@@ -1,0 +1,5 @@
+<meta>
+	<info author="norby89" type="map" gamemodes="assault"/>
+	<map src="Heist.map"/>
+	<script src="as-heist.lua" type="server"/>
+</meta>

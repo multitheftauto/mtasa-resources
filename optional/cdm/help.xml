@@ -1,0 +1,16 @@
+<help>Classic Death Match
+
+Score points by killing any player besides yourself,
+which lowers your points.
+
+Spawnscreen: Use the arrow keys to navigate between teams
+             and press Enter to join one.
+             You will spawn on one of your chosen teams spawn-
+             points, with the weapon(s) assigned to the team.
+
+Ingame: Press I anywhere to show map blips of all close-by
+        vehicles. (radius= 250m)
+
+Note: Although there are teams listed in this game-mode, it is
+      not necessarily team based. You will score a kill even
+      if you kill someone on your team.</help>

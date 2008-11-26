@@ -1,0 +1,38 @@
+local root = getRootElement()
+
+addEventHandler("onPlayerWasted", root,
+	function (ammo, killer, weapon, bodypart)
+		local r, g, b = getColorFromString(string.upper(get("color")))
+		local message
+		if killer then
+			if killer ~= source then
+				local killerType = getElementType(killer)
+				if killerType == "player" then
+					message = getClientName(killer).." killed "..getClientName(source).."."
+				elseif killerType == "vehicle" then
+					message = getClientName(getVehicleController(killer)).." killed "..getClientName(source).."."
+					if get("show_vehiclename") then
+						message = message .. " ("..getVehicleName(killer)..")"
+					end
+				end
+			else
+				message = getClientName(source).." committed suicide."
+			end
+		else
+			message = getClientName(source).." died."
+		end
+		if weapon and get("show_weapon") then
+			local weaponName = getWeaponNameFromID(weapon)
+			if weaponName then
+				message = message.." ("..weaponName..")"
+			end
+		end
+		if bodypart and get("show_bodypart") then
+			local bodypartName = getBodyPartName(bodypart)
+			if bodypartName then
+				message = message.." ("..getBodyPartName(bodypart)..")"
+			end
+		end
+		outputChatBox(message, root, r, g, b)
+	end
+)

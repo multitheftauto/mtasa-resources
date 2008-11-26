@@ -1,0 +1,10 @@
+<meta>
+	<info author="driver2" type="map" gamemodes="assault" />
+	<map src="as-ship.map" />
+	<script src="as-ship.lua" />
+	
+	<settings>
+		<setting name="#author" value="driver2" />
+		<setting name="#timelimit" value="300" />
+	</settings>
+</meta>

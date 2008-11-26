@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <* = call ( getResourceFromName("ajax"), "start", getResourceName(getThisResource()) ) *>
+        <link rel="stylesheet" type="text/css" href="server\http\admin.css" />
+        <script src='server\http\admin.js' type='text/javascript'></script>
+    </head>
+	<body onLoad="onLoad();">
+	<div align="center">
+		<table width="700" height="100%" cellspacing="0" cellpadding="0">
+          <tr class="main_top_menu">
+            <td width="36" align="center" class="main_top_menu"><a href="#" onclick="setPreviousPage ()"><img src="server\http\images\back.png" border="0" /><br />Back</a></td>
+            <td width="36" align="center" class="main_top_menu"><a href="#" onclick="setHomePage ()"><img src="server\http\images\home.png" border="0" /><br />Home</a></td>
+            <td>&nbsp;</td>
+          </tr>
+		  <tr height="180">
+		    <td colspan="3" background="server\http\images\header.png">&nbsp;</td>
+		  </tr>
+		  <tr>
+		    <td colspan="3">
+              <table width="100%" border="1" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td width="25%">
+				  <div style="width: 100%; height: 500px; overflow: auto;">
+				  	<table width="100%" border="0" cellpadding="1" cellspacing="1" class="main_right" id="menu">
+							<*
+								local table = call ( getThisResource(), "httpGetMenuItems" )
+								for name, section in pairs ( table ) do
+									httpWrite ( "<tr><td colspan=\"2\"><b>"..name.."</b><br /><hr /></td></tr>" )
+									local total = #section
+									local i = 1
+									while ( i <= total ) do
+										httpWrite ( "<tr>" )
+										httpWrite ( "<td align=\"center\"><a href=\"#\" onclick=\"setCurrentPage ( '"..section[i]["page"].."' )\"><img src=\""..section[i]["icon"].."\" border=\"0\" alt=\""..section[i]["alt"].."\" /><br />"..section[i]["name"].."</a></td>" )
+										if ( i < total ) then
+											i = i + 1
+											httpWrite ( "<td align=\"center\"><a href=\"#\" onclick=\"setCurrentPage ( '"..section[i]["page"].."' )\"><img src=\""..section[i]["icon"].."\" border=\"0\" alt=\""..section[i]["alt"].."\" /><br />"..section[i]["name"].."</a></td>" )
+										end
+										httpWrite ( "</tr>" )
+										i = i + 1
+									end
+								end
+							*>
+					</table>
+					</div>
+				  </td>
+				  <td valign="top"><div id="page"></div></td>
+				</tr>
+              </table>
+			</td>
+		  </tr>
+        </table>
+    </div>
+	</body>
+</html>

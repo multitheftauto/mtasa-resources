@@ -1,0 +1,40 @@
+body {
+	font-family: "Trebuchet MS", Arial, sans-serif;
+	font-size: 0.8em;
+}
+pre {text-indent: 30px}
+
+#toparea {
+	position: absolute; 
+	top:0px; 
+	right:0px; 
+	left:0px; 
+	height:23px; 
+	background:#555555; 
+	color:#FFFFFF; 
+	padding:7px;
+}
+
+#contentarea {
+	position:absolute;
+	top: 50px;
+	left: 0px;
+	margin-left: 25px;
+}
+
+span.mapsheader {
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #333;
+}
+
+div.gmdiv {
+	width: 100%;
+	background-color: #EEE;
+	padding-left: 15px;
+	margin-bottom: 20px;
+}
+
+span.highlighted {
+	color: #B00;
+}

@@ -1,0 +1,10 @@
+<meta>
+    <info author="Slothman" description="factory map" version="1" type="map" gamemodes="stealth"/>
+	<map src="factory.map"/>
+	<settings>
+		<setting name="#time" value="22:30" />
+		<setting name="#weather" value="[9]" />
+		<setting name="#waveheight" value="[02]" />
+	</settings>
+
+</meta>

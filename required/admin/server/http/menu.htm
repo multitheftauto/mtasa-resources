@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <* = call ( getResourceFromName("ajax"), "start", getResourceName(getThisResource()) ) *>
+        <link rel="stylesheet" type="text/css" href="admin.css" />
+        <script src='admin.js' type='text/javascript'></script>
+    </head>
+    <body>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="main_right" id="menu">
+			<*
+				local table = call ( getThisResource(), "getMenuItems" )
+				for name, section in pairs ( table ) do
+					httpWrite ( "<tr><td colspan=\"2\"><b>"..name.."</b><br /><hr /></td></tr>" )
+					local total = #section
+					local i = 1
+					while ( i <= total ) do
+						httpWrite ( "<tr>" )
+						httpWrite ( "<td align=\"center\"><a href=\"#\" onclick=\"setCurrentPage ( \""..section[i]["page"].."\" )\" alt=\""..section[i]["alt"].."\"><img src=\""..section[i]["icon"].."\" border=\"0\" /><br />"..section[i]["name"].."</a></td>" )
+						if ( i < total ) then
+							i = i + 1
+							httpWrite ( "<td align=\"center\"><a href=\"#\" onclick=\"setCurrentPage ( \""..section[i]["page"].."\" )\" alt=\""..section[i]["alt"].."\"><img src=\""..section[i]["icon"].."\" border=\"0\" /><br />"..section[i]["name"].."</a></td>" )
+						end
+						httpWrite ( "</tr>" )
+						i = i + 1
+					end
+				end
+			*>
+	</table>
+	</body>
+</html>

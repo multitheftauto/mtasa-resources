@@ -1,0 +1,7 @@
+<meta>
+    <info author="Ratt" type="map" gamemodes="assault" />
+    <map src="as-sharks.map" />
+    <script src="as-sharks.lua" />
+	<script src="as-sharks_client.lua" type="client"/>
+	<config src="help.xml" type="client"/>
+</meta>

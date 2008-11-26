@@ -1,0 +1,46 @@
+<map>
+<meta/>
+<options>
+<time>0:0</time>
+<weather>4</weather>
+</options>
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<vehicle522</vehicle />
+<checkpoint name="checkpoint">
+</checkpoint>
+<checkpoint name="checkpoint (1)">
+</checkpoint>
+
+<pickup name="repair pickup (1)" posX="-515.964233" posY="1967.528198" posZ="61.264160" type="repair" />
+<pickup name="repair pickup" posX="-579.751404" posY="2017.432739" posZ="60.687202" type="repair" />
+</map>

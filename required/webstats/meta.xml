@@ -1,0 +1,37 @@
+<meta>
+<include resource="ajax"/>
+	<info author="eAi" showInResourceBrowser="true" name="Statistics" description="View charts of statistics showing what's going on on your server" />
+	<script src="stats.lua" type="server" />
+	<script src="internal_stats.lua" type="server" />
+	<html src="FCF_Line.swf" raw="true" />
+	<html src="FCF_StackedArea2D.swf" raw="true" />
+	<html src="FCF_Pie2D.swf" raw="true" />
+	<html src="FCF_Pie3D.swf" raw="true" />
+	<html src="FCF_StackedColumn2D.swf" raw="true" />
+	<html src="FCF_StackedColumn3D.swf" raw="true" />
+	<html src="FCF_MSLine.swf" raw="true" />
+	<html src="index.htm" default="true"/>
+	<html src="players.xml" />
+	<html src="elements.xml" />
+	<html src="FusionCharts.js" raw="true"/>
+	<html src="ie-70.css" raw="true"/>
+	<html src="css.css" raw="true"/>
+	
+	<export function="getCurrentStats" http="true" />
+	<export function="registerStat" />
+	<export function="getRegisteredStats" />
+	<export function="getStatListByResource" />
+	
+	<!-- Internal stats -->
+	<export function="getVehicleCount" />
+	<export function="getObjectCount" />
+	<export function="getPlayerCount" />
+	<export function="getBlipCount" />
+	<export function="getMarkerCount" />
+	<export function="getPickupCount" />
+	<export function="getPublicChatCount" />
+	<export function="getTeamChatCount" />
+	<export function="getDamageCount" />
+	<export function="getVehiclesWastedCount" />
+	<export function="getChatCount" />
+</meta>

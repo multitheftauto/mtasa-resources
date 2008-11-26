@@ -1,0 +1,65 @@
+body {
+	font-family: "Trebuchet MS", Arial, sans-serif;;
+	font-size: 0.8em;
+}
+
+li {
+	white-space: nowrap;
+}
+
+ul {
+	padding-left: 10px;
+	margin: 0;
+	padding: 0;
+}
+
+ul li {
+	margin-left: 20px;
+	padding-left: 0px;
+}
+
+.plus {
+	list-style-type: none;
+	list-style-image: url('plus.gif');
+	cursor: pointer;
+}
+
+.minus {
+	list-style-type: none;
+	list-style-image: url('minus.gif');
+	cursor: pointer;
+}
+
+.loading {
+	list-style-type: none;
+	list-style-image: url('loading.gif');
+	cursor: wait;
+}
+
+.empty {
+	list-style-type: none;
+	list-style-image: none;
+	cursor: default;
+}
+
+.temp {
+	color: #008800;
+	font-weight: bold;
+}
+
+#toparea {
+	position: absolute; 
+	top:0px; 
+	right:0px; 
+	left:0px; 
+	height:23px; 
+	background:#555555; 
+	color:#FFFFFF; 
+	padding:7px;"
+}
+
+#contentarea {
+	position:absolute;
+	left: 20px;
+	top: 50px;
+}

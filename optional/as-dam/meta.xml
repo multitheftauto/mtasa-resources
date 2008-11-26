@@ -1,0 +1,10 @@
+<meta>
+	<info author="driver2" type="map" gamemodes="assault"/>
+	<map src="as-dam.map"/>
+	<script src="as-dam.lua" />
+	
+	<settings>
+		<setting name="#author" value="driver2" />
+		<setting name="#timelimit" value="600" />
+	</settings>
+</meta>

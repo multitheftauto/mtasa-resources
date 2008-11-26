@@ -1,0 +1,6 @@
+<meta>
+    <info author="Black Dragon" version="1.0" type="map" gamemodes="ctf"/>
+    <map src="ctf-goldcove.map" />
+    <script src="ctf-goldcove.lua" />
+    <include resource="maplimits" />
+</meta>

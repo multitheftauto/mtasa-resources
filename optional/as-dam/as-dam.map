@@ -1,0 +1,170 @@
+<map mod="deathmatch" version="1.0">
+
+  
+  <assaultSettings finishType="all" description="Steal explosives, destroy the dam" />
+  
+  <camera type="spawn" posX="506" posY="569" posZ="46" targetX="536" targetY="709" targetZ="4" />  <camera type="selectTeam" posX="506" posY="569" posZ="46" targetX="536" targetY="709" targetZ="4" />
+  <camera type="finish" posX="-631.987" posY="1843.968" posZ="10" targetX="-610.744" targetY="1920.229" targetZ="7" />
+  
+  <objective name="Explosive 1" description="Steal the explosives in the quarry" 
+  	id="exp1" req="" stay="8" stayText="Stealing explosives.."
+	posX="559.321411" posY="822.928101" posZ="-31.153337"
+	successText="Explosives stolen" defenderDescription="Prevent the other team from stealing the explosives" />
+  
+  <objective name="Explosive 2" description="Steal the explosives in the quarry"
+  	id="exp2" req="" stay="8" stayText="Stealing explosives.."
+	posX="677.674805" posY="841.297485" posZ="-43.960938"
+	successText="Explosives stolen" defenderDescription="Prevent the other team from stealing the explosives" />
+  
+  <objective name="Explosive 3" description="Steal the explosives in the quarry"
+  	id="exp3" req="" stay="10" stayText="Stealing explosives.."
+	posX="437.602264" posY="901.292725" posZ="-7.390396"
+	successText="Explosives stolen" defenderDescription="Prevent the other team from stealing the explosives" />
+  
+  <objective name="Leave the quarry" description="Make your way out of the quarry!"
+  	type="custom" id="leave" req="exp1,exp2,exp3"
+	posX="607.214844" posY="871.688110" posZ="-41.339630" forcedRespawn="both"
+	successText="Attackers escaped the quarry!" defenderDescription="Prevent the other team from escaping the quarry!" />
+  
+  <objective name="Reach the dam" description="Get near the dam"
+  	type="custom" id="dam" req="leave"
+	posX="-712.367126" posY="2063.582520" posZ="60.882820"
+	successText="~team~ reached the dam!" defenderDescription="Prevent the other team from reaching the dam" />
+
+  <objective name="Plant Bomb 1" description="Plant several boms on and around the dam"
+  	id="bomb1" req="dam" stay="12" stayText="Planting explosives.."
+	posX="-607.230408" posY="1924.516479" posZ="6.000000"
+	successText="Bomb planted"  defenderDescription="Prevent the other team from planting the bombs!"
+	bombPosX="-607.456" bombPosY="1924.6" bombPosZ="6.05" bombRotX="-90" bombRotY="0" bomtRotZ="0" />
+	
+  <objective name="Plant Bomb 2" description="Plant several boms on and around the dam"
+  	id="bomb2" req="dam" stay="10" stayText="Planting explosives.."
+	posX="-830.455383" posY="1973.126587" posZ="6.000008"
+	successText="Bomb planted" defenderDescription="Prevent the other team from planting the bombs!"
+	bombPosX="-830.45" bombPosY="1973" bombPosZ="6.05" bombRotX="-90" bombRotY="0" bomtRotZ="0" />
+  
+  <objective name="Plant Bomb 3" description="Plant several boms on and around the dam"
+  	id="bomb3" req="dam" stay="10" stayText="Planting explosives.."
+	posX="-783.043030" posY="2147.322998" posZ="59.382813"
+	successText="Bomb planted" defenderDescription="Prevent the other team from planting the bombs!"
+	bombPosX="-782.8" bombPosY="2146.82" bombPosZ="60" bombRotX="0" bombRotY="0" bombRotZ="180" />
+
+  
+  <spawngroup req="" type="attacker">
+	<spawnarea name="attacker" posX="520.062439" posY="657.482239" posZ="2.350243" rotZ="360" weapons="29,200;24,14" skins="122,124" />
+	<spawnarea name="attacker" posX="1000.145203" posY="962.748535" posZ="10.480690" rotZ="360" weapons="30,120;24,14" skins="122,124" />
+  </spawngroup>
+  <spawngroup req="" type="defender">
+	<spawnarea name="defender" posX="621.829956" posY="1029.658569" posZ="21.481613" rotZ="360" weapons="31,300;34,30" skins="282,283" />
+	<spawnarea name="defender" posX="390.232666" posY="902.287598" posZ="20.658554" rotZ="360" weapons="31,300;24,14" skins="282,283" />
+	<spawnarea name="defender" posX="639.960693" posY="890.002869" posZ="-43.293060" rotZ="360" weapons="31,300;24,14" skins="282,283" />
+  </spawngroup>
+  
+  <spawngroup req="exp1,exp2,exp3" type="attacker">
+	<spawnarea name="attacker 2" posX="602.478271" posY="844.592224" posZ="-43.606873" rotZ="360" weapons="30,300,24,14" skins="122,124" />
+  </spawngroup>
+  <spawngroup req="exp1,exp2,exp3" type="defender">
+	<spawnarea name="defender 2" posX="822.600952" posY="885.683167" posZ="13.011940" rotZ="360" weapons="31,300;24,14" skins="282,283" />
+	<spawnarea name="defender 2" posX="388.159149" posY="901.975830" posZ="20.514297" rotZ="360" weapons="31,300;24,14" skins="282,283" />
+  </spawngroup>
+
+  <spawngroup req="leave" type="attacker">
+	<spawnarea name="attacker after quarry" posX="861.462402" posY="865.448669" posZ="13.370245" rotZ="360" weapons="29,200" skins="122,124" />  
+	<spawnarea name="attacker after quarry" posX="514.339905" posY="658.217529" posZ="3.063502" rotZ="360" weapons="29,200" skins="122,124" />
+  </spawngroup>
+  <spawngroup req="leave" type="defender">
+	<spawnarea name="defender - after quarry" posX="998.369141" posY="1047.931274" posZ="48.151497" rotZ="360" weapons="31,300" skins="282,283" />
+	<spawnarea name="defender after quarry" posX="386.042633" posY="902.457886" posZ="20.740034" rotZ="360" weapons="31,300" skins="282,283" />  
+	<spawnarea name="defender after quarry" posX="-297.683319" posY="1311.318604" posZ="54.028942" rotZ="360" weapons="31,300" skins="282,283" />  
+	<spawnarea name="defender after quarry" posX="-92.572441" posY="1349.131226" posZ="10.370790" rotZ="360" weapons="31,300" skins="282,283" />
+  </spawngroup>
+  
+  <spawngroup req="dam" type="attacker">
+	<spawnarea name="attacker dam" posX="-395.116516" posY="1131.294922" posZ="15.894697" rotZ="360" weapons="31,300;24,21" skins="122,124" />  
+	<spawnarea name="attacker dam" posX="-297.425537" posY="1747.491821" posZ="42.706184" rotZ="360" weapons="31,300;24,21" skins="122,124" />
+	<spawnarea name="attacker dam" posX="-750.795593" posY="1635.094604" posZ="27.189108" rotZ="360" weapons="31,300;24,21" skins="122,124" />
+  </spawngroup>
+  <spawngroup req="dam" type="defender">
+	<spawnarea name="defender dam" posX="-910.461060" posY="2006.659912" posZ="60.932747" rotZ="360" weapons="30,300;24,21" skins="282,283" />  
+	<spawnarea name="defender dam" posX="-810.474060" posY="1815.639893" posZ="7.018691" rotZ="360" weapons="30,300;24,21" skins="282,283" />  
+	<spawnarea name="defender dam" posX="-507.941376" posY="1995.848267" posZ="60.572983" rotZ="360" weapons="30,300;24,21" skins="282,283" />
+  </spawngroup>
+  
+  <vehicle name="v" posX="-425.672943" posY="1163.015381" posZ="0.972062" rotZ="360" model="446" />
+  <vehicle name="v" posX="-420.031433" posY="1171.847046" posZ="0.982211" rotZ="360" model="446" />
+  <vehicle name="v" posX="-419.924988" posY="1149.054565" posZ="1.053401" rotZ="360" model="446" />
+  <vehicle name="vehicle change pickup" posX="491.524475" posY="673.170776" posZ="5.457573" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (1)" posX="489.972687" posY="668.777283" posZ="6.167603" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (2)" posX="487.505890" posY="663.825317" posZ="7.002842" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (3)" posX="485.820831" posY="659.958313" posZ="7.507408" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (4)" posX="484.734497" posY="655.540466" posZ="7.799919" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (5)" posX="484.119415" posY="651.417664" posZ="8.004515" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (6)" posX="483.271851" posY="646.746094" posZ="8.667608" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (7)" posX="482.261963" posY="641.869507" posZ="9.429913" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (8)" posX="533.190002" posY="637.264221" posZ="2.619213" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (9)" posX="533.959717" posY="643.117737" posZ="2.774673" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (10)" posX="494.343353" posY="679.257385" posZ="4.663475" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (11)" posX="541.243591" posY="660.721680" posZ="3.629210" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (12)" posX="538.853821" posY="656.782715" posZ="3.132799" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (13)" posX="537.017029" posY="651.919556" posZ="2.932892" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (14)" posX="534.872925" posY="647.691406" posZ="2.822282" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (15)" posX="1010.186829" posY="956.286316" posZ="11.320313" rotX="" rotY="" rotZ="" model="470" />
+  <vehicle name="vehicle change pickup (16)" posX="1010.885193" posY="941.705627" posZ="11.591152" rotX="" rotY="" rotZ="" model="470" />
+  <vehicle name="vehicle change pickup (17)" posX="1004.461792" posY="923.000244" posZ="12.048443" rotX="" rotY="" rotZ="" model="470" />
+  <vehicle name="vehicle change pickup (18)" posX="998.335754" posY="910.291443" posZ="11.743858" rotX="" rotY="" rotZ="" model="470" />
+  <vehicle name="vehicle change pickup (19)" posX="989.492493" posY="967.119446" posZ="11.320313" rotX="" rotY="" rotZ="" model="470" />
+  <vehicle name="vehicle change pickup (20)" posX="831.721252" posY="887.931946" posZ="13.851563" rotX="" rotY="" rotZ="" model="470" />
+  <vehicle name="vehicle change pickup (21)" posX="843.790710" posY="895.463440" posZ="13.858486" rotX="" rotY="" rotZ="" model="470" />
+  <vehicle name="vehicle change pickup (22)" posX="834.749390" posY="828.943970" posZ="12.770638" rotX="" rotY="" rotZ="" model="533" />
+  <vehicle name="vehicle change pickup (23)" posX="848.554565" posY="828.643433" posZ="13.851563" rotX="" rotY="" rotZ="" model="402" />
+  <vehicle name="vehicle change pickup (24)" posX="601.210144" posY="877.816040" posZ="-42.460938" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (25)" posX="612.126770" posY="876.941772" posZ="-42.460938" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (26)" posX="618.570374" posY="872.697388" posZ="-42.460938" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (27)" posX="595.769165" posY="834.907532" posZ="-42.655327" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (28)" posX="593.501892" posY="839.130371" posZ="-42.479988" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (29)" posX="588.576782" posY="843.969604" posZ="-42.034756" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (30)" posX="606.461121" posY="821.429077" posZ="-42.502426" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (31)" posX="613.135559" posY="823.140259" posZ="-42.453434" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (32)" posX="616.049500" posY="816.663757" posZ="-42.453438" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (33)" posX="623.224731" posY="815.026917" posZ="-42.460938" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup" posX="1014.761658" posY="997.170532" posZ="48.632813" rotX="" rotY="" rotZ="" model="447" />
+  <vehicle name="vehicle change pickup (1)" posX="1002.531921" posY="1013.286560" posZ="48.632813" rotX="" rotY="" rotZ="" model="447" />
+  <vehicle name="vehicle change pickup (2)" posX="996.446655" posY="1030.746460" posZ="48.632813" rotX="" rotY="" rotZ="" model="447" />
+  <vehicle name="vehicle change pickup (4)" posX="-792.561768" posY="1817.179688" posZ="1.469003" rotX="" rotY="" rotZ="" model="430" />
+  <vehicle name="vehicle change pickup (5)" posX="-513.157349" posY="1965.391724" posZ="60.975548" rotX="" rotY="" rotZ="" model="470" />
+  <vehicle name="vehicle change pickup (6)" posX="-526.189087" posY="1963.811646" posZ="60.789860" rotX="" rotY="" rotZ="" model="470" />
+  
+  <vehicle name="vehicle change pickup (7)" posX="-904.125305" posY="1984.671631" posZ="61.414063" rotX="" rotY="" rotZ="180" model="468" />
+  <vehicle name="vehicle change pickup (8)" posX="-906.876953" posY="1987.139648" posZ="61.414063" rotX="" rotY="" rotZ="180" model="468" />
+  <vehicle name="vehicle change pickup (9)" posX="-909.344055" posY="1990.532349" posZ="61.414063" rotX="" rotY="" rotZ="180" model="468" />
+  <vehicle name="vehicle change pickup (10)" posX="-912.240662" posY="1992.702637" posZ="61.414063" rotX="" rotY="" rotZ="180" model="468" />
+  <vehicle name="vehicle change pickup (11)" posX="-933.672485" posY="2027.029419" posZ="61.414063" rotX="" rotY="" rotZ="180" model="528" />
+  <vehicle name="vehicle change pickup (12)" posX="-927.142883" posY="2033.493164" posZ="61.420456" rotX="" rotY="" rotZ="180" model="470" />
+  
+  <vehicle name="vehicle change pickup (13)" posX="-290.714111" posY="1775.011719" posZ="43.187500" rotX="" rotY="" rotZ="" model="496" />
+  <vehicle name="vehicle change pickup (14)" posX="-299.143005" posY="1775.707031" posZ="43.187500" rotX="" rotY="" rotZ="" model="550" />
+  <vehicle name="vehicle change pickup (15)" posX="-289.230438" posY="1728.729492" posZ="43.187500" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (16)" posX="-292.559113" posY="1729.071899" posZ="43.187500" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (17)" posX="-295.952850" posY="1728.879639" posZ="43.187500" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (18)" posX="-299.125122" posY="1728.787354" posZ="43.187500" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (20)" posX="-315.497559" posY="1725.597290" posZ="42.937149" rotX="" rotY="" rotZ="" model="400" />
+  <vehicle name="vehicle change pickup (21)" posX="-329.711792" posY="1724.214722" posZ="42.911575" rotX="" rotY="" rotZ="" model="400" />
+  <vehicle name="vehicle change pickup (22)" posX="-305.534485" posY="1327.328125" posZ="54.938606" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (23)" posX="-300.716919" posY="1327.611328" posZ="54.960064" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (24)" posX="-311.423859" posY="1315.965332" posZ="54.442780" rotX="" rotY="" rotZ="" model="560" />
+  <vehicle name="vehicle change pickup (25)" posX="-323.918518" posY="1342.384277" posZ="55.130585" rotX="" rotY="" rotZ="" model="455" />
+  <vehicle name="vehicle change pickup (26)" posX="-774.492004" posY="1632.260742" posZ="27.603336" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (27)" posX="-774.580566" posY="1636.781616" posZ="27.651886" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (28)" posX="-775.004883" posY="1641.146240" posZ="27.766054" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (29)" posX="-732.810120" posY="1641.151123" posZ="27.184500" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (30)" posX="-730.096130" posY="1638.145142" posZ="26.554329" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (31)" posX="-726.752625" posY="1634.984619" posZ="25.788565" rotX="" rotY="" rotZ="" model="468" />
+  <vehicle name="vehicle change pickup (32)" posX="-723.687012" posY="1631.471558" posZ="25.074469" rotX="" rotY="" rotZ="" model="468" />
+
+  <vehicle name="vehicle change pickup (32)" posX="-88.45" posY="1343.691" posZ="10.78" rotX="" rotY="" rotZ="266" model="468" />
+  <vehicle name="vehicle change pickup (32)" posX="-88.45" posY="1345.691" posZ="10.78" rotX="" rotY="" rotZ="266" model="468" />
+  <vehicle name="vehicle change pickup (32)" posX="-88.45" posY="1347.691" posZ="10.78" rotX="" rotY="" rotZ="266" model="468" />
+  <vehicle name="vehicle change pickup (32)" posX="-88.45" posY="1349.691" posZ="10.78" rotX="" rotY="" rotZ="266" model="468" />
+  <vehicle name="vehicle change pickup (32)" posX="-80.94" posY="1372.343" posZ="10.48" rotX="" rotY="" rotZ="" model="560" />
+  
+</map>

@@ -1,0 +1,4 @@
+<meta>
+	<info type="map" gamemodes="race" name="Hydra race" author="Ransom" />
+	<race src="Hydra Race.map" />
+</meta>

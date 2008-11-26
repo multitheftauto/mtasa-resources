@@ -1,0 +1,10 @@
+<meta>
+	<info author="driver2" type="map" gamemodes="assault"/>
+	<map src="as-area51.map"/>
+	<script src="as-area51.lua" />
+	
+	<settings>
+		<setting name="#author" value="driver2" />
+		<setting name="#timelimit" value="300" />
+	</settings>
+</meta>

@@ -1,0 +1,9 @@
+<help popup="no">
+Capture The Orb - San Fierro Map
+
+Vehicles are placed around several player spawns across the map, and are an essential tool for reaching your objective.
+
+Since the map is not full of parked cars, there is a vehicle creation feature you can use in case you are stranded.
+
+Type "createvehicle [vehicle name]" to create the vehicle of your choice. You are restricted on how frequently you can create vehicles and their types, so choose carefully!
+</help>

@@ -1,0 +1,6 @@
+<meta>
+    <info author="Ratt" type="map" gamemodes="ctf" />
+    <script src="giveWeapons.lua" />
+    <map src="ctf-bombsite.map" />
+    <include resource="scoreboard" />
+</meta>

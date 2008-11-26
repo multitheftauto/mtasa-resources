@@ -1,0 +1,10 @@
+<meta>
+	<info author="jbeta" type="script" version="1.0.0" />
+	<script src="deathmessages.lua" type="server" />
+	<settings>
+		<setting name="*color" value="#ffaa00" />
+		<setting name="*show_bodypart" value="[true]" />
+		<setting name="*show_weapon" value="[true]" />
+		<setting name="*show_vehiclename" value="[true]" />
+	</settings>
+</meta>

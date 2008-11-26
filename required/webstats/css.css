@@ -1,0 +1,20 @@
+#topbar {
+	position: absolute; 
+	top:0px; 
+	right:0px; 
+	left:0px; 
+	height:23px; 
+	background:#555555; 
+	color:#FFFFFF; 
+	padding:7px;"
+}
+
+#datasets {
+	position: absolute; 
+	right: 0px; 
+	top: 37px; 
+	width: 20%; 
+	bottom: 0px;
+	background:#555555;
+	overflow:auto; 
+}
