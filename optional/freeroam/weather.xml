@@ -1,0 +1,22 @@
+<catalog type="weather">
+	<weather id="0" name="Blue sky with clouds" />
+	<weather id="1" name="Blue sky with clouds" />
+	<weather id="2" name="Blue sky with clouds" />
+	<weather id="3" name="Blue sky with clouds" />
+	<weather id="4" name="Blue sky with clouds" />
+	<weather id="5" name="Blue sky with clouds" />
+	<weather id="6" name="Blue sky with clouds" />
+	<weather id="7" name="Blue sky with clouds" />
+	<weather id="8" name="Storm" />
+	<weather id="9" name="Foggy" />
+	<weather id="10" name="Clear blue sky" />
+	<weather id="11" name="Hot, heat waves" />
+	<weather id="12" name="Dull, hazy" />
+	<weather id="13" name="Dull, hazy" />
+	<weather id="14" name="Dull, hazy" />
+	<weather id="15" name="Dull, hazy" />
+	<weather id="16" name="Dull, cloudy, rainy" />
+	<weather id="17" name="Very hot" />
+	<weather id="18" name="Very hot" />
+	<weather id="19" name="Sand storm" />
+</catalog>

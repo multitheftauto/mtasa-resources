@@ -43,7 +43,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		
 		-- load pickup models and textures
 		for name,id in pairs(g_ModelForPickupType) do
-			loadCustomModel(id, name)
+			loadCustomModel(id, 'model/' .. name .. '.dff', 'model/' .. name .. '.txd')
 		end
 		
 		setPlayerCanBeKnockedOffBike(g_Me, false)
@@ -67,7 +67,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	local x, y, z = getElementPosition(g_Vehicle)
 	setCameraBehindVehicle(vehicle)
 	alignVehicleToGround(vehicle)
-	local weapons = not g_ArmedVehicleIDs[getVehicleID(vehicle)] or g_MapOptions.vehicleweapons
+	local weapons = not g_ArmedVehicleIDs[getElementModel(vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
 	
@@ -242,12 +242,12 @@ addEventHandler('onClientColShapeHit', g_Root,
 			return
 		end
 		if pickup.type == 'vehiclechange' then
-			if pickup.vehicle == getVehicleID(g_Vehicle) then
+			if pickup.vehicle == getElementModel(g_Vehicle) then
 				return
 			end
 			g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
 		end
-		triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id)
+		triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id, pickup.type)
 		playSoundFrontEnd(46)
 	end
 )
@@ -259,18 +259,9 @@ function vehicleChanging(h, m)
 		setElementPosition(g_Vehicle, x, y, z - g_PrevVehicleHeight + newVehicleHeight)
 	end
 	g_PrevVehicleHeight = nil
-	local weapons = not g_ArmedVehicleIDs[getVehicleID(g_Vehicle)] or g_MapOptions.vehicleweapons
+	local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
-	
-	setTimer(revertTime, 1000, 1, h, m)
-end
-
-function revertTime(h, m)
-	if getTime() == 0 then
-		outputConsole('Midnight bug detected; resetting')
-		setTime(h, m)
-	end
 end
 
 function vehicleUnloading()
@@ -339,10 +330,11 @@ function checkpointReached(elem)
 	if elem ~= g_Vehicle then
 		return
 	end
+	
 	if g_Checkpoints[g_CurrentCheckpoint].vehicle then
 		g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
 	end
-	triggerServerEvent('onPlayerReachCheckpoint', g_Me, g_CurrentCheckpoint)
+	triggerServerEvent('onPlayerReachCheckpointInternal', g_Me, g_CurrentCheckpoint)
 	playSoundFrontEnd(43)
 	if g_CurrentCheckpoint < #g_Checkpoints then
 		showNextCheckpoint()
@@ -363,8 +355,8 @@ function startHurry()
 		local w, h = resAdjust(364), resAdjust(82)
 		g_GUI.hurry = guiCreateStaticImage(screenWidth/2 - w/2, screenHeight - h - 40, w, h, 'img/hurry.png', false, nil)
 		guiSetAlpha(g_GUI.hurry, 0)
-		Animation.createAndPlay(g_GUI.hurry, Animation.presets.guiPulse(1000))
 		Animation.createAndPlay(g_GUI.hurry, Animation.presets.guiFadeIn(800))
+		Animation.createAndPlay(g_GUI.hurry, Animation.presets.guiPulse(1000))
 	end
 	guiLabelSetColor(g_GUI.timeleft, 255, 0, 0)
 end

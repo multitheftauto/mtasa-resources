@@ -122,27 +122,24 @@ function loadMap(res)
 	return true
 end
 
-function startRace(fastStart)
-	g_SpawningPlayers = getElementsByType('player')
-	setTimer(joinHandler, 500, #g_SpawningPlayers)
-	setTimer(startCountdown, #g_SpawningPlayers*500 + (#g_Objects > 400 and (fastStart and 2000 or 8000) or (fastStart and 500 or 5000)), 1)
+function startRace()
+	g_Players = {}
+	g_SpawnTimer = setTimer(joinHandler, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
 		g_RankTimer = setTimer(updateRank, 1000, 0)
 	end
 end
 
-function startCountdown()
-	g_RaceStartCountdown:start()
-end
-
 function launchRace()
 	table.each(g_Vehicles, setVehicleFrozen, false)
+	table.each(g_Players, setPlayerGravity, 0.008)
 	clientCall(g_Root, 'launchRace', g_MapOptions.duration, g_MapOptions.vehicleweapons)
 	if g_MapOptions.duration then
 		g_RaceEndTimer = setTimer(raceTimeout, g_MapOptions.duration, 1)
 	end
 	g_CurrentRaceMode:launch()
 	g_CurrentRaceMode.running = true
+	triggerEvent('onRaceLaunch', getResourceRootElement(mapmanager.getRunningGamemodeMap()))
 end
 
 g_RaceStartCountdown = Countdown.create(3, launchRace)
@@ -159,7 +156,7 @@ function restartRace()
 		destroyElement(g_Vehicles[player])
 		destroyBlipsAttachedTo(player)
 	end
-	startRace(true)
+	startRace()
 end
 
 function joinHandler(player)
@@ -169,20 +166,25 @@ function joinHandler(player)
 		votemanager.voteMap(getThisResource())
 		return
 	end
-	if g_SpawningPlayers then
-		player = table.remove(g_SpawningPlayers)
-		if #g_SpawningPlayers == 0 then
-			g_SpawningPlayers = nil
+	if g_SpawnTimer then
+		for i,p in ipairs(getElementsByType('player')) do
+			if not table.find(g_Players, p) then
+				player = p
+				break
+			end
+		end
+		if not player then
+			killTimer(g_SpawnTimer)
+			g_SpawnTimer = nil
+			g_RaceStartCountdown:start()
+			return
 		end
 	end
 	local playerJoined = not player
-	if not player then
+	if playerJoined then
 		player = source
 	end
-	
-	if not table.find(g_Players, player) then
-		table.insert(g_Players, player)
-	end
+	table.insert(g_Players, player)
 	
 	local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint()
 	
@@ -217,8 +219,19 @@ function joinHandler(player)
 		local nick = getClientName(player)
 		vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
 		setVehicleFrozen(vehicle, true)
+		setPlayerGravity(player, 0.0001)
 		if playerJoined and g_CurrentRaceMode.running then
-			setTimer(setVehicleFrozen, 3000, 1, vehicle, false)
+			setTimer(
+				function()
+					if not table.find(g_Players, player) then
+						return
+					end
+					setVehicleFrozen(vehicle, false)
+					setPlayerGravity(player, 0.008)
+				end,
+				3000,
+				1
+			)
 		end
 		
 		if spawnpoint.paintjob or spawnpoint.upgrades then
@@ -270,8 +283,8 @@ function updateRank()
 	end
 end
 
-addEvent('onPlayerReachCheckpoint', true)
-addEventHandler('onPlayerReachCheckpoint', g_Root,
+addEvent('onPlayerReachCheckpointInternal', true)
+addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 	function(checkpointNum)
 		local vehicle = g_Vehicles[source]
 		local checkpoint = g_Checkpoints[checkpointNum]
@@ -285,13 +298,18 @@ addEventHandler('onPlayerReachCheckpoint', g_Root,
 			end
 		end
 		
-		g_CurrentRaceMode:onPlayerReachCheckpoint(source, checkpointNum)
+		local rank, time = g_CurrentRaceMode:onPlayerReachCheckpoint(source, checkpointNum)
+		if checkpointNum < #g_Checkpoints then
+			triggerEvent('onPlayerReachCheckpoint', source, checkpointNum, time)
+		else
+			triggerEvent('onPlayerFinish', source, rank, time)
+		end
 	end
 )
 
 addEvent('onPlayerPickUpRacePickup', true)
 addEventHandler('onPlayerPickUpRacePickup', g_Root,
-	function(pickupID)
+	function(pickupID, pickupType)
 		local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
 		local vehicle = g_Vehicles[source]
 		if pickup.type == 'repair' then
@@ -366,6 +384,12 @@ addEventHandler('onGamemodeMapStop', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStop')
 		unloadAll()
+	end
+)
+
+addEventHandler('onPollDraw', g_Root,
+	function()
+		outputDebugString('Poll ended in a draw')
 	end
 )
 
@@ -462,10 +486,17 @@ addCommandHandler('kill',
 )
 
 addCommandHandler('ghostmode',
-	function()
+	function(player)
+		if not isPlayerInACLGroup(player, 'Admin') then
+			return
+		end
 		g_MapOptions.ghostmode = not g_MapOptions.ghostmode
 		clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-		outputConsole('Ghostmode is now ' .. (g_MapOptions.ghostmode and 'on' or 'off'))
+		if g_MapOptions.ghostmode then
+			outputChatBox('Ghostmode enabled by ' .. getClientName(player), g_Root, 0, 240, 0)
+		else
+			outputChatBox('Ghostmode disabled by ' .. getClientName(player), g_Root, 240, 0, 0)
+		end
 	end
 )
 
@@ -485,3 +516,21 @@ addCommandHandler('convrace',
 		outputConsole('Map converted successfully')
 	end
 )
+
+------------------------
+-- Exported functions
+
+function getPlayerRank(player)
+	if not g_CurrentRaceMode or not g_CurrentRaceMode:isRanked() then
+		return false
+	end
+	return g_CurrentRaceMode:getPlayerRank(player)
+end
+
+function getTimePassed()
+	if not g_CurrentRaceMode then
+		return false
+	end
+	return g_CurrentRaceMode:getTimePassed()
+end
+

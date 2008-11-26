@@ -30,14 +30,6 @@ function warpPlayerIntoVehicle(player, vehicle)
 	end
 end
 
---[[
-local _spawnPlayer = spawnPlayer
-function spawnPlayer(player, ...)
-	_spawnPlayer(player, ...)
-	setCameraTarget(player, player)
-end
---]]
-
 g_Messages = {}		-- { player =  { display = display, textitem = textitem, timer = timer } }
 function showMessage(text, r, g, b, player)
 	if not player then
@@ -99,7 +91,7 @@ function setVehicleID(vehicle, id)
 	local player = getVehicleController(vehicle)
 	local vx, vy, vz = getElementVelocity(vehicle)
 	local tvx, tvy, tvz = getVehicleTurnVelocity(vehicle)
-	setVehicleModel(vehicle, id)
+	setElementModel(vehicle, id)
 	setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
 	setTimer(revertVehicleWheels, 1000, 1, vehicle)
 	if not doorExists then
@@ -180,7 +172,7 @@ function pimpVehicleRandom(vehicle)
 			true
 		)
 	end
-	if not g_PimpableVehicles[getVehicleID(vehicle)] then
+	if not g_PimpableVehicles[getElementModel(vehicle)] then
 		return
 	end
 	for slotName,upgrades in pairs(getVehicleCompatibleUpgradesGrouped(vehicle)) do
@@ -209,6 +201,21 @@ function getStringFromColor(r, g, b)
 	return string.format('#%02X%02X%02X', r, g, b)
 end
 
+function isPlayerInACLGroup(player, groupName)
+	local account = getClientAccount(player)
+	local group = aclGetGroup(groupName)
+	if not account or not group then
+		return false
+	end
+	local accountName = getAccountName(account)
+	for i,obj in ipairs(aclGroupListObjects(group)) do
+		if obj == 'user.' .. accountName or obj == 'user.*' then
+			return true
+		end
+	end
+	return false
+end
+
 --------------------------------
 -- Table extensions
 
@@ -230,13 +237,14 @@ function table.maptry(t, callback, ...)
 end
 
 function table.each(t, index, callback, ...)
+	local args = { ... }
 	if type(index) == 'function' then
-		table.insert(arg, 1, callback)
+		table.insert(args, 1, callback)
 		callback = index
 		index = false
 	end
 	for k,v in pairs(t) do
-		callback(index and v[index] or v, unpack(arg))
+		callback(index and v[index] or v, unpack(args))
 	end
 	return t
 end

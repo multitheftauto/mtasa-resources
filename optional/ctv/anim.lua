@@ -31,7 +31,7 @@
 	  paramater that linearly goes from a given starting value to a
 	  given ending value, over the specified amount of time, and is
 	  applied to one certain element. While a phase is running, its
-	  callback function will be called onClientRender with the following
+	  callback function will be called onClientPreRender with the following
 	  arguments:
 	  
 	    phase.fn(element elem, float param, table phase)
@@ -212,7 +212,7 @@ function Animation:play()
 		table.insert(Animation.collection, self)
 	end
 	if not Animation.playingAnimationsExist() then
-		addEventHandler('onClientRender', getRootElement(), updateAnim)
+		addEventHandler('onClientPreRender', getRootElement(), updateAnim)
 	end
 	self.playing = true
 end
@@ -220,14 +220,14 @@ end
 function Animation:pause()
 	self.playing = false
 	if not Animation.playingAnimationsExist() then
-		removeEventHandler('onClientRender', getRootElement(), updateAnim)
+		removeEventHandler('onClientPreRender', getRootElement(), updateAnim)
 	end
 end
 
 function Animation:remove()
 	table.removevalue(Animation.collection, self)
 	if not Animation.playingAnimationsExist() then
-		removeEventHandler('onClientRender', getRootElement(), updateAnim)
+		removeEventHandler('onClientPreRender', getRootElement(), updateAnim)
 	end
 	self.playing = false
 end
@@ -288,7 +288,7 @@ function updateAnim()
 				anim:remove()
 				phaseEnded = true
 			elseif not phase.time then
-				phase.fn(elem, phase)
+				phase.fn(elem)
 				phaseEnded = true
 			else
 				if not phase.starttick then
@@ -398,7 +398,7 @@ function Animation.presets.guiPulse(time, value, phase)
 	-- guiPulse(time)
 	-- Pulses an image (scale down/up). time = ms for a complete pulsation cycle
 	if type(time) ~= 'userdata' then
-		return { from = 0, to = 2*math.pi, transform = math.sin, time = time, repeats = 0, fn = Animation.presets.guiPulse }
+		return { from = 0, to = 2*math.pi, transform = math.sin, time = time, repeats = 0, fn = Animation.presets.pulse }
 	else
 		local elem = time
 		if not phase.width then

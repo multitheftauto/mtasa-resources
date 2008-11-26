@@ -10,6 +10,21 @@ addEventHandler('onClientCall', getRootElement(),
 	end
 )
 
+function createServerCallInterface()
+	return setmetatable(
+		{},
+		{
+			__index = function(t, k)
+				t[k] = function(...) triggerServerEvent('onServerCall', g_Me, k, ...) end
+				return t[k]
+			end
+		}
+	)
+end
+
+----------------------------
+-- GUI
+
 function showHUD(show)
 	for i,name in ipairs({ 'ammo', 'area_name', 'armour', 'breath', 'clock', 'health', 'money', 'vehicle_name', 'weapon' }) do
 		showPlayerHudComponent(name, show)
@@ -46,6 +61,18 @@ function setGUIComponentsVisible(settings)
 	end
 end
 
+function createShadowedLabel(x, y, width, height, text, align)
+	local shadow = guiCreateLabel(x + 1, y + 1, width, height, text, false)
+	guiLabelSetColor(shadow, 0, 0, 0)
+	local label = guiCreateLabel(x, y, width, height, text, false)
+	guiLabelSetColor(label, 255, 255, 255)
+	if align then
+		guiLabelSetHorizontalAlign(shadow, align)
+		guiLabelSetHorizontalAlign(label, align)
+	end
+	return label, shadow
+end
+
 function msToTimeStr(ms)
 	if not ms then
 		return ''
@@ -74,37 +101,14 @@ function resAdjust(num)
 	end
 end
 
-function loadCustomModel(id, name)
-	if not g_CustomModelPreloads then
-		g_CustomModelPreloads = {}
-	end
-	local x, y, z = getElementPosition(g_Me)
-	local object = createObject(id, x, y, z-50)
-	table.insert(g_CustomModelPreloads, { id = id, name = name, object = object })
-	addEventHandler('onClientElementStreamIn', object, customModelPreloaded, false)
-end
-
-function customModelPreloaded()
-	local i = table.find(g_CustomModelPreloads, 'object', source)
-	if i then
-		local preload = g_CustomModelPreloads[i]
-		local txd = engineLoadTXD(('model/%s.txd'):format(preload.name))
-		engineImportTXD(txd, preload.id)
-		local dff = engineLoadDFF(('model/%s.dff'):format(preload.name), 0)
-		engineReplaceModel(dff, preload.id)
-		destroyElement(source)
-		table.remove(g_CustomModelPreloads, i)
-		if #g_CustomModelPreloads == 0 then
-			g_CustomModelPreloads = nil
-		end
-	end
-end
+----------------------------
+-- Vehicles
 
 function setCameraBehindVehicle(vehicle)
 	local x, y, z = getElementPosition(vehicle)
 	local rx, ry, rz = getVehicleRotation(vehicle)
 	setCameraMatrix(x - 4*math.cos(math.rad(rz + 90)), y - 4*math.sin(math.rad(rz + 90)), z + 1, x, y, z + 1)
-	setTimer(setCameraTarget, 100, 1, g_Me)
+	setTimer(setCameraTarget, 150, 1, getLocalPlayer())
 end
 
 function alignVehicleToGround(vehicle)
@@ -128,30 +132,6 @@ function alignVehicleToGround(vehicle)
 			end
 		end
 	end
-end
-
-function createServerCallInterface()
-	return setmetatable(
-		{},
-		{
-			__index = function(t, k)
-				t[k] = function(...) triggerServerEvent('onServerCall', g_Me, k, ...) end
-				return t[k]
-			end
-		}
-	)
-end
-
-function createShadowedLabel(x, y, width, height, text, align)
-	local shadow = guiCreateLabel(x + 1, y + 1, width, height, text, false)
-	guiLabelSetColor(shadow, 0, 0, 0)
-	local label = guiCreateLabel(x, y, width, height, text, false)
-	guiLabelSetColor(label, 255, 255, 255)
-	if align then
-		guiLabelSetHorizontalAlign(shadow, align)
-		guiLabelSetHorizontalAlign(label, align)
-	end
-	return label, shadow
 end
 
 -----------------------------
@@ -215,14 +195,18 @@ end
 -----------------------------
 -- String extensions
 
-function string:split(separator)
-	if separator == '.' then
-		separator = '%.'
+function string:split(sep)
+	if #self == 0 then
+		return {}
 	end
+	sep = sep or ' '
 	local result = {}
-	for part in self:gmatch('(.-)' .. separator) do
-		result[#result+1] = part
-	end
-	result[#result+1] = self:match('.*' .. separator .. '(.*)$') or self
+	local from = 1
+	local to
+	repeat
+		to = self:find(sep, from, true) or (#self + 1)
+		result[#result+1] = self:sub(from, to - 1)
+		from = to + 1
+	until from == #self + 2
 	return result
 end

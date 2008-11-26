@@ -4,22 +4,44 @@
 local root = getRootElement ()
 local round = 0
 
+addEventHandler('onResourceStart', getResourceRootElement(getThisResource()),
+	function()
+		exports.scoreboard:addScoreboardColumn('Score')
+		table.each(getElementsByType('player'), joinHandler)
+	end
+)
+
+function joinHandler(player)
+	player = player or source
+	setElementData(player, 'Score', 0)
+	if van then
+		triggerClientEvent(player, 'doSetVan', van)
+	end
+end
+addEventHandler('onPlayerJoin', root, joinHandler)
+
+addEventHandler('onResourceStop', getResourceRootElement(getThisResource()),
+	function()
+		exports.scoreboard:removeScoreboardColumn('Score')
+	end
+)
+
 function onCTVMapStart (startedMap)
 	local mapRoot = getResourceRootElement(startedMap)
 	for k,v in ipairs(getElementsByType "player") do
 		bindKey ( v, "l", "down", toggleVehicleLights )
 	end
 	for k,v in ipairs(getElementsByType ( "base", mapRoot )) do
-			if getElementData ( v, "team" ) == "team1" then
-				baseTeamb1 = v
-			elseif getElementData ( v, "team" ) == "team2" then
-				baseTeamb2 = v
-			elseif getElementData ( v, "team" ) == "team3" then
-				baseTeamb3 = v
-			elseif getElementData ( v, "team" ) == "team4" then
-				baseTeamb4 = v
-			end
+		if getElementData ( v, "team" ) == "team1" then
+			baseTeamb1 = v
+		elseif getElementData ( v, "team" ) == "team2" then
+			baseTeamb2 = v
+		elseif getElementData ( v, "team" ) == "team3" then
+			baseTeamb3 = v
+		elseif getElementData ( v, "team" ) == "team4" then
+			baseTeamb4 = v
 		end
+	end
 	--team1
 	local team1markerX = getElementData ( baseTeamb1, "markerX" )
 	local team1markerY = getElementData ( baseTeamb1, "markerY" )
@@ -78,9 +100,9 @@ function onCtvChat ( message, theType )
 		local bastidName = getClientName ( source )
 		if ( team ) then
 		local r, g, b = getTeamColor ( team )
-		outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
+			outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
 		else
-		outputChatBox ( bastidName..": "..message )
+			outputChatBox ( bastidName..": "..message )
 		end
 	end
 end
@@ -95,6 +117,7 @@ function startRound ()
 	nextRound()
 
 	for k,v in ipairs(getElementsByType "player") do
+		setElementData(v, 'Score', 0)
 		fadeCamera ( v, false, 1.0, 0, 0, 0 )
 		setTimer ( fadeCamera, 1000, 1, v, true, 1 )
 		setTimer ( spawnScreen, 1000, 1, v )
@@ -136,19 +159,16 @@ function spawnVan ( target )
 	local pj = getElementData ( target, "paintjob" ) --paintjob
 	local upgrades = getElementData ( target, "upgrades" ) --paintjob
 	---seperate the colours string and get specific colour ids
-	local col1 = gettok ( colours, 1, 44 )
-	local col2 = gettok ( colours, 2, 44 )
-	local col3 = gettok ( colours, 3, 44 )
-	local col4 = gettok ( colours, 4, 44 )
+	local col1, col2, col3, col4 = colours and colours:match('^(%w+),(%w+),(%w+),(%w+)$')
 	--if any of them are "ran", then make them into a random id
-	if col1 == "ran" or col1 == false then	col1 = randInt(0,15) end
-	if col2 == "ran" or col1 == false then 	col2 = randInt(0,15) end
-	if col3 == "ran" or col1 == false then	col3 = randInt(0,15) end
-	if col4 == "ran" or col1 == false then	col4 = randInt(0,15) end
+	if col1 == "ran" or not col1 then col1 = randInt(0,126) end
+	if col2 == "ran" or not col2 then col2 = randInt(0,126) end
+	if col3 == "ran" or not col3 then col3 = randInt(0,126) end
+	if col4 == "ran" or not col4 then col4 = randInt(0,126) end
 	--if any of the rotations are not specified, make them 0
-	if rx == false then rx = 0 end
-	if ry == false then ry = 0 end
-	if rz == false then rz = 0 end
+	rx = rx or 0
+	ry = ry or 0
+	rz = rz or 0
 	
 	--finally, create the vehicle and define it as van
 	if ( platetext ) then
@@ -156,6 +176,7 @@ function spawnVan ( target )
 	else
 		van = createVehicle ( model, x, y, z, rx, ry, rz )
 	end
+	setElementHealth(van, 2000)
 	--if a paintjob was specified, add it
 	if ( pj ) then
 		setVehiclePaintjob ( van, pj )
@@ -169,11 +190,22 @@ function spawnVan ( target )
 		end
 	end
 	
-	vanMarker = createMarker ( x, y, z, "checkpoint", 1.5, 255, 255, 255, 255 )
+	vanMarker = createMarker ( x, y, z, "checkpoint", 1.5, 255, 255, 255, 127 )
 	attachElementToElement ( vanMarker, van )
 	
 	createBlipAttachedTo ( van, 55 )
+	triggerClientEvent('doSetVan', van)
 end
+
+addEvent('onVanDrown', true)
+addEventHandler('onVanDrown', root,
+	function()
+		if getElementHealth(van) > 250 then
+			blowVehicle(van)
+			triggerEvent('onVehicleExplode', van)
+		end
+	end
+)
 
 function vehicleExplode ()
 	if source == van then
@@ -224,11 +256,12 @@ end
 
 function playerEnterVehicle( vehicle, seat, playerJacked )
 	if ( vehicle == van ) and ( seat == 0 ) then
-		local team = getPlayerTeam( getVehicleController( vehicle ) )
+		local team = getPlayerTeam( source )
 		local r, g, b = getTeamColor( team )
 		showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, getTeamName(team).."s have the vehicle!" )
 		setMarkerColor ( vanMarker, r, g, b, 255 )
-		vanPlayer = getVehicleController( vehicle )
+		vanPlayer = source
+		triggerClientEvent('doAdaptHealthBar', root)
 	end
 end
 
@@ -236,11 +269,43 @@ function playerExitVehicle( vehicle, seat, playerJacked )
 	if ( vehicle == van ) and ( seat == 0 ) then
 		--outputChatBox ( "PLAYER = " .. getClientName(source) )
 		local team = getPlayerTeam( source )
-		local r, g, b = getTeamColor( team )
-		showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, getTeamName(team).."s have lost the vehicle!" )	
+		if team then
+			local r, g, b = getTeamColor( team )
+			showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, getTeamName(team).."s have lost the vehicle!" )	
+		end
 		setMarkerColor ( vanMarker, 255, 255, 255, 255 )
+		vanPlayer = nil
+		triggerClientEvent('doAdaptHealthBar', root)
 	end
 end
+
+addEventHandler('onPlayerWasted', root,
+	function(ammo, killer)
+		if source == vanPlayer then
+			playerExitVehicle(van, 0, false)
+		end
+		if not killer or not isElement(killer) or getElementType(killer) ~= 'player' then
+			return
+		end
+		if getPlayerTeam(source) ~= getPlayerTeam(killer) then
+			if van and source == getVehicleController(van) then
+				addPlayerScore(killer, 5)
+			else
+				addPlayerScore(killer, 1)
+			end
+		else
+			addPlayerScore(killer, -1)
+		end
+	end
+)
+
+addEventHandler('onPlayerQuit', root,
+	function()
+		if source == vanPlayer then
+			playerExitVehicle(van, 0, false)
+		end
+	end
+)
 
 function markerHit ( player )
 	local vanController = getVehicleController( van )
@@ -250,6 +315,7 @@ function markerHit ( player )
 			local teamName = getTeamName( team )
 			local r, g, b = getTeamColor( team )
 			showTextForAll ( 5000, 0.5, 0.1, 0, r, g, b, 200, 2.5, "" ..teamName.. " have captured the vehicle!" )
+			addPlayerScore(player, 10)
 			endRound()
 		end
 	end
@@ -279,11 +345,9 @@ addEventHandler ( "onPlayerChat", root, onCtvChat )
 
 addCommandHandler ( "kill", killplayer )
 
---!!
-addCommandHandler ( "bring", function(source, cmd)
-	local x, y, z = getElementPosition(source)
-	setElementPosition(van, x, y, z)
-end)
+function addPlayerScore(player, points)
+	setElementData(player, 'Score', getElementData(player, 'Score') + points)
+end
 
 function destroyBlipsAttachedTo(player)
 	local attached = getAttachedElements ( player )
@@ -294,4 +358,11 @@ function destroyBlipsAttachedTo(player)
 			end
 		end
 	end
+end
+
+function table.each(t, callback, ...)
+	for k,v in pairs(t) do
+		callback(v, ...)
+	end
+	return t
 end
