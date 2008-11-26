@@ -1,0 +1,9 @@
+<meta>
+    <info author="Slothman" description="chinatown map" version="1" type="map" gamemodes="stealth"/>
+	<map src="chinatown.map"/>
+	<settings>
+		<setting name="#time" value="20:30" />
+		<setting name="#weather" value="[21]" />
+		<setting name="#waveheight" value="[02]" />
+	</settings>
+</meta>

@@ -1,0 +1,6 @@
+<meta>
+    <info author="Iggy" description="Canals from GoW remade" version="1.0" type="map" gamemodes="ctf" />
+    <include resource="scoreboard" />
+    <script src="canalslua.lua"/>
+    <map src="ctf-canals.map" />
+</meta>

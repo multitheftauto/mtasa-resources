@@ -1,0 +1,9 @@
+<help popup="no">
+Capture The Orb
+
+The aim of the game is get the yellow orb and capture it at the objective. When a round starts, the orb will be placed at a random location (yellow blob on radar), and players will rush to pick it up and capture it for points.
+
+To make a player drop the orb, you can either kill them, run over them, or give them a bash if they're in a vehicle. Once they've dropped the orb, you can pick it up by simply walking/driving through it. (Note: If you're driving whilst carrying the orb it will affect your vehicle's handling.)
+
+After a player makes it to the objective, they will get points and the orb will be reset at another random location. The first player to reach 1000 points wins the game.
+</help>

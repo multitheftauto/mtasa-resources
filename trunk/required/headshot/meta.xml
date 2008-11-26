@@ -1,0 +1,4 @@
+<meta>
+	<info author="jbeta" type="script" version="1.0.0" />
+	<script src="headshot.lua" type="server" />
+</meta>

@@ -1,0 +1,18 @@
+<stats>
+  <stat id="69" name="Pistol skill" />
+  <stat id="70" name="Silenced Pistol skill" />
+  <stat id="71" name="Desert Eagle skill" />
+  <stat id="72" name="Shotgun skill" />
+  <stat id="73" name="Sawn Off skill" />
+  <stat id="74" name="Spaz12 skill" />
+  <stat id="75" name="Uzi skill" />
+  <stat id="76" name="MP5 skill" />
+  <stat id="77" name="AK47 skill" />
+  <stat id="78" name="M4 skill" />
+  <stat id="79" name="Sniper skill" />
+
+  <stat id="21" name="Fat stat" />
+  <stat id="22" name="Stamina stat" />
+  <stat id="23" name="Muscule stat" />
+  <stat id="24" name="Health stat" />
+</stats>

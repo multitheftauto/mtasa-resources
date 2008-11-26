@@ -1,0 +1,94 @@
+<*
+
+local colors 		= {"0080C0", "8000C0", "884400", "C08000", "880000", "008800", "000088"}
+local border_colors = {"0080C0", "8000C0", "884400", "C08000", "880000", "008800", "000088"}
+
+function split(str, delim, maxNb)
+	-- Eliminate bad cases...
+	if string.find(str, delim) == nil then
+		return { str }
+	end
+	if maxNb == nil or maxNb < 1 then
+		maxNb = 0    -- No limit
+	end
+	local result = {}
+	local pat = "(.-)" .. delim .. "()"
+	local nb = 0
+	local lastPos
+	for part, pos in string.gfind(str, pat) do
+		nb = nb + 1
+		result[nb] = part
+		lastPos = pos
+		if nb == maxNb then break end
+	end
+	-- Handle the last field
+	if nb ~= maxNb then
+		result[nb + 1] = string.sub(str, lastPos)
+	end
+	return result
+end
+
+thisresource = getThisResource()
+
+statsList = querystring.stats
+if ( statsList == nil ) then
+	statsList = ""
+end
+
+args =  split(querystring.stats,"|") 
+charttype = args [2]
+if ( charttype == nil ) then
+	httpWrite ( "Must specify a chart type!" )
+end
+
+local registeredStats = call(thisresource, "getRegisteredStats")
+
+if ( charttype == "FCF_Line" ) then	
+	yAxisName = registeredStats[split(args[1], ",")[1]].name
+else
+	yAxisName = ""
+end
+*>
+<graph caption='' xAxisName='Time' yAxisName='<* = yAxisName *>'  showNames='1' animation='0' rotateNames='1' decimalPrecision='0' formatNumberScale='0' yAxisMinValue="0" yAxisMaxValue="10">
+	<*
+	stats = call ( thisresource, "getCurrentStats" )
+	
+	if ( charttype == "FCF_StackedArea2D" or charttype == "FCF_StackedColumn2D" or charttype=="FCF_StackedColumn3D" or charttype=="FCF_MSLine" ) then
+		*>
+		<categories >
+			<* for k,v in ipairs(stats) do *>
+			<category name='<* = v.time *>' />
+			<* end *>
+		</categories>
+		
+		<*
+		local statsRequired = split(args[1], ",")
+		local i = 0
+		for p,q in ipairs(statsRequired) do
+			i = i + 1
+			*>
+			<dataset seriesname='<* = registeredStats[q].name *>' color='<* = colors[i] *>' areaBorderColor='<* = border_colors[i] *>'>
+			    <* for k,v in ipairs(stats) do *>
+				<set value='<* = v[q] *>' />
+				<* end *>
+			</dataset>
+			<*
+		end
+	elseif ( charttype == "FCF_Pie2D" or charttype == "FCF_Pie3D" ) then
+		local statsRequired = split(args[1], ",")
+		local i = 0
+		for p,q in ipairs(statsRequired) do
+			i = i + 1
+			*>
+			<set value='<* = stats[#stats][q] *>' name='<* = registeredStats[q].name *>' color='<* = colors[i] *>'/>
+			<*
+		end
+	elseif ( charttype == "FCF_Line" ) then
+		local statsRequired = split(args[1], ",")
+		q = statsRequired[1]
+		for k,v in ipairs(stats) do *>
+			<set name='<* = v.time *>' value='<* = v[q] *>' hoverText=''/>
+	 <* end 
+	end
+	*>
+</graph>

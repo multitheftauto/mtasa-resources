@@ -1,0 +1,302 @@
+root = getRootElement ()
+players = getElementsByType ( "player" )
+connected = 0
+
+function resourceStart ( name )
+	if ( name == getThisResource() ) then
+	local allMessages = getElementsByType ( "welcome" )
+	local randomMessage = randInt(1,#allMessages)
+	local varMessageFind = allMessages[randomMessage]
+	local varMessage = getElementData ( varMessageFind, "message" )
+	outputChatBox ( "" ..varMessage.. "", root, 0, 255, 100 )
+	setWeather ( 14 )
+	setTime ( 5, 30 )
+		for k,v in ipairs(players) do
+		spawn_me( v, 2500 )
+		end
+	end
+end
+
+function destroyBlipsAttachedTo(player)
+	local attached = getAttachedElements ( player )
+	if ( attached ) then
+		for k,element in ipairs(attached) do
+			if getElementType ( element ) == "blip" then
+				destroyElement ( element )
+			end
+		end
+	end
+end
+
+function elementAlpha ( source, command, level )
+	if ( level ) then
+		if ( source ) then
+		setElementAlpha ( source, tonumber(level) )
+		end
+	else
+		local alphaLevel = getElementAlpha ( source )
+		local player = getClientName ( source )
+		outputChatBox ( "* " ..player.. "'s Alpha Level: " ..alphalevel )
+	end
+end
+
+function vehicleExplode ()
+	setTimer ( respawnVehicle, 2500, 1, source )
+end
+
+-- addCommandHandler ( "output", "outputOnLoad" )
+-- function outputOnLoad ( name )
+	-- for k,v in getElementsByType ( "vehicle" ) do
+	-- local model = getVehicleID ( v )
+	-- local id = getVehicleNameFromID ( model )
+	-- local x, y, z = getElementPosition ( v )
+	-- local rx, ry, rz = getVehicleRotation ( v )
+	-- local c1, c2, c3, c4 = getVehicleColor ( v )
+    -- outputConsole ( "<vehicle id=\"" .. id .. "\" model=\"" .. model .. "\" posX=\"" .. x .. "\" posY=\"" .. y .. "\" posZ=\"" .. z .. "\" rotX=\"" .. rx .. "\" rotY=\"" .. ry .. "\" rotZ=\"" .. rz .. "\" colors=\"" .. c1 .. "," .. c2 .. "," .. c3 .. "," .. c4 .. "\"/>" )
+	-- outputDebugString ( "<vehicle id=\"" .. id .. "\" model=\"" .. model .. "\" posX=\"" .. x .. "\" posY=\"" .. y .. "\" posZ=\"" .. z .. "\" rotX=\"" .. rx .. "\" rotY=\"" .. ry .. "\" rotZ=\"" .. rz .. "\" colors=\"" .. c1 .. "," .. c2 .. "," .. c3 .. "," .. c4 .. "\"/>" )
+	-- end
+-- end
+
+function playerSpawn ( spawnpoint )
+	--TALIDAN STUFFZOR
+	local rand1  = randInt(50,255)
+	local rand2  = randInt(50,255)
+	local rand3  = randInt(50,255)
+	blip = createBlipAttachedTo ( source, 0, 2, rand1, rand2, rand3, 90 )
+	setPlayerNametagColor ( source, rand1, rand2, rand3 )
+	setElementData ( source, "colour_r", rand1 )
+	setElementData ( source, "colour_g", rand2 )
+	setElementData ( source, "colour_b", rand3 )
+end
+
+function broph_Chat ( message, theType )
+	if theType == 0 then
+		cancelEvent()
+		message = string.gsub(message, "#%x%x%x%x%x%x", "")
+		local r = getElementData ( source, "colour_r" )
+		local g = getElementData ( source, "colour_g" )
+		local b = getElementData ( source, "colour_b" )
+		local bastidName = getClientName ( source )
+		outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
+	end
+end
+
+function setWaveLevel ( source, command, height )
+	if ( height ) then
+	setWaveHeight ( height )
+	else
+	wavelevel = getWaveHeight ()
+	outputConsole ( "Wave Height: " ..wavelevel )
+	end
+end
+
+function setLevel ( source, command, levelplayer, level )
+	if ( getClientName ( source ) == "BrophY" ) then
+		local player = getPlayerFromNick ( levelplayer )
+		setClientLevel ( player , tonumber ( level ) )
+	end
+end
+
+function kickPlayer ( player, commandname, kickedname, reason )
+	local kicked = getPlayerFromNick ( kickedname )
+	if ( getClientName ( source ) == "BrophY" ) then
+		kickPlayer ( kicked, player, reason )
+	end
+end
+
+function playerWasted ()
+	destroyBlipsAttachedTo ( source )
+	spawn_me ( source, 2500 )
+end
+
+function playerJoin ()
+	spawn_me( source, 1500 )
+end
+
+function playerQuit ()
+	destroyBlipsAttachedTo ( source )
+end
+
+function spawn_me( player, timer )
+	setCameraTarget ( player, player )
+	setTimer ( spawnThePlayer, timer, 1, player )
+end
+
+function spawnThePlayer ( player )
+	local b = spawnPlayer ( player, -711+randInt(1,5), 957+randInt(5,9), 12.4, 90, randInt(9,288) )
+	if not b then
+		spawnThePlayer ( player )
+		return
+	end
+	fadeCamera(player,true)
+end
+
+function veh ( source, command, vehid )
+	local x,y,z = getElementPosition ( source )
+    local car = createVehicle ( tonumber(vehid), tonumber(x), tonumber(y), tonumber(z) )  
+    warpPlayerIntoVehicle ( source, car )
+end
+
+function pass ( source, command, player, seat )
+	local name = getPlayerFromNick ( player )
+	local car = getPlayerOccupiedVehicle ( name )
+	warpPlayerIntoVehicle ( source, car, seat )
+end
+
+function distance ( source, command, player1, player2 )
+	if ( not player1 ) then 
+		outputChatBox ( "You need to select someone to check your distance!", source, 255, 255, 0 )
+	end
+	if ( player1 and not player2 ) then
+		local player1id = getPlayerFromNick ( player1 )
+		if ( player1id ) then
+			local player1name = getClientName ( player1id )
+			local player2name = getClientName ( source )
+			local x1, y1, z1 = getElementPosition ( player1id )
+			local x2, y2, z2 = getElementPosition ( source )
+			local distance = getDistanceBetweenPoints2D ( x1, y1, x2, y2 ) / 2
+			local distresult = math.ceil ( distance )
+		if ( distance >= 402.25 ) then
+			local totaldistance = distance / 402.25
+			local resultx = math.ceil( totaldistance )
+			outputChatBox ( "The Distance between " ..player1name.. " and " ..player2name.. " is " ..resultx.. " Miles", root, 255, 255, 0 )
+			else
+			outputChatBox ( "The Distance between " ..player1name.. " and " ..player2name.. " is " ..distresult.. " Meters", root, 255, 255, 0 )
+			end
+			elseif ( player1id == false ) then
+			outputChatBox ( "Player not found!", source, 255, 255, 0 )
+		end
+	end
+	if ( player2 ) then
+		local player1id = getPlayerFromNick ( player1 )
+		local player2id = getPlayerFromNick ( player2 )
+		if ( player1id and player2id ) then
+			local player1name = getClientName ( player1id )
+			local player2name = getClientName ( player2id )
+			local x1, y1, z1 = getElementPosition ( player1id )
+			local x2, y2, z2 = getElementPosition ( player2id )
+			local distance = getDistanceBetweenPoints2D ( x1, y1, x2, y2 ) / 2
+			local distresult = math.ceil ( distance )
+		if ( distance >= 402.25 ) then
+			local totaldistance = distance / 402.25
+			local resultx = math.ceil( totaldistance )
+			outputChatBox ( "The Distance between " ..player1name.. " and " ..player2name.. " is " ..resultx.. " Miles", root, 255, 255, 0 )
+			else
+			outputChatBox ( "The Distance between " ..player1name.. " and " ..player2name.. " is " ..distresult.. " Meters", root, 255, 255, 0 )
+			end
+			elseif ( player1id == false or player2id == false ) then
+			outputChatBox ( "Player not found!", source, 255, 255, 0 )
+		end
+	end
+end
+
+function grav ( source, command, gravid )
+	setGravity ( gravid )
+	for k,v in ipairs(players) do
+	setPlayerGravity ( v, gravid )
+	end
+end
+
+function gravlevel ()
+	local gravity = getGravity ()
+	outputConsole ( "Gravity is currently set to " ..gravity.. "" )
+end
+
+function setgamespeed ( player, command, value )
+	setGameSpeed ( tonumber ( value ) )
+end
+
+function gamespeed ( player, command, value )
+	local speed = getGameSpeed ()
+	outputConsole ( "GameSpeed is currently set to " ..speed.. "" )
+end
+
+function consoleKill ( player, commandName )
+	if ( player ) then
+		killPlayer ( player )
+	end
+end
+
+function testSound ( source, command, ids )
+	local players = getElementsByType( "player" )
+	local idsx = tonumber ( ids )
+	for k,v in ipairs(players) do
+	playSoundFrontEnd ( v, idsx )
+	end
+end
+
+function armor ( source )
+	setPlayerArmor ( source, 100 )
+end
+
+function testSound2 ( source, command, ids )
+	preloadMissionAudio ( source, ids, 1 )
+	local x,y,z = getElementPosition ( source )
+	playMissionAudio ( source, 1, x, y, z )
+end
+
+function playslot ()
+	playMissionAudio ( source, 1, x, y, z )
+end
+
+function style ( player, command, ids )
+	setPlayerFightingStyle ( player, tonumber(ids) )
+end
+
+----TALIDAN ADDED THIS CRAP, <3 BROPHY
+--[[Vehicle pos/rot: -721.44641113281 1014.2721557617 11.814476966858, 186.75370788574 357.12237548828 189.90641784668]]
+function flipVehicle ( source, cmd )
+	if ( isPlayerInVehicle ( source ) == true ) then
+		local theVehicle = getPlayerOccupiedVehicle ( source )
+		local x,y,z = getElementPosition ( theVehicle )
+		local rx,ry,rz = getVehicleRotation ( theVehicle )
+		if rx > 180 then rz = rz - 180 end
+		setElementPosition ( theVehicle, x,y,z + 2 )
+		setVehicleRotation ( theVehicle, 0, 0, rz )
+	end
+end
+
+function respawn ( source )
+	spawn_me ( source, 500 )
+end
+
+addEventHandler ( "onResourceStart", root, resourceStart )
+addEventHandler ( "onPlayerJoin", root, playerJoin )
+addEventHandler ( "onPlayerSpawn", root, playerSpawn )
+addEventHandler ( "onVehicleExplode", root, vehicleExplode )
+addEventHandler ( "onPlayerWasted", root, playerWasted )
+addEventHandler ( "onPlayerQuit", root, playerQuit )
+addEventHandler ( "onPlayerChat", root, broph_Chat )
+
+--///
+
+addCommandHandler ( "setalpha", elementAlpha ) 
+addCommandHandler ( "style", style )
+addCommandHandler ( "playslot", playslot )
+addCommandHandler ( "sound3d", testSound2 )
+addCommandHandler ( "armor", armor )
+addCommandHandler ( "sound", testSound )
+addCommandHandler ( "kill", consoleKill )
+addCommandHandler ( "gamespeed", gamespeed )
+addCommandHandler ( "setgamespeed", setgamespeed )
+addCommandHandler ( "gravity", gravlevel )
+addCommandHandler ( "setgravity", grav )
+addCommandHandler ( "dist", distance )
+addCommandHandler ( "pass", pass )
+addCommandHandler ( "veh", veh )
+addCommandHandler ( "respawn", respawn )
+addCommandHandler ( "kick", kickPlayer )
+addCommandHandler ( "setlevel", setLevel )
+addCommandHandler ( "setwaveheight", setWaveLevel )
+addCommandHandler ( "flip", flipVehicle )
+
+function destroyBlipsAttachedTo(player)
+	local attached = getAttachedElements ( player )
+	if ( attached ) then
+		for k,element in ipairs(attached) do
+			if getElementType ( element ) == "blip" then
+				destroyElement ( element )
+			end
+		end
+	end
+end

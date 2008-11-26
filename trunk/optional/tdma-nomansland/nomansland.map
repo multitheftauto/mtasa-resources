@@ -1,0 +1,41 @@
+<map mod="deathmatch" version="1.0">
+	<meta>
+		<author>AlienX</author>
+		<description>TDMA Map File</description>
+	</meta>
+	
+	<gamesettings interior="10" respawntime="3000" maxkills="60" ff="off" />
+	
+	<base team="Balla" red="0" green="0" blue="255" >
+		<weapon model="4" ammo="1"/>
+		<weapon model="23" ammo="80"/>
+		<weapon model="30" ammo="500"/>
+		<weapon model="29" ammo="700"/>
+		<skin model="102"/>
+		<skin model="103"/>
+		<skin model="104"/>
+		<spawn posX="-974" posY="1061" posZ="1347" rot="90" randx="5" randy="5" randz="0"/>
+	</base>
+	
+	<base team="Grove" red="0" green="255" blue="0" >
+		<weapon model="4" ammo="1"/>
+		<weapon model="23" ammo="80"/>
+		<weapon model="30" ammo="500"/>
+		<weapon model="29" ammo="700"/>
+		<skin model="105"/>
+		<skin model="106"/>
+		<skin model="107"/>
+		<spawn posX="-1131" posY="1057" posZ="1347" rot="270" randx="5" randy="5" randz="0"/>
+	</base>
+	
+	<randomPickup posX="-1090.0135498047" posY="1045.1580810547" posZ="1347.3598632813" />
+	<randomPickup posX="-1085.4008789063" posY="1049.4132080078" posZ="1346.8569335938" />
+	<randomPickup posX="-1066.0760498047" posY="1087.591796875" posZ="1346.4808349609" />
+	<randomPickup posX="-1064.4283447266" posY="1068.1270751953" posZ="1346.4096679688" />
+	<randomPickup posX="-1063.2908935547" posY="1045.3084716797" posZ="1347.697021484" />
+	<randomPickup posX="-1042.21875" posY="1051.075561523" posZ="1345.4774169922" />
+	<randomPickup posX="-1041.3449707031" posY="1078.2841796875" posZ="1347.7821044922" />
+	<randomPickup posX="-1026.8214111328" posY="1077.9866943359" posZ="1346.7902832031" />
+	<randomPickup posX="-1020.1322021484" posY="1072.9356689453" posZ="1346.9825439453" />
+	<randomPickup posX="-1022.0773925781" posY="1050.7252197266" posZ="1346.0354003906" />
+</map>

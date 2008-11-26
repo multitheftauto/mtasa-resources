@@ -1,0 +1,14 @@
+<meta>
+    <include resource="ajax" />
+    <script src="map.lua" />
+	<html src="map.htm" default="true"/>
+    <html src="css.css" raw="true" />
+    <html src="script.js" raw="true" />
+	<html src="geticon.htm" />
+	<info author="eAi" name="Map" showInResourceBrowser="true"/>
+	<html src="icons\02.png" raw="true" />
+	
+	<export function="players" http="true" />
+	<export function="sendPlayerMessage" http="true" />
+	<export function="getAllBlips" http="true" />
+</meta>

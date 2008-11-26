@@ -1,0 +1,7 @@
+<meta>
+	<info author="Aeron (core) and Black Dragon (game)" version="1.0" type="gamemode" name="Capture the Flag" />
+	<script src="ctf.lua" />
+	<config src="help.xml" type="client" />
+	<include resource="spawnmanager"/>
+	<include resource="scoreboard"/>
+</meta>

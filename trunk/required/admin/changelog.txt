@@ -1,0 +1,52 @@
+-------------------------------------
+-- Version 1.1 Development Preview --
+-------------------------------------
+
+* Fixed buttons lock up caused by messages list global variable matching message box
+* Fixed vehicles being not warped to the right dimension and interior
+* Fixed interior and dimension not being applied to warped player
+* Fixed errors when synchronizing server data with client by initializing events on resource start
+* Fixed 'Output player information to console on select' in options
+* Fixed 'Output admin messages to chat box' in options
+* Kick and ban buttons now ask for a reason
+* Fixed slap button in spectator
+* Fixed 'Select' button in interior window
+* Fixed player count in server tab
+* Fixed paintjob list button lock
+* Changed meta slashes to resolve compability issues
+* New register syntax: register [<nick>] <password>
+* Added search box for player list
+* Added 'Shout' button
+* Added Welcome message button in Server tab
+* Added Serial bans support
+* Vehicle change now warps previous passengers into the new vehicle
+* All vehicle change messages will now be sent to passengers
+* Player can now be switched with arrow keys in spectator
+* Added Ban button to spectator
+* 'Warp player to' button now works
+* Added country resolving
+
+-------------------------------------
+-- Version 1.2 Development Preview --
+-------------------------------------
+
+* Fixed stuck country flags
+* Fixed vehicle customizations window being opened when player has no vehicle
+* Fixed errors and warings for 'Blow' and 'Destroy' buttons
+* Fixed errors and warnings when kicking/banning
+* Vehicle customizations window now shows vehicle upgrades already installed
+* Vehicle customizations window now can show upgrade names
+* Added 'Remove all' in vehicle customizations to remove vehicle upgrades
+* ACL Clean-up/setup - Start for console commands and groups support
+* Added console commands support (still has to be hardly tested)
+* Added server side code for multi groups support
+* Fixed the execute box warning label not going away when clicking on it
+* Added cities to player area
+* Fixed hardcoded weathers count
+-------------------------------------
+-- Version 1.3 Development Preview --
+-------------------------------------
+
+* Removed enforced serial authentification.  This can now be done from the MTA server through mtaserver.conf
+* Made some small bandwidth optimisations
+* New more reliable spectator mode

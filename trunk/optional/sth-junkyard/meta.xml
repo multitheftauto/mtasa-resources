@@ -1,0 +1,10 @@
+<meta>
+    <info author="Slothman" description="junkyard" version="1" type="map" gamemodes="stealth"/>
+	<map src="junkyard.map"/>
+
+	<settings>
+		<setting name="#time" value="20:30" />
+		<setting name="#weather" value="[4]" />
+		<setting name="#waveheight" value="[02]" />
+	</settings>
+</meta>

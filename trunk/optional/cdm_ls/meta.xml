@@ -1,0 +1,7 @@
+<meta>
+    <info author="Black Dragon" version="1.0" type="map" description="Los Santos CDM" gamemodes="cdm"/>
+    <include resource="headshot" />
+	 <include resource="deathpickups" />
+    <map src="cdm_ls.map" />
+    <script src="cdm_ls.lua" />
+</meta>

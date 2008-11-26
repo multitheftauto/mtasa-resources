@@ -1,0 +1,9 @@
+<meta>
+    <info author="Slothman" description="carrier map" version="1" type="map" gamemodes="stealth"/>
+	<map src="carrier.map"/>
+	<settings>
+		<setting name="#time" value="00:30" />
+		<setting name="#weather" value="[16]" />
+		<setting name="#waveheight" value="[3]" />
+	</settings>
+</meta>

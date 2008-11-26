@@ -1,0 +1,13 @@
+<*
+thisresource = getThisResource()
+*>
+<graph caption='<* = querystring.caption *>' xAxisName='Time' yAxisName='<* = querystring.yAxisName *>' showValues="0" showNames='1'  animation='0' rotateNames='1'
+decimalPrecision='0' formatNumberScale='0' yAxisMinValue="0" yAxisMaxValue="10">
+	<*
+	stats = call ( thisresource, "getCurrentStats" )
+
+	for k,v in ipairs(stats) do *><set name='<* = v.time *>' value='<* = v.players *>' color='588526' />
+		<*
+	end
+	*>
+</graph>

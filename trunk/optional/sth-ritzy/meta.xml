@@ -1,0 +1,9 @@
+<meta>
+    <info author="Slothman" description="ritzy" version="1" type="map" gamemodes="stealth"/>
+	<map src="ritzy.map"/>
+	<settings>
+		<setting name="#time" value="7:30" />
+		<setting name="#weather" value="[1]" />
+		<setting name="#waveheight" value="[0]" />
+	</settings>
+</meta>
