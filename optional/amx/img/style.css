@@ -1,0 +1,137 @@
+* { margin: 0; padding: 0; }
+
+body, th, td {
+	font-family: Verdana, sans-serif;
+	font-size: 10pt;
+	line-height: 14pt;
+}
+
+body {
+	padding: 20px 20px 20px 40px;
+}
+
+h1 {
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: 18pt;
+	font-weight: bold;
+	border-bottom: 2px #EEE solid;
+	margin: 1em 0 0.8em -20px;
+	padding-bottom: 0.3em;
+}
+
+h2, h3, h4 {
+	font-family: "Trebuchet MS", sans-serif;
+	font-weight: bold;
+}
+
+h2 {
+	font-size: 14pt;
+	margin: 1.8em 0 0.5em -20px;
+}
+
+h3 {
+	font-size: 12pt;
+	margin: 1.5em 0 0.5em;
+}
+
+h4 {
+	font-size: 10pt;
+	margin: 1.5em 0 0.5em;
+}
+
+p {
+	margin-bottom: 0.8em;
+}
+
+a {
+	color: #2F6FAB;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a img {
+	border: none;
+}
+
+ul {
+	margin: 0 0 0.8em 16px;
+}
+
+em {
+	font-weight: normal;
+	font-style: italic;
+}
+
+table {
+	border-collapse: collapse;
+	margin: 0 15px 0.8em;
+}
+
+th, td {
+	border: 1px #888 solid;
+	padding: 0.2em 1.5em 0.2em 0.5em;
+}
+
+th {
+	background-color: #F0F0F0;
+}
+
+code.block {
+	display: block;
+	white-space: pre;
+	margin: 0.8em 0 0.8em;
+	padding: 0.5em;
+	background-color: #F9F9F9;
+	border: 1px #2F6FAB solid;
+}
+
+code.block[lang="pawn"] {
+	background: #FFF9EA url(pawn.png) right center no-repeat;
+	border-color: #E4CA8B;
+}
+
+code.block[lang="lua"] {
+	background: #F7F7FF url(lua.png) right center no-repeat;
+	border-color: #7979BE;
+}
+
+code.block[lang="console"] {
+	background-color: #444;
+	border: 1px #111 solid;
+	color: #EEE;
+	font-weight: bold;
+}
+
+.rightscreen {
+	float: right;
+	margin: 0 0 1em 1em;
+	border: 1px #EEE solid;
+}
+
+.br {
+	color: #2700C2;
+	font-weight: bold;
+}
+
+.comment {
+	color: #008000;
+}
+
+.kw1 {
+	color: #00F;
+}
+
+.str {
+	color: #F00;
+}
+
+.type {
+	color: #008000;
+}
+
+.xmltag, .xmlprop {
+	color: #CC33FF;
+}

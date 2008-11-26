@@ -1,0 +1,7 @@
+<meta>
+	<info type="map" gamemodes="amx" name="AMX test gamemode" />
+	<amx src="testgm.amx"/>
+	<settings>
+		<setting name="*weather" value="10"/>
+	</settings>
+</meta>
