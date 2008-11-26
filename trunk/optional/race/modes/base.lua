@@ -146,10 +146,12 @@ function RaceMode:onPlayerJoin(player, spawnpoint)
 end
 
 function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
+	local rank = self:getPlayerRank(player)
+	local time = self:getTimePassed()
 	if checkpointNum < RaceMode.getNumberOfCheckpoints() then
 		-- Regular checkpoint
 		local vehicle = RaceMode.getPlayerVehicle(player)
-		self.checkpointBackups[player][checkpointNum] = { vehicle = getVehicleID(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getVehicleTurnVelocity(vehicle) } }		
+		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getVehicleTurnVelocity(vehicle) } }		
 		
 		self.checkpointBackups[player].goingback = true
 		if self.checkpointBackups[player].timer then
@@ -158,7 +160,6 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		self.checkpointBackups[player].timer = setTimer(lastCheckpointWasSafe, 5000, 1, self.id, player)
 	else
 		-- Finish reached
-		local rank = self:getPlayerRank(player)
 		RaceMode.setPlayerFinished(player)
 		if rank == 1 then
 			showMessage('You have won the race!', 0, 255, 0, player)
@@ -169,16 +170,20 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		else
 			showMessage('You finished ' .. rank .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' ) .. '!', 0, 255, 0, player)
 		end
-		self.rankingBoard:add(player, getTickCount() - self.startTick)
+		self.rankingBoard:add(player, time)
 		if rank < getPlayerCount() then
 			setTimer(clientCall, 5000, 1, player, 'startSpectate')
 		else
 			RaceMode.endRace()
 		end
 	end
+	return rank, time
 end
 
 function lastCheckpointWasSafe(id, player)
+	if not table.find(g_Players, player) then
+		return
+	end
 	local self = RaceMode.instances[id]
 	if self.checkpointBackups[player] then
 		self.checkpointBackups[player].goingback = false
@@ -220,6 +225,9 @@ function freeSpawnpoint(i)
 end
 
 function restorePlayer(id, player)
+	if not table.find(g_Players, player) then
+		return
+	end
 	local self = RaceMode.instances[id]
 	clientCall(player, 'stopSpectate')
 
@@ -242,7 +250,7 @@ function restorePlayer(id, player)
 		setElementPosition(vehicle, unpack(bkp.position))
 		setVehicleRotation(vehicle, unpack(bkp.rotation))
 		fixVehicle(vehicle)
-		if getVehicleID(vehicle) ~= bkp.vehicle then
+		if getElementModel(vehicle) ~= bkp.vehicle then
 			setVehicleID(vehicle, bkp.vehicle)
 		end
 		warpPlayerIntoVehicle(player, vehicle)
@@ -254,6 +262,9 @@ function restorePlayer(id, player)
 end
 
 function restorePlayerUnfreeze(id, player)
+	if not table.find(g_Players, player) then
+		return
+	end
 	local vehicle = RaceMode.getPlayerVehicle(player)
 	setVehicleFrozen(vehicle, false)
 	local bkp = RaceMode.instances[id].checkpointBackups[player][getPlayerCurrentCheckpoint(player)-1]

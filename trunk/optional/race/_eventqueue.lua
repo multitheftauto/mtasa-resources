@@ -148,7 +148,7 @@ function hookedEventTriggered(eventName, ...)
 	end
 end
 
-local _addEventHandler = addEventHandler
+_addEventHandler = addEventHandler
 function addEventHandler(event, elem, fn, getPropagated)
 	if getPropagated == nil then
 		getPropagated = true
@@ -160,7 +160,7 @@ function addEventHandler(event, elem, fn, getPropagated)
 	end
 end
 
-local _removeEventHandler = removeEventHandler
+_removeEventHandler = removeEventHandler
 function removeEventHandler(event, elem, fn)
 	if g_EventHandlers[event] then
 		local handler

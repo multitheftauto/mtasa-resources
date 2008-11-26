@@ -32,6 +32,7 @@ function startSpawnProtection ( source )
 	end
 	
 	local theMarker = createMarker( x, y, z, "arrow", 2, r, g, b, 255 )
+	setElementInterior ( theMarker, getElementInterior(source) )
 	if ( theMarker ) then -- check if the marker was created successfully
 		
 		attachElementToElement ( theMarker, player, 0, 0, 0, 0, 0, 0 )

@@ -6,7 +6,7 @@ function showPlayerTheirTeam(player, text, r, g, b)
 	if ( player == getLocalPlayer() ) then
 		if ( guiTextLabel ) then
 			guiSetText ( guiTextLabelTeamName, text )
-			guiSetColor ( guiTextLabelTeamName, r, g, b )
+			guiLabelSetColor ( guiTextLabelTeamName, r, g, b )
 		else
 			guiTextLabel = guiCreateLabel( 0.01, 0.20, 0.8203, 0.5, "Current Team: ", true )
 			if ( guiTextLabel ) then

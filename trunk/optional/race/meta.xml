@@ -1,54 +1,59 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.1" />
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" edf:definition="race.edf"/>
 	
-	<include resource="killmessages" />
-	<include resource="scoreboard" />
-	<include resource="votemanager" />
+	<include resource="killmessages"/>
+	<include resource="scoreboard"/>
+	<include resource="votemanager"/>
 	
-	<script src="_eventqueue.lua" type="server" />
-	<script src="util_server.lua" type="server" />
-	<script src="racemap.lua" type="server" />
-	<script src="countdown.lua" type="server" />
-	<script src="rankingboard.lua" type="server" />
-	<script src="modes/base.lua" type="server" />
-	<script src="modes/destructionderby.lua" type="server" />
-	<script src="modes/freeroam.lua" type="server" />
-	<script src="modes/sprint.lua" type="server" />
-	<script src="race_server.lua" type="server" />
+	<script src="_eventqueue.lua" type="server"/>
+	<script src="util_server.lua" type="server"/>
+	<script src="racemap.lua" type="server"/>
+	<script src="countdown.lua" type="server"/>
+	<script src="rankingboard.lua" type="server"/>
+	<script src="modes/base.lua" type="server"/>
+	<script src="modes/destructionderby.lua" type="server"/>
+	<script src="modes/freeroam.lua" type="server"/>
+	<script src="modes/sprint.lua" type="server"/>
+	<script src="race_server.lua" type="server"/>
 	
-	<script src="util_client.lua" type="client" />
-	<script src="fancyprogress.lua" type="client" />
-	<script src="client_anim.lua" type="client" />
-	<script src="countdown_client.lua" type="client" />
-	<script src="rankingboard_client.lua" type="client" />
-	<script src="race_client.lua" type="client" />
+	<script src="_custommodel.lua" type="client"/>
+	<script src="util_client.lua" type="client"/>
+	<script src="fancyprogress.lua" type="client"/>
+	<script src="client_anim.lua" type="client"/>
+	<script src="countdown_client.lua" type="client"/>
+	<script src="rankingboard_client.lua" type="client"/>
+	<script src="race_client.lua" type="client"/>
 	
-	<file src="img/rankbg.png" />
-	<file src="img/timepassedbg.png" />
-	<file src="img/progress_health_bg.png" />
-	<file src="img/progress_health.png" />
-	<file src="img/progress_speed_bg.png" />
-	<file src="img/progress_speed.png" />
-	<file src="img/countdown_3.png" />
-	<file src="img/countdown_2.png" />
-	<file src="img/countdown_1.png" />
-	<file src="img/countdown_0.png" />
-	<file src="img/timeleft.png" />
-	<file src="img/hurry.png" />
-	<file src="img/specprev.png" />
-	<file src="img/specprev_hi.png" />
-	<file src="img/specnext.png" />
-	<file src="img/specnext_hi.png" />
+	<file src="img/rankbg.png"/>
+	<file src="img/timepassedbg.png"/>
+	<file src="img/progress_health_bg.png"/>
+	<file src="img/progress_health.png"/>
+	<file src="img/progress_speed_bg.png"/>
+	<file src="img/progress_speed.png"/>
+	<file src="img/countdown_3.png"/>
+	<file src="img/countdown_2.png"/>
+	<file src="img/countdown_1.png"/>
+	<file src="img/countdown_0.png"/>
+	<file src="img/timeleft.png"/>
+	<file src="img/hurry.png"/>
+	<file src="img/specprev.png"/>
+	<file src="img/specprev_hi.png"/>
+	<file src="img/specnext.png"/>
+	<file src="img/specnext_hi.png"/>
 	
-	<file src="model/nitro.dff" />
-	<file src="model/nitro.txd" />
-	<file src="model/repair.dff" />
-	<file src="model/repair.txd" />
-	<file src="model/vehiclechange.dff" />
-	<file src="model/vehiclechange.txd" />
+	<file src="model/nitro.dff"/>
+	<file src="model/nitro.txd"/>
+	<file src="model/repair.dff"/>
+	<file src="model/repair.txd"/>
+	<file src="model/vehiclechange.dff"/>
+	<file src="model/vehiclechange.txd"/>
+	
+	<export function="getTimePassed" type="server"/>
+	<export function="getPlayerRank" type="server"/>
+	<export function="isPlayerFinished" type="server"/>
 	
 	<settings>
-		<setting name="*hurrytime" value="[30000]" />
-		<setting name="*timeafterfirstfinish" value="[60000]" />
+		<setting name="*hurrytime" value="[30000]"/>
+		<setting name="*timeafterfirstfinish" value="[60000]"/>
 	</settings>
 </meta>

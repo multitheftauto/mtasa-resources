@@ -226,6 +226,7 @@ function onMapFinish ( name )
 	if getThisResource() ~= name then return end
 	for k,v in ipairs(getElementsByType("player")) do
 		setElementInterior ( v, 0 )
+		setCameraInterior( v, 0 )
 		setElementData ( v, "tdma.teamMarker", nil )
 		setPlayerNametagColor ( v, 255, 255, 255 )
 	end
@@ -424,7 +425,7 @@ function setupBases( startedMap )
 	
 	local tSettings = getElementsByType ( "gametime" )
 	--outputDebugString ( "tSettings is " .. tostring(tSettings) )
-	if tSettings then
+	if tSettings and #tSettings > 0 then
 		local tHour = getElementData ( tSettings[1], "h" )
 		if ( tHour ) then gameTimeHour = tHour end
 		local tMin = getElementData ( tSettings[1], "m" )
@@ -586,6 +587,7 @@ function spawnThePlayer ( source, team )
 	else
 		spawnPlayer ( source, x,y,z, tonumber(rot), tonumber(randSkin), tonumber(gameInterior) )
 	end
+	setCameraInterior ( source, tonumber(gameInterior) )
 		
 	--setCameraMode ( source, "player" )
 	setPlayerTeam ( source, team.team )
@@ -607,6 +609,7 @@ function respawnThePlayer ( source, team )
 	local rz = tonumber(team.spawns[randSpawn].rz)
 	--outputDebugString ( "Respawning Player " .. getClientName(source) .. " to team " .. team.name )
 	local spawnComplete = spawnPlayer ( source, x, y, z, tonumber(rot), tonumber(randSkin), tonumber(gameInterior) )
+	setCameraInterior ( source, tonumber(gameInterior) )
 	if not ( spawnComplete ) then
 		--Spawn failed, try spawning as CJ?
 		--outputDebugString ( "Respawning Player FAILED - attempting to spawn player " .. getClientName(source) .. " as model CJ[0]")
