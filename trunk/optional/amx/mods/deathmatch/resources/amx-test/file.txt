@@ -1,0 +1,1 @@
+This is the content of an external file - it is in the gamemode's folder, not in a central "scriptfiles" folder between the files of all other gamemodes.
