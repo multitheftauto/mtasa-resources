@@ -6,7 +6,7 @@ local setInteriorMarkerZ = {
 		local vy = getElementData ( interiorElement,"posY" )
 		local vz = getElementData ( interiorElement,"posZ" )
 		--
-	 	setElementPosition(marker, vx, vy, vz + z/2 + 2.4)
+	 	setElementPosition(marker, vx, vy, vz + z/2.4 + 1.8)
 	end,
 	interiorReturn = function(marker,z)
 		local interiorElement = getElementParent(marker)
@@ -14,7 +14,7 @@ local setInteriorMarkerZ = {
 		local vy = getElementData ( interiorElement,"posY" )
 		local vz = getElementData ( interiorElement,"posZ" )
 		--
-	 	setElementPosition(marker, vx, vy, vz + z/2 + 2.4)	
+	 	setElementPosition(marker, vx, vy, vz + z/2.4 + 1.8)	
 	end
 }
 
@@ -25,9 +25,9 @@ addEventHandler("onClientElementStreamIn",getRootElement(),
 			local parentType = getElementType(parent)
 			if parentType == "interiorEntry" or parentType == "interiorReturn" then
 				interiorAnims[source] = Animation.createAndPlay(
-		source,
- 		{ from = 0, to = 2*math.pi, time = 2000, repeats = 0, transform = math.sin, fn = setInteriorMarkerZ[parentType] }
-)
+					source,
+					{ from = 0, to = 2*math.pi, time = 2000, repeats = 0, transform = math.sin, fn = setInteriorMarkerZ[parentType] }
+				)
 			end
 		end
 	end
@@ -41,6 +41,7 @@ addEventHandler("onClientElementStreamOut",getRootElement(),
 			if parentType == "interiorEntry" or parentType == "interiorReturn" then
 				if (interiorAnims[source] ) then
 					interiorAnims[source]:remove()
+					interiorAnims[source] = nil
 				end
 			end
 		end
