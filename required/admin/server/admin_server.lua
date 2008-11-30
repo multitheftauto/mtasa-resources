@@ -23,7 +23,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
-				triggerClientEvent ( player, "aClientResourceStart", _root, getResourceName ( resource ) )
+				triggerClientEvent ( player, EVENT_RESOURCE_START, _root, getResourceName ( resource ) )
 			end
 		end
 		return
@@ -141,7 +141,7 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
-				triggerClientEvent ( player, "aClientResourceStop", _root, getResourceName ( resource ) )
+				triggerClientEvent ( player, EVENT_RESOURCE_STOP, _root, getResourceName ( resource ) )
 			end
 		end
 	else
@@ -254,7 +254,7 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 	aPlayerInitialize ( source )
 	for id, player in ipairs(getElementsByType("player")) do
 		if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-			triggerClientEvent ( player, "aClientPlayerJoin", source, getClientIP ( source ), getPlayerUserName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
+			triggerClientEvent ( player, EVENT_PLAYER_JOIN, source, getClientIP ( source ), getPlayerUserName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
 		end
 	end
 	setPlayerGravity ( source, getGravity() )
@@ -262,16 +262,16 @@ end )
 
 function aPlayerInitialize ( player )
 	local serial = getPlayerSerial ( player )
-	if ( not isValidSerial ( serial ) ) then
-		outputChatBox ( "ERROR: "..getClientName ( player ).." - Invalid Serial." )
-		kickPlayer ( player, "Invalid Serial" )
-	else
+	-- if ( not isValidSerial ( serial ) ) then
+		-- outputChatBox ( "ERROR: "..getClientName ( player ).." - Invalid Serial." )
+		-- kickPlayer ( player, "Invalid Serial" )
+	-- else
 		bindKey ( player, "p", "down", aAdminMenu )
-		callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
+		-- callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
 		aPlayers[player] = {}
 		aPlayers[player]["country"] = getPlayerCountry ( player )
 		aPlayers[player]["money"] = getPlayerMoney ( player )
-	end
+	-- end
 end
 
 function aPlayerSerialCheck ( player, result )
@@ -309,7 +309,7 @@ end )
 
 function aAdminMenu ( player, key, keyState )
 	if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-		triggerClientEvent ( player, "aClientAdminMenu", _root )
+		triggerClientEvent ( player, EVENT_ADMIN_OPEN, _root )
 		aPlayers[player]["chat"] = true
 	end
 end
@@ -684,7 +684,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 						action = "adminr"
 					end
 					for id, p in ipairs ( getElementsByType ( "player" ) ) do
-						if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( "aSync", p, "admins" ) end
+						if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( "aSync", p, SYNC_ADMINS ) end
 					end
 				else
 					outputChatBox ( "Error - Admin group not initialized. Please reinstall admin resource.", source, 255, 0 ,0 )
@@ -893,13 +893,13 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 				action = nil
 				outputChatBox ( "Error setting game type.", source, 255, 0, 0 )
 			end
-			triggerEvent ( "aSync", source, "server" )
+			triggerEvent ( "aSync", source, SYNC_SERVER )
 		elseif ( action == "setmap" ) then
 			if ( not setMapName ( tostring ( data ) ) ) then
 				action = nil
 				outputChatBox ( "Error setting map name.", source, 255, 0, 0 )
 			end
-			triggerEvent ( "aSync", source, "server" )
+			triggerEvent ( "aSync", source, SYNC_SERVER )
 		elseif ( action == "setwelcome" ) then
 			if ( ( not data ) or ( data == "" ) ) then
 				action = "resetwelcome"
@@ -924,7 +924,7 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 				action = nil
 				outputChatBox ( "Error setting password", source, 255, 0, 0 )
 			end
-			triggerEvent ( "aSync", source, "server" )
+			triggerEvent ( "aSync", source, SYNC_SERVER )
 		elseif ( action == "setweather" ) then
 			if ( not setWeather ( tonumber ( data ) ) ) then
 				action = nil
@@ -996,7 +996,7 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 		action = nil
 	end
 	for id, p in ipairs ( getElementsByType ( "player" ) ) do
-		if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( "aSync", p, "messages" ) end
+		if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( SYNC_SERVER, p, "messages" ) end
 	end
 end )
 
@@ -1036,7 +1036,7 @@ addEventHandler ( "aBans", _root, function ( action, data )
 	
 		if ( action ~= nil ) then
 			aAction ( "bans", action, source, false, mdata, more )
-			triggerEvent ( "aSync", source, "sync", "bans" )
+			triggerEvent ( "aSync", source, SYNC_BANS )
 		end
 		return true
 	end

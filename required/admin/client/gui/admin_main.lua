@@ -10,10 +10,12 @@
 
 aAdminForm = nil
 aLastCheck = 0
-aCurrentVehicle = 429
-aCurrentWeapon = 30
-aCurrentAmmo = 90
-aCurrentSlap = 20
+aCurrent = {
+	Vehicle = 429,
+	Weapon = 30,
+	Ammo = 90,
+	Slap = 20
+}
 aPlayers = {}
 aBans = {}
 aLastSync = 0
@@ -39,7 +41,7 @@ function aAdminMenu ()
 		aTab1.Mute			= guiCreateButton ( 0.71, 0.170, 0.13, 0.04, "Mute", true, aTab1.Tab, "mute" )
 		aTab1.Freeze		= guiCreateButton ( 0.85, 0.170, 0.13, 0.04, "Freeze", true, aTab1.Tab, "freeze" )
 		aTab1.Spectate		= guiCreateButton ( 0.71, 0.215, 0.13, 0.04, "Spectate", true, aTab1.Tab, "spectate" )
-		aTab1.Slap			= guiCreateButton ( 0.85, 0.215, 0.13, 0.04, "Slap! "..aCurrentSlap.." _", true, aTab1.Tab, "slap" )
+		aTab1.Slap			= guiCreateButton ( 0.85, 0.215, 0.13, 0.04, "Slap! "..aCurrent.Slap.." _", true, aTab1.Tab, "slap" )
 		aTab1.SlapDropDown	= guiCreateStaticImage ( 0.95, 0.215, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
 		aTab1.SlapOptions		= guiCreateGridList ( 0.85, 0.215, 0.13, 0.40, true, aTab1.Tab )
 						  guiGridListSetSortingEnabled ( aTab1.SlapOptions, false )
@@ -76,7 +78,7 @@ function aAdminMenu ()
 		aTab1.SetTeam		= guiCreateButton ( 0.85, 0.440, 0.13, 0.04, "Set Team", true, aTab1.Tab, "setteam" )
 		aTab1.SetDimension	= guiCreateButton ( 0.71, 0.755, 0.13, 0.04, "Set Dimens.", true, aTab1.Tab, "setdimension" )
 		aTab1.SetInterior		= guiCreateButton ( 0.85, 0.755, 0.13, 0.04, "Set Interior", true, aTab1.Tab, "setinterior" )
-		aTab1.GiveWeapon		= guiCreateButton ( 0.71, 0.485, 0.27, 0.04, "Give: "..getWeaponNameFromID ( aCurrentWeapon ), true, aTab1.Tab )
+		aTab1.GiveWeapon		= guiCreateButton ( 0.71, 0.485, 0.27, 0.04, "Give: "..getWeaponNameFromID ( aCurrent.Weapon ), true, aTab1.Tab )
 		aTab1.WeaponDropDown	= guiCreateStaticImage ( 0.95, 0.485, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
 		aTab1.WeaponOptions	= guiCreateGridList ( 0.71, 0.485, 0.27, 0.48, true, aTab1.Tab )
 						  guiGridListAddColumn( aTab1.WeaponOptions, "", 0.85 )
@@ -94,21 +96,17 @@ function aAdminMenu ()
 		aTab1.VehicleDestroy	= guiCreateButton ( 0.71, 0.90, 0.13, 0.04, "Destroy", true, aTab1.Tab, "destroyvehicle" )
 		aTab1.VehicleBlow		= guiCreateButton ( 0.85, 0.85, 0.13, 0.04, "Blow", true, aTab1.Tab, "blowvehicle" )
 		aTab1.VehicleCustomize 	= guiCreateButton ( 0.85, 0.90, 0.13, 0.04, "Customize", true, aTab1.Tab, "customize" )
-		aTab1.GiveVehicle		= guiCreateButton ( 0.71, 0.710, 0.27, 0.04, "Give: "..getVehicleNameFromID ( aCurrentVehicle ), true, aTab1.Tab, "givevehicle" )
+		aTab1.GiveVehicle		= guiCreateButton ( 0.71, 0.710, 0.27, 0.04, "Give: "..getVehicleNameFromID ( aCurrent.Vehicle ), true, aTab1.Tab, "givevehicle" )
 		aTab1.VehicleDropDown 	= guiCreateStaticImage ( 0.95, 0.710, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
 		local gx, gy 		= guiGetSize ( aTab1.GiveVehicle, false )
 		aTab1.VehicleOptions	= guiCreateGridList ( 0, 0, gx, 200, false )
 						  guiGridListAddColumn( aTab1.VehicleOptions, "", 0.85 )
 						  guiSetAlpha ( aTab1.VehicleOptions, 0.80 )
 						  guiSetVisible ( aTab1.VehicleOptions, false )
-						  local avehspecial = { [596] = "LS", [597] = "SF", [598] = "LV" }
 						  for i = 0, 211 do
 							if ( getVehicleNameFromID ( 400 + i ) ~= "" ) then
 								local row = guiGridListAddRow ( aTab1.VehicleOptions )
-								local name = getVehicleNameFromID ( 400 + i )
-								if ( avehspecial[400+i] ) then name = name.." "..avehspecial[400+i] end
-								guiGridListSetItemText ( aTab1.VehicleOptions, row, 1, name, false, false )
-								guiGridListSetItemData ( aTab1.VehicleOptions, row, 1, tostring ( 400 + i ) )
+								guiGridListSetItemText ( aTab1.VehicleOptions, row, 1, getVehicleNameFromID ( 400 + i ), false, false )
 							end
 						  end
 		aTab2 = {}
@@ -281,10 +279,10 @@ function aAdminMenu ()
 		bindKey ( "arrow_d", "down", aPlayerListScroll, 1 )
 		bindKey ( "arrow_u", "down", aPlayerListScroll, -1 )
 
-		triggerServerEvent ( "aSync", getLocalPlayer(), "players" )
-		if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "messages" ) end
-		if ( hasPermissionTo ( "command.listresources" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) end
-		triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
+		triggerServerEvent ( "aSync", getLocalPlayer(), SYNC_PLAYERS )
+		if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), SYNC_MESSAGES ) end
+		if ( hasPermissionTo ( "command.listresources" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), SYNC_RESOURCES ) end
+		triggerServerEvent ( "aSync", getLocalPlayer(), SYNC_SERVER )
 		triggerEvent ( "onAdminInitialize" )
 		showCursor ( true )
 	end
@@ -336,10 +334,10 @@ function aMainSaveSettings ()
 	aSetSetting ( "adminChatSound", guiCheckBoxGetSelected ( aTab5.AdminChatSound ) )
 	aSetSetting ( "adminChatLines", guiGetText ( aTab6.AdminChatLines ) )
 	aSetSetting ( "refreshDelay", guiGetText ( aTab6.RefreshDelay ) )
-	aSetSetting ( "currentWeapon", aCurrentWeapon )
-	aSetSetting ( "currentAmmo", aCurrentAmmo )
-	aSetSetting ( "currentVehicle", aCurrentVehicle )
-	aSetSetting ( "currentSlap", aCurrentSlap )
+	aSetSetting ( "currentWeapon", aCurrent.Weapon )
+	aSetSetting ( "currentAmmo", aCurrent.Ammo )
+	aSetSetting ( "currentVehicle", aCurrent.Vehicle )
+	aSetSetting ( "currentSlap", aCurrent.Slap )
 	if ( guiRadioButtonGetSelected ( aTab6.PerformanceRAM ) ) then aSetSetting ( "performance", "RAM" )
 	elseif ( guiRadioButtonGetSelected ( aTab6.PerformanceCPU ) ) then aSetSetting ( "performance", "CPU" )
 	else aSetSetting ( "performance", "Auto" ) end
@@ -570,7 +568,7 @@ end
 function aSetCurrentAmmo ( ammo )
 	ammo = tonumber ( ammo )
 	if ( ( ammo ) and ( ammo > 0 ) and ( ammo < 10000 ) ) then
-		aCurrentAmmo = ammo
+		aCurrent.Ammo = ammo
 		return
 	end
 	outputChatBox ( "Invalid ammo value", getLocalPlayer(), 255, 0, 0 )
@@ -624,7 +622,7 @@ end
 function aClientDoubleClick ( button )
 	if ( source == aTab1.WeaponOptions ) then
 		if ( guiGridListGetSelectedItem ( aTab1.WeaponOptions ) ~= -1 ) then
-			aCurrentWeapon = getWeaponIDFromName ( guiGridListGetItemText ( aTab1.WeaponOptions, guiGridListGetSelectedItem ( aTab1.WeaponOptions ), 1 ) )
+			aCurrent.Weapon = getWeaponIDFromName ( guiGridListGetItemText ( aTab1.WeaponOptions, guiGridListGetSelectedItem ( aTab1.WeaponOptions ), 1 ) )
 			local wep = guiGridListGetItemText ( aTab1.WeaponOptions, guiGridListGetSelectedItem ( aTab1.WeaponOptions ), 1 )
 			wep = string.gsub ( wep, "Combat Shotgun", "Combat SG" )
 			guiSetText ( aTab1.GiveWeapon, "Give: "..wep.." " )
@@ -634,16 +632,18 @@ function aClientDoubleClick ( button )
 		local item = guiGridListGetSelectedItem ( aTab1.VehicleOptions )
 		if ( item ~= -1 ) then
 			if ( guiGridListGetItemText ( aTab1.VehicleOptions, item, 1 ) ~= "" ) then
-				aCurrentVehicle = tonumber ( guiGridListGetItemData ( aTab1.VehicleOptions, item, 1 ) )
+				local veh = getVehicleIDFromName ( guiGridListGetItemText ( aTab1.VehicleOptions, item, 1 ) )
+				if ( not veh ) then return end
+				aCurrent.Vehicle = veh
 				guiSetText ( aTab1.GiveVehicle, "Give: "..guiGridListGetItemText ( aTab1.VehicleOptions, item, 1 ).." " )
 			end
 		end
 		guiSetVisible ( aTab1.VehicleOptions, false )
 	elseif ( source == aTab1.SlapOptions ) then
 		if ( guiGridListGetSelectedItem ( aTab1.SlapOptions ) ~= -1 ) then
-			aCurrentSlap = guiGridListGetItemText ( aTab1.SlapOptions, guiGridListGetSelectedItem ( aTab1.SlapOptions ), 1 )
-			guiSetText ( aTab1.Slap, "Slap! "..aCurrentSlap.." _" )
-			if ( aSpecSlap ) then guiSetText ( aSpecSlap, "Slap! "..aCurrentSlap.."hp" ) end
+			aCurrent.Slap = guiGridListGetItemText ( aTab1.SlapOptions, guiGridListGetSelectedItem ( aTab1.SlapOptions ), 1 )
+			guiSetText ( aTab1.Slap, "Slap! "..aCurrent.Slap.." _" )
+			if ( aSpectator.Slap ) then guiSetText ( aSpecSlap, "Slap! "..aCurrent.Slap.."hp" ) end
 		end
 		guiSetVisible ( aTab1.SlapOptions, false )
 	end
@@ -678,7 +678,7 @@ function aClientClick ( button )
 					local player = getPlayerFromNick ( name )
 					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..name, "Enter the kick reason", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"kick\", $value )" )
 					elseif ( source == aTab1.Ban ) then aInputBox ( "Ban player "..name, "Enter the ban reason", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"ban\", $value )" )
-					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "slap", aCurrentSlap )
+					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "slap", aCurrent.Slap )
 					elseif ( source == aTab1.Mute ) then aMessageBox ( "question", "Are you sure to "..iif( aPlayers[player]["mute"], "unmute", "mute" ).." "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"mute\" )" )
 					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "freeze" )
 					elseif ( source == aTab1.Spectate ) then aSpectate ( player )
@@ -692,8 +692,8 @@ function aClientClick ( button )
 					elseif ( source == aTab1.SetMoney ) then aInputBox ( "Set Money", "Enter the money value", "0", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"setmoney\", $value )" )
 					elseif ( source == aTab1.SetStats ) then aPlayerStats ( player )
 					elseif ( source == aTab1.SetDimension ) then aInputBox ( "Dimension ID Required", "Enter Dimension ID between 0  and 65535", "0", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"setdimension\", $value )" )
-					elseif ( source == aTab1.GiveVehicle ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "givevehicle", aCurrentVehicle )
-					elseif ( source == aTab1.GiveWeapon ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "giveweapon", aCurrentWeapon, aCurrentAmmo )
+					elseif ( source == aTab1.GiveVehicle ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "givevehicle", aCurrent.Vehicle )
+					elseif ( source == aTab1.GiveWeapon ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "giveweapon", aCurrent.Weapon, aCurrent.Ammo )
 					elseif ( source == aTab1.Warp ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "warp" )
 					elseif ( source == aTab1.WarpTo ) then aPlayerWarp ( player )
 					elseif ( source == aTab1.VehicleFix ) then triggerServerEvent ( "aVehicle", getLocalPlayer(), player, "repair" )
@@ -723,7 +723,7 @@ function aClientClick ( button )
 				if ( guiGridListGetSelectedItem( aTab1.PlayerList ) ~= -1 ) then
 					local player = aAdminRefresh ()
 					if ( player ) then
-						triggerServerEvent ( "aSync", getLocalPlayer(), "player", player )
+						triggerServerEvent ( "aSync", getLocalPlayer(), SYNC_PLAYER, player )
 						if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then outputConsole ( "Name: "..aPlayers[player]["name"]..", IP: "..aPlayers[player]["IP"]..", Serial: "..aPlayers[player]["serial"]..", Username: "..aPlayers[player]["username"] ) end
 						guiSetText ( aTab1.IP, "IP: "..aPlayers[player]["IP"] )
 						guiSetText ( aTab1.Serial, "Serial: "..aPlayers[player]["serial"] )
@@ -789,7 +789,7 @@ function aClientClick ( button )
 				aManageACL()
 			elseif ( source == aTab2.ResourceRefresh ) then
 				guiGridListClear ( aTab2.ResourceList )
-				triggerServerEvent ( "aSync", getLocalPlayer(), "resources" )
+				triggerServerEvent ( "aSync", getLocalPlayer(), SYNC_RESOURCES )
 			elseif ( source == aTab2.ExecuteClient ) then
 				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then aExecute ( guiGetText ( aTab2.Command ), true ) end
 			elseif ( source == aTab2.ExecuteServer ) then
@@ -858,7 +858,7 @@ function aClientClick ( button )
 				aInputBox ( "Add Serial Ban", "Enter Serial to be banned", "", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"banserial\", $value )" )
 			elseif ( source == aTab4.BansRefresh ) then
 				guiGridListClear ( aTab4.BansList )
-				triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
+				triggerServerEvent ( "aSync", getLocalPlayer(), SYNC_BANS )
 			end
 		-- TAB 5, ADMIN CHAT
 		elseif ( getElementParent ( source ) == aTab5.Tab ) then
@@ -926,7 +926,7 @@ function aClientRender ()
 			else aLastCheck = getTickCount() + 50 end
 		end
 		if ( getTickCount() >= aLastSync ) then
-			triggerServerEvent ( "aSync", getLocalPlayer(), "admins" )
+			triggerServerEvent ( "aSync", getLocalPlayer(), SYNC_ADMINS )
 			aLastSync = getTickCount() + 15000
 		end
 	end

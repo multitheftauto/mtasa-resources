@@ -1,5 +1,5 @@
 <meta>
-  <info author="lil_Toady" type="misc" version="1.2" />
+  <info author="lil_Toady" type="misc" version="1.3" />
   <!--
     Admin System Meta File.
     
@@ -7,34 +7,39 @@
              versions of the admin system.
   -->
   <!--Main script files, keep them in that order or it may break-->
-  <script src="server/admin_coroutines.lua" />
-  <script src="server/admin_server.lua" />
-  <script src="server/admin_sync.lua" />
-  <script src="server/admin_commands.lua" />
-  <script src="server/admin_community.lua" />
-  <script src="server/admin_ip2c.lua" />
-  <script src="server/admin_ACL.lua" />
-  <script src="server/http/admin_http.lua" />
-  <script src="client/admin_client.lua" type="client" />
-  <script src="client/admin_gui.lua" type="client" />
-  <script src="client/admin_ACL.lua" type="client" />
-  <script src="client/gui/admin_main.lua" type="client" />
-  <script src="client/gui/admin_performance.lua" type="client" />
-  <script src="client/gui/admin_messages.lua" type="client" />
-  <script src="client/gui/admin_message.lua" type="client" />
-  <script src="client/gui/admin_spectator.lua" type="client" />
-  <script src="client/gui/admin_editor.lua" type="client" />
-  <script src="client/gui/admin_messagebox.lua" type="client" />
-  <script src="client/gui/admin_inputbox.lua" type="client" />
-  <script src="client/gui/admin_team.lua" type="client" />
-  <script src="client/gui/admin_skin.lua" type="client" />
-  <script src="client/gui/admin_stats.lua" type="client" />
-  <script src="client/gui/admin_vehicle.lua" type="client" />
-  <script src="client/gui/admin_interior.lua" type="client" />
-  <script src="client/gui/admin_ban.lua" type="client" />
-  <script src="client/gui/admin_warp.lua" type="client" />
-  <script src="client/gui/admin_report.lua" type="client" />
-  <script src="client/gui/admin_acl.lua" type="client" />
+  <script src="admin_definitions.lua"             type="client" />
+  <script src="admin_definitions.lua"             type="server" />
+
+  <script src="server/admin_coroutines.lua"       type="server" />
+  <script src="server/admin_server.lua"           type="server" />
+  <script src="server/admin_commands.lua"         type="server" />
+  <script src="server/admin_community.lua"        type="server" />
+  <script src="server/admin_ip2c.lua"             type="server" />
+  <script src="server/admin_ACL.lua"              type="server" />
+  <script src="server/admin_sync.lua"             type="server" />
+  <script src="server/http/admin_http.lua"        type="server" />
+  
+  <script src="client/admin_client.lua"           type="client" />
+  <script src="client/admin_wrapper.lua"          type="client" />
+  <script src="client/admin_gui.lua"              type="client" />
+  <script src="client/admin_ACL.lua"              type="client" />
+  <script src="client/gui/admin_main.lua"         type="client" />
+  <script src="client/gui/admin_performance.lua"  type="client" />
+  <script src="client/gui/admin_messages.lua"     type="client" />
+  <script src="client/gui/admin_message.lua"      type="client" />
+  <script src="client/gui/admin_spectator.lua"    type="client" />
+  <script src="client/gui/admin_editor.lua"       type="client" />
+  <script src="client/gui/admin_messagebox.lua"   type="client" />
+  <script src="client/gui/admin_inputbox.lua"     type="client" />
+  <script src="client/gui/admin_team.lua"         type="client" />
+  <script src="client/gui/admin_skin.lua"         type="client" />
+  <script src="client/gui/admin_stats.lua"        type="client" />
+  <script src="client/gui/admin_vehicle.lua"      type="client" />
+  <script src="client/gui/admin_interior.lua"     type="client" />
+  <script src="client/gui/admin_ban.lua"          type="client" />
+  <script src="client/gui/admin_warp.lua"         type="client" />
+  <script src="client/gui/admin_report.lua"       type="client" />
+  <script src="client/gui/admin_acl.lua"          type="client" />
 
   <!--Required XML configs kept in /conf/ folder-->
   <config src="conf/interiors.xml" type="client" />
