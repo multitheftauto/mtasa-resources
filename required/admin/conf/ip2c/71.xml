@@ -1,31 +1,12 @@
 <group>
-<range start="1191182336" end="1191444479" country="US" />
-<range start="1191444480" end="1191575551" country="US" />
-<range start="1191575552" end="1191596031" country="US" />
-<range start="1191608320" end="1191641087" country="US" />
-<range start="1191641088" end="1191673855" country="US" />
+<range start="1191182336" end="1191596031" country="US" />
+<range start="1191608320" end="1191673855" country="US" />
 <range start="1191673856" end="1191706623" country="CA" />
-<range start="1191706624" end="1192230911" country="US" />
-<range start="1192230912" end="1192296447" country="US" />
+<range start="1191706624" end="1192296447" country="US" />
 <range start="1192296448" end="1192361983" country="CA" />
 <range start="1192361984" end="1192427519" country="US" />
 <range start="1192427520" end="1192460287" country="CA" />
 <range start="1192460288" end="1192493055" country="US" />
 <range start="1192493056" end="1192755199" country="CA" />
-<range start="1192755200" end="1193017343" country="US" />
-<range start="1193017344" end="1193279487" country="US" />
-<range start="1193279488" end="1193803775" country="US" />
-<range start="1193803776" end="1194065919" country="US" />
-<range start="1194065920" end="1194328063" country="US" />
-<range start="1194328064" end="1194852351" country="US" />
-<range start="1194852352" end="1195376639" country="US" />
-<range start="1195376640" end="1196425215" country="US" />
-<range start="1196425216" end="1197473791" country="US" />
-<range start="1197473792" end="1199570943" country="US" />
-<range start="1199570944" end="1201668095" country="US" />
-<range start="1201668096" end="1203765247" country="US" />
-<range start="1203765248" end="1204813823" country="US" />
-<range start="1204813824" end="1205862399" country="US" />
-<range start="1205862400" end="1206910975" country="US" />
-<range start="1206910976" end="1207959551" country="US" />
+<range start="1192755200" end="1207959551" country="US" />
 </group>

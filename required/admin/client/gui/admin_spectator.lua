@@ -32,7 +32,7 @@ function aSpectator.Initialize ()
 		aSpectator.SetHealth		= guiCreateButton ( 0.10, 0.33, 0.80, 0.05, "Set Health", true, aSpectator.Actions )
 		aSpectator.SetArmour		= guiCreateButton ( 0.10, 0.39, 0.80, 0.05, "Set Armour", true, aSpectator.Actions )
 		aSpectator.SetStats		= guiCreateButton ( 0.10, 0.45, 0.80, 0.05, "Set Stats", true, aSpectator.Actions )
-		aSpectator.Slap			= guiCreateButton ( 0.10, 0.51, 0.80, 0.05, "Slap! "..aCurrent.Slap.."hp", true, aSpectator.Actions )
+		aSpectator.Slap			= guiCreateButton ( 0.10, 0.51, 0.80, 0.05, "Slap! "..aCurrentSlap.."hp", true, aSpectator.Actions )
 		aSpectator.Slaps			= guiCreateGridList ( 0.10, 0.51, 0.80, 0.48, true, aSpectator.Actions )
 					  		  guiGridListAddColumn( aSpectator.Slaps, "", 0.85 )
 					  		  guiSetVisible ( aSpectator.Slaps, false )
@@ -126,9 +126,9 @@ end
 function aSpectator.ClientDoubleClick ( button )
 	if ( source == aSpectator.Slaps ) then
 		if ( guiGridListGetSelectedItem ( aSpectator.Slaps ) ~= -1 ) then
-			aCurrent.Slap = guiGridListGetItemText ( aSpectator.Slaps, guiGridListGetSelectedItem ( aSpectator.Slaps ), 1 )
-			guiSetText ( aTab1.Slap, "Slap! "..aCurrent.Slap.."hp" )
-			guiSetText ( aSpectator.Slap, "Slap! "..aCurrent.Slap.."hp" )
+			aCurrentSlap = guiGridListGetItemText ( aSpectator.Slaps, guiGridListGetSelectedItem ( aSpectator.Slaps ), 1 )
+			guiSetText ( aTab1.Slap, "Slap! "..aCurrentSlap.."hp" )
+			guiSetText ( aSpectator.Slap, "Slap! "..aCurrentSlap.."hp" )
 		end
 		guiSetVisible ( aSpectator.Slaps, false )
 	end

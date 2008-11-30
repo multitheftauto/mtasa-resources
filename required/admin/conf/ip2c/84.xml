@@ -1,13 +1,10 @@
 <group>
 <range start="1409286144" end="1409548287" country="HU" />
 <range start="1409548288" end="1409810431" country="FR" />
-<range start="1409810432" end="1409875967" country="GB" />
-<range start="1409875968" end="1409941503" country="GB" />
+<range start="1409810432" end="1409941503" country="GB" />
 <range start="1409941504" end="1410007039" country="PL" />
 <range start="1410007040" end="1410072575" country="DE" />
-<range start="1410072576" end="1410138111" country="GB" />
-<range start="1410138112" end="1410203647" country="GB" />
-<range start="1410203648" end="1410269183" country="GB" />
+<range start="1410072576" end="1410269183" country="GB" />
 <range start="1410269184" end="1410334719" country="LT" />
 <range start="1410334720" end="1410342911" country="ES" />
 <range start="1410342912" end="1410351103" country="SK" />
@@ -26,8 +23,7 @@
 <range start="1410449408" end="1410457599" country="SE" />
 <range start="1410457600" end="1410465791" country="RU" />
 <range start="1410465792" end="1410473983" country="ES" />
-<range start="1410473984" end="1410482175" country="JO" />
-<range start="1410482176" end="1410490367" country="JO" />
+<range start="1410473984" end="1410490367" country="JO" />
 <range start="1410490368" end="1410498559" country="RU" />
 <range start="1410498560" end="1410506751" country="IT" />
 <range start="1410506752" end="1410514943" country="IE" />
@@ -38,8 +34,7 @@
 <range start="1410547712" end="1410555903" country="CZ" />
 <range start="1410555904" end="1410564095" country="GB" />
 <range start="1410564096" end="1410572287" country="SE" />
-<range start="1410572288" end="1410580479" country="DE" />
-<range start="1410580480" end="1410588671" country="DE" />
+<range start="1410572288" end="1410588671" country="DE" />
 <range start="1410588672" end="1410596863" country="GB" />
 <range start="1410596864" end="1410605055" country="ES" />
 <range start="1410605056" end="1410613247" country="CH" />
@@ -66,8 +61,7 @@
 <range start="1410777088" end="1410785279" country="RU" />
 <range start="1410785280" end="1410793471" country="SA" />
 <range start="1410793472" end="1410801663" country="GB" />
-<range start="1410801664" end="1410809855" country="RU" />
-<range start="1410809856" end="1410818047" country="RU" />
+<range start="1410801664" end="1410818047" country="RU" />
 <range start="1410818048" end="1410826239" country="SA" />
 <range start="1410826240" end="1410834431" country="SE" />
 <range start="1410834432" end="1410842623" country="PL" />
@@ -84,8 +78,7 @@
 <range start="1411784704" end="1411788799" country="GB" />
 <range start="1411788800" end="1411792895" country="IT" />
 <range start="1411792896" end="1411796991" country="DE" />
-<range start="1411796992" end="1411801087" country="PL" />
-<range start="1411801088" end="1411805183" country="PL" />
+<range start="1411796992" end="1411805183" country="PL" />
 <range start="1411805184" end="1411809279" country="AT" />
 <range start="1411809280" end="1411813375" country="LV" />
 <range start="1411813376" end="1411817471" country="NO" />
@@ -106,8 +99,7 @@
 <range start="1412136960" end="1412169727" country="BG" />
 <range start="1412169728" end="1412202495" country="TR" />
 <range start="1412202496" end="1412235263" country="DE" />
-<range start="1412235264" end="1412268031" country="GB" />
-<range start="1412268032" end="1412300799" country="GB" />
+<range start="1412235264" end="1412300799" country="GB" />
 <range start="1412300800" end="1412333567" country="DE" />
 <range start="1412333568" end="1412366335" country="LT" />
 <range start="1412366336" end="1412399103" country="SK" />
@@ -122,8 +114,7 @@
 <range start="1412694016" end="1412710399" country="EE" />
 <range start="1412710400" end="1412726783" country="RU" />
 <range start="1412726784" end="1412743167" country="SI" />
-<range start="1412743168" end="1412759551" country="NO" />
-<range start="1412759552" end="1412775935" country="NO" />
+<range start="1412743168" end="1412775935" country="NO" />
 <range start="1412775936" end="1412792319" country="NL" />
 <range start="1412792320" end="1412808703" country="EU" />
 <range start="1412808704" end="1412825087" country="RU" />
@@ -156,8 +147,7 @@
 <range start="1422491648" end="1422508031" country="GB" />
 <range start="1422508032" end="1422512127" country="BG" />
 <range start="1422512128" end="1422516223" country="PL" />
-<range start="1422516224" end="1422520319" country="RU" />
-<range start="1422520320" end="1422524415" country="RU" />
+<range start="1422516224" end="1422524415" country="RU" />
 <range start="1422524416" end="1422589951" country="NO" />
 <range start="1422589952" end="1422655487" country="IE" />
 <range start="1422655488" end="1422721023" country="RU" />
@@ -165,8 +155,7 @@
 <range start="1422729216" end="1422737407" country="NO" />
 <range start="1422737408" end="1422745599" country="EU" />
 <range start="1422753792" end="1422761983" country="EU" />
-<range start="1422761984" end="1422770175" country="PL" />
-<range start="1422770176" end="1422778367" country="PL" />
+<range start="1422761984" end="1422778367" country="PL" />
 <range start="1422778368" end="1422786559" country="GR" />
 <range start="1422786560" end="1422852095" country="HU" />
 <range start="1422852096" end="1422917631" country="DE" />
@@ -182,8 +171,7 @@
 <range start="1424588800" end="1424621567" country="GB" />
 <range start="1424621568" end="1424625663" country="PL" />
 <range start="1424625664" end="1424629759" country="GB" />
-<range start="1424629760" end="1424633855" country="PL" />
-<range start="1424633856" end="1424637951" country="PL" />
+<range start="1424629760" end="1424637951" country="PL" />
 <range start="1424637952" end="1424642047" country="FI" />
 <range start="1424642048" end="1424646143" country="DK" />
 <range start="1424646144" end="1424650239" country="RO" />
@@ -205,8 +193,7 @@
 <range start="1425063936" end="1425080319" country="KZ" />
 <range start="1425080320" end="1425096703" country="IR" />
 <range start="1425096704" end="1425113087" country="CH" />
-<range start="1425113088" end="1425129471" country="NL" />
-<range start="1425129472" end="1425145855" country="NL" />
+<range start="1425113088" end="1425145855" country="NL" />
 <range start="1425145856" end="1425162239" country="RU" />
 <range start="1425162240" end="1425178623" country="CZ" />
 <range start="1425178624" end="1425195007" country="BG" />
@@ -237,8 +224,7 @@
 <range start="1425444864" end="1425446911" country="IT" />
 <range start="1425446912" end="1425448959" country="GB" />
 <range start="1425448960" end="1425451007" country="NL" />
-<range start="1425451008" end="1425453055" country="GB" />
-<range start="1425453056" end="1425455103" country="GB" />
+<range start="1425451008" end="1425455103" country="GB" />
 <range start="1425455104" end="1425457151" country="IE" />
 <range start="1425457152" end="1425459199" country="GB" />
 <range start="1425459200" end="1425461247" country="DE" />
@@ -248,8 +234,7 @@
 <range start="1425467392" end="1425469439" country="CH" />
 <range start="1425469440" end="1425471487" country="DK" />
 <range start="1425471488" end="1425473535" country="DE" />
-<range start="1425473536" end="1425489919" country="RO" />
-<range start="1425489920" end="1425506303" country="RO" />
+<range start="1425473536" end="1425506303" country="RO" />
 <range start="1425506304" end="1425522687" country="NO" />
 <range start="1425522688" end="1425539071" country="IT" />
 <range start="1425539072" end="1425801215" country="FI" />
