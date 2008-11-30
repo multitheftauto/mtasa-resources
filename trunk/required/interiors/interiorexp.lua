@@ -49,8 +49,8 @@ function interiorLoadElements ( rootElement, resource )
 		if not interiors[resource][id] then outputDebugString ( "Interiors: Error, no refid specified to returnInterior.", 1 )
 			return
 		else
-				interiors[resource][id]["return"] = interior
-				resourceFromInterior[interior] = resource
+			interiors[resource][id]["return"] = interior
+			resourceFromInterior[interior] = resource
 		end
 	end
 end
@@ -62,7 +62,7 @@ function interiorCreateMarkers ( resource )
 		local entX,entY,entZ = getElementData ( entryInterior, "posX" ),getElementData ( entryInterior, "posY" ),getElementData ( entryInterior, "posZ" )
 		entX,entY,entZ = tonumber(entX),tonumber(entY),tonumber(entZ)
 		--
-		local marker = createMarker ( entX, entY, entZ + 2.2, "arrow", 2, 255, 255, 0, 200 )
+		local marker = createMarker ( entX, entY, entZ + 2.2, "arrow", 1.1, 255, 255, 0, 200 )
 		setElementParent ( marker, entryInterior )
 		interiorMarkers[entryInterior] = marker
 		--
@@ -87,7 +87,7 @@ function interiorCreateMarkers ( resource )
 		--
 		local oneway = getElementData ( entryInterior, "oneway" )
 		if oneway == "true" then return end
-		local marker1 = createMarker ( retX, retY, retZ + 2.2, "arrow", 2, 255, 255, 0, 200 )
+		local marker1 = createMarker ( retX, retY, retZ + 2.2, "arrow", 1.1, 255, 255, 0, 200 )
 		interiorMarkers[returnInterior] = marker1
 		setElementParent ( marker1, returnInterior )
 		--
@@ -139,26 +139,27 @@ function ( player, matchingDimension )
 end )
 
 function warpPlayerToInterior ( player, interior, resource, id )
-		local oppositeType = opposite[getElementType(interior)]
-		local targetInterior = interiors[resource][id][oppositeType]
-		
-		local x = getElementData ( targetInterior, "posX" )
-		local y = getElementData ( targetInterior, "posY" )
-		local z = getElementData ( targetInterior, "posZ" ) + 1
-		local dim = getElementData ( targetInterior, "dimension" )
-		local int = getElementData ( targetInterior, "interior" )
-		local rot = getElementData ( targetInterior, "rotation" )
-		toggleAllControls ( player, false )
-		fadeCamera ( player, false, 1.0 )
-		setTimer ( setPlayerInsideInterior, 1000, 1, player, int,dim,rot,x,y,z, interior )
-		blockPlayer[player] = true
-		setTimer ( function() blockPlayer[player] = nil end, 3500, 1, player, false )
+	local oppositeType = opposite[getElementType(interior)]
+	local targetInterior = interiors[resource][id][oppositeType]
+	
+	local x = getElementData ( targetInterior, "posX" )
+	local y = getElementData ( targetInterior, "posY" )
+	local z = getElementData ( targetInterior, "posZ" ) + 1
+	local dim = getElementData ( targetInterior, "dimension" )
+	local int = getElementData ( targetInterior, "interior" )
+	local rot = getElementData ( targetInterior, "rotation" )
+	toggleAllControls ( player, false )
+	fadeCamera ( player, false, 1.0 )
+	setTimer ( setPlayerInsideInterior, 1000, 1, player, int,dim,rot,x,y,z, interior )
+	blockPlayer[player] = true
+	setTimer ( function() blockPlayer[player] = nil end, 3500, 1, player, false )
 end
 
 function setPlayerInsideInterior ( player, int,dim,rot,x,y,z, interior )
 	setElementInterior ( player, int )
+	setCameraInterior ( player, int )
 	setElementDimension ( player, dim )
-	setPlayerRotation ( player, rot )
+	setPedRotation ( player, rot )
 	setElementPosition ( player, x, y, z )
 	toggleAllControls ( player, true )
 	setTimer ( fadeCamera, 500, 1, player, true, 1.0 )
