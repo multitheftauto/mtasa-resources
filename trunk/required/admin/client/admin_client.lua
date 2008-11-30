@@ -32,17 +32,17 @@ function aClientAdminMenu ()
 end
 
 addEvent ( "onAdminInitialize", true )
+addEvent ( "aMessage", true )
 addEvent ( "aClientLog", true )
-addEvent ( EVENT_SYNC, true )
-addEvent ( EVENT_PLAYER_JOIN, true )
-addEvent ( EVENT_MESSAGE, true )
-addEvent ( EVENT_ADMIN_CHAT, true )
-addEvent ( EVENT_RESOURCE_START, true )
-addEvent ( EVENT_RESOURCE_STOP, true )
-addEvent ( EVENT_ADMIN_OPEN, true )
-
-addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResource() ), function()
-	addEventHandler ( EVENT_ADMIN_OPEN, _root, aClientAdminMenu )
+addEvent ( "aClientSync", true )
+addEvent ( "aClientPlayerJoin", true )
+addEvent ( "aMessage", true )
+addEvent ( "aClientAdminChat", true )
+addEvent ( "aClientResourceStart", true )
+addEvent ( "aClientResourceStop", true )
+addEvent ( "aClientAdminMenu", true )
+function aAdminResourceStart ()
+	addEventHandler ( "aClientAdminMenu", _root, aClientAdminMenu )
 	local node = xmlLoadFile ( "conf\\weathers.xml" )
 	if ( node ) then
 		while ( true ) do
@@ -56,13 +56,13 @@ addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResou
 		if ( _weathers_max >= 1 ) then _weathers_max = _weathers_max - 1 end
 	end
 	aLoadSettings ()
-	triggerServerEvent ( EVENT_SYNC_PERMISSIONS, getLocalPlayer() )
-end )
+	triggerServerEvent ( "aPermissions", getLocalPlayer() )
+end
 
-addEventHandler ( "onClientResourceStop", getResourceRootElement ( getThisResource() ), function()
+function aAdminResourceStop ()
 	showCursor ( false )
 	guiSetInputEnabled ( false )
-end )
+end
 
 function aRegister ( name, welement, fopen, fclose )
 	_widgets[name] = {}
@@ -145,3 +145,6 @@ function getPlayerFromNick ( nick )
 	end
 	return false
 end
+
+addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResource() ), aAdminResourceStart )
+addEventHandler ( "onClientResourceStop", getResourceRootElement ( getThisResource() ), aAdminResourceStop )

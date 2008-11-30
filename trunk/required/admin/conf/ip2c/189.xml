@@ -1,8 +1,4 @@
 <group>
-<range start="3170893824" end="3172990975" country="BR" />
-<range start="3172990976" end="3175088127" country="BR" />
-<range start="3179282432" end="3183476735" country="MX" />
-<range start="3183476736" end="3184525311" country="MX" />
-<range start="3184525312" end="3185573887" country="MX" />
-<range start="3185573888" end="3187671039" country="MX" />
+<range start="3170893824" end="3175088127" country="BR" />
+<range start="3179282432" end="3187671039" country="MX" />
 </group>
