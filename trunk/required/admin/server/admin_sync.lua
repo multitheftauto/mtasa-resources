@@ -12,13 +12,13 @@ addEvent ( "aSync", true )
 addEventHandler ( "aSync", _root, function ( type, data )
 	local tableOut = {}
 	local theSource = _root
-	if ( type == SYNC_PLAYER ) then
+	if ( type == "player" ) then
 		aPlayers[source]["sync"] = data
 		tableOut["mute"] = isPlayerMuted ( data )
 		tableOut["freeze"] = isPlayerFrozen ( data )
 		tableOut["money"] = getPlayerMoney ( data )
 		theSource = data
-	elseif ( type == SYNC_PLAYERS ) then
+	elseif ( type == "players" ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			tableOut[player] = {}
 			tableOut[player]["name"] = getClientName ( player )
@@ -28,7 +28,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut[player]["country"] = aPlayers[player]["country"]
 			tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
 		end
-	elseif ( type == SYNC_RESOURCES ) then
+	elseif ( type == "resources" ) then
 		local resourceTable = getResources()
 		for id, resource in ipairs(resourceTable) do
 			local name = getResourceName ( resource )
@@ -37,7 +37,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut[id]["name"] = name
 			tableOut[id]["state"] = state
 		end
-	elseif ( type == SYNC_ADMINS ) then
+	elseif ( type == "admins" ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			tableOut[player] = {}
 			tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
@@ -57,13 +57,13 @@ addEventHandler ( "aSync", _root, function ( type, data )
 				end
 			end
 		end
-	elseif ( type == SYNC_SERVER ) then
+	elseif ( type == "server" ) then
 		tableOut["name"] = getServerName()
 		tableOut["players"] = getMaxPlayers()
 		tableOut["game"] = getGameType()
 		tableOut["map"] = getMapName()
 		tableOut["password"] = getServerPassword()
-	elseif ( type == SYNC_RIGHTS ) then
+	elseif ( type == "rights" ) then
 		for gi, group in ipairs ( aclListGroups() ) do
 			for oi, object in ipairs ( aclGroupListObjects ( group ) ) do
 				if ( ( object == data ) or ( object == "user.*" ) ) then
@@ -77,7 +77,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 				end
 			end
 		end
-	elseif ( type == SYNC_BANS ) then
+	elseif ( type == "bans" ) then
 		local node = getBansXML()
 		if ( node ) then
 			tableOut["IP"] = {}
@@ -117,7 +117,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 				bans = bans + 1
 			end
 		end
-	elseif ( type == SYNC_MESSAGES ) then
+	elseif ( type == "messages" ) then
 		local unread, total = 0, 0
 		for id, msg in ipairs ( aReports ) do
 			if ( not msg.read ) then

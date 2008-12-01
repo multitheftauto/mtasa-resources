@@ -52,6 +52,11 @@
       <player>Admin has changed your armour to $data</player>
       <log>ADMIN: $admin has changed $player's armour to $data</log>
     </group>
+    <group action="setmoney" r="225" g="170" b="90">
+      <admin>$player's money has been set to $data</admin>
+      <player>Admin has set your money to $data</player>
+      <log>ADMIN: $admin has set $player's money to $data</log>
+    </group>
     <group action="setskin" r="255" g="122" b="0">
       <admin>$player's skin has been changed to $data</admin>
       <player>Admin has changed your skin to $data</player>
@@ -211,6 +216,14 @@
     <group action="setgamespeed" r="225" g="170" b="90">
       <all>Game speed set to '$data' by Admin</all>
       <log>ADMIN: $admin has set game speed to '$data'</log>
+    </group>
+    <group action="setwaveheight" r="225" g="170" b="90">
+      <all>Waves height set to '$data' by Admin</all>
+      <log>ADMIN: $admin has set waves height to '$data'</log>
+    </group>
+    <group action="setblurlevel" r="225" g="170" b="90">
+      <all>Blur level set to '$data' by Admin</all>
+      <log>ADMIN: $admin has set blur level to '$data'</log>
     </group>
   </server>
   <bans>
