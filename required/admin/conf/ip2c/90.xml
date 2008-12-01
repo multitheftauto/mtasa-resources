@@ -16,8 +16,7 @@
 <range start="1520074752" end="1520107519" country="BG" />
 <range start="1520107520" end="1520140287" country="GB" />
 <range start="1520173056" end="1520205823" country="PL" />
-<range start="1520205824" end="1520238591" country="RU" />
-<range start="1520238592" end="1520271359" country="RU" />
+<range start="1520205824" end="1520271359" country="RU" />
 <range start="1520271360" end="1520304127" country="SI" />
 <range start="1520304128" end="1520435199" country="TR" />
 <range start="1520435200" end="1521483775" country="ES" />
@@ -26,8 +25,7 @@
 <range start="1522139136" end="1522270207" country="DE" />
 <range start="1522270208" end="1522401279" country="RU" />
 <range start="1522401280" end="1522532351" country="EE" />
-<range start="1522532352" end="1523580927" country="GB" />
-<range start="1523580928" end="1524629503" country="GB" />
+<range start="1522532352" end="1524629503" country="GB" />
 <range start="1524629504" end="1525678079" country="SE" />
 <range start="1525678080" end="1526726655" country="EU" />
 </group>
