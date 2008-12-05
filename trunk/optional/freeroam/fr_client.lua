@@ -1444,8 +1444,6 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		hideAllWindows()
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), doesPlayerHaveJetPack(g_Me))
 		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPlayerBeKnockedOffBike(g_Me))
-		outputChatBox('Welcome to Freeroam', 0, 255, 0)
-		outputChatBox('Press F1 to show/hide controls', 0, 255, 0)
 		triggerServerEvent('onLoadedAtClient', g_ResRoot, g_Me)
 	end
 )

@@ -235,7 +235,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 			clickhandler = function() wnd.onclick() end
 		end
 	elseif wnd.window then
-		clickhandler = function() createWindow(wnd.window) end
+		clickhandler = function() toggleWindow(wnd.window) end
 	elseif wnd.inputbox then
 		clickhandler = function()
 			wndInput = {
@@ -278,6 +278,10 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 	end
 end
 
+function isWindowOpen(wnd)
+	return wnd.element and guiGetVisible(wnd.element)
+end
+
 function getControlScreenPos(wnd)
 	local x, y = 0, 0
 	local curX, curY
@@ -293,24 +297,32 @@ end
 
 function closeWindow(...)
 	-- closeWindow(window1, window2, ...)
-	for i=1,arg.n do
-		g_openedWindows[arg[i]] = nil
-		if not arg[i].element then
+	local args = { ... }
+	for i=1,#args do
+		g_openedWindows[args[i]] = nil
+		if not args[i].element then
 			return
 		end
 		
-		if arg[i].onclose then
-			arg[i].onclose()
+		if args[i].onclose then
+			args[i].onclose()
 		end
-		guiSetVisible(arg[i].element, false)
+		guiSetVisible(args[i].element, false)
 	end
 	if not isAnyWindowOpen() then
 		showCursor(false)
 	end
 end
 
-function isWindowOpen(wnd)
-	return wnd.element and guiGetVisible(wnd.element)
+function toggleWindow(...)
+	local args = { ... }
+	for i=1,#args do
+		if isWindowOpen(args[i]) then
+			closeWindow(args[i])
+		else
+			createWindow(args[i])
+		end
+	end
 end
 
 function isAnyWindowOpen()
@@ -349,14 +361,15 @@ end
 function getControlData(...)
 	local lookIn
 	local currentData
-	if type(arg[1]) == 'string' then
-		currentData = _G[arg[1]]
+	local args = { ... }
+	if type(args[1]) == 'string' then
+		currentData = _G[args[1]]
 	else
-		currentData = arg[1]
+		currentData = args[1]
 	end
 	
-	for i=2,arg.n do
-		if arg[i] == '..' then
+	for i=2,#args do
+		if args[i] == '..' then
 			currentData = currentData.parent
 		else
 			lookIn = currentData.controls or currentData.tabs
@@ -365,7 +378,7 @@ function getControlData(...)
 			end
 			currentData = false
 			for j,control in pairs(lookIn) do
-				if control.id == arg[i] then
+				if control.id == args[i] then
 					currentData = control
 					break
 				end

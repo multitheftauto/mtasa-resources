@@ -94,6 +94,7 @@ g_OptionDefaults = {
 		disallowed = {}
 	},
 	weather = true,
+	welcometextonstart = true,
 	vehicles = {
 		maxidletime = 60000,
 		idleexplode = true,
@@ -135,6 +136,10 @@ function joinHandler(player)
 	g_PlayerData[player].blip = createBlipAttachedTo(player, 0, 2, r, g, b)
 	if g_FrozenTime then
 		clientCall(player, 'setTimeFrozen', true, g_FrozenTime[1], g_FrozenTime[2], g_FrozenWeather)
+	end
+	if getOption('welcometextonstart') then
+		outputChatBox('Welcome to Freeroam', player, 0, 255, 0)
+		outputChatBox('Press F1 to show/hide controls', player, 0, 255, 0)
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandler)
