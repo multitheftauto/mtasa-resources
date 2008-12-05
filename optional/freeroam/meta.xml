@@ -40,8 +40,9 @@
 		<!-- is running without having to refresh.                                                     -->
 		
 		
-		<setting name="*spawnmaponstart" value="false" />
-		<setting name="*spawnmapondeath" value="false" />
+		<setting name="*spawnmaponstart" value="true" />
+		<setting name="*spawnmapondeath" value="true" />
+		<setting name="*welcometextonstart" value="false" />
 		
 		<setting name="*alpha" value="true" />
 		<setting name="*anim" value="true" />
