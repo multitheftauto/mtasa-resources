@@ -42,7 +42,7 @@
 		
 		<setting name="*spawnmaponstart" value="true" />
 		<setting name="*spawnmapondeath" value="true" />
-		<setting name="*welcometextonstart" value="false" />
+		<setting name="*welcometextonstart" value="true" />
 		
 		<setting name="*alpha" value="true" />
 		<setting name="*anim" value="true" />
