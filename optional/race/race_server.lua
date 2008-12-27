@@ -464,7 +464,11 @@ addEventHandler('onVehicleDamage', g_Root,
 addEventHandler('onVehicleStartExit', g_Root, function() cancelEvent() end)
 
 function getPlayerCurrentCheckpoint(player)
-	return getElementData(player, 'Checkpoint') or 1
+    local value = getElementData(player, 'Checkpoint')
+    if value then
+        value = tonumber(string.sub(value,0,string.find(value," ")))
+    end
+    return value or 1
 end
 
 function setPlayerCurrentCheckpoint(player, i)
