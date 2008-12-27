@@ -53,7 +53,7 @@
 	<export function="isPlayerFinished" type="server"/>
 	
 	<settings>
-		<setting name="*hurrytime" value="[30000]"/>
-		<setting name="*timeafterfirstfinish" value="[60000]"/>
+		<setting name="*hurrytime" value="[15000]"/>
+		<setting name="*timeafterfirstfinish" value="[30000]"/>
 	</settings>
 </meta>
