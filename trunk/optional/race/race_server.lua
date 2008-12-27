@@ -348,7 +348,7 @@ function raceTimeout()
 	end
 	clientCall(g_Root, 'raceTimeout')
 	g_RaceEndTimer = nil
-	setTimer(votemanager.voteMap, 10000, 1, getThisResource())
+	setTimer(votemanager.voteMap, 2000, 1, getThisResource())
 end
 
 function unloadAll()
@@ -396,6 +396,7 @@ addEventHandler('onPollDraw', g_Root,
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
 		outputDebugString('Resource starting')
+		scoreboard.addScoreboardColumn('Checkpoint')	-- Checkpoint column in scoreboard
 		scoreboard.addScoreboardColumn('Race rank')
 	end
 )
@@ -404,6 +405,7 @@ addEventHandler('onResourceStop', g_ResRoot,
 	function()
 		outputDebugString('Resource stopping')
 		unloadAll()
+		scoreboard.removeScoreboardColumn('Checkpoint')
 		scoreboard.removeScoreboardColumn('Race rank')
 	end
 )
@@ -420,11 +422,13 @@ addEventHandler('onPlayerQuit', g_Root,
 			g_CurrentRaceMode:onPlayerQuit(source)
 		end
 		
-		local oldGhostMode = g_MapOptions.ghostmode
-		g_MapOptions.ghostmode = getPlayerCount() >= (get('ghostmodethreshold') or 10)
-		if g_MapOptions.ghostmode ~= oldGhostMode then
-			clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-		end
+		if( g_MapOptions ) then
+		    local oldGhostMode = g_MapOptions.ghostmode
+		    g_MapOptions.ghostmode = getPlayerCount() >= (get('ghostmodethreshold') or 10)
+		    if g_MapOptions.ghostmode ~= oldGhostMode then
+			    clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
+		    end
+		end		
 		
 		for i,player in pairs(g_Players) do
 			if not isPlayerFinished(player) then
@@ -435,13 +439,15 @@ addEventHandler('onPlayerQuit', g_Root,
 			outputDebugString('Stopping map')
 			triggerEvent('onGamemodeMapStop', g_Root)
 		else
-			setTimer(votemanager.voteMap, 5000, 1, getThisResource())
+			setTimer(votemanager.voteMap, 1000, 1, getThisResource())
 		end
 		
-		local oldGhost = g_MapOptions.ghostmode
-		g_MapOptions.ghostmode = getPlayerCount() >= (get('ghostmodethreshold') or 10)
-		if oldGhost ~= g_MapOptions.ghostmode then
-			clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
+		if( g_MapOptions ) then
+		    local oldGhost = g_MapOptions.ghostmode
+		    g_MapOptions.ghostmode = getPlayerCount() >= (get('ghostmodethreshold') or 10)
+		    if oldGhost ~= g_MapOptions.ghostmode then
+			    clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
+		    end
 		end
 	end
 )
@@ -458,7 +464,7 @@ addEventHandler('onVehicleDamage', g_Root,
 addEventHandler('onVehicleStartExit', g_Root, function() cancelEvent() end)
 
 function getPlayerCurrentCheckpoint(player)
-	return getElementData(player, 'race.checkpoint') or 1
+	return getElementData(player, 'Checkpoint') or 1
 end
 
 function setPlayerCurrentCheckpoint(player, i)

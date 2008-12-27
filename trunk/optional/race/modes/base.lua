@@ -80,7 +80,7 @@ function RaceMode:setTimeLeft(timeLeft)
 end
 
 function RaceMode.endRace()
-	setTimer(votemanager.voteMap, 5000, 1, getThisResource())
+	setTimer(votemanager.voteMap, 1000, 1, getThisResource())
 end
 
 -- Default functions
@@ -163,9 +163,12 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		RaceMode.setPlayerFinished(player)
 		if rank == 1 then
 			showMessage('You have won the race!', 0, 255, 0, player)
+			if self.rankingBoard then	-- Remove lingering labels
+				self.rankingBoard:destroy()
+			end
 			self.rankingBoard = RankingBoard:create()
 			if g_MapOptions.duration then
-				self:setTimeLeft(get('race.timeafterfirstfinish') or 60000)
+				self:setTimeLeft(get('race.timeafterfirstfinish') or 30000)
 			end
 		else
 			showMessage('You finished ' .. rank .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' ) .. '!', 0, 255, 0, player)
@@ -280,6 +283,14 @@ function RaceMode:destroy()
 	if self.rankingBoard then
 		self.rankingBoard:destroy()
 		self.rankingBoard = nil
-	end
+	end 
+    if self.checkpointBackups then      -- Stop timers
+        for plr,bkp in pairs(self.checkpointBackups) do
+            if bkp.timer then
+                killTimer(bkp.timer)
+                bkp.timer = nil
+            end
+        end
+    end
 	RaceMode.instances[self.id] = nil
 end

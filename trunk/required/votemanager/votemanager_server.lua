@@ -301,6 +301,11 @@ addEventHandler("onClientSendVote", rootElement,
 		
 		local previousVote = activePoll.votedOption[getPlayerUserName(client)]
 		
+		--check if player wants to cancel his non-existing vote
+		if voteID == -1 and not previousVote then
+			return
+		end
+
 		--check if he just wants to cancel his vote
 		if voteID == -1 and previousVote then
 			if not activePoll.allowchange then

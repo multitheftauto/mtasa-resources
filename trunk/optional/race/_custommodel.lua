@@ -60,3 +60,18 @@ function loadCustomModel(id, dff, txd)
 	preloads[id] = { dff = dff, txd = txd, elem = elem }
 	_addEventHandler('onClientElementStreamIn', elem, customModelPreloaded, false)
 end
+
+
+-- Make sure the preloads are near the player so the onClientElementStreamIn event gets triggered
+local function checkPreloads()
+	for id,preload in pairs(preloads) do
+		local px, py, pz = getElementPosition(getLocalPlayer())
+		local ex, ey, ez = getElementPosition(preload.elem)
+		local dist = getDistanceBetweenPoints3D ( px, py, pz, ex, ey, ez )
+		if( dist > 50 ) then
+			setElementPosition( preload.elem, px, py, pz - 10 )
+		end
+	end
+end
+
+setTimer(checkPreloads, 500, 10 )
