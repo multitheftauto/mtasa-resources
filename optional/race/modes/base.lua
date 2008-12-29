@@ -211,16 +211,12 @@ function RaceMode:onPlayerWasted(player)
 end
 
 function RaceMode:pickFreeSpawnpoint()
-	local i = table.find(RaceMode.getSpawnpoints(), 'used', '[nil]')
-	if not i then
-		i = math.random(RaceMode.getNumberOfSpawnpoints())
-	end
-	local spawnpoint = RaceMode.getSpawnpoint(i)
-	spawnpoint.used = true
-	if self.startTick then
-		setTimer(freeSpawnpoint, 10000, 1, i)
-	end
-	return spawnpoint
+    g_SpawnpointCounter = g_SpawnpointCounter or 0
+    g_SpawnpointCounter = g_SpawnpointCounter + 1
+    if g_SpawnpointCounter > RaceMode.getNumberOfSpawnpoints() then
+        g_SpawnpointCounter = 1
+    end
+	return RaceMode.getSpawnpoint(g_SpawnpointCounter)
 end
 
 function freeSpawnpoint(i)

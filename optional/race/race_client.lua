@@ -323,7 +323,7 @@ function showNextCheckpoint()
 		local nextMarker = createCheckpoint(i+1)
 		setMarkerTarget(curCheckpoint.marker, unpack(nextCheckpoint.position))
 	end
-	setElementData(g_Me, 'Checkpoint', i-1 .. ' / ' .. #g_Checkpoints)
+	setElementData(g_Me, 'race.checkpoint', i)
 end
 
 function checkpointReached(elem)
@@ -340,7 +340,6 @@ function checkpointReached(elem)
 		showNextCheckpoint()
 	else
 		guiSetText(g_GUI.checkpoint, #g_Checkpoints .. ' / ' .. #g_Checkpoints)
-    	setElementData(g_Me, 'Checkpoint', #g_Checkpoints .. ' / ' .. #g_Checkpoints)
 		if g_GUI.hurry then
 			Animation.createAndPlay(g_GUI.hurry, Animation.presets.guiFadeOut(500), destroyElement)
 			g_GUI.hurry = false
@@ -466,7 +465,7 @@ function unloadAll()
 	table.each(g_Objects, destroyElement)
 	g_Objects = {}
 	
-	setElementData(g_Me, 'Checkpoint', nil)
+	setElementData(g_Me, 'race.checkpoint', nil)
 	
 	g_Vehicle = nil
 	removeEventHandler('onClientRender', g_Root, updateTime)
