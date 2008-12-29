@@ -128,6 +128,7 @@ function startRace()
 	if g_CurrentRaceMode:isRanked() then
 		g_RankTimer = setTimer(updateRank, 1000, 0)
 	end
+    g_SpawnpointCounter = 0
 end
 
 function launchRace()
@@ -276,11 +277,13 @@ end
 addEventHandler('onPlayerJoin', g_Root, joinHandler)
 
 function updateRank()
-	for i,player in ipairs(g_Players) do
-		if not isPlayerFinished(player) then
-			setElementData(player, 'Race rank', g_CurrentRaceMode:getPlayerRank(player))
-		end
-	end
+    if g_CurrentRaceMode then
+	    for i,player in ipairs(g_Players) do
+		    if not isPlayerFinished(player) then
+			    setElementData(player, 'Race rank', g_CurrentRaceMode:getPlayerRank(player))
+		    end
+	    end
+    end
 end
 
 addEvent('onPlayerReachCheckpointInternal', true)
@@ -348,7 +351,7 @@ function raceTimeout()
 	end
 	clientCall(g_Root, 'raceTimeout')
 	g_RaceEndTimer = nil
-	setTimer(votemanager.voteMap, 2000, 1, getThisResource())
+	setTimer(votemanager.voteMap, 5000, 1, getThisResource())
 end
 
 function unloadAll()
@@ -396,7 +399,6 @@ addEventHandler('onPollDraw', g_Root,
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
 		outputDebugString('Resource starting')
-		scoreboard.addScoreboardColumn('Checkpoint')	-- Checkpoint column in scoreboard
 		scoreboard.addScoreboardColumn('Race rank')
 	end
 )
@@ -405,7 +407,6 @@ addEventHandler('onResourceStop', g_ResRoot,
 	function()
 		outputDebugString('Resource stopping')
 		unloadAll()
-		scoreboard.removeScoreboardColumn('Checkpoint')
 		scoreboard.removeScoreboardColumn('Race rank')
 	end
 )
@@ -439,7 +440,7 @@ addEventHandler('onPlayerQuit', g_Root,
 			outputDebugString('Stopping map')
 			triggerEvent('onGamemodeMapStop', g_Root)
 		else
-			setTimer(votemanager.voteMap, 1000, 1, getThisResource())
+			setTimer(votemanager.voteMap, 2000, 1, getThisResource())
 		end
 		
 		if( g_MapOptions ) then
@@ -464,11 +465,7 @@ addEventHandler('onVehicleDamage', g_Root,
 addEventHandler('onVehicleStartExit', g_Root, function() cancelEvent() end)
 
 function getPlayerCurrentCheckpoint(player)
-    local value = getElementData(player, 'Checkpoint')
-    if value then
-        value = tonumber(string.sub(value,0,string.find(value," ")))
-    end
-    return value or 1
+	return getElementData(player, 'race.checkpoint') or 1
 end
 
 function setPlayerCurrentCheckpoint(player, i)
