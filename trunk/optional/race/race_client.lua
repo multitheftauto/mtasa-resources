@@ -433,8 +433,10 @@ end
 
 function raceTimeout()
 	removeEventHandler('onClientRender', g_Root, updateTime)
-	destroyCheckpoint(g_CurrentCheckpoint)
-	destroyCheckpoint(g_CurrentCheckpoint + 1)
+	if g_CurrentCheckpoint then
+		destroyCheckpoint(g_CurrentCheckpoint)
+		destroyCheckpoint(g_CurrentCheckpoint + 1)
+	end
 	guiSetText(g_GUI.timeleft, msToTimeStr(0))
 	guiSetText(g_GUI.timepassed, msToTimeStr(g_Duration))
 	if g_GUI.hurry then

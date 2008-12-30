@@ -100,7 +100,6 @@ function setVehicleID(vehicle, id)
 	end
 	setElementVelocity(vehicle, vx, vy, vz)
 	setVehicleTurnVelocity(vehicle, tvx, tvy, tvz)
-	setTimer(warpPlayerIntoVehicle, 500, 3, player, vehicle)
 	
 	return vehicle
 end

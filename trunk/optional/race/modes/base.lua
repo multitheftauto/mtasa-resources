@@ -253,7 +253,7 @@ function restorePlayer(id, player)
 			setVehicleID(vehicle, bkp.vehicle)
 		end
 		warpPlayerIntoVehicle(player, vehicle)
-		setTimer(warpPlayerIntoVehicle, 500, 5, player, vehicle)
+		--setTimer(warpPlayerIntoVehicle, 500, 5, player, vehicle)
 		
 		setVehicleFrozen(vehicle, true)
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
