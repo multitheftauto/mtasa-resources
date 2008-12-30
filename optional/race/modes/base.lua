@@ -240,7 +240,8 @@ function restorePlayer(id, player)
 	if not RaceMode.checkpointsExist() then
 		local spawnpoint = self:pickFreeSpawnpoint()
 		bkp.position = spawnpoint.position
-		setVehicleID(RaceMode.getPlayerVehicle(player), spawnpoint.vehicle)
+		bkp.vehicle = spawnpoint.vehicle    -- Fix spawn'n'blow
+		--setVehicleID(RaceMode.getPlayerVehicle(player), spawnpoint.vehicle)
 	end
 	spawnPlayer(player, bkp.position[1], bkp.position[2], bkp.position[3], 0, getPlayerSkin(player))
 
