@@ -80,7 +80,24 @@ function RaceMode:setTimeLeft(timeLeft)
 end
 
 function RaceMode.endRace()
-	setTimer(votemanager.voteMap, 1000, 1, getThisResource())
+    gotoState("PostRace")
+    local text = g_GameOptions.randommaps and 'Next map starts in:' or 'Vote for next map starts in:'
+    Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255):start()
+end
+
+function RaceMode.startNextMapSelect()
+    gotoState('NextMapSelect')
+    Countdown.destroyAll()
+    destroyAllMessages()
+    if g_GameOptions.randommaps then
+        startRandomMap()
+    else
+        local options = {
+                adjustWidth = 50,
+                skipDontChange = true,
+            }
+        votemanager.voteMap(getThisResource(),nil,options)
+    end
 end
 
 -- Default functions
@@ -116,6 +133,14 @@ function RaceMode:getTimePassed()
 	end
 end
 
+function RaceMode:getTimeRemaining()
+	if self.startTick then
+		return self.startTick + g_MapOptions.duration - getTickCount()
+	else
+		return 0
+	end
+end
+
 function RaceMode:isRanked()
 	return true
 end
@@ -142,7 +167,7 @@ end
 
 function RaceMode:onPlayerJoin(player, spawnpoint)
 	self.checkpointBackups[player] = {}
-	self.checkpointBackups[player][0] = { vehicle = spawnpoint.vehicle, position = spawnpoint.position, rotation = {0, 0, spawnpoint.rotation}, velocity = {0, 0, 0}, turnvelocity = {0, 0, 0} }
+	self.checkpointBackups[player][0] = { vehicle = spawnpoint.vehicle, position = spawnpoint.position, rotation = {0, 0, spawnpoint.rotation}, velocity = {0, 0, 0}, turnvelocity = {0, 0, 0}, geardown = true }
 end
 
 function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
@@ -151,7 +176,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 	if checkpointNum < RaceMode.getNumberOfCheckpoints() then
 		-- Regular checkpoint
 		local vehicle = RaceMode.getPlayerVehicle(player)
-		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getVehicleTurnVelocity(vehicle) } }		
+		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getVehicleTurnVelocity(vehicle) }, geardown = getVehicleLandingGearDown(vehicle) or false }		
 		
 		self.checkpointBackups[player].goingback = true
 		if self.checkpointBackups[player].timer then
@@ -162,13 +187,14 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		-- Finish reached
 		RaceMode.setPlayerFinished(player)
 		if rank == 1 then
+            gotoState('SomeoneWon')
 			showMessage('You have won the race!', 0, 255, 0, player)
 			if self.rankingBoard then	-- Remove lingering labels
 				self.rankingBoard:destroy()
 			end
 			self.rankingBoard = RankingBoard:create()
 			if g_MapOptions.duration then
-				self:setTimeLeft(get('race.timeafterfirstfinish') or 30000)
+				self:setTimeLeft( g_GameOptions.timeafterfirstfinish )
 			end
 		else
 			showMessage('You finished ' .. rank .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' ) .. '!', 0, 255, 0, player)
@@ -177,6 +203,8 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		if rank < getPlayerCount() then
 			setTimer(clientCall, 5000, 1, player, 'startSpectate')
 		else
+            gotoState('EveryoneFinished')
+            self:setTimeLeft( 0 )
 			RaceMode.endRace()
 		end
 	end
@@ -203,10 +231,14 @@ function RaceMode:onPlayerWasted(player)
 		self.checkpointBackups[player].timer = nil
 	end
 	if RaceMode.getMapOption('respawn') == 'timelimit' and not RaceMode.isPlayerFinished(source) then
-		Countdown.create(RaceMode.getMapOption('respawntime')/1000, restorePlayer, 'You will respawn in:', 255, 255, 255, self.id, player):start(player)
-		if RaceMode.getMapOption('respawntime') >= 10000 then
-			setTimer(clientCall, 2000, 1, player, 'startSpectate')
-		end
+        -- See if its worth doing a respawn
+        local respawnTime       = RaceMode.getMapOption('respawntime')
+        if self:getTimeRemaining() - respawnTime > 3000 then
+            Countdown.create(respawnTime/1000, restorePlayer, 'You will respawn in:', 255, 255, 255, self.id, player):start(player)
+        end
+	    if RaceMode.getMapOption('respawntime') >= 10000 then
+		    setTimer(clientCall, 2000, 1, player, 'startSpectate')
+	    end
 	end
 end
 
@@ -228,7 +260,7 @@ function restorePlayer(id, player)
 		return
 	end
 	local self = RaceMode.instances[id]
-	clientCall(player, 'stopSpectate')
+	clientCall(player, 'stopSpectateAndBlack')
 
 	local checkpoint = getPlayerCurrentCheckpoint(player)
 	if self.checkpointBackups[player].goingback and checkpoint > 1 then
@@ -240,6 +272,8 @@ function restorePlayer(id, player)
 	if not RaceMode.checkpointsExist() then
 		local spawnpoint = self:pickFreeSpawnpoint()
 		bkp.position = spawnpoint.position
+		bkp.rotation = {0, 0, spawnpoint.rotation}
+		bkp.geardown = true                 -- Fix landing gear state
 		bkp.vehicle = spawnpoint.vehicle    -- Fix spawn'n'blow
 		--setVehicleID(RaceMode.getPlayerVehicle(player), spawnpoint.vehicle)
 	end
@@ -256,9 +290,12 @@ function restorePlayer(id, player)
 		warpPlayerIntoVehicle(player, vehicle)
 		--setTimer(warpPlayerIntoVehicle, 500, 5, player, vehicle)
 		
+        setVehicleLandingGearDown(vehicle,bkp.geardown)
 		setVehicleFrozen(vehicle, true)
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
 	end
+    setCameraTarget(player)
+    clientCall(player, 'soonFadeIn')
 end
 
 function restorePlayerUnfreeze(id, player)

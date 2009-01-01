@@ -4,6 +4,7 @@
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
 	<include resource="votemanager"/>
+	<include resource="helpmanager" />
 	
 	<script src="_eventqueue.lua" type="server"/>
 	<script src="util_server.lua" type="server"/>
@@ -14,6 +15,8 @@
 	<script src="modes/destructionderby.lua" type="server"/>
 	<script src="modes/freeroam.lua" type="server"/>
 	<script src="modes/sprint.lua" type="server"/>
+	<script src="racemidvote_server.lua" type="server"/>
+	<script src="racestates_server.lua" type="server"/>
 	<script src="race_server.lua" type="server"/>
 	
 	<script src="_custommodel.lua" type="client"/>
@@ -23,6 +26,7 @@
 	<script src="countdown_client.lua" type="client"/>
 	<script src="rankingboard_client.lua" type="client"/>
 	<script src="race_client.lua" type="client"/>
+	<config src="help.xml" type="client" />
 	
 	<file src="img/rankbg.png"/>
 	<file src="img/timepassedbg.png"/>
@@ -55,5 +59,8 @@
 	<settings>
 		<setting name="*hurrytime" value="[15000]"/>
 		<setting name="*timeafterfirstfinish" value="[30000]"/>
+		<setting name="*ghostmode" value="[false]"/>
+		<setting name="*ghostalpha" value="[false]"/>
+		<setting name="*randommaps" value="[false]"/>   <!-- randommaps = [true] for no polls at the end of each map -->
 	</settings>
 </meta>

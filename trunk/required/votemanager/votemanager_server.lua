@@ -99,7 +99,8 @@ function startPoll(pollData)
 	activePoll.clientData = {
 		title=activePoll.title,
 		allowchange=activePoll.allowchange,
-		nomination=activePoll.nomination
+		nomination=activePoll.nomination,
+        adjustwidth=activePoll.adjustwidth,
 	}
 	activePoll.clientOptions = {}
 	for i,option in ipairs(activePoll) do

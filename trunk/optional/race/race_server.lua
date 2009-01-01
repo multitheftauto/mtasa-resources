@@ -28,6 +28,7 @@ g_Vehicles = {}				-- { player = vehicle }
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
+        gotoState('LoadingMap')
 		if g_CurrentRaceMode then
 			outputDebugString('Unloading previous map')
 			unloadAll()
@@ -35,12 +36,22 @@ addEventHandler('onGamemodeMapStart', g_Root,
 		if not loadMap(mapres) then
 			return
 		end
+        g_MapInfo = {}
+        g_MapInfo.resname                   = getResourceName(mapres)
+	    g_GameOptions = {}
+        g_GameOptions.timeafterfirstfinish  = get('race.timeafterfirstfinish') or 30000
+        g_GameOptions.hurrytime             = get('race.hurrytime') or 15000
+        g_GameOptions.ghostmode             = get('race.ghostmode') or false
+        g_GameOptions.ghostalpha            = get('race.ghostalpha') or false
+        g_GameOptions.randommaps            = get('race.randommaps') or false
 		g_CurrentRaceMode = RaceMode.getApplicableMode():create()
 		outputDebugString('Loaded race mode ' .. g_CurrentRaceMode:getName())
 		startRace()
 	end
 )
 
+-- Called from:
+--      onGamemodeMapStart
 function loadMap(res)
 	local map = RaceMap.load(res)
 	if not map then
@@ -66,7 +77,6 @@ function loadMap(res)
 	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or 5000)
 	g_MapOptions.skins = map.skins or 'cj'
 	g_MapOptions.vehicleweapons = map.vehicleweapons == 'true'
-	g_MapOptions.ghostmode = map.ghostmode == 'true'
 	
 	-- read spawnpoints
 	g_Spawnpoints = map:getAll('spawnpoint')
@@ -122,7 +132,10 @@ function loadMap(res)
 	return true
 end
 
+-- Called from:
+--      onGamemodeMapStart
 function startRace()
+    gotoState('PreRace')
 	g_Players = {}
 	g_SpawnTimer = setTimer(joinHandler, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
@@ -131,6 +144,9 @@ function startRace()
     g_SpawnpointCounter = 0
 end
 
+
+-- Called from:
+--      g_RaceStartCountdown
 function launchRace()
 	table.each(g_Vehicles, setVehicleFrozen, false)
 	table.each(g_Players, setPlayerGravity, 0.008)
@@ -141,9 +157,10 @@ function launchRace()
 	g_CurrentRaceMode:launch()
 	g_CurrentRaceMode.running = true
 	triggerEvent('onRaceLaunch', getResourceRootElement(mapmanager.getRunningGamemodeMap()))
+    gotoState('Racing')
 end
 
-g_RaceStartCountdown = Countdown.create(3, launchRace)
+g_RaceStartCountdown = Countdown.create(6, launchRace)
 g_RaceStartCountdown:useImages('img/countdown_%d.png', 474, 204)
 g_RaceStartCountdown:enableFade(true)
 g_RaceStartCountdown:addClientHook(3, 'playSoundFrontEnd', 44)
@@ -151,6 +168,9 @@ g_RaceStartCountdown:addClientHook(2, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(1, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(0, 'playSoundFrontEnd', 45)
 
+
+-- Called from:
+--      Currently unused
 function restartRace()
 	for i,player in pairs(g_Players) do
 		clientCall(player, 'vehicleUnloading')
@@ -160,11 +180,17 @@ function restartRace()
 	startRace()
 end
 
+
+-- Called from:
+--      event onPlayerJoin
+--      g_SpawnTimer = setTimer(joinHandler, 500, 0) in startRace
+-- Interesting calls to:
+--      g_RaceStartCountdown:start()
 function joinHandler(player)
 	if #g_Spawnpoints == 0 then
 		-- start vote if no map is loaded
 		outputDebugString('No map loaded; showing votemanager')
-		votemanager.voteMap(getThisResource())
+        RaceMode.endRace()
 		return
 	end
 	if g_SpawnTimer then
@@ -177,6 +203,7 @@ function joinHandler(player)
 		if not player then
 			killTimer(g_SpawnTimer)
 			g_SpawnTimer = nil
+            gotoState('GridCountdown')
 			g_RaceStartCountdown:start()
 			return
 		end
@@ -258,24 +285,27 @@ function joinHandler(player)
 		g_Vehicles[player] = vehicle
 	end
 	
-	local oldGhostMode = g_MapOptions.ghostmode
-	g_MapOptions.ghostmode = getPlayerCount() >= (get('ghostmodethreshold') or 10)
-	if g_MapOptions.ghostmode ~= oldGhostMode then
-		clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-	end
+    -- Tell all clients to re-apply ghostmode settings in 100ms
+    setTimer(function() clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode) end, 100, 1 )
 	
-	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), playerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true), get('race.hurrytime') or 30000)
+	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), playerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true), g_GameOptions )
 	
 	createBlipAttachedTo(player, 0, 1, 200, 200, 200)
 	g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
+
+    -- Tell all clients to re-apply ghostmode settings in 1000ms
+    setTimer(function() clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode) end, 1000, 1 )
 	
 	if playerJoined and getPlayerCount() == 2 then
-		-- Restart the race if someone joined a lone player
-		Countdown.create(5, restartRace, 'Race will restart in:', 255, 255, 255):start()
+		---- Start random map vote if someone joined a lone player
+        startMidRaceVoteForRandomMap()
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandler)
 
+
+-- Called from:
+--      g_RankTimer = setTimer(updateRank, 1000, 0) in startRace
 function updateRank()
     if g_CurrentRaceMode then
 	    for i,player in ipairs(g_Players) do
@@ -343,7 +373,11 @@ addEventHandler('onPlayerWasted', g_Root,
 	end
 )
 
+
+-- Called from:
+--		g_RaceEndTimer = setTimer(raceTimeout, g_MapOptions.duration, 1)
 function raceTimeout()
+    gotoState("TimesUp")
 	for i,player in pairs(g_Players) do
 		if not isPlayerFinished(player) then
 			showMessage('Time\'s up!')
@@ -351,9 +385,13 @@ function raceTimeout()
 	end
 	clientCall(g_Root, 'raceTimeout')
 	g_RaceEndTimer = nil
-	setTimer(votemanager.voteMap, 5000, 1, getThisResource())
+    RaceMode.endRace()
 end
 
+-- Called from:
+--      onGamemodeMapStart
+--      onGamemodeMapStop
+--      onResourceStop
 function unloadAll()
 	clientCall(g_Root, 'unloadAll')
 	if g_RaceEndTimer then
@@ -385,11 +423,15 @@ end
 
 addEventHandler('onGamemodeMapStop', g_Root,
 	function(mapres)
+        fadeCamera ( g_Root, false, 0.0, 0,0, 0 ) 
 		outputDebugString('onGamemodeMapStop')
+        gotoState('NoMap')
 		unloadAll()
 	end
 )
 
+-- Called from:
+--      nowhere
 addEventHandler('onPollDraw', g_Root,
 	function()
 		outputDebugString('Poll ended in a draw')
@@ -405,6 +447,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
+        fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')
 		unloadAll()
 		scoreboard.removeScoreboardColumn('Race rank')
@@ -423,14 +466,6 @@ addEventHandler('onPlayerQuit', g_Root,
 			g_CurrentRaceMode:onPlayerQuit(source)
 		end
 		
-		if( g_MapOptions ) then
-		    local oldGhostMode = g_MapOptions.ghostmode
-		    g_MapOptions.ghostmode = getPlayerCount() >= (get('ghostmodethreshold') or 10)
-		    if g_MapOptions.ghostmode ~= oldGhostMode then
-			    clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-		    end
-		end		
-		
 		for i,player in pairs(g_Players) do
 			if not isPlayerFinished(player) then
 				return
@@ -440,15 +475,8 @@ addEventHandler('onPlayerQuit', g_Root,
 			outputDebugString('Stopping map')
 			triggerEvent('onGamemodeMapStop', g_Root)
 		else
-			setTimer(votemanager.voteMap, 2000, 1, getThisResource())
-		end
-		
-		if( g_MapOptions ) then
-		    local oldGhost = g_MapOptions.ghostmode
-		    g_MapOptions.ghostmode = getPlayerCount() >= (get('ghostmodethreshold') or 10)
-		    if oldGhost ~= g_MapOptions.ghostmode then
-			    clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-		    end
+            gotoState('EveryoneFinished')
+            RaceMode.endRace()
 		end
 	end
 )
@@ -488,7 +516,9 @@ end
 
 addCommandHandler('kill',
 	function(player)
-		killPlayer(player)
+        if stateAllowsKillPlayer() then
+		    killPlayer(player)
+        end
 	end
 )
 
@@ -497,9 +527,9 @@ addCommandHandler('ghostmode',
 		if not isPlayerInACLGroup(player, 'Admin') then
 			return
 		end
-		g_MapOptions.ghostmode = not g_MapOptions.ghostmode
-		clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-		if g_MapOptions.ghostmode then
+		g_GameOptions.ghostmode = not g_GameOptions.ghostmode
+		clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode)
+		if g_GameOptions.ghostmode then
 			outputChatBox('Ghostmode enabled by ' .. getClientName(player), g_Root, 0, 240, 0)
 		else
 			outputChatBox('Ghostmode disabled by ' .. getClientName(player), g_Root, 240, 0, 0)
