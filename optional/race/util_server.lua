@@ -32,8 +32,10 @@ end
 
 g_Messages = {}		-- { player =  { display = display, textitem = textitem, timer = timer } }
 function showMessage(text, r, g, b, player)
+    local ypos = 0.25
 	if not player then
 		player = g_Root
+        ypos = 0.35
 	end
 	
 	if g_Messages[player] then
@@ -41,7 +43,7 @@ function showMessage(text, r, g, b, player)
 	else
 		g_Messages[player] = {
 			display = textCreateDisplay(),
-			textitem = textCreateTextItem('', 0.5, 0.5, 'medium', 255, 0, 0, 255, 2, 'center', 'center')
+			textitem = textCreateTextItem('', 0.5, ypos, 'medium', 255, 0, 0, 255, 2, 'center', 'center')
 		}
 	end
 	
@@ -61,10 +63,19 @@ function showMessage(text, r, g, b, player)
 end
 
 function destroyMessage(player)
+    killTimer(g_Messages[player].timer)
 	textDestroyDisplay(g_Messages[player].display)
 	textDestroyTextItem(g_Messages[player].textitem)
 	g_Messages[player] = nil
 end
+
+function destroyAllMessages()
+    for key,value in pairs(g_Messages) do
+        destroyMessage(key)
+    end
+    g_Messages = {}  
+end
+
 
 function createResourceCallInterface(resname)
 	return setmetatable(

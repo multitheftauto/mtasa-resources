@@ -103,6 +103,12 @@ addEventHandler("doShowPoll", rootElement,
 		end
 		
 		isChangeAllowed = pollData.allowchange
+
+		layout.window.width = 150 + (pollData.adjustwidth or 0)
+        layout.title.width  = layout.window.width
+        layout.option.width = layout.window.width
+        layout.cancel.width = layout.window.width
+        layout.time.width   = layout.window.width
 		
       local screenX, screenY = guiGetScreenSize()
 		--create the window

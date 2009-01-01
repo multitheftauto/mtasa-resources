@@ -51,18 +51,19 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 	end
 )
 
-function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, hurryDuration)
+function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, gameoptions)
 	unloadAll()
 	
 	g_Players = getElementsByType('player')
 	g_MapOptions = mapoptions
+	g_GameOptions = gameoptions
 	
-	fadeCamera(true)
+	--fadeCamera(true)
 	showHUD(false)
 	
 	g_Vehicle = vehicle
 	setVehicleDamageProof(g_Vehicle, true)
-	setGhostMode(g_MapOptions.ghostmode)
+	setGhostMode(g_GameOptions.ghostmode)
 	
 	local x, y, z = getElementPosition(g_Vehicle)
 	setCameraBehindVehicle(vehicle)
@@ -112,10 +113,14 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	end
 	guiSetVisible(g_GUI.checkpoint, #g_Checkpoints > 0)
 	
-	g_HurryDuration = hurryDuration
+	g_HurryDuration = g_GameOptions.hurrytime
 	if duration then
 		launchRace(duration)
 	end
+
+    fadeCamera( false, 0.0 )
+    setTimer(fadeCamera, 750, 1, true, 10.0)
+    setTimer(fadeCamera, 1500, 1, true, 2.0)
 end
 
 function launchRace(duration)
@@ -139,13 +144,17 @@ function setGhostMode(ghostmode)
 	g_GhostMode = ghostmode
 	local vehicle
 	for i,player in ipairs(g_Players) do
-		setElementAlpha(player, ghostmode and 200 or 255)
+        if g_GameOptions and g_GameOptions.ghostalpha then
+		    setElementAlpha(player, ghostmode and 200 or 255)
+        end
 		vehicle = getPlayerOccupiedVehicle(player)
 		if vehicle then
 			if player ~= g_Me then
 				setElementCollisionsEnabled(vehicle, not ghostmode)
 			end
-			setElementAlpha(vehicle, ghostmode and 200 or 255)
+            if g_GameOptions and g_GameOptions.ghostalpha then
+			    setElementAlpha(vehicle, ghostmode and 200 or 255)
+		    end
 		end
 	end
 end
@@ -429,6 +438,18 @@ function stopSpectate()
 	unbindKey('arrow_r', 'down', spectateNext)
 	setCameraTarget(g_Me)
 	g_SpectatedPlayer = nil
+end
+
+--
+-- Camera transition for our player's respawn
+--
+function stopSpectateAndBlack()
+    stopSpectate()
+    fadeCamera(false,0.0, 0,0,0)            -- Instant black
+end
+
+function soonFadeIn()
+    setTimer(fadeCamera,250,1,true,1.0)    -- And up
 end
 
 function raceTimeout()

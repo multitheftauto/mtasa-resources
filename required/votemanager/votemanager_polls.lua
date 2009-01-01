@@ -278,7 +278,7 @@ end
 
 --[[ exported functions ]]--
 
-function voteMap(resource1, resource2)
+function voteMap(resource1, resource2, createOptions)
 	local gamemode, map
 	if resource1 then
 		if call(mapmanagerResource, "isMap", resource1) == true then
@@ -319,7 +319,7 @@ function voteMap(resource1, resource2)
 		
 	-- no map, a gamemode: vote between compatible maps for that gamemode
 	elseif not map then
-		return voteBetweenGamemodeCompatibleMaps(gamemode)
+		return voteBetweenGamemodeCompatibleMaps(gamemode,createOptions)
 		
 	-- a map, no gamemode: vote to change current gamemode map
 	elseif not gamemode then
@@ -566,7 +566,8 @@ function voteBetweenMaps(...)
 	end
 end
 
-function voteBetweenGamemodeCompatibleMaps(gamemode)
+function voteBetweenGamemodeCompatibleMaps(gamemode,createOptions)
+    createOptions = createOptions or {}
 	local compatibleMaps = call(mapmanagerResource, "getMapsCompatibleWithGamemode", gamemode)
 	
 	-- limit it to eight random maps
@@ -584,6 +585,7 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 		visibleTo=rootElement,
 		percentage=vote.map.percentage,
 		timeout=vote.map.timeout,
+        adjustwidth=createOptions.adjustWidth,
 		allowchange=vote.map.allowchange;
 		}
 	
@@ -592,7 +594,9 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 		table.insert(poll, {mapName, call, mapmanagerResource, "changeGamemodeMap", map, gamemode})
 	end
 	
-	table.insert(poll, DONT_CHANGE_OPTION)
+    if not createOptions.skipDontChange then
+	    table.insert(poll, DONT_CHANGE_OPTION)
+    end
 	
 	mapOptions = #poll - 1
 	local success = startPoll(poll)

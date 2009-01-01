@@ -121,7 +121,12 @@ function Countdown:update()
 		end
 	end
 	if not self:isClient() then
-		textItemSetText(self.countitem, self.texts[self.value] or tostring(self.value))
+	    if self.countitem then
+		    textItemSetText(self.countitem, self.texts[self.value] or tostring(self.value))
+            if textItemGetText(self.countitem) == '' then
+ 		        textItemSetText(self.textitem, '')
+            end
+        end
 	end
 	self.value = self.value - 1
 end
