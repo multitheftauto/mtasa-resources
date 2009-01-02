@@ -4,12 +4,12 @@
 	<config src="help.xml" type="client"/>
 
     <script src="stealthmain_server.lua" />
-    <script src="noiseblip.lua" />
     <script src="mission_timer.lua" />
     <script src="gadgets_server.lua" />
     <script src="gadgets_client.lua" type="client"/>
     <script src="stealthmain_client.lua" type="client"/>
     <script src="noisebar.lua" type="client"/>
+    <script src="noiseblip.lua" type="client"/>
 	<script src="spycam.lua" type="client"/>
 
 	<file src="riot_shield.txd" />
@@ -28,10 +28,10 @@
 	<include resource="maplimits" />
 
 	<settings>
-		<setting name="roundlimit" value="[6]" /> -- round length in minutes
-		<setting name="teamdamage" value="[1]" /> -- 0 for team protection off, 1 for team protection on
-		<setting name="teambalance" value="[1]" /> --  difference limit of amount of players between teams
-		<setting name="spazammo" value="[25]" /> -- ammo amounts
+		<setting name="roundlimit" value="[6]" /> <!-- round length in minutes -->
+		<setting name="teamdamage" value="[1]" /> <!--  0 for team protection off, 1 for team protection on -->
+		<setting name="teambalance" value="[1]" /> <!--   difference limit of amount of players between teams -->
+		<setting name="spazammo" value="[25]" /> <!--  ammo amounts -->
 		<setting name="m4ammo" value="[100]" />
 		<setting name="shotgunammo" value="[25]" />
 		<setting name="sniperammo" value="[20]" />
@@ -46,5 +46,7 @@
 		<setting name="satchelammo" value="[4]" />
 		<setting name="teargasammo" value="[4]" />
 		<setting name="molatovammo" value="[4]" />
+		<!--Table of weapons that lasersight is enabled.  Just use [ ] if you want to disable.  Note this wont work for weapons that laser sight is not coded for (atm only Sniper + M4) -->
+		<setting name="lasersight" value="[ [ 31, 34 ] ]" />
 	</settings>
 </meta>

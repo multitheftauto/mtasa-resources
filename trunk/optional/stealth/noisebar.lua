@@ -67,16 +67,15 @@ function reducesoundlevel ( thisplayer )
 			local isDead = isPlayerDead(getLocalPlayer ())
 			if (isDead == false) then
 				blipshowing = 1
-				triggerServerEvent ("soundblipon", getLocalPlayer (), thisplayer )
 			end
 		end
 	end
 	if soundlevel == 0 then
 		if blipshowing == 1 then
-			triggerServerEvent ("soundblipoff", getLocalPlayer (), thisplayer )
 			blipshowing = 0
 		end
 	end
+	updateRemoteSoundLevels()
 end
 --THIS REDUCES THE BAR VISUALLY WITHOUT EFFECTING THE ACTUAL VALUES
 function smoothreduce ()

@@ -5,9 +5,7 @@ addEvent ("cloaktheplayer", true )
 function cloakstart(thisplayer)
 	setElementData ( thisplayer, "stealthmode", "on" )
 	playSoundFrontEnd ( thisplayer, 34 )
-	for index, player2 in ipairs(getElementsByType("player")) do
-		triggerClientEvent(player2,"cloaksomeoneelse",getRootElement(),thisplayer)
-	end
+	setElementAlpha ( thisplayer, 10 )
 end
 
 addEventHandler("cloaktheplayer",getRootElement(),cloakstart)
@@ -22,9 +20,7 @@ function cloakstop(thisplayer)
 	end
 	setElementData ( thisplayer, "stealthmode", "off" )
 	playSoundFrontEnd ( thisplayer, 35 )
-	for index, player2 in ipairs(getElementsByType("player")) do
-		triggerClientEvent(player2,"uncloaksomeoneelse",getRootElement(),thisplayer)
-	end
+	setElementAlpha ( thisplayer, 255 )
 end
 addEventHandler("uncloaktheplayer",getRootElement(),cloakstop)
 

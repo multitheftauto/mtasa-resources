@@ -1,3 +1,5 @@
+local localPlayer = getLocalPlayer()
+local screenX,screenY = guiGetScreenSize()
 local spectateButton
 addEvent("swaptoggle", true )
 
@@ -19,7 +21,6 @@ function showSpectateText(text,show)
 		local length = guiLabelGetTextExtent ( tempText )
 		destroyElement ( tempText )
 		local buttonLength = length + 40
-		local screenX,screenY = guiGetScreenSize()
 		local x = (screenX - buttonLength)/2
 		guiSetPosition ( spectateButton,x, 0.75 * screenY, false )
 		guiSetSize ( spectateButton,buttonLength, 30, false )
@@ -414,3 +415,72 @@ function cleanup (theresource)
 end
 
 addEventHandler("onClientResourceStop", getRootElement(), cleanup)
+
+
+--Code for Laser sight on weapons.  Currently only for sniper and M4 weapons
+local laserWeapons = {}
+function drawLasers()
+	for k,player in ipairs(getElementsByType"player") do
+		local draw,startX,startY,startZ,targetX,targetY,targetZ
+		local playerWeapon = getPlayerWeapon ( player )
+		if ( playerWeapon == 31 and laserWeapons[31] ) then
+			draw = true
+			local offset = - 0.1
+			if isPlayerDucked ( player ) and isPlayerDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) and not ( getControlState"left" or getControlState"right" or getControlState"forwards" or getControlState"backwards" ) then
+				offset = - 0.095
+			elseif isPlayerDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) then
+				offset = - 0.05
+			end
+			local boneX,boneY,boneZ = getPedBonePosition ( player, 25 )
+			-- boneZ = boneZ - 0.12
+			startX,startY,startZ = getPlayerTargetStart ( player )
+		
+			targetX,targetY,targetZ = extendLine ( boneX,boneY,boneZ,startX,startY,startZ + offset,500 )	
+			if not isElementOnScreen ( player ) then --work around for an mta bug
+				startX,startY,startZ = getElementPosition ( player )
+				targetX,targetY,targetZ = getPlayerTargetEnd ( player )
+			end
+		elseif ( playerWeapon == 34 and laserWeapons[34] ) then
+			if ( player ~= localPlayer ) and ( isPlayerDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) ) then
+				draw = true
+				startX,startY,startZ = getPedBonePosition ( player, 35 )
+				targetX,targetY,targetZ = getPlayerTargetEnd ( player )
+				if not isElementOnScreen ( player ) then --work around for an mta bug
+					startX,startY,startZ = getElementPosition ( player )
+					targetX,targetY,targetZ = getPlayerTargetEnd ( player )
+				end
+			end
+		end
+		--Draw the weapons
+		if draw then
+			local bool,hitX,hitY,hitZ = processLineOfSight ( startX,startY,startZ,targetX,targetY,targetZ, true, true, true, true, true, false, false, true )
+			if not bool or not hitX then
+				hitX,hitY,hitZ = targetX,targetY,targetZ
+			end
+			dxDrawLine3D ( startX,startY,startZ, hitX,hitY,hitZ, tocolor(255,0,0,50), 1, false, 1 )
+		end
+	end
+end
+
+addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
+	function()
+		local weaponsTable = getElementData(getRootElement(),"lasersight")
+		if type(weaponsTable) == "table" and #weaponsTable > 0 then
+			for k,weaponID in ipairs(weaponsTable) do
+				laserWeapons[weaponID] = true
+			end
+			addEventHandler("onClientRender",getRootElement(),drawLasers)
+		end
+	end
+)
+
+function extendLine ( x,y,z,x2,y2,z2,length )
+	local vx = x2 - x
+	local vy = y2 - y
+	local vz = z2 - z
+	local ratio = length/(getDistanceBetweenPoints3D ( x,y,z,x2,y2,z2 ))
+	vx = vx*ratio
+	vy = vy*ratio
+	vz = vz*ratio
+	return (x + vx),(y + vy),(z + vz)
+end

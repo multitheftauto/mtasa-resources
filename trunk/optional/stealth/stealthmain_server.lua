@@ -51,6 +51,7 @@ function teamstealthgamestart()
 	teamswap = 0
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
+		killPlayer(v)
 		fadeCamera(v,true)
 		thisplayer = v
 		triggerClientEvent(v,"swaptoggle",getRootElement(), thisplayer, teamswap)
@@ -60,6 +61,8 @@ function teamstealthgamestart()
 		bindKey ( v, "r", "down", spectateNext )
 		bindKey ( v, "F3", "down", selectTeamKey )
 	end
+	--Enable laser sight
+	setElementData(getRootElement(),"lasersight",get("stealth.lasersight"))
 end
 
 addEventHandler( "onGamemodeStart", resourceRoot, teamstealthgamestart )

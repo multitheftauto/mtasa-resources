@@ -247,9 +247,7 @@ function goggletaskcheck ()
 			for tableKey, tableValue in pairs(tableofplayers) do 
 				iscloaked = getElementData ( tableValue, "stealthmode" )
 				if iscloaked == "on" then			
-					oldskin = getElementData ( tableValue, "playerskin" )
 					setElementAlpha ( tableValue, 255 )
-					setPlayerSkin ( tableValue, oldskin )
 				end
 			end
 		end
@@ -262,7 +260,6 @@ function goggletaskcheck ()
 			for tableKey, tableValue in pairs(tableofplayers) do 
 				iscloaked = getElementData ( tableValue, "stealthmode" )
 				if iscloaked == "on" then
-					setPlayerSkin ( tableValue, 164 )
 					local player = tableValue
 					alphachangedelay = setTimer ( setalpha, 100, 1, player )
 				end
