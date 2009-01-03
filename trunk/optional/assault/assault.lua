@@ -789,7 +789,7 @@ function spawnPlayerTeam( player )
 		newY = y + math.random(1,sizeY)
 	elseif (spawnpoint.shape == "circle") then
 		local maxRadius = tonumber(spawnpoint.radius)
-		local angle = randInt(0,359)
+		local angle = math.random(0,359)
 		local distance = maxRadius * math.random()
 		newX = x + math.cos(math.rad(angle)) * distance
 		newY = y + math.sin(math.rad(angle)) * distance
