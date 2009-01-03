@@ -785,12 +785,12 @@ function spawnPlayerTeam( player )
 	local newX = x
 	local newY = y
 	if (spawnpoint.shape == "rectangle") then
-		newX = x + randFloat(1,sizeX)
-		newY = y + randFloat(1,sizeY)
+		newX = x + math.random(1,sizeX)
+		newY = y + math.random(1,sizeY)
 	elseif (spawnpoint.shape == "circle") then
 		local maxRadius = tonumber(spawnpoint.radius)
 		local angle = randInt(0,359)
-		local distance = maxRadius * randFloat()
+		local distance = maxRadius * math.random()
 		newX = x + math.cos(math.rad(angle)) * distance
 		newY = y + math.sin(math.rad(angle)) * distance
 	end
@@ -814,7 +814,7 @@ function getSpawnpoint(spawngroupsTable)
 	spawnarea = spawngroup.spawnarea
 	--outputChatBox("test"..tostring(#spawngroup.spawnarea))
 	if (#spawnarea == 0) then return false end
-	local rand = randInt(1,#spawnarea)
+	local rand = math.random(1,#spawnarea)
 	return spawnarea[rand]
 end
 
@@ -841,7 +841,7 @@ function getRandomSkin( skinString )
 			end
 		end
 	end
-	local rand = randInt(1,#skins)
+	local rand = math.random(1,#skins)
 	return skins[rand]
 end
 -- Spawns all players, even if they are already spawned (as long as they selected a team)

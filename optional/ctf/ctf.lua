@@ -521,8 +521,8 @@ function CTF_spawnPlayer( player )
 		local team = getPlayerTeam( player )
 		if ( team ) then
 			local spawnpoints = getChildren ( team, "spawnpoint" )
-			call(getResourceFromName("spawnmanager"), "spawnPlayerAtSpawnpoint", player, spawnpoints[ randInt( 1, #spawnpoints ) ] )
-			--spawnPlayerAtSpawnpoint ( player, spawnpoints[ randInt( 1, #spawnpoints ) ] )
+			call(getResourceFromName("spawnmanager"), "spawnPlayerAtSpawnpoint", player, spawnpoints[ math.random( 1, #spawnpoints ) ] )
+			--spawnPlayerAtSpawnpoint ( player, spawnpoints[ math.random( 1, #spawnpoints ) ] )
 			local r,g,b = getTeamColor( team )
 			setPlayerNametagColor ( player, r, g, b )
 			if ( CTF_blips ) then

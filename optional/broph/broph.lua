@@ -5,7 +5,7 @@ connected = 0
 function resourceStart ( name )
 	if ( name == getThisResource() ) then
 	local allMessages = getElementsByType ( "welcome" )
-	local randomMessage = randInt(1,#allMessages)
+	local randomMessage = math.random(1,#allMessages)
 	local varMessageFind = allMessages[randomMessage]
 	local varMessage = getElementData ( varMessageFind, "message" )
 	outputChatBox ( "" ..varMessage.. "", root, 0, 255, 100 )
@@ -59,9 +59,9 @@ end
 
 function playerSpawn ( spawnpoint )
 	--TALIDAN STUFFZOR
-	local rand1  = randInt(50,255)
-	local rand2  = randInt(50,255)
-	local rand3  = randInt(50,255)
+	local rand1  = math.random(50,255)
+	local rand2  = math.random(50,255)
+	local rand3  = math.random(50,255)
 	blip = createBlipAttachedTo ( source, 0, 2, rand1, rand2, rand3, 90 )
 	setPlayerNametagColor ( source, rand1, rand2, rand3 )
 	setElementData ( source, "colour_r", rand1 )
@@ -123,7 +123,7 @@ function spawn_me( player, timer )
 end
 
 function spawnThePlayer ( player )
-	local b = spawnPlayer ( player, -711+randInt(1,5), 957+randInt(5,9), 12.4, 90, randInt(9,288) )
+	local b = spawnPlayer ( player, -711+math.random(1,5), 957+math.random(5,9), 12.4, 90, math.random(9,288) )
 	if not b then
 		spawnThePlayer ( player )
 		return

@@ -315,7 +315,7 @@ function playerSpawned ( posX, posY, posZ, spawnRotation, theTeam, theSkin, theI
 		setElementData ( source, "spawnVehicle", spawnCar )
 		maRide = getElementData ( source, "spawnVehicle" )
 		triggerClientEvent (source, "noCollBandito", source, myWeapon, mySecWeapon1, mySecWeapon2, mySecWeapon3)
-		createBlipAttachedTo ( source, 0, 2, randInt(0,255), randInt(0,255), randInt(0,255) )
+		createBlipAttachedTo ( source, 0, 2, math.random(0,255), math.random(0,255), math.random(0,255) )
 		setTimer (warpPlayerIntoVehicle, 500, 1, source, maRide )
 		setVehicleDamageProof ( maRide, true )
 		protection = createMarker ( x, y, z, "cylinder", 4, 255, 0, 0, 90 )
@@ -408,7 +408,7 @@ end
 	setElementParent ( stinger[source], stingercol[source] )
 	addEventHandler("onColShapeHit", stingercol[source], function ( Daplayer, matchingDimension )
 		local vehicle = getPlayerOccupiedVehicle ( Daplayer )
-		local randDamage = randInt(1,4)
+		local randDamage = math.random(1,4)
 		if ( randDamage == 1 ) then
 			setVehicleWheelStates ( vehicle, -1, -1, -1, 1 )
 		elseif ( randDamage == 2 ) then

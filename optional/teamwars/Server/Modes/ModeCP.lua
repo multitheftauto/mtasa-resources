@@ -987,7 +987,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 				outputChatBox("No spawnpoints left.", player)
 				return false
 			end
-			local spawnpoint = spawnpointList[ randInt( 1, #spawnpointList ) ] 
+			local spawnpoint = spawnpointList[ math.random( 1, #spawnpointList ) ] 
 			
 			local x,y,z = getElementPosition(spawnpoint)
 			local randx = getElementData(spawnpoint, "randx"); if (not randx) then randx = 0 end

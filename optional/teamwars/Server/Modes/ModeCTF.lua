@@ -547,7 +547,7 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 			local team = getPlayerTeam( player )
 			local spawnpoints = getChildren ( team, "spawnpoint" )
 			local r,g,b = getTeamColor( team )
-			local spawnpoint = spawnpoints[ randInt( 1, #spawnpoints ) ] 
+			local spawnpoint = spawnpoints[ math.random( 1, #spawnpoints ) ] 
 			
 			setPlayerNametagColor ( player, r, g, b )		
 
