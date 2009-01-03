@@ -129,7 +129,7 @@ function nextRound ()
 	--get a table of all the "target" elements from the .map
 	local allTargets = getElementsByType ( "target" )
 	--get a random number between 1, and the total number of rows in the table
-	randomVehicle = randInt(1,#allTargets)
+	randomVehicle = math.random(1,#allTargets)
 	--call the spawn van function, with the random target element as an argument
 	spawnVan ( allTargets[randomVehicle] )
 	
@@ -161,10 +161,10 @@ function spawnVan ( target )
 	---seperate the colours string and get specific colour ids
 	local col1, col2, col3, col4 = colours and colours:match('^(%w+),(%w+),(%w+),(%w+)$')
 	--if any of them are "ran", then make them into a random id
-	if col1 == "ran" or not col1 then col1 = randInt(0,126) end
-	if col2 == "ran" or not col2 then col2 = randInt(0,126) end
-	if col3 == "ran" or not col3 then col3 = randInt(0,126) end
-	if col4 == "ran" or not col4 then col4 = randInt(0,126) end
+	if col1 == "ran" or not col1 then col1 = math.random(0,126) end
+	if col2 == "ran" or not col2 then col2 = math.random(0,126) end
+	if col3 == "ran" or not col3 then col3 = math.random(0,126) end
+	if col4 == "ran" or not col4 then col4 = math.random(0,126) end
 	--if any of the rotations are not specified, make them 0
 	rx = rx or 0
 	ry = ry or 0

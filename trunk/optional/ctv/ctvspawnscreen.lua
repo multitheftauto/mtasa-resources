@@ -101,7 +101,7 @@ function spawnTeam ( source, key, keyState, team )
 	local r, g, b = getTeamColor ( team )
 	setPlayerNametagColor ( source, r, g, b )
 
-	spawnPlayer ( source, x + randInt(1,5), y + randInt(1,5), z, rot, randInt(startSkin, endSkin) )
+	spawnPlayer ( source, x + math.random(1,5), y + math.random(1,5), z, rot, math.random(startSkin, endSkin) )
 	showTextForPlayer ( source, 3000, 0.5, 0.5, 200, 100, 100, 200, 2, "Capture the vehicle!" )
 	--setCameraMode ( source, "player" )
 	setCameraTarget( source, source )

@@ -1185,33 +1185,33 @@ function spawn (baseX1, baseY1, baseZ1, index)
 	skinID[source] = index[source]
 	if ( index[source] == 1 ) then --soldier
 		if getTeamName(getPlayerTeam(source)) == "Ally" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 287 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 287 )
 		elseif getTeamName(getPlayerTeam(source)) == "Axis" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 165 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 165 )
 		end
 	elseif ( index[source] == 2 ) then --scout
 		if getTeamName(getPlayerTeam(source)) == "Ally" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 285 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 285 )
 		elseif getTeamName(getPlayerTeam(source)) == "Axis" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 163 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 163 )
 		end
 	elseif ( index[source] == 3 ) then --medic
 		if getTeamName(getPlayerTeam(source)) == "Ally" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 286 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 286 )
 		elseif getTeamName(getPlayerTeam(source)) == "Axis" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 164 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 164 )
 		end
 	elseif ( index[source] == 4 ) then --anti-tank
 		if getTeamName(getPlayerTeam(source)) == "Ally" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 284 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 284 )
 		elseif getTeamName(getPlayerTeam(source)) == "Axis" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 166 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 166 )
 		end
 	elseif ( index[source] == 5 ) then --mechanic
 		if getTeamName(getPlayerTeam(source)) == "Ally" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 260 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 260 )
 		elseif getTeamName(getPlayerTeam(source)) == "Axis" then
-			spawnPlayer (source, baseX1 + (randInt(0,10)), baseY1 + (randInt(0,10)), baseZ1, 0, 50 )
+			spawnPlayer (source, baseX1 + (math.random(0,10)), baseY1 + (math.random(0,10)), baseZ1, 0, 50 )
 		end
 	end
 		

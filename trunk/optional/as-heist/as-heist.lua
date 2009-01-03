@@ -407,7 +407,7 @@ function scriptCreateKey()
 		table.insert ( keycards, customPickup ( x, y, z, 1581, true ) )
 	end
 	isInterior = true
-	setElementData ( keycards[randInt ( 1, 8 )], "theone", true )
+	setElementData ( keycards[math.random ( 1, 8 )], "theone", true )
 	addEventHandler ( "onPickupUse", root, checkCard )
 end
 

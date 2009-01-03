@@ -527,7 +527,7 @@ function firstSpawn ( source )
 	if xDebug then outputDebugString ( "Spawning player " .. getClientName(thePlayer) .. " for the very first time" ) end
 	updatePlayerInfoBar ( thePlayer, 5200, "Please wait... Spawning" )
 	
-	local randTeam = randInt(1,#gameTeams)
+	local randTeam = math.random(1,#gameTeams)
 	local foundTeam = nil
 	local foundTeamID = nil
 	local allDone = false
@@ -562,12 +562,12 @@ function firstSpawn ( source )
 end
 
 function spawnThePlayer ( source, team )
-	local randSpawn = randInt(1,#team.spawns)
-	local randSkinPicker = randInt(1,#team.skins)
+	local randSpawn = math.random(1,#team.spawns)
+	local randSkinPicker = math.random(1,#team.skins)
 	local randSkin = tonumber(team.skins[randSkinPicker].id)
-	local x = tonumber(team.spawns[randSpawn].x) + randInt(0,tonumber(team.spawns[randSpawn].rx))
-	local y = tonumber(team.spawns[randSpawn].y) + randInt(0,tonumber(team.spawns[randSpawn].ry))
-	local z = tonumber(team.spawns[randSpawn].z) + randInt(0,tonumber(team.spawns[randSpawn].rz))
+	local x = tonumber(team.spawns[randSpawn].x) + math.random(0,tonumber(team.spawns[randSpawn].rx))
+	local y = tonumber(team.spawns[randSpawn].y) + math.random(0,tonumber(team.spawns[randSpawn].ry))
+	local z = tonumber(team.spawns[randSpawn].z) + math.random(0,tonumber(team.spawns[randSpawn].rz))
 	local rot = tonumber(team.spawns[randSpawn].rot)
 	local rx = tonumber(team.spawns[randSpawn].rx)
 	local ry = tonumber(team.spawns[randSpawn].ry)
@@ -597,12 +597,12 @@ function spawnThePlayer ( source, team )
 end
 
 function respawnThePlayer ( source, team )
-	local randSpawn = randInt(1,#team.spawns)
-	local randSkinPicker = randInt(1,#team.skins)
+	local randSpawn = math.random(1,#team.spawns)
+	local randSkinPicker = math.random(1,#team.skins)
 	local randSkin = tonumber(team.skins[randSkinPicker].id)
-	local x = tonumber(team.spawns[randSpawn].x) + randInt(0,tonumber(team.spawns[randSpawn].rx))
-	local y = tonumber(team.spawns[randSpawn].y) + randInt(0,tonumber(team.spawns[randSpawn].ry))
-	local z = tonumber(team.spawns[randSpawn].z) + randInt(0,tonumber(team.spawns[randSpawn].rz))
+	local x = tonumber(team.spawns[randSpawn].x) + math.random(0,tonumber(team.spawns[randSpawn].rx))
+	local y = tonumber(team.spawns[randSpawn].y) + math.random(0,tonumber(team.spawns[randSpawn].ry))
+	local z = tonumber(team.spawns[randSpawn].z) + math.random(0,tonumber(team.spawns[randSpawn].rz))
 	local rot = tonumber(team.spawns[randSpawn].rot)
 	local rx = tonumber(team.spawns[randSpawn].rx)
 	local ry = tonumber(team.spawns[randSpawn].ry)

@@ -32,13 +32,13 @@ function initPickupSystem (  )
 		pickups[1]["weaponammo"] = weaponammo
 		--outputDebugString ( "Got a random pickup @ " .. x .. " " .. y .. " " .. z .. ", now installing..." )
 		--generatePickup ( i )
-		setTimer ( generatePickup, randInt(30000, 120000), 1, i )
+		setTimer ( generatePickup, math.random(30000, 120000), 1, i )
 	end
 	pickups_count = i
 end
 
 function generatePickup ( pID )
-	local pType = randInt(0,8)
+	local pType = math.random(0,8)
 	
 	if ( pType == 0 ) then
 		--Health
@@ -68,7 +68,7 @@ function generatePickup ( pID )
 	elseif ( pType >= 2 ) then
 		--Weapon
 		if ( pickups[pID]["weaponid"] == "-1" ) then
-			local randomID = randInt(1,#pickups_weapons)
+			local randomID = math.random(1,#pickups_weapons)
 			local idWeapon = pickups_weapons[randomID]
 			local idAmmo = pickups_weaponsAmmo[randomID]
 			thePickup = createPickup ( pickups[pID]["x"], pickups[pID]["y"], pickups[pID]["z"], 2, idWeapon, 30000, idAmmo  )
@@ -142,7 +142,7 @@ local foundIt = false
 			end
 			
 			destroyElement ( v["pID"] )
-			setTimer ( generatePickup, randInt(30000, 120000), 1, v["id"] )
+			setTimer ( generatePickup, math.random(30000, 120000), 1, v["id"] )
 
 			--setTimer ( "generatePickup", 5000, 1, v["id"] )
 			break
@@ -157,7 +157,7 @@ end
 
 function getRandomWeapon()
 	local tableSize = #pickups_weapons
-	local randomID = randInt(1,tableSize)
+	local randomID = math.random(1,tableSize)
 	local i = 0
 	local returnValue = nil
 	

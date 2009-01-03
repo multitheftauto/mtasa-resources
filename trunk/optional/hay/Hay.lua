@@ -12,7 +12,7 @@ end )
 
 function spawnFunct ( passedPlayer )
     r = 20
-	angle = randInt(133, 308) --random angle between 0 and 359.99
+	angle = math.random(133, 308) --random angle between 0 and 359.99
 	centerX = -12
 	centerY = -10
 	spawnX = r*math.cos(angle) + centerX --circle trig math
@@ -64,10 +64,10 @@ function move ()
 --outputDebugString("move entered")
 	local rand
 	repeat
-		rand = randInt ( 1, options.b )
+		rand = math.random ( 1, options.b )
 	until (moving[rand] ~= 1)
 	local object = objects[ rand ]
-	local move = randInt ( 0, 5 )
+	local move = math.random ( 0, 5 )
 --outputDebugString("move: " .. move)
 	local x,y,z
 	local x2,y2,z2 = getElementPosition ( object )
@@ -154,23 +154,23 @@ function onThisResourceStart ( )
 	local x,y,z
 	for count = 1,options.b do
 		repeat
-			x = randInt ( 1, options.x )
-			y = randInt ( 1, options.y )
-			z = randInt ( 1, options.z )
+			x = math.random ( 1, options.x )
+			y = math.random ( 1, options.y )
+			z = math.random ( 1, options.z )
 		until (matrix[x][y][z] == 0)
 		matrix[x][y][z] = 1
-		objects[count] = createObject ( 3374, x * -4, y * -4, z * 3 ) --, randInt ( 0, 3 ) * 90, randInt ( 0, 1 ) * 180 , randInt ( 0, 1 ) * 180 )
+		objects[count] = createObject ( 3374, x * -4, y * -4, z * 3 ) --, math.random ( 0, 3 ) * 90, math.random ( 0, 1 ) * 180 , math.random ( 0, 1 ) * 180 )
 	end
 
 	--Place number of rocks in matrix
 	for count = 1,options.r do
 		repeat
-			x = randInt ( 1, options.x )
-			y = randInt ( 1, options.y )
-			z = randInt ( 1, options.z )
+			x = math.random ( 1, options.x )
+			y = math.random ( 1, options.y )
+			z = math.random ( 1, options.z )
 		until (matrix[x][y][z] == 0)
 		matrix[x][y][z] = 1
-		createObject ( 1305, x * -4, y * -4, z * 3, randInt ( 0, 359 ), randInt ( 0, 359 ), randInt ( 0, 359 ) )
+		createObject ( 1305, x * -4, y * -4, z * 3, math.random ( 0, 359 ), math.random ( 0, 359 ), math.random ( 0, 359 ) )
 	end
 	
 	--Calculate tower center and barrier radius
