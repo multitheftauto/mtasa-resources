@@ -63,6 +63,9 @@ function showMessage(text, r, g, b, player)
 end
 
 function destroyMessage(player)
+	if not g_Messages[player] then
+		return
+	end
     killTimer(g_Messages[player].timer)
 	textDestroyDisplay(g_Messages[player].display)
 	textDestroyTextItem(g_Messages[player].textitem)

@@ -407,7 +407,9 @@ function unloadAll()
 
 	for i,player in pairs(g_Players) do
 		setPlayerFinished(player, false)
+		destroyMessage(player)
 	end
+	destroyMessage(g_Root)
 	
 	table.each(g_Vehicles, destroyElement)
 	g_Vehicles = {}
