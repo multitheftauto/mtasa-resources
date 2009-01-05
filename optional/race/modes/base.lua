@@ -80,7 +80,7 @@ function RaceMode:setTimeLeft(timeLeft)
 end
 
 function RaceMode.endRace()
-    gotoState("PostRace")
+    gotoState('PostRace')
     local text = g_GameOptions.randommaps and 'Next map starts in:' or 'Vote for next map starts in:'
     Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255):start()
 end
@@ -199,6 +199,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		else
 			showMessage('You finished ' .. rank .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' ) .. '!', 0, 255, 0, player)
 		end
+		g_SToptimesManager:playerFinished( player, time)
 		self.rankingBoard:add(player, time)
 		if rank < getPlayerCount() then
 			setTimer(clientCall, 5000, 1, player, 'startSpectate')
@@ -260,7 +261,7 @@ function restorePlayer(id, player)
 		return
 	end
 	local self = RaceMode.instances[id]
-	clientCall(player, 'stopSpectateAndBlack')
+	clientCall(player, 'remoteStopSpectateAndBlack')
 
 	local checkpoint = getPlayerCurrentCheckpoint(player)
 	if self.checkpointBackups[player].goingback and checkpoint > 1 then
@@ -295,7 +296,7 @@ function restorePlayer(id, player)
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
 	end
     setCameraTarget(player)
-    clientCall(player, 'soonFadeIn')
+    clientCall(player, 'remoteSoonFadeIn')
 end
 
 function restorePlayerUnfreeze(id, player)

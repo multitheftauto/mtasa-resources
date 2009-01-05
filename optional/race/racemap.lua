@@ -40,6 +40,8 @@ function RaceMap.load(res)
 		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no meta.xml', 2)
 		return false
 	end
+    local infoNode = xmlFindSubNode(meta, 'info', 0)
+    local info = infoNode and xmlNodeGetAttributes ( infoNode ) or {}
 	local racenode = xmlFindSubNode(meta, 'race', 0)
 	local file = racenode and xmlNodeGetAttribute(racenode, 'src')
 	xmlUnloadFile(meta)
@@ -53,7 +55,7 @@ function RaceMap.load(res)
 		outputDebugString('Error opening ' .. file, 2)
 		return false
 	end
-	local map = setmetatable({ res = res, resname = getResourceName(res), file = file, xml = xml }, RaceMap)
+	local map = setmetatable({ res = res, resname = getResourceName(res), file = file, xml = xml, info = info }, RaceMap)
 	if map:isRaceFormat() then
 		setmetatable(map, RaceRaceMap)
 	elseif map:isDMFormat() then

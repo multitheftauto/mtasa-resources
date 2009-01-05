@@ -414,3 +414,46 @@ function string:split(separator)
 	result[#result+1] = self:match('.*' .. separator .. '(.*)$') or self
 	return result
 end
+
+
+
+function outputDebug( msg )
+	if _DEBUG then
+        outputDebugString( 'DEBUG: ' .. msg )
+	end
+end
+
+function outputDebugClient( msg )
+	if _DEBUG then
+        outputConsole( 'DEBUG: ' .. msg )
+	end
+end
+
+function outputWarning( msg )
+    outputDebugString( 'WARNING: ' .. msg )
+    outputConsole( 'WARNING: ' .. msg )
+end
+
+
+---------------------------------------------------------------------------
+--
+-- getRealDateTimeNowString()
+--
+-- current date and time as a sortable string
+-- eg '2010-12-25 15:32:45'
+--
+---------------------------------------------------------------------------
+function getRealDateTimeNowString()
+    return getRealDateTimeString( getRealTime() )
+end
+
+function getRealDateTimeString( time )
+    return string.format( '%04d-%02d-%02d %02d:%02d:%02d'
+                        ,time.year + 1900
+                        ,time.month + 1
+                        ,time.monthday
+                        ,time.hour
+                        ,time.minute
+                        ,time.second
+                        )
+end

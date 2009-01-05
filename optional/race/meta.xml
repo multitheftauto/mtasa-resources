@@ -17,6 +17,9 @@
 	<script src="modes/sprint.lua" type="server"/>
 	<script src="racemidvote_server.lua" type="server"/>
 	<script src="racestates_server.lua" type="server"/>
+	<script src="toptimes/databasetable_server.lua" type="server"/>
+	<script src="toptimes/maptimes_server.lua" type="server"/>
+	<script src="toptimes/toptimes_server.lua" type="server"/>
 	<script src="race_server.lua" type="server"/>
 	
 	<script src="_custommodel.lua" type="client"/>
@@ -25,6 +28,7 @@
 	<script src="client_anim.lua" type="client"/>
 	<script src="countdown_client.lua" type="client"/>
 	<script src="rankingboard_client.lua" type="client"/>
+	<script src="toptimes/toptimes_client.lua" type="client"/>
 	<script src="race_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
 	
@@ -44,6 +48,7 @@
 	<file src="img/specprev_hi.png"/>
 	<file src="img/specnext.png"/>
 	<file src="img/specnext_hi.png"/>
+	<file src="img/blank.png"/>
 	
 	<file src="model/nitro.dff"/>
 	<file src="model/nitro.txd"/>
@@ -62,5 +67,6 @@
 		<setting name="*ghostmode" value="[false]"/>
 		<setting name="*ghostalpha" value="[false]"/>
 		<setting name="*randommaps" value="[false]"/>   <!-- randommaps = [true] for no polls at the end of each map -->
+		<setting name="*statskey" value="[PlayerName]"/> <!-- use [PlayerName] or [PlayerSerial] to identify players for stats -->
 	</settings>
 </meta>

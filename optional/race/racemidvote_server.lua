@@ -4,7 +4,7 @@
 -- Mid-race random map vote
 --
 
-local lastVoteStarterName = ""
+local lastVoteStarterName = ''
 local lastVoteStarterCount = 0
 
 ----------------------------------------------------------------------------
@@ -28,41 +28,41 @@ function startMidRaceVoteForRandomMap(player)
 
         local playerName = getClientName(player)
 
-        local msg = ""
+        local msg = ''
 
         if playerName == lastVoteStarterName then
             lastVoteStarterCount = lastVoteStarterCount + 1
             if lastVoteStarterCount == 5 then
-                msg = playerName .. " started a vote. Hardly a suprise."
+                msg = playerName .. ' started a vote. Hardly a suprise.'
             elseif lastVoteStarterCount == 10 then
-                msg = "Guess what! "..playerName .. " started ANOTHER vote!"
+                msg = 'Guess what! '..playerName .. ' started ANOTHER vote!'
             elseif lastVoteStarterCount < 5 then
-                msg = playerName .. " started another vote."
+                msg = playerName .. ' started another vote.'
             else
-                msg = playerName .. " continues to abuse the vote system."
+                msg = playerName .. ' continues to abuse the vote system.'
             end
         else
             lastVoteStarterCount = 0
             lastVoteStarterName = playerName
-            msg = playerName .. " started a vote."
+            msg = playerName .. ' started a vote.'
         end
 
         outputVoteManager( msg )
     end
 
     if not player then
-        lastVoteStarterName = ""
+        lastVoteStarterName = ''
     end
 
     -- Actual vote started here
     local pollDidStart = exports.votemanager:startPoll {
-           title="Do you want to change to a random map?",
+           title='Do you want to change to a random map?',
            percentage=51,
            timeout=15,
            allowchange=false,
            visibleTo=getRootElement(),
-           [1]={"Yes", "midRaceVoteResult", getRootElement(), true},
-           [2]={"No", "midRaceVoteResult", getRootElement(), false;default=true},
+           [1]={'Yes', 'midRaceVoteResult', getRootElement(), true},
+           [2]={'No', 'midRaceVoteResult', getRootElement(), false;default=true},
     }
 
     -- Change state if vote did start
@@ -87,8 +87,8 @@ addEventHandler('midRaceVoteResult', getRootElement(),
         if votedYes then
             startRandomMap()
         else
-            if lastVoteStarterName ~= "" then
-                outputVoteManager( "Offical news: Everybody hates " .. lastVoteStarterName )
+            if lastVoteStarterName ~= '' then
+                outputVoteManager( 'Offical news: Everybody hates ' .. lastVoteStarterName )
             end
         end
 	end
@@ -124,7 +124,7 @@ function startRandomMap()
     if #compatibleMaps == 1 then
         exports.mapmanager:changeGamemodeMap ( compatibleMaps[1] )
     else
-        outputDebugString( "startRandomMap failed" )
+        outputWarning( 'startRandomMap failed' )
     end
 end
 
@@ -137,7 +137,7 @@ end
 function outputVoteManager(message, toElement)
 	toElement = toElement or g_Root
 	local r, g, b = getColorFromString(string.upper(get('votemanager.color')))
-	if getElementType(toElement) == "console" then
+	if getElementType(toElement) == 'console' then
 		outputServerLog(message)
 	else
 		outputChatBox(message, toElement, r, g, b)

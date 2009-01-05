@@ -62,7 +62,7 @@ function RankingBoard:add(name, time)
 	else
 		time = ''
 	end
-	local playerLabel, playerLabelShadow = createShadowedLabel(nameLeftDistance, y, 200, labelHeight, name .. time)
+	local playerLabel, playerLabelShadow = createShadowedLabel(nameLeftDistance, y, 250, labelHeight, name .. time)
 	table.insert(self.labels, posLabel)
 	table.insert(self.labels, posLabelShadow)
 	table.insert(self.labels, playerLabel)
