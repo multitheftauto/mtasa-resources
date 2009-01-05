@@ -299,12 +299,12 @@ end
 addEventHandler ( "onClientResourceStart",getRootElement() , clientsetup)
 
 function shieldload ()
-	txd_shield = engineLoadTXD("riot_shield.txd")
+	--[[txd_shield = engineLoadTXD("riot_shield.txd")
 	engineImportTXD(txd_shield,1631)
 	col_shield = engineLoadCOL("riot_shield.col")
 	dff_shield = engineLoadDFF("riot_shield.dff", 0 )
 	engineReplaceCOL(col_shield,1631)
-	engineReplaceModel(dff_shield,1631)
+	engineReplaceModel(dff_shield,1631)]]
 end
 
 
@@ -669,12 +669,12 @@ end
 addEvent("Clientshieldload",true)
 
 function shieldstart ()
-	txd_shield = engineLoadTXD("riot_shield.txd")
+	--[[txd_shield = engineLoadTXD("riot_shield.txd")
 	engineImportTXD(txd_shield,1631)
 	col_shield = engineLoadCOL("riot_shield.col")
 	dff_shield = engineLoadDFF("riot_shield.dff", 0 )
 	engineReplaceCOL(col_shield,1631)
-	engineReplaceModel(dff_shield,1631)
+	engineReplaceModel(dff_shield,1631)]]
 end
 
 addEventHandler( "Clientshieldload", getRootElement(), shieldstart )

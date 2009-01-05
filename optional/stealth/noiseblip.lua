@@ -6,21 +6,25 @@ local blipInfo = {}
 --Setup our playerblips
 addEventHandler ( "onClientPlayerSpawn", getRootElement(),
 	function()
-		--Create a blip is if it doesnt exist already
-		playerBlips[source] = playerBlips[source] or createBlip ( 0, 0, 0, 0, 2, 255, 0, 0, 0 )
+		if isElement ( playerBlips[source] ) then
+			destroyElement ( playerBlips[source] )
+		end
+		playerBlips[source] = createBlip ( 0, 0, 0, 0, 2, 255, 0, 0, 0 )
 		attachElementToElement ( playerBlips[source], source )
 	end
 )
 
 addEventHandler ( "onClientPlayerQuit", getRootElement(),
 	function()
-		destroyBlipsAttachedTo ( source )
+		destroyElement ( playerBlips[source] )
+		playerBlips[source] = nil
 	end
 )
 
 addEventHandler ( "onClientPlayerWasted", getRootElement(),
 	function()
-		destroyBlipsAttachedTo ( source )
+		destroyElement ( playerBlips[source] )
+		playerBlips[source] = nil
 	end
 )
 ---
@@ -34,27 +38,30 @@ function updateRemoteSoundLevels ()
 	--
 	for i,player in ipairs(getElementsByType"player") do
 		local soundlevel = getElementData ( player, "noiselevel" )
-		outputConsole ( getPlayerName(player).." "..tostring(soundlevel) )
 		local playerTeam = getPlayerTeam(player)
-		local teamName = getTeamName ( playerTeam )
-		--Sort out our nametags
-		if playerTeam == localTeam then
-			setPlayerNametagShowing(player,true)
-			if isElement(playerBlips[source]) then
+		if ( playerTeam ) then
+			local teamName = getTeamName ( playerTeam )
+			--Sort out our nametags
+			if playerTeam == localTeam then
+				setPlayerNametagShowing(player,true)
 				if soundlevel == 0 then
-					setBlipColor ( playerBlips[source], unpack(blipColors[teamName]), 255 )
-					setBlipSize ( playerBlips[source], 1 )
+					if isElement ( playerBlips[player] ) then
+						setBlipColor ( playerBlips[player], blipColors[teamName][1],blipColors[teamName][2],blipColors[teamName][3], 255 )
+						setBlipSize ( playerBlips[player], 1 )
+					end
 				else
-					setBlipSize ( playerBlips[source], 2 )
-					setBlipColor ( playerBlips[source], unpack(blipColors[teamName]), 255*(soundlevel/10) )
+					setBlipSize ( playerBlips[player], 2 )
+					setBlipColor ( playerBlips[player], blipColors[teamName][1],blipColors[teamName][2],blipColors[teamName][3], 255*(soundlevel/10) )
 				end
-			end
-		else
-			if soundlevel == 0 then
-				setPlayerNametagShowing(player,false)
-			end
-			if isElement(playerBlips[source]) then
-				setBlipColor ( playerBlips[source], unpack(blipColors[teamName]), 255*(soundlevel/10) )
+			else
+				if soundlevel == 0 then
+					setPlayerNametagShowing(player,false)
+				else
+					setPlayerNametagShowing(player,true)
+				end
+				if isElement ( playerBlips[player] ) then
+					setBlipColor ( playerBlips[player], blipColors[teamName][1],blipColors[teamName][2],blipColors[teamName][3], 255*(soundlevel/10) )
+				end
 			end
 		end
 	end
