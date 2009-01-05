@@ -9,6 +9,9 @@ g_Checkpoints = {}
 g_Pickups = {}
 g_VisiblePickups = {}
 g_Objects = {}
+g_CToptimes = CToptimes:create()
+--_DEBUG = true       -- More error output
+--_TESTING = true     -- Any user can issue test commands
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
@@ -51,12 +54,15 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 	end
 )
 
-function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, gameoptions)
+function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, gameoptions, mapinfo, playerInfo)
 	unloadAll()
 	
 	g_Players = getElementsByType('player')
 	g_MapOptions = mapoptions
 	g_GameOptions = gameoptions
+	g_MapInfo = mapinfo
+    g_PlayerInfo = playerInfo
+	g_CToptimes:onMapLoaded(mapinfo)
 	
 	--fadeCamera(true)
 	showHUD(false)
@@ -354,6 +360,7 @@ function checkpointReached(elem)
 			g_GUI.hurry = false
 		end
 		destroyCheckpoint(#g_Checkpoints)
+		g_CToptimes:doAutoShow()
 		toggleAllControls(false, true, false)
 	end
 end
@@ -392,7 +399,65 @@ function startSpectate()
 	bindKey('arrow_l', 'down', spectatePrevious)
 	bindKey('arrow_r', 'down', spectateNext)
 	updateSpectate()
+    startMovePlayerAway()
 end
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-- MovePlayerAway
+--
+-- Super hack - Fixes the spec cam problem
+--
+function startMovePlayerAway()
+    if g_MoveAwayTimer then
+        killTimer( g_MoveAwayTimer )
+    end
+ 
+    g_PlrWasDeadAtSpecStart = getElementHealth(g_Me) == 0
+
+    if not g_PlrWasDeadAtSpecStart then
+        return
+    end
+
+    movePlayerAway()
+    g_MoveAwayTimer = setTimer(movePlayerAway,1000,0)
+
+    setCameraTarget(g_SpectatedPlayer)
+end
+
+function movePlayerAway()
+    if g_PlrWasDeadAtSpecStart then
+        -- If our player is dead while specing, move him far away
+        local temp = getCameraTarget()   
+        local vehicle = getPedOccupiedVehicle(g_Me)
+        if vehicle then
+            fixVehicle( vehicle )
+            setElementPosition( vehicle, 0,0,1234567 )
+            setElementVelocity( vehicle, 0,0,0 )
+            setVehicleTurnVelocity( vehicle, 0,0,0 )
+        else
+            setElementPosition( g_Me, 0,0,1234567 )
+            setElementVelocity( g_Me, 0,0,0 )
+        end
+        server.setPlayerGravity( g_Me, 0 )
+        setElementHealth( g_Me, 90 )
+
+        if temp ~= getCameraTarget() then
+            setCameraTarget(temp)
+        end
+    end
+end
+
+function stopMovePlayerAway()
+    --server.setPlayerGravity( g_Me, 0.008 )
+    if g_MoveAwayTimer then
+        killTimer( g_MoveAwayTimer )
+        g_MoveAwayTimer = nil
+    end
+end
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
 
 function spectatePrevious()
 	local i = table.find(g_Players, g_SpectatedPlayer)
@@ -436,6 +501,7 @@ function stopSpectate()
 	end
 	unbindKey('arrow_l', 'down', spectatePrevious)
 	unbindKey('arrow_r', 'down', spectateNext)
+    stopMovePlayerAway()
 	setCameraTarget(g_Me)
 	g_SpectatedPlayer = nil
 end
@@ -443,12 +509,12 @@ end
 --
 -- Camera transition for our player's respawn
 --
-function stopSpectateAndBlack()
+function remoteStopSpectateAndBlack()
     stopSpectate()
     fadeCamera(false,0.0, 0,0,0)            -- Instant black
 end
 
-function soonFadeIn()
+function remoteSoonFadeIn()
     setTimer(fadeCamera,250,1,true,1.0)    -- And up
 end
 
@@ -468,6 +534,7 @@ function raceTimeout()
 end
 
 function unloadAll()
+	g_CToptimes:onMapUnloaded()
 	for i=1,#g_Checkpoints do
 		destroyCheckpoint(i)
 	end
@@ -630,6 +697,9 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 
 addCommandHandler('spec',
 	function()
+		if not g_PlayerInfo.testing and not g_PlayerInfo.admin then
+			return
+		end
 		if g_SpectatedPlayer then
 			stopSpectate()
 		else

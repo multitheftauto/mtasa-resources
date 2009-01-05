@@ -210,3 +210,19 @@ function string:split(sep)
 	until from == #self + 2
 	return result
 end
+
+
+function clamp( lo, value, hi )
+    return math.max( lo, math.min( value, hi ) )
+end
+
+
+function outputDebug( msg )
+	if _DEBUG then
+        outputConsole( 'DEBUG: ' .. msg )
+	end
+end
+
+function outputWarning( msg )
+    outputConsole( 'WARNING: ' .. msg )
+end

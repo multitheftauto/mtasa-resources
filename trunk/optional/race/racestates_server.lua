@@ -17,7 +17,7 @@
 -- 
 
 
-local currentRaceStateName = "undefined"
+local currentRaceStateName = 'undefined'
 
 
 ----------------------------------------------------------------------------
@@ -26,7 +26,7 @@ local currentRaceStateName = "undefined"
 -- Change the current state
 ----------------------------------------------------------------------------
 function gotoState(stateName)
-    outputDebugString( "Changing race state from " .. currentRaceStateName .. " to " .. stateName )
+    outputDebug( 'Changing race state from ' .. currentRaceStateName .. ' to ' .. stateName )
     currentRaceStateName = stateName
 end
 
@@ -37,7 +37,7 @@ end
 -- Check if the current state allows a random map vote to take place
 ----------------------------------------------------------------------------
 function stateAllowsRandomMapVote()
-    if currentRaceStateName == "Racing"        then    return true     end
+    if currentRaceStateName == 'Racing'        then    return true     end
     return false
 end
 
@@ -48,8 +48,8 @@ end
 -- Check if the current state allows killPlayer
 ----------------------------------------------------------------------------
 function stateAllowsKillPlayer()
-    if currentRaceStateName == "Racing"        then    return true     end
-    if currentRaceStateName == "MidRaceVote"   then    return true     end
+    if currentRaceStateName == 'Racing'        then    return true     end
+    if currentRaceStateName == 'MidRaceVote'   then    return true     end
     return false
 end
 

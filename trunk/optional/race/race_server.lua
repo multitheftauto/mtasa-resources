@@ -25,6 +25,10 @@ g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, p
 g_Players = {}				-- { i = player }
 g_Vehicles = {}				-- { player = vehicle }
 
+g_SToptimesManager = SToptimesManager:create()
+--_DEBUG = true       -- More error output
+--_TESTING = true     -- Any user can issue test commands
+
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
@@ -36,14 +40,6 @@ addEventHandler('onGamemodeMapStart', g_Root,
 		if not loadMap(mapres) then
 			return
 		end
-        g_MapInfo = {}
-        g_MapInfo.resname                   = getResourceName(mapres)
-	    g_GameOptions = {}
-        g_GameOptions.timeafterfirstfinish  = get('race.timeafterfirstfinish') or 30000
-        g_GameOptions.hurrytime             = get('race.hurrytime') or 15000
-        g_GameOptions.ghostmode             = get('race.ghostmode') or false
-        g_GameOptions.ghostalpha            = get('race.ghostalpha') or false
-        g_GameOptions.randommaps            = get('race.randommaps') or false
 		g_CurrentRaceMode = RaceMode.getApplicableMode():create()
 		outputDebugString('Loaded race mode ' .. g_CurrentRaceMode:getName())
 		startRace()
@@ -68,6 +64,9 @@ function loadMap(res)
 			setWeather(map.weather)
 		end
 	end
+    g_MapInfo = {}
+    g_MapInfo.name      = map.info['name'] or 'unnamed'
+    g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
 	g_MapOptions = {}
 	g_MapOptions.duration = map.duration and map.duration*1000 or 1800000
 	g_MapOptions.respawn = map.respawn
@@ -136,6 +135,7 @@ end
 --      onGamemodeMapStart
 function startRace()
     gotoState('PreRace')
+    g_SToptimesManager:setModeAndMap( g_CurrentRaceMode:getName(), g_MapInfo.name, g_GameOptions.statskey );
 	g_Players = {}
 	g_SpawnTimer = setTimer(joinHandler, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
@@ -287,8 +287,12 @@ function joinHandler(player)
 	
     -- Tell all clients to re-apply ghostmode settings in 100ms
     setTimer(function() clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode) end, 100, 1 )
-	
-	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), playerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true), g_GameOptions )
+
+    -- Send client all info
+    local playerInfo = {}
+    playerInfo.admin    = isPlayerInACLGroup(player, 'Admin')
+    playerInfo.testing  = _TESTING
+	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), playerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true), g_GameOptions, g_MapInfo, playerInfo )
 	
 	createBlipAttachedTo(player, 0, 1, 200, 200, 200)
 	g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
@@ -296,7 +300,7 @@ function joinHandler(player)
     -- Tell all clients to re-apply ghostmode settings in 1000ms
     setTimer(function() clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode) end, 1000, 1 )
 	
-	if playerJoined and getPlayerCount() == 2 then
+	if playerJoined and getPlayerCount() <= 2 then
 		---- Start random map vote if someone joined a lone player
         startMidRaceVoteForRandomMap()
 	end
@@ -377,7 +381,7 @@ addEventHandler('onPlayerWasted', g_Root,
 -- Called from:
 --		g_RaceEndTimer = setTimer(raceTimeout, g_MapOptions.duration, 1)
 function raceTimeout()
-    gotoState("TimesUp")
+    gotoState('TimesUp')
 	for i,player in pairs(g_Players) do
 		if not isPlayerFinished(player) then
 			showMessage('Time\'s up!')
@@ -402,7 +406,8 @@ function unloadAll()
 		killTimer(g_RankTimer)
 		g_RankTimer = nil
 	end
-	
+
+    g_SToptimesManager:unloadingMap()   -- Ensure last stuff is saved
 	Countdown.destroyAll()
 
 	for i,player in pairs(g_Players) do
@@ -425,8 +430,7 @@ end
 
 addEventHandler('onGamemodeMapStop', g_Root,
 	function(mapres)
-        fadeCamera ( g_Root, false, 0.0, 0,0, 0 ) 
-		outputDebugString('onGamemodeMapStop')
+        fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
         gotoState('NoMap')
 		unloadAll()
 	end
@@ -443,6 +447,18 @@ addEventHandler('onPollDraw', g_Root,
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
 		outputDebugString('Resource starting')
+	    g_GameOptions = {}
+        g_GameOptions.timeafterfirstfinish  = get('race.timeafterfirstfinish') or 30000
+        g_GameOptions.hurrytime             = get('race.hurrytime') or 15000
+        g_GameOptions.ghostmode             = get('race.ghostmode') or false
+        g_GameOptions.ghostalpha            = get('race.ghostalpha') or false
+        g_GameOptions.randommaps            = get('race.randommaps') or false
+        g_GameOptions.statskey              = get('race.statskey') or 'PlayerName'
+        g_GameOptions.statskey              = g_GameOptions.statskey:gsub('[%[%]]', '')
+        if g_GameOptions.statskey ~= 'PlayerName' and g_GameOptions.statskey ~= 'PlayerSerial' then
+            outputWarning( 'statskey is not set to PlayerName or PlayerSerial' )
+            g_GameOptions.statskey = 'PlayerName'
+        end
 		scoreboard.addScoreboardColumn('Race rank')
 	end
 )
@@ -526,7 +542,7 @@ addCommandHandler('kill',
 
 addCommandHandler('ghostmode',
 	function(player)
-		if not isPlayerInACLGroup(player, 'Admin') then
+		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
 			return
 		end
 		g_GameOptions.ghostmode = not g_GameOptions.ghostmode
