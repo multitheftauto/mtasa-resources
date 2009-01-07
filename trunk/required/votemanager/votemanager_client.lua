@@ -112,7 +112,7 @@ addEventHandler("doShowPoll", rootElement,
 		
       local screenX, screenY = guiGetScreenSize()
 		--create the window
-		voteWindow = guiCreateWindow (
+		voteWindow = guiCreateWindowFromCache (
 						screenX,
 						screenY,
 						layout.window.width,
@@ -124,7 +124,7 @@ addEventHandler("doShowPoll", rootElement,
 		
 		--create the title label
 		
-		local titleLabel = guiCreateLabel(
+		local titleLabel = guiCreateLabelFromCache(
 						layout.title.posX,
 						layout.title.posY,
 						layout.title.width,
@@ -154,7 +154,7 @@ addEventHandler("doShowPoll", rootElement,
 			table.insert(boundVoteKeys, optionKey)
 		
 			--create the option label
-			optionLabels[index] = guiCreateLabel(
+			optionLabels[index] = guiCreateLabelFromCache(
 						layout.option.posX,
 						labelY,
 						layout.option.width,
@@ -163,7 +163,7 @@ addEventHandler("doShowPoll", rootElement,
 						layout.option.relative,
 						voteWindow
 					)
-			---[[ FIXME - wordwrap
+			-- -[[ FIXME - wordwrap
 			--local optionHeight = guiLabelGetFontHeight(optionLabels[index]) *
 			--	math.ceil(guiLabelGetTextExtent(optionLabels[index]) / layout.option.width)
 			local optionHeight = 16
@@ -182,7 +182,7 @@ addEventHandler("doShowPoll", rootElement,
 			bindKey("backspace", "down", sendVote_bind)
 			
 			--create the cancel label
-			cancelLabel = guiCreateLabel(
+			cancelLabel = guiCreateLabelFromCache(
 						layout.cancel.posX,
 						labelY,
 						layout.cancel.width,
@@ -200,7 +200,7 @@ addEventHandler("doShowPoll", rootElement,
 		end
 		
 		--create the time label
-		timeLabel = guiCreateLabel(
+		timeLabel = guiCreateLabelFromCache(
 						layout.time.posX,
 						labelY,
 						layout.time.width,
@@ -242,7 +242,7 @@ addEventHandler("doStopPoll", rootElement,
 		unbindKey("backspace", "down", sendVote_bind)
 		
 		removeEventHandler("onClientRender", rootElement, updateTime)
-		destroyElement(voteWindow)
+		destroyElementToCache(voteWindow)
 	end
 )
 
@@ -308,3 +308,110 @@ addCommandHandler("cancelvote",
 )
 
 
+--
+-- Label cache
+--
+-- This code is tuned for the current votemanager setup and gui.
+-- If things change, and this code breaks, it might be easier just to remove it.
+--
+
+addEventHandler('onClientResourceStart', getRootElement(), function() precreateGuiElements() end )
+
+local unusedWindows = {}
+local unusedLabels = {}
+local donePrecreate = false
+
+function precreateGuiElements()
+    if donePrecreate then
+        return
+    end
+    outputDebugString( 'votemanager precreateGuiElements' )
+    local window = guiCreateWindowFromCache(10,10,100,100,'a',false )
+    if not window then
+        return
+    end
+    if #unusedWindows ~= 0 or #unusedLabels ~= 0 then
+        outputConsole( 'WARNING: Unexpected values at start of precreateGuiElements: #unusedWindows:' .. tostring(#unusedWindows) .. ' #unusedLabels:' .. tostring(#unusedLabels) )
+    end
+    for i=1,12 do
+        guiCreateLabelFromCache(10, i, 20, 10, 'a', false, window )
+	end
+    donePrecreate = true
+    destroyElementToCache(window)
+    if #unusedWindows ~= 1 or #unusedLabels ~= 12 then
+        outputConsole( 'WARNING: Unexpected values at end of precreateGuiElements: #unusedWindows:' .. tostring(#unusedWindows) .. ' #unusedLabels:' .. tostring(#unusedLabels) )
+    end
+end
+
+
+function guiCreateWindowFromCache(x, y, width, height, text, relative)
+    if #unusedWindows < 1 then
+        if donePrecreate then
+            outputConsole( 'WARNING: Unexpected call to guiCreateWindowFromCache: #unusedWindows:' .. tostring(#unusedWindows) .. ' #unusedLabels:' .. tostring(#unusedLabels) )
+        end
+	    return guiCreateWindow(x, y, width, height, text, relative )
+    else
+        local window = unusedWindows[#unusedWindows]
+        table.remove( unusedWindows )
+        guiSetSize(window, width, height, relative)
+        guiSetText(window, text)
+        guiSetPosition(window, x, y, relative)
+        guiSetAlpha(window, 1)
+        guiSetVisible(window, true)
+        guiBringToFront(window)
+        return window
+    end
+end
+
+
+function guiCreateLabelFromCache(x, y, width, height, text, relative, parent)
+    if #unusedLabels < 1 then
+        if donePrecreate then
+            outputConsole( 'WARNING: Unexpected call to guiCreateLabelFromCache: #unusedWindows:' .. tostring(#unusedWindows) .. ' #unusedLabels:' .. tostring(#unusedLabels) )
+        end
+	    return guiCreateLabel(x, y, width, height, text, relative, parent )
+    else
+        local label = unusedLabels[#unusedLabels]
+        table.remove( unusedLabels )
+        --setElementParent(label,parent)
+	    guiSetSize(label, width, height, relative)
+	    guiSetFont(label,"default-normal")
+	    guiSetText(label, text)
+	    guiLabelSetColor(label, 255, 255, 0)
+	    guiSetPosition(label, x, y, relative)
+        guiSetAlpha(label, 1)
+        guiSetVisible(label, true)
+        return label
+    end
+end
+
+
+function destroyElementToCache(elem)
+    local etype = getElementType(elem)
+    if etype == 'gui-window' then
+        local itemList = getElementChildren(elem)
+        if itemList then
+            for i,item in pairs(itemList) do
+                destroyElementToCache(item)
+            end
+        end
+        table.insertUnique(unusedWindows,elem)
+        guiSetVisible(elem, false)
+        if #unusedWindows ~= 1 or #unusedLabels ~= 12 then
+            outputConsole( 'WARNING: Unexpected values in destroyElementToCache: #unusedWindows:' .. tostring(#unusedWindows) .. ' #unusedLabels:' .. tostring(#unusedLabels) )
+        end
+    elseif etype == 'gui-label' then
+        table.insertUnique(unusedLabels,elem)
+        guiSetVisible(elem, false)
+    end
+end
+
+
+function table.insertUnique(t,val)
+	for k,v in pairs(t) do
+        if v == val then
+			return
+		end
+	end
+    table.insert(t,val)
+end
