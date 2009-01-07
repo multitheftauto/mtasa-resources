@@ -108,7 +108,7 @@ function CToptimes:openWindow ()
             self.gui['title'] = guiCreateLabel(0, 1, r.sizeX, 15, 'Top Times - ', false, self.gui['container'] )
             guiLabelSetHorizontalAlign ( self.gui['title'], 'center' )
             guiSetFont(self.gui['title'], 'default-bold-small')
-            guiSetAlpha(self.gui['title'], 0.50)
+            guiLabelSetColor ( self.gui['title'], 220, 220, 225 )
 
             self.gui['header'] = guiCreateLabel(19, 21, r.sizeX-30, 15, 'Pos      Time                            Name', false, self.gui['container'] )
             guiSetFont(self.gui['header'], 'default-small')
@@ -130,8 +130,9 @@ function CToptimes:openWindow ()
 
             -- paneTimes as parent:
 
-                -- All the labels in the time list, which is generated during doOnServerSentToptimes
+                -- All the labels in the time list
                 self.gui['listTimes'] = {}
+                self:updateLabelCount(8)
 
 end
 
@@ -265,18 +266,14 @@ end
 
 ---------------------------------------------------------------------------
 --
--- CToptimes:ServerSentToptimes()
+-- CToptimes:updateLabelCount()
 --
 --
 --
 ---------------------------------------------------------------------------
-function CToptimes:doOnServerSentToptimes( data, serverRevision, playerPosition )
-    outputDebug( 'CToptimes:doOnServerSentToptimes ' .. #data )
-    local numLines = clamp( 0, #data, 50 )
-    self.rect.sizeY = 46 + 15 * numLines
+function CToptimes:updateLabelCount(numLines)
 
     local r = self.rect
-    guiSetSize( self.gui['windowbg'], r.sizeX, r.sizeY, false )
 
     local parentGui = self.gui['paneTimes']
     local t = self.gui['listTimes']
@@ -291,10 +288,33 @@ function CToptimes:doOnServerSentToptimes( data, serverRevision, playerPosition 
     end
 
     while #t > numLines do
-        local last = t[#t]
+        local last = table.poplast(t)
         destroyElement( last )
-        table.remove( t )
     end
+
+end
+
+
+---------------------------------------------------------------------------
+--
+-- CToptimes:doOnServerSentToptimes()
+--
+--
+--
+---------------------------------------------------------------------------
+function CToptimes:doOnServerSentToptimes( data, serverRevision, playerPosition )
+    outputDebug( 'CToptimes:doOnServerSentToptimes ' .. #data )
+
+    -- Calc number lines to use and height of window
+    local numLines = clamp( 0, #data, 50 )
+    self.rect.sizeY = 46 + 15 * numLines
+
+    -- Set height of window
+    local r = self.rect
+    guiSetSize( self.gui['windowbg'], r.sizeX, r.sizeY, false )
+
+    -- Make listTimes contains the correct number of labels
+    self:updateLabelCount(numLines)
 
     -- Update the list items
     for i=1,numLines do
@@ -366,7 +386,15 @@ function CToptimes:doOnClientRender()
     guiSetAlpha( self.gui['container'], self.currentFade)
     guiSetVisible( self.gui['windowbg'], self.currentFade > 0 )
 end
-addEventHandler ( 'onClientRender', getRootElement(), function(...) g_CToptimes:doOnClientRender(...) end )
+
+
+addEventHandler ( 'onClientRender', getRootElement(),
+    function(...)
+        if g_CToptimes then
+            g_CToptimes:doOnClientRender(...)
+        end
+    end
+)
 
 
 ---------------------------------------------------------------------------

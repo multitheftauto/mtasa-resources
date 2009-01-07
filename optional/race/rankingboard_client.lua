@@ -51,7 +51,7 @@ function RankingBoard:add(name, time)
 		end
 		y = topDistance + (labelPosition-1)*labelHeight
 	end
-	local posLabel, posLabelShadow = createShadowedLabel(posLeftDistance, y, 20, labelHeight, tostring(self.position) .. ')', 'right')
+	local posLabel, posLabelShadow = createShadowedLabelFromSpare(posLeftDistance, y, 20, labelHeight, tostring(self.position) .. ')', 'right')
 	if time then
 		if not self.firsttime then
 			self.firsttime = time
@@ -62,7 +62,7 @@ function RankingBoard:add(name, time)
 	else
 		time = ''
 	end
-	local playerLabel, playerLabelShadow = createShadowedLabel(nameLeftDistance, y, 250, labelHeight, name .. time)
+	local playerLabel, playerLabelShadow = createShadowedLabelFromSpare(nameLeftDistance, y, 250, labelHeight, name .. time)
 	table.insert(self.labels, posLabel)
 	table.insert(self.labels, posLabelShadow)
 	table.insert(self.labels, playerLabel)
@@ -103,7 +103,7 @@ end
 
 function RankingBoard:destroyLastLabel(phase)
 	for i=1,4 do
-		destroyElement(self.labels[1])
+		destroyElementToSpare(self.labels[1])
 		table.remove(self.labels, 1)
 	end
 	local firstLabelIndex = table.find(self.labels, phase.firstLabel)
@@ -119,11 +119,67 @@ function RankingBoard:addMultiple(items)
 end
 
 function RankingBoard:clear()
-	table.each(self.labels, destroyElement)
+	table.each(self.labels, destroyElementToSpare)
 	self.labels = {}
 end
 
 function RankingBoard:destroy()
 	self:clear()
 	RankingBoard.instances[self.id] = nil
+end
+
+
+
+--
+-- Label cache
+--
+
+local spareElems = {}
+local donePrecreate = false
+
+function RankingBoard.precreateLabels(count)
+    donePrecreate = false
+    while #spareElems/4 < count do
+        local label, shadow = createShadowedLabel(10, 1, 20, 10, 'a' )
+        destroyElementToSpare(label)
+        destroyElementToSpare(shadow)
+	end
+    donePrecreate = true
+end
+
+function destroyElementToSpare(elem)
+    table.insertUnique( spareElems, elem )
+    guiSetVisible(elem, false)
+end
+
+function createShadowedLabelFromSpare(x, y, width, height, text, align)
+
+    if #spareElems < 2 then
+        if not donePrecreate then
+            outputDebug( 'createShadowedLabel' )
+        end
+	    return createShadowedLabel(x, y, width, height, text, align)
+    else
+        local shadow = table.popLast( spareElems )
+	    guiSetSize(shadow, width, height, false)
+	    guiSetText(shadow, text)
+	    --guiLabelSetColor(shadow, 0, 0, 0)
+	    guiSetPosition(shadow, x + 1, y + 1, false)
+        guiSetVisible(shadow, true)
+
+        local label = table.popLast( spareElems )
+	    guiSetSize(label, width, height, false)
+	    guiSetText(label, text)
+	    --guiLabelSetColor(label, 255, 255, 255)
+	    guiSetPosition(label, x, y, false)
+        guiSetVisible(label, true)
+	    if align then
+		    guiLabelSetHorizontalAlign(shadow, align)
+		    guiLabelSetHorizontalAlign(label, align)
+        else
+		    guiLabelSetHorizontalAlign(shadow, 'left')
+		    guiLabelSetHorizontalAlign(label, 'left')
+	    end
+        return label, shadow
+    end
 end

@@ -192,6 +192,23 @@ function table.create(keys, vals)
 	return result
 end
 
+function table.insertUnique(t,val)
+    if not table.find(t, val) then
+        table.insert(t,val)
+    end
+end
+
+function table.popLast(t,val)
+    if #t==0 then
+        return false
+    end
+    local last = t[#t]
+    table.remove(t)
+    return last
+end
+
+	
+
 -----------------------------
 -- String extensions
 
@@ -219,10 +236,15 @@ end
 
 function outputDebug( msg )
 	if _DEBUG then
-        outputConsole( 'DEBUG: ' .. msg )
+        local ms = getTickCount()
+        outputConsole( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
+        outputDebugString( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
 	end
 end
 
 function outputWarning( msg )
-    outputConsole( 'WARNING: ' .. msg )
+    local ms = getTickCount()
+    outputConsole( msToTimeStr(ms) .. ' cWARNING: ' .. msg )
+    outputDebugString( msToTimeStr(ms) .. ' cWARNING: ' .. msg )
 end
+
