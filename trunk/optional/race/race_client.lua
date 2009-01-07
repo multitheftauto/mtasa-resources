@@ -11,12 +11,13 @@ g_VisiblePickups = {}
 g_Objects = {}
 g_CToptimes = CToptimes:create()
 --_DEBUG = true       -- More error output
---_TESTING = true     -- Any user can issue test commands
+_TESTING = true     -- Any user can issue test commands
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
 		g_Players = getElementsByType('player')
 		
+        fadeCamera(false,0.0)
 		-- create GUI
 		local screenWidth, screenHeight = guiGetScreenSize()
 		g_GUI = {
@@ -38,6 +39,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 			guiLabelSetHorizontalAlign(g_GUI[name], 'center')
 		end
 		g_GUI.speedbar:setProgress(0)
+        RankingBoard.precreateLabels(10)
 		
 		-- set update handlers
 		g_PickupStartTick = getTickCount()
@@ -94,6 +96,11 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 		for k,v in pairs(pickup) do
 			g_Pickups[colshape][k] = v
 		end
+        if g_Pickups[colshape].type == 'vehiclechange' then
+			g_Pickups[colshape].label = guiCreateLabel(0, 0, 150, 20, getVehicleNameFromID(g_Pickups[colshape].vehicle), false)
+			guiSetVisible(g_Pickups[colshape].label, false )
+			guiSetAlpha(g_Pickups[colshape].label, 0 )
+        end
 	end
 	
 	-- objects
@@ -104,6 +111,19 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 		rot = object.rotation
 		g_Objects[i] = createObject(object.model, pos[1], pos[2], pos[3], rot[1], rot[2], rot[3])
 	end
+
+    -- Make sure one copy of each model does not get streamed out. Seems to help graphics caching.
+    local nonStreamedModels = {}
+ 	for i,obj in ipairs(g_Objects) do
+        local model = getElementModel ( obj )
+        if model and not nonStreamedModels[model] then
+            if setElementStreamable ( obj, false ) then
+                nonStreamedModels[model] = obj
+            else
+                outputDebug( 'setElementStreamable( obj, false ) failed for ' .. tostring(model) )
+            end           
+        end
+    end
 	
 	if #g_Checkpoints > 0 then
 		g_CurrentCheckpoint = 0
@@ -170,8 +190,7 @@ addEventHandler('onClientElementStreamIn', g_Root,
 		local colshape = table.find(g_Pickups, 'object', source)
 		if colshape then
 			local pickup = g_Pickups[colshape]
-			if pickup.type == 'vehiclechange' then
-				pickup.label = guiCreateLabel(0, 0, 150, 20, getVehicleNameFromID(pickup.vehicle), false)
+			if pickup.label then
 				guiSetVisible(pickup.label, false)
 				guiSetAlpha(pickup.label, 0)
 				guiLabelSetHorizontalAlign(pickup.label, 'center')
@@ -191,8 +210,7 @@ addEventHandler('onClientElementStreamOut', g_Root,
 		if colshape then
 			local pickup = g_Pickups[colshape]
 			if pickup.label then
-				destroyElement(pickup.label)
-				pickup.label = nil
+				guiSetVisible(pickup.label, false)
 				pickup.labelVisible = nil
 				pickup.labelInRange = nil
 			end
@@ -269,7 +287,7 @@ addEventHandler('onClientColShapeHit', g_Root,
 
 function vehicleChanging(h, m)
 	local newVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
-	if newVehicleHeight > g_PrevVehicleHeight then
+	if g_PrevVehicleHeight and newVehicleHeight > g_PrevVehicleHeight then
 		local x, y, z = getElementPosition(g_Vehicle)
 		setElementPosition(g_Vehicle, x, y, z - g_PrevVehicleHeight + newVehicleHeight)
 	end
@@ -439,7 +457,7 @@ function movePlayerAway()
             setElementPosition( g_Me, 0,0,1234567 )
             setElementVelocity( g_Me, 0,0,0 )
         end
-        server.setPlayerGravity( g_Me, 0 )
+        server.setPlayerGravity( g_Me, 0.0001 )
         setElementHealth( g_Me, 90 )
 
         if temp ~= getCameraTarget() then
@@ -449,11 +467,11 @@ function movePlayerAway()
 end
 
 function stopMovePlayerAway()
-    --server.setPlayerGravity( g_Me, 0.008 )
     if g_MoveAwayTimer then
         killTimer( g_MoveAwayTimer )
         g_MoveAwayTimer = nil
     end
+    server.setPlayerGravity( g_Me, 0.008 )
 end
 -----------------------------------------------------------------------
 -----------------------------------------------------------------------
@@ -488,7 +506,9 @@ function spectateNext()
 end
 
 function updateSpectate()
-	setTimer(setCameraTarget, 100, 1, g_SpectatedPlayer)
+    -- What does the timer version do? - Removed because of a problem at the end of spectating.
+	--setTimer(setCameraTarget, 100, 1, g_SpectatedPlayer)
+	setCameraTarget(g_SpectatedPlayer)
 	guiSetText(g_GUI.speclabel, 'Currently spectating:\n' .. getPlayerName(g_SpectatedPlayer))
 end
 

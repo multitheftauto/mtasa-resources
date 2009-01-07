@@ -3,7 +3,7 @@ g_ResRoot = getResourceRootElement(getThisResource())
 scoreboard = createResourceCallInterface('scoreboard')
 votemanager = createResourceCallInterface('votemanager')
 mapmanager = createResourceCallInterface('mapmanager')
-allowRPC('setVehicleFrozen', 'setElementPosition')
+allowRPC('setVehicleFrozen', 'setElementPosition','setPlayerGravity')
 g_MotorBikeIDs = table.create({ 448, 461, 462, 463, 468, 471, 521, 522, 523, 581, 586 }, true)
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_AircraftIDs = table.create({ 592, 577, 511, 548, 512, 593, 425, 520, 417, 487, 553, 488, 497, 563, 476, 447, 519, 460, 469, 513 }, true)
@@ -27,7 +27,7 @@ g_Vehicles = {}				-- { player = vehicle }
 
 g_SToptimesManager = SToptimesManager:create()
 --_DEBUG = true       -- More error output
---_TESTING = true     -- Any user can issue test commands
+_TESTING = true     -- Any user can issue test commands
 
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
@@ -217,6 +217,8 @@ function joinHandler(player)
 	local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint()
 	
 	local x, y, z = unpack(spawnpoint.position)
+    spawnPlayer(player, x + 4, y, z, 0, 0)
+--[[ Temporarily removed
 	if g_MapOptions.skins == 'cj' then
 		spawnPlayer(player, x + 4, y, z, 0, 0)
 		
@@ -238,6 +240,8 @@ function joinHandler(player)
 	else
 		spawnPlayer(player, x + 4, y, z, 0, getRandomFromRangeList(g_MapOptions.skins))
 	end
+--]]
+
 	setPlayerStat(player, 160, 1000)
 	setPlayerStat(player, 229, 1000)
 	setPlayerStat(player, 230, 1000)
@@ -265,7 +269,9 @@ function joinHandler(player)
 		if spawnpoint.paintjob or spawnpoint.upgrades then
 			setVehiclePaintjobAndUpgrades(vehicle, spawnpoint.paintjob, spawnpoint.upgrades)
 		else
+--[[ Temporarily removed
 			pimpVehicleRandom(vehicle)
+--]]
 			local vehicleColorFixed = false
 			for vehicles,color in pairs(g_FixedColorVehicles) do
 				if table.find(vehicles, spawnpoint.vehicle) then
