@@ -106,7 +106,10 @@ function setVehicleID(vehicle, id)
 	local vx, vy, vz = getElementVelocity(vehicle)
 	local tvx, tvy, tvz = getVehicleTurnVelocity(vehicle)
 	setElementModel(vehicle, id)
-	setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
+    if g_GameOptions.vehiclecolors == 'random' then
+        setRandomSeedForMap('vehiclecolors')
+        setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
+    end
 	setTimer(revertVehicleWheels, 1000, 1, vehicle)
 	if not doorExists then
 		revertVehicleDoors(vehicle)
@@ -169,6 +172,7 @@ function getVehicleCompatibleUpgradesGrouped(vehicle)
 end
 
 function pimpVehicleRandom(vehicle)
+    setRandomSeedForMap('upgrades')
 	if not g_PimpableVehicles then
 		g_PimpableVehicles = table.create(
 			{
@@ -197,7 +201,7 @@ end
 
 function getRandomFromRangeList(rangelist)
 	-- takes a string of the form "4 10 16-20 15" and returns a random number that is in this list
-	local range = table.random(rangelist:split(' '))
+	local range = table.random(tostring(rangelist):split(' '))
 	local low, high = range:match('(%d+)-(%d+)')
 	if low then
 		return math.random(tonumber(low), tonumber(high))

@@ -64,9 +64,60 @@
 	<settings>
 		<setting name="*hurrytime" value="[15000]"/>
 		<setting name="*timeafterfirstfinish" value="[30000]"/>
-		<setting name="*ghostmode" value="[false]"/>
-		<setting name="*ghostalpha" value="[false]"/>
-		<setting name="*randommaps" value="[false]"/>   <!-- randommaps = [true] for no polls at the end of each map -->
-		<setting name="*statskey" value="[PlayerName]"/> <!-- use [PlayerName] or [PlayerSerial] to identify players for stats -->
-	</settings>
+
+        <!-- ghostmode
+                [false]   - Collisions enabled.
+                [true]    - Collisions disabled. -->
+        <setting name="*ghostmode" value="[false]"/>
+
+        <!-- ghostalpha
+                [false]   - No effect.
+                [true]    - Make vehicle semi-transparent when collisions are disabled. -->
+        <setting name="*ghostalpha" value="[false]"/>
+
+        <!-- randommaps
+                [false]   - Map vote at the end of each map.
+                [true]    - Next map automatically selected. -->
+        <setting name="*randommaps" value="[false]"/>
+
+        <!-- statskey
+                name    - Use player name to identify player for stats.
+                serial  - Use player serial to identify player for stats. -->
+        <setting name="*statskey" value="name"/>
+
+        <!-- vehiclecolors
+                file            - Use the server file: mods\deathmatch\vehiclecolors.conf
+                random          - Use random colors. -->
+        <setting name="*vehiclecolors" value="random"/>
+
+        <!-- skins
+                cj              - Use the main skin
+                random          - Use a random skin.
+                7 10 16-20 15   - Choose a random skin from the range list. (Example shown) -->
+        <setting name="*skins" value="cj"/>
+
+        <!-- vehicleweapons
+                [false]   - Don't allow vehicle weapons.
+                [true]    - Allow vehicle weapons. -->
+        <setting name="*vehicleweapons" value="[true]"/>
+
+        <!-- autopimp
+                [false]   - Standard vehicles.
+                [true]    - Apply a selection of visual upgrades to vehicles. -->
+        <setting name="*autopimp" value="[true]"/>
+
+        <!-- xxxx_map_can_override
+                [false]   - Ignore setting in the map.
+                [true]    - If the setting exists in the map, use that instead of the one in this file. -->
+        <setting name="*ghostmode_map_can_override" value="[true]"/>
+        <setting name="*skins_map_can_override" value="[true]"/>
+        <setting name="*vehicleweapons_map_can_override" value="[true]"/>
+        <setting name="*autopimp_map_can_override" value="[true]"/>
+
+        <!-- xxxx_warning_if_map_override
+                [false]   -
+                [true]    - Issue a warning to players in the chatbox, if the map overrides the setting from this file. -->
+        <setting name="*ghostmode_warning_if_map_override" value="[true]"/>
+        <setting name="*vehicleweapons_warning_if_map_override" value="[true]"/>
+    </settings>
 </meta>

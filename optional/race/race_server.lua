@@ -76,6 +76,41 @@ function loadMap(res)
 	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or 5000)
 	g_MapOptions.skins = map.skins or 'cj'
 	g_MapOptions.vehicleweapons = map.vehicleweapons == 'true'
+    g_MapOptions.ghostmode = map.ghostmode == 'true'
+    g_MapOptions.autopimp = map.autopimp == 'true'
+
+    -- Set ghostmode from g_GameOptions if not defined in the map, or map override not allowed
+    if not map.ghostmode or not g_GameOptions.ghostmode_map_can_override then
+        g_MapOptions.ghostmode = g_GameOptions.ghostmode
+    elseif g_GameOptions.ghostmode_warning_if_map_override and g_MapOptions.ghostmode ~= g_GameOptions.ghostmode then
+        if g_MapOptions.ghostmode then
+            outputChatBox( 'Notice: Collisions are turned off for this map' )
+        else
+            outputChatBox( 'Notice: Collisions are turned on for this map' )
+        end
+    end
+
+    -- Set skins from g_GameOptions if not defined in the map, or map override not allowed
+    if not map.skins or not g_GameOptions.skins_map_can_override then
+        g_MapOptions.skins = g_GameOptions.skins
+    end
+
+    -- Set vehicleweapons from g_GameOptions if not defined in the map, or map override not allowed
+    if not map.vehicleweapons or not g_GameOptions.vehicleweapons_map_can_override then
+        g_MapOptions.vehicleweapons = g_GameOptions.vehicleweapons
+    elseif g_GameOptions.vehicleweapons_warning_if_map_override and g_MapOptions.vehicleweapons ~= g_GameOptions.vehicleweapons then
+        if g_MapOptions.vehicleweapons then
+            outputChatBox( 'Notice: Vehicle weapons are turned on for this map' )
+        else
+            outputChatBox( 'Notice: Vehicle weapons are turned off for this map' )
+        end
+    end
+
+    -- Set autopimp from g_GameOptions if not defined in the map, or map override not allowed
+    if not map.autopimp or not g_GameOptions.autopimp_map_can_override then
+        g_MapOptions.autopimp = g_GameOptions.autopimp
+    end
+
 	
 	-- read spawnpoints
 	g_Spawnpoints = map:getAll('spawnpoint')
@@ -217,12 +252,13 @@ function joinHandler(player)
 	local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint()
 	
 	local x, y, z = unpack(spawnpoint.position)
-    spawnPlayer(player, x + 4, y, z, 0, 0)
---[[ Temporarily removed
+	-- Set random seed dependant on map name, so everyone gets the same models
+    setRandomSeedForMap('clothes')
+
 	if g_MapOptions.skins == 'cj' then
 		spawnPlayer(player, x + 4, y, z, 0, 0)
 		
-		local clothes = { [16] = math.random(12, 13), [17] = 7 }
+		local clothes = { [16] = math.random(12, 13), [17] = 7 }    -- 16=Hats(12:helmet 13:moto) 17=Extra(7:garageleg)
 		for vehicles,vehicleclothes in pairs(g_VehicleClothes) do
 			if table.find(vehicles, spawnpoint.vehicle) then
 				for type,index in pairs(vehicleclothes) do
@@ -238,9 +274,15 @@ function joinHandler(player)
 	elseif g_MapOptions.skins == 'random' then
 		repeat until spawnPlayer(player, x + 4, y, z, 0, math.random(9, 288))
 	else
-		spawnPlayer(player, x + 4, y, z, 0, getRandomFromRangeList(g_MapOptions.skins))
+        local ok
+        for i=1,20 do
+            ok = spawnPlayer(player, x + 4, y, z, 0, getRandomFromRangeList(g_MapOptions.skins))
+            if ok then break end
+        end
+        if not ok then
+            spawnPlayer(player, x + 4, y, z, 0, 264)
+        end
 	end
---]]
 
 	setPlayerStat(player, 160, 1000)
 	setPlayerStat(player, 229, 1000)
@@ -249,6 +291,7 @@ function joinHandler(player)
 	local vehicle
 	if spawnpoint.vehicle then
 		local nick = getClientName(player)
+        setRandomSeedForMap('vehiclecolors')
 		vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
 		setVehicleFrozen(vehicle, true)
 		setPlayerGravity(player, 0.0001)
@@ -269,22 +312,25 @@ function joinHandler(player)
 		if spawnpoint.paintjob or spawnpoint.upgrades then
 			setVehiclePaintjobAndUpgrades(vehicle, spawnpoint.paintjob, spawnpoint.upgrades)
 		else
---[[ Temporarily removed
-			pimpVehicleRandom(vehicle)
---]]
-			local vehicleColorFixed = false
-			for vehicles,color in pairs(g_FixedColorVehicles) do
-				if table.find(vehicles, spawnpoint.vehicle) then
-					if color then
-						setVehicleColor(vehicle, color, 0, 0, 0)
-					end
-					vehicleColorFixed = true
-					break
-				end
-			end
-			if not vehicleColorFixed then
-				setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
-			end
+            if g_MapOptions.autopimp then
+			    pimpVehicleRandom(vehicle)
+            end
+            if g_GameOptions.vehiclecolors == 'random' then
+                setRandomSeedForMap('vehiclecolors')
+			    local vehicleColorFixed = false
+			    for vehicles,color in pairs(g_FixedColorVehicles) do
+				    if table.find(vehicles, spawnpoint.vehicle) then
+					    if color then
+						    setVehicleColor(vehicle, color, 0, 0, 0)
+					    end
+					    vehicleColorFixed = true
+					    break
+				    end
+			    end
+			    if not vehicleColorFixed then
+				    setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
+			    end
+            end
 		end
 		setTimer(warpPlayerIntoVehicle, 500, 10, player, vehicle)
 		
@@ -292,19 +338,20 @@ function joinHandler(player)
 	end
 	
     -- Tell all clients to re-apply ghostmode settings in 100ms
-    setTimer(function() clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode) end, 100, 1 )
+    setTimer(function() clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode) end, 100, 1 )
 
     -- Send client all info
     local playerInfo = {}
     playerInfo.admin    = isPlayerInACLGroup(player, 'Admin')
     playerInfo.testing  = _TESTING
-	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), playerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true), g_GameOptions, g_MapInfo, playerInfo )
+	local duration = playerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
+	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), duration, g_GameOptions, g_MapInfo, playerInfo )
 	
 	createBlipAttachedTo(player, 0, 1, 200, 200, 200)
 	g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
 
     -- Tell all clients to re-apply ghostmode settings in 1000ms
-    setTimer(function() clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode) end, 1000, 1 )
+    setTimer(function() clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode) end, 1000, 1 )
 	
 	if playerJoined and getPlayerCount() <= 2 then
 		---- Start random map vote if someone joined a lone player
@@ -326,6 +373,31 @@ function updateRank()
     end
 end
 
+
+-- Set random seed dependent on map name
+--
+-- Note: Some clients will experience severe stutter and stalls if any
+-- players have different skin/clothes.
+-- For smooth gameplay, ensure everyone even has the same skin setup including crash helmet etc.
+function setRandomSeedForMap( type )
+    local seed = 0
+    if type == 'clothes' then
+        seed = 100                  -- All players get the same driver skin/clothes
+    elseif type == 'upgrades' then
+        seed = 0                    -- All players get the same set of vehicle upgrades
+    elseif type == 'vehiclecolors' then
+        seed = getTickCount()       -- Allow vehicle colors to vary between players
+    else
+        outputWarning( 'Unknown setRandomSeedForMap type ' .. type )
+    end
+    for i,char in ipairs( { string.byte(g_MapInfo.name,1,g_MapInfo.name:len()) } ) do
+        seed = math.mod( seed * 11 + char, 216943)
+    end
+    math.randomseed(seed)    
+end
+
+
+
 addEvent('onPlayerReachCheckpointInternal', true)
 addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 	function(checkpointNum)
@@ -337,7 +409,9 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 			if checkpoint.paintjob or checkpoint.upgrades then
 				setVehiclePaintjobAndUpgrades(vehicle, checkpoint.paintjob, checkpoint.upgrades)
 			else
-				pimpVehicleRandom(vehicle)
+                if g_MapOptions.autopimp then
+			        pimpVehicleRandom(vehicle)
+                end
 			end
 		end
 		
@@ -459,11 +533,21 @@ addEventHandler('onResourceStart', g_ResRoot,
         g_GameOptions.ghostmode             = get('race.ghostmode') or false
         g_GameOptions.ghostalpha            = get('race.ghostalpha') or false
         g_GameOptions.randommaps            = get('race.randommaps') or false
-        g_GameOptions.statskey              = get('race.statskey') or 'PlayerName'
-        g_GameOptions.statskey              = g_GameOptions.statskey:gsub('[%[%]]', '')
-        if g_GameOptions.statskey ~= 'PlayerName' and g_GameOptions.statskey ~= 'PlayerSerial' then
-            outputWarning( 'statskey is not set to PlayerName or PlayerSerial' )
-            g_GameOptions.statskey = 'PlayerName'
+        g_GameOptions.statskey              = get('race.statskey') or 'name'
+        g_GameOptions.vehiclecolors         = get('race.vehiclecolors') or 'file'
+        g_GameOptions.skins                 = get('race.skins') or 'cj'
+        g_GameOptions.autopimp              = get('race.autopimp') or true
+        g_GameOptions.vehicleweapons        = get('race.vehicleweapons') or true
+        g_GameOptions.ghostmode_map_can_override        = get('race.ghostmode_map_can_override') or true
+        g_GameOptions.skins_map_can_override            = get('race.skins_map_can_override') or true
+        g_GameOptions.vehicleweapons_map_can_override   = get('race.vehicleweapons_map_can_override') or true
+        g_GameOptions.autopimp_map_can_override         = get('race.autopimp_map_can_override') or true
+        g_GameOptions.ghostmode_warning_if_map_override         = get('race.ghostmode_warning_if_map_override') or false
+        g_GameOptions.vehicleweapons_warning_if_map_override    = get('race.vehicleweapons_warning_if_map_override') or false
+
+        if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
+            outputWarning( "statskey is not set to 'name' or 'serial'" )
+            g_GameOptions.statskey = 'name'
         end
 		scoreboard.addScoreboardColumn('Race rank')
 	end
@@ -551,9 +635,9 @@ addCommandHandler('ghostmode',
 		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
 			return
 		end
-		g_GameOptions.ghostmode = not g_GameOptions.ghostmode
-		clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode)
-		if g_GameOptions.ghostmode then
+		g_MapOptions.ghostmode = not g_MapOptions.ghostmode
+		clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
+		if g_MapOptions.ghostmode then
 			outputChatBox('Ghostmode enabled by ' .. getClientName(player), g_Root, 0, 240, 0)
 		else
 			outputChatBox('Ghostmode disabled by ' .. getClientName(player), g_Root, 240, 0, 0)

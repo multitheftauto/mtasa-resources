@@ -249,7 +249,7 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:getIndexForPlayer( player )
 
-    if self.statsKey == 'PlayerSerial' then
+    if self.statsKey == 'serial' then
         -- Find player by serial
         local serial = getPlayerSerial(player)
         for i,row in ipairs(self.dbTable.rows) do

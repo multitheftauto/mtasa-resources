@@ -288,7 +288,7 @@ function CToptimes:updateLabelCount(numLines)
     end
 
     while #t > numLines do
-        local last = table.poplast(t)
+        local last = table.popLast(t)
         destroyElement( last )
     end
 
