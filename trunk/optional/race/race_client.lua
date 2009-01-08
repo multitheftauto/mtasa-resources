@@ -71,7 +71,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	
 	g_Vehicle = vehicle
 	setVehicleDamageProof(g_Vehicle, true)
-	setGhostMode(g_GameOptions.ghostmode)
+	setGhostMode(g_MapOptions.ghostmode)
 	
 	local x, y, z = getElementPosition(g_Vehicle)
 	setCameraBehindVehicle(vehicle)
