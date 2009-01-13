@@ -445,7 +445,7 @@ end
 
 function Animation.presets.guiMoveResize(endX, endY, endWidth, endHeight, time, loop, startX, startY, startWidth, startHeight, speedUpSlowDown)
 	-- guiMoveResize(endX, endY, endWidth, endHeight, [ time = 1000, loop = false, startX = current X, startY = current Y,
-	--   startWidth = current width, startHeiht = current height, speedUpSlowDown = false ])
+	--   startWidth = current width, startHeight = current height, speedUpSlowDown = false ])
 	if type(endX) ~= 'userdata' then
 		return { from = speedUpSlowDown and -math.pi/2 or 0, to = speedUpSlowDown and math.pi/2 or 1,
 		         time = time or 1000, repeats = loop and 0 or 1, transform = math.sin, fn = Animation.presets.guiMoveResize,
