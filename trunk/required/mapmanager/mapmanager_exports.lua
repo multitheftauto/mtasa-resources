@@ -20,7 +20,12 @@ function changeGamemode(gamemode, map)
 			return false
 		end
 	end
-	
+
+    -- Special thing if trying to start a gamemode which is already running, and mapmanger does not know about it.
+	if currentGamemode == nil and getResourceState(gamemode) == "running" then 
+	    currentGamemode = gamemode
+    end
+
 	if currentGamemode then
 		nextGamemode = gamemode
 		nextGamemodeMap = map

@@ -191,7 +191,6 @@ function SDatabaseTable:save()
 
     -- Build command
     --cmd = 'DELETE FROM ' .. qsafetablename( self.name )
-    --executeSQLQuery( cmd )
     cmd = 'DROP TABLE IF EXISTS ' .. qsafetablename( self.name )
     executeSQLQuery( cmd )
 

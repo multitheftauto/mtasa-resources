@@ -9,9 +9,9 @@ g_Checkpoints = {}
 g_Pickups = {}
 g_VisiblePickups = {}
 g_Objects = {}
-g_CToptimes = CToptimes:create()
---_DEBUG = true       -- More error output
-_TESTING = true     -- Any user can issue test commands
+
+--_DEBUG = {'undef','Xopt','Xtoptimes'}   -- More error output
+_TESTING = true             -- Any user can issue test commands
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
@@ -52,7 +52,11 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		end
 		
 		setPedCanBeKnockedOffBike(g_Me, false)
-		triggerServerEvent('onLoadedAtClient', g_Me)
+        if _DEBUG then
+    		setTimer( function() triggerServerEvent('onLoadedAtClient', g_Me) end, math.random(3000,5000), 1 )
+        else
+    		triggerServerEvent('onLoadedAtClient', g_Me)
+	    end
 	end
 )
 
@@ -64,7 +68,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	g_GameOptions = gameoptions
 	g_MapInfo = mapinfo
     g_PlayerInfo = playerInfo
-	g_CToptimes:onMapLoaded(mapinfo)
+    triggerEvent('onMapStarting', g_Me, mapinfo )
 	
 	--fadeCamera(true)
 	showHUD(false)
@@ -73,9 +77,9 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	setVehicleDamageProof(g_Vehicle, true)
 	setGhostMode(g_MapOptions.ghostmode)
 	
-	local x, y, z = getElementPosition(g_Vehicle)
+	--local x, y, z = getElementPosition(g_Vehicle)
 	setCameraBehindVehicle(vehicle)
-	alignVehicleToGround(vehicle)
+	--alignVehicleToGround(vehicle)
 	local weapons = not g_ArmedVehicleIDs[getElementModel(vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
@@ -112,7 +116,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 		g_Objects[i] = createObject(object.model, pos[1], pos[2], pos[3], rot[1], rot[2], rot[3])
 	end
 
-    -- Make sure one copy of each model does not get streamed out. Seems to help graphics caching.
+    -- Make sure one copy of each model does not get streamed out to help caching.
     local nonStreamedModels = {}
  	for i,obj in ipairs(g_Objects) do
         local model = getElementModel ( obj )
@@ -147,6 +151,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     fadeCamera( false, 0.0 )
     setTimer(fadeCamera, 750, 1, true, 10.0)
     setTimer(fadeCamera, 1500, 1, true, 2.0)
+    triggerServerEvent('onClientRaceReady', g_Me)
 end
 
 function launchRace(duration)
@@ -234,16 +239,26 @@ function updatePickups()
 			if pickup.label then
 				local pX, pY, pZ = getElementPosition(g_Me)
 				x, y = getScreenFromWorldPosition(unpack(pickup.position))
-				if x then
+                local distanceToPickup = getDistanceBetweenPoints3D(pX, pY, pZ, unpack(pickup.position))
+                if distanceToPickup > 100 then
+					if pickup.labelVisible then
+						guiSetVisible(pickup.label, false)
+						pickup.labelVisible = false
+					end
+				    if pickup.labelInRange then
+                        guiSetAlpha(pickup.label,0)
+					    pickup.labelInRange = false
+				    end
+				elseif x then
 					if not pickup.labelVisible then
 						guiSetVisible(pickup.label, true)
 						pickup.labelVisible = true
 					end
-					if getDistanceBetweenPoints3D(pX, pY, pZ, unpack(pickup.position)) < 80 then
+					if distanceToPickup < 80 then
 						if not pickup.labelInRange then
 							Animation.createAndPlay(
 								pickup.label,
-								{ from = 0, to = 1, time = 1000, fn = guiSetAlpha }
+								{ from = 0, to = 1, time = 500, fn = guiSetAlpha }
 							)
 							pickup.labelInRange = true
 						end
@@ -378,7 +393,7 @@ function checkpointReached(elem)
 			g_GUI.hurry = false
 		end
 		destroyCheckpoint(#g_Checkpoints)
-		g_CToptimes:doAutoShow()
+        triggerEvent('onPlayerReachedFinish', g_Me)
 		toggleAllControls(false, true, false)
 	end
 end
@@ -554,7 +569,7 @@ function raceTimeout()
 end
 
 function unloadAll()
-	g_CToptimes:onMapUnloaded()
+    triggerEvent('onMapStopping', g_Me)
 	for i=1,#g_Checkpoints do
 		destroyCheckpoint(i)
 	end

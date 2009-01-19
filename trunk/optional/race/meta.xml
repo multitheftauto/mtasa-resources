@@ -15,12 +15,12 @@
 	<script src="modes/destructionderby.lua" type="server"/>
 	<script src="modes/freeroam.lua" type="server"/>
 	<script src="modes/sprint.lua" type="server"/>
-	<script src="racemidvote_server.lua" type="server"/>
+	<script src="race_server.lua" type="server"/>
+	<script src="racevoting_server.lua" type="server"/>
 	<script src="racestates_server.lua" type="server"/>
 	<script src="toptimes/databasetable_server.lua" type="server"/>
 	<script src="toptimes/maptimes_server.lua" type="server"/>
 	<script src="toptimes/toptimes_server.lua" type="server"/>
-	<script src="race_server.lua" type="server"/>
 	
 	<script src="_custommodel.lua" type="client"/>
 	<script src="util_client.lua" type="client"/>
@@ -28,8 +28,8 @@
 	<script src="client_anim.lua" type="client"/>
 	<script src="countdown_client.lua" type="client"/>
 	<script src="rankingboard_client.lua" type="client"/>
-	<script src="toptimes/toptimes_client.lua" type="client"/>
 	<script src="race_client.lua" type="client"/>
+	<script src="toptimes/toptimes_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
 	
 	<file src="img/rankbg.png"/>

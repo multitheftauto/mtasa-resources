@@ -138,8 +138,7 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:sort()
 
-    outputDebugClient( 'Pre sort check ' )
-    self:checkIsSorted()
+    self:checkIsSorted('Presort')
 
     local rows = self.dbTable.rows
 
@@ -152,8 +151,7 @@ function SMaptimes:sort()
         end
     end
 
-    outputDebugClient( 'Post sort check ' )
-    self:checkIsSorted()
+    self:checkIsSorted('Postsort')
 
 end
 
@@ -165,20 +163,20 @@ end
 -- Debug
 --
 ---------------------------------------------------------------------------
-function SMaptimes:checkIsSorted()
+function SMaptimes:checkIsSorted(msg)
 
     for i=2,#self.dbTable.rows do
         local prevTime    = self.dbTable.rows[i-1].timeMs
         local time        = self.dbTable.rows[i].timeMs
         if prevTime > time then
-            outputDebugClient( '#1a Order error at ' .. i )
+            outputWarning( 'Maptimes sort error: ' .. msg .. ' timeMs order error at ' .. i )
         end
 
         if prevTime == time then
             prevDate    = self.dbTable.rows[i-1].dateRecorded
             date        = self.dbTable.rows[i].dateRecorded
             if prevDate > date then
-                outputDebugClient( '#1b Order error at ' .. i )
+                outputWarning( 'Maptimes sort error: ' .. msg .. ' dateRecorded order error at ' .. i )
             end
         end
     end
@@ -196,7 +194,9 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:getToptimes( howMany )
 
-    self:checkIsSorted()
+    if _DEBUG then
+        self:checkIsSorted('getToptimes')
+    end
 
     local result = {}
 
@@ -327,8 +327,10 @@ function SMaptimes:setTimeForPlayer( player, time, dateRecorded )
 
     if not oldIndex then
         -- No entry yet, so add it to the end
-        self:addPlayer( player )
-        oldIndex = self:getIndexForPlayer( player )
+        oldIndex = self:addPlayer( player )
+        if oldIndex ~= self:getIndexForPlayer( player ) then
+            outputError( "oldIndex ~= self:getIndexForPlayer( player )" )
+        end
     end
 
     -- Copy it out and then remove it from the table
@@ -346,7 +348,7 @@ function SMaptimes:setTimeForPlayer( player, time, dateRecorded )
     table.insert( self.dbTable.rows, newIndex, row )
 
     if _DEBUG then
-        self:checkIsSorted()
+        self:checkIsSorted('setTimeForPlayer')
     end
 
 end

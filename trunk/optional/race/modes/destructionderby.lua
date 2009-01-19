@@ -27,7 +27,7 @@ function DestructionDerby:onPlayerWasted(player)
 		showMessage(getClientName(alivePlayers[1]) .. ' is the final survivor!', 0, 255, 0)
 	end
 	if #alivePlayers <= 1 then
-		RaceMode.endRace()
+		RaceMode.endMap()
 	else
 		setTimer(clientCall, 2000, 1, player, 'startSpectate')
 	end

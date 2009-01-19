@@ -1,12 +1,26 @@
 --
--- toptimesmanager_server.lua
+-- toptimes_server.lua
 --
+-- Top times optional plug-in for race
+--
+-- Consisting of 3 server files:
+--                      databasetable_server.lua
+--                      maptimes_server.lua
+--                      toptimes_server.lua
+-- and 1 client file:
+--                      toptimes_client.lua
+--
+-- If you don't want this feature in your server, then either:
+--      - remove the above files from the race meta.xml
+--      - or set TOPTIMES_ENABLED to false in both toptimes_server.lua and toptimes_client.lua,
+--
+
+TOPTIMES_ENABLED = true
 
 SToptimesManager = {}
 SToptimesManager.__index = SToptimesManager
 
 SToptimesManager.instances = {}
-
 
 ---------------------------------------------------------------------------
 --
@@ -20,12 +34,12 @@ function SToptimesManager:create()
     SToptimesManager.instances[id] = setmetatable(
         {
             id = id,
-            playersWhoWantUpdates = {},
+            playersWhoWantUpdates   = {},
             updateQueue             = {},
             serviceQueueTimer       = nil,
-            displayTopCount         = 8,       -- Top number of times to display
+            displayTopCount         = 8,        -- Top number of times to display
             mapTimes                = nil,      -- SMaptimes:create()
-            serverRevision          = 0,        -- To prevent redundent updating to clients
+            serverRevision          = 0,        -- To prevent redundant updating to clients
         },
         self
     )
@@ -66,7 +80,7 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:setModeAndMap( raceModeName, mapName, statsKey )
-    outputDebug( 'SToptimesManager:setModeAndMap ' .. raceModeName .. '<>' .. mapName )
+    outputDebug( 'toptimes', 'SToptimesManager:setModeAndMap ' .. raceModeName .. '<>' .. mapName )
 
     -- Reset updatings from the previous map
     self.playersWhoWantUpdates = {}
@@ -124,11 +138,11 @@ function SToptimesManager:playerFinished( player, time, dateRecorded )
 
         -- See if its in the top 10
         if newPos <= self.displayTopCount then
-            outputDebugClient( getClientName(player) .. ' got toptime position ' .. newPos )
+            outputDebug( 'toptimes', getClientName(player) .. ' got toptime position ' .. newPos )
         end
 
         if bestTime then
-            outputDebugClient( getClientName(player) .. ' new personal best ' .. time .. ' ' .. bestTime - time )
+            outputDebug( 'toptimes', getClientName(player) .. ' new personal best ' .. time .. ' ' .. bestTime - time )
         end
 
         self.mapTimes:setTimeForPlayer( player, time, dateRecorded )
@@ -139,7 +153,7 @@ function SToptimesManager:playerFinished( player, time, dateRecorded )
         end
     end
 
-    outputDebug( 'SToptimesManager:playerFinished ' .. tostring(player) .. '<>' .. tostring(time) )
+    outputDebug( 'toptimes', '++ SToptimesManager:playerFinished ' .. tostring(getClientName(player)) .. ' time:' .. tostring(time) )
 end
 
 
@@ -172,7 +186,7 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:onServiceQueueTimer()
-    outputDebug( 'SToptimesManager:onServiceQueueTimer()' )
+    outputDebug( 'toptimes', 'SToptimesManager:onServiceQueueTimer()' )
     -- Process next player
     if #self.updateQueue > 0 then
         local player = self.updateQueue[1]
@@ -198,7 +212,7 @@ end
 function SToptimesManager:addPlayerToUpdateList( player )
     if not table.find( self.playersWhoWantUpdates, player) then
         table.insert( self.playersWhoWantUpdates, player )
-        outputDebug( 'playersWhoWantUpdates : ' .. #self.playersWhoWantUpdates )
+        outputDebug( 'toptimes', 'playersWhoWantUpdates : ' .. #self.playersWhoWantUpdates )
     end
 end
 
@@ -220,7 +234,7 @@ function SToptimesManager:queueUpdate( player )
     end
 
     if not self.serviceQueueTimer then
-        self.serviceQueueTimer = setTimer( function() self:onServiceQueueTimer() end, 500, 0 )
+        self.serviceQueueTimer = setTimer( function() self:onServiceQueueTimer() end, 100, 0 )
     end
 end
 
@@ -238,13 +252,13 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:doOnClientRequestToptimesUpdates( player, bOn, clientRevision )
-    outputDebug( 'SToptimesManager:onClientRequestToptimesUpdates: '
+    outputDebug( 'toptimes', 'SToptimesManager:onClientRequestToptimesUpdates: '
             .. tostring(getClientName(player)) .. '<>' .. tostring(bOn) .. '< crev:'
             .. tostring(clientRevision) .. '< srev:' .. tostring(self.serverRevision) )
     if bOn then
         self:addPlayerToUpdateList(player)
         if clientRevision ~= self.serverRevision then
-            outputDebug( 'queueUpdate for'..getClientName(player) )
+            outputDebug( 'toptimes', 'queueUpdate for'..getClientName(player) )
             self:queueUpdate(player)
         end
     else
@@ -261,6 +275,45 @@ addEventHandler('onClientRequestToptimesUpdates', getRootElement(),
         g_SToptimesManager:doOnClientRequestToptimesUpdates( source, bOn, clientRevision )
 	end
 )
+
+
+---------------------------------------------------------------------------
+-- Server
+-- Handle events from Race
+--
+-- This is the 'interface' from Race
+--
+---------------------------------------------------------------------------
+
+g_SToptimesManager = TOPTIMES_ENABLED and SToptimesManager:create()
+
+
+addEvent('onStartingMap', true)
+addEventHandler('onStartingMap', g_Root,
+	function(raceModeName, mapName, statsKey)
+        if g_SToptimesManager then
+		    g_SToptimesManager:setModeAndMap( raceModeName, mapName, statsKey )
+        end
+	end
+)
+
+addEvent('onPlayerFinish', true)
+addEventHandler('onPlayerFinish', g_Root,
+	function(rank, time)
+        if g_SToptimesManager then
+		    g_SToptimesManager:playerFinished( source, time)
+	    end
+	end
+)
+
+addEventHandler('onResourceStop', g_ResRoot,
+	function()
+        if g_SToptimesManager then
+    		g_SToptimesManager:unloadingMap()
+	    end
+	end
+)
+
 
 ---------------------------------------------------------------------------
 --

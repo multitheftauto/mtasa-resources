@@ -407,6 +407,13 @@ function table.filter(t, callback, cmpval)
 	return t
 end
 
+function table.insertUnique(t,val)
+    if not table.find(t, val) then
+        table.insert(t,val)
+    end
+end
+
+
 function string:split(separator)
 	if separator == '.' then
 		separator = '%.'
@@ -421,23 +428,33 @@ end
 
 
 
-function outputDebug( msg )
-	if _DEBUG then
-        outputDebugString( 'DEBUG: ' .. msg )
-	end
+function outputDebug( chan, msg )
+    if _DEBUG then
+        if not msg then
+            msg = chan
+            chan = 'undef'
+        end
+        if table.find(_DEBUG,chan) then
+            outputDebugString( 'DEBUG: ' .. msg )
+        end
+    end
+
 end
 
-function outputDebugClient( msg )
-	if _DEBUG then
-        outputConsole( 'DEBUG: ' .. msg )
-	end
-end
 
+-- Always send to server window
+-- and all client consoles
 function outputWarning( msg )
     outputDebugString( 'WARNING: ' .. msg )
     outputConsole( 'WARNING: ' .. msg )
 end
 
+-- Always send to server window
+-- and chat box window
+function outputError( msg )
+    outputDebugString( 'ERROR: ' .. msg )
+    outputChatBox( 'ERROR: ' .. msg )
+end
 
 ---------------------------------------------------------------------------
 --

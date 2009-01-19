@@ -5,14 +5,14 @@
 --
 -- NoMap            * No map loaded
 -- LoadingMap       * Loading a map
--- PreRace          * Pre race 'Gentlemen, start you engiens'
+-- PreGridCountdown * Pre race 'Gentlemen, start you engiens'
 -- GridCountdown    * Countdown
--- Racing           * Racing
--- 	  MidRaceVote      * Mid-race random map vote
+-- Running          * Racing
+-- 	  MidMapVote    * Mid-race random map vote
 -- SomeoneWon       * Someone won - Remaining race time is reduced to 'timeafterfirstfinish'
--- TimesUp			* Not everyone finished - (Immediately changes to PostRace)
--- EveryoneFinished	* Everyone finished - (Immediately changes to PostRace)
--- PostRace	        * Post race - '[Vote for] next map starts in 'n' seconds'
+-- TimesUp			* Not everyone finished - (Immediately changes to PostFinish)
+-- EveryoneFinished	* Everyone finished - (Immediately changes to PostFinish)
+-- PostFinish	    * Post race - '[Vote for] next map starts in 'n' seconds'
 -- NextMapSelect    * Vote for next map or Random select
 -- 
 
@@ -26,8 +26,23 @@ local currentRaceStateName = 'undefined'
 -- Change the current state
 ----------------------------------------------------------------------------
 function gotoState(stateName)
-    outputDebug( 'Changing race state from ' .. currentRaceStateName .. ' to ' .. stateName )
+    outputDebug( 'state', 'Changing race state from ' .. currentRaceStateName .. ' to ' .. stateName )
+
+    -- If leaving a state dedicated to voting, ensure the voting stops
+    if currentRaceStateName == 'MidMapVote' or currentRaceStateName == 'NextMapVote' then
+        votemanager.stopPoll()
+    end
+
     currentRaceStateName = stateName
+--[[
+    local levelInfo = getElementByID('mylevelinfo')
+    if not levelInfo then
+        levelInfo = createElement( 'levelinfo', 'mylevelinfo' )
+    end
+    if levelInfo then
+        setElementData( levelInfo, 'state', currentRaceStateName )
+    end
+--]]
 end
 
 
@@ -37,9 +52,32 @@ end
 -- Check if the current state allows a random map vote to take place
 ----------------------------------------------------------------------------
 function stateAllowsRandomMapVote()
-    if currentRaceStateName == 'Racing'        then    return true     end
+    if currentRaceStateName == 'Running'        then    return true     end
     return false
 end
+
+
+----------------------------------------------------------------------------
+-- stateAllowsRandomMapVoteResult
+--
+-- Check if the current state allows a random map vote result to apply
+----------------------------------------------------------------------------
+function stateAllowsRandomMapVoteResult()
+    if currentRaceStateName == 'MidMapVote'        then    return true     end
+    return false
+end
+
+
+----------------------------------------------------------------------------
+-- stateAllowsNextMapVoteResult
+--
+-- Check if the current state allows a next map vote to apply
+----------------------------------------------------------------------------
+function stateAllowsNextMapVoteResult()
+    if currentRaceStateName == 'NextMapVote'        then    return true     end
+    return false
+end
+
 
 
 ----------------------------------------------------------------------------
@@ -48,8 +86,65 @@ end
 -- Check if the current state allows killPlayer
 ----------------------------------------------------------------------------
 function stateAllowsKillPlayer()
-    if currentRaceStateName == 'Racing'        then    return true     end
-    if currentRaceStateName == 'MidRaceVote'   then    return true     end
+    if currentRaceStateName == 'Running'        then    return true     end
+    if currentRaceStateName == 'MidMapVote'   then    return true     end
+    return false
+end
+
+
+----------------------------------------------------------------------------
+-- stateAllowsCheckpoint
+--
+-- Check if the current state allows checkpoint processing
+----------------------------------------------------------------------------
+function stateAllowsCheckpoint()
+    if currentRaceStateName == 'Running'        then    return true     end
+    if currentRaceStateName == 'MidMapVote'   then    return true     end
+    return false
+end
+
+
+----------------------------------------------------------------------------
+-- stateAllowsPickup
+--
+-- Check if the current state allows pickup processing
+----------------------------------------------------------------------------
+function stateAllowsPickup()
+    if currentRaceStateName == 'Running'        then    return true     end
+    if currentRaceStateName == 'MidMapVote'   then    return true     end
+    return false
+end
+
+
+
+----------------------------------------------------------------------------
+-- stateIsUndefined
+--
+--
+----------------------------------------------------------------------------
+--function stateIsUndefined()
+    --return currentRaceStateName == 'undefined'
+--end
+--
+
+----------------------------------------------------------------------------
+-- stateAllowsCommandVoteMap
+--
+-- Check if the current state allows the command 'map'
+----------------------------------------------------------------------------
+function stateAllowsCommandVoteMap()
+    if currentRaceStateName == 'undefined'        then    return true     end
+    return false
+end
+
+
+----------------------------------------------------------------------------
+-- stateAllowsCommandVoteMap
+--
+-- Check if the current state allows the command 'map'
+----------------------------------------------------------------------------
+function stateAllowsCommandVoteMap()
+    if currentRaceStateName == 'undefined'        then    return true     end
     return false
 end
 

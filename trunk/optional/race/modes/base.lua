@@ -79,8 +79,8 @@ function RaceMode:setTimeLeft(timeLeft)
 	end
 end
 
-function RaceMode.endRace()
-    gotoState('PostRace')
+function RaceMode.endMap()
+    gotoState('PostFinish')
     local text = g_GameOptions.randommaps and 'Next map starts in:' or 'Vote for next map starts in:'
     Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255):start()
 end
@@ -92,11 +92,7 @@ function RaceMode.startNextMapSelect()
     if g_GameOptions.randommaps then
         startRandomMap()
     else
-        local options = {
-                adjustWidth = 50,
-                skipDontChange = true,
-            }
-        votemanager.voteMap(getThisResource(),nil,options)
+        startNextMapVote()
     end
 end
 
@@ -199,14 +195,13 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		else
 			showMessage('You finished ' .. rank .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' ) .. '!', 0, 255, 0, player)
 		end
-		g_SToptimesManager:playerFinished( player, time)
 		self.rankingBoard:add(player, time)
 		if rank < getPlayerCount() then
 			setTimer(clientCall, 5000, 1, player, 'startSpectate')
 		else
             gotoState('EveryoneFinished')
             self:setTimeLeft( 0 )
-			RaceMode.endRace()
+			RaceMode.endMap()
 		end
 	end
 	return rank, time
