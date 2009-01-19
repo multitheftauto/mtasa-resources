@@ -39,32 +39,32 @@ end
 
 function consoleKill ( player, commandName )
 	if ( player ) then
-		killPlayer ( player )
+		killPed ( player )
 	end
 end
 function consoleCreateVehicle ( player, commandName, first, second, third )
 	if ( player ) then
 		local id, x, y, z, r, d = 0, 0, 0, 0, 0, 5
 		local plate = false
-		r = getPlayerRotation ( player )
+		r = getPedRotation ( player )
 		x, y, z = getElementPosition ( player )
 		x = x + ( ( math.cos ( math.rad ( r ) ) ) * d )
 		y = y + ( ( math.sin ( math.rad ( r ) ) ) * d )
 		if ( third ) then
-			id = getVehicleIDFromName ( first .. " " .. second )
+			id = getVehicleModelFromName ( first .. " " .. second )
 			plate = third
 		elseif ( second ) then
-			if ( getVehicleIDFromName ( first .. " " .. second ) ) then
-				id = getVehicleIDFromName ( first .. " " .. second )
+			if ( getVehicleModelFromName ( first .. " " .. second ) ) then
+				id = getVehicleModelFromName ( first .. " " .. second )
      		else
-     			id = getVehicleIDFromName ( first )
+     			id = getVehicleModelFromName ( first )
 				if ( not id ) then
 					id = tonumber ( first )
 				end
      			plate = second
 			end			
 		else
-			id = getVehicleIDFromName ( first )
+			id = getVehicleModelFromName ( first )
 			if ( not id ) then
 				id = tonumber ( first )
 			end
@@ -109,8 +109,8 @@ function consoleWarpTo ( player, commandName, player2nick )
     	local x, y, z, r, d = 0, 0, 0, 0, 2.5
     	local player2 = getPlayerFromNick ( player2nick )
     	if ( player2 ) then
-        	if ( isPlayerInVehicle ( player2 ) ) then
-        		local player2vehicle = getPlayerOccupiedVehicle ( player2 )
+        	if ( isPedInVehicle ( player2 ) ) then
+        		local player2vehicle = getPedOccupiedVehicle ( player2 )
 --outputDebugString ( "The player is in a " .. getVehicleName ( player2vehicle ) )
 				local maxseats = getVehicleMaxPassengers ( player2vehicle ) + 1
 --outputDebugString ( "The vehicle has " .. maxseats .. " seats" )
@@ -129,7 +129,7 @@ function consoleWarpTo ( player, commandName, player2nick )
 					--setTimer ( warpPlayerIntoVehicle, 1000, 1, player, player2vehicle, i )
 					--fadeCamera ( player, false, 1, 0, 0, 0 )
 					--setTimer ( fadeCamera, 1000, 1, player, true, 1 )
-					local status = warpPlayerIntoVehicle ( player, player2vehicle, i )
+					local status = warpPedIntoVehicle ( player, player2vehicle, i )
 					if ( status ) then
 --outputDebugString ( "warpPlayerIntoVehicle returned true" )
 					else
@@ -140,11 +140,11 @@ function consoleWarpTo ( player, commandName, player2nick )
 				end
 			else
 				x, y, z = getElementPosition ( player2 )
-				r = getPlayerRotation ( player2 )
+				r = getPedRotation ( player2 )
  	   			x = x - ( ( math.cos ( math.rad ( r + 90 ) ) ) * d )
 			   	y = y - ( ( math.sin ( math.rad ( r + 90 ) ) ) * d )
    				setTimer ( setElementPosition, 1000, 1, player, x, y, z )
-   				setTimer ( setPlayerRotation, 1000, 1, player, r )
+   				setTimer ( setPedRotation, 1000, 1, player, r )
 				fadeCamera ( player, false, 1, 0, 0, 0 )
 				setTimer ( fadeCamera, 1000, 1, player, true, 1 )
 			end
@@ -177,7 +177,7 @@ end
 
 function consoleSetFightingStyle ( player, commandName, id )
 	if ( player and id ) then
-	    local status = setPlayerFightingStyle ( player, tonumber(id) )
+	    local status = setPedFightingStyle ( player, tonumber(id) )
 		if ( not status ) then
 			outputConsole ( "Failed to set fighting style.", player )
 		end
@@ -187,7 +187,7 @@ function consoleSetSkin ( player, commandName, id )
 	if ( player and id ) then
     	local blip = getElementData ( player, "blip" )
 		local x, y, z = getElementPosition ( player )
-		local r = getPlayerRotation ( player )
+		local r = getPedRotation ( player )
 		local status = spawnPlayer ( player, x, y, z, r, id )
 		if ( status ) then
     		if ( blip ) then
@@ -223,8 +223,8 @@ function consoleListClothes ( player, commandName, type )
 end
 function consoleAddClothes ( player, commandName, type, texture, model )
 	if ( player ) then
-		if ( getPlayerSkin ( player ) == 0 ) then
-			if ( addPlayerClothes ( player, texture, model, tonumber ( type ) ) == false ) then
+		if ( getElementModel ( player ) == 0 ) then
+			if ( addPedClothes ( player, texture, model, tonumber ( type ) ) == false ) then
 				outputConsole ( "Failed to add clothes.", player )
 			end
 		else
@@ -234,8 +234,8 @@ function consoleAddClothes ( player, commandName, type, texture, model )
 end
 function consoleRemoveClothes ( player, commandName, type )
 	if ( player ) then
-		if ( getPlayerSkin ( player ) == 0 ) then
-			if ( removePlayerClothes ( player, tonumber ( type ) ) == false ) then
+		if ( getElementModel ( player ) == 0 ) then
+			if ( removePedClothes ( player, tonumber ( type ) ) == false ) then
 				outputConsole ( "Failed to remove clothes.", player )
 			end
 		else
@@ -245,7 +245,7 @@ function consoleRemoveClothes ( player, commandName, type )
 end
 function consoleSetPlayerGravity ( player, commandName, level )
 	if ( player ) then
-		local success = setPlayerGravity ( player, tonumber ( level ) )
+		local success = setPedGravity ( player, tonumber ( level ) )
 		if (not success) then
 			outputConsole( "Failed to set player gravity", player )
 		end
@@ -254,8 +254,8 @@ end
 
 function consoleRepairVehicle ( player, commandName )
 	if ( player ) then
-		if ( isPlayerInVehicle ( player ) ) then
-			local veh = getPlayerOccupiedVehicle ( player )
+		if ( isPedInVehicle ( player ) ) then
+			local veh = getPedOccupiedVehicle ( player )
 			fixVehicle ( veh )
 		else
 		    outputConsole ( "You must be in a vehicle.", player )
@@ -264,8 +264,8 @@ function consoleRepairVehicle ( player, commandName )
 end
 function consoleSetColor ( player, commandName, col1, col2, col3, col4 )
 	if ( player ) then
-		if ( isPlayerInVehicle ( player ) ) then
-			local veh = getPlayerOccupiedVehicle ( player )
+		if ( isPedInVehicle ( player ) ) then
+			local veh = getPedOccupiedVehicle ( player )
 			local col1old, col2old, col3old, col4old = getVehicleColor ( veh )
 			if ( ( not col1 ) or col1 == "-1" ) then  col1 = col1old  end 
 			if ( ( not col2 ) or col2 == "-1" ) then  col2 = col2old  end 
@@ -281,8 +281,8 @@ function consoleSetColor ( player, commandName, col1, col2, col3, col4 )
 end
 function consoleCheckUpgrades ( player, commandName )
 	if ( player ) then
-		if ( isPlayerInVehicle ( player ) ) then
-			local veh = getPlayerOccupiedVehicle ( player )
+		if ( isPedInVehicle ( player ) ) then
+			local veh = getPedOccupiedVehicle ( player )
 		    local upgrades = getVehicleUpgrades ( veh )
 			local slotstrings = {}
 		    outputConsole ( "Compatible upgrades for " .. getVehicleName ( veh ) .. ":", player )
@@ -311,8 +311,8 @@ function consoleCheckUpgrades ( player, commandName )
 end
 function consoleAddUpgrade ( player, commandName, id )
 	if ( player ) then
-		if ( isPlayerInVehicle ( player ) ) then
-			local vehicle = getPlayerOccupiedVehicle ( player )
+		if ( isPedInVehicle ( player ) ) then
+			local vehicle = getPedOccupiedVehicle ( player )
 			local success = addVehicleUpgrade ( vehicle, tonumber ( id ) )
 			if ( success ) then
 			    outputConsole ( getVehicleUpgradeSlotName ( tonumber ( id ) ) .. " upgrade added.", player )
@@ -326,8 +326,8 @@ function consoleAddUpgrade ( player, commandName, id )
 end
 function consoleRemoveUpgrade ( player, commandName, id )
 	if ( player ) then
-		if ( isPlayerInVehicle ( player ) ) then
-			local veh = getPlayerOccupiedVehicle ( player )
+		if ( isPedInVehicle ( player ) ) then
+			local veh = getPedOccupiedVehicle ( player )
 			if ( removeVehicleUpgrade ( veh, tonumber ( id ) ) ) then
 			    outputConsole ( getVehicleUpgradeSlotName ( tonumber ( id ) ) .. " upgrade removed.", player )
 			else
@@ -340,8 +340,8 @@ function consoleRemoveUpgrade ( player, commandName, id )
 end
 function consoleSetPaintJob ( player, commandName, id )
 	if ( player ) then
-		if ( isPlayerInVehicle ( player ) ) then
-			local veh = getPlayerOccupiedVehicle ( player )
+		if ( isPedInVehicle ( player ) ) then
+			local veh = getPedOccupiedVehicle ( player )
 			if ( setVehiclePaintjob ( veh, tonumber ( id ) ) ) then
 			    outputConsole ( "Paintjob " .. id .. " set.", player )
 			else
@@ -355,13 +355,13 @@ end
 
 function consoleJetPack ( player, commandName )
 	if ( player ) then
-		if ( not doesPlayerHaveJetPack ( player ) ) then
-			local status = givePlayerJetPack ( player )
+		if ( not doesPedHaveJetPack ( player ) ) then
+			local status = givePedJetPack ( player )
 			if ( not status ) then
 				outputConsole ( "Failed to give jetpack.", player )
 			end
 		else
-			local status = removePlayerJetPack ( player )
+			local status = removePedJetPack ( player )
 			if ( not status ) then
 				outputConsole ( "Failed to remove jetpack.", player )
 			end
@@ -372,7 +372,7 @@ function consoleAttachTrailer ( player, commandName, trailerid, vehicleid )
 	if ( player ) then
 		if ( vehicleid ) then
 			local sx, sy, id, x, y, z, r, d = 0, 0, 0, 0, 0, 0, 0, 5
-			r = getPlayerRotation ( player )
+			r = getPedRotation ( player )
 			sx, sy, z = getElementPosition ( player )
 			x = sx + ( math.cos ( math.rad ( r ) ) * d )
 			y = sy + ( math.sin ( math.rad ( r ) ) * d )
@@ -388,8 +388,8 @@ function consoleAttachTrailer ( player, commandName, trailerid, vehicleid )
 				outputConsole ( "Failed to create vehicle and/or trailer.", player )
 			end
 		else			
-			if ( isPlayerInVehicle ( player ) ) then
-				local veh = getPlayerOccupiedVehicle ( player )
+			if ( isPedInVehicle ( player ) ) then
+				local veh = getPedOccupiedVehicle ( player )
 				local sx, sy, id, x, y, z, rx, ry, rz, d = 0, 0, 0, 0, 0, 0, 0, 0, 0, 7.5
 				rx, ry, rz = getVehicleRotation ( veh )
 				sx, sy, z = getElementPosition ( veh )
@@ -413,9 +413,9 @@ function consoleSetStat ( player, commandName, id, value )
 		id = tonumber ( id )
 		value = tonumber ( value )
 		if ( id and value ) then
-	        local flag = setPlayerStat ( player, id, value )
+	        local flag = setPedStat ( player, id, value )
 			if ( flag ) then
-				outputConsole ( "Stat " .. id .. " set to: " .. getPlayerStat ( player, id ), player ) -- doesn't work
+				outputConsole ( "Stat " .. id .. " set to: " .. getPedStat ( player, id ), player ) -- doesn't work
 			else
 				outputConsole ( "Failed to set stat.", player )
 			end
@@ -423,7 +423,7 @@ function consoleSetStat ( player, commandName, id, value )
 	end
 end
 function consoleGetPosition ( player, commandName )
-	local vehicle = getPlayerOccupiedVehicle ( player )
+	local vehicle = getPedOccupiedVehicle ( player )
 	if ( vehicle ) then
 		local trailer = getVehicleTowedByVehicle ( vehicle ) 
 		if ( trailer ) then
@@ -440,7 +440,7 @@ function consoleGetPosition ( player, commandName )
 		end
 	else
 		local x, y, z = getElementPosition ( player )
-		local r = getPlayerRotation ( player )
+		local r = getPedRotation ( player )
 		outputChatBox ( "Player pos/rot: " .. x .. " " .. y .. " " .. z .. ", " .. r, player )
 	end
 end
@@ -449,7 +449,7 @@ function consoleSetPosition ( player, commandName, x, y, z )
 	y = tonumber ( y ) 
 	z = tonumber ( z )
 	if ( x and y and z ) then 
-		local vehicle = getPlayerOccupiedVehicle ( player )
+		local vehicle = getPedOccupiedVehicle ( player )
 		if ( vehicle ) then
 			setElementPosition ( vehicle, x, y, z )
 		else
@@ -460,7 +460,7 @@ end
 
 function consoleCreateObject ( player, commandName, distance, id )
 	if ( player ) then
-		local r = getPlayerRotation ( player )
+		local r = getPedRotation ( player )
 		local x, y, z = getElementPosition ( player )
 		x = x + ( ( math.cos ( math.rad ( r ) + math.pi/2 ) ) * distance )
 		y = y + ( ( math.sin ( math.rad ( r ) + math.pi/2 ) ) * distance )
@@ -472,7 +472,7 @@ function consoleCreateObject ( player, commandName, distance, id )
 end
 function consoleCreateMarker ( player, commandName, distance, type, size, r, g, b, a )
 	if ( player ) then
-		local r = getPlayerRotation ( player )
+		local r = getPedRotation ( player )
 		local x, y, z = getElementPosition ( player )
 		x = x + ( ( math.cos ( math.rad ( r ) + math.pi/2 ) ) * distance )
 		y = y + ( ( math.sin ( math.rad ( r ) + math.pi/2 ) ) * distance )
@@ -487,7 +487,7 @@ function consoleOutputAllVehiclesToLog ( player, commandName )
 	for k,v in ipairs(vehicles) do
 	    local x, y, z = getElementPosition(v)
 	    local rx, ry, rz = getVehicleRotation(v)
-	    outputServerLog("<vehicle id=\"" .. getVehicleName(v) .. "\" model=\"" .. getVehicleID(v) .. "\" posX=\"" .. x .. "\" posY=\"" .. y .. "\" posZ=\"" .. z .. "\" rotX=\"" .. rx .. "\" rotY=\"" .. ry .. "\" rotZ=\"" .. rz .. "\"/>")
+	    outputServerLog("<vehicle id=\"" .. getVehicleName(v) .. "\" model=\"" .. getElementModel(v) .. "\" posX=\"" .. x .. "\" posY=\"" .. y .. "\" posZ=\"" .. z .. "\" rotX=\"" .. rx .. "\" rotY=\"" .. ry .. "\" rotZ=\"" .. rz .. "\"/>")
 	end
 end
 
@@ -523,8 +523,8 @@ addCommandHandler ( "createmarker", consoleCreateMarker )
 addCommandHandler ( "outputAllVehiclesToLog", consoleOutputAllVehiclesToLog )
 
 function toggleVehicleLights ( player, key, state )
-	if ( getPlayerOccupiedVehicleSeat ( player ) == 0 ) then
-		local veh = getPlayerOccupiedVehicle ( player )
+	if ( getPedOccupiedVehicleSeat ( player ) == 0 ) then
+		local veh = getPedOccupiedVehicle ( player )
 		if ( getVehicleOverrideLights ( veh ) ~= 2 ) then
 			setVehicleOverrideLights ( veh, 2 )
 		else
@@ -533,8 +533,8 @@ function toggleVehicleLights ( player, key, state )
 	end
 end
 function toggleVehicleLock ( player, key, state )
-	if ( getPlayerOccupiedVehicleSeat ( player ) == 0 ) then		
-		local veh = getPlayerOccupiedVehicle ( player )
+	if ( getPedOccupiedVehicleSeat ( player ) == 0 ) then		
+		local veh = getPedOccupiedVehicle ( player )
 		if ( isVehicleLocked ( veh ) ) then
 			setVehicleLocked ( veh, false )
 		else

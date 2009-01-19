@@ -128,7 +128,7 @@ local foundIt = false
 				updatePlayerInfoBar ( source, 5000, "You picked up 100 health points!" )
 			elseif ( v["pType"] == 1 ) then
 				--Give player armor
-				setPlayerArmor ( source, 100 )
+				setPedArmor ( source, 100 )
 				updatePlayerInfoBar ( source, 5000, "You picked up 100 armor points!" )
 			elseif ( v["pType"] == 2 ) then
 				--Give player weapon & ammo

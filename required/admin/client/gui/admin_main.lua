@@ -94,7 +94,7 @@ function aAdminMenu ()
 		aTab1.VehicleDestroy	= guiCreateButton ( 0.71, 0.90, 0.13, 0.04, "Destroy", true, aTab1.Tab, "destroyvehicle" )
 		aTab1.VehicleBlow		= guiCreateButton ( 0.85, 0.85, 0.13, 0.04, "Blow", true, aTab1.Tab, "blowvehicle" )
 		aTab1.VehicleCustomize 	= guiCreateButton ( 0.85, 0.90, 0.13, 0.04, "Customize", true, aTab1.Tab, "customize" )
-		aTab1.GiveVehicle		= guiCreateButton ( 0.71, 0.710, 0.27, 0.04, "Give: "..getVehicleNameFromID ( aCurrentVehicle ), true, aTab1.Tab, "givevehicle" )
+		aTab1.GiveVehicle		= guiCreateButton ( 0.71, 0.710, 0.27, 0.04, "Give: "..getVehicleNameFromModel ( aCurrentVehicle ), true, aTab1.Tab, "givevehicle" )
 		aTab1.VehicleDropDown 	= guiCreateStaticImage ( 0.95, 0.710, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
 		local gx, gy 		= guiGetSize ( aTab1.GiveVehicle, false )
 		aTab1.VehicleOptions	= guiCreateGridList ( 0, 0, gx, 200, false )
@@ -103,9 +103,9 @@ function aAdminMenu ()
 						  guiSetVisible ( aTab1.VehicleOptions, false )
 						  local avehspecial = { [596] = "LS", [597] = "SF", [598] = "LV" }
 						  for i = 0, 211 do
-							if ( getVehicleNameFromID ( 400 + i ) ~= "" ) then
+							if ( getVehicleNameFromModel ( 400 + i ) ~= "" ) then
 								local row = guiGridListAddRow ( aTab1.VehicleOptions )
-								local name = getVehicleNameFromID ( 400 + i )
+								local name = getVehicleNameFromModel ( 400 + i )
 								if ( avehspecial[400+i] ) then name = name.." "..avehspecial[400+i] end
 								guiGridListSetItemText ( aTab1.VehicleOptions, row, 1, name, false, false )
 								guiGridListSetItemData ( aTab1.VehicleOptions, row, 1, tostring ( 400 + i ) )
@@ -355,22 +355,22 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
 			if ( isPlayerDead ( player ) ) then guiSetText ( aTab1.Health, "Health: Dead" )
 			else guiSetText ( aTab1.Health, "Health: "..math.ceil ( getElementHealth ( player ) ).."%" ) end
-			guiSetText ( aTab1.Armour, "Armour: "..math.ceil ( getPlayerArmor ( player ) ).."%" )
-			guiSetText ( aTab1.Skin, "Skin: "..iif ( getPlayerSkin ( player ), getPlayerSkin ( player ), "N/A" ) )
+			guiSetText ( aTab1.Armour, "Armour: "..math.ceil ( getPedArmor ( player ) ).."%" )
+			guiSetText ( aTab1.Skin, "Skin: "..iif ( getElementModel ( player ), getElementModel ( player ), "N/A" ) )
 			if ( getPlayerTeam ( player ) ) then guiSetText ( aTab1.Team, "Team: "..getTeamName ( getPlayerTeam ( player ) ) )
 			else guiSetText ( aTab1.Team, "Team: None" ) end
 			guiSetText ( aTab1.Ping, "Ping: "..getPlayerPing ( player ) )
 			guiSetText ( aTab1.Money, "Money: "..( aPlayers[player]["money"] or 0 ) )
 			if ( getElementDimension ( player ) ) then guiSetText ( aTab1.Dimension, "Dimension: "..getElementDimension ( player ) ) end
 			if ( getElementInterior ( player ) ) then guiSetText ( aTab1.Interior, "Interior: "..getElementInterior ( player ) ) end
-			guiSetText ( aTab1.JetPack, iif ( doesPlayerHaveJetPack ( player ), "Remove JetPack", "Give JetPack" ) )
-			if ( getPlayerWeapon ( player ) ) then guiSetText ( aTab1.Weapon, "Weapon: "..getWeaponNameFromID ( getPlayerWeapon ( player ) ).." (ID: "..getPlayerWeapon ( player )..")" ) end
+			guiSetText ( aTab1.JetPack, iif ( doesPedHaveJetPack ( player ), "Remove JetPack", "Give JetPack" ) )
+			if ( getPedWeapon ( player ) ) then guiSetText ( aTab1.Weapon, "Weapon: "..getWeaponNameFromID ( getPedWeapon ( player ) ).." (ID: "..getPedWeapon ( player )..")" ) end
 			local x, y, z = getElementPosition ( player )
 			guiSetText ( aTab1.Area, "Area: "..iif ( getZoneName ( x, y, z, false ) == getZoneName ( x, y, z, true ), getZoneName ( x, y, z, false ), getZoneName ( x, y, z, false ).." ("..getZoneName ( x, y, z, true )..")" ) )
 			guiSetText ( aTab1.PositionX, "X: "..x )
 			guiSetText ( aTab1.PositionY, "Y: "..y )
 			guiSetText ( aTab1.PositionZ, "Z: "..z )
-			local vehicle = getPlayerOccupiedVehicle ( player )
+			local vehicle = getPedOccupiedVehicle ( player )
 			if ( vehicle ) then
 				guiSetText ( aTab1.Vehicle, "Vehicle: "..getVehicleName ( vehicle ).." (ID: "..getElementModel ( vehicle )..")" )
 				guiSetText ( aTab1.VehicleHealth, "Vehicle Health: "..math.ceil ( getElementHealth ( vehicle ) ).."%" )

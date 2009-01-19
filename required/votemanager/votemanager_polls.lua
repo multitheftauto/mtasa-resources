@@ -408,7 +408,7 @@ function voteKill(player, reason)
 			visibleTo = rootElement,
 			timeout = vote.kill.timeout,
 			allowchange = vote.kill.allowchange;
-			[1]={"Yes",killPlayer,player},
+			[1]={"Yes",killPed,player},
 			[2]={"No",outputVoteManager,"votekill: not enough votes to kill "..getClientName(player)..".",rootElement,vR,vG,vB;default=true},
 		}
 	end

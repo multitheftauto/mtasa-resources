@@ -34,14 +34,14 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 		end
 	elseif vehicleIDs[killerweapon] then --heliblades/rammed
 		if ( getElementType ( killer ) == "vehicle" ) then
-			usedVehicle = getVehicleID ( killer )
+			usedVehicle = getElementModel ( killer )
 			killer = getVehicleOccupant ( killer, 0 )
 		end
 	elseif ( killerweapon == 59 ) then
 		if ( getElementType ( killer ) == "player" ) then
-			local vehicle = getPlayerOccupiedVehicle(killer)
+			local vehicle = getPedOccupiedVehicle(killer)
 			if ( vehicle ) then
-				usedVehicle = getVehicleID ( vehicle )
+				usedVehicle = getElementModel ( vehicle )
 			end
 		end
 	end

@@ -42,7 +42,7 @@ end
 --THIS CHECKS IF THE PLAYER IS DOING CERTAIN THINGS THAT ARE KNOWN TO MAKE NOISE
 function noisecheck ( source, key, keystate )
 	thisplayer = getLocalPlayer ()
-	thetask = getPlayerSimplestTask ( thisplayer )
+	thetask = getPedSimplestTask ( thisplayer )
 	if watchedTasks[thetask] then
 		soundlevel = soundlevel+1
 	end
@@ -87,7 +87,7 @@ end
 
 --THIS PART MAKES NOISE WHEN A PLAYER GETS HURT
 function damagenoise ( attacker, weapon, bodypart, loss )
-	removeEventHandler ( "onClientPlayerDamage", getLocalPlayer (), damagenoise )
+	removeEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
 	soundlevel = soundlevel+2
 	restartdamagedetect = setTimer ( readddamage, 1000, 1 )
 	if ( bodypart == 7 ) or ( bodypart == 8 ) then
@@ -102,7 +102,7 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 						return
 					end
 				end
-				local currentarmor = getPlayerArmor (getLocalPlayer ())
+				local currentarmor = getPedArmor (getLocalPlayer ())
 				if currentarmor == 0 then
 					outputChatBox("You've been hit in the leg.", getLocalPlayer (), 255, 69, 0)
 					setElementData ( getLocalPlayer (), "legdamage", 1 )
@@ -114,7 +114,7 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 end
 
 function readddamage ()
-	addEventHandler ( "onClientPlayerDamage", getLocalPlayer (), damagenoise )
+	addEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
 end
 
 
@@ -161,7 +161,7 @@ end
 --LIMP TIMING
 
 function limpeffect ( source, key, keystate )
-	if isPlayerInVehicle (getLocalPlayer ()) then
+	if isPedInVehicle (getLocalPlayer ()) then
 		return
 	else
 		islimping = getElementData ( getLocalPlayer (), "legdamage" )
@@ -178,7 +178,7 @@ function limpeffect ( source, key, keystate )
 end
 
 function limpeffectparttwo ( source, key, keystate )
-	if isPlayerInVehicle (getLocalPlayer ()) then
+	if isPedInVehicle (getLocalPlayer ()) then
 		return
 	else
 		islimping = getElementData ( getLocalPlayer (), "legdamage" )
@@ -198,7 +198,7 @@ end
 
 function startalimp ()
 	local theplayer = getLocalPlayer ()
-	if (getPlayerArmor ( theplayer )) == 0 then
+	if (getPedArmor ( theplayer )) == 0 then
 		setElementData ( getLocalPlayer (), "legdamage", 1 )
 		local makeplayerlimp = setTimer ( limpeffect, 300, 1, source, key, state )
 	end
@@ -212,7 +212,7 @@ addCommandHandler ( "crippleme", startalimp )
 
 
 function movementcheck ( source, key, keystate )
-	if ( isPlayerDucked ( getLocalPlayer () ) ) == false then
+	if ( isPedDucked ( getLocalPlayer () ) ) == false then
 		if ( getControlState ( "sprint" ) ) then
 			soundlevel = soundlevel +1
 		end
@@ -241,8 +241,8 @@ function hidesoundbar ( theresource )
 	guiSetVisible ( thesoundbar, false )
 end
 
-addEventHandler ( "onClientPlayerWasted", getLocalPlayer (), hidesoundbar )
-addEventHandler ( "onClientPlayerDamage", getLocalPlayer (), damagenoise )
-addEventHandler ( "onClientPlayerWeaponFire", getLocalPlayer (), shootingnoise )
+addEventHandler ( "onClientPedWasted", getLocalPlayer (), hidesoundbar )
+addEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
+addEventHandler ( "onClientPedWeaponFire", getLocalPlayer (), shootingnoise )
 addEventHandler ( "onClientPlayerSpawn", getLocalPlayer (), setupsoundstuff )
 addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()), setuptrigger)

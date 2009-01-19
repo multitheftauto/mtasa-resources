@@ -5,7 +5,7 @@ addEventHandler("onPlayerDamage", getRootElement(),
 		if bodypart == 9 then
 			local result = triggerEvent("onPlayerHeadshot", source, attacker, weapon, loss)
 			if result == true then
-				killPlayer(source, attacker, weapon, bodypart)
+				killPed(source, attacker, weapon, bodypart)
 			end
 		end
 	end

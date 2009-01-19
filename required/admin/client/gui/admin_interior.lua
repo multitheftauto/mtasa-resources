@@ -23,8 +23,8 @@ function aPlayerInterior ( player )
 		local node = xmlLoadFile ( "conf\\interiors.xml" )
 		if ( node ) then
 			local interiors = 0
-			while ( xmlFindSubNode ( node, "interior", interiors ) ~= false ) do
-				local interior = xmlFindSubNode ( node, "interior", interiors )
+			while ( xmlFindChild ( node, "interior", interiors ) ~= false ) do
+				local interior = xmlFindChild ( node, "interior", interiors )
 				local row = guiGridListAddRow ( aInteriorList )
 				guiGridListSetItemText ( aInteriorList, row, 1, xmlNodeGetAttribute ( interior, "world" ), false, true )
 				guiGridListSetItemText ( aInteriorList, row, 2, xmlNodeGetAttribute ( interior, "id" ), false, false )

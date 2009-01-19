@@ -3,8 +3,8 @@ function isTimer(timer)
 end
 
 
-local _isPlayerDead = isPlayerDead
-function isPlayerDead(player)
+local _isPlayerDead = isPedDead
+function isPedDead(player)
 	return _isPlayerDead(player) or isPlayerTerminated(player)
 end
 

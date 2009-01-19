@@ -102,7 +102,7 @@ function stuff( player, flag )
 		if ( flag ~= newFlag ) then
 			if ( getElementInterior (player) == 0 ) then --dont trigger on interiors
 				if ( newFlag ) then    
-					if ( not isPlayerDead( player ) ) then	--Lol, inefficient. Bite me.
+					if ( not isPedDead( player ) ) then	--Lol, inefficient. Bite me.
 						textDisplayAddObserver ( mapl_disp, player )
 					end
 				else
@@ -110,13 +110,13 @@ function stuff( player, flag )
 				end
 			end
 		end
-		if newFlag and ( not isPlayerDead( player ) ) then			
+		if newFlag and ( not isPedDead( player ) ) then			
 			if ( getElementInterior (player) == 0 ) then --dont trigger on interiors
 				local playerHP = getElementHealth( player )
 				if ( playerHP > 10 ) then
 					setElementHealth( player, playerHP - 1 )
 				else
-					killPlayer( player )
+					killPed( player )
 				end
 			end
 		end

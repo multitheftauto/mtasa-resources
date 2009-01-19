@@ -11,7 +11,7 @@ server = createServerCallInterface()
 -- Set skin window
 ---------------------------
 function skinInit()
-	setControlNumber(wndSkin, 'skinid', getPlayerSkin(g_Me))
+	setControlNumber(wndSkin, 'skinid', getElementModel(g_Me))
 end
 
 function showSkinID(leaf)
@@ -188,7 +188,7 @@ addCommandHandler('setstyle',
 -- Clothes window
 ---------------------------
 function clothesInit()
-	if getPlayerSkin(g_Me) ~= 0 then
+	if getElementModel(g_Me) ~= 0 then
 		errMsg('You must have the CJ skin set in order to apply clothes.')
 		closeWindow(wndClothes)
 		return
@@ -422,7 +422,7 @@ addCommandHandler('wt', warpToCommand)
 ---------------------------
 
 function initStats()
-	applyToLeaves(getGridListCache(wndStats, 'statslist'), function(leaf) leaf.value = getPlayerStat(g_Me, leaf.id) end)
+	applyToLeaves(getGridListCache(wndStats, 'statslist'), function(leaf) leaf.value = getPedStat(g_Me, leaf.id) end)
 end
 
 function selectStat(leaf)
@@ -477,7 +477,7 @@ wndStats = {
 -- Jetpack toggle
 ---------------------------
 function toggleJetPack()
-	if not doesPlayerHaveJetPack(g_Me) then
+	if not doesPedHaveJetPack(g_Me) then
 		server.givePlayerJetPack(g_Me)
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), true)
 	else
@@ -496,7 +496,7 @@ addCommandHandler('jp', toggleJetPack)
 -- Fall off bike toggle
 ---------------------------
 function toggleFallOffBike()
-	setPlayerCanBeKnockedOffBike(g_Me, guiCheckBoxGetSelected(getControl(wndMain, 'falloff')))
+	setPedCanBeKnockedOffBike(g_Me, guiCheckBoxGetSelected(getControl(wndMain, 'falloff')))
 end
 
 ---------------------------
@@ -532,7 +532,7 @@ function setPosClick()
 end
 
 function setPlayerPosition(x, y, z)
-	local elem = getPlayerOccupiedVehicle(g_Me)
+	local elem = getPedOccupiedVehicle(g_Me)
 	local distanceToGround
 	local isVehicle
 	if elem then
@@ -682,7 +682,7 @@ function getPosCommand(cmd, playerName)
 	end
 	
 	local px, py, pz = getElementPosition(player)
-	local vehicle = getPlayerOccupiedVehicle(player)
+	local vehicle = getPedOccupiedVehicle(player)
 	if vehicle then
 		outputChatBox(sentenceStart .. 'in a ' .. getVehicleName(vehicle), 0, 255, 0)
 	else
@@ -787,7 +787,7 @@ function createVehicleCommand(cmd, ...)
 	for i=1,arg.n do
 		vehID = tonumber(arg[i])
 		if not vehID then
-			vehID = getVehicleIDFromName(arg[i])
+			vehID = getVehicleModelFromName(arg[i])
 		end
 		if vehID then
 			table.insert(vehiclesToCreate, vehID)
@@ -802,7 +802,7 @@ addCommandHandler('cv', createVehicleCommand)
 -- Repair vehicle
 ---------------------------
 function repairVehicle()
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle then
 		server.fixVehicle(vehicle)
 	end
@@ -815,10 +815,10 @@ addCommandHandler('rp', repairVehicle)
 -- Flip vehicle
 ---------------------------
 function flipVehicle()
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle then
-		local rX, rY, rZ = getVehicleRotation(vehicle)
-		server.setVehicleRotation(vehicle, 0, 0, (rX > 90 and rX < 270) and (rZ + 180) or rZ)
+		local rX, rY, rZ = getElementRotation(vehicle)
+		server.setElementRotation(vehicle, 0, 0, (rX > 90 and rX < 270) and (rZ + 180) or rZ)
 	end
 end
 
@@ -829,7 +829,7 @@ addCommandHandler('f', flipVehicle)
 -- Vehicle upgrades
 ---------------------------
 function upgradesInit()
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if not vehicle then
 		errMsg('Please enter a vehicle to change the upgrades of.')
 		closeWindow(wndUpgrades)
@@ -859,7 +859,7 @@ end
 
 function addRemoveUpgrade(selUpgrade)
 	-- Add or remove selected upgrade
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if not vehicle then
 		return
 	end
@@ -914,7 +914,7 @@ wndUpgrades = {
 }
 
 function addUpgradeCommand(cmd, upgrade)
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle and upgrade then
 		server.addVehicleUpgrade(vehicle, tonumber(upgrade) or 0)
 	end
@@ -923,7 +923,7 @@ addCommandHandler('addupgrade', addUpgradeCommand)
 addCommandHandler('au', addUpgradeCommand)
 
 function removeUpgradeCommand(cmd, upgrade)
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle and upgrade then
 		server.removeVehicleUpgrade(vehicle, tonumber(upgrade) or 0)
 	end
@@ -935,7 +935,7 @@ addCommandHandler('ru', removeUpgradeCommand)
 -- Toggle lights
 ---------------------------
 function forceLightsOn()
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if not vehicle then
 		return
 	end
@@ -948,7 +948,7 @@ function forceLightsOn()
 end
 
 function forceLightsOff()
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if not vehicle then
 		return
 	end
@@ -965,7 +965,7 @@ end
 -- Color
 ---------------------------
 function colorInit()
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if not vehicle then
 		errMsg('You need to be in a car to change its colors.')
 		closeWindow(wndColor)
@@ -977,7 +977,7 @@ function colorInit()
 end
 
 function colorSlotSelect()
-	local colors = { getVehicleColor(getPlayerOccupiedVehicle(g_Me)) }
+	local colors = { getVehicleColor(getPedOccupiedVehicle(g_Me)) }
 	for i=1,2 do
 		if guiRadioButtonGetSelected(getControl(wndColor, 'colorslot' .. i)) then
 			setColorSelection(colors[i])
@@ -987,7 +987,7 @@ function colorSlotSelect()
 end
 
 function applyColor(relX, relY)
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if not vehicle then
 		return
 	end
@@ -1047,7 +1047,7 @@ wndColor = {
 }
 
 function setColorCommand(cmd, ...)
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if not vehicle then
 		return
 	end
@@ -1065,7 +1065,7 @@ addCommandHandler('cl', setColorCommand)
 ---------------------------
 
 function paintjobInit()
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if not vehicle then
 		errMsg('You need to be in a car to change its paintjob.')
 		closeWindow(wndPaintjob)
@@ -1078,7 +1078,7 @@ function paintjobInit()
 end
 
 function applyPaintjob(paint)
-	server.setVehiclePaintjob(getPlayerOccupiedVehicle(g_Me), paint.id)
+	server.setVehiclePaintjob(getPedOccupiedVehicle(g_Me), paint.id)
 end
 
 wndPaintjob = {
@@ -1111,7 +1111,7 @@ wndPaintjob = {
 }
 
 function setPaintjobCommand(cmd, paint)
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	paint = paint and tonumber(paint)
 	if not paint or not vehicle then
 		return
@@ -1317,11 +1317,11 @@ function updateGUI(updateVehicle)
 	setControlNumbers(wndMain, {xpos=math.ceil(x), ypos=math.ceil(y), zpos=math.ceil(z)})
 	
 	-- update jetpack toggle
-	guiCheckBoxSetSelected( getControl(wndMain, 'jetpack'), doesPlayerHaveJetPack(g_Me) )
+	guiCheckBoxSetSelected( getControl(wndMain, 'jetpack'), doesPedHaveJetPack(g_Me) )
 	
 	if updateVehicle then
 		-- update current vehicle
-		local vehicle = getPlayerOccupiedVehicle(g_Me)
+		local vehicle = getPedOccupiedVehicle(g_Me)
 		if vehicle then
 			setControlText(wndMain, 'curvehicle', getVehicleName(vehicle))
 		else
@@ -1331,7 +1331,7 @@ function updateGUI(updateVehicle)
 end
 
 function mainWndShow()
-	if not getPlayerOccupiedVehicle(g_Me) then
+	if not getPedOccupiedVehicle(g_Me) then
 		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
 	end
 	updateTimer = updateTimer or setTimer(updateGUI, 2000, 0)
@@ -1442,8 +1442,8 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		bindKey('f1', 'down', toggleFRWindow)
 		createWindow(wndMain)
 		hideAllWindows()
-		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), doesPlayerHaveJetPack(g_Me))
-		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPlayerBeKnockedOffBike(g_Me))
+		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), doesPedHaveJetPack(g_Me))
+		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPedBeKnockedOffBike(g_Me))
 		triggerServerEvent('onLoadedAtClient', g_ResRoot, g_Me)
 	end
 )
@@ -1487,7 +1487,7 @@ addEventHandler('onClientPlayerQuit', g_Root,
 	end
 )
 
-addEventHandler('onClientPlayerWasted', g_Me,
+addEventHandler('onClientPedWasted', g_Me,
 	function()
 		onExitVehicle(g_Me)
 	end

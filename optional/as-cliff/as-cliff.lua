@@ -52,8 +52,8 @@ function doAssaultEndRound()
 	if ( objectives.truck ) then
 		local rocket = getElementData ( truck, "rocket" )
 		local rocket2 = getElementData ( truck, "rocket2" )
-		detachElementFromElement ( rocket, truck )
-		detachElementFromElement ( rocket2, truck )
+		detachElements ( rocket, truck )
+		detachElements ( rocket2, truck )
 		destroyElement ( rocket )
 		destroyElement ( rocket2 )
 		destroyBlipsAttachedTo ( truck )
@@ -103,8 +103,8 @@ end
 function attachRockets()
 	local rocket = createObject ( 3797, 0, 0, 0 )
 	local rocket2 = createObject ( 3797, 0, 0, 5 )
-	attachElementToElement ( rocket, truck, 1.9, -2.5, 0.4, 40, 0, 280 )
-	attachElementToElement ( rocket2, truck, -1.9, -2.5, 0.4, 320, 0, 260 )
+	attachElements ( rocket, truck, 1.9, -2.5, 0.4, 40, 0, 280 )
+	attachElements ( rocket2, truck, -1.9, -2.5, 0.4, 320, 0, 260 )
 	setElementData ( truck, "rocket", rocket )
 	setElementData ( truck, "rocket2", rocket2 )
 end
@@ -189,7 +189,7 @@ end
 
 function destroyFacility ()
 	for i, v in ipairs ( getElementsByType ( "player" ) ) do
-		if not isPlayerDead ( v ) then
+		if not isPedDead ( v ) then
 			setCameraMode ( v, "fixed" )
 		end
 	end

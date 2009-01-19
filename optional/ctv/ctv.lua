@@ -191,7 +191,7 @@ function spawnVan ( target )
 	end
 	
 	vanMarker = createMarker ( x, y, z, "checkpoint", 1.5, 255, 255, 255, 127 )
-	attachElementToElement ( vanMarker, van )
+	attachElements ( vanMarker, van )
 	
 	createBlipAttachedTo ( van, 55 )
 	triggerClientEvent('doSetVan', van)
@@ -322,12 +322,12 @@ function markerHit ( player )
 end
 
 function killplayer ( source )
-	killPlayer ( source )
+	killPed ( source )
 end
 
 function toggleVehicleLights ( player, key, state )
-	if ( getPlayerOccupiedVehicleSeat ( player ) == 0 ) then
-		local veh = getPlayerOccupiedVehicle ( player )
+	if ( getPedOccupiedVehicleSeat ( player ) == 0 ) then
+		local veh = getPedOccupiedVehicle ( player )
 		if ( getVehicleOverrideLights ( veh ) ~= 2 ) then
 			setVehicleOverrideLights ( veh, 2 )
 		else

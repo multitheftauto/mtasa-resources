@@ -16,7 +16,7 @@ local carrierGravity
 
 function onClientResourceStart_cto ( resource )
     localPlayer = getLocalPlayer ()
-    vehicle = getPlayerOccupiedVehicle ( localPlayer )
+    vehicle = getPedOccupiedVehicle ( localPlayer )
 	triggerServerEvent ( "onPlayerClientScriptLoad", localPlayer )
 	normalGravity = .008
 	carrierGravity = .005
@@ -65,25 +65,25 @@ function onClientCarrier_cto ( status )
 outputDebugString ( "You are the carrier!" )---
 		addEventHandler ( "onClientResourceStop", root, onClientResourceStop_cto )
 		addEventHandler ( "onClientRender", root, onClientRender_cto )
-		if ( isPlayerInVehicle ( localPlayer ) ) then
+		if ( isPedInVehicle ( localPlayer ) ) then
 			setGravity ( carrierGravity )
 		end
 	else
 outputDebugString ( "You are no longer the carrier" )---
 		removeEventHandler ( "onClientRender", root, onClientRender_cto )
 		removeEventHandler ( "onClientResourceStop", root, onClientResourceStop_cto )
-		if ( isPlayerInVehicle ( localPlayer ) ) then
+		if ( isPedInVehicle ( localPlayer ) ) then
 			setGravity ( normalGravity )
 		end
 	end
 end
 
 function onClientRender_cto ()
-	local inVehicle = isPlayerInVehicle ( localPlayer )
+	local inVehicle = isPedInVehicle ( localPlayer )
 	if ( inVehicle and not vehicle ) then
 	    -- player got in
 outputDebugString ( "You entered a vehicle" )---
-		vehicle = getPlayerOccupiedVehicle ( localPlayer )
+		vehicle = getPedOccupiedVehicle ( localPlayer )
 		setGravity ( carrierGravity )
 	elseif ( not inVehicle and vehicle ) then
 		-- player got out

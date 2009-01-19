@@ -25,12 +25,12 @@ addEventHandler('onClientCall', getResourceRootElement(getThisResource()),
 
 function setCameraPlayerMode()
 	local r
-	local vehicle = getPlayerOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle then
-		local rx, ry, rz = getVehicleRotation(vehicle)
+		local rx, ry, rz = getElementRotation(vehicle)
 		r = rz
 	else
-		r = getPlayerRotation(g_Me)
+		r = getPedRotation(g_Me)
 	end
 	local x, y, z = getElementPosition(g_Me)
 	setCameraMatrix(x - 4*math.cos(math.rad(r + 90)), y - 4*math.sin(math.rad(r + 90)), z + 1, x, y, z + 1)
@@ -38,7 +38,7 @@ function setCameraPlayerMode()
 end
 
 function getPlayerOccupiedSeat(player)
-	local vehicle = getPlayerOccupiedVehicle(player)
+	local vehicle = getPedOccupiedVehicle(player)
 	if not vehicle then
 		return false
 	end
@@ -281,17 +281,17 @@ end
 
 function _addXMLChildrenToTable(parentNode, leafName, leafAttrs, targetTable)
 	local i = 0
-	local groupNode = xmlFindSubNode(parentNode, 'group', 0)
+	local groupNode = xmlFindChild(parentNode, 'group', 0)
 	while groupNode do
 		local group = {'group', name=xmlNodeGetAttribute(groupNode, 'name'), children={}}
 		table.insert(targetTable, group)
 		_addXMLChildrenToTable(groupNode, leafName, leafAttrs, group.children)
 		i = i + 1
-		groupNode = xmlFindSubNode(parentNode, 'group', i)
+		groupNode = xmlFindChild(parentNode, 'group', i)
 	end
 	
 	i = 0
-	local leafNode = xmlFindSubNode(parentNode, leafName, 0)
+	local leafNode = xmlFindChild(parentNode, leafName, 0)
 	while leafNode do
 		local leaf = {leafName}
 		table.insert(targetTable, leaf)
@@ -299,7 +299,7 @@ function _addXMLChildrenToTable(parentNode, leafName, leafAttrs, targetTable)
 			leaf[attr] = ( attr == 'id' and tonumber(xmlNodeGetAttribute(leafNode, attr)) or xmlNodeGetAttribute(leafNode, attr) )
 		end
 		i = i + 1
-		leafNode = xmlFindSubNode(parentNode, leafName, i)
+		leafNode = xmlFindChild(parentNode, leafName, i)
 	end
 end
 

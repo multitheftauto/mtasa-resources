@@ -1,6 +1,6 @@
 function player_Spawn (  )
 	--outputChatBox ( "called for "..getClientName ( source ) )
-	skin = getPlayerSkin ( source )
+	skin = getElementModel ( source )
 	notrolley = getAttachedElements ( source )
 	for k,v in pairs(notrolley) do
 		if getElementType ( v ) == "object" then
@@ -10,7 +10,7 @@ function player_Spawn (  )
 	if ( skin ~= 217 ) then
 		local x,y,z = getElementPosition ( source )
 		trolley = createObject ( 1349, x, y, z, 0, 0, 0 )
-		attachElementToElement ( trolley, source, 0, 1.0, -0.45, 0.000000, 0.000000, 90 )
+		attachElements ( trolley, source, 0, 1.0, -0.45, 0.000000, 0.000000, 90 )
 		toggleControl ( source, "jump", false )
 	else
 		setElementAlpha( source, 255 )

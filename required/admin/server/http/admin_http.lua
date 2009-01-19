@@ -3,8 +3,8 @@ local node = xmlLoadFile ( "conf\\web.xml" )
 if ( node ) then
 	local items = 0
 	local resource = getResourceName ( getThisResource() )
-	while ( xmlFindSubNode ( node, "item", items ) ~= false ) do
-		local item = xmlFindSubNode ( node, "item", items )
+	while ( xmlFindChild ( node, "item", items ) ~= false ) do
+		local item = xmlFindChild ( node, "item", items )
 		local section = xmlNodeGetAttribute ( item, "section" )
 		local page = xmlNodeGetAttribute ( item, "page" )
 		local icon = xmlNodeGetAttribute ( item, "icon" )

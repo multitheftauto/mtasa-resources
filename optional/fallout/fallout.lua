@@ -216,7 +216,7 @@ end
 
 function quickKill ( player, key, keyState )
 	unbindKey ( player, "space" )
-    killPlayer ( player )	
+    killPed ( player )	
 end
 
 function activateSpectate ( player ) --Don't setTimer loop serverside, will cause bug when 2 players come in
@@ -255,7 +255,7 @@ addEventHandler("serverReportLoss", getRootElement (), playerLoss)
 
 function KillCheater ( )
 	outputChatBox ( "weapon cheat detected. "..getClientName(source).." killed for cheating." )
-	killPlayer ( source )
+	killPed ( source )
 end
 addEvent("serverKillCheater", true) --For triggering from server
 addEventHandler("serverKillCheater", getRootElement (), KillCheater)

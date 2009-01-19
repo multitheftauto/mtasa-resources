@@ -3,9 +3,9 @@ function players()
 	local tbl = {}
 	for k,v in ipairs(players) do
 		local x,y = getElementPosition(v)
-		local playerinfo = {name=getClientName(v), pos={x=x,y=y}, isdead=isPlayerDead(v)}
-		if ( isPlayerInVehicle(v) ) then
-			playerinfo.vehicle = getVehicleName(getPlayerOccupiedVehicle(v))
+		local playerinfo = {name=getClientName(v), pos={x=x,y=y}, isdead=isPedDead(v)}
+		if ( isPedInVehicle(v) ) then
+			playerinfo.vehicle = getVehicleName(getPedOccupiedVehicle(v))
 		end
 		table.insert(tbl, playerinfo)
 	end

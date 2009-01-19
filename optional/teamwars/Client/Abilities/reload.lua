@@ -111,12 +111,12 @@ function Ability_Reload:OnRender()
 	local firedGun = false
 	
 	-- Another possible fix for the 'no start ammo' bug
-	if ((not self.started) and (getPlayerTotalAmmo (self:getOwner(), self.weaponSlot) > 0)) then
+	if ((not self.started) and (getPedTotalAmmo (self:getOwner(), self.weaponSlot) > 0)) then
 		-- Get some info
-		self.curHolding = getPlayerWeapon(self:getOwner())
+		self.curHolding = getPedWeapon(self:getOwner())
 		self.reloading = false
 		
-		self.startAmmo = INT(getElementData(self:getElement(), "startAmmo"), getPlayerTotalAmmo (self:getOwner(), self.weaponSlot))
+		self.startAmmo = INT(getElementData(self:getElement(), "startAmmo"), getPedTotalAmmo (self:getOwner(), self.weaponSlot))
 		self.loadedAmmo = self.startAmmo
 		
 		self.isFiring = getControlState("fire")
@@ -139,7 +139,7 @@ function Ability_Reload:OnRender()
 		guiLabelSetColor(self.ammoLabel, 255, 255, 255)
 		guiLabelSetColor(self.ammoLabel2, 0, 0, 0)
 		guiSetVisible(self.reloadBar, false)
-		self.weaponRealAmmo = getPlayerTotalAmmo (self:getOwner(), self.weaponSlot)
+		self.weaponRealAmmo = getPedTotalAmmo (self:getOwner(), self.weaponSlot)
 		self.started = true -- Ok start up ok
 	end
 	
@@ -152,7 +152,7 @@ function Ability_Reload:OnRender()
 		self:updateAmmoLabel(true)		
 		showPlayerHudComponent ("ammo", false)		
 		
-		local currentAmmo = getPlayerTotalAmmo (self:getOwner(), self.weaponSlot)
+		local currentAmmo = getPedTotalAmmo (self:getOwner(), self.weaponSlot)
 		
 		if (currentAmmo < self.weaponRealAmmo) then
 			self.loadedAmmo = self.loadedAmmo - (self.weaponRealAmmo - currentAmmo) -- We got a shot!
@@ -217,9 +217,9 @@ function Ability_Reload:OnRender()
 end
 
 function Ability_Reload:OnClientPlayerWeaponSwitch(prevWeaponSlot, curSlot)	
-	local curWeapon = getPlayerWeapon(getLocalPlayer())
-	local prevWeapon = getPlayerWeapon(getLocalPlayer(), prevWeaponSlot)
-	self.curHolding = getPlayerWeapon(self:getOwner())
+	local curWeapon = getPedWeapon(getLocalPlayer())
+	local prevWeapon = getPedWeapon(getLocalPlayer(), prevWeaponSlot)
+	self.curHolding = getPedWeapon(self:getOwner())
 	self.curHoldingSlot = getSlotFromWeapon(self.curHolding)
 	
 	if (prevWeapon == self.weaponID) then

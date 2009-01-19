@@ -17,8 +17,8 @@ function aSetupACL ()
 	if ( node ) then
 		--Get ACLs
 		local acls = 0
-		while ( xmlFindSubNode ( node, "acl", acls ) ~= false ) do
-			local aclNode = xmlFindSubNode ( node, "acl", acls )
+		while ( xmlFindChild ( node, "acl", acls ) ~= false ) do
+			local aclNode = xmlFindChild ( node, "acl", acls )
 			local aclName = xmlNodeGetAttribute ( aclNode, "name" )
 			if ( ( aclNode ) and ( aclName ) ) then
 				temp_acl_nodes[aclName] = aclNode
@@ -42,8 +42,8 @@ end
 
 function aACLLoad ( acl, node )
 	local rights = 0
-	while ( xmlFindSubNode ( node, "right", rights ) ~= false ) do
-		local rightNode = xmlFindSubNode ( node, "right", rights )
+	while ( xmlFindChild ( node, "right", rights ) ~= false ) do
+		local rightNode = xmlFindChild ( node, "right", rights )
 		local rightName = xmlNodeGetAttribute ( rightNode, "name" )
 		local rightAccess = xmlNodeGetAttribute ( rightNode, "access" )
 		if ( ( rightName ) and ( rightAccess ) ) then

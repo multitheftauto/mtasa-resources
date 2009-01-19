@@ -72,7 +72,7 @@ end
 -- special function for cheaters
 
 function onPlayerEnterVehicle_temp ( vehicle, seat, jackedPlayer )
-    if ( isVehicleIDBlocked ( getVehicleID ( vehicle ) ) ) then
+    if ( isVehicleIDBlocked ( getElementModel ( vehicle ) ) ) then
   		cancelEvent()
 		outputChatBox ( "You are not allowed to use this vehicle.", source )
 	end
@@ -89,7 +89,7 @@ addEventHandler ( "onPlayerEnterVehicle", root, onPlayerEnterVehicle_temp )
 
 function consoleKill ( player, commandName )
 	if ( player ) then
-		killPlayer ( player )
+		killPed ( player )
 	end
 end
 
@@ -99,25 +99,25 @@ function consoleCreateVehicle ( player, commandName, first, second, third )
 		if ( allowed ) then
 			local id, x, y, z, r, d = 0, 0, 0, 0, 0, 5
 			local plate = false
-			r = getPlayerRotation ( player )
+			r = getPedRotation ( player )
 			x, y, z = getElementPosition ( player )
 			x = x + ( ( math.cos ( math.rad ( r ) ) ) * d )
 			y = y + ( ( math.sin ( math.rad ( r ) ) ) * d )
 			if ( third ) then
-				id = getVehicleIDFromName ( first .. " " .. second )
+				id = getVehicleModelFromName ( first .. " " .. second )
 				plate = third
 			elseif ( second ) then
-				if ( getVehicleIDFromName ( first .. " " .. second ) ) then
-					id = getVehicleIDFromName ( first .. " " .. second )
+				if ( getVehicleModelFromName ( first .. " " .. second ) ) then
+					id = getVehicleModelFromName ( first .. " " .. second )
 	     		else
-	     			id = getVehicleIDFromName ( first )
+	     			id = getVehicleModelFromName ( first )
 					if ( not id ) then
 						id = tonumber ( first )
 					end
 	     			plate = second
 				end
 			else
-				id = getVehicleIDFromName ( first )
+				id = getVehicleModelFromName ( first )
 				if ( not id ) then
 					id = tonumber ( first )
 				end

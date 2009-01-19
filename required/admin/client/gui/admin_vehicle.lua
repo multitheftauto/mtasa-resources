@@ -22,8 +22,8 @@ function aVehicleCustomize ( player )
 		local node = xmlLoadFile ( "conf\\upgrades.xml" )
 		if ( node ) then
 			local upgrades = 0
-			while ( xmlFindSubNode ( node, "upgrade", upgrades ) ~= false ) do
-				local upgrade = xmlFindSubNode ( node, "upgrade", upgrades )
+			while ( xmlFindChild ( node, "upgrade", upgrades ) ~= false ) do
+				local upgrade = xmlFindChild ( node, "upgrade", upgrades )
 				local id = tonumber ( xmlNodeGetAttribute ( upgrade, "id" ) )
 				local name = xmlNodeGetAttribute ( upgrade, "name" )
 				aUpgradeNames[id] = name
@@ -93,7 +93,7 @@ function aVehicleCustomize ( player )
 		--Register With Admin Form
 		aRegister ( "VehicleCustomize", aVehicleForm, aVehicleCustomize, aVehicleCustomizeClose )
 	end
-	local vehicle = getPlayerOccupiedVehicle ( player )
+	local vehicle = getPedOccupiedVehicle ( player )
 	if ( vehicle ) then
 		local update = true
 		if ( isElement ( aVehicleCustomizeVehicle ) ) then

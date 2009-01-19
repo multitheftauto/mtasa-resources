@@ -106,7 +106,7 @@ end
 
 function setCameraBehindVehicle(vehicle)
 	local x, y, z = getElementPosition(vehicle)
-	local rx, ry, rz = getVehicleRotation(vehicle)
+	local rx, ry, rz = getElementRotation(vehicle)
 	setCameraMatrix(x - 4*math.cos(math.rad(rz + 90)), y - 4*math.sin(math.rad(rz + 90)), z + 1, x, y, z + 1)
 	setTimer(setCameraTarget, 150, 1, getLocalPlayer())
 end

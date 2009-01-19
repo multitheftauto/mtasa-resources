@@ -26,26 +26,26 @@ g_Trailers = {
 }
 
 g_RPCFunctions = {
-	addPlayerClothes = { option = 'clothes', descr = 'Modifying clothes' },
+	addPedClothes = { option = 'clothes', descr = 'Modifying clothes' },
 	addVehicleUpgrade = { option = 'upgrades', descr = 'Adding/removing upgrades' },
 	fadeVehiclePassengersCamera = true,
 	fixVehicle = { option = 'repair', descr = 'Repairing vehicles' },
 	giveMeVehicles = { option = 'createvehicle', descr = 'Creating vehicles' },
 	giveMeWeapon = { option = 'weapons.enabled', descr = 'Getting weapons' },
-	givePlayerJetPack = { option = 'jetpack', descr = 'Getting a jetpack' },
-	killPlayer = { option = 'kill', descr = 'Killing yourself' },
-	removePlayerClothes = { option = 'clothes', descr = 'Modifying clothes' },
-	removePlayerFromVehicle = true,
-	removePlayerJetPack = { option = 'jetpack', descr = 'Removing a jetpack' },
+	givePedJetPack = { option = 'jetpack', descr = 'Getting a jetpack' },
+	killPed = { option = 'kill', descr = 'Killing yourself' },
+	removePedClothes = { option = 'clothes', descr = 'Modifying clothes' },
+	removePedFromVehicle = true,
+	removePedJetPack = { option = 'jetpack', descr = 'Removing a jetpack' },
 	removeVehicleUpgrade = { option = 'upgrades', descr = 'Adding/removing upgrades' },
 	setElementAlpha = { option = 'alpha', descr = 'Changing your alpha' },
 	setElementPosition = true,
 	setMyGameSpeed = { option = 'gamespeed.enabled', descr = 'Setting game speed' },
 	setMySkin = { option = 'setskin', descr = 'Setting skin' },
 	setPedAnimation = { option = 'anim', descr = 'Setting an animation' },
-	setPlayerFightingStyle = { option = 'setstyle', descr = 'Setting fighting style' },
-	setPlayerGravity = { option = 'gravity.enabled', descr = 'Setting gravity' },
-	setPlayerStat = { option = 'stats', descr = 'Changing stats' },
+	setPedFightingStyle = { option = 'setstyle', descr = 'Setting fighting style' },
+	setPedGravity = { option = 'gravity.enabled', descr = 'Setting gravity' },
+	setPedStat = { option = 'stats', descr = 'Changing stats' },
 	setTime = { option = 'time.set', descr = 'Changing time' },
 	setTimeFrozen = { option = 'time.freeze', descr = 'Freezing time' },
 	setVehicleColor = true,
@@ -147,7 +147,7 @@ addEventHandler('onPlayerJoin', g_Root, joinHandler)
 addEvent('onLoadedAtClient', true)
 addEventHandler('onLoadedAtClient', g_ResRoot,
 	function(player)
-		if getOption('spawnmaponstart') and isPlayerDead(player) then
+		if getOption('spawnmaponstart') and isPedDead(player) then
 			clientCall(source, 'showWelcomeMap')
 		end
 	end,
@@ -162,7 +162,7 @@ addEventHandler('onPlayerWasted', g_Root,
 		local player = source
 		setTimer(
 			function()
-				if isPlayerDead(player) then
+				if isPedDead(player) then
 					clientCall(player, 'showMap')
 				end
 			end,
@@ -194,7 +194,7 @@ addEventHandler('onClothesInit', g_Root,
 		-- get current player clothes { type = {texture=texture, model=model} }
 		result.playerClothes = {}
 		for type=0,17 do
-			texture, model = getPlayerClothes(source, type)
+			texture, model = getPedClothes(source, type)
 			if texture then
 				result.playerClothes[type] = {texture = texture, model = model}
 			end
@@ -206,22 +206,22 @@ addEventHandler('onClothesInit', g_Root,
 addEvent('onPlayerGravInit', true)
 addEventHandler('onPlayerGravInit', g_Root,
 	function()
-		triggerClientEvent('onClientPlayerGravInit', source, getPlayerGravity(source))
+		triggerClientEvent('onClientPlayerGravInit', source, getPedGravity(source))
 	end
 )
 
 function setMySkin(skinid)
-	if isPlayerDead(source) then
+	if isPedDead(source) then
 		local x, y, z = getElementPosition(source)
 		if isPlayerTerminated(source) then
 			x = 0
 			y = 0
 			z = 3
 		end
-		local r = getPlayerRotation(source)
+		local r = getPedRotation(source)
 		spawnPlayer(source, x, y, z, r, skinid)
 	else
-		setPlayerSkin(source, skinid)
+		setElementModel(source, skinid)
 		setElementHealth(source, 100)
 	end
 	setCameraTarget(source, source)
@@ -236,14 +236,14 @@ function spawnMe(x, y, z)
 end
 
 function warpMe(targetPlayer)
-	local vehicle = getPlayerOccupiedVehicle(targetPlayer)
+	local vehicle = getPedOccupiedVehicle(targetPlayer)
 	if not vehicle then
 		-- target player is not in a vehicle - just warp next to him
 		local x, y, z = getElementPosition(targetPlayer)
 		clientCall(source, 'setPlayerPosition', x + 2, y, z)
 	else
 		-- target player is in a vehicle - warp into it if there's space left
-		if getPlayerOccupiedVehicle(source) then
+		if getPedOccupiedVehicle(source) then
 			--removePlayerFromVehicle(source)
 			outputChatBox('Get out of your vehicle first.', source)
 			return
@@ -251,11 +251,11 @@ function warpMe(targetPlayer)
 		local numseats = getVehicleMaxPassengers(vehicle)
 		for i=0,numseats do
 			if not getVehicleOccupant(vehicle, i) then
-				if isPlayerDead(source) then
+				if isPedDead(source) then
 					local x, y, z = getElementPosition(vehicle)
 					spawnMe(x + 4, y, z + 1)
 				end
-				warpPlayerIntoVehicle(source, vehicle, i)
+				warpPedIntoVehicle(source, vehicle, i)
 				return
 			end
 		end
@@ -278,13 +278,13 @@ function giveMeVehicles(vehicles)
 	
 	local px, py, pz, prot
 	local radius = 5
-	local playerVehicle = getPlayerOccupiedVehicle(source)
+	local playerVehicle = getPedOccupiedVehicle(source)
 	if playerVehicle then
 		px, py, pz = getElementPosition(playerVehicle)
 		prot, prot, prot = getVehicleRotation(playerVehicle)
 	else
 		px, py, pz = getElementPosition(source)
-		prot = getPlayerRotation(source)
+		prot = getPedRotation(source)
 	end
 	local offsetRot = math.rad(prot+90)
 	local vx = px + radius * math.cos(offsetRot)
@@ -303,7 +303,7 @@ function giveMeVehicles(vehicles)
 			table.insert(vehicleList, vehicle)
 			g_VehicleData[vehicle] = { creator = source, timers = {} }
 			if vehID == 464 then
-				warpPlayerIntoVehicle(source, vehicle)
+				warpPedIntoVehicle(source, vehicle)
 			elseif not g_Trailers[vehID] then
 				if getOption('vehicles.idleexplode') then
 					g_VehicleData[vehicle].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, vehicle)
@@ -313,13 +313,13 @@ function giveMeVehicles(vehicles)
 			vx = vx + 4
 			vz = vz + 4
 		else
-			errMsg(getVehicleNameFromID(vehID):gsub('y$', 'ie') .. 's are not allowed', source)
+			errMsg(getVehicleNameFromModel(vehID):gsub('y$', 'ie') .. 's are not allowed', source)
 		end
 	end
 end
 
-_setPlayerGravity = setPlayerGravity
-function setPlayerGravity(player, grav)
+_setPlayerGravity = setPedGravity
+function setPedGravity(player, grav)
 	if grav < getOption('gravity.min') then
 		errMsg(('Minimum allowed gravity is %.5f'):format(getOption('gravity.min')), player)
 	elseif grav > getOption('gravity.max') then
@@ -356,7 +356,7 @@ function setTimeFrozen(state)
 end
 
 function fadeVehiclePassengersCamera(toggle)
-	local vehicle = getPlayerOccupiedVehicle(source)
+	local vehicle = getPedOccupiedVehicle(source)
 	if not vehicle then
 		return
 	end
@@ -392,7 +392,7 @@ addEventHandler('onVehicleEnter', g_Root,
 			killTimer(g_VehicleData[source].timers.destroy)
 			g_VehicleData[source].timers.destroy = nil
 		end
-		if not getOption('weapons.vehiclesenabled') and g_ArmedVehicles[getVehicleID(source)] then
+		if not getOption('weapons.vehiclesenabled') and g_ArmedVehicles[getElementModel(source)] then
 			toggleControl(player, 'vehicle_fire', false)
 			toggleControl(player, 'vehicle_secondary_fire', false)
 		end
@@ -415,7 +415,7 @@ addEventHandler('onVehicleExit', g_Root,
 			end
 			g_VehicleData[source].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, source)
 		end
-		if g_ArmedVehicles[getVehicleID(source)] then
+		if g_ArmedVehicles[getElementModel(source)] then
 			toggleControl(player, 'vehicle_fire', true)
 			toggleControl(player, 'vehicle_secondary_fire', true)
 		end

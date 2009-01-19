@@ -15,8 +15,8 @@ _unbindKey = unbindKey
 function fireRockets() --the main secondary weapon function
 if isPlayerDead(getLocalPlayer()) then return --if your dead, return... I dont want dead people start shooting ;>
 else
-	if isPlayerInVehicle ( getLocalPlayer() ) then --if your in a vehicle
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() ) --get your current vehicle
+	if isPedInVehicle ( getLocalPlayer() ) then --if your in a vehicle
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() ) --get your current vehicle
 			if secWeapon == "sam4" then --if your secondary weapon is "sam4"
 				if ( veLastShot > getTickCount() ) then return end --reload related
 				veLastShot = getTickCount() + 20000 --^
@@ -218,25 +218,25 @@ secWeapon = "heatseaking"
 end)
 
 function fireRocket() --the main fire secondary weapon function
-	local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() ) --get your vehicle
+	local vehicle = getPedOccupiedVehicle ( getLocalPlayer() ) --get your vehicle
 	if secWeapon == "sam4" then --if your secondary weapon is sam4
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() ) --quite unnecesary this... but meh...
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() ) --quite unnecesary this... but meh...
 		local sX, sY, sZ = getElementPosition ( vehicle ) --get the vehicles position
 		createProjectile ( getLocalPlayer(), 19, sX, sY, sZ + 4, 4.0 ) --create a rocket
 	elseif secWeapon == "sam8" then --same as sam4...
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 		local sX, sY, sZ = getElementPosition ( vehicle )
 		createProjectile ( getLocalPlayer(), 19, sX, sY, sZ + 5, 4.0 )
 	elseif secWeapon == "sam" then --same here...
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 		local sX, sY, sZ = getElementPosition ( vehicle )
 		createProjectile ( getLocalPlayer(), 19, sX, sY, sZ + 3, 5.0 )
 	elseif secWeapon == "mine" then --if you got mines...
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 		local sX, sY, sZ = getElementPosition ( vehicle )
 		triggerServerEvent ( "zeMINE", getLocalPlayer(), sX, sY, sZ ) --trigger a server event to lay a mine.
 	elseif secWeapon == "molotov" then --same as sam's..
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 		local sX, sY, sZ = getElementPosition ( vehicle )
 		createProjectile ( getLocalPlayer(), 18, sX, sY, sZ + 5, 1.0 )
 	end
@@ -248,18 +248,18 @@ else
 	if ( veLastShot2 > getTickCount() ) then return end --reload related.
 	veLastShot2 = getTickCount() + 2000
 	if thrWeapon == "stinger" then --if you got stinger...
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 		local sX, sY, sZ = getElementPosition ( vehicle )
 		triggerServerEvent ( "zeStinger", getLocalPlayer(), sX, sY, sZ ) --trigger a server event to place it.
 	elseif thrWeapon == "nos" then --if you got nitro
 		setControlState("vehicle_fire", true) --force your vehicle fire to true.
 		setTimer(setControlState, 100, 1, "vehicle_fire", false) --set it to false 100ms later.
 	elseif thrWeapon == "jump" then --if you got "springs".
-		local vehicle = getPlayerOccupiedVehicle(getLocalPlayer()) --get your vehicle
+		local vehicle = getPedOccupiedVehicle(getLocalPlayer()) --get your vehicle
 		local velx, vely, velz = getElementVelocity(vehicle) --get the current velocity
 		setElementVelocity(vehicle, velx, vely, velz+0.3) --add 0.3 to the Z velocity, to make it "jump"
 	elseif thrWeapon == "oil" then --if you got oil...
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 		local sX, sY, sZ = getElementPosition ( vehicle )
 		triggerServerEvent ( "zeSlippery", getLocalPlayer(), sX, sY, sZ ) --trigger a server event to place it.
 	end
@@ -342,19 +342,19 @@ reload2ndTime = 0
 function fireMiniRocket() --this is the primary weapon function.
 if isPlayerDead(getLocalPlayer()) then return --if your dead, do nothing...
 else
-	if isPlayerInVehicle ( getLocalPlayer() ) then --if youre in a vehicle...
-		local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer( ) ) --get your vehicle
+	if isPedInVehicle ( getLocalPlayer() ) then --if youre in a vehicle...
+		local vehicle = getPedOccupiedVehicle ( getLocalPlayer( ) ) --get your vehicle
 		if priWeapon == "explosion" then --if your primary weapon is "small missile"
 			if ( veLastShot1 > getTickCount() ) then return end --reload related...
 			veLastShot1 = getTickCount() + 2000
 			local distance = 30 --max distance
-			if getVehicleID (vehicle) == 431 then --if youre in a bus....
+			if getElementModel (vehicle) == 431 then --if youre in a bus....
 				sX, sY, sZ = getElementPosition ( getLocalPlayer() ) --get your position, rather than the vehicles.
 			else
 				sX, sY, sZ = getElementPosition ( vehicle ) --else get the vehicles position
 			end
 			local fX, fY, fZ = sX, sY, sZ
-			local rX, rY, rZ = getVehicleRotation ( vehicle )
+			local rX, rY, rZ = getElementRotation ( vehicle )
 			local rZ = 360 - rZ
 			local rX = 360 - rX
 			local offset = math.sqrt ( ( distance ^ 2 ) * 2 )
@@ -364,14 +364,14 @@ else
 			fY = fY + math.cos ( math.rad ( rZ ) ) * offset
 			fZ = fZ - math.tan ( math.rad ( rX ) ) * offset --alot of math i hardly understand myself...
 			local col, x, y, z, element = processLineOfSight ( sX, sY, sZ + 0.5, fX, fY, fZ ) --process the line of sight
-			if ( col ) and element ~= getLocalPlayer() and element ~= getPlayerOccupiedVehicle(getLocalPlayer()) then --if you got a collision in the way, and the element is not you or your vehicle...
+			if ( col ) and element ~= getLocalPlayer() and element ~= getPedOccupiedVehicle(getLocalPlayer()) then --if you got a collision in the way, and the element is not you or your vehicle...
 				triggerServerEvent ( "VehicleShot", getLocalPlayer(), x, y, z ) --trigger a server event
-				if getVehicleID (vehicle) == 431 then --if your in a bus, repeat everything once (to fire 2 small missiles)
+				if getElementModel (vehicle) == 431 then --if your in a bus, repeat everything once (to fire 2 small missiles)
 					setTimer (function()
 						local distance = 30
 						sX, sY, sZ = getElementPosition ( getLocalPlayer() )
 						local fX, fY, fZ = sX, sY, sZ
-						local rX, rY, rZ = getVehicleRotation ( vehicle )
+						local rX, rY, rZ = getElementRotation ( vehicle )
 						--local rX = 360 - rX
 						local rZ = 360 - rZ
 						local rX = 360 - rX
@@ -383,7 +383,7 @@ else
 						fY = fY + math.cos ( math.rad ( rZ ) ) * offset
 						fZ = fZ - math.tan ( math.rad ( rX ) ) * offset
 						local col, x, y, z, element = processLineOfSight ( sX, sY, sZ + 0.5, fX, fY, fZ )
-						if ( col ) and element ~= getLocalPlayer() and element ~= getPlayerOccupiedVehicle(getLocalPlayer()) then 
+						if ( col ) and element ~= getLocalPlayer() and element ~= getPedOccupiedVehicle(getLocalPlayer()) then 
 							triggerServerEvent ( "VehicleShot", getLocalPlayer(), x, y, z )
 						else 
 							triggerServerEvent ( "VehicleShot", getLocalPlayer(), fX, fY, fZ )
@@ -392,12 +392,12 @@ else
 				end
 			else 
 				triggerServerEvent ( "VehicleShot", getLocalPlayer(), fX, fY, fZ ) --if theres no collision what so ever, create the explosion as far as the max distance allows.
-				if getVehicleID (vehicle) == 431 then --repeat once if your in a bus...
+				if getElementModel (vehicle) == 431 then --repeat once if your in a bus...
 					setTimer (function()
 						local distance = 30
 						sX, sY, sZ = getElementPosition ( getLocalPlayer() )
 						local fX, fY, fZ = sX, sY, sZ
-						local rX, rY, rZ = getVehicleRotation ( vehicle )
+						local rX, rY, rZ = getElementRotation ( vehicle )
 						--local rX = 360 - rX
 						local rZ = 360 - rZ
 						local rX = 360 - rX
@@ -409,7 +409,7 @@ else
 						fY = fY + math.cos ( math.rad ( rZ ) ) * offset
 						fZ = fZ - math.tan ( math.rad ( rX ) ) * offset
 						local col, x, y, z, element = processLineOfSight ( sX, sY, sZ + 0.5, fX, fY, fZ )
-						if ( col ) and element ~= getLocalPlayer() and element ~= getPlayerOccupiedVehicle(getLocalPlayer()) then 
+						if ( col ) and element ~= getLocalPlayer() and element ~= getPedOccupiedVehicle(getLocalPlayer()) then 
 							triggerServerEvent ( "VehicleShot", getLocalPlayer(), x, y, z )
 						else 
 							triggerServerEvent ( "VehicleShot", getLocalPlayer(), fX, fY, fZ )
@@ -529,7 +529,7 @@ addEventHandler("onClientPlayerSpawn", getLocalPlayer(), function () --this trig
 
 end)
 
-addEventHandler("onClientPlayerWasted", getLocalPlayer(), function() --when you die...
+addEventHandler("onClientPedWasted", getLocalPlayer(), function() --when you die...
 	deaths = deaths + 1 --add one death to your current deaths.
 	if maxdeaths1 > 0 then --this is used for elimination mode
 		if tonumber(deaths) <= tonumber(maxdeaths1) then --if your current deaths is below or the same as the max death setting.
@@ -635,7 +635,7 @@ addEventHandler ( "stopBullets", getRootElement(), stopShooting )
 function fireMiniGun () --the main minigun function... im lazy, so i wont go into details... You dont want to edit this anyway.... no... no you dont! i said NO!
 --
 for player,v in pairs(shootingPlayers) do
-	if isPlayerInVehicle ( player ) then
+	if isPedInVehicle ( player ) then
 		if player == getLocalPlayer() then
 			if guiNiceProgressBarGetProgress ( miniAmmoBar ) <= 0 then
 				triggerServerEvent ( "stopFire", getLocalPlayer() )
@@ -650,16 +650,16 @@ for player,v in pairs(shootingPlayers) do
 			guiNiceProgressBarSetAlpha ( miniAmmoBar, 0.5	)
 			end
 		end
-		local vehicle = getPlayerOccupiedVehicle ( player )
+		local vehicle = getPedOccupiedVehicle ( player )
 			if player == getLocalPlayer() and guiNiceProgressBarGetProgress ( miniAmmoBar ) <= 0 then return end
 			local distance = 30
-			if getVehicleID (vehicle) == 431 then
+			if getElementModel (vehicle) == 431 then
 				sX, sY, sZ = getElementPosition ( getLocalPlayer() )
 			else
 				sX, sY, sZ = getElementPosition ( vehicle )
 			end
 			local fX, fY, fZ = sX, sY, sZ
-			local rX, rY, rZ = getVehicleRotation ( vehicle )
+			local rX, rY, rZ = getElementRotation ( vehicle )
 			local rX = 360 - rX
 			local rZ = 360 - rZ
 			--local rZ = 360 - rZ
@@ -705,7 +705,7 @@ function enterVehicle (player) --when you enter a vehicle...
 	guiNiceProgressBarSetAlpha ( rcHealthBar, 0 )
 	guiNiceProgressBarSetProgress ( rcHealthBar, 100 )
 	guiSetText ( rcHealthText, " - Reload: 100%" )
-	local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+	local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 	local zeHealth = getElementHealth ( vehicle )
 	local zeHealth = zeHealth / 10
 	if zeHealth > 100 then
@@ -847,17 +847,17 @@ addEvent ("noCollBandito", true)
 addEventHandler ("noCollBandito", getRootElement(), noCollBandito)
 
 function secondaryCrossHair ()
-if isPlayerInVehicle ( getLocalPlayer()) then
+if isPedInVehicle ( getLocalPlayer()) then
 if not ( secondaim ) then return end
-local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 			local distance = 20
-			if getVehicleID (vehicle) == 431 then
+			if getElementModel (vehicle) == 431 then
 				sX, sY, sZ = getElementPosition ( getLocalPlayer() )
 			else
 				sX, sY, sZ = getElementPosition ( vehicle )
 			end
 			local fX, fY, fZ = sX, sY, sZ
-			local rX, rY, rZ = getVehicleRotation ( vehicle )
+			local rX, rY, rZ = getElementRotation ( vehicle )
 			local rX = 360 - rX
 			local rZ = 360 - rZ
 			--local rZ = 360 - rZ
@@ -868,7 +868,7 @@ local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
 			fY = fY + math.cos ( math.rad ( rZ ) ) * offset
 			fZ = fZ - math.tan ( math.rad ( rX ) ) * offset
 			local col, x, y, z, element = processLineOfSight ( sX, sY, sZ + 0.5, fX, fY, fZ - 0.5, true,true )
-			if ( col ) and element ~= getLocalPlayer and element ~= getPlayerOccupiedVehicle(getLocalPlayer()) then
+			if ( col ) and element ~= getLocalPlayer and element ~= getPedOccupiedVehicle(getLocalPlayer()) then
 				setElementPosition ( secondaim, x, y, z )
 			else
 				setElementPosition ( secondaim, fX, fY, fZ )
@@ -919,7 +919,7 @@ end
 	
 function fireZeLaser () --the main minigun function... im lazy, so i wont go into details... You dont want to edit this anyway.... no... no you dont! i said NO!
 for player,v in pairs(shootingLaserPlayers) do
-	if isPlayerInVehicle ( player ) then
+	if isPedInVehicle ( player ) then
 		if player == getLocalPlayer() then
 			if guiNiceProgressBarGetProgress ( miniAmmoBar ) <= 0 then
 				triggerServerEvent ( "stopFire", getLocalPlayer() )
@@ -938,16 +938,16 @@ for player,v in pairs(shootingLaserPlayers) do
 				guiNiceProgressBarSetAlpha ( miniAmmoBar, 0.5	)
 			end
 		end
-		local vehicle = getPlayerOccupiedVehicle ( player )
+		local vehicle = getPedOccupiedVehicle ( player )
 			if player == getLocalPlayer() and guiNiceProgressBarGetProgress ( miniAmmoBar ) <= 0 then return end
 			local distance = 30
-			if getVehicleID (vehicle) == 431 then
+			if getElementModel (vehicle) == 431 then
 				sX, sY, sZ = getElementPosition ( getLocalPlayer() )
 			else
 				sX, sY, sZ = getElementPosition ( vehicle )
 			end
 			local fX, fY, fZ = sX, sY, sZ
-			local rX, rY, rZ = getVehicleRotation ( vehicle )
+			local rX, rY, rZ = getElementRotation ( vehicle )
 			local rX = 360 - rX
 			local rZ = 360 - rZ
 			--local rZ = 360 - rZ

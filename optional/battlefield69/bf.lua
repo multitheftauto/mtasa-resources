@@ -117,7 +117,7 @@ function onMapLoad ( name )
 			samsite[k] = createObject (3267, x, y, z, rot)
 			samcol[k] = createColCircle (x, y, 2)
 			addEventHandler ("onColShapeHit", samcol[k], function ( source )
-				if isPlayerInVehicle(source) then return else
+				if isPedInVehicle(source) then return else
 				outputChatBox ("Press 'R' to mount the Anti-Air gun", source)
 				myAA = k
 				end
@@ -148,7 +148,7 @@ function onMapLoad ( name )
 			capture[k] = createBlipAttachedTo (flagpole[k], 0, 2, 255, 255, 255, 255, root )
 			addEventHandler ("onColShapeHit", lowerFlag[k], function (source) 
 				if getElementType(source) ~= "player" then return end
-				if isPlayerInVehicle(source) then return end
+				if isPedInVehicle(source) then return end
 				if getElementData(lowerFlag[k], "blocker") ~= false then
 				if isElementWithinColShape(getElementData(lowerFlag[k], "blocker"), lowerFlag[k]) == true and getElementData(lowerFlag[k], "blocker") ~= source then 
 					local blocker = getElementData(lowerFlag[k], "blocker")
@@ -398,16 +398,16 @@ function onMapStop ()
 	local axis = getTeamFromName("Axis")
 	local ally = getTeamFromName("Ally")
 	for k,v in pairs(getPlayersInTeam(axis)) do
-		if isPlayerInVehicle(v) then
-			removePlayerFromVehicle(v)
+		if isPedInVehicle(v) then
+			removePedFromVehicle(v)
 		end
 		destroyBlipsAttachedTo(v)
 		axisBlip[v] = nil
 		setPlayerTeam(v, nil)
 	end
 	for k,v in pairs(getPlayersInTeam(ally)) do
-		if isPlayerInVehicle(v) then
-			removePlayerFromVehicle(v)
+		if isPedInVehicle(v) then
+			removePedFromVehicle(v)
 		end
 		destroyBlipsAttachedTo(v)
 		allyBlip[v] = nil
@@ -530,7 +530,7 @@ if getElementData(source, "feigndeath") == true then return end
 			end
 		end
 		if ( skinID[source] == 1 ) then
-			setPlayerArmor (source, 99)
+			setPedArmor (source, 99)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 31, 330 )
 			bindKey (source, "1", "down", weaponChange)
@@ -541,7 +541,7 @@ if getElementData(source, "feigndeath") == true then return end
 			giveWeapon ( source, 16, 10 )
 			bindKey (source, "4", "down", weaponChange)
 		elseif ( skinID[source] == 2 ) then
-			setPlayerArmor (source, 0)
+			setPedArmor (source, 0)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 34, 15 )
 			bindKey (source, "1", "down", weaponChange)
@@ -555,7 +555,7 @@ if getElementData(source, "feigndeath") == true then return end
 			bindKey (source, "5", "down", weaponChange)
 		elseif ( skinID[source] == 3 ) then
 			takeAllWeapons ( source )
-			setPlayerArmor (source, 0)
+			setPedArmor (source, 0)
 			giveWeapon ( source, 29, 300 )
 			bindKey (source, "1", "down", weaponChange)
 			giveWeapon ( source, 22, 100 )
@@ -565,7 +565,7 @@ if getElementData(source, "feigndeath") == true then return end
 			giveWeapon ( source, 42, 500 )
 			bindKey (source, "4", "down", weaponChange)
 		elseif ( skinID[source] == 4 ) then
-			setPlayerArmor (source, 0)
+			setPedArmor (source, 0)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 36, 5 )
 			bindKey (source, "1", "down", weaponChange)
@@ -578,7 +578,7 @@ if getElementData(source, "feigndeath") == true then return end
 			giveWeapon ( source, 40, 11 )
 			bindKey (source, "5", "down", weaponChange)
 		elseif ( skinID[source] == 5 ) then
-			setPlayerArmor (source, 0)
+			setPedArmor (source, 0)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 33, 100 )
 			bindKey (source, "1", "down", weaponChange)
@@ -605,7 +605,7 @@ if getElementData(source, "feigndeath") == true then return end
 			end
 		end
 		if ( skinID[source] == 1 ) then
-			setPlayerArmor (source, 99)
+			setPedArmor (source, 99)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 30, 330 )
 			bindKey (source, "1", "down", weaponChange)
@@ -616,7 +616,7 @@ if getElementData(source, "feigndeath") == true then return end
 			giveWeapon ( source, 16, 10 )
 			bindKey (source, "4", "down", weaponChange)
 		elseif ( skinID[source] == 2 ) then
-			setPlayerArmor (source, 0)
+			setPedArmor (source, 0)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 34, 15 )
 			bindKey (source, "1", "down", weaponChange)
@@ -629,7 +629,7 @@ if getElementData(source, "feigndeath") == true then return end
 			giveWeapon ( source, 44, 1 )
 			bindKey (source, "5", "down", weaponChange)
 		elseif ( skinID[source] == 3 ) then
-			setPlayerArmor (source, 0)
+			setPedArmor (source, 0)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 29, 300 )
 			bindKey (source, "1", "down", weaponChange)
@@ -640,7 +640,7 @@ if getElementData(source, "feigndeath") == true then return end
 			giveWeapon ( source, 42, 500 )
 			bindKey (source, "4", "down", weaponChange)
 		elseif ( skinID[source] == 4 ) then
-			setPlayerArmor (source, 0)
+			setPedArmor (source, 0)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 36, 5 )
 			bindKey (source, "1", "down", weaponChange)
@@ -653,7 +653,7 @@ if getElementData(source, "feigndeath") == true then return end
 			giveWeapon ( source, 40, 11 )
 			bindKey (source, "5", "down", weaponChange)
 		elseif ( skinID[source] == 5 ) then
-			setPlayerArmor (source, 0)
+			setPedArmor (source, 0)
 			takeAllWeapons ( source )
 			giveWeapon ( source, 33, 100 )
 			bindKey (source, "1", "down", weaponChange)
@@ -669,63 +669,63 @@ end )
 prevChange = {}
 function weaponChange (source, key, keyState)
 if guiWindowOpen[source] == true then return end
-if isPlayerInVehicle(source) then return end
+if isPedInVehicle(source) then return end
 	if prevChange[source] then return end
 	prevChange[source] = setTimer(function (source)
 		prevChange[source] = nil end, 1000, 1,source)
 	if key == "1" and keyState == "down" then
 		if skinID[source] == 1 then
-			setPlayerWeaponSlot(source, 5)
+			setPedWeaponSlot(source, 5)
 		elseif skinID[source] == 2 then
-			setPlayerWeaponSlot(source, 6)
+			setPedWeaponSlot(source, 6)
 		elseif skinID[source] == 3 then
-			setPlayerWeaponSlot(source, 4)
+			setPedWeaponSlot(source, 4)
 		elseif skinID[source] == 4 then
-			setPlayerWeaponSlot(source, 7)
+			setPedWeaponSlot(source, 7)
 		elseif skinID[source] == 5 then
-			setPlayerWeaponSlot(source, 6)
+			setPedWeaponSlot(source, 6)
 		end
 	elseif key == "2" and keyState == "down" then
 		if skinID[source] == 1 then
-			setPlayerWeaponSlot(source, 2)
+			setPedWeaponSlot(source, 2)
 		elseif skinID[source] == 2 then
-			setPlayerWeaponSlot(source, 2)
+			setPedWeaponSlot(source, 2)
 		elseif skinID[source] == 3 then
-			setPlayerWeaponSlot(source, 2)
+			setPedWeaponSlot(source, 2)
 		elseif skinID[source] == 4 then
-			setPlayerWeaponSlot(source, 4)
+			setPedWeaponSlot(source, 4)
 		elseif skinID[source] == 5 then
-			setPlayerWeaponSlot(source, 3)
+			setPedWeaponSlot(source, 3)
 		end
 	elseif key == "3" and keyState == "down" then
 		if skinID[source] == 1 then
-			setPlayerWeaponSlot(source, 0)
+			setPedWeaponSlot(source, 0)
 		elseif skinID[source] == 2 then
-			setPlayerWeaponSlot(source, 1)
+			setPedWeaponSlot(source, 1)
 		elseif skinID[source] == 3 then
-			setPlayerWeaponSlot(source, 10)
+			setPedWeaponSlot(source, 10)
 		elseif skinID[source] == 4 then
-			setPlayerWeaponSlot(source, 1)
+			setPedWeaponSlot(source, 1)
 		elseif skinID[source] == 5 then
-			setPlayerWeaponSlot(source, 1)
+			setPedWeaponSlot(source, 1)
 		end
 	elseif key == "4" and keyState == "down" then
 		if skinID[source] == 1 then
-			setPlayerWeaponSlot(source, 8)
+			setPedWeaponSlot(source, 8)
 		elseif skinID[source] == 2 then
-			setPlayerWeaponSlot(source, 8)
+			setPedWeaponSlot(source, 8)
 		elseif skinID[source] == 3 then
-			setPlayerWeaponSlot(source, 9)
+			setPedWeaponSlot(source, 9)
 		elseif skinID[source] == 4 then
-			setPlayerWeaponSlot(source, 8)
+			setPedWeaponSlot(source, 8)
 		elseif skinID[source] == 5 then
-			setPlayerWeaponSlot(source, 11)
+			setPedWeaponSlot(source, 11)
 		end
 	elseif key == "5" and keyState == "down" then
 		if skinID[source] == 2 then
-			setPlayerWeaponSlot(source, 11)
+			setPedWeaponSlot(source, 11)
 		elseif skinID[source] == 4 then
-			setPlayerWeaponSlot(source, 12)
+			setPedWeaponSlot(source, 12)
 		end
 	end
 end
@@ -754,14 +754,14 @@ if getElementData (source, "spawnProtection") == true then return end
 	lastDmg = getTickCount() + 200
 	if bodypart == 9 then
 		if weapon == 34 then
-			killPlayer(source, attacker, weapon, bodypart)
+			killPed(source, attacker, weapon, bodypart)
 			triggerClientEvent(attacker, "displayGUItext", attacker, 0.45, 0.3, "You killed "..getClientName(source).." with a headshot!", "default-bold-small", 255, 255, 255, 3000)
 		else
 			local loss1 = loss + loss
 			local totalHealth = getElementHealth(source) - ( loss1 )
 			loss1 = 0
 			if totalHealth <= 5 then
-				killPlayer(source, attacker, weapon, bodypart)
+				killPed(source, attacker, weapon, bodypart)
 				triggerClientEvent(attacker, "displayGUItext", attacker, 0.45, 0.3, "You killed "..getClientName(source).." with a headshot!", "default-bold-small", 255, 255, 255, 3000)
 			else
 				setElementHealth(source, totalHealth)
@@ -771,7 +771,7 @@ if getElementData (source, "spawnProtection") == true then return end
 		if weapon == 34 then
 			local totalHealth = getElementHealth(source) - ( loss + loss )
 			if totalHealth <= 5 then
-				killPlayer(source, attacker, weapon, bodypart)
+				killPed(source, attacker, weapon, bodypart)
 			else
 				setElementHealth(source, totalHealth)
 			end
@@ -780,7 +780,7 @@ if getElementData (source, "spawnProtection") == true then return end
 end )
 
 addEventHandler ("onVehicleDamage", getRootElement(), function (loss)
-	if getVehicleID(source) == 594 then
+	if getElementModel(source) == 594 then
 		local tank = getElementParent (source)
 		if ( getVehicleOccupant(tank) ~= false ) then
 			triggerClientEvent (getVehicleOccupant(tank), "damageVehicle", source, loss ) 
@@ -817,10 +817,10 @@ if samcol[1] ~= nil and isElementWithinColShape(source, samcol[myAA] ) then
 		triggerClientEvent(source,"doSetFreecamEnabled", source, x, y, z, dontChangeFixedMode)
 	end
 else
-	local target = getPlayerTarget ( source )
+	local target = getPedTarget ( source )
 	local weaponType = getPlayerWeapon ( source )
 	if ( target ) and getElementType(target) == "vehicle" and ( weaponType ~= 46 ) and ( weaponType ~= 14 ) then
-		if isPlayerDead(source) then return end
+		if isPedDead(source) then return end
 		if keyState == "down" then
 			if getElementType ( target ) == "vehicle" then
 				triggerClientEvent (source, "mountPatriot", source)
@@ -828,27 +828,27 @@ else
 		end
 	else
 		if ( skinID[source] == 5 ) then
-			if isPlayerDead(source) then return end
+			if isPedDead(source) then return end
 			local weaponType = getPlayerWeapon ( source )
 			if ( weaponType == 46) then
-				if isPlayerInVehicle(source) then return end
+				if isPedInVehicle(source) then return end
 				if keyState == "down" then
 					guiWindowOpen[source] = true
 					triggerClientEvent (source, "mechanicGUI", source)
 					showCursor (source, false)
 				end
 			else
-				if isPlayerInVehicle(source) then return end
+				if isPedInVehicle(source) then return end
 				if ( lastEvent > getTickCount() ) then return end
 				lastEvent = getTickCount() + 500
 				triggerClientEvent(source, "displayGUItext", source, 0.45, 0.3, "You need to equip your backpack!", "default-bold-small", 255, 255, 255, 3000)
 			end
 		elseif ( skinID[source] == 3 ) then
-			if isPlayerDead(source) then return end
+			if isPedDead(source) then return end
 			local weaponType = getPlayerWeapon ( source )
 			if ( weaponType == 14) then
 				if keyState == "down" then
-					if isPlayerInVehicle(source) then return end
+					if isPedInVehicle(source) then return end
 					triggerClientEvent(source, "displayGUItext", source, 0.45, 0.3, "Hold 'R' and click on the player\nyou want to mend", "default-bold-small", 255, 255, 255, 3000)
 					showCursor (source, true)
 				elseif keyState == "up" then
@@ -859,36 +859,36 @@ else
 					end
 				end
 			else
-				if isPlayerInVehicle(source) then return end
+				if isPedInVehicle(source) then return end
 				if ( lastEvent > getTickCount() ) then return end
 				lastEvent = getTickCount() + 500
 				triggerClientEvent(source, "displayGUItext", source, 0.45, 0.3, "You need to equip your medicine\n flowers!", "default-bold-small", 255, 255, 255, 3000)
 			end
 		elseif ( skinID[source] == 2 ) then
 			if keyState == "down" then
-			if isPlayerInVehicle(source) then return end
-				if isPlayerDead(source) and getElementData(source, "feigndeath") == true then
+			if isPedInVehicle(source) then return end
+				if isPedDead(source) and getElementData(source, "feigndeath") == true then
 					triggerClientEvent (source, "restoreDeath", source)
 				else
 					feignHealth = getElementHealth(source)
 					feignX, feignY, feignZ = getElementPosition(source)
-					feignRot = getPlayerRotation(source)
-					feignSkin = getPlayerSkin(source)
+					feignRot = getPedRotation(source)
+					feignSkin = getElementModel(source)
 					setElementData(source, "feigndeath", true)
 					triggerClientEvent (source, "feigndeath", source, feignHealth, feignX, feignY, feignZ, feignRot, feignSkin)
 				end
 			end
 			
 		end
-		if isPlayerInVehicle(source) then
-			if isPlayerDead(source) then return end
-			if getVehicleID(getPlayerOccupiedVehicle(source)) == 485 then
+		if isPedInVehicle(source) then
+			if isPedDead(source) then return end
+			if getElementModel(getPedOccupiedVehicle(source)) == 485 then
 				if detached == true then
 					detached = false
 				else
 					detached = true
 				end
-				detachTrailerFromVehicle (getPlayerOccupiedVehicle(source))
+				detachTrailerFromVehicle (getPedOccupiedVehicle(source))
 				local x, y, z = getElementPosition(bagBox)
 				activateFieldgun = createColCircle (x, y, z, 3)
 				addEventHandler ("onColShapeHit", activateFieldgun, activateFieldgun1 )	
@@ -905,7 +905,7 @@ setElementData(source, "feigndeath", false)
 end)
 
 function killScout ( source )
-	killPlayer(source)
+	killPed(source)
 end
 addEvent ("killscout", true)
 addEventHandler("killscout", getRootElement(), killScout)
@@ -930,22 +930,22 @@ function attachPatriot (target)
 	else
 		if ( target ) then
 			if getElementType ( target ) == "vehicle" then
-				if getVehicleID(target) == 470 then
-					attachElementToElement (source, target, 0, -2.1, 0.8)
+				if getElementModel(target) == 470 then
+					attachElements (source, target, 0, -2.1, 0.8)
 					giveWeapon (source, 38, 500, true)
-				elseif getVehicleID(target) == 455 then
+				elseif getElementModel(target) == 455 then
 					local driver = getVehicleController(target)
 					if driver then
 						setCameraTarget (source, driver)
-						attachElementToElement (source, target, math.random(-0.9,0.9), math.random(-4, 0), 0.8)
+						attachElements (source, target, math.random(-0.9,0.9), math.random(-4, 0), 0.8)
 					else
 						triggerClientEvent(source, "displayGUItext", source, 0.45, 0.3, "You need someone to drive!", "default-bold-small", 255, 255, 255, 3000)
 					end
-				elseif getVehicleID(target) == 548 then
+				elseif getElementModel(target) == 548 then
 					local driver = getVehicleController(target)
 					if driver then
 						setCameraTarget (source, driver)
-						attachElementToElement (source, target, math.random(-0.6, 0.6), math.random(-2, 3), -0.8)
+						attachElements (source, target, math.random(-0.6, 0.6), math.random(-2, 3), -0.8)
 					else
 						triggerClientEvent(source, "displayGUItext", source, 0.45, 0.3, "You need someone to drive!", "default-bold-small", 255, 255, 255, 3000)
 					end
@@ -959,7 +959,7 @@ addEvent ("attachPatriot", true)
 addEventHandler ("attachPatriot", root, attachPatriot)
 
 function detachPatriot (target)
-	detachElementFromElement ( source )
+	detachElements ( source )
 	setCameraTarget (source, source)
 	takeWeapon (source, 38)
 	if ( skinID[source] == 4 ) then
@@ -993,7 +993,7 @@ addEventHandler ("onElementClicked", getRootElement(), function (button, state, 
 			local x1, y1, z1 = getElementPosition (clicker)
 			local distance = getDistanceBetweenPoints3D (x1, y1, z1, x, y, z)
 			if distance < 4 then
-				if getVehicleID(source) ~= 432 and getVehicleID(source) ~= 594 then
+				if getElementModel(source) ~= 432 and getElementModel(source) ~= 594 then
 					triggerClientEvent(clicker, "displayGUItext", clicker, 0.45, 0.3, "Fixing vehicle...", "default-bold-small", 255, 255, 255, 3000)
 					triggerClientEvent (clicker, "mechanicProgressBars", clicker, source, x, y, z, rz)				
 				else
@@ -1074,7 +1074,7 @@ function vehicleCreate ()
 	airplane1[source] = createVehicle (577, carX[source], carY[source] - 200, carZ[source] + 39)
 	setElementParent ( airplane1[source], airPlane[source] )
 	setVehicleLandingGearDown ( airplane1[source], false )
-	setTimer (attachElementToElement, 500, 1, airplane1[source], airPlane[source], 0, 0, -1)
+	setTimer (attachElements, 500, 1, airplane1[source], airPlane[source], 0, 0, -1)
 	setTimer ( vehicleCreate1, 600, 1, airPlane[source], carX[source], carY[source], carZ[source] )
 	setTimer ( createVehicle1, 5600, 1, source, carX[source], carY[source], carZ[source] )
 
@@ -1094,9 +1094,9 @@ function createVehicle1 (source, carX, carY, carZ)
 	local vehID = getElementData (source, "vehID")
 	daChute[source] = createObject (2903, carX +5, carY, carZ + 30 )
 	daCar[source] = createVehicle (vehID, carX +5, carY, carZ + 20 )
-	setTimer (attachElementToElement, 300, 1, daCar[source], daChute[source], 0, 0, -8, 0, 0, 0)
+	setTimer (attachElements, 300, 1, daCar[source], daChute[source], 0, 0, -8, 0, 0, 0)
 	setTimer (createVehicle2, 500, 1, daChute[source], carX, carY, carZ )
-	setTimer (detachElementFromElement, 10500, 1, daCar[source], daChute[source])
+	setTimer (detachElements, 10500, 1, daCar[source], daChute[source])
 end
 
 
@@ -1334,25 +1334,25 @@ function restartGame()
 	local axis = getTeamFromName("Axis")
 	local ally = getTeamFromName("Ally")
 	for k,v in pairs(getPlayersInTeam(axis)) do
-		if isPlayerInVehicle(v) then
-			removePlayerFromVehicle(v)
+		if isPedInVehicle(v) then
+			removePedFromVehicle(v)
 		end
 		destroyBlipsAttachedTo(v)
 		axisBlip[v] = nil
 		setPlayerTeam(v, nil)
 		setTimer (setPlayerTeam, 1000, 1, v, ally)
-		killPlayer(v)
+		killPed(v)
 		triggerClientEvent (v, "captureTable", v, capture)
 	end
 	for k,v in pairs(getPlayersInTeam(ally)) do
-		if isPlayerInVehicle(v) then
-			removePlayerFromVehicle(v)
+		if isPedInVehicle(v) then
+			removePedFromVehicle(v)
 		end
 		destroyBlipsAttachedTo(v)
 		allyBlip[v] = nil
 		setPlayerTeam(v, nil)
 		setTimer (setPlayerTeam, 1000, 1, v, axis)
-		killPlayer(v)
+		killPed(v)
 		triggerClientEvent (v, "captureTable", v, capture)
 	end
 	local vehicles = getElementsByType("vehicle")
@@ -1390,7 +1390,7 @@ function spectateNext ( source )
 	spect = getElementData ( source, "spect" )
 	myTeam = getPlayerTeam(source)
 	teamMates = getPlayersInTeam(myTeam)
-	if isPlayerDead(teamMates[spect]) then
+	if isPedDead(teamMates[spect]) then
 		if spect == #teamMates then
 			setElementData ( source, "spect", 1 )
 			spectateNext (source)
@@ -1415,7 +1415,7 @@ function spectatePrev ( source )
 	spect = getElementData ( source, "spect" )
 	myTeam = getPlayerTeam(source)
 	teamMates = getPlayersInTeam(myTeam)
-	if isPlayerDead(teamMates[spect]) then
+	if isPedDead(teamMates[spect]) then
 		if spect == 1 then
 			spectN = #teamMates
 			setElementData ( source, "spect", spectN )
@@ -1466,23 +1466,23 @@ function showTextForPlayer ( source, time, red, green, blue, scale, text )
 end
 
 addEventHandler("onVehicleExplode", root, function ()
-	if getVehicleID(source) == 432 then
+	if getElementModel(source) == 432 then
 		setTimer ( destroyElement, 10000, 1, source )
 	end
 end)
 
 addEventHandler ("onVehicleEnter", root, function ( player, seat, jacked )
-	if getVehicleID(source) == 476 then
+	if getElementModel(source) == 476 then
 		triggerClientEvent (player, "rustlerEnter", player )
 		local x, y, z = getElementPosition(source)
 		local rotX, rotY, rotZ = getVehicleRotation(source)
 		bomb1 = createObject( 3790, x, y, z - 1, rotZ - 90, rotY, rotZ)
-		attachElementToElement (bomb1, source, 0, 0, -1.2, 0, 0, -1.5 )
-	elseif getVehicleID(source) == 432 then
+		attachElements (bomb1, source, 0, 0, -1.2, 0, 0, -1.5 )
+	elseif getElementModel(source) == 432 then
 		local x, y, z = getElementPosition (source)
 		if not (pot[source]) then
 			pot[source] = createVehicle (594, x + 3, y, z)
-			attachElementToElement (pot[source], source, 0, 4, 0.5, 0, 0, 0)
+			attachElements (pot[source], source, 0, 4, 0.5, 0, 0, 0)
 			setVehicleLocked (pot[source], true)
 			setElementParent (pot[source], source)
 			setElementHealth (pot[source], 1000)
@@ -1491,9 +1491,9 @@ addEventHandler ("onVehicleEnter", root, function ( player, seat, jacked )
 		end
 		triggerClientEvent (getVehicleOccupant(source), "damageVehicle", source )
 		triggerClientEvent (getVehicleOccupant(source), "enterRhino", source )
-	elseif getVehicleID(source) == 520 or getVehicleID(source) == 425 then
+	elseif getElementModel(source) == 520 or getElementModel(source) == 425 then
 		triggerClientEvent (getVehicleOccupant(source), "enterRhino", source )
-	elseif getVehicleID(source) == 578 then
+	elseif getElementModel(source) == 578 then
 		if getTeamName(getPlayerTeam(player)) == "Ally" then
 			for k,v in pairs(axisBlip) do
 				setElementVisibleTo(v, root, true)
@@ -1506,12 +1506,12 @@ addEventHandler ("onVehicleEnter", root, function ( player, seat, jacked )
 	end
 end)
 addEventHandler ("onVehicleExit", root, function ( player, seat, jacked )
-	if getVehicleID(source) == 476 then
+	if getElementModel(source) == 476 then
 		triggerClientEvent (player, "rustlerExit", player )
 		destroyElement (bomb1)
-	elseif getVehicleID(source) == 432 or getVehicleID(source) == 520 or getVehicleID(source) == 425 then
+	elseif getElementModel(source) == 432 or getElementModel(source) == 520 or getElementModel(source) == 425 then
 		triggerClientEvent (getVehicleOccupant(source), "leaveRhino", source)
-	elseif getVehicleID(source) == 578 then
+	elseif getElementModel(source) == 578 then
 		if getTeamName(getPlayerTeam(player)) == "Ally" then
 			for k,v in pairs(axisBlip) do
 				setElementVisibleTo(v, root, false)
@@ -1525,17 +1525,17 @@ addEventHandler ("onVehicleExit", root, function ( player, seat, jacked )
 end)
 
 function createBomb ( source )
-	local rustler = getPlayerOccupiedVehicle(source)
+	local rustler = getPedOccupiedVehicle(source)
 	local x, y, z = getElementPosition(rustler)
 	local rotX, rotY, rotZ = getVehicleRotation(rustler)
 	bomb1 = createObject( 3790, x, y, z - 1, rotZ - 90, rotY, rotZ)
-	attachElementToElement (bomb1, rustler, 0, 0, -1.2, 0, 0, -1.5 )
+	attachElements (bomb1, rustler, 0, 0, -1.2, 0, 0, -1.5 )
 end
 
 function rustlerBomb ( sX, sY, sZ, fX, fY, fZ )
 	destroyElement (bomb1)
 	setTimer (createBomb, 10000, 1, source)
-	local rotX, rotY, rotZ = getVehicleRotation(getPlayerOccupiedVehicle(source))
+	local rotX, rotY, rotZ = getVehicleRotation(getPedOccupiedVehicle(source))
 	local time = ( sZ - fZ ) * 50
 	local bomb = createObject( 3790, sX, sY, sZ - 6, rotZ - 90, rotY, rotZ )
 	moveObject ( bomb, time, fX, fY, fZ )
@@ -1555,10 +1555,10 @@ addEventHandler ( "antiAirShot", getRootElement(), antiAirShot )
 
 function createBigAssEar ()
 	for k,v in pairs(getElementsByType("vehicle")) do
-	if getVehicleID(v) == 578 then
+	if getElementModel(v) == 578 then
 		local x, y, z = getElementPosition(v)
 		theEar[k] = createObject (1595, x + 2, y, z + 5 )
-		attachElementToElement (theEar[k], v, 0, -1, 2)
+		attachElements (theEar[k], v, 0, -1, 2)
 		setElementParent (theEar[k], v)
 		for k,v in pairs(getElementsByType("player")) do
 			triggerClientEvent (v, "scale", v, theEar)

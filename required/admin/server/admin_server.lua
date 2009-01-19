@@ -44,8 +44,8 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	local node = xmlLoadFile ( "conf\\interiors.xml" )
 	if ( node ) then
 		local interiors = 0
-		while ( xmlFindSubNode ( node, "interior", interiors ) ) do
-			local interior = xmlFindSubNode ( node, "interior", interiors )
+		while ( xmlFindChild ( node, "interior", interiors ) ) do
+			local interior = xmlFindChild ( node, "interior", interiors )
 			interiors = interiors + 1
 			aInteriors[interiors] = {}
 			aInteriors[interiors]["world"] = tonumber ( xmlNodeGetAttribute ( interior, "world" ) )
@@ -60,8 +60,8 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	local node = xmlLoadFile ( "conf\\stats.xml" )
 	if ( node ) then
 		local stats = 0
-		while ( xmlFindSubNode ( node, "stat", stats ) ) do
-			local stat = xmlFindSubNode ( node, "stat", stats )
+		while ( xmlFindChild ( node, "stat", stats ) ) do
+			local stat = xmlFindChild ( node, "stat", stats )
 			local id = tonumber ( xmlNodeGetAttribute ( stat, "id" ) )
 			local name = xmlNodeGetAttribute ( stat, "name" )
 			aStats[id] = name
@@ -72,8 +72,8 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	local node = xmlLoadFile ( "conf\\weathers.xml" )
 	if ( node ) then
 		local weathers = 0
-		while ( xmlFindSubNode ( node, "weather", weathers ) ~= false ) do
-		local weather = xmlFindSubNode ( node, "weather", weathers )
+		while ( xmlFindChild ( node, "weather", weathers ) ~= false ) do
+		local weather = xmlFindChild ( node, "weather", weathers )
 			local id = tonumber ( xmlNodeGetAttribute ( weather, "id" ) )
 			local name = xmlNodeGetAttribute ( weather, "name" )
 			aWeathers[id] = name
@@ -84,14 +84,14 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	local node = xmlLoadFile ( "conf\\reports.xml" )
 	if ( node ) then
 		local messages = 0
-		while ( xmlFindSubNode ( node, "message", messages ) ) do
-			subnode = xmlFindSubNode ( node, "message", messages )
-			local author = xmlFindSubNode ( subnode, "author", 0 )
-			local subject = xmlFindSubNode ( subnode, "subject", 0 )
-			local category = xmlFindSubNode ( subnode, "category", 0 )
-			local text = xmlFindSubNode ( subnode, "text", 0 )
-			local time = xmlFindSubNode ( subnode, "time", 0 )
-			local read = ( xmlFindSubNode ( subnode, "read", 0 ) ~= false )
+		while ( xmlFindChild ( node, "message", messages ) ) do
+			subnode = xmlFindChild ( node, "message", messages )
+			local author = xmlFindChild ( subnode, "author", 0 )
+			local subject = xmlFindChild ( subnode, "subject", 0 )
+			local category = xmlFindChild ( subnode, "category", 0 )
+			local text = xmlFindChild ( subnode, "text", 0 )
+			local time = xmlFindChild ( subnode, "time", 0 )
+			local read = ( xmlFindChild ( subnode, "read", 0 ) ~= false )
 			local id = #aReports + 1
 			aReports[id] = {}
 			if ( author ) then aReports[id].author = xmlNodeGetValue ( author )
@@ -111,12 +111,12 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	local node = xmlLoadFile ( "conf\\messages.xml" )
 	if ( node ) then
 		for id, type in ipairs ( _types ) do
-			local subnode = xmlFindSubNode ( node, type, 0 )
+			local subnode = xmlFindChild ( node, type, 0 )
 			if ( subnode ) then
 				aLogMessages[type] = {}
 				local groups = 0
-				while ( xmlFindSubNode ( subnode, "group", groups ) ) do
-					local group = xmlFindSubNode ( subnode, "group", groups )
+				while ( xmlFindChild ( subnode, "group", groups ) ) do
+					local group = xmlFindChild ( subnode, "group", groups )
 					local action = xmlNodeGetAttribute ( group, "action" )
 					local r = tonumber ( xmlNodeGetAttribute ( group, "r" ) )
 					local g = tonumber ( xmlNodeGetAttribute ( group, "g" ) )
@@ -125,10 +125,10 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 					aLogMessages[type][action]["r"] = r or 0
 					aLogMessages[type][action]["g"] = g or 255
 					aLogMessages[type][action]["b"] = b or 0
-					if ( xmlFindSubNode ( group, "all", 0 ) ) then aLogMessages[type][action]["all"] = xmlNodeGetValue ( xmlFindSubNode ( group, "all", 0 ) ) end
-					if ( xmlFindSubNode ( group, "admin", 0 ) ) then aLogMessages[type][action]["admin"] = xmlNodeGetValue ( xmlFindSubNode ( group, "admin", 0 ) ) end
-					if ( xmlFindSubNode ( group, "player", 0 ) ) then aLogMessages[type][action]["player"] = xmlNodeGetValue ( xmlFindSubNode ( group, "player", 0 ) ) end
-					if ( xmlFindSubNode ( group, "log", 0 ) ) then aLogMessages[type][action]["log"] = xmlNodeGetValue ( xmlFindSubNode ( group, "log", 0 ) ) end
+					if ( xmlFindChild ( group, "all", 0 ) ) then aLogMessages[type][action]["all"] = xmlNodeGetValue ( xmlFindChild ( group, "all", 0 ) ) end
+					if ( xmlFindChild ( group, "admin", 0 ) ) then aLogMessages[type][action]["admin"] = xmlNodeGetValue ( xmlFindChild ( group, "admin", 0 ) ) end
+					if ( xmlFindChild ( group, "player", 0 ) ) then aLogMessages[type][action]["player"] = xmlNodeGetValue ( xmlFindChild ( group, "player", 0 ) ) end
+					if ( xmlFindChild ( group, "log", 0 ) ) then aLogMessages[type][action]["log"] = xmlNodeGetValue ( xmlFindChild ( group, "log", 0 ) ) end
 					groups = groups + 1
 				end
 			end
@@ -148,8 +148,8 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 		local node = xmlLoadFile ( "conf\\reports.xml" )
 		if ( node ) then 
 			local messages = 0
-			while ( xmlFindSubNode ( node, "message", messages ) ~= false ) do
-				local subnode = xmlFindSubNode ( node, "message", messages )
+			while ( xmlFindChild ( node, "message", messages ) ~= false ) do
+				local subnode = xmlFindChild ( node, "message", messages )
 				xmlDestroyNode ( subnode )
 				messages = messages + 1
 			end
@@ -157,10 +157,10 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 			node = xmlCreateFile ( "conf\\reports.xml", "messages" )
 		end
 		for id, message in ipairs ( aReports ) do
-			local subnode = xmlCreateSubNode ( node, "message" )
+			local subnode = xmlCreateChild ( node, "message" )
 			for key, value in pairs ( message ) do
 				if ( value ) then
-					xmlNodeSetValue ( xmlCreateSubNode ( subnode, key ), tostring ( value ) )
+					xmlNodeSetValue ( xmlCreateChild ( subnode, key ), tostring ( value ) )
 				end
 			end
 		end
@@ -171,7 +171,7 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 end )
 
 function aGetSetting ( setting )
-	local result = xmlFindSubNode ( _settings, tostring ( setting ), 0 )
+	local result = xmlFindChild ( _settings, tostring ( setting ), 0 )
 	if ( result ) then
 		result = xmlNodeGetValue ( result )
 		if ( result == "true" ) then return true
@@ -182,16 +182,16 @@ function aGetSetting ( setting )
 end
 
 function aSetSetting ( setting, value )
-	local node = xmlFindSubNode ( _settings, tostring ( setting ), 0 )
+	local node = xmlFindChild ( _settings, tostring ( setting ), 0 )
 	if ( not node ) then
-		node = xmlCreateSubNode ( _settings, tostring ( setting ) )
+		node = xmlCreateChild ( _settings, tostring ( setting ) )
 	end
 	xmlNodeSetValue ( node, tostring ( value ) )
 	xmlSaveFile ( _settings )
 end
 
 function aRemoveSetting ( setting )
-	local node = xmlFindSubNode ( _settings, tostring ( setting ), 0 )
+	local node = xmlFindChild ( _settings, tostring ( setting ), 0 )
 	if ( node ) then
 		xmlDestroyNode ( node )
 	end
@@ -257,7 +257,7 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 			triggerClientEvent ( player, "aClientPlayerJoin", source, getClientIP ( source ), getPlayerUserName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
 		end
 	end
-	setPlayerGravity ( source, getGravity() )
+	setPedGravity ( source, getGravity() )
 end )
 
 function aPlayerInitialize ( player )
@@ -571,7 +571,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 			local armour = tonumber ( data )
 			if ( armour ) then
 				if ( armour > 200 ) then armour = 100 end
-				if ( not setPlayerArmor ( player, armour ) ) then
+				if ( not setPedArmor ( player, armour ) ) then
 					action = nil
 				end
 				mdata = armour
@@ -579,16 +579,16 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				action = nil
 			end
 		elseif ( action == "setskin" ) then
-			local vehicle = getPlayerOccupiedVehicle ( player )
-			local jetpack = doesPlayerHaveJetPack ( player )
+			local vehicle = getPedOccupiedVehicle ( player )
+			local jetpack = doesPedHaveJetPack ( player )
 			local seat = 0
-			if ( vehicle ) then seat = getPlayerOccupiedVehicleSeat ( player ) end
+			if ( vehicle ) then seat = getPedOccupiedVehicleSeat ( player ) end
 			local x, y, z = getElementPosition ( player )
 			data = tonumber ( data )
-			if ( spawnPlayer ( player, x, y, z, getPlayerRotation ( player ), data, getElementInterior ( player ), getElementDimension ( player ), getPlayerTeam ( player ) ) ) then
+			if ( spawnPlayer ( player, x, y, z, getPedRotation ( player ), data, getElementInterior ( player ), getElementDimension ( player ), getPlayerTeam ( player ) ) ) then
 				fadeCamera ( player, true )
-				if ( vehicle ) then warpPlayerIntoVehicle ( player, vehicle, seat ) end
-				if ( jetpack ) then givePlayerJetPack ( player ) end
+				if ( vehicle ) then warpPedIntoVehicle ( player, vehicle, seat ) end
+				if ( jetpack ) then givePedJetPack ( player ) end
 				mdata = data
 			else
 				action = nil
@@ -602,14 +602,14 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 		elseif ( action == "setstat" ) then
 			if ( additional ) then
 				if ( tonumber ( data ) == 300 ) then
-					if ( setPlayerFightingStyle ( player, tonumber ( additional ) ) ) then
+					if ( setPedFightingStyle ( player, tonumber ( additional ) ) ) then
 						mdata = "Fighting Style"
 						more = additional
 					else
 						action = nil
 					end
 				else
-					if ( setPlayerStat ( player, tonumber ( data ), tonumber ( additional ) ) ) then
+					if ( setPedStat ( player, tonumber ( data ), tonumber ( additional ) ) ) then
 						mdata = aStats[data]
 						more = additional
 					else
@@ -630,7 +630,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 			action = nil
 			for id, interior in ipairs ( aInteriors ) do
 				if ( interior["id"] == data ) then
-					local vehicle = getPlayerOccupiedVehicle ( player )
+					local vehicle = getPedOccupiedVehicle ( player )
 					setElementInterior ( player, interior["world"] )
 					local x, y, z = interior["x"] or 0, interior["y"] or 0, interior["z"] or 0
 					local rot = interior["r"] or 0
@@ -639,7 +639,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 						setElementPosition ( vehicle, x, y, z + 0.2 )
 					else
 						setElementPosition ( player, x, y, z + 0.2 )
-						setPlayerRotation ( player, rot )
+						setPedRotation ( player, rot )
 					end
 					action = "interior"
 					mdata = data
@@ -657,13 +657,13 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				action = nil
 			end
 		elseif ( action == "jetpack" ) then
-			if ( doesPlayerHaveJetPack ( player ) ) then
-				removePlayerJetPack ( player )
+			if ( doesPedHaveJetPack ( player ) ) then
+				removePedJetPack ( player )
 				action = "jetpackr"
 			else
-				if ( getPlayerOccupiedVehicle ( player ) ) then outputChatBox ( "Unable to give a jetpack - "..getClientName ( player ).." is in a vehicle", source, 255, 0, 0 )
+				if ( getPedOccupiedVehicle ( player ) ) then outputChatBox ( "Unable to give a jetpack - "..getClientName ( player ).." is in a vehicle", source, 255, 0, 0 )
 				else
-					if ( givePlayerJetPack ( player ) ) then
+					if ( givePedJetPack ( player ) ) then
 						action = "jetpacka"
 					end
 				end
@@ -693,7 +693,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				outputChatBox ( "Error - Player is not logged in.", source, 255, 100 ,100 )
 			end
 		elseif ( action == "givevehicle" ) then
-			local pvehicle = getPlayerOccupiedVehicle ( player )
+			local pvehicle = getPedOccupiedVehicle ( player )
 			local vx, vy, vz = getElementVelocity ( player )
 			local vehicle = nil
 			if ( pvehicle ) then
@@ -707,17 +707,17 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				for i, p in ipairs ( passengers ) do
 					if ( p ~= player ) then
 						local s = i - 1
-						if ( s <= seats ) then setTimer ( warpPlayerIntoVehicle, 500, 1, p, vehicle, s ) end
+						if ( s <= seats ) then setTimer ( warpPedIntoVehicle, 500, 1, p, vehicle, s ) end
 					end
 				end
 			else
 				local x, y, z = getElementPosition ( player )
-				local r = getPlayerRotation ( player )
+				local r = getPedRotation ( player )
 				vehicle = createVehicle ( data, x, y, z, 0, 0, r )
 			end
 			setElementDimension ( vehicle, getElementDimension ( player ) )
 			setElementInterior ( vehicle, getElementInterior ( player ) )
-			warpPlayerIntoVehicle ( player, vehicle )
+			warpPedIntoVehicle ( player, vehicle )
 			setElementVelocity ( vehicle, vx, vy, vz )
 			mdata = getVehicleName ( vehicle )
 		elseif ( action == "giveweapon" ) then
@@ -728,9 +728,9 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				action = nil
 			end
 		elseif ( action == "slap" ) then
-			if ( getElementHealth ( player ) > 0 ) and ( not isPlayerDead ( player ) ) then
+			if ( getElementHealth ( player ) > 0 ) and ( not isPedDead ( player ) ) then
 				if ( ( not health ) or ( not tonumber ( health ) ) ) then data = 20 end
-				if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPlayer, 50, 1, player )
+				if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
 				else setElementHealth ( player, getElementHealth ( player ) - data ) end
 				local x, y, z = getElementVelocity ( player )
 				setElementVelocity ( player, x , y, z + 0.2 )
@@ -742,7 +742,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
     			function warpPlayer ( p, to )
 				function warp ( p, to )
 					local x, y, z = getElementPosition ( to )
-					local r = getPlayerRotation ( to )
+					local r = getPedRotation ( to )
  	   				x = x - math.sin ( math.rad ( r ) ) * 2
 					y = y + math.cos ( math.rad ( r ) ) * 2
    					setTimer ( setElementPosition, 1000, 1, p, x, y, z + 1 )
@@ -751,13 +751,13 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 					setElementInterior ( p, getElementInterior ( to ) )
 					setTimer ( fadeCamera, 1000, 1, p, true, 1 )
 				end
-      		  	if ( isPlayerInVehicle ( to ) ) then
-      		  		local vehicle = getPlayerOccupiedVehicle ( to )
+      		  	if ( isPedInVehicle ( to ) ) then
+      		  		local vehicle = getPedOccupiedVehicle ( to )
 					local seats = getVehicleMaxPassengers ( vehicle ) + 1
 					local i = 0
 					while ( i < seats ) do
 						if ( not getVehicleOccupant ( vehicle, i ) ) then
-   							setTimer ( warpPlayerIntoVehicle, 1000, 1, p, vehicle, i )
+   							setTimer ( warpPedIntoVehicle, 1000, 1, p, vehicle, i )
 							fadeCamera ( p, false, 1, 0, 0, 0 )
 							setTimer ( fadeCamera, 1000, 1, p, true, 1 )
 							break
@@ -791,7 +791,7 @@ end )
 addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", _root, function ( player, action, data )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
-		local vehicle = getPlayerOccupiedVehicle ( player )
+		local vehicle = getPedOccupiedVehicle ( player )
 		if ( vehicle ) then
 			local mdata = ""
 			if ( action == "repair" ) then
@@ -849,7 +849,7 @@ addEventHandler ( "aVehicle", _root, function ( player, action, data )
 				for i = 0, seats do
 					local passenger = getVehicleOccupant ( vehicle, i )
 					if ( passenger ) then
-						if ( ( passenger == player ) and ( getPlayerOccupiedVehicle ( source ) ~= vehicle ) ) then aAction ( "vehicle", action, source, passenger, mdata )
+						if ( ( passenger == player ) and ( getPedOccupiedVehicle ( source ) ~= vehicle ) ) then aAction ( "vehicle", action, source, passenger, mdata )
    						else aAction ( "vehicle", action, passenger, passenger, mdata ) end
 					end
 				end
@@ -944,7 +944,7 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 		elseif ( action == "setgravity" ) then
 			if ( setGravity ( tonumber ( data ) ) ) then
 				for id, player in ipairs ( getElementsByType ( "player" ) ) do
-					setPlayerGravity ( player, getGravity() )
+					setPedGravity ( player, getGravity() )
 				end
 			else
 				action = nil

@@ -194,7 +194,7 @@ function barrier ()
 	local barrier = createColCircle ( barrier_x, barrier_y, barrier_r )
 	addEventHandler ( "onColShapeLeave", barrier, function ( p )
 		if ( getElementType ( p ) == "player" ) then 
-			killPlayer ( p )
+			killPed ( p )
 			outputChatBox( "* Killed: Don't walk away.", p, 255, 100, 100 )
 			end
 		end )

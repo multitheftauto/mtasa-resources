@@ -402,14 +402,14 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 						
 						if (classInfo ~= false) then
 							-- Check armour of players and enforce limits
-							if (not isPlayerDead(playerValue)) then
-								if (getPlayerArmor(playerValue) > INT(classInfo["maxArmor"])) then
-									setPlayerArmor(playerValue, INT(classInfo["maxArmor"]))
+							if (not isPedDead(playerValue)) then
+								if (getPedArmor(playerValue) > INT(classInfo["maxArmor"])) then
+									setPedArmor(playerValue, INT(classInfo["maxArmor"]))
 								end
 							end
 							
 							-- Check health of players and enforce limits
-							if (not isPlayerDead(playerValue)) then
+							if (not isPedDead(playerValue)) then
 								if (getElementHealth(playerValue) > INT(classInfo["maxHealth"])) then
 									setElementHealth(playerValue,INT( classInfo["maxHealth"]))
 								end
@@ -527,7 +527,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 		
 		if (self.roundIsActive) then
 			-- Check for a Capture Point leave event
-			if (not isPlayerDead(player)) then -- Dead check just for security ;)
+			if (not isPedDead(player)) then -- Dead check just for security ;)
 				local CP = getElementData(marker, "teamwars_cp")
 				if (isElement(CP)) then
 					self:EnterCP(CP, player)
@@ -542,7 +542,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 		if (self.roundIsActive) then
 		
 			-- Check for a Capture Point leave event
-			if (not isPlayerDead(player)) then -- Dead check just for security ;)
+			if (not isPedDead(player)) then -- Dead check just for security ;)
 				local CP = getElementData(marker, "teamwars_cp")
 				if (isElement(CP)) then
 					self:ExitCP(CP, player)
@@ -680,7 +680,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 		local Players = getElementsByType("player")
 		
 		for k, Player  in ipairs(Players) do
-			if (isPlayerDead(Player)) then 
+			if (isPedDead(Player)) then 
 				local classElement = getElementData(Player, "teamwars_selected_class")
 				if (class) then
 					local classInfo = getClassInfo(classElement)
@@ -816,7 +816,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 				local randomClass = getElementData(playerValue, "teamwars_random_class")
 
 				if ((randomClass) or (selectedClass)) then
-					if ((not deadOnly) or (isPlayerDead(playerValue))) then
+					if ((not deadOnly) or (isPedDead(playerValue))) then
 						self:SpawnPlayer(playerValue)
 					end
 				end
@@ -881,7 +881,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 			local x,y,z =  getElementPosition(player)
 			local playerCorona = createMarker(x, y, z, "corona", 1.5, r, g, b, 100) -- was 125 alpha before
 
-			attachElementToElement(playerCorona, player)
+			attachElements(playerCorona, player)
 			local prevCorona = getElementData(player, "teamwars_player_corona")
 			
 			if (isElement(prevCorona)) then
@@ -1007,7 +1007,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 			-- setPlayerStat (player, 24, classInfo["MaxHealth"] * 5) -- DOES NOT WORK :(
 			
 			setElementHealth (player, INT(classInfo["startHealth"]))
-			setPlayerArmor(player, INT(classInfo["startArmor"]))
+			setPedArmor(player, INT(classInfo["startArmor"]))
 			
 			-- Give weapons
 			-- loop -- giveWeapon ( player thePlayer, int weapon, [ int ammo=30, bool setAsCurrent=false ] )
@@ -1046,7 +1046,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 		--		textDisplayAddObserver(self.teamTable[playerTeam].respawnDisplay, player)
 		--	end		
 			if ((not self.respawnTimers[team]) and (self.roundIsActive) and ((randomClass) or (selectedClass)))  then
-				if (isPlayerDead(player)) then
+				if (isPedDead(player)) then
 					self:SpawnPlayer(player)
 				end
 			end
@@ -1607,7 +1607,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 								local bHasCappingTeam = false
 								local bHasOtherTeam = false
 								for k, selPlayer in ipairs(playerList) do
-									if (not isPlayerDead(selPlayer)) then
+									if (not isPedDead(selPlayer)) then
 										if (CappingTeam == getPlayerTeam(selPlayer)) then
 											bHasCappingTeam= true
 										else
@@ -1638,7 +1638,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 		local playerList = self:GetCapturePointPlayers(CP)
 		
 		for k, player in ipairs ( playerList ) do
-			if ((not isPlayerDead(player)) and (getPlayerTeam(player) == CappingTeam)) then
+			if ((not isPedDead(player)) and (getPlayerTeam(player) == CappingTeam)) then
 				local currentPoints = getElementData(player, "Captures")				
 				setElementData(player, "Captures", currentPoints + 1)	
 				local Score = getElementData(player, "Score")				

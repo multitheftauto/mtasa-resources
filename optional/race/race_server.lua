@@ -3,7 +3,7 @@ g_ResRoot = getResourceRootElement(getThisResource())
 scoreboard = createResourceCallInterface('scoreboard')
 votemanager = createResourceCallInterface('votemanager')
 mapmanager = createResourceCallInterface('mapmanager')
-allowRPC('setVehicleFrozen', 'setElementPosition','setPlayerGravity')
+allowRPC('setVehicleFrozen', 'setElementPosition','setPedGravity')
 g_MotorBikeIDs = table.create({ 448, 461, 462, 463, 468, 471, 521, 522, 523, 581, 586 }, true)
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_AircraftIDs = table.create({ 592, 577, 511, 548, 512, 593, 425, 520, 417, 487, 553, 488, 497, 563, 476, 447, 519, 460, 469, 513 }, true)
@@ -184,7 +184,7 @@ end
 --      g_RaceStartCountdown
 function launchRace()
 	table.each(g_Vehicles, setVehicleFrozen, false)
-	table.each(g_Players, setPlayerGravity, 0.008)
+	table.each(g_Players, setPedGravity, 0.008)
 	clientCall(g_Root, 'launchRace', g_MapOptions.duration, g_MapOptions.vehicleweapons)
 	if g_MapOptions.duration then
 		g_RaceEndTimer = setTimer(raceTimeout, g_MapOptions.duration, 1)
@@ -269,7 +269,7 @@ function joinHandler(player)
 		local texture, model
 		for type,index in pairs(clothes) do
 			texture, model = getClothesByTypeIndex(type, index)
-			addPlayerClothes(player, texture, model, type)
+			addPedClothes(player, texture, model, type)
 		end
 	elseif g_MapOptions.skins == 'random' then
 		repeat until spawnPlayer(player, x + 4, y, z, 0, math.random(9, 288))
@@ -284,9 +284,9 @@ function joinHandler(player)
         end
 	end
 
-	setPlayerStat(player, 160, 1000)
-	setPlayerStat(player, 229, 1000)
-	setPlayerStat(player, 230, 1000)
+	setPedStat(player, 160, 1000)
+	setPedStat(player, 229, 1000)
+	setPedStat(player, 230, 1000)
 	
 	local vehicle
 	if spawnpoint.vehicle then
@@ -294,7 +294,7 @@ function joinHandler(player)
         setRandomSeedForMap('vehiclecolors')
 		vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
 		setVehicleFrozen(vehicle, true)
-		setPlayerGravity(player, 0.0001)
+		setPedGravity(player, 0.0001)
 		if playerJoined and g_CurrentRaceMode.running then
 			setTimer(
 				function()
@@ -302,7 +302,7 @@ function joinHandler(player)
 						return
 					end
 					setVehicleFrozen(vehicle, false)
-					setPlayerGravity(player, 0.008)
+					setPedGravity(player, 0.008)
 				end,
 				3000,
 				1
@@ -332,7 +332,7 @@ function joinHandler(player)
 			    end
             end
 		end
-		setTimer(warpPlayerIntoVehicle, 500, 10, player, vehicle)
+		setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)
 		
 		g_Vehicles[player] = vehicle
 	end
@@ -446,9 +446,9 @@ addEventHandler('onPlayerWasted', g_Root,
 		if g_CurrentRaceMode then
 			if not g_CurrentRaceMode.startTick then
 				local x, y, z = getElementPosition(source)
-				spawnPlayer(source, x, y, z, 0, getPlayerSkin(source))
+				spawnPlayer(source, x, y, z, 0, getElementModel(source))
 				if g_Vehicles[source] then
-					setTimer(warpPlayerIntoVehicle, 500, 10, source, g_Vehicles[source])
+					setTimer(warpPedIntoVehicle, 500, 10, source, g_Vehicles[source])
 				end
 			else
 				g_CurrentRaceMode:onPlayerWasted(source)
@@ -625,7 +625,7 @@ end
 addCommandHandler('kill',
 	function(player)
         if stateAllowsKillPlayer() then
-		    killPlayer(player)
+		    killPed(player)
         end
 	end
 )

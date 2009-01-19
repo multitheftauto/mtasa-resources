@@ -4,18 +4,18 @@ local driveby_state = true
 
 local function switchSlot()
         if ( not driveby_state ) then return end
-	if isPlayerInVehicle( localPlayer ) then
-		if getPlayerWeapon( localPlayer ) == 0 then
-			setPlayerWeaponSlot( localPlayer, 4 )
+	if isPedInVehicle( localPlayer ) then
+		if getPedWeapon( localPlayer ) == 0 then
+			setPedWeaponSlot( localPlayer, 4 )
 		else
-			setPlayerWeaponSlot( localPlayer, 0 )
+			setPedWeaponSlot( localPlayer, 0 )
 		end
 	end
 end
 bindKey( "mouse2", "down", switchSlot )
 
 local function hideWeapon( player )
-	setPlayerWeaponSlot( localPlayer, 0 )
+	setPedWeaponSlot( localPlayer, 0 )
 end
 addEventHandler( "onClientPlayerVehicleEnter", localPlayer, hideWeapon )
 

@@ -49,7 +49,7 @@ end
 
 function Ability_Medpack:OnCommand(command, arg1, arg2, arg3)	
 	if (command == self.command) then
-		if ((not isPlayerDead(getLocalPlayer())) and (not isPlayerInVehicle(getLocalPlayer()))) then
+		if ((not isPlayerDead(getLocalPlayer())) and (not isPedInVehicle(getLocalPlayer()))) then
 			self.currentPower = Ability_PowerSource.GetCurrentPower(self:getOwner(), self.powerSource)
 			-- Check if we can drop a medpack
 			if (self.currentPower >= self.dropCost) then

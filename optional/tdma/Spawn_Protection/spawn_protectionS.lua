@@ -3,7 +3,7 @@ SPTick = {}
 tdmaSPTimer = {}
 
 function endOfSpawnProtection ( player, marker )
-	detachElementFromElement ( marker, player )
+	detachElements ( marker, player )
 	destroyElement ( marker )
 	--local theTimer = getElementData ( player, "tdma.SPTimer" )
 	local theTimer = tdmaSPTimer[player]
@@ -35,7 +35,7 @@ function startSpawnProtection ( source )
 	setElementInterior ( theMarker, getElementInterior(source) )
 	if ( theMarker ) then -- check if the marker was created successfully
 		
-		attachElementToElement ( theMarker, player, 0, 0, 0, 0, 0, 0 )
+		attachElements ( theMarker, player, 0, 0, 0, 0, 0, 0 )
 		local myTimer = setTimer ( countdownSpawnProtection, 1000, 7, player, theMarker )
 		
 		SPTick[player] = 0

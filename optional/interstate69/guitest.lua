@@ -172,7 +172,7 @@ if (row1 == -1 and column1 == -1) then return end
 		priWeapon3 = nil
 	end
 	priWeapon0 = createObject (priWeaponModel, 0, 0, 0)
-	attachElementToElement(priWeapon0, ivehicle, priWeaponX, priWeaponY, priWeaponZ, priWeaponrotX, priWeaponrotY, priWeaponrotZ)
+	attachElements(priWeapon0, ivehicle, priWeaponX, priWeaponY, priWeaponZ, priWeaponrotX, priWeaponrotY, priWeaponrotZ)
 	if getElementData(priWeaponID, "posX1") then
 		priWeaponX1 = getElementData (priWeaponID, "posX1")
 		priWeaponY1 = getElementData (priWeaponID, "posY1")
@@ -181,7 +181,7 @@ if (row1 == -1 and column1 == -1) then return end
 		priWeaponrotY1 = getElementData (priWeaponID, "rotY1")
 		priWeaponrotZ1 = getElementData (priWeaponID, "rotZ1")
 		priWeapon1 = createObject (priWeaponModel, 0, 0, 0)
-		attachElementToElement(priWeapon1, ivehicle, priWeaponX1, priWeaponY1, priWeaponZ1, priWeaponrotX1, priWeaponrotY1, priWeaponrotZ1)
+		attachElements(priWeapon1, ivehicle, priWeaponX1, priWeaponY1, priWeaponZ1, priWeaponrotX1, priWeaponrotY1, priWeaponrotZ1)
 	end
 	if getElementData(priWeaponID, "posX2") then
 		priWeaponX2 = getElementData (priWeaponID, "posX2")
@@ -191,7 +191,7 @@ if (row1 == -1 and column1 == -1) then return end
 		priWeaponrotY2 = getElementData (priWeaponID, "rotY2")
 		priWeaponrotZ2 = getElementData (priWeaponID, "rotZ2")
 		priWeapon2 = createObject (priWeaponModel, 0, 0, 0)
-		attachElementToElement(priWeapon2, ivehicle, priWeaponX2, priWeaponY2, priWeaponZ2, priWeaponrotX2, priWeaponrotY2, priWeaponrotZ2)
+		attachElements(priWeapon2, ivehicle, priWeaponX2, priWeaponY2, priWeaponZ2, priWeaponrotX2, priWeaponrotY2, priWeaponrotZ2)
 	end
 	if getElementData(priWeaponID, "posX3") then
 		priWeaponX3 = getElementData (priWeaponID, "posX3")
@@ -201,7 +201,7 @@ if (row1 == -1 and column1 == -1) then return end
 		priWeaponrotY3 = getElementData (priWeaponID, "rotY3")
 		priWeaponrotZ3 = getElementData (priWeaponID, "rotZ3")
 		priWeapon3 = createObject (priWeaponModel, 0, 0, 0)
-		attachElementToElement(priWeapon3, ivehicle, priWeaponX3, priWeaponY3, priWeaponZ3, priWeaponrotX3, priWeaponrotY3, priWeaponrotZ3)
+		attachElements(priWeapon3, ivehicle, priWeaponX3, priWeaponY3, priWeaponZ3, priWeaponrotX3, priWeaponrotY3, priWeaponrotZ3)
 	end
 end
 function chooseSecondary ()
@@ -233,7 +233,7 @@ if (row2 == -1 and column2 == -1) then return end
 		secWeaponrotY = getElementData (secWeaponID, "rotY")
 		secWeaponrotZ = getElementData (secWeaponID, "rotZ")
 		secWeapon0 = createObject (secWeaponModel, 0, 0, 0)
-		attachElementToElement(secWeapon0, ivehicle, secWeaponX, secWeaponY, secWeaponZ, secWeaponrotX, secWeaponrotY, secWeaponrotZ)
+		attachElements(secWeapon0, ivehicle, secWeaponX, secWeaponY, secWeaponZ, secWeaponrotX, secWeaponrotY, secWeaponrotZ)
 	end
 	if getElementData(secWeaponID, "posX1") then
 		secWeaponX1 = getElementData (secWeaponID, "posX1")
@@ -243,7 +243,7 @@ if (row2 == -1 and column2 == -1) then return end
 		secWeaponrotY1 = getElementData (secWeaponID, "rotY1")
 		secWeaponrotZ1 = getElementData (secWeaponID, "rotZ1")
 		secWeapon1 = createObject (secWeaponModel, 0, 0, 0)
-		attachElementToElement(secWeapon1, ivehicle, secWeaponX1, secWeaponY1, secWeaponZ1, secWeaponrotX1, secWeaponrotY1, secWeaponrotZ1)
+		attachElements(secWeapon1, ivehicle, secWeaponX1, secWeaponY1, secWeaponZ1, secWeaponrotX1, secWeaponrotY1, secWeaponrotZ1)
 	end
 	if getElementData(secWeaponID, "posX2") then
 		secWeaponX2 = getElementData (secWeaponID, "posX2")
@@ -253,7 +253,7 @@ if (row2 == -1 and column2 == -1) then return end
 		secWeaponrotY2 = getElementData (secWeaponID, "rotY2")
 		secWeaponrotZ2 = getElementData (secWeaponID, "rotZ2")
 		secWeapon2 = createObject (secWeaponModel, 0, 0, 0)
-		attachElementToElement(secWeapon2, ivehicle, secWeaponX2, secWeaponY2, secWeaponZ2, secWeaponrotX2, secWeaponrotY2, secWeaponrotZ2)
+		attachElements(secWeapon2, ivehicle, secWeaponX2, secWeaponY2, secWeaponZ2, secWeaponrotX2, secWeaponrotY2, secWeaponrotZ2)
 	end
 end
 
@@ -579,12 +579,12 @@ function checkForVehicles () --UNFINISHED FUNCTION! DO NOT ATTEMPT TO USE THIS! 
 	if (isElement(v) ) then
 		if isElementOnScreen(v) == true then
 			if v ~= getLocalPlayer() then
-				if isPlayerInVehicle(v) then
+				if isPedInVehicle(v) then
 					local x, y, z = getElementPosition(v)
 					local px, py, pz = getElementPosition ( getLocalPlayer() )
 					local screenX, screenY = getScreenFromWorldPosition (x, y, z)
 					if (screenX) then
-						local vehicle = getPlayerOccupiedVehicle(v)
+						local vehicle = getPedOccupiedVehicle(v)
 						local distance = getDistanceBetweenPoints3D ( px, py, pz, x, y, z )
 						if distance < maxDistance then
 							if not nametag[v] then
@@ -677,7 +677,7 @@ addEventHandler("onClientPlayerQuit", getRootElement(), function ()
 		destroyElement(secondhealthbartag[source])
 		secondhealthbartag[source] = nil
 	end
-	if isPlayerInVehicle(source) then
+	if isPedInVehicle(source) then
 		--destroyElement(getPlayerOccupiedVehicle(source))
 	end
 	setTimer( function() players = getElementsByType("player") end, 500, 1)
@@ -700,7 +700,7 @@ addCommandHandler("newspawns", spawns)
 	
 function createspawns()	
 	local x, y, z = getElementPosition(getLocalPlayer())
-	spawn = xmlCreateSubNode ( spawnpoints, "spawnpoint" )
+	spawn = xmlCreateChild ( spawnpoints, "spawnpoint" )
 	xmlNodeSetAttribute(spawn, "posX", x )
 	xmlNodeSetAttribute(spawn, "posY", y )
 	xmlNodeSetAttribute(spawn, "posZ", z )

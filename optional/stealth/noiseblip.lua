@@ -10,7 +10,7 @@ addEventHandler ( "onClientPlayerSpawn", getRootElement(),
 			destroyElement ( playerBlips[source] )
 		end
 		playerBlips[source] = createBlip ( 0, 0, 0, 0, 2, 255, 0, 0, 0 )
-		attachElementToElement ( playerBlips[source], source )
+		attachElements ( playerBlips[source], source )
 	end
 )
 
@@ -21,7 +21,7 @@ addEventHandler ( "onClientPlayerQuit", getRootElement(),
 	end
 )
 
-addEventHandler ( "onClientPlayerWasted", getRootElement(),
+addEventHandler ( "onClientPedWasted", getRootElement(),
 	function()
 		destroyElement ( playerBlips[source] )
 		playerBlips[source] = nil
