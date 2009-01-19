@@ -252,7 +252,7 @@ $Id: ModeBase.lua 39 2007-12-18 21:50:11Z sinnerg $
 		local Players = getElementsByType("player")
 		
 		for k, Player  in ipairs(Players) do
-			if (not isPlayerDead(Player)) then killPlayer(Player) end -- Slay him! :P
+			if (not isPedDead(Player)) then killPed(Player) end -- Slay him! :P
 		end
 	end
 	
@@ -427,13 +427,13 @@ $Id: ModeBase.lua 39 2007-12-18 21:50:11Z sinnerg $
 -- 	Check if a player is spawn protected (handled client side for speed)
 	function ModeBase:IsSpawnProtected(player)
 		if (not isElement(player)) then return false end
-		if (isPlayerDead(player)) then return false end
+		if (isPedDead(player)) then return false end
 		
 		return getElementData(player, "tw_spawn_protected")
 	end
 	
 	function ModeBase:DisableSpawnProtection(player)
-		if ((self:IsSpawnProtected(player)) and (not isPlayerDead(player))) then
+		if ((self:IsSpawnProtected(player)) and (not isPedDead(player))) then
 			return triggerClientEvent(player, "onTeamWarsCustomEvent", Root, "disableSpawnProtection", player)
 		end
 		
@@ -476,8 +476,8 @@ $Id: ModeBase.lua 39 2007-12-18 21:50:11Z sinnerg $
 		if (oldTeam) then 
 			-- removePlayerFromTeam(player) 
 			-- outputChatBox(getClientName(player) .. " left " .. getTeamName(oldTeam) .. ".")
-			if (not isPlayerDead(player)) then
-				killPlayer(player)
+			if (not isPedDead(player)) then
+				killPed(player)
 			end
 		end
 		setPlayerTeam(player, team)

@@ -104,13 +104,13 @@ function aLoadSkins ()
 	local node = xmlLoadFile ( "conf\\skins.xml" )
 	if ( node ) then
 		local groups = 0
-		while ( xmlFindSubNode ( node, "group", groups ) ~= false ) do
-			local group = xmlFindSubNode ( node, "group", groups )
+		while ( xmlFindChild ( node, "group", groups ) ~= false ) do
+			local group = xmlFindChild ( node, "group", groups )
 			local groupn = xmlNodeGetAttribute ( group, "name" )
 			table[groupn] = {}
 			local skins = 0
-			while ( xmlFindSubNode ( group, "skin", skins ) ~= false ) do
-				local skin = xmlFindSubNode ( group, "skin", skins )
+			while ( xmlFindChild ( group, "skin", skins ) ~= false ) do
+				local skin = xmlFindChild ( group, "skin", skins )
 				local id = #table[groupn] + 1
 				table[groupn][id] = {}
 				table[groupn][id]["model"] = xmlNodeGetAttribute ( skin, "model" )

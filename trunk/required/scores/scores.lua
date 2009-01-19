@@ -25,7 +25,7 @@ local function resetScores (element)
 	setScoreData(element, "self", 0)
 	setScoreData(element, "ratio", "-")
 	local status = ""
-	if isPlayerDead(element) then
+	if isPedDead(element) then
 		status = "Dead"
 	end
 	setScoreData(element, "status", status)

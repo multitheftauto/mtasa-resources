@@ -311,7 +311,7 @@ end
 	-- teleporting the player in the casino, making the teleport marker invisible
 function enterCasino ( player, dimension )
 	setElementInterior ( player, 1, 2233.85, 1698.85, 1008.35 )
-	setPlayerRotation ( player, 180 )
+	setPedRotation ( player, 180 )
 end
 
 	-- teleporting the player outside, making the teleport marker visible again
@@ -336,8 +336,8 @@ end
 	-- if anyone for some reason remained outside kill them so they spawn in the interior
 function scriptEndCasino()
 	for i, v in ipairs ( getElementsByType ( "player" ) ) do
-		if ( getElementInterior ( v ) == 0 ) and ( not isPlayerDead ( v ) ) then
-			killPlayer ( v )
+		if ( getElementInterior ( v ) == 0 ) and ( not isPedDead ( v ) ) then
+			killPed ( v )
 		end
 	end
 end
@@ -557,7 +557,7 @@ function endColShapeEnter ( player, dimension )
 	if ( player == van ) then
 		local players = getElementsByType ( "player" )
 		for i, v in ipairs ( players ) do
-			if ( not isPlayerDead ( v ) ) then
+			if ( not isPedDead ( v ) ) then
 				setCameraMode ( v, "fixed" )
 			end
 		end

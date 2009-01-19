@@ -51,7 +51,7 @@ function teamstealthgamestart()
 	teamswap = 0
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
-		killPlayer(v)
+		killPed(v)
 		fadeCamera(v,true)
 		thisplayer = v
 		triggerClientEvent(v,"swaptoggle",getRootElement(), thisplayer, teamswap)
@@ -108,7 +108,7 @@ end
 
 function selectTeamKey(source)
 	ishespawning = getElementData ( source, "cantchangespawns" )
-	if ( isPlayerDead ( source ) ) and (ishespawning == 0) then
+	if ( isPedDead ( source ) ) and (ishespawning == 0) then
 		selectTeam( source )
 		getPlayerSpectatee[source] = nil
 		triggerClientEvent(source,"showSpectateText",source,"",false)
@@ -291,7 +291,7 @@ function mercspawn(thisplayer)
 	triggerClientEvent(source,"showSpectateText",source,"",false)
 	unbindKey ( source, "r", "down", spectateNext )
 	giveWeapon ( thisplayer, 3, 1 )
-	setPlayerFightingStyle ( thisplayer, 7 )
+	setPedFightingStyle ( thisplayer, 7 )
 end
 
 addEventHandler ( "domercspawn", getRootElement(), mercspawn )
@@ -319,7 +319,7 @@ function spyspawn(thisplayer)
 	triggerClientEvent(source,"showSpectateText",source,"",false)
 	unbindKey ( source, "r", "down", spectateNext )
 	giveWeapon ( thisplayer, 4, 1 )
-	setPlayerFightingStyle ( thisplayer, 6 )
+	setPedFightingStyle ( thisplayer, 6 )
 end
 
 addEventHandler ( "dospyspawn", getRootElement(), spyspawn )
@@ -327,17 +327,17 @@ addEventHandler ( "dospyspawn", getRootElement(), spyspawn )
 addEvent ( "givetheguns",true )
 
 function gearup (thisplayer, primarySelection, secondarySelection, throwableSelection, spygadgetSelection)
-	setPlayerStat ( thisplayer, 69, 999 )
-	setPlayerStat ( thisplayer, 70, 999 )
-	setPlayerStat ( thisplayer, 71, 999 )
-	setPlayerStat ( thisplayer, 72, 999 )
-	setPlayerStat ( thisplayer, 74, 200 )
-	setPlayerStat ( thisplayer, 75, 999 )
-	setPlayerStat ( thisplayer, 76, 500 )
-	setPlayerStat ( thisplayer, 77, 999 )
-	setPlayerStat ( thisplayer, 78, 200 )
-	setPlayerStat ( thisplayer, 79, 999 )
-	setPlayerStat ( thisplayer, 225, 999 )
+	setPedStat ( thisplayer, 69, 999 )
+	setPedStat ( thisplayer, 70, 999 )
+	setPedStat ( thisplayer, 71, 999 )
+	setPedStat ( thisplayer, 72, 999 )
+	setPedStat ( thisplayer, 74, 200 )
+	setPedStat ( thisplayer, 75, 999 )
+	setPedStat ( thisplayer, 76, 500 )
+	setPedStat ( thisplayer, 77, 999 )
+	setPedStat ( thisplayer, 78, 200 )
+	setPedStat ( thisplayer, 79, 999 )
+	setPedStat ( thisplayer, 225, 999 )
 	local sx,sy,sz = getElementPosition( thisplayer )
 	setElementAlpha ( thisplayer, 255 )
 	local dummyshield = createObject ( 1631, sx, sy, -60 )
@@ -357,7 +357,7 @@ function gearup (thisplayer, primarySelection, secondarySelection, throwableSele
 	satchelammo = get("stealth.satchelammo")
 	teargasammo = get("stealth.teargasammo")
 	molatovammo = get("stealth.molatovammo")
-	local skinnumber = getPlayerSkin ( thisplayer )
+	local skinnumber = getElementModel ( thisplayer )
 	setElementData ( thisplayer, "playerskin", skinnumber )
 	if primarySelection == "spaz-12" then
 		teamprotect = get("stealth.teamdamage")
@@ -416,7 +416,7 @@ function idleblockstop ()
 	local alltheplayers = getElementsByType("player")
 	for index, thisplayer in ipairs(alltheplayers) do
 		setElementData ( thisplayer, "waitingtospawn", "nope" )
-		if ( isPlayerDead ( thisplayer ) ) then
+		if ( isPedDead ( thisplayer ) ) then
 			setElementData ( thisplayer, "cantchangespawns", 0 )
 		end
 	end
@@ -441,7 +441,7 @@ function stealthplayerdied ( totalAmmo, killer, killerWeapon, bodypart )
 	if isplayercloaked == "on" then
 		local player = source
 		local oldskin = getElementData ( player, "playerskin" )
-		setPlayerSkin ( thisplayer, oldskin )
+		setElementModel ( thisplayer, oldskin )
 		setElementAlpha ( thisplayer, 255 )
 		cloakstop(player)
 	end
@@ -450,7 +450,7 @@ function stealthplayerdied ( totalAmmo, killer, killerWeapon, bodypart )
 			local deadguysteam = getPlayerTeam ( source )
 			local teammates = getPlayersInTeam ( deadguysteam ) 
 			for playerKey, playerValue in ipairs(teammates) do
-				local isDead = isPlayerDead(playerValue)
+				local isDead = isPedDead(playerValue)
 				if (isDead == false) then return end
 			end
 			local thisplayer = source
@@ -468,7 +468,7 @@ addEventHandler( "onPlayerWasted", getRootElement(), stealthplayerdied )
 
 function spectateNext (source) -- THIS IS THE FUNCTION USED TO SWICH WHO IS BEING SPECTATED BY PRESSING R
 	if playingaround == 1 then  -- IF A ROUND IS IN PROGRESS
-		if ( isPlayerDead ( source ) ) then --IF THE PLAYER IS DEAD
+		if ( isPedDead ( source ) ) then --IF THE PLAYER IS DEAD
 			local specPlayer = getPlayerSpectatee[source] -- gets the spectatee player
 			if not specPlayer then 
 				specPlayer = 1 
@@ -483,7 +483,7 @@ function spectateNext (source) -- THIS IS THE FUNCTION USED TO SWICH WHO IS BEIN
 				outputSpectateMessage("Nobody to Spectate",player) -- IF ITS JUST THE 1 PLAYER, SPECTATING IS IMPOSSIBLE
 			else
 				specPlayer = specPlayer+1
-				while isPlayerDead ( playersTable[specPlayer] ) do
+				while isPedDead ( playersTable[specPlayer] ) do
 					specPlayer = specPlayer+1
 				end
 				if specPlayer > playerCount then
@@ -504,7 +504,7 @@ end
 
 function filterPlayersTable ( playerTable ) --this function clears out useless players from spectators table
 	for k,v in ipairs(playerTable) do
-		if isPlayerDead ( v ) then
+		if isPedDead ( v ) then
 			table.remove(playerTable,k)
 		end
 	end
@@ -538,7 +538,7 @@ function stealthroundended( timerID, player )
 				if ( getElementData ( object, "renew" ) == "1" ) then
 					local x,y,z = getElementPosition( object )
 					local rx,ry,rz = getObjectRotation ( object )
-					local obid = getObjectModel ( object )
+					local obid = getElementModel ( object )
 					destroyElement(object)
 					local newobject = createObject ( obid, x, y, z, rx, ry, rz )
 					setElementData ( newobject, "renew", "1"  )
@@ -551,10 +551,10 @@ function stealthroundended( timerID, player )
 				setElementData ( thisplayer, "waitingtospawn", "indeed" )
 				triggerClientEvent(thisplayer,"cameramode",getRootElement(), thisplayer)
 				triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
-				local isDead = isPlayerDead(thisplayer)
+				local isDead = isPedDead(thisplayer)
 				if (isDead == false) then
 					team1survivers = team1survivers +1
-					killPlayer(thisplayer, thisplayer, 99, 99)
+					killPed(thisplayer, thisplayer, 99, 99)
 				end
 			end	
 			local secondteam = getPlayersInTeam ( team2 )
@@ -562,10 +562,10 @@ function stealthroundended( timerID, player )
 				setElementData ( thisplayer, "waitingtospawn", "indeed" )
 				triggerClientEvent(thisplayer,"cameramode",getRootElement(), thisplayer)
 				triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
-				local isDead = isPlayerDead(thisplayer)
+				local isDead = isPedDead(thisplayer)
 				if (isDead == false) then
 					team2survivers = team2survivers +1		
-					killPlayer(thisplayer, thisplayer, 99, 99)
+					killPed(thisplayer, thisplayer, 99, 99)
 				end
 			end
 			local everyone = getElementsByType("player")
@@ -630,14 +630,14 @@ function playerleftcount (source)
 		livingteam2 = 0
 		local firstteam = getPlayersInTeam ( team1 )
 		for playerKey, playerValue in ipairs(firstteam) do
-			local isDead = isPlayerDead(playerValue)
+			local isDead = isPedDead(playerValue)
 			if (isDead == false) then
 				livingteam1 = livingteam1+1
 			end
 		end
 		local secondteam = getPlayersInTeam ( team2 )
 		for playerKey, playerValue in ipairs(secondteam) do
-			local isDead = isPlayerDead(playerValue)
+			local isDead = isPedDead(playerValue)
 			if (isDead == false) then
 				livingteam2 = livingteam2+1
 			end
@@ -654,9 +654,9 @@ function playerleftcount (source)
 end
 
 function playerhurt ( attacker, weapon, bodypart, loss )--HEADSHOT INSTAKILL
-	if (getPlayerArmor ( source )) == 0 then
+	if (getPedArmor ( source )) == 0 then
 		if ( bodypart == 9 ) then
-		    killPlayer ( source, attacker, weapon, bodypart )
+		    killPed ( source, attacker, weapon, bodypart )
 		end
 	end
 end
@@ -683,7 +683,7 @@ function teamstealthgamestop()
 		playSoundFrontEnd (thisplayer, 35 )
 		setPlayerTeam(thisplayer, nil)
 		setPlayerNametagShowing ( thisplayer, true )
-		setPlayerFightingStyle ( thisplayer, 1 )
+		setPedFightingStyle ( thisplayer, 1 )
 		--setCameraMode ( thisplayer, "player" )
 		setCameraTarget ( thisplayer, thisplayer )
 		textDisplayRemoveObserver( redwinsdisplay, thisplayer )

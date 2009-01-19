@@ -226,7 +226,7 @@ $Id: ModeBase.lua 36 2007-12-12 01:42:23Z sinnerg $
 	end
 	
 	function ModeBase:OnClientPlayerWeaponSwitch(prevWeapon, curSlot)		
-		local curWeapon = getPlayerWeapon(getLocalPlayer())
+		local curWeapon = getPedWeapon(getLocalPlayer())
 		
 		-- Handle ability-handler objects
 		for k,abilityObj in ipairs(getAbilityHandlers()) do

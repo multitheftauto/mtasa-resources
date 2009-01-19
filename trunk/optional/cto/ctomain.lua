@@ -89,10 +89,10 @@ function onPlayerOrbHit_cto ( marker )
 	assert ( ( not teamGame ) or ( teamGame and getPlayerTeam ( source ) ), "Orb hitter expected on team but is not" )
 	-- make sure the player doesn't already have a marker attached and isn't dead
 	-- (the latter might happen if this event is triggered more than once)
-	if ( not isElementAttached ( marker ) and not isPlayerDead ( source ) ) then
-		local inVehicle = isPlayerInVehicle ( source )
+	if ( not isElementAttached ( marker ) and not isPedDead ( source ) ) then
+		local inVehicle = isPedInVehicle ( source )
 		-- make sure the player didn't just drop the orb from a vehicle
-		if ( not inVehicle or ( not getElementData ( source, "justDroppedOrb" ) and getPlayerOccupiedVehicleSeat ( source ) == 0 ) ) then
+		if ( not inVehicle or ( not getElementData ( source, "justDroppedOrb" ) and getPedOccupiedVehicleSeat ( source ) == 0 ) ) then
 			triggerClientEvent ( root, "doSetOrbHittable", root, false )
 			-- kill the reset timer if it exists
 			if ( resetOrbTimer ) then
@@ -111,7 +111,7 @@ function onPlayerOrbHit_cto ( marker )
 			local pointLimitReached = increasePoints ( source, 20 )
 			if ( not pointLimitReached ) then
 			    -- attach orb to player
-	   			attachElementToElement ( marker, source, 0, 0, 1.25 )
+	   			attachElements ( marker, source, 0, 0, 1.25 )
 			    -- add events for player
 			    addCarrierEvents ( source )
 			    -- let the player's client know that he has orb
@@ -137,7 +137,7 @@ function onCarrierObjectiveHit ( marker, matchingDimension )
 			destroyElement ( marker )
 	        objectiveMarker = nil
 	        -- detach orb from player
-	        detachElementFromElement ( orbMarker )
+	        detachElements ( orbMarker )
 			-- destroy orb
 			destroyBlipsAttachedTo ( orbMarker )
 			destroyElement ( orbMarker )
@@ -145,8 +145,8 @@ function onCarrierObjectiveHit ( marker, matchingDimension )
 	        -- increase player health
 	        setPlayerHealth ( source, 100 )
 	        -- increase vehicle health
-	        local vehicle = getPlayerOccupiedVehicle ( source )
-	        if ( vehicle and getPlayerOccupiedVehicleSeat ( source ) == 0 ) then
+	        local vehicle = getPedOccupiedVehicle ( source )
+	        if ( vehicle and getPedOccupiedVehicleSeat ( source ) == 0 ) then
 	        	fixVehicle ( vehicle )
 	        end
 	        -- remove any instructions message the player might have
@@ -179,7 +179,7 @@ outputConsole ( "[debug] carrier wasted" )
 	triggerClientEvent ( source, "onClientCarrier", root, false )
     orbCarrier = nil
     -- detach orb from player
-    detachElementFromElement ( orbMarker )
+    detachElements ( orbMarker )
     setElementPosition( orbMarker, getElementPosition ( source ) )
     -- make orb hittable
 	--addEventHandler ( "onMarkerHit", orbMarker, onOrbHit )
@@ -208,7 +208,7 @@ function onCarrierDamage ( attacker, attackerweapon, bodypart, loss )
 		triggerClientEvent ( source, "onClientCarrier", root, false )
 	    orbCarrier = nil
 	    -- detach orb from player
-	    detachElementFromElement ( orbMarker )
+	    detachElements ( orbMarker )
 	    setElementPosition( orbMarker, getElementPosition ( source ) )
 	    -- make orb hittable
 		--addEventHandler ( "onMarkerHit", orbMarker, onOrbHit )
@@ -244,7 +244,7 @@ function onCarrierVehicleExit ( vehicle, seat, jacker )
 		triggerClientEvent ( source, "onClientCarrier", root, false )
 		orbCarrier = nil
    	 	-- detach orb from old orb carrier
-	    detachElementFromElement ( orbMarker )
+	    detachElements ( orbMarker )
         -- remove any instructions message the jacked player might have
         call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
 		-- announce that jacker jacked the orb carrier
@@ -258,7 +258,7 @@ function onCarrierVehicleExit ( vehicle, seat, jacker )
 		local pointLimitReached = increasePoints ( jacker, 20 )
 		if ( not pointLimitReached ) then
 		    -- attach orb to jacker
-	   		attachElementToElement ( orbMarker, jacker, 0, 0, 1.25 )
+	   		attachElements ( orbMarker, jacker, 0, 0, 1.25 )
 		    -- add events for jacker
 		    addCarrierEvents ( jacker )
 	   		-- let the jacker's client know that he has orb
@@ -285,7 +285,7 @@ function onCarrierQuit ( reason )
 	destroyElement ( objectiveMarker )
 	objectiveMarker = nil
     -- detach orb from player
-    detachElementFromElement ( orbMarker )
+    detachElements ( orbMarker )
 	-- destroy orb
 	destroyBlipsAttachedTo ( orbMarker )
 	destroyElement ( orbMarker )
@@ -311,7 +311,7 @@ outputDebugString("damage: " .. loss)
 		triggerClientEvent ( orbCarrier, "onClientCarrier", root, false )
 		orbCarrier = nil
 	 	-- detach orb from player
-	    detachElementFromElement ( orbMarker )
+	    detachElements ( orbMarker )
 	    setElementPosition ( orbMarker, getElementPosition ( player ) )
 		-- make orb not hittable to player for 5 seconds
 		setElementData ( player, "justDroppedOrb", true )
@@ -420,7 +420,7 @@ function addCarrierEvents ( player )
 	success = addEventHandler ( "onPlayerVehicleExit", player, onCarrierVehicleExit ) -- unreliable -- onPlayerStartExitVehicle?	
 	if (not success) then outputDebugString("could not add onPlayerVehicleExit event for carrier")	end---
 	addEventHandler ( "onPlayerQuit", player, onCarrierQuit )
-	local vehicle = getPlayerOccupiedVehicle ( player )
+	local vehicle = getPedOccupiedVehicle ( player )
 	if ( vehicle ) then
 outputDebugString ( "adding onCarrierVehicleDamage for " .. getClientName ( player ) .. "..." )
 		addEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage )

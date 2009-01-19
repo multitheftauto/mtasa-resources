@@ -1,7 +1,7 @@
 function player_Spawn (  )
-	setPlayerStat ( source, 225, 999 )
+	setPedStat ( source, 225, 999 )
 	--outputChatBox ( "called for "..getClientName ( source ) )
-	skin = getPlayerSkin ( source )
+	skin = getElementModel ( source )
 	noshark = getAttachedElements ( source )
 	for k,v in pairs(noshark) do
 		if getElementType ( v ) == "object" then
@@ -11,7 +11,7 @@ function player_Spawn (  )
 	if ( skin == 124 ) then
 		local x,y,z = getElementPosition ( source )
 		shark = createObject ( 1608, x, y, z )
-		attachElementToElement ( shark, source, 0, 0, -0.4, 0.000000, 0.000000, 0.000000 )
+		attachElements ( shark, source, 0, 0, -0.4, 0.000000, 0.000000, 0.000000 )
 		setElementAlpha( source, 0 )
 		--toggleControl ( source, "jump", false )
 	else
@@ -37,7 +37,7 @@ addEventHandler ( "onPlayerQuit", getRootElement(), player_Quit )
 function thisResourceStop ()
 	for k,v in pairs(getElementsByType ( "player" )) do
 		setElementAlpha ( v, 255 )
-		setPlayerStat ( v, 225, 1 )
+		setPedStat ( v, 225, 1 )
 	end
 	setGameSpeed ( 1 )
 end

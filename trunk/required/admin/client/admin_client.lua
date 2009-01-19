@@ -46,7 +46,7 @@ function aAdminResourceStart ()
 	local node = xmlLoadFile ( "conf\\weathers.xml" )
 	if ( node ) then
 		while ( true ) do
-			local weather = xmlFindSubNode ( node, "weather", _weathers_max )
+			local weather = xmlFindChild ( node, "weather", _weathers_max )
 			if ( not weather ) then break end
 			local id = tonumber ( xmlNodeGetAttribute ( weather, "id" ) )
 			local name = xmlNodeGetAttribute ( weather, "name" )
@@ -90,7 +90,7 @@ function aLoadSettings ()
 end
 
 function aGetSetting ( setting )
-	local result = xmlFindSubNode ( _settings, tostring ( setting ), 0 )
+	local result = xmlFindChild ( _settings, tostring ( setting ), 0 )
 	if ( result ) then
 		result = xmlNodeGetValue ( result )
 		if ( result == "true" ) then return true
@@ -101,16 +101,16 @@ function aGetSetting ( setting )
 end
 
 function aSetSetting ( setting, value )
-	local node = xmlFindSubNode ( _settings, tostring ( setting ), 0 )
+	local node = xmlFindChild ( _settings, tostring ( setting ), 0 )
 	if ( not node ) then
-		node = xmlCreateSubNode ( _settings, tostring ( setting ) )
+		node = xmlCreateChild ( _settings, tostring ( setting ) )
 	end
 	xmlNodeSetValue ( node, tostring ( value ) )
 	xmlSaveFile ( _settings )
 end
 
 function aRemoveSetting ( setting )
-	local node = xmlFindSubNode ( _settings, tostring ( setting ), 0 )
+	local node = xmlFindChild ( _settings, tostring ( setting ), 0 )
 	if ( node ) then
 		xmlDestroyNode ( node )
 	end

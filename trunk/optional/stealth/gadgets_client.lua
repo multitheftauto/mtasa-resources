@@ -90,17 +90,17 @@ function playerkilled ()
 	end
 end
 
-addEventHandler ( "onClientPlayerWasted", getLocalPlayer(), playerkilled )
+addEventHandler ( "onClientPedWasted", getLocalPlayer(), playerkilled )
 
 function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHICH FUNCTION TO TRIGGER
-	local inacar = isPlayerInVehicle ( getLocalPlayer () )
+	local inacar = isPedInVehicle ( getLocalPlayer () )
 	if inacar == false then
 		local isDead = isPlayerDead(getLocalPlayer ())
 		if (isDead == false) then
 			if chosengadget == "mines" then
 				if gadgetuses >0 then
 					player = getLocalPlayer ()
-					if ( isPlayerDucked ( player) ) then
+					if ( isPedDucked ( player) ) then
 						triggerServerEvent ("poopoutthemine", getLocalPlayer (), player )
 						gadgetuses = gadgetuses-1
 						guiSetText ( gadgetlabel, gadgetuses )
@@ -157,7 +157,7 @@ addEvent("cloaksomeoneelse", true)
 
 function cloakaperson (thisplayer)
 	if goggleson ~= 1 then
-		setPlayerSkin ( thisplayer, 164 )
+		setElementModel ( thisplayer, 164 )
 		alphachangedelay = setTimer ( setalpha, 100, 1, thisplayer )
 	end
 end
@@ -175,7 +175,7 @@ addEvent("uncloaksomeoneelse", true)
 
 function uncloakaperson (thisplayer)
 	local oldskin = getElementData ( thisplayer, "playerskin" )
-	setPlayerSkin ( thisplayer, oldskin )
+	setElementModel ( thisplayer, oldskin )
 	setElementAlpha ( thisplayer, 255 ) --- NECCESARY???
 end
 
@@ -199,7 +199,7 @@ function weaponfired (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
 	end
 end
 
-addEventHandler ( "onClientPlayerWeaponFire", getRootElement(), weaponfired )
+addEventHandler ( "onClientPedWeaponFire", getRootElement(), weaponfired )
 
 function minedelaystop()
 	minedelay = 0
@@ -221,7 +221,7 @@ function triggerpulled(weapon)
 			outputChatBox ( "You are out of Camera Smokes.", getLocalPlayer (), 255, 69, 0)
 		end
 	else
-		local weapon = getPlayerWeapon (getLocalPlayer ())
+		local weapon = getPedWeapon (getLocalPlayer ())
 		if weapon == 44 then
 			gogglecheckdelay = setTimer ( goggletaskcheck, 200, 1 )
 		end
@@ -233,10 +233,10 @@ end
 
 --CHECKS IF THE PERSON IS PUTTING ON OR TAKING OFF GOGGLES
 function goggletaskcheck ()
-	if ( isPlayerDoingTask ( getLocalPlayer (), "TASK_SIMPLE_GOGGLES_ON" ) ) then
+	if ( isPedDoingTask ( getLocalPlayer (), "TASK_SIMPLE_GOGGLES_ON" ) ) then
 		if goggleson == 0 then
 			goggleson = 1
-			local gogglestype = getPlayerWeapon (getLocalPlayer ())
+			local gogglestype = getPedWeapon (getLocalPlayer ())
 			if gogglestype == 44 then
 				showNightvisionGUI()
 			end
@@ -252,7 +252,7 @@ function goggletaskcheck ()
 			end
 		end
 	end
-	if ( isPlayerDoingTask ( getLocalPlayer (), "TASK_SIMPLE_GOGGLES_OFF" ) ) then
+	if ( isPedDoingTask ( getLocalPlayer (), "TASK_SIMPLE_GOGGLES_OFF" ) ) then
 		if goggleson == 1 then
 			goggleson = 0
 			hideGogglesGUI()
@@ -412,7 +412,7 @@ function findthespot (rot)
 	if (touching) then
 		cameraplaced = 1
 		player = getLocalPlayer ()
-		if ( isPlayerDucked ( player) ) then
+		if ( isPedDucked ( player) ) then
 			z = z-0.7
 		end
 		triggerServerEvent ("cameraobject", getLocalPlayer (), x, y, z, player )
@@ -447,9 +447,9 @@ end
 
 
 function shieldingyet ()
-	if isPlayerInWater(getLocalPlayer()) == false then
+	if isElementInWater(getLocalPlayer()) == false then
 		if sheildon ~= 1 then
-			currenttask = getPlayerSimplestTask ( getLocalPlayer() )
+			currenttask = getPedSimplestTask ( getLocalPlayer() )
 			if notblockingTasks[currenttask] then
 	--			NO SHIELD APPEARS
 			else
@@ -459,7 +459,7 @@ function shieldingyet ()
 				stopblockcheck = setTimer ( inturuptshield, 300, 0, player )
 				local player = getLocalPlayer ()
 				triggerServerEvent ("shieldup", getLocalPlayer (), player )
-				currentweapon = getPlayerWeapon (getLocalPlayer ())
+				currentweapon = getPedWeapon (getLocalPlayer ())
 				txd_shield = engineLoadTXD("riot_shield.txd")
 				engineImportTXD(txd_shield,1631)
 				col_shield = engineLoadCOL("riot_shield.col")
@@ -472,13 +472,13 @@ function shieldingyet ()
 end
 
 function inturuptshield ()
-	newcurrenttask = getPlayerSimplestTask ( getLocalPlayer() )
+	newcurrenttask = getPedSimplestTask ( getLocalPlayer() )
 	if notblockingTasks[newcurrenttask] then
 		killTimer ( stopblockcheck )
 		stopblockcheck = nil
 		deactivategadget()
 	end
-	if isPlayerInWater(getLocalPlayer()) then
+	if isElementInWater(getLocalPlayer()) then
 		if (stopblockcheck) then
 			killTimer ( stopblockcheck )
 			stopblockcheck = nil

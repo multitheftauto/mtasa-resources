@@ -329,14 +329,14 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 						end
 						
 						-- Check armour of players and enforce limits
-						if (not isPlayerDead(playerValue)) then
-							if (getPlayerArmor(playerValue) > INT(classInfo["stats"]["maxArmor"])) then
+						if (not isPedDead(playerValue)) then
+							if (getPedArmor(playerValue) > INT(classInfo["stats"]["maxArmor"])) then
 								setPlayerArmour(playerValue, INT(classInfo["stats"]["maxArmor"]))
 							end
 						end
 						
 						-- Check health of players and enforce limits
-						if (not isPlayerDead(playerValue)) then
+						if (not isPedDead(playerValue)) then
 							if (getElementHealth(playerValue) > INT(classInfo["stats"]["maxHealth"])) then
 								setElementHealth(playerValue,INT( classInfo["stats"]["maxHealth"]))
 							end
@@ -387,8 +387,8 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 						if (( x1 ~= x2) or ( y1 ~= y2 ) or ( z1 ~= z2 )) then
 							-- Dont allow returns for now (make it a map option?)
 							if (self.optionCanReturn) then
-								detachElementFromElement ( colObject, player )
-								detachElementFromElement ( colMarker, player )
+								detachElements ( colObject, player )
+								detachElements ( colMarker, player )
 								setElementPosition( source, x, y, z )
 								setElementPosition( colObject, x, y, z )
 								setElementPosition( colMarker, x, y, z )
@@ -405,8 +405,8 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 							local playerColMarker = getElementData ( playerCol, "teamwars_flag_marker" )
 							local playerColTeam = getElementData( playerCol, "teamwars_team" )
 							x,y,z = tonumber( getElementData ( playerColFlag, "posX" ) ), tonumber( getElementData ( playerColFlag, "posY" ) ), tonumber( getElementData ( playerColFlag, "posZ" ) )
-							detachElementFromElement ( playerColObject, player )
-							detachElementFromElement ( playerColMarker, player )
+							detachElements ( playerColObject, player )
+							detachElements ( playerColMarker, player )
 							setElementPosition( playerCol, x, y, z )
 							setElementPosition( playerColMarker, x, y, z )
 							setElementPosition( playerColObject, x, y, z )
@@ -420,8 +420,8 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 					elseif ((not playerCol) and (colFlag)) then
 						setElementPosition( source, 0, 0, 0 )
 						setElementData( player, "teamwars_flag_colshape", source )
-						attachElementToElement ( colObject, player, 0, 0, 0, 0, 0, math.rad(-90) )
-						attachElementToElement ( colMarker, player, 0, 0, 0, 0, 0, 0 )
+						attachElements ( colObject, player, 0, 0, 0, 0, 0, math.rad(-90) )
+						attachElements ( colMarker, player, 0, 0, 0, 0, 0, 0 )
 						-- toggleControl ( player, "sprint", false )
 						self:Announce ( r, g, b, getClientName( player ) .. " took the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. "!", 4000 )
 						setElementData( colFlag, "teamwars_flag_return", false )
@@ -530,8 +530,8 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 			local playerColFlag = getElementData( playerCol, "teamwars_flag_element" ) 
 			local r,g,b = getTeamColor ( getPlayerTeam( source ) )
 		    local x,y,z = getElementPosition( source )
-			detachElementFromElement ( playerColObject, source )
-			detachElementFromElement ( playerColMarker, source )
+			detachElements ( playerColObject, source )
+			detachElements ( playerColMarker, source )
 			setElementPosition( playerCol, x, y, z )
 		    setElementPosition( playerColObject, x, y, z )
 		    setElementPosition( playerColMarker, x, y, z )
@@ -578,7 +578,7 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 			-- Coronas
 			local x,y,z =  getElementPosition(player)
 			local playerCorona = createMarker(x, y, z, "corona", 1.5, r, g, b, 125) 
-			attachElementToElement(playerCorona, player)
+			attachElements(playerCorona, player)
 			setElementData(player, "teamwars_player_corona", playerCorona)
 			--Hide to all
 			setElementVisibleTo (playerCorona, Root, false)
@@ -664,7 +664,7 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 			-- setPlayerStat (player, 24, classInfo["MaxHealth"] * 5) -- DOES NOT WORK :(
 			
 			setElementHealth (player, INT(classInfo["stats"]["startHealth"]))
-			setPlayerArmor(player, INT(classInfo["stats"]["startArmor"]))
+			setPedArmor(player, INT(classInfo["stats"]["startArmor"]))
 			
 			-- Give weapons
 			-- loop -- giveWeapon ( player thePlayer, int weapon, [ int ammo=30, bool setAsCurrent=false ] )

@@ -1,15 +1,15 @@
 setTimer ( setTime, 60000, 1, 12, 00 )
 
 function cancelSharkDamage  ( attacker, weapon, bodypart )
-	if weapon == 53 and attacker == getLocalPlayer() and getPlayerSkin(getLocalPlayer()) == 124 then
+	if weapon == 53 and attacker == getLocalPlayer() and getElementModel(getLocalPlayer()) == 124 then
 		cancelEvent()
 	end
 end
-addEventHandler ( "onClientPlayerDamage", getLocalPlayer(), cancelSharkDamage )
+addEventHandler ( "onClientPedDamage", getLocalPlayer(), cancelSharkDamage )
 
 function setupSpawn  ()
 	--outputChatBox ( "called for "..getPlayerName ( source ) )
-	if ( getPlayerSkin(getLocalPlayer()) == 124 ) then
+	if ( getElementModel(getLocalPlayer()) == 124 ) then
 		for k,v in pairs(getTimers()) do
 			if eatTimer == v then
 				killTimer ( v )
@@ -37,7 +37,7 @@ end
 addEventHandler ( "onClientPlayerSpawn", getLocalPlayer(), setupSpawn )
 
 function getSharkMouthPosition(player)
-	local rot = math.rad ( getPlayerRotation(player) )
+	local rot = math.rad ( getPedRotation(player) )
 	local x,y,z = getElementPosition ( player )
 	sharkOffset = 5
 	local tx = x + -sharkOffset * math.sin(rot)
@@ -48,7 +48,7 @@ end
 function isBeingEaten()
 	local x,y,z = getElementPosition ( getLocalPlayer() )
 	for k,player in pairs(getElementsByType("player")) do
-		if getPlayerSkin ( player ) == 124 then
+		if getElementModel ( player ) == 124 then
 			local sx,sy,sz = getSharkMouthPosition(player)
 			if getDistanceBetweenPoints3D ( x,y,z,sx,sy,sz ) <= 2 then
 				local health = getElementHealth ( getLocalPlayer() )

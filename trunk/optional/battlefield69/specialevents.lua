@@ -332,7 +332,7 @@ end
 function rustlerBomb ()
 	if lastShot > getTickCount() then return end
 	lastShot = getTickCount() + 10000
-	local vehicle = getPlayerOccupiedVehicle ( getLocalPlayer() )
+	local vehicle = getPedOccupiedVehicle ( getLocalPlayer() )
 	local x, y, z = getElementPosition ( vehicle )
 	local col, fX, fY, fZ, element = processLineOfSight ( x, y, z - 2, x, y, z - 300 )
 	triggerServerEvent ( "rustlerBomb", getLocalPlayer(), x, y, z - 1, fX, fY, fZ )
@@ -355,7 +355,7 @@ addEventHandler("rustlerExit", getLocalPlayer(), rustlerExit)
 
 
 function mountPatriot ()
-	local target = getPlayerTarget ( getLocalPlayer() )
+	local target = getPedTarget ( getLocalPlayer() )
 	if ( status == true ) then
 		status = false
 		triggerServerEvent ("detachPatriot", getLocalPlayer(), target)
@@ -371,7 +371,7 @@ end
 addEvent("mountPatriot", true)
 addEventHandler("mountPatriot", getLocalPlayer(), mountPatriot)
 
-addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), function (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
+addEventHandler("onClientPedWeaponFire", getLocalPlayer(), function (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
     if weapon == 38 and getKeyState("mouse1") == true then
 		if miniLastShot > getTickCount() then
 			toggleControl ("fire", false )
@@ -385,7 +385,7 @@ addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), function (weapon, 
 	end
 end)
 
-addEventHandler ("onClientPlayerWasted", getLocalPlayer(), function (attacker, weapon, bodypart)
+addEventHandler ("onClientPedWasted", getLocalPlayer(), function (attacker, weapon, bodypart)
 	if status == true then
 		status = false
 		triggerServerEvent ("detachPatriot", getLocalPlayer(), target)
@@ -437,13 +437,13 @@ addEvent ("leaveRhino", true)
 addEventHandler ("leaveRhino", getRootElement(), hideGUIs)
 lastPressed = 0
 function rhinoShoot ()
-if isPlayerInVehicle(getLocalPlayer()) == true then
-	if getControlState("vehicle_fire") == true or getVehicleID(getPlayerOccupiedVehicle(getLocalPlayer())) == 432 and getControlState("vehicle_secondary_fire") == true then
+if isPedInVehicle(getLocalPlayer()) == true then
+	if getControlState("vehicle_fire") == true or getElementModel(getPedOccupiedVehicle(getLocalPlayer())) == 432 and getControlState("vehicle_secondary_fire") == true then
 		if lastPressed > getTickCount() then return end
 		lastPressed = getTickCount() + 49
 		setTimer(toggleControl, 50, 1, "vehicle_fire", false)
 		setTimer (toggleControl, 4500, 1, "vehicle_fire", true)
-		if getVehicleID(getPlayerOccupiedVehicle(getLocalPlayer())) == 432 then
+		if getElementModel(getPedOccupiedVehicle(getLocalPlayer())) == 432 then
 			toggleControl ("vehicle_secondary_fire", false)
 			setTimer (toggleControl, 4500, 1, "vehicle_secondary_fire", true)
 		end
@@ -629,9 +629,9 @@ else
 	restoreZ =  feignZ
 	restoreRot = feignRot
 	restoreSkin =  feignSkin
-	restorePistol = getPlayerTotalAmmo (getLocalPlayer(), 2)
-	restoreSniper = getPlayerTotalAmmo (getLocalPlayer(), 6)
-	restoreNades = getPlayerTotalAmmo (getLocalPlayer(), 8)
+	restorePistol = getPedTotalAmmo (getLocalPlayer(), 2)
+	restoreSniper = getPedTotalAmmo (getLocalPlayer(), 6)
+	restoreNades = getPedTotalAmmo (getLocalPlayer(), 8)
 	triggerServerEvent ("killscout", getLocalPlayer(), source)
 	setTimer (setFreecamEnabled, 1000, 1 )
 end

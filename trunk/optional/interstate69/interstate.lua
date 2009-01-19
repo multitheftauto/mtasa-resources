@@ -96,7 +96,7 @@ function gameAreaLeave ( source )
 if (getElementType(source) == "player") then
 if hasSpawned[source] == true and gameareaEnable == true then
 	triggerClientEvent(source, "displayGUItext", source, 0.3, 0.3, "Return to the gamearea\nor you will die!", "sa-header", 255, 0, 0, 5000)
-	dieBastid[source] = setTimer (killPlayer, 15000, 1, source)
+	dieBastid[source] = setTimer (killPed, 15000, 1, source)
 end
 end
 end
@@ -274,59 +274,59 @@ function playerSpawned ( posX, posY, posZ, spawnRotation, theTeam, theSkin, theI
 		--outputChatBox("nametag showing, hiding")
 	--end
 		--setCameraMode ( source, "player" )
-		removePlayerFromVehicle ( source )
+		removePedFromVehicle ( source )
 		setCameraTarget ( source, source )
 		local x, y, z = getElementPosition (source)
 		spawnCar = createVehicle (unpack(vehicle1[source]), x + 2, y, z)
 		myWeapon = createObject (unpack(priWeapon[source].object), x + 2, y, z + 2)
-		attachElementToElement (myWeapon, spawnCar, unpack(priWeapon[source].pos) )
+		attachElements (myWeapon, spawnCar, unpack(priWeapon[source].pos) )
 		setElementParent ( myWeapon, spawnCar )
 		if priWeapon1[source] ~= nil then
 			myWeapon = createObject (unpack(priWeapon[source].object), x + 2, y, z + 2)
-			attachElementToElement (myWeapon, spawnCar, unpack(priWeapon1[source].pos) )
+			attachElements (myWeapon, spawnCar, unpack(priWeapon1[source].pos) )
 			setElementParent ( myWeapon, spawnCar )
 		end
 		if priWeapon2[source] ~= nil then
 			myWeapon = createObject (unpack(priWeapon[source].object), x + 2, y, z + 2)
-			attachElementToElement (myWeapon, spawnCar, unpack(priWeapon2[source].pos) )
+			attachElements (myWeapon, spawnCar, unpack(priWeapon2[source].pos) )
 			setElementParent ( myWeapon, spawnCar )
 		end
 		if priWeapon3[source] ~= nil then
 			myWeapon = createObject (unpack(priWeapon[source].object), x + 2, y, z + 2)
-			attachElementToElement (myWeapon, spawnCar, unpack(priWeapon3[source].pos) )
+			attachElements (myWeapon, spawnCar, unpack(priWeapon3[source].pos) )
 			setElementParent ( myWeapon, spawnCar )
 		end
 		
 		if secWeapon[source] ~= nil then
 			mySecWeapon1 = createObject (unpack(secWeapon[source].object), x + 2, y, z + 2)
-			attachElementToElement (mySecWeapon1, spawnCar, unpack(secWeapon[source].pos) )
+			attachElements (mySecWeapon1, spawnCar, unpack(secWeapon[source].pos) )
 			setElementParent ( mySecWeapon1, spawnCar )
 		end
 		if secWeapon1[source] ~= nil then
 			mySecWeapon2 = createObject (unpack(secWeapon[source].object), x + 2, y, z + 2)
-			attachElementToElement (mySecWeapon2, spawnCar, unpack(secWeapon1[source].pos) )
+			attachElements (mySecWeapon2, spawnCar, unpack(secWeapon1[source].pos) )
 			setElementParent ( mySecWeapon2, spawnCar )
 		end
 		if secWeapon2[source] ~= nil then
 			mySecWeapon3 = createObject (unpack(secWeapon[source].object), x + 2, y, z + 2)
-			attachElementToElement (mySecWeapon3, spawnCar, unpack(secWeapon2[source].pos) )
+			attachElements (mySecWeapon3, spawnCar, unpack(secWeapon2[source].pos) )
 			setElementParent ( mySecWeapon3, spawnCar )
 		end
 		setElementData ( source, "spawnVehicle", spawnCar )
 		maRide = getElementData ( source, "spawnVehicle" )
 		triggerClientEvent (source, "noCollBandito", source, myWeapon, mySecWeapon1, mySecWeapon2, mySecWeapon3)
 		createBlipAttachedTo ( source, 0, 2, math.random(0,255), math.random(0,255), math.random(0,255) )
-		setTimer (warpPlayerIntoVehicle, 500, 1, source, maRide )
+		setTimer (warpPedIntoVehicle, 500, 1, source, maRide )
 		setVehicleDamageProof ( maRide, true )
 		protection = createMarker ( x, y, z, "cylinder", 4, 255, 0, 0, 90 )
-		attachElementToElement ( protection, maRide )
+		attachElements ( protection, maRide )
 		setElementParent ( protection, maRide )
 		setTimer (destroyElement, tonumber(protectMe), 1, protection)
 		setTimer (setVehicleDamageProof, tonumber(protectMe), 1, maRide, false)
 	if tonumber(theMode) == 1 then
 		if getElementData ( source, "deaths" ) == tonumber(maxDeaths) then
 			triggerClientEvent(source, "displayGUItext", source, 0.3, 0.3, "YOU ARE ELIMINATED!", "sa-header", 255, 0, 0, 3000)
-			killPlayer ( source )
+			killPed ( source )
 		end
 	end
 end
@@ -363,7 +363,7 @@ end
 
 oil = {}
 function zeSlippery ( sX, sY, sZ )
-	local rx, ry, rz = getVehicleRotation(getPlayerOccupiedVehicle(source))
+	local rx, ry, rz = getVehicleRotation(getPedOccupiedVehicle(source))
 	if isElement(oil[source]) then
 		destroyElement(oil[source])
 	end
@@ -407,7 +407,7 @@ end
 	stingercol[source] = createColSphere ( x, y, z, 3 )
 	setElementParent ( stinger[source], stingercol[source] )
 	addEventHandler("onColShapeHit", stingercol[source], function ( Daplayer, matchingDimension )
-		local vehicle = getPlayerOccupiedVehicle ( Daplayer )
+		local vehicle = getPedOccupiedVehicle ( Daplayer )
 		local randDamage = math.random(1,4)
 		if ( randDamage == 1 ) then
 			setVehicleWheelStates ( vehicle, -1, -1, -1, 1 )
@@ -492,7 +492,7 @@ else
 				for k,v in ipairs(players) do
 					triggerClientEvent(getRootElement(), "displayGUItext", getRootElement(), 0.3, 0.3, getClientName (v) .." has Survived the match!", "sa-header", 0, 0, 255, 3000)
 					setElementData ( v, "wins", getElementData ( v, "wins" ) + 1 )
-					setTimer ( removePlayerFromVehicle, 8000, 1, source )
+					setTimer ( removePedFromVehicle, 8000, 1, source )
 					setTimer ( restartGame, 10000, 1, source )
 					destroyBlipsAttachedTo ( source )
 				end
@@ -541,7 +541,7 @@ end
 addEventHandler ( "onVehicleDamage", root, vehicleDamage )
 
 function vehicleEnter ( vehicle, seat, jacked )
-	local vehicle1 = getPlayerOccupiedVehicle ( source )
+	local vehicle1 = getPedOccupiedVehicle ( source )
 	triggerClientEvent (source, "damageVehicle", vehicle1 ) 
 	triggerClientEvent (source, "enterVehicle", source )
 end
@@ -581,7 +581,7 @@ triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
 			call(getResourceFromName("snake"), "stopSnake", v)
 		--end
 		destroyBlipsAttachedTo (v)
-		removePlayerFromVehicle (v)
+		removePedFromVehicle (v)
 		hasSpawned[v] = false
 		setCameraTarget ( v, v )
 		setElementData ( v, "deaths", 0 )
@@ -624,7 +624,7 @@ function mapStop()
 		destroyElement (v)
 	end
 	for k,v in ipairs(getElementsByType("player")) do
-		removePlayerFromVehicle (v)
+		removePedFromVehicle (v)
 		call(getResourceFromName("snake"), "stopSnake", v)
 		destroyBlipsAttachedTo (v)
 		setCameraTarget ( v, v )
@@ -655,12 +655,12 @@ function playerQuit ( )
 if tonumber(theMode) == 1 then
 	setTimer( testDeads, tonumber(respawnMe) + 500, 1)
 end
-local vehicle = getPlayerOccupiedVehicle(source)
+local vehicle = getPedOccupiedVehicle(source)
 if vehicle then
-	for k,v in ipairs(getAttachedElements(getPlayerOccupiedVehicle(source))) do
+	for k,v in ipairs(getAttachedElements(getPedOccupiedVehicle(source))) do
 		destroyElement(v)
 	end
-	destroyElement(getPlayerOccupiedVehicle(source))
+	destroyElement(getPedOccupiedVehicle(source))
 end
 	destroyBlipsAttachedTo ( source )
 	setPlayerTeam(source, nil)
@@ -796,7 +796,7 @@ addCommandHandler ("prev", spectatePrev)
 
 function filterPlayersTable ( playerTable ) --this function clears out useless players from spectators table
 	for k,v in ipairs(playerTable) do
-		if isPlayerDead ( v ) then
+		if isPedDead ( v ) then
 			table.remove(playerTable,k)
 		end
 	end
@@ -818,7 +818,7 @@ end
 addCommandHandler ( "stopspec", stopSpec )
 
 function addHealthVehicle ()
-	local vehicle1 = getPlayerOccupiedVehicle ( source )
+	local vehicle1 = getPedOccupiedVehicle ( source )
 	setElementHealth (vehicle1, 1500)
 	setElementData (source, "armor1", true)
 end
@@ -827,7 +827,7 @@ addEvent ("zeArmor", true)
 addEventHandler ("zeArmor", root, addHealthVehicle)
 
 function addNitroVehicle ()
-	local vehicle1 = getPlayerOccupiedVehicle ( source )
+	local vehicle1 = getPedOccupiedVehicle ( source )
 	addVehicleUpgrade(vehicle1, 1010)
 end
 addEvent("zeNOS", true)

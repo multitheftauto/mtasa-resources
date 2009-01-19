@@ -31,7 +31,7 @@ function loadIPGroup ( group )
 	if ( node ) then
 		local ranges = 0
 		while ( true ) do
-			local range_node = xmlFindSubNode ( node, "range", ranges )
+			local range_node = xmlFindChild ( node, "range", ranges )
 			if ( not range_node ) then break end
 			local rstart = tonumber ( xmlNodeGetAttribute ( range_node, "start" ) )
 			local rend = tonumber ( xmlNodeGetAttribute ( range_node, "end" ) )

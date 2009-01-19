@@ -278,7 +278,7 @@ function restorePlayer(id, player)
 		bkp.vehicle = spawnpoint.vehicle    -- Fix spawn'n'blow
 		--setVehicleID(RaceMode.getPlayerVehicle(player), spawnpoint.vehicle)
 	end
-	spawnPlayer(player, bkp.position[1], bkp.position[2], bkp.position[3], 0, getPlayerSkin(player))
+	spawnPlayer(player, bkp.position[1], bkp.position[2], bkp.position[3], 0, getElementModel(player))
 
 	local vehicle = RaceMode.getPlayerVehicle(player)
 	if vehicle then
@@ -288,7 +288,7 @@ function restorePlayer(id, player)
 		if getElementModel(vehicle) ~= bkp.vehicle then
 			setVehicleID(vehicle, bkp.vehicle)
 		end
-		warpPlayerIntoVehicle(player, vehicle)
+		warpPedIntoVehicle(player, vehicle)
 		--setTimer(warpPlayerIntoVehicle, 500, 5, player, vehicle)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)

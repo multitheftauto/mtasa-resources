@@ -101,7 +101,7 @@ addEventHandler("destroylandmine",getRootElement(),destroymine)
 addEvent ("placethecam", true )
 
 function dropcamera(player)
-	local playerrot = getPlayerRotation ( player )
+	local playerrot = getPedRotation ( player )
 	local rot = playerrot-180
 	triggerClientEvent(player,"findcamerapos",getRootElement(),rot )
 end
@@ -141,7 +141,7 @@ addEventHandler("killcameraobject",getRootElement(),removecamball)
 addEvent ("armortheplayer", true )
 
 function armorup(player)
-	setPlayerArmor ( player, 75 )
+	setPedArmor ( player, 75 )
 end
 
 addEventHandler("armortheplayer",getRootElement(),armorup)
@@ -155,7 +155,7 @@ function maketheshield (player)
 	local x, y, z = getElementPosition( player )
 	shield = createObject ( 1631, x, y, z, 0, 0, 0 )
 	setElementData ( shield, "type", "ashield" )
-	attachElementToElement( shield, player, .2, .5, .2 )
+	attachElements( shield, player, .2, .5, .2 )
 end
 	
 addEventHandler("shieldup", getRootElement() , maketheshield)	

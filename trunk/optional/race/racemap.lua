@@ -27,7 +27,7 @@ function RaceMap:__index(k)
 		self[k] = result
 		return result
 	end
-	result = xmlFindSubNode(self.xml, k, 0)
+	result = xmlFindChild(self.xml, k, 0)
 	if result then
 		result = self:createRaceMapObject(result, k)
 		self[k] = result
@@ -41,9 +41,9 @@ function RaceMap.load(res)
 		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no meta.xml', 2)
 		return false
 	end
-    local infoNode = xmlFindSubNode(meta, 'info', 0)
+    local infoNode = xmlFindChild(meta, 'info', 0)
     local info = infoNode and xmlNodeGetAttributes ( infoNode ) or {}
-	local racenode = xmlFindSubNode(meta, 'race', 0)
+	local racenode = xmlFindChild(meta, 'race', 0)
 	local file = racenode and xmlNodeGetAttribute(racenode, 'src')
 	xmlUnloadFile(meta)
 	if not file then
@@ -76,7 +76,7 @@ end
 function RaceMap:getAll(name, ...)
 	local i = 0
 	local result = {}
-	local node = xmlFindSubNode(self.xml, name, 0)
+	local node = xmlFindChild(self.xml, name, 0)
 	local attrs = g_MapObjAttrs[name] or { ... }
 	local obj
 	local id
@@ -88,7 +88,7 @@ function RaceMap:getAll(name, ...)
 		for _,attr in ipairs(attrs) do
 			result[i][attr] = obj[attr]
 		end
-		node = xmlFindSubNode(self.xml, name, i)
+		node = xmlFindChild(self.xml, name, i)
 	end
 	return result
 end
@@ -107,7 +107,7 @@ function RaceMapObject:__index(k)
 		self[k] = self:parseValue(val)
 		return self[k]
 	end
-	val = xmlFindSubNode(self.node, k, 0)
+	val = xmlFindChild(self.node, k, 0)
 	if val then
 		self[k] = self:parseValue(xmlNodeGetValue(val))
 		return self[k]
@@ -221,7 +221,7 @@ function RaceRaceMap:convert()
 		return false
 	end
 	if self.meta then
-		local infoNode = xmlFindSubNode(meta, 'info', 0)
+		local infoNode = xmlFindChild(meta, 'info', 0)
 		for _,infoAttr in ipairs({'author', 'description', 'version'}) do
 			xmlNodeSetAttribute(infoNode, infoAttr, self.meta[infoAttr])
 		end
@@ -229,11 +229,11 @@ function RaceRaceMap:convert()
 	end
 	
 	if self.options then
-		local settingsNode = xmlCreateSubNode(meta, 'settings')
+		local settingsNode = xmlCreateChild(meta, 'settings')
 		local settingNode
 		for option,_ in pairs(g_MapSettingNames) do
 			if self[option] then
-				settingNode = xmlCreateSubNode(settingsNode, 'setting')
+				settingNode = xmlCreateChild(settingsNode, 'setting')
 				xmlNodeSetAttribute(settingNode, 'name', '#' .. option)
 				xmlNodeSetAttribute(settingNode, 'value', self.options[option])
 			end
@@ -252,7 +252,7 @@ function RaceRaceMap:convert()
 	for objType,attrs in pairs(g_MapObjAttrs) do
 		i = 0
 		while true do
-			node = xmlFindSubNode(self.xml, objType, i)
+			node = xmlFindChild(self.xml, objType, i)
 			if not node then
 				break
 			end
@@ -275,7 +275,7 @@ function RaceRaceMap:convert()
 						end
 						xmlNodeSetAttribute(node, attr, val)
 					end
-					xmlDestroyNode(xmlFindSubNode(node, attr, 0))
+					xmlDestroyNode(xmlFindChild(node, attr, 0))
 				end
 			end
 			xmlNodeSetAttribute(node, 'id', objType .. (i+1))
@@ -285,7 +285,7 @@ function RaceRaceMap:convert()
 			i = i + 1
 		end
 		if objType == 'checkpoint' and i > 0 then
-			xmlNodeSetAttribute(xmlFindSubNode(self.xml, 'checkpoint', i-1), 'nextid', nil)
+			xmlNodeSetAttribute(xmlFindChild(self.xml, 'checkpoint', i-1), 'nextid', nil)
 		end
 	end
 	xmlNodeSetAttribute(self.xml, 'mod', 'deathmatch')

@@ -23,9 +23,9 @@ addEventHandler('onServerCall', getRootElement(),
 	end
 )
 
-local _warpPlayerIntoVehicle = warpPlayerIntoVehicle
-function warpPlayerIntoVehicle(player, vehicle)
-	if getPlayerOccupiedVehicle(player) ~= vehicle then
+local _warpPlayerIntoVehicle = warpPedIntoVehicle
+function warpPedIntoVehicle(player, vehicle)
+	if getPedOccupiedVehicle(player) ~= vehicle then
 		_warpPlayerIntoVehicle(player, vehicle)
 	end
 end

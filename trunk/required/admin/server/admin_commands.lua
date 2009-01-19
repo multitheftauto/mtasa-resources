@@ -26,11 +26,11 @@ function aSetupCommands()
 	local node = xmlLoadFile ( "conf\\commands.xml" )
 	if ( node ) then
 		for id, type in ipairs ( _types ) do
-			local subnode = xmlFindSubNode ( node, type, 0 )
+			local subnode = xmlFindChild ( node, type, 0 )
 			if ( subnode ) then
 				local commands = 0
-				while ( xmlFindSubNode ( subnode, "command", commands ) ~= false ) do
-					local command = xmlFindSubNode ( subnode, "command", commands )
+				while ( xmlFindChild ( subnode, "command", commands ) ~= false ) do
+					local command = xmlFindChild ( subnode, "command", commands )
 					local handler = xmlNodeGetAttribute ( command, "handler" )
 					local call = xmlNodeGetAttribute ( command, "call" )
 					local args = xmlNodeGetAttribute ( command, "args" )

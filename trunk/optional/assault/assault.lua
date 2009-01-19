@@ -245,8 +245,8 @@ function startRoundNow()
 end
 
 function waitForStart( player )
-	if (isPlayerInVehicle( player )) then
-		removePlayerFromVehicle( player ) end
+	if (isPedInVehicle( player )) then
+		removePedFromVehicle( player ) end
 	
 	textDisplayAddObserver( waitingDisplay, player )
 	--setCameraMode( player, "fixed" )
@@ -260,8 +260,8 @@ function waitForStart( player )
 end
 
 function waitEndRound( player )
-	if (isPlayerInVehicle( player )) then
-		removePlayerFromVehicle( player ) end
+	if (isPedInVehicle( player )) then
+		removePedFromVehicle( player ) end
 	
 	textDisplayAddObserver( waitingDisplay2, player )
 	--setCameraMode( player, "fixed" )
@@ -334,12 +334,12 @@ function onObjectiveHit( player )
 			local thisObjective = options.objective[status[objectiveId].key]
 			
 			if (thisObjective.captureType == "foot") then
-				if (isPlayerInVehicle(player) == true) then
+				if (isPedInVehicle(player) == true) then
 					outputChatBox("You need to be on foot to activate this objective!",player,255,0,0)
 					return
 				end
 			elseif (thisObjective.captureType == "vehicle") then
-				if (isPlayerInVehicle(player) == false) then
+				if (isPedInVehicle(player) == false) then
 					outputChatBox("You need to be in a vehicle to activate this objective!",player,255,0,0)
 					return
 				end
@@ -397,7 +397,7 @@ function objectiveCount(objectiveId)
 	
 	for k,v in ipairs(allPlayers) do
 		local team = getPlayerTeam(v)
-		if (isPlayerDead(v) == false and team == attacker and isPlayerInVehicle(v) ~= captureTypeBool) then
+		if (isPedDead(v) == false and team == attacker and isPedInVehicle(v) ~= captureTypeBool) then
 			countPlayers = countPlayers + 1
 			playerTable[#playerTable+1] = v
 		end
@@ -898,12 +898,12 @@ function onPlayerWasted( ammo, attacker, weapon, bodypart )
 end
 
 function selectTeam( player )
-	if (isPlayerInVehicle( player )) then
-		removePlayerFromVehicle( player ) end
+	if (isPedInVehicle( player )) then
+		removePedFromVehicle( player ) end
 	
-	if (isPlayerDead(player) == false) then
+	if (isPedDead(player) == false) then
 		setElementDataLocal( player, "dontRespawn", true )
-		killPlayer( player )
+		killPed( player )
 	end
 	setPlayerTeam( player, nil )
 	toggleSelectTeamDisplay( player, true )
@@ -1435,7 +1435,7 @@ function getFromSettings( mapName, setting, default )
 end
 
 function selfkill( source )
-	killPlayer(source)
+	killPed(source)
 end
 
 -- GUI/Textdisplay stuff

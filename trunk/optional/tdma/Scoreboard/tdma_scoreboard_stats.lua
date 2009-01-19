@@ -168,7 +168,7 @@ function gameTick ()
 				end
 			end
 			
-			local playerVehicle = getPlayerOccupiedVehicle(v)
+			local playerVehicle = getPedOccupiedVehicle(v)
 			if ( playerVehicle ) then
 				--Inside one
 				setElementData ( v, "status", "Vehicle" )

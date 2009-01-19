@@ -96,7 +96,7 @@ function readCycleXml(xmlFile)
 	local isAnyNodeValid = false
 	local nodeIndex = 0
 	while true do
-		local gameNode = xmlFindSubNode(cycleRoot, "game", nodeIndex)
+		local gameNode = xmlFindChild(cycleRoot, "game", nodeIndex)
 		if gameNode then
 			local gameInfo, returnedErrorCode = getGameNodeInfo(gameNode)
 			if gameInfo then

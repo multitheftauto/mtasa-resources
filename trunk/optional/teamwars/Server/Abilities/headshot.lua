@@ -48,14 +48,14 @@ function Ability_Headshot:OnPlayerDamage(source, attacker, weapon, bodypart, los
 	if ((bodypart == 9) and ( loss > 0.5)) then	-- Lame bug fix
 		if (self.weaponID == false) then -- Any weapon causes 'headshots' 
 			if ((not self.includeMelee) and (not isWeaponMelee(weapon))) then
-				killPlayer ( source, attacker, weapon, bodypart )	
+				killPed ( source, attacker, weapon, bodypart )	
 			elseif ((not self.includeMelee) and (isWeaponMelee(weapon))) then
 			
 			else				
-				killPlayer ( source, attacker, weapon, bodypart )	
+				killPed ( source, attacker, weapon, bodypart )	
 			end
 		elseif(self.weaponID == weapon) then
-			killPlayer ( source, attacker, weapon, bodypart )	
+			killPed ( source, attacker, weapon, bodypart )	
 		end
 	end
 end

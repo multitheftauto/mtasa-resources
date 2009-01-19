@@ -134,13 +134,13 @@ end
 function veh ( source, command, vehid )
 	local x,y,z = getElementPosition ( source )
     local car = createVehicle ( tonumber(vehid), tonumber(x), tonumber(y), tonumber(z) )  
-    warpPlayerIntoVehicle ( source, car )
+    warpPedIntoVehicle ( source, car )
 end
 
 function pass ( source, command, player, seat )
 	local name = getPlayerFromNick ( player )
-	local car = getPlayerOccupiedVehicle ( name )
-	warpPlayerIntoVehicle ( source, car, seat )
+	local car = getPedOccupiedVehicle ( name )
+	warpPedIntoVehicle ( source, car, seat )
 end
 
 function distance ( source, command, player1, player2 )
@@ -193,7 +193,7 @@ end
 function grav ( source, command, gravid )
 	setGravity ( gravid )
 	for k,v in ipairs(players) do
-	setPlayerGravity ( v, gravid )
+	setPedGravity ( v, gravid )
 	end
 end
 
@@ -213,7 +213,7 @@ end
 
 function consoleKill ( player, commandName )
 	if ( player ) then
-		killPlayer ( player )
+		killPed ( player )
 	end
 end
 
@@ -226,7 +226,7 @@ function testSound ( source, command, ids )
 end
 
 function armor ( source )
-	setPlayerArmor ( source, 100 )
+	setPedArmor ( source, 100 )
 end
 
 function testSound2 ( source, command, ids )
@@ -240,14 +240,14 @@ function playslot ()
 end
 
 function style ( player, command, ids )
-	setPlayerFightingStyle ( player, tonumber(ids) )
+	setPedFightingStyle ( player, tonumber(ids) )
 end
 
 ----TALIDAN ADDED THIS CRAP, <3 BROPHY
 --[[Vehicle pos/rot: -721.44641113281 1014.2721557617 11.814476966858, 186.75370788574 357.12237548828 189.90641784668]]
 function flipVehicle ( source, cmd )
-	if ( isPlayerInVehicle ( source ) == true ) then
-		local theVehicle = getPlayerOccupiedVehicle ( source )
+	if ( isPedInVehicle ( source ) == true ) then
+		local theVehicle = getPedOccupiedVehicle ( source )
 		local x,y,z = getElementPosition ( theVehicle )
 		local rx,ry,rz = getVehicleRotation ( theVehicle )
 		if rx > 180 then rz = rz - 180 end

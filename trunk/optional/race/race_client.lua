@@ -51,7 +51,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 			loadCustomModel(id, 'model/' .. name .. '.dff', 'model/' .. name .. '.txd')
 		end
 		
-		setPlayerCanBeKnockedOffBike(g_Me, false)
+		setPedCanBeKnockedOffBike(g_Me, false)
 		triggerServerEvent('onLoadedAtClient', g_Me)
 	end
 )
@@ -97,7 +97,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 			g_Pickups[colshape][k] = v
 		end
         if g_Pickups[colshape].type == 'vehiclechange' then
-			g_Pickups[colshape].label = guiCreateLabel(0, 0, 150, 20, getVehicleNameFromID(g_Pickups[colshape].vehicle), false)
+			g_Pickups[colshape].label = guiCreateLabel(0, 0, 150, 20, getVehicleNameFromModel(g_Pickups[colshape].vehicle), false)
 			guiSetVisible(g_Pickups[colshape].label, false )
 			guiSetAlpha(g_Pickups[colshape].label, 0 )
         end
@@ -173,7 +173,7 @@ function setGhostMode(ghostmode)
         if g_GameOptions and g_GameOptions.ghostalpha then
 		    setElementAlpha(player, ghostmode and 200 or 255)
         end
-		vehicle = getPlayerOccupiedVehicle(player)
+		vehicle = getPedOccupiedVehicle(player)
 		if vehicle then
 			if player ~= g_Me then
 				setElementCollisionsEnabled(vehicle, not ghostmode)
@@ -229,7 +229,7 @@ function updatePickups()
 	local pickup, x, y, pX, pY, pZ
 	for colshape,elem in pairs(g_VisiblePickups) do
 		if colshape ~= 'n' then
-			setObjectRotation(elem, 0, 0, angle)
+			setElementRotation(elem, 0, 0, angle)
 			pickup = g_Pickups[colshape]
 			if pickup.label then
 				local pX, pY, pZ = getElementPosition(g_Me)
@@ -667,7 +667,7 @@ addEventHandler('onClientPlayerJoin', g_Root,
 	end
 )
 
-addEventHandler('onClientPlayerWasted', g_Root,
+addEventHandler('onClientPedWasted', g_Root,
 	function()
 		if not g_StartTick then
 			return
@@ -681,7 +681,7 @@ addEventHandler('onClientPlayerWasted', g_Root,
 			end
 			setGhostMode(true)
 		else
-			local vehicle = getPlayerOccupiedVehicle(source)
+			local vehicle = getPedOccupiedVehicle(source)
 			if vehicle then
 				setElementCollisionsEnabled(vehicle, false)
 				if g_MapOptions.respawn == 'timelimit' and not g_GhostMode then
@@ -711,7 +711,7 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 		removeEventHandler('onClientRender', g_Root, updateBars)
 		killTimer(g_WaterCheckTimer)
 		showHUD(true)
-		setPlayerCanBeKnockedOffBike(g_Me, true)
+		setPedCanBeKnockedOffBike(g_Me, true)
 	end
 )
 

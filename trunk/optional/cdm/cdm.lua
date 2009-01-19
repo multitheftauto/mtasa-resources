@@ -105,7 +105,7 @@ function cdm_showScreen( player )
 	end
 	spawnPlayer( player, 10000, 10000, 10000, 0, 0 )
 	setElementPosition( player, teamRoot[last].camera.posX, teamRoot[last].camera.posY, teamRoot[last].camera.posZ - 100 )
-	setPlayerGravity ( player, 0 )
+	setPedGravity ( player, 0 )
 	textDisplayAddObserver ( teamRoot[last].display, player )
 	--[[if ( getCameraMode ( player ) == "player" ) then
 		setCameraMode ( player, "fixed" )
@@ -162,7 +162,7 @@ function cdm_spawn( player )
 	local randSkin = math.random(1, #teamRoot[teamNum].skins)
 	local team = getTeamFromName(teamRoot[teamNum].name)
 	setPlayerNametagColor ( player, teamRoot[teamNum].red, teamRoot[teamNum].green, teamRoot[teamNum].blue )
-	setPlayerGravity ( player, 0.008 )
+	setPedGravity ( player, 0.008 )
 	spawnPlayer ( player, 0, 0, 1000, 0, 1 )
 	setTimer( cdm_spawnTwo, 550, 1, player, teamNum, randSpawn, randSkin, team )
 end
@@ -181,8 +181,8 @@ end
 function cdm_killAll()
 	local players = getElementsByType( "player" )
 	for k,v in ipairs(players) do
-		if ( isPlayerDead( v ) == false ) then
-			killPlayer( v )
+		if ( isPedDead( v ) == false ) then
+			killPed( v )
 		end
 	end
 end	
@@ -225,11 +225,11 @@ function cdm_playerWasted( totalAmmo, killer )
 	destroyBlipsAttachedTo ( source )
 	local x, y, z = getElementPosition( source )
 	local deathBlip = createBlip ( x, y, z, 0, 2, 200, 200, 200 )
-	if ( getPlayerOccupiedVehicle ( source ) ) then
+	if ( getPedOccupiedVehicle ( source ) ) then
 		if ( respawnTime > 200 ) then
-			setTimer( removePlayerFromVehicle, respawnTime-200, 1, source )
+			setTimer( removePedFromVehicle, respawnTime-200, 1, source )
 		else
-			removePlayerFromVehicle( source )
+			removePedFromVehicle( source )
 		end
 	end
 	setTimer( destroyElement, respawnTime, 1, deathBlip )

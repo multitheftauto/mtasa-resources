@@ -87,7 +87,7 @@ function starttheround(player)
 		for tableKey, tableValue in pairs(tableofplayers) do 
 			iscloaked = getElementData ( tableValue, "stealthmode" )
 			if iscloaked == "on" then
-				setPlayerSkin ( tableValue, 111 )
+				setElementModel ( tableValue, 111 )
 				player = tableValue
 				alphachangedelay = setTimer ( setalpha, 100, 1, player )
 			end
@@ -422,32 +422,32 @@ local laserWeapons = {}
 function drawLasers()
 	for k,player in ipairs(getElementsByType"player") do
 		local draw,startX,startY,startZ,targetX,targetY,targetZ
-		local playerWeapon = getPlayerWeapon ( player )
+		local playerWeapon = getPedWeapon ( player )
 		if ( playerWeapon == 31 and laserWeapons[31] ) then
 			draw = true
 			local offset = - 0.1
-			if isPlayerDucked ( player ) and isPlayerDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) and not ( getControlState"left" or getControlState"right" or getControlState"forwards" or getControlState"backwards" ) then
+			if isPedDucked ( player ) and isPedDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) and not ( getControlState"left" or getControlState"right" or getControlState"forwards" or getControlState"backwards" ) then
 				offset = - 0.095
-			elseif isPlayerDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) then
+			elseif isPedDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) then
 				offset = - 0.05
 			end
 			local boneX,boneY,boneZ = getPedBonePosition ( player, 25 )
 			-- boneZ = boneZ - 0.12
-			startX,startY,startZ = getPlayerTargetStart ( player )
+			startX,startY,startZ = getPedTargetStart ( player )
 		
 			targetX,targetY,targetZ = extendLine ( boneX,boneY,boneZ,startX,startY,startZ + offset,500 )	
 			if not isElementOnScreen ( player ) then --work around for an mta bug
 				startX,startY,startZ = getElementPosition ( player )
-				targetX,targetY,targetZ = getPlayerTargetEnd ( player )
+				targetX,targetY,targetZ = getPedTargetEnd ( player )
 			end
 		elseif ( playerWeapon == 34 and laserWeapons[34] ) then
-			if ( player ~= localPlayer ) and ( isPlayerDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) ) then
+			if ( player ~= localPlayer ) and ( isPedDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) ) then
 				draw = true
 				startX,startY,startZ = getPedBonePosition ( player, 35 )
-				targetX,targetY,targetZ = getPlayerTargetEnd ( player )
+				targetX,targetY,targetZ = getPedTargetEnd ( player )
 				if not isElementOnScreen ( player ) then --work around for an mta bug
 					startX,startY,startZ = getElementPosition ( player )
-					targetX,targetY,targetZ = getPlayerTargetEnd ( player )
+					targetX,targetY,targetZ = getPedTargetEnd ( player )
 				end
 			end
 		end
