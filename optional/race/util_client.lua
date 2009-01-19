@@ -234,12 +234,18 @@ function clamp( lo, value, hi )
 end
 
 
-function outputDebug( msg )
-	if _DEBUG then
-        local ms = getTickCount()
-        outputConsole( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
-        outputDebugString( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
-	end
+function outputDebug( chan, msg )
+    if _DEBUG then
+        if not msg then
+            msg = chan
+            chan = 'undef'
+        end
+        if table.find(_DEBUG,chan) then
+            local ms = getTickCount()
+            outputConsole( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
+            outputDebugString( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
+        end
+    end
 end
 
 function outputWarning( msg )

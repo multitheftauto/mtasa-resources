@@ -1,19 +1,20 @@
 --
 -- racemidvote_server.lua
 --
--- Mid-race random map vote
+-- Mid-race random map vote and
+-- NextMapVote handled in this file
 --
 
 local lastVoteStarterName = ''
 local lastVoteStarterCount = 0
 
 ----------------------------------------------------------------------------
--- startMidRaceVoteForRandomMap
+-- startMidMapVoteForRandomMap
 --
 -- Start the vote menu if during a race and more than a minute from the end
 -- No messages if this was not started by a player
 ----------------------------------------------------------------------------
-function startMidRaceVoteForRandomMap(player)
+function startMidMapVoteForRandomMap(player)
 
     -- Check state and race time left
     if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 60000 then
@@ -54,6 +55,8 @@ function startMidRaceVoteForRandomMap(player)
         lastVoteStarterName = ''
     end
 
+    votemanager.stopPoll()
+
     -- Actual vote started here
     local pollDidStart = exports.votemanager:startPoll {
            title='Do you want to change to a random map?',
@@ -61,34 +64,36 @@ function startMidRaceVoteForRandomMap(player)
            timeout=15,
            allowchange=false,
            visibleTo=getRootElement(),
-           [1]={'Yes', 'midRaceVoteResult', getRootElement(), true},
-           [2]={'No', 'midRaceVoteResult', getRootElement(), false;default=true},
+           [1]={'Yes', 'midMapVoteResult', getRootElement(), true},
+           [2]={'No', 'midMapVoteResult', getRootElement(), false;default=true},
     }
 
     -- Change state if vote did start
     if pollDidStart then
-        gotoState('MidRaceVote')
+        gotoState('MidMapVote')
     end
 
 end
-addCommandHandler('new',startMidRaceVoteForRandomMap)
+addCommandHandler('new',startMidMapVoteForRandomMap)
 
 
 ----------------------------------------------------------------------------
--- event midRaceVoteResult
+-- event midMapVoteResult
 --
 -- Called from the votemanager when the poll has completed
 ----------------------------------------------------------------------------
-addEvent('midRaceVoteResult')
-addEventHandler('midRaceVoteResult', getRootElement(),
+addEvent('midMapVoteResult')
+addEventHandler('midMapVoteResult', getRootElement(),
 	function( votedYes )
         -- Change state back
-        gotoState('Racing')
-        if votedYes then
-            startRandomMap()
-        else
-            if lastVoteStarterName ~= '' then
-                outputVoteManager( 'Offical news: Everybody hates ' .. lastVoteStarterName )
+        if stateAllowsRandomMapVoteResult() then
+            gotoState('Running')
+            if votedYes then
+                startRandomMap()
+            else
+                if lastVoteStarterName ~= '' then
+                    outputVoteManager( 'Offical news: Everybody hates ' .. lastVoteStarterName )
+                end
             end
         end
 	end
@@ -146,3 +151,89 @@ function outputVoteManager(message, toElement)
 		end
 	end
 end
+
+
+
+--
+--
+-- NextMapVote
+--
+--
+--
+
+local numPollOptions = 0
+
+----------------------------------------------------------------------------
+-- startNextMapVote
+--
+-- Start a votemap for the next map. Should only be called during the
+-- race state 'NextMapSelect'
+----------------------------------------------------------------------------
+function startNextMapVote()
+
+    votemanager.stopPoll()
+
+    -- Get all maps
+    local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(getThisResource())
+	
+	-- limit it to eight random maps
+	if #compatibleMaps > 8 then
+		math.randomseed(getTickCount())
+		repeat
+			table.remove(compatibleMaps, math.random(1, #compatibleMaps))
+		until #compatibleMaps == 8
+	elseif #compatibleMaps < 2 then
+		return false, errorCode.onlyOneCompatibleMap
+	end
+	
+	local poll = {
+		title="Choose the next map:",
+		visibleTo=getRootElement(),
+		percentage=51,
+		timeout=15,
+        adjustwidth=50,
+		allowchange=false;
+		}
+	
+	for index, map in ipairs(compatibleMaps) do
+		local mapName = getResourceInfo(map, "name") or getResourceName(map)
+		table.insert(poll, {mapName, 'nextMapVoteResult', getRootElement(), map})
+	end
+
+	numPollOptions = #poll - 1
+	local pollDidStart = exports.votemanager:startPoll(poll)
+
+	if pollDidStart then
+        gotoState('NextMapVote')
+		addEventHandler("onPollEnd", getRootElement(), chooseRandomMap)
+	end
+
+    return pollDidStart
+end
+
+
+function chooseRandomMap (chosen)
+	if not chosen then
+		cancelEvent()
+		math.randomseed(getTickCount())
+		exports.votemanager:finishPoll(math.random(1, numPollOptions))
+	end
+	removeEventHandler("onPollEnd", getRootElement(), chooseRandomMap)
+end
+
+
+
+----------------------------------------------------------------------------
+-- event nextMapVoteResult
+--
+-- Called from the votemanager when the poll has completed
+----------------------------------------------------------------------------
+addEvent('nextMapVoteResult')
+addEventHandler('nextMapVoteResult', getRootElement(),
+	function( map )
+        if stateAllowsNextMapVoteResult() then
+            exports.mapmanager:changeGamemodeMap ( map )
+        end
+	end
+)
+

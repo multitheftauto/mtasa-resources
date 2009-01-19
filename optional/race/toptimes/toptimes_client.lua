@@ -1,11 +1,51 @@
 --
 -- toptimes_client.lua
 --
+-- See info in toptimes_server.lua
+--
+
+TOPTIMES_ENABLED = true
 
 CToptimes = {}
 CToptimes.__index = CToptimes
 
 CToptimes.instances = {}
+
+
+---------------------------------------------------------------------------
+-- Client
+-- Handle events from Race
+--
+-- This is the 'interface' from Race
+--
+---------------------------------------------------------------------------
+
+addEvent('onMapStarting', true)
+addEventHandler('onMapStarting', getRootElement(),
+	function(mapinfo)
+        if g_CToptimes then
+    		g_CToptimes:onMapStarting(mapinfo)
+        end
+	end
+)
+
+addEvent('onMapStopping', true)
+addEventHandler('onMapStopping', getRootElement(),
+	function()
+        if g_CToptimes then
+	        g_CToptimes:onMapStopping()
+        end
+	end
+)
+
+addEvent('onPlayerReachedFinish', true)
+addEventHandler('onPlayerReachedFinish', getRootElement(),
+	function()
+        if g_CToptimes then
+	        g_CToptimes:doAutoShow()
+        end
+	end
+)
 
 
 ---------------------------------------------------------------------------
@@ -167,12 +207,12 @@ end
 
 ---------------------------------------------------------------------------
 --
--- CToptimes:onMapLoad()
+-- CToptimes:onMapStarting()
 --
 --
 --
 ---------------------------------------------------------------------------
-function CToptimes:onMapLoaded(mapinfo)
+function CToptimes:onMapStarting(mapinfo)
    
     self.bAutoShow          = false
     self.bGettingUpdates    = false     -- Updates are automatically cleared on the server at the start of a new map,
@@ -187,12 +227,12 @@ end
 
 ---------------------------------------------------------------------------
 --
--- CToptimes:onMapUnloaded()
+-- CToptimes:onMapStopping()
 --
 --
 --
 ---------------------------------------------------------------------------
-function CToptimes:onMapUnloaded()
+function CToptimes:onMapStopping()
    
     self.bAutoShow          = false
     self.bGettingUpdates    = false     -- Updates are automatically cleared on the server at the start of a new map,
@@ -230,7 +270,7 @@ function CToptimes:updateShow()
     local bShowAny = self.bAutoShow or self.bManualShow
     self:enableToptimeUpdatesFromServer( bShowAny )
 
-    outputDebug( 'updateShow bAutoShow:'..tostring(self.bAutoShow)..' bManualShow:'..tostring(self.bManualShow)..' listStatus:'..self.listStatus )
+    --outputDebug( 'updateShow bAutoShow:'..tostring(self.bAutoShow)..' bManualShow:'..tostring(self.bManualShow)..' listStatus:'..self.listStatus )
     if not bShowAny then
         self.targetFade = 0
     elseif not self.bManualShow and self.listStatus ~= 'Full' then
@@ -335,9 +375,11 @@ function CToptimes:doOnServerSentToptimes( data, serverRevision, playerPosition 
     end
 
     -- Debug
-    outputDebug( string.format('crev:%d  srev:%d', self.clientRevision, serverRevision ) )
-    if self.clientRevision == serverRevision then
-        outputDebug( 'Already have this revision' )
+    if _DEBUG then
+        outputDebug( 'toptimes', string.format('crev:%s  srev:%s', tostring(self.clientRevision), tostring(serverRevision) ) )
+        if self.clientRevision == serverRevision then
+            outputDebug( 'Already have this revision' )
+        end
     end
 
     -- Update status
@@ -429,6 +471,8 @@ function CToptimes:doToggleToptimes( bOn )
 end
 
 
+
+
 ---------------------------------------------------------------------------
 --
 -- Commands and binds
@@ -439,7 +483,12 @@ end
 
 bindKey('F5', 'down',
     function()
-        g_CToptimes:doToggleToptimes()
+        if g_CToptimes then
+           g_CToptimes:doToggleToptimes()
+        end
     end
 )
 
+
+
+g_CToptimes = TOPTIMES_ENABLED and CToptimes:create()

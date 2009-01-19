@@ -156,7 +156,7 @@ function createShadowedLabelFromSpare(x, y, width, height, text, align)
 
     if #spareElems < 2 then
         if not donePrecreate then
-            outputDebug( 'createShadowedLabel' )
+            outputDebug( 'opt', 'createShadowedLabel' )
         end
 	    return createShadowedLabel(x, y, width, height, text, align)
     else

@@ -25,9 +25,8 @@ g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, p
 g_Players = {}				-- { i = player }
 g_Vehicles = {}				-- { player = vehicle }
 
-g_SToptimesManager = SToptimesManager:create()
---_DEBUG = true       -- More error output
-_TESTING = true     -- Any user can issue test commands
+--_DEBUG = {'undef','Xopt','Xtoptimes','state'}   -- More error output
+_TESTING = true             -- Any user can issue test commands
 
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
@@ -45,6 +44,35 @@ addEventHandler('onGamemodeMapStart', g_Root,
 		startRace()
 	end
 )
+
+function cacheGameOptions()
+    if not g_GameOptions then
+        g_GameOptions = {}
+        g_GameOptions.timeafterfirstfinish  = get('race.timeafterfirstfinish') or 30000
+        g_GameOptions.hurrytime             = get('race.hurrytime') or 15000
+        g_GameOptions.ghostmode             = get('race.ghostmode') or false
+        g_GameOptions.ghostalpha            = get('race.ghostalpha') or false
+        g_GameOptions.randommaps            = get('race.randommaps') or false
+        g_GameOptions.statskey              = get('race.statskey') or 'name'
+        g_GameOptions.vehiclecolors         = get('race.vehiclecolors') or 'file'
+        g_GameOptions.skins                 = get('race.skins') or 'cj'
+        g_GameOptions.autopimp              = get('race.autopimp') or true
+        g_GameOptions.vehicleweapons        = get('race.vehicleweapons') or true
+        g_GameOptions.ghostmode_map_can_override        = get('race.ghostmode_map_can_override') or true
+        g_GameOptions.skins_map_can_override            = get('race.skins_map_can_override') or true
+        g_GameOptions.vehicleweapons_map_can_override   = get('race.vehicleweapons_map_can_override') or true
+        g_GameOptions.autopimp_map_can_override         = get('race.autopimp_map_can_override') or true
+        g_GameOptions.ghostmode_warning_if_map_override         = get('race.ghostmode_warning_if_map_override') or false
+        g_GameOptions.vehicleweapons_warning_if_map_override    = get('race.vehicleweapons_warning_if_map_override') or false
+
+        if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
+            outputWarning( "statskey is not set to 'name' or 'serial'" )
+            g_GameOptions.statskey = 'name'
+        end
+    end
+end
+
+
 
 -- Called from:
 --      onGamemodeMapStart
@@ -169,8 +197,9 @@ end
 -- Called from:
 --      onGamemodeMapStart
 function startRace()
-    gotoState('PreRace')
-    g_SToptimesManager:setModeAndMap( g_CurrentRaceMode:getName(), g_MapInfo.name, g_GameOptions.statskey );
+    gotoState('PreGridCountdown')
+    --g_SToptimesManager:setModeAndMap( g_CurrentRaceMode:getName(), g_MapInfo.name, g_GameOptions.statskey )
+    triggerEvent('onStartingMap', g_Root, g_CurrentRaceMode:getName(), g_MapInfo.name, g_GameOptions.statskey )
 	g_Players = {}
 	g_SpawnTimer = setTimer(joinHandler, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
@@ -192,7 +221,7 @@ function launchRace()
 	g_CurrentRaceMode:launch()
 	g_CurrentRaceMode.running = true
 	triggerEvent('onRaceLaunch', getResourceRootElement(mapmanager.getRunningGamemodeMap()))
-    gotoState('Racing')
+    gotoState('Running')
 end
 
 g_RaceStartCountdown = Countdown.create(6, launchRace)
@@ -225,7 +254,7 @@ function joinHandler(player)
 	if #g_Spawnpoints == 0 then
 		-- start vote if no map is loaded
 		outputDebugString('No map loaded; showing votemanager')
-        RaceMode.endRace()
+        RaceMode.endMap()
 		return
 	end
 	if g_SpawnTimer then
@@ -355,7 +384,7 @@ function joinHandler(player)
 	
 	if playerJoined and getPlayerCount() <= 2 then
 		---- Start random map vote if someone joined a lone player
-        startMidRaceVoteForRandomMap()
+        startMidMapVoteForRandomMap()
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandler)
@@ -378,7 +407,7 @@ end
 --
 -- Note: Some clients will experience severe stutter and stalls if any
 -- players have different skin/clothes.
--- For smooth gameplay, ensure everyone even has the same skin setup including crash helmet etc.
+-- For smooth gameplay, ensure everyone has the same skin setup including crash helmet etc.
 function setRandomSeedForMap( type )
     local seed = 0
     if type == 'clothes' then
@@ -401,6 +430,9 @@ end
 addEvent('onPlayerReachCheckpointInternal', true)
 addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 	function(checkpointNum)
+        if not stateAllowsCheckpoint() then
+            return
+        end
 		local vehicle = g_Vehicles[source]
 		local checkpoint = g_Checkpoints[checkpointNum]
 		if checkpoint.vehicle then
@@ -427,6 +459,9 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 addEvent('onPlayerPickUpRacePickup', true)
 addEventHandler('onPlayerPickUpRacePickup', g_Root,
 	function(pickupID, pickupType)
+        if not stateAllowsPickup() then
+            return
+        end
 		local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
 		local vehicle = g_Vehicles[source]
 		if pickup.type == 'repair' then
@@ -469,7 +504,7 @@ function raceTimeout()
 	end
 	clientCall(g_Root, 'raceTimeout')
 	g_RaceEndTimer = nil
-    RaceMode.endRace()
+    RaceMode.endMap()
 end
 
 -- Called from:
@@ -487,7 +522,6 @@ function unloadAll()
 		g_RankTimer = nil
 	end
 
-    g_SToptimesManager:unloadingMap()   -- Ensure last stuff is saved
 	Countdown.destroyAll()
 
 	for i,player in pairs(g_Players) do
@@ -524,37 +558,37 @@ addEventHandler('onPollDraw', g_Root,
 	end
 )
 
+local bCalledOnGamemodeStart = false
+
+function resourceStartedTimeout()
+    if not bCalledOnGamemodeStart then
+        outputWarning( "Game mode 'Race' started incorrectly." )
+        outputWarning( "Trying to restart with mapmanager..." )
+        exports.mapmanager:changeGamemode( getResourceFromName('race') )
+    end
+end
+
+
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
 		outputDebugString('Resource starting')
-	    g_GameOptions = {}
-        g_GameOptions.timeafterfirstfinish  = get('race.timeafterfirstfinish') or 30000
-        g_GameOptions.hurrytime             = get('race.hurrytime') or 15000
-        g_GameOptions.ghostmode             = get('race.ghostmode') or false
-        g_GameOptions.ghostalpha            = get('race.ghostalpha') or false
-        g_GameOptions.randommaps            = get('race.randommaps') or false
-        g_GameOptions.statskey              = get('race.statskey') or 'name'
-        g_GameOptions.vehiclecolors         = get('race.vehiclecolors') or 'file'
-        g_GameOptions.skins                 = get('race.skins') or 'cj'
-        g_GameOptions.autopimp              = get('race.autopimp') or true
-        g_GameOptions.vehicleweapons        = get('race.vehicleweapons') or true
-        g_GameOptions.ghostmode_map_can_override        = get('race.ghostmode_map_can_override') or true
-        g_GameOptions.skins_map_can_override            = get('race.skins_map_can_override') or true
-        g_GameOptions.vehicleweapons_map_can_override   = get('race.vehicleweapons_map_can_override') or true
-        g_GameOptions.autopimp_map_can_override         = get('race.autopimp_map_can_override') or true
-        g_GameOptions.ghostmode_warning_if_map_override         = get('race.ghostmode_warning_if_map_override') or false
-        g_GameOptions.vehicleweapons_warning_if_map_override    = get('race.vehicleweapons_warning_if_map_override') or false
-
-        if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
-            outputWarning( "statskey is not set to 'name' or 'serial'" )
-            g_GameOptions.statskey = 'name'
-        end
 		scoreboard.addScoreboardColumn('Race rank')
+        setTimer(resourceStartedTimeout,900,1)
+        cacheGameOptions()
 	end
+)
+
+addEventHandler('onGamemodeStart', g_ResRoot,
+    function()
+	    outputDebugString('onGamemodeStart')
+        bCalledOnGamemodeStart = true
+        cacheGameOptions()
+    end
 )
 
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
+        gotoState( 'ResourceStopping' )
         fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')
 		unloadAll()
@@ -584,7 +618,7 @@ addEventHandler('onPlayerQuit', g_Root,
 			triggerEvent('onGamemodeMapStop', g_Root)
 		else
             gotoState('EveryoneFinished')
-            RaceMode.endRace()
+            RaceMode.endMap()
 		end
 	end
 )
