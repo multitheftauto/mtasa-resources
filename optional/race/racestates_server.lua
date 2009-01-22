@@ -100,6 +100,7 @@ end
 function stateAllowsCheckpoint()
     if currentRaceStateName == 'Running'        then    return true     end
     if currentRaceStateName == 'MidMapVote'   then    return true     end
+    if currentRaceStateName == 'SomeoneWon'   then    return true     end
     return false
 end
 
@@ -112,39 +113,9 @@ end
 function stateAllowsPickup()
     if currentRaceStateName == 'Running'        then    return true     end
     if currentRaceStateName == 'MidMapVote'   then    return true     end
+    if currentRaceStateName == 'SomeoneWon'   then    return true     end
     return false
 end
 
 
-
-----------------------------------------------------------------------------
--- stateIsUndefined
---
---
-----------------------------------------------------------------------------
---function stateIsUndefined()
-    --return currentRaceStateName == 'undefined'
---end
---
-
-----------------------------------------------------------------------------
--- stateAllowsCommandVoteMap
---
--- Check if the current state allows the command 'map'
-----------------------------------------------------------------------------
-function stateAllowsCommandVoteMap()
-    if currentRaceStateName == 'undefined'        then    return true     end
-    return false
-end
-
-
-----------------------------------------------------------------------------
--- stateAllowsCommandVoteMap
---
--- Check if the current state allows the command 'map'
-----------------------------------------------------------------------------
-function stateAllowsCommandVoteMap()
-    if currentRaceStateName == 'undefined'        then    return true     end
-    return false
-end
 
