@@ -25,12 +25,17 @@ g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, p
 g_Players = {}				-- { i = player }
 g_Vehicles = {}				-- { player = vehicle }
 
---_DEBUG = {'undef','Xopt','Xtoptimes','state'}   -- More error output
+--_DEBUG = {'NOundef','NOopt','NOtoptimes','NOstate','damageproof','racewar'}   -- More error output
 _TESTING = true             -- Any user can issue test commands
 
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
+		if getPlayerCount() == 0 then
+			outputDebugString('Stopping map')
+			triggerEvent('onGamemodeMapStop', g_Root)
+            return
+		end
         gotoState('LoadingMap')
 		if g_CurrentRaceMode then
 			outputDebugString('Unloading previous map')

@@ -16,11 +16,45 @@
 --
 
 TOPTIMES_ENABLED = true
-
 SToptimesManager = {}
 SToptimesManager.__index = SToptimesManager
-
 SToptimesManager.instances = {}
+
+
+---------------------------------------------------------------------------
+-- Server
+-- Handle events from Race
+--
+-- This is the 'interface' from Race
+--
+---------------------------------------------------------------------------
+
+addEvent('onStartingMap', true)
+addEventHandler('onStartingMap', g_Root,
+	function(raceModeName, mapName, statsKey)
+        if g_SToptimesManager then
+		    g_SToptimesManager:setModeAndMap( raceModeName, mapName, statsKey )
+        end
+	end
+)
+
+addEvent('onPlayerFinish', true)
+addEventHandler('onPlayerFinish', g_Root,
+	function(rank, time)
+        if g_SToptimesManager then
+		    g_SToptimesManager:playerFinished( source, time)
+	    end
+	end
+)
+
+addEventHandler('onResourceStop', g_ResRoot,
+	function()
+        if g_SToptimesManager then
+    		g_SToptimesManager:unloadingMap()
+	    end
+	end
+)
+
 
 ---------------------------------------------------------------------------
 --
@@ -277,43 +311,6 @@ addEventHandler('onClientRequestToptimesUpdates', getRootElement(),
 )
 
 
----------------------------------------------------------------------------
--- Server
--- Handle events from Race
---
--- This is the 'interface' from Race
---
----------------------------------------------------------------------------
-
-g_SToptimesManager = TOPTIMES_ENABLED and SToptimesManager:create()
-
-
-addEvent('onStartingMap', true)
-addEventHandler('onStartingMap', g_Root,
-	function(raceModeName, mapName, statsKey)
-        if g_SToptimesManager then
-		    g_SToptimesManager:setModeAndMap( raceModeName, mapName, statsKey )
-        end
-	end
-)
-
-addEvent('onPlayerFinish', true)
-addEventHandler('onPlayerFinish', g_Root,
-	function(rank, time)
-        if g_SToptimesManager then
-		    g_SToptimesManager:playerFinished( source, time)
-	    end
-	end
-)
-
-addEventHandler('onResourceStop', g_ResRoot,
-	function()
-        if g_SToptimesManager then
-    		g_SToptimesManager:unloadingMap()
-	    end
-	end
-)
-
 
 ---------------------------------------------------------------------------
 --
@@ -376,3 +373,8 @@ addCommandHandler('addtimes',
     end
 )
 
+
+---------------------------------------------------------------------------
+-- Global instance
+---------------------------------------------------------------------------
+g_SToptimesManager = TOPTIMES_ENABLED and SToptimesManager:create()

@@ -4,7 +4,6 @@
 
 SMaptimes = {}
 SMaptimes.__index = SMaptimes
-
 SMaptimes.instances = {}
 
 
