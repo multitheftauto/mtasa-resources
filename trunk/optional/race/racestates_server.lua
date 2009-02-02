@@ -3,6 +3,7 @@
 --
 -- Possible states are
 --
+-- undefined        *
 -- NoMap            * No map loaded
 -- LoadingMap       * Loading a map
 -- PreGridCountdown * Pre race 'Gentlemen, start you engiens'
@@ -14,7 +15,9 @@
 -- EveryoneFinished	* Everyone finished - (Immediately changes to PostFinish)
 -- PostFinish	    * Post race - '[Vote for] next map starts in 'n' seconds'
 -- NextMapSelect    * Vote for next map or Random select
--- 
+-- NextMapVote      * Vote for next map
+-- ResourceStopping *
+--
 
 
 local currentRaceStateName = 'undefined'

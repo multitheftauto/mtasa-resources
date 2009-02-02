@@ -5,10 +5,8 @@
 --
 
 TOPTIMES_ENABLED = true
-
 CToptimes = {}
 CToptimes.__index = CToptimes
-
 CToptimes.instances = {}
 
 
@@ -491,4 +489,7 @@ bindKey('F5', 'down',
 
 
 
+---------------------------------------------------------------------------
+-- Global instance
+---------------------------------------------------------------------------
 g_CToptimes = TOPTIMES_ENABLED and CToptimes:create()

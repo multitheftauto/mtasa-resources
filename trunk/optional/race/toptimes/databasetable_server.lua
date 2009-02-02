@@ -7,7 +7,6 @@
 
 SDatabaseTable = {}
 SDatabaseTable.__index = SDatabaseTable
-
 SDatabaseTable.instances = {}
 
 
