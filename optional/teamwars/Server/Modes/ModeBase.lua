@@ -222,7 +222,7 @@ $Id: ModeBase.lua 39 2007-12-18 21:50:11Z sinnerg $
 	end
 	
 	function ModeBase:OnPlayerJoin(source)
-		local playerName = getClientName(source)
+		local playerName = getPlayerName(source)
 	
 		-- Set connection status
 		setElementData(source, "Status", "Loading...")
@@ -230,7 +230,7 @@ $Id: ModeBase.lua 39 2007-12-18 21:50:11Z sinnerg $
 		self.Abilities[source] = {}
 	end
 	function ModeBase:OnPlayerJoined(source)
-		local playerName = getClientName(source)
+		local playerName = getPlayerName(source)
 		
 		-- Announce check
 		if (self.isAnnouncing) then
@@ -277,7 +277,7 @@ $Id: ModeBase.lua 39 2007-12-18 21:50:11Z sinnerg $
 	end
 
 	function ModeBase:OnPlayerQuit(source, reason)
-		local playerName = getClientName(source)
+		local playerName = getPlayerName(source)
 		
 		-- Announce check
 		if (self.isAnnouncing) then

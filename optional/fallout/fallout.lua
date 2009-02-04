@@ -146,17 +146,17 @@ function updateTournamentLeaders ()
 		end
 	end
     if ( top3[1] ) then
-    	textItemSetText ( firstText, "1st: " .. getClientName(top3[1].player) .. " " .. top3[1].ratio )
+    	textItemSetText ( firstText, "1st: " .. getPlayerName(top3[1].player) .. " " .. top3[1].ratio )
 	else
 	    textItemSetText ( firstText, "1st:" )
 	end
 	if ( top3[2] ) then
-    	textItemSetText ( secondText, "2nd: " .. getClientName(top3[2].player) .. " " .. top3[2].ratio )
+    	textItemSetText ( secondText, "2nd: " .. getPlayerName(top3[2].player) .. " " .. top3[2].ratio )
 	else
 	    textItemSetText ( secondText, "2nd:" )
 	end
 	if ( top3[3] ) then
-    	textItemSetText ( thirdText, "3rd: "..getClientName (top3[3].player).." ".. top3[3].ratio )
+    	textItemSetText ( thirdText, "3rd: "..getPlayerName (top3[3].player).." ".. top3[3].ratio )
 	else
 	    textItemSetText ( thirdText, "3rd:" )
 	end
@@ -169,10 +169,10 @@ function declareWinners ()
 	firstEntry = true --This is necessary to save names on seperate lines in a varible for the winners display
 	for k,v in pairs(winners) do
 		if firstEntry == true then
-			winnersList = getClientName ( v )
+			winnersList = getPlayerName ( v )
 			firstEntry = false
 		else
-			winnersList = winnersList.."\n"..getClientName ( v )
+			winnersList = winnersList.."\n"..getPlayerName ( v )
 		end
 		--outputChatBox ( "adding 1 win to: "..getClientName ( v ) ) --DEBUG--DEBUG--DEBUG--DEBUG --DEBUG
 		setElementData ( v, "Wins", ( getElementData ( v, "Wins" ) ) + 1 )
@@ -199,7 +199,7 @@ function declareWinners ()
 		playerwins = (getElementData (v, "Wins"))
 		if tonumber(playerwins) >= scoreLimit then
 			winnerCount = winnerCount + 1
-			winnerName = getClientName ( v )
+			winnerName = getPlayerName ( v )
 		end 
 	end
 	if winnerCount == 1 then
@@ -254,7 +254,7 @@ addEvent("serverReportLoss", true) --For triggering from server
 addEventHandler("serverReportLoss", getRootElement (), playerLoss)
 
 function KillCheater ( )
-	outputChatBox ( "weapon cheat detected. "..getClientName(source).." killed for cheating." )
+	outputChatBox ( "weapon cheat detected. "..getPlayerName(source).." killed for cheating." )
 	killPed ( source )
 end
 addEvent("serverKillCheater", true) --For triggering from server

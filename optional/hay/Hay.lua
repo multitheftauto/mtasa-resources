@@ -202,7 +202,7 @@ end
 
 function onPickupHit ( player )
 	if (getPickupType ( source ) == 2) then
-		outputChatBox( "* " .. getClientName ( player ) .. " made it to the top!", root, 255, 100, 100 )
+		outputChatBox( "* " .. getPlayerName ( player ) .. " made it to the top!", root, 255, 100, 100 )
 		toggleControl ( source, "fire", true )
 		destroyElement( source )
 	end

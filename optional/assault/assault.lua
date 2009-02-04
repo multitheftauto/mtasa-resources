@@ -758,7 +758,7 @@ function spawnPlayerTeam( player )
 		textDisplayAddObserver( defenderDisplay, player )
 		--setElementData(player,"assaultAttacker",false)
 	else
-		outputDebugString("Can't spawn player '"..getClientName(player).."' (no team)",2)
+		outputDebugString("Can't spawn player '"..getPlayerName(player).."' (no team)",2)
 		return
 	end
 	
@@ -796,7 +796,7 @@ function spawnPlayerTeam( player )
 	end
 	
 	if (spawnPlayer( player, newX, newY, z + 1, 0, skin ) == false) then
-		outputConsole("Failed to spawn player '"..getClientName(player).."'")
+		outputConsole("Failed to spawn player '"..getPlayerName(player).."'")
 	end
 	setElementInterior(player,tonumber(spawnpoint.interior))
 	setElementDimension(player,tonumber(spawnpoint.dimension))
@@ -935,7 +935,7 @@ function onPlayerChat( message, theType )
 		cancelEvent()
 		message = string.gsub(message, "#%x%x%x%x%x%x", "")
 		local team = getPlayerTeam( source )
-		local playerName = getClientName( source )
+		local playerName = getPlayerName( source )
 		if (team) then
 			local r,g,b = getTeamColor(team)
 			outputChatBox( playerName..":#FFFFFF "..message,getRootElement(),r,g,b, true )

@@ -152,7 +152,7 @@ function calculateWinners ()
 		end
 		for k, v in ipairs(getElementsByType("player")) do
 			if getElementData(v, "deaths") == winners then
-				triggerClientEvent(getRootElement(), "displayGUItext", getRootElement(), 0.3, 0.3, "Winner: "..getClientName(v), "sa-header", 0, 0, 255, 5000)
+				triggerClientEvent(getRootElement(), "displayGUItext", getRootElement(), 0.3, 0.3, "Winner: "..getPlayerName(v), "sa-header", 0, 0, 255, 5000)
 				setElementData ( v, "wins", getElementData(v, "wins") + 1 )
 			end
 		end
@@ -458,7 +458,7 @@ if #players > 0 then
 		local players = getPlayersInTeam(getTeamFromName("Alive"))
 		for k,v in ipairs(players) do
 			--showTextForAll ( 5000, 0, 0, 255, 2.0, getClientName (v) .." has Survived the match!" )
-			triggerClientEvent(getRootElement(), "displayGUItext", getRootElement(), 0.3, 0.3, getClientName (v) .." has Survived the match!", "sa-header", 0, 0, 255, 3000)
+			triggerClientEvent(getRootElement(), "displayGUItext", getRootElement(), 0.3, 0.3, getPlayerName (v) .." has Survived the match!", "sa-header", 0, 0, 255, 3000)
 			setElementData ( v, "wins", getElementData ( v, "wins" ) + 1 )
 			setTimer ( restartGame, 5000, 1, source )
 		end
@@ -490,14 +490,14 @@ else
 				spectateGay ( source )
 				local players = getPlayersInTeam(getTeamFromName("Alive"))
 				for k,v in ipairs(players) do
-					triggerClientEvent(getRootElement(), "displayGUItext", getRootElement(), 0.3, 0.3, getClientName (v) .." has Survived the match!", "sa-header", 0, 0, 255, 3000)
+					triggerClientEvent(getRootElement(), "displayGUItext", getRootElement(), 0.3, 0.3, getPlayerName (v) .." has Survived the match!", "sa-header", 0, 0, 255, 3000)
 					setElementData ( v, "wins", getElementData ( v, "wins" ) + 1 )
 					setTimer ( removePedFromVehicle, 8000, 1, source )
 					setTimer ( restartGame, 10000, 1, source )
 					destroyBlipsAttachedTo ( source )
 				end
 			else
-				triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), getClientName (source) .. " has been eliminated!", 255, 0, 0)
+				triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), getPlayerName (source) .. " has been eliminated!", 255, 0, 0)
 				setPlayerTeam(source, eliplayers)
 				destroyBlipsAttachedTo ( source )
 				spectateGay ( source )
@@ -506,9 +506,9 @@ else
 		else
 			local deaths = getElementData(source, "deaths")
 			if tonumber(theMode) == 1 then
-				triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), getClientName (source) .. " died. ("..deaths.."/"..tonumber(maxDeaths).." deaths)", 0, 255, 0)
+				triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), getPlayerName (source) .. " died. ("..deaths.."/"..tonumber(maxDeaths).." deaths)", 0, 255, 0)
 			elseif tonumber(theMode) == 2 then
-				triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), getClientName (source) .. " died. ("..deaths.." deaths)", 0, 255, 0)
+				triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), getPlayerName (source) .. " died. ("..deaths.." deaths)", 0, 255, 0)
 			end
 			setTimer ( reSpawnThePlayer, tonumber(respawnMe), 1, source )
 			destroyBlipsAttachedTo ( source )

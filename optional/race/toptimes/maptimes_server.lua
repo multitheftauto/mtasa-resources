@@ -227,7 +227,7 @@ end
 function SMaptimes:addPlayer( player )
 
     table.insert( self.dbTable.rows, {
-                                    playerName      = getClientName(player),
+                                    playerName      = getPlayerName(player),
                                     playerSerial    = getPlayerSerial(player),
                                     timeMs          = 0,
                                     timeText        = '00:00:000',
@@ -258,7 +258,7 @@ function SMaptimes:getIndexForPlayer( player )
         end
     else
         -- Find player by name
-        local name = getClientName(player)
+        local name = getPlayerName(player)
         for i,row in ipairs(self.dbTable.rows) do
             if name == row.playerName then
                 return i
@@ -337,7 +337,7 @@ function SMaptimes:setTimeForPlayer( player, time, dateRecorded )
     table.remove( self.dbTable.rows, oldIndex )
 
     -- Update it
-    row.playerName      = getClientName(player)     -- Refresh the name
+    row.playerName      = getPlayerName(player)     -- Refresh the name
     row.timeMs          = time
     row.timeText        = self:timeMsToTimeText(time)
     row.dateRecorded    = dateRecorded

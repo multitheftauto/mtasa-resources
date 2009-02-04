@@ -97,7 +97,7 @@ function onCtvChat ( message, theType )
 		cancelEvent()
 		message = string.gsub(message, "#%x%x%x%x%x%x", "")
 		local team = getPlayerTeam ( source )
-		local bastidName = getClientName ( source )
+		local bastidName = getPlayerName ( source )
 		if ( team ) then
 		local r, g, b = getTeamColor ( team )
 			outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )

@@ -491,7 +491,7 @@ function spectateNext (source) -- THIS IS THE FUNCTION USED TO SWICH WHO IS BEIN
 				end
 				--setCameraMode ( source, "player" )    
 				setCameraTarget ( source, playersTable[specPlayer] )
-				outputSpectateMessage("Now spectating "..getClientName(playersTable[specPlayer]),source)
+				outputSpectateMessage("Now spectating "..getPlayerName(playersTable[specPlayer]),source)
 				getPlayerSpectatee[source] = specPlayer
 			end
 		end
