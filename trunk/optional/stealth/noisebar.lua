@@ -90,24 +90,37 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 	removeEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
 	soundlevel = soundlevel+2
 	restartdamagedetect = setTimer ( readddamage, 1000, 1 )
-	if ( bodypart == 7 ) or ( bodypart == 8 ) then
-		local isplayerlimping = getElementData ( getLocalPlayer (), "legdamage" )
-		if isplayerlimping ~= 1 then
-			if (attacker) then
-				local attackerteam = getPlayerTeam (attacker)
-				local yourteam = getPlayerTeam (getLocalPlayer ())
-				if attackerteam == yourteam then
-					if getTeamFriendlyFire ( yourteam ) == false then
-						--do nothing
-						return
-					end
+	--Only continue if our bodypart is one of the legs
+	if ( bodypart ~= 7 ) and ( bodypart ~= 8 ) then
+		return
+	end
+	local isplayerlimping = getElementData ( getLocalPlayer (), "legdamage" )
+	if isplayerlimping ~= 1 then
+		if (attacker) then
+			local attackerteam = getPlayerTeam (attacker)
+			local yourteam = getPlayerTeam (getLocalPlayer ())
+			if attackerteam == yourteam then
+				if getTeamFriendlyFire ( yourteam ) == false then
+					--do nothing
+					return
 				end
-				local currentarmor = getPedArmor (getLocalPlayer ())
-				if currentarmor == 0 then
-					outputChatBox("You've been hit in the leg.", getLocalPlayer (), 255, 69, 0)
-					setElementData ( getLocalPlayer (), "legdamage", 1 )
-					local makeplayerlimp = setTimer ( limpeffect, 300, 1, source, key, state )
+			end
+			local currentarmor = getPedArmor (getLocalPlayer ())
+			if currentarmor == 0 then
+				--outputChatBox("You've been hit in the leg.", getLocalPlayer (), 255, 69, 0)
+				setPedAnimation ( getLocalPlayer(), "ped", bodyPartAnim[bodypart][1], true, true, false )
+				setTimer ( setPedAnimation, 600, 1, getLocalPlayer() )
+				setElementData ( getLocalPlayer (), "legdamage", 1 )
+				--Blood stuff
+				local function blood()
+					local boneX,boneY,boneZ = getPedBonePosition(getLocalPlayer(), bodyPartAnim[bodypart][2])
+					local rot = math.rad(getPedRotation ( getLocalPlayer() ))						
+					fxAddBlood ( boneX,boneY,boneZ, -math.sin(rot), math.cos(rot), -0.1, 500, 1.0 )
 				end
+				blood()
+				setTimer(blood,50,50)
+				--
+				local makeplayerlimp = setTimer ( limpeffect, 1000, 1, source, key, state )
 			end
 		end
 	end
