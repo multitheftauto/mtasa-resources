@@ -14,7 +14,7 @@ local function getName(element)
 	local etype = getElementType(element)
 	
 	if etype == "player" then
-		return getClientName(element)
+		return getPlayerName(element)
 	elseif etype == "team" then
 		return getTeamName(element)
 	end

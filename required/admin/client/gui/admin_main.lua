@@ -424,17 +424,13 @@ function aClientSync ( type, table )
 		guiSetText ( aTab3.GameType, "Game Type: "..( table["game"] or "None" ) )
 		guiSetText ( aTab3.MapName, "Map Name: "..( table["map"] or "None" ) )
 	elseif ( type == "bans" ) then
-		aBans = table
-		for group, data in pairs ( table ) do
-			guiGridListSetItemText ( aTab4.BansList, guiGridListAddRow ( aTab4.BansList ), 1, group.." bans", true, false )
-			for id, ban in pairs ( data ) do
-				local row = guiGridListAddRow ( aTab4.BansList )
-				guiGridListSetItemText ( aTab4.BansList, row, 1, iif ( ban["nick"], ban["nick"], "Unknown" ), false, false )
-				guiGridListSetItemText ( aTab4.BansList, row, 2, id, false, false )
-				guiGridListSetItemText ( aTab4.BansList, row, 3, iif ( ban["date"], ban["date"], "Unknown" ), false, false )
-				guiGridListSetItemText ( aTab4.BansList, row, 4, iif ( ban["time"], ban["time"], "Unknown" ), false, false )
-				guiGridListSetItemText ( aTab4.BansList, row, 5, iif ( ban["banner"], ban["banner"], "Unknown" ), false, false )
-			end
+		for i,ban in pairs ( table ) do
+			local row = guiGridListAddRow ( aTab4.BansList )
+			guiGridListSetItemText ( aTab4.BansList, row, 1, iif ( ban["nick"], ban["nick"], "Unknown" ), false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 2, ban.ip or "Unknown", false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 3, iif ( ban["date"], ban["date"], "Unknown" ), false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 4, iif ( ban["time"], ban["time"], "Unknown" ), false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 5, iif ( ban["banner"], ban["banner"], "Unknown" ), false, false )
 		end
 	elseif ( type == "messages" ) then
 		local prev = tonumber ( string.sub ( guiGetText ( aTab1.Messages ), 1, 1 ) )

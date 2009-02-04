@@ -14,7 +14,7 @@ function getPlayerWildcard ( string )
 	local player = getPlayerFromNick ( string )
 	if ( player ) then return player end
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
-		if ( string.find ( string.upper ( getClientName ( player ) ), string.upper ( string ) ) ) then
+		if ( string.find ( string.upper ( getPlayerName ( player ) ), string.upper ( string ) ) ) then
 			return player
 		end
 	end

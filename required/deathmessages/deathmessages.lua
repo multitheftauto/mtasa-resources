@@ -8,18 +8,18 @@ addEventHandler("onPlayerWasted", root,
 			if killer ~= source then
 				local killerType = getElementType(killer)
 				if killerType == "player" then
-					message = getClientName(killer).." killed "..getClientName(source).."."
+					message = getPlayerName(killer).." killed "..getPlayerName(source).."."
 				elseif killerType == "vehicle" then
-					message = getClientName(getVehicleController(killer)).." killed "..getClientName(source).."."
+					message = getPlayerName(getVehicleController(killer)).." killed "..getPlayerName(source).."."
 					if get("show_vehiclename") then
 						message = message .. " ("..getVehicleName(killer)..")"
 					end
 				end
 			else
-				message = getClientName(source).." committed suicide."
+				message = getPlayerName(source).." committed suicide."
 			end
 		else
-			message = getClientName(source).." died."
+			message = getPlayerName(source).." died."
 		end
 		if weapon and get("show_weapon") then
 			local weaponName = getWeaponNameFromID(weapon)

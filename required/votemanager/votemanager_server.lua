@@ -315,7 +315,7 @@ addEventHandler("onClientSendVote", rootElement,
 			end
 			
 			if get("log_votes") then
-				outputServerLog(getClientName(client).." cancelled his vote, was "..previousVote.." ("..activePoll[previousVote][1])
+				outputServerLog(getPlayerName(client).." cancelled his vote, was "..previousVote.." ("..activePoll[previousVote][1])
 			end
 		
 			activePoll.votedOption[getPlayerUserName(client)] = nil
@@ -331,13 +331,13 @@ addEventHandler("onClientSendVote", rootElement,
 				return false
 			end
 			if get("log_votes") then
-				outputServerLog(getClientName(client).." changed his vote to "..voteID.." ("..activePoll[voteID][1]..") from "..previousVote.." ("..activePoll[previousVote][1])
+				outputServerLog(getPlayerName(client).." changed his vote to "..voteID.." ("..activePoll[voteID][1]..") from "..previousVote.." ("..activePoll[previousVote][1])
 			end
 			activePoll[previousVote].votes = activePoll[previousVote].votes - 1
 			activePoll[voteID].votes = activePoll[voteID].votes + 1
 		else
 			if get("log_votes") then
-				outputServerLog(getClientName(client).." voted "..voteID.." ("..activePoll[voteID][1]..")")
+				outputServerLog(getPlayerName(client).." voted "..voteID.." ("..activePoll[voteID][1]..")")
 			end
 			activePoll[voteID].votes = activePoll[voteID].votes + 1
 		end

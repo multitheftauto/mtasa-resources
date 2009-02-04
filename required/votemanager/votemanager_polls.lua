@@ -97,7 +97,7 @@ function vote.map.handler(source,cmd,resource1Name,resource2Name)
 		end
 		local voteMapStarted, voteMapReturnCode = voteMap(resource1, resource2)
 		if voteMapStarted then
-			outputVoteManager("Map vote started by "..getClientName(source)..".")
+			outputVoteManager("Map vote started by "..getPlayerName(source)..".")
 			if source ~= serverConsole then
 				-- send Yes if it's a Yes/No vote (voteMapReturnCode == true)
 				if voteMapReturnCode == true then
@@ -153,7 +153,7 @@ function vote.mode.handler(source,cmd,resourceName)
 		
 		local voteModeStarted, voteModeReturnCode = voteBetweenModesThenMaps(unpack(gamemodes))
 		if voteModeStarted then
-			outputVoteManager("Mode vote started by "..getClientName(source)..".")
+			outputVoteManager("Mode vote started by "..getPlayerName(source)..".")
 			if source ~= serverConsole then
 				vote.mode.blockedPlayers[sourceUserName] = true
 				setTimer(removeLock, vote.mode.locktime * 1000, 1, sourceUserName, "mode")
@@ -188,7 +188,7 @@ function vote.kick.handler(source,cmd,playername,...)
 		end
 		local voteKickStarted, voteKickReturnCode = voteKick(getPlayerFromNick(playername or ""),reason)
 		if voteKickStarted then
-			outputVoteManager("Votekick started by "..getClientName(source)..".")
+			outputVoteManager("Votekick started by "..getPlayerName(source)..".")
 
 			if source ~= serverConsole then
 				triggerClientEvent(source,"doSendVote",rootElement,1)
@@ -225,7 +225,7 @@ function vote.ban.handler(source,cmd,playername,...)
 		end
 		local voteBanStarted, voteBanReturnCode = voteBan(getPlayerFromNick(playername or ""),reason)
 		if voteBanStarted then
-			outputVoteManager("Voteban started by "..getClientName(source)..".")
+			outputVoteManager("Voteban started by "..getPlayerName(source)..".")
 			
 			if source ~= serverConsole then
 				triggerClientEvent(source,"doSendVote",rootElement,1)
@@ -262,7 +262,7 @@ function vote.kill.handler(source,cmd,playername,...)
 		end
 		local voteKillStarted, voteKillReturnCode = voteKill(getPlayerFromNick(playername or ""),reason)
 		if voteKillStarted then
-			outputVoteManager("Votekill started by "..getClientName(source)..".")
+			outputVoteManager("Votekill started by "..getPlayerName(source)..".")
 			triggerClientEvent(source,"doSendVote",rootElement,1)
 			vote.kill.blockedPlayers[sourceUserName] = true
 			setTimer(removeLock, vote.kill.locktime * 1000, 1, sourceUserName, "kill")
@@ -358,7 +358,7 @@ function voteKick(player, reason)
 	if not player or getElementType(player) ~= "player" then
 		return false, errorCode.invalidPlayer
 	else
-		local title = "Kick "..getClientName(player).."?"
+		local title = "Kick "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
 		end
@@ -369,7 +369,7 @@ function voteKick(player, reason)
 			timeout = vote.kick.timeout,
 			allowchange = vote.kick.allowchange;
 			[1]={"Yes",kickPlayer,player,serverConsole,reason},
-			[2]={"No",outputVoteManager,"votekick: not enough votes to kick "..getClientName(player)..".",rootElement,vR,vG,vB;default=true},
+			[2]={"No",outputVoteManager,"votekick: not enough votes to kick "..getPlayerName(player)..".",rootElement,vR,vG,vB;default=true},
 		}
 	end
 end
@@ -378,7 +378,7 @@ function voteBan(player, reason)
 	if not player or getElementType(player) ~= "player" then
 		return false, errorCode.invalidPlayer
 	else
-		local title = "Ban "..getClientName(player).."?"
+		local title = "Ban "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
 		end
@@ -389,7 +389,7 @@ function voteBan(player, reason)
 			timeout = vote.ban.timeout,
 			allowchange = vote.ban.allowchange;
 			[1]={"Yes",banPlayer,player,serverConsole,reason},
-			[2]={"No",outputVoteManager,"voteban: not enough votes to ban "..getClientName(player)..".",rootElement,vR,vG,vB;default=true},
+			[2]={"No",outputVoteManager,"voteban: not enough votes to ban "..getPlayerName(player)..".",rootElement,vR,vG,vB;default=true},
 		}
 	end
 end
@@ -398,7 +398,7 @@ function voteKill(player, reason)
 	if not player or getElementType(player) ~= "player" then
 		return false, errorCode.invalidPlayer
 	else
-		local title = "Kill "..getClientName(player).."?"
+		local title = "Kill "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
 		end
@@ -409,7 +409,7 @@ function voteKill(player, reason)
 			timeout = vote.kill.timeout,
 			allowchange = vote.kill.allowchange;
 			[1]={"Yes",killPed,player},
-			[2]={"No",outputVoteManager,"votekill: not enough votes to kill "..getClientName(player)..".",rootElement,vR,vG,vB;default=true},
+			[2]={"No",outputVoteManager,"votekill: not enough votes to kill "..getPlayerName(player)..".",rootElement,vR,vG,vB;default=true},
 		}
 	end
 end

@@ -46,7 +46,7 @@ end
 function httpGetPlayerList()
 	local playerList = {}
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
-		table.insert ( playerList, getClientName ( player ) )
+		table.insert ( playerList, getPlayerName ( player ) )
 		table.insert ( playerList, getPlayerPing ( player ) )
 	end
 	return playerList
