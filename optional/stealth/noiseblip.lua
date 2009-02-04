@@ -44,14 +44,14 @@ function updateRemoteSoundLevels ()
 			--Sort out our nametags
 			if playerTeam == localTeam then
 				setPlayerNametagShowing(player,true)
-				if soundlevel == 0 then
-					if isElement ( playerBlips[player] ) then
+				if isElement ( playerBlips[player] ) then
+					if soundlevel == 0 then
 						setBlipColor ( playerBlips[player], blipColors[teamName][1],blipColors[teamName][2],blipColors[teamName][3], 255 )
 						setBlipSize ( playerBlips[player], 1 )
+					else
+						setBlipSize ( playerBlips[player], 2 )
+						setBlipColor ( playerBlips[player], blipColors[teamName][1],blipColors[teamName][2],blipColors[teamName][3], 255*(soundlevel/10) )
 					end
-				else
-					setBlipSize ( playerBlips[player], 2 )
-					setBlipColor ( playerBlips[player], blipColors[teamName][1],blipColors[teamName][2],blipColors[teamName][3], 255*(soundlevel/10) )
 				end
 			else
 				if soundlevel == 0 then
@@ -66,6 +66,7 @@ function updateRemoteSoundLevels ()
 		end
 	end
 end
+
 
 function table.find ( theTable, value )
 	for i,v in pairs(theTable) do

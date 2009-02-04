@@ -1,5 +1,5 @@
 <meta>
-	<info author="Slothman" type="gamemode" name="Stealth" />
+	<info author="Slothman" type="gamemode" name="Stealth" version="2.0.0"/>
 
 	<config src="help.xml" type="client"/>
 
