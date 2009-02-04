@@ -345,7 +345,7 @@ function CTF_flag_check( totalammo, killer, killerweapon, bodypart )
 		setElementPosition( playerCol, x, y, z )
 	        setElementPosition( playerColObject, x, y, z )
 	        setElementPosition( playerColMarker, x, y, z )
-		CTF_announce ( r, g, b, getClientName( player ) .. " dropped the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. " flag!", 4000 )
+		CTF_announce ( r, g, b, getPlayerName( player ) .. " dropped the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. " flag!", 4000 )
 		setElementData( player, "col", nil )
 	end
 	toggleControl ( player, "sprint", true )
@@ -361,7 +361,7 @@ function CTF_flag_check( totalammo, killer, killerweapon, bodypart )
 end
 
 function CTF_onColShapeHit ( player )
-	if ( ( getClientName( player ) ~= false ) and ( isPedDead ( player ) == false ) ) then
+	if ( ( getPlayerName( player ) ~= false ) and ( isPedDead ( player ) == false ) ) then
 	local playerTeam = getPlayerTeam( player )
 	local playerCol = getElementData( player, "col" )
 	local colObject = getElementData( source, "object" )
@@ -380,7 +380,7 @@ function CTF_onColShapeHit ( player )
 			setElementPosition( source, x, y, z )
 			setElementPosition( colObject, x, y, z )
 			setElementPosition( colMarker, x, y, z )
-			CTF_announce ( r, g, b, getClientName( player ) .. " returned the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. " flag!", 4000 )
+			CTF_announce ( r, g, b, getPlayerName( player ) .. " returned the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. " flag!", 4000 )
 		elseif (playerCol ~= nil) then
 	        	setElementData( player, "col", nil )
 			local playerColObject = getElementData( playerCol, "object" )
@@ -397,7 +397,7 @@ function CTF_onColShapeHit ( player )
 			setElementData( playerTeam, "score", getElementData( playerTeam, "score" ) + 1 )
 			setElementData( player, "score", getElementData( player, "score" ) + 5 )
 			updateScores()
-			CTF_announce ( r, g, b, getClientName( player ) .. " scores the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. " flag!", 4000 )
+			CTF_announce ( r, g, b, getPlayerName( player ) .. " scores the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. " flag!", 4000 )
 		end
 	elseif (playerCol == nil) then
 		setElementPosition( source, 0, 0, 0 )
@@ -405,7 +405,7 @@ function CTF_onColShapeHit ( player )
 		attachElements ( colObject, player, 0, 0, 0, 0, 0, -90 )
 		attachElements ( colMarker, player, 0, 0, 0, 0, 0, 0 )
 		toggleControl ( player, "sprint", false )
-		CTF_announce ( r, g, b, getClientName( player ) .. " took the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. " flag!", 4000 )
+		CTF_announce ( r, g, b, getPlayerName( player ) .. " took the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. " flag!", 4000 )
 	end
 	end
 end
@@ -470,7 +470,7 @@ function CTF_spawnMenu ( player )
 		end
 		setPlayerTeam( player, team )
 		local r,g,b = getTeamColor ( team )
-		CTF_announce ( r, g, b, getClientName(player) .. " joined the " .. getTeamName(team) .. " team!", 4000 )
+		CTF_announce ( r, g, b, getPlayerName(player) .. " joined the " .. getTeamName(team) .. " team!", 4000 )
 		if ( CTF_roundOn ) then
 			setTimer( CTF_spawnPlayer, CTF_respawnTime, 1, player )
 		end
@@ -506,7 +506,7 @@ function CTF_confirmSpawn( player )
 		textDisplayRemoveObserver ( CTF_spawnWarningDisp, player )
 		setPlayerTeam( player, teams[confTeam] )
 		local r,g,b = getTeamColor( teams[confTeam] )
-		CTF_announce ( r, g, b, getClientName(player) .. " joined the " .. getTeamName(teams[confTeam]) .. " team!", 4000 )
+		CTF_announce ( r, g, b, getPlayerName(player) .. " joined the " .. getTeamName(teams[confTeam]) .. " team!", 4000 )
 		if ( CTF_roundOn ) then
 			CTF_spawnPlayer( player )
 		end

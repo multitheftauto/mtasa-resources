@@ -24,7 +24,7 @@ function DestructionDerby:onPlayerWasted(player)
 	local alivePlayers = getAlivePlayers()
 	if #alivePlayers == 1 then
 		self.rankingBoard:add(alivePlayers[1], timePassed)
-		showMessage(getClientName(alivePlayers[1]) .. ' is the final survivor!', 0, 255, 0)
+		showMessage(getPlayerName(alivePlayers[1]) .. ' is the final survivor!', 0, 255, 0)
 	end
 	if #alivePlayers <= 1 then
 		RaceMode.endMap()

@@ -172,11 +172,11 @@ function SToptimesManager:playerFinished( player, time, dateRecorded )
 
         -- See if its in the top 10
         if newPos <= self.displayTopCount then
-            outputDebug( 'toptimes', getClientName(player) .. ' got toptime position ' .. newPos )
+            outputDebug( 'toptimes', getPlayerName(player) .. ' got toptime position ' .. newPos )
         end
 
         if bestTime then
-            outputDebug( 'toptimes', getClientName(player) .. ' new personal best ' .. time .. ' ' .. bestTime - time )
+            outputDebug( 'toptimes', getPlayerName(player) .. ' new personal best ' .. time .. ' ' .. bestTime - time )
         end
 
         self.mapTimes:setTimeForPlayer( player, time, dateRecorded )
@@ -187,7 +187,7 @@ function SToptimesManager:playerFinished( player, time, dateRecorded )
         end
     end
 
-    outputDebug( 'toptimes', '++ SToptimesManager:playerFinished ' .. tostring(getClientName(player)) .. ' time:' .. tostring(time) )
+    outputDebug( 'toptimes', '++ SToptimesManager:playerFinished ' .. tostring(getPlayerName(player)) .. ' time:' .. tostring(time) )
 end
 
 
@@ -287,12 +287,12 @@ end
 ---------------------------------------------------------------------------
 function SToptimesManager:doOnClientRequestToptimesUpdates( player, bOn, clientRevision )
     outputDebug( 'toptimes', 'SToptimesManager:onClientRequestToptimesUpdates: '
-            .. tostring(getClientName(player)) .. '<>' .. tostring(bOn) .. '< crev:'
+            .. tostring(getPlayerName(player)) .. '<>' .. tostring(bOn) .. '< crev:'
             .. tostring(clientRevision) .. '< srev:' .. tostring(self.serverRevision) )
     if bOn then
         self:addPlayerToUpdateList(player)
         if clientRevision ~= self.serverRevision then
-            outputDebug( 'toptimes', 'queueUpdate for'..getClientName(player) )
+            outputDebug( 'toptimes', 'queueUpdate for'..getPlayerName(player) )
             self:queueUpdate(player)
         end
     else
@@ -367,7 +367,7 @@ addCommandHandler('addtimes',
             local time = math.random(mintime*1000,maxtime*1000)
             -- find a player
             local player = g_Players[ math.random(1,#g_Players) ]
-            outputConsole( 'addplrtimes >' .. getClientName(player) .. '<>' .. tostring(time) .. '<' )
+            outputConsole( 'addplrtimes >' .. getPlayerName(player) .. '<>' .. tostring(time) .. '<' )
             g_SToptimesManager:playerFinished( player, time )
         end
     end

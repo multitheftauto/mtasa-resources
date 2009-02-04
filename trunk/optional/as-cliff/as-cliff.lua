@@ -188,29 +188,20 @@ function triggerLastObjective()
 end
 
 function destroyFacility ()
-	for i, v in ipairs ( getElementsByType ( "player" ) ) do
-		if not isPedDead ( v ) then
-			setCameraMode ( v, "fixed" )
-		end
-	end
-
-	setTimer ( setCameraLookAt, 100, 1, root, 1916.50, -633.24, 11.52 )
-	setTimer ( setCameraPosition, 101, 1, root, 1891.37, -536.45, 38.95 )
+	setTimer ( setCameraMatrix, 100, 1, root, 1891.37, -536.45, 38.95, 1916.50, -633.24, 11.52 )
 		setTimer ( createExplosion, 1400, 1, 1900.79, -559.62, 27.19, 1 )
 		setTimer ( createExplosion, 1600, 1, 1912.93, -568.59, 30.16, 10 )
 		setTimer ( createExplosion, 2000, 1, 1901.38, -576.28, 39.31, 10 )
 		setTimer ( createExplosion, 2200, 1, 1890.45, -569.91, 42.50, 10 )
 
-	setTimer ( setCameraLookAt, 2500, 1, root, 1912.60, -649.57, 87.51 )
-	setTimer ( setCameraPosition, 2501, 1, root, 1954.60, -558.81, 18.94 )
+	setTimer ( setCameraMatrix, 2500, 1, root, 1954.60, -558.81, 18.94, 1912.60, -649.57, 87.51 )
 		setTimer ( createExplosion, 2800, 1, 1918.27, -576.59, 37.31, 1 )
 			setTimer ( createExplosion, 3000, 1, 1952.49, -597.33, 28.04, 1 )
 			setTimer ( createExplosion, 3300, 1, 1944.41, -596.90, 41.17, 10 )
 			setTimer ( createExplosion, 3000, 1, 1948.40, -599.14, 66.17, 10 )
 			setTimer ( createExplosion, 3500, 1, 1933.78, -600.41, 73.07, 10 )
 
-	setTimer ( setCameraLookAt, 3900, 1, root, 1911.77, -602.46, 72.94 )
-	setTimer ( setCameraPosition, 3901, 1, root,  1900.13, -503.14, 67.95 )
+	setTimer ( setCameraMatrix, 2500, 1, root, 1900.13, -503.14, 67.95, 1911.77, -602.46, 72.94 )
 		setTimer ( createExplosion, 4300, 1, 1925.80, -595.26, 60.21, 1 )
 		setTimer ( createExplosion, 4600, 1, 1924.75, -612.78, 59.10, 10 )
 		setTimer ( createExplosion, 4900, 1, 1924.11, -628.83, 78.23, 10 )

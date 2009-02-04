@@ -324,7 +324,7 @@ function joinHandler(player)
 	
 	local vehicle
 	if spawnpoint.vehicle then
-		local nick = getClientName(player)
+		local nick = getPlayerName(player)
         setRandomSeedForMap('vehiclecolors')
 		vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
 		setVehicleFrozen(vehicle, true)
@@ -677,9 +677,9 @@ addCommandHandler('ghostmode',
 		g_MapOptions.ghostmode = not g_MapOptions.ghostmode
 		clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
 		if g_MapOptions.ghostmode then
-			outputChatBox('Ghostmode enabled by ' .. getClientName(player), g_Root, 0, 240, 0)
+			outputChatBox('Ghostmode enabled by ' .. getPlayerName(player), g_Root, 0, 240, 0)
 		else
-			outputChatBox('Ghostmode disabled by ' .. getClientName(player), g_Root, 240, 0, 0)
+			outputChatBox('Ghostmode disabled by ' .. getPlayerName(player), g_Root, 240, 0, 0)
 		end
 	end
 )

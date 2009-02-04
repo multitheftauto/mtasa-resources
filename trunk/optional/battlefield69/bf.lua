@@ -152,7 +152,7 @@ function onMapLoad ( name )
 				if getElementData(lowerFlag[k], "blocker") ~= false then
 				if isElementWithinColShape(getElementData(lowerFlag[k], "blocker"), lowerFlag[k]) == true and getElementData(lowerFlag[k], "blocker") ~= source then 
 					local blocker = getElementData(lowerFlag[k], "blocker")
-					outputDebugString ("Capture point "..id.." is blocked by "..getClientName(blocker).." !")
+					outputDebugString ("Capture point "..id.." is blocked by "..getPlayerName(blocker).." !")
 					else 
 						removeElementData(lowerFlag[k], "blocker") 
 				end
@@ -202,7 +202,7 @@ function onMapLoad ( name )
 									local distance = z1 - z2
 									local time = distance / 10 * 10000
 									triggerClientEvent (source, "captureHelpCreate", source)
-									triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), ""..getClientName(source).." has assaulted the " ..id.. "!", 255, 0, 0)
+									triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), ""..getPlayerName(source).." has assaulted the " ..id.. "!", 255, 0, 0)
 									moveObject ( allyFlag[k], time, x + 1, y, z2 )
 									moveObject ( allyFlag1[k], time, x + 1, y, z2 )
 									setBlipColor ( capture[k], 0, 255, 0, 255)
@@ -236,7 +236,7 @@ function onMapLoad ( name )
 									local distance = z1 - z2
 									local time = distance / 10 * 10000
 									triggerClientEvent (source, "captureHelpCreate", source)
-									triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), ""..getClientName(source).." has assaulted the " ..id.. "!", 0, 0, 255 )
+									triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), ""..getPlayerName(source).." has assaulted the " ..id.. "!", 0, 0, 255 )
 									setBlipColor ( capture[k], 0, 255, 0, 255)
 									moveObject ( axisFlag[k], time, x + 1, y, z2 )
 									moveObject ( axisFlag1[k], time, x + 1, y, z2 )
@@ -254,7 +254,7 @@ function onMapLoad ( name )
 							local r, g, b = getTeamColor(getPlayerTeam(source))
 							triggerClientEvent (source, "captureHelpCreate", source)
 							triggerClientEvent (source, "captureProgressDown", source, time)
-							triggerClientEvent(root, "displayGUItextAll", root, ""..getClientName(source).." has claimed the " ..id.. "!", r, g, b)
+							triggerClientEvent(root, "displayGUItextAll", root, ""..getPlayerName(source).." has claimed the " ..id.. "!", r, g, b)
 							moveObject ( flag[k], time, x + 0.5, y, z2 )
 							timer[k] = setTimer ( triggerEvent, time, 1, "onColShapeHit", lowerFlag[k], source )
 							currentuse[k] = setTimer ( setElementData, time-100, 1, lowerFlag[k], "inuse", false )
@@ -755,14 +755,14 @@ if getElementData (source, "spawnProtection") == true then return end
 	if bodypart == 9 then
 		if weapon == 34 then
 			killPed(source, attacker, weapon, bodypart)
-			triggerClientEvent(attacker, "displayGUItext", attacker, 0.45, 0.3, "You killed "..getClientName(source).." with a headshot!", "default-bold-small", 255, 255, 255, 3000)
+			triggerClientEvent(attacker, "displayGUItext", attacker, 0.45, 0.3, "You killed "..getPlayerName(source).." with a headshot!", "default-bold-small", 255, 255, 255, 3000)
 		else
 			local loss1 = loss + loss
 			local totalHealth = getElementHealth(source) - ( loss1 )
 			loss1 = 0
 			if totalHealth <= 5 then
 				killPed(source, attacker, weapon, bodypart)
-				triggerClientEvent(attacker, "displayGUItext", attacker, 0.45, 0.3, "You killed "..getClientName(source).." with a headshot!", "default-bold-small", 255, 255, 255, 3000)
+				triggerClientEvent(attacker, "displayGUItext", attacker, 0.45, 0.3, "You killed "..getPlayerName(source).." with a headshot!", "default-bold-small", 255, 255, 255, 3000)
 			else
 				setElementHealth(source, totalHealth)
 			end
@@ -796,13 +796,13 @@ function captureZone ( source, k, id )
 	local r, g, b = getTeamColor(getPlayerTeam(source))	
 	triggerClientEvent(source, "capturedHelpCreate", source)
 	if getTeamName(getPlayerTeam(source)) == "Ally" then
-		triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), ""..getClientName(source).." has Captured the " ..id.. "!", 0, 0, 255)
+		triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), ""..getPlayerName(source).." has Captured the " ..id.. "!", 0, 0, 255)
 		destroyBlipsAttachedTo ( flagpole[k] )
 		capture[k] = createBlipAttachedTo (flagpole[k], 30, 1, 255, 255, 255, 255 )
 		triggerClientEvent (getRootElement(), "captureTable", getRootElement(), capture)
 		
 	elseif getTeamName(getPlayerTeam(source)) == "Axis" then
-		triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), ""..getClientName(source).." has Captured the " ..id.. "!", 255, 0, 0)
+		triggerClientEvent(getRootElement(), "displayGUItextAll", getRootElement(), ""..getPlayerName(source).." has Captured the " ..id.. "!", 255, 0, 0)
 		destroyBlipsAttachedTo ( flagpole[k] )
 		capture[k] = createBlipAttachedTo (flagpole[k], 20, 1, 255, 255, 255, 255 )
 		triggerClientEvent (getRootElement(), "captureTable", getRootElement(), capture)
@@ -1133,49 +1133,49 @@ for k,v in ipairs(players) do
 		setTimer (setElementVisibleTo, 2500, 1, axisBlip[source], v, true)
 	end
 	if ( x == 5) then
-		outputChatBox (""..getClientName(source)..": Taking Fire! Need Assistance!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Taking Fire! Need Assistance!", v, r, g, b)
 	elseif ( x == 1 ) then
-		outputChatBox (""..getClientName(source)..": Attack the enemy base!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Attack the enemy base!", v, r, g, b)
 	elseif ( x == 2 ) then
-		outputChatBox (""..getClientName(source)..": Defend our bases!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Defend our bases!", v, r, g, b)
 	elseif ( x == 3 ) then
-		outputChatBox (""..getClientName(source)..": Its ours", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Its ours", v, r, g, b)
 	elseif ( x == 4 ) then
-		outputChatBox (""..getClientName(source)..": I cant hold it!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": I cant hold it!", v, r, g, b)
 	elseif ( x == 6 ) then
-		outputChatBox (""..getClientName(source)..": Requesting backup!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Requesting backup!", v, r, g, b)
 	elseif ( x == 7 ) then
-		outputChatBox (""..getClientName(source)..": MEEEDIIIC!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": MEEEDIIIC!", v, r, g, b)
 	elseif ( x == 8 ) then
-		outputChatBox (""..getClientName(source)..": Requesting a pickup!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Requesting a pickup!", v, r, g, b)
 	elseif ( x == 9 ) then
-		outputChatBox (""..getClientName(source)..": Requesting Anti-tank!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Requesting Anti-tank!", v, r, g, b)
 	elseif ( x == 10 ) then
-		outputChatBox (""..getClientName(source)..": Requesting a Mechanic!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Requesting a Mechanic!", v, r, g, b)
 	elseif ( x == 11 ) then
-		outputChatBox (""..getClientName(source)..": Enemy Soldier spotted!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Enemy Soldier spotted!", v, r, g, b)
 	elseif ( x == 12 ) then
-		outputChatBox (""..getClientName(source)..": Enemy Vehicle spotted!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Enemy Vehicle spotted!", v, r, g, b)
 	elseif ( x == 13 ) then
-		outputChatBox (""..getClientName(source)..": Enemy Airplane spotted!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Enemy Airplane spotted!", v, r, g, b)
 	elseif ( x == 14 ) then
-		outputChatBox (""..getClientName(source)..": Enemy Scout spotted!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Enemy Scout spotted!", v, r, g, b)
 	elseif ( x == 15 ) then
-		outputChatBox (""..getClientName(source)..": Enemy Anti-tank spotted!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Enemy Anti-tank spotted!", v, r, g, b)
 	elseif ( x == 16 ) then
-		outputChatBox (""..getClientName(source)..": Roger that!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Roger that!", v, r, g, b)
 	elseif ( x == 17 ) then
-		outputChatBox (""..getClientName(source)..": Negative!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Negative!", v, r, g, b)
 	elseif ( x == 18 ) then
-		outputChatBox (""..getClientName(source)..": I got one!", v, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": I got one!", v, r, g, b)
 	end
 end
 	if ( x == 19 ) then
-		outputChatBox (""..getClientName(source)..": Take that bitch!", root, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": Take that bitch!", root, r, g, b)
 	elseif ( x == 20 ) then
-		outputChatBox (""..getClientName(source)..": I would surrender if i were you..", root, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": I would surrender if i were you..", root, r, g, b)
 	elseif ( x == 21 ) then
-		outputChatBox (""..getClientName(source)..": All your bases are belong to us.", root, r, g, b)
+		outputChatBox (""..getPlayerName(source)..": All your bases are belong to us.", root, r, g, b)
 	end
 end
 addEvent ("radio", true)

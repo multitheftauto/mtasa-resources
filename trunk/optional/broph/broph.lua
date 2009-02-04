@@ -35,7 +35,7 @@ function elementAlpha ( source, command, level )
 		end
 	else
 		local alphaLevel = getElementAlpha ( source )
-		local player = getClientName ( source )
+		local player = getPlayerName ( source )
 		outputChatBox ( "* " ..player.. "'s Alpha Level: " ..alphalevel )
 	end
 end
@@ -76,7 +76,7 @@ function broph_Chat ( message, theType )
 		local r = getElementData ( source, "colour_r" )
 		local g = getElementData ( source, "colour_g" )
 		local b = getElementData ( source, "colour_b" )
-		local bastidName = getClientName ( source )
+		local bastidName = getPlayerName ( source )
 		outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
 	end
 end
@@ -91,7 +91,7 @@ function setWaveLevel ( source, command, height )
 end
 
 function setLevel ( source, command, levelplayer, level )
-	if ( getClientName ( source ) == "BrophY" ) then
+	if ( getPlayerName ( source ) == "BrophY" ) then
 		local player = getPlayerFromNick ( levelplayer )
 		setClientLevel ( player , tonumber ( level ) )
 	end
@@ -99,7 +99,7 @@ end
 
 function kickPlayer ( player, commandname, kickedname, reason )
 	local kicked = getPlayerFromNick ( kickedname )
-	if ( getClientName ( source ) == "BrophY" ) then
+	if ( getPlayerName ( source ) == "BrophY" ) then
 		kickPlayer ( kicked, player, reason )
 	end
 end
@@ -150,8 +150,8 @@ function distance ( source, command, player1, player2 )
 	if ( player1 and not player2 ) then
 		local player1id = getPlayerFromNick ( player1 )
 		if ( player1id ) then
-			local player1name = getClientName ( player1id )
-			local player2name = getClientName ( source )
+			local player1name = getPlayerName ( player1id )
+			local player2name = getPlayerName ( source )
 			local x1, y1, z1 = getElementPosition ( player1id )
 			local x2, y2, z2 = getElementPosition ( source )
 			local distance = getDistanceBetweenPoints2D ( x1, y1, x2, y2 ) / 2
@@ -171,8 +171,8 @@ function distance ( source, command, player1, player2 )
 		local player1id = getPlayerFromNick ( player1 )
 		local player2id = getPlayerFromNick ( player2 )
 		if ( player1id and player2id ) then
-			local player1name = getClientName ( player1id )
-			local player2name = getClientName ( player2id )
+			local player1name = getPlayerName ( player1id )
+			local player2name = getPlayerName ( player2id )
 			local x1, y1, z1 = getElementPosition ( player1id )
 			local x2, y2, z2 = getElementPosition ( player2id )
 			local distance = getDistanceBetweenPoints2D ( x1, y1, x2, y2 ) / 2

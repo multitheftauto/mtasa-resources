@@ -308,13 +308,24 @@ addEventHandler ("onClientPlayerSpawn", getLocalPlayer(), function()
 	end
 end )
 	
+local function getCamRotation ()
+	local px, py, pz, lx, ly, lz = getCameraMatrix()
+	local rotz = 6.2831853071796 - math.atan2 ( ( lx - px ), ( ly - py ) ) % 6.2831853071796
+ 	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
+	--Convert to degrees
+	rotx = math.deg(rotx)
+	rotz = -math.deg(rotz)
+	
+ 	return rotx, 180, rotz
+end
+	
 function antiAir ()
 	if lastShot > getTickCount() then return end
 	lastShot = getTickCount() + 500
 		local distance = 50
 		local sX, sY, sZ = getElementPosition ( getLocalPlayer() )
 		local fX, fY, fZ = sX, sY, sZ
-		rX, rY, rZ = getCameraRotation ()
+		rX, rY, rZ = getCamRotation ()
 		local offset = math.sqrt ( ( distance ^ 2 ) * 2 )
 		sX = sX + math.sin ( math.rad ( rZ ) ) * 1.5
 		sY = sY + math.cos ( math.rad ( rZ ) ) * 1.5

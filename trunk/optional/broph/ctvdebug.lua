@@ -86,7 +86,7 @@ function hplookup ( source, command, id )
 		if ( player ) then
 			local invehicle = isPedInVehicle ( player )
 		if ( invehicle == true ) then
-			local playername = getClientName ( player )
+			local playername = getPlayerName ( player )
 			local hplookedup = getElementHealth ( player )
 			local vehicle = getPedOccupiedVehicle ( player )
 			local vehiclehealth = getElementHealth ( vehicle )  / 10
@@ -94,7 +94,7 @@ function hplookup ( source, command, id )
 			local vehresult = math.ceil( vehiclehealth ) - 100
 			outputChatBox ( "* " .. playername .. "'s Health: " .. result .. "% - Vehicle Damage: " .. math.abs(vehresult) .. "%", root, 255, 255, 0 )
 		elseif ( invehicle == false ) then
-			local playername = getClientName ( player )
+			local playername = getPlayerName ( player )
 			local hplookedup = getElementHealth ( player )
 			local result = math.ceil( hplookedup )
 			outputChatBox ( "* " .. playername .. "'s Health: " .. result .. "%", root, 255, 255, 0 )
@@ -105,7 +105,7 @@ function hplookup ( source, command, id )
 end
 	if ( not id ) then
 		local hplookedup = getElementHealth ( source )
-		local playername = getClientName ( source )
+		local playername = getPlayerName ( source )
 		local invehicle = isPedInVehicle ( source )
 		if ( invehicle == true ) then
 			local vehicle = getPedOccupiedVehicle ( source )
@@ -140,7 +140,7 @@ end
 
 function playerloc(source)
 	if ( source ) then
-	local playername = getClientName(source)
+	local playername = getPlayerName(source)
 	local location = getElementZoneName(source)
 	outputChatBox ( "* " ..playername.. "'s Location: " ..location.. ", " ..getElementZoneName(source, true), root, 0, 255, 255 )
 	else

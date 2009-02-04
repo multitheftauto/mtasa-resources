@@ -829,7 +829,7 @@ $Id: ModeCP.lua 40 2007-12-31 00:46:26Z sinnerg $
 		if ( player ) then
 			local team = getPlayerTeam( player )
 			if (not team) then
-				outputDebugString("Could not spawn player " .. getClientName(player) .. " since he does not belong to a team!")
+				outputDebugString("Could not spawn player " .. getPlayerName(player) .. " since he does not belong to a team!")
 				return false
 			end
 			local spawnpoints = getChildren ( team, "spawnpoint" )

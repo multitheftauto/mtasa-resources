@@ -366,7 +366,7 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 		self.ModeBase:OnColShapeHit(colshape, player, matchedDimension)
 		local source = colshape
 		if (self.roundIsActive) then
-			if ( getClientName( player ) ~= false ) then -- no idea why it would need this, but ctf uses this so.. ;p
+			if ( getPlayerName( player ) ~= false ) then -- no idea why it would need this, but ctf uses this so.. ;p
 				local colType = getElementData(source, "teamwars_type")
 				if ((colType) and (colType == "flag_col")) then 
 					
@@ -392,7 +392,7 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 								setElementPosition( source, x, y, z )
 								setElementPosition( colObject, x, y, z )
 								setElementPosition( colMarker, x, y, z )
-								self:Announce ( r, g, b, getClientName( player ) .. " returned the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. "!", 4000 )
+								self:Announce ( r, g, b, getPlayerName( player ) .. " returned the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. "!", 4000 )
 								setElementData( playerColFlag, "teamwars_flag_status", 0 )-- 0 - back in base
 								setElementData( playerColFlag, "teamwars_flag_return", false )
 								setElementData(player, "teamwars_flag_colshape", nil)
@@ -412,7 +412,7 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 							setElementPosition( playerColObject, x, y, z )
 							setElementData( playerTeam, "score", getElementData( playerTeam, "score" ) + 1 )
 							setElementData( player, "score", getElementData( player, "score" ) + 5 )
-							self:Announce ( r, g, b, getClientName( player ) .. " scores the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. "!", 4000 )
+							self:Announce ( r, g, b, getPlayerName( player ) .. " scores the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. "!", 4000 )
 							setElementData( playerColFlag, "teamwars_flag_return", false )
 							setElementData( playerColFlag, "teamwars_flag_status", 0 )-- 0 - back in base
 							setElementData(player, "teamwars_flag_colshape", nil) 
@@ -423,7 +423,7 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 						attachElements ( colObject, player, 0, 0, 0, 0, 0, math.rad(-90) )
 						attachElements ( colMarker, player, 0, 0, 0, 0, 0, 0 )
 						-- toggleControl ( player, "sprint", false )
-						self:Announce ( r, g, b, getClientName( player ) .. " took the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. "!", 4000 )
+						self:Announce ( r, g, b, getPlayerName( player ) .. " took the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. "!", 4000 )
 						setElementData( colFlag, "teamwars_flag_return", false )
 						setElementData( colFlag, "teamwars_flag_status", 2 )-- 2 - Someone has it!
 						setElementData(player, "teamwars_flag_colshape", nil) 
@@ -535,7 +535,7 @@ $Id: ModeCTF.lua 32 2007-12-10 01:37:43Z sinnerg $
 			setElementPosition( playerCol, x, y, z )
 		    setElementPosition( playerColObject, x, y, z )
 		    setElementPosition( playerColMarker, x, y, z )
-			self:Announce ( r, g, b, getClientName( player ) .. " dropped the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. "!", 4000 )
+			self:Announce ( r, g, b, getPlayerName( player ) .. " dropped the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. "!", 4000 )
 			setElementData( player, "teamwars_flag_colshape", nil )
 			setElementData( playerColFlag, "teamwars_flag_status", 1 )-- 1, on the floor
 			setElementData( playerColFlag, "teamwars_flag_return", getTickCount() + 30000) -- TODO Make this an option (return time)

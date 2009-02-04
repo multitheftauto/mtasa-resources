@@ -555,19 +555,12 @@ end
 	-- changing the camera position for everyone and closing the garage door
 function endColShapeEnter ( player, dimension )
 	if ( player == van ) then
-		local players = getElementsByType ( "player" )
-		for i, v in ipairs ( players ) do
-			if ( not isPedDead ( v ) ) then
-				setCameraMode ( v, "fixed" )
-			end
-		end
-		
+
 		local gdoor = getElementByID ( "gdoor" )
 		local gdoortwo = getElementByID ( "gdoortwo" )
 		local x, y, z = getElementPosition ( gdoor )
 		local x2, y2, z2 = getElementPosition ( gdoortwo )
-		setTimer ( setCameraLookAt, 100, 1, root, 1096.59, 2143.73, 5.86 )
-		setTimer ( setCameraPosition, 101, 1, root, 1038.08, 2062.64, 11.42 )
+		setTimer ( setCameraMatrix, 100, 1, root, 1096.59, 2143.73, 5.86, 1038.08, 2062.64, 11.42 )
 		setTimer ( moveObject, 1500, 1, gdoor, 3000, x, y, 12.7 )
 		setTimer ( moveObject, 1500, 1, gdoortwo, 2000, x2, y2, 12.7 )
 		

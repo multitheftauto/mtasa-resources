@@ -219,7 +219,7 @@ function getStringFromColor(r, g, b)
 end
 
 function isPlayerInACLGroup(player, groupName)
-	local account = getClientAccount(player)
+	local account = getPlayerAccount(player)
 	local group = aclGetGroup(groupName)
 	if not account or not group then
 		return false

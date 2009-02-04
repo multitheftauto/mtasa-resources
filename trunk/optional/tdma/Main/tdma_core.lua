@@ -261,7 +261,7 @@ function onPlayerJoin ()
 	setElementData ( source, "tdma.status", statusTextItem )
 	setElementData( source, "tdma.teamMarker", nil )
 	
-	if ( debugEnabled ) then outputDebugString ( getClientName(source) .. "> No marker for this player, Make one and attach it." ) end
+	if ( debugEnabled ) then outputDebugString ( getPlayerName(source) .. "> No marker for this player, Make one and attach it." ) end
 	
 end
 addEventHandler ( "onPlayerJoin", root, onPlayerJoin )
@@ -321,7 +321,7 @@ function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 			local pTeamID = getElementData ( attacker, "tdma.teamid" )
 			local pTeam = gameTeams[pTeamID]
 			--Was it a self kill?
-			if ( getClientName(source) ~= getClientName(attacker) ) then
+			if ( getPlayerName(source) ~= getPlayerName(attacker) ) then
 				if ( pTeam ) then
 					updateKills ( attacker, pTeam )
 				end
@@ -336,7 +336,7 @@ function onChat ( message, theType )
 		cancelEvent()
 		message = string.gsub(message, "#%x%x%x%x%x%x", "")
 		local team = getPlayerTeam ( source )
-		local bastidName = getClientName ( source )
+		local bastidName = getPlayerName ( source )
 		if ( team ) then
 		local r, g, b = getTeamColor ( team )
 		outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
@@ -524,7 +524,7 @@ addEventHandler ( "onPlayerSpawn", root, playerSpawned )
 
 function firstSpawn ( source )
 	local thePlayer = source
-	if xDebug then outputDebugString ( "Spawning player " .. getClientName(thePlayer) .. " for the very first time" ) end
+	if xDebug then outputDebugString ( "Spawning player " .. getPlayerName(thePlayer) .. " for the very first time" ) end
 	updatePlayerInfoBar ( thePlayer, 5200, "Please wait... Spawning" )
 	
 	local randTeam = math.random(1,#gameTeams)
@@ -545,7 +545,7 @@ function firstSpawn ( source )
 	end
 	
 	if ( allDone ) then
-		if xDebug then outputDebugString ( "Spawning player " .. getClientName(thePlayer) .. " (ALLDONE) Team: " .. foundTeam.name ) end		
+		if xDebug then outputDebugString ( "Spawning player " .. getPlayerName(thePlayer) .. " (ALLDONE) Team: " .. foundTeam.name ) end		
 		spawnThePlayer ( thePlayer, foundTeam )
 		setElementData ( thePlayer, "tdma.teamid", foundTeamID )
 		showTextForPlayer ( thePlayer, 5000, tonumber(foundTeam.red), tonumber(foundTeam.green), tonumber(foundTeam.blue), 1.5, "You have been automatically assigned to team " .. foundTeam.name )
@@ -553,7 +553,7 @@ function firstSpawn ( source )
 		setPlayerNametagColor ( thePlayer, gameTeams[foundTeamID].red, gameTeams[foundTeamID].green, gameTeams[foundTeamID].blue )
 	else
 		--Just select a random team
-		if xDebug then outputDebugString ( "Spawning player " .. getClientName(thePlayer) .. " (NO FOUND) Team: " .. gameTeams[randTeam].name ) end
+		if xDebug then outputDebugString ( "Spawning player " .. getPlayerName(thePlayer) .. " (NO FOUND) Team: " .. gameTeams[randTeam].name ) end
 		spawnThePlayer ( thePlayer, gameTeams[1] )
 		setElementData ( thePlayer, "tdma.teamid", 1 )
 		--setMarkerColor ( theMarker, tonumber(gameTeams[1].red), tonumber(gameTeams[1].green), tonumber(gameTeams[1].blue), 255 )

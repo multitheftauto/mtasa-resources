@@ -52,10 +52,10 @@ end
 function spawnProtectToggle ( player, toggle )
 	if ( toggle ) then
 		setElementData ( player, "tdma.sp", "y" )
-		if xDebug then outputDebugString ( "Player " .. getClientName(player) .. " is spawn protected" ) end
+		if xDebug then outputDebugString ( "Player " .. getPlayerName(player) .. " is spawn protected" ) end
 	else
 		setElementData ( player, "tdma.sp", "n" )
-		if xDebug then outputDebugString ( "Player " .. getClientName(player) .. " is no longer spawn protected" ) end
+		if xDebug then outputDebugString ( "Player " .. getPlayerName(player) .. " is no longer spawn protected" ) end
 	end
 end
 

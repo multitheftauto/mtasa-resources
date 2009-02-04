@@ -19,7 +19,7 @@ function startMidMapVoteForRandomMap(player)
     -- Check state and race time left
     if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 60000 then
         if player then
-            outputConsole( "I'm afraid I can't let you do that, " .. getClientName(player) .. ".", player )
+            outputConsole( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
         end 
         return
     end
@@ -27,7 +27,7 @@ function startMidMapVoteForRandomMap(player)
     -- 'Hilariarse' messages
     if player then
 
-        local playerName = getClientName(player)
+        local playerName = getPlayerName(player)
 
         local msg = ''
 

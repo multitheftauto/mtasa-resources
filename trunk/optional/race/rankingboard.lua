@@ -24,7 +24,7 @@ function RankingBoard:setDirection(direction)
 end
 
 function RankingBoard:add(player, time)
-	local playerName = getClientName(player)
+	local playerName = getPlayerName(player)
 	if table.find(self.items, 'name', playerName) then
 		return
 	end
