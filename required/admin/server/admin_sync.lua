@@ -85,6 +85,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut.time = getBanTime(ban) or "Unknown"
 			tableOut.banner = getBanAdmin(ban) or "Unknown"
 			tableOut.ip = getBanIP(ban) or "Unknown"
+			tableOut.serial = getBanSerial(ban) or "Unknown"
 		end
 	elseif ( type == "messages" ) then
 		local unread, total = 0, 0
