@@ -103,20 +103,20 @@ function eventTriggered ( source,killer,weapon,bodypart,suicide,usedVehicle )
 		if suicide then
 			local weaponName = getWeaponNameFromID ( weapon )
 			if weaponName then
-				outputConsoleKillMessage ( "* "..getClientName(source).." killed himself. ("..weaponName..")" )
+				outputConsoleKillMessage ( "* "..getPlayerName(source).." killed himself. ("..weaponName..")" )
 			else
-				outputConsoleKillMessage ( "* "..getClientName(source).." killed himself."..extra )
+				outputConsoleKillMessage ( "* "..getPlayerName(source).." killed himself."..extra )
 			end
 		else
 			local weaponName = getWeaponNameFromID ( weapon )
 			if weaponName then
-				outputConsoleKillMessage ( "* "..getClientName(killer).." killed "..getClientName(source)..". ("..weaponName..")" )
+				outputConsoleKillMessage ( "* "..getPlayerName(killer).." killed "..getPlayerName(source)..". ("..weaponName..")" )
 			else
-				outputConsoleKillMessage ( "* "..getClientName(killer).." killed "..getClientName(source).."."..extra )
+				outputConsoleKillMessage ( "* "..getPlayerName(killer).." killed "..getPlayerName(source).."."..extra )
 			end
 		end
 	else
-		outputConsoleKillMessage ( "* "..getClientName(source).." died."..extra )
+		outputConsoleKillMessage ( "* "..getPlayerName(source).." died."..extra )
 	end
 	--
 end
