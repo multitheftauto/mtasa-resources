@@ -259,7 +259,7 @@ function warpMe(targetPlayer)
 				return
 			end
 		end
-		outputChatBox('No free seats left in ' .. getClientName(targetPlayer) .. '\'s vehicle.', source, 255, 0, 0)
+		outputChatBox('No free seats left in ' .. getPlayerName(targetPlayer) .. '\'s vehicle.', source, 255, 0, 0)
 	end
 end
 
@@ -374,7 +374,7 @@ addEventHandler('onPlayerChat', g_Root,
 		if type == 0 then
 			cancelEvent()
 			local r, g, b = getPlayerNametagColor(source)
-			outputChatBox(getClientName(source) .. ': #FFFFFF' .. msg:gsub('#%x%x%x%x%x%x', ''), g_Root, r, g, b, true)
+			outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. msg:gsub('#%x%x%x%x%x%x', ''), g_Root, r, g, b, true)
 		end
 	end
 )

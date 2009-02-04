@@ -72,7 +72,7 @@ function hasObjectPermissionTo ( object, action )
 end
 
 function aclGetAccount ( player )
-	local account = getClientAccount ( player )
+	local account = getPlayerAccount ( player )
 	if ( isGuestAccount ( account ) ) then return false
 	else return "user."..getAccountName ( account ) end
 end

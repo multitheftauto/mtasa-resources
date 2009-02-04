@@ -21,8 +21,8 @@ addEventHandler ( "aSync", _root, function ( type, data )
 	elseif ( type == "players" ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			tableOut[player] = {}
-			tableOut[player]["name"] = getClientName ( player )
-			tableOut[player]["IP"] = getClientIP ( player )
+			tableOut[player]["name"] = getPlayerName ( player )
+			tableOut[player]["IP"] = getPlayerIP ( player )
 			tableOut[player]["username"] = getPlayerUserName ( player )
 			tableOut[player]["serial"] = getPlayerSerial ( player )
 			tableOut[player]["country"] = aPlayers[player]["country"]
@@ -45,7 +45,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 				tableOut[player]["chat"] = aPlayers[player]["chat"]
 			end
 			tableOut[player]["groups"] = "None"
-			local account = getClientAccount ( player )
+			local account = getPlayerAccount ( player )
 			if ( isGuestAccount ( account ) ) then
 				tableOut[player]["groups"] = "Not logged in"
 			else
@@ -78,44 +78,13 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			end
 		end
 	elseif ( type == "bans" ) then
-		local node = getBansXML()
-		if ( node ) then
-			tableOut["IP"] = {}
-			tableOut["Serial"] = {}
-			local bans = 0
-			while ( xmlFindChild ( node, "ip", bans ) ~= false ) do
-				local ban = xmlFindChild ( node, "ip", bans )
-				local ip = xmlNodeGetAttribute ( ban, "address" )
-				tableOut["IP"][ip] = {}
-				local nick = xmlFindChild ( ban, "nick", 0 )
-				local banner = xmlFindChild ( ban, "banner", 0 )
-				local reason = xmlFindChild ( ban, "reason", 0 )
-				local date = xmlFindChild ( ban, "date", 0 )
-				local time = xmlFindChild ( ban, "time", 0 )
-				if ( nick ) then tableOut["IP"][ip]["nick"] = xmlNodeGetValue ( nick ) end
-				if ( banner ) then tableOut["IP"][ip]["banner"] = xmlNodeGetValue ( banner ) end
-				if ( reason ) then tableOut["IP"][ip]["reason"] = xmlNodeGetValue ( reason ) end
-				if ( date ) then tableOut["IP"][ip]["date"] = xmlNodeGetValue ( date ) end
-				if ( time ) then tableOut["IP"][ip]["time"] = xmlNodeGetValue ( time ) end
-				bans = bans + 1
-			end
-			local bans = 0
-			while ( xmlFindChild ( node, "serial", bans ) ~= false ) do
-				local ban = xmlFindChild ( node, "serial", bans )
-				local serial = xmlNodeGetAttribute ( ban, "value" )
-				tableOut["Serial"][serial] = {}
-				local nick = xmlFindChild ( ban, "nick", 0 )
-				local banner = xmlFindChild ( ban, "banner", 0 )
-				local reason = xmlFindChild ( ban, "reason", 0 )
-				local date = xmlFindChild ( ban, "date", 0 )
-				local time = xmlFindChild ( ban, "time", 0 )
-				if ( nick ) then tableOut["Serial"][serial]["nick"] = xmlNodeGetValue ( nick ) end
-				if ( banner ) then tableOut["Serial"][serial]["banner"] = xmlNodeGetValue ( banner ) end
-				if ( reason ) then tableOut["Serial"][serial]["reason"] = xmlNodeGetValue ( reason ) end
-				if ( date ) then tableOut["Serial"][serial]["date"] = xmlNodeGetValue ( date ) end
-				if ( time ) then tableOut["Serial"][serial]["time"] = xmlNodeGetValue ( time ) end
-				bans = bans + 1
-			end
+		local bans = getBans()
+		for i,ban in ipairs(bans) do
+			tableOut.nick = getBanUsername(ban) or "Unknown"
+			tableOut.date = "" ---!ACHTUNG
+			tableOut.time = getBanTime(ban) or "Unknown"
+			tableOut.banner = getBanAdmin(ban) or "Unknown"
+			tableOut.ip = getBanIP(ban) or "Unknown"
 		end
 	elseif ( type == "messages" ) then
 		local unread, total = 0, 0

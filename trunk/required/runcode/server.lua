@@ -3,7 +3,7 @@ local rootElement = getRootElement()
 function runString (commandstring, outputTo, source)
 	local sourceName
 	if source then
-		sourceName = getClientName(source)
+		sourceName = getPlayerName(source)
 	else
 		sourceName = "Console"
 	end

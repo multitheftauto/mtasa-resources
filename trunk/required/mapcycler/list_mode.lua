@@ -206,6 +206,6 @@ function skipMap(sourcePlayer, command)
 		--! deny access
 		--! return false
 	end
-	outputCyclerDebugString("Map skipped by "..getClientName(sourcePlayer)) --! change to server log when security is added
+	outputCyclerDebugString("Map skipped by "..getPlayerName(sourcePlayer)) --! change to server log when security is added
 	cycleMap_list()
 end

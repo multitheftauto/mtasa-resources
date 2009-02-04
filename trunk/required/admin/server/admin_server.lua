@@ -254,7 +254,7 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 	aPlayerInitialize ( source )
 	for id, player in ipairs(getElementsByType("player")) do
 		if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-			triggerClientEvent ( player, "aClientPlayerJoin", source, getClientIP ( source ), getPlayerUserName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
+			triggerClientEvent ( player, "aClientPlayerJoin", source, getPlayerIP ( source ), getPlayerUserName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
 		end
 	end
 	setPedGravity ( source, getGravity() )
@@ -263,7 +263,7 @@ end )
 function aPlayerInitialize ( player )
 	local serial = getPlayerSerial ( player )
 	if ( not isValidSerial ( serial ) ) then
-		outputChatBox ( "ERROR: "..getClientName ( player ).." - Invalid Serial." )
+		outputChatBox ( "ERROR: "..getPlayerName ( player ).." - Invalid Serial." )
 		kickPlayer ( player, "Invalid Serial" )
 	else
 		bindKey ( player, "p", "down", aAdminMenu )
@@ -286,7 +286,7 @@ addEventHandler ( "onClientLogin", _root, function ( previous, account, auto )
 end )
 
 addCommandHandler ( "register", function ( player, command, arg1, arg2 )
-	local username = getClientName ( player )
+	local username = getPlayerName ( player )
 	local password = arg1
 	if ( arg2 ) then
 		username = arg1
@@ -318,9 +318,9 @@ function aAction ( type, action, admin, player, data, more )
 	if ( aLogMessages[type] ) then
 		function aStripString ( string )
 			string = tostring ( string )
-			string = string.gsub ( string, "$admin", getClientName ( admin ) )
+			string = string.gsub ( string, "$admin", getPlayerName ( admin ) )
 			string = string.gsub ( string, "$data2", more )
-			if ( player ) then string = string.gsub ( string, "$player", getClientName ( player ) ) end
+			if ( player ) then string = string.gsub ( string, "$player", getPlayerName ( player ) ) end
 			return tostring ( string.gsub ( string, "$data", data ) )
 		end
 		local node = aLogMessages[type][action]
@@ -551,7 +551,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 			aSetPlayerFrozen ( player, not isPlayerFrozen ( player ) )
 		elseif ( action == "shout" ) then
 			local textDisplay = textCreateDisplay ()
-			local textItem = textCreateTextItem ( "(ADMIN)"..getClientName ( source )..":\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
+			local textItem = textCreateTextItem ( "(ADMIN)"..getPlayerName ( source )..":\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
 			textDisplayAddText ( textDisplay, textItem )
 			textDisplayAddObserver ( textDisplay, player )
 			setTimer ( textDestroyTextItem, 5000, 1, textItem )
@@ -661,7 +661,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				removePedJetPack ( player )
 				action = "jetpackr"
 			else
-				if ( getPedOccupiedVehicle ( player ) ) then outputChatBox ( "Unable to give a jetpack - "..getClientName ( player ).." is in a vehicle", source, 255, 0, 0 )
+				if ( getPedOccupiedVehicle ( player ) ) then outputChatBox ( "Unable to give a jetpack - "..getPlayerName ( player ).." is in a vehicle", source, 255, 0, 0 )
 				else
 					if ( givePedJetPack ( player ) ) then
 						action = "jetpacka"
@@ -669,7 +669,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				end
 			end
 		elseif ( action == "setgroup" ) then
-			local account = getClientAccount ( player )
+			local account = getPlayerAccount ( player )
 			if ( not isGuestAccount ( account ) ) then
 				local group = aclGetGroup ( "Admin" )
 				if ( group ) then
@@ -776,7 +776,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				warpPlayer ( source, player )
 			else
 				warpPlayer ( player, data )
-				mdata = getClientName ( data )
+				mdata = getPlayerName ( data )
 			end
 		else
 			action = nil
@@ -863,7 +863,7 @@ end )
 
 addEvent ( "aResource", true )
 addEventHandler ( "aResource", _root, function ( name, action )
-	local pname = getClientName ( source )
+	local pname = getPlayerName ( source )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local text = ""
 		if ( action == "start" ) then if ( startResource ( getResourceFromName ( name ), true ) ) then text = "Resource \'"..name.."\' started by "..pname end
@@ -975,7 +975,7 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 		local time = getRealTime()
 		local id = #aReports + 1
 		aReports[id] = {}
-		aReports[id].author = getClientName ( source )
+		aReports[id].author = getPlayerName ( source )
 		aReports[id].category = tostring ( data.category )
 		aReports[id].subject = tostring ( data.subject )
 		aReports[id].text = tostring ( data.message )
@@ -1007,13 +1007,13 @@ addEventHandler ( "aBans", _root, function ( action, data )
 		local more = ""
 		if ( action == "banip" ) then
 			mdata = data
-			if ( not banIP ( data, source ) ) then
+			if ( not addBan ( data,nil,nil,source ) ) then
 				action = nil
 			end
 		elseif ( action == "banserial" ) then
 			mdata = data
 			if ( isValidSerial ( data ) ) then
-				if ( not banSerial ( string.upper ( data ), source ) ) then
+				if ( not addBan ( nil,nil, string.upper ( data ),source ) ) then
 					action = nil
 				end
 			else
@@ -1022,13 +1022,19 @@ addEventHandler ( "aBans", _root, function ( action, data )
 			end
 		elseif ( action == "unbanip" ) then
 			mdata = data
-			if ( not unbanIP ( data, source ) ) then
-				action = nil
+			action = nil
+			for i,ban in ipairs(getBans ()) do
+				if getBanIP(ban) == data then
+					action = removeBan ( ban, source )
+				end
 			end
 		elseif ( action == "unbanserial" ) then
 			mdata = data
-			if ( not unbanSerial ( data, source ) ) then
-				action = nil
+			action = nil
+			for i,ban in ipairs(getBans ()) do
+				if getBanSerial(ban) == string.upper(data) then
+					action = removeBan ( ban, source )
+				end
 			end
 		else
 			action = nil
@@ -1061,7 +1067,7 @@ addEventHandler ( "aExecute", _root, function ( action, echo )
 			end
 			outputChatBox( "Command executed! Result: " ..restring, source, 0, 0, 255 )
 		end
-		outputServerLog ( "ADMIN: "..getClientName ( source ).." executed command: "..action )
+		outputServerLog ( "ADMIN: "..getPlayerName ( source ).." executed command: "..action )
 	end
 end )
 

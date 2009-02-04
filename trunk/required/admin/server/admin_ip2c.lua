@@ -11,7 +11,7 @@
 aCountries = {}
 
 function getPlayerCountry ( player )
-	local ip = getClientIP ( player )
+	local ip = getPlayerIP ( player )
 	local ip_group = tonumber ( gettok ( ip, 1, 46 ) )
 	local ip_code = ( gettok ( ip, 1, 46 ) * 16777216 ) + ( gettok ( ip, 2, 46 ) * 65536 ) + ( gettok ( ip, 3, 46 ) * 256 ) + ( gettok ( ip, 4, 46 ) )
 	if ( not aCountries[ip_group] ) then
