@@ -99,7 +99,7 @@ function selectTeam( player )
 	setPlayerTeam(player, nil)
 	textDisplayAddObserver ( selectTeamDisplay, player )
 	local thisplayer = player
-	triggerClientEvent(player,"cameramode",getRootElement(), thisplayer)
+	setCameraFixed(player,"cameramode",getRootElement(), thisplayer)
 	balanceamount = get("stealth.teambalance")
 	tonumber(balanceamount)
 	bindKey ( player, "F1", "down", joinTeam1 )
@@ -135,9 +135,9 @@ function onStealthPlayerJoin ()
 	bindKey ( source, "F3", "down", selectTeamKey )
 	bindKey ( source, "r", "down", spectateNext )
 	thisplayer = source
-	triggerClientEvent(source,"cameramode",getRootElement(), thisplayer)
+	setCameraFixed(source,"cameramode",getRootElement(), thisplayer)
 	destroyshield = setTimer ( destroyElement, 3000, 1, dummyshield )
-	triggerClientEvent(source,"cameramode",getRootElement(), thisplayer)
+	setCameraFixed(source,"cameramode",getRootElement(), thisplayer)
 	triggerClientEvent(source,"swaptoggle",getRootElement(), thisplayer, teamswap)
 	textDisplayAddObserver ( waitDisplay, thisplayer )
 	fadeCamera(thisplayer,true)
@@ -146,6 +146,7 @@ end
 addEventHandler ( "onPlayerJoin", getRootElement(), onStealthPlayerJoin )
 
 function teamstealthmapstart(startedMap)
+	mapRoot = source
 	roundstart = setTimer ( startstealthround, 15000, 1, player )
 	setElementData ( team1, "Score", 0 )
 	setElementData ( team2, "Score", 0 )
@@ -154,7 +155,7 @@ function teamstealthmapstart(startedMap)
 		fadeCamera(thisplayer,true)
 		setElementData ( thisplayer, "kills", 0 )
 		setElementData ( thisplayer, "deaths", 0 )
-		triggerClientEvent(thisplayer,"cameramode",getRootElement(), thisplayer)
+		setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
 		selectTeam (thisplayer)
 	end
 	teamprotect = get("stealth.teamprotect")
@@ -189,6 +190,30 @@ function teamstealthmapstart(startedMap)
 	if mapgravity then
 		setGravity ( mapgravity )
 	end	
+	--Create our camera element (if settings system was used)
+	if ( not getElementsByType"camera"[1] ) and ( get(getResourceName(currentmap)..".camera") ) then
+		local cameraInfo = get(getResourceName(currentmap)..".camera")
+		if not cameraInfo then
+			local xi, yi, zi = 0, 0, 0
+			local spawns = getElementsByType("spawnpoint",mapRoot)
+			for i,spawnpoint in ipairs(spawns) do
+				xi = xi + getElementData( spawnpoint, "posX" )
+				yi = yi + getElementData( spawnpoint, "posY" )
+				zi = zi + getElementData( spawnpoint, "posZ" )
+			end
+			xi = xi/spawns
+			yi = yi/spawns
+			zi = zi/spawns
+			cameraInfo = { {xi, yi, zi}, {xi, yi, zi} }
+		end
+		local camera = createElement("camera")
+		setElementData ( camera, "posX", cameraInfo[1][1] )
+		setElementData ( camera, "posY", cameraInfo[1][2] )
+		setElementData ( camera, "posZ", cameraInfo[1][3] )
+		setElementData ( camera, "targetX", cameraInfo[2][1] )
+		setElementData ( camera, "targetY", cameraInfo[2][2] )
+		setElementData ( camera, "targetZ", cameraInfo[2][3] )
+	end
 end
 
 addEventHandler( "onGamemodeMapStart", getRootElement(), teamstealthmapstart )
@@ -277,12 +302,17 @@ function mercspawn(thisplayer)
 		mapinterior = 0
 	end
 	mercteamspawns = getElementByID("mercspawns")
-	local mercpoints = getElementChildren ( mercteamspawns )
+	local mercpoints
+	if mercteamspawns then
+		mercpoints = getElementsByType ( "spawnpoint", mercteamspawns )
+	else
+		mercpoints = getElementsByType ( "mercenaryspawn", mapRoot or getRootElement() )
+	end
 	local random = math.random ( 1, table.getn ( mercpoints ) )
 	local posX = getElementData(mercpoints[random], "posX") 
 	local posY = getElementData(mercpoints[random], "posY") 
 	local posZ = getElementData(mercpoints[random], "posZ")
-	local rot = getElementData(mercpoints[random], "rot")
+	local rot = getElementData(mercpoints[random], "rot") or getElementData(mercpoints[random], "rotZ") or 0
 	spawnPlayer ( thisplayer, posX, posY, posZ, rot, 285, mapinterior )
 	--setCameraMode ( thisplayer, "player" )
 	setCameraTarget ( thisplayer, thisplayer )
@@ -305,12 +335,17 @@ function spyspawn(thisplayer)
 		mapinterior = 0
 	end
 	spyteamspawns = getElementByID("spyspawns")
-	local spypoints = getElementChildren ( spyteamspawns )
+	local spypoints
+	if spyteamspawns then
+		spypoints = getElementsByType ( "spawnpoint", spyteamspawns )
+	else
+		spypoints = getElementsByType ( "spyspawn", mapRoot or getRootElement() )
+	end
 	local random = math.random ( 1, table.getn ( spypoints ) )
 	local posX = getElementData(spypoints[random], "posX") 
 	local posY = getElementData(spypoints[random], "posY") 
 	local posZ = getElementData(spypoints[random], "posZ")
-	local rot = getElementData(spypoints[random], "rot")
+	local rot = getElementData(spypoints[random], "rot") or getElementData(spypoints[random], "rotZ") or 0
 	spawnPlayer ( thisplayer, posX, posY, posZ, rot, 163, mapinterior )
 	setCameraTarget( thisplayer, thisplayer )
 	--setCameraMode ( thisplayer, "player" )
@@ -458,7 +493,7 @@ function stealthplayerdied ( totalAmmo, killer, killerWeapon, bodypart )
 				roundnotover = 0
 				roundend = setTimer ( stealthroundended, 4000, 1, roundfinish, thisplayer )
 				destroyMissionTimer ( roundfinish )
-				triggerClientEvent(thisplayer,"cameramode",getRootElement(), thisplayer)
+				setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
 			end
 		end
 	end
@@ -549,7 +584,7 @@ function stealthroundended( timerID, player )
 			local firstteam = getPlayersInTeam ( team1 )
 			for index, thisplayer in ipairs(firstteam) do
 				setElementData ( thisplayer, "waitingtospawn", "indeed" )
-				triggerClientEvent(thisplayer,"cameramode",getRootElement(), thisplayer)
+				setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
 				triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
 				local isDead = isPedDead(thisplayer)
 				if (isDead == false) then
@@ -560,7 +595,7 @@ function stealthroundended( timerID, player )
 			local secondteam = getPlayersInTeam ( team2 )
 			for index, thisplayer in ipairs(secondteam) do
 				setElementData ( thisplayer, "waitingtospawn", "indeed" )
-				triggerClientEvent(thisplayer,"cameramode",getRootElement(), thisplayer)
+				setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
 				triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
 				local isDead = isPedDead(thisplayer)
 				if (isDead == false) then
@@ -623,6 +658,24 @@ function stealthplayerleft (source)
 end
 
 addEventHandler( "onPlayerQuit", getRootElement(), stealthplayerleft )
+
+function setCameraFixed ( player )
+	local cams = getElementsByType ("camera")
+	triggerClientEvent(player,"cameramode",getRootElement(), player )
+	--showSpectateText("",false)
+	if #cams > 0 then
+		local random = math.random( 1, #cams )
+		if ( cams[random] ) then
+			local x = getElementData ( cams[random], "posX" )
+			local y = getElementData ( cams[random], "posY" )
+			local z = getElementData ( cams[random], "posZ" )
+			local a = getElementData ( cams[random], "targetX" )
+			local b = getElementData ( cams[random], "targetY" )
+			local c = getElementData ( cams[random], "targetZ" )
+			setCameraMatrix(player, x, y, z, a, b, c)
+		end
+	end
+end
 
 function playerleftcount (source)
 	if playingaround == 1 then

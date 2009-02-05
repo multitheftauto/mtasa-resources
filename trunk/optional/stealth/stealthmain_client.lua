@@ -34,24 +34,7 @@ addEventHandler ( "showSpectateText",getRootElement(),showSpectateText )
 addEvent("cameramode", true)
 
 function movetocam(thisplayer)
-	cams = nil
-	local cams = getElementsByType ("camera")
 	showSpectateText("",false)
-	if #cams > 0 then
-		local random = math.random( 1, #cams )
-		if ( cams[random] ) then
-			local x = getElementData ( cams[random], "posX" )
-			local y = getElementData ( cams[random], "posY" )
-			local z = getElementData ( cams[random], "posZ" )
-			local a = getElementData ( cams[random], "targetX" )
-			local b = getElementData ( cams[random], "targetY" )
-			local c = getElementData ( cams[random], "targetZ" )
-			setCameraMatrix(x, y, z, a, b, c)
-			--setCameraPosition ( x, y, z )
-			--toggleCameraFixedMode(true)
-			--setTimer ( setCameraLookAt, 100, 1, a, b, c )
-		end
-	end
 end
 
 addEventHandler("cameramode", getRootElement(), movetocam)

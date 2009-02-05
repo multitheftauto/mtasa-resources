@@ -57,27 +57,38 @@ function CTF_gamemodeMapStop( startedMap )
 end
 
 function CTF_gamemodeMapStart ( startedMap )
-	local settings = getElementsByType( "settings" )
-	CTF_respawnTime = tonumber(getElementData( settings[1], "respawnTime" ))
+	local mapName = getResourceName(startedMap)
+	CTF_mapRoot = source
+	local settings = getElementsByType( "settings" , CTF_mapRoot)
+	if settings[1] then
+		CTF_respawnTime = tonumber(getElementData( settings[1], "respawnTime" ))
+		CTF_roundTime = tonumber(getElementData( settings[1], "roundTime" ))
+		CTF_spawnscreen = getElementData( settings[1], "spawnScreen" )
+		CTF_blips = getElementData( settings[1], "blips" )
+	end
+	CTF_respawnTime = CTF_respawnTime or get(mapName..".respawnTime")
+	CTF_roundTime = CTF_roundTime or get(mapName..".roundTime")
+	CTF_spawnscreen = CTF_spawnscreen or get(mapName..".spawnScreen")
+	CTF_blips = CTF_blips or get(mapName..".blips")
+	
 	if ( not CTF_respawnTime ) then
 		outputDebugString( "* CTF Warning: Respawn time not set. Defaulting to 4.5 seconds.", 2 )
 		CTF_respawnTime = 4500
 	end
-	CTF_roundTime = tonumber(getElementData( settings[1], "roundTime" ))
+
 	if ( not CTF_roundTime ) then
 		outputDebugString( "* CTF Warning: Round time not set. Defaulting to 10 minutes.", 2 )
 		CTF_roundTime = 600000
 	end
-	CTF_spawnscreen = getElementData( settings[1], "spawnScreen" )
+	
 	if ( CTF_spawnscreen == "on" ) then 
 		CTF_spawnscreen = true
 	end
-	CTF_blips = getElementData( settings[1], "blips" )
 	if ( ( CTF_blips ~= "team" ) and ( CTF_blips ~= "all" ) ) then
 		outputDebugString( "* CTF Warning: Blips are OFF.", 2 )
 		CTF_blips = false
 	end
-	local weapons = getElementsByType( "weapon" )
+	local weapons = getElementsByType( "weapon", CTF_mapRoot )
 	CTF_weapons = {}
 	for k,v in ipairs(weapons) do
 		CTF_weapons[k] = {}
@@ -85,7 +96,7 @@ function CTF_gamemodeMapStart ( startedMap )
 		CTF_weapons[k].ammo = getElementData( v, "ammo" )
 	end	
 	outputDebugString( "* CTF Info: Respawn time: " ..tostring(CTF_respawnTime) .. ", round time: " .. tostring(CTF_roundTime) .. ", spawnscreen: " .. tostring(CTF_spawnscreen) .. ", blips: " .. tostring(CTF_blips) .. ". " )
-	local teams = getElementsByType ( "team" )
+	local teams = getElementsByType ( "team", CTF_mapRoot )
 	CTF_annDisp = textCreateDisplay ()
 	CTF_annText = textCreateTextItem ( "", 0.5, 0.25, 0, 0, 0, 0, 255, 2, "center" )
 	textDisplayAddText ( CTF_annDisp, CTF_annText )
@@ -150,10 +161,19 @@ function CTF_gamemodeMapStart ( startedMap )
 			CTF_spawnText[teamKey] = textCreateTextItem ( getTeamName( teamValue ), 0.5, 0.6, 0, r, g, b, 255, 2, "center" )
 			textDisplayAddText ( CTF_spawnDisp[teamKey], CTF_spawnText[teamKey] )
 			setElementData( teamValue, "score", 0 )
-			local camera = getElementsByType( "camera" )
-			CTF_camPosX, CTF_camPosY, CTF_camPosZ, CTF_camLookX, CTF_camLookY, CTF_camLookZ = tonumber(getElementData( camera[1], "posX" )), tonumber(getElementData( camera[1], "posY" )), tonumber(getElementData( camera[1], "posZ" )), tonumber(getElementData( camera[1], "lookX" )), tonumber(getElementData( camera[1], "lookY" )), tonumber(getElementData( camera[1], "lookZ" ))
+			local camera = getElementsByType( "camera", CTF_mapRoot )
+			if camera[1] then
+				CTF_camPosX, CTF_camPosY, CTF_camPosZ, CTF_camLookX, CTF_camLookY, CTF_camLookZ = tonumber(getElementData( camera[1], "posX" )), tonumber(getElementData( camera[1], "posY" )), tonumber(getElementData( camera[1], "posZ" )), tonumber(getElementData( camera[1], "lookX" )), tonumber(getElementData( camera[1], "lookY" )), tonumber(getElementData( camera[1], "lookZ" ))
+			end
 			if ( not CTF_camPosX ) or ( not CTF_camPosY ) or ( not CTF_camPosZ ) or ( not CTF_camLookX ) or ( not CTF_camLookY ) or ( not CTF_camLookZ ) then
-				local flagss = getElementsByType( "flag" )
+				local camTable = get(mapName..".camera")
+				if camTable then
+					CTF_camPosX, CTF_camPosY, CTF_camPosZ = unpack(camTable[1])
+					CTF_camLookX, CTF_camLookY, CTF_camLookZ = unpack(camTable[2])
+				end
+			end
+			if ( not CTF_camPosX ) or ( not CTF_camPosY ) or ( not CTF_camPosZ ) or ( not CTF_camLookX ) or ( not CTF_camLookY ) or ( not CTF_camLookZ ) then
+				local flagss = getElementsByType( "flag", CTF_mapRoot )
 				local xi, yi, zi = 0, 0, 0
 				for p,f in ipairs(flagss) do
 					xi = xi + getElementData( f, "posX" )
@@ -192,7 +212,7 @@ end
 
 function CTF_endRound()
 	CTF_roundOn = false
-	local teams = getElementsByType ( "team" )
+	local teams = getElementsByType ( "team", CTF_mapRoot )
 	local maxScore = 0
 	local winningTeam = 0
 	local tieFlag = false
@@ -271,7 +291,7 @@ function CTF_newRound()
 			end
 		end
 	end
-	local teams = getElementsByType ( "team" )
+	local teams = getElementsByType ( "team", CTF_mapRoot )
 	for teamKey,teamValue in ipairs(teams) do
 		local nextTeam = teamKey + 1
 		if ( nextTeam > #teams ) then
@@ -425,7 +445,7 @@ function CTF_announce ( red, green, blue, text, time )
 end
 
 function updateScores()
-	local teams = getElementsByType( "team" )
+	local teams = getElementsByType( "team", CTF_mapRoot )
 	local str=""
 	for k,v in ipairs(teams) do
 		str = str .. getTeamName( v ) .. ": " .. getElementData( v, "score" ) .. "\n"
@@ -461,7 +481,7 @@ function CTF_spawnMenu ( player )
 		bindKey ( player, "arrow_l", "down", CTF_changeSpawn, player )
 		bindKey ( player, "arrow_r", "down", CTF_changeSpawn, player )
 	else
-		local teams = getElementsByType( "team" )
+		local teams = getElementsByType( "team", CTF_mapRoot )
 		local team = teams[1]
 		for teamKey,teamValue in ipairs(teams) do
 			if ( table.getn( getPlayersInTeam ( teamValue ) ) < table.getn( getPlayersInTeam ( team ) ) ) then
@@ -480,7 +500,7 @@ end
 function CTF_changeSpawn( player, key )
 	local last = getElementData( player, "CTF_lastSpawn" )
 	textDisplayRemoveObserver ( CTF_spawnDisp[last], player )
-	local teams = getElementsByType( "team" )
+	local teams = getElementsByType( "team", CTF_mapRoot )
 	if ( key == "arrow_l" ) then last = last - 1 else last = last + 1 end
 	if ( last < 1 ) then last = table.getn( teams ) end
 	if ( last > table.getn( teams ) ) then last = 1 end
@@ -490,7 +510,7 @@ end
 
 function CTF_confirmSpawn( player )
 	local confTeam = getElementData( player, "CTF_lastSpawn" )
-	local teams = getElementsByType( "team" )
+	local teams = getElementsByType( "team", CTF_mapRoot )
 	local smallest = 1337
 	for teamKey,teamValue in ipairs(teams) do
 		if ( table.getn( getPlayersInTeam ( teamValue ) ) < smallest ) then
