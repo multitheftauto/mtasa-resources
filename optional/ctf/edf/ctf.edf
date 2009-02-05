@@ -1,0 +1,29 @@
+<def name="Capture the Flag">
+	<setting name="camera" friendlyname="Start camera" type="camera" description="The starting position and look at of the camera.  This is required in order to stream any necessary objects before spawning players." default="0,0,0,0,0,0" required="true"/>
+	<setting name="respawnTime" friendlyname="Respawn time" type="number" description="The respawn time in (ms) after death" default="4500" required="true"/>
+	<setting name="roundTime" friendlyname="Round time" type="number" description="The length of each round in (ms), before teams are switched" default="600000" required="true"/>
+	<setting name="spawnScreen" friendlyname="Use spawnscreen" type="selection:on,off" description="Whether a spawnscreen should be used, or teams are placed automatically" default="600000" required="true"/>
+	<setting name="blips" friendlyname="Blip visibility" type="selection:team,all,off" description="Whether blips should only be visible to their team members, or universally visible, or not displayed at all" default="team" required="true"/>
+	
+	<element name="team" friendlyname="Team" instructions="Create a team.  Each team can have flag(s) associated to it" icon="edf/team.png">
+		<data name="name" type="string" instructions="The name of the team" default="team" />
+		<data name="color" type="color" instructions="The team color" default="#ffffffff" />
+	</element>
+	<element name="flag" friendlyname="Flag" instructions="The flag to be captured." icon="edf/flag.png">
+		<parent name="team" type="team" default="" />
+		<data name="position" type="coord3d" default="0,0,0" />
+		<object model="2993" />
+		<marker posZ="0.3" size="2" type="arrow" color="#ffffffff" />
+	</element>
+	<element name="spawnpoint" friendlyname="Spawnpoint" icon="edf/spawnpoint.png">
+		<parent name="team" type="team" default="" />
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="coord3d" default="0,0,0" />
+		<data name="skin" type="skinID" default="0" />
+		<ped model="!skin!" rotation="!rotation!"/>
+	</element>
+	<element name="weapon" friendlyname="Spawn weapon" icon="edf/weapon.png" shortcut="model">
+		<data name="model" type="weaponID" default="31" />
+		<data name="ammo" type="number" default="300" />
+	</element>
+</def>

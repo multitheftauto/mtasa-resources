@@ -1,5 +1,5 @@
 <meta>
-	<info author="Slothman" type="gamemode" name="Stealth" version="2.0.0"/>
+	<info author="Slothman" type="gamemode" name="Stealth" version="2.0.0" edf:definition="edf/stealth.edf" />
 
 	<config src="help.xml" type="client"/>
 
@@ -22,6 +22,9 @@
 	<file src="mine.png" />
 	<file src="radar.png" />
 	<file src="shield.png" />
+	
+	<file src="edf/mercenaryspawn.png" />
+	<file src="edf/spyspawn.png" />
 
 	<include resource="scoreboard" />
 	<include resource="killmessages" />
