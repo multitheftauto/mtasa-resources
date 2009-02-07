@@ -1,0 +1,10 @@
+<meta>
+		<info author="Jax + Talidan" description="Parachutes script" version="1.0.0"/>
+		<script src="utility.lua" type="client"/>
+        <script src="parachute.lua"/>
+        <script src="parachute_cl.lua" type="client"/>
+	    <script src="skydiving_cl.lua" type="client"/>
+		<script src="openChute.lua" type="client"/>
+		<script src="client_anim.lua" type="client"/>
+		<file src="parachuteopen.mp3" />
+</meta>
