@@ -1,4 +1,4 @@
-<def name="Capture the Flag">
+<def name="Stealth">
 	<setting name="camera" friendlyname="Spawnscreen camera" type="camera" description="The starting position and look-at of the spawnscreen camera.  This is required in order to stream any necessary objects before spawning players." default="0,0,0,0,0,0" required="false"/>
 
 	<element name="mercenaryspawn" friendlyname="Mercenary Spawnpoint" icon="edf/mercenaryspawn.png">
