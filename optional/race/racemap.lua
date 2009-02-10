@@ -16,6 +16,7 @@ g_MapSettingNames = table.create(
 -- Shared
 
 RaceMap = {}
+RaceElementMap = {}
 
 function RaceMap:__index(k)
 	if RaceMap[k] then
@@ -36,6 +37,14 @@ function RaceMap:__index(k)
 end
 
 function RaceMap.load(res)
+	--Check if there are any .<map/>'s by using the real element system first
+	local resourceRoot = getResourceRootElement(res)
+	if #getElementsByType("spawnpoint",resourceRoot) > 0 then 
+		--Spawnpoints are contained within the MTA map, therefore lets assume only MTA maps were used (removes general.ModifyOtherObjects dependency)
+		local map = setmetatable({ res = res, resname = getResourceName(res), mod = "map" }, RaceElementMap)
+		map.info = map
+		return map
+	end
 	local meta = xmlLoadFile('meta.xml', res)
 	if not meta then
 		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no meta.xml', 2)
@@ -291,3 +300,50 @@ function RaceRaceMap:convert()
 	xmlNodeSetAttribute(self.xml, 'mod', 'deathmatch')
 	setmetatable(self, DMRaceMap)
 end
+
+
+-----------------------------
+-- Element Map specific
+
+function RaceElementMap:__index(k)
+	if RaceElementMap[k] then
+		return RaceElementMap[k]
+	else
+		return get(k)
+	end
+end
+
+function RaceElementMap:isDMFormat()
+	return true
+end
+
+function RaceElementMap:isRaceFormat()
+	return false
+end
+
+function RaceElementMap:getAll(name,type)
+	local result = {}
+	--Block out specific stuff
+	if name == "object" then 
+		return {} 
+	elseif name == "pickup" then
+		return self:getAll("racepickup",name)
+	end
+	local resourceRoot = getResourceRootElement(self.res)
+	for i,element in ipairs(getElementsByType(name,resourceRoot)) do
+		result[i] = {}
+		result[i].id = getElementID(element) or i
+		attrs =	g_MapObjAttrs[type or name]
+		for _,attr in ipairs(attrs) do
+			result[i][attr] = getElementData(element,attr)
+			if attr == "rotation" then
+				result[i][attr] = result[i][attr] or getElementData(element,"rotZ")
+			elseif attr == "position" then
+				result[i][attr] = result[i][attr] or {tonumber(getElementData(element,"posX")), tonumber(getElementData(element,"posY")), tonumber(getElementData(element,"posZ"))}
+			end
+		end
+	end
+	return result
+end
+
+function RaceElementMap:unload() return false end
