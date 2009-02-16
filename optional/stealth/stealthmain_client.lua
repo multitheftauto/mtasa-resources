@@ -35,11 +35,37 @@ addEvent("cameramode", true)
 
 function movetocam(thisplayer)
 	showSpectateText("",false)
+	local cams = getElementsByType ("camera")
+	if #cams > 0 then
+		local random = math.random( 1, #cams )
+		if ( cams[random] ) then
+			local x = getElementData ( cams[random], "posX" )
+			local y = getElementData ( cams[random], "posY" )
+			local z = getElementData ( cams[random], "posZ" )
+			local a = getElementData ( cams[random], "targetX" )
+			local b = getElementData ( cams[random], "targetY" )
+			local c = getElementData ( cams[random], "targetZ" )
+			setCameraMatrix(x, y, z, a, b, c)
+		end
+	else --Most likely a setting
+		local cameraData = getElementData(getResourceRootElement(getThisResource()),"camera")
+		if cameraData then
+			local x,y,z = unpack(cameraData[1])
+			local a,b,c = unpack(cameraData[2])
+			setCameraMatrix(x, y, z, a, b, c)	
+		end
+	end
 end
 
 addEventHandler("cameramode", getRootElement(), movetocam)
 
 
+function updateCam (data)
+	if data ~= "camera" then return end
+	if not getElementData(source,data) then return end
+	movetocam()
+end
+addEventHandler ( "onClientElementDataChange", getResourceRootElement(getThisResource()), updateCam )
 
 addEvent("Startround",true)
 
@@ -447,6 +473,7 @@ end
 
 addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
 	function()
+		movetocam(getLocalPlayer())
 		local weaponsTable = getElementData(getRootElement(),"lasersight")
 		if type(weaponsTable) == "table" and #weaponsTable > 0 then
 			for k,weaponID in ipairs(weaponsTable) do
