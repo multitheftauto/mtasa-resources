@@ -195,7 +195,7 @@ function teamstealthmapstart(startedMap)
 		local cameraInfo = get(getResourceName(currentmap)..".camera")
 		if not cameraInfo then
 			local xi, yi, zi = 0, 0, 0
-			local spawns = getElementsByType("spawnpoint",mapRoot)
+			local spawns = table.merge(getElementsByType("spawnpoint",mapRoot),getElementsByType("spyspawn",mapRoot),getElementsByType("mercenaryspawn",mapRoot))
 			for i,spawnpoint in ipairs(spawns) do
 				xi = xi + getElementData( spawnpoint, "posX" )
 				yi = yi + getElementData( spawnpoint, "posY" )
@@ -206,13 +206,14 @@ function teamstealthmapstart(startedMap)
 			zi = zi/spawns
 			cameraInfo = { {xi, yi, zi}, {xi, yi, zi} }
 		end
-		local camera = createElement("camera")
-		setElementData ( camera, "posX", cameraInfo[1][1] )
-		setElementData ( camera, "posY", cameraInfo[1][2] )
-		setElementData ( camera, "posZ", cameraInfo[1][3] )
-		setElementData ( camera, "targetX", cameraInfo[2][1] )
-		setElementData ( camera, "targetY", cameraInfo[2][2] )
-		setElementData ( camera, "targetZ", cameraInfo[2][3] )
+		setElementData ( getResourceRootElement(getThisResource()), "camera", cameraInfo )
+		-- local camera = createElement("camera")
+		-- setElementData ( camera, "posX", cameraInfo[1][1] )
+		-- setElementData ( camera, "posY", cameraInfo[1][2] )
+		-- setElementData ( camera, "posZ", cameraInfo[1][3] )
+		-- setElementData ( camera, "targetX", cameraInfo[2][1] )
+		-- setElementData ( camera, "targetY", cameraInfo[2][2] )
+		-- setElementData ( camera, "targetZ", cameraInfo[2][3] )
 	end
 end
 
@@ -660,21 +661,8 @@ end
 addEventHandler( "onPlayerQuit", getRootElement(), stealthplayerleft )
 
 function setCameraFixed ( player )
-	local cams = getElementsByType ("camera")
 	triggerClientEvent(player,"cameramode",getRootElement(), player )
 	--showSpectateText("",false)
-	if #cams > 0 then
-		local random = math.random( 1, #cams )
-		if ( cams[random] ) then
-			local x = getElementData ( cams[random], "posX" )
-			local y = getElementData ( cams[random], "posY" )
-			local z = getElementData ( cams[random], "posZ" )
-			local a = getElementData ( cams[random], "targetX" )
-			local b = getElementData ( cams[random], "targetY" )
-			local c = getElementData ( cams[random], "targetZ" )
-			setCameraMatrix(player, x, y, z, a, b, c)
-		end
-	end
 end
 
 function playerleftcount (source)
@@ -761,3 +749,35 @@ function teamstealthgamestop()
 end
 
 addEventHandler( "onResourceStop", resourceRoot, teamstealthgamestop )
+
+
+function table.merge(appendTo, ...)
+	-- table.merge(targetTable, table1, table2, ...)
+	-- Append the values of one or more tables to a target table.
+	--
+	-- In the arguments list, a table pointer can be followed by a
+	-- numeric or textual key. In that case the values in the table
+	-- will be assumed to be tables, and of each of these the value
+	-- corresponding to the given key will be appended instead of the
+	-- subtable itself.
+	local appendval
+	for i=1,arg.n do
+		if type(arg[i]) == 'table' then
+			for k,v in pairs(arg[i]) do
+				if arg[i+1] and type(arg[i+1]) ~= 'table' then
+					appendval = v[arg[i+1]]
+				else
+					appendval = v
+				end
+				if appendval then
+					if type(k) == 'number' then
+						table.insert(appendTo, appendval)
+					else
+						appendTo[k] = appendval
+					end
+				end
+			end
+		end
+	end
+	return appendTo
+end
