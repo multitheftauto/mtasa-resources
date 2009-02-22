@@ -63,13 +63,14 @@ function string:split(separator)
 end
 
 function table.each(t, index, callback, ...)
+	local args = { ... }
 	if type(index) == 'function' then
-		table.insert(arg, 1, callback)
+		table.insert(args, 1, callback)
 		callback = index
 		index = false
 	end
 	for k,v in pairs(t) do
-		callback(index and v[index] or v, unpack(arg))
+		callback(index and v[index] or v, unpack(args))
 	end
 	return t
 end

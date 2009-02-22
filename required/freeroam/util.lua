@@ -158,11 +158,12 @@ function table.merge(appendTo, ...)
 	-- corresponding to the given key will be appended instead of the
 	-- subtable itself.
 	local appendval
-	for i=1,arg.n do
-		if type(arg[i]) == 'table' then
-			for k,v in pairs(arg[i]) do
-				if arg[i+1] and type(arg[i+1]) ~= 'table' then
-					appendval = v[arg[i+1]]
+	local args = { ... }
+	for i,a in ipairs(args) do
+		if type(a) == 'table' then
+			for k,v in pairs(a) do
+				if args[i+1] and type(args[i+1]) ~= 'table' then
+					appendval = v[args[i+1]]
 				else
 					appendval = v
 				end
@@ -240,13 +241,14 @@ function table.rep(value, times)
 end
 
 function table.each(t, index, callback, ...)
+	local args = { ... }
 	if type(index) == 'function' then
-		table.insert(arg, 1, callback)
+		table.insert(args, 1, callback)
 		callback = index
 		index = false
 	end
 	for k,v in pairs(t) do
-		callback(index and v[index] or v, unpack(arg))
+		callback(index and v[index] or v, unpack(args))
 	end
 	return t
 end
