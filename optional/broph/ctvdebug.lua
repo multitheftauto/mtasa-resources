@@ -22,11 +22,48 @@ end
 	-- end
 -- end
 
--- function consoleCommands ( player, commandName )
-	-- if ( player ) then
-		-- outputChatBox ( "Command List:" )
-	-- end
--- end
+-- Enabled this old function with new purpose - MK
+function consoleCommands ( player )
+	if ( player ) then
+		outputChatBox ( "Command List printed to console, press F8.", player )
+		outputConsole ( "createpickup", player )
+		outputConsole ( "createmarker", player )
+		outputConsole ( "setmapname", player )
+		outputConsole ( "removemarkers", player )
+		outputConsole ( "creategangzone", player )
+		outputConsole ( "removegangzones", player )
+		outputConsole ( "setgangzoneflashing", player )
+		outputConsole ( "hp", player )
+		outputConsole ( "tagcolor", player )
+		outputConsole ( "tagtext", player )
+		outputConsole ( "createobject", player )
+		outputConsole ( "loc", player )
+		outputConsole ( "locxyz", player )
+		outputConsole ( "createvehicle", player )
+		outputConsole ( "cv", player )
+		outputConsole ( "give", player )
+		outputConsole ( "warpto", player )
+		outputConsole ( "settime", player )
+		outputConsole ( "setweather", player )
+		outputConsole ( "blendweather", player )
+		outputConsole ( "setskin", player )
+		outputConsole ( "listclothes", player )
+		outputConsole ( "addclothes", player )
+		outputConsole ( "removeclothes", player )
+		outputConsole ( "repair", player )
+		outputConsole ( "setcolor", player )
+		outputConsole ( "checkupgrades", player )
+		outputConsole ( "addupgrade", player )
+		outputConsole ( "removeupgrade", player )
+		outputConsole ( "setpaintjob", player )
+		outputConsole ( "jetpack", player )
+		outputConsole ( "attachtrailer", player )
+		outputConsole ( "setstat", player )
+		outputConsole ( "getpos", player )
+		outputConsole ( "setpos", player )
+		outputConsole ( "garage", player )
+	 end
+ end
 
 function createpkup ( source, command, types, info, respawntime, ammo )
 	if (tonumber(types) == 0 or tonumber(types) == 1) then
@@ -128,13 +165,20 @@ function tagtext(source, command, message)
 	setPlayerNametagText(source, message)
 end
 
-function createobjectforplayer(player, command, object)
-    local x,y,z = getElementPosition ( player )
-	cobject = createObject ( object, x + 5, y, z )
+
+-- Modified createobject for easier usage - MK
+function createobjectforplayer( player, command, object )
+	local rotation_Z, distance = 0, 5
+	local PlayerRotation = getPlayerRotation ( player )
+	local rotation_Z = PlayerRotation + 90
+	local Player_x, Player_y, Player_z = getElementPosition ( player )
+	local Player_x = Player_x + (( math.cos( math.rad ( rotation_Z ))) * distance )
+	local Player_y = Player_y + (( math.sin( math.rad ( rotation_Z ))) * distance )
+	cobject = createObject ( object, Player_x, Player_y, Player_z, 0, 0, rotation_Z )
 	if  ( cobject ) then
 	outputChatBox ( "Object: " ..object.. " Created", player, 0, 255, 255 )
 	else
-	outputChatBox ( "Object could not be created", player, 0, 255, 255 )
+	outputChatBox ( "Object " ..object.. " could not be created", player, 0, 255, 255 )
 	end
 end
 
@@ -157,11 +201,26 @@ function locationxyz(source, command, x, y, z)
 	end
 end
 
+
+
+-- Added Garage Open/Close function - MK
+function garageControl(source, command, garageID)
+	if ( tonumber(garageID) ) and (not isGarageOpen(tonumber(garageID))) then
+	setGarageOpen(tonumber(garageID), true)
+	else 
+	setGarageOpen(tonumber(garageID), false)
+	end
+end
+
+
+
+-- Fixed vehicle spawn position - MK
 function consoleCreateVehicle ( player, commandName, first, second, third )
 	if ( player ) then
 		local id, x, y, z, r, d = 0, 0, 0, 0, 0, 5
 		local plate = false
-		r = getPedRotation ( player )
+		pr = getPedRotation ( player )
+		r = pr + 90
 		x, y, z = getElementPosition ( player )
 		x = x + ( ( math.cos ( math.rad ( r ) ) ) * d )
 		y = y + ( ( math.sin ( math.rad ( r ) ) ) * d )
@@ -596,7 +655,7 @@ addEventHandler ( "onPlayerJoin", root, playerJoin )
 --///
 
 -- addCommandHandler ( "output", outputOnLoad )
--- addCommandHandler ( "commands", consoleCommands )
+addCommandHandler ( "commands", consoleCommands )
 addCommandHandler ( "createpickup", createpkup )
 addCommandHandler ( "createmarker", makemarker )
 addCommandHandler ( "setmapname", setmapname )
@@ -611,6 +670,7 @@ addCommandHandler ( "createobject", createobjectforplayer )
 addCommandHandler ( "loc", playerloc )
 addCommandHandler ( "locxyz", locationxyz )
 addCommandHandler ( "createvehicle", consoleCreateVehicle )
+addCommandHandler ( "cv", consoleCreateVehicle )
 addCommandHandler ( "give", consoleGive )
 addCommandHandler ( "warpto", consoleWarpTo )
 addCommandHandler ( "settime", consoleSetTime )
@@ -631,3 +691,8 @@ addCommandHandler ( "attachtrailer", consoleAttachTrailer )
 addCommandHandler ( "setstat", consoleSetStat )
 addCommandHandler ( "getpos", consoleGetPosition )
 addCommandHandler ( "setpos", consoleSetPosition )
+addCommandHandler ( "garage", garageControl )
+
+
+
+
