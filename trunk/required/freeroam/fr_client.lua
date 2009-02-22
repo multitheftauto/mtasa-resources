@@ -478,10 +478,10 @@ wndStats = {
 ---------------------------
 function toggleJetPack()
 	if not doesPedHaveJetPack(g_Me) then
-		server.givePlayerJetPack(g_Me)
+		server.givePedJetPack(g_Me)
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), true)
 	else
-		server.removePlayerJetPack(g_Me)
+		server.removePedJetPack(g_Me)
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), false)
 	end
 end
@@ -784,10 +784,11 @@ wndCreateVehicle = {
 function createVehicleCommand(cmd, ...)
 	local vehID
 	local vehiclesToCreate = {}
-	for i=1,arg.n do
-		vehID = tonumber(arg[i])
+	local args = { ... }
+	for i,v in ipairs(args) do
+		vehID = tonumber(v)
 		if not vehID then
-			vehID = getVehicleModelFromName(arg[i])
+			vehID = getVehicleModelFromName(v)
 		end
 		if vehID then
 			table.insert(vehiclesToCreate, vehID)
@@ -818,7 +819,7 @@ function flipVehicle()
 	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle then
 		local rX, rY, rZ = getElementRotation(vehicle)
-		server.setElementRotation(vehicle, 0, 0, (rX > 90 and rX < 270) and (rZ + 180) or rZ)
+		server.setVehicleRotation(vehicle, 0, 0, (rX > 90 and rX < 270) and (rZ + 180) or rZ)
 	end
 end
 
@@ -1052,8 +1053,9 @@ function setColorCommand(cmd, ...)
 		return
 	end
 	local colors = { getVehicleColor(vehicle) }
+	local args = { ... }
 	for i=1,4 do
-		colors[i] = arg[i] and tonumber(arg[i]) or colors[i]
+		colors[i] = args[i] and tonumber(args[i]) or colors[i]
 	end
 	server.setVehicleColor(vehicle, unpack(colors))
 end
@@ -1196,12 +1198,14 @@ function setTimeFrozen(state, h, m, w)
 	if state then
 		if not g_TimeFreezeTimer then
 			g_TimeFreezeTimer = setTimer(function() setTime(h, m) setWeather(w) end, 5000, 0)
+			setMinuteDuration(9001)
 		end
 	else
 		if g_TimeFreezeTimer then
 			killTimer(g_TimeFreezeTimer)
 			g_TimeFreezeTimer = nil
 		end
+		setMinuteDuration(1000)
 	end
 end
 
