@@ -40,6 +40,7 @@ g_RPCFunctions = {
 	removeVehicleUpgrade = { option = 'upgrades', descr = 'Adding/removing upgrades' },
 	setElementAlpha = { option = 'alpha', descr = 'Changing your alpha' },
 	setElementPosition = true,
+	setElementInterior = true,
 	setMyGameSpeed = { option = 'gamespeed.enabled', descr = 'Setting game speed' },
 	setMySkin = { option = 'setskin', descr = 'Setting skin' },
 	setPedAnimation = { option = 'anim', descr = 'Setting an animation' },
@@ -219,7 +220,10 @@ function setMySkin(skinid)
 			z = 3
 		end
 		local r = getPedRotation(source)
+		local interior = getElementInterior(source)
 		spawnPlayer(source, x, y, z, r, skinid)
+		setElementInterior(source, interior)
+		setCameraInterior(source, interior)
 	else
 		setElementModel(source, skinid)
 		setElementHealth(source, 100)
@@ -405,7 +409,7 @@ addEventHandler('onVehicleExit', g_Root,
 			return
 		end
 		if not g_VehicleData[source].timers.fire then
-			for i=0,getVehicleMaxPassengers(source) do
+			for i=0,getVehicleMaxPassengers(source) or 1 do
 				if getVehicleOccupant(source, i) then
 					return
 				end
