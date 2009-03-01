@@ -25,6 +25,7 @@
 	<file src="vehiclecolors.png" />
 	
 	<config src="animations.xml" type="client" />
+	<config src="interiors.xml" type="client" />
 	<config src="skins.xml" type="client" />
 	<config src="stats.xml" type="client" />
 	<config src="vehicles.xml" type="client" />

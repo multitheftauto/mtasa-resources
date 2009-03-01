@@ -748,6 +748,37 @@ wndSpawnMap = {
 }
 
 ---------------------------
+-- Interior window
+---------------------------
+
+function setInterior(leaf)
+	server.setElementInterior(g_Me, leaf.world)
+	setCameraInterior(leaf.world)
+	setElementPosition(g_Me, leaf.posX, leaf.posY, leaf.posZ)
+	closeWindow(wndSetInterior)
+end
+
+wndSetInterior = {
+	'wnd',
+	text = 'Set interior',
+	width = 250,
+	controls = {
+		{
+			'lst',
+			id='interiors',
+			width=230,
+			height=300,
+			columns={
+				{text='Interior', attr='name'}
+			},
+			rows={xml='interiors.xml', attrs={'name', 'posX', 'posY', 'posZ', 'world'}},
+			onitemdoubleclick=setInterior
+		},
+		{'btn', id='close', closeswindow=true}
+	}
+}
+
+---------------------------
 -- Create vehicle window
 ---------------------------
 function createSelectedVehicle(leaf)
@@ -1399,10 +1430,11 @@ wndMain = {
 		{'br'},
 		
 		{'lbl', text='Pos:'},
-		{'lbl', id='xpos', text='x', width=50},
-		{'lbl', id='ypos', text='y', width=50},
-		{'lbl', id='zpos', text='z', width=50},
+		{'lbl', id='xpos', text='x', width=45},
+		{'lbl', id='ypos', text='y', width=45},
+		{'lbl', id='zpos', text='z', width=45},
 		{'btn', id='setpos', text='map', window=wndSetPos},
+		{'btn', id='setinterior', text='int', window=wndSetInterior},
 		{'br'},
 		{'br'},
 		
