@@ -185,7 +185,7 @@ function loadMap(res)
 				end
 			end
 		end
-		g_Checkpoints = chains[1]
+		g_Checkpoints = chains[1] or {}
 	end
 	
 	-- read objects

@@ -59,9 +59,7 @@ function setSkinCommand(cmd, skin)
 	if skin then
 		server.setMySkin(skin)
 		fadeCamera(true)
-		if isPlayerDead(g_Me) then
-			closeWindow(wndSpawnMap)
-		end
+		closeWindow(wndSpawnMap)
 	end
 end
 addCommandHandler('setskin', setSkinCommand)
@@ -754,7 +752,7 @@ wndSpawnMap = {
 function setInterior(leaf)
 	server.setElementInterior(g_Me, leaf.world)
 	setCameraInterior(leaf.world)
-	setElementPosition(g_Me, leaf.posX, leaf.posY, leaf.posZ)
+	setElementPosition(g_Me, leaf.posX, leaf.posY, leaf.posZ + 1)
 	closeWindow(wndSetInterior)
 end
 
@@ -1393,7 +1391,7 @@ function onExitVehicle(vehicle)
 end
 
 function killLocalPlayer()
-	server.killPlayer(g_Me)
+	server.killPed(g_Me)
 end
 
 function alphaCommand(command, alpha)
