@@ -5,6 +5,6 @@
     <include resource="maplimits" />
     
     <settings> 
-		<setting name="#weather" value="11" />
+		<setting name="#weather" value="[ 11 ]" />
     </settings> 
 </meta>
