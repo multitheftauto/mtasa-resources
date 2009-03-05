@@ -1,0 +1,1233 @@
+local root = getRootElement()
+local localPlayer = getLocalPlayer()
+local thisResource = getThisResource()
+local thisResourceRoot = getResourceRootElement(thisResource)
+local g_suspendedCamera = {}
+local g_screenX, g_screenY = guiGetScreenSize ()
+
+local CAMERA_MODE = 1
+local CURSOR_MODE = 2
+local g_mode
+local MOUSE_SUBMODE = 1
+local KEYBOARD_SUBMODE = 2
+local g_submode = MOUSE_SUBMODE
+local g_maxSelectDistance = 155 --units
+
+g_workingInterior = 0
+
+local g_suspended = false
+local g_enableWorld = true
+local g_sensitivityMode = false
+local g_showingProperties = false
+
+local g_selectedElement
+local g_selectedPart
+local g_targetedElement
+local g_targetedPart
+
+local g_colless = {}
+
+local g_arrowMarkerSizeRatio = 0.4 --Multiplied by the element's radius
+local g_arrowMarkerMinSize = 0.5 --The Absolute minimum size the marker can be
+local g_arrowMarker
+local g_editorBlip
+
+local CROSSHAIR_NOTHING = 1
+local CROSSHAIR_WORLD = 2
+local CROSSHAIR_WATER = 3
+local CROSSHAIR_MOUSEOVER = 4
+local CROSSHAIR_SENSITIVE = 5
+local g_crosshairState
+local g_showLabels = true
+local g_showCrosshair = true
+
+local g_mouseOver = true
+
+local DISTANCE_DECIMAL_PLACES = 3
+local INFO_COLOR = -3618561
+local INFO_SCALE,INFO_FONT = 1,"default"
+local START_X, START_Y, START_Z = 2483, -1666, 21
+local START_LOOKX, START_LOOKY, START_LOOKZ = 2483, -1566, 21
+
+local g_dragPosition = { }
+local g_dragElement
+local g_dragTimer
+local DRAG_MINIMUM_CLICK_TIME = 300
+local DRAG_CURSOR_MINIMAL_DISTANCE = 5
+local DRAG_CAMERA_MINIMAL_DISTANCE = 2
+
+local g_lastClick = 0
+local DOUBLE_CLICK_MAX_DELAY = 500 -- In ticks
+
+-- PRIVATE
+local isColless = {
+	marker = true,
+	vehicle = true,
+	pickup = true,
+	ped = true,
+	water = true,
+}
+local hasCol = {
+	object = true,
+}
+local noInteriors = {
+	marker = true,
+	pickup = true,
+	water = true,
+}
+local attachable = {
+	marker = true,
+	vehicle = true,
+	pickup = true,
+	object = true,
+	ped = true,
+	water = true,
+}
+
+local hitComponents = function (hit)
+	if hit then return hit.x, hit.y, hit.z
+	else return nil end
+end
+
+local commonIntersection = function (startX, startY, startZ, endX, endY, endZ, centerX, centerY, centerZ, element)
+	local _start = Vector3D:new(startX, startY, startZ)
+	local _end = Vector3D:new(endX, endY, endZ)
+	local _center = Vector3D:new(centerX, centerY, centerZ)
+
+	local elementType = getElementType(element)
+	local radius
+	if (elementType == "pickup") then
+		radius = 1
+	elseif (elementType == "marker") then
+		radius = getMarkerSize(element)
+	else
+		radius = getElementRadius(element)
+	end
+	return hitComponents(collisionTest.Sphere(_start, _end, _center, radius))
+end
+
+local specialIntersections = {
+	marker = function (startX, startY, startZ, endX, endY, endZ, centerX, centerY, centerZ, element)
+		local markerType = getMarkerType(element)
+		local _start = Vector3D:new(startX, startY, startZ)
+		local _end = Vector3D:new(endX, endY, endZ)
+		local _center = Vector3D:new(centerX, centerY, centerZ)
+		local size = getMarkerSize(element)
+
+		if markerType == "corona" or markerType == "ring" or markerType == "arrow" then
+			return hitComponents(collisionTest.Sphere(_start, _end, _center, size))
+		elseif markerType == "cylinder" then
+			return hitComponents(collisionTest.Cylinder(_start, _end, _center, size, size))
+		elseif markerType == "checkpoint" then
+			return hitComponents(collisionTest.Cylinder(_start, _end, _center, size, 60 * size))
+		end
+	end,
+	water = function (startX, startY, startZ, endX, endY, endZ, centerX, centerY, centerZ, element)
+		local _start = Vector3D:new(startX, startY, startZ)
+		local _end = Vector3D:new(endX, endY, endZ)
+		local _center = Vector3D:new(centerX, centerY, centerZ)
+		--
+		local x1 = getWaterVertexPosition ( element, 1 )
+		local x2,y1 = getWaterVertexPosition ( element, 2 )
+		--
+		sizeX = x2 - x1
+		--
+		local _,y2 = getWaterVertexPosition ( element, 3 )
+		sizeY = y2 - y1
+		
+		return hitComponents(collisionTest.Rectangle(_start, _end, _center, sizeX, sizeY))
+	end,
+}
+
+function startWhenLoaded()
+	if isInterfaceLoaded() then
+		startEditor()
+		removeEventHandler("onClientResourceStart", root, startWhenLoaded)
+	end
+end
+addEventHandler("onClientResourceStart", root, startWhenLoaded)
+
+addEventHandler("doSelectElement", root,
+	function (submode,shortcut)
+		submode = submode or 1
+		selectElement(source, submode,shortcut)
+	end
+)
+
+addEventHandler("onClientRender", root,
+	function ()
+		if g_suspended then
+			return
+		end
+		if not g_mouseOver or isMTAWindowActive() or guiGetInputEnabled() then
+			if g_targetedElement then
+				g_targetedPart = nil
+				g_targetedElement = nil
+				setCrosshairState(CROSSHAIR_NOTHING)
+			end
+			return
+		end
+		if g_mode == CAMERA_MODE then
+			if g_dragElement and not g_selectedElement then
+				local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
+				local distance = math.sqrt((g_dragPosition.x - lookX)^2 +
+				                           (g_dragPosition.y - lookY)^2 +
+							   (g_dragPosition.z - lookZ)^2)
+
+				if distance > DRAG_CAMERA_MINIMAL_DISTANCE then
+					selectElement(g_dragElement, MOUSE_SUBMODE)
+				end
+				return
+			end
+
+			local targetElement, targetX, targetY, targetZ = getTargetedElement()
+			if targetElement then
+				if targetElement ~= g_targetedPart then	
+					g_targetedPart = targetElement
+					g_targetedElement = edf.edfGetAncestor(targetElement)
+				end
+							
+				local camX, camY, camZ = getCameraMatrix()
+				local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
+				local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
+				createHighlighterText ( g_screenX/2, g_screenY/2,
+								getElementID(g_targetedElement) or "",
+								"["..getElementType(g_targetedElement).."]",
+								roundedDistance .. " m" 
+				)
+			else
+				if g_targetedElement then
+					g_targetedPart = nil
+					g_targetedElement = nil
+				end
+			end
+
+			if g_sensitivityMode then
+				setCrosshairState(CROSSHAIR_SENSITIVE)
+				return
+			end
+			
+			local camX, camY, camZ, endX, endY, endZ = getCameraLine()
+			if targetElement and not g_selectedElement then
+				setCrosshairState(CROSSHAIR_MOUSEOVER)
+			else
+				local waterCollision, wCX, wCY, wCZ = testLineAgainstWater(camX, camY, camZ, endX, endY, endZ)
+				local groundCollision, gCX, gCY, gCZ = 
+					processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer)
+		
+				if waterCollision and groundCollision then
+					if getDistanceBetweenPoints3D(wCX, wCY, wCZ, camX, camY, camZ) <= getDistanceBetweenPoints3D(gCX, gCY, gCZ, camX, camY, camZ) then
+						setCrosshairState(CROSSHAIR_WATER)
+					else
+						setCrosshairState(CROSSHAIR_WORLD)
+					end
+				elseif waterCollision then
+					setCrosshairState(CROSSHAIR_WATER)
+				elseif groundCollision then
+					setCrosshairState(CROSSHAIR_WORLD)
+				else
+					setCrosshairState(CROSSHAIR_NOTHING)
+				end
+			end
+		elseif g_mode == CURSOR_MODE then
+			if editor_gui.guiGetMouseOverElement() then return end
+			local targetElement = getTargetedElement()
+			if targetElement or (g_selectedElement and g_submode == MOUSE_SUBMODE) then
+				targetElement = targetElement or g_selectedElement
+				if targetElement ~= g_targetedPart then	
+					g_targetedPart = targetElement
+					g_targetedElement = edf.edfGetAncestor(targetElement)
+				end
+				targetX, targetY, targetZ = edf.edfGetElementPosition(g_targetedElement)
+				local labelCenterX,labelCenterY = getCursorPosition()		
+				labelCenterX = labelCenterX * g_screenX
+				labelCenterY = labelCenterY * g_screenY
+				
+				local camX, camY, camZ = getCameraMatrix()
+				local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
+				local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
+				
+				createHighlighterText ( labelCenterX,labelCenterY,
+								getElementID(g_targetedElement) or "",
+								"["..getElementType(g_targetedElement).."]",
+								roundedDistance .. " m" 
+				)
+			else
+				if g_targetedElement then				
+					g_targetedPart = nil
+					g_targetedElement = nil
+				end
+			end
+		end
+	end
+)
+
+addEventHandler("onClientElementStreamIn", root,
+	function ()
+		if isColless[getElementType(source)] then
+			g_colless[source] = true
+		end
+	end
+)
+
+addEventHandler("onClientElementStreamOut", root,
+	function ()
+		if isColless[getElementType(source)] then
+			g_colless[source] = nil
+		end
+	end
+)
+
+function startEditor()
+	--load editor controls from the xml
+	loadXMLControls()
+	
+	setWorkingInterior(0)
+
+	-- Set all other players in dimension 0
+	for k,player in ipairs(getElementsByType("player")) do
+		if player ~= getLocalPlayer() then
+			setElementDimension(player, 65000)
+		end
+	end
+	
+	attachPlayers(true)
+	--disable these for now
+	-- disableGameHUD()
+	-- setElementAlpha(localPlayer, 0)
+	--showChat(false)  Uncomment this line for release
+	
+	
+	-- set up camera and submodes
+	createCrosshair()
+	setCameraMatrix(START_X, START_Y, START_Z,START_LOOKX, START_LOOKY, START_LOOKZ)
+	setMode(CAMERA_MODE)
+	
+	
+	fadeCamera(true, 2)
+	
+	bindInput()
+	
+	-- loop through collisionless elements, get a table of streamed ones, and freeze vehicles
+	for eType in pairs(isColless) do
+		for k, element in pairs(getElementsByType(eType)) do
+			if eType == "vehicle" then
+				makeVehicleStatic(element)
+			elseif eType == "ped" then
+				makePedStatic ( element )
+			end
+			if isElementStreamedIn(element) then
+				g_colless[element] = true
+			end
+		end
+	end
+end
+
+function stopEditor()
+	attachPlayers(false)
+end
+addEventHandler("onClientResourceStop", thisResourceRoot, stopEditor)
+
+function toggleMode(key, keyState)
+	if (g_mode == CAMERA_MODE) then
+		setMode(CURSOR_MODE)
+	else
+		setMode(CAMERA_MODE)
+	end
+end
+
+function keyboardUndo()
+	if getKeyState("lctrl") or getKeyState("rctrl") then
+		return triggerServerEvent("doUndo", localPlayer)
+	end
+end
+
+function keyboardRedo()
+	if getKeyState("lctrl") or getKeyState("rctrl") then
+		return triggerServerEvent("doRedo", localPlayer)
+	end
+end
+
+function pickupSelectedElement()
+	if ( g_submode == KEYBOARD_SUBMODE ) then
+		local element = g_selectedElement
+		dropElement(false)
+		selectElement(element,MOUSE_SUBMODE)
+	end
+end
+
+function processLineForElements(startX, startY, startZ, endX, endY, endZ)
+	local foundElement = false
+	local hitX, hitY, hitZ = nil, nil, nil
+	--limit foundElementDistance to distance to endpoint because the collision check goes past the endpoint for some reason
+	local foundElementDistance = math.sqrt((endX-startX)^2 + (endY-startY)^2 + (endZ-startZ)^2)
+	for v in pairs(g_colless) do
+		while true do
+			--forget elements that have been destroyed
+			if not isElement(v) then
+				g_colless[v] = nil
+				break
+			end
+			--ignore if it's in a different dimension
+			if getElementDimension(v) ~= getWorkingDimension() then
+				break
+			end
+			
+			--ignore if its not a valid type
+			local strType = getElementType(v)
+			if not isColless[strType] and strType ~= "object" then
+				g_colless[v] = nil
+				break
+			end
+
+			--ignore if it's in a different interior
+			if not noInteriors[strType] and getElementInterior(v) ~= g_workingInterior then
+				break
+			end
+			--ignore selection arrow marker
+			if v == g_arrowMarker then
+				break
+			end
+			local centerX, centerY, centerZ = getElementPosition(v)
+			local distance = math.sqrt((centerX-startX)^2 + (centerY-startY)^2 + (centerZ-startZ)^2)
+
+			if (distance <= foundElementDistance) then
+				local intersection = specialIntersections[getElementType(v)] or commonIntersection
+				local _hitX, _hitY, _hitZ = intersection(startX, startY, startZ, endX, endY, endZ, centerX, centerY, centerZ, v)
+
+				if _hitX then
+					foundElement = v
+					foundElementDistance = distance
+					hitX = _hitX
+					hitY = _hitY
+					hitZ = _hitZ
+				end
+			end
+			break
+		end
+	end
+	return foundElement, hitX, hitY, hitZ
+end
+
+-- selects element mouse is pointing to, or drops selected element (freecam mode)
+function processFreecamClick(key, keyState)
+	if g_mode ~= CAMERA_MODE then
+		return
+	end
+	local drop
+	if (not g_suspended) then
+		local clickedElement, targetX, targetY, targetZ = getTargetedElement()
+
+		local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
+		local distance = math.sqrt((targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2)
+
+		if (distance > g_maxSelectDistance) then
+			clickedElement = nil
+			outputDebugString("Cannot select out of range element: " .. getElementType(clickedElement))
+			outputDebugString(" distance: " .. distance)
+		end
+
+		if keyState == "down" then
+			if clickedElement then
+				g_dragTimer = setTimer ( function()
+						g_dragPosition.x = lookX
+						g_dragPosition.y = lookY
+						g_dragPosition.z = lookZ
+						g_dragElement = clickedElement
+					end,
+					DRAG_MINIMUM_CLICK_TIME,
+					1
+					)
+			else
+				g_dragElement = nil
+			end
+			return
+		end
+		for k,timer in ipairs(getTimers()) do
+			if timer == g_dragTimer then
+				killTimer ( timer )
+				g_dragTimer = nil
+				break
+			end
+		end
+
+		if g_dragElement then
+			g_dragElement = nil
+			if g_selectedElement then
+				dropElement(true,true) --If its not the selected element, drop it and continue
+				return
+			end
+		end
+
+		-- attach element
+		if (clickedElement) then
+			if (g_selectedElement) then
+				if g_submode == MOUSE_SUBMODE then
+					dropElement(true,true) --Drop it, and stop here
+					return
+				end
+				dropElement(true,true) --If its not the selected element, drop it and continue
+			end
+			
+			if (key == cc.select_target_mouse) then
+				selectElement(clickedElement, MOUSE_SUBMODE)
+			elseif (key == cc.select_target_keyboard) then
+				selectElement(clickedElement, KEYBOARD_SUBMODE)
+			end
+		elseif (g_selectedElement) then
+			dropElement(true,true)
+		end
+	end
+end
+
+function getTargetedElement(hitX, hitY, hitZ)
+	local targetX, targetY, targetZ, targetedElement
+
+	if (g_mode == CAMERA_MODE) then
+		targetX, targetY, targetZ, targetedElement = processCameraLineOfSight()
+	elseif (g_mode == CURSOR_MODE) then
+		targetX, targetY, targetZ, targetedElement = processCursorLineOfSight()
+	end
+
+	local camX, camY, camZ = getCameraMatrix()
+	
+	-- check for collisionless elements between camera and collision point
+	local tempElement, tempHitX, tempHitY, tempHitZ = 
+		processLineForElements(camX, camY, camZ, targetX, targetY, targetZ)
+
+	-- if collisionless element was found in front of the collision point, use it
+	if (tempElement) then
+		targetedElement = tempElement
+		targetX, targetY, targetZ = tempHitX, tempHitY, tempHitZ
+	end
+	
+	if targetedElement then
+		if getElementType(targetedElement) == "player" then
+			targetedElement = false
+		end
+	end
+	
+	return targetedElement, targetX, targetY, targetZ
+end
+
+function createCrosshair()
+	g_showLabels = true
+	setCrosshairState(CROSSHAIR_NOTHING)
+end
+
+function createHighlighterText ( absX,absY,text1,text2,text3 )
+	if not g_showLabels then return false end
+	local height = dxGetFontHeight ( INFO_SCALE, INFO_FONT )
+	--
+	local extent = dxGetTextWidth ( text1, INFO_SCALE, INFO_FONT )
+	local xPos = absX - (extent/2)
+	local yPos = absY - 48
+	--First one is for the shaddow
+	dxDrawText ( text1, xPos + 1, yPos + 1, xPos + extent, yPos + height, -16777216, INFO_SCALE, INFO_FONT )
+	dxDrawText ( text1, xPos, yPos, xPos + extent, yPos + height, INFO_COLOR, INFO_SCALE, INFO_FONT )
+	--
+	extent = dxGetTextWidth ( text2, INFO_SCALE, INFO_FONT )
+	xPos = absX - (extent/2)
+	yPos = absY - 32
+	dxDrawText ( text2, xPos + 1, yPos + 1, xPos + extent, yPos + height, -1728053248, INFO_SCALE, INFO_FONT )
+	dxDrawText ( text2, xPos, yPos, xPos + extent, yPos + height, -1714894593, INFO_SCALE, INFO_FONT )
+	--
+	extent = dxGetTextWidth ( text3, INFO_SCALE, INFO_FONT )
+	xPos = absX - (extent/2)
+	yPos = absY + 16
+	dxDrawText ( text3, xPos + 1, yPos + 1, xPos + extent, yPos + height, -16777216, INFO_SCALE, INFO_FONT )
+	dxDrawText ( text3, xPos, yPos, xPos + extent, yPos + height, INFO_COLOR, INFO_SCALE, INFO_FONT )  
+	return true
+end
+
+
+function setCrosshairState(state)
+	if not g_showCrosshair then return end
+	local color = tocolor(255,255,255,102)
+	if state == CROSSHAIR_WORLD then
+		color = tocolor(255,255,255,255)
+	elseif state == CROSSHAIR_WATER then
+		color = tocolor(80,203,227,255)
+	elseif state == CROSSHAIR_MOUSEOVER then
+		color = tocolor(191,203,134,255)
+	elseif state == CROSSHAIR_SENSITIVE then
+		color = tocolor(255,0,0,255)
+	end
+	dxDrawImage ( g_screenX/2 - 16, g_screenY/2 - 16, 32, 32, "client/images/crosshair.png",0,0,0,color,false)
+	g_crosshairState = state
+end
+
+function makeVehicleStatic(vehicle)
+	vehicle = vehicle or source
+	setVehicleDamageProof(vehicle, true)
+	setVehicleFrozen(vehicle, true)
+	setElementCollisionsEnabled(vehicle, false)
+end
+addEventHandler("doSetVehicleStatic", getRootElement(), makeVehicleStatic)
+
+function makePedStatic(ped)
+	ped = ped or source
+	setElementCollisionsEnabled ( ped, false )
+end
+addEventHandler("doSetPedStatic", getRootElement(), makePedStatic)
+
+function setRepresentationCollisionsEnabled(element, state)
+	for k, child in ipairs(getElementChildren(element)) do
+		if edf.edfGetParent(child) == element then
+			if hasCol[getElementType(child)] then
+				setElementCollisionsEnabled(child, state)
+			end
+			setRepresentationCollisionsEnabled(child, state)
+		end
+	end
+end
+
+-- Drag and drop
+function processCursorMove(cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ)
+	if g_dragElement then
+		local distance = math.sqrt((absoluteX - g_dragPosition.x)^2 + (absoluteY - g_dragPosition.y)^2)
+		if distance > DRAG_CURSOR_MINIMAL_DISTANCE
+		then
+			selectElement(g_dragElement, MOUSE_SUBMODE)
+			g_dragPosition = { }
+			g_dragElement = nil
+		end
+	end
+end
+
+-- selects element mouse is pointing to, or drops selected element (cursor mode)
+function processCursorClick(button, state,cursorX, cursorY, worldX, worldY, worldZ, clickedElement)
+	local clickedGUI
+	if editor_gui then
+		clickedGUI = editor_gui.guiGetMouseOverElement()
+	end
+	
+	local key = mouseButtonToKeyName(button)
+	if ( clickedGUI ) or g_suspended or not g_enableWorld or not key then
+		return
+	end
+
+	local targetElement, targetX, targetY, targetZ = getTargetedElement(worldX, worldY, worldZ)
+	clickedElement = targetElement or clickedElement
+
+	if clickedElement then
+		-- get start point of vector
+		local camX, camY, camZ = getCameraMatrix()
+		-- get end point of vector
+		local hitX, hitY, hitZ = targetX, targetY, targetZ--worldX, worldY, worldZ
+		local distance = math.sqrt((hitX - camX)^2 + (hitY - camY)^2 + (hitZ - camZ)^2)
+		if (distance > g_maxSelectDistance) then
+			outputDebugString("Cannot select out of range element: " .. getElementType(clickedElement) .. " at distance: " .. distance)
+			clickedElement = nil
+		end
+	end
+
+	-- Save the current cursor coordinates to check if the player will try to drag
+	if state == "down" then
+		if clickedElement then
+			g_dragTimer = setTimer ( function()
+					g_dragPosition.x = cursorX
+					g_dragPosition.y = cursorY
+					g_dragElement = clickedElement
+				end,
+				DRAG_MINIMUM_CLICK_TIME,
+				1
+				)
+		else
+			g_dragElement = nil
+		end
+		return
+	end
+	for k,timer in ipairs(getTimers()) do
+		if timer == g_dragTimer then
+			killTimer ( timer )
+			g_dragTimer = nil
+			break
+		end
+	end
+	
+	g_dragElement = nil
+
+	local delay = getTickCount() - g_lastClick
+	local processDoubleClick = false
+	if key == cc.select_target_keyboard and
+	   delay < DOUBLE_CLICK_MAX_DELAY
+	then
+	  processDoubleClick = true
+	  g_lastClick = 0
+	end
+
+	if g_selectedElement then
+		if processDoubleClick then
+			g_lastClick = 0
+			editor_gui.openPropertiesBox(g_selectedElement)
+			return
+		else
+			--if an element is selected in freecam/cursor mode, just drop it
+			g_lastClick = getTickCount()
+			if g_submode == MOUSE_SUBMODE then
+				dropElement(true,true) --Drop it, and stop here
+				return
+			end
+			dropElement(true,true) --If its not the selected element, drop it and continue
+		end
+	elseif processDoubleClick and clickedElement then
+	  selectElement(clickedElement, KEYBOARD_SUBMODE)
+	  editor_gui.openPropertiesBox(g_selectedElement)
+	  g_lastClick = 0
+	  return
+	end
+
+	-- attach clicked element
+	if clickedElement then
+		if (key == cc.select_target_mouse) then
+			selectElement(clickedElement, MOUSE_SUBMODE)
+			g_lastClick = 0
+		elseif (key == cc.select_target_keyboard) then
+			selectElement(clickedElement, KEYBOARD_SUBMODE)
+			g_lastClick = getTickCount()
+		else
+			g_lastClick = 0
+		end
+	else
+		g_submode = MOUSE_SUBMODE
+	end
+end
+
+function getCameraLine()
+	-- get start point of vector
+	 camX, camY, camZ, endX, endY, endZ = getCameraMatrix()
+	 
+	-- alter the vector length to fit the maximum distance
+	local distance = getDistanceBetweenPoints3D ( camX, camY, camZ, endX, endY, endZ )
+	targetX = camX + ((endX - camX)/distance) * g_maxSelectDistance
+	targetY = camY + ((endY - camY)/distance) * g_maxSelectDistance
+	targetZ = camZ + ((endZ - camZ)/distance) * g_maxSelectDistance	
+	
+	return camX, camY, camZ, endX, endY, endZ
+end
+
+function mouseButtonToKeyName( buttonName )
+	if buttonName == "left" then
+		return "mouse1"
+	elseif buttonName == "right" then
+		return "mouse2"
+	elseif buttonName == "middle" then
+		return "mouse3"
+	end
+end
+
+function disableGameHUD()
+	showPlayerHudComponent("area_name", false)
+	showPlayerHudComponent("armour", false)
+	showPlayerHudComponent("breath", false)
+	showPlayerHudComponent("clock", false)
+	showPlayerHudComponent("health", false)
+	showPlayerHudComponent("money", false)
+	showPlayerHudComponent("vehicle_name", false)
+	showPlayerHudComponent("weapon", false)
+end
+
+-- PUBLIC
+function selectElement(element, submode, shortcut)
+	local openProperties
+	submode = submode or g_submode
+	
+	if g_selectedElement then
+		dropElement(true)
+	end
+	
+	assert(isElement(element), "Invalid element")
+
+		-- check the editing lock
+	local locked = getElementData(element, "me:locked")
+	if locked and locked ~= localPlayer then
+		assert(isElement(locked), "Bad lock owner ["..tostring(locked).."] for element: "..getElementType(element))
+		outputChatBox("Cannot select element, it is being controlled by " .. getPlayerName(locked))
+		return false
+	end
+
+	-- check if the element is, or is part of, an EDF element
+	local element = edf.edfGetAncestor(element)
+	local handle  = edf.edfGetHandle(element)
+	
+	if not handle then
+		if attachable[getElementType(element)] then
+			handle = element
+		else
+			handle = nil
+		end
+	end
+	
+	assert(handle == nil or isElement(handle), "Bad handle ["..tostring(handle).."] for element: "..getElementType(element))
+	
+	-- temporarily disable collisions for all parts
+	setRepresentationCollisionsEnabled(element, false)
+	
+	-- if we can position this element, grab it and add the markers
+	if handle then
+		local move_resource
+		if (submode == MOUSE_SUBMODE) then
+			if (g_mode == CAMERA_MODE) then
+				move_resource = move_freecam
+			elseif (g_mode == CURSOR_MODE) then
+				move_resource = move_cursor
+			end
+		elseif (submode == KEYBOARD_SUBMODE) then
+			move_resource = move_keyboard
+		else
+			error("Element selection submode is invalid",2)
+		end
+		
+		assert(move_resource.attachElement(handle), "move resource call failed when attaching element: " .. tostring(getElementType(element)))
+	end
+	
+	g_submode = submode
+	g_selectedPart = handle
+	g_selectedElement = element
+	
+	if handle then
+		--create the editor blip and keyboard arrow pointing to the handle
+		g_editorBlip = createBlipAttachedTo(handle, 0, 2, 255, 255, 0, 255)
+		if (submode == KEYBOARD_SUBMODE) then
+			createArrowMarker(handle)
+		end
+	else
+		editor_gui.openPropertiesBox( element, false, shortcut )
+		openProperties = true
+	end
+	
+	triggerServerEvent("doLockElement", element)
+	
+	-- trigger client and server selection events
+	triggerEvent("onClientElementSelect", element)
+	triggerServerEvent("onElementSelect", element)
+	
+	--Emulate a fake mouse  move to get the element to position properly
+	-- if not openProperties then
+		-- local cursorX, cursorY = 0.5,0.5
+		-- local absoluteX = math.ceil(g_screenX*cursorX)
+		-- local absoluteY = math.ceil(g_screenY*cursorY)		
+		-- worldX, worldY, worldZ = getWorldFromScreenPosition ( absoluteX, absoluteY, 100 )
+		-- triggerEvent ( "onClientCursorMove", root, cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ )
+	-- end
+	
+	if ( shortcut ) then
+		if not openProperties then 
+			editor_gui.openPropertiesBox( element, false, shortcut ) 
+		end
+	end
+
+	outputDebugString("Attached element: " .. getElementType(element))
+	return true
+end
+
+function dropElement(releaseLock,clonedrop)
+	if not g_selectedElement then
+		return false
+	end
+
+	if releaseLock ~= false then
+		releaseLock = true
+	end
+
+	-- re-enable collisions for all parts
+	setRepresentationCollisionsEnabled(g_selectedElement, true)
+
+	if g_selectedPart then
+		local move_resource
+		if (g_submode == MOUSE_SUBMODE) then
+			if (g_mode == CAMERA_MODE) then
+				move_resource = move_freecam
+			elseif (g_mode == CURSOR_MODE) then
+				move_resource = move_cursor
+			end
+		elseif (g_submode == KEYBOARD_SUBMODE) then
+			move_resource = move_keyboard
+		end
+		
+		assert(move_resource.detachElement(), "move resource call failed when detaching element: " .. tostring(getElementType(g_selectedElement)))
+		
+		--destroy the editor blip and keyboard arrow pointing to the handle
+		destroyElement(g_editorBlip)
+		if (g_submode == KEYBOARD_SUBMODE) then
+			showGridlines ( false )
+			destroyElement(g_arrowMarker)
+			g_arrowMarker = nil
+		end
+	end
+
+	if releaseLock then
+		triggerServerEvent("doUnlockElement", g_selectedElement)
+	end
+
+	-- trigger client and server selection events
+	triggerEvent("onClientElementDrop", g_selectedElement)
+	triggerServerEvent("onElementDrop", g_selectedElement)
+
+	local droppedElement = g_selectedElement
+	g_selectedElement = false
+	g_selectedPart = false
+	
+	outputDebugString("Detached element.")
+	
+	if getKeyState(cc.clone_drop_modifier) and clonedrop then
+		return doCloneElement(droppedElement)
+	else
+		return true
+	end
+end
+
+-- sets the camera mode to cursor or freecam
+function setMode(newMode)
+	if g_suspended then
+		return
+	end
+	
+	if newMode == CAMERA_MODE then
+		if (g_selectedElement and g_submode == MOUSE_SUBMODE) then
+			move_cursor.detachElement()
+			showCursor(false)
+			move_freecam.attachElement(edf.edfGetHandle(g_selectedElement) or g_selectedElement)
+		else
+			showCursor(false)
+		end
+		
+		triggerEvent("onFreecamMode", root)
+		freecam.setFreecamEnabled(false, false, false, true)
+		
+		bindControl("select_target_mouse", "both", processFreecamClick)
+		bindControl("select_target_keyboard", "both", processFreecamClick)
+
+		if g_mode == CURSOR_MODE then
+			removeEventHandler("onClientCursorMove", root, processCursorMove)
+			removeEventHandler("onClientClick", root, processCursorClick)
+		end
+		
+		showCrosshair(true,true)
+		g_mode = newMode
+		
+		return true
+	elseif newMode == CURSOR_MODE then
+		if (g_selectedElement and g_submode == MOUSE_SUBMODE) then
+			move_freecam.detachElement()
+			showCursor(true)
+			move_cursor.attachElement(edf.edfGetHandle(g_selectedElement) or g_selectedElement)
+		else
+			showCursor(true)
+		end
+		
+		triggerEvent("onCursorMode", root)
+		freecam.setFreecamDisabled(true)
+		
+		addEventHandler("onClientCursorMove", root, processCursorMove)
+		addEventHandler("onClientClick", root, processCursorClick)
+		
+		if g_mode == CAMERA_MODE then
+			unbindControl("select_target_mouse", "both", processFreecamClick)
+			unbindControl("select_target_keyboard", "both", processFreecamClick)
+		end
+		
+		showCrosshair(false)
+		g_mode = newMode
+		
+		return true
+	else
+		error("Requested mode is invalid", 2)
+	end
+end
+
+-- sets the maximum distance at which an element can be selected
+function setMaxSelectDistance(distance)
+	assert((distance >= 0), "Distance must be a positive number")
+	g_maxSelectDistance = distance
+	return true
+end
+
+function getSelectedElement()
+	return g_selectedElement or false
+end
+
+function getMode()
+	return g_mode
+end
+
+function getSubmode()
+	return g_submode
+end
+
+function getMaxSelectDistance()
+	return g_maxSelectDistance
+end
+
+function destroySelectedElement()
+	if g_selectedElement then
+		local element = g_selectedElement
+		dropElement(false)
+		return triggerServerEvent("doDestroyElement", element)
+	end
+end
+
+function createElement_cmd(cmd, elementType, resourceName)
+	if elementType and resourceName then
+		doCreateElement(elementType, resourceName)
+	else
+		outputConsole("* Syntax: /"..cmd.." <type> <from-definition>")
+	end
+end
+
+function cloneSelectedElement()
+	if g_selectedElement then
+		if g_submode == KEYBOARD_SUBMODE then
+			outputChatBox ( "WARNING: The selected element has been cloned on top of itself.", 0, 255, 0 )
+		end
+		doCloneElement ( g_selectedElement, g_submode )
+	end
+end
+
+function showCrosshair(status,labelStatus)
+	g_showCrosshair = status
+	-- g_showLabels = labelStatus
+	return true
+end
+
+function getWorkingInterior()
+	return g_workingInterior
+end
+
+function setWorkingInterior( interior )
+	setCameraInterior( interior )
+	setElementInterior(getLocalPlayer(), interior)
+	g_workingInterior = interior
+	return true
+end
+
+function suspend(leavePlayersAttached)
+	outputDebugString("Suspending editor_main.")
+
+	local move_resource
+	if (g_submode == MOUSE_SUBMODE) then
+		if (g_mode == CAMERA_MODE) then
+			move_resource = move_freecam
+		elseif (g_mode == CURSOR_MODE) then
+			move_resource = move_cursor
+		end
+	elseif (g_submode == KEYBOARD_SUBMODE) then
+		move_resource = move_keyboard
+	end
+
+	move_resource.disable()
+	unbindInput(true)
+	triggerEvent("onEditorSuspended",root)
+	editor_gui.setGUIShowing(false)
+	showCrosshair(false,false)
+	
+	if (g_mode == CAMERA_MODE) then
+		triggerEvent("doSetFreecamDisabled", root, true)
+		unbindControl("select_target_mouse", "both", processFreecamClick)
+	elseif (mode == CURSOR_MODE) then
+		showCursor(false,false)
+	end
+	g_suspendedCamera = { getCameraMatrix() }
+	if not leavePlayersAttached then
+		attachPlayers(false)
+	end
+	g_suspended = true
+end
+
+function resume(dontEnableMove)
+	outputDebugString("Resuming editor_main.")
+	
+	local move_resource
+	if (g_submode == MOUSE_SUBMODE) then
+		if (g_mode == CAMERA_MODE) then
+			move_resource = move_freecam
+			bindControl("select_target_mouse", "both", processFreecamClick)
+			bindControl("select_target_keyboard", "both", processFreecamClick)
+		elseif (g_mode == CURSOR_MODE) then
+			move_resource = move_cursor
+		end
+	elseif (g_submode == KEYBOARD_SUBMODE) then
+		move_resource = move_keyboard
+	end
+	
+	if not dontEnableMove then
+		move_resource.enable()
+	end
+	bindInput(true)
+	triggerEvent("onEditorResumed",root)
+	editor_gui.setGUIShowing(true)
+	
+	setElementInterior ( localPlayer, getWorkingInterior() )
+	setCameraInterior ( getWorkingInterior() )
+	setCameraMatrix ( unpack(g_suspendedCamera) )
+	
+	if (g_mode == CAMERA_MODE) then
+		triggerEvent("doSetFreecamEnabled", root, false, false, false, true)
+		showCrosshair(true,true)
+	elseif (g_mode == CURSOR_MODE) then
+		showCursor(true)
+		showCrosshair(false,true)
+	end
+	attachPlayers(true)
+	g_suspended = false
+end
+
+function bindInput(commandsOnly)
+	addCommandHandler("clone", cloneSelectedElement)
+	addCommandHandler("create", createElement_cmd)
+	addCommandHandler("destroy", destroySelectedElement)
+	addCommandHandler("delete", destroySelectedElement)
+	if ( commandsOnly ) then
+		return true
+	end
+	
+	bindControl("toggle_cursor", "down", toggleMode)
+	bindControl("pickup_selected_element", "down", pickupSelectedElement)
+	bindControl("destroy_selected_element", "down", destroySelectedElement)
+	bindControl("clone_selected_element", "down", cloneSelectedElement)
+	bindControl("drop_selected_element", "down", dropElement)
+	bindControl("undo", "down", keyboardUndo)
+	bindControl("redo", "down", keyboardRedo)
+	bindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
+end
+
+function unbindInput(commandsOnly)
+	removeCommandHandler("clone", cloneSelectedElement)
+	removeCommandHandler("create", createElement_cmd)
+	removeCommandHandler("destroy", destroySelectedElement)
+	removeCommandHandler("delete", destroySelectedElement)
+
+	if ( commandsOnly ) then
+		return true
+	end
+	unbindControl("toggle_cursor", "down", toggleMode)
+	unbindControl("pickup_selected_element", "down", pickupSelectedElement)
+	unbindControl("destroy_selected_element", "down", destroySelectedElement)
+	unbindControl("clone_selected_element", "down", cloneSelectedElement)
+	unbindControl("drop_selected_element", "down", dropElement)
+	unbindControl("undo", "down", keyboardUndo)
+	unbindControl("redo", "down", keyboardRedo)
+	unbindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
+end
+
+-- get the point and element targeted by the camera
+function processCameraLineOfSight()
+	local camX, camY, camZ, endX, endY, endZ = getCameraLine()
+	
+	-- get collision point on the line
+	local surfaceFound, targetX, targetY, targetZ, targetElement =
+		processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer)
+
+	-- if there is none, use the end point of the vector as the collision point
+	if not surfaceFound then
+	    targetX, targetY, targetZ = endX, endY, endZ
+	end
+	
+	return targetX, targetY, targetZ, targetElement
+end
+
+-- get the point and element targeted by the cursor
+function processCursorLineOfSight()
+	-- get start point of vector
+	local camX, camY, camZ = getCameraMatrix()
+	
+	--! getCursorPosition is innacurate, so we get the coordinates from the click event
+	local cursorX, cursorY, endX, endY, endZ = getCursorPosition()
+	
+	local surfaceFound, targetX, targetY, targetZ, targetElement =
+		processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer)
+
+	-- if there is none, use the end point of the vector as the collision point
+	if not surfaceFound then
+	    targetX, targetY, targetZ = endX, endY, endZ
+	end
+	
+	return targetX, targetY, targetZ, targetElement
+end
+
+function setWorldClickEnabled ( bool )
+	g_enableWorld = bool
+	return true
+end
+
+function toggleEditorKeys ( bool )
+	if bool then
+		bindControl("toggle_cursor", "down", toggleMode) --possibly add a check to check if its already bound
+	else
+		unbindControl("toggle_cursor", "down", toggleMode) --possibly add a check to check if its already bound
+	end
+end
+
+function enableMouseOver ( bool )
+	g_mouseOver = bool
+	return
+end
+
+function updateArrowMarker( element )
+	if not g_arrowMarker then return end
+
+	local element = element or g_selectedElement
+	if not element then return end
+
+	local radius = edf.edfGetElementRadius(element) or 1
+	
+	local offsetZ = radius + 1
+	local markerSize = math.max(g_arrowMarkerMinSize,g_arrowMarkerSizeRatio*radius)
+	
+	if isElementAttached(g_arrowMarker) then
+		detachElements(g_arrowMarker, getElementAttachedTo(g_arrowMarker))
+	end
+	setMarkerSize(g_arrowMarker, markerSize)
+	attachElements(g_arrowMarker, element, 0, 0, offsetZ)
+	showGridlines ( element )
+end
+
+function createArrowMarker( handle )
+	if not handle or not isElement(handle) then return end
+
+	if g_arrowMarker then destroyElement(g_arrowMarker) end
+
+	g_arrowMarker = createMarker(0, 0, 0, "arrow", .5, 255, 255, 0, 255)
+	setElementDimension(g_arrowMarker, getWorkingDimension())
+	updateArrowMarker( handle )
+end
+
+function setMovementType( movementType )
+	if g_arrowMarker then
+		if movementType == "move" then
+			setMarkerColor(g_arrowMarker, 255, 255, 0)
+		elseif movementType == "rotate" then
+			setMarkerColor(g_arrowMarker, 0, 255, 0)
+		end
+	end
+end
+
+function toggleSensitivityMode ()
+	g_sensitivityMode = not g_sensitivityMode
+	--Only with objects for now
+	for i,element in ipairs(getElementsByType"object") do
+		if isElementStreamedIn(element) then
+			g_colless[element] = g_sensitivityMode or nil
+		end
+	end
+	if g_sensitivityMode then
+		addEventHandler ( "onClientElementStreamIn", root, streamInCollessObjects )
+		addEventHandler ( "onClientElementStreamOut", root, streamOutCollessObjects )
+	else
+		removeEventHandler ( "onClientElementStreamIn", root, streamInCollessObjects )
+		removeEventHandler ( "onClientElementStreamOut", root, streamOutCollessObjects )
+	end
+end
+
+function streamInCollessObjects()
+	if getElementType(source) == "object" then
+		g_colless[source] = true
+	end
+end
+
+function streamOutCollessObjects()
+	if getElementType(source) == "object" then
+		g_colless[source] = nil
+	end
+end
