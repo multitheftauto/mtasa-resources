@@ -1,0 +1,9 @@
+<meta>
+	<script src="script.lua" type="client"/>
+	<file src="images\error.png" />
+	<file src="images\info.png" />
+	<file src="images\question.png" />
+	<file src="images\warning.png" />
+
+	<export function="guiShowMessageBox" type="client"/>
+</meta>

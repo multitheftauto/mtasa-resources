@@ -1,0 +1,17 @@
+<meta>
+	<script src="move_freecam.lua" type="client" />
+	<script src="controlinterface.lua" type="client"/>
+
+	<!-- client functions -->
+	<export function="attachElement" type="client" />
+	<export function="detachElement" type="client" />
+	<export function="setMaxMoveDistance" type="client" />
+	<export function="setRotateSpeeds" type="client" />
+	<export function="setZoomSpeeds" type="client" />
+	<export function="getAttachedElement" type="client" />
+	<export function="getMaxMoveDistance" type="client" />
+	<export function="getRotateSpeeds" type="client" />
+	<export function="getZoomSpeeds" type="client" />
+	<export function="enable" type="client" />
+	<export function="disable" type="client" />
+</meta>

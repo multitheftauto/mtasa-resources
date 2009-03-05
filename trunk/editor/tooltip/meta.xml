@@ -1,0 +1,19 @@
+<meta>
+	<info author="MTA Map editor team" type="script" version="0.1" />
+
+	<script src="tooltip.lua" type="client" />
+	<export function="Create" type="client" />
+	<export function="FadeIn" type="client" />
+	<export function="FadeOut" type="client" />
+	<export function="GetState" type="client" />
+	<export function="SetPosition" type="client" />
+	<export function="GetPosition" type="client" />
+	<export function="SetText" type="client" />
+	<export function="GetText" type="client" />
+	<export function="SetForegroundColor" type="client" />
+	<export function="GetForegroundColor" type="client" />
+	<export function="SetBackgroundColor" type="client" />
+	<export function="GetBackgroundColor" type="client" />
+	<export function="SetBorderColor" type="client" />
+	<export function="GetBorderColor" type="client" />
+</meta>
