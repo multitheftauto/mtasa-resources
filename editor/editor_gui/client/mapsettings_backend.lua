@@ -1,7 +1,7 @@
 --store defaults
 local MINUTE_DURATION = 2147483647
 local SET_TIME_TIMER
-local previousEnvironment = {}
+local previousEnvironment,radioWeather = {}
 currentMapSettings = {}
 local mapSettingFunctionsGet = {}
 local mapSettingFunctionsSet = {}
@@ -70,6 +70,7 @@ function storeOldMapSettings()
 	for i,setting in ipairs(mapSettingChangeHandled) do
 		previousEnvironment[setting] = mapsettings[setting]:getValue()
 	end
+	radioPresetWeather = guiRadioButtonGetSelected ( mapsettings.radioPreset )
 end
 
 function undoEnvironment()
@@ -87,6 +88,8 @@ function undoEnvironment()
 			mapsettings[control]:setValue(previousEnvironment[control])
 		end
 	end
+	guiRadioButtonSetSelected ( mapsettings.radioPreset, radioPresetWeather )
+	mapsettings_radioChange ()
 end
 
 
