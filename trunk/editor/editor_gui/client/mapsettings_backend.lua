@@ -1,7 +1,7 @@
 --store defaults
 local MINUTE_DURATION = 2147483647
 local SET_TIME_TIMER
-
+local previousEnvironment = {}
 currentMapSettings = {}
 local mapSettingFunctionsGet = {}
 local mapSettingFunctionsSet = {}
@@ -27,6 +27,67 @@ mapSettingSpecial = {
 ["rowData"] = "",
 ["weather"] = "weather",
 }
+local mapSettingChangeHandled = { --Ones that change live
+	"customWeather",
+	"weather",
+	"timeHour",
+	"timeMinute",
+	"waveheight",
+}
+
+local function deepTableEqual(table1, table2)
+	--compare table1 keys with table2's, mark the ones we compare
+	local checked = {}
+	for k, v in pairs(table1) do
+		if type(v) == "table" then
+			if type(table2[k]) == "table" then
+				local result = deepTableEqual(v, table2[k])
+				if not result then
+					return false
+				end
+			else
+				return false
+			end
+		else
+			if v ~= table2[k] then
+				return false
+			end
+		end
+		checked[k] = true
+	end
+	--if one key in table2 was not checked, table2 has more keys than table1
+	for k in pairs(table2) do
+		if not checked[k] then
+			return false
+		end
+	end
+	
+	return true
+end
+
+function storeOldMapSettings()
+	previousEnvironment = {}
+	for i,setting in ipairs(mapSettingChangeHandled) do
+		previousEnvironment[setting] = mapsettings[setting]:getValue()
+	end
+end
+
+function undoEnvironment()
+	for k,control in ipairs(mapSettingChangeHandled) do
+		local value = mapsettings[control]:getValue()
+		local modified = false
+
+		if type(value) ~= "table" then
+			modified = (value ~= previousEnvironment[control])
+		else
+			modified = not deepTableEqual(value, previousEnvironment[control])
+		end
+
+		if modified then
+			mapsettings[control]:setValue(previousEnvironment[control])
+		end
+	end
+end
 
 
 addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
