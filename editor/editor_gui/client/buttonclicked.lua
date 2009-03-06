@@ -108,6 +108,7 @@ topMenuClicked["map settings"] = function ()
 		valueWidget:destroy()
 		valueWidget = nil
 	end
+	storeOldMapSettings()
 	toggleSettingsGUI(false)
 	addEventHandler ( "onClientGUIMouseDown", mapsettings.settingsList, settingsListMouseDown )
 	mapsettings.rowValues = copyTable ( mapsettings.gamemodeSettings )

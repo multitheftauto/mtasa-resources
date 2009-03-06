@@ -44,16 +44,20 @@ function createMapSettings()
 	guiCreateMinimalLabel ( 0.02, 0.06, "Time:", true, mapsettings.environmentTab )
 	mapsettings.timeHour = editingControl.natural:create{["x"]=0.08,["y"]=0.04,["width"]=0.07,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["maxLength"]=2,["max"]=23}
 	mapsettings.timeMinute = editingControl.natural:create{["x"]=0.16,["y"]=0.04,["width"]=0.07,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["maxLength"]=2,["max"]=59}
-	
+	local function handlerSetTime() if mapsettings.timeHour:getValue() and mapsettings.timeMinute:getValue() then setTime(mapsettings.timeHour:getValue(),mapsettings.timeMinute:getValue()) end end
+	mapsettings.timeHour:addChangeHandler(handlerSetTime)
+	mapsettings.timeMinute:addChangeHandler(handlerSetTime)
 	--
 	guiCreateMinimalLabel ( 0.02, 0.2, "Weather:", true, mapsettings.environmentTab )
 	mapsettings.radioPreset = guiCreateRadioButton ( 0.12, 0.2, 0.1, 0.06, "Preset", true, mapsettings.environmentTab )
 	guiRadioButtonSetSelected ( mapsettings.radioPreset, true )
 	addEventHandler ( "onClientGUIMouseDown", mapsettings.radioPreset, mapsettings_radioChange )
 	mapsettings.weather = editingControl.dropdown:create{["x"]=0.25,["y"]=0.2,["width"]=0.45,["height"]=0.07,["dropWidth"]=0.45,["dropHeight"]=0.8,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true,["maxLength"]=3,["rows"]=weather}
+	mapsettings.weather:addChangeHandler(function(self) if self:getRow() then setWeather(self:getRow() - 1) end end )
 	--
 	mapsettings.radioCustom = guiCreateRadioButton ( 0.12, 0.32, 0.1, 0.06, "Custom", true, mapsettings.environmentTab )
 	mapsettings.customWeather = editingControl.natural:create{["x"]=0.25,["y"]=0.32,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true,["max"]=255,["enabled"]=false}
+	mapsettings.customWeather:addChangeHandler(function(self) local value = self:getValue() or 0 setWeather(value) end )
 	addEventHandler ( "onClientGUIMouseDown", mapsettings.radioCustom, mapsettings_radioChange )
 	--
 	guiCreateMinimalLabel ( 0.02, 0.5, "Gamespeed:", true, mapsettings.environmentTab )
@@ -64,6 +68,7 @@ function createMapSettings()
 	
 	guiCreateMinimalLabel ( 0.02, 0.86, "Wave Height:", true, mapsettings.environmentTab )
 	mapsettings.waveheight = editingControl.natural:create{["x"]=0.16,["y"]=0.82,["width"]=0.1,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3}
+	mapsettings.waveheight:addChangeHandler(function(self) if self:getValue() then setWaveHeight(self:getValue()) end end )
 	
 	guiCreateMinimalLabel ( 0.35, 0.5, "Minimum players:", true, mapsettings.environmentTab )
 	mapsettings.minPlayers = editingControl.number:create{["x"]=0.52,["y"]=0.48,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3,["max"]=128}
@@ -147,6 +152,7 @@ end
 ------OK and Cancel clicking
 
 function cancelMapSettings ()
+	undoEnvironment()
 	guiGridListSetSelectedItem ( mapsettings.settingsList, -1, -1 )
 	removeEventHandler ( "onClientGUIMouseDown", mapsettings.settingsList, settingsListMouseDown )
 	guiSetVisible ( mapsettings.window, false )
@@ -228,8 +234,10 @@ function mapsettings_radioChange ()
 	if guiRadioButtonGetSelected ( mapsettings.radioPreset ) then
 		mapsettings.weather:enable()
 		mapsettings.customWeather:disable()
+		if mapsettings.weather:getRow() then setWeather(mapsettings.weather:getRow() - 1) end
 	else
 		mapsettings.weather:disable()
 		mapsettings.customWeather:enable()
+		if mapsettings.customWeather:getValue() then setWeather(mapsettings.customWeather:getValue()) end
 	end
 end
