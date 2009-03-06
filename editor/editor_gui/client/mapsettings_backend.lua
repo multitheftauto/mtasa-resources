@@ -38,7 +38,6 @@ addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResourc
 addEvent ( "syncMapSettings",true)
 addEventHandler ( "syncMapSettings", getRootElement(), 
 function ( newMapSettings )
-	--outputChatBox ( "Map settings synced to local client from server" )
 	currentMapSettings = newMapSettings
 	freezeTime ( true, currentMapSettings.timeHour, currentMapSettings.timeMinute )
 	setWeather ( currentMapSettings.weather )
@@ -86,7 +85,6 @@ end
 function dumpMapSettings()
 	--first we dump the settings
 	for k,gui in pairs(mapSettingTypes) do
-		-- outputChatBox ( "GUI: "..tostring(gui) )
 		currentMapSettings[gui] = mapsettings[gui]:getValue()
 	end
 	--these are special
@@ -111,7 +109,6 @@ function setMapSettings()
 		end
 		--[[
 		if mapSettingAction[gui] then 
-			-- outputChatBox ( "Action: "..tostring(gui) )
 			mapSettingAction[gui]() 
 		end
 		]]

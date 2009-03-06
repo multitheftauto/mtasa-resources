@@ -38,7 +38,7 @@ local mapSettingAction = {
 
 function doSaveNewMapSettings( newMapSettings, hidden )
 	if not hidden then
-		outputChatBox ( getPlayerName(client).." updated the map settings.", rootElement, 255, 255, 0 )
+		editor_gui.outputMessage ( getPlayerName(client).." updated the map settings.", rootElement, 255, 255, 0 )
 	end
 	currentMapSettings = newMapSettings
 	for setting, value in pairs(currentMapSettings) do

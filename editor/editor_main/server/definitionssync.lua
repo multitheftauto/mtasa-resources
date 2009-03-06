@@ -89,7 +89,7 @@ addEventHandler ( "onResourceStart", thisResourceRoot,
 addEvent ( "reloadEDFDefinitions", true )
 addEventHandler ( "reloadEDFDefinitions",rootElement,
 function(newEDF)
-	outputChatBox ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
+	editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
 	loadedDefs = edf.edfGetLoadedEDFResources()
 	--load new defs
 	for k,resourceName in pairs(newEDF.addedEDF) do

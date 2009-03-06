@@ -100,17 +100,14 @@ function currentBrowser.update(elementArray)
 				local k = #dropdownArray + 1
 				dropdownArray[k] = friendlyName 
 				if nameTable[elementName] ~= nil then
-					--outputChatBox '3'
 					--since we found another element with the same name, set the old name to element [resource]
 					local oldRow = nameTable[elementName]["row"]
 					local oldFriendlyName = nameTable[elementName]["friendlyName"]
 					local oldResource = nameTable[elementName]["resource"]
 					local text = oldFriendlyName.." ["..oldResource.."]"
-					--outputChatBox '4'
 					dropdownArray[oldRow] = text
 					--set the current one with name [resource] too.
 					local newText = friendlyName.." ["..resource.."]"
-					-- outputChatBox ( friendlyName.." ["..resource.."]" )
 					dropdownArray[k] = newText
 				end	
 				elementList[k] = {}
@@ -230,7 +227,6 @@ end
 addEventHandler ( "onClientGUIChanged", rootElement, currentBrowser.searchChanged )
 
 function currentBrowser.prepareSearch()
-	--outputChatBox "searching"
 	local query = guiGetText ( currentBrowserGUI.search ) --get the query
 	local cellrow = currentBrowser.dropdownSelect
 	if cellrow == -0 then cellrow = 1 end
@@ -260,13 +256,9 @@ function currentBrowser.prepareSearch()
 			for k,v in pairs(elemTable) do
 				table.insert ( search, v )
 			end
-			--outputChatBox ( "results "..tostring(elementType)..": "..tostring(#search ) )
 		end
-		--outputChatBox ( "results0: "..tostring(#search ) )
 		search = setTableElementIDs(search)
-		--outputChatBox ( "results1: "..tostring(#search ) )
 		search = applySearch ( search, query )
-		--outputChatBox ( "results2: "..tostring(#search ) )
 		currentBrowserGUI.gridlist:setRows(search)
 	end
 end

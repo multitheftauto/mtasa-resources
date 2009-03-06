@@ -743,7 +743,7 @@ function selectElement(element, submode, shortcut)
 	local locked = getElementData(element, "me:locked")
 	if locked and locked ~= localPlayer then
 		assert(isElement(locked), "Bad lock owner ["..tostring(locked).."] for element: "..getElementType(element))
-		outputChatBox("Cannot select element, it is being controlled by " .. getPlayerName(locked))
+		editor_gui.outputMessage("Cannot select element, it is being controlled by " .. getPlayerName(locked), 255,255,255)
 		return false
 	end
 
@@ -979,7 +979,7 @@ end
 function cloneSelectedElement()
 	if g_selectedElement then
 		if g_submode == KEYBOARD_SUBMODE then
-			outputChatBox ( "WARNING: The selected element has been cloned on top of itself.", 0, 255, 0 )
+			editor_gui.outputMessage ( "WARNING: The selected element has been cloned on top of itself.", 255, 130, 0 )
 		end
 		doCloneElement ( g_selectedElement, g_submode )
 	end

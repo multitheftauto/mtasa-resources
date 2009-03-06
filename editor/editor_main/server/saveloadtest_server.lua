@@ -34,7 +34,7 @@ addEventHandler ( "onResourceStop", thisResourceRoot,
 ---
 addEventHandler("newResource", rootElement,
 	function()
-		outputChatBox (getPlayerName(client).." started a new map.", root,255,0,0)
+		editor_gui.outputMessage (getPlayerName(client).." started a new map.", root,255,0,0)
 		if ( loadedMap ) then
 			local currentMap = getResourceFromName ( loadedMap )
 			stopResource ( currentMap )
@@ -89,7 +89,7 @@ addEventHandler ( "openResource", rootElement,
 			loadedMap = resourceName 
 			passNewMapSettings()
 			returnValue = true
-			outputChatBox ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
+			editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
 		else
 			returnValue = false
 		end
@@ -151,7 +151,7 @@ function saveResource ( resourceName, test )
 	if ( test ) then return returnValue end
 	if returnValue then
 		loadedMap = resourceName
-		outputChatBox (getPlayerName(source).." saved to map resource \""..resourceName.."\".", root,255,0,0)
+		editor_gui.outputMessage (getPlayerName(source).." saved to map resource \""..resourceName.."\".", root,255,0,0)
 	end
 	triggerClientEvent ( client, "saveloadtest_return", client, "save", returnValue, resourceName )
 	return returnValue
@@ -185,7 +185,7 @@ function quickSave(saveAs)
 		local metaNode = xmlLoadFile ( "meta.xml",resource )
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
 		xmlUnloadFile ( metaNode )
-		outputChatBox (getPlayerName(client).." saved the map.", root,255,0,0)
+		editor_gui.outputMessage (getPlayerName(client).." saved the map.", root,255,0,0)
 		if saveAs then
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", true )
 		end

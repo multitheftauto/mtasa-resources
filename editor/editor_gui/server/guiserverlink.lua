@@ -37,3 +37,8 @@ function loadsave_getResources ( dialog, player )
 end
 addEventHandler ( "loadsave_getResources", getRootElement(), loadsave_getResources )
 
+
+function outputMessage ( text, player, r, g, b, time )
+	player = player or getRootElement()
+	return triggerClientEvent ( player, "doOutputMessage", player, text, r, g, b, time )
+end
