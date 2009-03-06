@@ -77,7 +77,7 @@ function loadXMLControls()
 		controlsXML = createDefaultXML() 
 	end
 	if not controlsXML then
-		outputChatBox ( "Error: Controls could not be loaded", 255,0,0 )
+		editor_gui.outputMessage( "Error: Controls could not be loaded", 255,0,0 )
 		return
 	end
 	--

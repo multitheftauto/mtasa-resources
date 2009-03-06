@@ -91,7 +91,6 @@ end
 addEvent ("syncEDFDefinitions",true)
 addEventHandler ( "syncEDFDefinitions", getRootElement(), 
 function ( newEDF )
-	--outputChatBox ( "Map settings synced to local client from server" )
 	allEDF = newEDF
 	setEDF("availEDF")
 	setEDF("addedEDF")

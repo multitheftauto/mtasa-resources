@@ -37,11 +37,14 @@
 	<script src="client/vehicleupgrades.lua" type="client"/>
 	<script src="client/tutorialfunctions.lua" type="client"/>
 	<script src="client/tutorialdefinition.lua" type="client"/>
+	<script src="client/outputmessage.lua" type="client"/>
 	<script src="client/welcome.lua" type="client"/>
 	<script src="client/getCameraRotation.lua" type="client" validate="false"/>
 	<!--serverside exports-->
 	<export function="loadsave_getResources" type="server"/>
+	<export function="outputMessage" type="server"/>
 	<!--clientside exports-->
+	<export function="outputMessage" type="client"/>
 	<export function="setGUIShowing" type="client"/>
 	<export function="setHUDAlpha" type="client"/>
 	<export function="guiGetMouseOverElement" type="client"/>

@@ -209,7 +209,6 @@ function confirmMapSettings ()
 	currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
 	dumpMapSettings()
 	setMapSettings()
-	--outputChatBox ( "Attempting to sync map settings with server" )
 	triggerServerEvent ( "doSaveMapSettings", getLocalPlayer(), currentMapSettings )
 	setGUIShowing(true)
 	guiSetInputEnabled ( false )

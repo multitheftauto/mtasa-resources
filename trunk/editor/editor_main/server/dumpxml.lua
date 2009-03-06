@@ -138,7 +138,6 @@ function dumpMeta ( xml, extraNodes, resource, filename )
 		for key,attr in ipairs(files) do
 			local fileNode = xmlCreateChild(xml,fileType)
 			for attributeName,attributeValue in orderedPairs(attr) do
-				--outputChatBox ( "<"..tostring(fileType)..">".." "..tostring(attributeName)..": "..tostring(attributeValue) )
 				xmlNodeSetAttribute(fileNode, attributeName, attributeValue)
 			end
 		end

@@ -71,7 +71,6 @@ function settingsListClicked()
 		if ( mapsettings.rowValues[previousRow] == "" or mapsettings.rowValues[previousRow] == nil ) and ( rowData[previousRow] ) and ( rowData[previousRow].default ) then 
 			mapsettings.rowValues[previousRow] = rowData[previousRow].default
 		end
-		--outputChatBox ( tostring(valueWidget:getValue()).." stored for "..tostring(rowData[previousRow].internalName) )
 	end
 	if data then
 		toggleSettingsGUI(true)
@@ -130,7 +129,6 @@ function toggleSettingsGUI(bool)
 				if ( mapsettings.rowValues[previousRow] == "" or mapsettings.rowValues[previousRow] == nil ) and ( rowData[previousRow] ) and ( rowData[previousRow].default ) then 
 					mapsettings.rowValues[previousRow] = rowData[previousRow].default
 				end
-				--outputChatBox ( tostring(valueWidget:getValue()).." stored for "..tostring(rowData[previousRow].internalName) )
 			end
 		end
 	end
@@ -149,7 +147,6 @@ function applyGamemodeSettings()
 	if source == mapsettings.settingsList then return end
 	local row = guiGridListGetSelectedItem ( mapsettings.settingsList )
 	if row == -1 then return end
-	--outputChatBox ( tostring(valueWidget:getValue()).." stored for "..tostring(rowData[previousRow].internalName) )
 	mapsettings.rowValues[row] = valueWidget:getValue()
 	if ( mapsettings.rowValues[row] == "" or mapsettings.rowValues[row] == nil ) and ( rowData[row] ) and ( rowData[row].default ) then 
 		mapsettings.rowValues[row] = rowData[row].default

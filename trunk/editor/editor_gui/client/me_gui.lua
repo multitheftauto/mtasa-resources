@@ -154,7 +154,6 @@ function refreshElementIcons()
 			local iconDir = dataTable["icon"]
 			local friendlyName = dataTable["friendlyname"]
 			if friendlyName == nil then friendlyName = elementName end
-			--outputChatBox ( "Element name:"..tostring(elementName).." Friendly Name:"..tostring(friendlyName) )
 			local theIcon
 			local posX = ((k)*guiConfig.iconSize) + menuButtonsOffset
 			if not iconDir then --if edf never passed an icon

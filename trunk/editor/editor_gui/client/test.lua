@@ -131,8 +131,7 @@ end
 addEventHandler ("onClientResourceStart",getRootElement(),
 	function(resource)
 		if resource ~= getResourceFromName"freeroam" then return end
-		outputChatBox ( "Editor test mode enabled", 0, 255, 0 )
-		outputChatBox ( "Press F1 to show/hide controls", 0, 255, 0 )
+		outputMessage ( "Editor test mode enabled.  Press F1 to show/hide controls", 0, 180, 0, 7000 )
 		local button = freeroam.appendControl ( "wndMain", {"btn", text="Stop testing"})
 		addEventHandler ( "onClientGUIClick",button,stopTest, false )
 		local workingInterior = editor_main.getWorkingInterior()

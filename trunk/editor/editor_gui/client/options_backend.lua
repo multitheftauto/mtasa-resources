@@ -76,7 +76,7 @@ function loadXMLSettings()
 	settingsXML = xmlLoadFile ( "settings.xml" )
 	if not settingsXML then createSettingsXML() end
 	if not settingsXML then
-		outputChatBox ( "Map editor settings could not be created!.", 255,0,0 )
+		outputMessage ( "Map editor settings could not be created!.", 255,0,0 )
 		return
 	end
 	--
