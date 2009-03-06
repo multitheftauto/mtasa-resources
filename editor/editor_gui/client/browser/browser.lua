@@ -42,6 +42,7 @@ end
 
 function browser.initiate ( theType, initialCat, initialModel )
 	if not ( initialCat ) then initialCat = 1 end
+	browser.dropdownSelected  = initialCat
 	searchModel = initialModel
 	--note: mainElement is defined in preview element
 	if isElement ( mainElement ) then
@@ -259,8 +260,8 @@ function browser.searchClick()
 end
 
 function browser.dropdownSelect ( element )
-	if browserGUI.dropdown:getRow() ~= browser.dropdownSelect then
-		browser.dropdownSelect = browserGUI.dropdown:getRow()
+	if browserGUI.dropdown:getRow() ~= browser.dropdownSelected then
+		browser.dropdownSelected = browserGUI.dropdown:getRow()
 		browser.prepareSearch()
 	end
 end
