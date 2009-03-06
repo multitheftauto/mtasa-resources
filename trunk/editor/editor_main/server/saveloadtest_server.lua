@@ -1,5 +1,6 @@
 g_in_test = false
 local g_restoreEDF
+local thisRoot = getResourceRootElement(getThisResource())
 local root = getRootElement()
 local g_default_spawnmaponstart,g_default_spawnmapondeath,g_defaultwelcometextonstart,g_mapstophandled
 local restoreGUIOnMapStop, restoreGUIOnGamemodeMapStop, startGamemodeOnStop
@@ -257,6 +258,7 @@ function (gamemodeName)
 			end
 			g_in_test = "map"
 		end
+		setElementData ( thisRoot, "g_in_test", true )
 		set ( "*freeroam.welcometextonstart", "false" )
 		set ( "*freeroam.spawnmaponstart", "false" )
 	else
@@ -311,6 +313,7 @@ function restoreGUIOnMapStop()
 		g_restoreEDF = nil
 	end
 	triggerClientEvent ( getRootElement(), "resumeGUI", getRootElement() )
+	setElementData ( thisRoot, "g_in_test", nil )
 	removeEventHandler ( "onResourceStop", source, restoreGUIOnMapStop )
 end
 
@@ -319,6 +322,7 @@ function restoreGUIOnGamemodeMapStop(gamemode)
 		startResource ( gamemode,false,false,true,false,false,false,false,false,true)
 	end
 	triggerClientEvent ( getRootElement(), "resumeGUI", getRootElement() )
+	setElementData ( thisRoot, "g_in_test", nil )
 	removeEventHandler ( "onGamemodeMapStop", root, restoreGUIOnGamemodeMapStop )
 	g_mapstophandled = nil
 end

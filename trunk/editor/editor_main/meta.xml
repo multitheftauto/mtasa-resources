@@ -69,6 +69,7 @@
 	<script src="server/undoredo_move.lua" type="server"/>
 
 	<!-- exported client functions -->
+	<export function="startEditor" type="client"/>
 	<export function="selectElement" type="client"/>
 	<export function="dropElement" type="client"/>
 	<export function="cloneSelectedElement" type="client"/>
