@@ -5,8 +5,6 @@
 	<script src="mapmanager_exports.lua"/>
 	<script src="mapmanager_http.lua"/>
 	
-	<script src="mapmanager_client.lua" type="client"/>
-	
 	<settings>
 		<setting name="*ASE" value="[true]"/>
 		<setting name="*messages" value="[true]"/>

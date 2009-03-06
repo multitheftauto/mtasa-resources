@@ -335,8 +335,6 @@ function doesMapSupportPlayerCount( map )
 	return true
 end
 
-local hr, mn
-
 local settingApplier = {
 	gamespeed = function(value) setGameSpeed(tonumber(value)) end,
 	gravity = function(value) setGravity(tonumber(value)) end,
@@ -346,6 +344,7 @@ local settingApplier = {
 		mn = tonumber(splitString[2]) or 0
 		setTime(hr, mn)
 	end,
+	locked_time = function(value) if value then setMinuteDuration(2147483647) else setMinuteDuration(1000) end end,
 	weather = function(value) setWeather(tonumber(value)) end,
 	waveheight = function(value) setWaveHeight(tonumber(value)) end,
 }
@@ -353,30 +352,15 @@ local settingApplier = {
 local defaultSettings = {
 	gamespeed = 1,
 	gravity = 0.008,
+	locked_time = false,
 	time = "12:00",
 	weather = 0,
 	waveheight = 0,
 }
 
-function freezeTimeOnJoin()
-	triggerClientEvent(source, "mm.doFreezeTime", source, hr, mn)
-end
-
-function removeTimeFreeze()
-	local hr, mn = getTime()
-	triggerClientEvent(rootElement, "mm.doUnfreezeTime", rootElement, hr, mn)
-	removeEventHandler("onPlayerJoin", rootElement, freezeTimeOnJoin)
-end
-addEventHandler("onGamemodeMapStop", rootElement, removeTimeFreeze)
-
 function applyMapSettings( map )
 	local mapSettingsGroup = getResourceName(map).."."
 	for setting, defaultValue in pairs(defaultSettings) do
 		settingApplier[setting](get(mapSettingsGroup..setting) or defaultValue)
-	end
-	
-	if get(mapSettingsGroup.."locked_time") then
-		triggerClientEvent(rootElement, "mm.doFreezeTime", rootElement, hr, mn)
-		addEventHandler("onPlayerJoin", rootElement, freezeTimeOnJoin)
 	end
 end
