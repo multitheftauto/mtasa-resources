@@ -90,7 +90,7 @@ function copyResourceFiles ( fromResource, targetResource )
 		for j,filePath in ipairs(paths) do
 			fileCopy ( filePath, fromResource, filePath, targetResource )
 			local data = attr[filePath]
-			data.src = targetPath
+			data.src = filePath
 			table.insert ( targetPaths[fileType], data )
 		end
 	end
