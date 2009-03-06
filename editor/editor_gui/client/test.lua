@@ -17,7 +17,12 @@ function createTestDialog()
 	addEventHandler ( "onClientGUIClick",testDialog.cancel,testHideDialog,false )
 	addEventHandler ( "onClientGUIClick",testDialog.test,testStart,false )
 	--
-	bindControl ( "toggle_test", "down", quickTest )
+	if getElementData ( localPlayer, "waitingToStart" ) then
+		bindControl ( "toggle_test", "down", stopTest )
+		addCommandHandler ( "stoptest", stopTest )
+	else
+		bindControl ( "toggle_test", "down", quickTest )
+	end
 end
 
 function quickTest()
@@ -77,6 +82,12 @@ addEventHandler("suspendGUI",getRootElement(),
 
 addEvent ( "resumeGUI", true )
 function resumeGUI ()
+	if getElementData ( localPlayer, "waitingToStart" ) then
+		setElementData ( localPlayer, "waitingToStart", false, nil )
+		editor_main.startEditor()
+		setGUIShowing(true)
+		return
+	end
 	freezeTime ( true, currentMapSettings.timeHour, currentMapSettings.timeMinute )
 	setWeather ( currentMapSettings.weather )
 	setElementDimension ( localPlayer, editor_main.getWorkingDimension() )

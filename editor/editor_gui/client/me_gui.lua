@@ -1,6 +1,7 @@
 enableSound = true --this enables or disables sound.  For the options menu
 isCurrentButtonElement = false --this checks whether the currently highlighted button is an element icon, so EDF info can appear.
 currentSelectedResource = false --this defines the currently selected resource
+local localPlayer= getLocalPlayer()
 local wasCurrentBrowserShowing = false
 local root = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
@@ -212,6 +213,9 @@ function refreshElementIcons()
 		guiSetVisible ( selected, false )
 	end
 	setHUDAlpha(currentHUDAlpha)
+	if getElementData ( localPlayer, "waitingToStart" ) then
+		setGUIShowing(false)
+	end
 end
 	
 function createGUILayout()
@@ -271,6 +275,9 @@ function createGUILayout()
 	
 	guiSetVisible ( selected, false )
 	setHUDAlpha(currentHUDAlpha)
+	if getElementData ( localPlayer, "waitingToStart" ) then
+		setGUIShowing(false)
+	end
 end
 
 function toggleHUDShowing(k1,k2,state)
