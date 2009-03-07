@@ -16,6 +16,7 @@ local defaults = {
 	minPlayers = 0,
 	maxPlayers = 128,
 }
+mapSettingDefaults = defaults
 currentMapSettings = defaults
 currentMapSettings.gamemodeSettings = {}
 
@@ -37,18 +38,18 @@ local mapSettingAction = {
 
 
 function doSaveNewMapSettings( newMapSettings, hidden )
-	if not hidden then
-		editor_gui.outputMessage ( getPlayerName(client).." updated the map settings.", rootElement, 255, 255, 0 )
-	end
 	currentMapSettings = newMapSettings
 	for setting, value in pairs(currentMapSettings) do
 		if mapSettingAction[setting] then 
 			mapSettingAction[setting](value)
 		end
 	end
-	for k,v in ipairs(getElementsByType("player")) do
-		if v ~= client then
-			triggerClientEvent ( v, "syncMapSettings", rootElement, currentMapSettings )
+	if not hidden then
+		editor_gui.outputMessage ( getPlayerName(client).." updated the map settings.", rootElement, 255, 255, 0 )
+		for k,v in ipairs(getElementsByType("player")) do
+			if v ~= client then
+				triggerClientEvent ( v, "syncMapSettings", rootElement, currentMapSettings )
+			end
 		end
 	end
 end
