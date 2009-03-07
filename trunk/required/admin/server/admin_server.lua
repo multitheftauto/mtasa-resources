@@ -278,7 +278,7 @@ function aPlayerSerialCheck ( player, result )
 	if ( result == 0 ) then kickPlayer ( player, "Invalid serial" ) end
 end
 
-addEventHandler ( "onClientLogin", _root, function ( previous, account, auto )
+addEventHandler ( "onPlayerLogin", _root, function ( previous, account, auto )
 	if ( hasObjectPermissionTo ( source, "general.tab_resources" ) ) then
 		triggerEvent ( "aPermissions", source )
 		outputChatBox ( "Press 'p' to open your admin panel", source )
