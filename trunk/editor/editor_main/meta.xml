@@ -36,6 +36,7 @@
 	<script src="client/main.lua" type="client"/>
 	<script src="client/editorelements.lua" type="client"/>
 	<script src="server/createdestroy.lua" type="server"/>
+	<script src="server/import.lua" type="server"/>
 	<script src="server/synchronization.lua" type="server"/>
 	<script src="server/locking.lua" type="server"/>
 	<script src="server/mapsettingssync.lua" type="server"/>
@@ -105,6 +106,7 @@
 	<export function="registerEditorElements" type="client"/>
 	<export function="updateArrowMarker" type="client"/>
 	<export function="setMovementType" type="client"/>
+	<export function="import" type="server"/>
 
 	<!-- clientside files -->
 	<file src="client/images/crosshair.png" type="client"/>

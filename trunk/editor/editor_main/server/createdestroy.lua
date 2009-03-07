@@ -24,6 +24,7 @@ local specialSyncers = {
 function setupNewElement(element, creatorResource, creatorClient, attachLater,shortcut,selectionSubmode)
 	selectionSubmode = selectionSubmode or 1
 	setElementParent(element, thisDynamicRoot)
+	setElementDimension ( element, getWorkingDimension() )
 	makeElementStatic( element )
 	assignID ( element )
 	triggerEvent ( "onElementCreate_undoredo", element )
@@ -69,12 +70,12 @@ addEventHandler ( "doCreateElement", rootElement,
 )
 
 addEventHandler ( "doCloneElement", rootElement,
-	function (attachMode)
+	function (attachMode,creator)
 		local clone = edf.edfCloneElement(source,true)
 		
 		if clone then
 			outputDebugString ( "Cloned '"..getElementType(source).."'." )
-			setupNewElement(clone, edf.edfGetCreatorResource(source), client, true, false, attachMode)
+			setupNewElement(clone, creator or edf.edfGetCreatorResource(source), client, true, false, attachMode)
 			setLockedElement(source, nil)
 		else
 			outputDebugString ( "Failed to clone '"..getElementType(source).."'" )
