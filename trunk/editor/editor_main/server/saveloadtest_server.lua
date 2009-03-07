@@ -210,63 +210,75 @@ function (gamemodeName)
 	triggerClientEvent ( root, "suspendGUI", client )
 	local success = saveResource ( TEST_RESOURCE, true )
 	if ( success ) then
-		local testMap = getResourceFromName(TEST_RESOURCE)
-		if not mapmanager.isMap(testMap) then
-			triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
-			"Dummy 'editor_test' resource may be corrupted!" )
-			return false
-		end
-		g_default_spawnmaponstart = get"freeroam.spawnmaponstart"
-		g_default_spawnmapondeath = get"freeroam.spawnmapondeath"
-		g_default_welcometextonstart = get"freeroam.welcometextonstart"
-		resetMapInfo()
-		disablePickups(false)
-		if ( gamemodeName ) then
-			set ( "*freeroam.spawnmapondeath", "false" )
-			if not startResource ( freeroamRes, true ) then
-				restoreSettings()
-				triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
-				"'editor_main' may lack sufficient ACL previlages to start/stop resources!" )
-				return false
-			end
-			local gamemode = getResourceFromName(gamemodeName)
-			if getResourceState ( gamemode ) == "running" and loadedEDF[gamemode] then
-				g_restoreEDF = gamemode
-				if not stopResource ( gamemode ) then
-					restoreSettings()
-					g_restoreEDF = nil
-					triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
-					"'editor_main' may lack sufficient ACL previlages to start/stop resources!" )
-					return false
-				end
-				addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
-			else
-				if not mapmanager.changeGamemode(gamemode,testMap) then
-					restoreSettings()
-					triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
-					"'editor_main' may lack sufficient ACL previlages to start/stop resources!" )
-					return false
-				end
-			end
-			g_in_test = "gamemode"
-		else
-			if not startResource ( freeroamRes, true ) or not startResource ( testMap, true ) then
-				restoreSettings()
-				triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
-				"'editor_main' may lack sufficient ACL previlages to start/stop resources!" )
-				return false			
-			end
-			g_in_test = "map"
-		end
-		setElementData ( thisRoot, "g_in_test", true )
-		set ( "*freeroam.welcometextonstart", "false" )
-		set ( "*freeroam.spawnmaponstart", "false" )
+		beginTest(client)
 	else
-		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
+		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 		"Dummy 'editor_test' resource may be corrupted!" )
 		return false	
 	end
 end )
+
+function beginTest(client)
+	local testMap = getResourceFromName(TEST_RESOURCE)
+	if not mapmanager.isMap(testMap) then
+		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
+		"Dummy 'editor_test' resource may be corrupted!" )
+		return false
+	end
+	g_default_spawnmaponstart = get"freeroam.spawnmaponstart"
+	g_default_spawnmapondeath = get"freeroam.spawnmapondeath"
+	g_default_welcometextonstart = get"freeroam.welcometextonstart"
+	resetMapInfo()
+	disablePickups(false)
+	if ( gamemodeName ) then
+		set ( "*freeroam.spawnmapondeath", "false" )
+		if not startResource ( freeroamRes, true ) then
+			restoreSettings()
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (1)" )
+			return false
+		end
+		local gamemode = getResourceFromName(gamemodeName)
+		if getResourceState ( gamemode ) == "running" and loadedEDF[gamemode] then
+			g_restoreEDF = gamemode
+			if not stopResource ( gamemode ) then
+				restoreSettings()
+				g_restoreEDF = nil
+				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (2)" )
+				return false
+			end
+			addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
+		else
+			if not mapmanager.changeGamemode(gamemode,testMap) then
+				restoreSettings()
+				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (3)" )
+				return false
+			end
+		end
+		g_in_test = "gamemode"
+	else
+		if not startResource ( freeroamRes, true ) then
+			restoreSettings()
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (4)" )
+			return false	
+		end
+		if not startResource ( testMap, true ) then
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (5)" )
+			return false			
+		end
+		g_in_test = "map"
+	end
+	for i,player in ipairs(getElementsByType"player") do
+		setElementDimension ( player, 0 )
+	end
+	setElementData ( thisRoot, "g_in_test", true )
+	set ( "*freeroam.welcometextonstart", "false" )
+	set ( "*freeroam.spawnmaponstart", "false" )
+end
 
 function startGamemodeOnStop(resource)
 	setTimer ( mapmanager.changeGamemode, 50, 1, resource,getResourceFromName(TEST_RESOURCE))

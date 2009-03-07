@@ -37,18 +37,18 @@ function attachPlayers(enabled)
 	attachPlayersEnabled = enabled
 	if enabled then
 		for i,player in ipairs(getElementsByType"player") do
-			if player ~= localPlayer then
-				setPlayerFlying(player,true)
-			end
+			-- if player ~= localPlayer then
+				-- setPlayerFlying(player,true)
+			-- end
 			setElementCollisionsEnabled(player,false)
 		end
 		setElementAlpha(localPlayer,0)
 		return addEventHandler ( "onClientRender", getRootElement(), attachRender )
 	else
 		for i,player in ipairs(getElementsByType"player") do
-			if player ~= localPlayer then
-				setPlayerFlying(player,false)
-			end
+			-- if player ~= localPlayer then
+				-- setPlayerFlying(player,false)
+			-- end
 			setElementCollisionsEnabled(player,true)
 		end
 		setElementAlpha(localPlayer,255)
@@ -60,9 +60,9 @@ addEventHandler ( "onClientPlayerSpawn", getRootElement(),
 	function()
 		if attachPlayersEnabled then
 			setElementCollisionsEnabled(source,false)
-			if source ~= localPlayer then
-				setPlayerFlying(source,true)
-			end
+			-- if source ~= localPlayer then
+				-- setPlayerFlying(source,true)
+			-- end
 		end
 	end
 )

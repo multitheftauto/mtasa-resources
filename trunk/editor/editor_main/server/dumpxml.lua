@@ -90,7 +90,7 @@ function dumpMeta ( xml, extraNodes, resource, filename )
 	local info = {}
 	info.author = currentMapSettings.metaAuthor
 	info.type = "map"
-	info.gamemodes = table.concat(currentMapSettings.addedGamemodes,",")
+	info.gamemodes = table.concat(currentMapSettings.addedGamemodes or {},",")
 	info.name = currentMapSettings.metaName
 	info.description = currentMapSettings.metaDescription
 	info.version = currentMapSettings.metaVersion
@@ -108,17 +108,17 @@ function dumpMeta ( xml, extraNodes, resource, filename )
 	
 	--[[ mapmanager settings ]]--
 	local settings = {}
-	settings["#time"] = currentMapSettings.timeHour..":"..currentMapSettings.timeMinute
-	settings["#gamespeed"] = toJSON(currentMapSettings.gamespeed)
-	settings["#gravity"] = toJSON(tonumber(currentMapSettings.gravity)) --!FIXME
-	settings["#weather"] = toJSON(currentMapSettings.weather)
-	settings["#waveheight"] = toJSON(currentMapSettings.waveheight)
-	settings["#locked_time"] = toJSON(currentMapSettings.lockTime)
-	settings["#minplayers"] = toJSON(currentMapSettings.minPlayers)
-	settings["#maxplayers"] = toJSON(currentMapSettings.maxPlayers)
+	settings["#time"] = (currentMapSettings.timeHour or mapSettingDefaults.timeHour)..":"..(currentMapSettings.timeMinute or mapSettingDefaults.timeMinute)
+	settings["#gamespeed"] = toJSON(currentMapSettings.gamespeed or mapSettingDefaults.gamespeed)
+	settings["#gravity"] = toJSON(tonumber(currentMapSettings.gravity or mapSettingDefaults.gravity)) --!FIXME
+	settings["#weather"] = toJSON(currentMapSettings.weather or mapSettingDefaults.weather)
+	settings["#waveheight"] = toJSON(currentMapSettings.waveheight or mapSettingDefaults.waveheight)
+	settings["#locked_time"] = toJSON(currentMapSettings.lockTime or mapSettingDefaults.lockTime)
+	settings["#minplayers"] = toJSON(currentMapSettings.minPlayers or mapSettingDefaults.minPlayers)
+	settings["#maxplayers"] = toJSON(currentMapSettings.maxPlayers or mapSettingDefaults.maxPlayers)
 	
 	--add any gamemode settings to the info table
-	for row, value in pairs(currentMapSettings.gamemodeSettings) do
+	for row, value in pairs(currentMapSettings.gamemodeSettings or {}) do
 		local data = currentMapSettings.rowData[row].internalName
 		settings['#'..data] = toJSON(value)
 	end

@@ -290,13 +290,6 @@ function startEditor()
 	
 	setWorkingInterior(0)
 
-	-- Set all other players in dimension 0
-	for k,player in ipairs(getElementsByType("player")) do
-		if player ~= getLocalPlayer() then
-			setElementDimension(player, 65000)
-		end
-	end
-	
 	attachPlayers(true)
 	--disable these for now
 	-- disableGameHUD()
