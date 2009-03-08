@@ -1,3 +1,4 @@
+local root = getRootElement()
 function import ( resource )
 	if type(resource) == "string" then
 		resource = getResourceFromName(resource)
@@ -6,29 +7,31 @@ function import ( resource )
 		outputDebugString("editor: Bad argument to 'import'",0,255,255,255)
 		return false
 	end
-	local found
-	for k,v in pairs(getResources()) do
-		if v == resource then
-			found = true
-			break
+	
+	local rootElement
+	if isElement(resource) then
+		rootElement = resource
+	else
+		for k,v in pairs(getResources()) do
+			if v == resource then
+				rootElement = getResourceRootElement(resource)
+				break
+			end
 		end
 	end
-	if not found then
-		outputDebugString("editor: Bad argument to 'import'",0,255,255,255)
-		return false	
-	end
-	local newElements = {}
-	local resourceRoot = getResourceRootElement(resource)
-	if not resourceRoot then
+	if not rootElement then
 		return false
 	end
+	
 	for creatorResource, dataTable in pairs(loadedEDF) do
 		for elementType in pairs(dataTable.elements) do
-			for i,element in ipairs(getElementsByType(elementType,resourceRoot)) do
+			for i,element in ipairs(getElementsByType(elementType,rootElement)) do
 				triggerEvent( "doCloneElement", element, false, creatorResource)
 			end
 		end
 	end
+	
 	return true
 end
 addCommandHandler("import",import)
+
