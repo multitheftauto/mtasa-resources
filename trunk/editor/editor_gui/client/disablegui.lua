@@ -16,7 +16,7 @@ end )
 function toggleAllGUI ( bool )
 	if not bool then
 		for k,elementType in ipairs(guiTypes) do
-			for k,element in ipairs(getElementsByType(elementType),getResourceGUIElement(getThisResource())) do
+			for k,element in ipairs(getElementsByType(elementType,getResourceGUIElement(getThisResource()))) do
 				if guiGetVisible ( element ) then
 					guiSetVisible ( element, false )
 					table.insert ( toggleHistory, element )
