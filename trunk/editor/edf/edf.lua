@@ -722,6 +722,11 @@ function edfGetCreatorResource( edfElement )
 	end
 end
 
+--Forcefully sets the creator
+function edfSetCreatorResource( edfElement, creator )
+	return setElementData( edfElement, "edf:creator", getResourceName(creator) )
+end
+
 --Returns an element's position, or its posX/Y/Z element data, or false
 function edfGetElementPosition(element)
 	local px, py, pz

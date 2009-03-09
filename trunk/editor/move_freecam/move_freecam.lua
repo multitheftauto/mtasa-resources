@@ -20,7 +20,6 @@ local selectedElement
 local centerToBaseDistance
 
 local rotationless
-local edfElement
 local rotX, rotY, rotZ
 
 local collisionless
@@ -56,11 +55,7 @@ local function getCoordsWithBoundingBox(origX, origY, origZ)
 		else
 			local surfaceFound, surfaceX, surfaceY, surfaceZ, element = processLineOfSight(origX, origY, origZ + SURFACE_ERROR_CORRECTION_OFFSET, origX, origY, origZ + minZ, true, true, true, true, true, true, false, true, selectedElement)
 			if (surfaceFound) then
-				if edfElement then
-					newZ = surfaceZ + maxZ
-				else
-					newZ = surfaceZ + centerToBaseDistance
-				end
+				newZ = surfaceZ + centerToBaseDistance
 			end
 		end
 		return newX, newY, newZ
@@ -194,16 +189,13 @@ function attachElement(element)
 		-- get element info
 	    selectedElement = element
 		--EDF implementation
-		edfElement = nil
 		if getResourceFromName"edf" and exports.edf:edfGetParent(element) ~= element then
 			if (getElementType(element) == "object") then
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element)
 				collisionless = false
-				--Estimate the bounding box
-				local radius = exports.edf:edfGetElementRadius(element)
-				edfElement = true
-				minX, minY, minZ, maxX, maxY, maxZ = -radius,-radius,-radius,radius,radius,radius
+				minX, minY, minZ, maxX, maxY, maxZ = exports.edf:edfGetElementBoundingBox(element)
+				centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(element)
 			end
 		else
 			if (getElementType(element) == "vehicle") then

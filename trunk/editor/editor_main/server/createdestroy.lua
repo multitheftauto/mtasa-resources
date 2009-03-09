@@ -71,6 +71,9 @@ addEventHandler ( "doCreateElement", rootElement,
 
 addEventHandler ( "doCloneElement", rootElement,
 	function (attachMode,creator)
+		if creator then
+			edf.edfSetCreatorResource(source,creator)
+		end
 		local clone = edf.edfCloneElement(source,true)
 		
 		if clone then
