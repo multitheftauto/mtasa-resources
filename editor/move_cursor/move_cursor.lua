@@ -22,7 +22,6 @@ local rotationless
 local rotX, rotY, rotZ
 
 local collisionless
-local edfElement
 local minX, minY, minZ, maxX, maxY, maxZ
 
 local ignoreFirst
@@ -57,11 +56,7 @@ local function getCoordsWithBoundingBox(origX, origY, origZ)
 		else
 			local surfaceFound, surfaceX, surfaceY, surfaceZ, element = processLineOfSight(origX, origY, origZ + SURFACE_ERROR_CORRECTION_OFFSET, origX, origY, origZ + minZ, true, true, true, true, true, true, false, true, selectedElement)
 			if (surfaceFound) then
-				if edfElement then
-					newZ = surfaceZ + maxZ
-				else
-					newZ = surfaceZ + centerToBaseDistance
-				end
+				newZ = surfaceZ + centerToBaseDistance
 			end
 		end
 		return newX, newY, newZ
@@ -112,7 +107,7 @@ local function onClientCursorMove_cursor(cursorX, cursorY, absoluteX, absoluteY,
 			-- if both found, compare distances
 			if (waterDistance >= surfaceDistance) then
 				if (not collisionless) then
-					centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(selectedElement)
+					centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(selectedElement)
 					local finalX, finalY, finalZ = getCoordsWithBoundingBox(surfaceX, surfaceY, surfaceZ)
 					setElementPosition(selectedElement, finalX, finalY, finalZ)
 				else
@@ -120,7 +115,7 @@ local function onClientCursorMove_cursor(cursorX, cursorY, absoluteX, absoluteY,
 				end
 			else
 				if (not collisionless) then
-					centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(selectedElement)
+					centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(selectedElement)
 					local finalX, finalY, finalZ = getCoordsWithBoundingBox(waterX, waterY, waterZ)
 					setElementPosition(selectedElement, finalX, finalY, finalZ)
 				else
@@ -129,7 +124,7 @@ local function onClientCursorMove_cursor(cursorX, cursorY, absoluteX, absoluteY,
 			end
 		elseif (surfaceFound) then
 			if (not collisionless) then
-				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(selectedElement)
+				centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(selectedElement)
 				local finalX, finalY, finalZ = getCoordsWithBoundingBox(surfaceX, surfaceY, surfaceZ)
 				setElementPosition(selectedElement, finalX, finalY, finalZ)
 			else
@@ -137,7 +132,7 @@ local function onClientCursorMove_cursor(cursorX, cursorY, absoluteX, absoluteY,
 			end
 		elseif (waterFound) then
 			if (not collisionless) then
-				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(selectedElement)
+				centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(selectedElement)
 				local finalX, finalY, finalZ = getCoordsWithBoundingBox(waterX, waterY, waterZ)
 				setElementPosition(selectedElement, finalX, finalY, finalZ)
 			else
@@ -222,16 +217,12 @@ function attachElement(element)
 	-- get element info
 	selectedElement = element
 	--EDF implementation
-	edfElement = nil
 	if getResourceFromName"edf" and exports.edf:edfGetParent(element) ~= element then
 		if (getElementType(element) == "object") then
 			rotationless = false
 			rotX, rotY, rotZ = getElementRotation(element)
 			collisionless = false
-			--Estimate the bounding box
-			local radius = exports.edf:edfGetElementRadius(element)
-			edfElement = true
-			minX, minY, minZ, maxX, maxY, maxZ = -radius,-radius,-radius,radius,radius,radius
+			minX, minY, minZ, maxX, maxY, maxZ = exports.edf:edfGetElementBoundingBox(element)
 		end
 	else
 		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then

@@ -24,6 +24,7 @@
 	<export function="edfGetParent" />				<!--element-->
 	<export function="edfGetAncestor" />			<!--element-->
 	<export function="edfGetCreatorResource" />	<!--resource-->
+	<export function="edfSetCreatorResource" /> <!--bool-->
 	<export function="edfGetElementPosition" />	<!--number, number, number-->
 	<export function="edfSetElementPosition" />	<!--bool-->
 	<export function="edfGetElementRotation" />	<!--number, number, number-->
@@ -50,5 +51,7 @@
 	<export function="edfSetElementDimension" type="client" />	<!--bool-->
 	<export function="edfGetElementProperty" type="client" />	<!--var-->
 	<export function="edfSetElementProperty" type="client" />	<!--bool-->
+	<export function="edfGetElementDistanceToBase" type="client" />  <!--number-->
+	<export function="edfGetElementBoundingBox" type="client" /> <!--number,number,number,number,number,number-->
 	<export function="edfGetElementRadius" type="client" />	<!--number-->
 </meta>

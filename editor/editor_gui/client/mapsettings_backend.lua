@@ -113,32 +113,8 @@ end
 function freezeTime ( enabled, hr, mn )
 	if enabled then
 		setTime ( hr, mn )
-		
-		if ( SET_TIME_TIMER ) then
-			for i,timer in ipairs(getTimers()) do
-				if timer == SET_TIME_TIMER then
-					killTimer ( timer )
-					break
-				end
-			end
-		end
-		
-		SET_TIME_TIMER = setTimer(
-			function() 
-				setTime(tonumber(currentMapSettings.timeHour), tonumber(currentMapSettings.timeMinute)) 
-			end, 
-		MINUTE_DURATION, 0)
-		
-		return setMinuteDuration ( MINUTE_DURATION )
+		setMinuteDuration ( MINUTE_DURATION )
 	else
-		if ( SET_TIME_TIMER ) then
-			for i,timer in ipairs(getTimers()) do
-				if timer == SET_TIME_TIMER then
-					killTimer ( timer )
-					break
-				end
-			end
-		end
 		setMinuteDuration ( 1000 )
 		if hr and mn then
 			return setTime ( hr, mn )
