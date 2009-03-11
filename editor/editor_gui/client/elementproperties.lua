@@ -83,6 +83,7 @@ local lineImg
 --global variables---------------
 local selectedElement
 local rootElement = getRootElement()
+local DEFAULT_PARENT_TEXT = "This element's parent for the map tree structure"
 local edfResource = getResourceFromName "edf"
 local editorResource = getResourceFromName "editor_main"
 local propertiesYPos = layout.control.baseY  --Y position to attach the next control at, initially base pos
@@ -227,7 +228,7 @@ function createPropertiesBox()
 	}
 	cntParent:addChangeHandler(function () setPropertiesChanged(true) end)
 
-	tooltipParent = tooltip.Create(0, 0, "This element's parent for the map tree structure")
+	tooltipParent = tooltip.Create(0, 0, DEFAULT_PARENT_TEXT)
 
 	lineImg = guiCreateStaticImage(
 		layout.line.x,
@@ -514,7 +515,7 @@ local function addEDFPropertyControlsForElement( element )
 	local creatorResource = getResourceName( edf.edfGetCreatorResource ( element) )
 	local creatorDef = resourceElementDefinitions[creatorResource] or resourceElementDefinitions.editor_main --!w
 	assert(creatorDef and creatorDef[elementType], "No creator resource info.")
-
+	
 	-- restrict parent types
 	cntParent:setTypes(creatorDef[elementType].parents)
 	-- do not allow choosing the element as its own parent, or if it is a parent already, dont allow it to be a child of its own child (makes no sense)
@@ -528,6 +529,11 @@ local function addEDFPropertyControlsForElement( element )
 	else
 		cntParent:setValue(nil)
 	end
+	
+	--if there was a name given to the parent, then set the label as that
+	guiSetText ( lblParentCaption, creatorDef[elementType].parentName or "parent" )
+	tooltip.SetText ( tooltipParent, creatorDef[elementType].parentDescription or DEFAULT_PARENT_TEXT )
+	
 	local lastCreatedType
 	
 	local sortedFields = sortFieldsByIndex(creatorDef[elementType].data)

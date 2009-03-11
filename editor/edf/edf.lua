@@ -923,6 +923,14 @@ function edfAddElementNodeData(node, resource)
 	typeDefinition.icon = xmlNodeGetAttribute(node,"icon")
 									   or typeDefinition.icon
 									   
+	--update the name of the parent
+	typeDefinition.parentName = xmlNodeGetAttribute(node,"parentName")
+									   or typeDefinition.parentName
+									   
+	--update the description of the parent
+	typeDefinition.parentDescription = xmlNodeGetAttribute(node,"parentDescription")
+									   or typeDefinition.parentDescription
+									   
 	--update the type shortcut
 	typeDefinition.shortcut = xmlNodeGetAttribute(node,"shortcut")
 									   or typeDefinition.shortcut	
@@ -1093,6 +1101,9 @@ function edfAddElementNodeParents(node, resource)
 		if parentType then
 			table.insert(parentsTable, parentType)
 		end
+		--If there was a name & description specified, add it if it doesnt exist
+		edf[resource]["elements"][name].parentName = edf[resource]["elements"][name].parentName or xmlNodeGetAttribute(subnode, "name")
+		edf[resource]["elements"][name].parentDescription = edf[resource]["elements"][name].parentDescription or xmlNodeGetAttribute(subnode, "description")
 		k = k + 1
 	until false
 	
