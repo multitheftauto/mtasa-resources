@@ -474,12 +474,16 @@ function processFreecamClick(key, keyState)
 				selectElement(clickedElement, KEYBOARD_SUBMODE)
 			end
 		elseif (g_selectedElement) then
-			if (key == cc.select_target_mouse) then
+			if g_submode == MOUSE_SUBMODE then
+				if (key == cc.select_target_mouse) then
+					dropElement(true,true)
+				elseif (key == cc.select_target_keyboard) then
+					local reselect = g_selectedElement
+					dropElement(true,true)
+					selectElement(reselect, KEYBOARD_SUBMODE)
+				end
+			else
 				dropElement(true,true)
-			elseif (key == cc.select_target_keyboard) then
-				local reselect = g_selectedElement
-				dropElement(true,true)
-				selectElement(reselect, KEYBOARD_SUBMODE)
 			end
 		end
 	end
