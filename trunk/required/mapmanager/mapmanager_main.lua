@@ -322,12 +322,12 @@ function doesMapSupportPlayerCount( map )
 	local maxPlayers = tonumber(get(mapName..".maxplayers"))
 	
 	local playersIn = getPlayerCount()
-	if minPlayers and minPlayers >= playersIn then
+	if minPlayers and minPlayers > playersIn then
 		outputMapManager( "More than "..(minPlayers).." are required to start '"..mapName.."'" )
 		return false
 	end
 	
-	if maxPlayers and maxPlayers <= playersIn then
+	if maxPlayers and maxPlayers < playersIn then
 		outputMapManager( "Less than "..(maxPlayers).." are required to start '"..mapName.."'" )
 		return false
 	end
