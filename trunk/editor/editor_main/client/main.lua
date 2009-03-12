@@ -474,7 +474,13 @@ function processFreecamClick(key, keyState)
 				selectElement(clickedElement, KEYBOARD_SUBMODE)
 			end
 		elseif (g_selectedElement) then
-			dropElement(true,true)
+			if (key == cc.select_target_mouse) then
+				dropElement(true,true)
+			elseif (key == cc.select_target_keyboard) then
+				local reselect = g_selectedElement
+				dropElement(true,true)
+				selectElement(reselect, KEYBOARD_SUBMODE)
+			end
 		end
 	end
 end
@@ -665,8 +671,14 @@ function processCursorClick(button, state,cursorX, cursorY, worldX, worldY, worl
 			--if an element is selected in freecam/cursor mode, just drop it
 			g_lastClick = getTickCount()
 			if g_submode == MOUSE_SUBMODE then
-				dropElement(true,true) --Drop it, and stop here
-				return
+				if (key == cc.select_target_mouse) then
+					dropElement(true,true)
+				elseif (key == cc.select_target_keyboard) then
+					local reselect = g_selectedElement
+					dropElement(true,true)
+					selectElement(reselect, KEYBOARD_SUBMODE)
+				end
+				return --Drop it, and stop here
 			end
 			dropElement(true,true) --If its not the selected element, drop it and continue
 		end
