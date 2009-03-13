@@ -56,7 +56,7 @@ local DRAG_MINIMUM_CLICK_TIME = 300
 local DRAG_CURSOR_MINIMAL_DISTANCE = 5
 local DRAG_CAMERA_MINIMAL_DISTANCE = 2
 
-local g_lastClick = 0
+local g_lastClick = { tick=getTickCount() }
 local DOUBLE_CLICK_MAX_DELAY = 500 -- In ticks
 
 -- PRIVATE
@@ -425,67 +425,79 @@ function processFreecamClick(key, keyState)
 			outputDebugString("Cannot select out of range element: " .. getElementType(clickedElement))
 			outputDebugString(" distance: " .. distance)
 		end
+		processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
+	end
+end
 
-		if keyState == "down" then
-			if clickedElement then
-				g_dragTimer = setTimer ( function()
-						g_dragPosition.x = lookX
-						g_dragPosition.y = lookY
-						g_dragPosition.z = lookZ
-						g_dragElement = clickedElement
-					end,
-					DRAG_MINIMUM_CLICK_TIME,
-					1
-					)
-			else
-				g_dragElement = nil
-			end
-			return
+function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
+	if keyState == "down" then
+		if ((getTickCount() - DOUBLE_CLICK_MAX_DELAY) <= g_lastClick.tick) 
+			and g_lastClick.key == key 
+			and g_lastClick.element == clickedElement then
+			return processDoubleClick ( clickedElement, key )
 		end
-		for k,timer in ipairs(getTimers()) do
-			if timer == g_dragTimer then
-				killTimer ( timer )
-				g_dragTimer = nil
-				break
-			end
-		end
-
-		if g_dragElement then
+		g_lastClick = { key = key, element = clickedElement, tick = getTickCount()  }
+		if clickedElement then
+			g_dragTimer = setTimer ( function()
+					g_dragPosition.x = lookX
+					g_dragPosition.y = lookY
+					g_dragPosition.z = lookZ
+					g_dragElement = clickedElement
+				end,
+				DRAG_MINIMUM_CLICK_TIME,
+				1
+				)
+		else
 			g_dragElement = nil
-			if g_selectedElement then
-				dropElement(true,true) --If its not the selected element, drop it and continue
+		end
+		return
+	end
+	for k,timer in ipairs(getTimers()) do
+		if timer == g_dragTimer then
+			killTimer ( timer )
+			g_dragTimer = nil
+			break
+		end
+	end
+
+	-- attach element
+	if (g_selectedElement) or (clickedElement == g_selectedElement) then
+		if g_submode == MOUSE_SUBMODE then
+			g_dragElement = nil
+			if (key == cc.select_target_mouse) then
+				dropElement(true,true)
+			elseif (key == cc.select_target_keyboard) then
+				local reselect = g_selectedElement
+				dropElement(true,true)
+				selectElement(reselect, KEYBOARD_SUBMODE)
+			end
+		else
+			dropElement(true,true)
+			g_dragElement = nil
+		end
+	elseif (clickedElement) then
+		if (g_selectedElement) then
+			g_dragElement = nil
+			if g_submode == MOUSE_SUBMODE then
+				dropElement(true,true) --Drop it, and stop here
 				return
 			end
+			dropElement(true,true) --If its not the selected element, drop it and continue
 		end
+		
+		if (key == cc.select_target_mouse) then
+			selectElement(clickedElement, MOUSE_SUBMODE)
+		elseif (key == cc.select_target_keyboard) then
+			selectElement(clickedElement, KEYBOARD_SUBMODE)
+		end
+	end
+end
 
-		-- attach element
-		if (g_selectedElement) or (clickedElement == g_selectedElement) then
-			if g_submode == MOUSE_SUBMODE then
-				if (key == cc.select_target_mouse) then
-					dropElement(true,true)
-				elseif (key == cc.select_target_keyboard) then
-					local reselect = g_selectedElement
-					dropElement(true,true)
-					selectElement(reselect, KEYBOARD_SUBMODE)
-				end
-			else
-				dropElement(true,true)
-			end
-		elseif (clickedElement) then
-			if (g_selectedElement) then
-				if g_submode == MOUSE_SUBMODE then
-					dropElement(true,true) --Drop it, and stop here
-					return
-				end
-				dropElement(true,true) --If its not the selected element, drop it and continue
-			end
-			
-			if (key == cc.select_target_mouse) then
-				selectElement(clickedElement, MOUSE_SUBMODE)
-			elseif (key == cc.select_target_keyboard) then
-				selectElement(clickedElement, KEYBOARD_SUBMODE)
-			end
-		end
+function processDoubleClick ( clickedElement, key )
+	if not clickedElement then return end
+	if key == cc.select_target_keyboard then
+		selectElement(clickedElement, KEYBOARD_SUBMODE)
+		editor_gui.openPropertiesBox(g_selectedElement)
 	end
 end
 
@@ -605,7 +617,7 @@ function processCursorMove(cursorX, cursorY, absoluteX, absoluteY, worldX, world
 end
 
 -- selects element mouse is pointing to, or drops selected element (cursor mode)
-function processCursorClick(button, state,cursorX, cursorY, worldX, worldY, worldZ, clickedElement)
+function processCursorClick(button, keyState,cursorX, cursorY, worldX, worldY, worldZ, clickedElement)
 	local clickedGUI
 	if editor_gui then
 		clickedGUI = editor_gui.guiGetMouseOverElement()
@@ -630,83 +642,7 @@ function processCursorClick(button, state,cursorX, cursorY, worldX, worldY, worl
 			clickedElement = nil
 		end
 	end
-
-	-- Save the current cursor coordinates to check if the player will try to drag
-	if state == "down" then
-		if clickedElement then
-			g_dragTimer = setTimer ( function()
-					g_dragPosition.x = cursorX
-					g_dragPosition.y = cursorY
-					g_dragElement = clickedElement
-				end,
-				DRAG_MINIMUM_CLICK_TIME,
-				1
-				)
-		else
-			g_dragElement = nil
-		end
-		return
-	end
-	for k,timer in ipairs(getTimers()) do
-		if timer == g_dragTimer then
-			killTimer ( timer )
-			g_dragTimer = nil
-			break
-		end
-	end
-	
-	g_dragElement = nil
-
-	local delay = getTickCount() - g_lastClick
-	local processDoubleClick = false
-	if key == cc.select_target_keyboard and
-	   delay < DOUBLE_CLICK_MAX_DELAY
-	then
-	  processDoubleClick = true
-	  g_lastClick = 0
-	end
-
-	if g_selectedElement then
-		if processDoubleClick then
-			g_lastClick = 0
-			editor_gui.openPropertiesBox(g_selectedElement)
-			return
-		else
-			--if an element is selected in freecam/cursor mode, just drop it
-			g_lastClick = getTickCount()
-			if g_submode == MOUSE_SUBMODE then
-				if (key == cc.select_target_mouse) then
-					dropElement(true,true)
-				elseif (key == cc.select_target_keyboard) then
-					local reselect = g_selectedElement
-					dropElement(true,true)
-					selectElement(reselect, KEYBOARD_SUBMODE)
-				end
-				return --Drop it, and stop here
-			end
-			dropElement(true,true) --If its not the selected element, drop it and continue
-		end
-	elseif processDoubleClick and clickedElement then
-	  selectElement(clickedElement, KEYBOARD_SUBMODE)
-	  editor_gui.openPropertiesBox(g_selectedElement)
-	  g_lastClick = 0
-	  return
-	end
-
-	-- attach clicked element
-	if clickedElement then
-		if (key == cc.select_target_mouse) then
-			selectElement(clickedElement, MOUSE_SUBMODE)
-			g_lastClick = 0
-		elseif (key == cc.select_target_keyboard) then
-			selectElement(clickedElement, KEYBOARD_SUBMODE)
-			g_lastClick = getTickCount()
-		else
-			g_lastClick = 0
-		end
-	else
-		g_submode = MOUSE_SUBMODE
-	end
+	processClick ( clickedElement, key, keyState, cursorX, cursorY )
 end
 
 function getCameraLine()
