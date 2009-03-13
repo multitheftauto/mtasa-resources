@@ -459,7 +459,19 @@ function processFreecamClick(key, keyState)
 		end
 
 		-- attach element
-		if (clickedElement) then
+		if (g_selectedElement) or (clickedElement == g_selectedElement) then
+			if g_submode == MOUSE_SUBMODE then
+				if (key == cc.select_target_mouse) then
+					dropElement(true,true)
+				elseif (key == cc.select_target_keyboard) then
+					local reselect = g_selectedElement
+					dropElement(true,true)
+					selectElement(reselect, KEYBOARD_SUBMODE)
+				end
+			else
+				dropElement(true,true)
+			end
+		elseif (clickedElement) then
 			if (g_selectedElement) then
 				if g_submode == MOUSE_SUBMODE then
 					dropElement(true,true) --Drop it, and stop here
@@ -472,18 +484,6 @@ function processFreecamClick(key, keyState)
 				selectElement(clickedElement, MOUSE_SUBMODE)
 			elseif (key == cc.select_target_keyboard) then
 				selectElement(clickedElement, KEYBOARD_SUBMODE)
-			end
-		elseif (g_selectedElement) then
-			if g_submode == MOUSE_SUBMODE then
-				if (key == cc.select_target_mouse) then
-					dropElement(true,true)
-				elseif (key == cc.select_target_keyboard) then
-					local reselect = g_selectedElement
-					dropElement(true,true)
-					selectElement(reselect, KEYBOARD_SUBMODE)
-				end
-			else
-				dropElement(true,true)
 			end
 		end
 	end
