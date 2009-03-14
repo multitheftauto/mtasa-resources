@@ -81,6 +81,7 @@ function browser.initiate ( theType, initialCat, initialModel )
 			end
 		end
 	end
+	guiSetInputEnabled ( false )
 end
 
 function startBrowser ( elementType, callback, initialCat, initialModel, rememberLast )
