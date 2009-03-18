@@ -12,6 +12,7 @@ local MOUSE_SUBMODE = 1
 local KEYBOARD_SUBMODE = 2
 local g_submode = MOUSE_SUBMODE
 local g_maxSelectDistance = 155 --units
+local g_moveDistance = 100 --move_cursor/freecam
 
 g_workingInterior = 0
 
@@ -160,10 +161,26 @@ addEventHandler("doSelectElement", root,
 	end
 )
 
-addEventHandler("onClientRender", root,
+addEventHandler("onClientPreRender", root,
 	function ()
 		if g_suspended then
 			return
+		end
+		--
+		local camX, camY, camZ, endX, endY, endZ = getCameraLine()
+		local labelCenterX,labelCenterY,crosshairState
+		if g_mode == CAMERA_MODE then
+			crosshairState = setCrosshairState
+			labelCenterX,labelCenterY = g_screenX/2, g_screenY/2
+		else
+			if editor_gui.guiGetMouseOverElement() then return end
+			labelCenterX,labelCenterY, endX,endY,endZ = getCursorPosition()		
+			if labelCenterX == 0 or labelCenterX == 1 or labelCenterY == 0 or labelCenterY == 1 then
+				return
+			end
+			labelCenterX = labelCenterX * g_screenX
+			labelCenterY = labelCenterY * g_screenY
+			crosshairState = setCursorCrosshairState
 		end
 		if not g_mouseOver or isMTAWindowActive() or guiGetInputEnabled() then
 			if g_targetedElement then
@@ -173,96 +190,64 @@ addEventHandler("onClientRender", root,
 			end
 			return
 		end
-		if g_mode == CAMERA_MODE then
-			if g_dragElement and not g_selectedElement then
-				local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
-				local distance = math.sqrt((g_dragPosition.x - lookX)^2 +
-				                           (g_dragPosition.y - lookY)^2 +
-							   (g_dragPosition.z - lookZ)^2)
+		if g_dragElement and not g_selectedElement then
+			local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
+			local distance = math.sqrt((g_dragPosition.x - lookX)^2 +
+									   (g_dragPosition.y - lookY)^2 +
+						   (g_dragPosition.z - lookZ)^2)
 
-				if distance > DRAG_CAMERA_MINIMAL_DISTANCE then
-					selectElement(g_dragElement, MOUSE_SUBMODE)
-				end
-				return
+			if distance > DRAG_CAMERA_MINIMAL_DISTANCE then
+				selectElement(g_dragElement, MOUSE_SUBMODE)
 			end
+			return
+		end
 
-			local targetElement, targetX, targetY, targetZ = getTargetedElement()
-			if targetElement then
-				if targetElement ~= g_targetedPart then	
-					g_targetedPart = targetElement
-					g_targetedElement = edf.edfGetAncestor(targetElement)
-				end
-							
-				local camX, camY, camZ = getCameraMatrix()
-				local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
-				local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
-				createHighlighterText ( g_screenX/2, g_screenY/2,
-								getElementID(g_targetedElement) or "",
-								"["..getElementType(g_targetedElement).."]",
-								roundedDistance .. " m" 
-				)
-			else
-				if g_targetedElement then
-					g_targetedPart = nil
-					g_targetedElement = nil
-				end
+		local targetElement, targetX, targetY, targetZ = getTargetedElement()
+		if targetElement then
+			if targetElement ~= g_targetedPart then	
+				g_targetedPart = targetElement
+				g_targetedElement = edf.edfGetAncestor(targetElement)
 			end
+						
+			local camX, camY, camZ = getCameraMatrix()
+			local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
+			local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
+			createHighlighterText ( labelCenterX,labelCenterY,
+							getElementID(g_targetedElement) or "",
+							"["..getElementType(g_targetedElement).."]",
+							roundedDistance .. " m" 
+			)
+		else
+			if g_targetedElement then
+				g_targetedPart = nil
+				g_targetedElement = nil
+			end
+		end
 
-			if g_sensitivityMode then
-				setCrosshairState(CROSSHAIR_SENSITIVE)
-				return
-			end
-			
-			local camX, camY, camZ, endX, endY, endZ = getCameraLine()
-			if targetElement and not g_selectedElement then
-				setCrosshairState(CROSSHAIR_MOUSEOVER)
-			else
-				local waterCollision, wCX, wCY, wCZ = testLineAgainstWater(camX, camY, camZ, endX, endY, endZ)
-				local groundCollision, gCX, gCY, gCZ = 
-					processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer)
+		if g_sensitivityMode then
+			crosshairState(CROSSHAIR_SENSITIVE)
+			return
+		end
 		
-				if waterCollision and groundCollision then
-					if getDistanceBetweenPoints3D(wCX, wCY, wCZ, camX, camY, camZ) <= getDistanceBetweenPoints3D(gCX, gCY, gCZ, camX, camY, camZ) then
-						setCrosshairState(CROSSHAIR_WATER)
-					else
-						setCrosshairState(CROSSHAIR_WORLD)
-					end
-				elseif waterCollision then
-					setCrosshairState(CROSSHAIR_WATER)
-				elseif groundCollision then
-					setCrosshairState(CROSSHAIR_WORLD)
+		if targetElement and not g_selectedElement then
+			crosshairState(CROSSHAIR_MOUSEOVER)
+		else
+			local waterCollision, wCX, wCY, wCZ = testLineAgainstWater(camX, camY, camZ, endX, endY, endZ)
+			local groundCollision, gCX, gCY, gCZ = 
+				processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer)
+	
+			if waterCollision and groundCollision then
+				if getDistanceBetweenPoints3D(wCX, wCY, wCZ, camX, camY, camZ) <= getDistanceBetweenPoints3D(gCX, gCY, gCZ, camX, camY, camZ) then
+					crosshairState(CROSSHAIR_WATER)
 				else
-					setCrosshairState(CROSSHAIR_NOTHING)
+					crosshairState(CROSSHAIR_WORLD)
 				end
-			end
-		elseif g_mode == CURSOR_MODE then
-			if editor_gui.guiGetMouseOverElement() then return end
-			local targetElement = getTargetedElement()
-			if targetElement or (g_selectedElement and g_submode == MOUSE_SUBMODE) then
-				targetElement = targetElement or g_selectedElement
-				if targetElement ~= g_targetedPart then	
-					g_targetedPart = targetElement
-					g_targetedElement = edf.edfGetAncestor(targetElement)
-				end
-				targetX, targetY, targetZ = edf.edfGetElementPosition(g_targetedElement)
-				local labelCenterX,labelCenterY = getCursorPosition()		
-				labelCenterX = labelCenterX * g_screenX
-				labelCenterY = labelCenterY * g_screenY
-				
-				local camX, camY, camZ = getCameraMatrix()
-				local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
-				local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
-				
-				createHighlighterText ( labelCenterX,labelCenterY,
-								getElementID(g_targetedElement) or "",
-								"["..getElementType(g_targetedElement).."]",
-								roundedDistance .. " m" 
-				)
+			elseif waterCollision then
+				crosshairState(CROSSHAIR_WATER)
+			elseif groundCollision then
+				crosshairState(CROSSHAIR_WORLD)
 			else
-				if g_targetedElement then				
-					g_targetedPart = nil
-					g_targetedElement = nil
-				end
+				crosshairState(CROSSHAIR_NOTHING)
 			end
 		end
 	end
@@ -430,6 +415,7 @@ function processFreecamClick(key, keyState)
 end
 
 function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
+	if not isElement(clickedElement) then clickedElement = nil end
 	if keyState == "down" then
 		if ((getTickCount() - DOUBLE_CLICK_MAX_DELAY) <= g_lastClick.tick) 
 			and g_lastClick.key == key 
@@ -578,6 +564,22 @@ function setCrosshairState(state)
 	g_crosshairState = state
 end
 
+function setCursorCrosshairState(state)
+	-- if not g_showCrosshair then return end
+	if state == CROSSHAIR_NOTHING or state == CROSSHAIR_WORLD then
+		return
+	elseif state == CROSSHAIR_WATER then
+		color = tocolor(80,203,227,255)
+	elseif state == CROSSHAIR_MOUSEOVER then
+		color = tocolor(191,203,134,255)
+	elseif state == CROSSHAIR_SENSITIVE then
+		color = tocolor(255,0,0,255)
+	end
+	local x,y = getCursorPosition()
+	dxDrawImage ( g_screenX*x - 1, g_screenY*y - 1, 15, 15,  "client/images/cursor.png", 0,0,0,color,true )
+	-- g_crosshairState = state
+end
+
 function makeVehicleStatic(vehicle)
 	vehicle = vehicle or source
 	setVehicleDamageProof(vehicle, true)
@@ -724,6 +726,7 @@ function selectElement(element, submode, shortcut)
 			elseif (g_mode == CURSOR_MODE) then
 				move_resource = move_cursor
 			end
+			move_resource.setMaxMoveDistance(g_moveDistance)
 		elseif (submode == KEYBOARD_SUBMODE) then
 			move_resource = move_keyboard
 		else
@@ -793,6 +796,7 @@ function dropElement(releaseLock,clonedrop)
 			elseif (g_mode == CURSOR_MODE) then
 				move_resource = move_cursor
 			end
+			g_moveDistance = move_resource.getMaxMoveDistance()
 		elseif (g_submode == KEYBOARD_SUBMODE) then
 			move_resource = move_keyboard
 		end
@@ -838,8 +842,10 @@ function setMode(newMode)
 	if newMode == CAMERA_MODE then
 		if (g_selectedElement and g_submode == MOUSE_SUBMODE) then
 			move_cursor.detachElement()
+			g_moveDistance = move_cursor.getMaxMoveDistance()
 			showCursor(false)
 			move_freecam.attachElement(edf.edfGetHandle(g_selectedElement) or g_selectedElement)
+			move_freecam.setMaxMoveDistance(g_moveDistance)
 		else
 			showCursor(false)
 		end
@@ -862,8 +868,10 @@ function setMode(newMode)
 	elseif newMode == CURSOR_MODE then
 		if (g_selectedElement and g_submode == MOUSE_SUBMODE) then
 			move_freecam.detachElement()
+			g_moveDistance = move_freecam.getMaxMoveDistance()
 			showCursor(true)
 			move_cursor.attachElement(edf.edfGetHandle(g_selectedElement) or g_selectedElement)
+			move_cursor.setMaxMoveDistance(g_moveDistance)
 		else
 			showCursor(true)
 		end
