@@ -110,6 +110,7 @@
 
 	<!-- clientside files -->
 	<file src="client/images/crosshair.png" type="client"/>
+	<file src="client/images/cursor.png" type="client"/>
 
 	<file src="client/images/icons/marker.png" type="client"/>
 	<file src="client/images/icons/object.png" type="client"/>
