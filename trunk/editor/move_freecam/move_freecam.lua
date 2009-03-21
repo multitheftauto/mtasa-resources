@@ -65,16 +65,16 @@ local function getCoordsWithBoundingBox(origX, origY, origZ)
 end
 
 local function rotateWithMouseWheel(key, keyState)
-	if (not rotationless) and getKeyState(cc.mod_rotate) then
+	if (not rotationless) and getCommandState("mod_rotate") then
 		local speed
-	    if (getKeyState(cc.mod_slow_speed)) then
+	    if (getCommandState("mod_slow_speed")) then
    	 		speed = rotateSpeed.slow
-   		elseif (getKeyState(cc.mod_fast_speed)) then
+   		elseif (getCommandState("mod_fast_speed")) then
    	    	speed = rotateSpeed.fast
 	    else
 	       	speed = rotateSpeed.medium
 	    end
-		if (key == cc.quick_rotate_decrease) then
+		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
 		end
 		if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") then
@@ -97,19 +97,19 @@ local function rotateWithMouseWheel(key, keyState)
 end
 
 local function zoomWithMouseWheel(key, keyState)
-	if not getKeyState(cc.mod_rotate) then
+	if not getCommandState("mod_rotate") then
 		local speed
-	    if (getKeyState(cc.mod_slow_speed)) then
+	    if (getCommandState("mod_slow_speed")) then
    	 		speed = zoomSpeed.slow
-   		elseif (getKeyState(cc.mod_fast_speed)) then
+   		elseif (getCommandState("mod_fast_speed")) then
    	    	speed = zoomSpeed.fast
 	    else
 	       	speed = zoomSpeed.medium
 	    end
 		
-	    if key == cc.zoom_in then
+	    if key == "zoom_in" then
    	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
-	    else --if key == cc.zoom_out
+	    else --if key == "zoom_out"
 	       	maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
 	    end
 	end

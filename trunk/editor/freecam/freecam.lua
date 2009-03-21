@@ -260,6 +260,10 @@ function isFreecamEnabled()
 	return getElementData(localPlayer,"freecam:state")
 end
 
+function getFreecamOption(theOption, value)
+	return options[theOption]
+end
+
 function setFreecamOption(theOption, value)
 	if options[theOption] ~= nil then
 		options[theOption] = value

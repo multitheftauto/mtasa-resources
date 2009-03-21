@@ -153,16 +153,16 @@ function enableElementLook (dontChangeFixedMode, target, newRotX, newRotY)
 		rotY = toRad ( newRotY )
 	end
 	
-	bindKey ( browserElementLookOptions.down, "down", scrollDown )
-	bindKey ( browserElementLookOptions.up, "down", scrollUp )
+	bindControl ( browserElementLookOptions.down, "down", scrollDown )
+	bindControl ( browserElementLookOptions.up, "down", scrollUp )
 	isEnabled = true
 end
 
 
 -- param:  dontChangeFixedMode  leaves toggleCameraFixedMode alone if true, disables it if false or nil (optional)
 function disableElementLook(dontChangeFixedMode)
-	unbindKey ( browserElementLookOptions.up, "down", scrollUp )
-	unbindKey ( browserElementLookOptions.down, "down", scrollDown )
+	unbindControl ( browserElementLookOptions.up, "down", scrollUp )
+	unbindControl ( browserElementLookOptions.down, "down", scrollDown )
 	isEnabled = false
 end
 

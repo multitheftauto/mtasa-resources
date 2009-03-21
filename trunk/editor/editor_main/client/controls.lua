@@ -19,88 +19,84 @@ local validKeys = {
 
 
 local defaultControls = {
-toggle_cursor				=	"f",
-select_target_keyboard		=	"mouse1",
-select_target_mouse			=	"mouse2",
-quick_rotate_increase		=	"mouse_wheel_up",
-quick_rotate_decrease		=	"mouse_wheel_down",
-zoom_in						=	"mouse_wheel_down",
-zoom_out					=	"mouse_wheel_up",
-mod_fast_speed				=	"lshift",
-mod_slow_speed				=	"lalt",
-mod_rotate					=	"lctrl",
-high_sensitivity_mode		=	"e",
-element_move_right			=	"arrow_r",
-element_move_left			=	"arrow_l",
-element_move_forward		=	"arrow_u",
-element_move_backward		=	"arrow_d",
-element_move_upwards		=	"pgup",
-element_move_downwards		=	"pgdn",
-camera_move_forwards		=	"w",
-camera_move_backwards		=	"s",
-camera_move_left			=	"a",
-camera_move_right			=	"d",
-toggle_gui_display			=	"F4",
-reset_rotation				=	"r",
-clone_drop_modifier			=	"lctrl",
-clone_selected_element		=	"c",
-pickup_selected_element		=	"F2",
-destroy_selected_element	=	"delete",
-undo						=	"z",
-redo						=	"y",
-drop_selected_element		=	"space",
-properties_toggle			=	"F3",
-edf_next					=	"mouse_wheel_up",
-edf_prev					=	"mouse_wheel_down",
--- currentelements_confirm			=	"enter",
-currentelements_up			=	"num_8",
-currentelements_down		=	"num_2",
-browser_up					=	"arrow_u",
-browser_down				=	"arrow_d",
-browser_confirm				=	"enter",
-browser_zoom_in				=	"mouse_wheel_up",
-browser_zoom_out			=	"mouse_wheel_down",
-toggle_test					=	"F5",
--- clipboard_copy					=	"c",
--- clipboard_cut					=	"x",
--- clipboard_paste					=	"v",
+
+{	name="toggle_cursor",			key ="f",				friendlyName="Toggle Cursor"					},
+{	name="select_target_keyboard",	key ="mouse1",			friendlyName="Select (Keyboard Mode)"			},
+{	name="select_target_mouse",		key ="mouse2",			friendlyName="Select (Mouse Mode)"				},
+{	name="quick_rotate_increase",	key ="mouse_wheel_up",	friendlyName="+Z Rotate (Rotate Modifier)"		},
+{	name="quick_rotate_decrease",	key ="mouse_wheel_down",friendlyName="-Z Rotate (Rotate Modifier)"		},
+{	name="zoom_in",					key ="mouse_wheel_down",friendlyName="Increase Select Distance"			},
+{	name="zoom_out",				key ="mouse_wheel_up",	friendlyName="Decrease Select Distance"			},
+{	name="mod_fast_speed",			key ="lshift",			friendlyName="Fast speed Modifier"				},
+{	name="mod_slow_speed",			key ="lalt",			friendlyName="Slow speed Modifier"				},
+{	name="mod_rotate",				key ="lctrl",			friendlyName="Rotate Modifier"					},
+{	name="high_sensitivity_mode",	key ="e",				friendlyName="High Sensivity Mode"				},
+{	name="element_move_right",		key ="arrow_r",			friendlyName="Move Element Right"				},
+{	name="element_move_left",		key ="arrow_l",			friendlyName="Move Element Left"				},
+{	name="element_move_forward",	key ="arrow_u",			friendlyName="Move Element Forward"				},
+{	name="element_move_backward",	key ="arrow_d",			friendlyName="Move Element Backward"			},
+{	name="element_move_upwards",	key ="pgup",			friendlyName="Move Element Upwards"				},
+{	name="element_move_downwards",	key ="pgdn",			friendlyName="Move Element Downwards"			},
+{	name="camera_move_forwards",	key ="w",				friendlyName="Camera forwards"					},
+{	name="camera_move_backwards",	key ="s",				friendlyName="Camera backwards"					},
+{	name="camera_move_left",		key ="a",				friendlyName="Camera strafe left"				},
+{	name="camera_move_right",		key ="d",				friendlyName="Camera strafe right"				},
+{	name="toggle_gui_display",		key ="F4",				friendlyName="Toggle GUI Display"				},
+{	name="reset_rotation",			key ="r",				friendlyName="Reset Rotation (Rotate Modifier)"	},
+{	name="clone_drop_modifier",		key ="lctrl",			friendlyName="Clone Drop Modifier"				},
+{	name="clone_selected_element",	key ="c",				friendlyName="Clone Selected Element"			},
+{	name="pickup_selected_element",	key ="F2",				friendlyName="Pickup selected element"			},
+{	name="drop_selected_element",	key ="space",			friendlyName="Drop Selected Element"			},
+{	name="destroy_selected_element",key ="delete",			friendlyName="Destroy element"					},
+{	name="undo",					key ="z",				friendlyName="Undo"								},
+{	name="redo",					key ="y",				friendlyName="Redo"								},
+{	name="properties_toggle",		key ="F3",				friendlyName="Show Properties Box"				},
+{	name="edf_next",				key ="mouse_wheel_up",	friendlyName="EDF Next resource"				},
+{	name="edf_prev",				key ="mouse_wheel_down",friendlyName="EDF Prev resource"				},
+-- {	name="currentelements_confirm",			key ="enter",		},
+{	name="currentelements_up",		key ="num_8",			friendlyName="Current Elements Up"				},
+{	name="currentelements_down",	key ="num_2",			friendlyName="Current Elements Down"			},
+{	name="browser_up",				key ="arrow_u",			friendlyName="Model Browser Up"					},
+{	name="browser_down",			key ="arrow_d",			friendlyName="Model Browser Down"				},
+{	name="browser_confirm",			key ="enter",			friendlyName="Model Browser Confirm"			},
+{	name="browser_zoom_in",			key ="mouse_wheel_up",	friendlyName="Model Browser Zoom In"			},
+{	name="browser_zoom_out",		key ="mouse_wheel_down",friendlyName="Model Browser Zoom Out"			},
+{	name="toggle_test",				key ="F5",				friendlyName="Toggle test mode"					},
+-- {	name="clipboard_copy"			key ="c",		},
+-- {	name="clipboard_cut"			key ="x",		},
+-- {	name="clipboard_paste"			key ="v",		},
+
 }
-cc = defaultControls
+cc = {}
+for i,control in ipairs(defaultControls) do
+	cc[control.name] = control.key
+end
+
 function getControls()
 	return cc
 end
 
-
-function loadXMLControls()
-	local controlsXML = xmlLoadFile ( "controls.xml" )
-	if not controlsXML then 
-		controlsXML = createDefaultXML() 
-	end
-	if not controlsXML then
-		editor_gui.outputMessage( "Error: Controls could not be loaded", 255,0,0 )
-		return
-	end
-	--
-	cc = {}
-	for nodeName,value in pairs(defaultControls) do
-		local node = xmlFindChild ( controlsXML, nodeName, 0 )
-		if ( node ) then
-			cc[nodeName] = xmlNodeGetValue ( node )
-		else
-			xmlNodeSetValue(xmlCreateChild ( controlsXML, nodeName ), value)
-			cc[nodeName] = value
+--Turn all controls into commands
+local localPlayer = getLocalPlayer()
+addEvent ( "onControlPressed" )
+local function parseControls ( command, keyState )
+	--Get the key name
+	local key = ""
+	for i,control in ipairs(defaultControls) do
+		if control.friendlyName == command then
+			key = control.name
 		end
 	end
+	keyState = keyState or "down"
+	triggerEvent ( "onControlPressed", localPlayer, key, keyState )
 end
 
-function createDefaultXML()
-	local xml = xmlCreateFile ( "controls.xml", "controls" )
-	for nodeName,defaultValue in pairs(cc) do
-		local node = xmlCreateChild ( xml, nodeName )
-		xmlNodeSetValue ( node, defaultValue )
+function processControls()
+	for i,control in ipairs(defaultControls) do
+		addCommandHandler ( control.friendlyName, parseControls )
+		bindKey ( cc[control.name], "down", control.friendlyName )
+		bindKey ( cc[control.name], "up", control.friendlyName, "up" )
 	end
-	xmlSaveFile ( xml )
-	return xml
 end
 
 addEventHandler("onClientResourceStart", getRootElement(), 
@@ -126,3 +122,5 @@ function blockMTAControls(key,state)
 		toggleAllControls(true,false,true)
 	end
 end
+
+

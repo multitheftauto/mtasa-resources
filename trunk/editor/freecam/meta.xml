@@ -12,5 +12,6 @@
 	<export function="setFreecamDisabled" type="client" />
 	<export function="isFreecamEnabled" type="client" />
 	<export function="setFreecamOption" type="client" />
+	<export function="getFreecamOption" type="client" />
 	<export function="getFreecamVelocity" type="client" />
 </meta>
