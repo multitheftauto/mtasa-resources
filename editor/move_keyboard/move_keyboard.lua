@@ -70,7 +70,7 @@ local function onClientRender_keyboard()
 		return
 	end
 	if (selectedElement) then
-		if not (getKeyState(cc.mod_rotate)) then -- set position
+		if not (getCommandState("mod_rotate")) then -- set position
 			if movementType ~= MOVEMENT_MOVE then
 				setMovementType("move")
 				movementType = MOVEMENT_MOVE
@@ -85,9 +85,9 @@ local function onClientRender_keyboard()
 			end
 
 			local speed
-			if (getKeyState(cc.mod_slow_speed)) then
+			if (getCommandState("mod_slow_speed")) then
 				speed = moveSpeed.slow
-			elseif (getKeyState(cc.mod_fast_speed)) then
+			elseif (getCommandState(mod_fast_speed)) then
 				speed = moveSpeed.fast
 			else
 				speed = moveSpeed.medium
@@ -99,31 +99,31 @@ local function onClientRender_keyboard()
 			local distanceY = speed * math.sin(camRotZ)
 
 			-- right/left
-			if (getKeyState(cc.element_move_right)) then
+			if (getCommandState("element_move_right")) then
 				tempX = tempX + distanceX
 				tempY = tempY - distanceY
 			end
-			if (getKeyState(cc.element_move_left)) then
+			if (getCommandState("element_move_left")) then
 				tempX = tempX - distanceX
 				tempY = tempY + distanceY
 			end
 
 			-- forward/back
-			if (getKeyState(cc.element_move_forward)) then
+			if (getCommandState("element_move_forward")) then
 				tempX = tempX + distanceY
 				tempY = tempY + distanceX
 			end
 
-			if (getKeyState(cc.element_move_backward)) then
+			if (getCommandState("element_move_backward")) then
 				tempX = tempX - distanceY
 				tempY = tempY - distanceX
 			end
 
 			-- up/down
-			if (getKeyState(cc.element_move_upwards)) then
+			if (getCommandState("element_move_upwards")) then
 				tempZ = tempZ + speed
 			end
-			if (getKeyState(cc.element_move_downwards)) then
+			if (getCommandState("element_move_downwards")) then
 				tempZ = tempZ - speed
 			end
 
@@ -138,16 +138,16 @@ local function onClientRender_keyboard()
 				setElementPosition(selectedElement, posX, posY, posZ)
 			end
 
-		elseif (not getKeyState(cc.reset_rotation)) then -- set rotation
+		elseif (not getCommandState("reset_rotation")) then -- set rotation
 			if movementType ~= MOVEMENT_ROTATE then
 				setMovementType("rotate")
 				movementType = MOVEMENT_ROTATE
 			end
 
 			local speed
-			if (getKeyState(cc.mod_slow_speed)) then
+			if (getCommandState("mod_slow_speed")) then
 				speed = rotateSpeed.slow
-			elseif (getKeyState(cc.mod_fast_speed)) then
+			elseif (getCommandState("mod_fast_speed")) then
 				speed = rotateSpeed.fast
 			else
 				speed = rotateSpeed.medium
@@ -157,10 +157,10 @@ local function onClientRender_keyboard()
 				local tempRot = rotZ
 
 				-- right/left
-				if (getKeyState(cc.element_move_right)) then
+				if (getCommandState("element_move_right")) then
 					tempRot = tempRot - speed
 				end
-				if (getKeyState(cc.element_move_left)) then
+				if (getCommandState("element_move_left")) then
 			        	tempRot = tempRot + speed
 				end
 				tempRot = tempRot % 360
@@ -178,23 +178,23 @@ local function onClientRender_keyboard()
 				local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
 
 				-- roll
-				if (getKeyState(cc.element_move_forward)) then
+				if (getCommandState("element_move_forward")) then
 					tempRotY = tempRotY + speed
-				elseif (getKeyState(cc.element_move_backward)) then
+				elseif (getCommandState("element_move_backward")) then
 					tempRotY = tempRotY - speed
 				end
 
 				-- pitch
-				if (getKeyState(cc.element_move_upwards)) then
+				if (getCommandState("element_move_upwards")) then
 					tempRotX = tempRotX + speed
-				elseif (getKeyState(cc.element_move_downwards)) then
+				elseif (getCommandState("element_move_downwards")) then
 					tempRotX = tempRotX - speed
 				end
 
 				-- spin
-				if (getKeyState(cc.element_move_right)) then
+				if (getCommandState("element_move_right")) then
 					tempRotZ = tempRotZ + speed
-				elseif (getKeyState(cc.element_move_left)) then
+				elseif (getCommandState("element_move_left")) then
 					tempRotZ = tempRotZ - speed
 				end
 
@@ -214,7 +214,7 @@ local function onClientRender_keyboard()
 
 		else -- reset rotation
 			if (rotX and rotY and rotZ) then
-				if getKeyState(cc.mod_rotate) then
+				if getCommandState("mod_rotate") then
 					if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") then
 						setElementRotation(selectedElement, 0, 0, rotZ)
 						rotX, rotY = 0, 0
@@ -239,15 +239,15 @@ local function rotateWithMouseWheel(key, keyState)
 	if (not rotationless) then
 		local speed
 
-		if (getKeyState(cc.mod_slow_speed)) then
+		if (getCommandState("mod_slow_speed")) then
 			speed = rotateSpeed.slow
-		elseif (getKeyState(cc.mod_fast_speed)) then
+		elseif (getCommandState("mod_fast_speed")) then
 			speed = rotateSpeed.fast
 		else
 			speed = rotateSpeed.medium
 		end
 
-		if (key == cc.quick_rotate_decrease) then
+		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
 		end
 

@@ -105,8 +105,8 @@ function startBrowser ( elementType, callback, initialCat, initialModel, remembe
 	guiSetVisible ( browserGUI.searchProgress,true)
 	guiSetVisible ( browserGUI.searchModel,true)
 	setCameraMatrix ( tx,ty,tz )
-	browserElementLookOptions.up = cc.browser_zoom_in
-	browserElementLookOptions.down = cc.browser_zoom_out
+	browserElementLookOptions.up = "browser_zoom_in"
+	browserElementLookOptions.down = "browser_zoom_out"
 
 	-- Save the initial values for if the player clicks in Cancel button
 	initialValues.initialType = elementType
@@ -348,5 +348,5 @@ function setModelText ( text )
 end
 
 function showCursor(state)
-	editor_main.showCursor (state)
+	return editor_main.showCursor (state)
 end

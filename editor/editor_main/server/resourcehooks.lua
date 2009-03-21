@@ -133,11 +133,10 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 			creationParameters.rotation = {edf.edfGetElementRotation(element)}
 			creationParameters.interior = edf.edfGetElementInterior(element) or nil
 
-			local editorElement = edf.edfCreateElement(elementType, fromResource, creationParameters, true)
+			local editorElement = edf.edfRepresentElement(element, fromResource, creationParameters, true)
 			if newEditorParent then
 				setElementData(editorElement, "me:parent", newEditorParent)
 			end
-			setElementID(editorElement, elementID)
 			assignID(editorElement)
 			setElementParent(editorElement, newParent)
 			recursiveDimensionSet(editorElement, getWorkingDimension())

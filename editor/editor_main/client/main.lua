@@ -271,7 +271,7 @@ addEventHandler("onClientElementStreamOut", root,
 
 function startEditor()
 	--load editor controls from the xml
-	loadXMLControls()
+	processControls()
 	
 	setWorkingInterior(0)
 
@@ -450,9 +450,9 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 	if (g_selectedElement) or (clickedElement == g_selectedElement) then
 		if g_submode == MOUSE_SUBMODE then
 			g_dragElement = nil
-			if (key == cc.select_target_mouse) then
+			if (key == "select_target_mouse") then
 				dropElement(true,true)
-			elseif (key == cc.select_target_keyboard) then
+			elseif (key == "select_target_keyboard") then
 				local reselect = g_selectedElement
 				dropElement(true,true)
 				selectElement(reselect, KEYBOARD_SUBMODE)
@@ -471,9 +471,9 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 			dropElement(true,true) --If its not the selected element, drop it and continue
 		end
 		
-		if (key == cc.select_target_mouse) then
+		if (key == "select_target_mouse") then
 			selectElement(clickedElement, MOUSE_SUBMODE)
-		elseif (key == cc.select_target_keyboard) then
+		elseif (key == "select_target_keyboard") then
 			selectElement(clickedElement, KEYBOARD_SUBMODE)
 		end
 	end
@@ -481,7 +481,7 @@ end
 
 function processDoubleClick ( clickedElement, key )
 	if not clickedElement then return end
-	if key == cc.select_target_keyboard then
+	if key == "select_target_keyboard" then
 		selectElement(clickedElement, KEYBOARD_SUBMODE)
 		editor_gui.openPropertiesBox(g_selectedElement)
 	end
@@ -625,7 +625,7 @@ function processCursorClick(button, keyState,cursorX, cursorY, worldX, worldY, w
 		clickedGUI = editor_gui.guiGetMouseOverElement()
 	end
 	
-	local key = mouseButtonToKeyName(button)
+	local key = getControlFromMouseKey(mouseButtonToKeyName(button))
 	if ( clickedGUI ) or g_suspended or not g_enableWorld or not key then
 		return
 	end
@@ -670,6 +670,12 @@ function mouseButtonToKeyName( buttonName )
 	end
 end
 
+function getControlFromMouseKey( mouseKey )
+	if mouseKey == cc.select_target_keyboard then return "select_target_keyboard"
+	elseif mouseKey == cc.select_target_mouse then return "select_target_mouse"
+	end
+end
+
 function disableGameHUD()
 	showPlayerHudComponent("area_name", false)
 	showPlayerHudComponent("armour", false)
@@ -690,7 +696,7 @@ function selectElement(element, submode, shortcut)
 		dropElement(true)
 	end
 	
-	assert(isElement(element), "Invalid element")
+	if not isElement(element) then return end
 
 		-- check the editing lock
 	local locked = getElementData(element, "me:locked")
@@ -826,7 +832,7 @@ function dropElement(releaseLock,clonedrop)
 	
 	outputDebugString("Detached element.")
 	
-	if getKeyState(cc.clone_drop_modifier) and clonedrop then
+	if getKeyState("clone_drop_modifier") and clonedrop then
 		return doCloneElement(droppedElement)
 	else
 		return true

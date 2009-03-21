@@ -64,8 +64,8 @@ addEventHandler("onClientResourceStart",thisResourceRoot, startGUI )
 
 function scrollEDF(key,keyState)
 	if isCurrentButtonElement == false then return end
-	if key == cc.edf_prev then prevEDF()
-	elseif key == cc.edf_next then nextEDF()
+	if key == "edf_prev" then prevEDF()
+	elseif key == "edf_next" then nextEDF()
 	end
 end
 
@@ -281,11 +281,9 @@ function createGUILayout()
 end
 
 function toggleHUDShowing(k1,k2,state)
-	if not getKeyState(cc.mod_rotate) then
-		setGUIShowing(not guiShowing)
-		showPlayerHudComponent("radar", guiShowing)
-		showChat ( guiShowing )
-	end
+	setGUIShowing(not guiShowing)
+	showPlayerHudComponent("radar", guiShowing)
+	showChat ( guiShowing )
 end
 
 function setGUIShowing(state)

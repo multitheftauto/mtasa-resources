@@ -1,24 +1,14 @@
 --------------Below is not config
-addEvent "onControlChanged"
+addEvent "onControlPressed"
 addEvent "onEditorSuspended"
 addEvent "onEditorResumed"
 local rootElement = getRootElement()
+local addedCommands = {}
+local commandState = {}
+local keyStateToBool = { down = true, up = false }
 local keybinds = {}
+local keybinds_backup = {}
 local keyStates = { down = true, up = true, both = true }
-
---!get controls if editor_main was already loaded on start
---Commented out as this resource always starts before _main
---[[addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),	
-	function()
-		local mainResource = getResourceFromName("editor_main")
-		if mainResource then
-			cc = call(mainResource, "getControls")
-			if onControlsLoaded then
-				onControlsLoaded()
-			end
-		end
-	end
-)]]
 
 --!get controls if editor_main is started after this
 addEventHandler("onClientResourceStart", rootElement,
@@ -33,67 +23,70 @@ addEventHandler("onClientResourceStart", rootElement,
 )
 
 function bindControl ( control, keyState, handlerFunction, ... )
-	local key = cc[control]
 	if not keyStates[keyState] then return false end
-	if not key then return false end
-	local returnValue = bindKey ( key, keyState, handlerFunction, ... )
-	if ( returnValue ) then
+	if not control then return false end
+	local hitState = "down"
+	if keyState == "down" or keyState == "both" then
 		keybinds[control] = keybinds[control] or {}
-		keybinds[control][keyState] = keybinds[control][keyState] or {}
-		keybinds[control][keyState][handlerFunction] = {...}
+		keybinds[control][hitState] = keybinds[control][hitState] or {}
+		keybinds[control][hitState][handlerFunction] = {...}
 	end
-	return returnValue
+	hitState = "up"
+	if keyState == "up" or keyState == "both" then
+		keybinds[control] = keybinds[control] or {}
+		keybinds[control][hitState] = keybinds[control][hitState] or {}
+		keybinds[control][hitState][handlerFunction] = {...}	
+	end
+	return true
 end
 
 
 function unbindControl ( control, keyState, handlerFunction )
-	local key = cc[control]
-	if not key then return false end
-	local returnValue = unbindKey ( key, keyState, handlerFunction )
-	if ( returnValue ) then
-		--Handle the optional arguments just like bindKey
-		if keyState then
-			if handlerFunction then
-				--The control may not be necessarilly be binded
-				if ( keybinds[control] ) then
-					if ( keybinds[control][keyState] ) then
-						keybinds[control][keyState][handlerFunction] = nil
-					end
-				end
-			else
-				if ( keybinds[control] ) then
-					keybinds[control][keyState] = nil
+	if not control then return false end
+	--Handle the optional arguments just like bindKey
+	if keyState then
+		if handlerFunction then
+			--The control may not be necessarilly be binded
+			if ( keybinds[control] ) then
+				if ( keybinds[control][keyState] ) then
+					keybinds[control][keyState][handlerFunction] = nil
 				end
 			end
 		else
-			keybinds[control] = nil
+			if ( keybinds[control] ) then
+				keybinds[control][keyState] = nil
+			end
 		end
+	else
+		keybinds[control] = nil
 	end
-	return returnValue
+	return true
 end
 
-addEventHandler ( "onControlsChanged", rootElement,
-	function ( changedControls )
-		--Table in the format of { [controlName] = newKey }
-		for control,newKey in pairs(changedControls) do
-			--Rebind the key
-			unbindKey ( cc[control] )
-			for keyState,functionTable in pairs(keybinds[control]) do
-				for handlerFunction, argumentsTable in pairs(functionTable) do
-					bindKey ( newKey, keyState, handlerFunction, unpack(argumentsTable) )
+function getCommandState ( command )
+	return commandState[command]
+end
+
+addEventHandler ( "onControlPressed",  rootElement,
+	function ( key, keyState )
+		commandState[key] = keyStateToBool[keyState]
+		if keybinds[key] then
+			if keybinds[key][keyState] then
+				for handlerFunction, args in pairs(keybinds[key][keyState]) do
+					handlerFunction ( key, keyState, unpack(args) )
 				end
 			end
-			cc[control] = newKey
 		end
 	end
 )
 
 addEventHandler ( "onEditorSuspended", rootElement,
 	function ()
+		keybinds_backup = deepcopy(keybinds)
 		for control,keyStateTable in pairs(keybinds) do
 			for keyState,functionTable in pairs(keyStateTable) do
 				for handlerFunction, argumentsTable in pairs(functionTable) do
-					unbindKey ( cc[control], keyState, handlerFunction )
+					unbindControl ( control, keyState, handlerFunction )
 				end
 			end
 		end
@@ -102,16 +95,30 @@ addEventHandler ( "onEditorSuspended", rootElement,
 
 addEventHandler ( "onEditorResumed", rootElement,
 	function ()
-		for control,keyStateTable in pairs(keybinds) do
+		for control,keyStateTable in pairs(keybinds_backup) do
 			for keyState,functionTable in pairs(keyStateTable) do
 				for handlerFunction, argumentsTable in pairs(functionTable) do
-					bindKey ( cc[control], keyState, handlerFunction, unpack(argumentsTable) )
+					bindControl ( control, keyState, handlerFunction, unpack(argumentsTable) )
 				end
 			end
 		end
 	end
 )
 
-
-
-
+function deepcopy(object)
+    local lookup_table = {}
+    local function _copy(object)
+        if type(object) ~= "table" then
+            return object
+        elseif lookup_table[object] then
+            return lookup_table[object]
+        end
+        local new_table = {}
+        lookup_table[object] = new_table
+        for index, value in pairs(object) do
+            new_table[_copy(index)] = _copy(value)
+        end
+        return setmetatable(new_table, getmetatable(object))
+    end
+    return _copy(object)
+end
