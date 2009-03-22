@@ -98,7 +98,7 @@ addEventHandler ( "onClientPlayerDamage", getRootElement(),
 		-- local slot = getSlotFromWeapon(weapon)
 		if getElementData ( source, "armor" ) then
 			if bodypart == 7 or bodypart == 8 or bodypart == 9 then
-				local sound = playSound3D( "ricochet.mp3", getElementPosition(source) )
+				local sound = playSound3D( "ricochet"..tostring(math.random(1,3))..".mp3", getElementPosition(source) )
 				setSoundMinDistance ( sound, 2 )
 				setSoundMaxDistance ( sound, 18 )
 			end
