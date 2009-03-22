@@ -695,7 +695,7 @@ function playerleftcount (source)
 end
 
 function playerhurt ( attacker, weapon, bodypart, loss )--HEADSHOT INSTAKILL
-	if (getPedArmor ( source )) == 0 then
+	if not (getElementData(source,"armor")) then
 		if ( bodypart == 9 ) then
 		    killPed ( source, attacker, weapon, bodypart )
 		end

@@ -22,6 +22,7 @@
 	<file src="mine.png" />
 	<file src="radar.png" />
 	<file src="shield.png" />
+	<file src="ricochet.mp3" />
 	
 	<file src="edf/mercenaryspawn.png" />
 	<file src="edf/spyspawn.png" />

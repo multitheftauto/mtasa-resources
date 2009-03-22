@@ -7,6 +7,7 @@ function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 		destroyElement (gadgeticon)
 		gadgeticon = nil
 	end
+	setElementData ( getLocalPlayer(), "armor", false )
 	if spygadgetSelection == "prox mine" then
 		chosengadget = "mines"
 		gadgetuses = 6
@@ -46,7 +47,7 @@ function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 		chosengadget = "armor"	
 		gadgetuses = nil
 		gadgeticon = guiCreateStaticImage (x, y, 40, 40, "armor.png", false)
-		triggerServerEvent ("armortheplayer", getLocalPlayer (), player )
+		setElementData ( getLocalPlayer(), "armor", true )
 		gadgetlabel = guiCreateLabel ( 0.05, .62, 40, 20, "", true, gadgeticon )
 		guiLabelSetColor ( gadgetlabel, 1, 1, 1 )
 	end
@@ -91,6 +92,20 @@ function playerkilled ()
 end
 
 addEventHandler ( "onClientPedWasted", getLocalPlayer(), playerkilled )
+
+addEventHandler ( "onClientPlayerDamage", getRootElement(),
+	function(attacker,weapon,bodypart)
+		-- local slot = getSlotFromWeapon(weapon)
+		if getElementData ( source, "armor" ) then
+			if bodypart == 7 or bodypart == 8 or bodypart == 9 then
+				local sound = playSound3D( "ricochet.mp3", getElementPosition(source) )
+				setSoundMinDistance ( sound, 2 )
+				setSoundMaxDistance ( sound, 18 )
+			end
+		end
+	end
+)
+
 
 function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHICH FUNCTION TO TRIGGER
 	local inacar = isPedInVehicle ( getLocalPlayer () )
