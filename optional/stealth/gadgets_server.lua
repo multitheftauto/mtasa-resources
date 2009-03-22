@@ -136,16 +136,6 @@ end
 addEventHandler("killcameraobject",getRootElement(),removecamball)
 
 
---ARMOR
-
-addEvent ("armortheplayer", true )
-
-function armorup(player)
-	setPedArmor ( player, 75 )
-end
-
-addEventHandler("armortheplayer",getRootElement(),armorup)
-
 --SHIELD
 
 addEvent ("shieldup", true )

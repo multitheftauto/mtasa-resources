@@ -86,8 +86,12 @@ end
 
 
 --THIS PART MAKES NOISE WHEN A PLAYER GETS HURT
+bodyPartAnim = { 
+	[7] = {	"DAM_LegL_frmBK",	42	},
+	[8] = {	"DAM_LegR_frmBK",	52	},
+}
+
 function damagenoise ( attacker, weapon, bodypart, loss )
-	removeEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
 	soundlevel = soundlevel+2
 	restartdamagedetect = setTimer ( readddamage, 1000, 1 )
 	--Only continue if our bodypart is one of the legs
@@ -105,8 +109,7 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 					return
 				end
 			end
-			local currentarmor = getPedArmor (getLocalPlayer ())
-			if currentarmor == 0 then
+			if not getElementData ( source, "armor" ) then
 				--outputChatBox("You've been hit in the leg.", getLocalPlayer (), 255, 69, 0)
 				setPedAnimation ( getLocalPlayer(), "ped", bodyPartAnim[bodypart][1], true, true, false )
 				setTimer ( setPedAnimation, 600, 1, getLocalPlayer() )
@@ -127,7 +130,7 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 end
 
 function readddamage ()
-	addEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
+	-- addEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
 end
 
 
