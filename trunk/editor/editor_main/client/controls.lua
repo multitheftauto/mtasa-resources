@@ -79,16 +79,7 @@ end
 --Turn all controls into commands
 local localPlayer = getLocalPlayer()
 addEvent ( "onControlPressed" )
-local upHandled = {}
-local function parseControlsUp ( key, keyState )
-	if not upHandled[key] then return end
-	triggerEvent ( "onControlPressed", localPlayer, upHandled[key].control, "up" )
-	for i,boundKey in ipairs(upHandled[key].neighbours) do
-		upHandled[boundKey] = nil
-	end
-end
-
-local function parseControls ( command )
+local function parseControls ( command, keyState )
 	--Get the key name
 	local key = ""
 	for i,control in ipairs(defaultControls) do
@@ -96,22 +87,15 @@ local function parseControls ( command )
 			key = control.name
 		end
 	end
-	--Register our "up" handler
-	local boundKeys = getBoundKeys(command)
-	for i,boundKey in ipairs(boundKeys) do
-		upHandled[boundKey] = { neighbours = boundKeys, control = key }
-	end
-	triggerEvent ( "onControlPressed", localPlayer, key, "down" )	
+	keyState = keyState or "down"
+	triggerEvent ( "onControlPressed", localPlayer, key, keyState )
 end
 
 function processControls()
 	for i,control in ipairs(defaultControls) do
 		addCommandHandler ( control.friendlyName, parseControls )
 		bindKey ( cc[control.name], "down", control.friendlyName )
-	end
-	--Ugly hack for up state
-	for key in pairs(validKeys) do
-		bindKey ( key, "up", parseControlsUp )
+		bindKey ( cc[control.name], "up", control.friendlyName, "up" )
 	end
 end
 
