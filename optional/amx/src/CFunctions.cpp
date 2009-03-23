@@ -16,38 +16,13 @@
 *
 *********************************************************/
 
-#ifdef WIN32
-	#include <windows.h>
-#else
-	#include <dlfcn.h>
-#endif
-
-#include <stdio.h>
-#include <list>
-#include <map>
-#include <set>
-#include <string>
-#include <vector>
-#include "ml_base.h"
-#include "CFunctions.h"
-#include "amx/amx.h"
-#include "amx/amxaux.h"
-#include "include/sqlite3.h"
-#include "util.h"
+#include "StdInc.h"
 
 using namespace std;
 using namespace boost::filesystem;
 
-extern ILuaModuleManager *pModuleManager;
+extern ILuaModuleManager10 *pModuleManager;
 
-extern "C" {
-	int AMXEXPORT amx_CoreInit(AMX *amx);
-	int AMXEXPORT amx_ConsoleInit(AMX *amx);
-	int AMXEXPORT amx_FloatInit(AMX *amx);
-	int AMXEXPORT amx_StringInit(AMX *amx);
-	int AMXEXPORT amx_TimeInit(AMX *amx);
-	int AMXEXPORT amx_FileInit(AMX *amx);
-};
 int amx_SAMPInit(AMX *amx);
 
 typedef int  (STDCALL AmxLoad_t)   (AMX *);

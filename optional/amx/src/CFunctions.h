@@ -16,16 +16,8 @@
 *
 *********************************************************/
 
-class CFunctions;
-
 #ifndef __CFUNCTIONS_H
 #define __CFUNCTIONS_H
-
-#include <string>
-#include <boost/filesystem.hpp>
-extern "C" {
-	#include "include/lua.h"
-};
 
 class CFunctions
 {
