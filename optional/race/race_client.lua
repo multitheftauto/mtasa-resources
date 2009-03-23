@@ -29,7 +29,8 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 			timeleftbg = guiCreateStaticImage(screenWidth/2-108/2, 15, 108, 24, 'img/timeleft.png', false, nil),
 			timeleft = guiCreateLabel(screenWidth/2-108/2, 19, 108, 30, '', false),
 			healthbar = FancyProgress.create(100, 1000, 'img/progress_health_bg.png', -65, 105, 123, 30, 'img/progress_health.png', 7, 7, 109, 16),
-			speedbar = FancyProgress.create(0, 1.5, 'img/progress_speed_bg.png', -65, 135, 123, 30, 'img/progress_speed.png', 7, 7, 109, 16)
+			speedbar = FancyProgress.create(0, 1.5, 'img/progress_speed_bg.png', -65, 135, 123, 30, 'img/progress_speed.png', 7, 7, 109, 16),
+			miscMessage = guiCreateLabel(screenWidth/2-150, screenHeight/2, 300, 20, '', false),
 		}
 		guiSetAlpha(g_GUI.rankbg, 0.3)
 		guiSetAlpha(g_GUI.timepassedbg, 0.3)
@@ -60,7 +61,29 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 	end
 )
 
+
+------------------------------------------------
+-- Misc message for client feedback when loading big maps
+------------------------------------------------
+
+function showMiscMessage( text )
+    guiLabelSetHorizontalAlign(g_GUI['miscMessage'], 'center')
+    guiSetText(g_GUI['miscMessage'], text) 
+    guiSetVisible(g_GUI['miscMessage'], true)
+end
+
+function hideMiscMessage()
+	guiSetVisible(g_GUI['miscMessage'], false)
+end
+
+function notifyLoadingMap( mapName )
+    fadeCamera( false, 0.0, 0,0,16 ) -- fadeout, instant, dark blue
+    showMiscMessage( 'Travelling to ' .. mapName )
+end
+
+
 function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, gameoptions, mapinfo, playerInfo)
+    hideMiscMessage()
 	unloadAll()
 	
 	g_Players = getElementsByType('player')
@@ -151,7 +174,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     fadeCamera( false, 0.0 )
     setTimer(fadeCamera, 750, 1, true, 10.0)
     setTimer(fadeCamera, 1500, 1, true, 2.0)
-    triggerServerEvent('onClientRaceReady', g_Me)
+    setTimer( function() triggerServerEvent('onClientRaceReady', g_Me) end, 3500, 1 )
 end
 
 function launchRace(duration)

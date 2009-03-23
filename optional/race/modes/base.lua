@@ -80,9 +80,11 @@ function RaceMode:setTimeLeft(timeLeft)
 end
 
 function RaceMode.endMap()
-    gotoState('PostFinish')
-    local text = g_GameOptions.randommaps and 'Next map starts in:' or 'Vote for next map starts in:'
-    Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255):start()
+    if stateAllowsPostFinish() then
+        gotoState('PostFinish')
+        local text = g_GameOptions.randommaps and 'Next map starts in:' or 'Vote for next map starts in:'
+        Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255):start()
+    end
 end
 
 function RaceMode.startNextMapSelect()
@@ -277,6 +279,8 @@ function restorePlayer(id, player)
 
 	local vehicle = RaceMode.getPlayerVehicle(player)
 	if vehicle then
+        setElementVelocity( vehicle, 0,0,0 )
+        setVehicleTurnVelocity( vehicle, 0,0,0 )
 		setElementPosition(vehicle, unpack(bkp.position))
 		setVehicleRotation(vehicle, unpack(bkp.rotation))
 		fixVehicle(vehicle)
@@ -288,6 +292,7 @@ function restorePlayer(id, player)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 		setVehicleFrozen(vehicle, true)
+        removeVehicleUpgrade(vehicle, 1010) -- remove nitro
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
 	end
     setCameraTarget(player)
