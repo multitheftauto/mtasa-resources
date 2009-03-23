@@ -26,10 +26,6 @@
 #define MODULE_VERSION		1.0
 #define MODULE_VERSIONSTRING "MTA AMX compatibility layer RC2"
 
-#include "Common.h"
-#include "CFunctions.h"
-#include "include/ILuaModuleManager.h"
-
 void logprintf(char *fmt, ...);
 int AMXCallPublicFilterScript(char *fnName);
 int AMXCallPublicGameMode(char *fnName);

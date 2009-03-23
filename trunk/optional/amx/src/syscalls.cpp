@@ -1,31 +1,12 @@
-#include "amx/amx.h"
-#include "CFunctions.h"
-
-#ifdef WIN32
-	#include "windows.h"
-#endif
-
-#include <map>
-#include <set>
-#include <string>
-#include "ml_base.h"
-#include "util.h"
-
-extern "C"
-{
-    #include "include/lua.h"
-    #include "include/lualib.h"
-    #include "include/lauxlib.h"
-	#include "include/lobject.h"
-}
+#include "StdInc.h"
 
 using namespace std;
 
-extern ILuaModuleManager *pModuleManager;
+extern ILuaModuleManager10 *pModuleManager;
 
 extern lua_State *mainVM;
-extern map< AMX *, AMXPROPS > loadedAMXs;
-extern map< string, HMODULE > loadedPlugins;
+extern map < AMX *, AMXPROPS > loadedAMXs;
+extern map < string, HMODULE > loadedPlugins;
 
 AMX_NATIVE_INFO *sampNatives = NULL;
 

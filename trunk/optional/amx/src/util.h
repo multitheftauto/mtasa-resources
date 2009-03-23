@@ -1,20 +1,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <string>
-#include <vector>
-extern "C"
-{
-    #include "include/lua.h"
-    #include "include/lualib.h"
-    #include "include/lauxlib.h"
-}
-#include "amx/amx.h"
-
 // Cross compatibility
 #ifdef WIN32
-
-	#include <windows.h>
 
 	#define STDCALL __stdcall
 
@@ -25,8 +13,6 @@ extern "C"
 	int setenv(const char* name, const char* value, int overwrite);
 
 #else
-
-	#include <dlfcn.h>
 
 	#define HMODULE void*
 	#define STDCALL

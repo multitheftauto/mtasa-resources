@@ -1,13 +1,9 @@
-#include <map>
-#include <vector>
-#include <boost/filesystem.hpp>
-#include "ml_base.h"
-#include "util.h"
+#include "StdInc.h"
 
 using namespace std;
 using namespace boost::filesystem;
 
-extern map< AMX *, AMXPROPS > loadedAMXs;
+extern map < AMX *, AMXPROPS > loadedAMXs;
 
 #ifdef WIN32
 
