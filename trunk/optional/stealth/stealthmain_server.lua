@@ -7,23 +7,6 @@ function teamstealthgamestart()
 	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "kills")
 	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "deaths")
 	playingaround = 0
-	selectTeamDisplay = textCreateDisplay()
-	local stext = textCreateTextItem ( "Select your spawn", 0.502, 0.302, "low", 0, 0, 0, 255, 1.4 )
-	local stext2 = textCreateTextItem ( "Press F1 to spawn RED", 0.501, 0.501, "low", 0, 0, 0, 255, 1.1 )
-	local stext3 = textCreateTextItem ( "Press F2 to spawn BLUE", 0.501, 0.551, "low", 0, 0, 0, 255, 1.1 )
-	local stext4 = textCreateTextItem ( "Press F3 to return to the spawn screen", 0.501, 0.601, "low", 0, 0, 0, 255, 1.1 )
-	local text = textCreateTextItem ( "Select your spawn", 0.5, 0.3, "low", 255, 255, 255, 255, 1.4 )
-	local text2 = textCreateTextItem ( "Press F1 to spawn RED", 0.5, 0.5, "low", 255, 255, 255, 255, 1.1 )
-	local text3 = textCreateTextItem ( "Press F2 to spawn BLUE", 0.5, 0.55, "low", 255, 255, 255, 255, 1.1 )
-	local text4 = textCreateTextItem ( "Press F3 to return to the spawn screen", 0.5, 0.6, "low", 255, 255, 255, 255, 1.1 )
-	textDisplayAddText ( selectTeamDisplay, stext )
-	textDisplayAddText ( selectTeamDisplay, stext2 )
-	textDisplayAddText ( selectTeamDisplay, stext3 )
-	textDisplayAddText ( selectTeamDisplay, stext4 )
-	textDisplayAddText ( selectTeamDisplay, text )
-	textDisplayAddText ( selectTeamDisplay, text2 )
-	textDisplayAddText ( selectTeamDisplay, text3 )
-	textDisplayAddText ( selectTeamDisplay, text4 )
 	redwinsdisplay = textCreateDisplay()
 	local redtext = textCreateTextItem ( "RED Team Wins the Match!", 0.5, 0.5, "low", 255, 0, 0, 255, 3, "center", "center" )
 	textDisplayAddText ( redwinsdisplay, redtext )
@@ -68,9 +51,6 @@ end
 addEventHandler( "onGamemodeStart", resourceRoot, teamstealthgamestart )
 
 function joinTeam( player, team )
-	unbindKey ( player, "F1", "down", joinTeam1 )
-	unbindKey ( player, "F2", "down", joinTeam2 )
-	textDisplayRemoveObserver ( selectTeamDisplay, player )
 	setPlayerTeam(player, team)
 	if team == team1 then
 		setPlayerNametagColor ( player, 255, 0, 0 )
@@ -79,6 +59,8 @@ function joinTeam( player, team )
 	end
 end
 
+addEvent ("dojoinTeam1", true )
+
 function joinTeam1( source )
 	if (countPlayersInTeam(team1) - countPlayersInTeam(team2) > balanceamount) then
 		outputChatBox("Can't join RED too many players", source, 255, 69, 0)
@@ -86,6 +68,9 @@ function joinTeam1( source )
 		joinTeam(source, team1)
 	end
 end
+addEventHandler ( "dojoinTeam1", getRootElement(), joinTeam1 )
+
+addEvent ("dojoinTeam2", true )
 
 function joinTeam2( source )
 	if (countPlayersInTeam(team2) - countPlayersInTeam(team1) > balanceamount) then
@@ -94,16 +79,15 @@ function joinTeam2( source )
 		joinTeam(source, team2)
 	end
 end
+addEventHandler ( "dojoinTeam2", getRootElement(), joinTeam2 )
 
 function selectTeam( player )
 	setPlayerTeam(player, nil)
-	textDisplayAddObserver ( selectTeamDisplay, player )
 	local thisplayer = player
+	triggerClientEvent(player,"doshowTeamWindow",getRootElement())
 	setCameraFixed(player,"cameramode",getRootElement(), thisplayer)
 	balanceamount = get("stealth.teambalance")
 	tonumber(balanceamount)
-	bindKey ( player, "F1", "down", joinTeam1 )
-	bindKey ( player, "F2", "down", joinTeam2 )
 end
 
 function selectTeamKey(source)
@@ -731,9 +715,6 @@ function teamstealthgamestop()
 		textDisplayRemoveObserver( bluewinsdisplay, thisplayer )
 		textDisplayRemoveObserver( tiegamedisplay, thisplayer )
 		textDisplayRemoveObserver( waitDisplay, thisplayer )
-		textDisplayRemoveObserver( selectTeamDisplay, thisplayer )
-		unbindKey ( thisplayer, "F1", "down", joinTeam1 )	
-		unbindKey ( thisplayer, "F2", "down", joinTeam2 )	
 		unbindKey ( thisplayer, "F3", "down", selectTeamKey )	
 	end
 	local timers = getTimers()
