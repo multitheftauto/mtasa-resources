@@ -121,4 +121,23 @@ function stateAllowsPickup()
 end
 
 
+----------------------------------------------------------------------------
+-- stateAllowsPostFinish
+--
+-- Check if the current state allows the post finish state to to entered
+----------------------------------------------------------------------------
+function stateAllowsPostFinish()
+    if currentRaceStateName ~= 'PostFinish'        then    return true     end
+    return false
+end
 
+
+----------------------------------------------------------------------------
+-- stateAllowsNotReadyMessage
+--
+-- Check if the current state allows the 'other players not ready' message to be displayed
+----------------------------------------------------------------------------
+function stateAllowsNotReadyMessage()
+    if currentRaceStateName == 'LoadingMap'        then    return true     end
+    return false
+end

@@ -25,7 +25,7 @@ g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, p
 g_Players = {}				-- { i = player }
 g_Vehicles = {}				-- { player = vehicle }
 
---_DEBUG = {'NOundef','NOopt','NOtoptimes','NOstate','damageproof','racewar'}   -- More error output
+--_DEBUG = {'NOundef','NOopt','NOtoptimes','state','NOdamageproof','NOracewar'}   -- More error output
 _TESTING = true             -- Any user can issue test commands
 
 addEventHandler('onGamemodeMapStart', g_Root,
@@ -37,6 +37,13 @@ addEventHandler('onGamemodeMapStart', g_Root,
             return
 		end
         gotoState('LoadingMap')
+        -- set up all players as not ready
+        for i,player in ipairs(getElementsByType('player')) do
+            setPlayerNotReady(player)
+        end
+        -- tell clients new map is loading
+        clientCall(g_Root, 'notifyLoadingMap', getResourceInfo(mapres, "name") or getResourceName(mapres) )
+
 		if g_CurrentRaceMode then
 			outputDebugString('Unloading previous map')
 			unloadAll()
@@ -217,8 +224,11 @@ end
 -- Called from:
 --      g_RaceStartCountdown
 function launchRace()
-	table.each(g_Vehicles, setVehicleFrozen, false)
-	table.each(g_Players, setPedGravity, 0.008)
+	--table.each(g_Vehicles, setVehicleFrozen, false)
+	--table.each(g_Players, setPedGravity, 0.008)
+	for i,player in pairs(g_Players) do
+		unfreezePlayerWhenReady(player,g_Vehicles[player])
+	end
 	clientCall(g_Root, 'launchRace', g_MapOptions.duration, g_MapOptions.vehicleweapons)
 	if g_MapOptions.duration then
 		g_RaceEndTimer = setTimer(raceTimeout, g_MapOptions.duration, 1)
@@ -229,7 +239,7 @@ function launchRace()
     gotoState('Running')
 end
 
-g_RaceStartCountdown = Countdown.create(6, launchRace)
+g_RaceStartCountdown = Countdown.create(5, launchRace)
 g_RaceStartCountdown:useImages('img/countdown_%d.png', 474, 204)
 g_RaceStartCountdown:enableFade(true)
 g_RaceStartCountdown:addClientHook(3, 'playSoundFrontEnd', 44)
@@ -255,10 +265,16 @@ end
 --      g_SpawnTimer = setTimer(joinHandler, 500, 0) in startRace
 -- Interesting calls to:
 --      g_RaceStartCountdown:start()
+--
+-- note: player is always nil on entry
 function joinHandler(player)
 	if #g_Spawnpoints == 0 then
 		-- start vote if no map is loaded
 		outputDebugString('No map loaded; showing votemanager')
+	    if g_SpawnTimer then
+		    killTimer(g_SpawnTimer)
+		    g_SpawnTimer = nil
+        end
         RaceMode.endMap()
 		return
 	end
@@ -270,10 +286,13 @@ function joinHandler(player)
 			end
 		end
 		if not player then
-			killTimer(g_SpawnTimer)
-			g_SpawnTimer = nil
-            gotoState('GridCountdown')
-			g_RaceStartCountdown:start()
+            -- Is everyone ready?
+            if howManyPlayersNotReady() == 0 then
+			    killTimer(g_SpawnTimer)
+			    g_SpawnTimer = nil
+                gotoState('GridCountdown')
+			    g_RaceStartCountdown:start()
+    		end
 			return
 		end
 	end
@@ -281,6 +300,10 @@ function joinHandler(player)
 	if playerJoined then
 		player = source
 	end
+    if not player then
+        outputDebugString( 'joinHandler: player==nil' )
+        return
+    end
 	table.insert(g_Players, player)
 	
 	local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint()
@@ -318,6 +341,7 @@ function joinHandler(player)
         end
 	end
 
+    setPlayerNotReady( player )
 	setPedStat(player, 160, 1000)
 	setPedStat(player, 229, 1000)
 	setPedStat(player, 230, 1000)
@@ -330,17 +354,7 @@ function joinHandler(player)
 		setVehicleFrozen(vehicle, true)
 		setPedGravity(player, 0.0001)
 		if playerJoined and g_CurrentRaceMode.running then
-			setTimer(
-				function()
-					if not table.find(g_Players, player) then
-						return
-					end
-					setVehicleFrozen(vehicle, false)
-					setPedGravity(player, 0.008)
-				end,
-				3000,
-				1
-			)
+            unfreezePlayerWhenReady(player,vehicle)
 		end
 		
 		if spawnpoint.paintjob or spawnpoint.upgrades then
@@ -393,6 +407,27 @@ function joinHandler(player)
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandler)
+
+
+
+-- Called from:
+--      joinHandler
+--      unfreezePlayerWhenReady
+--      launchRace
+function unfreezePlayerWhenReady(player,vehicle)
+	if not table.find(g_Players, player) then
+		return
+	end
+    if not isPlayerReady(player) then
+        setTimer( unfreezePlayerWhenReady, 500, 1, player, vehicle )
+    else
+	    setVehicleFrozen(vehicle, false)
+	    setPedGravity(player, 0.008)
+    	setVehicleDamageProof(vehicle, false)
+    	fixVehicle(vehicle)
+    end
+end
+
 
 
 -- Called from:
@@ -700,6 +735,106 @@ addCommandHandler('convrace',
 		outputConsole('Map converted successfully')
 	end
 )
+
+
+addEvent('onClientRaceReady', true)
+addEventHandler('onClientRaceReady', g_Root,
+	function()
+        setPlayerReady( source )
+	end
+)
+
+------------------------
+-- Players not ready stuff
+g_NotReady = {}             -- { player = bool }
+g_NotReadyTimer = nil
+g_NotReadyDisplay = nil
+g_NotReadyTextItems = {}
+
+-- Remove ref if player quits
+addEventHandler('onPlayerQuit', g_Root,
+	function()
+        g_NotReady[source] = nil
+	end
+)
+
+function setPlayerNotReady( player )
+    g_NotReady[player] = true
+    g_NotReadyTimeout = getTickCount() + 20000 + 10000
+    activateNotReadyText()
+end
+
+function setPlayerReady( player )
+    g_NotReady[player] = false
+    g_NotReadyTimeout = getTickCount() + 20000
+end
+
+function isPlayerReady( player )
+    return not g_NotReady[player]
+end
+
+
+function howManyPlayersNotReady()
+    local count = 0
+    for i,player in ipairs(g_Players) do
+        if g_NotReady[player] then
+            count = count + 1
+        end
+    end 
+    if g_NotReadyTimeout < getTickCount() then
+        count = 0       -- If the NotReadyTimeout has passed, pretend everyone is ready
+    end
+    return count, names
+end
+
+
+function activateNotReadyText()
+    --if stateAllowsNotReadyMessage() then
+        if not g_NotReadyTimer then
+            g_NotReadyTimer = setTimer( updateNotReadyText, 100, 0 )
+	        g_NotReadyDisplay = textCreateDisplay()
+	        g_NotReadyTextItems[1] = textCreateTextItem('', 0.5, 0.7, 'medium', 255, 235, 215, 255, 1.5, 'center', 'center')
+	        g_NotReadyTextItems[2] = textCreateTextItem('', 0.5, 0.73, 'medium', 255, 235, 215, 215, 1.0, 'center', 'center')
+	        textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[1])
+	        textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[2])
+        end
+    --end
+end
+
+function updateNotReadyText()
+    if howManyPlayersNotReady() == 0 then
+        deactiveNotReadyText()
+    end
+	if g_NotReadyDisplay then
+        -- Make sure all ready players are observers, and compile name list of players not ready
+        local names = '';
+        for i,player in ipairs(g_Players) do
+            if g_NotReady[player] then
+                textDisplayRemoveObserver(g_NotReadyDisplay, player)
+                names = names .. ' - ' .. getPlayerName(player)
+            else
+                textDisplayAddObserver(g_NotReadyDisplay, player)
+            end
+        end
+		local left = howManyPlayersNotReady()
+		textItemSetText(g_NotReadyTextItems[1], left .. ' more player' .. (left ~= 1 and 's' or '') .. ' travelling... ' )
+		textItemSetText(g_NotReadyTextItems[2], names .. ' - ' )
+	end
+end
+
+function deactiveNotReadyText()
+    if g_NotReadyTimer then
+        killTimer( g_NotReadyTimer )
+		textDestroyDisplay(g_NotReadyDisplay)
+		textDestroyTextItem(g_NotReadyTextItems[1])
+		textDestroyTextItem(g_NotReadyTextItems[2])
+        g_NotReadyTimer = nil
+		g_NotReadyDisplay = nil
+		g_NotReadyTextItems[1] = nil
+		g_NotReadyTextItems[2] = nil
+    end
+end
+
 
 ------------------------
 -- Exported functions
