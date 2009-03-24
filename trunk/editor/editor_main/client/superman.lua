@@ -147,7 +147,7 @@ function Superman.Start()
   -- Register events
   addEventHandler("onClientResourceStop", getResourceRootElement(thisResource), Superman.Stop, false)
   addEventHandler("onPlayerQuit", rootElement, Superman.onQuit)
-  addEventHandler("onClientPreRender", rootElement, Superman.processFlight)
+  addEventHandler("onClientRender", rootElement, Superman.processFlight)
   addEventHandler("onClientElementStreamIn", rootElement, Superman.onStreamIn)
   addEventHandler("onClientElementStreamOut", rootElement, Superman.onStreamOut)
 
