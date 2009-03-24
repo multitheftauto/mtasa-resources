@@ -1222,7 +1222,7 @@ eC.color = {
 
 		guiSetVisible(self.WGUI.selectWindow, true)
 		guiBringToFront(self.WGUI.selectWindow)
-		self:addHandler("onClientPreRender", rootElement, self.updateSelectedValue)
+		self:addHandler("onClientRender", rootElement, self.updateSelectedValue)
 		self:addHandler("onClientClick", rootElement, self.pickColor)
 
 		self.isSelectOpen = true
