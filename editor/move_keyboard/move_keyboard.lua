@@ -87,7 +87,7 @@ local function onClientRender_keyboard()
 			local speed
 			if (getCommandState("mod_slow_speed")) then
 				speed = moveSpeed.slow
-			elseif (getCommandState(mod_fast_speed)) then
+			elseif (getCommandState("mod_fast_speed")) then
 				speed = moveSpeed.fast
 			else
 				speed = moveSpeed.medium
