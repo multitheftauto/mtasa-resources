@@ -168,7 +168,7 @@ tutorial = {
 		setTimer(tutorialNext,14000,1)
 	end },
 	--16
-	{ message = "It is important that you are able to change the attributes of your object.  This can be done via the properties box.  To open the properties box, press the "..cc.properties_toggle.." key while an element is selected.  Alternatively you can double click the element while in cursor mode.",
+	{ message = "It is important that you are able to change the attributes of your object.  This can be done via the properties box.  To open the properties box, press the "..cc.properties_toggle.." key while an element is selected.  Alternatively you can double click the element.",
 	initiate = function() 
 		tutorialVars.detectPropertiesBox = true
 	end },
