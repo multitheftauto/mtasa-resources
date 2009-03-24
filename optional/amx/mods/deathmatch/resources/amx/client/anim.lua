@@ -31,7 +31,7 @@
 	  paramater that linearly goes from a given starting value to a
 	  given ending value, over the specified amount of time, and is
 	  applied to one certain element. While a phase is running, its
-	  callback function will be called onClientPreRender with the following
+	  callback function will be called onClientRender with the following
 	  arguments:
 	  
 	    phase.fn(element elem, float param, table phase)
@@ -212,7 +212,7 @@ function Animation:play()
 		table.insert(Animation.collection, self)
 	end
 	if not Animation.playingAnimationsExist() then
-		addEventHandler('onClientPreRender', getRootElement(), updateAnim)
+		addEventHandler('onClientRender', getRootElement(), updateAnim)
 	end
 	self.playing = true
 end
@@ -220,14 +220,14 @@ end
 function Animation:pause()
 	self.playing = false
 	if not Animation.playingAnimationsExist() then
-		removeEventHandler('onClientPreRender', getRootElement(), updateAnim)
+		removeEventHandler('onClientRender', getRootElement(), updateAnim)
 	end
 end
 
 function Animation:remove()
 	table.removevalue(Animation.collection, self)
 	if not Animation.playingAnimationsExist() then
-		removeEventHandler('onClientPreRender', getRootElement(), updateAnim)
+		removeEventHandler('onClientRender', getRootElement(), updateAnim)
 	end
 	self.playing = false
 end

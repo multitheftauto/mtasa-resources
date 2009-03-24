@@ -8,7 +8,7 @@ local pendingEvents = {}
 
 local _addEventHandler = addEventHandler
 function addEventHandler(event, elem, handler, getPropagated)
-	if event == 'onClientRender' or event == 'onClientPreRender' then
+	if event == 'onClientRender' then
 		return _addEventHandler(event, elem, handler, getPropagated)
 	end
 	return _addEventHandler(
