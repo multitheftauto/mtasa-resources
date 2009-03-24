@@ -576,7 +576,7 @@ function setCursorCrosshairState(state)
 		color = tocolor(255,0,0,255)
 	end
 	local x,y = getCursorPosition()
-	dxDrawImage ( g_screenX*x - 1, g_screenY*y - 1, 15, 15,  "client/images/cursor.png", 0,0,0,color,true )
+	dxDrawImage ( g_screenX*x - 2, g_screenY*y - 1, 15, 15,  "client/images/cursor.png", 0,0,0,color,true )
 	-- g_crosshairState = state
 end
 
