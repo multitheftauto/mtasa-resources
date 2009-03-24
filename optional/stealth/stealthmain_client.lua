@@ -473,7 +473,6 @@ function drawLasers()
 end
 
 function TeamSelected ( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clicked )
-	outputChatBox("GODDAMMIT",getLocalPlayer (), 255, 69, 0)
 	thisplayer = getLocalPlayer ()
 	if source == TeamSelect_Red then
 		showCursor ( false )
