@@ -161,7 +161,7 @@ addEventHandler("doSelectElement", root,
 	end
 )
 
-addEventHandler("onClientPreRender", root,
+addEventHandler("onClientRender", root,
 	function ()
 		if g_suspended then
 			return

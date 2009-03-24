@@ -54,7 +54,7 @@
 	<script src="client/controls.lua" type="client"/>
 	
 	<!--player attachment and spawning-->
-	<script src="client/superman.lua" type="client"/>
+	<script src="client/superman.lua" type="client" validate="false"/>
 	<script src="client/attachplayer.lua" type="client" validate="false"/>
 	<script src="server/playerspawn.lua" type="server"/>	
 	
