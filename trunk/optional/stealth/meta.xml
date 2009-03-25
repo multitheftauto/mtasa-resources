@@ -35,6 +35,8 @@
 
 	<settings>
 		<setting name="roundlimit" value="[6]" /> <!-- round length in minutes -->
+		<setting name="round_countlimit" value="[4]" /> <!-- number of rounds untill map cycler is activated. 1 round = play 2 matches, 1 on each team -->
+		<setting name="uziammo" value="[150]" />
 		<setting name="teamdamage" value="[1]" /> <!--  0 for team protection off, 1 for team protection on -->
 		<setting name="teambalance" value="[1]" /> <!--   difference limit of amount of players between teams -->
 		<setting name="spazammo" value="[25]" /> <!--  ammo amounts -->

@@ -313,16 +313,17 @@ end
 
 addEventHandler ( "onClientResourceStart",getRootElement() , clientsetup)
 
+addEvent("Clientshieldload",true)
 function shieldload ()
-	--[[txd_shield = engineLoadTXD("riot_shield.txd")
+	txd_shield = engineLoadTXD("riot_shield.txd")
 	engineImportTXD(txd_shield,1631)
 	col_shield = engineLoadCOL("riot_shield.col")
 	dff_shield = engineLoadDFF("riot_shield.dff", 0 )
 	engineReplaceCOL(col_shield,1631)
-	engineReplaceModel(dff_shield,1631)]]
+	engineReplaceModel(dff_shield,1631)
 end
 
-
+addEventHandler( "Clientshieldload", getRootElement(), shieldload )
 
 --RADAR BURST
 
@@ -475,12 +476,12 @@ function shieldingyet ()
 				local player = getLocalPlayer ()
 				triggerServerEvent ("shieldup", getLocalPlayer (), player )
 				currentweapon = getPedWeapon (getLocalPlayer ())
-				txd_shield = engineLoadTXD("riot_shield.txd")
-				engineImportTXD(txd_shield,1631)
-				col_shield = engineLoadCOL("riot_shield.col")
-				dff_shield = engineLoadDFF("riot_shield.dff", 0 )
-				engineReplaceCOL(col_shield,1631)
-				engineReplaceModel(dff_shield,1631)
+			--	txd_shield = engineLoadTXD("riot_shield.txd")
+			--	engineImportTXD(txd_shield,1631)
+			--	col_shield = engineLoadCOL("riot_shield.col")
+			--	dff_shield = engineLoadDFF("riot_shield.dff", 0 )
+			--	engineReplaceCOL(col_shield,1631)
+			--	engineReplaceModel(dff_shield,1631)
 			end
 		end
 	end
@@ -679,17 +680,3 @@ function updateInfraredGUI ()
 		end
 	end
 end
-
-
-addEvent("Clientshieldload",true)
-
-function shieldstart ()
-	--[[txd_shield = engineLoadTXD("riot_shield.txd")
-	engineImportTXD(txd_shield,1631)
-	col_shield = engineLoadCOL("riot_shield.col")
-	dff_shield = engineLoadDFF("riot_shield.dff", 0 )
-	engineReplaceCOL(col_shield,1631)
-	engineReplaceModel(dff_shield,1631)]]
-end
-
-addEventHandler( "Clientshieldload", getRootElement(), shieldstart )

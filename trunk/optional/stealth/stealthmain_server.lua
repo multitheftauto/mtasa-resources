@@ -134,6 +134,7 @@ function teamstealthmapstart(startedMap)
 	roundstart = setTimer ( startstealthround, 15000, 1, player )
 	setElementData ( team1, "Score", 0 )
 	setElementData ( team2, "Score", 0 )
+	round_count = 0	
 	local stealthplayers = getElementsByType("player")
 	for index, thisplayer in ipairs(stealthplayers) do
 		fadeCamera(thisplayer,true)
@@ -191,13 +192,13 @@ function teamstealthmapstart(startedMap)
 			cameraInfo = { {xi, yi, zi}, {xi, yi, zi} }
 		end
 		setElementData ( getResourceRootElement(getThisResource()), "camera", cameraInfo )
-		-- local camera = createElement("camera")
-		-- setElementData ( camera, "posX", cameraInfo[1][1] )
-		-- setElementData ( camera, "posY", cameraInfo[1][2] )
-		-- setElementData ( camera, "posZ", cameraInfo[1][3] )
-		-- setElementData ( camera, "targetX", cameraInfo[2][1] )
-		-- setElementData ( camera, "targetY", cameraInfo[2][2] )
-		-- setElementData ( camera, "targetZ", cameraInfo[2][3] )
+		local camera = createElement("camera")
+		setElementData ( camera, "posX", cameraInfo[1][1] )
+		setElementData ( camera, "posY", cameraInfo[1][2] )
+		setElementData ( camera, "posZ", cameraInfo[1][3] )
+		setElementData ( camera, "targetX", cameraInfo[2][1] )
+		setElementData ( camera, "targetY", cameraInfo[2][2] )
+		setElementData ( camera, "targetZ", cameraInfo[2][3] )
 	end
 end
 
@@ -635,7 +636,11 @@ end
 addEventHandler( "onPlayerKillMessage", getRootElement(), checkforemokids )
 
 function roundtick()
-	triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
+	round_count = round_count+1
+	round_limit = get("stealth.round_countlimit")*2
+	if round_count == round_limit then
+		triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
+	end
 end
 
 function stealthplayerleft (source)
