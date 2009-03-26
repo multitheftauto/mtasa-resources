@@ -237,7 +237,7 @@ function endPoll(chosenOption)
 				}
 				--insert the options with equal number of votes
 				for index in ipairs(equals) do
-					table.insert(drawPoll,activePoll[index])
+					table.insert(drawPoll,newOptions[index])
 				end
 				--delete the current active poll
 				activePoll = nil
