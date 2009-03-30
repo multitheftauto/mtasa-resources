@@ -574,7 +574,7 @@ function initTextDraw(textdraw)
 	textdraw.id = textdraw.id or (#amx.textdraws + 1)
 	amx.textdraws[textdraw.id] = textdraw
 	
-	local lineHeight = 30
+	local lineHeight = 60*(textdraw.lsize or 0.5)
 	
 	local text = textdraw.text:gsub('~k~~(.-)~', getSAMPBoundKey)
 	local lines = {}
@@ -590,6 +590,9 @@ function initTextDraw(textdraw)
 			lines[#lines + 1] = text
 			break
 		end
+	end
+	while #lines > 0 and lines[#lines]:match('^%s*$') do
+		lines[#lines] = nil
 	end
 	
 	textdraw.parts = {}
@@ -644,7 +647,7 @@ function initTextDraw(textdraw)
 			curX = textdraw.x
 		elseif textdraw.align == 2 or not textdraw.align then
 			-- center
-			curX = (textdraw.boxsize and (textdraw.x + textdraw.boxsize[1]/2) or screenWidth/2) - textWidth/2
+			curX = screenWidth/2 - textWidth/2
 		elseif textdraw.align == 3 then
 			-- right
 			curX = textdraw.x - textWidth
@@ -711,10 +714,11 @@ function renderTextDraws()
 							w = textdraw.width
 						end
 					elseif textdraw.align == 2 then
-						x = textdraw.x
 						if textdraw.boxsize then
+							x = screenWidth/2 - textdraw.boxsize[1]/2
 							w = textdraw.boxsize[1]
 						else
+							x = textdraw.x
 							w = textdraw.width
 						end
 					elseif textdraw.align == 3 then
@@ -726,7 +730,7 @@ function renderTextDraws()
 						x = textdraw.x - w
 					end
 					y = textdraw.y
-					if textdraw.boxsize then
+					if textdraw.boxsize and textdraw.text:match('^%s*$') then
 						h = textdraw.boxsize[2]
 					else
 						h = textdraw.absheight
@@ -793,13 +797,13 @@ function TextDrawCreate(amxName, id, textdraw)
 	local amx = g_AMXs[amxName]
 	textdraw.amx = amx
 	textdraw.id = id
+	amx.textdraws[id] = textdraw
 	if textdraw.x then
 		textdraw.x = textdraw.x*screenWidth
 		textdraw.y = textdraw.y*screenHeight
 	end
-	if textdraw.boxsize then
-		textdraw.boxsize[1] = textdraw.boxsize[1]*screenWidth
-		textdraw.boxsize[2] = textdraw.boxsize[2]*screenHeight
+	for prop,val in pairs(textdraw) do
+		TextDrawPropertyChanged(amxName, id, prop, val, true)
 	end
 	initTextDraw(textdraw)
 end
@@ -812,7 +816,7 @@ function TextDrawHideForPlayer(amxName, id)
 	hideTextDraw(g_AMXs[amxName].textdraws[id])
 end
 
-function TextDrawPropertyChanged(amxName, id, prop, newval)
+function TextDrawPropertyChanged(amxName, id, prop, newval, skipInit)
 	local textdraw = g_AMXs[amxName].textdraws[id]
 	textdraw[prop] = newval
 	if prop == 'boxsize' then
@@ -821,7 +825,9 @@ function TextDrawPropertyChanged(amxName, id, prop, newval)
 	elseif prop:match('color') then
 		textdraw[prop] = tocolor(unpack(newval))
 	end
-	initTextDraw(textdraw)
+	if not skipInit then
+		initTextDraw(textdraw)
+	end
 end
 
 function TextDrawShowForPlayer(amxName, id)

@@ -27,6 +27,9 @@ function gameModeInit(player)
 		fadeCamera(player, true)
 		setTimer(
 			function()
+				if not isElement(player) or getElementType(player) ~= 'player' then
+					return
+				end
 				killPlayer(player)
 				if procCallOnAll('OnPlayerRequestClass', playerID, 0) then
 					putPlayerInClassSelection(player)
@@ -40,6 +43,9 @@ function gameModeInit(player)
 	else
 		setTimer(
 			function()
+				if not isElement(player) or getElementType(player) ~= 'player' then
+					return
+				end
 				repeat until spawnPlayer(player, math.random(-20, 20), math.random(-20, 20), 3, math.random(0, 359), math.random(9, 288))
 			end,
 			5000,
