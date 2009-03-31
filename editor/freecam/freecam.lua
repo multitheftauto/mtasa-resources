@@ -6,6 +6,7 @@ local velocityX, velocityY, velocityZ
 
 -- configurable parameters
 local options = {
+	invertMouseLook = false,
 	normalMaxSpeed = 2,
 	slowMaxSpeed = 0.2,
 	fastMaxSpeed = 12,
@@ -197,14 +198,20 @@ local function freecamMouse (cX,cY,aX,aY)
 		mouseFrameDelay = mouseFrameDelay - 1
 		return
 	end
-
+	
 	-- how far have we moved the mouse from the screen center?
     local width, height = guiGetScreenSize()
     aX = aX - width / 2 
     aY = aY - height / 2
+	
+	--invert the mouse look if specified
+	if options.invertMouseLook then
+		aY = -aY
+	end
+	
     rotX = rotX + aX * options.mouseSensitivity * 0.01745
     rotY = rotY - aY * options.mouseSensitivity * 0.01745
-
+	
 	local PI = math.pi
 	if rotX > PI then
 		rotX = rotX - 2 * PI
