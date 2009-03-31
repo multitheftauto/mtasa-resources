@@ -15,7 +15,7 @@ end
 
 function waitForFreecam(resource)
 	if resource ~= getResourceFromName("freecam") then return end
-	freecam.setFreecamOption ( "smoothMovement", value )
+	freecam.setFreecamOption ( "smoothMovement", dialog.smoothCamMove:getValue() )
 	setFreecamSpeeds()
 	removeEventHandler ( "onClientResourceStart", getRootElement(), waitForFreecam )
 end
@@ -23,6 +23,7 @@ end
 function setFreecamSpeeds()
 	local freecamRes = getResourceFromName("freecam")
 
+	freecam.setFreecamOption ( "invertMouseLook", dialog.invertMouseLook:getValue() )
 	freecam.setFreecamOption ( "normalMaxSpeed", dialog.normalMove:getValue() )
 	freecam.setFreecamOption ( "fastMaxSpeed", dialog.fastMove:getValue() )
 	freecam.setFreecamOption ( "slowMaxSpeed", dialog.slowMove:getValue() )

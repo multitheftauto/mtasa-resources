@@ -53,6 +53,7 @@ function createOptionsDialog()
 	}
 	
 	dialog.smoothCamMove = editingControl.boolean:create{["x"]=0.5,["y"]=0.06,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.cameraTab,["label"]="Smooth Camera movement"}
+	dialog.invertMouseLook = editingControl.boolean:create{["x"]=0.5,["y"]=0.16,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.cameraTab,["label"]="Invert mouse look"}
 	--create movement settings
 	guiCreateLabel ( 0.02, 0.12, 1, 0.1, "Normal element movement speed:", true, dialog.movementTab )
 	guiCreateLabel ( 0.02, 0.32, 1, 0.1, "Fast element movement speed:", true, dialog.movementTab )
