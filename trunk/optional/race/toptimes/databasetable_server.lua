@@ -434,3 +434,13 @@ addCommandHandler('restartracemode',
 )
 
 
+addCommandHandler('pipedebug',
+	function(player, command, arg)
+		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+			return
+		end
+        g_PipeDebugTo = (arg == "1") and player
+        outputDebugString( 'g_PipeDebugTo = ' .. tostring(g_PipeDebugTo) )
+	end
+)
+
