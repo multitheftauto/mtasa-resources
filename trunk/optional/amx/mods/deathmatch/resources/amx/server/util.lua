@@ -124,7 +124,6 @@ end
 local _spawnPlayer = spawnPlayer
 function spawnPlayer(player, x, y, z, r, skin, interior, ...)
 	local result = _spawnPlayer(player, x, y, z, r, skin, interior, ...)
-	setCameraInterior(player, interior)
 	return result
 end
 

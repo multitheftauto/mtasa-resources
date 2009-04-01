@@ -1071,7 +1071,6 @@ function SetPlayerInterior(amx, player, interior)
 		return
 	end
 	setElementInterior(player, interior)
-	setCameraInterior(player, interior)
 end
 
 function SetPlayerObjectPos(amx, player, objID, x, y, z)

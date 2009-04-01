@@ -11,7 +11,6 @@ function gameModeInit(player)
 	end
 	setPlayerMoney(player, 0)
 	takeAllWeapons(player)
-	setCameraInterior(player, 0)
 	setElementInterior(player, 0)
 	setElementDimension(player, 0)
 	local r, g, b = math.random(50, 255), math.random(50, 255), math.random(50, 255)
