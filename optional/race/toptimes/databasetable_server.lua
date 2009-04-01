@@ -419,3 +419,18 @@ addCommandHandler('rencol',
         g_SToptimesManager.mapTimes.dbTable:load()
     end
 )
+
+
+------------------------
+-- Testing commands
+
+addCommandHandler('restartracemode',
+	function(player)
+		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+			return
+		end
+        exports.mapmanager:changeGamemode( getResourceFromName('race') )
+	end
+)
+
+
