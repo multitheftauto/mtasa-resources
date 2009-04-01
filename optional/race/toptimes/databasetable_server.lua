@@ -134,8 +134,8 @@ function SDatabaseTable:tryLoad()
     self.rows = {}
     for r,sqlRow in ipairs(sqlResults) do
         local row = {}
-        for c=1,#self.columns do
-            row[self.columns[c]] = sqlRow[c]
+        for c,column in ipairs(self.columns) do
+            row[column] = sqlRow[column]
         end
         table.insert( self.rows, row )
     end
