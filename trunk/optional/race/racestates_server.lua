@@ -138,6 +138,7 @@ end
 -- Check if the current state allows the 'other players not ready' message to be displayed
 ----------------------------------------------------------------------------
 function stateAllowsNotReadyMessage()
-    if currentRaceStateName == 'LoadingMap'        then    return true     end
+    if currentRaceStateName == 'LoadingMap'         then    return true     end
+    if currentRaceStateName == 'PreGridCountdown'   then    return true     end
     return false
 end

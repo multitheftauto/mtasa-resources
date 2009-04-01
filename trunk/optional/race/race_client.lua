@@ -362,8 +362,8 @@ end
 
 addEventHandler('onClientElementDataChange', g_Me,
 	function(dataName)
-		if dataName == 'Race rank' then
-			local rank = getElementData(g_Me, 'Race rank')
+		if dataName == 'race rank' then
+			local rank = getElementData(g_Me, 'race rank')
 			guiSetText(g_GUI.rank, tostring(rank) .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' ))
 		end
 	end,

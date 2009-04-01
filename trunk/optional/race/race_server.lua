@@ -436,8 +436,11 @@ function updateRank()
     if g_CurrentRaceMode then
 	    for i,player in ipairs(g_Players) do
 		    if not isPlayerFinished(player) then
-			    setElementData(player, 'Race rank', g_CurrentRaceMode:getPlayerRank(player))
-		    end
+			    setElementData(player, 'race rank', g_CurrentRaceMode:getPlayerRank(player))
+		        setElementData(player, 'checkpoint', getPlayerCurrentCheckpoint(player)-1 .. '/' .. #g_Checkpoints )
+		    else
+                setElementData(player, 'checkpoint', #g_Checkpoints .. '/' .. #g_Checkpoints )
+	        end
 	    end
     end
 end
@@ -612,7 +615,8 @@ end
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
 		outputDebugString('Resource starting')
-		scoreboard.addScoreboardColumn('Race rank')
+		scoreboard.addScoreboardColumn('checkpoint')
+		scoreboard.addScoreboardColumn('race rank')
         setTimer(resourceStartedTimeout,900,1)
         cacheGameOptions()
 	end
@@ -632,7 +636,8 @@ addEventHandler('onResourceStop', g_ResRoot,
         fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')
 		unloadAll()
-		scoreboard.removeScoreboardColumn('Race rank')
+		scoreboard.removeScoreboardColumn('race rank')
+		scoreboard.removeScoreboardColumn('checkpoint')
 	end
 )
 
@@ -789,7 +794,7 @@ end
 
 
 function activateNotReadyText()
-    --if stateAllowsNotReadyMessage() then
+    if stateAllowsNotReadyMessage() then
         if not g_NotReadyTimer then
             g_NotReadyTimer = setTimer( updateNotReadyText, 100, 0 )
 	        g_NotReadyDisplay = textCreateDisplay()
@@ -798,7 +803,7 @@ function activateNotReadyText()
 	        textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[1])
 	        textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[2])
         end
-    --end
+    end
 end
 
 function updateNotReadyText()

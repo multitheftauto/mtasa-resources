@@ -29,6 +29,8 @@ function updateScoreboardData(element,field,data)
 		data = tostring(data or "")
 		if field == "name" and getElementType(element) == "player" and getPlayerTeam(element) then
 			data = indent .. data
+        elseif field ~= "name" then
+			data = '  ' .. data     -- Added to make alignment look better
 		end
 		guiGridListSetItemText(
 			scoreboardGrid,

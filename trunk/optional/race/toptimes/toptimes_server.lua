@@ -222,7 +222,7 @@ end
 function SToptimesManager:onServiceQueueTimer()
     outputDebug( 'toptimes', 'SToptimesManager:onServiceQueueTimer()' )
     -- Process next player
-    if #self.updateQueue > 0 then
+    if #self.updateQueue > 0 and self.mapTimes then
         local player = self.updateQueue[1]
         local playerPosition = self.mapTimes:getIndexForPlayer( player )
         clientCall( player, 'onServerSentToptimes', self.toptimesDataForMap, self.serverRevision, playerPosition );
