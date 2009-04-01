@@ -438,7 +438,14 @@ function outputDebug( chan, msg )
             outputDebugString( 'DEBUG: ' .. msg )
         end
     end
-
+    if g_PipeDebugTo then
+        if not table.find(getElementsByType('player'), g_PipeDebugTo) then
+            outputWarning( 'cleared g_PipeDebugTo' )
+            g_PipeDebugTo = nil
+        else
+            outputConsole( 'DEBUG: ' .. (msg or chan), g_PipeDebugTo )
+        end
+    end
 end
 
 
