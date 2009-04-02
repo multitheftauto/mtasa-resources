@@ -439,8 +439,13 @@ addCommandHandler('pipedebug',
 		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
 			return
 		end
+        if g_PipeDebugTo then
+            clientCall(g_PipeDebugTo, 'setPipeDebug', false)
+        end
         g_PipeDebugTo = (arg == "1") and player
-        outputDebugString( 'g_PipeDebugTo = ' .. tostring(g_PipeDebugTo) )
+        if g_PipeDebugTo then
+            clientCall(g_PipeDebugTo, 'setPipeDebug', true)
+        end
 	end
 )
 

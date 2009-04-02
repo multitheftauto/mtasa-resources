@@ -83,6 +83,7 @@ end
 
 
 function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, gameoptions, mapinfo, playerInfo)
+    outputDebug( 'initRace start' )
     hideMiscMessage()
 	unloadAll()
 	
@@ -175,6 +176,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     setTimer(fadeCamera, 750, 1, true, 10.0)
     setTimer(fadeCamera, 1500, 1, true, 2.0)
     setTimer( function() triggerServerEvent('onClientRaceReady', g_Me) end, 3500, 1 )
+    outputDebug( 'initRace end' )
 end
 
 function launchRace(duration)
@@ -765,3 +767,8 @@ addCommandHandler('spec',
 		end
 	end
 )
+
+function setPipeDebug(bOn)
+    g_bPipeDebug = bOn
+    outputConsole( 'bPipeDebug set to ' .. tostring(g_bPipeDebug) )
+end
