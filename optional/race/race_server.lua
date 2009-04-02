@@ -601,38 +601,25 @@ addEventHandler('onPollDraw', g_Root,
 	end
 )
 
-local bCalledOnGamemodeStart = false
-
-function resourceStartedTimeout()
-    if not bCalledOnGamemodeStart then
-        outputWarning( "Game mode 'Race' started incorrectly." )
-        outputWarning( "Trying to restart with mapmanager..." )
-        exports.mapmanager:changeGamemode( getResourceFromName('race') )
-    end
-end
-
 
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
-		outputDebugString('Resource starting')
-		scoreboard.addScoreboardColumn('checkpoint')
-		scoreboard.addScoreboardColumn('race rank')
-        setTimer(resourceStartedTimeout,900,1)
-        cacheGameOptions()
+		outputDebugString('Race resource starting')
 	end
 )
 
 addEventHandler('onGamemodeStart', g_ResRoot,
     function()
-	    outputDebugString('onGamemodeStart')
-        bCalledOnGamemodeStart = true
+	    outputDebugString('Race onGamemodeStart')
+		scoreboard.addScoreboardColumn('checkpoint')
+		scoreboard.addScoreboardColumn('race rank')
         cacheGameOptions()
     end
 )
 
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
-        gotoState( 'ResourceStopping' )
+        gotoState( 'Race resource stopping' )
         fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')
 		unloadAll()
