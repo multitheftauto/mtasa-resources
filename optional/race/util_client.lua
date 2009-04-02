@@ -246,6 +246,9 @@ function outputDebug( chan, msg )
             outputDebugString( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
         end
     end
+    if g_bPipeDebug then
+        outputConsole( 'cDEBUG: ' .. (msg or chan) )
+    end
 end
 
 function outputWarning( msg )
