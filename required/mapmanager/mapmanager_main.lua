@@ -13,6 +13,44 @@ addEvent("onGamemodeStop")
 addEvent("onGamemodeMapStart")
 addEvent("onGamemodeMapStop")
 
+addEventHandler("onResourceStart", rootElement, 
+	function (startedResource)
+		--Is this resource a gamemode?
+		if isGamemode(startedResource) then
+			--Check no gamemode is running already
+			if getRunningGamemode() then
+				return
+			end
+			currentGamemode = startedResource
+			triggerEvent("onGamemodeStart", getResourceRootElement(startedResource), startedResource)
+			--We need to wait a while to see if any maps were started.  If not, lets try and start a random one
+			setTimer( 
+				function()
+					if not getRunningGamemodeMap() then
+						--Lets check if there are any maps for this gamemode
+						local maps = getMapsCompatibleWithGamemode(getRunningGamemode())
+						--If we have any, we'll start a random one
+						if #maps > 0 then
+							changeGamemodeMap (maps[math.random(1,#maps)])
+						end
+					end
+				end, 
+			50, 1 )
+		elseif isMap(startedResource) then --If its a map
+			--Is there a map running already?
+			if getRunningGamemodeMap() then
+				return
+			end
+			--Is it compatible with our gamemode?
+			if isGamemodeCompatibleWithMap ( getRunningGamemode(), startedResource ) then
+				--Lets link the map with the gamemode
+				currentGamemodeMap = startedResource
+				triggerEvent("onGamemodeMapStart", getResourceRootElement(startedResource), startedResource)	
+			end
+		end
+	end
+)
+
 addEventHandler("onResourceStop", rootElement, 
 	function (stoppedResource)
 		local resourceRoot = getResourceRootElement(stoppedResource)
@@ -264,10 +302,7 @@ end
 addCommandHandler("maps",outputMapListToConsole)
 
 function startGamemode(gamemode)
-	if startResource(gamemode) then
-		currentGamemode = gamemode
-		triggerEvent("onGamemodeStart", getResourceRootElement(gamemode), gamemode)
-	else
+	if not startResource(gamemode) then
 		error("mapmanager: gamemode resource could not be started.", 2)
 	end
 end
@@ -277,10 +312,7 @@ function startGamemodeT(gamemode)
 end
 
 function startGamemodeMap(map)
-	if startResource(map) then
-		currentGamemodeMap = map
-		triggerEvent("onGamemodeMapStart", getResourceRootElement(map), map)
-	else
+	if not startResource(map) then
 		error("mapmanager: map resource could not be started.", 2)
 	end
 end
