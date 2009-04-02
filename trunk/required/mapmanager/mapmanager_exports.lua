@@ -40,7 +40,6 @@ function changeGamemode(gamemode, map)
 end
 
 function changeGamemodeByName ( gamemodeName, mapName )
-	outputDebugString ( tostring(gamemodeName).." "..tostring(mapName) )
 	local gamemode,map = getResourceFromName ( gamemodeName ), nil
 	if not gamemode then
 		outputDebugString("mapmanager: Invalid gamemode resource specified.",1)
