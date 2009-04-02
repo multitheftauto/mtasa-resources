@@ -7,7 +7,7 @@
 	<!-- Also, give your modified resource a different name, like "<yournick>'s  -->
 	<!-- extended freeroam", to avoid confusion for users.                       -->
 	
-	<info name="Freeroam GUI" author="arc_" version="1.3.3" type="gamemode" />
+	<info name="Freeroam GUI" author="arc_" version="1.3.4" />
 	
 	<script src="util_server.lua" type="server" />
 	<script src="fr_server.lua" type="server" />
