@@ -19,7 +19,35 @@ addEventHandler("onResourceStart", rootElement,
 		if isGamemode(startedResource) then
 			--Check no gamemode is running already
 			if getRunningGamemode() then
-				return
+			    setTimer(
+                    function()
+                        -- #1 - Abort start of new gamemode
+                        stopResource(startedResource)
+			            setTimer(
+				            function()
+                                if currentGamemodeMap then
+                                    -- #2 - Stop current map
+                                    stopResource(currentGamemodeMap)
+                                end
+		                        setTimer(
+			                        function()
+                                        if currentGamemode then
+                                            -- #3 - Stop current gamemode
+                                            stopResource(currentGamemode)
+                                        end
+	                                    setTimer(
+		                                    function()
+                                                -- #4 - Restart new gamemode
+                                                startResource(startedResource)
+		                                    end, 
+	                                    50, 1 )
+			                        end, 
+		                        50, 1 )
+				            end, 
+			            50, 1 )
+				    end, 
+			    50, 1 )
+                return
 			end
 			currentGamemode = startedResource
 			triggerEvent("onGamemodeStart", getResourceRootElement(startedResource), startedResource)
