@@ -301,7 +301,7 @@ function joinHandler(player)
 		player = source
 	end
     if not player then
-        outputDebugString( 'joinHandler: player==nil' )
+        outputDebug( 'joinHandler: player==nil' )
         return
     end
 	table.insert(g_Players, player)
