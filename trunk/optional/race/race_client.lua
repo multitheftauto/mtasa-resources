@@ -2,6 +2,7 @@ g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
+g_WaterCraftIDs = table.create({ 539, 460, 417, 447, 472, 473, 493, 595, 484, 430, 453, 452, 446, 454 }, true)
 g_ModelForPickupType = { nitro = 1337, repair = 1338, vehiclechange = 1339 }
 server = createServerCallInterface()
 
@@ -373,11 +374,19 @@ addEventHandler('onClientElementDataChange', g_Me,
 )
 
 function checkWater()
-	local x, y, z = getElementPosition(g_Me)
-	local waterZ = getWaterLevel(x, y, z)
-	if waterZ and z < waterZ - 0.5 and not isPlayerFinished(g_Me) then
-		setElementHealth(g_Me, 0)
-	end
+    if g_Vehicle then
+        if not g_WaterCraftIDs[getElementModel(g_Vehicle)] then
+            local x, y, z = getElementPosition(g_Me)
+            local waterZ = getWaterLevel(x, y, z)
+            if waterZ and z < waterZ - 0.5 and not isPlayerFinished(g_Me) and g_MapOptions then
+                if g_MapOptions.firewater then
+                    blowVehicle ( g_Vehicle, true )
+                else
+                    setElementHealth(g_Me, 0)
+                end
+            end
+        end
+    end
 end
 
 function showNextCheckpoint()
