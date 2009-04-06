@@ -73,8 +73,8 @@ end
 function RaceMode:setTimeLeft(timeLeft)
 	if g_MapOptions.duration - self:getTimePassed() > timeLeft then
 		g_MapOptions.duration = self:getTimePassed() + timeLeft
-		killTimer(g_RaceEndTimer)
-		g_RaceEndTimer = setTimer(raceTimeout, timeLeft, 1)
+        g_RaceEndTimer:killTimer()
+		g_RaceEndTimer:setTimer(raceTimeout, timeLeft, 1)
 		clientCall(g_Root, 'setTimeLeft', timeLeft)
 	end
 end
