@@ -52,11 +52,11 @@ function RaceMap.load(res)
 	end
     local infoNode = xmlFindChild(meta, 'info', 0)
     local info = infoNode and xmlNodeGetAttributes ( infoNode ) or {}
-	local racenode = xmlFindChild(meta, 'race', 0)
+	local racenode = xmlFindChild(meta, 'race', 0) or xmlFindChild(meta, 'map', 0)
 	local file = racenode and xmlNodeGetAttribute(racenode, 'src')
 	xmlUnloadFile(meta)
 	if not file then
-		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no <race /> node in meta.xml', 2)
+		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no <race /> or <map /> node in meta.xml', 2)
 		return false
 	end
 	
