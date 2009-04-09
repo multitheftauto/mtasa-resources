@@ -141,6 +141,10 @@ function stopPoll()
 	
 	--unload the poll
 	activePoll = nil
+	if pollTimer then
+		killTimer(pollTimer)
+		pollTimer = nil
+	end
 	return true
 end
 
