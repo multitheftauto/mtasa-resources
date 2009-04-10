@@ -20,6 +20,11 @@ addEventHandler("onResourceStart", thisResourceRoot,
 	end
 )
 
+-- getPlayerUserName can return false. Make sure something useful is returned.
+function getPlayerUserNameSafe(client)
+    return getPlayerUserName(client) or getPlayerName(client)
+end
+
 function startPoll(pollData)
 	--if there's a poll already
 	if activePoll then
@@ -167,6 +172,16 @@ function recheckVotes()
 			break
 		end
 	end
+
+    -- If no change allowed and everyone has voted, end poll quicker
+    if activePoll and not activePoll.allowchange then
+        if activePoll.playersWhoVoted == activePoll.maxVoters then
+            if pollTimer then
+                killTimer(pollTimer)
+                pollTimer = setTimer(endPoll, 500, 1)
+            end
+        end
+    end
 end
 
 function endPoll(chosenOption)
@@ -304,7 +319,7 @@ addEventHandler("onClientSendVote", rootElement,
 			return false
 		end
 		
-		local previousVote = activePoll.votedOption[getPlayerUserName(client)]
+		local previousVote = activePoll.votedOption[getPlayerUserNameSafe(client)]
 		
 		--check if player wants to cancel his non-existing vote
 		if voteID == -1 and not previousVote then
@@ -322,7 +337,7 @@ addEventHandler("onClientSendVote", rootElement,
 				outputServerLog(getPlayerName(client).." cancelled his vote, was "..previousVote.." ("..activePoll[previousVote][1])
 			end
 		
-			activePoll.votedOption[getPlayerUserName(client)] = nil
+			activePoll.votedOption[getPlayerUserNameSafe(client)] = nil
 			activePoll.playersWhoVoted = activePoll.playersWhoVoted - 1
 			activePoll[previousVote].votes = activePoll[previousVote].votes - 1
 			return
@@ -347,7 +362,7 @@ addEventHandler("onClientSendVote", rootElement,
 		end
 		
 		activePoll.playersWhoVoted = activePoll.playersWhoVoted + 1
-		activePoll.votedOption[getPlayerUserName(client)] = voteID
+		activePoll.votedOption[getPlayerUserNameSafe(client)] = voteID
 
 		recheckVotes()
 	end
@@ -373,11 +388,11 @@ addEventHandler("onPlayerQuit", rootElement,
 			activePoll.maxVoters = activePoll.maxVoters - 1
 			activePoll.allowedPlayers[source] = nil
 			--if he had voted, we'll have to substract his vote
-			local voteID = activePoll.votedOption[getPlayerUserName(source)]
+			local voteID = activePoll.votedOption[getPlayerUserNameSafe(source)]
 			if voteID then
 				activePoll[voteID].votes = activePoll[voteID].votes - 1
 				activePoll.playersWhoVoted = activePoll.playersWhoVoted - 1
-				activePoll.votedOption[getPlayerUserName(client)] = nil
+				activePoll.votedOption[getPlayerUserNameSafe(source)] = nil
 			end
 
 			recheckVotes()
