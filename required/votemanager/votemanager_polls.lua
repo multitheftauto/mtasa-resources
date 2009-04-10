@@ -72,7 +72,7 @@ function vote.map.handler(source,cmd,resource1Name,resource2Name)
 
 	local sourceUserName
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserName(source)
+		sourceUserName = getPlayerUserNameSafe(source)
 	end
 	if source ~= serverConsole and vote.map.blockedPlayers[sourceUserName] then
 		outputVoteManager(cmd..": you have to wait "..vote.map.locktime.." seconds before starting another map vote.", source)
@@ -129,7 +129,7 @@ function vote.mode.handler(source,cmd,resourceName)
 	
 	local sourceUserName
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserName(source)
+		sourceUserName = getPlayerUserNameSafe(source)
 	end
 	if source ~= serverConsole and vote.mode.blockedPlayers[sourceUserName] then
 		outputVoteManager(cmd..": you have to wait "..vote.map.locktime.." seconds before starting another mode vote.", source)
@@ -177,7 +177,7 @@ function vote.kick.handler(source,cmd,playername,...)
 	
 	local sourceUserName
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserName(source)
+		sourceUserName = getPlayerUserNameSafe(source)
 	end
 	if source ~= serverConsole and vote.kick.blockedPlayers[sourceUserName] then
 		outputVoteManager(cmd..": you have to wait "..vote.kick.locktime.." seconds before starting another votekick.", source)
@@ -214,7 +214,7 @@ function vote.ban.handler(source,cmd,playername,...)
 	
 	local sourceUserName
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserName(source)
+		sourceUserName = getPlayerUserNameSafe(source)
 	end
 	if source ~= serverConsole and vote.ban.blockedPlayers[sourceUserName] then
 		outputVoteManager(cmd..": you have to wait "..vote.ban.locktime.." seconds before starting another voteban.", source)
@@ -251,7 +251,7 @@ function vote.kill.handler(source,cmd,playername,...)
 	
 	local sourceUserName
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserName(source)
+		sourceUserName = getPlayerUserNameSafe(source)
 	end
 	if vote.kill.blockedPlayers[sourceUserName] then
 		outputVoteManager(cmd..": you have to wait "..vote.kill.locktime.." seconds before starting another votekill.", source)
