@@ -1,5 +1,5 @@
 function clientCall(player, fnName, ...)
-	triggerClientEvent(player, 'onClientCall', player, fnName, ...)
+    triggerClientEvent(onlyJoined(player), 'onClientCall', player, fnName, ...)
 end
 
 g_AllowedRPCFunctions = {}
@@ -427,15 +427,37 @@ function string:split(separator)
 end
 
 
+function msToTimeStr(ms)
+	if not ms then
+		return ''
+	end
+	local centiseconds = tostring(math.floor(math.fmod(ms, 1000)/10))
+	if #centiseconds == 1 then
+		centiseconds = '0' .. centiseconds
+	end
+	local s = math.floor(ms / 1000)
+	local seconds = tostring(math.fmod(s, 60))
+	if #seconds == 1 then
+		seconds = '0' .. seconds
+	end
+	local minutes = tostring(math.floor(s / 60))
+	return minutes .. ':' .. seconds .. ':' .. centiseconds
+end
+
+
+function getTickTimeStr()
+    return msToTimeStr(getTickCount())
+end
+
 
 function outputDebug( chan, msg )
-    if _DEBUG then
+    if _DEBUG_LOG then
         if not msg then
             msg = chan
-            chan = 'undef'
+            chan = 'UNDEF'
         end
-        if table.find(_DEBUG,chan) then
-            outputDebugString( 'DEBUG: ' .. msg )
+        if table.find(_DEBUG_LOG,chan) then
+            outputDebugString( getTickTimeStr() .. ' DEBUG: ' .. msg )
         end
     end
     if g_PipeDebugTo then
@@ -443,7 +465,7 @@ function outputDebug( chan, msg )
             outputWarning( 'cleared g_PipeDebugTo' )
             g_PipeDebugTo = nil
         else
-            outputConsole( 'DEBUG: ' .. (msg or chan), g_PipeDebugTo )
+            outputConsole( getTickTimeStr() .. ' DEBUG: ' .. (msg or chan), g_PipeDebugTo )
         end
     end
 end
@@ -452,16 +474,17 @@ end
 -- Always send to server window
 -- and all client consoles
 function outputWarning( msg )
-    outputDebugString( 'WARNING: ' .. msg )
-    outputConsole( 'WARNING: ' .. msg )
+    outputDebugString( getTickTimeStr() .. ' WARNING: ' .. msg )
+    outputConsole( getTickTimeStr() .. ' WARNING: ' .. msg )
 end
 
 -- Always send to server window
 -- and chat box window
 function outputError( msg )
-    outputDebugString( 'ERROR: ' .. msg )
-    outputChatBox( 'ERROR: ' .. msg )
+    outputDebugString( getTickTimeStr() .. ' ERROR: ' .. msg )
+    outputChatBox( getTickTimeStr() .. ' ERROR: ' .. msg )
 end
+
 
 ---------------------------------------------------------------------------
 --
@@ -486,6 +509,39 @@ function getRealDateTimeString( time )
                         )
 end
 
+
+---------------------------------------------------------------------------
+--
+-- gets
+--
+---------------------------------------------------------------------------
+
+-- get string or default
+function getString(var,default)
+    local result = get(var)
+    if not result then
+        return default
+    end
+    return tostring(result)
+end
+
+-- get number or default
+function getNumber(var,default)
+    local result = get(var)
+    if not result then
+        return default
+    end
+    return tonumber(result)
+end
+
+-- get true or false or default
+function getBool(var,default)
+    local result = get(var)
+    if not result then
+        return default
+    end
+    return result == 'true'
+end
 
 
 ---------------------------------------------------------------------------

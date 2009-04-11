@@ -29,7 +29,7 @@ local currentRaceStateName = 'undefined'
 -- Change the current state
 ----------------------------------------------------------------------------
 function gotoState(stateName)
-    outputDebug( 'state', 'Changing race state from ' .. currentRaceStateName .. ' to ' .. stateName )
+    outputDebug( 'STATE', 'Changing race state from ' .. currentRaceStateName .. ' to ' .. stateName )
 
     -- If leaving a state dedicated to voting, ensure the voting stops
     if currentRaceStateName == 'MidMapVote' or currentRaceStateName == 'NextMapVote' then
@@ -115,8 +115,8 @@ end
 ----------------------------------------------------------------------------
 function stateAllowsPickup()
     if currentRaceStateName == 'Running'        then    return true     end
-    if currentRaceStateName == 'MidMapVote'   then    return true     end
-    if currentRaceStateName == 'SomeoneWon'   then    return true     end
+    if currentRaceStateName == 'MidMapVote'     then    return true     end
+    if currentRaceStateName == 'SomeoneWon'     then    return true     end
     return false
 end
 
@@ -127,8 +127,10 @@ end
 -- Check if the current state allows the post finish state to to entered
 ----------------------------------------------------------------------------
 function stateAllowsPostFinish()
-    if currentRaceStateName ~= 'PostFinish'        then    return true     end
-    return false
+    if currentRaceStateName == 'PostFinish'         then    return false     end
+    if currentRaceStateName == 'NextMapSelect'      then    return false     end
+    if currentRaceStateName == 'NextMapVote'        then    return false     end
+    return true
 end
 
 
@@ -142,3 +144,15 @@ function stateAllowsNotReadyMessage()
     if currentRaceStateName == 'PreGridCountdown'   then    return true     end
     return false
 end
+
+
+----------------------------------------------------------------------------
+-- stateAllowsGridCountdown
+--
+-- Check if the current state allows the grid countdown to start
+----------------------------------------------------------------------------
+function stateAllowsGridCountdown()
+    if currentRaceStateName == 'PreGridCountdown'   then    return true     end
+    return false
+end
+

@@ -67,7 +67,7 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:flush()
-    outputDebug( 'SMaptimes:flush()')
+    outputDebug( 'TOPTIMES', 'SMaptimes:flush()')
     self:save()
 end
 
@@ -193,7 +193,7 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:getToptimes( howMany )
 
-    if _DEBUG then
+    if _DEBUG_CHECK then
         self:checkIsSorted('getToptimes')
     end
 
@@ -346,7 +346,7 @@ function SMaptimes:setTimeForPlayer( player, time, dateRecorded )
     local newIndex = self:getPositionForTime( row.timeMs, row.dateRecorded )
     table.insert( self.dbTable.rows, newIndex, row )
 
-    if _DEBUG then
+    if _DEBUG_CHECK then
         self:checkIsSorted('setTimeForPlayer')
     end
 

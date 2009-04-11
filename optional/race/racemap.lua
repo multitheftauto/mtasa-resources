@@ -7,7 +7,7 @@ g_MapObjAttrs = {
 g_MapSettingNames = table.create(
 	{'time', 'weather', 'respawn', 'respawntime', 'duration', 'skins', 'bikehats', 'bikehatchance', 'carhats', 'carhatchance',
 	 'hairstyles', 'glasses', 'glasseschance', 'shirts', 'trousers', 'shoes',
-	 'ghostmode', 'vehicleweapons'},
+	 'ghostmode', 'vehicleweapons', 'autopimp', 'firewater', 'cachemodels'},
 	true
 )
 
@@ -149,6 +149,12 @@ function RaceRaceMap:__index(k)
 	local result = rawget(RaceRaceMap, k) or getmetatable(RaceRaceMap).__index(self, k)
 	if result or k == 'options' then
 		return result
+	end
+	if g_MapSettingNames[k] then
+		local result = get(self.resname .. '.' .. k)
+		if result then
+			return result
+		end
 	end
 	return self.options and self.options[k]
 end

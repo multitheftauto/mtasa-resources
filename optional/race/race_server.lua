@@ -30,8 +30,6 @@ g_SpawnTimer = Timer:create()
 g_RankTimer  = Timer:create()
 g_RaceEndTimer = Timer:create()
 
---_DEBUG = {'NOundef','NOopt','NOtoptimes','state','NOdamageproof','NOracewar'}   -- More error output
-_TESTING = true             -- Any user can issue test commands
 
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
@@ -65,24 +63,26 @@ addEventHandler('onGamemodeMapStart', g_Root,
 function cacheGameOptions()
     if not g_GameOptions then
         g_GameOptions = {}
-        g_GameOptions.timeafterfirstfinish  = get('race.timeafterfirstfinish') or 30000
-        g_GameOptions.hurrytime             = get('race.hurrytime') or 15000
-        g_GameOptions.ghostmode             = get('race.ghostmode') or false
-        g_GameOptions.ghostalpha            = get('race.ghostalpha') or false
-        g_GameOptions.randommaps            = get('race.randommaps') or false
-        g_GameOptions.statskey              = get('race.statskey') or 'name'
-        g_GameOptions.vehiclecolors         = get('race.vehiclecolors') or 'file'
-        g_GameOptions.skins                 = get('race.skins') or 'cj'
-        g_GameOptions.autopimp              = get('race.autopimp') or true
-        g_GameOptions.vehicleweapons        = get('race.vehicleweapons') or true
-        g_GameOptions.firewater             = get('race.firewater') or false
-        g_GameOptions.ghostmode_map_can_override        = get('race.ghostmode_map_can_override') or true
-        g_GameOptions.skins_map_can_override            = get('race.skins_map_can_override') or true
-        g_GameOptions.vehicleweapons_map_can_override   = get('race.vehicleweapons_map_can_override') or true
-        g_GameOptions.autopimp_map_can_override         = get('race.autopimp_map_can_override') or true
-        g_GameOptions.firewater_map_can_override        = get('race.firewater_map_can_override') or true
-        g_GameOptions.ghostmode_warning_if_map_override         = get('race.ghostmode_warning_if_map_override') or false
-        g_GameOptions.vehicleweapons_warning_if_map_override    = get('race.vehicleweapons_warning_if_map_override') or false
+        g_GameOptions.timeafterfirstfinish  = getNumber('race.timeafterfirstfinish',30000)
+        g_GameOptions.hurrytime             = getNumber('race.hurrytime',15000)
+        g_GameOptions.ghostmode             = getBool('race.ghostmode',false)
+        g_GameOptions.ghostalpha            = getBool('race.ghostalpha',false)
+        g_GameOptions.randommaps            = getBool('race.randommaps',false)
+        g_GameOptions.statskey              = getString('race.statskey','name')
+        g_GameOptions.vehiclecolors         = getString('race.vehiclecolors','file')
+        g_GameOptions.skins                 = getString('race.skins','cj')
+        g_GameOptions.autopimp              = getBool('race.autopimp',true)
+        g_GameOptions.vehicleweapons        = getBool('race.vehicleweapons',true)
+        g_GameOptions.firewater             = getBool('race.firewater',false)
+        g_GameOptions.cachemodels           = getBool('race.cachemodels',true)
+        g_GameOptions.ghostmode_map_can_override        = getBool('race.ghostmode_map_can_override',true)
+        g_GameOptions.skins_map_can_override            = getBool('race.skins_map_can_override',true)
+        g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
+        g_GameOptions.autopimp_map_can_override         = getBool('race.autopimp_map_can_override',true)
+        g_GameOptions.firewater_map_can_override        = getBool('race.firewater_map_can_override',true)
+        g_GameOptions.cachemodels_map_can_override      = getBool('race.cachemodels_map_can_override',true)
+        g_GameOptions.ghostmode_warning_if_map_override         = getBool('race.ghostmode_warning_if_map_override',true)
+        g_GameOptions.vehicleweapons_warning_if_map_override    = getBool('race.vehicleweapons_warning_if_map_override',true)
 
         if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
             outputWarning( "statskey is not set to 'name' or 'serial'" )
@@ -126,6 +126,7 @@ function loadMap(res)
     g_MapOptions.ghostmode = map.ghostmode == 'true'
     g_MapOptions.autopimp = map.autopimp == 'true'
     g_MapOptions.firewater = map.firewater == 'true'
+    g_MapOptions.cachemodels = map.cachemodels == 'true'
 
     -- Set ghostmode from g_GameOptions if not defined in the map, or map override not allowed
     if not map.ghostmode or not g_GameOptions.ghostmode_map_can_override then
@@ -162,6 +163,11 @@ function loadMap(res)
     -- Set firewater from g_GameOptions if not defined in the map, or map override not allowed
     if not map.firewater or not g_GameOptions.firewater_map_can_override then
         g_MapOptions.firewater = g_GameOptions.firewater
+    end
+
+    -- Set cachemodels from g_GameOptions if not defined in the map, or map override not allowed
+    if not map.cachemodels or not g_GameOptions.cachemodels_map_can_override then
+        g_MapOptions.cachemodels = g_GameOptions.cachemodels
     end
 
 	
@@ -225,7 +231,7 @@ function startRace()
     gotoState('PreGridCountdown')
     triggerEvent('onStartingMap', g_Root, g_CurrentRaceMode:getName(), g_MapInfo.name, g_GameOptions.statskey )
 	g_Players = {}
-	g_SpawnTimer:setTimer(joinHandler, 500, 0)
+	g_SpawnTimer:setTimer(joinHandlerByTimer, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
 		g_RankTimer:setTimer(updateRank, 1000, 0)
 	end
@@ -237,7 +243,7 @@ end
 --      g_RaceStartCountdown
 function launchRace()
 	for i,player in pairs(g_Players) do
-		unfreezePlayerWhenReady(player,g_Vehicles[player])
+		unfreezePlayerWhenReady(player)
 	end
 	clientCall(g_Root, 'launchRace', g_MapOptions.duration, g_MapOptions.vehicleweapons)
 	if g_MapOptions.duration then
@@ -249,7 +255,7 @@ function launchRace()
     gotoState('Running')
 end
 
-g_RaceStartCountdown = Countdown.create(5, launchRace)
+g_RaceStartCountdown = Countdown.create(6, launchRace)
 g_RaceStartCountdown:useImages('img/countdown_%d.png', 474, 204)
 g_RaceStartCountdown:enableFade(true)
 g_RaceStartCountdown:addClientHook(3, 'playSoundFrontEnd', 44)
@@ -277,7 +283,17 @@ end
 --      g_RaceStartCountdown:start()
 --
 -- note: player is always nil on entry
-function joinHandler(player)
+
+function joinHandlerByEvent()
+    setPlayerNotReady(source)
+    joinHandlerBoth()
+end
+
+function joinHandlerByTimer()
+    joinHandlerBoth()
+end
+
+function joinHandlerBoth(player)
 	if #g_Spawnpoints == 0 then
 		-- start vote if no map is loaded
 		outputDebugString('No map loaded; showing votemanager')
@@ -296,8 +312,10 @@ function joinHandler(player)
             -- Is everyone ready?
             if howManyPlayersNotReady() == 0 then
                 g_SpawnTimer:killTimer()
-                gotoState('GridCountdown')
-			    g_RaceStartCountdown:start()
+                if stateAllowsGridCountdown() then
+                    gotoState('GridCountdown')
+			        g_RaceStartCountdown:start()
+                end
     		end
 			return
 		end
@@ -307,9 +325,10 @@ function joinHandler(player)
 		player = source
 	end
     if not player then
-        outputDebug( 'joinHandler: player==nil' )
+        outputDebug( 'MISC', 'joinHandler: player==nil' )
         return
     end
+
 	table.insert(g_Players, player)
 	
 	local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint()
@@ -357,10 +376,13 @@ function joinHandler(player)
 		local nick = getPlayerName(player)
         setRandomSeedForMap('vehiclecolors')
 		vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
+		g_Vehicles[player] = vehicle
 		setVehicleFrozen(vehicle, true)
+        setVehicleDamageProof(vehicle, true)
+        fixVehicle(vehicle)
 		setPedGravity(player, 0.0001)
 		if playerJoined and g_CurrentRaceMode.running then
-            unfreezePlayerWhenReady(player,vehicle)
+            unfreezePlayerWhenReady(player)
 		end
 		
 		if spawnpoint.paintjob or spawnpoint.upgrades then
@@ -388,7 +410,6 @@ function joinHandler(player)
 		end
 		setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)
 		
-		g_Vehicles[player] = vehicle
 	end
 	
     -- Tell all clients to re-apply ghostmode settings in 100ms
@@ -412,7 +433,7 @@ function joinHandler(player)
         startMidMapVoteForRandomMap()
 	end
 end
-addEventHandler('onPlayerJoin', g_Root, joinHandler)
+addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
 
 
 
@@ -420,13 +441,15 @@ addEventHandler('onPlayerJoin', g_Root, joinHandler)
 --      joinHandler
 --      unfreezePlayerWhenReady
 --      launchRace
-function unfreezePlayerWhenReady(player,vehicle)
+function unfreezePlayerWhenReady(player)
 	if not table.find(g_Players, player) then
+        outputDebug( 'MISC', 'unfreezePlayerWhenReady: not table.find(g_Players, player)' )
 		return
 	end
     if not isPlayerReady(player) then
-        setTimer( unfreezePlayerWhenReady, 500, 1, player, vehicle )
+        setTimer( unfreezePlayerWhenReady, 500, 1, player )
     else
+        local vehicle = RaceMode.getPlayerVehicle(player)
 	    setVehicleFrozen(vehicle, false)
 	    setPedGravity(player, 0.008)
     	setVehicleDamageProof(vehicle, false)
@@ -588,7 +611,7 @@ end
 
 addEventHandler('onGamemodeMapStop', g_Root,
 	function(mapres)
-        fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
+        fadeCamera ( g_RootPlayers, false, 0.0, 0,0, 0 )
         gotoState('NoMap')
 		unloadAll()
 	end
@@ -602,6 +625,19 @@ addEventHandler('onPollDraw', g_Root,
 	end
 )
 
+-- Re-get resource call interfaces
+addEventHandler('onResourceStart', g_Root,
+	function(res)
+        local resourceName = getResourceName(res)
+        if resourceName == 'scoreboard' then
+            scoreboard = createResourceCallInterface('scoreboard')
+        elseif resourceName == 'votemanager' then
+            votemanager = createResourceCallInterface('votemanager')
+        elseif resourceName == 'mapmanager' then
+            mapmanager = createResourceCallInterface('mapmanager')
+	    end
+	end
+)
 
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
@@ -621,7 +657,7 @@ addEventHandler('onGamemodeStart', g_ResRoot,
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
         gotoState( 'Race resource stopping' )
-        fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
+        fadeCamera ( g_RootPlayers, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')
 		unloadAll()
 		scoreboard.removeScoreboardColumn('race rank')
@@ -743,6 +779,7 @@ g_NotReady = {}             -- { player = bool }
 g_NotReadyTimer = nil
 g_NotReadyDisplay = nil
 g_NotReadyTextItems = {}
+g_NotReadyDisplayOnTime = 0
 
 -- Remove ref if player quits
 addEventHandler('onPlayerQuit', g_Root,
@@ -751,15 +788,26 @@ addEventHandler('onPlayerQuit', g_Root,
 	end
 )
 
+-- Give 10 seconds for joining players to become not ready
+addEventHandler('onPlayerJoining', g_Root,
+	function()
+        g_JoinerExtraWait = getTickCount() + 10000
+	end
+)
+
+-- Give 30 seconds for not ready players to become ready
 function setPlayerNotReady( player )
     g_NotReady[player] = true
     g_NotReadyTimeout = getTickCount() + 20000 + 10000
+    if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 15000 end
     activateNotReadyText()
 end
 
+-- Alter not ready timeout 
 function setPlayerReady( player )
     g_NotReady[player] = false
     g_NotReadyTimeout = getTickCount() + 20000
+    if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 10000 end
 end
 
 function isPlayerReady( player )
@@ -773,7 +821,10 @@ function howManyPlayersNotReady()
         if g_NotReady[player] then
             count = count + 1
         end
-    end 
+    end
+    if g_JoinerExtraWait and g_JoinerExtraWait > getTickCount() then
+        count = count + 1 -- If the JoinerExtraWait is set, pretend someone is not ready
+    end
     if g_NotReadyTimeout and g_NotReadyTimeout < getTickCount() then
         count = 0       -- If the NotReadyTimeout has passed, pretend everyone is ready
     end
@@ -806,11 +857,13 @@ function updateNotReadyText()
                 textDisplayRemoveObserver(g_NotReadyDisplay, player)
                 names = names .. ' - ' .. getPlayerName(player)
             else
-                textDisplayAddObserver(g_NotReadyDisplay, player)
+                if not textDisplayIsObserver(g_NotReadyDisplay, player) then
+                    textDisplayAddObserver(g_NotReadyDisplay, player)
+                    g_NotReadyDisplayOnTime = getTickCount()
+                end
             end
         end
-		local left = howManyPlayersNotReady()
-		textItemSetText(g_NotReadyTextItems[1], left .. ' more player' .. (left ~= 1 and 's' or '') .. ' travelling... ' )
+		textItemSetText(g_NotReadyTextItems[1], 'Waiting for other players...' )
 		textItemSetText(g_NotReadyTextItems[2], names .. ' - ' )
 	end
 end
@@ -818,9 +871,17 @@ end
 function deactiveNotReadyText()
     if g_NotReadyTimer then
         killTimer( g_NotReadyTimer )
-		textDestroyDisplay(g_NotReadyDisplay)
-		textDestroyTextItem(g_NotReadyTextItems[1])
-		textDestroyTextItem(g_NotReadyTextItems[2])
+        -- Ensure message is displayed for at least 2 seconds
+        local hideDisplayDelay  = math.max(50,math.min(2000,2000+g_NotReadyDisplayOnTime - getTickCount()))
+        local display           = g_NotReadyDisplay;
+        local textItems         = { g_NotReadyTextItems[1], g_NotReadyTextItems[2] };
+		setTimer(
+            function()
+		        textDestroyDisplay(display)
+		        textDestroyTextItem(textItems[1])
+		        textDestroyTextItem(textItems[2])
+            end,
+            hideDisplayDelay, 1 )
         g_NotReadyTimer = nil
 		g_NotReadyDisplay = nil
 		g_NotReadyTextItems[1] = nil
