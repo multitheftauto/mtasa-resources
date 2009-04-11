@@ -63,7 +63,15 @@ addEventHandler("onResourceStart", thisResourceRoot,
 
 --[[ user command handlers ]]--
 
-function vote.map.handler(source,cmd,resource1Name,resource2Name)
+function vote.map.handler(source,cmd,...)
+    -- Handle map name with spaces
+    local resource1Name = table.concat({...},' ')
+    local resource2Name = nil
+    if not getResourceFromName(resource1Name) then
+        resource1Name = table.concat({...},' ',1,1)
+        resource2Name = table.concat({...},' ',2)
+    end
+
 	source = source or serverConsole
 	
 	if isDisabled(cmd, source) then
