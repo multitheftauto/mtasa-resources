@@ -6,7 +6,11 @@ addEventHandler('onClientCall', getRootElement(),
 		for i,pathpart in ipairs(path) do
 			fn = fn[pathpart]
 		end
-		fn(...)
+        if not fn then
+            outputDebugString( 'onClientCall fn is nil for ' .. tostring(fnName) )
+        else
+    		fn(...)
+        end
 	end
 )
 
@@ -88,6 +92,10 @@ function msToTimeStr(ms)
 	end
 	local minutes = tostring(math.floor(s / 60))
 	return minutes .. ':' .. seconds .. ':' .. centiseconds
+end
+
+function getTickTimeStr()
+    return msToTimeStr(getTickCount())
 end
 
 function resAdjust(num)
@@ -235,25 +243,23 @@ end
 
 
 function outputDebug( chan, msg )
-    if _DEBUG then
+    if _DEBUG_LOG then
         if not msg then
             msg = chan
-            chan = 'undef'
+            chan = 'UNDEF'
         end
-        if table.find(_DEBUG,chan) then
-            local ms = getTickCount()
-            outputConsole( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
-            outputDebugString( msToTimeStr(ms) .. ' cDEBUG: ' .. msg )
+        if table.find(_DEBUG_LOG,chan) then
+            outputConsole( getTickTimeStr() .. ' cDEBUG: ' .. msg )
+            outputDebugString( getTickTimeStr() .. ' cDEBUG: ' .. msg )
         end
     end
     if g_bPipeDebug then
-        outputConsole( 'cDEBUG: ' .. (msg or chan) )
+        outputConsole( getTickTimeStr() .. ' cDEBUG: ' .. (msg or chan) )
     end
 end
 
 function outputWarning( msg )
-    local ms = getTickCount()
-    outputConsole( msToTimeStr(ms) .. ' cWARNING: ' .. msg )
-    outputDebugString( msToTimeStr(ms) .. ' cWARNING: ' .. msg )
+    outputConsole( getTickTimeStr() .. ' cWARNING: ' .. msg )
+    outputDebugString( getTickTimeStr() .. ' cWARNING: ' .. msg )
 end
 

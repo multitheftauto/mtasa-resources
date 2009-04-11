@@ -110,7 +110,7 @@ end
 --
 ---------------------------------------------------------------------------
 function SDatabaseTable:tryLoad()
-    outputDebug( 'SDatabaseTable: Loading ' .. self.name )
+    outputDebug( 'TOPTIMES', 'SDatabaseTable: Loading ' .. self.name )
     self.rows = {}
 
     local cmd
@@ -178,7 +178,7 @@ function SDatabaseTable:save()
         return
     end
 
-    outputDebug( 'SDatabaseTable: Saving ' .. self.name )
+    outputDebug( 'TOPTIMES', 'SDatabaseTable: Saving ' .. self.name )
 
 
     -- Being save

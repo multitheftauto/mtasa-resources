@@ -185,6 +185,14 @@ function startNextMapVote()
 	elseif #compatibleMaps < 2 then
 		return false, errorCode.onlyOneCompatibleMap
 	end
+
+    -- mix up the list order
+    for i,map in ipairs(compatibleMaps) do
+        local swapWith = math.random(1, #compatibleMaps)
+        local temp = compatibleMaps[i]
+        compatibleMaps[i] = compatibleMaps[swapWith]
+        compatibleMaps[swapWith] = temp
+    end
 	
 	local poll = {
 		title="Choose the next map:",
@@ -216,7 +224,7 @@ function chooseRandomMap (chosen)
 	if not chosen then
 		cancelEvent()
 		math.randomseed(getTickCount())
-		exports.votemanager:finishPoll(math.random(1, numPollOptions))
+		exports.votemanager:finishPoll(1)
 	end
 	removeEventHandler("onPollEnd", getRootElement(), chooseRandomMap)
 end
@@ -237,3 +245,19 @@ addEventHandler('nextMapVoteResult', getRootElement(),
 	end
 )
 
+
+---------------------------------------------------------------------------
+--
+-- Testing
+--
+--
+--
+---------------------------------------------------------------------------
+addCommandHandler('forcevote',
+    function( player, command, value )
+		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+			return
+		end
+        startNextMapVote()
+    end
+)

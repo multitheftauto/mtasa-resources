@@ -292,6 +292,9 @@ function restorePlayer(id, player)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 		setVehicleFrozen(vehicle, true)
+        setVehicleDamageProof(vehicle, true)
+		setPedGravity(player, 0.0001)
+        fixVehicle(vehicle)
         removeVehicleUpgrade(vehicle, 1010) -- remove nitro
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
 	end
@@ -304,7 +307,10 @@ function restorePlayerUnfreeze(id, player)
 		return
 	end
 	local vehicle = RaceMode.getPlayerVehicle(player)
+    fixVehicle(vehicle)
+    setVehicleDamageProof(vehicle, false)
 	setVehicleFrozen(vehicle, false)
+    setPedGravity(player, 0.008)
 	local bkp = RaceMode.instances[id].checkpointBackups[player][getPlayerCurrentCheckpoint(player)-1]
 	setElementVelocity(vehicle, unpack(bkp.velocity))
 	setVehicleTurnVelocity(g_Vehicles[player], unpack(bkp.turnvelocity))

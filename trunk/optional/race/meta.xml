@@ -6,7 +6,8 @@
 	<include resource="votemanager"/>
 	<include resource="helpmanager" />
 	
-	<script src="_eventqueue.lua" type="server"/>
+	<script src="_common.lua" type="server"/>
+	<script src="_joiner.lua" type="server"/>
 	<script src="util_server.lua" type="server"/>
 	<script src="racemap.lua" type="server"/>
 	<script src="countdown.lua" type="server"/>
@@ -22,6 +23,8 @@
 	<script src="toptimes/maptimes_server.lua" type="server"/>
 	<script src="toptimes/toptimes_server.lua" type="server"/>
 	
+	<script src="_common.lua" type="client"/>
+	<script src="_joiner_client.lua" type="client"/>
 	<script src="_custommodel.lua" type="client"/>
 	<script src="util_client.lua" type="client"/>
 	<script src="fancyprogress.lua" type="client"/>
@@ -62,23 +65,23 @@
 	<export function="isPlayerFinished" type="server"/>
 	
 	<settings>
-		<setting name="*hurrytime" value="[15000]"/>
-		<setting name="*timeafterfirstfinish" value="[30000]"/>
+		<setting name="*hurrytime" value="15000"/>
+		<setting name="*timeafterfirstfinish" value="30000"/>
 
         <!-- ghostmode
-                [false]   - Collisions enabled.
-                [true]    - Collisions disabled. -->
-        <setting name="*ghostmode" value="[false]"/>
+                false   - Collisions enabled.
+                true    - Collisions disabled. -->
+        <setting name="*ghostmode" value="false"/>
 
         <!-- ghostalpha
-                [false]   - No effect.
-                [true]    - Make vehicle semi-transparent when collisions are disabled. -->
-        <setting name="*ghostalpha" value="[false]"/>
+                false   - No effect.
+                true    - Make vehicle semi-transparent when collisions are disabled. -->
+        <setting name="*ghostalpha" value="false"/>
 
         <!-- randommaps
-                [false]   - Map vote at the end of each map.
-                [true]    - Next map automatically selected. -->
-        <setting name="*randommaps" value="[false]"/>
+                false   - Map vote at the end of each map.
+                true    - Next map automatically selected. -->
+        <setting name="*randommaps" value="false"/>
 
         <!-- statskey
                 name    - Use player name to identify player for stats.
@@ -97,33 +100,55 @@
         <setting name="*skins" value="cj"/>
 
         <!-- vehicleweapons
-                [false]   - Don't allow vehicle weapons.
-                [true]    - Allow vehicle weapons. -->
-        <setting name="*vehicleweapons" value="[true]"/>
+                false   - Don't allow vehicle weapons.
+                true    - Allow vehicle weapons. -->
+        <setting name="*vehicleweapons" value="true"/>
 
         <!-- autopimp
-                [false]   - Standard vehicles.
-                [true]    - Apply a selection of visual upgrades to vehicles. -->
-        <setting name="*autopimp" value="[true]"/>
+                false   - Standard vehicles.
+                true    - Apply a selection of visual upgrades to vehicles. -->
+        <setting name="*autopimp" value="true"/>
 
         <!-- firewater
-                [false]   - Player drowns in water.
-                [true]    - Player explodes in water. -->
-        <setting name="*firewater" value="[false]"/>
+                false   - Player drowns in water.
+                true    - Player explodes in water. -->
+        <setting name="*firewater" value="false"/>
+
+        <!-- cachemodels
+                Note: This is an advanced setting. It should usually be enabled here, and disabled in each map that requires it.
+                false   - Do not cache map models. Use this for maps which have problems being displayed correctly.
+                true    - Cache map models to reduce lag-stutter effect. -->
+        <setting name="*cachemodels" value="true"/>
 
         <!-- xxxx_map_can_override
-                [false]   - Ignore setting in the map.
-                [true]    - If the setting exists in the map, use that instead of the one in this file. -->
-        <setting name="*ghostmode_map_can_override" value="[true]"/>
-        <setting name="*skins_map_can_override" value="[true]"/>
-        <setting name="*vehicleweapons_map_can_override" value="[true]"/>
-        <setting name="*autopimp_map_can_override" value="[true]"/>
-        <setting name="*firewater_map_can_override" value="[true]"/>
+                false   - Ignore setting in the map.
+                true    - If the setting exists in the map, use that instead of the one in this file. -->
+        <setting name="*ghostmode_map_can_override" value="true"/>
+        <setting name="*skins_map_can_override" value="true"/>
+        <setting name="*vehicleweapons_map_can_override" value="true"/>
+        <setting name="*autopimp_map_can_override" value="true"/>
+        <setting name="*firewater_map_can_override" value="true"/>
+        <setting name="*cachemodels_map_can_override" value="true"/>
 
         <!-- xxxx_warning_if_map_override
-                [false]   -
-                [true]    - Issue a warning to players in the chatbox, if the map overrides the setting from this file. -->
-        <setting name="*ghostmode_warning_if_map_override" value="[true]"/>
-        <setting name="*vehicleweapons_warning_if_map_override" value="[true]"/>
+                false   -
+                true    - Issue a warning to players in the chatbox, if the map overrides the setting from this file. -->
+        <setting name="*ghostmode_warning_if_map_override" value="true"/>
+        <setting name="*vehicleweapons_warning_if_map_override" value="true"/>
     </settings>
+
+
+    <!--
+        Settings in the map files
+        +++++++++++++++++++++++++
+        To add the 'ghostmode','skins','vehicleweapons','autopimp','firewater' or 'cachemodels'
+        setting to a map, insert (or update) a <settings...> section into the maps meta.xml file.
+        For example:
+
+        <settings>
+            <setting name="*vehicleweapons" value="false"/>
+            <setting name="*autopimp" value="false"/>
+        </settings>
+    -->
+
 </meta>

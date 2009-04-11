@@ -54,7 +54,7 @@ addEventHandler('onPlayerReachedFinish', getRootElement(),
 --
 ---------------------------------------------------------------------------
 function CToptimes:create()
-    outputDebug ( 'CToptimes:create' )
+    outputDebug ( 'TOPTIMES', 'CToptimes:create' )
     local id = #CToptimes.instances + 1
     CToptimes.instances[id] = setmetatable(
         {
@@ -191,10 +191,10 @@ function destroyElementList ( list )
     for key,value in pairs(list) do
         if value then
             if type(value) == 'table' then
-                outputDebug( 'destroyElementList '..tostring(value)..' '..tostring(key) )
+                outputDebug( 'TOPTIMES', 'destroyElementList '..tostring(value)..' '..tostring(key) )
                 destroyElementList(value)
             else
-                outputDebug( 'destroyElement '..tostring(value)..' '..tostring(key) )
+                outputDebug( 'TOPTIMES', 'destroyElement '..tostring(value)..' '..tostring(key) )
                 destroyElement(value)
             end
         end
@@ -268,7 +268,7 @@ function CToptimes:updateShow()
     local bShowAny = self.bAutoShow or self.bManualShow
     self:enableToptimeUpdatesFromServer( bShowAny )
 
-    --outputDebug( 'updateShow bAutoShow:'..tostring(self.bAutoShow)..' bManualShow:'..tostring(self.bManualShow)..' listStatus:'..self.listStatus )
+    --outputDebug( 'TOPTIMES', 'updateShow bAutoShow:'..tostring(self.bAutoShow)..' bManualShow:'..tostring(self.bManualShow)..' listStatus:'..self.listStatus )
     if not bShowAny then
         self.targetFade = 0
     elseif not self.bManualShow and self.listStatus ~= 'Full' then
@@ -341,7 +341,7 @@ end
 --
 ---------------------------------------------------------------------------
 function CToptimes:doOnServerSentToptimes( data, serverRevision, playerPosition )
-    outputDebug( 'CToptimes:doOnServerSentToptimes ' .. #data )
+    outputDebug( 'TOPTIMES', 'CToptimes:doOnServerSentToptimes ' .. #data )
 
     -- Calc number lines to use and height of window
     local numLines = clamp( 0, #data, 50 )
@@ -373,10 +373,10 @@ function CToptimes:doOnServerSentToptimes( data, serverRevision, playerPosition 
     end
 
     -- Debug
-    if _DEBUG then
-        outputDebug( 'toptimes', string.format('crev:%s  srev:%s', tostring(self.clientRevision), tostring(serverRevision) ) )
+    if _DEBUG_CHECK then
+        outputDebug( 'TOPTIMES', 'toptimes', string.format('crev:%s  srev:%s', tostring(self.clientRevision), tostring(serverRevision) ) )
         if self.clientRevision == serverRevision then
-            outputDebug( 'Already have this revision' )
+            outputDebug( 'TOPTIMES', 'Already have this revision' )
         end
     end
 

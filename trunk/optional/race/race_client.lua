@@ -11,8 +11,6 @@ g_Pickups = {}
 g_VisiblePickups = {}
 g_Objects = {}
 
---_DEBUG = {'undef','Xopt','Xtoptimes'}   -- More error output
-_TESTING = true             -- Any user can issue test commands
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
@@ -54,14 +52,10 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		end
 		
 		setPedCanBeKnockedOffBike(g_Me, false)
-        if _DEBUG then
-    		setTimer( function() triggerServerEvent('onLoadedAtClient', g_Me) end, math.random(3000,5000), 1 )
-        else
-    		triggerServerEvent('onLoadedAtClient', g_Me)
-	    end
 	end
 )
 
+--fadeCamera( true, 0 ) -- fadeup
 
 ------------------------------------------------
 -- Misc message for client feedback when loading big maps
@@ -84,7 +78,7 @@ end
 
 
 function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, gameoptions, mapinfo, playerInfo)
-    outputDebug( 'initRace start' )
+    outputDebug( 'MISC', 'initRace start' )
     hideMiscMessage()
 	unloadAll()
 	
@@ -95,7 +89,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     g_PlayerInfo = playerInfo
     triggerEvent('onMapStarting', g_Me, mapinfo )
 	
-	--fadeCamera(true)
+	fadeCamera(true)
 	showHUD(false)
 	
 	g_Vehicle = vehicle
@@ -142,17 +136,21 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	end
 
     -- Make sure one copy of each model does not get streamed out to help caching.
+    local maxNonStreamedModels = (g_MapOptions.cachemodels and 100) or 0
     local nonStreamedModels = {}
+    local numNonStreamedModels = 0
  	for i,obj in ipairs(g_Objects) do
         local model = getElementModel ( obj )
-        if model and not nonStreamedModels[model] then
+        if model and not nonStreamedModels[model] and numNonStreamedModels < maxNonStreamedModels then
             if setElementStreamable ( obj, false ) then
                 nonStreamedModels[model] = obj
+                numNonStreamedModels = numNonStreamedModels + 1
             else
-                outputDebug( 'setElementStreamable( obj, false ) failed for ' .. tostring(model) )
+                outputDebug( 'MISC', 'setElementStreamable( obj, false ) failed for ' .. tostring(model) )
             end           
         end
     end
+    outputDebug( 'MISC', 'maxNonStreamedModels:' .. tostring(maxNonStreamedModels) .. '  numNonStreamedModels:' .. numNonStreamedModels )
 	
 	if #g_Checkpoints > 0 then
 		g_CurrentCheckpoint = 0
@@ -177,7 +175,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     setTimer(fadeCamera, 750, 1, true, 10.0)
     setTimer(fadeCamera, 1500, 1, true, 2.0)
     setTimer( function() triggerServerEvent('onClientRaceReady', g_Me) end, 3500, 1 )
-    outputDebug( 'initRace end' )
+    outputDebug( 'MISC', 'initRace end' )
 end
 
 function launchRace(duration)
@@ -677,9 +675,9 @@ function makeCheckpointCurrent(i)
 	end
 	
 	if not checkpoint.type or checkpoint.type == 'checkpoint' then
-		checkpoint.colshape = createColCircle(pos[1], pos[2], checkpoint.size*4)
+		checkpoint.colshape = createColCircle(pos[1], pos[2], checkpoint.size*4 + 3)
 	else
-		checkpoint.colshape = createColSphere(pos[1], pos[2], pos[3], checkpoint.size*8)
+		checkpoint.colshape = createColSphere(pos[1], pos[2], pos[3], checkpoint.size*8 + 3)
 	end
 	addEventHandler('onClientColShapeHit', checkpoint.colshape, checkpointReached, false)
 end
