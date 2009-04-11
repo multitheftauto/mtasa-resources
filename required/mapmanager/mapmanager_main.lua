@@ -135,7 +135,8 @@ addEventHandler("onGamemodeMapStart", rootElement,
 	end
 )
 
-function changeGamemodeMap_cmd(source, command, mapName, gamemodeName)
+function changeGamemodeMap_cmd(source, command, ...)
+    local mapName = table.concat({...},' ')
 	source = source or serverConsole
 
 	local map
@@ -170,7 +171,9 @@ function changeGamemodeMap_cmd(source, command, mapName, gamemodeName)
 end
 addCommandHandler("changemap", changeGamemodeMap_cmd, true)
 
-function changeGamemode_cmd(source, command, gamemodeName, mapName)
+function changeGamemode_cmd(source, command, ...)
+    local gamemodeName = table.concat({...},' ',1,1)
+    local mapName = table.concat({...},' ',2)
 	source = source or serverConsole
 
 	local gamemode
