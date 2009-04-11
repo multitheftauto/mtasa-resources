@@ -149,19 +149,33 @@ addEventHandler('_onClientResourceStart', g_ResRoot,
 	end
 )
 
--- onJoinCompleteAtServer
---   A player is fully joined at the server. Call the deferred onClientPlayerJoin event handlers.
-addEvent('onJoinCompleteAtServer', true)
-addEventHandler('onJoinCompleteAtServer', g_Root,
+-- onMyJoinCompleteAtServer
+--   This player is now fully joined at the server.
+addEvent('onMyJoinCompleteAtServer', true)
+addEventHandler('onMyJoinCompleteAtServer', g_Root,
 	function(allJoinedPlayersAtServer)
-        outputDebug( 'JOINER', 'onJoinCompleteAtServer source:' .. tostring(source) )
-        outputDebug( 'JOINER', 'onJoinCompleteAtServer #allJoinedPlayersAtServer:' .. tostring(#allJoinedPlayersAtServer) )
+        outputDebug( 'JOINER', 'onMyJoinCompleteAtServer source:' .. tostring(getPlayerName(source)) )
+        outputDebug( 'JOINER', 'onMyJoinCompleteAtServer #allJoinedPlayersAtServer:' .. tostring(#allJoinedPlayersAtServer) )
 
-        outputDebug( 'JOINER', 'onJoinCompleteAtServer A #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
+        outputDebug( 'JOINER', 'onMyJoinCompleteAtServer A #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
         for i,player in ipairs(allJoinedPlayersAtServer) do
             table.insertUnique(g_JoinedPlayers,player)
         end
-        outputDebug( 'JOINER', 'onJoinCompleteAtServer B #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
+        outputDebug( 'JOINER', 'onMyJoinCompleteAtServer B #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
+	end
+)
+
+
+-- onOtherJoinCompleteAtServer
+--   A player is fully joined at the server. Call the deferred onClientPlayerJoin event handlers.
+addEvent('onOtherJoinCompleteAtServer', true)
+addEventHandler('onOtherJoinCompleteAtServer', g_Root,
+	function()
+        outputDebug( 'JOINER', 'onOtherJoinCompleteAtServer source:' .. tostring(getPlayerName(source)) )
+
+        outputDebug( 'JOINER', 'onOtherJoinCompleteAtServer A #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
+        table.insertUnique(g_JoinedPlayers,source)
+        outputDebug( 'JOINER', 'onOtherJoinCompleteAtServer B #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
 
         callSavedEventHandlers( 'onClientPlayerJoin', source )
 	end

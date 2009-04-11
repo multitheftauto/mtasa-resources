@@ -197,15 +197,21 @@ addEvent('onLoadedAtClient', true)
 addEventHandler('onLoadedAtClient', g_Root,
 	function()
         --setPlayerStatus(source,'loaded')
-        setElementParent( source, g_RootPlayers )
         outputDebug( 'JOINER', "getPlayerCount() #4 " .. tostring(getPlayerCount()) )
-        outputDebug( 'JOINER', 'onLoadedAtClient source:' .. tostring(source) ..'  plr:' .. tostring(plr) )
+        outputDebug( 'JOINER', 'onLoadedAtClient source:' .. tostring(source) ..'  name:' .. tostring(getPlayerName(source)) )
         outputDebug( 'JOINER', 'onLoadedAtClient g_RootJoining count:' .. tostring(getElementChildrenCount(g_RootJoining)) .. '  g_RootPlayers count:' .. tostring(getElementChildrenCount(g_RootPlayers)) )
         --setPlayerStatus(source,'spectating')
 
+        -- Tell other clients; join completed for this player
+        triggerClientEvent( g_RootPlayers, 'onOtherJoinCompleteAtServer', source )
+
+        setElementParent( source, g_RootPlayers )
+
+        -- Tell client; join completed; and send a list of all joined players
+        triggerClientEvent( source,        'onMyJoinCompleteAtServer',    source, getElementChildren(g_RootPlayers) )
+
+        -- Call deferred onPlayerJoin event handlers
         callSavedEventHandlers( 'onPlayerJoin', source )
-        -- Tell client join completed and send a list off all joined players
-        triggerClientEvent( 'onJoinCompleteAtServer', source, getElementChildren(g_RootPlayers) )
 	end
 )
 
