@@ -92,8 +92,8 @@ local function processCursorMove (absoluteX,absoluteY)
 		end
 	end
 
-	-- raise height if pickup
-	if (getElementType(selectedElement) == "pickup") then
+	-- raise height if pickup or a marker
+	if (getElementType(selectedElement) == "pickup") or (getElementType(selectedElement) == "marker") then
 		if (surfaceFound) then
 			surfaceZ = surfaceZ + 1
 		end

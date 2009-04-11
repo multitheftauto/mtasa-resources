@@ -131,8 +131,8 @@ local function onClientRender_freecam()
 		local surfaceFound, surfaceX, surfaceY, surfaceZ, element = processLineOfSight(camX, camY, camZ, targetX, targetY, targetZ, true, true, true, true, true, true, false, true, selectedElement)
 		local waterFound, waterX, waterY, waterZ = testLineAgainstWater(camX, camY, camZ, targetX, targetY, targetZ)
 
-		-- raise height if pickup
-		if (getElementType(selectedElement) == "pickup") then
+		-- raise height if pickup or a marker
+		if (getElementType(selectedElement) == "pickup") or (getElementType(selectedElement) == "marker") then
 			if (surfaceFound) then
 				surfaceZ = surfaceZ + 1
 			end
