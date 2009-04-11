@@ -832,7 +832,7 @@ function dropElement(releaseLock,clonedrop)
 	
 	outputDebugString("Detached element.")
 	
-	if getKeyState("clone_drop_modifier") and clonedrop then
+	if getCommandState("clone_drop_modifier") and clonedrop then
 		return doCloneElement(droppedElement)
 	else
 		return true
