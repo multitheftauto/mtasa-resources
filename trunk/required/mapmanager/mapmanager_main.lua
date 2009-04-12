@@ -52,6 +52,10 @@ addEventHandler("onResourceStart", rootElement,
 				end, 
 			50, 1 )
 		elseif isMap(startedResource) then --If its a map
+			--Make sure there is a gamemode running
+			if not getRunningGamemode() then
+				return
+			end
 			--Is there a map running already?
 			if getRunningGamemodeMap() then
 				return
