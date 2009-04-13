@@ -52,6 +52,8 @@ addEventHandler('onGamemodeMapStart', g_Root,
 			unloadAll()
 		end
 		if not loadMap(mapres) then
+            -- Select another map on load error
+            RaceMode.startNextMapSelect()
 			return
 		end
 		g_CurrentRaceMode = RaceMode.getApplicableMode():create()
@@ -98,7 +100,8 @@ end
 function loadMap(res)
 	local map = RaceMap.load(res)
 	if not map then
-		outputDebugString('Error loading map')
+		outputDebugString( 'Error loading map ' .. tostring(getResourceName(res)) )
+        outputChatBox( 'Error loading map ' .. tostring(getResourceName(res)) )
 		return false
 	end
 	
