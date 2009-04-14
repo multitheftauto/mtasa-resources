@@ -288,7 +288,7 @@ function restorePlayer(id, player)
 			setVehicleID(vehicle, bkp.vehicle)
 		end
 		warpPedIntoVehicle(player, vehicle)
-		setTimer(warpPlayerIntoVehicle, 500, 5, player, vehicle)
+		setTimer(warpPedIntoVehicle, 500, 5, player, vehicle)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 		setVehicleFrozen(vehicle, true)
