@@ -13,7 +13,7 @@ function openChute ( object, player, time )
 	openingChutes[object].time = time
 	openingChutes[object].player = player
 	openingChutes[object].originalTick = getTickCount()
-	attachElementToElement ( object, player, unpack(offset) )
+	attachElements ( object, player, unpack(offset) )
 	return true
 end
 

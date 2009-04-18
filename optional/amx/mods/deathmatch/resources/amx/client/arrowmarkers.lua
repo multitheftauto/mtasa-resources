@@ -43,7 +43,7 @@ addEventHandler('onClientElementStreamOut', getRootElement(),
 		end
 		local info = streamedMarkers[source]
 		if info.attachedTo then
-			attachElementToElement(source, info.attachedTo, unpack(info))
+			attachElements(source, info.attachedTo, unpack(info))
 		else
 			setElementPosition(source, unpack(info))
 		end

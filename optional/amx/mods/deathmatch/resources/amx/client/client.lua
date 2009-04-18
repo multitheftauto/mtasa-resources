@@ -230,7 +230,7 @@ function AttachPlayerObjectToPlayer(amxName, objID, attachPlayer, offsetX, offse
 	if not obj then
 		return
 	end
-	attachElementToElement(obj, attachPlayer, offsetX, offsetY, offsetZ, rX, rY, rZ)
+	attachElements(obj, attachPlayer, offsetX, offsetY, offsetZ, rX, rY, rZ)
 end
 
 function CreatePlayerObject(amxName, objID, model, x, y, z, rX, rY, rZ)
@@ -398,7 +398,7 @@ function SetVehicleParamsForPlayer(vehicle, isObjective, doorsLocked)
 		if not vehInfo.marker then
 			local x, y, z = getElementPosition(vehicle)
 			vehInfo.marker = createMarker(x, y, z, 'arrow', 2, 255, 255, 100)
-			attachElementToElement(vehInfo.marker, vehicle, 0, 0, 6)
+			attachElements(vehInfo.marker, vehicle, 0, 0, 6)
 			setElementParent(vehInfo.marker, vehicle)
 		end
 	end

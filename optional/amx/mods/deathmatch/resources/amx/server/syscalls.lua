@@ -282,7 +282,7 @@ function ApplyAnimation(amx, player, animLib, animName, fS, opt1, opt2, opt3, op
 end
 
 function AttachObjectToPlayer(amx, object, player, offsetX, offsetY, offsetZ, rX, rY, rZ)
-	attachElementToElement(object, player, offsetX, offsetY, offsetZ, rX, rY, rZ)
+	attachElements(object, player, offsetX, offsetY, offsetZ, rX, rY, rZ)
 end
 
 function AttachTrailerToVehicle(amx, trailer, vehicle)
