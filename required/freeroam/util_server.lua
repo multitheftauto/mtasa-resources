@@ -10,7 +10,7 @@ end
 
 function isPlayerTerminated(player)
 	local x, y, z = getElementPosition(player)
-	return (math.floor(x) == 132 and math.floor(y) == -68) or (math.abs(x) < 2 and math.abs(y) < 0 and z < 1)
+	return (math.floor(x) == 132 and math.floor(y) == -68) or (math.abs(x) < 2 and math.abs(y) < 2 and z < 1)
 end
 
 function errMsg(msg, player)
