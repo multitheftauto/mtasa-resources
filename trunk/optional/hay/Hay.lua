@@ -184,7 +184,7 @@ function onThisResourceStart ( )
 	
 	--Place top-haybail + minigun
 	createObject ( 3374, barrier_x, barrier_y, options.z * 3 + 3 )
-	createPickup ( barrier_x, barrier_y, options.z * 3 + 6, 3, 2880, 1 )
+	thePickup = createPickup ( barrier_x, barrier_y, options.z * 3 + 6, 3, 2880, 1 )
 	setTimer ( move, 100, 0 )
 	setTimer ( barrier, 1000, 1)
 	fadeCamera ( getRootElement(), true )
@@ -201,7 +201,7 @@ function barrier ()
 end
 
 function onPickupHit ( player )
-	if (getPickupType ( source ) == 2) then
+	if source == thePickup then
 		outputChatBox( "* " .. getPlayerName ( player ) .. " made it to the top!", root, 255, 100, 100 )
 		toggleControl ( source, "fire", true )
 		destroyElement( source )

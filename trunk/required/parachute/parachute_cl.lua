@@ -182,7 +182,7 @@ function removeParachute(player,type)
 			  {{ from = 0, to = 100, time = t(2500), fn = animationParachute_land }}
 			)
 			setTimer ( function()
-				detachElementFromElement ( chute, player )
+				detachElements ( chute, player )
 				setTimer ( destroyElement, t(3000), 1, chute )
 			end,
 			t(2500),

@@ -24,7 +24,7 @@ local function onRender()
 				if not processLineOfSight ( x,y,z, x,y,z-MIN_GROUND_HEIGHT, true, true,false,true,true,false,false,false,localPlayer ) then
 					setElementData(localPlayer,"skydiving",true)
 					setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_skyDive", -1, true, true, false )	
-					setPlayerWeaponSlot(localPlayer,11)
+					setPedWeaponSlot(localPlayer,11)
 					toggleControl ( "next_weapon", false )
 					toggleControl ( "previous_weapon", false )
 					addEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )

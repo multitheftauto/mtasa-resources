@@ -169,7 +169,7 @@ end
 -- Modified createobject for easier usage - MK
 function createobjectforplayer( player, command, object )
 	local rotation_Z, distance = 0, 5
-	local PlayerRotation = getPlayerRotation ( player )
+	local PlayerRotation = getPedRotation ( player )
 	local rotation_Z = PlayerRotation + 90
 	local Player_x, Player_y, Player_z = getElementPosition ( player )
 	local Player_x = Player_x + (( math.cos( math.rad ( rotation_Z ))) * distance )
