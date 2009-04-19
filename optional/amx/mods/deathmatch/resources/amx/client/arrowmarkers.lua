@@ -27,7 +27,7 @@ addEventHandler('onClientElementStreamIn', getRootElement(),
 		if attachedTo then
 			local x, y, z = getElementPosition(source)
 			local baseX, baseY, baseZ = getElementPosition(attachedTo)
-			detachElementFromElement(source)
+			detachElements(source)
 			streamedMarkers[source] = { x - baseX, y - baseY, z - baseZ, attachedTo = attachedTo }
 		else
 			streamedMarkers[source] = { getElementPosition(source) }

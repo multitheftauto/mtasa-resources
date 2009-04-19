@@ -95,7 +95,7 @@ function toggleDriveby()
 		--If a valid weapon was not found, dont set anything.
 		if not switchTo then return end
 		setPedDoingGangDriveby ( localPlayer, true )
-		setPlayerWeaponSlot( localPlayer, switchTo )
+		setPedWeaponSlot( localPlayer, switchTo )
 		--Setup our driveby limiter
 		limitDrivebySpeed ( switchToWeapon )
 		--Disable look left/right keys, they seem to become accelerate/decelerate (carried over from PS2 version)
@@ -107,7 +107,7 @@ function toggleDriveby()
 	else
 		--If so, unequip it
 		setPedDoingGangDriveby ( localPlayer, false )
-		setPlayerWeaponSlot( localPlayer, 0 )
+		setPedWeaponSlot( localPlayer, 0 )
 		limitDrivebySpeed ( switchToWeapon )
 		toggleControl ( "vehicle_look_left",true )
 		toggleControl ( "vehicle_look_right",true )
