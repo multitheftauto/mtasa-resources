@@ -34,6 +34,7 @@ function DestructionDerby:onPlayerWasted(player)
 	RaceMode.setPlayerFinished(player)
 end
 
+--[[
 function DestructionDerby:pickFreeSpawnpoint()
 	local i = table.find(RaceMode.getSpawnpoints(), 'used', '[nil]')
 	if i then
@@ -50,3 +51,4 @@ function DestructionDerby:pickFreeSpawnpoint()
 	end
 	return spawnpoint
 end
+--]]

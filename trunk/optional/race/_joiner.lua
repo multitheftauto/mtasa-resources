@@ -132,6 +132,9 @@ end
 -- If g_Root, change to g_RootPlayers
 function onlyJoined(player)
     if player == g_Root then
+        if not g_RootPlayers then
+            return getResourceRootElement(getThisResource())    -- return an element which will have no players
+        end
         return g_RootPlayers
     end
     return player

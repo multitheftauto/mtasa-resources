@@ -11,6 +11,7 @@ g_Pickups = {}
 g_VisiblePickups = {}
 g_Objects = {}
 
+outputChatBox ( "Race version r135 20Apr09", 255, 127, 0 )
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
