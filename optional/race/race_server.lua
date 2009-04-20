@@ -118,7 +118,7 @@ function loadMap(res)
     g_MapInfo.name      = map.info['name'] or 'unnamed'
     g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
 	g_MapOptions = {}
-	g_MapOptions.duration = map.duration and map.duration*1000 or 1800000
+	g_MapOptions.duration = map.duration and tonumber(map.duration) > 0 and map.duration*1000 or 1800000
 	g_MapOptions.respawn = map.respawn
 	if not g_MapOptions.respawn or g_MapOptions.respawn ~= 'none' then
 		g_MapOptions.respawn = 'timelimit'
@@ -238,7 +238,6 @@ function startRace()
 	if g_CurrentRaceMode:isRanked() then
 		g_RankTimer:setTimer(updateRank, 1000, 0)
 	end
-    g_SpawnpointCounter = 0
 end
 
 
@@ -381,6 +380,7 @@ function joinHandlerBoth(player)
 		vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
 		g_Vehicles[player] = vehicle
 		setVehicleFrozen(vehicle, true)
+        outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
         setVehicleDamageProof(vehicle, true)
         fixVehicle(vehicle)
 		setPedGravity(player, 0.0001)
@@ -449,10 +449,12 @@ function unfreezePlayerWhenReady(player)
         outputDebug( 'MISC', 'unfreezePlayerWhenReady: not table.find(g_Players, player)' )
 		return
 	end
-    if not isPlayerReady(player) then
+    if isPlayerNotReady(player) then
+        outputDebug( 'MISC', 'unfreezePlayerWhenReady: isPlayerNotReady(player) for ' .. tostring(getPlayerName(player)) )
         setTimer( unfreezePlayerWhenReady, 500, 1, player )
     else
         local vehicle = RaceMode.getPlayerVehicle(player)
+        outputDebug( 'MISC', 'unfreezePlayerWhenReady: setVehicleFrozen false for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
 	    setVehicleFrozen(vehicle, false)
 	    setPedGravity(player, 0.008)
     	setVehicleDamageProof(vehicle, false)
@@ -813,15 +815,15 @@ function setPlayerReady( player )
     if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 10000 end
 end
 
-function isPlayerReady( player )
-    return not g_NotReady[player]
+function isPlayerNotReady( player )
+    return g_NotReady[player]
 end
 
 
 function howManyPlayersNotReady()
     local count = 0
     for i,player in ipairs(g_Players) do
-        if g_NotReady[player] then
+        if isPlayerNotReady(player) then
             count = count + 1
         end
     end
@@ -856,7 +858,7 @@ function updateNotReadyText()
         -- Make sure all ready players are observers, and compile name list of players not ready
         local names = '';
         for i,player in ipairs(g_Players) do
-            if g_NotReady[player] then
+            if isPlayerNotReady(player) then
                 textDisplayRemoveObserver(g_NotReadyDisplay, player)
                 names = names .. ' - ' .. getPlayerName(player)
             else

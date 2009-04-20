@@ -67,6 +67,7 @@ function RankingBoard:add(name, time)
 	table.insert(self.labels, posLabelShadow)
 	table.insert(self.labels, playerLabel)
 	table.insert(self.labels, playerLabelShadow)
+    playSoundFrontEnd(7)
 	if doBoardScroll then
 		guiSetAlpha(posLabel, 0)
 		guiSetAlpha(posLabelShadow, 0)

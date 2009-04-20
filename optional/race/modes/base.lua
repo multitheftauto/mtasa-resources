@@ -240,13 +240,55 @@ function RaceMode:onPlayerWasted(player)
 	end
 end
 
-function RaceMode:pickFreeSpawnpoint()
-    g_SpawnpointCounter = g_SpawnpointCounter or 0
-    g_SpawnpointCounter = g_SpawnpointCounter + 1
-    if g_SpawnpointCounter > RaceMode.getNumberOfSpawnpoints() then
-        g_SpawnpointCounter = 1
+
+function distanceFromVehicleToSpawnpoint(vehicle, spawnpoint)
+    if vehicle then
+	    local x, y, z = getElementPosition(vehicle)
+	    return getDistanceBetweenPoints3D(x, y, z, unpack(spawnpoint.position))
     end
-	return RaceMode.getSpawnpoint(g_SpawnpointCounter)
+    return 10
+end
+
+function getSpaceAroundSpawnpoint(spawnpoint)
+    local space = 100000
+    for i,player in ipairs(g_Players) do
+        space = math.min(space, distanceFromVehicleToSpawnpoint(g_Vehicles[player], spawnpoint))
+    end
+    return space
+end
+
+function hasSpaceAroundSpawnpoint(spawnpoint, requiredSpace)
+    for i,player in ipairs(g_Players) do
+        if distanceFromVehicleToSpawnpoint(g_Vehicles[player], spawnpoint) < requiredSpace then
+            return false
+        end
+    end
+    return true
+end
+
+function RaceMode:pickFreeSpawnpoint()
+    -- Use the spawnpoints from #1 to #numplayers as a pool to use
+    local numToScan = math.min(getPlayerCount(), #g_Spawnpoints)
+    -- Starting at a random place in the pool...
+    local scanPos = math.random(1,numToScan)
+    -- ...loop through looking for a free spot
+    for i=1,numToScan do
+        local idx = (i + scanPos) % numToScan + 1
+        if hasSpaceAroundSpawnpoint(g_Spawnpoints[idx], 1) then
+            return g_Spawnpoints[idx]
+        end
+    end
+    -- If one can't be found, find the spot which has the most space
+    local bestSpace = 0
+    local bestMatch = 1
+    for i=1,numToScan do
+        local space = getSpaceAroundSpawnpoint(g_Spawnpoints[i])
+        if space > bestSpace then
+            bestSpace = space
+            bestMatch = i
+        end
+    end
+    return g_Spawnpoints[bestMatch]
 end
 
 function freeSpawnpoint(i)
@@ -267,7 +309,7 @@ function restorePlayer(id, player)
 	end
 	self.checkpointBackups[player].goingback = true
 	local bkp = self.checkpointBackups[player][checkpoint - 1]
-	if not RaceMode.checkpointsExist() then
+	if not RaceMode.checkpointsExist() or checkpoint==1 then
 		local spawnpoint = self:pickFreeSpawnpoint()
 		bkp.position = spawnpoint.position
 		bkp.rotation = {0, 0, spawnpoint.rotation}
@@ -291,6 +333,7 @@ function restorePlayer(id, player)
 		setTimer(warpPedIntoVehicle, 500, 5, player, vehicle)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
+        outputDebug( 'MISC', 'restorePlayer: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
 		setVehicleFrozen(vehicle, true)
         setVehicleDamageProof(vehicle, true)
 		setPedGravity(player, 0.0001)
@@ -309,6 +352,7 @@ function restorePlayerUnfreeze(id, player)
 	local vehicle = RaceMode.getPlayerVehicle(player)
     fixVehicle(vehicle)
     setVehicleDamageProof(vehicle, false)
+    outputDebug( 'MISC', 'restorePlayerUnfreeze: vehicle false for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
 	setVehicleFrozen(vehicle, false)
     setPedGravity(player, 0.008)
 	local bkp = RaceMode.instances[id].checkpointBackups[player][getPlayerCurrentCheckpoint(player)-1]
