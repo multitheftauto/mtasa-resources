@@ -11,7 +11,7 @@ g_Pickups = {}
 g_VisiblePickups = {}
 g_Objects = {}
 
-outputChatBox ( "Race version r135 20Apr09", 255, 127, 0 )
+outputChatBox ( "Race version r136 21Apr09", 255, 127, 0 )
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
@@ -30,11 +30,10 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 			timeleft = guiCreateLabel(screenWidth/2-108/2, 19, 108, 30, '', false),
 			healthbar = FancyProgress.create(100, 1000, 'img/progress_health_bg.png', -65, 105, 123, 30, 'img/progress_health.png', 7, 7, 109, 16),
 			speedbar = FancyProgress.create(0, 1.5, 'img/progress_speed_bg.png', -65, 135, 123, 30, 'img/progress_speed.png', 7, 7, 109, 16),
-			miscMessage = guiCreateLabel(screenWidth/2-150, screenHeight/2, 300, 20, '', false),
 		}
 		guiSetAlpha(g_GUI.rankbg, 0.3)
 		guiSetAlpha(g_GUI.timepassedbg, 0.3)
-		hideGUIComponents('healthbar', 'speedbar', 'rankbg', 'rank', 'timepassedbg', 'timeleftbg', 'checkpoint')
+		hideGUIComponents('healthbar', 'speedbar', 'rankbg', 'rank', 'timepassedbg', 'timeleftbg', 'checkpoint' )
 		for i,name in ipairs({'rank', 'checkpoint', 'timepassed', 'timeleft'}) do
 			guiSetFont(g_GUI[name], 'default-bold-small')
 			guiLabelSetHorizontalAlign(g_GUI[name], 'center')
@@ -51,36 +50,106 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		for name,id in pairs(g_ModelForPickupType) do
 			loadCustomModel(id, 'model/' .. name .. '.dff', 'model/' .. name .. '.txd')
 		end
-		
+
+        -- Init presentation screens
+        TravelScreen.init()
+        TitleScreen.init()
+
+        -- Show title screen now
+        TitleScreen.show()
+
+        -- last bits
 		setPedCanBeKnockedOffBike(g_Me, false)
 	end
 )
 
---fadeCamera( true, 0 ) -- fadeup
 
-------------------------------------------------
--- Misc message for client feedback when loading big maps
-------------------------------------------------
+-------------------------------------------------------
+-- Title screen
+-------------------------------------------------------
+TitleScreen = {}
+TitleScreen.startTime = 0
 
-function showMiscMessage( text )
-    guiLabelSetHorizontalAlign(g_GUI['miscMessage'], 'center')
-    guiSetText(g_GUI['miscMessage'], text) 
-    guiSetVisible(g_GUI['miscMessage'], true)
+function TitleScreen.init()
+    local screenWidth, screenHeight = guiGetScreenSize()
+    g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false, nil)
+    g_GUI['titleText1'] = guiCreateLabel(10, 457, 200, 15, 'Keys:', false, g_GUI['titleImage'] )
+    g_GUI['titleText2'] = guiCreateLabel(10, 490, 200, 15, 'F5 - Top times', false, g_GUI['titleImage'] )
+    g_GUI['titleText3'] = guiCreateLabel(10, 475, 200, 15, 'Enter - Retry', false, g_GUI['titleImage'] )
+    for i,name in ipairs({'titleText1', 'titleText2', 'titleText3'}) do
+        guiSetFont(g_GUI[name], 'default-bold-small')
+        guiLabelSetColor(g_GUI[name], 0,0,16)
+    end
+    hideGUIComponents('titleImage','titleText1', 'titleText2', 'titleText3')
 end
 
-function hideMiscMessage()
-	guiSetVisible(g_GUI['miscMessage'], false)
+function TitleScreen.show()
+    showGUIComponents('titleImage')
+    TitleScreen.startTime = getTickCount()
+    addEventHandler('onClientRender', g_Root, TitleScreen.update)
 end
 
+function TitleScreen.update()
+    local secondsLeft = TitleScreen.getSecondsRemaining()
+    local alpha = math.min(1,math.max( secondsLeft ,0))
+    guiSetAlpha(g_GUI['titleImage'], alpha)
+    if alpha == 0 then
+        hideGUIComponents('titleImage','titleText1', 'titleText2', 'titleText3')
+        removeEventHandler('onClientRender', g_Root, TitleScreen.update)
+    elseif secondsLeft < 5 then
+        showGUIComponents('titleImage','titleText1', 'titleText2', 'titleText3')
+	end
+end
+
+function TitleScreen.getSecondsRemaining()
+    return ( TitleScreen.startTime + 10000 - getTickCount() ) / 1000
+end
+-------------------------------------------------------
+
+
+-------------------------------------------------------
+-- Message for client feedback when loading maps
+-------------------------------------------------------
+TravelScreen = {}
+TravelScreen.startTime = 0
+
+function TravelScreen.init()
+    local screenWidth, screenHeight = guiGetScreenSize()
+	g_GUI['travelMessage'] = guiCreateLabel(screenWidth/2-150, screenHeight/2-100, 300, 20, '', false)
+    g_GUI['travelImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-90, 512, 256, 'img/travelling.png', false, nil)
+    guiLabelSetHorizontalAlign(g_GUI['travelMessage'], 'center')
+    hideGUIComponents('travelMessage', 'travelImage' )
+end
+
+function TravelScreen.show( text )
+    TravelScreen.startTime = getTickCount()
+    guiSetText(g_GUI['travelMessage'], text) 
+    guiSetVisible(g_GUI['travelMessage'], true)
+    guiSetVisible(g_GUI['travelImage'], true)
+end
+
+function TravelScreen.hide()
+	guiSetVisible(g_GUI['travelMessage'], false)
+    guiSetVisible(g_GUI['travelImage'], false)
+end
+
+function TravelScreen.getTicksRemaining()
+    return TravelScreen.startTime + 3000 - getTickCount()
+end
+
+-------------------------------------------------------
+
+
+-- Called from server
 function notifyLoadingMap( mapName )
     fadeCamera( false, 0.0, 0,0,16 ) -- fadeout, instant, dark blue
-    showMiscMessage( 'Travelling to ' .. mapName )
+    TravelScreen.show( 'Travelling to:  ' .. mapName )
 end
 
 
+-- Called from server
 function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, gameoptions, mapinfo, playerInfo)
     outputDebug( 'MISC', 'initRace start' )
-    hideMiscMessage()
 	unloadAll()
 	
 	g_Players = getElementsByType('player')
@@ -173,9 +242,19 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	end
 
     fadeCamera( false, 0.0 )
-    setTimer(fadeCamera, 750, 1, true, 10.0)
-    setTimer(fadeCamera, 1500, 1, true, 2.0)
-    setTimer( function() triggerServerEvent('onClientRaceReady', g_Me) end, 3500, 1 )
+
+    -- Min 3 seconds on misc message
+    local delay = TravelScreen.getTicksRemaining()
+    delay = math.max(50,delay)
+    setTimer(TravelScreen.hide,delay,1)
+
+    -- Delay readyness until after title
+    delay = delay + math.max( 0, TitleScreen.getSecondsRemaining() * 1000 - 1500 )
+
+    -- Do fadeup and then tell server client is ready
+    setTimer(fadeCamera, delay + 750, 1, true, 10.0)
+    setTimer(fadeCamera, delay + 1500, 1, true, 2.0)
+    setTimer( function() triggerServerEvent('onClientRaceReady', g_Me) end, delay + 3500, 1 )
     outputDebug( 'MISC', 'initRace end' )
 end
 
@@ -761,6 +840,26 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 		showHUD(true)
 		setPedCanBeKnockedOffBike(g_Me, true)
 	end
+)
+
+---------------------------------------------------------------------------
+--
+-- Commands and binds
+--
+--
+--
+---------------------------------------------------------------------------
+
+addCommandHandler('kill',
+    function(player)
+        triggerServerEvent('onClientKillPlayer', g_Me)
+    end
+)
+
+bindKey('enter_exit', 'down',
+    function()
+        triggerServerEvent('onClientKillPlayer', g_Me)
+    end
 )
 
 addCommandHandler('spec',

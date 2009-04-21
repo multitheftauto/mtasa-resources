@@ -210,7 +210,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 end
 
 function lastCheckpointWasSafe(id, player)
-	if not table.find(g_Players, player) then
+	if not isValidPlayer(player) then
 		return
 	end
 	local self = RaceMode.instances[id]
@@ -218,6 +218,10 @@ function lastCheckpointWasSafe(id, player)
 		self.checkpointBackups[player].goingback = false
 		self.checkpointBackups[player].timer = nil
 	end
+end
+
+function isValidPlayer(player)
+ 	return table.find(g_Players, player)
 end
 
 function RaceMode:onPlayerWasted(player)
@@ -296,7 +300,7 @@ function freeSpawnpoint(i)
 end
 
 function restorePlayer(id, player)
-	if not table.find(g_Players, player) then
+	if not isValidPlayer(player) then
 		return
 	end
 	local self = RaceMode.instances[id]
@@ -333,11 +337,9 @@ function restorePlayer(id, player)
 		setTimer(warpPedIntoVehicle, 500, 5, player, vehicle)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
+
+        RaceMode.playerFreeze(player)
         outputDebug( 'MISC', 'restorePlayer: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
-		setVehicleFrozen(vehicle, true)
-        setVehicleDamageProof(vehicle, true)
-		setPedGravity(player, 0.0001)
-        fixVehicle(vehicle)
         removeVehicleUpgrade(vehicle, 1010) -- remove nitro
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
 	end
@@ -346,19 +348,39 @@ function restorePlayer(id, player)
 end
 
 function restorePlayerUnfreeze(id, player)
-	if not table.find(g_Players, player) then
+	if not isValidPlayer(player) then
 		return
 	end
+    RaceMode.playerUnfreeze(player)
 	local vehicle = RaceMode.getPlayerVehicle(player)
-    fixVehicle(vehicle)
-    setVehicleDamageProof(vehicle, false)
     outputDebug( 'MISC', 'restorePlayerUnfreeze: vehicle false for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
-	setVehicleFrozen(vehicle, false)
-    setPedGravity(player, 0.008)
 	local bkp = RaceMode.instances[id].checkpointBackups[player][getPlayerCurrentCheckpoint(player)-1]
 	setElementVelocity(vehicle, unpack(bkp.velocity))
 	setVehicleTurnVelocity(g_Vehicles[player], unpack(bkp.turnvelocity))
 end
+
+--------------------------------------
+-- For use when starting or respawing
+--------------------------------------
+function RaceMode.playerFreeze(player)
+    toggleAllControls(player,true)
+	setPedGravity(player, 0.0001)
+	local vehicle = RaceMode.getPlayerVehicle(player)
+    fixVehicle(vehicle)
+	setVehicleFrozen(vehicle, true)
+    setVehicleDamageProof(vehicle, true)
+end
+
+function RaceMode.playerUnfreeze(player)
+    toggleAllControls(player,true)
+    setPedGravity(player, 0.008)
+	local vehicle = RaceMode.getPlayerVehicle(player)
+    fixVehicle(vehicle)
+    setVehicleDamageProof(vehicle, false)
+    setVehicleEngineState(vehicle, true)
+	setVehicleFrozen(vehicle, false)
+end
+--------------------------------------
 
 function RaceMode:onPlayerQuit(player)
 	self.checkpointBackups[player] = nil

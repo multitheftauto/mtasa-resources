@@ -3,7 +3,7 @@ g_ResRoot = getResourceRootElement(getThisResource())
 scoreboard = createResourceCallInterface('scoreboard')
 votemanager = createResourceCallInterface('votemanager')
 mapmanager = createResourceCallInterface('mapmanager')
-allowRPC('setVehicleFrozen', 'setElementPosition','setPedGravity')
+allowRPC('setElementPosition','setPedGravity' )
 g_MotorBikeIDs = table.create({ 448, 461, 462, 463, 468, 471, 521, 522, 523, 581, 586 }, true)
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_AircraftIDs = table.create({ 592, 577, 511, 548, 512, 593, 425, 520, 417, 487, 553, 488, 497, 563, 476, 447, 519, 460, 469, 513 }, true)
@@ -379,11 +379,8 @@ function joinHandlerBoth(player)
         setRandomSeedForMap('vehiclecolors')
 		vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
 		g_Vehicles[player] = vehicle
-		setVehicleFrozen(vehicle, true)
+        RaceMode.playerFreeze(player)
         outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
-        setVehicleDamageProof(vehicle, true)
-        fixVehicle(vehicle)
-		setPedGravity(player, 0.0001)
 		if playerJoined and g_CurrentRaceMode.running then
             unfreezePlayerWhenReady(player)
 		end
@@ -433,7 +430,7 @@ function joinHandlerBoth(player)
 	
 	if playerJoined and getPlayerCount() <= 2 then
 		---- Start random map vote if someone joined a lone player
-        startMidMapVoteForRandomMap()
+        setTimer(startMidMapVoteForRandomMap,7000,1)
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
@@ -445,20 +442,16 @@ addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
 --      unfreezePlayerWhenReady
 --      launchRace
 function unfreezePlayerWhenReady(player)
-	if not table.find(g_Players, player) then
-        outputDebug( 'MISC', 'unfreezePlayerWhenReady: not table.find(g_Players, player)' )
+	if not isValidPlayer(player) then
+        outputDebug( 'MISC', 'unfreezePlayerWhenReady: not isValidPlayer(player)' )
 		return
 	end
     if isPlayerNotReady(player) then
         outputDebug( 'MISC', 'unfreezePlayerWhenReady: isPlayerNotReady(player) for ' .. tostring(getPlayerName(player)) )
         setTimer( unfreezePlayerWhenReady, 500, 1, player )
     else
-        local vehicle = RaceMode.getPlayerVehicle(player)
-        outputDebug( 'MISC', 'unfreezePlayerWhenReady: setVehicleFrozen false for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
-	    setVehicleFrozen(vehicle, false)
-	    setPedGravity(player, 0.008)
-    	setVehicleDamageProof(vehicle, false)
-    	fixVehicle(vehicle)
+        RaceMode.playerUnfreeze(player)
+        outputDebug( 'MISC', 'unfreezePlayerWhenReady: setVehicleFrozen false for ' .. tostring(getPlayerName(player)) )
     end
 end
 
@@ -730,12 +723,20 @@ function distanceFromPlayerToCheckpoint(player, i)
 	return getDistanceBetweenPoints3D(x, y, z, unpack(checkpoint.position))
 end
 
-addCommandHandler('kill',
-	function(player)
+
+addEvent('onClientKillPlayer', true)
+addEventHandler('onClientKillPlayer', g_Root,
+    function()
+        local player = source
         if stateAllowsKillPlayer() then
-		    killPed(player)
+            local vehicle = RaceMode.getPlayerVehicle(player)
+            killPed(player)
+            toggleAllControls(player,false, true, false)
+            if vehicle then
+                setVehicleWheelStates ( vehicle, 1,2,2,1)
+            end
         end
-	end
+    end
 )
 
 addCommandHandler('ghostmode',
@@ -869,7 +870,7 @@ function updateNotReadyText()
             end
         end
 		textItemSetText(g_NotReadyTextItems[1], 'Waiting for other players...' )
-		textItemSetText(g_NotReadyTextItems[2], names .. ' - ' )
+		--textItemSetText(g_NotReadyTextItems[2], names .. ' - ' )
 	end
 end
 

@@ -52,6 +52,8 @@
 	<file src="img/specnext.png"/>
 	<file src="img/specnext_hi.png"/>
 	<file src="img/blank.png"/>
+	<file src="img/title.png"/>
+	<file src="img/travelling.png"/>
 	
 	<file src="model/nitro.dff"/>
 	<file src="model/nitro.txd"/>
