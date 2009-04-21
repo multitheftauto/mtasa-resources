@@ -17,7 +17,7 @@ local lastVoteStarterCount = 0
 function startMidMapVoteForRandomMap(player)
 
     -- Check state and race time left
-    if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 60000 then
+    if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 30000 then
         if player then
             outputConsole( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
         end 

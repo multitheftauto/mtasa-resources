@@ -91,6 +91,7 @@ end
 function stateAllowsKillPlayer()
     if currentRaceStateName == 'Running'        then    return true     end
     if currentRaceStateName == 'MidMapVote'   then    return true     end
+    if currentRaceStateName == 'SomeoneWon'   then    return true     end
     return false
 end
 
