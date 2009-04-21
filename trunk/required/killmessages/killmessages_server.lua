@@ -138,6 +138,18 @@ function outputKillMessage ( killed, wr,wg,wb,killer,kr,kg,kb,weapon,width,resou
 	triggerClientEvent(getRootElement(),"onClientPlayerKillMessage",killed,killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
 end
 
+function outputMessage ( message, visibleTo, r, g, b, font )
+	if type(message) ~= "string" and type(message) ~= "table" then
+		outputDebugString ( "outputMessage - Bad 'message' argument", 0, 112, 112, 112 ) 
+		return false 
+	end
+	if not isElement(visibleTo) or type(font) ~= "string" then 
+		outputDebugString ( "outputMessage - Bad argument", 0, 112, 112, 112 ) 
+		return false 
+	end
+	return triggerClientEvent ( visibleTo, "doOutputMessage", visibleTo, message, r, g, b, font )
+end
+
 function setKillMessageStyle ( startX,startY,align,lines,fadeStart,fadeAnimTime )
 	if ( not startX ) then startX = default.startX end
 	if ( not startY ) then startY = default.startY end

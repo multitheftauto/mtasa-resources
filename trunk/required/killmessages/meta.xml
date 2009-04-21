@@ -1,8 +1,11 @@
 <meta>
-	<info author="Talidan + Iggy" type="script"/>
+	<info author="Talidan + Iggy" type="script" version="2.0.0"/>
+	<script src="utils/textlib.lua" type="client"/>
+	<script src="utils/imagelib.lua" type="client"/>
+	<script src="killmessages_client.lua" type="client"/>
+	<script src="killmessages_server.lua" type="server"/>
 	<script src="gui.lua" type="client"/>
 	<script src="definitions.lua" type="client"/>
-	<script src="server.lua" type="server"/>
 	<!--All icons courtesy of Iggy-->
 	<file src="icons/fist.png"/>
 	<file src="icons/brassknuckle.png"/>
@@ -112,7 +115,8 @@
 	<file src="icons/sparrow.png"/>
 	<file src="icons/train.png"/>
 
-
+	<export function="outputMessage" type="server"/>
+	<export function="outputMessage" type="client"/>
 	<export function="outputKillMessage" type="server"/>
 	<export function="outputKillMessage" type="client"/>
 	<export function="setKillMessageStyle" type="client"/>
