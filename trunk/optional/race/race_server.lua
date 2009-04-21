@@ -609,6 +609,11 @@ end
 
 addEventHandler('onGamemodeMapStop', g_Root,
 	function(mapres)
+		--Clear the scoreboard
+		for i,player in ipairs(getElementsByType"player") do
+			setElementData ( player, "race rank", "" )
+			setElementData ( player, "checkpoint", "" )
+		end
         fadeCamera ( g_RootPlayers, false, 0.0, 0,0, 0 )
         gotoState('NoMap')
 		unloadAll()
