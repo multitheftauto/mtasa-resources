@@ -143,7 +143,7 @@ function outputMessage ( message, visibleTo, r, g, b, font )
 		outputDebugString ( "outputMessage - Bad 'message' argument", 0, 112, 112, 112 ) 
 		return false 
 	end
-	if not isElement(visibleTo) or type(font) ~= "string" then 
+	if not isElement(visibleTo) then 
 		outputDebugString ( "outputMessage - Bad argument", 0, 112, 112, 112 ) 
 		return false 
 	end
