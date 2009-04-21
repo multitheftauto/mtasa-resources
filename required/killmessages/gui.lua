@@ -3,6 +3,7 @@ local config = {
 ["lines"] = 5,
 ["startY"] = 0.35,
 ["textHeight"] = 16,
+["iconPosOffY"] = -10,
 ["iconHeight"] = 20,
 ["iconSpacing"] = 4,
 ["defaultWeapon"] = 255,
@@ -15,6 +16,7 @@ local default = {
 ["lines"] = 5,
 ["startY"] = 0.25,
 ["textHeight"] = 16,
+["iconPosOffY"] = -10,
 ["iconHeight"] = 20,
 ["iconSpacing"] = 4,
 ["defaultWeapon"] = 255,
@@ -25,7 +27,7 @@ local default = {
 }
 local endTime
 local screenX,screenY = guiGetScreenSize ()
-local killMessages = {}
+local contentMessages = {}
 local fadingLines = {}
 ---
 local iconOrder = {}
@@ -51,17 +53,11 @@ function setKillMessageStyle ( startX,startY,align,lines,fadeStart,fadeAnimTime 
 	config.lines = lines
 	config.startFade = fadeStart
 	config.fadeTime = fadeAnimTime
-	local i = 1
-	if #killMessages ~= 0 and isElement (killMessages[i]["leftShadow"]) then
-		while i ~= config.lines+1 do
-			if killMessages[i] then
-				destroyElement ( killMessages[i]["leftShadow"] )
-				destroyElement ( killMessages[i]["left"] )
-				destroyElement ( killMessages[i]["rightShadow"] )
-				destroyElement ( killMessages[i]["right"] )
-				destroyElement ( killMessages[i]["icon"] )
+	if #contentMessages ~= 0 then
+		for i=1,config.lines do
+			if contentMessages[i] then
+				destroyLine ( i )
 			end
-			i = i + 1
 		end
 	end
 	fadingLines = {}
@@ -76,124 +72,57 @@ end
 addEventHandler ( "doSetKillMessageStyle",getRootElement(),setKillMessageStyle)
 
 function createKillMessageGUI()
-	local i = 1
-	while i ~= config.lines+1 do
-		local gap = config.iconHeight - config.textHeight
-		gap = gap/2
+	local gap = config.iconHeight - config.textHeight
+	gap = gap/2
+	for i=1,config.lines do
 		local y = config.startY*screenY + (config.iconHeight*(i-1))
 		y = y + gap
-		killMessages[i] = {}
-		killMessages[i]["y"] = y
-		killMessages[i]["iconPath"] = ""
-		killMessages[i]["leftShadow"] = guiCreateLabel ( 0, 0, 200,16,"", false )
-		killMessages[i]["left"] = guiCreateLabel ( 0, 0, 200,16,"", false )
-		killMessages[i]["rightShadow"] = guiCreateLabel ( 0,0,200,16,"", false )
-		killMessages[i]["right"] = guiCreateLabel ( 0, 0,200,16, "", false )
-		killMessages[i]["icon"] = guiCreateStaticImage ( 0,0,0,0,"icons/generic.png", false )
-		guiLabelSetColor ( killMessages[i]["leftShadow"],0,0,0 )
-		guiLabelSetColor ( killMessages[i]["rightShadow"],0,0,0 )
-		i = i + 1
+		contentMessages[i] = { dxText:create("",0,y) }
 	end
 	endTime = config.fadeTime + config.startFade
 end
 
-addEvent ("onClientPlayerKillMessage",true)
-function onClientPlayerKillMessage ( killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
-	if wasEventCancelled() then return end
-	outputKillMessage ( source, wr,wg,wb,killer,kr,kg,kb,weapon,width,resource )
-end
-addEventHandler ("onClientPlayerKillMessage",getRootElement(),onClientPlayerKillMessage)
-
-function outputKillMessage ( source, wr,wg,wb,killer,kr,kg,kb,weapon,width,resource )
-	if not iconWidths[weapon] then 
-		if type(weapon) ~= "string" then
-			weapon = 999 
-		end
-	end
-	local killerName
-	local wastedName
-	if not tonumber(wr) then wr = 255 end
-	if not tonumber(wg) then wg = 255 end
-	if not tonumber(wb) then wb = 255 end
-	if not tonumber(kr) then kr = 255 end
-	if not tonumber(kg) then kg = 255 end
-	if not tonumber(kb) then kb = 255 end
-	if ( source ) then
-		if isElement ( source ) then
-			if getElementType ( source ) == "player" then 
-				wastedName = getPlayerName ( source )
-			else 
-			outputDebugString ( "outputKillMessage - Invalid 'wasted' player specified",0,0,0,100)
-			return false end
-		elseif type(source) == "string" then
-			wastedName = source
-		end
-	else 
-		outputDebugString ( "outputKillMessage - Invalid 'wasted' player specified",0,0,0,100)
-	return false end
-	if ( killer ) then
-		if isElement ( killer ) then
-			if getElementType ( killer ) == "player" then
-				killerName = getPlayerName ( killer )
-			else 
-				outputDebugString ( "outputKillMessage - Invalid 'killer' player specified",0,0,0,100)
-			return false end
-		elseif type(killer) == "string" then
-			killerName = killer
-		else
-			killerName = ""
-		end
-	else killerName = "" end
-	---shift everything up
-	shiftUpGUI()
-	--create the new text
-
-	if not killerName then
-		killerName = ""
-	end
-	local iconWidth = iconWidths[weapon]
-	local iconPath = icons[weapon]
-	if tonumber(width) then iconWidth = width end
-	if type(weapon) == "string" then iconPath = weapon end
-	setLineMessage(config.lines,killerName,wastedName,kr,kg,kb,wr,wg,wb,iconPath,iconWidth,resource)
-	fadeLine ( config.lines )	
-end
----NEED TO ALLOW CUSTOM RESOURCE
-
 function shiftUpGUI()
 	local i = 1
-	while i ~= (config.lines) do
-		local newTextLeft = guiGetText ( killMessages[i+1]["left"], false )
-		local newLeftR,newLeftG,newLeftB = guiLabelGetColor ( killMessages[i+1]["left"] )
-		local newTextRight = guiGetText ( killMessages[i+1]["right"], false )
-		local newRightR,newRightG,newRightB = guiLabelGetColor ( killMessages[i+1]["right"] )
-		local iconPath = killMessages[i+1]["iconPath"]
-		local iconWidth = guiGetSize ( killMessages[i+1]["icon"], false )
-		local resource = killMessages[i+1]["resource"]
-		setLineMessage ( i,newTextLeft,newTextRight,newLeftR,newLeftG,newLeftB,newRightR,newRightG,newRightB,iconPath,iconWidth,resource )
+	for i=config.lines,2,-1 do
+		local _,y = getWidgetPosition(contentMessages[i-1][1])
+		for k,part in ipairs(contentMessages[i]) do
+			local x,y2 = getWidgetPosition(part)
+			y2 = y2 - (config.startY*screenY + (config.iconHeight*(i-1)) + (config.iconHeight - config.textHeight)/2)
+			setWidgetPosition(part,x,y + y2)
+		end
+	end	
+	for i=1,config.lines-1 do
 		---shift up the alpha too
 		local tick = fadingLines[i+1]
 		fadingLines[i] = tick
 		fadingLines[i+1] = nil
-		i = i + 1
 	end	
 end
 
-function setLineMessage ( line, text1,text2,r1,g1,b1,r2,g2,b2,iconPath, iconWidth,resource )
-	local left = killMessages[line]["left"]
-	local right = killMessages[line]["right"]
-	local leftShadow = killMessages[line]["leftShadow"]
-	local rightShadow = killMessages[line]["rightShadow"]
-	--Set the text
-	guiSetText ( left,text1 )
-	guiSetText ( leftShadow,text1 )
-	guiSetText ( right,text2 )
-	guiSetText ( rightShadow,text2 )
-	--Set the colour
-	guiLabelSetColor ( left, r1,g1,b1 )
-	guiLabelSetColor ( right, r2,g2,b2 )
-	--Set the position
-	local leftX,rightX,iconX
+addEvent ( "doOutputMessage", true )
+function outputMessage ( message, r, g, b, font )
+	if type(message) ~= "string" and type(message) ~= "table" then
+		outputDebugString ( "outputMessage - Bad 'message' argument", 0, 112, 112, 112 ) 
+		return false 
+	end
+	if type(font) ~= "string" then 
+		outputDebugString ( "outputMessage - Bad argument", 0, 112, 112, 112 ) 
+		return false 
+	end
+	r = tonumber(r) or 255
+	g = tonumber(g) or 255
+	b = tonumber(b) or 255
+	font = font or "default"
+	---shift everything up
+	shiftUpGUI()
+	--Delete the first line
+	destroyLine (1)
+	table.remove ( contentMessages, 1 )
+	if type(message) == "string" then
+		message = {message}
+	end
+	local y = config.startY*screenY + (config.iconHeight*(config.lines-1)) + (config.iconHeight - config.textHeight)/2
 	local startX = config.startX
 	if startX < 1 and startX > -1 then --auto calculate whether its relative or absolute
 		startX = screenX/startX --make it relative
@@ -201,59 +130,66 @@ function setLineMessage ( line, text1,text2,r1,g1,b1,r2,g2,b2,iconPath, iconWidt
 	if startX < 0 then
 		startX = screenX + startX
 	end
-	local iconGap = 3 --in between text and icon
-	local y = killMessages[line]["y"]
-	local lengthRight = guiLabelGetTextExtent ( right )
-	local lengthLeft = guiLabelGetTextExtent ( left )
-	--Set right text pos
-	if config.align == "left" then
-		rightX = startX
-	elseif config.align == "center" or config.align == "centre" then
-		rightX = startX + (iconWidth/2)
-	else
-		rightX = startX - lengthRight
-	end
-	guiSetPosition ( right, rightX, y, false )
-	guiSetPosition ( rightShadow, rightX + 1, y + 1, false )
-	--Set the icon pos/size
-	local icon = killMessages[line]["icon"]
-	killMessages[line]["icon"] = guiStaticImageLoadImage ( icon, iconPath, resource )
-	guiSetSize ( icon, iconWidth, 20, false )
-	if config.align == "left" then
-		iconX = rightX + iconGap
-	elseif config.align == "center" or config.align == "centre" then
-		iconX = startX - (iconWidth/2)
-	else
-		iconX = rightX - iconGap - iconWidth
-	end
-	guiSetPosition ( icon, iconX, y, false )
-	killMessages[line]["iconPath"] = iconPath
-	--Set the left text pos
-	if config.align == "left" then
-		leftX = iconX + iconGap
-	elseif config.align == "center" or config.align == "centre" then
-		iconX = iconX - iconGap - lengthLeft
-	else
-		leftX = iconX - iconGap - lengthLeft
-	end
-	guiSetPosition ( left, leftX, y, false )
-	guiSetPosition ( leftShadow, leftX + 1, y + 1, false )
-	--Set the alpha correctly
-	setLineAlpha ( line, 1 )
+	drawLine ( message, startX, y, config.align, config.lines, r, g, b, font, 1 )
+	fadeLine ( config.lines )	
 end
+addEventHandler ( "doOutputMessage", getRootElement(), outputMessage )
 
-mta_guiStaticImageLoadImage = guiStaticImageLoadImage
-function guiStaticImageLoadImage ( icon, path, resourceName )
-	if ( resourceName ) then
-		local resource = getResourceFromName ( resourceName )
-		if ( resource ) then
-			destroyElement ( icon )
-			icon = guiCreateStaticImage ( 0,0,0,0,path, false,false,resource )
+function drawLine ( message, x,y, align, line, r, g, b, font, scale )
+	--First draw it and work out the width
+	local width = 0
+	contentMessages[line] = {}
+	for i,part in ipairs(message) do
+		if type(part) == "string" then
+			local text = dxText:create ( part, width, y, false )
+			text:font ( font )
+			text:scale ( scale )
+			text:type("shadow",1)
+			text:align"left"
+			text:color ( r,g,b )
+			table.insert ( contentMessages[line], text )
+			width = width + text:extent()
+		elseif part[1] == "icon" then
+			local iconWidth = part.width or iconWidths[part.id or -1] or iconWidths[255]
+			local iconHeight = part.height or config.iconHeight
+			local image = dxImage:create ( icons[part.id or 0] or icons[255], width, y + (part.posOffY or config.iconPosOffY), iconWidth, iconHeight, false )
+			image:color ( part.r or 255, part.g or 255, part.b or 255 )
+			image:rotation ( part.rot or 0, part.rotOffX or 0, part.rotOffY or 0 )
+			width = width + iconWidth
+			table.insert ( contentMessages[line], image )
+		elseif part[1] == "image" then
+			-- Can't do this with dx, no resource argument
+			if part.width and part.path then
+				local image = guiCreateStaticImage ( width, y + (part.posOffY or config.iconPosOffY), part.width, part.height or config.iconHeight, part.path, false, part.resourceName and getResourceFromName(part.resourceName) or getThisResource() )
+				if image then
+					guiSetProperty(image,"ZOrderChangeEnabled","False")
+					width = width + part.width
+				end
+				table.insert ( contentMessages[line], image )
+			end
+			-- local image = dxImage:create ( icons[part.id] or icons[255], width, y, iconWidths[part.id] or iconWidths[255], 20, false )
+			-- image:color ( part.r or 255, part.g or 255, part.b or 255 )
+			-- image:rotate ( part.rot or 0, part.rotOffX or 0, part.rotOffY or 0 )	
+		elseif part[1] == "color" or part[1] == "colour" then
+			r = part.r or r
+			g = part.g or g
+			b = part.b or b
+		elseif part[1] == "padding" then
+			width = width + part.width or 0
 		end
-	else
-		mta_guiStaticImageLoadImage ( icon, path )
+		contentMessages[line].scale = scale
 	end
-	return icon
+	--Now reposition everything properly
+	if align == "center" or align == "centre" then
+		x = x - width/2
+	elseif align == "right" then
+		x = x - width
+	end
+	for i,widget in ipairs(contentMessages[line]) do
+		local wx,wy = getWidgetPosition ( widget )
+		setWidgetPosition ( widget, x + wx, wy )
+	end
+	return true
 end
 
 function fadeLine ( line )
@@ -266,7 +202,7 @@ function()
 	for line,originalTick in pairs(fadingLines) do
 		local tickDifference = getTickCount() - originalTick
 		if tickDifference > endTime then
-			setLineMessage ( line, "","",0,0,0,0,0,0,"",0 )
+			destroyLine ( line )
 			setLineAlpha ( line, 1 )
 			fadingLines[line] = nil
 		elseif tickDifference >  config.startFade then
@@ -280,36 +216,46 @@ function()
 end )
 
 function setLineAlpha ( line, alpha )
-	guiSetAlpha ( killMessages[line]["left"], alpha )
-	guiSetAlpha ( killMessages[line]["right"], alpha )
-	guiSetAlpha ( killMessages[line]["leftShadow"], alpha )
-	guiSetAlpha ( killMessages[line]["rightShadow"], alpha )
-	guiSetAlpha ( killMessages[line]["icon"], alpha )
-end
-
-
------------guiLabelGetColor
-local mta_guiLabelSetColor = guiLabelSetColor
-local storedColors = {}
-function guiLabelSetColor ( element, red, green, blue )
-	storedColors[element] = {}
-	storedColors[element]["r"] = red
-	storedColors[element]["g"] = green
-	storedColors[element]["b"] = blue
-	mta_guiLabelSetColor ( element,red,green,blue )
-end
-
-function guiLabelGetColor ( element )
-	if storedColors[element] then
-		local r = storedColors[element]["r"]
-		local g = storedColors[element]["g"]
-		local b = storedColors[element]["b"]
-		return r,g,b
-	else
-		return 0,0,0
+	for i,part in ipairs(contentMessages[line]) do
+		setWidgetAlpha ( part, alpha )
 	end
 end
 
+function destroyLine ( line )
+	for k,part in ipairs(contentMessages[line]) do
+		destroyWidget(part)
+	end
+end
 
+function destroyWidget ( widget )
+	if isElement(widget) then
+		destroyElement ( widget )
+	elseif type(widget) == "table" and widget.destroy then
+		widget:destroy()
+	end
+end
 
---function setRightAligned ( element, x )
+function getWidgetPosition ( widget )
+	if isElement(widget) then
+		return guiGetPosition ( widget, false )
+	elseif type(widget) == "table" and widget.position then
+		return widget:position()
+	end
+end
+
+function setWidgetPosition ( widget, x, y )
+	if isElement(widget) then
+		return guiSetPosition ( widget, x, y, false )
+	elseif type(widget) == "table" and widget.position then
+		return widget:position(x,y,false)
+	end
+end
+
+function setWidgetAlpha ( widget, alpha )
+	if isElement(widget) then
+		guiSetAlpha ( widget, alpha )
+	elseif type(widget) == "table" and widget.color then
+		local r,g,b = widget:color()
+		widget:color(r,g,b,alpha*255)
+	end
+end
