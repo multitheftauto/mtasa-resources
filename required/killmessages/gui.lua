@@ -86,8 +86,10 @@ function shiftUpGUI()
 	local i = 1
 	for i=config.lines,2,-1 do
 		local _,y = getWidgetPosition(contentMessages[i-1][1])
+		y = y or (config.startY*screenY + (config.iconHeight*(i-2)) + (config.iconHeight - config.textHeight)/2)
 		for k,part in ipairs(contentMessages[i]) do
 			local x,y2 = getWidgetPosition(part)
+			y2 = y2 or (config.startY*screenY + (config.iconHeight*(i-1)) + (config.iconHeight - config.textHeight)/2)
 			y2 = y2 - (config.startY*screenY + (config.iconHeight*(i-1)) + (config.iconHeight - config.textHeight)/2)
 			setWidgetPosition(part,x,y + y2)
 		end
@@ -107,13 +109,11 @@ function outputMessage ( message, r, g, b, font )
 		return false 
 	end
 	if type(font) ~= "string" then 
-		outputDebugString ( "outputMessage - Bad argument", 0, 112, 112, 112 ) 
-		return false 
+		font = "default"
 	end
 	r = tonumber(r) or 255
 	g = tonumber(g) or 255
 	b = tonumber(b) or 255
-	font = font or "default"
 	---shift everything up
 	shiftUpGUI()
 	--Delete the first line
