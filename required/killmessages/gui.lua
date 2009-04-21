@@ -160,12 +160,15 @@ function drawLine ( message, x,y, align, line, r, g, b, font, scale )
 		elseif part[1] == "image" then
 			-- Can't do this with dx, no resource argument
 			if part.width and part.path then
-				local image = guiCreateStaticImage ( width, y + (part.posOffY or config.iconPosOffY), part.width, part.height or config.iconHeight, part.path, false, part.resourceName and getResourceFromName(part.resourceName) or getThisResource() )
+				if part.resourceName then
+					part.resource = getResourceFromName(tostring(part.resourceName)) or part.resource
+				end
+				local image = guiCreateStaticImage ( width, y + (part.posOffY or config.iconPosOffY), part.width, part.height or config.iconHeight, part.path, false, false, part.resource or getThisResource() )
 				if image then
 					guiSetProperty(image,"ZOrderChangeEnabled","False")
 					width = width + part.width
+					table.insert ( contentMessages[line], image )
 				end
-				table.insert ( contentMessages[line], image )
 			end
 			-- local image = dxImage:create ( icons[part.id] or icons[255], width, y, iconWidths[part.id] or iconWidths[255], 20, false )
 			-- image:color ( part.r or 255, part.g or 255, part.b or 255 )

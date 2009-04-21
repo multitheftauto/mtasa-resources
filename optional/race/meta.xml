@@ -54,6 +54,7 @@
 	<file src="img/blank.png"/>
 	<file src="img/title.png"/>
 	<file src="img/travelling.png"/>
+	<file src="img/killmessage.png"/>
 	
 	<file src="model/nitro.dff"/>
 	<file src="model/nitro.txd"/>

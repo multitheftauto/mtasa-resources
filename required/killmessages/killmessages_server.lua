@@ -147,6 +147,16 @@ function outputMessage ( message, visibleTo, r, g, b, font )
 		outputDebugString ( "outputMessage - Bad argument", 0, 112, 112, 112 ) 
 		return false 
 	end
+	--Turn any resources into resource names
+	if type(message) == "table" then
+		for i,part in ipairs(message) do
+			if part[1] == "image" then
+				if part.resource then
+					message[i].resourceName = getResourceName(part.resource)
+				end
+			end
+		end
+	end
 	return triggerClientEvent ( visibleTo, "doOutputMessage", visibleTo, message, r, g, b, font )
 end
 
