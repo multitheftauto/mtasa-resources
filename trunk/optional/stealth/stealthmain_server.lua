@@ -698,7 +698,9 @@ function outputHeadshotIcon (killer, weapon, bodypart)
 		cancelEvent()
 		local r2,g2,b2 = getTeamColor ( getPlayerTeam(killer) )
 		local r1,g1,b1 = getTeamColor ( getPlayerTeam(source) )
-		call(killmessageRes,"outputKillMessage",source,r1,g1,b1,killer,r2,g2,b2,256 )
+		exports.killmessages:outputMessage (
+			{getPlayerName(killer),{"padding",width=3},{"icon",id=weapon},{"padding",width=3},{"icon",id=256},{"padding",width=3},{"color",r=r2,g=g2,b=b2},getPlayerName(source) },
+			getRootElement(),r1,g1,b1 )
 	end
 end
 
