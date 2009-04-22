@@ -140,7 +140,7 @@ addEventHandler("onGamemodeMapStart", rootElement,
 )
 
 function changeGamemodeMap_cmd(source, command, ...)
-    local mapName = table.concat({...},' ')
+    local mapName = #{...}>0 and table.concat({...},' ') or nil
 	source = source or serverConsole
 
 	local map
@@ -151,19 +151,11 @@ function changeGamemodeMap_cmd(source, command, ...)
 			return false
 		end
 	else
-		outputMapManager("Usage: /"..command.." map [gamemode]",source)
+		outputMapManager("Usage: /"..command.." map",source)
 		return false
 	end
 	
 	local gamemode = currentGamemode
-	if gamemodeName then
-		gamemode = getResourceFromName(gamemodeName)
-		if not isGamemode(gamemode) then
-			outputMapManager("'"..gamemodeName.."' is not a valid gamemode.",source)
-			return false
-		end
-	end
-
 	if not isGamemode(gamemode) then
 		outputMapManager("No gamemode is running.",source)
 	elseif not isMapCompatibleWithGamemode(map, gamemode) then
@@ -176,8 +168,8 @@ end
 addCommandHandler("changemap", changeGamemodeMap_cmd, true)
 
 function changeGamemode_cmd(source, command, ...)
-    local gamemodeName = table.concat({...},' ',1,1)
-    local mapName = table.concat({...},' ',2)
+    local gamemodeName = #{...}>0 and table.concat({...},' ',1,1) or nil
+    local mapName      = #{...}>1 and table.concat({...},' ',2)   or nil
 	source = source or serverConsole
 
 	local gamemode

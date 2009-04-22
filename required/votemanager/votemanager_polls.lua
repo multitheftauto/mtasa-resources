@@ -64,14 +64,8 @@ addEventHandler("onResourceStart", thisResourceRoot,
 --[[ user command handlers ]]--
 
 function vote.map.handler(source,cmd,...)
-    -- Handle map name with spaces
-    local resource1Name = table.concat({...},' ')
-    local resource2Name = nil
-    if not getResourceFromName(resource1Name) then
-        resource1Name = table.concat({...},' ',1,1)
-        resource2Name = table.concat({...},' ',2)
-    end
-
+    local resource1Name = #{...}>0 and table.concat({...},' ',1,1) or nil
+    local resource2Name = #{...}>1 and table.concat({...},' ',2)   or nil
 	source = source or serverConsole
 	
 	if isDisabled(cmd, source) then
@@ -92,9 +86,6 @@ function vote.map.handler(source,cmd,...)
 				outputVoteManager(cmd..": resource '"..resource1Name.."' does not exist.", source)
 				return false
 			end
-		else
-			outputVoteManager(cmd..": Usage: /"..cmd.." gamemode [map].", source)
-			return false
 		end
 		if resource2Name then
 			resource2 = getResourceFromName(resource2Name)
@@ -140,7 +131,7 @@ function vote.mode.handler(source,cmd,resourceName)
 		sourceUserName = getPlayerUserNameSafe(source)
 	end
 	if source ~= serverConsole and vote.mode.blockedPlayers[sourceUserName] then
-		outputVoteManager(cmd..": you have to wait "..vote.map.locktime.." seconds before starting another mode vote.", source)
+		outputVoteManager(cmd..": you have to wait "..vote.mode.locktime.." seconds before starting another mode vote.", source)
 	else
 		local gamemodes = call(mapmanagerResource, "getGamemodes")
 		
@@ -326,11 +317,11 @@ function voteMap(resource1, resource2)
 		end
 		
 	-- no map, a gamemode: vote between compatible maps for that gamemode
-	elseif not map then
+	elseif not map and gamemode then
 		return voteBetweenGamemodeCompatibleMaps(gamemode)
 		
 	-- a map, no gamemode: vote to change current gamemode map
-	elseif not gamemode then
+	elseif map and not gamemode then
 		local runningGamemode = call(mapmanagerResource, "getRunningGamemode")
 		if not runningGamemode then
 			return false, errorCode.noGamemodeRunning
@@ -355,7 +346,7 @@ function voteMap(resource1, resource2)
 	else
 		local runningGamemode = call(mapmanagerResource, "getRunningGamemode")
 		if runningGamemode then
-			return voteBetweenGamemodeCompatibleMaps(runningGamemode), true
+			return voteBetweenGamemodeCompatibleMaps(runningGamemode)
 		else
 			return false, errorCode.noGamemodeRunning
 		end
