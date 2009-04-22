@@ -34,11 +34,11 @@ g_RaceEndTimer = Timer:create()
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
-		if getPlayerCount() == 0 then
-			outputDebugString('Stopping map')
-			triggerEvent('onGamemodeMapStop', g_Root)
-            return
-		end
+		--if getPlayerCount() == 0 then
+			--outputDebugString('Stopping map')
+			--triggerEvent('onGamemodeMapStop', g_Root)
+            --return
+		--end
         gotoState('LoadingMap')
         -- set up all players as not ready
         for i,player in ipairs(getElementsByType('player')) do
@@ -428,8 +428,8 @@ function joinHandlerBoth(player)
     -- Tell all clients to re-apply ghostmode settings in 1000ms
     setTimer(function() clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode) end, 1000, 1 )
 	
-	if playerJoined and getPlayerCount() <= 2 then
-		---- Start random map vote if someone joined a lone player
+	if playerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
+		---- Start random map vote if someone joined a lone player mid-race
         setTimer(startMidMapVoteForRandomMap,7000,1)
 	end
 end
