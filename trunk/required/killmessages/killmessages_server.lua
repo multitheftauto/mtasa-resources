@@ -153,6 +153,8 @@ function outputMessage ( message, visibleTo, r, g, b, font )
 			if part[1] == "image" then
 				if part.resource then
 					message[i].resourceName = getResourceName(part.resource)
+				else
+					part.resourceName = getResourceName(sourceResource)
 				end
 			end
 		end
