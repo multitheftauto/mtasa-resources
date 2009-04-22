@@ -58,29 +58,21 @@ addEventHandler('onClientResourceStart', g_ResRoot,
         -- Show title screen now
         TitleScreen.show()
 
-        -- last bits
 		setPedCanBeKnockedOffBike(g_Me, false)
 	end
 )
 
 
 -------------------------------------------------------
--- Title screen
+-- Title screen - Shown when player first joins the game
 -------------------------------------------------------
 TitleScreen = {}
 TitleScreen.startTime = 0
 
 function TitleScreen.init()
     local screenWidth, screenHeight = guiGetScreenSize()
-    g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false, nil)
-    g_GUI['titleText1'] = guiCreateLabel(10, 457, 200, 15, 'Keys:', false, g_GUI['titleImage'] )
-    g_GUI['titleText2'] = guiCreateLabel(10, 490, 200, 15, 'F5 - Top times', false, g_GUI['titleImage'] )
-    g_GUI['titleText3'] = guiCreateLabel(10, 475, 200, 15, 'Enter - Retry', false, g_GUI['titleImage'] )
-    for i,name in ipairs({'titleText1', 'titleText2', 'titleText3'}) do
-        guiSetFont(g_GUI[name], 'default-bold-small')
-        guiLabelSetColor(g_GUI[name], 0,0,16)
-    end
-    hideGUIComponents('titleImage','titleText1', 'titleText2', 'titleText3')
+    g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false, nil )
+    hideGUIComponents('titleImage')
 end
 
 function TitleScreen.show()
@@ -94,10 +86,10 @@ function TitleScreen.update()
     local alpha = math.min(1,math.max( secondsLeft ,0))
     guiSetAlpha(g_GUI['titleImage'], alpha)
     if alpha == 0 then
-        hideGUIComponents('titleImage','titleText1', 'titleText2', 'titleText3')
+        hideGUIComponents('titleImage')
         removeEventHandler('onClientRender', g_Root, TitleScreen.update)
     elseif secondsLeft < 5 then
-        showGUIComponents('titleImage','titleText1', 'titleText2', 'titleText3')
+        showGUIComponents('titleImage')
 	end
 end
 
@@ -108,7 +100,7 @@ end
 
 
 -------------------------------------------------------
--- Message for client feedback when loading maps
+-- Travel screen - Message for client feedback when loading maps
 -------------------------------------------------------
 TravelScreen = {}
 TravelScreen.startTime = 0
@@ -116,7 +108,7 @@ TravelScreen.startTime = 0
 function TravelScreen.init()
     local screenWidth, screenHeight = guiGetScreenSize()
 	g_GUI['travelMessage'] = guiCreateLabel(screenWidth/2-150, screenHeight/2-100, 300, 20, '', false)
-    g_GUI['travelImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-90, 512, 256, 'img/travelling.png', false, nil)
+    g_GUI['travelImage']   = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-90, 512, 256, 'img/travelling.png', false, nil)
     guiLabelSetHorizontalAlign(g_GUI['travelMessage'], 'center')
     hideGUIComponents('travelMessage', 'travelImage' )
 end
@@ -136,7 +128,6 @@ end
 function TravelScreen.getTicksRemaining()
     return TravelScreen.startTime + 3000 - getTickCount()
 end
-
 -------------------------------------------------------
 
 
