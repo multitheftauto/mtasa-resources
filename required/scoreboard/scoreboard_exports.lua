@@ -1,6 +1,7 @@
 local NAMECOLUMNSIZE = .55
 local PINGCOLUMNSIZE = .1
 
+resourceColumns = {}
 isColumn = {name=true,ping=true}
 scoreboardColumns = {
 	{name="name",size=NAMECOLUMNSIZE},
@@ -42,6 +43,10 @@ function addScoreboardColumn(name, element, position, size)
 	if name and not isColumn[name] then
 		isColumn[name] = true
 		table.insert(scoreboardColumns,position or #scoreboardColumns,{name=name,visibleTo=element,size=size})
+		if sourceResource then
+			resourceColumns[sourceResource] = resourceColumns[sourceResource] or {}
+			table.insert ( resourceColumns[sourceResource], name )
+		end
 		return triggerClientEvent(element or rootElement,"doAddColumn",rootElement,{name,size},position)
 	else
 		return false
@@ -89,3 +94,14 @@ end
 function setPlayerScoreboardForced(element, state)
 	return triggerClientEvent(element,"doForceScoreboard",rootElement,state)
 end
+
+addEventHandler ( "onResourceStop",rootElement,
+	function(resource)
+		if resourceColumns[resource] then
+			for i,name in ipairs(resourceColumns[resource]) do
+				removeScoreboardColumn(name)
+			end
+			resourceColumns[resource] = nil
+		end
+	end
+)

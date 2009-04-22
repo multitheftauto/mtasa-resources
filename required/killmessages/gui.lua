@@ -130,6 +130,15 @@ function outputMessage ( message, r, g, b, font )
 	if startX < 0 then
 		startX = screenX + startX
 	end
+	
+	for i,part in ipairs(message) do
+		if part[1] == "image" then
+			if not part.resource and not part.resourceName then
+				part.resource = sourceResource
+			end
+		end
+	end
+	
 	drawLine ( message, startX, y, config.align, config.lines, r, g, b, font, 1 )
 	fadeLine ( config.lines )	
 end
