@@ -144,8 +144,6 @@ function getMapsCompatibleWithGamemode(gamemode)
 			end
 		end
 	elseif isGamemode(gamemode) then
-		gamemodeName = getResourceName(gamemode)
-		
 		local resourceList = getResources()
 		
 		compatibleMaps = {}
