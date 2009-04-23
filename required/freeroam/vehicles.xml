@@ -155,10 +155,10 @@
 			<vehicle id="455" name="Flatbed" />
 			<vehicle id="530" name="Forklift" />
 			<vehicle id="403" name="Linerunner" />
-			<vehicle id="514" name="Linerunner 2" />
 			<vehicle id="443" name="Packer" />
 			<vehicle id="515" name="Roadtrain" />
 			<vehicle id="574" name="Sweeper" />
+			<vehicle id="514" name="Tanker" />
 			<vehicle id="525" name="Towtruck" />
 			<vehicle id="408" name="Trashmaster" />
 			<vehicle id="552" name="Utility van" />
