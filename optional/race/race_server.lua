@@ -29,6 +29,7 @@ g_Vehicles = {}				-- { player = vehicle }
 g_SpawnTimer = Timer:create()
 g_RankTimer  = Timer:create()
 g_RaceEndTimer = Timer:create()
+g_WatchDogTimer = Timer:create()
 
 
 addEventHandler('onGamemodeMapStart', g_Root,
@@ -296,12 +297,22 @@ end
 
 function joinHandlerBoth(player)
 	if #g_Spawnpoints == 0 then
-		-- start vote if no map is loaded
-		outputDebugString('No map loaded; showing votemanager')
-	    g_SpawnTimer:killTimer()
-        RaceMode.endMap()
-		return
-	end
+ 		-- start vote if no map is loaded
+       if not g_WatchDogTimer:isActive() then
+            g_WatchDogTimer:setTimer(
+                function()
+                    if #g_Spawnpoints == 0 then
+                        outputDebugString('No map loaded; showing votemanager')
+                        g_SpawnTimer:killTimer()
+                        RaceMode.endMap()
+                    end
+                end,
+                1000, 1 )
+        end
+        return
+    else
+        g_WatchDogTimer:killTimer()
+    end
 	if g_SpawnTimer:isActive() then
 		for i,p in ipairs(getElementsByType('player')) do
 			if not table.find(g_Players, p) then
