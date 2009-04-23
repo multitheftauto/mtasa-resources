@@ -52,11 +52,11 @@ function RaceMap.load(res)
 	end
     local infoNode = xmlFindChild(meta, 'info', 0)
     local info = infoNode and xmlNodeGetAttributes ( infoNode ) or {}
-	local racenode = xmlFindChild(meta, 'race', 0) or xmlFindChild(meta, 'map', 0)
+	local racenode = xmlFindChild(meta, 'race', 0)
 	local file = racenode and xmlNodeGetAttribute(racenode, 'src')
 	xmlUnloadFile(meta)
 	if not file then
-		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no <race /> or <map /> node in meta.xml', 2)
+		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no <race /> node in meta.xml', 2)
 		return false
 	end
 	
@@ -136,8 +136,10 @@ function RaceMap:save()
 end
 
 function RaceMap:unload()
-	xmlUnloadFile(self.xml)
-	self.xml = nil
+	if self.xml then
+		xmlUnloadFile(self.xml)
+		self.xml = nil
+	end
 end
 
 
@@ -187,7 +189,7 @@ end
 
 
 -----------------------------
--- Deathmatch specific
+-- Deathmatch specific (DP2)
 
 DMRaceMap = setmetatable({}, RaceMap)
 function DMRaceMap:__index(k)
@@ -228,88 +230,7 @@ function DMRaceMapObject:parseValue(val)
 end
 
 -----------------------------
--- Conversion
-
-function RaceRaceMap:convert()
-	local meta = xmlLoadFile('meta.xml', self.res)
-	if not meta then
-		return false
-	end
-	if self.meta then
-		local infoNode = xmlFindChild(meta, 'info', 0)
-		for _,infoAttr in ipairs({'author', 'description', 'version'}) do
-			xmlNodeSetAttribute(infoNode, infoAttr, self.meta[infoAttr])
-		end
-		xmlDestroyNode(self.meta.node)
-	end
-	
-	if self.options then
-		local settingsNode = xmlCreateChild(meta, 'settings')
-		local settingNode
-		for option,_ in pairs(g_MapSettingNames) do
-			if self[option] then
-				settingNode = xmlCreateChild(settingsNode, 'setting')
-				xmlNodeSetAttribute(settingNode, 'name', '#' .. option)
-				xmlNodeSetAttribute(settingNode, 'value', self.options[option])
-			end
-		end
-		xmlDestroyNode(self.options.node)
-	end
-	
-	xmlSaveFile(meta)
-	xmlUnloadFile(meta)
-	
-	local i, node, obj, val
-	local splitAttrs = {
-		position = { 'posX', 'posY', 'posZ' },
-		rotation = { 'rotX', 'rotY', 'rotZ' }
-	}
-	for objType,attrs in pairs(g_MapObjAttrs) do
-		i = 0
-		while true do
-			node = xmlFindChild(self.xml, objType, i)
-			if not node then
-				break
-			end
-			xmlNodeSetAttribute(node, 'name', nil)
-			obj = self:createRaceMapObject(node, objType)
-			for _,attr in ipairs(attrs) do
-				val = obj[attr]
-				if val then
-					if splitAttrs[attr] and type(val) == 'table' and #splitAttrs[attr] == #val then
-						for i,splitattr in ipairs(splitAttrs[attr]) do
-							xmlNodeSetAttribute(node, splitattr, val[i])
-						end
-					else
-						if type(val) == 'table' then
-							if attr == 'color' then
-								val = getStringFromColor(unpack(val))
-							else
-								val = table.concat(val, ',')
-							end
-						end
-						xmlNodeSetAttribute(node, attr, val)
-					end
-					xmlDestroyNode(xmlFindChild(node, attr, 0))
-				end
-			end
-			xmlNodeSetAttribute(node, 'id', objType .. (i+1))
-			if objType == 'checkpoint' then
-				xmlNodeSetAttribute(node, 'nextid', 'checkpoint' .. (i+2))
-			end
-			i = i + 1
-		end
-		if objType == 'checkpoint' and i > 0 then
-			xmlNodeSetAttribute(xmlFindChild(self.xml, 'checkpoint', i-1), 'nextid', nil)
-		end
-	end
-	xmlNodeSetAttribute(self.xml, 'mod', 'deathmatch')
-	setmetatable(self, DMRaceMap)
-end
-
-
------------------------------
--- Element Map specific
+-- Element Map specific (1.0)
 
 function RaceElementMap:__index(k)
 	if RaceElementMap[k] then
@@ -327,29 +248,34 @@ function RaceElementMap:isRaceFormat()
 	return false
 end
 
-function RaceElementMap:getAll(name,type)
+function RaceElementMap:getAll(name, type)
 	local result = {}
-	--Block out specific stuff
+	-- Block out specific stuff
 	if name == "object" then 
 		return {} 
 	elseif name == "pickup" then
 		return self:getAll("racepickup",name)
 	end
 	local resourceRoot = getResourceRootElement(self.res)
-	for i,element in ipairs(getElementsByType(name,resourceRoot)) do
+	for i,element in ipairs(getElementsByType(name, resourceRoot)) do
 		result[i] = {}
 		result[i].id = getElementID(element) or i
 		attrs =	g_MapObjAttrs[type or name]
 		for _,attr in ipairs(attrs) do
-			result[i][attr] = getElementData(element,attr)
+			local val = getElementData(element, attr)
 			if attr == "rotation" then
-				result[i][attr] = result[i][attr] or getElementData(element,"rotZ")
+				val = val or getElementData(element, "rotZ")
 			elseif attr == "position" then
-				result[i][attr] = result[i][attr] or {tonumber(getElementData(element,"posX")), tonumber(getElementData(element,"posY")), tonumber(getElementData(element,"posZ"))}
+				val = val or { tonumber(getElementData(element, "posX")), tonumber(getElementData(element, "posY")), tonumber(getElementData(element, "posZ")) }
+			elseif val then
+				val = DMRaceMapObject.parseValue(result[i], val)
 			end
+			result[i][attr] = val
 		end
 	end
 	return result
 end
 
-function RaceElementMap:unload() return false end
+function RaceElementMap:unload()
+	return false
+end

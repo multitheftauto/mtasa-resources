@@ -48,7 +48,8 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		
 		-- load pickup models and textures
 		for name,id in pairs(g_ModelForPickupType) do
-			loadCustomModel(id, 'model/' .. name .. '.dff', 'model/' .. name .. '.txd')
+			engineImportTXD(engineLoadTXD('model/' .. name .. '.txd'), id)
+			engineReplaceModel(engineLoadDFF('model/' .. name .. '.dff', id), id)
 		end
 
         -- Init presentation screens
