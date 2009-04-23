@@ -11,7 +11,7 @@ g_Pickups = {}
 g_VisiblePickups = {}
 g_Objects = {}
 
-outputChatBox ( "Race version r136 21Apr09", 255, 127, 0 )
+outputChatBox ( 'Race version ' .. VERSION, 255, 127, 0 )
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
@@ -72,31 +72,42 @@ TitleScreen.startTime = 0
 
 function TitleScreen.init()
     local screenWidth, screenHeight = guiGetScreenSize()
-    g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false, nil )
+    g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false )
     hideGUIComponents('titleImage')
 end
 
 function TitleScreen.show()
     showGUIComponents('titleImage')
     TitleScreen.startTime = getTickCount()
+    TitleScreen.bringForward = 0
     addEventHandler('onClientRender', g_Root, TitleScreen.update)
 end
 
 function TitleScreen.update()
-    local secondsLeft = TitleScreen.getSecondsRemaining()
+    local secondsLeft = TitleScreen.getTicksRemaining() / 1000
     local alpha = math.min(1,math.max( secondsLeft ,0))
     guiSetAlpha(g_GUI['titleImage'], alpha)
     if alpha == 0 then
         hideGUIComponents('titleImage')
         removeEventHandler('onClientRender', g_Root, TitleScreen.update)
-    elseif secondsLeft < 5 then
-        showGUIComponents('titleImage')
 	end
 end
 
-function TitleScreen.getSecondsRemaining()
-    return ( TitleScreen.startTime + 10000 - getTickCount() ) / 1000
+function TitleScreen.getTicksRemaining()
+    return math.max( 0, TitleScreen.startTime - TitleScreen.bringForward + 10000 - getTickCount() )
 end
+
+-- Start the fadeout as soon as possible
+function TitleScreen.bringForwardFadeout()
+    local ticksLeft = TitleScreen.getTicksRemaining()
+    local bringForward = ticksLeft - 1000
+    outputDebug( 'MISC', 'bringForward ' .. bringForward )
+    if bringForward > 0 then
+        TitleScreen.bringForward = math.min(TitleScreen.bringForward + bringForward,3000)
+        outputDebug( 'MISC', 'TitleScreen.bringForward ' .. TitleScreen.bringForward )
+    end
+end
+
 -------------------------------------------------------
 
 
@@ -127,8 +138,9 @@ function TravelScreen.hide()
 end
 
 function TravelScreen.getTicksRemaining()
-    return TravelScreen.startTime + 3000 - getTickCount()
+    return math.max( 0, TravelScreen.startTime + 3000 - getTickCount() )
 end
+
 -------------------------------------------------------
 
 
@@ -241,7 +253,8 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     setTimer(TravelScreen.hide,delay,1)
 
     -- Delay readyness until after title
-    delay = delay + math.max( 0, TitleScreen.getSecondsRemaining() * 1000 - 1500 )
+    TitleScreen.bringForwardFadeout()
+    delay = delay + math.max( 0, TitleScreen.getTicksRemaining() - 1500 )
 
     -- Do fadeup and then tell server client is ready
     setTimer(fadeCamera, delay + 750, 1, true, 10.0)
@@ -822,6 +835,7 @@ addEventHandler('onClientPlayerQuit', g_Root,
 			end
 		end
 		table.removevalue(g_Players, source)
+        g_SmoothList[player] = nil
 	end
 )
 
@@ -835,6 +849,134 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 	end
 )
 
+
+---------------------------------------------------------------------------
+-- Bigdar - Big radar
+---------------------------------------------------------------------------
+Bigdar = {}
+Bigdar.smoothList = {}      -- {player = rrz}
+Bigdar.lastSmoothSeconds = 0;
+Bigdar.beginValidSeconds = nil;
+Bigdar.enabled = true;
+
+function Bigdar.toggle()
+    Bigdar.enabled = not Bigdar.enabled
+    outputConsole( 'Bigdar is now ' .. (Bigdar.enabled and 'on' or 'off') )
+end
+
+function Bigdar.render()
+
+    -- Have to be not dead and with a vehicle for a least 1 second before these get drawn
+    if not g_Me or isPlayerDead(g_Me) or not getPedOccupiedVehicle(g_Me) then
+        Bigdar.beginValidSeconds = nil
+        return
+    end
+
+    -- Ensure at least 1 second since g_BeginValidSeconds was set
+    local timeSeconds = getTickCount() / 1000
+    if not Bigdar.beginValidSeconds then
+        Bigdar.beginValidSeconds = timeSeconds
+    end
+    if timeSeconds - Bigdar.beginValidSeconds < 1 then
+        return
+    end
+
+    -- No draw if faded out or not enabled
+    if not g_bShowAllTags or not Bigdar.enabled then
+        return
+    end
+
+    -- Calc smoothing vars
+    local delta = timeSeconds - Bigdar.lastSmoothSeconds
+    Bigdar.lastSmoothSeconds = timeSeconds
+    local timeslice = math.clamp(0,delta*14,1)
+
+    -- Get screen dimensions
+    local screenX,screenY = guiGetScreenSize()
+    local halfScreenX = screenX * 0.5
+    local halfScreenY = screenY * 0.5
+
+    -- Get my pos and rot
+    local mx, my, mz = getElementPosition(g_Me)
+    local _, _, mrz  = getCameraRot()
+
+    -- To radians
+    mrz = math.rad(-mrz)
+
+    for i,player in ipairs(g_Players) do
+        if player ~= g_Me then
+            -- Get other pos
+            local ox, oy, oz = getElementPosition(player)
+
+            local dist = getDistanceBetweenPoints3D( mx, my, mz, ox, oy, oz )
+
+            if dist < 60 then
+                local alpha = 1 - dist / 60
+                local scalex = alpha * 0.5 + 0.5
+                local scaley = alpha * 0.25 + 0.75
+
+                -- Calc dir to
+                local dx = ox - mx
+                local dy = oy - my
+                -- Calc rotz to
+                local drz = math.atan2(dx,dy)
+                -- Calc relative rotz to
+                local rrz = drz - mrz
+
+                -- Add smoothing to the relative rotz
+                local smooth = Bigdar.smoothList[player] or rrz
+                smooth = math.wrapdifference(-math.pi, smooth, rrz, math.pi)
+                if math.abs(smooth-rrz) > 1.57 then
+                    smooth = rrz
+                end
+                smooth = math.lerp( smooth, rrz, timeslice )
+                Bigdar.smoothList[player] = smooth
+                rrz = smooth
+
+                -- Calc on screen pos for relative rotz
+                local sx = math.sin(rrz)
+                local sy = math.cos(rrz)
+
+                -- Draw at edge of screen
+                local X1 = halfScreenX
+                local Y1 = halfScreenY
+                local X2 = sx * halfScreenX + halfScreenX
+                local Y2 = -sy * halfScreenY + halfScreenY
+                local X
+                local Y
+                if math.abs(sx) > -sy then
+                    -- Left or right
+                    if X2 < X1 then
+                        -- Left
+                        X = 32
+                        Y = Y1+ (Y2-Y1)* (X-X1) / (X2-X1)
+                    else
+                        -- right
+                        X = screenX-32
+                        Y = Y1+ (Y2-Y1)* (X-X1) / (X2-X1)
+                    end
+                else
+                    -- Top or bottom
+                    if Y2 < Y1 then
+                        -- Top
+                        Y = 32
+                        X = X1+ (X2-X1)* (Y-Y1) / (Y2 - Y1)
+                    else
+                        -- bottom
+                        Y = screenY-32
+                        X = X1+ (X2-X1)* (Y-Y1) / (Y2 - Y1)
+                    end
+                end
+
+                dxDrawImage ( X-24*scalex, Y-32*scaley, 48*scalex, 64*scaley, "img/bigdar.png", 180 + rrz * 180 / math.pi, 0, 0, tocolor(255,255,255,255*alpha), false )
+            end
+
+        end
+    end
+end
+addEventHandler('onClientRender', g_Root, Bigdar.render)
+
+
 ---------------------------------------------------------------------------
 --
 -- Commands and binds
@@ -844,7 +986,7 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 ---------------------------------------------------------------------------
 
 addCommandHandler('kill',
-    function(player)
+    function()
         triggerServerEvent('onClientKillPlayer', g_Me)
     end
 )
@@ -852,6 +994,12 @@ addCommandHandler('kill',
 bindKey('enter_exit', 'down',
     function()
         triggerServerEvent('onClientKillPlayer', g_Me)
+    end
+)
+
+bindKey('F4', 'down',
+    function()
+        Bigdar.toggle()
     end
 )
 
