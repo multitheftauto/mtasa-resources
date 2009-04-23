@@ -184,34 +184,33 @@ function loadMap(res)
 		local chains = {}		-- a chain is a list of checkpoints that immediately follow each other
 		local prevchainnum, chainnum, nextchainnum
 		for i,checkpoint in ipairs(g_Checkpoints) do
-			-- is it the finish?
-			if not checkpoint.nextid then
-				table.insert(chains, { checkpoint })
-			else
-				-- any chain we can place this checkpoint after?
-				chainnum = table.find(chains, '[last]', 'nextid', checkpoint.id)
-				if chainnum then
-					table.insert(chains[chainnum], checkpoint)
+			-- any chain we can place this checkpoint after?
+			chainnum = table.find(chains, '[last]', 'nextid', checkpoint.id)
+			if chainnum then
+				table.insert(chains[chainnum], checkpoint)
+				if checkpoint.nextid then
 					nextchainnum = table.find(chains, 1, 'id', checkpoint.nextid)
 					if nextchainnum then
 						table.merge(chains[chainnum], chains[nextchainnum])
 						table.remove(chains, nextchainnum)
 					end
-				else
-					-- any chain we can place it before?
-					chainnum = table.find(chains, 1, 'id', checkpoint.nextid)
-					if chainnum then
-						table.insert(chains[chainnum], 1, checkpoint)
-						prevchainnum = table.find(chains, '[last]', 'nextid', checkpoint.id)
-						if prevchainnum then
-							table.merge(chains[prevchainnum], chains[chainnum])
-							table.remove(chains, chainnum)
-						end
-					else
-						-- new chain
-						table.insert(chains, { checkpoint })
-					end
 				end
+			elseif checkpoint.nextid then
+				-- any chain we can place it before?
+				chainnum = table.find(chains, 1, 'id', checkpoint.nextid)
+				if chainnum then
+					table.insert(chains[chainnum], 1, checkpoint)
+					prevchainnum = table.find(chains, '[last]', 'nextid', checkpoint.id)
+					if prevchainnum then
+						table.merge(chains[prevchainnum], chains[chainnum])
+						table.remove(chains, chainnum)
+					end
+				else
+					-- new chain
+					table.insert(chains, { checkpoint })
+				end
+			else
+				table.insert(chains, { checkpoint })
 			end
 		end
 		g_Checkpoints = chains[1] or {}
@@ -758,24 +757,6 @@ addCommandHandler('ghostmode',
 		end
 	end
 )
-
-addCommandHandler('convrace',
-	function(player, command, resname)
-		local map = RaceMap.load(getResourceFromName(resname))
-		if not map then
-			return
-		end
-		if map:isDMFormat() then
-			outputConsole('Map is already in deathmatch format.')
-			return
-		end
-		map:convert()
-		map:save()
-		map:unload()
-		outputConsole('Map converted successfully')
-	end
-)
-
 
 addEvent('onClientRaceReady', true)
 addEventHandler('onClientRaceReady', g_Root,

@@ -25,7 +25,6 @@
 	
 	<script src="_common.lua" type="client"/>
 	<script src="_joiner_client.lua" type="client"/>
-	<script src="_custommodel.lua" type="client"/>
 	<script src="util_client.lua" type="client"/>
 	<script src="fancyprogress.lua" type="client"/>
 	<script src="client_anim.lua" type="client"/>
