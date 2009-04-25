@@ -236,6 +236,9 @@ function loadMap(res)
 	
 	-- read checkpoints
 	g_Checkpoints = map:getAll('checkpoint')
+	for i,checkpoint in ipairs(g_Checkpoints) do
+		checkpoint.size = checkpoint.size and checkpoint.size*4 or 4
+	end
 	if map:isDMFormat() then
 		-- sort checkpoints
 		local chains = {}		-- a chain is a list of checkpoints that immediately follow each other
