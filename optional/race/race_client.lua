@@ -795,7 +795,6 @@ function createCheckpoint(i)
 	end
 	local pos = checkpoint.position
 	local color = checkpoint.color or { 0, 0, 255 }
-	checkpoint.size = checkpoint.size and checkpoint.size*4 or 4
 	checkpoint.marker = createMarker(pos[1], pos[2], pos[3], checkpoint.type or 'checkpoint', checkpoint.size, color[1], color[2], color[3])
 	if (not checkpoint.type or checkpoint.type == 'checkpoint') and i == #g_Checkpoints then
 		setMarkerIcon(checkpoint.marker, 'finish')
