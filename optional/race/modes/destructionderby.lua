@@ -52,3 +52,7 @@ function DestructionDerby:pickFreeSpawnpoint()
 	return spawnpoint
 end
 --]]
+
+function DestructionDerby:getAllowBigdar()
+	return false
+end

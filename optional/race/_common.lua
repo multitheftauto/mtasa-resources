@@ -7,7 +7,7 @@
 --_DEBUG_TIMING = true        -- Introduce delays
 --_DEBUG_CHECKS = true        -- Extra checks
 _TESTING = true             -- Any user can issue test commands
-VERSION = 'r144 23Apr09'
+VERSION = 'r148 24Apr09'
 
 
 ---------------------------------------------------------------------------

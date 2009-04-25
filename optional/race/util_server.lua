@@ -100,16 +100,26 @@ function setVehicleID(vehicle, id)
 			break
 		end
 	end
-	local h, m = getTime()
-	
-	local player = getVehicleController(vehicle)
+
 	local vx, vy, vz = getElementVelocity(vehicle)
 	local tvx, tvy, tvz = getVehicleTurnVelocity(vehicle)
 	setElementModel(vehicle, id)
     if g_GameOptions.vehiclecolors == 'random' then
-        setRandomSeedForMap('vehiclecolors')
-        setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
-    end
+		setRandomSeedForMap('vehiclecolors')
+		local vehicleColorFixed = false
+		for vehicleID,color in pairs(g_FixedColorVehicles) do
+			if vehicleID == tonumber(id) then
+				if color then
+					setVehicleColor(vehicle, color[1], color[2], color[3], color[4])
+				end
+				vehicleColorFixed = true
+				break
+			end
+		end
+		if not vehicleColorFixed then
+			setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
+		end
+	end
 	setTimer(revertVehicleWheels, 1000, 1, vehicle)
 	if not doorExists then
 		revertVehicleDoors(vehicle)
@@ -542,4 +552,3 @@ function getBool(var,default)
     end
     return result == 'true'
 end
-

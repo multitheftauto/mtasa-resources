@@ -410,3 +410,7 @@ function RaceMode:destroy()
     end
 	RaceMode.instances[self.id] = nil
 end
+
+function RaceMode:getAllowBigdar()
+	return true
+end

@@ -1,4 +1,9 @@
 <meta>
-  <info type="map" gamemodes="race" name="Destruction Derby" author="Ransom" description="1st real concept map" version="1" />
-  <map src="Destruction Derby.map" />
+	<info type="map" gamemodes="race" name="Destruction Derby" author="Ransom" description="1st real concept map" version="1" />
+	<race src="Destruction Derby.map" />
+	<settings>
+		<setting name="#duration" value="300"/>
+		<setting name="#time" value="10:0"/>
+		<setting name="#respawn" value="none"/>
+	</settings>
 </meta>

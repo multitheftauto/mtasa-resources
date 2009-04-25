@@ -9,7 +9,60 @@ g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_AircraftIDs = table.create({ 592, 577, 511, 548, 512, 593, 425, 520, 417, 487, 553, 488, 497, 563, 476, 447, 519, 460, 469, 513 }, true)
 g_RCVehicleIDs = table.create({ 441, 464, 465, 501, 564 }, true)
 g_FixedColorVehicles = {
-	[{ 438, 420 }] = false
+	[416] = {1, 3, 0, 0},
+	[433] = {43, 0, 0, 0},
+	[427] = {0, 1, 0, 0},
+	[490] = {0, 0, 0, 0},
+	[407] = {3, 1, 0, 0},
+	[544] = {3, 1, 0, 0},
+	[470] = {43, 0, 0, 0},
+	[598] = {0, 1, 0, 0},
+	[596] = {0, 1, 0, 0},
+	[597] = {0, 1, 0, 0},
+	[599] = {0, 1, 0, 0},
+	[432] = {43, 0, 0, 0},
+	[601] = {1, 1, 0, 0},
+	[428] = {4, 75, 0, 0},
+	[438] = {6, 76, 0, 0},
+	[406] = {1, 1, 0, 0},
+	[486] = {1, 1, 0, 0},
+	[425] = {43, 0, 0, 0},
+	[448] = {3, 6, 0, 0},
+	[430] = {46, 26, 0, 0},
+	[464] = {14, 75, 0, 0},
+	[465] = {14, 75, 0, 0},
+	[501] = {14, 74, 0, 0},
+	[453] = {56, 56, 0, 0},
+	[447] = {75, 2, 0, 0},
+	[469] = {1, 3, 0, 0},
+	[409] = {1, 1, 0, 0},
+	[420] = {6, 1, 0, 0},
+	[408] = {26, 26, 0, 0},
+	[454] = {26, 26, 0, 0},
+	[609] = {36, 36, 0, 0},
+	[548] = {1, 1, 0, 0},
+	[592] = {1, 1, 0, 0},
+	[578] = {1, 1, 0, 0},
+	[537] = {1, 1, 0, 0},
+	[588] = {1, 1, 0, 0},
+	[493] = {36, 13, 0, 0},
+	[508] = {1, 1, 0, 0},
+	[595] = {112, 20, 0, 0},
+	[435] = {1, 1, 0, 0},
+	[450] = {1, 1, 0, 0},
+	[591] = {1, 1, 0, 0},
+	[556] = {1, 1, 0, 0},
+	[557] = {1, 1, 0, 0},
+	[584] = {1, 1, 0, 0},
+	[497] = {0, 1, 0, 0},
+	[563] = {1, 6, 0, 0},
+	[519] = {1, 1, 0, 0},
+	[538] = {1, 1, 0, 0},
+	[570] = {1, 1, 0, 0},
+	[574] = {26, 26, 0, 0},
+	[449] = {1, 74, 0, 0},
+	[583] = {1, 1, 0, 0},
+	[608] = {1, 1, 0, 0},
 }
 g_VehicleClothes = {
 	[{ 490, 523, 598, 596, 597, 599}] = { [16] = false, [17] = 4 }
@@ -30,6 +83,7 @@ g_SpawnTimer = Timer:create()
 g_RankTimer  = Timer:create()
 g_RaceEndTimer = Timer:create()
 g_WatchDogTimer = Timer:create()
+local pickupTimers = {}
 
 
 addEventHandler('onGamemodeMapStart', g_Root,
@@ -58,6 +112,7 @@ addEventHandler('onGamemodeMapStart', g_Root,
 			return
 		end
 		g_CurrentRaceMode = RaceMode.getApplicableMode():create()
+        g_MapOptions.allowBigdar = g_CurrentRaceMode.getAllowBigdar()
 		outputDebugString('Loaded race mode ' .. g_CurrentRaceMode:getName())
 		startRace()
 	end
@@ -131,6 +186,7 @@ function loadMap(res)
     g_MapOptions.autopimp = map.autopimp == 'true'
     g_MapOptions.firewater = map.firewater == 'true'
     g_MapOptions.cachemodels = map.cachemodels == 'true'
+    g_MapOptions.allowBigdar = true
 
     -- Set ghostmode from g_GameOptions if not defined in the map, or map override not allowed
     if not map.ghostmode or not g_GameOptions.ghostmode_map_can_override then
@@ -404,10 +460,10 @@ function joinHandlerBoth(player)
             if g_GameOptions.vehiclecolors == 'random' then
                 setRandomSeedForMap('vehiclecolors')
 			    local vehicleColorFixed = false
-			    for vehicles,color in pairs(g_FixedColorVehicles) do
-				    if table.find(vehicles, spawnpoint.vehicle) then
-					    if color then
-						    setVehicleColor(vehicle, color, 0, 0, 0)
+			    for vehicleID,color in pairs(g_FixedColorVehicles) do
+					if vehicleID == tonumber(spawnpoint.vehicle) then
+						if color then
+							setVehicleColor(vehicle, color[1], color[2], color[3], color[4])
 					    end
 					    vehicleColorFixed = true
 					    break
@@ -418,8 +474,7 @@ function joinHandlerBoth(player)
 			    end
             end
 		end
-		setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)
-		
+		setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)	
 	end
 	
     -- Tell all clients to re-apply ghostmode settings in 100ms
@@ -516,6 +571,20 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 		local vehicle = g_Vehicles[source]
 		local checkpoint = g_Checkpoints[checkpointNum]
 		if checkpoint.vehicle then
+			local rx, ry, rz = getVehicleRotation (vehicle)
+			if ry > 170 and ry < 190 then 
+				ry = 0 
+			end
+			if rx > 170 and rx < 190 then 
+				rx = 0
+				rz = rz + 180
+				if rz > 360 then
+					rz = rz - 360
+				end
+			end
+			if rx == 0 or ry == 0 then
+				setVehicleRotation(vehicle, rx, ry, rz)
+			end
 			setVehicleID(vehicle, checkpoint.vehicle)
 			clientCall(source, 'vehicleChanging')
 			if checkpoint.paintjob or checkpoint.upgrades then
@@ -538,7 +607,11 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 
 addEvent('onPlayerPickUpRacePickup', true)
 addEventHandler('onPlayerPickUpRacePickup', g_Root,
-	function(pickupID, pickupType)
+	function(pickupID, respawntime)
+		if respawntime then
+			clientCall(g_Root, 'unloadPickup', pickupID)
+			table.insert(pickupTimers, setTimer(clientCall, tonumber(respawntime), 1, g_Root, 'loadPickup', pickupID))
+		end
         if not stateAllowsPickup() then
             return
         end
@@ -549,6 +622,20 @@ addEventHandler('onPlayerPickUpRacePickup', g_Root,
 		elseif pickup.type == 'nitro' then
 			addVehicleUpgrade(vehicle, 1010)
 		elseif pickup.type == 'vehiclechange' then
+			local rx, ry, rz = getVehicleRotation (vehicle)
+			if ry > 170 and ry < 190 then 
+				ry = 0 
+			end
+			if rx > 170 and rx < 190 then 
+				rx = 0
+				rz = rz + 180
+				if rz > 360 then
+					rz = rz - 360
+				end
+			end
+			if rx == 0 or ry == 0 then
+				setVehicleRotation(vehicle, rx, ry, rz)
+			end
 			setVehicleID(vehicle, pickup.vehicle)
 			setVehiclePaintjobAndUpgrades(vehicle, pickup.paintjob, pickup.upgrades)
 			clientCall(source, 'vehicleChanging', getTime())
@@ -738,18 +825,13 @@ function distanceFromPlayerToCheckpoint(player, i)
 	return getDistanceBetweenPoints3D(x, y, z, unpack(checkpoint.position))
 end
 
-
 addEvent('onClientKillPlayer', true)
 addEventHandler('onClientKillPlayer', g_Root,
     function()
         local player = source
         if stateAllowsKillPlayer() then
-            local vehicle = RaceMode.getPlayerVehicle(player)
-            killPed(player)
+            setElementHealth(player, 0)
             toggleAllControls(player,false, true, false)
-            if vehicle then
-                setVehicleWheelStates ( vehicle, 1,2,2,1)
-            end
         end
     end
 )
