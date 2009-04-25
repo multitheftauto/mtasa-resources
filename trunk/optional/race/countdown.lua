@@ -15,7 +15,7 @@ Countdown.clientinstances = {}
 function Countdown.create(start, endFunction, text, r, g, b, ...)
 	local result = setmetatable(
 		{
-			startvalue = start or 5,
+			startvalue = math.floor(start or 5),
 			text = text,
 			r = r,
 			g = g,

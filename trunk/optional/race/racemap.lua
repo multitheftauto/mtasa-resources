@@ -2,7 +2,7 @@ g_MapObjAttrs = {
 	spawnpoint = { 'position', 'rotation', 'vehicle', 'paintjob', 'upgrades' },
 	checkpoint = { 'id', 'nextid', 'position', 'size', 'color', 'type', 'vehicle', 'paintjob', 'upgrades' },
 	object = { 'position', 'rotation', 'model' },
-	pickup = { 'position', 'type', 'vehicle', 'paintjob', 'upgrades' }
+	pickup = { 'position', 'type', 'vehicle', 'paintjob', 'upgrades', 'respawn' }
 }
 g_MapSettingNames = table.create(
 	{'time', 'weather', 'respawn', 'respawntime', 'duration', 'skins', 'bikehats', 'bikehatchance', 'carhats', 'carhatchance',

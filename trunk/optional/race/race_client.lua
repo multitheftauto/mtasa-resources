@@ -20,6 +20,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
         fadeCamera(false,0.0)
 		-- create GUI
 		local screenWidth, screenHeight = guiGetScreenSize()
+		g_dxGUI = {}
 		g_GUI = {
 			rankbg = guiCreateStaticImage(screenWidth-100, screenHeight-80, 100, 45, 'img/rankbg.png', false, nil),
 			rank = guiCreateLabel(screenWidth-100, screenHeight-75, 100, 20, '', false),
@@ -72,12 +73,18 @@ TitleScreen.startTime = 0
 
 function TitleScreen.init()
     local screenWidth, screenHeight = guiGetScreenSize()
-    g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false )
-    hideGUIComponents('titleImage')
+    g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false)
+	g_dxGUI['titleText'] = dxText:create('', 30, screenHeight-67, false, 'bankgothic', 0.70, 'left' )
+	g_dxGUI['titleText']:text(  'KEYS:\n' ..
+                                'F4        - BIGDAR\n' ..
+                                'F5        - TOP TIMES\n' ..
+                                'ENTER - RETRY' )
+    g_dxGUI['titleText']:color(200,200,200)
+    hideGUIComponents('titleImage','titleText')
 end
 
 function TitleScreen.show()
-    showGUIComponents('titleImage')
+    showGUIComponents('titleImage','titleText')
     TitleScreen.startTime = getTickCount()
     TitleScreen.bringForward = 0
     addEventHandler('onClientRender', g_Root, TitleScreen.update)
@@ -87,8 +94,9 @@ function TitleScreen.update()
     local secondsLeft = TitleScreen.getTicksRemaining() / 1000
     local alpha = math.min(1,math.max( secondsLeft ,0))
     guiSetAlpha(g_GUI['titleImage'], alpha)
+    g_dxGUI['titleText']:color(220,220,220,255*alpha)
     if alpha == 0 then
-        hideGUIComponents('titleImage')
+        hideGUIComponents('titleImage','titleText')
         removeEventHandler('onClientRender', g_Root, TitleScreen.update)
 	end
 end
@@ -107,7 +115,6 @@ function TitleScreen.bringForwardFadeout()
         outputDebug( 'MISC', 'TitleScreen.bringForward ' .. TitleScreen.bringForward )
     end
 end
-
 -------------------------------------------------------
 
 
@@ -119,35 +126,33 @@ TravelScreen.startTime = 0
 
 function TravelScreen.init()
     local screenWidth, screenHeight = guiGetScreenSize()
-	g_GUI['travelMessage'] = guiCreateLabel(screenWidth/2-150, screenHeight/2-100, 300, 20, '', false)
     g_GUI['travelImage']   = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-90, 512, 256, 'img/travelling.png', false, nil)
-    guiLabelSetHorizontalAlign(g_GUI['travelMessage'], 'center')
-    hideGUIComponents('travelMessage', 'travelImage' )
+	g_dxGUI['travelText1'] = dxText:create('Travelling to', screenWidth/2, screenHeight/2-130, false, 'bankgothic', 0.60, 'center' )
+	g_dxGUI['travelText2'] = dxText:create('', screenWidth/2, screenHeight/2-100, false, 'bankgothic', 0.70, 'center' )
+    g_dxGUI['travelText1']:color(240,240,240)
+    hideGUIComponents('travelImage', 'travelText1', 'travelText2')
 end
 
-function TravelScreen.show( text )
+function TravelScreen.show( msg )
     TravelScreen.startTime = getTickCount()
-    guiSetText(g_GUI['travelMessage'], text) 
-    guiSetVisible(g_GUI['travelMessage'], true)
-    guiSetVisible(g_GUI['travelImage'], true)
+    g_dxGUI['travelText2']:text(msg) 
+    showGUIComponents('travelImage', 'travelText1', 'travelText2')
 end
 
 function TravelScreen.hide()
-	guiSetVisible(g_GUI['travelMessage'], false)
-    guiSetVisible(g_GUI['travelImage'], false)
+    hideGUIComponents('travelImage', 'travelText1', 'travelText2')
 end
 
 function TravelScreen.getTicksRemaining()
     return math.max( 0, TravelScreen.startTime + 3000 - getTickCount() )
 end
-
 -------------------------------------------------------
 
 
 -- Called from server
 function notifyLoadingMap( mapName )
-    fadeCamera( false, 0.0, 0,0,16 ) -- fadeout, instant, dark blue
-    TravelScreen.show( 'Travelling to:  ' .. mapName )
+    fadeCamera( false, 0.0, 0,0,0 ) -- fadeout, instant, black
+    TravelScreen.show( mapName )
 end
 
 
@@ -188,15 +193,16 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 		pos = pickup.position
 		object = createObject(g_ModelForPickupType[pickup.type], pos[1], pos[2], pos[3])
 		setElementCollisionsEnabled(object, false)
-		colshape = createColSphere(pos[1], pos[2], pos[3], 5)
+		colshape = createColSphere(pos[1], pos[2], pos[3], 3)
 		g_Pickups[colshape] = { object = object }
 		for k,v in pairs(pickup) do
 			g_Pickups[colshape][k] = v
 		end
-        if g_Pickups[colshape].type == 'vehiclechange' then
-			g_Pickups[colshape].label = guiCreateLabel(0, 0, 150, 20, getVehicleNameFromModel(g_Pickups[colshape].vehicle), false)
-			guiSetVisible(g_Pickups[colshape].label, false )
-			guiSetAlpha(g_Pickups[colshape].label, 0 )
+        g_Pickups[colshape].load = true
+		if g_Pickups[colshape].type == 'vehiclechange' then
+			g_Pickups[colshape].label = dxText:create(getVehicleNameFromModel(g_Pickups[colshape].vehicle), 0.5, 0.5)
+			g_Pickups[colshape].label:color(255, 255, 255, 0)
+			g_Pickups[colshape].label:type("shadow",2)
         end
 	end
 	
@@ -221,7 +227,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
                 numNonStreamedModels = numNonStreamedModels + 1
             else
                 outputDebug( 'MISC', 'setElementStreamable( obj, false ) failed for ' .. tostring(model) )
-            end           
+            end
         end
     end
     outputDebug( 'MISC', 'maxNonStreamedModels:' .. tostring(maxNonStreamedModels) .. '  numNonStreamedModels:' .. numNonStreamedModels )
@@ -247,7 +253,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 
     fadeCamera( false, 0.0 )
 
-    -- Min 3 seconds on misc message
+    -- Min 3 seconds on travel message
     local delay = TravelScreen.getTicksRemaining()
     delay = math.max(50,delay)
     setTimer(TravelScreen.hide,delay,1)
@@ -305,9 +311,7 @@ addEventHandler('onClientElementStreamIn', g_Root,
 		if colshape then
 			local pickup = g_Pickups[colshape]
 			if pickup.label then
-				guiSetVisible(pickup.label, false)
-				guiSetAlpha(pickup.label, 0)
-				guiLabelSetHorizontalAlign(pickup.label, 'center')
+				pickup.label:color(255, 255, 255, 0)
 			end
 			g_VisiblePickups[colshape] = source
 			g_VisiblePickups.n = (g_VisiblePickups.n or 0) + 1
@@ -324,9 +328,7 @@ addEventHandler('onClientElementStreamOut', g_Root,
 		if colshape then
 			local pickup = g_Pickups[colshape]
 			if pickup.label then
-				guiSetVisible(pickup.label, false)
-				pickup.labelVisible = nil
-				pickup.labelInRange = nil
+				pickup.label:color(255, 255, 255, 0)
 			end
 			g_VisiblePickups[colshape] = nil
 			g_VisiblePickups.n = g_VisiblePickups.n - 1
@@ -338,53 +340,62 @@ addEventHandler('onClientElementStreamOut', g_Root,
 )
 
 function updatePickups()
-	local angle = math.fmod((getTickCount() - g_PickupStartTick) * 360 / 2000, 360)
 	local g_Pickups = g_Pickups
-	local pickup, x, y, pX, pY, pZ
+	local pickup, x, y, cX, cY, cZ, pickX, pickY, pickZ
 	for colshape,elem in pairs(g_VisiblePickups) do
 		if colshape ~= 'n' then
-			setElementRotation(elem, 0, 0, angle)
 			pickup = g_Pickups[colshape]
-			if pickup.label then
-				local pX, pY, pZ = getElementPosition(g_Me)
-				x, y = getScreenFromWorldPosition(unpack(pickup.position))
-                local distanceToPickup = getDistanceBetweenPoints3D(pX, pY, pZ, unpack(pickup.position))
-                if distanceToPickup > 100 then
-					if pickup.labelVisible then
-						guiSetVisible(pickup.label, false)
-						pickup.labelVisible = false
-					end
-				    if pickup.labelInRange then
-                        guiSetAlpha(pickup.label,0)
-					    pickup.labelInRange = false
-				    end
-				elseif x then
-					if not pickup.labelVisible then
-						guiSetVisible(pickup.label, true)
-						pickup.labelVisible = true
-					end
-					if distanceToPickup < 80 then
-						if not pickup.labelInRange then
-							Animation.createAndPlay(
-								pickup.label,
-								{ from = 0, to = 1, time = 500, fn = guiSetAlpha }
-							)
-							pickup.labelInRange = true
+			if pickup.load then
+				local angle = math.fmod((getTickCount() - g_PickupStartTick) * 360 / 2000, 360)
+				setElementRotation(elem, 0, 0, angle)
+				if pickup.label then
+					cX, cY, cZ = getCameraMatrix()
+					pickX, pickY, pickZ = unpack(pickup.position)
+					x, y = getScreenFromWorldPosition(pickX, pickY, pickZ + 2.85)
+					local distanceToPickup = getDistanceBetweenPoints3D(cX, cY, cZ, pickX, pickY, pickZ)
+					if distanceToPickup > 80 then
+						pickup.labelInRange = false
+					elseif x then
+						if distanceToPickup < 60 then
+							if isLineOfSightClear(cX, cY, cZ, pickX, pickY, pickZ, true, false, false, true, false) then
+								if not pickup.labelInRange then								
+									Animation.createAndPlay(
+										pickup.label,
+										Animation.presets.dxTextFadeIn(500)
+									)
+									pickup.labelInRange = true
+									pickup.labelVisible = true
+								end
+								if not pickup.labelVisible then
+									pickup.label:color(255, 255, 255, 255)
+								end
+							else
+								pickup.label:color(255, 255, 255, 0)
+								pickup.labelVisible = false
+							end
+						else
+							if pickup.labelInRange then
+								Animation.createAndPlay(
+									pickup.label,
+									Animation.presets.dxTextFadeOut(1000)
+								)
+								pickup.labelInRange = false
+								pickup.labelVisible = false
+							end
 						end
+						local scale = (60/getDistanceBetweenPoints3D(cX, cY, cZ, pickX, pickY, pickZ))*0.7
+						pickup.label:scale(scale)
+						pickup.label:position(x, y, false)
 					else
-						if pickup.labelInRange then
-							Animation.createAndPlay(
-								pickup.label,
-								{ from = 1, to = 0, time = 1000, fn = guiSetAlpha }
-							)
-							pickup.labelInRange = false
-						end
-					end
-					guiSetPosition(pickup.label, x-75, y-50, false)
-				else
-					if pickup.labelVisible then
-						guiSetVisible(pickup.label, false)
+						pickup.label:color(255, 255, 255, 0)
 						pickup.labelVisible = false
+					end
+				end
+			else
+				if pickup.label then
+					if pickup.labelInRange then
+						pickup.label:color(255, 255, 255, 0)
+						pickup.labelInRange = false
 					end
 				end
 			end
@@ -398,16 +409,52 @@ addEventHandler('onClientColShapeHit', g_Root,
 		if elem ~= g_Vehicle or not pickup then
 			return
 		end
-		if pickup.type == 'vehiclechange' then
-			if pickup.vehicle == getElementModel(g_Vehicle) then
-				return
+		if pickup.load then
+			if pickup.type == 'vehiclechange' then
+				if pickup.vehicle == getElementModel(g_Vehicle) then
+					return
+				end
+				g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
 			end
-			g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
+			triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id, pickup.respawn)
+			playSoundFrontEnd(46)
 		end
-		triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id, pickup.type)
-		playSoundFrontEnd(46)
 	end
 )
+
+function unloadPickup(pickupID)
+	for colshape,pickup in pairs(g_Pickups) do
+		if pickup.id == pickupID then
+			pickup.load = false
+			destroyElement(pickup.object)
+			return
+		end
+	end
+end
+
+function loadPickup(pickupID)
+	for colshape,pickup in pairs(g_Pickups) do
+		if pickup.id == pickupID then
+			pos = pickup.position
+			object = createObject(g_ModelForPickupType[pickup.type], pos[1], pos[2], pos[3])
+			setElementCollisionsEnabled(object, false)
+			g_VisiblePickups[colshape] = object
+			pickup.object = object
+			pickup.load = true
+			if isElementWithinColShape(g_Vehicle, colshape) then
+				if pickup.type == 'vehiclechange' then
+					if pickup.vehicle == getElementModel(g_Vehicle) then
+						return
+					end
+					g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
+				end
+				triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id, pickup.respawn)
+				playSoundFrontEnd(46)
+			end
+			return
+		end
+	end
+end
 
 function vehicleChanging(h, m)
 	local newVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
@@ -416,6 +463,10 @@ function vehicleChanging(h, m)
 		setElementPosition(g_Vehicle, x, y, z - g_PrevVehicleHeight + newVehicleHeight)
 	end
 	g_PrevVehicleHeight = nil
+	local vehID = getElementModel(g_Vehicle)
+	if vehID == 417 or vehID == 425 or vehID == 447 or vehID == 465 or vehID == 469 or vehID == 487 or vehID == 488 or vehID == 497 or vehID == 501 or vehID == 548 or vehID == 563 then
+		setHelicopterRotorSpeed (g_Vehicle, 0.2)
+	end
 	local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
@@ -462,11 +513,12 @@ function checkWater()
         if not g_WaterCraftIDs[getElementModel(g_Vehicle)] then
             local x, y, z = getElementPosition(g_Me)
             local waterZ = getWaterLevel(x, y, z)
-            if waterZ and z < waterZ - 0.5 and not isPlayerFinished(g_Me) and g_MapOptions then
+            if waterZ and z < waterZ - 0.5 and not isPlayerDead(g_Me) and not isPlayerFinished(g_Me) and g_MapOptions then
                 if g_MapOptions.firewater then
                     blowVehicle ( g_Vehicle, true )
                 else
-                    setElementHealth(g_Me, 0)
+                    setElementHealth(g_Me,0)
+                    triggerServerEvent('onClientKillPlayer',g_Me)
                 end
             end
         end
@@ -493,7 +545,7 @@ function showNextCheckpoint()
 end
 
 function checkpointReached(elem)
-	if elem ~= g_Vehicle then
+	if elem ~= g_Vehicle or getElementHealth(g_Vehicle) == 0 or getElementHealth(g_Me) == 0 then
 		return
 	end
 	
@@ -532,6 +584,9 @@ function setTimeLeft(timeLeft)
 	g_Duration = (getTickCount() - g_StartTick) + timeLeft
 end
 
+-----------------------------------------------------------------------
+-- Spectate
+-----------------------------------------------------------------------
 function startSpectate()
 	if #g_Players == 1 or g_SpectatedPlayer then
 		return
@@ -552,63 +607,6 @@ function startSpectate()
 	updateSpectate()
     startMovePlayerAway()
 end
-
------------------------------------------------------------------------
------------------------------------------------------------------------
--- MovePlayerAway
---
--- Super hack - Fixes the spec cam problem
---
-function startMovePlayerAway()
-    if g_MoveAwayTimer then
-        killTimer( g_MoveAwayTimer )
-    end
- 
-    g_PlrWasDeadAtSpecStart = getElementHealth(g_Me) == 0
-
-    if not g_PlrWasDeadAtSpecStart then
-        return
-    end
-
-    movePlayerAway()
-    g_MoveAwayTimer = setTimer(movePlayerAway,1000,0)
-
-    setCameraTarget(g_SpectatedPlayer)
-end
-
-function movePlayerAway()
-    if g_PlrWasDeadAtSpecStart then
-        -- If our player is dead while specing, move him far away
-        local temp = getCameraTarget()   
-        local vehicle = getPedOccupiedVehicle(g_Me)
-        if vehicle then
-            fixVehicle( vehicle )
-            setElementPosition( vehicle, 0,0,1234567 )
-            setElementVelocity( vehicle, 0,0,0 )
-            setVehicleTurnVelocity( vehicle, 0,0,0 )
-        else
-            setElementPosition( g_Me, 0,0,1234567 )
-            setElementVelocity( g_Me, 0,0,0 )
-        end
-        server.setPlayerGravity( g_Me, 0.0001 )
-        setElementHealth( g_Me, 90 )
-
-        if temp ~= getCameraTarget() then
-            setCameraTarget(temp)
-        end
-    end
-end
-
-function stopMovePlayerAway()
-    if g_MoveAwayTimer then
-        killTimer( g_MoveAwayTimer )
-        g_MoveAwayTimer = nil
-    end
-    server.setPlayerGravity( g_Me, 0.008 )
-end
------------------------------------------------------------------------
------------------------------------------------------------------------
-
 
 function spectatePrevious()
 	local i = table.find(g_Players, g_SpectatedPlayer)
@@ -658,10 +656,66 @@ function stopSpectate()
 	setCameraTarget(g_Me)
 	g_SpectatedPlayer = nil
 end
+-----------------------------------------------------------------------
 
---
+
+-----------------------------------------------------------------------
+-- MovePlayerAway - Super hack - Fixes the spec cam problem
+-----------------------------------------------------------------------
+function startMovePlayerAway()
+    if g_MoveAwayTimer then
+        killTimer( g_MoveAwayTimer )
+    end
+ 
+    g_PlrWasDeadAtSpecStart = getElementHealth(g_Me) == 0
+
+    if not g_PlrWasDeadAtSpecStart then
+        return
+    end
+
+    g_MoveAwayPos = math.random(0,4000)
+    movePlayerAway()
+    g_MoveAwayTimer = setTimer(movePlayerAway,1000,0)
+
+    setCameraTarget(g_SpectatedPlayer)
+end
+
+function movePlayerAway()
+    if g_PlrWasDeadAtSpecStart then
+        -- If our player is dead while specing, move him far away
+        local temp = getCameraTarget()   
+        local vehicle = getPedOccupiedVehicle(g_Me)
+        if vehicle then
+            fixVehicle( vehicle )
+            setElementPosition( vehicle, 0,g_MoveAwayPos,1234567 )
+            setElementVelocity( vehicle, 0,0,0 )
+            setVehicleTurnVelocity( vehicle, 0,0,0 )
+        else
+            setElementPosition( g_Me, 0,g_MoveAwayPos,1234567 )
+            setElementVelocity( g_Me, 0,0,0 )
+        end
+        server.setPlayerGravity( g_Me, 0.0001 )
+        setElementHealth( g_Me, 90 )
+
+        if temp ~= getCameraTarget() then
+            setCameraTarget(temp)
+        end
+    end
+end
+
+function stopMovePlayerAway()
+    if g_MoveAwayTimer then
+        killTimer( g_MoveAwayTimer )
+        g_MoveAwayTimer = nil
+    end
+    server.setPlayerGravity( g_Me, 0.008 )
+end
+-----------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------
 -- Camera transition for our player's respawn
---
+-----------------------------------------------------------------------
 function remoteStopSpectateAndBlack()
     stopSpectate()
     fadeCamera(false,0.0, 0,0,0)            -- Instant black
@@ -670,6 +724,7 @@ end
 function remoteSoonFadeIn()
     setTimer(fadeCamera,250,1,true,1.0)    -- And up
 end
+-----------------------------------------------------------------------
 
 function raceTimeout()
 	removeEventHandler('onClientRender', g_Root, updateTime)
@@ -696,9 +751,11 @@ function unloadAll()
 	
 	for colshape,pickup in pairs(g_Pickups) do
 		destroyElement(colshape)
-		destroyElement(pickup.object)
+		if pickup.object then
+			destroyElement(pickup.object)
+		end
 		if pickup.label then
-			destroyElement(pickup.label)
+			pickup.label:destroy()
 		end
 	end
 	g_Pickups = {}
@@ -737,9 +794,9 @@ function createCheckpoint(i)
 		return
 	end
 	local pos = checkpoint.position
-	local color = checkpoint.color or { 255, 0, 0 }
-	checkpoint.size = checkpoint.size or 2.25
-	checkpoint.marker = createMarker(pos[1], pos[2], pos[3], checkpoint.type or 'checkpoint', checkpoint.size*2, color[1], color[2], color[3])
+	local color = checkpoint.color or { 0, 0, 255 }
+	checkpoint.size = checkpoint.size and checkpoint.size*4 or 4
+	checkpoint.marker = createMarker(pos[1], pos[2], pos[3], checkpoint.type or 'checkpoint', checkpoint.size, color[1], color[2], color[3])
 	if (not checkpoint.type or checkpoint.type == 'checkpoint') and i == #g_Checkpoints then
 		setMarkerIcon(checkpoint.marker, 'finish')
 	end
@@ -761,9 +818,9 @@ function makeCheckpointCurrent(i)
 	end
 	
 	if not checkpoint.type or checkpoint.type == 'checkpoint' then
-		checkpoint.colshape = createColCircle(pos[1], pos[2], checkpoint.size*4 + 3)
+		checkpoint.colshape = createColCircle(pos[1], pos[2], checkpoint.size + 3)
 	else
-		checkpoint.colshape = createColSphere(pos[1], pos[2], pos[3], checkpoint.size*8 + 3)
+		checkpoint.colshape = createColSphere(pos[1], pos[2], pos[3], checkpoint.size + 3)
 	end
 	addEventHandler('onClientColShapeHit', checkpoint.colshape, checkpointReached, false)
 end
@@ -796,7 +853,7 @@ end
 
 addEventHandler('onClientPlayerJoin', g_Root,
 	function()
-		table.insert(g_Players, source)
+		table.insertUnique(g_Players, source)
 	end
 )
 
@@ -835,7 +892,7 @@ addEventHandler('onClientPlayerQuit', g_Root,
 			end
 		end
 		table.removevalue(g_Players, source)
-        g_SmoothList[player] = nil
+		Bigdar.smoothList[player] = nil
 	end
 )
 
@@ -855,9 +912,9 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 ---------------------------------------------------------------------------
 Bigdar = {}
 Bigdar.smoothList = {}      -- {player = rrz}
-Bigdar.lastSmoothSeconds = 0;
-Bigdar.beginValidSeconds = nil;
-Bigdar.enabled = true;
+Bigdar.lastSmoothSeconds = 0
+Bigdar.beginValidSeconds = nil
+Bigdar.enabled = true
 
 function Bigdar.toggle()
     Bigdar.enabled = not Bigdar.enabled
@@ -865,15 +922,16 @@ function Bigdar.toggle()
 end
 
 function Bigdar.render()
-
-    -- Have to be not dead and with a vehicle for a least 1 second before these get drawn
-    if not g_Me or isPlayerDead(g_Me) or not getPedOccupiedVehicle(g_Me) then
+    -- Ensure map allows it, and player not dead, and in a vehicle and not spectating
+    if not g_MapOptions or not g_MapOptions.allowBigdar or isPlayerDead(g_Me) or
+       not getPedOccupiedVehicle(g_Me) or isPlayerFinished(g_Me) or
+       not g_Vehicle or getCameraTarget() ~= g_Vehicle then
         Bigdar.beginValidSeconds = nil
         return
     end
 
     -- Ensure at least 1 second since g_BeginValidSeconds was set
-    local timeSeconds = getTickCount() / 1000
+    local timeSeconds = getSecondCount()
     if not Bigdar.beginValidSeconds then
         Bigdar.beginValidSeconds = timeSeconds
     end
@@ -885,6 +943,9 @@ function Bigdar.render()
     if not g_bShowAllTags or not Bigdar.enabled then
         return
     end
+
+	-- Icon definition
+	local icon = { file='img/bigdar.png', w=80, h=56, r=255, g=220, b=210 }
 
     -- Calc smoothing vars
     local delta = timeSeconds - Bigdar.lastSmoothSeconds
@@ -908,10 +969,15 @@ function Bigdar.render()
             -- Get other pos
             local ox, oy, oz = getElementPosition(player)
 
-            local dist = getDistanceBetweenPoints3D( mx, my, mz, ox, oy, oz )
+            -- Only draw marker if other player it is close enough, and not on screen
+            local maxDistance = 60
+            local alpha = 1 - getDistanceBetweenPoints3D( mx, my, mz, ox, oy, oz ) / maxDistance
+            local onScreen = getScreenFromWorldPosition ( ox, oy, oz )
 
-            if dist < 60 then
-                local alpha = 1 - dist / 60
+            if onScreen or alpha <= 0 then
+                -- If no draw, reset smooth position
+                Bigdar.smoothList[player] = nil
+            else
                 local scalex = alpha * 0.5 + 0.5
                 local scaley = alpha * 0.25 + 0.75
 
@@ -944,7 +1010,7 @@ function Bigdar.render()
                 local Y2 = -sy * halfScreenY + halfScreenY
                 local X
                 local Y
-                if math.abs(sx) > -sy then
+                if math.abs(sx) > math.abs(sy) then
                     -- Left or right
                     if X2 < X1 then
                         -- Left
@@ -967,10 +1033,8 @@ function Bigdar.render()
                         X = X1+ (X2-X1)* (Y-Y1) / (Y2 - Y1)
                     end
                 end
-
-                dxDrawImage ( X-24*scalex, Y-32*scaley, 48*scalex, 64*scaley, "img/bigdar.png", 180 + rrz * 180 / math.pi, 0, 0, tocolor(255,255,255,255*alpha), false )
+                dxDrawImage ( X-icon.w/2*scalex, Y-icon.h/2*scaley, icon.w*scalex, icon.h*scaley, icon.file, 180 + rrz * 180 / math.pi, 0, 0, tocolor(icon.r,icon.g,icon.b,255*alpha), false )
             end
-
         end
     end
 end

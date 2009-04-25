@@ -37,7 +37,9 @@ end
 
 function showGUIComponents(...)
 	for i,name in ipairs({...}) do
-		if type(g_GUI[name]) == 'table' then
+		if g_dxGUI[name] then
+			g_dxGUI[name]:visible(true)
+		elseif type(g_GUI[name]) == 'table' then
 			g_GUI[name]:show()
 		else
 			guiSetVisible(g_GUI[name], true)
@@ -47,7 +49,9 @@ end
 
 function hideGUIComponents(...)
 	for i,name in ipairs({...}) do
-		if type(g_GUI[name]) == 'table' then
+		if g_dxGUI[name] then
+			g_dxGUI[name]:visible(false)
+		elseif type(g_GUI[name]) == 'table' then
 			g_GUI[name]:hide()
 		else
 			guiSetVisible(g_GUI[name], false)
@@ -175,13 +179,14 @@ function table.removevalue(t, val)
 end
 
 function table.each(t, index, callback, ...)
+	local args = { ... }
 	if type(index) == 'function' then
-		table.insert(arg, 1, callback)
+		table.insert(args, 1, callback)
 		callback = index
 		index = false
 	end
 	for k,v in pairs(t) do
-		callback(index and v[index] or v, unpack(arg))
+		callback(index and v[index] or v, unpack(args))
 	end
 	return t
 end

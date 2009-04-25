@@ -3,7 +3,7 @@ Freeroam.__index = Freeroam
 
 Freeroam:register('Freeroam')
 
-function Freeroam.isApplicable()
+function Freeroam:isApplicable()
 	return not RaceMode.checkpointsExist() and RaceMode.getMapOption('respawn') == 'timelimit'
 end
 
