@@ -111,11 +111,15 @@ function loadMap(res)
     g_MapInfo.name      = map.info['name'] or 'unnamed'
     g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
 	g_MapOptions = {}
-	g_MapOptions.duration = getNumber(tostring("#"..g_MapInfo.resname..".duration"), 600)*1000
-	g_MapOptions.respawn = getString(tostring("#"..g_MapInfo.resname..".respawn"), "timelimit")
-	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and getNumber(tostring("#"..g_MapInfo.resname..".respawntime"), 10)*1000
-	g_MapOptions.time = getString(tostring("#"..g_MapInfo.resname..".time"), "12:00")
-	g_MapOptions.weather = getNumber(tostring("#"..g_MapInfo.resname..".weather"), 0)
+	g_MapOptions.duration = map.duration and tonumber(map.duration) > 0 and map.duration*1000 or 600000
+	g_MapOptions.respawn = map.respawn
+	if not g_MapOptions.respawn or g_MapOptions.respawn ~= 'none' then
+		g_MapOptions.respawn = 'timelimit'
+	end
+	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or 10000)
+	g_MapOptions.time = map.time or '12:00'
+	g_MapOptions.weather = map.weather or 0
+
 	g_MapOptions.skins = map.skins or 'cj'
 	g_MapOptions.vehicleweapons = map.vehicleweapons == 'true'
     g_MapOptions.ghostmode = map.ghostmode == 'true'
