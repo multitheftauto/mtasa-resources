@@ -242,9 +242,11 @@ end
 function RaceElementMap:__index(k)
 	if RaceElementMap[k] then
 		return RaceElementMap[k]
-	else
-		return get(k)
 	end
+	if g_MapSettingNames[k] then
+		return get(self.resname .. '.' .. k)
+	end
+	return get(k)
 end
 
 function RaceElementMap:isDMFormat()
