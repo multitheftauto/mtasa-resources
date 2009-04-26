@@ -27,12 +27,12 @@
 	<script src="_joiner_client.lua" type="client"/>
 	<script src="util_client.lua" type="client"/>
 	<script src="fancyprogress.lua" type="client"/>
-	<script src="textlib.lua" type="client"/>
 	<script src="client_anim.lua" type="client"/>
-	<script src="textlib_anim.lua" type="client"/>
 	<script src="countdown_client.lua" type="client"/>
 	<script src="rankingboard_client.lua" type="client"/>
 	<script src="race_client.lua" type="client"/>
+	<script src="textlib.lua" type="client"/>
+	<script src="textlib_anim.lua" type="client"/>
 	<script src="toptimes/toptimes_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
 	
