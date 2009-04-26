@@ -312,11 +312,13 @@ addEventHandler('onClientElementStreamIn', g_Root,
 			local pickup = g_Pickups[colshape]
 			if pickup.label then
 				pickup.label:color(255, 255, 255, 0)
+				pickup.label:visible(false)
+				pickup.labelInRange = false
 			end
 			g_VisiblePickups[colshape] = source
 			g_VisiblePickups.n = (g_VisiblePickups.n or 0) + 1
 			if g_VisiblePickups.n == 1 then
-				addEventHandler('onClientRender', g_Root, updatePickups)
+				--addEventHandler('onClientRender', g_Root, updatePickups)	-- Temp: Until event priorities implemented
 			end
 		end
 	end
@@ -329,24 +331,26 @@ addEventHandler('onClientElementStreamOut', g_Root,
 			local pickup = g_Pickups[colshape]
 			if pickup.label then
 				pickup.label:color(255, 255, 255, 0)
+				pickup.label:visible(false)
+				pickup.labelInRange = nil
 			end
 			g_VisiblePickups[colshape] = nil
 			g_VisiblePickups.n = g_VisiblePickups.n - 1
 			if g_VisiblePickups.n == 0 then
-				removeEventHandler('onClientRender', g_Root, updatePickups)
+				--removeEventHandler('onClientRender', g_Root, updatePickups)	-- Temp: Until event priorities implemented
 			end
 		end
 	end
 )
 
 function updatePickups()
+	local angle = math.fmod((getTickCount() - g_PickupStartTick) * 360 / 2000, 360)
 	local g_Pickups = g_Pickups
 	local pickup, x, y, cX, cY, cZ, pickX, pickY, pickZ
 	for colshape,elem in pairs(g_VisiblePickups) do
 		if colshape ~= 'n' then
 			pickup = g_Pickups[colshape]
 			if pickup.load then
-				local angle = math.fmod((getTickCount() - g_PickupStartTick) * 360 / 2000, 360)
 				setElementRotation(elem, 0, 0, angle)
 				if pickup.label then
 					cX, cY, cZ = getCameraMatrix()
@@ -355,11 +359,15 @@ function updatePickups()
 					local distanceToPickup = getDistanceBetweenPoints3D(cX, cY, cZ, pickX, pickY, pickZ)
 					if distanceToPickup > 80 then
 						pickup.labelInRange = false
+						pickup.label:visible(false)
 					elseif x then
 						if distanceToPickup < 60 then
 							if isLineOfSightClear(cX, cY, cZ, pickX, pickY, pickZ, true, false, false, true, false) then
 								if not pickup.labelInRange then								
-									Animation.createAndPlay(
+									if pickup.anim then
+										pickup.anim:remove()
+									end
+									pickup.anim = Animation.createAndPlay(
 										pickup.label,
 										Animation.presets.dxTextFadeIn(500)
 									)
@@ -369,30 +377,38 @@ function updatePickups()
 								if not pickup.labelVisible then
 									pickup.label:color(255, 255, 255, 255)
 								end
+								pickup.label:visible(true)
 							else
 								pickup.label:color(255, 255, 255, 0)
 								pickup.labelVisible = false
+								pickup.label:visible(false)
 							end
 						else
 							if pickup.labelInRange then
-								Animation.createAndPlay(
+								if pickup.anim then
+									pickup.anim:remove()
+								end
+								pickup.anim = Animation.createAndPlay(
 									pickup.label,
 									Animation.presets.dxTextFadeOut(1000)
 								)
 								pickup.labelInRange = false
 								pickup.labelVisible = false
+								pickup.label:visible(true)
 							end
 						end
-						local scale = (60/getDistanceBetweenPoints3D(cX, cY, cZ, pickX, pickY, pickZ))*0.7
+						local scale = (60/distanceToPickup)*0.7
 						pickup.label:scale(scale)
 						pickup.label:position(x, y, false)
 					else
 						pickup.label:color(255, 255, 255, 0)
 						pickup.labelVisible = false
+						pickup.label:visible(false)
 					end
 				end
 			else
 				if pickup.label then
+					pickup.label:visible(false)
 					if pickup.labelInRange then
 						pickup.label:color(255, 255, 255, 0)
 						pickup.labelInRange = false
@@ -402,6 +418,7 @@ function updatePickups()
 		end
 	end
 end
+addEventHandler('onClientRender', g_Root, updatePickups)
 
 addEventHandler('onClientColShapeHit', g_Root,
 	function(elem)
@@ -760,7 +777,7 @@ function unloadAll()
 	end
 	g_Pickups = {}
 	g_VisiblePickups = {}
-	removeEventHandler('onClientRender', g_Root, updatePickups)
+	--removeEventHandler('onClientRender', g_Root, updatePickups)
 	
 	table.each(g_Objects, destroyElement)
 	g_Objects = {}

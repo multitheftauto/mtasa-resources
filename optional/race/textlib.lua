@@ -110,6 +110,7 @@ end
 
 function dxText:visible(bool)
 	if type(bool) ~= "boolean" then return self.bVisible end
+	if self.bVisible == bool then return end
 	self.bVisible = bool
 	if bool then
 		visibleText[self] = true
@@ -189,6 +190,9 @@ addEventHandler ( "onClientRender", getRootElement(),
 			while true do
 				if self.bDestroyed then
 					visibleText[self] = nil
+					break
+				end
+				if self.tColor[4] < 1 then
 					break
 				end
 				local l,t,r,b

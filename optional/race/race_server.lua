@@ -883,6 +883,13 @@ addEventHandler('onPlayerJoining', g_Root,
 	end
 )
 
+-- Give 5 seconds for first player to start joining
+addEventHandler('onGamemodeMapStart', g_Root,
+	function(mapres)
+        g_JoinerExtraWait = getTickCount() + 5000
+	end
+)
+
 -- Give 30 seconds for not ready players to become ready
 function setPlayerNotReady( player )
     g_NotReady[player] = true
