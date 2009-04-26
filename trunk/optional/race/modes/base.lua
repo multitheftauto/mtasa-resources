@@ -342,7 +342,6 @@ function restorePlayer(id, player)
 		if getElementModel(vehicle) ~= bkp.vehicle then
 			setVehicleID(vehicle, bkp.vehicle)
 		end
-		warpPedIntoVehicle(player, vehicle)
 		setTimer(warpPedIntoVehicle, 500, 5, player, vehicle)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)

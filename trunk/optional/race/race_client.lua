@@ -318,7 +318,7 @@ addEventHandler('onClientElementStreamIn', g_Root,
 			g_VisiblePickups[colshape] = source
 			g_VisiblePickups.n = (g_VisiblePickups.n or 0) + 1
 			if g_VisiblePickups.n == 1 then
-				--addEventHandler('onClientRender', g_Root, updatePickups)	-- Temp: Until event priorities implemented
+				-- addEventHandler('onClientRender', g_Root, updatePickups)	-- Temp: Until event priorities implemented
 			end
 		end
 	end
@@ -337,7 +337,7 @@ addEventHandler('onClientElementStreamOut', g_Root,
 			g_VisiblePickups[colshape] = nil
 			g_VisiblePickups.n = g_VisiblePickups.n - 1
 			if g_VisiblePickups.n == 0 then
-				--removeEventHandler('onClientRender', g_Root, updatePickups)	-- Temp: Until event priorities implemented
+				-- removeEventHandler('onClientRender', g_Root, updatePickups)	-- Temp: Until event priorities implemented
 			end
 		end
 	end
@@ -423,7 +423,7 @@ addEventHandler('onClientRender', g_Root, updatePickups)
 addEventHandler('onClientColShapeHit', g_Root,
 	function(elem)
 		local pickup = g_Pickups[source]
-		if elem ~= g_Vehicle or not pickup then
+		if elem ~= g_Vehicle or not pickup or getElementHealth(g_Vehicle) == 0 or getElementHealth(g_Me) == 0 then
 			return
 		end
 		if pickup.load then
@@ -575,6 +575,11 @@ function checkpointReached(elem)
 		showNextCheckpoint()
 	else
 		guiSetText(g_GUI.checkpoint, #g_Checkpoints .. ' / ' .. #g_Checkpoints)
+		local rc = getRadioChannel()
+		setRadioChannel(0)
+		addEventHandler("onClientPlayerRadioSwitch", g_Root, onChange)
+		playSound("audio/mission_accomplished.mp3")
+		setTimer(changeRadioStation, 8000, 1, rc)
 		if g_GUI.hurry then
 			Animation.createAndPlay(g_GUI.hurry, Animation.presets.guiFadeOut(500), destroyElement)
 			g_GUI.hurry = false
@@ -583,6 +588,15 @@ function checkpointReached(elem)
         triggerEvent('onPlayerReachedFinish', g_Me)
 		toggleAllControls(false, true, false)
 	end
+end
+
+function onChange()
+	cancelEvent()
+end
+
+function changeRadioStation(rc)
+	removeEventHandler("onClientPlayerRadioSwitch", g_Root, onChange)
+	setRadioChannel(tonumber(rc))
 end
 
 function startHurry()
@@ -777,7 +791,7 @@ function unloadAll()
 	end
 	g_Pickups = {}
 	g_VisiblePickups = {}
-	--removeEventHandler('onClientRender', g_Root, updatePickups)
+	-- removeEventHandler('onClientRender', g_Root, updatePickups)
 	
 	table.each(g_Objects, destroyElement)
 	g_Objects = {}
@@ -908,7 +922,7 @@ addEventHandler('onClientPlayerQuit', g_Root,
 			end
 		end
 		table.removevalue(g_Players, source)
-		Bigdar.smoothList[player] = nil
+		Bigdar.smoothList[source] = nil
 	end
 )
 
