@@ -78,6 +78,7 @@ function cacheGameOptions()
         g_GameOptions.vehicleweapons        = getBool('race.vehicleweapons',true)
         g_GameOptions.firewater             = getBool('race.firewater',false)
         g_GameOptions.cachemodels           = getBool('race.cachemodels',true)
+        g_GameOptions.admingroup            = getString('race.admingroup','Admin')
         g_GameOptions.ghostmode_map_can_override        = getBool('race.ghostmode_map_can_override',true)
         g_GameOptions.skins_map_can_override            = getBool('race.skins_map_can_override',true)
         g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
@@ -116,7 +117,7 @@ function loadMap(res)
 	if not g_MapOptions.respawn or g_MapOptions.respawn ~= 'none' then
 		g_MapOptions.respawn = 'timelimit'
 	end
-	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or 10000)
+	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or 5000)
 	g_MapOptions.time = map.time or '12:00'
 	g_MapOptions.weather = map.weather or 0
 
@@ -434,7 +435,7 @@ function joinHandlerBoth(player)
 
     -- Send client all info
     local playerInfo = {}
-    playerInfo.admin    = isPlayerInACLGroup(player, 'Admin')
+    playerInfo.admin    = isPlayerInACLGroup(player, g_GameOptions.admingroup)
     playerInfo.testing  = _TESTING
 	local duration = playerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
 	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), duration, g_GameOptions, g_MapInfo, playerInfo )
@@ -797,7 +798,7 @@ addEventHandler('onClientKillPlayer', g_Root,
 
 addCommandHandler('ghostmode',
 	function(player)
-		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
 		g_MapOptions.ghostmode = not g_MapOptions.ghostmode

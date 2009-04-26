@@ -128,7 +128,11 @@
                 true    - Cache map models to reduce lag-stutter effect. -->
         <setting name="*cachemodels" value="true"/>
 
-        <!-- xxxx_map_can_override
+		<!-- admingroup
+                The name of the group to which the player must belong to issue certain commands  -->
+		<setting name="*admingroup" value="Admin"/>
+
+		<!-- xxxx_map_can_override
                 false   - Ignore setting in the map.
                 true    - If the setting exists in the map, use that instead of the one in this file. -->
         <setting name="*ghostmode_map_can_override" value="true"/>
