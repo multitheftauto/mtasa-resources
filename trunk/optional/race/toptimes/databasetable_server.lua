@@ -389,7 +389,7 @@ end
 
 addCommandHandler('addcol',
     function(player, command, ...)
-		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
         g_SToptimesManager.mapTimes.dbTable:addColumn( ... )
@@ -400,7 +400,7 @@ addCommandHandler('addcol',
 
 addCommandHandler('delcol',
     function(player, command, ...)
-		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
         g_SToptimesManager.mapTimes.dbTable:deleteColumn( ... )
@@ -411,7 +411,7 @@ addCommandHandler('delcol',
 
 addCommandHandler('rencol',
     function(player, command, ...)
-		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
         g_SToptimesManager.mapTimes.dbTable:renameColumn( ... )
@@ -426,7 +426,7 @@ addCommandHandler('rencol',
 
 addCommandHandler('restartracemode',
 	function(player)
-		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
         exports.mapmanager:changeGamemode( getResourceFromName('race') )
@@ -436,7 +436,7 @@ addCommandHandler('restartracemode',
 
 addCommandHandler('pipedebug',
 	function(player, command, arg)
-		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
         if g_PipeDebugTo then

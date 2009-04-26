@@ -322,7 +322,7 @@ addEventHandler('onClientRequestToptimesUpdates', getRootElement(),
 
 addCommandHandler('settopcount',
     function( player, command, value )
-		if not _TESTING and not isPlayerInACLGroup(player, 'Admin') then
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
         value = tonumber(value)
