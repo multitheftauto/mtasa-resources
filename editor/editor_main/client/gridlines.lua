@@ -25,7 +25,9 @@ local function renderGridlines()
 	local minX,minY,minZ,maxX,maxY,maxZ = getElementBoundingBox ( attachedToElement )
 	if not minX then
 		local radius = edf.edfGetElementRadius ( attachedToElement )
-		minX,minY,minZ,maxX,maxY,maxZ = -radius,-radius,-radius,radius,radius,radius
+		if radius then
+			minX,minY,minZ,maxX,maxY,maxZ = -radius,-radius,-radius,radius,radius,radius
+		end
 	end
 	
 	if not minX then return end
