@@ -16,6 +16,7 @@
 	<script src="modes/destructionderby.lua" type="server"/>
 	<script src="modes/freeroam.lua" type="server"/>
 	<script src="modes/sprint.lua" type="server"/>
+	<script src="fixedvehiclecolors.lua" type="server"/>
 	<script src="race_server.lua" type="server"/>
 	<script src="racevoting_server.lua" type="server"/>
 	<script src="racestates_server.lua" type="server"/>
@@ -57,6 +58,8 @@
 	<file src="img/travelling.png"/>
 	<file src="img/killmessage.png"/>
 	<file src="img/bigdar.png"/>
+	
+	<file src="audio/mission_accomplished.mp3"/>
 	
 	<file src="model/nitro.dff"/>
 	<file src="model/nitro.txd"/>

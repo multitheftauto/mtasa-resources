@@ -8,62 +8,6 @@ g_MotorBikeIDs = table.create({ 448, 461, 462, 463, 468, 471, 521, 522, 523, 581
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_AircraftIDs = table.create({ 592, 577, 511, 548, 512, 593, 425, 520, 417, 487, 553, 488, 497, 563, 476, 447, 519, 460, 469, 513 }, true)
 g_RCVehicleIDs = table.create({ 441, 464, 465, 501, 564 }, true)
-g_FixedColorVehicles = {
-	[416] = {1, 3, 0, 0},
-	[433] = {43, 0, 0, 0},
-	[427] = {0, 1, 0, 0},
-	[490] = {0, 0, 0, 0},
-	[407] = {3, 1, 0, 0},
-	[544] = {3, 1, 0, 0},
-	[470] = {43, 0, 0, 0},
-	[598] = {0, 1, 0, 0},
-	[596] = {0, 1, 0, 0},
-	[597] = {0, 1, 0, 0},
-	[599] = {0, 1, 0, 0},
-	[432] = {43, 0, 0, 0},
-	[601] = {1, 1, 0, 0},
-	[428] = {4, 75, 0, 0},
-	[438] = {6, 76, 0, 0},
-	[406] = {1, 1, 0, 0},
-	[486] = {1, 1, 0, 0},
-	[425] = {43, 0, 0, 0},
-	[448] = {3, 6, 0, 0},
-	[430] = {46, 26, 0, 0},
-	[464] = {14, 75, 0, 0},
-	[465] = {14, 75, 0, 0},
-	[501] = {14, 74, 0, 0},
-	[453] = {56, 56, 0, 0},
-	[447] = {75, 2, 0, 0},
-	[469] = {1, 3, 0, 0},
-	[409] = {1, 1, 0, 0},
-	[420] = {6, 1, 0, 0},
-	[408] = {26, 26, 0, 0},
-	[454] = {26, 26, 0, 0},
-	[609] = {36, 36, 0, 0},
-	[548] = {1, 1, 0, 0},
-	[592] = {1, 1, 0, 0},
-	[578] = {1, 1, 0, 0},
-	[537] = {1, 1, 0, 0},
-	[588] = {1, 1, 0, 0},
-	[493] = {36, 13, 0, 0},
-	[508] = {1, 1, 0, 0},
-	[595] = {112, 20, 0, 0},
-	[435] = {1, 1, 0, 0},
-	[450] = {1, 1, 0, 0},
-	[591] = {1, 1, 0, 0},
-	[556] = {1, 1, 0, 0},
-	[557] = {1, 1, 0, 0},
-	[584] = {1, 1, 0, 0},
-	[497] = {0, 1, 0, 0},
-	[563] = {1, 6, 0, 0},
-	[519] = {1, 1, 0, 0},
-	[538] = {1, 1, 0, 0},
-	[570] = {1, 1, 0, 0},
-	[574] = {26, 26, 0, 0},
-	[449] = {1, 74, 0, 0},
-	[583] = {1, 1, 0, 0},
-	[608] = {1, 1, 0, 0},
-}
 g_VehicleClothes = {
 	[{ 490, 523, 598, 596, 597, 599}] = { [16] = false, [17] = 4 }
 }
@@ -84,16 +28,17 @@ g_RankTimer  = Timer:create()
 g_RaceEndTimer = Timer:create()
 g_WatchDogTimer = Timer:create()
 local pickupTimers = {}
+local unloadedPickups = {}
 
 
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
-		--if getPlayerCount() == 0 then
-			--outputDebugString('Stopping map')
-			--triggerEvent('onGamemodeMapStop', g_Root)
-            --return
-		--end
+		-- if getPlayerCount() == 0 then
+			-- outputDebugString('Stopping map')
+			-- triggerEvent('onGamemodeMapStop', g_Root)
+            -- return
+		-- end
         gotoState('LoadingMap')
         -- set up all players as not ready
         for i,player in ipairs(getElementsByType('player')) do
@@ -162,24 +107,15 @@ function loadMap(res)
 	end
 	
 	-- set options
-	if map:isRaceFormat() then
-		if map.time then
-			setTime(map.time:match('(%d+):(%d+)'))
-		end
-		if map.weather then
-			setWeather(map.weather)
-		end
-	end
     g_MapInfo = {}
     g_MapInfo.name      = map.info['name'] or 'unnamed'
     g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
 	g_MapOptions = {}
-	g_MapOptions.duration = map.duration and tonumber(map.duration) > 0 and map.duration*1000 or 1800000
-	g_MapOptions.respawn = map.respawn
-	if not g_MapOptions.respawn or g_MapOptions.respawn ~= 'none' then
-		g_MapOptions.respawn = 'timelimit'
-	end
-	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or 5000)
+	g_MapOptions.duration = getNumber(tostring("#"..g_MapInfo.resname..".duration"), 600)*1000
+	g_MapOptions.respawn = getString(tostring("#"..g_MapInfo.resname..".respawn"), "timelimit")
+	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and getNumber(tostring("#"..g_MapInfo.resname..".respawntime"), 10)*1000
+	g_MapOptions.time = getString(tostring("#"..g_MapInfo.resname..".time"), "12:00")
+	g_MapOptions.weather = getNumber(tostring("#"..g_MapInfo.resname..".weather"), 0)
 	g_MapOptions.skins = map.skins or 'cj'
 	g_MapOptions.vehicleweapons = map.vehicleweapons == 'true'
     g_MapOptions.ghostmode = map.ghostmode == 'true'
@@ -187,7 +123,16 @@ function loadMap(res)
     g_MapOptions.firewater = map.firewater == 'true'
     g_MapOptions.cachemodels = map.cachemodels == 'true'
     g_MapOptions.allowBigdar = true
-
+	
+	outputDebug("MISC", "duration = "..g_MapOptions.duration.."  respawn = "..g_MapOptions.respawn.."  respawntime = "..tostring(g_MapOptions.respawntime).."  time = "..g_MapOptions.time.."  weather = "..g_MapOptions.weather)
+	
+	if g_MapOptions.time then
+		setTime(g_MapOptions.time:match('(%d+):(%d+)'))
+	end
+	if g_MapOptions.weather then
+		setWeather(g_MapOptions.weather)
+	end
+	
     -- Set ghostmode from g_GameOptions if not defined in the map, or map override not allowed
     if not map.ghostmode or not g_GameOptions.ghostmode_map_can_override then
         g_MapOptions.ghostmode = g_GameOptions.ghostmode
@@ -611,15 +556,16 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 addEvent('onPlayerPickUpRacePickup', true)
 addEventHandler('onPlayerPickUpRacePickup', g_Root,
 	function(pickupID, respawntime)
-		if respawntime then
-			clientCall(g_Root, 'unloadPickup', pickupID)
-			table.insert(pickupTimers, setTimer(clientCall, tonumber(respawntime), 1, g_Root, 'loadPickup', pickupID))
-		end
-        if not stateAllowsPickup() then
+		if not stateAllowsPickup() then
             return
         end
 		local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
 		local vehicle = g_Vehicles[source]
+		if respawntime then
+			table.insert(unloadedPickups, pickupID)
+			clientCall(g_Root, 'unloadPickup', pickupID)
+			table.insert(pickupTimers, setTimer(ServerLoadPickup, tonumber(respawntime), 1, pickupID))
+		end
 		if pickup.type == 'repair' then
 			fixVehicle(vehicle)
 		elseif pickup.type == 'nitro' then
@@ -627,7 +573,7 @@ addEventHandler('onPlayerPickUpRacePickup', g_Root,
 		elseif pickup.type == 'vehiclechange' then
 			local rx, ry, rz = getVehicleRotation (vehicle)
 			if ry > 170 and ry < 190 then 
-				ry = 0 
+				ry = 0
 			end
 			if rx > 170 and rx < 190 then 
 				rx = 0
@@ -645,6 +591,11 @@ addEventHandler('onPlayerPickUpRacePickup', g_Root,
 		end
 	end
 )
+
+function ServerLoadPickup(pickupID)
+	table.removevalue(unloadedPickups, pickupID)
+	clientCall(g_Root, 'loadPickup', pickupID)
+end
 
 addEventHandler('onPlayerWasted', g_Root,
 	function()
@@ -701,6 +652,7 @@ function unloadAll()
 	g_Checkpoints = {}
 	g_Objects = {}
 	g_Pickups = {}
+	unloadedPickups = {}
 	if g_CurrentRaceMode then
 		g_CurrentRaceMode:destroy()
 	end
@@ -858,6 +810,10 @@ addEvent('onClientRaceReady', true)
 addEventHandler('onClientRaceReady', g_Root,
 	function()
         setPlayerReady( source )
+		for i, pickupID in ipairs(unloadedPickups) do
+			-- outputDebugString(getPlayerName(source).." unload "..tostring(pickupID))
+			clientCall(source, "unloadPickup", pickupID )
+		end
 	end
 )
 
