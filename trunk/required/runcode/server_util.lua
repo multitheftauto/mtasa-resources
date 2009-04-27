@@ -1,10 +1,5 @@
 local rootElement = getRootElement()
 
--- pack arguments on a table with an argument-count key
-function npack(...)
-   return {_n=select('#',...);...}
-end
-
 function outputConsoleR(message, toElement)
 	if toElement == false then
 		outputServerLog(message)

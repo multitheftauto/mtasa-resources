@@ -1,8 +1,3 @@
--- pack arguments on a table with an argument-count key
-function npack(...)
-   return {_n=select('#',...);...}
-end
-
 function outputChatBoxR(message)
 	return outputChatBox(message, 200, 250, 200)
 end
