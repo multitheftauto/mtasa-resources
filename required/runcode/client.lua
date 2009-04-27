@@ -10,14 +10,14 @@ local function runString (commandstring)
 	end
 	if errorMsg then
 		--It still failed.  Print the error message and stop the function
-		outputChatBoxR("Error: "..errorMsg, outputTo)
+		outputChatBoxR("Error: "..errorMsg)
 		return
 	end
 	--Finally, lets execute our function
 	results = { pcall(commandFunction) }
 	if not results[1] then
 		--It failed.
-		outputChatBoxR("Error: "..results[2], outputTo)
+		outputChatBoxR("Error: "..results[2])
 		return
 	end
 	if not notReturned then
@@ -35,9 +35,9 @@ local function runString (commandstring)
 			end
 			resultsString = resultsString..tostring(results[i]).." ["..resultType.."]"
 		end
-		outputChatBoxR("Command results: "..resultsString, outputTo)
+		outputChatBoxR("Command results: "..resultsString)
 	elseif not errorMsg then
-		outputChatBoxR("Command executed!", outputTo)
+		outputChatBoxR("Command executed!")
 	end
 end
 
