@@ -31,7 +31,7 @@ function DestructionDerby:onPlayerWasted(player)
 	else
 		setTimer(clientCall, 2000, 1, player, 'startSpectate')
 	end
-	RaceMode.setPlayerFinished(player)
+	RaceMode.setPlayerIsFinished(player)
 end
 
 --[[

@@ -58,7 +58,7 @@ function RaceMode.getPlayers()
 	return g_Players
 end
 
-function RaceMode.setPlayerFinished(player)
+function RaceMode.setPlayerIsFinished(player)
 	setPlayerFinished(player, true)
 end
 
@@ -183,7 +183,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		self.checkpointBackups[player].timer = setTimer(lastCheckpointWasSafe, 5000, 1, self.id, player)
 	else
 		-- Finish reached
-		RaceMode.setPlayerFinished(player)
+		RaceMode.setPlayerIsFinished(player)
 		if rank == 1 then
             gotoState('SomeoneWon')
 			showMessage('You have won the race!', 0, 255, 0, player)
@@ -262,24 +262,28 @@ function distanceFromVehicleToSpawnpoint(vehicle, spawnpoint)
     return 10
 end
 
-function getSpaceAroundSpawnpoint(spawnpoint)
+function getSpaceAroundSpawnpoint(ignore,spawnpoint)
     local space = 100000
     for i,player in ipairs(g_Players) do
-        space = math.min(space, distanceFromVehicleToSpawnpoint(g_Vehicles[player], spawnpoint))
+		if player ~= ignore then
+			space = math.min(space, distanceFromVehicleToSpawnpoint(g_Vehicles[player], spawnpoint))
+		end
     end
     return space
 end
 
-function hasSpaceAroundSpawnpoint(spawnpoint, requiredSpace)
+function hasSpaceAroundSpawnpoint(ignore,spawnpoint, requiredSpace)
     for i,player in ipairs(g_Players) do
-        if distanceFromVehicleToSpawnpoint(g_Vehicles[player], spawnpoint) < requiredSpace then
-            return false
+		if player ~= ignore then
+			if distanceFromVehicleToSpawnpoint(g_Vehicles[player], spawnpoint) < requiredSpace then
+				return false
+			end
         end
     end
     return true
 end
 
-function RaceMode:pickFreeSpawnpoint()
+function RaceMode:pickFreeSpawnpoint(ignore)
     -- Use the spawnpoints from #1 to #numplayers as a pool to use
     local numToScan = math.min(getPlayerCount(), #g_Spawnpoints)
     -- Starting at a random place in the pool...
@@ -287,7 +291,7 @@ function RaceMode:pickFreeSpawnpoint()
     -- ...loop through looking for a free spot
     for i=1,numToScan do
         local idx = (i + scanPos) % numToScan + 1
-        if hasSpaceAroundSpawnpoint(g_Spawnpoints[idx], 1) then
+        if hasSpaceAroundSpawnpoint(ignore,g_Spawnpoints[idx], 1) then
             return g_Spawnpoints[idx]
         end
     end
@@ -295,7 +299,7 @@ function RaceMode:pickFreeSpawnpoint()
     local bestSpace = 0
     local bestMatch = 1
     for i=1,numToScan do
-        local space = getSpaceAroundSpawnpoint(g_Spawnpoints[i])
+        local space = getSpaceAroundSpawnpoint(ignore,g_Spawnpoints[i])
         if space > bestSpace then
             bestSpace = space
             bestMatch = i
@@ -323,7 +327,7 @@ function restorePlayer(id, player)
 	self.checkpointBackups[player].goingback = true
 	local bkp = self.checkpointBackups[player][checkpoint - 1]
 	if not RaceMode.checkpointsExist() or checkpoint==1 then
-		local spawnpoint = self:pickFreeSpawnpoint()
+		local spawnpoint = self:pickFreeSpawnpoint(player)
 		bkp.position = spawnpoint.position
 		bkp.rotation = {0, 0, spawnpoint.rotation}
 		bkp.geardown = true                 -- Fix landing gear state

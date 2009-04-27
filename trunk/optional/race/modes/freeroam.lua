@@ -11,7 +11,7 @@ function Freeroam:isRanked()
 	return false
 end
 
-function Freeroam:pickFreeSpawnpoint()
+function Freeroam:pickFreeSpawnpoint(ignore)
 	local i = table.find(RaceMode.getSpawnpoints(), 'used', '[nil]')
 	if i then
 		repeat

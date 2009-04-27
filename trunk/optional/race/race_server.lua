@@ -34,11 +34,6 @@ local unloadedPickups = {}
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
-		-- if getPlayerCount() == 0 then
-			-- outputDebugString('Stopping map')
-			-- triggerEvent('onGamemodeMapStop', g_Root)
-            -- return
-		-- end
         gotoState('LoadingMap')
         -- set up all players as not ready
         for i,player in ipairs(getElementsByType('player')) do
@@ -352,7 +347,7 @@ function joinHandlerBoth(player)
 
 	table.insert(g_Players, player)
 	
-	local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint()
+	local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint(player)
 	
 	local x, y, z = unpack(spawnpoint.position)
 	-- Set random seed dependant on map name, so everyone gets the same models

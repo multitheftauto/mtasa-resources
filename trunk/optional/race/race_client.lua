@@ -72,19 +72,23 @@ TitleScreen = {}
 TitleScreen.startTime = 0
 
 function TitleScreen.init()
-    local screenWidth, screenHeight = guiGetScreenSize()
-    g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false)
-	g_dxGUI['titleText'] = dxText:create('', 30, screenHeight-67, false, 'bankgothic', 0.70, 'left' )
-	g_dxGUI['titleText']:text(  'KEYS:\n' ..
-                                'F4        - BIGDAR\n' ..
-                                'F5        - TOP TIMES\n' ..
-                                'ENTER - RETRY' )
-    g_dxGUI['titleText']:color(200,200,200)
-    hideGUIComponents('titleImage','titleText')
+	local screenWidth, screenHeight = guiGetScreenSize()
+	g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false)
+	g_dxGUI['titleText1'] = dxText:create('', 30, screenHeight-67, false, 'bankgothic', 0.70, 'left' )
+	g_dxGUI['titleText2'] = dxText:create('', 120, screenHeight-67, false, 'bankgothic', 0.70, 'left' )
+	g_dxGUI['titleText1']:text(	'KEYS: \n' ..
+								'F4 \n' ..
+								'F5 \n' ..
+								'ENTER' )
+	g_dxGUI['titleText2']:text(	'\n' ..
+								'- BIGDAR \n' ..
+								'- TOP TIMES \n' ..
+								'- RETRY' )
+	hideGUIComponents('titleImage','titleText1','titleText2')
 end
 
 function TitleScreen.show()
-    showGUIComponents('titleImage','titleText')
+    showGUIComponents('titleImage','titleText1','titleText2')
     TitleScreen.startTime = getTickCount()
     TitleScreen.bringForward = 0
     addEventHandler('onClientRender', g_Root, TitleScreen.update)
@@ -94,9 +98,10 @@ function TitleScreen.update()
     local secondsLeft = TitleScreen.getTicksRemaining() / 1000
     local alpha = math.min(1,math.max( secondsLeft ,0))
     guiSetAlpha(g_GUI['titleImage'], alpha)
-    g_dxGUI['titleText']:color(220,220,220,255*alpha)
+    g_dxGUI['titleText1']:color(220,220,220,255*alpha)
+    g_dxGUI['titleText2']:color(220,220,220,255*alpha)
     if alpha == 0 then
-        hideGUIComponents('titleImage','titleText')
+        hideGUIComponents('titleImage','titleText1','titleText2')
         removeEventHandler('onClientRender', g_Root, TitleScreen.update)
 	end
 end
@@ -267,6 +272,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     setTimer(fadeCamera, delay + 1500, 1, true, 2.0)
     setTimer( function() triggerServerEvent('onClientRaceReady', g_Me) end, delay + 3500, 1 )
     outputDebug( 'MISC', 'initRace end' )
+    setTimer( function() setCameraBehindVehicle( g_Vehicle ) end, delay + 300, 1 )
 end
 
 function launchRace(duration)
@@ -753,7 +759,8 @@ function remoteStopSpectateAndBlack()
 end
 
 function remoteSoonFadeIn()
-    setTimer(fadeCamera,250,1,true,1.0)    -- And up
+    setTimer(fadeCamera,250+500,1,true,1.0)		-- And up
+    setTimer( function() setCameraBehindVehicle( g_Vehicle ) end ,250+500-150,1 )
 end
 -----------------------------------------------------------------------
 
