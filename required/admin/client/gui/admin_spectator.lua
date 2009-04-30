@@ -190,7 +190,7 @@ function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 			current = id
 		end
 	end
-	local next = ( current + inc ) % #players + 1
+	local next = ( ( current - 1 + inc ) % #players ) + 1
 	if ( next == current ) then
 		aMessageBox ( "question", "Nobody else to spectate, exit spectator?", "aSpectator.Close ( false )" )
 		return
@@ -256,7 +256,7 @@ function aSpectator.GetAlive ()
 	local alive = {}
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
 		if ( not isPlayerDead ( player ) ) then
-			alive.insert ( player )
+			table.insert ( alive, player )
 		end
 	end
 	return alive

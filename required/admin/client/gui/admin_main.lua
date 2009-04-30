@@ -471,7 +471,7 @@ function aClientPlayerJoin ( ip, username, serial, admin )
 	aPlayers[source] = {}
 	aPlayers[source]["name"] = getPlayerName ( source )
 	aPlayers[source]["IP"] = ip
-	aPlayers[source]["username"] = username
+	aPlayers[source]["username"] = username or "N/A"
 	aPlayers[source]["serial"] = serial
 	aPlayers[source]["admin"] = admin
 	local row = guiGridListAddRow ( aTab1.PlayerList )
