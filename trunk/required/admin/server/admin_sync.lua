@@ -23,7 +23,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut[player] = {}
 			tableOut[player]["name"] = getPlayerName ( player )
 			tableOut[player]["IP"] = getPlayerIP ( player )
-			tableOut[player]["username"] = getPlayerUserName ( player )
+			tableOut[player]["username"] = getPlayerUserName ( player ) or "N/A"
 			tableOut[player]["serial"] = getPlayerSerial ( player )
 			tableOut[player]["country"] = aPlayers[player]["country"]
 			tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
