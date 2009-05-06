@@ -153,10 +153,9 @@ addEventHandler ( "onGamemodeStart", rootElement,
 )
 
 function blockMapManager ( resource )
-	gamemodeToCancel = nil
 	if mapmanager.isGamemode(resource) then 
 		gamemodeToCancel = resource
 	else
-		gamemodeToCancel = resource
+		gamemodeToCancel = nil
 	end
 end

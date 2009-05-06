@@ -211,7 +211,7 @@ function (gamemodeName)
 	triggerClientEvent ( root, "suspendGUI", client )
 	local success = saveResource ( TEST_RESOURCE, true )
 	if ( success ) then
-		beginTest(client)
+		beginTest(client,gamemodeName)
 	else
 		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 		"Dummy 'editor_test' resource may be corrupted!" )
@@ -219,7 +219,7 @@ function (gamemodeName)
 	end
 end )
 
-function beginTest(client)
+function beginTest(client,gamemodeName)
 	local testMap = getResourceFromName(TEST_RESOURCE)
 	if not mapmanager.isMap(testMap) then
 		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
@@ -242,14 +242,15 @@ function beginTest(client)
 		local gamemode = getResourceFromName(gamemodeName)
 		if getResourceState ( gamemode ) == "running" and loadedEDF[gamemode] then
 			g_restoreEDF = gamemode
+			addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
 			if not stopResource ( gamemode ) then
 				restoreSettings()
 				g_restoreEDF = nil
+				removeEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
 				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (2)" )
 				return false
 			end
-			addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
 		else
 			if not mapmanager.changeGamemode(gamemode,testMap) then
 				restoreSettings()
@@ -292,18 +293,20 @@ addEventHandler ( "stopTest",root,
 	function()
 		stopResource ( freeroamRes )
 		disablePickups(true)
+		local testRes = getResourceFromName(TEST_RESOURCE)
 		--Restore settings to how they were before the test
 		restoreSettings()
 		if g_in_test == "gamemode" then
 			local gamemode = mapmanager.getRunningGamemode ( )
+			if not ( addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), restoreGUIOnMapStop ) ) then
+				addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
+			end
 			mapmanager.stopGamemode()
-			addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), restoreGUIOnMapStop )
 		else
-			local testRes = getResourceFromName(TEST_RESOURCE)
-			stopResource ( testRes )
-			resetMapInfo()
 			addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
+			resetMapInfo()
 		end
+		stopResource ( testRes )
 		for i,player in ipairs(getElementsByType"player") do
 			spawnPlayer ( player, 2483, -1666, 21 )
 			takeAllWeapons ( player )
