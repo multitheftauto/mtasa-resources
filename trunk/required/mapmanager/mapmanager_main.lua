@@ -36,21 +36,32 @@ addEventHandler("onResourceStart", rootElement,
 			if getRunningGamemode() then
                 return
 			end
-			currentGamemode = startedResource
-			triggerEvent("onGamemodeStart", getResourceRootElement(startedResource), startedResource)
-			--We need to wait a while to see if any maps were started.  If not, lets try and start a random one
-			setTimer( 
-				function()
-					if not getRunningGamemodeMap() then
-						--Lets check if there are any maps for this gamemode
-						local maps = getMapsCompatibleWithGamemode(getRunningGamemode())
-						--If we have any, we'll start a random one
-						if #maps > 0 then
-							changeGamemodeMap (maps[math.random(1,#maps)])
+			if triggerEvent("onGamemodeStart", getResourceRootElement(startedResource), startedResource) then
+				currentGamemode = startedResource
+				--Setup our announcements
+				local gamemodeName = getResourceInfo(currentGamemode, "name") or getResourceName(currentGamemode)
+				if get("ASE") then
+					setGameType(gamemodeName)
+				end
+				if get("messages") then
+					outputMapManager("Gamemode '"..gamemodeName.."' started.")
+				end
+				--We need to wait a while to see if any maps were started.  If not, lets try and start a random one
+				setTimer( 
+					function()
+						if not getRunningGamemodeMap() then
+							--Lets check if there are any maps for this gamemode
+							local maps = getMapsCompatibleWithGamemode(getRunningGamemode())
+							--If we have any, we'll start a random one
+							if #maps > 0 then
+								changeGamemodeMap (maps[math.random(1,#maps)])
+							end
 						end
-					end
-				end, 
-			50, 1 )
+					end, 
+				50, 1 )
+			else
+				currentGamemode = nil
+			end
 		elseif isMap(startedResource) then --If its a map
 			--Make sure there is a gamemode running
 			if not getRunningGamemode() then
@@ -63,8 +74,21 @@ addEventHandler("onResourceStart", rootElement,
 			--Is it compatible with our gamemode?
 			if isGamemodeCompatibleWithMap ( getRunningGamemode(), startedResource ) then
 				--Lets link the map with the gamemode
-				currentGamemodeMap = startedResource
-				triggerEvent("onGamemodeMapStart", getResourceRootElement(startedResource), startedResource)	
+				if ( triggerEvent("onGamemodeMapStart", getResourceRootElement(startedResource), startedResource) ) then
+					currentGamemodeMap = startedResource
+					--Setup our announcements
+					local gamemodeMapName = getResourceInfo(currentGamemodeMap, "name") or getResourceName(currentGamemodeMap)
+					applyMapSettings( currentGamemodeMap )
+					
+					if get("ASE") then
+						setMapName(gamemodeMapName)
+					end
+					if get("messages") then
+						outputMapManager("Map '"..gamemodeMapName.."' started.")
+					end
+				else
+					currentGamemodeMap = nil
+				end
 			end
 		end
 	end
@@ -107,34 +131,6 @@ addEventHandler("onResourceStop", rootElement,
 				startGamemodeMapT(nextGamemodeMap)
 				nextGamemodeMap = nil
 			end
-		end
-	end
-)
-
-addEventHandler("onGamemodeStart", rootElement, 
-	function ( startedGamemode )
-		local gamemodeName = getResourceInfo(startedGamemode, "name") or getResourceName(startedGamemode)
-		
-		if get("ASE") then
-			setGameType(gamemodeName)
-		end
-		if get("messages") then
-			outputMapManager("Gamemode '"..gamemodeName.."' started.")
-		end
-	end
-)
-
-addEventHandler("onGamemodeMapStart", rootElement, 
-	function ( startedGamemodeMap )
-		local gamemodeMapName = getResourceInfo(startedGamemodeMap, "name") or getResourceName(startedGamemodeMap)
-		
-		applyMapSettings( currentGamemodeMap )
-		
-		if get("ASE") then
-			setMapName(gamemodeMapName)
-		end
-		if get("messages") then
-			outputMapManager("Map '"..gamemodeMapName.."' started.")
 		end
 	end
 )
