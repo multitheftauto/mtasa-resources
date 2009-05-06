@@ -146,7 +146,7 @@ function saveResource ( resourceName, test )
 	end
 	local xmlNode = addResourceMap ( resource, resourceName..".map" )
 	local returnValue = dumpMap ( xmlNode, true )
-	clearResourceMeta ( resource )
+	clearResourceMeta ( resource, true )
 	local metaNode = xmlLoadFile ( "meta.xml",resource )
 	dumpMeta ( metaNode, metaNodes, resource, resourceName..".map" )
 	xmlUnloadFile ( metaNode )

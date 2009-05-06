@@ -30,7 +30,7 @@ local function renderGridlines()
 		end
 	end
 	
-	if not minX then return end
+	if not minX or not minY or not minZ or not maxX or not maxY or not maxZ then return end
 	local camX,camY,camZ = getCameraMatrix()
 	--Work out our line thickness
 	thickness = (100/getDistanceBetweenPoints3D(camX,camY,camZ,x,y,z)) * MAX_THICKNESS
