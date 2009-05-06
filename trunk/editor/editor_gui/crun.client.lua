@@ -26,9 +26,6 @@ local function crun(commandstring)
 	return unpack(results)
 end
 
-addEvent "doCrun"
-addEventHandler("doCrun", getRootElement(), crun)
-
 addCommandHandler("crung",
 	function (command, ...)
 		crun("return "..table.concat({...}, " "))

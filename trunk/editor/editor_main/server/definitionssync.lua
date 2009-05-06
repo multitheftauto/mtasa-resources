@@ -106,7 +106,8 @@ function(newEDF)
 			outputDebugString ( "loading "..resourceName.." def." )
 			--Only accept server config files and general files (for edf icons)
 			-- startResource ( getResourceFromName(resourceName),false,true,false,false,false,false,false,true)
-			edf.edfStartResource ( getResourceFromName(resourceName) )
+			blockMapManager ( resource ) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
+			edf.edfStartResource ( resource )
 		end
 	end
 	--unload defs
@@ -122,7 +123,7 @@ function(newEDF)
 		if loaded == true then
 			outputDebugString ( "unloading "..resourceName.." def." )
 			-- stopResource ( getResourceFromName(resourceName) )
-			edf.edfStopResource ( getResourceFromName(resourceName) )
+			edf.edfStopResource ( resource )
 		end
 	end
 	allEDF = newEDF
@@ -140,3 +141,22 @@ addEventHandler ( "onResourceStop",thisResourceRoot,
 		end
 	end
 )
+
+local gamemodeToCancel
+addEventHandler ( "onGamemodeStart", rootElement,
+	function ( resource ) 
+		if resource == gamemodeToCancel then
+			cancelEvent(true)
+			gamemodeToCancel = nil
+		end
+	end
+)
+
+function blockMapManager ( resource )
+	gamemodeToCancel = nil
+	if mapmanager.isGamemode(resource) then 
+		gamemodeToCancel = resource
+	else
+		gamemodeToCancel = resource
+	end
+end
