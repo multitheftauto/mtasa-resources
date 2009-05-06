@@ -70,6 +70,7 @@ addEventHandler ( "openResource", rootElement,
 					for k,defName in ipairs(usedDefinitions) do
 						local definition = getResourceFromName(defName)
 						if ( definition ) and ( getResourceState(definition) ~= 'running' ) then
+							blockMapManager ( definition ) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
 							edf.edfStartResource(definition)
 							table.insert (allEDF.addedEDF, defName )
 							local key = table.find(allEDF.availEDF,defName)

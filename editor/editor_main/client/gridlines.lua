@@ -22,7 +22,7 @@ local function renderGridlines()
 	local x,y,z = edf.edfGetElementPosition(attachedToElement)
 	if not x then return end
 
-	local minX,minY,minZ,maxX,maxY,maxZ = getElementBoundingBox ( attachedToElement )
+	local minX,minY,minZ,maxX,maxY,maxZ = edf.edfGetElementBoundingBox ( attachedToElement )
 	if not minX then
 		local radius = edf.edfGetElementRadius ( attachedToElement )
 		if radius then

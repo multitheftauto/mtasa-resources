@@ -284,6 +284,28 @@ function edfGetElementRadius(element,forced)
 	end
 end
 
+--This function grabs the element with the biggest radius, and uses that bounding box
+function edfGetElementBoundingBox ( element )
+	local biggestElement,biggestRadius
+	if isBasic[getElementType(element)] and ( edfGetParent(element) == element ) then
+		return getRadius(element)
+	else
+		local handle = edfGetHandle(element)
+		--do a loop of all representation elements
+		for i,representation in ipairs(getElementChildren(edfGetParent(element))) do
+			biggestElement = biggestElement or representation
+			local radius = edfGetElementRadius(representation,true) or 0
+			biggestRadius = biggestRadius or radius
+			--maxXY = math.max (maxXY,xyDistance+radius)
+			if radius > biggestRadius then
+				biggestRadius = radius
+				biggestElement = representation
+			end
+		end		
+	end
+	return getElementBoundingBox(biggestElement) or -biggestRadius,-biggestRadius,-biggestRadius,biggestRadius,biggestRadius,biggestRadius
+end
+
 --This function returns an estimated radius, my calculating the peak and base of an edf element.  "wide" elements are not accounted for due to glue positioning.
 function edfGetElementDistanceToBase(element,forced)
 	--If its a basic, non-representative element
@@ -298,29 +320,5 @@ function edfGetElementDistanceToBase(element,forced)
 		return maxDistance
 	end
 end
-
---This function returns an estimated radius, my calculating the peak and base of an edf element.  "wide" elements are not accounted for due to glue positioning.
-function edfGetElementBoundingBox(element,forced)
-	--If its a basic, non-representative element
-	if isBasic[getElementType(element)] and ( forced or edfGetParent(element) == element ) then
-		return getElementBoundingBox(element)
-	else
-		local radius = -math.huge
-		local handle = edfGetHandle(element)
-		local boundingBox = {0,0,0,0,0,0}
-		--do a loop of all representation elements
-		for i,representation in ipairs(getElementChildren(edfGetParent(element))) do
-			if getRadius ( representation ) > radius then
-				radius = edfGetElementRadius ( representation )
-				boundingBox = {edfGetElementBoundingBox(representation,true)}
-				if not boundingBox[1] then
-					boundingBox = {-radius,-radius,-radius,radius,radius,radius}
-				end
-			end
-		end
-		return unpack(boundingBox)
-	end
-end
-
 
 
