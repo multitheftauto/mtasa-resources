@@ -288,13 +288,13 @@ end
 function edfGetElementBoundingBox ( element )
 	local biggestElement,biggestRadius
 	if isBasic[getElementType(element)] and ( edfGetParent(element) == element ) then
-		return getRadius(element)
+		return getElementBoundingBox(element)
 	else
 		local handle = edfGetHandle(element)
 		--do a loop of all representation elements
 		for i,representation in ipairs(getElementChildren(edfGetParent(element))) do
 			biggestElement = biggestElement or representation
-			local radius = edfGetElementRadius(representation,true) or 0
+			local radius = getRadius(representation,true) or 0
 			biggestRadius = biggestRadius or radius
 			--maxXY = math.max (maxXY,xyDistance+radius)
 			if radius > biggestRadius then
@@ -303,7 +303,7 @@ function edfGetElementBoundingBox ( element )
 			end
 		end		
 	end
-	return getElementBoundingBox(biggestElement) or -biggestRadius,-biggestRadius,-biggestRadius,biggestRadius,biggestRadius,biggestRadius
+	return getElementBoundingBox(biggestElement) or false
 end
 
 --This function returns an estimated radius, my calculating the peak and base of an edf element.  "wide" elements are not accounted for due to glue positioning.
