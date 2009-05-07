@@ -1,5 +1,6 @@
 <meta>
 <info author="BrophY" description="Shecs" version="1" type="map" />
+<include resource="playercolors" />
 <map src="broph.map" />
 <script src="broph.lua" />
 <script src="ctvdebug.lua" />
