@@ -59,26 +59,8 @@ end
 
 function playerSpawn ( spawnpoint )
 	--TALIDAN STUFFZOR
-	local rand1  = math.random(50,255)
-	local rand2  = math.random(50,255)
-	local rand3  = math.random(50,255)
-	blip = createBlipAttachedTo ( source, 0, 2, rand1, rand2, rand3, 90 )
-	setPlayerNametagColor ( source, rand1, rand2, rand3 )
-	setElementData ( source, "colour_r", rand1 )
-	setElementData ( source, "colour_g", rand2 )
-	setElementData ( source, "colour_b", rand3 )
-end
-
-function broph_Chat ( message, theType )
-	if theType == 0 then
-		cancelEvent()
-		message = string.gsub(message, "#%x%x%x%x%x%x", "")
-		local r = getElementData ( source, "colour_r" )
-		local g = getElementData ( source, "colour_g" )
-		local b = getElementData ( source, "colour_b" )
-		local bastidName = getPlayerName ( source )
-		outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
-	end
+	local r,g,b = exports.playercolors:getPlayerColor ( r, g, b )
+	blip = createBlipAttachedTo ( source, 0, 2, r, g, b, 90 )
 end
 
 function setWaveLevel ( source, command, height )
@@ -266,7 +248,6 @@ addEventHandler ( "onPlayerSpawn", root, playerSpawn )
 addEventHandler ( "onVehicleExplode", root, vehicleExplode )
 addEventHandler ( "onPlayerWasted", root, playerWasted )
 addEventHandler ( "onPlayerQuit", root, playerQuit )
-addEventHandler ( "onPlayerChat", root, broph_Chat )
 
 --///
 
