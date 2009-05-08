@@ -303,7 +303,12 @@ function edfGetElementBoundingBox ( element )
 			end
 		end		
 	end
-	return getElementBoundingBox(biggestElement) or false
+	local a,b,c,d,e,f = getElementBoundingBox(biggestElement)
+	if a then
+		return a,b,c,d,e,f
+	else
+		return -biggestRadius,-biggestRadius,-biggestRadius,biggestRadius,biggestRadius,biggestRadius
+	end
 end
 
 --This function returns an estimated radius, my calculating the peak and base of an edf element.  "wide" elements are not accounted for due to glue positioning.
