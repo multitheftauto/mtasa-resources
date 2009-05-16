@@ -34,6 +34,11 @@ local unloadedPickups = {}
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
+		if getTotalPlayerCount() == 0 then
+			outputDebugString('Stopping map')
+			triggerEvent('onGamemodeMapStop', g_Root)
+            return
+		end
         gotoState('LoadingMap')
         -- set up all players as not ready
         for i,player in ipairs(getElementsByType('player')) do
@@ -889,9 +894,7 @@ function activateNotReadyText()
             g_NotReadyTimer = setTimer( updateNotReadyText, 100, 0 )
 	        g_NotReadyDisplay = textCreateDisplay()
 	        g_NotReadyTextItems[1] = textCreateTextItem('', 0.5, 0.7, 'medium', 255, 235, 215, 255, 1.5, 'center', 'center')
-	        g_NotReadyTextItems[2] = textCreateTextItem('', 0.5, 0.73, 'medium', 255, 235, 215, 215, 1.0, 'center', 'center')
 	        textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[1])
-	        textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[2])
         end
     end
 end
@@ -901,12 +904,10 @@ function updateNotReadyText()
         deactiveNotReadyText()
     end
 	if g_NotReadyDisplay then
-        -- Make sure all ready players are observers, and compile name list of players not ready
-        local names = '';
+        -- Make sure all ready players are observers
         for i,player in ipairs(g_Players) do
             if isPlayerNotReady(player) then
                 textDisplayRemoveObserver(g_NotReadyDisplay, player)
-                names = names .. ' - ' .. getPlayerName(player)
             else
                 if not textDisplayIsObserver(g_NotReadyDisplay, player) then
                     textDisplayAddObserver(g_NotReadyDisplay, player)
@@ -914,8 +915,10 @@ function updateNotReadyText()
                 end
             end
         end
-		textItemSetText(g_NotReadyTextItems[1], 'Waiting for other players...' )
-		--textItemSetText(g_NotReadyTextItems[2], names .. ' - ' )
+		-- Only show 'Waiting for other players...' if there actually are any other players
+		if getTotalPlayerCount() > 1 then
+			textItemSetText(g_NotReadyTextItems[1], 'Waiting for other players...' )
+		end
 	end
 end
 
@@ -925,20 +928,47 @@ function deactiveNotReadyText()
         -- Ensure message is displayed for at least 2 seconds
         local hideDisplayDelay  = math.max(50,math.min(2000,2000+g_NotReadyDisplayOnTime - getTickCount()))
         local display           = g_NotReadyDisplay;
-        local textItems         = { g_NotReadyTextItems[1], g_NotReadyTextItems[2] };
+        local textItems         = { g_NotReadyTextItems[1] };
 		setTimer(
             function()
 		        textDestroyDisplay(display)
 		        textDestroyTextItem(textItems[1])
-		        textDestroyTextItem(textItems[2])
             end,
             hideDisplayDelay, 1 )
         g_NotReadyTimer = nil
 		g_NotReadyDisplay = nil
 		g_NotReadyTextItems[1] = nil
-		g_NotReadyTextItems[2] = nil
     end
 end
+
+
+------------------------
+-- Testing commands
+
+addCommandHandler('restartracemode',
+	function(player)
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+			return
+		end
+        exports.mapmanager:changeGamemode( getResourceFromName('race') )
+	end
+)
+
+
+addCommandHandler('pipedebug',
+	function(player, command, arg)
+		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+			return
+		end
+        if g_PipeDebugTo then
+            clientCall(g_PipeDebugTo, 'setPipeDebug', false)
+        end
+        g_PipeDebugTo = (arg == "1") and player
+        if g_PipeDebugTo then
+            clientCall(g_PipeDebugTo, 'setPipeDebug', true)
+        end
+	end
+)
 
 
 ------------------------

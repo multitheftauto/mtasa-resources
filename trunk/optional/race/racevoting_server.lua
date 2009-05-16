@@ -62,7 +62,7 @@ function startMidMapVoteForRandomMap(player)
            title='Do you want to change to a random map?',
            percentage=51,
            timeout=15,
-           allowchange=false,
+           allowchange=true,
            visibleTo=getRootElement(),
            [1]={'Yes', 'midMapVoteResult', getRootElement(), true},
            [2]={'No', 'midMapVoteResult', getRootElement(), false;default=true},
@@ -200,7 +200,7 @@ function startNextMapVote()
 		percentage=51,
 		timeout=15,
         adjustwidth=50,
-		allowchange=false;
+		allowchange=true;
 		}
 	
 	for index, map in ipairs(compatibleMaps) do

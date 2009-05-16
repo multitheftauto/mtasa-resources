@@ -1,5 +1,5 @@
-addEvent('onClientCall', true)
-addEventHandler('onClientCall', getRootElement(),
+addEvent('onClientCall_race', true)
+addEventHandler('onClientCall_race', getRootElement(),
 	function(fnName, ...)
 		local fn = _G
 		local path = fnName:split('.')
@@ -7,7 +7,7 @@ addEventHandler('onClientCall', getRootElement(),
 			fn = fn[pathpart]
 		end
         if not fn then
-            outputDebugString( 'onClientCall fn is nil for ' .. tostring(fnName) )
+            outputDebugString( 'onClientCall_race fn is nil for ' .. tostring(fnName) )
         else
     		fn(...)
         end
@@ -19,7 +19,7 @@ function createServerCallInterface()
 		{},
 		{
 			__index = function(t, k)
-				t[k] = function(...) triggerServerEvent('onServerCall', g_Me, k, ...) end
+				t[k] = function(...) triggerServerEvent('onServerCall_race', g_Me, k, ...) end
 				return t[k]
 			end
 		}
