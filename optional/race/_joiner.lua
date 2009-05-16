@@ -110,6 +110,7 @@ function getDeadPlayers()
 end
 
 -- getPlayerCount patch 
+_getPlayerCount = getPlayerCount
 function getPlayerCount()
     return g_RootPlayers and getElementChildrenCount(g_RootPlayers) or 0
 end
@@ -140,6 +141,10 @@ function onlyJoined(player)
     return player
 end
 
+-- Number of players, both pending and joined
+function getTotalPlayerCount(player)
+	return _getPlayerCount()
+end
 
 ----------------------------------------------------------------------------
 --

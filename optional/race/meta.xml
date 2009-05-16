@@ -5,7 +5,8 @@
 	<include resource="scoreboard"/>
 	<include resource="votemanager"/>
 	<include resource="helpmanager" />
-	
+	<include resource="race_toptimes" />
+
 	<script src="_common.lua" type="server"/>
 	<script src="_joiner.lua" type="server"/>
 	<script src="util_server.lua" type="server"/>
@@ -20,9 +21,6 @@
 	<script src="race_server.lua" type="server"/>
 	<script src="racevoting_server.lua" type="server"/>
 	<script src="racestates_server.lua" type="server"/>
-	<script src="toptimes/databasetable_server.lua" type="server"/>
-	<script src="toptimes/maptimes_server.lua" type="server"/>
-	<script src="toptimes/toptimes_server.lua" type="server"/>
 	
 	<script src="_common.lua" type="client"/>
 	<script src="_joiner_client.lua" type="client"/>
@@ -34,7 +32,6 @@
 	<script src="race_client.lua" type="client"/>
 	<script src="textlib.lua" type="client"/>
 	<script src="textlib_anim.lua" type="client"/>
-	<script src="toptimes/toptimes_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
 	
 	<file src="img/rankbg.png"/>

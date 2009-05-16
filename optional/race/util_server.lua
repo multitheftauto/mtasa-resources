@@ -1,5 +1,5 @@
 function clientCall(player, fnName, ...)
-    triggerClientEvent(onlyJoined(player), 'onClientCall', player, fnName, ...)
+    triggerClientEvent(onlyJoined(player), 'onClientCall_race', player, fnName, ...)
 end
 
 g_AllowedRPCFunctions = {}
@@ -10,8 +10,8 @@ function allowRPC(...)
 	end
 end
 
-addEvent('onServerCall', true)
-addEventHandler('onServerCall', getRootElement(),
+addEvent('onServerCall_race', true)
+addEventHandler('onServerCall_race', getRootElement(),
 	function(fnName, ...)
 		if g_AllowedRPCFunctions[fnName] then
 			local fn = _G
