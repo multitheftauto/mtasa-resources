@@ -21,7 +21,7 @@ addEventHandler ( "onClientPlayerQuit", getRootElement(),
 	end
 )
 
-addEventHandler ( "onClientPedWasted", getRootElement(),
+addEventHandler ( "onClientPlayerWasted", getRootElement(),
 	function()
 		destroyElement ( playerBlips[source] )
 		playerBlips[source] = nil

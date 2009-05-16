@@ -90,7 +90,7 @@ function toggleDriveby()
 			end
 		else
 			switchTo = lastSlot
-			switchToWeapon = getPlayerWeapon ( localPlayer, lastSlot )
+			switchToWeapon = getPedWeapon ( localPlayer, lastSlot )
 		end
 		--If a valid weapon was not found, dont set anything.
 		if not switchTo then return end

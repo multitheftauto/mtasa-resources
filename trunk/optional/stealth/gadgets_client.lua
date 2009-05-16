@@ -91,7 +91,7 @@ function playerkilled ()
 	end
 end
 
-addEventHandler ( "onClientPedWasted", getLocalPlayer(), playerkilled )
+addEventHandler ( "onClientPlayerWasted", getLocalPlayer(), playerkilled )
 
 addEventHandler ( "onClientPlayerDamage", getRootElement(),
 	function(attacker,weapon,bodypart)
@@ -214,7 +214,7 @@ function weaponfired (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
 	end
 end
 
-addEventHandler ( "onClientPedWeaponFire", getRootElement(), weaponfired )
+addEventHandler ( "onClientPlayerWeaponFire", getRootElement(), weaponfired )
 
 function minedelaystop()
 	minedelay = 0

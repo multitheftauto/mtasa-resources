@@ -5,7 +5,7 @@ function cancelSharkDamage  ( attacker, weapon, bodypart )
 		cancelEvent()
 	end
 end
-addEventHandler ( "onClientPedDamage", getLocalPlayer(), cancelSharkDamage )
+addEventHandler ( "onClientPlayerDamage", getLocalPlayer(), cancelSharkDamage )
 
 function setupSpawn  ()
 	--outputChatBox ( "called for "..getPlayerName ( source ) )

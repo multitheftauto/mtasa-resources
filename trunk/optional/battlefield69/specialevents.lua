@@ -382,7 +382,7 @@ end
 addEvent("mountPatriot", true)
 addEventHandler("mountPatriot", getLocalPlayer(), mountPatriot)
 
-addEventHandler("onClientPedWeaponFire", getLocalPlayer(), function (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
+addEventHandler("onClientPlayerWeaponFire", getLocalPlayer(), function (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
     if weapon == 38 and getKeyState("mouse1") == true then
 		if miniLastShot > getTickCount() then
 			toggleControl ("fire", false )
@@ -396,7 +396,7 @@ addEventHandler("onClientPedWeaponFire", getLocalPlayer(), function (weapon, amm
 	end
 end)
 
-addEventHandler ("onClientPedWasted", getLocalPlayer(), function (attacker, weapon, bodypart)
+addEventHandler ("onClientPlayerWasted", getLocalPlayer(), function (attacker, weapon, bodypart)
 	if status == true then
 		status = false
 		triggerServerEvent ("detachPatriot", getLocalPlayer(), target)

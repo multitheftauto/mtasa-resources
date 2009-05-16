@@ -257,8 +257,8 @@ function hidesoundbar ( theresource )
 	guiSetVisible ( thesoundbar, false )
 end
 
-addEventHandler ( "onClientPedWasted", getLocalPlayer (), hidesoundbar )
-addEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
-addEventHandler ( "onClientPedWeaponFire", getLocalPlayer (), shootingnoise )
+addEventHandler ( "onClientPlayerWasted", getLocalPlayer (), hidesoundbar )
+addEventHandler ( "onClientPlayerDamage", getLocalPlayer (), damagenoise )
+addEventHandler ( "onClientPlayerWeaponFire", getLocalPlayer (), shootingnoise )
 addEventHandler ( "onClientPlayerSpawn", getLocalPlayer (), setupsoundstuff )
 addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()), setuptrigger)
