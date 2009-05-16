@@ -60,7 +60,7 @@ function SToptimesManager:create()
             playersWhoWantUpdates   = {},
             updateQueue             = {},
             serviceQueueTimer       = nil,
-            displayTopCount         = 10,       -- Top number of times to display
+            displayTopCount         = 8,       -- Top number of times to display
             mapTimes                = nil,      -- SMaptimes:create()
             serverRevision          = 0,        -- To prevent redundant updating to clients
         },
@@ -167,9 +167,6 @@ function SToptimesManager:playerFinished( player, time, dateRecorded )
         -- See if its in the top 10
         if newPos <= self.displayTopCount then
             outputDebug( 'TOPTIMES', getPlayerName(player) .. ' got toptime position ' .. newPos )
-			if newPos <= self.mapTimes:getNumberOfToptimes( self.displayTopCount ) then
-				clientCall(player, "playAudio", "audio/nicework.mp3")
-			end
         end
 
         if bestTime then

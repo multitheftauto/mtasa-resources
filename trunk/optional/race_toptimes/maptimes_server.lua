@@ -216,14 +216,6 @@ function SMaptimes:getToptimes( howMany )
     return result
 end
 
-function SMaptimes:getNumberOfToptimes( howMany )
-    if #self.dbTable.rows >= howMany then
-		return howMany
-	end
-    return #self.dbTable.rows
-end
-
-
 ---------------------------------------------------------------------------
 --
 -- SMaptimes:addPlayer()
