@@ -203,8 +203,8 @@ $Id: teamwars.lua 39 2007-12-18 21:50:11Z sinnerg $
 	addEventHandler("onClientRender", Root, TW_OnRender)
 	addEventHandler("onClientPlayerSpawn", Root, TW_OnPlayerSpawn)
 	addEventHandler("onClientPlayerWeaponSwitch", Root, TW_OnClientPlayerWeaponSwitch )
-	addEventHandler("onClientPedDamage", Root, TW_OnClienPlayerDamage)
-	addEventHandler("onClientPedWasted", Root, TW_OnPlayerDead)
+	addEventHandler("onClientPlayerDamage", Root, TW_OnClienPlayerDamage)
+	addEventHandler("onClientPlayerWasted", Root, TW_OnPlayerDead)
 -- Misc Functions
 	_OutputDebugString = outputDebugString; function outputDebugString(str, level) _OutputDebugString('TeamWars(Client):  ' .. str, level) end
 	

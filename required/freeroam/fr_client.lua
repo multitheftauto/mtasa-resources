@@ -848,7 +848,7 @@ function flipVehicle()
 	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle then
 		local rX, rY, rZ = getElementRotation(vehicle)
-		server.setVehicleRotation(vehicle, 0, 0, (rX > 90 and rX < 270) and (rZ + 180) or rZ)
+		server.setElementRotation(vehicle, 0, 0, (rX > 90 and rX < 270) and (rZ + 180) or rZ)
 	end
 end
 
@@ -1521,7 +1521,7 @@ addEventHandler('onClientPlayerQuit', g_Root,
 	end
 )
 
-addEventHandler('onClientPedWasted', g_Me,
+addEventHandler('onClientPlayerWasted', g_Me,
 	function()
 		onExitVehicle(g_Me)
 	end

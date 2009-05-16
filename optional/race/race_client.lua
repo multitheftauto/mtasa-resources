@@ -894,7 +894,7 @@ addEventHandler('onClientPlayerJoin', g_Root,
 	end
 )
 
-addEventHandler('onClientPedWasted', g_Root,
+addEventHandler('onClientPlayerWasted', g_Root,
 	function()
 		if not g_StartTick then
 			return

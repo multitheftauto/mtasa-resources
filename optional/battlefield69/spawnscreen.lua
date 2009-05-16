@@ -780,7 +780,7 @@ function hideSpawnMenu ()
 end
 addCommandHandler ("hidemenu", hideSpawnMenu)
 
-addEventHandler ("onClientPedDamage", getLocalPlayer(), function ( attacker, weapon, bodypart )
+addEventHandler ("onClientPlayerDamage", getLocalPlayer(), function ( attacker, weapon, bodypart )
 	if getElementData (getLocalPlayer(), "spawnProtection") == true then
 		cancelEvent()
 	else
@@ -801,7 +801,7 @@ addEventHandler("onClientPlayerSpawn", getLocalPlayer(), function ()
 	end
 end)
 
-addEventHandler ("onClientPedWasted", getLocalPlayer(), function (attacker, weapon, bodypart)
+addEventHandler ("onClientPlayerWasted", getLocalPlayer(), function (attacker, weapon, bodypart)
 if hasSpawned == false then return end
 if mapStopped == true then return end
 if getElementData(getLocalPlayer(), "feigndeath") == true then return end

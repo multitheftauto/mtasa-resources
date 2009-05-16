@@ -4,4 +4,4 @@ function playerDamageTaken ( attacker, weapon, bodypart )
 		cancelEvent()	
 	end
 end
-addEventHandler ( "onClientPedDamage", getLocalPlayer(), playerDamageTaken )
+addEventHandler ( "onClientPlayerDamage", getLocalPlayer(), playerDamageTaken )

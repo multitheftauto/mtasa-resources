@@ -529,7 +529,7 @@ addEventHandler("onClientPlayerSpawn", getLocalPlayer(), function () --this trig
 
 end)
 
-addEventHandler("onClientPedWasted", getLocalPlayer(), function() --when you die...
+addEventHandler("onClientPlayerWasted", getLocalPlayer(), function() --when you die...
 	deaths = deaths + 1 --add one death to your current deaths.
 	if maxdeaths1 > 0 then --this is used for elimination mode
 		if tonumber(deaths) <= tonumber(maxdeaths1) then --if your current deaths is below or the same as the max death setting.
