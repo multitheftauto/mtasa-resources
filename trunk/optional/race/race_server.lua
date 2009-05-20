@@ -752,15 +752,6 @@ addEventHandler('onPlayerQuit', g_Root,
 	end
 )
 
-addEventHandler('onVehicleDamage', g_Root,
-	function()
-		local player = table.find(g_Vehicles, source)
-		if player then
-			setElementHealth(player, getElementHealth(source)/10)
-		end
-	end
-)
-
 addEventHandler('onVehicleStartExit', g_Root, function() cancelEvent() end)
 
 function getPlayerCurrentCheckpoint(player)
