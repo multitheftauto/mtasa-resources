@@ -448,7 +448,10 @@ function EnableTirePopping(amx, enable)
 end
 
 function EnableZoneNames(amx, enable)
-
+	g_ShowZoneNames = enable
+	for i,data in pairs(g_Players) do
+		showPlayerHudComponent(data.elem, 'area_name', enable)
+	end
 end
 
 function ForceClassSelection(amx, playerID)
@@ -857,7 +860,9 @@ function KillTimer(amx, timerID)
 end
 
 function LimitGlobalChatRadius(amx, radius)
-
+	if radius > 0 then
+		g_GlobalChatRadius = radius
+	end
 end
 
 function LinkVehicleToInterior(amx, vehicle, interior)
@@ -1268,7 +1273,7 @@ function ShowPlayerMarkers(amx, show)
 end
 
 function ShowPlayerNameTagForPlayer(amx, player, playerToShow, show)
-	
+	clientCall(player, 'setPlayerNametagShowing', playerToShow, show)
 end
 
 function SpawnPlayer(amx, player)
