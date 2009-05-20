@@ -5,12 +5,12 @@ g_Vehicles = {}
 g_Objects = {}
 g_Pickups = {}
 
-debug.sethook()		-- remove the "infinite running script" check
-
 function initGameModeGlobals()
 	g_PlayerClasses = {}
 	g_Teams = setmetatable({}, { __index = function(t, k) t[k] = createTeam('Team ' .. (k+1)) return t[k] end })
-	g_ShowPlayerMarkers = nil
+	g_ShowPlayerMarkers = true
+	g_ShowZoneNames = true
+	g_GlobalChatRadius = false
 end
 
 addEventHandler('onResourceStart', g_ResRoot,

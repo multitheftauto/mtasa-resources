@@ -15,6 +15,7 @@ function gameModeInit(player)
 	setElementDimension(player, 0)
 	local r, g, b = math.random(50, 255), math.random(50, 255), math.random(50, 255)
 	ShowPlayerMarker(false, player, g_ShowPlayerMarkers)
+	showPlayerHudComponent(player, 'area_name', g_ShowZoneNames)
 	SetPlayerColor(false, player, r, g, b)
 	setElementData(player, 'Score', 0)
 	toggleAllControls(player, false, true, false)
@@ -243,8 +244,19 @@ addEventHandler('onPlayerChat', root,
 		if not procCallOnAll('OnPlayerText', getElemID(source), msg) then
 			return
 		end
+		
 		local r, g, b = getPlayerNametagColor(source)
-		outputChatBox(getClientName(source) .. ':#FFFFFF ' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
+		
+		if g_GlobalChatRadius then
+			local x, y, z = getElementPosition(source)
+			for i,data in pairs(g_Players) do
+				if getDistanceBetweenPoints3D(x, y, z, getElementPosition(data.elem)) <= g_GlobalChatRadius then
+					outputChatBox(getClientName(source) .. ':#FFFFFF ' .. msg:gsub('#%x%x%x%x%x%x', ''), data.elem, r, g, b, true)
+				end
+			end
+		else
+			outputChatBox(getClientName(source) .. ':#FFFFFF ' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
+		end
 	end
 )
 
