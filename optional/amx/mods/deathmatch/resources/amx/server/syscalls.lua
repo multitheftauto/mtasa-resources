@@ -1135,7 +1135,7 @@ function SetPlayerTeam(amx, player, team)
 end
 
 function SetPlayerTime(amx, player, hours, minutes)
-	setTime(hours, minutes)
+	clientCall(player, 'setTime', hours, minutes)
 end
 
 function SetPlayerVirtualWorld(amx, player, dimension)
