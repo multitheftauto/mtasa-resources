@@ -429,7 +429,7 @@ addEventHandler('onClientRender', g_Root, updatePickups)
 addEventHandler('onClientColShapeHit', g_Root,
 	function(elem)
 		local pickup = g_Pickups[source]
-		if elem ~= g_Vehicle or not pickup or getElementHealth(g_Vehicle) == 0 or getElementHealth(g_Me) == 0 then
+		if elem ~= g_Vehicle or not pickup or isVehicleBlown(g_Vehicle) or getElementHealth(g_Me) == 0 then
 			return
 		end
 		if pickup.load then
@@ -568,7 +568,7 @@ function showNextCheckpoint()
 end
 
 function checkpointReached(elem)
-	if elem ~= g_Vehicle or getElementHealth(g_Vehicle) == 0 or getElementHealth(g_Me) == 0 then
+	if elem ~= g_Vehicle or isVehicleBlown(g_Vehicle) or getElementHealth(g_Me) == 0 then
 		return
 	end
 	
