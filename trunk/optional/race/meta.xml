@@ -26,6 +26,7 @@
 	<script src="_joiner_client.lua" type="client"/>
 	<script src="util_client.lua" type="client"/>
 	<script src="fancyprogress.lua" type="client"/>
+	<script src="nametags.lua" type="client"/>
 	<script src="client_anim.lua" type="client"/>
 	<script src="countdown_client.lua" type="client"/>
 	<script src="rankingboard_client.lua" type="client"/>
