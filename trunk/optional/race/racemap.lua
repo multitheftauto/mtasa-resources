@@ -279,6 +279,9 @@ function RaceElementMap:getAll(name, type)
 			elseif val then
 				val = DMRaceMapObject.parseValue(result[i], val)
 			end
+			if val == "" then
+				val = nil
+			end
 			result[i][attr] = val
 		end
 	end
