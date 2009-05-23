@@ -486,13 +486,10 @@ function vehicleChanging(h, m)
 		setElementPosition(g_Vehicle, x, y, z - g_PrevVehicleHeight + newVehicleHeight)
 	end
 	g_PrevVehicleHeight = nil
-	local vehID = getElementModel(g_Vehicle)
-	if vehID == 417 or vehID == 425 or vehID == 447 or vehID == 465 or vehID == 469 or vehID == 487 or vehID == 488 or vehID == 497 or vehID == 501 or vehID == 548 or vehID == 563 then
-		setHelicopterRotorSpeed (g_Vehicle, 0.2)
-	end
 	local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
+	checkVehicleIsHelicopter()
 end
 
 function vehicleUnloading()
@@ -761,6 +758,7 @@ end
 function remoteSoonFadeIn()
     setTimer(fadeCamera,250+500,1,true,1.0)		-- And up
     setTimer( function() setCameraBehindVehicle( g_Vehicle ) end ,250+500-150,1 )
+	setTimer(checkVehicleIsHelicopter,250+500,1)
 end
 -----------------------------------------------------------------------
 
