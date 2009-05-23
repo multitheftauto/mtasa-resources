@@ -113,6 +113,9 @@ function loadMap(res)
     g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
 	g_MapOptions = {}
 	g_MapOptions.duration = map.duration and tonumber(map.duration) > 0 and map.duration*1000 or 600000
+	if g_MapOptions.duration > 3600000 then
+		g_MapOptions.duration = 3600000
+	end
 	g_MapOptions.respawn = map.respawn
 	if not g_MapOptions.respawn or g_MapOptions.respawn ~= 'none' then
 		g_MapOptions.respawn = 'timelimit'
