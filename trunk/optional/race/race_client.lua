@@ -29,7 +29,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 			timepassed = guiCreateLabel(screenWidth-100, screenHeight-25, 100, 20, '', false),
 			timeleftbg = guiCreateStaticImage(screenWidth/2-108/2, 15, 108, 24, 'img/timeleft.png', false, nil),
 			timeleft = guiCreateLabel(screenWidth/2-108/2, 19, 108, 30, '', false),
-			healthbar = FancyProgress.create(100, 1000, 'img/progress_health_bg.png', -65, 105, 123, 30, 'img/progress_health.png', 7, 7, 109, 16),
+			healthbar = FancyProgress.create(250, 1000, 'img/progress_health_bg.png', -65, 105, 123, 30, 'img/progress_health.png', 7, 7, 109, 16),
 			speedbar = FancyProgress.create(0, 1.5, 'img/progress_speed_bg.png', -65, 135, 123, 30, 'img/progress_speed.png', 7, 7, 109, 16),
 		}
 		guiSetAlpha(g_GUI.rankbg, 0.3)
