@@ -524,28 +524,18 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 		local vehicle = g_Vehicles[source]
 		local checkpoint = g_Checkpoints[checkpointNum]
 		if checkpoint.vehicle then
-			local rx, ry, rz = getVehicleRotation (vehicle)
-			if ry > 170 and ry < 190 then 
-				ry = 0 
-			end
-			if rx > 170 and rx < 190 then 
-				rx = 0
-				rz = rz + 180
-				if rz > 360 then
-					rz = rz - 360
+			if getElementModel(vehicle) ~= tonumber(checkpoint.vehicle) then
+				local rx, ry, rz = getVehicleRotation (vehicle)
+				setVehicleRotation(vehicle, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
+				setVehicleID(vehicle, checkpoint.vehicle)
+				clientCall(source, 'vehicleChanging')
+				if checkpoint.paintjob or checkpoint.upgrades then
+					setVehiclePaintjobAndUpgrades(vehicle, checkpoint.paintjob, checkpoint.upgrades)
+				else
+					if g_MapOptions.autopimp then
+						pimpVehicleRandom(vehicle)
+					end
 				end
-			end
-			if rx == 0 or ry == 0 then
-				setVehicleRotation(vehicle, rx, ry, rz)
-			end
-			setVehicleID(vehicle, checkpoint.vehicle)
-			clientCall(source, 'vehicleChanging')
-			if checkpoint.paintjob or checkpoint.upgrades then
-				setVehiclePaintjobAndUpgrades(vehicle, checkpoint.paintjob, checkpoint.upgrades)
-			else
-                if g_MapOptions.autopimp then
-			        pimpVehicleRandom(vehicle)
-                end
 			end
 		end
 		
@@ -576,23 +566,13 @@ addEventHandler('onPlayerPickUpRacePickup', g_Root,
 		elseif pickup.type == 'nitro' then
 			addVehicleUpgrade(vehicle, 1010)
 		elseif pickup.type == 'vehiclechange' then
-			local rx, ry, rz = getVehicleRotation (vehicle)
-			if ry > 170 and ry < 190 then 
-				ry = 0
+			if getElementModel(vehicle) ~= tonumber(pickup.vehicle) then
+				local rx, ry, rz = getVehicleRotation (vehicle)
+				setVehicleRotation(vehicle, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
+				setVehicleID(vehicle, pickup.vehicle)
+				setVehiclePaintjobAndUpgrades(vehicle, pickup.paintjob, pickup.upgrades)
+				clientCall(source, 'vehicleChanging', getTime())
 			end
-			if rx > 170 and rx < 190 then 
-				rx = 0
-				rz = rz + 180
-				if rz > 360 then
-					rz = rz - 360
-				end
-			end
-			if rx == 0 or ry == 0 then
-				setVehicleRotation(vehicle, rx, ry, rz)
-			end
-			setVehicleID(vehicle, pickup.vehicle)
-			setVehiclePaintjobAndUpgrades(vehicle, pickup.paintjob, pickup.upgrades)
-			clientCall(source, 'vehicleChanging', getTime())
 		end
 	end
 )
@@ -748,6 +728,25 @@ addEventHandler('onPlayerQuit', g_Root,
 		else
             gotoState('EveryoneFinished')
             RaceMode.endMap()
+		end
+	end
+)
+
+addEventHandler('onVehicleDamage', g_Root,
+	function(loss)
+		local player = table.find(g_Vehicles, source)
+		if player then
+			local newHealth = getElementHealth(source) - tonumber(loss)
+			if newHealth > 0 then
+				if getElementHealth(source) - tonumber(loss) < 250 then
+					setElementHealth(player, 1)
+					tick = getTickCount()
+				else
+					setElementHealth(player, 0.132 * (newHealth) - 32)
+				end
+			else
+				cancelEvent()
+			end
 		end
 	end
 )
