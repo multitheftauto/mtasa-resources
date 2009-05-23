@@ -207,6 +207,11 @@ function startNextMapVote()
 		local mapName = getResourceInfo(map, "name") or getResourceName(map)
 		table.insert(poll, {mapName, 'nextMapVoteResult', getRootElement(), map})
 	end
+	
+	local currentMap = exports.mapmanager:getRunningGamemodeMap()
+	if currentMap then
+		table.insert(poll, {"Play again", 'nextMapVoteResult', getRootElement(), currentMap})
+	end
 
 	numPollOptions = #poll - 1
 	local pollDidStart = exports.votemanager:startPoll(poll)
