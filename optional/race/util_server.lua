@@ -93,14 +93,6 @@ function createResourceCallInterface(resname)
 end
 
 function setVehicleID(vehicle, id)
-	local doorExists = false
-	for i=2,5 do
-		if getVehicleDoorState(vehicle, i) ~= 4 then
-			doorExists = true
-			break
-		end
-	end
-
 	local vx, vy, vz = getElementVelocity(vehicle)
 	local tvx, tvy, tvz = getVehicleTurnVelocity(vehicle)
 	setElementModel(vehicle, id)
@@ -121,10 +113,7 @@ function setVehicleID(vehicle, id)
 		end
 	end
 	setTimer(revertVehicleWheels, 1000, 1, vehicle)
-	if not doorExists then
-		revertVehicleDoors(vehicle)
-		setTimer(revertVehicleDoors, 1000, 1, vehicle)
-	end
+	setTimer(revertVehicleDoors, 1000, 1, vehicle)
 	setElementVelocity(vehicle, vx, vy, vz)
 	setVehicleTurnVelocity(vehicle, tvx, tvy, tvz)
 	
