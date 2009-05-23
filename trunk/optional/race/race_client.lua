@@ -198,7 +198,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 		pos = pickup.position
 		object = createObject(g_ModelForPickupType[pickup.type], pos[1], pos[2], pos[3])
 		setElementCollisionsEnabled(object, false)
-		colshape = createColSphere(pos[1], pos[2], pos[3], 3)
+		colshape = createColSphere(pos[1], pos[2], pos[3], 3.5)
 		g_Pickups[colshape] = { object = object }
 		for k,v in pairs(pickup) do
 			g_Pickups[colshape][k] = v
