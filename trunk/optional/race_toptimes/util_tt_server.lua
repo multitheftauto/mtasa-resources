@@ -1,3 +1,7 @@
+--
+-- util_tt_server.lua
+--
+
 g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 
@@ -48,6 +52,14 @@ function isPlayerInACLGroup(player, groupName)
 	return false
 end
 
+
+---------------------------------------------------------------------------
+-- Version
+---------------------------------------------------------------------------
+function getBuildString()
+	return getResourceInfo(getThisResource(), 'build') or 'n/a'
+end
+
 -----------------------------
 -- Debug
 
@@ -58,7 +70,7 @@ function outputDebug( chan, msg )
             chan = 'UNDEF'
         end
         if table.find(_DEBUG_LOG,chan) then
-            outputDebugString( getTickTimeStr() .. ' DEBUG: ' .. msg )
+            outputDebugString( getTickTimeStr() .. ' DEBUG_tt: ' .. msg )
         end
     end
     if g_PipeDebugTo then
@@ -66,7 +78,7 @@ function outputDebug( chan, msg )
             outputWarning( 'cleared g_PipeDebugTo' )
             g_PipeDebugTo = nil
         else
-            outputConsole( getTickTimeStr() .. ' DEBUG: ' .. (msg or chan), g_PipeDebugTo )
+            outputConsole( getTickTimeStr() .. ' DEBUG_tt: ' .. (msg or chan), g_PipeDebugTo )
         end
     end
 end
@@ -75,15 +87,15 @@ end
 -- Always send to server window
 -- and all client consoles
 function outputWarning( msg )
-    outputDebugString( getTickTimeStr() .. ' WARNING: ' .. msg )
-    outputConsole( getTickTimeStr() .. ' WARNING: ' .. msg )
+    outputDebugString( getTickTimeStr() .. ' WARNING_tt: ' .. msg )
+    outputConsole( getTickTimeStr() .. ' WARNING_tt: ' .. msg )
 end
 
 -- Always send to server window
 -- and chat box window
 function outputError( msg )
-    outputDebugString( getTickTimeStr() .. ' ERROR: ' .. msg )
-    outputChatBox( getTickTimeStr() .. ' ERROR: ' .. msg )
+    outputDebugString( getTickTimeStr() .. ' ERROR_tt: ' .. msg )
+    outputChatBox( getTickTimeStr() .. ' ERROR_tt: ' .. msg )
 end
 
 

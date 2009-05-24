@@ -4,14 +4,11 @@ g_Me = getLocalPlayer()
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_WaterCraftIDs = table.create({ 539, 460, 417, 447, 472, 473, 493, 595, 484, 430, 453, 452, 446, 454 }, true)
 g_ModelForPickupType = { nitro = 1337, repair = 1338, vehiclechange = 1339 }
-server = createServerCallInterface()
 
 g_Checkpoints = {}
 g_Pickups = {}
 g_VisiblePickups = {}
 g_Objects = {}
-
-outputChatBox ( 'Race version ' .. VERSION, 255, 127, 0 )
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
@@ -171,7 +168,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	g_GameOptions = gameoptions
 	g_MapInfo = mapinfo
     g_PlayerInfo = playerInfo
-    triggerEvent('onMapStarting', g_Me, mapinfo )
+    triggerEvent('onClientMapStarting', g_Me, mapinfo )
 	
 	fadeCamera(true)
 	showHUD(false)
@@ -191,7 +188,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	g_Checkpoints = checkpoints
 	
 	-- pickups
-	local pickupElem
+	local object
 	local pos
 	local colshape
 	for i,pickup in pairs(pickups) do
@@ -270,7 +267,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     -- Do fadeup and then tell server client is ready
     setTimer(fadeCamera, delay + 750, 1, true, 10.0)
     setTimer(fadeCamera, delay + 1500, 1, true, 2.0)
-    setTimer( function() triggerServerEvent('onClientRaceReady', g_Me) end, delay + 3500, 1 )
+    setTimer( function() triggerServerEvent('onNotifyPlayerReady', g_Me) end, delay + 3500, 1 )
     outputDebug( 'MISC', 'initRace end' )
     setTimer( function() setCameraBehindVehicle( g_Vehicle ) end, delay + 300, 1 )
 end
@@ -458,8 +455,8 @@ end
 function loadPickup(pickupID)
 	for colshape,pickup in pairs(g_Pickups) do
 		if pickup.id == pickupID then
-			pos = pickup.position
-			object = createObject(g_ModelForPickupType[pickup.type], pos[1], pos[2], pos[3])
+			local pos = pickup.position
+			local object = createObject(g_ModelForPickupType[pickup.type], pos[1], pos[2], pos[3])
 			setElementCollisionsEnabled(object, false)
 			g_VisiblePickups[colshape] = object
 			pickup.object = object
@@ -538,7 +535,7 @@ function checkWater()
                     blowVehicle ( g_Vehicle, true )
                 else
                     setElementHealth(g_Me,0)
-                    triggerServerEvent('onClientKillPlayer',g_Me)
+                    triggerServerEvent('onRequestKillPlayer',g_Me)
                 end
             end
         end
@@ -588,7 +585,7 @@ function checkpointReached(elem)
 			g_GUI.hurry = false
 		end
 		destroyCheckpoint(#g_Checkpoints)
-        triggerEvent('onPlayerReachedFinish', g_Me)
+        triggerEvent('onClientPlayerFinish', g_Me)
 		toggleAllControls(false, true, false)
 	end
 end
@@ -778,7 +775,7 @@ function raceTimeout()
 end
 
 function unloadAll()
-    triggerEvent('onMapStopping', g_Me)
+    triggerEvent('onClientMapStopping', g_Me)
 	for i=1,#g_Checkpoints do
 		destroyCheckpoint(i)
 	end
@@ -927,7 +924,6 @@ addEventHandler('onClientPlayerQuit', g_Root,
 			end
 		end
 		table.removevalue(g_Players, source)
-		Bigdar.smoothList[source] = nil
 	end
 )
 
@@ -942,138 +938,6 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 )
 
 
----------------------------------------------------------------------------
--- Bigdar - Big radar
----------------------------------------------------------------------------
-Bigdar = {}
-Bigdar.smoothList = {}      -- {player = rrz}
-Bigdar.lastSmoothSeconds = 0
-Bigdar.beginValidSeconds = nil
-Bigdar.enabled = true
-
-function Bigdar.toggle()
-    Bigdar.enabled = not Bigdar.enabled
-    outputConsole( 'Bigdar is now ' .. (Bigdar.enabled and 'on' or 'off') )
-end
-
-function Bigdar.render()
-    -- Ensure map allows it, and player not dead, and in a vehicle and not spectating
-    if not g_MapOptions or not g_MapOptions.allowBigdar or isPlayerDead(g_Me) or
-       not getPedOccupiedVehicle(g_Me) or isPlayerFinished(g_Me) or
-       not g_Vehicle or getCameraTarget() ~= g_Vehicle then
-        Bigdar.beginValidSeconds = nil
-        return
-    end
-
-    -- Ensure at least 1 second since g_BeginValidSeconds was set
-    local timeSeconds = getSecondCount()
-    if not Bigdar.beginValidSeconds then
-        Bigdar.beginValidSeconds = timeSeconds
-    end
-    if timeSeconds - Bigdar.beginValidSeconds < 1 then
-        return
-    end
-
-    -- No draw if faded out or not enabled
-    if not g_bShowAllTags or not Bigdar.enabled then
-        return
-    end
-
-	-- Icon definition
-	local icon = { file='img/bigdar.png', w=80, h=56, r=255, g=220, b=210 }
-
-    -- Calc smoothing vars
-    local delta = timeSeconds - Bigdar.lastSmoothSeconds
-    Bigdar.lastSmoothSeconds = timeSeconds
-    local timeslice = math.clamp(0,delta*14,1)
-
-    -- Get screen dimensions
-    local screenX,screenY = guiGetScreenSize()
-    local halfScreenX = screenX * 0.5
-    local halfScreenY = screenY * 0.5
-
-    -- Get my pos and rot
-    local mx, my, mz = getElementPosition(g_Me)
-    local _, _, mrz  = getCameraRot()
-
-    -- To radians
-    mrz = math.rad(-mrz)
-
-    for i,player in ipairs(g_Players) do
-        if player ~= g_Me then
-            -- Get other pos
-            local ox, oy, oz = getElementPosition(player)
-
-            -- Only draw marker if other player it is close enough, and not on screen
-            local maxDistance = 60
-            local alpha = 1 - getDistanceBetweenPoints3D( mx, my, mz, ox, oy, oz ) / maxDistance
-            local onScreen = getScreenFromWorldPosition ( ox, oy, oz )
-
-            if onScreen or alpha <= 0 then
-                -- If no draw, reset smooth position
-                Bigdar.smoothList[player] = nil
-            else
-                local scalex = alpha * 0.5 + 0.5
-                local scaley = alpha * 0.25 + 0.75
-
-                -- Calc dir to
-                local dx = ox - mx
-                local dy = oy - my
-                -- Calc rotz to
-                local drz = math.atan2(dx,dy)
-                -- Calc relative rotz to
-                local rrz = drz - mrz
-
-                -- Add smoothing to the relative rotz
-                local smooth = Bigdar.smoothList[player] or rrz
-                smooth = math.wrapdifference(-math.pi, smooth, rrz, math.pi)
-                if math.abs(smooth-rrz) > 1.57 then
-                    smooth = rrz
-                end
-                smooth = math.lerp( smooth, rrz, timeslice )
-                Bigdar.smoothList[player] = smooth
-                rrz = smooth
-
-                -- Calc on screen pos for relative rotz
-                local sx = math.sin(rrz)
-                local sy = math.cos(rrz)
-
-                -- Draw at edge of screen
-                local X1 = halfScreenX
-                local Y1 = halfScreenY
-                local X2 = sx * halfScreenX + halfScreenX
-                local Y2 = -sy * halfScreenY + halfScreenY
-                local X
-                local Y
-                if math.abs(sx) > math.abs(sy) then
-                    -- Left or right
-                    if X2 < X1 then
-                        -- Left
-                        X = 32
-                        Y = Y1+ (Y2-Y1)* (X-X1) / (X2-X1)
-                    else
-                        -- right
-                        X = screenX-32
-                        Y = Y1+ (Y2-Y1)* (X-X1) / (X2-X1)
-                    end
-                else
-                    -- Top or bottom
-                    if Y2 < Y1 then
-                        -- Top
-                        Y = 32
-                        X = X1+ (X2-X1)* (Y-Y1) / (Y2 - Y1)
-                    else
-                        -- bottom
-                        Y = screenY-32
-                        X = X1+ (X2-X1)* (Y-Y1) / (Y2 - Y1)
-                    end
-                end
-                dxDrawImage ( X-icon.w/2*scalex, Y-icon.h/2*scaley, icon.w*scalex, icon.h*scaley, icon.file, 180 + rrz * 180 / math.pi, 0, 0, tocolor(icon.r,icon.g,icon.b,255*alpha), false )
-            end
-        end
-    end
-end
-addEventHandler('onClientRender', g_Root, Bigdar.render)
 
 
 ---------------------------------------------------------------------------
@@ -1086,19 +950,13 @@ addEventHandler('onClientRender', g_Root, Bigdar.render)
 
 addCommandHandler('kill',
     function()
-        triggerServerEvent('onClientKillPlayer', g_Me)
+        triggerServerEvent('onRequestKillPlayer', g_Me)
     end
 )
 
 bindKey('enter_exit', 'down',
     function()
-        triggerServerEvent('onClientKillPlayer', g_Me)
-    end
-)
-
-bindKey('F4', 'down',
-    function()
-        Bigdar.toggle()
+        triggerServerEvent('onRequestKillPlayer', g_Me)
     end
 )
 

@@ -1,3 +1,7 @@
+g_Root = getRootElement()
+g_ResRoot = getResourceRootElement(getThisResource())
+g_Me = getLocalPlayer()
+
 addEvent('onClientCall_race', true)
 addEventHandler('onClientCall_race', getRootElement(),
 	function(fnName, ...)
@@ -25,6 +29,8 @@ function createServerCallInterface()
 		}
 	)
 end
+
+server = createServerCallInterface()
 
 ----------------------------
 -- GUI
@@ -117,9 +123,11 @@ end
 -- Vehicles
 
 function setCameraBehindVehicle(vehicle)
-	local x, y, z = getElementPosition(vehicle)
-	local rx, ry, rz = getElementRotation(vehicle)
-	setCameraMatrix(x - 4*math.cos(math.rad(rz + 90)), y - 4*math.sin(math.rad(rz + 90)), z + 1, x, y, z + 1)
+	if vehicle then
+		local x, y, z = getElementPosition(vehicle)
+		local rx, ry, rz = getElementRotation(vehicle)
+		setCameraMatrix(x - 4*math.cos(math.rad(rz + 90)), y - 4*math.sin(math.rad(rz + 90)), z + 1, x, y, z + 1)
+	end
 	setTimer(setCameraTarget, 150, 1, getLocalPlayer())
 end
 
@@ -197,6 +205,26 @@ function table.each(t, index, callback, ...)
 	end
 	return t
 end
+
+function table.deepcopy(t)
+	local known = {}
+	local function _deepcopy(t)
+		local result = {}
+		for k,v in pairs(t) do
+			if type(v) == 'table' then
+				if not known[v] then
+					known[v] = _deepcopy(v)
+				end
+				result[k] = known[v]
+			else
+				result[k] = v
+			end
+		end
+		return result
+	end
+	return _deepcopy(t)
+end
+
 
 function table.create(keys, vals)
 	local result = {}

@@ -14,7 +14,8 @@
 g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 
-addEvent('onPlayerJoining')
+addEvent('onPlayerJoining')		-- Pre join
+addEvent('onPlayerJoined')		-- Post join
 
 ---------------------------------
 --
@@ -34,9 +35,7 @@ end
 -- Catch addEventHandler calls here and save the ones listed in g_EventHandlers
 _addEventHandler = addEventHandler
 function addEventHandler(event, elem, fn, getPropagated)
-	if getPropagated == nil then
-		getPropagated = true
-	end
+	getPropagated = getPropagated==nil and true or getPropagated
 	if g_EventHandlers[event] then
 		table.insert(g_EventHandlers[event], { elem = elem, fn = fn, getpropagated = getPropagated })
 	else
@@ -161,14 +160,10 @@ addEventHandler('onResourceStart', g_ResRoot,
         g_RootJoining = createElement( 'plrcontainer', 'plrs joining' )
         g_RootPlayers = createElement( 'plrcontainer', 'plrs joined' )
         -- Put all current players into 'joining' group
-        outputDebug( 'JOINER', "getPlayerCount() #2 " .. tostring(getPlayerCount()) )
-        outputDebug( 'JOINER', 'onResourceStart #1 g_RootJoining count:' .. tostring(getElementChildrenCount(g_RootJoining)) .. '  g_RootPlayers count:' .. tostring(getElementChildrenCount(g_RootPlayers)) )
         for i,player in ipairs(_getElementsByType('player')) do
             setElementParent( player, g_RootJoining )
-            --setPlayerStatus(player,'joining')
+
         end 
-        outputDebug( 'JOINER', 'onResourceStart #2 g_RootJoining count:' .. tostring(getElementChildrenCount(g_RootJoining)) .. '  g_RootPlayers count:' .. tostring(getElementChildrenCount(g_RootPlayers)) )
-        outputDebug( 'JOINER', "getPlayerCount() #3 " .. tostring(getPlayerCount()) )
 	end
 )
 
@@ -177,6 +172,8 @@ addEventHandler('onResourceStart', g_ResRoot,
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
         table.each(getElementsByType('plrcontainer'), destroyElement)
+		g_RootJoining = nil
+		g_RootPlayers = nil
 	end
 )
 
@@ -185,8 +182,6 @@ addEventHandler('onResourceStop', g_ResRoot,
 addEventHandler('_onPlayerJoin', g_Root,
     function ()
         setElementParent( source, g_RootJoining )
-        --setPlayerStatus(source,'joining')
-        outputDebug( 'JOINER', '_onPlayerJoin g_RootJoining count:' .. tostring(getElementChildrenCount(g_RootJoining)) .. '  g_RootPlayers count:' .. tostring(getElementChildrenCount(g_RootPlayers)) )
         triggerEvent( 'onPlayerJoining', source );
     end
 )
@@ -195,7 +190,6 @@ addEventHandler('_onPlayerJoin', g_Root,
 --      Clean up
 addEventHandler('onPlayerQuit', g_Root,
 	function()
-        --setPlayerStatus(source,nil)
 	end
 )
 
@@ -204,12 +198,6 @@ addEventHandler('onPlayerQuit', g_Root,
 addEvent('onLoadedAtClient', true)
 addEventHandler('onLoadedAtClient', g_Root,
 	function()
-        --setPlayerStatus(source,'loaded')
-        outputDebug( 'JOINER', "getPlayerCount() #4 " .. tostring(getPlayerCount()) )
-        outputDebug( 'JOINER', 'onLoadedAtClient source:' .. tostring(source) ..'  name:' .. tostring(getPlayerName(source)) )
-        outputDebug( 'JOINER', 'onLoadedAtClient g_RootJoining count:' .. tostring(getElementChildrenCount(g_RootJoining)) .. '  g_RootPlayers count:' .. tostring(getElementChildrenCount(g_RootPlayers)) )
-        --setPlayerStatus(source,'spectating')
-
         -- Tell other clients; join completed for this player
         triggerClientEvent( g_RootPlayers, 'onOtherJoinCompleteAtServer', source )
 
@@ -220,6 +208,7 @@ addEventHandler('onLoadedAtClient', g_Root,
 
         -- Call deferred onPlayerJoin event handlers
         callSavedEventHandlers( 'onPlayerJoin', source )
+        triggerEvent( 'onPlayerJoined', source )
 	end
 )
 
