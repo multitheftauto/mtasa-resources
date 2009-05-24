@@ -1,0 +1,26 @@
+<meta>
+	<info name="Traffic Sensor" description="Traffic Sensor addon for Race" author="ccw" type="script" addon="race" version="0.0.1" build="r180 21May09"/>
+
+	<script src="_common_ts.lua" type="server"/>
+	<script src="util_ts_server.lua" type="server"/>
+	<script src="trafficsensor_server.lua" type="server"/>
+
+	<script src="_common_ts.lua" type="client"/>
+	<script src="util_ts_client.lua" type="client"/>
+	<script src="trafficsensor_client.lua" type="client"/>
+
+	<file src="img/arrow_ts.png"/>
+
+
+	<settings>
+		<!-- statskey
+                name    - Use player name to identify player for stats.
+                serial  - Use player serial to identify player for stats. -->
+		<setting name="*statskey" value="name"/>
+
+		<!-- admingroup
+                The name of the group to which the player must belong to issue certain commands  -->
+		<setting name="*admingroup" value="Admin"/>
+	</settings>
+
+</meta>
