@@ -22,6 +22,7 @@ propertyGetters = {
 		end,
 		upgrades = getVehicleUpgrades,
 		plate = getVehiclePlateText,
+		paintjob = function(vehicle) return tostring(getVehiclePaintjob(vehicle)) end,
 	},
 	marker = {
 		type = getMarkerType,
@@ -120,6 +121,7 @@ propertySetters = {
 			end
 			return true
 		end,
+		paintjob = setVehiclePaintjob
 	},
 	marker = {
 		type = setMarkerType,
