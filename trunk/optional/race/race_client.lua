@@ -771,6 +771,7 @@ function raceTimeout()
 		Animation.createAndPlay(g_GUI.hurry, Animation.presets.guiFadeOut(500), destroyElement)
 		g_GUI.hurry = nil
 	end
+	triggerEvent("onClientPlayerOutOfTime", g_Me)
 	toggleAllControls(false, true, false)
 end
 

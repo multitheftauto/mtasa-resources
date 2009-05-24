@@ -69,8 +69,8 @@ addEventHandler('onGamemodeMapStart', g_Root,
 		end
 		g_CurrentRaceMode = RaceMode.getApplicableMode():create()
         g_MapOptions.allowBigdar = g_CurrentRaceMode.getAllowBigdar()
-		g_MapInfo.modename  = g_CurrentRaceMode.name
-		outputDebugString('Loaded race mode ' .. g_CurrentRaceMode:getName())
+		g_MapInfo.modename  = g_CurrentRaceMode:getName()
+		outputDebugString('Loaded race mode ' .. g_MapInfo.modename)
 		startRace()
 	end
 )
@@ -256,7 +256,7 @@ end
 --      onGamemodeMapStart
 function startRace()
     gotoState('PreGridCountdown')
-    triggerEvent('onMapStarting', g_Root, g_CurrentRaceMode:getName(), g_MapInfo.name, g_GameOptions.statskey )
+    triggerEvent('onMapStarting', g_Root, g_MapInfo, g_MapOptions, g_GameOptions.statskey )
 	g_Players = {}
 	g_SpawnTimer:setTimer(joinHandlerByTimer, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
