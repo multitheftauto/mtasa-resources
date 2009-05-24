@@ -943,9 +943,22 @@ Addons.reportShort = ''
 
 -- Start addon resources listed in the setting 'race.addons'
 function startAddons()
-	stopAddons()
 	Addons.report = {}
 	Addons.reportShort = ''
+
+	-- Check permissions
+	local bCanStartResource = hasObjectPermissionTo ( getThisResource(), "function.startResource", false )
+	local bCanStopResource = hasObjectPermissionTo ( getThisResource(), "function.stopResource", false )
+	if not bCanStartResource or not bCanStopResource then
+		local line1 = 'WARNING: Race does not have permission to start/stop resources'
+		local line2 = 'WARNING: Addons may not function correctly'
+		outputDebugString( line1 )
+		outputDebugString( line2 )
+		table.insert(Addons.report,line1)
+		table.insert(Addons.report,line2)
+	end
+
+	stopAddons()
 	for idx,name in ipairs(string.split(getString('race.addons'),',')) do
 		if name ~= '' then
 			local resource = getResourceFromName(name)

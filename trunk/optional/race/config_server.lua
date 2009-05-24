@@ -100,7 +100,6 @@ end
 function setAddonsInfo(active, inactive)
 	-- compile setting from active items
 	local setting = table.concat(active,",")
-	outputConsole( 'setting ' .. tostring(setting) )
 	set('*addons',setting)
 end
 
