@@ -15,16 +15,16 @@ SToptimesManager.instances = {}
 --
 ---------------------------------------------------------------------------
 
-addEvent('onMapStarting', true)
+addEvent('onMapStarting')
 addEventHandler('onMapStarting', g_Root,
-	function(raceModeName, mapName, statsKey)
+	function(mapInfo, mapOptions, statsKey)
         if g_SToptimesManager then
-		    g_SToptimesManager:setModeAndMap( raceModeName, mapName, statsKey )
+		    g_SToptimesManager:setModeAndMap( mapInfo.modename, mapInfo.name, statsKey )
         end
 	end
 )
 
-addEvent('onPlayerFinish', true)
+addEvent('onPlayerFinish')
 addEventHandler('onPlayerFinish', g_Root,
 	function(rank, time)
         if g_SToptimesManager then
@@ -40,6 +40,17 @@ addEventHandler('onResourceStop', g_ResRoot,
 	    end
 	end
 )
+
+
+---------------------------------------------------------------------------
+--
+-- Events fired from here
+--
+---------------------------------------------------------------------------
+
+addEvent("onPlayerToptimeImprovement")
+
+---------------------------------------------------------------------------
 
 
 ---------------------------------------------------------------------------
@@ -146,7 +157,7 @@ end
 -- If time is good enough, insert into database
 --
 ---------------------------------------------------------------------------
-function SToptimesManager:playerFinished( player, time, dateRecorded )
+function SToptimesManager:playerFinished( player, newTime, dateRecorded )
 
 	if not self.mapTimes then
 		outputDebug( 'TOPTIMES', 'SToptimesManager:playerFinished - self.mapTimes == nil' )
@@ -155,22 +166,25 @@ function SToptimesManager:playerFinished( player, time, dateRecorded )
 
     dateRecorded = dateRecorded or getRealDateTimeNowString()
 
-    local bestTime  = self.mapTimes:getTimeForPlayer( player )    -- Can be false if no previous time
-    local newPos    = self.mapTimes:getPositionForTime( time, dateRecorded )
+    local oldTime	= self.mapTimes:getTimeForPlayer( player )    -- Can be false if no previous time
+    local newPos	= self.mapTimes:getPositionForTime( newTime, dateRecorded )
 
     -- See if time is an improvement for this player
-    if not bestTime or time < bestTime then
+    if not oldTime or newTime < oldTime then
 
-        -- See if its in the top 10
+		local oldPos    = self.mapTimes:getIndexForPlayer( player )
+		triggerEvent("onPlayerToptimeImprovement", player, newPos, newTime, oldPos, oldTime, self.displayTopCount, self.mapTimes:getValidEntryCount() )
+
+        -- See if its in the top display
         if newPos <= self.displayTopCount then
             outputDebug( 'TOPTIMES', getPlayerName(player) .. ' got toptime position ' .. newPos )
         end
 
-        if bestTime then
-            outputDebug( 'TOPTIMES', getPlayerName(player) .. ' new personal best ' .. time .. ' ' .. bestTime - time )
+        if oldTime then
+            outputDebug( 'TOPTIMES', getPlayerName(player) .. ' new personal best ' .. newTime .. ' ' .. oldTime - newTime )
         end
 
-        self.mapTimes:setTimeForPlayer( player, time, dateRecorded )
+        self.mapTimes:setTimeForPlayer( player, newTime, dateRecorded )
 
         -- updateTopText if database was changed
         if newPos <= self.displayTopCount then
@@ -178,7 +192,7 @@ function SToptimesManager:playerFinished( player, time, dateRecorded )
         end
     end
 
-    outputDebug( 'TOPTIMES', '++ SToptimesManager:playerFinished ' .. tostring(getPlayerName(player)) .. ' time:' .. tostring(time) )
+    outputDebug( 'TOPTIMES', '++ SToptimesManager:playerFinished ' .. tostring(getPlayerName(player)) .. ' time:' .. tostring(newTime) )
 end
 
 

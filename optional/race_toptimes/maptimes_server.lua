@@ -216,6 +216,18 @@ function SMaptimes:getToptimes( howMany )
     return result
 end
 
+
+---------------------------------------------------------------------------
+--
+-- SMaptimes:getValidEntryCount()
+--
+-- Return a count of the number of toptimes
+--
+---------------------------------------------------------------------------
+function SMaptimes:getValidEntryCount()
+    return #self.dbTable.rows
+end
+
 ---------------------------------------------------------------------------
 --
 -- SMaptimes:addPlayer()
