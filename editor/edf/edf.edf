@@ -27,6 +27,7 @@
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
 		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
 		<data name="color" type="vehiclecolors" description="vehicle colors" required="false" />
+		<data name="paintjob" type="selection:0,1,2,3" description="vehicle paintjob" required="false" />
 		<data name="upgrades" type="vehicleupgrades" description="installed vehicle upgrades" required="false" />
 		<data name="plate" type="plate" description="number plate" required="false" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
