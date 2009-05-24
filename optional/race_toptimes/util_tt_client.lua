@@ -1,3 +1,7 @@
+--
+-- util_tt_client.lua
+--
+
 g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
@@ -41,18 +45,18 @@ function outputDebug( chan, msg )
             chan = 'UNDEF'
         end
         if table.find(_DEBUG_LOG,chan) then
-            outputConsole( getTickTimeStr() .. ' cDEBUG: ' .. msg )
-            outputDebugString( getTickTimeStr() .. ' cDEBUG: ' .. msg )
+            outputConsole( getTickTimeStr() .. ' cDEBUG_tt: ' .. msg )
+            outputDebugString( getTickTimeStr() .. ' cDEBUG_tt: ' .. msg )
         end
     end
     if g_bPipeDebug then
-        outputConsole( getTickTimeStr() .. ' cDEBUG: ' .. (msg or chan) )
+        outputConsole( getTickTimeStr() .. ' cDEBUG_tt: ' .. (msg or chan) )
     end
 end
 
 function outputWarning( msg )
-    outputConsole( getTickTimeStr() .. ' cWARNING: ' .. msg )
-    outputDebugString( getTickTimeStr() .. ' cWARNING: ' .. msg )
+    outputConsole( getTickTimeStr() .. ' cWARNING_tt: ' .. msg )
+    outputDebugString( getTickTimeStr() .. ' cWARNING_tt: ' .. msg )
 end
 
 

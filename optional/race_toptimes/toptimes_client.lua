@@ -1,14 +1,11 @@
 --
 -- toptimes_client.lua
 --
--- See info in toptimes_server.lua
---
 
 CToptimes = {}
 CToptimes.__index = CToptimes
 CToptimes.instances = {}
 
-outputChatBox ( 'Toptimes (for Race) version ' .. VERSION, 255, 127, 0 )
 
 ---------------------------------------------------------------------------
 -- Client
@@ -18,30 +15,30 @@ outputChatBox ( 'Toptimes (for Race) version ' .. VERSION, 255, 127, 0 )
 --
 ---------------------------------------------------------------------------
 
-addEvent('onMapStarting', true)
-addEventHandler('onMapStarting', getRootElement(),
+addEvent('onClientMapStarting', true)
+addEventHandler('onClientMapStarting', getRootElement(),
 	function(mapinfo)
-		outputDebug( 'TOPTIMES', 'onMapStarting' )
+		outputDebug( 'TOPTIMES', 'onClientMapStarting' )
         if g_CToptimes then
     		g_CToptimes:onMapStarting(mapinfo)
         end
 	end
 )
 
-addEvent('onMapStopping', true)
-addEventHandler('onMapStopping', getRootElement(),
+addEvent('onClientMapStopping', true)
+addEventHandler('onClientMapStopping', getRootElement(),
 	function()
-		outputDebug( 'TOPTIMES', 'onMapStopping' )
+		outputDebug( 'TOPTIMES', 'onClientMapStopping' )
         if g_CToptimes then
 	        g_CToptimes:onMapStopping()
         end
 	end
 )
 
-addEvent('onPlayerReachedFinish', true)
-addEventHandler('onPlayerReachedFinish', getRootElement(),
+addEvent('onClientPlayerFinish', true)
+addEventHandler('onClientPlayerFinish', getRootElement(),
 	function()
-		outputDebug( 'TOPTIMES', 'onPlayerReachedFinish' )
+		outputDebug( 'TOPTIMES', 'onClientPlayerFinish' )
         if g_CToptimes then
 	        g_CToptimes:doAutoShow()
         end

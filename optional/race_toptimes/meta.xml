@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race Toptimes" description="Toptimes plug-in for Race" author="ccw" type="misc" version="0.0.1"/>
+	<info name="Toptimes" description="Toptimes addon for Race" author="ccw" type="script" addon="race" version="0.0.1" build="r180 21May09"/>
 
 	<script src="_common_tt.lua" type="server"/>
 	<script src="util_tt_server.lua" type="server"/>

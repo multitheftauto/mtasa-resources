@@ -44,7 +44,7 @@ addEventHandler ( "onClientRender", g_Root,
 					if not sx or not sy then break end
 					--Draw our text
 					local offset = (scale) * NAMETAG_TEXT_BAR_SPACE/2
-					dxDrawText ( getPlayerNametagText(player), sx, sy - offset, sx, sy - offset, tocolor(255,255,255,alpha), scale*NAMETAG_TEXTSIZE, "default", "center", "bottom", false, false, false )
+					dxDrawText ( getPlayerName(player), sx, sy - offset, sx, sy - offset, tocolor(255,255,255,alpha), scale*NAMETAG_TEXTSIZE, "default", "center", "bottom", false, false, false )
 					--We draw three parts to make the healthbar.  First the outline/background
 					local drawX = sx - NAMETAG_WIDTH*scale/2
 					drawY = sy + offset
@@ -88,7 +88,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 addEventHandler ( "onClientPlayerJoin", g_Root,
 	function()
 		if source == g_Me then return end
-		setPlayerNametagVisible ( source, false )
+		setPlayerNametagShowing ( source, false )
 		nametag.create ( source )
 	end
 )

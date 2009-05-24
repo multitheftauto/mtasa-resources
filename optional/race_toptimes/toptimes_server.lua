@@ -1,9 +1,6 @@
 --
 -- toptimes_server.lua
 --
--- Top times optional plug-in for race
---
---
 
 SToptimesManager = {}
 SToptimesManager.__index = SToptimesManager
@@ -18,8 +15,8 @@ SToptimesManager.instances = {}
 --
 ---------------------------------------------------------------------------
 
-addEvent('onStartingMap', true)
-addEventHandler('onStartingMap', g_Root,
+addEvent('onMapStarting', true)
+addEventHandler('onMapStarting', g_Root,
 	function(raceModeName, mapName, statsKey)
         if g_SToptimesManager then
 		    g_SToptimesManager:setModeAndMap( raceModeName, mapName, statsKey )

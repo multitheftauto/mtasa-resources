@@ -7,7 +7,9 @@
 g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 
-addEvent('onClientPlayerJoining')
+addEvent('onClientPlayerJoining')	-- Pre join
+addEvent('onClientPlayerJoined')	-- Post join
+
 g_JoinedPlayers = {}                -- List of joined players maintained at the client
 
 
@@ -30,9 +32,7 @@ end
 -- Catch addEventHandler calls here and save the ones listed in g_EventHandlers
 _addEventHandler = addEventHandler
 function addEventHandler(event, elem, fn, getPropagated)
-	if getPropagated == nil then
-		getPropagated = true
-	end
+	getPropagated = getPropagated==nil and true or getPropagated
 	if g_EventHandlers[event] then
 		table.insert(g_EventHandlers[event], { elem = elem, fn = fn, getpropagated = getPropagated })
 	else
@@ -110,7 +110,6 @@ function filterTable(playerList)
             table.insert(result,player)
         end
     end
-    outputDebug( 'JOINER', 'filterTable #playerList:' .. tostring(#playerList) .. '  #result:' .. tostring(#result) )
     return result
 end
 
@@ -125,7 +124,6 @@ end
 --      Do nothing
 addEventHandler('_onClientPlayerJoin', g_Root,
     function ()
-        outputDebug( 'JOINER', '_onClientPlayerJoin g_JoinedPlayers count:' .. tostring(#g_JoinedPlayers) )
         triggerEvent( 'onClientPlayerJoining', source );
     end
 )
@@ -134,12 +132,10 @@ addEventHandler('_onClientPlayerJoin', g_Root,
 --      Call the deferred onClientResourceStart event handlers, then tell the server we are loaded.
 addEventHandler('_onClientResourceStart', g_ResRoot,
 	function()
-        outputDebug( 'JOINER', '_onClientResourceStart g_JoinedPlayers count:' .. tostring(#g_JoinedPlayers) )
         callSavedEventHandlers( 'onClientResourceStart', source )
         if _DEBUG_TIMING then
     		setTimer(
                 function()
-                    outputDebug( 'JOINER', 'client trigger onLoadedAtClient' )
                     triggerServerEvent('onLoadedAtClient', g_Me)
                 end,
                 math.random(1000,15000), 1 )
@@ -154,14 +150,9 @@ addEventHandler('_onClientResourceStart', g_ResRoot,
 addEvent('onMyJoinCompleteAtServer', true)
 addEventHandler('onMyJoinCompleteAtServer', g_Root,
 	function(allJoinedPlayersAtServer)
-        outputDebug( 'JOINER', 'onMyJoinCompleteAtServer source:' .. tostring(getPlayerName(source)) )
-        outputDebug( 'JOINER', 'onMyJoinCompleteAtServer #allJoinedPlayersAtServer:' .. tostring(#allJoinedPlayersAtServer) )
-
-        outputDebug( 'JOINER', 'onMyJoinCompleteAtServer A #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
         for i,player in ipairs(allJoinedPlayersAtServer) do
             table.insertUnique(g_JoinedPlayers,player)
         end
-        outputDebug( 'JOINER', 'onMyJoinCompleteAtServer B #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
 	end
 )
 
@@ -171,13 +162,10 @@ addEventHandler('onMyJoinCompleteAtServer', g_Root,
 addEvent('onOtherJoinCompleteAtServer', true)
 addEventHandler('onOtherJoinCompleteAtServer', g_Root,
 	function()
-        outputDebug( 'JOINER', 'onOtherJoinCompleteAtServer source:' .. tostring(getPlayerName(source)) )
-
-        outputDebug( 'JOINER', 'onOtherJoinCompleteAtServer A #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
         table.insertUnique(g_JoinedPlayers,source)
-        outputDebug( 'JOINER', 'onOtherJoinCompleteAtServer B #g_JoinedPlayers:' .. tostring(#g_JoinedPlayers) )
 
         callSavedEventHandlers( 'onClientPlayerJoin', source )
+        triggerEvent( 'onClientPlayerJoined', source )
 	end
 )
 
@@ -185,8 +173,7 @@ addEventHandler('onOtherJoinCompleteAtServer', g_Root,
 --   Remove player from JoinedPlayers list
 addEventHandler('onClientPlayerQuit', g_Root,
     function ()
-        table.removevalue(g_JoinedPlayers, source )
-        outputDebug( 'JOINER', 'onClientPlayerQuit g_JoinedPlayers count:' .. tostring(#g_JoinedPlayers) )
+        table.removevalue(g_JoinedPlayers, source)
     end
 )
 

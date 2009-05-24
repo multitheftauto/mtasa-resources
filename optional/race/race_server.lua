@@ -31,6 +31,17 @@ local pickupTimers = {}
 local unloadedPickups = {}
 
 
+addEventHandler('onPlayerJoin', g_Root,
+	function()
+		-- Race welcome message
+		outputChatBox ( 'Race version ' .. getBuildString(), source, 255, 127, 0 )
+		for _,line in ipairs(Addons.report) do
+			outputConsole ( 'Race addon: ' .. line, source )
+		end
+	end
+)
+
+
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
@@ -58,6 +69,7 @@ addEventHandler('onGamemodeMapStart', g_Root,
 		end
 		g_CurrentRaceMode = RaceMode.getApplicableMode():create()
         g_MapOptions.allowBigdar = g_CurrentRaceMode.getAllowBigdar()
+		g_MapInfo.modename  = g_CurrentRaceMode.name
 		outputDebugString('Loaded race mode ' .. g_CurrentRaceMode:getName())
 		startRace()
 	end
@@ -244,7 +256,7 @@ end
 --      onGamemodeMapStart
 function startRace()
     gotoState('PreGridCountdown')
-    triggerEvent('onStartingMap', g_Root, g_CurrentRaceMode:getName(), g_MapInfo.name, g_GameOptions.statskey )
+    triggerEvent('onMapStarting', g_Root, g_CurrentRaceMode:getName(), g_MapInfo.name, g_GameOptions.statskey )
 	g_Players = {}
 	g_SpawnTimer:setTimer(joinHandlerByTimer, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
@@ -562,7 +574,7 @@ addEventHandler('onPlayerPickUpRacePickup', g_Root,
 		if respawntime then
 			table.insert(unloadedPickups, pickupID)
 			clientCall(g_Root, 'unloadPickup', pickupID)
-			table.insert(pickupTimers, setTimer(ServerLoadPickup, tonumber(respawntime), 1, pickupID))
+			pickupTimers[pickupID] = setTimer(ServerLoadPickup, tonumber(respawntime), 1, pickupID)
 		end
 		if pickup.type == 'repair' then
 			fixVehicle(vehicle)
@@ -581,6 +593,7 @@ addEventHandler('onPlayerPickUpRacePickup', g_Root,
 )
 
 function ServerLoadPickup(pickupID)
+	pickupTimers[pickupID] = nil
 	table.removevalue(unloadedPickups, pickupID)
 	clientCall(g_Root, 'loadPickup', pickupID)
 end
@@ -621,7 +634,9 @@ end
 --      onGamemodeMapStop
 --      onResourceStop
 function unloadAll()
-	clientCall(g_Root, 'unloadAll')
+	if getPlayerCount() > 0 then
+		clientCall(g_Root, 'unloadAll')
+	end
     g_RaceEndTimer:killTimer()
     g_RankTimer:killTimer()
     g_SpawnTimer:killTimer()
@@ -641,6 +656,8 @@ function unloadAll()
 	g_Objects = {}
 	g_Pickups = {}
 	unloadedPickups = {}
+	table.each(pickupTimers,killTimer)
+	pickupTimers = {}
 	if g_CurrentRaceMode then
 		g_CurrentRaceMode:destroy()
 	end
@@ -685,6 +702,7 @@ addEventHandler('onResourceStart', g_Root,
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
 		outputDebugString('Race resource starting')
+		startAddons()
 	end
 )
 
@@ -700,11 +718,12 @@ addEventHandler('onGamemodeStart', g_ResRoot,
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
         gotoState( 'Race resource stopping' )
-        fadeCamera ( g_RootPlayers, false, 0.0, 0,0, 0 )
+        fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')
 		unloadAll()
 		scoreboard.removeScoreboardColumn('race rank')
 		scoreboard.removeScoreboardColumn('checkpoint')
+		stopAddons()
 	end
 )
 
@@ -759,8 +778,8 @@ function distanceFromPlayerToCheckpoint(player, i)
 	return getDistanceBetweenPoints3D(x, y, z, unpack(checkpoint.position))
 end
 
-addEvent('onClientKillPlayer', true)
-addEventHandler('onClientKillPlayer', g_Root,
+addEvent('onRequestKillPlayer', true)
+addEventHandler('onRequestKillPlayer', g_Root,
     function()
         local player = source
         if stateAllowsKillPlayer() then
@@ -785,8 +804,8 @@ addCommandHandler('ghostmode',
 	end
 )
 
-addEvent('onClientRaceReady', true)
-addEventHandler('onClientRaceReady', g_Root,
+addEvent('onNotifyPlayerReady', true)
+addEventHandler('onNotifyPlayerReady', g_Root,
 	function()
         setPlayerReady( source )
 		for i, pickupID in ipairs(unloadedPickups) do
@@ -913,6 +932,59 @@ function deactiveNotReadyText()
 		g_NotReadyDisplay = nil
 		g_NotReadyTextItems[1] = nil
     end
+end
+
+
+------------------------
+-- addon management
+Addons = {}
+Addons.report = {}
+Addons.reportShort = ''
+
+-- Start addon resources listed in the setting 'race.addons'
+function startAddons()
+	stopAddons()
+	Addons.report = {}
+	Addons.reportShort = ''
+	for idx,name in ipairs(string.split(getString('race.addons'),',')) do
+		if name ~= '' then
+			local resource = getResourceFromName(name)
+			if not resource then
+				outputError( "Can't use addon '" .. name .. "', as it is not the name of a resource" )
+			else
+				if getResourceInfo ( resource, 'addon' ) ~= 'race' then
+					outputError( "Can't use addon " .. name .. ', as it does not have addon="race" in the info section' )
+				else
+					startResource(resource)
+					-- Update Addons.report
+					local tag = getResourceInfo ( resource, 'name' ) or getResourceName(resource)
+					local build = getResourceInfo ( resource, 'build' ) or ''
+					local version = getResourceInfo ( resource, 'version' ) or ''
+					local author = getResourceInfo ( resource, 'author' ) or ''
+					local description = getResourceInfo ( resource, 'description' ) or ''
+					local line = tag .. ' - ' .. description .. ' - by ' .. author .. ' - version [' .. version .. '] [' .. build .. ']'
+					table.insert(Addons.report,line)
+					-- Update Addons.reportShort
+					if  Addons.reportShort ~= '' then
+						Addons.reportShort = Addons.reportShort .. ', '
+					end
+					Addons.reportShort = Addons.reportShort .. tag
+				end
+			end
+		end
+	end
+end
+
+-- Stop all resources with addon="race"
+function stopAddons()
+	for _, resource in ipairs(getResources()) do
+		local state = getResourceState ( resource )
+        if ( state and state ~= 'loaded' ) then
+            if getResourceInfo ( resource, 'addon' ) == 'race' then
+				stopResource(resource)
+			end
+        end
+	end
 end
 
 

@@ -1,11 +1,11 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" edf:definition="race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r180 21May09" edf:definition="race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
 	<include resource="votemanager"/>
 	<include resource="helpmanager" />
-	<include resource="race_toptimes" />
+
 
 	<script src="_common.lua" type="server"/>
 	<script src="_joiner.lua" type="server"/>
@@ -21,7 +21,8 @@
 	<script src="race_server.lua" type="server"/>
 	<script src="racevoting_server.lua" type="server"/>
 	<script src="racestates_server.lua" type="server"/>
-	
+	<script src="config_server.lua" type="server"/>
+
 	<script src="_common.lua" type="client"/>
 	<script src="_joiner_client.lua" type="client"/>
 	<script src="util_client.lua" type="client"/>
@@ -33,6 +34,7 @@
 	<script src="race_client.lua" type="client"/>
 	<script src="textlib.lua" type="client"/>
 	<script src="textlib_anim.lua" type="client"/>
+	<script src="config_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
 	
 	<file src="img/rankbg.png"/>
@@ -55,8 +57,7 @@
 	<file src="img/title.png"/>
 	<file src="img/travelling.png"/>
 	<file src="img/killmessage.png"/>
-	<file src="img/bigdar.png"/>
-	
+
 	<file src="audio/mission_accomplished.mp3"/>
 	
 	<file src="model/nitro.dff"/>
@@ -129,6 +130,10 @@
 		<!-- admingroup
                 The name of the group to which the player must belong to issue certain commands  -->
 		<setting name="*admingroup" value="Admin"/>
+
+		<!-- addons
+                List of race addon resources that will be controlled automatically -->
+		<setting name="*addons" value="race_toptimes,race_traffic_sensor"/>
 
 		<!-- xxxx_map_can_override
                 false   - Ignore setting in the map.

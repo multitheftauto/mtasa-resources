@@ -1,3 +1,6 @@
+g_Root = getRootElement()
+g_ResRoot = getResourceRootElement(getThisResource())
+
 function clientCall(player, fnName, ...)
     triggerClientEvent(onlyJoined(player), 'onClientCall_race', player, fnName, ...)
 end
@@ -137,7 +140,7 @@ function setVehiclePaintjobAndUpgrades(vehicle, paintjob, upgrades)
 	if paintjob then
 		setVehiclePaintjob(vehicle, paintjob)
 	end
-	if upgrades then
+	if upgrades and type(upgrades) == 'table' then
 		local appliedUpgrade
 		local appliedUpgrades = getVehicleUpgrades(vehicle)
 		local k
@@ -230,6 +233,13 @@ function isPlayerInACLGroup(player, groupName)
 		end
 	end
 	return false
+end
+
+---------------------------------------------------------------------------
+-- Version
+---------------------------------------------------------------------------
+function getBuildString()
+	return getResourceInfo(getThisResource(), 'build') or 'n/a'
 end
 
 --------------------------------
