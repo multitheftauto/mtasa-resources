@@ -256,5 +256,9 @@
     <group action="password" r="50" g="255" b="50">
       <admin>You password has been successfully changed to '$data'</admin>
     </group>
+    <group action="settings" r="225" g="170" b="90">
+      <admin>Set '$data' to '$data2'</admin>
+      <log>ADMIN: Set '$data' to '$data2' by $admin</log>
+    </group>
   </admin>
 </messages>

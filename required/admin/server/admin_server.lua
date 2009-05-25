@@ -389,6 +389,68 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 		end
 	elseif ( action == "autologin" ) then
 
+	elseif ( action == "settings" ) then
+		local cmd = arg[1]
+		local resName = arg[2]
+		local tableOut = {}
+		if ( cmd == "change" ) then
+			local name = arg[3]
+			local value = arg[4]
+			local oldvalue = get(resName..'.'..name)
+			-- Match type
+			if type(oldvalue) == 'boolean' then value = value=='true'   end
+			if type(oldvalue) == 'number'  then value = tonumber(value) end
+			if value ~= oldvalue then
+				if set('*'..resName..'.'..name,value) then
+					-- Tell the resource one of its settings has changed
+					local res = getResourceFromName(resName)
+					local resRoot = getResourceRootElement(res)
+					if resRoot then
+						triggerEvent('onSettingChange', resRoot, name, value, oldvalue )
+					end
+					mdata = resName..'.'..name
+					mdata2 = tostring(value)
+				end
+			end
+		elseif ( cmd == "getall" ) then
+			-- Get raw settings list for this resource
+			local rawsettings = get(resName..'.')
+			local settings = {}
+			-- Parse raw settings
+			for rawname,value in pairs(rawsettings) do
+				-- Remove leading '*','#' or '@'
+				local temp = string.gsub(rawname,'[%*%#%@](.*)','%1')
+				-- Remove leading 'resName.'
+				local name = string.gsub(temp,resName..'%.(.*)','%1')
+				-- If name didn't have a leading 'resName.', then it must be the default setting
+				local bIsDefault = ( temp == name )
+				if settings[name] == nil then
+					settings[name] = {}
+				end
+				if bIsDefault then
+					settings[name].default = value
+				else
+					settings[name].current = value
+				end
+			end
+			-- Copy to tableOut
+			for name,value in pairs(settings) do
+				if value.default ~= nil then
+					tableOut[name] = {}
+					tableOut[name].default = value.default
+					tableOut[name].current = value.current
+					if value.current == nil then
+						tableOut[name].current = value.default
+					end
+				else
+					outputConsole( 'Ignoring unused setting ' .. resName .. '.' .. name, source )
+				end
+			end
+		end
+		triggerClientEvent ( source, "aAdminSettings", _root, cmd, resName, tableOut )
+		if mdata == "" then
+			action = nil
+		end
 	elseif ( action == "sync" ) then
 		local type = arg[1]
 		local tableOut = {}

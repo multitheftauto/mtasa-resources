@@ -35,6 +35,7 @@
   <script src="client/gui/admin_warp.lua" type="client" />
   <script src="client/gui/admin_report.lua" type="client" />
   <script src="client/gui/admin_acl.lua" type="client" />
+  <script src="client/gui/admin_settings.lua" type="client" />
 
   <!--Required XML configs kept in /conf/ folder-->
   <config src="conf/interiors.xml" type="client" />
