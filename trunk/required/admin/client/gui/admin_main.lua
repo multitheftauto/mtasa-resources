@@ -116,8 +116,10 @@ function aAdminMenu ()
 		aTab2.ManageACL		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "Manage ACL", true, aTab2.Tab )
 		aTab2.ResourceList	= guiCreateGridList ( 0.03, 0.05, 0.35, 0.85, true, aTab2.Tab )
 						  guiGridListAddColumn( aTab2.ResourceList, "Resource", 0.55 )
-						  guiGridListAddColumn( aTab2.ResourceList, "State", 0.40 )
+						  guiGridListAddColumn( aTab2.ResourceList, "", 0.05 )
+						  guiGridListAddColumn( aTab2.ResourceList, "State", 0.35 )
 		aTab2.ResourceRefresh	= guiCreateButton ( 0.03, 0.91, 0.35, 0.04, "Refresh list", true, aTab2.Tab, "listresources" )
+		aTab2.ResourceSettings	= guiCreateButton ( 0.40, 0.05, 0.20, 0.04, "Settings", true, aTab2.Tab )
 		aTab2.ResourceStart	= guiCreateButton ( 0.40, 0.10, 0.20, 0.04, "Start", true, aTab2.Tab, "start" )
 		aTab2.ResourceRestart	= guiCreateButton ( 0.40, 0.15, 0.20, 0.04, "Restart", true, aTab2.Tab, "restart" )
 		aTab2.ResourceStop	= guiCreateButton ( 0.40, 0.20, 0.20, 0.04, "Stop", true, aTab2.Tab, "stop" )
@@ -395,7 +397,8 @@ function aClientSync ( type, table )
 		for id, resource in ipairs(table) do
 			local row = guiGridListAddRow ( aTab2.ResourceList )
 			guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
-			guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["state"], false, false )
+			guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
+			guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
 		end
 	elseif ( type == "admins" ) then
 		--if ( guiGridListGetRowCount ( aTab5.AdminPlayers ) > 0 ) then guiGridListClear ( aTab5.AdminPlayers ) end
@@ -451,7 +454,7 @@ function aClientResourceStart ( resource )
 	local id = 0
 	while ( id <= guiGridListGetRowCount( aTab2.ResourceList ) ) do
 		if ( guiGridListGetItemText ( aTab2.ResourceList, id, 1 ) == resource ) then
-			guiGridListSetItemText ( aTab2.ResourceList, id, 2, "running", false, false )
+			guiGridListSetItemText ( aTab2.ResourceList, id, 3, "running", false, false )
 		end
 		id = id + 1
 	end
@@ -461,7 +464,7 @@ function aClientResourceStop ( resource )
 	local id = 0
 	while ( id <= guiGridListGetRowCount( aTab2.ResourceList ) ) do
 		if ( guiGridListGetItemText ( aTab2.ResourceList, id, 1 ) == resource ) then
-			guiGridListSetItemText ( aTab2.ResourceList, id, 2, "loaded", false, false )
+			guiGridListSetItemText ( aTab2.ResourceList, id, 3, "loaded", false, false )
 		end
 		id = id + 1
 	end
@@ -644,6 +647,10 @@ function aClientDoubleClick ( button )
 			if ( aSpecSlap ) then guiSetText ( aSpecSlap, "Slap! "..aCurrentSlap.."hp" ) end
 		end
 		guiSetVisible ( aTab1.SlapOptions, false )
+	elseif ( source == aTab2.ResourceList ) then
+		if ( guiGridListGetSelectedItem ( aTab1.ResourceList ) ~= -1 ) then
+			aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ) ) )
+		end
 	end
 	if ( guiGetVisible ( aTab1.WeaponOptions ) ) then guiSetVisible ( aTab1.WeaponOptions, false ) end
 	if ( guiGetVisible ( aTab1.VehicleOptions ) ) then guiSetVisible ( aTab1.VehicleOptions, false ) end
@@ -767,19 +774,20 @@ function aClientClick ( button )
 			end
 		-- TAB 2, RESOURCES
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
-			if ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) ) then
+			if ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceSettings ) ) then
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
 				else
 					if ( source == aTab2.ResourceStart ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "start" )
 					elseif ( source == aTab2.ResourceRestart ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "restart" )
 					elseif ( source == aTab2.ResourceStop ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "stop" )
+					elseif ( source == aTab2.ResourceSettings ) then aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ) ) )
 					end
 				end
 			elseif ( source == aTab2.ResourceList ) then
 				guiSetVisible ( aTab2.ResourceFailture, false )
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
-					if ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 2 ) == "Failed to load" ) then
+					if ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 3 ) == "Failed to load" ) then
 						guiSetVisible ( aTab2.ResourceFailture, true )
 					end
 				end

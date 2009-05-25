@@ -33,8 +33,14 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		for id, resource in ipairs(resourceTable) do
 			local name = getResourceName ( resource )
 			local state = getResourceState ( resource )
+			local rawsettings = get(name..'.')
+			local numsettings = 0
+			if rawsettings then
+				for k,v in pairs(rawsettings) do numsettings = numsettings + 1 end
+			end
 			tableOut[id] = {}
 			tableOut[id]["name"] = name
+			tableOut[id]["numsettings"] = numsettings
 			tableOut[id]["state"] = state
 		end
 	elseif ( type == "admins" ) then
