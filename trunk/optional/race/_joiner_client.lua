@@ -164,7 +164,10 @@ addEventHandler('onOtherJoinCompleteAtServer', g_Root,
 	function()
         table.insertUnique(g_JoinedPlayers,source)
 
+        -- Call deferred onClientPlayerJoin event handlers
         callSavedEventHandlers( 'onClientPlayerJoin', source )
+
+        -- Custom event for joiner aware event handlers
         triggerEvent( 'onClientPlayerJoined', source )
 	end
 )
