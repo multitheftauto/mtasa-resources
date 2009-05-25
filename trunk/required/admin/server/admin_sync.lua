@@ -36,7 +36,11 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			local rawsettings = get(name..'.')
 			local numsettings = 0
 			if rawsettings then
-				for k,v in pairs(rawsettings) do numsettings = numsettings + 1 end
+				for k,v in pairs(rawsettings) do
+					if string.sub(k,1,1) == '*' then
+						numsettings = numsettings + 1
+					end
+				end
 			end
 			tableOut[id] = {}
 			tableOut[id]["name"] = name

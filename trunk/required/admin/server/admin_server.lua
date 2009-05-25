@@ -418,19 +418,21 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			local settings = {}
 			-- Parse raw settings
 			for rawname,value in pairs(rawsettings) do
-				-- Remove leading '*','#' or '@'
-				local temp = string.gsub(rawname,'[%*%#%@](.*)','%1')
-				-- Remove leading 'resName.'
-				local name = string.gsub(temp,resName..'%.(.*)','%1')
-				-- If name didn't have a leading 'resName.', then it must be the default setting
-				local bIsDefault = ( temp == name )
-				if settings[name] == nil then
-					settings[name] = {}
-				end
-				if bIsDefault then
-					settings[name].default = value
-				else
-					settings[name].current = value
+				if string.sub(rawname,1,1) == '*' then
+					-- Remove leading '*','#' or '@'
+					local temp = string.gsub(rawname,'[%*%#%@](.*)','%1')
+					-- Remove leading 'resName.'
+					local name = string.gsub(temp,resName..'%.(.*)','%1')
+					-- If name didn't have a leading 'resName.', then it must be the default setting
+					local bIsDefault = ( temp == name )
+					if settings[name] == nil then
+						settings[name] = {}
+					end
+					if bIsDefault then
+						settings[name].default = value
+					else
+						settings[name].current = value
+					end
 				end
 			end
 			-- Copy to tableOut
