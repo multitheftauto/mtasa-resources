@@ -116,7 +116,7 @@ end
 --------------------------------
 -- Config events
 --------------------------------
-addEventHandler ( "onClientGUISize", getRootElement(),
+addEventHandler ( "onClientGUISize", g_ResRoot,
 	function ()
 		if source == gui["form"] then
 			resizeMenu()
@@ -124,8 +124,11 @@ addEventHandler ( "onClientGUISize", getRootElement(),
 	end
 )
 
-addEventHandler ( "onClientGUIClick", getRootElement(),
+addEventHandler ( "onClientGUIClick", g_ResRoot,
 	function ()
+		if not gui["form"] then
+			return
+		end
 		if source == gui["button_ok"] then
 			triggerServerEvent('onRequestAddonsChange', g_ResRoot, AddonsActive, AddonsInactive )
 			closeConfigMenu()

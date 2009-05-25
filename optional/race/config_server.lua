@@ -5,7 +5,7 @@
 --------------------------------
 -- command hint on login
 --------------------------------
-addEventHandler("onPlayerLogin", root,
+addEventHandler("onPlayerLogin", g_Root,
   function()
 	local player = source
 	if not isPlayerInACLGroup(player, g_GameOptions.admingroup) then

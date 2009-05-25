@@ -208,6 +208,8 @@ addEventHandler('onLoadedAtClient', g_Root,
 
         -- Call deferred onPlayerJoin event handlers
         callSavedEventHandlers( 'onPlayerJoin', source )
+
+        -- Custom event for joiner aware event handlers
         triggerEvent( 'onPlayerJoined', source )
 	end
 )
