@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r195 24May09" edf:definition="race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r196 26May09" edf:definition="race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -93,7 +93,7 @@
         <!-- statskey
                 name    - Use player name to identify player for stats.
                 serial  - Use player serial to identify player for stats. -->
-        <setting name="*statskey" value="name"/>
+        <setting name="#statskey" value="name"/>
 
         <!-- vehiclecolors
                 file            - Use the server file: mods\deathmatch\vehiclecolors.conf
@@ -133,7 +133,7 @@
 
 		<!-- addons
                 List of race addon resources that will be controlled automatically -->
-		<setting name="*addons" value="race_toptimes,race_traffic_sensor"/>
+		<setting name="#addons" value="race_toptimes,race_traffic_sensor"/>
 
 		<!-- xxxx_map_can_override
                 false   - Ignore setting in the map.
