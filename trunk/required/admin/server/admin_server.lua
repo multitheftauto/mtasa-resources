@@ -396,12 +396,14 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 		if ( cmd == "change" ) then
 			local name = arg[3]
 			local value = arg[4]
-			local oldvalue = get(resName..'.'..name)
+			-- Get previous value
+			local settings = aGetResourceSettings( resName )
+			local oldvalue = settings[name].current
 			-- Match type
 			if type(oldvalue) == 'boolean' then value = value=='true'   end
 			if type(oldvalue) == 'number'  then value = tonumber(value) end
 			if value ~= oldvalue then
-				if set('*'..resName..'.'..name,value) then
+				if aSetResourceSetting( resName, name, value ) then
 					-- Tell the resource one of its settings has changed
 					local res = getResourceFromName(resName)
 					local resRoot = getResourceRootElement(res)
@@ -413,41 +415,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				end
 			end
 		elseif ( cmd == "getall" ) then
-			-- Get raw settings list for this resource
-			local rawsettings = get(resName..'.')
-			local settings = {}
-			-- Parse raw settings
-			for rawname,value in pairs(rawsettings) do
-				if string.sub(rawname,1,1) == '*' then
-					-- Remove leading '*','#' or '@'
-					local temp = string.gsub(rawname,'[%*%#%@](.*)','%1')
-					-- Remove leading 'resName.'
-					local name = string.gsub(temp,resName..'%.(.*)','%1')
-					-- If name didn't have a leading 'resName.', then it must be the default setting
-					local bIsDefault = ( temp == name )
-					if settings[name] == nil then
-						settings[name] = {}
-					end
-					if bIsDefault then
-						settings[name].default = value
-					else
-						settings[name].current = value
-					end
-				end
-			end
-			-- Copy to tableOut
-			for name,value in pairs(settings) do
-				if value.default ~= nil then
-					tableOut[name] = {}
-					tableOut[name].default = value.default
-					tableOut[name].current = value.current
-					if value.current == nil then
-						tableOut[name].current = value.default
-					end
-				else
-					outputConsole( 'Ignoring unused setting ' .. resName .. '.' .. name, source )
-				end
-			end
+			tableOut = aGetResourceSettings( resName )
 		end
 		triggerClientEvent ( source, "aAdminSettings", _root, cmd, resName, tableOut )
 		if mdata == "" then

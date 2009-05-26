@@ -33,15 +33,8 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		for id, resource in ipairs(resourceTable) do
 			local name = getResourceName ( resource )
 			local state = getResourceState ( resource )
-			local rawsettings = get(name..'.')
 			local numsettings = 0
-			if rawsettings then
-				for k,v in pairs(rawsettings) do
-					if string.sub(k,1,1) == '*' then
-						numsettings = numsettings + 1
-					end
-				end
-			end
+			for k,v in pairs(aGetResourceSettings(name)) do numsettings = numsettings + 1 end
 			tableOut[id] = {}
 			tableOut[id]["name"] = name
 			tableOut[id]["numsettings"] = numsettings

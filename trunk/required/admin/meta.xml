@@ -14,6 +14,7 @@
   <script src="server/admin_community.lua" />
   <script src="server/admin_ip2c.lua" />
   <script src="server/admin_ACL.lua" />
+  <script src="server/admin_settings.lua" />
   <script src="server/http/admin_http.lua" />
   <script src="client/admin_client.lua" type="client" />
   <script src="client/admin_gui.lua" type="client" />

@@ -648,8 +648,8 @@ function aClientDoubleClick ( button )
 		end
 		guiSetVisible ( aTab1.SlapOptions, false )
 	elseif ( source == aTab2.ResourceList ) then
-		if ( guiGridListGetSelectedItem ( aTab1.ResourceList ) ~= -1 ) then
-			aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ) ) )
+		if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
+			aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) )
 		end
 	end
 	if ( guiGetVisible ( aTab1.WeaponOptions ) ) then guiSetVisible ( aTab1.WeaponOptions, false ) end
