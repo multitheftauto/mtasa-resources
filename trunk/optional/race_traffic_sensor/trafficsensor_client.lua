@@ -45,8 +45,9 @@ Bigdar.smoothList = {}			-- {player = rrz}
 Bigdar.finishedPlayers = {}
 Bigdar.lastSmoothSeconds = 0
 Bigdar.beginValidSeconds = nil
-Bigdar.enabled = true
-Bigdar.allowed = true
+Bigdar.enabled = true		-- Manual override
+Bigdar.allowed = true		-- Map override
+Bigdar.hidden = true		-- Black screen override
 
 function Bigdar.toggle()
     Bigdar.enabled = not Bigdar.enabled
@@ -81,7 +82,7 @@ function Bigdar.render()
 
     -- No draw if faded out or not enabled
     if
-		--not g_bShowAllTags or
+		Bigdar.hidden or
 		not Bigdar.enabled then
 			return
     end
@@ -108,7 +109,7 @@ function Bigdar.render()
 
 	-- For each 'other player'
     for i,player in ipairs(getElementsByType('player')) do
-        if player ~= g_Me and not isPlayerDead(player) and not isPlayerFinished(player) and isPlayerNametagShowing(player) then
+        if player ~= g_Me and not isPlayerDead(player) and not isPlayerFinished(player) then
 
             -- Get other pos
             local ox, oy, oz = getElementPosition(player)
@@ -186,6 +187,9 @@ end
 addEventHandler('onClientRender', g_Root, Bigdar.render)
 
 
+---------------------------------------------------------------------------
+-- Various events
+
 addEventHandler('onClientPlayerJoined', g_Root,
 	function()
 		--table.insertUnique(g_Players, source)
@@ -198,6 +202,22 @@ addEventHandler('onClientPlayerQuit', g_Root,
 		Bigdar.smoothList[source] = nil
 	end
 )
+
+
+addEvent ( "onClientScreenFadedOut", true )
+addEventHandler ( "onClientScreenFadedOut", g_Root,
+	function()
+		Bigdar.hidden = true
+	end
+)
+
+addEvent ( "onClientScreenFadedIn", true )
+addEventHandler ( "onClientScreenFadedIn", g_Root,
+	function()
+		Bigdar.hidden = false
+	end
+)
+
 
 ---------------------------------------------------------------------------
 --
