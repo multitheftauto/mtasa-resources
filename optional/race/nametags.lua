@@ -1,6 +1,7 @@
 nametag = {}
 local nametags = {}
 local g_screenX,g_screenY = guiGetScreenSize()
+local bHideNametags = false
 
 local NAMETAG_SCALE = 0.3 --Overall adjustment of the nametag, use this to resize but constrain proportions
 local NAMETAG_ALPHA_DISTANCE = 50 --Distance to start fading out
@@ -14,7 +15,14 @@ local NAMETAG_TEXTSIZE = 0.7
 local NAMETAG_OUTLINE_THICKNESS = 1.2
 --
 local NAMETAG_ALPHA_DIFF = NAMETAG_DISTANCE - NAMETAG_ALPHA_DISTANCE
-NAMETAG_SCALE = 1/NAMETAG_SCALE * g_screenY/800 
+NAMETAG_SCALE = 1/NAMETAG_SCALE * 800 / g_screenY 
+
+-- Ensure the name tag doesn't get too big
+local maxScaleCurve = { {0, 0}, {3, 3}, {13, 5} }
+-- Ensure the text doesn't get too small/unreadable
+local textScaleCurve = { {0, 0.8}, {0.8, 1.2}, {99, 99} }
+-- Make the text a bit brighter and fade more gradually
+local textAlphaCurve = { {0, 0}, {25, 100}, {120, 190}, {255, 190} }
 
 function nametag.create ( player )
 	nametags[player] = true
@@ -26,6 +34,20 @@ end
 
 addEventHandler ( "onClientRender", g_Root,
 	function()
+		if bHideNametags then
+			return
+		end
+
+		-- Hideous quick fix --
+		for i,player in ipairs(getElementsByType"player") do
+			if player ~= g_Me then
+				setPlayerNametagShowing ( player, false )
+				if not nametags[player] then
+					nametag.create ( player )
+				end
+			end
+		end
+
 		local x,y,z = getCameraMatrix()
 		for player in pairs(nametags) do 
 			while true do
@@ -34,17 +56,20 @@ addEventHandler ( "onClientRender", g_Root,
 				local px,py,pz = getElementPosition ( vehicle )
 				local pdistance = getDistanceBetweenPoints3D ( x,y,z,px,py,pz )
 				if pdistance <= NAMETAG_DISTANCE then
+					--Get screenposition
+					local sx,sy = getScreenFromWorldPosition ( px, py, pz+0.95 )
+					if not sx or not sy then break end
 					--Calculate our components
 					local scale = 1/(NAMETAG_SCALE * (pdistance / NAMETAG_DISTANCE))
 					local alpha = ((pdistance - NAMETAG_ALPHA_DISTANCE) / NAMETAG_ALPHA_DIFF)
 					alpha = (alpha < 0) and NAMETAG_ALPHA or NAMETAG_ALPHA-(alpha*NAMETAG_ALPHA)
+					scale = evalCurve(maxScaleCurve,scale)
+					local textscale = evalCurve(textScaleCurve,scale)
+					local textalpha = evalCurve(textAlphaCurve,alpha)
 					local outlineThickness = NAMETAG_OUTLINE_THICKNESS*(scale)
-					--Get screenposition
-					local sx,sy = getScreenFromWorldPosition ( px, py, pz )
-					if not sx or not sy then break end
 					--Draw our text
 					local offset = (scale) * NAMETAG_TEXT_BAR_SPACE/2
-					dxDrawText ( getPlayerName(player), sx, sy - offset, sx, sy - offset, tocolor(255,255,255,alpha), scale*NAMETAG_TEXTSIZE, "default", "center", "bottom", false, false, false )
+					dxDrawText ( getPlayerName(player), sx, sy - offset, sx, sy - offset, tocolor(255,255,255,textalpha), textscale*NAMETAG_TEXTSIZE, "default", "center", "bottom", false, false, false )
 					--We draw three parts to make the healthbar.  First the outline/background
 					local drawX = sx - NAMETAG_WIDTH*scale/2
 					drawY = sy + offset
@@ -74,6 +99,31 @@ addEventHandler ( "onClientRender", g_Root,
 )
 
 
+------------------------------------------------------------------------
+
+-- curve is { {x1, y1}, {x2, y2}, {x3, y3} ... }
+function evalCurve( curve, input )
+	-- First value
+	if input<curve[1][1] then
+		return curve[1][2]
+	end
+	-- Interp value
+	for idx=2,#curve do
+		if input<curve[idx][1] then
+			local x1 = curve[idx-1][1]
+			local y1 = curve[idx-1][2]
+			local x2 = curve[idx][1]
+			local y2 = curve[idx][2]
+			-- Find pos between input points
+			local alpha = (input - x1)/(x2 - x1);
+			-- Map to output points
+			return math.lerp(y1,y2,alpha)
+		end
+	end
+	-- Last value
+	return curve[#curve][2]
+end
+
 ---------------THE FOLLOWING IS THE MANAGEMENT OF NAMETAGS-----------------
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
@@ -96,5 +146,20 @@ addEventHandler ( "onClientPlayerJoin", g_Root,
 addEventHandler ( "onClientPlayerQuit", g_Root,
 	function()
 		nametag.destroy ( source )
+	end
+)
+
+
+addEvent ( "onClientScreenFadedOut", true )
+addEventHandler ( "onScreenFadedOut", g_Root,
+	function()
+		bHideNametags = true
+	end
+)
+
+addEvent ( "onClientScreenFadedIn", true )
+addEventHandler ( "onScreenFadedIn", g_Root,
+	function()
+		bHideNametags = false
 	end
 )

@@ -306,10 +306,9 @@ end
 
 
 -------------------------------------------------------
--- Hide player tags when the screen is black
+-- Trigger an event when the screen fades in/out
 -------------------------------------------------------
-fadeInFinTimer = Timer:create()
-g_bShowAllTags = true
+local fadeInFinTimer = Timer:create()
 
 _fadeCamera = fadeCamera
 function fadeCamera(fadeIn,timeToFade,...)
@@ -317,27 +316,15 @@ function fadeCamera(fadeIn,timeToFade,...)
     local ticksToFade = (not timeToFade or timeToFade < 1) and 0 or timeToFade * 1000
     if not fadeIn then
         fadeInFinTimer:killTimer()
-        g_bShowAllTags = false
-        for i,player in ipairs(getElementsByType('player')) do
-            setPlayerNametagShowing ( player, g_bShowAllTags )
-        end
+		triggerEvent( 'onClientScreenFadedOut', g_Root )
     else
         fadeInFinTimer:setTimer( onfadeInFin, math.max(50,ticksToFade/8), 1 )
     end
 end
 
 function onfadeInFin()
-    outputDebug( 'TAGS', 'Show all tags ' )
-    g_bShowAllTags = true
-    for i,player in ipairs(getElementsByType('player')) do
-        setPlayerNametagShowing ( player, g_bShowAllTags )
-    end
+	triggerEvent( 'onClientScreenFadedIn', g_Root )
 end
 
-addEventHandler('onClientPlayerJoin', g_Root,
-	function()
-        setPlayerNametagShowing ( source, g_bShowAllTags )
-	end
-)
 -------------------------------------------------------
 
