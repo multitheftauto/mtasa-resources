@@ -488,6 +488,15 @@ bindKey('F5', 'down',
     end
 )
 
+addCommandHandler('doF5',
+	function(player,command,...)
+		outputDebugString('doF5')
+        if g_CToptimes then
+           g_CToptimes:doToggleToptimes()
+        end
+	end
+)
+
 
 
 ---------------------------------------------------------------------------

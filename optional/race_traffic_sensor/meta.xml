@@ -1,5 +1,5 @@
 <meta>
-	<info name="Traffic Sensor" description="Traffic Sensor addon for Race" author="ccw" type="script" addon="race" version="0.0.1" build="r180 21May09"/>
+	<info name="Traffic Sensor" description="Traffic Sensor addon for Race" author="ccw" type="script" addon="race" version="0.0.1" build="r201 28May09"/>
 
 	<script src="_common_ts.lua" type="server"/>
 	<script src="util_ts_server.lua" type="server"/>
@@ -8,6 +8,7 @@
 	<script src="_common_ts.lua" type="client"/>
 	<script src="util_ts_client.lua" type="client"/>
 	<script src="trafficsensor_client.lua" type="client"/>
+	<config src="help.xml" type="client" />
 
 	<file src="img/arrow_ts.png"/>
 

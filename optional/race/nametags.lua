@@ -34,10 +34,6 @@ end
 
 addEventHandler ( "onClientRender", g_Root,
 	function()
-		if bHideNametags then
-			return
-		end
-
 		-- Hideous quick fix --
 		for i,player in ipairs(getElementsByType"player") do
 			if player ~= g_Me then
@@ -47,7 +43,9 @@ addEventHandler ( "onClientRender", g_Root,
 				end
 			end
 		end
-
+		if bHideNametags then
+			return
+		end
 		local x,y,z = getCameraMatrix()
 		for player in pairs(nametags) do 
 			while true do
@@ -68,8 +66,13 @@ addEventHandler ( "onClientRender", g_Root,
 					local textalpha = evalCurve(textAlphaCurve,alpha)
 					local outlineThickness = NAMETAG_OUTLINE_THICKNESS*(scale)
 					--Draw our text
+					local r,g,b = 255,255,255
+					local team = getPlayerTeam(player)
+					if team then
+						r,g,b = getTeamColor(team)
+					end
 					local offset = (scale) * NAMETAG_TEXT_BAR_SPACE/2
-					dxDrawText ( getPlayerName(player), sx, sy - offset, sx, sy - offset, tocolor(255,255,255,textalpha), textscale*NAMETAG_TEXTSIZE, "default", "center", "bottom", false, false, false )
+					dxDrawText ( getPlayerName(player), sx, sy - offset, sx, sy - offset, tocolor(r,g,b,textalpha), textscale*NAMETAG_TEXTSIZE, "default", "center", "bottom", false, false, false )
 					--We draw three parts to make the healthbar.  First the outline/background
 					local drawX = sx - NAMETAG_WIDTH*scale/2
 					drawY = sy + offset
@@ -151,14 +154,14 @@ addEventHandler ( "onClientPlayerQuit", g_Root,
 
 
 addEvent ( "onClientScreenFadedOut", true )
-addEventHandler ( "onScreenFadedOut", g_Root,
+addEventHandler ( "onClientScreenFadedOut", g_Root,
 	function()
 		bHideNametags = true
 	end
 )
 
 addEvent ( "onClientScreenFadedIn", true )
-addEventHandler ( "onScreenFadedIn", g_Root,
+addEventHandler ( "onClientScreenFadedIn", g_Root,
 	function()
 		bHideNametags = false
 	end
