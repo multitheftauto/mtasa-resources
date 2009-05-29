@@ -71,10 +71,8 @@ function startPoll(pollData)
 		end
 	elseif isElement(pollData.visibleTo) and getElementType(pollData.visibleTo) == "team"  then
 		for k,player in ipairs(getPlayersInTeam(pollData.visibleTo)) do
-			if isElement(player) and getElementType(player) == "player" then
-				allowedPlayers[player] = true
-				playerAmount = playerAmount + 1
-			end
+			allowedPlayers[player] = true
+			playerAmount = playerAmount + 1
 		end
 	elseif isElement(pollData.visibleTo) or pollData.visibleTo == nil then
 		for k,player in ipairs(getElementsByType("player",pollData.visibleTo or rootElement)) do

@@ -185,6 +185,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	local weapons = not g_ArmedVehicleIDs[getElementModel(vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
+	setBlurLevel(1)
 	
 	-- checkpoints
 	g_Checkpoints = checkpoints
@@ -321,10 +322,6 @@ addEventHandler('onClientElementStreamIn', g_Root,
 				pickup.labelInRange = false
 			end
 			g_VisiblePickups[colshape] = source
-			g_VisiblePickups.n = (g_VisiblePickups.n or 0) + 1
-			if g_VisiblePickups.n == 1 then
-				-- addEventHandler('onClientRender', g_Root, updatePickups)	-- Temp: Until event priorities implemented
-			end
 		end
 	end
 )
@@ -340,10 +337,6 @@ addEventHandler('onClientElementStreamOut', g_Root,
 				pickup.labelInRange = nil
 			end
 			g_VisiblePickups[colshape] = nil
-			g_VisiblePickups.n = g_VisiblePickups.n - 1
-			if g_VisiblePickups.n == 0 then
-				-- removeEventHandler('onClientRender', g_Root, updatePickups)	-- Temp: Until event priorities implemented
-			end
 		end
 	end
 )
@@ -353,71 +346,69 @@ function updatePickups()
 	local g_Pickups = g_Pickups
 	local pickup, x, y, cX, cY, cZ, pickX, pickY, pickZ
 	for colshape,elem in pairs(g_VisiblePickups) do
-		if colshape ~= 'n' then
-			pickup = g_Pickups[colshape]
-			if pickup.load then
-				setElementRotation(elem, 0, 0, angle)
-				if pickup.label then
-					cX, cY, cZ = getCameraMatrix()
-					pickX, pickY, pickZ = unpack(pickup.position)
-					x, y = getScreenFromWorldPosition(pickX, pickY, pickZ + 2.85)
-					local distanceToPickup = getDistanceBetweenPoints3D(cX, cY, cZ, pickX, pickY, pickZ)
-					if distanceToPickup > 80 then
-						pickup.labelInRange = false
-						pickup.label:visible(false)
-					elseif x then
-						if distanceToPickup < 60 then
-							if isLineOfSightClear(cX, cY, cZ, pickX, pickY, pickZ, true, false, false, true, false) then
-								if not pickup.labelInRange then								
-									if pickup.anim then
-										pickup.anim:remove()
-									end
-									pickup.anim = Animation.createAndPlay(
-										pickup.label,
-										Animation.presets.dxTextFadeIn(500)
-									)
-									pickup.labelInRange = true
-									pickup.labelVisible = true
-								end
-								if not pickup.labelVisible then
-									pickup.label:color(255, 255, 255, 255)
-								end
-								pickup.label:visible(true)
-							else
-								pickup.label:color(255, 255, 255, 0)
-								pickup.labelVisible = false
-								pickup.label:visible(false)
-							end
-						else
-							if pickup.labelInRange then
+		pickup = g_Pickups[colshape]
+		if pickup.load then
+			setElementRotation(elem, 0, 0, angle)
+			if pickup.label then
+				cX, cY, cZ = getCameraMatrix()
+				pickX, pickY, pickZ = unpack(pickup.position)
+				x, y = getScreenFromWorldPosition(pickX, pickY, pickZ + 2.85)
+				local distanceToPickup = getDistanceBetweenPoints3D(cX, cY, cZ, pickX, pickY, pickZ)
+				if distanceToPickup > 80 then
+					pickup.labelInRange = false
+					pickup.label:visible(false)
+				elseif x then
+					if distanceToPickup < 60 then
+						if isLineOfSightClear(cX, cY, cZ, pickX, pickY, pickZ, true, false, false, true, false) then
+							if not pickup.labelInRange then								
 								if pickup.anim then
 									pickup.anim:remove()
 								end
 								pickup.anim = Animation.createAndPlay(
 									pickup.label,
-									Animation.presets.dxTextFadeOut(1000)
+									Animation.presets.dxTextFadeIn(500)
 								)
-								pickup.labelInRange = false
-								pickup.labelVisible = false
-								pickup.label:visible(true)
+								pickup.labelInRange = true
+								pickup.labelVisible = true
 							end
+							if not pickup.labelVisible then
+								pickup.label:color(255, 255, 255, 255)
+							end
+							pickup.label:visible(true)
+						else
+							pickup.label:color(255, 255, 255, 0)
+							pickup.labelVisible = false
+							pickup.label:visible(false)
 						end
-						local scale = (60/distanceToPickup)*0.7
-						pickup.label:scale(scale)
-						pickup.label:position(x, y, false)
 					else
-						pickup.label:color(255, 255, 255, 0)
-						pickup.labelVisible = false
-						pickup.label:visible(false)
+						if pickup.labelInRange then
+							if pickup.anim then
+								pickup.anim:remove()
+							end
+							pickup.anim = Animation.createAndPlay(
+								pickup.label,
+								Animation.presets.dxTextFadeOut(1000)
+							)
+							pickup.labelInRange = false
+							pickup.labelVisible = false
+							pickup.label:visible(true)
+						end
 					end
-				end
-			else
-				if pickup.label then
+					local scale = (60/distanceToPickup)*0.7
+					pickup.label:scale(scale)
+					pickup.label:position(x, y, false)
+				else
+					pickup.label:color(255, 255, 255, 0)
+					pickup.labelVisible = false
 					pickup.label:visible(false)
-					if pickup.labelInRange then
-						pickup.label:color(255, 255, 255, 0)
-						pickup.labelInRange = false
-					end
+				end
+			end
+		else
+			if pickup.label then
+				pickup.label:visible(false)
+				if pickup.labelInRange then
+					pickup.label:color(255, 255, 255, 0)
+					pickup.labelInRange = false
 				end
 			end
 		end
@@ -432,24 +423,27 @@ addEventHandler('onClientColShapeHit', g_Root,
 			return
 		end
 		if pickup.load then
-			if pickup.type == 'vehiclechange' then
-				if pickup.vehicle == getElementModel(g_Vehicle) then
-					return
-				end
-				g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
-			end
-			triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id, pickup.respawn)
-			playSoundFrontEnd(46)
+			handleHitPickup(pickup)
 		end
 	end
 )
+
+function handleHitPickup(pickup)
+	if pickup.type == 'vehiclechange' then
+		if pickup.vehicle == getElementModel(g_Vehicle) then
+			return
+		end
+		g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
+	end
+	triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id, pickup.respawn)
+	playSoundFrontEnd(46)
+end
 
 function unloadPickup(pickupID)
 	for colshape,pickup in pairs(g_Pickups) do
 		if pickup.id == pickupID then
 			pickup.load = false
-			destroyElement(pickup.object)
-			pickup.object = nil
+			setElementAlpha(pickup.object, 0)
 			return
 		end
 	end
@@ -458,21 +452,10 @@ end
 function loadPickup(pickupID)
 	for colshape,pickup in pairs(g_Pickups) do
 		if pickup.id == pickupID then
-			local pos = pickup.position
-			local object = createObject(g_ModelForPickupType[pickup.type], pos[1], pos[2], pos[3])
-			setElementCollisionsEnabled(object, false)
-			g_VisiblePickups[colshape] = object
-			pickup.object = object
+			setElementAlpha(pickup.object, 255)
 			pickup.load = true
 			if isElementWithinColShape(g_Vehicle, colshape) then
-				if pickup.type == 'vehiclechange' then
-					if pickup.vehicle == getElementModel(g_Vehicle) then
-						return
-					end
-					g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
-				end
-				triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id, pickup.respawn)
-				playSoundFrontEnd(46)
+				handleHitPickup(pickup)
 			end
 			return
 		end

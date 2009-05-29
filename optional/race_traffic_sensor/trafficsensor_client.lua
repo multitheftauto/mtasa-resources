@@ -88,7 +88,7 @@ function Bigdar.render()
     end
 
 	-- Icon definition
-	local icon = { file='img/arrow_ts.png', w=80, h=56, r=255, g=220, b=210 }
+	local icon = { file='img/arrow_ts.png', w=80, h=56 }
 
     -- Calc smoothing vars
     local delta = timeSeconds - Bigdar.lastSmoothSeconds
@@ -123,6 +123,13 @@ function Bigdar.render()
                 -- If no draw, reset smooth position
                 Bigdar.smoothList[player] = nil
             else
+                -- Calc arrow color
+				local r,g,b = 255,220,210
+				local team = getPlayerTeam(player)
+				if team then
+					r,g,b = getTeamColor(team)
+				end
+
                 -- Calc draw scale
                 local scalex = alpha * 0.5 + 0.5
                 local scaley = alpha * 0.25 + 0.75
@@ -179,7 +186,7 @@ function Bigdar.render()
                         X = X1+ (X2-X1)* (Y-Y1) / (Y2 - Y1)
                     end
                 end
-                dxDrawImage ( X-icon.w/2*scalex, Y-icon.h/2*scaley, icon.w*scalex, icon.h*scaley, icon.file, 180 + rrz * 180 / math.pi, 0, 0, tocolor(icon.r,icon.g,icon.b,255*alpha), false )
+                dxDrawImage ( X-icon.w/2*scalex, Y-icon.h/2*scaley, icon.w*scalex, icon.h*scaley, icon.file, 180 + rrz * 180 / math.pi, 0, 0, tocolor(r,g,b,255*alpha), false )
             end
         end
     end

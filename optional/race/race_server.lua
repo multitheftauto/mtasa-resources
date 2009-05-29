@@ -967,7 +967,6 @@ function startAddons()
 					outputWarning( "Can't use addon " .. name .. ', as it does not have addon="race" in the info section' )
 				else
 					-- Start or restart resource
-					outputChatBox( name .. ' state: ' .. getResourceState(resource) )
 					if getResourceState(resource) == 'running' then
 						restartResource(resource)
 					else

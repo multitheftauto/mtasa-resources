@@ -202,9 +202,17 @@ end
 -- Racewar.playerFinished() -- Update team points
 ---------------------------------------------------------------------------
 function Racewar.playerFinished( player, rank )
-	local pointsEarned = getPlayerCount() - rank + 1
 	local team = getPlayerTeam(player)
 	if team then
+		local othercount = 0
+		-- count up others not finished who are not on the player's team
+		for _,other in ipairs(playerlist) do
+			if not isPlayerFinished(other) and team ~= getPlayerTeam(other) then
+				othercount = othercount + 1
+			end
+		end
+		Racewar.outputChat( 'You beat ' .. othercount .. ' players from other teams' )
+		local pointsEarned = othercount	-- getPlayerCount() - rank + 1
 		Racewar.output( pointsEarned .. " pts for '"..getTeamName(team).."' by "..getPlayerName(player) )
 		addTeamScore(team,pointsEarned)
 		Racewar.updateStatusDisplay()
@@ -454,7 +462,7 @@ function Racewar.playerChooseTeam( player )
 	bindKey ( player, "1", "down", Racewar.playerTeamChosen, 1 )
 	bindKey ( player, "2", "down", Racewar.playerTeamChosen, 2 )
 	bindKey ( player, "3", "down", Racewar.playerTeamChosen, 3 )
-	bindKey ( player, "4", "down", Racewar.playerTeamChosen, 0 )
+	bindKey ( player, "F3", "down", Racewar.playerTeamChosen, 0 )
 end
 
 ---------------------------------------------------------------------------
@@ -465,11 +473,11 @@ function Racewar.playerTeamChosen( player, key, keyState, teamIndex )
 	unbindKey ( player, "1", "down", Racewar.playerTeamChosen )
 	unbindKey ( player, "2", "down", Racewar.playerTeamChosen )
 	unbindKey ( player, "3", "down", Racewar.playerTeamChosen )
-	unbindKey ( player, "4", "down", Racewar.playerTeamChosen )
+	unbindKey ( player, "F3", "down", Racewar.playerTeamChosen )
 
 	Racewar.changePlayerTeam( player, teamIndex )
 
-	bindKey ( player, "4", "down", Racewar.playerChooseTeam )
+	bindKey ( player, "F3", "down", Racewar.playerChooseTeam )
 end
 
 
@@ -506,8 +514,9 @@ function Racewar.updateChooseTeamDisplay()
 		chooseTeamLines[3] = textCreateTextItem ( 'Press 1 to join A',				x, y+0.119, 'low', 255, 255, 255, 255, 1.4, 'center' )
 		chooseTeamLines[4] = textCreateTextItem ( 'Press 2 to join B',				x, y+0.149, 'low', 255, 255, 255, 255, 1.4, 'center' )
 		chooseTeamLines[5] = textCreateTextItem ( 'Press 3 to join C',				x, y+0.178, 'low', 255, 255, 255, 255, 1.4, 'center' )
-		chooseTeamLines[6] = textCreateTextItem ( 'Press 4 not to join a team',		x, y+0.209, 'low', 200, 200, 200, 255, 1.4, 'center' )
-		chooseTeamLines[7] = textCreateTextItem ( 'Press F9 for help',				x, y+0.239, 'low', 200, 200, 0, 255, 1.4, 'center' ) 
+		chooseTeamLines[6] = textCreateTextItem ( 'Press F3 not to join a team',	x, y+0.209, 'low', 200, 200, 200, 255, 1.4, 'center' )
+		chooseTeamLines[7] = textCreateTextItem ( 'Press F3 to change team later',		x, y+0.239, 'low', 200, 200, 0, 255, 1.4, 'center' ) 
+		chooseTeamLines[8] = textCreateTextItem ( 'Press F9 for help',				x, y+0.269, 'low', 200, 200, 0, 255, 1.4, 'center' ) 
 		for i,line in ipairs(chooseTeamLines) do
 			textDisplayAddText ( chooseTeamDisplay, line )
 		end
@@ -716,3 +725,6 @@ function Racewar.outputChat(text,visibleTo)
 	outputChatBox ( "#C0C0C0Racewar: #FFFF00" .. text, visibleTo or getRootElement(), 255, 255, 255, true )
 end
 
+function isPlayerFinished(player)
+	return getElementData(player, 'race.finished')
+end

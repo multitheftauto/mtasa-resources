@@ -200,7 +200,7 @@ function startNextMapVote()
 		visibleTo=getRootElement(),
 		percentage=51,
 		timeout=15,
-        adjustwidth=50,
+        adjustwidth=100,
 		allowchange=true;
 		}
 	

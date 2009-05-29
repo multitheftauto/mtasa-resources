@@ -1,5 +1,5 @@
 <meta>
-	<info name="Traffic Sensor" description="Traffic Sensor addon for Race" author="ccw" type="script" addon="race" version="0.0.1" build="r201 28May09"/>
+	<info name="Traffic Sensor" description="Traffic Sensor addon for Race" author="ccw" type="script" addon="race" version="0.0.1" build="r202 29May09"/>
 
 	<script src="_common_ts.lua" type="server"/>
 	<script src="util_ts_server.lua" type="server"/>
