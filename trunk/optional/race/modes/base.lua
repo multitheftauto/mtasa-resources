@@ -84,6 +84,7 @@ function RaceMode.endMap()
         gotoState('PostFinish')
         local text = g_GameOptions.randommaps and 'Next map starts in:' or 'Vote for next map starts in:'
         Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255):start()
+		triggerEvent('onPostFinish', g_Root)
     end
 end
 
@@ -210,9 +211,13 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		if rank < getPlayerCount() then
 			setTimer(clientCall, 5000, 1, player, 'startSpectate')
 		else
-            gotoState('EveryoneFinished')
-            self:setTimeLeft( 0 )
-			RaceMode.endMap()
+			setTimer(
+				function()
+					gotoState('EveryoneFinished')
+					self:setTimeLeft( 0 )
+					RaceMode.endMap()
+				end,
+				50, 1 )
 		end
 	end
 	return rank, time
@@ -230,7 +235,7 @@ function lastCheckpointWasSafe(id, player)
 end
 
 function isValidPlayer(player)
- 	return table.find(g_Players, player)
+ 	return g_Players and table.find(g_Players, player)
 end
 
 function RaceMode:onPlayerWasted(player)

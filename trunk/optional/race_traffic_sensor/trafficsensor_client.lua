@@ -233,3 +233,10 @@ bindKey('F4', 'down',
     end
 )
 
+addCommandHandler('doF4',
+	function(player,command,...)
+		outputDebugString('doF4')
+        Bigdar.toggle()
+	end
+)
+

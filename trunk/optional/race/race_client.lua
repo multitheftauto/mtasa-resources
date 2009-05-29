@@ -86,6 +86,7 @@ end
 
 function TitleScreen.show()
     showGUIComponents('titleImage','titleText1','titleText2')
+	guiMoveToBack(g_GUI['titleImage'])
     TitleScreen.startTime = getTickCount()
     TitleScreen.bringForward = 0
     addEventHandler('onClientRender', g_Root, TitleScreen.update)
@@ -139,6 +140,7 @@ function TravelScreen.show( msg )
     TravelScreen.startTime = getTickCount()
     g_dxGUI['travelText2']:text(msg) 
     showGUIComponents('travelImage', 'travelText1', 'travelText2')
+	guiMoveToBack(g_GUI['travelImage'])
 end
 
 function TravelScreen.hide()
@@ -447,6 +449,7 @@ function unloadPickup(pickupID)
 		if pickup.id == pickupID then
 			pickup.load = false
 			destroyElement(pickup.object)
+			pickup.object = nil
 			return
 		end
 	end

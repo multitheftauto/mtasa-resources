@@ -1,5 +1,5 @@
 <meta>
-	<info name="Toptimes" description="Toptimes addon for Race" author="ccw" type="script" addon="race" version="0.0.1" build="r180 21May09"/>
+	<info name="Toptimes" description="Toptimes addon for Race" author="ccw" type="script" addon="race" version="0.0.1" build="r201 28May09"/>
 
 	<script src="_common_tt.lua" type="server"/>
 	<script src="util_tt_server.lua" type="server"/>
@@ -10,6 +10,7 @@
 	<script src="_common_tt.lua" type="client"/>
 	<script src="util_tt_client.lua" type="client"/>
 	<script src="toptimes_client.lua" type="client"/>
+	<config src="help.xml" type="client" />
 
 	<file src="img/timepassedbg.png"/>
 	<file src="img/blank.png"/>

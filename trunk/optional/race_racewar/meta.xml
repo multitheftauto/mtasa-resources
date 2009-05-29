@@ -1,0 +1,20 @@
+<meta>
+	<info name="Race War" description="Team racing add on" author="ccw" type="script" addon="race" version="0.0.1" build="r201 28May09"/>
+
+	<script src="_common_rw.lua" type="server"/>
+	<script src="util_rw_server.lua" type="server"/>
+	<script src="racewar_server.lua" type="server"/>
+
+	<script src="_common_rw.lua" type="client"/>
+	<script src="util_rw_client.lua" type="client"/>
+	<script src="racewar_client.lua" type="client"/>
+	<config src="help.xml" type="client" />
+
+
+	<settings>
+		<!-- admingroup
+                The name of the group to which the player must belong to issue certain commands  -->
+		<setting name="*admingroup" value="Admin"/>
+	</settings>
+
+</meta>
