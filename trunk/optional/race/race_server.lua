@@ -723,7 +723,6 @@ addEventHandler('onResourceStop', g_ResRoot,
 		unloadAll()
 		scoreboard.removeScoreboardColumn('race rank')
 		scoreboard.removeScoreboardColumn('checkpoint')
-		stopAddons()
 	end
 )
 
@@ -958,17 +957,22 @@ function startAddons()
 		table.insert(Addons.report,line2)
 	end
 
-	stopAddons()
 	for idx,name in ipairs(string.split(getString('race.addons'),',')) do
 		if name ~= '' then
 			local resource = getResourceFromName(name)
 			if not resource then
-				outputError( "Can't use addon '" .. name .. "', as it is not the name of a resource" )
+				outputWarning( "Can't use addon '" .. name .. "', as it is not the name of a resource" )
 			else
 				if getResourceInfo ( resource, 'addon' ) ~= 'race' then
-					outputError( "Can't use addon " .. name .. ', as it does not have addon="race" in the info section' )
+					outputWarning( "Can't use addon " .. name .. ', as it does not have addon="race" in the info section' )
 				else
-					startResource(resource)
+					-- Start or restart resource
+					outputChatBox( name .. ' state: ' .. getResourceState(resource) )
+					if getResourceState(resource) == 'running' then
+						restartResource(resource)
+					else
+						startResource(resource)
+					end
 					-- Update Addons.report
 					local tag = getResourceInfo ( resource, 'name' ) or getResourceName(resource)
 					local build = getResourceInfo ( resource, 'build' ) or ''
@@ -985,18 +989,6 @@ function startAddons()
 				end
 			end
 		end
-	end
-end
-
--- Stop all resources with addon="race"
-function stopAddons()
-	for _, resource in ipairs(getResources()) do
-		local state = getResourceState ( resource )
-        if ( state and state ~= 'loaded' ) then
-            if getResourceInfo ( resource, 'addon' ) == 'race' then
-				stopResource(resource)
-			end
-        end
 	end
 end
 
