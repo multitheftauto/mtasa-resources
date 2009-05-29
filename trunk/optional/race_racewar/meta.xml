@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race War" description="Team racing add on" author="ccw" type="script" addon="race" version="0.0.1" build="r201 28May09"/>
+	<info name="Race War" description="Team racing add on" author="ccw" type="script" addon="race" version="0.0.1" build="r202 29May09"/>
 
 	<script src="_common_rw.lua" type="server"/>
 	<script src="util_rw_server.lua" type="server"/>
