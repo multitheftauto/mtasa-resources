@@ -283,6 +283,7 @@ function endRound()
 	setTimer ( destroyElement, 9000, 1, g_missionTimer )
 	local text = ""
 	local conquered = false
+	local timeLeft = exports.missiontimer:getMissionTimerTime ( g_missionTimer )/1000
 	if (attacker == team1) then
 		timeReachedBefore = timeLimit - timeLeft
 		if (timeLeft <= 0) then 

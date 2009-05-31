@@ -9,10 +9,10 @@
 	
 	<export function="createMissionTimer" type="server" />
 	<export function="createMissionTimer" type="client" />
-	<export function="getMissionTimerRemainingTime" type="server" />
-	<export function="getMissionTimerRemainingTime" type="client" />
-	<export function="setMissionTimerRemainingTime" type="server" />
-	<export function="setMissionTimerRemainingTime" type="client" />
+	<export function="getMissionTimerTime" type="server" />
+	<export function="getMissionTimerTime" type="client" />
+	<export function="setMissionTimerTime" type="server" />
+	<export function="setMissionTimerTime" type="client" />
 	<export function="setMissionTimerFrozen" type="client" />
 	<export function="setMissionTimerFrozen" type="server" />
 </meta>

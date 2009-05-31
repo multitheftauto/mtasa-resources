@@ -40,7 +40,7 @@ addEventHandler ( "onClientRender", rootElement,
 				local color = tocolor(255,255,255,255)
 				if data.countdown then
 					msPassed = data.duration - msPassed
-					if msPassed < data.hurrytime then
+					if msPassed <= data.hurrytime then
 						color = tocolor ( 255,0,0,255 )
 					end
 				end
