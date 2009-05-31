@@ -20,7 +20,7 @@ function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, fon
 	missionTimers[element].countdown = countdown
 	missionTimers[element].duration = duration
 	missionTimers[element].originalTick = getTickCount()
-	missionTimers[element].showCS = bool[showCS] or 0
+	missionTimers[element].showCS = (bool[showCS] == nil and true) or showCS
 	missionTimers[element].bg = bool[bg] or true
 	missionTimers[element].font = font or "default-bold"
 	missionTimers[element].scale = tonumber(scale) or 1

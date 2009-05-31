@@ -45,7 +45,6 @@ function dmMapStart(resource,mapRoot)
 	processSpawnStart()
 	--Start our timer
 	g_MissionTimer = exports.missiontimer:createMissionTimer (g_TimeLimit,true,true,0.5,20,true,"default-bold",1)
-	setTimer ( call, g_TimeLimit - 15000, 1, getResourceFromName"missiontimer", "setMissionTimerColor", 255, 0, 0 )
 	addEventHandler ( "onMissionTimerElapsed", g_MissionTimer, onTimeElapsed )
 	g_FragLimitText = dxText:create ( "Frag Limit: "..g_FragLimit, 0.5, 35, "default-bold", 1 )
 	g_FragLimitText:align("center","top")

@@ -181,14 +181,14 @@ function startAssault(resource)
 	--startAssaultMap(resource)
 end
 
-function updateTimeLeft()
-	timeLeft = timeLeft - 1
-	textItemSetText(timeLeftTextItem,calcTime(timeLeft))
-	if (timeLeft <= 0) then
-		killTimer(assaultTimers.updateTimeLeft)
-		endRound()
-	end
-end
+-- function updateTimeLeft()
+	-- timeLeft = timeLeft - 1
+	-- textItemSetText(timeLeftTextItem,calcTime(timeLeft))
+	-- if (timeLeft <= 0) then
+		-- killTimer(assaultTimers.updateTimeLeft)
+		-- endRound()
+	-- end
+-- end
 
 --[[
 Prepares the round to be started
@@ -232,8 +232,10 @@ function startRoundNow()
 	if (options.time ~= false) then setTime(gettok(options.time,1,58),gettok(options.time,2,58)) end
 	waiting = false
 	timeLeft = timeLimit
-	if (isTimer(assaultTimers.updateTimeLeft)) then killTimer(assaultTimers.updateTimeLeft) end
-	assaultTimers.updateTimeLeft = setTimer(updateTimeLeft,1000,timeLimit)
+	-- if (isTimer(assaultTimers.updateTimeLeft)) then killTimer(assaultTimers.updateTimeLeft) end
+	-- assaultTimers.updateTimeLeft = setTimer(updateTimeLeft,1000,timeLimit)
+	g_missionTimer = exports.missiontimer:createMissionTimer (options.timelimit*1000,true,false,0.5,20,true,"default-bold",1)
+	addEventHandler ( "onMissionTimerElapsed", g_missionTimer, endRound )
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
 		if (getPlayerTeam(v)) then
@@ -277,7 +279,8 @@ function endRound()
 
 	waiting = true
 
-	killTimer(assaultTimers.updateTimeLeft)
+	-- killTimer(assaultTimers.updateTimeLeft)
+	setTimer ( destroyElement, 9000, 1, g_missionTimer )
 	local text = ""
 	local conquered = false
 	if (attacker == team1) then
