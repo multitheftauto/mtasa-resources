@@ -5,12 +5,16 @@
 </team>
 ]]
 
+local CTF_root = getRootElement()
+
 function CTF_onResourceStart( resourcename )
-	local players = getElementsByType ( "player" )
-	for k,v in ipairs(players) do
-		setElementData( v, "score", 0 )
+	if ( resourcename == getThisResource () ) then
+		local players = getElementsByType ( "player" )
+		for k,v in ipairs(players) do
+			setElementData( v, "score", 0 )
+		end
+		setTimer( call, 1000, 1, getResourceFromName("scoreboard"), "addScoreboardColumn", "score" )
 	end
-	setTimer( call, 1000, 1, getResourceFromName("scoreboard"), "addScoreboardColumn", "score" )
 end
 
 function CTF_gamemodeMapStop( startedMap )
@@ -142,8 +146,8 @@ function CTF_gamemodeMapStart ( startedMap )
 						setElementData( col, "blip", blip )
 						setElementData( col, "blipTwo", blipTwo )
 						if ( CTF_blips == "team" ) then
-							setElementVisibleTo ( blip, root, false )
-							setElementVisibleTo ( blipTwo, root, false )
+							setElementVisibleTo ( blip, CTF_root, false )
+							setElementVisibleTo ( blipTwo, CTF_root, false )
 						end
 					end
 					setElementData( col, "object", object )
@@ -202,7 +206,8 @@ function CTF_gamemodeMapStart ( startedMap )
 		if ( CTF_roundTime >= 120000 ) then
 			setTimer( CTF_announce, CTF_roundTime-60000, 1, 255, 255, 255, "One minute remaining!", 4000 )
 		end
-		setTimer( CTF_endRound, CTF_roundTime, 1 )
+		CTF_missionTimer = exports.missiontimer:createMissionTimer (CTF_roundTime,true,true,0.5,20,true,"default-bold",1)
+		addEventHandler ( "onMissionTimerElapsed", CTF_missionTimer, CTF_endRound )
 	end
 end
 
@@ -256,6 +261,7 @@ function CTF_endRound()
 		setTimer( unbindKey, 10000, 1, v, "F3", "down", setPlayerTeam )
 		setTimer( textDisplayRemoveObserver, 10000, 1, CTF_spawnChangeDisp, v )
 	end
+	setTimer ( destroyElement, 9000, 1, CTF_missionTimer)
 	setTimer( CTF_newRound, 10000, 1 )
 end
 	
@@ -282,8 +288,8 @@ function CTF_newRound()
 			setElementPosition( colObject, x, y, z )
 			setElementPosition( colMarker, x, y, z )
 			if ( CTF_blips == "team" ) then
-				setElementVisibleTo ( getElementData( v, "blip" ), root, false )
-				setElementVisibleTo ( getElementData( v, "blipTwo" ), root, false )
+				setElementVisibleTo ( getElementData( v, "blip" ), CTF_root, false )
+				setElementVisibleTo ( getElementData( v, "blipTwo" ), CTF_root, false )
 			end
 		end
 	end
@@ -320,7 +326,8 @@ function CTF_newRound()
 	if ( CTF_roundTime >= 120000 ) then
 		setTimer( CTF_announce, CTF_roundTime-60000, 1, 255, 255, 255, "One minute remaining!", 4000 )
 	end
-	setTimer( CTF_endRound, CTF_roundTime, 1 )
+	CTF_missionTimer = exports.missiontimer:createMissionTimer (CTF_roundTime,true,true,0.5,20,true,"default-bold",1)
+	addEventHandler ( "onMissionTimerElapsed", CTF_missionTimer, CTF_endRound )
 end
 		
 	
@@ -545,7 +552,7 @@ function CTF_spawnPlayer( player )
 				local playerBlip = createBlipAttachedTo ( player, 0, 2, r, g, b, 255 )
 				setElementData( playerBlip, "playerBlip", true )
 				if ( CTF_blips == "team" ) then
-					setElementVisibleTo ( playerBlip, root, false )
+					setElementVisibleTo ( playerBlip, CTF_root, false )
 					for k,v in ipairs(getPlayersInTeam(team)) do
 						setElementVisibleTo ( playerBlip, v, true )
 					end
@@ -591,10 +598,10 @@ function getChildren ( root, type )
 	return result
 end
 
-addEventHandler( "onResourceStart", resourceRoot, CTF_onResourceStart )
-addEventHandler( "onPlayerJoin", root, CTF_onPlayerJoin )
-addEventHandler( "onPlayerQuit", root, CTF_flag_check )
-addEventHandler( "onPlayerWasted", root, CTF_flag_check )
-addEventHandler( "onColShapeHit", resourceRoot, CTF_onColShapeHit )
-addEventHandler( "onGamemodeMapStart", root, CTF_gamemodeMapStart )
-addEventHandler( "onGamemodeMapStop", root, CTF_gamemodeMapStop )
+addEventHandler( "onResourceStart", CTF_root, CTF_onResourceStart )
+addEventHandler( "onPlayerJoin", CTF_root, CTF_onPlayerJoin )
+addEventHandler( "onPlayerQuit", CTF_root, CTF_flag_check )
+addEventHandler( "onPlayerWasted", CTF_root, CTF_flag_check )
+addEventHandler( "onColShapeHit", CTF_root, CTF_onColShapeHit )
+addEventHandler( "onGamemodeMapStart", CTF_root, CTF_gamemodeMapStart )
+addEventHandler( "onGamemodeMapStop", CTF_root, CTF_gamemodeMapStop )
