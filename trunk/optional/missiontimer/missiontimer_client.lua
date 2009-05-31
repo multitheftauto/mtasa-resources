@@ -28,7 +28,7 @@ function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, fon
 	missionTimers[element].timer = setTimer ( triggerEvent, duration, 1, "onClientMissionTimerElapsed", element )
 end
 
-function setMissionTimerRemainingTime ( timer, time )
+function setMissionTimerTime ( timer, time )
 	if missionTimers[timer] then
 		missionTimers[timer].duration = tonumber(time) or missionTimers[timer].remaining
 		missionTimers[timer].originalTick = getTickCount()
@@ -37,8 +37,15 @@ function setMissionTimerRemainingTime ( timer, time )
 	return false
 end
 
-function getMissionTimerRemainingTime ( timer )
-	return missionTimers[timer] and (missionTimers[timer].duration - (missionTimers[element].originalTick - getTickCount())) or false
+function getMissionTimerTime ( timer )
+	if missionTimers[timer] then
+		if missionTimers[timer].countdown then
+			return math.min(missionTimers[timer].duration - (getTickCount() - missionTimers[timer].originalTick),0)
+		else
+			return (getTickCount() - missionTimers[timer].originalTick)
+		end
+	end
+	return false
 end
 
 function setMissionTimerFrozen ( timer, frozen )
