@@ -157,3 +157,16 @@ function stateAllowsGridCountdown()
     return false
 end
 
+
+----------------------------------------------------------------------------
+-- stateAllowsSpawnInNoRespawnMap
+--
+-- Check if the current state allows a joining player to spawn when the current mode/map is no respawn
+----------------------------------------------------------------------------
+function stateAllowsSpawnInNoRespawnMap()
+    if currentRaceStateName == 'NoMap'				then    return true     end
+    if currentRaceStateName == 'LoadingMap'			then    return true     end
+    if currentRaceStateName == 'PreGridCountdown'   then    return true     end
+    if currentRaceStateName == 'GridCountdown'		then    return true     end
+    return false
+end

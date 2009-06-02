@@ -119,9 +119,12 @@ function CToptimes:openWindow ()
 
     local screenWidth, screenHeight = guiGetScreenSize()
 
+	local gui_x = 0.56
+	local gui_y = 0.02
+
     self.rect = {}
-    self.rect.x     = screenWidth/2 + 63
-    self.rect.y     = 14
+    self.rect.x     = screenWidth/2 + 63 + ( screenWidth * (gui_x - 0.56) )
+    self.rect.y     = 14 + ( screenHeight * (gui_y - 0.02) )
     self.rect.sizeX = 400-120
     self.rect.sizeY = 46 + 15 * 8
 

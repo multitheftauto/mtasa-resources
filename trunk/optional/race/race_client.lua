@@ -186,7 +186,8 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
 	setBlurLevel(1)
-	
+	setPlayerSpectating( g_Me, false )
+
 	-- checkpoints
 	g_Checkpoints = checkpoints
 	
@@ -511,12 +512,28 @@ addEventHandler('onClientElementDataChange', g_Me,
 	false
 )
 
+addEventHandler('onClientElementDataChange', g_Root,
+	function(dataName)
+		if dataName == 'race.finished' then
+			if isPlayerFinished(source) then
+				Spectate.validateTargetSoon( source, 2000 )	-- No spectate continue at this player after 2 seconds
+			end
+		end
+		if dataName == 'race.spectating' then
+			if isPlayerSpectating(source) then
+				Spectate.validateTarget( source )	-- No spectate at this player
+			end
+		end
+	end
+)
+
+
 function checkWater()
     if g_Vehicle then
         if not g_WaterCraftIDs[getElementModel(g_Vehicle)] then
             local x, y, z = getElementPosition(g_Me)
             local waterZ = getWaterLevel(x, y, z)
-            if waterZ and z < waterZ - 0.5 and not isPlayerDead(g_Me) and not isPlayerFinished(g_Me) and g_MapOptions then
+            if waterZ and z < waterZ - 0.5 and not isPlayerRaceDead(g_Me) and not isPlayerFinished(g_Me) and g_MapOptions then
                 if g_MapOptions.firewater then
                     blowVehicle ( g_Vehicle, true )
                 else
@@ -604,6 +621,11 @@ end
 -----------------------------------------------------------------------
 -- Spectate
 -----------------------------------------------------------------------
+Spectate = {}
+Spectate.blockUntilTimes = {}
+Spectate.validateTargetTimer = Timer:create()
+g_SpectatedPlayer = nil
+
 function startSpectate()
 	if #g_Players == 1 or g_SpectatedPlayer then
 		return
@@ -616,48 +638,11 @@ function startSpectate()
 	g_GUI.speclabel = guiCreateLabel(screenWidth/2 - 100, screenHeight - 100, 200, 50, '', false)
 	guiLabelSetHorizontalAlign(g_GUI.speclabel, 'center')
 	hideGUIComponents('specprevhi', 'specnexthi')
-	repeat
-		g_SpectatedPlayer = g_Players[math.random(#g_Players)]
-	until g_SpectatedPlayer ~= g_Me
-	bindKey('arrow_l', 'down', spectatePrevious)
-	bindKey('arrow_r', 'down', spectateNext)
-	updateSpectate()
+	Spectate.setTarget( Spectate.findNewTarget(g_Me,1) )
+	bindKey('arrow_l', 'down', Spectate.previous)
+	bindKey('arrow_r', 'down', Spectate.next)
     startMovePlayerAway()
-end
-
-function spectatePrevious()
-	local i = table.find(g_Players, g_SpectatedPlayer)
-	local startI = i
-	repeat
-		i = (i == 1) and #g_Players or (i - 1)
-	until (g_Players[i] ~= g_Me and not isPlayerFinished(g_Players[i])) or i == startI
-	if i ~= startI then
-		g_SpectatedPlayer = g_Players[i]
-		updateSpectate()
-	end
-	setGUIComponentsVisible({ specprev = false, specprevhi = true })
-	setTimer(setGUIComponentsVisible, 100, 1, { specprevhi = false, specprev = true })
-end
-
-function spectateNext()
-	local i = table.find(g_Players, g_SpectatedPlayer)
-	local startI = i
-	repeat
-		i = (i == #g_Players) and 1 or (i + 1)
-	until (g_Players[i] ~= g_Me and not isPlayerFinished(g_Players[i])) or i == startI
-	if i ~= startI then
-		g_SpectatedPlayer = g_Players[i]
-		updateSpectate()
-	end
-	setGUIComponentsVisible({ specnext = false, specnexthi = true })
-	setTimer(setGUIComponentsVisible, 100, 1, { specnexthi = false, specnext = true })
-end
-
-function updateSpectate()
-    -- What does the timer version do? - Removed because of a problem at the end of spectating.
-	--setTimer(setCameraTarget, 100, 1, g_SpectatedPlayer)
-	setCameraTarget(g_SpectatedPlayer)
-	guiSetText(g_GUI.speclabel, 'Currently spectating:\n' .. getPlayerName(g_SpectatedPlayer))
+	setPlayerSpectating( g_Me, true )
 end
 
 function stopSpectate()
@@ -667,14 +652,100 @@ function stopSpectate()
 			g_GUI[name] = nil
 		end
 	end
-	unbindKey('arrow_l', 'down', spectatePrevious)
-	unbindKey('arrow_r', 'down', spectateNext)
+	unbindKey('arrow_l', 'down', Spectate.previous)
+	unbindKey('arrow_r', 'down', Spectate.next)
     stopMovePlayerAway()
 	setCameraTarget(g_Me)
 	g_SpectatedPlayer = nil
+	Spectate.cancelValidateTargetSoon()
+	setPlayerSpectating( g_Me, false )
+end
+
+function Spectate.previous()
+    Spectate.setTarget( Spectate.findNewTarget(g_SpectatedPlayer,-1) )
+	setGUIComponentsVisible({ specprev = false, specprevhi = true })
+	setTimer(setGUIComponentsVisible, 100, 1, { specprevhi = false, specprev = true })
+end
+
+function Spectate.next()
+    Spectate.setTarget( Spectate.findNewTarget(g_SpectatedPlayer,1) )
+	setGUIComponentsVisible({ specnext = false, specnexthi = true })
+	setTimer(setGUIComponentsVisible, 100, 1, { specnexthi = false, specnext = true })
+end
+
+-- Step along to the next player to spectate
+function Spectate.findNewTarget(current,dir)
+	local pos = table.find(g_Players, current) or 1
+    for i=1,#g_Players do
+        pos = ((pos + dir - 1) % #g_Players ) + 1
+        if Spectate.isValidTarget(g_Players[pos]) then
+            return g_Players[pos]
+        end
+    end
+    return 1
+end
+
+function Spectate.isValidTarget(player)
+    if player == 1 then
+        return true
+    end
+    if player == g_Me or isPlayerFinished(player) or isPlayerRaceDead(player) or isPlayerSpectating(player) then
+        return false
+    end
+	if ( Spectate.blockUntilTimes[player] or 0 ) > getTickCount() then
+		return false
+	end
+	if not table.find(g_Players, player) then
+		return false
+    end
+	return true
+end
+
+function Spectate.setTarget( player )
+    --Spectate.active = true
+    if g_SpectatedPlayer ~= player then
+		Spectate.cancelValidateTargetSoon()
+	end
+    g_SpectatedPlayer = player
+    if g_SpectatedPlayer ~= 1 then
+    	setCameraTarget(g_SpectatedPlayer)
+	    guiSetText(g_GUI.speclabel, 'Currently spectating:\n' .. getPlayerName(g_SpectatedPlayer))
+    else
+		local x,y,z = getElementPosition(g_Me)
+		x = x - ( x % 32 )
+		y = y - ( y % 32 )
+		z = 50
+    	setCameraTarget( g_Me )
+    	setCameraMatrix( x,y,z,x,y+50,z+50)
+	    guiSetText(g_GUI.speclabel, 'Currently spectating:\n No one to spectate')
+    end
+end
+
+function Spectate.blockAsTarget( player, ticks )
+	Spectate.blockUntilTimes[player] = getTickCount() + ticks
+	Spectate.validateTarget()
+end
+
+function Spectate.validateTargetSoon( player, time )
+	if player == g_SpectatedPlayer then
+		if not Spectate.validateTargetTimer:isActive() then
+			Spectate.validateTargetTimer:setTimer(Spectate.validateTarget, time, 1, player )
+		end
+	end
+end
+
+function Spectate.cancelValidateTargetSoon()
+	Spectate.validateTargetTimer:killTimer()
+end
+
+function Spectate.validateTarget(player)
+	if g_SpectatedPlayer and player == g_SpectatedPlayer then
+		if not Spectate.isValidTarget(player) then
+			Spectate.next()
+		end
+	end
 end
 -----------------------------------------------------------------------
-
 
 -----------------------------------------------------------------------
 -- MovePlayerAway - Super hack - Fixes the spec cam problem
@@ -694,7 +765,7 @@ function startMovePlayerAway()
     movePlayerAway()
     g_MoveAwayTimer = setTimer(movePlayerAway,1000,0)
 
-    setCameraTarget(g_SpectatedPlayer)
+    Spectate.setTarget( g_SpectatedPlayer )
 end
 
 function movePlayerAway()
@@ -866,14 +937,32 @@ function setCurrentCheckpoint(i)
 	showNextCheckpoint()
 end
 
+function isPlayerRaceDead(player)
+	return not getElementHealth(player) or getElementHealth(player) < 1 or isPlayerDead(player)
+end
+
 function isPlayerFinished(player)
 	return getElementData(player, 'race.finished')
+end
+
+function setPlayerSpectating(player,state)
+	setElementData(player, 'race.spectating', state)
+end
+
+function isPlayerSpectating(player)
+	return getElementData(player, 'race.spectating')
 end
 
 addEventHandler('onClientPlayerJoin', g_Root,
 	function()
 		table.insertUnique(g_Players, source)
 	end
+)
+
+addEventHandler('onClientPlayerSpawn', g_Root,
+	function()
+		Spectate.blockAsTarget( source, 2000 )	-- No spectate at this player for 2 seconds
+    end
 )
 
 addEventHandler('onClientPlayerWasted', g_Root,
@@ -890,6 +979,7 @@ addEventHandler('onClientPlayerWasted', g_Root,
 			end
 			setGhostMode(true)
 		else
+			Spectate.validateTargetSoon( source, 2000 )	-- No spectate continue at this player after 2 seconds
 			local vehicle = getPedOccupiedVehicle(source)
 			if vehicle then
 				setElementCollisionsEnabled(vehicle, false)
@@ -903,14 +993,9 @@ addEventHandler('onClientPlayerWasted', g_Root,
 
 addEventHandler('onClientPlayerQuit', g_Root,
 	function()
-		if source == g_SpectatedPlayer then
-			if getPlayerCount() > 1 then
-				spectateNext()
-			else
-				stopSpectate()
-			end
-		end
 		table.removevalue(g_Players, source)
+		Spectate.blockUntilTimes[source] = nil
+		Spectate.validateTarget(source)		-- No spectate at this player
 	end
 )
 

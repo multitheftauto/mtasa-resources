@@ -3,40 +3,6 @@
 --
 
 --------------------------------
--- command hint on login
---------------------------------
-addEventHandler("onPlayerLogin", g_Root,
-  function()
-	local player = source
-	if not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
-		return
-	end
-	setTimer(
-        function()
-			outputChatBox ( "Type '/config' to configure race addons", player, 255, 127, 0 )
-        end,
-        500, 1 )
-  end
-)
-
---------------------------------
--- command hint on join (onPlayerJoin called at resource start for everyplayer by _joiner)
---------------------------------
-addEventHandler('onPlayerJoin', g_Root,
-	function()
-		local player = source
-		setTimer(
-            function()
-				if not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
-					return
-				end
-				outputChatBox ( "Type '/config' to configure race addons", player, 255, 127, 0 )
-            end,
-            500, 1 )
-	end
-)
-
---------------------------------
 -- The Command
 --------------------------------
 addCommandHandler('config',
@@ -44,7 +10,7 @@ addCommandHandler('config',
 		if not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
-		triggerClientEvent('onClientOpenConfig', player )
+		triggerClientEvent( player, 'onClientOpenConfig', player )
     end
 )
 
@@ -54,15 +20,15 @@ addCommandHandler('config',
 addEvent('onRequestAddonsInfo', true )
 addEventHandler('onRequestAddonsInfo', g_ResRoot,
 	function()
-		local active, inactive = getAddonsInfo()
-		triggerClientEvent('onClientReceiveAddonsInfo', source, active, inactive )
+		local addonsInfoMap = getAddonsInfo()
+		triggerClientEvent( source, 'onClientReceiveAddonsInfo', source, addonsInfoMap )
 	end
 )
 
 addEvent('onRequestAddonsChange', true )
 addEventHandler('onRequestAddonsChange', g_ResRoot,
-	function(active, inactive)
-		setAddonsInfo( active, inactive );
+	function(addonsInfoMap)
+		setAddonsInfo( addonsInfoMap );
         exports.mapmanager:changeGamemode( getResourceFromName('race') )
 	end
 )
@@ -73,33 +39,42 @@ addEventHandler('onRequestAddonsChange', g_ResRoot,
 --------------------------------
 function getAddonsInfo()
 	-- Find availible
-	local availible = {}
+	local addonsInfoMap = {}
 	for _, resource in ipairs(getResources()) do
 		if getResourceInfo ( resource, 'addon' ) == 'race' then
-			table.insert(availible, getResourceName(resource) )
+			local info = {}
+			info.name = getResourceName ( resource )
+			info.tag = getResourceInfo ( resource, 'name' ) or getResourceName(resource)
+			info.build = getResourceInfo ( resource, 'build' ) or ''
+			info.version = getResourceInfo ( resource, 'version' ) or ''
+			info.author = getResourceInfo ( resource, 'author' ) or ''
+			info.description = getResourceInfo ( resource, 'description' ) or ''
+			info.enabled = false
+			addonsInfoMap[info.name] = info
 		end
 	end
 	-- Find active
-	local active = {}
 	for idx,name in ipairs(string.split(getString('race.addons'),',')) do
-		if name ~= '' then
-			local resource = getResourceFromName(name)
-			if resource and getResourceInfo ( resource, 'addon' ) == 'race' then
-				table.removevalue(availible, name )
-				table.insert(active, name )
-			end
+		if addonsInfoMap[name] then
+			addonsInfoMap[name].enabled = true
 		end
 	end
-	return active, availible
+	return addonsInfoMap
 end
 
 
 --------------------------------
 -- Set active addons
 --------------------------------
-function setAddonsInfo(active, inactive)
-	-- compile setting from active items
-	local setting = table.concat(active,",")
+function setAddonsInfo(addonsInfoMap)
+	-- compile setting from enabled items
+	local activeList = {}
+	for _,info in pairs(addonsInfoMap) do
+		if info.enabled then
+			table.insert( activeList, info.name )
+		end
+	end
+	local setting = table.concat(activeList,",")
 	set('*addons',setting)
 end
 

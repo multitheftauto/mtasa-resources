@@ -17,9 +17,9 @@ SToptimesManager.instances = {}
 
 addEvent('onMapStarting')
 addEventHandler('onMapStarting', g_Root,
-	function(mapInfo, mapOptions, statsKey)
+	function(mapInfo, mapOptions, gameOptions)
         if g_SToptimesManager then
-		    g_SToptimesManager:setModeAndMap( mapInfo.modename, mapInfo.name, statsKey )
+		    g_SToptimesManager:setModeAndMap( mapInfo.modename, mapInfo.name, type(gameOptions)=='table' and gameOptions.statsKey or statsKey )
         end
 	end
 )

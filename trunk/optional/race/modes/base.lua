@@ -238,6 +238,16 @@ function isValidPlayer(player)
  	return g_Players and table.find(g_Players, player)
 end
 
+function isValidPlayerVehicle(player,vehicle)
+	if isValidPlayer(player) then
+		if vehicle and g_Vehicles[player] == vehicle then
+			return true
+		end
+	end
+	return false
+end
+
+
 function RaceMode:onPlayerWasted(player)
 	if not self.checkpointBackups[player] then
 		return
@@ -417,8 +427,4 @@ function RaceMode:destroy()
         end
     end
 	RaceMode.instances[self.id] = nil
-end
-
-function RaceMode:getAllowBigdar()
-	return true
 end

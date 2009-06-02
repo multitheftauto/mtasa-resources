@@ -7,4 +7,9 @@ Keys
 F4         - Toggle bigdar (Traffic sensor)
 F5         - Show top times (Toptimes)
 Enter/Exit - Kill player
+
+Admins
+------
+/config     - Configure Race addons
+/ghostmode  - Toggle collisions
 </help>
