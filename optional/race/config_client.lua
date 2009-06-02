@@ -3,8 +3,8 @@
 --
 
 local gui = {}
-local AddonsActive = {}
-local AddonsInactive = {}
+local guiData = {}
+local AddonsInfoList = {}
 
 
 addEvent('onClientOpenConfig', true )
@@ -24,18 +24,29 @@ function openConfigMenu ()
     showCursor ( true )
 
     -- Create a gui window
-    gui["form"]				= guiCreateWindow ( 200, 300, 370, 220, "ADDONS", false )
+    gui["form"]				= guiCreateWindow ( 200, 230, 390, 420, "ADDONS", false )
+
+    gui['headerul'] = guiCreateLabel(10, 25, 570, 25, string.rep('_', 98), false, gui["form"] )
+    --guiLabelSetHorizontalAlign ( gui['headerul'], 'center' )
+    guiLabelSetColor ( gui['headerul'], 160, 160, 192 )
+
+    gui['header'] = guiCreateLabel(30, 25, 300, 25, 'Name' .. string.rep(' ', 36) .. 'Description', false, gui["form"] )
+    guiSetFont(gui['header'], 'default-small')
+    guiLabelSetColor ( gui['header'], 160, 160, 192 )
+
 	gui["scrollpane"]		= guiCreateScrollPane( 0, 0, 1, 1, true, gui["form"] )
 	gui["button_ok"]		= guiCreateButton( 0, 0, 1, 1, 'Ok',		false, gui["form"] )
 	gui["button_cancel"]	= guiCreateButton( 0, 0, 1, 1, 'Cancel',	false, gui["form"] )
 	gui["label1"]			= guiCreateLabel( 0, 0, 1, 1, 'Get more race addons from http://blaaaaaaaaaaah/',	false, gui["form"] )
-	gui["label2"]			= guiCreateLabel( 0, 0, 1, 1, "Note: Pressing 'Ok' will apply changes and restart race",	false, gui["form"] )
+	gui["label2"]			= guiCreateLabel( 0, 0, 1, 1, "Note: Pressing 'Ok' will apply changes and restart Race",	false, gui["form"] )
 	gui["checkboxes"] = {}
 
 	guiLabelSetHorizontalAlign( gui["label1"], 'center'  )
 	guiLabelSetHorizontalAlign( gui["label2"], 'center'  )
 	guiSetFont( gui["label1"], 'default-bold-small' )
 	guiSetFont( gui["label2"], 'default-bold-small' )
+    guiLabelSetColor ( gui['label1'], 255, 255, 230 )
+    guiLabelSetColor ( gui['label2'], 255, 255, 230 )
 
 	guiSetVisible(gui["scrollpane"],false)
 	guiScrollPaneSetScrollBars(gui["scrollpane"],false, true)
@@ -46,16 +57,24 @@ end
 
 addEvent('onClientReceiveAddonsInfo', true )
 addEventHandler('onClientReceiveAddonsInfo', g_ResRoot,
-	function(active, inactive)
-		AddonsActive = active
-		AddonsInactive = inactive
-		local idx = 1
-		for _,name in ipairs(AddonsActive) do
-			gui["checkboxes"][idx] = guiCreateCheckBox ( 10, 10+idx*20, 200, 20, name, true, false, gui["scrollpane"] )
-			idx = idx + 1
+	function(addonsInfoMap)
+		-- Map to list
+		AddonsInfoList = {}
+		for name,info in pairs(addonsInfoMap) do
+			table.insert( AddonsInfoList, info )
 		end
-		for _,name in ipairs(AddonsInactive) do
-			gui["checkboxes"][idx] = guiCreateCheckBox ( 10, 10+idx*20, 200, 20, name, false, false, gui["scrollpane"] )
+		-- alpha sort
+		table.sort(AddonsInfoList, function(a,b) return(a.tag > b.tag) end)
+		-- create lines
+		local idx = 1
+		for _,info in ipairs(AddonsInfoList) do
+			local checkbox = guiCreateCheckBox ( 10,  10+idx*20, 150, 20, info.tag, info.enabled, false, gui["scrollpane"] )
+			local label1 = guiCreateLabel      ( 160, 10+idx*20+3, 220,  20, info.description, false, gui["scrollpane"] )
+			if not checkbox then
+				outputDebugString( "checkbox failed" )
+			end
+			gui["checkboxes"][idx] = checkbox
+			guiData[checkbox] = idx
 			idx = idx + 1
 		end
 		resizeMenu()
@@ -68,7 +87,7 @@ function resizeMenu()
 	rect.x, rect.y, rect.sx, rect.sy = 0,0,guiGetSize ( gui["form"], false )
 
 	-- Trim top
-	_,rect = rectSplitY( rect, 30 )
+	_,rect = rectSplitY( rect, 50 )
 
 	-- Divide into list and buttons area
 	local rectTop, rectBot = rectSplitY( rect, -90 )
@@ -108,6 +127,7 @@ function closeConfigMenu ()
 	if gui["form"] then
 		destroyElement( gui["form"] )
 		gui = {}
+		guiData = {}
 	end
     showCursor ( false )
 end
@@ -130,7 +150,12 @@ addEventHandler ( "onClientGUIClick", g_ResRoot,
 			return
 		end
 		if source == gui["button_ok"] then
-			triggerServerEvent('onRequestAddonsChange', g_ResRoot, AddonsActive, AddonsInactive )
+			-- list to map
+			local addonsInfoMap = {}
+			for _,info in ipairs(AddonsInfoList) do
+				addonsInfoMap[info.name] = info
+			end
+			triggerServerEvent('onRequestAddonsChange', g_ResRoot, addonsInfoMap )
 			closeConfigMenu()
 			return
 		end
@@ -140,14 +165,8 @@ addEventHandler ( "onClientGUIClick", g_ResRoot,
 		end
 		for i,checkbox in ipairs(gui["checkboxes"]) do
 			if source == checkbox then
-				local name = guiGetText(checkbox)
-				if guiCheckBoxGetSelected ( checkbox ) then
-					table.removevalue(AddonsInactive,name)
-					table.insert(AddonsActive,name)
-				else
-					table.removevalue(AddonsActive,name)
-					table.insert(AddonsInactive,name)
-				end
+				local idx = guiData[checkbox]
+				AddonsInfoList[idx].enabled = guiCheckBoxGetSelected ( checkbox )
 				return
 			end
 		end

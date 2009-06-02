@@ -45,8 +45,8 @@ addEventHandler('onResourceStop', g_Root,
 
 addEvent('onMapStarting')
 addEventHandler('onMapStarting', g_Root,
-	function(mapInfo, mapOptions, statsKey)
-		Racewar.setModeAndMap( mapInfo.modename, mapInfo.name, statsKey )
+	function(mapInfo)
+		Racewar.setModeAndMap( mapInfo.modename, mapInfo.name )
 	end
 )
 
@@ -166,7 +166,7 @@ end
 ---------------------------------------------------------------------------
 -- Racewar.setModeAndMap() -- Called when a new map has been loaded
 ---------------------------------------------------------------------------
-function Racewar.setModeAndMap( raceModeName, mapName, statsKey )
+function Racewar.setModeAndMap( raceModeName, mapName )
 	if raceModeName == 'Sprint' then
 		Racewar.roundStart()
 	end

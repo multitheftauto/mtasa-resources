@@ -68,7 +68,6 @@ addEventHandler('onGamemodeMapStart', g_Root,
 			return
 		end
 		g_CurrentRaceMode = RaceMode.getApplicableMode():create()
-        g_MapOptions.allowBigdar = g_CurrentRaceMode.getAllowBigdar()
 		g_MapInfo.modename  = g_CurrentRaceMode:getName()
 		outputDebugString('Loaded race mode ' .. g_MapInfo.modename)
 		startRace()
@@ -142,7 +141,6 @@ function loadMap(res)
     g_MapOptions.autopimp = map.autopimp == 'true'
     g_MapOptions.firewater = map.firewater == 'true'
     g_MapOptions.cachemodels = map.cachemodels == 'true'
-    g_MapOptions.allowBigdar = true
 	
 	outputDebug("MISC", "duration = "..g_MapOptions.duration.."  respawn = "..g_MapOptions.respawn.."  respawntime = "..tostring(g_MapOptions.respawntime).."  time = "..g_MapOptions.time.."  weather = "..g_MapOptions.weather)
 	
@@ -256,7 +254,7 @@ end
 --      onGamemodeMapStart
 function startRace()
     gotoState('PreGridCountdown')
-    triggerEvent('onMapStarting', g_Root, g_MapInfo, g_MapOptions, g_GameOptions.statskey )
+    triggerEvent('onMapStarting', g_Root, g_MapInfo, g_MapOptions, g_GameOptions )
 	g_Players = {}
 	g_SpawnTimer:setTimer(joinHandlerByTimer, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
@@ -277,7 +275,6 @@ function launchRace()
 	end
 	g_CurrentRaceMode:launch()
 	g_CurrentRaceMode.running = true
-	triggerEvent('onRaceLaunch', getResourceRootElement(mapmanager.getRunningGamemodeMap()))
     gotoState('Running')
 end
 
@@ -356,8 +353,8 @@ function joinHandlerBoth(player)
 			return
 		end
 	end
-	local playerJoined = not player
-	if playerJoined then
+	local bPlayerJoined = not player
+	if bPlayerJoined then
 		player = source
 	end
     if not player then
@@ -415,7 +412,7 @@ function joinHandlerBoth(player)
 		g_Vehicles[player] = vehicle
         RaceMode.playerFreeze(player)
         outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
-		if playerJoined and g_CurrentRaceMode.running then
+		if bPlayerJoined and g_CurrentRaceMode.running then
             unfreezePlayerWhenReady(player)
 		end
 		
@@ -452,7 +449,7 @@ function joinHandlerBoth(player)
     local playerInfo = {}
     playerInfo.admin    = isPlayerInACLGroup(player, g_GameOptions.admingroup)
     playerInfo.testing  = _TESTING
-	local duration = playerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
+	local duration = bPlayerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
 	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), duration, g_GameOptions, g_MapInfo, playerInfo )
 	
 	createBlipAttachedTo(player, 0, 1, 200, 200, 200)
@@ -461,7 +458,7 @@ function joinHandlerBoth(player)
     -- Tell all clients to re-apply ghostmode settings in 1000ms
     setTimer(function() clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode) end, 1000, 1 )
 	
-	if playerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
+	if bPlayerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
 		---- Start random map vote if someone joined a lone player mid-race
         setTimer(startMidMapVoteForRandomMap,7000,1)
 	end
@@ -794,8 +791,10 @@ addCommandHandler('ghostmode',
 			return
 		end
 		g_MapOptions.ghostmode = not g_MapOptions.ghostmode
-		clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-		if g_MapOptions.ghostmode then
+		g_GameOptions.ghostmode = not g_GameOptions.ghostmode
+		set('*ghostmode', g_GameOptions.ghostmode and 'true' or 'false' )
+		clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode)
+		if g_GameOptions.ghostmode then
 			outputChatBox('Ghostmode enabled by ' .. getPlayerName(player), g_Root, 0, 240, 0)
 		else
 			outputChatBox('Ghostmode disabled by ' .. getPlayerName(player), g_Root, 240, 0, 0)
