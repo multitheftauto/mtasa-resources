@@ -420,6 +420,15 @@ addEventHandler('onClientRender', g_Root, updatePickups)
 addEventHandler('onClientColShapeHit', g_Root,
 	function(elem)
 		local pickup = g_Pickups[source]
+		outputDebug( 'CHECKPOINT', 'onClientColShapeHit'
+						.. ' elem:' .. tostring(elem)
+						.. ' g_Vehicle:' .. tostring(g_Vehicle)
+						.. ' isVehicleBlown(g_Vehicle):' .. tostring(isVehicleBlown(g_Vehicle))
+						.. ' g_Me:' .. tostring(g_Me)
+						.. ' getElementHealth(g_Me):' .. tostring(getElementHealth(g_Me))
+						.. ' source:' .. tostring(source)
+						.. ' pickup:' .. tostring(pickup)
+						)
 		if elem ~= g_Vehicle or not pickup or isVehicleBlown(g_Vehicle) or getElementHealth(g_Me) == 0 then
 			return
 		end
@@ -564,7 +573,22 @@ function showNextCheckpoint()
 	setElementData(g_Me, 'race.checkpoint', i)
 end
 
+
+addCommandHandler('forcecp',
+    function()
+        checkpointReached(g_Vehicle)
+    end
+)
+
 function checkpointReached(elem)
+	outputConsole( 'checkpointReached'
+					.. ' ' .. tostring(g_CurrentCheckpoint)
+					.. ' elem:' .. tostring(elem)
+					.. ' g_Vehicle:' .. tostring(g_Vehicle)
+					.. ' isVehicleBlown(g_Vehicle):' .. tostring(isVehicleBlown(g_Vehicle))
+					.. ' g_Me:' .. tostring(g_Me)
+					.. ' getElementHealth(g_Me):' .. tostring(getElementHealth(g_Me))
+					)
 	if elem ~= g_Vehicle or isVehicleBlown(g_Vehicle) or getElementHealth(g_Me) == 0 then
 		return
 	end
