@@ -187,7 +187,10 @@ function RaceRaceMapObject:__index(k)
 end
 
 function RaceRaceMapObject:parseValue(val)
-	if not val or #val == 0 then
+	if type(val) ~= 'string' then
+		return val
+	end
+	if #val == 0 then
 		return false
 	end
 	val = table.maptry(val:split(' '), tonumber) or val
@@ -228,7 +231,10 @@ function DMRaceMapObject:__index(k)
 end
 
 function DMRaceMapObject:parseValue(val)
-	if not val or #val == 0 then
+	if type(val) ~= 'string' then
+		return val
+	end
+	if #val == 0 then
 		return false
 	end
 	local r, g, b = getColorFromString(val)
