@@ -65,7 +65,7 @@ local function renderGridlines()
 	--Draw rectangular faces
 	for k,face in ipairs(faces) do
 		for i,coord3d in ipairs(face) do
-			if not getScreenFromWorldPosition(unpack(coord3d)) then return end
+			if not getScreenFromWorldPosition(coord3d[1],coord3d[2],coord3d[3],10) then return end
 			local nextIndex = i + 1
 			if not face[nextIndex] then nextIndex = 1 end
 			local targetCoord3d  = face[nextIndex]
@@ -91,8 +91,8 @@ end
 addEventHandler ( "onClientRender", getRootElement(), renderGridlines )
 
 function drawLine ( vecOrigin, vecTarget )
-	local startX,startY = getScreenFromWorldPosition(unpack(vecOrigin))
-	local endX,endY = getScreenFromWorldPosition(unpack(vecTarget))
+	local startX,startY = getScreenFromWorldPosition(vecOrigin[1],vecOrigin[2],vecOrigin[3],10)
+	local endX,endY = getScreenFromWorldPosition(vecTarget[1],vecTarget[2],vecTarget[3],10)
 	if not startX or not startY or not endX or not endY then 
 		return false
 	end
