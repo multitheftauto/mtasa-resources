@@ -55,7 +55,7 @@ addEventHandler ( "onClientRender", g_Root,
 				local pdistance = getDistanceBetweenPoints3D ( x,y,z,px,py,pz )
 				if pdistance <= NAMETAG_DISTANCE then
 					--Get screenposition
-					local sx,sy = getScreenFromWorldPosition ( px, py, pz+0.95 )
+					local sx,sy = getScreenFromWorldPosition ( px, py, pz+0.95, 0.06 )
 					if not sx or not sy then break end
 					--Calculate our components
 					local scale = 1/(NAMETAG_SCALE * (pdistance / NAMETAG_DISTANCE))

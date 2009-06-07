@@ -353,7 +353,7 @@ function updatePickups()
 			if pickup.label then
 				cX, cY, cZ = getCameraMatrix()
 				pickX, pickY, pickZ = unpack(pickup.position)
-				x, y = getScreenFromWorldPosition(pickX, pickY, pickZ + 2.85)
+				x, y = getScreenFromWorldPosition(pickX, pickY, pickZ + 2.85, 0.08 )
 				local distanceToPickup = getDistanceBetweenPoints3D(cX, cY, cZ, pickX, pickY, pickZ)
 				if distanceToPickup > 80 then
 					pickup.labelInRange = false

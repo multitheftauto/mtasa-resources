@@ -199,6 +199,8 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 			showMessage('You finished ' .. rank .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' ) .. '!', 0, 255, 0, player)
 		end
 		--Output a killmessage
+--[[
+		--Broken
 		exports.killmessages:outputMessage(
 			{
 				{"image",path="img/killmessage.png",resource=getThisResource(),width=24},
@@ -207,6 +209,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 			g_Root,
 			255,0,0
 		)
+--]]
 		self.rankingBoard:add(player, time)
 		if rank < getPlayerCount() then
 			setTimer(clientCall, 5000, 1, player, 'startSpectate')
