@@ -212,7 +212,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 --]]
 		self.rankingBoard:add(player, time)
 		if rank < getPlayerCount() then
-			setTimer(clientCall, 5000, 1, player, 'startSpectate')
+			setTimer(clientCall, 5000, 1, player, 'Spectate.start', 'auto')
 		else
 			setTimer(
 				function()
@@ -266,7 +266,7 @@ function RaceMode:onPlayerWasted(player)
             Countdown.create(respawnTime/1000, restorePlayer, 'You will respawn in:', 255, 255, 255, self.id, player):start(player)
         end
 	    if RaceMode.getMapOption('respawntime') >= 10000 then
-		    setTimer(clientCall, 2000, 1, player, 'startSpectate')
+		    setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
 	    end
 	end
 end
@@ -399,6 +399,7 @@ function RaceMode.playerFreeze(player)
     fixVehicle(vehicle)
 	setVehicleFrozen(vehicle, true)
     setVehicleDamageProof(vehicle, true)
+	clientCall(player, 'setElementCollisionsEnabled', vehicle, false)
 end
 
 function RaceMode.playerUnfreeze(player)
@@ -409,6 +410,7 @@ function RaceMode.playerUnfreeze(player)
     setVehicleDamageProof(vehicle, false)
     setVehicleEngineState(vehicle, true)
 	setVehicleFrozen(vehicle, false)
+	clientCall(player, 'setElementCollisionsEnabled', vehicle, true)
 end
 --------------------------------------
 
