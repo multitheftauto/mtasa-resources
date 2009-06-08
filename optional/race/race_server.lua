@@ -451,7 +451,8 @@ function joinHandlerBoth(player)
     playerInfo.testing  = _TESTING
 	local duration = bPlayerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
 	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), duration, g_GameOptions, g_MapInfo, playerInfo )
-	
+
+	setPlayerSpectating( player, false )
 	createBlipAttachedTo(player, 0, 1, 200, 200, 200)
 	g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
 
@@ -801,6 +802,34 @@ addCommandHandler('ghostmode',
 		end
 	end
 )
+
+-- Handle client request for manual spectate
+addEvent('onClientRequestSpectate', true)
+addEventHandler('onClientRequestSpectate', g_Root,
+	function(enable)
+		-- Checks if switching on
+		if enable then
+			if not stateAllowsManualSpectate() then return end
+		end
+		if isPlayerSpectating(source) ~= enable then
+			setPlayerSpectating( source, enable )
+			if enable then
+				clientCall(source, "Spectate.start", 'manual' )
+			else
+				clientCall(source, "Spectate.stop", 'manual' )
+			end
+		end
+	end
+)
+
+function setPlayerSpectating(player, toggle)
+	setElementData(player, 'race.spectating', toggle)
+end
+
+function isPlayerSpectating(player)
+	return getElementData(player, 'race.spectating') or false
+end
+
 
 addEvent('onNotifyPlayerReady', true)
 addEventHandler('onNotifyPlayerReady', g_Root,

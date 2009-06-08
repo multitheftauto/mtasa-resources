@@ -70,7 +70,7 @@ TitleScreen.startTime = 0
 
 function TitleScreen.init()
 	local screenWidth, screenHeight = guiGetScreenSize()
-	g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256, 512, 512, 'img/title.png', false)
+	g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256-10, 512, 512, 'img/title.png', false)
 	g_dxGUI['titleText1'] = dxText:create('', 30, screenHeight-67, false, 'bankgothic', 0.70, 'left' )
 	g_dxGUI['titleText2'] = dxText:create('', 120, screenHeight-67, false, 'bankgothic', 0.70, 'left' )
 	g_dxGUI['titleText1']:text(	'KEYS: \n' ..
@@ -186,7 +186,6 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
 	setBlurLevel(1)
-	setPlayerSpectating( g_Me, false )
 
 	-- checkpoints
 	g_Checkpoints = checkpoints
@@ -646,14 +645,48 @@ end
 -- Spectate
 -----------------------------------------------------------------------
 Spectate = {}
+Spectate.active = false
+Spectate.target = nil
 Spectate.blockUntilTimes = {}
+Spectate.savePos = false
+Spectate.manual = false
 Spectate.validateTargetTimer = Timer:create()
-g_SpectatedPlayer = nil
 
-function startSpectate()
-	if #g_Players == 1 or g_SpectatedPlayer then
-		return
+
+-- Request to switch on
+function Spectate.start(type)
+	outputDebug( 'SPECTATE', 'Spectate.start '..type )
+	assert(type=='manual' or type=='auto', "Spectate.start : type == auto or manual")
+	if type == 'manual' then
+		if Spectate.active then
+			return					-- Ignore if manual request and already on
+		end
+		Spectate.savePos = true	-- Savepos and start if manual request and was off
+	elseif type == 'auto' then
+		Spectate.savePos = false	-- Clear restore pos if an auto spectate is requested
 	end
+	if not Spectate.active then
+		Spectate._start()			-- Switch on here, if was off
+	end
+end
+
+
+-- Request to switch off
+function Spectate.stop(type)
+	outputDebug( 'SPECTATE', 'Spectate.stop '..type )
+	assert(type=='manual' or type=='auto', "Spectate.start : type == auto or manual")
+	if type == 'auto' then
+		Spectate.savePos = false	-- Clear restore pos if an auto spectate is requested
+	end
+	if Spectate.active then
+		Spectate._stop()			-- Switch off here, if was on
+	end
+end
+
+
+function Spectate._start()
+	outputDebug( 'SPECTATE', 'Spectate._start ' )
+	assert(not Spectate.active, "Spectate._start - not Spectate.active")
 	local screenWidth, screenHeight = guiGetScreenSize()
 	g_GUI.specprev = guiCreateStaticImage(screenWidth/2 - 100 - 58, screenHeight - 123, 58, 82, 'img/specprev.png', false, nil)
 	g_GUI.specprevhi = guiCreateStaticImage(screenWidth/2 - 100 - 58, screenHeight - 123, 58, 82, 'img/specprev_hi.png', false, nil)
@@ -662,14 +695,20 @@ function startSpectate()
 	g_GUI.speclabel = guiCreateLabel(screenWidth/2 - 100, screenHeight - 100, 200, 50, '', false)
 	guiLabelSetHorizontalAlign(g_GUI.speclabel, 'center')
 	hideGUIComponents('specprevhi', 'specnexthi')
+	if Spectate.savePos then
+		savePosition()
+	end
 	Spectate.setTarget( Spectate.findNewTarget(g_Me,1) )
 	bindKey('arrow_l', 'down', Spectate.previous)
 	bindKey('arrow_r', 'down', Spectate.next)
-    startMovePlayerAway()
-	setPlayerSpectating( g_Me, true )
+	MovePlayerAway.start()
+	Spectate.setTarget( Spectate.target )
 end
 
-function stopSpectate()
+-- Stop spectating. Will restore position if Spectate.savePos is set
+function Spectate._stop()
+	outputDebug( 'SPECTATE', 'Spectate._stop ' )
+	assert(Spectate.active, "Spectate._stop - Spectate.active")
 	for i,name in ipairs({'specprev', 'specprevhi', 'specnext', 'specnexthi', 'speclabel'}) do
 		if g_GUI[name] then
 			destroyElement(g_GUI[name])
@@ -678,21 +717,25 @@ function stopSpectate()
 	end
 	unbindKey('arrow_l', 'down', Spectate.previous)
 	unbindKey('arrow_r', 'down', Spectate.next)
-    stopMovePlayerAway()
+	MovePlayerAway.stop()
 	setCameraTarget(g_Me)
-	g_SpectatedPlayer = nil
+	Spectate.target = nil
+	Spectate.active = false
+	if Spectate.savePos then
+		Spectate.savePos = false
+		restorePosition()
+	end
 	Spectate.cancelValidateTargetSoon()
-	setPlayerSpectating( g_Me, false )
 end
 
 function Spectate.previous()
-    Spectate.setTarget( Spectate.findNewTarget(g_SpectatedPlayer,-1) )
+	Spectate.setTarget( Spectate.findNewTarget(Spectate.target,-1) )
 	setGUIComponentsVisible({ specprev = false, specprevhi = true })
 	setTimer(setGUIComponentsVisible, 100, 1, { specprevhi = false, specprev = true })
 end
 
 function Spectate.next()
-    Spectate.setTarget( Spectate.findNewTarget(g_SpectatedPlayer,1) )
+	Spectate.setTarget( Spectate.findNewTarget(Spectate.target,1) )
 	setGUIComponentsVisible({ specnext = false, specnexthi = true })
 	setTimer(setGUIComponentsVisible, 100, 1, { specnexthi = false, specnext = true })
 end
@@ -700,58 +743,42 @@ end
 -- Step along to the next player to spectate
 function Spectate.findNewTarget(current,dir)
 	local pos = table.find(g_Players, current) or 1
-    for i=1,#g_Players do
-        pos = ((pos + dir - 1) % #g_Players ) + 1
-        if Spectate.isValidTarget(g_Players[pos]) then
-            return g_Players[pos]
-        end
-    end
-    return 1
+	for i=1,#g_Players do
+		pos = ((pos + dir - 1) % #g_Players ) + 1
+		if Spectate.isValidTarget(g_Players[pos]) then
+			return g_Players[pos]
+		end
+	end
+	return nil
 end
 
 function Spectate.isValidTarget(player)
-    if player == 1 then
-        return true
-    end
-    if player == g_Me or isPlayerFinished(player) or isPlayerRaceDead(player) or isPlayerSpectating(player) then
-        return false
-    end
+	if player == nil then
+		return true
+	end
+	if player == g_Me or isPlayerFinished(player) or isPlayerRaceDead(player) or isPlayerSpectating(player) then
+		return false
+	end
 	if ( Spectate.blockUntilTimes[player] or 0 ) > getTickCount() then
 		return false
 	end
 	if not table.find(g_Players, player) then
 		return false
-    end
+	end
 	return true
 end
 
-function Spectate.setTarget( player )
-    --Spectate.active = true
-    if g_SpectatedPlayer ~= player then
-		Spectate.cancelValidateTargetSoon()
+-- If player is the current target, check to make sure is valid
+function Spectate.validateTarget(player)
+	if Spectate.active and player == Spectate.target then
+		if not Spectate.isValidTarget(player) then
+			Spectate.next()
+		end
 	end
-    g_SpectatedPlayer = player
-    if g_SpectatedPlayer ~= 1 then
-    	setCameraTarget(g_SpectatedPlayer)
-	    guiSetText(g_GUI.speclabel, 'Currently spectating:\n' .. getPlayerName(g_SpectatedPlayer))
-    else
-		local x,y,z = getElementPosition(g_Me)
-		x = x - ( x % 32 )
-		y = y - ( y % 32 )
-		z = 50
-    	setCameraTarget( g_Me )
-    	setCameraMatrix( x,y,z,x,y+50,z+50)
-	    guiSetText(g_GUI.speclabel, 'Currently spectating:\n No one to spectate')
-    end
-end
-
-function Spectate.blockAsTarget( player, ticks )
-	Spectate.blockUntilTimes[player] = getTickCount() + ticks
-	Spectate.validateTarget()
 end
 
 function Spectate.validateTargetSoon( player, time )
-	if player == g_SpectatedPlayer then
+	if Spectate.active and player == Spectate.target then
 		if not Spectate.validateTargetTimer:isActive() then
 			Spectate.validateTargetTimer:setTimer(Spectate.validateTarget, time, 1, player )
 		end
@@ -762,75 +789,135 @@ function Spectate.cancelValidateTargetSoon()
 	Spectate.validateTargetTimer:killTimer()
 end
 
-function Spectate.validateTarget(player)
-	if g_SpectatedPlayer and player == g_SpectatedPlayer then
-		if not Spectate.isValidTarget(player) then
-			Spectate.next()
-		end
+
+function Spectate.setTarget( player )
+	if Spectate.target ~= player then
+		Spectate.cancelValidateTargetSoon()
 	end
+	Spectate.active = true
+	Spectate.target = player
+	if Spectate.target then
+		setCameraTarget(Spectate.target)
+		guiSetText(g_GUI.speclabel, 'Currently spectating:\n' .. getPlayerName(Spectate.target))
+	else
+		local x,y,z = getElementPosition(g_Me)
+		x = x - ( x % 32 )
+		y = y - ( y % 32 )
+		z = 50
+		setCameraTarget( g_Me )
+		setCameraMatrix( x,y,z,x,y+50,z+50)
+		guiSetText(g_GUI.speclabel, 'Currently spectating:\n No one to spectate')
+	end
+end
+
+function Spectate.blockAsTarget( player, ticks )
+	Spectate.blockUntilTimes[player] = getTickCount() + ticks
+	Spectate.validateTarget(player)
+end
+
+
+g_SavedPos = {}
+function savePosition()
+	g_SavedPos.x, g_SavedPos.y, g_SavedPos.z = getElementPosition(g_Me)
+	g_SavedPos.rz = getPedRotation(g_Me)
+	g_SavedPos.vx, g_SavedPos.vy, g_SavedPos.vz = getElementPosition(g_Vehicle)
+	g_SavedPos.vrx, g_SavedPos.vry, g_SavedPos.vrz = getElementRotation(g_Vehicle)
+end
+
+function restorePosition()
+	setElementPosition( g_Me, g_SavedPos.x, g_SavedPos.y, g_SavedPos.z )
+	setPedRotation( g_Me, g_SavedPos.rz )
+	setElementPosition( g_Vehicle, g_SavedPos.vx, g_SavedPos.vy, g_SavedPos.vz )
+	setElementRotation( g_Vehicle, g_SavedPos.vrx, g_SavedPos.vry, g_SavedPos.vrz )
 end
 -----------------------------------------------------------------------
 
 -----------------------------------------------------------------------
 -- MovePlayerAway - Super hack - Fixes the spec cam problem
 -----------------------------------------------------------------------
-function startMovePlayerAway()
-    if g_MoveAwayTimer then
-        killTimer( g_MoveAwayTimer )
-    end
- 
-    g_PlrWasDeadAtSpecStart = getElementHealth(g_Me) == 0
+MovePlayerAway = {}
+MovePlayerAway.timer = Timer:create()
+MovePlayerAway.posX = 0
+MovePlayerAway.posY = 0
+MovePlayerAway.posZ = 0
+MovePlayerAway.rotZ = 0
 
-    if not g_PlrWasDeadAtSpecStart then
-        return
-    end
-
-    g_MoveAwayPos = math.random(0,4000)
-    movePlayerAway()
-    g_MoveAwayTimer = setTimer(movePlayerAway,1000,0)
-
-    Spectate.setTarget( g_SpectatedPlayer )
+function MovePlayerAway.start()
+	local element = g_Vehicle or getPedOccupiedVehicle(g_Me) or g_Me
+	MovePlayerAway.posX, MovePlayerAway.posY, MovePlayerAway.posZ = getElementPosition(element)
+	MovePlayerAway.posZ = 1234567 + math.random(0,4000)
+	MovePlayerAway.rotZ = 0
+	MovePlayerAway.update(true)
+	MovePlayerAway.timer:setTimer(MovePlayerAway.update,500,0)
 end
 
-function movePlayerAway()
-    if g_PlrWasDeadAtSpecStart then
-        -- If our player is dead while specing, move him far away
-        local temp = getCameraTarget()   
-        local vehicle = getPedOccupiedVehicle(g_Me)
-        if vehicle then
-            fixVehicle( vehicle )
-            setElementPosition( vehicle, 0,g_MoveAwayPos,1234567 )
-            setElementVelocity( vehicle, 0,0,0 )
-            setVehicleTurnVelocity( vehicle, 0,0,0 )
-        else
-            setElementPosition( g_Me, 0,g_MoveAwayPos,1234567 )
-            setElementVelocity( g_Me, 0,0,0 )
-        end
-        server.setPlayerGravity( g_Me, 0.0001 )
-        setElementHealth( g_Me, 90 )
 
-        if temp ~= getCameraTarget() then
-            setCameraTarget(temp)
-        end
-    end
+function MovePlayerAway.update(nozcheck)
+	-- Move our player far away
+	local temp = getCameraTarget()
+	if not getPedOccupiedVehicle(g_Me) then
+		setElementPosition( g_Me, MovePlayerAway.posX-10, MovePlayerAway.posY-10, MovePlayerAway.posZ )
+	end
+	if getPedOccupiedVehicle(g_Me) then
+		if not nozcheck then
+			if temp then
+				MovePlayerAway.posX, MovePlayerAway.posY = getElementPosition(temp)
+				outputDebug( 'SPECTATE', 'type:' .. getElementType(temp) )
+				if getElementType(temp) == 'ped' then
+					MovePlayerAway.rotZ = getPedRotation(temp)
+				else
+					_,_, MovePlayerAway.rotZ = getElementRotation(temp)
+				end
+			end  
+		end
+		local vehicle = g_Vehicle
+		if vehicle then
+			if not nozcheck then
+				local _,_,z = getElementPosition(vehicle)
+				if z < 1234567 / 2 then
+					outputDebugString( "*** z < 1234567 / 2 ***" )
+					-- MovePlayerAway.stop()
+					-- return
+				end
+			end
+
+			fixVehicle( vehicle )
+			setElementPosition( vehicle, MovePlayerAway.posX, MovePlayerAway.posY, MovePlayerAway.posZ )
+			--server.setElementPosition( vehicle, MovePlayerAway.posX, MovePlayerAway.posY, MovePlayerAway.posZ )
+			setElementVelocity( vehicle, 0,0,0 )
+			setVehicleTurnVelocity( vehicle, 0,0,0 )
+			setElementRotation ( vehicle, 0,0,MovePlayerAway.rotZ )
+		end
+	end
+	server.setPlayerGravity( g_Me, 0.0001 )
+	setElementHealth( g_Me, 90 )
+
+	if temp ~= getCameraTarget() then
+		setCameraTarget(temp)
+	end
 end
 
-function stopMovePlayerAway()
-    if g_MoveAwayTimer then
-        killTimer( g_MoveAwayTimer )
-        g_MoveAwayTimer = nil
-    end
-    server.setPlayerGravity( g_Me, 0.008 )
+function MovePlayerAway.stop()
+	if MovePlayerAway.timer:isActive() then
+		MovePlayerAway.timer:killTimer()
+		local vehicle = g_Vehicle
+		if vehicle then
+			setElementVelocity( vehicle, 0,0,0 )
+			setVehicleTurnVelocity( vehicle, 0,0,0 )
+			setVehicleFrozen ( vehicle, false )
+			setVehicleDamageProof ( vehicle, false )
+		end
+		setElementVelocity( g_Me, 0,0,0 )
+		server.setPlayerGravity( g_Me, 0.008 )
+	end
 end
------------------------------------------------------------------------
-
 
 -----------------------------------------------------------------------
 -- Camera transition for our player's respawn
 -----------------------------------------------------------------------
 function remoteStopSpectateAndBlack()
-    stopSpectate()
-    fadeCamera(false,0.0, 0,0,0)            -- Instant black
+	Spectate.stop('auto')
+	fadeCamera(false,0.0, 0,0,0)			-- Instant black
 end
 
 function remoteSoonFadeIn()
@@ -896,8 +983,8 @@ function unloadAll()
 	end
 	g_StartTick = nil
 	g_HurryDuration = nil
-	if g_SpectatedPlayer then
-		stopSpectate()
+	if Spectate.active then
+		Spectate.stop('auto')
 	end
 	
 	setGhostMode(false)
@@ -969,10 +1056,6 @@ function isPlayerFinished(player)
 	return getElementData(player, 'race.finished')
 end
 
-function setPlayerSpectating(player,state)
-	setElementData(player, 'race.spectating', state)
-end
-
 function isPlayerSpectating(player)
 	return getElementData(player, 'race.spectating')
 end
@@ -996,19 +1079,15 @@ addEventHandler('onClientPlayerWasted', g_Root,
 		end
 		if source == g_Me then
 			if #g_Players > 1 and (g_MapOptions.respawn == 'none' or g_MapOptions.respawntime >= 10000) then
-				setTimer(startSpectate, 2000, 1)
+				setTimer(Spectate.start, 2000, 1, 'auto')
 			end
-			if g_MapOptions.respawn == 'timelimit' and not g_GhostMode then
-				setTimer(setGhostMode, g_MapOptions.respawntime + 2000, 1, false)
-			end
-			setGhostMode(true)
 		else
 			Spectate.validateTargetSoon( source, 2000 )	-- No spectate continue at this player after 2 seconds
 			local vehicle = getPedOccupiedVehicle(source)
 			if vehicle then
-				setElementCollisionsEnabled(vehicle, false)
-				if g_MapOptions.respawn == 'timelimit' and not g_GhostMode then
-					setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime + 2000, 1, vehicle, true)
+				setElementCollisionsEnabled(vehicle, true)
+				if g_MapOptions.respawn == 'timelimit' and g_GhostMode then
+					setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime + 2000, 1, vehicle, not g_GhostMode)
 				end
 			end
 		end
@@ -1046,26 +1125,57 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 
 addCommandHandler('kill',
     function()
-        triggerServerEvent('onRequestKillPlayer', g_Me)
+		if Spectate.active then
+    		if Spectate.savePos then
+				triggerServerEvent('onClientRequestSpectate', g_Me, false )
+    		end
+        else
+			triggerServerEvent('onRequestKillPlayer', g_Me)
+		end
     end
 )
 
 bindKey('enter_exit', 'down',
     function()
-        triggerServerEvent('onRequestKillPlayer', g_Me)
+		if Spectate.active then
+    		if Spectate.savePos then
+				triggerServerEvent('onClientRequestSpectate', g_Me, false )
+    		end
+        else
+	        triggerServerEvent('onRequestKillPlayer', g_Me)
+		end
     end
 )
+
+
+bindKey('b', 'down',
+    function()
+	    if not g_PlayerInfo.testing and not g_PlayerInfo.admin then
+		    return
+	    end
+	    if Spectate.active then
+    		if Spectate.savePos then
+				triggerServerEvent('onClientRequestSpectate', g_Me, false )
+    		end
+	    else
+			triggerServerEvent('onClientRequestSpectate', g_Me, true )
+	    end
+    end
+)
+
 
 addCommandHandler('spec',
 	function()
 		if not g_PlayerInfo.testing and not g_PlayerInfo.admin then
 			return
 		end
-		if g_SpectatedPlayer then
-			stopSpectate()
-		else
-			startSpectate()
-		end
+	    if Spectate.active then
+    		if Spectate.savePos then
+				triggerServerEvent('onClientRequestSpectate', g_Me, false )
+    		end
+	    else
+			triggerServerEvent('onClientRequestSpectate', g_Me, true )
+	    end
 	end
 )
 

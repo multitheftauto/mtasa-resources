@@ -29,7 +29,7 @@ function DestructionDerby:onPlayerWasted(player)
 	if #alivePlayers <= 1 then
 		RaceMode.endMap()
 	else
-		setTimer(clientCall, 2000, 1, player, 'startSpectate')
+		setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
 	end
 	RaceMode.setPlayerIsFinished(player)
 end

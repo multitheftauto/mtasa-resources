@@ -51,7 +51,7 @@ function openConfigMenu ()
 	guiSetVisible(gui["scrollpane"],false)
 	guiScrollPaneSetScrollBars(gui["scrollpane"],false, true)
 
-	triggerServerEvent('onRequestAddonsInfo', g_ResRoot )
+	triggerServerEvent('onRequestAddonsInfo', g_Me )
 end
 
 
@@ -155,7 +155,7 @@ addEventHandler ( "onClientGUIClick", g_ResRoot,
 			for _,info in ipairs(AddonsInfoList) do
 				addonsInfoMap[info.name] = info
 			end
-			triggerServerEvent('onRequestAddonsChange', g_ResRoot, addonsInfoMap )
+			triggerServerEvent('onRequestAddonsChange', g_Me, addonsInfoMap )
 			closeConfigMenu()
 			return
 		end
