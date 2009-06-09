@@ -741,7 +741,7 @@ addEventHandler('onPlayerQuit', g_Root,
 				return
 			end
 		end
-		if #g_Players == 0 then
+		if getTotalPlayerCount() < 2 then
 			outputDebugString('Stopping map')
 			triggerEvent('onGamemodeMapStop', g_Root)
 		else

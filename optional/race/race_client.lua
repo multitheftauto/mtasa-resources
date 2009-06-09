@@ -70,7 +70,8 @@ TitleScreen.startTime = 0
 
 function TitleScreen.init()
 	local screenWidth, screenHeight = guiGetScreenSize()
-	g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256-10, 512, 512, 'img/title.png', false)
+	local adjustY = math.clamp( -30, -15 + (-30- -15) * (screenHeight - 480)/(900 - 480), -15 );
+	g_GUI['titleImage'] = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-256+adjustY, 512, 512, 'img/title.png', false)
 	g_dxGUI['titleText1'] = dxText:create('', 30, screenHeight-67, false, 'bankgothic', 0.70, 'left' )
 	g_dxGUI['titleText2'] = dxText:create('', 120, screenHeight-67, false, 'bankgothic', 0.70, 'left' )
 	g_dxGUI['titleText1']:text(	'KEYS: \n' ..
@@ -854,46 +855,35 @@ end
 
 function MovePlayerAway.update(nozcheck)
 	-- Move our player far away
-	local temp = getCameraTarget()
+	local camTarget = getCameraTarget()
 	if not getPedOccupiedVehicle(g_Me) then
 		setElementPosition( g_Me, MovePlayerAway.posX-10, MovePlayerAway.posY-10, MovePlayerAway.posZ )
 	end
 	if getPedOccupiedVehicle(g_Me) then
 		if not nozcheck then
-			if temp then
-				MovePlayerAway.posX, MovePlayerAway.posY = getElementPosition(temp)
-				outputDebug( 'SPECTATE', 'type:' .. getElementType(temp) )
-				if getElementType(temp) == 'ped' then
-					MovePlayerAway.rotZ = getPedRotation(temp)
+			if camTarget then
+				MovePlayerAway.posX, MovePlayerAway.posY = getElementPosition(camTarget)
+				outputDebug( 'SPECTATE', 'type:' .. getElementType(camTarget) )
+				if getElementType(camTarget) == 'ped' then
+					MovePlayerAway.rotZ = getPedRotation(camTarget)
 				else
-					_,_, MovePlayerAway.rotZ = getElementRotation(temp)
+					_,_, MovePlayerAway.rotZ = getElementRotation(camTarget)
 				end
 			end  
 		end
 		local vehicle = g_Vehicle
 		if vehicle then
-			if not nozcheck then
-				local _,_,z = getElementPosition(vehicle)
-				if z < 1234567 / 2 then
-					outputDebugString( "*** z < 1234567 / 2 ***" )
-					-- MovePlayerAway.stop()
-					-- return
-				end
-			end
-
 			fixVehicle( vehicle )
 			setElementPosition( vehicle, MovePlayerAway.posX, MovePlayerAway.posY, MovePlayerAway.posZ )
-			--server.setElementPosition( vehicle, MovePlayerAway.posX, MovePlayerAway.posY, MovePlayerAway.posZ )
 			setElementVelocity( vehicle, 0,0,0 )
 			setVehicleTurnVelocity( vehicle, 0,0,0 )
 			setElementRotation ( vehicle, 0,0,MovePlayerAway.rotZ )
 		end
 	end
-	server.setPlayerGravity( g_Me, 0.0001 )
 	setElementHealth( g_Me, 90 )
 
-	if temp ~= getCameraTarget() then
-		setCameraTarget(temp)
+	if camTarget ~= getCameraTarget() then
+		setCameraTarget(camTarget)
 	end
 end
 
@@ -908,7 +898,6 @@ function MovePlayerAway.stop()
 			setVehicleDamageProof ( vehicle, false )
 		end
 		setElementVelocity( g_Me, 0,0,0 )
-		server.setPlayerGravity( g_Me, 0.008 )
 	end
 end
 
