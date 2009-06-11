@@ -848,7 +848,7 @@ function flipVehicle()
 	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle then
 		local rX, rY, rZ = getElementRotation(vehicle)
-		server.setElementRotation(vehicle, 0, 0, (rX > 90 and rX < 270) and (rZ + 180) or rZ)
+		server['set' .. 'VehicleRotation'](vehicle, 0, 0, (rX > 90 and rX < 270) and (rZ + 180) or rZ)
 	end
 end
 

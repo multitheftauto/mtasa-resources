@@ -149,7 +149,7 @@ addEvent('onLoadedAtClient', true)
 addEventHandler('onLoadedAtClient', g_ResRoot,
 	function(player)
 		if getOption('spawnmaponstart') and isPedDead(player) then
-			clientCall(source, 'showWelcomeMap')
+			clientCall(player, 'showWelcomeMap')
 		end
 	end,
 	false
