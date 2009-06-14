@@ -186,7 +186,6 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	local weapons = not g_ArmedVehicleIDs[getElementModel(vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
-	setBlurLevel(1)
 
 	-- checkpoints
 	g_Checkpoints = checkpoints
@@ -271,6 +270,12 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     -- Do fadeup and then tell server client is ready
     setTimer(fadeCamera, delay + 750, 1, true, 10.0)
     setTimer(fadeCamera, delay + 1500, 1, true, 2.0)
+    
+    if g_PlayerInfo.joined and g_MapOptions.respawn == "none" then
+        setTimer(Spectate.start, delay + 1250, 1, 'auto')
+        return
+    end
+    
     setTimer( function() triggerServerEvent('onNotifyPlayerReady', g_Me) end, delay + 3500, 1 )
     outputDebug( 'MISC', 'initRace end' )
     setTimer( function() setCameraBehindVehicle( g_Vehicle ) end, delay + 300, 1 )
@@ -704,6 +709,7 @@ function Spectate._start()
 	bindKey('arrow_r', 'down', Spectate.next)
 	MovePlayerAway.start()
 	Spectate.setTarget( Spectate.target )
+    Spectate.validateTarget(Spectate.target)
 end
 
 -- Stop spectating. Will restore position if Spectate.savePos is set

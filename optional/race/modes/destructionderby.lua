@@ -34,6 +34,28 @@ function DestructionDerby:onPlayerWasted(player)
 	RaceMode.setPlayerIsFinished(player)
 end
 
+function DestructionDerby:onPlayerQuit(player)
+    local alivePlayers = getAlivePlayers()
+    for i,pl in ipairs(alivePlayers) do
+        if pl == player then
+            table.remove(alivePlayers, i)
+        end
+    end
+	if not self.rankingBoard then
+		self.rankingBoard = RankingBoard:create()
+		self.rankingBoard:setDirection('up')
+	end
+	local timePassed = self:getTimePassed()
+	self.rankingBoard:add(player, timePassed)
+	if #alivePlayers == 1 then
+		self.rankingBoard:add(alivePlayers[1], timePassed)
+		showMessage(getPlayerName(alivePlayers[1]) .. ' is the final survivor!', 0, 255, 0)
+	end
+	if #alivePlayers <= 1 then
+		RaceMode.endMap()
+	end
+end
+
 --[[
 function DestructionDerby:pickFreeSpawnpoint()
 	local i = table.find(RaceMode.getSpawnpoints(), 'used', '[nil]')
