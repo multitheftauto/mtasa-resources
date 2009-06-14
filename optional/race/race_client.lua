@@ -186,6 +186,8 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	local weapons = not g_ArmedVehicleIDs[getElementModel(vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
 	toggleControl('vehicle_secondary_fire', weapons)
+	setCloudsEnabled(g_GameOptions.cloudsenable)
+	setBlurLevel(g_GameOptions.blurlevel)
 
 	-- checkpoints
 	g_Checkpoints = checkpoints
@@ -279,6 +281,23 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     setTimer( function() triggerServerEvent('onNotifyPlayerReady', g_Me) end, delay + 3500, 1 )
     outputDebug( 'MISC', 'initRace end' )
     setTimer( function() setCameraBehindVehicle( g_Vehicle ) end, delay + 300, 1 )
+end
+
+-- Called from the server when settings are changed
+function updateOptions ( gameoptions, mapoptions )
+	-- Update
+	g_GameOptions = gameoptions
+	g_MapOptions = mapoptions
+
+	-- Apply
+	if g_Vehicle then
+		local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
+		toggleControl('vehicle_fire', weapons)
+		toggleControl('vehicle_secondary_fire', weapons)
+		setGhostMode(g_MapOptions.ghostmode)
+	end
+	setCloudsEnabled(g_GameOptions.cloudsenable)
+	setBlurLevel(g_GameOptions.blurlevel)
 end
 
 function launchRace(duration)

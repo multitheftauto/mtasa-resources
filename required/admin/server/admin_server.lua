@@ -408,7 +408,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					local res = getResourceFromName(resName)
 					local resRoot = getResourceRootElement(res)
 					if resRoot then
-						triggerEvent('onSettingChange', resRoot, name, value, oldvalue )
+						triggerEvent('onSettingChange', resRoot, name, value, oldvalue, source )
 					end
 					mdata = resName..'.'..name
 					mdata2 = tostring(value)

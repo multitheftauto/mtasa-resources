@@ -74,36 +74,125 @@ addEventHandler('onGamemodeMapStart', g_Root,
 	end
 )
 
-function cacheGameOptions()
-    if not g_GameOptions then
-        g_GameOptions = {}
-        g_GameOptions.timeafterfirstfinish  = getNumber('race.timeafterfirstfinish',30000)
-        g_GameOptions.hurrytime             = getNumber('race.hurrytime',15000)
-        g_GameOptions.ghostmode             = getBool('race.ghostmode',false)
-        g_GameOptions.ghostalpha            = getBool('race.ghostalpha',false)
-        g_GameOptions.randommaps            = getBool('race.randommaps',false)
-        g_GameOptions.statskey              = getString('race.statskey','name')
-        g_GameOptions.vehiclecolors         = getString('race.vehiclecolors','file')
-        g_GameOptions.skins                 = getString('race.skins','cj')
-        g_GameOptions.autopimp              = getBool('race.autopimp',true)
-        g_GameOptions.vehicleweapons        = getBool('race.vehicleweapons',true)
-        g_GameOptions.firewater             = getBool('race.firewater',false)
-        g_GameOptions.cachemodels           = getBool('race.cachemodels',true)
-        g_GameOptions.admingroup            = getString('race.admingroup','Admin')
-        g_GameOptions.ghostmode_map_can_override        = getBool('race.ghostmode_map_can_override',true)
-        g_GameOptions.skins_map_can_override            = getBool('race.skins_map_can_override',true)
-        g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
-        g_GameOptions.autopimp_map_can_override         = getBool('race.autopimp_map_can_override',true)
-        g_GameOptions.firewater_map_can_override        = getBool('race.firewater_map_can_override',true)
-        g_GameOptions.cachemodels_map_can_override      = getBool('race.cachemodels_map_can_override',true)
-        g_GameOptions.ghostmode_warning_if_map_override         = getBool('race.ghostmode_warning_if_map_override',true)
-        g_GameOptions.vehicleweapons_warning_if_map_override    = getBool('race.vehicleweapons_warning_if_map_override',true)
+-- Called from the admin panel when a setting is changed there
+addEvent ( "onSettingChange" )
+addEventHandler('onSettingChange', g_ResRoot,
+	function(name, value, oldvalue, player)
+		outputDebug( 'MISC', 'Setting changed: ' .. tostring(name) .. '  value:' .. tostring(value) .. '  value:' .. tostring(oldvalue).. '  by:' .. tostring(getPlayerName(player)) )
+		cacheGameOptions()
+		if g_SavedMapSettings then
+			cacheMapOptions(g_SavedMapSettings)
+			outputChatBox( tostring(playerName) .. ' xxchanged ' .. tostring(name) .. ' to ' .. tostring(value), g_Root, 0, 240, 0 )
+			clientCall(g_Root,'updateOptions', g_GameOptions, g_MapOptions)
+		end
+	end
+)
 
-        if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
-            outputWarning( "statskey is not set to 'name' or 'serial'" )
-            g_GameOptions.statskey = 'name'
-        end
-    end
+function cacheGameOptions()
+	g_GameOptions = {}
+	g_GameOptions.timeafterfirstfinish  = getNumber('race.timeafterfirstfinish',30) * 1000
+	g_GameOptions.hurrytime				= getNumber('race.hurrytime',15) * 1000
+	g_GameOptions.defaultrespawntime	= getNumber('race.respawntime',5) * 1000
+	g_GameOptions.ghostmode				= getBool('race.ghostmode',false)
+	g_GameOptions.ghostalpha			= getBool('race.ghostalpha',false)
+	g_GameOptions.randommaps			= getBool('race.randommaps',false)
+	g_GameOptions.statskey				= getString('race.statskey','name')
+	g_GameOptions.vehiclecolors			= getString('race.vehiclecolors','file')
+	g_GameOptions.skins					= getString('race.skins','cj')
+	g_GameOptions.autopimp				= getBool('race.autopimp',true)
+	g_GameOptions.vehicleweapons		= getBool('race.vehicleweapons',true)
+	g_GameOptions.firewater				= getBool('race.firewater',false)
+	g_GameOptions.cachemodels			= getBool('race.cachemodels',true)
+	g_GameOptions.admingroup			= getString('race.admingroup','Admin')
+	g_GameOptions.blurlevel				= getNumber('race.blur',36)
+	g_GameOptions.cloudsenable			= getBool('race.clouds',true)
+	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
+	g_GameOptions.skins_map_can_override			= getBool('race.skins_map_can_override',true)
+	g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
+	g_GameOptions.autopimp_map_can_override			= getBool('race.autopimp_map_can_override',true)
+	g_GameOptions.firewater_map_can_override		= getBool('race.firewater_map_can_override',true)
+	g_GameOptions.cachemodels_map_can_override		= getBool('race.cachemodels_map_can_override',true)
+	g_GameOptions.ghostmode_warning_if_map_override			= getBool('race.ghostmode_warning_if_map_override',true)
+	g_GameOptions.vehicleweapons_warning_if_map_override	= getBool('race.vehicleweapons_warning_if_map_override',true)
+
+	if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
+		outputWarning( "statskey is not set to 'name' or 'serial'" )
+		g_GameOptions.statskey = 'name'
+	end
+end
+
+
+function cacheMapOptions(map)
+	g_MapOptions = {}
+	g_MapOptions.duration = map.duration and tonumber(map.duration) > 0 and map.duration*1000 or 600000
+	if g_MapOptions.duration > 86400000 then
+		g_MapOptions.duration = 86400000
+	end
+	g_MapOptions.respawn = map.respawn
+	if not g_MapOptions.respawn or g_MapOptions.respawn ~= 'none' then
+		g_MapOptions.respawn = 'timelimit'
+	end
+	g_MapOptions.respawntime	= g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or g_GameOptions.defaultrespawntime)
+	g_MapOptions.time			= map.time or '12:00'
+	g_MapOptions.weather		= map.weather or 0
+
+	g_MapOptions.skins			= map.skins or 'cj'
+	g_MapOptions.vehicleweapons = map.vehicleweapons == 'true'
+	g_MapOptions.ghostmode		= map.ghostmode == 'true'
+	g_MapOptions.autopimp		= map.autopimp == 'true'
+	g_MapOptions.firewater		= map.firewater == 'true'
+	g_MapOptions.cachemodels	= map.cachemodels == 'true'
+	
+	outputDebug("MISC", "duration = "..g_MapOptions.duration.."  respawn = "..g_MapOptions.respawn.."  respawntime = "..tostring(g_MapOptions.respawntime).."  time = "..g_MapOptions.time.."  weather = "..g_MapOptions.weather)
+	
+	if g_MapOptions.time then
+		setTime(g_MapOptions.time:match('(%d+):(%d+)'))
+	end
+	if g_MapOptions.weather then
+		setWeather(g_MapOptions.weather)
+	end
+	
+	-- Set ghostmode from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.ghostmode or not g_GameOptions.ghostmode_map_can_override then
+		g_MapOptions.ghostmode = g_GameOptions.ghostmode
+	elseif g_GameOptions.ghostmode_warning_if_map_override and g_MapOptions.ghostmode ~= g_GameOptions.ghostmode then
+		if g_MapOptions.ghostmode then
+			outputChatBox( 'Notice: Collisions are turned off for this map' )
+		else
+			outputChatBox( 'Notice: Collisions are turned on for this map' )
+		end
+	end
+
+	-- Set skins from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.skins or not g_GameOptions.skins_map_can_override then
+		g_MapOptions.skins = g_GameOptions.skins
+	end
+
+	-- Set vehicleweapons from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.vehicleweapons or not g_GameOptions.vehicleweapons_map_can_override then
+		g_MapOptions.vehicleweapons = g_GameOptions.vehicleweapons
+	elseif g_GameOptions.vehicleweapons_warning_if_map_override and g_MapOptions.vehicleweapons ~= g_GameOptions.vehicleweapons then
+		if g_MapOptions.vehicleweapons then
+			outputChatBox( 'Notice: Vehicle weapons are turned on for this map' )
+		else
+			outputChatBox( 'Notice: Vehicle weapons are turned off for this map' )
+		end
+	end
+
+	-- Set autopimp from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.autopimp or not g_GameOptions.autopimp_map_can_override then
+		g_MapOptions.autopimp = g_GameOptions.autopimp
+	end
+
+	-- Set firewater from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.firewater or not g_GameOptions.firewater_map_can_override then
+		g_MapOptions.firewater = g_GameOptions.firewater
+	end
+
+	-- Set cachemodels from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.cachemodels or not g_GameOptions.cachemodels_map_can_override then
+		g_MapOptions.cachemodels = g_GameOptions.cachemodels
+	end
 end
 
 
@@ -122,77 +211,22 @@ function loadMap(res)
     g_MapInfo = {}
     g_MapInfo.name      = map.info['name'] or 'unnamed'
     g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
-	g_MapOptions = {}
-	g_MapOptions.duration = map.duration and tonumber(map.duration) > 0 and map.duration*1000 or 600000
-	if g_MapOptions.duration > 86400000 then
-		g_MapOptions.duration = 86400000
-	end
-	g_MapOptions.respawn = map.respawn
-	if not g_MapOptions.respawn or g_MapOptions.respawn ~= 'none' then
-		g_MapOptions.respawn = 'timelimit'
-	end
-	g_MapOptions.respawntime = g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or 5000)
-	g_MapOptions.time = map.time or '12:00'
-	g_MapOptions.weather = map.weather or 0
 
-	g_MapOptions.skins = map.skins or 'cj'
-	g_MapOptions.vehicleweapons = map.vehicleweapons == 'true'
-    g_MapOptions.ghostmode = map.ghostmode == 'true'
-    g_MapOptions.autopimp = map.autopimp == 'true'
-    g_MapOptions.firewater = map.firewater == 'true'
-    g_MapOptions.cachemodels = map.cachemodels == 'true'
-	
-	outputDebug("MISC", "duration = "..g_MapOptions.duration.."  respawn = "..g_MapOptions.respawn.."  respawntime = "..tostring(g_MapOptions.respawntime).."  time = "..g_MapOptions.time.."  weather = "..g_MapOptions.weather)
-	
-	if g_MapOptions.time then
-		setTime(g_MapOptions.time:match('(%d+):(%d+)'))
-	end
-	if g_MapOptions.weather then
-		setWeather(g_MapOptions.weather)
-	end
-	
-    -- Set ghostmode from g_GameOptions if not defined in the map, or map override not allowed
-    if not map.ghostmode or not g_GameOptions.ghostmode_map_can_override then
-        g_MapOptions.ghostmode = g_GameOptions.ghostmode
-    elseif g_GameOptions.ghostmode_warning_if_map_override and g_MapOptions.ghostmode ~= g_GameOptions.ghostmode then
-        if g_MapOptions.ghostmode then
-            outputChatBox( 'Notice: Collisions are turned off for this map' )
-        else
-            outputChatBox( 'Notice: Collisions are turned on for this map' )
-        end
-    end
+	g_SavedMapSettings = {}
+	g_SavedMapSettings.duration			= map.duration
+	g_SavedMapSettings.respawn			= map.respawn
+	g_SavedMapSettings.respawntime		= map.respawntime
+	g_SavedMapSettings.time				= map.time
+	g_SavedMapSettings.weather			= map.weather
+	g_SavedMapSettings.skins			= map.skins
+	g_SavedMapSettings.vehicleweapons	= map.vehicleweapons
+	g_SavedMapSettings.ghostmode		= map.ghostmode
+	g_SavedMapSettings.autopimp			= map.autopimp
+	g_SavedMapSettings.firewater		= map.firewater
+	g_SavedMapSettings.cachemodels		= map.cachemodels
+	g_SavedMapSettings.firewater		= map.firewater
 
-    -- Set skins from g_GameOptions if not defined in the map, or map override not allowed
-    if not map.skins or not g_GameOptions.skins_map_can_override then
-        g_MapOptions.skins = g_GameOptions.skins
-    end
-
-    -- Set vehicleweapons from g_GameOptions if not defined in the map, or map override not allowed
-    if not map.vehicleweapons or not g_GameOptions.vehicleweapons_map_can_override then
-        g_MapOptions.vehicleweapons = g_GameOptions.vehicleweapons
-    elseif g_GameOptions.vehicleweapons_warning_if_map_override and g_MapOptions.vehicleweapons ~= g_GameOptions.vehicleweapons then
-        if g_MapOptions.vehicleweapons then
-            outputChatBox( 'Notice: Vehicle weapons are turned on for this map' )
-        else
-            outputChatBox( 'Notice: Vehicle weapons are turned off for this map' )
-        end
-    end
-
-    -- Set autopimp from g_GameOptions if not defined in the map, or map override not allowed
-    if not map.autopimp or not g_GameOptions.autopimp_map_can_override then
-        g_MapOptions.autopimp = g_GameOptions.autopimp
-    end
-
-    -- Set firewater from g_GameOptions if not defined in the map, or map override not allowed
-    if not map.firewater or not g_GameOptions.firewater_map_can_override then
-        g_MapOptions.firewater = g_GameOptions.firewater
-    end
-
-    -- Set cachemodels from g_GameOptions if not defined in the map, or map override not allowed
-    if not map.cachemodels or not g_GameOptions.cachemodels_map_can_override then
-        g_MapOptions.cachemodels = g_GameOptions.cachemodels
-    end
-
+	cacheMapOptions(g_SavedMapSettings)
 	
 	-- read spawnpoints
 	g_Spawnpoints = map:getAll('spawnpoint')
@@ -718,7 +752,9 @@ addEventHandler('onGamemodeStart', g_ResRoot,
 		scoreboard.addScoreboardColumn('race rank')
 		scoreboard.addScoreboardColumn('checkpoint')
 		scoreboard.addScoreboardColumn('state')
-        cacheGameOptions()
+		if not g_GameOptions then
+	        cacheGameOptions()
+		end
     end
 )
 
