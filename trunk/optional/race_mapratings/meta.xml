@@ -1,10 +1,6 @@
 <meta>
-	<info name="Race Map Ratings" description="Map Ratings plug-in for Race" author="Flobu" type="script" addon="race" version="0.0.1"/>
-
-	<include resource="helpmanager" />
+	<info name="Map Ratings" description="Map Ratings addon for Race" author="Flobu and dragon" type="script" addon="race" version="0.0.2"/>
 
 	<script src="mapratings_server.lua" type="server"/>
-
-	<config src="help.xml" type="client" />
 	
 </meta>

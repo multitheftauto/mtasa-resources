@@ -1,41 +1,20 @@
 local g_Root = getRootElement()
 local g_ResRoot = getResourceRootElement(getThisResource())
-local g_Me = getLocalPlayer()
 
-local p_Killed = false
-local mapMode = ""
+local soundVolume = 0.5
 
 function playAudio(filename)
-	outputDebugString("play sound "..filename)
-	playSound("audio/"..filename)
+	-- outputDebugString("play sound "..filename)
+	local sound = playSound("audio/"..filename)
+	setSoundVolume(sound, soundVolume)
 end
+
 addEvent("playClientAudio", true)
 addEventHandler("playClientAudio", g_Root, playAudio)
-
-addEvent("onClientMapStarting")
-addEventHandler('onClientMapStarting', g_Root,
-	function(mapInfo)
-		mapMode = mapInfo.modename
-	end
-)
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
 		playAudio("raceon.mp3")
-	end
-)
-
-addEventHandler('onClientPlayerWasted', g_Root,
-	function()
-		if source == g_Me then
-			if not p_Killed then
-				if mapMode ~= "Destruction derby" then
-					playAudio("wasted.mp3")
-				end
-			else
-				p_Killed = false
-			end
-		end
 	end
 )
 
@@ -46,14 +25,9 @@ addEventHandler('onClientPlayerOutOfTime', g_Root,
 	end
 )
 
-addCommandHandler('kill',
-    function()
-		p_Killed = true
-    end
-)
-
-bindKey('enter_exit', 'down',
-    function()
-		p_Killed = true
+addCommandHandler("soundvolume",
+    function(cmd, value)
+		soundVolume = value/100
+		outputConsole("set sound volume to "..value.."%")
     end
 )
