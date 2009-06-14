@@ -6,7 +6,7 @@ local mapName
 addEvent('onMapStarting')
 addEventHandler('onMapStarting', g_Root,
 	function(mapInfo)
-		outputDebugString("mapratings: sending data: "..tostring(mapInfo.name))
+		-- outputDebugString("mapratings: sending data: "..tostring(mapInfo.name))
         mapName = mapInfo.name
 		triggerEvent("onSendMapRating", g_Root, getMapRating(mapName) or "unrated")
 	end
@@ -42,10 +42,20 @@ end
 
 addEvent('onPollStarting')
 addEventHandler('onPollStarting', g_Root,
-	function( poll )
+	function(poll)
 		for index, item in ipairs(poll) do
 			local mapname = item[1]
-			local rating = getMapRating(mapname)
+			local rating
+			if mapname == "Play again" then
+                if mapName then
+                    rating = getMapRating(mapName)
+                else
+                    item[1] = nil
+                    break
+                end
+			else
+				rating = getMapRating(mapname)
+			end
 			if rating then
 				mapname = mapname.." ("..(rating.average or "?")..")"
 			end
@@ -76,7 +86,7 @@ addCommandHandler('rate',
 	function(player, cmd, rating)
 		rating = tonumber(rating)
 		if rating then
-			if rating >= 0 and rating <= 10 then 
+			if rating >= 0 and rating <= 10 then
 				updateMapRating(player, mapName, math.floor((rating + 0.005)*100)/100)
 			else
 				outputChatBox("Choose a rating between 0 and 10.", player, 255, 0, 0)

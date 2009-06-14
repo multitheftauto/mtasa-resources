@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race Voice Pack" description="Voice Pack plug-in for Race" author="Flobu" type="script" addon="race" version="0.0.1"/>
+	<info name="Voice Pack" description="Voice Pack addon for Race" author="Flobu and dragon" type="script" addon="race" version="0.0.2"/>
 
 	<script src="voicepack_server.lua" type="server"/>
 	
