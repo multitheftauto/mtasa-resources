@@ -78,11 +78,10 @@ addEventHandler('onGamemodeMapStart', g_Root,
 addEvent ( "onSettingChange" )
 addEventHandler('onSettingChange', g_ResRoot,
 	function(name, value, oldvalue, player)
-		outputDebug( 'MISC', 'Setting changed: ' .. tostring(name) .. '  value:' .. tostring(value) .. '  value:' .. tostring(oldvalue).. '  by:' .. tostring(getPlayerName(player)) )
+		outputDebug( 'MISC', 'Setting changed: ' .. tostring(name) .. '  value:' .. tostring(value) .. '  value:' .. tostring(oldvalue).. '  by:' .. tostring(player and getPlayerName(player) or 'n/a') )
 		cacheGameOptions()
 		if g_SavedMapSettings then
 			cacheMapOptions(g_SavedMapSettings)
-			outputChatBox( tostring(playerName) .. ' xxchanged ' .. tostring(name) .. ' to ' .. tostring(value), g_Root, 0, 240, 0 )
 			clientCall(g_Root,'updateOptions', g_GameOptions, g_MapOptions)
 		end
 	end

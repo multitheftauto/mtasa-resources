@@ -399,7 +399,7 @@ function RaceMode.playerFreeze(player)
     fixVehicle(vehicle)
 	setVehicleFrozen(vehicle, true)
     setVehicleDamageProof(vehicle, true)
-	clientCall(player, 'setElementCollisionsEnabled', vehicle, false)
+	--clientCall(player, 'setElementCollisionsEnabled', vehicle, false)
 end
 
 function RaceMode.playerUnfreeze(player)
@@ -409,7 +409,7 @@ function RaceMode.playerUnfreeze(player)
     setVehicleDamageProof(vehicle, false)
     setVehicleEngineState(vehicle, true)
 	setVehicleFrozen(vehicle, false)
-	clientCall(player, 'setElementCollisionsEnabled', vehicle, true)
+	--clientCall(player, 'setElementCollisionsEnabled', vehicle, true)
 end
 --------------------------------------
 

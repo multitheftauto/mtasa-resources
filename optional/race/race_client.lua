@@ -605,7 +605,7 @@ addCommandHandler('forcecp',
 )
 
 function checkpointReached(elem)
-	outputConsole( 'checkpointReached'
+	outputDebug( 'CP', 'checkpointReached'
 					.. ' ' .. tostring(g_CurrentCheckpoint)
 					.. ' elem:' .. tostring(elem)
 					.. ' g_Vehicle:' .. tostring(g_Vehicle)
