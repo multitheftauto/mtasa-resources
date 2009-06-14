@@ -374,6 +374,7 @@ function restorePlayer(id, player)
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
 	end
     setCameraTarget(player)
+    setElementData(player, "state", "alive")
     clientCall(player, 'remoteSoonFadeIn')
 end
 
@@ -394,7 +395,6 @@ end
 --------------------------------------
 function RaceMode.playerFreeze(player)
     toggleAllControls(player,true)
-	setPedGravity(player, 0.0001)
 	local vehicle = RaceMode.getPlayerVehicle(player)
     fixVehicle(vehicle)
 	setVehicleFrozen(vehicle, true)
@@ -404,7 +404,6 @@ end
 
 function RaceMode.playerUnfreeze(player)
     toggleAllControls(player,true)
-    setPedGravity(player, 0.008)
 	local vehicle = RaceMode.getPlayerVehicle(player)
     fixVehicle(vehicle)
     setVehicleDamageProof(vehicle, false)

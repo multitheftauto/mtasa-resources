@@ -1,6 +1,8 @@
 <help>
-/new         - Start a vote for a new random map
-/rate 0-10   - Rate map (Map Ratings)
+/new                - Start a vote for a new random map
+/rate 0-10          - Rate map (Map Ratings)
+/map                - Show mapinfo (Map Info)
+/soundvolume 0-100  - set soundvolume of the additional sounds (Voice Pack)
 
 Keys
 ----

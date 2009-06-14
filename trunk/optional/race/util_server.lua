@@ -37,6 +37,17 @@ function warpPedIntoVehicle(player, vehicle)
 	end
 end
 
+local _getAlivePlayers = getAlivePlayers
+function getAlivePlayers(player)
+	local result = {}
+	for _,player in ipairs(_getAlivePlayers()) do
+		if getElementData(player, "state") == "alive" then
+			table.insert(result, player)
+		end
+	end
+	return result
+end
+
 g_Messages = {}		-- { player =  { display = display, textitem = textitem, timer = timer } }
 function showMessage(text, r, g, b, player)
     local ypos = 0.25

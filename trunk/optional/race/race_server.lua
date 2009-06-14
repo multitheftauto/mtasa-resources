@@ -3,7 +3,7 @@ g_ResRoot = getResourceRootElement(getThisResource())
 scoreboard = createResourceCallInterface('scoreboard')
 votemanager = createResourceCallInterface('votemanager')
 mapmanager = createResourceCallInterface('mapmanager')
-allowRPC('setElementPosition','setPedGravity' )
+allowRPC('setElementPosition')
 g_MotorBikeIDs = table.create({ 448, 461, 462, 463, 468, 471, 521, 522, 523, 581, 586 }, true)
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_AircraftIDs = table.create({ 592, 577, 511, 548, 512, 593, 425, 520, 417, 487, 553, 488, 497, 563, 476, 447, 519, 460, 469, 513 }, true)
@@ -353,95 +353,105 @@ function joinHandlerBoth(player)
 			return
 		end
 	end
+    local respawn = true
 	local bPlayerJoined = not player
 	if bPlayerJoined then
 		player = source
-	end
+        setElementData(player, "state", "joined")
+	else
+        setElementData(player, "state", "not ready")
+    end
     if not player then
         outputDebug( 'MISC', 'joinHandler: player==nil' )
         return
     end
 
 	table.insert(g_Players, player)
-	
-	local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint(player)
-	
-	local x, y, z = unpack(spawnpoint.position)
-	-- Set random seed dependant on map name, so everyone gets the same models
-    setRandomSeedForMap('clothes')
+    local vehicle
+	if respawn then
+        local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint(player)
+        
+        local x, y, z = unpack(spawnpoint.position)
+        -- Set random seed dependant on map name, so everyone gets the same models
+        setRandomSeedForMap('clothes')
 
-	if g_MapOptions.skins == 'cj' then
-		spawnPlayer(player, x + 4, y, z, 0, 0)
-		
-		local clothes = { [16] = math.random(12, 13), [17] = 7 }    -- 16=Hats(12:helmet 13:moto) 17=Extra(7:garageleg)
-		for vehicles,vehicleclothes in pairs(g_VehicleClothes) do
-			if table.find(vehicles, spawnpoint.vehicle) then
-				for type,index in pairs(vehicleclothes) do
-					clothes[type] = index or nil
-				end
-			end
-		end
-		local texture, model
-		for type,index in pairs(clothes) do
-			texture, model = getClothesByTypeIndex(type, index)
-			addPedClothes(player, texture, model, type)
-		end
-	elseif g_MapOptions.skins == 'random' then
-		repeat until spawnPlayer(player, x + 4, y, z, 0, math.random(9, 288))
-	else
-        local ok
-        for i=1,20 do
-            ok = spawnPlayer(player, x + 4, y, z, 0, getRandomFromRangeList(g_MapOptions.skins))
-            if ok then break end
+        if g_MapOptions.skins == 'cj' then
+            spawnPlayer(player, x + 4, y, z, 0, 0)
+            
+            local clothes = { [16] = math.random(12, 13), [17] = 7 }    -- 16=Hats(12:helmet 13:moto) 17=Extra(7:garageleg)
+            for vehicles,vehicleclothes in pairs(g_VehicleClothes) do
+                if table.find(vehicles, spawnpoint.vehicle) then
+                    for type,index in pairs(vehicleclothes) do
+                        clothes[type] = index or nil
+                    end
+                end
+            end
+            local texture, model
+            for type,index in pairs(clothes) do
+                texture, model = getClothesByTypeIndex(type, index)
+                addPedClothes(player, texture, model, type)
+            end
+        elseif g_MapOptions.skins == 'random' then
+            repeat until spawnPlayer(player, x + 4, y, z, 0, math.random(9, 288))
+        else
+            local ok
+            for i=1,20 do
+                ok = spawnPlayer(player, x + 4, y, z, 0, getRandomFromRangeList(g_MapOptions.skins))
+                if ok then break end
+            end
+            if not ok then
+                spawnPlayer(player, x + 4, y, z, 0, 264)
+            end
         end
-        if not ok then
-            spawnPlayer(player, x + 4, y, z, 0, 264)
-        end
-	end
 
-    setPlayerNotReady( player )
-	setPedStat(player, 160, 1000)
-	setPedStat(player, 229, 1000)
-	setPedStat(player, 230, 1000)
-	
-	local vehicle
-	if spawnpoint.vehicle then
-		local nick = getPlayerName(player)
-        setRandomSeedForMap('vehiclecolors')
-		vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
-		g_Vehicles[player] = vehicle
-        RaceMode.playerFreeze(player)
-        outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
-		if bPlayerJoined and g_CurrentRaceMode.running then
-            unfreezePlayerWhenReady(player)
-		end
-		
-		if spawnpoint.paintjob or spawnpoint.upgrades then
-			setVehiclePaintjobAndUpgrades(vehicle, spawnpoint.paintjob, spawnpoint.upgrades)
-		else
-            if g_MapOptions.autopimp then
-			    pimpVehicleRandom(vehicle)
+        setPlayerNotReady( player )
+        setPedStat(player, 160, 1000)
+        setPedStat(player, 229, 1000)
+        setPedStat(player, 230, 1000)
+        
+        if spawnpoint.vehicle then
+            local nick = getPlayerName(player)
+            setRandomSeedForMap('vehiclecolors')
+            vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
+            g_Vehicles[player] = vehicle
+            RaceMode.playerFreeze(player)
+            outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
+            if bPlayerJoined and g_CurrentRaceMode.running then
+                unfreezePlayerWhenReady(player)
             end
-            if g_GameOptions.vehiclecolors == 'random' then
-                setRandomSeedForMap('vehiclecolors')
-			    local vehicleColorFixed = false
-			    for vehicleID,color in pairs(g_FixedColorVehicles) do
-					if vehicleID == tonumber(spawnpoint.vehicle) then
-						if color then
-							setVehicleColor(vehicle, color[1], color[2], color[3], color[4])
-					    end
-					    vehicleColorFixed = true
-					    break
-				    end
-			    end
-			    if not vehicleColorFixed then
-				    setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
-			    end
+            
+            if spawnpoint.paintjob or spawnpoint.upgrades then
+                setVehiclePaintjobAndUpgrades(vehicle, spawnpoint.paintjob, spawnpoint.upgrades)
+            else
+                if g_MapOptions.autopimp then
+                    pimpVehicleRandom(vehicle)
+                end
+                if g_GameOptions.vehiclecolors == 'random' then
+                    setRandomSeedForMap('vehiclecolors')
+                    local vehicleColorFixed = false
+                    for vehicleID,color in pairs(g_FixedColorVehicles) do
+                        if vehicleID == tonumber(spawnpoint.vehicle) then
+                            if color then
+                                setVehicleColor(vehicle, color[1], color[2], color[3], color[4])
+                            end
+                            vehicleColorFixed = true
+                            break
+                        end
+                    end
+                    if not vehicleColorFixed then
+                        setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
+                    end
+                end
             end
-		end
-		setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)	
-	end
-	
+            setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)	
+        end
+        
+        setPlayerSpectating( player, false )
+        createBlipAttachedTo(player, 0, 1, 200, 200, 200)
+        g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
+    else
+        vehicle = createVehicle(400,0,0,0)
+    end
     -- Tell all clients to re-apply ghostmode settings in 100ms
     setTimer(function() clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode) end, 100, 1 )
 
@@ -449,18 +459,15 @@ function joinHandlerBoth(player)
     local playerInfo = {}
     playerInfo.admin    = isPlayerInACLGroup(player, g_GameOptions.admingroup)
     playerInfo.testing  = _TESTING
+    playerInfo.joined   = bPlayerJoined
 	local duration = bPlayerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
 	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), duration, g_GameOptions, g_MapInfo, playerInfo )
-
-	setPlayerSpectating( player, false )
-	createBlipAttachedTo(player, 0, 1, 200, 200, 200)
-	g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
 
     -- Tell all clients to re-apply ghostmode settings in 1000ms
     setTimer(function() clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode) end, 1000, 1 )
 	
 	if bPlayerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
-		---- Start random map vote if someone joined a lone player mid-race
+		-- Start random map vote if someone joined a lone player mid-race
         setTimer(startMidMapVoteForRandomMap,7000,1)
 	end
 end
@@ -606,6 +613,7 @@ addEventHandler('onPlayerWasted', g_Root,
 					setTimer(warpPedIntoVehicle, 500, 10, source, g_Vehicles[source])
 				end
 			else
+				setElementData(source, "state", "dead")
 				g_CurrentRaceMode:onPlayerWasted(source)
 			end
 		end
@@ -709,6 +717,7 @@ addEventHandler('onGamemodeStart', g_ResRoot,
 	    outputDebugString('Race onGamemodeStart')
 		scoreboard.addScoreboardColumn('race rank')
 		scoreboard.addScoreboardColumn('checkpoint')
+		scoreboard.addScoreboardColumn('state')
         cacheGameOptions()
     end
 )
@@ -721,6 +730,7 @@ addEventHandler('onResourceStop', g_ResRoot,
 		unloadAll()
 		scoreboard.removeScoreboardColumn('race rank')
 		scoreboard.removeScoreboardColumn('checkpoint')
+		scoreboard.removeScoreboardColumn('state')
 	end
 )
 
@@ -741,6 +751,7 @@ addEventHandler('onPlayerQuit', g_Root,
 				return
 			end
 		end
+        
 		if getTotalPlayerCount() < 2 then
 			outputDebugString('Stopping map')
 			triggerEvent('onGamemodeMapStop', g_Root)
@@ -881,6 +892,7 @@ end
 
 -- Alter not ready timeout 
 function setPlayerReady( player )
+	setElementData(player, "state", "alive")
     g_NotReady[player] = false
     g_NotReadyTimeout = getTickCount() + 20000
     if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 10000 end
