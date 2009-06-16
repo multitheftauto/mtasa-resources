@@ -85,13 +85,13 @@ end
 function shiftUpGUI()
 	local i = 1
 	for i=config.lines,2,-1 do
-		local _,y = getWidgetPosition(contentMessages[i-1][1])
-		y = y or (config.startY*screenY + (config.iconHeight*(i-2)) + (config.iconHeight - config.textHeight)/2)
+		local y = config.startY*screenY + (config.iconHeight*(i-1)) + (config.iconHeight - config.textHeight)/2
+		local targetY = config.startY*screenY + (config.iconHeight*(i-2)) + (config.iconHeight - config.textHeight)/2
 		for k,part in ipairs(contentMessages[i]) do
-			local x,y2 = getWidgetPosition(part)
-			y2 = y2 or (config.startY*screenY + (config.iconHeight*(i-1)) + (config.iconHeight - config.textHeight)/2)
-			y2 = y2 - (config.startY*screenY + (config.iconHeight*(i-1)) + (config.iconHeight - config.textHeight)/2)
-			setWidgetPosition(part,x,y + y2)
+			local x,realY = getWidgetPosition(part)
+
+			local diffY = realY - y
+			setWidgetPosition(part,x,targetY + diffY)
 		end
 	end	
 	for i=1,config.lines-1 do
@@ -132,7 +132,7 @@ function outputMessage ( message, r, g, b, font )
 	end
 	
 	for i,part in ipairs(message) do
-		if part[1] == "image" then
+		if type(part) == "table" and part[1] == "image" then
 			if not part.resource and not part.resourceName then
 				part.resource = sourceResource
 			end
@@ -167,21 +167,16 @@ function drawLine ( message, x,y, align, line, r, g, b, font, scale )
 			width = width + iconWidth
 			table.insert ( contentMessages[line], image )
 		elseif part[1] == "image" then
-			-- Can't do this with dx, no resource argument
 			if part.width and part.path then
 				if part.resourceName then
 					part.resource = getResourceFromName(tostring(part.resourceName)) or part.resource
 				end
-				local image = guiCreateStaticImage ( width, y + (part.posOffY or config.iconPosOffY), part.width, part.height or config.iconHeight, part.path, false, false, part.resource or getThisResource() )
-				if image then
-					guiSetProperty(image,"ZOrderChangeEnabled","False")
-					width = width + part.width
-					table.insert ( contentMessages[line], image )
-				end
-			end
-			-- local image = dxImage:create ( icons[part.id] or icons[255], width, y, iconWidths[part.id] or iconWidths[255], 20, false )
-			-- image:color ( part.r or 255, part.g or 255, part.b or 255 )
-			-- image:rotate ( part.rot or 0, part.rotOffX or 0, part.rotOffY or 0 )	
+				local image = dxImage:create ( ":"..getResourceName(part.resource).."/"..part.path, width, y + (part.posOffY or config.iconPosOffY), part.width, part.height or config.iconHeight, false )
+				image:color ( part.r or 255, part.g or 255, part.b or 255 )
+				image:rotation ( part.rot or 0, part.rotOffX or 0, part.rotOffY or 0 )				
+				width = width + part.width
+				table.insert ( contentMessages[line], image )
+			end	
 		elseif part[1] == "color" or part[1] == "colour" then
 			r = part.r or r
 			g = part.g or g
@@ -237,6 +232,7 @@ function destroyLine ( line )
 	for k,part in ipairs(contentMessages[line]) do
 		destroyWidget(part)
 	end
+	contentMessages[line] = {}
 end
 
 function destroyWidget ( widget )
