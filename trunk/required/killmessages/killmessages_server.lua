@@ -135,7 +135,7 @@ function outputKillMessage ( killed, wr,wg,wb,killer,kr,kg,kb,weapon,width,resou
 		outputDebugString ( "outputKillMessage - Invalid 'wasted' player specified",0,0,0,100)
 		return false
 	end
-	triggerClientEvent(getRootElement(),"onClientPlayerKillMessage",killed,killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
+	return triggerClientEvent(getRootElement(),"onClientPlayerKillMessage",killed,killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
 end
 
 function outputMessage ( message, visibleTo, r, g, b, font )
@@ -150,7 +150,7 @@ function outputMessage ( message, visibleTo, r, g, b, font )
 	--Turn any resources into resource names
 	if type(message) == "table" then
 		for i,part in ipairs(message) do
-			if part[1] == "image" then
+			if type(part) == "table" and part[1] == "image" then
 				if part.resource then
 					message[i].resourceName = getResourceName(part.resource)
 				else

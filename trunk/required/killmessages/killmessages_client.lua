@@ -49,7 +49,7 @@ function outputKillMessage ( source, wr,wg,wb,killer,kr,kg,kb,weapon,width,resou
 	if not killerName then
 		killerName = ""
 	end
-	outputMessage ( {killerName, {"padding",width=3}, {"icon",id=weapon},
+	return outputMessage ( {killerName, {"padding",width=3}, {"icon",id=weapon},
 		{"padding",width=3},{"color",r=wr,g=wg,b=wb}, wastedName},
 		kr,kg,kb )
 end
