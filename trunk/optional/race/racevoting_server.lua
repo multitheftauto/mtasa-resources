@@ -9,6 +9,50 @@ local lastVoteStarterName = ''
 local lastVoteStarterCount = 0
 
 ----------------------------------------------------------------------------
+-- outputHilariarseMessage
+--
+-- Comedy gold
+----------------------------------------------------------------------------
+function outputHilariarseMessage( player )
+	if not player then
+		lastVoteStarterName = ''
+	else
+		local playerName = getPlayerName(player)
+		local msg = ''
+		if playerName == lastVoteStarterName then
+			lastVoteStarterCount = lastVoteStarterCount + 1
+			if lastVoteStarterCount == 5 then
+				msg = playerName .. ' started a vote. Hardly a suprise.'
+			elseif lastVoteStarterCount == 10 then
+				msg = 'Guess what! '..playerName .. ' started ANOTHER vote!'
+			elseif lastVoteStarterCount < 5 then
+				msg = playerName .. ' started another vote.'
+			else
+				msg = playerName .. ' continues to abuse the vote system.'
+			end
+		else
+			lastVoteStarterCount = 0
+			lastVoteStarterName = playerName
+			msg = playerName .. ' started a vote.'
+		end
+		outputVoteManager( msg )
+	end
+end
+
+
+----------------------------------------------------------------------------
+-- outputKillerPunchLine
+--
+-- Sewing kits available in the foyer
+----------------------------------------------------------------------------
+function outputKillerPunchLine( player )
+	if lastVoteStarterName ~= '' then
+		outputVoteManager( 'Offical news: Everybody hates ' .. lastVoteStarterName )
+	end
+end
+
+
+----------------------------------------------------------------------------
 -- startMidMapVoteForRandomMap
 --
 -- Start the vote menu if during a race and more than a minute from the end
@@ -16,62 +60,32 @@ local lastVoteStarterCount = 0
 ----------------------------------------------------------------------------
 function startMidMapVoteForRandomMap(player)
 
-    -- Check state and race time left
-    if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 30000 then
-        if player then
-            outputConsole( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
-        end 
-        return
-    end
+	-- Check state and race time left
+	if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 30000 then
+		if player then
+			outputVoteManager( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
+		end 
+		return
+	end
 
-    -- 'Hilariarse' messages
-    if player then
+	outputHilariarseMessage( player )
+	votemanager.stopPoll()
 
-        local playerName = getPlayerName(player)
+	-- Actual vote started here
+	local pollDidStart = exports.votemanager:startPoll {
+			title='Do you want to change to a random map?',
+			percentage=51,
+			timeout=15,
+			allowchange=true,
+			visibleTo=getRootElement(),
+			[1]={'Yes', 'midMapVoteResult', getRootElement(), true},
+			[2]={'No', 'midMapVoteResult', getRootElement(), false;default=true},
+	}
 
-        local msg = ''
-
-        if playerName == lastVoteStarterName then
-            lastVoteStarterCount = lastVoteStarterCount + 1
-            if lastVoteStarterCount == 5 then
-                msg = playerName .. ' started a vote. Hardly a suprise.'
-            elseif lastVoteStarterCount == 10 then
-                msg = 'Guess what! '..playerName .. ' started ANOTHER vote!'
-            elseif lastVoteStarterCount < 5 then
-                msg = playerName .. ' started another vote.'
-            else
-                msg = playerName .. ' continues to abuse the vote system.'
-            end
-        else
-            lastVoteStarterCount = 0
-            lastVoteStarterName = playerName
-            msg = playerName .. ' started a vote.'
-        end
-
-        outputVoteManager( msg )
-    end
-
-    if not player then
-        lastVoteStarterName = ''
-    end
-
-    votemanager.stopPoll()
-
-    -- Actual vote started here
-    local pollDidStart = exports.votemanager:startPoll {
-           title='Do you want to change to a random map?',
-           percentage=51,
-           timeout=15,
-           allowchange=true,
-           visibleTo=getRootElement(),
-           [1]={'Yes', 'midMapVoteResult', getRootElement(), true},
-           [2]={'No', 'midMapVoteResult', getRootElement(), false;default=true},
-    }
-
-    -- Change state if vote did start
-    if pollDidStart then
-        gotoState('MidMapVote')
-    end
+	-- Change state if vote did start
+	if pollDidStart then
+		gotoState('MidMapVote')
+	end
 
 end
 addCommandHandler('new',startMidMapVoteForRandomMap)
@@ -85,19 +99,18 @@ addCommandHandler('new',startMidMapVoteForRandomMap)
 addEvent('midMapVoteResult')
 addEventHandler('midMapVoteResult', getRootElement(),
 	function( votedYes )
-        -- Change state back
-        if stateAllowsRandomMapVoteResult() then
-            gotoState('Running')
-            if votedYes then
-                startRandomMap()
-            else
-                if lastVoteStarterName ~= '' then
-                    outputVoteManager( 'Offical news: Everybody hates ' .. lastVoteStarterName )
-                end
-            end
-        end
+		-- Change state back
+		if stateAllowsRandomMapVoteResult() then
+			gotoState('Running')
+			if votedYes then
+				startRandomMap()
+			else
+				outputKillerPunchLine()
+			end
+		end
 	end
 )
+
 
 
 ----------------------------------------------------------------------------
@@ -107,30 +120,30 @@ addEventHandler('midMapVoteResult', getRootElement(),
 ----------------------------------------------------------------------------
 function startRandomMap()
 
-    -- Get all maps
-    local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(getThisResource())
+	-- Get all maps
+	local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(getThisResource())
 
-    -- Remove current one
-    for i,map in ipairs(compatibleMaps) do
-        local name = getResourceName(map)
-        if name == g_MapInfo.resname then
-	        table.removevalue(compatibleMaps, map)
-            break
-        end
-    end
+	-- Remove current one
+	for i,map in ipairs(compatibleMaps) do
+		local name = getResourceName(map)
+		if name == g_MapInfo.resname then
+			table.removevalue(compatibleMaps, map)
+			break
+		end
+	end
 
-    -- Remove all but one
-    math.randomseed(getTickCount())
-    repeat
-	    table.remove(compatibleMaps, math.random(1, #compatibleMaps))
-    until #compatibleMaps < 2
+	-- Remove all but one
+	math.randomseed(getTickCount())
+	repeat
+		table.remove(compatibleMaps, math.random(1, #compatibleMaps))
+	until #compatibleMaps < 2
 
-    -- If we have one, launch it!
-    if #compatibleMaps == 1 then
-        exports.mapmanager:changeGamemodeMap ( compatibleMaps[1] )
-    else
-        outputWarning( 'startRandomMap failed' )
-    end
+	-- If we have one, launch it!
+	if #compatibleMaps == 1 then
+		exports.mapmanager:changeGamemodeMap ( compatibleMaps[1] )
+	else
+		outputWarning( 'startRandomMap failed' )
+	end
 end
 
 
@@ -161,7 +174,6 @@ end
 --
 --
 
-local numPollOptions = 0
 local g_Poll
 
 ----------------------------------------------------------------------------
@@ -172,10 +184,10 @@ local g_Poll
 ----------------------------------------------------------------------------
 function startNextMapVote()
 
-    votemanager.stopPoll()
+	votemanager.stopPoll()
 
-    -- Get all maps
-    local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(getThisResource())
+	-- Get all maps
+	local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(getThisResource())
 	
 	-- limit it to eight random maps
 	if #compatibleMaps > 8 then
@@ -187,20 +199,20 @@ function startNextMapVote()
 		return false, errorCode.onlyOneCompatibleMap
 	end
 
-    -- mix up the list order
-    for i,map in ipairs(compatibleMaps) do
-        local swapWith = math.random(1, #compatibleMaps)
-        local temp = compatibleMaps[i]
-        compatibleMaps[i] = compatibleMaps[swapWith]
-        compatibleMaps[swapWith] = temp
-    end
+	-- mix up the list order
+	for i,map in ipairs(compatibleMaps) do
+		local swapWith = math.random(1, #compatibleMaps)
+		local temp = compatibleMaps[i]
+		compatibleMaps[i] = compatibleMaps[swapWith]
+		compatibleMaps[swapWith] = temp
+	end
 	
 	local poll = {
 		title="Choose the next map:",
 		visibleTo=getRootElement(),
 		percentage=51,
 		timeout=15,
-        adjustwidth=100,
+		adjustwidth=100,
 		allowchange=true;
 		}
 	
@@ -220,15 +232,14 @@ function startNextMapVote()
 	poll = g_Poll
 	g_Poll = nil
 
-	numPollOptions = #poll - 1
 	local pollDidStart = exports.votemanager:startPoll(poll)
 
 	if pollDidStart then
-        gotoState('NextMapVote')
+		gotoState('NextMapVote')
 		addEventHandler("onPollEnd", getRootElement(), chooseRandomMap)
 	end
 
-    return pollDidStart
+	return pollDidStart
 end
 
 
@@ -260,12 +271,87 @@ end
 addEvent('nextMapVoteResult')
 addEventHandler('nextMapVoteResult', getRootElement(),
 	function( map )
-        if stateAllowsNextMapVoteResult() then
-            exports.mapmanager:changeGamemodeMap ( map )
-        end
+		if stateAllowsNextMapVoteResult() then
+			exports.mapmanager:changeGamemodeMap ( map )
+		end
 	end
 )
 
+
+
+----------------------------------------------------------------------------
+-- startMidMapVoteForRestartMap
+--
+-- Start the vote menu to restart the current map if during a race
+-- No messages if this was not started by a player
+----------------------------------------------------------------------------
+function startMidMapVoteForRestartMap(player)
+
+	-- Check state and race time left
+	if not stateAllowsRandomMapVote() then
+		if player then
+			outputVoteManager( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
+		end 
+		return
+	end
+
+	outputHilariarseMessage( player )
+	votemanager.stopPoll()
+
+	-- Actual vote started here
+	local pollDidStart = exports.votemanager:startPoll {
+			title='Do you want to restart/n the current map?',
+			percentage=51,
+			timeout=15,
+			allowchange=true,
+			visibleTo=getRootElement(),
+			[1]={'Yes', 'midMapRestartVoteResult', getRootElement(), true},
+			[2]={'No', 'midMapRestartVoteResult', getRootElement(), false;default=true},
+	}
+
+	-- Change state if vote did start
+	if pollDidStart then
+		gotoState('MidMapVote')
+	end
+
+end
+addCommandHandler('voteredo',startMidMapVoteForRestartMap)
+
+
+----------------------------------------------------------------------------
+-- event midMapRestartVoteResult
+--
+-- Called from the votemanager when the poll has completed
+----------------------------------------------------------------------------
+addEvent('midMapRestartVoteResult')
+addEventHandler('midMapRestartVoteResult', getRootElement(),
+	function( votedYes )
+		-- Change state back
+		if stateAllowsRandomMapVoteResult() then
+			gotoState('Running')
+			if votedYes then
+				exports.mapmanager:changeGamemodeMap ( exports.mapmanager:getRunningGamemodeMap() )
+			else
+				outputKillerPunchLine()
+			end
+		end
+	end
+)
+
+addCommandHandler('redo',
+	function( player, command, value )
+		if isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+			local currentMap = exports.mapmanager:getRunningGamemodeMap()
+			if currentMap then
+				exports.mapmanager:changeGamemodeMap (currentMap)
+			else
+				outputVoteManager("You can't restart the map because no map is running", player)
+			end
+		else
+			outputVoteManager("You are not an Admin", player)
+		end
+	end
+)
 
 ---------------------------------------------------------------------------
 --
@@ -275,10 +361,10 @@ addEventHandler('nextMapVoteResult', getRootElement(),
 --
 ---------------------------------------------------------------------------
 addCommandHandler('forcevote',
-    function( player, command, value )
+	function( player, command, value )
 		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
-        startNextMapVote()
-    end
+		startNextMapVote()
+	end
 )
