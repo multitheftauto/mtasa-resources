@@ -4,6 +4,13 @@ missionTimers = {}
 bool = { [false]=true, [true]=true }
 addEvent ( "onClientMissionTimerElapsed", true )
 
+addEventHandler("onClientResourceStart",resourceRoot,
+	function()
+		triggerServerEvent ( "onClientMissionTimerDownloaded", getLocalPlayer() )
+	end
+)
+
+
 function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale )
 	sourceResource = sourceResource or thisResource
 	local element = createElement ( "missiontimer" )
@@ -40,7 +47,7 @@ end
 function getMissionTimerTime ( timer )
 	if missionTimers[timer] then
 		if missionTimers[timer].countdown then
-			return math.min(missionTimers[timer].duration - (getTickCount() - missionTimers[timer].originalTick),0)
+			return math.max(missionTimers[timer].duration - (getTickCount() - missionTimers[timer].originalTick),0)
 		else
 			return (getTickCount() - missionTimers[timer].originalTick)
 		end
