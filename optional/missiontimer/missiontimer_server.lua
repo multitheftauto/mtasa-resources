@@ -8,9 +8,8 @@ function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
 	--Setup data
-	missionTimers[element] = {}
-	missionTimers[element].duration = duration
-	missionTimers[element].countdown = countdown
+	missionTimers[element] = { duration = duration, countdown = countdown, showCS, x = x, y = y,
+								bg = bg, font = font, scale = scale }
 	missionTimers[element].originalTick = getTickCount()
 	--
 	missionTimers[element].timer = setTimer ( timeElapsed, duration, 1, element )
@@ -33,7 +32,7 @@ end
 function getMissionTimerTime ( timer )
 	if missionTimers[timer] then
 		if missionTimers[timer].countdown then
-			return math.min(missionTimers[timer].duration - (getTickCount() - missionTimers[timer].originalTick),0)
+			return math.max(missionTimers[timer].duration - (getTickCount() - missionTimers[timer].originalTick),0)
 		else
 			return (getTickCount() - missionTimers[timer].originalTick)
 		end
@@ -80,5 +79,13 @@ end
 
 function timeElapsed ( timer )
 	triggerEvent ( "onMissionTimerElapsed", timer )
-	--triggerClientEvent ( "onClientMissionTimerElapsed", timer )
 end
+
+addEvent("onClientMissionTimerDownloaded",true)
+addEventHandler ( "onClientMissionTimerDownloaded", root, 
+	function()
+		for timer,data in pairs(missionTimers) do
+			triggerClientEvent ( "setupNewMissionTimer", timer, getMissionTimerTime(timer), data.countdown, data.showCS, data.x, data.y, data.bg, data.font, data.scale )
+		end
+	end
+)
