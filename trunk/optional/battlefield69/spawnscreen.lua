@@ -315,7 +315,7 @@ end
 				mapbase = guiCreateScrollPane ( 0.30, 0.10, 0.675, 0.8, true, spawnForm)
 				map1 = guiCreateStaticImage ( 0, 0, 1, 1, "map.png", true, mapbase )
 				addEventHandler ( "onClientGUIClick", map1, mapEnlarge, false )
-				map = guiCreateStaticImage (0, 0, 1, 1, specialimage, true, map1, mapresource)
+				map = guiCreateStaticImage (0, 0, 1, 1, ":"getResourceName(mapresource).."/"..specialimage, true, map1 )
 			else
 				mapbase = guiCreateScrollPane ( 0.30, 0.10, 0.675, 0.8, true, spawnForm)
 				map = guiCreateStaticImage ( 0, 0, 1, 1, "map.png", true, mapbase )
