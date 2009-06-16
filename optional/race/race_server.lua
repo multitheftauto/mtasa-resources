@@ -1043,7 +1043,7 @@ function startAddons()
 				else
 					-- Start or restart resource
 					if getResourceState(resource) == 'running' then
-						restartResource(resource)
+						-- restartResource(resource)
 					else
 						startResource(resource)
 					end
