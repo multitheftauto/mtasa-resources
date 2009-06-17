@@ -1,6 +1,7 @@
 local localPlayer = getLocalPlayer()
 local driver = false
 local shooting = false
+local helpText,helpAnimation
 lastSlot = 0
 settings = {}
 
@@ -24,9 +25,15 @@ addEventHandler( "onClientPlayerVehicleEnter", localPlayer, setupDriveby )
 --Tell the server the clientside script was downloaded and started
 addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()),
 	function()
+		bindKey ( "mouse2", "down", "Toggle Driveby", "" )
+		bindKey ( "e", "down", "Next driveby weapon", "1" )
+		bindKey ( "q", "down", "Previous driveby weapon", "-1" )
 		toggleControl ( "vehicle_next_weapon",false )
 		toggleControl ( "vehicle_previous_weapon",false )
 		triggerServerEvent ( "driveby_clientScriptLoaded", localPlayer )
+		helpText = dxText:create("",0.5,0.85)
+		helpText:scale(1)
+		helpText:type("stroke",1)
 	end
 )
 
@@ -48,9 +55,6 @@ addEventHandler("doSendDriveBySettings",localPlayer,
 			newTable[vehicleID] = true
 		end
 		settings.blockedVehicles = newTable
-		bindKey( settings.key_toggleDriveby, "down", toggleDriveby )
-		bindKey( settings.key_nextWeapon, "down", switchDrivebyWeapon,1 )
-		bindKey( settings.key_prevWeapon, "down", switchDrivebyWeapon,-1 )
 	end
 )
 
@@ -104,6 +108,13 @@ function toggleDriveby()
 		toggleControl ( "vehicle_secondary_fire",false )
 		toggleTurningKeys(vehicleID,false)
 		addEventHandler ( "onClientPlayerVehicleExit",localPlayer,removeKeyToggles )
+		local prevw,nextw = next(getBoundKeys ( "Previous driveby weapon" )),next(getBoundKeys ( "Next driveby weapon" ))
+		if prevw and nextw then
+			if animation then Animation:remove() end
+			helpText:text( "Press '"..prevw.."' or '"..nextw.."' to change weapon" )
+			fadeInHelp()
+			setTimer ( fadeOutHelp, 10000, 1 )
+		end
 	else
 		--If so, unequip it
 		setPedDoingGangDriveby ( localPlayer, false )
@@ -113,21 +124,26 @@ function toggleDriveby()
 		toggleControl ( "vehicle_look_right",true )
 		toggleControl ( "vehicle_secondary_fire",true )
 		toggleTurningKeys(vehicleID,true)
+		fadeOutHelp()
 		removeEventHandler ( "onClientPlayerVehicleExit",localPlayer,removeKeyToggles )
 	end
 end
+addCommandHandler ( "Toggle Driveby", toggleDriveby )
 
 function removeKeyToggles(vehicle)
 	toggleControl ( "vehicle_look_left",true )
 	toggleControl ( "vehicle_look_right",true )
 	toggleControl ( "vehicle_secondary_fire",true )
 	toggleTurningKeys(getElementModel(vehicle),true)
+	fadeOutHelp()
 	removeEventHandler ( "onClientPlayerVehicleExit",localPlayer,removeKeyToggles )
 end
 
 
 --This function handles the driveby switch weapon key
-function switchDrivebyWeapon(key,state,progress)
+function switchDrivebyWeapon(key,progress)
+	progress = tonumber(progress)
+	if not progress then return end
 	--If the fire button is being pressed dont switch
 	if shooting then return end
 	--If he's not in a vehicle dont bother
@@ -176,6 +192,8 @@ function switchDrivebyWeapon(key,state,progress)
 	setPedWeaponSlot( localPlayer, switchTo )
 	limitDrivebySpeed ( switchToWeapon )
 end
+addCommandHandler ( "Next driveby weapon", switchDrivebyWeapon )
+addCommandHandler ( "Previous driveby weapon", switchDrivebyWeapon )
 
 --Here lies the stuff that limits shooting speed (so slow weapons dont shoot ridiculously fast)
 local limiterTimer
@@ -248,3 +266,18 @@ function toggleTurningKeys(vehicleID, state)
 	end
 end
 	
+function fadeInHelp()
+	if helpAnimation then helpAnimation:remove() end
+	local _,_,_,a = helpText:color()
+	if a == 255 then return end
+	helpAnimation = Animation.createAndPlay(helpText, Animation.presets.dxTextFadeIn(300))
+	setTimer ( function() helpText:color(255,255,255,255) end, 300, 1 )
+end
+
+function fadeOutHelp()
+	if helpAnimation then helpAnimation:remove() end
+	local _,_,_,a = helpText:color()
+	if a == 0 then return end
+	helpAnimation = Animation.createAndPlay(helpText, Animation.presets.dxTextFadeOut(300))
+	setTimer ( function() helpText:color(255,255,255,0) end, 300, 1 )
+end

@@ -3,6 +3,12 @@
 	<script src="driveby_client.lua" type="client" />
 	<script src="exports_client.lua" type="client" />
 	<script src="driveby_server.lua" type="server" />
+	
+	<!--utils-->
+	<script src="utils/textlib.lua" type="client" />
+	<script src="utils/client_anim.lua" type="client" />
+	<script src="utils/textlib_anim.lua" type="client" />
+	
 	<settings>
 		<!--Weapon ids that the driver can use.  For no weapons just use "[[ ]]"-->
 		<setting name="driveby_driver" value="[[ 22,23,24,26,28,29,32 ]]"/>
@@ -12,15 +18,6 @@
 		
 		<!--Defines the shot delay for individual weapons that arent meant for driveby, in the format of 'weapon':time(ms)-->
 		<setting name="driveby_shot_delay" value="[{ '22':300,'23':300,'24':800,'26':700 }]"/>
-		
-		<!--The default key used to toggle driveby mode-->
-		<setting name="driveby_toggle_mode" value="mouse2"/>
-		
-		<!--The default key used to change to next driveby weapon-->
-		<setting name="driveby_next_weapon" value="vehicle_look_right"/>
-
-		<!--The default key used to change to previous driveby weapon-->
-		<setting name="driveby_prev_weapon" value="vehicle_look_left"/>
 		
 		<!--Vehicles that cannot be drivebyd inside-->
 		<setting name="driveby_blocked_vehicles" value="[[ 432,601,437,431,592,553,577,488,497,548,563,512,476,447,425,519,520,460,417,469,487,513,441,464,501,465,564,538,449,537,539,570472,473,493,595,484,430,453,452,446,454,606,591,607,611,610,590,569,611,435,608,584,450 ]]"/>
