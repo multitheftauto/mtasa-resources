@@ -272,8 +272,8 @@
 <interiorReturn	refid="POLICE3"	posX="288.75"	posY="167.65"	posZ="1006.18"	rotation="180"	interior="3"	dimension="0"	/>
 <interiorEntry	id="POLICE4"	posX="2286.96"	posY="2432.21"	posZ="9.9369"	rotation="0"	dimension="0"	interior="0"	/>
 <interiorReturn	refid="POLICE4"	posX="238.66"	posY="139.35"	posZ="1002.05"	rotation="180"	interior="3"	dimension="0"	/>
-<interiorEntry	id="RCPLAY"	posX="-2242.01"	posY="128.521"	posZ="34.4174"	rotation="325"	dimension="0"	interior="0"	/>
-<interiorReturn	refid="RCPLAY"	posX="-2241.07"	posY="128.52"	posZ="1034.42"	rotation="90"	interior="6"	dimension="0"	/>
+<interiorEntry	id="RCPLAY"	posX="-2242.01"	posY="128.521"	posZ="34.4174"	rotation="94"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="RCPLAY"	posX="-2241.07"	posY="128.52"	posZ="1034.42"	rotation="270"	interior="6"	dimension="0"	/>
 <interiorEntry	id="REST2"	posX="-857.938"	posY="1535.56"	posZ="21.6348"	rotation="180"	dimension="0"	interior="0"	/>
 <interiorReturn	refid="REST2"	posX="441.98"	posY="-49.92"	posZ="998.69"	rotation="323"	interior="6"	dimension="0"	/>
 <interiorEntry	id="REST2 (2)"	posX="-1887.43"	posY="749.592"	posZ="44.4658"	rotation="180"	dimension="0"	interior="0"	/>
