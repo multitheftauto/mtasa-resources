@@ -20,6 +20,7 @@ function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale
 end
 
 function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, font, scale )
+	if missionTimers[element] then return end
 	addEventHandler ( "onClientElementDestroy", element, onMissionTimerDestroy )
 	missionTimers[element] = {}
 	missionTimers[element].x = tonumber(x) or 0
