@@ -29,13 +29,14 @@ function changeGamemode(gamemode, map)
 	if currentGamemode then
 		nextGamemode = gamemode
 		nextGamemodeMap = map
-		return stopGamemode()
-	else
-		startGamemode(gamemode)
-		if map then
-			changeGamemodeMap(map)
-		end
+		stopGamemode()
 		return true
+	else
+		local result = startGamemode(gamemode)
+		if map then
+			 result = changeGamemodeMap(map)
+		end
+		return result
 	end
 end
 
@@ -75,7 +76,8 @@ function changeGamemodeMap(map, gamemode)
 		
 		if currentGamemodeMap then
 			nextGamemodeMap = map
-			return stopGamemodeMap()
+			stopGamemodeMap()
+			return true
 		else
 			return startGamemodeMap(map)
 		end

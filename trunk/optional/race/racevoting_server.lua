@@ -9,11 +9,11 @@ local lastVoteStarterName = ''
 local lastVoteStarterCount = 0
 
 ----------------------------------------------------------------------------
--- outputHilariarseMessage
+-- displayHilariarseMessage
 --
 -- Comedy gold
 ----------------------------------------------------------------------------
-function outputHilariarseMessage( player )
+function displayHilariarseMessage( player )
 	if not player then
 		lastVoteStarterName = ''
 	else
@@ -35,19 +35,19 @@ function outputHilariarseMessage( player )
 			lastVoteStarterName = playerName
 			msg = playerName .. ' started a vote.'
 		end
-		outputVoteManager( msg )
+		outputRace( msg )
 	end
 end
 
 
 ----------------------------------------------------------------------------
--- outputKillerPunchLine
+-- displayKillerPunchLine
 --
 -- Sewing kits available in the foyer
 ----------------------------------------------------------------------------
-function outputKillerPunchLine( player )
+function displayKillerPunchLine( player )
 	if lastVoteStarterName ~= '' then
-		outputVoteManager( 'Offical news: Everybody hates ' .. lastVoteStarterName )
+		outputRace( 'Offical news: Everybody hates ' .. lastVoteStarterName )
 	end
 end
 
@@ -63,12 +63,12 @@ function startMidMapVoteForRandomMap(player)
 	-- Check state and race time left
 	if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 30000 then
 		if player then
-			outputVoteManager( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
+			outputRace( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
 		end 
 		return
 	end
 
-	outputHilariarseMessage( player )
+	displayHilariarseMessage( player )
 	votemanager.stopPoll()
 
 	-- Actual vote started here
@@ -105,7 +105,7 @@ addEventHandler('midMapVoteResult', getRootElement(),
 			if votedYes then
 				startRandomMap()
 			else
-				outputKillerPunchLine()
+				displayKillerPunchLine()
 			end
 		end
 	end
@@ -126,7 +126,7 @@ function startRandomMap()
 	-- Remove current one
 	for i,map in ipairs(compatibleMaps) do
 		local name = getResourceName(map)
-		if name == g_MapInfo.resname then
+		if g_MapInfo and name == g_MapInfo.resname then
 			table.removevalue(compatibleMaps, map)
 			break
 		end
@@ -140,7 +140,9 @@ function startRandomMap()
 
 	-- If we have one, launch it!
 	if #compatibleMaps == 1 then
-		exports.mapmanager:changeGamemodeMap ( compatibleMaps[1] )
+		if not exports.mapmanager:changeGamemodeMap ( compatibleMaps[1] ) then
+			problemChangingMap()
+		end
 	else
 		outputWarning( 'startRandomMap failed' )
 	end
@@ -148,13 +150,13 @@ end
 
 
 ----------------------------------------------------------------------------
--- outputVoteManager
+-- outputRace
 --
--- Same color as votemanager
+-- Race color is defined in the settings
 ----------------------------------------------------------------------------
-function outputVoteManager(message, toElement)
+function outputRace(message, toElement)
 	toElement = toElement or g_Root
-	local r, g, b = getColorFromString(string.upper(get('votemanager.color')))
+	local r, g, b = getColorFromString(string.upper(get("color")))
 	if getElementType(toElement) == 'console' then
 		outputServerLog(message)
 	else
@@ -163,6 +165,25 @@ function outputVoteManager(message, toElement)
 			outputServerLog(message)
 		end
 	end
+end
+
+
+----------------------------------------------------------------------------
+-- problemChangingMap
+--
+-- Sort it
+----------------------------------------------------------------------------
+function problemChangingMap()
+	outputRace( 'Changing to random map in 5 seconds' )
+	local currentMap = exports.mapmanager:getRunningGamemodeMap()
+	setTimer(
+        function()
+			-- Check that something else hasn't already changed the map
+			if currentMap == exports.mapmanager:getRunningGamemodeMap() then
+	            startRandomMap()
+			end
+        end,
+        math.random(4500,5500), 1 )
 end
 
 
@@ -272,7 +293,9 @@ addEvent('nextMapVoteResult')
 addEventHandler('nextMapVoteResult', getRootElement(),
 	function( map )
 		if stateAllowsNextMapVoteResult() then
-			exports.mapmanager:changeGamemodeMap ( map )
+			if not exports.mapmanager:changeGamemodeMap ( map ) then
+				problemChangingMap(map)
+			end
 		end
 	end
 )
@@ -290,12 +313,12 @@ function startMidMapVoteForRestartMap(player)
 	-- Check state and race time left
 	if not stateAllowsRandomMapVote() then
 		if player then
-			outputVoteManager( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
+			outputRace( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
 		end 
 		return
 	end
 
-	outputHilariarseMessage( player )
+	displayHilariarseMessage( player )
 	votemanager.stopPoll()
 
 	-- Actual vote started here
@@ -330,9 +353,11 @@ addEventHandler('midMapRestartVoteResult', getRootElement(),
 		if stateAllowsRandomMapVoteResult() then
 			gotoState('Running')
 			if votedYes then
-				exports.mapmanager:changeGamemodeMap ( exports.mapmanager:getRunningGamemodeMap() )
+				if not exports.mapmanager:changeGamemodeMap ( exports.mapmanager:getRunningGamemodeMap() ) then
+					problemChangingMap()
+				end
 			else
-				outputKillerPunchLine()
+				displayKillerPunchLine()
 			end
 		end
 	end
@@ -343,12 +368,14 @@ addCommandHandler('redo',
 		if isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			local currentMap = exports.mapmanager:getRunningGamemodeMap()
 			if currentMap then
-				exports.mapmanager:changeGamemodeMap (currentMap)
+				if not exports.mapmanager:changeGamemodeMap (currentMap) then
+					problemChangingMap()
+				end
 			else
-				outputVoteManager("You can't restart the map because no map is running", player)
+				outputRace("You can't restart the map because no map is running", player)
 			end
 		else
-			outputVoteManager("You are not an Admin", player)
+			outputRace("You are not an Admin", player)
 		end
 	end
 )

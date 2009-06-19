@@ -131,7 +131,19 @@ function stateAllowsPostFinish()
     if currentRaceStateName == 'PostFinish'         then    return false     end
     if currentRaceStateName == 'NextMapSelect'      then    return false     end
     if currentRaceStateName == 'NextMapVote'        then    return false     end
-    return true
+	if currentRaceStateName == 'LoadingMap'			then	return false	end
+	return true
+end
+
+
+----------------------------------------------------------------------------
+-- stateAllowsNextMapSelect
+--
+-- Check if the current state allows the NextMapSelect state to to entered
+----------------------------------------------------------------------------
+function stateAllowsNextMapSelect()
+	if currentRaceStateName == 'PostFinish'			then	return true		end
+	return false
 end
 
 

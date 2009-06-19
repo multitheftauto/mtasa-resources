@@ -89,14 +89,16 @@ function RaceMode.endMap()
 end
 
 function RaceMode.startNextMapSelect()
-    gotoState('NextMapSelect')
-    Countdown.destroyAll()
-    destroyAllMessages()
-    if g_GameOptions.randommaps then
-        startRandomMap()
-    else
-        startNextMapVote()
-    end
+	if stateAllowsNextMapSelect() then
+		gotoState('NextMapSelect')
+		Countdown.destroyAll()
+		destroyAllMessages()
+		if g_GameOptions.randommaps then
+			startRandomMap()
+		else
+			startNextMapVote()
+		end
+	end
 end
 
 -- Default functions
@@ -119,7 +121,7 @@ end
 
 function RaceMode:launch()
 	self.startTick = getTickCount()
-	for i,spawnpoint in ipairs(RaceMode.getSpawnpoints()) do
+	for _,spawnpoint in ipairs(RaceMode.getSpawnpoints()) do
 		spawnpoint.used = nil
 	end
 end
@@ -274,7 +276,7 @@ function distanceFromVehicleToSpawnpoint(vehicle, spawnpoint)
 	    local x, y, z = getElementPosition(vehicle)
 	    return getDistanceBetweenPoints3D(x, y, z, unpack(spawnpoint.position))
     end
-    return 10
+    return 0
 end
 
 function getSpaceAroundSpawnpoint(ignore,spawnpoint)
