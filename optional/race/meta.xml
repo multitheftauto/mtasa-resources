@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r215 14Jun09" edf:definition="race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r216 18Jun09" edf:definition="race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -79,6 +79,11 @@
 				3. select Resources tab
 				4. double click on 'race'
 			 ***************************************************** -->
+
+		<setting name="*color" value="#D27350"
+					accept="*"
+					desc="Color of the Race chat box messages."
+					/>
 
 		<setting name="*hurrytime" value="15"
 					accept="0-120"

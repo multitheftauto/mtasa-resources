@@ -62,17 +62,21 @@ addEventHandler('onGamemodeMapStart', g_Root,
 			outputDebugString('Unloading previous map')
 			unloadAll()
 		end
-		if not loadMap(mapres) then
-            -- Select another map on load error
-            RaceMode.startNextMapSelect()
-			return
-		end
-		g_CurrentRaceMode = RaceMode.getApplicableMode():create()
-		g_MapInfo.modename  = g_CurrentRaceMode:getName()
-		outputDebugString('Loaded race mode ' .. g_MapInfo.modename)
-		startRace()
+		setTimer(doLoadMap,50,1,mapres)
 	end
 )
+-- continue loading map after onGamemodeMapStart has completed
+function doLoadMap(mapres)
+	if not loadMap(mapres) then
+        -- Select another map on load error
+        problemChangingMap()
+		return
+	end
+	g_CurrentRaceMode = RaceMode.getApplicableMode():create()
+	g_MapInfo.modename  = g_CurrentRaceMode:getName()
+	outputDebugString('Loaded race mode ' .. g_MapInfo.modename)
+	startRace()
+end
 
 -- Called from the admin panel when a setting is changed there
 addEvent ( "onSettingChange" )
@@ -205,7 +209,14 @@ function loadMap(res)
         outputChatBox( 'Error loading map ' .. tostring(getResourceName(res)) )
 		return false
 	end
-	
+	local numSpawnPoints = #map:getAll('spawnpoint')
+	if getTotalPlayerCount() > numSpawnPoints then
+		-- unload map xml
+		map:unload()
+		outputRace( (numSpawnPoints).." or less players are required to start '"..tostring(getResourceName(res)).."'" )
+		return false
+	end
+
 	-- set options
     g_MapInfo = {}
     g_MapInfo.name      = map.info['name'] or 'unnamed'

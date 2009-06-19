@@ -314,7 +314,9 @@ addCommandHandler("maps",outputMapListToConsole)
 function startGamemode(gamemode)
 	if not startResource(gamemode) then
 		error("mapmanager: gamemode resource could not be started.", 2)
+		return false
 	end
+	return true
 end
 
 function startGamemodeT(gamemode)
@@ -324,7 +326,9 @@ end
 function startGamemodeMap(map)
 	if not startResource(map) then
 		error("mapmanager: map resource could not be started.", 2)
+		return false
 	end
+	return true
 end
 
 function startGamemodeMapT(map)
@@ -365,12 +369,12 @@ function doesMapSupportPlayerCount( map )
 	
 	local playersIn = getPlayerCount()
 	if minPlayers and minPlayers > playersIn then
-		outputMapManager( "More than "..(minPlayers).." are required to start '"..mapName.."'" )
+		outputMapManager( (minPlayers).." or more players are required to start '"..mapName.."'" )
 		return false
 	end
 	
 	if maxPlayers and maxPlayers < playersIn then
-		outputMapManager( "Less than "..(maxPlayers).." are required to start '"..mapName.."'" )
+		outputMapManager( (maxPlayers).." or less players are required to start '"..mapName.."'" )
 		return false
 	end
 		
