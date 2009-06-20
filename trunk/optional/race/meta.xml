@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r228 18Jun09" edf:definition="race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r229 19Jun09" edf:definition="race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -81,79 +81,109 @@
 			 ***************************************************** -->
 
 		<setting name="*color" value="#D27350"
+					friendlyname="Message color"
+					group="Display"
 					accept="*"
+					examples="#FF0000,#776655"
 					desc="Color of the Race chat box messages."
 					/>
 
 		<setting name="*hurrytime" value="15"
+					friendlyname="Hurry time"
 					accept="0-120"
+					group="Gameplay"
 					desc="Display HURRY! message this many seconds before the time runs out."
 					/>
 
 		<setting name="*timeafterfirstfinish" value="30"
+					friendlyname="Finish race time"
 					accept="0-120"
+					group="Gameplay"
 					desc="The number of seconds the race continues for after someone wins."
 					/>
 
 		<setting name="*respawntime" value="5"
+					friendlyname="Respawn time"
 					accept="0-60"
+					group="Gameplay"
 					desc="Default respawn time if one is not set in the map."
 					/>
 
 		<setting name="*ghostmode" value="false"
+					friendlyname="Ghost mode"
 					accept="false,true"
+					group="Gameplay"
 					desc="Set to true to disable collisions."
 					/>
 
         <setting name="*ghostalpha" value="false"
+					friendlyname="Ghost alpha"
 					accept="false,true"
+					group="Graphics"
 					desc="Set to true to make vehicle semi-transparent when collisions are disabled."
 					/>
 
         <setting name="*randommaps" value="false"
+					friendlyname="Random maps"
 					accept="false,true"
+					group="Gameplay"
 					desc="Set to true to make the next map selection automatic."
 					/>
 
         <setting name="#statskey" value="name"
 					accept="name,serial"
+					group="none"
 					desc="To identify players for stats."
 					/>
 
         <setting name="*vehiclecolors" value="random"
+					friendlyname="Vehicle colors"
 					accept="file,random"
+					group="Graphics"
 					desc="Set to file to use the server file: mods\deathmatch\vehiclecolors.conf"
 					/>
 
         <setting name="*skins" value="cj"
+					friendlyname="Driver skin"
+					group="Graphics"
 					accept="*"
-					example="cj,random,7 10 16-20 15"
+					examples="cj,random,7 10 16-20 15"
 					desc="Choose a driver skin. Acceptable values can be 'cj' or 'random' or a range list like this:'7 10 16-20 15'"
 					/>
 
         <setting name="*vehicleweapons" value="true"
+					friendlyname="Vehicle weapons"
+					group="Gameplay"
 					accept="false,true"
 					desc="Set to true to allow vehicle weapons."
 					/>
 
         <setting name="*autopimp" value="true"
+					friendlyname="Auto pimp"
+					group="Graphics"
 					accept="false,true"
 					desc="Set to true to apply a selection of visual upgrades to vehicles."
 					/>
 
         <setting name="*firewater" value="false"
+					friendlyname="Fire water"
+					group="Graphics"
 					accept="false,true"
 					desc="Set to true to explode the player when entering the water."
 					/>
 
         <setting name="*cachemodels" value="true"
+					friendlyname="Cache models"
+					group="_Advanced"
 					accept="false,true"
 					desc="Advanced setting to reduce lag-stutter effect. It should usually be enabled here, and disabled in each map that has problems being displayed correctly."
 					/>
 
 		<setting name="*admingroup" value="Admin"
+					friendlyname="Admin group"
+					group="_Advanced"
 					accept="*"
-					example="Admin,Moderator,SuperModerator"
+					examples="Admin,Moderator,SuperModerator"
 					desc="The name of the group to which the player must belong to issue certain commands"
 					/>
 
@@ -163,24 +193,28 @@
 					/>
 
 		<setting name="*blur" value="36"
+					friendlyname="Blur level"
+					group="Display"
 					accept="0-36"
 					desc="Set to 0 to turn off blur."
 					/>
 
 		<setting name="*clouds" value="true"
+					friendlyname="Clouds enable"
+					group="Display"
 					accept="false,true"
 					desc="Set to false to turn off clouds."
 					/>
 
-        <setting name="*ghostmode_map_can_override" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
-        <setting name="*skins_map_can_override" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
-		<setting name="*vehicleweapons_map_can_override" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
-		<setting name="*autopimp_map_can_override" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
-		<setting name="*firewater_map_can_override" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
-		<setting name="*cachemodels_map_can_override" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
+        <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
+		<setting name="*skins_map_can_override"  friendlyname="Driver skin map override" group="Graphics" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
+		<setting name="*vehicleweapons_map_can_override"  friendlyname="Vehicle weapons map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
+		<setting name="*autopimp_map_can_override"  friendlyname="Auto pimp map override" group="Graphics" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
+		<setting name="*firewater_map_can_override"  friendlyname="Firewater map override" group="Graphics" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
+		<setting name="*cachemodels_map_can_override"  friendlyname="Cache models map override" group="_Advanced" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
 
-		<setting name="*ghostmode_warning_if_map_override" value="true" accept="false,true" desc="Set to true to issue a warning to players in the chatbox, if the map overrides this setting"/>
-		<setting name="*vehicleweapons_warning_if_map_override" value="true" accept="false,true" desc="Set to true to issue a warning to players in the chatbox, if the map overrides this setting"/>
+		<setting name="*ghostmode_warning_if_map_override"  friendlyname="Ghost mode override warning" group="Gameplay" value="true" accept="false,true" desc="Set to true to issue a warning to players in the chatbox, if the map overrides this setting"/>
+		<setting name="*vehicleweapons_warning_if_map_override"  friendlyname="Vehicle weapons override warning" group="Gameplay" value="true" accept="false,true" desc="Set to true to issue a warning to players in the chatbox, if the map overrides this setting"/>
     </settings>
 
 

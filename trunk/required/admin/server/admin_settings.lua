@@ -58,6 +58,11 @@ function aGetResourceSettings( resName )
 			if value.current == nil then
 				tableOut[name].current = value.default
 			end
+			tableOut[name].friendlyname	= get( resName .. '.' .. name .. '.friendlyname' )
+			tableOut[name].group		= get( resName .. '.' .. name .. '.group' )
+			tableOut[name].accept		= get( resName .. '.' .. name .. '.accept' )
+			tableOut[name].examples		= get( resName .. '.' .. name .. '.examples' )
+			tableOut[name].desc			= get( resName .. '.' .. name .. '.desc' )
 		end
 	end
 	return tableOut
