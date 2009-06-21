@@ -829,9 +829,9 @@ function Spectate.setTarget( player )
 		local x,y,z = getElementPosition(g_Me)
 		x = x - ( x % 32 )
 		y = y - ( y % 32 )
-		z = 50
+		z = getGroundPosition ( x, y, 5000 ) or 40
 		setCameraTarget( g_Me )
-		setCameraMatrix( x,y,z,x,y+50,z+50)
+		setCameraMatrix( x,y,z+10,x,y+50,z+60)
 		guiSetText(g_GUI.speclabel, 'Currently spectating:\n No one to spectate')
 	end
 end
@@ -907,7 +907,7 @@ function MovePlayerAway.update(nozcheck)
 	end
 	setElementHealth( g_Me, 90 )
 
-	if camTarget ~= getCameraTarget() then
+	if camTarget and camTarget ~= getCameraTarget() then
 		setCameraTarget(camTarget)
 	end
 end

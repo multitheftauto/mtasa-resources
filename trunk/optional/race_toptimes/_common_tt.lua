@@ -1,35 +1,58 @@
 --
 -- common_tt.lua
---   Common setting for server and client
+--	Common setting for server and client
 --
 
---_DEBUG_LOG = {'UNDEF','MISC','OPTIMIZATION','TOPTIMES','STATE','JOINER','TIMER'}   -- More logging
-_TESTING = true             -- Any user can issue test commands
+--_DEBUG_LOG = {'UNDEF','MISC','OPTIMIZATION','TOPTIMES','STATE','JOINER','TIMER'}	-- More logging
+_TESTING = true			 -- Any user can issue test commands
 
 
 ---------------------------------------------------------------------------
 -- Math extentions
 ---------------------------------------------------------------------------
 function math.lerp(from,to,alpha)
-    return from + (to-from) * alpha
+	return from + (to-from) * alpha
 end
 
 function math.clamp(low,value,high)
-    return math.max(low,math.min(value,high))
+	return math.max(low,math.min(value,high))
 end
 
 function math.wrap(low,value,high)
-    while value > high do
-        value = value - (high-low)
-    end
-    while value < low do
-        value = value + (high-low)
-    end
-    return value
+	while value > high do
+		value = value - (high-low)
+	end
+	while value < low do
+		value = value + (high-low)
+	end
+	return value
 end
 
 function math.wrapdifference(low,value,other,high)
-    return math.wrap(low,value-other,high)+other
+	return math.wrap(low,value-other,high)+other
+end
+
+-- curve is { {x1, y1}, {x2, y2}, {x3, y3} ... }
+function math.evalCurve( curve, input )
+	-- First value
+	if input<curve[1][1] then
+		return curve[1][2]
+	end
+	-- Interp value
+	for idx=2,#curve do
+		if input<curve[idx][1] then
+			local x1 = curve[idx-1][1]
+			local y1 = curve[idx-1][2]
+			local x2 = curve[idx][1]
+			local y2 = curve[idx][2]
+			-- Find pos between input points
+			local alpha = (input - x1)/(x2 - x1);
+			-- Map to output points
+			return math.lerp(y1,y2,alpha)
+		end
+	end
+	-- Last value
+	return curve[#curve][2]
 end
 ---------------------------------------------------------------------------
 
@@ -231,18 +254,18 @@ function table.each(t, index, callback, ...)
 end
 
 function table.insertUnique(t,val)
-    if not table.find(t, val) then
-        table.insert(t,val)
-    end
+	if not table.find(t, val) then
+		table.insert(t,val)
+	end
 end
 
 function table.popLast(t,val)
-    if #t==0 then
-        return false
-    end
-    local last = t[#t]
-    table.remove(t)
-    return last
+	if #t==0 then
+		return false
+	end
+	local last = t[#t]
+	table.remove(t)
+	return last
 end
 ---------------------------------------------------------------------------
 
@@ -272,7 +295,7 @@ function msToTimeStr(ms)
 end
 
 function getTickTimeStr()
-    return msToTimeStr(getTickCount())
+	return msToTimeStr(getTickCount())
 end
 ---------------------------------------------------------------------------
 
@@ -305,55 +328,55 @@ Timer.instances = {}
 
 -- Create a Timer instance
 function Timer:create()
-    local id = #Timer.instances + 1
-    Timer.instances[id] = setmetatable(
-        {
-            id = id,
-            timer = nil,      -- Actual timer
-        },
-        self
-    )
-    return Timer.instances[id]
+	local id = #Timer.instances + 1
+	Timer.instances[id] = setmetatable(
+		{
+			id = id,
+			timer = nil,		-- Actual timer
+		},
+		self
+	)
+	return Timer.instances[id]
 end
 
 -- Destroy a Timer instance
 function Timer:destroy()
-    self:killTimer()
-    Timer.instances[self.id] = nil
-    self.id = 0
+	self:killTimer()
+	Timer.instances[self.id] = nil
+	self.id = 0
 end
 
 -- Check if timer is valid
 function Timer:isActive()
-    return self.timer ~= nil
+	return self.timer ~= nil
 end
 
 -- killTimer
 function Timer:killTimer()
-    if self.timer then
-        killTimer( self.timer )
-        self.timer = nil
-    end
+	if self.timer then
+		killTimer( self.timer )
+		self.timer = nil
+	end
 end
 
 -- setTimer
 function Timer:setTimer( theFunction, timeInterval, timesToExecute, ... )
-    self:killTimer()
-    self.fn = theFunction
-    self.count = timesToExecute
-    self.args = { ... }
-    self.timer = setTimer( function() self:handleFunctionCall() end, timeInterval, timesToExecute )
+	self:killTimer()
+	self.fn = theFunction
+	self.count = timesToExecute
+	self.args = { ... }
+	self.timer = setTimer( function() self:handleFunctionCall() end, timeInterval, timesToExecute )
 end
 
 function Timer:handleFunctionCall()
-    self.fn(unpack(self.args))
-    -- Delete reference to timer if there are no more repeats
-    if self.count > 0 then
-        self.count = self.count - 1
-        if self.count == 0 then
-            self.timer = nil
-        end
-    end
+	self.fn(unpack(self.args))
+	-- Delete reference to timer if there are no more repeats
+	if self.count > 0 then
+		self.count = self.count - 1
+		if self.count == 0 then
+			self.timer = nil
+		end
+	end
 end
 
 ---------------------------------------------------------------------------

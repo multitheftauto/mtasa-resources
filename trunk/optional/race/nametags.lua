@@ -35,7 +35,7 @@ end
 addEventHandler ( "onClientRender", g_Root,
 	function()
 		-- Hideous quick fix --
-		for i,player in ipairs(getElementsByType"player") do
+		for i,player in ipairs(g_Players) do
 			if player ~= g_Me then
 				setPlayerNametagShowing ( player, false )
 				if not nametags[player] then
@@ -61,9 +61,9 @@ addEventHandler ( "onClientRender", g_Root,
 					local scale = 1/(NAMETAG_SCALE * (pdistance / NAMETAG_DISTANCE))
 					local alpha = ((pdistance - NAMETAG_ALPHA_DISTANCE) / NAMETAG_ALPHA_DIFF)
 					alpha = (alpha < 0) and NAMETAG_ALPHA or NAMETAG_ALPHA-(alpha*NAMETAG_ALPHA)
-					scale = evalCurve(maxScaleCurve,scale)
-					local textscale = evalCurve(textScaleCurve,scale)
-					local textalpha = evalCurve(textAlphaCurve,alpha)
+					scale = math.evalCurve(maxScaleCurve,scale)
+					local textscale = math.evalCurve(textScaleCurve,scale)
+					local textalpha = math.evalCurve(textAlphaCurve,alpha)
 					local outlineThickness = NAMETAG_OUTLINE_THICKNESS*(scale)
 					--Draw our text
 					local r,g,b = 255,255,255
@@ -101,31 +101,6 @@ addEventHandler ( "onClientRender", g_Root,
 	end
 )
 
-
-------------------------------------------------------------------------
-
--- curve is { {x1, y1}, {x2, y2}, {x3, y3} ... }
-function evalCurve( curve, input )
-	-- First value
-	if input<curve[1][1] then
-		return curve[1][2]
-	end
-	-- Interp value
-	for idx=2,#curve do
-		if input<curve[idx][1] then
-			local x1 = curve[idx-1][1]
-			local y1 = curve[idx-1][2]
-			local x2 = curve[idx][1]
-			local y2 = curve[idx][2]
-			-- Find pos between input points
-			local alpha = (input - x1)/(x2 - x1);
-			-- Map to output points
-			return math.lerp(y1,y2,alpha)
-		end
-	end
-	-- Last value
-	return curve[#curve][2]
-end
 
 ---------------THE FOLLOWING IS THE MANAGEMENT OF NAMETAGS-----------------
 addEventHandler('onClientResourceStart', g_ResRoot,

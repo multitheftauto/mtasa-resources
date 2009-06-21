@@ -18,26 +18,26 @@ SToptimesManager.instances = {}
 addEvent('onMapStarting')
 addEventHandler('onMapStarting', g_Root,
 	function(mapInfo, mapOptions, gameOptions)
-        if g_SToptimesManager then
-		    g_SToptimesManager:setModeAndMap( mapInfo.modename, mapInfo.name, type(gameOptions)=='table' and gameOptions.statsKey or statsKey )
-        end
+		if g_SToptimesManager then
+			g_SToptimesManager:setModeAndMap( mapInfo.modename, mapInfo.name, type(gameOptions)=='table' and gameOptions.statsKey or statsKey )
+		end
 	end
 )
 
 addEvent('onPlayerFinish')
 addEventHandler('onPlayerFinish', g_Root,
 	function(rank, time)
-        if g_SToptimesManager then
-		    g_SToptimesManager:playerFinished( source, time)
-	    end
+		if g_SToptimesManager then
+			g_SToptimesManager:playerFinished( source, time)
+		end
 	end
 )
 
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
-        if g_SToptimesManager then
-    		g_SToptimesManager:unloadingMap()
-	    end
+		if g_SToptimesManager then
+			g_SToptimesManager:unloadingMap()
+		end
 	end
 )
 
@@ -61,21 +61,21 @@ addEvent("onPlayerToptimeImprovement")
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:create()
-    local id = #SToptimesManager.instances + 1
-    SToptimesManager.instances[id] = setmetatable(
-        {
-            id = id,
-            playersWhoWantUpdates   = {},
-            updateQueue             = {},
-            serviceQueueTimer       = nil,
-            displayTopCount         = 8,       -- Top number of times to display
-            mapTimes                = nil,      -- SMaptimes:create()
-            serverRevision          = 0,        -- To prevent redundant updating to clients
-        },
-        self
-    )
-    SToptimesManager.instances[id]:postCreate()
-    return SToptimesManager.instances[id]
+	local id = #SToptimesManager.instances + 1
+	SToptimesManager.instances[id] = setmetatable(
+		{
+			id = id,
+			playersWhoWantUpdates	= {},
+			updateQueue			 = {},
+			serviceQueueTimer		= nil,
+			displayTopCount		 = 8,		-- Top number of times to display
+			mapTimes				= nil,		-- SMaptimes:create()
+			serverRevision			= 0,		-- To prevent redundant updating to clients
+		},
+		self
+	)
+	SToptimesManager.instances[id]:postCreate()
+	return SToptimesManager.instances[id]
 end
 
 
@@ -87,8 +87,8 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:destroy()
-    SToptimesManager.instances[self.id] = nil
-    self.id = 0
+	SToptimesManager.instances[self.id] = nil
+	self.id = 0
 end
 
 
@@ -100,6 +100,8 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:postCreate()
+	cacheSettings()
+	self.displayTopCount = g_Settings.numtimes
 end
 
 
@@ -111,28 +113,28 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:setModeAndMap( raceModeName, mapName, statsKey )
-    outputDebug( 'TOPTIMES', 'SToptimesManager:setModeAndMap ' .. raceModeName .. '<>' .. mapName )
+	outputDebug( 'TOPTIMES', 'SToptimesManager:setModeAndMap ' .. raceModeName .. '<>' .. mapName )
 
-    -- Reset updatings from the previous map
-    self.playersWhoWantUpdates = {}
-    self.updateQueue = {}
-    if self.serviceQueueTimer then
-        killTimer(self.serviceQueueTimer)
-    end
-    self.serviceQueueTimer = nil
+	-- Reset updatings from the previous map
+	self.playersWhoWantUpdates = {}
+	self.updateQueue = {}
+	if self.serviceQueueTimer then
+		killTimer(self.serviceQueueTimer)
+	end
+	self.serviceQueueTimer = nil
 
-    -- Remove old map times
-    if self.mapTimes then
-        self.mapTimes:flush()   -- Ensure last stuff is saved
-        self.mapTimes:destroy()
-    end
+	-- Remove old map times
+	if self.mapTimes then
+		self.mapTimes:flush()	-- Ensure last stuff is saved
+		self.mapTimes:destroy()
+	end
 
-    -- Get map times for this map
-    self.mapTimes = SMaptimes:create( raceModeName, mapName, statsKey )
-    self.mapTimes:load()
+	-- Get map times for this map
+	self.mapTimes = SMaptimes:create( raceModeName, mapName, statsKey )
+	self.mapTimes:load()
 
-    -- Get the toptimes data ready to send
-    self:updateTopText()
+	-- Get the toptimes data ready to send
+	self:updateTopText()
 end
 
 
@@ -144,9 +146,9 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:unloadingMap()
-    if self.mapTimes then
-        self.mapTimes:flush()   -- Ensure last stuff is saved
-    end
+	if self.mapTimes then
+		self.mapTimes:flush()	-- Ensure last stuff is saved
+	end
 end
 
 
@@ -164,35 +166,35 @@ function SToptimesManager:playerFinished( player, newTime, dateRecorded )
 		return
 	end
 
-    dateRecorded = dateRecorded or getRealDateTimeNowString()
+	dateRecorded = dateRecorded or getRealDateTimeNowString()
 
-    local oldTime	= self.mapTimes:getTimeForPlayer( player )    -- Can be false if no previous time
-    local newPos	= self.mapTimes:getPositionForTime( newTime, dateRecorded )
+	local oldTime	= self.mapTimes:getTimeForPlayer( player )	-- Can be false if no previous time
+	local newPos	= self.mapTimes:getPositionForTime( newTime, dateRecorded )
 
-    -- See if time is an improvement for this player
-    if not oldTime or newTime < oldTime then
+	-- See if time is an improvement for this player
+	if not oldTime or newTime < oldTime then
 
-		local oldPos    = self.mapTimes:getIndexForPlayer( player )
+		local oldPos	= self.mapTimes:getIndexForPlayer( player )
 		triggerEvent("onPlayerToptimeImprovement", player, newPos, newTime, oldPos, oldTime, self.displayTopCount, self.mapTimes:getValidEntryCount() )
 
-        -- See if its in the top display
-        if newPos <= self.displayTopCount then
-            outputDebug( 'TOPTIMES', getPlayerName(player) .. ' got toptime position ' .. newPos )
-        end
+		-- See if its in the top display
+		if newPos <= self.displayTopCount then
+			outputDebug( 'TOPTIMES', getPlayerName(player) .. ' got toptime position ' .. newPos )
+		end
 
-        if oldTime then
-            outputDebug( 'TOPTIMES', getPlayerName(player) .. ' new personal best ' .. newTime .. ' ' .. oldTime - newTime )
-        end
+		if oldTime then
+			outputDebug( 'TOPTIMES', getPlayerName(player) .. ' new personal best ' .. newTime .. ' ' .. oldTime - newTime )
+		end
 
-        self.mapTimes:setTimeForPlayer( player, newTime, dateRecorded )
+		self.mapTimes:setTimeForPlayer( player, newTime, dateRecorded )
 
-        -- updateTopText if database was changed
-        if newPos <= self.displayTopCount then
-            self:updateTopText()
-        end
-    end
+		-- updateTopText if database was changed
+		if newPos <= self.displayTopCount then
+			self:updateTopText()
+		end
+	end
 
-    outputDebug( 'TOPTIMES', '++ SToptimesManager:playerFinished ' .. tostring(getPlayerName(player)) .. ' time:' .. tostring(newTime) )
+	outputDebug( 'TOPTIMES', '++ SToptimesManager:playerFinished ' .. tostring(getPlayerName(player)) .. ' time:' .. tostring(newTime) )
 end
 
 
@@ -204,16 +206,17 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:updateTopText()
-    -- Update data
+	if not self.mapTimes then return end
+	-- Update data
 
-    -- Read top rows from map toptimes table and send to all players who want to know
-    self.toptimesDataForMap = self.mapTimes:getToptimes( self.displayTopCount )
-    self.serverRevision = self.serverRevision + 1
+	-- Read top rows from map toptimes table and send to all players who want to know
+	self.toptimesDataForMap = self.mapTimes:getToptimes( self.displayTopCount )
+	self.serverRevision = self.serverRevision + 1
 
-    -- Queue send to all players
-    for i,player in ipairs(self.playersWhoWantUpdates) do
-        self:queueUpdate(player)
-    end
+	-- Queue send to all players
+	for i,player in ipairs(self.playersWhoWantUpdates) do
+		self:queueUpdate(player)
+	end
 end
 
 
@@ -225,19 +228,19 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:onServiceQueueTimer()
-    outputDebug( 'TOPTIMES', 'SToptimesManager:onServiceQueueTimer()' )
-    -- Process next player
-    if #self.updateQueue > 0 and self.mapTimes then
-        local player = self.updateQueue[1]
-        local playerPosition = self.mapTimes:getIndexForPlayer( player )
-        clientCall( player, 'onServerSentToptimes', self.toptimesDataForMap, self.serverRevision, playerPosition );
-    end
-    table.remove(self.updateQueue,1)
-    -- Stop timer if end of update queue
-    if #self.updateQueue < 1 then
-        killTimer(self.serviceQueueTimer)
-        self.serviceQueueTimer = nil
-    end
+	outputDebug( 'TOPTIMES', 'SToptimesManager:onServiceQueueTimer()' )
+	-- Process next player
+	if #self.updateQueue > 0 and self.mapTimes then
+		local player = self.updateQueue[1]
+		local playerPosition = self.mapTimes:getIndexForPlayer( player )
+		clientCall( player, 'onServerSentToptimes', self.toptimesDataForMap, self.serverRevision, playerPosition );
+	end
+	table.remove(self.updateQueue,1)
+	-- Stop timer if end of update queue
+	if #self.updateQueue < 1 then
+		killTimer(self.serviceQueueTimer)
+		self.serviceQueueTimer = nil
+	end
 end
 
 
@@ -249,14 +252,14 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:addPlayerToUpdateList( player )
-    if not table.find( self.playersWhoWantUpdates, player) then
-        table.insert( self.playersWhoWantUpdates, player )
-        outputDebug( 'TOPTIMES', 'playersWhoWantUpdates : ' .. #self.playersWhoWantUpdates )
-    end
+	if not table.find( self.playersWhoWantUpdates, player) then
+		table.insert( self.playersWhoWantUpdates, player )
+		outputDebug( 'TOPTIMES', 'playersWhoWantUpdates : ' .. #self.playersWhoWantUpdates )
+	end
 end
 
 function SToptimesManager:removePlayerFromUpdateList( player )
-    table.removevalue( self.playersWhoWantUpdates, player )
+	table.removevalue( self.playersWhoWantUpdates, player )
 end
 
 
@@ -268,18 +271,18 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:queueUpdate( player )
-    if not table.find( self.updateQueue, player) then
-        table.insert( self.updateQueue, player )
-    end
+	if not table.find( self.updateQueue, player) then
+		table.insert( self.updateQueue, player )
+	end
 
-    if not self.serviceQueueTimer then
-        self.serviceQueueTimer = setTimer( function() self:onServiceQueueTimer() end, 100, 0 )
-    end
+	if not self.serviceQueueTimer then
+		self.serviceQueueTimer = setTimer( function() self:onServiceQueueTimer() end, 100, 0 )
+	end
 end
 
 
 function SToptimesManager:unqueueUpdate( player )
-    table.removevalue( self.updateQueue, player )
+	table.removevalue( self.updateQueue, player )
 end
 
 
@@ -291,19 +294,19 @@ end
 --
 ---------------------------------------------------------------------------
 function SToptimesManager:doOnClientRequestToptimesUpdates( player, bOn, clientRevision )
-    outputDebug( 'TOPTIMES', 'SToptimesManager:onClientRequestToptimesUpdates: '
-            .. tostring(getPlayerName(player)) .. '<>' .. tostring(bOn) .. '< crev:'
-            .. tostring(clientRevision) .. '< srev:' .. tostring(self.serverRevision) )
-    if bOn then
-        self:addPlayerToUpdateList(player)
-        if clientRevision ~= self.serverRevision then
-            outputDebug( 'TOPTIMES', 'queueUpdate for'..getPlayerName(player) )
-            self:queueUpdate(player)
-        end
-    else
-        self:removePlayerFromUpdateList(player)
-        self:unqueueUpdate(player)
-    end
+	outputDebug( 'TOPTIMES', 'SToptimesManager:onClientRequestToptimesUpdates: '
+			.. tostring(getPlayerName(player)) .. '<>' .. tostring(bOn) .. '< crev:'
+			.. tostring(clientRevision) .. '< srev:' .. tostring(self.serverRevision) )
+	if bOn then
+		self:addPlayerToUpdateList(player)
+		if clientRevision ~= self.serverRevision then
+			outputDebug( 'TOPTIMES', 'queueUpdate for'..getPlayerName(player) )
+			self:queueUpdate(player)
+		end
+	else
+		self:removePlayerFromUpdateList(player)
+		self:unqueueUpdate(player)
+	end
 
 end
 
@@ -311,34 +314,50 @@ end
 addEvent('onClientRequestToptimesUpdates', true)
 addEventHandler('onClientRequestToptimesUpdates', getRootElement(),
 	function( bOn, clientRevision )
-        g_SToptimesManager:doOnClientRequestToptimesUpdates( source, bOn, clientRevision )
+		g_SToptimesManager:doOnClientRequestToptimesUpdates( source, bOn, clientRevision )
 	end
 )
 
 
-
 ---------------------------------------------------------------------------
 --
--- Testing
+-- Settings
 --
 --
 --
 ---------------------------------------------------------------------------
+function cacheSettings()
+	g_Settings = {}
+	g_Settings.numtimes		= getNumber('numtimes',8)
+	g_Settings.startshow	= getBool('startshow',false)
+	g_Settings.hotkey		= getString('hotkey','F5')
+	g_Settings.gui_x		= getNumber('gui_x',0.56)
+	g_Settings.gui_y		= getNumber('gui_y',0.02)
+end
 
-addCommandHandler('settopcount',
-    function( player, command, value )
-		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
-			return
+-- React to admin panel changes
+addEvent ( "onSettingChange" )
+addEventHandler('onSettingChange', g_ResRoot,
+	function(name, oldvalue, value, playeradmin)
+		outputDebug( 'MISC', 'Setting changed: ' .. tostring(name) .. '  value:' .. tostring(value) .. '  value:' .. tostring(oldvalue).. '  by:' .. tostring(player and getPlayerName(player) or 'n/a') )
+		cacheSettings()
+		-- Update here
+		if g_SToptimesManager then
+			g_SToptimesManager.displayTopCount = g_Settings.numtimes
+			g_SToptimesManager:updateTopText()
 		end
-        value = tonumber(value)
-        if value > 0 then
-            value = math.max( 1, math.min( value, 50 ) )
-            if value ~= g_SToptimesManager.displayTopCount then
-                g_SToptimesManager.displayTopCount = value
-                g_SToptimesManager:updateTopText()
-            end
-        end
-    end
+		-- Update clients
+		clientCall(g_Root,'updateSettings', g_Settings, playeradmin)
+	end
+)
+
+-- New player joined
+addEvent('onLoadedAtClient_tt', true)
+addEventHandler('onLoadedAtClient_tt', g_Root,
+	function()
+		-- Tell newly joined client current settings
+		clientCall(source,'updateSettings', g_Settings)
+	end
 )
 
 

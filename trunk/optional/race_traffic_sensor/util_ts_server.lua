@@ -6,11 +6,11 @@ g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 
 function clientCall(player, fnName, ...)
-    triggerClientEvent(onlyJoined(player), 'onClientCall_rts', player, fnName, ...)
+	triggerClientEvent(onlyJoined(player), 'onClientCall_rts', player, fnName, ...)
 end
 
 function onlyJoined(player)
-    return player
+	return player
 end
 
 
@@ -56,38 +56,38 @@ end
 -- Debug
 
 function outputDebug( chan, msg )
-    if _DEBUG_LOG then
-        if not msg then
-            msg = chan
-            chan = 'UNDEF'
-        end
-        if table.find(_DEBUG_LOG,chan) then
-            outputDebugString( getTickTimeStr() .. ' DEBUG_rts: ' .. msg )
-        end
-    end
-    if g_PipeDebugTo then
-        if not table.find(getElementsByType('player'), g_PipeDebugTo) then
-            outputWarning( 'cleared g_PipeDebugTo' )
-            g_PipeDebugTo = nil
-        else
-            outputConsole( getTickTimeStr() .. ' DEBUG_rts: ' .. (msg or chan), g_PipeDebugTo )
-        end
-    end
+	if _DEBUG_LOG then
+		if not msg then
+			msg = chan
+			chan = 'UNDEF'
+		end
+		if table.find(_DEBUG_LOG,chan) then
+			outputDebugString( getTickTimeStr() .. ' DEBUG_rts: ' .. msg )
+		end
+	end
+	if g_PipeDebugTo then
+		if not table.find(getElementsByType('player'), g_PipeDebugTo) then
+			outputWarning( 'cleared g_PipeDebugTo' )
+			g_PipeDebugTo = nil
+		else
+			outputConsole( getTickTimeStr() .. ' DEBUG_rts: ' .. (msg or chan), g_PipeDebugTo )
+		end
+	end
 end
 
 
 -- Always send to server window
 -- and all client consoles
 function outputWarning( msg )
-    outputDebugString( getTickTimeStr() .. ' WARNING_rts: ' .. msg )
-    outputConsole( getTickTimeStr() .. ' WARNING_rts: ' .. msg )
+	outputDebugString( getTickTimeStr() .. ' WARNING_rts: ' .. msg )
+	outputConsole( getTickTimeStr() .. ' WARNING_rts: ' .. msg )
 end
 
 -- Always send to server window
 -- and chat box window
 function outputError( msg )
-    outputDebugString( getTickTimeStr() .. ' ERROR_rts: ' .. msg )
-    outputChatBox( getTickTimeStr() .. ' ERROR_rts: ' .. msg )
+	outputDebugString( getTickTimeStr() .. ' ERROR_rts: ' .. msg )
+	outputChatBox( getTickTimeStr() .. ' ERROR_rts: ' .. msg )
 end
 
 
@@ -100,18 +100,18 @@ end
 --
 ---------------------------------------------------------------------------
 function getRealDateTimeNowString()
-    return getRealDateTimeString( getRealTime() )
+	return getRealDateTimeString( getRealTime() )
 end
 
 function getRealDateTimeString( time )
-    return string.format( '%04d-%02d-%02d %02d:%02d:%02d'
-                        ,time.year + 1900
-                        ,time.month + 1
-                        ,time.monthday
-                        ,time.hour
-                        ,time.minute
-                        ,time.second
-                        )
+	return string.format( '%04d-%02d-%02d %02d:%02d:%02d'
+						,time.year + 1900
+						,time.month + 1
+						,time.monthday
+						,time.hour
+						,time.minute
+						,time.second
+						)
 end
 
 
@@ -123,27 +123,27 @@ end
 
 -- get string or default
 function getString(var,default)
-    local result = get(var)
-    if not result then
-        return default
-    end
-    return tostring(result)
+	local result = get(var)
+	if not result then
+		return default
+	end
+	return tostring(result)
 end
 
 -- get number or default
 function getNumber(var,default)
-    local result = get(var)
-    if not result then
-        return default
-    end
-    return tonumber(result)
+	local result = get(var)
+	if not result then
+		return default
+	end
+	return tonumber(result)
 end
 
 -- get true or false or default
 function getBool(var,default)
-    local result = get(var)
-    if not result then
-        return default
-    end
-    return result == 'true'
+	local result = get(var)
+	if not result then
+		return default
+	end
+	return result == 'true'
 end
