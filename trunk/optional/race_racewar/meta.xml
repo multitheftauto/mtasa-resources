@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race War" description="Team racing add on" author="ccw" type="script" addon="race" version="0.0.1" build="r202 29May09"/>
+	<info name="Race War" description="Team racing add on" author="ccw" type="script" addon="race" version="0.0.2" build="r230 21Jun09"/>
 
 	<script src="_common_rw.lua" type="server"/>
 	<script src="util_rw_server.lua" type="server"/>
@@ -12,9 +12,20 @@
 
 
 	<settings>
-		<!-- admingroup
-                The name of the group to which the player must belong to issue certain commands  -->
-		<setting name="*admingroup" value="Admin"/>
+		<!-- *****************************************************
+			 All these settings are adjustable in the Admin Panel:
+				1. start admin
+				2. press 'p'
+				3. select Resources tab
+				4. double click on 'race_racewar'
+			 ***************************************************** -->
+
+		<setting name="*numrounds" value="3"
+					friendlyname="Number of rounds"
+					group="Setting"
+					accept="1-10"
+					desc="The number of rounds per war."
+					/>
 	</settings>
 
 </meta>

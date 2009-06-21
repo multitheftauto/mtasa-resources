@@ -114,6 +114,7 @@ addCommandHandler('newwar',
 -- Racewar.startup()
 ---------------------------------------------------------------------------
 function Racewar.startup()
+	cacheSettings()
 	Racewar.output( 'Startup' )
 	teamlist = {}
 	teamlist[1] = createTeam ( "Red", 255, 0, 0 )
@@ -147,7 +148,7 @@ end
 ---------------------------------------------------------------------------
 function Racewar.initializeNewWar()
 	roundCurrent = 1
-	roundsTotal = 3
+	roundsTotal = g_Settings.numrounds
 	if teamlist then
 		table.each( teamlist, setTeamScore, 0 )
 	end
@@ -211,7 +212,7 @@ function Racewar.playerFinished( player, rank )
 				othercount = othercount + 1
 			end
 		end
-		Racewar.outputChat( 'You beat ' .. othercount .. ' players from other teams' )
+		Racewar.outputChat( 'You beat ' .. othercount .. ' player' .. (othercount==1 and '' or 's') .. ' from other teams', player )
 		local pointsEarned = othercount	-- getPlayerCount() - rank + 1
 		Racewar.output( pointsEarned .. " pts for '"..getTeamName(team).."' by "..getPlayerName(player) )
 		addTeamScore(team,pointsEarned)
@@ -649,8 +650,8 @@ addEvent('newWarVoteResult')
 addEventHandler('newWarVoteResult', getRootElement(),
 	function( votedYes )
 		if votedYes then
-			Racewar.output( "Starting new war" )
 			Racewar.initializeNewWar()
+			Racewar.output( 'Starting new ' .. roundsTotal .. ' round war' )
 		else
 			Racewar.outputChat( 'New war vote result was [No].', g_Root )
 		end
@@ -728,3 +729,33 @@ end
 function isPlayerFinished(player)
 	return getElementData(player, 'race.finished')
 end
+
+
+
+---------------------------------------------------------------------------
+--
+-- Settings
+--
+--
+--
+---------------------------------------------------------------------------
+function cacheSettings()
+	g_Settings = {}
+	g_Settings.numrounds	= getString('numrounds','3')
+end
+
+-- Initial cache
+addEventHandler('onResourceStart', g_ResRoot,
+	function()
+		cacheSettings()
+	end
+)
+
+-- React to admin panel changes
+addEvent ( "onSettingChange" )
+addEventHandler('onSettingChange', g_ResRoot,
+	function(name, oldvalue, value, playeradmin)
+		cacheSettings()
+	end
+)
+
