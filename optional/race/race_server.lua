@@ -81,7 +81,7 @@ end
 -- Called from the admin panel when a setting is changed there
 addEvent ( "onSettingChange" )
 addEventHandler('onSettingChange', g_ResRoot,
-	function(name, value, oldvalue, player)
+	function(name, oldvalue, value, player)
 		outputDebug( 'MISC', 'Setting changed: ' .. tostring(name) .. '  value:' .. tostring(value) .. '  value:' .. tostring(oldvalue).. '  by:' .. tostring(player and getPlayerName(player) or 'n/a') )
 		cacheGameOptions()
 		if g_SavedMapSettings then

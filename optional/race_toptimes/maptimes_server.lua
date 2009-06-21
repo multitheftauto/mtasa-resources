@@ -15,19 +15,19 @@ SMaptimes.instances = {}
 --
 ---------------------------------------------------------------------------
 function SMaptimes:create( raceModeName, mapName, statsKey )
-    local id = #SMaptimes.instances + 1
-    SMaptimes.instances[id] = setmetatable(
-        {
-            id = id,
-            raceModeName    = raceModeName,
-            mapName         = mapName,
-            statsKey        = statsKey,
-            dbTable         = nil,
-        },
-        self
-    )
-    SMaptimes.instances[id]:postCreate()
-    return SMaptimes.instances[id]
+	local id = #SMaptimes.instances + 1
+	SMaptimes.instances[id] = setmetatable(
+		{
+			id = id,
+			raceModeName	= raceModeName,
+			mapName		 = mapName,
+			statsKey		= statsKey,
+			dbTable		 = nil,
+		},
+		self
+	)
+	SMaptimes.instances[id]:postCreate()
+	return SMaptimes.instances[id]
 end
 
 
@@ -39,8 +39,8 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:destroy()
-    SMaptimes.instances[self.id] = nil
-    self.id = 0
+	SMaptimes.instances[self.id] = nil
+	self.id = 0
 end
 
 
@@ -52,10 +52,10 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:postCreate()
-    local tableName = self:makeDatabaseTableName( self.raceModeName, self.mapName )
-    local columns = { 'playerName', 'playerSerial', 'timeMs', 'timeText', 'dateRecorded', 'extra' }
-    local columnTypes = { 'TEXT', 'TEXT', 'REAL', 'TEXT', 'TEXT' }
-    self.dbTable = SDatabaseTable:create( tableName, columns, columnTypes )
+	local tableName = self:makeDatabaseTableName( self.raceModeName, self.mapName )
+	local columns = { 'playerName', 'playerSerial', 'timeMs', 'timeText', 'dateRecorded', 'extra' }
+	local columnTypes = { 'TEXT', 'TEXT', 'REAL', 'TEXT', 'TEXT' }
+	self.dbTable = SDatabaseTable:create( tableName, columns, columnTypes )
 end
 
 
@@ -67,8 +67,8 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:flush()
-    outputDebug( 'TOPTIMES', 'SMaptimes:flush()')
-    self:save()
+	outputDebug( 'TOPTIMES', 'SMaptimes:flush()')
+	self:save()
 end
 
 
@@ -80,7 +80,7 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:makeDatabaseTableName( raceModeName, mapName )
-    return 'race maptimes ' .. raceModeName .. ' ' .. mapName
+	return 'race maptimes ' .. raceModeName .. ' ' .. mapName
 end
 
 
@@ -93,13 +93,13 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:timeMsToTimeText( timeMs )
 
-    local minutes   = math.floor( timeMs / 60000 )
-    timeMs          = timeMs - minutes * 60000;
+	local minutes	= math.floor( timeMs / 60000 )
+	timeMs			= timeMs - minutes * 60000;
 
-    local seconds   = math.floor( timeMs / 1000 )
-    local ms        = timeMs - seconds * 1000;
+	local seconds	= math.floor( timeMs / 1000 )
+	local ms		= timeMs - seconds * 1000;
 
-    return string.format( '%02d:%02d:%03d', minutes, seconds, ms );
+	return string.format( '%02d:%02d:%03d', minutes, seconds, ms );
 end
 
 
@@ -111,8 +111,8 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:load()
-    self.dbTable:load()
-    self:sort()
+	self.dbTable:load()
+	self:sort()
 end
 
 
@@ -124,7 +124,7 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:save()
-    self.dbTable:save()
+	self.dbTable:save()
 end
 
 
@@ -137,20 +137,20 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:sort()
 
-    self:checkIsSorted('Presort')
+	self:checkIsSorted('Presort')
 
-    local rows = self.dbTable.rows
+	local rows = self.dbTable.rows
 
-    for i=1,#rows-1 do
-        if rows[i].timeMs > rows[i+1].timeMs then
-            local temp  = rows[i]
-            rows[i]     = rows[i+1]
-            rows[i+1]   = temp
-            i = math.max( i-2, 0 )
-        end
-    end
+	for i=1,#rows-1 do
+		if rows[i].timeMs > rows[i+1].timeMs then
+			local temp	= rows[i]
+			rows[i]	 = rows[i+1]
+			rows[i+1]	= temp
+			i = math.max( i-2, 0 )
+		end
+	end
 
-    self:checkIsSorted('Postsort')
+	self:checkIsSorted('Postsort')
 
 end
 
@@ -164,21 +164,21 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:checkIsSorted(msg)
 
-    for i=2,#self.dbTable.rows do
-        local prevTime    = self.dbTable.rows[i-1].timeMs
-        local time        = self.dbTable.rows[i].timeMs
-        if prevTime > time then
-            outputWarning( 'Maptimes sort error: ' .. msg .. ' timeMs order error at ' .. i )
-        end
+	for i=2,#self.dbTable.rows do
+		local prevTime	= self.dbTable.rows[i-1].timeMs
+		local time		= self.dbTable.rows[i].timeMs
+		if prevTime > time then
+			outputWarning( 'Maptimes sort error: ' .. msg .. ' timeMs order error at ' .. i )
+		end
 
-        if prevTime == time then
-            prevDate    = self.dbTable.rows[i-1].dateRecorded
-            date        = self.dbTable.rows[i].dateRecorded
-            if prevDate > date then
-                outputWarning( 'Maptimes sort error: ' .. msg .. ' dateRecorded order error at ' .. i )
-            end
-        end
-    end
+		if prevTime == time then
+			prevDate	= self.dbTable.rows[i-1].dateRecorded
+			date		= self.dbTable.rows[i].dateRecorded
+			if prevDate > date then
+				outputWarning( 'Maptimes sort error: ' .. msg .. ' dateRecorded order error at ' .. i )
+			end
+		end
+	end
 
 end
 
@@ -193,27 +193,27 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:getToptimes( howMany )
 
-    if _DEBUG_CHECK then
-        self:checkIsSorted('getToptimes')
-    end
+	if _DEBUG_CHECK then
+		self:checkIsSorted('getToptimes')
+	end
 
-    local result = {}
+	local result = {}
 
-    for i=1,howMany do
-        if i <= #self.dbTable.rows then
-            result[i] = {
-                            timeText    = self.dbTable.rows[i].timeText, 
-                            playerName  = self.dbTable.rows[i].playerName
-                        }
-        else
-            result[i] = {
-                            timeText    = ' -- Empty -- ', 
-                            playerName  = ''
-                        }
-        end
-    end
+	for i=1,howMany do
+		if i <= #self.dbTable.rows then
+			result[i] = {
+							timeText	= self.dbTable.rows[i].timeText, 
+							playerName	= self.dbTable.rows[i].playerName
+						}
+		else
+			result[i] = {
+							timeText	= ' -- Empty -- ', 
+							playerName	= ''
+						}
+		end
+	end
 
-    return result
+	return result
 end
 
 
@@ -225,7 +225,7 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:getValidEntryCount()
-    return #self.dbTable.rows
+	return #self.dbTable.rows
 end
 
 ---------------------------------------------------------------------------
@@ -237,16 +237,16 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:addPlayer( player )
 
-    table.insert( self.dbTable.rows, {
-                                    playerName      = getPlayerName(player),
-                                    playerSerial    = getPlayerSerial(player),
-                                    timeMs          = 0,
-                                    timeText        = '00:00:000',
-                                    dateRecorded    = '1900-00-00 00:00:00',
-                                    extra           = ''
-                                } )
+	table.insert( self.dbTable.rows, {
+									playerName		= getPlayerName(player),
+									playerSerial	= getPlayerSerial(player),
+									timeMs			= 0,
+									timeText		= '00:00:000',
+									dateRecorded	= '1900-00-00 00:00:00',
+									extra			= ''
+								} )
 
-    return #self.dbTable.rows
+	return #self.dbTable.rows
 end
 
 
@@ -259,25 +259,25 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:getIndexForPlayer( player )
 
-    if self.statsKey == 'serial' then
-        -- Find player by serial
-        local serial = getPlayerSerial(player)
-        for i,row in ipairs(self.dbTable.rows) do
-            if serial == row.playerSerial then
-                return i
-            end
-        end
-    else
-        -- Find player by name
-        local name = getPlayerName(player)
-        for i,row in ipairs(self.dbTable.rows) do
-            if name == row.playerName then
-                return i
-            end
-        end
-    end
+	if self.statsKey == 'serial' then
+		-- Find player by serial
+		local serial = getPlayerSerial(player)
+		for i,row in ipairs(self.dbTable.rows) do
+			if serial == row.playerSerial then
+				return i
+			end
+		end
+	else
+		-- Find player by name
+		local name = getPlayerName(player)
+		for i,row in ipairs(self.dbTable.rows) do
+			if name == row.playerName then
+				return i
+			end
+		end
+	end
 
-    return false
+	return false
 end
 
 
@@ -290,16 +290,16 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:getPositionForTime( time, dateRecorded )
 
-    for i,row in ipairs(self.dbTable.rows) do
-        if time < row.timeMs then
-            return i
-        end
-        if time == row.timeMs and dateRecorded < row.dateRecorded then
-            return i
-        end
-    end
+	for i,row in ipairs(self.dbTable.rows) do
+		if time < row.timeMs then
+			return i
+		end
+		if time == row.timeMs and dateRecorded < row.dateRecorded then
+			return i
+		end
+	end
 
-    return #self.dbTable.rows + 1
+	return #self.dbTable.rows + 1
 end
 
 
@@ -312,13 +312,13 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:getTimeForPlayer( player )
 
-    local i = self:getIndexForPlayer( player )
+	local i = self:getIndexForPlayer( player )
 
-    if not i then
-        return false
-    end
+	if not i then
+		return false
+	end
 
-    return self.dbTable.rows[i].timeMs
+	return self.dbTable.rows[i].timeMs
 
 end
 
@@ -332,34 +332,34 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:setTimeForPlayer( player, time, dateRecorded )
 
-    -- Find current entry for player
-    local oldIndex = self:getIndexForPlayer( player )
+	-- Find current entry for player
+	local oldIndex = self:getIndexForPlayer( player )
 
-    if not oldIndex then
-        -- No entry yet, so add it to the end
-        oldIndex = self:addPlayer( player )
-        if oldIndex ~= self:getIndexForPlayer( player ) then
-            outputError( "oldIndex ~= self:getIndexForPlayer( player )" )
-        end
-    end
+	if not oldIndex then
+		-- No entry yet, so add it to the end
+		oldIndex = self:addPlayer( player )
+		if oldIndex ~= self:getIndexForPlayer( player ) then
+			outputError( "oldIndex ~= self:getIndexForPlayer( player )" )
+		end
+	end
 
-    -- Copy it out and then remove it from the table
-    local row = self.dbTable.rows[oldIndex]
-    table.remove( self.dbTable.rows, oldIndex )
+	-- Copy it out and then remove it from the table
+	local row = self.dbTable.rows[oldIndex]
+	table.remove( self.dbTable.rows, oldIndex )
 
-    -- Update it
-    row.playerName      = getPlayerName(player)     -- Refresh the name
-    row.timeMs          = time
-    row.timeText        = self:timeMsToTimeText(time)
-    row.dateRecorded    = dateRecorded
+	-- Update it
+	row.playerName		= getPlayerName(player)	 -- Refresh the name
+	row.timeMs			= time
+	row.timeText		= self:timeMsToTimeText(time)
+	row.dateRecorded	= dateRecorded
 
-    -- Put it back in at the correct position to maintain sort order
-    local newIndex = self:getPositionForTime( row.timeMs, row.dateRecorded )
-    table.insert( self.dbTable.rows, newIndex, row )
+	-- Put it back in at the correct position to maintain sort order
+	local newIndex = self:getPositionForTime( row.timeMs, row.dateRecorded )
+	table.insert( self.dbTable.rows, newIndex, row )
 
-    if _DEBUG_CHECK then
-        self:checkIsSorted('setTimeForPlayer')
-    end
+	if _DEBUG_CHECK then
+		self:checkIsSorted('setTimeForPlayer')
+	end
 
 end
 

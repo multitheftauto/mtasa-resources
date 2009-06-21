@@ -33,6 +33,29 @@ end
 function math.wrapdifference(low,value,other,high)
     return math.wrap(low,value-other,high)+other
 end
+
+-- curve is { {x1, y1}, {x2, y2}, {x3, y3} ... }
+function math.evalCurve( curve, input )
+	-- First value
+	if input<curve[1][1] then
+		return curve[1][2]
+	end
+	-- Interp value
+	for idx=2,#curve do
+		if input<curve[idx][1] then
+			local x1 = curve[idx-1][1]
+			local y1 = curve[idx-1][2]
+			local x2 = curve[idx][1]
+			local y2 = curve[idx][2]
+			-- Find pos between input points
+			local alpha = (input - x1)/(x2 - x1);
+			-- Map to output points
+			return math.lerp(y1,y2,alpha)
+		end
+	end
+	-- Last value
+	return curve[#curve][2]
+end
 ---------------------------------------------------------------------------
 
 

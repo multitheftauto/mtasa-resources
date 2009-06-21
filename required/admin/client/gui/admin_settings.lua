@@ -108,10 +108,12 @@ function aClientSettingsDoubleClick ( button )
 					outputDebugString( "aClientSettingsDoubleClick: Error with " .. name )
 					return
 				end
+				local friendlyname = aSettingsData["settings"][name].friendlyname
+				friendlyname = friendlyname or name
 				local current = aSettingsData["settings"][name].current
 				current = current == nil and "" or current
 				aInputBox ( "Change setting",
-							"Enter new value for '"..name.."'",
+							"Enter new value for '".. friendlyname .."'",
 							tostring(current),
 							"triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"settings\", \"change\", \""..aSettingsData["resName"].."\", \""..name.."\", $value )" )
 			end
