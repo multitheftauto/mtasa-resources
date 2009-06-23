@@ -1217,8 +1217,8 @@ function edfCheckElementData(theElement, dataField, dataDefinition)
 
 	if dataField == 'position' 
 		or dataField == 'rotation' 
-		--[[or gettok ( dataDefinition.datatype,1,58 ) == "element"
-		or gettok ( dataDefinition.datatype,1,58 ) == "selection"]] then
+		or gettok ( dataDefinition.datatype,1,58 ) == "element"
+		or gettok ( dataDefinition.datatype,1,58 ) == "selection" then
 		-- Position and rotation are not single strings with a special format that needs checking
 		return false
 	elseif not theData then
