@@ -98,7 +98,7 @@ function aSpectator.Close ( destroy )
 	unbindKey ( "mouse_wheel_down", "down", aSpectator.MoveOffset, 1 )
 	removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
 	removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
-	removeEventHandler ( "onClientMouseMove", _root, aSpectator.MouseMove )
+	removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
 	removeEventHandler ( "onClientRender", _root, aSpectator.Render )
 
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceSpectator ) ) ) then
