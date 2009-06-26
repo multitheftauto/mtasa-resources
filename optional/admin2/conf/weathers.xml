@@ -1,0 +1,22 @@
+<weathers>
+  <weather id="0" name="Blue Sky, Sunny" />
+  <weather id="1" name="Blue Sky, Sunny" />
+  <weather id="2" name="Blue Sky, Clouds" />
+  <weather id="3" name="Blue Sky, Clouds" />
+  <weather id="4" name="Blue Sky, Clouds" />
+  <weather id="5" name="Blue Sky, Clouds" />
+  <weather id="6" name="Blue Sky, Clouds" />
+  <weather id="7" name="Blue Sky, Clouds" />
+  <weather id="8" name="Storming" />
+  <weather id="9" name="Cloudy and Foggy" />
+  <weather id="10" name="Clear Blue Sky" />
+  <weather id="11" name="Sunny, Scorching Hot" />
+  <weather id="12" name="Very Dull, Colourless, Hazy" />
+  <weather id="13" name="Very Dull, Colourless, Hazy" />
+  <weather id="14" name="Very Dull, Colourless, Hazy" />
+  <weather id="15" name="Very Dull, Colourless, Hazy" />
+  <weather id="16" name="Dull, Cloudy, Rainy" />
+  <weather id="17" name="Sunny, Scorching Hot" />
+  <weather id="18" name="Sunny, Scorching Hot" />
+  <weather id="19" name="Sandstorm" />
+</weathers>
