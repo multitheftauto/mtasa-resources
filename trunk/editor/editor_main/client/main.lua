@@ -697,6 +697,8 @@ function selectElement(element, submode, shortcut)
 	end
 	
 	if not isElement(element) then return end
+	
+	if not triggerEvent ( "onClientElementSelect", element, submode, shortcut ) then return false end
 
 		-- check the editing lock
 	local locked = getElementData(element, "me:locked")
@@ -759,8 +761,7 @@ function selectElement(element, submode, shortcut)
 	
 	triggerServerEvent("doLockElement", element)
 	
-	-- trigger client and server selection events
-	triggerEvent("onClientElementSelect", element)
+	-- trigger server selection events
 	triggerServerEvent("onElementSelect", element)
 	
 	--Emulate a fake mouse  move to get the element to position properly
