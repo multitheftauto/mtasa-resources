@@ -482,8 +482,9 @@ end
 function processDoubleClick ( clickedElement, key )
 	if not clickedElement then return end
 	if key == "select_target_keyboard" then
-		selectElement(clickedElement, KEYBOARD_SUBMODE)
-		editor_gui.openPropertiesBox(g_selectedElement)
+		if ( selectElement(clickedElement, KEYBOARD_SUBMODE) ) then
+			editor_gui.openPropertiesBox(g_selectedElement)
+		end
 	end
 end
 

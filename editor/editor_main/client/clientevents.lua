@@ -6,6 +6,7 @@ addEvent ( "doSetPedStatic", true )
 addEvent "onClientElementSelect"
 addEvent "onClientElementDrop"
 -- client-side create/destroy events
+addEvent ( "onClientElementPreCreate" )
 addEvent ( "onClientElementCreate", true )
 addEvent ( "onClientElementDestroyed", true )
 -- edf events
