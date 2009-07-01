@@ -23,7 +23,7 @@ end )
 
 function aGetSetting ( setting )
 	local cache = aSettings.Cache[setting]
-	if ( cache != nil ) then
+	if ( cache ~= nil ) then
 		return cache
 	end
 
