@@ -996,13 +996,13 @@ addEventHandler ( "aBans", _root, function ( action, data )
 		local more = ""
 		if ( action == "banip" ) then
 			mdata = data
-			if ( not banIP ( data, source ) ) then
+			if ( not BanIP ( data, source ) ) then
 				action = nil
 			end
 		elseif ( action == "banserial" ) then
 			mdata = data
 			if ( isValidSerial ( data ) ) then
-				if ( not banSerial ( string.upper ( data ), source ) ) then
+				if ( not BanSerial ( string.upper ( data ), source ) ) then
 					action = nil
 				end
 			else
@@ -1011,12 +1011,12 @@ addEventHandler ( "aBans", _root, function ( action, data )
 			end
 		elseif ( action == "unbanip" ) then
 			mdata = data
-			if ( not unbanIP ( data, source ) ) then
+			if ( not UnbanIP ( data, source ) ) then
 				action = nil
 			end
 		elseif ( action == "unbanserial" ) then
 			mdata = data
-			if ( not unbanSerial ( data, source ) ) then
+			if ( not UnbanSerial ( data, source ) ) then
 				action = nil
 			end
 		else
@@ -1069,3 +1069,40 @@ addEventHandler ( "aClientInitialized", _root, function ()
         aPlayers[source]["aClientInitialized"] = true
     end
 end )
+
+function UnbanIP ( IP, responsible )
+	local bans = getBans()
+	for k,v in ipairs(bans) do
+		if (getBanIP(v) == IP) then
+			return removeBan(v, responsible)
+		end
+	end
+	return false
+end
+function UnbanSerial ( IP, responsible )
+	local bans = getBans()
+	for k,v in ipairs(bans) do
+		if (getBanSerial(v) == IP) then
+			return removeBan(v, responsible)
+		end
+	end
+	return false
+end
+function UnbanPlayer ( playerName, responsible )
+	local bans = getBans()
+	for k,v in ipairs(bans) do
+		if (getBanUsername(v) == playername) then
+			return removeBan(v, responsible)
+		end
+	end
+end
+function banPlayer ( playerName, responsible )
+	return addBan(nil, playerName, nil, responsible)
+end
+function BanIP ( IP, responsible )
+	return addBan(IP, nil, nil, responsible)
+end
+function BanSerial ( Serial, responsible )
+	return addBan(nil, nil, Serial, responsible)
+end
+
