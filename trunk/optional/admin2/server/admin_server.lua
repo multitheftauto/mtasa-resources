@@ -283,9 +283,10 @@ function aPlayerSerialCheck ( player, result )
 end
 
 addEventHandler ( "onPlayerLogin", _root, function ( previous, account, auto )
-	if ( hasObjectPermissionTo ( source, "general.tab_resources" ) ) then
-		triggerEvent ( "aPermissions", source )
-		outputChatBox ( "Press 'p' to open your admin panel", source )
+	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
+        if ( aPlayers[source]["aClientInitialized"] ) then
+    		triggerEvent ( "aPermissions", source )
+        end
 	end
 end )
 
@@ -1060,4 +1061,11 @@ addEventHandler ( "aAdminChat", _root, function ( chat )
 			triggerClientEvent ( player, "aClientAdminChat", source, chat )
 		end
 	end
+end )
+
+addEvent ( "aClientInitialized", true )
+addEventHandler ( "aClientInitialized", _root, function ()
+    if ( aPlayers[source] ) then
+        aPlayers[source]["aClientInitialized"] = true
+    end
 end )
