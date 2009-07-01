@@ -1,7 +1,7 @@
 function forceReload(p)
 	local weapon=getPlayerWeapon(p)
 	local totalAmmo=getPlayerTotalAmmo(p)
-	setWeaponAmmo(p,weapon,totalAmmo,0)
+	setWeaponAmmo(p,weapon,totalAmmo,0, true)
 end
 addCommandHandler("Reload weapon",forceReload)
 
