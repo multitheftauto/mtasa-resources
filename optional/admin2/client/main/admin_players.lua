@@ -42,11 +42,12 @@ function aPlayersTab.Create ( tab )
 					  	  for i = 0, 10 do guiGridListSetItemText ( aPlayersTab.SlapOptions, guiGridListAddRow ( aPlayersTab.SlapOptions ), 1, tostring ( i * 10 ), false, false ) end
 	aPlayersTab.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aPlayersTab.Tab, "shout" )
 	aPlayersTab.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aPlayersTab.Tab, "setgroup" )
-						  guiCreateHeader ( 0.25, 0.08, 0.20, 0.04, "Player:", true, aPlayersTab.Tab )
-	aPlayersTab.Name			= guiCreateLabel ( 0.26, 0.125, 0.30, 0.035, "Name: N/A", true, aPlayersTab.Tab )
-	aPlayersTab.IP			= guiCreateLabel ( 0.26, 0.170, 0.30, 0.035, "IP: N/A", true, aPlayersTab.Tab )
-	aPlayersTab.Serial		= guiCreateLabel ( 0.26, 0.215, 0.30, 0.035, "Serial: N/A", true, aPlayersTab.Tab )
-	aPlayersTab.Username		= guiCreateLabel ( 0.26, 0.260, 0.30, 0.035, "Username: N/A", true, aPlayersTab.Tab )
+						  guiCreateHeader ( 0.25, 0.035, 0.20, 0.04, "Player:", true, aPlayersTab.Tab )
+	aPlayersTab.Name			= guiCreateLabel ( 0.26, 0.080, 0.30, 0.035, "Name: N/A", true, aPlayersTab.Tab )
+	aPlayersTab.IP			= guiCreateLabel ( 0.26, 0.125, 0.30, 0.035, "IP: N/A", true, aPlayersTab.Tab )
+	aPlayersTab.Serial		= guiCreateLabel ( 0.26, 0.170, 0.30, 0.035, "Serial: N/A", true, aPlayersTab.Tab )
+	aPlayersTab.Username		= guiCreateLabel ( 0.26, 0.215, 0.30, 0.035, "Username: N/A", true, aPlayersTab.Tab )
+	aPlayersTab.Country		= guiCreateLabel ( 0.26, 0.260, 0.30, 0.035, "Country: Unknown", true, aPlayersTab.Tab )
 	aPlayersTab.Groups		= guiCreateLabel ( 0.26, 0.305, 0.30, 0.035, "Groups: N/A", true, aPlayersTab.Tab )
 	aPlayersTab.Flag			= guiCreateStaticImage ( 0.40, 0.125, 0.025806, 0.021154, "client\\images\\empty.png", true, aPlayersTab.Tab )
 					  	  guiCreateHeader ( 0.25, 0.350, 0.20, 0.04, "Game:", true, aPlayersTab.Tab )
@@ -190,8 +191,9 @@ function aPlayersTab.onClientClick ( button )
 				if ( player ) then
 					triggerServerEvent ( "aSync", getLocalPlayer(), "player", player )
 					guiSetText ( aPlayersTab.IP, "IP: "..aPlayers[player]["IP"] )
-					guiSetText ( aPlayersTab.Serial, "Serial: "..aPlayers[player]["serial"] or "N/A" )
-					guiSetText ( aPlayersTab.Username, "Username: "..aPlayers[player]["username"] or "N/A" )
+					guiSetText ( aPlayersTab.Serial, "Serial: "..(aPlayers[player]["serial"] or "N/A") )
+					guiSetText ( aPlayersTab.Username, "Username: "..(aPlayers[player]["username"] or "N/A") )
+					guiSetText ( aPlayersTab.Country, "Country: ".. (aPlayers[player]["countryname"] or "Unknown") )
 					if ( aPlayers[player]["country"] ) then
 						local x, y = guiGetPosition ( aPlayersTab.IP, false )
 						local width = guiLabelGetTextExtent ( aPlayersTab.IP )
@@ -207,6 +209,7 @@ function aPlayersTab.onClientClick ( button )
 				guiSetText ( aPlayersTab.IP, "IP: N/A" )
 				guiSetText ( aPlayersTab.Serial, "Serial: N/A" )
 				guiSetText ( aPlayersTab.Username, "Username: N/A" )
+				guiSetText ( aPlayersTab.Country, "Country: Unknown" )
 				guiSetText ( aPlayersTab.Groups, "Groups: N/A" )
 				guiSetText ( aPlayersTab.Mute, "Stfu" )
 				guiSetText ( aPlayersTab.Freeze, "Freeze" )
@@ -309,13 +312,16 @@ function aPlayersTab.onClientPlayerChangeNick ( oldNick, newNick )
 	end
 end
 
-function aPlayersTab.onClientPlayerJoin ( ip, username, serial, admin )
+function aPlayersTab.onClientPlayerJoin ( ip, username, serial, admin, country, countryname )
 	aPlayers[source] = {}
 	aPlayers[source]["name"] = getPlayerName ( source )
 	aPlayers[source]["IP"] = ip
 	aPlayers[source]["username"] = username or "N/A"
 	aPlayers[source]["serial"] = serial or "N/A"
 	aPlayers[source]["admin"] = admin
+	aPlayers[source]["country"] = country
+	aPlayers[source]["countryname"] = countryname
+
 	local row = guiGridListAddRow ( aPlayersTab.PlayerList )
 	guiGridListSetItemText ( aPlayersTab.PlayerList, row, 1, getPlayerName ( source ), false, false )
 	if ( admin ) then

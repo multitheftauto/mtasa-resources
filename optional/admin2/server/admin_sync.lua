@@ -26,6 +26,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut[player]["username"] = getPlayerUserName ( player )
 			tableOut[player]["serial"] = getPlayerSerial ( player )
 			tableOut[player]["country"] = aPlayers[player]["country"]
+			tableOut[player]["countryname"] = aPlayers[player]["countryname"]
 			tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
 		end
 	elseif ( type == "resources" ) then
