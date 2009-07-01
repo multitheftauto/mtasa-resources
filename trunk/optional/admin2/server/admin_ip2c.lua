@@ -178,7 +178,7 @@ local CountryCodes =
 	["YT"]="Mayotte",
 	["YU"]="Yugoslavia",
 	["ZA"]="South Africa",
-	["ZZ"]="Unknown"
+	["ZZ"]="None"
 }
 function loadIPGroup ( group )
 	aCountries[group] = {}
