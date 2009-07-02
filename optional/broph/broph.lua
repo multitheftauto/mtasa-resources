@@ -284,3 +284,42 @@ function destroyBlipsAttachedTo(player)
 		end
 	end
 end
+
+
+--
+-- Spawn lots of peds nearby
+--
+local pedRate = 50
+local pedMaxCount = 500
+local pedTimer = nil
+local pedTimer2 = nil
+
+addCommandHandler ( "manypeds",
+	function (player)
+		pedTimer = setTimer( addPedTick, pedRate, 0 )
+		pedTimer2 = setTimer( removePedTick, 1000, 0 )
+	end
+)
+
+function addPedTick()
+	local peds = getElementsByType( "ped" )
+	if #peds < pedMaxCount then
+		local x,y,z = getElementPosition( getRandomPlayer() )
+		x = x + math.random(-50,50)
+		y = y + math.random(-50,50)
+		z = z + 4
+		local modelid = 0
+		createPed ( modelid, x, y, z )		
+	end
+end
+
+function removePedTick()
+	local peds = getElementsByType( "ped" )
+	for i,ped in ipairs(peds) do
+		if isPedDead(ped) then
+			destroyElement(ped)
+		end
+	end
+end
+
+
