@@ -128,7 +128,7 @@ local function cmdBan(id)
 	if not id or not g_Players[id] then
 		return
 	end
-	local name = getClientName(g_Players[id].elem)
+	local name = getPlayerName(g_Players[id].elem)
 	if banPlayer(g_Players[id].elem) then
 		return 'Added ' .. id .. ' (' .. name .. ') to the ban list'
 	else
@@ -205,7 +205,7 @@ local function cmdKick(id)
 	if not id or not g_Players[id] then
 		return 'Invalid player id'
 	end
-	local name = getClientName(g_Players[id].elem)
+	local name = getPlayerName(g_Players[id].elem)
 	if kickPlayer(g_Players[id].elem) then
 		return 'Kicked ' .. id .. ' (' .. name .. ')'
 	else
@@ -241,7 +241,7 @@ end
 local function cmdPlayers()
 	local result = ''
 	for id,data in pairs(g_Players) do
-		result = result .. ('%5d  %s\n'):format(id, getClientName(data.elem))
+		result = result .. ('%5d  %s\n'):format(id, getPlayerName(data.elem))
 	end
 	return result
 end
@@ -382,7 +382,7 @@ addCommandHandler('rcon',
 
 addEventHandler('onConsole', root,
 	function(str)
-		if getAccountName(getClientAccount(source)) ~= 'Console' then
+		if getAccountName(getPlayerAccount(source)) ~= 'Console' then
 			return
 		end
 		local result = doRCON(str)
