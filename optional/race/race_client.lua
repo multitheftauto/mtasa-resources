@@ -1033,9 +1033,9 @@ function makeCheckpointCurrent(i)
 	end
 	
 	if not checkpoint.type or checkpoint.type == 'checkpoint' then
-		checkpoint.colshape = createColCircle(pos[1], pos[2], checkpoint.size + 3)
+		checkpoint.colshape = createColCircle(pos[1], pos[2], checkpoint.size + 4)
 	else
-		checkpoint.colshape = createColSphere(pos[1], pos[2], pos[3], checkpoint.size + 3)
+		checkpoint.colshape = createColSphere(pos[1], pos[2], pos[3], checkpoint.size + 4)
 	end
 	addEventHandler('onClientColShapeHit', checkpoint.colshape, checkpointReached, false)
 end
