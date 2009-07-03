@@ -248,11 +248,11 @@ end
 
 function MovePlayerObject(amxName, objID, x, y, z, speed)
 	local obj = g_AMXs[amxName].playerobjects[objID]
-	local rX, rY, rZ = getObjectRotation(obj)
+	local rX, rY, rZ = getElementRotation(obj)
 	local distance = getDistanceBetweenPoints3D(x, y, z, getElementPosition(obj))
 	local time = distance/speed*1000
 	moveObject(obj, time, x, y, z)
-	setObjectRotation(obj, rX, rY, rZ)
+	setElementRotation(obj, rX, rY, rZ)
 end
 
 function SetPlayerObjectPos(amxName, objID, x, y, z)
@@ -268,7 +268,7 @@ function SetPlayerObjectRot(amxName, objID, rX, rY, rZ)
 	if not obj then
 		return
 	end
-	setObjectRotation(obj, rX, rY, rZ)
+	setElementRotation(obj, rX, rY, rZ)
 end
 
 function StopPlayerObject(amxName, objID)
@@ -434,14 +434,14 @@ function dropVehicle(vehicle)
 		bottom = -top
 	end
 	local x, y, z = getElementPosition(vehicle)
-	local rx, ry, rz = getVehicleRotation(vehicle)
+	local rx, ry, rz = getElementRotation(vehicle)
 	
 	local hit, hitX, hitY, hitZ = processLineOfSight(x, y, z + top, x, y, z - 10, true, false)
 	if hitZ then
 		setElementCollisionsEnabled(vehicle, true)
 		if z < hitZ - bottom - 0.5 or top > 2 then
 			setElementPosition(vehicle, x, y, hitZ + 2*math.abs(bottom))
-			setVehicleRotation(vehicle, 0, ry, rz)
+			setElementRotation(vehicle, 0, ry, rz)
 			setElementVelocity(vehicle, 0, 0, -0.05)
 		end
 		if dropdata.tries < VEHICLE_DROP_MAX_TRIES then

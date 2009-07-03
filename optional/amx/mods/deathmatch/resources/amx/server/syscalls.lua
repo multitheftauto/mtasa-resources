@@ -586,7 +586,7 @@ function GetPlayerInterior(amx, player)
 end
 
 function GetPlayerIp(amx, player, refName, len)
-	local ip = getClientIP(player)
+	local ip = getPlayerIP(player)
 	if #ip < len then
 		writeMemString(amx, refName, ip)
 	end
@@ -608,7 +608,7 @@ function GetPlayerMoney(amx, player)
 end
 
 function GetPlayerName(amx, player, nameBuf, bufSize)
-	local name = getClientName(player)
+	local name = getPlayerName(player)
 	if #name <= bufSize then
 		writeMemString(amx, nameBuf, name)
 	end
@@ -669,11 +669,11 @@ function GetPlayerScore(amx, player)
 end
 
 function GetPlayerSkin(amx, player)
-	return getPlayerSkin(player)
+	return getElementModel(player)
 end
 
 function GetPlayerSpecialAction(amx, player)
-	if doesPlayerHaveJetPack(player) then
+	if doesPedHaveJetPack(player) then
 		return SPECIAL_ACTION_USEJETPACK
 	else
 		return g_Players[getElemID(player)].specialaction or SPECIAL_ACTION_NONE
@@ -908,7 +908,7 @@ function PlayerSpectateVehicle(amx, player, vehicleToSpectate, mode)
 end
 
 function PutPlayerInVehicle(amx, player, vehicle, seat)
-	warpPlayerIntoVehicle(player, vehicle, seat)
+	warpPedIntoVehicle(player, vehicle, seat)
 	if g_RCVehicles[getElementModel(vehicle)] then
 		setElementAlpha(player, 0)
 	end
@@ -922,7 +922,7 @@ end
 function RemovePlayerFromVehicle(amx, player)
 	local vehicle = getPedOccupiedVehicle(player)
 	if vehicle then
-		removePlayerFromVehicle(player)
+		removePedFromVehicle(player)
 		if g_RCVehicles[getElementModel(vehicle)] then
 			clientCall(root, 'setElementAlpha', player, 255)
 		end
@@ -971,11 +971,11 @@ function SendDeathMessage(amx, killer, victim, reason)
 end
 
 function SendPlayerMessageToAll(amx, sender, message)
-	outputChatBox(getClientName(sender) .. ' ' .. message, root, 255, 255, 255)
+	outputChatBox(getPlayerName(sender) .. ' ' .. message, root, 255, 255, 255)
 end
 
 function SendPlayerMessageToPlayer(amx, playerTo, playerFrom, message)
-	outputChatBox(getClientName(playerFrom) .. ' ' .. message, playerTo, 255, 255, 255)
+	outputChatBox(getPlayerName(playerFrom) .. ' ' .. message, playerTo, 255, 255, 255)
 end
 
 function SendRconCommand(amx, command)
@@ -1029,7 +1029,7 @@ function SetPlayerAmmo(amx, player, slot, ammo)
 end
 
 function SetPlayerArmour(amx, player, armor)
-	setPlayerArmor(player, armor)
+	setPedArmor(player, armor)
 end
 
 function SetPlayerCameraLookAt(amx, player, lx, ly, lz)
@@ -1064,7 +1064,7 @@ function SetPlayerFacingAngle(amx, player, angle)
 end
 
 function SetPlayerGravity(amx, player, gravity)
-	setPlayerGravity(player, gravity)
+	setPedGravity(player, gravity)
 end
 
 function SetPlayerHealth(amx, player, health)
@@ -1103,7 +1103,7 @@ function SetPlayerObjectRot(amx, player, objID, rX, rY, rZ)
 end
 
 function SetPlayerName(amx, player, name)
-	setClientName(player, name)
+	setPlayerName(player, name)
 end
 
 function SetPlayerPos(amx, player, x, y, z)
@@ -1120,15 +1120,15 @@ function SetPlayerScore(amx, player, score)
 end
 
 function SetPlayerSkin(amx, player, skin)
-	setPlayerSkin(player, skinReplace[skin] or skin)
+	setElementModel(player, skinReplace[skin] or skin)
 end
 
 function SetPlayerSpecialAction(amx, player, actionID)
 	if actionID == SPECIAL_ACTION_NONE then
-		removePlayerJetPack(player)
+		removePedJetPack(player)
 		setPedAnimation(player, false)
 	elseif actionID == SPECIAL_ACTION_USEJETPACK then
-		givePlayerJetPack(player)
+		givePedJetPack(player)
 	elseif g_SpecialActions[actionID] then
 		setPedAnimation(player, unpack(g_SpecialActions[actionID]))
 	end
@@ -1217,7 +1217,7 @@ function SetVehicleToRespawn(amx, vehicle)
 	for seat=0,getVehicleMaxPassengers(vehicle) do
 		local player = getVehicleOccupant(vehicle, seat)
 		if player then
-			removePlayerFromVehicle(player)
+			removePedFromVehicle(player)
 		end
 	end
 	local spawninfo = g_Vehicles[getElemID(vehicle)].spawninfo
@@ -1428,7 +1428,7 @@ function TogglePlayerSpectating(amx, player, enable)
 		setCameraMatrix(player, 75.461357116699, 64.600051879883, 51.685581207275, 149.75857543945, 131.53228759766, 40.597320556641)
 		showPlayerHudComponent(player, 'radar', false)
 	else
-		if isPlayerDead(player) then
+		if isPedDead(player) then
 			spawnPlayerBySelectedClass(player)
 		end
 		setCameraTarget(player, player)

@@ -30,7 +30,7 @@ function gameModeInit(player)
 				if not isElement(player) or getElementType(player) ~= 'player' then
 					return
 				end
-				killPlayer(player)
+				killPed(player)
 				if procCallOnAll('OnPlayerRequestClass', playerID, 0) then
 					putPlayerInClassSelection(player)
 				else
@@ -66,7 +66,7 @@ function joinHandler(player)
 	
 	-- Keybinds
 	bindKey(player, 'F4', 'down', classSelKey)
-	bindKey(player, 'enter_exit', 'down', removePlayerJetPack)
+	bindKey(player, 'enter_exit', 'down', removePedJetPack)
 	g_Players[playerID].keys = {}
 	local function bindControls(player, t)
 		for samp,mta in pairs(t) do
@@ -150,7 +150,7 @@ function putPlayerInClassSelection(player)
 		return
 	end
 	toggleAllControls(player, false, true, false)
-	killPlayer(player)
+	killPed(player)
 	local playerID = getElemID(player)
 	g_Players[playerID].viewingintro = nil
 	g_Players[playerID].doingclasssel = true
@@ -176,10 +176,10 @@ function requestClass(player, btn, state, dir)
 		data.selectedclass = #g_PlayerClasses
 	end
 	local x, y, z = getElementPosition(player)
-	if isPlayerDead(player) then
+	if isPedDead(player) then
 		spawnPlayer(player, x, y, z, getPedRotation(player), g_PlayerClasses[data.selectedclass][5], getElementInterior(player), playerID)
 	else
-		setPlayerSkin(player, g_PlayerClasses[data.selectedclass][5])
+		setElementModel(player, g_PlayerClasses[data.selectedclass][5])
 	end
 	clientCall(player, 'selectClass', data.selectedclass)
 	procCallOnAll('OnPlayerRequestClass', playerID, data.selectedclass)
@@ -251,11 +251,11 @@ addEventHandler('onPlayerChat', root,
 			local x, y, z = getElementPosition(source)
 			for i,data in pairs(g_Players) do
 				if getDistanceBetweenPoints3D(x, y, z, getElementPosition(data.elem)) <= g_GlobalChatRadius then
-					outputChatBox(getClientName(source) .. ':#FFFFFF ' .. msg:gsub('#%x%x%x%x%x%x', ''), data.elem, r, g, b, true)
+					outputChatBox(getPlayerName(source) .. ':#FFFFFF ' .. msg:gsub('#%x%x%x%x%x%x', ''), data.elem, r, g, b, true)
 				end
 			end
 		else
-			outputChatBox(getClientName(source) .. ':#FFFFFF ' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
+			outputChatBox(getPlayerName(source) .. ':#FFFFFF ' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
 		end
 	end
 )
@@ -266,7 +266,7 @@ addEventHandler('onPlayerDamage', root,
 			return
 		end
 		if g_ServerVars.instagib then
-			killPlayer(source)
+			killPed(source)
 		end
 	end
 )
@@ -293,7 +293,7 @@ addEventHandler('onPlayerWasted', root,
 
 addCommandHandler('kill',
 	function(player)
-		killPlayer(player)
+		killPed(player)
 	end
 )
 
@@ -418,13 +418,13 @@ function getPedOccupiedVehicle(player)
 	return data and data.vehicle
 end
 
-local _warpPlayerIntoVehicle = warpPlayerIntoVehicle
-function warpPlayerIntoVehicle(player, vehicle, seat)
+local _warpPlayerIntoVehicle = warpPedIntoVehicle
+function warpPedIntoVehicle(player, vehicle, seat)
 	g_Players[getElemID(player)].vehicle = vehicle
 	_warpPlayerIntoVehicle(player, vehicle, seat)
 end
 
-function removePlayerFromVehicle(player)
+function removePedFromVehicle(player)
 	local playerdata = g_Players[getElemID(player)]
 	if not playerdata.vehicle then
 		return false
@@ -457,7 +457,7 @@ addEventHandler('onPlayerPickupHit', root,
 		procCallOnAll('OnPlayerPickUpPickup', getElemID(source), getElemID(pickup))
 		if getElementModel(pickup) == 370 then
 			-- Jetpack pickup
-			givePlayerJetPack(source)
+			givePedJetPack(source)
 		end
 	end
 )

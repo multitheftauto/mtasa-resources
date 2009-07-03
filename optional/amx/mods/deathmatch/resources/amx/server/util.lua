@@ -67,7 +67,7 @@ addEventHandler('onCall', g_ResRoot,
 )
 
 function isPlayerInACLGroup(player, groupName)
-	local account = getClientAccount(player)
+	local account = getPlayerAccount(player)
 	local group = aclGetGroup(groupName)
 	if not account or not group then
 		return false
@@ -81,9 +81,9 @@ function isPlayerInACLGroup(player, groupName)
 	return false
 end
 
-local _warpPlayerIntoVehicle = warpPlayerIntoVehicle
-function warpPlayerIntoVehicle(player, vehicle, seat)
-	setTimer(_warpPlayerIntoVehicle, 500, 3, player, vehicle, seat)
+local _warpPedIntoVehicle = warpPedIntoVehicle
+function warpPedIntoVehicle(player, vehicle, seat)
+	setTimer(_warpPedIntoVehicle, 500, 3, player, vehicle, seat)
 end
 
 local _bindKey = bindKey
@@ -112,9 +112,9 @@ function unbindKey(player, key, ...)
 	end
 end
 
-local _isPlayerDead = isPlayerDead
-function isPlayerDead(player)
-	if _isPlayerDead(player) then
+local _isPedDead = isPedDead
+function isPedDead(player)
+	if _isPedDead(player) then
 		return true
 	end
 	local x, y, z = getElementPosition(player)

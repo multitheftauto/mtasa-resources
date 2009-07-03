@@ -107,9 +107,9 @@ function bindKey(key, ...)
 	end
 end
 
-local _isPlayerDead = isPlayerDead
-function isPlayerDead(player)
-	if _isPlayerDead(player) then
+local _isPedDead = isPedDead
+function isPedDead(player)
+	if _isPedDead(player) then
 		return true
 	end
 	local x, y, z = getElementPosition(player)
