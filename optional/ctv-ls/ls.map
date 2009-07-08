@@ -1,12 +1,12 @@
 <map mod="deathmatch" author="BrophY" version="1.0">
 
-	<base team="team1" teamName="Grove" teamColor="0,255,30" posX="2493" posY="-1669" posZ="13.34" rot="0" markerX="2499.3945" markerY="-1656.2666" markerZ="13.3973" markercolor="0,255,30" blip="62" skins="105,107" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
+	<base team="team1" teamName="Grove" teamColor="0,255,30" posX="2493" posY="-1669" posZ="13.34" rot="0" markerX="2491.511" markerY="-1668.122" markerZ="13.3973" markercolor="0,255,30" blip="62" skins="105,107" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
 	
-	<base team="team2" teamName="Balla" teamColor="204,51,255" posX="2210" posY="-1160" posZ="25.8" rot="0" markerX="2228.8994" markerY="-1173.5866" markerZ="25.7265" markercolor="138,0,84" blip="59" skins="102,104" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
+	<base team="team2" teamName="Balla" teamColor="204,51,255" posX="2210" posY="-1160" posZ="25.8" rot="0" markerX="2216.947" markerY="-1166.182" markerZ="25.7265" markercolor="138,0,84" blip="59" skins="102,104" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
 	
-	<base team="team3" teamName="Cop" teamColor="26,198,255" posX="1587" posY="-1689" posZ="5.90" rot="354.872" markerX="1585.3624" markerY="-1678.0627" markerZ="5.702" markercolor="0,48,194" blip="58" skins="280,288" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
+	<base team="team3" teamName="Cop" teamColor="26,198,255" posX="1587" posY="-1689" posZ="5.90" rot="354.872" markerX="1601.79" markerY="-1608.60" markerZ="13.482" markercolor="0,48,194" blip="58" skins="280,288" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
 	
-	<base team="team4" teamName="Russian" teamColor="255,255,0" posX="860" posY="-1224" posZ="20" rot="270" markerX="868.071" markerY="-1255.165" markerZ="15.011" markercolor="255,255,0" blip="60" skins="124,127" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
+	<base team="team4" teamName="Russian" teamColor="255,255,0" posX="860" posY="-1224" posZ="20" rot="270" markerX="867.07" markerY="-1209.60" markerZ="16.97" markercolor="255,255,0" blip="60" skins="124,127" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
 	
 	<target model="428" posX="2795.1708" posY="-2417.6420" posZ="13.755" rotX="0" rotY="0" rotZ="90.0"  plate="CASHRAID" colors="ran,0,0,0" />
 	<target model="428" posX="1751.620" posY="-2434.8952" posZ="13.679" rotX="0" rotY="0" rotZ="143.7" plate="FARTVAN" colors="ran,0,0,0" />
@@ -65,7 +65,7 @@
 <vehicle id="Slamvan" model="535" posX="2224.2692871094" posY="-1111.8800048828" posZ="25.885433197021" rotX="356.18743896484" rotY="6.2045288085938" rotZ="170.79833984375" color="55 1 0 0"/>
 <vehicle id="Previon" model="436" posX="2206.6489257813" posY="-1134.5711669922" posZ="25.475547790527" rotX="359.49456787109" rotY="6.7992858886719" rotZ="77.154144287109" color="92 1 0 0"/>
 <vehicle id="Previon" model="436" posX="2197.74609375" posY="-1106.1704101563" posZ="24.972127914429" rotX="358.61596679688" rotY="2.9484252929688" rotZ="155.54693603516" color="109 1 0 0"/>
-<vehicle id="Landstalker" model="400" posX="2217.7158203125" posY="-1166.3707275391" posZ="25.820550918579" rotX="359.99551391602" rotY="359.99249267578" rotZ="270.2297668457" color="123 1 0 0"/>
+<vehicle id="Landstalker" model="400" posX="2205.578203125" posY="-1157.007275391" posZ="25.820550918579" rotX="359.99551391602" rotY="359.99249267578" rotZ="270.2297668457" color="123 1 0 0"/>
 <vehicle id="Hotknife" model="434" posX="2171.4890136719" posY="-1090.0935058594" posZ="25.481269836426" rotX="359.50289916992" rotY="359.90664672852" rotZ="154.697265625" color="1 1 0 0"/>
 <vehicle id="Bus" model="431" posX="2296.2919921875" posY="-1133.4848632813" posZ="26.979763031006" rotX="359.74841308594" rotY="2.01513671875" rotZ="194.63597106934" color="71 87 0 0"/>
 <vehicle id="Merit" model="551" posX="2222.8293457031" posY="-1096.1928710938" posZ="28.586261749268" rotX="13.286895751953" rotY="354.66738891602" rotZ="15.243194580078" color="91 1 0 0"/>
@@ -80,7 +80,7 @@
 <vehicle id="Admiral" model="445" posX="881.52325439453" posY="-1268.2213134766" posZ="14.631078720093" rotX="359.05786132813" rotY="359.58416748047" rotZ="179.76745605469" color="41 41 0 0"/>
 <vehicle id="Admiral" model="445" posX="877.28192138672" posY="-1268.4755859375" posZ="14.610640525818" rotX="0.81976318359375" rotY="0.038055419921875" rotZ="357.11029052734" color="42 42 0 0"/>
 <vehicle id="Flash" model="565" posX="910.40765380859" posY="-1262.1243896484" posZ="14.490026473999" rotX="1.8727111816406" rotY="358.37649536133" rotZ="89.174285888672" color="81 27 0 0"/>
-<vehicle id="Washington" model="421" posX="877.91491699219" posY="-1207.2414550781" posZ="16.860439300537" rotX="359.99932861328" rotY="0.013458251953125" rotZ="134.96011352539" color="30 1 0 0"/>
+<vehicle id="Washington" model="421" posX="887.64491699219" posY="-1198.094550781" posZ="16.860439300537" rotX="359.99932861328" rotY="0.013458251953125" rotZ="178.0011352539" color="30 1 0 0"/>
 <vehicle id="BMX" model="481" posX="908.71246337891" posY="-1232.4846191406" posZ="16.514110565186" rotX="358.60458374023" rotY="359.45883178711" rotZ="242.1012878418" color="46 46 0 0"/>
 <vehicle id="BMX" model="481" posX="910.40557861328" posY="-1231.5314941406" posZ="16.490997314453" rotX="358.47302246094" rotY="359.8639831543" rotZ="240.63200378418" color="65 9 0 0"/>
 <vehicle id="Sandking" model="495" posX="881.88677978516" posY="-1178.0681152344" posZ="17.3483543396" rotX="0.9735107421875" rotY="0.06494140625" rotZ="179.34008789063" color="123 124 0 0"/>
