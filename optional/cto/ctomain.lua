@@ -24,12 +24,15 @@ local orbMarker
 local objectiveMarker
 local orbCarrier
 local resetOrbTimer
+local runningMapResource
 
 function onGamemodeMapStart_cto ( resource )
 	if (not mapStarted) then
 	    mapStarted = true
-		displayMessage ( "Capture the Orb" )
+	    runningMapResource = resource
+		displayMessage ( "Capture the Orb (debug version)" )
 		-- create orb and objective
+--outputServerLog("G O ING  TO  RE S E T   ORB !!!!!!!")
 	  	resetOrb ()
 	  	resetObjective ()
    		-- set players' points to 0
@@ -75,7 +78,7 @@ function onPlayerClientScriptLoad_cto ()
 	if ( orbMarker and not isElementAttached ( orbMarker ) ) then
 assert(orbMarker, "from server: orbMarker doesn't exist") -- appears...
 assert(isElement(orbMarker), "from server: orbMarker isn't an element")
-setTimer ( outputConsole, 1000, 1, "debug: triggering client event doSetOrbHittable for " .. getPlayerName ( source ) )
+setTimer ( outputConsole, 1000, 1, "debug: triggering client event doSetOrbHittable for " .. getClientName ( source ) )
 		setTimer ( triggerClientEvent, 2500, 1, source, "doSetOrbHittable", root, true, orbMarker ) -- sometimes doesn't exit in client yet?
 	end
 end -- done
@@ -89,10 +92,10 @@ function onPlayerOrbHit_cto ( marker )
 	assert ( ( not teamGame ) or ( teamGame and getPlayerTeam ( source ) ), "Orb hitter expected on team but is not" )
 	-- make sure the player doesn't already have a marker attached and isn't dead
 	-- (the latter might happen if this event is triggered more than once)
-	if ( not isElementAttached ( marker ) and not isPedDead ( source ) ) then
-		local inVehicle = isPedInVehicle ( source )
+	if ( not isElementAttached ( marker ) and not isPlayerDead ( source ) ) then
+		local inVehicle = isPlayerInVehicle ( source )
 		-- make sure the player didn't just drop the orb from a vehicle
-		if ( not inVehicle or ( not getElementData ( source, "justDroppedOrb" ) and getPedOccupiedVehicleSeat ( source ) == 0 ) ) then
+		if ( not inVehicle or ( not getElementData ( source, "justDroppedOrb" ) and getPlayerOccupiedVehicleSeat ( source ) == 0 ) ) then
 			triggerClientEvent ( root, "doSetOrbHittable", root, false )
 			-- kill the reset timer if it exists
 			if ( resetOrbTimer ) then
@@ -102,16 +105,16 @@ function onPlayerOrbHit_cto ( marker )
    			-- announce that player has orb
    			if ( teamGame ) then
    				--local r, g, b = getTeamColor ( getPlayerTeam ( source ) )
-   				displayMessage ( getPlayerName ( source ) .. " has the orb!", 0, 0, 255, getPlayerTeam ( source ) )
-   				displayMessage ( getPlayerName ( source ) .. " has the orb!", 255, 0, 0, getPlayerTeam ( source ), true )
+   				displayMessage ( getClientName ( source ) .. " has the orb!", 0, 0, 255, getPlayerTeam ( source ) )
+   				displayMessage ( getClientName ( source ) .. " has the orb!", 255, 0, 0, getPlayerTeam ( source ), true )
    			else
-   				displayMessage ( getPlayerName ( source ) .. " has the orb!" )
+   				displayMessage ( getClientName ( source ) .. " has the orb!" )
    			end
 			-- increase score
 			local pointLimitReached = increasePoints ( source, 20 )
 			if ( not pointLimitReached ) then
 			    -- attach orb to player
-	   			attachElements ( marker, source, 0, 0, 1.25 )
+	   			attachElementToElement ( marker, source, 0, 0, 1.25 )
 			    -- add events for player
 			    addCarrierEvents ( source )
 			    -- let the player's client know that he has orb
@@ -125,6 +128,7 @@ function onPlayerOrbHit_cto ( marker )
 end -- done
 
 function onCarrierObjectiveHit ( marker, matchingDimension )
+	assert ( orbCarrier == source, "onCarrierObjectiveHit triggered for a non-carrier" )
 	assert ( ( not teamGame ) or ( teamGame and getPlayerTeam ( source ) ), "Carrier expected on team but is not" )
 	if ( marker == objectiveMarker ) then
 --		if ( not isPlayerInVehicle ( source ) ) then
@@ -137,7 +141,7 @@ function onCarrierObjectiveHit ( marker, matchingDimension )
 			destroyElement ( marker )
 	        objectiveMarker = nil
 	        -- detach orb from player
-	        detachElements ( orbMarker )
+	        detachElementFromElement ( orbMarker )
 			-- destroy orb
 			destroyBlipsAttachedTo ( orbMarker )
 			destroyElement ( orbMarker )
@@ -145,18 +149,18 @@ function onCarrierObjectiveHit ( marker, matchingDimension )
 	        -- increase player health
 	        setPlayerHealth ( source, 100 )
 	        -- increase vehicle health
-	        local vehicle = getPedOccupiedVehicle ( source )
-	        if ( vehicle and getPedOccupiedVehicleSeat ( source ) == 0 ) then
+	        local vehicle = getPlayerOccupiedVehicle ( source )
+	        if ( vehicle and getPlayerOccupiedVehicleSeat ( source ) == 0 ) then
 	        	fixVehicle ( vehicle )
 	        end
 	        -- remove any instructions message the player might have
 	        call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
    			-- announce that player reached the objective
    			if ( teamGame ) then
-   				displayMessage ( getPlayerName ( source ) .. " reached the objective!", 0, 0, 255, getPlayerTeam ( source ) )
-   				displayMessage ( getPlayerName ( source ) .. " reached the objective!", 255, 0, 0, getPlayerTeam ( source ), true )
+   				displayMessage ( getClientName ( source ) .. " reached the objective!", 0, 0, 255, getPlayerTeam ( source ) )
+   				displayMessage ( getClientName ( source ) .. " reached the objective!", 255, 0, 0, getPlayerTeam ( source ), true )
    			else
-   				displayMessage ( getPlayerName ( source ) .. " reached the objective!" )
+   				displayMessage ( getClientName ( source ) .. " reached the objective!" )
    			end
 			-- increase score
 			local pointLimitReached = increasePoints ( source, 100 )
@@ -179,7 +183,7 @@ outputConsole ( "[debug] carrier wasted" )
 	triggerClientEvent ( source, "onClientCarrier", root, false )
     orbCarrier = nil
     -- detach orb from player
-    detachElements ( orbMarker )
+    detachElementFromElement ( orbMarker )
     setElementPosition( orbMarker, getElementPosition ( source ) )
     -- make orb hittable
 	--addEventHandler ( "onMarkerHit", orbMarker, onOrbHit )
@@ -191,10 +195,10 @@ outputConsole ( "[debug] carrier wasted" )
     call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
 	-- announce that the player dropped the orb
 	if ( teamGame ) then
-		displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
-		displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
+		displayMessage ( getClientName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
+		displayMessage ( getClientName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
 	else
-		displayMessage ( getPlayerName ( source ) .. " dropped the orb!" )
+		displayMessage ( getClientName ( source ) .. " dropped the orb!" )
 	end
 end -- done
 
@@ -208,7 +212,7 @@ function onCarrierDamage ( attacker, attackerweapon, bodypart, loss )
 		triggerClientEvent ( source, "onClientCarrier", root, false )
 	    orbCarrier = nil
 	    -- detach orb from player
-	    detachElements ( orbMarker )
+	    detachElementFromElement ( orbMarker )
 	    setElementPosition( orbMarker, getElementPosition ( source ) )
 	    -- make orb hittable
 		--addEventHandler ( "onMarkerHit", orbMarker, onOrbHit )
@@ -220,17 +224,17 @@ function onCarrierDamage ( attacker, attackerweapon, bodypart, loss )
         call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
 		-- announce that the player dropped the orb
 		if ( teamGame ) then
-			displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
-			displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
+			displayMessage ( getClientName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
+			displayMessage ( getClientName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
 		else
-			displayMessage ( getPlayerName ( source ) .. " dropped the orb!" )
+			displayMessage ( getClientName ( source ) .. " dropped the orb!" )
 		end
 	end
 end -- done
 -------------
 
 function onCarrierVehicleEnter ( vehicle, seat, jacked )
-outputDebugString ( "adding onCarrierVehicleDamage for " .. getPlayerName ( source ) .. "..." )
+outputDebugString ( "adding onCarrierVehicleDamage for " .. getClientName ( source ) .. "..." )
 	addEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage ) -- added when it already exists sometimes
 	setElementData ( source, "carrierVehicle", vehicle )
 end -- done
@@ -244,21 +248,21 @@ function onCarrierVehicleExit ( vehicle, seat, jacker )
 		triggerClientEvent ( source, "onClientCarrier", root, false )
 		orbCarrier = nil
    	 	-- detach orb from old orb carrier
-	    detachElements ( orbMarker )
+	    detachElementFromElement ( orbMarker )
         -- remove any instructions message the jacked player might have
         call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
 		-- announce that jacker jacked the orb carrier
 		if ( teamGame ) then		
-			displayMessage ( getPlayerName ( source ) .. " was jacked by " .. getPlayerName ( jacker ) .. "!", 0, 0, 255, getPlayerTeam ( jacker ) )
-			displayMessage ( getPlayerName ( source ) .. " was jacked by " .. getPlayerName ( jacker ) .. "!", 255, 0, 0, getPlayerTeam ( jacker ), true )
+			displayMessage ( getClientName ( source ) .. " was jacked by " .. getClientName ( jacker ) .. "!", 0, 0, 255, getPlayerTeam ( jacker ) )
+			displayMessage ( getClientName ( source ) .. " was jacked by " .. getClientName ( jacker ) .. "!", 255, 0, 0, getPlayerTeam ( jacker ), true )
 		else
-			displayMessage ( getPlayerName ( source ) .. " was jacked by " .. getPlayerName ( jacker ) .. "!" )
+			displayMessage ( getClientName ( source ) .. " was jacked by " .. getClientName ( jacker ) .. "!" )
 		end
 		-- increase score
 		local pointLimitReached = increasePoints ( jacker, 20 )
 		if ( not pointLimitReached ) then
 		    -- attach orb to jacker
-	   		attachElements ( orbMarker, jacker, 0, 0, 1.25 )
+	   		attachElementToElement ( orbMarker, jacker, 0, 0, 1.25 )
 		    -- add events for jacker
 		    addCarrierEvents ( jacker )
 	   		-- let the jacker's client know that he has orb
@@ -272,7 +276,7 @@ function onCarrierVehicleExit ( vehicle, seat, jacker )
 	-- the code below will catch the exit and remove the onCarrierVehicleDamageEvent
 	local vehicle = getElementData ( source, "carrierVehicle" )
 	if ( vehicle ) then
-outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( source ) .. " (caught in onCarrierVehicleExit)" )
+outputDebugString ( "removing onCarrierVehicleDamage for " .. getClientName ( source ) .. " (caught in onCarrierVehicleExit)" )
 		removeEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage )
 		setElementData ( source, "carrierVehicle", false )
 	end
@@ -285,7 +289,7 @@ function onCarrierQuit ( reason )
 	destroyElement ( objectiveMarker )
 	objectiveMarker = nil
     -- detach orb from player
-    detachElements ( orbMarker )
+    detachElementFromElement ( orbMarker )
 	-- destroy orb
 	destroyBlipsAttachedTo ( orbMarker )
 	destroyElement ( orbMarker )
@@ -294,10 +298,10 @@ function onCarrierQuit ( reason )
 	setTimer ( resetOrb, 5000, 1 )
    	setTimer ( resetObjective, 5000, 1 )
 	if ( teamGame ) then
-		displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
-		displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
+		displayMessage ( getClientName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
+		displayMessage ( getClientName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
 	else
-		displayMessage ( getPlayerName ( source ) .. " dropped the orb!" )
+		displayMessage ( getClientName ( source ) .. " dropped the orb!" )
 	end
 end -- done
 
@@ -311,7 +315,7 @@ outputDebugString("damage: " .. loss)
 		triggerClientEvent ( orbCarrier, "onClientCarrier", root, false )
 		orbCarrier = nil
 	 	-- detach orb from player
-	    detachElements ( orbMarker )
+	    detachElementFromElement ( orbMarker )
 	    setElementPosition ( orbMarker, getElementPosition ( player ) )
 		-- make orb not hittable to player for 5 seconds
 		setElementData ( player, "justDroppedOrb", true )
@@ -326,10 +330,10 @@ outputDebugString("damage: " .. loss)
         call ( getResourceFromName ( "easytext" ), "displayMessageForPlayer", player, 2, "[Five second pickup penalty]", 5000, 0.5, 0.535, 170, 0, 0, 255, 1.75 )
         -- announce that jacker jacked the orb carrier
 		if ( teamGame ) then
-			displayMessage ( getPlayerName ( player ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( player ) )
-			displayMessage ( getPlayerName ( player ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( player ), true )
+			displayMessage ( getClientName ( player ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( player ) )
+			displayMessage ( getClientName ( player ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( player ), true )
 		else
-			displayMessage ( getPlayerName ( player ) .. " dropped the orb!" )
+			displayMessage ( getClientName ( player ) .. " dropped the orb!" )
 		end
 	end
 end -- done
@@ -349,10 +353,9 @@ function destroyAndResetIdleOrb ()
 end
 
 function onPlayerSpawn_cto ( spawnpoint )
-    giveWeapon ( source, 22, 187 )
-    giveWeapon ( source, 33, 70 )
-	--giveWeapon ( source, 41, 300 )
-	giveWeapon ( source, 29, 270 )
+    giveWeapon ( source, 22, 250 )
+    giveWeapon ( source, 33, 300 )
+	giveWeapon ( source, 41, 300 )
     giveWeapon ( source, 18, 4 )
     giveWeapon ( source, 1, 1 )
 end -- done
@@ -360,7 +363,9 @@ end -- done
 function resetOrb ()
 	---MODIFIED FROM ERORR'S ORIGINAL CODE.  More editor compatible, as there's no unnecessary parent group anymore.
 	-- get coords from map
-	local runningMap = call(getResourceFromName"mapmanager","getRunningGamemodeMap")
+	--local runningMap = call(getResourceFromName"mapmanager","getRunningGamemodeMap") -- commented out because this returns nil when resetOrb is called when the gm map is started because mapmanager does not have the gm map set yet at this point.. this is because it triggers the event gm map start event before setting the gm map (currentGamemodeMap is nil at this point) -- erorr404
+	local runningMap = runningMapResource
+--outputServerLog(tostring(runningMap))
 	local mapRoot = getResourceRootElement(runningMap)
 	local orbs = getElementsByType ( "orb",mapRoot )
 	local orbCount = #orbs
@@ -389,7 +394,8 @@ end -- done
 function resetObjective ()
 	---MODIFIED FROM ERORR'S ORIGINAL CODE.  More editor compatible, as there's no unnecessary parent group anymore.
 	-- get coords from map
-	local runningMap = call(getResourceFromName"mapmanager","getRunningGamemodeMap")
+	--local runningMap = call(getResourceFromName"mapmanager","getRunningGamemodeMap") -- commented out because this returns nil when resetOrb is called when the gm map is started because mapmanager does not have the gm map set yet at this point.. this is because it triggers the event gm map start event before setting the gm map (currentGamemodeMap is nil at this point) -- erorr404
+	local runningMap = runningMapResource
 	local mapRoot = getResourceRootElement(runningMap)
 	local objectives = getElementsByType ( "objective",mapRoot )
 	local objectiveCount = #objectives
@@ -420,9 +426,9 @@ function addCarrierEvents ( player )
 	success = addEventHandler ( "onPlayerVehicleExit", player, onCarrierVehicleExit ) -- unreliable -- onPlayerStartExitVehicle?	
 	if (not success) then outputDebugString("could not add onPlayerVehicleExit event for carrier")	end---
 	addEventHandler ( "onPlayerQuit", player, onCarrierQuit )
-	local vehicle = getPedOccupiedVehicle ( player )
+	local vehicle = getPlayerOccupiedVehicle ( player )
 	if ( vehicle ) then
-outputDebugString ( "adding onCarrierVehicleDamage for " .. getPlayerName ( player ) .. "..." )
+outputDebugString ( "adding onCarrierVehicleDamage for " .. getClientName ( player ) .. "..." )
 		addEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage )
 		setElementData ( player, "carrierVehicle", vehicle )
 	end
@@ -437,7 +443,7 @@ function removeCarrierEvents ( player )
 	removeEventHandler ( "onPlayerQuit", player, onCarrierQuit )
 	local vehicle = getElementData ( player, "carrierVehicle" )
 	if ( vehicle ) then
-outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( player ) .. "..." )
+outputDebugString ( "removing onCarrierVehicleDamage for " .. getClientName ( player ) .. "..." )
 		removeEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage )
 		setElementData ( player, "carrierVehicle", false )
 	end
@@ -464,7 +470,7 @@ function increasePoints ( player, points )
 		setElementData ( player, "points", playerPoints )
 		if ( playerPoints >= POINT_LIMIT ) then
             setTimer ( endGame, 2500, 1 )
-           	displayMessage ( "Point limit reached, " .. getPlayerName ( player ) .. " wins!" )
+           	displayMessage ( "Point limit reached, " .. getClientName ( player ) .. " wins!" )
            	pointLimitReached = true
 		end
 	end
@@ -477,7 +483,7 @@ function endGame ()
 	local mapmanagerResource = getResourceFromName ( "mapmanager" )
 	if ( mapmanagerResource and getResourceState ( mapmanagerResource ) == "running" ) then
 		--setTimer ( call, 10000, 1, mapmanagerResource, "stopGamemode" ) -- server crashes
-		setTimer ( outputChatBox, 10000, 1, "[Gamemode finished, resource can be stopped]" )
+		setTimer ( outputConsole, 10000, 1, "[Gamemode finished, resource can be stopped]" )
 	end
 end  -- done
 
@@ -497,7 +503,7 @@ end
 -- not called when falling from bike!?
 function onVehicleStartExit_cto ( player, seat, jacker )
 	if ( player == orbCarrier ) then
-outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( player ) .. "..." )
+outputDebugString ( "removing onCarrierVehicleDamage for " .. getClientName ( player ) .. "..." )
 		removeEventHandler ( "onVehicleDamage", source, onCarrierVehicleDamage )
 		setElementData ( player, "carrierVehicle", false )
 	end

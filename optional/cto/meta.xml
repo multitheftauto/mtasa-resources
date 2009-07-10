@@ -1,9 +1,9 @@
 <meta>
 
-    <info author="erorr404" name="Capture the orb" description="CTF-style game, only with more vehicles, and an orb instead of a flag!" type="gamemode" version="1" edf:definition="edf/cto.edf" />
+    <info author="erorr404" name="Capture the orb" description="Free for all gamemode" type="gamemode" version="1" edf:definition="cto.edf" />
 
 	<config src="help.xml" type="client"/>
-
+	
     <include resource="scoreboard" />
     <include resource="deathpickups" />
     <include resource="killmessages" />
@@ -14,9 +14,4 @@
     <script src="ctoclient.lua" type="client" />
     <script src="spawn.lua" type="server" />
 
-	
-	<!--EDF-->
-	<file src="edf/orb.png" />
-	<file src="edf/spawnpoint.png" />
-	<file src="edf/objective.png" />
 </meta>
