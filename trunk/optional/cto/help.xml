@@ -1,9 +1,9 @@
-<help popup="no">
-Capture The Orb
+<help popup="yes">
+CAPTURE THE ORB
 
-The aim of the game is to capture the orb and take it to the objective. When a round starts, the orb will be placed at a random location (yellow blob on radar), and the first player to get to it can capture it.
+The point of the game is to get the glowing yellow ORB to it's destination, indicated by a checkered flag on the radar. You can steal the orb from other players in several ways, including killing them, running them over, or bumping into their vehicle. If you are driving with the orb, be careful, as your car's handling and speed will be effected by the orb's mysterious properties.
 
-To make a player drop the orb, you can either kill them, run over them, or give them a bash if they're in a vehicle. Once they've dropped the orb, you have a chance to capture it yourself by simply walking/driving through it. (Note: If you're driving whilst carrying the orb it will affect the vehicle's handling.)
+How do you win the game? By reaching the point limit first. You earn points for picking up the orb, and more for capturing it.
 
-Whoever picks up the orb will then be told to take it to the objective, displayed on the radar as a checkered flag. Once the orb has been returned to the objective successfully, their score will increase and a new orb will be created.
+What if someone drops the orb in a place that's hard to reach? Players can try to do jumps with their cars, or think of various other ways to reach the orb. But if no one gets it for 5 minutes, the orb will reset.
 </help>
