@@ -16,6 +16,7 @@
 -- onVehicleStartExit_cto not called when falling from bike (fixed?)
 
 local POINT_LIMIT = 1000
+local ORB_RESET_TIME = 300000
 
 local root = getRootElement ()
 local mapStarted = false
@@ -30,9 +31,8 @@ function onGamemodeMapStart_cto ( resource )
 	if (not mapStarted) then
 	    mapStarted = true
 	    runningMapResource = resource
-		displayMessage ( "Capture the Orb (debug version)" )
+		displayMessage ( "Capture the Orb" )
 		-- create orb and objective
---outputServerLog("G O ING  TO  RE S E T   ORB !!!!!!!")
 	  	resetOrb ()
 	  	resetObjective ()
    		-- set players' points to 0
@@ -78,7 +78,7 @@ function onPlayerClientScriptLoad_cto ()
 	if ( orbMarker and not isElementAttached ( orbMarker ) ) then
 assert(orbMarker, "from server: orbMarker doesn't exist") -- appears...
 assert(isElement(orbMarker), "from server: orbMarker isn't an element")
-setTimer ( outputConsole, 1000, 1, "debug: triggering client event doSetOrbHittable for " .. getClientName ( source ) )
+setTimer ( outputConsole, 1000, 1, "debug: triggering client event doSetOrbHittable for " .. getPlayerName ( source ) )
 		setTimer ( triggerClientEvent, 2500, 1, source, "doSetOrbHittable", root, true, orbMarker ) -- sometimes doesn't exit in client yet?
 	end
 end -- done
@@ -92,10 +92,10 @@ function onPlayerOrbHit_cto ( marker )
 	assert ( ( not teamGame ) or ( teamGame and getPlayerTeam ( source ) ), "Orb hitter expected on team but is not" )
 	-- make sure the player doesn't already have a marker attached and isn't dead
 	-- (the latter might happen if this event is triggered more than once)
-	if ( not isElementAttached ( marker ) and not isPlayerDead ( source ) ) then
-		local inVehicle = isPlayerInVehicle ( source )
+	if ( not isElementAttached ( marker ) and not isPedDead ( source ) ) then
+		local inVehicle = isPedInVehicle ( source )
 		-- make sure the player didn't just drop the orb from a vehicle
-		if ( not inVehicle or ( not getElementData ( source, "justDroppedOrb" ) and getPlayerOccupiedVehicleSeat ( source ) == 0 ) ) then
+		if ( not inVehicle or ( not getElementData ( source, "justDroppedOrb" ) and getPedOccupiedVehicleSeat ( source ) == 0 ) ) then
 			triggerClientEvent ( root, "doSetOrbHittable", root, false )
 			-- kill the reset timer if it exists
 			if ( resetOrbTimer ) then
@@ -105,16 +105,16 @@ function onPlayerOrbHit_cto ( marker )
    			-- announce that player has orb
    			if ( teamGame ) then
    				--local r, g, b = getTeamColor ( getPlayerTeam ( source ) )
-   				displayMessage ( getClientName ( source ) .. " has the orb!", 0, 0, 255, getPlayerTeam ( source ) )
-   				displayMessage ( getClientName ( source ) .. " has the orb!", 255, 0, 0, getPlayerTeam ( source ), true )
+   				displayMessage ( getPlayerName ( source ) .. " has the orb!", 0, 0, 255, getPlayerTeam ( source ) )
+   				displayMessage ( getPlayerName ( source ) .. " has the orb!", 255, 0, 0, getPlayerTeam ( source ), true )
    			else
-   				displayMessage ( getClientName ( source ) .. " has the orb!" )
+   				displayMessage ( getPlayerName ( source ) .. " has the orb!" )
    			end
 			-- increase score
 			local pointLimitReached = increasePoints ( source, 20 )
 			if ( not pointLimitReached ) then
 			    -- attach orb to player
-	   			attachElementToElement ( marker, source, 0, 0, 1.25 )
+	   			attachElements ( marker, source, 0, 0, 1.25 )
 			    -- add events for player
 			    addCarrierEvents ( source )
 			    -- let the player's client know that he has orb
@@ -141,7 +141,7 @@ function onCarrierObjectiveHit ( marker, matchingDimension )
 			destroyElement ( marker )
 	        objectiveMarker = nil
 	        -- detach orb from player
-	        detachElementFromElement ( orbMarker )
+	        detachElements ( orbMarker )
 			-- destroy orb
 			destroyBlipsAttachedTo ( orbMarker )
 			destroyElement ( orbMarker )
@@ -149,18 +149,18 @@ function onCarrierObjectiveHit ( marker, matchingDimension )
 	        -- increase player health
 	        setPlayerHealth ( source, 100 )
 	        -- increase vehicle health
-	        local vehicle = getPlayerOccupiedVehicle ( source )
-	        if ( vehicle and getPlayerOccupiedVehicleSeat ( source ) == 0 ) then
+	        local vehicle = getPedOccupiedVehicle ( source )
+	        if ( vehicle and getPedOccupiedVehicleSeat ( source ) == 0 ) then
 	        	fixVehicle ( vehicle )
 	        end
 	        -- remove any instructions message the player might have
 	        call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
    			-- announce that player reached the objective
    			if ( teamGame ) then
-   				displayMessage ( getClientName ( source ) .. " reached the objective!", 0, 0, 255, getPlayerTeam ( source ) )
-   				displayMessage ( getClientName ( source ) .. " reached the objective!", 255, 0, 0, getPlayerTeam ( source ), true )
+   				displayMessage ( getPlayerName ( source ) .. " reached the objective!", 0, 0, 255, getPlayerTeam ( source ) )
+   				displayMessage ( getPlayerName ( source ) .. " reached the objective!", 255, 0, 0, getPlayerTeam ( source ), true )
    			else
-   				displayMessage ( getClientName ( source ) .. " reached the objective!" )
+   				displayMessage ( getPlayerName ( source ) .. " reached the objective!" )
    			end
 			-- increase score
 			local pointLimitReached = increasePoints ( source, 100 )
@@ -183,22 +183,22 @@ outputConsole ( "[debug] carrier wasted" )
 	triggerClientEvent ( source, "onClientCarrier", root, false )
     orbCarrier = nil
     -- detach orb from player
-    detachElementFromElement ( orbMarker )
+    detachElements ( orbMarker )
     setElementPosition( orbMarker, getElementPosition ( source ) )
     -- make orb hittable
 	--addEventHandler ( "onMarkerHit", orbMarker, onOrbHit )
 	triggerClientEvent ( root, "doSetOrbHittable", root, true, orbMarker )
 	--orbMarkerHittable = true
 	-- set reset timer
-	resetOrbTimer = setTimer ( destroyAndResetIdleOrb, 300000, 1 )
+	resetOrbTimer = setTimer ( destroyAndResetIdleOrb, ORB_RESET_TIME, 1 )
     -- remove any instructions message the player might have
     call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
 	-- announce that the player dropped the orb
 	if ( teamGame ) then
-		displayMessage ( getClientName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
-		displayMessage ( getClientName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
+		displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
+		displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
 	else
-		displayMessage ( getClientName ( source ) .. " dropped the orb!" )
+		displayMessage ( getPlayerName ( source ) .. " dropped the orb!" )
 	end
 end -- done
 
@@ -212,29 +212,29 @@ function onCarrierDamage ( attacker, attackerweapon, bodypart, loss )
 		triggerClientEvent ( source, "onClientCarrier", root, false )
 	    orbCarrier = nil
 	    -- detach orb from player
-	    detachElementFromElement ( orbMarker )
+	    detachElements ( orbMarker )
 	    setElementPosition( orbMarker, getElementPosition ( source ) )
 	    -- make orb hittable
 		--addEventHandler ( "onMarkerHit", orbMarker, onOrbHit )
 		triggerClientEvent ( root, "doSetOrbHittable", root, true, orbMarker )
 		--orbMarkerHittable = true
 		-- set reset timer
-		resetOrbTimer = setTimer ( destroyAndResetIdleOrb, 300000, 1 )
+		resetOrbTimer = setTimer ( destroyAndResetIdleOrb, ORB_RESET_TIME, 1 )
         -- remove any instructions message the player might have
         call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
 		-- announce that the player dropped the orb
 		if ( teamGame ) then
-			displayMessage ( getClientName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
-			displayMessage ( getClientName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
+			displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
+			displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
 		else
-			displayMessage ( getClientName ( source ) .. " dropped the orb!" )
+			displayMessage ( getPlayerName ( source ) .. " dropped the orb!" )
 		end
 	end
 end -- done
 -------------
 
 function onCarrierVehicleEnter ( vehicle, seat, jacked )
-outputDebugString ( "adding onCarrierVehicleDamage for " .. getClientName ( source ) .. "..." )
+outputDebugString ( "adding onCarrierVehicleDamage for " .. getPlayerName ( source ) .. "..." )
 	addEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage ) -- added when it already exists sometimes
 	setElementData ( source, "carrierVehicle", vehicle )
 end -- done
@@ -248,21 +248,21 @@ function onCarrierVehicleExit ( vehicle, seat, jacker )
 		triggerClientEvent ( source, "onClientCarrier", root, false )
 		orbCarrier = nil
    	 	-- detach orb from old orb carrier
-	    detachElementFromElement ( orbMarker )
+	    detachElements ( orbMarker )
         -- remove any instructions message the jacked player might have
         call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", source, 2 )
 		-- announce that jacker jacked the orb carrier
 		if ( teamGame ) then		
-			displayMessage ( getClientName ( source ) .. " was jacked by " .. getClientName ( jacker ) .. "!", 0, 0, 255, getPlayerTeam ( jacker ) )
-			displayMessage ( getClientName ( source ) .. " was jacked by " .. getClientName ( jacker ) .. "!", 255, 0, 0, getPlayerTeam ( jacker ), true )
+			displayMessage ( getPlayerName ( source ) .. " was jacked by " .. getPlayerName ( jacker ) .. "!", 0, 0, 255, getPlayerTeam ( jacker ) )
+			displayMessage ( getPlayerName ( source ) .. " was jacked by " .. getPlayerName ( jacker ) .. "!", 255, 0, 0, getPlayerTeam ( jacker ), true )
 		else
-			displayMessage ( getClientName ( source ) .. " was jacked by " .. getClientName ( jacker ) .. "!" )
+			displayMessage ( getPlayerName ( source ) .. " was jacked by " .. getPlayerName ( jacker ) .. "!" )
 		end
 		-- increase score
 		local pointLimitReached = increasePoints ( jacker, 20 )
 		if ( not pointLimitReached ) then
 		    -- attach orb to jacker
-	   		attachElementToElement ( orbMarker, jacker, 0, 0, 1.25 )
+	   		attachElements ( orbMarker, jacker, 0, 0, 1.25 )
 		    -- add events for jacker
 		    addCarrierEvents ( jacker )
 	   		-- let the jacker's client know that he has orb
@@ -276,7 +276,7 @@ function onCarrierVehicleExit ( vehicle, seat, jacker )
 	-- the code below will catch the exit and remove the onCarrierVehicleDamageEvent
 	local vehicle = getElementData ( source, "carrierVehicle" )
 	if ( vehicle ) then
-outputDebugString ( "removing onCarrierVehicleDamage for " .. getClientName ( source ) .. " (caught in onCarrierVehicleExit)" )
+outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( source ) .. " (caught in onCarrierVehicleExit)" )
 		removeEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage )
 		setElementData ( source, "carrierVehicle", false )
 	end
@@ -289,7 +289,7 @@ function onCarrierQuit ( reason )
 	destroyElement ( objectiveMarker )
 	objectiveMarker = nil
     -- detach orb from player
-    detachElementFromElement ( orbMarker )
+    detachElements ( orbMarker )
 	-- destroy orb
 	destroyBlipsAttachedTo ( orbMarker )
 	destroyElement ( orbMarker )
@@ -298,15 +298,15 @@ function onCarrierQuit ( reason )
 	setTimer ( resetOrb, 5000, 1 )
    	setTimer ( resetObjective, 5000, 1 )
 	if ( teamGame ) then
-		displayMessage ( getClientName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
-		displayMessage ( getClientName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
+		displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( source ) )
+		displayMessage ( getPlayerName ( source ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( source ), true )
 	else
-		displayMessage ( getClientName ( source ) .. " dropped the orb!" )
+		displayMessage ( getPlayerName ( source ) .. " dropped the orb!" )
 	end
 end -- done
 
 function onCarrierVehicleDamage ( loss )
-outputDebugString("damage: " .. loss)
+--outputDebugString("damage: " .. loss)
 	if ( loss >= 25 ) then
 		assert ( ( not teamGame ) or ( teamGame and getPlayerTeam ( orbCarrier ) ), "Old carrier expected on team but is not" )
 	    local player = orbCarrier
@@ -315,7 +315,7 @@ outputDebugString("damage: " .. loss)
 		triggerClientEvent ( orbCarrier, "onClientCarrier", root, false )
 		orbCarrier = nil
 	 	-- detach orb from player
-	    detachElementFromElement ( orbMarker )
+	    detachElements ( orbMarker )
 	    setElementPosition ( orbMarker, getElementPosition ( player ) )
 		-- make orb not hittable to player for 5 seconds
 		setElementData ( player, "justDroppedOrb", true )
@@ -324,16 +324,16 @@ outputDebugString("damage: " .. loss)
 		--addEventHandler ( "onMarkerHit", orbMarker, onOrbHit )
 		triggerClientEvent ( root, "doSetOrbHittable", root, true, orbMarker )
 		-- set reset timer
-		resetOrbTimer = setTimer ( destroyAndResetIdleOrb, 300000, 1 )
+		resetOrbTimer = setTimer ( destroyAndResetIdleOrb, ORB_RESET_TIME, 1 )
 		--orbMarkerHittable = true
         -- tell the player he can't pick the orb up for 5 seconds
         call ( getResourceFromName ( "easytext" ), "displayMessageForPlayer", player, 2, "[Five second pickup penalty]", 5000, 0.5, 0.535, 170, 0, 0, 255, 1.75 )
         -- announce that jacker jacked the orb carrier
 		if ( teamGame ) then
-			displayMessage ( getClientName ( player ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( player ) )
-			displayMessage ( getClientName ( player ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( player ), true )
+			displayMessage ( getPlayerName ( player ) .. " dropped the orb!", 255, 0, 0, getPlayerTeam ( player ) )
+			displayMessage ( getPlayerName ( player ) .. " dropped the orb!", 0, 0, 255, getPlayerTeam ( player ), true )
 		else
-			displayMessage ( getClientName ( player ) .. " dropped the orb!" )
+			displayMessage ( getPlayerName ( player ) .. " dropped the orb!" )
 		end
 	end
 end -- done
@@ -379,7 +379,7 @@ function resetOrb ()
 		local z = tonumber ( getElementData ( orbElem, "posZ" ) )
 		--outputDebugString("orb: " .. x .. " " .. y .. " " .. z)
 		-- create orb
-		orbMarker = createMarker ( x, y, z, "corona", .5, 255, 255, 0, 255 )
+		orbMarker = createMarker ( x, y, z, "corona", .75, 255, 255, 0, 255 ) -- size changed from 0.5 to 0.75
 	 	createBlipAttachedTo ( orbMarker, 56, 3 )
 		--addEventHandler ( "onMarkerHit", orbMarker, onOrbHit )
 		triggerClientEvent ( root, "doSetOrbHittable", root, true, orbMarker )
@@ -426,9 +426,9 @@ function addCarrierEvents ( player )
 	success = addEventHandler ( "onPlayerVehicleExit", player, onCarrierVehicleExit ) -- unreliable -- onPlayerStartExitVehicle?	
 	if (not success) then outputDebugString("could not add onPlayerVehicleExit event for carrier")	end---
 	addEventHandler ( "onPlayerQuit", player, onCarrierQuit )
-	local vehicle = getPlayerOccupiedVehicle ( player )
+	local vehicle = getPedOccupiedVehicle ( player )
 	if ( vehicle ) then
-outputDebugString ( "adding onCarrierVehicleDamage for " .. getClientName ( player ) .. "..." )
+outputDebugString ( "adding onCarrierVehicleDamage for " .. getPlayerName ( player ) .. "..." )
 		addEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage )
 		setElementData ( player, "carrierVehicle", vehicle )
 	end
@@ -443,7 +443,7 @@ function removeCarrierEvents ( player )
 	removeEventHandler ( "onPlayerQuit", player, onCarrierQuit )
 	local vehicle = getElementData ( player, "carrierVehicle" )
 	if ( vehicle ) then
-outputDebugString ( "removing onCarrierVehicleDamage for " .. getClientName ( player ) .. "..." )
+outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( player ) .. "..." )
 		removeEventHandler ( "onVehicleDamage", vehicle, onCarrierVehicleDamage )
 		setElementData ( player, "carrierVehicle", false )
 	end
@@ -470,7 +470,7 @@ function increasePoints ( player, points )
 		setElementData ( player, "points", playerPoints )
 		if ( playerPoints >= POINT_LIMIT ) then
             setTimer ( endGame, 2500, 1 )
-           	displayMessage ( "Point limit reached, " .. getClientName ( player ) .. " wins!" )
+           	displayMessage ( "Point limit reached, " .. getPlayerName ( player ) .. " wins!" )
            	pointLimitReached = true
 		end
 	end
@@ -503,7 +503,7 @@ end
 -- not called when falling from bike!?
 function onVehicleStartExit_cto ( player, seat, jacker )
 	if ( player == orbCarrier ) then
-outputDebugString ( "removing onCarrierVehicleDamage for " .. getClientName ( player ) .. "..." )
+outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( player ) .. "..." )
 		removeEventHandler ( "onVehicleDamage", source, onCarrierVehicleDamage )
 		setElementData ( player, "carrierVehicle", false )
 	end
