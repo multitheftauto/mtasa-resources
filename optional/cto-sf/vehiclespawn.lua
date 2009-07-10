@@ -1,91 +1,28 @@
 local root = getRootElement ()
 local resourceRoot = getResourceRootElement(getThisResource())
-local flyingVehicleIDs = {592, 577, 511, 548, 512, 593, 425, 417, 487, 553,
+local blockedVehiclesIDs = {592, 577, 511, 548, 512, 593, 425, 417, 487, 553,
 							488, 497, 563, 476, 447, 519, 460, 469, 513, 520,
-							441, 464, 465, 501, 432, 539}
-local fastVehicleIDs = {402, 603, 562, 565, 559, 560, 558, 429, 541, 415, 480,
-							434, 494, 502, 503, 411, 506, 451, 477, 581, 521,
-							522, 461, 468 }
-
+							441, 464, 465, 501, 432}
 local vehicleCreateTimes = {}
-
--- utility functions
 						
 function isVehicleIDBlocked ( id )
 	local blocked = false
-	for k,v in ipairs ( fastVehicleIDs ) do
+	for k,v in ipairs ( blockedVehiclesIDs ) do
 		if ( v == id ) then
 		    blocked = true
 		    break
 		end
 	end
-	if ( not blocked ) then
-		for k,v in ipairs ( flyingVehicleIDs ) do
-			if ( v == id ) then
-			    blocked = true
-			    break
-			end
-		end
-	end
 	return blocked
 end
 
--- time penalty should really be a function of how frequently the vehicles were created..
-function canPlayerCreateVehicle(player)
-	local baseMinimumTime = 60000
-	local timeLeft = 0
-	local allowed = true
-	local curTickCount = getTickCount()
-	local lastIndex = #vehicleCreateTimes[player]
-	local curIndex = lastIndex
-	while (curIndex > 0 and allowed) do
-		local dt = curTickCount - vehicleCreateTimes[player][curIndex]
---outputDebugString(curIndex .. " dt: " .. dt)
-		local minimumTime = (lastIndex - curIndex + 1) * baseMinimumTime
---outputDebugString(curIndex .. " minT: " .. minimumTime)
-		if (dt < minimumTime) then
---outputDebugString("  dt < minimumTime")
-			allowed = false
-			timeLeft = minimumTime - dt
-		end
-		curIndex = curIndex - 1
-	end
-	return allowed, timeLeft
-end
-
--- table management functions
-
-function onResourceStart_temp(resource)
-	for i,v in ipairs(getElementsByType("player")) do
-		vehicleCreateTimes[v] = {}
-	end
-end
-
-function onPlayerJoin_temp()
-	vehicleCreateTimes[source] = {}
-end
-
-function onPlayerQuit_temp(reason)
-	vehicleCreateTimes[source] = nil
-end
-
--- special function for cheaters
-
 function onPlayerEnterVehicle_temp ( vehicle, seat, jackedPlayer )
     if ( isVehicleIDBlocked ( getElementModel ( vehicle ) ) ) then
-  		cancelEvent()
-		outputChatBox ( "You are not allowed to use this vehicle.", source )
+		killPed ( source )
+		destroyElement ( vehicle )
+		outputChatBox ( "Vehicle not allowed", source )
 	end
 end
-
--- events for functions above
-
-addEventHandler ( "onResourceStart", resourceRoot, onResourceStart_temp )
-addEventHandler ( "onPlayerJoin", root, onPlayerJoin_temp )
-addEventHandler ( "onPlayerQuit", root, onPlayerQuit_temp )
-addEventHandler ( "onPlayerEnterVehicle", root, onPlayerEnterVehicle_temp )
-
--- commands
 
 function consoleKill ( player, commandName )
 	if ( player ) then
@@ -115,13 +52,15 @@ function consoleCreateVehicle ( player, commandName, first, second, third )
 						id = tonumber ( first )
 					end
 	     			plate = second
-				end
+				end			
 			else
 				id = getVehicleModelFromName ( first )
 				if ( not id ) then
 					id = tonumber ( first )
 				end
 			end
+
+			local punish = false
 
 			if ( not isVehicleIDBlocked ( id ) ) then
 				local vehicle
@@ -132,14 +71,20 @@ function consoleCreateVehicle ( player, commandName, first, second, third )
 				end
 		     	if ( vehicle ) then
 		     	    toggleVehicleRespawn ( vehicle, true )
-
+		     	    
 		     	    table.insert(vehicleCreateTimes[player], getTickCount())
-
+		     	    
+		     	    if (punish) then
+		     	    	warpPedIntoVehicle(player, vehicle)
+						setVehicleFrozen(vehicle, true)
+						setTimer(setVehicleFrozen, 10000, 1, vehicle, false)
+		     	    end
+		     	    
 		     	else
 				 	outputConsole ( "Failed to create vehicle.", player )
 				end
 			else
-			    outputChatBox ( "Vehicle not allowed, choose something slower!", player )
+			    outputChatBox ( "Vehicle not allowed", player )
 			end
 		else
 			outputChatBox("Wait " .. timeLeft/1000 .. " seconds.", player)
@@ -147,16 +92,58 @@ function consoleCreateVehicle ( player, commandName, first, second, third )
 	end
 end
 
-addCommandHandler ( "kill", consoleKill )
-addCommandHandler ( "createvehicle", consoleCreateVehicle )
 
--- enable respawn for all vehicles that exist on map start
+-- time penalty should really be a function of how frequently the vehicles were created..
+function canPlayerCreateVehicle(player)
+	local baseMinimumTime = 15000
+	local timeLeft = 0
+	local allowed = true
+	local curTickCount = getTickCount()
+	local lastIndex = #vehicleCreateTimes[player]
+	local curIndex = lastIndex
+	while (curIndex > 0 and allowed) do
+		local dt = curTickCount - vehicleCreateTimes[player][curIndex]
+--outputDebugString(curIndex .. " dt: " .. dt)
+		local minimumTime = (lastIndex - curIndex + 1) * baseMinimumTime
+--outputDebugString(curIndex .. " minT: " .. minimumTime)
+		if (dt < minimumTime) then
+--outputDebugString("  dt < minimumTime")
+			allowed = false
+			timeLeft = minimumTime - dt
+		end
+		curIndex = curIndex - 1
+	end
+	return allowed, timeLeft
+end
 
-function onCtosfStart(resource)
-	for i,v in ipairs(getElementsByType("vehicle")) do
-		if (getElementType(v) == "vehicle") then
-	    	toggleVehicleRespawn(v, true)
-	    end
+function onResourceStart_temp(resource)
+	for i,v in ipairs(getElementsByType("player")) do
+		vehicleCreateTimes[v] = {}
 	end
 end
-addEventHandler("onResourceStart", resourceRoot, onCtosfStart)
+
+function onPlayerJoin_temp()
+	vehicleCreateTimes[source] = {}
+end
+
+function onPlayerQuit_temp(reason)
+	vehicleCreateTimes[source] = nil
+end
+
+addEventHandler ( "onPlayerEnterVehicle", root, onPlayerEnterVehicle_temp )
+addEventHandler ( "onResourceStart", resourceRoot, onResourceStart_temp )
+addEventHandler ( "onPlayerJoin", root, onPlayerJoin_temp )
+addEventHandler ( "onPlayerQuit", root, onPlayerQuit_temp )
+
+addCommandHandler ( "kill", consoleKill )
+--addCommandHandler ( "createvehicle", consoleCreateVehicle )
+
+
+
+addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
+function (resource)
+	for i,v in ipairs(getElementsByType("vehicle")) do
+	    toggleVehicleRespawn(v, true)
+	end
+end
+)
