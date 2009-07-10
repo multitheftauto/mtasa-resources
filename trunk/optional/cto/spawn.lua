@@ -4,6 +4,7 @@ local resourceRoot = getResourceRootElement ( getThisResource () )
 local teamGame = false
 local teamSpawnpoints = {}
 
+--function onResourceStart_spawn ( resource )
 function onGamemodeMapStart_spawn ( resource )
 	if (not mapStarted) then
 	    mapStarted = true
@@ -45,12 +46,11 @@ function onGamemodeMapStart_spawn ( resource )
 		end
 	end
 end
-addEventHandler ( "onGamemodeMapStart", root, onGamemodeMapStart_spawn )
 
 -- non-team functions
 
 function onPlayerJoin_noteam () -- gets triggered even with teams???
-    spawnPlayerAtRandomSpawnpoint ( source )
+    spawnPlayerAtRandomSpawnpoint ( source )  
 end
 
 function onPlayerWasted__noteam ( ammo, killer, killerWeapon, bodypart )
@@ -93,10 +93,15 @@ function consoleJoinTeam ( player, commandName, name1, name2 )
 		end
 	end
 end
+
+addEventHandler ( "onGamemodeMapStart", root, onGamemodeMapStart_spawn )
+--addEventHandler ( "onResourceStart", resourceRoot, onResourceStart_spawn )
+
 addCommandHandler ( "jointeam", consoleJoinTeam )
 
 function spawnPlayerAtSpawnpoint ( player, sp )
-	setCameraTarget ( source, source )
+outputServerLog("GOING TO SPWAN PLAYER!")
+	setCameraTarget ( player, player ) -- added 7/8/09, as when the player joins and you spawn him it doesn't set the camera on him
 	fadeCamera ( player, true )
 	return call(getResourceFromName"spawnmanager","spawnPlayerAtSpawnpoint",player,sp )
 end

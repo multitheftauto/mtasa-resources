@@ -16,7 +16,7 @@ local carrierGravity
 
 function onClientResourceStart_cto ( resource )
     localPlayer = getLocalPlayer ()
-    vehicle = getPedOccupiedVehicle ( localPlayer )
+    vehicle = getPlayerOccupiedVehicle ( localPlayer )
 	triggerServerEvent ( "onPlayerClientScriptLoad", localPlayer )
 	normalGravity = .008
 	carrierGravity = .005
@@ -53,9 +53,11 @@ outputDebugString(" removing orb hittable (client)")
 end
 
 function onClientElementColShapeHit_cto ( colshape, matchingDimension ) -- can get called lots of times tho
+	if (orbCol and colshape == orbCol) then
 outputDebugString ( "You hit the colshape!" )---
-	if ( not isPlayerDead ( localPlayer ) ) then
-		triggerServerEvent ( "onPlayerOrbHit", localPlayer, orbMarker )
+		if ( not isPlayerDead ( localPlayer ) ) then
+			triggerServerEvent ( "onPlayerOrbHit", localPlayer, orbMarker )
+		end
 	end
 end
 
@@ -65,25 +67,25 @@ function onClientCarrier_cto ( status )
 outputDebugString ( "You are the carrier!" )---
 		addEventHandler ( "onClientResourceStop", root, onClientResourceStop_cto )
 		addEventHandler ( "onClientRender", root, onClientRender_cto )
-		if ( isPedInVehicle ( localPlayer ) ) then
+		if ( isPlayerInVehicle ( localPlayer ) ) then
 			setGravity ( carrierGravity )
 		end
 	else
 outputDebugString ( "You are no longer the carrier" )---
 		removeEventHandler ( "onClientRender", root, onClientRender_cto )
 		removeEventHandler ( "onClientResourceStop", root, onClientResourceStop_cto )
-		if ( isPedInVehicle ( localPlayer ) ) then
+		if ( isPlayerInVehicle ( localPlayer ) ) then
 			setGravity ( normalGravity )
 		end
 	end
 end
 
 function onClientRender_cto ()
-	local inVehicle = isPedInVehicle ( localPlayer )
+	local inVehicle = isPlayerInVehicle ( localPlayer )
 	if ( inVehicle and not vehicle ) then
 	    -- player got in
 outputDebugString ( "You entered a vehicle" )---
-		vehicle = getPedOccupiedVehicle ( localPlayer )
+		vehicle = getPlayerOccupiedVehicle ( localPlayer )
 		setGravity ( carrierGravity )
 	elseif ( not inVehicle and vehicle ) then
 		-- player got out
@@ -118,3 +120,17 @@ end
 addEventHandler ( "onClientResourceStart", thisResourceRoot, onClientResourceStart_cto )
 addEventHandler ( "doSetOrbHittable", root, doSetOrbHittable_cto )
 addEventHandler ( "onClientCarrier", root, onClientCarrier_cto )
+
+
+-- code for making orb hittable by vehicle
+-- messy but quick fix
+addEventHandler ( "onClientElementColShapeHit", getRootElement(),
+function ( colShape, matchingDimension )
+	if (orbCol and colShape == orbCol and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == source) then
+outputDebugString ( "Your vehicle hit the colshape!" )---
+		if ( not isPlayerDead ( localPlayer ) ) then
+			triggerServerEvent ( "onPlayerOrbHit", localPlayer, orbMarker )
+		end
+	end
+end
+)
