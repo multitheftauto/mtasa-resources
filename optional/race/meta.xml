@@ -37,8 +37,6 @@
 	<script src="config_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
 	
-	<file src="img/rankbg.png"/>
-	<file src="img/timepassedbg.png"/>
 	<file src="img/progress_health_bg.png"/>
 	<file src="img/progress_health.png"/>
 	<file src="img/progress_speed_bg.png"/>
