@@ -149,7 +149,7 @@ addEventHandler("doShowPoll", rootElement,
 			--bind the number key and add it to the bound keys table
 			local optionKey = tostring(index)
 			bindKey(optionKey, "down", sendVote_bind)
-			unbindKey("num_"..optionKey, "down", sendVote_bind)
+			bindKey("num_"..optionKey, "down", sendVote_bind)
 			
 			table.insert(boundVoteKeys, optionKey)
 		
