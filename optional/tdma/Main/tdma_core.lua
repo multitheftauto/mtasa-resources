@@ -321,7 +321,7 @@ function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 			local pTeamID = getElementData ( attacker, "tdma.teamid" )
 			local pTeam = gameTeams[pTeamID]
 			--Was it a self kill?
-			if ( getPlayerName(source) ~= getPlayerName(attacker) ) then
+			if ( getPlayerName(source) ~= getPlayerName(attacker) and vTeamID ~= pTeamID  ) then
 				if ( pTeam ) then
 					updateKills ( attacker, pTeam )
 				end
