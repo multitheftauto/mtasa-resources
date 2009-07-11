@@ -316,10 +316,11 @@ function RaceMode:pickFreeSpawnpoint(ignore)
     local bestSpace = 0
     local bestMatch = 1
     for i=1,numToScan do
-        local space = getSpaceAroundSpawnpoint(ignore,g_Spawnpoints[i])
+        local idx = (i + scanPos) % numToScan + 1
+        local space = getSpaceAroundSpawnpoint(ignore,g_Spawnpoints[idx])
         if space > bestSpace then
             bestSpace = space
-            bestMatch = i
+            bestMatch = idx
         end
     end
     return g_Spawnpoints[bestMatch]

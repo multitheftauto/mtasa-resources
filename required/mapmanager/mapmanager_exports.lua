@@ -1,6 +1,6 @@
 local GAMEMODE_LIST_SEPARATOR = string.byte(',')
 
-function changeGamemode(gamemode, map)
+function changeGamemode(gamemode, map, ignorePlayerCount)
 	if not isGamemode(gamemode) then
 		outputDebugString("mapmanager: Invalid gamemode specified.",1)
 		return false
@@ -15,7 +15,7 @@ function changeGamemode(gamemode, map)
 				"' is not compatible with '"..getResourceName(gamemode).."'.",1)
 			return false
 		end
-		if not doesMapSupportPlayerCount(map) then
+		if not ignorePlayerCount and not doesMapSupportPlayerCount(map) then
 			outputDebugString("mapmanager: Map does not support player count.",1)
 			return false
 		end
@@ -34,13 +34,13 @@ function changeGamemode(gamemode, map)
 	else
 		local result = startGamemode(gamemode)
 		if map then
-			 result = changeGamemodeMap(map)
+			 result = changeGamemodeMap(map,nil,ignorePlayerCount)
 		end
 		return result
 	end
 end
 
-function changeGamemodeByName ( gamemodeName, mapName )
+function changeGamemodeByName ( gamemodeName, mapName, ignorePlayerCount )
 	local gamemode,map = getResourceFromName ( gamemodeName ), nil
 	if not gamemode then
 		outputDebugString("mapmanager: Invalid gamemode resource specified.",1)
@@ -53,12 +53,12 @@ function changeGamemodeByName ( gamemodeName, mapName )
 			return false
 		end
 	end
-	return changeGamemode ( gamemode, map )
+	return changeGamemode ( gamemode, map, ignorePlayerCount )
 end
 
-function changeGamemodeMap(map, gamemode)
+function changeGamemodeMap(map, gamemode, ignorePlayerCount)
 	if gamemode and isGamemode(gamemode) and gamemode ~= currentGamemode then
-		return changeGamemode(gamemode, map)
+		return changeGamemode(gamemode, map, ignorePlayerCount)
 	else
 		if not isMap(map) then
 			outputDebugString("mapmanager: Invalid map specified.",1)
@@ -69,7 +69,7 @@ function changeGamemodeMap(map, gamemode)
 				"' is not compatible with '"..getResourceName(currentGamemode).."'.",1)
 			return false
 		end
-		if not doesMapSupportPlayerCount(map) then
+		if not ignorePlayerCount and not doesMapSupportPlayerCount(map) then
 			outputDebugString("mapmanager: Map does not support player count.",1)
 			return false
 		end

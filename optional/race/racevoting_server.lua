@@ -140,7 +140,7 @@ function startRandomMap()
 
 	-- If we have one, launch it!
 	if #compatibleMaps == 1 then
-		if not exports.mapmanager:changeGamemodeMap ( compatibleMaps[1] ) then
+		if not exports.mapmanager:changeGamemodeMap ( compatibleMaps[1], nil, true ) then
 			problemChangingMap()
 		end
 	else
@@ -293,7 +293,7 @@ addEvent('nextMapVoteResult')
 addEventHandler('nextMapVoteResult', getRootElement(),
 	function( map )
 		if stateAllowsNextMapVoteResult() then
-			if not exports.mapmanager:changeGamemodeMap ( map ) then
+			if not exports.mapmanager:changeGamemodeMap ( map, nil, true ) then
 				problemChangingMap(map)
 			end
 		end
@@ -353,7 +353,7 @@ addEventHandler('midMapRestartVoteResult', getRootElement(),
 		if stateAllowsRandomMapVoteResult() then
 			gotoState('Running')
 			if votedYes then
-				if not exports.mapmanager:changeGamemodeMap ( exports.mapmanager:getRunningGamemodeMap() ) then
+				if not exports.mapmanager:changeGamemodeMap ( exports.mapmanager:getRunningGamemodeMap(), nil, true ) then
 					problemChangingMap()
 				end
 			else
@@ -368,7 +368,7 @@ addCommandHandler('redo',
 		if isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			local currentMap = exports.mapmanager:getRunningGamemodeMap()
 			if currentMap then
-				if not exports.mapmanager:changeGamemodeMap (currentMap) then
+				if not exports.mapmanager:changeGamemodeMap (currentMap, nil, true) then
 					problemChangingMap()
 				end
 			else

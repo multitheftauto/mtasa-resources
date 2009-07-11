@@ -741,7 +741,7 @@ end
 ---------------------------------------------------------------------------
 function cacheSettings()
 	g_Settings = {}
-	g_Settings.numrounds	= getString('numrounds','3')
+	g_Settings.numrounds	= getNumber('numrounds','3')
 end
 
 -- Initial cache

@@ -209,13 +209,6 @@ function loadMap(res)
         outputChatBox( 'Error loading map ' .. tostring(getResourceName(res)) )
 		return false
 	end
-	local numSpawnPoints = #map:getAll('spawnpoint')
-	if getTotalPlayerCount() > numSpawnPoints then
-		-- unload map xml
-		map:unload()
-		outputRace( (numSpawnPoints).." or less players are required to start '"..tostring(getResourceName(res)).."'" )
-		return false
-	end
 
 	-- set options
     g_MapInfo = {}
@@ -237,6 +230,17 @@ function loadMap(res)
 	g_SavedMapSettings.firewater		= map.firewater
 
 	cacheMapOptions(g_SavedMapSettings)
+
+	-- Check race can start ok
+	if not g_MapOptions.ghostmode then
+		local numSpawnPoints = #map:getAll('spawnpoint')
+		if getTotalPlayerCount() > numSpawnPoints then
+			-- unload map xml
+			map:unload()
+			outputRace( (numSpawnPoints).." or less players are required to start '"..tostring(getResourceName(res)).."' if not using ghostmode" )
+			return false
+		end
+	end
 	
 	-- read spawnpoints
 	g_Spawnpoints = map:getAll('spawnpoint')
