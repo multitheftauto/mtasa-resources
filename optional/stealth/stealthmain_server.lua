@@ -701,8 +701,8 @@ function outputHeadshotIcon (killer, weapon, bodypart)
 		local r2,g2,b2 = getTeamColor ( getPlayerTeam(killer) )
 		local r1,g1,b1 = getTeamColor ( getPlayerTeam(source) )
 		exports.killmessages:outputMessage (
-			{getPlayerName(killer),{"padding",width=3},{"icon",id=weapon},{"padding",width=3},{"icon",id=256},{"padding",width=3},{"color",r=r2,g=g2,b=b2},getPlayerName(source) },
-			getRootElement(),r1,g1,b1 )
+			{getPlayerName(killer),{"padding",width=3},{"icon",id=weapon},{"padding",width=3},{"icon",id=256},{"padding",width=3},{"color",r=r1,g=g1,b=b1},getPlayerName(source) },
+			getRootElement(),r2,g2,b2 )
 	end
 end
 
