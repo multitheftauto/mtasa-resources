@@ -64,6 +64,7 @@ addEvent ("dojoinTeam1", true )
 function joinTeam1( source )
 	if (countPlayersInTeam(team1) - countPlayersInTeam(team2) > balanceamount) then
 		outputChatBox("Can't join RED too many players", source, 255, 69, 0)
+		triggerClientEvent(source,"doshowTeamWindow",source)
 	else
 		joinTeam(source, team1)
 	end
@@ -75,6 +76,7 @@ addEvent ("dojoinTeam2", true )
 function joinTeam2( source )
 	if (countPlayersInTeam(team2) - countPlayersInTeam(team1) > balanceamount) then
 		outputChatBox("Can't join BLUE too many players", source, 255, 69, 0)
+		triggerClientEvent(source,"doshowTeamWindow",source)
 	else
 		joinTeam(source, team2)
 	end
@@ -153,7 +155,7 @@ function teamstealthmapstart(startedMap)
 	end
 	setElementData ( team1, "Score", 0 )
 	setElementData ( team2, "Score", 0 )
-	currentmap = call(getResourceFromName"mapmanager","getRunningGamemodeMap")
+	currentmap = startedMap
 	local maptime = get(getResourceName(currentmap)..".#time")
 	if maptime then
 		local splitString = split(maptime, string.byte(':'))
@@ -699,8 +701,8 @@ function outputHeadshotIcon (killer, weapon, bodypart)
 		local r2,g2,b2 = getTeamColor ( getPlayerTeam(killer) )
 		local r1,g1,b1 = getTeamColor ( getPlayerTeam(source) )
 		exports.killmessages:outputMessage (
-			{getPlayerName(killer),{"padding",width=3},{"icon",id=weapon},{"padding",width=3},{"icon",id=256},{"padding",width=3},{"color",r=r1,g=g1,b=b1},getPlayerName(source) },
-			getRootElement(),r2,g2,b2 )
+			{getPlayerName(killer),{"padding",width=3},{"icon",id=weapon},{"padding",width=3},{"icon",id=256},{"padding",width=3},{"color",r=r2,g=g2,b=b2},getPlayerName(source) },
+			getRootElement(),r1,g1,b1 )
 	end
 end
 
