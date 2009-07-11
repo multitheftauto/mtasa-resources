@@ -102,7 +102,7 @@
 					desc="The number of seconds the race continues for after someone wins."
 					/>
 
-		<setting name="*respawntime" value="5"
+		<setting name="*respawntime" value="10"
 					friendlyname="Respawn time"
 					accept="0-60"
 					group="Gameplay"
