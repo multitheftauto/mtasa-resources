@@ -1,5 +1,5 @@
 <meta>
-	<info author="Talidan" version="1.0.0" type="gamemode" description="A raw deathmatch gamemode" />
+	<info author="Talidan" version="1.0.0" type="gamemode" description="A raw deathmatch gamemode" edf:definition="edf/dm.edf" />
 	<include resource="killmessages" />
 	<include resource="playercolors" />
 	<include resource="deathpickups" />
@@ -12,6 +12,7 @@
 	
 	<script src="logic_client.lua" type="client"/>
 	<file src="images/frag.png" />
+	<file src="edf/spawnpoint.png" />
 	
 	<!--Utils-->
 	<script src="utils/client_anim.lua" type="client" />

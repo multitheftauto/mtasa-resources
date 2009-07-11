@@ -4,8 +4,8 @@ local announcementText,processWasted
 
 local defaults = {
 	fragLimit = 10,
-	timeLimit = 600000, --15 minutes
-	respawnTime = 10000,
+	timeLimit = 600, --15 minutes
+	respawnTime = 10
 }
 
 local function sortingFunction (a,b)
@@ -38,9 +38,9 @@ function dmMapStart(resource,mapRoot)
 	end
 	g_MapResource = resource
 	g_MapRoot = source or mapRoot
-	g_FragLimit = tonumber(get("dm_frag_limit")) and math.floor(tonumber(get("dm_frag_limit"))) or defaults.fragLimit
-	g_TimeLimit = tonumber(get("dm_time_limit")) and math.floor(tonumber(get("dm_time_limit"))) or defaults.timeLimit
-	g_RespawnTime = tonumber(get("dm_respawn_time")) and math.floor(tonumber(get("dm_respawn_time"))) or defaults.respawnTime
+	g_FragLimit = tonumber(get(resourceName..".frag_limit")) and math.floor(tonumber(get(resourceName..".frag_limit"))) or defaults.fragLimit
+	g_TimeLimit = (tonumber(get(resourceName..".time_limit")) and math.floor(tonumber(get(resourceName..".time_limit"))) or defaults.timeLimit)*1000
+	g_RespawnTime = (tonumber(get(resourceName..".respawn_time")) and math.floor(tonumber(get(resourceName..".respawn_time"))) or defaults.respawnTime)*1000
 	addEventHandler ( "onPlayerWasted", g_Root, processWasted )
 	processSpawnStart()
 	--Start our timer
