@@ -328,6 +328,8 @@ function setGhostMode(ghostmode)
 		if vehicle then
 			if player ~= g_Me then
 				setElementCollisionsEnabled(vehicle, not ghostmode)
+				local wheelstate = ghostmode and 2 or 0
+				setVehicleWheelStates ( vehicle, wheelstate, wheelstate, wheelstate, wheelstate )
 			end
             if g_GameOptions and g_GameOptions.ghostalpha then
 			    setElementAlpha(vehicle, ghostmode and 200 or 255)
