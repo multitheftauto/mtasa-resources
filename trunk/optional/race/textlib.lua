@@ -242,7 +242,6 @@ addEventHandler ( "onClientRender", getRootElement(),
 					att4 = att4 or 0
 					att5 = att5 or self.tColor[4]
 					outlinesize = att1 or 2
-					outlinesize = math.min(self.fScale,outlinesize) --Make sure the outline size isnt thicker than the size of the label
 					if outlinesize > 0 then
 						for offsetX=-outlinesize,outlinesize,outlinesize do
 							for offsetY=-outlinesize,outlinesize,outlinesize do
