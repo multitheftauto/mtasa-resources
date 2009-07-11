@@ -114,7 +114,7 @@ function addHelpTabFromXML(resource)
 		return false
 	end
 		
-	local helpnode = getResourceConfig(resource, "help.xml")
+	local helpnode = getResourceConfig(":"..getResourceName(resource).."help.xml")
 	if helpnode then
 		local helptext = xmlNodeGetValue(helpnode)
 		local showPopup = not (xmlNodeGetAttribute(helpnode, "popup") == "no")
