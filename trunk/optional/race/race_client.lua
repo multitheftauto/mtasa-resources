@@ -18,9 +18,9 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		-- create GUI
 		local screenWidth, screenHeight = guiGetScreenSize()
 		g_dxGUI = {
-			ranknum = dxText:create('1', screenWidth - 50, screenHeight - 75, false, 'bankgothic', 2, 'right'),
-			ranksuffix = dxText:create('st', screenWidth - 40, screenHeight - 66, false, 'bankgothic', 1),
-			checkpoint = dxText:create('0/0', screenWidth - 54, screenHeight - 34, false, 'bankgothic', 0.8, 'center')
+			ranknum = dxText:create('1', screenWidth - 50, screenHeight - 80, false, 'bankgothic', 2, 'right'),
+			ranksuffix = dxText:create('st', screenWidth - 40, screenHeight - 71, false, 'bankgothic', 1),
+			checkpoint = dxText:create('0/0', screenWidth - 54, screenHeight - 42, false, 'bankgothic', 0.8, 'center'),
 		}
 		g_dxGUI.ranknum:type('stroke', 2, 0, 0, 0, 255)
 		g_dxGUI.ranksuffix:type('stroke', 2, 0, 0, 0, 255)
@@ -28,14 +28,16 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		g_GUI = {
 			timeleftbg = guiCreateStaticImage(screenWidth/2-108/2, 15, 108, 24, 'img/timeleft.png', false, nil),
 			timeleft = guiCreateLabel(screenWidth/2-108/2, 19, 108, 30, '', false),
+			timepassed = guiCreateLabel(screenWidth - 72, screenHeight - 28, 100, 30, '', false),
 			healthbar = FancyProgress.create(250, 1000, 'img/progress_health_bg.png', -65, 60, 123, 30, 'img/progress_health.png', 8, 8, 108, 16),
 			speedbar = FancyProgress.create(0, 1.5, 'img/progress_speed_bg.png', -65, 90, 123, 30, 'img/progress_speed.png', 8, 8, 108, 16),
 		}
 		guiSetFont(g_GUI.timeleft, 'default-bold-small')
+		guiSetFont(g_GUI.timepassed, 'default-bold-small')
 		guiLabelSetHorizontalAlign(g_GUI.timeleft, 'center')
 		g_GUI.speedbar:setProgress(0)
 		
-		hideGUIComponents('healthbar', 'speedbar', 'ranknum', 'ranksuffix', 'timeleftbg', 'checkpoint' )
+		hideGUIComponents('timeleftbg', 'timeleft', 'healthbar', 'speedbar', 'ranknum', 'ranksuffix', 'checkpoint', 'timepassed')
         RankingBoard.precreateLabels(10)
 		
 		-- set update handlers
@@ -245,6 +247,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	
 	-- GUI
 	showGUIComponents('healthbar', 'speedbar')
+	hideGUIComponents('timeleftbg', 'timeleft', 'timepassed')
 	if ranked then
 		showGUIComponents('ranknum', 'ranksuffix')
 	else
@@ -307,12 +310,10 @@ function launchRace(duration)
 	g_Players = getElementsByType('player')
 	
 	if type(duration) == 'number' then
-		showGUIComponents('timeleftbg', 'timeleft')
+		showGUIComponents('timeleftbg', 'timeleft', 'timepassed')
 		guiLabelSetColor(g_GUI.timeleft, 255, 255, 255)
 		g_Duration = duration
 		addEventHandler('onClientRender', g_Root, updateTime)
-	else
-		hideGUIComponents('timeleftbg', 'timeleft')
 	end
 	
 	setVehicleDamageProof(g_Vehicle, false)
@@ -527,6 +528,9 @@ end
 function updateTime()
 	local tick = getTickCount()
 	local msPassed = tick - g_StartTick
+	if not isPlayerFinished(g_Me) then
+		guiSetText(g_GUI.timepassed, msToTimeStr(msPassed))
+	end
 	local timeLeft = g_Duration - msPassed
 	guiSetText(g_GUI.timeleft, msToTimeStr(timeLeft > 0 and timeLeft or 0))
 	if g_HurryDuration and g_GUI.hurry == nil and timeLeft <= g_HurryDuration then
@@ -991,7 +995,7 @@ function unloadAll()
 	toggleAllControls(true)
 	
 	if g_GUI then
-		hideGUIComponents('healthbar', 'speedbar', 'ranknum', 'ranksuffix', 'checkpoint', 'timeleft')
+		hideGUIComponents('timeleftbg', 'timeleft', 'healthbar', 'speedbar', 'ranknum', 'ranksuffix', 'checkpoint', 'timepassed')
 		if g_GUI.hurry then
 			Animation.createAndPlay(g_GUI.hurry, Animation.presets.guiFadeOut(500), destroyElement)
 			g_GUI.hurry = nil
