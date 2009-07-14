@@ -1,7 +1,5 @@
 function forceReload(p)
-	local weapon=getPlayerWeapon(p)
-	local totalAmmo=getPlayerTotalAmmo(p)
-	setWeaponAmmo(p,weapon,totalAmmo,0, true)
+	makePedReload (p)
 end
 addCommandHandler("Reload weapon",forceReload)
 
@@ -21,6 +19,6 @@ end
 addEvent("onPlayerReload",true)
 addEventHandler("onPlayerReload",getRootElement(),
 	function()
-		forceReload(source)
+		makePedReload (source)
 	end
 )
