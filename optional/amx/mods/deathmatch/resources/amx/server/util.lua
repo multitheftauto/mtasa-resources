@@ -495,7 +495,7 @@ local string, fileSetPos, fileRead = string, fileSetPos, fileRead
 function getResourceAMXFiles(res)
 	local result = false
 	
-	local meta = xmlLoadFile('meta.xml', res)
+	local meta = xmlLoadFile(':' .. getResourceName(res) .. '/' .. 'meta.xml' )
 	if not meta then
 		return false
 	end

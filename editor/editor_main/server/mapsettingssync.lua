@@ -147,7 +147,7 @@ function passNewMapSettings()
 end
 
 function getSettings(resource)
-	local meta = xmlLoadFile( "meta.xml", resource )
+	local meta = xmlLoadFile( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	local settings = {}
 	local settingsNode = xmlFindChild ( meta, "settings" ,0 )
 	if not settingsNode then return settings end

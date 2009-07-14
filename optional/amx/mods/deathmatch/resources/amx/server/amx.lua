@@ -74,7 +74,7 @@ function loadAMX(fileName, res)
 		amx.type = 'gamemode'
 	end
 	
-	local hAMX = fileOpen(fileName, true, res)
+	local hAMX = fileOpen(':' .. getResourceName(res) .. '/' .. fileName, true)
 	if not hAMX then
 		outputDebugString('Error opening ' .. fileName, 1)
 		return false

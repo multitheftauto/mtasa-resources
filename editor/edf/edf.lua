@@ -199,7 +199,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 		return false
 	end
 	--try to load it
-	local definitionRoot = xmlLoadFile(definitionName, fromResource)
+	local definitionRoot = xmlLoadFile(':' .. getResourceName(fromResource) .. '/' .. definitionName)
 	if not definitionRoot then
 		outputDebugString(fromResourceName .. ': couldn\'t load edf file', 1)
 		return false
