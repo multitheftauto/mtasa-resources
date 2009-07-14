@@ -41,7 +41,7 @@ function RaceMap.load(res)
 	local resourceRoot = getResourceRootElement(res)
 	if #getElementsByType("spawnpoint",resourceRoot) > 0 then 
 		--Spawnpoints are contained within the MTA map, therefore lets assume only MTA maps were used (removes general.ModifyOtherObjects dependency)
-		local meta = xmlLoadFile('meta.xml', res)
+		local meta = xmlLoadFile(':' .. getResourceName(res) .. '/' .. 'meta.xml')
 		if not meta then
 			outputDebugString('Error while loading ' .. getResourceName(res) .. ': no meta.xml', 2)
 			return false
@@ -52,7 +52,7 @@ function RaceMap.load(res)
 		local map = setmetatable({ res = res, resname = getResourceName(res), mod = "map", info = info }, RaceElementMap)
 		return map
 	end
-	local meta = xmlLoadFile('meta.xml', res)
+	local meta = xmlLoadFile(':' .. getResourceName(res) .. '/' .. 'meta.xml')
 	if not meta then
 		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no meta.xml', 2)
 		return false
@@ -67,7 +67,7 @@ function RaceMap.load(res)
 		return false
 	end
 	
-	local xml = xmlLoadFile(file, res)
+	local xml = xmlLoadFile(':' .. getResourceName(res) .. '/' .. file)
 	if not xml then
 		outputDebugString('Error opening ' .. file, 2)
 		return false

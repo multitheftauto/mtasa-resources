@@ -59,7 +59,7 @@ addEventHandler ( "openResource", rootElement,
 			elementProperties = {}
 			local maps = getResourceFiles ( map, "map" )
 			for key,mapPath in ipairs(maps) do
-				local mapNode = xmlLoadFile ( mapPath, map )
+				local mapNode = xmlLoadFile ( ':' .. getResourceName(map) .. '/' .. mapPath )
 
 				local usedDefinitions = xmlNodeGetAttribute(mapNode, "edf:definitions")
 				if usedDefinitions then
@@ -147,7 +147,7 @@ function saveResource ( resourceName, test )
 	local xmlNode = addResourceMap ( resource, resourceName..".map" )
 	local returnValue = dumpMap ( xmlNode, true )
 	clearResourceMeta ( resource, true )
-	local metaNode = xmlLoadFile ( "meta.xml",resource )
+	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	dumpMeta ( metaNode, metaNodes, resource, resourceName..".map" )
 	xmlUnloadFile ( metaNode )
 	if ( test ) then return returnValue end
@@ -184,7 +184,7 @@ function quickSave(saveAs)
 		end
 		dumpMap ( xmlNode, true )
 		xmlUnloadFile ( xmlNode )
-		local metaNode = xmlLoadFile ( "meta.xml",resource )
+		local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
 		xmlUnloadFile ( metaNode )
 		editor_gui.outputMessage (getPlayerName(client).." saved the map.", root,255,0,0)

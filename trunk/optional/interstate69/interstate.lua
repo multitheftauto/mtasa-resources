@@ -18,7 +18,7 @@ function onMapLoad ( name )
 	vehicle1 = {}
 	
 	local currentmap = call(getResourceFromName"mapmanager","getRunningGamemodeMap")
-	local successful = fileOpen("vehicles.xml", true, currentmap)
+	local successful = fileOpen(':' .. getResourceName(currentmap) .. '/' .. "vehicles.xml", true)
 	if (successful ~= false) then
 		fileClose(successful)
 		vehicleRoot = getResourceRootElement(currentmap)

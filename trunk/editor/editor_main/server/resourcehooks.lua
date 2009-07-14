@@ -1,4 +1,5 @@
 function addResourceMap ( resource, filename, dimension )
+	outputDebugString( "** Use addResourceMap in Lua or in C++? Fix me **" )
 	if not resource then return false end
 	dimension = dimension or 0
 	local currentFiles = getResourceFiles ( resource, "map" )
@@ -8,13 +9,13 @@ function addResourceMap ( resource, filename, dimension )
 		end
 	end
 	--
-	local newMap = xmlCreateFile ( filename, "map", resource )
+	local newMap = xmlCreateFile ( ':' .. getResourceName(resource) .. '/' .. filename, "map" )
 	xmlSaveFile ( newMap )
 	return newMap
 end
 
 function removeResourceFile ( resource, path, filetype )
-	local metaNode = xmlLoadFile ( "meta.xml", resource )
+	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	local i = 0
 	while xmlFindChild ( metaNode, filetype, i ) ~= false do
 		local node = xmlFindChild ( metaNode, filetype, i )
@@ -26,12 +27,12 @@ function removeResourceFile ( resource, path, filetype )
 	end
 	xmlSaveFile ( metaNode )
 	xmlUnloadFile ( metaNode )
-	return fileDelete ( path, resource )
+	return fileDelete ( ':' .. getResourceName(resource) .. '/' .. path )
 end
 
 local quickRemove = { map=true, setting=true, settings=true }
 function clearResourceMeta ( resource, quick ) --removes settings and info nodes
-	local metaNode = xmlLoadFile ( "meta.xml", resource )
+	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	while true do
 		local infoNode = xmlFindChild(metaNode, "info", 0)
 		if infoNode then
@@ -62,7 +63,7 @@ end
 
 
 function getResourceFiles ( resource, fileType )
-	local meta = xmlLoadFile ( "meta.xml", resource )
+	local meta = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	if not meta then return false end
 	local files = {}
 	local fileAttributes = {}
@@ -159,11 +160,11 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 end
 
 function fileCopy ( path, fromResource, targetPath, targetResource )
-	local sourceFile = fileOpen(path, true, fromResource)
+	local sourceFile = fileOpen(':' .. getResourceName(fromResource) .. '/' .. path, true)
 	if sourceFile then
 		local readBuffer = 0
 		local buffer
-		local targetFile = fileCreate (targetPath, targetResource )
+		local targetFile = fileCreate (':' .. getResourceName(targetResource) .. '/' .. targetPath)
 		while not fileIsEOF(sourceFile) do
 			buffer = fileRead(sourceFile, 500)
 			readBuffer = readBuffer + 500
