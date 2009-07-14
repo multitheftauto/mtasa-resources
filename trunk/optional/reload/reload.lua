@@ -1,5 +1,5 @@
 function forceReload(p)
-	makePedReload (p)
+	reloadPedWeapon (p)
 end
 addCommandHandler("Reload weapon",forceReload)
 
@@ -19,6 +19,6 @@ end
 addEvent("onPlayerReload",true)
 addEventHandler("onPlayerReload",getRootElement(),
 	function()
-		makePedReload (source)
+		reloadPedWeapon (source)
 	end
 )
