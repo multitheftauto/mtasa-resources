@@ -140,6 +140,7 @@ function endRound ()
 	destroyBlipsAttachedTo ( van )
 	destroyElement ( van )
 	destroyElement ( vanMarker ) 
+	van = nil
 	setTimer( nextRound, 5000, 1 )
 end
 
@@ -308,13 +309,16 @@ addEventHandler('onPlayerQuit', root,
 )
 
 function markerHit ( player )
+	if not van then
+		return
+	end
 	local vanController = getVehicleController( van )
 	if player == vanController then
 		if source == capture1 or source == capture2 or source == capture3 or source == capture4 then
 			local team = getPlayerTeam( vanController )
 			local teamName = getTeamName( team )
 			local r, g, b = getTeamColor( team )
-			showTextForAll ( 5000, 0.5, 0.1, 0, r, g, b, 200, 2.5, "" ..teamName.. " have captured the vehicle!" )
+			showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, teamName .. " have captured the vehicle!" )
 			addPlayerScore(player, 10)
 			endRound()
 		end
