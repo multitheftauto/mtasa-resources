@@ -234,8 +234,8 @@ function startRoundNow()
 	timeLeft = timeLimit
 	-- if (isTimer(assaultTimers.updateTimeLeft)) then killTimer(assaultTimers.updateTimeLeft) end
 	-- assaultTimers.updateTimeLeft = setTimer(updateTimeLeft,1000,timeLimit)
-	g_missionTimer = exports.missiontimer:createMissionTimer (options.timelimit*1000,true,false,0.5,20,true,"default-bold",1)
-	addEventHandler ( "onMissionTimerElapsed", g_missionTimer, endRound )
+	g_missionTimer = exports.missiontimer:createMissionTimer (timeLimit*1000,true,false,0.5,20,true,"default-bold",1)
+	addEventHandler ( "onMissionTimerElapsed", g_missionTimer, function() endRound(false) end )
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
 		if (getPlayerTeam(v)) then
@@ -275,35 +275,45 @@ end
 This one is called when the round ended and checks if already both rounds were played, if so which team won and so on.
 It also starts the new round after some delay..
 ]]
-function endRound()
+function endRound(conquered)
 
 	waiting = true
 
 	-- killTimer(assaultTimers.updateTimeLeft)
 	setTimer ( destroyElement, 9000, 1, g_missionTimer )
 	local text = ""
-	local conquered = false
-	local timeLeft = exports.missiontimer:getMissionTimerTime ( g_missionTimer )/1000
+	local timeLeft = math.max(exports.missiontimer:getMissionTimerTime ( g_missionTimer )/1000, 0)
 	if (attacker == team1) then
 		timeReachedBefore = timeLimit - timeLeft
-		if (timeLeft <= 0) then 
+		if not conquered then
+			-- team 1 failed to attack in round 1
 			text = team2Name.." "..options.defendedMessage..""
-		else 
-			text = team1Name.." "..options.conqueredMessage.." in "..calcTime(timeReachedBefore)..""
+			team1Succeded = false
+		else
+			-- team 1 successfully attacked in round 1
+			text = team1Name.." "..options.conqueredMessage.." in "..calcTime(timeReachedBefore)
 			team1Succeded = true
-			conquered = true
 		end
 	elseif (attacker == team2) then
 		setTimer(triggerEvent, 10000, 1, "onRoundFinished", getResourceRootElement(getThisResource()))
-		if (timeLeft <= 0) then
-			if (team1Succeded == true) then
+		if not conquered then
+			-- team 1 successfully defended in round 2 and...
+			if team1Succeded then
+				-- ...successfully attacked in round 1
 				text = team1Name.." "..options.defendedMessage.."! "..team1Name.." wins!"
 			else
+				-- ...failed the attack in round 1
 				text = team1Name.." "..options.defendedMessage.."! Tie!"
 			end
 		else
-			text = team2Name.." "..options.conqueredMessage.."! "..team2Name.." wins!"
-			conquered = true
+			-- team 1 failed to defend in round 2 and...
+			if team1Succeded then
+				-- ...successfully attacked in round 1
+				text = team2Name.." "..options.conqueredMessage.." in "..calcTime(timeLimit - timeLeft).."! Tie!"
+			else
+				-- ...failed to attack in round 1
+				text = team2Name.." "..options.conqueredMessage.." in "..calcTime(timeLimit - timeLeft).."! "..team2Name.." wins!"
+			end
 		end
 	end
 	triggerEvent("onAssaultEndRound",getRootElement(),conquered)
@@ -499,11 +509,11 @@ function objectiveReached( objectiveId, playerTable )
 	-- Finished map?
 	if (options.finishType == "all") then
 		if (allObjectivesReached() == true) then
-			endRound()
+			endRound(true)
 		end
 	elseif (options.finishType == "objective") then
 		if (objectiveId == options.finishObjective) then
-			endRound()
+			endRound(true)
 		end
 	end
 	
@@ -1138,26 +1148,12 @@ function calcTime ( timeLeft )
 	
 	if ( timeHours >= 1 ) then
 		--outputDebugString ( "Time hours is above or equal too 1" )
-		calcString = formatStr(tostring(timeHours)) .. ":"
+		calcString = string.format("%02d:", timeHours)
 	end
-	calcString = calcString .. formatStr(string.format("%.0d", tostring(timeMins))) .. ":" .. formatStr(tostring(timeSecs))
+	calcString = calcString .. string.format("%02d:%02d", timeMins, timeSecs)
 	
 	--outputDebugString ( "calcString = " .. calcString )
 	return calcString
-end
-
-function formatStr ( formatString )
-	local aString = tostring(formatString)
-	
-	if ( #aString == 1 ) then
-		aString = "0" .. aString
-	end
-	
-	if ( #aString == 0 ) then
-		aString = "00"
-	end
-
-	return aString
 end
 
 function showTextForAll ( time, red, green, blue, scale, text, vertical )
