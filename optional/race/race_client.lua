@@ -18,7 +18,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		-- create GUI
 		local screenWidth, screenHeight = guiGetScreenSize()
 		g_dxGUI = {
-			ranknum = dxText:create('1', screenWidth - 50, screenHeight - 80, false, 'bankgothic', 2, 'right'),
+			ranknum = dxText:create('1', screenWidth - 60, screenHeight - 80, false, 'bankgothic', 2, 'right'),
 			ranksuffix = dxText:create('st', screenWidth - 40, screenHeight - 71, false, 'bankgothic', 1),
 			checkpoint = dxText:create('0/0', screenWidth - 54, screenHeight - 42, false, 'bankgothic', 0.8, 'center'),
 		}
