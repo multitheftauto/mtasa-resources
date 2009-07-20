@@ -87,14 +87,19 @@ addEventHandler ( "doCloneElement", rootElement,
 )
 
 addEventHandler ( "doDestroyElement", rootElement,
-	function ()
-		if getLockedElement(client) == source then
+	function (forced)
+		local locked = getLockedElement(client)
+		if forced or locked == source then
 			outputDebugString ( "Deleted '"..getElementType(source).."'." )
-			triggerEvent ( "onElementDestroy_undoredo", source )
-			setLockedElement(client, nil)
+			
+			if locked then
+				setLockedElement(client, nil)
+			end
 			
 			triggerEvent("onElementDestroy", source)
 			triggerClientEvent(rootElement, "onClientElementDestroyed", source)
+			
+			triggerEvent ( "onElementDestroy_undoredo", source )
 		end
 	end
 )

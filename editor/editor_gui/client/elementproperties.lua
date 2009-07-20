@@ -668,7 +668,7 @@ local function applyPropertiesChanges()
 		end
 	end
 
-	triggerServerEvent("syncProperties", selectedElement, oldValues, newValues)
+	triggerServerEvent("syncProperties", getRootElement(), oldValues, newValues, selectedElement)
 
 	--allow again editing values
 	guiSetProperty(btnOK,         "Disabled", "False")

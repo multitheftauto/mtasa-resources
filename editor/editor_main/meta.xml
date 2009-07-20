@@ -108,6 +108,7 @@
 	<export function="registerEditorElements" type="client"/>
 	<export function="updateArrowMarker" type="client"/>
 	<export function="setMovementType" type="client"/>
+	<export function="enableMouseOver" type="client"/>
 	<export function="import" type="server"/>
 
 	<!-- clientside files -->
