@@ -605,12 +605,14 @@ local function sendInitialParameters()
 
 	closePropertiesBox()
 	
-	triggerServerEvent("doCreateElement", getLocalPlayer(),
-		newElementType,
-		newElementResource,
-		parametersTable,
-		false --don't attach it later
-	)
+	if triggerEvent ( "onClientElementPreCreate", root, newElementType, newElementResource, parametersTable, false ) then
+		triggerServerEvent("doCreateElement", getLocalPlayer(),
+			newElementType,
+			newElementResource,
+			parametersTable,
+			false --don't attach it later
+		)
+	end
 	
 	newElementType = nil
 	newElementResource = nil
@@ -668,7 +670,7 @@ local function applyPropertiesChanges()
 		end
 	end
 
-	triggerServerEvent("syncProperties", getRootElement(), oldValues, newValues, selectedElement)
+	triggerServerEvent("syncProperties", getLocalPlayer(), oldValues, newValues, selectedElement)
 
 	--allow again editing values
 	guiSetProperty(btnOK,         "Disabled", "False")

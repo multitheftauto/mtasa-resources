@@ -111,6 +111,10 @@
 	<export function="enableMouseOver" type="client"/>
 	<export function="import" type="server"/>
 
+	<export function="createHighlighterText" type="client"/>
+	<export function="setCrosshairState" type="client"/>
+	<export function="setCursorCrosshairState" type="client"/>
+
 	<!-- clientside files -->
 	<file src="client/images/crosshair.png" type="client"/>
 	<file src="client/images/cursor.png" type="client"/>
