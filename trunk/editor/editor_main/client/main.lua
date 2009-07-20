@@ -789,6 +789,9 @@ function dropElement(releaseLock,clonedrop)
 		return false
 	end
 
+	-- trigger client selection events
+	if not triggerEvent("onClientElementDrop", g_selectedElement) then return false end
+
 	if releaseLock ~= false then
 		releaseLock = true
 	end
@@ -824,8 +827,7 @@ function dropElement(releaseLock,clonedrop)
 		triggerServerEvent("doUnlockElement", g_selectedElement)
 	end
 
-	-- trigger client and server selection events
-	triggerEvent("onClientElementDrop", g_selectedElement)
+	-- trigger server selection events
 	triggerServerEvent("onElementDrop", g_selectedElement)
 
 	local droppedElement = g_selectedElement
