@@ -33,17 +33,17 @@ function doCreateElement ( elementType, resourceName, creationParameters, attach
 			break
 		end
 	end
-	
-	if triggerEvent ( "onClientElementPreCreate", root, elementType, resourceName, creationParameters, attachLater, requiresCreationBox, shortcut ) then
-		if requiresCreationBox then
-			editor_gui.openPropertiesBox(elementType, resourceName)
-		else
-			creationParameters.interior = creationParameters.interior or getWorkingInterior()
-			creationParameters.dimension = creationParameters.dimension or getWorkingDimension()
 
-			if attachLater == nil then
-				attachLater = true
-			end
+	if requiresCreationBox then
+		editor_gui.openPropertiesBox(elementType, resourceName)
+	else
+		creationParameters.interior = creationParameters.interior or getWorkingInterior()
+		creationParameters.dimension = creationParameters.dimension or getWorkingDimension()
+
+		if attachLater == nil then
+			attachLater = true
+		end
+		if triggerEvent ( "onClientElementPreCreate", root, elementType, resourceName, creationParameters, attachLater, shortcut ) then
 			triggerServerEvent( "doCreateElement", localPlayer, elementType, resourceName, creationParameters, attachLater, shortcut )
 		end
 	end

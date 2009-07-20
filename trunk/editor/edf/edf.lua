@@ -550,6 +550,13 @@ function edfCreateElement(elementType, fromResource, parametersTable, editorMode
 		
 		setElementInterior(theElement, parametersTable.interior)
 		setElementDimension(theElement, parametersTable.dimension)
+		
+		-- setElementData if it is not an edf property
+		for dataField, dataValue in pairs(parametersTable) do
+			if not edf[fromResource]["elements"][elementType].data[dataField] then
+				setElementData(theElement, dataField, dataValue)
+			end
+		end
 	else
 		local newElement = createElement(elementType)
 		if not newElement then

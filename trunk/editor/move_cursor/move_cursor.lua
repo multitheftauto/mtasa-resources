@@ -289,10 +289,10 @@ function detachElement()
 
 	 -- sync position/rotation
 	local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
-	triggerServerEvent("syncProperty", getRootElement(), "position", {tempPosX, tempPosY, tempPosZ}, selectedElement)
+	triggerServerEvent("syncProperty", getLocalPlayer(), "position", {tempPosX, tempPosY, tempPosZ}, selectedElement)
 	if hasRotation[getElementType(selectedElement)] then
 		rotX, rotY, rotZ = getElementRotation(selectedElement)
-		triggerServerEvent("syncProperty", getRootElement(), "rotation", {rotX, rotY, rotZ}, selectedElement)
+		triggerServerEvent("syncProperty", getLocalPlayer(), "rotation", {rotX, rotY, rotZ}, selectedElement)
 	end
 	selectedElement = nil
 
