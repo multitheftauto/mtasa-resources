@@ -3,7 +3,7 @@ g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_WaterCraftIDs = table.create({ 539, 460, 417, 447, 472, 473, 493, 595, 484, 430, 453, 452, 446, 454 }, true)
-g_ModelForPickupType = { nitro = 783, repair = 784, vehiclechange = 785 }
+g_ModelForPickupType = { nitro = 1337, repair = 1338, vehiclechange = 1339 }
 
 g_Checkpoints = {}
 g_Pickups = {}
