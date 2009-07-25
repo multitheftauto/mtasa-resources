@@ -1,0 +1,21 @@
+<settings>
+	<!-- The number of points needed to win the game -->
+	<pointlimit>1000</pointlimit>
+
+	<!-- Whether or not this is a game between two teams: 0,1 -->
+	<teamgame>0</teamgame>
+
+	<!-- Whether or not to hide the objective blip from the enemies (players without the blip): 0,1  Note: objectives are always hidden from enemy teams, so this setting only applies to non-team games -->
+	<hideobj>1</hideobj>
+
+	<!-- time the briefcase needs to be idle before it resets in seconds -->
+	<idletime>300</idletime>
+
+	<!-- the weapons and ammo that players spawn with -->
+	<weapons>
+		<weapon id="22" ammo="200" />
+		<weapon id="17" ammo="4" />
+		<weapon id="18" ammo="4" />
+		<weapon id="29" ammo="250" />
+	</weapons>
+</settings>
