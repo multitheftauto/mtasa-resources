@@ -7,6 +7,7 @@ local edfStarted = {}
 local thisResource = getThisResource()
 local rootElement = getRootElement()
 createResourceCallInterface("mapmanager")
+addEvent"onElementPropertyChanged"
 
 local DUMMY_ID = 3003
 local DUMMY_DIMENSION = -99
@@ -300,6 +301,25 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 		i = i + 1
 	until false
 	
+	i = 0
+	local serverScripts,clientScripts = {},{}
+	repeat
+		--try to get a new node until we go out of range
+		local node = xmlFindChild(definitionRoot,"script",i)
+		if not node then break end
+		
+		--check the element has a defined type name
+		local name = xmlNodeGetAttribute(node,"src")
+		if name then
+			if xmlNodeGetAttribute(node,"type") == "client" then
+				table.insert(clientScripts,name)
+			else
+				table.insert(serverScripts,name)
+			end
+		end			
+		i = i + 1
+	until false
+	readScripts(serverScripts,clientScripts,fromResource)
 	--if we've reached this point, trigger the load event
 	local triggerFrom = rootElement
 	if getResourceState(fromResource) == "running" then
@@ -790,15 +810,21 @@ end
 --Sets an element's position, or its posX/Y/Z element data
 function edfSetElementPosition(element, px, py, pz)
 	if isBasic[getElementType(element)] then
-		return setElementPosition(element, px, py, pz)
+		if setElementPosition(element, px, py, pz) then
+			triggerEvent ( "onElementPropertyChanged", element, "position" )
+			return true
+		end
 	else
 		local handle = edfGetHandle(element)
 		if handle then
-			return setElementPosition(handle, px, py, pz)
+			if setElementPosition(handle, px, py, pz) then
+				triggerEvent ( "onElementPropertyChanged", element, "position" )
+			end
 		else
 			setElementData(element, "posX", px or 0)
 			setElementData(element, "posY", py or 0)
 			setElementData(element, "posZ", pz or 0)
+			triggerEvent ( "onElementPropertyChanged", element, "position" )
 			return true
 		end
 	end
@@ -871,8 +897,9 @@ function edfSetElementProperty(element, property, value)
 			return false
 		end
 	end
-	
-	return setElementData(element, property, value)
+	setElementData(element, property, value)
+	triggerEvent ( "onElementPropertyChanged", element, property )
+	return true
 end
 
 function edfSetElementPropertyForRepresentations(element,property,value)

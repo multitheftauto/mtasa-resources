@@ -6,6 +6,8 @@
 	<script src="datatypes.lua" />
 	<script src="edf.lua" />
 	<script src="edf_client.lua" type="client" />
+	<script src="scriptreader.lua" />
+	<script src="scriptreader_client.lua" type="client" />
 	
 	<export function="edfStartResource" />				<!--bool-->
 	<export function="edfStopResource" />				<!--bool-->	

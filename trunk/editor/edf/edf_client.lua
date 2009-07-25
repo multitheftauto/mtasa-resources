@@ -1,4 +1,5 @@
 addEvent ( "hideDummy", true )
+addEvent ( "onClientElementPropertyChanged" )
 local thisResource = getThisResource()
 
 -- basic types list
@@ -222,8 +223,9 @@ function edfSetElementProperty(element, property, value)
 			return false
 		end
 	end
-	
-	return setElementData(element, property, value)
+	setElementData(element, property, value)
+	triggerEvent ( "onClientElementPropertyChanged", element, property )
+	return true
 end
 
 function edfSetElementPropertyForRepresentations(element,property,value)
