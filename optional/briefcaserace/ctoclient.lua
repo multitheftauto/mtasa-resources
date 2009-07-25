@@ -2,12 +2,14 @@
 -- line 43 onClientElementColShapeHit_cto already handled error on start (or just restart?)
 
 --outputChatBox("CTO CLIENT LOADED")
+local MAX_CARRIER_SPEED = .6
 
 local root = getRootElement ()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 
-local orbMarker
 local orbCol
+
+local objectiveBlip
 
 local localPlayer
 local vehicle
@@ -31,21 +33,16 @@ end
 -- gets called twice for some reason on restart (once right away, once when it should)
 -- collision shape probably gets created twice
 addEvent ( "doSetOrbHittable", true )
-function doSetOrbHittable_cto ( hittable, theOrbMarker )
-outputDebugString("doSetOrbHittable_cto entered, hittable: " .. tostring(hittable))
-if (hittable) then
-assert(theOrbMarker, "theOrbMarker doesn't exist") -- appears...
-assert(isElement(theOrbMarker), "theOrbMarker isn't an element")
-end
+function doSetOrbHittable_cto ( hittable, x, y, z )
 	if ( hittable ) then
 outputDebugString(" setting orb hittable (client)")
-		orbMarker = theOrbMarker
-		local x, y, z = getElementPosition ( theOrbMarker )
+		if ( orbCol ) then
+			--??????
+		end
 		orbCol = createColSphere ( x, y, z, 1.5 ) -- size changed from 1 to 1.5
 		addEventHandler ( "onClientElementColShapeHit", localPlayer, onClientElementColShapeHit_cto )
 	else
 outputDebugString(" removing orb hittable (client)")
-		orbMarker = nil
 		removeEventHandler ( "onClientElementColShapeHit", localPlayer, onClientElementColShapeHit_cto )
 		destroyElement ( orbCol )
 		orbCol = nil
@@ -56,13 +53,13 @@ function onClientElementColShapeHit_cto ( colshape, matchingDimension ) -- can g
 	if (orbCol and colshape == orbCol) then
 outputDebugString ( "You hit the colshape!" )---
 		if ( not isPlayerDead ( localPlayer ) ) then
-			triggerServerEvent ( "onPlayerOrbHit", localPlayer, orbMarker )
+			triggerServerEvent ( "onPlayerOrbHit", localPlayer )
 		end
 	end
 end
 
 addEvent ( "onClientCarrier", true )
-function onClientCarrier_cto ( status )
+function onClientCarrier_cto ( status, objectiveBlipStatus, blipX, blipY, blipZ )
 	if ( status ) then
 outputDebugString ( "You are the carrier!" )---
 		addEventHandler ( "onClientResourceStop", root, onClientResourceStop_cto )
@@ -70,12 +67,21 @@ outputDebugString ( "You are the carrier!" )---
 		if ( isPedInVehicle ( localPlayer ) ) then
 			setGravity ( carrierGravity )
 		end
+		-- make an objective blip?
+		if (objectiveBlipStatus) then
+			objectiveBlip = createBlip ( blipX, blipY, blipZ, 53, 4, 255, 0, 0, 255, 32767 )
+		end
 	else
 outputDebugString ( "You are no longer the carrier" )---
 		removeEventHandler ( "onClientRender", root, onClientRender_cto )
 		removeEventHandler ( "onClientResourceStop", root, onClientResourceStop_cto )
 		if ( isPedInVehicle ( localPlayer ) ) then
 			setGravity ( normalGravity )
+		end
+		-- delete the objective blip?
+		if (objectiveBlip) then
+		    destroyElement(objectiveBlip)
+		    objectiveBlip = nil
 		end
 	end
 end
@@ -95,8 +101,8 @@ outputDebugString ( "You exitted a vehicle" )---
 	elseif ( vehicle ) then
 --outputDebugString ( "Speed limiter enabled" )---
 		local origVX, origVY, origVZ = getElementVelocity ( vehicle )
-	    -- slow vehicle down if it's going over .5 m/s
-		if ( math.sqrt ( origVX^2 + origVY^2 ) > .6 ) then
+	    -- slow vehicle down if it's going over MAX_CARRIER_SPEED m/s
+		if ( math.sqrt ( origVX^2 + origVY^2 ) > MAX_CARRIER_SPEED ) then
 		
 			-- get original angle
 			local angle
@@ -107,8 +113,8 @@ outputDebugString ( "You exitted a vehicle" )---
 			end
 
 			-- get new X and Y velocity
-			local newVX = .6 * math.cos ( angle )
-			local newVY = .6 * math.sin ( angle )
+			local newVX = MAX_CARRIER_SPEED * math.cos ( angle )
+			local newVY = MAX_CARRIER_SPEED * math.sin ( angle )
 			
 			-- set new velocity
 			setElementVelocity ( vehicle, newVX, newVY, origVZ )
@@ -129,8 +135,18 @@ function ( colShape, matchingDimension )
 	if (orbCol and colShape == orbCol and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == source) then
 outputDebugString ( "Your vehicle hit the colshape!" )---
 		if ( not isPlayerDead ( localPlayer ) ) then
-			triggerServerEvent ( "onPlayerOrbHit", localPlayer, orbMarker )
+			triggerServerEvent ( "onPlayerOrbHit", localPlayer )
 		end
 	end
+end
+)
+
+
+
+-- disable marker collisions
+addEvent ( "doDisableOrbCollisions", true )
+addEventHandler ( "doDisableOrbCollisions", root,
+function ()
+	setElementCollisionsEnabled ( source, false )
 end
 )

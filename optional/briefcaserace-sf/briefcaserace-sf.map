@@ -109,26 +109,26 @@
   <vehicle id="Phoenix" model="603" posX="-1692.4749755859" posY="906.17828369141" posZ="24.729278564453" rotX="0.0660400390625" rotY="359.98950195313" rotZ="271.56176757813" />
   <vehicle id="Blista Compact" model="496" posX="-1787.9436035156" posY="887.17163085938" posZ="24.46053314209" rotX="0.04339599609375" rotY="359.93176269531" rotZ="0.57763671875" />
 
-  <orb id="orb_0" posX="-1531.339600" posY="687.697021" posZ="7.187500"/>
-  <orb id="orb_1" posX="-1752.209717" posY="246.891159" posZ="6.645340"/>
-  <orb id="orb_2" posX="-2027.503052" posY="-54.364349" posZ="35.386024"/>
-  <orb id="orb_3" posX="-2482.062012" posY="-284.752747" posZ="40.544395"/>
-  <orb id="orb_4" posX="-2314.570068" posY="101.148849" posZ="35.398438"/>
-  <orb id="orb_5" posX="-2648.423828" posY="-29.900179" posZ="6.132813"/>
-  <orb id="orb_6" posX="-2802.729004" posY="1007.782837" posZ="48.113464"/>
-  <orb id="orb_7" posX="-2456.390625" posY="639.602173" posZ="33.028984"/>
-  <orb id="orb_8" posX="-2367.014648" posY="1396.322754" posZ="7.203770"/>
-  <orb id="orb_9" posX="-1954.263672" posY="1332.795776" posZ="7.187500"/>
-  <orb id="orb_10" posX="-1733.756348" posY="884.232605" posZ="25.085938"/>
-  <orb id="orb_11" posX="-2099.006592" posY="293.692780" posZ="37.688751"/>
-  <orb id="orb_12" posX="-1951.669800" posY="704.025635" posZ="46.562500"/>
-  <orb id="orb_13" posX="-2342.747070" posY="986.370911" posZ="50.695313"/>
-  <orb id="orb_14" posX="-1989.588013" posY="1040.332642" posZ="55.726563"/>
-  <orb id="orb_15" posX="-1731.119629" posY="1525.778320" posZ="7.187500"/>
-  <orb id="orb_16" posX="-1460.342163" posY="1143.172363" posZ="7.187500"/>
-  <orb id="orb_17" posX="-2598.453857" posY="1129.071167" posZ="55.691368"/>
-  <orb id="orb_18" posX="-2566.130371" posY="439.349213" posZ="14.880854"/>
-  <orb id="orb_19" posX="-2211.563477" posY="582.866455" posZ="35.169136"/>
+  <briefcase id="briefcase_0" posX="-1531.339600" posY="687.697021" posZ="7.187500"/>
+  <briefcase id="briefcase_1" posX="-1752.209717" posY="246.891159" posZ="6.645340"/>
+  <briefcase id="briefcase_2" posX="-2027.503052" posY="-54.364349" posZ="35.386024"/>
+  <briefcase id="briefcase_3" posX="-2482.062012" posY="-284.752747" posZ="40.544395"/>
+  <briefcase id="briefcase_4" posX="-2314.570068" posY="101.148849" posZ="35.398438"/>
+  <briefcase id="briefcase_5" posX="-2648.423828" posY="-29.900179" posZ="6.132813"/>
+  <briefcase id="briefcase_6" posX="-2802.729004" posY="1007.782837" posZ="48.113464"/>
+  <briefcase id="briefcase_7" posX="-2456.390625" posY="639.602173" posZ="33.028984"/>
+  <briefcase id="briefcase_8" posX="-2367.014648" posY="1396.322754" posZ="7.203770"/>
+  <briefcase id="briefcase_9" posX="-1954.263672" posY="1332.795776" posZ="7.187500"/>
+  <briefcase id="briefcase_10" posX="-1733.756348" posY="884.232605" posZ="25.085938"/>
+  <briefcase id="briefcase_11" posX="-2099.006592" posY="293.692780" posZ="37.688751"/>
+  <briefcase id="briefcase_12" posX="-1951.669800" posY="704.025635" posZ="46.562500"/>
+  <briefcase id="briefcase_13" posX="-2342.747070" posY="986.370911" posZ="50.695313"/>
+  <briefcase id="briefcase_14" posX="-1989.588013" posY="1040.332642" posZ="55.726563"/>
+  <briefcase id="briefcase_15" posX="-1731.119629" posY="1525.778320" posZ="7.187500"/>
+  <briefcase id="briefcase_16" posX="-1460.342163" posY="1143.172363" posZ="7.187500"/>
+  <briefcase id="briefcase_17" posX="-2598.453857" posY="1129.071167" posZ="55.691368"/>
+  <briefcase id="briefcase_18" posX="-2566.130371" posY="439.349213" posZ="14.880854"/>
+  <briefcase id="briefcase_19" posX="-2211.563477" posY="582.866455" posZ="35.169136"/>
 
   <objective id="objective_0" posX="-1431.693604" posY="920.504028" posZ="6.187500"/>
   <objective id="objective_1" posX="-2515.104004" posY="-612.798645" posZ="131.562500"/>

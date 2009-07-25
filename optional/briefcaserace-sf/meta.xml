@@ -1,0 +1,9 @@
+<meta>
+
+    <info author="erorr404" type="map" gamemodes="briefcaserace" />
+
+    <map src="briefcaserace-sf.map" />
+    <script src="vehiclespawn.lua" type="server"/>
+    <script src="replace_with_fast_vehicles.lua" type="server"/>
+ 
+</meta>

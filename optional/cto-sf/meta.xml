@@ -1,8 +1,0 @@
-<meta>
-
-    <info author="erorr404" type="map" gamemodes="cto" />
-
-    <map src="sf_cto.map" />
-	<script src="vehiclespawn.lua" type="server"/>
- 
-</meta>
