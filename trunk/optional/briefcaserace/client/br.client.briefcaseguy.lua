@@ -1,4 +1,5 @@
-ALTERED_GRAVITY_MAGNITUDE = 0.7
+ALTERED_GRAVITY_MAGNITUDE = 0.6
+ALTERED_GRAVITY_MAGNITUDE_2 = 0.475
 MAX_CARRIER_SPEED = 0.6
 local root = getRootElement()
 local localPlayer = getLocalPlayer()
@@ -8,9 +9,14 @@ function addVehicleEffects()
 	addEventHandler("onClientPlayerVehicleExit", localPlayer, onExit)
 	-- add effects if in vehicle
 	if (isPedInVehicle(localPlayer)) then
+		local vehicle = getPedOccupiedVehicle(localPlayer)
 		showVolatilityMeter()
 		addEventHandler("onClientRender", root, onFrameLimitVehicleSpeed)
-		setVehicleGravity(getPedOccupiedVehicle(localPlayer), 0, 0, -1*ALTERED_GRAVITY_MAGNITUDE)
+		if (getVehicleType(vehicle) == "Bike") then -- make it harder for bikes, cause they have big advantages in other areas
+			setVehicleGravity(vehicle, 0, 0, -1*ALTERED_GRAVITY_MAGNITUDE_2)
+		else
+			setVehicleGravity(vehicle, 0, 0, -1*ALTERED_GRAVITY_MAGNITUDE)
+		end
 	end
 end
 
@@ -28,7 +34,11 @@ end
 function onEnter(vehicle, seat)
 	showVolatilityMeter()
 	addEventHandler("onClientRender", root, onFrameLimitVehicleSpeed)
-	setVehicleGravity(vehicle, 0, 0, -1*ALTERED_GRAVITY_MAGNITUDE)
+	if (getVehicleType(vehicle) == "Bike") then -- make it harder for bikes, cause they have big advantages in other areas
+		setVehicleGravity(vehicle, 0, 0, -1*ALTERED_GRAVITY_MAGNITUDE_2)
+	else
+		setVehicleGravity(vehicle, 0, 0, -1*ALTERED_GRAVITY_MAGNITUDE)
+	end
 end
 
 function onExit(vehicle, seat)

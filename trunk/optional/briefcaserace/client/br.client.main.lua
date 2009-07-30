@@ -1,16 +1,28 @@
 ----------------------------------- D E B U G -----------------------------------
-local bcCarriedText = 	guiCreateLabel(100, 475, 500, 100, "Briefcase carrier: none", false)
-local bcIdleText = 		guiCreateLabel(100, 500, 500, 100, "Briefcase idle   : false", false)
-local obExistsText = 	guiCreateLabel(100, 525, 500, 100, "Objective exists : false", false)
-local obHitterText = 	guiCreateLabel(100, 550, 500, 100, "Objective hitter : none or not you", false)
+local bcCarriedText = 	guiCreateLabel(100, 425, 500, 100, "Briefcase carrier :  none", false); 				guiSetVisible(bcCarriedText, false)
+local bcIdleText = 		guiCreateLabel(100, 450, 500, 100, "Briefcase idle :  false", false); 					guiSetVisible(bcIdleText, false)
+local obExistsText = 	guiCreateLabel(100, 487.5, 500, 100, "Objective exists :  false", false); 				guiSetVisible(obExistsText, false)
+local obHitterText = 	guiCreateLabel(100, 512.5, 500, 100, "Objective hitter :  none or not you", false); 	guiSetVisible(obHitterText, false)
+local obsHitterText = 	guiCreateLabel(100, 550, 500, 100, "Team objective hitter :  none or not you", false); 	guiSetVisible(obsHitterText, false)
+addCommandHandler("dbg",
+function (command, arg)
+	local vis = true
+	if (arg == "0") then  vis = false  end
+	guiSetVisible(bcCarriedText, vis)
+	guiSetVisible(bcIdleText, vis)
+	guiSetVisible(obExistsText, vis)
+	guiSetVisible(obHitterText, vis)
+	guiSetVisible(obsHitterText, vis)
+end
+)
 ---------------------------------------------------------------------------------
 ---- Assert Checks ----
 local bcCarried = false
 local bcIdle = false
 local obExists = false
 local obHittable = false
-local obsExist = {}
-local ob2Hittable = false
+local obsExist = {} -- at least 1 team obj exists
+local ob2Hittable = false -- a team objective is hittable
 -----------------------
 
 -- server events:
@@ -21,8 +33,8 @@ local ob2Hittable = false
 BRIEFCASE_BLIP_ID = 41
 OBJECTIVE_BLIP_ID = 53
 ENEMY_OBJECTIVE_BLIP_ID = 0
-BLIP_DISTANCE_LIMIT = 100
-TEAM_BLIP_DISTANCE_LIMIT = 50
+BLIP_DISTANCE_LIMIT = 250
+TEAM_BLIP_DISTANCE_LIMIT = 150
 
 local root = getRootElement()
 local localPlayer = getLocalPlayer()
@@ -47,8 +59,11 @@ addEvent("clientSetTeamObjectiveHittable", true)
 addEvent("clientDestroyTeamObjective", true)
 
 addEventHandler("clientGiveBriefcaseToPlayer", root,
-function ()
+function (r, g, b)
 	assert(not bcCarried)
+	r = r or 255
+	g = g or 0
+	b = b or 0
 	bcCarried = true
 outputDebugString("in client clientGiveBriefcaseToPlayer")
 	-- source is the player to give to, coords are the location of the objective, hideObjective is whether to hide the objective from everyone else
@@ -60,14 +75,14 @@ outputDebugString("in client clientGiveBriefcaseToPlayer")
 	-- create gui indicating the briefcase carrier
 	guiShowBriefcaseGuy(source)
 	-- create indicator for easy identification of the briefcase guy
-	indicator = createMarker(0, 0, 0, "arrow", 1, 255, 0, 0, 200)
+	indicator = createMarker(0, 0, 0, "arrow", 1, r, g, b, 200)
 	attachElements(indicator, source, 0, 0, 2.5)
 	if (source == localPlayer) then
 		-- add vehicle events and gui for briefcase guy
 		addVehicleEffects()
 	end
 	-- debug --
-	guiSetText(bcCarriedText, "Briefcase carrier: " .. getPlayerName(source))
+	guiSetText(bcCarriedText, "Briefcase carrier :  " .. getPlayerName(source))
 end
 )
 
@@ -91,7 +106,7 @@ outputDebugString("in client clientTakeBriefcaseFromPlayer")
 		removeVehicleEffects()
 	end
 	-- debug --
-	guiSetText(bcCarriedText, "Briefcase carrier: none")
+	guiSetText(bcCarriedText, "Briefcase carrier :  none")
 end
 )
 
@@ -107,7 +122,7 @@ function (x, y, z)
 	-- make briefcase hittable
 	createHittableBriefcaseCol(x, y, z-1, 1.25, 2)
 	-- debug --
-	guiSetText(bcIdleText, "Briefcase idle   : true")
+	guiSetText(bcIdleText, "Briefcase idle :  true")
 end
 )
 
@@ -124,7 +139,7 @@ function ()
 	-- make briefcase not hittable
 	destroyHittableBriefcaseCol()
 	-- debug --
-	guiSetText(bcIdleText, "Briefcase idle   : false")
+	guiSetText(bcIdleText, "Briefcase idle :  false")
 end
 )
 
@@ -139,12 +154,13 @@ function (x, y, z, showBlip)
 		objectiveBlip = createBlip(x, y, z, OBJECTIVE_BLIP_ID, 4, 255, 0, 0, 255, 32767, BLIP_DISTANCE_LIMIT)
 	end
 	-- debug --
-	guiSetText(obExistsText, "Objective exists : true")
+	guiSetText(obExistsText, "Objective exists :  true")
 end
 )
 
 addEventHandler("clientSetObjectiveHittable", root,
 function (hittable, showBlip)
+	assert(obExists)
 	if (hittable) then
 		assert(not obHittable)
 		obHittable = true
@@ -156,17 +172,18 @@ function (hittable, showBlip)
 			objectiveBlip = createBlip(x, y, z, OBJECTIVE_BLIP_ID, 4, 255, 0, 0, 255, 32767)
 		end
 		-- debug --
-		guiSetText(obHitterText, "Objective hitter : you")
+		guiSetText(obHitterText, "Objective hitter :  you")
 	else
 		assert(obHittable)
 		obHittable = false
 		destroyHittableObjectiveCol()
 		if (not showBlip) then
+			local x, y, z = getElementPosition(objective)
 			destroyElement(objectiveBlip)
 			objectiveBlip = createBlip(x, y, z, OBJECTIVE_BLIP_ID, 4, 255, 0, 0, 255, 32767, BLIP_DISTANCE_LIMIT)
 		end
 		-- debug --
-		guiSetText(obHitterText, "Objective hitter : none or not you")
+		guiSetText(obHitterText, "Objective hitter :  none or not you")
 	end
 end
 )
@@ -177,10 +194,10 @@ function ()
 	assert(obExists)
 	obExists = false
 	destroyElement(objective)
-	destroyElement(objectiveBlip) -- bad arg.. why?
+	destroyElement(objectiveBlip)
 	objectiveBlip = false
 	-- debug --
-	guiSetText(obExistsText, "Objective exists : false")
+	guiSetText(obExistsText, "Objective exists :  false")
 end
 )
 
@@ -189,27 +206,32 @@ function (team, friendly, x, y, z)
 	assert(not obsExist[team])
 	obsExist[team] = true
 	local r, g, b = getTeamColor(team)
-	teamObjectives[team] = createMarker(x, y, z, "cylinder", 3, r, g, b, 170)
+	teamObjectives[team] = createMarker(x, y, z, "cylinder", 3, r, g, b, 85)
 	if (friendly) then
 		teamObjectiveBlips[team] = createBlip(x, y, z, OBJECTIVE_BLIP_ID, 4, 255, 0, 0, 255, 32767)
 	else
-		teamObjectiveBlips[team] = createBlip(x, y, z, ENEMY_OBJECTIVE_BLIP_ID, 4, 255, r, g, b, 32767, TEAM_BLIP_DISTANCE_LIMIT)
+		teamObjectiveBlips[team] = createBlip(x, y, z, ENEMY_OBJECTIVE_BLIP_ID, 3, r, g, b, 255, 32767, TEAM_BLIP_DISTANCE_LIMIT)
 	end
 end
 )
 
 addEventHandler("clientSetTeamObjectiveHittable", root,
 function (team, hittable)
+	assert(obsExist[team])
 	if (hittable) then
 		assert(not ob2Hittable)
 		ob2Hittable = true
 		-- make the objective hittable
 		local x, y, z = getElementPosition(teamObjectives[team])
 		createHittableObjectiveCol(x, y, z, 1.5, 3)
+		-- debug --
+		guiSetText(obsHitterText, "Team objective hitter :  you")
 	else
 		assert(ob2Hittable)
 		ob2Hittable = false
 		destroyHittableObjectiveCol()
+		-- debug --
+		guiSetText(obsHitterText, "Team objective hitter :  none or not you")
 	end
 end
 )

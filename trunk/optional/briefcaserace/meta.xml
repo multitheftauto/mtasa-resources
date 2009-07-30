@@ -7,17 +7,21 @@
     <file src="hand_icon.png" type="client" />
     <file src="briefcase_icon.png" type="client" />
 	
-    <include resource="scoreboard" />
     <include resource="deathpickups" />
     <include resource="killmessages" />
+    <include resource="scoreboard" />
+    <include resource="spectator" />
     <include resource="briefcase" />
     <include resource="easytext" />
 
     <script src="server/br.server.main.lua" type="server" />
-    <!--script src="server/br.server.Test.lua" type="server" /-->
+    <script src="server/br.server.game.lua" type="server" />
     <script src="server/br.server.eventQueue.lua" type="server" />
     <script src="server/br.server.Briefcase.lua" type="server" />
     <script src="server/br.server.Objective.lua" type="server" />
+    <script src="server/br.server.spawn.lua" type="server" />
+    <script src="server/br.server.garages.lua" type="server" />
+    <script src="server/br.server.playerblips.lua" type="server" />
 
     <script src="client/br.client.main.lua" type="client" />
     <script src="client/br.client.eventQueue.lua" type="client" />
@@ -26,8 +30,10 @@
     <script src="client/br.client.briefcaseguy.lua" type="client" />
     <script src="client/br.client.generalgui.lua" type="client" />
     <script src="client/br.client.vehiclegui.lua" type="client" />
+    <script src="client/br.client.spawngui.lua" type="client" />
+    <script src="client/br.client.garages.lua" type="client" />
 
-    <script src="playerblips.lua" type="server" />
-    <script src="spawn.lua" type="server" />
+    <script src="shared/br.vehdamage.lua" type="server" />
+    <script src="shared/br.vehdamage.lua" type="client" />
 
 </meta>

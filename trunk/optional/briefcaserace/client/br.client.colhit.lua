@@ -29,6 +29,9 @@ assert(isElement(hitElement))
 assert(getElementType(hitElement))
 --outputDebugString("briefcase hit client-side!")
 	-- see if it's the local player or their vehicle
+	if (isPlayerDead(localPlayer)) then
+		return
+	end
 	if (getElementType(hitElement) == "player" and hitElement == localPlayer) then
 		triggerServerEvent("onPlayerBriefcaseHit", getLocalPlayer())
 	elseif (getElementType(hitElement) == "vehicle" and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == hitElement) then

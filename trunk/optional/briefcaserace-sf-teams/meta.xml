@@ -6,5 +6,5 @@
     <script src="vehiclespawn.lua" type="server"/>
 
     <file src="settings.xml" type="server" />
-
+ 
 </meta>

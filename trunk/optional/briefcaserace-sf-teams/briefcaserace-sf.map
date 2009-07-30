@@ -1,5 +1,8 @@
 <map>
 
+  <team name="Hobos" color="#ff7f50" />
+  <team name="Suits" color="#6495ed" />
+
   <spawnpoint id="spawnpoint_1" posX="-1982.86" posY="112.54" posZ="27.68" rot="0" skin="60"/>
   <spawnpoint id="spawnpoint_1" posX="-2035.7490234375" posY="139.54206848145" posZ="28.8359375" rot="270" skin="170"/>
   <spawnpoint id="spawnpoint_1" posX="-1975.6838378906" posY="137.91412353516" posZ="27.6875" rot="90" skin="193"/>

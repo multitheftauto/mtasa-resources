@@ -31,6 +31,7 @@ end
 )
 
 function scheduleClientEvent(player, eventName, attachToElement, ...)
+	assert(player and eventName and attachToElement)
 	assert({...}, "OMGz, how can a table be false/nil???")
 	if (clientStatuses[player]) then
 outputDebugString("a. scheduling event: " .. eventName)

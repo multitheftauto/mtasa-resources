@@ -17,9 +17,9 @@ function Objective:new(o)
 		for i,team in ipairs(getValidTeams()) do
 			for j,player in ipairs(getPlayersInTeam(team)) do
 				if (team == o.team) then
-					scheduleClientEvent(player, "clientCreateTeamObjective", root, o.team, true, o.x, o.y, o.y)
+					scheduleClientEvent(player, "clientCreateTeamObjective", root, o.team, true, o.x, o.y, o.z)
 				else
-					scheduleClientEvent(player, "clientCreateTeamObjective", root, o.team, false, o.x, o.y, o.y)
+					scheduleClientEvent(player, "clientCreateTeamObjective", root, o.team, false, o.x, o.y, o.z)
 				end
 			end
 		end

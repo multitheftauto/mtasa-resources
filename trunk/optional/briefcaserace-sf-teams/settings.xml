@@ -2,19 +2,19 @@
 	<!-- The number of points needed to win the game -->
 	<pointlimit>1000</pointlimit>
 
-	<!-- The number of points needed to win the game -->
+	<!-- Weather... -->
 	<weather>3</weather>
 
 	<!-- The number of points needed to win the game -->
 	<idlecam x="-1606.7691650391" y="1106.5153808594" z="31.579252243042" lx="-1606.4222412109" ly="1105.5905761719" lz="31.423093795776" roll="0" fov="70" />
 
-	<!-- Whether or not this is a game between two teams: 0,1 -->
-	<teamgame>0</teamgame>
+	<!-- Whether or not this is a team game (a team game must have at least two teams in the map file): 0,1 -->
+	<teamgame>1</teamgame>
 
 	<!-- whether friendly fire is enabled (teams only): 0,1 -->
-	<ff>1</ff>
+	<ff>0</ff>
 
-	<!-- whether friendly fire is enabled (teams only): 0,1 -->
+	<!-- Whether to enable auto-balance (teams only): 0,1 -->
 	<autobalance>1</autobalance>
 
 	<!-- the skins used for each team (teams only): 0,1 -->
