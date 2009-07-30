@@ -17,14 +17,13 @@ function Briefcase:destroy()
 		scheduleClientEventForPlayers(getReadyPlayers(), "clientDestroyIdleBriefcase", root)
 		self.bidle = false
 	elseif (self.carrier) then
-		scheduleClientEventForPlayers(getReadyPlayers(), "clientTakeBriefcaseFromPlayer", carrier)
+		scheduleClientEventForPlayers(getReadyPlayers(), "clientTakeBriefcaseFromPlayer", self.carrier)
 		self.carrier = false
 	end
 end
 
 function Briefcase:idle(x, y, z)
 	assert(not self.bidle and not self.carrier)
-outputDebugString("WOOF")
 	self.x, self.y, self.z = x, y, z
 	self.bidle = true
 	scheduleClientEventForPlayers(getReadyPlayers(), "clientCreateIdleBriefcase", root, x, y, z)
@@ -44,10 +43,10 @@ function Briefcase:notIdle()
 	scheduleClientEventForPlayers(getReadyPlayers(), "clientDestroyIdleBriefcase", root)
 end
 
-function Briefcase:attach(player)
+function Briefcase:attach(player, r, g, b)
 	assert(not self.bidle and not self.carrier)
 	self.carrier = player
-	scheduleClientEventForPlayers(getReadyPlayers(), "clientGiveBriefcaseToPlayer", player)
+	scheduleClientEventForPlayers(getReadyPlayers(), "clientGiveBriefcaseToPlayer", player, r, g, b)
 end
 
 function Briefcase:getCarrier()
