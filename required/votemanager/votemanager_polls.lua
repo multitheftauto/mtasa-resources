@@ -102,16 +102,16 @@ function vote.map.handler(source,cmd,...)
 				if voteMapReturnCode == true then
 					triggerClientEvent(source,"doSendVote",rootElement,1)
 				end
-				vote.map.blockedPlayers[sourceUserName] = true
-				setTimer(removeLock, vote.map.locktime * 1000, 1, sourceUserName, "map")
+                if vote.map.locktime >= 0.05 then
+                    vote.map.blockedPlayers[sourceUserName] = true
+                    setTimer(removeLock, vote.map.locktime * 1000, 1, sourceUserName, "map")
+                end
 			end
 		else
 			if voteMapReturnCode == errorCode.pollAlreadyRunning then
 				outputVoteManager(cmd..": another poll is in progress.", source)
 			elseif voteMapReturnCode == errorCode.noGamemodeRunning then
-				outputVoteManager(cmd..": no gamemode is running, you must specify a mode for the map.", source)
-			elseif voteMapReturnCode == errorCode.onlyOneCompatibleMap then
-				outputVoteManager(cmd..": there's less than two compatible maps for this gamemode.", source)
+				outputVoteManager(cmd..": no gamemode is running, you must specify a mode for the map.", source)            
 			elseif voteMapReturnCode == errorCode.invalidMap then
 				outputVoteManager(cmd..": invalid map name.", source)
 			end
@@ -154,8 +154,10 @@ function vote.mode.handler(source,cmd,resourceName)
 		if voteModeStarted then
 			outputVoteManager("Mode vote started by "..getPlayerName(source)..".")
 			if source ~= serverConsole then
-				vote.mode.blockedPlayers[sourceUserName] = true
-				setTimer(removeLock, vote.mode.locktime * 1000, 1, sourceUserName, "mode")
+                if vote.mode.locktime >= 0.05 then
+                    vote.mode.blockedPlayers[sourceUserName] = true
+                    setTimer(removeLock, vote.mode.locktime * 1000, 1, sourceUserName, "mode")
+                end
 			end
 		else
 			if voteModeReturnCode == errorCode.pollAlreadyRunning then
@@ -185,14 +187,16 @@ function vote.kick.handler(source,cmd,playername,...)
 		if #reason == 0 then
 			reason = nil
 		end
-		local voteKickStarted, voteKickReturnCode = voteKick(getPlayerFromNick(playername or ""),reason)
+		local voteKickStarted, voteKickReturnCode = voteKick(getPlayerFromName(playername or ""),reason)
 		if voteKickStarted then
 			outputVoteManager("Votekick started by "..getPlayerName(source)..".")
 
 			if source ~= serverConsole then
 				triggerClientEvent(source,"doSendVote",rootElement,1)
-				vote.kick.blockedPlayers[sourceUserName] = true
-				setTimer(removeLock, vote.kick.locktime * 1000, 1, sourceUserName, "kick")
+                if vote.kick.locktime >= 0.05 then
+                    vote.kick.blockedPlayers[sourceUserName] = true
+                    setTimer(removeLock, vote.kick.locktime * 1000, 1, sourceUserName, "kick")
+                end
 			end
 		else
 			if voteKickReturnCode == errorCode.pollAlreadyRunning then
@@ -222,14 +226,16 @@ function vote.ban.handler(source,cmd,playername,...)
 		if #reason == 0 then
 			reason = nil
 		end
-		local voteBanStarted, voteBanReturnCode = voteBan(getPlayerFromNick(playername or ""),reason)
+		local voteBanStarted, voteBanReturnCode = voteBan(getPlayerFromName(playername or ""),reason)
 		if voteBanStarted then
 			outputVoteManager("Voteban started by "..getPlayerName(source)..".")
 			
 			if source ~= serverConsole then
 				triggerClientEvent(source,"doSendVote",rootElement,1)
-				vote.ban.blockedPlayers[sourceUserName] = true
-				setTimer(removeLock, vote.ban.locktime * 1000, 1, sourceUserName, "ban")
+                if vote.ban.locktime >= 0.05 then
+                    vote.ban.blockedPlayers[sourceUserName] = true
+                    setTimer(removeLock, vote.ban.locktime * 1000, 1, sourceUserName, "ban")
+                end
 			end
 		else
 			if voteBanReturnCode == errorCode.pollAlreadyRunning then
@@ -259,12 +265,14 @@ function vote.kill.handler(source,cmd,playername,...)
 		if #reason == 0 then
 			reason = nil
 		end
-		local voteKillStarted, voteKillReturnCode = voteKill(getPlayerFromNick(playername or ""),reason)
+		local voteKillStarted, voteKillReturnCode = voteKill(getPlayerFromName(playername or ""),reason)
 		if voteKillStarted then
 			outputVoteManager("Votekill started by "..getPlayerName(source)..".")
 			triggerClientEvent(source,"doSendVote",rootElement,1)
-			vote.kill.blockedPlayers[sourceUserName] = true
-			setTimer(removeLock, vote.kill.locktime * 1000, 1, sourceUserName, "kill")
+            if vote.kill.locktime >= 0.05 then
+                vote.kill.blockedPlayers[sourceUserName] = true
+                setTimer(removeLock, vote.kill.locktime * 1000, 1, sourceUserName, "kill")
+            end
 		else
 			if voteKillReturnCode == errorCode.pollAlreadyRunning then
 				outputVoteManager(cmd..": another poll is in progress.", source)
@@ -310,7 +318,7 @@ function voteMap(resource1, resource2)
 				timeout = vote.map.timeout,
 				allowchange = vote.map.allowchange;
 				[1]={"Yes",call,mapmanagerResource,"changeGamemodeMap",map,gamemode},
-				[2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.." on map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
+				[2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."' on map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
 			}), true
 		else
 			return false, errorCode.mapIsntCompatible
@@ -575,7 +583,29 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 			table.remove(compatibleMaps, math.random(1, #compatibleMaps))
 		until #compatibleMaps == 8
 	elseif #compatibleMaps < 2 then
-		return false, errorCode.onlyOneCompatibleMap
+        local gamemodeName = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
+        if #compatibleMaps == 1 then
+            local mapName = getResourceInfo(compatibleMaps[1], "name") or getResourceName(compatibleMaps[1])
+            return (startPoll{
+                title = "Change mode to "..gamemodeName.." on map "..mapName.."?",
+                percentage = vote.map.percentage,
+                visibleTo = rootElement,
+                timeout = vote.map.timeout,
+                allowchange = vote.map.allowchange;
+                [1]={"Yes",call,mapmanagerResource,"changeGamemodeMap",compatibleMaps[1],gamemode},
+                [2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."' on map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
+            }), true
+        elseif #compatibleMaps < 1 then
+            return (startPoll{
+                title = "Change mode to "..gamemodeName.."?",
+                percentage = vote.map.percentage,
+                visibleTo = rootElement,
+                timeout = vote.map.timeout,
+                allowchange = vote.map.allowchange;
+                [1]={"Yes",call,mapmanagerResource,"changeGamemode",gamemode},
+                [2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."'.",rootElement,vR,vG,vB;default=true},
+            }), true
+        end
 	end
 	
 	local poll = {
