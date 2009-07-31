@@ -14,7 +14,6 @@ errorCode = {
 	invalidPlayer = 31,
 	twoMapsNeeded = 32,
 	noGamemodeRunning = 33,
-	onlyOneCompatibleMap = 34,
-	mapIsntCompatible = 35,
-	twoModesNeeded = 36,
+	mapIsntCompatible = 34,
+	twoModesNeeded = 35,
 }

@@ -330,7 +330,12 @@ addEventHandler("onClientSendVote", rootElement,
 		if voteID == -1 and not previousVote then
 			return
 		end
-
+        
+        --check if player wants to change to his previous vote
+        if previousVote and voteID == previousVote then
+			return
+		end
+        
 		--check if he just wants to cancel his vote
 		if voteID == -1 and previousVote then
 			if not activePoll.allowchange then
@@ -339,7 +344,7 @@ addEventHandler("onClientSendVote", rootElement,
 			end
 			
 			if get("log_votes") then
-				outputServerLog(getPlayerName(client).." cancelled his vote, was "..previousVote.." ("..activePoll[previousVote][1])
+				outputServerLog(getPlayerName(client).." cancelled his vote, was "..previousVote.." ("..activePoll[previousVote][1]..")")
 			end
 		
 			activePoll.votedOption[getPlayerUserNameSafe(client)] = nil
@@ -355,7 +360,7 @@ addEventHandler("onClientSendVote", rootElement,
 				return false
 			end
 			if get("log_votes") then
-				outputServerLog(getPlayerName(client).." changed his vote to "..voteID.." ("..activePoll[voteID][1]..") from "..previousVote.." ("..activePoll[previousVote][1])
+				outputServerLog(getPlayerName(client).." changed his vote to "..voteID.." ("..activePoll[voteID][1]..") from "..previousVote.." ("..activePoll[previousVote][1]..")")
 			end
 			activePoll[previousVote].votes = activePoll[previousVote].votes - 1
 			activePoll[voteID].votes = activePoll[voteID].votes + 1

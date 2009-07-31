@@ -94,8 +94,14 @@ addEventHandler("doShowPoll", rootElement,
 		voteIDFromName = {}
 	    for id, name in ipairs(nameFromVoteID) do
 			voteIDFromName[name] = id
+            width = dxGetTextWidth("1. "..name) + 20
+            --check if the name width is higher than the current width
+            if layout.window.width < width then
+                --set the curent width to the width of the name
+                layout.window.width = width
+            end
 		end
-		
+        
 		--determine if we have to append nomination number
 		local nominationString = ""
 		if pollData.nomination > 1 then 
@@ -104,13 +110,13 @@ addEventHandler("doShowPoll", rootElement,
 		
 		isChangeAllowed = pollData.allowchange
 
-		layout.window.width = 150 + (pollData.adjustwidth or 0)
         layout.title.width  = layout.window.width
         layout.option.width = layout.window.width
         layout.cancel.width = layout.window.width
         layout.time.width   = layout.window.width
 		
-      local screenX, screenY = guiGetScreenSize()
+        local screenX, screenY = guiGetScreenSize()
+        
 		--create the window
 		voteWindow = guiCreateWindowFromCache (
 						screenX,
@@ -152,7 +158,7 @@ addEventHandler("doShowPoll", rootElement,
 			bindKey("num_"..optionKey, "down", sendVote_bind)
 			
 			table.insert(boundVoteKeys, optionKey)
-		
+            
 			--create the option label
 			optionLabels[index] = guiCreateLabelFromCache(
 						layout.option.posX,
@@ -222,6 +228,9 @@ addEventHandler("doShowPoll", rootElement,
 		guiSetSize(voteWindow, layout.window.width, windowHeight, false)
 		guiSetPosition(voteWindow, screenX - layout.window.width, screenY - windowHeight, false)
 		
+        --set the default value after creating gui
+        layout.window.width = 150
+        
 		isVoteActive = true
 		
 		finishTime = getTickCount() + pollTime
