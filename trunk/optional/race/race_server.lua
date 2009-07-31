@@ -910,6 +910,9 @@ g_NotReadyTimer = nil
 g_NotReadyDisplay = nil
 g_NotReadyTextItems = {}
 g_NotReadyDisplayOnTime = 0
+g_JoinerExtraWait = nil
+g_NotReadyTimeout = nil
+g_NotReadyMaxWait = nil
 
 -- Remove ref if player quits
 addEventHandler('onPlayerQuit', g_Root,
@@ -929,6 +932,7 @@ addEventHandler('onPlayerJoining', g_Root,
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
         g_JoinerExtraWait = getTickCount() + 5000
+		g_NotReadyMaxWait = false
 	end
 )
 
@@ -946,6 +950,10 @@ function setPlayerReady( player )
     g_NotReady[player] = false
     g_NotReadyTimeout = getTickCount() + 20000
     if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 10000 end
+	-- Set max timeout to 30 seconds after first person is ready
+	if not g_NotReadyMaxWait then
+		g_NotReadyMaxWait = getTickCount() + 30000
+	end
 end
 
 function isPlayerNotReady( player )
@@ -965,6 +973,9 @@ function howManyPlayersNotReady()
     end
     if g_NotReadyTimeout and g_NotReadyTimeout < getTickCount() then
         count = 0       -- If the NotReadyTimeout has passed, pretend everyone is ready
+    end
+    if g_NotReadyMaxWait and g_NotReadyMaxWait < getTickCount() then
+        count = 0       -- If the NotReadyMaxWait has passed, pretend everyone is ready
     end
     return count, names
 end
