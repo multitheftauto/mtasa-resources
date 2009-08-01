@@ -24,6 +24,7 @@
 	
 	<export function="edfGetHandle" />				<!--element-->
 	<export function="edfGetParent" />				<!--element-->
+	<export function="edfIsRepresentation" />		<!--element-->
 	<export function="edfGetAncestor" />			<!--element-->
 	<export function="edfGetCreatorResource" />	<!--resource-->
 	<export function="edfSetCreatorResource" /> <!--bool-->

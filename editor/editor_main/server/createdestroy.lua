@@ -64,7 +64,7 @@ addEventHandler ( "doCreateElement", rootElement,
 			outputDebugString ( "Created '"..elementType..":"..tostring(edfElement).."' from '"..resourceName.."'" )
 			setupNewElement(edfElement, creatorResource, client, attachLater, shortcut)
 		else
-			outputDebugString ( "Failed to create '"..elementType.." from '"..resourceName.."'" )
+			outputDebugString ( "Failed to create '"..elementType.."' from '"..resourceName.."'" )
 		end
 	end
 )

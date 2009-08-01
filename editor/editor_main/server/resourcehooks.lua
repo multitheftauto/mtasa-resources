@@ -115,7 +115,7 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 			resourceTable[elementType] = edf.edfGetResourceForElementType(elementType)
 		end
 
-		if resourceTable[elementType] then
+		if resourceTable[elementType] and not edf.edfIsRepresentation(element) then
 			local fromResource = resourceTable[elementType]
 			local edfElements = loadedEDF[fromResource].elements
 			local elementID = getElementID(element)

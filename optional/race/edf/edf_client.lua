@@ -1,15 +1,19 @@
-g_ModelForPickupType = { nitro = 783, repair = 784, vehiclechange = 785 }
+g_ModelForPickupType = { nitro = 1337, repair = 1338, vehiclechange = 1339 }
 models = {}
-outputChatBox "ITS ALIVE :D"
+outputChatBox "ITS ALIVE (client) :D"
+
+startTick = getTickCount()
 
 function onStart() --Callback triggered by edf
 	outputChatBox "REPLACING"
 	for name,id in pairs(g_ModelForPickupType) do
-		models[name] = { txd = engineLoadTXD(':race/model/' .. name .. '.txd'), dff = engineLoadDFF(':race/model/' .. name .. '.dff', id) }
+		models[name] = {}
+		models[name].txd = engineLoadTXD(':race/model/' .. name .. '.txd')
 		engineImportTXD(models[name].txd, id)
+		
+		models[name].dff = engineLoadDFF(':race/model/' .. name .. '.dff', id)
 		engineReplaceModel(models[name].dff, id)
 	end
-	startTick = getTickCount()
 end
 
 function onStop()
@@ -26,7 +30,7 @@ addEventHandler ( "onClientElementPropertyChanged", root,
 			local pickupType = exports.edf:edfGetElementProperty ( source, "type" )
 			local object = getRepresentation(source)
 			if object then
-				setElementModel ( object, g_ModelForPickupType[pickupType] or 784 )
+				setElementModel ( object, g_ModelForPickupType[pickupType] or 1337 )
 			end
 		elseif getElementType(source) == "checkpoint" and propertyName == "nextid" then
 			local nextID = exports.edf:edfGetElementProperty ( source, "nextid" )
