@@ -359,6 +359,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	
 	-- quit if that resource doesn't have a representation for it
 	if not elementDefinition then
+		outputDebugString('No definition for ' .. elementType)
 		return false
 	end
 	
@@ -380,6 +381,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	for dataField, dataDefinition in pairs(elementDefinition.data) do
 		local checkedData = edfCheckElementData(theElement, dataField, dataDefinition)
 		if checkedData == nil then
+			outputDebugString('Failed validation for ' .. elementType .. '!' .. dataField)
 			return false
 		end
 		
@@ -719,6 +721,11 @@ end
 --Returns a custom element's invisible handle
 function edfGetHandle( edfElement )
 	return getElementData(edfElement, "edf:handle") or false
+end
+
+--Returns whether or not an element is part of an edf element's representation
+function edfIsRepresentation( elem )
+	return getElementData(elem, "edf:rep")
 end
 
 --Returns an element's EDF parent

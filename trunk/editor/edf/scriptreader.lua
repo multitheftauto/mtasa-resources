@@ -38,7 +38,7 @@ function readScripts ( server, client, resource )
 end
 
 function getScript ( path, resource )
-	local script = fileOpen(path, true, resource) 
+	local script = fileOpen(":" .. getResourceName(resource) .. "/" .. path, true) 
 	if not script then return false end
 	local scriptString = ""
     while not fileIsEOF(script) do
@@ -46,7 +46,7 @@ function getScript ( path, resource )
     end
     fileClose(script) 
 	--Attempt to load this script
-	local loadFunction, errorMsg = loadstring ( scriptString )
+	local loadFunction, errorMsg = loadstring ( scriptString, path )
 	if errorMsg then
 		outputDebugString ( "Error: "..getResourceName(resource).."/"..path..": "..errorMsg )
 		return false
