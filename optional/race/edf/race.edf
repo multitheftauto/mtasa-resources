@@ -14,7 +14,7 @@
 	</element>
 	<element name="checkpoint" friendlyname="Checkpoint" icon="edf/checkpoint.png">
 		<data name="position" type="coord3d" default="0,0,0" />
-		<data name="type" type="selection:checkpoint,ring" default="checkpoint" />
+		<data name="type" type="selection:checkpoint,ring,corona" default="checkpoint" />
 		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
 		<data name="size" type="number" description="marker size" default="2.25" />
 		<data name="nextid" type="element:checkpoint" description="The next checkpoint after this one" required="false" default="" />
@@ -22,7 +22,7 @@
 		<!-- <data name="vehicle" type="vehicleID" required="false" /> -->
 		<marker color="!color!" type="!type!" size="!size!"/>
 	</element>
-	<element name="racepickup" friendlyname="Race Pickup" icon="edf/pickup.png">
+	<element name="racepickup" friendlyname="Race pickup" icon="edf/pickup.png">
 		<data name="position" type="coord3d" default="0,0,0" />
 		<data name="type" type="selection:nitro,repair,vehiclechange" description="The type of pickup.  Can repair the vehicle, add a Nitro, or change the player's vehicle" default="nitro" />
 		

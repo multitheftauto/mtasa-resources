@@ -13,10 +13,14 @@ addEventHandler ( "onMapOpened", root,
 			local marker = getRepresentation(checkpoint, "marker")
 			local nextID = exports.edf:edfGetElementProperty ( checkpoint, "nextid" )
 			if nextID then
-				setMarkerIcon ( marker, "arrow" )
+				if getMarkerType(marker) == "checkpoint" then
+					setMarkerIcon ( marker, "arrow" )
+				end
 				setMarkerTarget ( marker, exports.edf:edfGetElementPosition(nextID) )
 			else
-				setMarkerIcon ( marker, "finish" )
+				if getMarkerType(marker) == "checkpoint" then
+					setMarkerIcon ( marker, "finish" )
+				end
 			end
 		end
 	end
@@ -41,20 +45,24 @@ addEventHandler ( "onElementCreate", root,
 addEventHandler ( "onElementPropertyChanged", root,
 	function ( propertyName )
 		if getElementType(source) == "racepickup" and propertyName == "type" then
-			local pickupType = exports.edf:edfGetElementProperty ( source, propertyName )
+			local pickupType = exports.edf:edfGetElementProperty ( source, "type" )
 			local object = getRepresentation(source, "object")
 			if object then
 				setElementModel ( object, g_ModelForPickupType[pickupType] or 1337 )
 			end
 		elseif getElementType(source) == "checkpoint" then
-			if propertyName == "nextid" then
-				local nextID = exports.edf:edfGetElementProperty ( source, propertyName )
+			if propertyName == "nextid" or propertyName == "type" then
+				local nextID = exports.edf:edfGetElementProperty ( source, "nextid" )
 				local marker = getRepresentation(source,"marker")
 				if nextID then
-					setMarkerIcon ( marker, "arrow" )
+					if getMarkerType(marker) == "checkpoint" then
+						setMarkerIcon ( marker, "arrow" )
+					end
 					setMarkerTarget ( marker, exports.edf:edfGetElementPosition(nextID) )
 				else
-					setMarkerIcon ( marker, "finish" )
+					if getMarkerType(marker) == "checkpoint" then
+						setMarkerIcon ( marker, "finish" )
+					end
 				end
 			elseif propertyName == "position" then
 				--If this checkpoint is the nextid of any other checkpoints
