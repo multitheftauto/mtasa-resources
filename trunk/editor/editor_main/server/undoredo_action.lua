@@ -130,7 +130,6 @@ end
 function ActionCreate:destructor()
 	if (self.element and isElement(self.element)) then
 		destroyElement(self.element)
-		elementProperties[self.element] = nil
 		return true
 	else
 		outputDebugString("Cannot destroy element: element does not exist or invalid element")
@@ -192,9 +191,6 @@ function ActionDestroy:setElement(element)
 		if self.references then
 			for refElement,property in pairs(self.references) do
 				edf.edfSetElementProperty(refElement, property, nil)
-			
-				elementProperties[refElement] = elementProperties[refElement] or getMapElementData(refElement)
-				elementProperties[refElement][property] = value
 			end
 		end
 
@@ -217,9 +213,6 @@ function ActionDestroy:performUndo()
 		if self.references then
 			for refElement,property in pairs(self.references) do
 				edf.edfSetElementProperty(refElement, property, self.element)
-			
-				elementProperties[refElement] = elementProperties[refElement] or getMapElementData(refElement)
-				elementProperties[refElement][property] = self.element
 			end
 		end
 	else
@@ -241,9 +234,6 @@ function ActionDestroy:performRedo()
 		if self.references then
 			for refElement,property in pairs(self.references) do
 				edf.edfSetElementProperty(refElement, property, nil)
-			
-				elementProperties[refElement] = elementProperties[refElement] or getMapElementData(refElement)
-				elementProperties[refElement][property] = nil
 			end
 		end
 	else
@@ -256,7 +246,6 @@ function ActionDestroy:destructor()
 	if (self.element and isElement(self.element)) then
 		if (edf.edfGetElementDimension(self.element) == DESTROYED_ELEMENT_DIMENSION) then
 			destroyElement(self.element)
-			elementProperties[self.element] = nil
 		end
 		return true
 	else

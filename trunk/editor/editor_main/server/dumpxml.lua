@@ -61,9 +61,7 @@ function dumpNodes ( xml, elementTable, elementChildren )
 		--add an ID attribute first off
 		xmlNodeSetAttribute(elementNode, "id", getElementID(element))
 		-- dump properties to attributes
-		--if editor properties were not found, use the attributes from the .map
-		elementProperties[element] = elementProperties[element] or getMapElementData(element)
-		for dataName, dataValue in orderedPairs(elementProperties[element]) do
+		for dataName, dataValue in orderedPairs(getMapElementData(element)) do
 			if dataName == "position" then
 				xmlNodeSetAttribute(elementNode, "posX", toAttribute(dataValue[1]))
 				xmlNodeSetAttribute(elementNode, "posY", toAttribute(dataValue[2]))
@@ -72,7 +70,7 @@ function dumpNodes ( xml, elementTable, elementChildren )
 				xmlNodeSetAttribute(elementNode, "rotX", toAttribute(dataValue[1]))
 				xmlNodeSetAttribute(elementNode, "rotY", toAttribute(dataValue[2]))
 				xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(dataValue[3]))
-			else
+			elseif dataName ~= "dimension" or dataValue ~= getWorkingDimension() then
 				xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
 			end
 		end

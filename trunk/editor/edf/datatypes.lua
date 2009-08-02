@@ -64,6 +64,9 @@ c.element = function(ID, elementType)
 	if type(ID) ~= "string" then
 		return nil
 	end
+	if type(elementType) == "table" then
+		elementType = elementType[1]
+	end
 	local theElement = getElementByID(ID)
 	if theElement then
 		if elementType then

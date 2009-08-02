@@ -143,14 +143,6 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 			recursiveDimensionSet(editorElement, getWorkingDimension())
 			makeElementStatic(editorElement)
 
-			elementProperties[editorElement] = {}
-			for dataField, dataDefinition in pairs(edfElements[elementType].data) do
-				elementProperties[editorElement][dataField] = edf.edfGetElementProperty(editorElement, dataField) or nil
-			end
-			elementProperties[editorElement].position = creationParameters.position
-			elementProperties[editorElement].rotation = creationParameters.rotation
-			elementProperties[editorElement].interior = creationParameters.interior
-			elementProperties[editorElement].dimension = elementDimension
 			setElementData(editorElement, "me:dimension", elementDimension)
 
 			flattenTree ( element, newParent, editorElement, resourceTable )
