@@ -24,7 +24,7 @@
 	</element>
 	<element name="racepickup" friendlyname="Race Pickup" icon="edf/pickup.png">
 		<data name="position" type="coord3d" default="0,0,0" />
-		<data name="type" type="selection:repair,nitro,vehiclechange" description="The type of pickup.  Can repair the vehicle, add a Nitro, or change the player's vehicle" default="nitro" />
+		<data name="type" type="selection:nitro,repair,vehiclechange" description="The type of pickup.  Can repair the vehicle, add a Nitro, or change the player's vehicle" default="nitro" />
 		
 		<data name="vehicle" type="vehicleID" default="522" description="The vehicle model, if a vehiclechange pickup" required="false" />
 		<object model="1337" position="0,0,0"/>

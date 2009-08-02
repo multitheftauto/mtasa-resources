@@ -28,7 +28,7 @@ addEventHandler ( "onElementCreate", root,
 		if getElementType(source) == "checkpoint" then
 			--Find the first element without a nextid
 			for i,checkpoint in ipairs(getElementsByType"checkpoint") do
-				if not exports.edf:edfGetElementProperty ( checkpoint, "nextid" ) then
+				if checkpoint ~= source and not exports.edf:edfGetElementProperty ( checkpoint, "nextid" ) then
 					exports.edf:edfSetElementProperty ( checkpoint, "nextid", source )
 					break
 				end

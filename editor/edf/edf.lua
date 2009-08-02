@@ -816,47 +816,68 @@ end
 
 --Sets an element's position, or its posX/Y/Z element data
 function edfSetElementPosition(element, px, py, pz)
+	local ancestor = edfGetAncestor(element) or element
+	setElementData(ancestor, "position", {x, y, z})
 	if isBasic[getElementType(element)] then
 		if setElementPosition(element, px, py, pz) then
-			triggerEvent ( "onElementPropertyChanged", element, "position" )
+			triggerEvent ( "onElementPropertyChanged", ancestor, "position" )
 			return true
 		end
 	else
 		local handle = edfGetHandle(element)
 		if handle then
 			if setElementPosition(handle, px, py, pz) then
-				triggerEvent ( "onElementPropertyChanged", element, "position" )
+				triggerEvent ( "onElementPropertyChanged", ancestor, "position" )
+				return true
 			end
 		else
 			setElementData(element, "posX", px or 0)
 			setElementData(element, "posY", py or 0)
 			setElementData(element, "posZ", pz or 0)
-			triggerEvent ( "onElementPropertyChanged", element, "position" )
+			triggerEvent ( "onElementPropertyChanged", ancestor, "position" )
 			return true
 		end
 	end
+	return false
 end
 
 --Sets an element's rotation, or its rotX/Y/Z element data
 function edfSetElementRotation(element, rx, ry, rz)
+	local ancestor = edfGetAncestor(element) or element
+	setElementData(ancestor, "rotation", {rx, ry, rz})
+	
 	local etype = getElementType(element)
 	if etype == "object" then
-		return setObjectRotation(element, rx, ry, rz)
+		if setObjectRotation(element, rx, ry, rz) then
+			triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
+			return true
+		end
 	elseif etype == "vehicle" then
-		return setVehicleRotation(element, rx, ry, rz)
+		if setVehicleRotation(element, rx, ry, rz) then
+			triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
+			return true
+		end
 	elseif etype == "player" or etype == "ped" then
-		return setPedRotation(element, rz)
+		if setPedRotation(element, rz) then
+			triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
+			return true
+		end
 	else
 		local handle = edfGetHandle(element)
 		if handle then
-			return setObjectRotation(handle, rx, ry, rz)
+			if setObjectRotation(handle, rx, ry, rz) then
+				triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
+				return true
+			end
 		else
 			setElementData(element, "rotX", rx or 0)
 			setElementData(element, "rotY", ry or 0)
 			setElementData(element, "rotZ", rz or 0)
+			triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
 			return true
 		end
 	end
+	return false
 end
 
 function edfGetElementInterior(element)
