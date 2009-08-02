@@ -65,6 +65,10 @@
 	<file src="model/vehiclechange.dff"/>
 	<file src="model/vehiclechange.txd"/>
 	
+	<file src="edf/checkpoint.png"/>
+	<file src="edf/pickup.png"/>
+	<file src="edf/spawnpoint.png"/>
+	
 	<export function="getTimePassed" type="server"/>
 	<export function="getPlayerRank" type="server"/>
 	<export function="isPlayerFinished" type="server"/>
