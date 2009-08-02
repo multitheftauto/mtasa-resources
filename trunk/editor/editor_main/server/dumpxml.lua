@@ -22,7 +22,7 @@ function dumpMap ( xml, save, baseElement )
 
 	for i, element in ipairs(getElementChildren(baseElement)) do  --Find parents to start with
 		--ignore representations and destroyed elements
-		if edf.edfGetParent(element) == element and getElementDimension(element) ~= DESTROYED_ELEMENT_DIMENSION then
+		if not edf.edfIsRepresentation(element) and getElementDimension(element) ~= DESTROYED_ELEMENT_DIMENSION then
 			local parent = getElementData ( element, "me:parent" )
 			if not parent or getElementType(parent) == "map" then
 				table.insert ( rootElements, element )

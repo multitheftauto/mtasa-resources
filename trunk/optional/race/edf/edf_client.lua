@@ -28,7 +28,7 @@ addEventHandler ( "onClientElementPropertyChanged", root,
 	function ( propertyName )
 		if getElementType(source) == "racepickup" and propertyName == "type" then
 			local pickupType = exports.edf:edfGetElementProperty ( source, "type" )
-			local object = getRepresentation(source)
+			local object = getRepresentation(source,"object")
 			if object then
 				setElementModel ( object, g_ModelForPickupType[pickupType] or 1337 )
 			end
