@@ -33,16 +33,6 @@ function setupNewElement(element, creatorResource, creatorClient, attachLater,sh
 	end
 	justCreated[element] = true --mark it so undoredo ignores first placement
 	
-	--store initial properties
-	elementProperties[element] = {}
-	for dataField in pairs(loadedEDF[creatorResource].elements[getElementType(element)].data) do
-		if specialSyncers[dataField] then
-			elementProperties[element][dataField] = specialSyncers[dataField](element)
-		else
-			elementProperties[element][dataField] = edf.edfGetElementProperty(element, dataField) or nil
-		end
-	end
-	
 	triggerEvent("onElementCreate", element)
 	triggerClientEvent(rootElement, "onClientElementCreate", element)
 end
@@ -50,7 +40,6 @@ end
 addEventHandler ( "doCreateElement", rootElement,
 	function ( elementType, resourceName, parameters, attachLater, shortcut )
 		parameters = parameters or {}
-		parameters.glued = true
 		
 		local creatorResource = getResourceFromName( resourceName )
 		local edfElement = edf.edfCreateElement (

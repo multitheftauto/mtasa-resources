@@ -817,7 +817,7 @@ end
 --Sets an element's position, or its posX/Y/Z element data
 function edfSetElementPosition(element, px, py, pz)
 	local ancestor = edfGetAncestor(element) or element
-	setElementData(ancestor, "position", {x, y, z})
+	setElementData(ancestor, "position", {px, py, pz})
 	if isBasic[getElementType(element)] then
 		if setElementPosition(element, px, py, pz) then
 			triggerEvent ( "onElementPropertyChanged", ancestor, "position" )
@@ -1194,14 +1194,11 @@ function edfAddSettingNodeData(node, resource)
 	if defaultAttribute then
 		local dataType = settingDefinition.datatype
 		local token = gettok ( settingDefinition.datatype,1,58 )
-		local token2 = gettok ( settingDefinition.datatype,2,58 ) or token
+		local token2 = gettok ( settingDefinition.datatype,2,58 )
 		local validvalues
-		if token == "element" then
+		if token2 then
 			dataType = token
-			validvalues = split(token2,44)
-		elseif token == "selection" then
-			dataType = token
-			validvalues = split(token2,44)
+			validvalues = split(token2, 44)
 		end
 		settingDefinition.default = convert[dataType](defaultAttribute,validvalues)
 	else
@@ -1277,10 +1274,7 @@ end
 function edfCheckElementData(theElement, dataField, dataDefinition)
 	local theData = getElementData(theElement, dataField)
 
-	if dataField == 'position' 
-		or dataField == 'rotation' 
-		or gettok ( dataDefinition.datatype,1,58 ) == "element"
-		or gettok ( dataDefinition.datatype,1,58 ) == "selection" then
+	if dataField == 'position' or dataField == 'rotation' then
 		-- Position and rotation are not single strings with a special format that needs checking
 		return false
 	elseif not theData then
@@ -1294,7 +1288,7 @@ function edfCheckElementData(theElement, dataField, dataDefinition)
 			correctType = "string"
 		end
 		
-		local convertedValue = convert[correctType](theData)
+		local convertedValue = convert[correctType](theData, dataDefinition.validvalues)
 		
 		-- if the attribute has an invalid type,
 		if convertedValue == nil then
@@ -1308,20 +1302,14 @@ function edfCheckElementData(theElement, dataField, dataDefinition)
 		end
 	end
 
-	-- if there is still no data (because it wasnt set and there was no default)
-	if not theData then  --Make an exception for booleans
-		if ( ( dataDefinition.datatype ~= "boolean" )  and ( theData ~= nil ) ) then --If its not a boolean&nil
-			-- prepare a warning message
-			local errstring = "Attribute '"..dataField.."' missing in element '"..getElementType(theElement).."'."
-			-- if the attribute is required,
-			if dataDefinition.required then
-				--then it is an error and we have to stop here
-				outputDebugString(errstring,1)
-				return nil
-			else
-				--else, just warn about it
-				outputDebugString(errstring,2)
-			end
+	-- if there is still no data (because it wasnt set and there was no default)...
+	if theData == nil then
+		if dataDefinition.required then
+			--...and the data is required, then it is an error and we have to stop here
+			outputDebugString("Attribute '"..dataField.."' missing in element '"..getElementType(theElement).."'.", 1)
+			return nil
+		else
+			return false
 		end
 	end
 	

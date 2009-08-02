@@ -1,23 +1,22 @@
 g_ModelForPickupType = { nitro = 1337, repair = 1338, vehiclechange = 1339 }
-outputChatBox "ITS ALIVE (server) :D"
 
 addEventHandler ( "onMapOpened", root,
 	function()
 		for i,pickup in ipairs(getElementsByType"racepickup") do
-			local pickupType = exports.edf:edfGetElementProperty ( source, "type" )
-			local object = getRepresentation(source, "object")
+			local pickupType = exports.edf:edfGetElementProperty ( pickup, "type" )
+			local object = getRepresentation(pickup, "object")
 			if object then
 				setElementModel ( object, g_ModelForPickupType[pickupType] or 1337 )
 			end		
 		end
 		for i,checkpoint in ipairs(getElementsByType"checkpoint") do
-			local nextID = exports.edfGetElementProperty ( source, "nextid" )
+			local marker = getRepresentation(checkpoint, "marker")
+			local nextID = exports.edf:edfGetElementProperty ( checkpoint, "nextid" )
 			if nextID then
-				local elem = getElementByID ( nextID )
-				if elem then
-					local marker = getRepresentation(elem,"marker")
-					setMarkerTarget ( marker, exports.edf:edfGetElementPosition(elem) )
-				end
+				setMarkerIcon ( marker, "arrow" )
+				setMarkerTarget ( marker, exports.edf:edfGetElementPosition(nextID) )
+			else
+				setMarkerIcon ( marker, "finish" )
 			end
 		end
 	end

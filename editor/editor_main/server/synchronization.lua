@@ -1,10 +1,6 @@
-elementProperties = {}
-
 local function syncElementPosition(element, value)
 	local x, y, z = unpack(value)
 	edf.edfSetElementPosition(element, x, y, z)
-	elementProperties[element] = elementProperties[element] or getMapElementData(element)
-	elementProperties[element].position = {x, y, z}
 end
 
 local function syncElementRotation(element, value)
@@ -15,20 +11,14 @@ local function syncElementRotation(element, value)
 		rx, ry, rz = unpack(value)
 	end
 	edf.edfSetElementRotation(element, rx, ry, rz)
-	elementProperties[element] = elementProperties[element] or getMapElementData(element)
-	elementProperties[element].rotation = {rx, ry, rz}
 end
 
 local function syncElementDimension(element, dim)
-	elementProperties[element] = elementProperties[element] or getMapElementData(element)
-	elementProperties[element].dimension = dim
 	setElementData(element, "me:dimension", dim)
 end
 
 local function syncElementInterior(element, int)
 	edf.edfSetElementInterior(element, int)
-	elementProperties[element] = elementProperties[element] or getMapElementData(element)
-	elementProperties[element].interior = int
 end
 
 local function syncParent(element, parent)
@@ -66,9 +56,6 @@ local function commonSyncer(element, property, value)
 		end
 	end
 	edf.edfSetElementProperty(element, property, value)
-	
-	elementProperties[element] = elementProperties[element] or getMapElementData(element)
-	elementProperties[element][property] = value
 	
 	if getElementData(element, "me:autoID") then
 		--force a reassign. blank the ID first to avoid ID number changing

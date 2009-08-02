@@ -10,6 +10,8 @@ local fileTypes = { "script","map","file","config","html" }
 local specialFileTypes = { "script","file","config","html" }
 
 loadedMap = false
+addEvent ( "onNewMap" )
+addEvent ( "onMapOpened" )
 addEvent ( "openResource", true )
 addEvent ( "saveResource", true )
 addEvent ( "testResource", true )
@@ -44,6 +46,7 @@ addEventHandler("newResource", rootElement,
 		destroyElement(root)
 		passDefaultMapSettings()
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
+		triggerEvent("onNewMap", thisResourceRoot)
 	end
 )
 
@@ -56,7 +59,6 @@ addEventHandler ( "openResource", rootElement,
 		if ( map ) then
 			--
 			destroyElement(root)
-			elementProperties = {}
 			local maps = getResourceFiles ( map, "map" )
 			for key,mapPath in ipairs(maps) do
 				local mapNode = xmlLoadFile ( ':' .. getResourceName(map) .. '/' .. mapPath )
@@ -92,6 +94,7 @@ addEventHandler ( "openResource", rootElement,
 			passNewMapSettings()
 			returnValue = true
 			editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
+			triggerEvent("onMapOpened", thisResourceRoot, map)
 		else
 			returnValue = false
 		end

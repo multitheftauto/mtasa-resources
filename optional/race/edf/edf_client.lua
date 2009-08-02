@@ -1,11 +1,9 @@
 g_ModelForPickupType = { nitro = 1337, repair = 1338, vehiclechange = 1339 }
 models = {}
-outputChatBox "ITS ALIVE (client) :D"
 
 startTick = getTickCount()
 
 function onStart() --Callback triggered by edf
-	outputChatBox "REPLACING"
 	for name,id in pairs(g_ModelForPickupType) do
 		models[name] = {}
 		models[name].txd = engineLoadTXD(':race/model/' .. name .. '.txd')
@@ -17,7 +15,6 @@ function onStart() --Callback triggered by edf
 end
 
 function onStop()
-	outputChatBox "UNLOADING"
 	for name,id in pairs(g_ModelForPickupType) do
 		destroyElement ( models[name].txd )
 		destroyElement ( models[name].dff )
