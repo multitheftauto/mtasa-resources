@@ -1,0 +1,5 @@
+<meta>
+	<info author="norby89 and driver2" type="map" gamemodes="assault"/>
+	<map src="Cliff Mayhem.map"/>
+	<script src="as-cliff.lua" type="server"/>
+</meta>
