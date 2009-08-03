@@ -61,8 +61,8 @@
 
   <!--beach-->
 	<spawngroup type="attacker" req="">
-		<spawnarea posX="1955.6616210938" posY="-275.64169311523" posZ="10.982377052307" skins="287" weapons="4,1;23,50;29,300;18,5" />
-		<spawnarea posX="1935.0413818359" posY="-268.59426879883" posZ="5.8361692428589" skins="287" weapons="4,1;23,50;29,300;18,5" />
+		<spawnarea posX="1955.0000000000" posY="-245.00000000000" posZ="-0.500000000000" skins="287" weapons="4,1;23,50;29,300;18,5" />
+		<spawnarea posX="2007.0000000000" posY="-237.00000000000" posZ="-0.500000000000" skins="287" weapons="4,1;23,50;29,300;18,5" />
 	</spawngroup>
 	
   <!-- cliff-->
