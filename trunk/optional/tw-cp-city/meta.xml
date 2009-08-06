@@ -1,6 +1,0 @@
-<meta>
-	<info author="MACK" version="0.1.0" type="map" gamemodes="teamwars" />
-	<map src="tw_cp-city.map" />
-	<include resource="scoreboard" />
-	<include resource="tw_default" description="Requires the default Team Wars classes." />
-</meta>
