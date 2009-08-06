@@ -1,10 +1,10 @@
 <meta>
-	<info author="Talidan" version="1.0.0" description="Utility script to handle mission timers for scripts" />
+	<info author="Talidan" version="1.0.0" description="Utility resource to handle teams" />
 	<script src="main.lua" type="server" />
 	<script src="main_client.lua" type="client" />
 	<script src="drawdefinitions.lua" type="client" />
 	<script src="draw.lua" type="client" />
-	<script src="crun.client.lua" type="client" />
+	<!--<script src="crun.client.lua" type="client" /> -->
 
 	<file src="images/backdrop.png" />
 	<file src="images/team.png" />

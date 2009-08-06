@@ -47,7 +47,7 @@ function processSpawnStart()
 end
 
 function processPlayerSpawn ( player )
-	player = player or source
+	player = (isElement(player) and getElementType(player) == "player") and player or source
 	if not getElementData ( player, "Score" ) then
 		setElementData ( player, "Score", 0 )
 	end
