@@ -88,6 +88,7 @@ function onGamemodeMapStop_brmain(resource)
 	runningMap = false
 	teams = {}
 	settings =	{	limit = 1000, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, onfootonly = false, teamskins = {},
+					varteams = false, varteamsmaxplayers = 6,
 					weapons = {[1] = 1, [22] = 200, [17] = 4, [29] = 250},
 					cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70}
 				}
@@ -186,6 +187,9 @@ function destroyVarTeam(team)
 end
 
 function onPlayerJoin_varTeams()
+	if (not settings.varteams) then
+		return
+	end
 	local totalPlayers = #getElementsByType("player")
 	local totalTeams = #teams
 	local capacity = totalTeams * settings.varteamsmaxplayers
@@ -193,9 +197,13 @@ function onPlayerJoin_varTeams()
 		createVarTeam()
 	end
 end
+addEventHandler("onPlayerJoin", root, onPlayerJoin_varTeams)
 
 -- gets rid of one team max, ideally would get rid of more if necessary, but whatever...
 function onPlayerQuit_varTeams()
+	if (not settings.varteams) then
+		return
+	end
 	local canDestroyTeam = false
 	-- see if we can afford to get rid of another team
 	if (#teams > 2) then
@@ -220,6 +228,7 @@ function onPlayerQuit_varTeams()
 		end
 	end
 end
+addEventHandler("onPlayerQuit", root, onPlayerQuit_varTeams)
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TEAM/PLAYER FUNCTIONS --
