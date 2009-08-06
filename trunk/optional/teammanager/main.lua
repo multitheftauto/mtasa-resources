@@ -39,9 +39,9 @@ setTimer ( updateSettings, 30000, 0 )
 
 addEvent ("rpc_playerTeamSwitch",true)
 addEventHandler ( "rpc_playerTeamSwitch", root,
-	function ( team )
+	function ( team, scriptRequested )
 		local prevTeam = getPlayerTeam ( client )
-		if triggerEvent ( "onPlayerTeamSwitch", client, prevTeam, team, "manual" ) then
+		if triggerEvent ( "onPlayerTeamSwitch", client, prevTeam, team, scriptRequested and "script" or "manual" ) then
 			setPlayerTeam ( client, team )
 		end
 	end

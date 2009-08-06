@@ -1,5 +1,7 @@
 local definition,teamsTable
 local xAbsOffset = 0
+local scriptRequestedMenu
+
 if screenY*presetSpawnScreen.aspect < screenX then --Widescreen
 	xAbsOffset = (screenX - screenY*presetSpawnScreen.aspect)/2
 	screenX = screenY*presetSpawnScreen.aspect
@@ -93,7 +95,7 @@ function presetClicked()
 	if highlighter then
 		playSoundFrontEnd ( 1 )
 		if  highlighter == getPlayerTeam(localPlayer) or
-			triggerServerEvent ( "rpc_playerTeamSwitch", localPlayer, highlighter ) then
+			triggerServerEvent ( "rpc_playerTeamSwitch", localPlayer, highlighter, scriptRequestedMenu ) then
 			
 			removeEventHandler ( "onClientRender", root, drawPresetMenu )
 			removeEventHandler ( "onClientRender", root, drawInfo )
@@ -119,7 +121,8 @@ function guiClicked()
 	end
 end
 
-function drawMenu ( teams, gamemodeName )
+function drawMenu ( teams, gamemodeName, scriptEnforced )
+	scriptRequestedMenu = scriptEnforced
 	if menuShowing then return end
 	drawGamemodeName = gamemodeName or ""
 	--Work out how many teams we've got

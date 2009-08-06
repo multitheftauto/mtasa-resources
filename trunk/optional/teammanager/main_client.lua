@@ -13,7 +13,7 @@ function handlePlayer (teams,gamemodeName)
 		teamsTable = teams
 	end
 	bindKey ( ".", "down", "changeteam", "" )
-	return drawMenu ( teamsTable, gamemodeName )
+	return drawMenu ( teamsTable, gamemodeName, true )
 end
 
 addEvent ( "rpc_handlePlayer", true )
