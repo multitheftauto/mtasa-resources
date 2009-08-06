@@ -1,15 +1,18 @@
 --TO DO
--- do player blips work? make them color-coded to team?
--- bike grav too low.. they can drop at hard-to-reach places, need better way of crippling bikes
--- some garage cols are bad, gonna need to get the sizes of those myself
--- dead guys sometimes get briefcase? (maybe when they spawn they hit it if it was at theit death location).. need testing --> one solution, make it not hittable for a few secs after spawn
+-- make variable teams option.. teams are auto-generated as player count increases. 6 players per team? what skins do they use? (done, needs testing)
+-- maybe carrier vehicle 'gravity' is too low, needs testing (needs testing)
+-- maybe when briefcase is stuck in air, make it slowly lower to the ground
+-- make cars only drop from collision damage, not from weapon damage (done, REALLY needs testing)
+-- do player blips work? make them color-coded to team? (done, need testing) (sometimes blips get left behind?)
+-- some garage cols are bad, gonna need to get the sizes of those myself (done, at least for san fierro)
+-- dead guys sometimes get briefcase? (maybe when they spawn they hit it if it was at theit death location).. REALLY needs testing --> one solution, make it not hittable for a few secs after spawn
 -- on finish, victory message isn't displayed (in team mode): for enemy, works on delivery? (fixed?)
--- make teams more easily identifiable.. nametag colors etc.. team skins option?
--- think of better ways to have cars drop briefcases (maybe they drop too easily when damaged, use x^2?)
--- have passenger-only drivebys
+-- make teams more easily identifiable.. nametag colors etc.. team skins option? (done, but more could be done)
+-- think of better ways to have cars drop briefcases (maybe they drop too easily when damaged, use x^2?) (irrelevant now)
+-- have passenger-only drivebys (done)
 -- find a better briefcase icon
 -- add FF option in settings (done)
--- add briefcases to places inaccessible by cars.. rooftops, interiors.. so people get out of their cars sometimes. maybe create a different map for that?
+-- add briefcases to places inaccessible by cars.. rooftops, interiors.. so people get out of their cars sometimes. maybe create a different map for that? (done)
 -- make waiting screens pretty, so players see it whenever they are not ready (kind of done, but doesn't always work)
 -- add spectator mode? add click to spawn?? (no, forget it... well maybe as a seperate option selectable frmo the team menu)
 -- add time-limit? as it approaches, increase game speed? play sound from gta3?
@@ -22,12 +25,12 @@
 -- make it so... the faster the vehicle, the easier it drops (or classify into: coupes, sedans, old cars, trucks, big trucks, etc) (done)
 -- add spray shops for vehicle repairs, or repair pickups? (done)
 -- add weapon pickups (randomly placed?)
--- add a volatility meter client-side so people see how easily they can drop the orb (done)
+-- add a volatility meter client-side so people see how easily they can drop the orb (done) (removed, irrelevant now)
 -- put stuff into settings and make some of it adjustable in the middle of the game (hiding/showing destiantion to players, etc.) (done)
 -- finish implementing team support (done)
 --  make each team have a different objective
 --  make negative annoucements red for teams, positive blue (done?)
--- display who carrier is
+-- display who carrier is (done, press tab)
 -- objective not accurate at high speeds (or is it?) (it is)
 -- reset flag after idle time (done?)
 -- make enter/exit vehicle events be triggered from client script (why?)
@@ -40,6 +43,11 @@
 -- onCarrierEnterVehicle is not always triggered for some unknown reason (should be fixed, updated event name...)
 -- onVehicleStartExit_brgame not called when falling from bike (fixed?)
 -- MTA BUGS:
+--  vehicles take damage when being jacked from another player, possible reason:
+--    [14:53] <erorr404> my theory is that when you call fixVehicle() server-side, the server sets the vehicle's health variable to 1000, but the synching client (who does not know the new health yet) sends a packet with the old vehicle health, which is lower than 1000
+--    [14:53] <erorr404> then it compares the new health (sent by client) and the old health and sees that it has dropped
+--    [14:53] <erorr404> and calls onVehicleDamage
+--   one solution: after calling repair vehicle (from spray shops), have it ignore damage done for the next second or so (done)
 --  colshape hit events sometimes seem to get triggered for no reason? (could be my fault)
 --  setGarageOpen() only takes effect after reconnect, not when the resource starts [server] (works when first starting, when connecting, but not after restarting resource)
 --  getGarageSize() returns shitty values (mostly for the X, sometimes for Y) [client]
@@ -357,6 +365,7 @@ function onPlayerBriefcaseHit_brgame()
 				displayMessageForPlayers(1, getPlayerName(source) .. " has the briefcase!")
 			end
 			-- give him the briefcase
+			debugMessage("Adding carrier " .. getPlayerName(source) .. " due to briefcase hit.")
 			addCarrier(source)
 		end
 	end
@@ -366,7 +375,8 @@ end
 function onPlayerObjectiveHit_brgame()
 		assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")---asserts, but it's ok since client has multiple hits in one short period
 		assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
-	--	if ( not isPlayerInVehicle ( source ) ) then
+		if ( not settings.onfootonly or not isPedInVehicle ( source ) ) then
+			debugMessage("Removing carrier " .. getPlayerName(source) .. " due to objective hit.")
 			removeCarrier(source, 2)
 	        -- increase player health
 	        setElementHealth(source, 100)
@@ -398,15 +408,17 @@ function onPlayerObjectiveHit_brgame()
 	   			setTimer(resetBriefcase, 5000, 1)
 	           	setTimer(resetObjective, 5000, 1)
 			end
-	--	else
-	--	    outputChatBox ( "Get out of your vehicle!", source, 147, 112, 219 )
-	--	end
+		else
+		    --outputChatBox ( "Get out of your vehicle!", source, 147, 112, 219 )
+			displayMessageForPlayer(source, 2, "Get out of your vehicle first!", 5000, 0.5, 0.535, 170, 0, 0, 1.75)
+		end
 end
 
 -- game event - carrier dies
 function onCarrierWasted(ammo, killer, weapon, bodypart)
 	assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")
 	assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
+	debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier death.")
 	removeCarrier(source, 1)
 	-- remove any instructions message the player might have
 	clearMessageForPlayer(source, 2)
@@ -423,6 +435,7 @@ end
 function onCarrierQuit(reason)
 	assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")
 	assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
+	debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier quit.")
 	removeCarrier(source, 3)
 	-- remove any instructions message the player might have
 	clearMessageForPlayer(source, 2)
@@ -440,6 +453,7 @@ function onCarrierDamage(attacker, attackerweapon, bodypart, loss)
 	if ((attackerweapon == 49 or attackerweapon == 50) and loss > 8) then --if they were hit by a vehicle
 		assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")
 		assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
+		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier damage from vehicle.")
 		removeCarrier(source, 1)
 		-- remove any instructions message the player might have
 		clearMessageForPlayer(source, 2)
@@ -463,8 +477,13 @@ end
 -- game event - carrier enters vehicle
 -- adds vehicle damage event
 function onCarrierVehicleEnter(vehicle, seat, jacked)
-	addEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage) -- added when it already exists sometimes
-	setElementData(source, "carrierVehicle", vehicle)
+	-- When jacking, onCarrierVehicleExit gets called and adds onVehicleNonWeaponDamage event for player. Then this event triggers and tries to add it again, producing an error.
+	-- So, we check to see if it has been added yet be checking the element data:
+	if (not getElementData(source, "carrierVehicle")) then
+		--addEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage) -- added when it already exists sometimes (like when jacking)
+		addEventHandler("onVehicleNonWeaponDamage", vehicle, onCarrierVehicleDamage) -- added when it already exists sometimes (like when jacking)
+		setElementData(source, "carrierVehicle", vehicle)
+	end
 end
 
 -- game event - someone starts to exit their vehicle
@@ -478,7 +497,8 @@ function onVehicleStartExit_brgame(player, seat, jacker)
 	if (theBriefcase and theBriefcase:getCarrier() and player == theBriefcase:getCarrier()) then
 		assert(not settings.teams or isPlayerOnValidTeam(player), "Player not on valid team")
 		-- remove vehicle damage
-		removeEventHandler("onVehicleDamage", source, onCarrierVehicleDamage)
+		--removeEventHandler("onVehicleDamage", source, onCarrierVehicleDamage)
+		removeEventHandler("onVehicleNonWeaponDamage", source, onCarrierVehicleDamage)
 		setElementData(player, "carrierVehicle", false)
 	end
 end
@@ -493,6 +513,7 @@ function onCarrierVehicleExit(vehicle, seat, jacker)
 	assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
 	if (jacker) then
 		assert(not settings.teams or isPlayerOnValidTeam(jacker), "Player not on valid team")
+		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier jacked.")
   		removeCarrier(source, 0)
 		---- set him to lastCarrier
 		--lastCarrier = source
@@ -506,11 +527,13 @@ function onCarrierVehicleExit(vehicle, seat, jacker)
 			displayMessageForPlayers(1, getPlayerName(jacker) .. " stole the briefcase from " .. getPlayerName(source) .. "!")
 		end
 		-- give him the briefcase
+		debugMessage("Adding carrier " .. getPlayerName(jacker) .. " due to jacking.")
 		addCarrier(jacker)
 	elseif (getElementData(source, "carrierVehicle")) then
 		-- NEW -- make him drop the briefcase and give him a pickup penalty (this usually happens when he falls of a bike, or in any other case where onStartExit doesn't get triggered first)
 		------------------------------------
 		removeCarrier(source, 1)
+		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to bike fall.")
 		-- set him to lastCarrier
 		lastCarrier = source
 		-- remove any instructions message the player might have
@@ -534,7 +557,8 @@ function onCarrierVehicleExit(vehicle, seat, jacker)
 	local vehicle = getElementData(source, "carrierVehicle")
 	if (vehicle) then
 		--outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( source ) .. " (caught in onCarrierVehicleExit)" )
-		removeEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage)
+		--removeEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage)
+		removeEventHandler("onVehicleNonWeaponDamage", vehicle, onCarrierVehicleDamage)
 		setElementData(source, "carrierVehicle", false)
 	end
 end
@@ -542,17 +566,21 @@ end
 -- game event - carrier's vehicle gets damaged
 -- makes orb not pickup-able by this player for 5 seconds, makes player drop orb
 function onCarrierVehicleDamage(loss)
---outputDebugString("damage: " .. loss)
+	assert(theBriefcase and theBriefcase:getCarrier(), "blah blah blah")
+	local player = theBriefcase:getCarrier()
+	assert(not settings.teams or isPlayerOnValidTeam(player), "Player not on valid team")
+	assert(isPedInVehicle(player) and getPedOccupiedVehicle(player) == source, "onCarrierVehicleDamage - carrier not in a vehicle or his vehicle isn't the one that was damaged.")
 	-- dropLoss is the least amount of damage that needs to be done to drop the orb           
 	--local dropLoss = 25 -- old value
 	--local dropLoss = (getElementHealth(source) + loss)^3/5000000 -- make it a function of current vehicle health - if healthy, more damage is required to drop orb, if unhealthy, less damage is required 
 	-- dropLoss = the minimum health loss required in order to drop the briefcase: a function of the vehicle type and it's health
-	local dropLoss = getDropLossFromHealth(source, getElementHealth(source) + loss)
-	if (loss >= dropLoss) then
-		assert(theBriefcase and theBriefcase:getCarrier(), "blah blah blah")
-		local player = theBriefcase:getCarrier()
-		assert(not settings.teams or isPlayerOnValidTeam(player), "Player not on valid team")
+	--local dropLoss = getDropLossFromHealth(source, getElementHealth(source) + loss)
+	local dropThreshold = getDropThresholdFromVehicle(source)
+	debugMessage("Carrier damaged vehicle: damage - " .. loss .. ", threshold - " .. dropThreshold)
+	if (loss >= dropThreshold) then
+		--local player = theBriefcase:getCarrier()
 		removeCarrier(player, 1)
+		debugMessage("Removing carrier " .. getPlayerName(player) .. " due to vehicle damage.")
 		-- set him to lastCarrier
 		lastCarrier = player
 		-- remove any instructions message the player might have
@@ -712,7 +740,8 @@ function addCarrierEvents(player)
 	addEventHandler("onPlayerQuit", player, onCarrierQuit)
 	local vehicle = getPedOccupiedVehicle(player)
 	if (vehicle) then
-		addEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage)
+		--addEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage)
+		addEventHandler("onVehicleNonWeaponDamage", vehicle, onCarrierVehicleDamage)
 		setElementData(player, "carrierVehicle", vehicle)
 	end
 end
@@ -726,7 +755,8 @@ function removeCarrierEvents(player)
 	removeEventHandler("onPlayerQuit", player, onCarrierQuit)
 	local vehicle = getElementData(player, "carrierVehicle")
 	if (vehicle) then
-		removeEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage)
+		--removeEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage)
+		removeEventHandler("onVehicleNonWeaponDamage", vehicle, onCarrierVehicleDamage)
 		setElementData(player, "carrierVehicle", false)
 	end
 end
@@ -839,7 +869,7 @@ function displayMessageForPlayers ( ID, message, displayTime, posX, posY, r, g, 
 	posX = posX or 0.5
 	posY = posY or 0.5
 	r = r or 255
-	g = g or 255
+	g = g or 127
 	b = b or 0
 	if ( team ) then
 		-- display message for team(s)
@@ -873,7 +903,7 @@ function displayMessageForPlayer ( player, ID, message, displayTime, posX, posY,
 	posX = posX or 0.5
 	posY = posY or 0.5
 	r = r or 255
-	g = g or 255
+	g = g or 127
 	b = b or 0
 	-- display message for everyone
 	outputConsole ( message, player )

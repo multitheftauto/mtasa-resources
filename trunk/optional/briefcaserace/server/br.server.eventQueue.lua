@@ -34,15 +34,15 @@ function scheduleClientEvent(player, eventName, attachToElement, ...)
 	assert(player and eventName and attachToElement)
 	assert({...}, "OMGz, how can a table be false/nil???")
 	if (clientStatuses[player]) then
-outputDebugString("a. scheduling event: " .. eventName)
+--debugMessage("a. scheduling event: " .. eventName)
 		triggerClientEvent(player, eventName, attachToElement, unpack({...}))
 		return true
 	elseif (eventQueues[player]) then
-outputDebugString("b. scheduling event: " .. eventName)
+--debugMessage("b. scheduling event: " .. eventName)
 		table.insert(eventQueues[player], {event = eventName, elem = attachToElement, args = {...}})
 		return true
 	else
-outputDebugString("c. scheduling event: " .. eventName)
+--debugMessage("c. scheduling event: " .. eventName)
 		clientStatuses[player] = false
 		eventQueues[player] = {}
 		table.insert(eventQueues[player], {event = eventName, elem = attachToElement, args = {...}})
