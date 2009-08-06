@@ -69,9 +69,18 @@ function table.each(t, index, callback, ...)
 		callback = index
 		index = false
 	end
-	for k,v in pairs(t) do
-		callback(index and v[index] or v, unpack(args))
-	end
+	local restart, oldlen
+	repeat
+		restart = false
+		oldlen = #t
+		for k,v in pairs(t) do
+			callback(index and v[index] or v, unpack(args))
+			if not t[k] or #t ~= oldlen then
+				restart = true
+				break
+			end
+		end
+	until not restart
 	return t
 end
 

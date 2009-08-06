@@ -447,9 +447,8 @@ addEventHandler('onVehicleExplode', g_Root,
 )
 
 function unloadVehicle(vehicle)
-	local existingTimers = getTimers()
 	for name,timer in pairs(g_VehicleData[vehicle].timers) do
-		if table.find(existingTimers, timer) then
+		if isTimer(timer) then
 			killTimer(timer)
 		end
 		g_VehicleData[vehicle].timers[name] = nil
