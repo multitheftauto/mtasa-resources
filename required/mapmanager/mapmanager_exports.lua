@@ -110,10 +110,25 @@ function getGamemodesCompatibleWithMap(map)
 		
 	local compatibleGamemodes = {}
 	local gmNameList = split(gmListString, GAMEMODE_LIST_SEPARATOR)
+	local cachedGamemodes = {}
 	for i, gmName in ipairs(gmNameList) do
 		local gamemode = getResourceFromName(gmName)
 		if gamemode then
+			cachedGamemodes[gamemode] = true
 			table.insert(compatibleGamemodes, gamemode)
+		end
+	end
+	--For each gamemode, we check to see if they announce compatibility with another gamemode using the "maps" tag
+	for i,gamemode in ipairs(getGamemodes()) do
+		local mapListString = getResourceInfo(gamemode, "maps")
+		if mapListString then
+			local gmNameList = split(gmListString, GAMEMODE_LIST_SEPARATOR)
+			for i, gmName in ipairs(gmNameList) do
+				local gamemode = getResourceFromName(gmName)
+				if gamemode and cachedGamemodes[gamemode] then --If its a gamemode, and that mode is one of our previous compatible modes
+					table.insert(compatibleGamemodes,gamemode)
+				end
+			end
 		end
 	end
 	
@@ -187,13 +202,7 @@ function isGamemodeCompatibleWithMap(gamemode, map)
 		return false
 	end
 	
-	for i, compatibleMap in ipairs(getMapsCompatibleWithGamemode(gamemode)) do
-		if map == compatibleMap then
-			return true
-		end
-	end
-	
-	return false
+	return isMapCompatibleWithGamemode(map, gamemode)
 end
 
 function isMap(resource)
