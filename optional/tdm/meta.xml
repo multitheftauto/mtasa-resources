@@ -1,5 +1,5 @@
 <meta>
-	<info author="Talidan" version="1.0.0" type="gamemode" description="A raw deathmatch gamemode" />
+	<info author="Talidan" version="1.0.0" type="gamemode" maps="deathmatch" description="A raw deathmatch gamemode" />
 	<include resource="killmessages" />
 	<include resource="deathpickups" />
 	<include resource="spawnmanager" />
