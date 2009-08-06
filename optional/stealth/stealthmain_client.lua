@@ -36,8 +36,10 @@ addEvent("cameramode", true)
 
 function movetocam(thisplayer)
 	showSpectateText("",false)
+	outputChatBox "HERE"
 	local cams = getElementsByType ("camera")
 	if #cams > 0 then
+		outputChatBox "HERE1"
 		local random = math.random( 1, #cams )
 		if ( cams[random] ) then
 			local x = getElementData ( cams[random], "posX" )
@@ -49,6 +51,7 @@ function movetocam(thisplayer)
 			setCameraMatrix(x, y, z, a, b, c)
 		end
 	else --Most likely a setting
+		outputChatBox "HERE2"
 		local cameraData = getElementData(getResourceRootElement(getThisResource()),"camera")
 		if cameraData then
 			local x,y,z = unpack(cameraData[1])
@@ -472,19 +475,6 @@ function drawLasers()
 	end
 end
 
-function TeamSelected ( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clicked )
-	thisplayer = getLocalPlayer ()
-	if source == TeamSelect_Red then
-		showCursor ( false )
-		triggerServerEvent ("dojoinTeam1", getLocalPlayer (), thisplayer )
-		guiSetVisible ( TeamSelect_Window[1], false )
-	elseif source == TeamSelect_Blue then
-		showCursor ( false )
-		triggerServerEvent ("dojoinTeam2", getLocalPlayer (), thisplayer )
-		guiSetVisible ( TeamSelect_Window[1], false )
-	end
-end
-
 addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
 	function()
 		movetocam(getLocalPlayer())
@@ -495,18 +485,6 @@ addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResourc
 			end
 			addEventHandler("onClientRender",getRootElement(),drawLasers)
 		end
-		showCursor ( true )
-		TeamSelect_Window = {}
-		TeamSelect_Button = {}
-		TeamSelect_Label = {}
-		TeamSelect_Window[1] = guiCreateWindow(0.25,0.35,0.5,0.25,"Choose your Team",true)
-		TeamSelect_Red = guiCreateButton(0.04,0.2189,0.4244,0.4852,"RED",true,TeamSelect_Window[1])
-		TeamSelect_Blue = guiCreateButton(0.5222,0.2189,0.4244,0.4852,"BLUE",true,TeamSelect_Window[1])
-		TeamSelect_Label[2] = guiCreateLabel(0.3422,0.7988,0.5111,0.1183,"F3 to return to this menu",true,TeamSelect_Window[1])
-		guiLabelSetVerticalAlign(TeamSelect_Label[2],"top")
-		guiLabelSetHorizontalAlign(TeamSelect_Label[2],"left",false)
-		addEventHandler ( "onClientGUIClick", TeamSelect_Red, TeamSelected)
-		addEventHandler ( "onClientGUIClick", TeamSelect_Blue, TeamSelected)
 	end
 )
 		
@@ -520,13 +498,4 @@ function extendLine ( x,y,z,x2,y2,z2,length )
 	vz = vz*ratio
 	return (x + vx),(y + vy),(z + vz)
 end
-
-addEvent("doshowTeamWindow",true)
-
-function showTeamWindow ()
-	guiSetVisible ( TeamSelect_Window[1], true )
-	showCursor ( true )
-end
-
-addEventHandler ( "doshowTeamWindow",getRootElement(), showTeamWindow )
 
