@@ -36,10 +36,8 @@ addEvent("cameramode", true)
 
 function movetocam(thisplayer)
 	showSpectateText("",false)
-	outputChatBox "HERE"
 	local cams = getElementsByType ("camera")
 	if #cams > 0 then
-		outputChatBox "HERE1"
 		local random = math.random( 1, #cams )
 		if ( cams[random] ) then
 			local x = getElementData ( cams[random], "posX" )
@@ -51,7 +49,6 @@ function movetocam(thisplayer)
 			setCameraMatrix(x, y, z, a, b, c)
 		end
 	else --Most likely a setting
-		outputChatBox "HERE2"
 		local cameraData = getElementData(getResourceRootElement(getThisResource()),"camera")
 		if cameraData then
 			local x,y,z = unpack(cameraData[1])
