@@ -60,6 +60,7 @@ function setSkinCommand(cmd, skin)
 		server.setMySkin(skin)
 		fadeCamera(true)
 		closeWindow(wndSpawnMap)
+		closeWindow(wndSetPos)
 	end
 end
 addCommandHandler('setskin', setSkinCommand)
@@ -153,18 +154,12 @@ wndWeapon = {
 }
 
 function giveWeaponCommand(cmd, weapon, amount)
-	weapon = weapon and tonumber(weapon)
+	weapon = tonumber(weapon) or getWeaponIDFromName(weapon)
 	if not weapon then
 		return
 	end
-	if not amount then
-		amount = 500
-	else
-		amount = tonumber(amount)
-	end
-	if amount then
-		server.giveMeWeapon(weapon, amount)
-	end
+	amount = amount and tonumber(amount) or 500
+	server.giveMeWeapon(weapon, amount)
 end
 addCommandHandler('give', giveWeaponCommand)
 addCommandHandler('wp', giveWeaponCommand)
