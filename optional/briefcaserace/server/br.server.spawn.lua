@@ -195,7 +195,7 @@ function onPlayerTeamSelect(team)
 end
 
 function updateTeamMenu()
-	scheduleClientEvent(root, "doCreateTeamMenu", root, getValidTeams())
+	scheduleClientEventForPlayers(getElementsByType("player"), "doCreateTeamMenu", root, getValidTeams())
 end
 
 -- possible bug: player changes teams or leaves team - it spawns him twice or spawns him when it shouldn't!
