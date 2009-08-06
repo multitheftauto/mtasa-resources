@@ -1,11 +1,13 @@
 root = getRootElement()
 runningMap = false
 teams = {} -- used for team game, the participating teams
-settings =	{	limit = 1000, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, teamskins = {},
+settings =	{	limit = 1000, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, onfootonly = false, teamskins = {},
+				varteams = false, varteamsmaxplayers = 6,
 				weapons = {[1] = 1, [22] = 200, [17] = 4, [29] = 250},
 				cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70}
 			}
 local readyPlayers = {}
+local varTeamIndex = 1
 
 addEvent("onPlayerReady", true)
 addEvent("onPlayerBriefcaseHit", true)
@@ -41,18 +43,29 @@ function onGamemodeMapStart_brmain(resource)
 		outputConsole("Briefcase Race: " .. getResourceName(resource) .. " map started. Starting game.")
 		outputServerLog("Briefcase Race: " .. getResourceName(resource) .. " map started. Starting game.")
 		-- get settings
-		readSettingsFile(resource)
-		-- get the teams that currently exist
+		--readSettingsFile(resource)
+		readMapSettings(resource)
+		-- get the teams that currently exist (or create them if it's a variable-teams game)
 		if (settings.teams) then
-			teams = getElementsByType("team")
-			if (#teams < 2) then
-				outputConsole("Briefcase Race: Error: Teams enabled in settings but not enough teams exist! Fix this map or try a different one.")
-				outputServerLog("Briefcase Race: Error: Teams enabled in settings but not enough teams exist! Fix this map or try a different one.")
-				return
+			if (not settings.varteams) then
+				teams = getElementsByType("team")
+				if (#teams < 2) then
+					outputConsole("Briefcase Race: Error: Teams enabled in settings but not enough teams exist! Fix this map or try a different one.")
+					outputServerLog("Briefcase Race: Error: Teams enabled in settings but not enough teams exist! Fix this map or try a different one.")
+					return
+				else
+					-- set friendly fire
+					for i,v in ipairs(teams) do
+						setTeamFriendlyFire(v, settings.ff)
+					end
+				end
 			else
-				-- set friendly fire
-				for i,v in ipairs(teams) do
-					setTeamFriendlyFire(v, settings.ff)
+				teamskins = {}
+				createVarTeam()
+				createVarTeam()
+				local numPlayers = #getElementsByType("player")
+				while (numPlayers > #teams * settings.varteamsmaxplayers) do
+					createVarTeam()
 				end
 			end
 		end
@@ -74,7 +87,7 @@ function onGamemodeMapStop_brmain(resource)
 	removeEventHandler("onResourceStop", getResourceRootElement(resource), onGamemodeMapStop_brmain)
 	runningMap = false
 	teams = {}
-	settings =	{	limit = 1000, teams = true, hide = true, reset = 300, gamespeed = 1, ff = true, teamskins = {},
+	settings =	{	limit = 1000, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, onfootonly = false, teamskins = {},
 					weapons = {[1] = 1, [22] = 200, [17] = 4, [29] = 250},
 					cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70}
 				}
@@ -119,6 +132,92 @@ function forceScoreboardForAllPlayers ( status )
 		return true
 	else
 	    return false
+	end
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- VARTEAM FUNCTIONS --
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function createVarTeam()
+	local teamName = "Team " .. varTeamIndex
+	varTeamIndex = varTeamIndex + 1
+	local r = math.random(0,255)
+	local g = math.random(0,255)
+	local b = math.random(0,255)
+	-- generate team skin
+	local skin
+	local skinTaken = false
+	repeat
+		skin = getRandomSkin()
+		for teamName,skinArray in pairs(settings.teamskins) do
+			if (skinArray[1] == skin) then
+				skinTaken = true
+				break
+			end
+		end
+	until(not skinTaken)
+	settings.teamskins[teamName] = {[1] = skin}
+	-- create team
+	local team = createTeam(teamName, r, g, b)
+	table.insert(teams, team)
+	setTeamFriendlyFire(team, settings.ff)
+	setElementData(team, "points", 0)
+	updateTeamMenu()
+end
+
+function destroyVarTeam(team)
+	local found = false
+	for i,v in ipairs(teams) do
+		if (v == team) then
+			found = i
+			break
+		end
+	end
+	if (found) then
+		settings.teamskins[getTeamName(teams[found])] = nil
+		destroyElement(teams[found])
+		table.remove(teams, found)
+		updateTeamMenu()
+		return true
+	else
+		return false
+	end
+end
+
+function onPlayerJoin_varTeams()
+	local totalPlayers = #getElementsByType("player")
+	local totalTeams = #teams
+	local capacity = totalTeams * settings.varteamsmaxplayers
+	if (totalPlayers > capacity) then
+		createVarTeam()
+	end
+end
+
+-- gets rid of one team max, ideally would get rid of more if necessary, but whatever...
+function onPlayerQuit_varTeams()
+	local canDestroyTeam = false
+	-- see if we can afford to get rid of another team
+	if (#teams > 2) then
+		local totalPlayers = #getElementsByType("player")
+		local totalTeams = #teams
+		local capacity = totalTeams * settings.varteamsmaxplayers
+		if (totalPlayers <= capacity-settings.varteamsmaxplayers) then
+			canDestroyTeam = true
+		end
+	end
+	-- destroy any empty teams
+	if (canDestroyTeam) then
+		local foundTeam = false
+		for i,v in ipairs(teams) do
+			if (countPlayersInTeam(v) == 0) then
+				foundTeam = v
+				break
+			end
+		end
+		if (foundTeam) then
+			destroyVarTeam(foundTeam)
+		end
 	end
 end
 
@@ -202,6 +301,106 @@ end
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- XML FUNCTIONS --
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function readMapSettings(resource)
+	local mapName = getResourceName(resource)
+	-- get weather
+	local weather = get(mapName .. ".weather")
+	if (weather) then
+		settings.weather = weather
+	end
+	-- get cam
+	local cam = get(mapName .. ".idlecam")
+	if (cam) then
+		-- check elements
+		local valid = true
+		for i=1,8 do
+			if (not cam[i]) then
+				valid = false
+				break
+			end
+		end
+		if (valid) then
+			settings.cam = {x = cam[1], y = cam[2], z = cam[3], lx = cam[4], ly = cam[5], lz = cam[6], roll = cam[7], fov = cam[8]}
+		end
+	end
+	-- get gamespeed
+	local gamespeed = get(mapName .. ".gamespeed")
+	if (gamespeed) then
+		settings.gamespeed = gamespeed
+	end
+	-- get pointlimit
+	local pointlimit = get(mapName .. ".pointlimit")
+	if (pointlimit) then
+		settings.limit = pointlimit
+	end
+	-- get onfootonly
+	local onfootonly = get(mapName .. ".onfootonly")
+	if (onfootonly) then
+		settings.onfootonly = onfootonly
+	end
+	-- get hide
+	local hide = get(mapName .. ".hide")
+	if (hide) then
+		settings.hide = hide
+	end
+	-- get idletime
+	local idletime = get(mapName .. ".idletime")
+	if (idletime) then
+		settings.reset = idletime
+	end
+	-- get weapons
+	local weapons = get(mapName .. ".weapons")
+	if (weapons) then
+--outputChatBox("get(mapName .. '.weapons'): " .. weapons)
+		settings.weapons = {}
+		for k,v in pairs(weapons) do
+			settings.weapons[tonumber(k)] = v
+		end
+	end
+	-- get teamgame
+	local teamgame = get(mapName .. ".teamgame")
+	if (teamgame) then
+		settings.teams = teamgame
+	end
+	-- get ff
+	local ff = get(mapName .. ".ff")
+	if (ff) then
+		settings.ff = ff
+	end
+	-- get teamskins
+	local teamskins = get(mapName .. ".teamskins")
+	if (teamskins) then
+--outputChatBox("get(mapName .. '.teamskins'): " .. teamskins)
+		settings.teamskins = {}
+		for teamName,skinsString in pairs(teamskins) do
+			settings.teamskins[teamName] = {}
+			local index = 1
+			local curSkin = gettok(skinsString, index, string.byte(','))
+			while (curSkin) do
+				-- process current skin
+				curSkin = tonumber(curSkin)
+				if (curSkin) then
+					table.insert(settings.teamskins[teamName], curSkin)
+				end
+				-- get the next skin
+				index = index + 1
+				curSkin = gettok(skinsString, index, string.byte(','))
+			end
+			--outputDebugString("skins read from settings.xml from team " .. teamName .. ": " .. skinsString)
+		end
+	end
+	-- get varteams
+	local varteams = get(mapName .. ".varteams")
+	if (varteams) then
+		settings.varteams = varteams
+	end
+	-- get varteamsmaxplayers
+	local varteamsmaxplayers = get(mapName .. ".varteamsmaxplayers")
+	if (varteamsmaxplayers) then
+		settings.varteamsmaxplayers = varteamsmaxplayers
+	end
+end
 
 function readSettingsFile(resource)
 	local settingsRoot = xmlLoadFile(":" .. getResourceName(resource) .. "/settings.xml")
@@ -300,6 +499,20 @@ function readSettingsFile(resource)
 				elseif (val == "1") then
 					settings.autobalance = true
 					outputDebugString("autobalance read from settings.xml " .. val)
+				end
+			end
+		end
+		-- get on foot only delivery
+		node = xmlFindChild(settingsRoot, "onfootonly", 0)
+		if (node) then
+			val = xmlNodeGetValue(node)
+			if (val and tonumber(val)) then
+				if (val == "0") then
+					settings.onfootonly = false
+					outputDebugString("onfootonly read from settings.xml " .. val)
+				elseif (val == "1") then
+					settings.onfootonly = true
+					outputDebugString("onfootonly read from settings.xml " .. val)
 				end
 			end
 		end

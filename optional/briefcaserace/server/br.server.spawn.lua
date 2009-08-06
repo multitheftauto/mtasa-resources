@@ -139,23 +139,35 @@ end
 
 -- triggered by client
 function onPlayerTeamSelect(team)
-	if (isTeamValid(team) and (not getPlayerTeam(source) or getPlayerTeam(source) ~= team)) then
+	if (isTeamValid(team)) then
 		local refuse = false
-		-- check auto-balance
-		if (settings.autobalance) then
-			if (#getReadyPlayers() > 5) then
-				-- don't let him join the team if it has 2+ more players than any other team
-				local thisTeamPlayerCount = countPlayersInTeam(team)
-				for i,v in ipairs(getValidTeams()) do
-					if (v ~= team) then
-						local otherTeamPlayerCount = countPlayersInTeam(v)
-						if (otherTeamPlayerCount+2 <= thisTeamPlayerCount) then
-							refuse = true
-							outputConsole("You could not join team " .. getTeamName(team) .. " because it has too many players.", source)
-							break
+		if (getPlayerTeam(source) and getPlayerTeam(source) == team) then
+			outputChatBox("You could not join team " .. getTeamName(team) .. " because you are already on it.", source)
+			refuse = true
+		end
+		if (not settings.varteams) then
+			-- check auto-balance
+			if (settings.autobalance) then
+				if (#getReadyPlayers() > 5) then
+					-- don't let him join the team if it has 2+ more players than any other team
+					local thisTeamPlayerCount = countPlayersInTeam(team)
+					for i,v in ipairs(getValidTeams()) do
+						if (v ~= team) then
+							local otherTeamPlayerCount = countPlayersInTeam(v)
+							if (otherTeamPlayerCount+2 <= thisTeamPlayerCount) then
+								refuse = true
+								outputChatBox("You could not join team " .. getTeamName(team) .. " because it would have too many players (auto-balance is on).", source)
+								break
+							end
 						end
 					end
 				end
+			end
+		else
+			-- check if desired team is at capacity
+			if (countPlayersInTeam(team) >= settings.varteamsmaxplayers) then
+				refuse = true
+				outputChatBox("You could not join team " .. getTeamName(team) .. " because it is at capacity.", source)
 			end
 		end
 		-- done checking auto-balance
@@ -176,10 +188,14 @@ function onPlayerTeamSelect(team)
 					spawnPlayerAtRandomSpawnpoint(source)
 				end
 			else
-				outputConsole("You could not join team " .. getTeamName(team) .. " because you have the briefcase. Try losing it or dying.", source)
+				outputChatBox("You could not join team " .. getTeamName(team) .. " because you have the briefcase. Try losing it or dying.", source)
 			end
 		end
 	end
+end
+
+function updateTeamMenu()
+	scheduleClientEvent(root, "doCreateTeamMenu", root, getValidTeams())
 end
 
 -- possible bug: player changes teams or leaves team - it spawns him twice or spawns him when it shouldn't!
@@ -215,8 +231,8 @@ end
 
 addEventHandler("onPlayerQuit", root,
 function ()
-	if (exports.spectator:isSpectator(source)) then
-		exports.spectator:removeSpectator(source)
-	end
+--	if (exports.spectator:isSpectator(source)) then
+--		exports.spectator:removeSpectator(source)
+--	end
 end
 )

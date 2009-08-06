@@ -30,7 +30,8 @@ local ob2Hittable = false -- a team objective is hittable
 --  onPlayerBriefcaseHit
 --  onPlayerObjectiveHit
 
-BRIEFCASE_BLIP_ID = 41
+BRIEFCASE_BLIP_ID = 56--41
+BRIEFCASE_BLIP_SIZE = 4
 OBJECTIVE_BLIP_ID = 53
 ENEMY_OBJECTIVE_BLIP_ID = 0
 BLIP_DISTANCE_LIMIT = 250
@@ -65,12 +66,12 @@ function (r, g, b)
 	g = g or 0
 	b = b or 0
 	bcCarried = true
-outputDebugString("in client clientGiveBriefcaseToPlayer")
+--outputDebugString("in client clientGiveBriefcaseToPlayer")
 	-- source is the player to give to, coords are the location of the objective, hideObjective is whether to hide the objective from everyone else
 	--exports.briefcase:addBriefcaseHolder(source)
 	scheduleBriefcaseCall("addBriefcaseHolder", source)
 	-- create blip attached to player
-	briefcaseBlip = createBlip(0, 0, 0, BRIEFCASE_BLIP_ID, 4, 255, 0, 0, 255, 32766)
+	briefcaseBlip = createBlip(0, 0, 0, BRIEFCASE_BLIP_ID, BRIEFCASE_BLIP_SIZE, 255, 0, 0, 255, 32766)
 	attachElements(briefcaseBlip, source)
 	-- create gui indicating the briefcase carrier
 	guiShowBriefcaseGuy(source)
@@ -90,7 +91,7 @@ addEventHandler("clientTakeBriefcaseFromPlayer", root,
 function ()
 	assert(bcCarried)
 	bcCarried = false
-outputDebugString("in client clientTakeBriefcaseFromPlayer")
+--outputDebugString("in client clientTakeBriefcaseFromPlayer")
 	-- source is the player to give to
 	--exports.briefcase:removeBriefcaseHolder(source)
 	scheduleBriefcaseCall("removeBriefcaseHolder", source)
@@ -118,7 +119,7 @@ function (x, y, z)
 	--exports.briefcase:createIdleBriefcase(x, y, z, 3, 1)
 	scheduleBriefcaseCall("createIdleBriefcase", x, y, z, 2.5, 1)
 	-- create blip at this location
-	briefcaseBlip = createBlip(x, y, z, BRIEFCASE_BLIP_ID, 4, 255, 0, 0, 255, 32766)
+	briefcaseBlip = createBlip(x, y, z, BRIEFCASE_BLIP_ID, BRIEFCASE_BLIP_SIZE, 255, 0, 0, 255, 32766)
 	-- make briefcase hittable
 	createHittableBriefcaseCol(x, y, z-1, 1.25, 2)
 	-- debug --

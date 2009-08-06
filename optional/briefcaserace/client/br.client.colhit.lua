@@ -2,6 +2,9 @@ local localPlayer = getLocalPlayer()
 local briefcaseTube = false
 local objectiveTube = false
 
+local SEND_DELAY = 500
+local lastSendTick = 0
+
 -- briefcase col
 
 function createHittableBriefcaseCol(x, y, z, radius, height)
@@ -18,7 +21,7 @@ function destroyHittableBriefcaseCol()
 end
 
 function onBriefcaseTubeHit(hitElement, matchingDimension)
-outputDebugString("briefcase hit, hitElement: " .. tostring(hitElement))
+--outputDebugString("briefcase hit, hitElement: " .. tostring(hitElement))
 -- gets called a several times when this event is added, the last time hitElement is not an element
 --if (isElement(hitElement)) then
 --outputDebugString(" is element")
@@ -29,13 +32,18 @@ assert(isElement(hitElement))
 assert(getElementType(hitElement))
 --outputDebugString("briefcase hit client-side!")
 	-- see if it's the local player or their vehicle
+	if (getTickCount()-lastSendTick <= SEND_DELAY) then
+		return
+	end
 	if (isPlayerDead(localPlayer)) then
 		return
 	end
 	if (getElementType(hitElement) == "player" and hitElement == localPlayer) then
 		triggerServerEvent("onPlayerBriefcaseHit", getLocalPlayer())
+		lastSendTick = getTickCount()
 	elseif (getElementType(hitElement) == "vehicle" and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == hitElement) then
 		triggerServerEvent("onPlayerBriefcaseHit", getLocalPlayer())
+		lastSendTick = getTickCount()
 	end
 end
 
@@ -55,11 +63,16 @@ function destroyHittableObjectiveCol()
 end
 
 function onObjectiveTubeHit(hitElement, matchingDimension)
-outputDebugString("objective hit, hitElement: " .. tostring(hitElement))
+	if (getTickCount()-lastSendTick <= SEND_DELAY) then
+		return
+	end
+--outputDebugString("objective hit, hitElement: " .. tostring(hitElement))
 	-- see if it's the local player or their vehicle
 	if (getElementType(hitElement) == "player" and hitElement == localPlayer) then
 		triggerServerEvent("onPlayerObjectiveHit", getLocalPlayer())
+		lastSendTick = getTickCount()
 	elseif (getElementType(hitElement) == "vehicle" and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == hitElement) then
 		triggerServerEvent("onPlayerObjectiveHit", getLocalPlayer())
+		lastSendTick = getTickCount()
 	end
 end

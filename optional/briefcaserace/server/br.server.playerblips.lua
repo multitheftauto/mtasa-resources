@@ -1,9 +1,9 @@
 -- messily modified version of playerblips
-root = getRootElement ()
-MAX_DIST = 300
-color = { 255, 0, 0 }
-blips = {}
-resourceRoot = getResourceRootElement ( getThisResource () )
+local root = getRootElement ()
+local MAX_DIST = 300
+local color = { 255, 0, 0 }
+local blips = {}
+local resourceRoot = getResourceRootElement ( getThisResource () )
 
 function onResourceStart ( resource )
   	for id, player in ipairs( getElementsByType ( "player" ) ) do
@@ -24,7 +24,7 @@ function onPlayerSpawn ( spawnpoint )
 	if (team) then
 		r, g, b = getTeamColor(team)
 	end
-	createBlipAttachedTo ( source, 0, 2, r, g, b, 255, 0, MAX_DIST )
+	blips[source] = createBlipAttachedTo ( source, 0, 2, r, g, b, 255, 0, MAX_DIST )
 end
 
 function onPlayerQuit ()
