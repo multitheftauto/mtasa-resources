@@ -1,5 +1,5 @@
 <meta>
-	<info author="BrophY" description="Shecs" version="1" type="map" />
+	<info author="BrophY" description="A playtest/freeroam mode" version="1" type="gamemode" />
 	<include resource="freeroam" />
 	
 	<map src="broph.map" />
