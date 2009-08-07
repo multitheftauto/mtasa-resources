@@ -197,9 +197,11 @@ function toggleScoreboard(state)
 	guiSetVisible(scoreboardGrid,state)
 end
 
-function toggleScoreboardPressed(key,keystate,state)
+function toggleScoreboardPressed(command,state)
+	state = (state == "1") and true or false
 	toggleScoreboard(state)
 end
+addCommandHandler ( "scoreboard", toggleScoreboardPressed )
 
 function checkVisibility()
 	local currentTeam = getPlayerTeam(localPlayer)
@@ -213,11 +215,11 @@ end
 
 function setScoreboardForced(state)
 	if state == true then
-		unbindKey("tab","down",toggleScoreboardPressed)
-		unbindKey("tab","up",toggleScoreboardPressed)
+		unbindKey("tab","down","scoreboard")
+		unbindKey("tab","up","scoreboard")
 	elseif state == false then
-		bindKey("tab","down",toggleScoreboardPressed,true)
-		bindKey("tab","up",toggleScoreboardPressed,false)
+		bindKey("tab","down","scoreboard","1")
+		bindKey("tab","up","scoreboard","0")
 	else
 		return false
 	end
@@ -240,8 +242,8 @@ addEventHandler("onClientResourceStart", thisResourceRoot,
 		guiSetAlpha(rmbLabel, .8)
 		guiLabelSetColor(rmbLabel, 200, 200, 255)
 		
-		bindKey("tab","down",toggleScoreboardPressed,true)
-		bindKey("tab","up",toggleScoreboardPressed,false)
+		bindKey("tab","down","scoreboard","1")
+		bindKey("tab","up","scoreboard","0")
 		
 		addCommandHandler("scoreboard", toggleScoreboard)
 		

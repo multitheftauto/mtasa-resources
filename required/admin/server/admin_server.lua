@@ -266,7 +266,7 @@ function aPlayerInitialize ( player )
 		outputChatBox ( "ERROR: "..getPlayerName ( player ).." - Invalid Serial." )
 		kickPlayer ( player, "Invalid Serial" )
 	else
-		bindKey ( player, "p", "down", aAdminMenu )
+		bindKey ( player, "p", "down", "admin" )
 		callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
 		aPlayers[player] = {}
 		aPlayers[player]["country"] = getPlayerCountry ( player )
@@ -307,12 +307,13 @@ addCommandHandler ( "register", function ( player, command, arg1, arg2 )
 	end
 end )
 
-function aAdminMenu ( player, key, keyState )
+function aAdminMenu ( player, command )
 	if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
 		triggerClientEvent ( player, "aClientAdminMenu", _root )
 		aPlayers[player]["chat"] = true
 	end
 end
+addCommandHandler ( "admin", aAdminMenu )
 
 function aAction ( type, action, admin, player, data, more )
 	if ( aLogMessages[type] ) then
@@ -707,10 +708,10 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 				if ( group ) then
 					if ( data == true ) then
 						aclGroupAddObject ( group, "user."..getAccountName ( account ) )
-						bindKey ( player, "p", "down", aAdminMenu )
+						bindKey ( player, "p", "down", "admin" )
 						action = "admina"
 					elseif ( data == false ) then
-						unbindKey ( player, "p", "down", aAdminMenu )
+						unbindKey ( player, "p", "down", "admin" )
 						aclGroupRemoveObject ( group, "user."..getAccountName ( account ) )
 						aPlayers[player]["chat"] = false
 						action = "adminr"

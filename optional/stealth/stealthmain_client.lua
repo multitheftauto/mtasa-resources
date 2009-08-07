@@ -412,7 +412,7 @@ function cleanup (theresource)
 	        killTimer ( timerValue )
 		end
 		unbindKey ("fire", "down", triggerpulled )
-		unbindKey ("r", "down", activategadget )
+		unbindKey ("r", "down", "Use Gadget/Spectate Next" )
 		unbindKey ("forwards", "down", walksoundstart )
 		unbindKey ("backwards", "down", walksoundstart )
 		unbindKey ("left", "down", walksoundstart )

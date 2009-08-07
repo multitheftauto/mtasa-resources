@@ -301,8 +301,8 @@ function clientsetup (resource)
 	if resource ~= getThisResource() then return end
 	notblockingTasks = { TASK_SIMPLE_GET_UP=false, TASK_SIMPLE_SWIM=false, TASK_SIMPLE_LAND=false, TASK_SIMPLE_TIRED=false, TASK_SIMPLE_IN_AIR=true, TASK_SIMPLE_JUMP=true, TASK_SIMPLE_JETPACK=true, TASK_SIMPLE_FALL=true, TASK_SIMPLE_EVASIVE_DIVE=true, TASK_SIMPLE_CLIMB=true, TASK_SIMPLE_CHOKING=true, TASK_SIMPLE_CAR_SLOW_BE_DRAGGED_OUT=true, TASK_SIMPLE_CAR_SLOW_DRAG_PED_OUT=true, TASK_SIMPLE_CAR_QUICK_BE_DRAGGED_OUT=true, TASK_SIMPLE_CAR_QUICK_DRAG_PED_OUT=true, TASK_SIMPLE_CAR_GET_IN=true, TASK_SIMPLE_CAR_GET_OUT=true, TASK_SIMPLE_CAR_JUMP_OUT=true, TASK_SIMPLE_CAR_DRIVE=true, TASK_SIMPLE_BIKE_JACKED=true }
 	bindKey ("fire", "down", triggerpulled )
-	bindKey ("r", "down", activategadget )
-	bindKey ("r", "up", deactivategadget )
+	bindKey ("r", "down", "Use Gadget/Spectate Next", "" )
+	bindKey ("r", "up", "Use Gadget/Spectate Next", "0" )
 	setElementData ( getLocalPlayer (), "stealthmode", "off" )
 	goggleson = 0
 	burstinprogress = 0
@@ -310,6 +310,16 @@ function clientsetup (resource)
 	lookingthroughcamera = 0
 	loadtheshield = setTimer ( shieldload, 3000, 1 )
 end
+
+addCommandHandler ( "Use Gadget", 
+	function ( command, state )
+		if state == "0" then 
+			deactivategadget()
+		else
+			activategadget()
+		end
+	end
+)
 
 addEventHandler ( "onClientResourceStart",getRootElement() , clientsetup)
 

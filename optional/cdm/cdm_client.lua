@@ -1,7 +1,7 @@
 function cdm_clientResourceStart ( resourcename )
 	if ( resourcename == getThisResource () ) then
-		bindKey ( "i", "down", "showvehicles 1" )
-		bindKey ( "i", "up", "showvehicles 0" )
+		bindKey ( "i", "down", "showvehicles", "1" )
+		bindKey ( "i", "up", "showvehicles", "0" )
 	end
 end
 
