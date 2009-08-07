@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="ChrML Hard" author="ChrML and some extra sps for release by Ransom" description="Harder hydra skills test" version="1" />
+  <map src="ChrML Hard.map" />
+  <settings>
+    <setting name="#weather" value="4" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="450" />
+  </settings>
+</meta>

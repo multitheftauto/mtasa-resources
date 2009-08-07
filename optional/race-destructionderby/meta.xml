@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Destruction Derby" author="Ransom" description="1st real concept map" version="0" />
+  <map src="Destruction Derby.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="270" />
+  </settings>
+</meta>
