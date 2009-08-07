@@ -1,9 +1,0 @@
-<meta>
-   <info type="map" gamemodes="race" name="Channel Loop" author="UOcUK-Juggernaut" description="3 laps round a loop of the Los Santos drainage ditches" version="1"/>
-   <race src="Channel Loop.map"/>
-   <settings>
-      <setting name="#time" value="4:0"/>
-      <setting name="#respawn" value="timelimit"/>
-   </settings>
-</meta>
-
