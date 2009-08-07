@@ -57,7 +57,7 @@ function destroyIdleBriefcase()
 	end
 end
 
-addEventHandler("onClientRender", root,
+addEventHandler("onClientPreRender", root,
 function ()
 	-- attach briefcase to players' hands
 	for i,v in ipairs(briefcaseCarriers) do
