@@ -54,9 +54,8 @@ addEventHandler('onClientPlayerFinish', getRootElement(),
 function updateSettings(settings, playeradmin)
 	outputDebug( 'TOPTIMES', 'updateSettings' )
 	if g_CToptimes then
-		if settings and settings.gui_x and settings.gui_y and settings.hotkey then
+		if settings and settings.gui_x and settings.gui_y then
 			g_CToptimes:setWindowPosition( settings.gui_x, settings.gui_y )
-			g_CToptimes:setHotKey( settings.hotkey )
 			g_CToptimes.startshow = settings.startshow
 		end
 		-- If admin changed this setting manually, then show the table to him
@@ -245,14 +244,14 @@ end
 ---------------------------------------------------------------------------
 function CToptimes:setHotKey ( hotkey )
 	if self.hotkey then
-		unbindKey ( self.hotkey, 'down', onHotKey )
+		unbindKey ( self.hotkey, 'down', "showtimes" )
 	end
 	if hotkey and self.hotkey and hotkey ~= self.hotkey then
 		outputConsole( "Race Toptimes hotkey is now '" .. tostring(hotkey) .. "'" )
 	end
 	self.hotkey = hotkey
 	if self.hotkey then
-		bindKey ( self.hotkey, 'down', onHotKey )
+		bindKey ( self.hotkey, 'down', "showtimes" )
 	end
 end
 
@@ -539,6 +538,7 @@ function onHotKey()
 		g_CToptimes:doToggleToptimes()
 	end
 end
+addCommandHandler ( "showtimes", onHotKey )
 
 addCommandHandler('doF5',
 	function(player,command,...)

@@ -330,7 +330,6 @@ function cacheSettings()
 	g_Settings = {}
 	g_Settings.numtimes		= getNumber('numtimes',8)
 	g_Settings.startshow	= getBool('startshow',false)
-	g_Settings.hotkey		= getString('hotkey','F5')
 	g_Settings.gui_x		= getNumber('gui_x',0.56)
 	g_Settings.gui_y		= getNumber('gui_y',0.02)
 end

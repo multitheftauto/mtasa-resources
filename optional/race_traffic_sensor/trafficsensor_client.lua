@@ -11,7 +11,6 @@
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
 		Bigdar.setHotKey( 'F4' )
-		triggerServerEvent('onLoadedAtClient_rts', g_Me)
 	end
 )
 
@@ -44,13 +43,6 @@ addEventHandler('onClientPlayerFinish', getRootElement(),
 	end
 )
 
-function updateSettings(settings, playeradmin)
-	if settings and settings.hotkey then
-		Bigdar.setHotKey( settings.hotkey )
-	end
-end
-
-
 ---------------------------------------------------------------------------
 -- Bigdar - Big radar
 ---------------------------------------------------------------------------
@@ -67,14 +59,14 @@ Bigdar.hotkey = nil		-- Current hotkey
 
 function Bigdar.setHotKey ( hotkey )
 	if Bigdar.hotkey then
-		unbindKey ( Bigdar.hotkey, 'down', onHotKey )
+		unbindKey ( Bigdar.hotkey, 'down', "showsensor" )
 	end
 	if hotkey and Bigdar.hotkey and hotkey ~= Bigdar.hotkey then
 		outputConsole( "Race Traffic Sensor hotkey is now '" .. tostring(hotkey) .. "'" )
 	end
 	Bigdar.hotkey = hotkey
 	if Bigdar.hotkey then
-		bindKey ( Bigdar.hotkey, 'down', onHotKey )
+		bindKey ( Bigdar.hotkey, 'down', "showsensor" )
 	end
 end
 
@@ -271,6 +263,7 @@ addEventHandler ( "onClientScreenFadedIn", g_Root,
 function onHotKey()
 	Bigdar.toggle()
 end
+addCommandHandler ( "showsensor", onHotKey )
 
 addCommandHandler('doF4',
 	function(player,command,...)
