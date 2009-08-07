@@ -141,7 +141,7 @@ function changeGamemodeMap_cmd(source, command, ...)
 
 	local map
 	if mapName then
-		map = getResourceFromName(mapName)
+		map = getMapFromName(mapName)
 		if not isMap(map) then
 			outputMapManager("'"..mapName.."' is not a valid map.",source)
 			return false
@@ -163,9 +163,8 @@ function changeGamemodeMap_cmd(source, command, ...)
 end
 addCommandHandler("changemap", changeGamemodeMap_cmd, true)
 
-function changeGamemode_cmd(source, command, ...)
-    local gamemodeName = #{...}>0 and table.concat({...},' ',1,1) or nil
-    local mapName      = #{...}>1 and table.concat({...},' ',2)   or nil
+function changeGamemode_cmd(source, command, gamemodeName,...)
+    local mapName      = #{...}>1 and table.concat({...},' ')   or nil
 	source = source or serverConsole
 
 	local gamemode
@@ -182,7 +181,7 @@ function changeGamemode_cmd(source, command, ...)
 	
 	local map
 	if mapName then
-		map = getResourceFromName(mapName)
+		map = getMapFromName(mapName)
 		if not isMap(map) then
 			outputMapManager("'"..mapName.."' is not a valid map.",source)
 			return false
@@ -410,3 +409,20 @@ function applyMapSettings( map )
 		settingApplier[setting](get(mapSettingsGroup..setting) or defaultValue)
 	end
 end
+
+function getMapFromName ( name )
+	local resource = getResourceFromName ( name )
+	if resource then 
+		return resource
+	end
+	name = string.lower(name) --Remove case sensitivity.  May cause minor problems with linux servers.
+	--Loop through and find resources with a matching 'name' param 
+	for i,resource in ipairs(getMaps()) do
+		local infoName = getResourceInfo ( resource, "name" )
+		if (infoName and (string.lower(infoName) == name)) then
+			return resource
+		end
+	end
+	return false
+end
+

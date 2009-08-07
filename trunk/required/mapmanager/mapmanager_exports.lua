@@ -47,7 +47,7 @@ function changeGamemodeByName ( gamemodeName, mapName, ignorePlayerCount )
 		return false
 	end
 	if ( mapName ) then
-		map = getResourceFromName ( mapName )
+		map = getMapFromName ( mapName )
 		if not map then
 			outputDebugString("mapmanager: Invalid map resource specified.",1)
 			return false
