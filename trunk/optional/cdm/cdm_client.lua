@@ -1,6 +1,7 @@
 function cdm_clientResourceStart ( resourcename )
 	if ( resourcename == getThisResource () ) then
-		bindKey ( "i", "both", showVehicles )
+		bindKey ( "i", "down", "showvehicles 1" )
+		bindKey ( "i", "up", "showvehicles 0" )
 	end
 end
 
@@ -10,9 +11,9 @@ function dist2DFixed( element, x, y, z )
 	return dist
 end
 
-function showVehicles( key, keyState )
+function showVehicles( command, keyState )
 	local vehicles = getElementsByType( "vehicle" )
-	if ( keyState == "down" ) then
+	if ( keyState == "1" ) then
 		blipsFlag = true
 		updateBlips()
 	else

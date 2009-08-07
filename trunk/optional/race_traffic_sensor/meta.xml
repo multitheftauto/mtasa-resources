@@ -1,34 +1,10 @@
 <meta>
 	<info name="Traffic Sensor" description="Traffic Sensor addon for Race" author="ccw" type="script" addon="race" version="0.0.2" build="r230 21Jun09"/>
 
-	<script src="_common_ts.lua" type="server"/>
-	<script src="util_ts_server.lua" type="server"/>
-	<script src="trafficsensor_server.lua" type="server"/>
-
 	<script src="_common_ts.lua" type="client"/>
 	<script src="util_ts_client.lua" type="client"/>
 	<script src="trafficsensor_client.lua" type="client"/>
 
 	<file src="img/arrow_ts.png"/>
-
-
-	<settings>
-
-		<!-- *****************************************************
-			 All these settings are adjustable in the Admin Panel:
-				1. start admin
-				2. press 'p'
-				3. select Resources tab
-				4. double click on 'race_traffic_sensor'
-			 ***************************************************** -->
-
-		<setting name="*hotkey" value="F4"
-					friendlyname="Hotkey"
-					group="Interface"
-					accept="*"
-					desc="The key to use to toggle the indicators."
-					/>
-
-	</settings>
 
 </meta>

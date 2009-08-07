@@ -65,7 +65,7 @@ function joinHandler(player)
 	clientCall(player, 'setPlayerID', playerID)
 	
 	-- Keybinds
-	bindKey(player, 'F4', 'down', classSelKey)
+	bindKey(player, 'F4', 'down', "changeclass")
 	bindKey(player, 'enter_exit', 'down', removePedJetPack)
 	g_Players[playerID].keys = {}
 	local function bindControls(player, t)
@@ -111,6 +111,7 @@ function classSelKey(player)
 	outputChatBox('* Returning to class selection after next death', player, 0, 220, 220)
 	g_Players[getElemID(player)].returntoclasssel = true
 end
+addCommandHandler ( "changeclass", classSelKey )
 
 function keyStateChange(player, key, state)
 	local id = getElemID(player)
