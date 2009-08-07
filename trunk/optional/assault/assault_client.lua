@@ -160,7 +160,8 @@ function switchObjectivesText()
 	setCurrentObjectiveText(currentObjectiveShowing)
 end
 
-bindKey( "F4", "down", switchObjectivesText )
+addCommandHandler( "Switch objective text", switchObjectivesText )
+bindKey( "F4", "down", "Switch objective text" )
 
 function setCurrentObjectiveText(number)
 	local team = getPlayerTeam(getLocalPlayer())

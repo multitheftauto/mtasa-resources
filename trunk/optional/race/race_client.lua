@@ -1143,19 +1143,21 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 --
 ---------------------------------------------------------------------------
 
-addCommandHandler('kill',
-    function()
-		if Spectate.active then
-    		if Spectate.savePos then
-				triggerServerEvent('onClientRequestSpectate', g_Me, false )
-    		end
-        else
-			triggerServerEvent('onRequestKillPlayer', g_Me)
-		end
-    end
-)
 
-bindKey('enter_exit', 'down',
+function kill()
+	if Spectate.active then
+		if Spectate.savePos then
+			triggerServerEvent('onClientRequestSpectate', g_Me, false )
+		end
+    else
+		triggerServerEvent('onRequestKillPlayer', g_Me)
+	end
+end
+addCommandHandler('kill',kill)
+addCommandHandler('Commit suicide',kill)
+bindKey ( next(getBoundKeys"enter_exit"), "down", "Commit suicide" )
+
+--[[bindKey('enter_exit', 'down',
     function()
 		if Spectate.active then
     		if Spectate.savePos then
@@ -1165,10 +1167,10 @@ bindKey('enter_exit', 'down',
 	        triggerServerEvent('onRequestKillPlayer', g_Me)
 		end
     end
-)
+)]]
 
 
-bindKey('b', 'down',
+--[[bindKey('b', 'down',
     function()
 	    if not g_PlayerInfo.testing and not g_PlayerInfo.admin then
 		    return
@@ -1181,23 +1183,25 @@ bindKey('b', 'down',
 			triggerServerEvent('onClientRequestSpectate', g_Me, true )
 	    end
     end
-)
+)]]
 
 
-addCommandHandler('spec',
-	function()
-		if not g_PlayerInfo.testing and not g_PlayerInfo.admin then
-			return
-		end
-	    if Spectate.active then
-    		if Spectate.savePos then
-				triggerServerEvent('onClientRequestSpectate', g_Me, false )
-    		end
-	    else
-			triggerServerEvent('onClientRequestSpectate', g_Me, true )
-	    end
+
+function spectate()
+	if not g_PlayerInfo.testing and not g_PlayerInfo.admin then
+		return
 	end
-)
+    if Spectate.active then
+		if Spectate.savePos then
+			triggerServerEvent('onClientRequestSpectate', g_Me, false )
+		end
+    else
+		triggerServerEvent('onClientRequestSpectate', g_Me, true )
+    end
+end
+addCommandHandler('spectate',spectate)
+addCommandHandler('Toggle spectator',spectate)
+bindKey("b","down","Toggle spectator")
 
 function setPipeDebug(bOn)
     g_bPipeDebug = bOn
