@@ -91,7 +91,6 @@ function cdm_initialize()
 		textDisplayAddText ( teamRoot[k].display, teamRoot[k].text1 )
 		textDisplayAddText ( teamRoot[k].display, teamRoot[k].text2 )
 		teamRoot[k].team = createTeam( tostring(teamRoot[k].name), tonumber(teamRoot[k].red), tonumber(teamRoot[k].green), tonumber(teamRoot[k].blue) )
-		--outputChatBox ( k .. " " .. tostring( teamRoot[k].team ) .. " " .. tostring(getTeamFromName(teamRoot[k].name)) ) <- Lol wut? Retardo butt. Uncomment for many lulz
 	end
 	cdm_error = false
 	outputDebugString( "Done." )
@@ -107,41 +106,20 @@ function cdm_showScreen( player )
 	setElementPosition( player, teamRoot[last].camera.posX, teamRoot[last].camera.posY, teamRoot[last].camera.posZ - 100 )
 	setPedGravity ( player, 0 )
 	textDisplayAddObserver ( teamRoot[last].display, player )
-	--[[if ( getCameraMode ( player ) == "player" ) then
-		setCameraMode ( player, "fixed" )
-	else
-		setCameraMode ( player, "player" )
-		setCameraMode ( player, "fixed" )	--Not bullshit. Fo real.
-	end
-	setCameraPosition ( player, teamRoot[last].camera.posX, teamRoot[last].camera.posY, teamRoot[last].camera.posZ )
-	--setCameraLookAt ( player, teamRoot[last].camera.lookX, teamRoot[last].camera.lookY, teamRoot[last].camera.lookZ )
-	local lookAtTimer = setTimer( setCameraLookAt, 500, 10, player, teamRoot[last].camera.lookX, teamRoot[last].camera.lookY, teamRoot[last].camera.lookZ )
-	setElementData( player, "lookAtTimer", lookAtTimer )
-	--bindKey ( player, "enter_exit", "down", cdm_spawn,  player )
-	--bindKey ( player, "left", "down", cdm_changeSpawn, player )
-	--bindKey ( player, "right", "down", cdm_changeSpawn, player )--]]
 	setCameraMatrix ( player, teamRoot[last].camera.posX, teamRoot[last].camera.posY, teamRoot[last].camera.posZ, teamRoot[last].camera.lookX, teamRoot[last].camera.lookY, teamRoot[last].camera.lookZ )
-	bindKey ( player, "enter", "down", cdm_spawn,  player )
-	bindKey ( player, "arrow_l", "down", cdm_changeSpawn, player )
-	bindKey ( player, "arrow_r", "down", cdm_changeSpawn, player )
+	bindKey ( player, "enter", "down", "Spawn" )
+	bindKey ( player, "arrow_l", "down", "Next_team", "arrow_l" )
+	bindKey ( player, "arrow_r", "down", "Previous_team", "arrow_r" )
 end
 
-function cdm_changeSpawn( player, key )
+function cdm_changeSpawn( player, commandName, key )
 	local last = getElementData( player, "lastSpawn" )
 	textDisplayRemoveObserver ( teamRoot[last].display, player )
-	--if ( key == "left" ) then last = last - 1 else last = last + 1 end
 	if ( key == "arrow_l" ) then last = last - 1 else last = last + 1 end
 	if ( last < 1 ) then last = #teamRoot end
 	if ( last > #teamRoot ) then last = 1 end
 	textDisplayAddObserver ( teamRoot[last].display, player )
 	setElementPosition( player, teamRoot[last].camera.posX, teamRoot[last].camera.posY, teamRoot[last].camera.posZ - 100 )
-	--[[setCameraPosition ( player, teamRoot[last].camera.posX, teamRoot[last].camera.posY, teamRoot[last].camera.posZ )
-	local lookAtTimer = getElementData( player, "lookAtTimer" )
-	if ( lookAtTimer ) then
-		killTimer ( lookAtTimer )
-		setElementData( player, "lookAtTimer", nil )
-	end
-	setCameraLookAt ( player, teamRoot[last].camera.lookX, teamRoot[last].camera.lookY, teamRoot[last].camera.lookZ ) ]]
 	setCameraMatrix( player, teamRoot[last].camera.posX, teamRoot[last].camera.posY, teamRoot[last].camera.posZ, teamRoot[last].camera.lookX, teamRoot[last].camera.lookY, teamRoot[last].camera.lookZ )
 	setElementData( player, "lastSpawn", last )
 end
@@ -149,15 +127,9 @@ end
 function cdm_spawn( player )
 	teamNum = getElementData( player, "lastSpawn" )
 	textDisplayRemoveObserver ( teamRoot[teamNum].display, player )
-	--for k,v in ipairs(teamRoot) do
-	--	textDisplayRemoveObserver ( teamRoot[k].display, player )
-	--end
-	--unbindKey ( player, "enter_exit", "down", cdm_spawn )
-	--unbindKey ( player, "left", "down", cdm_changeSpawn )
-	--unbindKey ( player, "right", "down", cdm_changeSpawn )
-	unbindKey ( player, "enter", "down", cdm_spawn )
-	unbindKey ( player, "arrow_l", "down", cdm_changeSpawn )
-	unbindKey ( player, "arrow_r", "down", cdm_changeSpawn )
+	unbindKey ( player, "enter", "down", "Spawn" )
+	unbindKey ( player, "arrow_l", "down", "Next_team" )
+	unbindKey ( player, "arrow_r", "down", "Previous_team" )
 	local randSpawn = math.random(1, #teamRoot[teamNum].spawnpoints)
 	local randSkin = math.random(1, #teamRoot[teamNum].skins)
 	local team = getTeamFromName(teamRoot[teamNum].name)
@@ -168,7 +140,6 @@ function cdm_spawn( player )
 end
 
 function cdm_spawnTwo( player, teamNum, randSpawn, randSkin, team )
-	--setCameraMode ( player, "player" )
 	setCameraTarget( player, player )
 	setPlayerTeam ( player, team )
 	spawnPlayer ( player, teamRoot[teamNum].spawnpoints[randSpawn].posX, teamRoot[teamNum].spawnpoints[randSpawn].posY, teamRoot[teamNum].spawnpoints[randSpawn].posZ, teamRoot[teamNum].spawnpoints[randSpawn].rot, teamRoot[teamNum].skins[randSkin], 0, 0, team )
@@ -253,6 +224,10 @@ function getChildren ( root, type )
 	end
 	return result
 end
+
+addCommandHandler("Spawn", cdm_spawn)
+addCommandHandler("Next_team", cdm_changeSpawn)
+addCommandHandler("Previous_team", cdm_changeSpawn)
 
 addEventHandler ( "onPlayerJoin", cdm_root, cdm_playerJoin )
 addEventHandler ( "onPlayerQuit", cdm_root, cdm_playerQuit )
