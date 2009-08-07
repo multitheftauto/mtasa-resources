@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Rustler Rampage" author="Ransom" description="Rustler war at sea" version="0" />
+  <map src="Rustler Rampage.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="420" />
+  </settings>
+</meta>

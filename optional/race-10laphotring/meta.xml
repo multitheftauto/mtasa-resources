@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="10Lap Hotring" author="Aeron for interior models.  BLASTAxerox for checkpoints and spawns." description="10 lap race with Hotring Racers.  Thanks to Aeron for the interior models.  Respect to the BLASTA crew." version="0" />
+  <map src="10Lap Hotring.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="240" />
+  </settings>
+</meta>

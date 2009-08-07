@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="The Panopticon" author="Blue Zircon" description="Ranchers on dangerous roads during a nasty storm" version="0" duration="210" />
+  <map src="The Panopticon.map" />
+  <settings>
+    <setting name="#time" value="1:0" />
+    <setting name="#weather" value="8" />
+    <setting name="#respawn" value="timelimit" />
+  </settings>
+</meta>

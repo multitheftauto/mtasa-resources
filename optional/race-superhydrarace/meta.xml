@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Super Hydra Race" author="Ransom" description="2nd ever hydra race" version="0" />
+  <map src="Super Hydra Race.map" />
+  <settings>
+    <setting name="#weather" value="8" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="600" />
+  </settings>
+</meta>

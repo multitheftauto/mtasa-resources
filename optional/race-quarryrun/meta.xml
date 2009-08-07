@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Quarry Run" author="Slothman" description="A race around the Quarry on dirtbikes" version="0" />
+  <map src="Quarry Run.map" />
+  <settings>
+    <setting name="#time" value="15:0" />
+    <setting name="#weather" value="3" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="300" />
+  </settings>
+</meta>

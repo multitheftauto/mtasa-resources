@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-16"?>
+<map mod="deathmatch">
+  <spawnpoint posX="-2200.484863" posY="2421.825439" posZ="1.165230" rotation="225" vehicle="447" id="spawnpoint0" />
+  <spawnpoint posX="-2333.987549" posY="2497.883301" posZ="1.189028" rotation="167" vehicle="447" id="spawnpoint1" />
+  <spawnpoint posX="-2320.333984" posY="2294.191162" posZ="1.043757" rotation="178" vehicle="447" id="spawnpoint2" />
+  <spawnpoint posX="-2617.830811" posY="2259.159424" posZ="8.286091" rotation="270" vehicle="447" id="spawnpoint3" />
+  <spawnpoint posX="-2220.735352" posY="2401.207275" posZ="1.141664" rotation="225" vehicle="447" id="spawnpoint4" />
+  <spawnpoint posX="-2487.791748" posY="2279.978516" posZ="18.908543" rotation="270" vehicle="447" id="spawnpoint5" />
+  <spawnpoint posX="-2319.950195" posY="2327.581787" posZ="1.135010" rotation="360" vehicle="447" id="spawnpoint6" />
+  <spawnpoint posX="-2227.438232" posY="2326.377686" posZ="7.646875" rotation="360" vehicle="447" id="spawnpoint7" />
+  <spawnpoint posX="-2494.791992" posY="2512.755371" posZ="18.780005" rotation="270" vehicle="447" id="spawnpoint8" />
+  <spawnpoint posX="-2410.806396" posY="2314.227539" posZ="1.022179" rotation="360" vehicle="447" id="spawnpoint9" />
+  <spawnpoint posX="-2530.324951" posY="2361.068848" posZ="5.085530" rotation="178" vehicle="447" id="spawnpoint10" />
+  <spawnpoint posX="-2250.519775" posY="2431.108887" posZ="1.084665" rotation="44" vehicle="447" id="spawnpoint11" />
+  <spawnpoint posX="-2258.897705" posY="2536.235107" posZ="1.117823" rotation="282" vehicle="447" id="spawnpoint12" />
+  <spawnpoint posX="-2230.928711" posY="2450.950684" posZ="1.154004" rotation="44" vehicle="447" id="spawnpoint13" />
+  <spawnpoint posX="-2501.367432" posY="2309.981689" posZ="15.711888" rotation="259" vehicle="447" id="spawnpoint14" />
+  <spawnpoint posX="-2553.885498" posY="2248.557373" posZ="5.062500" rotation="64" vehicle="447" id="spawnpoint15" />
+  <spawnpoint posX="-2268.560791" posY="2291.274170" posZ="4.920213" rotation="179" vehicle="447" id="spawnpoint16" />
+  <spawnpoint posX="-2540.722412" posY="2313.180420" posZ="13.623438" rotation="360" vehicle="447" id="spawnpoint17" />
+  <spawnpoint posX="-2508.766846" posY="2282.629395" posZ="15.146875" rotation="179" vehicle="447" id="spawnpoint18" />
+  <spawnpoint posX="-2502.473145" posY="2203.703613" posZ="0.983055" rotation="259" vehicle="447" id="spawnpoint19" />
+  <spawnpoint posX="-2438.193359" posY="2431.937988" posZ="13.690090" rotation="271" vehicle="447" id="spawnpoint20" />
+  <spawnpoint posX="-2436.680176" posY="2512.137207" posZ="14.101921" rotation="179" vehicle="447" id="spawnpoint21" />
+  <spawnpoint posX="-2326.961670" posY="2417.514160" posZ="7.130292" rotation="237" vehicle="447" id="spawnpoint22" />
+  <spawnpoint posX="-2276.875244" posY="2333.395996" posZ="5.068194" rotation="360" vehicle="447" id="spawnpoint23" />
+  <spawnpoint posX="-2295.164795" posY="2414.433350" posZ="5.014062" rotation="134" vehicle="447" id="spawnpoint24" />
+  <spawnpoint posX="-2271.045898" posY="2390.461426" posZ="5.048964" rotation="134" vehicle="447" id="spawnpoint25" />
+  <spawnpoint posX="-2325.692139" posY="2365.663818" posZ="5.242277" rotation="101" vehicle="447" id="spawnpoint26" />
+  <spawnpoint posX="-2375.819824" posY="2375.604736" posZ="3.594055" rotation="101" vehicle="447" id="spawnpoint27" />
+  <spawnpoint posX="-2447.468506" posY="2395.321777" posZ="13.671792" rotation="78" vehicle="447" id="spawnpoint28" />
+  <spawnpoint posX="-2533.914063" posY="2346.564941" posZ="13.336099" rotation="134" vehicle="447" id="spawnpoint29" />
+  <spawnpoint posX="-2615.750000" posY="2331.520020" posZ="8.307034" rotation="360" vehicle="447" id="spawnpoint30" />
+  <spawnpoint posX="-2535.537109" posY="2477.860596" posZ="19.652708" rotation="168" vehicle="447" id="spawnpoint31" />
+  <racepickup posX="-2227.579590" posY="2327.389404" posZ="32.394390" respawn="300000" type="repair" id="pickup0" />
+  <racepickup posX="-2212.382813" posY="2410.890381" posZ="32.394390" respawn="300000" type="repair" id="pickup1" />
+  <racepickup posX="-2241.485352" posY="2439.619629" posZ="32.394390" respawn="300000" type="repair" id="pickup2" />
+  <racepickup posX="-2320.132080" posY="2311.411865" posZ="32.394390" respawn="300000" type="repair" id="pickup3" />
+  <racepickup posX="-2334.398926" posY="2496.838623" posZ="32.394390" respawn="300000" type="repair" id="pickup4" />
+  <racepickup posX="-2256.551270" posY="2535.996094" posZ="32.394390" respawn="300000" type="repair" id="pickup5" />
+  <racepickup posX="-2496.903076" posY="2292.178467" posZ="32.394390" respawn="300000" type="repair" id="pickup6" />
+  <racepickup posX="-2530.194336" posY="2360.623535" posZ="32.394390" respawn="300000" type="repair" id="pickup7" />
+  <racepickup posX="-2554.068359" posY="2248.735840" posZ="32.394390" respawn="300000" type="repair" id="pickup8" />
+  <racepickup posX="-2616.863525" posY="2259.145996" posZ="32.394390" respawn="300000" type="repair" id="pickup9" />
+  <racepickup posX="-2410.973633" posY="2315.323242" posZ="32.394390" respawn="300000" type="repair" id="pickup10" />
+  <racepickup posX="-2493.580322" posY="2512.643555" posZ="32.394390" respawn="300000" type="repair" id="pickup11" />
+</map>

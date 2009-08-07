@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Santos Drive" author="Black Dragon" description="A cruise around Los Santos" version="0" />
+  <map src="Santos Drive.map" />
+  <settings>
+    <setting name="#time" value="0:0" />
+    <setting name="#weather" value="4" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#respawntime" value="6" />
+    <setting name="#duration" value="360" />
+  </settings>
+</meta>

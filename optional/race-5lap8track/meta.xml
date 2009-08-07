@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="5Lap 8track" author="Aeron for interior models.  BLASTAxerox for checkpoints and spawns" description="Hotring race around the figure8 course. Much thanks to Aeron for the interior models. Respect to the BLASTA crew." version="0" />
+  <map src="5Lap 8track.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+  </settings>
+</meta>

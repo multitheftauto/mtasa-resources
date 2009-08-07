@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="mx_sky" author="JHXP" description="A quick crazy custom-made-ground race" version="0" />
+  <map src="mx_sky.map" />
+  <settings>
+    <setting name="#time" value="22:0" />
+    <setting name="#weather" value="6" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="300" />
+  </settings>
+</meta>

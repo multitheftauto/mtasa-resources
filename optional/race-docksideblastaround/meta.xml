@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Dockside BLASTAround" author="BLASTAxerox" description="Tough bike race with some difficult jumps and stupidly sharp turns.  Respect to the BLASTA crew." version="0" />
+  <map src="Dockside BLASTAround.map" />
+  <settings>
+    <setting name="#weather" value="1" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="300" />
+  </settings>
+</meta>

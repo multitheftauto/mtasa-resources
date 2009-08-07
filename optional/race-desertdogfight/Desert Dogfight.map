@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-16"?>
+<map mod="deathmatch">
+  <spawnpoint posX="36.842506" posY="2266.003906" posZ="124.454262" rotation="352" vehicle="520" id="spawnpoint0" />
+  <spawnpoint posX="97.457504" posY="2239.397705" posZ="125.632393" rotation="276" vehicle="520" id="spawnpoint1" />
+  <spawnpoint posX="33.762665" posY="2225.252197" posZ="126.073143" rotation="178" vehicle="520" id="spawnpoint2" />
+  <spawnpoint posX="-63.248581" posY="2272.799072" posZ="121.724983" rotation="320" vehicle="520" id="spawnpoint3" />
+  <spawnpoint posX="-95.089211" posY="2284.754150" posZ="122.926292" rotation="360" vehicle="520" id="spawnpoint4" />
+  <spawnpoint posX="-94.306053" posY="2246.864014" posZ="122.231026" rotation="161" vehicle="520" id="spawnpoint5" />
+  <spawnpoint posX="-257.599365" posY="2295.533936" posZ="111.322655" rotation="132" vehicle="520" id="spawnpoint6" />
+  <spawnpoint posX="-306.565674" posY="2350.030762" posZ="113.261192" rotation="122" vehicle="520" id="spawnpoint7" />
+  <spawnpoint posX="-426.762817" posY="2505.210938" posZ="125.224266" rotation="339" vehicle="520" id="spawnpoint8" />
+  <spawnpoint posX="-668.524841" posY="2621.383789" posZ="147.160965" rotation="360" vehicle="520" id="spawnpoint9" />
+  <spawnpoint posX="-833.747681" posY="2642.070313" posZ="133.934799" rotation="360" vehicle="520" id="spawnpoint10" />
+  <spawnpoint posX="-827.645996" posY="2590.580566" posZ="136.003540" rotation="139" vehicle="520" id="spawnpoint11" />
+  <spawnpoint posX="-662.231506" posY="2573.685791" posZ="153.122009" rotation="127" vehicle="520" id="spawnpoint12" />
+  <spawnpoint posX="-679.266724" posY="2368.441162" posZ="161.387955" rotation="119" vehicle="520" id="spawnpoint13" />
+  <spawnpoint posX="-474.318115" posY="2348.525391" posZ="122.267143" rotation="127" vehicle="520" id="spawnpoint14" />
+  <spawnpoint posX="-643.737122" posY="2350.734863" posZ="158.963882" rotation="152" vehicle="520" id="spawnpoint15" />
+  <spawnpoint posX="-485.937897" posY="2115.558105" posZ="134.758179" rotation="94" vehicle="520" id="spawnpoint16" />
+  <spawnpoint posX="-373.690857" posY="2125.685791" posZ="133.705811" rotation="242" vehicle="520" id="spawnpoint17" />
+  <spawnpoint posX="-297.849609" posY="2170.478027" posZ="113.427376" rotation="71" vehicle="520" id="spawnpoint18" />
+  <spawnpoint posX="-266.252563" posY="2169.473877" posZ="113.345940" rotation="223" vehicle="520" id="spawnpoint19" />
+  <spawnpoint posX="-311.445801" posY="2006.157715" posZ="131.384201" rotation="314" vehicle="520" id="spawnpoint20" />
+  <spawnpoint posX="-364.044952" posY="1985.572388" posZ="132.359329" rotation="75" vehicle="520" id="spawnpoint21" />
+  <spawnpoint posX="-189.156311" posY="1887.851318" posZ="116.429787" rotation="237" vehicle="520" id="spawnpoint22" />
+  <spawnpoint posX="-180.640808" posY="1781.200439" posZ="99.624535" rotation="270" vehicle="520" id="spawnpoint23" />
+  <spawnpoint posX="-194.419861" posY="1748.143188" posZ="99.828941" rotation="228" vehicle="520" id="spawnpoint24" />
+  <spawnpoint posX="-224.610779" posY="1776.590820" posZ="103.390236" rotation="132" vehicle="520" id="spawnpoint25" />
+  <spawnpoint posX="-321.403351" posY="1945.828979" posZ="133.333633" rotation="109" vehicle="520" id="spawnpoint26" />
+  <spawnpoint posX="-180.795349" posY="1489.822998" posZ="74.610909" rotation="270" vehicle="520" id="spawnpoint27" />
+  <spawnpoint posX="-201.665512" posY="1385.040527" posZ="68.516022" rotation="233" vehicle="520" id="spawnpoint28" />
+  <spawnpoint posX="-379.758423" posY="1570.245728" posZ="76.804161" rotation="105" vehicle="520" id="spawnpoint29" />
+  <spawnpoint posX="-556.266174" posY="1786.716431" posZ="138.311691" rotation="100" vehicle="520" id="spawnpoint30" />
+  <spawnpoint posX="-496.187134" posY="1807.316528" posZ="133.541977" rotation="288" vehicle="520" id="spawnpoint31" />
+</map>

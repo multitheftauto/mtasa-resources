@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Smugglers Run" author="erorr404" description="Play as a smuggler on a mission to deliver the goods or as a Hunter pilot ordered to take them out by any means necessary. Hunters ignore checkpoints!&#xD;&#xA;&#xD;&#xA;- original verison" version="0" />
+  <map src="Smugglers Run.map" />
+  <settings>
+    <setting name="#time" value="16:0" />
+    <setting name="#weather" value="2" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#respawntime" value="20" />
+    <setting name="#duration" value="600" />
+  </settings>
+</meta>

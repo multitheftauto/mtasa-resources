@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-16"?>
+<map mod="deathmatch">
+  <spawnpoint posX="2392.000000" posY="-4072.000000" posZ="3.353250" rotation="360" vehicle="424" id="spawnpoint0" />
+  <spawnpoint posX="2388.000000" posY="-4028.000000" posZ="3.353250" rotation="179" vehicle="424" id="spawnpoint1" />
+  <spawnpoint posX="2368.000000" posY="-4052.000000" posZ="3.353250" rotation="270" vehicle="424" id="spawnpoint2" />
+  <spawnpoint posX="2412.000000" posY="-4048.000000" posZ="3.353250" rotation="90" vehicle="424" id="spawnpoint3" />
+  <spawnpoint posX="2388.000000" posY="-4072.000000" posZ="3.353250" rotation="360" vehicle="424" id="spawnpoint4" />
+  <spawnpoint posX="2392.000000" posY="-4028.000000" posZ="3.353250" rotation="179" vehicle="424" id="spawnpoint5" />
+  <spawnpoint posX="2368.000000" posY="-4048.000000" posZ="3.353250" rotation="270" vehicle="424" id="spawnpoint6" />
+  <spawnpoint posX="2412.000000" posY="-4052.000000" posZ="3.353250" rotation="90" vehicle="424" id="spawnpoint7" />
+  <spawnpoint posX="2396.000000" posY="-4072.000000" posZ="3.353250" rotation="360" vehicle="424" id="spawnpoint8" />
+  <spawnpoint posX="2384.000000" posY="-4028.000000" posZ="3.353250" rotation="179" vehicle="424" id="spawnpoint9" />
+  <spawnpoint posX="2368.000000" posY="-4056.000000" posZ="3.353250" rotation="270" vehicle="424" id="spawnpoint10" />
+  <spawnpoint posX="2412.000000" posY="-4044.000000" posZ="3.353250" rotation="90" vehicle="424" id="spawnpoint11" />
+  <spawnpoint posX="2384.000000" posY="-4072.000000" posZ="3.353250" rotation="360" vehicle="424" id="spawnpoint12" />
+  <spawnpoint posX="2396.000000" posY="-4028.000000" posZ="3.353250" rotation="179" vehicle="424" id="spawnpoint13" />
+  <spawnpoint posX="2368.000000" posY="-4044.000000" posZ="3.353250" rotation="270" vehicle="424" id="spawnpoint14" />
+  <spawnpoint posX="2412.000000" posY="-4056.000000" posZ="3.353250" rotation="90" vehicle="424" id="spawnpoint15" />
+  <spawnpoint posX="2400.000000" posY="-4072.000000" posZ="3.353250" rotation="360" vehicle="424" id="spawnpoint16" />
+  <spawnpoint posX="2380.000000" posY="-4028.000000" posZ="3.353250" rotation="179" vehicle="424" id="spawnpoint17" />
+  <spawnpoint posX="2368.000000" posY="-4060.000000" posZ="3.353250" rotation="270" vehicle="424" id="spawnpoint18" />
+  <spawnpoint posX="2412.000000" posY="-4040.000000" posZ="3.353250" rotation="90" vehicle="424" id="spawnpoint19" />
+  <spawnpoint posX="2380.000000" posY="-4072.000000" posZ="3.353250" rotation="360" vehicle="424" id="spawnpoint20" />
+  <spawnpoint posX="2400.000000" posY="-4028.000000" posZ="3.353250" rotation="179" vehicle="424" id="spawnpoint21" />
+  <spawnpoint posX="2368.000000" posY="-4040.000000" posZ="3.353250" rotation="270" vehicle="424" id="spawnpoint22" />
+  <spawnpoint posX="2412.000000" posY="-4060.000000" posZ="3.353250" rotation="90" vehicle="424" id="spawnpoint23" />
+  <spawnpoint posX="2404.000000" posY="-4072.000000" posZ="3.353250" rotation="360" vehicle="424" id="spawnpoint24" />
+  <spawnpoint posX="2376.000000" posY="-4028.000000" posZ="3.353250" rotation="179" vehicle="424" id="spawnpoint25" />
+  <spawnpoint posX="2368.000000" posY="-4064.000000" posZ="3.353250" rotation="270" vehicle="424" id="spawnpoint26" />
+  <spawnpoint posX="2412.000000" posY="-4036.000000" posZ="3.353250" rotation="90" vehicle="424" id="spawnpoint27" />
+  <spawnpoint posX="2376.000000" posY="-4072.000000" posZ="3.353250" rotation="360" vehicle="424" id="spawnpoint28" />
+  <spawnpoint posX="2404.000000" posY="-4028.000000" posZ="3.353250" rotation="179" vehicle="424" id="spawnpoint29" />
+  <spawnpoint posX="2368.000000" posY="-4036.000000" posZ="3.353250" rotation="270" vehicle="424" id="spawnpoint30" />
+  <spawnpoint posX="2412.000000" posY="-4064.000000" posZ="3.353250" rotation="90" vehicle="424" id="spawnpoint31" />
+  <object posX="2360.500000" posY="-4072.500000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="14.9999777807454" model="3374" id="object0" />
+  <object posX="2360.000000" posY="-4068.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object1" />
+  <object posX="2360.000000" posY="-4064.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object2" />
+  <object posX="2360.000000" posY="-4060.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object3" />
+  <object posX="2360.000000" posY="-4056.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object4" />
+  <object posX="2360.000000" posY="-4052.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object5" />
+  <object posX="2360.000000" posY="-4048.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object6" />
+  <object posX="2360.000000" posY="-4044.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object7" />
+  <object posX="2360.000000" posY="-4040.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object8" />
+  <object posX="2360.000000" posY="-4036.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object9" />
+  <object posX="2360.000000" posY="-4032.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="0" model="3374" id="object10" />
+  <object posX="2360.500000" posY="-4027.500000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="-14.9999777807454" model="3374" id="object11" />
+  <object posX="2363.000000" posY="-4077.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="-44.9999906380158" model="3374" id="object12" />
+  <object posX="2364.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object13" />
+  <object posX="2364.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object14" />
+  <object posX="2364.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object15" />
+  <object posX="2364.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object16" />
+  <object posX="2364.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object17" />
+  <object posX="2364.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object18" />
+  <object posX="2364.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object19" />
+  <object posX="2364.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object20" />
+  <object posX="2364.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object21" />
+  <object posX="2364.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object22" />
+  <object posX="2364.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object23" />
+  <object posX="2364.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object24" />
+  <object posX="2363.000000" posY="-4023.000000" posZ="2.500000" rotX="0" rotY="44.9999906380158" rotZ="-44.9999906380158" model="3374" id="object25" />
+  <object posX="2367.500000" posY="-4079.500000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="-14.9999777807454" model="3374" id="object26" />
+  <object posX="2368.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object27" />
+  <object posX="2368.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object28" />
+  <object posX="2368.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object29" />
+  <object posX="2368.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object30" />
+  <object posX="2368.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object31" />
+  <object posX="2368.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object32" />
+  <object posX="2368.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object33" />
+  <object posX="2368.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object34" />
+  <object posX="2368.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object35" />
+  <object posX="2368.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object36" />
+  <object posX="2368.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object37" />
+  <object posX="2368.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object38" />
+  <object posX="2368.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object39" />
+  <object posX="2368.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object40" />
+  <object posX="2367.500000" posY="-4020.500000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="14.9999777807454" model="3374" id="object41" />
+  <object posX="2372.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object42" />
+  <object posX="2372.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object43" />
+  <object posX="2372.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object44" />
+  <object posX="2372.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object45" />
+  <object posX="2372.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object46" />
+  <object posX="2372.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object47" />
+  <object posX="2372.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object48" />
+  <object posX="2372.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object49" />
+  <object posX="2372.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object50" />
+  <object posX="2372.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object51" />
+  <object posX="2372.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object52" />
+  <object posX="2372.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object53" />
+  <object posX="2372.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object54" />
+  <object posX="2372.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object55" />
+  <object posX="2372.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object56" />
+  <object posX="2372.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object57" />
+  <object posX="2376.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object58" />
+  <object posX="2376.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object59" />
+  <object posX="2376.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object60" />
+  <object posX="2376.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object61" />
+  <object posX="2376.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object62" />
+  <object posX="2376.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object63" />
+  <object posX="2376.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object64" />
+  <object posX="2376.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object65" />
+  <object posX="2376.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object66" />
+  <object posX="2376.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object67" />
+  <object posX="2376.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object68" />
+  <object posX="2376.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object69" />
+  <object posX="2376.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object70" />
+  <object posX="2376.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object71" />
+  <object posX="2376.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object72" />
+  <object posX="2376.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object73" />
+  <object posX="2380.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object74" />
+  <object posX="2380.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object75" />
+  <object posX="2380.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object76" />
+  <object posX="2380.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object77" />
+  <object posX="2380.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object78" />
+  <object posX="2380.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object79" />
+  <object posX="2380.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object80" />
+  <object posX="2380.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object81" />
+  <object posX="2380.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object82" />
+  <object posX="2380.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object83" />
+  <object posX="2380.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object84" />
+  <object posX="2380.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object85" />
+  <object posX="2380.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object86" />
+  <object posX="2380.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object87" />
+  <object posX="2380.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object88" />
+  <object posX="2380.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object89" />
+  <object posX="2384.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object90" />
+  <object posX="2384.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object91" />
+  <object posX="2384.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object92" />
+  <object posX="2384.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object93" />
+  <object posX="2384.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object94" />
+  <object posX="2384.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object95" />
+  <object posX="2384.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object96" />
+  <object posX="2384.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object97" />
+  <object posX="2384.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object98" />
+  <object posX="2384.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object99" />
+  <object posX="2384.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object100" />
+  <object posX="2384.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object101" />
+  <object posX="2384.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object102" />
+  <object posX="2384.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object103" />
+  <object posX="2384.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object104" />
+  <object posX="2384.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object105" />
+  <object posX="2388.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object106" />
+  <object posX="2388.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object107" />
+  <object posX="2388.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object108" />
+  <object posX="2388.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object109" />
+  <object posX="2388.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object110" />
+  <object posX="2388.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object111" />
+  <object posX="2388.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object112" />
+  <object posX="2388.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object113" />
+  <object posX="2388.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object114" />
+  <object posX="2388.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object115" />
+  <object posX="2388.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object116" />
+  <object posX="2388.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object117" />
+  <object posX="2388.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object118" />
+  <object posX="2388.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object119" />
+  <object posX="2388.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object120" />
+  <object posX="2388.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object121" />
+  <object posX="2392.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object122" />
+  <object posX="2392.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object123" />
+  <object posX="2392.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object124" />
+  <object posX="2392.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object125" />
+  <object posX="2392.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object126" />
+  <object posX="2392.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object127" />
+  <object posX="2392.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object128" />
+  <object posX="2392.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object129" />
+  <object posX="2392.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object130" />
+  <object posX="2392.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object131" />
+  <object posX="2392.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object132" />
+  <object posX="2392.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object133" />
+  <object posX="2392.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object134" />
+  <object posX="2392.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object135" />
+  <object posX="2392.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object136" />
+  <object posX="2392.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object137" />
+  <object posX="2396.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object138" />
+  <object posX="2396.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object139" />
+  <object posX="2396.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object140" />
+  <object posX="2396.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object141" />
+  <object posX="2396.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object142" />
+  <object posX="2396.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object143" />
+  <object posX="2396.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object144" />
+  <object posX="2396.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object145" />
+  <object posX="2396.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object146" />
+  <object posX="2396.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object147" />
+  <object posX="2396.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object148" />
+  <object posX="2396.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object149" />
+  <object posX="2396.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object150" />
+  <object posX="2396.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object151" />
+  <object posX="2396.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object152" />
+  <object posX="2396.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object153" />
+  <object posX="2400.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object154" />
+  <object posX="2400.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object155" />
+  <object posX="2400.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object156" />
+  <object posX="2400.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object157" />
+  <object posX="2400.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object158" />
+  <object posX="2400.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object159" />
+  <object posX="2400.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object160" />
+  <object posX="2400.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object161" />
+  <object posX="2400.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object162" />
+  <object posX="2400.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object163" />
+  <object posX="2400.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object164" />
+  <object posX="2400.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object165" />
+  <object posX="2400.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object166" />
+  <object posX="2400.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object167" />
+  <object posX="2400.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object168" />
+  <object posX="2400.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object169" />
+  <object posX="2404.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object170" />
+  <object posX="2404.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object171" />
+  <object posX="2404.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object172" />
+  <object posX="2404.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object173" />
+  <object posX="2404.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object174" />
+  <object posX="2404.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object175" />
+  <object posX="2404.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object176" />
+  <object posX="2404.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object177" />
+  <object posX="2404.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object178" />
+  <object posX="2404.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object179" />
+  <object posX="2404.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object180" />
+  <object posX="2404.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object181" />
+  <object posX="2404.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object182" />
+  <object posX="2404.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object183" />
+  <object posX="2404.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object184" />
+  <object posX="2404.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object185" />
+  <object posX="2408.000000" posY="-4080.000000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="0" model="3374" id="object186" />
+  <object posX="2408.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object187" />
+  <object posX="2408.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object188" />
+  <object posX="2408.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object189" />
+  <object posX="2408.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object190" />
+  <object posX="2408.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object191" />
+  <object posX="2408.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object192" />
+  <object posX="2408.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object193" />
+  <object posX="2408.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object194" />
+  <object posX="2408.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object195" />
+  <object posX="2408.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object196" />
+  <object posX="2408.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object197" />
+  <object posX="2408.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object198" />
+  <object posX="2408.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object199" />
+  <object posX="2408.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object200" />
+  <object posX="2408.000000" posY="-4020.000000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="0" model="3374" id="object201" />
+  <object posX="2412.500000" posY="-4079.500000" posZ="2.500000" rotX="-44.9999906380158" rotY="0" rotZ="14.9999777807454" model="3374" id="object202" />
+  <object posX="2412.000000" posY="-4076.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object203" />
+  <object posX="2412.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object204" />
+  <object posX="2412.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object205" />
+  <object posX="2412.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object206" />
+  <object posX="2412.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object207" />
+  <object posX="2412.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object208" />
+  <object posX="2412.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object209" />
+  <object posX="2412.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object210" />
+  <object posX="2412.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object211" />
+  <object posX="2412.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object212" />
+  <object posX="2412.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object213" />
+  <object posX="2412.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object214" />
+  <object posX="2412.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object215" />
+  <object posX="2412.000000" posY="-4024.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object216" />
+  <object posX="2412.500000" posY="-4020.500000" posZ="2.500000" rotX="44.9999906380158" rotY="0" rotZ="-14.9999777807454" model="3374" id="object217" />
+  <object posX="2417.000000" posY="-4077.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="-44.9999906380158" model="3374" id="object218" />
+  <object posX="2416.000000" posY="-4072.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object219" />
+  <object posX="2416.000000" posY="-4068.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object220" />
+  <object posX="2416.000000" posY="-4064.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object221" />
+  <object posX="2416.000000" posY="-4060.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object222" />
+  <object posX="2416.000000" posY="-4056.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object223" />
+  <object posX="2416.000000" posY="-4052.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object224" />
+  <object posX="2416.000000" posY="-4048.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object225" />
+  <object posX="2416.000000" posY="-4044.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object226" />
+  <object posX="2416.000000" posY="-4040.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object227" />
+  <object posX="2416.000000" posY="-4036.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object228" />
+  <object posX="2416.000000" posY="-4032.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object229" />
+  <object posX="2416.000000" posY="-4028.000000" posZ="1.000000" rotX="0" rotY="0" rotZ="0" model="3374" id="object230" />
+  <object posX="2417.000000" posY="-4023.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="44.9999906380158" model="3374" id="object231" />
+  <object posX="2419.500000" posY="-4072.500000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="-14.9999777807454" model="3374" id="object232" />
+  <object posX="2420.000000" posY="-4068.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object233" />
+  <object posX="2420.000000" posY="-4064.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object234" />
+  <object posX="2420.000000" posY="-4060.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object235" />
+  <object posX="2420.000000" posY="-4056.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object236" />
+  <object posX="2420.000000" posY="-4052.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object237" />
+  <object posX="2420.000000" posY="-4048.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object238" />
+  <object posX="2420.000000" posY="-4044.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object239" />
+  <object posX="2420.000000" posY="-4040.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object240" />
+  <object posX="2420.000000" posY="-4036.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object241" />
+  <object posX="2420.000000" posY="-4032.000000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="0" model="3374" id="object242" />
+  <object posX="2419.500000" posY="-4027.500000" posZ="2.500000" rotX="0" rotY="-44.9999906380158" rotZ="14.9999777807454" model="3374" id="object243" />
+  <object posX="2390.000000" posY="-4050.000000" posZ="2.911778" rotX="0" rotY="0" rotZ="0" model="1225" id="object244" />
+  <object posX="2404.000000" posY="-4036.000000" posZ="2.911778" rotX="0" rotY="0" rotZ="0" model="1225" id="object245" />
+  <object posX="2376.000000" posY="-4036.000000" posZ="2.911778" rotX="0" rotY="0" rotZ="0" model="1225" id="object246" />
+  <object posX="2376.000000" posY="-4064.000000" posZ="2.911778" rotX="0" rotY="0" rotZ="0" model="1225" id="object247" />
+  <object posX="2404.000000" posY="-4064.000000" posZ="2.911778" rotX="0" rotY="0" rotZ="0" model="1225" id="object248" />
+  <racepickup posX="2390.000000" posY="-4050.000000" posZ="5.200061" type="nitro" id="pickup0" />
+</map>

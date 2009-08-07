@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Long Way Round" author="BLASTAxerox" description="Marathon around the entire state.  Watch the damage meters.  Respect to the BLASTA crew." version="0" />
+  <map src="Long Way Round.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="780" />
+  </settings>
+</meta>

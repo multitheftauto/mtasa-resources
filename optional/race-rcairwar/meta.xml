@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="RC Air War" author="erorr404" description="A battle to the death with RC Barons over a park in San Fierro." version="0" />
+  <map src="RC Air War.map" />
+  <settings>
+    <setting name="#time" value="10:0" />
+    <setting name="#weather" value="7" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#respawntime" value="10" />
+    <setting name="#duration" value="300" />
+  </settings>
+</meta>

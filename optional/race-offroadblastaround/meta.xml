@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Offroad BLASTAround" author="BLASTAxerox" description="Nasty Offroad course with mutiple hairpin turns and difficult inclines.  Respect to the BLASTA crew." version="0" />
+  <map src="Offroad BLASTAround.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="360" />
+  </settings>
+</meta>

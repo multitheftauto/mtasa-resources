@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Stunt" author="Aeron" description="Interior with stunt stuff" version="0" />
+  <map src="Stunt.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+  </settings>
+</meta>

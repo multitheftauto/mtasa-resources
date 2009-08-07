@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Freeroam" author="BLASTAxerox... some spawn and vehicle change moves by Ransom" description="Planes are at SF Easter Bay Airport.  Uber planes are kinda hidden.  Respect to the BLASTA crew." version="0" />
+  <map src="Freeroam.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#respawntime" value="12" />
+    <setting name="#duration" value="600" />
+  </settings>
+</meta>

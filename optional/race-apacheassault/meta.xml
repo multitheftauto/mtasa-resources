@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Apache Assault" author="Zircon... improper sps fixed for release by Ransom" description="Hunter War" version="0" />
+  <map src="Apache Assault.map" />
+  <settings>
+    <setting name="#respawn" value="none" />
+  </settings>
+</meta>
