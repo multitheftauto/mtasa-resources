@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Chiliad Climb" author="DominionSpy" version="1" />
+  <map src="Chiliad Climb.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+  </settings>
+</meta>

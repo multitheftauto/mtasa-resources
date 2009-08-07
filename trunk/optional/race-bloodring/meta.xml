@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Bloodring" author="Aeron for interior models. BLASTAxerox for spawns. Ransom for extra invisible barrier and explosive barrels on garage" description="Destruction derby using Bloodring Bangers.  Thanks to Aeron for the interior models.  Respect to the BLASTA crew." version="0" />
+  <map src="Bloodring.map" />
+  <settings>
+    <setting name="#respawn" value="none" />
+    <setting name="#duration" value="360" />
+  </settings>
+</meta>

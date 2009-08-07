@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="3Lap Dirtring" author="Aeron for interior models.  BLASTAxerox for checkpoints and spawns." description="3 lap race on a Sanchez.  Thanks to Aeron for the interior models.  Respect to the BLASTA crew." version="0" />
+  <map src="3Lap Dirtring.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="270" />
+  </settings>
+</meta>

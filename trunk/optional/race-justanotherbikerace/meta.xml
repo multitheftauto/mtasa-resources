@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Just Another Bike Race" author="BLASTAxerox" description="Tight turns with lots of pace.  Respect to the BLASTA crew." version="0" />
+  <map src="Just Another Bike Race.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="270" />
+  </settings>
+</meta>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Runway 69" author="Blue Zircon" description="Dodo flying to driving through the city" version="0" />
+  <map src="Runway 69.map" />
+  <settings>
+    <setting name="#time" value="9:0" />
+    <setting name="#weather" value="9" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="360" />
+  </settings>
+</meta>

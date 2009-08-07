@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Sea Rustler" author="Ransom" description="Hunter battle at sea" version="0" />
+  <map src="Sea Rustler.map" />
+  <settings>
+    <setting name="#respawn" value="none" />
+    <setting name="#duration" value="780" />
+  </settings>
+</meta>
