@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Drift" author="BLASTAxerox" description="The name says it all.  DRIFT the corners to win.  Respect to the BLASTA crew." version="0" />
+  <map src="Drift.map" />
+  <settings>
+    <setting name="#weather" value="5" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="240" />
+  </settings>
+</meta>
