@@ -29,7 +29,7 @@ addEventHandler('onResourceStop', getResourceRootElement(getThisResource()),
 function onCTVMapStart (startedMap)
 	local mapRoot = getResourceRootElement(startedMap)
 	for k,v in ipairs(getElementsByType "player") do
-		bindKey ( v, "l", "down", toggleVehicleLights )
+		bindKey ( v, "l", "down", "Toggle vehicle lights" )
 	end
 	for k,v in ipairs(getElementsByType ( "base", mapRoot )) do
 		if getElementData ( v, "team" ) == "team1" then
@@ -348,6 +348,7 @@ addEventHandler ( "onMarkerHit", root, markerHit )
 addEventHandler ( "onPlayerChat", root, onCtvChat )
 
 addCommandHandler ( "kill", killplayer )
+addCommandHandler ( "Toggle vehicle lights", toggleVehicleLights )
 
 function addPlayerScore(player, points)
 	setElementData(player, 'Score', getElementData(player, 'Score') + points)
