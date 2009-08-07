@@ -1,3 +1,4 @@
+local spectators = {}
 local getPlayerSpectatee = {}
 resourceRoot = getResourceRootElement(getThisResource())
 local quedTeamChangers = {}
@@ -42,7 +43,7 @@ function teamstealthgamestart()
 		setElementData ( v, "kills", 0 )
 		setElementData ( v, "deaths", 0 )
 		setPlayerNametagShowing ( v, false )
-		bindKey ( v, "r", "down", spectateNext )
+		spectators[v] = true
 	end
 	--Enable laser sight
 	setElementData(getRootElement(),"lasersight",get("stealth.lasersight"))
@@ -72,7 +73,7 @@ function onStealthPlayerJoin ()
 	setElementData ( source, "kills", 0 )
 	setElementData ( source, "deaths", 0 )
 	setPlayerNametagShowing ( source, false )
-	bindKey ( source, "r", "down", spectateNext )
+	spectators[source] = true
 	thisplayer = source
 	setCameraFixed(source,"cameramode",getRootElement(), thisplayer)
 	destroyshield = setTimer ( destroyElement, 3000, 1, dummyshield )
@@ -261,7 +262,7 @@ function mercspawn(thisplayer)
 	setElementData ( thisplayer, "waitingtospawn", "nope" )
 	getPlayerSpectatee[thisplayer] = nil
 	triggerClientEvent(source,"showSpectateText",source,"",false)
-	unbindKey ( source, "r", "down", spectateNext )
+	spectators[source] = nil
 	giveWeapon ( thisplayer, 3, 1 )
 	setPedFightingStyle ( thisplayer, 7 )
 end
@@ -294,7 +295,7 @@ function spyspawn(thisplayer)
 	setElementData ( thisplayer, "waitingtospawn", "nope" )
 	getPlayerSpectatee[source] = nil
 	triggerClientEvent(source,"showSpectateText",source,"",false)
-	unbindKey ( source, "r", "down", spectateNext )
+	spectators[source] = nil
 	giveWeapon ( thisplayer, 4, 1 )
 	setPedFightingStyle ( thisplayer, 6 )
 end
@@ -443,13 +444,21 @@ end
 
 addEventHandler( "onPlayerWasted", getRootElement(), stealthplayerdied )
 
+addCommandHandler ( "Use Gadget/Spectate Next",
+	function ( player, command, state )
+		if state ~= "0" and spectators[player] then
+			spectateNext ( player )
+		end
+	end
+)
+
 function spectateNext (source) -- THIS IS THE FUNCTION USED TO SWICH WHO IS BEING SPECTATED BY PRESSING R
 	if playingaround == 1 then  -- IF A ROUND IS IN PROGRESS
 		if ( isPedDead ( source ) ) then --IF THE PLAYER IS DEAD
 			local specPlayer = getPlayerSpectatee[source] -- gets the spectatee player
 			if not specPlayer then 
 				specPlayer = 1 
-				bindKey ( source, "r", "down", spectateNext )
+				spectators[source] = true
 			end
 			local deadplayerTeam = getPlayerTeam(source)
 			local playersTable = getPlayersInTeam ( deadplayerTeam )

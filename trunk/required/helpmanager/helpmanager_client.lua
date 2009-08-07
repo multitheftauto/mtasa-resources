@@ -53,7 +53,7 @@ addEventHandler("onClientResourceStart", thisResourceRoot,
 		end
 		
 		addCommandHandler(HELP_COMMAND, clientToggleHelp)
-		bindKey(HELP_KEY, "down", clientToggleHelp)
+		bindKey(HELP_KEY, "down", HELP_COMMAND)
 	end
 )
 
