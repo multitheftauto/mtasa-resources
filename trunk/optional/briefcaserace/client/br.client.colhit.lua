@@ -3,7 +3,8 @@ local briefcaseTube = false
 local objectiveTube = false
 
 local SEND_DELAY = 500
-local lastSendTick = 0
+local lastSendTick_bri = 0
+local lastSendTick_obj = 0
 
 -- briefcase col
 
@@ -32,7 +33,7 @@ assert(isElement(hitElement))
 assert(getElementType(hitElement))
 --outputDebugString("briefcase hit client-side!")
 	-- see if it's the local player or their vehicle
-	if (getTickCount()-lastSendTick <= SEND_DELAY) then
+	if (getTickCount()-lastSendTick_bri <= SEND_DELAY) then
 		return
 	end
 	if (isPlayerDead(localPlayer)) then
@@ -40,10 +41,10 @@ assert(getElementType(hitElement))
 	end
 	if (getElementType(hitElement) == "player" and hitElement == localPlayer) then
 		triggerServerEvent("onPlayerBriefcaseHit", getLocalPlayer())
-		lastSendTick = getTickCount()
+		lastSendTick_bri = getTickCount()
 	elseif (getElementType(hitElement) == "vehicle" and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == hitElement) then
 		triggerServerEvent("onPlayerBriefcaseHit", getLocalPlayer())
-		lastSendTick = getTickCount()
+		lastSendTick_bri = getTickCount()
 	end
 end
 
@@ -63,16 +64,16 @@ function destroyHittableObjectiveCol()
 end
 
 function onObjectiveTubeHit(hitElement, matchingDimension)
-	if (getTickCount()-lastSendTick <= SEND_DELAY) then
+	if (getTickCount()-lastSendTick_obj <= SEND_DELAY) then
 		return
 	end
 --outputDebugString("objective hit, hitElement: " .. tostring(hitElement))
 	-- see if it's the local player or their vehicle
 	if (getElementType(hitElement) == "player" and hitElement == localPlayer) then
 		triggerServerEvent("onPlayerObjectiveHit", getLocalPlayer())
-		lastSendTick = getTickCount()
+		lastSendTick_obj = getTickCount()
 	elseif (getElementType(hitElement) == "vehicle" and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == hitElement) then
 		triggerServerEvent("onPlayerObjectiveHit", getLocalPlayer())
-		lastSendTick = getTickCount()
+		lastSendTick_obj = getTickCount()
 	end
 end

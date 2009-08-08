@@ -49,7 +49,7 @@ function onFrameSlowVehicle()
 				-- pause code...
 				if (not isVehicleOnGround(element)) then
 					local gx, gy, gz = getVehicleGravity(element)
-					lastVelZ = lastVelZ + gz * 9.8 * (1/50) * ((curTick-lastFrameTick)/1000)
+					lastVelZ = lastVelZ + gz * 9.8 * (1/30) * ((curTick-lastFrameTick)/1000)
 				end
 				setElementVelocity(element, lastVelX, lastVelY, lastVelZ)
 				lastFrameTick = curTick

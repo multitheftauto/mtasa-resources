@@ -10,12 +10,16 @@
 --209-264
 --274-288
 
-function getRandomSkin()
-	local model
-	repeat
-		model = math.random(0, 288)
-	until(isSkinValid(model))
-	return model
+function getRandomSkin(usedSkins)
+	local freeSkins = getValidSkins(usedSkins)
+	if (#freeSkins == 0) then
+		-- there are no more free skins, choose a random skin from one that is taken
+		local allSkins = getValidSkins({})
+		return allSkins[math.random(1, #allSkins)]
+	else
+		-- choose a random free skin
+		return freeSkins[math.random(1, #freeSkins)]
+	end
 end
 
 function isSkinValid(model)
@@ -35,4 +39,23 @@ function isSkinValid(model)
 	else
 		return true
 	end
+end
+
+function getValidSkins(excludeList)
+	local skinsTable = {}
+	for skin=0,288 do
+		if (isSkinValid(skin)) then
+			local match = false
+			for j,v in ipairs(excludeList) do
+				if (v == skin) then
+					match = true
+					break
+				end
+			end
+			if (not match) then
+				table.insert(skinsTable, skin)
+			end
+		end
+	end
+	return skinsTable
 end
