@@ -236,7 +236,11 @@ function spawnMe(x, y, z)
 	if not x then
 		x, y, z = getElementPosition(source)
 	end
-	repeat until spawnPlayer(source, x, y, z, 0, math.random(9, 288))
+	if isPedTerminated(source) then
+		repeat until spawnPlayer(source, x, y, z, 0, math.random(9, 288))
+	else
+		spawnPlayer(source, x, y, z, 0, getPedSkin(source))
+	end
 end
 
 function warpMe(targetPlayer)
