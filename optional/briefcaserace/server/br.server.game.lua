@@ -515,8 +515,8 @@ function onCarrierVehicleExit(vehicle, seat, jacker)
 		assert(not settings.teams or isPlayerOnValidTeam(jacker), "Player not on valid team")
 		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier jacked.")
   		removeCarrier(source, 0)
-		---- set him to lastCarrier
-		--lastCarrier = source
+		-- set him to lastCarrier
+		lastCarrier = source
 		-- remove any instructions message the jacked player might have
 		clearMessageForPlayer(source, 2)
 		-- announce that jacker jacked the orb carrier
@@ -793,6 +793,7 @@ function resetBriefcase()
 	local briefcaseCount = #briefcases
 	--outputDebugString ( briefcaseCount .. " briefcases total")---
 	if (briefcaseCount > 0) then
+		math.randomseed(getTickCount())
 		local briefcaseIndex = math.random(1, briefcaseCount)
 		--outputDebugString("briefcase " .. briefcaseIndex .. " chosen")---
 		local briefcaseElem = briefcases[briefcaseIndex]
@@ -822,8 +823,9 @@ function resetObjective()
 	if (objectiveCount > 0) then
 		--outputDebugString(objectiveCount .. " objectives total")---
 	 	-- create objective
+		math.randomseed(getTickCount())
 		if (not settings.teams) then
-			local objectiveIndex = math.random ( 1, objectiveCount )
+			local objectiveIndex = math.random(1, objectiveCount)
 			--outputDebugString("objective " .. objectiveIndex .. " chosen")---
 			local objectiveElem = objectives[objectiveIndex]
 			local x = tonumber(getElementData(objectiveElem, "posX"))
@@ -833,7 +835,7 @@ function resetObjective()
 			theObjective = Objective:new({x = x, y = y, z = z})
 		else
 			for i,v in ipairs(teams) do
-				local objectiveIndex = math.random ( 1, objectiveCount )
+				local objectiveIndex = math.random(1, objectiveCount)
 				--outputDebugString("objective " .. objectiveIndex .. " chosen")---
 				local objectiveElem = objectives[objectiveIndex]
 				local x = tonumber(getElementData(objectiveElem, "posX"))

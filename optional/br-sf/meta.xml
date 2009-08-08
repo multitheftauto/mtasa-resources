@@ -35,17 +35,20 @@
 	<!-- A boolean indicating whether or not this is a game between teams: [ true ], [ false ] -->
         <setting name="#teamgame" value="[ false ]" />
 
-	<!-- variable teams - a boolean indicating whether teams will be generated automatically based on player count (teams only): [ true ], [ false ] -->
-        <setting name="#varteams" value="[ false ]" />
+	<!-- automatic teams - a boolean indicating whether teams will be generated automatically based on player count (teams only): [ true ], [ false ] -->
+        <setting name="#autoteams" value="[ false ]" />
 
-	<!-- the max number of players per team (varteams only). When all teams have the max number of players, a new team will be generated. -->
-        <setting name="#varteamsmaxplayers" value="[ 4 ]" />
+	<!-- the max number of players per team (autoteams only). When all teams have the max number of players, a new team will be generated. -->
+        <setting name="#autoteamsmaxplayers" value="[ 4 ]" />
 
 	<!-- A boolean indicating whether friendly fire is enabled (teams only): [ true ], [ false ] -->
         <setting name="#ff" value="[ true ]" />
 
 	<!-- the skins used for each team (teams only): key is the team name, value is a comma seperated string of skin IDs, e.g. [ {'Ballas':'105,106'} ] -->
         <setting name="#teamskins" value="[ {} ]" />
+
+	<!-- A boolean indicating whether to show debug output: [ true ], [ false ] -->
+        <setting name="#debug" value="[ true ]" />
 
     </settings>
 

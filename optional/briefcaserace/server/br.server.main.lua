@@ -4,7 +4,8 @@ teams = {} -- used for team game, the participating teams
 settings =	{	limit = 1000, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, onfootonly = false, teamskins = {},
 				varteams = false, varteamsmaxplayers = 6,
 				weapons = {[1] = 1, [22] = 200, [17] = 4, [29] = 250},
-				cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70}
+				cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70},
+				dbg = false
 			}
 local readyPlayers = {}
 local varTeamIndex = 1
@@ -107,12 +108,12 @@ function onResourceStart_brmain ( resource )
 		local scoreboardResource = getResourceFromName ( "scoreboard" )
 		if ( scoreboardResource and getResourceState ( scoreboardResource ) == "running" ) then
 		    setTimer ( call, 5000, 1, scoreboardResource, "addScoreboardColumn", "points" )
-		    outputDebugString ( "Scoreboard already started: Adding points column in 5 seconds..." )
+		    debugMessage ( "Scoreboard already started: Adding points column in 5 seconds..." )
 		end
 	elseif ( resource == getResourceFromName ( "scoreboard" ) ) then
 		-- add points column to scoreboard if it just already loaded
 	    setTimer ( call, 5000, 1, scoreboardResource, "addScoreboardColumn", "points" )
-		outputDebugString ( "Scoreboard just started: Adding points column in 5 seconds..." )
+		debugMessage ( "Scoreboard just started: Adding points column in 5 seconds..." )
 	end
 end
 
@@ -143,28 +144,23 @@ end
 function createVarTeam()
 	local teamName = "Team " .. varTeamIndex
 	varTeamIndex = varTeamIndex + 1
-	local r = math.random(0,255)
-	local g = math.random(0,255)
-	local b = math.random(0,255)
-	-- generate team skin
-	local skin
-	local skinTaken = false
-	repeat
-		skin = getRandomSkin()
-		for teamName,skinArray in pairs(settings.teamskins) do
-			if (skinArray[1] == skin) then
-				skinTaken = true
-				break
-			end
-		end
-	until(not skinTaken)
-	settings.teamskins[teamName] = {[1] = skin}
+	-- generate random color
+	math.randomseed(getTickCount() + #teams)
+	local r = math.random(0, 255)
+	local g = math.random(0, 255)
+	local b = math.random(0, 255)
+	-- generate random team skin
+	local usedSkins = {}
+	for teamName,skinArray in pairs(settings.teamskins) do
+		table.insert(usedSkins, skinArray[1])
+	end
+	local randSkin = getRandomSkin(usedSkins)
+	settings.teamskins[teamName] = {[1] = randSkin}
 	-- create team
 	local team = createTeam(teamName, r, g, b)
 	table.insert(teams, team)
 	setTeamFriendlyFire(team, settings.ff)
 	setElementData(team, "points", 0)
-	updateTeamMenu()
 end
 
 function destroyVarTeam(team)
@@ -179,13 +175,14 @@ function destroyVarTeam(team)
 		settings.teamskins[getTeamName(teams[found])] = nil
 		destroyElement(teams[found])
 		table.remove(teams, found)
-		updateTeamMenu()
 		return true
 	else
 		return false
 	end
 end
 
+-- creates a team when player joins (if necessary)
+-- note: when you join, the player count includes you
 function onPlayerJoin_varTeams()
 	if (not settings.varteams) then
 		return
@@ -195,36 +192,48 @@ function onPlayerJoin_varTeams()
 	local capacity = totalTeams * settings.varteamsmaxplayers
 	if (totalPlayers > capacity) then
 		createVarTeam()
+		updateTeamMenu()
 	end
 end
 addEventHandler("onPlayerJoin", root, onPlayerJoin_varTeams)
 
--- gets rid of one team max, ideally would get rid of more if necessary, but whatever...
+-- destroys unneeded teams when player quits
+-- note: when you quit, the player count still includes you
 function onPlayerQuit_varTeams()
 	if (not settings.varteams) then
 		return
 	end
-	local canDestroyTeam = false
-	-- see if we can afford to get rid of another team
 	if (#teams > 2) then
-		local totalPlayers = #getElementsByType("player")
-		local totalTeams = #teams
-		local capacity = totalTeams * settings.varteamsmaxplayers
-		if (totalPlayers <= capacity-settings.varteamsmaxplayers) then
-			canDestroyTeam = true
-		end
-	end
-	-- destroy any empty teams
-	if (canDestroyTeam) then
-		local foundTeam = false
-		for i,v in ipairs(teams) do
-			if (countPlayersInTeam(v) == 0) then
-				foundTeam = v
-				break
+		local sourceTeam = getPlayerTeam(source)
+		local teamsDestroyed = false
+		local totalPlayers = #getElementsByType("player")-1
+		local totalTeams = #teams--
+		local capacity = totalTeams * settings.varteamsmaxplayers--
+		local noEmptyTeams = false--
+		while (capacity - settings.varteamsmaxplayers >= totalPlayers and totalTeams > 2 and not noEmptyTeams) do
+			-- destroy an empty team if one exists
+			local victimTeam = false
+			for i,team in ipairs(teams) do
+				local numPlayers = countPlayersInTeam(team)
+				if (sourceTeam and sourceTeam == team) then
+					numPlayers = numPlayers - 1
+				end
+				if (numPlayers == 0) then
+					victimTeam = team
+					break
+				end
+			end
+			if (victimTeam) then
+				destroyVarTeam(victimTeam)
+				totalTeams = totalTeams - 1
+				capacity = capacity - settings.varteamsmaxplayers
+				teamsDestroyed = true
+			else
+				noEmptyTeams = true
 			end
 		end
-		if (foundTeam) then
-			destroyVarTeam(foundTeam)
+		if (teamsDestroyed) then
+			updateTeamMenu()
 		end
 	end
 end
@@ -291,20 +300,6 @@ end
 
 function getReadyPlayers()
 	return readyPlayers
---[[	-- generate array of ready players
-	if (not settings.teams) then
-		return getElementsByType("player")
-	else
-		local playerTable = {}
-		for i,team in ipairs(getElementsByType("team")) do
-			if (isTeamValid(team)) then
-				for j,player in ipairs(getPlayersInTeam(team)) do
-					table.insert(playerTable, player)
-				end
-			end
-		end
-		return playerTable
-	end]]
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -400,200 +395,18 @@ function readMapSettings(resource)
 		end
 	end
 	-- get varteams
-	local varteams = get(mapName .. ".varteams")
+	local varteams = get(mapName .. ".autoteams")
 	if (varteams) then
 		settings.varteams = varteams
 	end
 	-- get varteamsmaxplayers
-	local varteamsmaxplayers = get(mapName .. ".varteamsmaxplayers")
+	local varteamsmaxplayers = get(mapName .. ".autoteamsmaxplayers")
 	if (varteamsmaxplayers) then
 		settings.varteamsmaxplayers = varteamsmaxplayers
 	end
-end
-
-function readSettingsFile(resource)
-	local settingsRoot = xmlLoadFile(":" .. getResourceName(resource) .. "/settings.xml")
-	--local settingsRoot = xmlLoadFile("settings.xml", resource)
-	--local settingsRoot = getResourceConfig(resource, "settings.xml")
-	if (not settingsRoot) then
-		outputDebugString("Could not read settings.xml file from gamemode.. using default settings.")
-	else
-		-- get point limit
-		local node, val
-		node = xmlFindChild(settingsRoot, "pointlimit", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val)) then
-				settings.limit = tonumber(val)
-				outputDebugString("pointlimit read from settings.xml " .. val)
-			end
-		end
-		-- get weather
-		node = xmlFindChild(settingsRoot, "weather", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val)) then
-				settings.weather = tonumber(val)
-				outputDebugString("weather read from settings.xml " .. val)
-			end
-		end
-		-- get team game
-		node = xmlFindChild(settingsRoot, "teamgame", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val)) then
-				if (val == "0") then
-					settings.teams = false
-					outputDebugString("teamgame read from settings.xml " .. val)
-				elseif (val == "1") then
-					settings.teams = true
-					outputDebugString("teamgame read from settings.xml " .. val)
-				end
-			end
-		end
-		-- get hide objective
-		node = xmlFindChild(settingsRoot, "hideobj", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val)) then
-				if (val == "0") then
-					settings.hide = false
-					outputDebugString("hideobj read from settings.xml " .. val)
-				elseif (val == "1") then
-					settings.hide = true
-					outputDebugString("hideobj read from settings.xml " .. val)
-				end
-			end
-		end
-		-- get idle time
-		node = xmlFindChild(settingsRoot, "idletime", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val)) then
-				settings.reset = tonumber(val)
-				outputDebugString("idletime read from settings.xml: " .. val)
-			end
-		end
-		-- get game speed
-		node = xmlFindChild(settingsRoot, "gamespeed", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val) and tonumber(val) <= 10 and tonumber(val) > 0) then
-				settings.gamespeed = tonumber(val)
-				outputDebugString("gamespeed read from settings.xml: " .. val)
-			end
-		end
-		-- get friendly fire
-		node = xmlFindChild(settingsRoot, "ff", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val)) then
-				if (val == "0") then
-					settings.ff = false
-					outputDebugString("ff read from settings.xml " .. val)
-				elseif (val == "1") then
-					settings.ff = true
-					outputDebugString("ff read from settings.xml " .. val)
-				end
-			end
-		end
-		-- get autobalance
-		node = xmlFindChild(settingsRoot, "autobalance", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val)) then
-				if (val == "0") then
-					settings.autobalance = false
-					outputDebugString("autobalance read from settings.xml " .. val)
-				elseif (val == "1") then
-					settings.autobalance = true
-					outputDebugString("autobalance read from settings.xml " .. val)
-				end
-			end
-		end
-		-- get on foot only delivery
-		node = xmlFindChild(settingsRoot, "onfootonly", 0)
-		if (node) then
-			val = xmlNodeGetValue(node)
-			if (val and tonumber(val)) then
-				if (val == "0") then
-					settings.onfootonly = false
-					outputDebugString("onfootonly read from settings.xml " .. val)
-				elseif (val == "1") then
-					settings.onfootonly = true
-					outputDebugString("onfootonly read from settings.xml " .. val)
-				end
-			end
-		end
-		-- get team skins
-		node = xmlFindChild(settingsRoot, "teamskins", 0)
-		if (node) then
-			settings.teamskins = {}
-			local children = xmlNodeGetChildren(node)
-			if (children) then
-				for i,v in ipairs(children) do
-					local teamName = xmlNodeGetAttribute(v, "team")
-					if (teamName) then
-						settings.teamskins[teamName] = {}
-						local skins = xmlNodeGetValue(v)
-						local index = 1
-						local curSkin = gettok(skins, index, string.byte(','))
-						while (curSkin) do
-							-- process current skin
-							curSkin = tonumber(curSkin)
-							if (curSkin) then
-								table.insert(settings.teamskins[teamName], curSkin)
-							end
-							-- get the next skin
-							index = index + 1
-							curSkin = gettok(skins, index, string.byte(','))
-						end
-						outputDebugString("skins read from settings.xml from team " .. teamName .. ": " .. skins)
-					end
-				end
-			end
-		end
-		-- get spawn weapons
-		node = xmlFindChild(settingsRoot, "weapons", 0)
-		if (node) then
-			settings.weapons = {}
-			local children = xmlNodeGetChildren(node)
-			if (children) then
-				for i,v in ipairs(children) do
-					local id = xmlNodeGetAttribute(v, "id")
-					local ammo = xmlNodeGetAttribute(v, "ammo")
-					id = tonumber(id)
-					ammo = tonumber(ammo)
-					if (id and ammo) then
-						settings.weapons[id] = ammo
-						outputDebugString("weapon read from settings.xml: " .. id .. ":" .. ammo)
-					end
-				end
-			end
-		end
-		-- get idle cam position
-		node = xmlFindChild(settingsRoot, "idlecam", 0)
-		if (node) then
-			local x = xmlNodeGetAttribute(node, "x")
-			local y = xmlNodeGetAttribute(node, "y")
-			local z = xmlNodeGetAttribute(node, "z")
-			local lx = xmlNodeGetAttribute(node, "lx")
-			local ly = xmlNodeGetAttribute(node, "ly")
-			local lz = xmlNodeGetAttribute(node, "lz")
-			local roll = xmlNodeGetAttribute(node, "roll")
-			local fov = xmlNodeGetAttribute(node, "fov")
-			if (x and y and z and lx and ly and lz and roll and fov and
-				tonumber(x) and tonumber(y) and tonumber(z) and tonumber(lx) and tonumber(ly) and tonumber(lz) and tonumber(roll) and tonumber(fov)) then
-				settings.cam.x = x
-				settings.cam.y = y
-				settings.cam.z = z
-				settings.cam.lx = lx
-				settings.cam.ly = ly
-				settings.cam.lz = lz
-				settings.cam.roll = roll
-				settings.cam.fov = fov
-			end
-		end
-		xmlUnloadFile(settingsRoot)
+	-- get debug
+	local dbg = get(mapName .. ".debug")
+	if (dbg) then
+		settings.dbg = dbg
 	end
 end
