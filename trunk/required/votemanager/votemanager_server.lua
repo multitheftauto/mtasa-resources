@@ -35,6 +35,9 @@ function startPoll(pollData)
 	if #pollData < 2 then
 		return false, errorCode.lessThanTwoOptions
 	end
+
+	--save this incase a random item needs to be selected after this poll has finished
+	setCurrentPollSize( #pollData )
 	
 	--check there's a title
 	if type(pollData.title) ~= "string" then
@@ -290,7 +293,7 @@ function applyPollResults(chosenOption)
 	activePoll = nil
 
 	local result = triggerEvent("onPollEnd", thisResourceRoot, chosenOption)
-   
+
 	if result == true then
 		outputVoteManager("Vote ended! ["..optionTable[1].."]",rootElement)
 		
