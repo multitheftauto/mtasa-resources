@@ -30,7 +30,7 @@
 	<file src="edf/spyspawn.png" />
 
 	<include resource="teammanager" />
-	<include reosurce="missiontimer" />
+	<include resource="missiontimer" />
 	<include resource="scoreboard" />
 	<include resource="killmessages" />
 	<include resource="maplimits" />
