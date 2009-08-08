@@ -99,6 +99,10 @@ function vote.map.handler(source,cmd,...)
 				return false
 			end
 		end
+		-- if using votemap to do a mode change, ensure that votemode has not been disabled
+		if call(mapmanagerResource, "isGamemode", resource1) and not call(mapmanagerResource, "isMap", resource1) and call(mapmanagerResource, "getRunningGamemode") ~= resource1 and isDisabled("votemode", source) then
+			return
+		end
 		local voteMapStarted, voteMapReturnCode = voteMap(resource1, resource2)
 		if voteMapStarted then
 			outputVoteManager("Map vote started by "..getPlayerName(source)..".")

@@ -6,7 +6,7 @@
 --_DEBUG_LOG = {'UNDEF','MISC','OPTIMIZATION','TOPTIMES','STATE','JOINER','TIMER'}   -- More logging
 --_DEBUG_TIMING = true        -- Introduce delays
 --_DEBUG_CHECKS = true        -- Extra checks
-_TESTING = true             -- Any user can issue test commands
+_TESTING = false             -- Any user can issue test commands
 
 
 ---------------------------------------------------------------------------
