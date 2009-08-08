@@ -6,6 +6,7 @@ local serverConsole = getElementByIndex("console", 0)
 local modeOptions = 0
 local mapOptions = 0
 local DONT_CHANGE_OPTION = {"Don't change", default=true}
+local currentPollSize = 0
 
 local vote = {
 	map = {},
@@ -31,7 +32,7 @@ local function chooseRandomMap (chosen)
 	if not chosen then
 		cancelEvent()
 		math.randomseed(getTickCount())
-		finishPoll(math.random(1, mapOptions))
+		finishPoll(math.random(1, math.min(mapOptions,currentPollSize)))
 	end
 	removeEventHandler("onPollEnd", rootElement, chooseRandomMap)
 end
@@ -40,9 +41,13 @@ local function chooseRandomMode (chosen)
 	if not chosen then
 		cancelEvent()
 		math.randomseed(getTickCount())
-		finishPoll(math.random(1, modeOptions))
+		finishPoll(math.random(1, math.min(modeOptions,currentPollSize)))
 	end
 	removeEventHandler("onPollEnd", rootElement, chooseRandomMode)
+end
+
+function setCurrentPollSize ( size )
+	currentPollSize = size
 end
 
 --initializes built-in polls' settings
