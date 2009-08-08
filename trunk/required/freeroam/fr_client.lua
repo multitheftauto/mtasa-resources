@@ -172,7 +172,7 @@ addCommandHandler('setstyle',
 	function(cmd, style)
 		style = style and tonumber(style)
 		if style then
-			server.setPlayerFightingStyle(g_Me, style)
+			server.setPedFightingStyle(g_Me, style)
 		end
 	end
 )
@@ -234,7 +234,7 @@ function applyClothes(cloth)
 		end
 		cloth.wearing = true
 		setControlText(wndClothes, 'addremove', 'remove')
-		server.addPlayerClothes(g_Me, cloth.texture, cloth.model, cloth.parent.type)
+		server.addPedClothes(g_Me, cloth.texture, cloth.model, cloth.parent.type)
 	end
 end
 
@@ -270,7 +270,7 @@ wndClothes = {
 function addClothesCommand(cmd, type, model, texture)
 	type = type and tonumber(type)
 	if type and model and texture then
-		server.addPlayerClothes(g_Me, texture, model, type)
+		server.addPedClothes(g_Me, texture, model, type)
 	end
 end
 addCommandHandler('addclothes', addClothesCommand)
@@ -306,7 +306,7 @@ end
 function applyPlayerGrav()
 	local grav = getControlNumber(wndGravity, 'gravval')
 	if grav then
-		server.setPlayerGravity(g_Me, grav)
+		server.setPedGravity(g_Me, grav)
 	end
 	closeWindow(wndGravity)
 end
@@ -314,7 +314,7 @@ end
 function setGravityCommand(cmd, grav)
 	grav = grav and tonumber(grav)
 	if grav then
-		server.setPlayerGravity(g_Me, tonumber(grav))
+		server.setPedGravity(g_Me, tonumber(grav))
 	end
 end
 addCommandHandler('setgravity', setGravityCommand)
@@ -437,7 +437,7 @@ function applyStat()
 		return
 	end
 	leaf.value = value
-	server.setPlayerStat(g_Me, leaf.id, value)
+	server.setPedStat(g_Me, leaf.id, value)
 end
 
 wndStats = {
