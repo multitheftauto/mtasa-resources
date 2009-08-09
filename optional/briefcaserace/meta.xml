@@ -4,15 +4,15 @@
 
     <config src="help.xml" type="client"/>
 
-    <!--file src="hand_icon.png" type="client" /-->
-    <!--file src="briefcase_icon.png" type="client" /-->
-	
+    <include resource="mapmanager" />
     <include resource="deathpickups" />
     <include resource="killmessages" />
     <include resource="scoreboard" />
     <include resource="spawnmanager" />
     <include resource="briefcase" />
     <include resource="easytext" />
+    <include resource="realdriveby" />
+    <include resource="missiontimer" />
 
     <script src="server/br.server.main.lua" type="server" />
     <script src="server/br.server.game.lua" type="server" />
@@ -23,6 +23,7 @@
     <script src="server/br.server.garages.lua" type="server" />
     <script src="server/br.server.playerblips.lua" type="server" />
     <script src="server/br.server.randomskin.lua" type="server" />
+    <script src="server/br.server.vehdamage.lua" type="server" />
     <script src="server/br.server.debug.lua" type="server" />
 
     <script src="client/br.client.main.lua" type="client" />
@@ -32,16 +33,14 @@
     <script src="client/br.client.briefcaseguy.lua" type="client" />
     <script src="client/br.client.vehhandling.lua" type="client" />
     <script src="client/br.client.generalgui.lua" type="client" />
-    <!--script src="client/br.client.vehiclegui.lua" type="client" /-->
     <script src="client/br.client.spawngui.lua" type="client" />
     <script src="client/br.client.garages.lua" type="client" />
     <script src="client/br.client.driveby.lua" type="client" />
+    <script src="client/br.client.vehdamage.lua" type="client" />
     <script src="client/br.client.debug.lua" type="client" />
 
     <script src="shared/br.damageamounts.lua" type="server" />
     <script src="shared/br.damageamounts.lua" type="client" />
 
-    <script src="server/br.server.vehdamage.lua" type="server" />
-    <script src="client/br.client.vehdamage.lua" type="client" />
 
 </meta>

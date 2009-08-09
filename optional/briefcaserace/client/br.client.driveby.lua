@@ -1,4 +1,11 @@
-local localPlayer = getLocalPlayer()
+addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
+function (resource)
+	exports.realdriveby:setDriverDrivebyAbility()
+	exports.realdriveby:setPassengerDrivebyAbility(22, 28, 29, 32)
+end
+)
+
+--[[local localPlayer = getLocalPlayer()
 local lastSeat = 0
 
 function toggleDriveBy()
@@ -36,3 +43,4 @@ function (veh, seat)
 	lastSeat = seat
 end
 )
+]]

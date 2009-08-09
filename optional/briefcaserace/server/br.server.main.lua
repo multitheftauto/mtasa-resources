@@ -1,7 +1,8 @@
 root = getRootElement()
 runningMap = false
 teams = {} -- used for team game, the participating teams
-settings =	{	limit = 1000, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, onfootonly = false, teamskins = {},
+createdTeams = {} -- the teams created by this resource, they are destroyed when a map stops
+settings =	{	limit = 1000, tlimit = false, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, onfootonly = false, teamskins = {},
 				varteams = false, varteamsmaxplayers = 6,
 				weapons = {[1] = 1, [22] = 200, [17] = 4, [29] = 250},
 				cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70},
@@ -34,15 +35,15 @@ end
 function onGamemodeMapStart_brmain(resource)
 --outputServerLog(tostring(resource))
 	if (runningMap) then
-		outputConsole("Briefcase Race: The old game mode must be stopped before a new one is started. Stop the old one and then start a new one.")
-		outputServerLog("Briefcase Race: The old game mode must be stopped before a new one is started. Stop the old one and then start a new one.")
+		outputChatBox("Briefcase Race: Failed to start game. The old game mode map must be stopped before a new one is started. Stop any running game mode maps and then start a new one.", root, 255, 127, 0)
+		debugMessage("Briefcase Race: Failed to start game. The old game mode map must be stopped before a new one is started. Stop any running game mode maps and then start a new one.")
 --		outputConsole(getResourceName(runningMap) .. " map changed to " .. getResourceName(resource) .. " map. Ignoring settings. To use new settings, restart the game mode.")
 --		removeEventHandler("onResourceStop", runningMap, onGamemodeMapStop_brmain)
 --		runningMap = resource
 --		addEventHandler("onResourceStop", resource, onGamemodeMapStop_brmain)
 	else
-		outputConsole("Briefcase Race: " .. getResourceName(resource) .. " map started. Starting game.")
-		outputServerLog("Briefcase Race: " .. getResourceName(resource) .. " map started. Starting game.")
+		outputChatBox("Briefcase Race: " .. getResourceName(resource) .. " map started. Starting game.", root, 255, 127, 0)
+		debugMessage("Briefcase Race: " .. getResourceName(resource) .. " map started. Starting game.")
 		-- get settings
 		--readSettingsFile(resource)
 		readMapSettings(resource)
@@ -51,8 +52,8 @@ function onGamemodeMapStart_brmain(resource)
 			if (not settings.varteams) then
 				teams = getElementsByType("team")
 				if (#teams < 2) then
-					outputConsole("Briefcase Race: Error: Teams enabled in settings but not enough teams exist! Fix this map or try a different one.")
-					outputServerLog("Briefcase Race: Error: Teams enabled in settings but not enough teams exist! Fix this map or try a different one.")
+					outputChatBox("Briefcase Race: Error: Teams enabled in settings but not enough teams exist! Fix this map or try a different one.", root, 255, 127, 0)
+					debugMessage("Briefcase Race: Error: Teams enabled in settings but not enough teams exist! Fix this map or try a different one.")
 					return
 				else
 					-- set friendly fire
@@ -77,24 +78,39 @@ function onGamemodeMapStart_brmain(resource)
 		setGameSpeed(settings.gamespeed)
 		runningMap = resource
 		addEventHandler("onResourceStop", getResourceRootElement(resource), onGamemodeMapStop_brmain)
-		-- start the game
+		-- start the game (creates ready players, enables spawning/team selection, creates briefcase and objective(s))
 		startGame()
 	end
 end
 
+-- when the gamemode map can stops, the game can either be started or it can be ended
+--  the former will happen if admin or vote changes the map/mode in the middle of the game
+--  the latter will happen if the game ends naturally (i.e. point limit reached) and the map cycler kicks in (or an admin/vote changes it)
+-- to avoid calling endGame() multiple times, we use isGameStarted() to see whether or not we need to stop it
 function onGamemodeMapStop_brmain(resource)
-	outputConsole("Briefcase Race: " .. getResourceName(resource) .. " map stopped. Stopping game.")
-	outputServerLog("Briefcase Race: " .. getResourceName(resource) .. " map stopped. Stopping game.")
+	outputChatBox("Briefcase Race: " .. getResourceName(resource) .. " map stopped. Stopping game and/or clearing settings.", root, 255, 127, 0)
+	debugMessage("Briefcase Race: " .. getResourceName(resource) .. " map stopped. Stopping game and/or clearing settings.")
+	if (isGameStarted()) then
+		-- end the game (gets rid of all ready players, disables spawning, destroys briefcase and objective(s))
+		endGame(false, false) -- don't show scores and don't call map cycler, as the map is already being stopped
+	end
+	-- reset stuff here
 	removeEventHandler("onResourceStop", getResourceRootElement(resource), onGamemodeMapStop_brmain)
 	runningMap = false
+	-- destroy any teams created by THIS resource (this is the case if it's autoteams)
+	for i,v in ipairs(createdTeams) do
+		destroyElement(v)
+	end
+	-- reset all vars
 	teams = {}
-	settings =	{	limit = 1000, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, onfootonly = false, teamskins = {},
+	createdTeams = {}
+	varTeamIndex = 1
+	settings =	{	limit = 1000, tlimit = false, weather = 0, teams = false, hide = true, reset = 300, gamespeed = 1, ff = true, autobalance = true, onfootonly = false, teamskins = {},
 					varteams = false, varteamsmaxplayers = 6,
 					weapons = {[1] = 1, [22] = 200, [17] = 4, [29] = 250},
-					cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70}
+					cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70},
+					dbg = false
 				}
-	-- end the game
-	endGame()
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -159,11 +175,28 @@ function createVarTeam()
 	-- create team
 	local team = createTeam(teamName, r, g, b)
 	table.insert(teams, team)
+	-- insert into createdTeams table --
+	table.insert(createdTeams, team)
+	------------------------------------
 	setTeamFriendlyFire(team, settings.ff)
 	setElementData(team, "points", 0)
 end
 
 function destroyVarTeam(team)
+	-- remove from createdTeams table if it exists --
+	local found2 = false
+	for i,v in ipairs(createdTeams) do
+		if (v == team) then
+			found2 = i
+			break
+		end
+	end
+	if (found2) then
+		destroyElement(createdTeams[found2])
+		table.remove(createdTeams, found2)
+	end
+	-------------------------------------------------
+	-- remove it from teams table
 	local found = false
 	for i,v in ipairs(teams) do
 		if (v == team) then
@@ -337,6 +370,11 @@ function readMapSettings(resource)
 	local pointlimit = get(mapName .. ".pointlimit")
 	if (pointlimit) then
 		settings.limit = pointlimit
+	end
+	-- get timelimit
+	local timelimit = get(mapName .. ".timelimit")
+	if (timelimit) then
+		settings.tlimit = timelimit
 	end
 	-- get onfootonly
 	local onfootonly = get(mapName .. ".onfootonly")
