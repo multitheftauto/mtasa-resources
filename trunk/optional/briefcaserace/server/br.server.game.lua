@@ -69,6 +69,9 @@
 -- GLOBAL VARIABLES --
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local gameStarted = false
+local timerElement = false
+
 local theBriefcase = nil
 local theObjective = nil
 local teamObjectives = {}
@@ -100,12 +103,12 @@ function startGame()
 				setElementData(v, "points", 0)
 			end
 		end
-		-- set players to ready if there are no teams
+		--[[-- set players to ready if there are no teams
 		if (not settings.teams) then
 			for i,v in ipairs(players) do
 				addReadyPlayer(v)
 			end
-		end
+		end]] -- this is now done in br.server.spawn
 		-- create briefcase and objective
 	  	resetBriefcase()
 	  	resetObjective()
@@ -126,9 +129,21 @@ function startGame()
 	else
 		init_teamSpawn()
 	end
+	
+	-- set a time limit if there is one
+	if (settings.tlimit) then
+		timerElement = exports.missiontimer:createMissionTimer(settings.tlimit*60*1000, true, false, 0.5, 20, true, "default-bold", 1)
+		addEventHandler("onMissionTimerElapsed", timerElement, onTimeLimitReached)
+	end
+
+	gameStarted = true
 end
 
-function endGame(showScores)
+function isGameStarted()
+	return gameStarted
+end
+
+function endGame(showScores, tellMapCycler)
 	if (theBriefcase) then
 		theBriefcase:destroy()
 		theBriefcase = nil
@@ -163,7 +178,7 @@ function endGame(showScores)
 		end_teamSpawn()
 	end
 	
-	-- remove all players from readyPlayers
+	-- remove all players from readyPlayers -- unecessary as they're removed in br.server.spawn now ?
 	local tempTable = {}
 	for i,v in ipairs(getReadyPlayers()) do -- copy the table of ready players
 		tempTable[i] = v
@@ -173,22 +188,36 @@ function endGame(showScores)
 	end
 	
 	if (showScores) then
-		forceScoreboardForAllPlayers(true)
+		--[[forceScoreboardForAllPlayers(true)
 		setTimer(forceScoreboardForAllPlayers, 10000, 1, false)
 		addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), onStopSetScoreboardNotForced)
-		setTimer(removeEventHandler, 10000, 1, "onResourceStop", getResourceRootElement(getThisResource()), onStopSetScoreboardNotForced)
+		setTimer(removeEventHandler, 10000, 1, "onResourceStop", getResourceRootElement(getThisResource()), onStopSetScoreboardNotForced)]]
 --		local mapmanagerResource = getResourceFromName("mapmanager")
 --		if (mapmanagerResource and getResourceState(mapmanagerResource) == "running") then
 --			setTimer(outputConsole, 9000, 1, "[Gamemode finished]")
 --			setTimer(call, 10000, 1, mapmanagerResource, "stopGamemode") -- server crashes?
 --		end
 	end
-
+	
+	if (tellMapCycler) then
+		local mapCyclerResource = getResourceFromName("mapcycler")
+		if (mapCyclerResource and getResourceState(mapCyclerResource) == "running") then
+			triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
+		end
+	end
+	
+	-- remove the time limit timer if there is one
+	if (timerElement) then
+		destroyElement(timerElement)
+		timerElement = false
+	end
+	
+	gameStarted = false
 end
 
-function onStopSetScoreboardNotForced(resource)
+--[[function onStopSetScoreboardNotForced(resource)
 	forceScoreboardForAllPlayers(false)
-end
+end]]
 
 -- sets player's points to 0 when they join
 function onPlayerJoin_brgame()
@@ -208,7 +237,6 @@ function increasePoints(player, points)
 		setElementData(player, "points", playerPoints)
 		setElementData(team, "points", teamPoints)
 		if (teamPoints >= settings.limit) then
-            --setTimer(endGame, 2500, 1)
             local r, g, b = getTeamColor(team)
 			displayMessageForPlayers(1, "Point limit reached, team " .. getTeamName ( team ) .. " wins!", 10000, nil, nil, 0, 0, 255, team)
 			displayMessageForPlayers(1, "Point limit reached, team " .. getTeamName ( team ) .. " wins!", 10000, nil, nil, 255, 0, 0, team, true)
@@ -218,7 +246,6 @@ function increasePoints(player, points)
 		local playerPoints = getElementData(player, "points") + points
 		setElementData(player, "points", playerPoints)
 		if (playerPoints >= settings.limit) then
-            --setTimer(endGame, 2500, 1)
 			displayMessageForPlayers(1, "Point limit reached, " .. getPlayerName ( player ) .. " wins!", 10000)
            	pointLimitReached = true
 		end
@@ -402,7 +429,7 @@ function onPlayerObjectiveHit_brgame()
 			-- increase score
 			local pointLimitReached = increasePoints(source, 100)
 			if (pointLimitReached) then
-				endGame(true)
+				endGame(true, true)
 			else
 			    -- reset orb and objective
 	   			setTimer(resetBriefcase, 5000, 1)
@@ -600,6 +627,59 @@ function onCarrierVehicleDamage(loss)
 	end
 end
 
+function onTimeLimitReached()
+	-- remove carrier if there is one
+	if (theBriefcase and theBriefcase:getCarrier()) then
+		local player = theBriefcase:getCarrier()
+		debugMessage("Removing carrier " .. getPlayerName(player) .. " due to time limit expiration.")
+		removeCarrier(player, 2)
+	end
+	-- get player/team with most points
+	if (settings.teams) then
+		-- get the team with the max score, if any
+		local maxScore = 0
+		local maxScoreTeam = false
+		for i,v in ipairs(getValidTeams()) do
+			local points = getElementData(v, "points")
+			if (points > maxScore) then
+				maxScore = points
+				maxScoreTeam = v
+			elseif (points == maxScore) then
+				maxScoreTeam = false
+			end
+		end
+		-- show the message
+		if (maxScoreTeam) then
+			local r, g, b = getTeamColor(maxScoreTeam)
+			displayMessageForPlayers(1, "Time limit expired, team " .. getTeamName ( maxScoreTeam ) .. " wins!", 10000, nil, nil, 0, 0, 255, maxScoreTeam)
+			displayMessageForPlayers(1, "Time limit expired, team " .. getTeamName ( maxScoreTeam ) .. " wins!", 10000, nil, nil, 255, 0, 0, maxScoreTeam, true)
+		else
+			displayMessageForPlayers(1, "Time limit expired, the game is a draw", 10000)
+		end
+	else
+		-- get the player with the max score, if any
+		local maxScore = 0
+		local maxScorePlayer = false
+		for i,v in ipairs(getReadyPlayers()) do
+			local points = getElementData(v, "points")
+			if (points > maxScore) then
+				maxScore = points
+				maxScorePlayer = v
+			elseif (points == maxScore) then
+				maxScorePlayer = false
+			end
+		end
+		-- show the message
+		if (maxScorePlayer) then
+			displayMessageForPlayers(1, "Time limit expired, " .. getPlayerName ( maxScorePlayer ) .. " wins!", 10000)
+		else
+			displayMessageForPlayers(1, "Time limit expired, the game is a draw", 10000)
+		end
+	end
+	-- end the game
+	endGame(true, true)
+end
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- CARRIER MANAGEMENT FUNCTIONS --
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -634,7 +714,7 @@ function addCarrier(player)
 	end
 	
 	if (pointLimitReached) then
-		endGame(true)
+		endGame(true, true)
 	else
 		-- remove old briefcase
 		if (theBriefcase:isIdle()) then
@@ -701,7 +781,7 @@ function removeCarrier(player, action)
 			theObjective:destroy()
 			theObjective = nil
 		else
-			assert(isPlayerOnValidTeam(source), "Player not on valid team")
+			assert(isPlayerOnValidTeam(player), "Player not on valid team")
 			for i,v in ipairs(teams) do
 				teamObjectives[v]:destroy()
 				teamObjectives[v] = nil
@@ -716,7 +796,7 @@ function removeCarrier(player, action)
 			theObjective:destroy()
 			theObjective = nil
 		else
-			assert(isPlayerOnValidTeam(source), "Player not on valid team")
+			assert(isPlayerOnValidTeam(player), "Player not on valid team")
 			for i,v in ipairs(teams) do
 				teamObjectives[v]:destroy()
 				teamObjectives[v] = nil

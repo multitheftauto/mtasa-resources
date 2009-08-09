@@ -16,6 +16,9 @@ function ()
 end
 )]]
 
+-- manages player spawning and team selection
+-- uses setPlayerReady() and setPlayerNotReady() to have br.server.game put the player in or take the player out of the game
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- FFA SPAWN --
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,6 +28,7 @@ local ffaStarted = false
 
 function init_ffaSpawn()
 	for i,v in ipairs(getElementsByType("player")) do
+		setPlayerReady(v)
 		spawnPlayerAtRandomSpawnpoint(v)
 	end
 	addEventHandler("onPlayerJoin", root, onPlayerJoin_spawnffa)
@@ -41,9 +45,14 @@ function end_ffaSpawn()
 			killPed(v)
 		end
 		fadeCamera(v, true)
-		setCameraMatrix(v, settings.cam.x, settings.cam.y, settings.cam.z, settings.cam.lx, settings.cam.ly, settings.cam.lz, settings.cam.x, settings.cam.roll, settings.cam.fov)
+		setCameraMatrix(v, settings.cam.x, settings.cam.y, settings.cam.z, settings.cam.lx, settings.cam.ly, settings.cam.lz, settings.cam.roll, settings.cam.fov)
 	end
 	ffaStarted = false
+	-- make all ready players not ready
+	-- (essentially it just removes them from the ready table - the briefcases and objectives are already destroyed at this point because endGame() did that)
+	for i,v in ipairs(getReadyPlayers()) do
+		setPlayerNotReady(v)
+	end
 end
 
 function onPlayerJoin_spawnffa()
@@ -114,6 +123,11 @@ function end_teamSpawn()
 		setCameraMatrix(v, settings.cam.x, settings.cam.y, settings.cam.z, settings.cam.lx, settings.cam.ly, settings.cam.lz, settings.cam.roll, settings.cam.fov)
 	end
 	teamsStarted = false
+	-- make all ready players not ready
+	-- (essentially it just removes them from the ready table - the briefcases and objectives are already destroyed at this point because endGame() did that)
+	for i,v in ipairs(getReadyPlayers()) do
+		setPlayerNotReady(v)
+	end
 end
 
 function onPlayerJoin_spawnteam()

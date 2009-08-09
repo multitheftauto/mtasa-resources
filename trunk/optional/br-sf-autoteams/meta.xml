@@ -19,6 +19,9 @@
 	<!-- the number of points needed to win the game (a player gets 100 points for delivering a briefcase) -->
         <setting name="#pointlimit" value="[ 1000 ]" />
 
+	<!-- the time limit in minutes. If no one reaches the point limit by this time, the game will end. Possible values: [ false ] - no time limit, [ 30 ] - 30 minute time limit -->
+        <setting name="#timelimit" value="[ 60 ]" />
+
 	<!-- a boolean indicating whether the briefcase can only be deliverd on foot: [ false ] - on foot or in car, [ true ] - only on foot -->
         <setting name="#onfootonly" value="[ true ]" />
 

@@ -4,7 +4,7 @@ local localPlayer = getLocalPlayer()
 addEventHandler("onClientResourceStart", getResourceRootElement(),
 function (resource)
 	local x, y = guiGetScreenSize()
-	carrierLabel = guiCreateLabel(math.ceil(.25*x), 25, math.ceil(.5*x), 50, "The briefcase is idle.", false)
+	carrierLabel = guiCreateLabel(math.ceil(.25*x), 35, math.ceil(.5*x), 50, "The briefcase is idle.", false)
 	guiLabelSetHorizontalAlign(carrierLabel, "center")
 	guiLabelSetColor(carrierLabel, 255, 127, 0)
 	guiSetFont(carrierLabel, "clear-normal")
