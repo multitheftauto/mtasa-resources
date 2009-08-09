@@ -435,18 +435,14 @@ function drawLasers()
 		local playerWeapon = getPedWeapon ( player )
 		if ( playerWeapon == 31 and laserWeapons[31] ) then
 			draw = true
-			local offset = - 0.1
-			if isPedDucked ( player ) and isPedDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) and not ( getControlState"left" or getControlState"right" or getControlState"forwards" or getControlState"backwards" ) then
-				offset = - 0.095
-			elseif isPedDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) then
-				offset = - 0.05
-			end
-			local boneX,boneY,boneZ = getPedBonePosition ( player, 25 )
-			-- boneZ = boneZ - 0.12
-			startX,startY,startZ = getPedTargetStart ( player )
-		
-			targetX,targetY,targetZ = extendLine ( boneX,boneY,boneZ,startX,startY,startZ + offset,500 )	
-			if not isElementOnScreen ( player ) then --work around for an mta bug
+			if player == localPlayer and getControlState("aim_weapon") then
+				startX,startY,startZ = getPedBonePosition ( player, 35 )
+				targetX,targetY,targetZ = getPedTargetEnd ( player )
+			elseif isElementOnScreen ( player ) then
+				local boneX,boneY,boneZ = getPedBonePosition ( player, 25 )
+				startX,startY,startZ = getPedTargetStart ( player )
+				targetX,targetY,targetZ = extendLine ( boneX,boneY,boneZ,startX,startY,startZ - 0.1,500 )
+			else
 				startX,startY,startZ = getElementPosition ( player )
 				targetX,targetY,targetZ = getPedTargetEnd ( player )
 			end
