@@ -164,7 +164,7 @@ end
 addCommandHandler("changemap", changeGamemodeMap_cmd, true)
 
 function changeGamemode_cmd(source, command, gamemodeName,...)
-    local mapName      = #{...}>1 and table.concat({...},' ')   or nil
+    local mapName = #{...}>0 and table.concat({...},' ') or nil
 	source = source or serverConsole
 
 	local gamemode
