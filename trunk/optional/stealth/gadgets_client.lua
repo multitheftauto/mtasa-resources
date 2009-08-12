@@ -311,7 +311,7 @@ function clientsetup (resource)
 	loadtheshield = setTimer ( shieldload, 3000, 1 )
 end
 
-addCommandHandler ( "Use Gadget", 
+addCommandHandler ( "Use Gadget/Spectate Next", 
 	function ( command, state )
 		if state == "0" then 
 			deactivategadget()

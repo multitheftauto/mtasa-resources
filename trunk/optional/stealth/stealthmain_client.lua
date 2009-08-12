@@ -431,39 +431,24 @@ addEventHandler("onClientResourceStop", getRootElement(), cleanup)
 local laserWeapons = {}
 function drawLasers()
 	for k,player in ipairs(getElementsByType"player") do
-		local draw,startX,startY,startZ,targetX,targetY,targetZ
 		local playerWeapon = getPedWeapon ( player )
-		if ( playerWeapon == 31 and laserWeapons[31] ) then
-			draw = true
-			if player == localPlayer and getControlState("aim_weapon") then
-				startX,startY,startZ = getPedBonePosition ( player, 35 )
-				targetX,targetY,targetZ = getPedTargetEnd ( player )
-			elseif isElementOnScreen ( player ) then
-				local boneX,boneY,boneZ = getPedBonePosition ( player, 25 )
-				startX,startY,startZ = getPedTargetStart ( player )
-				targetX,targetY,targetZ = extendLine ( boneX,boneY,boneZ,startX,startY,startZ - 0.1,500 )
-			else
-				startX,startY,startZ = getElementPosition ( player )
-				targetX,targetY,targetZ = getPedTargetEnd ( player )
-			end
-		elseif ( playerWeapon == 34 and laserWeapons[34] ) then
-			if ( player ~= localPlayer ) and ( isPedDoingTask ( player, "TASK_SIMPLE_USE_GUN" ) ) then
-				draw = true
-				startX,startY,startZ = getPedBonePosition ( player, 35 )
-				targetX,targetY,targetZ = getPedTargetEnd ( player )
-				if not isElementOnScreen ( player ) then --work around for an mta bug
-					startX,startY,startZ = getElementPosition ( player )
-					targetX,targetY,targetZ = getPedTargetEnd ( player )
+		if ( laserWeapons[playerWeapon] ) then
+			local startX,startY,startZ,targetX,targetY,targetZ
+			local boneX,boneY,boneZ = getPedBonePosition ( player, 25 )
+			startX,startY,startZ = getPedGunMuzzlePosition ( player )
+			if boneX and startX then
+				if getPedControlState(player, "aim_weapon") then
+					targetX, targetY, targetZ = getPedTargetEnd(player)
+				else
+					targetX,targetY,targetZ = extendLine ( boneX,boneY,boneZ,startX,startY,startZ - 0.1,500 )
 				end
+				
+				local bool,hitX,hitY,hitZ = processLineOfSight ( startX,startY,startZ,targetX,targetY,targetZ, true, true, true, true, true, false, false, true )
+				if not bool or not hitX then
+					hitX,hitY,hitZ = targetX,targetY,targetZ
+				end
+				dxDrawLine3D ( startX,startY,startZ, hitX,hitY,hitZ, tocolor(255,0,0,50), 1, false, 1 )
 			end
-		end
-		--Draw the weapons
-		if draw then
-			local bool,hitX,hitY,hitZ = processLineOfSight ( startX,startY,startZ,targetX,targetY,targetZ, true, true, true, true, true, false, false, true )
-			if not bool or not hitX then
-				hitX,hitY,hitZ = targetX,targetY,targetZ
-			end
-			dxDrawLine3D ( startX,startY,startZ, hitX,hitY,hitZ, tocolor(255,0,0,50), 1, false, 1 )
 		end
 	end
 end
