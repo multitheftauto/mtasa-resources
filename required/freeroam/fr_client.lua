@@ -746,8 +746,19 @@ wndSpawnMap = {
 
 function setInterior(leaf)
 	server.setElementInterior(g_Me, leaf.world)
+	local vehicle = getPedOccupiedVehicle(g_Me)
+	if vehicle then
+		server.setElementInterior(vehicle, leaf.world)
+		for i=0,getVehicleMaxPassengers(vehicle) do
+			local player = getVehicleOccupant(vehicle, i)
+			if player and player ~= g_Me then
+				server.setElementInterior(player, leaf.world)
+				server.setCameraInterior(player, leaf.world)
+			end
+		end
+	end
 	setCameraInterior(leaf.world)
-	setElementPosition(g_Me, leaf.posX, leaf.posY, leaf.posZ + 1)
+	setPlayerPosition(leaf.posX, leaf.posY, leaf.posZ + 1)
 	closeWindow(wndSetInterior)
 end
 

@@ -214,7 +214,7 @@ addEventHandler('onPlayerGravInit', g_Root,
 function setMySkin(skinid)
 	if isPedDead(source) then
 		local x, y, z = getElementPosition(source)
-		if isPlayerTerminated(source) then
+		if isPedTerminated(source) then
 			x = 0
 			y = 0
 			z = 3
@@ -275,6 +275,9 @@ function warpMe(targetPlayer)
 		end
 		outputChatBox('No free seats left in ' .. getPlayerName(targetPlayer) .. '\'s vehicle.', source, 255, 0, 0)
 	end
+	local interior = getElementInterior(targetPlayer)
+	setElementInterior(source, interior)
+	setCameraInterior(source, interior)
 end
 
 function giveMeWeapon(weapon, amount)
@@ -291,7 +294,7 @@ function giveMeVehicles(vehicles)
 	end
 	
 	local px, py, pz, prot
-	local radius = 5
+	local radius = 3
 	local playerVehicle = getPedOccupiedVehicle(source)
 	if playerVehicle then
 		px, py, pz = getElementPosition(playerVehicle)
@@ -300,11 +303,11 @@ function giveMeVehicles(vehicles)
 		px, py, pz = getElementPosition(source)
 		prot = getPedRotation(source)
 	end
-	local offsetRot = math.rad(prot+90)
+	local offsetRot = math.rad(prot)
 	local vx = px + radius * math.cos(offsetRot)
 	local vy = py + radius * math.sin(offsetRot)
 	local vz = pz + 2
-	local vrot = prot + 90
+	local vrot = prot
 	
 	local vehicleList = g_PlayerData[source].vehicles
 	local vehicle
