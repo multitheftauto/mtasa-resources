@@ -473,7 +473,7 @@ function handleHitPickup(pickup)
 		end
 		g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
 	end
-	triggerServerEvent('onPlayerPickUpRacePickup', g_Me, pickup.id, pickup.respawn)
+	triggerServerEvent('onPlayerPickUpRacePickupInternal', g_Me, pickup.id, pickup.respawn)
 	playSoundFrontEnd(46)
 end
 
