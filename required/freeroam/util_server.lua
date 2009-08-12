@@ -3,12 +3,12 @@ function isTimer(timer)
 end
 
 
-local _isPlayerDead = isPedDead
+local _isPedDead = isPedDead
 function isPedDead(player)
-	return _isPlayerDead(player) or isPlayerTerminated(player)
+	return _isPedDead(player) or isPedTerminated(player)
 end
 
-function isPlayerTerminated(player)
+function isPedTerminated(player)
 	local x, y, z = getElementPosition(player)
 	return (math.floor(x) == 132 and math.floor(y) == -68) or (math.abs(x) < 2 and math.abs(y) < 2 and z < 1)
 end
