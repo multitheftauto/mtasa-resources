@@ -241,9 +241,15 @@ function spawnMe(x, y, z)
 	else
 		spawnPlayer(source, x, y, z, 0, getPedSkin(source))
 	end
+	setCameraTarget(source, source)
+	setCameraInterior(source, getElementInterior(source))
 end
 
 function warpMe(targetPlayer)
+	if isPedDead(source) then
+		spawnMe()
+	end
+	
 	local vehicle = getPedOccupiedVehicle(targetPlayer)
 	if not vehicle then
 		-- target player is not in a vehicle - just warp next to him
