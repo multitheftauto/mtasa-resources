@@ -582,7 +582,8 @@ function setRandomSeedForMap( type )
 end
 
 
-
+addEvent('onPlayerReachCheckpoint')
+addEvent('onPlayerFinish')
 addEvent('onPlayerReachCheckpointInternal', true)
 addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 	function(checkpointNum)
@@ -616,8 +617,9 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 	end
 )
 
-addEvent('onPlayerPickUpRacePickup', true)
-addEventHandler('onPlayerPickUpRacePickup', g_Root,
+addEvent('onPlayerPickUpRacePickup')
+addEvent('onPlayerPickUpRacePickupInternal', true)
+addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 	function(pickupID, respawntime)
 		if not stateAllowsPickup() then
             return
@@ -642,6 +644,7 @@ addEventHandler('onPlayerPickUpRacePickup', g_Root,
 				clientCall(source, 'vehicleChanging', getTime())
 			end
 		end
+		triggerEvent('onPlayerPickUpRacePickup', source, pickupID, pickup.type, pickup.vehicle)
 	end
 )
 
