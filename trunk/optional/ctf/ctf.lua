@@ -346,14 +346,31 @@ function CTF_onPlayerJoin ( )
 	end
 end
 
-function CTF_flag_check( totalammo, killer, killerweapon, bodypart )
-	if ( killer ) then
+function CTF_onPlayerWasted ( totalammo, killer, killerweapon, bodypart )
+	-- Increment score of killer
+	if ( killer and getElementType( killer ) == "player" ) then
 		if ( getPlayerTeam( killer ) ~= getPlayerTeam( source ) ) then
 			setElementData( killer, "score", getElementData( killer, "score" ) + 1 )
 		else
 			setElementData( killer, "score", getElementData( killer, "score" ) - 1 )
 		end
 	end
+	-- Flag stuff
+	local player = source --It's important. Trust me.
+	CTF_flag_check ()
+	-- Handle respawn
+	if ( CTF_roundOn ) then
+		fadeCamera ( player, false, CTF_respawnTime/500, 000, 000, 000 )
+		setTimer( fadeCamera, CTF_respawnTime, 1, player, true ) 
+		setTimer( CTF_spawnPlayer, CTF_respawnTime, 1, player )
+	end
+end
+
+function CTF_onPlayerQuit ( )
+	CTF_flag_check ()
+end
+
+function CTF_flag_check ( )
 	local playerCol = getElementData( source, "col" )
 	local player = source --It's important. Trust me.
 	if ( playerCol ~= nil ) then
@@ -376,11 +393,6 @@ function CTF_flag_check( totalammo, killer, killerweapon, bodypart )
 	local xi, yi, zi = getElementPosition( player )
 	local deathBlip = createBlip ( xi, yi, zi, 0, 2, 200, 200, 200 )
 	setTimer( destroyElement, CTF_respawnTime, 1, deathBlip )
-	if ( CTF_roundOn ) then
-		fadeCamera ( player, false, CTF_respawnTime/500, 000, 000, 000 )
-		setTimer( fadeCamera, CTF_respawnTime, 1, player, true ) 
-		setTimer( CTF_spawnPlayer, CTF_respawnTime, 1, player )
-	end
 end
 
 function CTF_onColShapeHit ( player )
@@ -600,8 +612,8 @@ end
 
 addEventHandler( "onResourceStart", CTF_root, CTF_onResourceStart )
 addEventHandler( "onPlayerJoin", CTF_root, CTF_onPlayerJoin )
-addEventHandler( "onPlayerQuit", CTF_root, CTF_flag_check )
-addEventHandler( "onPlayerWasted", CTF_root, CTF_flag_check )
+addEventHandler( "onPlayerQuit", CTF_root, CTF_onPlayerQuit )
+addEventHandler( "onPlayerWasted", CTF_root, CTF_onPlayerWasted )
 addEventHandler( "onColShapeHit", CTF_root, CTF_onColShapeHit )
 addEventHandler( "onGamemodeMapStart", CTF_root, CTF_gamemodeMapStart )
 addEventHandler( "onGamemodeMapStop", CTF_root, CTF_gamemodeMapStop )
