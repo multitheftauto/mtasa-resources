@@ -435,7 +435,7 @@ function drawLasers()
 		if ( laserWeapons[playerWeapon] ) then
 			local startX,startY,startZ,targetX,targetY,targetZ
 			local boneX,boneY,boneZ = getPedBonePosition ( player, 25 )
-			startX,startY,startZ = getPedGunMuzzlePosition ( player )
+			startX,startY,startZ = getPedWeaponMuzzlePosition ( player )
 			if boneX and startX then
 				if getPedControlState(player, "aim_weapon") then
 					targetX, targetY, targetZ = getPedTargetEnd(player)
