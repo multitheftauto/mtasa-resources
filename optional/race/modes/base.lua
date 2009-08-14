@@ -327,7 +327,9 @@ function RaceMode:pickFreeSpawnpoint(ignore)
 end
 
 function freeSpawnpoint(i)
-	RaceMode.getSpawnpoint(i).used = nil
+	if RaceMode.getSpawnpoint(i) then
+		RaceMode.getSpawnpoint(i).used = nil
+	end
 end
 
 function restorePlayer(id, player)
