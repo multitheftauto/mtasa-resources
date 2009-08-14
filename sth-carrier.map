@@ -1,0 +1,56 @@
+<map edf:definitions="stealth,editor_main">
+    <mercenaryspawn id="mercenaryspawn (1)" interior="0" posX="-1253.73828125" posY="498.69299316406" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (2)" interior="0" posX="-1255.0395507813" posY="498.6923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (3)" interior="0" posX="-1256.3393554688" posY="498.6923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (4)" interior="0" posX="-1257.7142333984" posY="498.6923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (5)" interior="0" posX="-1259.2138671875" posY="498.6923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (7)" interior="0" posX="-1252.48828125" posY="498.6923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (8)" interior="0" posX="-1252.48828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (9)" interior="0" posX="-1253.73828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (10)" interior="0" posX="-1254.98828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (11)" interior="0" posX="-1256.48828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (12)" interior="0" posX="-1257.98828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    <mercenaryspawn id="mercenaryspawn (13)" interior="0" posX="-1259.23828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
+    
+	<spyspawn id="spyspawn (1)" interior="0" posX="-1426.0520019531" posY="504.42425537109" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
+    <spyspawn id="spyspawn (2)" interior="0" posX="-1427.5517578125" posY="504.423828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
+    <spyspawn id="spyspawn (3)" interior="0" posX="-1429.0517578125" posY="504.423828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
+    <spyspawn id="spyspawn (4)" interior="0" posX="-1430.8017578125" posY="504.423828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
+    <spyspawn id="spyspawn (5)" interior="0" posX="-1430.8017578125" posY="506.173828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
+    <spyspawn id="spyspawn (6)" interior="0" posX="-1429.3017578125" posY="506.173828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
+    <spyspawn id="spyspawn (7)" interior="0" posX="-1427.5517578125" posY="506.173828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
+    <spyspawn id="spyspawn (8)" interior="0" posX="-1426.0517578125" posY="506.173828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
+	
+    <object id="object (cxrf_a51_stairs08) (1)" dimension="0" interior="0" model="16731" name="object" posX="-1429.888794" posY="516.342834" posZ="5.574392" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (cxrf_a51_stairs08) (2)" dimension="0" interior="0" model="16731" name="object (1)" posX="-1446.8017578125" posY="516.34375" posZ="0.88095301389694" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (cos_sbanksteps01) (1)" dimension="0" interior="0" model="12958" name="object (2)" posX="-1338.510742" posY="487.263000" posZ="14.077453" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (a51_ventsouth) (1)" dimension="0" interior="0" model="16644" name="object (3)" posX="-1330.754883" posY="483.781769" posZ="11.092094" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (lhroofst14) (1)" dimension="0" interior="0" model="5822" name="object (5)" posX="-1401.674438" posY="515.887085" posZ="9.063447" rotX="0" rotY="0" rotZ="3.8674651171331" />
+    <object id="object (las2dkwar01) (1)" dimension="0" interior="0" model="5259" name="object (6)" posX="-1403.412598" posY="507.131805" posZ="1.564583" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (des_quarryplatform) (1)" dimension="0" interior="0" model="16082" name="object (13)" posX="-1450.464722" posY="494.888550" posZ="13.585888" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (imoildrum4_LAS) (1)" dimension="0" interior="0" model="3633" name="object (14)" posX="-1346.650146" posY="500.244080" posZ="17.709175" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (CJ_METAL_CRATE) (1)" dimension="0" interior="0" model="964" name="object (16)" posX="-1385.028320" posY="500.131287" posZ="17.234373" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (CJ_METAL_CRATE) (2)" dimension="0" interior="0" model="964" name="object (17)" posX="-1323.288818" posY="509.021027" posZ="17.234373" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (CJ_METAL_CRATE) (3)" dimension="0" interior="0" model="964" name="object (18)" posX="-1288.569702" posY="510.937012" posZ="17.236259" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (CJ_METAL_CRATE) (4)" dimension="0" interior="0" model="964" name="object (19)" posX="-1285.069580" posY="509.427673" posZ="17.234373" rotX="0" rotY="0" rotZ="116.02401080977" />
+    <object id="object (lasdkrt05) (1)" dimension="0" interior="0" model="3575" name="object (20)" posX="-1282.144531" posY="497.642639" posZ="19.926064" rotX="0" rotY="0" rotZ="181.34125675046" />
+    <object id="object (CJ_CHRIS_CRATE) (1)" dimension="0" interior="0" model="2669" name="object (21)" posX="-1369.225220" posY="505.831909" posZ="18.574646" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (des_a51warheads) (1)" dimension="0" interior="0" model="16641" name="object (25)" posX="-1302.543945" posY="502.781830" posZ="18.764231" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (crates01) (1)" dimension="0" interior="0" model="18260" name="object (43)" posX="-1350.1025390625" posY="512.3935546875" posZ="18.807565689087" rotX="0" rotY="0" rotZ="180.47790527344" />
+    <object id="object (vgsEfrght03) (1)" dimension="0" interior="0" model="8885" name="object (19)" posX="-1406.4443359375" posY="476.8251953125" posZ="9.6152830123901" rotX="0" rotY="0" rotZ="90.236206054688" />
+    <object id="object (dockcranescale0) (1)" dimension="0" interior="0" model="5126" name="object (20)" posX="-1310.933350" posY="473.389557" posZ="21.144337" rotX="0" rotY="0" rotZ="90.240852733105" />
+    <object id="object (crates01) (2)" dimension="0" interior="0" model="18260" name="object (25)" posX="-1369.060425" posY="470.681122" posZ="7.760695" rotX="0" rotY="0" rotZ="-270.72255819931" />
+    <object id="object (cos_sbanksteps02) (1)" dimension="0" interior="0" model="12839" name="object (26)" posX="-1314.926147" posY="515.927673" posZ="7.551659" rotX="0" rotY="0" rotZ="-89.338673388892" />
+    <object id="object (cos_sbanksteps03) (1)" dimension="0" interior="0" model="12950" name="object (27)" posX="-1305.517090" posY="516.152954" posZ="0.712934" rotX="0" rotY="0" rotZ="90.627599244818" />
+    <object id="object (vgsEfrght03) (2)" dimension="0" interior="0" model="8885" name="object (30)" posX="-1310.976807" posY="476.864044" posZ="9.615283" rotX="0" rotY="0" rotZ="179.83724253825" />
+    <object id="object (las2dkwar04) (1)" dimension="0" interior="0" model="5262" name="object (31)" posX="-1333.75390625" posY="476.86889648438" posZ="9.1451606750488" rotX="0" rotY="0" rotZ="90.236206054688" />
+    <object id="object (apgate1_VegS01) (1)" dimension="0" interior="0" model="8167" name="object (34)" posX="-1446.244141" posY="493.325928" posZ="11.290545" rotX="0" rotY="0" rotZ="0.21485917317406" />
+    <object id="object (des_swtfence2) (1)" model="11474" posX="-1377.1805419922" posY="492.74389648438" posZ="6.3638415336609" rotX="0" rotY="2" rotZ="97" />
+    <object id="object (k_cargo1) (1)" model="2974" posX="-1365.6427001953" posY="515.55902099609" posZ="15.587564468384" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (k_cargo1) (2)" model="2974" posX="-1284.0930175781" posY="515.56115722656" posZ="15.587564468384" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (k_cargo1) (3)" model="2974" posX="-1409.6134033203" posY="487.03393554688" posZ="15.578125" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (k_cargo1) (4)" model="2974" posX="-1363.2905273438" posY="486.43530273438" posZ="15.578125" rotX="0" rotY="0" rotZ="89.684936523438" />
+    <object id="object (lasdkrt05) (2)" model="3575" posX="-1423.810546875" posY="501.81292724609" posZ="19.921129226685" rotX="0" rotY="0" rotZ="89.994995117188" />
+    <object id="object (crates01) (3)" dimension="0" interior="0" model="18260" name="object (43)" posX="-1399.0457763672" posY="505.46328735352" posZ="18.807567596436" rotX="0" rotY="0" rotZ="60.837951660156" />
+    <object id="object (vgsEfrght03) (3)" dimension="0" interior="0" model="8885" name="object (19)" posX="-1466.5559082031" posY="477.12878417969" posZ="9.6152801513672" rotX="0" rotY="0" rotZ="270.57141113281" />
+</map>
