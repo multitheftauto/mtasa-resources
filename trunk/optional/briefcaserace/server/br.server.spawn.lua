@@ -192,6 +192,7 @@ function onPlayerTeamSelect(team)
 			end
 			if (success) then
 				local r, g, b = getTeamColor(team)
+				setPlayerNametagColor(source, r, g, b)
 				outputChatBox(getPlayerName(source) .. " joined " .. getTeamName(team), root, r, g, b)
 				scheduleClientEvent(source, "doShowPlayerTeamMenu", root, false)
 				setPlayerTeam(source, team)

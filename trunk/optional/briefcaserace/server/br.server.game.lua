@@ -69,13 +69,16 @@
 -- GLOBAL VARIABLES --
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local DELIVER_PTS = 100
+local PICKUP_PTS = 25
+
 local gameStarted = false
 local timerElement = false
 
 local theBriefcase = nil
 local theObjective = nil
 local teamObjectives = {}
-local lastCarrier = false -- sets on carrier run over, jacked, bike fall, vehicle damage. clears on last carrier quit, briefcase reset, briefcase deliver, add carrier.
+local lastCarrier = false -- last player/team that got briefcase - used to prevent multiple point adding. sets on add, clears on last carrier quit, briefcase reset, briefcase deliver, add carrier. Note: one possible problem - need to clear if team gets destroyed? (as in auto-teams)
 local resetBriefcaseTimer = nil
 
 -- element data:
@@ -376,7 +379,7 @@ end
 
 -- game event - player hits the briefcase
 function onPlayerBriefcaseHit_brgame()
-	assert(theBriefcase and theBriefcase:isIdle(), "blah blah blah")---asserts, but it's ok since client has multiple hits in one short period
+	assert(theBriefcase and theBriefcase:isIdle(), "Briefcase hit - the briefcase does not exist or is not idle")---asserts, but it's ok since client has multiple hits in one short period
 	assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
 	-- make sure the player isn't dead (the latter might be the case if this event is triggered more than once)
 	if (not isPedDead(source)) then
@@ -400,7 +403,7 @@ end
 
 -- game event - player delivers the briefcase
 function onPlayerObjectiveHit_brgame()
-		assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")---asserts, but it's ok since client has multiple hits in one short period
+		assert(theBriefcase and theBriefcase:getCarrier() == source, "Objective hit - the briefcase does not exist or the carrier isn't the guy who hit the objective")---asserts, but it's ok since client has multiple hits in one short period
 		assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
 		if ( not settings.onfootonly or not isPedInVehicle ( source ) ) then
 			debugMessage("Removing carrier " .. getPlayerName(source) .. " due to objective hit.")
@@ -427,7 +430,7 @@ function onPlayerObjectiveHit_brgame()
 				displayMessageForPlayers(1, getPlayerName(source) .. " reached the destination!")
 	  		end
 			-- increase score
-			local pointLimitReached = increasePoints(source, 100)
+			local pointLimitReached = increasePoints(source, DELIVER_PTS)
 			if (pointLimitReached) then
 				endGame(true, true)
 			else
@@ -443,7 +446,7 @@ end
 
 -- game event - carrier dies
 function onCarrierWasted(ammo, killer, weapon, bodypart)
-	assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")
+	assert(theBriefcase and theBriefcase:getCarrier() == source, "Carrier wasted - the briefcase does not exist or the carrier isn't the guy who was wasted")
 	assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
 	debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier death.")
 	removeCarrier(source, 1)
@@ -460,7 +463,7 @@ end
 
 -- game event - carrier quits
 function onCarrierQuit(reason)
-	assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")
+	assert(theBriefcase and theBriefcase:getCarrier() == source, "Carrier quit - the briefcase does not exist or the carrier isn't the guy who quit")
 	assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
 	debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier quit.")
 	removeCarrier(source, 3)
@@ -478,7 +481,7 @@ end
 -- game event - carrier gets run over
 function onCarrierDamage(attacker, attackerweapon, bodypart, loss)
 	if ((attackerweapon == 49 or attackerweapon == 50) and loss > 8) then --if they were hit by a vehicle
-		assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")
+		assert(theBriefcase and theBriefcase:getCarrier() == source, "Carrier run over - the briefcase does not exist or the carrier isn't the guy who was run over")
 		assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
 		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier damage from vehicle.")
 		removeCarrier(source, 1)
@@ -494,8 +497,6 @@ function onCarrierDamage(attacker, attackerweapon, bodypart, loss)
 		-- make briefcase not hittable to player for 5 seconds
 		setElementData(source, "justDroppedBriefcase", true)
 		setTimer(setElementData, 5000, 1, source, "justDroppedBriefcase", false)
-		-- set him to lastCarrier
-		lastCarrier = source
         -- tell the player he can't pick the orb up for 5 seconds
 		displayMessageForPlayer(source, 2, "[Five second pickup penalty]", 5000, 0.5, 0.535, 170, 0, 0, 1.75)
 	end
@@ -536,14 +537,12 @@ end
 --  increases jacker's score, attaches orb to jacker, adds carrier events to jacker, makes jacker a carrier
 -- removes vehicle damage handler if it wasn't already removed (this can happen in the case of falling off a bike, for example)
 function onCarrierVehicleExit(vehicle, seat, jacker)
-	assert(theBriefcase and theBriefcase:getCarrier() == source, "blah blah blah")
+	assert(theBriefcase and theBriefcase:getCarrier() == source, "Carrier exitted vehicle - the briefcase does not exist or the carrier isn't the guy who exitted")
 	assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
 	if (jacker) then
 		assert(not settings.teams or isPlayerOnValidTeam(jacker), "Player not on valid team")
 		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier jacked.")
   		removeCarrier(source, 0)
-		-- set him to lastCarrier
-		lastCarrier = source
 		-- remove any instructions message the jacked player might have
 		clearMessageForPlayer(source, 2)
 		-- announce that jacker jacked the orb carrier
@@ -561,8 +560,6 @@ function onCarrierVehicleExit(vehicle, seat, jacker)
 		------------------------------------
 		removeCarrier(source, 1)
 		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to bike fall.")
-		-- set him to lastCarrier
-		lastCarrier = source
 		-- remove any instructions message the player might have
 		clearMessageForPlayer(source, 2)
 		-- announce that the player dropped the orb
@@ -593,7 +590,7 @@ end
 -- game event - carrier's vehicle gets damaged
 -- makes orb not pickup-able by this player for 5 seconds, makes player drop orb
 function onCarrierVehicleDamage(loss)
-	assert(theBriefcase and theBriefcase:getCarrier(), "blah blah blah")
+	assert(theBriefcase and theBriefcase:getCarrier(), "Carrier vehicle damage - the briefcase does not exist or a carrier does not exist")
 	local player = theBriefcase:getCarrier()
 	assert(not settings.teams or isPlayerOnValidTeam(player), "Player not on valid team")
 	assert(isPedInVehicle(player) and getPedOccupiedVehicle(player) == source, "onCarrierVehicleDamage - carrier not in a vehicle or his vehicle isn't the one that was damaged.")
@@ -608,8 +605,6 @@ function onCarrierVehicleDamage(loss)
 		--local player = theBriefcase:getCarrier()
 		removeCarrier(player, 1)
 		debugMessage("Removing carrier " .. getPlayerName(player) .. " due to vehicle damage.")
-		-- set him to lastCarrier
-		lastCarrier = player
 		-- remove any instructions message the player might have
 		clearMessageForPlayer(player, 2)
 		-- announce that the player dropped the orb
@@ -686,13 +681,15 @@ end
 
 -- 1) removes old briefcase, 2) creates new briefcase for player, 3) makes objective hittable
 function addCarrier(player)
+	assert(not settings.teams or isPlayerOnValidTeam(player), "Player not on valid team")
+
 	-- kill the reset timer if it exists
 	if (resetBriefcaseTimer) then
 		killTimer(resetBriefcaseTimer)
 		resetBriefcaseTimer = false
 	end
 	
-	-- block this player's points if he was lastCarrier, reset lastCarrier
+	-- block this player's points if he was lastCarrier
 	local blockPoints = false
 	if (lastCarrier) then
 		if (not settings.teams) then
@@ -700,17 +697,26 @@ function addCarrier(player)
 				blockPoints = true
 			end
 		else
-			if (getPlayerTeam(lastCarrier) == getPlayerTeam(player)) then
-				blockPoints = true
+			if (isElement(lastCarrier)) then -- if team lastCarrier was destroyed, this will no longer be an element and we skip the check
+				if (lastCarrier == getPlayerTeam(player)) then
+					blockPoints = true
+				end
 			end
 		end
-		lastCarrier = false
 	end
-	
+
+	-- set this player/team to lastCarrier
+	if (not settings.teams) then
+		lastCarrier = player
+	else
+		lastCarrier = getPlayerTeam(player)
+	end
+
+	-- increase points if not blocked
 	local pointLimitReached = false
 	if (not blockPoints) then
 		-- increase score
-		pointLimitReached = increasePoints(player, 20)
+		pointLimitReached = increasePoints(player, PICKUP_PTS)
 	end
 	
 	if (pointLimitReached) then
@@ -933,8 +939,10 @@ function resetObjective()
 end
 
 function onPlayerQuit_brgame(quitType, reason, responsibleElement)
-	if (lastCarrier and lastCarrier == source) then
-		lastCarrier = false
+	if (lastCarrier and not settings.teams) then
+		if (source == lastCarrier) then
+			lastCarrier = false
+		end
 	end
 	-- remove him from the ready players (if he's not a ready player, it will just ignore him)
 	removeReadyPlayer(source)

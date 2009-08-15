@@ -516,4 +516,34 @@
     <vehicle id="Yosemite" model="554" posX="-1732.970703125" posY="127.095703125" posZ="3.6387469768524" rotX="359.1650390625" rotY="359.99450683594" rotZ="24.439086914063" />
     <vehicle id="Roadtrain" model="515" posX="-1816.9384765625" posY="2.5244140625" posZ="16.131774902344" rotX="359.50561523438" rotY="0" rotZ="271.21398925781" />
 
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (1)" posX="-1414.0733642578" posY="-408.06683349609" posZ="12.630916595459" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (2)" posX="-1538.5050048828" posY="-439.71356201172" posZ="6" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (3)" posX="-2320.5632324219" posY="-161.33142089844" posZ="35.5546875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (4)" posX="-2752.1159667969" posY="-262.63070678711" posZ="7.195240020752" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (5)" posX="-2648.4448242188" posY="18.943477630615" posZ="6.1328125" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (6)" posX="-2765.4038085938" posY="375.68978881836" posZ="6.3359375" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (7)" posX="-2669.4287109375" posY="639.23376464844" posZ="14.453125" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (8)" posX="-2667.3920898438" posY="639.22393798828" posZ="14.453125" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (9)" posX="-2819.4235839844" posY="1118.208984375" posZ="28.630367279053" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (10)" posX="-2606.5061035156" posY="1433.0220947266" posZ="7.1875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (11)" posX="-1590.9420166016" posY="1244.1649169922" posZ="7.174861907959" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (12)" posX="-1763.0008544922" posY="746.23309326172" posZ="34.28401184082" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (13)" posX="-1943.2497558594" posY="486.98852539063" posZ="31.96875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (14)" posX="-1922.8393554688" posY="281.41345214844" posZ="41.046875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (15)" posX="-2136.7238769531" posY="-117.61213684082" posZ="36.519073486328" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (16)" posX="-2333.3681640625" posY="222.04664611816" posZ="36.313209533691" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (17)" posX="-2411.1381835938" posY="-271.59814453125" posZ="39.778980255127" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (18)" posX="-2286.7666015625" posY="1102.4060058594" posZ="80.06315612793" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (19)" posX="-2111.7307128906" posY="973.76098632813" posZ="71.515625" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (20)" posX="-1740.7126464844" posY="867.16479492188" posZ="25.0859375" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (21)" posX="-2069.0112304688" posY="659.34521484375" posZ="52.785011291504" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (22)" posX="-2184.0832519531" posY="646.60437011719" posZ="49.4375" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (23)" posX="-1976.9948730469" posY="170.90119934082" posZ="27.694049835205" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (24)" posX="-1527.1884765625" posY="447.05227661133" posZ="7.1875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (25)" posX="-1717.9936523438" posY="-39.060302734375" posZ="3.5546875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (26)" posX="-1850.7552490234" posY="-167.58799743652" posZ="9.1632261276245" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (27)" posX="-2118.0537109375" posY="-418.93853759766" posZ="35.53125" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (28)" posX="-2412.0471191406" posY="-578.60906982422" posZ="132.74143981934" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (29)" posX="-1942.6811523438" posY="666.44342041016" posZ="47.703125" rotX="0" rotY="0" rotZ="0" />
+
 </map>
