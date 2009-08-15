@@ -13,14 +13,6 @@ function makeElementStatic(element)
 	end
 end
 
-local specialSyncers = {
-	position = function(element) return {edf.edfGetElementPosition(element)} end,
-	rotation = function(element) return {edf.edfGetElementRotation(element)} end,
-	dimension = function(element) return 0 end,
-	interior = function(element) return edf.edfGetElementInterior(element) end,
-	parent = function(element) return getElementData(element, "me:parent") end,
-}
-
 function setupNewElement(element, creatorResource, creatorClient, attachLater,shortcut,selectionSubmode)
 	selectionSubmode = selectionSubmode or 1
 	setElementParent(element, thisDynamicRoot)
