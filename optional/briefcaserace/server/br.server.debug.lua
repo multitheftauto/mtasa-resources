@@ -1,8 +1,10 @@
-function debugMessage(message)
+function debugMessage(message, consoleOnly)
 	if (settings.dbg) then
-		message = "br.server debug: " .. message
+		message = "SERVER debug: " .. message
 		outputConsole(message)
-		--outputServerLog(message)
-		outputDebugString(message)
+		if (not consoleOnly) then
+			--outputServerLog(message)
+			outputDebugString(message)
+		end
 	end
 end

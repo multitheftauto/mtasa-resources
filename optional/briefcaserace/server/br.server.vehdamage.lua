@@ -3,6 +3,7 @@
 --    This is a hacky way to ignore vehicle damage done by weapons, but should be good enough for our purposes.
 
 local vehiclesJustRepaired = {}
+local JUST_REPAIRED_TIMEOUT = 1000
 
 local MAX_IGNORE_TIME = 500
 local MAX_IGNORE_LOSS = 305
@@ -17,14 +18,13 @@ addEvent("onVehicleNonWeaponDamage", false) -- triggered here, caught by server.
 -- d event
 addEventHandler("onVehicleDamage", root,
 function (loss)
+	local curTick = getTickCount()
 	if (vehiclesJustRepaired[source]) then
-		debugMessage("Vehicle damage detected (" .. loss .. ") but vehicle was just repaired - ignoring.")
-	elseif (getTickCount() - lastWeaponDamageTick < MAX_IGNORE_TIME and loss < MAX_IGNORE_LOSS) then
-		debugMessage("Vehicle damage detected (" .. loss .. ") but is probably from weapon - ignoring.")
-		-- don't drop it
-		--outputChatBox(" will not drop briefcase")
+		debugMessage("Vehicle damage detected (" .. loss .. ") but vehicle was just repaired - ignoring. [" .. curTick .. "]")
+	elseif (curTick - lastWeaponDamageTick < MAX_IGNORE_TIME and loss < MAX_IGNORE_LOSS) then
+		debugMessage("Vehicle damage detected (" .. loss .. ") but is probably from weapon - ignoring. [" .. curTick .. "]")
 	else
-		--debugMessage("Vehicle damage detected (" .. loss .. "), triggering onVehicleNonWeaponDamage.")
+		debugMessage("Vehicle damage detected (" .. loss .. "), triggering onVehicleNonWeaponDamage. [" .. curTick .. "]", true)
 		-- trigger vehicle damage event
 		triggerEvent("onVehicleNonWeaponDamage", source, loss)
 	end
@@ -34,14 +34,14 @@ end
 -- wd event
 addEventHandler("onVehicleDamageFromWeapon", root,
 function ()
---debugMessage("server - onVehicleDamageFromWeapon event at " .. getTickCount())
+	debugMessage("Vehicle damage FROM WEAPON detected [" .. getTickCount() .. "]", true)
 	lastWeaponDamageTick = getTickCount()
 end
 )
 
 function notifyOfVehicleHealthIncrease(vehicle)
 	vehiclesJustRepaired[vehicle] = true
-	setTimer(removeVehicleFromTable, 1000, 1, vehicle)
+	setTimer(removeVehicleFromTable, JUST_REPAIRED_TIMEOUT, 1, vehicle)
 end
 
 function removeVehicleFromTable(vehicle)

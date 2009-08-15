@@ -376,16 +376,16 @@ function readMapSettings(resource)
 	if (timelimit) then
 		settings.tlimit = timelimit
 	end
-	-- get onfootonly
+	-- get onfootonly (boolean)
 	local onfootonly = get(mapName .. ".onfootonly")
-	if (onfootonly) then
+	--if (onfootonly) then
 		settings.onfootonly = onfootonly
-	end
-	-- get hide
+	--end
+	-- get hide (boolean)
 	local hide = get(mapName .. ".hide")
-	if (hide) then
+	--if (hide) then
 		settings.hide = hide
-	end
+	--end
 	-- get idletime
 	local idletime = get(mapName .. ".idletime")
 	if (idletime) then
@@ -400,16 +400,16 @@ function readMapSettings(resource)
 			settings.weapons[tonumber(k)] = v
 		end
 	end
-	-- get teamgame
+	-- get teamgame (boolean)
 	local teamgame = get(mapName .. ".teamgame")
-	if (teamgame) then
+	--if (teamgame) then
 		settings.teams = teamgame
-	end
-	-- get ff
+	--end
+	-- get ff (boolean)
 	local ff = get(mapName .. ".ff")
-	if (ff) then
+	--if (ff) then
 		settings.ff = ff
-	end
+	--end
 	-- get teamskins
 	local teamskins = get(mapName .. ".teamskins")
 	if (teamskins) then
@@ -432,11 +432,11 @@ function readMapSettings(resource)
 			--outputDebugString("skins read from settings.xml from team " .. teamName .. ": " .. skinsString)
 		end
 	end
-	-- get varteams
+	-- get varteams (boolean)
 	local varteams = get(mapName .. ".autoteams")
-	if (varteams) then
+	--if (varteams) then
 		settings.varteams = varteams
-	end
+	--end
 	-- get varteamsmaxplayers
 	local varteamsmaxplayers = get(mapName .. ".autoteamsmaxplayers")
 	if (varteamsmaxplayers) then
