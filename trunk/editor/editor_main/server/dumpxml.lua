@@ -13,6 +13,14 @@ function toAttribute(value)
 	end
 end
 
+local specialSyncers = {
+	position = function() end,
+	rotation = function() end,
+	dimension = function(element) return 0 end,
+	interior = function(element) return edf.edfGetElementInterior(element) end,
+	parent = function(element) return getElementData(element, "me:parent") end,
+}
+
 --!Need to write a decent algorithm to handle parents.
 function dumpMap ( xml, save, baseElement )
 	baseElement = baseElement or thisDynamicRoot
@@ -60,6 +68,18 @@ function dumpNodes ( xml, elementTable, elementChildren )
 		local elementNode = xmlCreateChild(xml, getElementType(element))
 		--add an ID attribute first off
 		xmlNodeSetAttribute(elementNode, "id", getElementID(element))
+		--dump raw properties from the getters
+		for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
+			local value
+			if specialSyncers[dataField] then
+				value = specialSyncers[dataField](element)
+			else
+				value = edf.edfGetElementProperty(element, dataField)
+			end
+			if type(value) == "number" or type(value) == "string" then
+				xmlNodeSetAttribute(elementNode, dataField, value )
+			end
+		end
 		-- dump properties to attributes
 		for dataName, dataValue in orderedPairs(getMapElementData(element)) do
 			if dataName == "position" then
@@ -70,7 +90,7 @@ function dumpNodes ( xml, elementTable, elementChildren )
 				xmlNodeSetAttribute(elementNode, "rotX", toAttribute(dataValue[1]))
 				xmlNodeSetAttribute(elementNode, "rotY", toAttribute(dataValue[2]))
 				xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(dataValue[3]))
-			elseif dataName ~= "dimension" or dataValue ~= getWorkingDimension() then
+			elseif not specialSyncers[dataName] or dataValue ~= getWorkingDimension() then
 				xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
 			end
 		end

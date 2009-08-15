@@ -1,5 +1,4 @@
 function addResourceMap ( resource, filename, dimension )
-	outputDebugString( "** Use addResourceMap in Lua or in C++? Fix me **" )
 	if not resource then return false end
 	dimension = dimension or 0
 	local currentFiles = getResourceFiles ( resource, "map" )
