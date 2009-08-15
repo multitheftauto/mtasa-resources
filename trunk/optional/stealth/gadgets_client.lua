@@ -309,6 +309,7 @@ function clientsetup (resource)
 	cameraplaced = 0
 	lookingthroughcamera = 0
 	loadtheshield = setTimer ( shieldload, 3000, 1 )
+	loadtheshield = setTimer ( shieldload, 4000, 1 )
 end
 
 addCommandHandler ( "Use Gadget/Spectate Next", 
@@ -463,11 +464,16 @@ function shieldup ()
 	toggleControl ("forwards", false )
 	toggleControl ("backwards", false )
 	toggleControl ("enter_exit", false )
-	toggleControl ("fire", false )
-	toggleControl ("aim_weapon", false )
-	toggleControl ("jump", false )
-	setControlState ( "aim_weapon", true )
-	setControlState ( "jump", true )
+	if (isPedDucked ( getLocalPlayer() ) == false ) then
+		toggleControl ("fire", false )
+		toggleControl ("aim_weapon", false )
+		toggleControl ("jump", false )
+		setControlState ( "aim_weapon", true )
+		setControlState ( "jump", true )
+	else
+		toggleControl ("jump", false )
+		toggleControl ("sprint", false )		
+	end
 	blockcheck = setTimer ( shieldingyet, 300, 0, player )
 end
 
@@ -486,12 +492,6 @@ function shieldingyet ()
 				local player = getLocalPlayer ()
 				triggerServerEvent ("shieldup", getLocalPlayer (), player )
 				currentweapon = getPedWeapon (getLocalPlayer ())
-			--	txd_shield = engineLoadTXD("riot_shield.txd")
-			--	engineImportTXD(txd_shield,1631)
-			--	col_shield = engineLoadCOL("riot_shield.col")
-			--	dff_shield = engineLoadDFF("riot_shield.dff", 0 )
-			--	engineReplaceCOL(col_shield,1631)
-			--	engineReplaceModel(dff_shield,1631)
 			end
 		end
 	end
@@ -533,6 +533,7 @@ function deactivategadget ()
 		toggleControl ("fire", true )
 		toggleControl ("aim_weapon", true )
 		toggleControl ("jump", true )
+		toggleControl ("sprint", true )
 		setControlState ( "aim_weapon", false )
 		setControlState ( "jump", false )
 		if shieldon == 1 then

@@ -141,11 +141,15 @@ addEventHandler("killcameraobject",getRootElement(),removecamball)
 addEvent ("shieldup", true )
 
 function maketheshield (player)
-	giveWeapon ( player, 0, 0, true )
 	local x, y, z = getElementPosition( player )
 	shield = createObject ( 1631, x, y, z, 0, 0, 0 )
 	setElementData ( shield, "type", "ashield" )
-	attachElements( shield, player, .2, .5, .2 )
+	if isPedDucked ( player ) then
+		attachElements( shield, player, .2, .5, -.6, 0, 90, 0 )
+	else
+		giveWeapon ( player, 0, 0, true )
+		attachElements( shield, player, .2, .5, .2 )
+	end
 end
 	
 addEventHandler("shieldup", getRootElement() , maketheshield)	
