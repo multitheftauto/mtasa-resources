@@ -9,6 +9,7 @@
 		<setting name="*ASE" value="[true]"/>
 		<setting name="*messages" value="[true]"/>
 		<setting name="*color" value="#E1AA5A"/>
+		<setting name="*currentmap" value="[true]"/>
 	</settings>
 	
 	<export function="changeGamemode"/>

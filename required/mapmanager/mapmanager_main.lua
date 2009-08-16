@@ -3,6 +3,9 @@ currentGamemodeMap = nil
 nextGamemode = nil
 nextGamemodeMap = nil
 
+mapdisplay = nil
+mapdisplaytext = nil
+
 setGameType(false)
 setMapName("None")
 
@@ -12,6 +15,24 @@ addEvent("onGamemodeStart")
 addEvent("onGamemodeStop")
 addEvent("onGamemodeMapStart")
 addEvent("onGamemodeMapStop")
+
+addEventHandler("onResourceStart", resourceRoot,
+	function()
+		mapdisplay = textCreateDisplay()
+		mapdisplaytext = textCreateTextItem("", 0.002, 0.984, "normal", 255, 255, 255, 150, 1)
+		textDisplayAddText(mapdisplay, mapdisplaytext)
+		
+		for i,player in ipairs(getElementsByType("player")) do
+			textDisplayAddObserver(mapdisplay, player)
+		end
+	end
+)
+
+addEventHandler("onPlayerJoin", rootElement, 
+	function()
+		textDisplayAddObserver(mapdisplay, source)
+	end
+)
 
 addEventHandler("onResourcePreStart", rootElement, 
 	function (startingResource)
@@ -36,6 +57,11 @@ addEventHandler("onResourceStart", rootElement,
 			if getRunningGamemode() then
                 return
 			end
+			
+			if get("currentmap") then
+				textItemSetText(mapdisplaytext, "Current map: /")
+			end
+			
 			if triggerEvent("onGamemodeStart", getResourceRootElement(startedResource), startedResource) then
 				currentGamemode = startedResource
 				--Setup our announcements
@@ -80,6 +106,10 @@ addEventHandler("onResourceStart", rootElement,
 					local gamemodeMapName = getResourceInfo(currentGamemodeMap, "name") or getResourceName(currentGamemodeMap)
 					applyMapSettings( currentGamemodeMap )
 					
+					if get("currentmap") then
+						textItemSetText(mapdisplaytext, "Current map: "..gamemodeMapName)
+					end
+					
 					if get("ASE") then
 						setMapName(gamemodeMapName)
 					end
@@ -101,6 +131,8 @@ addEventHandler("onResourceStop", rootElement,
 			currentGamemode = nil
 			setGameType(false)
 			
+			textItemSetText(mapdisplaytext, "")
+			
 			triggerEvent("onGamemodeStop", resourceRoot, currentGamemode)
 			
 			if currentGamemodeMap then
@@ -117,6 +149,10 @@ addEventHandler("onResourceStop", rootElement,
 			currentGamemodeMap = nil
 			resetMapInfo()
 			setMapName("None")
+			
+			if get("currentmap") and getRunningGamemode() then
+				textItemSetText(mapdisplaytext, "Current map: /")
+			end
 			
 			triggerEvent("onGamemodeMapStop", resourceRoot, currentGamemodeMap)
 			
@@ -425,4 +461,3 @@ function getMapFromName ( name )
 	end
 	return false
 end
-
