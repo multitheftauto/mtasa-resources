@@ -10,6 +10,13 @@ addEventHandler("onClientResourceStart",resourceRoot,
 	end
 )
 
+addEventHandler ("onClientResourceStop",rootElement,
+	function()
+		for i,timer in ipairs(getElementsByType("missiontimer",source)) do
+			destroyElement(timer)
+		end
+	end
+)
 
 function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale )
 	sourceResource = sourceResource or thisResource

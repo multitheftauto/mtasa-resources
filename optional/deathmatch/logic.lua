@@ -109,7 +109,7 @@ function processRanks()
 			local previousScore = getElementData ( previousPlayer, "Score" )
 			local playerScore = getElementData ( player, "Score" ) 
 			if previousScore == playerScore then
-				setElementData ( player, "Rank", previousScore )
+				setElementData ( player, "Rank", getElementData( previousPlayer, "Rank" ) )
 			else
 				setElementData ( player, "Rank", i )
 			end

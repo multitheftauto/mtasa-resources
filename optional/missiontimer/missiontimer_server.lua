@@ -3,6 +3,14 @@ local bool = { [false]=true, [true]=true }
 local missionTimers = {}
 addEvent"onMissionTimerElapsed"
 
+addEventHandler ("onResourceStop",root,
+	function()
+		for i,timer in ipairs(getElementsByType("missiontimer",source)) do
+			destroyElement(timer)
+		end
+	end
+)
+
 function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale )
 	sourceResource = sourceResource or thisResource
 	local element = createElement ( "missiontimer" )
