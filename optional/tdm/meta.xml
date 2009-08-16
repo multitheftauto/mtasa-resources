@@ -1,5 +1,5 @@
 <meta>
-	<info author="Talidan" version="1.0.0" type="gamemode" maps="deathmatch" description="A team deathmatch gamemode" edf:definition="edf/dm.edf" />
+	<info author="Talidan" version="1.0.0" type="gamemode" compatible-with="deathmatch" description="A team deathmatch gamemode" edf:definition="edf/dm.edf" />
 	<include resource="killmessages" />
 	<include resource="deathpickups" />
 	<include resource="spawnmanager" />
