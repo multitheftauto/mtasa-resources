@@ -279,7 +279,7 @@ function aPlayerSerialCheck ( player, result )
 end
 
 addEventHandler ( "onPlayerLogin", _root, function ( previous, account, auto )
-	if ( hasObjectPermissionTo ( source, "general.tab_resources" ) ) then
+	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
 		triggerEvent ( "aPermissions", source )
 		outputChatBox ( "Press 'p' to open your admin panel", source )
 	end

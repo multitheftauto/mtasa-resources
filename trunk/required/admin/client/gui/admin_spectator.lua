@@ -16,6 +16,7 @@ function aSpectate ( player )
 		return
 	end
 	aSpectator.Spectating = player
+    setPedFrozen ( getLocalPlayer(), true )
 	if ( ( not aSpectator.Actions ) or ( not guiGetVisible ( aSpectator.Actions ) ) ) then
 		aSpectator.Initialize ()
 	end
@@ -118,6 +119,10 @@ function aSpectator.Close ( destroy )
 		guiSetVisible ( aSpectator.Prev, false )
 	end
 	setCameraTarget ( getLocalPlayer() )
+    local x, y, z = getElementPosition(getLocalPlayer())
+    setElementPosition(getLocalPlayer(), x, y, z+1)
+    setElementVelocity (getLocalPlayer(), 0, 0, 0)
+    setPedFrozen ( getLocalPlayer(), false )
 	aSpectator.Spectating = nil
 	showCursor ( true )
 	aAdminMenu()
@@ -196,6 +201,7 @@ function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 		return
 	end
 	aSpectator.Spectating = players[next]
+    setPedFrozen ( getLocalPlayer(), true )
 end
 
 function aSpectator.CursorMove ( rx, ry, x, y )
