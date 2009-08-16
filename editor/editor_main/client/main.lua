@@ -142,10 +142,10 @@ local specialIntersections = {
 
 function startWhenLoaded()
 	if getElementData(thisResourceRoot,"g_in_test") then 
-		setElementData ( localPlayer, "waitingToStart", false, true )
+		setElementData ( localPlayer, "waitingToStart", true, false )
 		return 
 	else
-		setElementData ( localPlayer, "waitingToStart", false, nil )
+		setElementData ( localPlayer, "waitingToStart", nil, false )
 	end
 	if isInterfaceLoaded() then
 		removeEventHandler("onClientResourceStart", root, startWhenLoaded)
