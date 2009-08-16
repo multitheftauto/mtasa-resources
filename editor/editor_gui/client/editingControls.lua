@@ -487,13 +487,15 @@ eC.catalogID = {
 		return tonumber(stringValue) or stringValue
 	end,
 	launchCatalogBrowser = function( self, autoSet )
-		local callback = function( categoryType, chosenCategory, chosenModel)
+		local callback = function( categoryType, chosenCategory, chosenModel, cancelled)
 			self.category = chosenCategory
+			self.cancelled = cancelled
 			self:setValue(chosenModel)
 			if isElement(self.GUI.launchBrowserButton) then
 				triggerEvent( "onClientControlBrowserClose", self.GUI.launchBrowserButton )
 			end
 		end
+		self.cancelled = nil
 		outputDebugString(tostring(self.category))
 		startBrowser( self.IDType, callback, self.category, tonumber(self:getValue()), autoSet )
 		triggerEvent( "onClientControlBrowserLaunch", self.GUI.launchBrowserButton )

@@ -328,7 +328,7 @@ function browser.browserCancelled(button)
 	if ( tutorialVars.browserOK ) then return end
 
 	if callbackFunction then
-		callbackFunction(initialValues.initialType, initialValues.initialCat, initialValues.initialModel)
+		callbackFunction(initialValues.initialType, initialValues.initialCat, initialValues.initialModel,true)
 	end
 	browser.close()
 end
