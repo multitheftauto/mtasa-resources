@@ -309,7 +309,6 @@ function clientsetup (resource)
 	cameraplaced = 0
 	lookingthroughcamera = 0
 	loadtheshield = setTimer ( shieldload, 3000, 1 )
-	loadtheshield = setTimer ( shieldload, 4000, 1 )
 end
 
 addCommandHandler ( "Use Gadget/Spectate Next", 
