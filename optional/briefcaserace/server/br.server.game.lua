@@ -1,4 +1,6 @@
 --TO DO
+-- in server.spawn, track timers that spawn players and timers that show gui, so they can be destroyed if the map ends, etc. (done, need testing)
+-- make team menu gui support higher number of teams (screen only shows up to 17 teams right now)
 -- make variable teams option.. teams are auto-generated as player count increases. 6 players per team? what skins do they use? (done, needs testing)
 -- maybe carrier vehicle 'gravity' is too low, needs testing (needs testing)
 -- maybe when briefcase is stuck in air, make it slowly lower to the ground
@@ -80,6 +82,8 @@ local theObjective = nil
 local teamObjectives = {}
 local lastCarrier = false -- last player/team that got briefcase - used to prevent multiple point adding. sets on add, clears on last carrier quit, briefcase reset, briefcase deliver, add carrier. Note: one possible problem - need to clear if team gets destroyed? (as in auto-teams)
 local resetBriefcaseTimer = nil
+local resetObjectivesTimer = nil
+local idleBriefcaseTimer = nil
 
 -- element data:
 --  carrierVehicle - 'false' if carrier doesn't have vehicle events attached (onCarrierVehicleDamage), 'vehicle' if carrier's vehicle still has events attached
@@ -114,7 +118,7 @@ function startGame()
 		end]] -- this is now done in br.server.spawn
 		-- create briefcase and objective
 	  	resetBriefcase()
-	  	resetObjective()
+	  	resetObjectives()
 
 	-- add events
 	--addEventHandler( "onPlayerReady", root,				onPlayerReady_brgame);
@@ -147,6 +151,11 @@ function isGameStarted()
 end
 
 function endGame(showScores, tellMapCycler)
+	-- remove carrier if he exists
+	if (theBriefcase and theBriefcase:getCarrier()) then
+		removeCarrier(theBriefcase:getCarrier(), 2)
+	end
+	-- delete briefcase and objective(s)
 	if (theBriefcase) then
 		theBriefcase:destroy()
 		theBriefcase = nil
@@ -163,6 +172,14 @@ function endGame(showScores, tellMapCycler)
 	if (resetBriefcaseTimer) then
 		killTimer(resetBriefcaseTimer)
 		resetBriefcaseTimer = nil
+	end
+	if (resetObjectivesTimer) then
+		killTimer(resetObjectivesTimer)
+		resetObjectivesTimer = nil
+	end
+	if (idleBriefcaseTimer) then
+		killTimer(idleBriefcaseTimer)
+		idleBriefcaseTimer = nil
 	end
 
 	-- remove events
@@ -216,6 +233,35 @@ function endGame(showScores, tellMapCycler)
 	end
 	
 	gameStarted = false
+end
+
+-- used for auto teams mode - let the script know there is a new team
+function gameAddVarTeam(team)
+	assert(settings.teams and settings.varteams, "requested to create var team, but this is not the game mode")
+	assert(not teamObjectives[team], "requested to create var team, but team is already in objectives table")
+	-- check if any other objectives exist - this tells us whether we should create one
+	local empty = true
+	for k,v in pairs(teamObjectives) do
+		empty = false
+		break
+	end
+	-- create and add this objective to the table if necessary
+	if (not empty) then
+		addObjectiveForTeam(team)
+	end
+end
+
+-- used for auto teams mode - let the script know a team is about to be destroyed
+-- the given team MUST be empty or this will not work
+function gameRemoveVarTeam(team)
+	assert(settings.teams and settings.varteams, "requested to destroy var team, but this is not the game mode")
+	assert(team and isElement(team) and getElementType(team) == "team", "requested to destroy var team, but team does not exist")
+	assert(countPlayersInTeam(team) == 0, "requested to destroy var team, but team is not empty")
+	-- remove team from objective markers if they exist
+	if (teamObjectives[team]) then
+		teamObjectives[team]:destroy()
+		teamObjectives[team] = nil
+	end
 end
 
 --[[function onStopSetScoreboardNotForced(resource)
@@ -435,8 +481,8 @@ function onPlayerObjectiveHit_brgame()
 				endGame(true, true)
 			else
 			    -- reset orb and objective
-	   			setTimer(resetBriefcase, 5000, 1)
-	           	setTimer(resetObjective, 5000, 1)
+	   			resetBriefcaseTimer = setTimer(resetBriefcase, 5000, 1)
+	           	resetObjectivesTimer = setTimer(resetObjectives, 5000, 1)
 			end
 		else
 		    --outputChatBox ( "Get out of your vehicle!", source, 147, 112, 219 )
@@ -684,9 +730,9 @@ function addCarrier(player)
 	assert(not settings.teams or isPlayerOnValidTeam(player), "Player not on valid team")
 
 	-- kill the reset timer if it exists
-	if (resetBriefcaseTimer) then
-		killTimer(resetBriefcaseTimer)
-		resetBriefcaseTimer = false
+	if (idleBriefcaseTimer) then
+		killTimer(idleBriefcaseTimer)
+		idleBriefcaseTimer = false
 	end
 	
 	-- block this player's points if he was lastCarrier
@@ -777,7 +823,7 @@ function removeCarrier(player, action)
 		local x, y, z = getElementPosition(player)
 		theBriefcase:idle(x, y, z)
 		-- set reset timer
-		resetBriefcaseTimer = setTimer(destroyAndResetIdleBriefcase, settings.reset*1000, 1)
+		idleBriefcaseTimer = setTimer(destroyAndResetIdleBriefcase, settings.reset*1000, 1)
 	elseif ( action == 2 ) then
 		-- destroy briefcase
 		theBriefcase:destroy()
@@ -809,8 +855,8 @@ function removeCarrier(player, action)
 			end
 		end
 		-- reset orb and objective
-		setTimer(resetBriefcase, 5000, 1)
-		setTimer(resetObjective, 5000, 1)
+		resetBriefcaseTimer = setTimer(resetBriefcase, 5000, 1)
+		resetObjectivesTimer = setTimer(resetObjectives, 5000, 1)
 	end
 end
 
@@ -855,11 +901,11 @@ end
 -- destroys and resets orb after inactivity
 function destroyAndResetIdleBriefcase()
 	-- kill timer
-    resetBriefcaseTimer = false
+    idleBriefcaseTimer = false
 	-- destroy briefcase
 	theBriefcase:notIdle()
     -- reset briefcase
- 	setTimer(resetBriefcase, 5000, 1)
+ 	resetBriefcaseTimer = setTimer(resetBriefcase, 5000, 1)
 	-- reset lastCarrier if exists
 	if (lastCarrier) then
 		lastCarrier = false
@@ -870,6 +916,7 @@ end
 
 -- chooses a random briefcase spawn location from map file, creates idle briefcase
 function resetBriefcase()
+	resetBriefcaseTimer = nil
 	---MODIFIED FROM ERORR'S ORIGINAL CODE.  More editor compatible, as there's no unnecessary parent group anymore.
 	-- get coords from map
 	--local runningMap = call(getResourceFromName"mapmanager","getRunningGamemodeMap") -- commented out because this returns nil when resetOrb is called when the gm map is started because mapmanager does not have the gm map set yet at this point.. this is because it triggers the event gm map start event before setting the gm map (currentGamemodeMap is nil at this point) -- erorr404
@@ -899,7 +946,8 @@ function resetBriefcase()
 end
 
 -- chooses a random desstination spawn location from map file, creates destination
-function resetObjective()
+function resetObjectives()
+	resetObjectivesTimer = nil
 	---MODIFIED FROM ERORR'S ORIGINAL CODE.  More editor compatible, as there's no unnecessary parent group anymore.
 	-- get coords from map
 	--local runningMap = call(getResourceFromName"mapmanager","getRunningGamemodeMap") -- commented out because this returns nil when resetOrb is called when the gm map is started because mapmanager does not have the gm map set yet at this point.. this is because it triggers the event gm map start event before setting the gm map (currentGamemodeMap is nil at this point) -- erorr404
@@ -931,6 +979,29 @@ function resetObjective()
 				teamObjectives[v] = Objective:new({x = x, y = y, z = z, team = v})
 			end
 		end
+	 	return true
+	else
+	    outputChatBox("Error: no objectives")
+	    return false
+	end
+end
+
+function addObjectiveForTeam(team)
+	local mapRoot = getResourceRootElement(runningMap)
+	local objectives = getElementsByType("objective", mapRoot)
+	local objectiveCount = #objectives
+	if (objectiveCount > 0) then
+		--outputDebugString(objectiveCount .. " objectives total")---
+	 	-- create objective
+		math.randomseed(getTickCount())
+		local objectiveIndex = math.random(1, objectiveCount)
+		--outputDebugString("objective " .. objectiveIndex .. " chosen")---
+		local objectiveElem = objectives[objectiveIndex]
+		local x = tonumber(getElementData(objectiveElem, "posX"))
+		local y = tonumber(getElementData(objectiveElem, "posY"))
+		local z = tonumber(getElementData(objectiveElem, "posZ"))
+		--outputDebugString("objective: " .. x .. " " .. y .. " " .. z)---
+		teamObjectives[team] = Objective:new({x = x, y = y, z = z, team = team})
 	 	return true
 	else
 	    outputChatBox("Error: no objectives")

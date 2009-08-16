@@ -1,5 +1,6 @@
 -- add a pretty picture of a briefcase!
-local TEXT_Y_INTERVAL = 50
+--local TEXT_Y_INTERVAL = 50
+local TEXT_Y_INTERVAL = .05
 
 addEvent("doCreateTeamMenu", true)
 addEvent("doShowPlayerTeamMenu", true)
@@ -38,7 +39,7 @@ function (teamTable)
 	local width, height = guiGetScreenSize()
 	local curX, curY = 0.25*width, 0.10*height
 	-- create instructions label
-	instructionsLabel = guiCreateLabel(curX, curY, 0.5*width, TEXT_Y_INTERVAL, "Select a team:", false)
+	instructionsLabel = guiCreateLabel(curX, curY, 0.5*width, TEXT_Y_INTERVAL*height, "Select a team:", false)
 	guiSetFont(instructionsLabel, "sa-header")
 	guiLabelSetHorizontalAlign(instructionsLabel, "center")
 	--guiLabelSetColor(instructionsLabel, 255, 127, 255)
@@ -46,10 +47,10 @@ function (teamTable)
 	guiSetVisible(instructionsLabel, guiShowing)
 	-- create teams label
 	for i,v in ipairs(teams) do
-		curY = curY + TEXT_Y_INTERVAL
+		curY = curY + TEXT_Y_INTERVAL*height
 		local name = getTeamName(v)
 		local r, g, b = getTeamColor(v)
-		teamLabels[v] = guiCreateLabel(curX, curY, 0.5*width, TEXT_Y_INTERVAL, name, false)
+		teamLabels[v] = guiCreateLabel(curX, curY, 0.5*width, TEXT_Y_INTERVAL*height, name, false)
 		guiSetFont(teamLabels[v], "sa-header")
 		guiLabelSetHorizontalAlign(teamLabels[v], "center")
 		guiLabelSetColor(teamLabels[v], r, g, b)

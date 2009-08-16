@@ -22,7 +22,7 @@ function onClientPlayerWeaponFireAtVehicle(weapon, ammo, ammoInClip, hitX, hitY,
 			waitTimer = nil
 		end
 		if (numWaiting == MAX_SEND_AMOUNT-1) then
-debugMessage("client - triggering onVehicleDamageFromWeapon, " .. numWaiting .. " events packed")
+--debugMessage("client - triggering onVehicleDamageFromWeapon, " .. numWaiting .. " events packed")
 			-- max send amount reached, send now
 			triggerServerEvent("onVehicleDamageFromWeapon", hitElement)
 			numWaiting = 0
@@ -35,7 +35,7 @@ debugMessage("client - triggering onVehicleDamageFromWeapon, " .. numWaiting .. 
 end
 
 function sendEvent(hitElement)
-debugMessage("client - triggering onVehicleDamageFromWeapon, " .. numWaiting .. " events packed")
+--debugMessage("client - triggering onVehicleDamageFromWeapon, " .. numWaiting .. " events packed")
 	triggerServerEvent("onVehicleDamageFromWeapon", hitElement)
 	waitTimer = nil
 	numWaiting = 0

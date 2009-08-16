@@ -1,5 +1,4 @@
 -- TO DO:
---  have it take your camera to a pretty place when game is idle or you're not on team
 
 --[[addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
 function (resource)
@@ -18,6 +17,8 @@ end
 
 -- manages player spawning and team selection
 -- uses setPlayerReady() and setPlayerNotReady() to have br.server.game put the player in or take the player out of the game
+
+local spawnTimers = {} -- a timer for each player who is set to spawn
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- FFA SPAWN --
@@ -46,6 +47,11 @@ function end_ffaSpawn()
 		end
 		fadeCamera(v, true)
 		setCameraMatrix(v, settings.cam.x, settings.cam.y, settings.cam.z, settings.cam.lx, settings.cam.ly, settings.cam.lz, settings.cam.roll, settings.cam.fov)
+		-- remove spawn timer if exists
+		if (spawnTimers[v]) then
+			killTimer(spawnTimers[v])
+			spawnTimers[v] = nil
+		end
 	end
 	ffaStarted = false
 	-- make all ready players not ready
@@ -61,7 +67,10 @@ function onPlayerJoin_spawnffa()
 end
 
 function onPlayerWasted_spawnffa()
-	setTimer(spawnPlayerAtRandomSpawnpoint, 3000, 1, source)
+	if (spawnTimers[source]) then
+		killTimer(spawnTimers[source])
+	end
+	spawnTimers[source] = setTimer(spawnPlayerAtRandomSpawnpoint, 3000, 1, source)
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -79,6 +88,7 @@ end
 addEvent("onPlayerTeamSelect", true)
 
 local teamsStarted = false
+local createGuiTimers = {} -- a timer for each player who has pending gui
 
 function init_teamSpawn()
 	local players = getElementsByType("player")
@@ -91,7 +101,7 @@ function init_teamSpawn()
 		--  so we wait 5 seconds and hope that it is by then
 		--  (This is obviously not fool-proof, and queuing it until the gm resource loads is pointless.
 		--  We should queue the triggerClientEvent call until the gm map loads client-side instead, but lazy..)
-		setTimer(createAndShowTeamMenuForPlayer, 5000, 1, v)
+		createGuiTimers[v] = setTimer(createAndShowTeamMenuForPlayer, 5000, 1, v)
 		-- set their camera
 		--fadeCamera(v, true)
 		fadeCamera(v, true)
@@ -121,6 +131,16 @@ function end_teamSpawn()
 		-- set their camera
 		fadeCamera(v, true)
 		setCameraMatrix(v, settings.cam.x, settings.cam.y, settings.cam.z, settings.cam.lx, settings.cam.ly, settings.cam.lz, settings.cam.roll, settings.cam.fov)
+		-- remove spawn timer if exists
+		if (spawnTimers[v]) then
+			killTimer(spawnTimers[v])
+			spawnTimers[v] = nil
+		end
+		-- remove gui timer if exists
+		if (createGuiTimers[v]) then
+			killTimer(createGuiTimers[v])
+			createGuiTimers[v] = nil
+		end
 	end
 	teamsStarted = false
 	-- make all ready players not ready
@@ -131,7 +151,7 @@ function end_teamSpawn()
 end
 
 function onPlayerJoin_spawnteam()
-	setTimer(createAndShowTeamMenuForPlayer, 5000, 1, source)
+	createGuiTimers[source] = setTimer(createAndShowTeamMenuForPlayer, 5000, 1, source)
 	-- kill the player and show him a nice view
 	if (not isPedDead(source)) then
 		killPed(source)
@@ -144,6 +164,7 @@ end
 
 -- usually called on a timer, so check if the player is still here
 function createAndShowTeamMenuForPlayer(player)
+	createGuiTimers[player] = nil
 	if (isElement(player)) then
 		scheduleClientEvent(player, "doCreateTeamMenu", root, getValidTeams())
 		scheduleClientEvent(player, "doShowPlayerTeamMenu", root, true)
@@ -191,12 +212,19 @@ function onPlayerTeamSelect(team)
 				success = setPlayerNotReady(source)
 			end
 			if (success) then
+				-- set up player
 				local r, g, b = getTeamColor(team)
 				setPlayerNametagColor(source, r, g, b)
 				outputChatBox(getPlayerName(source) .. " joined " .. getTeamName(team), root, r, g, b)
 				scheduleClientEvent(source, "doShowPlayerTeamMenu", root, false)
 				setPlayerTeam(source, team)
 				setPlayerReady(source)
+				-- remove spawn timer if exists
+				if (spawnTimers[source]) then
+					killTimer(spawnTimers[source])
+					spawnTimers[source] = nil
+				end
+				-- spawn player, or kill him and have him auto spawn
 				if (not isPedDead(source)) then
 					killPed(source)
 				else
@@ -217,7 +245,7 @@ end
 -- respawn player after death
 function onPlayerWasted_spawnteam()
 	if (isPlayerReady(source)) then
-		setTimer(spawnPlayerAtRandomSpawnpoint, 3000, 1, source)
+		spawnTimers[source] = setTimer(spawnPlayerAtRandomSpawnpoint, 3000, 1, source)
 	end
 end
 
@@ -232,6 +260,7 @@ end
 
 
 function spawnPlayerAtRandomSpawnpoint ( player )
+	spawnTimers[player] = nil
     local spawnpoints = getElementsByType ( "spawnpoint" )
     local spawnpointIndex = math.random ( # spawnpoints )
     spawnPlayerAtSpawnpoint ( player, spawnpoints[spawnpointIndex] )

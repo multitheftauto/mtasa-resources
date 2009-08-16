@@ -8,8 +8,13 @@ settings =	{	limit = 1000, tlimit = false, weather = 0, teams = false, hide = tr
 				cam = {x = 1468.88, y = -919.25, z = 100.15, lx = 1468.39, ly = -918.42, lz = 99.88, roll = 0, fov = 70},
 				dbg = false
 			}
+
+--local teams = {}
 local readyPlayers = {}
+
 local varTeamIndex = 1
+local clearVarTeamsTimer = nil
+local CLEAR_VARTEAMS_DELAY = 60000---
 
 addEvent("onPlayerReady", true)
 addEvent("onPlayerBriefcaseHit", true)
@@ -66,9 +71,11 @@ function onGamemodeMapStart_brmain(resource)
 				createVarTeam()
 				createVarTeam()
 				local numPlayers = #getElementsByType("player")
+				--numPlayers = 128---test thing
 				while (numPlayers > #teams * settings.varteamsmaxplayers) do
 					createVarTeam()
 				end
+				clearVarTeamsTimer = setTimer(removeEmptyVarTeams, CLEAR_VARTEAMS_DELAY, 0)
 			end
 		end
 		-- set weather
@@ -83,7 +90,7 @@ function onGamemodeMapStart_brmain(resource)
 	end
 end
 
--- when the gamemode map can stops, the game can either be started or it can be ended
+-- when the gamemode map can stops, the game can either already be started or can already be ended
 --  the former will happen if admin or vote changes the map/mode in the middle of the game
 --  the latter will happen if the game ends naturally (i.e. point limit reached) and the map cycler kicks in (or an admin/vote changes it)
 -- to avoid calling endGame() multiple times, we use isGameStarted() to see whether or not we need to stop it
@@ -97,6 +104,11 @@ function onGamemodeMapStop_brmain(resource)
 	-- reset stuff here
 	removeEventHandler("onResourceStop", getResourceRootElement(resource), onGamemodeMapStop_brmain)
 	runningMap = false
+	-- stop varteams timer if it exists
+	if (clearVarTeamsTimer) then
+		killTimer(clearVarTeamsTimer)
+		clearVarTeamsTimer = nil
+	end
 	-- destroy any teams created by THIS resource (this is the case if it's autoteams)
 	for i,v in ipairs(createdTeams) do
 		destroyElement(v)
@@ -160,8 +172,8 @@ end
 function createVarTeam()
 	local teamName = "Team " .. varTeamIndex
 	varTeamIndex = varTeamIndex + 1
-	-- generate random color
-	math.randomseed(getTickCount() + #teams)
+	-- generate random color sequence
+	math.randomseed(math.floor(getTickCount()/(#teams+1)))
 	local r = math.random(0, 255)
 	local g = math.random(0, 255)
 	local b = math.random(0, 255)
@@ -175,6 +187,8 @@ function createVarTeam()
 	-- create team
 	local team = createTeam(teamName, r, g, b)
 	table.insert(teams, team)
+	-- tell br.game to add the corresponding objective marker
+	gameAddVarTeam(team)
 	-- insert into createdTeams table --
 	table.insert(createdTeams, team)
 	------------------------------------
@@ -192,11 +206,9 @@ function destroyVarTeam(team)
 		end
 	end
 	if (found2) then
-		destroyElement(createdTeams[found2])
 		table.remove(createdTeams, found2)
 	end
 	-------------------------------------------------
-	-- remove it from teams table
 	local found = false
 	for i,v in ipairs(teams) do
 		if (v == team) then
@@ -205,6 +217,9 @@ function destroyVarTeam(team)
 		end
 	end
 	if (found) then
+		-- tell br.game to get rid of the corresponding objective marker
+		gameRemoveVarTeam(teams[found])
+		-- remove it from teams table
 		settings.teamskins[getTeamName(teams[found])] = nil
 		destroyElement(teams[found])
 		table.remove(teams, found)
@@ -221,15 +236,53 @@ function onPlayerJoin_varTeams()
 		return
 	end
 	local totalPlayers = #getElementsByType("player")
+	--totalPlayers = 50---test thing
 	local totalTeams = #teams
 	local capacity = totalTeams * settings.varteamsmaxplayers
 	if (totalPlayers > capacity) then
 		createVarTeam()
 		updateTeamMenu()
+		outputDebugString("varteams - Created one team on player join.")
 	end
 end
 addEventHandler("onPlayerJoin", root, onPlayerJoin_varTeams)
 
+-- destroys empty teams
+function removeEmptyVarTeams()
+	assert(settings.varteams)
+	if (#teams > 2) then
+		local teamsDestroyed = false -- whether or not any teams were destroyed
+		local totalPlayers = #getElementsByType("player") -- number of players (fixed here)
+		local totalTeams = #teams -- current number of teams
+		local capacity = totalTeams * settings.varteamsmaxplayers -- there current capacity - decreases as teams are removed
+		local noEmptyTeams = false -- true if no empty teams were found in the last iteration, tells us there is no reason to keep looping
+		while (capacity - settings.varteamsmaxplayers >= totalPlayers and totalTeams > 2 and not noEmptyTeams) do
+			-- destroy an empty team if one exists
+			local victimTeam = false
+			for i,team in ipairs(teams) do
+				local numPlayers = countPlayersInTeam(team)
+				if (numPlayers == 0) then
+					victimTeam = team
+					break
+				end
+			end
+			if (victimTeam) then
+				destroyVarTeam(victimTeam)
+				totalTeams = totalTeams - 1
+				capacity = capacity - settings.varteamsmaxplayers
+				teamsDestroyed = true
+			else
+				noEmptyTeams = true
+			end
+		end
+		if (teamsDestroyed) then
+			updateTeamMenu()
+			outputDebugString("varteams - Destroyed empty team(s).")
+		end
+	end
+end
+
+--[[-- [Note - a better way would be to periodically check the teams and see which ones can be killed.. this would avoid the problem of the player still being on the team when it's killed]
 -- destroys unneeded teams when player quits
 -- note: when you quit, the player count still includes you
 function onPlayerQuit_varTeams()
@@ -270,7 +323,7 @@ function onPlayerQuit_varTeams()
 		end
 	end
 end
-addEventHandler("onPlayerQuit", root, onPlayerQuit_varTeams)
+addEventHandler("onPlayerQuit", root, onPlayerQuit_varTeams)]]
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TEAM/PLAYER FUNCTIONS --
