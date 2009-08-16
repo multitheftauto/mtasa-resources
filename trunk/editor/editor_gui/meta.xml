@@ -5,7 +5,7 @@
 	<include resource="tooltip" />
 	<!--clientside logic-->
 		<!--client utils-->
-		<script src="crun.client.lua" type="client"/>
+<!-- 		<script src="crun.client.lua" type="client"/> -->
 		<script src="client/orderedPairs.lua" type="client"/>
 		<script src="client/vehicleupgrades.lua" type="client"/>
 		<script src="client/editingControls.lua" type="client"/>
@@ -66,7 +66,7 @@
 	<config src="client/browser/vehicles.xml" type="client"/>
 	<!--serverside logic-->
 	<script src="server/guiserverlink.lua" type="server"/>
-	<script src="run.server.lua" type="server"/>
+<!-- 	<script src="run.server.lua" type="server"/> -->
 	<script src="server/interface.lua" type="server"/>
 	<!--gui icons-->
 	<!--Most icons courtesy of the Evaraldo Crystal icon gallery-->
