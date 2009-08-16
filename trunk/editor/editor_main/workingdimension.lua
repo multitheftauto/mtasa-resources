@@ -1,4 +1,4 @@
-local WORKING_DIMENSION = 65000
+local WORKING_DIMENSION = 200
 
 function getWorkingDimension()
 	return WORKING_DIMENSION
