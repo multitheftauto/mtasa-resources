@@ -364,10 +364,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	end
 	
 	-- if a creator resource doesn't exist, set it as the new resource
-	local resourceName = getElementData( theElement, "edf:creator" )
-	if not resourceName then
-		setElementData ( theElement, "edf:creator", getResourceName(resource) )
-	end
+	setElementData ( theElement, "edf:creator", getResourceName(resource) )
 	
 	-- don't represent it if that'd make it go over the instance limit
 	local limit = elementDefinition.limit

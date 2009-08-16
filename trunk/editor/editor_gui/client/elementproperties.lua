@@ -792,8 +792,12 @@ function openPropertiesBox( element, resourceName, shortcut )
 				control:addChangeHandler(syncPropertiesCallback)
 				--Attach after closing
 				control:addChangeHandler(
-					function()
-						editor_main.selectElement(element,1)
+					function(control)
+						if control.cancelled then
+							triggerServerEvent ( "doDestroyElement", element, true)
+						else
+							editor_main.selectElement(element,1)
+						end
 					end
 				)
 			end
