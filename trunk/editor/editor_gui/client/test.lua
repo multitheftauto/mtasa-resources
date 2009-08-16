@@ -83,7 +83,7 @@ addEventHandler("suspendGUI",getRootElement(),
 addEvent ( "resumeGUI", true )
 function resumeGUI ()
 	if getElementData ( localPlayer, "waitingToStart" ) then
-		setElementData ( localPlayer, "waitingToStart", false, nil )
+		setElementData ( localPlayer, "waitingToStart", nil, false )
 		editor_main.startEditor()
 		setGUIShowing(true)
 		return
