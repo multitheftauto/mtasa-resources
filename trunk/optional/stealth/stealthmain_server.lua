@@ -1,7 +1,6 @@
 local spectators = {}
 local getPlayerSpectatee = {}
 resourceRoot = getResourceRootElement(getThisResource())
-local quedTeamChangers = {}
 
 function teamstealthgamestart()
 	killmessageRes = getResourceFromName"killmessages"
@@ -44,21 +43,66 @@ function teamstealthgamestart()
 		setElementData ( v, "deaths", 0 )
 		setPlayerNametagShowing ( v, false )
 		spectators[v] = true
+		bindKey ( v, "F3", "down", selectTeamKey )
 	end
 	--Enable laser sight
 	setElementData(getRootElement(),"lasersight",get("stealth.lasersight"))
-	addEventHandler ( "onPlayerTeamSwitch", getRootElement(), playerTeamSwitch )
 end
 
 addEventHandler( "onGamemodeStart", resourceRoot, teamstealthgamestart )
 
-function playerTeamSwitch(prevTeam, team, type)
-	if type == "manual" then --The player manually tried to change team
-		outputChatBox("You will switch teams next round.", source, 255, 69, 0)
-		quedTeamChangers[source] = team
+function joinTeam( player, team )
+	setPlayerTeam(player, team)
+	if team == team1 then
+		setPlayerNametagColor ( player, 255, 0, 0 )
+ 	elseif team == team2 then
+		setPlayerNametagColor ( player, 0, 0, 255 )
 	end
 end
 
+addEvent("dojoinTeam1",true )
+function joinTeam1( source )
+	if (countPlayersInTeam(team1) - countPlayersInTeam(team2) > balanceamount) then
+		outputChatBox("Can't join RED too many players", source, 255, 69, 0)
+		triggerClientEvent(source,"doshowTeamWindow",source)
+	else
+		joinTeam(source, team1)
+	end
+end
+addEventHandler ( "dojoinTeam1", getRootElement(), joinTeam1 )
+ 
+addEvent("dojoinTeam2",true )
+function joinTeam2( source )
+	if (countPlayersInTeam(team2) - countPlayersInTeam(team1) > balanceamount) then
+		outputChatBox("Can't join BLUE too many players", source, 255, 69, 0)
+		triggerClientEvent(source,"doshowTeamWindow",source)
+	else
+		joinTeam(source, team2)
+	end
+end
+addEventHandler ( "dojoinTeam2", getRootElement(), joinTeam2 )
+ 
+function selectTeam( player )
+	setPlayerTeam(player, nil)
+	local thisplayer = player
+	triggerClientEvent(player,"doshowTeamWindow",getRootElement())
+	setCameraFixed(player,"cameramode",getRootElement(), thisplayer)
+	balanceamount = get("stealth.teambalance")
+	tonumber(balanceamount)
+end
+
+function selectTeamKey(source)
+	ishespawning = getElementData ( source, "cantchangespawns" )
+	if ( isPedDead ( source ) ) and (ishespawning == 0) then
+		selectTeam( source )
+		getPlayerSpectatee[source] = nil
+		triggerClientEvent(source,"showSpectateText",source,"",false)
+		unbindKey ( source, "r", "down", spectateNext )
+		setPlayerTeam(source, nil)
+	else
+		outputChatBox("You can only change teams when your dead.", source, 255, 69, 0)
+	end
+end
 
 function onStealthPlayerJoin ()
 	playersin = getPlayerCount()
@@ -69,11 +113,12 @@ function onStealthPlayerJoin ()
 			destroyMissionTimer ( roundfinish )
 		end
 	end
-	exports.teammanager:handlePlayer ( source )
+	selectTeam (source)
 	setElementData ( source, "kills", 0 )
 	setElementData ( source, "deaths", 0 )
 	setPlayerNametagShowing ( source, false )
 	spectators[source] = true
+	bindKey ( source, "F3", "down", selectTeamKey )
 	thisplayer = source
 	setCameraFixed(source,"cameramode",getRootElement(), thisplayer)
 	destroyshield = setTimer ( destroyElement, 3000, 1, dummyshield )
@@ -95,10 +140,10 @@ function teamstealthmapstart(startedMap)
 	local stealthplayers = getElementsByType("player")
 	for index, thisplayer in ipairs(stealthplayers) do
 		fadeCamera(thisplayer,true)
-		exports.teammanager:handlePlayer ( thisplayer, teams, "Stealth" )
 		setElementData ( thisplayer, "kills", 0 )
 		setElementData ( thisplayer, "deaths", 0 )
 		setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
+		selectTeam (thisplayer)
 	end
 	teamprotect = get("stealth.teamprotect")
 	if teamprotect == 1 then	
@@ -583,12 +628,6 @@ function stealthroundended( timerID, player )
 					textDisplayAddObserver( tiegamedisplay, thisplayer )
 				end
 			end
-			for player,team in pairs(quedTeamChangers) do
-				if isElement(player) then
-					setTimer ( setPlayerTeam, 2500, 1, player, team )
-				end
-				quedTeamChangers[player] = nil
-			end
 			roundstart = setTimer ( startstealthround, 7000, 1, player )
 			roundcycle = setTimer ( roundtick, 3000, 1, player )
 			removeEventHandler ( "missionTimerActivated", getRootElement(), stealthroundended )
@@ -693,6 +732,7 @@ function teamstealthgamestop()
 		textDisplayRemoveObserver( bluewinsdisplay, thisplayer )
 		textDisplayRemoveObserver( tiegamedisplay, thisplayer )
 		textDisplayRemoveObserver( waitDisplay, thisplayer )
+		unbindKey ( thisplayer, "F3", "down", selectTeamKey )
 	end
 	local timers = getTimers()
 	for timerKey, timerValue in ipairs(timers) do

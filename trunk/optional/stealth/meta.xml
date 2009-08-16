@@ -1,13 +1,12 @@
 <meta>
-	<info author="Slothman" type="gamemode" name="Stealth" version="2.0.0" edf:definition="edf/stealth.edf" />
+	<info author="Slothman and Talidan" type="gamemode" name="Stealth" version="3.0.0" edf:definition="edf/stealth.edf" />
 
 	<config src="help.xml" type="client"/>
-
-    <script src="stealthmain_server.lua" />
     <script src="mission_timer.lua" />
     <script src="gadgets_server.lua" />
     <script src="gadgets_client.lua" type="client"/>
     <script src="stealthmain_client.lua" type="client"/>
+	<script src="stealthmain_server.lua"/>
     <script src="noisebar.lua" type="client"/>
     <script src="noiseblip.lua" type="client"/>
 	<script src="spycam.lua" type="client"/>
@@ -29,7 +28,6 @@
 	<file src="edf/mercenaryspawn.png" />
 	<file src="edf/spyspawn.png" />
 
-	<include resource="teammanager" />
 	<include resource="missiontimer" />
 	<include resource="scoreboard" />
 	<include resource="killmessages" />
@@ -40,6 +38,7 @@
 		<setting name="round_countlimit" value="[4]" /> <!-- number of rounds untill map cycler is activated. 1 round = play 2 matches, 1 on each team -->
 		<setting name="uziammo" value="[150]" />
 		<setting name="teamdamage" value="[1]" /> <!--  0 for team protection off, 1 for team protection on -->
+		<setting name="teambalance" value="[1]" /> <!--   difference limit of amount of players between teams -->
 		<setting name="spazammo" value="[25]" /> <!--  ammo amounts -->
 		<setting name="m4ammo" value="[100]" />
 		<setting name="shotgunammo" value="[25]" />
