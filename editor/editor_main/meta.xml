@@ -17,8 +17,8 @@
 	<script src="client/controlinterface.lua" type="client"/>
 	<script src="server/util.lua" type="server" />
 	<script src="server/orderedPairs.lua" type="server"/>
-	<script src="run.server.lua" type="server"/>
-	<script src="crun.client.lua" type="client"/>
+<!-- 	<script src="run.server.lua" type="server"/>
+	<script src="crun.client.lua" type="client"/> -->
 	<script src="client/matrix.lua" type="client"/>
 	<script src="client/complex.lua" type="client"/>
 
