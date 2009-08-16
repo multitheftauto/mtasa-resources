@@ -42,9 +42,9 @@ function dmMapStart(resource,mapRoot)
 	end
 	g_MapResource = resource
 	g_MapRoot = source or mapRoot
-	g_FragLimit = tonumber(get("frag_limit")) and math.floor(tonumber(get("dm_frag_limit"))) or defaults.fragLimit
-	g_TimeLimit = tonumber(get("time_limit")) and math.floor(tonumber(get("dm_time_limit"))) or defaults.timeLimit
-	g_RespawnTime = tonumber(get("respawn_time")) and math.floor(tonumber(get("dm_respawn_time"))) or defaults.respawnTime
+	g_FragLimit = tonumber(get("frag_limit")) and math.floor(tonumber(get("frag_limit"))) or defaults.fragLimit
+	g_TimeLimit = tonumber(get("time_limit")) and math.floor(tonumber(get("time_limit"))) or defaults.timeLimit
+	g_RespawnTime = tonumber(get("respawn_time")) and math.floor(tonumber(get("respawn_time"))) or defaults.respawnTime
 	addEventHandler ( "onPlayerWasted", g_Root, processWasted )
 	processSpawnStart()
 	--Start our timer
