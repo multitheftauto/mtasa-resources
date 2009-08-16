@@ -288,7 +288,7 @@ end
 
 function ActionProperties:performUndo()
 	if (self.element and isElement(self.element)) then
-		syncProperties(self.newProperties, self.oldProperties, self.element)
+		syncProperties(self.newProperties, self.oldProperties, self.element, true)
 	else
 		outputDebugString("Cannot perform undo: element does not exist or invalid element")
 		return false
@@ -297,7 +297,7 @@ end
 
 function ActionProperties:performRedo()
 	if (self.element and isElement(self.element)) then
-		syncProperties(self.oldProperties, self.newProperties, self.element)
+		syncProperties(self.oldProperties, self.newProperties, self.element, true)
 	else
 		outputDebugString("Cannot perform redo: element does not exist or invalid element")
 		return false
