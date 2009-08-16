@@ -117,12 +117,12 @@ function processRanks()
 	table.sort ( teams , sortingFunction )
 	--Take into account people with the same score
 	for i,team in ipairs(teams ) do
-		local previousPlayer = teams [i-1]
+		local previousTeam = teams [i-1]
 		if teams[i-1] then
-			local previousScore = getElementData ( previousPlayer, "Score" )
-			local playerScore = getElementData ( team, "Score" ) 
-			if previousScore == playerScore then
-				setElementData ( team, "Rank", previousScore )
+			local previousScore = getElementData ( previousTeam, "Score" )
+			local teamScore = getElementData ( team, "Score" ) 
+			if previousScore == teamScore then
+				setElementData ( team, "Rank", getElementData ( previousTeam, "Rank" ) )
 			else
 				setElementData ( team, "Rank", i )
 			end
