@@ -313,7 +313,7 @@ addEventHandler ( "stopTest",root,
 		for i,player in ipairs(getElementsByType"player") do
 			spawnPlayer ( player, 2483, -1666, 21 )
 			takeAllWeapons ( player )
-			setElementDimension ( player, 65000 )
+			setElementDimension ( player, getWorkingDimension() )
 		end
 		g_mapstophandled = g_mapstophandled or addEventHandler ( "onGamemodeMapStop", root, restoreGUIOnGamemodeMapStop )
 	end
