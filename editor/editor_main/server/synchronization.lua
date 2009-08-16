@@ -76,7 +76,7 @@ function syncProperty(property, value, element)
 end
 addEventHandler("syncProperty", getRootElement(), syncProperty)
 
-function syncProperties(oldProperties, newProperties, element)
+function syncProperties(oldProperties, newProperties, element, undoredo)
 	local locked = element or getLockedElement(client)
 	if element or (locked and (source == locked or edf.edfGetParent(source) == locked)) then
 		for dataField, value in pairs(newProperties) do
@@ -99,8 +99,9 @@ function syncProperties(oldProperties, newProperties, element)
 				end
 			end
 		end
-
-		triggerEvent("onElementPropertiesChange_undoredo", locked, oldProperties, newProperties)
+		if not undoredo then
+			triggerEvent("onElementPropertiesChange_undoredo", locked, oldProperties, newProperties)
+		end
 	end
 end
 addEventHandler("syncProperties", getRootElement(), syncProperties)
