@@ -15,74 +15,76 @@ local function onRender()
 	local currentTick = getTickCount()
 	local tickDiff =  currentTick - lastTick
 	lastTick = currentTick
-	if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not doesPedHaveJetPack(localPlayer) then
-		local velX, velY, velZ = getElementVelocity ( localPlayer ) 
-		local x,y,z = getElementPosition(localPlayer)
-		if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0 ) 
-		and not testLineAgainstWater ( x,y,z,x,y,z + 5 ) then
-			if not getElementData(localPlayer,"skydiving") then
-				if not processLineOfSight ( x,y,z, x,y,z-MIN_GROUND_HEIGHT, true, true,false,true,true,false,false,false,localPlayer ) then
-					setElementData(localPlayer,"skydiving",true)
-					setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_skyDive", -1, true, true, false )	
-					setPedWeaponSlot(localPlayer,11)
-					toggleControl ( "next_weapon", false )
-					toggleControl ( "previous_weapon", false )
-					addEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )
-				end
-			else
-				local rotX,_,rotZ = getElementRotation ( localPlayer )
-				rotZ = -rotZ
-				local accel
-				local velocityChanged
-				if ( getMoveState "forwards" ) then	
-					accel = true
-					local dirX = math.sin ( math.rad ( rotZ ) )
-					local dirY = math.cos ( math.rad ( rotZ ) )
-					velX = velX + dirX * s(accelerate_speed)
-					velY = velY + dirY * s(accelerate_speed)
-					if rotX < x_rotation then
-						rotX = rotX + a(rotation_accelerate,tickDiff)
+	if tickDiff > 0 then
+		if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not doesPedHaveJetPack(localPlayer) then
+			local velX, velY, velZ = getElementVelocity ( localPlayer ) 
+			local x,y,z = getElementPosition(localPlayer)
+			if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0 ) 
+			and not testLineAgainstWater ( x,y,z,x,y,z + 5 ) then
+				if not getElementData(localPlayer,"skydiving") then
+					if not processLineOfSight ( x,y,z, x,y,z-MIN_GROUND_HEIGHT, true, true,false,true,true,false,false,false,localPlayer ) then
+						setElementData(localPlayer,"skydiving",true)
+						setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_skyDive", -1, true, true, false )	
+						setPedWeaponSlot(localPlayer,11)
+						toggleControl ( "next_weapon", false )
+						toggleControl ( "previous_weapon", false )
+						addEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )
 					end
-					setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_SkyDive_Accel", -1, true, true, false )
-					if getMoveState"left" then
-						rotZ = rotZ - a(3,tickDiff)
-					elseif getMoveState"right" then
-						rotZ = rotZ + a(3,tickDiff)
-					end
-				elseif ( getMoveState"left" ) then 
-					rotZ = rotZ - a(3,tickDiff)
-					setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_SkyDive_L", -1, true, true, false )
-				elseif ( getMoveState"right" ) then 
-					rotZ = rotZ + a(3,tickDiff)
-					setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_SkyDive_R", -1, true, true, false )
 				else
-					if rotX > 0 then
-						rotX = rotX - a(rotation_accelerate,tickDiff)
+					local rotX,_,rotZ = getElementRotation ( localPlayer )
+					rotZ = -rotZ
+					local accel
+					local velocityChanged
+					if ( getMoveState "forwards" ) then	
+						accel = true
+						local dirX = math.sin ( math.rad ( rotZ ) )
+						local dirY = math.cos ( math.rad ( rotZ ) )
+						velX = velX + dirX * s(accelerate_speed)
+						velY = velY + dirY * s(accelerate_speed)
+						if rotX < x_rotation then
+							rotX = rotX + a(rotation_accelerate,tickDiff)
+						end
+						setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_SkyDive_Accel", -1, true, true, false )
+						if getMoveState"left" then
+							rotZ = rotZ - a(3,tickDiff)
+						elseif getMoveState"right" then
+							rotZ = rotZ + a(3,tickDiff)
+						end
+					elseif ( getMoveState"left" ) then 
+						rotZ = rotZ - a(3,tickDiff)
+						setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_SkyDive_L", -1, true, true, false )
+					elseif ( getMoveState"right" ) then 
+						rotZ = rotZ + a(3,tickDiff)
+						setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_SkyDive_R", -1, true, true, false )
+					else
+						if rotX > 0 then
+							rotX = rotX - a(rotation_accelerate,tickDiff)
+						end
+						setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_skyDive", -1, true, true, false )
+					end	
+					if not accel then
+						local speed = getDistanceBetweenPoints3D(0,0,0,velX,velY,velZ)
+						if speed > slow_speed then
+							velZ = velZ - s(z_accelerate)
+							setElementVelocity ( localPlayer, velX, velY, velZ )
+							velocityChanged = true
+						end
 					end
-					setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_skyDive", -1, true, true, false )
-				end	
-				if not accel then
-					local speed = getDistanceBetweenPoints3D(0,0,0,velX,velY,velZ)
-					if speed > slow_speed then
-						velZ = velZ - s(z_accelerate)
+					if not velocityChanged then
+						velX = math.sin ( math.rad ( rotZ ) ) * s(0.1)
+						velY = math.cos ( math.rad ( rotZ ) ) * s(0.1)
 						setElementVelocity ( localPlayer, velX, velY, velZ )
-						velocityChanged = true
+					end
+					setPedRotation ( localPlayer, -rotZ )
+					setElementRotation ( localPlayer, rotX, 0, rotZ )
+					if not warning and processLineOfSight ( x,y,z, x,y,z-WARNING_HEIGHT, true, false,false,true,false,false,false,false,localPlayer ) then
+						addEventHandler ( "onClientRender", root, warningText )
 					end
 				end
-				if not velocityChanged then
-					velX = math.sin ( math.rad ( rotZ ) ) * s(0.1)
-					velY = math.cos ( math.rad ( rotZ ) ) * s(0.1)
-					setElementVelocity ( localPlayer, velX, velY, velZ )
-				end
-				setPedRotation ( localPlayer, -rotZ )
-				setElementRotation ( localPlayer, rotX, 0, rotZ )
-				if not warning and processLineOfSight ( x,y,z, x,y,z-WARNING_HEIGHT, true, false,false,true,false,false,false,false,localPlayer ) then
-					addEventHandler ( "onClientRender", root, warningText )
-				end
+			elseif isPedOnGround ( localPlayer ) and getElementData(localPlayer,"skydiving") then
+				setPedNewAnimation(localPlayer,"animation_state","PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, true)
+				stopSkyDiving()
 			end
-		elseif isPedOnGround ( localPlayer ) and getElementData(localPlayer,"skydiving") then
-			setPedNewAnimation(localPlayer,"animation_state","PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, true)
-			stopSkyDiving()
 		end
 	end
 	--Process remote players
