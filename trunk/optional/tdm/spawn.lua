@@ -66,7 +66,9 @@ function processPlayerSpawn ( player )
 	currentSpawnKey = currentSpawnKey + 1
 	currentSpawnKey = g_Spawnpoints[currentSpawnKey] and currentSpawnKey or 1
 	exports.spawnmanager:spawnPlayerAtSpawnpoint ( player, g_Spawnpoints[currentSpawnKey] )
-	giveWeapon ( player, 22, 100, true )
+	for weapon,ammo in pairs(g_Weapons) do
+		giveWeapon ( player, weapon, ammo, true )
+	end
 	fadeCamera(player,true)
 	setCameraTarget(player,player)
 end

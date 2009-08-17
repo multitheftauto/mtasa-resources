@@ -5,8 +5,9 @@ local mapTimers = {}
 
 local defaults = {
 	fragLimit = 10,
-	timeLimit = 600000, --15 minutes
-	respawnTime = 10000,
+	timeLimit = 600, --10 minutes
+	respawnTime = 10,
+	spawn_weapons = "22:100",
 }
 
 local function sortingFunction (a,b)
@@ -33,6 +34,10 @@ addEventHandler ( "onGamemodeStart", g_Root,
 addEventHandler ( "onGamemodeStop", g_Root,
 	function()
 		set("deathpickups.only_current",g_default_deathpickups)
+		for i,player in ipairs(getElementsByType"player") do
+			removeElementData ( player, "Score" )
+			removeElementData ( player, "Rank" )
+		end
 	end
 )
 
@@ -46,8 +51,17 @@ function dmMapStart(resource,mapRoot)
 	g_MapResource = resource
 	g_MapRoot = source or mapRoot
 	g_FragLimit = tonumber(get("frag_limit")) and math.floor(tonumber(get("frag_limit"))) or defaults.fragLimit
-	g_TimeLimit = tonumber(get("time_limit")) and math.floor(tonumber(get("time_limit"))) or defaults.timeLimit
-	g_RespawnTime = tonumber(get("respawn_time")) and math.floor(tonumber(get("respawn_time"))) or defaults.respawnTime
+	g_TimeLimit = tonumber(get("time_limit")) and math.floor(tonumber(get("time_limit"))) or defaults.timeLimit*1000
+	g_RespawnTime = tonumber(get("respawn_time")) and math.floor(tonumber(get("respawn_time"))) or defaults.respawnTime*1000
+	g_Weapons = {}
+	local weaponsString = get(resourceName..".spawn_weapons") or defaults.spawn_weapons
+	for i,weaponSub in ipairs(split(weaponsString,44)) do
+		local weapon = tonumber(gettok ( weaponSub, 1, 58 ))
+		local ammo = tonumber(gettok ( weaponSub, 2, 58 ))
+		if weapon and ammo then
+			g_Weapons[weapon] = ammo
+		end
+	end
 	addEventHandler ( "onPlayerWasted", g_Root, processWasted )
 	processSpawnStart()
 	--Start our timer
