@@ -56,7 +56,6 @@ function processSpawnStart(delay)
 	--Use a random spawnpoint as the target
 	local lookX,lookY,lookZ = getElementData(g_Spawnpoints[1],"posX"), getElementData(g_Spawnpoints[1],"posY"), getElementData(g_Spawnpoints[1],"posZ")
 	for i,player in ipairs(getElementsByType"player") do
-		setStats ( player )
 		setCameraMatrix ( player, camX,camY,camZ,lookX,lookY,lookZ )
 	end
 	setTimer ( spawnAllPlayers, delay, 1 )
@@ -65,6 +64,7 @@ end
 function processPlayerSpawn ( player )
 	player = player or source
 	if not isElement(player) then return end
+	setStats ( player )
 	if not getElementData ( player, "Score" ) then
 		setElementData ( player, "Score", 0 )
 	end

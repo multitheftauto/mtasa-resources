@@ -40,7 +40,8 @@ function dmMapStart(resource,mapRoot)
 	local resourceName = getResourceName ( resource )
 	for i,player in ipairs(getElementsByType"player") do
 		setPlayerTeam ( player, nil )
-		setElementData ( player, "Score", "" )
+		setElementData ( player, "Score", nil )
+		setElementData ( player, "Rank", nil )
 	end
 	g_MapResource = resource
 	g_MapRoot = source or mapRoot
@@ -56,10 +57,10 @@ function dmMapStart(resource,mapRoot)
 	g_FragLimitText:align("center","top")
 	g_FragLimitText:type("stroke",1)
 	g_FragLimitText:sync()
-	setElementData ( teams[1], "Score", 0 )
-	setElementData ( teams[2], "Score", 0 )
-	setElementData ( teams[1], "Rank", "-" )
-	setElementData ( teams[2], "Rank", "-" )
+	for i,team in ipairs(teams) do
+		setElementData ( team, "Score", 0 )
+		setElementData ( team, "Rank", "-" )
+	end
 end
 addEventHandler ( "onGamemodeMapStart", g_Root, dmMapStart )
 
