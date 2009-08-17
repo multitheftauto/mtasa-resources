@@ -60,7 +60,7 @@ end
 function processPlayerSpawn ( player )
 	player = (isElement(player) and getElementType(player) == "player") and player or source
 	if not getElementData ( player, "Score" ) then
-		setElementData ( player, "Score", 0 )
+		setElementData ( player, "Score", nil )
 	end
 	currentSpawnKey = currentSpawnKey + 1
 	currentSpawnKey = g_Spawnpoints[currentSpawnKey] and currentSpawnKey or 1
