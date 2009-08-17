@@ -77,7 +77,7 @@ end
 
 --Process deaths
 function processWasted( totalammo, killer, killerweapon, bodypart )
-	if killer then --Give the killer credit
+	if killer and (getElementType(killer) == "player" or getElementType(killer) == "vehicle") then --Give the killer credit
 		killer = (getElementType(killer) == "player") and killer or getVehicleOccupant(killer)
 		if killer == source then --He killed himself. 
 			setElementData ( killer, "Score", getElementData(killer,"Score") - 1 )
