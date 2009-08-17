@@ -257,6 +257,7 @@ addEventHandler("doStopPoll", rootElement,
 
 function sendVote_bind(key)
 	if key ~= "backspace" then
+		key = key:gsub('num_', '')
 		return sendVote(tonumber(key))
 	else
 		return sendVote(-1)
