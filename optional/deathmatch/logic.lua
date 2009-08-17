@@ -1,5 +1,5 @@
 g_Root = getRootElement()
-local CAMERA_LOAD_DELAY = 2500 --Time left for the camera to stream in the map.
+local CAMERA_LOAD_DELAY = 6000 --Time left for the camera to stream in the map.
 local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText
 local announcementText,processWasted
 
