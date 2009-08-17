@@ -1,4 +1,5 @@
 g_Root = getRootElement()
+local CAMERA_LOAD_DELAY = 2500 --Time left for the camera to stream in the map.
 local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText
 local announcementText,processWasted
 
@@ -42,7 +43,12 @@ function dmMapStart(resource,mapRoot)
 	g_TimeLimit = (tonumber(get(resourceName..".time_limit")) and math.floor(tonumber(get(resourceName..".time_limit"))) or defaults.timeLimit)*1000
 	g_RespawnTime = (tonumber(get(resourceName..".respawn_time")) and math.floor(tonumber(get(resourceName..".respawn_time"))) or defaults.respawnTime)*1000
 	addEventHandler ( "onPlayerWasted", g_Root, processWasted )
-	processSpawnStart()
+	processSpawnStart(CAMERA_LOAD_DELAY)
+	setTimer ( initiateGame, CAMERA_LOAD_DELAY, 1 )
+end
+addEventHandler ( "onGamemodeMapStart", g_Root, dmMapStart )
+
+function initiateGame()
 	--Start our timer
 	g_MissionTimer = exports.missiontimer:createMissionTimer (g_TimeLimit,true,true,0.5,20,true,"default-bold",1)
 	addEventHandler ( "onMissionTimerElapsed", g_MissionTimer, onTimeElapsed )
@@ -51,7 +57,6 @@ function dmMapStart(resource,mapRoot)
 	g_FragLimitText:type("stroke",1)
 	g_FragLimitText:sync()
 end
-addEventHandler ( "onGamemodeMapStart", g_Root, dmMapStart )
 
 addEventHandler ( "onPlayerJoin", g_Root,
 	function()
