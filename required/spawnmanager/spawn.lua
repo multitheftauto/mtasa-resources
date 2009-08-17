@@ -107,7 +107,7 @@ function spawnPlayerAtSpawnpoint ( player, spawnpoint, useWave )
 	if not tonumber(y) then outputDebugString("spawnPlayerAtSpawnpoint: Specified spawnpoint lacks proper 'y' position",0,255,128,0) return false end
 	if not tonumber(z) then outputDebugString("spawnPlayerAtSpawnpoint: Specified spawnpoint lacks proper 'z' position",0,255,128,0) return false end
 	local skin = getElementData ( spawnpoint, "skin" )
-	local rot = getElementData ( spawnpoint, "rot" )
+	local rot = getElementData ( spawnpoint, "rot" ) or getElementData ( spawnpoint, "rotation" ) or getElementData ( spawnpoint, "rotZ" )
 	local interior = getElementData ( spawnpoint, "interior" )
 	local dimension = getElementData ( spawnpoint, "dimension" )
 	local team = getElementData ( spawnpoint, "team" )
