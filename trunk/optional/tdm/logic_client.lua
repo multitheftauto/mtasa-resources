@@ -77,8 +77,8 @@ function updateScores()
 	local localTeam = getPlayerTeam(g_LocalPlayer)
 	if not localTeam then return end
 	local currentScore = getElementData(localTeam,"Score")
+	fragText:text(tostring(currentScore))
 	if source == g_LocalPlayer then
-		fragText:text(tostring(currentScore))
 		if (currentScore < 0) then 
 			fragText:color(255,0,0,255) 
 		else 
