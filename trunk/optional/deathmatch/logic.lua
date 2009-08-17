@@ -2,6 +2,7 @@ g_Root = getRootElement()
 local CAMERA_LOAD_DELAY = 6000 --Time left for the camera to stream in the map.
 local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText
 local announcementText,processWasted
+local mapTimers = {}
 
 local defaults = {
 	fragLimit = 10,
@@ -99,7 +100,7 @@ function processWasted( totalammo, killer, killerweapon, bodypart )
 	end
 	processRanks()
 	triggerClientEvent ( source, "requestCountdown", source, g_RespawnTime )
-	setTimer ( processPlayerSpawn, g_RespawnTime, 1, source )
+	table.insert ( mapTimers, setTimer ( processPlayerSpawn, g_RespawnTime, 1, source ) )
 end
 
 --Calculate the ranks
@@ -130,6 +131,10 @@ function processEnd(winner,draw)
 	g_FragLimitText:visible(false)
 	g_FragLimitText:sync()
 	g_FragLimitText = nil
+	for i,timer in ipairs(mapTimers) do
+		killTimer ( timer )
+	end
+	mapTimers = {}
 	destroyElement(g_MissionTimer)
 	setTimer ( reboot, 15000, 1 )
 	if not winner then 
