@@ -48,13 +48,13 @@ function processSpawnStart(delay)
 	--Randomize our spawnpoint order
 	table.shuffle(g_Spawnpoints)
 	--Calculate our camera position, by grabbing an average spawnpoint position
-	local camX,camY,camZ = 0,0,0
+	camX,camY,camZ = 0,0,0
 	for i,spawnpoint in ipairs(g_Spawnpoints) do
 		camX,camY,camZ = camX + getElementData(spawnpoint,"posX"), camY + getElementData(spawnpoint,"posY"), camZ + getElementData(spawnpoint,"posZ")
 	end
 	camX,camY,camZ = camX/#g_Spawnpoints, camY/#g_Spawnpoints, camZ/#g_Spawnpoints + 30
 	--Use a random spawnpoint as the target
-	local lookX,lookY,lookZ = getElementData(g_Spawnpoints[1],"posX"), getElementData(g_Spawnpoints[1],"posY"), getElementData(g_Spawnpoints[1],"posZ")
+	lookX,lookY,lookZ = getElementData(g_Spawnpoints[1],"posX"), getElementData(g_Spawnpoints[1],"posY"), getElementData(g_Spawnpoints[1],"posZ")
 	for i,player in ipairs(getElementsByType"player") do
 		setCameraMatrix ( player, camX,camY,camZ,lookX,lookY,lookZ )
 	end

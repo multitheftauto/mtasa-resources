@@ -30,5 +30,9 @@
 		requests for a forced autobalance before it is taken into effect -->
 		<setting name="autobalance_threshold" value="[3]" />
 		
+		<!-- "friendly_fire" sets whether friendly fire is enabled.  'true'
+		means players will take damage when shot. -->
+		<setting name="friendly_fire" value="[ false ]" />
+		
 	</settings>
 </meta>

@@ -4,12 +4,21 @@ local settings = {
 	"balance_threshold",
 	"autobalance_teams",
 	"autobalance_threshold",
+	"friendly_fire",
 }
 
 function handlePlayer ( player, teams, gamemodeName )
 	if not isElement(player) or getElementType(player) ~= "player" then
 		outputDebugString ( "teammanager: Error, bad 'player' argument" )
 		return false
+	end
+	for t1,t2 in pairs(teams) do
+		if isElement(t1) then
+			setTeamFriendlyFire ( t1, get"friendly_fire" )
+		end
+		if isElement(t2) then
+			setTeamFriendlyFire ( t2, get"friendly_fire" )
+		end
 	end
 	local i = 0
 	for _ in pairs(teams) do

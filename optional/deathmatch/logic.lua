@@ -61,6 +61,7 @@ end
 
 addEventHandler ( "onPlayerJoin", g_Root,
 	function()
+		setCameraMatrix ( source, camX, camY, camZ, lookX, lookY, lookZ )
 		processRanks()
 		if g_FragLimitText then
 			g_FragLimitText:sync(source)
@@ -132,7 +133,9 @@ function processEnd(winner,draw)
 	g_FragLimitText:sync()
 	g_FragLimitText = nil
 	for i,timer in ipairs(mapTimers) do
-		killTimer ( timer )
+		if isTimer ( timer ) then
+			killTimer ( timer )
+		end
 	end
 	mapTimers = {}
 	destroyElement(g_MissionTimer)
@@ -175,4 +178,13 @@ function reboot()
 	announcementText:visible(false)
 	announcementText:sync()	
 	dmMapStart(g_MapResource,g_MapRoot)
+end
+
+function isTimer ( timer )
+	for i,v in ipairs(getTimers()) do
+		if timer == v then 
+			return true
+		end
+	end
+	return false
 end
