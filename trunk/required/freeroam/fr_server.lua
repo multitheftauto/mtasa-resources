@@ -463,6 +463,9 @@ addEventHandler('onVehicleExplode', g_Root,
 )
 
 function unloadVehicle(vehicle)
+	if not g_VehicleData[vehicle] then
+		return
+	end
 	for name,timer in pairs(g_VehicleData[vehicle].timers) do
 		if isTimer(timer) then
 			killTimer(timer)
