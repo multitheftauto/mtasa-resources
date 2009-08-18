@@ -35,12 +35,6 @@ propertyGetters = {
 				return "Custom"
 			end
 		end,
-		amount = function(element)
-			return getElementData(element, "edf:p:amount")
-		end,
-		respawn = function(element)
-			return getElementData(element, "edf:p:respawn")
-		end,
 	},
 	radararea = {
 		sizeX = function(element)
@@ -159,14 +153,6 @@ propertySetters = {
 			else
 				return false
 			end
-		end,
-		amount = function(element, amount)
-			if amount then return setElementData(element, "edf:p:amount", amount)
-			else return false end
-		end,
-		respawn = function(element, respawn)
-			if respawn then return setElementData(element, "edf:p:respawn", respawn)
-			else return false end
 		end,
 	},
 	radararea = {

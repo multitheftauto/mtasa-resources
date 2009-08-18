@@ -255,7 +255,7 @@ function edfGetElementProperty(element, property)
 	if propertyGetters[elementType] and propertyGetters[elementType][property] then
 		return propertyGetters[elementType][property](element)
 	else
-		return getElementData(element, property, value)
+		return getElementData(element, property)
 	end
 end
 
