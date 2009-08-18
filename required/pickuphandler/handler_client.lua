@@ -23,8 +23,8 @@ addEventHandler ( "ph_onClientPickupHit", root,
 	function ()
 		local p_weapon = getPickupWeapon ( source )
 		local p_slot = getSlotFromWeapon ( p_weapon )
-		local weapon = getPlayerWeapon ( localPlayer, p_slot )
-		if ( not weapon ) or ( weapon == 0 ) or ( getPlayerTotalAmmo ( localPlayer, p_slot ) == 0 ) or ( weapon == p_weapon ) then 
+		local weapon = getPedWeapon ( localPlayer, p_slot )
+		if ( not weapon ) or ( weapon == 0 ) or ( getPedTotalAmmo ( localPlayer, p_slot ) == 0 ) or ( weapon == p_weapon ) then 
 			triggerServerEvent ( "ph_onPlayerPickupAccept", source, localPlayer )
 		else
 			local key = next(getBoundKeys"Replace weapon") or 'Replace Weapon'
