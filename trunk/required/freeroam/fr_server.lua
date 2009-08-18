@@ -281,6 +281,9 @@ function warpMe(targetPlayer)
 end
 
 function giveMeWeapon(weapon, amount)
+	if weapon > 50 then
+		return
+	end
 	if table.find(getOption('weapons.disallowed'), weapon) then
 		errMsg((getWeaponNameFromID(weapon) or tostring(weapon)) .. 's are not allowed', source)
 	else
