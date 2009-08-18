@@ -11,7 +11,9 @@
 	<script src="spawn.lua" />
 	
 	<script src="logic_client.lua" type="client"/>
+	<script src="teamtags.lua" type="client" />
 	<file src="images/frag.png" />
+	<file src="images/teamtags.png" />
 	<file src="edf/spawnpoint.png" />
 	
 	<!--Utils-->

@@ -202,3 +202,23 @@ function isTimer ( timer )
 	end
 	return false
 end
+
+addEventHandler ( "onPickupUse", root,
+	function ( player )
+		if getPickupType ( source ) == 2 and getPickupWeapon ( source ) == 22 then
+			if getPlayerWeapon ( player ) == 22 and getPlayerTotalAmmo ( player ) ~= 0 then
+				setColtStat ( true, player )
+			else
+				triggerClientEvent ( player, "onColtPickup", player, source )
+			end
+		end
+	end
+)
+
+addEvent ( "doSetColtStat", true )
+function setColtStat ( fullSkill, player )
+	local stat = fullSkill and 999 or 900
+	player = player or source
+	setPedStat ( player, 69, stat )
+end
+addEventHandler ( "doSetColtStat", g_Root, setColtStat )
