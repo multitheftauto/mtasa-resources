@@ -108,11 +108,9 @@ function processWasted( totalammo, killer, killerweapon, bodypart )
 		killer = (getElementType(killer) == "player") and killer or getVehicleOccupant(killer)
 		if killer == source then --He killed himself. 
 			setElementData ( killerTeam, "Score", getElementData(killerTeam,"Score") - 1 )
-			setElementData ( killer, "Score", getElementData(killer,"Score") - 1 )
 		elseif getPlayerTeam ( killer ) ~= getPlayerTeam ( source ) then
 			local newScore = getElementData(killerTeam,"Score") + 1
 			setElementData ( killerTeam, "Score", newScore )
-			setElementData ( killer, "Score",  getElementData(killer,"Score") )
 			if newScore == g_FragLimit then
 				return processEnd(killerTeam)
 			end
