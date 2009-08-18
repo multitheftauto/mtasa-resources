@@ -68,8 +68,8 @@ local edfCreateBasic = {
 		end
 		
 		--! workaround
-		setElementData(pickup, "edf:p:amount", pAmount)
-		setElementData(pickup, "edf:p:respawn", cdata.respawn)
+		setElementData(pickup, "amount", pAmount)
+		setElementData(pickup, "respawn", cdata.respawn)
 		
 		return pickup
 	end,
