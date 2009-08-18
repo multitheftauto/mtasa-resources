@@ -1,6 +1,6 @@
 addEventHandler ( "onPickupHit", root, 
 	function ( player )
-		if ( not isPlayerInVehicle ( player ) ) then
+		if ( not isPedInVehicle ( player ) ) then
 			if ( getPickupType ( source ) == 2 ) then
 				local p_weapon = getPickupWeapon ( source )
 				local weapon = getPlayerWeapon ( player ) --Save some bandwidth if they have this weapon already
