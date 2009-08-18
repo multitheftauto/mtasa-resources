@@ -65,12 +65,17 @@ function processPlayerSpawn ( player )
 	end
 	currentSpawnKey = currentSpawnKey + 1
 	currentSpawnKey = g_Spawnpoints[currentSpawnKey] and currentSpawnKey or 1
-	exports.spawnmanager:spawnPlayerAtSpawnpoint ( player, g_Spawnpoints[currentSpawnKey] )
+	if (exports.spawnmanager:spawnPlayerAtSpawnpoint ( player, g_Spawnpoints[currentSpawnKey] )) then
+		outputDebugString("Player " .. tostring(getPlayerName(player)) .. " Did not spawn due to a spawnmanager error.")
+	else
+		outputDebugString("Player " .. tostring(getPlayerName(player)) .. " Spawned.")
+	end
 	for weapon,ammo in pairs(g_Weapons) do
 		giveWeapon ( player, weapon, ammo, true )
 	end
 	fadeCamera(player,true)
 	setCameraTarget(player,player)
+
 end
 
 function setStats ( player )
