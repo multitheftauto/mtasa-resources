@@ -16,7 +16,7 @@ function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
 	--Setup data
-	missionTimers[element] = { duration = duration, countdown = countdown, showCS, x = x, y = y,
+	missionTimers[element] = { duration = duration, countdown = countdown, showCS = showCS, x = x, y = y,
 								bg = bg, font = font, scale = scale }
 	missionTimers[element].originalTick = getTickCount()
 	--
