@@ -125,7 +125,7 @@ function processWasted( totalammo, killer, killerweapon, bodypart )
 	processRanks()
 	triggerClientEvent ( source, "requestCountdown", source, g_RespawnTime )
 	table.insert ( mapTimers, setTimer ( processPlayerSpawn, g_RespawnTime, 1, source ) )
-	outputDebugString("Player " .. tostring(getPlayerName(player)) .. " Wasted event called.")
+	outputDebugString("Player " .. tostring(getPlayerName(source)) .. " Wasted event called.")
 end
 
 --Calculate the ranks
