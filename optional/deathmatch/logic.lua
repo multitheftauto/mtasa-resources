@@ -89,7 +89,7 @@ addEventHandler ( "onPlayerJoin", g_Root,
 function onTimeElapsed()
 	local players = getElementsByType"player"
 	table.sort ( players, sortingFunction )
-	if getElementData ( players[1], "Score" ) == getElementData ( players[2], "Score" ) then
+	if players[2] and getElementData ( players[1], "Score" ) == getElementData ( players[2], "Score" ) then
 		processEnd ( false, true )
 		return
 	end
