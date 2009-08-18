@@ -200,36 +200,36 @@
     <pickup id="pickup (Rifle) (1)" type="33" interior="0" dimension="0" amount="45" name="Rifle pickup (1)" posX="3005.619385" posY="-1465.633667" posZ="753.673645" respawn="15000" />
     <pickup id="pickup (Rifle) (2)" type="33" interior="0" dimension="0" amount="45" name="Rifle pickup (2)" posX="2919.525635" posY="-1477.648438" posZ="749.410278" respawn="15000" />
     <pickup id="pickup (Deagle) (1)" type="24" interior="0" dimension="0" amount="84" name="Deagle pickup (1)" posX="2887.427734" posY="-1460.638428" posZ="749.410278" respawn="20000" />
-    <spawnpoint id="spawnpoint (1)" interior="0" skin="121" dimension="0" posX="2874.8088378906" posY="-1511.1447753906" posZ="747.49713134766" rotX="0" rotY="0" rotZ="260.30029296875" />
-    <spawnpoint id="spawnpoint (2)" interior="0" skin="121" dimension="0" posX="2889.1853027344" posY="-1444.8795166016" posZ="748.91027832031" rotX="0" rotY="0" rotZ="220.42041015625" />
-    <spawnpoint id="spawnpoint (3)" interior="0" skin="121" dimension="0" posX="2869.3283691406" posY="-1413.7735595703" posZ="747.49713134766" rotX="0" rotY="0" rotZ="220.42041015625" />
-    <spawnpoint id="spawnpoint (4)" interior="0" skin="121" dimension="0" posX="3013.3603515625" posY="-1430.4173583984" posZ="747.49713134766" rotX="0" rotY="0" rotZ="359.25" />
-    <spawnpoint id="spawnpoint (5)" interior="0" skin="121" dimension="0" posX="3001.1489257813" posY="-1444.6488037109" posZ="753.17364501953" rotX="0" rotY="0" rotZ="90" />
-    <spawnpoint id="spawnpoint (6)" interior="0" skin="121" dimension="0" posX="3003.1635742188" posY="-1494.0552978516" posZ="747.49713134766" rotX="0" rotY="0" rotZ="0" />
-    <spawnpoint id="spawnpoint (7)" interior="0" skin="121" dimension="0" posX="3020.787109375" posY="-1523.9056396484" posZ="747.49713134766" rotX="0" rotY="0" rotZ="89.730010986328" />
-    <spawnpoint id="spawnpoint (8)" interior="0" skin="121" dimension="0" posX="2966.4509277344" posY="-1530.6754150391" posZ="747.49713134766" rotX="0" rotY="0" rotZ="59.820007324219" />
-    <spawnpoint id="spawnpoint (9)" interior="0" skin="121" dimension="0" posX="2869.6799316406" posY="-1481.8974609375" posZ="747.49713134766" rotX="0" rotY="0" rotZ="200.48046875" />
-    <spawnpoint id="spawnpoint (10)" interior="0" skin="121" dimension="0" posX="2932.6330566406" posY="-1486.1995849609" posZ="748.91027832031" rotX="0" rotY="0" rotZ="59.820007324219" />
-    <spawnpoint id="spawnpoint (11)" interior="0" skin="121" dimension="0" posX="2933.2404785156" posY="-1458.7106933594" posZ="748.91027832031" rotX="0" rotY="0" rotZ="130.69055175781" />
-    <spawnpoint id="spawnpoint (12)" interior="0" skin="121" dimension="0" posX="2933.5322265625" posY="-1471.5343017578" posZ="748.91027832031" rotX="0" rotY="0" rotZ="50.927917480469" />
-    <spawnpoint id="spawnpoint (13)" interior="0" skin="121" dimension="0" posX="2884.0168457031" posY="-1484.3947753906" posZ="748.91027832031" rotX="0" rotY="0" rotZ="325.25720214844" />
-    <spawnpoint id="spawnpoint (14)" interior="0" skin="121" dimension="0" posX="2958.5610351563" posY="-1454.0965576172" posZ="747.49713134766" rotX="0" rotY="0" rotZ="315.28552246094" />
-    <spawnpoint id="spawnpoint (15)" interior="0" skin="121" dimension="0" posX="3003.8041992188" posY="-1424.6079101563" posZ="747.49713134766" rotX="0" rotY="0" rotZ="145.79049682617" />
-    <spawnpoint id="spawnpoint (16)" interior="0" skin="121" dimension="0" posX="3025.0734863281" posY="-1431.0173339844" posZ="747.99713134766" rotX="0" rotY="0" rotZ="95.938537597656" />
-    <spawnpoint id="spawnpoint (17)" interior="0" skin="121" dimension="0" posX="3025.9133300781" posY="-1490.4348144531" posZ="747.99713134766" rotX="0" rotY="0" rotZ="77.078186035156" />
-    <spawnpoint id="spawnpoint (18)" interior="0" skin="121" dimension="0" posX="3014.9963378906" posY="-1510.7081298828" posZ="750.34686279297" rotX="0" rotY="0" rotZ="77.074584960938" />
-    <spawnpoint id="spawnpoint (19)" interior="0" skin="121" dimension="0" posX="3027.8435058594" posY="-1529.0388183594" posZ="747.49713134766" rotX="0" rotY="0" rotZ="37.194580078125" />
-    <spawnpoint id="spawnpoint (20)" interior="0" skin="121" dimension="0" posX="2968.3642578125" posY="-1520.0335693359" posZ="747.49713134766" rotX="0" rotY="0" rotZ="317.43408203125" />
-    <spawnpoint id="spawnpoint (21)" interior="0" skin="121" dimension="0" posX="2968.0649414063" posY="-1478.4689941406" posZ="747.49713134766" rotX="0" rotY="0" rotZ="317.43347167969" />
-    <spawnpoint id="spawnpoint (22)" interior="0" skin="121" dimension="0" posX="2989.1926269531" posY="-1486.3973388672" posZ="747.49713134766" rotX="0" rotY="0" rotZ="317.43347167969" />
-    <spawnpoint id="spawnpoint (23)" interior="0" skin="121" dimension="0" posX="2999.2795410156" posY="-1460.6458740234" posZ="747.49713134766" rotX="0" rotY="0" rotZ="147.94369506836" />
-    <spawnpoint id="spawnpoint (24)" interior="0" skin="121" dimension="0" posX="2980.2915039063" posY="-1460.5328369141" posZ="747.49713134766" rotX="0" rotY="0" rotZ="318.51196289063" />
-    <spawnpoint id="spawnpoint (25)" interior="0" skin="121" dimension="0" posX="2956.8327636719" posY="-1478.9025878906" posZ="747.49713134766" rotX="0" rotY="0" rotZ="48.239990234375" />
-    <spawnpoint id="spawnpoint (26)" interior="0" skin="121" dimension="0" posX="2944.9240722656" posY="-1485.3572998047" posZ="747.49713134766" rotX="0" rotY="0" rotZ="328.47546386719" />
-    <spawnpoint id="spawnpoint (27)" interior="0" skin="121" dimension="0" posX="2938.3920898438" posY="-1496.5733642578" posZ="755.56042480469" rotX="0" rotY="0" rotZ="318.50476074219" />
-    <spawnpoint id="spawnpoint (28)" interior="0" skin="121" dimension="0" posX="2914.4936523438" posY="-1424.5037841797" posZ="747.71496582031" rotX="0" rotY="0" rotZ="268.65478515625" />
-    <spawnpoint id="spawnpoint (29)" interior="0" skin="121" dimension="0" posX="2923.0263671875" posY="-1442.3194580078" posZ="747.71496582031" rotX="0" rotY="0" rotZ="268.65417480469" />
-    <spawnpoint id="spawnpoint (30)" interior="0" skin="121" dimension="0" posX="2968.2150878906" posY="-1420.0328369141" posZ="747.49713134766" rotX="0" rotY="0" rotZ="59.284393310547" />
+    <spawnpoint id="spawnpoint (1)" interior="0" skin="30" dimension="0" posX="2874.8088378906" posY="-1511.1447753906" posZ="747.49713134766" rotX="0" rotY="0" rotZ="260.30029296875" />
+    <spawnpoint id="spawnpoint (2)" interior="0" skin="31" dimension="0" posX="2889.1853027344" posY="-1444.8795166016" posZ="748.91027832031" rotX="0" rotY="0" rotZ="220.42041015625" />
+    <spawnpoint id="spawnpoint (3)" interior="0" skin="109" dimension="0" posX="2869.3283691406" posY="-1413.7735595703" posZ="747.49713134766" rotX="0" rotY="0" rotZ="220.42041015625" />
+    <spawnpoint id="spawnpoint (4)" interior="0" skin="100" dimension="0" posX="3013.3603515625" posY="-1430.4173583984" posZ="747.49713134766" rotX="0" rotY="0" rotZ="359.25" />
+    <spawnpoint id="spawnpoint (5)" interior="0" skin="115" dimension="0" posX="3001.1489257813" posY="-1444.6488037109" posZ="753.17364501953" rotX="0" rotY="0" rotZ="90" />
+    <spawnpoint id="spawnpoint (6)" interior="0" skin="106" dimension="0" posX="3003.1635742188" posY="-1494.0552978516" posZ="747.49713134766" rotX="0" rotY="0" rotZ="0" />
+    <spawnpoint id="spawnpoint (7)" interior="0" skin="223" dimension="0" posX="3020.787109375" posY="-1523.9056396484" posZ="747.49713134766" rotX="0" rotY="0" rotZ="89.730010986328" />
+    <spawnpoint id="spawnpoint (8)" interior="0" skin="91" dimension="0" posX="2966.4509277344" posY="-1530.6754150391" posZ="747.49713134766" rotX="0" rotY="0" rotZ="59.820007324219" />
+    <spawnpoint id="spawnpoint (9)" interior="0" skin="54" dimension="0" posX="2869.6799316406" posY="-1481.8974609375" posZ="747.49713134766" rotX="0" rotY="0" rotZ="200.48046875" />
+    <spawnpoint id="spawnpoint (10)" interior="0" skin="118" dimension="0" posX="2932.6330566406" posY="-1486.1995849609" posZ="748.91027832031" rotX="0" rotY="0" rotZ="59.820007324219" />
+    <spawnpoint id="spawnpoint (11)" interior="0" skin="28" dimension="0" posX="2933.2404785156" posY="-1458.7106933594" posZ="748.91027832031" rotX="0" rotY="0" rotZ="130.69055175781" />
+    <spawnpoint id="spawnpoint (12)" interior="0" skin="73" dimension="0" posX="2933.5322265625" posY="-1471.5343017578" posZ="748.91027832031" rotX="0" rotY="0" rotZ="50.927917480469" />
+    <spawnpoint id="spawnpoint (13)" interior="0" skin="66" dimension="0" posX="2884.0168457031" posY="-1484.3947753906" posZ="748.91027832031" rotX="0" rotY="0" rotZ="325.25720214844" />
+    <spawnpoint id="spawnpoint (14)" interior="0" skin="17" dimension="0" posX="2958.5610351563" posY="-1454.0965576172" posZ="747.49713134766" rotX="0" rotY="0" rotZ="315.28552246094" />
+    <spawnpoint id="spawnpoint (15)" interior="0" skin="195" dimension="0" posX="3003.8041992188" posY="-1424.6079101563" posZ="747.49713134766" rotX="0" rotY="0" rotZ="145.79049682617" />
+    <spawnpoint id="spawnpoint (16)" interior="0" skin="176" dimension="0" posX="3025.0734863281" posY="-1431.0173339844" posZ="747.99713134766" rotX="0" rotY="0" rotZ="95.938537597656" />
+    <spawnpoint id="spawnpoint (17)" interior="0" skin="153" dimension="0" posX="3025.9133300781" posY="-1490.4348144531" posZ="747.99713134766" rotX="0" rotY="0" rotZ="77.078186035156" />
+    <spawnpoint id="spawnpoint (18)" interior="0" skin="180" dimension="0" posX="3014.9963378906" posY="-1510.7081298828" posZ="750.34686279297" rotX="0" rotY="0" rotZ="77.074584960938" />
+    <spawnpoint id="spawnpoint (19)" interior="0" skin="229" dimension="0" posX="3027.8435058594" posY="-1529.0388183594" posZ="747.49713134766" rotX="0" rotY="0" rotZ="37.194580078125" />
+    <spawnpoint id="spawnpoint (20)" interior="0" skin="69" dimension="0" posX="2968.3642578125" posY="-1520.0335693359" posZ="747.49713134766" rotX="0" rotY="0" rotZ="317.43408203125" />
+    <spawnpoint id="spawnpoint (21)" interior="0" skin="12" dimension="0" posX="2968.0649414063" posY="-1478.4689941406" posZ="747.49713134766" rotX="0" rotY="0" rotZ="317.43347167969" />
+    <spawnpoint id="spawnpoint (22)" interior="0" skin="13" dimension="0" posX="2989.1926269531" posY="-1486.3973388672" posZ="747.49713134766" rotX="0" rotY="0" rotZ="317.43347167969" />
+    <spawnpoint id="spawnpoint (23)" interior="0" skin="14" dimension="0" posX="2999.2795410156" posY="-1460.6458740234" posZ="747.49713134766" rotX="0" rotY="0" rotZ="147.94369506836" />
+    <spawnpoint id="spawnpoint (24)" interior="0" skin="15" dimension="0" posX="2980.2915039063" posY="-1460.5328369141" posZ="747.49713134766" rotX="0" rotY="0" rotZ="318.51196289063" />
+    <spawnpoint id="spawnpoint (25)" interior="0" skin="16" dimension="0" posX="2956.8327636719" posY="-1478.9025878906" posZ="747.49713134766" rotX="0" rotY="0" rotZ="48.239990234375" />
+    <spawnpoint id="spawnpoint (26)" interior="0" skin="17" dimension="0" posX="2944.9240722656" posY="-1485.3572998047" posZ="747.49713134766" rotX="0" rotY="0" rotZ="328.47546386719" />
+    <spawnpoint id="spawnpoint (27)" interior="0" skin="18" dimension="0" posX="2938.3920898438" posY="-1496.5733642578" posZ="755.56042480469" rotX="0" rotY="0" rotZ="318.50476074219" />
+    <spawnpoint id="spawnpoint (28)" interior="0" skin="19" dimension="0" posX="2914.4936523438" posY="-1424.5037841797" posZ="747.71496582031" rotX="0" rotY="0" rotZ="268.65478515625" />
+    <spawnpoint id="spawnpoint (29)" interior="0" skin="20" dimension="0" posX="2923.0263671875" posY="-1442.3194580078" posZ="747.71496582031" rotX="0" rotY="0" rotZ="268.65417480469" />
+    <spawnpoint id="spawnpoint (30)" interior="0" skin="21" dimension="0" posX="2968.2150878906" posY="-1420.0328369141" posZ="747.49713134766" rotX="0" rotY="0" rotZ="59.284393310547" />
     <spawnpoint id="spawnpoint (31)" interior="0" skin="121" dimension="0" posX="3022.5612792969" posY="-1451.2974853516" posZ="750.34948730469" rotX="0" rotY="0" rotZ="62.0322265625" />
     <pickup id="pickup (Chainsaw) (1)" type="9" interior="0" amount="100" respawn="30000" dimension="0" posX="2909.6008300781" posY="-1488.6474609375" posZ="747.71496582031" rotX="0" rotY="0" rotZ="0" />
     <pickup id="pickup (Deagle) (2)" type="24" interior="0" amount="30" respawn="30000" dimension="0" posX="2941.7236328125" posY="-1510.4869384766" posZ="747.49713134766" rotX="0" rotY="0" rotZ="0" />
