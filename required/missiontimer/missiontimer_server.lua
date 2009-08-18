@@ -93,7 +93,7 @@ addEvent("onClientMissionTimerDownloaded",true)
 addEventHandler ( "onClientMissionTimerDownloaded", root, 
 	function()
 		for timer,data in pairs(missionTimers) do
-			triggerClientEvent ( "setupNewMissionTimer", timer, getMissionTimerTime(timer), data.countdown, data.showCS, data.x, data.y, data.bg, data.font, data.scale )
+			triggerClientEvent ( source, "setupNewMissionTimer", timer, getMissionTimerTime(timer), data.countdown, data.showCS, data.x, data.y, data.bg, data.font, data.scale )
 		end
 	end
 )
