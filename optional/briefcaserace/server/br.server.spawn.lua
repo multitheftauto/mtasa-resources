@@ -164,7 +164,10 @@ end
 
 -- usually called on a timer, so check if the player is still here
 function createAndShowTeamMenuForPlayer(player)
-	createGuiTimers[player] = nil
+	if (createGuiTimers[player]) then
+		killTimer(createGuiTimers[player])
+		createGuiTimers[player] = nil
+	end
 	if (isElement(player)) then
 		scheduleClientEvent(player, "doCreateTeamMenu", root, getValidTeams())
 		scheduleClientEvent(player, "doShowPlayerTeamMenu", root, true)
@@ -216,7 +219,7 @@ function onPlayerTeamSelect(team)
 				local r, g, b = getTeamColor(team)
 				setPlayerNametagColor(source, r, g, b)
 				outputChatBox(getPlayerName(source) .. " joined " .. getTeamName(team), root, r, g, b)
-				scheduleClientEvent(source, "doShowPlayerTeamMenu", root, false)
+				scheduleClientEvent(source, "doShowPlayerTeamMenu", root, false, 7)
 				setPlayerTeam(source, team)
 				setPlayerReady(source)
 				-- remove spawn timer if exists
@@ -260,14 +263,17 @@ end
 
 
 function spawnPlayerAtRandomSpawnpoint ( player )
-	spawnTimers[player] = nil
+	if (spawnTimers[player]) then
+		killTimer(spawnTimers[player])
+		spawnTimers[player] = nil
+	end
     local spawnpoints = getElementsByType ( "spawnpoint" )
     local spawnpointIndex = math.random ( # spawnpoints )
     spawnPlayerAtSpawnpoint ( player, spawnpoints[spawnpointIndex] )
 end
 
 function spawnPlayerAtSpawnpoint ( player, sp )
-outputServerLog("GOING TO SPWAN PLAYER!")
+--outputServerLog("GOING TO SPWAN PLAYER!")
 	setCameraTarget ( player, player ) -- added 7/8/09, as when the player joins and you spawn him it doesn't set the camera on him
 	fadeCamera ( player, true )
 	return call(getResourceFromName"spawnmanager","spawnPlayerAtSpawnpoint",player,sp )
