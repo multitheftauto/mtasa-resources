@@ -1,7 +1,0 @@
-<meta>
-    <info author="Lucif3r" name="Snake" version="1" type="script"/>
-	<script src="snake.lua" type="client" />
-	<script src="snakeserver.lua" type="server" />
-	<export function="startSnake" type="server" />
-	<export function="stopSnake" type="server" />
-</meta>
