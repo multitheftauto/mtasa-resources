@@ -69,7 +69,7 @@ function onGamemodeMapStart_brmain(resource)
 			else
 				teamskins = {}
 				local numPlayers = #getElementsByType("player")
-				numPlayers = 128---test thing
+				--numPlayers = 128---test thing
 				-- generate colors we will use for teams
 				local numColors = math.max(15, math.ceil(numPlayers/settings.varteamsmaxplayers))
 				generateColors(numColors)
