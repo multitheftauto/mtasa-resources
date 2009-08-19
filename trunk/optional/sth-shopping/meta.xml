@@ -1,0 +1,9 @@
+<meta>
+    <info author="Ziven" description="mhm" version="1" type="map" gamemodes="stealth"/>
+	<map src="ShoppingCenter.map"/>
+	<settings>
+		<setting name="#time" value="12:00" />
+		<setting name="#weather" value="[0]" />
+		<setting name="#waveheight" value="[0]" />
+	</settings>
+</meta>
