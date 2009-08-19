@@ -68,10 +68,14 @@ function onGamemodeMapStart_brmain(resource)
 				end
 			else
 				teamskins = {}
-				createVarTeam()
-				createVarTeam()
 				local numPlayers = #getElementsByType("player")
-				--numPlayers = 128---test thing
+				numPlayers = 128---test thing
+				-- generate colors we will use for teams
+				local numColors = math.max(15, math.ceil(numPlayers/settings.varteamsmaxplayers))
+				generateColors(numColors)
+				-- generate teams
+				createVarTeam()
+				createVarTeam()
 				while (numPlayers > #teams * settings.varteamsmaxplayers) do
 					createVarTeam()
 				end
@@ -172,11 +176,15 @@ end
 function createVarTeam()
 	local teamName = "Team " .. varTeamIndex
 	varTeamIndex = varTeamIndex + 1
-	-- generate random color sequence
-	math.randomseed(math.floor(getTickCount()/(#teams+1)))
-	local r = math.random(0, 255)
-	local g = math.random(0, 255)
-	local b = math.random(0, 255)
+	-- choose this team's color
+	local r, g, b
+	r, g, b = chooseRandomColor() -- chooses a color and removes it from the free list
+	if (not r) then
+		math.randomseed(math.floor(getTickCount()/(#teams+1)))
+		r = math.random(0, 255)
+		g = math.random(0, 255)
+		b = math.random(0, 255)
+	end
 	-- generate random team skin
 	local usedSkins = {}
 	for teamName,skinArray in pairs(settings.teamskins) do

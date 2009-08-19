@@ -1,6 +1,6 @@
 -- add a pretty picture of a briefcase!
---local TEXT_Y_INTERVAL = 50
-local TEXT_Y_INTERVAL = .05
+local TEXT_Y_INTERVAL = 38
+--local TEXT_Y_INTERVAL = .05
 
 addEvent("doCreateTeamMenu", true)
 addEvent("doShowPlayerTeamMenu", true)
@@ -8,13 +8,19 @@ addEvent("doShowPlayerTeamMenu", true)
 local root = getRootElement()
 local localPlayer = getLocalPlayer()
 
+local screenX, screenY
+
 local teams = {}
 local guiExists = false
 local guiShowing = false
 
-local instructionsLabel
-local teamLabels = {}
-local rolledOverLabel
+local defaultMenuData
+local menuData = {}
+local highlightedTeam = false
+local lastSendTime = 0
+local sendDelay = 1000
+
+local notAllFit = false
 
 addEventHandler("doCreateTeamMenu", root,
 function (teamTable)
@@ -24,121 +30,155 @@ function (teamTable)
 	for i,v in ipairs(teamTable) do
 		assert(isElement(v) and getElementType(v) == "team")
 	end
-	-- destroy old labels if they exist
-	if (instructionsLabel) then
-		destroyElement(instructionsLabel)
-		instructionsLabel = false
-	end
-	for i,v in ipairs(teams) do
-		removeEventHandler("onClientGUIClick", teamLabels[v], onTeamLabelClick)
-		destroyElement(teamLabels[v])
-		teamLabels[v] = nil
-	end
-	-- create new labels
+	-- reset menu data
+	menuData = {}
 	teams = teamTable
+	-- generate menu data
 	local width, height = guiGetScreenSize()
-	local curX, curY = 0.25*width, 0.10*height
-	-- create instructions label
-	instructionsLabel = guiCreateLabel(curX, curY, 0.5*width, TEXT_Y_INTERVAL*height, "Select a team:", false)
-	guiSetFont(instructionsLabel, "sa-header")
-	guiLabelSetHorizontalAlign(instructionsLabel, "center")
-	--guiLabelSetColor(instructionsLabel, 255, 127, 255)
-	guiLabelSetColor(instructionsLabel, 255, 127, 0)
-	guiSetVisible(instructionsLabel, guiShowing)
-	-- create teams label
+	screenX, screenY = width, height
+	local curX, curY = 0.4*width, 0.10*height
+	local defaultText = "Join team [F3]:"
+	defaultMenuData = {text = defaultText, color = {255, 127, 0}, x = math.floor(curX), width = math.floor(0.2*width), y = math.floor(curY), height = math.floor(TEXT_Y_INTERVAL)}
+	curY = curY+5
 	for i,v in ipairs(teams) do
-		curY = curY + TEXT_Y_INTERVAL*height
+		curY = curY + TEXT_Y_INTERVAL
 		local name = getTeamName(v)
 		local r, g, b = getTeamColor(v)
-		teamLabels[v] = guiCreateLabel(curX, curY, 0.5*width, TEXT_Y_INTERVAL*height, name, false)
-		guiSetFont(teamLabels[v], "sa-header")
-		guiLabelSetHorizontalAlign(teamLabels[v], "center")
-		guiLabelSetColor(teamLabels[v], r, g, b)
-		addEventHandler("onClientGUIClick", teamLabels[v], onTeamLabelClick)
-		guiSetVisible(teamLabels[v], guiShowing)
+		menuData[v] = {text = name, color = {r, g, b}, x = math.floor(curX), width = math.floor(0.2*width), y = math.floor(curY), height = math.floor(TEXT_Y_INTERVAL)}
+	end
+	if (curY >= height) then
+		-- not all teams fit on screen
+		notAllFit = true
+	else
+		notAllFit = false
 	end
 	guiExists = true
 end
 )
 
 addEventHandler("doShowPlayerTeamMenu", root,
-function (show)
+function (show, playSoundID)
 --outputChatBox("doShowPlayerTeamMenu ...")
-	assert(guiExists)
+	assert(guiExists) -- asserts when team map is stopped before gm creates a team menu for player (within first 5 seconds of map start).. but who cares
 	if (show == nil) then -- toggle
-		guiSetVisible(instructionsLabel, not guiShowing)
-		for i,v in ipairs(teams) do
-			guiSetVisible(teamLabels[v], not guiShowing)
+		if (not guiShowing) then -- show it
+			highlightedTeam = false
+			addEventHandler("onClientRender", root, showTextOnFrame)
+			addEventHandler("onClientClick", root, onMenuClick)
+		else -- hide it
+			highlightedTeam = false
+			removeEventHandler("onClientRender", root, showTextOnFrame)
+			removeEventHandler("onClientClick", root, onMenuClick)
 		end
 		showCursor(not guiShowing)
 		guiShowing = not guiShowing
 	elseif (show) then -- show
 		if (not guiShowing) then
-			guiSetVisible(instructionsLabel, true)
-			for i,v in ipairs(teams) do
-				guiSetVisible(teamLabels[v], true)
-			end
 			showCursor(true)
 			guiShowing = true
+			highlightedTeam = false
+			addEventHandler("onClientRender", root, showTextOnFrame)
+			addEventHandler("onClientClick", root, onMenuClick)
 		end
 	else -- hide
 		if (guiShowing) then
-			guiSetVisible(instructionsLabel, false)
-			for i,v in ipairs(teams) do
-				guiSetVisible(teamLabels[v], false)
-			end
 			showCursor(false)
 			guiShowing = false
+			highlightedTeam = false
+			removeEventHandler("onClientRender", root, showTextOnFrame)
+			removeEventHandler("onClientClick", root, onMenuClick)
 		end
 	end
-end
-)
-
-function onTeamLabelClick(button, state, x, y)
---outputChatBox("Team Label Clicked!")
-	if (button == "left" and state == "up") then
---outputChatBox("Team Label Clicked!")
-		for k,v in pairs(teamLabels) do
-			if (v == source) then
---outputChatBox("Team Label Clicked!")
-				triggerServerEvent("onPlayerTeamSelect", localPlayer, k)
-				break
-			end
-		end
+	if (playSoundID) then
+		playSoundFrontEnd(playSoundID)
 	end
-end
-
---[[-- need to detect when mouse moves off an element, so we can reset it
-addEventHandler("onClientMouseMove", root,
-function (absX, absY)
---outputChatBox(getElementType(source))
-	local found = false
-	for k,v in pairs(teamLabels) do
-		if (v == source) then
-			if (rolledOverLabel ~= source) then
-				if (rolledOverLabel) then
-					highLightLabel(rolledOverLabel, false)
-				end
-				rolledOverLabel = source
-				highLightLabel(source, true)
-			end
-			found = true
-			break
+	if (guiShowing) then
+		addCommandHandler("jointeam", commandJoinTeam)
+		if (notAllFit) then
+			outputChatBox("Warning: Some of the teams do not fit on your screen. To join one of those teams, open the team menu [F3] and type 'jointeam TEAMNAME' in the console.")
 		end
-	end
-	if (not found) then
-		if (rolledOverLabel) then
-			highLightLabel(rolledOverLabel, false)
-			rolledOverLabel = false
-		end
-	end
-end
-)
-
-function highLightLabel(label, highlight)
-	if (highlight) then
-		guiSetAlpha(label, 150)
 	else
-		guiSetAlpha(label, 255)
+		removeCommandHandler("jointeam", commandJoinTeam)
 	end
-end]]
+end
+)
+
+function onMenuClick(button, state, aX, aY, wX, wY, wZ, element)
+	if (state == "down") then
+		local curTick = getTickCount()
+		if (highlightedTeam and curTick-lastSendTime > sendDelay) then
+			local playerTeam = getPlayerTeam(localPlayer)
+			if (playerTeam and highlightedTeam == playerTeam) then
+				outputChatBox("You could not join team " .. getTeamName(playerTeam) .. " because you are already on it.")
+				return
+			end
+			lastSendTime = curTick
+			triggerServerEvent("onPlayerTeamSelect", localPlayer, highlightedTeam)
+		end
+	end
+end
+
+function showTextOnFrame()
+	local cX, cY, wX, wY, wZ = getCursorPosition()
+	cX = math.floor(screenX*cX)
+	cY = math.floor(screenY*cY)
+	local rolledOver = false
+	-- draw teams
+	for k,v in pairs(menuData) do
+		local r, g, b = v.color[1], v.color[2], v.color[3]
+		local size = 3
+		if (not rolledOver and cX > v.x and cX < v.x+v.width and cY > v.y and cY < v.y+v.height) then
+			--outputChatBox("mouse over team: " .. v.text)
+			--r, g, b = 255, 255, 255
+			size = 3.75
+			rolledOver = k
+		end
+		--dxDrawText(v.text, v.x+1, v.y+1, v.x+v.width, v.y+v.height, tocolor(0, 0, 0), size, "default", "center", "center", false, false, false) -- shadow
+		dxDrawText(v.text, v.x, v.y, v.x+v.width, v.y+v.height, tocolor(r, g, b), size, "default", "center", "center", false, false, false)
+	end
+	-- draw default text
+	dxDrawText(defaultMenuData.text, defaultMenuData.x+2, defaultMenuData.y+3, defaultMenuData.x+defaultMenuData.width, defaultMenuData.y+defaultMenuData.height, tocolor(0, 0, 0), 3, "default", "center", "center", false, false, false)
+	dxDrawText(defaultMenuData.text, defaultMenuData.x, defaultMenuData.y, defaultMenuData.x+defaultMenuData.width, defaultMenuData.y+defaultMenuData.height, tocolor(defaultMenuData.color[1], defaultMenuData.color[2], defaultMenuData.color[3]), 3, "default", "center", "center", false, false, false)
+	if (rolledOver and (not highlightedTeam or highlightedTeam ~= rolledOver)) then
+		-- just rolled over
+		highlightedTeam = rolledOver
+		playSoundFrontEnd(32)
+	elseif (not rolledOver and highlightedTeam) then
+		-- just rolled off
+		highlightedTeam = false
+	end
+end
+
+function commandJoinTeam(command, ...)
+	if (#{...} == 0) then
+		outputConsole("jointeam: you must enter a team name.")
+	else
+		local teamName = table.concat({...}, " ")
+		local team = getTeamFromName(teamName)
+		if (not team) then
+			outputConsole("jointeam: team " .. teamName .. " does not exist.")
+		else
+			local found = false
+			for i,v in ipairs(teams) do
+				if (v == team) then
+					found = true
+					break
+				end
+			end
+			if (not found) then
+				outputConsole("jointeam: team " .. teamName .. " is not a participating team.")
+			else
+				local playerTeam = getPlayerTeam(localPlayer)
+				if (playerTeam and team == playerTeam) then
+					outputConsole("jointeam: you are already on team " .. teamName .. ".")
+				else
+					local curTick = getTickCount()
+					if (curTick-lastSendTime > sendDelay) then
+						lastSendTime = curTick
+						triggerServerEvent("onPlayerTeamSelect", localPlayer, team)
+					end
+				end
+			end
+		end
+	end
+end

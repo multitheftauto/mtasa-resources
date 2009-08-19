@@ -23,6 +23,7 @@
     <script src="server/br.server.garages.lua" type="server" />
     <script src="server/br.server.playerblips.lua" type="server" />
     <script src="server/br.server.randomskin.lua" type="server" />
+    <script src="server/br.server.randomcolor.lua" type="server" />
     <script src="server/br.server.vehdamage.lua" type="server" />
     <script src="server/br.server.debug.lua" type="server" />
 
