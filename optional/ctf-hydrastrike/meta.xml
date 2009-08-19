@@ -1,6 +1,6 @@
 <meta>
     <info author="KWKSND" name="HYDRASTRIKE" version="1" type="map" gamemodes="ctf"/>
-    <map src="KWKHYDRASTRIKEDM.MAP" />
+    <map src="KWKHYDRASTRIKEDM.map" />
 	<include resource="headshot" />
 	<include resource="deathpickups" />
 	<include resource="deathmessages" />
@@ -8,6 +8,6 @@
 	<include resource="scores" />
 	<include resource="driveby" />
    	<script src="KWKHYDRASTRIKEDM.LUA" />
-    	<script src="KWKHYDRASTRIKEDM2.lua" />
+    <script src="KWKHYDRASTRIKEDM2.LUA" />
 </meta>
 
