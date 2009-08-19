@@ -1,0 +1,7 @@
+<meta>
+    <info author="NOzolS" description="Medieval village map, Highborns VS hicks" type="map" version="1.0" gamemodes="tdma"/>
+    <map src="medieval.map" />
+    <settings> 
+	<setting name="#weather" value="4" />
+    </settings> 
+</meta>

@@ -1,0 +1,10 @@
+<meta>
+    	<info author="Dragon and Slothman" description="Hideout_Z map, a ctf-map with zombies!" version="1.0.1" type="map" gamemodes="ctf" />
+    	<script src="giveWeapons.lua" />
+    	<map src="hideout.map" />
+	<settings>
+		<setting name="#Zlimit" value="[60]" />
+                <setting name="#weather" value="[9]" />
+                <setting name="#time" value="20:00" />
+	</settings>
+</meta>
