@@ -100,19 +100,19 @@
 	<defenderSpawn posX="2848.4194335938" posY="-2363.3398437500" posZ="22.798677444458" req="storebuilding" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
 
 	<objective name="Crane" description="Sabotage the crane to prevent the enemy crew from loading the goods"
-		posX="2380.9250488281" posY="-2689.5749511719" posZ="13.217923164368" id="crane" req="" />
+		posX="2380.9250488281" posY="-2689.5749511719" posZ="12.5" id="crane" req="" />
 	<objective name="Empty Warehouse" description="Storm the warehouse" stay="15" stayText="Assaulting"
-		successText="Secured the area" id="emptywarehouse" req="crane" posX="2413.7907714844" posY="-2471.3579101563" posZ="13.630155563354" />
+		successText="Secured the area" id="emptywarehouse" req="crane" posX="2413.7907714844" posY="-2471.3579101563" posZ="12.6" />
 	<objective name="Barracks" description="Burn down their barracks" stay="3" stayText="Preparing Gasoline..."
-		successText="Ignited the gasoline!" id="barracks" req="emptywarehouse" posX="2538.7834472656" posY="-2536.7368164063" posZ="13.556545257568" />
+		successText="Ignited the gasoline!" id="barracks" req="emptywarehouse" posX="2538.7834472656" posY="-2536.7368164063" posZ="12.5" />
 	<objective name="Landing" description="Get the boats to prevent them from escaping" stay="3" stayText="Securing"
-		successText="Got the boats" id="landing" req="barracks" posX="2622.3081054688" posY="-2462.0231933594" posZ="13.332293510437" />
+		successText="Got the boats" id="landing" req="barracks" posX="2622.3081054688" posY="-2462.0231933594" posZ="12" />
 	<objective name="Eastern Docks" description="Secure the control room" stay="5" stayText="Securing"
-		successText="Search and Secure complete!" id="storebuilding" req="landing" posX="2730.9633789063" posY="-2450.158203125" posZ="17.593746185303" />
+		successText="Search and Secure complete!" id="storebuilding" req="landing" posX="2730.9633789063" posY="-2450.158203125" posZ="16.5" />
 	<objective name="Front Anchor" description="Lock the anchor to prevent cheap escape" stay="5" stayText="Jamming..."
-		successText="Anchor jammed!" id="anchor" req="storebuilding" posX="2837.8015136719" posY="-2541.8510742188" posZ="18.313264846802" />
+		successText="Anchor jammed!" id="anchor" req="storebuilding" posX="2837.8015136719" posY="-2541.8510742188" posZ="17.3" />
 	<objective name="Bridge" description="Get controll of their Ship" stay="5" stayText="Planting..."
-		successText="Bridge Secured!" id="chimney" req="anchor" posX="2837.9565429688" posY="-2363.5166015625" posZ="31.003940582275" />
+		successText="Bridge Secured!" id="chimney" req="anchor" posX="2837.9565429688" posY="-2363.5166015625" posZ="30" />
 
 	<pickup name="Sniper" posX="2274.5692382813" posY="-2563.45" posZ="18.8" type="weapon" weapon="34" ammo="25" respawn="60000" />
 	<pickup name="Grenades" posX="2837.8713378906" posY="-2519.6989746094" posZ="21.0" type="weapon" weapon="16" ammo="5" respawn="10000" />

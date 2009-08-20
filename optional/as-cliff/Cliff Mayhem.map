@@ -22,7 +22,7 @@
 	
 
 	<objective name="Find a way in" description="The gate is closed, you'll have to find another way in." successText="attackers reached the facility" id="way_in" req=""
-		posX="1821.666015625" posY="-513.634765625" posZ="74.816455078125" />
+		posX="1821.666015625" posY="-513.634765625" posZ="74.7" />
 
 	<objective name="Cabin" description="Before planting the bombs find out what they are hiding here." successText="got to the cabin" id="cabin" req="way_in" markerType="checkpoint"
 		posX="1950.6126708984" posY="-519.82934570313" posZ="70.905914306641" />
@@ -43,7 +43,7 @@
 		stay="8" stayText="Planting bomb..." posX="1912.7525634766" posY="-424.056640625" posZ="36.315757751465" />
 
 	<objective name="Truck" description="Place the chemical weapon in a truck and get the hell out of here!!!" successText="weapon stolen" id="truck" req="bomb01,bomb02,bomb03,bomb04"
-		stay="10" stayText="Loading truck..." posX="1899.0120849609" posY="-503.68988037109" posZ="18.504592895508" />
+		stay="10" stayText="Loading truck..." posX="1899.0120849609" posY="-503.68988037109" posZ="17.8" />
 
 	<objective name="Home" description="Hurry, there's no time left to lose!" successText="" id="finish" req="gate,truck" type="custom"
 		posX="1971.7713623047" posY="-273.80429077148" posZ="3.4754505157471" />
