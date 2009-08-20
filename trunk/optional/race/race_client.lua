@@ -604,13 +604,6 @@ function showNextCheckpoint()
 	setElementData(g_Me, 'race.checkpoint', i)
 end
 
-
-addCommandHandler('forcecp',
-    function()
-        checkpointReached(g_Vehicle)
-    end
-)
-
 function checkpointReached(elem)
 	outputDebug( 'CP', 'checkpointReached'
 					.. ' ' .. tostring(g_CurrentCheckpoint)
@@ -620,7 +613,7 @@ function checkpointReached(elem)
 					.. ' g_Me:' .. tostring(g_Me)
 					.. ' getElementHealth(g_Me):' .. tostring(getElementHealth(g_Me))
 					)
-	if elem ~= g_Vehicle or isVehicleBlown(g_Vehicle) or getElementHealth(g_Me) == 0 then
+	if elem ~= g_Vehicle or isVehicleBlown(g_Vehicle) or getElementHealth(g_Me) == 0 or Spectate.active then
 		return
 	end
 	
