@@ -607,6 +607,9 @@ function createObjectiveMarker( objective )
 	local y = 	objective.posY
 	local z = 	objective.posZ
 	objectiveMarker = createMarker(x, y, z, objective.markerType,2,255,128,64)
+	if objective.interior then
+		setElementInterior(objectiveMarker, objective.interior)
+	end
 	status[objective.id].marker = objectiveMarker
 	--objectiveMarkerColShape = getElementColShape(objectiveMarker)
 	objectiveMarkerColShape = createColTube(x,y,z,2,2)
@@ -1227,6 +1230,7 @@ function readOptions( startedMap )
 		options.objective[k].posX = tonumber(getElementData2(v,"posX",true))
 		options.objective[k].posY = tonumber(getElementData2(v,"posY",true))
 		options.objective[k].posZ = tonumber(getElementData2(v,"posZ",true))
+		options.objective[k].interior = tonumber(getElementData2(v,"interior",false))
 		options.objective[k].blip = getElementData2(v,"blip",false,"0")
 		options.objective[k].forcedRespawn = getElementData2(v,"forcedRespawn",false,"none")
 		options.objective[k].markerType = getElementData2(v,"markerType",false,"cylinder")
