@@ -243,10 +243,9 @@ function showProgress(objectiveId, bool, progress, total, stayText)
 	guiSetVisible(progressBar[objectiveId],bool)
 	guiSetVisible(progressBarText[objectiveId],bool)
 	if (progress ~= nil and total ~= nil) then
-		local p = math.ceil(progress / total * 100) / 100
-		local pp = p * 100
-		guiProgressBarSetProgress(progressBar[objectiveId],pp)
-		guiSetText ( progressBarText[objectiveId], stayText.." "..pp.."%" )
+		local p = math.ceil(progress / total * 100)
+		guiProgressBarSetProgress(progressBar[objectiveId],p)
+		guiSetText ( progressBarText[objectiveId], ("%s %d%%"):format(stayText, p) )
 		guiSetSize ( progressBarText[objectiveId], guiLabelGetTextExtent ( progressBarText[objectiveId] ), guiLabelGetFontHeight ( progressBarText[objectiveId] ), false )
 	end
 end
