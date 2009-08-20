@@ -1,7 +1,0 @@
-<meta>
-    <info author="Iggy" description="Canals from GoW remade" version="1" type="map" gamemodes="tdma"/>
-    <map src="canals.map" />
-    <settings>
-      <setting name="waveheight" value="[0]"/>  
-    </settings>
-</meta>
