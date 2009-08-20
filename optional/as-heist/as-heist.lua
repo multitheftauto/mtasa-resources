@@ -560,7 +560,7 @@ function endColShapeEnter ( player, dimension )
 		local gdoortwo = getElementByID ( "gdoortwo" )
 		local x, y, z = getElementPosition ( gdoor )
 		local x2, y2, z2 = getElementPosition ( gdoortwo )
-		setTimer ( setCameraMatrix, 100, 1, root, 1096.59, 2143.73, 5.86, 1038.08, 2062.64, 11.42 )
+		setTimer ( setCameraMatrix, 100, 1, root, 1039.013671875, 2087.5078125, 25.104822158813, 1114.0322265625, 2087.136718, 0 )
 		setTimer ( moveObject, 1500, 1, gdoor, 3000, x, y, 12.7 )
 		setTimer ( moveObject, 1500, 1, gdoortwo, 2000, x2, y2, 12.7 )
 		
