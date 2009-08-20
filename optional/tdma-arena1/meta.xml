@@ -1,9 +1,0 @@
-<meta>
-    <info author="jhxp" version="1.0" description="First concept map for MTASA DM ever made. Designed for Team DeathMatch" type="map" gamemodes="tdma"/>
-    <map src="arena1.map" />
-    <include resource="maplimits" />
-    
-    <settings> 
-		<setting name="#weather" value="[ 4 ]" />
-    </settings> 
-</meta>
