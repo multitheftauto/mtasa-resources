@@ -1,5 +1,5 @@
 <meta>
-    <info gamemodes="deathmatch" type="map" author="Iggy" version="1.0" description="Canals from GoW remade" />
+    <info gamemodes="deathmatch,tdm" type="map" author="Iggy" version="1.0" description="Canals from GoW remade" />
     <map src="dm-canals.map" dimension="0" />
     <settings>
         <setting name="#minplayers" value="[ 0 ]" />

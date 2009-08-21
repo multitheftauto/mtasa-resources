@@ -1,5 +1,5 @@
 <meta>
-    <info gamemodes="dm,tdm" type="map" author="jhxp" version="1.0" description="First concept map for MTASA DM ever made. Designed for Team DeathMatch" />
+    <info gamemodes="deathmatch,tdm" type="map" author="jhxp" version="1.0" description="First concept map for MTASA DM ever made. Designed for Team DeathMatch" />
     <map src="dm-arena1.map" dimension="0" />
     <settings>
         <setting name="#maxplayers" value="[ 128 ]" />

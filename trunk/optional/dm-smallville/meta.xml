@@ -1,5 +1,5 @@
 <meta>
-    <info gamemodes="deathmatch" type="map" name="smallville" author="jhxp" version="1.0.0" />
+    <info gamemodes="deathmatch,tdm" type="map" name="smallville" author="jhxp" version="1.0.0" />
     <map src="dm-smallville.map" dimension="0" />
     <settings>
         <setting name="#maxplayers" value="[ 128 ]" />
