@@ -112,10 +112,10 @@ addEventHandler("onResourceStop", rootElement,
 	function (stoppedResource)
 		local resourceRoot = getResourceRootElement(stoppedResource)
 		if stoppedResource == currentGamemode then
+			triggerEvent("onGamemodeStop", resourceRoot, currentGamemode)
+			
 			currentGamemode = nil
 			setGameType(false)
-			
-			triggerEvent("onGamemodeStop", resourceRoot, currentGamemode)
 			
 			if currentGamemodeMap then
 				stopResource(currentGamemodeMap)
@@ -128,11 +128,11 @@ addEventHandler("onResourceStop", rootElement,
 				end
 			end
 		elseif stoppedResource == currentGamemodeMap then
+			triggerEvent("onGamemodeMapStop", resourceRoot, currentGamemodeMap)
+			
 			currentGamemodeMap = nil
 			resetMapInfo()
 			setMapName("None")
-			
-			triggerEvent("onGamemodeMapStop", resourceRoot, currentGamemodeMap)
 			
 			if nextGamemode then
 				startGamemodeT(nextGamemode)
