@@ -1,9 +1,0 @@
-<meta>
-    	<info author="Ratt" description="Warehouse" version="1" type="map" gamemodes="ctf" />
-    	<script src="giveWeapons.lua" />
-    	<map src="ctf-warehouse.map" />
-	<settings>
-		<setting name="time" value="12:00" />
-		<setting name="weather" value="[11]" />
-	</settings>
-</meta>
