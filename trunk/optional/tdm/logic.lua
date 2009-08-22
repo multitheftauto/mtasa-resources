@@ -50,9 +50,9 @@ function dmMapStart(resource,mapRoot)
 	end
 	g_MapResource = resource
 	g_MapRoot = source or mapRoot
-	g_FragLimit = tonumber(get("frag_limit")) and math.floor(tonumber(get("frag_limit"))) or defaults.fragLimit
-	g_TimeLimit = tonumber(get("time_limit")) and math.floor(tonumber(get("time_limit"))) or defaults.timeLimit*1000
-	g_RespawnTime = tonumber(get("respawn_time")) and math.floor(tonumber(get("respawn_time"))) or defaults.respawnTime*1000
+	g_FragLimit = tonumber(get(resourceName..".frag_limit")) and math.floor(tonumber(get(resourceName..".frag_limit"))) or defaults.fragLimit
+	g_TimeLimit = (tonumber(get(resourceName..".time_limit")) and math.floor(tonumber(get(resourceName..".time_limit"))) or defaults.timeLimit)*1000
+	g_RespawnTime = (tonumber(get(resourceName..".respawn_time")) and math.floor(tonumber(get(resourceName..".respawn_time"))) or defaults.respawnTime)*1000
 	g_Weapons = {}
 	local weaponsString = get(resourceName..".spawn_weapons") or defaults.spawn_weapons
 	for i,weaponSub in ipairs(split(weaponsString,44)) do

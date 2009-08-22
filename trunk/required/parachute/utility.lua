@@ -3,7 +3,7 @@ local DEFAULT_GRAVITY = 0.008
 local DEFAULT_GAMESPEED = 1
 
 function a(angle,tick)
-	return (FPS_BENCHMARK/tick * angle)*(getGameSpeed()/DEFAULT_GAMESPEED)
+	return ((tick * angle)/FPS_BENCHMARK)*(getGameSpeed()/DEFAULT_GAMESPEED)
 end
 
 function s(speed)
