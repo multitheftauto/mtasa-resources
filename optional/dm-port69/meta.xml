@@ -1,0 +1,23 @@
+<meta>
+    <author>Ransom</author>
+    <description>1st massive/completed deathmatch map</description>
+    <info gamemodes="deathmatch,tdm" type="map" name="Port 69" author="Ransom" version="1.0.0" description="1st massive deathmatch map -- 2006" />
+    <map src="port69.map" dimension="0" />
+    <script src="port69.lua" />
+    <include resource="playerblips" />
+    <include resource="realdriveby" />
+    <settings>
+        <setting name="#maxplayers" value="[ 128 ]" />
+        <setting name="#respawn_time" value="[ 5 ]" />
+        <setting name="#gamespeed" value="[ 1 ]" />
+        <setting name="#minplayers" value="[ 0 ]" />
+        <setting name="#spawn_weapons" value='[ "9:1, 22:340, 25:20, 28:100, 30:60, 16:2" ]' />
+        <setting name="#frag_limit" value="[ 50 ]" />
+        <setting name="#gravity" value="[ 0.008000 ]" />
+        <setting name="#waveheight" value="[ 0 ]" />
+        <setting name="#time_limit" value="[ 1800 ]" />
+        <setting name="#locked_time" value="[ false ]" />
+        <setting name="#weather" value="[ 0 ]" />
+        <setting name="#time" value="12:0" />
+    </settings>
+</meta>
