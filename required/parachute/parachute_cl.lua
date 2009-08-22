@@ -42,7 +42,10 @@ local function onRender ( )
 						else
 							velZ = lastspeed + s(haltspeed)
 						end
-					end        
+					end 
+				-- going slower than the slowest falling speed (or up)
+				elseif ( velZ >= slowfallspeed ) then
+					velZ = currentfallspeed
 				end
 				lastspeed = velZ
 				local dirX = math.sin ( math.rad ( rotZ ) )
@@ -161,7 +164,6 @@ function onWasted()
 	removeParachute(localPlayer,"water")
 	setPedAnimation(localPlayer)
 	setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, false)
-	removeEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
 end
 
 function addLocalParachute()
@@ -206,6 +208,7 @@ function removeParachute(player,type)
 		changeVelocity = false
 		setElementData ( localPlayer, "animation_state", nil )
 		setTimer ( setElementData, 1000, 1, localPlayer, "parachuting", false )
+		removeEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
 		triggerServerEvent ( "requestRemoveParachute", localPlayer )
 	end
 end
