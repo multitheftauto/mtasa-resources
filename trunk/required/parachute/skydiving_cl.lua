@@ -4,10 +4,13 @@ local accelerate_speed = 0.01
 local z_accelerate = 0.003
 local x_rotation = 45
 local rotation_accelerate = 0.75
+local freefall_speed = 0.2
 local localPlayer = getLocalPlayer()
 local root = getRootElement()
 local lastTick
 local warning
+local divingTick = 0
+local divingSpeed
 
 local function onRender()
 	--Process the local player
@@ -16,11 +19,11 @@ local function onRender()
 	local tickDiff =  currentTick - lastTick
 	lastTick = currentTick
 	if tickDiff > 0 then
-		if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not doesPedHaveJetPack(localPlayer) then
+		if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not doesPedHaveJetPack(localPlayer) and not isElementAttached(localPlayer) and not isPlayerDead(localPlayer) then
 			local velX, velY, velZ = getElementVelocity ( localPlayer ) 
 			local x,y,z = getElementPosition(localPlayer)
 			if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0 ) 
-			and not testLineAgainstWater ( x,y,z,x,y,z + 5 ) then
+			and not testLineAgainstWater ( x,y,z,x,y,z + 12 ) then				
 				if not getElementData(localPlayer,"skydiving") then
 					if not processLineOfSight ( x,y,z, x,y,z-MIN_GROUND_HEIGHT, true, true,false,true,true,false,false,false,localPlayer ) then
 						setElementData(localPlayer,"skydiving",true)
@@ -29,12 +32,24 @@ local function onRender()
 						toggleControl ( "next_weapon", false )
 						toggleControl ( "previous_weapon", false )
 						addEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )
+						divingTick = currentTick
 					end
 				else
+					-- after a few seconds start checking for slow/upwards freefalling (wait a while to avoid speeding up the moment you start diving)
+					if (not divingSpeed) and currentTick > (divingTick+3000) then divingSpeed = true end
+					
 					local rotX,_,rotZ = getElementRotation ( localPlayer )
 					rotZ = -rotZ
 					local accel
 					local velocityChanged
+					if divingSpeed then
+						-- stop people being able to gain height while parachuting into a slope by adding a minimum speed, doesnt address the root cause though i cant see a better way of fixing this
+						local speed = getDistanceBetweenPoints3D(0,0,0,velX,velY,velZ)
+						if speed < freefall_speed then
+							velZ = -s(freefall_speed)
+						end
+					end
+					
 					if ( getMoveState "forwards" ) then	
 						accel = true
 						local dirX = math.sin ( math.rad ( rotZ ) )
@@ -79,11 +94,18 @@ local function onRender()
 					setElementRotation ( localPlayer, rotX, 0, rotZ )
 					if not warning and processLineOfSight ( x,y,z, x,y,z-WARNING_HEIGHT, true, false,false,true,false,false,false,false,localPlayer ) then
 						addEventHandler ( "onClientRender", root, warningText )
-					end
+					end			
 				end
 			elseif isPedOnGround ( localPlayer ) and getElementData(localPlayer,"skydiving") then
 				setPedNewAnimation(localPlayer,"animation_state","PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, true)
+				toggleControl ( "next_weapon", true )
+				toggleControl ( "previous_weapon", true )	
 				stopSkyDiving()
+			elseif testLineAgainstWater ( x,y,z,x,y,z + 12 ) and getElementData(localPlayer,"skydiving") then
+				toggleControl ( "next_weapon", true )
+				toggleControl ( "previous_weapon", true )					
+				stopSkyDiving()
+				setPedAnimation(localPlayer)			
 			end
 		end
 	end
@@ -115,7 +137,6 @@ function onSkyDivingWasted()
 	stopSkyDiving()
 	setPedAnimation(localPlayer)
 	setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, false)
-	removeEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )
 end
 
 function stopSkyDiving()
@@ -123,7 +144,10 @@ function stopSkyDiving()
 	local _,_,rotZ = getElementRotation ( localPlayer )
 	setElementRotation ( localPlayer, 0, 0, -rotZ )
 	setElementData(localPlayer,"skydiving",false)
+	removeEventHandler ( "onClientPlayerWasted", localPlayer, onSkyDivingWasted )
 	removeEventHandler ( "onClientRender", root, warningText )
+	divingSpeed = nil
+	divingTick = 0
 end
 
 local g_screenX,g_screenY = guiGetScreenSize()
