@@ -13,7 +13,7 @@ function players()
 end
 
 function sendPlayerMessage(playername, message)
-	local player = getPlayerFromNick(playername)
+	local player = getPlayerFromName(playername)
 	if ( player ) then
 		outputChatBox("<webmap> " .. message, player)
 	end
