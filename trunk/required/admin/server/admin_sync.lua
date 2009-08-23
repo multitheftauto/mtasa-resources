@@ -108,11 +108,13 @@ addEvent ( "onPlayerMoneyChange", false )
 addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource () ), function()
 	setTimer ( function()
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
-			local money = getPlayerMoney ( player )
-			local prev = aPlayers[player]["money"]
-			if ( money ~= prev ) then
-				triggerEvent ( "onPlayerMoneyChange", player, prev, money )
-				aPlayers[player]["money"] = money
+			if aPlayers[player] then
+				local money = getPlayerMoney ( player )
+				local prev = aPlayers[player]["money"]
+				if ( money ~= prev ) then
+					triggerEvent ( "onPlayerMoneyChange", player, prev, money )
+					aPlayers[player]["money"] = money
+				end
 			end
 		end
 	end, 1500, 0 )
