@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-16"?>
 <meta>
    <info type="map" gamemodes="race" name="Speed for Weed" author="KWKSND" description="Speed to get the Weed" version="1.0"/>
-   <race src="KWK SPEED FOR WEED.map"/>
+   <map src="KWK SPEED FOR WEED.map"/>
    <settings>
       <setting name="#duration" value="360"/>
       <setting name="#time" value="23:0"/>
