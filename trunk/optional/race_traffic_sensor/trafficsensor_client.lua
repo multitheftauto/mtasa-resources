@@ -230,8 +230,8 @@ addEventHandler('onClientPlayerJoin', g_Root,
 
 addEventHandler('onClientPlayerQuit', g_Root,
 	function()
-		table.remove(Bigdar.finishedPlayers,source)
-		table.remove(Bigdar.allPlayers,source)
+		table.removevalue(Bigdar.finishedPlayers,source)
+		table.removevalue(Bigdar.allPlayers,source)
 		Bigdar.smoothList[source] = nil
 	end
 )
