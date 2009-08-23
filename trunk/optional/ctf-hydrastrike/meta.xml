@@ -6,7 +6,7 @@
 	<include resource="deathmessages" />
 	<include resource="killmessages" />
 	<include resource="scores" />
-	<include resource="driveby" />
+	<include resource="realdriveby" />
    	<script src="KWKHYDRASTRIKEDM.LUA" />
     <script src="KWKHYDRASTRIKEDM2.LUA" />
 </meta>
