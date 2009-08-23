@@ -261,21 +261,17 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 end )
 
 function aPlayerInitialize ( player )
-	--[[
 	local serial = getPlayerSerial ( player )
 	if ( not isValidSerial ( serial ) ) then
 		outputChatBox ( "ERROR: "..getPlayerName ( player ).." - Invalid Serial." )
 		kickPlayer ( player, "Invalid Serial" )
 	else
-	--]]
 		bindKey ( player, "p", "down", "admin" )
 		callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
 		aPlayers[player] = {}
 		aPlayers[player]["country"] = getPlayerCountry ( player )
 		aPlayers[player]["money"] = getPlayerMoney ( player )
-	--[[
 	end
-	--]]
 end
 
 function aPlayerSerialCheck ( player, result )
