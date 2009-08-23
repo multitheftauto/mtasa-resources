@@ -42,6 +42,24 @@ addEventHandler ( "onElementCreate", root,
 	end
 )
 
+addEventHandler ( "onElementDestroy", root,
+	function()
+		if getElementType(source) == "checkpoint" then
+			for i,checkpoint in ipairs(getElementsByType"checkpoint") do
+				if checkpoint ~= source and exports.edf:edfGetElementProperty ( checkpoint, "nextid" ) == source then
+					local nextcp = exports.edf:edfGetElementProperty ( source, "nextid" )
+					exports.edf:edfSetElementProperty ( checkpoint, "nextid", nextcp )
+					if not nextcp then
+						local marker = getRepresentation(checkpoint, "marker")
+						setMarkerIcon ( marker, "finish" )
+					end
+					break
+				end
+			end
+		end
+	end
+)
+
 addEventHandler ( "onElementPropertyChanged", root,
 	function ( propertyName )
 		if getElementType(source) == "racepickup" and propertyName == "type" then
