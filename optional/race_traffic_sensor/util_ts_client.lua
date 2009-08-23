@@ -30,6 +30,17 @@ function outputWarning( msg )
 	outputDebugString( getTickTimeStr() .. ' cWARNING_rts: ' .. msg )
 end
 
+-----------------------------
+-- Table extensions
 
+function table.removevalue(t, val)
+	for i,v in ipairs(t) do
+		if v == val then
+			table.remove(t, i)
+			return i
+		end
+	end
+	return false
+end
 
 
