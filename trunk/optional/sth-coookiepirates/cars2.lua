@@ -1,5 +1,5 @@
 function enterVehicle ( player, seat, jacked ) 
-    if ( getVehicleID(source) ) then
+    if ( getElementModel(source) ) then
         cancelEvent()
     end
 end

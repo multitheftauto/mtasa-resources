@@ -6,7 +6,7 @@ function locks()
 	local vehicles = getElementsByType("vehicle")
 	for i,v in ipairs(vehicles) do
 		setVehicleLocked( v, true )
-		if (getVehicleID(v) == 427 or getVehicleID(v) == 427 or getVehicleID(v) == 597) then
+		if (getElementModel(v) == 427 or getElementModel(v) == 427 or getElementModel(v) == 597) then
 			setVehicleSirensOn ( v, true )
 		end
 	end
