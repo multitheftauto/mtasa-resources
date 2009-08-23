@@ -1,6 +1,10 @@
 --
 -- util_ts_client.lua
 --
+g_Root = getRootElement()
+g_ResRoot = getResourceRootElement(getThisResource())
+g_Me = getLocalPlayer()
+
 
 -----------------------------
 -- Debug
