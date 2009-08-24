@@ -319,7 +319,7 @@ function Racewar.updateStatusDisplay()
 	if not statusDisplay then
 		statusDisplay = textCreateDisplay()
 		local x=0.90
-		local y=0.01
+		local y=0.01 + 0.15
 		statusDisplayLines[1] = textCreateTextItem ( '  RACEWAR Standings',		x, y, 'low', 255, 255, 160, 255, 1.2, 'center' )
 		y = y + 0.017
 		statusDisplayLines[2] = textCreateTextItem ( '	Round 1 of 3',			x, y, 'low', 160, 160, 160, 255, 1.0, 'center' )
@@ -420,7 +420,7 @@ function Racewar.updateNewsDisplay()
 	if not newsDisplay then
 		newsDisplay = textCreateDisplay()
 		local x=0.85
-		local y=0.182
+		local y=0.182 + 0.1
 		newsDisplayLines[1] = textCreateTextItem ( '1',	 x, y+0.000, 'low', 255, 255, 240, 132, 1, 'left' )
 		newsDisplayLines[2] = textCreateTextItem ( '2',	 x, y+0.015, 'low', 255, 255, 240, 162, 1, 'left' )
 		newsDisplayLines[3] = textCreateTextItem ( '3',	 x, y+0.030, 'low', 255, 255, 240, 192, 1, 'left' )
