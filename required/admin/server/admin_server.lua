@@ -223,6 +223,11 @@ function getWeatherNameFromID ( weather )
 	return iif ( aWeathers[weather], aWeathers[weather], "Unknown" )
 end
 
+function getPlayerAccountName( player )
+	local account = getPlayerAccount ( player )
+	return account and getAccountName ( account )
+end
+
 addEvent ( "onPlayerMute", false )
 function aSetPlayerMuted ( player, state )
 	if ( setPlayerMuted ( player, state ) ) then
@@ -379,7 +384,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 		elseif ( not arg[3] ) then outputChatBox ( "Error - Confirm password.", source, 255, 0, 0 )
 		elseif ( tostring ( arg[2] ) ~= tostring ( arg[3] ) ) then outputChatBox ( "Error - Passwords do not match.", source, 255, 0, 0 )
 		else
-			local account = getAccount ( getPlayerUserName ( source ), tostring ( arg[1] ) )
+			local account = getAccount ( getPlayerAccountName ( source ), tostring ( arg[1] ) )
 			if ( account ) then
 				action = "password"
 				setAccountPassword ( account, arg[2] )
