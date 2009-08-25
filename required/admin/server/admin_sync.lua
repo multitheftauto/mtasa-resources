@@ -91,7 +91,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 				date = string.format("%04d-%02d-%02d", realTime.year + 1900, realTime.month + 1, realTime.monthday )
 			end
 			tableOut[i] = {}
-			tableOut[i].nick = getBanUsername(ban) or "Unknown"
+			tableOut[i].nick = getBanUsername(ban) or getBanNick(ban) or "Unknown"
 			tableOut[i].date = date
 			tableOut[i].time = time
 			tableOut[i].banner = getBanAdmin(ban) or "Unknown"
