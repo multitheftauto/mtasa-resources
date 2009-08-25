@@ -194,11 +194,12 @@ function aAdminMenu ()
 		aTab4.Tab			= guiCreateTab ( "Bans", aTabPanel, "bans" )
 		aTab4.BansList		= guiCreateGridList ( 0.03, 0.05, 0.80, 0.90, true, aTab4.Tab )
 						  guiGridListAddColumn( aTab4.BansList, "Name", 0.22 )
-						  guiGridListAddColumn( aTab4.BansList, "IP", 0.28 )
-						  guiGridListAddColumn( aTab4.BansList, "Serial", 0.28 )
+						  guiGridListAddColumn( aTab4.BansList, "IP", 0.22 )
+						  guiGridListAddColumn( aTab4.BansList, "Serial", 0.22 )
+						  guiGridListAddColumn( aTab4.BansList, "By", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "Date", 0.17 )
 						  guiGridListAddColumn( aTab4.BansList, "Time", 0.13 )
-						  guiGridListAddColumn( aTab4.BansList, "By", 0.22 )
+						  guiGridListAddColumn( aTab4.BansList, "Reason", 0.22 )
 		aTab4.Details		= guiCreateButton ( 0.85, 0.10, 0.13, 0.04, "Details", true, aTab4.Tab )
 		aTab4.Unban			= guiCreateButton ( 0.85, 0.20, 0.13, 0.04, "Unban", true, aTab4.Tab, "unban" )
 		aTab4.UnbanIP		= guiCreateButton ( 0.85, 0.25, 0.13, 0.04, "Unban IP", true, aTab4.Tab, "unbanip" )
@@ -428,14 +429,24 @@ function aClientSync ( type, table )
 		guiSetText ( aTab3.GameType, "Game Type: "..( table["game"] or "None" ) )
 		guiSetText ( aTab3.MapName, "Map Name: "..( table["map"] or "None" ) )
 	elseif ( type == "bans" ) then
+		aBans = {}
+		aBans["Serial"] = {}
+		aBans["IP"] = {}
 		for i,ban in pairs ( table ) do
+			if ban.serial then
+				aBans["Serial"][ban.serial] = ban
+			end
+			if ban.ip then
+				aBans["IP"][ban.ip] = ban
+			end
 			local row = guiGridListAddRow ( aTab4.BansList )
 			guiGridListSetItemText ( aTab4.BansList, row, 1, iif ( ban["nick"], ban["nick"], "Unknown" ), false, false )
 			guiGridListSetItemText ( aTab4.BansList, row, 2, ban.ip or "Unknown", false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 2, ban.serial or "Unknown", false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 4, iif ( ban["date"], ban["date"], "Unknown" ), false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 5, iif ( ban["time"], ban["time"], "Unknown" ), false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 6, iif ( ban["banner"], ban["banner"], "Unknown" ), false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 3, ban.serial or "Unknown", false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 4, iif ( ban["banner"], ban["banner"], "Unknown" ), false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 5, iif ( ban["date"], ban["date"], "Unknown" ), false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 6, iif ( ban["time"], ban["time"], "Unknown" ), false, false )
+			guiGridListSetItemText ( aTab4.BansList, row, 7, iif ( ban["reason"], ban["reason"], "Unknown" ), false, false )
 		end
 	elseif ( type == "messages" ) then
 		local prev = tonumber ( string.sub ( guiGetText ( aTab1.Messages ), 1, 1 ) )

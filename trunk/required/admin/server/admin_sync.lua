@@ -23,7 +23,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut[player] = {}
 			tableOut[player]["name"] = getPlayerName ( player )
 			tableOut[player]["IP"] = getPlayerIP ( player )
-			tableOut[player]["username"] = getPlayerUserName ( player ) or "N/A"
+			tableOut[player]["username"] = getPlayerUserName ( player ) or getPlayerAccountName ( player ) or "N/A"
 			tableOut[player]["serial"] = getPlayerSerial ( player )
 			tableOut[player]["country"] = aPlayers[player]["country"]
 			tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
@@ -83,12 +83,21 @@ addEventHandler ( "aSync", _root, function ( type, data )
 	elseif ( type == "bans" ) then
 		local bans = getBans()
 		for i,ban in ipairs(bans) do
-			tableOut.nick = getBanUsername(ban) or "Unknown"
-			tableOut.date = "" ---!ACHTUNG
-			tableOut.time = getBanTime(ban) or "Unknown"
-			tableOut.banner = getBanAdmin(ban) or "Unknown"
-			tableOut.ip = getBanIP(ban) or "Unknown"
-			tableOut.serial = getBanSerial(ban) or "Unknown"
+			local time, date = "Unknown", "Unknown"
+			local seconds = getBanTime(ban)
+			if seconds then
+				local realTime = getRealTime( seconds )
+				time = string.format("%02d:%02d", realTime.hour, realTime.minute )
+				date = string.format("%04d-%02d-%02d", realTime.year + 1900, realTime.month + 1, realTime.monthday )
+			end
+			tableOut[i] = {}
+			tableOut[i].nick = getBanUsername(ban) or "Unknown"
+			tableOut[i].date = date
+			tableOut[i].time = time
+			tableOut[i].banner = getBanAdmin(ban) or "Unknown"
+			tableOut[i].ip = getBanIP(ban) or "Unknown"
+			tableOut[i].serial = getBanSerial(ban) or "Unknown"
+			tableOut[i].reason = getBanReason(ban) or "Unknown"
 		end
 	elseif ( type == "messages" ) then
 		local unread, total = 0, 0

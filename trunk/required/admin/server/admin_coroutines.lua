@@ -8,6 +8,8 @@
 *
 **************************************]]
 
+--[[ Generates errors
+
 local _addEventHandler = addEventHandler
 function addEventHandler ( event, element, handler )
 	_addEventHandler ( event, element, corouteHandler ( handler ) )
@@ -30,3 +32,5 @@ function coroutineKill ( cr )
 		coroutine.resume ( c, nil )
 	end
 end
+
+--]]
