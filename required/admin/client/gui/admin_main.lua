@@ -750,7 +750,7 @@ function aClientClick ( button )
 						guiSetText ( aTab1.Serial, "Serial: "..aPlayers[player]["serial"] )
 						guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
 						guiSetText ( aTab1.Accountname, "Account Name: "..aPlayers[player]["accountname"] )
-						guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\fr.png" )
+						guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
 						if ( aPlayers[player]["country"] ) then
 							local x, y = guiGetPosition ( aTab1.IP, false )
 							local width = guiLabelGetTextExtent ( aTab1.IP )
