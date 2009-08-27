@@ -325,7 +325,7 @@ function aAction ( type, action, admin, player, data, more )
 		function aStripString ( string )
 			string = tostring ( string )
 			string = string.gsub ( string, "$admin", getPlayerName ( admin ) )
-			string = string.gsub ( string, "$data2", more )
+			string = string.gsub ( string, "$data2", more or "" )
 			if ( player ) then string = string.gsub ( string, "$player", getPlayerName ( player ) ) end
 			return tostring ( string.gsub ( string, "$data", data ) )
 		end
