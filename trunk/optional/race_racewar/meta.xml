@@ -1,13 +1,10 @@
 <meta>
-	<info name="Race War" description="Team racing add on" author="ccw" type="script" addon="race" version="0.0.2" build="r230 21Jun09"/>
+	<info name="Race War" description="Team racing add on" author="ccw" type="script" addon="race" version="0.0.3" build="r429 27Aug09"/>
 
 	<script src="_common_rw.lua" type="server"/>
 	<script src="util_rw_server.lua" type="server"/>
 	<script src="racewar_server.lua" type="server"/>
 
-	<script src="_common_rw.lua" type="client"/>
-	<script src="util_rw_client.lua" type="client"/>
-	<script src="racewar_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
 
 
@@ -25,6 +22,20 @@
 					group="Setting"
 					accept="1-10"
 					desc="The number of rounds per war."
+					/>
+
+		<setting name="*ptsprefix" value="$"
+					friendlyname="Points prefix"
+					group="Setting"
+					accept="*"
+					desc="A string to prepend to the points value."
+					/>
+
+		<setting name="*ptspostfix" value=",000"
+					friendlyname="Points postfix"
+					group="Setting"
+					accept="*"
+					desc="A string to append to the points value."
 					/>
 	</settings>
 

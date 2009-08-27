@@ -41,6 +41,15 @@ addEventHandler('onResourceStop', g_ResRoot,
 	end
 )
 
+addEventHandler('onPlayerQuit', g_Root,
+	function()
+		if g_SToptimesManager then
+			g_SToptimesManager:removePlayerFromUpdateList(source)
+			g_SToptimesManager:unqueueUpdate(source)
+		end
+	end
+)
+
 
 ---------------------------------------------------------------------------
 --
