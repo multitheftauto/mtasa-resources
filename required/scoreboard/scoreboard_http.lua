@@ -60,9 +60,11 @@ local function refreshServerScoreboard()
 	end
 	
 	for i,team in ipairs(getElementsByType("team")) do
-		table.insert(scoreboardNewRows,getRowData(team))
-		for i,player in ipairs(getPlayersInTeam(team)) do
-			table.insert(scoreboardNewRows,getRowData(player))
+		if isElement(team) then		-- Sanity check, as sometimes team is not valid here. (Why?)
+			table.insert(scoreboardNewRows,getRowData(team))
+			for i,player in ipairs(getPlayersInTeam(team)) do
+				table.insert(scoreboardNewRows,getRowData(player))
+			end
 		end
 	end
 	

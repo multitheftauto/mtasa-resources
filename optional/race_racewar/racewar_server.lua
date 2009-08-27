@@ -176,6 +176,22 @@ end
 
 ---------------------------------------------------------------------------
 --
+-- Points
+--
+--
+--
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+-- convertPoints -- To look like something else, so it doesn't clash with other point systems
+---------------------------------------------------------------------------
+function convertPoints(pts)
+	return g_Settings.ptsprefix .. pts .. g_Settings.ptspostfix
+end
+
+
+---------------------------------------------------------------------------
+--
 -- Players
 --
 --
@@ -212,9 +228,9 @@ function Racewar.playerFinished( player, rank )
 				othercount = othercount + 1
 			end
 		end
-		Racewar.outputChat( 'You beat ' .. othercount .. ' player' .. (othercount==1 and '' or 's') .. ' from other teams', player )
+		--Racewar.outputChat( 'You beat ' .. othercount .. ' player' .. (othercount==1 and '' or 's') .. ' from other teams', player )
 		local pointsEarned = othercount	-- getPlayerCount() - rank + 1
-		Racewar.output( pointsEarned .. " pts for '"..getTeamName(team).."' by "..getPlayerName(player) )
+		Racewar.output( convertPoints(pointsEarned) .. " for '"..getTeamName(team).."' by "..getPlayerName(player) )
 		addTeamScore(team,pointsEarned)
 		Racewar.updateStatusDisplay()
 	end
@@ -361,7 +377,7 @@ function Racewar.updateStatusDisplay()
 			local pos = idx==1 and '1st' or idx==2 and '2nd' or idx==3 and '3rd'
 			local rankText = rank .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' )
 
-			textItemSetText ( statusDisplayLines[2+idx], rankText..'  '..score..' pts  '..name )
+			textItemSetText ( statusDisplayLines[2+idx], rankText..'  '..convertPoints(score)..'  '..name )
 			textItemSetColor ( statusDisplayLines[2+idx], r,b,g,255 )
 
 			rankNext = rankNext + 1
@@ -475,6 +491,10 @@ function Racewar.playerTeamChosen( player, key, keyState, teamIndex )
 	unbindKey ( player, "2", "down", Racewar.playerTeamChosen )
 	unbindKey ( player, "3", "down", Racewar.playerTeamChosen )
 	unbindKey ( player, "F3", "down", Racewar.playerTeamChosen )
+
+	if not getPlayerTeam(player) then
+		Racewar.outputChat( convertPoints(1) .." per enemy team player you beat to the finish line.", player )
+	end
 
 	Racewar.changePlayerTeam( player, teamIndex )
 
@@ -742,6 +762,8 @@ end
 function cacheSettings()
 	g_Settings = {}
 	g_Settings.numrounds	= getNumber('numrounds','3')
+	g_Settings.ptsprefix	= getString('ptsprefix','$')
+	g_Settings.ptspostfix	= getString('ptspostfix',',000')
 end
 
 -- Initial cache
@@ -756,6 +778,7 @@ addEvent ( "onSettingChange" )
 addEventHandler('onSettingChange', g_ResRoot,
 	function(name, oldvalue, value, playeradmin)
 		cacheSettings()
+		Racewar.updateStatusDisplay()
 	end
 )
 
