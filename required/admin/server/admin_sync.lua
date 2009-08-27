@@ -17,13 +17,28 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		tableOut["mute"] = isPlayerMuted ( data )
 		tableOut["freeze"] = isPlayerFrozen ( data )
 		tableOut["money"] = getPlayerMoney ( data )
+		tableOut["username"] = getPlayerUserName ( data ) or "N/A"
+		tableOut["accountname"] = getPlayerAccountName ( data ) or "N/A"
+		tableOut["groups"] = "None"
+		local account = getPlayerAccount ( data )
+		if ( isGuestAccount ( account ) ) then
+			tableOut["groups"] = "Not logged in"
+		else
+			local groups = aclGetAccountGroups ( account )
+			if ( #groups <= 0 ) then
+				tableOut["groups"] = "None"
+			else
+				tableOut["groups"] = table.concat(groups, ", ")
+			end
+		end
 		theSource = data
 	elseif ( type == "players" ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			tableOut[player] = {}
 			tableOut[player]["name"] = getPlayerName ( player )
 			tableOut[player]["IP"] = getPlayerIP ( player )
-			tableOut[player]["username"] = getPlayerUserName ( player ) or getPlayerAccountName ( player ) or "N/A"
+			tableOut[player]["username"] = getPlayerUserName ( player ) or "N/A"
+			tableOut[player]["accountname"] = getPlayerAccountName ( player ) or "N/A"
 			tableOut[player]["serial"] = getPlayerSerial ( player )
 			tableOut[player]["country"] = aPlayers[player]["country"]
 			tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
@@ -56,7 +71,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 				if ( #groups <= 0 ) then
 					tableOut[player]["groups"] = "None"
 				else
-					tableOut[player]["groups"] = unpack ( groups )
+					tableOut[player]["groups"] = table.concat(groups, ", ")
 				end
 			end
 		end

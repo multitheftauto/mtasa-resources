@@ -52,8 +52,9 @@ function aAdminMenu ()
 						  guiCreateHeader ( 0.25, 0.08, 0.20, 0.04, "Player:", true, aTab1.Tab )
 		aTab1.Name			= guiCreateLabel ( 0.26, 0.125, 0.30, 0.035, "Name: N/A", true, aTab1.Tab )
 		aTab1.IP			= guiCreateLabel ( 0.26, 0.170, 0.30, 0.035, "IP: N/A", true, aTab1.Tab )
-		aTab1.Serial		= guiCreateLabel ( 0.26, 0.215, 0.30, 0.035, "Serial: N/A", true, aTab1.Tab )
-		aTab1.Username		= guiCreateLabel ( 0.26, 0.260, 0.30, 0.035, "Username: N/A", true, aTab1.Tab )
+		aTab1.Serial		= guiCreateLabel ( 0.26, 0.215, 0.45, 0.035, "Serial: N/A", true, aTab1.Tab )
+		aTab1.Username		= guiCreateLabel ( 0.26, 0.245, 0.30, 0.035, "Username: N/A", true, aTab1.Tab )
+		aTab1.Accountname	= guiCreateLabel ( 0.26, 0.275, 0.30, 0.035, "Account Name: N/A", true, aTab1.Tab )
 		aTab1.Groups		= guiCreateLabel ( 0.26, 0.305, 0.30, 0.035, "Groups: N/A", true, aTab1.Tab )
 		aTab1.Flag			= guiCreateStaticImage ( 0.40, 0.125, 0.025806, 0.021154, "client\\images\\empty.png", true, aTab1.Tab )
 						  guiCreateHeader ( 0.25, 0.350, 0.20, 0.04, "Game:", true, aTab1.Tab )
@@ -356,6 +357,8 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Name, "Name: "..aPlayers[player]["name"] )
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unmute", "Mute" ) )
 			guiSetText ( aTab1.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
+			guiSetText ( aTab1.Username, "Community Username: "..( aPlayers[player]["username"] or "" ) )
+			guiSetText ( aTab1.Accountname, "Account Name: "..( aPlayers[player]["accountname"] or "" ) )
 			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
 			if ( isPlayerDead ( player ) ) then guiSetText ( aTab1.Health, "Health: Dead" )
 			else guiSetText ( aTab1.Health, "Health: "..math.ceil ( getElementHealth ( player ) ).."%" ) end
@@ -481,13 +484,15 @@ function aClientResourceStop ( resource )
 	end
 end
 
-function aClientPlayerJoin ( ip, username, serial, admin )
+function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
 	aPlayers[source] = {}
 	aPlayers[source]["name"] = getPlayerName ( source )
 	aPlayers[source]["IP"] = ip
 	aPlayers[source]["username"] = username or "N/A"
+	aPlayers[source]["accountname"] = accountname or "N/A"
 	aPlayers[source]["serial"] = serial
 	aPlayers[source]["admin"] = admin
+	aPlayers[source]["country"] = country
 	local row = guiGridListAddRow ( aTab1.PlayerList )
 	guiGridListSetItemText ( aTab1.PlayerList, row, 1, getPlayerName ( source ), false, false )
 	if ( admin ) then
@@ -740,25 +745,25 @@ function aClientClick ( button )
 					local player = aAdminRefresh ()
 					if ( player ) then
 						triggerServerEvent ( "aSync", getLocalPlayer(), "player", player )
-						if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then outputConsole ( "Name: "..aPlayers[player]["name"]..", IP: "..aPlayers[player]["IP"]..", Serial: "..aPlayers[player]["serial"]..", Username: "..aPlayers[player]["username"] ) end
+						if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then outputConsole ( "Name: "..aPlayers[player]["name"]..", IP: "..aPlayers[player]["IP"]..", Serial: "..aPlayers[player]["serial"]..", Community Username: "..aPlayers[player]["username"]..", Account Name: "..aPlayers[player]["accountname"] ) end
 						guiSetText ( aTab1.IP, "IP: "..aPlayers[player]["IP"] )
 						guiSetText ( aTab1.Serial, "Serial: "..aPlayers[player]["serial"] )
-						guiSetText ( aTab1.Username, "Username: "..aPlayers[player]["username"] )
+						guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
+						guiSetText ( aTab1.Accountname, "Account Name: "..aPlayers[player]["accountname"] )
+						guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\fr.png" )
 						if ( aPlayers[player]["country"] ) then
 							local x, y = guiGetPosition ( aTab1.IP, false )
 							local width = guiLabelGetTextExtent ( aTab1.IP )
-							guiSetPosition ( aTab1.Flag, x + width + 3, y + 4, false )
-							if ( not guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\flags\\"..tostring ( aPlayers[player]["country"] )..".png" ) ) then
-								guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" ) end
-						else
-							guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
+							guiSetPosition ( aTab1.Flag, x + width + 7, y + 4, false )
+							guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\flags\\"..tostring ( aPlayers[player]["country"] )..".png" )
 						end
 					end
 				else
 					guiSetText ( aTab1.Name, "Name: N/A" )
 					guiSetText ( aTab1.IP, "IP: N/A" )
 					guiSetText ( aTab1.Serial, "Serial: N/A" )
-					guiSetText ( aTab1.Username, "Username: N/A" )
+					guiSetText ( aTab1.Username, "Community Username: N/A" )
+					guiSetText ( aTab1.Accountname, "Account Name: N/A" )
 					guiSetText ( aTab1.Groups, "Groups: N/A" )
 					guiSetText ( aTab1.Mute, "Mute" )
 					guiSetText ( aTab1.Freeze, "Freeze" )
