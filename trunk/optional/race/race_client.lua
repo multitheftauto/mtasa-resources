@@ -557,6 +557,9 @@ addEventHandler('onClientElementDataChange', g_Root,
 		if dataName == 'race.finished' then
 			if isPlayerFinished(source) then
 				Spectate.validateTargetSoon( source, 2000 )	-- No spectate continue at this player after 2 seconds
+				nametag.destroy(source)
+			elseif source ~= g_Me then
+				nametag.create(source)
 			end
 		end
 		if dataName == 'race.spectating' then
