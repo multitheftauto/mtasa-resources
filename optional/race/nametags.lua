@@ -79,7 +79,7 @@ addEventHandler ( "onClientRender", g_Root,
 					local width,height =  NAMETAG_WIDTH*scale, NAMETAG_HEIGHT*scale
 					dxDrawRectangle ( drawX, drawY, width, height, tocolor(0,0,0,alpha) )
 					--Next the inner background 
-					local health = getElementHealth(vehicle)
+					local health = math.max(getElementHealth(vehicle), 0)
 					local r,g = 255 - health/1000*255,health/1000*255
 					dxDrawRectangle ( 	drawX + outlineThickness, 
 										drawY + outlineThickness, 

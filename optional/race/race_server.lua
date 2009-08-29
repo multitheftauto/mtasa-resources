@@ -467,6 +467,11 @@ function joinHandlerBoth(player)
             if bPlayerJoined and g_CurrentRaceMode.running then
                 unfreezePlayerWhenReady(player)
             end
+			
+            if g_CurrentRaceMode:getName() == 'Destruction derby' and not stateAllowsSpawnInNoRespawnMap() then
+                g_CurrentRaceMode.setPlayerIsFinished(player)
+                setElementPosition(vehicle, 0, 0, 0)
+            end
             
             if spawnpoint.paintjob or spawnpoint.upgrades then
                 setVehiclePaintjobAndUpgrades(vehicle, spawnpoint.paintjob, spawnpoint.upgrades)
@@ -827,6 +832,7 @@ end
 
 function setPlayerFinished(player, toggle)
 	setElementData(player, 'race.finished', toggle)
+	showBlipsAttachedTo(player, not toggle)
 end
 
 function isPlayerFinished(player)
