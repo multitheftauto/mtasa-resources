@@ -80,6 +80,7 @@ addEventHandler ( "onClientRender", g_Root,
 					dxDrawRectangle ( drawX, drawY, width, height, tocolor(0,0,0,alpha) )
 					--Next the inner background 
 					local health = math.max(getElementHealth(vehicle), 0)
+					health = (health - 250)/750*1000
 					local r,g = 255 - health/1000*255,health/1000*255
 					dxDrawRectangle ( 	drawX + outlineThickness, 
 										drawY + outlineThickness, 
