@@ -711,6 +711,7 @@ end
 
 function Spectate._start()
 	outputDebug( 'SPECTATE', 'Spectate._start ' )
+	triggerServerEvent('onClientNotifySpectate', g_Me, true )
 	assert(not Spectate.active, "Spectate._start - not Spectate.active")
 	local screenWidth, screenHeight = guiGetScreenSize()
 	g_GUI.specprev = guiCreateStaticImage(screenWidth/2 - 100 - 58, screenHeight - 123, 58, 82, 'img/specprev.png', false, nil)
@@ -733,6 +734,7 @@ end
 
 -- Stop spectating. Will restore position if Spectate.savePos is set
 function Spectate._stop()
+	triggerServerEvent('onClientNotifySpectate', g_Me, false )
 	outputDebug( 'SPECTATE', 'Spectate._stop ' )
 	assert(Spectate.active, "Spectate._stop - Spectate.active")
 	for i,name in ipairs({'specprev', 'specprevhi', 'specnext', 'specnexthi', 'speclabel'}) do
@@ -867,12 +869,14 @@ MovePlayerAway.posX = 0
 MovePlayerAway.posY = 0
 MovePlayerAway.posZ = 0
 MovePlayerAway.rotZ = 0
+MovePlayerAway.health = 0
 
 function MovePlayerAway.start()
 	local element = g_Vehicle or getPedOccupiedVehicle(g_Me) or g_Me
 	MovePlayerAway.posX, MovePlayerAway.posY, MovePlayerAway.posZ = getElementPosition(element)
-	MovePlayerAway.posZ = 1234567 + math.random(0,4000)
+	MovePlayerAway.posZ = 34567 + math.random(0,4000)
 	MovePlayerAway.rotZ = 0
+	MovePlayerAway.health = math.max(1,getElementHealth(element))
 	MovePlayerAway.update(true)
 	MovePlayerAway.timer:setTimer(MovePlayerAway.update,500,0)
 end
@@ -899,6 +903,7 @@ function MovePlayerAway.update(nozcheck)
 		local vehicle = g_Vehicle
 		if vehicle then
 			fixVehicle( vehicle )
+			setVehicleFrozen ( vehicle, true )
 			setElementPosition( vehicle, MovePlayerAway.posX, MovePlayerAway.posY, MovePlayerAway.posZ )
 			setElementVelocity( vehicle, 0,0,0 )
 			setVehicleTurnVelocity( vehicle, 0,0,0 )
@@ -921,6 +926,7 @@ function MovePlayerAway.stop()
 			setVehicleTurnVelocity( vehicle, 0,0,0 )
 			setVehicleFrozen ( vehicle, false )
 			setVehicleDamageProof ( vehicle, false )
+			setElementHealth ( vehicle, MovePlayerAway.health )
 		end
 		setElementVelocity( g_Me, 0,0,0 )
 	end
@@ -1150,47 +1156,15 @@ addCommandHandler('kill',kill)
 addCommandHandler('Commit suicide',kill)
 bindKey ( next(getBoundKeys"enter_exit"), "down", "Commit suicide" )
 
---[[bindKey('enter_exit', 'down',
-    function()
-		if Spectate.active then
-    		if Spectate.savePos then
-				triggerServerEvent('onClientRequestSpectate', g_Me, false )
-    		end
-        else
-	        triggerServerEvent('onRequestKillPlayer', g_Me)
-		end
-    end
-)]]
-
-
---[[bindKey('b', 'down',
-    function()
-	    if not g_PlayerInfo.testing and not g_PlayerInfo.admin then
-		    return
-	    end
-	    if Spectate.active then
-    		if Spectate.savePos then
-				triggerServerEvent('onClientRequestSpectate', g_Me, false )
-    		end
-	    else
-			triggerServerEvent('onClientRequestSpectate', g_Me, true )
-	    end
-    end
-)]]
-
-
 
 function spectate()
-	if not g_PlayerInfo.testing and not g_PlayerInfo.admin then
-		return
-	end
-    if Spectate.active then
+	if Spectate.active then
 		if Spectate.savePos then
 			triggerServerEvent('onClientRequestSpectate', g_Me, false )
 		end
-    else
+	else
 		triggerServerEvent('onClientRequestSpectate', g_Me, true )
-    end
+	end
 end
 addCommandHandler('spectate',spectate)
 addCommandHandler('Toggle spectator',spectate)

@@ -280,7 +280,16 @@ end
 ---------------------------------------------------------------------------
 -- Misc functions
 ---------------------------------------------------------------------------
+-- remove color coding from string
+function removeColorCoding ( name )
+	return type(name)=='string' and string.gsub ( name, '#%x%x%x%x%x%x', '' ) or name
+end
 
+-- getPlayerName with color coding removed
+_getPlayerName = getPlayerName
+function getPlayerName ( player )
+	return removeColorCoding ( _getPlayerName ( player ) )
+end
 ---------------------------------------------------------------------------
 
 
