@@ -832,7 +832,6 @@ end
 
 function setPlayerFinished(player, toggle)
 	setElementData(player, 'race.finished', toggle)
-	showBlipsAttachedTo(player, not toggle)
 end
 
 function isPlayerFinished(player)
