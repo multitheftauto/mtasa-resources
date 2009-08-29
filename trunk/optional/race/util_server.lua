@@ -231,6 +231,18 @@ function destroyBlipsAttachedTo(elem)
 	table.each(table.filter(getAttachedElements(elem) or {}, getElementType, 'blip'), destroyElement)
 end
 
+function showBlipsAttachedTo(elem, bShow)
+	local elements = getAttachedElements ( elem )
+	for k,v in ipairs( elements ) do
+		if ( getElementType( v ) == "blip" ) then
+			local r,g,b,a = getBlipColor ( v )
+			a = bShow and 255 or 0
+			setBlipColor ( v, r,g,b,a )
+		end
+	end
+end
+
+
 function getStringFromColor(r, g, b)
 	return string.format('#%02X%02X%02X', r, g, b)
 end

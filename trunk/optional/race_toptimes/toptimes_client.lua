@@ -398,7 +398,7 @@ end
 --
 ---------------------------------------------------------------------------
 function CToptimes:doOnServerSentToptimes( data, serverRevision, playerPosition )
-	outputDebug( 'TOPTIMES', 'CToptimes:doOnServerSentToptimes ' .. #data )
+	outputDebug( 'TOPTIMES', 'CToptimes:doOnServerSentToptimes ' .. tostring(#data) )
 
 	-- Calc number lines to use and height of window
 	local numLines = math.clamp( 0, #data, 50 )

@@ -494,7 +494,7 @@ function joinHandlerBoth(player)
             setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)	
         end
         
-        setPlayerSpectating( player, false )
+        --setPlayerSpectating( player, false )
         createBlipAttachedTo(player, 0, 1, 200, 200, 200)
         g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
     else
@@ -874,9 +874,12 @@ addEventHandler('onClientRequestSpectate', g_Root,
 		-- Checks if switching on
 		if enable then
 			if not stateAllowsManualSpectate() then return end
+			if not _TESTING and not isPlayerInACLGroup(source, g_GameOptions.admingroup) then
+				return
+			end
 		end
 		if isPlayerSpectating(source) ~= enable then
-			setPlayerSpectating( source, enable )
+			--setPlayerSpectating( source, enable )
 			if enable then
 				clientCall(source, "Spectate.start", 'manual' )
 			else
@@ -886,7 +889,16 @@ addEventHandler('onClientRequestSpectate', g_Root,
 	end
 )
 
+-- Handle client going to/from spectating
+addEvent('onClientNotifySpectate', true)
+addEventHandler('onClientNotifySpectate', g_Root,
+	function(enable)
+		setPlayerSpectating(source, enable)
+	end
+)
+
 function setPlayerSpectating(player, toggle)
+	showBlipsAttachedTo ( player, not toggle )		-- Hide blips if spectating
 	setElementData(player, 'race.spectating', toggle)
 end
 

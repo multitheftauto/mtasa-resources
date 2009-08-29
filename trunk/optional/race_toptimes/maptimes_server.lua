@@ -61,6 +61,24 @@ end
 
 ---------------------------------------------------------------------------
 --
+-- SMaptimes:validateDbTableRow()
+--
+-- Make sure each cell in the row contains a valid value
+--
+---------------------------------------------------------------------------
+function SMaptimes:validateDbTableRow( index )
+	local row = self.dbTable.rows[index]
+	row.playerName		= removeColorCoding ( tostring(row.playerName) or "playerName" )
+	row.playerSerial	= tostring(row.playerSerial) or "playerSerial"
+	row.timeMs			= tonumber(row.timeMs) or 0
+	row.timeText		= tostring(row.timeText) or "00:00:000"
+	row.dateRecorded	= tostring(row.dateRecorded) or "1900-00-00 00:00:00"
+	row.extra			= tostring(row.extra) or ""
+end
+
+
+---------------------------------------------------------------------------
+--
 -- SMaptimes:flush()
 --
 -- Destroy a SMaptimes instance
@@ -112,6 +130,12 @@ end
 ---------------------------------------------------------------------------
 function SMaptimes:load()
 	self.dbTable:load()
+
+	-- Make sure each cell in the table contains a valid value - saves lots of checks later
+	for i,row in ipairs(self.dbTable.rows) do
+		self:validateDbTableRow( i )
+	end
+
 	self:sort()
 end
 
@@ -245,6 +269,9 @@ function SMaptimes:addPlayer( player )
 									dateRecorded	= '1900-00-00 00:00:00',
 									extra			= ''
 								} )
+
+	-- Make sure new row has valid values
+	self:validateDbTableRow( #self.dbTable.rows )
 
 	return #self.dbTable.rows
 end
