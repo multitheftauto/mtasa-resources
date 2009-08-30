@@ -31,7 +31,6 @@ end
 local function chooseRandomMap (chosen)
 	if not chosen then
 		cancelEvent()
-		math.randomseed(getTickCount())
 		finishPoll(math.random(1, math.min(mapOptions,currentPollSize)))
 	end
 	removeEventHandler("onPollEnd", rootElement, chooseRandomMap)
@@ -40,7 +39,6 @@ end
 local function chooseRandomMode (chosen)
 	if not chosen then
 		cancelEvent()
-		math.randomseed(getTickCount())
 		finishPoll(math.random(1, math.min(modeOptions,currentPollSize)))
 	end
 	removeEventHandler("onPollEnd", rootElement, chooseRandomMode)
@@ -153,7 +151,6 @@ function vote.mode.handler(source,cmd,resourceName)
 		
 		-- limit it to eight random modes
 		if #gamemodes > 8 then
-			math.randomseed(getTickCount())
 			repeat
 				table.remove(gamemodes, math.random(1, #gamemodes))
 			until #gamemodes == 8
@@ -587,7 +584,6 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 	
 	-- limit it to eight random maps
 	if #compatibleMaps > 8 then
-		math.randomseed(getTickCount())
 		repeat
 			table.remove(compatibleMaps, math.random(1, #compatibleMaps))
 		until #compatibleMaps == 8
