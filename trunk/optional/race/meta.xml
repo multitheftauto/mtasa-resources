@@ -191,7 +191,7 @@
 
 		<setting name="#addons" value="race_toptimes,race_traffic_sensor"
 					accept="*"
-					desc="The name of the group to which the player must belong to issue certain commands"
+					desc="List of race addon resources to load automatically"
 					/>
 
 		<setting name="*blur" value="36"

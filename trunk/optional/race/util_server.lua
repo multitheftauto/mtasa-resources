@@ -102,6 +102,10 @@ function setVehicleID(vehicle, id)
 	local vx, vy, vz = getElementVelocity(vehicle)
 	local tvx, tvy, tvz = getVehicleTurnVelocity(vehicle)
 	setElementModel(vehicle, id)
+	local player = getVehicleController(vehicle)
+	if player then
+		setElementAlpha(player, g_RCVehicleIDs[id] and 0 or 255)
+	end
     if g_GameOptions.vehiclecolors == 'random' then
 		setRandomSeedForMap('vehiclecolors')
 		local vehicleColorFixed = false
