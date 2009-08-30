@@ -750,9 +750,7 @@ addEventHandler('onResourceStart', g_Root,
 	function(res)
 		local resourceName = getResourceName(res)
 		if resourceName == 'scoreboard' then
-			exports.scoreboard:addScoreboardColumn('race rank')
-			exports.scoreboard:addScoreboardColumn('checkpoint')
-			exports.scoreboard:addScoreboardColumn('state')
+			setTimer( addRaceScoreboardColumns, 1000, 1 )
 		end
 	end
 )
@@ -766,16 +764,20 @@ addEventHandler('onResourceStart', g_ResRoot,
 )
 
 addEventHandler('onGamemodeStart', g_ResRoot,
-    function()
-	    outputDebugString('Race onGamemodeStart')
-		exports.scoreboard:addScoreboardColumn('race rank')
-		exports.scoreboard:addScoreboardColumn('checkpoint')
-		exports.scoreboard:addScoreboardColumn('state')
+	function()
+		outputDebugString('Race onGamemodeStart')
+		addRaceScoreboardColumns()
 		if not g_GameOptions then
-	        cacheGameOptions()
+			cacheGameOptions()
 		end
-    end
+	end
 )
+
+function addRaceScoreboardColumns()
+	exports.scoreboard:addScoreboardColumn('race rank')
+	exports.scoreboard:addScoreboardColumn('checkpoint')
+	exports.scoreboard:addScoreboardColumn('state')
+end
 
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
