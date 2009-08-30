@@ -33,7 +33,7 @@ function gotoState(stateName)
 
     -- If leaving a state dedicated to voting, ensure the voting stops
     if currentRaceStateName == 'MidMapVote' or currentRaceStateName == 'NextMapVote' then
-        votemanager.stopPoll()
+        exports.votemanager:stopPoll()
     end
 
     currentRaceStateName = stateName
