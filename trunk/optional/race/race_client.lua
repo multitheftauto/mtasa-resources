@@ -20,7 +20,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		g_dxGUI = {
 			ranknum = dxText:create('1', screenWidth - 60, screenHeight - 80, false, 'bankgothic', 2, 'right'),
 			ranksuffix = dxText:create('st', screenWidth - 40, screenHeight - 71, false, 'bankgothic', 1),
-			checkpoint = dxText:create('0/0', screenWidth - 54, screenHeight - 42, false, 'bankgothic', 0.8, 'center'),
+			checkpoint = dxText:create('0/0', screenWidth - 20, screenHeight - 42, false, 'bankgothic', 0.8, 'right')
 		}
 		g_dxGUI.ranknum:type('stroke', 2, 0, 0, 0, 255)
 		g_dxGUI.ranksuffix:type('stroke', 2, 0, 0, 0, 255)
