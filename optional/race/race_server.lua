@@ -460,6 +460,7 @@ function joinHandlerBoth(player)
             vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
             g_Vehicles[player] = vehicle
             RaceMode.playerFreeze(player)
+			setElementAlpha(player, g_RCVehicleIDs[id] and 0 or 255)
             outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
             if bPlayerJoined and g_CurrentRaceMode.running then
                 unfreezePlayerWhenReady(player)
@@ -518,7 +519,7 @@ function joinHandlerBoth(player)
 	
 	if bPlayerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
 		-- Start random map vote if someone joined a lone player mid-race
-        setTimer(startMidMapVoteForRandomMap,7000,1)
+		setTimer(startMidMapVoteForRandomMap,7000,1)
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
@@ -623,9 +624,6 @@ addEvent('onPlayerPickUpRacePickup')
 addEvent('onPlayerPickUpRacePickupInternal', true)
 addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 	function(pickupID, respawntime)
-		if not stateAllowsPickup() then
-            return
-        end
 		local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
 		local vehicle = g_Vehicles[source]
 		if respawntime then

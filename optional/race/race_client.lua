@@ -3,7 +3,7 @@ g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_WaterCraftIDs = table.create({ 539, 460, 417, 447, 472, 473, 493, 595, 484, 430, 453, 452, 446, 454 }, true)
-g_ModelForPickupType = { nitro = 1337, repair = 1338, vehiclechange = 1339 }
+g_ModelForPickupType = { nitro = 2221, repair = 2222, vehiclechange = 2223 }
 
 g_Checkpoints = {}
 g_Pickups = {}
@@ -1103,11 +1103,9 @@ addEventHandler('onClientPlayerWasted', g_Root,
 		else
 			Spectate.validateTargetSoon( source, 2000 )	-- No spectate continue at this player after 2 seconds
 			local vehicle = getPedOccupiedVehicle(source)
-			if vehicle then
-				setElementCollisionsEnabled(vehicle, true)
-				if g_MapOptions.respawn == 'timelimit' and g_GhostMode then
-					setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime + 2000, 1, vehicle, not g_GhostMode)
-				end
+			if vehicle and g_MapOptions.respawn == 'timelimit' then
+				setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime, 1, vehicle, false)
+				setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime + 2000, 1, vehicle, not g_GhostMode)
 			end
 		end
 	end

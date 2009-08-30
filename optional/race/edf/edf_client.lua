@@ -1,4 +1,4 @@
-g_ModelForPickupType = { nitro = 1337, repair = 1338, vehiclechange = 1339 }
+g_ModelForPickupType = { nitro = 2221, repair = 2222, vehiclechange = 2223 }
 models = {}
 
 startTick = getTickCount()
