@@ -98,18 +98,6 @@ function destroyAllMessages()
 end
 
 
-function createResourceCallInterface(resname)
-	return setmetatable(
-		{ res = getResourceFromName(resname) },
-		{
-			__index = function(t, k)
-				t[k] = function(...) call(t.res, k, ...) end
-				return t[k]
-			end
-		}
-	)
-end
-
 function setVehicleID(vehicle, id)
 	local vx, vy, vz = getElementVelocity(vehicle)
 	local tvx, tvy, tvz = getVehicleTurnVelocity(vehicle)

@@ -1,8 +1,5 @@
 g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
-scoreboard = createResourceCallInterface('scoreboard')
-votemanager = createResourceCallInterface('votemanager')
-mapmanager = createResourceCallInterface('mapmanager')
 allowRPC('setElementPosition')
 g_MotorBikeIDs = table.create({ 448, 461, 462, 463, 468, 471, 521, 522, 523, 581, 586 }, true)
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
@@ -747,19 +744,19 @@ addEventHandler('onPollDraw', g_Root,
 	end
 )
 
--- Re-get resource call interfaces
+
+-- Recharge scoreboard columns if required
 addEventHandler('onResourceStart', g_Root,
 	function(res)
-        local resourceName = getResourceName(res)
-        if resourceName == 'scoreboard' then
-            scoreboard = createResourceCallInterface('scoreboard')
-        elseif resourceName == 'votemanager' then
-            votemanager = createResourceCallInterface('votemanager')
-        elseif resourceName == 'mapmanager' then
-            mapmanager = createResourceCallInterface('mapmanager')
-	    end
+		local resourceName = getResourceName(res)
+		if resourceName == 'scoreboard' then
+			exports.scoreboard:addScoreboardColumn('race rank')
+			exports.scoreboard:addScoreboardColumn('checkpoint')
+			exports.scoreboard:addScoreboardColumn('state')
+		end
 	end
 )
+
 
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
@@ -771,9 +768,9 @@ addEventHandler('onResourceStart', g_ResRoot,
 addEventHandler('onGamemodeStart', g_ResRoot,
     function()
 	    outputDebugString('Race onGamemodeStart')
-		scoreboard.addScoreboardColumn('race rank')
-		scoreboard.addScoreboardColumn('checkpoint')
-		scoreboard.addScoreboardColumn('state')
+		exports.scoreboard:addScoreboardColumn('race rank')
+		exports.scoreboard:addScoreboardColumn('checkpoint')
+		exports.scoreboard:addScoreboardColumn('state')
 		if not g_GameOptions then
 	        cacheGameOptions()
 		end
@@ -786,9 +783,9 @@ addEventHandler('onResourceStop', g_ResRoot,
         fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')
 		unloadAll()
-		scoreboard.removeScoreboardColumn('race rank')
-		scoreboard.removeScoreboardColumn('checkpoint')
-		scoreboard.removeScoreboardColumn('state')
+		exports.scoreboard:removeScoreboardColumn('race rank')
+		exports.scoreboard:removeScoreboardColumn('checkpoint')
+		exports.scoreboard:removeScoreboardColumn('state')
 	end
 )
 

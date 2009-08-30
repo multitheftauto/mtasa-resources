@@ -69,7 +69,7 @@ function startMidMapVoteForRandomMap(player)
 	end
 
 	displayHilariarseMessage( player )
-	votemanager.stopPoll()
+	exports.votemanager:stopPoll()
 
 	-- Actual vote started here
 	local pollDidStart = exports.votemanager:startPoll {
@@ -205,7 +205,7 @@ local g_Poll
 ----------------------------------------------------------------------------
 function startNextMapVote()
 
-	votemanager.stopPoll()
+	exports.votemanager:stopPoll()
 
 	-- Get all maps
 	local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(getThisResource())
@@ -319,7 +319,7 @@ function startMidMapVoteForRestartMap(player)
 	end
 
 	displayHilariarseMessage( player )
-	votemanager.stopPoll()
+	exports.votemanager:stopPoll()
 
 	-- Actual vote started here
 	local pollDidStart = exports.votemanager:startPoll {
