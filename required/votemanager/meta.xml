@@ -1,5 +1,5 @@
 <meta>
-	<info author="jbeta" description="Vote manager resource" type="script" version="1.0.4" />
+	<info author="jbeta" description="Vote manager resource" type="script" version="1.0.5" />
 	<include resource="helpmanager" />
 	
 	<script src="votemanager_errorcodes.lua" type="server"/>
