@@ -32,6 +32,7 @@ function DestructionDerby:onPlayerWasted(player)
 		setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
 	end
 	RaceMode.setPlayerIsFinished(player)
+	showBlipsAttachedTo(player, false)
 end
 
 function DestructionDerby:onPlayerQuit(player)
