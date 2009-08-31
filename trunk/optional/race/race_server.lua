@@ -498,6 +498,7 @@ function joinHandlerBoth(player)
         end
         
         --setPlayerSpectating( player, false )
+		destroyBlipsAttachedTo(player)
         createBlipAttachedTo(player, 0, 1, 200, 200, 200)
         g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
     else
