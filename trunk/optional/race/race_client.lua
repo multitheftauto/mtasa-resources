@@ -28,7 +28,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		g_GUI = {
 			timeleftbg = guiCreateStaticImage(screenWidth/2-108/2, 15, 108, 24, 'img/timeleft.png', false, nil),
 			timeleft = guiCreateLabel(screenWidth/2-108/2, 19, 108, 30, '', false),
-			timepassed = guiCreateLabel(screenWidth - 72, screenHeight - 28, 100, 30, '', false),
+			timepassed = guiCreateLabel(screenWidth - 78, screenHeight - 29, 100, 30, '', false),
 			healthbar = FancyProgress.create(250, 1000, 'img/progress_health_bg.png', -65, 60, 123, 30, 'img/progress_health.png', 8, 8, 108, 16),
 			speedbar = FancyProgress.create(0, 1.5, 'img/progress_speed_bg.png', -65, 90, 123, 30, 'img/progress_speed.png', 8, 8, 108, 16),
 		}
@@ -246,8 +246,9 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	end
 	
 	-- GUI
-	showGUIComponents('healthbar', 'speedbar')
-	hideGUIComponents('timeleftbg', 'timeleft', 'timepassed')
+	showGUIComponents('healthbar', 'speedbar', 'timepassed')
+	hideGUIComponents('timeleftbg', 'timeleft')
+	guiSetText(g_GUI.timepassed, msToTimeStr(0))
 	if ranked then
 		showGUIComponents('ranknum', 'ranksuffix')
 	else
@@ -310,7 +311,7 @@ function launchRace(duration)
 	g_Players = getElementsByType('player')
 	
 	if type(duration) == 'number' then
-		showGUIComponents('timeleftbg', 'timeleft', 'timepassed')
+		showGUIComponents('timeleftbg', 'timeleft')
 		guiLabelSetColor(g_GUI.timeleft, 255, 255, 255)
 		g_Duration = duration
 		addEventHandler('onClientRender', g_Root, updateTime)

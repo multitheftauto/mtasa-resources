@@ -110,7 +110,7 @@ addEventHandler("doShowPoll", rootElement,
 		
 		isChangeAllowed = pollData.allowchange
 
-        layout.title.width  = layout.window.width
+        layout.title.width  = layout.window.width - 20
         layout.option.width = layout.window.width
         layout.cancel.width = layout.window.width
         layout.time.width   = layout.window.width

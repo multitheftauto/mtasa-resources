@@ -55,7 +55,7 @@ end
 ----------------------------------------------------------------------------
 -- startMidMapVoteForRandomMap
 --
--- Start the vote menu if during a race and more than a minute from the end
+-- Start the vote menu if during a race and more than 30 seconds from the end
 -- No messages if this was not started by a player
 ----------------------------------------------------------------------------
 function startMidMapVoteForRandomMap(player)
@@ -233,7 +233,6 @@ function startNextMapVote()
 		visibleTo=getRootElement(),
 		percentage=51,
 		timeout=15,
-		adjustwidth=100,
 		allowchange=true;
 		}
 	
