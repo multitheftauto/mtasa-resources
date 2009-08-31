@@ -36,7 +36,10 @@ function gotoState(stateName)
         exports.votemanager:stopPoll()
     end
 
-    currentRaceStateName = stateName
+    if currentRaceStateName ~= stateName then
+		triggerEvent('onRaceStateChanging', g_Root, stateName, currentRaceStateName )
+		currentRaceStateName = stateName
+	end
 --[[
     local levelInfo = getElementByID('mylevelinfo')
     if not levelInfo then

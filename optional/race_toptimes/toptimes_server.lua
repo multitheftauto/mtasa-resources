@@ -170,6 +170,11 @@ end
 ---------------------------------------------------------------------------
 function SToptimesManager:playerFinished( player, newTime, dateRecorded )
 
+	-- Check if top time recording is disabled for this player
+	if getElementData ( player, "toptimes" ) == "off" then
+		return
+	end
+
 	if not self.mapTimes then
 		outputDebug( 'TOPTIMES', 'SToptimesManager:playerFinished - self.mapTimes == nil' )
 		return
