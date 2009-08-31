@@ -113,19 +113,6 @@ end
 
 
 ----------------------------------------------------------------------------
--- stateAllowsPickup
---
--- Check if the current state allows pickup processing
-----------------------------------------------------------------------------
-function stateAllowsPickup()
-    if currentRaceStateName == 'Running'        then    return true     end
-    if currentRaceStateName == 'MidMapVote'     then    return true     end
-    if currentRaceStateName == 'SomeoneWon'     then    return true     end
-    return false
-end
-
-
-----------------------------------------------------------------------------
 -- stateAllowsPostFinish
 --
 -- Check if the current state allows the post finish state to to entered

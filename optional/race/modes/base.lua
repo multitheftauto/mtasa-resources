@@ -354,7 +354,7 @@ function restorePlayer(id, player)
 		bkp.vehicle = spawnpoint.vehicle    -- Fix spawn'n'blow
 		--setVehicleID(RaceMode.getPlayerVehicle(player), spawnpoint.vehicle)
 	end
-	spawnPlayer(player, bkp.position[1], bkp.position[2], bkp.position[3], 0, getElementModel(player))
+	spawnPlayer(player, 0, 0, 0, 0, getElementModel(player))
 
 	local vehicle = RaceMode.getPlayerVehicle(player)
 	if vehicle then
