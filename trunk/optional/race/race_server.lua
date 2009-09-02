@@ -129,7 +129,9 @@ function cacheMapOptions(map)
 		g_MapOptions.duration = 86400000
 	end
 	g_MapOptions.respawn = map.respawn
-	if not g_MapOptions.respawn or g_MapOptions.respawn ~= 'none' then
+	if not g_MapOptions.respawn then
+		g_MapOptions.respawn = 'none'
+	elseif g_MapOptions.respawn ~= 'timelimit' and g_MapOptions.respawn ~= 'none' then
 		g_MapOptions.respawn = 'timelimit'
 	end
 	g_MapOptions.respawntime	= g_MapOptions.respawn == 'timelimit' and (map.respawntime and map.respawntime*1000 or g_GameOptions.defaultrespawntime)
