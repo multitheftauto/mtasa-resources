@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r431 29Aug09" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.2" build="r447 02Sep09" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -181,12 +181,12 @@
 					desc="Advanced setting to reduce lag-stutter effect. It should usually be enabled here, and disabled in each map that has problems being displayed correctly."
 					/>
 
-		<setting name="*admingroup" value="Admin"
-					friendlyname="Admin group"
+		<setting name="*admingroup" value="Admin,SuperModerator"
+					friendlyname="Admin group list"
 					group="_Advanced"
 					accept="*"
 					examples="Admin,Moderator,SuperModerator"
-					desc="The name of the group to which the player must belong to issue certain commands"
+					desc="To issue certain commands, the player must belong to one of the groups listed."
 					/>
 
 		<setting name="#addons" value="race_toptimes,race_traffic_sensor"

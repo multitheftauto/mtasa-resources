@@ -241,14 +241,18 @@ end
 
 function isPlayerInACLGroup(player, groupName)
 	local account = getPlayerAccount(player)
-	local group = aclGetGroup(groupName)
-	if not account or not group then
+	if not account then
 		return false
 	end
 	local accountName = getAccountName(account)
-	for i,obj in ipairs(aclGroupListObjects(group)) do
-		if obj == 'user.' .. accountName or obj == 'user.*' then
-			return true
+	for _,name in ipairs(string.split(groupName,',')) do
+		local group = aclGetGroup(name)
+		if group then
+			for i,obj in ipairs(aclGroupListObjects(group)) do
+				if obj == 'user.' .. accountName or obj == 'user.*' then
+					return true
+				end
+			end
 		end
 	end
 	return false

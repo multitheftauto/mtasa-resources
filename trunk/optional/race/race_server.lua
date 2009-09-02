@@ -787,6 +787,7 @@ addEventHandler('onResourceStop', g_ResRoot,
 		exports.scoreboard:removeScoreboardColumn('race rank')
 		exports.scoreboard:removeScoreboardColumn('checkpoint')
 		exports.scoreboard:removeScoreboardColumn('state')
+		stopAddons()
 	end
 )
 
@@ -1109,6 +1110,23 @@ function startAddons()
 		end
 	end
 end
+
+
+-- Force the stopping of addon resources listed in the setting 'race.addons'
+function stopAddons()
+	outputDebugString("stopAddons")
+	for idx,name in ipairs(string.split(getString('race.addons'),',')) do
+		if name ~= '' then
+			local resource = getResourceFromName(name)
+			if resource and getResourceInfo ( resource, 'addon' ) == 'race' then
+				if getResourceState(resource) == 'running' then
+					stopResource(resource)
+				end
+			end
+		end
+	end
+end
+
 
 
 ------------------------
