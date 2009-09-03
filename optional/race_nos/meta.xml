@@ -1,5 +1,5 @@
 <meta>
-	<info author="50p" version="0.1" name="NOS" description="NFS-like NOS addon for Race" type="script" addon="race" build="r33 12Aug09" />
+	<info author="50p" version="0.4" name="Need for Speed NOS" description="NFS-like NOS addon for Race" type="script" addon="race" build="r40 2Sep09" />
 
 	<script src="s_main.lua" />
 	<script src="c_main.lua" type="client" />
