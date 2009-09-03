@@ -328,3 +328,14 @@ end
 
 -------------------------------------------------------
 
+-- Calculate the gap between element bounding spheres
+function getGapBetweenElements( elemA, elemB )
+	if not isElement( elemA ) or not isElement( elemB ) then
+		return false
+	end
+	local x,y,z = getElementPosition( elemA )
+	local distance = getDistanceBetweenPoints3D( x, y, z, getElementPosition( elemB ) )
+	distance = distance - ( getElementRadius( elemA ) or 0 )
+	distance = distance - ( getElementRadius( elemB ) or 0 )
+	return math.max( 0, distance )
+end

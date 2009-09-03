@@ -1104,9 +1104,14 @@ addEventHandler('onClientPlayerWasted', g_Root,
 		else
 			Spectate.validateTargetSoon( source, 2000 )	-- No spectate continue at this player after 2 seconds
 			local vehicle = getPedOccupiedVehicle(source)
-			if vehicle and g_MapOptions.respawn == 'timelimit' then
-				setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime, 1, vehicle, false)
-				setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime + 2000, 1, vehicle, not g_GhostMode)
+			if vehicle then
+				if ( getGapBetweenElements( vehicle, getPedOccupiedVehicle(g_Me) ) or 100 ) > 5 then
+					setElementCollisionsEnabled ( vehicle, true )	-- Fix floaty dead cars
+				end
+				if g_MapOptions.respawn == 'timelimit' then
+					setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime, 1, vehicle, false)
+					setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime + 2000, 1, vehicle, not g_GhostMode)
+				end
 			end
 		end
 	end

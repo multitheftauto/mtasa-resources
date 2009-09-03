@@ -30,8 +30,7 @@ local unloadedPickups = {}
 
 addEventHandler('onPlayerJoin', g_Root,
 	function()
-		-- Race welcome message
-		outputChatBox ( 'Race version ' .. getBuildString(), source, 255, 127, 0 )
+		outputConsole ( 'Race version ' .. getBuildString(), source, 255, 127, 0 )
 		for _,line in ipairs(Addons.report) do
 			outputConsole ( 'Race addon: ' .. line, source )
 		end
@@ -333,17 +332,6 @@ g_RaceStartCountdown:addClientHook(2, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(1, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(0, 'playSoundFrontEnd', 45)
 
-
--- Called from:
---      Currently unused
-function restartRace()
-	for i,player in pairs(g_Players) do
-		clientCall(player, 'vehicleUnloading')
-		destroyElement(g_Vehicles[player])
-		destroyBlipsAttachedTo(player)
-	end
-	startRace()
-end
 
 
 -- Called from:
@@ -789,7 +777,6 @@ addEventHandler('onResourceStop', g_ResRoot,
 		exports.scoreboard:removeScoreboardColumn('race rank')
 		exports.scoreboard:removeScoreboardColumn('checkpoint')
 		exports.scoreboard:removeScoreboardColumn('state')
-		stopAddons()
 	end
 )
 
@@ -1112,23 +1099,6 @@ function startAddons()
 		end
 	end
 end
-
-
--- Force the stopping of addon resources listed in the setting 'race.addons'
-function stopAddons()
-	outputDebugString("stopAddons")
-	for idx,name in ipairs(string.split(getString('race.addons'),',')) do
-		if name ~= '' then
-			local resource = getResourceFromName(name)
-			if resource and getResourceInfo ( resource, 'addon' ) == 'race' then
-				if getResourceState(resource) == 'running' then
-					stopResource(resource)
-				end
-			end
-		end
-	end
-end
-
 
 
 ------------------------
