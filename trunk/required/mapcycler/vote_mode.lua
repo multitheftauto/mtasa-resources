@@ -8,6 +8,12 @@ function startCycler_vote()
 end
 
 function cycleMap_vote()
+	-- This increases the server startup speed - ('voteBetweenModes' will fail with no players anyway)
+	if #getElementsByType("player") < 1 then
+		remainingRounds = get("vote_rounds")
+		return
+	end
+
 	local allModes = call(mapmanagerResource, "getGamemodes")
 	local modeSelection = {}
 	
