@@ -29,7 +29,6 @@ addEvent('onRequestAddonsChange', true )
 addEventHandler('onRequestAddonsChange', g_ResRoot,
 	function(addonsInfoMap)
 		setAddonsInfo( addonsInfoMap );
-        exports.mapmanager:changeGamemode( getResourceFromName('race') )
 	end
 )
 
@@ -66,15 +65,35 @@ end
 --------------------------------
 -- Set active addons
 --------------------------------
-function setAddonsInfo(addonsInfoMap)
+function setAddonsInfo(newAddonsInfoMap)
+	local oldAddonsInfoMap = getAddonsInfo()
+
 	-- compile setting from enabled items
 	local activeList = {}
-	for _,info in pairs(addonsInfoMap) do
+	for _,info in pairs(newAddonsInfoMap) do
 		if info.enabled then
 			table.insert( activeList, info.name )
 		end
 	end
 	local setting = table.concat(activeList,",")
 	set('*addons',setting)
+
+	-- Stop or start addons as required
+	for _,newInfo in pairs(newAddonsInfoMap) do
+		for _,oldInfo in pairs(oldAddonsInfoMap) do
+			if oldInfo.name == newInfo.name and oldInfo.enabled ~= newInfo.enabled then
+				local resource = getResourceFromName( newInfo.name )
+				if newInfo.enabled then
+					if getResourceState(resource) ~= 'running' then
+						startResource(resource)
+					end
+				else
+					if getResourceState(resource) == 'running' then
+						stopResource(resource)
+					end
+				end
+			end
+		end
+	end
 end
 

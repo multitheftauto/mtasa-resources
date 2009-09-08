@@ -35,18 +35,21 @@ function openConfigMenu ()
     guiLabelSetColor ( gui['header'], 160, 160, 192 )
 
 	gui["scrollpane"]		= guiCreateScrollPane( 0, 0, 1, 1, true, gui["form"] )
-	gui["button_ok"]		= guiCreateButton( 0, 0, 1, 1, 'Ok',		false, gui["form"] )
+	gui["button_apply"]		= guiCreateButton( 0, 0, 1, 1, 'Apply',		false, gui["form"] )
 	gui["button_cancel"]	= guiCreateButton( 0, 0, 1, 1, 'Cancel',	false, gui["form"] )
-	gui["label1"]			= guiCreateLabel( 0, 0, 1, 1, 'Get more race addons from http://blaaaaaaaaaaah/',	false, gui["form"] )
-	gui["label2"]			= guiCreateLabel( 0, 0, 1, 1, "Note: Pressing 'Ok' will apply changes and restart Race",	false, gui["form"] )
+	gui["label1"]			= guiCreateLabel( 0, 0, 1, 1, 'Get more race addons from http://community.mtasa.com/',	false, gui["form"] )
+	gui["label2"]			= guiCreateLabel( 0, 0, 1, 1, "Note: Some addons may not take effect",	false, gui["form"] )
+	gui["label3"]			= guiCreateLabel( 0, 0, 1, 1, "until the start of the next map.",	false, gui["form"] )
 	gui["checkboxes"] = {}
 
 	guiLabelSetHorizontalAlign( gui["label1"], 'center'  )
 	guiLabelSetHorizontalAlign( gui["label2"], 'center'  )
-	guiSetFont( gui["label1"], 'default-bold-small' )
+	guiLabelSetHorizontalAlign( gui["label3"], 'center'  )
 	guiSetFont( gui["label2"], 'default-bold-small' )
-    guiLabelSetColor ( gui['label1'], 255, 255, 230 )
-    guiLabelSetColor ( gui['label2'], 255, 255, 230 )
+	guiSetFont( gui["label3"], 'default-bold-small' )
+	guiLabelSetColor ( gui['label1'], 230, 230, 210 )
+	guiLabelSetColor ( gui['label2'], 255, 255, 255 )
+	guiLabelSetColor ( gui['label3'], 255, 255, 255 )
 
 	guiSetVisible(gui["scrollpane"],false)
 	guiScrollPaneSetScrollBars(gui["scrollpane"],false, true)
@@ -90,7 +93,7 @@ function resizeMenu()
 	_,rect = rectSplitY( rect, 50 )
 
 	-- Divide into list and buttons area
-	local rectTop, rectBot = rectSplitY( rect, -90 )
+	local rectTop, rectBot = rectSplitY( rect, -115 )
 
 	-- Set list rect
 	guiSetRect( gui["scrollpane"], rectTop, false )
@@ -102,9 +105,16 @@ function resizeMenu()
 	local rectLabel1, rectCur = rectSplitY( rectCur, 25 )
 	guiSetRect( gui["label1"], rectLabel1, false )
 
+	-- gap
+	rectSplitY( rectCur, 10 )
+
 	-- get rect for label2
-	local rectLabel2, rectCur = rectSplitY( rectCur, 25 )
+	local rectLabel2, rectCur = rectSplitY( rectCur, 15 )
 	guiSetRect( gui["label2"], rectLabel2, false )
+
+	-- get rect for label3
+	local rectLabel3, rectCur = rectSplitY( rectCur, 15 )
+	guiSetRect( gui["label3"], rectLabel3, false )
 
 	-- get rect bottom bar
 	local _,rectCur = rectSplitY( rectCur, -30 )
@@ -116,8 +126,9 @@ function resizeMenu()
 
 	-- get rect for ok button
 	local rectCur, rectOk = rectSplitX( rectCur, -95 )
-	guiSetPosition ( gui["button_ok"], rectOk.x, rectOk.y, false )
-	guiSetSize ( gui["button_ok"], 90, 22, false )
+	guiSetPosition ( gui["button_apply"], rectOk.x, rectOk.y, false )
+	guiSetSize ( gui["button_apply"], 90, 22, false )
+	guiSetEnabled ( gui["button_apply"], false )
 end
 
 --------------------------------
@@ -149,7 +160,7 @@ addEventHandler ( "onClientGUIClick", g_ResRoot,
 		if not gui["form"] then
 			return
 		end
-		if source == gui["button_ok"] then
+		if source == gui["button_apply"] then
 			-- list to map
 			local addonsInfoMap = {}
 			for _,info in ipairs(AddonsInfoList) do
@@ -167,6 +178,7 @@ addEventHandler ( "onClientGUIClick", g_ResRoot,
 			if source == checkbox then
 				local idx = guiData[checkbox]
 				AddonsInfoList[idx].enabled = guiCheckBoxGetSelected ( checkbox )
+				guiSetEnabled ( gui["button_apply"], true )
 				return
 			end
 		end

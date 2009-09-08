@@ -370,6 +370,10 @@ function restorePlayer(id, player)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 
+		-- Show vehicle as semi transparent while respawning
+		if not g_MapOptions.ghostmode then
+			clientCall(g_Root, 'setElementAlpha', vehicle, 160)
+		end
         RaceMode.playerFreeze(player)
         outputDebug( 'MISC', 'restorePlayer: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
         removeVehicleUpgrade(vehicle, 1010) -- remove nitro
@@ -398,10 +402,14 @@ end
 function RaceMode.playerFreeze(player)
     toggleAllControls(player,true)
 	local vehicle = RaceMode.getPlayerVehicle(player)
+	if g_MapOptions.ghostmode and g_GameOptions.ghostalpha then
+		clientCall(g_Root, 'setElementAlpha', vehicle, 200)
+	end
     fixVehicle(vehicle)
 	setVehicleFrozen(vehicle, true)
     setVehicleDamageProof(vehicle, true)
-	--clientCall(player, 'setElementCollisionsEnabled', vehicle, false)
+	clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
+	clientCall(g_Root, 'setElementCollisionsEnabled', vehicle, false)
 end
 
 function RaceMode.playerUnfreeze(player)
@@ -411,7 +419,11 @@ function RaceMode.playerUnfreeze(player)
     setVehicleDamageProof(vehicle, false)
     setVehicleEngineState(vehicle, true)
 	setVehicleFrozen(vehicle, false)
-	--clientCall(player, 'setElementCollisionsEnabled', vehicle, true)
+	if not g_MapOptions.ghostmode or not g_GameOptions.ghostalpha then
+		clientCall(g_Root, 'setElementAlpha', vehicle, 255)
+	end
+	clientCall(player, 'setElementCollisionsEnabled', vehicle, true)
+	clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
 end
 --------------------------------------
 

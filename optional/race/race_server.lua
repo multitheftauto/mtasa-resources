@@ -494,8 +494,6 @@ function joinHandlerBoth(player)
     else
         vehicle = createVehicle(400,0,0,0)
     end
-    -- Tell all clients to re-apply ghostmode settings in 100ms
-    setTimer(function() clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode) end, 100, 1 )
 
     -- Send client all info
     local playerInfo = {}
@@ -504,9 +502,6 @@ function joinHandlerBoth(player)
     playerInfo.joined   = bPlayerJoined
 	local duration = bPlayerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
 	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), duration, g_GameOptions, g_MapInfo, playerInfo )
-
-    -- Tell all clients to re-apply ghostmode settings in 1000ms
-    setTimer(function() clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode) end, 1000, 1 )
 	
 	if bPlayerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
 		-- Start random map vote if someone joined a lone player mid-race
@@ -1095,6 +1090,52 @@ function startAddons()
 					end
 					Addons.reportShort = Addons.reportShort .. tag
 				end
+			end
+		end
+	end
+end
+
+
+------------------------
+-- Server side move away
+MoveAway = {}
+MoveAway.list = {}
+MoveAway.timer = Timer:create()
+
+addEvent( "onRequestMoveAwayBegin", true )
+addEventHandler( "onRequestMoveAwayBegin", g_Root,
+	function()
+		MoveAway.list [ source ] = true
+		if not MoveAway.timer:isActive() then
+			MoveAway.timer:setTimer( MoveAway.update, 1000, 0 )
+		end
+	end
+)
+
+addEventHandler( "onPlayerQuit", g_Root,
+	function()
+		MoveAway.list [ source ] = nil
+	end
+)
+
+
+addEvent( "onRequestMoveAwayEnd", true )
+addEventHandler( "onRequestMoveAwayEnd", g_Root,
+	function(player)
+		MoveAway.list [ source ] = nil
+	end
+)
+
+function MoveAway.update ()
+	for player,_ in pairs(MoveAway.list) do
+		if isPedDead(player) or getElementHealth(player) == 0 then
+			local vehicle = g_Vehicles[player]
+			if isElement(vehicle) then 
+				setElementVelocity(vehicle,0,0,0)
+				setVehicleTurnVelocity(vehicle,0,0,0)
+				clientCall(g_Root,"setElementCollisionsEnabled",vehicle,false)
+				setElementAlpha( vehicle,60 )
+				setElementAlpha( player,60 )
 			end
 		end
 	end

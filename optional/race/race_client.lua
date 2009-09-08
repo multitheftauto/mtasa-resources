@@ -80,7 +80,7 @@ function TitleScreen.init()
 								'F5 \n' ..
 								'ENTER' )
 	g_dxGUI['titleText2']:text(	'\n' ..
-								'- BIGDAR \n' ..
+								'- TRAFFIC ARROWS \n' ..
 								'- TOP TIMES \n' ..
 								'- RETRY' )
 	hideGUIComponents('titleImage','titleText1','titleText2')
@@ -880,6 +880,7 @@ function MovePlayerAway.start()
 	MovePlayerAway.health = math.max(1,getElementHealth(element))
 	MovePlayerAway.update(true)
 	MovePlayerAway.timer:setTimer(MovePlayerAway.update,500,0)
+	triggerServerEvent("onRequestMoveAwayBegin", g_Me)
 end
 
 
@@ -919,6 +920,7 @@ function MovePlayerAway.update(nozcheck)
 end
 
 function MovePlayerAway.stop()
+	triggerServerEvent("onRequestMoveAwayEnd", g_Me)
 	if MovePlayerAway.timer:isActive() then
 		MovePlayerAway.timer:killTimer()
 		local vehicle = g_Vehicle
@@ -1097,20 +1099,17 @@ addEventHandler('onClientPlayerWasted', g_Root,
 		if not g_StartTick then
 			return
 		end
-		if source == g_Me then
+		local player = source	-- source may change before the end of this function
+		local vehicle = getPedOccupiedVehicle(player)
+		if player == g_Me then
 			if #g_Players > 1 and (g_MapOptions.respawn == 'none' or g_MapOptions.respawntime >= 10000) then
 				setTimer(Spectate.start, 2000, 1, 'auto')
 			end
 		else
-			Spectate.validateTargetSoon( source, 2000 )	-- No spectate continue at this player after 2 seconds
-			local vehicle = getPedOccupiedVehicle(source)
+			Spectate.validateTargetSoon( player, 2000 )	-- No spectate continue at this player after 2 seconds
 			if vehicle then
 				if ( getGapBetweenElements( vehicle, getPedOccupiedVehicle(g_Me) ) or 100 ) > 5 then
 					setElementCollisionsEnabled ( vehicle, true )	-- Fix floaty dead cars
-				end
-				if g_MapOptions.respawn == 'timelimit' then
-					setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime, 1, vehicle, false)
-					setTimer(setElementCollisionsEnabled, g_MapOptions.respawntime + 2000, 1, vehicle, not g_GhostMode)
 				end
 			end
 		end
