@@ -1,5 +1,5 @@
 <meta>
-	<info author="Talidan" name="RealDriveby" description="Real drive-bys" type="script" version="1.0.3" />
+	<info author="Talidan" name="RealDriveby" description="Real drive-bys" type="script" version="2.0.0" />
 	<script src="driveby_client.lua" type="client" />
 	<script src="exports_client.lua" type="client" />
 	<script src="driveby_server.lua" type="server" />
