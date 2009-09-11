@@ -110,9 +110,20 @@ addEventHandler ( "doTriggerServerEvents",getRootElement(),
 		eventCanceled2 = triggerEvent ( "onInteriorHit", interior, source )
 		if ( eventCanceled2 ) and ( eventCanceled1 ) then
 			triggerClientEvent ( source, "doWarpPlayerToInterior", source, interior, resource, id )
+			setTimer ( setPlayerInsideInterior, 1000, 1, source, interior, resource, id )
 		end
 	end
 )
+
+local opposite = { ["interiorReturn"] = "entry",["interiorEntry"] = "return" }
+function setPlayerInsideInterior ( player, interior, resource, id )
+	local oppositeType = opposite[getElementType(interior)]
+	local targetInterior = interiors[getResourceFromName(resource) or getThisResource()][id][oppositeType]
+	local dim = getElementData ( targetInterior, "dimension" )
+	local int = getElementData ( targetInterior, "interior" )
+	setElementInterior ( player, int )
+	setElementDimension ( player, dim )
+end
 
 function getInteriorName ( interior )
 	if not isElement ( interior ) then outputDebugString("getInteriorName: Invalid variable specified as interior.  Element expected, got "..type(interior)..".",0,255,128,0) return false end
