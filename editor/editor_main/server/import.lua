@@ -1,7 +1,10 @@
 local root = getRootElement()
-function import ( resource )
+function import ( resource, cmd, resourceString )
 	if type(resource) == "string" then
 		resource = getResourceFromName(resource)
+	end
+	if type(resourceString) == "string" then
+		resource = getResourceFromName(resourceString)
 	end
 	if not resource then
 		outputDebugString("editor: Bad argument to 'import'",0,255,255,255)
