@@ -34,3 +34,11 @@ addEventHandler('onPlayerJoin', root,
 		applyStats(source)
 	end
 )
+
+addEventHandler('onGamemodeMapStart', root,
+	function()
+		for _,player in ipairs(getElementsByType('player')) do
+			applyStats(player)
+		end	
+	end
+)
