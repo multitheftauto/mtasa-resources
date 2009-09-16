@@ -49,6 +49,8 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		for name,id in pairs(g_ModelForPickupType) do
 			engineImportTXD(engineLoadTXD('model/' .. name .. '.txd'), id)
 			engineReplaceModel(engineLoadDFF('model/' .. name .. '.dff', id), id)
+			-- Double draw distance for pickups
+			engineSetModelLODDistance( id, 60 )
 		end
 
         -- Init presentation screens
@@ -583,6 +585,10 @@ function checkWater()
                 end
             end
         end
+		-- Check stalled vehicle
+		if not getVehicleEngineState( g_Vehicle ) then
+			setVehicleEngineState( g_Vehicle, true )
+        end
     end
 end
 
@@ -677,6 +683,8 @@ Spectate.blockUntilTimes = {}
 Spectate.savePos = false
 Spectate.manual = false
 Spectate.validateTargetTimer = Timer:create()
+Spectate.tickTimer = Timer:create()
+Spectate.fadedout = true
 
 
 -- Request to switch on
@@ -719,7 +727,8 @@ function Spectate._start()
 	g_GUI.specprevhi = guiCreateStaticImage(screenWidth/2 - 100 - 58, screenHeight - 123, 58, 82, 'img/specprev_hi.png', false, nil)
 	g_GUI.specnext = guiCreateStaticImage(screenWidth/2 + 100, screenHeight - 123, 58, 82, 'img/specnext.png', false, nil)
 	g_GUI.specnexthi = guiCreateStaticImage(screenWidth/2 + 100, screenHeight - 123, 58, 82, 'img/specnext_hi.png', false, nil)
-	g_GUI.speclabel = guiCreateLabel(screenWidth/2 - 100, screenHeight - 100, 200, 50, '', false)
+	g_GUI.speclabel = guiCreateLabel(screenWidth/2 - 100, screenHeight - 100, 200, 70, '', false)
+	Spectate.updateGuiFadedOut()
 	guiLabelSetHorizontalAlign(g_GUI.speclabel, 'center')
 	hideGUIComponents('specprevhi', 'specnexthi')
 	if Spectate.savePos then
@@ -731,10 +740,12 @@ function Spectate._start()
 	MovePlayerAway.start()
 	Spectate.setTarget( Spectate.target )
     Spectate.validateTarget(Spectate.target)
+	Spectate.tickTimer:setTimer( Spectate.tick, 500, 0 )
 end
 
 -- Stop spectating. Will restore position if Spectate.savePos is set
 function Spectate._stop()
+	Spectate.tickTimer:killTimer()
 	triggerServerEvent('onClientNotifySpectate', g_Me, false )
 	outputDebug( 'SPECTATE', 'Spectate._stop ' )
 	assert(Spectate.active, "Spectate._stop - Spectate.active")
@@ -763,10 +774,12 @@ function Spectate.previous()
 	setTimer(setGUIComponentsVisible, 100, 1, { specprevhi = false, specprev = true })
 end
 
-function Spectate.next()
+function Spectate.next(bGUIFeedback)
 	Spectate.setTarget( Spectate.findNewTarget(Spectate.target,1) )
-	setGUIComponentsVisible({ specnext = false, specnexthi = true })
-	setTimer(setGUIComponentsVisible, 100, 1, { specnexthi = false, specnext = true })
+	if bGUIFeedback then
+		setGUIComponentsVisible({ specnext = false, specnexthi = true })
+		setTimer(setGUIComponentsVisible, 100, 1, { specnexthi = false, specnext = true })
+	end
 end
 
 -- Step along to the next player to spectate
@@ -801,7 +814,7 @@ end
 function Spectate.validateTarget(player)
 	if Spectate.active and player == Spectate.target then
 		if not Spectate.isValidTarget(player) then
-			Spectate.next()
+			Spectate.next(false)
 		end
 	end
 end
@@ -826,7 +839,9 @@ function Spectate.setTarget( player )
 	Spectate.active = true
 	Spectate.target = player
 	if Spectate.target then
-		setCameraTarget(Spectate.target)
+		if Spectate.getCameraTargetPlayer() ~= Spectate.target then
+			setCameraTarget(Spectate.target)
+		end
 		guiSetText(g_GUI.speclabel, 'Currently spectating:\n' .. getPlayerName(Spectate.target))
 	else
 		local x,y,z = getElementPosition(g_Me)
@@ -844,6 +859,20 @@ function Spectate.blockAsTarget( player, ticks )
 	Spectate.validateTarget(player)
 end
 
+function Spectate.tick()
+	if not Spectate.target or Spectate.getCameraTargetPlayer() ~= Spectate.target or not Spectate.isValidTarget(Spectate.target) then
+		Spectate.next(false)
+	end
+end
+
+function Spectate.getCameraTargetPlayer()
+	local element = getCameraTarget()
+	if element and getElementType(element) == "vehicle" then
+		element = getVehicleController(element)
+	end
+	return element
+end
+
 
 g_SavedPos = {}
 function savePosition()
@@ -859,6 +888,34 @@ function restorePosition()
 	setElementPosition( g_Vehicle, g_SavedPos.vx, g_SavedPos.vy, g_SavedPos.vz )
 	setElementRotation( g_Vehicle, g_SavedPos.vrx, g_SavedPos.vry, g_SavedPos.vrz )
 end
+
+
+addEvent ( "onClientScreenFadedOut", true )
+addEventHandler ( "onClientScreenFadedOut", g_Root,
+	function()
+		Spectate.fadedout = true
+		Spectate.updateGuiFadedOut()
+	end
+)
+
+addEvent ( "onClientScreenFadedIn", true )
+addEventHandler ( "onClientScreenFadedIn", g_Root,
+	function()
+		Spectate.fadedout = false
+		Spectate.updateGuiFadedOut()
+	end
+)
+
+function Spectate.updateGuiFadedOut()
+	if g_GUI and g_GUI.specprev then
+		if Spectate.fadedout then
+			setGUIComponentsVisible({ specprev = false, specnext = false, speclabel = false })
+		else
+			setGUIComponentsVisible({ specprev = true, specnext = true, speclabel = true })
+		end
+	end
+end
+
 -----------------------------------------------------------------------
 
 -----------------------------------------------------------------------
