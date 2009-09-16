@@ -152,3 +152,29 @@ function Timer:handleFunctionCall()
 end
 
 ---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+-- Others
+---------------------------------------------------------------------------
+function getElementDesc(element)
+	local bHasPlayerName = false
+	local status = "[" .. tostring( getElementType(element) ) .. ":"
+
+	if getElementType(element)=="player" then
+		status = status .. getPlayerName(element)
+		bHasPlayerName = true
+	end
+	if getElementType(element)=="vehicle" then
+		local player = getVehicleController(element)
+		if player then
+			status = status .. "controller-" .. getPlayerName(player)
+			bHasPlayerName = true
+		end
+	end
+	if not bHasPlayerName then
+		status = status .. string.gsub(tostring(element),".* 0*","0")
+	end
+	return status .. "]"
+end
+---------------------------------------------------------------------------

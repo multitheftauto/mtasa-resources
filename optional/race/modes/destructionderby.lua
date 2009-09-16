@@ -37,11 +37,10 @@ end
 
 function DestructionDerby:onPlayerQuit(player)
     local alivePlayers = getAlivePlayers()
-    for i,pl in ipairs(alivePlayers) do
-        if pl == player then
-            table.remove(alivePlayers, i)
-        end
-    end
+	if not table.find( alivePlayers, player ) then
+		return
+	end
+	table.removevalue( alivePlayers, player )
 	if not self.rankingBoard then
 		self.rankingBoard = RankingBoard:create()
 		self.rankingBoard:setDirection('up')

@@ -388,7 +388,6 @@ function joinHandlerBoth(player)
 			return
 		end
 	end
-    local respawn = true
 	local bPlayerJoined = not player
 	if bPlayerJoined then
 		player = source
@@ -403,7 +402,7 @@ function joinHandlerBoth(player)
 
 	table.insert(g_Players, player)
     local vehicle
-	if respawn then
+	if true then
         local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint(player)
         
         local x, y, z = unpack(spawnpoint.position)
@@ -487,12 +486,9 @@ function joinHandlerBoth(player)
             setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)	
         end
         
-        --setPlayerSpectating( player, false )
 		destroyBlipsAttachedTo(player)
         createBlipAttachedTo(player, 0, 1, 200, 200, 200)
         g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
-    else
-        vehicle = createVehicle(400,0,0,0)
     end
 
     -- Send client all info
@@ -867,7 +863,6 @@ addEventHandler('onClientRequestSpectate', g_Root,
 			end
 		end
 		if isPlayerSpectating(source) ~= enable then
-			--setPlayerSpectating( source, enable )
 			if enable then
 				clientCall(source, "Spectate.start", 'manual' )
 			else
