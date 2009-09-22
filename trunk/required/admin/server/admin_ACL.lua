@@ -8,18 +8,7 @@
 *
 **************************************]]
 
-
--- cmd: nil			- legacy call
---		"maintain"	- if enough entries are missing, add them
---		"force"		- force install or rights, as per "conf\\ACL.xml"
-function aSetupACL ( cmd )
-	if ( aGetSetting ( "installed" ) ) then
-		if cmd ~= "maintain" and cmd ~= "force" then
-			return		-- Do nothing if installed and no cmd
-		end
-	else
-		cmd = "force"	-- Force if not installed
-	end
+function aSetupACL ()
 	local temp_acl_nodes = {}
 	local node = xmlLoadFile ( "conf\\ACL.xml" )
 	if ( node ) then
@@ -33,70 +22,41 @@ function aSetupACL ( cmd )
 			end
 			acls = acls + 1
 		end
-		if cmd == "maintain" then
-			-- Count missing rights
-			local totalMissing, totalRights = 0,0
-			for id, acl in ipairs ( aclList () ) do
-				local aclName = aclGetName ( acl )
-				local node = temp_acl_nodes[aclName] or temp_acl_nodes["Default"]
-				if node then
-					local missing,rights = aACLLoad ( acl, node, "countmissing" )
-					totalMissing = totalMissing + missing
-					totalRights = totalRights + rights
-				end
-			end
-			if totalMissing > 0 then
-				outputDebugString( "admin maintain - totalRights:" .. totalRights .. "  totalMissing:" .. totalMissing )
-			end
-			if totalMissing < totalRights / 2 then
-				return	-- Not enough to warrent a re-add
-			end
-		end
-		-- Add rights
+		-- Add missing rights
+		local totalAdded = 0
 		for id, acl in ipairs ( aclList () ) do
 			local aclName = aclGetName ( acl )
 			local node = temp_acl_nodes[aclName] or temp_acl_nodes["Default"]
 			if node then
-				-- Do 'addmissing' or 'addall' depending on what's required
-				aACLLoad ( acl, node, cmd == "maintain" and "addmissing" or "addall" )
+				totalAdded = totalAdded + aACLLoad ( acl, node )
 			end
 		end
-		if cmd == "maintain" then
-			outputConsole ( "Admin access list successfully updated" )
-		else
-			outputConsole ( "Admin access list successfully installed" )
+		if totalAdded > 0 then
+			outputConsole ( "Admin access list successfully updated " )
+			outputDebugString ( "Admin added " .. totalAdded .. " missing rights" )
 		end
 	else
 		outputConsole ( "Failed to install admin access list - File missing" )
 	end
-	aSetSetting ( "installed", true )
 end
 
--- cmd:	"countmissing"	- count missing entries
---		"addmissing"	- add missing entries
---		"addall"		- add all entries
-function aACLLoad ( acl, node, cmd )
-	local missing = 0
+function aACLLoad ( acl, node )
+	local added = 0
 	local rights = 0
 	while ( xmlFindChild ( node, "right", rights ) ~= false ) do
 		local rightNode = xmlFindChild ( node, "right", rights )
 		local rightName = xmlNodeGetAttribute ( rightNode, "name" )
 		local rightAccess = xmlNodeGetAttribute ( rightNode, "access" )
 		if ( ( rightName ) and ( rightAccess ) ) then
-			if cmd == "addall" then
+			-- Add if missing from this acl
+			if not aclRightExists ( acl, rightName ) then
 				aclSetRight ( acl, rightName, rightAccess == "true" )
-			else
-				if not aclRightExists ( acl, rightName ) then
-					missing = missing + 1
-					if cmd == "addmissing" then
-						aclSetRight ( acl, rightName, rightAccess == "true" )
-					end
-				end
+				added = added + 1
 			end
 		end
 		rights = rights + 1
 	end
-	return missing, rights
+	return added
 end
 
 _hasObjectPermissionTo = hasObjectPermissionTo
@@ -142,12 +102,3 @@ function aclRightExists( acl, right )
 	end
 	return false
 end
-
--- Command to force reinstall of rights for the admin panel
-addCommandHandler ( "adminreinstall",
-	function(source)
-		if ( hasObjectPermissionTo ( source, "function.aclSetRight" ) ) then
-			aSetupACL( "force" )
-		end
-	end
-)

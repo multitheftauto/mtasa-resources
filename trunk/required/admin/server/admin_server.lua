@@ -33,7 +33,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 		_settings = xmlCreateFile ( "conf\\settings.xml", "main" )
 		xmlSaveFile ( _settings )
 	end
-	aSetupACL( "maintain" )
+	aSetupACL()
 	aSetupCommands()
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
 		aPlayerInitialize ( player )
