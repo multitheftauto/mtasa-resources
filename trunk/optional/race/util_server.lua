@@ -42,7 +42,9 @@ function getAlivePlayers(player)
 	local result = {}
 	for _,player in ipairs(_getAlivePlayers()) do
 		if getElementData(player, "state") == "alive" then
-			table.insert(result, player)
+			if not getElementData(player, "race.finished") then
+				table.insert(result, player)
+			end
 		end
 	end
 	return result
@@ -99,8 +101,6 @@ end
 
 
 function setVehicleID(vehicle, id)
-	local vx, vy, vz = getElementVelocity(vehicle)
-	local tvx, tvy, tvz = getVehicleTurnVelocity(vehicle)
 	setElementModel(vehicle, id)
 	local player = getVehicleController(vehicle)
 	if player then

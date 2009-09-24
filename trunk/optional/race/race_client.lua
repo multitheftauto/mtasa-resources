@@ -350,7 +350,7 @@ function updateVars( element )
 		setElementAlpha ( element, alpha )
 	end
 	-- Collide others
-	local collideothers = getElementData ( element, "race.collideothers" )
+	local collideothers = getElementData ( element, "race.collideothers" ) or 0
 	if collideothers then
 		if element ~= g_Me and element ~= g_Vehicle then
 			setElementCollisionsEnabled ( element, collideothers ~= 0 )
@@ -614,8 +614,13 @@ function checkWater()
 		-- Check stalled vehicle
 		if not getVehicleEngineState( g_Vehicle ) then
 			setVehicleEngineState( g_Vehicle, true )
-        end
-    end
+		end
+		-- Check dead vehicle
+		if getElementHealth( g_Vehicle ) == 0 and not isPlayerRaceDead(g_Me) and not isPlayerFinished(g_Me)then
+			setElementHealth(g_Me,0)
+			triggerServerEvent('onRequestKillPlayer',g_Me)
+		end
+	end
 end
 
 function showNextCheckpoint()
@@ -961,6 +966,8 @@ function MovePlayerAway.start()
 	MovePlayerAway.posZ = 34567 + math.random(0,4000)
 	MovePlayerAway.rotZ = 0
 	MovePlayerAway.health = math.max(1,getElementHealth(element))
+	setElementHealth( element, 2000 )
+	setElementHealth( g_Me, 90 )
 	MovePlayerAway.update(true)
 	MovePlayerAway.timer:setTimer(MovePlayerAway.update,500,0)
 	triggerServerEvent("onRequestMoveAwayBegin", g_Me)
@@ -1192,7 +1199,7 @@ addEventHandler('onClientPlayerWasted', g_Root,
 			Spectate.validateTargetSoon( player, 2000 )	-- No spectate continue at this player after 2 seconds
 			if vehicle then
 				if ( getGapBetweenElements( vehicle, getPedOccupiedVehicle(g_Me) ) or 100 ) > 5 then
-					setElementCollisionsEnabled ( vehicle, true )	-- Fix floaty dead cars
+					-- setElementCollisionsEnabled ( vehicle, true )	-- Fix floaty dead cars
 				end
 			end
 		end
