@@ -18,25 +18,25 @@
       <log>ADMIN: $admin has kicked $player ($data)</log>
     </group>
     <group action="mute" r="255" g="0" b="0">
-      <all>$player has been muted by Admin.</all>
+      <all>$player has been muted by $admin.</all>
       <log>ADMIN: $admin has muted $player</log>
     </group>
     <group action="unmute" r="0" g="255" b="100">
-      <all>$player has been unmuted by Admin.</all>
+      <all>$player has been unmuted by $admin.</all>
       <log>ADMIN: $admin has unmuted $player</log>
     </group>
     <group action="freeze" r="255" g="0" b="0">
       <admin>$player has been frozen</admin>
-      <player>You have been frozen by Admin</player>
+      <player>You have been frozen by $admin</player>
       <log>ADMIN: $admin has frozen $player</log>
     </group>
     <group action="unfreeze" r="0" g="255" b="100">
       <admin>$player has been unfrozen</admin>
-      <player>You have been unfrozen by Admin</player>
+      <player>You have been unfrozen by $admin</player>
       <log>ADMIN: $admin has unfrozen $player</log>
     </group>
     <group action="slap" r="235" g="20" b="200">
-      <all>$player has been slapped by Admin. ($data HP)</all>
+      <all>$player has been slapped by $admin. ($data HP)</all>
       <log>ADMIN: $admin has slapped $player ($data HP)</log>
     </group>
     <group action="shout" r="255" g="100" b="30">
@@ -44,22 +44,22 @@
     </group>
     <group action="sethealth" r="0" g="170" b="170">
       <admin>$player's health has been changed to $data</admin>
-      <player>Admin has changed your health to $data</player>
+      <player>$admin has changed your health to $data</player>
       <log>ADMIN: $admin has changed $player's health to $data</log>
     </group>
     <group action="setarmour" r="122" g="122" b="122">
       <admin>$player's armour has been changed to $data</admin>
-      <player>Admin has changed your armour to $data</player>
+      <player>$admin has changed your armour to $data</player>
       <log>ADMIN: $admin has changed $player's armour to $data</log>
     </group>
     <group action="setmoney" r="225" g="170" b="90">
       <admin>$player's money has been set to $data</admin>
-      <player>Admin has set your money to $data</player>
+      <player>$admin has set your money to $data</player>
       <log>ADMIN: $admin has set $player's money to $data</log>
     </group>
     <group action="setskin" r="255" g="122" b="0">
       <admin>$player's skin has been changed to $data</admin>
-      <player>Admin has changed your skin to $data</player>
+      <player>$admin has changed your skin to $data</player>
       <log>ADMIN: $admin has changed $player's skin to $data</log>
     </group>
     <group action="setteam" r="255" g="255" b="0">
@@ -79,17 +79,17 @@
     </group>
     <group action="setstat" r="255" g="122" b="0">
       <admin>$player's $data has been set to $data2</admin>
-      <player>Admin has set your $data to $data2</player>
+      <player>$admin has set your $data to $data2</player>
       <log>ADMIN: $admin has changed $player's $data to $data2</log>
     </group>
     <group action="jetpackr" r="255" g="0" b="0">
       <admin>$player's jetpack has been removed</admin>
-      <player>Admin has removed your jetpack</player>
+      <player>$admin has removed your jetpack</player>
       <log>ADMIN: $admin has removed $player's jetpack</log>
     </group>
     <group action="jetpacka" r="255" g="122" b="0">
       <admin>$player has been given a jetpack</admin>
-      <player>Admin has given you a jetpack</player>
+      <player>$admin has given you a jetpack</player>
       <log>ADMIN: $admin has given a jetpack to $player</log>
     </group>
     <group action="adminr" r="255" g="0" b="0">
@@ -104,12 +104,12 @@
     </group>
     <group action="givevehicle" r="0" g="255" b="0">
       <admin>$player has been given a '$data'</admin>
-      <player>Admin has given you a '$data'</player>
+      <player>$admin has given you a '$data'</player>
       <log>ADMIN: $admin has given $player a '$data'" </log>
     </group>
     <group action="giveweapon" r="0" g="0" b="255">
       <admin>$player has been given a '$data'($data2)</admin>
-      <player>Admin has given you '$data'($data2)</player>
+      <player>$admin has given you '$data'($data2)</player>
       <log>ADMIN: $admin has given $player '$data'</log>
     </group>
     <group action="warp" r="0" g="200" b="50">
@@ -118,7 +118,7 @@
     </group>
     <group action="warpto" r="0" g="200" b="50">
       <admin>$player has been warped to $data</admin>
-      <player>You have been warped to $data by Admin</player>
+      <player>You have been warped to $data by $admin</player>
       <log>ADMIN: $admin has moved $player to $data</log>
     </group>
   </player>
@@ -135,37 +135,37 @@
   <vehicle>
     <group action="repair" r="0" g="255" b="0">
       <admin>$player's vehicle has been fixed</admin>
-      <player>Admin has fixed your vehicle</player>
+      <player>$admin has fixed your vehicle</player>
       <log>ADMIN: $admin has fixed vehicle of $player</log>
     </group>
     <group action="blow" r="255" g="0" b="0">
       <admin>$player's vehicle has been blown</admin>
-      <player>Admin has blown your vehicle</player>
+      <player>$admin has blown your vehicle</player>
       <log>ADMIN: $admin has blown vehicle of $player</log>
     </group>
     <group action="destroy" r="255" g="0" b="0">
       <admin>$player's vehicle has been destroyed</admin>
-      <player>Admin has destroyed your vehicle</player>
+      <player>$admin has destroyed your vehicle</player>
       <log>ADMIN: $admin has destroyed vehicle of $player</log>
     </group>
     <group action="customize" r="225" g="170" b="90">
       <admin>$player's vehicle has been upgraded. ($data)</admin>
-      <player>Admin has upgraded your vehicle. ($data)</player>
+      <player>$admin has upgraded your vehicle. ($data)</player>
       <log>ADMIN: $admin has upgraded vehicle of $player ($data)</log>
     </group>
     <group action="customizer" r="225" g="170" b="90">
       <admin>$player's vehicle upgrades have been removed.</admin>
-      <player>Admin has removed your vehicle upgrades.</player>
+      <player>$admin has removed your vehicle upgrades.</player>
       <log>ADMIN: $admin has has removed vehicle upgrades of $player</log>
     </group>
     <group action="setpaintjob" r="225" g="170" b="90">
       <admin>$player's vehicle paint job set to $data</admin>
-      <player>Admin has changed your vehicle paint job to $data</player>
+      <player>$admin has changed your vehicle paint job to $data</player>
       <log>ADMIN: $admin has changed paint job of $player's vehicle to $data</log>
     </group>
     <group action="setcolor" r="225" g="170" b="90">
       <admin>$player's vehicle color changed</admin>
-      <player>Admin has changed your vehicle color</player>
+      <player>$admin has changed your vehicle color</player>
       <log>ADMIN: $admin has changed color of $player's vehicle</log>
     </group>
   </vehicle>
@@ -210,19 +210,19 @@
       <log>ADMIN: $admin is blending weather to '$data'</log>
     </group>
     <group action="setgravity" r="225" g="170" b="90">
-      <all>Gravitation value set to '$data' by Admin</all>
+      <all>Gravitation value set to '$data' by $admin</all>
       <log>ADMIN: $admin has set gravitation to $data</log>
     </group>
     <group action="setgamespeed" r="225" g="170" b="90">
-      <all>Game speed set to '$data' by Admin</all>
+      <all>Game speed set to '$data' by $admin</all>
       <log>ADMIN: $admin has set game speed to '$data'</log>
     </group>
     <group action="setwaveheight" r="225" g="170" b="90">
-      <all>Waves height set to '$data' by Admin</all>
+      <all>Waves height set to '$data' by $admin</all>
       <log>ADMIN: $admin has set waves height to '$data'</log>
     </group>
     <group action="setblurlevel" r="225" g="170" b="90">
-      <all>Blur level set to '$data' by Admin</all>
+      <all>Blur level set to '$data' by $admin</all>
       <log>ADMIN: $admin has set blur level to '$data'</log>
     </group>
   </server>
