@@ -93,6 +93,7 @@ function cacheGameOptions()
 	g_GameOptions.timeafterfirstfinish  = getNumber('race.timeafterfirstfinish',30) * 1000
 	g_GameOptions.hurrytime				= getNumber('race.hurrytime',15) * 1000
 	g_GameOptions.defaultrespawntime	= getNumber('race.respawntime',5) * 1000
+	g_GameOptions.defaultduration		= getNumber('race.duration',6000) * 1000
 	g_GameOptions.ghostmode				= getBool('race.ghostmode',false)
 	g_GameOptions.ghostalpha			= getBool('race.ghostalpha',false)
 	g_GameOptions.randommaps			= getBool('race.randommaps',false)
@@ -124,7 +125,7 @@ end
 
 function cacheMapOptions(map)
 	g_MapOptions = {}
-	g_MapOptions.duration = map.duration and tonumber(map.duration) > 0 and map.duration*1000 or 600000
+	g_MapOptions.duration = map.duration and tonumber(map.duration) > 0 and map.duration*1000 or g_GameOptions.defaultduration
 	if g_MapOptions.duration > 86400000 then
 		g_MapOptions.duration = 86400000
 	end
@@ -229,6 +230,14 @@ function loadMap(res)
 	g_SavedMapSettings.firewater		= map.firewater
 
 	cacheMapOptions(g_SavedMapSettings)
+
+	-- If no checkpoints and ghostmode no defined in the map, turn ghostmode off for this map
+	if #map:getAll('checkpoint') == 0 and not map.ghostmode and g_MapOptions.ghostmode then
+		g_MapOptions.ghostmode = false
+		if g_GameOptions.ghostmode_warning_if_map_override then
+			outputChatBox( 'Notice: Collisions are turned off for this map' )
+		end
+	end
 
 	-- Check race can start ok
 	if not g_MapOptions.ghostmode then
@@ -795,8 +804,10 @@ addEventHandler('onPlayerQuit', g_Root,
 			outputDebugString('Stopping map')
 			triggerEvent('onGamemodeMapStop', g_Root)
 		else
-            gotoState('EveryoneFinished')
-            RaceMode.endMap()
+			if stateAllowsPostFinish() then
+				gotoState('EveryoneFinished')
+				RaceMode.endMap()
+			end
 		end
 	end
 )

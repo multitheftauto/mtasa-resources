@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r461 23Sep09" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r463 24Sep09" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -108,7 +108,14 @@
 					friendlyname="Respawn time"
 					accept="0-60"
 					group="Gameplay"
-					desc="Default respawn time if one is not set in the map."
+					desc="Default respawn time in seconds, if one is not set in the map."
+					/>
+
+		<setting name="*duration" value="600"
+					friendlyname="Map duration"
+					accept="1-3600"
+					group="Gameplay"
+					desc="Default duration in seconds, if one is not set in the map."
 					/>
 
 		<setting name="*ghostmode" value="false"
