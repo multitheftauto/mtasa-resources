@@ -124,8 +124,6 @@ function setVehicleID(vehicle, id)
 	end
 	setTimer(revertVehicleWheels, 1000, 1, vehicle)
 	setTimer(revertVehicleDoors, 1000, 1, vehicle)
-	setElementVelocity(vehicle, vx, vy, vz)
-	setVehicleTurnVelocity(vehicle, tvx, tvy, tvz)
 	
 	return vehicle
 end
