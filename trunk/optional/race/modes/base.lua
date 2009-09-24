@@ -374,11 +374,7 @@ function restorePlayer(id, player)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 
-		-- Show vehicle as semi transparent while respawning
-		if not g_MapOptions.ghostmode then
-			clientCall(g_Root, 'setElementAlpha', vehicle, 160)
-		end
-        RaceMode.playerFreeze(player)
+        RaceMode.playerFreeze(player, true)
         outputDebug( 'MISC', 'restorePlayer: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
         removeVehicleUpgrade(vehicle, 1010) -- remove nitro
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
@@ -403,17 +399,29 @@ end
 --------------------------------------
 -- For use when starting or respawing
 --------------------------------------
-function RaceMode.playerFreeze(player)
+function RaceMode.playerFreeze(player, bRespawn)
     toggleAllControls(player,true)
 	local vehicle = RaceMode.getPlayerVehicle(player)
-	if g_MapOptions.ghostmode and g_GameOptions.ghostalpha then
-		clientCall(g_Root, 'setElementAlpha', vehicle, 200)
-	end
+
+	-- Reset move away stuff
+	setVehicleCollideOthers( "ForMoveAway", vehicle, nil )
+	setAlphaOverride( "ForMoveAway", {player, vehicle}, nil )
+
+	-- Setup ghost mode for this vehicle
+	setVehicleCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
+	setAlphaOverride( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 160 or nil )
+
+	-- Show non-ghost vehicles as semi-transparent while respawning
+	setAlphaOverride( "ForRespawnEffect", {player, vehicle}, bRespawn and not g_MapOptions.ghostmode and 120 or nil )
+
+	-- No collisions while frozen
+	setVehicleCollideOthers( "ForVehicleSpawnFreeze", vehicle, 0 )
+
     fixVehicle(vehicle)
 	setVehicleFrozen(vehicle, true)
     setVehicleDamageProof(vehicle, true)
-	clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-	clientCall(g_Root, 'setElementCollisionsEnabled', vehicle, false)
+	setVehicleCollideWorld( "ForVehicleJudder", vehicle, 0 )
+	flushOverrides()
 end
 
 function RaceMode.playerUnfreeze(player)
@@ -423,13 +431,85 @@ function RaceMode.playerUnfreeze(player)
     setVehicleDamageProof(vehicle, false)
     setVehicleEngineState(vehicle, true)
 	setVehicleFrozen(vehicle, false)
-	if not g_MapOptions.ghostmode or not g_GameOptions.ghostalpha then
-		clientCall(g_Root, 'setElementAlpha', vehicle, 255)
+
+	-- Remove things added for freeze only
+	setVehicleCollideWorld( "ForVehicleJudder", vehicle, nil )
+	setVehicleCollideOthers( "ForVehicleSpawnFreeze", vehicle, nil )
+	setAlphaOverride( "ForRespawnEffect", {player, vehicle}, nil )
+	flushOverrides()
 	end
-	clientCall(player, 'setElementCollisionsEnabled', vehicle, true)
-	clientCall(g_Root, 'setGhostMode', g_MapOptions.ghostmode)
-end
 --------------------------------------
+
+g_Override = {}
+g_Override.list = {}
+
+addEventHandler( "onPlayerQuit", g_Root,
+	function()
+		g_Override.list [ source ] = nil
+		g_Override.list [ RaceMode.getPlayerVehicle(source) or source ] = nil
+	end
+)
+
+function setVehicleCollideWorld( reason, element, value )
+	setOverride( reason, element, value, "race.collideworld", 1 )
+end
+
+function setVehicleCollideOthers( reason, element, value )
+	setOverride( reason, element, value, "race.collideothers", 1 )
+end
+
+function setAlphaOverride( reason, element, value )
+	setOverride( reason, element, value, "race.alpha", 255 )
+end
+
+function setOverride( reason, element, value, var, default )
+	-- Recurse for each item if element is a table
+	if type(element) == "table" then
+		for _,item in ipairs(element) do
+			setOverride( reason, item, value, var, default )
+		end
+		return
+	end
+	-- Add to override list
+	if not g_Override.list[element] then		g_Override.list[element] = {}		end
+	if not g_Override.list[element][var] then	g_Override.list[element][var] = { default=default}	end
+	g_Override.list[element][var][reason] = value
+	-- Set timer to auto-flush incase it is not done manually
+	setTimer( flushOverrides, 50, 1 )
+end
+
+function flushOverrides()
+	-- For each element
+	for element,varlist in pairs(g_Override.list) do
+		-- For each var
+		for var,valuelist in pairs(varlist) do
+			-- Find the lowest value
+			local lowestValue = var.default or 1000
+			for _,value in pairs(valuelist) do
+				lowestValue = math.min( lowestValue, value )
+			end
+			-- Set the lowest value for this element's var
+			setElementData ( element, var, lowestValue )		
+		end
+	end
+end
+
+function resetOverrides()
+	-- For each element
+	for element,varlist in pairs(g_Override.list) do
+		-- For each var
+		for var,valuelist in pairs(varlist) do
+			-- Set the default value for this element's var
+			if isElement ( element ) then
+				setElementData ( element, var, var.default )		
+			end
+		end
+	end
+	g_Override.list = {}
+end
+
+--------------------------------------
+
 
 function RaceMode:onPlayerQuit(player)
 	self.checkpointBackups[player] = nil

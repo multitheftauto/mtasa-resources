@@ -181,7 +181,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	
 	g_Vehicle = vehicle
 	setVehicleDamageProof(g_Vehicle, true)
-	setGhostMode(g_MapOptions.ghostmode)
+	updateVars(g_Vehicle)
 	
 	--local x, y, z = getElementPosition(g_Vehicle)
 	setCameraBehindVehicle(vehicle)
@@ -303,7 +303,6 @@ function updateOptions ( gameoptions, mapoptions )
 		local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
 		toggleControl('vehicle_fire', weapons)
 		toggleControl('vehicle_secondary_fire', weapons)
-		setGhostMode(g_MapOptions.ghostmode)
 	end
 	setCloudsEnabled(g_GameOptions.cloudsenable)
 	setBlurLevel(g_GameOptions.blurlevel)
@@ -324,24 +323,51 @@ function launchRace(duration)
 	g_StartTick = getTickCount()
 end
 
-function setGhostMode(ghostmode)
-	g_GhostMode = ghostmode
-	local vehicle
-	for i,player in ipairs(g_Players) do
-        if g_GameOptions and g_GameOptions.ghostalpha then
-		    setElementAlpha(player, ghostmode and 200 or 255)
-        end
-		vehicle = getPedOccupiedVehicle(player)
-		if vehicle then
-			if player ~= g_Me then
-				setElementCollisionsEnabled(vehicle, not ghostmode)
-			end
-            if g_GameOptions and g_GameOptions.ghostalpha then
-			    setElementAlpha(vehicle, ghostmode and 200 or 255)
-		    end
+
+--------------------------------------------------------
+-- Element vars - alpha and collideness
+--------------------------------------------------------
+addEventHandler('onClientElementDataChange', g_Root,
+	function(dataName)
+		if getElementType(source)=="vehicle" or getElementType(source)=="player" then
+			updateVars(source)
+		end
+	end
+)
+
+addEventHandler('onClientElementStreamIn', g_Root,
+	function()
+		if getElementType(source)=="vehicle" or getElementType(source)=="player" then
+			updateVars(source)
+		end
+	end
+)
+
+function updateVars( element )
+	-- Alpha
+	local alpha = getElementData ( element, "race.alpha" )
+	if alpha then
+		setElementAlpha ( element, alpha )
+	end
+	-- Collide others
+	local collideothers = getElementData ( element, "race.collideothers" )
+	if collideothers then
+		if element ~= g_Me and element ~= g_Vehicle then
+			setElementCollisionsEnabled ( element, collideothers ~= 0 )
+		end
+	end
+	-- Collide world
+	local collideworld = getElementData ( element, "race.collideworld" )
+	if collideworld then
+		if element == g_Me or element == g_Vehicle then
+			setElementCollisionsEnabled ( element, collideworld ~= 0 )
 		end
 	end
 end
+
+
+-----------------------------------------------
+
 
 addEventHandler('onClientElementStreamIn', g_Root,
 	function()
@@ -1065,8 +1091,6 @@ function unloadAll()
 	if Spectate.active then
 		Spectate.stop('auto')
 	end
-	
-	setGhostMode(false)
 end
 
 function createCheckpoint(i)

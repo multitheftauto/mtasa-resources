@@ -83,6 +83,7 @@ addEventHandler('onSettingChange', g_ResRoot,
 		if g_SavedMapSettings then
 			cacheMapOptions(g_SavedMapSettings)
 			clientCall(g_Root,'updateOptions', g_GameOptions, g_MapOptions)
+			updateGhostmode()
 		end
 	end
 )
@@ -448,8 +449,8 @@ function joinHandlerBoth(player)
             setRandomSeedForMap('vehiclecolors')
             vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
             g_Vehicles[player] = vehicle
+			setAlphaOverride( "ForRCVehicles", player, g_RCVehicleIDs[spawnpoint.vehicle] and 0 or nil )
             RaceMode.playerFreeze(player)
-			setElementAlpha(player, g_RCVehicleIDs[spawnpoint.vehicle] and 0 or 255)
             outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
             if bPlayerJoined and g_CurrentRaceMode.running then
                 unfreezePlayerWhenReady(player)
@@ -701,6 +702,7 @@ function unloadAll()
 		g_CurrentRaceMode:destroy()
 	end
 	g_CurrentRaceMode = nil
+	resetOverrides()
 end
 
 addEventHandler('onGamemodeMapStop', g_Root,
@@ -842,7 +844,7 @@ addCommandHandler('ghostmode',
 		g_MapOptions.ghostmode = not g_MapOptions.ghostmode
 		g_GameOptions.ghostmode = not g_GameOptions.ghostmode
 		set('*ghostmode', g_GameOptions.ghostmode and 'true' or 'false' )
-		clientCall(g_Root, 'setGhostMode', g_GameOptions.ghostmode)
+		updateGhostmode()
 		if g_GameOptions.ghostmode then
 			outputChatBox('Ghostmode enabled by ' .. getPlayerName(player), g_Root, 0, 240, 0)
 		else
@@ -850,6 +852,16 @@ addCommandHandler('ghostmode',
 		end
 	end
 )
+
+function updateGhostmode()
+	for i,player in ipairs(g_Players) do
+		local vehicle = RaceMode.getPlayerVehicle(player)
+		if vehicle then
+			setVehicleCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
+			setAlphaOverride( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 160 or nil )
+		end
+	end
+end
 
 -- Handle client request for manual spectate
 addEvent('onClientRequestSpectate', true)
@@ -1128,9 +1140,8 @@ function MoveAway.update ()
 			if isElement(vehicle) then 
 				setElementVelocity(vehicle,0,0,0)
 				setVehicleTurnVelocity(vehicle,0,0,0)
-				clientCall(g_Root,"setElementCollisionsEnabled",vehicle,false)
-				setElementAlpha( vehicle,60 )
-				setElementAlpha( player,60 )
+				setVehicleCollideOthers( "ForMoveAway", vehicle, 0 )
+				setAlphaOverride( "ForMoveAway", {player, vehicle}, 0 )
 			end
 		end
 	end
