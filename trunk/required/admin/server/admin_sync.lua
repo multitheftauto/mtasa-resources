@@ -28,7 +28,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			if ( #groups <= 0 ) then
 				tableOut["groups"] = "None"
 			else
-				tableOut["groups"] = table.concat(groups, ", ")
+				tableOut["groups"] = table.concat(table.reverse(groups), ", ")
 			end
 		end
 		theSource = data
@@ -71,7 +71,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 				if ( #groups <= 0 ) then
 					tableOut[player]["groups"] = "None"
 				else
-					tableOut[player]["groups"] = table.concat(groups, ", ")
+					tableOut[player]["groups"] = table.concat(table.reverse(groups), ", ")
 				end
 			end
 		end
@@ -188,3 +188,11 @@ addEventHandler ( "aPermissions", _root, function()
 		triggerClientEvent ( source, "aPermissions", source, tableOut )
 	end
 end )
+
+function table.reverse(t)
+	local newt = {}
+	for idx,item in ipairs(t) do
+		newt[#t - idx + 1] = item
+	end
+	return newt
+end
