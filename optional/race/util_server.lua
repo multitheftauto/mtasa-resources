@@ -104,7 +104,7 @@ function setVehicleID(vehicle, id)
 	setElementModel(vehicle, id)
 	local player = getVehicleController(vehicle)
 	if player then
-		setElementAlpha(player, g_RCVehicleIDs[id] and 0 or 255)
+		setAlphaOverride( "ForRCVehicles", player, g_RCVehicleIDs[id] and 0 or nil )
 	end
     if g_GameOptions.vehiclecolors == 'random' then
 		setRandomSeedForMap('vehiclecolors')
