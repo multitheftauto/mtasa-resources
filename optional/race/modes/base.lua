@@ -409,7 +409,7 @@ function RaceMode.playerFreeze(player, bRespawn)
 
 	-- Setup ghost mode for this vehicle
 	setVehicleCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
-	setAlphaOverride( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 160 or nil )
+	setAlphaOverride( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
 
 	-- Show non-ghost vehicles as semi-transparent while respawning
 	setAlphaOverride( "ForRespawnEffect", {player, vehicle}, bRespawn and not g_MapOptions.ghostmode and 120 or nil )
@@ -442,6 +442,7 @@ function RaceMode.playerUnfreeze(player)
 
 g_Override = {}
 g_Override.list = {}
+g_Override.timer = Timer:create()
 
 addEventHandler( "onPlayerQuit", g_Root,
 	function()
@@ -462,6 +463,19 @@ function setAlphaOverride( reason, element, value )
 	setOverride( reason, element, value, "race.alpha", 255 )
 end
 
+function getVehicleCollideWorld( reason, element, value )
+	return getOverride( reason, element, "race.collideworld" )
+end
+
+function getVehicleCollideOthers( reason, element, value )
+	return getOverride( reason, element, "race.collideothers" )
+end
+
+function getAlphaOverride( reason, element, value )
+	return getOverride( reason, element, "race.alpha" )
+end
+
+
 function setOverride( reason, element, value, var, default )
 	-- Recurse for each item if element is a table
 	if type(element) == "table" then
@@ -475,10 +489,17 @@ function setOverride( reason, element, value, var, default )
 	if not g_Override.list[element][var] then	g_Override.list[element][var] = { default=default}	end
 	g_Override.list[element][var][reason] = value
 	-- Set timer to auto-flush incase it is not done manually
-	setTimer( flushOverrides, 50, 1 )
+	if not g_Override.timer:isActive() then
+		g_Override.timer:setTimer( flushOverrides, 50, 1 )
+	end
+end
+
+function getOverride( reason, element, var )
+	return g_Override.list[element] and g_Override.list[element][var] and g_Override.list[element][var][reason] or nil
 end
 
 function flushOverrides()
+	g_Override.timer:killTimer()
 	-- For each element
 	for element,varlist in pairs(g_Override.list) do
 		-- For each var
