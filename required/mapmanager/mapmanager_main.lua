@@ -58,7 +58,8 @@ addEventHandler("onResourceStart", rootElement,
 					setGameType(gamemodeName)
 				end
 				if get("messages") then
-					outputMapManager("Gamemode '"..gamemodeName.."' started.")
+					local name = getInstigatorName ( " by " ) or ""
+					outputMapManager("Gamemode '"..gamemodeName.."' started" .. name .. "." )
 				end
 				--We need to wait a while to see if any maps were started.  If not, lets try and start a random one
 				setTimer( 
@@ -98,7 +99,8 @@ addEventHandler("onResourceStart", rootElement,
 						setMapName(gamemodeMapName)
 					end
 					if get("messages") then
-						outputMapManager("Map '"..gamemodeMapName.."' started.")
+						local name = getInstigatorName ( " by " ) or ""
+						outputMapManager("Map '"..gamemodeMapName.."' started" .. name .. ".")
 					end
 				else
 					currentGamemodeMap = nil
@@ -172,6 +174,7 @@ function changeGamemodeMap_cmd(source, command, ...)
 		outputMapManager("Map '"..getResourceName(map)..
 			"' is not compatible with '"..getResourceName(gamemode).."'.",source)
 	else
+		setInstigator( source )
 		changeGamemodeMap(map, gamemode)
 	end
 end
@@ -201,7 +204,7 @@ function changeGamemode_cmd(source, command, gamemodeName,...)
 			return false
 		end
 	end
-	
+	setInstigator( source )
 	changeGamemode(gamemode,map)
 end
 addCommandHandler("gamemode", changeGamemode_cmd, true)
@@ -440,3 +443,15 @@ function getMapFromName ( name )
 	return false
 end
 
+function setInstigator( admin )
+	g_InstigatorName = getPlayerName( admin )
+	g_InstigatorTime = getTickCount()
+end
+
+function getInstigatorName( prepend )
+	local age = getTickCount() - ( g_InstigatorTime or 0 )
+	local name = g_InstigatorName
+	g_InstigatorName = nil
+	g_InstigatorTime = nil
+	return age < 2000 and name and ( prepend .. name ) or nil
+end
