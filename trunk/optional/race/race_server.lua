@@ -869,7 +869,7 @@ function updateGhostmode()
 		local vehicle = RaceMode.getPlayerVehicle(player)
 		if vehicle then
 			setVehicleCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
-			setAlphaOverride( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 160 or nil )
+			setAlphaOverride( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
 		end
 	end
 end

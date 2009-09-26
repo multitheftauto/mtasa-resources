@@ -53,6 +53,11 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 			engineSetModelLODDistance( id, 60 )
 		end
 
+		if isVersion101Compatible() then
+			-- Dont clip vehicles (1.0.1 function)
+			setCameraClip ( true, false )
+		end
+
         -- Init presentation screens
         TravelScreen.init()
         TitleScreen.init()
@@ -349,17 +354,33 @@ function updateVars( element )
 	if alpha then
 		setElementAlpha ( element, alpha )
 	end
-	-- Collide others
-	local collideothers = getElementData ( element, "race.collideothers" ) or 0
-	if collideothers then
-		if element ~= g_Me and element ~= g_Vehicle then
-			setElementCollisionsEnabled ( element, collideothers ~= 0 )
+	if isVersion10() then
+		-- 1.0
+		-- Collide others
+		local collideothers = getElementData ( element, "race.collideothers" ) or 0
+		if collideothers then
+			if element ~= g_Me and element ~= g_Vehicle then
+				setElementCollisionsEnabled ( element, collideothers ~= 0 )
+			end
 		end
-	end
-	-- Collide world
-	local collideworld = getElementData ( element, "race.collideworld" )
-	if collideworld then
-		if element == g_Me or element == g_Vehicle then
+		-- Collide world
+		local collideworld = getElementData ( element, "race.collideworld" )
+		if collideworld then
+			if element == g_Me or element == g_Vehicle then
+				setElementCollisionsEnabled ( element, collideworld ~= 0 )
+			end
+		end
+	else
+		-- 1.0.1
+		-- Collide others
+		local collideothers = getElementData ( element, "race.collideothers" ) or 0
+		for k,other in ipairs(getElementsByType("vehicle")) do
+			local docollide = collideothers > 0 and ( getElementData ( other, "race.collideothers" ) or 0 ) > 0
+			setElementCollidableWith ( element, other, docollide )
+		end
+		-- Collide world
+		local collideworld = getElementData ( element, "race.collideworld" )
+		if collideworld then
 			setElementCollisionsEnabled ( element, collideworld ~= 0 )
 		end
 	end
