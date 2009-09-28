@@ -335,6 +335,30 @@ addEventHandler('onClientRequestToptimesUpdates', getRootElement(),
 
 ---------------------------------------------------------------------------
 --
+-- Commands and binds
+--
+--
+--
+---------------------------------------------------------------------------
+
+addCommandHandler( "deletetime",
+	function( player )
+		if not _TESTING and not isPlayerInACLGroup(player, g_Settings.admingroup) then
+			return
+		end
+		if g_SToptimesManager and g_SToptimesManager.mapTimes then
+			local row = g_SToptimesManager.mapTimes:deletefirst()
+			if row then
+				g_SToptimesManager:updateTopText()
+				outputChatBox( "Top time from '" .. tostring(row.playerName) .. "' deleted by " .. getPlayerName(player) )
+			end
+		end
+	end
+)
+
+
+---------------------------------------------------------------------------
+--
 -- Settings
 --
 --
@@ -346,6 +370,7 @@ function cacheSettings()
 	g_Settings.startshow	= getBool('startshow',false)
 	g_Settings.gui_x		= getNumber('gui_x',0.56)
 	g_Settings.gui_y		= getNumber('gui_y',0.02)
+	g_Settings.admingroup	= getString("admingroup","Admin")
 end
 
 -- React to admin panel changes
