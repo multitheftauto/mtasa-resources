@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r465 26Sep09" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r466 28Sep09" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -213,6 +213,13 @@
 					group="Display"
 					accept="false,true"
 					desc="Set to false to turn off clouds."
+					/>
+
+		<setting name="*joinspectating" value="true"
+					friendlyname="Join spectating"
+					group="Gameplay"
+					accept="false,true"
+					desc="Set to true to make joining players spectate the race in progress."
 					/>
 
         <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>

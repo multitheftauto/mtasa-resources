@@ -286,12 +286,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     -- Do fadeup and then tell server client is ready
     setTimer(fadeCamera, delay + 750, 1, true, 10.0)
     setTimer(fadeCamera, delay + 1500, 1, true, 2.0)
-    
-    if g_PlayerInfo.joined and g_MapOptions.respawn == "none" then
-        setTimer(Spectate.start, delay + 1250, 1, 'auto')
-        return
-    end
-    
+
     setTimer( function() triggerServerEvent('onNotifyPlayerReady', g_Me) end, delay + 3500, 1 )
     outputDebug( 'MISC', 'initRace end' )
     setTimer( function() setCameraBehindVehicle( g_Vehicle ) end, delay + 300, 1 )
@@ -760,7 +755,7 @@ end
 -- Request to switch off
 function Spectate.stop(type)
 	outputDebug( 'SPECTATE', 'Spectate.stop '..type )
-	assert(type=='manual' or type=='auto', "Spectate.start : type == auto or manual")
+	assert(type=='manual' or type=='auto', "Spectate.stop : type == auto or manual")
 	if type == 'auto' then
 		Spectate.savePos = false	-- Clear restore pos if an auto spectate is requested
 	end
@@ -903,6 +898,9 @@ function Spectate.setTarget( player )
 		setCameraTarget( g_Me )
 		setCameraMatrix( x,y,z+10,x,y+50,z+60)
 		guiSetText(g_GUI.speclabel, 'Currently spectating:\n No one to spectate')
+	end
+	if Spectate.active and Spectate.savePos then
+		guiSetText(g_GUI.speclabel, guiGetText(g_GUI.speclabel) .. "\n\nPress 'B' to join")
 	end
 end
 
@@ -1247,6 +1245,21 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 
 
 
+------------------------
+-- Script integrity test
+
+setTimer(
+	function ()
+		if #getTimers () > 20 then
+			outputChatBox( "Race integrity test fail (client): Too many timers :" .. #getTimers () )
+		end
+
+		if g_Vehicle and not isElement(g_Vehicle) then
+			outputChatBox( "Race integrity test fail (client): Your vehicle has been destroyed. Please panic." )
+		end
+	end,
+	1000,0
+)
 
 ---------------------------------------------------------------------------
 --

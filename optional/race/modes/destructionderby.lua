@@ -8,69 +8,81 @@ function DestructionDerby:isApplicable()
 end
 
 function DestructionDerby:getPlayerRank(player)
-	return #getAlivePlayers()
+	return #getActivePlayers()
 end
 
 function DestructionDerby:onPlayerWasted(player)
-	if RaceMode.isPlayerFinished(player) then
-		return
-	end
-	if not self.rankingBoard then
-		self.rankingBoard = RankingBoard:create()
-		self.rankingBoard:setDirection('up')
-	end
-	local timePassed = self:getTimePassed()
-	self.rankingBoard:add(player, timePassed)
-	local alivePlayers = getAlivePlayers()
-	if #alivePlayers == 1 then
-		self.rankingBoard:add(alivePlayers[1], timePassed)
-		showMessage(getPlayerName(alivePlayers[1]) .. ' is the final survivor!', 0, 255, 0)
-	end
-	if #alivePlayers <= 1 then
-		RaceMode.endMap()
-	else
-		setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
+	if isActivePlayer(player) then
+		self:handleFinishActivePlayer(player)
+		if getActivePlayerCount() <= 1 then
+			RaceMode.endMap()
+		else
+			setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
+		end
 	end
 	RaceMode.setPlayerIsFinished(player)
 	showBlipsAttachedTo(player, false)
 end
 
 function DestructionDerby:onPlayerQuit(player)
-    local alivePlayers = getAlivePlayers()
-	if not table.find( alivePlayers, player ) then
-		return
-	end
-	table.removevalue( alivePlayers, player )
-	if not self.rankingBoard then
-		self.rankingBoard = RankingBoard:create()
-		self.rankingBoard:setDirection('up')
-	end
-	local timePassed = self:getTimePassed()
-	self.rankingBoard:add(player, timePassed)
-	if #alivePlayers == 1 then
-		self.rankingBoard:add(alivePlayers[1], timePassed)
-		showMessage(getPlayerName(alivePlayers[1]) .. ' is the final survivor!', 0, 255, 0)
-	end
-	if #alivePlayers <= 1 then
-		RaceMode.endMap()
+	if isActivePlayer(player) then
+		self:handleFinishActivePlayer(player)
+		if getActivePlayerCount() <= 1 then
+			RaceMode.endMap()
+		end
 	end
 end
 
---[[
-function DestructionDerby:pickFreeSpawnpoint()
-	local i = table.find(RaceMode.getSpawnpoints(), 'used', '[nil]')
-	if i then
-		repeat
-			i = math.random(RaceMode.getNumberOfSpawnpoints())
-		until not RaceMode.getSpawnpoint(i).used
-	else
-		i = math.random(RaceMode.getNumberOfSpawnpoints())
+function DestructionDerby:handleFinishActivePlayer(player)
+	-- Update ranking board for player being removed
+	if not self.rankingBoard then
+		self.rankingBoard = RankingBoard:create()
+		self.rankingBoard:setDirection( 'up', getActivePlayerCount() )
 	end
-	local spawnpoint = RaceMode.getSpawnpoint(i)
-	spawnpoint.used = true
-	if self.startTick then
-		setTimer(freeSpawnpoint, 10000, 1, i)
+	local timePassed = self:getTimePassed()
+	self.rankingBoard:add(player, timePassed)
+	-- Do remove
+	finishActivePlayer(player)
+	-- Update ranking board if one player left
+	local activePlayers = getActivePlayers()
+	if #activePlayers == 1 then
+		self.rankingBoard:add(activePlayers[1], timePassed)
+		showMessage(getPlayerName(activePlayers[1]) .. ' is the final survivor!', 0, 255, 0)
 	end
-	return spawnpoint
 end
---]]
+
+
+
+------------------------------------------------------------
+-- activePlayerList stuff
+--
+
+function isActivePlayer( player )
+	return table.find( g_CurrentRaceMode.activePlayerList, player )
+end
+
+function addActivePlayer( player )
+	table.insertUnique( g_CurrentRaceMode.activePlayerList, player )
+end
+
+function removeActivePlayer( player )
+	table.removevalue( g_CurrentRaceMode.activePlayerList, player )
+end
+
+function finishActivePlayer( player )
+	table.removevalue( g_CurrentRaceMode.activePlayerList, player )
+	table.insert( g_CurrentRaceMode.finishedPlayerList, getPlayerName(player) )
+end
+
+function getFinishedPlayerCount()
+	return #g_CurrentRaceMode.finishedPlayerList
+end
+
+function getActivePlayerCount()
+	return #g_CurrentRaceMode.activePlayerList
+end
+
+function getActivePlayers()
+	return g_CurrentRaceMode.activePlayerList
+end
+
