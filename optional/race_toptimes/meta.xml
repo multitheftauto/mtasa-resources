@@ -1,5 +1,5 @@
 <meta>
-	<info name="Toptimes" description="Toptimes addon for Race" author="ccw" type="script" addon="race" version="0.0.2" build="r431 29Aug09"/>
+	<info name="Toptimes" description="Toptimes addon for Race" author="ccw" type="script" addon="race" version="0.0.2" build="r466 29Sep09"/>
 
 	<script src="_common_tt.lua" type="server"/>
 	<script src="util_tt_server.lua" type="server"/>
@@ -50,6 +50,14 @@
 					group="Interface"
 					accept="0.00-1.00"
 					desc="The position of the table on the screen."
+					/>
+
+		<setting name="*admingroup" value="Admin,SuperModerator"
+					friendlyname="Admin group list"
+					group="_Advanced"
+					accept="*"
+					examples="Admin,Moderator,SuperModerator"
+					desc="To issue certain commands, the player must belong to one of the groups listed."
 					/>
 
 	</settings>
