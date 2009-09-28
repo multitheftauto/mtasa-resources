@@ -112,7 +112,9 @@ function RaceMode:create()
 	RaceMode.instances[id] = setmetatable(
 		{
 			id = id,
-			checkpointBackups = {}  -- { player = { goingback = true/false, i = { vehicle = id, position = {x, y, z}, rotation = {x, y, z}, velocity = {x, y, z} } } }
+			checkpointBackups = {},  -- { player = { goingback = true/false, i = { vehicle = id, position = {x, y, z}, rotation = {x, y, z}, velocity = {x, y, z} } } }
+			activePlayerList = {},
+			finishedPlayerList = {},
 		},
 		self
 	)
@@ -123,6 +125,12 @@ function RaceMode:launch()
 	self.startTick = getTickCount()
 	for _,spawnpoint in ipairs(RaceMode.getSpawnpoints()) do
 		spawnpoint.used = nil
+	end
+	-- Put all relevant players into the active player list
+	for _,player in ipairs(getElementsByType("player")) do
+		if not isPlayerFinished(player) then
+			addActivePlayer( player )
+		end
 	end
 end
 
@@ -150,8 +158,9 @@ function RaceMode:getPlayerRank(queryPlayer)
 	local rank = 1
 	local queryCheckpoint = getPlayerCurrentCheckpoint(queryPlayer)
 	local checkpoint
-	
-	for i,player in ipairs(RaceMode.getPlayers()) do
+
+	-- Figure out rank amoung the active players
+	for i,player in ipairs(getActivePlayers()) do
 		if player ~= queryPlayer then
 			checkpoint = getPlayerCurrentCheckpoint(player)
 			if RaceMode.isPlayerFinished(player) or checkpoint > queryCheckpoint then
@@ -163,6 +172,9 @@ function RaceMode:getPlayerRank(queryPlayer)
 			end
 		end
 	end
+
+	-- Then add on the players that have finished
+	rank = rank + getFinishedPlayerCount()
 	return rank
 end
 
@@ -187,6 +199,8 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 	else
 		-- Finish reached
 		RaceMode.setPlayerIsFinished(player)
+		finishActivePlayer( player )
+		setPlayerStatus( player, nil, "finished" )
 		if rank == 1 then
             gotoState('SomeoneWon')
 			showMessage('You have won the race!', 0, 255, 0, player)
@@ -210,7 +224,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 			255,0,0
 		)
 		self.rankingBoard:add(player, time)
-		if rank < getPlayerCount() then
+		if getActivePlayerCount() > 0 then
 			setTimer(clientCall, 5000, 1, player, 'Spectate.start', 'auto')
 		else
 			setTimer(
@@ -380,7 +394,7 @@ function restorePlayer(id, player)
 		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
 	end
     setCameraTarget(player)
-    setElementData(player, "state", "alive")
+	setPlayerStatus( player, "alive", "" )
     clientCall(player, 'remoteSoonFadeIn')
 end
 
@@ -534,6 +548,7 @@ end
 
 function RaceMode:onPlayerQuit(player)
 	self.checkpointBackups[player] = nil
+	removeActivePlayer( player )
 end
 
 function RaceMode:destroy()

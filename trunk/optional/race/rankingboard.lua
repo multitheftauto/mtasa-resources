@@ -16,10 +16,13 @@ function RankingBoard:clientCall(player, fn, ...)
 	clientCall(player, 'RankingBoard.call', self.id, fn, ...)
 end
 
-function RankingBoard:setDirection(direction)
+local savedplrcount = 1
+
+function RankingBoard:setDirection(direction, plrcount)
+	savedplrcount = plrcount
 	if direction == 'up' or direction == 'down' then
 		self.direction = direction
-		self:clientCall(g_Root, 'setDirection', direction)
+		self:clientCall(g_Root, 'setDirection', direction, plrcount )
 	end
 end
 
@@ -35,7 +38,7 @@ end
 function RankingBoard:playerJoined(player)
 	clientCall(player, 'RankingBoard.create', self.id)
 	if self.direction then
-		self:clientCall(player, 'setDirection', self.direction)
+		self:clientCall(player, 'setDirection', self.direction, savedplrcount )
 	end
 	self:clientCall(player, 'addMultiple', self.items)
 end

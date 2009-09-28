@@ -107,6 +107,7 @@ function cacheGameOptions()
 	g_GameOptions.admingroup			= getString('race.admingroup','Admin')
 	g_GameOptions.blurlevel				= getNumber('race.blur',36)
 	g_GameOptions.cloudsenable			= getBool('race.clouds',true)
+	g_GameOptions.joinspectating		= getBool('race.joinspectating',true)
 	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
 	g_GameOptions.skins_map_can_override			= getBool('race.skins_map_can_override',true)
 	g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
@@ -235,7 +236,7 @@ function loadMap(res)
 	if #map:getAll('checkpoint') == 0 and not map.ghostmode and g_MapOptions.ghostmode then
 		g_MapOptions.ghostmode = false
 		if g_GameOptions.ghostmode_warning_if_map_override then
-			outputChatBox( 'Notice: Collisions are turned off for this map' )
+			outputChatBox( 'Notice: Collisions are turned on for this map' )
 		end
 	end
 
@@ -401,9 +402,9 @@ function joinHandlerBoth(player)
 	local bPlayerJoined = not player
 	if bPlayerJoined then
 		player = source
-        setElementData(player, "state", "joined")
+		setPlayerStatus( player, "joined", "" )
 	else
-        setElementData(player, "state", "not ready")
+        setPlayerStatus( player, "not ready", "" )
     end
     if not player then
         outputDebug( 'MISC', 'joinHandler: player==nil' )
@@ -512,6 +513,23 @@ function joinHandlerBoth(player)
 	if bPlayerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
 		-- Start random map vote if someone joined a lone player mid-race
 		setTimer(startMidMapVoteForRandomMap,7000,1)
+	end
+
+	-- Handle spectating when joined
+	if g_CurrentRaceMode.isPlayerFinished(player) then
+		-- Joining 'finished'
+		clientCall(player, "Spectate.start", 'auto' )
+		local status = math.random(0,10)==6 and "waiting" or ({"bored","hopeful","excited","oblivious"})[math.random(1,4)]
+		setPlayerStatus( player, nil, status )
+	else
+		if bPlayerJoined and g_CurrentRaceMode.running then
+			-- Joining after start
+			addActivePlayer(player)
+			if g_GameOptions.joinspectating then
+				clientCall(player, "Spectate.start", 'manual' )
+				setPlayerStatus( player, nil, "spectating")
+			end
+		end
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
@@ -656,7 +674,7 @@ addEventHandler('onPlayerWasted', g_Root,
 					setTimer(warpPedIntoVehicle, 500, 10, source, g_Vehicles[source])
 				end
 			else
-				setElementData(source, "state", "dead")
+				setPlayerStatus( source, "dead", "" )
 				g_CurrentRaceMode:onPlayerWasted(source)
 			end
 		end
@@ -888,8 +906,10 @@ addEventHandler('onClientRequestSpectate', g_Root,
 		if isPlayerSpectating(source) ~= enable then
 			if enable then
 				clientCall(source, "Spectate.start", 'manual' )
+				setPlayerStatus( source, nil, "spectating")
 			else
 				clientCall(source, "Spectate.stop", 'manual' )
+				setPlayerStatus( source, nil, "")
 			end
 		end
 	end
@@ -967,13 +987,17 @@ end
 
 -- Alter not ready timeout 
 function setPlayerReady( player )
-	setElementData(player, "state", "alive")
+	setPlayerStatus( player, "alive", nil )
     g_NotReady[player] = false
     g_NotReadyTimeout = getTickCount() + 20000
     if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 10000 end
 	-- Set max timeout to 30 seconds after first person is ready
 	if not g_NotReadyMaxWait then
 		g_NotReadyMaxWait = getTickCount() + 30000
+	end
+	-- If more than 10 players, and only one player not ready, limit max wait time to 5 seconds
+	if #g_Players > 10 and howManyPlayersNotReady() == 1 then
+		g_NotReadyMaxWait = math.min( g_NotReadyMaxWait, getTickCount() + 5000 )
 	end
 end
 
@@ -1159,6 +1183,55 @@ function MoveAway.update ()
 end
 
 
+function setPlayerStatus( player, status1, status2 )
+	if status1 then
+		setElementData ( player, "status1", status1 )
+	end
+	if status2 then
+		setElementData ( player, "status2", status2 )
+	end
+	local status = getElementData ( player, "status2" )
+	if not status or status=="" then
+		status = getElementData ( player, "status1" )
+	end
+	if status then
+		setElementData ( player, "state", status )
+	end
+end
+
+------------------------
+-- Script integrity test
+
+g_IntegrityFailCount = 0
+setTimer(
+	function ()
+		local fail = false
+		-- Check for timer leaks
+		if #getTimers () > 20 then
+			fail = true
+			outputRace( "Race integrity test fail: Too many timers :" .. #getTimers () )
+		end
+
+		-- Make sure all vehicles are valid - Invalid vehicles really mess up the race script
+		for player,vehicle in pairs(g_Vehicles) do
+			if not isElement(vehicle) then
+				fail = true
+				outputRace( "Race integrity test fail: Invalid vehicle for player " .. tostring(getPlayerName(player)) )
+			end
+		end
+
+		-- Incremenet or reset fail counter
+		g_IntegrityFailCount = fail and g_IntegrityFailCount + 1 or 0
+
+		-- Two fails in a row triggers a script restart
+		if g_IntegrityFailCount > 1 then
+			outputRace( "Race script integrity compromised - Restarting" )
+			exports.mapmanager:changeGamemode( getResourceFromName('race') )
+		end	
+	end,
+	1000,0
+)
+
 ------------------------
 -- Testing commands
 
@@ -1167,6 +1240,7 @@ addCommandHandler('restartracemode',
 		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
+		outputChatBox('Race restarted by ' .. getPlayerName(player), g_Root, 0, 240, 0)
         exports.mapmanager:changeGamemode( getResourceFromName('race') )
 	end
 )

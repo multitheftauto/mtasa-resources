@@ -367,6 +367,7 @@ addCommandHandler('redo',
 		if isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			local currentMap = exports.mapmanager:getRunningGamemodeMap()
 			if currentMap then
+				outputChatBox('Map restarted by ' .. getPlayerName(player), g_Root, 0, 240, 0)
 				if not exports.mapmanager:changeGamemodeMap (currentMap, nil, true) then
 					problemChangingMap()
 				end
