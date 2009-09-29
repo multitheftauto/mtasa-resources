@@ -685,15 +685,17 @@ addEventHandler('onPlayerWasted', g_Root,
 -- Called from:
 --		g_RaceEndTimer = setTimer(raceTimeout, g_MapOptions.duration, 1)
 function raceTimeout()
-    gotoState('TimesUp')
-	for i,player in pairs(g_Players) do
-		if not isPlayerFinished(player) then
-			showMessage('Time\'s up!')
+	if stateAllowsTimesUp() then
+		gotoState('TimesUp')
+		for i,player in pairs(g_Players) do
+			if not isPlayerFinished(player) then
+				showMessage('Time\'s up!')
+			end
 		end
+		clientCall(g_Root, 'raceTimeout')
+		g_RaceEndTimer:killTimer()
+		RaceMode.endMap()
 	end
-	clientCall(g_Root, 'raceTimeout')
-	g_RaceEndTimer:killTimer()
-    RaceMode.endMap()
 end
 
 -- Called from:

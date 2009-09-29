@@ -189,3 +189,16 @@ function stateAllowsSpawnInNoRespawnMap()
 	if currentRaceStateName == 'GridCountdown'		then	return true	 end
 	return false
 end
+
+
+----------------------------------------------------------------------------
+-- stateAllowsTimesUp
+--
+-- Check if the current state allows 'TimesUp' state to be entered
+----------------------------------------------------------------------------
+function stateAllowsTimesUp()
+	if currentRaceStateName == 'PostFinish'			then	return false	 end
+	if currentRaceStateName == 'NextMapSelect'		then	return false	 end
+	if currentRaceStateName == 'NextMapVote'		then	return false	 end
+	return true
+end
