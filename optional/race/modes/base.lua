@@ -282,6 +282,12 @@ function RaceMode:onPlayerWasted(player)
 		    setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
 	    end
 	end
+	if g_MapOptions.respawn == 'none' then
+		removeActivePlayer( player )
+		if getActivePlayerCount() < 1 then
+			RaceMode.endMap()
+		end
+	end
 end
 
 
@@ -549,6 +555,11 @@ end
 function RaceMode:onPlayerQuit(player)
 	self.checkpointBackups[player] = nil
 	removeActivePlayer( player )
+	if g_MapOptions.respawn == 'none' then
+		if getActivePlayerCount() < 1 then
+			RaceMode.endMap()
+		end
+	end
 end
 
 function RaceMode:destroy()
