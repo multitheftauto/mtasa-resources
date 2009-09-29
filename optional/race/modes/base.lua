@@ -284,7 +284,7 @@ function RaceMode:onPlayerWasted(player)
 	end
 	if g_MapOptions.respawn == 'none' then
 		removeActivePlayer( player )
-		if getActivePlayerCount() < 1 then
+		if getActivePlayerCount() < 1 and g_CurrentRaceMode.running then
 			RaceMode.endMap()
 		end
 	end
@@ -556,7 +556,7 @@ function RaceMode:onPlayerQuit(player)
 	self.checkpointBackups[player] = nil
 	removeActivePlayer( player )
 	if g_MapOptions.respawn == 'none' then
-		if getActivePlayerCount() < 1 then
+		if getActivePlayerCount() < 1 and g_CurrentRaceMode.running then
 			RaceMode.endMap()
 		end
 	end

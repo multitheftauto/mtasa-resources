@@ -824,7 +824,7 @@ addEventHandler('onPlayerQuit', g_Root,
 			outputDebugString('Stopping map')
 			triggerEvent('onGamemodeMapStop', g_Root)
 		else
-			if stateAllowsPostFinish() then
+			if stateAllowsPostFinish() and g_CurrentRaceMode.running then
 				gotoState('EveryoneFinished')
 				RaceMode.endMap()
 			end
