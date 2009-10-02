@@ -460,6 +460,33 @@ function RaceMode.playerUnfreeze(player)
 	end
 --------------------------------------
 
+--------------------------------------------------------
+-- This allows addons to manipulate player 'collide others' and 'alpha'
+-- If calling serverside, ensure setElementData has [synchronize = false] to reduce bandwidth usage. Examples:
+--		setElementData( player, "overrideCollide.ForMyAddonName", 0, false )		-- Collide 'off' for this player
+--		setElementData( player, "overrideCollide.ForMyAddonName", nil, false )		-- Collide 'default' for this player
+--		setElementData( player, "overrideAlpha.ForMyAddonName", 120, false )		-- Alpha '120 maximum' for this player
+--		setElementData( player, "overrideAlpha.ForMyAddonName", nil, false )		-- Alpha 'default' for this player
+--------------------------------------------------------
+addEventHandler('onElementDataChange', g_Root,
+	function(dataName)
+		if string.find( dataName, "override" ) == 1 then
+			local player = source
+			local vehicle = RaceMode.getPlayerVehicle( player )
+			if vehicle then
+				local value = getElementData( source, dataName )
+				if string.find( dataName, "overrideCollide" ) == 1 then
+					setVehicleCollideOthers( dataName, vehicle, value )
+				elseif string.find( dataName, "overrideAlpha" ) == 1 then
+					setAlphaOverride( dataName, {player, vehicle}, value )
+				end
+			end
+		end
+	end
+)
+--------------------------------------------------------
+
+
 g_Override = {}
 g_Override.list = {}
 g_Override.timer = Timer:create()
