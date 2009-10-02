@@ -311,6 +311,7 @@ end
 --      onGamemodeMapStart
 function startRace()
     gotoState('PreGridCountdown')
+	setElementData( g_ResRoot, "info", {mapInfo = g_MapInfo, mapOptions = g_MapOptions, gameOptions = g_GameOptions}, false )
     triggerEvent('onMapStarting', g_Root, g_MapInfo, g_MapOptions, g_GameOptions )
 	g_Players = {}
 	g_SpawnTimer:setTimer(joinHandlerByTimer, 500, 0)
