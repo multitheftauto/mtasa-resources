@@ -163,16 +163,9 @@ function SMaptimes:sort()
 
 	self:checkIsSorted('Presort')
 
-	local rows = self.dbTable.rows
-
-	for i=1,#rows-1 do
-		if rows[i].timeMs > rows[i+1].timeMs then
-			local temp	= rows[i]
-			rows[i]	 = rows[i+1]
-			rows[i+1]	= temp
-			i = math.max( i-2, 0 )
-		end
-	end
+	table.sort(self.dbTable.rows, function(a, b)
+									return a.timeMs < b.timeMs or ( a.timeMs == b.timeMs and a.dateRecorded < b.dateRecorded )
+								  end )
 
 	self:checkIsSorted('Postsort')
 

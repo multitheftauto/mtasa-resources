@@ -54,7 +54,7 @@ Bigdar.lastSmoothSeconds = 0
 Bigdar.beginValidSeconds = nil
 Bigdar.enabled = true		-- Manual override
 Bigdar.allowed = true		-- Map override
-Bigdar.hidden = true		-- Black screen override
+Bigdar.hidden = false		-- Black screen override
 Bigdar.hotkey = nil		-- Current hotkey
 
 function Bigdar.setHotKey ( hotkey )
