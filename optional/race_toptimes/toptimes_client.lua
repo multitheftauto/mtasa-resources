@@ -180,8 +180,11 @@ function CToptimes:openWindow ()
 			-- paneLoading as parent:
 
 				self.gui['busy'] = guiCreateLabel(sizeX/4, 38, sizeX/2, 15, 'Please wait', false, self.gui['paneLoading'] )
+				self.gui['busy2'] = guiCreateLabel(sizeX/4, 53, sizeX/2, 15, 'until next map', false, self.gui['paneLoading'] )
 				guiLabelSetHorizontalAlign ( self.gui['busy'], 'center' )
+				guiLabelSetHorizontalAlign ( self.gui['busy2'], 'center' )
 				guiSetFont(self.gui['busy'], 'default-bold-small')
+				guiSetFont(self.gui['busy2'], 'default-bold-small')
 
 			self.gui['paneTimes'] = guiCreateStaticImage(0,0,1,1, 'img/blank.png', true, self.gui['container'])
 
@@ -272,6 +275,8 @@ function CToptimes:onMapStarting(mapinfo)
 	self:updateShow()
 	-- Set the title
 	guiSetText ( self.gui['title'], 'Top Times - ' .. mapinfo.name )
+	-- Hide the 'until next map' message
+	guiSetVisible (self.gui['busy2'], false)
 
 	if self.startshow then
 		self:doToggleToptimes( true )

@@ -1,5 +1,5 @@
 <meta>
-	<info name="Toptimes" description="Toptimes addon for Race" author="ccw" type="script" addon="race" version="0.0.2" build="r466 29Sep09"/>
+	<info name="Toptimes" description="Toptimes addon for Race" author="ccw" type="script" addon="race" version="0.0.3" build="r472 02Oct09"/>
 
 	<script src="_common_tt.lua" type="server"/>
 	<script src="util_tt_server.lua" type="server"/>
@@ -35,7 +35,7 @@
 					friendlyname="Show at start"
 					group="Setting"
 					accept="false,true"
-					desc="Set to true to show the table at the start of each race. May cause a bandwidth spike if there are lots of players. May cause complaints from players with slow computers."
+					desc="Set to true to show the table at the start of each race."
 					/>
 
 		<setting name="*gui_x" value="0.7"
