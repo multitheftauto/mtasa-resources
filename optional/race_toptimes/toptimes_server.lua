@@ -19,7 +19,7 @@ addEvent('onMapStarting')
 addEventHandler('onMapStarting', g_Root,
 	function(mapInfo, mapOptions, gameOptions)
 		if g_SToptimesManager then
-			g_SToptimesManager:setModeAndMap( mapInfo.modename, mapInfo.name, type(gameOptions)=='table' and gameOptions.statsKey or statsKey )
+			g_SToptimesManager:setModeAndMap( mapInfo.modename, mapInfo.name, gameOptions.statsKey )
 		end
 	end
 )
@@ -50,6 +50,19 @@ addEventHandler('onPlayerQuit', g_Root,
 	end
 )
 
+addEventHandler('onResourceStart', g_ResRoot,
+	function()
+		local raceInfo = getRaceInfo()
+		if raceInfo and g_SToptimesManager then
+			g_SToptimesManager:setModeAndMap( raceInfo.mapInfo.modename, raceInfo.mapInfo.name, raceInfo.gameOptions.statsKey )
+		end
+	end
+)
+
+function getRaceInfo()
+	local raceResRoot = getResourceRootElement( getResourceFromName( "race" ) )
+	return raceResRoot and getElementData( raceResRoot, "info" )
+end
 
 ---------------------------------------------------------------------------
 --
@@ -395,6 +408,12 @@ addEventHandler('onLoadedAtClient_tt', g_Root,
 	function()
 		-- Tell newly joined client current settings
 		clientCall(source,'updateSettings', g_Settings)
+
+		-- This could also be the toptimes resource being restarted, so send some mapinfo
+		local raceInfo = getRaceInfo()
+		if raceInfo then
+		    triggerClientEvent('onClientSetMapName', source, raceInfo.mapInfo.name )
+		end
 	end
 )
 

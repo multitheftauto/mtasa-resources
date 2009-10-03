@@ -51,6 +51,16 @@ addEventHandler('onClientPlayerFinish', getRootElement(),
 	end
 )
 
+addEvent('onClientSetMapName', true)
+addEventHandler('onClientSetMapName', getRootElement(),
+	function(manName)
+		if g_CToptimes then
+			g_CToptimes:setWindowTitle(manName)
+		end
+	end
+)
+
+
 function updateSettings(settings, playeradmin)
 	outputDebug( 'TOPTIMES', 'updateSettings' )
 	if g_CToptimes then
@@ -240,6 +250,23 @@ end
 
 ---------------------------------------------------------------------------
 --
+-- CToptimes:setWindowTitle()
+--
+--
+--
+---------------------------------------------------------------------------
+function CToptimes:setWindowTitle( mapName )
+	if self.gui['title'] then
+		-- Set the title
+		guiSetText ( self.gui['title'], 'Top Times - ' .. mapName )
+		-- Hide the 'until next map' message
+		guiSetVisible (self.gui['busy2'], false)
+	end
+end
+
+
+---------------------------------------------------------------------------
+--
 -- CToptimes:setHotKey()
 --
 --
@@ -273,10 +300,7 @@ function CToptimes:onMapStarting(mapinfo)
 	self.listStatus		 = 'Empty'
 	self.clientRevision	 = -1
 	self:updateShow()
-	-- Set the title
-	guiSetText ( self.gui['title'], 'Top Times - ' .. mapinfo.name )
-	-- Hide the 'until next map' message
-	guiSetVisible (self.gui['busy2'], false)
+	self:setWindowTitle( mapinfo.name )
 
 	if self.startshow then
 		self:doToggleToptimes( true )
@@ -298,8 +322,7 @@ function CToptimes:onMapStopping()
 	self.listStatus		 = 'Empty'
 	self.clientRevision	 = -1
 	self:doToggleToptimes(false)
-	-- Set the title
-	guiSetText ( self.gui['title'], '')
+	self:setWindowTitle( '' )
 
 end
 
