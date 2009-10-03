@@ -495,7 +495,8 @@ function joinHandlerBoth(player)
                     end
                 end
             end
-            setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)	
+            warpPedIntoVehicle(player, vehicle)	
+            --setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)	
         end
         
 		destroyBlipsAttachedTo(player)
@@ -672,7 +673,8 @@ addEventHandler('onPlayerWasted', g_Root,
 				local x, y, z = getElementPosition(source)
 				spawnPlayer(source, x, y, z, 0, getElementModel(source))
 				if g_Vehicles[source] then
-					setTimer(warpPedIntoVehicle, 500, 10, source, g_Vehicles[source])
+		            warpPedIntoVehicle(player, vehicle)	
+					--setTimer(warpPedIntoVehicle, 500, 10, source, g_Vehicles[source])
 				end
 			else
 				setPlayerStatus( source, "dead", "" )
@@ -1203,18 +1205,49 @@ function setPlayerStatus( player, status1, status2 )
 end
 
 ------------------------
+-- Keep players in vehicles
+g_checkPedIndex = 0
+
+setTimer(
+	function ()
+		-- Make sure all players are in a vehicle
+		local maxCheck = 6		-- Max number to check per call
+		local maxWarp = 3		-- Max number to warp per call
+
+		local warped = 0
+		for checked = 0, #g_Players - 1 do
+			if checked >= maxCheck or warped >= maxWarp then
+				break
+			end
+			g_checkPedIndex = g_checkPedIndex + 1
+			if g_checkPedIndex > #g_Players then
+				g_checkPedIndex = 1
+			end
+			local player = g_Players[g_checkPedIndex]
+			if not getPedOccupiedVehicle(player) then
+				local vehicle = g_Vehicles[player]
+				if vehicle and isElement(vehicle) and not isPlayerRaceDead(player) then
+					outputDebugString( "Warping player into vehicle for " .. tostring(getPlayerName(player)) )
+					warpPedIntoVehicle( player, vehicle )
+					warped = warped + 1
+				end
+			end
+		end
+	end,
+	50,0
+)
+
+function isPlayerRaceDead(player)
+	return not getElementHealth(player) or getElementHealth(player) < 1e-45 or isPlayerDead(player)
+end
+
+------------------------
 -- Script integrity test
 
 g_IntegrityFailCount = 0
 setTimer(
 	function ()
 		local fail = false
-		-- Check for timer leaks
-		if #getTimers () > 20 then
-			fail = true
-			outputRace( "Race integrity test fail: Too many timers :" .. #getTimers () )
-		end
-
 		-- Make sure all vehicles are valid - Invalid vehicles really mess up the race script
 		for player,vehicle in pairs(g_Vehicles) do
 			if not isElement(vehicle) then

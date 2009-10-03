@@ -26,12 +26,12 @@ addEventHandler('onServerCall_race', getRootElement(),
 	end
 )
 
-local _warpPlayerIntoVehicle = warpPedIntoVehicle
+local _warpPedIntoVehicle = warpPedIntoVehicle
 function warpPedIntoVehicle(player, vehicle)
 	if isValidPlayer(player) then
 		if getPedOccupiedVehicle(player) ~= vehicle then
 			if isValidPlayerVehicle(player,vehicle) then
-				_warpPlayerIntoVehicle(player, vehicle)
+				_warpPedIntoVehicle(player, vehicle)
 			end
 		end
 	end

@@ -1250,10 +1250,6 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 
 setTimer(
 	function ()
-		if #getTimers () > 20 then
-			outputChatBox( "Race integrity test fail (client): Too many timers :" .. #getTimers () )
-		end
-
 		if g_Vehicle and not isElement(g_Vehicle) then
 			outputChatBox( "Race integrity test fail (client): Your vehicle has been destroyed. Please panic." )
 		end
