@@ -588,6 +588,8 @@ addEventHandler('onClientElementDataChange', g_Me,
 		if dataName == 'race rank' then
 			local rank = getElementData(g_Me, 'race rank')
 			if not tonumber(rank) then
+				g_dxGUI.ranknum:text('')
+				g_dxGUI.ranksuffix:text('')
 				return
 			end
 			g_dxGUI.ranknum:text(tostring(rank))
@@ -851,7 +853,14 @@ function Spectate.isValidTarget(player)
 	if ( Spectate.blockUntilTimes[player] or 0 ) > getTickCount() then
 		return false
 	end
-	if not table.find(g_Players, player) then
+	if not table.find(g_Players, player) or not isElement(player) then
+		return false
+	end
+	local x,y,z = getElementPosition(player)
+	if z > 20000 then
+		return false
+	end
+	if x > -1 and x < 1 and y > -1 and y < 1 then
 		return false
 	end
 	return true

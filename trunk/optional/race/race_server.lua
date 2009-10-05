@@ -521,7 +521,7 @@ function joinHandlerBoth(player)
 	if g_CurrentRaceMode.isPlayerFinished(player) then
 		-- Joining 'finished'
 		clientCall(player, "Spectate.start", 'auto' )
-		local status = math.random(0,10)==6 and "waiting" or ({"bored","hopeful","excited","oblivious"})[math.random(1,4)]
+		local status = math.random(0,10)~=6 and "waiting" or ({"bored","hopeful","excited","oblivious"})[math.random(1,4)]
 		setPlayerStatus( player, nil, status )
 	else
 		if bPlayerJoined and g_CurrentRaceMode.running then
@@ -561,16 +561,21 @@ end
 -- Called from:
 --      g_RankTimer = setTimer(updateRank, 1000, 0) in startRace
 function updateRank()
-    if g_CurrentRaceMode then
-	    for i,player in ipairs(g_Players) do
-		    if not isPlayerFinished(player) then
-			    setElementData(player, 'race rank', g_CurrentRaceMode:getPlayerRank(player))
-		        setElementData(player, 'checkpoint', getPlayerCurrentCheckpoint(player)-1 .. '/' .. #g_Checkpoints )
-		    else
-                setElementData(player, 'checkpoint', #g_Checkpoints .. '/' .. #g_Checkpoints )
-	        end
-	    end
-    end
+	if g_CurrentRaceMode then
+		for i,player in ipairs(g_Players) do
+			local cptext = ""
+			if not isPlayerFinished(player) then
+				local rank = g_CurrentRaceMode:getPlayerRank(player)
+				if not rank or rank > 0 then
+					setElementData(player, 'race rank', rank)
+				end
+				cptext = getPlayerCurrentCheckpoint(player)-1 .. '/' .. #g_Checkpoints
+			else
+				cptext = #g_Checkpoints .. '/' .. #g_Checkpoints
+			end
+			setElementData(player, 'checkpoint', #g_Checkpoints > 0 and cptext or "-" )
+		end
+	end
 end
 
 
