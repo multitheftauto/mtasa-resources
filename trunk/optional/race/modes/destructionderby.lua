@@ -11,6 +11,25 @@ function DestructionDerby:getPlayerRank(player)
 	return #getActivePlayers()
 end
 
+-- Copy of old updateRank
+function DestructionDerby:updateRanks()
+	for i,player in ipairs(g_Players) do
+		if not isPlayerFinished(player) then
+			local rank = self:getPlayerRank(player)
+			if not rank or rank > 0 then
+				setElementData(player, 'race rank', rank)
+			end
+		end
+	end
+	-- Make text look good at the start
+	if not self.running then
+		for i,player in ipairs(g_Players) do
+			setElementData(player, 'race rank', '' )
+			setElementData(player, 'checkpoint', '' )
+		end
+	end
+end
+
 function DestructionDerby:onPlayerWasted(player)
 	if isActivePlayer(player) then
 		self:handleFinishActivePlayer(player)
@@ -71,7 +90,7 @@ end
 
 function finishActivePlayer( player )
 	table.removevalue( g_CurrentRaceMode.activePlayerList, player )
-	table.insert( g_CurrentRaceMode.finishedPlayerList, getPlayerName(player) )
+	table.insert( g_CurrentRaceMode.finishedPlayerList, _getPlayerName(player) )
 end
 
 function getFinishedPlayerCount()

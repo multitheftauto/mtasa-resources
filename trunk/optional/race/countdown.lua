@@ -12,7 +12,7 @@ end
 Countdown.instances = {}
 Countdown.clientinstances = {}
 
-function Countdown.create(start, endFunction, text, r, g, b, ...)
+function Countdown.create(start, endFunction, text, r, g, b, ypos, scale, bSingleLine, ...)
 	local result = setmetatable(
 		{
 			startvalue = math.floor(start or 5),
@@ -20,6 +20,9 @@ function Countdown.create(start, endFunction, text, r, g, b, ...)
 			r = r,
 			g = g,
 			b = b,
+			ypos = ypos or 0.5,
+			scale = scale or 2.0,
+			bSingleLine = bSingleLine,
 			hooks = {},
 			texts = {}
 		},
@@ -83,12 +86,17 @@ function Countdown:start(player)
 		self.client.player = player or g_Root
 	else
 		self.display = textCreateDisplay()
-		if self.text then
-			self.textitem = textCreateTextItem(self.text, 0.5, 0.49, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, 2, 'center', 'bottom')
-			textDisplayAddText(self.display, self.textitem)
+		if self.bSingleLine then
+			self.singleitem = textCreateTextItem('', 0.5, self.ypos, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'top')
+			textDisplayAddText(self.display, self.singleitem)
+		else
+			if self.text then
+				self.textitem = textCreateTextItem(self.text, 0.5, self.ypos - 0.01, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'bottom')
+				textDisplayAddText(self.display, self.textitem)
+			end
+			self.countitem = textCreateTextItem('', 0.5, self.text and self.ypos + 0.01 or self.ypos, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'top')
+			textDisplayAddText(self.display, self.countitem)
 		end
-		self.countitem = textCreateTextItem('', 0.5, self.text and 0.51 or 0.5, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, 2, 'center', 'top')
-		textDisplayAddText(self.display, self.countitem)
 		
 		if player then
 			textDisplayAddObserver(self.display, player)
@@ -127,6 +135,13 @@ function Countdown:update()
  		        textItemSetText(self.textitem, '')
             end
         end
+		if self.singleitem then
+			local singletext = self.texts[self.value] or tostring(self.value)
+			if singletext ~= '' and self.text then
+				singletext = self.text .. '  ' .. singletext
+			end
+			textItemSetText(self.singleitem, singletext )
+		end
 	end
 	self.value = self.value - 1
 end
@@ -140,12 +155,10 @@ function Countdown:destroy()
 		self.client.id = nil
 		self.client.player = nil
 	else
-		textDestroyDisplay(self.display)
-		self.display = nil
-		textDestroyTextItem(self.textitem)
-		self.textitem = nil
-		textDestroyTextItem(self.countitem)
-		self.countitem = nil
+		if self.display			then textDestroyDisplay(self.display)			self.display		= nil end
+		if self.textitem		then textDestroyTextItem(self.textitem)			self.textitem		= nil end
+		if self.countitem		then textDestroyTextItem(self.countitem)		self.countitem		= nil end
+		if self.singleitem		then textDestroyTextItem(self.singleitem)		self.singleitem		= nil end
 	end
 	Countdown.instances[self.id] = nil
 	if self.timer then

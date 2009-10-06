@@ -50,7 +50,7 @@ function showMessage(text, r, g, b, player)
 	else
 		g_Messages[player] = {
 			display = textCreateDisplay(),
-			textitem = textCreateTextItem('', 0.5, ypos, 'medium', 255, 0, 0, 255, 2, 'center', 'center')
+			textitem = textCreateTextItem('', 0.5, ypos, 'medium', 255, 0, 0, 255, 3.0, 'center', 'center')
 		}
 	end
 	
