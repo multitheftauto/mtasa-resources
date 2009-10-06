@@ -12,6 +12,13 @@ local playerParent = getElementParent(localPlayer)
 local rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 
+-- getPlayerName with color coding removed
+local _getPlayerName = getPlayerName
+local function getPlayerName ( player )
+	local name = _getPlayerName ( player )
+	return type(name)=='string' and string.gsub ( name, '#%x%x%x%x%x%x', '' ) or name
+end
+
 function getName(element)
 	local eType = getElementType(element)
 	

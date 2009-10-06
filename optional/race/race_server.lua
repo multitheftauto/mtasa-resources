@@ -562,19 +562,7 @@ end
 --      g_RankTimer = setTimer(updateRank, 1000, 0) in startRace
 function updateRank()
 	if g_CurrentRaceMode then
-		for i,player in ipairs(g_Players) do
-			local cptext = ""
-			if not isPlayerFinished(player) then
-				local rank = g_CurrentRaceMode:getPlayerRank(player)
-				if not rank or rank > 0 then
-					setElementData(player, 'race rank', rank)
-				end
-				cptext = getPlayerCurrentCheckpoint(player)-1 .. '/' .. #g_Checkpoints
-			else
-				cptext = #g_Checkpoints .. '/' .. #g_Checkpoints
-			end
-			setElementData(player, 'checkpoint', #g_Checkpoints > 0 and cptext or "-" )
-		end
+		g_CurrentRaceMode:updateRanks()
 	end
 end
 
@@ -907,19 +895,23 @@ addEvent('onClientRequestSpectate', true)
 addEventHandler('onClientRequestSpectate', g_Root,
 	function(enable)
 		-- Checks if switching on
+		local player = source
 		if enable then
 			if not stateAllowsManualSpectate() then return end
-			if not _TESTING and not isPlayerInACLGroup(source, g_GameOptions.admingroup) then
+			if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 				return
 			end
 		end
-		if isPlayerSpectating(source) ~= enable then
+		if isPlayerSpectating(player) ~= enable then
 			if enable then
-				clientCall(source, "Spectate.start", 'manual' )
-				setPlayerStatus( source, nil, "spectating")
+				clientCall(player, "Spectate.start", 'manual' )
+				setPlayerStatus( player, nil, "spectating")
 			else
-				clientCall(source, "Spectate.stop", 'manual' )
-				setPlayerStatus( source, nil, "")
+				clientCall(player, "Spectate.stop", 'manual' )
+				setPlayerStatus( player, nil, "")
+				-- Do 'freeze/collision off' stuff when stopping spectate
+				RaceMode.playerFreeze(player, true, true)
+				setTimer(RaceMode.playerUnfreeze, 2000, 1, player, true)
 			end
 		end
 	end

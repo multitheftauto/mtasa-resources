@@ -168,8 +168,6 @@ end
 -- Check if the current state allows a player to manualy select to spectate
 ----------------------------------------------------------------------------
 function stateAllowsManualSpectate()
-	--if currentRaceStateName == 'PreGridCountdown'	then	return true	 end
-	if currentRaceStateName == 'GridCountdown'		then	return true	 end
 	if currentRaceStateName == 'Running'			then	return true	 end
 	if currentRaceStateName == 'MidMapVote'			then	return true	 end
 	if currentRaceStateName == 'SomeoneWon'			then	return true	 end

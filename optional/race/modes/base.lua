@@ -83,7 +83,7 @@ function RaceMode.endMap()
     if stateAllowsPostFinish() then
         gotoState('PostFinish')
         local text = g_GameOptions.randommaps and 'Next map starts in:' or 'Vote for next map starts in:'
-        Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255):start()
+        Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255, 0.6, 2.5 ):start()
 		triggerEvent('onPostFinish', g_Root)
     end
 end
@@ -176,6 +176,46 @@ function RaceMode:getPlayerRank(queryPlayer)
 	-- Then add on the players that have finished
 	rank = rank + getFinishedPlayerCount()
 	return rank
+end
+
+-- Faster version of old updateRank
+function RaceMode:updateRanks()
+	-- Make a table with the active players
+	local sortinfo = {}
+	for i,player in ipairs(getActivePlayers()) do
+		sortinfo[i] = {}
+		sortinfo[i].player = player
+		sortinfo[i].checkpoint = getPlayerCurrentCheckpoint(player)
+		sortinfo[i].cpdist = distanceFromPlayerToCheckpoint(player, sortinfo[i].checkpoint )
+	end
+	-- Order by cp
+	table.sort( sortinfo, function(a,b)
+						return a.checkpoint > b.checkpoint or
+							   ( a.checkpoint == b.checkpoint and a.cpdist < b.cpdist )
+					  end )
+	-- Copy back into active players list to speed up sort next time
+	for i,info in ipairs(sortinfo) do
+		g_CurrentRaceMode.activePlayerList[i] = info.player
+	end
+	-- Update data
+	local rankOffset = getFinishedPlayerCount()
+	for i,info in ipairs(sortinfo) do
+		setElementData(info.player, 'race rank', i + rankOffset )
+		setElementData(info.player, 'checkpoint', info.checkpoint-1 .. '/' .. #g_Checkpoints )
+	end
+	-- Make sure cp text looks good for finished players
+	for i,player in ipairs(g_Players) do
+		if isPlayerFinished(player) then
+			setElementData(player, 'checkpoint', #g_Checkpoints .. '/' .. #g_Checkpoints )
+		end
+	end
+	-- Make text look good at the start
+	if not self.running then
+		for i,player in ipairs(g_Players) do
+			setElementData(player, 'race rank', 1 )
+			setElementData(player, 'checkpoint', '0/' .. #g_Checkpoints )
+		end
+	end
 end
 
 function RaceMode:onPlayerJoin(player, spawnpoint)
@@ -276,7 +316,7 @@ function RaceMode:onPlayerWasted(player)
         -- See if its worth doing a respawn
         local respawnTime       = RaceMode.getMapOption('respawntime')
         if self:getTimeRemaining() - respawnTime > 3000 then
-            Countdown.create(respawnTime/1000, restorePlayer, 'You will respawn in:', 255, 255, 255, self.id, player):start(player)
+            Countdown.create(respawnTime/1000, restorePlayer, 'You will respawn in:', 255, 255, 255, 0.25, 2.5, true, self.id, player):start(player)
         end
 	    if RaceMode.getMapOption('respawntime') >= 10000 then
 		    setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
@@ -320,6 +360,7 @@ function hasSpaceAroundSpawnpoint(ignore,spawnpoint, requiredSpace)
     return true
 end
 
+local g_DoubleUpPos = 0
 function RaceMode:pickFreeSpawnpoint(ignore)
     -- Use the spawnpoints from #1 to #numplayers as a pool to use
     local numToScan = math.min(getPlayerCount(), #g_Spawnpoints)
@@ -343,6 +384,11 @@ function RaceMode:pickFreeSpawnpoint(ignore)
             bestMatch = idx
         end
     end
+	-- If bestSpace is too small, assume all spawnpoints are taken, and start to double up
+	if bestSpace < 0.1 then
+		g_DoubleUpPos = ( g_DoubleUpPos + 1 ) % #g_Spawnpoints
+		bestMatch = g_DoubleUpPos + 1
+	end
     return g_Spawnpoints[bestMatch]
 end
 
@@ -420,7 +466,7 @@ end
 --------------------------------------
 -- For use when starting or respawing
 --------------------------------------
-function RaceMode.playerFreeze(player, bRespawn)
+function RaceMode.playerFreeze(player, bRespawn, bDontFix)
     toggleAllControls(player,true)
 	local vehicle = RaceMode.getPlayerVehicle(player)
 
@@ -438,17 +484,24 @@ function RaceMode.playerFreeze(player, bRespawn)
 	-- No collisions while frozen
 	setVehicleCollideOthers( "ForVehicleSpawnFreeze", vehicle, 0 )
 
-    fixVehicle(vehicle)
+	if not bDontFix then
+		fixVehicle(vehicle)
+	end
 	setVehicleFrozen(vehicle, true)
     setVehicleDamageProof(vehicle, true)
 	setVehicleCollideWorld( "ForVehicleJudder", vehicle, 0 )
 	flushOverrides()
 end
 
-function RaceMode.playerUnfreeze(player)
+function RaceMode.playerUnfreeze(player, bDontFix)
+	if not isValidPlayer(player) then
+		return
+	end
     toggleAllControls(player,true)
 	local vehicle = RaceMode.getPlayerVehicle(player)
-    fixVehicle(vehicle)
+	if not bDontFix then
+		fixVehicle(vehicle)
+	end
     setVehicleDamageProof(vehicle, false)
     setVehicleEngineState(vehicle, true)
 	setVehicleFrozen(vehicle, false)
