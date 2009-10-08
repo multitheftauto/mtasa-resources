@@ -87,14 +87,14 @@ function Countdown:start(player)
 	else
 		self.display = textCreateDisplay()
 		if self.bSingleLine then
-			self.singleitem = textCreateTextItem('', 0.5, self.ypos, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'top')
+			self.singleitem = textCreateTextItem('', 0.5, self.ypos, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'top', 128 )
 			textDisplayAddText(self.display, self.singleitem)
 		else
 			if self.text then
-				self.textitem = textCreateTextItem(self.text, 0.5, self.ypos - 0.01, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'bottom')
+				self.textitem = textCreateTextItem(self.text, 0.5, self.ypos - 0.01, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'bottom', 128 )
 				textDisplayAddText(self.display, self.textitem)
 			end
-			self.countitem = textCreateTextItem('', 0.5, self.text and self.ypos + 0.01 or self.ypos, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'top')
+			self.countitem = textCreateTextItem('', 0.5, self.text and self.ypos + 0.01 or self.ypos, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'top', 128 )
 			textDisplayAddText(self.display, self.countitem)
 		end
 		
