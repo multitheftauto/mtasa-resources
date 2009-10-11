@@ -242,6 +242,10 @@ function aSetPlayerFrozen ( player, state )
 	if ( toggleAllControls ( player, not state, true, false ) ) then
 		aPlayers[player]["freeze"] = state
 		triggerEvent ( "onPlayerFreeze", player, state )
+		local vehicle = getPedOccupiedVehicle( player )
+		if vehicle then
+			setVehicleFrozen ( vehicle, state )
+		end
 		return true
 	end
 	return false
@@ -580,7 +584,8 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 		if ( action == "kick" ) then
 			setTimer ( kickPlayer, 100, 1, player, source, data )
 		elseif ( action == "ban" ) then
-			setTimer ( banPlayer, 100, 1, player, source, data )
+			setTimer ( banPlayer, 100, 1, player, true, false, false, source, data )
+			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bans" )
 		elseif ( action == "mute" )  then
 			if ( isPlayerMuted ( player ) ) then action = "un"..action end
 			aSetPlayerMuted ( player, not isPlayerMuted ( player ) )

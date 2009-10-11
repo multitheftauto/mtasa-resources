@@ -432,6 +432,7 @@ function aClientSync ( type, table )
 		guiSetText ( aTab3.GameType, "Game Type: "..( table["game"] or "None" ) )
 		guiSetText ( aTab3.MapName, "Map Name: "..( table["map"] or "None" ) )
 	elseif ( type == "bans" ) then
+		guiGridListClear ( aTab4.BansList )
 		aBans = {}
 		aBans["Serial"] = {}
 		aBans["IP"] = {}
@@ -698,7 +699,7 @@ function aClientClick ( button )
 					local name = guiGridListGetItemText ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 )
 					local player = getPlayerFromNick ( name )
 					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..name, "Enter the kick reason", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"kick\", $value )" )
-					elseif ( source == aTab1.Ban ) then aInputBox ( "Ban player "..name, "Enter the ban reason", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"ban\", $value )" )
+					elseif ( source == aTab1.Ban ) then aInputBox ( "Ban player "..name, "Enter the ban reason (This works now)", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"ban\", $value )" )
 					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "slap", aCurrentSlap )
 					elseif ( source == aTab1.Mute ) then aMessageBox ( "question", "Are you sure to "..iif( aPlayers[player]["mute"], "unmute", "mute" ).." "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"mute\" )" )
 					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "freeze" )
@@ -866,9 +867,10 @@ function aClientClick ( button )
 				if ( guiGridListGetSelectedItem ( aTab4.BansList ) == -1 ) then
 					aMessageBox ( "error", "No ban row selected!" )
 				else
-					local selected = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 2 )
-					if ( aBans["Serial"][selected] ) then aMessageBox ( "question", "Unban Serial "..selected.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanserial\", \""..selected.."\" )" )
-					else aMessageBox ( "question", "Unban IP "..selected.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanip\", \""..selected.."\" )" ) end
+					local selip = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 2 )
+					local selserial = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 3 )
+					if ( aBans["Serial"][selserial] and selserial ~= "Unknown" ) then aMessageBox ( "question", "Unban Serial "..selserial.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanserial\", \""..selserial.."\" )" )
+					else aMessageBox ( "question", "Unban IP "..selip.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanip\", \""..selip.."\" )" ) end
 				end
 			elseif ( source == aTab4.UnbanIP ) then
 				aInputBox ( "Unban IP", "Enter IP to be unbanned", "", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanip\", $value )" )
