@@ -163,6 +163,9 @@ end
 function isVersion101Compatible()
 	return getVersion().number >= 257
 end
+function isVersion102Compatible()
+	return getVersion().number >= 258
+end
 ---------------------------------------------------------------------------
 
 

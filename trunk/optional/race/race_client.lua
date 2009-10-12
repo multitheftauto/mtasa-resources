@@ -349,8 +349,8 @@ function updateVars( element )
 	if alpha then
 		setElementAlpha ( element, alpha )
 	end
-	if isVersion10() then
-		-- 1.0
+	if not isVersion102Compatible() then
+		-- 1.0 and 1.0.1
 		-- Collide others
 		local collideothers = getElementData ( element, "race.collideothers" ) or 0
 		if collideothers then
@@ -366,7 +366,7 @@ function updateVars( element )
 			end
 		end
 	else
-		-- 1.0.1
+		-- 1.0.2
 		-- Collide others
 		local collideothers = getElementData ( element, "race.collideothers" ) or 0
 		for k,other in ipairs(getElementsByType("vehicle")) do
