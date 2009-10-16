@@ -312,6 +312,7 @@ end
 function startRace()
     gotoState('PreGridCountdown')
 	setElementData( g_ResRoot, "info", {mapInfo = g_MapInfo, mapOptions = g_MapOptions, gameOptions = g_GameOptions}, false )
+	AddonOverride.removeAll()
     triggerEvent('onMapStarting', g_Root, g_MapInfo, g_MapOptions, g_GameOptions )
 	g_Players = {}
 	g_SpawnTimer:setTimer(joinHandlerByTimer, 500, 0)
@@ -460,7 +461,7 @@ function joinHandlerBoth(player)
             setRandomSeedForMap('vehiclecolors')
             vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
             g_Vehicles[player] = vehicle
-			setAlphaOverride( "ForRCVehicles", player, g_RCVehicleIDs[spawnpoint.vehicle] and 0 or nil )
+			Override.setAlpha( "ForRCVehicles", player, g_RCVehicleIDs[spawnpoint.vehicle] and 0 or nil )
             RaceMode.playerFreeze(player)
             outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
             if bPlayerJoined and g_CurrentRaceMode.running then
@@ -530,6 +531,7 @@ function joinHandlerBoth(player)
 			if g_GameOptions.joinspectating then
 				clientCall(player, "Spectate.start", 'manual' )
 				setPlayerStatus( player, nil, "spectating")
+				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), 0 )
 			end
 		end
 	end
@@ -727,7 +729,7 @@ function unloadAll()
 		g_CurrentRaceMode:destroy()
 	end
 	g_CurrentRaceMode = nil
-	resetOverrides()
+	Override.resetAll()
 end
 
 addEventHandler('onGamemodeMapStop', g_Root,
@@ -884,8 +886,8 @@ function updateGhostmode()
 	for i,player in ipairs(g_Players) do
 		local vehicle = RaceMode.getPlayerVehicle(player)
 		if vehicle then
-			setVehicleCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
-			setAlphaOverride( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
+			Override.setCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
+			Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
 		end
 	end
 end
@@ -906,9 +908,11 @@ addEventHandler('onClientRequestSpectate', g_Root,
 			if enable then
 				clientCall(player, "Spectate.start", 'manual' )
 				setPlayerStatus( player, nil, "spectating")
+				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), 0 )
 			else
 				clientCall(player, "Spectate.stop", 'manual' )
 				setPlayerStatus( player, nil, "")
+				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), nil )
 				-- Do 'freeze/collision off' stuff when stopping spectate
 				RaceMode.playerFreeze(player, true, true)
 				setTimer(RaceMode.playerUnfreeze, 2000, 1, player, true)
@@ -1177,8 +1181,8 @@ function MoveAway.update ()
 			if isElement(vehicle) then 
 				setElementVelocity(vehicle,0,0,0)
 				setVehicleTurnVelocity(vehicle,0,0,0)
-				setVehicleCollideOthers( "ForMoveAway", vehicle, 0 )
-				setAlphaOverride( "ForMoveAway", {player, vehicle}, 0 )
+				Override.setCollideOthers( "ForMoveAway", vehicle, 0 )
+				Override.setAlpha( "ForMoveAway", {player, vehicle}, 0 )
 			end
 		end
 	end
