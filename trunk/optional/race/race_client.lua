@@ -186,7 +186,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	
 	g_Vehicle = vehicle
 	setVehicleDamageProof(g_Vehicle, true)
-	updateVars(g_Vehicle)
+	OverrideClient.updateVars(g_Vehicle)
 	
 	--local x, y, z = getElementPosition(g_Vehicle)
 	setCameraBehindVehicle(vehicle)
@@ -322,67 +322,6 @@ function launchRace(duration)
 	
 	g_StartTick = getTickCount()
 end
-
-
---------------------------------------------------------
--- Element vars - alpha and collideness
---------------------------------------------------------
-addEventHandler('onClientElementDataChange', g_Root,
-	function(dataName)
-		if getElementType(source)=="vehicle" or getElementType(source)=="player" then
-			updateVars(source)
-		end
-	end
-)
-
-addEventHandler('onClientElementStreamIn', g_Root,
-	function()
-		if getElementType(source)=="vehicle" or getElementType(source)=="player" then
-			updateVars(source)
-		end
-	end
-)
-
-function updateVars( element )
-	-- Alpha
-	local alpha = getElementData ( element, "race.alpha" )
-	if alpha then
-		setElementAlpha ( element, alpha )
-	end
-	if not isVersion102Compatible() then
-		-- 1.0 and 1.0.1
-		-- Collide others
-		local collideothers = getElementData ( element, "race.collideothers" ) or 0
-		if collideothers then
-			if element ~= g_Me and element ~= g_Vehicle then
-				setElementCollisionsEnabled ( element, collideothers ~= 0 )
-			end
-		end
-		-- Collide world
-		local collideworld = getElementData ( element, "race.collideworld" )
-		if collideworld then
-			if element == g_Me or element == g_Vehicle then
-				setElementCollisionsEnabled ( element, collideworld ~= 0 )
-			end
-		end
-	else
-		-- 1.0.2
-		-- Collide others
-		local collideothers = getElementData ( element, "race.collideothers" ) or 0
-		for k,other in ipairs(getElementsByType("vehicle")) do
-			local docollide = collideothers > 0 and ( getElementData ( other, "race.collideothers" ) or 0 ) > 0
-			setElementCollidableWith ( element, other, docollide )
-		end
-		-- Collide world
-		local collideworld = getElementData ( element, "race.collideworld" )
-		if collideworld then
-			setElementCollisionsEnabled ( element, collideworld ~= 0 )
-		end
-	end
-end
-
-
------------------------------------------------
 
 
 addEventHandler('onClientElementStreamIn', g_Root,

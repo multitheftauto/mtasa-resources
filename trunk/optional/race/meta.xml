@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r480 12Oct09" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r482 16Oct09" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -22,6 +22,7 @@
 	<script src="racevoting_server.lua" type="server"/>
 	<script src="racestates_server.lua" type="server"/>
 	<script src="config_server.lua" type="server"/>
+	<script src="override_server.lua" type="server"/>
 
 	<script src="_common.lua" type="client"/>
 	<script src="_joiner_client.lua" type="client"/>
@@ -35,6 +36,7 @@
 	<script src="textlib.lua" type="client"/>
 	<script src="textlib_anim.lua" type="client"/>
 	<script src="config_client.lua" type="client"/>
+	<script src="override_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
 	
 	<file src="img/progress_health_bg.png"/>

@@ -470,27 +470,33 @@ function RaceMode.playerFreeze(player, bRespawn, bDontFix)
     toggleAllControls(player,true)
 	local vehicle = RaceMode.getPlayerVehicle(player)
 
+	-- Apply addon overrides at start of new map
+	if not bRespawn then
+		AddonOverride.applyAll( player )
+	end
+
 	-- Reset move away stuff
-	setVehicleCollideOthers( "ForMoveAway", vehicle, nil )
-	setAlphaOverride( "ForMoveAway", {player, vehicle}, nil )
+	Override.setCollideOthers( "ForVehicleSpectating", vehicle, nil )
+	Override.setCollideOthers( "ForMoveAway", vehicle, nil )
+	Override.setAlpha( "ForMoveAway", {player, vehicle}, nil )
 
 	-- Setup ghost mode for this vehicle
-	setVehicleCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
-	setAlphaOverride( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
+	Override.setCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
+	Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
 
 	-- Show non-ghost vehicles as semi-transparent while respawning
-	setAlphaOverride( "ForRespawnEffect", {player, vehicle}, bRespawn and not g_MapOptions.ghostmode and 120 or nil )
+	Override.setAlpha( "ForRespawnEffect", {player, vehicle}, bRespawn and not g_MapOptions.ghostmode and 120 or nil )
 
 	-- No collisions while frozen
-	setVehicleCollideOthers( "ForVehicleSpawnFreeze", vehicle, 0 )
+	Override.setCollideOthers( "ForVehicleSpawnFreeze", vehicle, 0 )
 
 	if not bDontFix then
 		fixVehicle(vehicle)
 	end
 	setVehicleFrozen(vehicle, true)
     setVehicleDamageProof(vehicle, true)
-	setVehicleCollideWorld( "ForVehicleJudder", vehicle, 0 )
-	flushOverrides()
+	Override.setCollideWorld( "ForVehicleJudder", vehicle, 0 )
+	Override.flushAll()
 end
 
 function RaceMode.playerUnfreeze(player, bDontFix)
@@ -507,129 +513,11 @@ function RaceMode.playerUnfreeze(player, bDontFix)
 	setVehicleFrozen(vehicle, false)
 
 	-- Remove things added for freeze only
-	setVehicleCollideWorld( "ForVehicleJudder", vehicle, nil )
-	setVehicleCollideOthers( "ForVehicleSpawnFreeze", vehicle, nil )
-	setAlphaOverride( "ForRespawnEffect", {player, vehicle}, nil )
-	flushOverrides()
+	Override.setCollideWorld( "ForVehicleJudder", vehicle, nil )
+	Override.setCollideOthers( "ForVehicleSpawnFreeze", vehicle, nil )
+	Override.setAlpha( "ForRespawnEffect", {player, vehicle}, nil )
+	Override.flushAll()
 	end
---------------------------------------
-
---------------------------------------------------------
--- This allows addons to manipulate player 'collide others' and 'alpha'
--- If calling serverside, ensure setElementData has [synchronize = false] to reduce bandwidth usage. Examples:
---		setElementData( player, "overrideCollide.ForMyAddonName", 0, false )		-- Collide 'off' for this player
---		setElementData( player, "overrideCollide.ForMyAddonName", nil, false )		-- Collide 'default' for this player
---		setElementData( player, "overrideAlpha.ForMyAddonName", 120, false )		-- Alpha '120 maximum' for this player
---		setElementData( player, "overrideAlpha.ForMyAddonName", nil, false )		-- Alpha 'default' for this player
---------------------------------------------------------
-addEventHandler('onElementDataChange', g_Root,
-	function(dataName)
-		if string.find( dataName, "override" ) == 1 then
-			local player = source
-			local vehicle = RaceMode.getPlayerVehicle( player )
-			if vehicle then
-				local value = getElementData( source, dataName )
-				if string.find( dataName, "overrideCollide" ) == 1 then
-					setVehicleCollideOthers( dataName, vehicle, value )
-				elseif string.find( dataName, "overrideAlpha" ) == 1 then
-					setAlphaOverride( dataName, {player, vehicle}, value )
-				end
-			end
-		end
-	end
-)
---------------------------------------------------------
-
-
-g_Override = {}
-g_Override.list = {}
-g_Override.timer = Timer:create()
-
-addEventHandler( "onPlayerQuit", g_Root,
-	function()
-		g_Override.list [ source ] = nil
-		g_Override.list [ RaceMode.getPlayerVehicle(source) or source ] = nil
-	end
-)
-
-function setVehicleCollideWorld( reason, element, value )
-	setOverride( reason, element, value, "race.collideworld", 1 )
-end
-
-function setVehicleCollideOthers( reason, element, value )
-	setOverride( reason, element, value, "race.collideothers", 1 )
-end
-
-function setAlphaOverride( reason, element, value )
-	setOverride( reason, element, value, "race.alpha", 255 )
-end
-
-function getVehicleCollideWorld( reason, element, value )
-	return getOverride( reason, element, "race.collideworld" )
-end
-
-function getVehicleCollideOthers( reason, element, value )
-	return getOverride( reason, element, "race.collideothers" )
-end
-
-function getAlphaOverride( reason, element, value )
-	return getOverride( reason, element, "race.alpha" )
-end
-
-
-function setOverride( reason, element, value, var, default )
-	-- Recurse for each item if element is a table
-	if type(element) == "table" then
-		for _,item in ipairs(element) do
-			setOverride( reason, item, value, var, default )
-		end
-		return
-	end
-	-- Add to override list
-	if not g_Override.list[element] then		g_Override.list[element] = {}		end
-	if not g_Override.list[element][var] then	g_Override.list[element][var] = { default=default}	end
-	g_Override.list[element][var][reason] = value
-	-- Set timer to auto-flush incase it is not done manually
-	if not g_Override.timer:isActive() then
-		g_Override.timer:setTimer( flushOverrides, 50, 1 )
-	end
-end
-
-function getOverride( reason, element, var )
-	return g_Override.list[element] and g_Override.list[element][var] and g_Override.list[element][var][reason] or nil
-end
-
-function flushOverrides()
-	g_Override.timer:killTimer()
-	-- For each element
-	for element,varlist in pairs(g_Override.list) do
-		-- For each var
-		for var,valuelist in pairs(varlist) do
-			-- Find the lowest value
-			local lowestValue = var.default or 1000
-			for _,value in pairs(valuelist) do
-				lowestValue = math.min( lowestValue, value )
-			end
-			-- Set the lowest value for this element's var
-			setElementData ( element, var, lowestValue )		
-		end
-	end
-end
-
-function resetOverrides()
-	-- For each element
-	for element,varlist in pairs(g_Override.list) do
-		-- For each var
-		for var,valuelist in pairs(varlist) do
-			-- Set the default value for this element's var
-			if isElement ( element ) then
-				setElementData ( element, var, var.default )		
-			end
-		end
-	end
-	g_Override.list = {}
-end
-
 --------------------------------------
 
 
