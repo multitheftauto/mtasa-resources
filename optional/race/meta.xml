@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r482 16Oct09" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r483 17Oct09" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -74,6 +74,7 @@
 	<export function="getTimePassed" type="server"/>
 	<export function="getPlayerRank" type="server"/>
 	<export function="isPlayerFinished" type="server"/>
+	<export function="getPlayerVehicle" type="server"/>
 	
 	<settings>
 		<!-- *****************************************************
