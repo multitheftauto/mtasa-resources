@@ -668,12 +668,13 @@ addEventHandler('onPlayerWasted', g_Root,
 				local x, y, z = getElementPosition(source)
 				spawnPlayer(source, x, y, z, 0, getElementModel(source))
 				if g_Vehicles[source] then
-		            warpPedIntoVehicle(player, vehicle)	
-					--setTimer(warpPedIntoVehicle, 500, 10, source, g_Vehicles[source])
+					warpPedIntoVehicle(source, g_Vehicles[source])	
 				end
 			else
 				setPlayerStatus( source, "dead", "" )
+				local player = source
 				g_CurrentRaceMode:onPlayerWasted(source)
+				triggerEvent( 'onPlayerRaceWasted', player, RaceMode.getPlayerVehicle( player ) )
 			end
 		end
 	end
@@ -1314,5 +1315,9 @@ function getTimePassed()
 		return false
 	end
 	return g_CurrentRaceMode:getTimePassed()
+end
+
+function getPlayerVehicle( player )
+	return RaceMode.getPlayerVehicle( player )
 end
 
