@@ -11,7 +11,7 @@
 _commands = {}
 
 function getPlayerWildcard ( string )
-	local player = getPlayerFromNick ( string )
+	local player = getPlayerFromName ( string )
 	if ( player ) then return player end
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
 		if ( string.find ( string.upper ( getPlayerName ( player ) ), string.upper ( string ) ) ) then
