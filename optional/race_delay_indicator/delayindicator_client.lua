@@ -23,18 +23,18 @@ addEventHandler("showDelay", g_Root,
 			else
 				cps = "(-"..cps.."CPs) "
 			end
-			delayDisplayBehind:text("+"..msToTimeStr(delayTime).." "..cps..getPlayerName(source))
+			delayDisplayBehind:text("-"..msToTimeStr(delayTime).." "..cps..string.gsub(getPlayerName(source), "#%x%x%x%x%x%x", ""))
 			delayDisplayBehind:visible(true)
 			behindTick = getTickCount()
 			setTimer(hideDelayDisplay, TIME_TO_DISPLAY, 1, false)
 		elseif type(optional) == "table" then
 			if delayTime < 0 then
 				-- outputChatBox("-"..msToTimeStr(-delayTime).." current record")
-				delayDisplayFront:text("-"..msToTimeStr(-delayTime).." record #"..optional[1])
+				delayDisplayFront:text("+"..msToTimeStr(-delayTime).." record #"..optional[1])
 				delayDisplayFront:color(255, 255, 0)
 			elseif delayTime > 0 then
 				-- outputChatBox("+"..msToTimeStr(delayTime).." current record")
-				delayDisplayFront:text("+"..msToTimeStr(delayTime).." record #"..optional[1])
+				delayDisplayFront:text("-"..msToTimeStr(delayTime).." record #"..optional[1])
 				delayDisplayFront:color(0, 255, 255)
 			end
 			delayDisplayFront:visible(true)
@@ -47,7 +47,7 @@ addEventHandler("showDelay", g_Root,
 			else
 				cps = "(+"..cps.."CPs) "
 			end
-			delayDisplayFront:text("-"..msToTimeStr(delayTime).." "..cps..getPlayerName(source))
+			delayDisplayFront:text("+"..msToTimeStr(delayTime).." "..cps..string.gsub(getPlayerName(source), "#%x%x%x%x%x%x", ""))
 			delayDisplayFront:color(255, 0, 0)
 			delayDisplayFront:visible(true)
 			frontTick = getTickCount()
