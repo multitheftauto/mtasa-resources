@@ -104,16 +104,19 @@ function cacheGameOptions()
 	g_GameOptions.vehicleweapons		= getBool('race.vehicleweapons',true)
 	g_GameOptions.firewater				= getBool('race.firewater',false)
 	g_GameOptions.cachemodels			= getBool('race.cachemodels',true)
+	g_GameOptions.classicchangez		= getBool('race.classicchangez',false)
 	g_GameOptions.admingroup			= getString('race.admingroup','Admin')
 	g_GameOptions.blurlevel				= getNumber('race.blur',36)
 	g_GameOptions.cloudsenable			= getBool('race.clouds',true)
 	g_GameOptions.joinspectating		= getBool('race.joinspectating',true)
+	g_GameOptions.stealthspectate		= getBool('race.stealthspectate',true)
 	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
 	g_GameOptions.skins_map_can_override			= getBool('race.skins_map_can_override',true)
 	g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
 	g_GameOptions.autopimp_map_can_override			= getBool('race.autopimp_map_can_override',true)
 	g_GameOptions.firewater_map_can_override		= getBool('race.firewater_map_can_override',true)
 	g_GameOptions.cachemodels_map_can_override		= getBool('race.cachemodels_map_can_override',true)
+	g_GameOptions.classicchangez_map_can_override	= getBool('race.classicchangez_map_can_override',true)
 	g_GameOptions.ghostmode_warning_if_map_override			= getBool('race.ghostmode_warning_if_map_override',true)
 	g_GameOptions.vehicleweapons_warning_if_map_override	= getBool('race.vehicleweapons_warning_if_map_override',true)
 
@@ -146,6 +149,7 @@ function cacheMapOptions(map)
 	g_MapOptions.autopimp		= map.autopimp == 'true'
 	g_MapOptions.firewater		= map.firewater == 'true'
 	g_MapOptions.cachemodels	= map.cachemodels == 'true'
+	g_MapOptions.classicchangez	= map.classicchangez == 'true'
 	
 	outputDebug("MISC", "duration = "..g_MapOptions.duration.."  respawn = "..g_MapOptions.respawn.."  respawntime = "..tostring(g_MapOptions.respawntime).."  time = "..g_MapOptions.time.."  weather = "..g_MapOptions.weather)
 	
@@ -197,6 +201,11 @@ function cacheMapOptions(map)
 	if not map.cachemodels or not g_GameOptions.cachemodels_map_can_override then
 		g_MapOptions.cachemodels = g_GameOptions.cachemodels
 	end
+
+	-- Set classicchangez from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.classicchangez or not g_GameOptions.classicchangez_map_can_override then
+		g_MapOptions.classicchangez = g_GameOptions.classicchangez
+	end
 end
 
 
@@ -228,6 +237,7 @@ function loadMap(res)
 	g_SavedMapSettings.autopimp			= map.autopimp
 	g_SavedMapSettings.firewater		= map.firewater
 	g_SavedMapSettings.cachemodels		= map.cachemodels
+	g_SavedMapSettings.classicchangez	= map.classicchangez
 	g_SavedMapSettings.firewater		= map.firewater
 
 	cacheMapOptions(g_SavedMapSettings)
@@ -607,7 +617,7 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 				local rx, ry, rz = getVehicleRotation (vehicle)
 				setVehicleRotation(vehicle, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
 				setVehicleID(vehicle, checkpoint.vehicle)
-				clientCall(source, 'vehicleChanging')
+				clientCall(source, 'vehicleChanging', g_MapOptions.classicchangez, tonumber(checkpoint.vehicle))
 				if checkpoint.paintjob or checkpoint.upgrades then
 					setVehiclePaintjobAndUpgrades(vehicle, checkpoint.paintjob, checkpoint.upgrades)
 				else
@@ -648,7 +658,7 @@ addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 				setVehicleRotation(vehicle, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
 				setVehicleID(vehicle, pickup.vehicle)
 				setVehiclePaintjobAndUpgrades(vehicle, pickup.paintjob, pickup.upgrades)
-				clientCall(source, 'vehicleChanging', getTime())
+				clientCall(source, 'vehicleChanging', g_MapOptions.classicchangez, tonumber(pickup.vehicle))
 			end
 		end
 		triggerEvent('onPlayerPickUpRacePickup', source, pickupID, pickup.type, pickup.vehicle)
@@ -908,7 +918,9 @@ addEventHandler('onClientRequestSpectate', g_Root,
 		if isPlayerSpectating(player) ~= enable then
 			if enable then
 				clientCall(player, "Spectate.start", 'manual' )
-				setPlayerStatus( player, nil, "spectating")
+				if not g_GameOptions.stealthspectate then
+					setPlayerStatus( player, nil, "spectating")
+				end
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), 0 )
 			else
 				clientCall(player, "Spectate.stop", 'manual' )
