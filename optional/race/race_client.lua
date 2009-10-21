@@ -484,12 +484,19 @@ function loadPickup(pickupID)
 	end
 end
 
-function vehicleChanging(h, m)
-	local newVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
-	if g_PrevVehicleHeight and newVehicleHeight > g_PrevVehicleHeight then
-		local x, y, z = getElementPosition(g_Vehicle)
-		setElementPosition(g_Vehicle, x, y, z - g_PrevVehicleHeight + newVehicleHeight)
+function vehicleChanging( changez, newModel )
+	if getElementModel(g_Vehicle) ~= newModel then
+		outputConsole( "Vehicle change model mismatch (" .. tostring(getElementModel(g_Vehicle)) .. "/" .. tostring(newModel) .. ")" )
 	end
+	local newVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
+	local x, y, z = getElementPosition(g_Vehicle)
+	if g_PrevVehicleHeight and newVehicleHeight > g_PrevVehicleHeight then
+		z = z - g_PrevVehicleHeight + newVehicleHeight
+	end
+	if changez then
+		z = z + 1
+	end
+	setElementPosition(g_Vehicle, x, y, z)
 	g_PrevVehicleHeight = nil
 	local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
 	toggleControl('vehicle_fire', weapons)
