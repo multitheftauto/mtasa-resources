@@ -50,7 +50,7 @@ addEventHandler('onPlayerWasted', g_Root,
 	end
 )
 
-addEvent('onRequestKillPlayer')
+addEvent('onRequestKillPlayer', true)
 addEventHandler('onRequestKillPlayer', g_Root,
     function()
 		p_Killed = true
