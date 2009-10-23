@@ -614,8 +614,7 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 		local checkpoint = g_Checkpoints[checkpointNum]
 		if checkpoint.vehicle then
 			if getElementModel(vehicle) ~= tonumber(checkpoint.vehicle) then
-				local rx, ry, rz = getVehicleRotation (vehicle)
-				setVehicleRotation(vehicle, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
+				clientCall(source, 'alignVehicleWithUp')
 				setVehicleID(vehicle, checkpoint.vehicle)
 				clientCall(source, 'vehicleChanging', g_MapOptions.classicchangez, tonumber(checkpoint.vehicle))
 				if checkpoint.paintjob or checkpoint.upgrades then
@@ -654,8 +653,7 @@ addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 			addVehicleUpgrade(vehicle, 1010)
 		elseif pickup.type == 'vehiclechange' then
 			if getElementModel(vehicle) ~= tonumber(pickup.vehicle) then
-				local rx, ry, rz = getVehicleRotation (vehicle)
-				setVehicleRotation(vehicle, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
+				clientCall(source, 'alignVehicleWithUp')
 				setVehicleID(vehicle, pickup.vehicle)
 				setVehiclePaintjobAndUpgrades(vehicle, pickup.paintjob, pickup.upgrades)
 				clientCall(source, 'vehicleChanging', g_MapOptions.classicchangez, tonumber(pickup.vehicle))
