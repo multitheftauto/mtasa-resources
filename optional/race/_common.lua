@@ -172,6 +172,7 @@ end
 ---------------------------------------------------------------------------
 -- Others
 ---------------------------------------------------------------------------
+-- Element description for debugging
 function getElementDesc(element)
 	local bHasPlayerName = false
 	local status = "[" .. tostring( getElementType(element) ) .. ":"
@@ -192,4 +193,85 @@ function getElementDesc(element)
 	end
 	return status .. "]"
 end
+
+-- Modulo with more useful sign handling
+function rem( a, b )
+	local result = a - b * math.floor( a / b )
+	if result >= b then
+		result = result - b
+	end
+	return result
+end
+
+-- Rotations from an element matrix
+function matrixToRotations( matrix )
+
+	local Right = Vector3D:new( matrix[1][1], matrix[1][2], matrix[1][3] )
+	local Fwd	= Vector3D:new( matrix[2][1], matrix[2][2], matrix[2][3] )
+	local Up	= Vector3D:new( matrix[3][1], matrix[3][2], matrix[3][3] )
+
+	local rz = math.atan2( Fwd.y, Fwd.x )
+	local rx = math.asin( Fwd.z )
+	local ry = -math.atan2( Right.z, Up.z)
+
+	-- Convert to degrees and ensure 0-360
+	rx = rem( rx * (360/6.28) - 90, 360 )
+	ry = rem( ry * (360/6.28), 360 )
+	rz = rem( rz * (360/6.28), 360 )
+
+	return rx, ry, rz
+end
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+-- Vector3D
+---------------------------------------------------------------------------
+Vector3D = {
+	new = function(self, _x, _y, _z)
+		local newVector = { x = _x or 0.0, y = _y or 0.0, z = _z or 0.0 }
+		return setmetatable(newVector, { __index = Vector3D })
+	end,
+
+	Copy = function(self)
+		return Vector3D:new(self.x, self.y, self.z)
+	end,
+
+	Normalize = function(self)
+		local mod = self:Length()
+		self.x = self.x / mod
+		self.y = self.y / mod
+		self.z = self.z / mod
+	end,
+
+	Dot = function(self, V)
+		return self.x * V.x + self.y * V.y + self.z * V.z
+	end,
+
+	Length = function(self)
+		return math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z)
+	end,
+
+	AddV = function(self, V)
+		return Vector3D:new(self.x + V.x, self.y + V.y, self.z + V.z)
+	end,
+
+	SubV = function(self, V)
+		return Vector3D:new(self.x - V.x, self.y - V.y, self.z - V.z)
+	end,
+
+	CrossV = function(self, V)
+		return Vector3D:new(self.y * V.z - self.z * V.y,
+							self.z * V.x - self.x * V.z,
+							self.x * V.y - self.y * V.z)
+	end,
+
+	Mul = function(self, n)
+		return Vector3D:new(self.x * n, self.y * n, self.z * n)
+	end,
+
+	Div = function(self, n)
+		return Vector3D:new(self.x / n, self.y / n, self.z / n)
+	end,
+}
 ---------------------------------------------------------------------------

@@ -1198,6 +1198,35 @@ addEventHandler('onClientResourceStop', g_ResRoot,
 	end
 )
 
+------------------------
+-- Make vehicle upright
+
+function directionToRotation2D( x, y )
+	return rem( math.atan2( y, x ) * (360/6.28) - 90, 360 )
+end
+
+function alignVehicleWithUp()
+	local vehicle = g_Vehicle
+	if not vehicle then return end
+
+	local matrix = getElementMatrix( vehicle )
+	local Right = Vector3D:new( matrix[1][1], matrix[1][2], matrix[1][3] )
+	local Fwd	= Vector3D:new( matrix[2][1], matrix[2][2], matrix[2][3] )
+	local Up	= Vector3D:new( matrix[3][1], matrix[3][2], matrix[3][3] )
+
+	local Velocity = Vector3D:new( getElementVelocity( vehicle ) )
+	local rz
+
+	if Velocity:Length() > 0.05 and Up.z < 0.001 then
+		-- If velocity is valid, and we are upside down, use it to determine rotation
+		rz = directionToRotation2D( Velocity.x, Velocity.y )
+	else
+		-- Otherwise use facing direction to determine rotation
+		rz = directionToRotation2D( Fwd.x, Fwd.y )
+	end
+
+	setVehicleRotation( vehicle, 0, 0, rz )
+end
 
 
 ------------------------
