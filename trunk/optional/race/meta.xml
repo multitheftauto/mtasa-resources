@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r488 22Oct09" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r489 24Oct09" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -237,6 +237,13 @@
 					group="_Advanced"
 					accept="false,true"
 					desc="Set to true to move the player up when changing vehicles."
+					/>
+
+		<setting name="*countdowneffect" value="true"
+					friendlyname="Countdown effect"
+					group="Display"
+					accept="false,true"
+					desc="Set to true for a fancy effect on the last countdown image."
 					/>
 
         <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>

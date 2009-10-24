@@ -49,23 +49,28 @@ function Countdown:update()
 		return
 	end
 	if self.images then
-		if self.countelem then
-			destroyElement(self.countelem)
+		if self.countelems and self.countelems[1] then
+			table.each( self.countelems, destroyElement )
 		end
+		self.countelems = {}
+
 		local screenWidth, screenHeight = guiGetScreenSize()
-		self.countelem = guiCreateStaticImage(
-			math.floor(screenWidth/2 - self.images.width/2),
-			math.floor(screenHeight/2 - self.images.height/2),
-			self.images.width,
-			self.images.height,
-			string.format(self.images.namepattern, self.value),
-			false,
-			nil
-		)
+		local numImages = g_GameOptions.countdowneffect and self.value == 0 and 3 or 1
+		for i=numImages,1,-1 do
+			self.countelems[i] = guiCreateStaticImage(
+				math.floor(screenWidth/2 - self.images.width/2),
+				math.floor(screenHeight/2 - self.images.height/2),
+				self.images.width,
+				self.images.height,
+				string.format(self.images.namepattern, self.value),
+				false,
+				nil
+			)
+		end
 		if self.fade then
 			Animation.createAndPlay(
-				self.countelem,
-				{ from = 1, to = 0, time = 1000, fn = guiSetAlpha }
+				self.countelems,
+				{ from = 0, to = 1, time = 1000, fn = zoomFades, width = self.images.width, height = self.images.height }
 			)
 			if self.background and self.value == 0 then
 				Animation.createAndPlay(
@@ -86,14 +91,50 @@ function Countdown:destroy()
 	if type(self) ~= 'table' then
 		self = Countdown.instances[self]
 	end
-	if self.countelem then
-		destroyElement(self.countelem)
-		self.countelem = nil
+	if self.countelems and self.countelems[1] then
+		table.each( self.countelems, destroyElement )
 	end
+	self.countelems = nil
 	if self.background and self.background.elem then
 		destroyElement(self.background.elem)
 		self.background.elem = nil
 	end
 	Countdown.instances[self.id] = nil
 	self.id = nil
+end
+
+-- Custom fancy effect for final countdown image
+function zoomFades(elems, val, info)
+	if type( val ) == 'table' then
+		return
+	end
+
+	local valinv = 1 - val
+	local width = info.width
+	local height = info.height
+
+	local val = 1-((1-val) * (1-val))
+	local slope = val * 0.95
+	local alphas = { valinv, (valinv-0.35) * 0.20, (valinv-0.5) * 0.125 }
+
+	if #elems > 1 then
+		alphas[1] = valinv*valinv-valinv*0.5
+	end
+
+	for i,elem in ipairs(elems) do
+		if isElement(elem) then
+			local scalex = 1 + slope * (i-1)
+			local scaley = 1 + slope * (i-1)
+			local sx = width * scalex
+			local sy = height * scaley
+			local screenWidth, screenHeight = guiGetScreenSize()
+			sx = math.min( screenWidth, sx )
+			sy = math.min( screenHeight, sy )
+			local px = math.floor(screenWidth/2 - sx/2)
+			local py = math.floor(screenHeight/2 - sy/2)
+			guiSetPosition( elem, px, py, false )
+			guiSetSize( elem, sx, sy, false )
+			guiSetAlpha( elem, alphas[i] )
+		end
+	end
 end
