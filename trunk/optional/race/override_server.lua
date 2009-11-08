@@ -14,10 +14,9 @@ Override = {}
 Override.list = {}
 Override.timer = Timer:create()
 
-addEventHandler( "onPlayerQuit", g_Root,
+addEventHandler( "onElementDestroy", g_Root,
 	function()
 		Override.list [ source ] = nil
-		Override.list [ RaceMode.getPlayerVehicle(source) or source ] = nil
 	end
 )
 
