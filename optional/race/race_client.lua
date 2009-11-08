@@ -531,25 +531,29 @@ end
 
 addEventHandler('onClientElementDataChange', g_Me,
 	function(dataName)
-		if dataName == 'race rank' then
-			local rank = getElementData(g_Me, 'race rank')
-			if not tonumber(rank) then
-				g_dxGUI.ranknum:text('')
-				g_dxGUI.ranksuffix:text('')
-				return
-			end
-			g_dxGUI.ranknum:text(tostring(rank))
-			g_dxGUI.ranksuffix:text( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' )
+		if dataName == 'race rank' and not Spectate.active then
+			setRankDisplay( getElementData(g_Me, 'race rank') )
 		end
 	end,
 	false
 )
 
+function setRankDisplay( rank )
+	if not tonumber(rank) then
+		g_dxGUI.ranknum:text('')
+		g_dxGUI.ranksuffix:text('')
+		return
+	end
+	g_dxGUI.ranknum:text(tostring(rank))
+	g_dxGUI.ranksuffix:text( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' )
+end
+
+
 addEventHandler('onClientElementDataChange', g_Root,
 	function(dataName)
 		if dataName == 'race.finished' then
 			if isPlayerFinished(source) then
-				Spectate.validateTargetSoon( source, 2000 )	-- No spectate continue at this player after 2 seconds
+				Spectate.dropCamera( source, 2000 )
 			end
 		end
 		if dataName == 'race.spectating' then
@@ -603,8 +607,71 @@ function showNextCheckpoint()
 		local nextMarker = createCheckpoint(i+1)
 		setMarkerTarget(curCheckpoint.marker, unpack(nextCheckpoint.position))
 	end
-	setElementData(g_Me, 'race.checkpoint', i)
+	if not Spectate.active then
+		setElementData(g_Me, 'race.checkpoint', i)
+	end
 end
+
+-------------------------------------------------------------------------------
+-- Show checkpoints and rank info that is relevant to the player being spectated
+local prevWhich = nil
+local cpValuePrev = nil
+local rankValuePrev = nil
+
+function updateSpectatingCheckpointsAndRank()
+	local which = getWhichDataSourceToUse()
+
+	-- Do nothing if we are keeping the last thing displayed
+	if which == "keeplast" then
+		return
+	end
+
+	local dataSourceChangedToLocal = which ~= prevWhich and which=="local"
+	prevWhich = which
+
+	if Spectate.active or dataSourceChangedToLocal then
+		local watchedPlayer = getWatchedPlayer()
+
+		if g_CurrentCheckpoint and g_Checkpoints and #g_Checkpoints > 0 then
+			local cpValue = getElementData(watchedPlayer, 'race.checkpoint') or 0
+			if cpValue > 0 and cpValue <= #g_Checkpoints then
+				if cpValue ~= cpValuePrev then
+					cpValuePrev = cpValue
+					setCurrentCheckpoint( cpValue )	
+				end
+			end
+		end
+
+		local rankValue = getElementData(watchedPlayer, 'race rank') or 0
+		if rankValue ~= rankValuePrev then
+			rankValuePrev = rankValue
+			setRankDisplay( rankValue )	
+		end
+	end
+	if dataSourceChangedToLocal then
+		cpValuePrev = nil
+		rankValuePrev = nil
+	end
+end
+
+-- "local"			If not spectating
+-- "spectarget"		If spectating valid target
+-- "keeplast"		If spectating nil target and dropcam
+-- "local"			If spectating nil target and no dropcam
+function getWhichDataSourceToUse()
+	if not Spectate.active			then	return "local"			end
+	if Spectate.target				then	return "spectarget"		end
+	if Spectate.hasDroppedCamera()	then	return "keeplast"		end
+	return "local"
+end
+
+function getWatchedPlayer()
+	if not Spectate.active			then	return g_Me				end
+	if Spectate.target				then	return Spectate.target	end
+	if Spectate.hasDroppedCamera()	then	return nil				end
+	return g_Me
+end
+-------------------------------------------------------------------------------
 
 function checkpointReached(elem)
 	outputDebug( 'CP', 'checkpointReached'
@@ -677,7 +744,7 @@ Spectate.target = nil
 Spectate.blockUntilTimes = {}
 Spectate.savePos = false
 Spectate.manual = false
-Spectate.validateTargetTimer = Timer:create()
+Spectate.droppedCameraTimer = Timer:create()
 Spectate.tickTimer = Timer:create()
 Spectate.fadedout = true
 
@@ -740,6 +807,7 @@ end
 
 -- Stop spectating. Will restore position if Spectate.savePos is set
 function Spectate._stop()
+	Spectate.cancelDropCamera()
 	Spectate.tickTimer:killTimer()
 	triggerServerEvent('onClientNotifySpectate', g_Me, false )
 	outputDebug( 'SPECTATE', 'Spectate._stop ' )
@@ -760,7 +828,6 @@ function Spectate._stop()
 		Spectate.savePos = false
 		restorePosition()
 	end
-	Spectate.cancelValidateTargetSoon()
 end
 
 function Spectate.previous()
@@ -777,17 +844,54 @@ function Spectate.next(bGUIFeedback)
 	end
 end
 
+---------------------------------------------
 -- Step along to the next player to spectate
+local playersRankSorted = {}
+local playersRankSortedTime = 0
+
 function Spectate.findNewTarget(current,dir)
-	local pos = table.find(g_Players, current) or 1
-	for i=1,#g_Players do
-		pos = ((pos + dir - 1) % #g_Players ) + 1
-		if Spectate.isValidTarget(g_Players[pos]) then
-			return g_Players[pos]
+
+	-- Time to update sorted list?
+	local bUpdateSortedList = ( getTickCount() - playersRankSortedTime > 1000 )
+
+	-- Need to update sorted list because g_Players has changed size?
+	bUpdateSortedList = bUpdateSortedList or ( #playersRankSorted ~= #g_Players )
+
+	if not bUpdateSortedList then
+		-- Check playersRankSorted contains the same elements as g_Players
+		for _,item in ipairs(playersRankSorted) do
+			if not table.find(g_Players, item.player) then
+				bUpdateSortedList = true
+				break
+			end
+		end
+	end
+
+	-- Update sorted list if required
+	if bUpdateSortedList then
+		-- Remake list
+		playersRankSorted = {}
+		for _,player in ipairs(g_Players) do
+			local rank = tonumber(getElementData(player, 'race rank') or 0)
+			table.insert( playersRankSorted, {player=player, rank=rank} )
+		end
+		-- Sort it by rank
+		table.sort(playersRankSorted, function(a,b) return(a.rank > b.rank) end)
+
+		playersRankSortedTime = getTickCount()
+	end
+
+	-- Find next player in list
+	local pos = table.find(playersRankSorted, 'player', current) or 1
+	for i=1,#playersRankSorted do
+		pos = ((pos + dir - 1) % #playersRankSorted ) + 1
+		if Spectate.isValidTarget(playersRankSorted[pos].player) then
+			return playersRankSorted[pos].player
 		end
 	end
 	return nil
 end
+---------------------------------------------
 
 function Spectate.isValidTarget(player)
 	if player == nil then
@@ -816,28 +920,38 @@ end
 function Spectate.validateTarget(player)
 	if Spectate.active and player == Spectate.target then
 		if not Spectate.isValidTarget(player) then
-			Spectate.next(false)
+			Spectate.previous(false)
 		end
 	end
 end
 
-function Spectate.validateTargetSoon( player, time )
+function Spectate.dropCamera( player, time )
 	if Spectate.active and player == Spectate.target then
-		if not Spectate.validateTargetTimer:isActive() then
-			Spectate.validateTargetTimer:setTimer(Spectate.validateTarget, time, 1, player )
+		if not Spectate.hasDroppedCamera() then
+			setCameraMatrix( getCameraMatrix() )
+			Spectate.target = nil
+			Spectate.droppedCameraTimer:setTimer(Spectate.cancelDropCamera, time, 1, player )
 		end
 	end
 end
 
-function Spectate.cancelValidateTargetSoon()
-	Spectate.validateTargetTimer:killTimer()
+function Spectate.hasDroppedCamera()
+	return Spectate.droppedCameraTimer:isActive()
+end
+
+function Spectate.cancelDropCamera()
+	if Spectate.hasDroppedCamera() then
+		Spectate.droppedCameraTimer:killTimer()
+		Spectate.tick()
+	end
 end
 
 
 function Spectate.setTarget( player )
-	if Spectate.target ~= player then
-		Spectate.cancelValidateTargetSoon()
+	if Spectate.hasDroppedCamera() then
+		return
 	end
+
 	Spectate.active = true
 	Spectate.target = player
 	if Spectate.target then
@@ -865,8 +979,8 @@ function Spectate.blockAsTarget( player, ticks )
 end
 
 function Spectate.tick()
-	if not Spectate.target or Spectate.getCameraTargetPlayer() ~= Spectate.target or not Spectate.isValidTarget(Spectate.target) then
-		Spectate.next(false)
+	if not Spectate.target or ( Spectate.getCameraTargetPlayer() and Spectate.getCameraTargetPlayer() ~= Spectate.target ) or not Spectate.isValidTarget(Spectate.target) then
+		Spectate.previous(false)
 	end
 end
 
@@ -908,6 +1022,16 @@ addEventHandler ( "onClientScreenFadedIn", g_Root,
 	function()
 		Spectate.fadedout = false
 		Spectate.updateGuiFadedOut()
+	end
+)
+
+addEvent ( "onClientPreRender", true )
+addEventHandler ( "onClientPreRender", g_Root,
+	function()
+		if isPlayerRaceDead( g_Me ) then
+			setCameraMatrix( getCameraMatrix() )		
+		end
+		updateSpectatingCheckpointsAndRank()
 	end
 )
 
@@ -1048,7 +1172,6 @@ function unloadAll()
 	end
 	g_Pickups = {}
 	g_VisiblePickups = {}
-	-- removeEventHandler('onClientRender', g_Root, updatePickups)
 	
 	table.each(g_Objects, destroyElement)
 	g_Objects = {}
@@ -1163,19 +1286,14 @@ addEventHandler('onClientPlayerWasted', g_Root,
 		if not g_StartTick then
 			return
 		end
-		local player = source	-- source may change before the end of this function
+		local player = source
 		local vehicle = getPedOccupiedVehicle(player)
 		if player == g_Me then
 			if #g_Players > 1 and (g_MapOptions.respawn == 'none' or g_MapOptions.respawntime >= 10000) then
 				setTimer(Spectate.start, 2000, 1, 'auto')
 			end
 		else
-			Spectate.validateTargetSoon( player, 2000 )	-- No spectate continue at this player after 2 seconds
-			if vehicle then
-				if ( getGapBetweenElements( vehicle, getPedOccupiedVehicle(g_Me) ) or 100 ) > 5 then
-					-- setElementCollisionsEnabled ( vehicle, true )	-- Fix floaty dead cars
-				end
-			end
+			Spectate.dropCamera( player, 1000 )
 		end
 	end
 )

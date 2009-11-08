@@ -462,6 +462,7 @@ function joinHandlerBoth(player)
             end
         end
 
+		setPlayerSpectating(player, false)
         setPlayerNotReady( player )
         setPedStat(player, 160, 1000)
         setPedStat(player, 229, 1000)
@@ -478,8 +479,8 @@ function joinHandlerBoth(player)
             if bPlayerJoined and g_CurrentRaceMode.running then
                 unfreezePlayerWhenReady(player)
             end
-			
-            if g_CurrentRaceMode:getName() == 'Destruction derby' and not stateAllowsSpawnInNoRespawnMap() then
+
+			if g_MapOptions.respawn == 'none' and not stateAllowsSpawnInNoRespawnMap() then
                 g_CurrentRaceMode.setPlayerIsFinished(player)
                 setElementPosition(vehicle, 0, 0, 0)
             end
@@ -1266,10 +1267,11 @@ setTimer(
 			if not isElement(vehicle) then
 				fail = true
 				outputRace( "Race integrity test fail: Invalid vehicle for player " .. tostring(getPlayerName(player)) )
+				kickPlayer( player, nil, "Connection terminated to protect the core" )
 			end
 		end
 
-		-- Incremenet or reset fail counter
+		-- Increment or reset fail counter
 		g_IntegrityFailCount = fail and g_IntegrityFailCount + 1 or 0
 
 		-- Two fails in a row triggers a script restart
