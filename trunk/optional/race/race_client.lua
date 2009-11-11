@@ -830,10 +830,12 @@ function Spectate._stop()
 	end
 end
 
-function Spectate.previous()
+function Spectate.previous(bGUIFeedback)
 	Spectate.setTarget( Spectate.findNewTarget(Spectate.target,-1) )
-	setGUIComponentsVisible({ specprev = false, specprevhi = true })
-	setTimer(setGUIComponentsVisible, 100, 1, { specprevhi = false, specprev = true })
+	if bGUIFeedback then
+		setGUIComponentsVisible({ specprev = false, specprevhi = true })
+		setTimer(setGUIComponentsVisible, 100, 1, { specprevhi = false, specprev = true })
+	end
 end
 
 function Spectate.next(bGUIFeedback)
@@ -1343,7 +1345,7 @@ function alignVehicleWithUp()
 		rz = directionToRotation2D( Fwd.x, Fwd.y )
 	end
 
-	setVehicleRotation( vehicle, 0, 0, rz )
+	setElementRotation( vehicle, 0, 0, rz )
 end
 
 

@@ -469,9 +469,10 @@ function joinHandlerBoth(player)
         setPedStat(player, 230, 1000)
         
         if spawnpoint.vehicle then
-            local nick = getPlayerName(player)
             setRandomSeedForMap('vehiclecolors')
-            vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, #nick <= 8 and nick or nick:sub(1, 8))
+			-- Replace groups of unprintable characters with a space, and then remove any leading space
+			local plate = getPlayerName(player):gsub( '[^%a%d]+', ' ' ):gsub( '^ ', '' )
+			vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, plate:sub(1, 8))
             g_Vehicles[player] = vehicle
 			Override.setAlpha( "ForRCVehicles", player, g_RCVehicleIDs[spawnpoint.vehicle] and 0 or nil )
             RaceMode.playerFreeze(player)
@@ -509,7 +510,6 @@ function joinHandlerBoth(player)
                 end
             end
             warpPedIntoVehicle(player, vehicle)	
-            --setTimer(warpPedIntoVehicle, 500, 10, player, vehicle)	
         end
         
 		destroyBlipsAttachedTo(player)
@@ -1133,7 +1133,8 @@ function startAddons()
 				else
 					-- Start or restart resource
 					if getResourceState(resource) == 'running' then
-						-- restartResource(resource)
+						stopResource(resource)
+						setTimer( function() startResource(resource) end, 200, 1 )
 					else
 						startResource(resource)
 					end
@@ -1188,6 +1189,11 @@ addEventHandler( "onRequestMoveAwayEnd", g_Root,
 )
 
 function MoveAway.update ()
+	for player,_ in pairs(MoveAway.list) do
+		if not isElement(player) then
+			MoveAway.list [ player ] = nil
+		end
+	end
 	for player,_ in pairs(MoveAway.list) do
 		if isPedDead(player) or getElementHealth(player) == 0 then
 			local vehicle = g_Vehicles[player]
@@ -1292,7 +1298,7 @@ addCommandHandler('restartracemode',
 			return
 		end
 		outputChatBox('Race restarted by ' .. getPlayerName(player), g_Root, 0, 240, 0)
-        exports.mapmanager:changeGamemode( getResourceFromName('race') )
+		exports.mapmanager:changeGamemode( getResourceFromName('race') )
 	end
 )
 
