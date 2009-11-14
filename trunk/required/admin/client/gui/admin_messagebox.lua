@@ -69,7 +69,7 @@ function aMessageBox ( type, message, action )
 end
 
 function aMessageBoxClose ( destroy )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceMessage ) ) ) then
+	if ( ( destroy ) or ( aPerformanceMessage and guiCheckBoxGetSelected ( aPerformanceMessage ) ) ) then
 		if ( aMessageForm ) then
 			unbindKey ( "enter", "down", aMessageBoxAccept )
 			unbindKey ( "n", "down", aMessageBoxAccept )

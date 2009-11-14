@@ -282,6 +282,7 @@ function aAdminMenu ()
 		addEventHandler ( "onClientRender", _root, aClientRender )
 		addEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
 		addEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
+		addEventHandler ( "onClientGUITabSwitched", aTabPanel, aClientGUITabSwitched )
 
 		bindKey ( "arrow_d", "down", aPlayerListScroll, 1 )
 		bindKey ( "arrow_u", "down", aPlayerListScroll, -1 )
@@ -431,12 +432,21 @@ function aClientSync ( type, table )
 		guiSetText ( aTab3.Password, "Password: "..( table["password"] or "None" ) )
 		guiSetText ( aTab3.GameType, "Game Type: "..( table["game"] or "None" ) )
 		guiSetText ( aTab3.MapName, "Map Name: "..( table["map"] or "None" ) )
+	elseif ( type == "bansdirty" ) then
+		g_GotLatestBansList = false
+		if aAdminForm and guiGetVisible ( aAdminForm ) and guiGetSelectedTab( aTabPanel ) == aTab4.Tab then
+			-- Request full bans list if bans tab is displayed when 'bansdirty' is received
+			triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
+		end
 	elseif ( type == "bans" ) then
+		outputDebugString( "aClientSync received 'bans'" )
+		g_GotLatestBansList = true
 		guiGridListClear ( aTab4.BansList )
 		aBans = {}
 		aBans["Serial"] = {}
 		aBans["IP"] = {}
-		for i,ban in pairs ( table ) do
+		for i=#table,1,-1 do
+			local ban = table[i]
 			if ban.serial then
 				aBans["Serial"][ban.serial] = ban
 			end
@@ -459,6 +469,17 @@ function aClientSync ( type, table )
 		end
 		guiSetText ( aTab1.Messages, table["unread"].."/"..table["total"].." unread messages" )
 	end
+end
+
+function aClientGUITabSwitched( selectedTab )
+	if getElementParent( selectedTab ) == aTabPanel then
+		if selectedTab == aTab4.Tab then
+			if not g_GotLatestBansList then
+				-- Request full bans list if bans tab is selected and current list is out of date
+				triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
+			end
+		end	
+	end 
 end
 
 function aMessage ( )
