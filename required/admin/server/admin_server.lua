@@ -19,6 +19,17 @@ aStats = {}
 aReports = {}
 aWeathers = {}
 
+function notifyPlayerLoggedIn(player)
+	outputChatBox ( "Press 'p' to open your admin panel", player )
+	local unread = 0
+	for _, msg in ipairs ( aReports ) do
+		unread = unread + ( msg.read and 0 or 1 )
+	end
+	if unread > 0 then
+		outputChatBox( unread .. " unread Admin message" .. ( unread==1 and "" or "s" ), player, 255, 0, 0 )
+	end
+end
+
 addEventHandler ( "onResourceStart", _root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
@@ -38,7 +49,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
 		aPlayerInitialize ( player )
 		if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-			outputChatBox ( "Press 'p' to open your admin panel", player )
+			notifyPlayerLoggedIn(player)
 		end
 	end
 	local node = xmlLoadFile ( "conf\\interiors.xml" )
@@ -290,7 +301,7 @@ end
 addEventHandler ( "onPlayerLogin", _root, function ( previous, account, auto )
 	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
 		triggerEvent ( "aPermissions", source )
-		outputChatBox ( "Press 'p' to open your admin panel", source )
+		notifyPlayerLoggedIn( source )
 	end
 end )
 
@@ -585,7 +596,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 			setTimer ( kickPlayer, 100, 1, player, source, data )
 		elseif ( action == "ban" ) then
 			setTimer ( banPlayer, 100, 1, player, true, false, false, source, data )
-			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bans" )
+			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bansdirty" )
 		elseif ( action == "mute" )  then
 			if ( isPlayerMuted ( player ) ) then action = "un"..action end
 			aSetPlayerMuted ( player, not isPlayerMuted ( player ) )
@@ -1024,6 +1035,12 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 		aReports[id].text = tostring ( data.message )
 		aReports[id].time = time.monthday.."/"..time.month.." "..time.hour..":"..time.minute
 		aReports[id].read = false
+		-- PM all admins to say a new message has arrived
+		for id, p in ipairs ( getElementsByType ( "player" ) ) do
+			if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then
+				outputChatBox( "New Admin message from " .. aReports[id].author .. " (" .. aReports[id].subject .. ")", p, 255, 0, 0 )
+			end
+		end	
 	elseif ( action == "get" ) then
 		triggerClientEvent ( source, "aMessage", source, "get", aReports )
 	elseif ( action == "read" ) then
@@ -1085,7 +1102,7 @@ addEventHandler ( "aBans", _root, function ( action, data )
 	
 		if ( action ~= nil ) then
 			aAction ( "bans", action, source, false, mdata, more )
-			triggerEvent ( "aSync", source, "sync", "bans" )
+			triggerEvent ( "aSync", source, "sync", "bansdirty" )
 		end
 		return true
 	end

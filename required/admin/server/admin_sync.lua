@@ -7,7 +7,6 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-local bInitalUpdateBans = false;
 
 addEvent ( "aSync", true )
 addEventHandler ( "aSync", _root, function ( type, data )
@@ -34,10 +33,6 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		end
 		theSource = data
 	elseif ( type == "players" ) then
-		if not bInitalUpdateBans then
-			bInitalUpdateBans = true
-			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bans" )
-		end
 		for id, player in ipairs(getElementsByType("player")) do
 			tableOut[player] = {}
 			tableOut[player]["name"] = getPlayerName ( player )
@@ -100,6 +95,8 @@ addEventHandler ( "aSync", _root, function ( type, data )
 				end
 			end
 		end
+	elseif ( type == "bansdirty" ) then
+		tableOut = nil
 	elseif ( type == "bans" ) then
 		local bans = getBans()
 		for i,ban in ipairs(bans) do
@@ -196,13 +193,13 @@ end )
 
 addEventHandler ( "onBan", _root,
 	function()
-		setTimer( triggerEvent, 200, 1, "aSync", _root, "bans" )
+		setTimer( triggerEvent, 200, 1, "aSync", _root, "bansdirty" )
 	end
 )
 
 addEventHandler ( "onUnban", _root,
 	function()
-		setTimer( triggerEvent, 200, 1, "aSync", _root, "bans" )
+		setTimer( triggerEvent, 200, 1, "aSync", _root, "bansdirty" )
 	end
 )
 

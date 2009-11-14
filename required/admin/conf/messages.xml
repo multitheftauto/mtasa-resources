@@ -12,9 +12,11 @@
     -->
   <player>
     <group action="ban" r="255" g="0" b="0">
+      <all>$player has been banned by $admin.</all>
       <log>ADMIN: $admin has banned $player ($data)</log>
     </group>
     <group action="kick" r="255" g="0" b="0">
+      <all>$player has been kicked by $admin.</all>
       <log>ADMIN: $admin has kicked $player ($data)</log>
     </group>
     <group action="mute" r="255" g="0" b="0">
