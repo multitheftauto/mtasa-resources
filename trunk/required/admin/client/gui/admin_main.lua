@@ -570,6 +570,10 @@ function aPlayerListScroll ( key, state, inc )
 	else
 		guiGridListSetSelectedItem ( aTab1.PlayerList, next, 1 )
 	end
+	local oldsource = source
+	source = aTab1.PlayerList;
+	aClientClick ( "left" )
+	source = oldsource
 end
 
 function aClientPlayerChangeNick ( oldNick, newNick )
