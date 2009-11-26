@@ -597,7 +597,7 @@ function sqlInt(value)
 end
 
 function getTableName(value)
-	return sqlString( 'race mapmanager maps' )
+	return sqlString( 'race_mapmanager_maps' )
 end
 
 function ensureTableExists()
