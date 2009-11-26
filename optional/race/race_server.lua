@@ -252,7 +252,7 @@ function loadMap(res)
 	end
 
 	-- Check race can start ok
-	if not g_MapOptions.ghostmode then
+	if g_IgnoreSpawnCountProblems ~= res and not g_MapOptions.ghostmode then
 		local numSpawnPoints = #map:getAll('spawnpoint')
 		if getTotalPlayerCount() > numSpawnPoints then
 			-- unload map xml
@@ -534,8 +534,7 @@ function joinHandlerBoth(player)
 	if g_CurrentRaceMode.isPlayerFinished(player) then
 		-- Joining 'finished'
 		clientCall(player, "Spectate.start", 'auto' )
-		local status = math.random(0,10)~=6 and "waiting" or ({"bored","hopeful","excited","oblivious"})[math.random(1,4)]
-		setPlayerStatus( player, nil, status )
+		setPlayerStatus( player, nil, "waiting" )
 	else
 		if bPlayerJoined and g_CurrentRaceMode.running then
 			-- Joining after start

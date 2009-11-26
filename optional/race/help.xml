@@ -13,7 +13,10 @@ Enter/Exit - Kill player
 
 Admins
 ------
-/config     - Configure Race addons
-/ghostmode  - Toggle collisions
+/config           - Configure Race addons
+/ghostmode        - Toggle collisions
+/checkmap mapname - Find a map
+/nextmap mapname  - Set the next map
+/random           - Change to a random map
 Change other settings in the Admin panel
 </help>

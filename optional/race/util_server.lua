@@ -526,6 +526,28 @@ function getRealDateTimeString( time )
                         )
 end
 
+function getRealTimeSeconds()
+	return realTimeDateToSeconds( getRealTime() )
+end
+
+function realTimeDateToSeconds( time )
+	local leapyears = math.floor( ( time.year - 72 + 3 ) / 4 )
+	local days = ( time.year - 70 ) * 365 + leapyears + time.yearday
+	local seconds = days * 60*60*24
+	seconds = seconds + time.hour * 60*60
+	seconds = seconds + time.minute * 60
+	seconds = seconds + time.second
+	seconds = seconds - time.isdst * 60*60
+	return seconds
+end
+
+function realTimeDateToSecondsTest()
+	for i=1,100 do
+		local time1 = getRealTime( math.random(0, 60*60*24*365*50) )	-- Get a random date between 1970 and 2020
+		local time2 = getRealTime( realTimeToSeconds( time1 ) )
+		assert( getRealDateTimeString( time1 ) == getRealDateTimeString( time2 ) )
+	end
+end
 
 ---------------------------------------------------------------------------
 --
