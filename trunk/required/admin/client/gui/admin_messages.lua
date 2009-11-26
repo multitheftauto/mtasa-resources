@@ -14,17 +14,17 @@ _messages = nil
 function aViewMessages ( player )
 	if ( aMessagesForm == nil ) then
 		local x, y = guiGetScreenSize()
-		aMessagesForm	= guiCreateWindow ( x / 2 - 250, y / 2 - 125, 500, 250, "View Messages", false )
+		aMessagesForm	= guiCreateWindow ( x / 2 - 250, y / 2 - 125, 620, 250, "View Messages", false )
 
-		aMessagesList		= guiCreateGridList ( 0.03, 0.09, 0.75, 0.85, true, aMessagesForm )
-					   guiGridListAddColumn( aMessagesList, "#", 0.10 )
-					   guiGridListAddColumn( aMessagesList, "Subject", 0.50 )
-					   guiGridListAddColumn( aMessagesList, "Date", 0.20 )
-					   guiGridListAddColumn( aMessagesList, "Author", 0.15 )
-		aMessagesRead	= guiCreateButton ( 0.80, 0.20, 0.15, 0.09, "Read", true, aMessagesForm )
-		aMessagesDelete	= guiCreateButton ( 0.80, 0.30, 0.15, 0.09, "Delete", true, aMessagesForm )
-		aMessagesRefresh	= guiCreateButton ( 0.80, 0.65, 0.15, 0.09, "Refresh", true, aMessagesForm )
-		aMessagesClose	= guiCreateButton ( 0.80, 0.85, 0.15, 0.09, "Close", true, aMessagesForm )
+		aMessagesList		= guiCreateGridList ( 0.02, 0.09, 0.82, 0.85, true, aMessagesForm )
+					   guiGridListAddColumn( aMessagesList, "#", 0.08 )
+					   guiGridListAddColumn( aMessagesList, "Subject", 0.46 )
+					   guiGridListAddColumn( aMessagesList, "Date", 0.23 )
+					   guiGridListAddColumn( aMessagesList, "Author", 0.19 )
+		aMessagesRead	= guiCreateButton ( 0.86, 0.20, 0.12, 0.09, "Read", true, aMessagesForm )
+		aMessagesDelete	= guiCreateButton ( 0.86, 0.30, 0.12, 0.09, "Delete", true, aMessagesForm )
+		aMessagesRefresh	= guiCreateButton ( 0.86, 0.65, 0.12, 0.09, "Refresh", true, aMessagesForm )
+		aMessagesClose	= guiCreateButton ( 0.86, 0.85, 0.12, 0.09, "Close", true, aMessagesForm )
 		addEventHandler ( "aMessage", _root, aMessagesSync )
 		addEventHandler ( "onClientGUIClick", aMessagesForm, aClientMessagesClick )
 		addEventHandler ( "onClientGUIDoubleClick", aMessagesForm, aClientMessagesDoubleClick )
@@ -53,7 +53,8 @@ function aMessagesSync ( action, data )
 	if ( action == "get" ) then
 		_messages = data
 		guiGridListClear ( aMessagesList )
-		for id, message in ipairs ( data ) do
+		for id=#data,1,-1 do
+			local message = data[id]
 			local row = guiGridListAddRow ( aMessagesList )
 			guiGridListSetItemText ( aMessagesList, row, 1, tostring ( id ), false, false )
 			if ( message.read ) then guiGridListSetItemText ( aMessagesList, row, 2, message.subject, false, false )

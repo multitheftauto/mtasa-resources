@@ -227,4 +227,20 @@
   <html src="server/http/images/bans.png" raw="true"/>
   -->
 
+	<settings>
+		<!-- *****************************************************
+			 All these settings are adjustable in the Admin Panel:
+				1. start admin
+				2. press 'p'
+				3. select Resources tab
+				4. double click on the resource name
+			 ***************************************************** -->
+
+		<setting name="*maxmsgs" value="99"
+					friendlyname="Max messages"
+					accept="1-1000"
+					desc="Maximum admin messages to keep."
+					/>
+	</settings>
+
 </meta>
