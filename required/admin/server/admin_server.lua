@@ -118,6 +118,34 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 			aReports[id].read = read
 			messages = messages + 1
 		end
+		-- Remove duplicates
+		local a = 1
+		while a <= #aReports do
+			local b = a + 1
+			while b <= #aReports do
+				if table.cmp( aReports[a], aReports[b] ) then
+					table.remove( aReports, b )
+					b = b - 1
+				end
+				b = b + 1
+			end
+			a = a + 1
+		end
+		-- Upgrade time from '4/9 5:9' to '2009-09-04 05:09'
+		for id, rep in ipairs ( aReports ) do
+			if string.find( rep.time, "/" ) then
+				local monthday, month, hour, minute = string.match( rep.time, "^(.-)/(.-) (.-):(.-)$" )
+				rep.time = string.format( '%04d-%02d-%02d %02d:%02d', 2009, month + 1, monthday, hour, minute )
+			end
+		end
+		-- Sort messages by time
+		table.sort(aReports, function(a,b) return(a.time < b.time) end)
+		-- Limit number of messages
+		if tonumber(get('maxmsgs')) then
+			while #aReports > tonumber(get('maxmsgs')) do
+				table.remove( aReports, 1 )
+			end
+		end
 	end
 	local node = xmlLoadFile ( "conf\\messages.xml" )
 	if ( node ) then
@@ -158,11 +186,9 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 	else
 		local node = xmlLoadFile ( "conf\\reports.xml" )
 		if ( node ) then 
-			local messages = 0
-			while ( xmlFindChild ( node, "message", messages ) ~= false ) do
-				local subnode = xmlFindChild ( node, "message", messages )
+			while ( xmlFindChild ( node, "message", 0 ) ~= false ) do
+				local subnode = xmlFindChild ( node, "message", 0 )
 				xmlDestroyNode ( subnode )
-				messages = messages + 1
 			end
 		else
 			node = xmlCreateFile ( "conf\\reports.xml", "messages" )
@@ -1033,14 +1059,20 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 		aReports[id].category = tostring ( data.category )
 		aReports[id].subject = tostring ( data.subject )
 		aReports[id].text = tostring ( data.message )
-		aReports[id].time = time.monthday.."/"..time.month.." "..time.hour..":"..time.minute
+		aReports[id].time = string.format( '%04d-%02d-%02d %02d:%02d', time.year + 1900, time.month + 1, time.monthday, time.hour, time.minute )
 		aReports[id].read = false
 		-- PM all admins to say a new message has arrived
-		for id, p in ipairs ( getElementsByType ( "player" ) ) do
+		for _, p in ipairs ( getElementsByType ( "player" ) ) do
 			if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then
 				outputChatBox( "New Admin message from " .. aReports[id].author .. " (" .. aReports[id].subject .. ")", p, 255, 0, 0 )
 			end
-		end	
+		end
+		-- Keep message count no greater that 'maxmsgs'
+		if tonumber(get('maxmsgs')) then
+			while #aReports > tonumber(get('maxmsgs')) do
+				table.remove( aReports, 1 )
+			end
+		end
 	elseif ( action == "get" ) then
 		triggerClientEvent ( source, "aMessage", source, "get", aReports )
 	elseif ( action == "read" ) then

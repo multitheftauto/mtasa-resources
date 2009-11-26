@@ -210,3 +210,15 @@ function table.reverse(t)
 	end
 	return newt
 end
+
+function table.cmp(t1, t2)
+	if not t1 or not t2 or #t1 ~= #t2 then
+		return false
+	end
+	for k,v in pairs(t1) do
+		if v ~= t2[k] then
+			return false
+		end
+	end
+	return true
+end
