@@ -53,7 +53,7 @@ addEventHandler("onClientResourceStart", thisResourceRoot,
 		end
 		
 		addCommandHandler(HELP_COMMAND, clientToggleHelp)
-		bindKey(HELP_KEY, "down", HELP_COMMAND)
+		bindKey(HELP_KEY, "down", clientToggleHelp)
 	end
 )
 
@@ -75,13 +75,31 @@ end
 addEventHandler("doHideHelp", rootElement, hideHelp)
 
 function addHelpTab(resource, showPopup)
-	showPopup = showPopup or true
+
+	if showPopup == nil then
+		showPopup = true
+	end
+	
 	-- block duplicates
 	if tab[resource] then
 		return false
 	end
+	
+	local tabtext = getResourceName(resource)
+	
+	local helpnode = getResourceConfig(":" .. getResourceName(resource) .. "/help.xml")
+	
+	if helpnode then
+	
+		local nameattribute = xmlNodeGetAttribute(helpnode, "title");
+		
+		if nameattribute then
+			tabtext = nameattribute;
+		end
+		
+	end
 
-	tab[resource] = guiCreateTab(getResourceName(resource), tPanel)
+	tab[resource] = guiCreateTab( tabtext , tPanel)
 	
 	if showPopup then
 		addHelpPopup(resource)
