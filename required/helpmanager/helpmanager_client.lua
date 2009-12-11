@@ -215,8 +215,21 @@ function showHelpPopup(resource)
 	local screenX, screenY = guiGetScreenSize()
 	local wndPopup = guiCreateWindow(0, screenY - 20, screenX, 0, '', false) --350
 	
+	local restitle = getResourceName(resource)
+	local helpnode = getResourceConfig(":" .. getResourceName(resource) .. "/help.xml")
+	
+	if helpnode then
+	
+		local nameattribute = xmlNodeGetAttribute(helpnode, "title");
+		
+		if nameattribute then
+			restitle = nameattribute;
+		end
+		
+	end
+	
 	local text =
-		"Help page available for "..getResourceName(resource).."! "..
+		"Help page available for ".. restitle .."! "..
 		"Press "..HELP_KEY.." or type /"..HELP_COMMAND.." to read it."
 		
 	guiSetText(wndPopup, text)
