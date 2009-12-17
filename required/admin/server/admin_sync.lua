@@ -18,6 +18,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		tableOut["freeze"] = isPlayerFrozen ( data )
 		tableOut["money"] = getPlayerMoney ( data )
 		tableOut["username"] = getPlayerUserName ( data ) or "N/A"
+		tableOut["version"] = aPlayers[data]["version"]
 		tableOut["accountname"] = getPlayerAccountName ( data ) or "N/A"
 		tableOut["groups"] = "None"
 		local account = getPlayerAccount ( data )
@@ -38,6 +39,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut[player]["name"] = getPlayerName ( player )
 			tableOut[player]["IP"] = getPlayerIP ( player )
 			tableOut[player]["username"] = getPlayerUserName ( player ) or "N/A"
+			tableOut[player]["version"] = aPlayers[player]["version"]
 			tableOut[player]["accountname"] = getPlayerAccountName ( player ) or "N/A"
 			tableOut[player]["serial"] = getPlayerSerial ( player )
 			tableOut[player]["country"] = aPlayers[player]["country"]

@@ -320,6 +320,36 @@ function aPlayerInitialize ( player )
 	end
 end
 
+addEvent ( "aPlayerVersion", true )
+addEventHandler ( "aPlayerVersion", _root, function ( version )
+	local bIsPre = false
+	-- If not Release, mark as 'pre'
+	if version.type:lower() ~= "release" then
+		bIsPre = true
+	else
+		-- Extract rc version if there
+		local _,_,rc = string.find( version.tag or "", "(%d)$" )
+		rc = tonumber(rc) or 0
+		-- If release, but before final rc, mark as 'pre'
+		if version.mta == "1.0.2" and rc > 0 and rc < 13 then
+			bIsPre = true
+		elseif version.mta == "1.0.3" and rc < 9 then
+			bIsPre = true
+		-- elseif version.mta == "1.0.4" and rc < ? then
+			-- bIsPre = true
+		-- elseif version.mta == "1.0.5" and rc < ? then
+			-- bIsPre = true
+		end
+		-- If version does not have a built in version check, maybe show a message box advising an upgrade
+		if version.number < 259 or ( version.mta == "1.0.3" and rc < 3 ) then
+			triggerClientEvent ( source, "aClientShowUpgradeMessage", source )	
+		end
+	end
+	if aPlayers[source] then
+		aPlayers[source]["version"] = version.mta .. ( bIsPre and " pre" or "" )
+	end
+end )
+
 function aPlayerSerialCheck ( player, result )
 	if ( result == 0 ) then kickPlayer ( player, "Invalid serial" ) end
 end

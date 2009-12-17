@@ -57,6 +57,7 @@ function aAdminResourceStart ()
 	end
 	aLoadSettings ()
 	triggerServerEvent ( "aPermissions", getLocalPlayer() )
+	setTimer( function() triggerServerEvent ( "aPlayerVersion", getLocalPlayer(), getVersion() ) end, 2000, 1 )
 end
 
 function aAdminResourceStop ()
@@ -148,3 +149,72 @@ end
 
 addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResource() ), aAdminResourceStart )
 addEventHandler ( "onClientResourceStop", getResourceRootElement ( getThisResource() ), aAdminResourceStop )
+
+
+--
+-- Upgrade check message for 1.0 to 1.0.2
+--
+addEvent ( "aClientShowUpgradeMessage", true )
+addEventHandler ( "aClientShowUpgradeMessage", _root,
+	function()
+		local xml = xmlLoadFile("upgrade_cookie.xml")
+		if not xml then
+			xml = xmlCreateFile("upgrade_cookie.xml", "settings")
+		end
+		if not xml then return end
+
+		local node = xmlFindChild(xml, "upgradeMessage", 0)
+		if not node then
+			node = xmlCreateChild(xml, "upgradeMessage")
+		end
+		local timeNow = getRealTimeSeconds()
+		local bShowConsoleText = true
+		local bShowMessageBox = true
+
+		if bShowConsoleText then
+			local lastTime = xmlNodeGetAttribute(node, "lastConsoleTextTime")
+			local age = timeNow - ( tonumber(lastTime) or 0 )
+			if age > 60*60 then
+				xmlNodeSetAttribute(node, "lastConsoleTextTime", tostring( timeNow ))
+				xmlSaveFile(xml)
+				outputConsole( "A new version of MTA:SA is available! - Please download from www.mtasa.com" )
+			end
+		end
+
+		if bShowMessageBox then
+			local lastTime = xmlNodeGetAttribute(node, "lastMessageBoxTime")
+			local age = timeNow - ( tonumber(lastTime) or 0 )
+			if age > 60*60*24 then
+				xmlNodeSetAttribute(node, "lastMessageBoxTime", tostring( timeNow ))
+				xmlSaveFile(xml)
+				aMessageBox( "A new version of MTA:SA is available!",  "Please download from www.mtasa.com" )
+				setTimer ( aMessageBoxClose, 15000, 1, true )
+			end
+		end
+	end
+)
+
+
+function getRealTimeSeconds()
+	return realTimeToSeconds( getRealTime() )
+end
+
+function realTimeToSeconds( time )
+	local leapyears = math.floor( ( time.year - 72 + 3 ) / 4 )
+	local days = ( time.year - 70 ) * 365 + leapyears + time.yearday
+	local seconds = days * 60*60*24
+	seconds = seconds + time.hour * 60*60
+	seconds = seconds + time.minute * 60
+	seconds = seconds + time.second
+	seconds = seconds - time.isdst * 60*60
+	return seconds
+end
+
+function realTimeToSecondsTest()
+	for i=1,100 do
+		local time1 = getRealTime( math.random(0, 60*60*24*365*50) )	-- Get a random date between 1970 and 2020
+		local time2 = getRealTime( realTimeToSeconds( time1 ) )
+		assert( getRealDateTimeString( time1 ) == getRealDateTimeString( time2 ) )
+	end
+end
+
