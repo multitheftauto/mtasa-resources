@@ -643,7 +643,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 end )
 
 addEvent ( "aPlayer", true )
-addEventHandler ( "aPlayer", _root, function ( player, action, data, additional )
+addEventHandler ( "aPlayer", _root, function ( player, action, data, additional, additional2 )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local admin = source
 		local mdata = ""
@@ -651,7 +651,19 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional 
 		if ( action == "kick" ) then
 			setTimer ( kickPlayer, 100, 1, player, source, data )
 		elseif ( action == "ban" ) then
-			setTimer ( banPlayer, 100, 1, player, true, false, false, source, data )
+			local reason = data
+			local seconds = additional
+			local bUseSerial = additional2
+			if bUseSerial then
+				-- Add account name of banner to the reason
+				local adminAccountName = getAccountName ( getPlayerAccount ( source ) )
+				if adminAccountName and adminAccountName ~= getPlayerName( source ) then
+					reason = reason .. " (by " .. adminAccountName .. ")"
+				end
+				setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds )
+			else
+				setTimer ( banPlayer, 100, 1, player, true, false, false, source, reason, seconds )
+			end
 			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bansdirty" )
 		elseif ( action == "mute" )  then
 			if ( isPlayerMuted ( player ) ) then action = "un"..action end
