@@ -22,6 +22,7 @@ function aAdminMenu ()
 	if ( aAdminForm == nil ) then
 		local x, y = guiGetScreenSize()
 		aAdminForm			= guiCreateWindow ( x / 2 - 310, y / 2 - 260, 620, 520, "Admin Menu - v".._version, false )
+							guiWindowSetSizable ( aAdminForm, false )
 						  guiSetText ( aAdminForm, "Admin Menu - v".._version )
 						  guiCreateLabel ( 0.68, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )
 		aTabPanel			= guiCreateTabPanel ( 0.01, 0.05, 0.98, 0.95, true, aAdminForm )
@@ -194,14 +195,15 @@ function aAdminMenu ()
 
 		aTab4 = {}
 		aTab4.Tab			= guiCreateTab ( "Bans", aTabPanel, "bans" )
-		aTab4.BansList		= guiCreateGridList ( 0.03, 0.05, 0.80, 0.90, true, aTab4.Tab )
+		aTab4.BansList		= guiCreateGridList ( 0.03, 0.05, 0.80, 0.87, true, aTab4.Tab )
 						  guiGridListAddColumn( aTab4.BansList, "Name", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "IP", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "Serial", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "By", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "Date", 0.17 )
 						  guiGridListAddColumn( aTab4.BansList, "Time", 0.13 )
-						  guiGridListAddColumn( aTab4.BansList, "Reason", 0.22 )
+						  guiGridListAddColumn( aTab4.BansList, "Reason", 0.52 )
+						  guiGridListSetSortingEnabled( aTab4.BansList, false )
 		aTab4.Details		= guiCreateButton ( 0.85, 0.10, 0.13, 0.04, "Details", true, aTab4.Tab )
 		aTab4.Unban			= guiCreateButton ( 0.85, 0.20, 0.13, 0.04, "Unban", true, aTab4.Tab, "unban" )
 		aTab4.UnbanIP		= guiCreateButton ( 0.85, 0.25, 0.13, 0.04, "Unban IP", true, aTab4.Tab, "unbanip" )
@@ -209,6 +211,9 @@ function aAdminMenu ()
 		aTab4.BanIP			= guiCreateButton ( 0.85, 0.40, 0.13, 0.04, "Ban IP", true, aTab4.Tab, "banip" )
 		aTab4.BanSerial		= guiCreateButton ( 0.85, 0.45, 0.13, 0.04, "Ban Serial", true, aTab4.Tab, "banserial" )
 		aTab4.BansRefresh		= guiCreateButton ( 0.85, 0.85, 0.13, 0.04, "Refresh", true, aTab4.Tab, "listbans" )
+
+		aTab4.BansTotal		= guiCreateLabel ( 0.20, 0.94, 0.31, 0.04, "Showing  0 / 0  bans", true, aTab4.Tab )
+		aTab4.BansMore		= guiCreateButton ( 0.50, 0.94, 0.13, 0.04, "Get more...", true, aTab4.Tab, "listbans" )
 
 		aTab5 = {}
 		aTab5.Tab			= guiCreateTab ( "Admin Chat", aTabPanel, "adminchat" )
@@ -440,29 +445,43 @@ function aClientSync ( type, table )
 			-- Request full bans list if bans tab is displayed when 'bansdirty' is received
 			triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
 		end
-	elseif ( type == "bans" ) then
-		outputDebugString( "aClientSync received 'bans'" )
-		g_GotLatestBansList = true
-		guiGridListClear ( aTab4.BansList )
-		aBans = {}
-		aBans["Serial"] = {}
-		aBans["IP"] = {}
-		for i=#table,1,-1 do
-			local ban = table[i]
-			if ban.serial then
-				aBans["Serial"][ban.serial] = ban
+	elseif ( type == "bans" or type == "bansmore" ) then
+		outputDebugString( "aClientSync received " .. type )
+		if type == "bans" then
+			g_GotLatestBansList = true
+			guiGridListClear ( aTab4.BansList )
+			aBans = {}
+			aBans["Serial"] = {}
+			aBans["IP"] = {}
+		end
+		local total = tonumber(table.total) or 0
+		local amount = guiGridListGetRowCount( aTab4.BansList ) + #table
+		guiSetText( aTab4.BansTotal, "Showing  " .. amount .. " / " .. total .. "  bans" )
+		if g_GotLatestBansList then
+			for i=1,#table do
+				local ban = table[i]
+				if ban.serial then
+					aBans["Serial"][ban.serial] = ban
+				end
+				if ban.ip then
+					aBans["IP"][ban.ip] = ban
+				end
+				local time, date = "-", "-"
+				if ban.seconds then
+					local realTime = getRealTime( ban.seconds )
+					time = string.format("%02d:%02d", realTime.hour, realTime.minute )
+					date = string.format("%04d-%02d-%02d", realTime.year + 1900, realTime.month + 1, realTime.monthday )
+				end
+				local reason = ban["reason"] and ban["reason"]~="nil" and ban["reason"] or ""
+				local row = guiGridListAddRow ( aTab4.BansList )
+				guiGridListSetItemText ( aTab4.BansList, row, 1, ban["nick"]	or "n/a", false, false )
+				guiGridListSetItemText ( aTab4.BansList, row, 2, ban.ip			or "n/a", false, false )
+				guiGridListSetItemText ( aTab4.BansList, row, 3, ban.serial		or "n/a", false, false )
+				guiGridListSetItemText ( aTab4.BansList, row, 4, ban["banner"]	or "n/a", false, false )
+				guiGridListSetItemText ( aTab4.BansList, row, 5, date,					false, false )
+				guiGridListSetItemText ( aTab4.BansList, row, 6, time,					false, false )
+				guiGridListSetItemText ( aTab4.BansList, row, 7, reason, false, false )
 			end
-			if ban.ip then
-				aBans["IP"][ban.ip] = ban
-			end
-			local row = guiGridListAddRow ( aTab4.BansList )
-			guiGridListSetItemText ( aTab4.BansList, row, 1, iif ( ban["nick"], ban["nick"], "Unknown" ), false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 2, ban.ip or "Unknown", false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 3, ban.serial or "Unknown", false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 4, iif ( ban["banner"], ban["banner"], "Unknown" ), false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 5, iif ( ban["date"], ban["date"], "Unknown" ), false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 6, iif ( ban["time"], ban["time"], "Unknown" ), false, false )
-			guiGridListSetItemText ( aTab4.BansList, row, 7, iif ( ban["reason"], ban["reason"], "Unknown" ), false, false )
 		end
 	elseif ( type == "messages" ) then
 		local prev = tonumber ( string.sub ( guiGetText ( aTab1.Messages ), 1, 1 ) )
@@ -913,6 +932,8 @@ function aClientClick ( button )
 			elseif ( source == aTab4.BansRefresh ) then
 				guiGridListClear ( aTab4.BansList )
 				triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
+			elseif ( source == aTab4.BansMore ) then
+				triggerServerEvent ( "aSync", getLocalPlayer(), "bansmore", guiGridListGetRowCount( aTab4.BansList ) )
 			end
 		-- TAB 5, ADMIN CHAT
 		elseif ( getElementParent ( source ) == aTab5.Tab ) then

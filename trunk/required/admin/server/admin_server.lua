@@ -654,12 +654,16 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			local reason = data
 			local seconds = additional
 			local bUseSerial = additional2
+			if bUseSerial and getPlayerName ( player ) then
+				-- Add banned player name to the reason
+				reason = reason .. " (nick: " .. getPlayerName ( player ) .. ")"
+			end
+			-- Add account name of banner to the reason
+			local adminAccountName = getAccountName ( getPlayerAccount ( source ) )
+			if adminAccountName and adminAccountName ~= getPlayerName( source ) then
+				reason = reason .. " (by " .. adminAccountName .. ")"
+			end
 			if bUseSerial then
-				-- Add account name of banner to the reason
-				local adminAccountName = getAccountName ( getPlayerAccount ( source ) )
-				if adminAccountName and adminAccountName ~= getPlayerName( source ) then
-					reason = reason .. " (by " .. adminAccountName .. ")"
-				end
 				setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds )
 			else
 				setTimer ( banPlayer, 100, 1, player, true, false, false, source, reason, seconds )

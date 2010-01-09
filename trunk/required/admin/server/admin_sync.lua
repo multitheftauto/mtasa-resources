@@ -99,24 +99,30 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		end
 	elseif ( type == "bansdirty" ) then
 		tableOut = nil
-	elseif ( type == "bans" ) then
-		local bans = getBans()
-		for i,ban in ipairs(bans) do
-			local time, date = "Unknown", "Unknown"
-			local seconds = getBanTime(ban)
-			if seconds then
-				local realTime = getRealTime( seconds )
-				time = string.format("%02d:%02d", realTime.hour, realTime.minute )
-				date = string.format("%04d-%02d-%02d", realTime.year + 1900, realTime.month + 1, realTime.monthday )
+		g_Bans = nil
+	elseif ( type == "bans" or type == "bansmore" ) then
+		if not g_Bans then
+			local bans = getBans()
+			g_Bans = {}
+			-- Reverse
+			for i = #bans,1,-1 do
+				table.insert( g_Bans, bans[i] )
 			end
+		end
+		local from = ( tonumber( data ) or 0 ) + 1
+		local to = math.min( from+14, #g_Bans )
+		tableOut.total = #g_Bans
+		for b=from,to do
+			i = b - from + 1
+			ban = g_Bans[b]
+			local seconds = getBanTime(ban)
 			tableOut[i] = {}
-			tableOut[i].nick = getBanUsername(ban) or getBanNick(ban) or "Unknown"
-			tableOut[i].date = date
-			tableOut[i].time = time
-			tableOut[i].banner = getBanAdmin(ban) or "Unknown"
-			tableOut[i].ip = getBanIP(ban) or "Unknown"
-			tableOut[i].serial = getBanSerial(ban) or "Unknown"
-			tableOut[i].reason = getBanReason(ban) or "Unknown"
+			tableOut[i].nick = getBanUsername(ban) or getBanNick(ban)
+			tableOut[i].seconds = seconds
+			tableOut[i].banner = getBanAdmin(ban)
+			tableOut[i].ip = getBanIP(ban)
+			tableOut[i].serial = getBanSerial(ban)
+			tableOut[i].reason = getBanReason(ban)
 		end
 	elseif ( type == "messages" ) then
 		local unread, total = 0, 0
