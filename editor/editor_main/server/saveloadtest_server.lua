@@ -1,11 +1,13 @@
 g_in_test = false
-local g_restoreEDF
+local g_restoreEDF, dumpTimer
 local thisRoot = getResourceRootElement(getThisResource())
 local root = getRootElement()
 local g_default_spawnmaponstart,g_default_spawnmapondeath,g_defaultwelcometextonstart,g_mapstophandled
 local restoreGUIOnMapStop, restoreGUIOnGamemodeMapStop, startGamemodeOnStop
 local freeroamRes = getResourceFromName "freeroam"
 local TEST_RESOURCE = "editor_test"
+local DUMP_RESOURCE = "editor_dump"
+local dumpInterval = get("dumpSaveInterval") and tonumber(get("dumpSaveInterval"))*1000 or 60000
 local fileTypes = { "script","map","file","config","html" } 
 local specialFileTypes = { "script","file","config","html" }
 
@@ -22,6 +24,55 @@ addEvent ( "quickSaveResource", true )
 addEventHandler ( "onResourceStart", thisResourceRoot,
 	function()
 		destroyElement( rootElement )
+		setTimer(startUp, 1000, 1)
+	end
+)
+
+function startUp()
+	enabled = getBool("enableDumpSave", true)
+	if enabled then
+		if not openResource(DUMP_RESOURCE, true) then
+			outputDebugString("cant open dump, create new dump")
+			saveResource(DUMP_RESOURCE, true)
+		end
+		dumpTimer = setTimer(dumpSave, dumpInterval, 0)
+	end
+	for i,player in ipairs(getElementsByType("player")) do
+		local account = getPlayerAccount(player)
+		if account then
+			local accountName = getAccountName(account)
+			local adminGroups = split(get("admingroup") or "Admin",string.byte(','))
+			for _,name in ipairs(adminGroups) do
+				local group = aclGetGroup(name)
+				if group then
+					for i,obj in ipairs(aclGroupListObjects(group)) do
+						if obj == 'user.' .. accountName or obj == 'user.*' then
+							triggerClientEvent(player, "enableServerSettings", player, enabled, dumpInterval/1000)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+addCommandHandler("showdump",
+	function()
+		editor_gui.outputMessage ("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'New Map' to start a new map.", root,255,255,0, 20000)
+	end
+)
+
+addCommandHandler("savedump",
+	function()
+		dumpSave()
+	end
+)
+
+addEventHandler ( "onPlayerJoin", rootElement,
+	function()
+		if loadedMap ~= DUMP_RESOURCE then
+			editor_gui.outputMessage ("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'New Map' to start a new map.", root,255,255,0, 20000)
+		end
 	end
 )
 
@@ -41,66 +92,77 @@ addEventHandler("newResource", rootElement,
 		if ( loadedMap ) then
 			local currentMap = getResourceFromName ( loadedMap )
 			stopResource ( currentMap )
-			loadedMap = false
+			loadedMap = DUMP_RESOURCE
 		end
 		destroyElement(root)
 		passDefaultMapSettings()
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
 		triggerEvent("onNewMap", thisResourceRoot)
+		dumpSave()
 	end
 )
 
 ---
-addEventHandler ( "openResource", rootElement,
-	function ( resourceName )
-		--need to clear undo/redo history!
-		local returnValue
-		local map = getResourceFromName ( resourceName )
-		if ( map ) then
-			--
-			destroyElement(root)
-			local maps = getResourceFiles ( map, "map" )
-			for key,mapPath in ipairs(maps) do
-				local mapNode = xmlLoadFile ( ':' .. getResourceName(map) .. '/' .. mapPath )
+function openResource( resourceName, onStart )
+	--need to clear undo/redo history!
+	local returnValue
+	local map = getResourceFromName ( resourceName )
+	if ( map ) then
+		--
+		destroyElement(root)
+		local maps = getResourceFiles ( map, "map" )
+		local mapName = DUMP_RESOURCE
+		for key,mapPath in ipairs(maps) do
+			local mapNode = xmlLoadFile ( ':' .. getResourceName(map) .. '/' .. mapPath )
 
-				local usedDefinitions = xmlNodeGetAttribute(mapNode, "edf:definitions")
-				if usedDefinitions then
-					-- The map specifies a set of EDF to load
-					local loadedDefinitions = edf.edfGetLoadedEDFResources()
-					local usedDefinitions = split(usedDefinitions, 44)
-					-- Load the neccessary definitions
-					for k,defName in ipairs(usedDefinitions) do
-						local definition = getResourceFromName(defName)
-						if ( definition ) and ( getResourceState(definition) ~= 'running' ) then
-							blockMapManager ( definition ) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
-							edf.edfStartResource(definition)
-							table.insert (allEDF.addedEDF, defName )
-							local key = table.find(allEDF.availEDF,defName)
-							if key then
-								table.remove ( allEDF.availEDF, key )
-								break
-							end
+			local usedDefinitions = xmlNodeGetAttribute(mapNode, "edf:definitions")
+			if usedDefinitions then
+				-- The map specifies a set of EDF to load
+				local loadedDefinitions = edf.edfGetLoadedEDFResources()
+				local usedDefinitions = split(usedDefinitions, 44)
+				-- Load the neccessary definitions
+				for k,defName in ipairs(usedDefinitions) do
+					local definition = getResourceFromName(defName)
+					if ( definition ) and ( getResourceState(definition) ~= 'running' ) then
+						blockMapManager ( definition ) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
+						edf.edfStartResource(definition)
+						table.insert (allEDF.addedEDF, defName )
+						local key = table.find(allEDF.availEDF,defName)
+						if key then
+							table.remove ( allEDF.availEDF, key )
+							break
 						end
 					end
-					triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
 				end
-
-				local mapElement = loadMapData ( mapNode, thisResourceRoot, false )
-				flattenTree ( mapElement, thisDynamicRoot )
-				destroyElement ( mapElement )
+				triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
 			end
-			
-			loadedMap = resourceName 
-			passNewMapSettings()
-			returnValue = true
-			editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
-			triggerEvent("onMapOpened", thisResourceRoot, map)
-		else
-			returnValue = false
+
+			local mapElement = loadMapData ( mapNode, thisResourceRoot, false )
+			flattenTree ( mapElement, thisDynamicRoot )
+			destroyElement ( mapElement )
+			mapName = string.sub(mapPath, 1, -5)
 		end
-		triggerClientEvent ( source, "saveloadtest_return", source, "open", returnValue )
+		
+		loadedMap = resourceName 
+		passNewMapSettings()
+		returnValue = true
+		if not onStart then
+			editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
+		else
+			loadedMap = mapName
+		end
+		triggerEvent("onMapOpened", thisResourceRoot, map)
+	else
+		returnValue = false
 	end
-)
+	if onStart then
+		return returnValue
+	else
+		triggerClientEvent ( source, "saveloadtest_return", source, "open", returnValue )
+		dumpSave()
+	end
+end
+addEventHandler ( "openResource", rootElement, openResource )
 
 
 
@@ -119,14 +181,14 @@ function saveResource ( resourceName, test )
 		if not mapmanager.isMap ( resource ) then
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
 			"You cannot overwrite non-map resources." )
-			return			
+			return
 		end
 		for i,fileType in ipairs(fileTypes) do
 			local files = getResourceFiles(resource,fileType)
 			if not files then
 				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 				"Could not overwrite resource, the target resource may be corrupt." )
-				return	
+				return
 			end
 			for j,filePath in ipairs(files) do
 				if not removeResourceFile ( resource, filePath, fileType ) then
@@ -159,22 +221,23 @@ function saveResource ( resourceName, test )
 		editor_gui.outputMessage (getPlayerName(source).." saved to map resource \""..resourceName.."\".", root,255,0,0)
 	end
 	triggerClientEvent ( client, "saveloadtest_return", client, "save", returnValue, resourceName )
+	dumpSave()
 	return returnValue
 end
 addEventHandler ( "saveResource", rootElement, saveResource )
 
-function quickSave(saveAs)
+function quickSave(saveAs, dump)
 	if loadedMap then
-		local resource = getResourceFromName ( loadedMap )
+		local resource = getResourceFromName ( dump and DUMP_RESOURCE or loadedMap )
 		local mapTable = getResourceFiles ( resource,"map" )
 		if not mapTable then
-			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
+			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, loadedMap,
 			"Could not overwrite resource, the target resource may be corrupt." )
-			return	
+			return
 		end
 		for key,mapPath in ipairs(mapTable) do
 			if not removeResourceFile ( resource,mapPath,"map" ) then
-				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
+				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, loadedMap,
 				"Could not overwrite resource.  The map resource may be in .zip format." )
 				return
 			end
@@ -190,9 +253,16 @@ function quickSave(saveAs)
 		local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
 		xmlUnloadFile ( metaNode )
-		editor_gui.outputMessage (getPlayerName(client).." saved the map.", root,255,0,0)
-		if saveAs then
-			triggerClientEvent ( client, "saveloadtest_return", client, "save", true )
+		if not dump and loadedMap == DUMP_RESOURCE then
+			editor_gui.loadsave_getResources("saveAs",source)
+			return
+		end
+ 		if saveAs then
+ 			triggerClientEvent ( client, "saveloadtest_return", client, "save", true )
+ 		end
+		if not dump then
+			editor_gui.outputMessage (getPlayerName(client).." saved the map.", root,255,0,0)
+			dumpSave()
 		end
 	else
 		editor_gui.loadsave_getResources("saveAs",source)
@@ -277,6 +347,7 @@ function beginTest(client,gamemodeName)
 		end
 		g_in_test = "map"
 	end
+	dumpSave()
 	for i,player in ipairs(getElementsByType"player") do
 		setElementDimension ( player, 0 )
 	end
@@ -344,4 +415,59 @@ function restoreGUIOnGamemodeMapStop(gamemode)
 	setElementData ( thisRoot, "g_in_test", nil )
 	removeEventHandler ( "onGamemodeMapStop", root, restoreGUIOnGamemodeMapStop )
 	g_mapstophandled = nil
+end
+
+-- dump settings
+function dumpSave()
+	if getBool("enableDumpSave", true) and not getElementData(thisRoot, "g_in_test") then
+		quickSave(false,true)
+	end
+end
+
+addEvent("dumpSaveSettings", true)
+addEventHandler("dumpSaveSettings", root,
+	function(enabled, interval)
+		if tonumber(interval)*1000 ~= dumpInterval then
+			if isTimer(dumpTimer) then
+				killTimer(dumpTimer)
+			end
+			set("dumpSaveInterval", tostring(interval))
+			dumpInterval = tonumber(interval)*1000
+			dumpTimer = setTimer(dumpSave, dumpInterval, 0)
+		end
+		if enabled ~= getBool("enableDumpSave", true) then
+			set("enableDumpSave", tostring(enabled))
+			if enabled then
+				dumpTimer = setTimer(dumpSave, dumpInterval, 0)
+			elseif isTimer(dumpTimer) then
+				killTimer(dumpTimer)
+				dumpTimer = nil
+			end
+		end
+	end
+)
+
+addEventHandler("onPlayerLogin", root,
+	function(prevaccount, account)
+		local accountName = getAccountName(account)
+		local adminGroups = split(get("admingroup") or "Admin",string.byte(','))
+		for _,name in ipairs(adminGroups) do
+			local group = aclGetGroup(name)
+			if group then
+				for i,obj in ipairs(aclGroupListObjects(group)) do
+					if obj == 'user.' .. accountName or obj == 'user.*' then
+						triggerClientEvent(source, "enableServerSettings", source, getBool("enableDumpSave", true), dumpInterval/1000)
+					end
+				end
+			end
+		end
+	end
+)
+
+function getBool(var,default)
+    local result = get(var)
+    if not result then
+        return default
+    end
+    return result == 'true'
 end

@@ -298,7 +298,7 @@ function browser.toggleCursor()
 end
 
 function browser.browserSelected(button)
-	if button ~= "left" and button ~= cc.browser_confirm then return end
+	if button ~= "left" and button ~= "browser_confirm" then return end
 	
 	browser.applySelected()
 end

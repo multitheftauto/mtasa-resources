@@ -1,4 +1,5 @@
 local guiCreateLabel = guiCreateMinimalLabel
+local tabpanel
 dialog = {}
 interiors = {}
 interiorsNames = {}
@@ -9,7 +10,7 @@ function createOptionsDialog()
 	guiWindowSetSizable ( dialog.window, false )
 	guiSetVisible(dialog.window, false )
 	
-	local tabpanel = guiCreateTabPanel ( 0.02388, 0.09444, 0.9582, 0.81389, true, dialog.window )
+	tabpanel = guiCreateTabPanel ( 0.02388, 0.09444, 0.9582, 0.81389, true, dialog.window )
 	dialog.generalTab = guiCreateTab("General",tabpanel)
 	dialog.cameraTab = guiCreateTab("Camera",tabpanel)
 	dialog.movementTab = guiCreateTab("Movement",tabpanel)
@@ -115,4 +116,12 @@ function confirmSettings ()
 	xmlSaveFile ( settingsXML )
 end
 
-
+addEvent("enableServerSettings", true)
+addEventHandler("enableServerSettings", root,
+	function(enabled, interval)
+		dialog.serverTab = guiCreateTab("Server Settings",tabpanel)
+		dialog.enableDumpSave = editingControl.boolean:create{["x"]=0.02,["y"]=0.02,["width"]=1,["height"]=0.1,["relative"]=true,["value"]=enabled,["parent"]=dialog.serverTab,["label"]="Enable Map Backup"}
+		guiCreateLabel ( 0.02, 0.14, 1, 0.1, "Map Backup Interval (seconds):", true, dialog.serverTab )
+		dialog.dumpSaveInterval = editingControl.integer:create{["x"]=0.02,["y"]=0.2,["width"]=0.30,["height"]=0.07,["relative"]=true,["value"]=interval,["parent"]=dialog.serverTab }
+	end
+)

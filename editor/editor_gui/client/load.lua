@@ -1,6 +1,7 @@
 loadDialog = {}
 local open
 local mainRes = getResourceFromName"editor_main"
+local openResources = {}
 
 function createLoadDialog()
 	loadDialog.window	=	guiCreateWindow ( screenX/2 - 320, screenY/2 - 180, 640, 360, "OPEN...", false )
@@ -9,7 +10,6 @@ function createLoadDialog()
 	loadDialog.cancel = guiCreateButton ( 0.780357142, 0.919444, 0.22857142, 0.05555555, "Cancel", true, loadDialog.window )
 	loadDialog.mapName = guiCreateEdit ( 0.02, 0.87388845, 0.75, 0.08, "", true, loadDialog.window )
 	guiWindowSetSizable ( loadDialog.window, false )
-	guiEditSetReadOnly ( loadDialog.mapName, true )
 	--
 	guiGridListAddColumn ( loadDialog.mapsList, "Name", 0.4 )
 	guiGridListAddColumn ( loadDialog.mapsList, "Gamemodes", 0.4 )
@@ -19,7 +19,7 @@ function createLoadDialog()
 	addEventHandler ( "onClientGUIClick", loadDialog.cancel, closeLoadDialog, false )
 	addEventHandler ( "onClientGUIClick", loadDialog.open, openMap, false )
 	addEventHandler ( "onClientGUIDoubleClick", loadDialog.mapsList, openMap, false )
-	addEventHandler ( "onClientGUIClick", loadDialog.mapsList, setEditBoxMapName, false )
+	addEventHandler ( "onClientGUIChanged", loadDialog.mapName, openSearch )
 end
 
 function closeLoadDialog()
@@ -27,6 +27,7 @@ function closeLoadDialog()
 	setGUIShowing(true)
 	guiSetInputEnabled ( false )
 	setWorldClickEnabled ( true )
+	openResources = {}
 end
 
 function openMap()
@@ -38,8 +39,7 @@ function openMap()
 end
 
 function openButton ()
-	local resourceName = guiGetText ( loadDialog.mapName )
-	editor_main.openResource ( resourceName )
+	editor_main.openResource ( mapName )
 end
 
 addEvent ( "openShowDialog",true )
@@ -47,10 +47,12 @@ function openShowDialog( resources )
 	setGUIShowing(false)
 	guiSetInputEnabled ( true )
 	setWorldClickEnabled ( false )
+	openResources = {}
 	guiSetText ( loadDialog.mapName, "" )
 	guiGridListClear ( loadDialog.mapsList )
 	for i,res in ipairs(resources) do
 		if res["type"] == "map" then
+			table.insert(openResources, res)
 			local row = guiGridListAddRow ( loadDialog.mapsList )
 			guiGridListSetItemText ( loadDialog.mapsList, row, 1, res["friendlyName"], false, false )
 			guiGridListSetItemText ( loadDialog.mapsList, row, 2, res["gamemodes"], false, false )
@@ -61,12 +63,24 @@ function openShowDialog( resources )
 end
 addEventHandler ( "openShowDialog", getRootElement(), openShowDialog )
 
-function setEditBoxMapName()
-	local row = guiGridListGetSelectedItem ( loadDialog.mapsList )
-	if row == -1 then
-		guiSetText ( loadDialog.mapName, "" )
+function openSearch()
+	guiGridListClear ( loadDialog.mapsList )
+	local text = guiGetText(source)
+	if text == "" then
+		for i,res in ipairs(openResources) do
+			local row = guiGridListAddRow ( loadDialog.mapsList )
+			guiGridListSetItemText ( loadDialog.mapsList, row, 1, res["friendlyName"], false, false )
+			guiGridListSetItemText ( loadDialog.mapsList, row, 2, res["gamemodes"], false, false )
+			guiGridListSetItemText ( loadDialog.mapsList, row, 3, res["version"], false, false )
+		end
 	else
-		mapName = guiGridListGetItemText ( loadDialog.mapsList, row, 1 )
-		guiSetText ( loadDialog.mapName, mapName ) 
+		for i,res in ipairs(openResources) do
+			if string.find(res["friendlyName"],text) then
+				local row = guiGridListAddRow ( loadDialog.mapsList )
+				guiGridListSetItemText ( loadDialog.mapsList, row, 1, res["friendlyName"], false, false )
+				guiGridListSetItemText ( loadDialog.mapsList, row, 2, res["gamemodes"], false, false )
+				guiGridListSetItemText ( loadDialog.mapsList, row, 3, res["version"], false, false )
+			end
+		end
 	end
 end

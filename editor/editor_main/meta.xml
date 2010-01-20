@@ -123,5 +123,26 @@
 	<file src="client/images/icons/object.png" type="client"/>
 	<file src="client/images/icons/vehicle.png" type="client"/>
 	<file src="client/images/icons/pickup.png" type="client"/>
+	
+	<settings>
+		<setting name="*admingroup" value="Admin"
+						friendlyname="Admin group list"
+						accept="*"
+						examples="Admin,Moderator,SuperModerator"
+						desc="To change server settings, the player must belong to one of the groups listed."
+						/>
+
+		<setting name="#enableDumpSave" value="true"
+						friendlyname="Enable map backup"
+						accept="true,false"
+						desc="Set to false to disable map backup."
+						/>
+
+		<setting name="#dumpSaveInterval" value="60"
+						friendlyname="Map backup interval"
+						accept="1-3600"
+						desc="Map backup interval in seconds."
+						/>
+	</settings>
 </meta>
 

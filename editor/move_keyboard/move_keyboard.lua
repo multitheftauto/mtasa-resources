@@ -236,38 +236,39 @@ local function onClientRender_keyboard()
 end
 
 local function rotateWithMouseWheel(key, keyState)
-	if (not rotationless) then
-		local speed
+	if rotationless or (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then 
+		return
+	end
+	local speed
 
-		if (getCommandState("mod_slow_speed")) then
-			speed = rotateSpeed.slow
-		elseif (getCommandState("mod_fast_speed")) then
-			speed = rotateSpeed.fast
-		else
-			speed = rotateSpeed.medium
-		end
+	if (getCommandState("mod_slow_speed")) then
+		speed = rotateSpeed.slow
+	elseif (getCommandState("mod_fast_speed")) then
+		speed = rotateSpeed.fast
+	else
+		speed = rotateSpeed.medium
+	end
 
-		if (key == "quick_rotate_decrease") then
-			speed = speed * -1
-		end
+	if (key == "quick_rotate_decrease") then
+		speed = speed * -1
+	end
 
-		rotX, rotY, rotZ = getElementRotation(selectedElement)
-		if (getElementType(selectedElement) == "vehicle" or getElementType(selectedElement) == "object") then
-			rotZ = rotZ + speed
-			setElementRotation(selectedElement, rotX, rotY, rotZ)
-			--Peds dont have their rotation updated with their attached parents
-			for i,element in ipairs(getAttachedElements(selectedElement)) do
-				if getElementType(element) == "ped" then
-					setElementRotation(element, 0,0,-rotZ)
-					setPedRotation(element, rotZ)
-				end
+	rotX, rotY, rotZ = getElementRotation(selectedElement)
+	if (getElementType(selectedElement) == "vehicle" or getElementType(selectedElement) == "object") then
+		rotZ = rotZ + speed
+		setElementRotation(selectedElement, rotX, rotY, rotZ)
+		--Peds dont have their rotation updated with their attached parents
+		for i,element in ipairs(getAttachedElements(selectedElement)) do
+			if getElementType(element) == "ped" then
+				setElementRotation(element, 0,0,-rotZ)
+				setPedRotation(element, rotZ)
 			end
-		elseif (getElementType(selectedElement) == "ped") then
-			rotZ = rotZ + speed
-			rotZ = rotZ % 360
-			setElementRotation(selectedElement, 0,0,-rotZ)
-			setPedRotation(selectedElement, rotZ)
 		end
+	elseif (getElementType(selectedElement) == "ped") then
+		rotZ = rotZ + speed
+		rotZ = rotZ % 360
+		setElementRotation(selectedElement, 0,0,-rotZ)
+		setPedRotation(selectedElement, rotZ)
 	end
 end
 

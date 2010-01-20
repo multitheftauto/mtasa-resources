@@ -123,3 +123,7 @@ function setEditorMoveSpeeds()
 
 	move_keyboard.toggleAxesLock ( dialog.lockToAxes:getValue() )
 end
+
+function optionsActions.enableDumpSave(value)
+	triggerServerEvent("dumpSaveSettings", getRootElement(), value, dialog.dumpSaveInterval:getValue())
+end
