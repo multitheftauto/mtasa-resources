@@ -40,6 +40,7 @@ local nodeTypes = {
 ["lockToAxes"]="bool",
 ["autosnap"]="bool",
 ["tutorialOnStart"]="bool",
+["enableDumpSave"]="bool",
 }
 local defaults = {
 ["enableSounds"]=true,
@@ -66,8 +67,7 @@ local defaults = {
 --stuff involving xml and dumping
 function doActions()
 	for name,v in pairs(nodeTypes) do
-		if ( optionsActions[name] ) then
-			
+		if ( optionsActions[name] ) and ( dialog[name] ) then
 			optionsActions[name]( dialog[name]:getValue() )
 		end
 	end

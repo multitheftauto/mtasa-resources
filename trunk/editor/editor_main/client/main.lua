@@ -447,21 +447,7 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 	end
 
 	-- attach element
-	if (g_selectedElement) or (clickedElement == g_selectedElement) then
-		if g_submode == MOUSE_SUBMODE then
-			g_dragElement = nil
-			if (key == "select_target_mouse") then
-				dropElement(true,true)
-			elseif (key == "select_target_keyboard") then
-				local reselect = g_selectedElement
-				dropElement(true,true)
-				selectElement(reselect, KEYBOARD_SUBMODE)
-			end
-		else
-			dropElement(true,true)
-			g_dragElement = nil
-		end
-	elseif (clickedElement) then
+	if (clickedElement) then
 		if (g_selectedElement) then
 			g_dragElement = nil
 			if g_submode == MOUSE_SUBMODE then
@@ -475,6 +461,20 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 			selectElement(clickedElement, MOUSE_SUBMODE)
 		elseif (key == "select_target_keyboard") then
 			selectElement(clickedElement, KEYBOARD_SUBMODE)
+		end
+	elseif (g_selectedElement) then
+		if g_submode == MOUSE_SUBMODE then
+			g_dragElement = nil
+			if (key == "select_target_mouse") then
+				dropElement(true,true)
+			elseif (key == "select_target_keyboard") then
+				local reselect = g_selectedElement
+				dropElement(true,true)
+				selectElement(reselect, KEYBOARD_SUBMODE)
+			end
+		else
+			dropElement(true,true)
+			g_dragElement = nil
 		end
 	end
 end
@@ -700,15 +700,15 @@ function selectElement(element, submode, shortcut)
 	if not isElement(element) then return end
 	
 	if not triggerEvent ( "onClientElementSelect", element, submode, shortcut ) then return false end
-
-		-- check the editing lock
+	
+	-- check the editing lock
 	local locked = getElementData(element, "me:locked")
 	if locked and locked ~= localPlayer then
 		assert(isElement(locked), "Bad lock owner ["..tostring(locked).."] for element: "..getElementType(element))
 		editor_gui.outputMessage("Cannot select element, it is being controlled by " .. getPlayerName(locked), 255,255,255)
 		return false
 	end
-
+	
 	-- check if the element is, or is part of, an EDF element
 	local element = edf.edfGetAncestor(element)
 	local handle  = edf.edfGetHandle(element)

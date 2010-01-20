@@ -32,7 +32,7 @@ function elementSearch ( cachetable, query, results, foundCache )
 				end
 				if not matches then
 					if tonumber(query) then
-						if model == tonumber(query) then
+						if string.find ( model, tonumber(query) ) then
 							table.insert ( results, object )
 							foundCache[model] = true
 						end	

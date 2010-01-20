@@ -719,7 +719,7 @@ function closePropertiesBox()
 	propertiesYPos = layout.control.baseY
 
 	showCursor(false)
-	editor_main.resume(true)
+	editor_main.resume()
 
 	propertiesChanged = nil
 

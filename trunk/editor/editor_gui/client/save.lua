@@ -1,4 +1,5 @@
 local TEST_RESOURCE = "editor_test"
+local DUMP_RESOURCE = "editor_dump"
 local mapsInfo = {}
 local resourcesInfo = {}
 saveDialog = {}
@@ -36,8 +37,6 @@ function closeSaveDialog()
 end
 
 function saveMap()
-	local row = guiGridListGetSelectedItem ( saveDialog.mapsList )
-	-- if row == -1 then return end
 	mapName = guiGetText ( saveDialog.mapName )
 	if mapName == "" then return end
 	if mapsInfo[string.lower(mapName)] then
@@ -77,7 +76,7 @@ function saveShowDialog( resources )
 	guiSetText ( saveDialog.mapName, "" )
 	guiGridListClear ( saveDialog.mapsList )
 	for i,res in ipairs(resources) do
-		if res["type"] == "map" and string.lower(res["friendlyName"]) ~= TEST_RESOURCE then
+		if res["type"] == "map" and string.lower(res["friendlyName"]) ~= TEST_RESOURCE and string.lower(res["friendlyName"]) ~= DUMP_RESOURCE then
 			local row = guiGridListAddRow ( saveDialog.mapsList )
 			guiGridListSetItemText ( saveDialog.mapsList, row, 1, res["friendlyName"], false, false )
 			guiGridListSetItemText ( saveDialog.mapsList, row, 2, res["gamemodes"], false, false )
