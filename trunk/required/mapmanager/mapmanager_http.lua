@@ -1,16 +1,12 @@
 local cachedGamemodeList
 local recacheInterval = 5000 --ms
+local lastRecacheTime = 0
 
-local function recacheGamemodeList()
-	cachedGamemodeList = getGamemodes()
-end
-
-addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
-	function ()
-		setTimer(recacheGamemodeList, recacheInterval,0)
-	end
-)
 
 function getCachedGamemodeList()
+	if getTickCount() - lastRecacheTime > recacheInterval then
+		cachedGamemodeList = getGamemodes()
+		lastRecacheTime = getTickCount()
+	end
 	return cachedGamemodeList
 end
