@@ -1,5 +1,5 @@
 <meta>
-	<info author="Talidan + Iggy" type="script" version="2.0.0"/>
+	<info author="Talidan + Iggy" type="script" version="2.0.1"/>
 	<script src="utils/textlib.lua" type="client"/>
 	<script src="utils/imagelib.lua" type="client"/>
 	<script src="killmessages_client.lua" type="client"/>
