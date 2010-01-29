@@ -874,7 +874,7 @@ function Spectate.findNewTarget(current,dir)
 		-- Remake list
 		playersRankSorted = {}
 		for _,player in ipairs(g_Players) do
-			local rank = tonumber(getElementData(player, 'race rank') or 0)
+			local rank = tonumber(getElementData(player, 'race rank')) or 0
 			table.insert( playersRankSorted, {player=player, rank=rank} )
 		end
 		-- Sort it by rank
