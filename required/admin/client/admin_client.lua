@@ -54,6 +54,7 @@ function aAdminResourceStart ()
 			_weathers_max = _weathers_max + 1
 		end
 		if ( _weathers_max >= 1 ) then _weathers_max = _weathers_max - 1 end
+		xmlUnloadFile ( node )
 	end
 	aLoadSettings ()
 	triggerServerEvent ( "aPermissions", getLocalPlayer() )
@@ -83,6 +84,9 @@ function aAdminDestroy ()
 end
 
 function aLoadSettings ()
+	if _settings then
+		xmlUnloadFile ( _settings )
+	end
 	_settings = xmlLoadFile ( "admin.xml" )
 	if ( not _settings ) then
 		_settings = xmlCreateFile ( "admin.xml", "main" )
@@ -191,6 +195,7 @@ addEventHandler ( "aClientShowUpgradeMessage", _root,
 				setTimer ( aMessageBoxClose, 15000, 1, true )
 			end
 		end
+		xmlUnloadFile (xml)
 	end
 )
 

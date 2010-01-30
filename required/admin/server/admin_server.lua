@@ -146,6 +146,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 				table.remove( aReports, 1 )
 			end
 		end
+		xmlUnloadFile ( node )
 	end
 	local node = xmlLoadFile ( "conf\\messages.xml" )
 	if ( node ) then

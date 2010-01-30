@@ -29,6 +29,7 @@ function aVehicleCustomize ( player )
 				aUpgradeNames[id] = name
 				upgrades = upgrades + 1
 			end
+			xmlUnloadFile ( node )
 		end
 
 		local c = 1

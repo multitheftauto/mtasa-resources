@@ -20,6 +20,7 @@ if ( node ) then
 		items = items + 1
 	end
 end
+xmlUnloadFile ( node )
 
 function httpAddMenuItem ( resource, section, name, page, icon, alt )
 	if ( alt ) then

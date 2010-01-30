@@ -30,6 +30,7 @@ function aPlayerInterior ( player )
 				guiGridListSetItemText ( aInteriorList, row, 2, xmlNodeGetAttribute ( interior, "id" ), false, false )
 				interiors = interiors + 1
 			end
+			xmlUnloadFile ( node )
 		end
 		addEventHandler ( "onClientGUIDoubleClick", aInteriorForm, aClientInteriorDoubleClick )
 		addEventHandler ( "onClientGUIClick", aInteriorForm, aClientInteriorClick )
