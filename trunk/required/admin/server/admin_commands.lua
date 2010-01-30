@@ -43,6 +43,7 @@ function aSetupCommands()
 				end
 			end
 		end
+		xmlUnloadFile ( node )
 	end
 
 end

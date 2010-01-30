@@ -119,6 +119,7 @@ function aLoadSkins ()
 			end
 			groups = groups + 1
 		end
+		xmlUnloadFile ( node )
 	end
 	return table
 end

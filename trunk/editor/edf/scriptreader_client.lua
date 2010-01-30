@@ -83,6 +83,7 @@ addEventHandler ( "downloadScript", root,
 		if file then
 			xmlNodeSetValue ( file, script )
 			xmlSaveFile ( file )
+			xmlUnloadFile ( file )
 		end
 		loadScripts ( resourceName ) --Attempt to load all scripts at this point
 	end

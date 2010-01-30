@@ -135,6 +135,7 @@ function readCycleXml(xmlFile)
 			nextGameIndex = notPlayedGames[math.random(1, #notPlayedGames)]
 		end
 	end
+	xmlUnloadFile ( cycleRoot )
 
 	if isAnyNodeValid then
 		return true
