@@ -142,7 +142,6 @@ addEventHandler("onPlayerToptimeImprovement", g_Root,
 		if newPos <= topTimeRankPlayer[1] then
 			local playername = newPos.." "..getPlayerName(source)
 			local interims = table.concat(allCpTimes[source], ",")
-			executeSQLQuery("BEGIN TRANSACTION" )
 			local sql = executeSQLQuery("SELECT * FROM mapInterims WHERE mapname = ?", mapName )
 			if #sql > 0 then
 				-- if debug then outputDebugString("mapinterims: update mapinterims "..playername.." "..interims) end
@@ -151,7 +150,6 @@ addEventHandler("onPlayerToptimeImprovement", g_Root,
 				-- if debug then outputDebugString("mapinterims: insert mapinterims "..playername.." "..interims) end
 				executeSQLQuery("INSERT INTO mapInterims (mapName,playername,interims) VALUES (?,?,?)", mapName, playername, interims )
 			end
-			executeSQLQuery("END TRANSACTION" )
 		end
 	end
 )
