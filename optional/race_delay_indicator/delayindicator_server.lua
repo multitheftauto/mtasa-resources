@@ -12,7 +12,18 @@ local players = {}
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
 		-- executeSQLDropTable("mapInterims")
-		executeSQLCreateTable("mapInterims", "mapname TEXT, playername TEXT, interims TEXT")
+		-- Add table if required
+		executeSQLQuery("CREATE TABLE IF NOT EXISTS mapInterims (mapname TEXT, playername TEXT, interims TEXT)")
+		-- Remove any duplicate mapname entries
+		executeSQLQuery("DELETE FROM mapInterims WHERE rowid in "
+							.. " (SELECT A.rowid"
+							.. " FROM mapInterims A, mapInterims B"
+							.. " WHERE A.rowid > B.rowid AND A.mapname = B.mapname)")
+		-- Add unique index to speed things up (Also means INSERT will fail if the unique index (mapname) already exists)
+		executeSQLQuery("CREATE UNIQUE INDEX IF NOT EXISTS IDX_MAPINTERIMS_MAPNAME on mapInterims(mapname)")
+
+		-- Perform upgrade from an old version
+		updatetopTimeInterims()
 	end
 )
 
@@ -24,7 +35,7 @@ addEventHandler('onMapStarting', g_Root,
 		cpTimes = {}
 		allCpTimes = {}
 		topTimeInterims = nil
-		local sql = executeSQLQuery("SELECT * FROM mapInterims WHERE mapname = '"..mapName.."'")
+		local sql = executeSQLQuery("SELECT * FROM mapInterims WHERE mapname = ?", mapName )
 		if #sql > 0 then
 			-- if debug then outputDebugString(tostring(sql[1].playername).." "..tostring(sql[1].interims)) end
 			topTimeRankPlayer = split(sql[1].playername, string.byte(' '))
@@ -131,36 +142,36 @@ addEventHandler("onPlayerToptimeImprovement", g_Root,
 		if newPos <= topTimeRankPlayer[1] then
 			local playername = newPos.." "..getPlayerName(source)
 			local interims = table.concat(allCpTimes[source], ",")
-			local sql = executeSQLQuery("SELECT * FROM mapInterims WHERE mapname = '"..mapName.."'")
+			executeSQLQuery("BEGIN TRANSACTION" )
+			local sql = executeSQLQuery("SELECT * FROM mapInterims WHERE mapname = ?", mapName )
 			if #sql > 0 then
 				-- if debug then outputDebugString("mapinterims: update mapinterims "..playername.." "..interims) end
-				executeSQLUpdate("mapInterims", "playername = '"..playername.."', interims = '"..interims.."'", "mapname = '"..mapName.."'")
+				executeSQLQuery("UPDATE mapInterims SET playername=?, interims=? WHERE mapname=?", playername, interims, mapName )
 			else
 				-- if debug then outputDebugString("mapinterims: insert mapinterims "..playername.." "..interims) end
-				executeSQLInsert("mapInterims", "'"..mapName.."', '"..playername.."', '"..interims.."'")
+				executeSQLQuery("INSERT INTO mapInterims (mapName,playername,interims) VALUES (?,?,?)", mapName, playername, interims )
 			end
+			executeSQLQuery("END TRANSACTION" )
 		end
 	end
 )
 
-addCommandHandler("updatetopTimeInterims",
-	function(player)
-		sql = executeSQLQuery("SELECT * FROM mapInterims")
-		if debug then outputDebugString("mapInterims: start update "..tostring(#sql)) end
-		for _,row in ipairs(sql) do
-			if not string.find(row.playername, " ") then
-				local old = row.playername
-				row.playername = "1 "..old
-				executeSQLUpdate("mapInterims", "playername = '"..row.playername.."'", "mapname = '"..row.mapname.."'")
-				outputConsole("mapInterims: changed "..tostring(old).." to "..tostring(row.playername).." in "..tostring(row.mapname), player)
-				if debug then outputDebugString("mapInterims: changed "..tostring(old).." to "..tostring(row.playername).." in "..tostring(row.mapname)) end
-			else
-				outputConsole("mapInterims: not changed "..tostring(row.playername).." in "..tostring(row.mapname), player)
-				if debug then outputDebugString("mapInterims: not changed "..tostring(row.playername).." in "..tostring(row.mapname)) end
-			end
+function updatetopTimeInterims()
+	sql = executeSQLQuery("SELECT * FROM mapInterims")
+	if debug then outputDebugString("mapInterims: start update "..tostring(#sql)) end
+	for _,row in ipairs(sql) do
+		if not string.find(row.playername, " ") then
+			local old = row.playername
+			row.playername = "1 "..old
+			executeSQLQuery("UPDATE mapInterims SET playername=? WHERE mapname=?", row.playername, row.mapname )
+			--outputConsole("mapInterims: changed "..tostring(old).." to "..tostring(row.playername).." in "..tostring(row.mapname), player)
+			if debug then outputDebugString("mapInterims: changed "..tostring(old).." to "..tostring(row.playername).." in "..tostring(row.mapname)) end
+		else
+			-- outputConsole("mapInterims: not changed "..tostring(row.playername).." in "..tostring(row.mapname), player)
+			if debug then outputDebugString("mapInterims: not changed "..tostring(row.playername).." in "..tostring(row.mapname)) end
 		end
 	end
-)
+end
 
 addCommandHandler("cpdelays",
 	function(player)
