@@ -1,5 +1,5 @@
 <meta>
-	<info name="Delay Indicator" description="Delay Indicator addon for Race" author="Flobu and dragon" type="script" addon="race" version="0.1.0"/>
+	<info name="Delay Indicator" description="Delay Indicator addon for Race" author="Flobu and dragon" type="script" addon="race" version="0.1.1"/>
 
 	<include resource="helpmanager" />
 	
