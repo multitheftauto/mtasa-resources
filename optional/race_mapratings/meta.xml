@@ -1,6 +1,0 @@
-<meta>
-	<info name="Map Ratings" description="Map Ratings addon for Race" author="Flobu and dragon" type="script" addon="race" version="0.0.2"/>
-
-	<script src="mapratings_server.lua" type="server"/>
-	
-</meta>
