@@ -290,7 +290,7 @@ addEventHandler('nextMapVoteResult', getRootElement(),
 	function( map )
 		if stateAllowsNextMapVoteResult() then
 			if not exports.mapmanager:changeGamemodeMap ( map, nil, true ) then
-				problemChangingMap(map)
+				problemChangingMap()
 			end
 		end
 	end
@@ -307,7 +307,7 @@ addEventHandler('nextMapVoteResult', getRootElement(),
 function startMidMapVoteForRestartMap(player)
 
 	-- Check state and race time left
-	if not stateAllowsRandomMapVote() then
+	if not stateAllowsRestartMapVote() then
 		if player then
 			outputRace( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
 		end 
@@ -319,7 +319,7 @@ function startMidMapVoteForRestartMap(player)
 
 	-- Actual vote started here
 	local pollDidStart = exports.votemanager:startPoll {
-			title='Do you want to restart/n the current map?',
+			title='Do you want to restart the current map?',
 			percentage=51,
 			timeout=15,
 			allowchange=true,

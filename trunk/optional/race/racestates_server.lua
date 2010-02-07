@@ -62,6 +62,16 @@ function stateAllowsRandomMapVote()
     return false
 end
 
+----------------------------------------------------------------------------
+-- stateAllowsRestartMapVote
+--
+-- Check if the current state allows a random map vote to take place
+----------------------------------------------------------------------------
+function stateAllowsRestartMapVote()
+    if currentRaceStateName == 'Running'        then    return true     end
+	if currentRaceStateName == 'SomeoneWon'   then    return true     end
+    return false
+end
 
 ----------------------------------------------------------------------------
 -- stateAllowsRandomMapVoteResult
