@@ -69,27 +69,25 @@ function aSpectator.Initialize ()
 	bindKey ( "arrow_r", "down", aSpectator.SwitchPlayer, 1 )
 	bindKey ( "mouse_wheel_up", "down", aSpectator.MoveOffset, -1 )
 	bindKey ( "mouse_wheel_down", "down", aSpectator.MoveOffset, 1 )
+	bindKey ( "mouse2", "both", aSpectator.Cursor )
 	addEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
 	addEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
 	addEventHandler ( "onClientCursorMove", _root, aSpectator.CursorMove )
 	addEventHandler ( "onClientRender", _root, aSpectator.Render )
-
+	
 	guiSetVisible ( aSpectator.Actions, true )
 	guiSetVisible ( aSpectator.Players, true )
 	guiSetVisible ( aSpectator.Next, true )
 	guiSetVisible ( aSpectator.Prev, true )
 	aAdminMenuClose ( false )
-
-	showCursor ( true )
 end
 
 function aSpectator.Cursor ( key, state )
-	local show = not isCursorShowing()
-	guiSetVisible ( aSpectator.Actions, show )
-	guiSetVisible ( aSpectator.Players, show )
-	guiSetVisible ( aSpectator.Next, show )
-	guiSetVisible ( aSpectator.Prev, show )
-	showCursor ( show )
+	if state == "down" then
+		showCursor(true)
+	else
+		showCursor(false)
+	end
 end
 
 function aSpectator.Close ( destroy )
@@ -97,6 +95,7 @@ function aSpectator.Close ( destroy )
 	unbindKey ( "arrow_r", "down", aSpectator.SwitchPlayer, 1 )
 	unbindKey ( "mouse_wheel_up", "down", aSpectator.MoveOffset, -1 )
 	unbindKey ( "mouse_wheel_down", "down", aSpectator.MoveOffset, 1 )
+	unbindKey ( "mouse2", "both", aSpectator.Cursor )
 	removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
 	removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
 	removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
