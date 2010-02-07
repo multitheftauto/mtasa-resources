@@ -3,7 +3,7 @@
 --   Common setting for server and client
 --
 
---_DEBUG_LOG = {'UNDEF','MISC','OPTIMIZATION','TOPTIMES','STATE','JOINER','TIMER'}   -- More logging
+--_DEBUG_LOG = {'UNDEF','MISC','OPTIMIZATION','TOPTIMES','STATE','JOINER','TIMER','RANDMAP','CHECKPOINT','CP','SPECTATE'}   -- More logging
 --_DEBUG_TIMING = true        -- Introduce delays
 --_DEBUG_CHECKS = true        -- Extra checks
 _TESTING = false             -- Any user can issue test commands

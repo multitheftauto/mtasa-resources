@@ -85,7 +85,9 @@ function Override.flushAll()
 				lowestValue = math.min( lowestValue, value )
 			end
 			-- Set the lowest value for this element's var
-			setElementData ( element, var, lowestValue )
+			if isElement ( element ) then
+				setElementData ( element, var, lowestValue )
+			end
 		end
 	end
 end

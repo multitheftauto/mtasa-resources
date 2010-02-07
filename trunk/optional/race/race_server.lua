@@ -222,8 +222,9 @@ function loadMap(res)
 	end
 
 	-- set options
-    g_MapInfo = {}
+    g_MapInfo = getMapInfo(res)
     g_MapInfo.name      = map.info['name'] or 'unnamed'
+	g_MapInfo.author    = map.info['author']
     g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
 
 	g_SavedMapSettings = {}
@@ -267,14 +268,16 @@ function loadMap(res)
 	
 	-- read checkpoints
 	g_Checkpoints = map:getAll('checkpoint')
-	for i,checkpoint in ipairs(g_Checkpoints) do
-		checkpoint.size = checkpoint.size and checkpoint.size*4 or 4
-	end
+	
 	if map:isDMFormat() then
 		-- sort checkpoints
 		local chains = {}		-- a chain is a list of checkpoints that immediately follow each other
 		local prevchainnum, chainnum, nextchainnum
 		for i,checkpoint in ipairs(g_Checkpoints) do
+		
+			--check size
+			checkpoint.size = checkpoint.size or 4
+			
 			-- any chain we can place this checkpoint after?
 			chainnum = table.find(chains, '[last]', 'nextid', checkpoint.id)
 			if chainnum then
@@ -305,6 +308,14 @@ function loadMap(res)
 			end
 		end
 		g_Checkpoints = chains[1] or {}
+	end
+	
+	-- if map isn't made in the new editor or map is an old race map multiplicate the checkpointsize with 4
+	local madeInNewEditor = map.def and map.def:find("editor_main")
+	if not madeInNewEditor or map:isRaceFormat() then
+		for i,checkpoint in ipairs(g_Checkpoints) do
+			checkpoint.size = checkpoint.size and checkpoint.size*4 or 4
+		end
 	end
 	
 	-- read objects
@@ -643,7 +654,7 @@ addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 	function(pickupID, respawntime)
 		local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
 		local vehicle = g_Vehicles[source]
-		if respawntime then
+		if respawntime and tonumber(respawntime) >= 50 then
 			table.insert(unloadedPickups, pickupID)
 			clientCall(g_Root, 'unloadPickup', pickupID)
 			pickupTimers[pickupID] = setTimer(ServerLoadPickup, tonumber(respawntime), 1, pickupID)
@@ -875,22 +886,22 @@ addEventHandler('onRequestKillPlayer', g_Root,
     end
 )
 
-addCommandHandler('ghostmode',
-	function(player)
-		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
-			return
-		end
-		g_MapOptions.ghostmode = not g_MapOptions.ghostmode
-		g_GameOptions.ghostmode = not g_GameOptions.ghostmode
-		set('*ghostmode', g_GameOptions.ghostmode and 'true' or 'false' )
-		updateGhostmode()
-		if g_GameOptions.ghostmode then
-			outputChatBox('Ghostmode enabled by ' .. getPlayerName(player), g_Root, 0, 240, 0)
-		else
-			outputChatBox('Ghostmode disabled by ' .. getPlayerName(player), g_Root, 240, 0, 0)
-		end
+function setServerGhostmode(player)
+	if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+		return
 	end
-)
+	g_MapOptions.ghostmode = not g_MapOptions.ghostmode
+	g_GameOptions.ghostmode = not g_GameOptions.ghostmode
+	set('*ghostmode', g_GameOptions.ghostmode and 'true' or 'false' )
+	updateGhostmode()
+	if g_GameOptions.ghostmode then
+		outputChatBox('Ghostmode enabled by ' .. getPlayerName(player), g_Root, 0, 240, 0)
+	else
+		outputChatBox('Ghostmode disabled by ' .. getPlayerName(player), g_Root, 240, 0, 0)
+	end
+end
+addCommandHandler('gm', setServerGhostmode)
+addCommandHandler('ghostmode', setServerGhostmode)
 
 function updateGhostmode()
 	for i,player in ipairs(g_Players) do
