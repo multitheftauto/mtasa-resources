@@ -18,22 +18,23 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		-- create GUI
 		local screenWidth, screenHeight = guiGetScreenSize()
 		g_dxGUI = {
-			ranknum = dxText:create('1', screenWidth - 60, screenHeight - 80, false, 'bankgothic', 2, 'right'),
-			ranksuffix = dxText:create('st', screenWidth - 40, screenHeight - 71, false, 'bankgothic', 1),
-			checkpoint = dxText:create('0/0', screenWidth - 20, screenHeight - 42, false, 'bankgothic', 0.8, 'right')
+			ranknum = dxText:create('1', screenWidth - 60, screenHeight - 95, false, 'bankgothic', 2, 'right'),
+			ranksuffix = dxText:create('st', screenWidth - 40, screenHeight - 86, false, 'bankgothic', 1),
+			checkpoint = dxText:create('0/0', screenWidth - 15, screenHeight - 54, false, 'bankgothic', 0.8, 'right'),
+			timepassed = dxText:create('0:00:00', screenWidth - 10, screenHeight - 25, false, 'bankgothic', 0.7, 'right'),
+			mapdisplay = dxText:create('Map: none', 2, screenHeight - dxGetFontHeight(0.7, 'bankgothic')/2, false, 'bankgothic', 0.7, 'left')
 		}
 		g_dxGUI.ranknum:type('stroke', 2, 0, 0, 0, 255)
 		g_dxGUI.ranksuffix:type('stroke', 2, 0, 0, 0, 255)
 		g_dxGUI.checkpoint:type('stroke', 1, 0, 0, 0, 255)
+		g_dxGUI.timepassed:type('stroke', 1, 0, 0, 0, 255)
 		g_GUI = {
 			timeleftbg = guiCreateStaticImage(screenWidth/2-108/2, 15, 108, 24, 'img/timeleft.png', false, nil),
 			timeleft = guiCreateLabel(screenWidth/2-108/2, 19, 108, 30, '', false),
-			timepassed = guiCreateLabel(screenWidth - 78, screenHeight - 29, 100, 30, '', false),
-			healthbar = FancyProgress.create(250, 1000, 'img/progress_health_bg.png', -65, 60, 123, 30, 'img/progress_health.png', 8, 8, 108, 16),
-			speedbar = FancyProgress.create(0, 1.5, 'img/progress_speed_bg.png', -65, 90, 123, 30, 'img/progress_speed.png', 8, 8, 108, 16),
+			healthbar = FancyProgress.create(250, 1000, 'img/progress_health_bg.png', -65, 60, 123, 30, 'img/progress_health.png', 8, 8, 108, 15),
+			speedbar = FancyProgress.create(0, 1.5, 'img/progress_speed_bg.png', -65, 90, 123, 30, 'img/progress_speed.png', 8, 8, 108, 15),
 		}
 		guiSetFont(g_GUI.timeleft, 'default-bold-small')
-		guiSetFont(g_GUI.timepassed, 'default-bold-small')
 		guiLabelSetHorizontalAlign(g_GUI.timeleft, 'center')
 		g_GUI.speedbar:setProgress(0)
 		
@@ -181,6 +182,8 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     g_PlayerInfo = playerInfo
     triggerEvent('onClientMapStarting', g_Me, mapinfo )
 	
+	g_dxGUI.mapdisplay:text("Map: "..g_MapInfo.name)
+	
 	fadeCamera(true)
 	showHUD(false)
 	
@@ -253,9 +256,9 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	end
 	
 	-- GUI
+	g_dxGUI.timepassed:text('0:00:00')
 	showGUIComponents('healthbar', 'speedbar', 'timepassed')
 	hideGUIComponents('timeleftbg', 'timeleft')
-	guiSetText(g_GUI.timepassed, msToTimeStr(0))
 	if ranked then
 		showGUIComponents('ranknum', 'ranksuffix')
 	else
@@ -520,7 +523,7 @@ function updateTime()
 	local tick = getTickCount()
 	local msPassed = tick - g_StartTick
 	if not isPlayerFinished(g_Me) then
-		guiSetText(g_GUI.timepassed, msToTimeStr(msPassed))
+		g_dxGUI.timepassed:text(msToTimeStr(msPassed))
 	end
 	local timeLeft = g_Duration - msPassed
 	guiSetText(g_GUI.timeleft, msToTimeStr(timeLeft > 0 and timeLeft or 0))
