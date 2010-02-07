@@ -12,6 +12,9 @@ function onStart() --Callback triggered by edf
 		models[name].dff = engineLoadDFF(':race/model/' .. name .. '.dff', id)
 		engineReplaceModel(models[name].dff, id)
 	end
+	for i,racepickup in pairs(getElementsByType"racepickup") do
+		checkElementType(racepickup)
+	end
 end
 
 function onStop()
@@ -28,7 +31,7 @@ addEventHandler ( "onClientElementPropertyChanged", root,
 				local pickupType = exports.edf:edfGetElementProperty ( source, "type" )
 				local object = getRepresentation(source,"object")
 				if object then
-					setElementModel ( object, g_ModelForPickupType[pickupType] or 1337 )
+					setElementModel ( object[1], g_ModelForPickupType[pickupType] or 1346 )
 				end
 			end
 		elseif getElementType(source) == "checkpoint" then
@@ -50,23 +53,40 @@ addEventHandler ( "onClientElementPropertyChanged", root,
 	end
 )
 
+function checkElementType(element)
+	element = element or source
+	if getElementType(element) == "racepickup" then
+		local pickupType = exports.edf:edfGetElementProperty ( element, "type" )
+		local object = getRepresentation(element,"object")
+		if object then
+			setElementModel ( object[1], g_ModelForPickupType[pickupType] or 1346 )
+			setElementAlpha ( object[2], 0 )
+		end
+	end
+end
+addEventHandler("onClientElementCreate", root, checkElementType)
+
 --Pickup processing code
 function updatePickups()
 	local angle = math.fmod((getTickCount() - startTick) * 360 / 2000, 360)
 	for i,racepickup in pairs(getElementsByType"racepickup") do
-		local object = getRepresentation(racepickup,"object")
-		if object then
-			setElementRotation(object, 0, 0, angle)
-		end
+		setElementRotation(racepickup, 0, 0, angle)
 	end
 end
 addEventHandler('onClientRender', root, updatePickups)
 
 function getRepresentation(element,type)
+	local elemTable = {}
 	for i,elem in ipairs(getElementsByType(type,element)) do
 		if elem ~= exports.edf:edfGetHandle ( elem ) then
-			return elem
+			table.insert(elemTable, elem)
 		end
 	end
-	return false
+	if #elemTable == 0 then
+		return false
+	elseif #elemTable == 1 then
+		return elemTable[1]
+	else
+		return elemTable
+	end
 end

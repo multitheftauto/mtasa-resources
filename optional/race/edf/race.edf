@@ -18,16 +18,16 @@
 		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
 		<data name="size" type="number" description="marker size" default="2.25" />
 		<data name="nextid" type="element:checkpoint" description="The next checkpoint after this one" required="false" default="" />
-		
-		<!-- <data name="vehicle" type="vehicleID" required="false" /> -->
+		<data name="vehicle" type="vehicleID" required="false"/>
 		<marker color="!color!" type="!type!" size="!size!"/>
 	</element>
 	<element name="racepickup" friendlyname="Race pickup" icon="edf/pickup.png">
 		<data name="position" type="coord3d" default="0,0,0" />
 		<data name="type" type="selection:nitro,repair,vehiclechange" description="The type of pickup.  Can repair the vehicle, add a Nitro, or change the player's vehicle" default="nitro" />
-		
+		<data name="respawn" type="integer" default="0" description="The respawn time in miliseconds" />
 		<data name="vehicle" type="vehicleID" default="522" description="The vehicle model, if a vehiclechange pickup" required="false" />
-		<object model="1337" position="0,0,0"/>
+		<object model="2221" position="0,0,0" />
+		<object model="1346" position="0,0,0" editorOnly="true"/>
 	</element>
 	
 	<script src="edf/edf.lua" />
