@@ -144,6 +144,8 @@ function aAdminMenu ()
 						  guiLabelSetColor ( aTab2.ExecuteAdvanced, 255, 0, 0 )
 		aLogLines = 1
 
+		createMapTab()
+		
 		aTab3 = {}
 		aTab3.Tab			= guiCreateTab ( "Server", aTabPanel, "server" )
 		aTab3.Server		= guiCreateLabel ( 0.05, 0.05, 0.70, 0.05, "Server: Unknown", true, aTab3.Tab )
