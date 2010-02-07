@@ -13,6 +13,7 @@
   <script src="server/admin_commands.lua" />
   <script src="server/admin_community.lua" />
   <script src="server/admin_ip2c.lua" />
+  <script src="server/admin_servermaps.lua" />
   <script src="server/admin_ACL.lua" />
   <script src="server/admin_settings.lua" />
   <script src="server/http/admin_http.lua" />
@@ -21,6 +22,7 @@
   <script src="client/admin_ACL.lua" type="client" />
   <script src="client/gui/admin_main.lua" type="client" />
   <script src="client/gui/admin_performance.lua" type="client" />
+  <script src="client/gui/admin_maps.lua" type="client" />
   <script src="client/gui/admin_messages.lua" type="client" />
   <script src="client/gui/admin_message.lua" type="client" />
   <script src="client/gui/admin_spectator.lua" type="client" />
@@ -226,8 +228,8 @@
   <html src="server/http/images/password.png" raw="true"/>
   <html src="server/http/images/bans.png" raw="true"/>
   -->
-
-	<settings>
+ 
+ <settings>
 		<!-- *****************************************************
 			 All these settings are adjustable in the Admin Panel:
 				1. start admin
