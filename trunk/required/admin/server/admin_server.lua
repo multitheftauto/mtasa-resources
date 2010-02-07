@@ -676,6 +676,14 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 		elseif ( action == "freeze" )  then
 			if ( isPlayerFrozen ( player ) ) then action = "un"..action end
 			aSetPlayerFrozen ( player, not isPlayerFrozen ( player ) )
+		elseif ( action == "nick" )  then
+			local playername = getPlayerName(player)
+			if setPlayerName( player, data ) then
+				outputChatBox ( "You changed '"..playername.."' to '"..data.."'!", source, 255, 100, 70 )
+				outputChatBox ( "'"..getPlayerName( source ).."' changed your nick to '"..data.."'!", player, 255, 100, 70 )
+			else
+				outputChatBox ( "Invalid Nick", source, 255, 0, 0 )
+			end
 		elseif ( action == "shout" ) then
 			local textDisplay = textCreateDisplay ()
 			local textItem = textCreateTextItem ( "(ADMIN)"..getPlayerName ( source )..":\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
@@ -820,32 +828,20 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				outputChatBox ( "Error - Player is not logged in.", source, 255, 100 ,100 )
 			end
 		elseif ( action == "givevehicle" ) then
-			local pvehicle = getPedOccupiedVehicle ( player )
-			local vx, vy, vz = getElementVelocity ( player )
-			local vehicle = nil
-			if ( pvehicle ) then
-				local passengers = getVehicleOccupants ( pvehicle )
-				local x, y, z = getElementPosition ( pvehicle )
-				local rx, ry, rz = getVehicleRotation ( pvehicle )
-				local vx, vy, vz = getElementVelocity ( pvehicle )
-				destroyElement ( pvehicle )
-				vehicle = createVehicle ( data, x, y, z, rx, ry, rz )
-				local seats = getVehicleMaxPassengers ( vehicle )
-				for i, p in ipairs ( passengers ) do
-					if ( p ~= player ) then
-						local s = i - 1
-						if ( s <= seats ) then setTimer ( warpPedIntoVehicle, 500, 1, p, vehicle, s ) end
-					end
-				end
+			local vehicle = getPedOccupiedVehicle ( player )
+			if ( vehicle ) then
+				setElementModel(vehicle, data)
+				fixVehicle(vehicle)
 			else
 				local x, y, z = getElementPosition ( player )
 				local r = getPedRotation ( player )
+				local vx, vy, vz = getElementVelocity ( player )
 				vehicle = createVehicle ( data, x, y, z, 0, 0, r )
+				setElementDimension ( vehicle, getElementDimension ( player ) )
+				setElementInterior ( vehicle, getElementInterior ( player ) )
+				warpPedIntoVehicle ( player, vehicle )
+				setElementVelocity ( vehicle, vx, vy, vz )
 			end
-			setElementDimension ( vehicle, getElementDimension ( player ) )
-			setElementInterior ( vehicle, getElementInterior ( player ) )
-			warpPedIntoVehicle ( player, vehicle )
-			setElementVelocity ( vehicle, vx, vy, vz )
 			mdata = getVehicleName ( vehicle )
 		elseif ( action == "giveweapon" ) then
 			if ( giveWeapon ( player, data, additional, true ) ) then
