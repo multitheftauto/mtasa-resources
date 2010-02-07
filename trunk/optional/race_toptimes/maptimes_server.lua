@@ -392,16 +392,18 @@ end
 -- Remove the best time from this map
 --
 ---------------------------------------------------------------------------
-function SMaptimes:deletefirst()
+function SMaptimes:deletetime(place)
+
+	place = tonumber(place) or 1
 
 	-- Although the list should be sorted already, make sure
 	self:sort()
 
 	-- Remove the first row
-	if #self.dbTable.rows >= 1 then
+	if #self.dbTable.rows >= place then
 		-- Copy it out and then remove it from the table
-		local row = self.dbTable.rows[1]
-		table.remove( self.dbTable.rows, 1 )
+		local row = self.dbTable.rows[place]
+		table.remove( self.dbTable.rows, place )
 		return row
 	end
 

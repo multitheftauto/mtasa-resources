@@ -355,12 +355,12 @@ addEventHandler('onClientRequestToptimesUpdates', getRootElement(),
 ---------------------------------------------------------------------------
 
 addCommandHandler( "deletetime",
-	function( player )
+	function( player, cmd, place )
 		if not _TESTING and not isPlayerInACLGroup(player, g_Settings.admingroup) then
 			return
 		end
 		if g_SToptimesManager and g_SToptimesManager.mapTimes then
-			local row = g_SToptimesManager.mapTimes:deletefirst()
+			local row = g_SToptimesManager.mapTimes:deletetime(place)
 			if row then
 				g_SToptimesManager:updateTopText()
 				outputChatBox( "Top time from '" .. tostring(row.playerName) .. "' deleted by " .. getPlayerName(player) )
