@@ -24,7 +24,7 @@ function aAdminMenu ()
 		aAdminForm			= guiCreateWindow ( x / 2 - 310, y / 2 - 260, 620, 520, "Admin Menu - v".._version, false )
 							guiWindowSetSizable ( aAdminForm, false )
 						  guiSetText ( aAdminForm, "Admin Menu - v".._version )
-						  guiCreateLabel ( 0.68, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )
+						  guiCreateLabel ( 0.75, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )
 		aTabPanel			= guiCreateTabPanel ( 0.01, 0.05, 0.98, 0.95, true, aAdminForm )
 		aTab1 = {}	
 		aTab1.Tab			= guiCreateTab ( "Players", aTabPanel, "players" )
@@ -47,6 +47,7 @@ function aAdminMenu ()
 						  guiGridListAddColumn( aTab1.SlapOptions, "", 0.85 )
 						  guiSetVisible ( aTab1.SlapOptions, false )
 						  for i = 0, 10 do guiGridListSetItemText ( aTab1.SlapOptions, guiGridListAddRow ( aTab1.SlapOptions ), 1, tostring ( i * 10 ), false, false ) end
+		aTab1.Nick			= guiCreateButton ( 0.71, 0.260, 0.13, 0.04, "Set Nick", true, aTab1.Tab )
 		aTab1.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aTab1.Tab, "shout" )
 		aTab1.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aTab1.Tab, "setgroup" )
 	
@@ -295,7 +296,10 @@ function aAdminMenu ()
 
 		triggerServerEvent ( "aSync", getLocalPlayer(), "players" )
 		if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "messages" ) end
-		if ( hasPermissionTo ( "command.listresources" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) end
+		if ( hasPermissionTo ( "command.listresources" ) ) then 
+			-- triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) 
+			-- triggerServerEvent("getMaps_s", getLocalPlayer(), getLocalPlayer(), true) 
+		end
 		triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
 		triggerEvent ( "onAdminInitialize" )
 		showCursor ( true )
@@ -751,6 +755,7 @@ function aClientClick ( button )
 					elseif ( source == aTab1.Mute ) then aMessageBox ( "question", "Are you sure to "..iif( aPlayers[player]["mute"], "unmute", "mute" ).." "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"mute\" )" )
 					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "freeze" )
 					elseif ( source == aTab1.Spectate ) then aSpectate ( player )
+					elseif ( source == aTab1.Nick ) then aInputBox ( "Set Nick", "Enter the new nick of the player", name, "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"nick\", $value )" )
 					elseif ( source == aTab1.Shout ) then aInputBox ( "Shout", "Enter text to be shown on player's screen", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"shout\", $value )" )
 					elseif ( source == aTab1.SetHealth ) then aInputBox ( "Set Health", "Enter the health value", "100", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"sethealth\", $value )" )
 					elseif ( source == aTab1.SetArmour ) then aInputBox ( "Set Armour", "Enter the armour value", "100", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setarmour\", $value )" )
