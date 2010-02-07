@@ -48,8 +48,12 @@ function RaceMap.load(res)
 		end
 		local infoNode = xmlFindChild(meta, 'info', 0)
 		local info = infoNode and xmlNodeGetAttributes ( infoNode ) or {}
+		local filename = xmlNodeGetAttribute(xmlFindChild(meta, 'map', 0), 'src')
+		local mapNode = xmlLoadFile(':' .. getResourceName(res) .. '/' .. filename)
+		local def = xmlNodeGetAttribute(mapNode,"edf:definitions")
 		xmlUnloadFile(meta)
-		local map = setmetatable({ res = res, resname = getResourceName(res), mod = "map", info = info }, RaceElementMap)
+		xmlUnloadFile(mapNode)
+		local map = setmetatable({ res = res, resname = getResourceName(res), mod = "map", info = info, def = def }, RaceElementMap)
 		return map
 	end
 	local meta = xmlLoadFile(':' .. getResourceName(res) .. '/' .. 'meta.xml')

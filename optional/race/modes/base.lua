@@ -261,7 +261,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 				getPlayerName(player),
 			},
 			g_Root,
-			255,0,0
+			getPlayerNametagColor(player)
 		)
 		self.rankingBoard:add(player, time)
 		if getActivePlayerCount() > 0 then
@@ -318,7 +318,7 @@ function RaceMode:onPlayerWasted(player)
         if self:getTimeRemaining() - respawnTime > 3000 then
             Countdown.create(respawnTime/1000, restorePlayer, 'You will respawn in:', 255, 255, 255, 0.25, 2.5, true, self.id, player):start(player)
         end
-	    if RaceMode.getMapOption('respawntime') >= 10000 then
+	    if RaceMode.getMapOption('respawntime') >= 5000 then
 		    setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
 	    end
 	end
