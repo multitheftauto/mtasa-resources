@@ -84,17 +84,25 @@ function vote.map.handler(source,cmd,...)
 	else
 		local resource1, resource2
 		if resource1Name then
-			resource1 = getResourceFromName(resource1Name)
-			if not resource1 then
-				outputVoteManager(cmd..": resource '"..resource1Name.."' does not exist.", source)
-				return false
+			if resource1Name == "*" then
+				resource1 = "*"
+			else
+				resource1, errormsg = findMap(resource1Name)
+				if not resource1 then
+					if exports.mapmanager:isGamemode(getResourceFromName(resource1Name)) then
+						resource1 = getResourceFromName(resource1Name)
+					else
+						outputVoteManager(errormsg, source)
+						return false
+					end
+				end
 			end
-		end
-		if resource2Name then
-			resource2 = getResourceFromName(resource2Name)
-			if not resource2 then
-				outputVoteManager(cmd..": resource '"..resource2Name.."' does not exist.", source)
-				return false
+			if resource2Name then
+				resource2, errormsg = findMap(resource2Name, resource1)
+				if not resource2 then
+					outputVoteManager(errormsg, source)
+					return false
+				end
 			end
 		end
 		-- if using votemap to do a mode change, ensure that votemode has not been disabled
@@ -126,7 +134,7 @@ function vote.map.handler(source,cmd,...)
 	end
 end
 
-function vote.mode.handler(source,cmd,resourceName)
+function vote.mode.handler(source,cmd)
 	source = source or serverConsole
 
 	if isDisabled(cmd, source) then
@@ -193,7 +201,7 @@ function vote.kick.handler(source,cmd,playername,...)
 		if #reason == 0 then
 			reason = nil
 		end
-		local voteKickStarted, voteKickReturnCode = voteKick(getPlayerFromName(playername or ""),reason)
+		local voteKickStarted, voteKickReturnCode = voteKick(getPlayerByNamepart(playername),reason)
 		if voteKickStarted then
 			outputVoteManager("Votekick started by "..getPlayerName(source)..".")
 
@@ -232,7 +240,7 @@ function vote.ban.handler(source,cmd,playername,...)
 		if #reason == 0 then
 			reason = nil
 		end
-		local voteBanStarted, voteBanReturnCode = voteBan(getPlayerFromName(playername or ""),reason)
+		local voteBanStarted, voteBanReturnCode = voteBan(getPlayerByNamepart(playername),reason)
 		if voteBanStarted then
 			outputVoteManager("Voteban started by "..getPlayerName(source)..".")
 			
@@ -271,7 +279,7 @@ function vote.kill.handler(source,cmd,playername,...)
 		if #reason == 0 then
 			reason = nil
 		end
-		local voteKillStarted, voteKillReturnCode = voteKill(getPlayerFromName(playername or ""),reason)
+		local voteKillStarted, voteKillReturnCode = voteKill(getPlayerByNamepart(playername),reason)
 		if voteKillStarted then
 			outputVoteManager("Votekill started by "..getPlayerName(source)..".")
 			triggerClientEvent(source,"doSendVote",rootElement,1)
@@ -294,11 +302,15 @@ end
 function voteMap(resource1, resource2)
 	local gamemode, map
 	if resource1 then
-		if call(mapmanagerResource, "isMap", resource1) == true then
-			map = resource1
-		elseif call(mapmanagerResource, "isGamemode", resource1) == true then
-			gamemode = resource1
-		end
+        if resource1 == "*" then
+            map = "*"
+        else
+            if call(mapmanagerResource, "isMap", resource1) == true then
+                map = resource1
+            elseif call(mapmanagerResource, "isGamemode", resource1) == true then
+                gamemode = resource1
+            end
+        end
 	end
 	if resource2 then
 		if call(mapmanagerResource, "isMap", resource2) == true then
@@ -312,13 +324,42 @@ function voteMap(resource1, resource2)
 		end
 	end
 
+    -- map equals "*": vote for a random map on the current gamemode
+    if map and map == "*" then
+        local runningGamemode = call(mapmanagerResource, "getRunningGamemode")
+		if not runningGamemode then
+			return false, errorCode.noGamemodeRunning
+		end
+        
+        local compatibleMaps = call(mapmanagerResource, "getMapsCompatibleWithGamemode", runningGamemode)
+        map = call(mapmanagerResource, "getRunningGamemodeMap")
+        if map then
+            local currentMap = getResourceName(map)
+            for i,map in ipairs(compatibleMaps) do
+                if getResourceName(map) == currentMap then
+                    table.remove(compatibleMaps, i)
+                    break
+                end
+            end
+        end
+
+        return (startPoll {
+            title='Change to a random map on this gamemode?',
+            percentage = vote.map.percentage,
+            visibleTo = rootElement,
+            timeout = vote.map.timeout,
+            allowchange = vote.map.allowchange;
+            [1]={'Yes',call,mapmanagerResource,"changeGamemodeMap",compatibleMaps[math.random(1, #compatibleMaps)]},
+            [2]={"No",outputVoteManager,"votemap: not enough votes to change to a random map on this gamemode.",rootElement,vR,vG,vB;default=true},
+        }), true
+    
 	-- a map, a gamemode: vote for that pair
-	if map and gamemode then
+	elseif map and gamemode then
 		if call(mapmanagerResource, "isMapCompatibleWithGamemode", map, gamemode) then
 			local gamemodeName = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
 			local mapName = getResourceInfo(map, "name") or getResourceName(map)
 			return (startPoll{
-				title = "Change mode to "..gamemodeName.." on map "..mapName.."?",
+                title = "Change mode to "..gamemodeName.." on map "..mapName.."?",
 				percentage = vote.map.percentage,
 				visibleTo = rootElement,
 				timeout = vote.map.timeout,
@@ -635,3 +676,81 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 	end
 	return success
 end
+
+--Find a player which matches best
+function getPlayerByNamepart(namePart)
+	if not namePart then return false end
+	namePart = string.lower(namePart)
+	
+	local bestaccuracy = 0
+	local foundPlayer, b, e
+	for _,player in ipairs(getElementsByType("player")) do
+		b,e = string.find(string.lower(getPlayerName(player)), namePart)
+		if b and e then
+			if e-b > bestaccuracy then
+				bestaccuracy = e-b
+				foundPlayer = player
+			end
+		end
+	end
+
+	return foundPlayer or false
+end
+
+--Find a map which matches, or nil and a text message if there is not one match
+function findMap( query, gamemode)
+	local maps = findMaps( query, gamemode )
+	
+	-- Make status string
+	local status = "Found " .. #maps .. " match" .. ( #maps==1 and "" or "es" )
+	for i=1,math.min(5,#maps) do
+		status = status .. ( i==1 and ": " or ", " ) .. "'" .. getMapName( maps[i] ) .. "'"
+	end
+	if #maps > 5 then
+		status = status .. " (" .. #maps - 5 .. " more)"
+	end
+
+	if #maps == 0 then
+		return nil, status .. " for '" .. query .. "'"
+	end
+	if #maps == 1 then
+		return maps[1], status
+	end
+	if #maps > 1 then
+		return nil, status
+	end
+end
+
+-- Find all maps which match the query string
+function findMaps( query, gamemode )
+	local results = {}
+	-- Loop through and find matching maps
+	local maps = gamemode and exports.mapmanager:getMapsCompatibleWithGamemode(gamemode) or exports.mapmanager:getMaps()
+	for i,resource in ipairs(maps) do
+		local resName = getResourceName( resource )
+		local infoName = getMapName( resource  )
+
+		-- Look for exact match first
+		if query == resName or query == infoName then
+			return {resource}
+		end
+
+		-- Find match for query within infoName
+		if string.find( infoName:lower(), query:lower() ) then
+			table.insert( results, resource )
+		end
+	end
+	return results
+end
+
+function getMapName( map )
+	return getResourceInfo( map, "name" ) or getResourceName( map ) or "unknown"
+end
+
+addCommandHandler("stopvote",
+	function(player)
+		if isObjectInACLGroup("user."..getAccountName(getPlayerAccount(player)), aclGetGroup("Admin")) then
+			stopPoll()
+		end
+	end
+)
