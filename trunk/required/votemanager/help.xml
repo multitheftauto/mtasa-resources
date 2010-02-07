@@ -1,6 +1,9 @@
 <help popup="no">
 The following votes are handled by this manager:
 
+/votemap *
+Starts a vote to launch a random map running on the current gamemode.
+
 /votemap some_gamemode some_map
 Starts a vote to launch "some_map" running on the gamemode "some_gamemode".
 
