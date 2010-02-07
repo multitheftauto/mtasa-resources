@@ -5,7 +5,11 @@ local defaultConfig = {}
 local rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 
-addEvent "onPollStart"
+local g_Poll
+
+addEvent "onPollStarting"	--before start to modify it
+addEvent "onPollModified"
+addEvent "onPollStart"		--at start to cancel it
 addEvent "onPollStop"
 addEvent "onPollEnd"
 addEvent("onClientSendVote", true)
@@ -26,6 +30,12 @@ function getPlayerUserNameSafe(client)
 end
 
 function startPoll(pollData)
+	-- Allow other resources to modify the poll
+	g_Poll = pollData
+	triggerEvent('onPollStarting', rootElement, pollData )
+	pollData = g_Poll
+	g_Poll = nil
+	
 	--if there's a poll already
 	if activePoll then
 		return false, errorCode.pollAlreadyRunning
@@ -113,7 +123,6 @@ function startPoll(pollData)
 		title=activePoll.title,
 		allowchange=activePoll.allowchange,
 		nomination=activePoll.nomination,
-        adjustwidth=activePoll.adjustwidth,
 	}
 	activePoll.clientOptions = {}
 	for i,option in ipairs(activePoll) do
@@ -134,6 +143,13 @@ function startPoll(pollData)
 	pollTimer = setTimer(endPoll, activePoll.timeout * 1000, 1)
 	return true
 end
+
+-- Used by other resources in response to onPollStarting
+addEventHandler('onPollModified', getRootElement(),
+	function( pollData )
+		g_Poll = pollData
+	end
+)
 
 function stopPoll()
 	--ignore if there's no poll
