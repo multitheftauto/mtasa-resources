@@ -187,7 +187,7 @@ end
 --
 --
 
--- local g_Poll
+local g_Poll
 
 ----------------------------------------------------------------------------
 -- startNextMapVote
@@ -244,10 +244,10 @@ function startNextMapVote()
 	end
 
 	-- Allow addons to modify the poll
-	-- g_Poll = poll
-	-- triggerEvent('onPollStarting', g_Root, poll )
-	-- poll = g_Poll
-	-- g_Poll = nil
+	g_Poll = poll
+	triggerEvent('onPollStarting', g_Root, poll )
+	poll = g_Poll
+	g_Poll = nil
 
 	local pollDidStart = exports.votemanager:startPoll(poll)
 
@@ -261,12 +261,12 @@ end
 
 
 -- Used by addons in response to onPollStarting
--- addEvent('onPollModified')
--- addEventHandler('onPollModified', getRootElement(),
-	-- function( poll )
-		-- g_Poll = poll
-	-- end
--- )
+addEvent('onPollModified')
+addEventHandler('onPollModified', getRootElement(),
+	function( poll )
+		g_Poll = poll
+	end
+)
 
 
 function chooseRandomMap (chosen)
