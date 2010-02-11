@@ -53,17 +53,11 @@ addEvent('onPollStarting')
 addEventHandler('onPollStarting', g_Root,
 	function(poll)
 		for index, item in ipairs(poll) do
-			if item[1] == "Yes" or item[1] == "No" then return end
+			if item[1] == "Yes" then return end
 			
 			local mapname = item[1]
-			local map
-			for k,v in pairs(item) do
-				if type(v) == "userdata" and getResourceName(v) and exports.mapmanager:isMap(v) then
-					map = v
-					outputDebugString("found map "..tostring(getResourceName(v)).." at "..tostring(k))
-					break
-				end
-			end
+			local map = item[4]
+			
 			if map then
 				local rating = getMapRating(getResourceName(map))
 				if rating then
