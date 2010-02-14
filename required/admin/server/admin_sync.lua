@@ -50,12 +50,14 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		for id, resource in ipairs(resourceTable) do
 			local name = getResourceName ( resource )
 			local state = getResourceState ( resource )
+			local type = getResourceInfo ( resource, "type" )
 			local numsettings = 0
 			for k,v in pairs(aGetResourceSettings(name)) do numsettings = numsettings + 1 end
 			tableOut[id] = {}
 			tableOut[id]["name"] = name
 			tableOut[id]["numsettings"] = numsettings
 			tableOut[id]["state"] = state
+			tableOut[id]["type"] = type
 		end
 	elseif ( type == "admins" ) then
 		for id, player in ipairs(getElementsByType("player")) do
