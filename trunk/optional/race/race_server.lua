@@ -269,6 +269,14 @@ function loadMap(res)
 	-- read checkpoints
 	g_Checkpoints = map:getAll('checkpoint')
 	
+	-- if map isn't made in the new editor or map is an old race map multiplicate the checkpointsize with 4
+	local madeInNewEditor = map.def and map.def:find("editor_main")
+	if not madeInNewEditor or map:isRaceFormat() then
+		for i,checkpoint in ipairs(g_Checkpoints) do
+			checkpoint.size = checkpoint.size and checkpoint.size*4 or 4
+		end
+	end
+	
 	if map:isDMFormat() then
 		-- sort checkpoints
 		local chains = {}		-- a chain is a list of checkpoints that immediately follow each other
@@ -308,14 +316,6 @@ function loadMap(res)
 			end
 		end
 		g_Checkpoints = chains[1] or {}
-	end
-	
-	-- if map isn't made in the new editor or map is an old race map multiplicate the checkpointsize with 4
-	local madeInNewEditor = map.def and map.def:find("editor_main")
-	if not madeInNewEditor or map:isRaceFormat() then
-		for i,checkpoint in ipairs(g_Checkpoints) do
-			checkpoint.size = checkpoint.size and checkpoint.size*4 or 4
-		end
 	end
 	
 	-- read objects
