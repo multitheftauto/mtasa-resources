@@ -5,27 +5,27 @@ local g_MapResName
 
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
-		-- outputDebugString("mapratings: sending data: "..tostring(mapInfo.name))
         g_MapResName = getResourceName(mapres)
 	end
 )
 
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
+		-- outputDebugString("delete mapratings "..tostring(executeSQLQuery("DROP TABLE mapratings")))
 		-- Add table if required
 		executeSQLQuery("CREATE TABLE IF NOT EXISTS mapratings (mapname TEXT, playername TEXT, rating INTEGER)")
 		-- Remove any duplicate mapname entries
-		executeSQLQuery("DELETE FROM mapratings WHERE rowid in "
-							.. " (SELECT A.rowid"
-							.. " FROM mapratings A, mapratings B"
-							.. " WHERE A.rowid > B.rowid AND A.mapname = B.mapname)")
+		-- executeSQLQuery("DELETE FROM mapratings WHERE rowid in "
+							-- .. " (SELECT A.rowid"
+							-- .. " FROM mapratings A, mapratings B"
+							-- .. " WHERE A.rowid > B.rowid AND A.mapname = B.mapname)")
 		-- Add unique index to speed things up (Also means INSERT will fail if the unique index (mapname) already exists)
-		executeSQLQuery("CREATE UNIQUE INDEX IF NOT EXISTS IDX_MAPRATINGS_MAPNAME on mapratings(mapname)")
+		-- executeSQLQuery("CREATE UNIQUE INDEX IF NOT EXISTS IDX_MAPRATINGS_MAPNAME on mapratings(mapname)")
 		
 		-- Perform upgrade from an old version if necessary
 		updateMapNames()
 		
-		g_MapResName = exports.mapmanager:getRunningGamemodeMap()
+		g_MapResName = getResourceName(exports.mapmanager:getRunningGamemodeMap())
 	end
 )
 
@@ -33,16 +33,18 @@ function updateMapRating(player, mapresname, rating)
 	local playername = getPlayerName(player)
 	local sql = executeSQLQuery("SELECT rating FROM mapratings WHERE mapname=? AND playername=?", mapresname, playername)
 	if #sql > 0 then
-		-- outputDebugString("mapratings: update maprating "..playername.." "..rating)
-		executeSQLQuery("UPDATE mapratings SET rating=? WHERE mapname=? AND playername=?", rating, mapresname, playername)
+		local success = executeSQLQuery("UPDATE mapratings SET rating=? WHERE mapname=? AND playername=?", rating, mapresname, playername)
+		-- outputDebugString("mapratings: update mapratings "..playername.." "..rating.." "..tostring(success))
+		if not success then return end
 		if sql[1].rating == rating then
 			outputChatBox("You already rated this map "..getRatingColorAsHex(rating)..rating.."/10#FF0000.", player, 255, 0, 0, true)
 		else
 			outputChatBox("Changed rating from "..getRatingColorAsHex(sql[1].rating)..sql[1].rating.."/10 #E1AA5Ato "..getRatingColorAsHex(rating)..rating.."/10#E1AA5A.", player, 225, 170, 90, true)
 		end
 	else
-		-- outputDebugString("mapratings: insert maprating "..playername.." "..rating)
-		executeSQLQuery("INSERT INTO mapratings (mapname,playername,rating) VALUES (?,?,?)", mapresname, playername, rating)
+		local success = executeSQLQuery("INSERT INTO mapratings VALUES (?,?,?)", mapresname, playername, rating)
+		-- outputDebugString("mapratings: insert mapratings "..playername.." "..rating.." "..tostring(success))
+		if not success then return end
 		outputChatBox("Rated '"..(getResourceInfo(getResourceFromName(mapresname), "name") or mapresname).."' "..getRatingColorAsHex(rating)..rating.."/10#E1AA5A.", player, 225, 170, 90, true)
 		triggerEvent("onPlayerRateMap", player, mapresname, rating, getMapRating(mapresname))
 	end
