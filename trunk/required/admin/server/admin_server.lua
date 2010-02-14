@@ -374,6 +374,7 @@ addCommandHandler ( "register", function ( player, command, arg1, arg2 )
 			outputChatBox ( "register: - Password should be at least 4 characters long", player, 255, 100, 70 )
 		elseif ( addAccount ( username, password ) ) then
 			outputChatBox ( "You have successfully registered! Username: '"..username.."', Password: '"..password.."'(Remember it)", player, 255, 100, 70 )
+			outputServerLog ( "ADMIN: "..getPlayerName ( player ).." registered account '"..username.."' (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )
 		elseif ( getAccount ( username ) ) then
 			outputChatBox ( "register: - Account with this name already exists.", player, 255, 100, 70 )
 		else
@@ -383,6 +384,38 @@ addCommandHandler ( "register", function ( player, command, arg1, arg2 )
 		outputChatBox ( "register: - Syntax is 'register [<nick>] <password>'", player, 255, 100, 70 )
 	end
 end )
+
+-- This requires "function.removeAccount" permission for both the admin resource and the player
+addCommandHandler ( "unregister", function ( player, command, arg1, arg2 )
+	local username = arg1 or ""
+	local result = "failed - No permission"
+	if ( hasObjectPermissionTo ( player, "function.removeAccount" ) ) then
+		local account = getAccount ( username )
+		if not account then
+			result = "failed - Does not exist"
+		elseif #aclGetAccountGroups ( account ) > 1 then
+			result = "failed - Account in more than one ACL group"
+		elseif removeAccount( account ) then
+			result = "succeeded"
+		else
+			result = "failed - Check resource has permission"
+		end
+	end
+	outputChatBox ( "Unregistering account '"..username.."' "..result, player, 255, 100, 70 )
+	outputServerLog ( "ADMIN: "..getAdminNameForLog ( player ).." unregistering account '"..username.."' "..result.." (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )	
+end )
+
+-- Returns "name" or "name(accountname)" if they differ
+function getAdminNameForLog(player)
+	local name = getPlayerName( player )
+	if not isGuestAccount( getPlayerAccount( player ) ) then
+		local accountName = getAccountName( getPlayerAccount( player ) )
+		if name ~= accountName then
+			return name.."("..accountName..")"
+		end
+	end
+	return name
+end
 
 function aAdminMenu ( player, command )
 	if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then

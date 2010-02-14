@@ -122,7 +122,8 @@ function aAdminMenu ()
 						  guiGridListAddColumn( aTab2.ResourceList, "Resource", 0.55 )
 						  guiGridListAddColumn( aTab2.ResourceList, "", 0.05 )
 						  guiGridListAddColumn( aTab2.ResourceList, "State", 0.35 )
-		aTab2.ResourceRefresh	= guiCreateButton ( 0.03, 0.91, 0.35, 0.04, "Refresh list", true, aTab2.Tab, "listresources" )
+		aTab2.ResourceInclMaps	= guiCreateCheckBox ( 0.03, 0.91, 0.15, 0.04, "Include Maps", false, true, aTab2.Tab )
+		aTab2.ResourceRefresh	= guiCreateButton ( 0.20, 0.915, 0.18, 0.04, "Refresh list", true, aTab2.Tab, "listresources" )
 		aTab2.ResourceSettings	= guiCreateButton ( 0.40, 0.05, 0.20, 0.04, "Settings", true, aTab2.Tab )
 		aTab2.ResourceStart	= guiCreateButton ( 0.40, 0.10, 0.20, 0.04, "Start", true, aTab2.Tab, "start" )
 		aTab2.ResourceRestart	= guiCreateButton ( 0.40, 0.15, 0.20, 0.04, "Restart", true, aTab2.Tab, "restart" )
@@ -412,11 +413,14 @@ function aClientSync ( type, table )
 	elseif ( type == "players" ) then
 		aPlayers = table
 	elseif ( type == "resources" ) then
+		local bInclMaps = guiCheckBoxGetSelected ( aTab2.ResourceInclMaps )
 		for id, resource in ipairs(table) do
-			local row = guiGridListAddRow ( aTab2.ResourceList )
-			guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
-			guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
-			guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
+			if bInclMaps or resource["type"] ~= "map" then
+				local row = guiGridListAddRow ( aTab2.ResourceList )
+				guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
+				guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
+				guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
+			end
 		end
 	elseif ( type == "admins" ) then
 		--if ( guiGridListGetRowCount ( aTab5.AdminPlayers ) > 0 ) then guiGridListClear ( aTab5.AdminPlayers ) end
@@ -500,7 +504,14 @@ end
 
 function aClientGUITabSwitched( selectedTab )
 	if getElementParent( selectedTab ) == aTabPanel then
-		if selectedTab == aTab4.Tab then
+		if selectedTab == aTab2.Tab then
+			-- Handle initial update of resources list
+			if guiGridListGetRowCount( aTab2.ResourceList ) == 0 then
+				if ( hasPermissionTo ( "command.listresources" ) ) then 
+					triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) 
+				end
+			end
+		elseif selectedTab == aTab4.Tab then
 			if not g_GotLatestBansList then
 				-- Request full bans list if bans tab is selected and current list is out of date
 				triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
@@ -866,7 +877,7 @@ function aClientClick ( button )
 				end
 			elseif ( source == aTab2.ManageACL ) then
 				aManageACL()
-			elseif ( source == aTab2.ResourceRefresh ) then
+			elseif ( source == aTab2.ResourceRefresh or source == aTab2.ResourceInclMaps ) then
 				guiGridListClear ( aTab2.ResourceList )
 				triggerServerEvent ( "aSync", getLocalPlayer(), "resources" )
 			elseif ( source == aTab2.ExecuteClient ) then
