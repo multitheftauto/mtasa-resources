@@ -159,3 +159,22 @@ function getBool(var,default)
 	end
 	return result == 'true'
 end
+
+
+---------------------------------------------------------------------------
+--
+-- Misc
+--
+---------------------------------------------------------------------------
+-- Returns "name" or "name(accountname)" if they differ
+function getAdminNameForLog(player)
+	local name = getPlayerName( player )
+	if not isGuestAccount( getPlayerAccount( player ) ) then
+		local accountName = getAccountName( getPlayerAccount( player ) )
+		if name ~= accountName then
+			return name.."("..accountName..")"
+		end
+	end
+	return name
+end
+
