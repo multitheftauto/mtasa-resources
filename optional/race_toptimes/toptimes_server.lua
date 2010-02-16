@@ -363,7 +363,10 @@ addCommandHandler( "deletetime",
 			local row = g_SToptimesManager.mapTimes:deletetime(place)
 			if row then
 				g_SToptimesManager:updateTopText()
-				outputChatBox( "Top time from '" .. tostring(row.playerName) .. "' deleted by " .. getPlayerName(player) )
+				local mapName = tostring(g_SToptimesManager.mapTimes.mapName)
+				local placeText = place and " #" .. tostring(place) or ""
+				outputChatBox( "Top time"..placeText.." from '" .. tostring(row.playerName) .. "' deleted by " .. getPlayerName(player) )
+				outputServerLog( "INFO: Top time"..placeText.." from '" ..tostring(row.playerName).. "' (" ..tostring(row.timeText).. " in " ..mapName.. ") deleted by " .. getAdminNameForLog(player) )
 			end
 		end
 	end
