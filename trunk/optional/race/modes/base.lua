@@ -261,7 +261,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 				getPlayerName(player),
 			},
 			g_Root,
-			getPlayerNametagColor(player)
+			255,0,0
 		)
 		self.rankingBoard:add(player, time)
 		if getActivePlayerCount() > 0 then
