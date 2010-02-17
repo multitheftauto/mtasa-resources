@@ -246,6 +246,13 @@
 					desc="Set to true for a fancy effect on the last countdown image."
 					/>
 
+		<setting name="*showmapname" value="true"
+					friendlyname="Show map name"
+					group="Display"
+					accept="false,true"
+					desc="Set to true to show the current map name in the bottom left."
+					/>
+
         <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
 		<setting name="*skins_map_can_override"  friendlyname="Driver skin map override" group="Graphics" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
 		<setting name="*vehicleweapons_map_can_override"  friendlyname="Vehicle weapons map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
