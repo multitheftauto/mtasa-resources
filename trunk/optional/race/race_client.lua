@@ -199,6 +199,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	toggleControl('vehicle_secondary_fire', weapons)
 	setCloudsEnabled(g_GameOptions.cloudsenable)
 	setBlurLevel(g_GameOptions.blurlevel)
+	g_dxGUI.mapdisplay:visible(g_GameOptions.showmapname)
 
 	-- checkpoints
 	g_Checkpoints = checkpoints
@@ -309,6 +310,7 @@ function updateOptions ( gameoptions, mapoptions )
 	end
 	setCloudsEnabled(g_GameOptions.cloudsenable)
 	setBlurLevel(g_GameOptions.blurlevel)
+	g_dxGUI.mapdisplay:visible(g_GameOptions.showmapname)
 end
 
 function launchRace(duration)
@@ -417,6 +419,9 @@ function updatePickups()
 					pickup.label:color(255, 255, 255, 0)
 					pickup.labelVisible = false
 					pickup.label:visible(false)
+				end
+				if Spectate.fadedout then
+					pickup.label:visible(false)	-- Hide pickup labels when screen is black
 				end
 			end
 		else
