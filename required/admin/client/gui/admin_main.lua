@@ -105,16 +105,18 @@ function aAdminMenu ()
 						  guiGridListAddColumn( aTab1.VehicleOptions, "", 0.85 )
 						  guiSetAlpha ( aTab1.VehicleOptions, 0.80 )
 						  guiSetVisible ( aTab1.VehicleOptions, false )
-						  local avehspecial = { [596] = "LS", [597] = "SF", [598] = "LV" }
-						  for i = 0, 211 do
-							if ( getVehicleNameFromModel ( 400 + i ) ~= "" ) then
-								local row = guiGridListAddRow ( aTab1.VehicleOptions )
-								local name = getVehicleNameFromModel ( 400 + i )
-								if ( avehspecial[400+i] ) then name = name.." "..avehspecial[400+i] end
-								guiGridListSetItemText ( aTab1.VehicleOptions, row, 1, name, false, false )
-								guiGridListSetItemData ( aTab1.VehicleOptions, row, 1, tostring ( 400 + i ) )
+							local vehicleNames = {}
+							for i = 400, 611 do
+								if ( getVehicleNameFromModel ( i ) ~= "" ) then
+									table.insert( vehicleNames, { model = i, name = getVehicleNameFromModel ( i ) } )
+								end
 							end
-						  end
+							table.sort( vehicleNames, function(a, b) return a.name < b.name end )
+							for _,info in ipairs(vehicleNames) do
+								local row = guiGridListAddRow ( aTab1.VehicleOptions )
+								guiGridListSetItemText ( aTab1.VehicleOptions, row, 1, info.name, false, false )
+								guiGridListSetItemData ( aTab1.VehicleOptions, row, 1, tostring ( info.model ) )
+							end
 		aTab2 = {}
 		aTab2.Tab			= guiCreateTab ( "Resources", aTabPanel, "resources" )
 		aTab2.ManageACL		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "Manage ACL", true, aTab2.Tab )
