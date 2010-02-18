@@ -4,6 +4,7 @@ g_Me = getLocalPlayer()
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_WaterCraftIDs = table.create({ 539, 460, 417, 447, 472, 473, 493, 595, 484, 430, 453, 452, 446, 454 }, true)
 g_ModelForPickupType = { nitro = 2221, repair = 2222, vehiclechange = 2223 }
+g_HunterID = 425
 
 g_Checkpoints = {}
 g_Pickups = {}
@@ -194,9 +195,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	--local x, y, z = getElementPosition(g_Vehicle)
 	setCameraBehindVehicle(vehicle)
 	--alignVehicleToGround(vehicle)
-	local weapons = not g_ArmedVehicleIDs[getElementModel(vehicle)] or g_MapOptions.vehicleweapons
-	toggleControl('vehicle_fire', weapons)
-	toggleControl('vehicle_secondary_fire', weapons)
+	updateVehicleWeapons()
 	setCloudsEnabled(g_GameOptions.cloudsenable)
 	setBlurLevel(g_GameOptions.blurlevel)
 	g_dxGUI.mapdisplay:visible(g_GameOptions.showmapname)
@@ -303,11 +302,7 @@ function updateOptions ( gameoptions, mapoptions )
 	g_MapOptions = mapoptions
 
 	-- Apply
-	if g_Vehicle then
-		local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
-		toggleControl('vehicle_fire', weapons)
-		toggleControl('vehicle_secondary_fire', weapons)
-	end
+	updateVehicleWeapons()
 	setCloudsEnabled(g_GameOptions.cloudsenable)
 	setBlurLevel(g_GameOptions.blurlevel)
 	g_dxGUI.mapdisplay:visible(g_GameOptions.showmapname)
@@ -506,10 +501,19 @@ function vehicleChanging( changez, newModel )
 	end
 	setElementPosition(g_Vehicle, x, y, z)
 	g_PrevVehicleHeight = nil
-	local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
-	toggleControl('vehicle_fire', weapons)
-	toggleControl('vehicle_secondary_fire', weapons)
+	updateVehicleWeapons()
 	checkVehicleIsHelicopter()
+end
+
+function updateVehicleWeapons()
+	if g_Vehicle then
+		local weapons = not g_ArmedVehicleIDs[getElementModel(g_Vehicle)] or g_MapOptions.vehicleweapons
+		toggleControl('vehicle_fire', weapons)
+		if getElementModel(g_Vehicle) == g_HunterID and not g_MapOptions.hunterminigun then
+			weapons = false
+		end
+		toggleControl('vehicle_secondary_fire', weapons)
+	end
 end
 
 function vehicleUnloading()

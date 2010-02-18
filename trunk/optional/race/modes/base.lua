@@ -468,6 +468,7 @@ end
 --------------------------------------
 function RaceMode.playerFreeze(player, bRespawn, bDontFix)
     toggleAllControls(player,true)
+	clientCall( player, "updateVehicleWeapons" )
 	local vehicle = RaceMode.getPlayerVehicle(player)
 
 	-- Apply addon overrides at start of new map
@@ -504,6 +505,7 @@ function RaceMode.playerUnfreeze(player, bDontFix)
 		return
 	end
     toggleAllControls(player,true)
+	clientCall( player, "updateVehicleWeapons" )
 	local vehicle = RaceMode.getPlayerVehicle(player)
 	if not bDontFix then
 		fixVehicle(vehicle)
@@ -519,6 +521,37 @@ function RaceMode.playerUnfreeze(player, bDontFix)
 	Override.flushAll()
 	end
 --------------------------------------
+
+-- Handle admin panel unfreeze
+addEventHandler ( "onPlayerFreeze", root,
+	function ( state )
+		local player = source
+		if not state then
+			setTimer(
+				function ()
+					if isElement( player ) then
+						clientCall( player, "updateVehicleWeapons" )
+					end
+				end,
+				200, 1 )
+		end
+	end
+)
+
+-- Handle admin panel change vehicle
+addEventHandler ( "aPlayer", root,
+	function ( player, cmd, arg )
+		if cmd == "givevehicle" then
+			setTimer(
+				function ()
+					if isElement( player ) then
+						clientCall( player, "updateVehicleWeapons" )
+					end
+				end,
+				200, 1 )
+		end
+	end
+)
 
 
 function RaceMode:onPlayerQuit(player)
