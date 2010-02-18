@@ -112,6 +112,7 @@ function cacheGameOptions()
 	g_GameOptions.stealthspectate		= getBool('race.stealthspectate',true)
 	g_GameOptions.countdowneffect		= getBool('race.countdowneffect',true)
 	g_GameOptions.showmapname			= getBool('race.showmapname',true)
+	g_GameOptions.hunterminigun			= getBool('race.hunterminigun',true)
 	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
 	g_GameOptions.skins_map_can_override			= getBool('race.skins_map_can_override',true)
 	g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
@@ -121,7 +122,7 @@ function cacheGameOptions()
 	g_GameOptions.classicchangez_map_can_override	= getBool('race.classicchangez_map_can_override',true)
 	g_GameOptions.ghostmode_warning_if_map_override			= getBool('race.ghostmode_warning_if_map_override',true)
 	g_GameOptions.vehicleweapons_warning_if_map_override	= getBool('race.vehicleweapons_warning_if_map_override',true)
-
+	g_GameOptions.hunterminigun_map_can_override	= getBool('race.hunterminigun_map_can_override',true)
 	if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
 		outputWarning( "statskey is not set to 'name' or 'serial'" )
 		g_GameOptions.statskey = 'name'
@@ -152,7 +153,8 @@ function cacheMapOptions(map)
 	g_MapOptions.firewater		= map.firewater == 'true'
 	g_MapOptions.cachemodels	= map.cachemodels == 'true'
 	g_MapOptions.classicchangez	= map.classicchangez == 'true'
-	
+	g_MapOptions.hunterminigun	= map.hunterminigun == 'true'
+
 	outputDebug("MISC", "duration = "..g_MapOptions.duration.."  respawn = "..g_MapOptions.respawn.."  respawntime = "..tostring(g_MapOptions.respawntime).."  time = "..g_MapOptions.time.."  weather = "..g_MapOptions.weather)
 	
 	if g_MapOptions.time then
@@ -208,6 +210,11 @@ function cacheMapOptions(map)
 	if not map.classicchangez or not g_GameOptions.classicchangez_map_can_override then
 		g_MapOptions.classicchangez = g_GameOptions.classicchangez
 	end
+
+	-- Set hunterminigun from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.hunterminigun or not g_GameOptions.hunterminigun_map_can_override then
+		g_MapOptions.hunterminigun = g_GameOptions.hunterminigun
+	end
 end
 
 
@@ -242,6 +249,7 @@ function loadMap(res)
 	g_SavedMapSettings.cachemodels		= map.cachemodels
 	g_SavedMapSettings.classicchangez	= map.classicchangez
 	g_SavedMapSettings.firewater		= map.firewater
+	g_SavedMapSettings.hunterminigun	= map.hunterminigun
 
 	cacheMapOptions(g_SavedMapSettings)
 
