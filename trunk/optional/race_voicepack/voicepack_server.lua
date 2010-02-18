@@ -16,7 +16,7 @@ addEventHandler('onMapStarting', g_Root,
 
 addEventHandler('onPlayerQuit', g_Root,
     function()
-        if mapMode == "Destruction derby" then
+        if mapMode == "Destruction derby" and getElementData(source,"state") == "alive" then
 			local alivePlayers = getAlivePlayers()
             for i,player in ipairs(alivePlayers) do
                 if player == source then
