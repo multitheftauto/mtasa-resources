@@ -346,7 +346,6 @@ function Timer:setTimer( theFunction, timeInterval, timesToExecute, ... )
 end
 
 function Timer:handleFunctionCall()
-	self.fn(unpack(self.args))
 	-- Delete reference to timer if there are no more repeats
 	if self.count > 0 then
 		self.count = self.count - 1
@@ -354,6 +353,7 @@ function Timer:handleFunctionCall()
 			self.timer = nil
 		end
 	end
+	self.fn(unpack(self.args))
 end
 
 ---------------------------------------------------------------------------
