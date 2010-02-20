@@ -254,6 +254,7 @@ function getVehicleOccupants ( vehicle )
 end
 
 function isValidSerial ( serial )
+	-- Did you know gmatch returns an iterator function?
 	return string.gmatch ( serial, "%w%w%w%w-%w%w%w%w-%w%w%w%w-%w%w%w%w" )
 end
 
@@ -320,6 +321,10 @@ function aPlayerInitialize ( player )
 		aPlayers[player]["money"] = getPlayerMoney ( player )
 	end
 end
+
+addEventHandler ( "onPlayerQuit", root, function ()
+	aPlayers[source] = nil
+end )
 
 addEvent ( "aPlayerVersion", true )
 addEventHandler ( "aPlayerVersion", _root, function ( version )

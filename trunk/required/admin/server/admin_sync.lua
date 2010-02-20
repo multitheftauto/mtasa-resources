@@ -13,6 +13,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 	local tableOut = {}
 	local theSource = _root
 	if ( type == "player" ) then
+		if not isElement( data ) then return end
 		aPlayers[source]["sync"] = data
 		tableOut["mute"] = isPlayerMuted ( data )
 		tableOut["freeze"] = isPlayerFrozen ( data )
