@@ -459,7 +459,6 @@ function aClientSync ( type, table )
 			triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
 		end
 	elseif ( type == "bans" or type == "bansmore" ) then
-		outputDebugString( "aClientSync received " .. type )
 		if type == "bans" then
 			g_GotLatestBansList = true
 			guiGridListClear ( aTab4.BansList )
@@ -621,7 +620,6 @@ function aClientPlayerChangeNick ( oldNick, newNick )
 	local lists = { aTab1.PlayerList, aTab5.AdminPlayers, aSpectator.PlayerList }
 	for _,gridlist in ipairs(lists) do
 		for row=0,guiGridListGetRowCount(gridlist)-1 do
-			outputDebugString( tostring(row) .. ":" .. tostring(guiGridListGetItemPlayerName ( gridlist, row, 1 )) )
 			if ( guiGridListGetItemPlayerName ( gridlist, row, 1 ) == oldNick ) then
 				guiGridListSetItemPlayerName ( gridlist, row, 1, newNick, false, false )
 			end
@@ -1034,11 +1032,9 @@ end
 
 
 function updateColorCodes()
-	outputDebugString( "updateColorCodes" )
 	local lists = { aTab1.PlayerList, aTab5.AdminPlayers, aSpectator.PlayerList }
 	for _,gridlist in ipairs(lists) do
 		for row=0,guiGridListGetRowCount(gridlist)-1 do
-			outputDebugString( tostring(row) .. ":" .. tostring(guiGridListGetItemPlayerName( gridlist, row, 1 )) )
 			guiGridListSetItemPlayerName( gridlist, row, 1, guiGridListGetItemPlayerName( gridlist, row, 1 ) )
 		end
 	end
