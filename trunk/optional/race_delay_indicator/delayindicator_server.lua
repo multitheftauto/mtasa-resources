@@ -72,20 +72,21 @@ addEventHandler('onPlayerReachCheckpoint', g_Root,
                 else
                     if debug then outputDebugString("race_delay_indicator: ".."no lastPlayer use nothing") end
                 end
+			else
+				if allCpTimes[frontPlayer] and allCpTimes[frontPlayer][checkpointNum] then
+					if debug then outputDebugString("race_delay_indicator: ".."use allCpTimes["..getPlayerName(frontPlayer).."]["..checkpointNum.."] = "..tostring(allCpTimes[frontPlayer][checkpointNum])) end
+					diff = timePassed - allCpTimes[frontPlayer][checkpointNum]
+				else
+					if debug then outputDebugString("race_delay_indicator: ".."lua is too slow no difference") end
+					diff = 0
+				end
+				if not players[source] then
+					triggerClientEvent(source, "showDelay", frontPlayer, diff)
+				end
+				if not players[frontPlayer] then
+					triggerClientEvent(frontPlayer, "showDelay", source, diff, checkpointNum)
+				end
             end
-            if allCpTimes[frontPlayer] and allCpTimes[frontPlayer][checkpointNum] then
-                if debug then outputDebugString("race_delay_indicator: ".."use allCpTimes["..getPlayerName(frontPlayer).."]["..checkpointNum.."] = "..tostring(allCpTimes[frontPlayer][checkpointNum])) end
-                diff = timePassed - allCpTimes[frontPlayer][checkpointNum]
-            else
-                if debug then outputDebugString("race_delay_indicator: ".."lua is too slow no difference") end
-                diff = 0
-            end
-            if not players[source] then
-				triggerClientEvent(source, "showDelay", frontPlayer, diff)
-			end
-            if not players[frontPlayer] then
-				triggerClientEvent(frontPlayer, "showDelay", source, diff, checkpointNum)
-			end
         end
         lastPlayer[checkpointNum] = source
 		if debug then outputDebugString("race_delay_indicator: ".."allCpTimes: "..tostring(getPlayerName(source)).." checkpointNum = "..tostring(checkpointNum).." timePassed = "..tostring(allCpTimes[source][checkpointNum])) end
