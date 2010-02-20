@@ -27,7 +27,7 @@ function aPlayerWarp ( player )
 	aWarpSelectPointer = player
 	guiGridListClear ( aWarpList )
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
-		guiGridListSetItemText ( aWarpList, guiGridListAddRow ( aWarpList ), 1, getPlayerName ( player ), false, false )
+		guiGridListSetItemPlayerName ( aWarpList, guiGridListAddRow ( aWarpList ), 1, getPlayerName ( player ), false, false )
 	end
 	guiSetVisible ( aWarpForm, true )
 	guiBringToFront ( aWarpForm )
@@ -50,7 +50,7 @@ function aClientWarpDoubleClick ( button )
 	if ( button == "left" ) then
 		if ( source == aWarpList ) then
 			if ( guiGridListGetSelectedItem ( aWarpList ) ~= -1 ) then
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aWarpSelectPointer, "warpto", getPlayerFromNick ( guiGridListGetItemText ( aWarpList, guiGridListGetSelectedItem ( aWarpList ), 1 ) ) )
+				triggerServerEvent ( "aPlayer", getLocalPlayer(), aWarpSelectPointer, "warpto", getPlayerFromNick ( guiGridListGetItemPlayerName ( aWarpList, guiGridListGetSelectedItem ( aWarpList ), 1 ) ) )
 				aPlayerWarpClose ( false )
 			end
 		end
@@ -61,7 +61,7 @@ function aClientWarpClick ( button )
 	if ( button == "left" ) then
 		if ( source == aWarpSelect ) then
 			if ( guiGridListGetSelectedItem ( aWarpList ) ~= -1 ) then
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aWarpSelectPointer, "warpto", getPlayerFromNick ( guiGridListGetItemText ( aWarpList, guiGridListGetSelectedItem ( aWarpList ), 1 ) ) )
+				triggerServerEvent ( "aPlayer", getLocalPlayer(), aWarpSelectPointer, "warpto", getPlayerFromNick ( guiGridListGetItemPlayerName ( aWarpList, guiGridListGetSelectedItem ( aWarpList ), 1 ) ) )
 				aPlayerWarpClose ( false )
 			end
 		elseif ( source == aWarpCancel ) then

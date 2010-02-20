@@ -32,9 +32,10 @@ function aAdminMenu ()
 						  guiSetAlpha ( aPlayerAdvanced, 0.7 )
 		aTab1.PlayerListSearch 	= guiCreateEdit ( 0.03, 0.05, 0.16, 0.04, "", true, aTab1.Tab )
 						  guiCreateStaticImage ( 0.19, 0.05, 0.035, 0.04, "client\\images\\search.png", true, aTab1.Tab )
-		aTab1.PlayerList		= guiCreateGridList ( 0.03, 0.10, 0.20, 0.85, true, aTab1.Tab )
+		aTab1.HideColorCodes= guiCreateCheckBox ( 0.037, 0.94, 0.20, 0.04, "Hide color codes", true, true, aTab1.Tab )
+		aTab1.PlayerList		= guiCreateGridList ( 0.03, 0.10, 0.20, 0.83, true, aTab1.Tab )
 						  guiGridListAddColumn( aTab1.PlayerList, "Player Name", 0.85 )
-						  for id, player in ipairs ( getElementsByType ( "player" ) ) do guiGridListSetItemText ( aTab1.PlayerList, guiGridListAddRow ( aTab1.PlayerList ), 1, getPlayerName ( player ), false, false ) end
+						  for id, player in ipairs ( getElementsByType ( "player" ) ) do guiGridListSetItemPlayerName ( aTab1.PlayerList, guiGridListAddRow ( aTab1.PlayerList ), 1, getPlayerName ( player ), false, false ) end
 		aTab1.Kick			= guiCreateButton ( 0.71, 0.125, 0.13, 0.04, "Kick", true, aTab1.Tab, "kick" )
 		aTab1.Ban			= guiCreateButton ( 0.85, 0.125, 0.13, 0.04, "Ban", true, aTab1.Tab, "ban" )
 		aTab1.Mute			= guiCreateButton ( 0.71, 0.170, 0.13, 0.04, "Mute", true, aTab1.Tab, "mute" )
@@ -368,7 +369,7 @@ end
 
 function aAdminRefresh ()
 	if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) ~= -1 ) then
-		local player = getPlayerFromNick ( guiGridListGetItemText ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 ) )
+		local player = getPlayerFromNick ( guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 ) )
 		if ( player ) then
 			guiSetText ( aTab1.Name, "Name: "..aPlayers[player]["name"] )
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unmute", "Mute" ) )
@@ -436,12 +437,12 @@ function aClientSync ( type, table )
 					local id = 0
 					local exists = false
 					while ( id <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
-						if ( guiGridListGetItemText ( aTab5.AdminPlayers, id, 1 ) == getPlayerName ( player ) ) then
+						if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id, 1 ) == getPlayerName ( player ) ) then
 							exists = true
 						end
 						id = id + 1
 					end
-					if ( exists == false ) then guiGridListSetItemText ( aTab5.AdminPlayers, guiGridListAddRow ( aTab5.AdminPlayers ), 1, getPlayerName ( player ), false, false ) end
+					if ( exists == false ) then guiGridListSetItemPlayerName ( aTab5.AdminPlayers, guiGridListAddRow ( aTab5.AdminPlayers ), 1, getPlayerName ( player ), false, false ) end
 				end
 			end
 		end
@@ -556,21 +557,21 @@ function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
 	aPlayers[source]["admin"] = admin
 	aPlayers[source]["country"] = country
 	local row = guiGridListAddRow ( aTab1.PlayerList )
-	guiGridListSetItemText ( aTab1.PlayerList, row, 1, getPlayerName ( source ), false, false )
+	guiGridListSetItemPlayerName ( aTab1.PlayerList, row, 1, getPlayerName ( source ), false, false )
 	if ( admin ) then
 		local row = guiGridListAddRow ( aTab5.AdminPlayers )
-		guiGridListSetItemText ( aTab5.AdminPlayers, row, 1, getPlayerName ( source ), false, false )
+		guiGridListSetItemPlayerName ( aTab5.AdminPlayers, row, 1, getPlayerName ( source ), false, false )
 	end
-	if ( aSpecPlayerList ) then
-		local row = guiGridListAddRow ( aSpecPlayerList )
-		guiGridListSetItemText ( aSpecPlayerList, row, 1, getPlayerName ( source ), false, false )
+	if ( aSpectator.PlayerList ) then
+		local row = guiGridListAddRow ( aSpectator.PlayerList )
+		guiGridListSetItemPlayerName ( aSpectator.PlayerList, row, 1, getPlayerName ( source ), false, false )
 	end
 end
 
 function aClientPlayerQuit ()
 	local id = 0
 	while ( id <= guiGridListGetRowCount( aTab1.PlayerList ) ) do
-		if ( guiGridListGetItemText ( aTab1.PlayerList, id, 1 ) == getPlayerName ( source ) ) then
+		if ( guiGridListGetItemPlayerName ( aTab1.PlayerList, id, 1 ) == getPlayerName ( source ) ) then
 			guiGridListRemoveRow ( aTab1.PlayerList, id )
 		end
 		id = id + 1
@@ -578,17 +579,17 @@ function aClientPlayerQuit ()
 	if ( aPlayers[source]["admin"] ) then
 		local id = 0
 		while ( id <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
-			if ( guiGridListGetItemText ( aTab5.AdminPlayers, id, 1 ) == getPlayerName ( source ) ) then
+			if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id, 1 ) == getPlayerName ( source ) ) then
 				guiGridListRemoveRow ( aTab5.AdminPlayers, id )
 			end
 			id = id + 1
 		end
 	end
-	if ( aSpecPlayerList ) then
+	if ( aSpectator.PlayerList ) then
 		local id = 0
-		while ( id <= guiGridListGetRowCount( aSpecPlayerList ) ) do
-			if ( guiGridListGetItemText ( aSpecPlayerList, id, 1 ) == getPlayerName ( source ) ) then
-				guiGridListRemoveRow ( aSpecPlayerList, id )
+		while ( id <= guiGridListGetRowCount( aSpectator.PlayerList ) ) do
+			if ( guiGridListGetItemPlayerName ( aSpectator.PlayerList, id, 1 ) == getPlayerName ( source ) ) then
+				guiGridListRemoveRow ( aSpectator.PlayerList, id )
 			end
 			id = id + 1
 		end
@@ -617,12 +618,14 @@ function aPlayerListScroll ( key, state, inc )
 end
 
 function aClientPlayerChangeNick ( oldNick, newNick )
-	local id = 0
-	while ( id <= guiGridListGetRowCount( aTab1.PlayerList ) ) do
-		if ( guiGridListGetItemText ( aTab1.PlayerList, id, 1 ) == oldNick ) then
-			guiGridListSetItemText ( aTab1.PlayerList, id, 1, newNick, false, false )
+	local lists = { aTab1.PlayerList, aTab5.AdminPlayers, aSpectator.PlayerList }
+	for _,gridlist in ipairs(lists) do
+		for row=0,guiGridListGetRowCount(gridlist)-1 do
+			outputDebugString( tostring(row) .. ":" .. tostring(guiGridListGetItemPlayerName ( gridlist, row, 1 )) )
+			if ( guiGridListGetItemPlayerName ( gridlist, row, 1 ) == oldNick ) then
+				guiGridListSetItemPlayerName ( gridlist, row, 1, newNick, false, false )
+			end
 		end
-		id = id + 1
 	end
 end
 
@@ -676,12 +679,12 @@ function aClientGUIChanged ()
 		local text = guiGetText ( source )
 		if ( text == "" ) then
 			for id, player in ipairs ( getElementsByType ( "player" ) ) do
-				guiGridListSetItemText ( aTab1.PlayerList, guiGridListAddRow ( aTab1.PlayerList ), 1, getPlayerName ( player ), false, false )
+				guiGridListSetItemPlayerName ( aTab1.PlayerList, guiGridListAddRow ( aTab1.PlayerList ), 1, getPlayerName ( player ), false, false )
 			end
 		else
 			for id, player in ipairs ( getElementsByType ( "player" ) ) do
 				if ( string.find ( string.upper ( getPlayerName ( player ) ), string.upper ( text ) ) ) then
-					guiGridListSetItemText ( aTab1.PlayerList, guiGridListAddRow ( aTab1.PlayerList ), 1, getPlayerName ( player ), false, false )
+					guiGridListSetItemPlayerName ( aTab1.PlayerList, guiGridListAddRow ( aTab1.PlayerList ), 1, getPlayerName ( player ), false, false )
 				end
 			end
 		end
@@ -754,6 +757,8 @@ function aClientClick ( button )
 				aViewMessages()
 			elseif ( source == aTab1.PlayerListSearch ) then
 				guiSetInputEnabled ( true )
+			elseif ( source == aTab1.HideColorCodes ) then
+				updateColorCodes()
 			elseif ( getElementType ( source ) == "gui-button" )  then
 				if ( source == aTab1.GiveVehicle ) then guiBringToFront ( aTab1.VehicleDropDown )
 				elseif ( source == aTab1.GiveWeapon ) then guiBringToFront ( aTab1.WeaponDropDown )
@@ -761,7 +766,7 @@ function aClientClick ( button )
 				if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) == -1 ) then
 					aMessageBox ( "error", "No player selected!" )
 				else
-					local name = guiGridListGetItemText ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 )
+					local name = guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 )
 					local escname = string.gsub( name,"([\"])", "\\\"" )
 					local player = getPlayerFromNick ( name )
 					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..name, "Enter the kick reason", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"kick\", $value )" )
@@ -1025,4 +1030,31 @@ function aClientRender ()
 			aLastSync = getTickCount() + 15000
 		end
 	end
+end
+
+
+function updateColorCodes()
+	outputDebugString( "updateColorCodes" )
+	local lists = { aTab1.PlayerList, aTab5.AdminPlayers, aSpectator.PlayerList }
+	for _,gridlist in ipairs(lists) do
+		for row=0,guiGridListGetRowCount(gridlist)-1 do
+			outputDebugString( tostring(row) .. ":" .. tostring(guiGridListGetItemPlayerName( gridlist, row, 1 )) )
+			guiGridListSetItemPlayerName( gridlist, row, 1, guiGridListGetItemPlayerName( gridlist, row, 1 ) )
+		end
+	end
+end
+
+function guiGridListSetItemPlayerName( gridlist, row, col, name )
+	local bHideColorCodes = guiCheckBoxGetSelected ( aTab1.HideColorCodes )
+	guiGridListSetItemText( gridlist, row, col, bHideColorCodes and removeColorCoding(name) or name, false, false )
+	guiGridListSetItemData( gridlist, row, col, name )
+end
+
+function guiGridListGetItemPlayerName( gridlist, row, col )
+	return guiGridListGetItemData( gridlist, row, col ) or guiGridListGetItemText( gridlist, row, col )
+end
+
+-- remove color coding from string
+function removeColorCoding( name )
+	return type(name)=='string' and string.gsub ( name, '#%x%x%x%x%x%x', '' ) or name
 end

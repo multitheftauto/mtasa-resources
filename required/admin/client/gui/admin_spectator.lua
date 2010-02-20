@@ -53,7 +53,7 @@ function aSpectator.Initialize ()
 					  		  guiGridListAddColumn( aSpectator.PlayerList, "Player Name", 0.85 )
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
 			local row = guiGridListAddRow ( aSpectator.PlayerList )
-			guiGridListSetItemText ( aSpectator.PlayerList, row, 1, getPlayerName ( player ), false, false )
+			guiGridListSetItemPlayerName ( aSpectator.PlayerList, row, 1, getPlayerName ( player ), false, false )
 			if ( player == aSpectator.Spectating ) then guiGridListSetSelectedItem ( aSpectator.PlayerList, row, 1 ) end
 		end
 		aSpectator.Prev			= guiCreateButton ( x / 2 - 100, y - 50, 70, 30, "< Previous", false )
@@ -155,7 +155,7 @@ function aSpectator.ClientClick ( button )
 		elseif ( source == aSpectator.Prev ) then aSpectator.SwitchPlayer ( -1 )
 		elseif ( source == aSpectator.PlayerList ) then
 			if ( guiGridListGetSelectedItem ( source ) ~= -1 ) then
-				aSpectate ( getPlayerFromNick ( guiGridListGetItemText ( source, guiGridListGetSelectedItem ( source ), 1 ) ) )
+				aSpectate ( getPlayerFromNick ( guiGridListGetItemPlayerName ( source, guiGridListGetSelectedItem ( source ), 1 ) ) )
 			end
 		end
 	elseif ( button == "right" ) then
