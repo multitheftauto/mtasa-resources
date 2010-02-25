@@ -64,7 +64,7 @@ function aAdminSettings ( type, resName, settingstable )
 		triggerServerEvent ( "aAdmin", getLocalPlayer(), "settings", "getall", resName )
 	elseif type == "getall" then
 		aSettingsData["settings"] = settingstable
-		guiGridListClear( aSettingsList )
+		local rowindex = { [1] = 0 }
 		-- get groups
 		local groups = {}
 		local groupnameList = {}
@@ -84,17 +84,35 @@ function aAdminSettings ( type, resName, settingstable )
 			-- sort names
 			table.sort(namesList, function(a,b) return(a < b) end)
 			-- Add to gridlist using sorted names
-			local row = guiGridListAddRow( aSettingsList )
+			local row = guiGridListAddRowMaybe( aSettingsList, rowindex )
 			guiGridListSetItemText ( aSettingsList, row, 1, string.sub(groupname,1,1)=='_' and string.sub(groupname,2) or groupname, true, false )
 			for i,name in ipairs(namesList) do
 				local value = aSettingsData["settings"][name]
-				row = guiGridListAddRow( aSettingsList )
+				row = guiGridListAddRowMaybe( aSettingsList, rowindex )
 				guiGridListSetItemText ( aSettingsList, row, 1, tostring(value.friendlyname or name), false, false )
 				guiGridListSetItemText ( aSettingsList, row, 2, tostring(value.current), false, false )
 				guiGridListSetItemText ( aSettingsList, row, 3, tostring(value.default), false, false )
 				guiGridListSetItemData ( aSettingsList, row, 1, tostring(name) )
 			end
 		end
+		guiGridListRemoveLastRows( aSettingsList, guiGridListGetRowCount( aSettingsList ) - rowindex[1] )
+	end
+end
+
+function guiGridListAddRowMaybe ( aSettingsList, rowindex )
+	local row
+	if rowindex[1] < guiGridListGetRowCount( aSettingsList ) then
+		row = rowindex[1]
+	else
+		row = guiGridListAddRow( aSettingsList )
+	end
+	rowindex[1] = rowindex[1] + 1
+	return row
+end
+
+function guiGridListRemoveLastRows ( aSettingsList, amount )
+	for i=1,amount do
+		guiGridListRemoveRow( aSettingsList, guiGridListGetRowCount( aSettingsList ) - 1 )
 	end
 end
 

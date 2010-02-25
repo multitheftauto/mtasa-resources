@@ -1027,14 +1027,14 @@ addEventHandler ( "aResource", _root, function ( name, action )
 	local pname = getPlayerName ( source )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local text = ""
-		if ( action == "start" ) then if ( startResource ( getResourceFromName ( name ), true ) ) then text = "Resource \'"..name.."\' started by "..pname end
-		elseif ( action == "restart" ) then if ( restartResource ( getResourceFromName ( name ) ) ) then text = "Resource \'"..name.."\' restarted by "..pname end
-		elseif ( action == "stop" ) then if ( stopResource ( getResourceFromName ( name ) ) ) then text = "Resource \'"..name.."\' stopped by "..pname end
+		if ( action == "start" ) then if ( startResource ( getResourceFromName ( name ), true ) ) then text = "started" end
+		elseif ( action == "restart" ) then if ( restartResource ( getResourceFromName ( name ) ) ) then text = "restarted" end
+		elseif ( action == "stop" ) then if ( stopResource ( getResourceFromName ( name ) ) ) then text = "stopped" end
 		else action = nil
 		end
 		if ( text ~= "" ) then
+			outputServerLog ( "ADMIN: Resource \'" .. name .. "\' " .. text .. " by " .. getAdminNameForLog ( source )  )
 			for id, player in ipairs(getElementsByType("player")) do
-				outputServerLog ( "ADMIN: "..text )
 				triggerClientEvent ( player, "aClientLog", _root, text  )
 			end
 		end
@@ -1240,7 +1240,7 @@ addEventHandler ( "aExecute", _root, function ( action, echo )
 			end
 			outputChatBox( "Command executed! Result: " ..restring, source, 0, 0, 255 )
 		end
-		outputServerLog ( "ADMIN: "..getPlayerName ( source ).." executed command: "..action )
+		outputServerLog ( "ADMIN: "..getAdminNameForLog ( source ).." executed command: "..action )
 	end
 end )
 
