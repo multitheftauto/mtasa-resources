@@ -12,13 +12,13 @@ function outputConsoleR(message, toElement)
 	end
 end
 
-function outputChatBoxR(message, toElement)
+function outputChatBoxR(message, toElement, forceLog)
 	if toElement == false then
 		outputServerLog(message)
 	else
 		toElement = toElement or rootElement
 		outputChatBox(message, toElement, 250, 200, 200)
-		if toElement == rootElement then
+		if toElement == rootElement or forceLog then
 			outputServerLog(message)
 		end
 	end

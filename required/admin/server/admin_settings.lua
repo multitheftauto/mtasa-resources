@@ -28,9 +28,7 @@ function aGetResourceSettings( resName )
 	-- Parse raw settings
 	for rawname,value in pairs(rawsettings) do
 		if allowedTypes[type(value)] then
---		if type(value) == 'boolean' or type(value) == 'number' or type(value) == 'string' then
 			if allowedAccess[string.sub(rawname,1,1)] then
---			if string.sub(rawname,1,1) == '*' then
 				-- Remove leading '*','#' or '@'
 				local temp = string.gsub(rawname,'[%*%#%@](.*)','%1')
 				-- Remove leading 'resName.'
