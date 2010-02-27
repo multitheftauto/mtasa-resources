@@ -31,6 +31,7 @@ function aViewMessages ( player )
 		--Register With Admin Form
 		aRegister ( "Messages", aMessagesForm, aViewMessages, aViewMessagesClose )
 	end
+	aHideFloaters()
 	guiSetVisible ( aMessagesForm, true )
 	guiBringToFront ( aMessagesForm )
 	triggerServerEvent ( "aMessage", getLocalPlayer(), "get" )

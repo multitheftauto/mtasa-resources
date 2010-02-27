@@ -53,8 +53,8 @@ function aMessageBox ( type, message, action )
 	guiSetVisible ( aMessageYes, false )
 	guiSetVisible ( aMessageNo, false )
 	guiSetVisible ( aMessageOk, false )
+	aHideFloaters()
 	guiSetVisible ( aMessageForm, true )
-	guiSetVisible ( aInputForm, false )
 	if ( type == "warning" ) then guiSetVisible ( aMessageWarning, true )
 	elseif ( type == "question" ) then guiSetVisible ( aMessageQuestion, true )
 	elseif ( type == "error" ) then guiSetVisible ( aMessageError, true )
@@ -118,4 +118,12 @@ function aMessageBoxClick ( button )
 			aMessageBoxClose ( false )
 		end
 	end
+end
+
+function aHideFloaters()
+	guiSetVisible ( aMessagesForm, false )	-- admin messages
+	guiSetVisible ( aMessageForm, false )	-- message box
+	guiSetVisible ( aInputForm, false )
+	guiSetVisible ( aBanInputForm, false )
+	guiSetVisible ( aMuteInputForm, false )
 end

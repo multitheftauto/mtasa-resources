@@ -409,7 +409,7 @@ function aAdminRefresh ()
 end
 
 function aClientSync ( type, table )
-	if ( type == "player" ) then
+	if ( type == "player" and aPlayers[source] ) then
 		for type, data in pairs ( table ) do
 			aPlayers[source][type] = data
 		end
@@ -770,7 +770,7 @@ function aClientClick ( button )
 					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..name, "Enter the kick reason", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"kick\", $value )" )
 					elseif ( source == aTab1.Ban ) then aBanInputBox ( player )
 					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "slap", aCurrentSlap )
-					elseif ( source == aTab1.Mute ) then aMessageBox ( "question", "Are you sure to "..iif( aPlayers[player]["mute"], "unmute", "mute" ).." "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"mute\" )" )
+					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"mute\" )" ) end
 					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "freeze" )
 					elseif ( source == aTab1.Spectate ) then aSpectate ( player )
 					elseif ( source == aTab1.Nick ) then aInputBox ( "Set Nick", "Enter the new nick of the player", name, "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"nick\", $value )" )

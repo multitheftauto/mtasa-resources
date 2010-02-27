@@ -141,10 +141,8 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 		-- Sort messages by time
 		table.sort(aReports, function(a,b) return(a.time < b.time) end)
 		-- Limit number of messages
-		if tonumber(get('maxmsgs')) then
-			while #aReports > tonumber(get('maxmsgs')) do
-				table.remove( aReports, 1 )
-			end
+		while #aReports > g_Prefs.maxmsgs do
+			table.remove( aReports, 1 )
 		end
 		xmlUnloadFile ( node )
 	end
@@ -268,13 +266,62 @@ function getPlayerAccountName( player )
 end
 
 addEvent ( "onPlayerMute", false )
-function aSetPlayerMuted ( player, state )
+function aSetPlayerMuted ( player, state, length )
 	if ( setPlayerMuted ( player, state ) ) then
+		if not state then
+			aRemoveUnmuteTimer( player )
+		elseif state and length and length > 0 then
+			aAddUnmuteTimer( player, length )
+		end
 		triggerEvent ( "onPlayerMute", player, state )
 		return true
 	end
 	return false
 end
+
+addEventHandler ( "onPlayerJoin", _root, function ()
+	local player = source
+	if aHasUnmuteTimer( player ) then
+		if not isPlayerMuted(player) then
+			triggerEvent ( "aPlayer", getElementByIndex("console", 0), player, "mute" )
+		end
+	end
+end )
+
+-- Allows for timed mutes across reconnects
+local aUnmuteTimerList = {}
+function aAddUnmuteTimer( player, length )
+	aRemoveUnmuteTimer( player )
+	local serial = getPlayerSerial( player )
+	aUnmuteTimerList[serial] = setTimer(
+								function()
+									aUnmuteTimerList[serial] = nil
+									for _,player in ipairs(getElementsByType('player')) do
+										if getPlayerSerial(player) == serial then
+											if isPlayerMuted(player) then
+												triggerEvent ( "aPlayer", getElementByIndex("console", 0), player, "mute" )
+											end
+										end
+									end
+								end,
+								length*1000, 1 )
+end
+
+function aRemoveUnmuteTimer( player )
+	local serial = getPlayerSerial( player )
+	if aUnmuteTimerList[serial] then
+		killTimer( aUnmuteTimerList[serial] )
+		aUnmuteTimerList[serial] = nil
+	end
+end
+
+function aHasUnmuteTimer( player )
+	local serial = getPlayerSerial( player )
+	if aUnmuteTimerList[serial] then
+		return true
+	end
+end
+
 
 addEvent ( "onPlayerFreeze", false )
 function aSetPlayerFrozen ( player, state )
@@ -681,18 +728,40 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 	if ( action ~= nil ) then aAction ( "admin", action, source, false, mdata, mdata2 ) end
 end )
 
+
+-- seconds to description i.e. "10 mins"
+function secondsToTimeDesc( seconds )
+	if seconds then
+		local tab = { {"day",60*60*24},  {"hour",60*60},  {"min",60},  {"sec",1} }
+		for i,item in ipairs(tab) do
+			local t = math.floor(seconds/item[2])
+			if t > 0 or i == #tab then
+				return tostring(t) .. " " .. item[1] .. (t~=1 and "s" or "")
+			end
+		end
+	end
+	return ""
+end
+
 addEvent ( "aPlayer", true )
 addEventHandler ( "aPlayer", _root, function ( player, action, data, additional, additional2 )
+	if not isElement( player ) then
+		return	-- Ignore if player is not longer valid
+	end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local admin = source
 		local mdata = ""
 		local more = ""
 		if ( action == "kick" ) then
-			setTimer ( kickPlayer, 100, 1, player, source, data )
+			local reason = data
+			mdata = reason and reason~="" and ( "(" .. reason .. ")" ) or ""
+			setTimer ( kickPlayer, 100, 1, player, source, reason )
 		elseif ( action == "ban" ) then
 			local reason = data
-			local seconds = additional
+			local seconds = additional and additional > 0 and additional
 			local bUseSerial = additional2
+			mdata = reason and reason~="" and ( "(" .. reason .. ")" ) or ""
+			more = seconds and ( "(" .. secondsToTimeDesc(seconds) .. ")" ) or ""
 			if bUseSerial and getPlayerName ( player ) then
 				-- Add banned player name to the reason
 				reason = reason .. " (nick: " .. getPlayerName ( player ) .. ")"
@@ -703,14 +772,20 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				reason = reason .. " (by " .. adminAccountName .. ")"
 			end
 			if bUseSerial then
+				outputChatBox ( "You banned serial " .. getPlayerSerial( player ), source, 255, 100, 70 )
 				setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds )
 			else
+				outputChatBox ( "You banned IP " .. getPlayerIP( player ), source, 255, 100, 70 )
 				setTimer ( banPlayer, 100, 1, player, true, false, false, source, reason, seconds )
 			end
 			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bansdirty" )
 		elseif ( action == "mute" )  then
 			if ( isPlayerMuted ( player ) ) then action = "un"..action end
-			aSetPlayerMuted ( player, not isPlayerMuted ( player ) )
+			local reason = data
+			local seconds = additional and additional > 0 and additional
+			mdata = reason and reason~="" and ( "(" .. reason .. ")" ) or ""
+			more = seconds and ( "(" .. secondsToTimeDesc(seconds) .. ")" ) or ""
+			aSetPlayerMuted ( player, not isPlayerMuted ( player ), seconds )
 		elseif ( action == "freeze" )  then
 			if ( isPlayerFrozen ( player ) ) then action = "un"..action end
 			aSetPlayerFrozen ( player, not isPlayerFrozen ( player ) )
@@ -1149,10 +1224,8 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 			end
 		end
 		-- Keep message count no greater that 'maxmsgs'
-		if tonumber(get('maxmsgs')) then
-			while #aReports > tonumber(get('maxmsgs')) do
-				table.remove( aReports, 1 )
-			end
+		while #aReports > g_Prefs.maxmsgs do
+			table.remove( aReports, 1 )
 		end
 	elseif ( action == "get" ) then
 		triggerClientEvent ( source, "aMessage", source, "get", aReports )
