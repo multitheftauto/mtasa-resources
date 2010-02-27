@@ -6,11 +6,11 @@
   -->
   <player>
     <command handler="kick" call="kick" args="P,s" />
-    <command handler="ban" call="ban" args="P,s" />
+    <command handler="ban" call="ban" args="P,s,i" />
     <command handler="shout" call="shout" args="P,s" />
     <command handler="freeze" call="freeze" args="P" />
     <command handler="unfreeze" call="freeze" args="P" />
-    <command handler="mute" call="mute" args="P" />
+    <command handler="mute" call="mute" args="P,s,i" />
     <command handler="unmute" call="mute" args="P" />
     <command handler="sethealth" call="sethealth" args="P,i" />
     <command handler="sethp" call="sethealth" args="P,i" />
