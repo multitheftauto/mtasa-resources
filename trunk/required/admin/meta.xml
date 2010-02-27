@@ -7,6 +7,8 @@
              versions of the admin system.
   -->
   <!--Main script files, keep them in that order or it may break-->
+  <script src="server/admin_serverjoiner.lua" />
+  <script src="server/admin_serverprefs.lua" />
   <script src="server/admin_coroutines.lua" />
   <script src="server/admin_server.lua" />
   <script src="server/admin_sync.lua" />
@@ -17,6 +19,8 @@
   <script src="server/admin_ACL.lua" />
   <script src="server/admin_settings.lua" />
   <script src="server/http/admin_http.lua" />
+  <script src="client/admin_clientjoiner.lua" type="client" />
+  <script src="client/admin_clientprefs.lua" type="client" />
   <script src="client/admin_client.lua" type="client" />
   <script src="client/admin_gui.lua" type="client" />
   <script src="client/admin_ACL.lua" type="client" />
@@ -243,6 +247,20 @@
 					accept="1-1000"
 					desc="Maximum admin messages to keep."
 					/>
-	</settings>
+
+		<setting name="*bandurations" value="60,3600,43200,0"
+					friendlyname="Ban durations"
+					group="Durations"
+					examples="60,360,0"
+					desc="Duration options for the ban window. Comma seperated list in seconds. 0 means no duration limit."
+					/>
+
+		<setting name="*mutedurations" value="60,120,300,600,0"
+					friendlyname="Mute durations"
+					group="Durations"
+					examples="60,360,0"
+					desc="Duration options for the mute window. Comma seperated list in seconds. 0 means no duration limit."
+					/>
+ </settings>
 
 </meta>

@@ -12,16 +12,16 @@
     -->
   <player>
     <group action="ban" r="255" g="0" b="0">
-      <all>$player has been banned by $admin.</all>
-      <log>ADMIN: $admin has banned $player ($data)</log>
+      <all>$player has been banned by $admin. $data2</all>
+      <log>ADMIN: $admin has banned $player $data $data2</log>
     </group>
     <group action="kick" r="255" g="0" b="0">
       <all>$player has been kicked by $admin.</all>
-      <log>ADMIN: $admin has kicked $player ($data)</log>
+      <log>ADMIN: $admin has kicked $player $data</log>
     </group>
     <group action="mute" r="255" g="0" b="0">
-      <all>$player has been muted by $admin.</all>
-      <log>ADMIN: $admin has muted $player</log>
+      <all>$player has been muted by $admin. $data2</all>
+      <log>ADMIN: $admin has muted $player $data $data2</log>
     </group>
     <group action="unmute" r="0" g="255" b="100">
       <all>$player has been unmuted by $admin.</all>
@@ -140,12 +140,12 @@
       <player>$admin has fixed your vehicle</player>
       <log>ADMIN: $admin has fixed vehicle of $player</log>
     </group>
-    <group action="blow" r="255" g="0" b="0">
+    <group action="blowvehicle" r="255" g="0" b="0">
       <admin>$player's vehicle has been blown</admin>
       <player>$admin has blown your vehicle</player>
       <log>ADMIN: $admin has blown vehicle of $player</log>
     </group>
-    <group action="destroy" r="255" g="0" b="0">
+    <group action="destroyvehicle" r="255" g="0" b="0">
       <admin>$player's vehicle has been destroyed</admin>
       <player>$admin has destroyed your vehicle</player>
       <log>ADMIN: $admin has destroyed vehicle of $player</log>
