@@ -484,7 +484,7 @@ function aAction ( type, action, admin, player, data, more )
 			string = string.gsub ( string, "$admin", getPlayerName ( admin ) )
 			string = string.gsub ( string, "$data2", more or "" )
 			if ( player ) then string = string.gsub ( string, "$player", getPlayerName ( player ) ) end
-			return tostring ( string.gsub ( string, "$data", data ) )
+			return tostring ( string.gsub ( string, "$data", data or "" ) )
 		end
 		local node = aLogMessages[type][action]
 		if ( node ) then
@@ -746,21 +746,21 @@ end
 addEvent ( "aPlayer", true )
 addEventHandler ( "aPlayer", _root, function ( player, action, data, additional, additional2 )
 	if not isElement( player ) then
-		return	-- Ignore if player is not longer valid
+		return	-- Ignore if player is no longer valid
 	end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local admin = source
 		local mdata = ""
 		local more = ""
 		if ( action == "kick" ) then
-			local reason = data
-			mdata = reason and reason~="" and ( "(" .. reason .. ")" ) or ""
+			local reason = data or ""
+			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
 			setTimer ( kickPlayer, 100, 1, player, source, reason )
 		elseif ( action == "ban" ) then
-			local reason = data
-			local seconds = additional and additional > 0 and additional
+			local reason = data or ""
+			local seconds = tonumber(additional) and tonumber(additional) > 0 and tonumber(additional)
 			local bUseSerial = additional2
-			mdata = reason and reason~="" and ( "(" .. reason .. ")" ) or ""
+			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
 			more = seconds and ( "(" .. secondsToTimeDesc(seconds) .. ")" ) or ""
 			if bUseSerial and getPlayerName ( player ) then
 				-- Add banned player name to the reason
@@ -781,9 +781,9 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bansdirty" )
 		elseif ( action == "mute" )  then
 			if ( isPlayerMuted ( player ) ) then action = "un"..action end
-			local reason = data
-			local seconds = additional and additional > 0 and additional
-			mdata = reason and reason~="" and ( "(" .. reason .. ")" ) or ""
+			local reason = data or ""
+			local seconds = tonumber(additional) and tonumber(additional) > 0 and tonumber(additional)
+			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
 			more = seconds and ( "(" .. secondsToTimeDesc(seconds) .. ")" ) or ""
 			aSetPlayerMuted ( player, not isPlayerMuted ( player ), seconds )
 		elseif ( action == "freeze" )  then
