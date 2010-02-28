@@ -238,6 +238,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		self.checkpointBackups[player].timer = setTimer(lastCheckpointWasSafe, 5000, 1, self.id, player)
 	else
 		-- Finish reached
+		rank = getFinishedPlayerCount() + 1
 		RaceMode.setPlayerIsFinished(player)
 		finishActivePlayer( player )
 		setPlayerStatus( player, nil, "finished" )
