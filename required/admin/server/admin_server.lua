@@ -1081,12 +1081,14 @@ addEventHandler ( "aVehicle", _root, function ( player, action, data )
 				action = nil
 			end
 			if ( action ~= nil ) then
-				local seats = getVehicleMaxPassengers ( vehicle ) + 1
-				for i = 0, seats do
-					local passenger = getVehicleOccupant ( vehicle, i )
-					if ( passenger ) then
-						if ( ( passenger == player ) and ( getPedOccupiedVehicle ( source ) ~= vehicle ) ) then aAction ( "vehicle", action, source, passenger, mdata )
-   						else aAction ( "vehicle", action, passenger, passenger, mdata ) end
+				local seats = getVehicleMaxPassengers ( vehicle )
+				if seats then
+					for i = 0, seats do
+						local passenger = getVehicleOccupant ( vehicle, i )
+						if ( passenger ) then
+							if ( ( passenger == player ) and ( getPedOccupiedVehicle ( source ) ~= vehicle ) ) then aAction ( "vehicle", action, source, passenger, mdata )
+							else aAction ( "vehicle", action, passenger, passenger, mdata ) end
+						end
 					end
 				end
 			end

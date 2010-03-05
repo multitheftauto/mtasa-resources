@@ -28,7 +28,7 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 	---These are special checks for certain kill types
 	local usedVehicle
 	if killerweapon == 19 then --rockets
-		killerweapon = getPlayerWeapon(killer)
+		killerweapon = getElementType ( killer ) == "player" and getPlayerWeapon(killer)
 		if not killerweapon then
 			killerweapon = 51
 		end
@@ -47,7 +47,7 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 	end
 	--finish this
 	-- Got a killer? Print the normal "* X died" if not
-	if ( killer ) then
+	if ( killer and getElementType ( killer ) == "player" ) then
 		local kr,kg,kb = getPlayerNametagColor	( killer )
 		if getPlayerTeam ( source ) then
 			kr,kg,kb = getTeamColor ( getPlayerTeam ( killer ) )
