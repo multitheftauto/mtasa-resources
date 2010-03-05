@@ -312,6 +312,18 @@ function aAdminMenu ()
 	end
 	guiSetVisible ( aAdminForm, true )
 	showCursor ( true )
+	-- If the camera target was on another player, select him in the player list
+	local element = getCameraTarget()
+	if element and getElementType(element)=="vehicle" then
+		element = getVehicleController(element)
+	end
+	if element and getElementType(element)=="player" and element ~= getLocalPlayer() then
+		for row=0,guiGridListGetRowCount( aTab1.PlayerList )-1 do
+			if ( guiGridListGetItemPlayerName ( aTab1.PlayerList, row, 1 ) == getPlayerName ( element ) ) then
+				guiGridListSetSelectedItem ( aTab1.PlayerList, row, 1 )
+			end
+		end
+	end
 end
 
 function aAdminMenuClose ( destroy )
@@ -370,7 +382,7 @@ end
 function aAdminRefresh ()
 	if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) ~= -1 ) then
 		local player = getPlayerFromNick ( guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 ) )
-		if ( player ) then
+		if ( player and aPlayers[player] ) then
 			guiSetText ( aTab1.Name, "Name: "..aPlayers[player]["name"] )
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unmute", "Mute" ) )
 			guiSetText ( aTab1.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
@@ -575,7 +587,7 @@ function aClientPlayerQuit ()
 		end
 		id = id + 1
 	end
-	if ( aPlayers[source]["admin"] ) then
+	if ( aPlayers[source] and aPlayers[source]["admin"] ) then
 		local id = 0
 		while ( id <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
 			if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id, 1 ) == getPlayerName ( source ) ) then
