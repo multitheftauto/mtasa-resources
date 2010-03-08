@@ -150,7 +150,7 @@ function getSettings(resource)
 	local meta = xmlLoadFile( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	local settings = {}
 	local settingsNode = xmlFindChild ( meta, "settings" ,0 )
-	if not settingsNode then return settings end
+	if not settingsNode then xmlUnloadFile ( meta ) return settings end
 	local nodes = xmlNodeGetChildren ( settingsNode )
 	for i,node in ipairs(nodes) do
 		if xmlNodeGetName(node) == "setting" then
@@ -164,5 +164,6 @@ function getSettings(resource)
 			end
 		end
 	end
+	xmlUnloadFile ( meta )
 	return settings
 end

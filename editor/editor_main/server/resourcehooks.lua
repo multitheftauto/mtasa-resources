@@ -57,6 +57,7 @@ function clearResourceMeta ( resource, quick ) --removes settings and info nodes
 		end
 	end
 	xmlSaveFile ( metaNode )
+	xmlUnloadFile ( metaNode )
 	return true
 end
 

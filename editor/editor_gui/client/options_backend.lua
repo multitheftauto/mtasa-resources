@@ -75,6 +75,9 @@ end
 
 function loadXMLSettings()
 	--this should use xmlLoadFile afterwards
+	if settingsXML then
+		xmlUnloadFile ( settingsXML )
+	end
 	settingsXML = xmlLoadFile ( "settings.xml" )
 	if not settingsXML then createSettingsXML() end
 	if not settingsXML then
@@ -133,6 +136,10 @@ function createSettingsXML()
 		xmlNodeSetValue ( node, tostring(defaults[gui]) )
 	end
 	xmlSaveFile ( xml )
+	xmlUnloadFile ( xml )
+	if settingsXML then
+		xmlUnloadFile ( settingsXML )
+	end
 	settingsXML = xmlLoadFile ( "settings.xml" )
 end
 

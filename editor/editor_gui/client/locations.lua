@@ -58,6 +58,9 @@ function createLocationsMenu()
 	end
 	addToGridlist ( locations.plist, newTable )
 	--
+	if bookmarksXML then
+		xmlUnloadFile ( bookmarksXML )
+	end
 	bookmarksXML = xmlLoadFile ( "bookmarks.xml" )
 	if not bookmarksXML then 
 		bookmarksXML = xmlCreateFile ( "bookmarks.xml","bookmarks") 
