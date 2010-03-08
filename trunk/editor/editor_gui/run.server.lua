@@ -92,7 +92,9 @@ function dumpupgrades()
 		end
 	end
 	xmlNodeSetValue(XML, contents)
-	return xmlSaveFile(XML)
+	local result = xmlSaveFile(XML)
+	xmlUnloadFile(XML)
+	return result
 end
 
 --#2533--

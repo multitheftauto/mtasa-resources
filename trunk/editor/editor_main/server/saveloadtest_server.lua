@@ -141,6 +141,7 @@ function openResource( resourceName, onStart )
 			flattenTree ( mapElement, thisDynamicRoot )
 			destroyElement ( mapElement )
 			mapName = string.sub(mapPath, 1, -5)
+			xmlUnloadFile ( mapNode )
 		end
 		
 		loadedMap = resourceName 
