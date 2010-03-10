@@ -1340,8 +1340,11 @@ addEventHandler ( "aAdminChat", _root, function ( chat )
 end )
 
 addEventHandler('onElementDataChange', root,
-	function(dataName)
-		if checkClient( source, 'onElementDataChange', dataName ) then return end
+	function(dataName, oldValue )
+		if checkClient( source, 'onElementDataChange', dataName ) then
+			setElementData( source, dataName, oldValue )
+			return
+		end
 	end
 )
 
