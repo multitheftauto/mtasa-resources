@@ -375,6 +375,7 @@ end )
 
 addEvent ( "aPlayerVersion", true )
 addEventHandler ( "aPlayerVersion", _root, function ( version )
+	if checkClient( source, 'aPlayerVersion' ) then return end
 	local bIsPre = false
 	-- If not Release, mark as 'pre'
 	if version.type:lower() ~= "release" then
@@ -499,6 +500,7 @@ end
 
 addEvent ( "aTeam", true )
 addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
+	if checkClient( source, 'aTeam', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		mdata = tostring ( data )
 		mdata = ""
@@ -532,6 +534,7 @@ end )
 
 addEvent ( "aAdmin", true )
 addEventHandler ( "aAdmin", _root, function ( action, ... )
+	if checkClient( source, 'aAdmin', action ) then return end
 	local mdata = ""
 	local mdata2 = ""
 	if ( action == "password" ) then
@@ -745,6 +748,7 @@ end
 
 addEvent ( "aPlayer", true )
 addEventHandler ( "aPlayer", _root, function ( player, action, data, additional, additional2 )
+	if checkClient( source, 'aPlayer', action ) then return end
 	if not isElement( player ) then
 		return	-- Ignore if player is no longer valid
 	end
@@ -1026,6 +1030,7 @@ end )
 
 addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", _root, function ( player, action, data )
+	if checkClient( source, 'aVehicle', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local vehicle = getPedOccupiedVehicle ( player )
 		if ( vehicle ) then
@@ -1101,6 +1106,7 @@ end )
 
 addEvent ( "aResource", true )
 addEventHandler ( "aResource", _root, function ( name, action )
+	if checkClient( source, 'aResource', action ) then return end
 	local pname = getPlayerName ( source )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local text = ""
@@ -1123,6 +1129,7 @@ end )
 
 addEvent ( "aServer", true )
 addEventHandler ( "aServer", _root, function ( action, data, data2 )
+	if checkClient( source, 'aServer', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local mdata = tostring ( data )
 		local mdata2 = ""
@@ -1209,6 +1216,7 @@ end )
 
 addEvent ( "aMessage", true )
 addEventHandler ( "aMessage", _root, function ( action, data )
+	if checkClient( source, 'aMessage', action ) then return end
 	if ( action == "new" ) then
 		local time = getRealTime()
 		local id = #aReports + 1
@@ -1250,6 +1258,7 @@ end )
 
 addEvent ( "aBans", true )
 addEventHandler ( "aBans", _root, function ( action, data )
+	if checkClient( source, 'aBans', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local mdata = ""
 		local more = ""
@@ -1300,6 +1309,7 @@ end )
 
 addEvent ( "aExecute", true )
 addEventHandler ( "aExecute", _root, function ( action, echo )
+	if checkClient( source, 'aExecute', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then 
 		local result = loadstring("return " .. action)()
 		if ( echo == true ) then
@@ -1321,9 +1331,31 @@ end )
 
 addEvent ( "aAdminChat", true )
 addEventHandler ( "aAdminChat", _root, function ( chat )
+	if checkClient( source, 'aAdminChat' ) then return end
 	for id, player in ipairs(getElementsByType("player")) do
 		if ( aPlayers[player]["chat"] ) then
 			triggerClientEvent ( player, "aClientAdminChat", source, chat )
 		end
 	end
 end )
+
+addEventHandler('onElementDataChange', root,
+	function(dataName)
+		if checkClient( source, 'onElementDataChange', dataName ) then return end
+	end
+)
+
+function checkClient(player,...)
+	if client and client ~= player then
+		local desc = table.concat({...}," ")
+		local ipAddress = getPlayerIP(client)
+		outputServerLog( "ADMIN-ERROR: Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")" )
+		cancelEvent()
+		if g_Prefs.clientcheckban then
+			local reason = "admin checkClient (" .. tostring(desc) .. ")"
+			addBan ( ipAddress, nil, nil, getRootElement(), reason )
+		end
+		return true
+	end
+	return false
+end

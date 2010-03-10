@@ -443,7 +443,7 @@ function aClientSync ( type, table )
 			if ( table[player]["admin"] == false ) and ( player == getLocalPlayer() ) then
 				aAdminDestroy()
 				break
-			else
+			elseif aPlayers[player] then
 				aPlayers[player]["groups"] = table[player]["groups"]
 				if ( table[player]["chat"] ) then
 					local id = 0
