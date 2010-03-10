@@ -10,6 +10,7 @@
 
 addEvent ( "aSync", true )
 addEventHandler ( "aSync", _root, function ( type, data )
+	if checkClient( source, 'aSync', type ) then return end
 	local tableOut = {}
 	local theSource = _root
 	if ( type == "player" ) then
@@ -187,6 +188,7 @@ end )
 
 addEvent ( "aPermissions", true )
 addEventHandler ( "aPermissions", _root, function()
+	if checkClient( source, 'aPermissions' ) then return end
 	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
 		local tableOut = {}
 		for gi, group in ipairs ( aclGroupList() ) do

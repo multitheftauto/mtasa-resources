@@ -261,6 +261,13 @@
 					examples="60,360,0"
 					desc="Duration options for the mute window. Comma seperated list in seconds. 0 means no duration limit."
 					/>
+
+		<setting name="*clientcheckban" value="false"
+					friendlyname="clientcheckban"
+					group="_Advanced"
+					accept="true,false"
+					desc="Ban IP's that attempt to send fake admin packets."
+					/>
  </settings>
 
 </meta>
