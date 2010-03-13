@@ -12,7 +12,6 @@
 --------------------------------------------------------
 Override = {}
 Override.list = {}
-Override.timer = Timer:create()
 
 addEventHandler( "onElementDestroy", g_Root,
 	function()
@@ -66,15 +65,15 @@ function Override.set( reason, element, value, var, default )
 	if not Override.list[element][var] then	Override.list[element][var] = { default=default}	end
 	Override.list[element][var][reason] = value
 	-- Set timer to auto-flush incase it is not done manually
-	if not Override.timer:isActive() then
-		Override.timer:setTimer( Override.flushAll, 50, 1 )
+	if not TimerManager.hasTimerFor("override") then
+		TimerManager.createTimerFor("map","override"):setTimer( Override.flushAll, 50, 1 )
 	end
 end
 
 
 -- Update. Find lowest value for each element var, and setElementData for it
 function Override.flushAll()
-	Override.timer:killTimer()
+	TimerManager.destroyTimersFor("override")
 	-- For each element
 	for element,varlist in pairs(Override.list) do
 		-- For each var

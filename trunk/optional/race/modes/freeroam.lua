@@ -23,7 +23,7 @@ function Freeroam:pickFreeSpawnpoint(ignore)
 	local spawnpoint = RaceMode.getSpawnpoint(i)
 	spawnpoint.used = true
 	if self.startTick then
-		setTimer(freeSpawnpoint, 2000, 1, i)
+		TimerManager.createTimerFor("map"):setTimer(freeSpawnpoint, 2000, 1, i)
 	end
 	return spawnpoint
 end

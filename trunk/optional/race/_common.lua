@@ -91,6 +91,81 @@ end
 ---------------------------------------------------------------------------
 
 
+
+---------------------------------------------------------------------------
+-- TimerManager
+---------------------------------------------------------------------------
+TimerManager = {}
+TimerManager.list = {}
+
+-- Create a timer with tags
+function TimerManager.createTimerFor( ... )
+	local tags = TimerManager.makeTagsString( ... )
+	local timer = Timer:create(true)
+	table.insert( TimerManager.list, { timer=timer, tags=tags } )
+	outputDebug( "TIMERS", "create - number of timers:" .. tostring(#TimerManager.list) )
+	return timer
+end
+
+-- Timer must have all the tags specified
+function TimerManager.hasTimerFor( ... )
+	local timers = TimerManager.getTimersByTags(...)
+	return #timers > 0
+end
+
+-- Timers must have all the tags specified
+function TimerManager.destroyTimersFor( ... )
+	local timers = TimerManager.getTimersByTags(...)
+	for _,timer in ipairs(timers) do
+		timer:destroy()
+	end
+end
+
+-- Remove specific timer from the list
+function TimerManager.removeTimer( timer )
+	for _,item in ipairs(TimerManager.list) do
+		if item.timer == timer then
+			table.removevalue(TimerManager.list, item)
+			outputDebug( "TIMERS", "remove - number of timers:" .. tostring(#TimerManager.list) )
+		end
+	end
+end
+
+-- Turn args into one string containing alpha sorted tags
+function TimerManager.makeTagsString( ... )
+	local tags = {}
+	for _,arg in ipairs({ ... }) do
+		table.insert( tags, tostring(arg) )
+	end
+	table.sort(tags)
+	local result = ""
+	for i,tag in ipairs(tags) do
+		if i > 1 then result = result .. "," end
+		result = result .. tag
+	end
+	return result
+end
+
+-- Get all timers which contains all matching tags
+function TimerManager.getTimersByTags( ... )
+	local timers = {}
+	local tagsPartial = TimerManager.makeTagsString( ... )
+	for i,item in ipairs(TimerManager.list) do
+		if item.tags:find(tagsPartial, 1, true) then
+			table.insert( timers, item.timer )
+		end
+	end
+	return timers
+end
+
+
+addEventHandler ( "onElementDestroy", root,
+	function()
+		TimerManager.destroyTimersFor( source )
+	end
+)
+
+
 ---------------------------------------------------------------------------
 -- Timer - Wraps a standard timer
 ---------------------------------------------------------------------------
@@ -99,12 +174,13 @@ Timer.__index = Timer
 Timer.instances = {}
 
 -- Create a Timer instance
-function Timer:create()
+function Timer:create(autodestroy)
     local id = #Timer.instances + 1
     Timer.instances[id] = setmetatable(
         {
             id = id,
             timer = nil,      -- Actual timer
+            autodestroy = autodestroy,
         },
         self
     )
@@ -114,6 +190,7 @@ end
 -- Destroy a Timer instance
 function Timer:destroy()
     self:killTimer()
+    TimerManager.removeTimer(self)
     Timer.instances[self.id] = nil
     self.id = 0
 end
@@ -136,6 +213,7 @@ function Timer:setTimer( theFunction, timeInterval, timesToExecute, ... )
     self:killTimer()
     self.fn = theFunction
     self.count = timesToExecute
+    self.dodestroy = false
     self.args = { ... }
     self.timer = setTimer( function() self:handleFunctionCall() end, timeInterval, timesToExecute )
 end
@@ -146,9 +224,13 @@ function Timer:handleFunctionCall()
         self.count = self.count - 1
         if self.count == 0 then
             self.timer = nil
+            self.dodestroy = self.autodestroy
         end
     end
     self.fn(unpack(self.args))
+    if self.dodestroy then
+        self:destroy()
+    end
 end
 
 ---------------------------------------------------------------------------

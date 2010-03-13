@@ -3,7 +3,7 @@ g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 
 addEvent('onClientCall_race', true)
-addEventHandler('onClientCall_race', getRootElement(),
+addEventHandler('onClientCall_race', resourceRoot,
 	function(fnName, ...)
 		local fn = _G
 		local path = fnName:split('.')
@@ -23,7 +23,7 @@ function createServerCallInterface()
 		{},
 		{
 			__index = function(t, k)
-				t[k] = function(...) triggerServerEvent('onServerCall_race', g_Me, k, ...) end
+				t[k] = function(...) triggerServerEvent('onServerCall_race', resourceRoot, k, ...) end
 				return t[k]
 			end
 		}

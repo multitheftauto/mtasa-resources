@@ -19,12 +19,6 @@ g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, p
 g_Players = {}				-- { i = player }
 g_Vehicles = {}				-- { player = vehicle }
 
--- Timers
-g_SpawnTimer = Timer:create()
-g_RankTimer  = Timer:create()
-g_RaceEndTimer = Timer:create()
-g_WatchDogTimer = Timer:create()
-local pickupTimers = {}
 local unloadedPickups = {}
 
 
@@ -58,7 +52,7 @@ addEventHandler('onGamemodeMapStart', g_Root,
 			outputDebugString('Unloading previous map')
 			unloadAll()
 		end
-		setTimer(doLoadMap,50,1,mapres)
+		TimerManager.createTimerFor("raceresource","loadmap"):setTimer( doLoadMap, 50, 1 ,mapres )
 	end
 )
 -- continue loading map after onGamemodeMapStart has completed
@@ -346,9 +340,9 @@ function startRace()
 	AddonOverride.removeAll()
     triggerEvent('onMapStarting', g_Root, g_MapInfo, g_MapOptions, g_GameOptions )
 	g_Players = {}
-	g_SpawnTimer:setTimer(joinHandlerByTimer, 500, 0)
+	TimerManager.createTimerFor("map","spawn"):setTimer(joinHandlerByTimer, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
-		g_RankTimer:setTimer(updateRank, 1000, 0)
+		TimerManager.createTimerFor("map","rank"):setTimer(updateRank, 1000, 0)
 	end
 end
 
@@ -361,7 +355,7 @@ function launchRace()
 	end
 	clientCall(g_Root, 'launchRace', g_MapOptions.duration, g_MapOptions.vehicleweapons)
 	if g_MapOptions.duration then
-		g_RaceEndTimer:setTimer(raceTimeout, g_MapOptions.duration, 1)
+		TimerManager.createTimerFor("map","raceend"):setTimer(raceTimeout, g_MapOptions.duration, 1)
 	end
 	g_CurrentRaceMode:launch()
 	g_CurrentRaceMode.running = true
@@ -398,12 +392,12 @@ end
 function joinHandlerBoth(player)
 	if #g_Spawnpoints == 0 then
  		-- start vote if no map is loaded
-       if not g_WatchDogTimer:isActive() then
-            g_WatchDogTimer:setTimer(
+		if not TimerManager.hasTimerFor("watchdog") then
+            TimerManager.createTimerFor("map","watchdog"):setTimer(
                 function()
                     if #g_Spawnpoints == 0 then
                         outputDebugString('No map loaded; showing votemanager')
-                        g_SpawnTimer:killTimer()
+						TimerManager.destroyTimersFor("spawn")
                         RaceMode.endMap()
                     end
                 end,
@@ -411,9 +405,9 @@ function joinHandlerBoth(player)
         end
         return
     else
-        g_WatchDogTimer:killTimer()
+		TimerManager.destroyTimersFor("watchdog")
     end
-	if g_SpawnTimer:isActive() then
+	if TimerManager.hasTimerFor("spawn") then
 		for i,p in ipairs(getElementsByType('player')) do
 			if not table.find(g_Players, p) then
 				player = p
@@ -423,7 +417,7 @@ function joinHandlerBoth(player)
 		if not player then
             -- Is everyone ready?
             if howManyPlayersNotReady() == 0 then
-                g_SpawnTimer:killTimer()
+				TimerManager.destroyTimersFor("spawn")
                 if stateAllowsGridCountdown() then
                     gotoState('GridCountdown')
 			        g_RaceStartCountdown:start()
@@ -547,7 +541,7 @@ function joinHandlerBoth(player)
 	
 	if bPlayerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
 		-- Start random map vote if someone joined a lone player mid-race
-		setTimer(startMidMapVoteForRandomMap,7000,1)
+		TimerManager.createTimerFor("map"):setTimer(startMidMapVoteForRandomMap,7000,1)
 	end
 
 	-- Handle spectating when joined
@@ -582,7 +576,7 @@ function unfreezePlayerWhenReady(player)
 	end
     if isPlayerNotReady(player) then
         outputDebug( 'MISC', 'unfreezePlayerWhenReady: isPlayerNotReady(player) for ' .. tostring(getPlayerName(player)) )
-        setTimer( unfreezePlayerWhenReady, 500, 1, player )
+        TimerManager.createTimerFor("map",player):setTimer( unfreezePlayerWhenReady, 500, 1, player )
     else
         RaceMode.playerUnfreeze(player)
         outputDebug( 'MISC', 'unfreezePlayerWhenReady: setVehicleFrozen false for ' .. tostring(getPlayerName(player)) )
@@ -663,10 +657,11 @@ addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 	function(pickupID, respawntime)
 		local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
 		local vehicle = g_Vehicles[source]
+		if not pickup or not vehicle then return end
 		if respawntime and tonumber(respawntime) >= 50 then
 			table.insert(unloadedPickups, pickupID)
 			clientCall(g_Root, 'unloadPickup', pickupID)
-			pickupTimers[pickupID] = setTimer(ServerLoadPickup, tonumber(respawntime), 1, pickupID)
+			TimerManager.createTimerFor("map"):setTimer(ServerLoadPickup, tonumber(respawntime), 1, pickupID)
 		end
 		if pickup.type == 'repair' then
 			fixVehicle(vehicle)
@@ -685,7 +680,6 @@ addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 )
 
 function ServerLoadPickup(pickupID)
-	pickupTimers[pickupID] = nil
 	table.removevalue(unloadedPickups, pickupID)
 	clientCall(g_Root, 'loadPickup', pickupID)
 end
@@ -721,7 +715,7 @@ function raceTimeout()
 			end
 		end
 		clientCall(g_Root, 'raceTimeout')
-		g_RaceEndTimer:killTimer()
+		TimerManager.destroyTimersFor("raceend")
 		RaceMode.endMap()
 	end
 end
@@ -734,9 +728,7 @@ function unloadAll()
 	if getPlayerCount() > 0 then
 		clientCall(g_Root, 'unloadAll')
 	end
-    g_RaceEndTimer:killTimer()
-    g_RankTimer:killTimer()
-    g_SpawnTimer:killTimer()
+	TimerManager.destroyTimersFor("map")
 
 	Countdown.destroyAll()
 
@@ -753,8 +745,6 @@ function unloadAll()
 	g_Objects = {}
 	g_Pickups = {}
 	unloadedPickups = {}
-	table.each(pickupTimers,killTimer)
-	pickupTimers = {}
 	if g_CurrentRaceMode then
 		g_CurrentRaceMode:destroy()
 	end
@@ -789,7 +779,7 @@ addEventHandler('onResourceStart', g_Root,
 	function(res)
 		local resourceName = getResourceName(res)
 		if resourceName == 'scoreboard' then
-			setTimer( addRaceScoreboardColumns, 1000, 1 )
+			TimerManager.createTimerFor("raceresource"):setTimer( addRaceScoreboardColumns, 1000, 1 )
 		end
 	end
 )
@@ -947,7 +937,7 @@ addEventHandler('onClientRequestSpectate', g_Root,
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), nil )
 				-- Do 'freeze/collision off' stuff when stopping spectate
 				RaceMode.playerFreeze(player, true, true)
-				setTimer(RaceMode.playerUnfreeze, 2000, 1, player, true)
+				TimerManager.createTimerFor("map",player):setTimer(RaceMode.playerUnfreeze, 2000, 1, player, true)
 			end
 		end
 	end
@@ -985,7 +975,6 @@ addEventHandler('onNotifyPlayerReady', g_Root,
 ------------------------
 -- Players not ready stuff
 g_NotReady = {}             -- { player = bool }
-g_NotReadyTimer = nil
 g_NotReadyDisplay = nil
 g_NotReadyTextItems = {}
 g_NotReadyDisplayOnTime = 0
@@ -1066,8 +1055,8 @@ end
 
 function activateNotReadyText()
     if stateAllowsNotReadyMessage() then
-        if not g_NotReadyTimer then
-            g_NotReadyTimer = setTimer( updateNotReadyText, 100, 0 )
+        if not g_NotReadyDisplay then
+			TimerManager.createTimerFor("raceresource","notready"):setTimer( updateNotReadyText, 100, 0 )
 	        g_NotReadyDisplay = textCreateDisplay()
 	        g_NotReadyTextItems[1] = textCreateTextItem('', 0.5, 0.7, 'medium', 255, 235, 215, 255, 1.5, 'center', 'center')
 	        textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[1])
@@ -1099,19 +1088,18 @@ function updateNotReadyText()
 end
 
 function deactiveNotReadyText()
-    if g_NotReadyTimer then
-        killTimer( g_NotReadyTimer )
+    if g_NotReadyDisplay then
+		TimerManager.destroyTimersFor("notready")
         -- Ensure message is displayed for at least 2 seconds
         local hideDisplayDelay  = math.max(50,math.min(2000,2000+g_NotReadyDisplayOnTime - getTickCount()))
         local display           = g_NotReadyDisplay;
         local textItems         = { g_NotReadyTextItems[1] };
-		setTimer(
+		TimerManager.createTimerFor("raceresource"):setTimer(
             function()
 		        textDestroyDisplay(display)
 		        textDestroyTextItem(textItems[1])
             end,
             hideDisplayDelay, 1 )
-        g_NotReadyTimer = nil
 		g_NotReadyDisplay = nil
 		g_NotReadyTextItems[1] = nil
     end
@@ -1153,7 +1141,7 @@ function startAddons()
 					-- Start or restart resource
 					if getResourceState(resource) == 'running' then
 						stopResource(resource)
-						setTimer( function() startResource(resource) end, 200, 1 )
+						TimerManager.createTimerFor("raceresource"):setTimer( function() startResource(resource) end, 200, 1 )
 					else
 						startResource(resource)
 					end
@@ -1181,14 +1169,13 @@ end
 -- Server side move away
 MoveAway = {}
 MoveAway.list = {}
-MoveAway.timer = Timer:create()
 
 addEvent( "onRequestMoveAwayBegin", true )
 addEventHandler( "onRequestMoveAwayBegin", g_Root,
 	function()
 		MoveAway.list [ source ] = true
-		if not MoveAway.timer:isActive() then
-			MoveAway.timer:setTimer( MoveAway.update, 1000, 0 )
+		if not TimerManager.hasTimerFor("moveaway") then
+			TimerManager.createTimerFor("map","moveaway"):setTimer( MoveAway.update, 1000, 0 )
 		end
 	end
 )
@@ -1247,7 +1234,7 @@ end
 -- Keep players in vehicles
 g_checkPedIndex = 0
 
-setTimer(
+TimerManager.createTimerFor("raceresource","warppeds"):setTimer(
 	function ()
 		-- Make sure all players are in a vehicle
 		local maxCheck = 6		-- Max number to check per call
@@ -1284,7 +1271,7 @@ end
 -- Script integrity test
 
 g_IntegrityFailCount = 0
-setTimer(
+TimerManager.createTimerFor("raceresource","integrity"):setTimer(
 	function ()
 		local fail = false
 		-- Make sure all vehicles are valid - Invalid vehicles really mess up the race script
