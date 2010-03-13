@@ -373,7 +373,7 @@ function updatePickups()
 				elseif x then
 					if distanceToPickup < 60 then
 						if isLineOfSightClear(cX, cY, cZ, pickX, pickY, pickZ, true, false, false, true, false) then
-							if not pickup.labelInRange then								
+							if not pickup.labelInRange then
 								if pickup.anim then
 									pickup.anim:remove()
 								end
@@ -993,6 +993,11 @@ function Spectate.blockAsTarget( player, ticks )
 end
 
 function Spectate.tick()
+	if Spectate.target and Spectate.getCameraTargetPlayer() and Spectate.getCameraTargetPlayer() ~= Spectate.target then
+		if Spectate.isValidTarget(Spectate.target) then
+			setCameraTarget(Spectate.target)
+		end
+	end
 	if not Spectate.target or ( Spectate.getCameraTargetPlayer() and Spectate.getCameraTargetPlayer() ~= Spectate.target ) or not Spectate.isValidTarget(Spectate.target) then
 		Spectate.previous(false)
 	end
@@ -1043,7 +1048,7 @@ addEvent ( "onClientPreRender", true )
 addEventHandler ( "onClientPreRender", g_Root,
 	function()
 		if isPlayerRaceDead( g_Me ) then
-			setCameraMatrix( getCameraMatrix() )		
+			setCameraMatrix( getCameraMatrix() )
 		end
 		updateSpectatingCheckpointsAndRank()
 	end

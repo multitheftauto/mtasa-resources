@@ -196,21 +196,21 @@ addEventHandler('onPlayerQuit', g_Root,
 -- onLoadedAtClient
 --      Client says he is good to go. Move player element to g_RootPlayers and call deferred onPlayerJoin event handlers.
 addEvent('onLoadedAtClient', true)
-addEventHandler('onLoadedAtClient', g_Root,
-	function()
+addEventHandler('onLoadedAtClient', resourceRoot,
+	function( player )
         -- Tell other clients; join completed for this player
-        triggerClientEvent( g_RootPlayers, 'onOtherJoinCompleteAtServer', source )
+        triggerClientEvent( g_RootPlayers, 'onOtherJoinCompleteAtServer', resourceRoot, player )
 
-        setElementParent( source, g_RootPlayers )
+        setElementParent( player, g_RootPlayers )
 
         -- Tell client; join completed; and send a list of all joined players
-        triggerClientEvent( source,        'onMyJoinCompleteAtServer',    source, getElementChildren(g_RootPlayers) )
+        triggerClientEvent( player, 'onMyJoinCompleteAtServer', resourceRoot, getElementChildren(g_RootPlayers) )
 
         -- Call deferred onPlayerJoin event handlers
-        callSavedEventHandlers( 'onPlayerJoin', source )
+        callSavedEventHandlers( 'onPlayerJoin', player )
 
         -- Custom event for joiner aware event handlers
-        triggerEvent( 'onPlayerJoined', source )
+        triggerEvent( 'onPlayerJoined', player )
 	end
 )
 

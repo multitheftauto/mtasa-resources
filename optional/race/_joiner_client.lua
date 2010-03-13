@@ -136,11 +136,11 @@ addEventHandler('_onClientResourceStart', g_ResRoot,
         if _DEBUG_TIMING then
     		setTimer(
                 function()
-                    triggerServerEvent('onLoadedAtClient', g_Me)
+                    triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
                 end,
                 math.random(1000,15000), 1 )
         else
-    		triggerServerEvent('onLoadedAtClient', g_Me)
+    		triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
 	    end
 	end
 )
@@ -148,7 +148,7 @@ addEventHandler('_onClientResourceStart', g_ResRoot,
 -- onMyJoinCompleteAtServer
 --   This player is now fully joined at the server.
 addEvent('onMyJoinCompleteAtServer', true)
-addEventHandler('onMyJoinCompleteAtServer', g_Root,
+addEventHandler('onMyJoinCompleteAtServer', resourceRoot,
 	function(allJoinedPlayersAtServer)
         for i,player in ipairs(allJoinedPlayersAtServer) do
             table.insertUnique(g_JoinedPlayers,player)
@@ -160,15 +160,15 @@ addEventHandler('onMyJoinCompleteAtServer', g_Root,
 -- onOtherJoinCompleteAtServer
 --   A player is fully joined at the server. Call the deferred onClientPlayerJoin event handlers.
 addEvent('onOtherJoinCompleteAtServer', true)
-addEventHandler('onOtherJoinCompleteAtServer', g_Root,
-	function()
-        table.insertUnique(g_JoinedPlayers,source)
+addEventHandler('onOtherJoinCompleteAtServer', resourceRoot,
+	function( player )
+        table.insertUnique(g_JoinedPlayers,player)
 
         -- Call deferred onClientPlayerJoin event handlers
-        callSavedEventHandlers( 'onClientPlayerJoin', source )
+        callSavedEventHandlers( 'onClientPlayerJoin', player )
 
         -- Custom event for joiner aware event handlers
-        triggerEvent( 'onClientPlayerJoined', source )
+        triggerEvent( 'onClientPlayerJoined', player )
 	end
 )
 

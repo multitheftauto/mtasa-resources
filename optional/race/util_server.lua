@@ -2,7 +2,7 @@ g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 
 function clientCall(player, fnName, ...)
-    triggerClientEvent(onlyJoined(player), 'onClientCall_race', player, fnName, ...)
+	triggerClientEvent(onlyJoined(player), 'onClientCall_race', resourceRoot, fnName, ...)
 end
 
 g_AllowedRPCFunctions = {}
@@ -14,7 +14,7 @@ function allowRPC(...)
 end
 
 addEvent('onServerCall_race', true)
-addEventHandler('onServerCall_race', getRootElement(),
+addEventHandler('onServerCall_race', resourceRoot,
 	function(fnName, ...)
 		if g_AllowedRPCFunctions[fnName] then
 			local fn = _G
@@ -46,7 +46,7 @@ function showMessage(text, r, g, b, player)
 	end
 	
 	if g_Messages[player] then
-		killTimer(g_Messages[player].timer)
+		TimerManager.destroyTimersFor("message",player)
 	else
 		g_Messages[player] = {
 			display = textCreateDisplay(),
@@ -66,14 +66,14 @@ function showMessage(text, r, g, b, player)
 	else
 		textDisplayAddObserver(display, player)
 	end
-	g_Messages[player].timer = setTimer(destroyMessage, 8000, 1, player)
+	TimerManager.createTimerFor("raceresource","message",player):setTimer(destroyMessage, 8000, 1, player)
 end
 
 function destroyMessage(player)
+	TimerManager.destroyTimersFor("message",player)
 	if not g_Messages[player] then
 		return
 	end
-    killTimer(g_Messages[player].timer)
 	textDestroyDisplay(g_Messages[player].display)
 	textDestroyTextItem(g_Messages[player].textitem)
 	g_Messages[player] = nil
@@ -109,8 +109,8 @@ function setVehicleID(vehicle, id)
 			setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
 		end
 	end
-	setTimer(revertVehicleWheels, 1000, 1, vehicle)
-	setTimer(revertVehicleDoors, 1000, 1, vehicle)
+	TimerManager.createTimerFor("map",vehicle):setTimer(revertVehicleWheels, 1000, 1, vehicle)
+	TimerManager.createTimerFor("map",vehicle):setTimer(revertVehicleDoors, 1000, 1, vehicle)
 	
 	return vehicle
 end

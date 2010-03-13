@@ -73,8 +73,8 @@ end
 function RaceMode:setTimeLeft(timeLeft)
 	if g_MapOptions.duration - self:getTimePassed() > timeLeft then
 		g_MapOptions.duration = self:getTimePassed() + timeLeft
-        g_RaceEndTimer:killTimer()
-		g_RaceEndTimer:setTimer(raceTimeout, timeLeft, 1)
+		TimerManager.destroyTimersFor("raceend")
+		TimerManager.createTimerFor("map","raceend"):setTimer(raceTimeout, timeLeft, 1)
 		clientCall(g_Root, 'setTimeLeft', timeLeft)
 	end
 end
@@ -231,11 +231,8 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		local vehicle = RaceMode.getPlayerVehicle(player)
 		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getVehicleTurnVelocity(vehicle) }, geardown = getVehicleLandingGearDown(vehicle) or false }		
 		
-		self.checkpointBackups[player].goingback = true
-		if self.checkpointBackups[player].timer then
-			killTimer(self.checkpointBackups[player].timer)
-		end
-		self.checkpointBackups[player].timer = setTimer(lastCheckpointWasSafe, 5000, 1, self.id, player)
+		TimerManager.destroyTimersFor("checkpointBackup",player)
+		TimerManager.createTimerFor("map","checkpointBackup",player):setTimer(lastCheckpointWasSafe, 5000, 1, self.id, player)
 	else
 		-- Finish reached
 		rank = getFinishedPlayerCount() + 1
@@ -266,9 +263,9 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		)
 		self.rankingBoard:add(player, time)
 		if getActivePlayerCount() > 0 then
-			setTimer(clientCall, 5000, 1, player, 'Spectate.start', 'auto')
+			TimerManager.createTimerFor("map",player):setTimer(clientCall, 5000, 1, player, 'Spectate.start', 'auto')
 		else
-			setTimer(
+			TimerManager.createTimerFor("map"):setTimer(
 				function()
 					gotoState('EveryoneFinished')
 					self:setTimeLeft( 0 )
@@ -287,7 +284,6 @@ function lastCheckpointWasSafe(id, player)
 	local self = RaceMode.instances[id]
 	if self.checkpointBackups[player] then
 		self.checkpointBackups[player].goingback = false
-		self.checkpointBackups[player].timer = nil
 	end
 end
 
@@ -309,10 +305,7 @@ function RaceMode:onPlayerWasted(player)
 	if not self.checkpointBackups[player] then
 		return
 	end
-	if self.checkpointBackups[player].timer then
-		killTimer(self.checkpointBackups[player].timer)
-		self.checkpointBackups[player].timer = nil
-	end
+	TimerManager.destroyTimersFor("checkpointBackup",player)
 	if RaceMode.getMapOption('respawn') == 'timelimit' and not RaceMode.isPlayerFinished(source) then
         -- See if its worth doing a respawn
         local respawnTime       = RaceMode.getMapOption('respawntime')
@@ -320,7 +313,7 @@ function RaceMode:onPlayerWasted(player)
             Countdown.create(respawnTime/1000, restorePlayer, 'You will respawn in:', 255, 255, 255, 0.25, 2.5, true, self.id, player):start(player)
         end
 	    if RaceMode.getMapOption('respawntime') >= 5000 then
-		    setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
+		    TimerManager.createTimerFor("map",player):setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
 	    end
 	end
 	if g_MapOptions.respawn == 'none' then
@@ -438,14 +431,13 @@ function restorePlayer(id, player)
 			setVehicleID(vehicle, bkp.vehicle)
 		end
 		warpPedIntoVehicle(player, vehicle)	
-		--setTimer(warpPedIntoVehicle, 500, 5, player, vehicle)
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 
         RaceMode.playerFreeze(player, true)
         outputDebug( 'MISC', 'restorePlayer: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
         removeVehicleUpgrade(vehicle, 1010) -- remove nitro
-		setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
+		TimerManager.createTimerFor("map",player):setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
 	end
     setCameraTarget(player)
 	setPlayerStatus( player, "alive", "" )
@@ -528,13 +520,7 @@ addEventHandler ( "onPlayerFreeze", root,
 	function ( state )
 		local player = source
 		if not state then
-			setTimer(
-				function ()
-					if isElement( player ) then
-						clientCall( player, "updateVehicleWeapons" )
-					end
-				end,
-				200, 1 )
+			TimerManager.createTimerFor("map",player):setTimer( clientCall, 200, 1, player, "updateVehicleWeapons" )
 		end
 	end
 )
@@ -543,13 +529,7 @@ addEventHandler ( "onPlayerFreeze", root,
 addEventHandler ( "aPlayer", root,
 	function ( player, cmd, arg )
 		if cmd == "givevehicle" then
-			setTimer(
-				function ()
-					if isElement( player ) then
-						clientCall( player, "updateVehicleWeapons" )
-					end
-				end,
-				200, 1 )
+			TimerManager.createTimerFor("map",player):setTimer( clientCall, 200, 1, player, "updateVehicleWeapons" )
 		end
 	end
 )
@@ -569,14 +549,7 @@ function RaceMode:destroy()
 	if self.rankingBoard then
 		self.rankingBoard:destroy()
 		self.rankingBoard = nil
-	end 
-    if self.checkpointBackups then      -- Stop timers
-        for plr,bkp in pairs(self.checkpointBackups) do
-            if bkp.timer then
-                killTimer(bkp.timer)
-                bkp.timer = nil
-            end
-        end
-    end
+	end
+	TimerManager.destroyTimersFor("checkpointBackup")
 	RaceMode.instances[self.id] = nil
 end
