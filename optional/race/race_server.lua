@@ -920,7 +920,7 @@ addEventHandler('onClientRequestSpectate', g_Root,
 		local player = source
 		if enable then
 			if not stateAllowsManualSpectate() then return end
-			if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+			if not _TESTING and g_MapInfo.modename == "Destruction derby" and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 				return
 			end
 		end
