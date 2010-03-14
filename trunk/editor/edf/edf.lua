@@ -581,12 +581,16 @@ function edfCreateElement(elementType, fromResource, parametersTable, editorMode
 		if not newElement then
 			return false
 		end
-				
+
 		for dataField, dataValue in pairs(parametersTable) do
 			if dataField == "position" then
 				edfSetElementPosition(newElement, dataValue[1], dataValue[2], dataValue[3])
 			elseif dataField == "rotation" then
 				edfSetElementRotation(newElement, dataValue[1], dataValue[2], dataValue[3])
+			elseif dataField == "interior" then
+				setElementInterior(newElement, dataValue)
+			elseif dataField == "dimension" then
+				setElementDimension(newElement, dataValue)
 			else
 				setElementData(newElement, dataField, dataValue)
 			end
