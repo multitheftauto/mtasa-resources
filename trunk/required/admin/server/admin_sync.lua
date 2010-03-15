@@ -13,7 +13,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 	if checkClient( false, source, 'aSync', type ) then return end
 	local tableOut = {}
 	local theSource = _root
-	if not hasObjectPermissionTo ( client, "general.adminpanel" ) then
+	if client and not hasObjectPermissionTo ( client, "general.adminpanel" ) then
 		type = "loggedout"
 	elseif ( type == "player" ) then
 		if not isElement( data ) then return end
