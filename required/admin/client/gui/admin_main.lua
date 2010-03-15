@@ -321,6 +321,7 @@ function aAdminMenu ()
 		for row=0,guiGridListGetRowCount( aTab1.PlayerList )-1 do
 			if ( guiGridListGetItemPlayerName ( aTab1.PlayerList, row, 1 ) == getPlayerName ( element ) ) then
 				guiGridListSetSelectedItem ( aTab1.PlayerList, row, 1 )
+				break
 			end
 		end
 	end
@@ -437,6 +438,8 @@ function aClientSync ( type, table )
 				guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
 			end
 		end
+	elseif ( type == "loggedout" ) then
+		aAdminDestroy()
 	elseif ( type == "admins" ) then
 		--if ( guiGridListGetRowCount ( aTab5.AdminPlayers ) > 0 ) then guiGridListClear ( aTab5.AdminPlayers ) end
 		for id, player in ipairs(getElementsByType("player")) do
@@ -693,7 +696,7 @@ function aClientGUIChanged ()
 			end
 		else
 			for id, player in ipairs ( getElementsByType ( "player" ) ) do
-				if ( string.find ( string.upper ( getPlayerName ( player ) ), string.upper ( text ) ) ) then
+				if ( string.find ( string.upper ( getPlayerName ( player ) ), string.upper ( text ), 1, true ) ) then
 					guiGridListSetItemPlayerName ( aTab1.PlayerList, guiGridListAddRow ( aTab1.PlayerList ), 1, getPlayerName ( player ), false, false )
 				end
 			end
