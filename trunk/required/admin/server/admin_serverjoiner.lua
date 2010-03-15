@@ -45,7 +45,7 @@ addEventHandler('onPlayerQuit', root,
 addEvent('onResourceLoadedAtClient_internal', true)
 addEventHandler('onResourceLoadedAtClient_internal', resourceRoot,
 	function(player)
-		if checkClient( player, 'onResourceLoadedAtClient_internal' ) then return end
+		if checkClient( false, player, 'onResourceLoadedAtClient_internal' ) then return end
 		if playerData[player] then
 			playerData[player].loaded = true
 			-- Do queued events

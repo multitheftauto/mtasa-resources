@@ -9,7 +9,7 @@
 **************************************]]
 
 function getServerMaps (loadList)
-	if checkClient( source, 'getServerMaps' ) then return end
+	if checkClient( true, source, 'getServerMaps' ) then return end
 	local tableOut
 	if loadList then
 		tableOut = {}
@@ -54,7 +54,7 @@ addEvent("getMaps_s", true)
 addEventHandler("getMaps_s", getRootElement(), getServerMaps)
 
 function startGamemodeMap(gamemode, map)
-	if checkClient( source, 'startGamemodeMap' ) then return end
+	if checkClient( true, source, 'startGamemodeMap' ) then return end
 	if gamemode == "no gamemode" then
 		call(getResourceFromName("mapmanager"), "changeGamemodeMap", getResourceFromName(map))
 	else
@@ -73,7 +73,7 @@ addEvent("startGamemodeMap_s", true)
 addEventHandler("startGamemodeMap_s", getRootElement(), startGamemodeMap)
 
 function deleteRevertMap(delete, mapResName, mapName)
-	if checkClient( source, 'deleteRevertMap' ) then return end
+	if checkClient( true, source, 'deleteRevertMap' ) then return end
 	outputDebugString("delete = "..tostring(delete).." mapResName = "..tostring(mapResName).." mapName = "..tostring(mapName))
 	if mapResName then
 		local success
@@ -114,7 +114,7 @@ addEventHandler("deleteRevertMap_s", getRootElement(), deleteRevertMap)
 
 
 function setNextMap(mapName)
-	if checkClient( source, 'setNextMap', mapName ) then return end
+	if checkClient( true, source, 'setNextMap', mapName ) then return end
 	executeCommandHandler("nextmap", source, mapName)
 end
 addEvent("setNextMap_s", true)
