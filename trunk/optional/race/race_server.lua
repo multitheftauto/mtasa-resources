@@ -927,7 +927,7 @@ addEventHandler('onClientRequestSpectate', g_Root,
 		if isPlayerSpectating(player) ~= enable then
 			if enable then
 				clientCall(player, "Spectate.start", 'manual' )
-				if not g_GameOptions.stealthspectate then
+				if not g_GameOptions.stealthspectate or not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 					setPlayerStatus( player, nil, "spectating")
 				end
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), 0 )

@@ -996,6 +996,7 @@ function Spectate.tick()
 	if Spectate.target and Spectate.getCameraTargetPlayer() and Spectate.getCameraTargetPlayer() ~= Spectate.target then
 		if Spectate.isValidTarget(Spectate.target) then
 			setCameraTarget(Spectate.target)
+			return
 		end
 	end
 	if not Spectate.target or ( Spectate.getCameraTargetPlayer() and Spectate.getCameraTargetPlayer() ~= Spectate.target ) or not Spectate.isValidTarget(Spectate.target) then
@@ -1209,6 +1210,7 @@ function unloadAll()
 			g_GUI.hurry = nil
 		end
 	end
+	TimerManager.destroyTimersFor("map")
 	g_StartTick = nil
 	g_HurryDuration = nil
 	if Spectate.active then
@@ -1309,7 +1311,7 @@ addEventHandler('onClientPlayerWasted', g_Root,
 		local vehicle = getPedOccupiedVehicle(player)
 		if player == g_Me then
 			if #g_Players > 1 and (g_MapOptions.respawn == 'none' or g_MapOptions.respawntime >= 10000) then
-				setTimer(Spectate.start, 2000, 1, 'auto')
+				TimerManager.createTimerFor("map"):setTimer(Spectate.start, 2000, 1, 'auto')
 			end
 		else
 			Spectate.dropCamera( player, 1000 )
