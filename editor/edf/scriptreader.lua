@@ -79,9 +79,10 @@ addEventHandler ( "onPlayerJoin", root,
 			local scriptInfo = {}
 			local clientScripts
 			for path,info in pairs(data) do
-				scriptInfo[info.id] = { path = info.path, md5 = info.md5 }
+				scriptInfo[info.id] = { path = path, md5 = info.md5 }
 				clientScripts = true
 			end
+			local resourceName = getResourceName(resource)
 			if clientScripts then
 				triggerClientEvent ( "requestScriptDownloads", root, scriptInfo, resourceName )
 			end 

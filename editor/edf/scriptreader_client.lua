@@ -46,7 +46,7 @@ function loadScripts ( resourceName )
 		end
 		local loadFunction, errorMsg = loadstring ( script )
 		if errorMsg then
-			outputDebugString ( "Error: "..getResourceName(resource).."/"..path..": "..errorMsg )
+			outputDebugString ( "Error: "..resourceName.."/"..tostring(REQUIRED_FILES[resourceName][id])..": "..errorMsg  )
 			return false
 		end
 		setfenv ( loadFunction, SCRIPT_G[resourceName] )()
