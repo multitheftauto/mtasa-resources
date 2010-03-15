@@ -8,6 +8,12 @@
 --_DEBUG_CHECKS = true        -- Extra checks
 _TESTING = false             -- Any user can issue test commands
 
+---------------------------------------------------------------------------
+-- Script location
+---------------------------------------------------------------------------
+function isServer()				return triggerClientEvent ~= nil	end
+function isClient()				return triggerServerEvent ~= nil	end
+function getScriptLocation()	return isServer() and "Server" or "Client"	end
 
 ---------------------------------------------------------------------------
 -- Math extentions
@@ -103,7 +109,7 @@ function TimerManager.createTimerFor( ... )
 	local tags = TimerManager.makeTagsString( ... )
 	local timer = Timer:create(true)
 	table.insert( TimerManager.list, { timer=timer, tags=tags } )
-	outputDebug( "TIMERS", "create - number of timers:" .. tostring(#TimerManager.list) )
+	outputDebug( "TIMERS", getScriptLocation() .. " create - number of timers:" .. tostring(#TimerManager.list) )
 	return timer
 end
 
@@ -126,7 +132,7 @@ function TimerManager.removeTimer( timer )
 	for _,item in ipairs(TimerManager.list) do
 		if item.timer == timer then
 			table.removevalue(TimerManager.list, item)
-			outputDebug( "TIMERS", "remove - number of timers:" .. tostring(#TimerManager.list) )
+			outputDebug( "TIMERS", getScriptLocation() .. " remove - number of timers:" .. tostring(#TimerManager.list) )
 		end
 	end
 end
@@ -159,11 +165,21 @@ function TimerManager.getTimersByTags( ... )
 end
 
 
-addEventHandler ( "onElementDestroy", root,
+if isServer() then
+	addEventHandler ( "onElementDestroy", root,
 	function()
 		TimerManager.destroyTimersFor( source )
 	end
-)
+	)
+end
+
+if isClient() then
+	addEventHandler ( "onClientElementDestroy", root,
+		function()
+			TimerManager.destroyTimersFor( source )
+		end
+	)
+end
 
 
 ---------------------------------------------------------------------------
