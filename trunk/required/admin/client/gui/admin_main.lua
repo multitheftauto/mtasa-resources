@@ -209,7 +209,7 @@ function aAdminMenu ()
 						  guiGridListAddColumn( aTab4.BansList, "By", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "Date", 0.17 )
 						  guiGridListAddColumn( aTab4.BansList, "Time", 0.13 )
-						  guiGridListAddColumn( aTab4.BansList, "Reason", 0.52 )
+						  guiGridListAddColumn( aTab4.BansList, "Reason", 0.92 )
 						  guiGridListSetSortingEnabled( aTab4.BansList, false )
 		aTab4.Details		= guiCreateButton ( 0.85, 0.10, 0.13, 0.04, "Details", true, aTab4.Tab )
 		aTab4.Unban			= guiCreateButton ( 0.85, 0.20, 0.13, 0.04, "Unban", true, aTab4.Tab, "unban" )
@@ -944,8 +944,9 @@ function aClientClick ( button )
 				if ( guiGridListGetSelectedItem ( aTab4.BansList ) == -1 ) then
 					aMessageBox ( "error", "No ban row selected!" )
 				else
-					local ip = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 2 )
-					aBanDetails ( ip )
+					local selip = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 2 )
+					local selserial = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 3 )
+					aBanDetails ( aBans["Serial"][selserial] and selserial or selip )
 				end
 			elseif ( source == aTab4.Unban ) then
 				if ( guiGridListGetSelectedItem ( aTab4.BansList ) == -1 ) then
@@ -953,7 +954,7 @@ function aClientClick ( button )
 				else
 					local selip = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 2 )
 					local selserial = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 3 )
-					if ( aBans["Serial"][selserial] and selserial ~= "Unknown" ) then aMessageBox ( "question", "Unban Serial "..selserial.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanserial\", \""..selserial.."\" )" )
+					if ( aBans["Serial"][selserial] ) then aMessageBox ( "question", "Unban Serial "..selserial.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanserial\", \""..selserial.."\" )" )
 					else aMessageBox ( "question", "Unban IP "..selip.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanip\", \""..selip.."\" )" ) end
 				end
 			elseif ( source == aTab4.UnbanIP ) then

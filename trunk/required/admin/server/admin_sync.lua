@@ -118,7 +118,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			end
 		end
 		local from = ( tonumber( data ) or 0 ) + 1
-		local to = math.min( from+14, #g_Bans )
+		local to = math.min( from+24, #g_Bans )
 		tableOut.total = #g_Bans
 		for b=from,to do
 			i = b - from + 1
