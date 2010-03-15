@@ -1361,7 +1361,7 @@ function checkClient(checkAccess,player,...)
 	end
 	if checkAccess and not hasObjectPermissionTo ( player, "general.adminpanel" ) then
 		local desc = table.concat({...}," ")
-		local ipAddress = getPlayerIP(client)
+		local ipAddress = getPlayerIP(client or player)
 		outputDebugString( "Admin security - Client without admin panel rights trigged an admin panel event. " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 2 )
 		return true
 	end
