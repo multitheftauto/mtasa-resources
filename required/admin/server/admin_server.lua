@@ -1091,8 +1091,7 @@ addEventHandler ( "aVehicle", _root, function ( player, action, data )
 					for i = 0, seats do
 						local passenger = getVehicleOccupant ( vehicle, i )
 						if ( passenger ) then
-							if ( ( passenger == player ) and ( getPedOccupiedVehicle ( source ) ~= vehicle ) ) then aAction ( "vehicle", action, source, passenger, mdata )
-							else aAction ( "vehicle", action, passenger, passenger, mdata ) end
+							aAction ( "vehicle", action, source, passenger, mdata )
 						end
 					end
 				end
