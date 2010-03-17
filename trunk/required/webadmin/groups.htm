@@ -545,11 +545,14 @@ function.[name]
 												<select id="selectresource" onchange="validateResource();" onclick="validateResource();" onkeyup="validateResource();">
 												<option>[all resources]</option>
 												<*
-												local resources = getResources()
-												for k,v in ipairs(resources) do
-													local resourceName = getResourceName(v)
+												local resourceNames = {}
+												for _,resource in ipairs(getResources()) do
+													table.insert(resourceNames,getResourceName(resource))
+												end
+												table.sort(resourceNames)
+												for _,name in ipairs(resourceNames) do
 													*>
-														<option><* = resourceName *></option>
+														<option><* = name *></option>
 													<*
 												end
 												*>

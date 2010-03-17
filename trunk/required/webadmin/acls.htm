@@ -522,11 +522,14 @@ function.[name]
 							
 							<select id="addrightsetting2Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" onclick="updateRightNamePreview();">
 							<*
-							local resources = getResources()
-							for k,v in ipairs(resources) do
-								local resourceName = getResourceName(v)
+							local resourceNames = {}
+							for _,resource in ipairs(getResources()) do
+								table.insert(resourceNames,getResourceName(resource))
+							end
+							table.sort(resourceNames)
+							for _,name in ipairs(resourceNames) do
 								*>
-									<option><* = resourceName *></option>
+									<option><* = name *></option>
 								<*
 							end
 							*>
@@ -545,11 +548,14 @@ function.[name]
 						<div class="addrighttabpane" id="addrightsetting5" style="display:none;">
 							<label for="addrightsetting5Resource">Resource:</label> <select id="addrightsetting5Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();">
 							<*
-							local resources = getResources()
-							for k,v in ipairs(resources) do
-								local resourceName = getResourceName(v)
+							local resourceNames = {}
+							for _,resource in ipairs(getResources()) do
+								table.insert(resourceNames,getResourceName(resource))
+							end
+							table.sort(resourceNames)
+							for _,name in ipairs(resourceNames) do
 								*>
-									<option><* = resourceName *></option>
+									<option><* = name *></option>
 								<*
 							end
 							*>
@@ -560,11 +566,14 @@ function.[name]
 							<div class="formfield">
 							<label for="addrightsetting6Resource">Resource:</label> <select id="addrightsetting6Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" onclick="updateRightNamePreview();">
 							<*
-							local resources = getResources()
-							for k,v in ipairs(resources) do
-								local resourceName = getResourceName(v)
+							local resourceNames = {}
+							for _,resource in ipairs(getResources()) do
+								table.insert(resourceNames,getResourceName(resource))
+							end
+							table.sort(resourceNames)
+							for _,name in ipairs(resourceNames) do
 								*>
-									<option><* = resourceName *></option>
+									<option><* = name *></option>
 								<*
 							end
 							*>
@@ -579,11 +588,14 @@ function.[name]
 							<div class="formfield">
 							<label for="addrightsetting7Resource">Resource:</label> <select id="addrightsetting7Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" onclick="updateRightNamePreview();">
 							<*
-							local resources = getResources()
-							for k,v in ipairs(resources) do
-								local resourceName = getResourceName(v)
+							local resourceNames = {}
+							for _,resource in ipairs(getResources()) do
+								table.insert(resourceNames,getResourceName(resource))
+							end
+							table.sort(resourceNames)
+							for _,name in ipairs(resourceNames) do
 								*>
-									<option><* = resourceName *></option>
+									<option><* = name *></option>
 								<*
 							end
 							*>
