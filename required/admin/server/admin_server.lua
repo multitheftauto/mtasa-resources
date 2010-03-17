@@ -500,7 +500,7 @@ end
 
 addEvent ( "aTeam", true )
 addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
-	if checkClient( true, source, 'aTeam', action ) then return end
+	if checkClient( "command."..action, source, 'aTeam', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		mdata = tostring ( data )
 		mdata = ""
@@ -748,7 +748,7 @@ end
 
 addEvent ( "aPlayer", true )
 addEventHandler ( "aPlayer", _root, function ( player, action, data, additional, additional2 )
-	if checkClient( true, source, 'aPlayer', action ) then return end
+	if checkClient( "command."..action, source, 'aPlayer', action ) then return end
 	if not isElement( player ) then
 		return	-- Ignore if player is no longer valid
 	end
@@ -1030,7 +1030,7 @@ end )
 
 addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", _root, function ( player, action, data )
-	if checkClient( true, source, 'aVehicle', action ) then return end
+	if checkClient( "command."..action, source, 'aVehicle', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local vehicle = getPedOccupiedVehicle ( player )
 		if ( vehicle ) then
@@ -1105,7 +1105,7 @@ end )
 
 addEvent ( "aResource", true )
 addEventHandler ( "aResource", _root, function ( name, action )
-	if checkClient( true, source, 'aResource', action ) then return end
+	if checkClient( "command."..action, source, 'aResource', action ) then return end
 	local pname = getPlayerName ( source )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local text = ""
@@ -1128,7 +1128,7 @@ end )
 
 addEvent ( "aServer", true )
 addEventHandler ( "aServer", _root, function ( action, data, data2 )
-	if checkClient( true, source, 'aServer', action ) then return end
+	if checkClient( "command."..action, source, 'aServer', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local mdata = tostring ( data )
 		local mdata2 = ""
@@ -1215,7 +1215,7 @@ end )
 
 addEvent ( "aMessage", true )
 addEventHandler ( "aMessage", _root, function ( action, data )
-	if checkClient( true, source, 'aMessage', action ) then return end
+	if checkClient( false, source, 'aMessage', action ) then return end
 	if ( action == "new" ) then
 		local time = getRealTime()
 		local id = #aReports + 1
@@ -1236,7 +1236,10 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 		while #aReports > g_Prefs.maxmsgs do
 			table.remove( aReports, 1 )
 		end
-	elseif ( action == "get" ) then
+		return
+	end
+	if checkClient( true, source, 'aMessage', action ) then return end
+	if ( action == "get" ) then
 		triggerClientEvent ( source, "aMessage", source, "get", aReports )
 	elseif ( action == "read" ) then
 		if ( aReports[data] ) then
@@ -1257,7 +1260,7 @@ end )
 
 addEvent ( "aBans", true )
 addEventHandler ( "aBans", _root, function ( action, data )
-	if checkClient( true, source, 'aBans', action ) then return end
+	if checkClient( "command."..action, source, 'aBans', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local mdata = ""
 		local more = ""
@@ -1308,7 +1311,7 @@ end )
 
 addEvent ( "aExecute", true )
 addEventHandler ( "aExecute", _root, function ( action, echo )
-	if checkClient( true, source, 'aExecute', action ) then return end
+	if checkClient( "command.execute", source, 'aExecute', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then 
 		local result = loadstring("return " .. action)()
 		if ( echo == true ) then
@@ -1347,6 +1350,7 @@ addEventHandler('onElementDataChange', root,
 	end
 )
 
+-- returns true if there is trouble
 function checkClient(checkAccess,player,...)
 	if client and client ~= player then
 		local desc = table.concat({...}," ")
@@ -1359,11 +1363,22 @@ function checkClient(checkAccess,player,...)
 		end
 		return true
 	end
-	if checkAccess and not hasObjectPermissionTo ( player, "general.adminpanel" ) then
-		local desc = table.concat({...}," ")
-		local ipAddress = getPlayerIP(client or player)
-		outputDebugString( "Admin security - Client without admin panel rights trigged an admin panel event. " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 2 )
-		return true
+	if checkAccess then
+		if type(checkAccess) == 'string' then
+			if hasObjectPermissionTo ( player, checkAccess ) then
+				return false	-- Access ok
+			end
+			if hasObjectPermissionTo ( player, "general.adminpanel" ) then
+				outputDebugString( "Admin security - Client does not have required rights ("..checkAccess.."). " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")" )
+				return true		-- Low risk fail - Can't do specific command, but has access to admin panel
+			end
+		end
+		if not hasObjectPermissionTo ( player, "general.adminpanel" ) then
+			local desc = table.concat({...}," ")
+			local ipAddress = getPlayerIP(client or player)
+			outputDebugString( "Admin security - Client without admin panel rights trigged an admin panel event. " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 2 )
+			return true			-- High risk fail - No access to admin panel
+		end
 	end
 	return false
 end
