@@ -98,7 +98,7 @@ function dumpNodes ( xml, elementTable, elementChildren )
 	end
 end
 
-function dumpMeta ( xml, extraNodes, resource, filename )
+function dumpMeta ( xml, extraNodes, resource, filename, test )
 	if not resource then return false end
 	dimension = dimension or 0
 	extraNodes = extraNodes or {}
@@ -112,6 +112,9 @@ function dumpMeta ( xml, extraNodes, resource, filename )
 	info.name = currentMapSettings.metaName
 	info.description = currentMapSettings.metaDescription
 	info.version = currentMapSettings.metaVersion
+	if test then
+		info["edf:represent"] = "false"
+	end
 	for attributeName, attributeValue in pairs(info) do
 		if attributeValue ~= "" then
 			xmlNodeSetAttribute(infoNode, attributeName, attributeValue)
