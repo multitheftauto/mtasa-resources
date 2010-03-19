@@ -2,7 +2,7 @@ g_in_test = false
 local g_restoreEDF, dumpTimer
 local thisRoot = getResourceRootElement(getThisResource())
 local root = getRootElement()
-local g_default_spawnmaponstart,g_default_spawnmapondeath,g_defaultwelcometextonstart,g_mapstophandled
+local g_default_spawnmaponstart,g_default_spawnmapondeath,g_defaultwelcometextonstart
 local restoreGUIOnMapStop, restoreGUIOnGamemodeMapStop, startGamemodeOnStop
 local freeroamRes = getResourceFromName "freeroam"
 local TEST_RESOURCE = "editor_test"
@@ -214,7 +214,7 @@ function saveResource ( resourceName, test )
 	local returnValue = dumpMap ( xmlNode, true )
 	clearResourceMeta ( resource, true )
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
-	dumpMeta ( metaNode, metaNodes, resource, resourceName..".map" )
+	dumpMeta ( metaNode, metaNodes, resource, resourceName..".map", test )
 	xmlUnloadFile ( metaNode )
 	if ( test ) then return returnValue end
 	if returnValue then
@@ -307,7 +307,7 @@ function beginTest(client,gamemodeName)
 	disablePickups(false)
 	if ( gamemodeName ) then
 		set ( "*freeroam.spawnmapondeath", "false" )
-		if not startResource ( freeroamRes, true ) then
+		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (1)" )
@@ -335,16 +335,16 @@ function beginTest(client,gamemodeName)
 		end
 		g_in_test = "gamemode"
 	else
-		if not startResource ( freeroamRes, true ) then
+		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (4)" )
-			return false	
+			return false
 		end
-		if not startResource ( testMap, true ) then
+		if getResourceState(testMap) ~= "running" and not startResource ( testMap, true ) then
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (5)" )
-			return false			
+			return false
 		end
 		g_in_test = "map"
 	end
@@ -355,41 +355,38 @@ function beginTest(client,gamemodeName)
 	setElementData ( thisRoot, "g_in_test", true )
 	set ( "*freeroam.welcometextonstart", "false" )
 	set ( "*freeroam.spawnmaponstart", "false" )
+	addEvent("onPollStart")
+	addEventHandler("onPollStart", root, function()
+		stopTest()
+		cancelEvent()
+	end)
 end
 
 function startGamemodeOnStop(resource)
-	setTimer ( mapmanager.changeGamemode, 50, 1, resource,getResourceFromName(TEST_RESOURCE))
+	setTimer ( mapmanager.changeGamemode, 50, 1, resource, getResourceFromName(TEST_RESOURCE))
 	removeEventHandler ( "onResourceStop", source, startGamemodeOnStop )
 end
 
-
-addEvent ( "stopTest", true )
-addEventHandler ( "stopTest",root,
-	function()
-		stopResource ( freeroamRes )
-		disablePickups(true)
-		local testRes = getResourceFromName(TEST_RESOURCE)
-		--Restore settings to how they were before the test
-		restoreSettings()
-		if g_in_test == "gamemode" then
-			local gamemode = mapmanager.getRunningGamemode ( )
-			if not ( addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), restoreGUIOnMapStop ) ) then
-				addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
-			end
-			mapmanager.stopGamemode()
-		else
+addEvent("stopTest", true)
+function stopTest()
+	stopResource ( freeroamRes )
+	disablePickups(true)
+	local testRes = getResourceFromName(TEST_RESOURCE)
+	--Restore settings to how they were before the test
+	restoreSettings()
+	if g_in_test == "gamemode" then
+		local gamemode = mapmanager.getRunningGamemode()
+		if not ( addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), restoreGUIOnMapStop ) ) then
 			addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
-			resetMapInfo()
 		end
-		stopResource ( testRes )
-		for i,player in ipairs(getElementsByType"player") do
-			spawnPlayer ( player, 2483, -1666, 21 )
-			takeAllWeapons ( player )
-			setElementDimension ( player, getWorkingDimension() )
-		end
-		g_mapstophandled = g_mapstophandled or addEventHandler ( "onGamemodeMapStop", root, restoreGUIOnGamemodeMapStop )
+		mapmanager.stopGamemode()
+	else
+		addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
+		resetMapInfo()
 	end
-)
+	stopResource ( testRes )
+end
+addEventHandler("stopTest", root, stopTest)
 
 function restoreSettings()
 	set ( "*freeroam.spawnmaponstart", g_default_spawnmaponstart )
@@ -397,25 +394,16 @@ function restoreSettings()
 	set ( "*freeroam.welcometextonstart", g_default_welcometextonstart )
 end
 
-function restoreGUIOnMapStop()
+function restoreGUIOnMapStop(resource)
 	if g_restoreEDF then
 		--Start the edf resource again if it was stopped
-		setTimer ( startResource, 50, 1, g_restoreEDF,false,false,true,false,false,false,false,false,true)
+		blockMapManager(g_restoreEDF) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
+		setTimer(startResource, 50, 1, g_restoreEDF, false, false, true, false, false, false, false, false, true)
 		g_restoreEDF = nil
 	end
-	triggerClientEvent ( getRootElement(), "resumeGUI", getRootElement() )
+	setTimer(triggerClientEvent, 50, 1, getRootElement(), "resumeGUI", getRootElement())
 	setElementData ( thisRoot, "g_in_test", nil )
 	removeEventHandler ( "onResourceStop", source, restoreGUIOnMapStop )
-end
-
-function restoreGUIOnGamemodeMapStop(gamemode)
-	if loadedEDF[gamemode] then
-		startResource ( gamemode,false,false,true,false,false,false,false,false,true)
-	end
-	triggerClientEvent ( getRootElement(), "resumeGUI", getRootElement() )
-	setElementData ( thisRoot, "g_in_test", nil )
-	removeEventHandler ( "onGamemodeMapStop", root, restoreGUIOnGamemodeMapStop )
-	g_mapstophandled = nil
 end
 
 -- dump settings
