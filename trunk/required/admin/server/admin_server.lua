@@ -1352,7 +1352,7 @@ addEventHandler('onElementDataChange', root,
 
 -- returns true if there is trouble
 function checkClient(checkAccess,player,...)
-	if client and client ~= player then
+	if client and client ~= player and getElementType(player)=='player' then
 		local desc = table.concat({...}," ")
 		local ipAddress = getPlayerIP(client)
 		outputDebugString( "Admin security - Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 1 )
