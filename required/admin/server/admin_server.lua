@@ -1343,7 +1343,7 @@ end )
 
 addEventHandler('onElementDataChange', root,
 	function(dataName, oldValue )
-		if getElementType(player)=='player' and checkClient( false, source, 'onElementDataChange', dataName ) then
+		if getElementType(source)=='player' and checkClient( false, source, 'onElementDataChange', dataName ) then
 			setElementData( source, dataName, oldValue )
 			return
 		end
