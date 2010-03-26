@@ -262,6 +262,13 @@
 					desc="Duration options for the mute window. Comma seperated list in seconds. 0 means no duration limit."
 					/>
 
+		<setting name="*securitylevel" value="2"
+					friendlyname="Security level"
+					group="_Advanced"
+					accept="0-2"
+					desc="Detect fake admin packets. 0-No checks  1-Some checks  2-All checks."
+					/>
+
 		<setting name="*clientcheckban" value="false"
 					friendlyname="clientcheckban"
 					group="_Advanced"

@@ -167,9 +167,9 @@ end
 
 if isServer() then
 	addEventHandler ( "onElementDestroy", root,
-	function()
-		TimerManager.destroyTimersFor( source )
-	end
+		function()
+			TimerManager.destroyTimersFor( source )
+		end
 	)
 end
 

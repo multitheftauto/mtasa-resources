@@ -198,6 +198,7 @@ addEventHandler('onPlayerQuit', g_Root,
 addEvent('onLoadedAtClient', true)
 addEventHandler('onLoadedAtClient', resourceRoot,
 	function( player )
+		if checkClient( false, player, 'onLoadedAtClient' ) then return end
         -- Tell other clients; join completed for this player
         triggerClientEvent( g_RootPlayers, 'onOtherJoinCompleteAtServer', resourceRoot, player )
 
