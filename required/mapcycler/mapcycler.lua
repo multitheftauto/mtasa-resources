@@ -1,6 +1,5 @@
 rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
-mapmanagerResource = getResourceFromName("mapmanager")
 
 local cycleMode
 local cyclerFunction

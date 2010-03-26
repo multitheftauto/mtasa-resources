@@ -1,6 +1,5 @@
 local root = getRootElement()
 local scoresRoot = getResourceRootElement(getThisResource())
-local scoreboard = getResourceFromName("scoreboard")
 
 local scoreColumns = {"kills", "deaths", "self", "ratio", "status"}
 local isColumnActive = {}
@@ -45,10 +44,10 @@ function updateActiveColumns ()
 	for i, column in ipairs(scoreColumns) do
 		if get(column) then
 			isColumnActive[column] = true
-			call(scoreboard, "addScoreboardColumn", column)
+			exports.scoreboard:addScoreboardColumn(column)
 		elseif isColumnActive[column] then
 			isColumnActive[column] = false
-			call(scoreboard, "removeScoreboardColumn", column)
+			exports.scoreboard:removeScoreboardColumn(column)
 		end
 	end
 end
@@ -66,7 +65,7 @@ addEventHandler("onResourceStop", scoresRoot,
 	function ()
 		for i, column in ipairs(scoreColumns) do
 			if isColumnActive[column] then
-				call(scoreboard, "removeScoreboardColumn", column)
+				exports.scoreboard:removeScoreboardColumn(column)
 			end
 		end
 	end
@@ -119,7 +118,7 @@ addCommandHandler("score",
 					break
 				end
 				if isColumnActive[column] then
-					call(scoreboard, "addScoreboardColumn", column)
+					exports.scoreboard:addScoreboardColumn(column)
 					outputConsole(column .. ": " .. getElementData(player, column), player)
 				end
 			end
