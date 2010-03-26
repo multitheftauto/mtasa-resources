@@ -1,6 +1,5 @@
 local rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
-local mapmanagerResource = getResourceFromName("mapmanager")
 local serverConsole = getElementByIndex("console", 0)
 
 local modeOptions = 0
@@ -31,6 +30,7 @@ end
 local function chooseRandomMap (chosen)
 	if not chosen then
 		cancelEvent()
+		math.randomseed(getTickCount())
 		finishPoll(math.random(1, math.min(mapOptions,currentPollSize)))
 	end
 	removeEventHandler("onPollEnd", rootElement, chooseRandomMap)
@@ -39,6 +39,7 @@ end
 local function chooseRandomMode (chosen)
 	if not chosen then
 		cancelEvent()
+		math.randomseed(getTickCount())
 		finishPoll(math.random(1, math.min(modeOptions,currentPollSize)))
 	end
 	removeEventHandler("onPollEnd", rootElement, chooseRandomMode)
@@ -106,7 +107,7 @@ function vote.map.handler(source,cmd,...)
 			end
 		end
 		-- if using votemap to do a mode change, ensure that votemode has not been disabled
-		if call(mapmanagerResource, "isGamemode", resource1) and not call(mapmanagerResource, "isMap", resource1) and call(mapmanagerResource, "getRunningGamemode") ~= resource1 and isDisabled("votemode", source) then
+		if exports.mapmanager:isGamemode(resource1) and not exports.mapmanager:isMap(resource1) and exports.mapmanager:getRunningGamemode() ~= resource1 and isDisabled("votemode", source) then
 			return
 		end
 		local voteMapStarted, voteMapReturnCode = voteMap(resource1, resource2)
@@ -148,17 +149,18 @@ function vote.mode.handler(source,cmd)
 	if source ~= serverConsole and vote.mode.blockedPlayers[sourceUserName] then
 		outputVoteManager(cmd..": you have to wait "..vote.mode.locktime.." seconds before starting another mode vote.", source)
 	else
-		local gamemodes = call(mapmanagerResource, "getGamemodes")
+		local gamemodes = exports.mapmanager:getGamemodes()
 		
 		--remove the current gamemode from the list
 		for i, gamemode in ipairs(gamemodes) do
-			if gamemode == call(mapmanagerResource, "getRunningGamemode") then
+			if gamemode == exports.mapmanager:getRunningGamemode() then
 				table.remove(gamemodes, i)
 			end
 		end
 		
 		-- limit it to eight random modes
 		if #gamemodes > 8 then
+			math.randomseed(getTickCount())
 			repeat
 				table.remove(gamemodes, math.random(1, #gamemodes))
 			until #gamemodes == 8
@@ -305,19 +307,19 @@ function voteMap(resource1, resource2)
         if resource1 == "*" then
             map = "*"
         else
-            if call(mapmanagerResource, "isMap", resource1) == true then
+            if exports.mapmanager:isMap(resource1) == true then
                 map = resource1
-            elseif call(mapmanagerResource, "isGamemode", resource1) == true then
+            elseif exports.mapmanager:isGamemode(resource1) == true then
                 gamemode = resource1
             end
         end
 	end
 	if resource2 then
-		if call(mapmanagerResource, "isMap", resource2) == true then
+		if exports.mapmanager:isMap(resource2) == true then
 			if not map then
 				map = resource2
 			end
-		elseif call(mapmanagerResource, "isGamemode", resource2) == true then
+		elseif exports.mapmanager:isGamemode(resource2) == true then
 			if not gamemode then
 				gamemode = resource2
 			end
@@ -326,13 +328,13 @@ function voteMap(resource1, resource2)
 
     -- map equals "*": vote for a random map on the current gamemode
     if map and map == "*" then
-        local runningGamemode = call(mapmanagerResource, "getRunningGamemode")
+        local runningGamemode = exports.mapmanager:getRunningGamemode()
 		if not runningGamemode then
 			return false, errorCode.noGamemodeRunning
 		end
         
-        local compatibleMaps = call(mapmanagerResource, "getMapsCompatibleWithGamemode", runningGamemode)
-        map = call(mapmanagerResource, "getRunningGamemodeMap")
+        local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(runningGamemode)
+        map = exports.mapmanager:getRunningGamemodeMap()
         if map then
             local currentMap = getResourceName(map)
             for i,map in ipairs(compatibleMaps) do
@@ -349,13 +351,13 @@ function voteMap(resource1, resource2)
             visibleTo = rootElement,
             timeout = vote.map.timeout,
             allowchange = vote.map.allowchange;
-            [1]={'Yes',call,mapmanagerResource,"changeGamemodeMap",compatibleMaps[math.random(1, #compatibleMaps)]},
+            [1]={'Yes',call,getResourceFromName("mapmanager"),"changeGamemodeMap",compatibleMaps[math.random(1, #compatibleMaps)]},
             [2]={"No",outputVoteManager,"votemap: not enough votes to change to a random map on this gamemode.",rootElement,vR,vG,vB;default=true},
         }), true
     
 	-- a map, a gamemode: vote for that pair
 	elseif map and gamemode then
-		if call(mapmanagerResource, "isMapCompatibleWithGamemode", map, gamemode) then
+		if exports.mapmanager:isMapCompatibleWithGamemode(map, gamemode) then
 			local gamemodeName = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
 			local mapName = getResourceInfo(map, "name") or getResourceName(map)
 			return (startPoll{
@@ -364,7 +366,7 @@ function voteMap(resource1, resource2)
 				visibleTo = rootElement,
 				timeout = vote.map.timeout,
 				allowchange = vote.map.allowchange;
-				[1]={"Yes",call,mapmanagerResource,"changeGamemodeMap",map,gamemode},
+				[1]={"Yes",call,getResourceFromName("mapmanager"),"changeGamemodeMap",map,gamemode},
 				[2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."' on map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
 			}), true
 		else
@@ -377,12 +379,12 @@ function voteMap(resource1, resource2)
 		
 	-- a map, no gamemode: vote to change current gamemode map
 	elseif map and not gamemode then
-		local runningGamemode = call(mapmanagerResource, "getRunningGamemode")
+		local runningGamemode = exports.mapmanager:getRunningGamemode()
 		if not runningGamemode then
 			return false, errorCode.noGamemodeRunning
 		end
 		
-		if call(mapmanagerResource, "isMapCompatibleWithGamemode", map, runningGamemode) then
+		if exports.mapmanager:isMapCompatibleWithGamemode(map, runningGamemode) then
 			local mapName = getResourceInfo(map, "name") or getResourceName(map)
 			return (startPoll{
 				title="Change map to "..mapName.."?",
@@ -390,7 +392,7 @@ function voteMap(resource1, resource2)
 				visibleTo = rootElement,
 				timeout = vote.map.timeout,
 				allowchange = vote.map.allowchange;
-				[1]={"Yes",call,mapmanagerResource,"changeGamemodeMap",map,runningGamemode},
+				[1]={"Yes",call,getResourceFromName("mapmanager"),"changeGamemodeMap",map,runningGamemode},
 				[2]={"No",outputVoteManager,"votemap: not enough votes to change to map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
 			}), true
 		else
@@ -399,7 +401,7 @@ function voteMap(resource1, resource2)
 		
 	-- no map, no gamemode: vote between compatible maps for the running gamemode
 	else
-		local runningGamemode = call(mapmanagerResource, "getRunningGamemode")
+		local runningGamemode = exports.mapmanager:getRunningGamemode()
 		if runningGamemode then
 			return voteBetweenGamemodeCompatibleMaps(runningGamemode)
 		else
@@ -498,19 +500,19 @@ function voteBetweenModes(...)
 		
 		if map then
 			if
-				call(mapmanagerResource, "isGamemode", gamemode) and call(mapmanagerResource, "isMap", map)
+				exports.mapmanager:isGamemode(gamemode) and exports.mapmanager:isMap(map)
 			and not
-				(call(mapmanagerResource, "getRunningGamemode") == gamemode and call(mapmanagerResource, "getRunningGamemodeMap") == map)
+				(exports.mapmanager:getRunningGamemode() == gamemode and exports.mapmanager:getRunningGamemodeMap() == map)
 			then
 				local gamemodeName = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
 				local mapName = getResourceInfo(map, "name") or getResourceName(map)
-				table.insert(poll,{gamemodeName.." + "..mapName, call, mapmanagerResource, "changeGamemodeMap", map, gamemode})
+				table.insert(poll,{gamemodeName.." + "..mapName, call, getResourceFromName("mapmanager"), "changeGamemodeMap", map, gamemode})
 				i = i + 1
 			end
 		else
-			if call(mapmanagerResource, "isGamemode", gamemode) and not call(mapmanagerResource, "getRunningGamemode") == gamemode then
+			if exports.mapmanager:isGamemode(gamemode) and not exports.mapmanager:getRunningGamemode() == gamemode then
 				local gamemodeName = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
-				table.insert(poll,{gamemodeName, call, mapmanagerResource, "changeGamemode", gamemode})
+				table.insert(poll,{gamemodeName, call, getResourceFromName("mapmanager"), "changeGamemode", gamemode})
 				i = i + 1
 			end
 		end
@@ -551,17 +553,17 @@ function voteBetweenModesThenMaps(...)
 			break
 		end
 
-		if call(mapmanagerResource, "isGamemode", gamemode) then
-			local compatibleMaps = call(mapmanagerResource, "getMapsCompatibleWithGamemode", gamemode)
+		if exports.mapmanager:isGamemode(gamemode) then
+			local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(gamemode)
 			local gamemodeName = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
 			--start a map vote if there are 2+ maps for the mode
 			if #compatibleMaps > 1 then
 				table.insert(poll,{gamemodeName, voteBetweenGamemodeCompatibleMaps, gamemode})
 			--start with the only map if there is only one map for the mode
 			elseif #compatibleMaps == 1 then
-				table.insert(poll,{gamemodeName, call, mapmanagerResource, "changeGamemode", gamemode, compatibleMaps[1]})
+				table.insert(poll,{gamemodeName, call, getResourceFromName("mapmanager"), "changeGamemode", gamemode, compatibleMaps[1]})
 			else
-				table.insert(poll,{gamemodeName, call, mapmanagerResource, "changeGamemode", gamemode})
+				table.insert(poll,{gamemodeName, call, getResourceFromName("mapmanager"), "changeGamemode", gamemode})
 			end
 		end
 	end
@@ -601,9 +603,9 @@ function voteBetweenMaps(...)
 		if i > 8 then
 			break
 		end
-		if call(mapmanagerResource, "isMap", map) then
+		if exports.mapmanager:isMap(map) then
 			local mapName = getResourceInfo(map, "name") or getResourceName(map)
-			table.insert(poll,{mapName, call, mapmanagerResource, "changeGamemodeMap", map})
+			table.insert(poll,{mapName, call, getResourceFromName("mapmanager"), "changeGamemodeMap", map})
 		end
 	end
 	
@@ -621,10 +623,11 @@ function voteBetweenMaps(...)
 end
 
 function voteBetweenGamemodeCompatibleMaps(gamemode)
-	local compatibleMaps = call(mapmanagerResource, "getMapsCompatibleWithGamemode", gamemode)
+	local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(gamemode)
 	
 	-- limit it to eight random maps
 	if #compatibleMaps > 8 then
+		math.randomseed(getTickCount())
 		repeat
 			table.remove(compatibleMaps, math.random(1, #compatibleMaps))
 		until #compatibleMaps == 8
@@ -638,7 +641,7 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
                 visibleTo = rootElement,
                 timeout = vote.map.timeout,
                 allowchange = vote.map.allowchange;
-                [1]={"Yes",call,mapmanagerResource,"changeGamemodeMap",compatibleMaps[1],gamemode},
+                [1]={"Yes",call,getResourceFromName("mapmanager"),"changeGamemodeMap",compatibleMaps[1],gamemode},
                 [2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."' on map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
             }), true
         elseif #compatibleMaps < 1 then
@@ -648,7 +651,7 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
                 visibleTo = rootElement,
                 timeout = vote.map.timeout,
                 allowchange = vote.map.allowchange;
-                [1]={"Yes",call,mapmanagerResource,"changeGamemode",gamemode},
+                [1]={"Yes",call,getResourceFromName("mapmanager"),"changeGamemode",gamemode},
                 [2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."'.",rootElement,vR,vG,vB;default=true},
             }), true
         end
@@ -664,7 +667,7 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 	
 	for index, map in ipairs(compatibleMaps) do
 		local mapName = getResourceInfo(map, "name") or getResourceName(map)
-		table.insert(poll, {mapName, call, mapmanagerResource, "changeGamemodeMap", map, gamemode})
+		table.insert(poll, {mapName, call, getResourceFromName("mapmanager"), "changeGamemodeMap", map, gamemode})
 	end
 	
 	table.insert(poll, DONT_CHANGE_OPTION)

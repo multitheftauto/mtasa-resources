@@ -6,18 +6,18 @@ function startCycler_random()
 end
 
 function cycleMap_random()
-	local allModes = call(mapmanagerResource, "getGamemodes")
+	local allModes = exports.mapmanager:getGamemodes()
 	
 	-- get up to eight random modes with a compatible map
 	math.randomseed(getTickCount())
 	local randomMode = allModes[math.random(1, #allModes)]
 	
-	local compatibleMaps = call(mapmanagerResource, "getMapsCompatibleWithGamemode", randomMode)
+	local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(randomMode)
 	if #compatibleMaps > 0 then
 		local randomMap = compatibleMaps[math.random(1, #compatibleMaps)]
-		call(mapmanagerResource, "changeGamemodeMap", randomMap, randomMode)
+		exports.mapmanager:changeGamemodeMap(randomMap, randomMode)
 	else
-		call(mapmanagerResource, "changeGamemode", randomMode)
+		exports.mapmanager:changeGamemode(randomMode)
 	end
 		
 	remainingRounds = get("random_rounds")

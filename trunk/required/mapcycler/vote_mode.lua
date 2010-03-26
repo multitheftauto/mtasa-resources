@@ -1,4 +1,3 @@
-local votemanagerResource = getResourceFromName("votemanager")
 
 function startCycler_vote()
 	addCommandHandler("skipmap", cycleMap_vote, true)
@@ -14,7 +13,7 @@ function cycleMap_vote()
 		return
 	end
 
-	local allModes = call(mapmanagerResource, "getGamemodes")
+	local allModes = exports.mapmanager:getGamemodes()
 	local modeSelection = {}
 	
 	-- get up to eight random modes with a compatible map
@@ -27,7 +26,7 @@ function cycleMap_vote()
 		local randomIndex = math.random(1, #allModes)
 		local randomMode = allModes[randomIndex]
 		
-		local compatibleMaps = call(mapmanagerResource, "getMapsCompatibleWithGamemode", randomMode)
+		local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(randomMode)
 		local randomMap = nil
 		if #compatibleMaps > 0 then
 			randomMap = compatibleMaps[math.random(1, #compatibleMaps)]
@@ -37,7 +36,7 @@ function cycleMap_vote()
 		table.remove(allModes, randomIndex)
 	end
 
-	call(votemanagerResource, "voteBetweenModes", unpack(modeSelection))
+	exports.votemanager:voteBetweenModes(unpack(modeSelection))
 	
 	remainingRounds = get("vote_rounds")
 end

@@ -1,5 +1,4 @@
 local rootElement = getRootElement()
-local mapmanagerResource = getResourceFromName("mapmanager")
 
 local listMode
 local configPath = "mapcycle.xml"
@@ -70,9 +69,9 @@ function cycleMap_list()
 	
 	local success
 	if gameInfo.map then
-		success = call(mapmanagerResource, "changeGamemodeMap", gameInfo.map, gameInfo.mode)
+		success = exports.mapmanager:changeGamemodeMap(gameInfo.map, gameInfo.mode)
 	else
-		success = call(mapmanagerResource, "changeGamemode", gameInfo.mode)
+		success = exports.mapmanager:changeGamemode(gameInfo.mode)
 	end
 	
 	if not success then
@@ -157,7 +156,7 @@ function getGameNodeInfo(gameNode)
 	if not info.mode then
 		return false, errorCode.modeDoesntExist
 	end
-	if call(mapmanagerResource, "isGamemode", info.mode) ~= true then
+	if exports.mapmanager:isGamemode(info.mode) ~= true then
 		return false, errorCode.modeInvalid
 	end
 	
@@ -168,7 +167,7 @@ function getGameNodeInfo(gameNode)
 		if not info.map then
 			return false, errorCode.mapDoesntExist
 		end
-		if call(mapmanagerResource, "isMap", info.map) ~= true then
+		if exports.mapmanager:isMap(info.map) ~= true then
 			return false, errorCode.mapInvalid
 		end
 	end
