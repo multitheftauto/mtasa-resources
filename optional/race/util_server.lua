@@ -16,6 +16,7 @@ end
 addEvent('onServerCall_race', true)
 addEventHandler('onServerCall_race', resourceRoot,
 	function(fnName, ...)
+		if checkClient( false, source, 'onServerCall_race' ) then return end
 		if g_AllowedRPCFunctions[fnName] then
 			local fn = _G
 			for i,pathpart in ipairs(fnName:split('.')) do

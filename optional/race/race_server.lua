@@ -107,6 +107,7 @@ function cacheGameOptions()
 	g_GameOptions.countdowneffect		= getBool('race.countdowneffect',true)
 	g_GameOptions.showmapname			= getBool('race.showmapname',true)
 	g_GameOptions.hunterminigun			= getBool('race.hunterminigun',true)
+	g_GameOptions.securitylevel			= getNumber('race.securitylevel',2)
 	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
 	g_GameOptions.skins_map_can_override			= getBool('race.skins_map_can_override',true)
 	g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
@@ -622,6 +623,7 @@ addEvent('onPlayerFinish')
 addEvent('onPlayerReachCheckpointInternal', true)
 addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 	function(checkpointNum)
+		if checkClient( false, source, 'onPlayerReachCheckpointInternal' ) then return end
         if not stateAllowsCheckpoint() then
             return
         end
@@ -655,6 +657,7 @@ addEvent('onPlayerPickUpRacePickup')
 addEvent('onPlayerPickUpRacePickupInternal', true)
 addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 	function(pickupID, respawntime)
+		if checkClient( false, source, 'onPlayerPickUpRacePickupInternal' ) then return end
 		local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
 		local vehicle = g_Vehicles[source]
 		if not pickup or not vehicle then return end
@@ -877,6 +880,7 @@ end
 addEvent('onRequestKillPlayer', true)
 addEventHandler('onRequestKillPlayer', g_Root,
     function()
+		if checkClient( false, source, 'onRequestKillPlayer' ) then return end
         local player = source
         if stateAllowsKillPlayer() then
             setElementHealth(player, 0)
@@ -916,6 +920,7 @@ end
 addEvent('onClientRequestSpectate', true)
 addEventHandler('onClientRequestSpectate', g_Root,
 	function(enable)
+		if checkClient( false, source, 'onClientRequestSpectate' ) then return end
 		-- Checks if switching on
 		local player = source
 		if enable then
@@ -947,6 +952,7 @@ addEventHandler('onClientRequestSpectate', g_Root,
 addEvent('onClientNotifySpectate', true)
 addEventHandler('onClientNotifySpectate', g_Root,
 	function(enable)
+		if checkClient( false, source, 'onClientNotifySpectate' ) then return end
 		setPlayerSpectating(source, enable)
 	end
 )
@@ -964,7 +970,8 @@ end
 addEvent('onNotifyPlayerReady', true)
 addEventHandler('onNotifyPlayerReady', g_Root,
 	function()
-        setPlayerReady( source )
+		if checkClient( false, source, 'onNotifyPlayerReady' ) then return end
+		setPlayerReady( source )
 		for i, pickupID in ipairs(unloadedPickups) do
 			-- outputDebugString(getPlayerName(source).." unload "..tostring(pickupID))
 			clientCall(source, "unloadPickup", pickupID )
@@ -1173,6 +1180,7 @@ MoveAway.list = {}
 addEvent( "onRequestMoveAwayBegin", true )
 addEventHandler( "onRequestMoveAwayBegin", g_Root,
 	function()
+		if checkClient( false, source, 'onRequestMoveAwayBegin' ) then return end
 		MoveAway.list [ source ] = true
 		if not TimerManager.hasTimerFor("moveaway") then
 			TimerManager.createTimerFor("map","moveaway"):setTimer( MoveAway.update, 1000, 0 )
@@ -1189,7 +1197,8 @@ addEventHandler( "onPlayerQuit", g_Root,
 
 addEvent( "onRequestMoveAwayEnd", true )
 addEventHandler( "onRequestMoveAwayEnd", g_Root,
-	function(player)
+	function()
+		if checkClient( false, source, 'onRequestMoveAwayEnd' ) then return end
 		MoveAway.list [ source ] = nil
 	end
 )
@@ -1346,3 +1355,39 @@ function getPlayerVehicle( player )
 	return RaceMode.getPlayerVehicle( player )
 end
 
+
+------------------------
+-- Checks
+
+addEventHandler('onElementDataChange', root,
+	function(dataName, oldValue )
+		if getElementType(source)=='player' and checkClient( false, source, 'onElementDataChange', dataName ) then
+			setElementData( source, dataName, oldValue )
+			return
+		end
+	end
+)
+
+-- returns true if there is trouble
+function checkClient(checkAccess,player,...)
+	if client and client ~= player and g_Settings.securitylevel >= 2 then
+		local desc = table.concat({...}," ")
+		local ipAddress = getPlayerIP(client)
+		outputDebugString( "Race security - Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 1 )
+		cancelEvent()
+		if g_Settings.clientcheckban then
+			local reason = "race checkClient (" .. tostring(desc) .. ")"
+			addBan ( ipAddress, nil, nil, getRootElement(), reason )
+		end
+		return true
+	end
+	if checkAccess and g_Settings.securitylevel >= 1 then
+		if not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+			local desc = table.concat({...}," ")
+			local ipAddress = getPlayerIP(client or player)
+			outputDebugString( "Race security - Client without required rights trigged a race event. " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 2 )
+			return true
+		end
+	end
+	return false
+end

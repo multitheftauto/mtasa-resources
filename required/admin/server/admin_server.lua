@@ -1343,7 +1343,7 @@ end )
 
 addEventHandler('onElementDataChange', root,
 	function(dataName, oldValue )
-		if checkClient( false, source, 'onElementDataChange', dataName ) then
+		if getElementType(player)=='player' and checkClient( false, source, 'onElementDataChange', dataName ) then
 			setElementData( source, dataName, oldValue )
 			return
 		end
@@ -1352,7 +1352,7 @@ addEventHandler('onElementDataChange', root,
 
 -- returns true if there is trouble
 function checkClient(checkAccess,player,...)
-	if client and client ~= player and getElementType(player)=='player' then
+	if client and client ~= player and g_Prefs.securitylevel >= 2 then
 		local desc = table.concat({...}," ")
 		local ipAddress = getPlayerIP(client)
 		outputDebugString( "Admin security - Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 1 )
@@ -1363,7 +1363,7 @@ function checkClient(checkAccess,player,...)
 		end
 		return true
 	end
-	if checkAccess then
+	if checkAccess and g_Prefs.securitylevel >= 1 then
 		if type(checkAccess) == 'string' then
 			if hasObjectPermissionTo ( player, checkAccess ) then
 				return false	-- Access ok
