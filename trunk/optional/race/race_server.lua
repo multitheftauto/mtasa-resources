@@ -889,7 +889,7 @@ addEventHandler('onRequestKillPlayer', g_Root,
     end
 )
 
-function setServerGhostmode(player)
+function toggleServerGhostmode(player)
 	if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 		return
 	end
@@ -897,14 +897,14 @@ function setServerGhostmode(player)
 	g_GameOptions.ghostmode = not g_GameOptions.ghostmode
 	set('*ghostmode', g_GameOptions.ghostmode and 'true' or 'false' )
 	updateGhostmode()
-	if g_GameOptions.ghostmode then
+	if g_MapOptions.ghostmode then
 		outputChatBox('Ghostmode enabled by ' .. getPlayerName(player), g_Root, 0, 240, 0)
 	else
 		outputChatBox('Ghostmode disabled by ' .. getPlayerName(player), g_Root, 240, 0, 0)
 	end
 end
-addCommandHandler('gm', setServerGhostmode)
-addCommandHandler('ghostmode', setServerGhostmode)
+addCommandHandler('gm', toggleServerGhostmode)
+addCommandHandler('ghostmode', toggleServerGhostmode)
 
 function updateGhostmode()
 	for i,player in ipairs(g_Players) do
