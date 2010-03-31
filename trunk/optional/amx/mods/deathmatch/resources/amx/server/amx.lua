@@ -1,6 +1,7 @@
 g_LoadedAMXs = {}
 
 g_Players = {}
+g_Bots = {}
 g_Vehicles = {}
 g_Objects = {}
 g_Pickups = {}
@@ -45,9 +46,6 @@ addEventHandler('onResourceStart', g_ResRoot,
 		
 		exports.scoreboard:addScoreboardColumn('Score')
 		
-		for i=0,49 do
-			setGarageOpen(i, i ~= 22)
-		end
 	end,
 	false
 )
@@ -126,6 +124,7 @@ function loadAMX(fileName, res)
 	amx.textdraws = {}
 	amx.menus = {}
 	amx.gangzones = {}
+	amx.bots = {}
 	amx.dbresults = {}
 	
 	clientCall(root, 'addAMX', amx.name, amx.type)
@@ -135,7 +134,7 @@ function loadAMX(fileName, res)
 		setWeather(10)
 		initGameModeGlobals()
 		ShowPlayerMarkers(amx, true)
-		procCallInternal(amx, 'OnGameModeInit')
+		procCallOnAll('OnGameModeInit')
 		table.each(g_Players, 'elem', gameModeInit)
 	else
 		procCallInternal(amx, 'OnFilterScriptInit')
@@ -145,6 +144,7 @@ function loadAMX(fileName, res)
 	for id,player in pairs(g_Players) do
 		procCallInternal(amx, 'OnPlayerConnect', id)
 	end
+	
 	if not alreadySyncingWeapons and isWeaponSyncingNeeded(amx) then
 		clientCall(root, 'enableWeaponSyncing', true)
 	end
@@ -166,7 +166,7 @@ function unloadAMX(amx, notifyClient)
 	
 	amxUnload(amx.cptr)
 	
-	for i,elemtype in ipairs({'pickups', 'vehicles', 'objects', 'gangzones'}) do
+	for i,elemtype in ipairs({'pickups', 'vehicles', 'objects', 'gangzones','bots'}) do
 		for id,data in pairs(amx[elemtype]) do
 			removeElem(amx, elemtype, data.elem)
 			destroyElement(data.elem)

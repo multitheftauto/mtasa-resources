@@ -53,7 +53,8 @@ local allowedRPC = {
 	setCameraInterior = true,
 	setElementInterior = true,
 	spawnPlayer = true,
-	syncPlayerWeapons = true
+	syncPlayerWeapons = true,
+	setGarageOpen = true
 }
 
 addEvent('onCall', true)
@@ -231,11 +232,22 @@ function getPlayerState(player)
 	return g_Players[getElemID(player)] and g_Players[getElemID(player)].state or PLAYER_STATE_ONFOOT
 end
 
+function getBotState(bot)
+	return g_Bots[getElemID(bot)] and g_Bots[getElemID(bot)].state or PLAYER_STATE_ONFOOT
+end
+
 function setPlayerState(player, state)
 	local playerID = getElemID(player)
 	local oldState = g_Players[playerID].state or PLAYER_STATE_ONFOOT
 	g_Players[playerID].state = state
 	procCallOnAll('OnPlayerStateChange', playerID, state, oldState)
+end
+
+function setBotState(bot, state)
+	local botID = getElemID(bot)
+	local oldState = g_Bots[botID].state or PLAYER_STATE_ONFOOT
+	g_Bots[botID].state = state
+	procCallOnAll('OnBotStateChange', botID, state, oldState)
 end
 
 -- Table extensions
@@ -831,4 +843,11 @@ end
 function color2cell(r, g, b, a)
 	local binshl = binshl
 	return binshl(r, 24) + binshl(g, 16) + binshl(b, 8) + (a or 255)
+end
+
+function isPed(elem)
+	if getElementType(elem) == "ped" then
+		return true
+	end
+	return false
 end
