@@ -966,6 +966,7 @@ function ShowMenuForPlayer(amxName, menuID)
 		g_CurrentMenu.alpha = 1
 	end
 	showTextDraw(g_CurrentMenu.titletextdraw)
+	bindKey('enter', 'down', OnKeyPress)
 end
 
 function HideMenuForPlayer(amxName, menuID)
@@ -1006,6 +1007,12 @@ function closeMenu()
 	g_CurrentMenu.closebtnhover = nil
 	g_CurrentMenu = nil
 	showCursor(false)
+	unbindKey('enter', 'down', OnKeyPress)
+end
+
+function exitMenu()
+	closeMenu()
+	serverAMXEvent('OnPlayerExitedMenu', g_PlayerID)
 end
 
 function renderMenu()
@@ -1067,6 +1074,13 @@ function menuClickHandler(button, state, clickX, clickY)
 	local selectedRow = math.floor((clickY - g_CurrentMenu.y - MENU_TOP_PADDING) / MENU_ITEM_HEIGHT)
 	if not (g_CurrentMenu.disabledrows and table.find(g_CurrentMenu.disabledrows, selectedRow)) then
 		serverAMXEvent('OnPlayerSelectedMenuRow', g_PlayerID, selectedRow)
+		closeMenu()
+	end
+end
+
+function OnKeyPress(key, keyState)
+	if ( keyState == "down" ) then
+		exitMenu()
 	end
 end
 

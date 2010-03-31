@@ -103,6 +103,7 @@ function joinHandler(player)
 			end
 		)
 	end
+	setPlayerNametagShowing(player, false)
 end
 addEventHandler('onPlayerJoin', root, joinHandler)
 
@@ -263,6 +264,7 @@ addEventHandler('onPlayerChat', root,
 
 addEventHandler('onPlayerDamage', root,
 	function(attacker, weapon, body, loss)
+
 		if not attacker or not isElement(attacker) or getElementType(attacker) ~= 'player' then
 			return
 		end
@@ -271,7 +273,14 @@ addEventHandler('onPlayerDamage', root,
 		end
 	end
 )
-
+addEvent('OnBotDamage', true)
+addEventHandler('OnBotDamage', root,
+	function(botid, attacker, weapon, body, loss)
+		attackid = nil
+		
+		procCallOnAll('OnBotDamage', getElemID(source), attackid, body, loss)
+	end
+)
 addEventHandler('onPlayerWasted', root,
 	function(ammo, killer, weapon, bodypart)
 		local playerID = getElemID(source)
@@ -289,12 +298,6 @@ addEventHandler('onPlayerWasted', root,
 		end
 		g_Players[playerID].vehicle = nil
 		g_Players[playerID].specialaction = SPECIAL_ACTION_NONE
-	end
-)
-
-addCommandHandler('kill',
-	function(player)
-		killPed(player)
 	end
 )
 
@@ -349,7 +352,13 @@ addEventHandler('onVehicleEnter', root,
 		if not amx then
 			return
 		end
-		
+		if isPed(player) then
+			local pedID = getElemID(player)
+			g_Bots[pedID].vehicle = source
+			setBotState(player, seat == 0 and PLAYER_STATE_DRIVER or PLAYER_STATE_PASSENGER)
+			procCallOnAll('OnBotEnterVehicle', pedID, vehID, seat ~= 0 and 1 or 0)
+			return
+		end
 		local playerID = getElemID(player)
 		g_Players[playerID].vehicle = source
 		setPlayerState(player, seat == 0 and PLAYER_STATE_DRIVER or PLAYER_STATE_PASSENGER)
@@ -367,6 +376,14 @@ addEventHandler('onVehicleExit', root,
 		local amx = getElemAMX(source)
 		local vehID = getElemID(source)
 		if not amx then
+			return
+		end
+		
+		if isPed(player) then
+			local pedID = getElemID(player)
+			g_Bots[pedID].vehicle = nil
+			setBotState(player, PLAYER_STATE_ONFOOT)
+			procCallOnAll('OnBotExitVehicle', pedID, vehID)
 			return
 		end
 		
@@ -420,6 +437,7 @@ function getPedOccupiedVehicle(player)
 end
 
 local _warpPlayerIntoVehicle = warpPedIntoVehicle
+oldwarpPedIntoVehicle = warpPedIntoVehicle
 function warpPedIntoVehicle(player, vehicle, seat)
 	g_Players[getElemID(player)].vehicle = vehicle
 	_warpPlayerIntoVehicle(player, vehicle, seat)
@@ -448,10 +466,22 @@ function removePedFromVehicle(player)
 end
 
 -------------------------------
+-- Peds
+
+addEventHandler('onPedWasted', root,
+	function(totalAmmo, killer, killerWeapon, bodypart)
+		if isPed(source) ~= true then return end
+			procCallOnAll('OnBotDeath', getElemID(source), getElemID(killer), killerWeapon, bodypart)
+	end
+)
+-------------------------------
 -- Misc
 
 addEventHandler('onPlayerPickupHit', root,
 	function(pickup)
+		if isPed(source) then
+			procCallOnAll('OnBotPickUpPickup', getElemID(source), getElemID(pickup))
+		end
 		if getElementType(source) ~= 'player' or not getElemID(pickup) then
 			return
 		end

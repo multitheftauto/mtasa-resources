@@ -24,6 +24,8 @@ function argsToMTA(amx, prototype, ...)
 			val = val % 0x100			-- a
 		elseif vartype == 'p' then		-- player
 			val = g_Players[val] and g_Players[val].elem
+		elseif vartype == 'z' then		-- bot/ped
+			val = g_Bots[val] and g_Bots[val].elem
 		elseif vartype == 't' then		-- team
 			val = val ~= 0 and g_Teams[val]
 		elseif vartype == 'v' then		-- vehicle
@@ -1237,6 +1239,10 @@ function SetVehicleZAngle(amx, vehicle, rZ)
 	setVehicleRotation(vehicle, rX, rY, rZ)
 end
 
+function RepairVehicle(amx, vehicle)
+	fixVehicle(vehicle)
+end
+
 function SetWeather(amx, weatherID)
 	setWeather(weatherID % 256)
 end
@@ -1549,6 +1555,308 @@ function format(amx, outBuf, outBufSize, fmt, ...)
 end
 
 -----------------------------------------------------
+-- Alpha funcs
+function GetAlpha(amx, elem)
+	return getElementAlpha(alpha)
+end
+
+function SetAlpha(amx, elem, alpha)
+	return setElementAlpha(elem, alpha)
+end
+GetPlayerAlpha = GetAlpha
+GetVehicleAlpha = GetAlpha
+GetObjectAlpha = GetAlpha
+GetBotAlpha = GetAlpha
+SetPlayerAlpha = SetAlpha
+SetVehicleAlpha = SetAlpha
+SetObjectAlpha = SetAlpha
+SetBotAlpha = SetAlpha
+-----------------------------------------------------
+-- Misc player funcs
+function IsPlayerInWater(amx, player)
+	return isElementInWater(player)
+end
+
+function IsPlayerOnFire(amx, player)
+	return isPedOnFire(player)
+end
+
+function IsPlayerDucked(amx, player)
+	return isPedDucked(player)
+end
+
+function IsPlayerOnGround(amx, player)
+	return isPedOnGround(amx, player)
+end
+
+function GetPlayerFightingStyle(amx, player)
+	return getPedFightingStyle(player)
+end
+
+function SetPlayerFightingStyle(amx, player, style)
+	return setPedFightingStyle(player, style)
+end
+
+function SetPlayerOnFire(amx, player, state)
+	return setPedOnFire(player, state)
+end
+
+function GetPlayerStat(amx, player, stat)
+	return getPedStat(player, stat)
+end
+
+function SetPlayerStat(amx, player, stat, value)
+	return setPedStat(player, stat, value)
+end
+
+function GetPlayerDoingDriveBy(amx, ped)
+	return getElementData(pedt, 'DoingDriveBy')
+end
+
+function SetPlayerDoingDriveBy(amx, ped, state)
+	clientCall(root, 'setPedDoingGangDriveby', ped, state)
+	setElementData(ped, 'DoingDriveBy', state)
+	return true
+end
+
+function GetPlayerCanBeKnockedOffBike(amx, ped)
+	return getElementData(ped, 'CanBeKnockedOffBike')
+end
+
+function SetPlayerCanBeKnockedOffBike(amx, ped, state)
+	clientCall(root, 'setPedCanBeKnockedOffBike', ped, state)
+	setElementData(ped, 'CanBeKnockedOffBike', state)
+end
+
+function SetPlayerWeaponSlot(amx, ped, slot)
+	clientCall(root, 'setPedWeaponSlot', ped, slot)
+	return true
+end
+
+function SetPlayerHeadless(amx, ped, state)
+	return setPedHeadless(ped, state)
+end
+
+function GetPlayerBlurLevel(amx, player)
+	return getPlayerBlurLevel(player)
+end
+
+function SetPlayerBlurLevel(amx, player, level)
+	return setPlayerBlurLevel(player, level)
+end
+
+IsBotInWater = IsPlayerInWater
+IsBotOnFire = IsPlayerOnFire
+IsBotDucked = IsPlayerDucked
+IsBotOnGround = IsPlayerOnGround
+GetBotFightingStyle = GetPlayerFightingStyle
+SetBotFightingStyle = SetPlayerFightingStyle
+SetBotOnFire = SetPlayerOnFire
+GetBotSkin = GetPlayerSkin
+SetBotSkin = SetPlayerSkin
+GetBotStat = GetPlayerStat
+SetBotStat = SetPlayerStat
+GetBotDoingDriveBy = GetPlayerDoingDriveBy
+SetBotDoingDriveBy = SetPlayerDoingDriveBy
+GetBotCanBeKnockedOffBike = GetPlayerCanBeKnockedOffBike
+SetBotCanBeKnockedOffBike = SetPlayerCanBeKnockedOffBike
+SetBotWeaponSlot = SetPlayerWeaponSlot
+SetBotHeadless = SetPlayerHeadless
+-----------------------------------------------------
+-- Bots
+function CreateBot(amx, model, x, y, z, name)
+	local ped = createPed(model, x, y, z)
+	setElementData(ped, 'BotName', name, true)
+	local pedID = addElem(amx, 'bots', ped)
+	procCallOnAll('OnBotConnect', pedID, name)
+	return pedID
+end
+
+function DestroyBot(amx, bot)
+	removeElem(amx, 'bots', bot)
+	destroyElement(bot)
+end
+
+function GetBotState(amx, bot)
+	return getBotState(bot)
+end
+
+function PutBotInVehicle(amx, bot, vehicle, seat)
+	return oldwarpPedIntoVehicle(bot, vehicle, seat)
+end
+
+function RemoveBotFromVehicle(amx, bot)
+	local vehicle = getPedOccupiedVehicle(bot)
+	if vehicle then
+		return removePedFromVehicle(bot)
+	end
+end
+
+function SetBotControlState(amx, bot, control, state)
+	clientCall(root, 'setPedControlState', bot, control, state)
+	return true
+end
+
+function SetBotAimTarget(amx, bot, x, y, z)
+	clientCall(root, 'setPedAimTarget', bot, x, y, z)
+	return true
+end
+
+function IsBotDead(amx, bot)
+	return isPedDead(bot)
+end
+
+function KillBot(amx, bot)
+	return killPed(bot)
+end
+
+function GetBotRot(amx, ped, refX, refY, refZ)
+	local rX, rX, rZ = getPedRotation(ped)
+	writeMemFloat(amx, refX, rX)
+	writeMemFloat(amx, refY, rY)
+	writeMemFloat(amx, refZ, rZ)
+end
+
+function SetBotRot(amx, Ped, rX, rY, rY)
+	setPedRotation(ped, rX, rY, rZ)
+end
+
+function GetBotName(amx, bot, nameBuf, bufSize)
+	local name = getElementData(bot, 'BotName')
+	if #name <= bufSize then
+		writeMemString(amx, nameBuf, name)
+	end
+end
+
+GetBotHealth = GetPlayerHealth
+SetBotHealth = SetPlayerHealth
+GetBotArmour = GetPlayerArmour
+SetBotArmour = SetPlayerArmour
+GetBotPos = GetObjectPos
+SetBotPos = SetObjectPos
+-----------------------------------------------------
+-- Vehicles
+function GetVehicleEngineState(amx, vehicle)
+	return getVehicleEngineState(vehicle)
+end
+
+function SetVehicleEngineState(amx, vehicle, state)
+	return setVehicleEngineState(vehicle, state)
+end
+
+function GetVehicleDoorState(amx, vehicle, door)
+	return getVehicleDoorState(vehicle, door)
+end
+
+function SetVehicleDoorState(amx, vehicle, door, state)
+	return setVehicleDoorState(vehicle, door, state)
+end
+
+function GetVehicleMaxPassengers(amx, vehicle)
+	return getVehicleMaxPassengers(vehicle)
+end
+
+function GetVehicleLightState(amx, vehicle, light)
+	return getVehicleLightState(vehicle, light)
+end
+
+function SetVehicleLightState(amx, vehicle, light, state)
+	return setVehicleLightState(vehicle, light, state)
+end
+
+function GetVehicleOverrideLights(amx, vehicle)
+	return  getVehicleOverrideLights(vehicle)
+end
+
+function SetVehicleOverrideLights(amx, vehicle, state)
+	return setVehicleOverrideLights(vehicle, state)
+end
+
+function GetVehicleWheelState(amx, vehicle, wheelid)
+	local w1, w2, w3, w4 = getVehicleWheelStates(vehicleid)
+	if wheelid == 0 then return w1 end
+	if wheelid == 1 then return w2 end
+	if wheelid == 2 then return w3 end
+	if wheelid == 3 then return w4 end
+end
+
+function SetVehicleWheelState(amx, vehicle, frontLeft, rearLeft, frontRight, rearRight)
+	return setVehicleWheelStates(vehicle, frontLeft, rearLeft, frontRight, rearRight)
+end
+
+function GetVehiclePanelState(amx, vehicle, panel)
+	return getVehiclePanelState(vehicle, panel)
+end
+
+function SetVehiclePanelState(amx, vehicle, panel, state)
+	return setVehiclePanelState(vehicle, panel, state)
+end
+
+-----------------------------------------------------
+-- Misc
+function SetSkyGradient(amx, topRed, topGreen, topBlue, bottomRed, bottomGreen, bottomBlue)
+	return setSkyGradient(topRed, topGreen, topBlue, bottomRed, bottomGreen, bottomBlue)
+end
+
+function ResetSkyGradient(amx)
+	return resetSkyGradient()
+end
+
+function GetCloudsEnabled(amx)
+	return getCloudsEnabled()
+end
+
+function SetCloudsEnabled(amx, state)
+	return setCloudsEnabled(state)
+end
+
+function IsGarageOpen(amx, garage)
+	return isGarageOpen(garage)
+end
+
+function SetGarageOpen(amx, garage, state)
+	return setGarageOpen( garage, state )
+end
+
+function IsGlitchEnabled(amx, glitch)
+	return isGlitchEnabled(glitch)
+end
+
+function SetGlitchEnabled(amx, glitch, state)
+	return setGlitchEnabled(amx, glitch, state)
+end
+
+function SetFPSLimit(amx, limit)
+	return setFPSLimit(limit)
+end
+
+function GetPlayerCount(amx)
+	return getPlayerCount(amx)
+end
+
+function GetRandomPlayer(amx)
+	return getElemID(getRandomPlayer())
+end
+
+function FadePlayerCamera(amx, player, fadeIn, timeToFade, red, green, blue)
+	return fadeCamera(player, fadeIn, timeToFade, red, green, blue)
+end
+
+function GetRuleValue(amx, rule, nameBuf, bufSize)
+	local ruleval = getRuleValue(rule)
+	if #ruleval <= bufSize then
+		writeMemString(amx, nameBuf, ruleval)
+	end
+end
+
+function SetRuleValue(amx, rule, value)
+	return setRuleValue(rule, value)
+end
+
+function RemoveRuleValue(amx, rule)
+	return removeRuleValue(rule)
+end
+-----------------------------------------------------
 -- List of the functions and their argument types
 
 g_SAMPSyscallPrototypes = {
@@ -1687,6 +1995,7 @@ g_SAMPSyscallPrototypes = {
 	PlayerSpectatePlayer = {'p', 'p', 'i'},
 	PlayerSpectateVehicle = {'p', 'v', 'i'},
 	PutPlayerInVehicle = {'p', 'v', 'i'},
+	RepairVehicle = {'v'},
 
 	RemovePlayerClothes = {'p', 'i'},
 	RemovePlayerFromVehicle = {'p'},
@@ -1786,6 +2095,102 @@ g_SAMPSyscallPrototypes = {
 	TogglePlayerSpectating = {'p', 'b'},
 
 	UsePlayerPedAnims = {},
+	
+	
+	CreateBot = { 'i', 'f', 'f', 'f', 's'},
+	DestroyBot = {'z'},
+	IsPlayerInWater = {'z'},
+	IsPlayerOnFire = {'z'},
+	IsPlayerDucked = {'z'},
+	IsPlayerOnGround = {'z'},
+	GetBotHealth = {'z', 'r'},
+	SetBotHealth = {'z', 'f'},
+	GetBotArmour = {'z', 'r'},
+	SetBotArmour = {'z', 'f'},
+	GetBotPos = {'z', 'r', 'r', 'r'},
+	SetBotPos = {'z', 'f', 'f', 'f'},
+	GetBotRot = {'z', 'r', 'r', 'r'},
+	SetBotRot = {'z', 'f', 'f', 'f'},
+	GetPlayerFightingStyle = {'z'},
+	SetPlayerFightingStyle = {'z','i'},
+	SetBotOnFire = {'z', 'b'},
+	GetBotSkin = {'z'},
+	SetBotSkin = {'z', 'i'},
+	GetBotStat = {'z', 'i'},
+	SetBotStat = {'z', 'i', 'f'},
+	GetBotState = {'z'},
+	PutBotInVehicle = {'z', 'v', 'i'},
+	RemoveBotFromVehicle = {'z'},
+	SetBotControlState = {'z', 's', 'b'},
+	SetBotAimTarget = {'z', 'f', 'f', 'f'},
+	GetBotDoingDriveBy = {'z'},
+	SetBotDoingDriveBy = {'z', 'b'},
+	GetBotCanBeKnockedOffBike = {'z'},
+	SetBotCanBeKnockedOffBike = {'z', 'b'},
+	SetBotWeaponSlot = {'z', 'i'},
+	SetBotHeadless = {'z', 'b'},
+	IsBotDead = {'z'},
+	KillBot = {'z'},
+	GetBotAlpha = {'z'},
+	SetBotAlpha = {'z', 'i'},
+	GetBotName = {'z', 'r', 'i'},
+	
+	-- players
+	IsPlayerInWater = {'p'},
+	IsPlayerOnFire = {'p'},
+	IsPlayerDucked = {'p'},
+	IsPlayerOnGround = {'p'},
+	GetPlayerFightingStyle = {'p'},
+	SetPlayerFightingStyle = {'p','i'},
+	SetPlayerOnFire = {'p', 'b'},
+	GetPlayerStat = {'p', 'i'},
+	SetPlayerStat = {'p', 'i', 'f'},
+	GetPlayerCanBeKnockedOffBike = {'p'},
+	SetPlayerCanBeKnockedOffBike = {'p', 'b'},
+	GetPlayerDoingDriveBy = {'p'},
+	SetPlayerDoingDriveBy = {'p', 'b'},
+	SetPlayerWeaponSlot = {'p', 'i'},
+	SetPlayerHeadless = {'p', 'b'},
+	GetPlayerBlurLevel = {'p'},
+	SetPlayerBlurLevel = {'p', 'i'},
+	GetPlayerAlpha = {'p'},
+	SetPlayerAlpha = {'p', 'i'},
+	FadePlayerCamera = {'p', 'b', 'f', 'i', 'i', 'i'},
+	
+	-- vehicles
+	GetVehicleEngineState = {'v'},
+	SetVehicleEngineState = {'v', 'b'},
+	GetVehicleDoorState = {'v', 'i'},
+	SetVehicleDoorState = {'v', 'i', 'i'},
+	GetVehicleMaxPassengers = {'v'},
+	GetVehicleLightState = {'v', 'i'},
+	SetVehicleLightState = {'v', 'i', 'i'},
+	GetVehicleOverrideLights = {'v'},
+	SetVehicleOverrideLights = {'v', 'i'},
+	GetVehicleWheelState = {'v','i'},
+	SetVehicleWheelState = {'v','i','i','i','i'},
+	GetVehicleAlpha = {'v'},
+	SetVehicleAlpha = {'v', 'i'},
+	
+	-- misc
+	SetSkyGradient = {'i','i','i','i','i','i'},
+	ResetSkyGradient = {},
+	GetCloudsEnabled = {},
+	SetCloudsEnabled = {'b'},
+	IsGarageOpen = {'i'},
+	SetGarageOpen = {'i','b'},
+	IsGlitchEnabled = {'s'},
+	SetGlitchEnabled = {'s', 'b'},
+	SetFPSLimit = {'i'},
+	GetRandomPlayer = {},
+	GetPlayerCount = {},
+	GetObjectAlpha = {'o'},
+	SetObjectAlpha = {'o', 'i'},
+	
+	-- rules
+	SetRuleValue = {'s', 's'},
+	GetRuleValue = {'s', 'r', 'i'},
+	RemoveRuleValue = {'s'},
 	
 	acos = {'f'},
 	asin = {'f'},

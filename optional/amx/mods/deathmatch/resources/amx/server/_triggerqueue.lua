@@ -1,4 +1,5 @@
-local _triggerClientEvent = triggerClientEvent
+_triggerClientEvent = triggerClientEvent
+
 local playerData = {}			-- { player = { loaded = bool, pending = {...} } }
 
 local function joinHandler(player)
