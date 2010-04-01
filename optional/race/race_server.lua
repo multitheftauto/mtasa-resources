@@ -1370,18 +1370,18 @@ addEventHandler('onElementDataChange', root,
 
 -- returns true if there is trouble
 function checkClient(checkAccess,player,...)
-	if client and client ~= player and g_Settings.securitylevel >= 2 then
+	if client and client ~= player and g_GameOptions.securitylevel >= 2 then
 		local desc = table.concat({...}," ")
 		local ipAddress = getPlayerIP(client)
 		outputDebugString( "Race security - Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 1 )
 		cancelEvent()
-		if g_Settings.clientcheckban then
+		if g_GameOptions.clientcheckban then
 			local reason = "race checkClient (" .. tostring(desc) .. ")"
 			addBan ( ipAddress, nil, nil, getRootElement(), reason )
 		end
 		return true
 	end
-	if checkAccess and g_Settings.securitylevel >= 1 then
+	if checkAccess and g_GameOptions.securitylevel >= 1 then
 		if not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			local desc = table.concat({...}," ")
 			local ipAddress = getPlayerIP(client or player)
