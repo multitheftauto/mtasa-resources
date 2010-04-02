@@ -42,6 +42,8 @@ function argsToMTA(amx, prototype, ...)
 			val = amx.menus[val]
 		elseif vartype == 'g' then		-- gang zone
 			val = amx.gangzones[val] and amx.gangzones[val].elem
+		elseif vartype == 'k' then		-- bot/ped
+			val = g_Markers[val] and g_Markers[val].elem
 		elseif vartype == 'd' then		-- database result
 			val = amx.dbresults[val]
 		end
@@ -1645,6 +1647,25 @@ function SetPlayerBlurLevel(amx, player, level)
 	return setPlayerBlurLevel(player, level)
 end
 
+function GetPlayerVehicleSeat(amx, player)
+	return getPedOccupiedVehicleSeat(player)
+end
+
+function GetPlayerVelocity(amx, player, refVX, refVY, refVZ)
+	local vx, vy, vz = getElementVelocity(player)
+	writeMemFloat(amx, refVX, vx)
+	writeMemFloat(amx, refVY, vy)
+	writeMemFloat(amx, refVZ, vz)
+end
+
+function SetPlayerVelocity(amx, player, vx, vy, vz)
+	setElementVelocity(player, vx, vy, vz)
+end
+
+function SetPlayerControlState(amx, player, control, state)
+	return setControlState(player, control, state)
+end
+
 IsBotInWater = IsPlayerInWater
 IsBotOnFire = IsPlayerOnFire
 IsBotDucked = IsPlayerDucked
@@ -1662,6 +1683,9 @@ GetBotCanBeKnockedOffBike = GetPlayerCanBeKnockedOffBike
 SetBotCanBeKnockedOffBike = SetPlayerCanBeKnockedOffBike
 SetBotWeaponSlot = SetPlayerWeaponSlot
 SetBotHeadless = SetPlayerHeadless
+GetBotVehicleSeat = GetPlayerVehicleSeat
+GetBotVelocity = GetPlayerVelocity
+SetBotVelocity = SetPlayerVelocity
 -----------------------------------------------------
 -- Bots
 function CreateBot(amx, model, x, y, z, name)
@@ -1735,6 +1759,100 @@ SetBotArmour = SetPlayerArmour
 GetBotPos = GetObjectPos
 SetBotPos = SetObjectPos
 -----------------------------------------------------
+-- Native Markers
+function CreateMarker(amx, x, y, z, typeid, size, r, g, b, a)
+	local marker = createMarker(x, y, z, typeid, size, r, g, b, a, getRootElement())
+	local markerID = addElem(amx, 'markers', marker)
+	procCallOnAll('OnMarkerCreate', markerID)
+	return markerID
+end
+
+function DestroyMarker(amx, marker)
+	removeElem(amx, 'markers', marker)
+	destroyElement(marker)
+	return true
+end
+
+function GetMarkerColor(amx, marker, colorid)
+	local R, G, B, A = getMarkerColor( marker )
+	if colorid == 0 then return R end
+	if colorid == 1 then return G end
+	if colorid == 2 then return B end
+	if colorid == 3 then return A end
+	return false
+end
+
+function GetMarkerIcon(amx, marker)
+	local icon = getMarkerIcon(marker)
+	if icon == "none" then return 0 end
+	if icon == "arrow" then return 1 end
+	if icon == "finish" then return 2 end
+	return false
+end
+
+function GetMarkerSize(amx, marker, refSize)
+	local size = getMarkerSize(marker)
+	writeMemFloat(amx, refSize, marker)
+	return true
+end
+
+function GetMarkerTarget(amx, marker, refX, refY, refZ)
+	local x, y, z = getMarkerTarget(marker)
+	if x == false then return false end
+	writeMemFloat(amx, refX, x)
+	writeMemFloat(amx, refY, y)
+	writeMemFloat(amx, refZ, z)
+	return true
+end
+
+function GetMarkerType(amx, marker)
+	local mtype = getMarkerType(marker)
+	if mtype == false then return false end
+	if mtype == "checkpoint" then return 0 end
+	if mtype == "ring" then return 1 end
+	if mtype == "cylinder" then return 2 end
+	if mtype == "arrow" then return 3 end
+	if mtype == "corona" then return 4 end
+	return false
+end
+
+function SetMarkerColor(amx, marker, red, green, blue, alpha)
+	return setMarkerColor(marker, red, green, blue, alpha)
+end
+
+function SetMarkerIcon(amx, marker, icon)
+	if icon == 0 then icon = "none"
+	elseif icon == 1 then icon = "arrow"
+	elseif icon == 2 then icon = "finish"
+	else return false end
+	return setMarkerIcon(amx, marker, icon)
+end
+
+function SetMarkerSize(amx, marker, size)
+	return setMarkerSize(marker, size)
+end
+
+function SetMarkerTarget(amx, marker, x, y, z)
+	return setMarkerTarget(marker, x, y, z)
+end
+
+function SetMarkerType(amx, marker, typeid)
+	if typeid == 0 then typeid = "checkpoint"
+	elseif typeid == 1 then typeid = "ring"
+	elseif typeid == 2 then typeid = "cylinder"
+	elseif typeid == 3 then typeid = "arrow"
+	elseif typeid == 4 then typeid = "corona"
+	else return false end
+	return setMarkerType(marker, typeid)
+end
+
+function IsPlayerInMarker(amx, marker, elem)
+	return isElementWithinMarker(elem, marker)
+end
+
+IsVehicleInMarker = IsPlayerInMarker
+IsBotInMarker = IsPlayerInMarker
+-----------------------------------------------------
 -- Vehicles
 function GetVehicleEngineState(amx, vehicle)
 	return getVehicleEngineState(vehicle)
@@ -1792,6 +1910,90 @@ function SetVehiclePanelState(amx, vehicle, panel, state)
 	return setVehiclePanelState(vehicle, panel, state)
 end
 
+function GetVehiclePaintjob(amx, vehicle)
+	return getVehiclePaintjob(vehicle)
+end
+
+function GetVehicleComponentInSlot(amx, vehicle, slot)
+	return getVehicleUpgradeOnSlot(vehicle, slot)
+end
+
+function GetVehicleSirensOn(amx, vehicle)
+	return getVehicleSirensOn(vehicle)
+end
+
+function SetVehicleSirensOn(amx, vehicle, state)
+	return setVehicleSirensOn(vehicle, state)
+end
+
+function IsTrainDerailable(amx, train)
+	return isTrainDerailable(train)
+end
+
+function IsTrainDerailed(amx, train)
+	return isTrainDerailed(train)
+end
+
+function SetTrainDerailable(amx, train, state)
+	return setTrainDerailable(train, state)
+end
+
+function SetTrainDerailed(amx, train, state)
+	return setTrainDerailed(train, state)
+end
+
+function GetTrainDirection(amx, train)
+	return getTrainDirection(train)
+end
+
+function SetTrainDirection(amx, train, direction)
+	return setTrainDirection(train, direction)
+end
+
+function GetTrainSpeed(amx, train, refSpeed)
+	local speed = getTrainSpeed(train)
+	writeMemFloat(amx, refSpeed, speed)
+	return true
+end
+
+function SetTrainSpeed(amx, train, speed)
+	return setTrainSpeed(train, speed)
+end
+
+-----------------------------------------------------
+-- Water
+function GetWaveHeight(amx)
+	return getWaveHeight()
+end
+
+function SetWaveHeight(amx, height)
+	return setWaveHeight(height)
+end
+
+function SetWaterLevel(amx, level)
+	return setWaterLevel(level)
+end
+-----------------------------------------------------
+-- Pickups
+function GetPickupType(amx, pickup)
+	return getPickupType(pickup)
+end
+
+function SetPickupType(amx, pickup, typeid, amount, ammo)
+	return setPickupType(pickup, typeid, amount, ammo)
+end
+
+function GetPickupWeapon(amx, pickup)
+	return getPickupWeapon(pickup)
+end
+
+function GetPickupAmount(amx, pickup)
+	return getPickupAmount(pickup)
+end
+
+function GetPickupAmmo(amx, pickup)
+	return getPickupAmmo(pickup)
+end
 -----------------------------------------------------
 -- Misc
 function SetSkyGradient(amx, topRed, topGreen, topBlue, bottomRed, bottomGreen, bottomBlue)
@@ -1830,6 +2032,10 @@ function SetFPSLimit(amx, limit)
 	return setFPSLimit(limit)
 end
 
+function GetFPSLimit(amx)
+	return getFPSLimit()
+end
+
 function GetPlayerCount(amx)
 	return getPlayerCount(amx)
 end
@@ -1855,6 +2061,21 @@ end
 
 function RemoveRuleValue(amx, rule)
 	return removeRuleValue(rule)
+end
+
+function md5hash(amx, str, refStr, refSize)
+	local hash = md5(str)
+	if #hash <= refSize then
+		writeMemString(amx, refStr, hash)
+	end
+end
+
+function GetDistanceBetweenPoints2D(amx, x1, y1, x2, y2)
+	return getDistanceBetweenPoints2D(x1, y1, x2, y2)
+end
+
+function GetDistanceBetweenPoints3D(amx, x1, y1, z1, x2, y2, z2)
+	return getDistanceBetweenPoints3D(x1, y1, z1, x2, y2, z2)
 end
 -----------------------------------------------------
 -- List of the functions and their argument types
@@ -2099,10 +2320,10 @@ g_SAMPSyscallPrototypes = {
 	
 	CreateBot = { 'i', 'f', 'f', 'f', 's'},
 	DestroyBot = {'z'},
-	IsPlayerInWater = {'z'},
-	IsPlayerOnFire = {'z'},
-	IsPlayerDucked = {'z'},
-	IsPlayerOnGround = {'z'},
+	IsBotInWater = {'z'},
+	IsBotOnFire = {'z'},
+	IsBotDucked = {'z'},
+	IsBotOnGround = {'z'},
 	GetBotHealth = {'z', 'r'},
 	SetBotHealth = {'z', 'f'},
 	GetBotArmour = {'z', 'r'},
@@ -2134,6 +2355,10 @@ g_SAMPSyscallPrototypes = {
 	GetBotAlpha = {'z'},
 	SetBotAlpha = {'z', 'i'},
 	GetBotName = {'z', 'r', 'i'},
+	GetBotVehicleSeat = {'z'},
+	GetBotVelocity = {'z', 'r', 'r', 'r'},
+	SetBotVelocity = {'z', 'f', 'f', 'f'},
+	
 	
 	-- players
 	IsPlayerInWater = {'p'},
@@ -2156,6 +2381,10 @@ g_SAMPSyscallPrototypes = {
 	GetPlayerAlpha = {'p'},
 	SetPlayerAlpha = {'p', 'i'},
 	FadePlayerCamera = {'p', 'b', 'f', 'i', 'i', 'i'},
+	GetPlayerVehicleSeat = {'p'},
+	GetBotVelocity = {'p', 'r', 'r', 'r'},
+	SetBotVelocity = {'p', 'f', 'f', 'f'},
+	SetPlayerControlState = {'p', 's', 'b'},
 	
 	-- vehicles
 	GetVehicleEngineState = {'v'},
@@ -2171,6 +2400,42 @@ g_SAMPSyscallPrototypes = {
 	SetVehicleWheelState = {'v','i','i','i','i'},
 	GetVehicleAlpha = {'v'},
 	SetVehicleAlpha = {'v', 'i'},
+	GetVehiclePaintjob = {'v'},
+	GetVehicleComponentInSlot = {'v', 'i'},
+	GetVehicleSirensOn = {'v'},
+	SetVehicleSirensOn = {'v', 'b'},
+	IsTrainDerailable = {'v'},
+	IsTrainDerailed = {'v'},
+	SetTrainDerailable = {'v', 'b'},
+	SetTrainDerailed = {'v', 'b'},
+	GetTrainDirection = {'v'},
+	SetTrainDirection = {'v', 'b'},
+	GetTrainSpeed = {'v', 'r'},
+	SetTrainSpeed = {'v', 'f'},
+
+	-- pickups
+	GetPickupType = {'u'},
+	SetPickupType = {'u', 'i', 'i', 'i', 'i'},
+	GetPickupWeapon = {'u'},
+	GetPickupAmount = {'u'},
+	GetPickupAmmo = {'u'},
+	
+	-- markers
+	CreateMarker = {'f', 'f', 'f', 's', 'f', 'i', 'i', 'i', 'i'},
+	DestroyMarker = {'k'},
+	GetMarkerColor = {'k', 'i'},
+	GetMarkerIcon = {'k'},
+	GetMarkerSize = {'k', 'r'},
+	GetMarkerTarget = {'k', 'r', 'r', 'r'},
+	GetMarkerType = {'k'},
+	SetMarkerColor = {'k', 'i', 'i', 'i', 'i'},
+	SetMarkerIcon = {'k', 'i'},
+	SetMarkerSize = {'k', 'f'},
+	SetMarkerTarget = {'k', 'f', 'f', 'f'},
+	SetMarkerType = {'k', 'i'},
+	IsPlayerInMarker = {'k', 'p'},
+	IsBotInMarker = {'k', 'z'},
+	IsVehicleInMarker = {'k', 'v'},
 	
 	-- misc
 	SetSkyGradient = {'i','i','i','i','i','i'},
@@ -2181,11 +2446,18 @@ g_SAMPSyscallPrototypes = {
 	SetGarageOpen = {'i','b'},
 	IsGlitchEnabled = {'s'},
 	SetGlitchEnabled = {'s', 'b'},
+	GetFPSLimit = {},
 	SetFPSLimit = {'i'},
 	GetRandomPlayer = {},
 	GetPlayerCount = {},
 	GetObjectAlpha = {'o'},
 	SetObjectAlpha = {'o', 'i'},
+	GetWaveHeight = {},
+	SetWaveHeight = {'f'}, 
+	SetWaterLevel = {'f'},
+	GetDistanceBetweenPoints2D = {'f', 'f', 'f', 'f'},
+	GetDistanceBetweenPoints3D = {'f', 'f', 'f', 'f', 'f', 'f'},
+	md5hash = {'s', 'r', 'i'},
 	
 	-- rules
 	SetRuleValue = {'s', 's'},

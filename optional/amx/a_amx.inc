@@ -13,12 +13,20 @@ native lua(const fn[], {Float,_}:...);
 native amxRegisterPawnPrototypes(const prototype[][]);
 native amxVersion(&Float:ver);
 native amxVersionString(buffer[], maxsize);
+native md5hash(str[], const buf[], bufsize);
 
 // Events
 forward OnBotConnect(botid, name[]);
 forward OnBotEnterVehicle(botid, vehicleid, seatid);
 forward OnBotExitVehicle(botid, vehicleid);
 forward OnBotDeath(botid, killerid, weaponid, bodypart);
+forward OnVehicleDamage(vehicleid, Float:loss);
+forward OnPlayerShootingPlayer(playerid, attackerid, bodypart, Float:loss);
+forward OnPlayerWeaponSwitch(playerid, previousWeaponID, currentWeaponID);
+forward OnPlayerShoot(playerid, weapon, ammo, ammoInClip, Float:hitX, Float:hitY, Float:hitZ);
+forward OnMarkerCreate(markerid);
+forward OnMarkerHit(markerid, elemtype[], elemid, matchingDimension);
+forward OnMarkerLeave(markerid, elemtype[], elemid, matchingDimension);
 
 // World
 native SetSkyGradient(topRed = 0, topGreen = 0, topBlue = 0, bottomRed = 0, bottomGreen = 0, bottomBlue = 0);
@@ -32,6 +40,37 @@ native SetGlitchEnabled(name[], stateid);
 native SetFPSLimit(fps);
 native GetPlayerCount();
 native GetRandomPlayer();
+native GetDistanceBetweenPoints2D(Float:X1, Float:Y1, Float:X2, Float:Y2);
+native GetDistanceBetweenPoints3D(Float:X1, Float:Y1, Float:Z1, Float:X2, Float:Y2, Float:Z2);
+
+// Water
+native GetWaveHeight();
+native SetWaveHeight(Float:height);
+native SetWaterLevel(Float:level);
+
+// Pickups
+native GetPickupType(pickupid);
+native SetPickupType(pickupid, typeid, amount, ammo = 500);
+native GetPickupWeapon(pickupid);
+native GetPickupAmount(pickupid);
+native GetPickupAmmo(pickupid);
+
+// Native Markers
+native CreateMarker(Float:X, Float:Y, Float:Z, type[], Float:size, red, green, blue, alpha);
+native DestroyMarker(markerid);
+native GetMarkerColor(markerid, colorid); // Color IDs: 0 = Red, 1 = Green, 2 = Blue, 3 = Alpha
+native GetMarkerIcon(markerid); // 0 = No icon, 1 = Arrow, 2 = Race finish
+native GetMarkerSize(markerid, &Float:size);
+native GetMarkerTarget(markerid, &Float:X, &Float:Y, &Float:Z);
+native GetMarkerType(markerid); // 0 = Checkpoint, 1 = Ring, 2 = Cylinder, 3 = Arrow, 4 = Corona
+native SetMarkerColor(markerid, red, green, blue, alpha);
+native SetMarkerIcon(markerid, iconid); // 0 = No icon, 1 = Arrow, 2 = Race finish
+native SetMarkerSize(markerid, Float:size);
+native SetMarkerTarget(markerid, Float:X, Float:Y, Float:Z);
+native SetMarkerType(markerid, typeid); // 0 = Checkpoint, 1 = Ring, 2 = Cylinder, 3 = Arrow, 4 = Corona
+native IsPlayerInMarker(markerid, playerid);
+native IsBotInMarker(markerid, botid);
+native IsVehicleInMarker(markerid, vehicleid);
 
 // Rules
 native GetRuleValue(rule[], const buf[], bufsize);
@@ -67,6 +106,10 @@ native SetPlayerBlurLevel(playerid, level);
 native GetPlayerAlpha(playerid);
 native SetPlayerAlpha(playerid, alpha);
 native FadePlayerCamera(playerid, fadeIn, Float:timeToFade = 1.0, red = 0, green = 0, blue = 0);
+native GetPlayerVehicleSeat(playerid);
+native GetPlayerVelocity(playerid, &Float:X, &Float:Y, &Float:Z);
+native SetPlayerVelocity(playerid, Float:X, Float:Y, Float:Z);
+native SetPlayerControlState(playerid, control[], stateid);
 
 // Vehicles
 native GetVehicleMaxPassengers(vehicleid);
@@ -87,6 +130,18 @@ native GetVehiclePanelState(vehicleid, panelid);
 native SetVehiclePanelState(vehicleid, panelid, stateid);
 native GetVehicleAlpha(vehicleid);
 native SetVehicleAlpha(vehicleid, alpha);
+native GetVehiclePaintjob(vehicleid);
+native GetVehicleComponentInSlot(vehicleid, slot);
+native GetVehicleSirensOn(vehicleid);
+native SetVehicleSirensOn(vehicleid, stateid);
+native IsTrainDerailable(vehicleid);
+native IsTrainDerailed(vehicleid);
+native SetTrainDerailable(vehicleid, stateid);
+native SetTrainDerailed(vehicleid, stateid);
+native GetTrainDirection(vehicleid);
+native SetTrainDirection(vehicleid, direction);
+native GetTrainSpeed(vehicleid, &Float:speed);
+native SetTrainSpeed(vehicleid, &Float:speed);
 
 // Bots
 native CreateBot(modelid, Float:x, Float:y, Float:z, name[] = "Bot");
@@ -122,3 +177,6 @@ native BotKill(botid);
 native GetBotAlpha(botid);
 native SetBotAlpha(botid, alpha);
 native GetBotName(botid, const buf[], bufsize);
+native GetBotVehicleSeat(botid);
+native GetBotVelocity(botid, &Float:X, &Float:Y, &Float:Z);
+native SetBotVelocity(botid, Float:X, Float:Y, Float:Z);

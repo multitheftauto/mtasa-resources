@@ -5,6 +5,7 @@ g_Bots = {}
 g_Vehicles = {}
 g_Objects = {}
 g_Pickups = {}
+g_Markers = {}
 
 function initGameModeGlobals()
 	g_PlayerClasses = {}
@@ -125,6 +126,7 @@ function loadAMX(fileName, res)
 	amx.menus = {}
 	amx.gangzones = {}
 	amx.bots = {}
+	amx.markers = {}
 	amx.dbresults = {}
 	
 	clientCall(root, 'addAMX', amx.name, amx.type)
@@ -166,7 +168,7 @@ function unloadAMX(amx, notifyClient)
 	
 	amxUnload(amx.cptr)
 	
-	for i,elemtype in ipairs({'pickups', 'vehicles', 'objects', 'gangzones','bots'}) do
+	for i,elemtype in ipairs({'pickups', 'vehicles', 'objects', 'gangzones','bots','markers'}) do
 		for id,data in pairs(amx[elemtype]) do
 			removeElem(amx, elemtype, data.elem)
 			destroyElement(data.elem)
