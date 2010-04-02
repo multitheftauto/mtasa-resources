@@ -114,6 +114,7 @@
 	<file src="icons/roundvan.png"/>
 	<file src="icons/sparrow.png"/>
 	<file src="icons/train.png"/>
+	<file src="icons/fireextinguisher.png"/>
 
 	<export function="outputMessage" type="server"/>
 	<export function="outputMessage" type="client"/>
