@@ -1,7 +1,6 @@
 <meta>
   <info name="AMX" author="adamix" type="gamemode" />
 
-  <script src="client/util.lua" type="client" />
   <script src="server/defines.lua" type="server" />
   <script src="server/util.lua" type="server" />
   <script src="server/_triggerqueue.lua" type="server" />
@@ -10,6 +9,7 @@
   <script src="server/events.lua" type="server" />
   <script src="server/amx.lua" type="server" />
 
+  <script src="client/util.lua" type="client" />
   <script src="client/anim.lua" type="client" />
   <script src="client/arrowmarkers.lua" type="client" />
   <script src="client/mouselook.lua" type="client" />

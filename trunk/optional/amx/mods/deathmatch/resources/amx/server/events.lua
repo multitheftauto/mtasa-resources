@@ -268,19 +268,18 @@ addEventHandler('onPlayerDamage', root,
 		if not attacker or not isElement(attacker) or getElementType(attacker) ~= 'player' then
 			return
 		end
+		procCallOnAll('OnPlayerShootingPlayer', getElemID(source), getElemID(attacker), body, loss)
 		if g_ServerVars.instagib then
 			killPed(source)
 		end
 	end
 )
-addEvent('OnBotDamage', true)
-addEventHandler('OnBotDamage', root,
-	function(botid, attacker, weapon, body, loss)
-		attackid = nil
-		
-		procCallOnAll('OnBotDamage', getElemID(source), attackid, body, loss)
+addEventHandler('onPlayerWeaponSwitch', root,
+	function(prev, current)
+		procCallOnAll('OnPlayerWeaponSwitch', getElemID(source), prev, current)
 	end
 )
+
 addEventHandler('onPlayerWasted', root,
 	function(ammo, killer, weapon, bodypart)
 		local playerID = getElemID(source)
@@ -431,6 +430,18 @@ addEventHandler('onVehicleExplode', root,
 	end
 )
 
+addEventHandler('onVehicleDamage', root,
+	function(loss)
+		local amx = getElemAMX(source)
+		local vehID = getElemID(source)
+		if not amx then
+			return
+		end
+		
+		procCallOnAll('OnVehicleDamage', vehID, loss)
+	end
+)
+
 function getPedOccupiedVehicle(player)
 	local data = g_Players[getElemID(player)]
 	return data and data.vehicle
@@ -464,7 +475,26 @@ function removePedFromVehicle(player)
 	end
 	return true
 end
-
+-------------------------------
+-- Markers
+addEventHandler('onMarkerHit', root,
+	function(elem, dimension)
+		if getElementType(elem) == "player" or getElementType(elem) == "vehicle" or getElementType(elem) == "ped" then
+			local elemtype = getElementType(elem)
+			local elemid = getElemID(elem)
+			procCallOnAll('OnMarkerHit', getElemID(source), elemtype, elemid, dimension);
+		end
+	end
+)
+addEventHandler('onMarkerLeave', root,
+	function(elem, dimension)
+		if getElementType(elem) == "player" or getElementType(elem) == "vehicle" or getElementType(elem) == "ped" then
+			local elemtype = getElementType(elem)
+			local elemid = getElemID(elem)
+			procCallOnAll('OnMarkerLeave', getElemID(source), elemtype, elemid, dimension);
+		end
+	end
+)
 -------------------------------
 -- Peds
 

@@ -185,6 +185,14 @@ function requestSpawn()
 	triggerServerEvent('onRequestSpawn', g_Me, g_ClassSelectionInfo.selectedclass)
 end
 
+addEventHandler('onClientPlayerWeaponFire', resourceRoot,
+	function(weapon, ammo, ammoInClip, hitX, hitY, hitZ)
+		if getLocalPlayer() ~= source then return end
+		serverAMXEvent('OnPlayerShoot', getElemID(source), weapon, ammo, ammoInClip, hitX, hitY, hitZ)
+	end,
+	false
+)
+
 -----------------------------
 -- Camera
 
