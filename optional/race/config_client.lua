@@ -21,26 +21,32 @@ function openConfigMenu ()
 	if gui["form"] then
 		return
 	end
-    showCursor ( true )
+	showCursor ( true )
 
-    -- Create a gui window
-    gui["form"]				= guiCreateWindow ( 200, 230, 390, 420, "ADDONS", false )
+	-- Create a gui window
+	gui["form"]				= guiCreateWindow ( 200, 230, 390, 420, "ADDONS", false )
 
-    gui['headerul'] = guiCreateLabel(10, 25, 570, 25, string.rep('_', 98), false, gui["form"] )
-    --guiLabelSetHorizontalAlign ( gui['headerul'], 'center' )
-    guiLabelSetColor ( gui['headerul'], 160, 160, 192 )
+	gui['headerul'] = guiCreateLabel(10, 25, 670, 25, string.rep('_', 98), false, gui["form"] )
+	guiLabelSetColor ( gui['headerul'], 160, 160, 192 )
+	gui['headerul2'] = guiCreateLabel(10, 28, 670, 25, string.rep('_', 98), false, gui["form"] )
+	guiLabelSetColor ( gui['headerul2'], 160, 160, 192 )
 
-    gui['header'] = guiCreateLabel(30, 25, 300, 25, 'Name' .. string.rep(' ', 36) .. 'Description', false, gui["form"] )
-    guiSetFont(gui['header'], 'default-small')
-    guiLabelSetColor ( gui['header'], 160, 160, 192 )
+	gui['headers'] = {}
+	gui['headers'][1] = guiCreateLabel(30, 25, 90, 25, 'State', false, gui["form"] )
+	gui['headers'][2] = guiCreateLabel(50, 25, 90, 25, '', false, gui["form"] )
+	gui['headers'][3] = guiCreateLabel(70, 25, 90, 25, 'Name', false, gui["form"] )
+	gui['headers'][4] = guiCreateLabel(90, 25, 90, 25, 'Description', false, gui["form"] )
+	for idx,header in ipairs( gui['headers'] ) do
+		guiSetFont(header, 'default-small')
+		guiLabelSetColor ( header, 160, 160, 192 )
+	end
 
 	gui["scrollpane"]		= guiCreateScrollPane( 0, 0, 1, 1, true, gui["form"] )
-	gui["button_apply"]		= guiCreateButton( 0, 0, 1, 1, 'Apply',		false, gui["form"] )
-	gui["button_cancel"]	= guiCreateButton( 0, 0, 1, 1, 'Cancel',	false, gui["form"] )
+	gui["button_close"]		= guiCreateButton( 0, 0, 1, 1, 'Close',		false, gui["form"] )
 	gui["label1"]			= guiCreateLabel( 0, 0, 1, 1, 'Get more race addons from http://community.mtasa.com/',	false, gui["form"] )
 	gui["label2"]			= guiCreateLabel( 0, 0, 1, 1, "Note: Some addons may not take effect",	false, gui["form"] )
 	gui["label3"]			= guiCreateLabel( 0, 0, 1, 1, "until the start of the next map.",	false, gui["form"] )
-	gui["checkboxes"] = {}
+	gui["rows"] = {}
 
 	guiLabelSetHorizontalAlign( gui["label1"], 'center'  )
 	guiLabelSetHorizontalAlign( gui["label2"], 'center'  )
@@ -69,17 +75,84 @@ addEventHandler('onClientReceiveAddonsInfo', g_ResRoot,
 		-- alpha sort
 		table.sort(AddonsInfoList, function(a,b) return(a.tag > b.tag) end)
 		-- create lines
-		local idx = 1
-		for _,info in ipairs(AddonsInfoList) do
-			local checkbox = guiCreateCheckBox ( 10,  10+idx*20, 150, 20, info.tag, info.enabled, false, gui["scrollpane"] )
-			local label1 = guiCreateLabel      ( 160, 10+idx*20+3, 220,  20, info.description, false, gui["scrollpane"] )
-			if not checkbox then
-				outputDebugString( "checkbox failed" )
+		local colLengths = {}
+		for idx,info in ipairs(AddonsInfoList) do
+			if not gui["rows"][idx] then gui["rows"][idx] = {} end
+			local row = gui["rows"][idx]
+			if not row.checkbox then
+				row.name			= guiCreateLabel ( 50,  10+idx*20,   150, 20, info.tag, false, gui["scrollpane"] )
+				row.state			= guiCreateLabel ( 160, 10+idx*20, 220, 20, info.state, false, gui["scrollpane"] )
+				row.description		= guiCreateLabel ( 260, 10+idx*20, 220, 20, info.description, false, gui["scrollpane"] )
+				row.checkbox	 = guiCreateCheckBox ( 10,  10+idx*20-2,   150, 20, "", info.enabled, false, gui["scrollpane"] )
+				guiLabelSetColor ( row.state, 255, 0, 0 )
 			end
-			gui["checkboxes"][idx] = checkbox
-			guiData[checkbox] = idx
-			idx = idx + 1
+
+			-- Alternate row colors + active highlight
+			local r, g, b = 255, 255, 255
+			if idx % 2 == 1 then
+				b = b * 0.6
+			else
+				b = b * 0.8
+			end
+			if info.state ~= "running" then
+				r = r * 0.5
+				g = g * 0.5
+				b = b * 0.5
+			end
+			guiLabelSetColor ( row.name, r, g, b )
+			guiLabelSetColor ( row.description, r, g, b )
+
+			guiSetText( row.name, info.tag )
+			guiSetText( row.state, info.state == "running" and "ON" or "" )
+			guiSetText( row.description, info.description )
+
+			colLengths[1] = 27
+			colLengths[2] = 20
+			colLengths[3] = math.max( colLengths[3] or 0, guiLabelGetTextExtent ( row.name ) + 20 )
+			colLengths[4] = math.max( colLengths[4] or 0, guiLabelGetTextExtent ( row.description ) + 20 )
 		end
+
+		-- Layout columns
+		local colPositions = {}
+		colPositions[1] = 10
+		colPositions[2] = colPositions[1] + colLengths[1]
+		colPositions[3] = colPositions[2] + colLengths[2]
+		colPositions[4] = colPositions[3] + colLengths[3]
+		colPositions[5] = colPositions[4] + colLengths[4]
+
+		local sx,sy,px,py
+		for idx,header in ipairs(gui["headers"]) do
+			px,py = guiGetPosition( header, false )
+			guiSetPosition( header, colPositions[idx], py, false )
+		end
+
+		for idx,row in ipairs(gui["rows"]) do
+			local row = gui["rows"][idx]
+
+			sx,sy = guiGetSize( row.state, false )
+			px,py = guiGetPosition( row.state, false )
+			guiSetSize( row.state, colLengths[1], sy, false )
+			guiSetPosition( row.state, colPositions[1], py, false )
+
+			sx,sy = guiGetSize( row.checkbox, false )
+			px,py = guiGetPosition( row.checkbox, false )
+			guiSetSize( row.checkbox, colLengths[2] + colLengths[3], sy, false )
+			guiSetPosition( row.checkbox, colPositions[2], py, false )
+
+			sx,sy = guiGetSize( row.name, false )
+			px,py = guiGetPosition( row.name, false )
+			guiSetSize( row.name, colLengths[3], sy, false )
+			guiSetPosition( row.name, colPositions[3], py, false )
+
+			sx,sy = guiGetSize( row.description, false )
+			px,py = guiGetPosition( row.description, false )
+			guiSetSize( row.description, colLengths[4], sy, false )
+			guiSetPosition( row.description, colPositions[4], py, false )
+		end
+		
+		x,y = guiGetSize( gui["form"], false )
+		guiSetSize( gui["form"], colPositions[5]+50, y, false )
+
 		resizeMenu()
 		guiSetVisible(gui["scrollpane"],true)
 	end
@@ -93,13 +166,17 @@ function resizeMenu()
 	_,rect = rectSplitY( rect, 50 )
 
 	-- Divide into list and buttons area
-	local rectTop, rectBot = rectSplitY( rect, -115 )
+	local rectTop, rectBot = rectSplitY( rect, -110 )
 
 	-- Set list rect
 	guiSetRect( gui["scrollpane"], rectTop, false )
 
+	-- get rect for headerul2
+	local rectHeaderul2, rectCur = rectSplitY( rectBot, 18 )
+	guiSetRect( gui["headerul2"], rectHeaderul2, false )
+
 	-- gap
-	local rectLabel1, rectCur = rectSplitY( rectBot, 7 )
+	local _, rectCur = rectSplitY( rectBot, 25 )
 
 	-- get rect for label1
 	local rectLabel1, rectCur = rectSplitY( rectCur, 25 )
@@ -121,14 +198,8 @@ function resizeMenu()
 
 	-- get rect for close button
 	local rectCur, rectClose = rectSplitX( rectCur, -95 )
-	guiSetPosition ( gui["button_cancel"], rectClose.x, rectClose.y, false )
-	guiSetSize ( gui["button_cancel"], 90, 22, false )
-
-	-- get rect for ok button
-	local rectCur, rectOk = rectSplitX( rectCur, -95 )
-	guiSetPosition ( gui["button_apply"], rectOk.x, rectOk.y, false )
-	guiSetSize ( gui["button_apply"], 90, 22, false )
-	guiSetEnabled ( gui["button_apply"], false )
+	guiSetPosition ( gui["button_close"], rectClose.x, rectClose.y, false )
+	guiSetSize ( gui["button_close"], 90, 22, false )
 end
 
 --------------------------------
@@ -160,29 +231,26 @@ addEventHandler ( "onClientGUIClick", g_ResRoot,
 		if not gui["form"] then
 			return
 		end
-		if source == gui["button_apply"] then
-			-- list to map
-			local addonsInfoMap = {}
-			for _,info in ipairs(AddonsInfoList) do
-				addonsInfoMap[info.name] = info
-			end
-			triggerServerEvent('onRequestAddonsChange', g_Me, addonsInfoMap )
+		if source == gui["button_close"] then
 			closeConfigMenu()
 			return
 		end
-		if source == gui["button_cancel"] then
-			closeConfigMenu()
-			return
-		end
-		for i,checkbox in ipairs(gui["checkboxes"]) do
-			if source == checkbox then
-				local idx = guiData[checkbox]
-				AddonsInfoList[idx].enabled = guiCheckBoxGetSelected ( checkbox )
-				guiSetEnabled ( gui["button_apply"], true )
+		for idx,row in ipairs(gui["rows"]) do
+			if source == row.checkbox then
+				-- Toggle
+				AddonsInfoList[idx].enabled = guiCheckBoxGetSelected ( row.checkbox )
+				-- list to map
+				local addonsInfoMap = {}
+				for _,info in ipairs(AddonsInfoList) do
+					addonsInfoMap[info.name] = info
+				end
+				-- Send to server
+				triggerServerEvent('onRequestAddonsChange', g_Me, addonsInfoMap )
+				-- Update status
+				setTimer( function() triggerServerEvent('onRequestAddonsInfo', g_Me ) end, 150, 1 )
 				return
 			end
 		end
-
 	end
 )
 

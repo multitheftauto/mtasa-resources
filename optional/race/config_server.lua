@@ -51,6 +51,7 @@ function getAddonsInfo()
 			info.author = getResourceInfo ( resource, 'author' ) or ''
 			info.description = getResourceInfo ( resource, 'description' ) or ''
 			info.enabled = false
+			info.state = getResourceState ( resource )
 			addonsInfoMap[info.name] = info
 		end
 	end
