@@ -11,6 +11,7 @@ local posX, posY, posZ
 
 local rotationless
 local rotX, rotY, rotZ
+local rotFlipped = false
 
 local collisionless
 local lockToAxes = false
@@ -176,12 +177,31 @@ local function onClientRender_keyboard()
 
 			else
 				local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
+				
+				-- conversion to XYZ order
+				tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)
+				tempRotX = math.deg(tempRotX)
+				tempRotY = math.deg(tempRotY)
+				tempRotZ = math.deg(tempRotZ)
 
 				-- roll
 				if (getCommandState("element_move_forward")) then
-					tempRotY = tempRotY + speed
+					if rotFlipped then
+						tempRotY = tempRotY - speed
+					else
+						tempRotY = tempRotY + speed
+					end
 				elseif (getCommandState("element_move_backward")) then
-					tempRotY = tempRotY - speed
+					if rotFlipped then
+						tempRotY = tempRotY + speed
+					else
+						tempRotY = tempRotY - speed
+					end
+				end
+				
+				-- not sure why, maybe rotation conversion has singularity
+				if tempRotY > 90 or tempRotY < -90 then
+					rotFlipped = not rotFlipped
 				end
 
 				-- pitch
@@ -197,6 +217,9 @@ local function onClientRender_keyboard()
 				elseif (getCommandState("element_move_left")) then
 					tempRotZ = tempRotZ - speed
 				end
+				
+				-- conversion back to YXZ order
+				tempRotX, tempRotY, tempRotZ = convertRotationToMTA(math.rad(tempRotX), math.rad(tempRotY), math.rad(tempRotZ))
 
 				-- check if rotation changed
 				if (not (tempRotX == rotX and tempRotY == rotY and tempRotZ == rotZ)) then
