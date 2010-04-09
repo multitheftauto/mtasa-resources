@@ -73,7 +73,7 @@ addEventHandler('onClientReceiveAddonsInfo', g_ResRoot,
 			table.insert( AddonsInfoList, info )
 		end
 		-- alpha sort
-		table.sort(AddonsInfoList, function(a,b) return(a.tag > b.tag) end)
+		table.sort(AddonsInfoList, function(a,b) return(a.tag < b.tag) end)
 		-- create lines
 		local colLengths = {}
 		for idx,info in ipairs(AddonsInfoList) do
