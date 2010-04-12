@@ -90,7 +90,7 @@ end
 
 function finishActivePlayer( player )
 	table.removevalue( g_CurrentRaceMode.activePlayerList, player )
-	table.insert( g_CurrentRaceMode.finishedPlayerList, _getPlayerName(player) )
+	table.insertUnique( g_CurrentRaceMode.finishedPlayerList, _getPlayerName(player) )
 end
 
 function getFinishedPlayerCount()
