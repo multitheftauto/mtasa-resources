@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r566 01Apr10" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r577 12Apr10" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -265,6 +265,20 @@
 					group="_Advanced"
 					accept="0-2"
 					desc="Detect fake packets. 0-No checks  1-Some checks  2-All checks."
+					/>
+
+		<setting name="*anyonecanspec" value="true"
+					friendlyname="Anyone can spectate"
+					group="Gameplay"
+					accept="false,true"
+					desc="Allow any player to start spectating with the 'B' key."
+					/>
+
+		<setting name="*joinrandomvote" value="true"
+					friendlyname="Random vote on join"
+					group="Gameplay"
+					accept="false,true"
+					desc="If someone joins a lone player, start a vote to change to a random map."
 					/>
 
         <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>

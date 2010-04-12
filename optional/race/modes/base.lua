@@ -54,6 +54,10 @@ function RaceMode.getMapOption(option)
 	return g_MapOptions[option]
 end
 
+function RaceMode.isMapRespawn()
+	return RaceMode.getMapOption('respawn') == 'timelimit'
+end
+
 function RaceMode.getPlayers()
 	return g_Players
 end
@@ -393,12 +397,14 @@ function freeSpawnpoint(i)
 	end
 end
 
-function restorePlayer(id, player)
+function restorePlayer(id, player, bNoFade )
 	if not isValidPlayer(player) then
 		return
 	end
 	local self = RaceMode.instances[id]
-	clientCall(player, 'remoteStopSpectateAndBlack')
+	if not bNoFade then
+		clientCall(player, 'remoteStopSpectateAndBlack')
+	end
 
 	local checkpoint = getPlayerCurrentCheckpoint(player)
 	if self.checkpointBackups[player].goingback and checkpoint > 1 then
@@ -442,7 +448,7 @@ function restorePlayer(id, player)
 	end
     setCameraTarget(player)
 	setPlayerStatus( player, "alive", "" )
-    clientCall(player, 'remoteSoonFadeIn')
+	clientCall(player, 'remoteSoonFadeIn', bNoFade )
 end
 
 function restorePlayerUnfreeze(id, player)

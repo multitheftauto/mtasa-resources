@@ -108,6 +108,8 @@ function cacheGameOptions()
 	g_GameOptions.showmapname			= getBool('race.showmapname',true)
 	g_GameOptions.hunterminigun			= getBool('race.hunterminigun',true)
 	g_GameOptions.securitylevel			= getNumber('race.securitylevel',2)
+	g_GameOptions.anyonecanspec			= getBool('race.anyonecanspec',true)
+	g_GameOptions.joinrandomvote		= getBool('race.joinrandomvote',true)
 	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
 	g_GameOptions.skins_map_can_override			= getBool('race.skins_map_can_override',true)
 	g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
@@ -925,7 +927,7 @@ addEventHandler('onClientRequestSpectate', g_Root,
 		local player = source
 		if enable then
 			if not stateAllowsManualSpectate() then return end
-			if not _TESTING and g_MapInfo.modename == "Destruction derby" and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+			if not _TESTING and g_MapInfo.modename == "Destruction derby" and not isPlayerInACLGroup(player, g_GameOptions.admingroup) and not g_GameOptions.anyonecanspec then
 				return
 			end
 		end

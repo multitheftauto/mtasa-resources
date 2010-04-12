@@ -120,12 +120,12 @@ function TitleScreen.getTicksRemaining()
 end
 
 -- Start the fadeout as soon as possible
-function TitleScreen.bringForwardFadeout()
+function TitleScreen.bringForwardFadeout(maxSkip)
     local ticksLeft = TitleScreen.getTicksRemaining()
     local bringForward = ticksLeft - 1000
     outputDebug( 'MISC', 'bringForward ' .. bringForward )
     if bringForward > 0 then
-        TitleScreen.bringForward = math.min(TitleScreen.bringForward + bringForward,3000)
+        TitleScreen.bringForward = math.min(TitleScreen.bringForward + bringForward,maxSkip)
         outputDebug( 'MISC', 'TitleScreen.bringForward ' .. TitleScreen.bringForward )
     end
 end
@@ -283,7 +283,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
     setTimer(TravelScreen.hide,delay,1)
 
     -- Delay readyness until after title
-    TitleScreen.bringForwardFadeout()
+    TitleScreen.bringForwardFadeout(3000)
     delay = delay + math.max( 0, TitleScreen.getTicksRemaining() - 1500 )
 
     -- Do fadeup and then tell server client is ready
@@ -639,7 +639,13 @@ function updateSpectatingCheckpointsAndRank()
 	end
 
 	local dataSourceChangedToLocal = which ~= prevWhich and which=="local"
+	local dataSourceChangedFromLocal = which ~= prevWhich and prevWhich=="local"
 	prevWhich = which
+
+	if dataSourceChangedFromLocal or dataSourceChangedToLocal then
+		cpValuePrev = nil
+		rankValuePrev = nil
+	end
 
 	if Spectate.active or dataSourceChangedToLocal then
 		local watchedPlayer = getWatchedPlayer()
@@ -659,10 +665,6 @@ function updateSpectatingCheckpointsAndRank()
 			rankValuePrev = rankValue
 			setRankDisplay( rankValue )	
 		end
-	end
-	if dataSourceChangedToLocal then
-		cpValuePrev = nil
-		rankValuePrev = nil
 	end
 end
 
@@ -1151,9 +1153,11 @@ function remoteStopSpectateAndBlack()
 	fadeCamera(false,0.0, 0,0,0)			-- Instant black
 end
 
-function remoteSoonFadeIn()
+function remoteSoonFadeIn( bNoCameraMove )
     setTimer(fadeCamera,250+500,1,true,1.0)		-- And up
-    setTimer( function() setCameraBehindVehicle( g_Vehicle ) end ,250+500-150,1 )
+	if not bNoCameraMove then
+		setTimer( function() setCameraBehindVehicle( g_Vehicle ) end ,250+500-150,1 )
+	end
 	setTimer(checkVehicleIsHelicopter,250+500,1)
 end
 -----------------------------------------------------------------------
