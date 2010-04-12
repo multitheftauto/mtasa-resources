@@ -31,6 +31,9 @@
 	<!-- call interfaces -->
 	<script src="server/interface.lua" type="server"/>
 	<script src="client/interface.lua" type="client"/>
+	
+	<!-- freeroam dependency check -->
+	<script src="server/freeroam.lua" type="server" />
 
 	<!-- clientside element manipulation code -->
 	<script src="client/collisions.lua" type="client"/>
