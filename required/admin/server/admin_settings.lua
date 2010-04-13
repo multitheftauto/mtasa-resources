@@ -5,6 +5,7 @@
 *	admin_settings.lua
 *
 *	Original File by ccw
+*	table setting by Flobu
 *
 **************************************]]
 
@@ -15,10 +16,10 @@ function aSetResourceSetting( resName, name, value )
 end
 
 
--- Get a resource's public bool,number or string settings
+-- Get a resource's public bool,number,string or table settings
 function aGetResourceSettings( resName )
 	allowedAccess = { ['*']=true }
-	allowedTypes  = { ['boolean']=true, ['number']=true, ['string']=true }
+	allowedTypes  = { ['boolean']=true, ['number']=true, ['string']=true, ['table']=true }
 
 	local rawsettings = get(resName..'.')
 	if not rawsettings then
