@@ -566,9 +566,16 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			local settings = aGetResourceSettings( resName )
 			local oldvalue = settings[name].current
 			-- Match type
+			local changed = false
 			if type(oldvalue) == 'boolean' then value = value=='true'   end
 			if type(oldvalue) == 'number'  then value = tonumber(value) end
-			if value ~= oldvalue then
+			if type(oldvalue) == "table" then
+				value = fromJSON("[["..value.."]]")
+				changed = not table.compare(value, oldvalue)
+			else
+				changed = value ~= oldvalue
+			end
+			if changed then
 				if aSetResourceSetting( resName, name, value ) then
 					-- Tell the resource one of its settings has changed
 					local res = getResourceFromName(resName)
@@ -577,11 +584,17 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 						triggerEvent('onSettingChange', resRoot, name, oldvalue, value, source )
 					end
 					mdata = resName..'.'..name
-					mdata2 = tostring(value)
+					mdata2 = type(value) == "table" and string.gsub(toJSON(value),"^(%[ %[ )(.*)( %] %])$", "%2") or tostring(value)
 				end
 			end
 		elseif ( cmd == "getall" ) then
 			tableOut = aGetResourceSettings( resName )
+			for name,value in pairs(tableOut) do
+				if type(value.default) == "table" then
+					tableOut[name].default = string.gsub(toJSON(value.default),"^(%[ %[ )(.*)( %] %])$", "%2")
+					tableOut[name].current = string.gsub(toJSON(value.current),"^(%[ %[ )(.*)( %] %])$", "%2")
+				end
+			end
 		end
 		triggerClientEvent ( source, "aAdminSettings", _root, cmd, resName, tableOut )
 		if mdata == "" then
