@@ -902,17 +902,19 @@ eC.coord3d = {
 		x = 0,
 		y = 0,
 		width = 200,
-		height = 23,
+		height = 69,
 		relative = false,
 		value = {0,0,0},
 	},
 	constructor = function( self, info )
-		local widthThird = info.width / 3
-		
+		local heightThird = info.height/3
 		local info_mt = {__index=info}
-		local infoX = setmetatable( {value=info.value[1], width=widthThird, x=info.x}, info_mt )
-		local infoY = setmetatable( {value=info.value[2], width=widthThird, x=info.x + widthThird }, info_mt )
-		local infoZ = setmetatable( {value=info.value[3], width=widthThird, x=info.x + 2*widthThird }, info_mt )
+		guiCreateLabel ( info.x, info.y + 3, 10, 23, "x:", false, info.parent )
+		local infoX = setmetatable( {value=info.value[1], x=info.x + 14, height = heightThird, width = info.width - 14, y=info.y + 2 }, info_mt )
+		guiCreateLabel ( info.x, info.y + 26, 10, 23, "y:", false, info.parent )
+		local infoY = setmetatable( {value=info.value[2], x=info.x + 14, height = heightThird, width = info.width - 14, y=info.y + 25 }, info_mt )
+		guiCreateLabel ( info.x, info.y + 48, 10, 23, "z:", false, info.parent )
+		local infoZ = setmetatable( {value=info.value[3], x=info.x + 14, height = heightThird, width = info.width - 14, y=info.y + 48 }, info_mt )
 		self.children.numberX = eC.number:create( infoX )
 		self.children.numberY = eC.number:create( infoY )
 		self.children.numberZ = eC.number:create( infoZ )
