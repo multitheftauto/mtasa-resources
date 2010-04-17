@@ -726,6 +726,13 @@ function closePropertiesBox()
 	creatingNewElement = false
 end
 
+function addOKButtonHandler (button, state)
+	if button == "left" and state == "up" then
+		addEventHandler( "onClientGUIClick", btnOK, toggleProperties, false )
+		removeEventHandler ( "onClientClick", root, addOKButtonHandler )
+	end
+end
+
 function openPropertiesBox( element, resourceName, shortcut )
 	selectedElement = nil
 	--Tutorial hook
@@ -772,9 +779,15 @@ function openPropertiesBox( element, resourceName, shortcut )
 		setPropertiesChanged(false)
 	end
 	
+	--Hack to ensure the OK button doesn't get pressed immediately if the properties box is opened whilst the cursor is over the OK button
+	if not getKeyState ( "mouse1" ) then --If the left mouse key isnt being pressed, we're okay to allow the OK button to be pressed
+		addEventHandler( "onClientGUIClick", btnOK, toggleProperties, false )
+	else --Otherwise, we attach a handler which waits for the left mouse button to be released before activating the OK button
+		addEventHandler ( "onClientClick", root, addOKButtonHandler )
+	end
+	
 	addEventHandler( "onClientGUIClick", btnCancel, cancelProperties, false )
 	addEventHandler( "onClientGUIClick", btnApply, syncPropertiesCallback, false )
-	addEventHandler( "onClientGUIClick", btnOK, toggleProperties, false )
 	addEventHandler( "onClientGUIClick", btnPullout, openPullout, false )
 	addEventHandler( "onClientMouseMove", getRootElement(), tooltipsCheckMouseMove )
 
