@@ -542,7 +542,7 @@ function joinHandlerBoth(player)
 	local duration = bPlayerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
 	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), duration, g_GameOptions, g_MapInfo, playerInfo )
 	
-	if bPlayerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() then
+	if bPlayerJoined and getPlayerCount() == 2 and stateAllowsRandomMapVote() and g_GameOptions.joinrandomvote then
 		-- Start random map vote if someone joined a lone player mid-race
 		TimerManager.createTimerFor("map"):setTimer(startMidMapVoteForRandomMap,7000,1)
 	end
@@ -927,8 +927,12 @@ addEventHandler('onClientRequestSpectate', g_Root,
 		local player = source
 		if enable then
 			if not stateAllowsManualSpectate() then return end
-			if not _TESTING and g_MapInfo.modename == "Destruction derby" and not isPlayerInACLGroup(player, g_GameOptions.admingroup) and not g_GameOptions.anyonecanspec then
-				return
+			if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+				if g_MapInfo.modename == "Destruction derby" then
+					return
+				elseif not g_GameOptions.anyonecanspec then
+					return
+				end
 			end
 		end
 		if isPlayerSpectating(player) ~= enable then
