@@ -909,11 +909,11 @@ eC.coord3d = {
 	constructor = function( self, info )
 		local heightThird = info.height/3
 		local info_mt = {__index=info}
-		guiCreateLabel ( info.x, info.y + 3, 10, 23, "x:", false, info.parent )
+		local labelX = guiCreateLabel ( info.x, info.y + 3, 10, 23, "x:", false, info.parent )
 		local infoX = setmetatable( {value=info.value[1], x=info.x + 14, height = heightThird, width = info.width - 14, y=info.y + 2 }, info_mt )
-		guiCreateLabel ( info.x, info.y + 26, 10, 23, "y:", false, info.parent )
+		local labelY = guiCreateLabel ( info.x, info.y + 26, 10, 23, "y:", false, info.parent )
 		local infoY = setmetatable( {value=info.value[2], x=info.x + 14, height = heightThird, width = info.width - 14, y=info.y + 25 }, info_mt )
-		guiCreateLabel ( info.x, info.y + 48, 10, 23, "z:", false, info.parent )
+		local labelZ = guiCreateLabel ( info.x, info.y + 48, 10, 23, "z:", false, info.parent )
 		local infoZ = setmetatable( {value=info.value[3], x=info.x + 14, height = heightThird, width = info.width - 14, y=info.y + 48 }, info_mt )
 		self.children.numberX = eC.number:create( infoX )
 		self.children.numberY = eC.number:create( infoY )
@@ -923,7 +923,7 @@ eC.coord3d = {
 		self.children.numberY:addChangeHandler(function() self:callChangeHandlers() end)
 		self.children.numberZ:addChangeHandler(function() self:callChangeHandlers() end)
 		
-		self.GUI = { self.children.numberX.GUI.editField, self.children.numberY.GUI.editField, self.children.numberZ.GUI.editField }
+		self.GUI = { self.children.numberX.GUI.editField, self.children.numberY.GUI.editField, self.children.numberZ.GUI.editField, labelX, labelY, labelZ }
 		
 		return self
 	end,
