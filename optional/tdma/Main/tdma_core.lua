@@ -338,11 +338,12 @@ function onChat ( message, theType )
 		local team = getPlayerTeam ( source )
 		local bastidName = getPlayerName ( source )
 		if ( team ) then
-		local r, g, b = getTeamColor ( team )
-		outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
+			local r, g, b = getTeamColor ( team )
+			outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
 		else
-		outputChatBox ( bastidName..": "..message )
+			outputChatBox ( bastidName..": "..message )
 		end
+		outputServerLog( "CHAT: " .. bastidName .. ": " .. message )
 	end
 end
 addEventHandler ( "onPlayerChat", root, onChat )
