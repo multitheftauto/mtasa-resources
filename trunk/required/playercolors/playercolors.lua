@@ -26,7 +26,7 @@ addEventHandler('onPlayerChat', g_Root,
 			local name = getPlayerName(source)
 			local msg = msg:gsub('#%x%x%x%x%x%x', '')
 			outputChatBox( name.. ': #FFFFFF' .. msg, g_Root, r, g, b, true)
-			outputServerLog ( name..': ' .. msg )
+			outputServerLog( "CHAT: " .. name .. ": " .. msg )
 		end
 	end
 )

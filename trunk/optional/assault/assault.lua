@@ -959,6 +959,7 @@ function onPlayerChat( message, theType )
 		else
 			outputChatBox( playerName..": "..message )
 		end
+		outputServerLog( "CHAT: " .. playerName .. ": " .. message )
 	end
 end
 

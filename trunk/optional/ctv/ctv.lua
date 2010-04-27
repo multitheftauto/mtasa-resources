@@ -104,6 +104,7 @@ function onCtvChat ( message, theType )
 		else
 			outputChatBox ( bastidName..": "..message )
 		end
+		outputServerLog( "CHAT: " .. bastidName .. ": " .. message )
 	end
 end
 
