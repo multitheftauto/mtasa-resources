@@ -270,7 +270,7 @@ function aPlayerInitialize ( player )
 		outputChatBox ( "ERROR: "..getPlayerName ( player ).." - Invalid Serial." )
 		kickPlayer ( player, "Invalid Serial" )
 	else
-		callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
+		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
 		aPlayers[player] = {}
 		aPlayers[player]["country"] = getPlayerCountry ( player )
 		aPlayers[player]["countryname"] = getPlayerCountryName ( player )
