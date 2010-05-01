@@ -14,6 +14,9 @@ local isChangeAllowed = false
 local timeLabel
 local finishTime
 
+local cacheVoteNumber
+local cacheTimer
+
 local layout = {}
 layout.window = {
 	width = 150,
@@ -86,12 +89,15 @@ addEvent("doStopPoll", true)
 
 addEventHandler("doShowPoll", rootElement,
 	function (pollData, pollOptions, pollTime)
+		--clear the send vote cache
+		cacheVoteNumber = ""
 		--clear the bound keys table
 		boundVoteKeys = {}
 		--store the vote option names in the array nameFromVoteID
 		nameFromVoteID = pollOptions
 		--then build a reverse table
 		voteIDFromName = {}
+		local width
 	    for id, name in ipairs(nameFromVoteID) do
 			voteIDFromName[name] = id
             width = dxGetTextWidth("1. "..name) + 20
@@ -102,6 +108,13 @@ addEventHandler("doShowPoll", rootElement,
             end
 		end
         
+		for word in string.gfind(pollData.title, "[^%s]+") do
+            width = dxGetTextWidth(word) + 20
+            if layout.window.width < width then
+                layout.window.width = width
+            end
+        end
+		
 		--determine if we have to append nomination number
 		local nominationString = ""
 		if pollData.nomination > 1 then 
@@ -184,6 +197,13 @@ addEventHandler("doShowPoll", rootElement,
 			labelY = labelY + optionHeight + layout.option.bottom_padding
 		end
 		
+		--bind 0 keys if there are more than 9 options
+		if #pollOptions > 9 then
+			bindKey("0", "down", sendVote_bind)
+			bindKey("num_0", "down", sendVote_bind)
+			table.insert(boundVoteKeys, "0")
+		end
+		
 		if isChangeAllowed then
 			bindKey("backspace", "down", sendVote_bind)
 			
@@ -258,7 +278,29 @@ addEventHandler("doStopPoll", rootElement,
 function sendVote_bind(key)
 	if key ~= "backspace" then
 		key = key:gsub('num_', '')
-		return sendVote(tonumber(key))
+		if #nameFromVoteID < 10 then
+			return sendVote(tonumber(key))
+		else
+			cacheVoteNumber = cacheVoteNumber..key
+			if #cacheVoteNumber > 1 then
+				if isTimer(cacheTimer) then
+					killTimer(cacheTimer)
+				end
+				cacheVoteNumber = tonumber(cacheVoteNumber)
+				if nameFromVoteID[cacheVoteNumber] then
+					if cacheVoteNumber < 10 then
+						return sendVote(cacheVoteNumber)
+					else
+						cacheTimer = setTimer(sendVote, 500, 1, cacheVoteNumber)
+					end
+					cacheVoteNumber = key
+				else
+					cacheVoteNumber = ""
+				end
+			else		
+				cacheTimer = setTimer(sendVote, 500, 1, tonumber(cacheVoteNumber))
+			end
+		end
 	else
 		return sendVote(-1)
 	end
@@ -291,6 +333,8 @@ function sendVote(voteID)
 		end
 	end
 	
+	--clear the send vote cache
+	cacheVoteNumber = ""
 	hasAlreadyVoted = voteID
 	
 	--send the vote to the server
