@@ -55,7 +55,7 @@ function doSaveNewMapSettings( newMapSettings, hidden )
 		local edfLoaded
 		for _, gamemodeResName in ipairs(currentMapSettings.addedGamemodes) do
 			local gamemode = getResourceFromName(gamemodeResName)
-			if gamemode and getResourceState(gamemode) ~= 'running' then
+			if gamemode and edf.edfHasDefinition(gamemode) and getResourceState(gamemode) ~= 'running' then
 				blockMapManager(gamemode) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
 				edf.edfStartResource(gamemode)
 				table.insert(allEDF.addedEDF, gamemodeResName)
