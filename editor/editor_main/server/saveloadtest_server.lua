@@ -130,7 +130,6 @@ function openResource( resourceName, onStart )
 						local key = table.find(allEDF.availEDF,defName)
 						if key then
 							table.remove ( allEDF.availEDF, key )
-							break
 						end
 					end
 				end

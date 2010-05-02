@@ -51,6 +51,24 @@ function doSaveNewMapSettings( newMapSettings, hidden )
 				triggerClientEvent ( v, "syncMapSettings", rootElement, currentMapSettings )
 			end
 		end
+		--start definitions from added gamemodes if necessary
+		local edfLoaded
+		for _, gamemodeResName in ipairs(currentMapSettings.addedGamemodes) do
+			local gamemode = getResourceFromName(gamemodeResName)
+			if gamemode and getResourceState(gamemode) ~= 'running' then
+				blockMapManager(gamemode) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
+				edf.edfStartResource(gamemode)
+				table.insert(allEDF.addedEDF, gamemodeResName)
+				local index = table.find(allEDF.availEDF, gamemodeResName)
+				if index then
+					table.remove(allEDF.availEDF, index)
+				end
+				edfLoaded = true
+			end
+		end
+		if edfLoaded then
+			triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+		end
 	end
 end
 addEventHandler ( "doSaveMapSettings", rootElement, doSaveNewMapSettings )
