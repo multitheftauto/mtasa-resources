@@ -730,6 +730,8 @@ end
 -- Find all maps which match the query string
 function findMaps( query )
 	local results = {}
+	--escape all meta chars
+	query = string.gsub(query, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
 	-- Loop through and find matching maps
 	for i,resource in ipairs(exports.mapmanager:getMapsCompatibleWithGamemode(getThisResource())) do
 		local resName = getResourceName( resource )

@@ -684,7 +684,9 @@ end
 function getPlayerByNamepart(namePart)
 	if not namePart then return false end
 	namePart = string.lower(namePart)
-	
+	--escape all metachars
+	namePart = string.gsub(namePart, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
+	local playername
 	local bestaccuracy = 0
 	local foundPlayer, b, e
 	for _,player in ipairs(getElementsByType("player")) do
@@ -727,6 +729,8 @@ end
 -- Find all maps which match the query string
 function findMaps( query, gamemode )
 	local results = {}
+	--escape all meta chars
+	query = string.gsub(query, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
 	-- Loop through and find matching maps
 	local maps = gamemode and exports.mapmanager:getMapsCompatibleWithGamemode(gamemode) or exports.mapmanager:getMaps()
 	for i,resource in ipairs(maps) do
