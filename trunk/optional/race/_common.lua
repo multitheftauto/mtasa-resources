@@ -106,9 +106,13 @@ TimerManager.list = {}
 
 -- Create a timer with tags
 function TimerManager.createTimerFor( ... )
-	local tags = TimerManager.makeTagsString( ... )
+	-- Make a dictionary of tags for easy lookup
+	local tagMap = {}
+	for _,arg in ipairs({ ... }) do
+		tagMap[tostring(arg)] = 1
+	end
 	local timer = Timer:create(true)
-	table.insert( TimerManager.list, { timer=timer, tags=tags } )
+	table.insert( TimerManager.list, { timer=timer, tagMap=tagMap } )
 	outputDebug( "TIMERS", getScriptLocation() .. " create - number of timers:" .. tostring(#TimerManager.list) )
 	return timer
 end
@@ -137,27 +141,24 @@ function TimerManager.removeTimer( timer )
 	end
 end
 
--- Turn args into one string containing alpha sorted tags
-function TimerManager.makeTagsString( ... )
-	local tags = {}
-	for _,arg in ipairs({ ... }) do
-		table.insert( tags, tostring(arg) )
-	end
-	table.sort(tags)
-	local result = ""
-	for i,tag in ipairs(tags) do
-		if i > 1 then result = result .. "," end
-		result = result .. tag
-	end
-	return result
-end
-
 -- Get all timers which contains all matching tags
 function TimerManager.getTimersByTags( ... )
+	-- Get list of tags to find
+	local findtags = {}
+	for _,arg in ipairs({ ... }) do
+		table.insert( findtags, tostring(arg) )
+	end
+	-- Check each timer
 	local timers = {}
-	local tagsPartial = TimerManager.makeTagsString( ... )
 	for i,item in ipairs(TimerManager.list) do
-		if item.tags:find(tagsPartial, 1, true) then
+		local bFound = true
+		for _,tag in ipairs(findtags) do
+			if item.tagMap[tag] ~= 1 then
+				bFound = false
+				break
+			end
+		end
+		if bFound then
 			table.insert( timers, item.timer )
 		end
 	end

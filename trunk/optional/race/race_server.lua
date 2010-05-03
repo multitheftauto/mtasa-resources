@@ -490,6 +490,9 @@ function joinHandlerBoth(player)
 			-- Replace groups of unprintable characters with a space, and then remove any leading space
 			local plate = getPlayerName(player):gsub( '[^%a%d]+', ' ' ):gsub( '^ ', '' )
 			vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, plate:sub(1, 8))
+			if setElementSyncer then
+				setElementSyncer( vehicle, false )
+			end
             g_Vehicles[player] = vehicle
 			Override.setAlpha( "ForRCVehicles", player, g_RCVehicleIDs[spawnpoint.vehicle] and 0 or nil )
             RaceMode.playerFreeze(player)
