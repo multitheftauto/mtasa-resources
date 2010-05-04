@@ -335,7 +335,6 @@ end
 function pickupSelectedElement()
 	if ( g_submode == KEYBOARD_SUBMODE ) then
 		local element = g_selectedElement
-		dropElement(false)
 		selectElement(element,MOUSE_SUBMODE)
 	end
 end
@@ -454,13 +453,12 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 				dropElement(true,true) --Drop it, and stop here
 				return
 			end
-			dropElement(true,true) --If its not the selected element, drop it and continue
 		end
 		
 		if (key == "select_target_mouse") then
-			selectElement(clickedElement, MOUSE_SUBMODE)
+			selectElement(clickedElement, MOUSE_SUBMODE, false, g_selectedElement, g_selectedElement)
 		elseif (key == "select_target_keyboard") then
-			selectElement(clickedElement, KEYBOARD_SUBMODE)
+			selectElement(clickedElement, KEYBOARD_SUBMODE, false, g_selectedElement, g_selectedElement)
 		end
 	elseif (g_selectedElement) then
 		if g_submode == MOUSE_SUBMODE then
@@ -469,8 +467,7 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 				dropElement(true,true)
 			elseif (key == "select_target_keyboard") then
 				local reselect = g_selectedElement
-				dropElement(true,true)
-				selectElement(reselect, KEYBOARD_SUBMODE)
+				selectElement(reselect, KEYBOARD_SUBMODE, false, true, true)
 			end
 		else
 			dropElement(true,true)
@@ -689,17 +686,17 @@ function disableGameHUD()
 end
 
 -- PUBLIC
-function selectElement(element, submode, shortcut)
+function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedrop)
 	local openProperties
 	submode = submode or g_submode
-	
-	if g_selectedElement then
-		dropElement(true)
-	end
 	
 	if not isElement(element) then return end
 	
 	if not triggerEvent ( "onClientElementSelect", element, submode, shortcut ) then return false end
+	
+	if g_selectedElement then
+		dropElement(dropreleaseLock, dropclonedrop)
+	end
 	
 	-- check the editing lock
 	local locked = getElementData(element, "me:locked")
@@ -788,17 +785,17 @@ function dropElement(releaseLock,clonedrop)
 	if not g_selectedElement then
 		return false
 	end
-
+	
 	-- trigger client selection events
 	if not triggerEvent("onClientElementDrop", g_selectedElement) then return false end
-
+	
 	if releaseLock ~= false then
 		releaseLock = true
 	end
-
+	
 	-- re-enable collisions for all parts
 	setRepresentationCollisionsEnabled(g_selectedElement, true)
-
+	
 	if g_selectedPart then
 		local move_resource
 		if (g_submode == MOUSE_SUBMODE) then

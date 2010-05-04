@@ -194,7 +194,6 @@ end
 
 function currentBrowser.doubleClick()
 	if ( not callbackFunction ) then
-		editor_main.dropElement ()
 		if cSelectedElement then
 			editor_main.selectElement ( cSelectedElement, 2 )
 		end
