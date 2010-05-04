@@ -192,22 +192,32 @@ function edfSetElementInterior(element, interior)
 end
 
 function edfGetElementDimension(element)
-	return getElementData(element, "edf:dimension") or 0
-end
-
-function edfSetElementDimension(element, dimension)
-	if dimension then
 		if isBasic[getElementType(element)] then
-			return setElementDimension(element, dimension)
+			return getElementDimension(element)
 		else
 			local handle = edfGetHandle(element)
 			if handle then
-				return setElementDimension(handle, dimension)
+					return getElementDimension(handle)
 			else
-				setElementData(element, "dimension", dimension or 0)
+					return getElementData(element, "edf:dimension")
 			end
 		end
-	end
+        return getElementData(element, "edf:dimension") or 0
+end
+
+function edfSetElementDimension(element, dimension)
+        if dimension then
+                if isBasic[getElementType(element)] then
+                        return setElementDimension(element, dimension)
+                else
+                        local handle = edfGetHandle(element)
+                        if handle then
+                                return setElementDimension(handle, dimension)
+                        else
+                                setElementData(element, "edf:dimension", dimension or 0)
+                        end
+                end
+        end
 end
 
 function edfSetElementProperty(element, property, value)

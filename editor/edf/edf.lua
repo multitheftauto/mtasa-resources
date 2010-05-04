@@ -898,7 +898,7 @@ function edfSetElementInterior(element, interior)
 end
 
 function edfGetElementDimension(element)
-	return getElementDimension(element) or tonumber(getElementData(element, "dimension")) or 0
+	return getElementDimension(element) or tonumber(getElementData(element, "edf:dimension")) or 0
 end
 
 function edfSetElementDimension(element, dimension)
