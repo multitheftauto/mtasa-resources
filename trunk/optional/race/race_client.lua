@@ -761,12 +761,15 @@ Spectate.manual = false
 Spectate.droppedCameraTimer = Timer:create()
 Spectate.tickTimer = Timer:create()
 Spectate.fadedout = true
+Spectate.blockManual = false
+Spectate.blockManualTimer = nil
 
 
 -- Request to switch on
 function Spectate.start(type)
 	outputDebug( 'SPECTATE', 'Spectate.start '..type )
 	assert(type=='manual' or type=='auto', "Spectate.start : type == auto or manual")
+	Spectate.blockManual = false
 	if type == 'manual' then
 		if Spectate.active then
 			return					-- Ignore if manual request and already on
@@ -1315,6 +1318,9 @@ addEventHandler('onClientPlayerWasted', g_Root,
 		local vehicle = getPedOccupiedVehicle(player)
 		if player == g_Me then
 			if #g_Players > 1 and (g_MapOptions.respawn == 'none' or g_MapOptions.respawntime >= 10000) then
+				if Spectate.blockManualTimer and isTimer(Spectate.blockManualTimer) then
+					killTimer(Spectate.blockManualTimer)
+				end
 				TimerManager.createTimerFor("map"):setTimer(Spectate.start, 2000, 1, 'auto')
 			end
 		else
@@ -1399,7 +1405,9 @@ function kill()
 			triggerServerEvent('onClientRequestSpectate', g_Me, false )
 		end
     else
+		Spectate.blockManual = true
 		triggerServerEvent('onRequestKillPlayer', g_Me)
+		Spectate.blockManualTimer = setTimer(function() Spectate.blockManual = false end, 3000, 1)
 	end
 end
 addCommandHandler('kill',kill)
@@ -1413,7 +1421,9 @@ function spectate()
 			triggerServerEvent('onClientRequestSpectate', g_Me, false )
 		end
 	else
-		triggerServerEvent('onClientRequestSpectate', g_Me, true )
+		if not Spectate.blockManual then
+			triggerServerEvent('onClientRequestSpectate', g_Me, true )
+		end
 	end
 end
 addCommandHandler('spectate',spectate)
