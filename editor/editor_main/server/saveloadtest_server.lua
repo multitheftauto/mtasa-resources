@@ -34,6 +34,12 @@ function startUp()
 		if not openResource(DUMP_RESOURCE, true) then
 			outputDebugString("cant open dump, create new dump")
 			saveResource(DUMP_RESOURCE, true)
+		else
+			if #getElementsByType("player") > 0 then
+				editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'New Map' to start a new map.", root, 255, 255, 0, 20000)
+			else
+				addEventHandler("onPlayerJoin", rootElement, onJoin)
+			end
 		end
 		dumpTimer = setTimer(dumpSave, dumpInterval, 0)
 	end
@@ -56,34 +62,16 @@ function startUp()
 	end
 end
 
-addCommandHandler("showdump",
-	function()
-		editor_gui.outputMessage ("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'New Map' to start a new map.", root,255,255,0, 20000)
-	end
-)
-
 addCommandHandler("savedump",
 	function()
 		dumpSave()
 	end
 )
 
-addEventHandler ( "onPlayerJoin", rootElement,
-	function()
-		if loadedMap ~= DUMP_RESOURCE then
-			editor_gui.outputMessage ("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'New Map' to start a new map.", root,255,255,0, 20000)
-		end
-	end
-)
-
-addEventHandler ( "onResourceStop", thisResourceRoot,
-	function()
-		if ( loadedMap ) then
-			local currentMap = getResourceFromName ( loadedMap )
-			loadedMap = false
-		end
-	end
-)
+function onJoin()
+	editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'New Map' to start a new map.", source, 255, 255, 0, 20000)
+	removeEventHandler("onPlayerJoin", rootElement, onJoin)
+end
 
 ---
 addEventHandler("newResource", rootElement,
