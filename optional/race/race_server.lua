@@ -921,6 +921,8 @@ function updateGhostmode()
 	end
 end
 
+g_SavedVelocity = {}
+
 -- Handle client request for manual spectate
 addEvent('onClientRequestSpectate', true)
 addEventHandler('onClientRequestSpectate', g_Root,
@@ -945,17 +947,27 @@ addEventHandler('onClientRequestSpectate', g_Root,
 					setPlayerStatus( player, nil, "spectating")
 				end
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), 0 )
+				g_SavedVelocity[player] = {}
+				g_SavedVelocity[player].velocity = {getElementVelocity(g_Vehicles[player])}
+				g_SavedVelocity[player].turnvelocity = {getVehicleTurnVelocity(g_Vehicles[player])}
 			else
 				clientCall(player, "Spectate.stop", 'manual' )
 				setPlayerStatus( player, nil, "")
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), nil )
 				-- Do 'freeze/collision off' stuff when stopping spectate
 				RaceMode.playerFreeze(player, true, true)
-				TimerManager.createTimerFor("map",player):setTimer(RaceMode.playerUnfreeze, 2000, 1, player, true)
+				TimerManager.createTimerFor("map",player):setTimer(afterSpectatePlayerUnfreeze, 2000, 1, player, true)
 			end
 		end
 	end
 )
+
+function afterSpectatePlayerUnfreeze(player, bDontFix)
+	RaceMode.playerUnfreeze(player, bDontFix)
+	setElementVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].velocity))
+	setVehicleTurnVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].turnvelocity))
+	g_SavedVelocity[player] = nil
+end
 
 -- Handle client going to/from spectating
 addEvent('onClientNotifySpectate', true)
@@ -1002,6 +1014,7 @@ g_NotReadyMaxWait = nil
 addEventHandler('onPlayerQuit', g_Root,
 	function()
         g_NotReady[source] = nil
+		g_SavedVelocity[source] = nil
 	end
 )
 
