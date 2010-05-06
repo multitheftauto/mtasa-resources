@@ -21,7 +21,7 @@ function createBrowser()
 	browserGUI.window = guiCreateWindow 	( 0, 0, 0.25, 1, "Browse...", true )
 	guiSetVisible ( browserGUI.window, false )
 	browserGUI.dropdown = editingControl.dropdown:create{["x"]=12,["y"]=25,["width"]=screenX*0.25,["height"]=20,["dropWidth"]=screenX*0.25,["dropHeight"]=200,["relative"]=false,["parent"]=browserGUI.window,["rows"]={"All categories"}}
-	browserGUI.list = browserList:create( 12, 85, screenX*0.25, screenY*1-112, { {["Element"]=0.9 },{["[ID]"]=0.2}--[[,{["Night"]=0.2} ]]},false, browserGUI.window )
+	browserGUI.list = browserList:create( 12, 85, screenX*0.25, screenY*1-112, { {["Element"]=0.95-(60/(screenX*0.25))},{["[ID]"]=40/(screenX*0.25)}},false, browserGUI.window )
 	browserGUI.search = guiCreateEdit ( 12, 50, screenX*0.25, 30, "Search...", false, browserGUI.window )
 	browserGUI.ok = guiCreateButton ( 12, screenY-24, screenX*0.125 - 2, 40, "OK", false, browserGUI.window )
 	browserGUI.cancel = guiCreateButton ( screenX*0.125 + 12 + 2, screenY-24, screenX*0.125 - 2, 40, "Cancel", false, browserGUI.window )
