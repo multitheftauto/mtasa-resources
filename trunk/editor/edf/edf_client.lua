@@ -275,6 +275,11 @@ function edfGetElementRadius(element,forced)
 	if isBasic[getElementType(element)] and ( forced or edfGetParent(element) == element ) then
 		return getRadius(element)
 	else
+		local handleRadius = 0
+		if isBasic[getElementType(edfGetHandle(element))] then
+			handleRadius = getRadius(edfGetHandle(element))
+		end
+		
 		local maxZ,minZ,maxXY = -math.huge,math.huge,0
 		local handle = edfGetHandle(element)
 		--get the centre point to calculate our radius
@@ -292,7 +297,7 @@ function edfGetElementRadius(element,forced)
 		maxZ = maxZ - centreZ
 		minZ = centreZ - minZ
 		--Return the largest radius, whether that is the lower bound or upper bound
-		return math.max ( maxZ, minZ )
+		return math.max ( maxZ, minZ, handleRadius )
 	end
 end
 
