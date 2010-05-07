@@ -397,7 +397,7 @@ function freeSpawnpoint(i)
 	end
 end
 
-function restorePlayer(id, player, bNoFade )
+function restorePlayer(id, player, bNoFade, bDontFix)
 	if not isValidPlayer(player) then
 		return
 	end
@@ -433,7 +433,9 @@ function restorePlayer(id, player, bNoFade )
         setVehicleTurnVelocity( vehicle, 0,0,0 )
 		setElementPosition(vehicle, unpack(bkp.position))
 		setVehicleRotation(vehicle, unpack(bkp.rotation))
-		fixVehicle(vehicle)
+		if not bDontFix then
+			fixVehicle(vehicle)
+		end
 		if getElementModel(vehicle) ~= bkp.vehicle then
 			setVehicleID(vehicle, bkp.vehicle)
 		end
@@ -441,21 +443,22 @@ function restorePlayer(id, player, bNoFade )
 		
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 
-        RaceMode.playerFreeze(player, true)
+		RaceMode.playerFreeze(player, true, bDontFix)
         outputDebug( 'MISC', 'restorePlayer: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
         removeVehicleUpgrade(vehicle, 1010) -- remove nitro
-		TimerManager.createTimerFor("map",player):setTimer(restorePlayerUnfreeze, 2000, 1, self.id, player)
+		TimerManager.destroyTimersFor("unfreeze",player)
+		TimerManager.createTimerFor("map","unfreeze",player):setTimer(restorePlayerUnfreeze, 2000, 1, id, player, bDontFix)
 	end
     setCameraTarget(player)
 	setPlayerStatus( player, "alive", "" )
 	clientCall(player, 'remoteSoonFadeIn', bNoFade )
 end
 
-function restorePlayerUnfreeze(id, player)
+function restorePlayerUnfreeze(id, player, bDontFix)
 	if not isValidPlayer(player) then
 		return
 	end
-    RaceMode.playerUnfreeze(player)
+	RaceMode.playerUnfreeze(player, bDontFix)
 	local vehicle = RaceMode.getPlayerVehicle(player)
     outputDebug( 'MISC', 'restorePlayerUnfreeze: vehicle false for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
 	local bkp = RaceMode.instances[id].checkpointBackups[player][getPlayerCurrentCheckpoint(player)-1]
