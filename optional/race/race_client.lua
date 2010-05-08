@@ -603,7 +603,7 @@ function checkWater()
 	end
 end
 
-function showNextCheckpoint()
+function showNextCheckpoint(bOtherPlayer)
 	g_CurrentCheckpoint = g_CurrentCheckpoint + 1
 	local i = g_CurrentCheckpoint
 	g_dxGUI.checkpoint:text((i - 1) .. ' / ' .. #g_Checkpoints)
@@ -612,7 +612,7 @@ function showNextCheckpoint()
 	else
 		createCheckpoint(1)
 	end
-	makeCheckpointCurrent(i)
+	makeCheckpointCurrent(i,bOtherPlayer)
 	if i < #g_Checkpoints then
 		local curCheckpoint = g_Checkpoints[i]
 		local nextCheckpoint = g_Checkpoints[i+1]
@@ -655,7 +655,7 @@ function updateSpectatingCheckpointsAndRank()
 			if cpValue > 0 and cpValue <= #g_Checkpoints then
 				if cpValue ~= cpValuePrev then
 					cpValuePrev = cpValue
-					setCurrentCheckpoint( cpValue )	
+					setCurrentCheckpoint( cpValue, Spectate.active )	
 				end
 			end
 		end
@@ -1107,7 +1107,9 @@ function MovePlayerAway.update(nozcheck)
 		if not nozcheck then
 			if camTarget then
 				MovePlayerAway.posX, MovePlayerAway.posY = getElementPosition(camTarget)
-				outputDebug( 'SPECTATE', 'type:' .. getElementType(camTarget) )
+				if getElementType(camTarget) ~= "vehicle" then
+					outputDebug( 'SPECTATE', 'camera target type:' .. getElementType(camTarget) )
+				end
 				if getElementType(camTarget) == 'ped' then
 					MovePlayerAway.rotZ = getPedRotation(camTarget)
 				else
@@ -1244,7 +1246,7 @@ function createCheckpoint(i)
 	return checkpoint.marker
 end
 
-function makeCheckpointCurrent(i)
+function makeCheckpointCurrent(i,bOtherPlayer)
 	local checkpoint = g_Checkpoints[i]
 	local pos = checkpoint.position
 	local color = checkpoint.color or { 255, 0, 0 }
@@ -1260,7 +1262,9 @@ function makeCheckpointCurrent(i)
 	else
 		checkpoint.colshape = createColSphere(pos[1], pos[2], pos[3], checkpoint.size + 4)
 	end
-	addEventHandler('onClientColShapeHit', checkpoint.colshape, checkpointReached, false)
+	if not bOtherPlayer then
+		addEventHandler('onClientColShapeHit', checkpoint.colshape, checkpointReached)
+	end
 end
 
 function destroyCheckpoint(i)
@@ -1277,12 +1281,12 @@ function destroyCheckpoint(i)
 	end
 end
 
-function setCurrentCheckpoint(i)
+function setCurrentCheckpoint(i, bOtherPlayer)
 	destroyCheckpoint(g_CurrentCheckpoint)
 	destroyCheckpoint(g_CurrentCheckpoint + 1)
 	createCheckpoint(i)
 	g_CurrentCheckpoint = i - 1
-	showNextCheckpoint()
+	showNextCheckpoint(bOtherPlayer)
 end
 
 function isPlayerRaceDead(player)
