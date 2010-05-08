@@ -109,6 +109,7 @@ function cacheGameOptions()
 	g_GameOptions.hunterminigun			= getBool('race.hunterminigun',true)
 	g_GameOptions.securitylevel			= getNumber('race.securitylevel',2)
 	g_GameOptions.anyonecanspec			= getBool('race.anyonecanspec',true)
+	g_GameOptions.norsadminspectate		= getBool('race.norsadminspectate',false)
 	g_GameOptions.joinrandomvote		= getBool('race.joinrandomvote',true)
 	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
 	g_GameOptions.skins_map_can_override			= getBool('race.skins_map_can_override',true)
@@ -921,6 +922,8 @@ function updateGhostmode()
 	end
 end
 
+g_SavedVelocity = {}
+
 -- Handle client request for manual spectate
 addEvent('onClientRequestSpectate', true)
 addEventHandler('onClientRequestSpectate', g_Root,
@@ -930,11 +933,15 @@ addEventHandler('onClientRequestSpectate', g_Root,
 		local player = source
 		if enable then
 			if not stateAllowsManualSpectate() then return end
-			if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
-				if g_MapInfo.modename == "Destruction derby" then
-					return
-				elseif not g_GameOptions.anyonecanspec then
-					return
+			if not _TESTING then
+				if isPlayerInACLGroup(player, g_GameOptions.admingroup) then
+					if not RaceMode.isMapRespawn() and not g_GameOptions.norsadminspectate then
+						return false
+					end
+				else
+					if not RaceMode.isMapRespawn() or not g_GameOptions.anyonecanspec then
+						return false
+					end
 				end
 			end
 		end
@@ -945,16 +952,32 @@ addEventHandler('onClientRequestSpectate', g_Root,
 					setPlayerStatus( player, nil, "spectating")
 				end
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), 0 )
+				g_SavedVelocity[player] = {}
+				g_SavedVelocity[player].velocity = {getElementVelocity(g_Vehicles[player])}
+				g_SavedVelocity[player].turnvelocity = {getVehicleTurnVelocity(g_Vehicles[player])}
 			else
 				clientCall(player, "Spectate.stop", 'manual' )
 				setPlayerStatus( player, nil, "")
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), nil )
-				-- Do respawn style restore 
-				restorePlayer( g_CurrentRaceMode.id, player, true, true )
+				if RaceMode.getNumberOfCheckpoints() > 0 then
+					-- Do respawn style restore
+					restorePlayer( g_CurrentRaceMode.id, player, true, true )
+				else
+					-- Do 'freeze/collision off' stuff when stopping spectate
+					RaceMode.playerFreeze(player, true, true)
+					TimerManager.createTimerFor("map",player):setTimer(afterSpectatePlayerUnfreeze, 2000, 1, player, true)
+				end
 			end
 		end
 	end
 )
+
+function afterSpectatePlayerUnfreeze(player, bDontFix)
+	RaceMode.playerUnfreeze(player, bDontFix)
+	setElementVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].velocity))
+	setVehicleTurnVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].turnvelocity))
+	g_SavedVelocity[player] = nil
+end
 
 -- Handle client going to/from spectating
 addEvent('onClientNotifySpectate', true)
@@ -1001,6 +1024,7 @@ g_NotReadyMaxWait = nil
 addEventHandler('onPlayerQuit', g_Root,
 	function()
         g_NotReady[source] = nil
+		g_SavedVelocity[source] = nil
 	end
 )
 

@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r597 07May10" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r598 08May10" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -220,14 +220,14 @@
 
 		<setting name="*joinspectating" value="true"
 					friendlyname="Join spectating"
-					group="Gameplay"
+					group="Spectating"
 					accept="false,true"
 					desc="Set to true to make joining players spectate the race in progress."
 					/>
 
 		<setting name="*stealthspectate" value="true"
 					friendlyname="Admin stealth spectate"
-					group="_Advanced"
+					group="Spectating"
 					accept="false,true"
 					desc="Set to true to hide the state of spectating admins."
 					/>
@@ -269,9 +269,16 @@
 
 		<setting name="*anyonecanspec" value="true"
 					friendlyname="Anyone can spectate"
-					group="Gameplay"
+					group="Spectating"
 					accept="false,true"
-					desc="Allow any player to start spectating with the 'B' key."
+					desc="Allow any player to start spectating with the 'B' key. (Does not work in no repawn maps)"
+					/>
+
+		<setting name="*norsadminspectate" value="false"
+					friendlyname="Admin no respawn spectate"
+					group="Spectating"
+					accept="false,true"
+					desc="Allow admins to spectate while alive in no respawn maps."
 					/>
 
 		<setting name="*joinrandomvote" value="true"
