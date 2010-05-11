@@ -696,6 +696,14 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
 				local right = arg[3]
+				local enabled = true
+				if ( not aclSetRight ( acl, right, enabled ) ) then
+					action = nil
+					outputChatBox ( "Error adding right '"..tostring ( arg[3] ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
+				else
+					mdata2 = "Right '"..arg[3].."'"
+					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )
+				end
 			end
 		else
 			action = nil

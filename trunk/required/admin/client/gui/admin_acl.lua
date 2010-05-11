@@ -150,6 +150,9 @@ function aAdminACL ( type, acltable )
 				for name, access in pairs ( acltable["rights"] ) do
 					local row = guiGridListAddRow ( aACLList )
 					guiGridListSetItemText ( aACLList, row, 2, "  "..name, false, false )
+					if guiGridListSetItemColor then
+						guiGridListSetItemColor ( aACLList, row, 2, access and 0 or 255, access and 255 or 0, 0, 255)
+					end
 				end
 				guiGridListSetItemText ( aACLList, acl_row, 1, "-", false, false )
 			else
@@ -209,7 +212,11 @@ function aClientACLClick ( button )
 		elseif ( source == aACLCreateGroup ) then
 			aInputBox ( "Create ACL Group", "Enter group name:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"aclcreate\", \"group\", $value )" )
 		elseif ( source == aACLCreateACL ) then
-			aInputBox ( "Create ACL", "Enter game type:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"aclcreate\", \"acl\", $value )" )
+			aInputBox ( "Create ACL", "Enter acl name:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"aclcreate\", \"acl\", $value )" )
+		elseif ( source == aACLAddObject ) then
+			aInputBox ( "Create ACL Group", "Enter object name:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"acladd\", \"object\", \""..aAclData["current"].."\", $value )" )
+		elseif ( source == aACLAddRight ) then
+			aInputBox ( "Create ACL", "Enter right name:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"acladd\", \"right\", \""..aAclData["current"].."\", $value )" )
 		elseif ( source == aACLDestroyGroup ) then
 			aMessageBox ( "warning", "Are you sure to destroy "..aAclData["current"].." group?", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"acldestroy\", \"group\", \""..aAclData["current"].."\" )" )
 		elseif ( source == aACLDestroyACL ) then
