@@ -303,8 +303,8 @@ function aAdminMenu ()
 		triggerServerEvent ( "aSync", getLocalPlayer(), "players" )
 		if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "messages" ) end
 		if ( hasPermissionTo ( "command.listresources" ) ) then 
-			-- triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) 
-			-- triggerServerEvent("getMaps_s", getLocalPlayer(), getLocalPlayer(), true) 
+			triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) 
+			triggerServerEvent("getMaps_s", getLocalPlayer(), getLocalPlayer(), true) 
 		end
 		triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
 		triggerEvent ( "onAdminInitialize" )
