@@ -10,7 +10,7 @@
 
 _DEBUG = false
 
-_version = '1.2 Development Preview'
+_version = '1.3'
 _root = getRootElement()
 _flags = {}
 _widgets = {}
