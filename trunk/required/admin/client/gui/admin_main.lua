@@ -21,9 +21,9 @@ aLastSync = 0
 function aAdminMenu ()
 	if ( aAdminForm == nil ) then
 		local x, y = guiGetScreenSize()
-		aAdminForm			= guiCreateWindow ( x / 2 - 310, y / 2 - 260, 620, 520, "Admin Menu - v".._version, false )
+		aAdminForm			= guiCreateWindow ( x / 2 - 310, y / 2 - 260, 620, 520, "", false )
 							guiWindowSetSizable ( aAdminForm, false )
-						  guiSetText ( aAdminForm, "Admin Menu - v".._version )
+						  guiSetText ( aAdminForm, "Admin Panel   -   v".._version )
 						  guiCreateLabel ( 0.75, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )
 		aTabPanel			= guiCreateTabPanel ( 0.01, 0.05, 0.98, 0.95, true, aAdminForm )
 		aTab1 = {}	
@@ -302,10 +302,6 @@ function aAdminMenu ()
 
 		triggerServerEvent ( "aSync", getLocalPlayer(), "players" )
 		if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "messages" ) end
-		if ( hasPermissionTo ( "command.listresources" ) ) then 
-			triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) 
-			triggerServerEvent("getMaps_s", getLocalPlayer(), getLocalPlayer(), true) 
-		end
 		triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
 		triggerEvent ( "onAdminInitialize" )
 		showCursor ( true )
@@ -526,6 +522,13 @@ function aClientGUITabSwitched( selectedTab )
 			if guiGridListGetRowCount( aTab2.ResourceList ) == 0 then
 				if ( hasPermissionTo ( "command.listresources" ) ) then 
 					triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) 
+				end
+			end
+		elseif selectedTab == aTabMap.Tab then
+			-- Handle initial update of map list
+			if guiGridListGetRowCount( aTabMap.MapList ) == 0 then
+				if ( hasPermissionTo ( "command.listresources" ) ) then 
+					triggerServerEvent ( "getMaps_s", getLocalPlayer(), getLocalPlayer(), true ) 
 				end
 			end
 		elseif selectedTab == aTab4.Tab then
