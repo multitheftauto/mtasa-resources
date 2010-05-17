@@ -28,7 +28,7 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 	---These are special checks for certain kill types
 	local usedVehicle
 	if killerweapon == 19 then --rockets
-		killerweapon = killer and getElementType ( killer ) == "player" and getPlayerWeapon(killer)
+		killerweapon = killer and getElementType ( killer ) == "player" and getPedWeapon(killer)
 		if not killerweapon then
 			killerweapon = 51
 		end

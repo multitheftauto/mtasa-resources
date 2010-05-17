@@ -24,7 +24,7 @@ addEventHandler ( "onPlayerWasted", getRootElement (),
 		local timeout = get("timeout")
 		
 		if get("only_current") then
-			local source_weapon = getPlayerWeapon ( source )
+			local source_weapon = getPedWeapon ( source )
 			if ( source_weapon and source_weapon ~= 0 and source_ammo ) then
 				local pickup = createPickup ( pX, pY, pZ, 2, source_weapon, timeout, source_ammo )
 				addEventHandler ( "onPickupHit", pickup, onDeathPickupHit )

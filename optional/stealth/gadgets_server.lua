@@ -30,7 +30,7 @@ addEventHandler("uncloaktheplayer",getRootElement(),cloakstop)
 addEvent ("goggleswap", true )
 
 function changegoggles(player)
-	local currentgoggles = getPlayerWeapon ( player, 11 )
+	local currentgoggles = getPedWeapon ( player, 11 )
 	if currentgoggles == 44 then
 		giveWeapon ( player, 45, 1 )
 		outputChatBox("Infrared.",player, 255, 69, 0)

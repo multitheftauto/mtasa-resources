@@ -216,7 +216,7 @@ end
 addEventHandler ( "onPickupUse", root,
 	function ( player )
 		if getPickupType ( source ) == 2 and getPickupWeapon ( source ) == 22 then
-			if getPlayerWeapon ( player ) == 22 and getPlayerTotalAmmo ( player ) ~= 0 then
+			if getPedWeapon ( player ) == 22 and getPedTotalAmmo ( player ) ~= 0 then
 				setColtStat ( true, player )
 			else
 				triggerClientEvent ( player, "onColtPickup", player, source )
