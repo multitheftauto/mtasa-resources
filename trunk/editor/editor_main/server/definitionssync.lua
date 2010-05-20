@@ -86,49 +86,59 @@ addEventHandler ( "onResourceStart", thisResourceRoot,
 	end
 )
 
-addEvent ( "reloadEDFDefinitions", true )
-addEventHandler ( "reloadEDFDefinitions",rootElement,
-function(newEDF)
-	editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
+function reloadEDFDefinitions(newEDF)
+	if client then
+		editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
+	end
 	loadedDefs = edf.edfGetLoadedEDFResources()
 	--load new defs
-	for k,resourceName in pairs(newEDF.addedEDF) do
+	for k,resourceName in ipairs(newEDF.addedEDF) do
 		--check if the resource is loaded already
-		local loaded = false
 		local resource = getResourceFromName ( resourceName )
-		for k, loadedResource in pairs(loadedDefs) do
-			if loadedResource == resource then
-				loaded = true
-				break
+		if resource then
+			local loaded = false
+			for k, loadedResource in ipairs(loadedDefs) do
+				if loadedResource == resource then
+					loaded = true
+					break
+				end
 			end
-		end
-		if loaded == false then
-			outputDebugString ( "loading "..resourceName.." def." )
-			--Only accept server config files and general files (for edf icons)
-			-- startResource ( getResourceFromName(resourceName),false,true,false,false,false,false,false,true)
-			blockMapManager ( resource ) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
-			edf.edfStartResource ( resource )
+			if loaded == false then
+				outputDebugString ( "loading "..resourceName.." def." )
+				--Only accept server config files and general files (for edf icons)
+				-- startResource ( getResourceFromName(resourceName),false,true,false,false,false,false,false,true)
+				blockMapManager ( resource ) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
+				edf.edfStartResource ( resource )
+			end
+		else
+			table.remove(newEDF.addedEDF, k)
 		end
 	end
 	--unload defs
-	for k, resourceName in pairs(newEDF.availEDF) do
-		local loaded = false
+	for k, resourceName in ipairs(newEDF.availEDF) do
 		local resource = getResourceFromName ( resourceName )
-		for k, loadedResource in pairs(loadedDefs) do
-			if loadedResource == resource then
-				loaded = true
-				break
+		if resource then
+			local loaded = false
+			for k, loadedResource in ipairs(loadedDefs) do
+				if loadedResource == resource then
+					loaded = true
+					break
+				end
 			end
-		end
-		if loaded == true then
-			outputDebugString ( "unloading "..resourceName.." def." )
-			-- stopResource ( getResourceFromName(resourceName) )
-			edf.edfStopResource ( resource )
+			if loaded == true then
+				outputDebugString ( "unloading "..resourceName.." def." )
+				-- stopResource ( getResourceFromName(resourceName) )
+				edf.edfStopResource ( resource )
+			end
+		else
+			table.remove(newEDF.availEDF, k)
 		end
 	end
 	allEDF = newEDF
 	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
-end )
+end
+addEvent ( "reloadEDFDefinitions", true )
+addEventHandler ( "reloadEDFDefinitions", rootElement, reloadEDFDefinitions )
 
 addEventHandler ( "onResourceStop",thisResourceRoot,
 	function()
