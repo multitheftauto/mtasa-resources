@@ -36,7 +36,7 @@ function startUp()
 			saveResource(DUMP_RESOURCE, true)
 		else
 			if #getElementsByType("player") > 0 then
-				editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'New Map' to start a new map.", root, 255, 255, 0, 20000)
+				editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'new' to start a new map.", root, 255, 255, 0, 20000)
 			else
 				addEventHandler("onPlayerJoin", rootElement, onJoin)
 			end
@@ -69,7 +69,7 @@ addCommandHandler("savedump",
 )
 
 function onJoin()
-	editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'New Map' to start a new map.", source, 255, 255, 0, 20000)
+	editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'new' to start a new map.", source, 255, 255, 0, 20000)
 	removeEventHandler("onPlayerJoin", rootElement, onJoin)
 end
 
@@ -102,26 +102,20 @@ function openResource( resourceName, onStart )
 		local mapName = DUMP_RESOURCE
 		for key,mapPath in ipairs(maps) do
 			local mapNode = xmlLoadFile ( ':' .. getResourceName(map) .. '/' .. mapPath )
-
+			-- read the definitons that are used in the map
 			local usedDefinitions = xmlNodeGetAttribute(mapNode, "edf:definitions")
 			if usedDefinitions then
-				-- The map specifies a set of EDF to load
-				local loadedDefinitions = edf.edfGetLoadedEDFResources()
-				local usedDefinitions = split(usedDefinitions, 44)
-				-- Load the neccessary definitions
-				for k,defName in ipairs(usedDefinitions) do
-					local definition = getResourceFromName(defName)
-					if ( definition ) and ( getResourceState(definition) ~= 'running' ) then
-						blockMapManager ( definition ) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
-						edf.edfStartResource(definition)
-						table.insert (allEDF.addedEDF, defName )
-						local key = table.find(allEDF.availEDF,defName)
-						if key then
-							table.remove ( allEDF.availEDF, key )
-						end
-					end
+				local newEDF = allEDF
+				-- define all EDFs as available
+				for _, definition in ipairs(newEDF.addedEDF) do
+					table.insert(newEDF.availEDF, definition)
 				end
-				triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+				-- The map specifies a set of EDF to load
+				newEDF.addedEDF = split(usedDefinitions, 44)
+				--  Remove the added EDFs from the available
+				table.subtract(newEDF.availEDF, newEDF.addedEDF)
+				-- Un/Load the neccessary definitions
+				reloadEDFDefinitions(newEDF)
 			end
 
 			local mapElement = loadMapData ( mapNode, thisResourceRoot, false )

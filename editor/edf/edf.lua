@@ -175,11 +175,21 @@ addEventHandler("onResourceStop", rootElement,
 ---------------------------------------------------------------------
 
 function edfStartResource ( resource )
-	if not getResourceName(resource) or getResourceState ( resource ) == "running" then
+	if not getResourceName(resource) then
 		return false
+	elseif getResourceState(resource) == "running" then
+		-- load the definition
+		local def = edfLoadDefinition(resource)
+		-- stop here if it couldn't be loaded
+		if not def then return end
+		edfStarted[resource] = true
+		-- Notify that the load has been successful
+		outputDebugString("Loaded definitions for '"..getResourceName(resource).."'.",0,180,180,255)
+		return true
+	else
+		edfStarted[resource] = false
+		return startResource(resource,false,false,true,false,false,false,false,false,true)
 	end
-	edfStarted[resource] = false
-	return startResource ( resource,false,false,true,false,false,false,false,false,true)
 end
 
 function edfStopResource ( resource )
