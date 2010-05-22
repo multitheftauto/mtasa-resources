@@ -17,19 +17,21 @@ end
 
 
 -- Get a resource's public bool,number,string or table settings
-function aGetResourceSettings( resName )
+function aGetResourceSettings( resName, bCountOnly )
 	allowedAccess = { ['*']=true }
 	allowedTypes  = { ['boolean']=true, ['number']=true, ['string']=true, ['table']=true }
+	local count = 0
 
 	local rawsettings = get(resName..'.')
 	if not rawsettings then
-		return {}
+		return {}, count
 	end
 	local settings = {}
 	-- Parse raw settings
 	for rawname,value in pairs(rawsettings) do
 		if allowedTypes[type(value)] then
 			if allowedAccess[string.sub(rawname,1,1)] then
+				count = count + 1
 				-- Remove leading '*','#' or '@'
 				local temp = string.gsub(rawname,'[%*%#%@](.*)','%1')
 				-- Remove leading 'resName.'
@@ -46,6 +48,10 @@ function aGetResourceSettings( resName )
 				end
 			end
 		end
+	end
+	-- Don't do anything else if all we want is the settings count
+	if bCountOnly then
+		return {}, count
 	end
 	-- Copy to tableOut, setting 'current' from 'default' where appropriate
 	local tableOut = {}
@@ -64,5 +70,5 @@ function aGetResourceSettings( resName )
 			tableOut[name].desc			= get( resName .. '.' .. name .. '.desc' )
 		end
 	end
-	return tableOut
+	return tableOut, count
 end
