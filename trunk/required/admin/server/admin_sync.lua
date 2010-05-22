@@ -57,8 +57,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			local name = getResourceName ( resource )
 			local state = getResourceState ( resource )
 			local type = getResourceInfo ( resource, "type" )
-			local numsettings = 0
-			for k,v in pairs(aGetResourceSettings(name)) do numsettings = numsettings + 1 end
+			local _,numsettings = aGetResourceSettings(name,true)
 			tableOut[id] = {}
 			tableOut[id]["name"] = name
 			tableOut[id]["numsettings"] = numsettings

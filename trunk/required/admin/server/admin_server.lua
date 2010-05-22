@@ -389,18 +389,25 @@ addEventHandler ( "aPlayerVersion", _root, function ( version )
 			bIsPre = true
 		elseif version.mta == "1.0.3" and rc < 9 then
 			bIsPre = true
-		-- elseif version.mta == "1.0.4" and rc < ? then
-			-- bIsPre = true
-		-- elseif version.mta == "1.0.5" and rc < ? then
-			-- bIsPre = true
 		end
 		-- If version does not have a built in version check, maybe show a message box advising an upgrade
 		if version.number < 259 or ( version.mta == "1.0.3" and rc < 3 ) then
 			triggerClientEvent ( source, "aClientShowUpgradeMessage", source )	
 		end
 	end
+
+	-- Try to get new player version
+	local playerVersion
+	if getPlayerVersion then
+		playerVersion = getPlayerVersion(client)
+	else
+		playerVersion = version.mta .. "-" .. ( bIsPre and "7" or "9" ) .. ".00000.0"
+	end
+
+	-- Format it all prettyful
+	local _,_,ver,type,build = string.find ( playerVersion, "(.*)-([0-9])\.(.*)" )
 	if aPlayers[source] then
-		aPlayers[source]["version"] = version.mta .. ( bIsPre and " pre" or "" )
+		aPlayers[source]["version"] = ver .. ( type < '9' and " pre  " or "  " ) .. "(" .. type .. "." .. build .. ")"
 	end
 end )
 
