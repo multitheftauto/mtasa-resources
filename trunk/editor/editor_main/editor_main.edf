@@ -5,6 +5,7 @@
 		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="doublesided" type="selection:false,true" description="MTA double sidedness" required="false" />
 	</element>
 	<element name="pickup" friendlyname="Pickup" icon="client/images/icons/pickup.png">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
