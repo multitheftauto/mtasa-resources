@@ -10,6 +10,13 @@ end
 propertyGetters = {
 	object = {
 		model = getElementModel,
+		doublesided = function(element)
+			if isElementDoubleSided then
+				return isElementDoubleSided(element) and "true" or "false"
+			else
+				return getElementData(element,"doublesided")=="true" and "true" or "false"
+			end
+		end,
 	},
 	ped = {
 		model = getElementModel,
@@ -93,6 +100,13 @@ propertyGetters = {
 propertySetters = {
 	object = {
 		model = setElementModel,
+		doublesided = function(element,bon)
+			if setElementDoubleSided then
+				return setElementDoubleSided(element,bon=="true")
+			else
+				return setElementData(element,"doublesided",bon=="true" and "true" or "false")
+			end
+		end,
 	},
 	ped = {
 		model = setElementModel,
