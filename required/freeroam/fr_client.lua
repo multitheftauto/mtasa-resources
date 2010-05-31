@@ -1484,6 +1484,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		hideAllWindows()
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), doesPedHaveJetPack(g_Me))
 		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPedBeKnockedOffBike(g_Me))
+		setJetpackMaxHeight ( 9001 )
 		triggerServerEvent('onLoadedAtClient', g_ResRoot, g_Me)
 	end
 )
