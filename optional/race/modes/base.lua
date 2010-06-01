@@ -480,7 +480,7 @@ function RaceMode.playerFreeze(player, bRespawn, bDontFix)
 	end
 
 	-- Reset move away stuff
-	Override.setCollideOthers( "ForVehicleSpectating", vehicle, nil )
+	Override.setCollideOthers( "ForSpectating", vehicle, nil )
 	Override.setCollideOthers( "ForMoveAway", vehicle, nil )
 	Override.setAlpha( "ForMoveAway", {player, vehicle}, nil )
 
