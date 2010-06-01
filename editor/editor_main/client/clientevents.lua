@@ -15,6 +15,8 @@ addEvent ( "doUnloadEDF", true )
 -- client-side editor mode toggle events
 addEvent "onFreecamMode"
 addEvent "onCursorMode"
+-- element double click
+addEvent "onClientElementDoubleClick"
 -- custom click event
 addEvent "onClientWorldClick"
 -- clipboard events

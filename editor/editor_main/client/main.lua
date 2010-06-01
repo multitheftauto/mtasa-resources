@@ -477,8 +477,8 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 end
 
 function processDoubleClick ( clickedElement, key )
-	if triggerEvent ( "onClientDoubleClick", clickedElement, key ) then
-		if not clickedElement then return end
+	if not clickedElement then return end
+	if triggerEvent ( "onClientElementDoubleClick", clickedElement, key ) then
 		if key == "select_target_keyboard" then
 			if ( selectElement(clickedElement, KEYBOARD_SUBMODE) ) then
 				editor_gui.openPropertiesBox(g_selectedElement)
