@@ -97,7 +97,6 @@ function cacheGameOptions()
 	g_GameOptions.autopimp				= getBool('race.autopimp',true)
 	g_GameOptions.vehicleweapons		= getBool('race.vehicleweapons',true)
 	g_GameOptions.firewater				= getBool('race.firewater',false)
-	g_GameOptions.cachemodels			= getBool('race.cachemodels',true)
 	g_GameOptions.classicchangez		= getBool('race.classicchangez',false)
 	g_GameOptions.admingroup			= getString('race.admingroup','Admin')
 	g_GameOptions.blurlevel				= getNumber('race.blur',36)
@@ -116,7 +115,6 @@ function cacheGameOptions()
 	g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
 	g_GameOptions.autopimp_map_can_override			= getBool('race.autopimp_map_can_override',true)
 	g_GameOptions.firewater_map_can_override		= getBool('race.firewater_map_can_override',true)
-	g_GameOptions.cachemodels_map_can_override		= getBool('race.cachemodels_map_can_override',true)
 	g_GameOptions.classicchangez_map_can_override	= getBool('race.classicchangez_map_can_override',true)
 	g_GameOptions.ghostmode_warning_if_map_override			= getBool('race.ghostmode_warning_if_map_override',true)
 	g_GameOptions.vehicleweapons_warning_if_map_override	= getBool('race.vehicleweapons_warning_if_map_override',true)
@@ -149,7 +147,6 @@ function cacheMapOptions(map)
 	g_MapOptions.ghostmode		= map.ghostmode == 'true'
 	g_MapOptions.autopimp		= map.autopimp == 'true'
 	g_MapOptions.firewater		= map.firewater == 'true'
-	g_MapOptions.cachemodels	= map.cachemodels == 'true'
 	g_MapOptions.classicchangez	= map.classicchangez == 'true'
 	g_MapOptions.hunterminigun	= map.hunterminigun == 'true'
 
@@ -199,11 +196,6 @@ function cacheMapOptions(map)
 		g_MapOptions.firewater = g_GameOptions.firewater
 	end
 
-	-- Set cachemodels from g_GameOptions if not defined in the map, or map override not allowed
-	if not map.cachemodels or not g_GameOptions.cachemodels_map_can_override then
-		g_MapOptions.cachemodels = g_GameOptions.cachemodels
-	end
-
 	-- Set classicchangez from g_GameOptions if not defined in the map, or map override not allowed
 	if not map.classicchangez or not g_GameOptions.classicchangez_map_can_override then
 		g_MapOptions.classicchangez = g_GameOptions.classicchangez
@@ -244,7 +236,6 @@ function loadMap(res)
 	g_SavedMapSettings.ghostmode		= map.ghostmode
 	g_SavedMapSettings.autopimp			= map.autopimp
 	g_SavedMapSettings.firewater		= map.firewater
-	g_SavedMapSettings.cachemodels		= map.cachemodels
 	g_SavedMapSettings.classicchangez	= map.classicchangez
 	g_SavedMapSettings.firewater		= map.firewater
 	g_SavedMapSettings.hunterminigun	= map.hunterminigun
@@ -974,9 +965,11 @@ addEventHandler('onClientRequestSpectate', g_Root,
 
 function afterSpectatePlayerUnfreeze(player, bDontFix)
 	RaceMode.playerUnfreeze(player, bDontFix)
-	setElementVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].velocity))
-	setVehicleTurnVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].turnvelocity))
-	g_SavedVelocity[player] = nil
+	if g_SavedVelocity[player] then
+		setElementVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].velocity))
+		setVehicleTurnVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].turnvelocity))
+		g_SavedVelocity[player] = nil
+	end
 end
 
 -- Handle client going to/from spectating

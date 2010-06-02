@@ -233,23 +233,6 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 		g_Objects[i] = createObject(object.model, pos[1], pos[2], pos[3], rot[1], rot[2], rot[3])
 	end
 
-    -- Make sure one copy of each model does not get streamed out to help caching.
-    local maxNonStreamedModels = (g_MapOptions.cachemodels and 100) or 0
-    local nonStreamedModels = {}
-    local numNonStreamedModels = 0
- 	for i,obj in ipairs(g_Objects) do
-        local model = getElementModel ( obj )
-        if model and not nonStreamedModels[model] and numNonStreamedModels < maxNonStreamedModels then
-            if setElementStreamable ( obj, false ) then
-                nonStreamedModels[model] = obj
-                numNonStreamedModels = numNonStreamedModels + 1
-            else
-                outputDebug( 'MISC', 'setElementStreamable( obj, false ) failed for ' .. tostring(model) )
-            end
-        end
-    end
-    outputDebug( 'MISC', 'maxNonStreamedModels:' .. tostring(maxNonStreamedModels) .. '  numNonStreamedModels:' .. numNonStreamedModels )
-	
 	if #g_Checkpoints > 0 then
 		g_CurrentCheckpoint = 0
 		showNextCheckpoint()
