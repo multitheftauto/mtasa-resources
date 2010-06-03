@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r610 02Jun10" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r611 04Jun10" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -279,6 +279,13 @@
 					group="Gameplay"
 					accept="false,true"
 					desc="If someone joins a lone player, start a vote to change to a random map."
+					/>
+
+		<setting name="*asyncloading" value="true"
+					friendlyname="Asynchronous Loading"
+					group="_Advanced"
+					accept="false,true"
+					desc="Enabling this can reduce model loading lag for certain maps. It is only applied for clients who have chosen the 'Auto' option for asynchronous loading in their main settings menu."
 					/>
 
         <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
