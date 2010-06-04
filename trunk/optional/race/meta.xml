@@ -274,6 +274,13 @@
 					desc="Allow admins to spectate while alive in no respawn maps."
 					/>
 
+		<setting name="*racerespawn" value="true"
+					friendlyname="Race respawn after spectate"
+					group="Spectating"
+					accept="false,true"
+					desc="Force players to spawn like after death."
+					/>
+
 		<setting name="*joinrandomvote" value="true"
 					friendlyname="Random vote on join"
 					group="Gameplay"
