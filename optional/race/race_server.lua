@@ -109,6 +109,7 @@ function cacheGameOptions()
 	g_GameOptions.securitylevel			= getNumber('race.securitylevel',2)
 	g_GameOptions.anyonecanspec			= getBool('race.anyonecanspec',true)
 	g_GameOptions.norsadminspectate		= getBool('race.norsadminspectate',false)
+	g_GameOptions.racerespawn			= getBool('race.racerespawn',true)
 	g_GameOptions.joinrandomvote		= getBool('race.joinrandomvote',true)
 	g_GameOptions.asyncloading			= getBool('race.asyncloading',true)
 	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
@@ -927,7 +928,7 @@ addEventHandler('onClientRequestSpectate', g_Root,
 			if not stateAllowsManualSpectate() then return end
 			if not _TESTING then
 				if isPlayerInACLGroup(player, g_GameOptions.admingroup) then
-					if not RaceMode.isMapRespawn() and not g_GameOptions.norsadminspectate then
+					if not RaceMode.isMapRespawn() and g_GameOptions.norsadminspectate then
 						return false
 					end
 				else
@@ -951,7 +952,7 @@ addEventHandler('onClientRequestSpectate', g_Root,
 				clientCall(player, "Spectate.stop", 'manual' )
 				setPlayerStatus( player, nil, "")
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), nil )
-				if RaceMode.getNumberOfCheckpoints() > 0 then
+				if g_GameOptions.racerespawn and RaceMode.getNumberOfCheckpoints() > 0 then
 					-- Do respawn style restore
 					restorePlayer( g_CurrentRaceMode.id, player, true, true )
 				else
