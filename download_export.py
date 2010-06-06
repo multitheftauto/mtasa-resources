@@ -1,20 +1,16 @@
-import os
-import shutil
-import zipfile
-import tempfile
+import os                       #basic file/dir stuff
+import shutil           #higher level file operations, used to delete directory trees
+import zipfile          #used to create zip files
 import stat
-import time
+import tempfile
 
-EXPORT_DIR = "./exported_installer/"
+EXPORT_DIR = tempfile.mkdtemp() + "/"
+TEMP_EXPORT_DIR = EXPORT_DIR + "TEMP_SVN_DIR/"
 
 validResourceTypes = {
 	"optional" : 1,
 	"required" : 1,
 	"editor" : 1,
-}
-
-folderResources = {
-	"amx" : 1
 }
 
 #Function to get rid of read-only
@@ -40,21 +36,17 @@ def makeNukeList(dir):
 	return nukeList
 
 
-if os.path.exists(EXPORT_DIR):
-	makeNukeList(EXPORT_DIR)
-	shutil.rmtree(EXPORT_DIR)
-
 #Let's create a temp working directory
-shutil.copytree("./", EXPORT_DIR)
+shutil.copytree("./", TEMP_EXPORT_DIR)
 
-listnuke = makeNukeList(EXPORT_DIR)
+listnuke = makeNukeList(TEMP_EXPORT_DIR)
 
 #walking is done, now delete all of the .svn dirs
 for dir in listnuke:
 		print("Removing %s"%dir)
 		shutil.rmtree(dir)
 #Delete any files in the root of the dir
-for root,dirs,files in os.walk(EXPORT_DIR):
+for root,dirs,files in os.walk(TEMP_EXPORT_DIR):
 	for file in files:
 		os.remove(os.path.abspath(os.path.join(root,file)))
 	#Delete any folders that shouldnt be there
@@ -63,25 +55,26 @@ for root,dirs,files in os.walk(EXPORT_DIR):
 			shutil.rmtree(os.path.abspath(os.path.join(root,dir)))
 	break
 
-time.sleep(2)
-#output our zips
+	
+#Grab the SVN revision from a local file
+SVNfile = open('.svn\entries', 'r')
+svnRevision = SVNfile.readlines()[3][:-1]
+
+# Merge the three root directories into one by moving files/dirs up one directory
+for rootDir in os.listdir(TEMP_EXPORT_DIR):
+		for subDir in os.listdir(os.path.join(TEMP_EXPORT_DIR,rootDir)):
+				# move files to root directory
+				srcFile = os.path.join(TEMP_EXPORT_DIR,rootDir,subDir)
+				dstFile = os.path.join(EXPORT_DIR,subDir)
+				print ( srcFile )
+				print ( dstFile )
+				os.rename(srcFile,dstFile)
+# delete empty temp directory
+shutil.rmtree(TEMP_EXPORT_DIR)
+
+zipFileHandle = zipfile.ZipFile("multitheftauto_resources-r%s.zip"%svnRevision,'w', zipfile.ZIP_DEFLATED) #ZIP_DEFLATED means to compress, the alternative is ZIP_STORED
 for root,dirs,files in os.walk(EXPORT_DIR):
-	for resourceDir in dirs:
-		for resource in os.listdir( os.path.join(EXPORT_DIR,resourceDir) ):
-			if not folderResources.has_key(resource):
-				path = os.path.join(EXPORT_DIR,resourceDir, resource)
-				print("%s.zip" % (path))
-				zip = zipfile.ZipFile("%s.zip" % (path), "w", zipfile.ZIP_DEFLATED )
-				for root,dirs,files in os.walk( path ):
-					for file in files:
-						#print ("%s/%s" % (root[(len(resourceDir) + len(resource)) + 2:],file)
-						#print ( "%s/%s" % (root[len(path)+1:],file) )
-						print ( "%s/%s" % (root,file) )
-						
-						zip.write (  "%s/%s" % (root,file), "%s/%s" % (root[len(path)+1:],file) )
-				zip.close()
-				#Now we can delete the corresponding folder
-				shutil.rmtree(path)
-	break
-
-
+		for file in files:
+				absPathToFile = os.path.join(root,file)
+				zipFileHandle.write(absPathToFile,os.path.relpath(absPathToFile,EXPORT_DIR))
+zipFileHandle.close()
