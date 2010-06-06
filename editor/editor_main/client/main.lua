@@ -194,7 +194,7 @@ addEventHandler("onClientRender", root,
 			local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
 			local distance = math.sqrt((g_dragPosition.x - lookX)^2 +
 									   (g_dragPosition.y - lookY)^2 +
-						   (g_dragPosition.z - lookZ)^2)
+				 (g_dragPosition.z and (g_dragPosition.z - lookZ)^2 or 0))
 
 			if distance > DRAG_CAMERA_MINIMAL_DISTANCE then
 				selectElement(g_dragElement, MOUSE_SUBMODE)
