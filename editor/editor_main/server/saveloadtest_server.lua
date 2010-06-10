@@ -36,7 +36,7 @@ function startUp()
 			saveResource(DUMP_RESOURCE, true)
 		else
 			if #getElementsByType("player") > 0 then
-				editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'new' to start a new map.", root, 255, 255, 0, 20000)
+				editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the previously loaded map. Use 'new' to start a new map.", root, 255, 255, 0, 20000)
 			else
 				addEventHandler("onPlayerJoin", rootElement, onJoin)
 			end
@@ -69,7 +69,7 @@ addCommandHandler("savedump",
 )
 
 function onJoin()
-	editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the preciously loaded map. Use 'new' to start a new map.", source, 255, 255, 0, 20000)
+	editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the previously loaded map. Use 'new' to start a new map.", source, 255, 255, 0, 20000)
 	removeEventHandler("onPlayerJoin", rootElement, onJoin)
 end
 
