@@ -644,7 +644,7 @@ function updateSpectatingCheckpointsAndRank()
 			if cpValue > 0 and cpValue <= #g_Checkpoints then
 				if cpValue ~= cpValuePrev then
 					cpValuePrev = cpValue
-					setCurrentCheckpoint( cpValue, Spectate.active )	
+					setCurrentCheckpoint( cpValue, Spectate.active and watchedPlayer ~= g_Me )
 				end
 			end
 		end
