@@ -143,19 +143,21 @@ function TravelScreen.init()
     g_GUI['travelImage']   = guiCreateStaticImage(screenWidth/2-256, screenHeight/2-90, 512, 256, 'img/travelling.png', false, nil)
 	g_dxGUI['travelText1'] = dxText:create('Travelling to', screenWidth/2, screenHeight/2-130, false, 'bankgothic', 0.60, 'center' )
 	g_dxGUI['travelText2'] = dxText:create('', screenWidth/2, screenHeight/2-100, false, 'bankgothic', 0.70, 'center' )
+	g_dxGUI['travelText3'] = dxText:create('', screenWidth/2, screenHeight/2-70, false, 'bankgothic', 0.70, 'center' )
     g_dxGUI['travelText1']:color(240,240,240)
-    hideGUIComponents('travelImage', 'travelText1', 'travelText2')
+    hideGUIComponents('travelImage', 'travelText1', 'travelText2', 'travelText3')
 end
 
-function TravelScreen.show( msg )
+function TravelScreen.show( mapName, authorName )
     TravelScreen.startTime = getTickCount()
-    g_dxGUI['travelText2']:text(msg) 
-    showGUIComponents('travelImage', 'travelText1', 'travelText2')
+    g_dxGUI['travelText2']:text(mapName) 
+	g_dxGUI['travelText3']:text(authorName and "Author: " .. authorName or "")
+    showGUIComponents('travelImage', 'travelText1', 'travelText2', 'travelText3')
 	guiMoveToBack(g_GUI['travelImage'])
 end
 
 function TravelScreen.hide()
-    hideGUIComponents('travelImage', 'travelText1', 'travelText2')
+    hideGUIComponents('travelImage', 'travelText1', 'travelText2', 'travelText3')
 end
 
 function TravelScreen.getTicksRemaining()
@@ -165,9 +167,9 @@ end
 
 
 -- Called from server
-function notifyLoadingMap( mapName )
+function notifyLoadingMap( mapName, authorName )
     fadeCamera( false, 0.0, 0,0,0 ) -- fadeout, instant, black
-    TravelScreen.show( mapName )
+    TravelScreen.show( mapName, authorName )
 end
 
 

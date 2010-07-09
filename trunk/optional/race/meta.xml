@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r611 04Jun10" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="0.8.3" build="r619 09July10" edf:definition="edf/race.edf"/>
 	
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -293,6 +293,13 @@
 					group="_Advanced"
 					accept="false,true"
 					desc="Enabling this can reduce model loading lag for certain maps. It is only applied for clients who have chosen the 'Auto' option for asynchronous loading in their main settings menu."
+					/>
+
+		<setting name="*showauthorname" value="true"
+					friendlyname="Show map author name"
+					group="Display"
+					accept="false,true"
+					desc="Set to true to show the author name on the travelling screen."
 					/>
 
         <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
