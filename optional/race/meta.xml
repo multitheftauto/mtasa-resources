@@ -296,10 +296,10 @@
 					/>
 
 		<setting name="*showauthorname" value="true"
-					friendlyname="Show map author name"
+					friendlyname="Show author name"
 					group="Display"
 					accept="false,true"
-					desc="Set to true to show the author name on the travelling screen."
+					desc="Set to true to show the map author name on the travelling screen."
 					/>
 
         <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
