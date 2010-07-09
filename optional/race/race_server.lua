@@ -46,7 +46,7 @@ addEventHandler('onGamemodeMapStart', g_Root,
             setPlayerNotReady(player)
         end
         -- tell clients new map is loading
-        clientCall(g_Root, 'notifyLoadingMap', getResourceInfo(mapres, "name") or getResourceName(mapres) )
+        clientCall(g_Root, 'notifyLoadingMap', getResourceInfo(mapres, "name") or getResourceName(mapres), g_GameOptions.showauthorname and getResourceInfo( mapres , "author") )
 
 		if g_CurrentRaceMode then
 			outputDebugString('Unloading previous map')
@@ -112,6 +112,7 @@ function cacheGameOptions()
 	g_GameOptions.racerespawn			= getBool('race.racerespawn',true)
 	g_GameOptions.joinrandomvote		= getBool('race.joinrandomvote',true)
 	g_GameOptions.asyncloading			= getBool('race.asyncloading',true)
+	g_GameOptions.showauthorname		= getBool('race.showauthorname',true)
 	g_GameOptions.ghostmode_map_can_override		= getBool('race.ghostmode_map_can_override',true)
 	g_GameOptions.skins_map_can_override			= getBool('race.skins_map_can_override',true)
 	g_GameOptions.vehicleweapons_map_can_override   = getBool('race.vehicleweapons_map_can_override',true)
