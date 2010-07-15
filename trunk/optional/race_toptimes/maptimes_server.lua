@@ -39,6 +39,7 @@ end
 --
 ---------------------------------------------------------------------------
 function SMaptimes:destroy()
+	self.dbTable:destroy()
 	SMaptimes.instances[self.id] = nil
 	self.id = 0
 end
