@@ -23,7 +23,7 @@ local specialSyncers = {
 
 --!Need to write a decent algorithm to handle parents.
 function dumpMap ( xml, save, baseElement )
-	baseElement = baseElement or thisDynamicRoot
+	baseElement = baseElement or mapContainer
 	local elementChildren = {}
 	local rootElements = {}
 	local usedResources = {}
@@ -69,6 +69,7 @@ function dumpNodes ( xml, elementTable, elementChildren )
 		--add an ID attribute first off
 		xmlNodeSetAttribute(elementNode, "id", getElementID(element))
 		--dump raw properties from the getters
+--		outputDebugString(tostring(loadedEDF).."["..tostring(edf.edfGetCreatorResource(element)).."]"..".elements["..tostring(getElementType(element)).."].data")
 		for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
 			local value
 			if specialSyncers[dataField] then

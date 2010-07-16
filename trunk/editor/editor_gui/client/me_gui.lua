@@ -26,6 +26,12 @@ local guiShowing = true --this is a variable used to detect if gui is hidden or 
 local currentHUDAlpha
 local requireBinds
 
+function table.size(tab)
+    local length = 0
+    for _ in pairs(tab) do length = length + 1 end
+    return length
+end
+
 function startGUI(resource)
 	outputConsole("GUI load time measures (ms):")
 	TIME = getTickCount()
@@ -83,8 +89,10 @@ addEventHandler ( "onClientResourceStart", getRootElement(), onEDFResourceStart 
 function createElementIcons ( tableEDF, resource )
 	--store all our data neatly under the resource
 	local defTable = clearNonCreatableElements ( tableEDF["elements"] )
-	resourceElementDefinitions[resource] = defTable
-	refreshElementIcons()
+	if table.size(defTable) > 0 then
+		resourceElementDefinitions[resource] = defTable
+		refreshElementIcons()
+	end
 end
 addEventHandler ( "doLoadEDF", root, createElementIcons )
 

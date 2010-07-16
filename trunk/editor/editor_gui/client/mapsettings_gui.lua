@@ -67,7 +67,7 @@ function createMapSettings()
 	mapsettings.gravity = editingControl.number:create{["x"]=0.16,["y"]=0.64,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true}
 	
 	guiCreateMinimalLabel ( 0.02, 0.86, "Wave Height:", true, mapsettings.environmentTab )
-	mapsettings.waveheight = editingControl.natural:create{["x"]=0.16,["y"]=0.82,["width"]=0.1,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3}
+	mapsettings.waveheight = editingControl.number:create{["x"]=0.16,["y"]=0.82,["width"]=0.1,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true,["min"]=0,["max"]=100}
 	mapsettings.waveheight:addChangeHandler(function(self) if self:getValue() then setWaveHeight(self:getValue()) end end )
 	
 	guiCreateMinimalLabel ( 0.35, 0.5, "Minimum players:", true, mapsettings.environmentTab )

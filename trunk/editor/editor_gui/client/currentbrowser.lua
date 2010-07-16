@@ -316,6 +316,10 @@ function clearReps ( elemTable )
 end
 
 function clearOtherResourceElements ( elemTable, resourceName )
+	if not getResourceFromName("edf") then
+		return elemTable
+	end
+	
 	local newTable = {}
 	for key,value in ipairs(elemTable) do
 		local creator = edf.edfGetCreatorResource (value)

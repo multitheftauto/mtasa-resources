@@ -9,7 +9,12 @@ function readScripts ( server, client, resource )
 		local script,loadFunction = getScript ( path, resource )
 		if script then
 			if not SCRIPT_G[resource] then
-				SCRIPT_G[resource] = {}
+				createEventHandlerContainerForResource(resource)
+				createKeyBindContainerForResource(resource)
+				createCommandHandlerContainerForResource(resource)
+				SCRIPT_G[resource] = {addEventHandler = createAddEventHandlerFunctionForResource(resource), removeEventHandler = createRemoveEventHandlerFunctionForResource(resource),
+										bindKey = createBindKeyFunctionForResource, unbindKey = createUnbindKeyFunctionForResource,
+										addCommandHandler = createAddCommandHandlerFunctionForResource, removeCommandHandler = createRemoveCommandHandlerFunctionForResource}
 				setmetatable(SCRIPT_G[resource], { __index = _G })
 			end
 			setfenv ( loadFunction, SCRIPT_G[resource] )()
@@ -75,6 +80,10 @@ addEventHandler ( "requestSendScripts", root,
 
 addEventHandler ( "onPlayerJoin", root,
 	function()
+		if getElementData(getResourceRootElement(getResourceFromName("editor_main")),"g_in_test") then
+			return
+		end
+		
 		for resource,data in pairs(CLIENTSCRIPTS) do
 			local scriptInfo = {}
 			local clientScripts
@@ -84,7 +93,7 @@ addEventHandler ( "onPlayerJoin", root,
 			end
 			local resourceName = getResourceName(resource)
 			if clientScripts then
-				triggerClientEvent ( "requestScriptDownloads", root, scriptInfo, resourceName )
+				triggerClientEvent ( source, "requestScriptDownloads", root, scriptInfo, resourceName )
 			end 
 		end
 	end
@@ -93,6 +102,12 @@ addEventHandler ( "onPlayerJoin", root,
 addEventHandler ( "onResourceStop", root,
 	function(resource)
 		if SCRIPT_G[resource] then
+			if type(SCRIPT_G[resource].onStop) == "function" then
+				SCRIPT_G[resource].onStop()
+			end
+			cleanEventHandlerContainerForResource(resource)
+			cleanKeyBindContainerForResource(resource)
+			cleanCommandHandlerContainerForResource(resource)
 			SCRIPT_G[resource] = nil --Unload our script
 		end
 	end

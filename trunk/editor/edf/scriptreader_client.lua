@@ -41,7 +41,12 @@ function loadScripts ( resourceName )
 	--We have all our scripts ready.  Lets load them
 	for i,script in pairs(TEMP_SCRIPT_STORE[resourceName]) do
 		if not SCRIPT_G[resourceName] then
-			SCRIPT_G[resourceName] = {}
+			createEventHandlerContainerForResource(resourceName)
+			createKeyBindContainerForResource(resourceName)
+			createCommandHandlerContainerForResource(resourceName)
+			SCRIPT_G[resourceName] = {addEventHandler = createAddEventHandlerFunctionForResource(resourceName), removeEventHandler = createRemoveEventHandlerFunctionForResource(resourceName),
+										bindKey = createBindKeyFunctionForResource(resourceName), unbindKey = createUnbindKeyFunctionForResource(resourceName),
+										addCommandHandler = createAddCommandHandlerFunctionForResource(resourceName), removeCommandHandler = createRemoveCommandHandlerFunctionForResource(resourceName)}
 			setmetatable(SCRIPT_G[resourceName], { __index = _G })
 		end
 		local loadFunction, errorMsg = loadstring ( script )
@@ -68,6 +73,9 @@ addEventHandler ( "onClientResourceStop", root,
 			if type(SCRIPT_G[resourceName].onStop) == "function" then
 				SCRIPT_G[resourceName].onStop()
 			end
+			cleanEventHandlerContainerForResource(resourceName)
+			cleanKeyBindContainerForResource(resourceName)
+			cleanCommandHandlerContainerForResource(resourceName)
 			SCRIPT_G[resourceName] = nil --Unload our script
 		end
 	end

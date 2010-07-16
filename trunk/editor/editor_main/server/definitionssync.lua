@@ -86,8 +86,14 @@ addEventHandler ( "onResourceStart", thisResourceRoot,
 	end
 )
 
-function reloadEDFDefinitions(newEDF)
-	if client then
+function reloadEDFDefinitions(newEDF,noOutput)
+	if client and not isPlayerAllowedToDoEditorAction(client,"definitions") then
+		editor_gui.outputMessage ("You don't have permissions to change the map definitions!", client,255,0,0)
+		triggerClientEvent(client, 'syncEDFDefinitions', rootElement, allEDF)
+		return
+	end
+	
+	if client and not noOutput then
 		editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
 	end
 	loadedDefs = edf.edfGetLoadedEDFResources()

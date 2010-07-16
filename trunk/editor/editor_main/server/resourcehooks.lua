@@ -107,6 +107,8 @@ local function recursiveDimensionSet(baseElement, dimension)
 end
 
 function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
+	local tick = getTickCount()
+	
 	local resourceTable = resourceTable or {}
 
 	for i, element in ipairs(getElementChildren(baseElement)) do
@@ -144,8 +146,13 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 			makeElementStatic(editorElement)
 
 			setElementData(editorElement, "me:dimension", elementDimension)
-
+			
 			flattenTree ( element, newParent, editorElement, resourceTable )
+		end
+		
+		if getTickCount() >= tick + 500 then
+			coroutine.yield()
+			tick = getTickCount()
 		end
 	end
 	return true

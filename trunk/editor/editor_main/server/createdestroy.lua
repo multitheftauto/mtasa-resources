@@ -15,7 +15,7 @@ end
 
 function setupNewElement(element, creatorResource, creatorClient, attachLater,shortcut,selectionSubmode)
 	selectionSubmode = selectionSubmode or 1
-	setElementParent(element, thisDynamicRoot)
+	setElementParent(element, mapContainer)
 	setElementDimension ( element, getWorkingDimension() )
 	makeElementStatic( element )
 	assignID ( element )
@@ -31,11 +31,17 @@ end
 
 addEventHandler ( "doCreateElement", rootElement,
 	function ( elementType, resourceName, parameters, attachLater, shortcut )
+		if client and not isPlayerAllowedToDoEditorAction(client,"createElement") then
+			editor_gui.outputMessage ("You don't have permissions to create a new element!", client,255,0,0)
+			return
+		end
+		
 		parameters = parameters or {}
 		
 		local creatorResource = getResourceFromName( resourceName )
 		local edfElement = edf.edfCreateElement (
 			elementType,
+			client,
 			creatorResource,
 			parameters,
 			true --editor mode
@@ -52,6 +58,11 @@ addEventHandler ( "doCreateElement", rootElement,
 
 addEventHandler ( "doCloneElement", rootElement,
 	function (attachMode,creator)
+		if client and not isPlayerAllowedToDoEditorAction(client,"createElement") then
+			editor_gui.outputMessage ("You don't have permissions to clone an element!", client,255,0,0)
+			return
+		end
+		
 		if creator then
 			edf.edfSetCreatorResource(source,creator)
 		end
@@ -69,6 +80,14 @@ addEventHandler ( "doCloneElement", rootElement,
 
 addEventHandler ( "doDestroyElement", rootElement,
 	function (forced)
+		if client and not isPlayerAllowedToDoEditorAction(client,"deleteElement") then
+			editor_gui.outputMessage ("You don't have permissions to delete an element!", client,255,0,0)
+			return
+		elseif client and client ~= edf.edfGetCreatorClient(source) and not isPlayerAllowedToDoEditorAction(client,"deleteOtherElement") then
+			editor_gui.outputMessage ("You don't have permissions to delete someone else's element!", client,255,0,0)
+			return
+		end
+		
 		local locked = getLockedElement(client)
 		if forced or locked == source then
 			outputDebugString ( "Deleted '"..getElementType(source).."'." )

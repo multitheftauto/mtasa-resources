@@ -107,11 +107,11 @@ end
 addEventHandler("resumeGUI",getRootElement(),resumeGUI)
 
 function stopTest()
-	for k,player in ipairs(getElementsByType("player")) do
+--[[	for k,player in ipairs(getElementsByType("player")) do
 		if player ~= getLocalPlayer() then
 			setElementDimension(player, editor_main.getWorkingDimension())
 		end
-	end
+	end]]
 	if tutorialVars.test then tutorialNext() end
 	triggerServerEvent ( "stopTest",localPlayer )
 	unbindControl ( "toggle_test", "down", stopTest )

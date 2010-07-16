@@ -241,6 +241,10 @@ end
 
 -- params: x, y, z  sets camera's position (optional)
 function setFreecamEnabled (x, y, z)
+	if isFreecamEnabled() then
+		return false
+	end
+	
 	if (x and y and z) then
 	    setCameraMatrix ( camPosX, camPosY, camPosZ )
 	end
@@ -253,6 +257,10 @@ end
 
 -- param:  dontChangeFixedMode  leaves toggleCameraFixedMode alone if true, disables it if false or nil (optional)
 function setFreecamDisabled()
+	if not isFreecamEnabled() then
+		return false
+	end
+	
 	velocityX,velocityY,velocityZ = 0,0,0
 	speed = 0
 	strafespeed = 0

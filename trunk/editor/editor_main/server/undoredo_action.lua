@@ -163,7 +163,7 @@ function ActionDestroy:getActionName()
 end
 
 local function getElementsWithParent(element, base, res)
-	local base = base or thisDynamicRoot
+	local base = base or mapContainer
 	local res = res or {}
 	local children = getElementChildren(base)
 

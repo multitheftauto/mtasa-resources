@@ -1,3 +1,12 @@
+function isPlayerAllowedToDoEditorAction(player,action)
+	if isElement(player) and getElementType(player)=="player" and action and type(action)=="string" then
+--		return hasObjectPermissionTo(player,"resource.editor."..action,false)
+		return hasObjectPermissionTo(player,"resource.editor."..action)
+	end
+	
+	return false
+end
+
 function table.subtract(t1, t2)
 	local find, remove = table.find, table.remove
 	for i=#t1,1,-1 do

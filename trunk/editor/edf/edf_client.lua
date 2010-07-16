@@ -68,7 +68,7 @@ function edfGetAncestor( repPart )
 end
 
 function edfGetCreatorResource( edfElement )
-	local resourceName = getElementData( edfElement, "edf:creator" )
+	local resourceName = getElementData( edfElement, "edf:creatorResource" )
 	if resourceName then
 		return getResourceFromName( resourceName )
 	else

@@ -24,6 +24,7 @@ addEvent ( "quickSaveResource", true )
 addEventHandler ( "onResourceStart", thisResourceRoot,
 	function()
 		destroyElement( rootElement )
+		mapContainer = createElement("mapContainer")
 		setTimer(startUp, 1000, 1)
 	end
 )
@@ -76,13 +77,20 @@ end
 ---
 addEventHandler("newResource", rootElement,
 	function()
+		if client and not isPlayerAllowedToDoEditorAction(client,"newMap") then
+			editor_gui.outputMessage ("You don't have permissions to start a new map!", client,255,0,0)
+			return
+		end
+		
 		editor_gui.outputMessage (getPlayerName(client).." started a new map.", root,255,0,0)
 		if ( loadedMap ) then
 			local currentMap = getResourceFromName ( loadedMap )
 			stopResource ( currentMap )
 			loadedMap = DUMP_RESOURCE
 		end
-		destroyElement(root)
+		for index,child in ipairs(getElementChildren(mapContainer)) do
+			destroyElement(child)
+		end
 		passDefaultMapSettings()
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
 		triggerEvent("onNewMap", thisResourceRoot)
@@ -91,13 +99,82 @@ addEventHandler("newResource", rootElement,
 )
 
 ---
+local openResourceCoroutine
+local openingResource
+local openingResourceName
+local openingOnStart
+local openingSource
+local openingStartTick
+local openingMapElement
+local openingMapName
+
+function handleOpenResource()
+	local status = coroutine.status(openResourceCoroutine)
+	
+	if status == "suspended" then
+		coroutine.resume(openResourceCoroutine)
+	elseif status == "dead" then
+		destroyElement ( openingMapElement )
+		
+		loadedMap = openingResourceName 
+		passNewMapSettings()
+		if not openingOnStart then
+			local outputStr = tostring(getPlayerName ( openingSource )).." opened map "..tostring(openingResourceName)..". (opening took "..getTickCount() - openingStartTick.." ms)"
+			editor_gui.outputMessage ( outputStr, root,255,0,0)
+			outputDebugString ( outputStr )
+			triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
+			dumpSave()
+		else
+			loadedMap = openingMapName
+			outputDebugString ( "Loaded map in "..getTickCount()-openingStartTick.." ms" )
+		end
+		triggerEvent("onMapOpened", mapContainer, openingResource)
+		
+		openResourceCoroutine = nil
+		openingResource       = nil
+		openingResourceName   = nil
+		openingOnStart        = nil
+		openingSource         = nil
+		openingMapElement     = nil
+		openingMapName        = nil
+		
+		return
+	end
+	
+	setTimer(handleOpenResource,50,1)
+end
+
+function isEditorOpeningResource()
+	return openingResource and true
+end
+
 function openResource( resourceName, onStart )
+	if isEditorOpeningResource() then
+		return
+	end
+	
+	if client and not isPlayerAllowedToDoEditorAction(client,"load") then
+		editor_gui.outputMessage ("You don't have permissions to load another map!", client,255,0,0)
+		return
+	end
+	
 	--need to clear undo/redo history!
 	local returnValue
 	local map = getResourceFromName ( resourceName )
 	if ( map ) then
 		--
-		destroyElement(root)
+		for index,child in ipairs(getElementChildren(mapContainer)) do
+			destroyElement(child)
+		end
+		
+		openingOnStart      = onStart
+		openingResourceName = resourceName
+		openingSource       = source
+		openingResource     = map
+		openingStartTick    = getTickCount()
+		
+		editor_gui.outputMessage ( "Opening map "..tostring(openingResourceName).."...", root,0,0,255,600000)
+		
 		local maps = getResourceFiles ( map, "map" )
 		local mapName = DUMP_RESOURCE
 		for key,mapPath in ipairs(maps) do
@@ -115,33 +192,39 @@ function openResource( resourceName, onStart )
 				--  Remove the added EDFs from the available
 				table.subtract(newEDF.availEDF, newEDF.addedEDF)
 				-- Un/Load the neccessary definitions
-				reloadEDFDefinitions(newEDF)
+				reloadEDFDefinitions(newEDF,true)
 			end
 
-			local mapElement = loadMapData ( mapNode, thisResourceRoot, false )
-			flattenTree ( mapElement, thisDynamicRoot )
-			destroyElement ( mapElement )
-			mapName = string.sub(mapPath, 1, -5)
+			local mapElement = loadMapData ( mapNode, mapContainer, false )
+			openingMapElement = mapElement
+			openResourceCoroutine = coroutine.create(flattenTree)
+			setTimer(handleOpenResource,50,1)
+			coroutine.resume(openResourceCoroutine,mapElement,mapContainer)
+--			flattenTree ( mapElement, mapContainer )
+--			outputDebugString("Loading map took "..getTickCount()-tick.." ms")
+--			destroyElement ( mapElement )
+--			mapName = string.sub(mapPath, 1, -5)
 			xmlUnloadFile ( mapNode )
 		end
 		
-		loadedMap = resourceName 
-		passNewMapSettings()
 		returnValue = true
+--[[		loadedMap = resourceName 
+		passNewMapSettings()
+		returnValue = true]]
 		if not onStart then
-			editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
+--			editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
 		else
-			loadedMap = mapName
+			openingMapName = mapName
 		end
-		triggerEvent("onMapOpened", thisResourceRoot, map)
+--		triggerEvent("onMapOpened", thisResourceRoot, map)
 	else
 		returnValue = false
 	end
 	if onStart then
 		return returnValue
 	else
-		triggerClientEvent ( source, "saveloadtest_return", source, "open", returnValue )
-		dumpSave()
+--		triggerClientEvent ( source, "saveloadtest_return", source, "open", returnValue )
+--		dumpSave()
 	end
 end
 addEventHandler ( "openResource", rootElement, openResource )
@@ -150,6 +233,15 @@ addEventHandler ( "openResource", rootElement, openResource )
 
 ---Save
 function saveResource ( resourceName, test )
+	if isEditorOpeningResource() then
+		return
+	end
+	
+	if client and not isPlayerAllowedToDoEditorAction(client,"saveAs") then
+		editor_gui.outputMessage ("You don't have permissions to save the map!", client,255,0,0)
+		return
+	end
+	
 	if ( loadedMap ) then
 		if string.lower(loadedMap) == string.lower(resourceName) then
 			quickSave(true)
@@ -209,6 +301,11 @@ end
 addEventHandler ( "saveResource", rootElement, saveResource )
 
 function quickSave(saveAs, dump)
+	if client and not isPlayerAllowedToDoEditorAction(client,"save") then
+		editor_gui.outputMessage ("You don't have permissions to save the map!", client,255,0,0)
+		return
+	end
+	
 	if loadedMap then
 		local resource = getResourceFromName ( dump and DUMP_RESOURCE or loadedMap )
 		local mapTable = getResourceFiles ( resource,"map" )
@@ -239,9 +336,9 @@ function quickSave(saveAs, dump)
 			editor_gui.loadsave_getResources("saveAs",source)
 			return
 		end
- 		if saveAs then
- 			triggerClientEvent ( client, "saveloadtest_return", client, "save", true )
- 		end
+		if saveAs then
+			triggerClientEvent ( client, "saveloadtest_return", client, "save", true )
+		end
 		if not dump then
 			editor_gui.outputMessage (getPlayerName(client).." saved the map.", root,255,0,0)
 			dumpSave()
@@ -257,6 +354,11 @@ addEventHandler("quickSaveResource", rootElement, quickSave )
 local testBackupNodes = {}
 addEventHandler ( "testResource", root,
 function (gamemodeName)
+	if client and not isPlayerAllowedToDoEditorAction(client,"test") then
+		editor_gui.outputMessage ("You don't have permissions to enable test mode!", client,255,0,0)
+		return
+	end
+	
 	--Check if the freeroam resource exists
 	if not ( freeroamRes ) then
 		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, "'freeroam' not found.  Test could not be started." )
@@ -274,6 +376,8 @@ function (gamemodeName)
 	end
 end )
 
+local lastTestGamemodeName
+
 function beginTest(client,gamemodeName)
 	local testMap = getResourceFromName(TEST_RESOURCE)
 	if not mapmanager.isMap(testMap) then
@@ -286,7 +390,9 @@ function beginTest(client,gamemodeName)
 	g_default_welcometextonstart = get"freeroam.welcometextonstart"
 	resetMapInfo()
 	disablePickups(false)
+	gamemodeName = gamemodeName or lastTestGamemodeName
 	if ( gamemodeName ) then
+		lastTestGamemodeName = gamemodeName
 		set ( "*freeroam.spawnmapondeath", "false" )
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
@@ -350,6 +456,11 @@ end
 
 addEvent("stopTest", true)
 function stopTest()
+	if client and not isPlayerAllowedToDoEditorAction(client,"test") then
+		editor_gui.outputMessage ("You don't have permissions to enable test mode!", client,255,0,0)
+		return
+	end
+	
 	stopResource ( freeroamRes )
 	disablePickups(true)
 	local testRes = getResourceFromName(TEST_RESOURCE)
@@ -365,7 +476,14 @@ function stopTest()
 		addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
 		resetMapInfo()
 	end
+	g_in_test = false
 	stopResource ( testRes )
+	
+	for index,player in ipairs(getElementsByType("player")) do
+		-- Respawn the player, to stop the player from dieing repeatedly if dead and possibly prevents other bugs
+		local x,y,z = getElementPosition(player)
+		setTimer(spawnPlayer,50,1,player,x,y,z,0,0,0,getWorkingDimension())
+	end
 end
 addEventHandler("stopTest", root, stopTest)
 
@@ -379,7 +497,8 @@ function restoreGUIOnMapStop(resource)
 	if g_restoreEDF then
 		--Start the edf resource again if it was stopped
 		blockMapManager(g_restoreEDF) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
-		setTimer(startResource, 50, 1, g_restoreEDF, false, false, true, false, false, false, false, false, true)
+--		setTimer(startResource, 50, 1, g_restoreEDF, false, false, true, false, false, false, false, false, true)
+		setTimer(edf.edfStartResource,50,1,g_restoreEDF)
 		g_restoreEDF = nil
 	end
 	setTimer(triggerClientEvent, 50, 1, getRootElement(), "resumeGUI", getRootElement())
@@ -389,7 +508,7 @@ end
 
 -- dump settings
 function dumpSave()
-	if getBool("enableDumpSave", true) and not getElementData(thisRoot, "g_in_test") then
+	if getBool("enableDumpSave", true) and not getElementData(thisRoot, "g_in_test") and not isEditorOpeningResource() then
 		quickSave(false,true)
 	end
 end
