@@ -1,11 +1,19 @@
 <meta>
 	<info author="jbeta" description="Element Definition Format" edf:definition="edf.edf" />
+	<script src="sharedutil.lua" />
+	<script src="sharedutil.lua" type="client" />
 	<script src="interface.lua" />
 	<script src="properties.lua" />
 	<script src="properties_client.lua" type="client" />
 	<script src="datatypes.lua" />
 	<script src="edf.lua" />
 	<script src="edf_client.lua" type="client" />
+	<script src="scriptreadereventhandlers.lua" />
+	<script src="scriptreadereventhandlers.lua" type="client" />
+	<script src="scriptreadercommandhandlers.lua" />
+	<script src="scriptreadercommandhandlers.lua" type="client" />
+	<script src="scriptreaderkeybinds.lua" />
+	<script src="scriptreaderkeybinds.lua" type="client" />
 	<script src="scriptreader.lua" />
 	<script src="scriptreader_client.lua" type="client" />
 	
@@ -28,6 +36,8 @@
 	<export function="edfGetAncestor" />			<!--element-->
 	<export function="edfGetCreatorResource" />	<!--resource-->
 	<export function="edfSetCreatorResource" /> <!--bool-->
+	<export function="edfGetCreatorClient" />	<!--resource-->
+	<export function="edfSetCreatorClient" /> <!--bool-->
 	<export function="edfGetElementPosition" />	<!--number, number, number-->
 	<export function="edfSetElementPosition" />	<!--bool-->
 	<export function="edfGetElementRotation" />	<!--number, number, number-->

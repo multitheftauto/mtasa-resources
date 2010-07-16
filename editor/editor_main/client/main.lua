@@ -163,7 +163,7 @@ addEventHandler("doSelectElement", root,
 
 addEventHandler("onClientRender", root,
 	function ()
-		if g_suspended then
+		if g_suspended or getElementData(thisResourceRoot,"g_in_test") then
 			return
 		end
 		--
@@ -175,7 +175,7 @@ addEventHandler("onClientRender", root,
 		else
 			if editor_gui.guiGetMouseOverElement() then return end
 			labelCenterX,labelCenterY, endX,endY,endZ = getCursorPosition()		
-			if labelCenterX == 0 or labelCenterX == 1 or labelCenterY == 0 or labelCenterY == 1 then
+			if not labelCenterX or labelCenterX == 0 or labelCenterX == 1 or labelCenterY == 0 or labelCenterY == 1 then
 				return
 			end
 			labelCenterX = labelCenterX * g_screenX
@@ -709,7 +709,7 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	end
 	
 	-- check if the element is, or is part of, an EDF element
-	local element = edf.edfGetAncestor(element)
+	element = edf.edfGetAncestor(element)
 	local handle  = edf.edfGetHandle(element)
 	
 	if not handle then

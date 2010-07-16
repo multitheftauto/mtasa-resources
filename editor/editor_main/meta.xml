@@ -61,7 +61,8 @@
 	<!--player attachment and spawning-->
 	<script src="client/superman.lua" type="client" validate="false"/>
 	<script src="client/attachplayer.lua" type="client" validate="false"/>
-	<script src="server/playerspawn.lua" type="server"/>	
+	<script src="server/playerspawn.lua" type="server"/>
+	<script src="server/playerblips.lua" type="server"/>
 	
 	<!-- saving/loading/testing -->
 	<script src="client/saveloadtest_client.lua" type="client"/>

@@ -14,11 +14,9 @@ local function setX ( _, x ) message.x = x end
 local function doAnimation (...) table.insert(message.animations,Animation.createAndPlay(...)) end
 
 local function cleanup ()
-	for i,timer in ipairs(getTimers()) do
-		for k,t in ipairs(message.timers) do
-			if t == timer then
-				killTimer ( t )
-			end
+	for k,t in ipairs(message.timers) do
+		if isTimer(t) then
+			killTimer ( t )
 		end
 	end
 	message.timers = {}
@@ -64,7 +62,7 @@ function outputMessage ( text, r, g, b, time )
 		table.insert(message.timers, setTimer ( function() doAnimation(setTextAlpha,
 			{{ from = 200, to = 0, time = FADE_TIME, fn = setTextAlpha }}) end, MOVE_DELAY + time - FADE_TIME, 1 ))
 		--
-		setTimer ( removeHandler, MOVE_DELAY + time, 1 )
+		table.insert(message.timers, setTimer ( removeHandler, MOVE_DELAY + time, 1 ))
 			
 	else
 		message.x = screenX/2 - message.width/2
@@ -77,7 +75,8 @@ function outputMessage ( text, r, g, b, time )
 			{{ from = 1, to = 200, time = FADE_TIME, fn = setTextAlpha }})
 		table.insert(message.timers, setTimer ( function()  doAnimation (setTextAlpha,
 			{{ from = 200, to = 0, time = FADE_TIME, fn = setTextAlpha },}) end, time, 1 ) )
-		setTimer ( removeHandler, time + FADE_TIME, 1 )
+		--
+		table.insert(message.timers, setTimer ( removeHandler, time + FADE_TIME, 1 ))
 	end
 	if not message.outputting then
 		message.outputting = true

@@ -10,6 +10,8 @@
 	<include resource="editor_gui" />
 	<!--Simple script to check freeroam is available (not an include resource, but a dependency) -->
 	<script src="freeroam.lua" type="server" />
+	<!--Script to shutdown the running gamemode and maps, because otherwise you get trouble -->
+	<script src="gamemodestopper.lua" type="server" />
 	<!--Script to handle editor's exported functions-->
 	<script src="exports.lua" type="server" />
 	

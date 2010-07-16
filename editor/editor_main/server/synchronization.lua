@@ -78,6 +78,23 @@ addEventHandler("syncProperty", getRootElement(), syncProperty)
 
 function syncProperties(oldProperties, newProperties, element, undoredo)
 	local locked = element or getLockedElement(client)
+	
+	if (client and not isPlayerAllowedToDoEditorAction(client,"editElementProperties")) or (client and client ~= edf.edfGetCreatorClient(element) and not isPlayerAllowedToDoEditorAction(client,"editOtherElementProperties")) then
+		editor_gui.outputMessage ("You don't have permissions to edit element properties!", client,255,0,0)
+		
+		for dataField, value in pairs(oldProperties) do
+			if newProperties[dataField] ~= value then
+				if specialSyncers[dataField] then
+					specialSyncers[dataField](locked, value)
+				else
+					commonSyncer(locked, dataField, value)
+				end
+			end
+		end
+		
+		return
+	end
+	
 	if element or (locked and (source == locked or edf.edfGetParent(source) == locked)) then
 		for dataField, value in pairs(newProperties) do
 			if specialSyncers[dataField] then

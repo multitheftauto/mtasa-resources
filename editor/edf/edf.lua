@@ -374,7 +374,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	end
 	
 	-- if a creator resource doesn't exist, set it as the new resource
-	setElementData ( theElement, "edf:creator", getResourceName(resource) )
+	setElementData ( theElement, "edf:creatorResource", getResourceName(resource) )
 	
 	-- don't represent it if that'd make it go over the instance limit
 	local limit = elementDefinition.limit
@@ -545,8 +545,13 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 end
 
 --Creates an [elementType] element as defined in [fromResource] and represents it
-function edfCreateElement(elementType, fromResource, parametersTable, editorMode)
+function edfCreateElement(elementType, creatorClient, fromResource, parametersTable, editorMode)
 	local theElement
+	
+	if not isElement(creatorClient) or getElementType(creatorClient)~="player" then
+		outputDebugString("edfCreateElement: Non-existing creator specified",1)
+		return false
+	end
 	
 	if not edf[fromResource] then
 		outputDebugString("edfCreateElement: Resource '"..getResourceName(fromResource).."'s definition isn't loaded.",1)
@@ -613,7 +618,8 @@ function edfCreateElement(elementType, fromResource, parametersTable, editorMode
 		end
 	end
 
-	setElementData(theElement, "edf:creator", getResourceName(fromResource))
+	edfSetCreatorResource(theElement,fromResource)
+	edfSetCreatorClient(theElement,creatorClient)
 	
 	return theElement
 end
@@ -624,6 +630,7 @@ function edfCloneElement(theElement, editorMode )
 		return false
 	end
 	local creatorResource = edfGetCreatorResource(theElement)
+	local creatorClient = edfGetCreatorClient(theElement)
 	local elementType = getElementType(theElement)
 	
 	if not edf[creatorResource] then
@@ -680,7 +687,8 @@ function edfCloneElement(theElement, editorMode )
 		end
 	end
 
-	setElementData(theElement, "edf:creator", getResourceName(creatorResource))
+	edfSetCreatorResource(theElement,creatorResource)
+	edfSetCreatorClient(theElement,creatorClient)
 	
 	return theElement
 end
@@ -759,7 +767,7 @@ end
 
 --Returns a custom element's creator resource
 function edfGetCreatorResource( edfElement )
-	local resourceName = getElementData( edfElement, "edf:creator" )
+	local resourceName = getElementData( edfElement, "edf:creatorResource" )
 	if resourceName then
 		return getResourceFromName( resourceName )
 	else
@@ -767,9 +775,19 @@ function edfGetCreatorResource( edfElement )
 	end
 end
 
---Forcefully sets the creator
+--Forcefully sets the creator resource
 function edfSetCreatorResource( edfElement, creator )
-	return setElementData( edfElement, "edf:creator", getResourceName(creator) )
+	return setElementData( edfElement, "edf:creatorResource", getResourceName(creator) )
+end
+
+--Returns a custom element's creator client
+function edfGetCreatorClient( edfElement )
+	return getElementData( edfElement, "edf:creatorClient" )
+end
+
+--Forcefully sets the creator client
+function edfSetCreatorClient( edfElement, creator )
+	return setElementData( edfElement, "edf:creatorClient", creator )
 end
 
 --Returns an element's position, or its posX/Y/Z element data, or false

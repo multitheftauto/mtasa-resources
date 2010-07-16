@@ -38,6 +38,12 @@ local mapSettingAction = {
 
 
 function doSaveNewMapSettings( newMapSettings, hidden )
+	if client and not hidden and not isPlayerAllowedToDoEditorAction(client,"mapSettings") then
+		editor_gui.outputMessage ("You don't have permissions to change the map settings!", client,255,0,0)
+		triggerClientEvent ( client, "syncMapSettings", rootElement, currentMapSettings )
+		return
+	end
+	
 	currentMapSettings = newMapSettings
 	for setting, value in pairs(currentMapSettings) do
 		if mapSettingAction[setting] then 
