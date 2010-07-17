@@ -1,9 +1,15 @@
 local httpColumns = {}
 local httpRows = {}
 local updateInterval = 1000
+local lastUpdateTime = 0
 
 function getScoreboardColumns( )
-   return httpColumns
+	-- Only update http data if someone is looking
+	if getTickCount() - lastUpdateTime > updateInterval then
+		lastUpdateTime = getTickCount()
+		refreshServerScoreboard()
+	end
+	return httpColumns
 end
 
 function getScoreboardRows( )
@@ -42,7 +48,7 @@ local function getRowData( element )
 	return rowData
 end
 
-local function refreshServerScoreboard()
+function refreshServerScoreboard()
 	local scoreboardNewColumns = {}
 	
 	for i, column in ipairs(scoreboardColumns) do
@@ -75,9 +81,3 @@ local function refreshServerScoreboard()
 	
 	httpRows = scoreboardNewRows
 end
-
-addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
-	function()
-		setTimer(refreshServerScoreboard, updateInterval, 0)
-	end
-)
