@@ -2416,6 +2416,58 @@
       <object model="1001" name="spl_b_bab_m" keywords=""/>
       <object model="1000" name="spl_b_mar_m" keywords=""/>
    </group>
+   <group name="Weapon Models">
+      <object model="321" name="Regular_Dildo" keywords="weapon,gift,10"/>
+      <object model="322" name="Vibrator" keywords="weapon,gift,11"/>
+      <object model="323" name="White_Dildo" keywords="weapon,gift,12"/>
+      <object model="324" name="Vibrator_unused" keywords=""/>
+      <object model="325" name="Flowers" keywords="weapon,gift,14"/>
+      <object model="326" name="Cane" keywords="weapon,15"/>
+      <object model="327" name="Box_small_unused" keywords=""/>
+      <object model="328" name="Box_long_unused" keywords=""/>
+      <object model="330" name="Phone" keywords="mission,missions,mobilephone,cellphone,CJ"/>
+      <object model="331" name="Brass_Knuckles" keywords="weapon,1"/>
+      <object model="333" name="Golf_Club" keywords="weapon,2"/>
+      <object model="334" name="Night_Strick" keywords="weapon,3"/>
+      <object model="335" name="Knife" keywords="weapon,4"/>
+      <object model="336" name="Baseball_Bat" keywords="weapon,5"/>
+      <object model="337" name="Shovel" keywords="weapon,6"/>
+      <object model="338" name="Pool_Cue" keywords="weapon,7"/>
+      <object model="339" name="Katana" keywords="weapon,8"/>
+      <object model="341" name="Chainsaw" keywords="weapon,9"/>
+      <object model="342" name="Grenade" keywords="weapon,16"/>
+      <object model="343" name="Tear_Gas" keywords="weapon,17"/>
+      <object model="344" name="Molotov_Cocktail" keywords="weapon,18"/>
+      <object model="345" name="Missile" keywords=""/>
+      <object model="346" name="Pistol" keywords="weapon,22,colt-45"/>
+      <object model="347" name="Silenced_Pistol" keywords="weapon,23"/>
+      <object model="348" name="Desert_Eagle" keywords="weapon,24"/>
+      <object model="349" name="Shotgun" keywords="weapon,25"/>
+      <object model="350" name="Sawn-Off_Shotgun" keywords="weapon,26"/>
+      <object model="351" name="Combat_Shotgun" keywords="weapon,27,SPAZ-12"/>
+      <object model="352" name="Uzi" keywords="weapon,28"/>
+      <object model="353" name="MP5" keywords="weapon,29"/>
+      <object model="354" name="Hydra_Flare" keywords=""/>
+      <object model="355" name="AK47" keywords="weapon,30"/>
+      <object model="356" name="M4" keywords="weapon,31"/>
+      <object model="357" name="Country_Rifle" keywords="weapon,33"/>
+      <object model="358" name="Sniper_Rifle" keywords="weapon,34"/>
+      <object model="359" name="Rocket_Launcher" keywords="weapon,35"/>
+      <object model="360" name="Heat_Seeking_Rocket_Launcher" keywords="weapon,36"/>
+      <object model="361" name="Flamethrower" keywords="weapon,37"/>
+      <object model="362" name="Minigun" keywords="weapon,38"/>
+      <object model="363" name="Satchel_Charge" keywords="weapon,39"/>
+      <object model="364" name="Detonator" keywords="weapon,40,bomb"/>
+      <object model="365" name="Spray_Can" keywords="weapon,41"/>
+      <object model="366" name="Fire_Extinguisher" keywords="weapon,42"/>
+      <object model="367" name="Camera" keywords="weapon,43"/>
+      <object model="368" name="Night_Vision_Goggles" keywords="weapon,44"/>
+      <object model="369" name="Infra-Red_Goggles" keywords="weapon,45"/>
+      <object model="370" name="Jet_Pack" keywords=""/>
+      <object model="371" name="Parachute" keywords="weapon,46"/>
+      <object model="372" name="Tec-9" keywords="weapon,32"/>
+      <object model="373" name="Armor" keywords="armour"/>
+   </group>
    <group name="industrial">
       <group name="General">
          <object model="914" name="GRILL" keywords=""/>
