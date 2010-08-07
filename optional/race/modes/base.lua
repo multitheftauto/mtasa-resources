@@ -436,6 +436,7 @@ function restorePlayer(id, player, bNoFade, bDontFix)
 		if not bDontFix then
 			fixVehicle(vehicle)
 		end
+		setVehicleID(vehicle, 481)	-- BMX (fix engine sound)
 		if getElementModel(vehicle) ~= bkp.vehicle then
 			setVehicleID(vehicle, bkp.vehicle)
 		end
