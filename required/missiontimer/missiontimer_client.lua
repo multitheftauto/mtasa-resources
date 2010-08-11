@@ -36,7 +36,7 @@ function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, fon
 	missionTimers[element].duration = duration
 	missionTimers[element].originalTick = getTickCount()
 	missionTimers[element].showCS = (bool[showCS] == nil and true) or showCS
-	missionTimers[element].bg = bool[bg] or true
+	missionTimers[element].bg = (bool[bg] == nil and true) or bg
 	missionTimers[element].font = font or "default-bold"
 	missionTimers[element].scale = tonumber(scale) or 1
 	missionTimers[element].hurrytime = 15000
@@ -68,8 +68,9 @@ function setMissionTimerFrozen ( timer, frozen )
 	if missionTimers[timer] and bool[frozen] then
 		missionTimers[timer].frozen = frozen or nil
 		if frozen then
-			killTimer ( missionTimers[source].timer )		
-			missionTimers[timer].duration = getMissionTimerRemainingTime ( timer )
+			killTimer ( missionTimers[timer].timer )		
+			missionTimers[timer].timer = nil
+			missionTimers[timer].duration = getMissionTimerTime ( timer )
 		else
 			missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", timer )		
 			missionTimers[timer].originalTick = getTickCount()

@@ -35,54 +35,48 @@ end
 addEventHandler ( "onClientRender", rootElement,
 	function()
 		for timer,data in pairs(missionTimers) do
+			local msPassed 
+			
 			if not data.frozen then
-				local msPassed = getTickCount() - data.originalTick
-				local color = tocolor(255,255,255,255)
-				if data.countdown then
-					msPassed = data.duration - msPassed
-					if msPassed <= data.hurrytime then
-						color = tocolor ( 255,0,0,255 )
-					end
-				end
-				local x,y = toposition(data.x,data.y)
-				local scale = data.scale or 1
-				if data.bg then
-					local width,height = bgWidth*scale,bgHeight*scale
-					dxDrawImage ( x-width*0.5, y-height*0.5, width, height, "timeleft.png" )
-				end
-				dxDrawText ( msToTimeStr(msPassed,data.showCS), 
-					x, 
-					y, 
-					x, 
-					y, 
-					color, 
-					scale, 
-					data.font or "default-bold", 
-					"center", 
-					"center" )
+				msPassed = getTickCount() - data.originalTick
+			else
+				msPassed = data.duration
 			end
+			
+			local color = tocolor(255,255,255,255)
+			if data.countdown and not data.frozen then
+				msPassed = data.duration - msPassed
+				if msPassed <= data.hurrytime then
+					color = tocolor ( 255,0,0,255 )
+				end
+			end
+			local x,y = toposition(data.x,data.y)
+			local scale = data.scale or 1
+			if data.bg then
+				local width,height = bgWidth*scale,bgHeight*scale
+				dxDrawImage ( x-width*0.5, y-height*0.5, width, height, "timeleft.png" )
+			end
+			dxDrawText ( msToTimeStr(msPassed,data.showCS), 
+				x, 
+				y, 
+				x, 
+				y, 
+				color, 
+				scale, 
+				data.font or "default-bold", 
+				"center", 
+				"center" )
 		end
 	end
 )
-function updateTime()
-	local tick = getTickCount()
-	local msPassed = tick - g_StartTick
-	if not isPlayerFinished(g_Me) then
-		guiSetText(g_GUI.timepassed, msToTimeStr(msPassed))
-	end
-	local timeLeft = g_Duration - msPassed
-	if g_HurryDuration and g_GUI.hurry == nil and timeLeft <= g_HurryDuration then
-		startHurry()
-	end
-	guiSetText(g_GUI.timeleft, msToTimeStr(timeLeft > 0 and timeLeft or 0))
-end
+
 
 function toposition(x,y)
 	local finalX,finalY = x,y
 	if x > 1 then --Is X bigger than 1?  If so we've got an absolute position
 		finalX = x
 	elseif x < -1 then --We have a reversed absolute position
-		finalX = screenX - x
+		finalX = screenX + x
 	elseif x > 0 then --We have a relative position
 		finalX = screenX * x
 	else --We have a reversed relative position
@@ -92,7 +86,7 @@ function toposition(x,y)
 	if y > 1 then --Is Y bigger than 1?  If so we've got an absolute position
 		finalY = y
 	elseif y < -1 then --We have a reversed absolute position
-		finalY = screenY - y
+		finalY = screenY + y
 	elseif x > 0 then --We have a relative position
 		finalY = screenY * y
 	else --We have a reversed relative position
