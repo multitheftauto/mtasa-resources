@@ -8,7 +8,7 @@ addEventHandler ( "setupNewMissionTimer", rootElement,
 addEvent ( "setMissionTimerRemainingTime", true )
 addEventHandler ( "setMissionTimerRemainingTime", rootElement,
 	function(remaining)
-		setMissionTimerRemainingTime ( source, remaining )
+		setMissionTimerTime ( source, remaining )
 	end
 )
 
