@@ -21,7 +21,7 @@ addEventHandler ( "setMissionTimerFrozen", rootElement,
 
 addEvent ( "setMissionTimerHurryTime", true )
 addEventHandler ( "setMissionTimerHurryTime", rootElement,
-	function(r,g,b)
-		setMissionTimerHurryTime ( source, r,g,b )
+	function(time)
+		setMissionTimerHurryTime ( source, time )
 	end
 )

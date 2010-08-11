@@ -49,13 +49,15 @@ function getMissionTimerTime ( timer )
 end
 
 function setMissionTimerFrozen ( timer, frozen )	
-	if frozen == not not missionTimers[timer].frozen then return false end
-	
 	if not bool[frozen] then return false end
 	
 	if missionTimers[timer] then
+		if frozen == not not missionTimers[timer].frozen then return false end
+	
 		if frozen then
-			killTimer ( missionTimers[timer].timer )
+			if isTimer(missionTimers[timer].timer) then
+				killTimer ( missionTimers[timer].timer )
+			end
 			missionTimers[timer].timer = nil
 			missionTimers[timer].duration = getMissionTimerTime ( timer )
 		else
@@ -72,9 +74,11 @@ function isMissionTimerFrozen ( timer )
 	return not not missionTimers[timer].frozen
 end
 
-function setMissionTimerHurryTime ( timer, time )	
+function setMissionTimerHurryTime ( timer, time )
+	if not time or not tonumber(time) then return nil end
+	
 	if missionTimers[timer] then
-		return triggerClientEvent ( "setMissionTimerFrozen", element, time )
+		return triggerClientEvent ( "setMissionTimerHurryTime", timer, time )
 	end
 	return false
 end
@@ -83,10 +87,12 @@ function cleanupMissionTimer()
 	for i,timer in ipairs(getTimers()) do
 		if timer == missionTimers[source].timer then
 			killTimer ( timer )
-			missionTimers[source].timer = nil
+			
 			break
 		end
 	end
+	
+	missionTimers[source] = nil
 end
 
 function timeElapsed ( timer )
