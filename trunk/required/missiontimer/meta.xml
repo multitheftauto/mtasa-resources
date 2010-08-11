@@ -15,4 +15,6 @@
 	<export function="setMissionTimerTime" type="client" />
 	<export function="setMissionTimerFrozen" type="client" />
 	<export function="setMissionTimerFrozen" type="server" />
+	<export function="setMissionTimerHurryTime" type="server"/>
+	<export function="setMissionTimerHurryTime" type="client"/>
 </meta>

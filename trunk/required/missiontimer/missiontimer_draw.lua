@@ -35,7 +35,7 @@ end
 addEventHandler ( "onClientRender", rootElement,
 	function()
 		for timer,data in pairs(missionTimers) do
-			local msPassed 
+			local msPassed = 0
 			
 			if not data.frozen then
 				msPassed = getTickCount() - data.originalTick
@@ -44,7 +44,7 @@ addEventHandler ( "onClientRender", rootElement,
 			end
 			
 			local color = tocolor(255,255,255,255)
-			if data.countdown and not data.frozen then
+			if data.countdown then
 				msPassed = data.duration - msPassed
 				if msPassed <= data.hurrytime then
 					color = tocolor ( 255,0,0,255 )
