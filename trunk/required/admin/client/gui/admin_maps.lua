@@ -8,12 +8,14 @@
 *
 **************************************]]
 
-local count
+aGamemodeMapTable = {}
 
 function createMapTab()
 	aTabMap = {}
 	aTabMap.Tab = guiCreateTab ( "Maps", aTabPanel )
-	aTabMap.MapList = guiCreateGridList ( 0.03, 0.05, 0.35, 0.85, true, aTabMap.Tab )
+	aTabMap.MapListSearch = guiCreateEdit ( 0.03, 0.05, 0.31, 0.04, "", true, aTabMap.Tab )
+						  guiCreateStaticImage ( 0.34, 0.05, 0.035, 0.04, "client\\images\\search.png", true, aTabMap.Tab )
+	aTabMap.MapList = guiCreateGridList ( 0.03, 0.10, 0.35, 0.80, true, aTabMap.Tab )
 					  guiGridListAddColumn( aTabMap.MapList, "Map Name", 2)
 					  guiGridListAddColumn( aTabMap.MapList, "Resource Name", 1)
 					  guiGridListAddColumn( aTabMap.MapList, "Gamemode", 0.5)
@@ -28,12 +30,14 @@ function createMapTab()
 	aTabMap.RefreshList = guiCreateButton ( 0.03, 0.91, 0.35, 0.04, "Refresh list", true, aTabMap.Tab )
 	addEventHandler ("onClientGUIClick", aAdminForm, guiClick)
 	addEventHandler ("onClientGUIDoubleClick", aAdminForm, guiDoubleClick)
+	addEventHandler ("onClientGUIChanged", aAdminForm, guiChanged)
 end
 
 function loadMaps(gamemodeMapTable, gamemode, map)
 	guiSetText(aTabMap.CurMap,"Current Map: "..map)
 	guiSetText(aTabMap.CurGamemode,"Current Gamemode: "..gamemode)
 	if gamemodeMapTable then
+		aGamemodeMapTable = gamemodeMapTable
 		for id,gamemode in pairs (gamemodeMapTable) do
 			guiGridListSetItemText ( aTabMap.MapList, guiGridListAddRow ( aTabMap.MapList ), 1, gamemode.name, true, false )
 			if #gamemode.maps == 0 and gamemode.name ~= "no gamemode" and gamemode.name ~= "deleted maps" then
@@ -58,7 +62,9 @@ addEventHandler("getMaps_c", getLocalPlayer(), loadMaps)
 function guiClick(button)
 	if button == "left" then
 		if ( getElementParent ( source ) == aTabMap.Tab ) then
-			if source == aTabMap.RefreshList then
+			if source == aTabMap.MapListSearch then
+				guiSetInputEnabled(true)
+			elseif source == aTabMap.RefreshList then
 				guiGridListClear(aTabMap.MapList)
 				triggerServerEvent("getMaps_s", getLocalPlayer(), true)
 			end
@@ -105,6 +111,57 @@ function guiDoubleClick(button)
 			local gamemode = guiGridListGetItemText ( aTabMap.MapList, guiGridListGetSelectedItem( aTabMap.MapList ), 3 )
 			if source == aTabMap.MapList then
 				triggerServerEvent("startGamemodeMap_s", getLocalPlayer(), gamemode, mapResName)
+			end
+		end
+	end
+end
+
+function guiChanged()
+	guiGridListClear(aTabMap.MapList)
+	local text = string.lower(guiGetText(source))
+	if ( text == "" ) then
+		for id,gamemode in pairs (aGamemodeMapTable) do
+			guiGridListSetItemText ( aTabMap.MapList, guiGridListAddRow ( aTabMap.MapList ), 1, gamemode.name, true, false )
+			if #gamemode.maps == 0 and gamemode.name ~= "no gamemode" and gamemode.name ~= "deleted maps" then
+				local row = guiGridListAddRow ( aTabMap.MapList )
+				guiGridListSetItemText ( aTabMap.MapList, row, 1, gamemode.name, false, false )
+				guiGridListSetItemText ( aTabMap.MapList, row, 2, gamemode.resname, false, false )
+				guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
+			else
+				for id,map in ipairs (gamemode.maps) do
+					local row = guiGridListAddRow ( aTabMap.MapList )
+					guiGridListSetItemText ( aTabMap.MapList, row, 1, map.name, false, false )
+					guiGridListSetItemText ( aTabMap.MapList, row, 2, map.resname, false, false )
+					guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
+				end
+			end
+		end
+	else
+		for id,gamemode in pairs (aGamemodeMapTable) do
+			local gameModeRow = guiGridListAddRow ( aTabMap.MapList )
+			local noMaps = true
+			guiGridListSetItemText ( aTabMap.MapList, gameModeRow, 1, gamemode.name, true, false )
+			if #gamemode.maps == 0 and gamemode.name ~= "no gamemode" and gamemode.name ~= "deleted maps" then
+				if string.find(string.lower(gamemode.name.." "..gamemode.resname), text, 1, true) then
+					local row = guiGridListAddRow ( aTabMap.MapList )
+					guiGridListSetItemText ( aTabMap.MapList, row, 1, gamemode.name, false, false )
+					guiGridListSetItemText ( aTabMap.MapList, row, 2, gamemode.resname, false, false )
+					guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
+					noMaps = false
+				end
+			else
+				for id,map in ipairs (gamemode.maps) do
+					if string.find(string.lower(map.name.." "..map.resname), text, 1, true) then
+						local row = guiGridListAddRow ( aTabMap.MapList )
+						guiGridListSetItemText ( aTabMap.MapList, row, 1, map.name, false, false )
+						guiGridListSetItemText ( aTabMap.MapList, row, 2, map.resname, false, false )
+						guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
+						noMaps = false
+					end
+				end
+			end
+			if noMaps then
+				guiGridListRemoveRow(aTabMap.MapList, gameModeRow)
 			end
 		end
 	end
