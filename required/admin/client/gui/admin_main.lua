@@ -17,6 +17,7 @@ aCurrentSlap = 20
 aPlayers = {}
 aBans = {}
 aLastSync = 0
+aResources = {}
 
 function aAdminMenu ()
 	if ( aAdminForm == nil ) then
@@ -121,7 +122,9 @@ function aAdminMenu ()
 		aTab2 = {}
 		aTab2.Tab			= guiCreateTab ( "Resources", aTabPanel, "resources" )
 		aTab2.ManageACL		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "Manage ACL", true, aTab2.Tab )
-		aTab2.ResourceList	= guiCreateGridList ( 0.03, 0.05, 0.35, 0.85, true, aTab2.Tab )
+		aTab2.ResourceListSearch = guiCreateEdit ( 0.03, 0.05, 0.31, 0.04, "", true, aTab2.Tab )
+						  guiCreateStaticImage ( 0.34, 0.05, 0.035, 0.04, "client\\images\\search.png", true, aTab2.Tab )
+		aTab2.ResourceList	= guiCreateGridList ( 0.03, 0.10, 0.35, 0.80, true, aTab2.Tab )
 						  guiGridListAddColumn( aTab2.ResourceList, "Resource", 0.55 )
 						  guiGridListAddColumn( aTab2.ResourceList, "", 0.05 )
 						  guiGridListAddColumn( aTab2.ResourceList, "State", 0.35 )
@@ -427,6 +430,7 @@ function aClientSync ( type, table )
 		aPlayers = table
 	elseif ( type == "resources" ) then
 		local bInclMaps = guiCheckBoxGetSelected ( aTab2.ResourceInclMaps )
+		aResources = table
 		for id, resource in ipairs(table) do
 			if bInclMaps or resource["type"] ~= "map" then
 				local row = guiGridListAddRow ( aTab2.ResourceList )
@@ -705,6 +709,31 @@ function aClientGUIChanged ()
 				end
 			end
 		end
+	elseif ( source == aTab2.ResourceListSearch ) then
+		local bInclMaps = guiCheckBoxGetSelected ( aTab2.ResourceInclMaps )
+		guiGridListClear ( aTab2.ResourceList )
+		local text = string.lower(guiGetText(source))
+		if ( text == "" ) then
+			for id, resource in ipairs(aResources) do
+				if bInclMaps or resource["type"] ~= "map" then
+					local row = guiGridListAddRow ( aTab2.ResourceList )
+					guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
+					guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
+					guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
+				end
+			end
+		else
+			for id, resource in ipairs(aResources) do
+				if bInclMaps or resource["type"] ~= "map" then
+					if string.find(string.lower(resource.name), text, 1, true) then
+						local row = guiGridListAddRow ( aTab2.ResourceList )
+						guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
+						guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
+						guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
+					end
+				end
+			end
+		end
 	end
 end
 
@@ -882,7 +911,9 @@ function aClientClick ( button )
 			end
 		-- TAB 2, RESOURCES
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
-			if ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceSettings ) ) then
+			if ( source == aTab2.ResourceListSearch ) then
+				guiSetInputEnabled ( true )
+			elseif ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceSettings ) ) then
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
 				else
