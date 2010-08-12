@@ -68,7 +68,9 @@ function setMissionTimerFrozen ( timer, frozen )
 	if missionTimers[timer] and bool[frozen] then
 		missionTimers[timer].frozen = frozen or nil
 		if frozen then
-			killTimer ( missionTimers[timer].timer )		
+			if isTimer( missionTimers[timer].timer ) then
+				killTimer ( missionTimers[timer].timer )
+			end
 			missionTimers[timer].timer = nil
 			missionTimers[timer].duration = getMissionTimerTime ( timer )
 		else
