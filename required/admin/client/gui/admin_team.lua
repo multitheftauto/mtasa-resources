@@ -23,6 +23,7 @@ function aPlayerTeam ( player )
 		aTeamRefresh		= guiCreateButton ( 0.03, 0.90, 0.50, 0.08, "Refresh", true, aTeamForm )
 		aTeamNew		= guiCreateButton ( 0.55, 0.18, 0.42, 0.09, "New Team", true, aTeamForm, "createteam" )
 		aTeamDelete		= guiCreateButton ( 0.55, 0.28, 0.42, 0.09, "Delete Team", true, aTeamForm, "destroyteam" )
+		aTeamShowColor	= guiCreateCheckBox ( 0.55, 0.38, 0.42, 0.09, "Show Teamcolor", true, true, aTeamForm )
 		aTeamNameLabel	= guiCreateLabel 	( 0.55, 0.19, 0.42, 0.07, "Team Name:", true, aTeamForm )
 		aTeamColor		= guiCreateLabel 	( 0.55, 0.37, 0.42, 0.11, "Color:", true, aTeamForm )
 		aTeamR		= guiCreateLabel 	( 0.70, 0.37, 0.42, 0.11, "R:", true, aTeamForm )
@@ -42,11 +43,7 @@ function aPlayerTeam ( player )
 		aRegister ( "PlayerTeam", aTeamForm, aPlayerTeam, aPlayerTeamClose )
 	end
 	aTeamSelect = player
-	guiGridListClear ( aTeamList )
-	for id, team in ipairs ( getElementsByType ( "team" ) ) do
-		local row = guiGridListAddRow ( aTeamList )
-		guiGridListSetItemText ( aTeamList, row, 1, getTeamName ( team ), false, false )
-	end
+	aTeamsRefresh ()
 	guiSetVisible ( aTeamForm, true )
 	guiBringToFront ( aTeamForm )
 	aNewTeamShow ( false )
@@ -82,7 +79,7 @@ function aClientTeamClick ( button )
 	if ( button == "left" ) then
 		if ( source == aTeamNew ) then
 			aNewTeamShow ( true )
-		elseif ( source == aTeamRefresh ) then
+		elseif ( source == aTeamRefresh or source == aTeamShowColor ) then
 			aTeamsRefresh()
 		elseif ( source == aTeamDelete ) then
 			if ( guiGridListGetSelectedItem ( aTeamList ) == -1 ) then
@@ -124,6 +121,7 @@ end
 function aNewTeamShow ( bool )
 	guiSetVisible ( aTeamNew, not bool )
 	guiSetVisible ( aTeamDelete, not bool )
+	guiSetVisible ( aTeamShowColor, not bool )
 	guiSetVisible ( aTeamNameLabel, bool )
 	guiSetVisible ( aTeamName, bool )
 	guiSetVisible ( aTeamColor, bool )
@@ -140,9 +138,13 @@ end
 function aTeamsRefresh ()
 	if ( aTeamList ) then
 		guiGridListClear ( aTeamList )
+		local showColor = guiCheckBoxGetSelected ( aTeamShowColor )
 		for id, team in ipairs ( getElementsByType ( "team" ) ) do
 			local row = guiGridListAddRow ( aTeamList )
 			guiGridListSetItemText ( aTeamList, row, 1, getTeamName ( team ), false, false )
+			if showColor then
+				guiGridListSetItemColor ( aTeamList, row, 1, getTeamColor ( team ) )
+			end
 		end
 	end
 end
