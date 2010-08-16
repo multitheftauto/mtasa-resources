@@ -18,15 +18,15 @@ addEventHandler ("onClientResourceStop",rootElement,
 	end
 )
 
-function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale )
+function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale, prefix )
 	sourceResource = sourceResource or thisResource
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
-	setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, font, scale )
+	setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, font, scale, prefix )
 	return element
 end
 
-function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, font, scale )
+function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, font, scale, prefix )
 	if missionTimers[element] then return end
 	addEventHandler ( "onClientElementDestroy", element, onMissionTimerDestroy )
 	missionTimers[element] = {}
@@ -39,7 +39,9 @@ function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, fon
 	missionTimers[element].bg = (bool[bg] == nil and true) or bg
 	missionTimers[element].font = font or "default-bold"
 	missionTimers[element].scale = tonumber(scale) or 1
+	missionTimers[element].prefix = prefix or ""
 	missionTimers[element].hurrytime = 15000
+	missionTimers[element].pWidth = dxGetTextWidth(missionTimers[element].prefix, missionTimers[element].scale, missionTimers[element].font)
 	missionTimers[element].timer = setTimer ( triggerEvent, duration, 1, "onClientMissionTimerElapsed", element )
 end
 
@@ -88,6 +90,15 @@ end
 
 function setMissionTimerHurryTime ( timer, time )
 	missionTimers[timer].hurrytime = tonumber(time) or 15000
+end
+
+function setMissionTimerPrefix( timer, prefix )
+	if type( prefix ) ~= "string" then return false end
+	
+	if missionTimers[timer] then
+		missionTimers[timer].prefix = prefix
+		missionTimers[timer].pWidth = dxGetTextWidth(missionTimers[timer].prefix, missionTimers[timer].scale, missionTimers[timer].font)
+	end
 end
 
 function onMissionTimerDestroy()

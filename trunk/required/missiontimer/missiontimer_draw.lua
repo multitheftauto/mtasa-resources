@@ -54,11 +54,12 @@ addEventHandler ( "onClientRender", rootElement,
 			end
 			local x,y = toposition(data.x,data.y)
 			local scale = data.scale or 1
+			
 			if data.bg then
-				local width,height = bgWidth*scale,bgHeight*scale
+				local width,height = bgWidth*scale + data.pWidth,bgHeight*scale
 				dxDrawImage ( x-width*0.5, y-height*0.5, width, height, "timeleft.png" )
 			end
-			dxDrawText ( msToTimeStr(msPassed,data.showCS), 
+			dxDrawText ( data.prefix .. msToTimeStr(msPassed,data.showCS), 
 				x, 
 				y, 
 				x, 
