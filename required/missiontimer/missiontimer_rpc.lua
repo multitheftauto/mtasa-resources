@@ -1,7 +1,7 @@
 addEvent ( "setupNewMissionTimer", true )
 addEventHandler ( "setupNewMissionTimer", rootElement,
-	function(duration, countdown, showCS, x, y, bg, font, scale, prefix)
-		setupMissionTimer ( source, duration, countdown, showCS, x, y, bg, font, scale, prefix )
+	function(duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
+		setupMissionTimer ( source, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 	end
 )
 
@@ -27,9 +27,9 @@ addEventHandler ( "setMissionTimerHurryTime", rootElement,
 )
 
 
-addEvent ( "setMissionTimerPrefix", true )
-addEventHandler ( "setMissionTimerPrefix", rootElement,
-	function(prefix)
-		setMissionTimerPrefix ( source, prefix )
+addEvent ( "setMissionTimerFormat", true )
+addEventHandler ( "setMissionTimerFormat", rootElement,
+	function(timerFormat)
+		setMissionTimerFormat ( source, timerFormat )
 	end
 )

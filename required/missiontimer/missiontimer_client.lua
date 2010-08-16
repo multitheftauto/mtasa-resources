@@ -18,15 +18,15 @@ addEventHandler ("onClientResourceStop",rootElement,
 	end
 )
 
-function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale, prefix )
+function createMissionTimer ( duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 	sourceResource = sourceResource or thisResource
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
-	setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, font, scale, prefix )
+	setupMissionTimer ( element, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 	return element
 end
 
-function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, font, scale, prefix )
+function setupMissionTimer ( element, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 	if missionTimers[element] then return end
 	addEventHandler ( "onClientElementDestroy", element, onMissionTimerDestroy )
 	missionTimers[element] = {}
@@ -35,13 +35,13 @@ function setupMissionTimer ( element, duration, countdown, showCS, x, y, bg, fon
 	missionTimers[element].countdown = countdown
 	missionTimers[element].duration = duration
 	missionTimers[element].originalTick = getTickCount()
-	missionTimers[element].showCS = (bool[showCS] == nil and true) or showCS
+	missionTimers[element].timerFormat = type( timerFormat ) == "string" and timerFormat or "%m:%s"
 	missionTimers[element].bg = (bool[bg] == nil and true) or bg
 	missionTimers[element].font = font or "default-bold"
 	missionTimers[element].scale = tonumber(scale) or 1
-	missionTimers[element].prefix = prefix or ""
 	missionTimers[element].hurrytime = 15000
-	missionTimers[element].pWidth = dxGetTextWidth(missionTimers[element].prefix, missionTimers[element].scale, missionTimers[element].font)
+	missionTimers[element].formatWidth = dxGetTextWidth(missionTimers[element].timerFormat, missionTimers[element].scale, missionTimers[element].font)
+	missionTimers[element].colour = (r and g and b) and tocolor(r, g, b) or tocolor(255,255,255)
 	missionTimers[element].timer = setTimer ( triggerEvent, duration, 1, "onClientMissionTimerElapsed", element )
 end
 
@@ -92,12 +92,12 @@ function setMissionTimerHurryTime ( timer, time )
 	missionTimers[timer].hurrytime = tonumber(time) or 15000
 end
 
-function setMissionTimerPrefix( timer, prefix )
-	if type( prefix ) ~= "string" then return false end
+function setMissionTimerFormat( timer, timerFormat )
+	if type( timerFormat ) ~= "string" then return false end
 	
 	if missionTimers[timer] then
-		missionTimers[timer].prefix = prefix
-		missionTimers[timer].pWidth = dxGetTextWidth(missionTimers[timer].prefix, missionTimers[timer].scale, missionTimers[timer].font)
+		missionTimers[timer].timerFormat = timerFormat
+		missionTimers[timer].formatWidth = dxGetTextWidth(missionTimers[timer].timerFormat, missionTimers[timer].scale, missionTimers[timer].font)
 	end
 end
 

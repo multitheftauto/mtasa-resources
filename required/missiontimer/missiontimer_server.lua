@@ -11,18 +11,18 @@ addEventHandler ("onResourceStop",root,
 	end
 )
 
-function createMissionTimer ( duration, countdown, showCS, x, y, bg, font, scale, prefix )
+function createMissionTimer ( duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 	sourceResource = sourceResource or thisResource
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
 	--Setup data
-	missionTimers[element] = { duration = duration, countdown = countdown, showCS = showCS, x = x, y = y,
-								bg = bg, font = font, scale = scale, prefix = prefix }
+	missionTimers[element] = { duration = duration, countdown = countdown, timerFormat = timerFormat, x = x, y = y,
+								bg = bg, font = font, scale = scale, r = r, g = g, b = b }
 	missionTimers[element].originalTick = getTickCount()
 	--
 	missionTimers[element].timer = setTimer ( timeElapsed, duration, 1, element )
 	addEventHandler ( "onElementDestroy", element, cleanupMissionTimer )
-	triggerClientEvent ( "setupNewMissionTimer", element, duration, countdown, showCS, x, y, bg, font, scale, prefix )
+	triggerClientEvent ( "setupNewMissionTimer", element, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 	return element
 end
 
@@ -86,13 +86,13 @@ function setMissionTimerHurryTime ( timer, time )
 end
 
 
-function setMissionTimerPrefix( timer, prefix )
-	if type( prefix ) ~= "string" then return false end
+function setMissionTimerFormat( timer, timerFormat )
+	if type( timerFormat ) ~= "string" then return false end
 	
 	if missionTimers[timer] then
-		missionTimers[timer].prefix = prefix
+		missionTimers[timer].timerFormat = timerFormat
 		
-		return triggerClientEvent ( "setMissionTimerPrefix", timer, prefix )
+		return triggerClientEvent ( "setMissionTimerFormat", timer, timerFormat )
 	end
 	return false
 end

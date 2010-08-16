@@ -2,17 +2,15 @@ local screenX,screenY = guiGetScreenSize()
 local bgWidth,bgHeight = 100, 20
 
 --Robbed from arc_
-function msToTimeStr(ms,showCS)
+function msToTimeStr(ms)
 	if not ms then
 		return ''
 	end
+	
 	if ms < 0 then
-		if showCS then
-			return "0:00:00"
-		else 
-			return "0:00"
-		end
+		return "0:00:00"
 	end
+	
 	local centiseconds = tostring(math.floor(math.fmod(ms, 1000)/10))
 	if #centiseconds == 1 then
 		centiseconds = '0' .. centiseconds
@@ -24,11 +22,7 @@ function msToTimeStr(ms,showCS)
 	end
 	local minutes = tostring(math.floor(s / 60))
 	
-	if showCS then
-		return minutes .. ':' .. seconds .. ':' .. centiseconds
-	else
-		return minutes .. ':' .. seconds
-	end
+	return minutes, seconds, centiseconds
 end
 
 
@@ -43,7 +37,8 @@ addEventHandler ( "onClientRender", rootElement,
 				msPassed = data.duration
 			end
 			
-			local color = tocolor(255,255,255,255)
+			local color = data.colour
+			
 			if data.countdown then
 				if not data.frozen then
 					msPassed = data.duration - msPassed
@@ -56,10 +51,17 @@ addEventHandler ( "onClientRender", rootElement,
 			local scale = data.scale or 1
 			
 			if data.bg then
-				local width,height = bgWidth*scale + data.pWidth,bgHeight*scale
+				local width,height = bgWidth*scale + math.max(data.formatWidth-bgWidth+10,0),bgHeight*scale
 				dxDrawImage ( x-width*0.5, y-height*0.5, width, height, "timeleft.png" )
 			end
-			dxDrawText ( data.prefix .. msToTimeStr(msPassed,data.showCS), 
+			
+			local m,s,cs = msToTimeStr(msPassed)
+			
+			local output = data.timerFormat:gsub("%%m",m)
+			output = output:gsub("%%s",s)
+			output = output:gsub("%%cs",cs)
+			
+			dxDrawText ( output, 
 				x, 
 				y, 
 				x, 
