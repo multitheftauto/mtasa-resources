@@ -35,7 +35,7 @@ function setupMissionTimer ( element, duration, countdown, timerFormat, x, y, bg
 	missionTimers[element].countdown = countdown
 	missionTimers[element].duration = duration
 	missionTimers[element].originalTick = getTickCount()
-	missionTimers[element].timerFormat = type( timerFormat ) == "string" and timerFormat or "%m:%s"
+	missionTimers[element].timerFormat = type( timerFormat ) == "string" and timerFormat or "%m:%s:%cs"
 	missionTimers[element].bg = (bool[bg] == nil and true) or bg
 	missionTimers[element].font = font or "default-bold"
 	missionTimers[element].scale = tonumber(scale) or 1
