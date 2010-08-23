@@ -8,7 +8,7 @@ function msToTimeStr(ms)
 	end
 	
 	if ms < 0 then
-		return "0:00:00"
+		return "0","00","00"
 	end
 	
 	local centiseconds = tostring(math.floor(math.fmod(ms, 1000)/10))
