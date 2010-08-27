@@ -48,7 +48,7 @@ function animateParachuteOpen()
 				else
 					local size = tickDifference/time
 					setObjectScale ( object, size )
-					setPedNewAnimation ( player, "animation_state","PARACHUTE", "PARA_open", -1, false, true, false )
+					setPedNewAnimation ( player, nil,"PARACHUTE", "PARA_open", -1, false, true, false )
 					return
 				end
 			end
