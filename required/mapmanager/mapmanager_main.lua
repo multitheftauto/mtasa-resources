@@ -13,19 +13,29 @@ addEvent("onGamemodeStop")
 addEvent("onGamemodeMapStart")
 addEvent("onGamemodeMapStop")
 
-addEventHandler("onResourcePreStart", rootElement, 
+addEventHandler("onResourcePreStart", rootElement,
 	function (startingResource)
 		--Is starting resource a gamemode?
 		if isGamemode(startingResource) then
 			--Check if another gamemode is running already
-            if getRunningGamemode() and getRunningGamemode() ~= startingResource then
+			if getRunningGamemode() and getRunningGamemode() ~= startingResource then
 				-- Initiate a new changemode sequence and cancel this event
-                outputMapManager( "Initiating changemode from '" .. getResourceName(getRunningGamemode()) .. "' to '" .. getResourceName(startingResource) .. "'" )
-                changeGamemode(startingResource)
-                cancelEvent(true)
-            end
-        end
-    end
+				outputMapManager( "Initiating changemode from '" .. getResourceName(getRunningGamemode()) .. "' to '" .. getResourceName(startingResource) .. "'" )
+				changeGamemode(startingResource)
+				cancelEvent(true)
+			end
+		elseif isMap(startingResource) then
+			--Check if another map is running already
+			if getRunningGamemodeMap() and getRunningGamemodeMap() ~= startingResource then
+				-- Initiate a new changemap sequence and cancel this event
+				if isGamemodeCompatibleWithMap ( getRunningGamemode(), startingResource ) then
+					outputMapManager( "Initiating changemap from '" .. getResourceName(getRunningGamemodeMap()) .. "' to '" .. getResourceName(startingResource) .. "'" )
+					changeGamemodeMap(startingResource)
+				end
+				cancelEvent(true)
+			end
+		end
+	end
 )
 
 addEventHandler("onPlayerJoin", rootElement,
