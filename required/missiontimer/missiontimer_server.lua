@@ -31,6 +31,12 @@ function setMissionTimerTime ( timer, time )
 	if missionTimers[timer] and tonumber(time) then
 		missionTimers[timer].duration = tonumber(time) or missionTimers[timer].duration
 		missionTimers[timer].originalTick = getTickCount()
+		
+		if isTimer(missionTimers[timer].timer) then
+			killTimer ( missionTimers[timer].timer )
+		end
+		missionTimers[timer].timer = setTimer ( timeElapsed, missionTimers[timer].duration, 1, timer )
+		
 		triggerClientEvent ( "setMissionTimerRemainingTime", timer, time )
 		return true
 	end
@@ -63,7 +69,7 @@ function setMissionTimerFrozen ( timer, frozen )
 			missionTimers[timer].timer = nil
 			missionTimers[timer].duration = getMissionTimerTime ( timer )
 		else
-			missionTimers[timer].timer = setTimer ( timeElapsed, duration, 1, timer )
+			missionTimers[timer].timer = setTimer ( timeElapsed, missionTimers[timer].duration, 1, timer )
 			missionTimers[timer].originalTick = getTickCount()
 		end
 		return triggerClientEvent ( "setMissionTimerFrozen", timer, frozen )
