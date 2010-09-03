@@ -86,7 +86,7 @@ function cacheGameOptions()
 	g_GameOptions = {}
 	g_GameOptions.timeafterfirstfinish  = getNumber('race.timeafterfirstfinish',30) * 1000
 	g_GameOptions.hurrytime				= getNumber('race.hurrytime',15) * 1000
-	g_GameOptions.defaultrespawnmode	= getString('race.respawnmode','timelimit')
+	g_GameOptions.defaultrespawnmode	= getString('race.respawnmode','none')
 	g_GameOptions.defaultrespawntime	= getNumber('race.respawntime',5) * 1000
 	g_GameOptions.defaultduration		= getNumber('race.duration',6000) * 1000
 	g_GameOptions.ghostmode				= getBool('race.ghostmode',false)

@@ -107,7 +107,7 @@
 					desc="The number of seconds the race continues for after someone wins."
 					/>
 
-		<setting name="*respawnmode" value="timelimit"
+		<setting name="*respawnmode" value="none"
 					friendlyname="Respawn mode"
 					accept="timelimit,none"
 					group="Gameplay"
