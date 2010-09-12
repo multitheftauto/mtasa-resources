@@ -71,7 +71,7 @@ addEventHandler ( "onClientElementDataChange", getResourceRootElement(getThisRes
 addEvent("Startround",true)
 
 function starttheround(player)
-	outputChatBox("Round Started",getLocalPlayer (), 255, 69, 0)
+	outputChatBox("Round Started", 255, 69, 0)
 	sitthisoneout = setTimer ( idlethisround, 30000, 1, player )
 	team = getPlayerTeam ( player )
 	showCursor ( true )
@@ -111,7 +111,7 @@ function idlethisround (player)
 	sitthisoneout = nil
 	guiSetVisible ( spiesMenu, false )
 	guiSetVisible ( mercenariesMenu, false )
-	outputChatBox ( "Sitting out this round", player, 255, 69, 0)
+	outputChatBox ( "Sitting out this round", 255, 69, 0)
 end
 
 

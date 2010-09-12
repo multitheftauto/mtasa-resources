@@ -157,7 +157,7 @@ function aVehicleCheckUpgrades ( vehicle )
 			end
 		end
 	else
-		outputChatBox ( "You must be in a vehicle.", player, 255, 0, 0 )
+		outputChatBox ( "You must be in a vehicle.", 255, 0, 0 )
 	end
 end
 
