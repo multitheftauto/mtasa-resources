@@ -96,10 +96,11 @@ function aAdminMenu ()
 						  guiCreateHeader ( 0.25, 0.805, 0.20, 0.04, "Vehicle:", true, aTab1.Tab )
 		aTab1.Vehicle		= guiCreateLabel ( 0.26, 0.850, 0.35, 0.04, "Vehicle: N/A", true, aTab1.Tab )
 		aTab1.VehicleHealth	= guiCreateLabel ( 0.26, 0.895, 0.25, 0.04, "Vehicle Health: 0%", true, aTab1.Tab )
-		aTab1.VehicleFix		= guiCreateButton ( 0.71, 0.85, 0.13, 0.04, "Fix", true, aTab1.Tab, "repair" )
-		aTab1.VehicleDestroy	= guiCreateButton ( 0.71, 0.90, 0.13, 0.04, "Destroy", true, aTab1.Tab, "destroyvehicle" )
-		aTab1.VehicleBlow		= guiCreateButton ( 0.85, 0.85, 0.13, 0.04, "Blow", true, aTab1.Tab, "blowvehicle" )
-		aTab1.VehicleCustomize 	= guiCreateButton ( 0.85, 0.90, 0.13, 0.04, "Customize", true, aTab1.Tab, "customize" )
+		aTab1.VehicleFix		= guiCreateButton ( 0.71, 0.84, 0.13, 0.04, "Fix", true, aTab1.Tab, "repair" )
+		aTab1.VehicleDestroy	= guiCreateButton ( 0.71, 0.89, 0.13, 0.04, "Destroy", true, aTab1.Tab, "destroyvehicle" )
+		aTab1.VehicleBlow		= guiCreateButton ( 0.85, 0.84, 0.13, 0.04, "Blow", true, aTab1.Tab, "blowvehicle" )
+		aTab1.VehicleCustomize 	= guiCreateButton ( 0.85, 0.89, 0.13, 0.04, "Customize", true, aTab1.Tab, "customize" )
+		aTab1.AnonAdmin		  = guiCreateCheckBox (0.745, 0.942, 0.20, 0.04, "Anonymous Admin", isAnonAdmin(), true, aTab1.Tab )
 		aTab1.GiveVehicle		= guiCreateButton ( 0.71, 0.710, 0.27, 0.04, "Give: "..getVehicleNameFromModel ( aCurrentVehicle ), true, aTab1.Tab, "givevehicle" )
 		aTab1.VehicleDropDown 	= guiCreateStaticImage ( 0.95, 0.710, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
 		local gx, gy 		= guiGetSize ( aTab1.GiveVehicle, false )
@@ -680,7 +681,7 @@ function aSetCurrentAmmo ( ammo )
 		aCurrentAmmo = ammo
 		return
 	end
-	outputChatBox ( "Invalid ammo value", getLocalPlayer(), 255, 0, 0 )
+	outputChatBox ( "Invalid ammo value", 255, 0, 0 )
 end
 
 function aClientGUIAccepted ( element )
@@ -805,6 +806,8 @@ function aClientClick ( button )
 				guiSetInputEnabled ( true )
 			elseif ( source == aTab1.HideColorCodes ) then
 				updateColorCodes()
+			elseif ( source == aTab1.AnonAdmin ) then
+				setAnonAdmin( guiCheckBoxGetSelected ( aTab1.AnonAdmin ) )
 			elseif ( getElementType ( source ) == "gui-button" )  then
 				if ( source == aTab1.GiveVehicle ) then guiBringToFront ( aTab1.VehicleDropDown )
 				elseif ( source == aTab1.GiveWeapon ) then guiBringToFront ( aTab1.WeaponDropDown )
@@ -1104,4 +1107,14 @@ end
 -- remove color coding from string
 function removeColorCoding( name )
 	return type(name)=='string' and string.gsub ( name, '#%x%x%x%x%x%x', '' ) or name
+end
+
+-- anon admin
+function isAnonAdmin()
+	return getElementData( getLocalPlayer(), "AnonAdmin" ) == true
+end
+
+function setAnonAdmin( bOn )
+	guiCheckBoxSetSelected ( aTab1.AnonAdmin, bOn )
+	setElementData( getLocalPlayer(), "AnonAdmin", bOn )
 end
