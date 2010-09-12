@@ -4,7 +4,7 @@ local serverConsole = getElementByIndex("console", 0)
 
 local modeOptions = 0
 local mapOptions = 0
-local DONT_CHANGE_OPTION = {"Don't change", default=true}
+local DONT_CHANGE_OPTION = {"Don't change", default=false}
 local currentPollSize = 0
 
 local vote = {
