@@ -97,6 +97,8 @@ function startPoll(pollData)
 		return false, errorCode.startCancelled
 	end
 	
+	outputServerLogMaybe( string.format("Vote started '%s'", pollData.title) )
+
 	pollData.playersWhoVoted = 0
 	pollData.maxVoters = playerAmount
 	--make pollData.allowedPlayers a reference to the player table
@@ -175,6 +177,8 @@ function recheckVotes()
 	--if any option exceeds that number, it wins
 	for index,option in ipairs(activePoll) do
 		if option.votes >= votesNeeded then
+			local percent = option.votes * 100 / math.max(1,activePoll.maxVoters)
+			outputServerLogMaybe( string.format("Vote finished early as %d%% (%d/%d players) reached for option [%s]", percent, option.votes, activePoll.maxVoters, tostring(option[1])) )
 			endPoll(index)
 			break
 		end
@@ -212,44 +216,52 @@ function endPoll(chosenOption)
 	if chosenOption then
 		return applyPollResults(chosenOption)
 	else
-		local newOptions = {}
-		for k, option in ipairs(activePoll) do
-			newOptions[k] = option
-			newOptions[k].oldindex = k
-		end
-		--if there's no default option, we sort the poll options by votes
-		table.sort(newOptions, function(a,b) return(a.votes > b.votes) end)
-		--check if there's a draw and store the options with equal number of votes in 'equals'
-		local equals = {[1]=true}
-		local k = 1
-		while newOptions[k].votes == newOptions[k+1].votes do
-			equals[k+1] = true
-			if not newOptions[k+2] then
-				break
+		-- No option has enough percent using votes/totalplayers - See if any option will win using votes/totalvoters
+
+		-- Make a list of the highest scoring options
+		local winningIndices = {}
+		local highestVotes = 0
+		for idx, option in ipairs(activePoll) do
+			if option.votes > highestVotes then
+				highestVotes = option.votes
+				winningIndices = {}
 			end
-			k = k + 1
+			if option.votes == highestVotes then
+				table.insert( winningIndices, idx )
+			end
 		end
+
+		-- Output some stuff for the server log
+		local winningNames = ""
+		for _,indici in ipairs(winningIndices) do
+			winningNames = winningNames .. "[" .. activePoll[indici][1] .. "]"
+		end
+		local percent = highestVotes * 100 / math.max(1,activePoll.playersWhoVoted)
+		outputServerLogMaybe( string.format("Vote finished with %d%% (%d/%d voters) for the most popular option(s). %s", percent, highestVotes, activePoll.playersWhoVoted, winningNames) )
+
+		-- if top option has enough percent, use it
+		if percent >= activePoll.percentage then
+			return applyPollResults( winningIndices[1] )
+		end
+
+		-- Now use default option if defined
+		for index,option in ipairs(activePoll) do
+			if option.default then
+				outputServerLogMaybe( "Vote using default option" )
+				return applyPollResults(index)
+			end
+		end
+
 		--if there's no draw, finish with the one with the greater number of votes
-		if #equals == 1 then
-			return applyPollResults(newOptions[1].oldindex)
+		if #winningIndices == 1 then
+			outputServerLogMaybe( "Vote using highest number of votes" )
+			return applyPollResults( winningIndices[1] )
 		--if there's a draw,
 		else
-			--if the next nomination exceeds the max or doesn't reduce option count, finish here
-			if activePoll.nomination+1 > activePoll.maxnominations or #equals == #activePoll then
-				--try to get the default option first
-				for index,option in ipairs(activePoll) do
-					if option.default then
-						return applyPollResults(index)
-					end
-				end
-				
-				local result = triggerEvent("onPollEnd", thisResourceRoot)
-			
-				if result == true then
-					outputVoteManager("Vote ended! [Draw]", rootElement)
-				end
-				
-				activePoll = nil
+			--if the next nomination exceeds the max or doesn't reduce option count, make a casting vote using super-computer heuristic algorithms
+			if activePoll.nomination+1 > activePoll.maxnominations or #winningIndices == #activePoll then
+				outputServerLogMaybe( "Vote using CPU casting vote" )
+				return applyPollResults( winningIndices[ math.random( 1, #winningIndices ) ] )
 			else
 				--copy the poll settings and increase nomination number
 				local drawPoll = {
@@ -262,8 +274,8 @@ function endPoll(chosenOption)
 					nomination=activePoll.nomination+1,
 				}
 				--insert the options with equal number of votes
-				for index in ipairs(equals) do
-					table.insert(drawPoll,newOptions[index])
+				for _,indici in ipairs(winningIndices) do
+					table.insert(drawPoll,activePoll[indici])
 				end
 				--delete the current active poll
 				activePoll = nil
@@ -422,5 +434,11 @@ function outputVoteManager(message, toElement)
 		if toElement == rootElement then
 			outputServerLog(message)
 		end
+	end
+end
+
+function outputServerLogMaybe(message)
+	if get("log_votes") then
+		outputServerLog(message)
 	end
 end
