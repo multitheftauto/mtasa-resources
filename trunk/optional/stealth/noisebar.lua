@@ -110,7 +110,7 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 				end
 			end
 			if not getElementData ( source, "armor" ) then
-				--outputChatBox("You've been hit in the leg.", getLocalPlayer (), 255, 69, 0)
+				--outputChatBox("You've been hit in the leg.", 255, 69, 0)
 				setPedAnimation ( getLocalPlayer(), "ped", bodyPartAnim[bodypart][1], true, true, false )
 				setTimer ( setPedAnimation, 600, 1, getLocalPlayer() )
 				setElementData ( getLocalPlayer (), "legdamage", 1 )

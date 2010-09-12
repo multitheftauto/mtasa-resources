@@ -121,10 +121,10 @@ function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHI
 						guiSetText ( gadgetlabel, gadgetuses )
 						playSoundFrontEnd(42)
 					else
-						outputChatBox("You need to crouch to place a landmine.",player, 255, 69, 0)
+						outputChatBox("You need to crouch to place a landmine.", 255, 69, 0)
 					end
 				else
-					outputChatBox ( "You are out of Mines", getLocalPlayer (), 255, 69, 0)
+					outputChatBox ( "You are out of Mines", 255, 69, 0)
 				end
 			elseif chosengadget == "burst" then
 				radarblipburst()
@@ -140,10 +140,10 @@ function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHI
 						gadgetuses = gadgetuses-1
 						guiSetText ( gadgetlabel, gadgetuses )
 					else
-						outputChatBox ( "You are already currently cloaked.", getLocalPlayer (), 255, 69, 0)
+						outputChatBox ( "You are already currently cloaked.", 255, 69, 0)
 					end
 				else
-					outputChatBox ( "You are out of Cloaks", getLocalPlayer (), 255, 69, 0)
+					outputChatBox ( "You are out of Cloaks", 255, 69, 0)
 				end
 			elseif chosengadget == "goggles" then
 				goggletoggle()
@@ -233,7 +233,7 @@ function triggerpulled(weapon)
 			gadgetuses = gadgetuses-1
 			guiSetText ( gadgetlabel, gadgetuses )
 		else
-			outputChatBox ( "You are out of Camera Smokes.", getLocalPlayer (), 255, 69, 0)
+			outputChatBox ( "You are out of Camera Smokes.", 255, 69, 0)
 		end
 	else
 		local weapon = getPedWeapon (getLocalPlayer ())
@@ -290,7 +290,7 @@ function goggletoggle()
 			player = getLocalPlayer ()
 			triggerServerEvent ("goggleswap", getLocalPlayer (), player )
 		else
-			outputChatBox ( "Take off the goggles to toggle their mode.", getLocalPlayer (), 255, 69, 0)
+			outputChatBox ( "Take off the goggles to toggle their mode.", 255, 69, 0)
 		end
 	end
 end
@@ -441,7 +441,7 @@ function findthespot (rot)
 		if ( isPedDucked ( player) ) then
 			z = z-0.7
 		end
-		triggerServerEvent ("cameraobject", getLocalPlayer (), x, y, z, player )
+		triggerServerEvent ("cameraobject", x, y, z, player )
 		placeSpyCam ( x, y, z, rot )
 		playSoundFrontEnd(37)
 		camerax = x
@@ -449,7 +449,7 @@ function findthespot (rot)
 		cameraz = z
 		cameracol = createColSphere ( x, y, z, 1.4 )
 	else
-		outputChatBox ( "You need to place the cam on a wall", getLocalPlayer (), 255, 69, 0)
+		outputChatBox ( "You need to place the cam on a wall", 255, 69, 0)
 	end
 end
 
