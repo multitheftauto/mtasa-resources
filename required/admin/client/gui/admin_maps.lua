@@ -12,7 +12,7 @@ aGamemodeMapTable = {}
 
 function createMapTab()
 	aTabMap = {}
-	aTabMap.Tab = guiCreateTab ( "Maps", aTabPanel )
+	aTabMap.Tab = guiCreateTab ( "Maps", aTabPanel, "maps" )
 	aTabMap.MapListSearch = guiCreateEdit ( 0.03, 0.05, 0.31, 0.04, "", true, aTabMap.Tab )
 						  guiCreateStaticImage ( 0.34, 0.05, 0.035, 0.04, "client\\images\\search.png", true, aTabMap.Tab )
 	aTabMap.MapList = guiCreateGridList ( 0.03, 0.10, 0.35, 0.80, true, aTabMap.Tab )
