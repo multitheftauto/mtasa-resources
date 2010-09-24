@@ -28,11 +28,13 @@ function aChatTab.Create ( tab )
 	if ( aGetSetting ( "adminChatSound" ) ) then guiCheckBoxSetSelected ( aChatTab.AdminChatSound, true ) end
 
 	addEventHandler ( "aClientAdminChat", _root, aChatTab.onClientAdminChat )
+	addEventHandler ( "aClientPlayerJoin", _root, aChatTab.onClientPlayerJoin )
 	addEventHandler ( "onClientPlayerQuit", _root, aChatTab.onClientPlayerQuit )
 	addEventHandler ( "onClientResourceStop", getResourceRootElement(), aChatTab.onClientResourceStop )
 	addEventHandler ( "onClientGUIClick", aChatTab.Tab, aChatTab.onClientClick )
 	addEventHandler ( "onClientGUIAccepted", aChatTab.AdminText, aChatTab.onClientGUIAccepted )
 	addEventHandler ( "aClientSync", _root, aChatTab.onClientSync )
+	addEventHandler ( "onAdminRefresh", _root, aChatTab.onRefresh )
 end
 
 function aChatTab.onClientClick ( button )
@@ -61,27 +63,42 @@ function aChatTab.onClientSync ( type, table )
 			else
 				aPlayers[player]["groups"] = table[player]["groups"]
 				if ( table[player]["chat"] ) then
+					local list = aChatTab.AdminPlayers
 					local id = 0
 					local exists = false
-					while ( id <= guiGridListGetRowCount( aChatTab.AdminPlayers ) ) do
-						if ( guiGridListGetItemText ( aChatTab.AdminPlayers, id, 1 ) == getPlayerName ( player ) ) then
+					while ( id <= guiGridListGetRowCount( list ) ) do
+						if ( guiGridListGetItemData ( list, id, 1 ) == player ) then
 							exists = true
 						end
 						id = id + 1
 					end
-					if ( exists == false ) then guiGridListSetItemText ( aChatTab.AdminPlayers, guiGridListAddRow ( aChatTab.AdminPlayers ), 1, getPlayerName ( player ), false, false ) end
+					if ( not exists ) then
+						local row = guiGridListAddRow ( list )
+						guiGridListSetItemData ( list, row, 1, source )
+						guiGridListSetItemText ( list, row, 1, getPlayerName ( player ), false, false )
+					end
 				end
 			end
 		end
 	end
 end
 
+function aChatTab.onClientPlayerJoin ( ip, username, serial, admin, country, countryname )
+	local list = aChatTab.AdminPlayers
+	if ( admin ) then
+		local row = guiGridListAddRow ( list )
+		guiGridListSetItemData ( list, row, 1, source )
+		guiGridListSetItemText ( list, row, 1, getPlayerName ( source ), false, false )
+	end
+end
+
 function aChatTab.onClientPlayerQuit ()
 	if ( aPlayers[source]["admin"] ) then
+		local list = aChatTab.AdminPlayers
 		local id = 0
-		while ( id <= guiGridListGetRowCount( aChatTab.AdminPlayers ) ) do
-			if ( guiGridListGetItemText ( aChatTab.AdminPlayers, id, 1 ) == getPlayerName ( source ) ) then
-				guiGridListRemoveRow ( aChatTab.AdminPlayers, id )
+		while ( id <= guiGridListGetRowCount( list ) ) do
+			if ( guiGridListGetItemData ( list, id, 1 ) == source ) then
+				guiGridListRemoveRow ( list, id )
 			end
 			id = id + 1
 		end

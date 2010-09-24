@@ -8,114 +8,127 @@
 *
 **************************************]]
 
-aMessageForm = nil
+MB_WARNING = 1
+MB_ERROR = 2
+MB_QUESTION = 3
+MB_INFO = 4
 
-function aMessageBox ( type, message, action )
+MB_YESNO = 1
+MB_OK = 2
+
+aMessageBox = {
+	type = { "warning", "error", "question", "info" },
+	Thread = nil,
+	Result = false;
+}
+
+function messageBox ( message, icon, type )
+	if ( message ) then
+		return aMessageBox.Show ( message, icon or MB_INFO, type or MB_OK )
+	end
+	return false
+end
+
+function aMessageBox.Show ( message, icon, type )
 	local x, y = guiGetScreenSize()
-	if ( aMessageForm == nil ) then
-		aMessageForm	= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 110, "", false )
-					  guiWindowSetSizable ( aMessageForm, false )
-		aMessageWarning	= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\warning.png", false, aMessageForm )
-		aMessageQuestion	= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\question.png", false, aMessageForm )
-		aMessageError		= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\error.png", false, aMessageForm )
-		aMessageInfo		= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\info.png", false, aMessageForm )
-		aMessageLabel		= guiCreateLabel ( 100, 32, 180, 16, "", false, aMessageForm )
-					  guiLabelSetHorizontalAlign ( aMessageLabel, 2 )
-		aMessageYes		= guiCreateButton ( 120, 70, 55, 17, "Yep", false, aMessageForm )
-		aMessageNo		= guiCreateButton ( 180, 70, 55, 17, "Nope", false, aMessageForm )
-		aMessageOk		= guiCreateButton ( 160, 70, 55, 17, "k", false, aMessageForm )
-		guiSetProperty ( aMessageForm, "AlwaysOnTop", "true" )
-		aMessageAction = nil
-		bindKey ( "enter", "down", aMessageBoxAccept )
-		bindKey ( "n", "down", aMessageBoxAccept )
-		addEventHandler ( "onClientGUIClick", aMessageForm, aMessageBoxClick )
+	if ( aMessageBox.Form == nil ) then
+		aMessageBox.Form		= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 110, "", false )
+					  	  guiWindowSetSizable ( aMessageBox.Form, false )
+		aMessageBox.Warning	= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\warning.png", false, aMessageBox.Form )
+		aMessageBox.Question	= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\question.png", false, aMessageBox.Form )
+		aMessageBox.Error		= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\error.png", false, aMessageBox.Form )
+		aMessageBox.Info		= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\info.png", false, aMessageBox.Form )
+		aMessageBox.Label		= guiCreateLabel ( 100, 32, 180, 16, "", false, aMessageBox.Form )
+					  	  guiLabelSetHorizontalAlign ( aMessageBox.Label, 2 )
+		aMessageBox.Yes		= guiCreateButton ( 120, 70, 55, 17, "Yes", false, aMessageBox.Form )
+		aMessageBox.No		= guiCreateButton ( 180, 70, 55, 17, "No", false, aMessageBox.Form )
+		aMessageBox.Ok		= guiCreateButton ( 160, 70, 55, 17, "Ok", false, aMessageBox.Form )
+		guiSetProperty ( aMessageBox.Form, "AlwaysOnTop", "true" )
+
+
+		bindKey ( "enter", "down", aMessageBox.Accept, true )
+		bindKey ( "y", "down", aMessageBox.Accept, true )
+		bindKey ( "n", "down", aMessageBox.Accept, false )
+		addEventHandler ( "onClientGUIClick", aMessageBox.Yes, aMessageBox.onClick )
+		addEventHandler ( "onClientGUIClick", aMessageBox.No, aMessageBox.onClick )
+		addEventHandler ( "onClientGUIClick", aMessageBox.Ok, aMessageBox.onClick )
+
 		--Register With Admin Form
-		aRegister ( "MessageBox", aMessageForm, aMessageBox, aMessageBoxClose )
+		aRegister ( "MessageBox", aMessageBox.Form, aMessageBox.Show, aMessageBox.Close )
 	end
-	guiSetText ( aMessageForm, type )
-	guiSetText ( aMessageLabel, tostring ( message ) )
-	local width = guiLabelGetTextExtent ( aMessageLabel )
+
+	guiSetText ( aMessageBox.Form, aMessageBox.type[type] )
+	guiSetText ( aMessageBox.Label, tostring ( message ) )
+	local width = guiLabelGetTextExtent ( aMessageBox.Label )
 	if ( width > 180 ) then 
-		guiSetSize ( aMessageForm, 100 + width + 20, 110, false )
-		guiSetSize ( aMessageLabel, width, 16, false )
+		guiSetSize ( aMessageBox.Form, 100 + width + 20, 110, false )
+		guiSetSize ( aMessageBox.Label, width, 16, false )
 	else
-		guiSetSize ( aMessageForm, 300, 110, false )
-		guiSetSize ( aMessageLabel, 180, 16, false )
+		guiSetSize ( aMessageBox.Form, 300, 110, false )
+		guiSetSize ( aMessageBox.Label, 180, 16, false )
 	end
-	local sx, sy = guiGetSize ( aMessageForm, false )
-	guiSetPosition ( aMessageOk, sx / 2 - 22, 70, false )
-	guiSetPosition ( aMessageForm, x / 2 - sx / 2, y / 2 - sy / 2, false )
-	guiBringToFront ( aMessageForm )
-	guiSetVisible ( aMessageWarning, false )
-	guiSetVisible ( aMessageQuestion, false )
-	guiSetVisible ( aMessageError, false )
-	guiSetVisible ( aMessageInfo, false )
-	guiSetVisible ( aMessageYes, false )
-	guiSetVisible ( aMessageNo, false )
-	guiSetVisible ( aMessageOk, false )
-	guiSetVisible ( aMessageForm, true )
-	guiSetVisible ( aInputForm, false )
-	if ( type == "warning" ) then guiSetVisible ( aMessageWarning, true )
-	elseif ( type == "question" ) then guiSetVisible ( aMessageQuestion, true )
-	elseif ( type == "error" ) then guiSetVisible ( aMessageError, true )
-	else guiSetVisible ( aMessageInfo, true ) end
-	if ( ( action ~= "" ) and ( action ~= nil ) and ( action ~= false ) ) then
-		guiSetVisible ( aMessageYes, true )
-		guiSetVisible ( aMessageNo, true )
-		aMessageAction = action
+	local sx, sy = guiGetSize ( aMessageBox.Form, false )
+	guiSetPosition ( aMessageBox.Ok, sx / 2 - 22, 70, false )
+	guiSetPosition ( aMessageBox.Form, x / 2 - sx / 2, y / 2 - sy / 2, false )
+	guiSetVisible ( aMessageBox.Form, true )
+	guiBringToFront ( aMessageBox.Form )
+
+	guiSetVisible ( aMessageBox.Warning, type == MB_WARNING )
+	guiSetVisible ( aMessageBox.Question, type == MB_QUESTION )
+	guiSetVisible ( aMessageBox.Error, type == MB_ERROR )
+	guiSetVisible ( aMessageBox.Info, type == MB_INFO )
+
+	--guiSetVisible ( aInputForm, false )
+
+	if ( action == MB_YESNO ) then
+		guiSetVisible ( aMessageBox.Yes, true )
+		guiSetVisible ( aMessageBox.No, true )
+		guiSetVisible ( aMessageBox.Ok, false )
 	else
-		guiSetVisible ( aMessageOk, true )
+		guiSetPosition ( aMessageBox.Ok, sx / 2 - 22, 70, false )
+		guiSetVisible ( aMessageBox.Ok, true )
+		guiSetVisible ( aMessageBox.Yes, false )
+		guiSetVisible ( aMessageBox.No, false )
 	end
+
+	aMessageBox.Thread = sourceCoroutine
+	aMessageBox.Result = false
+	coroutine.yield ()
+	aMessageBox.Thread = nil
+	return aMessageBox.Result
 end
 
-function aMessageBoxClose ( destroy )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceMessage ) ) ) then
-		if ( aMessageForm ) then
-			unbindKey ( "enter", "down", aMessageBoxAccept )
-			unbindKey ( "n", "down", aMessageBoxAccept )
-			removeEventHandler ( "onClientGUIClick", aMessageForm, aMessageBoxClick )
-			aMessageAction = nil
-			destroyElement ( aMessageForm )
-			aMessageForm = nil
-		end
-	else
-		guiSetVisible ( aMessageForm, false )
-	end
-end
-
-function aMessageBoxAccept ( key, state )
-	if ( guiGetVisible ( aMessageForm ) ) then
-		if ( guiGetVisible ( aMessageOk ) ) then
-			if ( key == "enter" ) then
-				aMessageAction = nil
-				aMessageBoxClose ( false )
-			end
+function aMessageBox.Close ( destroy )
+	if ( aMessageBox.Form ) then
+		if ( destroy ) then
+			unbindKey ( "enter", "down", aMessageBox.Accept )
+			unbindKey ( "n", "down", aMessageBox.Accept )
+			destroyElement ( aMessageBox.Form )
+			aMessageBox.Form = nil
 		else
-			if ( key == "enter" ) then
-				if ( aMessageAction ~= nil ) then 
-					loadstring(aMessageAction)()
-				end
-				aMessageAction = nil
-				aMessageBoxClose ( false )
-			elseif ( key == "n" ) then
-				aMessageAction = nil
-				aMessageBoxClose ( false )
-			end
+			guiSetVisible ( aMessageBox.Form, false )
+		end
+		if ( aMessageBox.Thread ) then
+			coroutine.resume ( aMessageBox.Thread )
 		end
 	end
 end
 
-function aMessageBoxClick ( button )
+function aMessageBox.Accept ( key, state, result )
+	if ( guiGetVisible ( aMessageBox.Form ) ) then
+		aMessageBox.Result = result
+		aMessageBox.Close ( false )
+	end
+end
+
+function aMessageBox.onClick ( button )
 	if ( button == "left" ) then
-		if ( source == aMessageYes ) then
-			if ( aMessageAction ~= nil ) then 
-				loadstring(aMessageAction)()
-			end
-			aMessageAction = nil
-			aMessageBoxClose ( false )
-		elseif ( ( source == aMessageNo ) or ( source == aMessageOk ) ) then
-			aMessageAction = nil
-			aMessageBoxClose ( false )
+		if ( source == aMessageBox.No ) then
+			aMessageBox.Result = false
+			aMessageBox.Close ( false )
+		elseif ( ( source == aMessageBox.Yes ) or ( source == aMessageBox.Ok ) ) then
+			aMessageBox.Result = true
+			aMessageBox.Close ( false )
 		end
 	end
 end

@@ -1,5 +1,5 @@
 <meta>
-  <info name="Admin" author="lil_Toady" type="misc" version="1.2" description="Administration panel" />
+  <info name="Admin" author="lil_Toady" type="misc" version="2.0" description="Administration panel" />
   <!--
     Admin System Meta File.
     
@@ -10,7 +10,9 @@
   <script src="admin_definitions.lua" 				        type="server" />
   <script src="admin_definitions.lua" 				        type="client" />
   
-  <script src="server/admin_coroutines.lua" 		      type="server" />
+  <script src="server/admin_settings.lua" 	      type="server" />
+  <script src="server/admin_wrapper.lua" 		      type="server" />
+  <script src="server/admin_functions.lua" 	      type="server" />
   <script src="server/admin_server.lua" 			        type="server" />
   <script src="server/admin_sync.lua" 				        type="server" />
   <script src="server/admin_commands.lua" 			      type="server" />
@@ -18,6 +20,7 @@
   <script src="server/admin_ACL.lua" 				          type="server" />
   <script src="server/admin_bans.lua"                 type="server" />
 
+  <script src="client/admin_coroutines.lua" 			        type="client" />
   <script src="client/admin_wrapper.lua" 			        type="client" />
   <script src="client/admin_ACL.lua" 				          type="client" />
   <script src="client/admin_settings.lua"             type="client" />

@@ -13,30 +13,45 @@ addEventHandler ( "aSync", _root, function ( type, data )
 	local tableOut = {}
 	local theSource = _root
 	if ( type == "player" ) then
+		if ( not isElement( data ) ) then return end
 		aPlayers[source]["sync"] = data
 		tableOut["mute"] = isPlayerMuted ( data )
-		tableOut["freeze"] = isPlayerFrozen ( data )
+		tableOut["freeze"] = isPedFrozen ( data )
 		tableOut["money"] = getPlayerMoney ( data )
+		tableOut["version"] = getPlayerVersion ( data )
+		local account = getPlayerAccount ( data )
+		if ( isGuestAccount ( account ) ) then
+			tableOut["groups"] = "Not logged in"
+		else
+			local groups = aclGetAccountGroups ( account )
+			if ( #groups <= 0 ) then
+				tableOut["groups"] = "None"
+			else
+				tableOut["groups"] = table.concat ( table.reverse ( groups ), ", " )
+			end
+		end
+		tableOut["account"] = getAccountName ( account )
 		theSource = data
 	elseif ( type == "players" ) then
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
 			tableOut[player] = {}
 			tableOut[player]["name"] = getPlayerName ( player )
 			tableOut[player]["IP"] = getPlayerIP ( player )
-			tableOut[player]["username"] = getPlayerUserName ( player )
+			tableOut[player]["account"] = getAccountName ( getPlayerAccount ( player ) )
 			tableOut[player]["serial"] = getPlayerSerial ( player )
 			tableOut[player]["country"] = aPlayers[player]["country"]
 			tableOut[player]["countryname"] = aPlayers[player]["countryname"]
 			tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
 		end
 	elseif ( type == "resources" ) then
+		tableOut = {}
 		local resourceTable = getResources()
-		for id, resource in ipairs(resourceTable) do
+		for id, resource in ipairs ( resourceTable ) do
 			local name = getResourceName ( resource )
 			local state = getResourceState ( resource )
-			tableOut[id] = {}
-			tableOut[id].name = name
-			tableOut[id].state = state
+			local group = getResourceInfo ( resource, "type" ) or "misc"
+			if ( not tableOut[group] ) then tableOut[group] = {} end
+			table.insert ( tableOut[group], { name = name, state = state } )
 		end
 	elseif ( type == "resource" ) then
 		local resource = getResourceFromName ( data )
@@ -48,6 +63,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut.info.author = getResourceInfo ( resource, "author" ) or nil
 			tableOut.info.version = getResourceInfo ( resource, "version" ) or nil
 			tableOut.info.description = getResourceInfo ( resource, "description" ) or nil
+			tableOut.info.settings = aGetResourceSettings ( data, false )
 		end
 	elseif ( type == "admins" ) then
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
@@ -182,4 +198,60 @@ end )
 function getMonthName ( month )
 	local names = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
 	return names[month]
+end
+
+function aGetResourceSettings( resName, bCountOnly )
+	allowedAccess = { ['*']=true }
+	allowedTypes  = { ['boolean']=true, ['number']=true, ['string']=true, ['table']=true }
+	local count = 0
+
+	local rawsettings = get(resName..'.')
+	if not rawsettings then
+		return {}, count
+	end
+	local settings = {}
+	-- Parse raw settings
+	for rawname,value in pairs(rawsettings) do
+		if allowedTypes[type(value)] then
+			if allowedAccess[string.sub(rawname,1,1)] then
+				count = count + 1
+				-- Remove leading '*','#' or '@'
+				local temp = string.gsub(rawname,'[%*%#%@](.*)','%1')
+				-- Remove leading 'resName.'
+				local name = string.gsub(temp,resName..'%.(.*)','%1')
+				-- If name didn't have a leading 'resName.', then it must be the default setting
+				local bIsDefault = ( temp == name )
+				if settings[name] == nil then
+					settings[name] = {}
+				end
+				if bIsDefault then
+					settings[name].default = value
+				else
+					settings[name].current = value
+				end
+			end
+		end
+	end
+	-- Don't do anything else if all we want is the settings count
+	if bCountOnly then
+		return {}, count
+	end
+	-- Copy to tableOut, setting 'current' from 'default' where appropriate
+	local tableOut = {}
+	for name,value in pairs(settings) do
+		if value.default ~= nil then
+			tableOut[name] = {}
+			tableOut[name].default = value.default
+			tableOut[name].current = value.current
+			if value.current == nil then
+				tableOut[name].current = value.default
+			end
+			tableOut[name].friendlyname	= get( resName .. '.' .. name .. '.friendlyname' )
+			tableOut[name].group		= get( resName .. '.' .. name .. '.group' )
+			tableOut[name].accept		= get( resName .. '.' .. name .. '.accept' )
+			tableOut[name].examples		= get( resName .. '.' .. name .. '.examples' )
+			tableOut[name].desc			= get( resName .. '.' .. name .. '.desc' )
+		end
+	end
+	return tableOut, count
 end

@@ -10,7 +10,7 @@
 
 _DEBUG = false
 
-_version = '1.337r42 Limited Oldskool Editi0n'
+_version = '2.0'
 
 _root = getRootElement()
 

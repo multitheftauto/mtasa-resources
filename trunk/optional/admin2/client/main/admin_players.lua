@@ -27,7 +27,11 @@ function aPlayersTab.Create ( tab )
 					  	  guiCreateInnerImage ( "client\\images\\search.png", aPlayersTab.PlayerListSearch )
 	aPlayersTab.PlayerList		= guiCreateGridList ( 0.01, 0.07, 0.20, 0.91, true, aPlayersTab.Tab )
 					  	  guiGridListAddColumn( aPlayersTab.PlayerList, "Player list", 0.85 )
-					  	  for id, player in ipairs ( getElementsByType ( "player" ) ) do guiGridListSetItemText ( aPlayersTab.PlayerList, guiGridListAddRow ( aPlayersTab.PlayerList ), 1, getPlayerName ( player ), false, false ) end
+					  	  for id, player in ipairs ( getElementsByType ( "player" ) ) do
+							local row = guiGridListAddRow ( aPlayersTab.PlayerList )
+							guiGridListSetItemText ( aPlayersTab.PlayerList, row, 1, getPlayerName ( player ), false, false )
+							guiGridListSetItemData ( aPlayersTab.PlayerList, row, 1, player )
+						  end
 	aPlayersTab.Kick			= guiCreateButton ( 0.71, 0.125, 0.13, 0.04, "Kick", true, aPlayersTab.Tab, "kick" )
 	aPlayersTab.Ban			= guiCreateButton ( 0.85, 0.125, 0.13, 0.04, "Ban", true, aPlayersTab.Tab, "ban" )
 	aPlayersTab.Mute			= guiCreateButton ( 0.71, 0.170, 0.13, 0.04, "Mute", true, aPlayersTab.Tab, "mute" )
@@ -46,8 +50,8 @@ function aPlayersTab.Create ( tab )
 	aPlayersTab.Name			= guiCreateLabel ( 0.26, 0.080, 0.30, 0.035, "Name: N/A", true, aPlayersTab.Tab )
 	aPlayersTab.IP			= guiCreateLabel ( 0.26, 0.125, 0.30, 0.035, "IP: N/A", true, aPlayersTab.Tab )
 	aPlayersTab.Serial		= guiCreateLabel ( 0.26, 0.170, 0.30, 0.035, "Serial: N/A", true, aPlayersTab.Tab )
-	aPlayersTab.Username		= guiCreateLabel ( 0.26, 0.215, 0.30, 0.035, "Username: N/A", true, aPlayersTab.Tab )
-	aPlayersTab.Country		= guiCreateLabel ( 0.26, 0.260, 0.30, 0.035, "Country: Unknown", true, aPlayersTab.Tab )
+	aPlayersTab.Country		= guiCreateLabel ( 0.26, 0.215, 0.30, 0.035, "Country: Unknown", true, aPlayersTab.Tab )
+	aPlayersTab.Account		= guiCreateLabel ( 0.26, 0.260, 0.30, 0.035, "Account: N/A", true, aPlayersTab.Tab )
 	aPlayersTab.Groups		= guiCreateLabel ( 0.26, 0.305, 0.30, 0.035, "Groups: N/A", true, aPlayersTab.Tab )
 	aPlayersTab.Flag			= guiCreateStaticImage ( 0.40, 0.125, 0.025806, 0.021154, "client\\images\\empty.png", true, aPlayersTab.Tab )
 					  	  guiCreateHeader ( 0.25, 0.350, 0.20, 0.04, "Game:", true, aPlayersTab.Tab )
@@ -79,8 +83,6 @@ function aPlayersTab.Create ( tab )
 	aPlayersTab.SetMoney		= guiCreateButton ( 0.71, 0.530, 0.13, 0.04, "Set Money", true, aPlayersTab.Tab, "setmoney" )
 	aPlayersTab.SetStats		= guiCreateButton ( 0.85, 0.530, 0.13, 0.04, "Set Stats", true, aPlayersTab.Tab, "setstat" )
 	aPlayersTab.JetPack		= guiCreateButton ( 0.71, 0.575, 0.27, 0.04, "Give JetPack", true, aPlayersTab.Tab, "jetpack" )
-	aPlayersTab.Warp			= guiCreateButton ( 0.71, 0.620, 0.27, 0.04, "Warp to player", true, aPlayersTab.Tab, "warp" )
-	aPlayersTab.WarpTo		= guiCreateButton ( 0.71, 0.665, 0.27, 0.04, "Warp player to..", true, aPlayersTab.Tab, "warp" )
 					  	  guiCreateHeader ( 0.25, 0.805, 0.20, 0.04, "Vehicle:", true, aPlayersTab.Tab )
 	aPlayersTab.Vehicle		= guiCreateLabel ( 0.26, 0.850, 0.35, 0.04, "Vehicle: N/A", true, aPlayersTab.Tab )
 	aPlayersTab.VehicleHealth	= guiCreateLabel ( 0.26, 0.895, 0.25, 0.04, "Vehicle Health: 0%", true, aPlayersTab.Tab )
@@ -112,6 +114,7 @@ function aPlayersTab.Create ( tab )
 	addEventHandler ( "onClientPlayerQuit", _root, aPlayersTab.onClientPlayerQuit )
 	addEventHandler ( "aClientSync", _root, aPlayersTab.onClientSync )
 	addEventHandler ( "onClientResourceStop", getResourceRootElement(), aPlayersTab.onClientResourceStop )
+	addEventHandler ( "onAdminRefresh", _root, aPlayersTab.onRefresh )
 
 	triggerServerEvent ( "aSync", getLocalPlayer(), "players" )
 	if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "messages" ) end
@@ -138,14 +141,14 @@ function aPlayersTab.onClientClick ( button )
 			elseif ( source == aPlayersTab.GiveWeapon ) then guiBringToFront ( aPlayersTab.WeaponDropDown )
 			elseif ( source == aPlayersTab.Slap ) then guiBringToFront ( aPlayersTab.SlapDropDown ) end
 			if ( guiGridListGetSelectedItem ( aPlayersTab.PlayerList ) == -1 ) then
-				aMessageBox ( "error", "No player selected!" )
+				messageBox ( "No player selected!", MB_ERROR, MB_OK )
 			else
-				local name = guiGridListGetItemText ( aPlayersTab.PlayerList, guiGridListGetSelectedItem( aPlayersTab.PlayerList ), 1 )
-				local player = getPlayerFromNick ( name )
+				local player = getSelectedPlayer ()
+				local name = getPlayerName ( player )
 				if ( source == aPlayersTab.Kick ) then aInputBox ( "Kick nub "..name.." out", "Whai?", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"kick\", $value )" )
 				elseif ( source == aPlayersTab.Ban ) then aInputBox ( "Bant nub "..name, "Whai?!", "gay!", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"ban\", $value )" )
 				elseif ( source == aPlayersTab.Slap ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "slap", aPlayersTab.CurrentSlap )
-				elseif ( source == aPlayersTab.Mute ) then aMessageBox ( "question", "Are you sure to "..iif( aPlayers[player]["mute"], "unmute", "mute" ).." "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"mute\" )" )
+				elseif ( source == aPlayersTab.Mute ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "mute" )
 				elseif ( source == aPlayersTab.Freeze ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "freeze" )
 				elseif ( source == aPlayersTab.Spectate ) then aSpectate ( player )
 				elseif ( source == aPlayersTab.Shout ) then aInputBox ( "Shout", "Enter text the nub would see", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"shout\", $value )" )
@@ -160,15 +163,13 @@ function aPlayersTab.onClientClick ( button )
 				elseif ( source == aPlayersTab.SetDimension ) then aInputBox ( "Dimension ID Required", "Enter Dimension ID between 0  and 65535", "0", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"setdimension\", $value )" )
 				elseif ( source == aPlayersTab.GiveVehicle ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "givevehicle", aPlayersTab.CurrentVehicle )
 				elseif ( source == aPlayersTab.GiveWeapon ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "giveweapon", aPlayersTab.CurrentWeapon, aPlayersTab.CurrentAmmo )
-				elseif ( source == aPlayersTab.Warp ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "warp" )
-				elseif ( source == aPlayersTab.WarpTo ) then aPlayerWarp ( player )
 				elseif ( source == aPlayersTab.VehicleFix ) then triggerServerEvent ( "aVehicle", getLocalPlayer(), player, "repair" )
 				elseif ( source == aPlayersTab.VehicleBlow ) then triggerServerEvent ( "aVehicle", getLocalPlayer(), player, "blowvehicle" )
 				elseif ( source == aPlayersTab.VehicleDestroy ) then triggerServerEvent ( "aVehicle", getLocalPlayer(), player, "destroyvehicle" )
 				elseif ( source == aPlayersTab.VehicleCustomize ) then aVehicleCustomize ( player )
 				elseif ( source == aPlayersTab.Admin ) then
-					if ( aPlayers[player]["admin"] ) then aMessageBox ( "warning", "Revoke admin rights from "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"setgroup\", false )" )
-					else aMessageBox ( "warning", "Give admin rights to "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..name.."\" ), \"setgroup\", true )" ) end
+					if ( aPlayers[player]["admin"] and messageBox ( "Revoke admin rights from "..name.."?", MB_WARNING ) ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "setgroup", false )
+					elseif ( messageBox ( "Give admin rights to "..name.."?", MB_WARNING ) )then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "setgroup", true ) end
 				end
 			end
 		elseif ( source == aPlayersTab.VehicleDropDown ) then
@@ -192,7 +193,6 @@ function aPlayersTab.onClientClick ( button )
 					triggerServerEvent ( "aSync", getLocalPlayer(), "player", player )
 					guiSetText ( aPlayersTab.IP, "IP: "..aPlayers[player]["IP"] )
 					guiSetText ( aPlayersTab.Serial, "Serial: "..(aPlayers[player]["serial"] or "N/A") )
-					guiSetText ( aPlayersTab.Username, "Username: "..(aPlayers[player]["username"] or "N/A") )
 					guiSetText ( aPlayersTab.Country, "Country: ".. (aPlayers[player]["countryname"] or "Unknown") )
 					if ( aPlayers[player]["country"] ) then
 						local x, y = guiGetPosition ( aPlayersTab.IP, false )
@@ -208,7 +208,7 @@ function aPlayersTab.onClientClick ( button )
 				guiSetText ( aPlayersTab.Name, "Name: N/A" )
 				guiSetText ( aPlayersTab.IP, "IP: N/A" )
 				guiSetText ( aPlayersTab.Serial, "Serial: N/A" )
-				guiSetText ( aPlayersTab.Username, "Username: N/A" )
+				guiSetText ( aPlayersTab.Account, "Account: N/A" )
 				guiSetText ( aPlayersTab.Country, "Country: Unknown" )
 				guiSetText ( aPlayersTab.Groups, "Groups: N/A" )
 				guiSetText ( aPlayersTab.Mute, "Stfu" )
@@ -304,9 +304,10 @@ end
 
 function aPlayersTab.onClientPlayerChangeNick ( oldNick, newNick )
 	local id = 0
-	while ( id <= guiGridListGetRowCount( aPlayersTab.PlayerList ) ) do
-		if ( guiGridListGetItemText ( aPlayersTab.PlayerList, id, 1 ) == oldNick ) then
-			guiGridListSetItemText ( aPlayersTab.PlayerList, id, 1, newNick, false, false )
+	local list = aPlayersTab.PlayerList
+	while ( id <= guiGridListGetRowCount( list ) ) do
+		if ( guiGridListGetItemData ( list, id, 1 ) == source ) then
+			guiGridListSetItemText ( list, id, 1, newNick, false, false )
 		end
 		id = id + 1
 	end
@@ -316,18 +317,17 @@ function aPlayersTab.onClientPlayerJoin ( ip, username, serial, admin, country, 
 	aPlayers[source] = {}
 	aPlayers[source]["name"] = getPlayerName ( source )
 	aPlayers[source]["IP"] = ip
-	aPlayers[source]["username"] = username or "N/A"
 	aPlayers[source]["serial"] = serial or "N/A"
 	aPlayers[source]["admin"] = admin
 	aPlayers[source]["country"] = country
 	aPlayers[source]["countryname"] = countryname
+	aPlayers[source]["account"] = "Guest"
+	aPlayers[source]["groups"] = "Not logged in"
 
-	local row = guiGridListAddRow ( aPlayersTab.PlayerList )
-	guiGridListSetItemText ( aPlayersTab.PlayerList, row, 1, getPlayerName ( source ), false, false )
-	if ( admin ) then
-		local row = guiGridListAddRow ( aTab5.AdminPlayers )
-		guiGridListSetItemText ( aTab5.AdminPlayers, row, 1, getPlayerName ( source ), false, false )
-	end
+	local list = aPlayersTab.PlayerList
+	local row = guiGridListAddRow ( list )
+	guiGridListSetItemData ( list, row, 1, source )
+	guiGridListSetItemText ( list, row, 1, getPlayerName ( source ), false, false )
 	if ( aSpecPlayerList ) then
 		local row = guiGridListAddRow ( aSpecPlayerList )
 		guiGridListSetItemText ( aSpecPlayerList, row, 1, getPlayerName ( source ), false, false )
@@ -335,10 +335,11 @@ function aPlayersTab.onClientPlayerJoin ( ip, username, serial, admin, country, 
 end
 
 function aPlayersTab.onClientPlayerQuit ()
+	local list = aPlayersTab.PlayerList
 	local id = 0
-	while ( id <= guiGridListGetRowCount( aPlayersTab.PlayerList ) ) do
-		if ( guiGridListGetItemText ( aPlayersTab.PlayerList, id, 1 ) == getPlayerName ( source ) ) then
-			guiGridListRemoveRow ( aPlayersTab.PlayerList, id )
+	while ( id <= guiGridListGetRowCount( list ) ) do
+		if ( guiGridListGetItemData ( list, id, 1 ) == source ) then
+			guiGridListRemoveRow ( list, id )
 		end
 		id = id + 1
 	end
@@ -376,7 +377,8 @@ function aPlayersTab.onRefresh ()
 		guiSetText ( aPlayersTab.Name, "Name: "..aPlayers[player]["name"] )
 		guiSetText ( aPlayersTab.Mute, iif ( aPlayers[player]["mute"], "Unstfu", "Stfu" ) )
 		guiSetText ( aPlayersTab.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
-		guiSetText ( aPlayersTab.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
+		guiSetText ( aPlayersTab.Groups, "Account: "..( aPlayers[player]["account"] or "N/A" ) )
+		guiSetText ( aPlayersTab.Groups, "Groups: "..( aPlayers[player]["groups"] or "N/A" ) )
 
 		if ( isPlayerDead ( player ) ) then guiSetText ( aPlayersTab.Health, "Health: Dead" )
 		else guiSetText ( aPlayersTab.Health, "Health: "..math.ceil ( getElementHealth ( player ) ).."%" ) end
@@ -413,8 +415,8 @@ function aPlayersTab.onRefresh ()
 			guiSetText ( aPlayersTab.Vehicle, "Vehicle: Foot" )
 			guiSetText ( aPlayersTab.VehicleHealth, "Vehicle Health: 0%" )
 		end
-		return player
 	end
+	return player
 end
 
 function aPlayersTab.onClientResourceStop ()
@@ -430,13 +432,14 @@ function aPlayersTab.SetCurrentAmmo ( ammo )
 		aPlayersTab.CurrentAmmo = ammo
 		return
 	end
-	aMessageBox ( "error", "Invalid ammo value" )
+	messageBox ( "Invalid ammo value", MB_ERROR )
 end
 
 function getSelectedPlayer ()
 	local list = aPlayersTab.PlayerList
-	if ( guiGridListGetSelectedItem ( list ) ~= -1 ) then
-		return getPlayerFromNick ( guiGridListGetItemText ( list, guiGridListGetSelectedItem ( list ), 1 ) )
+	local item = guiGridListGetSelectedItem ( list )
+	if ( item ~= -1 ) then
+		return guiGridListGetItemData ( list, item, 1 )
 	end
 	return nil
 end
