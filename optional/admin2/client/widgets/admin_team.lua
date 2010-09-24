@@ -86,18 +86,20 @@ function aClientTeamClick ( button )
 			aTeamsRefresh()
 		elseif ( source == aTeamDelete ) then
 			if ( guiGridListGetSelectedItem ( aTeamList ) == -1 ) then
-				aMessageBox ( "warning", "No team selected!" )
+				messageBox ( "No team selected!", MB_WARNING )
 			else
 				local team = guiGridListGetItemText ( aTeamList, guiGridListGetSelectedItem ( aTeamList ), 1 )
-				aMessageBox ( "question", "Are you sure to delete \""..team.."\"?", "triggerServerEvent ( \"aTeam\", getLocalPlayer(), \"destroyteam\", \""..team.."\" )" )
+				if ( messageBox ( "Are you sure to delete \""..team.."\"?", MB_QUESTION ) ) then
+					triggerServerEvent ( "aTeam", getLocalPlayer(), "destroyteam", team )
+				end
 			end
 			setTimer ( aTeamsRefresh, 2000, 1 )
 		elseif ( source == aTeamCreate ) then
 			local team = guiGetText ( aTeamName )
 			if ( ( team == nil ) or ( team == false ) or ( team == "" ) ) then
-				aMessageBox ( "warning", "Enter the team name!" )
+				messageBox ( "Enter the team name!", MB_WARNING )
 			elseif ( getTeamFromName ( team ) ) then
-				aMessageBox ( "error", "A team with this name already exists" )
+				messageBox ( "A team with this name already exists", MB_ERROR )
 			else
 				triggerServerEvent ( "aTeam", getLocalPlayer(), "createteam", team, guiGetText ( aTeamRed ), guiGetText ( aTeamGreen ), guiGetText ( aTeamBlue ) )
 				aNewTeamShow ( false )
@@ -109,7 +111,7 @@ function aClientTeamClick ( button )
 			aNewTeamShow ( false )
 		elseif ( source == aTeamAccept ) then
 			if ( guiGridListGetSelectedItem ( aTeamList ) == -1 ) then
-				aMessageBox ( "warning", "No team selected!" )
+				messageBox ( "No team selected!", MB_WARNING )
 			else
 				local team = guiGridListGetItemText ( aTeamList, guiGridListGetSelectedItem ( aTeamList ), 1 )
 				triggerServerEvent ( "aPlayer", getLocalPlayer(), aTeamSelect, "setteam", getTeamFromName ( team ) )

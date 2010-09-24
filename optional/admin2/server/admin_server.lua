@@ -10,7 +10,6 @@
 
 _root = getRootElement()
 _types = { "player", "team", "vehicle", "resource", "bans", "server", "admin" }
-_settings = nil
 
 aPlayers = {}
 aLogMessages = {}
@@ -34,11 +33,6 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 			end
 		end
 		return
-	end
-	_settings = xmlLoadFile ( "conf\\settings.xml" )
-	if ( not _settings ) then
-		_settings = xmlCreateFile ( "conf\\settings.xml", "main" )
-		xmlSaveFile ( _settings )
 	end
 	aSetupACL()
 	aSetupCommands()
@@ -174,34 +168,6 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 	aclSave ()
 end )
 
-function aGetSetting ( setting )
-	local result = xmlFindChild ( _settings, tostring ( setting ), 0 )
-	if ( result ) then
-		result = xmlNodeGetValue ( result )
-		if ( result == "true" ) then return true
-		elseif ( result == "false" ) then return false
-		else return result end
-	end
-	return false
-end
-
-function aSetSetting ( setting, value )
-	local node = xmlFindChild ( _settings, tostring ( setting ), 0 )
-	if ( not node ) then
-		node = xmlCreateChild ( _settings, tostring ( setting ) )
-	end
-	xmlNodeSetValue ( node, tostring ( value ) )
-	xmlSaveFile ( _settings )
-end
-
-function aRemoveSetting ( setting )
-	local node = xmlFindChild ( _settings, tostring ( setting ), 0 )
-	if ( node ) then
-		xmlDestroyNode ( node )
-	end
-	xmlSaveFile ( _settings )
-end
-
 function iif ( cond, arg1, arg2 )
 	if ( cond ) then
 		return arg1
@@ -227,30 +193,6 @@ function getWeatherNameFromID ( weather )
 	return iif ( aWeathers[weather], aWeathers[weather], "Unknown" )
 end
 
-addEvent ( "onPlayerMute", false )
-function aSetPlayerMuted ( player, state )
-	if ( setPlayerMuted ( player, state ) ) then
-		triggerEvent ( "onPlayerMute", player, state )
-		return true
-	end
-	return false
-end
-
-addEvent ( "onPlayerFreeze", false )
-function aSetPlayerFrozen ( player, state )
-	if ( toggleAllControls ( player, not state, true, false ) ) then
-		aPlayers[player]["freeze"] = state
-		triggerEvent ( "onPlayerFreeze", player, state )
-		return true
-	end
-	return false
-end
-
-function isPlayerFrozen ( player )
-	if ( aPlayers[player]["freeze"] == nil ) then aPlayers[player]["freeze"] = false end
-	return aPlayers[player]["freeze"]
-end
-
 addEventHandler ( "onPlayerJoin", _root, function ()
 	if ( aGetSetting ( "welcome" ) ) then
 		outputChatBox ( aGetSetting ( "welcome" ), source, 255, 100, 100 )
@@ -265,21 +207,10 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 end )
 
 function aPlayerInitialize ( player )
-	local serial = getPlayerSerial ( player )
-	if ( not isValidSerial ( serial ) ) then
-		outputChatBox ( "ERROR: "..getPlayerName ( player ).." - Invalid Serial." )
-		kickPlayer ( player, "Invalid Serial" )
-	else
-		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
-		aPlayers[player] = {}
-		aPlayers[player]["country"] = getPlayerCountry ( player )
-		aPlayers[player]["countryname"] = getPlayerCountryName ( player )
-		aPlayers[player]["money"] = getPlayerMoney ( player )
-	end
-end
-
-function aPlayerSerialCheck ( player, result )
-	if ( result == 0 ) then kickPlayer ( player, "Invalid serial" ) end
+	aPlayers[player] = {}
+	aPlayers[player]["country"] = getPlayerCountry ( player )
+	aPlayers[player]["countryname"] = getPlayerCountryName ( player )
+	aPlayers[player]["money"] = getPlayerMoney ( player )
 end
 
 addEventHandler ( "onPlayerLogin", _root, function ( previous, account, auto )
@@ -290,36 +221,14 @@ addEventHandler ( "onPlayerLogin", _root, function ( previous, account, auto )
 	end
 end )
 
-addCommandHandler ( "register", function ( player, command, arg1, arg2 )
-	local username = getPlayerName ( player )
-	local password = arg1
-	if ( arg2 ) then
-		username = arg1
-		password = arg2
-	end
-	if ( password ~= nil ) then
-		if ( string.len ( password ) < 4 ) then
-			outputChatBox ( "register: - Password should be at least 4 characters long", player, 255, 100, 70 )
-		elseif ( addAccount ( username, password ) ) then
-			outputChatBox ( "You have successfully registered! Username: '"..username.."', Password: '"..password.."'(Remember it)", player, 255, 100, 70 )
-		elseif ( getAccount ( username ) ) then
-			outputChatBox ( "register: - Account with this name already exists.", player, 255, 100, 70 )
-		else
-			outputChatBox ( "Unknown Error", player, 255, 100, 70 )
-		end
-	else
-		outputChatBox ( "register: - Syntax is 'register [<nick>] <password>'", player, 255, 100, 70 )
-	end
-end )
-
 function aAction ( type, action, admin, player, data, more )
 	if ( aLogMessages[type] ) then
 		function aStripString ( string )
 			string = tostring ( string )
 			string = string.gsub ( string, "$admin", getPlayerName ( admin ) )
-			string = string.gsub ( string, "$data2", more )
+			string = string.gsub ( string, "$data2", more or "" )
 			if ( player ) then string = string.gsub ( string, "$player", getPlayerName ( player ) ) end
-			return tostring ( string.gsub ( string, "$data", data ) )
+			return tostring ( string.gsub ( string, "$data", data or "" ) )
 		end
 		local node = aLogMessages[type][action]
 		if ( node ) then
@@ -333,36 +242,19 @@ function aAction ( type, action, admin, player, data, more )
 end
 
 addEvent ( "aTeam", true )
-addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
+addEventHandler ( "aTeam", _root, function ( action, name, ... )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
-		mdata = tostring ( data )
-		mdata = ""
-		if ( action == "createteam" ) then
-			local success = false
-			if ( tonumber ( r ) ) and ( tonumber ( g ) ) and ( tonumber ( b ) ) then
-				success = createTeam ( name, tonumber ( r ), tonumber ( g ), tonumber ( b ) )
-			else
-				success = createTeam ( name )
+		local func = aFunctions.team[action]
+		if ( func ) then
+			local result, mdata1, mdata2 = func ( name, ... )
+			if ( result ~= false ) then
+				if ( type ( result ) == "string" ) then action = result end
+				aAction ( "team", action, source, false, mdata1, mdata2 ) 
 			end
-			if ( not success ) then
-				action = nil
-				outputChatBox ( "Team \""..name.."\" could not be created.", source, 255, 0, 0 )
-			end
-		elseif ( action == "destroyteam" ) then
-			local team = getTeamFromName ( name )
-			if ( getTeamFromName ( name ) ) then
-				destroyElement ( team )
-			else
-				action = nil
-			end
-		else
-			action = nil
 		end
-		if ( action ~= nil ) then aAction ( "server", action, source, false, mdata, mdata2 ) end
-		return true
+	else
+		outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
 	end
-	outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
-	return false
 end )
 
 addEvent ( "aAdmin", true )
@@ -532,430 +424,91 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 end )
 
 addEvent ( "aPlayer", true )
-addEventHandler ( "aPlayer", _root, function ( player, action, data, additional )
+addEventHandler ( "aPlayer", _root, function ( player, action, ... )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
-		local admin = source
-		local mdata = ""
-		local more = ""
-		if ( action == "kick" ) then
-			setTimer ( kickPlayer, 100, 1, player, source, data )
-		elseif ( action == "ban" ) then
-			setTimer ( banPlayer, 100, 1, player, source, data )
-		elseif ( action == "mute" )  then
-			if ( isPlayerMuted ( player ) ) then action = "un"..action end
-			aSetPlayerMuted ( player, not isPlayerMuted ( player ) )
-		elseif ( action == "freeze" )  then
-			if ( isPlayerFrozen ( player ) ) then action = "un"..action end
-			aSetPlayerFrozen ( player, not isPlayerFrozen ( player ) )
-		elseif ( action == "shout" ) then
-			local textDisplay = textCreateDisplay ()
-			local textItem = textCreateTextItem ( "(ADMIN)"..getPlayerName ( source )..":\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
-			textDisplayAddText ( textDisplay, textItem )
-			textDisplayAddObserver ( textDisplay, player )
-			setTimer ( textDestroyTextItem, 5000, 1, textItem )
-			setTimer ( textDestroyDisplay, 5000, 1, textDisplay )
-		elseif ( action == "sethealth" ) then
-			local health = tonumber ( data )
-			if ( health ) then
-				if ( health > 200 ) then health = 100 end
-				if ( not setElementHealth ( player, health ) ) then
-					action = nil
-				end
-				mdata = health
-			else
-				action = nil
+		local mdata1 = ""
+		local mdata2 = ""
+		local func = aFunctions.player[action]
+		if ( func ) then
+			local result = nil
+			result, mdata1, mdata2 = func ( player, ... )
+			if ( result ~= false ) then
+				if ( type ( result ) == "string" ) then action = result end
+				aAction ( "player", action, source, player, mdata1, mdata2 )
 			end
-		elseif ( action == "setarmour" ) then
-			local armour = tonumber ( data )
-			if ( armour ) then
-				if ( armour > 200 ) then armour = 100 end
-				if ( not setPedArmor ( player, armour ) ) then
-					action = nil
-				end
-				mdata = armour
-			else
-				action = nil
-			end
-		elseif ( action == "setskin" ) then
-			local vehicle = getPedOccupiedVehicle ( player )
-			local jetpack = doesPedHaveJetPack ( player )
-			local seat = 0
-			if ( vehicle ) then seat = getPedOccupiedVehicleSeat ( player ) end
-			local x, y, z = getElementPosition ( player )
-			data = tonumber ( data )
-			if ( spawnPlayer ( player, x, y, z, getPedRotation ( player ), data, getElementInterior ( player ), getElementDimension ( player ), getPlayerTeam ( player ) ) ) then
-				fadeCamera ( player, true )
-				if ( vehicle ) then warpPedIntoVehicle ( player, vehicle, seat ) end
-				if ( jetpack ) then givePedJetPack ( player ) end
-				mdata = data
-			else
-				action = nil
-			end
-		elseif ( action == "setmoney" ) then
-			mdata = data
-			if ( not setPlayerMoney ( player, data ) ) then
-				outputChatBox ( "Invalid money data", source, 255, 0, 0 )
-				action = nil
-			end
-		elseif ( action == "setstat" ) then
-			if ( additional ) then
-				if ( tonumber ( data ) == 300 ) then
-					if ( setPedFightingStyle ( player, tonumber ( additional ) ) ) then
-						mdata = "Fighting Style"
-						more = additional
-					else
-						action = nil
-					end
-				else
-					if ( setPedStat ( player, tonumber ( data ), tonumber ( additional ) ) ) then
-						mdata = aStats[data]
-						more = additional
-					else
-						action = nil
-					end
-				end
-			else
-				action = nil
-			end
-		elseif ( action == "setteam" ) then
-			if ( getElementType ( data ) == "team" ) then
-				setPlayerTeam ( player, data )
-				mdata = getTeamName ( data )
-			else
-				action = nil
-			end
-		elseif ( action == "setinterior" ) then
-			action = nil
-			for id, interior in ipairs ( aInteriors ) do
-				if ( interior["id"] == data ) then
-					local vehicle = getPedOccupiedVehicle ( player )
-					setElementInterior ( player, interior["world"] )
-					local x, y, z = interior["x"] or 0, interior["y"] or 0, interior["z"] or 0
-					local rot = interior["r"] or 0
-					if ( vehicle ) then 
-						setElementInterior ( vehicle, interior["world"] )
-						setElementPosition ( vehicle, x, y, z + 0.2 )
-					else
-						setElementPosition ( player, x, y, z + 0.2 )
-						setPedRotation ( player, rot )
-					end
-					action = "interior"
-					mdata = data
-				end
-			end
-		elseif ( action == "setdimension" ) then
-			local dimension = tonumber ( data )
-			if ( dimension ) then
-				if ( dimension > 65535 ) or ( dimension < 0 ) then dimension = 0 end
-				if ( not setElementDimension ( player, dimension ) ) then
-					action = nil
-				end
-				mdata = dimension
-			else
-				action = nil
-			end
-		elseif ( action == "jetpack" ) then
-			if ( doesPedHaveJetPack ( player ) ) then
-				removePedJetPack ( player )
-				action = "jetpackr"
-			else
-				if ( getPedOccupiedVehicle ( player ) ) then outputChatBox ( "Unable to give a jetpack - "..getPlayerName ( player ).." is in a vehicle", source, 255, 0, 0 )
-				else
-					if ( givePedJetPack ( player ) ) then
-						action = "jetpacka"
-					end
-				end
-			end
-		elseif ( action == "setgroup" ) then
-			local account = getPlayerAccount ( player )
-			if ( not isGuestAccount ( account ) ) then
-				local group = aclGetGroup ( "Admin" )
-				if ( group ) then
-					if ( data == true ) then
-						aclGroupAddObject ( group, "user."..getAccountName ( account ) )
-						action = "admina"
-					elseif ( data == false ) then
-						aclGroupRemoveObject ( group, "user."..getAccountName ( account ) )
-						aPlayers[player]["chat"] = false
-						action = "adminr"
-					end
-					for id, p in ipairs ( getElementsByType ( "player" ) ) do
-						if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( "aSync", p, "admins" ) end
-					end
-				else
-					outputChatBox ( "Error - Admin group not initialized. Please reinstall admin resource.", source, 255, 0 ,0 )
-				end
-			else
-				outputChatBox ( "Error - Player is not logged in.", source, 255, 100 ,100 )
-			end
-		elseif ( action == "givevehicle" ) then
-			local pvehicle = getPedOccupiedVehicle ( player )
-			local vx, vy, vz = getElementVelocity ( player )
-			local vehicle = nil
-			if ( pvehicle ) then
-				local passengers = getVehicleOccupants ( pvehicle )
-				local x, y, z = getElementPosition ( pvehicle )
-				local rx, ry, rz = getVehicleRotation ( pvehicle )
-				local vx, vy, vz = getElementVelocity ( pvehicle )
-				destroyElement ( pvehicle )
-				vehicle = createVehicle ( data, x, y, z, rx, ry, rz )
-				local seats = getVehicleMaxPassengers ( vehicle )
-				for i, p in ipairs ( passengers ) do
-					if ( p ~= player ) then
-						local s = i - 1
-						if ( s <= seats ) then setTimer ( warpPedIntoVehicle, 500, 1, p, vehicle, s ) end
-					end
-				end
-			else
-				local x, y, z = getElementPosition ( player )
-				local r = getPedRotation ( player )
-				vehicle = createVehicle ( data, x, y, z, 0, 0, r )
-			end
-			setElementDimension ( vehicle, getElementDimension ( player ) )
-			setElementInterior ( vehicle, getElementInterior ( player ) )
-			warpPedIntoVehicle ( player, vehicle )
-			setElementVelocity ( vehicle, vx, vy, vz )
-			mdata = getVehicleName ( vehicle )
-		elseif ( action == "giveweapon" ) then
-			if ( giveWeapon ( player, data, additional, true ) ) then
-				mdata = getWeaponNameFromID ( data )
-				more = additional
-			else
-				action = nil
-			end
-		elseif ( action == "slap" ) then
-			if ( getElementHealth ( player ) > 0 ) and ( not isPedDead ( player ) ) then
-				if ( ( not health ) or ( not tonumber ( health ) ) ) then data = 20 end
-				if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
-				else setElementHealth ( player, getElementHealth ( player ) - data ) end
-				local x, y, z = getElementVelocity ( player )
-				setElementVelocity ( player, x , y, z + 0.2 )
-				mdata = data
-			else
-				action = nil
-			end
-		elseif ( action == "warp" ) or ( action == "warpto" ) then
-    			function warpPlayer ( p, to )
-				function warp ( p, to )
-					local x, y, z = getElementPosition ( to )
-					local r = getPedRotation ( to )
- 	   				x = x - math.sin ( math.rad ( r ) ) * 2
-					y = y + math.cos ( math.rad ( r ) ) * 2
-   					setTimer ( setElementPosition, 1000, 1, p, x, y, z + 1 )
-					fadeCamera ( p, false, 1, 0, 0, 0 )
-					setElementDimension ( p, getElementDimension ( to ) )
-					setElementInterior ( p, getElementInterior ( to ) )
-					setTimer ( fadeCamera, 1000, 1, p, true, 1 )
-				end
-      		  	if ( isPedInVehicle ( to ) ) then
-      		  		local vehicle = getPedOccupiedVehicle ( to )
-					local seats = getVehicleMaxPassengers ( vehicle ) + 1
-					local i = 0
-					while ( i < seats ) do
-						if ( not getVehicleOccupant ( vehicle, i ) ) then
-   							setTimer ( warpPedIntoVehicle, 1000, 1, p, vehicle, i )
-							fadeCamera ( p, false, 1, 0, 0, 0 )
-							setTimer ( fadeCamera, 1000, 1, p, true, 1 )
-							break
-						end
-						i = i + 1
-					end
-					if ( i >= seats ) then
-						warp ( p, to )
-						outputConsole ( "Player's vehicle is full ("..getVehicleName ( vehicle ).." - Seats: "..seats..")", p )
-					end
-				else
-					warp ( p, to )
-				end
-			end
-			if ( action == "warp" ) then
-				warpPlayer ( source, player )
-			else
-				warpPlayer ( player, data )
-				mdata = getPlayerName ( data )
-			end
-		else
-			action = nil
 		end
-		if ( action ~= nil ) then aAction ( "player", action, admin, player, mdata, more ) end
-		return true
+	else
+		outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
 	end
-	outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
-	return false
 end )
 
 addEvent ( "aVehicle", true )
-addEventHandler ( "aVehicle", _root, function ( player, action, data )
+addEventHandler ( "aVehicle", _root, function ( player, action, ... )
+	local vehicle = getPedOccupiedVehicle ( player )
+	if ( not vehicle ) then
+		return
+	end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
-		local vehicle = getPedOccupiedVehicle ( player )
-		if ( vehicle ) then
-			local mdata = ""
-			if ( action == "repair" ) then
-				fixVehicle ( vehicle )
-				local rx, ry, rz = getVehicleRotation ( vehicle )
-				if ( rx > 110 ) and ( rx < 250 ) then
-					local x, y, z = getElementPosition ( vehicle )
-					setVehicleRotation ( vehicle, rx + 180, ry, rz )
-					setElementPosition ( vehicle, x, y, z + 2 )
-				end
-			elseif ( action == "customize" ) then
-				if ( data[1] == "remove" ) then
-					for id, upgrade in ipairs ( getVehicleUpgrades ( vehicle ) ) do
-						removeVehicleUpgrade ( vehicle, upgrade )
-					end
-					action = "customizer"
-				else
-					for id, upgrade in ipairs ( data ) do
-						addVehicleUpgrade ( vehicle, upgrade )
-						if ( mdata == "" ) then mdata = tostring ( upgrade )
-						else mdata = mdata..", "..upgrade end
-					end
-				end
-			elseif ( action == "setpaintjob" ) then
-				mdata = data
-				if ( not setVehiclePaintjob ( vehicle, data ) ) then
-					action = nil
-					outputChatBox ( "Invalid Paint job ID", source, 255, 0, 0 )
-				end
-			elseif ( action == "setcolor" ) then
-				for k, color in ipairs ( data ) do
-					local c = tonumber ( color )
-					if ( c ) then
-						if ( c < 0 ) or ( c > 126 ) then
-							action = nil
-						end
-					else
-						action = nil
-					end
-				end
-				if ( action ~= nil ) then
-					if ( not setVehicleColor ( vehicle, tonumber(data[1]), tonumber(data[2]), tonumber(data[3]), tonumber(data[4]) ) ) then
-						action = nil
-					end
-				end
-			elseif ( action == "blowvehicle" ) then
-				setTimer ( blowVehicle, 100, 1, vehicle )
-			elseif ( action == "destroyvehicle" ) then
-				setTimer ( destroyElement, 100, 1, vehicle )
-			else
-				action = nil
-			end
-			if ( action ~= nil ) then
+		local mdata1 = ""
+		local mdata2 = ""
+		local func = aFunctions.vehicle[action]
+		if ( func ) then
+			local result = nil
+			result, mdata1, mdata2 = func ( player, vehicle, ... )
+			if ( result ~= false ) then
+				if ( type ( result ) == "string" ) then action = result end
 				local seats = getVehicleMaxPassengers ( vehicle ) + 1
 				for i = 0, seats do
 					local passenger = getVehicleOccupant ( vehicle, i )
 					if ( passenger ) then
 						if ( ( passenger == player ) and ( getPedOccupiedVehicle ( source ) ~= vehicle ) ) then aAction ( "vehicle", action, source, passenger, mdata )
-   						else aAction ( "vehicle", action, passenger, passenger, mdata ) end
+   						else aAction ( "vehicle", action, passenger, passenger, mdata1, mdata2 ) end
 					end
 				end
 			end
 		end
-		return true
+	else
+		outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
 	end
-	outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
-	return false
 end )
 
 addEvent ( "aResource", true )
-addEventHandler ( "aResource", _root, function ( name, action )
-	local pname = getPlayerName ( source )
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
-		if ( action == "start" ) then startResource ( getResourceFromName ( name ), true )
-		elseif ( action == "restart" ) then restartResource ( getResourceFromName ( name ) )
-		elseif ( action == "stop" ) then stopResource ( getResourceFromName ( name ) )
-		else action = nil
-		end
-		return true
+addEventHandler ( "aResource", _root, function ( name, action, ... )
+	if ( not name or not action ) then
+		return
 	end
-	outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
-	return false
+	local resource = getResourceFromName ( name )
+	if ( not resource ) then
+		return
+	end
+	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+		local func = aFunctions.resource[action]
+		if ( func ) then
+			local result, mdata1, mdata2 = func ( resource, ... )
+			if ( result ~= false ) then
+				if ( type ( result ) == "string" ) then action = result end
+				aAction ( "resource", action, source, player, mdata1, mdata2 )
+			end
+		end
+	else
+		outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
+	end
 end )
 
 addEvent ( "aServer", true )
-addEventHandler ( "aServer", _root, function ( action, data, data2 )
+addEventHandler ( "aServer", _root, function ( action, ... )
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
-		local mdata = tostring ( data )
-		local mdata2 = ""
-		if ( action == "setgame" ) then
-			if ( not setGameType ( tostring ( data ) ) ) then
-				action = nil
-				outputChatBox ( "Error setting game type.", source, 255, 0, 0 )
+		local func = aFunctions.server[action]
+		if ( func ) then
+			local result, mdata1, mdata2 = func ( ... )
+			if ( result ~= false ) then
+				if ( type ( result ) == "string" ) then action = result end
+				aAction ( "server", action, source, player, mdata1, mdata2 )
 			end
-			triggerEvent ( "aSync", source, "server" )
-		elseif ( action == "setmap" ) then
-			if ( not setMapName ( tostring ( data ) ) ) then
-				action = nil
-				outputChatBox ( "Error setting map name.", source, 255, 0, 0 )
-			end
-			triggerEvent ( "aSync", source, "server" )
-		elseif ( action == "setwelcome" ) then
-			if ( ( not data ) or ( data == "" ) ) then
-				action = "resetwelcome"
-				aRemoveSetting ( "welcome" )
-			else
-				aSetSetting ( "welcome", tostring ( data ) )
-				mdata = data
-			end
-		elseif ( action == "settime" ) then
-			if ( not setTime ( tonumber ( data ), tonumber ( data2 ) ) ) then
-				action = nil
-				outputChatBox ( "Error setting time.", source, 255, 0, 0 )
-			end
-			mdata = data..":"..data2
-		elseif ( action == "setpassword" ) then
-			if ( data == "" ) then
-				setServerPassword ( nil )
-				action = "resetpassword"
-			elseif ( string.len ( data ) > 32 ) then
-				outputChatBox ( "Set password: 32 characters max", source, 255, 0, 0 )
-			elseif ( not setServerPassword ( data ) ) then
-				action = nil
-				outputChatBox ( "Error setting password", source, 255, 0, 0 )
-			end
-			triggerEvent ( "aSync", source, "server" )
-		elseif ( action == "setweather" ) then
-			if ( not setWeather ( tonumber ( data ) ) ) then
-				action = nil
-				outputChatBox ( "Error setting weather.", source, 255, 0, 0 )
-			end
-			mdata = data.." "..getWeatherNameFromID ( tonumber ( data ) )
-		elseif ( action == "blendweather" ) then
-			if ( not setWeatherBlended ( tonumber ( data ) ) ) then
-				action = nil
-				outputChatBox ( "Error setting weather.", source, 255, 0, 0 )
-			end
-		elseif ( action == "setgamespeed" ) then
-			if ( not setGameSpeed ( tonumber ( data ) ) ) then
-				action = nil
-				outputChatBox ( "Error setting game speed.", source, 255, 0, 0 )
-			end
-		elseif ( action == "setgravity" ) then
-			if ( setGravity ( tonumber ( data ) ) ) then
-				for id, player in ipairs ( getElementsByType ( "player" ) ) do
-					setPedGravity ( player, getGravity() )
-				end
-			else
-				action = nil
-				outputChatBox ( "Error setting gravity.", source, 255, 0, 0 )
-			end
-		elseif ( action == "setblurlevel" ) then
-
-		elseif ( action == "setwaveheight" ) then
-			if ( not setWaveHeight ( data ) ) then
-				outputChatBox ( "Error setting wave height.", source, 255, 0, 0 )
-				action = nil
-			else
-				mdata = data
-			end
-		else
-			action = nil
 		end
-		if ( action ~= nil ) then aAction ( "server", action, source, false, mdata, mdata2 ) end
-		return true
+	else
+		outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
 	end
-	outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
-	return false
 end )
 
 addEvent ( "aMessage", true )
@@ -1106,3 +659,36 @@ function BanSerial ( Serial, responsible )
 	return addBan(nil, nil, Serial, responsible)
 end
 
+function warpPlayer ( p, to )
+	function warp ( p, to )
+		local x, y, z = getElementPosition ( to )
+		local r = getPedRotation ( to )
+		x = x - math.sin ( math.rad ( r ) ) * 2
+		y = y + math.cos ( math.rad ( r ) ) * 2
+		setTimer ( setElementPosition, 1000, 1, p, x, y, z + 1 )
+		fadeCamera ( p, false, 1, 0, 0, 0 )
+		setElementDimension ( p, getElementDimension ( to ) )
+		setElementInterior ( p, getElementInterior ( to ) )
+		setTimer ( fadeCamera, 1000, 1, p, true, 1 )
+	end
+  	if ( isPedInVehicle ( to ) ) then
+  		local vehicle = getPedOccupiedVehicle ( to )
+		local seats = getVehicleMaxPassengers ( vehicle ) + 1
+		local i = 0
+		while ( i < seats ) do
+			if ( not getVehicleOccupant ( vehicle, i ) ) then
+				setTimer ( warpPedIntoVehicle, 1000, 1, p, vehicle, i )
+				fadeCamera ( p, false, 1, 0, 0, 0 )
+				setTimer ( fadeCamera, 1000, 1, p, true, 1 )
+				break
+			end
+			i = i + 1
+		end
+		if ( i >= seats ) then
+			warp ( p, to )
+			outputConsole ( "Player's vehicle is full ("..getVehicleName ( vehicle ).." - Seats: "..seats..")", p )
+		end
+	else
+		warp ( p, to )
+	end
+end

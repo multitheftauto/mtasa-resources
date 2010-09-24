@@ -12,11 +12,13 @@ aAdminMain = {
 	Form = nil,
 	Panel = nil,
 	Tabs = {},
-	Widgets = {}
+	Widgets = {},
+	Refresh = 0
 }
 
 addEvent ( "aClientAdminMenu", true )
 addEvent ( "onAdminInitialize", true )
+addEvent ( "onAdminRefresh", false )
 
 function aAdminMain.Open ()
 	if ( aAdminMain.Form == nil ) then
@@ -100,3 +102,10 @@ function aRegister ( name, welement, fopen, fclose )
 	aAdminMain.Widgets[name].initialize = fopen
 	aAdminMain.Widgets[name].close = fclose
 end
+
+addEventHandler ( "onClientRender", _root, function ()
+	if ( getTickCount () > aAdminMain.Refresh ) then
+		triggerEvent ( "onAdminRefresh", _root )
+		aAdminMain.Refresh = getTickCount () + 100
+	end
+end )
