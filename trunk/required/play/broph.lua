@@ -7,6 +7,7 @@ addEventHandler("onResourceStart", resourceRoot,
 )
 
 function spawn(player)
+	if not isElement(player) then return end
 	repeat until spawnPlayer ( player, -711+math.random(1,5), 957+math.random(5,9), 12.4, 90, math.random(9,288) )
 	fadeCamera(player, true)
 	setCameraTarget(player, player)
