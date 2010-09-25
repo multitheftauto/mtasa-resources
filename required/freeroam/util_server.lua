@@ -5,7 +5,7 @@ end
 
 local _isPedDead = isPedDead
 function isPedDead(player)
-	return _isPedDead(player) or isPedTerminated(player)
+	if isElement(player) then return _isPedDead(player) or isPedTerminated(player) else return false end
 end
 
 function isPedTerminated(player)
