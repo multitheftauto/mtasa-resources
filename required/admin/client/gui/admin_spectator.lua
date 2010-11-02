@@ -73,7 +73,7 @@ function aSpectator.Initialize ()
 	addEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
 	addEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
 	addEventHandler ( "onClientCursorMove", _root, aSpectator.CursorMove )
-	addEventHandler ( "onClientRender", _root, aSpectator.Render )
+	addEventHandler ( "onClientPreRender", _root, aSpectator.Render )
 	
 	guiSetVisible ( aSpectator.Actions, true )
 	guiSetVisible ( aSpectator.Players, true )
@@ -99,7 +99,7 @@ function aSpectator.Close ( destroy )
 	removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
 	removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
 	removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
-	removeEventHandler ( "onClientRender", _root, aSpectator.Render )
+	removeEventHandler ( "onClientPreRender", _root, aSpectator.Render )
 
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceSpectator ) ) ) then
 		if ( aSpectator.Actions ) then
