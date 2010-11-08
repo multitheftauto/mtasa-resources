@@ -69,11 +69,11 @@
 		<setting name="*warp" value="true" />
 		<setting name="*weapons/enabled" value="true" />          <!-- Can players give themselves weapons? -->
 		<setting name="*weapons/vehiclesenabled" value="true" />  <!-- Can players fire vehicle weapons? -->
-		<setting name="*weapons/disallowed" value="[[38]]" />     <!-- Comma-separated list of specific weapon ID's that players are not allowed to give to themselves -->
+		<setting name="*weapons/disallowed" value="[[]]" />     <!-- Comma-separated list of specific weapon ID's that players are not allowed to give to themselves -->
 		<setting name="*weather" value="true" />
 		<setting name="*vehicles/maxidletime" value="[300000]" />  <!-- Time in ms before a vehicle without passengers gets destroyed -->
 		<setting name="*vehicles/idleexplode" value="false" />     <!-- If set to false, vehicles simply disappear when they time out instead of exploding -->
 		<setting name="*vehicles/maxperplayer" value="[2]" />     <!-- Maximum number of vehicles a player can have at the same time -->
-		<setting name="*vehicles/disallowed" value="[[432]]" />   <!-- Comma-separated list of vehicles that players may not create -->
+		<setting name="*vehicles/disallowed" value="[[]]" />   <!-- Comma-separated list of vehicles that players may not create -->
 	</settings>
 </meta>
