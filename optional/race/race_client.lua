@@ -265,6 +265,12 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 
     fadeCamera( false, 0.0 )
 
+	-- Editor start
+	if isEditor() then
+		editorInitRace()
+		return
+	end
+
     -- Min 3 seconds on travel message
     local delay = TravelScreen.getTicksRemaining()
     delay = math.max(50,delay)
