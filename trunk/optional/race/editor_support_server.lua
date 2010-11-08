@@ -164,8 +164,8 @@ if isEditor() then
 	_cacheGameOptions = cacheGameOptions
 	function cacheGameOptions()
 		_cacheGameOptions()
-		g_GameOptions.joinspectating		= false
-		g_GameOptions.joinrandomvote		= false
+		g_GameOptions.joinspectating					= false
+		g_GameOptions.joinrandomvote					= false
 		g_GameOptions.ghostmode_map_can_override		= true
 		g_GameOptions.skins_map_can_override			= true
 		g_GameOptions.vehicleweapons_map_can_override   = true
@@ -173,6 +173,11 @@ if isEditor() then
 		g_GameOptions.firewater_map_can_override		= true
 		g_GameOptions.classicchangez_map_can_override	= true
 	end
-
+	
+	_cacheMapOptions = cacheMapOptions
+	function cacheMapOptions(map)
+		_cacheMapOptions(map)
+		g_MapOptions.respawn = 'timelimit'
+	end
 end
 

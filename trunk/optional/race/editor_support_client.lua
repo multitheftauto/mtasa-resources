@@ -74,8 +74,10 @@ if isEditor() then
 		local idx = #editorHelpLines/2
 		editorHelpLines[idx*2+1] = dxText:create(text1, 10, 250 + idx * 15, false, "default-bold", 1.0, "left" )
 		editorHelpLines[idx*2+1]:color( 255, 250, 130, 240 )
+		editorHelpLines[idx*2+1]:type( "border", 1 )
 		editorHelpLines[idx*2+2] = dxText:create(text2 or "", 34, 250 + idx * 15, false, "default-bold", 1.0, "left" )
 		editorHelpLines[idx*2+2]:color( 255, 250, 250, 230 )
+		editorHelpLines[idx*2+2]:type( "border", 1 )
 	end
 
 	function editorHideHelp()
