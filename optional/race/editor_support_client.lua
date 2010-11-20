@@ -4,7 +4,7 @@
 
 function isEditor()
 	if g_IsEditor == nil then
-		g_IsEditor = getElementData(root,"isEditor")
+		g_IsEditor = getElementData(resourceRoot,"isEditor")
 		outputDebug ( "Client: Is editor " .. tostring(g_IsEditor == true) )
 	end
 	return g_IsEditor == true
