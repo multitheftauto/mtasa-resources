@@ -14,7 +14,7 @@ function isEditor()
 end
 
 -- set global element data to indicate if editor is running
-setElementData(root,"isEditor",isEditor())
+setElementData(resourceRoot,"isEditor",isEditor())
 
 
 -- Hacks start here
