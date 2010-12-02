@@ -323,7 +323,7 @@ function clearOtherResourceElements ( elemTable, resourceName )
 	local newTable = {}
 	for key,value in ipairs(elemTable) do
 		local creator = edf.edfGetCreatorResource (value)
-		local creatorName = getResourceName(creator)
+		local creatorName = creator and getResourceName(creator)
 		if ( creatorName == resourceName ) or ( creatorName == "edf" and resourceName == "editor_main" ) then
 			table.insert ( newTable, value )
 		end

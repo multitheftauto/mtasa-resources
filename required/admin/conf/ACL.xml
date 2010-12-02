@@ -15,6 +15,7 @@
     <right name="general.tab_players" access="true" />
     <right name="general.tab_resources" access="true" />
     <right name="general.tab_server" access="true" />
+    <right name="general.tab_maps" access="true" />
     <right name="general.tab_bans" access="true" />
     <right name="general.tab_adminchat" access="true" />
     <!--Player Related-->

@@ -35,6 +35,7 @@ function FancyProgress.create(minval, maxval, bgName, x, y, width, height, barNa
 end
 
 function FancyProgress:setProgress(progress)
+	if not progress then progress = 0 end
 	if progress < self.min then
 		progress = self.min
 	elseif progress > self.max then
