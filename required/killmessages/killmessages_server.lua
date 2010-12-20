@@ -49,7 +49,7 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 	-- Got a killer? Print the normal "* X died" if not
 	if ( killer and getElementType ( killer ) == "player" ) then
 		local kr,kg,kb = getPlayerNametagColor	( killer )
-		if getPlayerTeam ( source ) then
+		if getPlayerTeam ( killer ) then
 			kr,kg,kb = getTeamColor ( getPlayerTeam ( killer ) )
 		end
 		-- Suicide?
@@ -86,7 +86,7 @@ function eventTriggered ( source,killer,weapon,bodypart,suicide,usedVehicle )
 	local kr,kg,kb = false,false,false
 	if ( killer ) then
 		kr,kg,kb = getPlayerNametagColor	( killer )
-		if getPlayerTeam ( source ) then
+		if getPlayerTeam ( killer ) then
 			kr,kg,kb = getTeamColor ( getPlayerTeam ( killer ) )
 		end
 	end
