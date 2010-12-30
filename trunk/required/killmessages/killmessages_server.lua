@@ -33,7 +33,7 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 			killerweapon = 51
 		end
 	elseif vehicleIDs[killerweapon] then --heliblades/rammed
-		if ( getElementType ( killer ) == "vehicle" ) then
+		if ( isElement(killer) and getElementType ( killer ) == "vehicle" ) then
 			usedVehicle = getElementModel ( killer )
 			killer = getVehicleOccupant ( killer, 0 )
 		end
@@ -47,7 +47,7 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 	end
 	--finish this
 	-- Got a killer? Print the normal "* X died" if not
-	if ( killer and getElementType ( killer ) == "player" ) then
+	if ( killer and isElement(killer) and getElementType ( killer ) == "player" ) then
 		local kr,kg,kb = getPlayerNametagColor	( killer )
 		if getPlayerTeam ( killer ) then
 			kr,kg,kb = getTeamColor ( getPlayerTeam ( killer ) )
