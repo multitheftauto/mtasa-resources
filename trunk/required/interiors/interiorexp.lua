@@ -121,8 +121,10 @@ function setPlayerInsideInterior ( player, interior, resource, id )
 	local targetInterior = interiors[getResourceFromName(resource) or getThisResource()][id][oppositeType]
 	local dim = getElementData ( targetInterior, "dimension" )
 	local int = getElementData ( targetInterior, "interior" )
-	setElementInterior ( player, int )
-	setElementDimension ( player, dim )
+	if (isElement(player)) then
+		setElementInterior ( player, int )
+		setElementDimension ( player, dim )
+	end
 end
 
 function getInteriorName ( interior )
