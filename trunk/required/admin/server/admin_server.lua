@@ -600,7 +600,9 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					local res = getResourceFromName(resName)
 					local resRoot = getResourceRootElement(res)
 					if resRoot then
-						triggerEvent('onSettingChange', resRoot, name, oldvalue, value, source )
+						if getVersion().mta < "1.1" then
+							triggerEvent('onSettingChange', resRoot, name, oldvalue, value, source )
+						end
 					end
 					mdata = resName..'.'..name
 					mdata2 = type(value) == "table" and string.gsub(toJSON(value),"^(%[ %[ )(.*)( %] %])$", "%2") or tostring(value)

@@ -32,11 +32,13 @@ function aSetupACL ()
 			end
 		end
 		if totalAdded > 0 then
+			outputServerLog ( "Admin access list successfully updated " )
 			outputConsole ( "Admin access list successfully updated " )
 			outputDebugString ( "Admin added " .. totalAdded .. " missing rights" )
 		end
 		xmlUnloadFile ( node )
 	else
+		outputServerLog ( "Failed to install admin access list - File missing" )
 		outputConsole ( "Failed to install admin access list - File missing" )
 	end
 end
