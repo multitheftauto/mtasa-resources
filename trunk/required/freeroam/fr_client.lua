@@ -404,6 +404,7 @@ function warpToCommand(cmd, player)
 		end
 	else
 		createWindow(wndWarp)
+		showCursor(true)
 	end
 end
 
@@ -681,7 +682,7 @@ function getPosCommand(cmd, playerName)
 	else
 		outputChatBox(sentenceStart .. 'on foot', 0, 255, 0)
 	end
-	outputChatBox(sentenceStart .. 'at (' .. px .. ', ' .. py .. ', ' .. pz .. ')', 0, 255, 0)
+	outputChatBox(sentenceStart .. 'at (' .. string.format("%.5f", px) .. ' ' .. string.format("%.5f", py) .. ' ' .. string.format("%.5f", pz) .. ')', 0, 255, 0)
 end
 addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
