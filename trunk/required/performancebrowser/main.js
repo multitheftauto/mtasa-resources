@@ -14,15 +14,103 @@ function updateRightNamePreview()
 	}
 }
 
+function performancebrowserLoad () {
+    updateCategories();
+	performancebrowserUpdate();
+
+	var queryUser = document.getElementById("queryUser").innerHTML;
+    getSelected ( queryUser,
+		function(targetIndex,categoryIndex,queryOptionsText,queryFilterText)
+		{
+    		document.getElementById("queryTarget").selectedIndex = targetIndex;
+    		document.getElementById("queryCategory").selectedIndex = categoryIndex;
+    		document.getElementById("queryOptions").value = queryOptionsText;
+    		document.getElementById("queryFilter").value = queryFilterText;
+    		performQuery();
+        }
+	);
+}
+
+
 function performancebrowserUpdate () {
 	updateHeaders();
 	setTimeout ( "updateRows()", 800 );
 	setTimeout ( "performancebrowserUpdate()" , 3000 );
 }
+			
+function updateCategories() {
+	var queryUser = document.getElementById("queryUser").innerHTML;
+    getCategories ( queryUser,
+		function(columns,bChanged,categoryIndex)
+		{
+		    doUpdateCategories( columns, categoryIndex );
+    		document.getElementById("queryCategory").selectedIndex = categoryIndex;
+        }
+	);
+}
+
+/*
+function maybeUpdateCategories() {
+	var queryUser = document.getElementById("queryUser").innerHTML;
+    getCategories ( queryUser,
+		function(columns,bChanged,categoryIndex)
+		{
+		    if ( bChanged )
+    		    doUpdateCategories( columns, categoryIndex );
+        }
+	);
+}
+*/
+
+function doUpdateCategories(columns,categoryIndex) {
+
+	var columnHeaders = document.getElementById ( "queryCategory" );
+	while (columnHeaders.hasChildNodes())
+	{
+		columnHeaders.removeChild ( columnHeaders.firstChild );
+	}
+
+	if (columns.length != 0)
+	{
+	    for (i = 0; i < columns.length; i++)
+		{
+			var columnElement = document.createElement("option");
+			var columnName = columns[i].htmlEntities();
+			columnElement.innerHTML = columnName;
+			columnHeaders.appendChild ( columnElement );
+		}
+	}
+	
+	document.getElementById("queryCategory").selectedIndex = categoryIndex;
+}
+
+
+function doUpdateTargets(columns,targetIndex) {
+
+	var columnHeaders = document.getElementById ( "queryTarget" );
+	while (columnHeaders.hasChildNodes())
+	{
+		columnHeaders.removeChild ( columnHeaders.firstChild );
+	}
+
+	if (columns.length != 0)
+	{
+	    for (i = 0; i < columns.length; i++)
+		{
+			var columnElement = document.createElement("option");
+			var columnName = columns[i].htmlEntities();
+			columnElement.innerHTML = columnName;
+			columnHeaders.appendChild ( columnElement );
+		}
+	}
+	
+	document.getElementById("queryTarget").selectedIndex = targetIndex;
+}
+
 
 function updateHeaders() {
-    getHttpColumns
-	(
+	var queryUser = document.getElementById("queryUser").innerHTML;
+    getHttpColumns ( queryUser,
 		function(columns)
 		{
 			var columnHeaders = document.getElementById ( "headers" );
@@ -54,10 +142,16 @@ function updateHeaders() {
 }
 
 function updateRows() {
-    getHttpRows
-	(
-		function(rows)
+	var queryUser = document.getElementById("queryUser").innerHTML;
+    getHttpRows ( queryUser,
+		function(rows,bQuerydone,bTargetsChanged)
 		{
+		    if ( bQuerydone )
+                document.getElementById("searchingSpinner").style.display = "none";
+                
+		    if ( bTargetsChanged )
+                performQueryDelayed();
+
 			var performancebrowserElement = document.getElementById ( "performancebrowser" );
 			while (performancebrowserElement.hasChildNodes())
 			{
@@ -104,14 +198,25 @@ function performQuery()
 {
 	timeout = null;
 	document.getElementById("searchingSpinner").style.display = "inline";
+	var queryUser = document.getElementById("queryUser").innerHTML;
+	var queryTarget = document.getElementById("queryTarget").value;
 	var queryCategory = document.getElementById("queryCategory").value;
 	var queryOptions = document.getElementById("queryOptions").value;
 	var queryFilter = document.getElementById("queryFilter").value;
 
-    setQuery ( queryCategory, queryOptions, queryFilter,
-		function ()
+    setQuery ( queryUser, queryTarget, queryCategory, queryOptions, queryFilter,
+		function (categoryColumns,bUpdateCategories,categoryIndex,targetColumns,bUpdateTargets,targetIndex)
         {
-			document.getElementById("searchingSpinner").style.display = "none";
+            if ( bUpdateCategories )
+            {
+                doUpdateCategories(categoryColumns,categoryIndex);
+                performQueryDelayed();
+            }
+            if ( bUpdateTargets )
+            {
+                doUpdateTargets(targetColumns,targetIndex);
+                performQueryDelayed();
+            }
 		}
 	);
 }
