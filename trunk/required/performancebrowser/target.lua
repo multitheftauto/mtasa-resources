@@ -133,9 +133,11 @@ end
 function Target:getStatsFromRemote( username, queryCategoryName, queryOptionsText, queryFilterText )
 	triggerClientEvent( self.player, "onClientRequestStats", self.player, username, queryCategoryName, queryOptionsText, queryFilterText )
 	local store = self:getResultsStoreForUsername( username )
+	local age = getTickCount() - ( store.timeAdded or 0 )
 	local bUptoDate = ( store.queryCategoryName == queryCategoryName and
 						store.queryOptionsText == queryOptionsText and
-						store.queryFilterText == queryFilterText )
+						store.queryFilterText == queryFilterText and
+						age < 10000 )
 	return store.a, store.b, bUptoDate
 end
 
@@ -149,6 +151,7 @@ addEventHandler('onNotifyStats', resourceRoot,
 		store.queryCategoryName = queryCategoryName
 		store.queryOptionsText = queryOptionsText
 		store.queryFilterText = queryFilterText
+		store.timeAdded = getTickCount()
 	end
 )
 
