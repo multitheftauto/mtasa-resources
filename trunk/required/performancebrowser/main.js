@@ -179,13 +179,13 @@ function updateAll()
                 setNextUpdateTime(500)
                 return;
             }
-
+/*
             if ( counterReturn + 1 != counter )
             {
                 document.getElementById ( "statusLabel1" ).innerHTML = "..."
                 return;
             }
-
+*/
             if ( typeof(categoryColumns) == "object" )
                 doUpdateCategories(categoryColumns,categoryIndex);
 

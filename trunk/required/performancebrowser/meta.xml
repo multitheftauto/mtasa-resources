@@ -1,11 +1,11 @@
 <meta>
     <include resource="ajax" />
-	<info author="" type="script" name="Performance stats" showInResourceBrowser="true" version="0.0.3" />
+	<info author="" type="script" name="Performance stats" showInResourceBrowser="true" version="0.0.4" />
 	<script src="performancebrowser.lua" type="server"/>
 	<script src="viewer.lua" type="server"/>
-	<script src="viewermanager.lua" type="server"/>
+	<script src="viewerManager.lua" type="server"/>
 	<script src="target.lua" type="server"/>
-	<script src="targetmanager.lua" type="server"/>
+	<script src="targetManager.lua" type="server"/>
 	<script src="performancebrowser_client.lua" type="client"/>
 
 	<html src="main.htm" default="true"/>
