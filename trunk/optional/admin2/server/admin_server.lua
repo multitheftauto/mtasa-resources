@@ -444,6 +444,7 @@ end )
 
 addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", _root, function ( player, action, ... )
+	if ( not player ) then return end
 	local vehicle = getPedOccupiedVehicle ( player )
 	if ( not vehicle ) then
 		return

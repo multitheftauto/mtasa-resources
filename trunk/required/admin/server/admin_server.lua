@@ -1012,11 +1012,15 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 		elseif ( action == "slap" ) then
 			if ( getElementHealth ( player ) > 0 ) and ( not isPedDead ( player ) ) then
 				if ( ( not data ) or ( not tonumber ( data ) ) ) then data = 20 end
-				if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
-				else setElementHealth ( player, getElementHealth ( player ) - data ) end
-				local x, y, z = getElementVelocity ( player )
-				setElementVelocity ( player, x , y, z + 0.2 )
-				mdata = data
+				if ( ( tonumber ( data ) >= 0 ) ) then
+					if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
+					else setElementHealth ( player, getElementHealth ( player ) - data ) end
+					local x, y, z = getElementVelocity ( player )
+					setElementVelocity ( player, x , y, z + 0.2 )
+					mdata = data
+				else
+					action = nil
+				end
 			else
 				action = nil
 			end
@@ -1074,6 +1078,7 @@ addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", _root, function ( player, action, data )
 	if checkClient( "command."..action, source, 'aVehicle', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+		if ( not player ) then return end
 		local vehicle = getPedOccupiedVehicle ( player )
 		if ( vehicle ) then
 			local mdata = ""
