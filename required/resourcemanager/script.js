@@ -174,6 +174,7 @@ function startResourceButton ( resourceName )
 			);
 		}
 	);
+	refreshInfo ( )
 }
 
 function restartResourceButton ( resourceName )
@@ -183,7 +184,7 @@ function restartResourceButton ( resourceName )
 
 	restartResource ( resource,
 		function ( wasSuccessful ) {
-			alert('Restart successful');
+			//alert('Restart successful');
 			var newState;
 			getResourceState ( resource,
 				function ( state ) {
@@ -203,6 +204,7 @@ function restartResourceButton ( resourceName )
 			);
 		}
 	);
+	refreshInfo ( )
 }
 
 function stopResourceButton ( resourceName )
@@ -230,6 +232,7 @@ function stopResourceButton ( resourceName )
 			);
 		}
 	);
+	refreshInfo ( )
 }
 
 var currentResourceInfo = null;
