@@ -201,12 +201,16 @@ aFunctions = {
 		end,
 		['slap'] = function ( player, data )
 			if ( getElementHealth ( player ) > 0 ) and ( not isPedDead ( player ) ) then
-				if ( ( not health ) or ( not tonumber ( health ) ) ) then data = 20 end
-				if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
-				else setElementHealth ( player, getElementHealth ( player ) - data ) end
-				local x, y, z = getElementVelocity ( player )
-				setElementVelocity ( player, x , y, z + 0.2 )
-				return true, data
+				if ( ( not data ) or ( not tonumber ( data ) ) ) then data = 20 end
+				if ( ( tonumber ( data ) >= 0 ) ) then
+					if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
+					else setElementHealth ( player, getElementHealth ( player ) - data ) end
+					local x, y, z = getElementVelocity ( player )
+					setElementVelocity ( player, x , y, z + 0.2 )
+					return true, data
+				else
+					return false
+				end
 			else
 				return false
 			end
