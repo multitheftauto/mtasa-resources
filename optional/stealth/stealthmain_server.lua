@@ -511,7 +511,7 @@ function spectateNext (source) -- THIS IS THE FUNCTION USED TO SWICH WHO IS BEIN
 			--
 			local playerCount = #playersTable
 			if playerCount == 0 then
-				outputSpectateMessage("Nobody to Spectate",player) -- IF ITS JUST THE 1 PLAYER, SPECTATING IS IMPOSSIBLE
+				outputSpectateMessage("Nobody to Spectate",source) -- IF ITS JUST THE 1 PLAYER, SPECTATING IS IMPOSSIBLE
 			else
 				specPlayer = specPlayer+1
 				while isPedDead ( playersTable[specPlayer] ) do
