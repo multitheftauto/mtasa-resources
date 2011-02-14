@@ -6,48 +6,41 @@
 		<script src ='main.js' type = 'text/javascript'></script>
 	</head>
 	<body onload="performancebrowserLoad()">
-		<div id="toparea">This page shows the performance data.</div>
-		<div id="contentarea">
-		<table id="performancebrowser-table">
-			<thead>
-				<tr id="headers" />
-			</thead>
-			<tbody id="performancebrowser" />
-		</table>
+	    <div id="wraparea">
+	        <div id="searcharea">
+                <div style="display:none;visibility:hidden" id="queryUser"><* = getAccountName(user) *></div>
+			    <label for="queryTarget"> Target: </label>
+			    <select size="3" id="queryTarget" onchange="performQueryFast()" onkeyup="performQueryFast()" onclick="performQueryFast()" onload="performQueryFast()">
+
+			    </select>
+
+			    <label for="queryCategory"> Category: </label>
+			    <select size="3" id="queryCategory" onchange="performQueryFast()" onkeyup="performQueryFast()" onclick="performQueryFast()" onload="performQueryFast()">
+
+			    </select>
+
+                <label for="queryFilter"> Options: </label>
+                <input type="text" id="queryOptions" onchange="performQuerySlow()" onkeyup="performQuerySlow()"/> 
+
+                <label for="queryOptions"> Filter: </label>
+                <input type="text" id="queryFilter" onchange="performQuerySlow()" onkeyup="performQuerySlow()"/> 
+
+		        <img src='/ajax/loading.gif' id="searchingSpinner" style="display:none;" />
+
+	        </div>
+	        <div id="statusarea">
+			    <label id="statusLabel0">&nbsp;</label>
+			    <label id="statusLabel1"></label>
+			    <label id="statusLabel2"></label>
+	        </div>
+		    <div id="contentarea">
+		    <table id="performancebrowser-table">
+			    <thead>
+				    <tr id="headers" />
+			    </thead>
+			    <tbody id="performancebrowser" />
+		    </table>
+            </div>
         </div>
-	    <div id="searcharea">
-            <div style="display:none;visibility:hidden" id="queryUser"><* = getAccountName(user) *></div>
-			<label for="queryTarget"> Target: </label>
-			<select id="queryTarget" onchange="performQueryDelayed()" onkeyup="performQueryDelayed()" onclick="performQueryDelayed()" onload="performQueryDelayed()">
-			<*
-			for _,name in ipairs(exports.performancebrowser:getTargets(getAccountName(user))) do
-				*>
-					<option><* = name *></option>
-				<*
-			end
-			*>
-			</select>
-
-			<label for="queryCategory"> Category: </label>
-			<select id="queryCategory" onchange="performQueryDelayed()" onkeyup="performQueryDelayed()" onclick="performQueryDelayed()" onload="performQueryDelayed()">
-			<*
-			for _,name in ipairs(exports.performancebrowser:getCategories(getAccountName(user))) do
-				*>
-					<option><* = name *></option>
-				<*
-			end
-			*>
-			</select>
-
-            <label for="queryFilter"> Options: </label>
-            <input type="text" id="queryOptions" onchange="performQueryDelayed()" onkeyup="performQueryDelayed()"/> 
-
-            <label for="queryOptions"> Filter: </label>
-            <input type="text" id="queryFilter" onchange="performQueryDelayed()" onkeyup="performQueryDelayed()"/> 
-
-		    <img src='/ajax/loading.gif' id="searchingSpinner" style="display:none;" />
-
-	    </div>
-
 	</body>
 </html>

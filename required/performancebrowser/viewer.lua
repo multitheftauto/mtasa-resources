@@ -23,16 +23,16 @@ function Viewer:create(name)
 			DEFAULTCOLUMNSIZE	= "180px",
 			httpColumns			= {},
 			httpRows			= {},
-			updateInterval		= 5000,
-			lastUpdateTime		= 0,
-			currentTarget		= nil,
-			queryTargetName		= "none",
-			queryCategoryName	= "none",
+			queryTargetName		= "",
+			queryCategoryName	= "",
 			queryFilterText		= "",
 			queryOptionsText	= "",
-			categoryUpdateTime = {},
-			bQueryDone			= false,
-			bTargetsChanged		= false,
+			categoryUpdateTime  = {},
+			bQueryDone		    = false,
+			lastTargets			= {},
+			lastCategories		= {},
+			lastRows			= {},
+			lastHeaders		    = {},
 		},
 		self
 	)
@@ -99,8 +99,9 @@ end
 --
 ---------------------------------------------------------------------------
 function Viewer:getCurrentTarget ()
-	self.currentTarget = validateTarget(self.currentTarget)
-	return self.currentTarget
+	local currentTarget = getTargetFromName(self.queryTargetName)
+	currentTarget = validateTarget(currentTarget)
+	return currentTarget
 end
 
 
@@ -122,34 +123,18 @@ function Viewer:getCategoryIndex ( categoryName )
 	return 1
 end
 
-
 ---------------------------------------------------------------------------
 --
--- Viewer:getSelected()
---
---
---
----------------------------------------------------------------------------
-function Viewer:getSelected()
-	local targetIndex = getTargetIndex( self:getCurrentTarget () )
-	local categoryIndex = self:getCategoryIndex( self.queryCategoryName )
-	return targetIndex - 1, categoryIndex - 1, self.queryOptionsText, self.queryFilterText
-end
-
-
----------------------------------------------------------------------------
---
--- Viewer:getCategories()
+-- Viewer:getCategoriesIfChanged()
 --
 -- Browser wants to know what categories to put in the list
 --
 ---------------------------------------------------------------------------
-function Viewer:getCategories ()
+function Viewer:getCategoriesIfChanged ()
 	local categories = self:getCategoriesRaw ()
 	local bChanged = not table.cmp(categories, self.lastCategories)
 	self.lastCategories = categories
-	local categoryIndex = self:getCategoryIndex( self.queryCategoryName )
-	return categories, bChanged, categoryIndex - 1
+	return bChanged and categories or false
 end
 
 
@@ -176,97 +161,111 @@ end
 
 ---------------------------------------------------------------------------
 --
--- Viewer:getTargets()
+-- Viewer:getTargetsIfChanged()
 --
 -- Browser wants to know what targets to put in the list
 --
 ---------------------------------------------------------------------------
-function Viewer:getTargets ( bClearChangedFlag )
+function Viewer:getTargetsIfChanged ()
 	local targets = getTargetNameList ()
 	local bChanged = not table.cmp(targets, self.lastTargets)
 	self.lastTargets = targets
-	self.bTargetsChanged = self.bTargetsChanged or bChanged
-	bChanged = self.bTargetsChanged
-	if bClearChangedFlag then
-		self.bTargetsChanged = false
-	end
-	local targetIndex = getTargetNameIndex( self.queryTargetName )
-	return targets, bChanged, targetIndex - 1
+	return bChanged and targets or false
 end
+
 
 ---------------------------------------------------------------------------
 --
--- Viewer:getTargetsRaw()
+-- Viewer:getHeadersIfChanged()
 --
---
+-- returns false if not changed
 --
 ---------------------------------------------------------------------------
---[[
-function Viewer:getTargetsRaw ()
-	local targets = getTargetNameList()
-	return targets
-
-	local target = self:getCurrentTarget()
-	if not target then return { "no target" } end
-	if not target.bSupportsStats then return { "not supported" } end
-	-- Get active categories
-	local columnList,rowList = target:getPerformanceStats(self.name,"")
-	local targets = {}
-	for _,row in ipairs(rowList) do
-		table.insert( targets, row[1] )
-	end
-	return targets
-
+function Viewer:getHeadersIfChanged ()
+	local headers = self.httpColumns
+	local bChanged = not table.cmp(headers, self.lastHeaders)
+	self.lastHeaders = headers
+	return bChanged and headers or false
 end
---]]
+
+
+---------------------------------------------------------------------------
+--
+-- Viewer:getRowsIfChanged()
+--
+-- returns false if not changed
+--
+---------------------------------------------------------------------------
+function Viewer:getRowsIfChanged ()
+	local rows = self.httpRows
+	local bChanged = not table.cmp(rows, self.lastRows)
+	self.lastRows = rows
+	return bChanged and rows or false
+end
+
 
 ---------------------------------------------------------------------------
 --
 -- Viewer:setQuery()
 --
--- Browser has changed display request
+-- Browser has display request
 --
 ---------------------------------------------------------------------------
-function Viewer:setQuery ( targetName, categoryName, optionsText, filterText )
-	self.currentTarget = getTargetFromName(targetName)
+function Viewer:setQuery ( counter, targetName, categoryName, optionsText, filterText )
+	self:setUsed()
+
+	local restoredQueryOptionsText = false
+	local restoredQueryFilterText = false
+
+	-- Is this the first call from a new page?
+	if counter == 0 then
+		if #self.lastTargets == 0 then
+			-- Set initial settings
+			targetName = getTargetNameList ()[1]
+			categoryName = self:getCategoriesRaw ()[1]
+		else
+			-- Restore last settings
+			self.lastTargets = {}
+			self.lastCategories = {}
+			self.lastHeaders = {}
+			self.lastRows = {}
+			targetName = self.queryTargetName
+			categoryName = self.queryCategoryName
+			optionsText = self.queryOptionsText
+			filterText = self.queryFilterText
+
+			restoredQueryOptionsText = optionsText
+			restoredQueryFilterText = filterText
+		end
+	end
+
 	self.queryTargetName = targetName
 	self.queryCategoryName = categoryName
 	self.queryOptionsText = optionsText
 	self.queryFilterText = filterText
-	self.lastUpdateTime = 0
-	local categories, bCategoriesChanged, categoryIndex = self:getCategories ()
-	local targets, bTargetsChanged, targetIndex = self:getTargets ( true )
-	return categories, bCategoriesChanged, categoryIndex, targets, bTargetsChanged, targetIndex
-end
 
+	local targets = self:getTargetsIfChanged ()
+	local targetIndex = getTargetIndex( self:getCurrentTarget() )
 
----------------------------------------------------------------------------
---
--- Viewer:getHttpColumns()
---
--- Browser wants columns to display
---
----------------------------------------------------------------------------
-function Viewer:getHttpColumns ()
-	if getTickCount() - self.lastUpdateTime > self.updateInterval then
-		self.lastUpdateTime = getTickCount()
-		self:updateCache()
-	end
-	return self.httpColumns
-end
+	local categories = self:getCategoriesIfChanged ()
+	local categoryIndex = self:getCategoryIndex( self.queryCategoryName )
 
+	self:updateCache()
+	local headers = self:getHeadersIfChanged()
+	local rows = self:getRowsIfChanged()
 
----------------------------------------------------------------------------
---
--- Viewer:getHttpRows()
---
--- Browser wants rows to display
---
----------------------------------------------------------------------------
-function Viewer:getHttpRows()
-	self:setUsed()
-	local targets, bTargetsChanged, targetIndex = self:getTargets ( false )
-	return self.httpRows, self.bQueryDone, bTargetsChanged
+	local status2 = tostring(self.queryTargetName)
+	local status1 = status2=="" and "" or "Performance stats for: "
+
+	return	counter,
+			self.bQueryDone,
+			categories, categoryIndex - 1,
+			targets, targetIndex - 1,
+			headers,
+			rows,
+            restoredQueryOptionsText,
+            restoredQueryFilterText,
+			status1, status2
 end
 
 

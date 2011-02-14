@@ -4,21 +4,52 @@ body {
 }
 pre {text-indent: 30px}
 
-#toparea {
-	position: absolute; 
-	top:0px; 
-	right:0px; 
-	left:0px; 
-	height:23px; 
-	background:#555555; 
-	color:#FFFFFF; 
+#wraparea {
+	position:absolute;
+	top: 0px;
+	right:0px;
+	left:0px;
+	color:#FFFFFF;
+	padding:0px;
+}
+
+#searcharea {
+	background:#555555;
+	color:#FFFFFF;
 	padding:7px;
 }
 
+#statusarea {
+	color:#FFFFFF;
+	padding:5px;
+	font-weight:normal;
+	text-align: center;
+	font-size: medium;
+	background-color: #333;
+	border-top-width: medium;
+	border-right-width: thick;
+	border-bottom-width: medium;
+	border-left-width: thick;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #555;
+	border-right-color: #555;
+	border-bottom-color: #555;
+	border-left-color: #555;
+}
+
+#statusLabel1 {
+	color: #999;
+}
+#statusLabel2 {
+	font-size: large;
+	color: #FFC;
+}
+
 #contentarea {
-	position:absolute;
-	top: 50px;
-	left: 0px;
+	padding-top: 7px;
 }
 
 /* performancebrowser styles */
@@ -26,16 +57,13 @@ pre {text-indent: 30px}
 	margin-left: 2%;
 	width: 96%;
 	background-color:#CCCCCC;
+	color:#000000; 
 }
 
 #headers {
 	background: #999999;
 	font-weight:bold;
 	color: #EEEEEE;
-}
-
-td.player#name {
-	padding-left: 10px;
 }
 
 .team {
@@ -53,16 +81,6 @@ td.player#name {
 	font-size: small;
 }
 
-#searcharea {
-	position:absolute; 
-	top: 0px; 
-	right:0px; 
-	left:0px; 
-	height: 23px; 
-	background:#555555;
-	color:#FFFFFF;
-	padding:7px;
-}
 
 .formfield {
 	clear: both;
