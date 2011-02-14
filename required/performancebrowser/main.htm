@@ -5,7 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="main.css" />
 		<script src ='main.js' type = 'text/javascript'></script>
 	</head>
-	<body onLoad="performancebrowserUpdate()">
+	<body onload="performancebrowserLoad()">
 		<div id="toparea">This page shows the performance data.</div>
 		<div id="contentarea">
 		<table id="performancebrowser-table">
@@ -16,12 +16,22 @@
 		</table>
         </div>
 	    <div id="searcharea">
+            <div style="display:none;visibility:hidden" id="queryUser"><* = getAccountName(user) *></div>
+			<label for="queryTarget"> Target: </label>
+			<select id="queryTarget" onchange="performQueryDelayed()" onkeyup="performQueryDelayed()" onclick="performQueryDelayed()" onload="performQueryDelayed()">
+			<*
+			for _,name in ipairs(exports.performancebrowser:getTargets(getAccountName(user))) do
+				*>
+					<option><* = name *></option>
+				<*
+			end
+			*>
+			</select>
 
 			<label for="queryCategory"> Category: </label>
 			<select id="queryCategory" onchange="performQueryDelayed()" onkeyup="performQueryDelayed()" onclick="performQueryDelayed()" onload="performQueryDelayed()">
-            <option>Select...</option>
 			<*
-			for _,name in ipairs(exports.performancebrowser:getCategories()) do
+			for _,name in ipairs(exports.performancebrowser:getCategories(getAccountName(user))) do
 				*>
 					<option><* = name *></option>
 				<*
@@ -35,7 +45,7 @@
             <label for="queryOptions"> Filter: </label>
             <input type="text" id="queryFilter" onchange="performQueryDelayed()" onkeyup="performQueryDelayed()"/> 
 
-		    <img src='/ajax/loaderblack.gif' id="searchingSpinner" style="display:none;" />
+		    <img src='/ajax/loading.gif' id="searchingSpinner" style="display:none;" />
 
 	    </div>
 
