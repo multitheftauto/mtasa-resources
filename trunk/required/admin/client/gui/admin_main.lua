@@ -417,6 +417,11 @@ function aAdminRefresh ()
 				guiSetText ( aTab1.Vehicle, "Vehicle: Foot" )
 				guiSetText ( aTab1.VehicleHealth, "Vehicle Health: 0%" )
 			end
+			if ( aPlayers[player]["admin"] ) then
+				guiSetText(aTab1.Admin, "Revoke admin rights")
+			else
+				guiSetText(aTab1.Admin, "Give admin rights")
+			end
 			return player
 		end
 	end

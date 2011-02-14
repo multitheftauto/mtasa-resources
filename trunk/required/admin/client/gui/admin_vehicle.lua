@@ -162,7 +162,7 @@ function aVehicleCheckUpgrades ( vehicle )
 end
 
 function aVehicleCheckCurrentUpgrades ( vehicle )
-	if ( vehicle ) then
+	if ( vehicle and isElement( vehicle ) ) then
 		for slot, v in ipairs ( aVehicleUpgrades ) do
 			if ( getVehicleUpgradeOnSlot ( vehicle, aVehicleUpgrades[slot].id ) > 0 ) then
 				if ( guiCheckBoxGetSelected ( aVehicleUpgradeNames ) ) then
