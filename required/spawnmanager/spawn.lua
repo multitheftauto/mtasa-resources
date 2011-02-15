@@ -18,8 +18,7 @@ function createSpawnpoint ( x, y, z, rot, skin, interior, dimension )
 	setElementData ( sp, "posZ", z )
 	setElementData ( sp, "rot", rot )
 	setElementData ( sp, "skin", skin )
-	setElementData ( sp, "interior", rot )
-	setElementData ( sp, "dimension", interior )
+	setElementData ( sp, "interior", interior )
 	setElementData ( sp, "dimension", dimension )
 	return sp
 end
