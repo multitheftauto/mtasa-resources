@@ -2,6 +2,41 @@
   <!--
     Special thanks to Talidan and Slothman for the skins list
   -->
+	<group name="Special">
+		<skin model="1" name="Truth" />
+		<skin model="2" name="Maccer" />
+		<skin model="265" name="Tenpenny" />
+		<skin model="266" name="Pulaski" />
+		<skin model="267" name="Hern" />
+		<skin model="268" name="Dwayne" />
+		<skin model="269" name="Big Smoke" />
+		<skin model="270" name="Sweet" />
+		<skin model="271" name="Ryder" />
+		<skin model="272" name="Forelli Guy" />
+		<skin model="290" name="Rose" />
+		<skin model="291" name="Kent Paul" />
+		<skin model="292" name="Cesar" />
+		<skin model="293" name="OG Loc" />
+		<skin model="294" name="Wuzi Mu" />
+		<skin model="295" name="Mike Toreno" />
+		<skin model="296" name="Jizzy" />
+		<skin model="297" name="Madd Dogg" />
+		<skin model="298" name="Catalina" />
+		<skin model="299" name="Claude from GTA 3" />
+		<skin model="300" name="Ryder" />
+		<skin model="301" name="Ryder Robber" />
+		<skin model="302" name="Emmet" />
+		<skin model="303" name="Andre" />
+		<skin model="304" name="Kendl" />
+		<skin model="305" name="Jethro" />
+		<skin model="306" name="Zero" />
+		<skin model="307" name="T-bone Mendez" />
+		<skin model="308" name="Sindaco Guy" />
+		<skin model="309" name="Janitor" />
+		<skin model="310" name="Big Bear" />
+		<skin model="311" name="Big Smoke with Vest" />
+		<skin model="312" name="Physco" />
+	</group>
 	<group name="Beach">
 		<skin model="18" name="Black Beachguy" />
 		<skin model="45" name="Beach Mustache" />
