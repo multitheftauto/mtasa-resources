@@ -478,14 +478,16 @@ function unloadVehicle(vehicle)
 		table.removevalue(g_PlayerData[creator].vehicles, vehicle)
 	end
 	g_VehicleData[vehicle] = nil
-	destroyElement(vehicle)
+	if isElement(vehicle) then
+		destroyElement(vehicle)
+	end
 end
 
 function quitHandler(player)
 	if type(player) ~= 'userdata' then
 		player = source
 	end
-	if g_PlayerData[player].blip then
+	if g_PlayerData[player].blip and isElement(g_PlayerData[player].blip) then
 		destroyElement(g_PlayerData[player].blip)
 	end
 	table.each(g_PlayerData[player].vehicles, unloadVehicle)
