@@ -170,16 +170,6 @@ function aSynchCoroutineFunc( type, data )
 	end
 end
 
-
-function aSyncResume()
-	local status = coroutine.status(aSyncCoroutine)
-	if (status == "suspended") then
-		coroutine.resume(aSyncCoroutine)
-	elseif (status == "dead") then
-		aSyncCoroutine = nil
-	end
-end
-
 addEvent("aSync", true)
 addEventHandler("aSync", _root, function(type, data) 
 	aSyncCoroutine = coroutine.create(aSynchCoroutineFunc)
