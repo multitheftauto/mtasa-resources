@@ -8,9 +8,10 @@
 *
 **************************************]]
 
-addEvent ( "aSync", true )
-addEventHandler ( "aSync", _root, function ( type, data )
+function aSynchCoroutineFunc( type, data )
+	local source = source -- Needed
 	if checkClient( false, source, 'aSync', type ) then return end
+	local cor = aSyncCoroutine
 	local tableOut = {}
 	local theSource = _root
 	if client and not hasObjectPermissionTo ( client, "general.adminpanel" ) then
@@ -53,6 +54,8 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		end
 	elseif ( type == "resources" ) then
 		local resourceTable = getResources()
+		local tick = getTickCount()
+		local antiCorMessageSpam = 0
 		for id, resource in ipairs(resourceTable) do
 			local name = getResourceName ( resource )
 			local state = getResourceState ( resource )
@@ -63,6 +66,24 @@ addEventHandler ( "aSync", _root, function ( type, data )
 			tableOut[id]["numsettings"] = numsettings
 			tableOut[id]["state"] = state
 			tableOut[id]["type"] = type
+			
+			if ( getTickCount() > tick + 100 ) then
+				-- Execution exceeded 100ms so pause and resume in 100ms
+				setTimer(function()
+					local status = coroutine.status(cor)
+					if (status == "suspended") then
+						coroutine.resume(cor)
+					elseif (status == "dead") then
+						cor = nil
+					end
+				end, 100, 1)
+				if (antiCorMessageSpam == 0) then
+					outputChatBox("Please wait, resource list still loading... Don't try refresh.", source, 255, 255, 0)
+				end
+				antiCorMessageSpam = antiCorMessageSpam + 1
+				coroutine.yield()
+				tick = getTickCount()
+			end
 		end
 	elseif ( type == "admins" ) then
 		for id, player in ipairs(getElementsByType("player")) do
@@ -144,7 +165,25 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		tableOut["unread"] = unread
 		tableOut["total"] = total
 	end
-	triggerClientEvent ( source, "aClientSync", theSource, type, tableOut )
+	if (isElement(source)) then -- Incase the source has quit during coroutine loading
+		triggerClientEvent ( source, "aClientSync", theSource, type, tableOut )
+	end
+end
+
+
+function aSyncResume()
+	local status = coroutine.status(aSyncCoroutine)
+	if (status == "suspended") then
+		coroutine.resume(aSyncCoroutine)
+	elseif (status == "dead") then
+		aSyncCoroutine = nil
+	end
+end
+
+addEvent("aSync", true)
+addEventHandler("aSync", _root, function(type, data) 
+	aSyncCoroutine = coroutine.create(aSynchCoroutineFunc)
+	coroutine.resume(aSyncCoroutine, type, data)
 end )
 
 addEvent ( "onPlayerMoneyChange", false )
