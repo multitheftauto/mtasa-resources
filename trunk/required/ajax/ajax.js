@@ -251,6 +251,12 @@ function callFunction ( resourceName, functionName, returnFunction, errorFunctio
                     errorFunction (  AJAX.responseText );
                 return;
             }
+
+            if ( AJAX.status == 404 ) {
+                /* Silently fail for 404 (resource not running) to prevent errors on server restart */
+                return;
+            }
+
             if ( errorFunction != null )
                 errorFunction ( "ajax: " + AJAX.statusText );
         }
