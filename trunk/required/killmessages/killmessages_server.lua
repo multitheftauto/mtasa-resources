@@ -27,7 +27,7 @@ local vehicleIDs = { [50]=true,[49]=true,[31]=true,[38]=true,[52]=true }
 function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart )
 	---These are special checks for certain kill types
 	local usedVehicle
-	if killerweapon == 19 then --rockets
+	if killerweapon == 19 and isElement(killer) then --rockets
 		killerweapon = killer and getElementType ( killer ) == "player" and getPedWeapon(killer)
 		if not killerweapon then
 			killerweapon = 51
@@ -37,7 +37,7 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 			usedVehicle = getElementModel ( killer )
 			killer = getVehicleOccupant ( killer, 0 )
 		end
-	elseif ( killerweapon == 59 ) then
+	elseif ( killerweapon == 59 and isElement(killer) ) then
 		if ( getElementType ( killer ) == "player" ) then
 			local vehicle = getPedOccupiedVehicle(killer)
 			if ( vehicle ) then
