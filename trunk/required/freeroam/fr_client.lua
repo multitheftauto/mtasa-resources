@@ -159,7 +159,7 @@ function giveWeaponCommand(cmd, weapon, amount)
 		return
 	end
 	amount = amount and tonumber(amount) or 500
-	server.giveMeWeapon(weapon, amount)
+	server.giveMeWeapon(math.floor(weapon), amount)
 end
 addCommandHandler('give', giveWeaponCommand)
 addCommandHandler('wp', giveWeaponCommand)
@@ -827,7 +827,7 @@ function createVehicleCommand(cmd, ...)
 			vehID = getVehicleModelFromName(v)
 		end
 		if vehID then
-			table.insert(vehiclesToCreate, vehID)
+			table.insert(vehiclesToCreate, math.floor(vehID))
 		end
 	end
 	server.giveMeVehicles(vehiclesToCreate)
