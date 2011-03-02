@@ -30,8 +30,17 @@ addEventHandler ( "onPlayerWasted", getRootElement (),
 				addEventHandler ( "onPickupHit", pickup, onDeathPickupHit )
 				timers[pickup] = setTimer ( destroyDeathPickup, timeout, 1, pickup )
 			end
-		else			
-			triggerClientEvent ( source, "clientGetPlayerWeapons", source )
+		else
+			local droppedWeapons = {}
+			for slot=0, 12 do
+				local ammo = getPedTotalAmmo(source, slot) 
+				if (getPedWeapon(source, slot) ~= 0) then
+					local weapon = getPedWeapon(source, slot)
+					local ammo = getPedTotalAmmo(source, slot)
+					table.insert(droppedWeapons, {weapon, ammo})					
+				end
+			end
+			DropAllWeapons(droppedWeapons)
 		end
 	end
 )
@@ -49,5 +58,3 @@ function DropAllWeapons ( droppedWeapons )
 		timers[pickup] = setTimer ( destroyDeathPickup, timeout, 1, pickup )
 	end	
 end
-addEvent("serverDropAllWeapons",true)
-addEventHandler("serverDropAllWeapons", getRootElement (), DropAllWeapons)
