@@ -24,7 +24,7 @@ Vehicles:
 
 Tools:
  wt / warpto [playername]
- sp / setpos [x] [y] [z]
+ sp / setpos [x] [y] [z] [rot]
  gp / getpos
 
 Environment:
