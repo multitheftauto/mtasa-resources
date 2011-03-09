@@ -687,8 +687,9 @@ end
 addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
 
-function setPosCommand(cmd, x, y, z)
+function setPosCommand(cmd, x, y, z, r)
 	local px, py, pz = getElementPosition(g_Me)
+	local pr = getPedRotation(g_Me)
 	if not x or x == '-' or not tonumber(x) then
 		x = px
 	end
@@ -699,6 +700,14 @@ function setPosCommand(cmd, x, y, z)
 		z = pz
 	end
 	setPlayerPosition(tonumber(x), tonumber(y), tonumber(z))
+	if (isPedInVehicle(g_Me)) then
+		local vehicle = getPedOccupiedVehicle(g_Me)
+		if (vehicle and isElement(vehicle) and getVehicleController(vehicle) == g_Me) then
+			setElementRotation(vehicle, 0, 0, tonumber(r) or pr)
+		end
+	else
+		setPedRotation(g_Me, tonumber(r) or pr)
+	end
 end
 addCommandHandler('setpos', setPosCommand)
 addCommandHandler('sp', setPosCommand)
