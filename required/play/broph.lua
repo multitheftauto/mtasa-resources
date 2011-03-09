@@ -4,10 +4,22 @@ addEventHandler("onResourceStart", resourceRoot,
 			spawn(player)
 		end
 	end
+	setGravity(0.008)
+	setGameSpeed(1)
 )
 
 function spawn(player)
 	if not isElement(player) then return end
+	setElementInterior(player, 0)
+	setElementDimension(player, 0)
+	showPlayerHudComponent(player, "ammo", true)
+	showPlayerHudComponent(player, "armour", true)
+	showPlayerHudComponent(player, "breath", true)
+	showPlayerHudComponent(player, "clock", true)
+	showPlayerHudComponent(player, "health", true)
+	showPlayerHudComponent(player, "money", true)
+	showPlayerHudComponent(player, "radar", true)
+	showPlayerHudComponent(player, "weapon", true)
 	repeat until spawnPlayer ( player, -711+math.random(1,5), 957+math.random(5,9), 12.4, 90, math.random(9,288) )
 	fadeCamera(player, true)
 	setCameraTarget(player, player)
