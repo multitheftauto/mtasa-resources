@@ -3,9 +3,11 @@ addEventHandler("onResourceStart", resourceRoot,
 		for i,player in ipairs(getElementsByType("player")) do
 			spawn(player)
 		end
+		setGravity(0.008)
+		setGameSpeed(1)
+		setTime(12, 0)
+		setWeather(0)
 	end
-	setGravity(0.008)
-	setGameSpeed(1)
 )
 
 function spawn(player)
@@ -23,6 +25,7 @@ function spawn(player)
 	repeat until spawnPlayer ( player, -711+math.random(1,5), 957+math.random(5,9), 12.4, 90, math.random(9,288) )
 	fadeCamera(player, true)
 	setCameraTarget(player, player)
+	showChat(player, true)
 end
 
 addEventHandler("onPlayerJoin", root,
