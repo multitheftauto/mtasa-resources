@@ -249,7 +249,7 @@ function warpMe(targetPlayer)
 	if isPedDead(source) then
 		spawnMe()
 	end
-	
+
 	local vehicle = getPedOccupiedVehicle(targetPlayer)
 	if not vehicle then
 		-- target player is not in a vehicle - just warp next to him
@@ -295,7 +295,7 @@ function giveMeVehicles(vehicles)
 	if type(vehicles) == 'number' then
 		vehicles = { vehicles }
 	end
-	
+
 	local px, py, pz, prot
 	local radius = 3
 	local playerVehicle = getPedOccupiedVehicle(source)
@@ -311,12 +311,14 @@ function giveMeVehicles(vehicles)
 	local vy = py + radius * math.sin(offsetRot)
 	local vz = pz + 2
 	local vrot = prot
-	
+
 	local vehicleList = g_PlayerData[source].vehicles
 	local vehicle
 	for i,vehID in ipairs(vehicles) do
-		if not table.find(getOption('vehicles.disallowed'), vehID) then
-			if #vehicleList == getOption('vehicles.maxperplayer') then
+		if vehID < 400 or vehID > 611 then
+			errMsg(vehID ..' is incorrect vehicle model', source)
+		elseif not table.find(getOption('vehicles.disallowed'), vehID) then
+			if #vehicleList >= getOption('vehicles.maxperplayer') then
 				unloadVehicle(vehicleList[1])
 			end
 			vehicle = createVehicle(vehID, vx, vy, vz, 0, 0, vrot)
