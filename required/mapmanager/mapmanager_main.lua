@@ -169,7 +169,11 @@ function changeGamemodeMap_cmd(source, command, ...)
 	if mapName then
 		map = getMapFromName(mapName)
 		if not isMap(map) then
-			outputMapManager("'"..mapName.."' is not a valid map.",source)
+			if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then
+				outputMapManager("'"..mapName.."' is not a valid map.", source)
+			else
+				outputMapManager("'"..mapName.."' is not a valid map. Use the refresh command and try again", source)
+			end
 			return false
 		end
 	else
@@ -198,8 +202,17 @@ function changeGamemode_cmd(source, command, gamemodeName,...)
 	if gamemodeName then
 		gamemode = getResourceFromName(gamemodeName)
 		if not isGamemode(gamemode) then
-			outputMapManager("'"..gamemodeName.."' is not a valid gamemode.",source)
-			return false
+			if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then
+				refreshResources(false)
+				gamemode = getResourceFromName(gamemodeName)
+				if not isGamemode(gamemode) then
+					outputMapManager("'"..gamemodeName.."' is not a valid gamemode.", source)
+					return false
+				end
+			else
+				outputMapManager("'"..gamemodeName.."' is not a valid gamemode. Use the refresh command and try again", source)
+				return false
+			end
 		end
 	else
 		outputMapManager("Usage: /"..command.." gamemode [map]",source)
@@ -210,7 +223,11 @@ function changeGamemode_cmd(source, command, gamemodeName,...)
 	if mapName then
 		map = getMapFromName(mapName)
 		if not isMap(map) then
-			outputMapManager("'"..mapName.."' is not a valid map.",source)
+			if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then
+				outputMapManager("'"..mapName.."' is not a valid map.", source)
+			else
+				outputMapManager("'"..mapName.."' is not a valid map. Use the refresh command and try again", source)
+			end
 			return false
 		end
 	end
@@ -439,6 +456,13 @@ end
 
 function getMapFromName ( name )
 	local resource = getResourceFromName ( name )
+	if resource then 
+		return resource
+	end
+	if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then -- If this version has refreshResources, refresh resources.
+		refreshResources(false)
+	end
+	local resource = getResourceFromName ( name ) --and try get the resource again.
 	if resource then 
 		return resource
 	end
