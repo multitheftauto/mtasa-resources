@@ -130,7 +130,7 @@ function aListSkins ( mode )
 	if ( mode == 1 ) then --Normal
 		local skins = {}
 		for name, group in pairs ( aSkins ) do
-			if (name ~= "Special" or name == "Special" and getVersion().number > 260) then
+			if (name ~= "Special" or name == "Special" and getVersion().number >= 272) then
 				for id, skin in pairs ( group ) do
 					local id = tonumber ( skin["model"] )
 					skins[id] = skin["name"]
@@ -149,7 +149,7 @@ function aListSkins ( mode )
 		guiGridListSetSortingEnabled ( aSkinList, true )
 	else	--Groups
 		for name, group in pairs ( aSkins ) do
-			if (name ~= "Special" or name == "Special" and getVersion().number > 260) then
+			if (name ~= "Special" or name == "Special" and getVersion().number >= 272) then
 				local row = guiGridListAddRow ( aSkinList )
 				guiGridListSetItemText ( aSkinList, row, 2, name, true, false )
 				for id, skin in ipairs ( aSkins[name] ) do
