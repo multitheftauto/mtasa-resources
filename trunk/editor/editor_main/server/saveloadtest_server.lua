@@ -10,6 +10,7 @@ local DUMP_RESOURCE = "editor_dump"
 local dumpInterval = get("dumpSaveInterval") and tonumber(get("dumpSaveInterval"))*1000 or 60000
 local fileTypes = { "script","map","file","config","html" } 
 local specialFileTypes = { "script","file","config","html" }
+local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 
 loadedMap = false
 addEvent ( "onNewMap" )
