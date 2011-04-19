@@ -141,6 +141,7 @@ local specialIntersections = {
 }
 
 function startWhenLoaded()
+	engineSetAsynchronousLoading ( true, true )
 	if getElementData(thisResourceRoot,"g_in_test") then 
 		setElementData ( localPlayer, "waitingToStart", true, false )
 		return 
@@ -309,6 +310,7 @@ end
 
 function stopEditor()
 	attachPlayers(false)
+	engineSetAsynchronousLoading ( false, false )
 end
 addEventHandler("onClientResourceStop", thisResourceRoot, stopEditor)
 
