@@ -15,10 +15,13 @@ function getPlayerCountry ( player )
 	return getIpCountry ( getPlayerIP ( player ) )
 end
 function getIpCountry ( ip )
+	if ( get ( "*useip2c" ) == "false" ) then return false end
 	local ip_group = tonumber ( gettok ( ip, 1, 46 ) )
 	local ip_code = ( gettok ( ip, 1, 46 ) * 16777216 ) + ( gettok ( ip, 2, 46 ) * 65536 ) + ( gettok ( ip, 3, 46 ) * 256 ) + ( gettok ( ip, 4, 46 ) )
-	if ( #aCountries == 0 ) then
-		loadIPGroups ()
+	if ( #aCountries == 0 and not makeCor) then
+		--loadIPGroups ()
+		makeCor = coroutine.create(loadIPGroups)
+		coroutine.resume(makeCor)
 	end
 	if ( not aCountries[ip_group] ) then
 		aCountries[ip_group] = {}
@@ -44,9 +47,24 @@ function loadIPGroups ()
 	end
 
 	local buffer = ""
+	local tick = getTickCount()
 	while true do
 		local endpos = string.find(buffer, "\n")
 
+		if ( getTickCount() > tick + 50 ) then
+			-- Execution exceeded 50ms so pause and resume in 50ms
+			setTimer(function()
+				local status = coroutine.status(makeCor)
+				if (status == "suspended") then
+					coroutine.resume(makeCor)
+				elseif (status == "dead") then
+					makeCor = nil
+				end
+			end, 50, 1)
+			coroutine.yield()
+			tick = getTickCount()
+		end
+		
 		-- If can't find CR, try to load more from the file
 		if not endpos then
 			if fileIsEOF( hReadFile ) then
@@ -83,8 +101,9 @@ function loadIPGroups ()
 			end
 		end
 	end
-
 	fileClose(hReadFile)
+	makeCor = nil
+	return true
 end
 
 

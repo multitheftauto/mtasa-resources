@@ -44,6 +44,9 @@
   <script src="client/gui/admin_acl.lua" type="client" />
   <script src="client/gui/admin_settings.lua" type="client" />
 
+  <!--Exported Functions-->
+  <export function="getPlayerCountry"/>
+
   <!--Required XML configs kept in /conf/ folder-->
   <config src="conf/interiors.xml" type="client" />
   <config src="conf/weathers.xml" type="client" />
@@ -274,6 +277,13 @@
 					group="_Advanced"
 					accept="true,false"
 					desc="Ban IP's that attempt to send fake admin packets."
+					/>
+					
+		<setting name="*useip2c" value="true"
+					friendlyname="useip2c"
+					group="_Advanced"
+					accept="true,false"
+					desc="Displays country flags next to players, set to false to save about 20mb of server RAM."
 					/>
  </settings>
 
