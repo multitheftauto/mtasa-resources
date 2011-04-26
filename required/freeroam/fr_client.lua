@@ -512,7 +512,12 @@ function setPosInit()
 	addEventHandler('onClientRender', g_Root, updatePlayerBlips)
 end
 
-function fillInPosition(relX, relY)
+function fillInPosition(relX, relY, btn)
+	if (btn == 'right') then
+		closeWindow (wndSetPos)
+		return
+	end
+
 	local x = relX*6000 - 3000
 	local y = 3000 - relY*6000
 	local hit, hitX, hitY, hitZ
@@ -653,7 +658,8 @@ wndSetPos = {
 		{'txt', id='y', text='', width=60},
 		{'txt', id='z', text='', width=60},
 		{'btn', id='ok', onclick=setPosClick},
-		{'btn', id='cancel', closeswindow=true}
+		{'btn', id='cancel', closeswindow=true},
+		{'lbl', text='Right click on map to close'}
 	},
 	oncreate = setPosInit,
 	onclose = closePositionWindow
