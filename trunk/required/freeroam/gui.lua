@@ -229,7 +229,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		if wndClass == 'img' then
 			clickhandler = function(btn, state, x, y)
 				local imgX, imgY = getControlScreenPos(wnd)
-				wnd.onclick((x - imgX)/wnd.width, (y - imgY)/wnd.height)
+				wnd.onclick((x - imgX)/wnd.width, (y - imgY)/wnd.height, btn)
 			end
 		else
 			clickhandler = function() wnd.onclick() end
