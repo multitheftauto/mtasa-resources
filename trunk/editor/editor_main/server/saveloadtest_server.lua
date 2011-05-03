@@ -120,7 +120,7 @@ function handleOpenResource()
 		loadedMap = openingResourceName 
 		passNewMapSettings()
 		if not openingOnStart then
-			local outputStr = tostring(getPlayerName ( openingSource )).." opened map "..tostring(openingResourceName)..". (opening took "..getTickCount() - openingStartTick.." ms)"
+			local outputStr = tostring(getPlayerName ( openingSource )).." opened map "..tostring(openingResourceName)..". (opening took "..math.floor(getTickCount() - openingStartTick).." ms)"
 			editor_gui.outputMessage ( outputStr, root,255,0,0)
 			outputDebugString ( outputStr )
 			triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
@@ -429,7 +429,6 @@ addEventHandler("quickSaveResource", rootElement, quickSave )
 
 function quickSaveCoroutineFunction(saveAs, dump, client)
 	if loadedMap then
-		editor_gui.outputMessage("The map is being saved... (this could take a while)", root,255,0,0)
 		local tick = getTickCount()
 		local iniTick = getTickCount()
 		local resource = getResourceFromName ( dump and DUMP_RESOURCE or loadedMap )
@@ -457,6 +456,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		local elementChildren = {}
 		local rootElements = {}
 		local usedResources = {}
+		local showSaveWarningOnce = false
 
 		for i, element in ipairs(getElementChildren(baseElement)) do  --Find parents to start with
 			if (getTickCount() > tick + 200) then
@@ -467,6 +467,10 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 						quickSaveCoroutine = nil
 					end
 				end, 200, 1)
+				if (not showSaveWarningOnce and iniTick < getTickCount() - 3000) then
+					editor_gui.outputMessage("The map is being saved... (this could take a while)", root,255,0,0)
+					showSaveWarningOnce = true
+				end
 				coroutine.yield()
 				tick = getTickCount()
 			end
@@ -506,6 +510,10 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 						quickSaveCoroutine = nil
 					end
 				end, 200, 1)
+				if (not showSaveWarningOnce and iniTick < getTickCount() - 3000) then
+					editor_gui.outputMessage("The map is being saved... (this could take a while)", root,255,0,0)
+					showSaveWarningOnce = true
+				end
 				coroutine.yield()
 				tick = getTickCount()
 			end
@@ -548,7 +556,6 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
 		xmlUnloadFile ( metaNode )
-		outputDebugString("Quick save complete in "..math.floor(getTickCount() - iniTick).." ms")
 		if not dump and loadedMap == DUMP_RESOURCE then
 			editor_gui.loadsave_getResources("saveAs",client)
 			return
