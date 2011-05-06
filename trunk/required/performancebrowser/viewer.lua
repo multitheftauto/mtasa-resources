@@ -26,6 +26,7 @@ function Viewer:create(name)
 			queryTargetName		= "",
 			queryCategoryName	= "",
 			queryFilterText		= "",
+			queryShowClients    = "",
 			queryOptionsText	= "",
 			categoryUpdateTime  = {},
 			bQueryDone		    = false,
@@ -99,8 +100,8 @@ end
 --
 ---------------------------------------------------------------------------
 function Viewer:getCurrentTarget ()
-	local currentTarget = getTargetFromName(self.queryTargetName)
-	currentTarget = validateTarget(currentTarget)
+	local currentTarget = getTargetFromName(self.queryTargetName, self.queryShowClients)
+	currentTarget = validateTarget(currentTarget, self.queryShowClients)
 	return currentTarget
 end
 
@@ -132,7 +133,7 @@ end
 ---------------------------------------------------------------------------
 function Viewer:getCategoriesIfChanged ()
 	local categories = self:getCategoriesRaw ()
-	local bChanged = not table.cmp(categories, self.lastCategories)
+	local bChanged = not table.deepcompare(categories, self.lastCategories)
 	self.lastCategories = categories
 	return bChanged and categories or false
 end
@@ -167,8 +168,8 @@ end
 --
 ---------------------------------------------------------------------------
 function Viewer:getTargetsIfChanged ()
-	local targets = getTargetNameList ()
-	local bChanged = not table.cmp(targets, self.lastTargets)
+	local targets = getTargetNameList (self.queryShowClients)
+	local bChanged = not table.deepcompare(targets, self.lastTargets)
 	self.lastTargets = targets
 	return bChanged and targets or false
 end
@@ -183,7 +184,7 @@ end
 ---------------------------------------------------------------------------
 function Viewer:getHeadersIfChanged ()
 	local headers = self.httpColumns
-	local bChanged = not table.cmp(headers, self.lastHeaders)
+	local bChanged = not table.deepcompare(headers, self.lastHeaders)
 	self.lastHeaders = headers
 	return bChanged and headers or false
 end
@@ -198,7 +199,7 @@ end
 ---------------------------------------------------------------------------
 function Viewer:getRowsIfChanged ()
 	local rows = self.httpRows
-	local bChanged = not table.cmp(rows, self.lastRows)
+	local bChanged = not table.deepcompare(rows, self.lastRows)
 	self.lastRows = rows
 	return bChanged and rows or false
 end
@@ -211,17 +212,18 @@ end
 -- Browser has display request
 --
 ---------------------------------------------------------------------------
-function Viewer:setQuery ( counter, targetName, categoryName, optionsText, filterText )
+function Viewer:setQuery ( counter, targetName, categoryName, optionsText, filterText, showClients )
 	self:setUsed()
 
 	local restoredQueryOptionsText = false
 	local restoredQueryFilterText = false
+	local restoredQueryShowClients = false
 
 	-- Is this the first call from a new page?
 	if counter == 0 then
 		if #self.lastTargets == 0 then
 			-- Set initial settings
-			targetName = getTargetNameList ()[1]
+			targetName = getTargetNameList (self.queryShowClients)[1]
 			categoryName = self:getCategoriesRaw ()[1]
 		else
 			-- Restore last settings
@@ -233,9 +235,11 @@ function Viewer:setQuery ( counter, targetName, categoryName, optionsText, filte
 			categoryName = self.queryCategoryName
 			optionsText = self.queryOptionsText
 			filterText = self.queryFilterText
+			showClients = self.queryShowClients
 
 			restoredQueryOptionsText = optionsText
 			restoredQueryFilterText = filterText
+			restoredQueryShowClients = showClients
 		end
 	end
 
@@ -243,9 +247,10 @@ function Viewer:setQuery ( counter, targetName, categoryName, optionsText, filte
 	self.queryCategoryName = categoryName
 	self.queryOptionsText = optionsText
 	self.queryFilterText = filterText
+	self.queryShowClients = showClients
 
 	local targets = self:getTargetsIfChanged ()
-	local targetIndex = getTargetIndex( self:getCurrentTarget() )
+	local targetIndex = getTargetIndex( self:getCurrentTarget(), self.queryShowClients )
 
 	local categories = self:getCategoriesIfChanged ()
 	local categoryIndex = self:getCategoryIndex( self.queryCategoryName )
@@ -256,6 +261,7 @@ function Viewer:setQuery ( counter, targetName, categoryName, optionsText, filte
 
 	local status2 = tostring(self.queryTargetName)
 	local status1 = status2=="" and "" or "Performance stats for: "
+	local warning1 = tostring(self:getCurrentTarget().name):sub(1,6) ~= "client" and "" or "Warning: May affect client"
 
 	return	counter,
 			self.bQueryDone,
@@ -265,7 +271,8 @@ function Viewer:setQuery ( counter, targetName, categoryName, optionsText, filte
 			rows,
             restoredQueryOptionsText,
             restoredQueryFilterText,
-			status1, status2
+            restoredQueryShowClients,
+			status1, status2, warning1
 end
 
 
@@ -309,36 +316,62 @@ function Viewer:updateCache()
 	-- Process columns
 	local rowIndices = {}
 	local newColumns = {}
-	local prevSectionName = ""
-	local idx = 1
+
+	local prevSectionName = nil
+	local newSections = {}
+
+	local columnTint
+	local sectionIdx = 0
+	local sectionSubIdx = 0
+	local idx = 0
 	for k,columnName in pairs(columnList) do
+		idx = idx + 1
+		table.insert(rowIndices,idx)
+
 		local parts = split ( columnName, string.byte( '.' ) )
+		local sectionName = ""
 		if #parts == 2 then
-			local sectionName = parts[1]
+			sectionName = parts[1]
 			columnName = parts[2]
-			if sectionName ~= prevSectionName then
-				prevSectionName = sectionName
-				table.insert(rowIndices,false)
-				table.insert(newColumns,{name=" "..sectionName,size=columnSize})
+		end
+
+		if sectionName == prevSectionName then
+			-- Extend previous section
+			newSections[#newSections].span = tostring(newSections[#newSections].span + 1)
+			sectionSubIdx = sectionSubIdx + 1
+		else
+			-- New section
+			prevSectionName = sectionName
+			table.insert(newSections,{name=sectionName,span="1"})
+			sectionIdx = sectionIdx + 1
+			sectionSubIdx = 1
+			if sectionIdx % 2 == 1 then
+				columnTint = Color:new(128,128,134)
+			else
+				columnTint = Color:new(134,128,128)
 			end
 		end
-		table.insert(rowIndices,idx)
-		idx = idx + 1	
-		table.insert(newColumns,{name=columnName,size=columnSize})
+		local tintString = columnTint:Add( sectionSubIdx * 2 ):toString()
+		table.insert(newColumns,{name=columnName,size=columnSize,tint=tintString})
 	end
-	self.httpColumns = newColumns
+	self.httpColumns = {newSections,newColumns}
 
 	-- Process rows
+	local rowColors = { "#d8d8d8", "#d2d2d2", "#c0c4c0", "#b8bfb8" }
 	local newRows = {}
-	for _, row in ipairs(rowList) do
+	for irow, row in ipairs(rowList) do
 		local rowdata = {}
-		local style = "main"
+		local rowclass = "main"
+		local rowcolor = rowColors[ (irow % 2) + 1 ]
+		local rowblank = " | "
 		if #row > 0 then
 			if string.find( row[1], '.', 1, true ) ~= nil then
-				style = "sub"
+				rowclass = "sub"
+				rowcolor = rowColors[ (irow % 2) + 3 ]
+				rowblank = " + "
 			end
 		end
-		table.insert(rowdata,style)
+		table.insert(rowdata,{class=rowclass,color=rowcolor})
 		for i, idx in ipairs(rowIndices) do
 			if idx then
 				if bClearChange and newColumns[i].name == "change" then
@@ -347,7 +380,7 @@ function Viewer:updateCache()
 					table.insert(rowdata,row[idx])
 				end
 			else
-				table.insert(rowdata,style == "sub" and " + " or " | ")
+				table.insert(rowdata,rowblank)
 			end
 		end
 		table.insert(newRows,rowdata)
@@ -358,19 +391,71 @@ end
 
 ---------------------------------------------------------------------------
 --
--- table.cmp
+-- table.deepcompare
 --
 -- Test for table equality
 --
 ---------------------------------------------------------------------------
-function table.cmp(t1, t2)
-	if not t1 or not t2 or #t1 ~= #t2 then
-		return false
-	end
-	for k,v in pairs(t1) do
-		if v ~= t2[k] then
-			return false
-		end
-	end
-	return true
+function table.deepcompare(tab1,tab2)
+    if tab1 and tab2 then
+        if tab1 == tab2 then
+            return true
+        end
+        if type(tab1) == 'table' and type(tab2) == 'table' then
+            if #tab1 ~= #tab2 then
+                return false
+            end
+            for index, content in pairs(tab1) do
+                if not table.deepcompare(tab2[index],content) then
+                    return false
+                end
+            end
+            return true
+        end
+    end
+    return false
 end
+
+
+---------------------------------------------------------------------------
+--
+-- Color
+--
+-- Color manipulation (R,G,B) (0-255,0-255,0-255)
+--
+---------------------------------------------------------------------------
+Color = {
+	new = function(self, _x, _y, _z)
+		local newColor = { x = _x or 0, y = _y or 0, z = _z or 0 }
+		return setmetatable(newColor, { __index = Color })
+	end,
+
+	Copy = function(self)
+		return Color:new(self.x, self.y, self.z)
+	end,
+
+	AddV = function(self, V)
+		return Color:new(self.x + V.x, self.y + V.y, self.z + V.z)
+	end,
+
+	SubV = function(self, V)
+		return Color:new(self.x - V.x, self.y - V.y, self.z - V.z)
+	end,
+
+	Add = function(self, n)
+		return Color:new(self.x + n, self.y + n, self.z + n)
+	end,
+
+	Mul = function(self, n)
+		return Color:new(self.x * n, self.y * n, self.z * n)
+	end,
+
+	Div = function(self, n)
+		return Color:new(self.x / n, self.y / n, self.z / n)
+	end,
+
+	toString = function(self)
+		return string.format( "#%02x%02x%02x", self.x, self.y, self.z )
+	end,
+
+}
