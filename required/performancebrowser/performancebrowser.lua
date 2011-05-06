@@ -5,7 +5,7 @@
 --
 
 -- Browser update
-function setQuery ( counter, user, target, category, options, filter )
+function setQuery ( counter, user, target, category, options, filter, showClients )
 	local viewer = getViewer(user)
-	return viewer:setQuery ( counter, target, category, options, filter )
+	return viewer:setQuery ( counter, target, category, options, filter, showClients )
 end

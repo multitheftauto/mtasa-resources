@@ -57,11 +57,6 @@ function getPlayerTag ( player )
 	end
 end
 
-
-function isTarget ( player )
-	return targetList[getPlayerKey(player)] ~= nil
-end
-
 function addTarget ( player )
 	targetList[getPlayerKey(player)] = Target:create(player,getPlayerKey(player),getPlayerTag(player))
 end
@@ -81,47 +76,52 @@ function getTarget ( player )
 	return targetList[getPlayerKey(player)]
 end
 
-function getTargetFromName ( name )
+function getTargetFromName ( name, showClients )
 	for _,target in pairs(targetList) do
 		if target.name == name then
-			return target
+			if showClients == "true" or target.name == "server" then
+				return target
+			end
 		end
 	end
 	return nil
 end
 
-function getTargetNameList ()
+function getTargetNameList ( showClients )
 	local result = {}
 	for _,target in pairs(targetList) do
-		table.insert( result, target.name )
+		if showClients == "true" or target.name == "server" then
+			table.insert( result, target.name )
+		end
 	end
 	return result
 end
 
-function getTargetIndex ( t )
+function getTargetIndex ( t, showClients )
 	local idx = 1
 	for _,target in pairs(targetList) do
 		if target == t then
-			return idx
+			if showClients == "true" or target.name == "server" then
+				return idx
+			end
 		end
 		idx = idx + 1
 	end
 	return 1
 end
 
-function getTargetNameIndex ( name )
-	return getTargetIndex ( getTargetFromName ( name ) )
-end
-
-
-function validateTarget ( t )
+function validateTarget ( t, showClients )
 	for i,target in pairs(targetList) do
 		if target == t then
-			return t
+			if showClients == "true" or target.name == "server" then
+				return t
+			end
 		end
 	end
 	for i,target in pairs(targetList) do
-		return target
+		if showClients == "true" or target.name == "server" then
+			return target
+		end
 	end
 	return nil
 end

@@ -47,6 +47,10 @@ pre {text-indent: 30px}
 	font-size: large;
 	color: #FFC;
 }
+#warningLabel1 {
+	font-weight:bold;
+	color: #F88;
+}
 
 #contentarea {
 	padding-top: 7px;
@@ -60,8 +64,14 @@ pre {text-indent: 30px}
 	color:#000000; 
 }
 
+#headerSections {
+	background: #888888;
+	font-weight:bold;
+	color: #ffff7f;
+	text-align: center;
+}
 #headers {
-	background: #999999;
+	background: #aaaaaa;
 	font-weight:bold;
 	color: #EEEEEE;
 }
@@ -72,12 +82,11 @@ pre {text-indent: 30px}
 }
 
 .main {
-	background-color:#d8d8d8;
 }
 
 .sub {
+	color:#405030;
 	padding-left: 10px;
-	background-color:#c0c0c0;
 	font-size: small;
 }
 

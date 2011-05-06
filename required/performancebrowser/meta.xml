@@ -8,6 +8,8 @@
 	<script src="targetManager.lua" type="server"/>
 	<script src="performancebrowser_client.lua" type="client"/>
 
+    <html src="pad.gif" raw="true" />
+    <html src="loading.gif" raw="true" />
 	<html src="main.htm" default="true"/>
 	<html src="main.css" raw="true" />
 	<html src="main.js" raw="true" />
