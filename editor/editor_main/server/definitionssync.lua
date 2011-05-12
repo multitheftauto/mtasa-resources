@@ -117,27 +117,31 @@ function reloadEDFDefinitions(newEDF,noOutput)
 				edf.edfStartResource ( resource )
 			end
 		else
-			table.remove(newEDF.addedEDF, k)
+			if resourceName ~= "editor_main" then
+				table.remove(newEDF.addedEDF, k)
+			end
 		end
 	end
 	--unload defs
 	for k, resourceName in ipairs(newEDF.availEDF) do
-		local resource = getResourceFromName ( resourceName )
-		if resource then
-			local loaded = false
-			for k, loadedResource in ipairs(loadedDefs) do
-				if loadedResource == resource then
-					loaded = true
-					break
+		if resourceName ~= "editor_main" then
+			local resource = getResourceFromName ( resourceName )
+			if resource then
+				local loaded = false
+				for k, loadedResource in ipairs(loadedDefs) do
+					if loadedResource == resource then
+						loaded = true
+						break
+					end
 				end
+				if loaded == true then
+					outputDebugString ( "unloading "..resourceName.." def." )
+					-- stopResource ( getResourceFromName(resourceName) )
+					edf.edfStopResource ( resource )
+				end
+			else
+				table.remove(newEDF.availEDF, k)
 			end
-			if loaded == true then
-				outputDebugString ( "unloading "..resourceName.." def." )
-				-- stopResource ( getResourceFromName(resourceName) )
-				edf.edfStopResource ( resource )
-			end
-		else
-			table.remove(newEDF.availEDF, k)
 		end
 	end
 	allEDF = newEDF
