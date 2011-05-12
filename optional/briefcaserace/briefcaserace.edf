@@ -8,9 +8,9 @@
 		<marker size="3" type="cylinder" color="#9370dbaa" />
 	</element>
 	<element name="spawnpoint" friendlyname="Spawnpoint">
-		<object editorOnly="true" model="3092" posZ="1" />
 		<data name="position" type="coord3d" default="0,0,0" />
-		<data name="rotation" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="number" default="0" />
 		<data name="skin" type="skinID" default="0" />
+		<ped model="!skin!" position="!position!" rotZ="!rotation!" />
 	</element>
 </def>
