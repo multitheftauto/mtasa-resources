@@ -8,35 +8,46 @@
 *
 **************************************]]
 
-aCountries = {}
-
+local aCountries = {}
+local makeCor
 
 function getPlayerCountry ( player )
 	return getIpCountry ( getPlayerIP ( player ) )
 end
 function getIpCountry ( ip )
-	if ( get ( "*useip2c" ) == "false" ) then return false end
+	if not loadIPGroupsIsReady() then return false end
 	local ip_group = tonumber ( gettok ( ip, 1, 46 ) )
-	local ip_code = ( gettok ( ip, 1, 46 ) * 16777216 ) + ( gettok ( ip, 2, 46 ) * 65536 ) + ( gettok ( ip, 3, 46 ) * 256 ) + ( gettok ( ip, 4, 46 ) )
-	if ( #aCountries == 0 and not makeCor) then
-		--loadIPGroups ()
-		makeCor = coroutine.create(loadIPGroups)
-		coroutine.resume(makeCor)
-	end
+	local ip_code = ( gettok ( ip, 2, 46 ) * 65536 ) + ( gettok ( ip, 3, 46 ) * 256 ) + ( gettok ( ip, 4, 46 ) )
 	if ( not aCountries[ip_group] ) then
-		aCountries[ip_group] = {}
+		return false
 	end
 	for id, group in ipairs ( aCountries[ip_group] ) do
-		if ( ( group.rstart <= ip_code ) and ( ip_code <= group.rend ) ) then
-			return group.rcountry
+		local buffer = ByteBuffer:new( group )
+		local rstart = buffer:readInt24()
+		if ip_code >= rstart then
+			local rend = buffer:readInt24()
+			if ip_code <= rend then
+				local rcountry = buffer:readBytes( 2 )
+				return rcountry
+			end
 		end
 	end
 	return false
 end
 
+-- Returns false if aCountries is not ready
+function loadIPGroupsIsReady ()
+	if ( get ( "*useip2c" ) == "false" ) then return false end
+	if ( #aCountries == 0 and not makeCor) then
+    	makeCor = coroutine.create(loadIPGroupsWorker)
+    	coroutine.resume(makeCor)
+	end
+	return makeCor == nil
+end
+setTimer( loadIPGroupsIsReady, 1000, 1 )
 
 -- Load all IP groups from "conf/IpToCountryCompact.csv"
-function loadIPGroups ()
+function loadIPGroupsWorker ()
 	unrelPosReset()
 
 	local readFilename = "conf/IpToCountryCompact.csv";
@@ -51,7 +62,7 @@ function loadIPGroups ()
 	while true do
 		local endpos = string.find(buffer, "\n")
 
-		if ( getTickCount() > tick + 50 ) then
+		if makeCor and ( getTickCount() > tick + 50 ) then
 			-- Execution exceeded 50ms so pause and resume in 50ms
 			setTimer(function()
 				local status = coroutine.status(makeCor)
@@ -88,23 +99,68 @@ function loadIPGroups ()
 				rstart = unrelRange ( rstart )
 				rend = unrelRange ( rend )
 
+				-- Top byte is group
 				local group = math.floor( rstart / 0x1000000 )
+
+				-- Remove top byte from ranges
+				rstart = rstart - group * 0x1000000
+				rend = rend - group * 0x1000000
 
 				if not aCountries[group] then
 					aCountries[group] = {}
 				end
 				local count = #aCountries[group] + 1
-				aCountries[group][count] = {}
-				aCountries[group][count].rstart = rstart
-				aCountries[group][count].rend = rend
-				aCountries[group][count].rcountry = rcountry
+
+				-- Add country/IP range to aCountries
+				local buffer = ByteBuffer:new()
+				buffer:writeInt24( rstart )
+				buffer:writeInt24( rend )
+				buffer:writeBytes( rcountry, 2 )
+				aCountries[group][count] = buffer.data
 			end
 		end
 	end
 	fileClose(hReadFile)
 	makeCor = nil
+	collectgarbage("collect")
 	return true
 end
+
+-- For squeezing data together
+ByteBuffer = {
+	new = function(self, indata)
+		local newItem = { data = indata or "", readPos = 1 }
+		return setmetatable(newItem, { __index = ByteBuffer })
+	end,
+
+	Copy = function(self)
+		return ByteBuffer:new(self.data)
+	end,
+
+	-- Write
+	writeInt24 = function(self,value)
+		local b0 = math.floor(value / 1) % 256
+		local b1 = math.floor(value / 256) % 256
+		local b2 = math.floor(value / 65536) % 256
+		self.data = self.data .. string.char(b0,b1,b2)
+	end,
+
+	writeBytes = function(self, chars, count)
+		self.data = self.data .. string.sub(chars,1,count)
+	end,
+
+	-- Read
+	readInt24 = function(self,value)
+		local b0,b1,b2 = string.byte(self.data, self.readPos, self.readPos+2)
+		self.readPos = self.readPos + 3
+		return b0 + b1 * 256 + b2 * 65536
+	end,
+
+	readBytes = function(self, count)
+		self.readPos = self.readPos + count
+		return string.sub(self.data, self.readPos - count, self.readPos - 1)
+	end,
+}
 
 
 
@@ -160,7 +216,7 @@ if makeAndTestCompactCsv then
 				return
 			end
 			makeCor = coroutine.create ( makeCompactCsvWorker )
-			coroutine.resume ( makeCor )		
+			coroutine.resume ( makeCor )
 		end
 	)
 
@@ -186,10 +242,11 @@ if makeAndTestCompactCsv then
 
 		local tick = getTickCount()
 
+		local cur = {}
 		local buffer = ""
 		while true do
 
-			if ( getTickCount() > tick + 50 ) then
+			if ( makeCor and getTickCount() > tick + 50 ) then
 				-- Execution exceeded 50ms so pause and resume in 50ms
 				setTimer(function()
 					local status = coroutine.status(makeCor)
@@ -223,32 +280,57 @@ if makeAndTestCompactCsv then
 					-- Parse out required fields
 					local _,_,rstart,rend,rcountry = string.find(line, '"(%w+)","(%w+)","%w+","%w+","(%w+)"' )
 					if rcountry then
-						-- Absolute to relative numbers
-						rstart = relRange( rstart )
-						rend = relRange( rend )
-						-- Output line
-						fileWrite( hWriteFile, rstart .. "," .. rend .. "," .. rcountry .. "\n" )
+
+						rstart = tonumber(rstart)
+						rend = tonumber(rend)
+
+						--
+						-- Save memory by joining ranges here
+						--
+						local group = math.floor( rstart / 0x1000000 )
+						if group == cur.group and rstart == cur.rend + 1 and rcountry == cur.rcountry then
+							-- We can extend previous range
+							cur.rend = rend
+						else
+							-- Otherwise flush previous range
+							writeCountryRange(hWriteFile, cur.rstart, cur.rend, cur.rcountry)
+							-- and start a new one
+							cur.group = group
+							cur.rstart = rstart
+							cur.rend = rend
+							cur.rcountry = rcountry
+						end
 					end
 				end
 			end
 		end
-
+		-- Flush last range
+		writeCountryRange(hWriteFile, cur.rstart, cur.rend, cur.rcountry)
 		fileClose(hWriteFile)
 		fileClose(hReadFile)
 		outputHere ( "makeCompactCsv done" )
 	end
 
+	function writeCountryRange(hWriteFile, rstart, rend, rcountry)
+		if not rstart then return end
+		-- Absolute to relative numbers
+		rstart = relRange( rstart )
+		rend = relRange( rend )
+		-- Output line
+		fileWrite( hWriteFile, rstart .. "," .. rend .. "," .. rcountry .. "\n" )
+	end
 
-	function ipTestDo( ip )
+	function ipTestDo( c, ip )
 		local country = getIpCountry ( ip )
-		outputHere ( "ip " .. ip .. " is in " .. tostring(country) )
+		outputHere ( "ip " .. ip .. " is in " .. tostring(country) .. " (Expected " .. c .. ")" )
 	end
 
 	function ipTest()
-		ipTestDo ( "46.1.2.3" )
-		ipTestDo ( "88.1.2.3" )
-		ipTestDo ( "46.208.74.201" )
-		ipTestDo ( "102.1.2.3" )
+		ipTestDo ( "DE", "46.1.2.3" )
+		ipTestDo ( "ES", "88.1.2.3" )
+		ipTestDo ( "FR", "109.1.2.3" )
+		ipTestDo ( "AR", "190.1.2.3" )
+		ipTestDo ( "AU", "203.1.2.3" )
 	end
 
 	addCommandHandler ( "iptest", ipTest )
