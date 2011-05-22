@@ -44,7 +44,7 @@ function resourceListUpdate () {
 							resname = resourceTable[i].resource.name;
 						
 
-						var onclick = "onclick=\"setCurrentResource('" + resourceTable[i].resource.name + "')";
+						var onclick = "onclick=\"setCurrentResource('" + resourceTable[i].resource.name + "')\"";
 						var classname="inactive";
 						if ( resourceTable[i].resource.name == currentResourceName && currentPageName == "" ) 
 							classname="active";
@@ -55,7 +55,7 @@ function resourceListUpdate () {
 						}
 						
 						htmlOut += "<div id='resource-" + resourceTable[i].resource.name + "' class='" + classname + 
-						"' title='" + resourceTable[i].description + "' " + onclick + " \">" + resname + "</div>\n"
+						"' title='" + resourceTable[i].description + "' " + onclick + " >" + resname + "</div>\n"
 						
 						if ( resourceTable[i].pages != false ) {
 							var pages = resourceTable[i].pages.split(",");
@@ -70,10 +70,10 @@ function resourceListUpdate () {
 								if ( currentPageName != "" && pagename == currentPageName )
 									classname = "active_subpage";
 									
-								var onclick = "onclick=\"setCurrentPage('" + resourceTable[i].resource.name + "','" + pagename + "')";
+								var onclick = "onclick=\"setCurrentPage('" + resourceTable[i].resource.name + "','" + pagename + "')\"";
 								
 								htmlOut += "<div id='resource-" + resourceTable[i].resource.name + "-" + pagename + "' class='" + classname + 
-								"' " + onclick + " \">" + name + "</div>\n"
+								"' " + onclick + " >" + name + "</div>\n"
 							}
 						}
 					}
