@@ -14,17 +14,30 @@ addEventHandler('onResourceStart', g_ResRoot,
 		-- outputDebugString("delete mapratings "..tostring(executeSQLQuery("DROP TABLE mapratings")))
 		-- Add table if required
 		executeSQLQuery("CREATE TABLE IF NOT EXISTS mapratings (mapname TEXT, playername TEXT, rating INTEGER)")
-		-- Remove any duplicate mapname entries
-		-- executeSQLQuery("DELETE FROM mapratings WHERE rowid in "
-							-- .. " (SELECT A.rowid"
-							-- .. " FROM mapratings A, mapratings B"
-							-- .. " WHERE A.rowid > B.rowid AND A.mapname = B.mapname)")
-		-- Add unique index to speed things up (Also means INSERT will fail if the unique index (mapname) already exists)
-		-- executeSQLQuery("CREATE UNIQUE INDEX IF NOT EXISTS IDX_MAPRATINGS_MAPNAME on mapratings(mapname)")
+
+		-- Create unique index to speed up WHERE when using [mapname] or [mapname+playername]
+		if not executeSQLQuery("CREATE UNIQUE INDEX IF NOT EXISTS IDX_MAPRATINGS_MAPNAME_PLAYERNAME on mapRatings(mapname, playername)") then
+			-- If create unique index has failed, remove duplicates before retrying
+
+			-- Create a temp non-unique index to speed up deletion of duplicates
+			executeSQLQuery("CREATE INDEX IF NOT EXISTS IDX_MAPRATINGS_MAPNAME_PLAYERNAME_temp on mapRatings(mapname, playername)")
+			-- Delete duplicates
+			executeSQLQuery("DELETE FROM mapRatings WHERE rowid in "
+								.. " (SELECT A.rowid"
+								.. " FROM mapRatings A, mapRatings B"
+								.. " WHERE A.rowid > B.rowid AND A.mapname = B.mapname AND A.playername = B.playername)")
+			-- Remove temp index
+			executeSQLQuery("DROP INDEX IDX_MAPRATINGS_MAPNAME_PLAYERNAME_temp")
+			-- Now this should work
+			executeSQLQuery("CREATE UNIQUE INDEX IF NOT EXISTS IDX_MAPRATINGS_MAPNAME_PLAYERNAME on mapRatings(mapname, playername)")
+		end
+
+		-- Create non-unique index to speed up WHERE when using [playername]
+		executeSQLQuery("CREATE INDEX IF NOT EXISTS IDX_MAPRATINGS_PLAYERNAME on mapRatings(playername)")
 		
 		-- Perform upgrade from an old version if necessary
 		updateMapNames()
-		
+
 		g_MapResName = getResourceName(exports.mapmanager:getRunningGamemodeMap())
 	end
 )
@@ -137,19 +150,24 @@ function updateMapNames()
 		end
 	end
 	if not needUpdate then return end
-	outputDebugString("mapratings: Need Mapname Update")
+	outputChatBox( "Please wait while the map ratings are assimulated" )
 	local maps = exports.mapmanager:getMaps()
 	local infoMaps = {}
 	for _,map in ipairs(exports.mapmanager:getMaps()) do
 		infoMaps[getResourceInfo(map, "name") or getResourceName(map)] = getResourceName(map)
 	end
-	for _,row in ipairs(sql) do
+	local reportTime = getTickCount()
+	for i,row in ipairs(sql) do
+		if getTickCount() - reportTime > 5000 then
+			reportTime = getTickCount()
+			outputChatBox( string.format("%2.2f%% done", i * 100 / #sql ) )
+		end
 		if infoMaps[row.mapname] then
 			executeSQLQuery("UPDATE mapratings SET mapname=? WHERE mapname=?", infoMaps[row.mapname], row.mapname)
-			outputDebugString("mapratings: changed "..tostring(row.mapname).." to "..tostring(infoMaps[row.mapname]))
+			--outputDebugString("mapratings: changed "..tostring(row.mapname).." to "..tostring(infoMaps[row.mapname]))
 		elseif not getResourceFromName(row.mapname) then
 			executeSQLQuery("DELETE FROM mapratings WHERE mapname=?", row.mapname)
-			outputDebugString("mapratings: deleted "..tostring(row.mapname))
+			--outputDebugString("mapratings: deleted "..tostring(row.mapname))
 		end
 	end
 end
