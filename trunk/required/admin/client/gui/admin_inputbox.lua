@@ -16,7 +16,7 @@ function aInputBox ( title, message, default, action )
 		aInputForm		= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 110, "", false )
 				  	   guiWindowSetSizable ( aInputForm, false )
 		aInputLabel		= guiCreateLabel ( 20, 24, 270, 15, "", false, aInputForm )
-					   guiLabelSetHorizontalAlign ( aInputLabel, 2 )
+					   guiLabelSetHorizontalAlign ( aInputLabel, "center" )
 		aInputValue		= guiCreateEdit ( 35, 47, 230, 24, "", false, aInputForm )
 		aInputOk		= guiCreateButton ( 90, 80, 55, 17, "Ok", false, aInputForm )
 		aInputCancel		= guiCreateButton ( 150, 80, 55, 17, "Cancel", false, aInputForm )
@@ -112,7 +112,7 @@ function aBanInputBox ( player )
 		y = 24
 
 		aBanInputLabel			= guiCreateLabel ( 20, y, 270, 15, "", false, aBanInputForm )
-		guiLabelSetHorizontalAlign ( aBanInputLabel, 2 )
+		guiLabelSetHorizontalAlign ( aBanInputLabel, "center" )
 		y = y + 23
 		
 		aBanInputValue			= guiCreateEdit ( 35, y, 230, 24, "", false, aBanInputForm )
@@ -276,7 +276,7 @@ function aMuteInputBox ( player )
 		y = 24
 
 		aMuteInputLabel			= guiCreateLabel ( 20, y, 270, 15, "", false, aMuteInputForm )
-		guiLabelSetHorizontalAlign ( aMuteInputLabel, 2 )
+		guiLabelSetHorizontalAlign ( aMuteInputLabel, "center" )
 		y = y + 23
 
 		aMuteInputValue			= guiCreateEdit ( 35, y, 230, 24, "", false, aMuteInputForm )

@@ -37,7 +37,7 @@ function aViewMessages ( player )
 end
 
 function aViewMessagesClose ( destroy )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aMessage ) ) ) then
+	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceMessage ) ) ) then
 		if ( aMessagesForm ) then
 			removeEventHandler ( "onClientGUIClick", aMessagesForm, aClientMessagesClick )
 			removeEventHandler ( "onClientGUIDoubleClick", aMessagesForm, aClientMessagesDoubleClick )
@@ -45,7 +45,7 @@ function aViewMessagesClose ( destroy )
 			aMessagesForm = nil
 		end
 	else
-		guiSetVisible ( aMessagesForm, false )
+		if aMessagesForm then guiSetVisible ( aMessagesForm, false ) end
 	end
 end
 

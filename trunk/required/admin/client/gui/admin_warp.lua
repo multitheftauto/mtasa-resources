@@ -34,7 +34,7 @@ function aPlayerWarp ( player )
 end
 
 function aPlayerWarpClose ( destroy )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceWarp ) ) ) then
+	if ( ( destroy ) or ( aPerformanceWarp and guiCheckBoxGetSelected ( aPerformanceWarp ) ) ) then
 		if ( aWarpForm ) then
 			removeEventHandler ( "onClientGUIDoubleClick", aWarpForm, aClientWarpDoubleClick )
 			removeEventHandler ( "onClientGUIClick", aWarpForm, aClientWarpClick )

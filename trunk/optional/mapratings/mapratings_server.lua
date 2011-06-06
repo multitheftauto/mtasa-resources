@@ -38,7 +38,10 @@ addEventHandler('onResourceStart', g_ResRoot,
 		-- Perform upgrade from an old version if necessary
 		updateMapNames()
 
-		g_MapResName = getResourceName(exports.mapmanager:getRunningGamemodeMap())
+		local currentGamemodeMap = exports.mapmanager:getRunningGamemodeMap()
+		if currentGamemodeMap then
+			g_MapResName = getResourceName(currentGamemodeMap)
+		end
 	end
 )
 

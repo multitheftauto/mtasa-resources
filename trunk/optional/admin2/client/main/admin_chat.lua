@@ -126,7 +126,7 @@ function aChatTab.onClientResourceStop ()
 end
 
 function aChatTab.onRefresh ()
-	if ( guiGetSelectedTab ( aTabPanel ) == aChatTab.Tab ) then
+	if ( guiGetSelectedTab ( getElementParent( aChatTab.Tab ) ) == aChatTab.Tab ) then
 		if ( getTickCount() >= aChatTab.LastSync ) then
 			triggerServerEvent ( "aSync", getLocalPlayer(), "admins" )
 			aChatTab.LastSync = getTickCount() + 15000

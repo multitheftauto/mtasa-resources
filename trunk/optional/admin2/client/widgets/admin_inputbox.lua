@@ -16,7 +16,7 @@ function aInputBox ( title, message, default, action )
 		aInputForm		= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 110, "", false )
 				  	   guiWindowSetSizable ( aInputForm, false )
 		aInputLabel		= guiCreateLabel ( 20, 24, 270, 15, "", false, aInputForm )
-					   guiLabelSetHorizontalAlign ( aInputLabel, 2 )
+					   guiLabelSetHorizontalAlign ( aInputLabel, "center" )
 		aInputValue		= guiCreateEdit ( 35, 47, 230, 24, "", false, aInputForm )
 		aInputOk		= guiCreateButton ( 90, 80, 55, 17, "k", false, aInputForm )
 		aInputCancel		= guiCreateButton ( 150, 80, 55, 17, "Cancel", false, aInputForm )
@@ -33,14 +33,14 @@ function aInputBox ( title, message, default, action )
 	guiSetText ( aInputLabel, message )
 	guiSetText ( aInputValue, default )
 	guiSetVisible ( aInputForm, true )
-	guiSetVisible ( aMessageForm, false )
+	if aMessageForm then guiSetVisible ( aMessageForm, false ) end
 	guiBringToFront ( aInputForm )
 	aInputAction = action
 end
 
 function aInputBoxClose ( destroy )
 	guiSetInputEnabled ( false )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
+	if ( ( destroy ) or ( aPerformanceInput and guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
 		if ( aInputForm ) then
 			removeEventHandler ( "onClientGUIClick", aInputForm, aInputBoxClick )
 			removeEventHandler ( "onClientGUIAccepted", aInputValue, aInputBoxAccepted )

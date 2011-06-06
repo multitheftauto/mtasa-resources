@@ -60,7 +60,7 @@ function aManageACL ()
 end
 
 function aACLClose ( destroy )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceACL ) ) ) then
+	if ( ( destroy ) or ( aPerformanceACL and guiCheckBoxGetSelected ( aPerformanceACL ) ) ) then
 		if ( aAclForm ) then
 			removeEventHandler ( "onClientGUIClick", aAclForm, aClientACLClick )
 			removeEventHandler ( "onClientGUIDoubleClick", aAclForm, aClientACLDoubleClick )

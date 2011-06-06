@@ -20,7 +20,7 @@ function aMessageBox ( type, message, action )
 		aMessageError		= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\error.png", false, aMessageForm )
 		aMessageInfo		= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\info.png", false, aMessageForm )
 		aMessageLabel		= guiCreateLabel ( 100, 32, 180, 16, "", false, aMessageForm )
-					  guiLabelSetHorizontalAlign ( aMessageLabel, 2 )
+					  guiLabelSetHorizontalAlign ( aMessageLabel, "center" )
 		aMessageYes		= guiCreateButton ( 120, 70, 55, 17, "Yes", false, aMessageForm )
 		aMessageNo		= guiCreateButton ( 180, 70, 55, 17, "No", false, aMessageForm )
 		aMessageOk		= guiCreateButton ( 160, 70, 55, 17, "Ok", false, aMessageForm )
@@ -79,7 +79,7 @@ function aMessageBoxClose ( destroy )
 			aMessageForm = nil
 		end
 	else
-		guiSetVisible ( aMessageForm, false )
+        if aMessageForm then guiSetVisible ( aMessageForm, false ) end
 	end
 end
 
@@ -121,9 +121,9 @@ function aMessageBoxClick ( button )
 end
 
 function aHideFloaters()
-	guiSetVisible ( aMessagesForm, false )	-- admin messages
-	guiSetVisible ( aMessageForm, false )	-- message box
-	guiSetVisible ( aInputForm, false )
-	guiSetVisible ( aBanInputForm, false )
-	guiSetVisible ( aMuteInputForm, false )
+	if aMessagesForm then guiSetVisible ( aMessagesForm, false ) end	-- admin messages
+	if aMessageForm then guiSetVisible ( aMessageForm, false ) end	-- message box
+	if aInputForm then guiSetVisible ( aInputForm, false ) end
+	if aBanInputForm then guiSetVisible ( aBanInputForm, false ) end
+	if aMuteInputForm then guiSetVisible ( aMuteInputForm, false ) end
 end

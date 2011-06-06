@@ -20,7 +20,7 @@ function aPlayerSkin ( player )
 		local x, y = guiGetScreenSize()
 		aSkinForm		= guiCreateWindow ( x / 2 - 140, y / 2 - 125, 280, 250, "Player Skin Select", false )
 		aSkinLabel		= guiCreateLabel ( 0.03, 0.09, 0.94, 0.07, "Select a skin from the list or enter the id", true, aSkinForm )
-					  guiLabelSetHorizontalAlign ( aSkinLabel, 2 )
+					  guiLabelSetHorizontalAlign ( aSkinLabel, "center" )
 					  guiLabelSetColor ( aSkinLabel, 255, 0, 0 )
 		aSkinGroups		= guiCreateCheckBox ( 0.03, 0.90, 0.70, 0.09, "Sort by groups", false, true, aSkinForm )
 					   if ( aGetSetting ( "skinsGroup" ) ) then guiCheckBoxSetSelected ( aSkinGroups, true ) end
