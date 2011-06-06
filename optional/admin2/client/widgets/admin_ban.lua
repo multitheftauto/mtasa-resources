@@ -34,7 +34,7 @@ function aBanDetails ( ip )
 		guiSetText ( aBanBanner, "Bant by: "..iif ( aBans["IP"][ip]["banner"], aBans["IP"][ip]["banner"], "Unknown" ) )
 		if ( aBanReason ) then destroyElement ( aBanReason ) end
 		aBanReason = guiCreateLabel ( 0.03, 0.60, 0.80, 0.30, "Reason: "..iif ( aBans["IP"][ip]["reason"], aBans["IP"][ip]["reason"], "Unknown" ), true, aBanForm )
-		guiLabelSetHorizontalAlign ( aBanReason, 4 )
+		guiLabelSetHorizontalAlign ( aBanReason, "left", true )
 		guiSetVisible ( aBanForm, true )
 		guiBringToFront ( aBanForm )
 	elseif ( aBans["Serial"][ip] ) then
@@ -45,7 +45,7 @@ function aBanDetails ( ip )
 		guiSetText ( aBanBanner, "Bant by: "..iif ( aBans["Serial"][ip]["banner"], aBans["Serial"][ip]["banner"], "Unknown" ) )
 		if ( aBanReason ) then destroyElement ( aBanReason ) end
 		aBanReason = guiCreateLabel ( 0.03, 0.60, 0.80, 0.30, "Reason: "..iif ( aBans["Serial"][ip]["reason"], aBans["Serial"][ip]["reason"], "Unknown" ), true, aBanForm )
-		guiLabelSetHorizontalAlign ( aBanReason, 4 )
+		guiLabelSetHorizontalAlign ( aBanReason, "left", true )
 		guiSetVisible ( aBanForm, true )
 		guiBringToFront ( aBanForm )
 	end

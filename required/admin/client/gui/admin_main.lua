@@ -30,7 +30,6 @@ function aAdminMenu ()
 		aTab1 = {}	
 		aTab1.Tab			= guiCreateTab ( "Players", aTabPanel, "players" )
 		aTab1.Messages		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "0/0 unread messages", true, aTab1.Tab )
-						  guiSetAlpha ( aPlayerAdvanced, 0.7 )
 		aTab1.PlayerListSearch 	= guiCreateEdit ( 0.03, 0.05, 0.16, 0.04, "", true, aTab1.Tab )
 						  guiCreateStaticImage ( 0.19, 0.05, 0.035, 0.04, "client\\images\\search.png", true, aTab1.Tab )
 		aTab1.HideColorCodes= guiCreateCheckBox ( 0.037, 0.94, 0.20, 0.04, "Hide color codes", true, true, aTab1.Tab )
@@ -278,7 +277,7 @@ function aAdminMenu ()
 		if ( aGetSetting ( "outputPlayer" ) ) then guiCheckBoxSetSelected ( aTab6.OutputPlayer, true ) end
 		if ( aGetSetting ( "adminChatOutput" ) ) then guiCheckBoxSetSelected ( aTab6.AdminChatOutput, true ) end
 		if ( aGetSetting ( "adminChatSound" ) ) then guiCheckBoxSetSelected ( aTab5.AdminChatSound, true ) end
-		if ( tonumber ( aGetSetting ( "adminChatLines" ) ) ) then guiSetText ( aTab6.AdminChatLines, aGetSetting ( "adminChatLines" ) ) end
+		--if ( tonumber ( aGetSetting ( "adminChatLines" ) ) ) then guiSetText ( aTab6.AdminChatLines, aGetSetting ( "adminChatLines" ) ) end
 		if ( ( tonumber ( aGetSetting ( "refreshDelay" ) ) ) and ( tonumber ( aGetSetting ( "refreshDelay" ) ) >= 50 ) ) then guiSetText ( aTab6.RefreshDelay, aGetSetting ( "refreshDelay" ) ) end
 
 		addEventHandler ( "aClientLog", _root, aClientLog )
@@ -370,7 +369,7 @@ function aMainSaveSettings ()
 	aSetSetting ( "outputPlayer", guiCheckBoxGetSelected ( aTab6.OutputPlayer ) )
 	aSetSetting ( "adminChatOutput", guiCheckBoxGetSelected ( aTab6.AdminChatOutput ) )
 	aSetSetting ( "adminChatSound", guiCheckBoxGetSelected ( aTab5.AdminChatSound ) )
-	aSetSetting ( "adminChatLines", guiGetText ( aTab6.AdminChatLines ) )
+	--aSetSetting ( "adminChatLines", guiGetText ( aTab6.AdminChatLines ) )
 	aSetSetting ( "refreshDelay", guiGetText ( aTab6.RefreshDelay ) )
 	aSetSetting ( "currentWeapon", aCurrentWeapon )
 	aSetSetting ( "currentAmmo", aCurrentAmmo )
@@ -388,7 +387,7 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Name, "Name: "..aPlayers[player]["name"] )
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unmute", "Mute" ) )
 			guiSetText ( aTab1.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
-			guiSetText ( aTab1.Username, "Community Username: "..( aPlayers[player]["username"] or "" ) )
+			--guiSetText ( aTab1.Username, "Community Username: "..( aPlayers[player]["username"] or "" ) )
 			guiSetText ( aTab1.Version, "Version: "..( aPlayers[player]["version"] or "" ) )
 			guiSetText ( aTab1.Accountname, "Account Name: "..( aPlayers[player]["accountname"] or "" ) )
 			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
@@ -875,7 +874,7 @@ function aClientClick ( button )
 						if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then outputConsole ( "Name: "..aPlayers[player]["name"]..", IP: "..aPlayers[player]["IP"]..", Serial: "..aPlayers[player]["serial"]..", Community Username: "..aPlayers[player]["username"]..", Account Name: "..aPlayers[player]["accountname"] ) end
 						guiSetText ( aTab1.IP, "IP: "..aPlayers[player]["IP"] )
 						guiSetText ( aTab1.Serial, "Serial: "..aPlayers[player]["serial"] )
-						guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
+						--guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
 						guiSetText ( aTab1.Accountname, "Account Name: "..aPlayers[player]["accountname"] )
 						guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
 						if ( aPlayers[player]["country"] ) then
@@ -890,7 +889,7 @@ function aClientClick ( button )
 					guiSetText ( aTab1.Name, "Name: N/A" )
 					guiSetText ( aTab1.IP, "IP: N/A" )
 					guiSetText ( aTab1.Serial, "Serial: N/A" )
-					guiSetText ( aTab1.Username, "Community Username: N/A" )
+					--guiSetText ( aTab1.Username, "Community Username: N/A" )
 					guiSetText ( aTab1.Version, "Version: N/A" )
 					guiSetText ( aTab1.Accountname, "Account Name: N/A" )
 					guiSetText ( aTab1.Groups, "Groups: N/A" )
@@ -912,7 +911,7 @@ function aClientClick ( button )
 					guiSetText ( aTab1.PositionY, "Y: 0" )
 					guiSetText ( aTab1.PositionZ, "Z: 0" )
 					guiSetText ( aTab1.Vehicle, "Vehicle: N/A" )
-					guiSetText ( aVehicleHealth, "Vehicle Health: 0%" )
+					guiSetText ( aTab1.VehicleHealth, "Vehicle Health: 0%" )
 					guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
 
 				end

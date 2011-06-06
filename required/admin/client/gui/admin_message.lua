@@ -43,14 +43,14 @@ function aViewMessage ( id )
 end
 
 function aViewMessageClose ( destroy )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aMessage ) ) ) then
+	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceMessage ) ) ) then
 		if ( aViewMessageForm ) then
 			removeEventHandler ( "onClientGUIClick", aViewMessageForm, aClientMessageClick )
 			destroyElement ( aViewMessageForm )
 			aViewMessageForm = nil
 		end
 	else
-		guiSetVisible ( aViewMessageForm, false )
+		if aViewMessageForm then guiSetVisible ( aViewMessageForm, false ) end
 	end
 end
 

@@ -1283,22 +1283,22 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 		while #aReports > g_Prefs.maxmsgs do
 			table.remove( aReports, 1 )
 		end
-		return
 	end
-	if checkClient( true, source, 'aMessage', action ) then return end
-	if ( action == "get" ) then
-		triggerClientEvent ( source, "aMessage", source, "get", aReports )
-	elseif ( action == "read" ) then
-		if ( aReports[data] ) then
-			aReports[data].read = true
+	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
+		if ( action == "get" ) then
+			triggerClientEvent ( source, "aMessage", source, "get", aReports )
+		elseif ( action == "read" ) then
+			if ( aReports[data] ) then
+				aReports[data].read = true
+			end
+		elseif ( action == "delete" ) then
+			if ( aReports[data] ) then
+				table.remove ( aReports, data )
+			end
+			triggerClientEvent ( source, "aMessage", source, "get", aReports )
+		else
+			action = nil
 		end
-	elseif ( action == "delete" ) then
-		if ( aReports[data] ) then
-			table.remove ( aReports, data )
-		end
-		triggerClientEvent ( source, "aMessage", source, "get", aReports )
-	else
-		action = nil
 	end
 	for id, p in ipairs ( getElementsByType ( "player" ) ) do
 		if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( "aSync", p, "messages" ) end

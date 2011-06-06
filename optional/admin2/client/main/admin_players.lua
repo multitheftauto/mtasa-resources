@@ -22,7 +22,6 @@ function aPlayersTab.Create ( tab )
 	aPlayersTab.Tab = tab
 
 	aPlayersTab.Messages		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "0/0 unread messages", true, aPlayersTab.Tab )
-					  	  guiSetAlpha ( aPlayerAdvanced, 0.7 )
 	aPlayersTab.PlayerListSearch 	= guiCreateEdit ( 0.01, 0.02, 0.20, 0.04, "", true, aPlayersTab.Tab )
 					  	  guiCreateInnerImage ( "client\\images\\search.png", aPlayersTab.PlayerListSearch )
 	aPlayersTab.PlayerList		= guiCreateGridList ( 0.01, 0.07, 0.20, 0.91, true, aPlayersTab.Tab )
@@ -229,7 +228,7 @@ function aPlayersTab.onClientClick ( button )
 				guiSetText ( aPlayersTab.PositionY, "Y: 0" )
 				guiSetText ( aPlayersTab.PositionZ, "Z: 0" )
 				guiSetText ( aPlayersTab.Vehicle, "Vehicle: N/A" )
-				guiSetText ( aVehicleHealth, "Vehicle Health: 0%" )
+				guiSetText ( aPlayersTab.VehicleHealth, "Vehicle Health: 0%" )
 				guiStaticImageLoadImage ( aPlayersTab.Flag, "client\\images\\empty.png" )
 			end
 		end
