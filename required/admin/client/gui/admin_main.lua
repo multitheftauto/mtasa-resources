@@ -309,6 +309,11 @@ function aAdminMenu ()
 		triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
 		triggerEvent ( "onAdminInitialize" )
 		showCursor ( true )
+
+		if getVersion().sortable and getVersion().sortable < "1.0.4-9.02436" then
+			guiSetText ( aAdminForm, "Warning - Admin Panel not compatible with server version" )
+			guiLabelSetHorizontalAlign ( guiCreateLabel ( 0.30, 0.11, 0.4, 0.04, "Upgrade server or downgrade Admin Panel", true, aAdminForm ), "center" )
+		end
 	end
 	guiSetVisible ( aAdminForm, true )
 	showCursor ( true )
