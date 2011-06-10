@@ -252,8 +252,6 @@ addEventHandler("onClientResourceStart", thisResourceRoot,
 		bindKey("tab","down","scoreboard","1")
 		bindKey("tab","up","scoreboard","0")
 		
-		addCommandHandler("scoreboard", toggleScoreboard)
-		
 		setTimer(refreshScoreboard, updateInterval, 0)
 		updateScoreboard()
 		

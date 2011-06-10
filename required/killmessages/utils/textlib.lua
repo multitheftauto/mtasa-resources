@@ -123,7 +123,7 @@ function dxText:destroy()
 end
 
 function dxText:extent()
-	local extent = dxGetTextWidth ( self.strText, self,fScale, self.strFont )
+	local extent = dxGetTextWidth ( self.strText, self.fScale, self.strFont )
 	if self.strType == "stroke" or self.strType == "border" then
 		extent = extent + self.tAttributes[1]
 	end
@@ -131,7 +131,7 @@ function dxText:extent()
 end
 
 function dxText:height()
-	local height = dxGetFontHeight ( self,fScale, self.strFont )
+	local height = dxGetFontHeight ( self.fScale, self.strFont )
 	if self.strType == "stroke" or self.strType == "border" then
 		height = height + self.tAttributes[1]
 	end
