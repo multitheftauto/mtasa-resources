@@ -167,14 +167,14 @@ function refreshElementIcons()
 			local posX = ((k)*guiConfig.iconSize) + menuButtonsOffset
 			if not iconDir then --if edf never passed an icon
 				--create a generic one
-				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false,false ) --, getResourceFromName(key)) 
+				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false) --, getResourceFromName(key)) 
 			else
 				--otherwise create edf's icon
-				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, ":"..resource.."/"..iconDir, false,false )
+				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, ":"..resource.."/"..iconDir, false)
 			end
 			if not theIcon then
 				--if edf's icon was not made successfully, then create a generic one.
-				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false,false ) 
+				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false) 
 			end
 			addEventHandler ( "onClientGUIMouseDown", theIcon, buttonClicked, false )
 			
