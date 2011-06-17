@@ -132,7 +132,9 @@ function toggleSettingsGUI(bool)
 			end
 		end
 	end
-	guiSetVisible ( mapsettings.applyGamemodeSettings, bool)
+	if mapsettings.applyGamemodeSettings then
+		guiSetVisible ( mapsettings.applyGamemodeSettings, bool)
+	end
 	guiSetVisible ( mapsettings.description,bool )
 	guiSetVisible ( mapsettings.value,bool)
 	guiSetVisible ( mapsettings.required, bool)

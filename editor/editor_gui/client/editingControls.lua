@@ -149,7 +149,9 @@ eC.number = {
 	},
 	constructor = function( self, info )
 		self.GUI.editField = guiCreateEdit( info.x, info.y, info.width, info.height, tostring(info.value), info.relative, info.parent )
-		guiEditSetMaxLength( self.GUI.editField, info.maxLength )
+		if info.maxLength then
+			guiEditSetMaxLength( self.GUI.editField, info.maxLength )
+		end
 		
 		self.min = info.min
 		self.max = info.max
@@ -201,7 +203,7 @@ eC.number = {
 			changedText = sign .. changedText
 		end
 		
-		if changedText ~= inputText then
+		if changedText and changedText ~= inputText then
 			guiSetText(self.GUI.editField, changedText)
 		end
 	end,
@@ -598,7 +600,7 @@ eC.dropdown = {
 		end
 		self.row = self.row or 1
 		
-		guiGridListSetSelectedItem ( self.GUI.gridlist, self.row-1 )
+		guiGridListSetSelectedItem ( self.GUI.gridlist, self.row-1, 1 )
 		local rowText = guiGridListGetItemText ( self.GUI.gridlist, self.row-1, 1 )
 		guiSetText ( self.GUI.label, rowText )
 		
