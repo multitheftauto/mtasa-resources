@@ -324,6 +324,7 @@ function setGUIShowing(state)
 end
 
 function setHUDAlpha(level)
+	if not level then return false end
 	local isFalse
 	for icon,data in pairs(iconData) do
 		returnValue = guiSetAlpha ( icon, level )

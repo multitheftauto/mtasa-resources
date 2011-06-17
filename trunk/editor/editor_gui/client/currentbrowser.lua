@@ -41,9 +41,13 @@ function createCurrentBrowser ()
 	guiSetProperty(currentBrowserGUI.browser,"RelativeMinSize","w:0.250000 h:0.400000")
 	--
 	guiSetAlpha ( currentBrowserGUI.browser, 50 )
-	guiSetAlpha ( currentBrowserGUI.gridlist, 50 )
+	if isElement ( currentBrowserGUI.gridlist ) then
+		guiSetAlpha ( currentBrowserGUI.gridlist, 50 )
+	end
 	guiSetAlpha ( currentBrowserGUI.search, 50 )
-	guiSetAlpha ( currentBrowserGUI.dropdown, 50 )
+	if isElement ( currentBrowserGUI.dropdown ) then
+		guiSetAlpha ( currentBrowserGUI.dropdown, 50 )
+	end
 	--
 	guiSetVisible ( currentBrowserGUI.browser, false )
 	currentBrowser.update()
