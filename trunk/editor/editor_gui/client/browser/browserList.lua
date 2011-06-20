@@ -61,7 +61,9 @@ local function updateActivatedBrowsers()
 				if type(rowColumns) == "table" then 
 					local pos = guiGridListAddRow ( self.gridlist )
 					for columnID, text in ipairs(rowColumns) do
-						guiGridListSetItemText(self.gridlist,pos,columnID,text,false,false)
+						if (text) then
+							guiGridListSetItemText(self.gridlist,pos,columnID,text,false,false)
+						end
 					end
 				else --if its a linear table then there's only 1 column to set
 					local pos = guiGridListAddRow ( self.gridlist )
