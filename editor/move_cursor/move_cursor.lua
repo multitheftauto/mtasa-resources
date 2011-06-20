@@ -73,6 +73,8 @@ local function processCursorMove (absoluteX,absoluteY)
 	end
 	-- process line, checking for water and surfaces
 	local worldX, worldY, worldZ = getWorldFromScreenPosition(absoluteX, absoluteY, MAX_DISTANCE )
+	-- make sure there is a camera position
+	if (not camX) then return end
 	local surfaceFound, surfaceX, surfaceY, surfaceZ, element = processLineOfSight(camX, camY, camZ, worldX, worldY, worldZ, true, true, true, true, true, true, false, true, selectedElement)
 	local waterFound, waterX, waterY, waterZ = testLineAgainstWater(camX, camY, camZ, worldX, worldY, worldZ)
 
