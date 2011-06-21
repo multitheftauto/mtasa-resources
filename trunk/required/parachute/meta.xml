@@ -7,4 +7,10 @@
 		<script src="openChute.lua" type="client"/>
 		<script src="client_anim.lua" type="client"/>
 		<file src="parachuteopen.mp3" />
+		
+		<export function="removeParachute" type="client"/>
+		<export function="stopSkyDiving" type="client"/>
+		
+		<export function="isPlayerSkyDiving" type="client"/>
+		<export function="isPlayerParachuting" type="client"/>
 </meta>
