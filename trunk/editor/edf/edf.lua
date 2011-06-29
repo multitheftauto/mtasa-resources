@@ -264,7 +264,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 		if not node then break end
 
 		--check the element has a defined type name
-		local name = xmlNodeGetAttribute(node,"name")
+		local name = getValidElementNodeAttribute(node,"name")
 		if name then
 			--create a new data table if there wasn't one already
 			definition.elements[name] = definition.elements[name] or {}
@@ -285,7 +285,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 		if not node then break end
 		
 		--check the element has a defined type name
-		local name = xmlNodeGetAttribute(node,"name")
+		local name = getValidElementNodeAttribute(node,"name")
 		if name then
 			--add the children data to the type definition
 			edfAddElementNodeChildren(node,inResource)
@@ -302,7 +302,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 		if not node then break end
 		
 		--check the element has a defined type name
-		local name = xmlNodeGetAttribute(node,"name")
+		local name = getValidElementNodeAttribute(node,"name")
 		if name then
 			--add the children data to the type definition
 			edfAddSettingNodeData(node,inResource)
@@ -319,7 +319,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 		if not node then break end
 		
 		--check the element has a defined type name
-		local name = xmlNodeGetAttribute(node,"src")
+		local name = getValidElementNodeAttribute(node,"src")
 		if name then
 			if xmlNodeGetAttribute(node,"type") == "client" then
 				table.insert(clientScripts,name)
@@ -341,6 +341,21 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 
 	return true
 end
+
+-- Get the required attribute for the item, if it passes the minmum version check
+function getValidElementNodeAttribute(node,key)
+	--check the element has a defined type key
+	local value = xmlNodeGetAttribute(node,key)
+	if value then
+		--check the element is supported by the server version
+		local minver = xmlNodeGetAttribute(node,"minver")
+		if not minver or getVersion().sortable >= minver then
+			return value
+		end
+	end
+	return false
+end
+
 
 --Unloads [resource]'s definition
 function edfUnloadDefinition(resource)
@@ -1215,6 +1230,7 @@ function edfAddSettingNodeData(node, resource)
 	-- update the setting friendly name
 	settingDefinition.friendlyname = xmlNodeGetAttribute(node,"friendlyname")
 								or settingDefinition.friendlyname
+
 	-- update the setting type
 	settingDefinition.datatype = xmlNodeGetAttribute(node,"type")
 								or settingDefinition.datatype
