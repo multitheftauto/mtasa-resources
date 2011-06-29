@@ -203,8 +203,8 @@ addEventHandler("onClientRender", root,
 			return
 		end
 
-		local targetElement, targetX, targetY, targetZ = getTargetedElement()
-		if targetElement then
+		local targetElement, targetX, targetY, targetZ, buildingInfo = getTargetedElement()
+		if targetElement and not g_SelectWorldBuildingMode_main then
 			if targetElement ~= g_targetedPart then	
 				g_targetedPart = targetElement
 				g_targetedElement = edf.edfGetAncestor(targetElement)
@@ -224,6 +224,25 @@ addEventHandler("onClientRender", root,
 				g_targetedElement = nil
 			end
 		end
+
+        -- HUD when selecting a world building
+		g_worldBuildingInfo = nil
+        if g_SelectWorldBuildingMode_main then
+            local line1 = "[SELECT WORLD OBJECT]"
+            local line2 = ""
+            local line3 = ""
+     		if not targetElement and buildingInfo then
+    			local camX, camY, camZ = getCameraMatrix()
+    			local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
+    			local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
+    			local modelName = tostring( engineGetModelNameFromID( buildingInfo.id ) )
+    			line1 = buildingInfo.id .. " (" .. modelName .. ")"
+				line2 = "[world]"
+				line3 = roundedDistance .. " m"
+    			g_worldBuildingInfo = buildingInfo
+    		end
+			createHighlighterText ( labelCenterX,labelCenterY, line1, line2, line3 )
+        end
 
 		if g_sensitivityMode then
 			crosshairState(CROSSHAIR_SENSITIVE)
@@ -416,6 +435,12 @@ function processFreecamClick(key, keyState)
 end
 
 function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
+
+    -- Hook for select a world building
+	if handleWorldBuildingMode( keyState ) then
+		return
+	end
+
 	if not isElement(clickedElement) then clickedElement = nil end
 	if keyState == "down" then
 		if ((getTickCount() - DOUBLE_CLICK_MAX_DELAY) <= g_lastClick.tick) 
@@ -493,9 +518,9 @@ function getTargetedElement(hitX, hitY, hitZ)
 	local targetX, targetY, targetZ, targetedElement
 
 	if (g_mode == CAMERA_MODE) then
-		targetX, targetY, targetZ, targetedElement = processCameraLineOfSight()
+		targetX, targetY, targetZ, targetedElement, buildingInfo = processCameraLineOfSight()
 	elseif (g_mode == CURSOR_MODE) then
-		targetX, targetY, targetZ, targetedElement = processCursorLineOfSight()
+		targetX, targetY, targetZ, targetedElement, buildingInfo = processCursorLineOfSight()
 	end
 
 	local camX, camY, camZ = getCameraMatrix()
@@ -516,7 +541,7 @@ function getTargetedElement(hitX, hitY, hitZ)
 		end
 	end
 	
-	return targetedElement, targetX, targetY, targetZ
+	return targetedElement, targetX, targetY, targetZ, buildingInfo
 end
 
 function createCrosshair()
@@ -629,6 +654,7 @@ function processCursorClick(button, keyState,cursorX, cursorY, worldX, worldY, w
 	
 	local key = getControlFromMouseKey(mouseButtonToKeyName(button))
 	if ( clickedGUI ) or g_suspended or not g_enableWorld or not key then
+        maybeCancelWorldBuildingMode(keyState)
 		return
 	end
 
@@ -1086,15 +1112,19 @@ function processCameraLineOfSight()
 	local camX, camY, camZ, endX, endY, endZ = getCameraLine()
 	
 	-- get collision point on the line
-	local surfaceFound, targetX, targetY, targetZ, targetElement =
-		processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer)
+	local surfaceFound, targetX, targetY, targetZ, targetElement,
+            nx, ny, nz, material, lighting, piece,
+            buildingId, bx, by, bz, brx, bry, brz
+		= processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
 
 	-- if there is none, use the end point of the vector as the collision point
 	if not surfaceFound then
 	    targetX, targetY, targetZ = endX, endY, endZ
 	end
 	
-	return targetX, targetY, targetZ, targetElement
+	local buildingInfo = buildingId and { id=buildingId, x=bx, y=by, z=bz, rx=brx, ry=bry, rz=brz }
+
+	return targetX, targetY, targetZ, targetElement, buildingInfo
 end
 
 -- get the point and element targeted by the cursor
@@ -1104,16 +1134,20 @@ function processCursorLineOfSight()
 	
 	--! getCursorPosition is innacurate, so we get the coordinates from the click event
 	local cursorX, cursorY, endX, endY, endZ = getCursorPosition()
-	
-	local surfaceFound, targetX, targetY, targetZ, targetElement =
-		processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer)
+
+	local surfaceFound, targetX, targetY, targetZ, targetElement,
+            nx, ny, nz, material, lighting, piece,
+            buildingId, bx, by, bz, brx, bry, brz
+        = processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
 
 	-- if there is none, use the end point of the vector as the collision point
 	if not surfaceFound then
 	    targetX, targetY, targetZ = endX, endY, endZ
 	end
+
+	local buildingInfo = buildingId and { id=buildingId, x=bx, y=by, z=bz, rx=brx, ry=bry, rz=brz }
 	
-	return targetX, targetY, targetZ, targetElement
+	return targetX, targetY, targetZ, targetElement, buildingInfo
 end
 
 function setWorldClickEnabled ( bool )
@@ -1199,5 +1233,46 @@ end
 function streamOutCollessObjects()
 	if getElementType(source) == "object" then
 		g_colless[source] = nil
+	end
+end
+
+
+--
+-- World building clone functions
+--
+
+-- Catch create event and switch on 'Select World Building Mode'
+addEvent ( "onClientElementPreCreate" )
+addEventHandler( "onClientElementPreCreate", root,
+	function ( elementType, resourceName, creationParameters, attachLater, shortcut )
+		if shortcut == "selworld" then
+			g_SelectWorldBuildingMode_main = true
+			cancelEvent()
+		end
+	end
+)
+
+-- Catch click and create copy of a world building
+function handleWorldBuildingMode(keyState)
+	if keyState == "down" then
+		if g_SelectWorldBuildingMode_main then
+        	if g_worldBuildingInfo then
+        		creationParameters = {}
+        		creationParameters.model = g_worldBuildingInfo.id
+        		creationParameters.position = { g_worldBuildingInfo.x, g_worldBuildingInfo.y, g_worldBuildingInfo.z }
+        		creationParameters.rotation = { g_worldBuildingInfo.rx, g_worldBuildingInfo.ry, g_worldBuildingInfo.rz }
+        		doCreateElement("object", "editor_main", creationParameters)
+        	end
+			g_SelectWorldBuildingMode_main = false
+			return true
+		end
+	end
+	return false
+end
+
+-- Catch click and cancel 'Select World Building Mode'
+function maybeCancelWorldBuildingMode(keyState)
+	if keyState == "down" then
+		g_SelectWorldBuildingMode_main = false
 	end
 end
