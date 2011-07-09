@@ -322,6 +322,8 @@ function giveMeVehicles(vehicles)
 				unloadVehicle(vehicleList[1])
 			end
 			vehicle = createVehicle(vehID, vx, vy, vz, 0, 0, vrot)
+			setElementInterior(vehicle, getElementInterior(source))
+			setElementDimension(vehicle, getElementDimension(source))
 			table.insert(vehicleList, vehicle)
 			g_VehicleData[vehicle] = { creator = source, timers = {} }
 			if vehID == 464 then
