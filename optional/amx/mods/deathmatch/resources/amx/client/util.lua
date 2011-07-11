@@ -278,5 +278,5 @@ function setcoloralpha(color, alpha)
 end
 
 function fromcolor(color)
-	return math.floor(color / 65536) % 256, math.floor(color / 256) % 256, color % 256, math.floor(color / 16777216)
+	return math.floor(color / 65536) % 255, math.floor(color / 255) % 255, color % 255, math.floor(color / 16777216)
 end

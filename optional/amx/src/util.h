@@ -31,6 +31,8 @@
 
 
 // Util functions
+std::string ToUTF8(const char * str);
+std::string ToOriginalCP(const char * str);
 void lua_pushamxstring(lua_State *luaVM, AMX *amx, cell addr);
 void lua_pushamxstring(lua_State *luaVM, AMX *amx, cell *physaddr);
 void lua_pushremotevalue(lua_State *localVM, lua_State *remoteVM, int index, bool toplevel = true);

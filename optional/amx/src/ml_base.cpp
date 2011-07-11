@@ -97,6 +97,8 @@ MTAEXPORT bool InitModule ( ILuaModuleManager10 *pManager, char *szModuleName, c
 	pluginInitData[PLUGIN_DATA_CALLPUBLIC_FS] = (void*)&AMXCallPublicFilterScript;
 	pluginInitData[PLUGIN_DATA_CALLPUBLIC_GM] = (void*)&AMXCallPublicGameMode;
 
+	char* localeInfo = setlocale(LC_ALL, "Russian");
+
 	string PATH = getenv("PATH");
 	PATH += ";mods/deathmatch/resources/amx/plugins/";
 	setenv("PATH", PATH.c_str(), 1);

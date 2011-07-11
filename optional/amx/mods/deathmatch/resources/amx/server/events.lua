@@ -61,6 +61,7 @@ function joinHandler(player)
 	end
 	
 	local playerID = addElem(g_Players, player)
+	setElementData(player, 'ID', playerID)
 	clientCall(player, 'setAMXVersion', amxVersionString())
 	clientCall(player, 'setPlayerID', playerID)
 	
@@ -77,6 +78,11 @@ function joinHandler(player)
 	bindControls(player, g_KeyMapping)
 	bindControls(player, g_LeftRightMapping)
 	bindControls(player, g_UpDownMapping)
+	for k,v in ipairs(g_Keys) do
+		bindKey(player, v, 'both', mtaKeyStateChange)
+	end
+	g_Players[playerID].updatetimer = setTimer(procCallOnAll, 100, 0, 'OnPlayerUpdate', playerID)
+	
 	
 	if playerJoined then
 		if getRunningGameMode() then
@@ -94,12 +100,19 @@ function joinHandler(player)
 				for id,textdraw in pairs(amx.textdraws) do
 					clientCall(player, 'TextDrawCreate', amx.name, id, table.deshadowize(textdraw, true))
 				end
+				
 				-- send menus
 				for i,menu in pairs(amx.menus) do
 					clientCall(player, 'CreateMenu', amx.name, i, menu)
 				end
 				
+				-- send 3d text labels
+				for i,label in pairs(amx.textlabels) do
+					clientCall(player, 'Create3DTextLabel', amx.name, i, label)
+				end
+				
 				procCallInternal(amx, 'OnPlayerConnect', playerID)
+				
 			end
 		)
 	end
@@ -123,6 +136,13 @@ function keyStateChange(player, key, state)
 		g_Players[id].keys.old = newState
 		procCallOnAll('OnPlayerKeyStateChange', id, newState, oldState)
 	end
+end
+
+function mtaKeyStateChange(player, key, state)
+	local iState = nil
+	if state == 'up' then iState = 0 end
+	if state == 'down' then iState = 1 end
+	procCallOnAll('OnKeyPress', getElemID(player), key, iState)
 end
 
 function buildKeyState(player, t)
@@ -319,6 +339,10 @@ addEventHandler('onPlayerQuit', root,
 		if g_Players[playerID].blip then
 			destroyElement(g_Players[playerID].blip)
 		end
+		if g_Players[playerID].updatetimer then
+			killTimer( g_Players[playerID].updatetimer )
+			g_Players[playerID].updatetimer = nil
+		end
 		g_Players[playerID] = nil
 	end
 )
@@ -388,7 +412,7 @@ addEventHandler('onVehicleExit', root,
 		
 		local playerID = getElemID(player)
 		g_Players[playerID].vehicle = nil
-		procCallInternal(amx, 'OnPlayerExitVehicle', playerID, vehID)
+		procCallOnAll('OnPlayerExitVehicle', playerID, vehID)
 		setPlayerState(player, PLAYER_STATE_ONFOOT)
 		
 		for i=0,getVehicleMaxPassengers(source) do
@@ -447,13 +471,6 @@ function getPedOccupiedVehicle(player)
 	return data and data.vehicle
 end
 
-local _warpPlayerIntoVehicle = warpPedIntoVehicle
-oldwarpPedIntoVehicle = warpPedIntoVehicle
-function warpPedIntoVehicle(player, vehicle, seat)
-	g_Players[getElemID(player)].vehicle = vehicle
-	_warpPlayerIntoVehicle(player, vehicle, seat)
-end
-
 function removePedFromVehicle(player)
 	local playerdata = g_Players[getElemID(player)]
 	if not playerdata.vehicle then
@@ -465,6 +482,7 @@ function removePedFromVehicle(player)
 	playerdata.beingremovedfromvehicle = true
 	local x, y, z = getElementPosition(playerdata.vehicle)
 	local rx, ry, rz = getVehicleRotation(playerdata.vehicle)
+	procCallOnAll('OnPlayerExitVehicle', getElemID(player), getElemID(playerdata.vehicle))
 	spawnPlayerBySelectedClass(player, x + 4*math.cos(math.rad(rz+180)), y + 4*math.sin(math.rad(rz+180)), z + 1, rz)
 	playerdata.beingremovedfromvehicle = nil
 	playerdata.vehicle = nil
@@ -507,18 +525,27 @@ addEventHandler('onPedWasted', root,
 -------------------------------
 -- Misc
 
-addEventHandler('onPlayerPickupHit', root,
-	function(pickup)
-		if isPed(source) then
-			procCallOnAll('OnBotPickUpPickup', getElemID(source), getElemID(pickup))
-		end
-		if getElementType(source) ~= 'player' or not getElemID(pickup) then
+addEventHandler('onPickupUse', root,
+	function(player)
+		--if isPed(source) then
+		--	procCallOnAll('OnBotPickUpPickup', getElemID(source), getElemID(pickup))
+		--end
+		--if getElementType(source) ~= 'player' or not getElemID(pickup) then
+		--	return
+		--end
+		local pickup = source
+		local model = getElementModel(pickup)
+		
+		if isCustomPickup(pickup) then
 			return
 		end
-		procCallOnAll('OnPlayerPickUpPickup', getElemID(source), getElemID(pickup))
-		if getElementModel(pickup) == 370 then
+
+		local amx = getElemAMX(pickup)
+		procCallInternal(amx, 'OnPlayerPickUpPickup', getElemID(player), getElemID(pickup))
+
+		if model == 370 then
 			-- Jetpack pickup
-			givePedJetPack(source)
+			givePedJetPack(player)
 		end
 	end
 )
@@ -527,5 +554,39 @@ addEventHandler('onConsole', root,
 	function(cmd)
 		cmd = '/' .. cmd:gsub('^([^%s]*)', g_CommandMapping)
 		procCallOnAll('OnPlayerCommandText', getElemID(source), cmd)
+	end
+)
+
+addEventHandler('onPlayerClick', root,
+	function(mouseButton, buttonState, elem, worldPosX, worldPosY, worldPosZ, screenPosX, screenPosY)
+		local iButton = nil
+		local iState = nil
+		local elemID = nil
+		local playerID = getElemID(source)
+		if elem ~= nil then elemID = getElemID(elem) end
+		if mouseButton == 'left' then iButton = 0 end
+		if mouseButton == 'middle' then iButton = 1 end
+		if mouseButton == 'right' then iButton = 2 end
+		if buttonState == 'up' then iState = 0 end
+		if buttonState == 'down' then iState = 1 end
+		
+		procCallOnAll('OnPlayerClickWorld', playerID, iButton, iState, worldPosX, worldPosY, worldPosZ)
+		if elem == nil then return end
+		if getElementType(elem) == 'player' then
+			procCallOnAll('OnPlayerClickWorldPlayer', playerID, iButton, iState, elemID, worldPosX, worldPosY, worldPosZ)
+		end
+		if getElementType(elem) == 'object' then
+			procCallOnAll('OnPlayerClickWorldObject', playerID, iButton, iState, elemID, worldPosX, worldPosY, worldPosZ)
+		end
+		if getElementType(elem) == 'vehicle' then
+			procCallOnAll('OnPlayerClickWorldVehicle', playerID, iButton, iState, elemID, worldPosX, worldPosY, worldPosZ)
+		end
+		
+	end
+)
+
+addEvent('onPlayerChangeNick', root,
+	function()
+		cancelEvent()
 	end
 )

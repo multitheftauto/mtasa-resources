@@ -169,7 +169,8 @@ int callLuaMTWrite(lua_State *luaVM) {
 			break;
 		}
 		case LUA_TSTRING: {
-			amx_SetString(physaddr, lua_tostring(luaVM, 3), 0, 0, UNLIMITED);
+			std::string newstr = ToOriginalCP(lua_tostring(luaVM, 3));
+			amx_SetString(physaddr, newstr.c_str(), 0, 0, UNLIMITED);
 			break;
 		}
 		case LUA_TLIGHTUSERDATA:

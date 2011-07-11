@@ -1,4 +1,6 @@
 #include "StdInc.h"
+#include "UTF8.h"
+#include <cstdlib>
 
 using namespace std;
 using namespace boost::filesystem;
@@ -26,6 +28,39 @@ extern map < AMX *, AMXPROPS > loadedAMXs;
 
 #endif
 
+std::string ToUTF8(const char * str)
+{
+	int strLen = strlen(str);
+	int newstrLen = mbstowcs(NULL, str, strLen);
+	wchar_t *dest = new wchar_t[newstrLen+1];
+
+	mbstowcs(dest, str, strLen);
+	dest[newstrLen] = 0;
+	std::string newstr = utf8_wcstombs(dest);
+	delete[] dest;
+	return newstr;
+}
+
+std::string ToOriginalCP(const char * str)
+{
+    /*iconv_t conv = iconv_open("CP1251","UTF-8");
+    iconv(conv, (const char**)&str, (size_t*)&strLen, &pOut, (size_t*)&newstrLen);
+    iconv_close(conv);*/
+
+	std::wstring newstr = utf8_mbstowcs(str);
+
+	int strLen = strlen(str);
+	int newstrLen = wcstombs(NULL, newstr.c_str(), newstr.length());
+	char *dest = new char[newstr.length()+1];
+
+	wcstombs(dest, newstr.c_str(), newstr.length());
+	dest[newstr.length()] = 0;
+
+	std::string retstr = dest;
+    delete[] dest;
+	return retstr;
+}
+
 void lua_pushamxstring(lua_State* luaVM, AMX* amx, cell *physaddr) {
 	if(!physaddr) {
 		lua_pushnil(luaVM);
@@ -37,9 +72,14 @@ void lua_pushamxstring(lua_State* luaVM, AMX* amx, cell *physaddr) {
 
 	char *str = new char[strLen+1];
 	amx_GetString(str, physaddr, 0, strLen+1);
-	lua_pushlstring(luaVM, str, strLen);
+
+	std::string newstr = ToUTF8(str);
+
+	lua_pushlstring(luaVM, newstr.c_str(), newstr.length());
 	delete[] str;
 }
+
+
 
 void lua_pushamxstring(lua_State *luaVM, AMX *amx, cell addr) {
 	cell *physaddr;
@@ -67,7 +107,8 @@ void lua_pushremotevalue(lua_State *localVM, lua_State *remoteVM, int index, boo
 		case LUA_TSTRING: {
 			size_t len;
 			const char *str = lua_tolstring(remoteVM, index, &len);
-			lua_pushlstring(localVM, str, len);
+			std::string newstr = ToUTF8(str);
+			lua_pushlstring(localVM, newstr.c_str(), newstr.length());
 			break;
 		}
 		case LUA_TTABLE: {
@@ -165,7 +206,9 @@ string getScriptFilePath(AMX *amx, const char *filename) {
 	// Then check if it exists in the main scriptfiles folder
 	path scriptfilespath = path("mods/deathmatch/resources/amx/scriptfiles") / filename;
 	if(exists(scriptfilespath))
+	{
 		return scriptfilespath.string();
+	}
 
 	// Otherwise default to amx's resource folder - make sure the folder
 	// where the file is expected exists

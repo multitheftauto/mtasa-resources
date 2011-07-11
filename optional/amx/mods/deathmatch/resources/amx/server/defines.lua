@@ -56,7 +56,10 @@ g_CommandMapping = setmetatable({
 	['auth']  = 'login',
 	['speak'] = 'say',
 	['leave'] = 'exit',
-	['out']   = 'quit'
+	['out']   = 'quit',
+	['mstart'] = 'start',
+	['mstop'] = 'stop',
+	['reg'] = 'register'
 }, {
 	__index = function(t, k)
 		return table.find(t, k) or nil
