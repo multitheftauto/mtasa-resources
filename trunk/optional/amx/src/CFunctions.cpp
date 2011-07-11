@@ -195,13 +195,24 @@ int CFunctions::amxCall(lua_State *luaVM) {
 				break;
 			}
 			case LUA_TNUMBER: {
-				amx_Push(amx, (cell)lua_tonumber(luaVM, i));
+				std::string str = lua_tostring(luaVM, i);
+				if(str.find(".")!=std::string::npos) 
+				{
+					float fval = lua_tonumber(luaVM, i);
+					cell val = *(cell*)&fval;
+					amx_Push(amx, val);
+				}
+				else
+				{
+					amx_Push(amx, (cell)lua_tonumber(luaVM, i));
+				}
 				break;
 			}
 			case LUA_TSTRING: {
 				cell amxStringAddr;
 				cell *physStringAddr;
-				amx_PushString(amx, &amxStringAddr, &physStringAddr, lua_tostring(luaVM, i), 0, 0);
+				std::string newstr = ToOriginalCP(lua_tostring(luaVM, i));
+				amx_PushString(amx, &amxStringAddr, &physStringAddr, newstr.c_str(), 0, 0);
 				stringsToRelease.push_back(amxStringAddr);
 				break;
 			}
@@ -284,11 +295,12 @@ int CFunctions::amxWriteString(lua_State *luaVM) {
 		return 0;
 	const cell addr = (cell)lua_tonumber(luaVM, 2);
 	const char *str = luaL_checkstring(luaVM, 3);
+	std::string newstr = ToOriginalCP(str);
 	cell* physaddr;
 	amx_GetAddr(amx, addr, &physaddr);
 	if(!physaddr)
 		return 0;
-	amx_SetString(physaddr, str, 0, 0, UNLIMITED);
+	amx_SetString(physaddr, newstr.c_str(), 0, 0, UNLIMITED);
 	lua_pushboolean(luaVM, 1);
 	return 1;
 }

@@ -20,7 +20,7 @@ function argsToMTA(amx, prototype, ...)
 			if not colorArgs then
 				colorArgs = {}
 			end
-			colorArgs[i] = { binshr(val, 24), binshr(val, 16) % 0x100, binshr(val, 8) % 0x100 }		-- r, g, b
+			colorArgs[i] = { binshr(val, 24) % 0x100, binshr(val, 16) % 0x100, binshr(val, 8) % 0x100 }		-- r, g, b
 			val = val % 0x100			-- a
 		elseif vartype == 'p' then		-- player
 			val = g_Players[val] and g_Players[val].elem
@@ -42,10 +42,14 @@ function argsToMTA(amx, prototype, ...)
 			val = amx.menus[val]
 		elseif vartype == 'g' then		-- gang zone
 			val = amx.gangzones[val] and amx.gangzones[val].elem
-		elseif vartype == 'k' then		-- bot/ped
+		elseif vartype == 'k' then		-- native marker
 			val = g_Markers[val] and g_Markers[val].elem
+		elseif vartype == 'l' then		-- slothbots
+			val = g_SlothBots[val] and g_SlothBots[val].elem
 		elseif vartype == 'd' then		-- database result
 			val = amx.dbresults[val]
+		elseif vartype == 'a' then		-- 3D text label
+			val = amx.textlabels[val]
 		end
 		if val == nil then
 			val = false
@@ -216,17 +220,22 @@ function AddPlayerClothes(amx, player, type, index)
 	addPedClothes(player, texture, model, type)
 end
 
-local function cancelPickup()
+local function housePickup()
+	local amx = getElemAMX(source)
+	procCallInternal(amx, 'OnPlayerPickUpPickup', getElemID(player), getElemID(source))
 	cancelEvent()
 end
 function AddStaticPickup(amx, model, type, x, y, z)
-	local mtaPickupType, mtaPickupAmount
+	local mtaPickupType, mtaPickupAmount, respawntime
 	if model == 1240 then		-- health
 		mtaPickupType = 0
 		mtaPickupAmount = 100
 	elseif model == 1242 then	-- armor
 		mtaPickupType = 1
 		mtaPickupAmount = 100
+	elseif model == 1272 or model == 1273 then
+		mtaPickupType = 3
+		mtaPickupAmount = model
 	else						-- weapon
 		mtaPickupType = 2
 		mtaPickupAmount = g_WeaponIDMapping[model]
@@ -235,14 +244,15 @@ function AddStaticPickup(amx, model, type, x, y, z)
 			mtaPickupAmount = model
 		end
 	end
+	
 	local pickup = createPickup(x, y, z, mtaPickupType, mtaPickupAmount)
 	if not pickup then
 		outputDebugString('Failed to create pickup of model ' .. model, 2)
 		return 0
 	end
-	if model == 1272 or model == 1273 then
+	if isCustomPickup(pickup) then
 		-- house pickups don't disappear on pickup
-		addEventHandler('onPickupHit', pickup, cancelPickup, false)
+		addEventHandler('onPickupUse', pickup, housePickup, false)
 	end
 	return addElem(amx, 'pickups', pickup)
 end
@@ -253,8 +263,15 @@ end
 
 function AddStaticVehicleEx(amx, model, x, y, z, angle, color1, color2, respawnDelay)
 	local vehicle = createVehicle(model, x, y, z, 0, 0, angle)
+	if(vehicle == false) then
+		return false
+	end
+
 	if not g_PoliceVehicles[model] then
-		setVehicleColor(vehicle, color1 >= 0 and color1 or math.random(0, 126), color2 >= 0 and color2 or math.random(0, 126), 0, 0)
+		if(color1 <= 0 and color1 >= 126) then color1 = math.random(1, 126) end
+		if(color2 <= 0 and color2 >= 126) then color2 = math.random(1, 126) end
+		
+		setVehicleColor(vehicle, color1, color2, 0, 0)
 	end
 	local vehID = addElem(amx, 'vehicles', vehicle)
 	if respawnDelay < 0 then
@@ -504,11 +521,19 @@ function GangZoneDestroy(amx, zone)
 end
 
 function GangZoneShowForPlayer(amx, player, zone, r, g, b, a)
+	if r < 1 then r = 1 end
+	if g < 1 then g = 1 end
+	if b < 1 then b = 1 end
+	if a < 1 then a = 1 end
 	setRadarAreaColor(zone, r, g, b, a)
 	setElementVisibleTo(zone, player, true)
 end
 
 function GangZoneShowForAll(amx, zone, r, g, b, a)
+	if r < 1 then r = 1 end
+	if g < 1 then g = 1 end
+	if b < 1 then b = 1 end
+	if a < 1 then a = 1 end
 	setRadarAreaColor(zone, r, g, b, a)
 	setElementVisibleTo(zone, root, true)
 end
@@ -556,7 +581,7 @@ function GetObjectRot(amx, object, refX, refY, refZ)
 end
 
 function GetPlayerAmmo(amx, player)
-	return getPlayerTotalAmmo(player)
+	return getPedTotalAmmo(player)
 end
 
 function GetPlayerArmour(amx, player, refArmor)
@@ -615,6 +640,13 @@ function GetPlayerName(amx, player, nameBuf, bufSize)
 	local name = getPlayerName(player)
 	if #name <= bufSize then
 		writeMemString(amx, nameBuf, name)
+	end
+end
+
+function gpci(amx, player, nameBuf, bufSize)
+	local serial = getPlayerSerial(player)
+	if #serial <= bufSize then
+		writeMemString(amx, nameBuf, serial)
 	end
 end
 
@@ -713,7 +745,7 @@ function GetPlayerWantedLevel(amx, player)
 end
 
 function GetPlayerWeapon(amx, player)
-	return getPlayerWeapon(player)
+	return getPedWeapon(player)
 end
 
 function GetPlayerWeaponData(amx, player, slot, refWeapon, refAmmo)
@@ -1021,7 +1053,17 @@ function SetNameTagDrawDistance(amx, distance)
 end
 
 function SetObjectPos(amx, object, x, y, z)
+	if(getElementType(object) == 'vehicle') then 
+		setVehicleFrozen(object, true)
+	end
+	
 	setElementPosition(object, x, y, z)
+	
+	if(getElementType(object) == 'vehicle') then 
+		setVehicleTurnVelocity(object, 0, 0, 0)
+		setElementVelocity(object, 0, 0, 0)
+		setTimer(setVehicleFrozen, 500, 1, object, false)
+	end
 end
 
 function SetObjectRot(amx, object, rX, rY, rY)
@@ -1230,6 +1272,7 @@ end
 
 function SetVehicleVelocity(amx, vehicle, vx, vy, vz)
 	setElementVelocity(vehicle, vx, vy, vz)
+	setVehicleTurnVelocity(vehicle, vx, vy, vz)
 end
 
 function SetVehicleVirtualWorld(amx, vehicle, dimension)
@@ -1238,7 +1281,7 @@ end
 
 function SetVehicleZAngle(amx, vehicle, rZ)
 	local rX, rY = getVehicleRotation(vehicle)
-	setVehicleRotation(vehicle, rX, rY, rZ)
+	setVehicleRotation(vehicle, 0, 0, rZ)
 end
 
 function RepairVehicle(amx, vehicle)
@@ -1666,6 +1709,18 @@ function SetPlayerControlState(amx, player, control, state)
 	return setControlState(player, control, state)
 end
 
+function GetPlayerSkillLevel(amx, player, skill)
+	return getPedStat(player, skill + 69)
+end
+
+function SetPlayerSkillLevel(amx, player, skill, level)
+	return setPedStat(player, skill + 69, level)
+end
+
+function SetPlayerArmedWeapon(amx, player, weapon)
+	return setPedWeaponSlot(player, weapon)
+end
+
 IsBotInWater = IsPlayerInWater
 IsBotOnFire = IsPlayerOnFire
 IsBotDucked = IsPlayerDucked
@@ -1690,6 +1745,7 @@ SetBotVelocity = SetPlayerVelocity
 -- Bots
 function CreateBot(amx, model, x, y, z, name)
 	local ped = createPed(model, x, y, z)
+	setElementData(ped, 'amx.shownametag', true, true)
 	setElementData(ped, 'BotName', name, true)
 	local pedID = addElem(amx, 'bots', ped)
 	procCallOnAll('OnBotConnect', pedID, name)
@@ -1852,6 +1908,46 @@ end
 
 IsVehicleInMarker = IsPlayerInMarker
 IsBotInMarker = IsPlayerInMarker
+
+-----------------------------------------------------
+-- SlothBots
+--
+-----------------------------------------------------
+-- Player Data
+function SetPlayerDataInt(amx, player, key, value)
+	return setElementData(player, key, value)
+end
+
+function GetPlayerDataInt(amx, player, key)
+	return getElementData(player, key)
+end
+
+SetPlayerDataFloat = SetPlayerDataInt
+GetPlayerDataFloat = GetPlayerDataInt
+SetPlayerDataBool = SetPlayerDataInt
+GetPlayerDataBool = GetPlayerDataInt
+SetPlayerDataStr = SetPlayerDataInt
+
+function GetPlayerDataStr(amx, player, key, buf, len)
+	local data = getElementData(player, key)
+	if #data <= len then
+		writeMemString(amx, buf, data)
+	end
+end
+
+function IsPlayerDataSet(amx, player, key)
+	return true
+end
+
+function ResetPlayerData(amx, player, key)
+	return setElementData(player, key, nil)
+end
+
+function ResetAllPlayerData(amx, player)
+	return true
+end
+
+
 -----------------------------------------------------
 -- Vehicles
 function GetVehicleEngineState(amx, vehicle)
@@ -2077,10 +2173,158 @@ end
 function GetDistanceBetweenPoints3D(amx, x1, y1, z1, x2, y2, z2)
 	return getDistanceBetweenPoints3D(x1, y1, z1, x2, y2, z2)
 end
+
+function AddScoreboardColumn(amx, column)
+	return exports.amxscoreboard:addScoreboardColumn('_' .. column)
+end
+
+function RemoveScoreboardColumn(amx, column)
+	return exports.amxscoreboard:removeScoreboardColumn('_' .. column)
+end
+
+function SetScoreboardData(amx, player, column, data)
+	return setElementData(player, '_' .. column, data)
+end
+-----------------------------------------------------
+-- dummy
+function ConnectNPC(amx, name, script)
+	return true
+end
+
+function IsPlayerNPC(amx, player)
+	return false
+end
+
+function IsVehicleStreamedIn(amx, vehicle, player)
+	return true
+end
+
+function SetPlayerChatBubble(amx, player, text, color, dist, exptime)
+	return false
+end
+
+function Create3DTextLabel(amx, text, r, g, b, a, x, y, z, dist, vw, los)
+	text = text:lower()
+	for mta,samp in pairs(g_CommandMapping) do
+		text = text:gsub('/' .. samp, '/' .. mta)
+	end
+	local textlabel = { text = text, color = {r = r, g = g, b = b, a = a}, X = x, Y = y, Z = z, dist = dist, vw = vw, los = los }
+	local id = table.insert(amx.textlabels, textlabel)
+
+	textlabel.id = id
+	
+	clientCall(root, 'Create3DTextLabel', amx.name, id, textlabel)
+	return id
+end
+
+function CreatePlayer3DTextLabel(amx, player, text, r, g, b, a, x, y, z, dist, vw, los)
+	text = text:lower()
+	for mta,samp in pairs(g_CommandMapping) do
+		text = text:gsub('/' .. samp, '/' .. mta)
+	end
+	local textlabel = { text = text, color = {r = r, g = g, b = b, a = a}, X = x, Y = y, Z = z, dist = dist, vw = vw, los = los }
+	local id = table.insert(amx.textlabels, textlabel)
+
+	textlabel.id = id
+	
+	clientCall(root, 'Create3DTextLabel', amx.name, id, textlabel)
+	return id
+end
+
+function Delete3DTextLabel(amx, textlabel)
+	local id = textlabel.id
+	if not amx.textlabels[id] then
+		return
+	end
+	clientCall(root, 'Delete3DTextLabel', amx.name, id)
+	amx.textlabels[id] = nil
+	return true
+end
+
+function DeletePlayer3DTextLabel(amx, player, textlabel)
+	local id = textlabel.id
+	if not amx.textlabels[id] then
+		return
+	end
+	clientCall(root, 'Delete3DTextLabel', amx.name, id)
+	amx.textlabels[id] = nil
+	return true
+end
+
+function Attach3DTextLabelToPlayer(amx, textlabel, player, offX, offY, offZ)
+	textlabel.attached = true
+	textlabel.offX = offX
+	textlabel.offY = offY
+	textlabel.offZ = offZ
+	textlabel.attachedTo = player
+	clientCall(root, 'Attach3DTextLabel', amx.name, textlabel)
+	return true
+end
+
+function Attach3DTextLabelToVehicle(amx, textlabel, vehicle, offX, offY, offZ)
+	textlabel.attached = true
+	textlabel.offX = offX
+	textlabel.offY = offY
+	textlabel.offZ = offZ
+	textlabel.attachedTo = vehicle
+	clientCall(root, 'Attach3DTextLabel', amx.name, textlabel)
+	return true
+end
+
+function Update3DTextLabelText(amx, textlabel, r, g, b, a, text)
+	textlabel.text = text
+	textlabel.color = {r = r, g = g, b = b, a = a}
+	return true
+end
+
+function UpdatePlayer3DTextLabelText(amx, textlabel, r, g, b, a, text)
+	textlabel.text = text
+	textlabel.color = {r = r, g = g, b = b, a = a}
+	return true
+end
+
+function PlayCrimeReportForPlayer(amx, player, suspectid, crimeid)
+	return false
+end
+
+function IsPlayerInRangeOfPoint(amx, player, range, pX, pY, pZ)
+	x, y, z = getElementPosition(player)
+	return true
+end
+
+function GetPlayerSurfingVehicleID(amx, player)
+	return -1
+end
+
+function ShowCursor(amx, player, show, controls)
+	showCursor(player, show, controls)
+end
+
+function AddEventHandler(amx, event, func)
+	if g_EventNames[event] then
+		g_Events[func] = event
+	end
+end
+
+function RemoveEventHandler(amx, func)
+	g_Events[func] = nil
+end
+
+function AttachElementToElement(amx, elem, toelem, xPos, yPos, zPos, xRot, yRot, zRot)
+	return attachElements(elem, toelem, xPos, yPos, zPos, xRot, yRot, zRot)
+end
+
+function Dummy(amx, text)
+	return 0;
+end
+Broadcast = Dummy
+
 -----------------------------------------------------
 -- List of the functions and their argument types
 
 g_SAMPSyscallPrototypes = {
+	Broadcast = {'s'},
+
 	AddMenuItem = {'m', 'i', 's'},
 	AddPlayerClass = {'i', 'f', 'f', 'f', 'f', 'i', 'i', 'i', 'i', 'i', 'i'},
 	AddPlayerClassEx = {'t', 'i', 'f', 'f', 'f', 'f', 'i', 'i', 'i', 'i', 'i', 'i'},
@@ -2317,6 +2561,7 @@ g_SAMPSyscallPrototypes = {
 
 	UsePlayerPedAnims = {},
 	
+	ShowCursor = {'p', 'b', 'b'},
 	
 	CreateBot = { 'i', 'f', 'f', 'f', 's'},
 	DestroyBot = {'z'},
@@ -2382,9 +2627,12 @@ g_SAMPSyscallPrototypes = {
 	SetPlayerAlpha = {'p', 'i'},
 	FadePlayerCamera = {'p', 'b', 'f', 'i', 'i', 'i'},
 	GetPlayerVehicleSeat = {'p'},
-	GetBotVelocity = {'p', 'r', 'r', 'r'},
-	SetBotVelocity = {'p', 'f', 'f', 'f'},
+	GetPlayerVelocity = {'p', 'r', 'r', 'r'},
+	SetPlayerVelocity = {'p', 'f', 'f', 'f'},
 	SetPlayerControlState = {'p', 's', 'b'},
+	GetPlayerSkillLevel = {'p', 'i'},
+	SetPlayerSkillLevel = {'p', 'i', 'i'},
+	SetPlayerArmedWeapon = {'p', 'i'},
 	
 	-- vehicles
 	GetVehicleEngineState = {'v'},
@@ -2463,6 +2711,52 @@ g_SAMPSyscallPrototypes = {
 	SetRuleValue = {'s', 's'},
 	GetRuleValue = {'s', 'r', 'i'},
 	RemoveRuleValue = {'s'},
+	
+	-- dialogs
+	ShowPlayerDialog = {'p', 'i', 'i', 's','s', 's', 's', client=true},
+	
+	-- scoreboard
+	AddScoreboardColumn = {'s'},
+	RemoveScoreboardColumn = {'s'},
+	SetScoreboardData = {'p', 's', 's'},
+	
+	-- dummy
+	ConnectNPC = {'s', 's'},
+	IsPlayerNPC = {'p'},
+	IsVehicleStreamedIn = {'v', 'p'},
+	SetPlayerChatBubble = {'p', 's', 'i', 'f', 'i'},
+	Create3DTextLabel = {'s', 'c', 'f', 'f', 'f', 'f', 'i', 'i'},
+	CreatePlayer3DTextLabel = {'p', 's', 'c', 'f', 'f', 'f', 'f', 'i', 'i'},
+	Delete3DTextLabel = {'a'},
+	DeletePlayer3DTextLabel = {'p', 'a'},
+	Attach3DTextLabelToPlayer = {'a', 'p', 'f', 'f', 'f'},
+	Attach3DTextLabelToVehicle = {'a', 'v', 'f', 'f', 'f'},
+	Update3DTextLabelText = {'a', 'c', 's'},
+	UpdatePlayer3DTextLabelText = {'p', 'a', 'c', 's'},
+	PlayCrimeReportForPlayer  = {'p', 'i', 'i'},
+	
+	IsPlayerInRangeOfPoint = {'p', 'f', 'f', 'f', 'f'},
+	GetPlayerSurfingVehicleID = {'p'},
+	
+	-- player data
+	SetPlayerDataInt = {'p', 's', 'i'},
+	GetPlayerDataInt = {'p', 's'},
+	SetPlayerDataFloat = {'p', 's', 'f'},
+	GetPlayerDataFloat = {'p', 's'},
+	SetPlayerDataBool = {'p', 's', 'b'},
+	GetPlayerDataBool = {'p', 's'},
+	SetPlayerDataStr = {'p', 's', 's'},
+	GetPlayerDataStr = {'p', 's', 'r', 'i'},
+	IsPlayerDataSet = {'p', 's'},
+	ResetPlayerData = {'p', 's'},
+	ResetAllPlayerData = {'p'},
+	
+	AddEventHandler = {'s', 's'},
+	RemoveEventHandler = {'s'},
+	
+	gpci = {'p', 'r', 'i'},
+	
+	AttachObjectToVehicle = {'o', 'v', 'f', 'f', 'f', 'f', 'f', 'f'},
 	
 	acos = {'f'},
 	asin = {'f'},

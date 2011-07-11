@@ -32,6 +32,8 @@ local screenWidth, screenHeight = guiGetScreenSize()
 addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me)
+		InitDialogs()
+		setTimer(checkTextLabels, 500, 0)
 	end,
 	false
 )
@@ -48,7 +50,7 @@ function setAMXVersion(ver)
 end
 
 function addAMX(name, type)
-	g_AMXs[name] = { name = name, type = type, vehicles = {}, playerobjects = {}, textdraws = {}, menus = {}, blips = {} }
+	g_AMXs[name] = { name = name, type = type, vehicles = {}, playerobjects = {}, textdraws = {}, textlabels = {}, menus = {}, blips = {} }
 	-- textdraws = { id = { text = text, color = color, align = 1|2|3, x = x, y = y, boxsize = {width, height}, parts={{x=x,y=y,color=color,text=text},...} }, ... }
 	setmetatable(
 		g_AMXs[name].vehicles,
@@ -87,6 +89,9 @@ function removeAMX(amxName)
 	for id,textdraw in pairs(amx.textdraws) do
 		destroyTextDraw(textdraw)
 	end
+	for id, textlabel in pairs(amx.textlabels) do
+		destroyTextLabel(textlabel)
+	end
 	for id,menu in pairs(amx.menus) do
 		DestroyMenu(amxName, id)
 	end
@@ -98,7 +103,11 @@ end
 function setPlayerID(id)
 	g_PlayerID = id
 end
-
+-----------------------------
+-- MTA Key Handling
+function HandleMTAKey( key, keyState )
+	outputServerLog("handlemtakey: " .. key)
+end
 -----------------------------
 -- Class selection screen
 
@@ -123,9 +132,28 @@ function startClassSelection(classInfo)
 		g_ClassSelectionInfo.selectedclass = 0
 	end
 	g_ClassSelectionInfo.gui = {
-		img = guiCreateStaticImage(35, screenHeight - 410, 205, 236, 'client/logo_small.png', false)
+		img = guiCreateStaticImage(35, screenHeight - 410, 205, 236, 'client/logo_small.png', false),
+		btnLeft = guiCreateButton(screenWidth/2-145-70,screenHeight-100,140,20,"<<<",false),
+		btnRight = guiCreateButton(screenWidth/2-70,screenHeight-100,140,20,">>>",false),
+		btnSpawn = guiCreateButton(screenWidth/2+145-70,screenHeight-100,140,20,"Spawn",false)
 	}
+	addEventHandler ( "onClientGUIClick", g_ClassSelectionInfo.gui.btnLeft, ClassSelLeft )
+	addEventHandler ( "onClientGUIClick", g_ClassSelectionInfo.gui.btnRight, ClassSelRight )
+	addEventHandler ( "onClientGUIClick", g_ClassSelectionInfo.gui.btnSpawn, ClassSelSpawn )
+	showCursor(true)
 	addEventHandler('onClientRender', root, renderClassSelText)
+end
+
+function ClassSelLeft ()
+	server.requestClass(getLocalPlayer(), false, false, -1)
+end
+
+function ClassSelRight ()
+	server.requestClass(getLocalPlayer(), false, false, 1)
+end
+
+function ClassSelSpawn ()
+	server.requestSpawn(getLocalPlayer(), false, false)
 end
 
 function renderClassSelText()
@@ -171,6 +199,12 @@ function destroyClassSelGUI()
 	setCameraTarget(g_Me)
 	setGravity(0.008)
 	setElementCollisionsEnabled(g_Me, true)
+	showCursor(false)
+	if g_ClassSelectionInfo then
+		removeEventHandler ( "onClientGUIClick", g_ClassSelectionInfo.gui.btnLeft, ClassSelLeft )
+		removeEventHandler ( "onClientGUIClick", g_ClassSelectionInfo.gui.btnRight, ClassSelRight )
+		removeEventHandler ( "onClientGUIClick", g_ClassSelectionInfo.gui.btnSpawn, ClassSelSpawn )
+	end
 end
 
 addEventHandler('onClientResourceStop', resourceRoot,
@@ -187,7 +221,7 @@ end
 
 addEventHandler('onClientPlayerWeaponFire', resourceRoot,
 	function(weapon, ammo, ammoInClip, hitX, hitY, hitZ)
-		if getLocalPlayer() ~= source then return end
+		--if getLocalPlayer() ~= source then return end
 		serverAMXEvent('OnPlayerShoot', getElemID(source), weapon, ammo, ammoInClip, hitX, hitY, hitZ)
 	end,
 	false
@@ -463,21 +497,23 @@ end
 
 addEventHandler('onClientElementStreamIn', root,
 	function()
-		if getElementType(source) ~= 'vehicle' then
-			return
-		end
-		-- drop floating/underground vehicles
-		if not vehicleDrops[source] and isVehicleEmpty(source) and not BOATS[getElementModel(source)] then
-			setElementCollisionsEnabled(source, false)
-			local timer = setTimer(dropVehicle, VEHICLE_DROP_TRY_INTERVAL, VEHICLE_DROP_MAX_TRIES, source)
-			vehicleDrops[source] = { timer = timer, tries = 0 }
-		end
-		
-		local amx, vehID = getElemAMX(source), getElemID(source)
-		local vehInfo = amx and vehID and amx.vehicles[vehID]
-		if vehInfo and not vehInfo.blip then
-			vehInfo.blip = createBlipAttachedTo(source, 0, 1, 136, 136, 136)
-			setElementParent(vehInfo.blip, source)
+		if getElementType(source) == 'vehicle' then
+			-- drop floating/underground vehicles
+			if not vehicleDrops[source] and isVehicleEmpty(source) and not BOATS[getElementModel(source)] then
+				setElementCollisionsEnabled(source, false)
+				local timer = setTimer(dropVehicle, VEHICLE_DROP_TRY_INTERVAL, VEHICLE_DROP_MAX_TRIES, source)
+				vehicleDrops[source] = { timer = timer, tries = 0 }
+			end
+			
+			local amx, vehID = getElemAMX(source), getElemID(source)
+			local vehInfo = amx and vehID and amx.vehicles[vehID]
+			if vehInfo and not vehInfo.blip then
+				vehInfo.blip = createBlipAttachedTo(source, 0, 1, 136, 136, 136, 150, 0, 500)
+				setElementParent(vehInfo.blip, source)
+			end
+			serverAMXEvent('OnVehicleStreamIn', getElemID(source), getElemID(getLocalPlayer()))
+		elseif getElementType(source) == 'player' then
+			serverAMXEvent('OnPlayerStreamIn', getElemID(source), getElemID(getLocalPlayer()))
 		end
 	end
 )
@@ -485,15 +521,17 @@ addEventHandler('onClientElementStreamIn', root,
 addEventHandler('onClientElementStreamOut', root,
 	function()
 		if getElementType(source) ~= 'vehicle' then
-			return
-		end
-		local amx, vehID = getElemAMX(source), getElemID(source)
-		local vehInfo = amx and vehID and amx.vehicles[vehID]
-		if vehInfo and vehInfo.blip and not vehInfo.blippersistent then
-			if isElement(vehInfo.blip) then
-				destroyElement(vehInfo.blip)
-			end
-			vehInfo.blip = nil
+			local amx, vehID = getElemAMX(source), getElemID(source)
+			local vehInfo = amx and vehID and amx.vehicles[vehID]
+			if vehInfo and vehInfo.blip and not vehInfo.blippersistent then
+				if isElement(vehInfo.blip) then
+					destroyElement(vehInfo.blip)
+				end
+				vehInfo.blip = nil
+			end 
+			serverAMXEvent('OnVehicleStreamOut', getElemID(source), getElemID(getLocalPlayer()))
+		elseif getElementType(source) == 'player' then
+			serverAMXEvent('OnPlayerStreamOut', getElemID(source), getElemID(getLocalPlayer()))
 		end
 	end
 )
@@ -801,6 +839,83 @@ function destroyGameText()
 	gameText = false
 end
 
+function renderTextLabels()
+	for name,amx in pairs(g_AMXs) do
+		for id,textlabel in pairs(amx.textlabels) do
+			if textlabel.enabled then
+				if textlabel.attached then
+					local oX, oY, oZ = getElementPosition(textlabel.attachedTo)
+					oX = oX + textlabel.offX
+					oY = oY + textlabel.offY
+					oZ = oZ + textlabel.offZ
+					textlabel.X = oX
+					textlabel.Y = oY
+					textlabel.Z = oZ
+				end
+				
+				local screenX, screenY = getScreenFromWorldPosition(textlabel.X, textlabel.Y, textlabel.Z, textlabel.dist, false)
+				local pX, pY, pZ = getElementPosition(g_Me)
+				local dist = getDistanceBetweenPoints3D(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z)
+				local vw = getElementDimension(g_Me)
+				--[[if textlabel.attached then
+					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, true, true, true, true, false, false, textlabel.attachedTo)
+				else]] --неработает, похоже функция isLineOfSightClear не работает с аргументом ignoredElement.
+					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, false, false)--пока так, потом разберутся с функцией сделаем как нужно :)
+				--end
+				local len = string.len(textlabel.text)
+				if screenX and dist <= textlabel.dist and vw == textlabel.vw then
+					if not textlabel.los then
+						--dxDrawText(textlabel.text, screenX, screenY, screenWidth, screenHeight, tocolor ( 0, 0, 0, 255 ), 1, "default")--, "center", "center")--, true, false)
+						dxDrawText(textlabel.text, screenX, screenY, screenWidth, screenHeight, tocolor(textlabel.color.r, textlabel.color.g, textlabel.color.b, textlabel.color.a), 1, "default-bold")--, "center", "center", true, false)
+					elseif LOS then
+						--dxDrawText(textlabel.text, screenX, screenY, screenWidth, screenHeight, tocolor ( 0, 0, 0, 255 ), 1, "default")--, "center", "center")--, true, false)
+						dxDrawText(textlabel.text, screenX - (len), screenY, screenWidth, screenHeight, tocolor(textlabel.color.r, textlabel.color.g, textlabel.color.b, textlabel.color.a), 1, "default-bold")--, "center", "center", true, false)
+					end
+				end
+			end
+		end
+	end
+end
+addEventHandler("onClientRender", root, renderTextLabels)
+
+function checkTextLabels()
+	for name,amx in pairs(g_AMXs) do
+		for id,textlabel in pairs(amx.textlabels) do
+		
+			local pX, pY, pZ = getElementPosition(g_Me)
+			local dist = getDistanceBetweenPoints3D(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z)
+			
+			if dist <= textlabel.dist then
+				textlabel.enabled = true
+			else
+				textlabel.enabled = false
+			end
+		
+		end
+	end
+end
+
+
+function Create3DTextLabel(amxName, id, textlabel)
+	local amx = g_AMXs[amxName]
+	textlabel.amx = amx
+	textlabel.id = id
+	textlabel.enabled = false
+	amx.textlabels[id] = textlabel
+end
+
+function Delete3DTextLabel(amxName, id)
+	local amx = g_AMXs[amxName]
+	textlabel = amx.textlabels[id]
+	table.removevalue(amx.textlabels, textlabel)
+end
+
+function Attach3DTextLabel(amxName, textlabel)
+	local amx = g_AMXs[amxName]
+	local id = textlabel.id
+	amx.textlabels[id] = textlabel
+end
+
 function TextDrawCreate(amxName, id, textdraw)
 	local amx = g_AMXs[amxName]
 	textdraw.amx = amx
@@ -983,7 +1098,7 @@ function HideMenuForPlayer(amxName, menuID)
 			g_CurrentMenu.anim:remove()
 			g_CurrentMenu.anim = nil
 		end
-		g_CurrentMenu.anim = Animation.createAndPlay(g_CurrentMenu, { time = 500, from = 1, to = 0, fn = setMenuAlpha }, closeMenu)
+		g_CurrentMenu.anim = Animation.createAndPlay(g_CurrentMenu, { time = 500, from = 1, to = 0, fn = setMenuAlpha }, exitMenu)
 	end
 end
 
@@ -991,7 +1106,7 @@ function DestroyMenu(amxName, menuID)
 	local amx = g_AMXs[amxName]
 	destroyTextDraw(amx.menus[menuID].titletextdraw)
 	if g_CurrentMenu and menuID == g_CurrentMenu.id then
-		closeMenu()
+		exitMenu()
 	end
 	amx.menus[menuID] = nil
 end
@@ -1082,7 +1197,7 @@ function menuClickHandler(button, state, clickX, clickY)
 	local selectedRow = math.floor((clickY - g_CurrentMenu.y - MENU_TOP_PADDING) / MENU_ITEM_HEIGHT)
 	if not (g_CurrentMenu.disabledrows and table.find(g_CurrentMenu.disabledrows, selectedRow)) then
 		serverAMXEvent('OnPlayerSelectedMenuRow', g_PlayerID, selectedRow)
-		closeMenu()
+		exitMenu()
 	end
 end
 
@@ -1222,3 +1337,155 @@ function TogglePlayerClock(amxName, toggle)
 	setMinuteDuration(toggle and 1000 or 2147483647)
 	showPlayerHudComponent('clock', toggle)
 end
+
+function createListDialog()
+		listDialog = nil
+		listWindow = guiCreateWindow(screenWidth/2 - 541/2,screenHeight/2 - 352/2,541,352,"",false)
+		guiWindowSetMovable(listWindow,false)
+		guiWindowSetSizable(listWindow,false)
+		listGrid = guiCreateGridList(9,19,523,300,false,listWindow)
+		guiGridListSetSelectionMode(listGrid,2)
+		guiGridListSetScrollBars(listGrid, true, true)
+		listColumn = guiGridListAddColumn(listGrid, "List", 0.85)
+		listButton1 = guiCreateButton(10,323,256,20,"",false,listWindow)
+		listButton2 = guiCreateButton(281,323,256,20,"",false,listWindow)
+		guiSetVisible(listWindow, false)
+		addEventHandler("onClientGUIClick", listButton1, OnListDialogButton1Click, false)
+		addEventHandler("onClientGUIClick", listButton2, OnListDialogButton2Click, false)
+end
+
+function createInputDialog()	
+		inputDialog = nil
+		inputWindow = guiCreateWindow(screenWidth/2 - 541/2,screenHeight/2 - 352/2,541,352,"",false)
+		guiWindowSetMovable(listWindow,false)
+		guiWindowSetSizable(listWindow,false)
+		inputLabel = guiCreateLabel(9, 19, 523, 270, "", false, inputWindow)
+		inputEdit = guiCreateEdit(9,290,523,30,"",false,inputWindow)
+		inputButton1 = guiCreateButton(10,323,256,20,"",false,inputWindow)
+		inputButton2 = guiCreateButton(281,323,256,20,"",false,inputWindow)
+		guiSetVisible(inputWindow, false)
+		addEventHandler("onClientGUIClick", inputButton1, OnInputDialogButton1Click, false)
+		addEventHandler("onClientGUIClick", inputButton2, OnInputDialogButton2Click, false)
+end
+
+function createMessageDialog()
+		msgDialog = nil
+		msgWindow = guiCreateWindow(screenWidth/2 - 541/2,screenHeight/2 - 352/2,541,352,"",false)
+		guiWindowSetMovable(msgWindow,false)
+		guiWindowSetSizable(msgWindow,false)
+		msgLabel = guiCreateLabel(9, 19, 523, 300, "", false, msgWindow)
+		msgButton1 = guiCreateButton(10,323,256,20,"",false,msgWindow)
+		msgButton2 = guiCreateButton(281,323,256,20,"",false,msgWindow)
+		guiSetVisible(msgWindow, false)
+		addEventHandler("onClientGUIClick", msgButton1, OnMessageDialogButton1Click, false)
+		addEventHandler("onClientGUIClick", msgButton2, OnMessageDialogButton2Click, false)
+end
+
+function InitDialogs()
+	createListDialog()
+	createInputDialog()
+	createMessageDialog()
+end
+
+function OnListDialogButton1Click( button, state )
+	if button == "left" then
+		local row, column = guiGridListGetSelectedItem(listGrid)
+		local text = guiGridListGetItemText(listGrid, row, column)
+		serverAMXEvent("OnDialogResponse", getElemID(getLocalPlayer()), listDialog, 1, row, text);
+		guiSetVisible(listWindow, false)
+		guiGridListClear(listGrid)
+		showCursor(false)
+		listDialog = nil
+	end
+end
+
+function OnListDialogButton2Click( button, state )
+	if button == "left" then
+		local row, column = guiGridListGetSelectedItem(listGrid)
+		local text = guiGridListGetItemText(listGrid, row, column)
+		serverAMXEvent("OnDialogResponse", getElemID(getLocalPlayer()), listDialog, 0, row, text);
+		guiSetVisible(listWindow, false)
+		guiGridListClear(listGrid)
+		showCursor(false)
+		listDialog = nil
+	end
+end
+
+function OnInputDialogButton1Click( button, state )
+	if button == "left" then
+		serverAMXEvent("OnDialogResponse", getElemID(getLocalPlayer()), inputDialog, 1, 0, guiGetText(inputEdit));
+		guiSetVisible(inputWindow, false)
+		showCursor(false)
+		inputDialog = nil
+	end
+end
+
+function OnInputDialogButton2Click( button, state )
+	if button == "left" then
+		serverAMXEvent("OnDialogResponse", getElemID(getLocalPlayer()), inputDialog, 0, 0, guiGetText(inputEdit));
+		guiSetVisible(inputWindow, false)
+		showCursor(false)
+		inputDialog = nil
+	end
+end
+
+function OnMessageDialogButton1Click( button, state )
+	if button == "left" then
+		serverAMXEvent("OnDialogResponse", getElemID(getLocalPlayer()), msgDialog, 1, 0, "");
+		guiSetVisible(msgWindow, false)
+		showCursor(false)
+		msgDialog = nil
+	end
+end
+
+function OnMessageDialogButton2Click( button, state )
+	if button == "left" then
+		serverAMXEvent("OnDialogResponse", getElemID(getLocalPlayer()), msgDialog, 0, 0, "");
+		guiSetVisible(msgWindow, false)
+		msgDialog = nil
+		showCursor(false)
+	end
+end
+
+
+function ShowPlayerDialog(amxName, dialogid, dialogtype, caption, info, button1, button2)
+	if dialogtype == 0 then
+		guiSetText(msgButton1, button1)
+		guiSetText(msgButton2, button2)
+		guiSetText(msgWindow, caption)
+		guiSetText(msgLabel, info)
+		guiSetVisible(msgWindow, true)
+		msgDialog = dialogid
+		showCursor(true)
+	elseif dialogtype == 1 then
+		guiSetText(inputButton1, button1)
+		guiSetText(inputButton2, button2)
+		guiSetText(inputWindow, caption)
+		guiSetText(inputEdit, "")
+		guiSetText(inputLabel, info)
+		guiSetVisible(inputWindow, true)
+		inputDialog = dialogid
+		showCursor(true)
+	elseif dialogtype == 2 then
+		guiSetText(listButton1, button1)
+		guiSetText(listButton2, button2)
+		guiSetText(listWindow, caption)
+		guiSetVisible(listWindow, true)
+		listDialog = dialogid
+		showCursor(true)
+		local items = string.gsub(info, "\t", "        ")
+		items = string.split(items, "\n")
+		for k,v in ipairs(items) do
+			local row = guiGridListAddRow ( listGrid )
+			guiGridListSetItemText ( listGrid, row, listColumn, v, false, true)
+		end
+	end
+end
+
+addEvent ( "onPlayerClickPlayer" )
+function OnPlayerClickPlayer ( element )
+	serverAMXEvent('OnPlayerClickPlayer', getElemID(getLocalPlayer()), getElemID(element), 0)
+end
+addEventHandler ( "onPlayerClickPlayer", getRootElement(), OnPlayerClickPlayer )
+
+

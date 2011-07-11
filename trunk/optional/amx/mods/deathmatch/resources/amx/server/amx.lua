@@ -1,4 +1,5 @@
 g_LoadedAMXs = {}
+g_Events = {}
 
 g_Players = {}
 g_Bots = {}
@@ -6,6 +7,7 @@ g_Vehicles = {}
 g_Objects = {}
 g_Pickups = {}
 g_Markers = {}
+g_SlothBots = {}
 
 function initGameModeGlobals()
 	g_PlayerClasses = {}
@@ -45,8 +47,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 			end
 		end
 		
-		exports.scoreboard:addScoreboardColumn('Score')
-		
+		exports.amxscoreboard:addScoreboardColumn('Score')
 	end,
 	false
 )
@@ -123,11 +124,13 @@ function loadAMX(fileName, res)
 	amx.timers = {}
 	amx.files = {}
 	amx.textdraws = {}
+	amx.textlabels = {}
 	amx.menus = {}
 	amx.gangzones = {}
 	amx.bots = {}
 	amx.markers = {}
 	amx.dbresults = {}
+	amx.slothbots = {}
 	
 	clientCall(root, 'addAMX', amx.name, amx.type)
 	
@@ -168,7 +171,7 @@ function unloadAMX(amx, notifyClient)
 	
 	amxUnload(amx.cptr)
 	
-	for i,elemtype in ipairs({'pickups', 'vehicles', 'objects', 'gangzones','bots','markers'}) do
+	for i,elemtype in ipairs({'pickups', 'vehicles', 'objects', 'gangzones','bots','markers','textlabels','textdraws'}) do
 		for id,data in pairs(amx[elemtype]) do
 			removeElem(amx, elemtype, data.elem)
 			destroyElement(data.elem)
@@ -223,7 +226,7 @@ addEventHandler('onResourceStop', getRootElement(),
 
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
-		exports.scoreboard:removeScoreboardColumn('Score')
+		exports.amxscoreboard:removeScoreboardColumn('Score')
 		table.each(g_LoadedAMXs, unloadAMX, false)
 		amxUnloadAllPlugins()
 		for i=0,49 do
@@ -305,6 +308,13 @@ function procCallInternal(amx, nameOrOffset, ...)
 			 ret = amxCall(amx.cptr, -1, ...)
 		end
 	else
+		if(g_EventNames[nameOrOffset]) then
+			for k,v in pairs(g_Events) do
+				if v == nameOrOffset then
+					amxCall(amx.cptr, k, ...)
+				end
+			end
+		end
 		ret = amxCall(amx.cptr, nameOrOffset, ...)
 	end
 	amx.proc = prevProc
