@@ -82,6 +82,10 @@ addEventHandler("newResource", rootElement,
 			editor_gui.outputMessage ("You don't have permissions to start a new map!", client,255,0,0)
 			return
 		end
+		if isEditorSaving() or isEditorOpeningResource() then
+			editor_gui.outputMessage ("Cannot create a new map while another is being saved or loaded", client, 255, 0, 0)
+			return
+		end
 		
 		editor_gui.outputMessage (getPlayerName(client).." started a new map.", root,255,0,0)
 		if ( loadedMap ) then
@@ -108,6 +112,9 @@ local openingSource
 local openingStartTick
 local openingMapElement
 local openingMapName
+---
+local quickSaveCoroutine
+local saveResourceCoroutine
 
 function handleOpenResource()
 	local status = coroutine.status(openResourceCoroutine)
@@ -149,6 +156,13 @@ function isEditorOpeningResource()
 	return openingResource and true
 end
 
+function isEditorSaving()
+	if quickSaveCoroutine or saveResourceCoroutine then
+		return true
+	end
+	return false
+end
+
 function openResource( resourceName, onStart )
 	if isEditorOpeningResource() then
 		return
@@ -156,6 +170,11 @@ function openResource( resourceName, onStart )
 	
 	if client and not isPlayerAllowedToDoEditorAction(client,"load") then
 		editor_gui.outputMessage ("You don't have permissions to load another map!", client,255,0,0)
+		return
+	end
+	
+	if isEditorSaving() then
+		editor_gui.outputMessage ("Cannot save while another save is in progress", client,255,0,0)
 		return
 	end
 	
@@ -239,6 +258,12 @@ function saveResource(resourceName, test)
 		return
 	end
 	
+	if isEditorSaving() then
+		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
+			"You cannot save while another save or load is in progress" )
+		return
+	end
+	
 	if client and not isPlayerAllowedToDoEditorAction(client,"saveAs") then
 		editor_gui.outputMessage ("You don't have permissions to save the map!", client,255,0,0)
 		return
@@ -263,6 +288,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client )
 	if ( loadedMap ) then
 		if string.lower(loadedMap) == string.lower(resourceName) then
 			quickSave(true)
+			saveResourceCoroutine = nil
 			return
 		end
 	end
@@ -273,6 +299,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client )
 		if not mapmanager.isMap ( resource ) then
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
 			"You cannot overwrite non-map resources." )
+			saveResourceCoroutine = nil
 			return
 		end
 		for i,fileType in ipairs(fileTypes) do
@@ -280,12 +307,14 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client )
 			if not files then
 				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 				"Could not overwrite resource, the target resource may be corrupt." )
+				saveResourceCoroutine = nil
 				return
 			end
 			for j,filePath in ipairs(files) do
 				if not removeResourceFile ( resource, filePath, fileType ) then
 					triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 					"Could not overwrite resource.  The map resource may be in .zip format." )
+					saveResourceCoroutine = nil
 					return
 				end
 			end
@@ -295,6 +324,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client )
 		if not resource then
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 			"Could not create resource.  The resource directory may exist already or be invalid" )
+			saveResourceCoroutine = nil
 			return
 		end
 	end
@@ -402,7 +432,10 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client )
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	dumpMeta ( metaNode, metaNodes, resource, resourceName..".map", test )
 	xmlUnloadFile ( metaNode )
-	if ( test ) then return returnValue end
+	if ( test ) then 
+		saveResourceCoroutine = nil 
+		return returnValue 
+	end
 	if returnValue then
 		loadedMap = resourceName
 		if (theSaver) then
@@ -414,10 +447,15 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client )
 	end
 	dumpSave()
 	outputDebugString("Full saving of map complete in "..math.floor(getTickCount() - iniTick).." ms")
+	saveResourceCoroutine = nil
 	return returnValue
 end
 
 function quickSave(saveAs, dump)
+	if isEditorSaving() or isEditorOpeningResource() then
+		editor_gui.outputMessage ("Cannot quick save while a save or load is in progress", client,255,0,0)
+		return
+	end
 	if client and not isPlayerAllowedToDoEditorAction(client,"save") then
 		editor_gui.outputMessage ("You don't have permissions to save the map!", client,255,0,0)
 		return
@@ -436,12 +474,14 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		if not mapTable then
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, loadedMap,
 			"Could not overwrite resource, the target resource may be corrupt." )
+			quickSaveCoroutine = nil
 			return
 		end
 		for key,mapPath in ipairs(mapTable) do
 			if not removeResourceFile ( resource,mapPath,"map" ) then
 				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, loadedMap,
 				"Could not overwrite resource.  The map resource may be in .zip format." )
+				quickSaveCoroutine = nil
 				return
 			end
 		end
@@ -449,6 +489,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		local xmlNode = addResourceMap ( resource, loadedMap..".map" )
 		if not xmlNode then
 			triggerClientEvent ( client, "saveloadtest_return", client, "quickSave", false, loadedMap )
+			quickSaveCoroutine = nil
 			return
 		end
 		--dumpMap ( xmlNode, true )
@@ -558,6 +599,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		xmlUnloadFile ( metaNode )
 		if not dump and loadedMap == DUMP_RESOURCE then
 			editor_gui.loadsave_getResources("saveAs",client)
+			quickSaveCoroutine = nil
 			return
 		end
 		if saveAs then
@@ -570,6 +612,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 	else
 		editor_gui.loadsave_getResources("saveAs",client)
 	end
+	quickSaveCoroutine = nil
 end
 
 ------TESTING
@@ -603,6 +646,11 @@ end )
 local lastTestGamemodeName
 
 function beginTest(client,gamemodeName)
+	if isEditorSaving() or isEditorOpeningResource() then
+		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
+		"Cannot begin test while a save or load is in progress" )
+		return false
+	end
 	local testMap = getResourceFromName(TEST_RESOURCE)
 	if not mapmanager.isMap(testMap) then
 		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
@@ -732,7 +780,7 @@ end
 
 -- dump settings
 function dumpSave()
-	if getBool("enableDumpSave", true) and not getElementData(thisRoot, "g_in_test") and not isEditorOpeningResource() then
+	if getBool("enableDumpSave", true) and not getElementData(thisRoot, "g_in_test") and not isEditorOpeningResource() and not isEditorSaving() then
 		quickSave(false,true)
 	end
 end
