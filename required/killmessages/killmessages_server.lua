@@ -77,7 +77,7 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 end
 addEventHandler ( "onPlayerWasted", getRootElement(), KillMessages_onPlayerWasted )
 
-addEvent ( "onPlayerKillMessage", "wasted,killer,weapon" )
+addEvent ( "onPlayerKillMessage" )
 function eventTriggered ( source,killer,weapon,bodypart,suicide,usedVehicle )
 	local wr,wg,wb = getPlayerNametagColor	( source )
 	if getPlayerTeam ( source ) then
