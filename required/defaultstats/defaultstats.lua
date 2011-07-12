@@ -42,3 +42,9 @@ addEventHandler('onGamemodeMapStart', root,
 		end	
 	end
 )
+
+addEventHandler('onPlayerSpawn', root,
+	function()
+		applyStats(source)
+	end
+)
