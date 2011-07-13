@@ -22,12 +22,14 @@ addEventHandler ( "aPermissions", getLocalPlayer(), function ( table )
 	for id, right in ipairs ( table ) do
 		_aclrights[right] = true
 		if ( aAdminForm ) then
-			guiSetEnabled ( _guiprotected[right], true )
+			if _guiprotected[right] then
+				guiSetEnabled ( _guiprotected[right], true )
+			end
 		end
 	end
 end )
 
-addEventHandler ( "onAdminInitialize", _root, function()
+addEventHandler ( "onAdminInitialize", resourceRoot, function()
 	if ( #_guiprotected == 0 ) then
 		triggerServerEvent ( "aPermissions", getLocalPlayer() )
 	end

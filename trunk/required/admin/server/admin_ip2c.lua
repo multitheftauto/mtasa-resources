@@ -28,7 +28,7 @@ function getIpCountry ( ip )
 			local rend = buffer:readInt24()
 			if ip_code <= rend then
 				local rcountry = buffer:readBytes( 2 )
-				return rcountry
+				return rcountry and rcountry ~= "ZZ"
 			end
 		end
 	end

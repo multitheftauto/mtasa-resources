@@ -60,7 +60,8 @@ function aAdminMenu ()
 		aTab1.Version		= guiCreateLabel ( 0.26, 0.245, 0.435, 0.035, "Version: N/A", true, aTab1.Tab )
 		aTab1.Accountname	= guiCreateLabel ( 0.26, 0.275, 0.435, 0.035, "Account Name: N/A", true, aTab1.Tab )
 		aTab1.Groups		= guiCreateLabel ( 0.26, 0.305, 0.435, 0.035, "Groups: N/A", true, aTab1.Tab )
-		aTab1.Flag			= guiCreateStaticImage ( 0.40, 0.125, 0.025806, 0.021154, "client\\images\\empty.png", true, aTab1.Tab )
+		aTab1.Flag			= guiCreateStaticImage ( 0.40, 0.170, 0.025806, 0.021154, "client\\images\\empty.png", true, aTab1.Tab )
+		aTab1.CountryCode	= guiCreateLabel ( 0.45, 0.170, 0.04, 0.035, "", true, aTab1.Tab )
 						  guiCreateHeader ( 0.25, 0.350, 0.20, 0.04, "Game:", true, aTab1.Tab )
 		aTab1.Health		= guiCreateLabel ( 0.26, 0.395, 0.20, 0.04, "Health: 0%", true, aTab1.Tab )
 		aTab1.Armour		= guiCreateLabel ( 0.45, 0.395, 0.20, 0.04, "Armour: 0%", true, aTab1.Tab )
@@ -307,7 +308,7 @@ function aAdminMenu ()
 		triggerServerEvent ( "aSync", getLocalPlayer(), "players" )
 		if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "messages" ) end
 		triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
-		triggerEvent ( "onAdminInitialize" )
+		triggerEvent ( "onAdminInitialize", resourceRoot )
 		showCursor ( true )
 
 		if getVersion().sortable and getVersion().sortable < "1.0.4-9.02436" then
@@ -881,12 +882,17 @@ function aClientClick ( button )
 						guiSetText ( aTab1.Serial, "Serial: "..aPlayers[player]["serial"] )
 						--guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
 						guiSetText ( aTab1.Accountname, "Account Name: "..aPlayers[player]["accountname"] )
-						guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
-						if ( aPlayers[player]["country"] ) then
+						local countryCode = aPlayers[player]["country"]
+						if not countryCode then
+							guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
+							guiSetText ( aTab1.CountryCode, "" )
+						else
 							local x, y = guiGetPosition ( aTab1.IP, false )
 							local width = guiLabelGetTextExtent ( aTab1.IP )
 							guiSetPosition ( aTab1.Flag, x + width + 7, y + 4, false )
-							guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\flags\\"..tostring ( aPlayers[player]["country"] )..".png" )
+							guiSetPosition ( aTab1.CountryCode, x + width + 30, y, false )
+							guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\flags\\"..tostring ( countryCode )..".png" )
+							guiSetText ( aTab1.CountryCode, tostring( countryCode ) )
 						end
 						guiSetText ( aTab1.Version, "Version: " .. ( aPlayers[player]["version"] or "" ) )
 					end
