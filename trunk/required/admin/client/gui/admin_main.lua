@@ -581,6 +581,13 @@ function aClientResourceStop ( resource )
 end
 
 function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
+	if ip == false and serial == false then
+		-- Update country only
+		if aPlayers[source] then
+			aPlayers[source]["country"] = country
+		end
+		return
+	end
 	aPlayers[source] = {}
 	aPlayers[source]["name"] = getPlayerName ( source )
 	aPlayers[source]["IP"] = ip
@@ -924,7 +931,7 @@ function aClientClick ( button )
 					guiSetText ( aTab1.Vehicle, "Vehicle: N/A" )
 					guiSetText ( aTab1.VehicleHealth, "Vehicle Health: 0%" )
 					guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
-
+					guiSetText ( aTab1.CountryCode, "" )
 				end
 			end
 		-- TAB 2, RESOURCES

@@ -28,7 +28,7 @@ function getIpCountry ( ip )
 			local rend = buffer:readInt24()
 			if ip_code <= rend then
 				local rcountry = buffer:readBytes( 2 )
-				return rcountry and rcountry ~= "ZZ"
+				return rcountry ~= "ZZ" and rcountry
 			end
 		end
 	end
@@ -123,6 +123,19 @@ function loadIPGroupsWorker ()
 	fileClose(hReadFile)
 	makeCor = nil
 	collectgarbage("collect")
+
+	-- Update currently connected players
+	for user,info in pairs( aPlayers ) do
+		info["country"] = getPlayerCountry ( user )
+
+		-- Send info to all admins
+		for id, admin in ipairs(getElementsByType("player")) do
+			if ( hasObjectPermissionTo ( admin, "general.adminpanel" ) ) then
+				triggerClientEvent ( admin, "aClientPlayerJoin", user, false, false, false, false, false, aPlayers[user]["country"] )
+			end
+		end
+	end
+
 	return true
 end
 
