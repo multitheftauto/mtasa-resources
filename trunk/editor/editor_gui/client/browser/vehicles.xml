@@ -162,6 +162,17 @@
 			<vehicle	model="573"	keywords=""	/>
 			<vehicle	model="574"	keywords=""	/>
 			<vehicle	model="578"	keywords=""	/>
+		</group>
+		<group name="Trailers">
+			<vehicle	model="606"	keywords=""	name="Baggage Trailer (Covered)"	/>
+			<vehicle	model="607"	keywords=""	name="Baggage Trailer (Uncovered)"	/>
+			<vehicle	model="610"	keywords=""	name="Farm Trailer"	/>
+			<vehicle	model="611"	keywords=""	name="Street Clean - Trailer"	/>
+			<vehicle	model="584"	keywords=""	name="Petrol Trailer"	/>
+			<vehicle	model="608"	keywords=""	name="Stairs"	/>
+			<vehicle	model="435"	keywords=""	name="Cargo Trailer 1"	/>
+			<vehicle	model="450"	keywords=""	name="Cargo Trailer 2"	/>
+			<vehicle	model="591"	keywords=""	name="Cargo Trailer 3"	/>
 		</group>				
 		<group	name="Trucks">			
 			<vehicle	model="414"	keywords=""	/>
