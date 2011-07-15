@@ -282,7 +282,7 @@ local specialSyncers = {
 	parent = function(element) return getElementData(element, "me:parent") end,
 }
 
-function saveResourceCoroutineFunction ( resourceName, test, theSaver, client )
+function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, gamemodeName )
 	local tick = getTickCount()
 	local iniTick = getTickCount()
 	if ( loadedMap ) then
@@ -432,8 +432,9 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client )
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	dumpMeta ( metaNode, metaNodes, resource, resourceName..".map", test )
 	xmlUnloadFile ( metaNode )
-	if ( test ) then 
-		saveResourceCoroutine = nil 
+	if ( test ) then
+		saveResourceCoroutine = nil
+		beginTest(client, gamemodeName)
 		return returnValue 
 	end
 	if returnValue then
@@ -633,9 +634,9 @@ function (gamemodeName)
 	triggerClientEvent ( root, "suspendGUI", client )
 	--local success = saveResource ( TEST_RESOURCE, true )
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
-	local success = coroutine.resume(saveResourceCoroutine, TEST_RESOURCE, true)
+	local success = coroutine.resume(saveResourceCoroutine, TEST_RESOURCE, true, nil, nil, gamemodeName)
 	if ( success ) then
-		beginTest(client,gamemodeName)
+		--beginTest(client,gamemodeName)
 	else
 		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 		"Dummy 'editor_test' resource may be corrupted!" )
