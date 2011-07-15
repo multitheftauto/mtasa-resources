@@ -32,8 +32,27 @@ local mapSettingAction = {
 	weather = function ( value )
 		setWeather(value)
 	end,
+	
+	gravity = function(value)
+		setGravity(value)
+		setTimer(function()
+			for i, p in ipairs(getElementsByType("player")) do
+				setPedGravity(p, value)
+			end
+		end, 1000, 1)
+	end,
+	
+	gamespeed = setGameSpeed,
 
 	waveheight = setWaveHeight,
+	
+	lockTime = function(value)
+		if (value) then
+			setMinuteDuration(100000)
+		else
+			setMinuteDuration(1000)
+		end
+	end
 }
 
 
@@ -79,29 +98,28 @@ function doSaveNewMapSettings( newMapSettings, hidden )
 end
 addEventHandler ( "doSaveMapSettings", rootElement, doSaveNewMapSettings )
 
-addEventHandler ( "onResourceStart", thisResourceRoot,
-	function ()
-		resetMapInfo()
-		if getResourceState( mapmanager.res ) ~= "running" then
-			return
-		end
-		--get the gamemodes
-		local gamemodes = mapmanager.getGamemodes()
-		currentMapSettings.availGamemodes = {}
-		currentMapSettings.addedGamemodes = {}
-		for k,v in ipairs(gamemodes) do
-			local name = getResourceName ( v )
-			if string.lower(name) ~= "freeroam" then
-				table.insert ( currentMapSettings.availGamemodes, name )
-			end
-		end
-		for setting, value in pairs(currentMapSettings) do
-			if mapSettingAction[setting] then 
-				mapSettingAction[setting](value)
-			end
+function setupMapSettings()
+	resetMapInfo()
+	if getResourceState( mapmanager.res ) ~= "running" then
+		return
+	end
+	--get the gamemodes
+	local gamemodes = mapmanager.getGamemodes()
+	currentMapSettings.availGamemodes = {}
+	currentMapSettings.addedGamemodes = {}
+	for k,v in ipairs(gamemodes) do
+		local name = getResourceName ( v )
+		if string.lower(name) ~= "freeroam" then
+			table.insert ( currentMapSettings.availGamemodes, name )
 		end
 	end
-)
+	for setting, value in pairs(currentMapSettings) do
+		if mapSettingAction[setting] then 
+			mapSettingAction[setting](value)
+		end
+	end
+end
+addEventHandler ( "onResourceStart", thisResourceRoot, setupMapSettings )
 
 addEventHandler ( "onClientGUILoaded", getRootElement(),
 	function()

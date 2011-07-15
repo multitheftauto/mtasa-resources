@@ -662,6 +662,7 @@ function beginTest(client,gamemodeName)
 	g_default_spawnmapondeath = get"freeroam.spawnmapondeath"
 	g_default_welcometextonstart = get"freeroam.welcometextonstart"
 	resetMapInfo()
+	setupMapSettings()
 	disablePickups(false)
 	gamemodeName = gamemodeName or lastTestGamemodeName
 	if ( gamemodeName ) then
@@ -749,6 +750,7 @@ function stopTest()
 		addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
 		resetMapInfo()
 	end
+	setupMapSettings()
 	g_in_test = false
 	stopResource ( testRes )
 	
