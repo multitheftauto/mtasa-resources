@@ -1,4 +1,4 @@
-local NAMECOLUMNSIZE = .55
+﻿local NAMECOLUMNSIZE = .55
 local PINGCOLUMNSIZE = .1
 
 resourceColumns = {}

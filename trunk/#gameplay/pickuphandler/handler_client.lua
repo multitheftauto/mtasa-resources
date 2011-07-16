@@ -1,4 +1,4 @@
-localPlayer = getLocalPlayer()
+﻿localPlayer = getLocalPlayer()
 local screenX, screenY = guiGetScreenSize ()
 local lastPickup,overlayText,overlayShowing
 ---

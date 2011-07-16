@@ -1,4 +1,4 @@
-addEvent ("onClientPlayerKillMessage",true)
+﻿addEvent ("onClientPlayerKillMessage",true)
 function onClientPlayerKillMessage ( killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
 	if wasEventCancelled() then return end
 	outputKillMessage ( source, wr,wg,wb,killer,kr,kg,kb,weapon,width,resource )

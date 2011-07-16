@@ -1,4 +1,4 @@
-local columnByName = {}
+﻿local columnByName = {}
 local scoreboardColumns = {}
 local scoreboardRows = {}
 local scoreboardGrid

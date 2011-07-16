@@ -1,4 +1,4 @@
-local g_screenX,g_screenY = guiGetScreenSize()
+﻿local g_screenX,g_screenY = guiGetScreenSize()
 local BONE_ID = 8
 local WORLD_OFFSET = 0.4
 local ICON_PATH = "images/voice.png"

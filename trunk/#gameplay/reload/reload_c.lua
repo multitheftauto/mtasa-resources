@@ -1,4 +1,4 @@
-addCommandHandler("Reload weapon",
+﻿addCommandHandler("Reload weapon",
 	function()
 		triggerServerEvent("onPlayerReload",getLocalPlayer())
 	end

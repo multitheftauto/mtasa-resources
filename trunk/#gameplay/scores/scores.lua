@@ -1,4 +1,4 @@
-local root = getRootElement()
+﻿local root = getRootElement()
 local scoresRoot = getResourceRootElement(getThisResource())
 
 local scoreColumns = {"kills", "deaths", "self", "ratio", "status"}

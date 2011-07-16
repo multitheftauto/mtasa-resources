@@ -1,4 +1,4 @@
---[[
+﻿--[[
 <maplimit>
 	<point x="" y="" />
 	<point x="" y="" />

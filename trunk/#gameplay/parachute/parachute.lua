@@ -1,4 +1,4 @@
-root = getRootElement ()
+﻿root = getRootElement ()
 
 local function onResourceStart ( resource )
   local players = getElementsByType ( "player" )

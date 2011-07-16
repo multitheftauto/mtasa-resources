@@ -1,4 +1,4 @@
-local localPlayer = getLocalPlayer()
+﻿local localPlayer = getLocalPlayer()
 local driver = false
 local shooting = false
 local helpText,helpAnimation

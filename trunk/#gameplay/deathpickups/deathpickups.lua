@@ -1,4 +1,4 @@
-local timers = {} -- timers for existing pickups
+﻿local timers = {} -- timers for existing pickups
 
 local function onDeathPickupHit ( player, matchingDimension )
 	if matchingDimension then

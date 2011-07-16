@@ -1,4 +1,4 @@
--- needs configurable blip colors, and team support
+﻿-- needs configurable blip colors, and team support
 root = getRootElement ()
 color = { 0, 255, 0 }
 players = {}

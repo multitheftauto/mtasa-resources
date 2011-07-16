@@ -1,4 +1,4 @@
-g_gridListContents = {}   -- info about binded gridlists
+﻿g_gridListContents = {}   -- info about binded gridlists
 g_openedWindows = {}      -- {window1table = true, window2table = true, ...}
 
 GRIDLIST_UPDATE_CHUNK_SIZE = 10

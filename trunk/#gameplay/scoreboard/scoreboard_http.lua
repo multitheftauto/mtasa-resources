@@ -1,4 +1,4 @@
-local httpColumns = {}
+﻿local httpColumns = {}
 local httpRows = {}
 local updateInterval = 1000
 local lastUpdateTime = 0

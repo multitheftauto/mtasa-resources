@@ -1,4 +1,4 @@
---STOLED FROM ARC_ LUL
+﻿--STOLED FROM ARC_ LUL
 --[[
 	Anim queue: list of animation specifications that have to complete their animation one after the other
 	Anim: an element (GUI, player, vehicle...) and a list of phases

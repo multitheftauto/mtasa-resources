@@ -1,4 +1,4 @@
-FALL_VELOCITY = 0.9 -- how fast you have to be going (z) before you stop landing properly and just hit the ground
+﻿FALL_VELOCITY = 0.9 -- how fast you have to be going (z) before you stop landing properly and just hit the ground
 MIN_GROUND_HEIGHT = 20 -- how high above the ground you need to be before parachuting will start
 local y_turn_offset = 20 -- limits how far to the sides the player will lean when turning left or right
 local rotation_accelerate = 0.5 -- speed at which the player will lean when turning

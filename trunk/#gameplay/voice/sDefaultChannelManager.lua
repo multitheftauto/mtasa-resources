@@ -1,4 +1,4 @@
-if isVoiceEnabled() then
+﻿if isVoiceEnabled() then
 	addEventHandler ( "onPlayerJoin", root, 
 		function()
 			setPlayerInternalChannel ( source, root )

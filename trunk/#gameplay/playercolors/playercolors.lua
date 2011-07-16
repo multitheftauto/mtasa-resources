@@ -1,4 +1,4 @@
-local lowerBound,upperBound = unpack(get"color_range")
+﻿local lowerBound,upperBound = unpack(get"color_range")
 g_Root = getRootElement ()
 g_ResourceRoot = getResourceRootElement ( getThisResource () )
 

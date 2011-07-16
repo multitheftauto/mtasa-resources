@@ -1,4 +1,4 @@
-local validDrivebyWeapons = { [22]=true,[23]=true,[24]=true,[25]=true,
+﻿local validDrivebyWeapons = { [22]=true,[23]=true,[24]=true,[25]=true,
 [26]=true,[27]=true,[28]=true,[29]=true,[32]=true,[30]=true,[31]=true,
 [32]=true,[33]=true,[38]=true }
 

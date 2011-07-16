@@ -1,4 +1,4 @@
-addEvent ( "setupNewMissionTimer", true )
+﻿addEvent ( "setupNewMissionTimer", true )
 addEventHandler ( "setupNewMissionTimer", rootElement,
 	function(duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 		setupMissionTimer ( source, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )

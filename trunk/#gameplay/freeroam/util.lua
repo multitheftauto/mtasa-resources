@@ -1,4 +1,4 @@
-function createServerCallInterface()
+﻿function createServerCallInterface()
 	return setmetatable(
 		{},
 		{
