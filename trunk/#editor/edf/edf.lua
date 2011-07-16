@@ -675,7 +675,15 @@ function edfCloneElement(theElement, editorMode )
 			childData[property] = parametersTable[property] or propertyData.default
 		end
 		
+		local oldElement = theElement
 		theElement = cloneElement(theElement)
+		
+		if getElementType(oldElement) == "object" and isElementDoubleSided(oldElement) then
+			setElementDoubleSided(theElement, true)
+		end
+		if getElementType(oldElement) == "vehicle" then
+			setVehiclePaintjob(theElement, getVehiclePaintjob(oldElement))
+		end
 		
 		setElementInterior(theElement, parametersTable.interior)
 		setElementDimension(theElement, parametersTable.dimension)
