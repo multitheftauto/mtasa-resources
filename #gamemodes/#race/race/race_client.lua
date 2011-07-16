@@ -1117,7 +1117,7 @@ function MovePlayerAway.update(nozcheck)
 		local vehicle = g_Vehicle
 		if vehicle then
 			fixVehicle( vehicle )
-			setVehicleFrozen ( vehicle, true )
+			setElementFrozen ( vehicle, true )
 			setElementPosition( vehicle, MovePlayerAway.posX, MovePlayerAway.posY, MovePlayerAway.posZ )
 			setElementVelocity( vehicle, 0,0,0 )
 			setVehicleTurnVelocity( vehicle, 0,0,0 )
@@ -1139,7 +1139,7 @@ function MovePlayerAway.stop()
 		if vehicle then
 			setElementVelocity( vehicle, 0,0,0 )
 			setVehicleTurnVelocity( vehicle, 0,0,0 )
-			setVehicleFrozen ( vehicle, false )
+			setElementFrozen ( vehicle, false )
 			setVehicleDamageProof ( vehicle, false )
 			setElementHealth ( vehicle, MovePlayerAway.health )
 		end

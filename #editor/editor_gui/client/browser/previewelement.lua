@@ -31,7 +31,7 @@ function setModel.vehicleID ( model )
 		setElementDimension ( browser.mainElement, BROWSER_DIMENSION )
 		setElementStreamable( browser.mainElement, false)
 		setElementCollisionsEnabled( browser.mainElement, false) --this prevents them from jittering
-		setVehicleFrozen( browser.mainElement, true)
+		setElementFrozen( browser.mainElement, true)
 		setElementInterior( browser.mainElement, 14)
 		for i=0,5 do
 			setVehicleDoorState ( browser.mainElement, i, 0 )
