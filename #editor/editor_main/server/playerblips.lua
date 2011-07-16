@@ -1,4 +1,4 @@
-local blipContainer
+﻿local blipContainer
 
 local defaultColor     = {0,255,0}
 local playerBlips      = {}

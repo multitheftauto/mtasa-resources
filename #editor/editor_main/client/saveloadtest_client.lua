@@ -1,4 +1,4 @@
-local loadedMap = false
+﻿local loadedMap = false
 addEvent ( "saveloadtest_return",true )
 function openResource ( resourceName )
 	triggerServerEvent ( "openResource", getLocalPlayer(), resourceName )

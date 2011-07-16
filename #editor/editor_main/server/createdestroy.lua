@@ -1,4 +1,4 @@
-local rootElement = getRootElement()
+﻿local rootElement = getRootElement()
 local WAIT_LOAD_INTERVAL = 100 --ms
 
 function makeElementStatic(element)

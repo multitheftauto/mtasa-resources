@@ -1,4 +1,4 @@
--- state variables
+﻿-- state variables
 local speed = 0
 local strafespeed = 0
 local rotX, rotY = 0,0

@@ -1,4 +1,4 @@
--- Copyright (c) 2008, Alberto Alonso
+﻿-- Copyright (c) 2008, Alberto Alonso
 --
 -- All rights reserved.
 --

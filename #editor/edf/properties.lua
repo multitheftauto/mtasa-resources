@@ -1,4 +1,4 @@
-local function getStringFromColor( R, G, B, A )
+﻿local function getStringFromColor( R, G, B, A )
 	if R and G and B then
 		A = A or 255
 		return "#"..string.format("%02x",R)..string.format("%02x",G)..string.format("%02x",B)..string.format("%02x",A)

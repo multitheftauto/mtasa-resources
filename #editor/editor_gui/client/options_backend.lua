@@ -1,4 +1,4 @@
-------All the tables defining stuff
+﻿------All the tables defining stuff
 local bools = { ["false"]=false, ["true"]=true }
 local xmlVariants = {
 ["enableSounds"]="enablesounds",

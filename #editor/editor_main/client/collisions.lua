@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Collection of functions to detect if a line hits a shape
 
 	Special thanks to Rayco "XeNMaX" Hernandez García for his BIG help.

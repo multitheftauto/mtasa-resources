@@ -1,4 +1,4 @@
-local BUFFER_SIZE = 500
+﻿local BUFFER_SIZE = 500
 local SCRIPT_G = {}
 local CLIENTSCRIPTS = {} ---Used to send to joining players etc
 

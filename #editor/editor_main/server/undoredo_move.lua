@@ -1,4 +1,4 @@
-justCreated = {}
+﻿justCreated = {}
 local selectedElements = {}
 
 local function isElementMoved(element)

@@ -1,4 +1,4 @@
-mapSettingsCamera = {}
+﻿mapSettingsCamera = {}
 mapsettings = {}
 screenX, screenY = guiGetScreenSize()
 weather = {

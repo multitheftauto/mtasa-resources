@@ -1,4 +1,4 @@
-local root = getRootElement()
+﻿local root = getRootElement()
 function import ( resource, cmd, resourceString )
 	if type(resource) == "string" then
 		resource = getResourceFromName(resource)

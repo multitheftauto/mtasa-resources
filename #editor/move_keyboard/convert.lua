@@ -1,4 +1,4 @@
--- XYZ euler rotation to YXZ euler rotation
+﻿-- XYZ euler rotation to YXZ euler rotation
 function convertRotationToMTA(rx, ry, rz)
 	local sinX = math.sin(rx)
 	local cosX = math.cos(rx)

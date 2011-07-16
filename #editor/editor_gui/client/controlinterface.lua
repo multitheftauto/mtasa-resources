@@ -1,4 +1,4 @@
-local function onControlsLoaded()
+﻿local function onControlsLoaded()
 	bindControl ( "toggle_gui_display","down", toggleHUDShowing )
 	bindControl ( "edf_prev", "down", scrollEDF )
 	bindControl ( "edf_next", "down", scrollEDF )

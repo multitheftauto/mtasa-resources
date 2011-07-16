@@ -1,4 +1,4 @@
---[[-----------DOCUMENTATION---------------
+﻿--[[-----------DOCUMENTATION---------------
 SYNTAX:
 guibutton,guibutton,guibutton = guiShowMessageBox ( string message, string boxType, string title [, string button1, string button2, stringbutton3] )
 REQUIRED ARGUMENTS

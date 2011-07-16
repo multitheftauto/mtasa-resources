@@ -1,4 +1,4 @@
-browserList = {}
+﻿browserList = {}
 browserList_mt = { __index = browserList }
 local activatedBrowsers = {}
 local ROW_HEIGHT = 14

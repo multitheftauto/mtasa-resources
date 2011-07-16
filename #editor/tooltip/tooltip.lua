@@ -1,4 +1,4 @@
--- Default values
+﻿-- Default values
 local DEFAULT_FRAME_COUNT = 10
 local DEFAULT_BACKGROUND  = { r = 255, g = 255, b = 128 }
 local DEFAULT_FOREGROUND  = { r = 0,   g = 0,   b = 0   }

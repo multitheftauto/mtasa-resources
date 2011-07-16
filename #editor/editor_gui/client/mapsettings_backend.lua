@@ -1,4 +1,4 @@
---store defaults
+﻿--store defaults
 local MINUTE_DURATION = 2147483647
 local SET_TIME_TIMER
 local previousEnvironment,radioWeather = {}

@@ -1,4 +1,4 @@
-local welcomeWindow
+﻿local welcomeWindow
 local proceedToTutorial,skipTutorial
 local editorRes = getResourceFromName"editor_main"
 local welcomeText = [[Welcome to the MTA:SA Map Editor.  This is your first time using the editor, so you are able to enter tutorial mode which will teach you the basics of using the editor. 

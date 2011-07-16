@@ -1,4 +1,4 @@
----Created by norby89, based upon freecam by eAi
+﻿---Created by norby89, based upon freecam by eAi
 -- state variables
 local rotX, rotY = 0, 0
 local cameraDistance = 0

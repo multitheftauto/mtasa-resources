@@ -1,4 +1,4 @@
--- TO DO
+﻿-- TO DO
 -- stop game physics from making OBJECTS spin and fall
 -- make it possible for elements to hit surfaces properly
 

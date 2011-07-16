@@ -1,4 +1,4 @@
-local guiCreateLabel = guiCreateMinimalLabel
+﻿local guiCreateLabel = guiCreateMinimalLabel
 local tabpanel
 dialog = {}
 interiors = {}

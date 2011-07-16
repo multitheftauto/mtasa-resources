@@ -1,4 +1,4 @@
-function isResourceRunning(res)
+﻿function isResourceRunning(res)
 	return getResourceState(res)=="running"
 end
 

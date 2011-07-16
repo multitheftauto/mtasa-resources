@@ -1,4 +1,4 @@
-local COMMAND_HANDLERS = {}
+﻿local COMMAND_HANDLERS = {}
 
 function createCommandHandlerContainerForResource(resource)
 	COMMAND_HANDLERS[resource] = {}

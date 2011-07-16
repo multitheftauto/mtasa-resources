@@ -1,4 +1,4 @@
-local function syncElementPosition(element, value)
+﻿local function syncElementPosition(element, value)
 	local x, y, z = unpack(value)
 	edf.edfSetElementPosition(element, x, y, z)
 end

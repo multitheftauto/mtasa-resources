@@ -1,4 +1,4 @@
-local localPlayer = getLocalPlayer()
+﻿local localPlayer = getLocalPlayer()
 local rootElement = getRootElement()
 currentBrowserGUI = {}
 currentBrowser = {}

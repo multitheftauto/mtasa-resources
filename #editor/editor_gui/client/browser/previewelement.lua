@@ -1,4 +1,4 @@
-tx,ty,tz = 91,100,502 --The position of 	the element
+﻿tx,ty,tz = 91,100,502 --The position of 	the element
 local hideX,hideY,hideZ = 0,0,0 --where to hide the local player
 local rz = 0 -- The current rotation 
 local maxRadius = 5

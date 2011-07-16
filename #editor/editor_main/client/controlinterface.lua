@@ -1,4 +1,4 @@
-addEvent "onControlPressed"
+﻿addEvent "onControlPressed"
 addEvent "onEditorSuspended"
 addEvent "onEditorResumed"
 local rootElement = getRootElement()

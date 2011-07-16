@@ -1,4 +1,4 @@
-optionsActions = {}
+﻿optionsActions = {}
 --7 - 16
 function optionsActions.enableSounds (value)
 	enableSound = value

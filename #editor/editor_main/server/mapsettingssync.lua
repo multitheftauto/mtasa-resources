@@ -1,4 +1,4 @@
-local rootElement = getRootElement()
+﻿local rootElement = getRootElement()
 
 --current settings' table, initially default map settings
 local defaults = {

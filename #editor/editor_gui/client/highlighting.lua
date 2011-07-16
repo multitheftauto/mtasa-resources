@@ -1,4 +1,4 @@
---this script does most of the work where a highlighter appears when you mouse over an icon
+﻿--this script does most of the work where a highlighter appears when you mouse over an icon
 local textOffsetY = 2
 local textOffsetX = 5
 local resourceTextOffsetY = 37
