@@ -1,4 +1,4 @@
---Script credit: eAi
+﻿--Script credit: eAi
 --outputChatBox ( "Freecam Loaded", 255, 127, 0 ) --DEBUG
 local collision = true
 local maxspeed, superspeed = .5, .75

@@ -1,4 +1,4 @@
-g_ResRoot = getResourceRootElement(getThisResource())
+﻿g_ResRoot = getResourceRootElement(getThisResource())
 
 --[[
 local function fndebug(...)

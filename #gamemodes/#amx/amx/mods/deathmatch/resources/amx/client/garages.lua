@@ -1,4 +1,4 @@
-addEventHandler( "onClientRender", getRootElement(),
+﻿addEventHandler( "onClientRender", getRootElement(),
 	function(  )
 		for i=0,49 do
 			local gx, gy, gz = getGaragePosition( i )

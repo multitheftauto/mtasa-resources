@@ -1,4 +1,4 @@
--- This client script is completely controlled by the server
+﻿-- This client script is completely controlled by the server
 Countdown = {}
 Countdown.__index = Countdown
 Countdown.instances = {}

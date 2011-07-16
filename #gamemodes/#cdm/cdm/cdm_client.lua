@@ -1,4 +1,4 @@
-function cdm_clientResourceStart ( resourcename )
+﻿function cdm_clientResourceStart ( resourcename )
 	if ( resourcename == getThisResource () ) then
 		bindKey ( "i", "down", "Show Vehicles", "1" )
 		bindKey ( "i", "up", "Show Vehicles", "0" )

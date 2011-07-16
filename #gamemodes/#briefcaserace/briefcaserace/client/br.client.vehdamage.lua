@@ -1,4 +1,4 @@
--- This script calls the sever whenever the checkElement is shot at. It can also package multiple shots and send them as one event to save bandwidth.
+﻿-- This script calls the sever whenever the checkElement is shot at. It can also package multiple shots and send them as one event to save bandwidth.
 -- This event should be added for one client only, or the server will recieve the same damage event from multiple clients.
 -- How event packaging works: On event, wait MAX_WAIT_TIME. If nothing happens in that time, send. On next event, 1) cancel old wait time if exists, 2) if number of packaged events equals MAX_SEND_AMOUNT, send, otherwise wait again.
 -- Note: packaging has been disabled since it delays too much

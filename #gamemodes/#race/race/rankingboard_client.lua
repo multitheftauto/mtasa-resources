@@ -1,4 +1,4 @@
-RankingBoard = {}
+﻿RankingBoard = {}
 RankingBoard.__index = RankingBoard
 
 RankingBoard.instances = {}

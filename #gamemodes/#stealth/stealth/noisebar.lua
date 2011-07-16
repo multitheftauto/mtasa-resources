@@ -1,4 +1,4 @@
-function setupstuff ()
+﻿function setupstuff ()
 	blipshowing = 0
 	soundlevel = 0
 	thisplayer = getLocalPlayer ()

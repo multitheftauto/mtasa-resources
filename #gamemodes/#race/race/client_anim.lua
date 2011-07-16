@@ -1,4 +1,4 @@
---[[
+﻿--[[
 
   Client animation library by arc_
                Version 1.0.0

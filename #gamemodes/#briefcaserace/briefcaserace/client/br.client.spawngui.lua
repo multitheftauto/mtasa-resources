@@ -1,4 +1,4 @@
--- add a pretty picture of a briefcase!
+﻿-- add a pretty picture of a briefcase!
 local TEXT_Y_INTERVAL = 38
 --local TEXT_Y_INTERVAL = .05
 

@@ -1,4 +1,4 @@
-local getEnemyTeam = { RED = "BLUE", BLUE = "RED" }
+﻿local getEnemyTeam = { RED = "BLUE", BLUE = "RED" }
 local blipColors = { RED = {255,0,0}, BLUE = {0,0,255} }
 local playerBlips = {}
 local blipInfo = {}

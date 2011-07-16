@@ -1,4 +1,4 @@
-function player_Spawn (  )
+﻿function player_Spawn (  )
 	setPedStat ( source, 225, 999 )
 	--outputChatBox ( "called for "..getClientName ( source ) )
 	skin = getElementModel ( source )

@@ -1,4 +1,4 @@
--- CTF-Sewer script by jhxp , contains parts of two scripts:
+﻿-- CTF-Sewer script by jhxp , contains parts of two scripts:
 -- giveWeaponsOnSpawn for CTF: CS Italy by Ratt
 -- assault (respawning vehicles) by driver2
 

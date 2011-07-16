@@ -1,4 +1,4 @@
---this was heavilly based on freecam, thanks eAi
+﻿--this was heavilly based on freecam, thanks eAi
 --max rots are half the distance either way
 local buttonStates = {}
 local maxRot = 90

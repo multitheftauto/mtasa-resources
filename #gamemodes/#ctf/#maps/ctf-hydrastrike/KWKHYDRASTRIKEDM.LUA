@@ -1,4 +1,4 @@
-function onPlayerSpawn ()
+﻿function onPlayerSpawn ()
 	giveWeapon ( source, 16, 5 )
 	giveWeapon ( source, 25, 100 )
 	giveWeapon ( source, 28, 500, true )

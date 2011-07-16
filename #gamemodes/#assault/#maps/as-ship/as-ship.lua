@@ -1,4 +1,4 @@
-
+﻿
 
 function finished(objective)
 	if (objective.id ~= "freight") then return end

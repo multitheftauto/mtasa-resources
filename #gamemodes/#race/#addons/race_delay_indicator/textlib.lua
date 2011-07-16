@@ -1,4 +1,4 @@
-dxText = {}
+﻿dxText = {}
 dxText_mt = { __index = dxText }
 local idAssign,idPrefix = 0,"c"
 local g_screenX,g_screenY = guiGetScreenSize()

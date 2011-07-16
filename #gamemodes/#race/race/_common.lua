@@ -1,4 +1,4 @@
---
+﻿--
 -- common.lua
 --   Common setting for server and client
 --

@@ -1,4 +1,4 @@
--- two parallel arrays, one with vehicle IDs and one with vehicle drop thresholds
+﻿-- two parallel arrays, one with vehicle IDs and one with vehicle drop thresholds
 
 local vehiclesByClass = {}
 vehiclesByClass[1] = {441, 464, 501, 465, 564, 594, 510, 509, 481} -- rcs

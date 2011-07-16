@@ -1,4 +1,4 @@
--- vehicle health bar added by arc_
+﻿-- vehicle health bar added by arc_
 
 local theVan
 local screenWidth, screenHeight = guiGetScreenSize()

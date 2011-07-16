@@ -1,4 +1,4 @@
---Modified by Ransom
+﻿--Modified by Ransom
 players = getElementsByType ( "player" )
 root = getRootElement ()
 scoreboardRes = getResourceFromName("scoreboard")

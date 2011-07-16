@@ -1,4 +1,4 @@
-addEvent("onPlayerGarageEnter", true)
+﻿addEvent("onPlayerGarageEnter", true)
 
 addEventHandler("onResourceStart", getResourceRootElement(),
 function (resource)

@@ -1,4 +1,4 @@
-root = getRootElement()
+﻿root = getRootElement()
 SPTick = {}
 tdmaSPTimer = {}
 

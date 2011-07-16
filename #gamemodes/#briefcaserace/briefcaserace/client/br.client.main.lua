@@ -1,4 +1,4 @@
------------------------------------ D E B U G -----------------------------------
+﻿----------------------------------- D E B U G -----------------------------------
 local bcCarriedText = 	guiCreateLabel(100, 425, 500, 100, "Briefcase carrier :  none", false); 				guiSetVisible(bcCarriedText, false)
 local bcIdleText = 		guiCreateLabel(100, 450, 500, 100, "Briefcase idle :  false", false); 					guiSetVisible(bcIdleText, false)
 local obExistsText = 	guiCreateLabel(100, 487.5, 500, 100, "Objective exists :  false", false); 				guiSetVisible(obExistsText, false)

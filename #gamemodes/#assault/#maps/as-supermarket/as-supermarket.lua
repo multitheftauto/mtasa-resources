@@ -1,4 +1,4 @@
-function player_Spawn (  )
+﻿function player_Spawn (  )
 	--outputChatBox ( "called for "..getClientName ( source ) )
 	skin = getElementModel ( source )
 	notrolley = getAttachedElements ( source )

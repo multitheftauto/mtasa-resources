@@ -1,4 +1,4 @@
---[[
+﻿--[[
 <team name="" colorR="" colorG="" colorB="">
 	<flag name="" posX="" posY="" posZ="" />
 	<spawnpoint posX="" posY="" posZ="" rot="" model="" />

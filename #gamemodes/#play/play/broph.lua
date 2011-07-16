@@ -1,4 +1,4 @@
-addEventHandler("onResourceStart", resourceRoot,
+﻿addEventHandler("onResourceStart", resourceRoot,
 	function()
 		resetMapInfo()
 		for i,player in ipairs(getElementsByType("player")) do

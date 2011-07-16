@@ -1,4 +1,4 @@
-DestructionDerby = setmetatable({}, RaceMode)
+﻿DestructionDerby = setmetatable({}, RaceMode)
 DestructionDerby.__index = DestructionDerby
 
 DestructionDerby:register('Destruction derby')

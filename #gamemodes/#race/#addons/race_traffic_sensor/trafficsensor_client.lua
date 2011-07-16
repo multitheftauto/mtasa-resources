@@ -1,4 +1,4 @@
---
+﻿--
 -- traffic_sensor_client.lua
 --
 

@@ -1,4 +1,4 @@
-g_ServerVars = {
+﻿g_ServerVars = {
 	announce = true,
 	anticheat = false,
 	bind = '',

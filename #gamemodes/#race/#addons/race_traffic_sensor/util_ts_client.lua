@@ -1,4 +1,4 @@
---
+﻿--
 -- util_ts_client.lua
 --
 g_Root = getRootElement()

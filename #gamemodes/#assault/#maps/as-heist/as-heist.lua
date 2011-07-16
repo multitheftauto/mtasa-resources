@@ -1,4 +1,4 @@
-local resourceRoot = getResourceRootElement ( getThisResource() )
+﻿local resourceRoot = getResourceRootElement ( getThisResource() )
 local root = getRootElement()
 local moneybags, keycards, cols = {}, {}, {}
 local attackers, currentObj, isInterior = nil, nil, nil

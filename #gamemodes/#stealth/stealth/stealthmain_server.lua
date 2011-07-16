@@ -1,4 +1,4 @@
-local spectators = {}
+﻿local spectators = {}
 local getPlayerSpectatee = {}
 resourceRoot = getResourceRootElement(getThisResource())
 

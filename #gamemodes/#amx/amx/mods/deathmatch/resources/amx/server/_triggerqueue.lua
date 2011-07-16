@@ -1,4 +1,4 @@
-_triggerClientEvent = triggerClientEvent
+﻿_triggerClientEvent = triggerClientEvent
 
 local playerData = {}			-- { player = { loaded = bool, pending = {...} } }
 

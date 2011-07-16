@@ -1,4 +1,4 @@
-
+﻿
 function openSilo(objective)
 	if (objective.id == "silo") then
 		local objects = getElementsByType("object")

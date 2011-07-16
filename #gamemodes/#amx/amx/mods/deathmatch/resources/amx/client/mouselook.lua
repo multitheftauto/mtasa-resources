@@ -1,4 +1,4 @@
--- implements a mouse look for spectating e.g. vehicles, as MTA's setCameraTarget only supports players
+﻿-- implements a mouse look for spectating e.g. vehicles, as MTA's setCameraTarget only supports players
 
 local screenWidth, screenHeight = guiGetScreenSize()
 
