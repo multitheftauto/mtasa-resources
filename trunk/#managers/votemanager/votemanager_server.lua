@@ -1,4 +1,4 @@
-local activePoll
+﻿local activePoll
 
 local pollTimer
 local defaultConfig = {}

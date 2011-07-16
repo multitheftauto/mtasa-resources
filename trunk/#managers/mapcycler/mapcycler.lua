@@ -1,4 +1,4 @@
-rootElement = getRootElement()
+﻿rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 
 local cycleMode

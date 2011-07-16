@@ -1,4 +1,4 @@
-
+﻿
 function startCycler_vote()
 	addCommandHandler("skipmap", cycleMap_vote, true)
 	

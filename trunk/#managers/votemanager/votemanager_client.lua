@@ -1,4 +1,4 @@
-local rootElement = getRootElement()
+﻿local rootElement = getRootElement()
 local localPlayer = getLocalPlayer()
 
 local voteWindow

@@ -1,4 +1,4 @@
-local rootElement = getRootElement()
+﻿local rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 local serverConsole = getElementByIndex("console", 0)
 
