@@ -1,4 +1,4 @@
--- ACLs
+﻿-- ACLs
 function getACLs()
 	local tbl = {}
 	local acls = aclList()

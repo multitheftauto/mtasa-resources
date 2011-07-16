@@ -1,4 +1,4 @@
-registeredStats = {}
+﻿registeredStats = {}
 stats = {}
 nodepos = 1
 maxstatrecords = 60  -- 1  hours worth

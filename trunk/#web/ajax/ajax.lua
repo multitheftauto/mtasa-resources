@@ -1,4 +1,4 @@
--- was #E1ECFE
+﻿-- was #E1ECFE
 function moduleStart ( name, title )
     return "<div style='background: #898B5E; padding:10px;' id='" .. name .. "'><img src='/ajax/loading.gif' style='float:right;display:none' id='" .. name .. "Loading'><strong>" .. title .. "</strong> <span id='" .. name .. "Status'>&nbsp;</span><br><br>";
 end
