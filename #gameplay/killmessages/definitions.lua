@@ -1,4 +1,4 @@
-iconWidths = {
+﻿iconWidths = {
 [0] = 21,
 [1] = 15,
 [2] = 97,

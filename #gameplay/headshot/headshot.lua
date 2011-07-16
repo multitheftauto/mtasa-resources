@@ -1,4 +1,4 @@
-addEvent "onPlayerHeadshot"
+﻿addEvent "onPlayerHeadshot"
 
 addEventHandler("onPlayerDamage", getRootElement(),
 	function (attacker, weapon, bodypart, loss)

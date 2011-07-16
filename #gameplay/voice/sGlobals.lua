@@ -1,4 +1,4 @@
-if isVoiceEnabled() then
+﻿if isVoiceEnabled() then
 	TEAM_REFRESH = 4000 -- Interval in which team channels are refreshed, in MS.
 	SETTINGS_REFRESH = 5000 -- Interval in which team channels are refreshed, in MS.
 	resourceRoot = getResourceRootElement(getThisResource())

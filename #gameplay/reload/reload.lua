@@ -1,4 +1,4 @@
-function forceReload(p)
+﻿function forceReload(p)
 	reloadPedWeapon (p)
 end
 addCommandHandler("Reload weapon",forceReload)

@@ -1,4 +1,4 @@
-local interiors = {}
+﻿local interiors = {}
 local interiorMarkers = {}
 local resourceFromInterior = {}
 --format interior = { [resource] = { [id] = { return= { [element],[element] }, entry=[element] } }

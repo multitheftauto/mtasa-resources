@@ -1,4 +1,4 @@
-local screenX,screenY = guiGetScreenSize()
+﻿local screenX,screenY = guiGetScreenSize()
 local bgWidth,bgHeight = 100, 20
 
 --Robbed from arc_

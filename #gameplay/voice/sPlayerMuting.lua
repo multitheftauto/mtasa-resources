@@ -1,4 +1,4 @@
-if isVoiceEnabled() then
+﻿if isVoiceEnabled() then
 	function setPlayerMuted ( player, muted )
 		if not checkValidPlayer ( player ) then return false end
 		muted = not not muted or nil

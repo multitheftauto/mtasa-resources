@@ -1,4 +1,4 @@
-addEventHandler ( "onPickupHit", root, 
+﻿addEventHandler ( "onPickupHit", root, 
 	function ( player )
 		if ( not isPedInVehicle ( player ) ) then
 			if ( getPickupType ( source ) == 2 ) then

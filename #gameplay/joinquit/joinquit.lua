@@ -1,4 +1,4 @@
-g_Root = getRootElement()
+﻿g_Root = getRootElement()
 
 addEventHandler('onClientPlayerJoin', g_Root,
 	function()

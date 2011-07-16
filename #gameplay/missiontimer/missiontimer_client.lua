@@ -1,4 +1,4 @@
-rootElement = getRootElement()
+﻿rootElement = getRootElement()
 thisResource = getThisResource()
 missionTimers = {}
 bool = { [false]=true, [true]=true }

@@ -1,4 +1,4 @@
-local WARNING_HEIGHT = 300 -- height at which the 'open your parachute' message is shown
+﻿local WARNING_HEIGHT = 300 -- height at which the 'open your parachute' message is shown
 local slow_speed = 0.75 -- overall (x,y,z) speed limit after which z_accelerate is used
 local accelerate_speed = 0.03 -- forward acceleration speed while holding forward (skydiving)
 local z_accelerate = 0.007 -- forward acceleration while not holding any controls (freefalling)

@@ -1,4 +1,4 @@
-local thisResource = getThisResource()
+﻿local thisResource = getThisResource()
 local bool = { [false]=true, [true]=true }
 local missionTimers = {}
 addEvent"onMissionTimerElapsed"

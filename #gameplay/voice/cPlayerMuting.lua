@@ -1,4 +1,4 @@
-addEventHandler ( "onClientPlayerVoiceStart", root,
+﻿addEventHandler ( "onClientPlayerVoiceStart", root,
 	function()
 		if globalMuted[source] then
 			return

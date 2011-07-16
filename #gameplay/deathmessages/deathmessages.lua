@@ -1,4 +1,4 @@
-local root = getRootElement()
+﻿local root = getRootElement()
 
 addEventHandler("onPlayerWasted", root,
 	function (ammo, killer, weapon, bodypart)

@@ -1,4 +1,4 @@
-local customKills = {}
+﻿local customKills = {}
 local config = {
 ["lines"] = 5,
 ["startY"] = 0.35,
