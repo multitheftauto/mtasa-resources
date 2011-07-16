@@ -890,15 +890,14 @@ function aClientClick ( button )
 						--guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
 						guiSetText ( aTab1.Accountname, "Account Name: "..aPlayers[player]["accountname"] )
 						local countryCode = aPlayers[player]["country"]
+						loadFlagImage ( aTab1.Flag, countryCode )
 						if not countryCode then
-							guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
 							guiSetText ( aTab1.CountryCode, "" )
 						else
 							local x, y = guiGetPosition ( aTab1.IP, false )
 							local width = guiLabelGetTextExtent ( aTab1.IP )
 							guiSetPosition ( aTab1.Flag, x + width + 7, y + 4, false )
 							guiSetPosition ( aTab1.CountryCode, x + width + 30, y, false )
-							guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\flags\\"..tostring ( countryCode )..".png" )
 							guiSetText ( aTab1.CountryCode, tostring( countryCode ) )
 						end
 						guiSetText ( aTab1.Version, "Version: " .. ( aPlayers[player]["version"] or "" ) )
@@ -1139,4 +1138,24 @@ end
 function setAnonAdmin( bOn )
 	guiCheckBoxSetSelected ( aTab1.AnonAdmin, bOn )
 	setElementData( getLocalPlayer(), "AnonAdmin", bOn )
+end
+
+function loadFlagImage( guiStaticImage, countryCode )
+	if countryCode then
+		local flagFilename = "client\\images\\flags\\"..tostring ( countryCode )..".png"
+		if getVersion().sortable and getVersion().sortable > "1.1.0" then
+			-- 1.1
+			if fileExists( flagFilename ) then
+				if guiStaticImageLoadImage ( guiStaticImage, flagFilename ) then
+					return
+				end
+			end
+		else
+			-- 1.0
+			guiStaticImageLoadImage ( guiStaticImage, "client\\images\\empty.png" )
+			guiStaticImageLoadImage ( guiStaticImage, flagFilename )
+			return
+		end
+	end
+	guiStaticImageLoadImage ( guiStaticImage, "client\\images\\empty.png" )
 end
