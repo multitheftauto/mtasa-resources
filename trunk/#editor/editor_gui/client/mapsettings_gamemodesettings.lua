@@ -1,4 +1,4 @@
-local edfSettings = {}
+﻿local edfSettings = {}
 rowData = {}
 mapsettings.rowValues = {}
 mapsettings.gamemodeSettings = {}

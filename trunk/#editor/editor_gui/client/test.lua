@@ -1,4 +1,4 @@
-local localPlayer = getLocalPlayer()
+﻿local localPlayer = getLocalPlayer()
 local editorRes = getResourceFromName"editor_main"
 local testDialog = {}
 local hideDialog

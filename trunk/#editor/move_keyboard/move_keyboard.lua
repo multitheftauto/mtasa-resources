@@ -1,4 +1,4 @@
--- implement bounding box checking
+﻿-- implement bounding box checking
 local root = getRootElement()
 
 local ignoreAllSurfaces = true

@@ -1,4 +1,4 @@
-g_in_test = false
+﻿g_in_test = false
 local g_restoreEDF, dumpTimer
 local thisRoot = getResourceRootElement(getThisResource())
 local root = getRootElement()

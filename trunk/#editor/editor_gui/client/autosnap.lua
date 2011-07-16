@@ -1,4 +1,4 @@
-local g_root = getRootElement()
+﻿local g_root = getRootElement()
 local camDistance = 5
 local elementDiameter = 1
 local snapElement

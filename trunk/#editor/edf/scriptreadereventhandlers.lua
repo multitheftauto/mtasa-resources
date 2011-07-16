@@ -1,4 +1,4 @@
-local EVENT_HANDLERS = {}
+﻿local EVENT_HANDLERS = {}
 
 function createEventHandlerContainerForResource(resource)
 	EVENT_HANDLERS[resource] = {}

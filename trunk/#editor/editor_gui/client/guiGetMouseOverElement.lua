@@ -1,4 +1,4 @@
---GUI's onClientMouseMove is flawed in the fact that it does not trigger when you move your mouse without a gui element on top
+﻿--GUI's onClientMouseMove is flawed in the fact that it does not trigger when you move your mouse without a gui element on top
 --this script works around that for the highlighter when the mouse is not on top of gui
 --it also provides a guiGetMouseOverElement to retrieve the current mouse over element.
 local worldDetector

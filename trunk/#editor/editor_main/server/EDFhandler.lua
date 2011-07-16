@@ -1,4 +1,4 @@
-local clientGUILoaded = {} --We dont want to trigger client events if they havent downloaded client scripts yet
+﻿local clientGUILoaded = {} --We dont want to trigger client events if they havent downloaded client scripts yet
 loadedEDF = {}
 
 addEventHandler ( "onResourceStart", thisResourceRoot,

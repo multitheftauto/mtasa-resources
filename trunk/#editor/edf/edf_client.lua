@@ -1,4 +1,4 @@
-addEvent ( "hideDummy", true )
+﻿addEvent ( "hideDummy", true )
 addEvent ( "onClientElementPropertyChanged" )
 local thisResource = getThisResource()
 

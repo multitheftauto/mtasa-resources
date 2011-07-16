@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	matrix v 0.2.8
 	
 	Lua 5.1 compatible

@@ -1,4 +1,4 @@
-function elementSearch ( cachetable, query, results, foundCache )
+﻿function elementSearch ( cachetable, query, results, foundCache )
 	if not foundCache then foundCache = {} end
 	query = string.lower(query)
 	if results == nil then results = {} end

@@ -1,4 +1,4 @@
-local REQUIRED, NOT_REQUIRED, LOADED = 0, 1, 2
+﻿local REQUIRED, NOT_REQUIRED, LOADED = 0, 1, 2
 
 local interface = {
 	editor_main = REQUIRED,

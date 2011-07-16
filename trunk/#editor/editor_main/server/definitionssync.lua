@@ -1,4 +1,4 @@
-allEDF = {}
+﻿allEDF = {}
 
 addEventHandler ( "onClientGUILoaded", rootElement,
 	function()

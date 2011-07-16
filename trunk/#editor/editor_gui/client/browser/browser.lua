@@ -1,4 +1,4 @@
-local res = getThisResource()
+﻿local res = getThisResource()
 browser = {}
 browserGUI = {}
 BROWSER_DIMENSION = nil

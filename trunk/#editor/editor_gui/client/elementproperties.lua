@@ -1,4 +1,4 @@
---layout------------------------
+﻿--layout------------------------
 local scrollbarThumbSize = 20 --px
 local screenX,screenY = guiGetScreenSize()
 

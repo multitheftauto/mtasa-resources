@@ -1,4 +1,4 @@
-function isPlayerAllowedToDoEditorAction(player,action)
+﻿function isPlayerAllowedToDoEditorAction(player,action)
 	if isElement(player) and getElementType(player)=="player" and action and type(action)=="string" then
 --		return hasObjectPermissionTo(player,"resource.editor."..action,false)
 		return hasObjectPermissionTo(player,"resource.editor."..action)

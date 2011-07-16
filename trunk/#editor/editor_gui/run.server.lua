@@ -1,4 +1,4 @@
-local rR, rG, rB = 250, 100, 100
+﻿local rR, rG, rB = 250, 100, 100
 local rootElement = getRootElement()
 
 local function npack(...)

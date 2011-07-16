@@ -1,4 +1,4 @@
-local mainRes = getResourceFromName"editor_main"
+﻿local mainRes = getResourceFromName"editor_main"
 topMenuClicked = {} --a table storing all functions when the topmenu is clicked
 
 --since the highlighter covers an icon button, this function acts as a redirect and triggers the function for the proper button

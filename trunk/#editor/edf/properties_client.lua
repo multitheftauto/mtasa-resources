@@ -1,4 +1,4 @@
-propertyGetters = {
+﻿propertyGetters = {
 	object = {
 		model = getElementModel,
 		doublesided = function(element)

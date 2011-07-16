@@ -1,4 +1,4 @@
-local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
+﻿local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 local rootElement = getRootElement()
 
 -- ACTION CLASSES

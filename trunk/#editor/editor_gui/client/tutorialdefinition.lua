@@ -1,4 +1,4 @@
---only on part 2
+﻿--only on part 2
 addEvent "onClientElementDrop"
 addEvent "onClientElementSelect"
 local editorRes = getResourceFromName"editor_main"

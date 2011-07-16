@@ -1,4 +1,4 @@
-local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
+﻿local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 function toAttribute(value)
 	if type(value) == "table" then
 		if type(value[1]) == "table" then --Assume its a camera type

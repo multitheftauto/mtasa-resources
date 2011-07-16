@@ -1,4 +1,4 @@
-local localPlayer  = getLocalPlayer()
+﻿local localPlayer  = getLocalPlayer()
 local MAX_THICKNESS = 1.2
 local thickness
 local drawLine

@@ -1,4 +1,4 @@
-local disable = function() cancelEvent() end
+﻿local disable = function() cancelEvent() end
 addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()),
 	function()
 		for i,player in ipairs(getElementsByType"player") do

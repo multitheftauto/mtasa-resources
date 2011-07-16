@@ -1,4 +1,4 @@
--- server-side select/drop events
+﻿-- server-side select/drop events
 addEvent ( "onElementSelect", true )
 addEvent ( "onElementDrop", true )
 -- serverside create/destroy events

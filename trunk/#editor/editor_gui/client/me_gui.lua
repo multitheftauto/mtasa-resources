@@ -1,4 +1,4 @@
-enableSound = true --this enables or disables sound.  For the options menu
+﻿enableSound = true --this enables or disables sound.  For the options menu
 isCurrentButtonElement = false --this checks whether the currently highlighted button is an element icon, so EDF info can appear.
 currentSelectedResource = false --this defines the currently selected resource
 local localPlayer= getLocalPlayer()

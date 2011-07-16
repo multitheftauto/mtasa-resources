@@ -1,4 +1,4 @@
-local g_screenX,g_screenY = guiGetScreenSize()
+﻿local g_screenX,g_screenY = guiGetScreenSize()
 local g_root = getRootElement()
 local message = { timers = {}, animations = {} }
 local TEXT_SCALE = 1

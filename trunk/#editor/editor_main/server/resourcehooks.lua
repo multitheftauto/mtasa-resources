@@ -1,4 +1,4 @@
-function addResourceMap ( resource, filename, dimension )
+﻿function addResourceMap ( resource, filename, dimension )
 	if not resource then return false end
 	dimension = dimension or 0
 	local currentFiles = getResourceFiles ( resource, "map" )

@@ -1,4 +1,4 @@
--- complex 0.3.0
+﻿-- complex 0.3.0
 -- Lua 5.1
 
 -- 'complex' provides common tasks with complex numbers

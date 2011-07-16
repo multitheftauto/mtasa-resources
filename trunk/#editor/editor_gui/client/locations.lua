@@ -1,4 +1,4 @@
-local locations = {}
+﻿local locations = {}
 local interiorsTable, bookmarksTable
 local bookmarksXML
 --functions

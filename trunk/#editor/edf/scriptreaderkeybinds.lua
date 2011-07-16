@@ -1,4 +1,4 @@
-local KEY_BINDS = {}
+﻿local KEY_BINDS = {}
 
 function createKeyBindContainerForResource(resource)
 	KEY_BINDS[resource] = {}
