@@ -1,4 +1,4 @@
-local ADMIN_GROUP = "Admin"
+﻿local ADMIN_GROUP = "Admin"
 local MAX_PASSWORD_CHARS = 30
 local g_console = getElementsByType"console"[1]
 local g_inWizard,g_wizardCR,g_pattern,g_inputIgnore

@@ -1,4 +1,4 @@
-local rootElement = getRootElement()
+﻿local rootElement = getRootElement()
 
 function runString (commandstring, outputTo, source)
 	local sourceName

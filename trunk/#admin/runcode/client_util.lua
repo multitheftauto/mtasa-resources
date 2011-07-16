@@ -1,4 +1,4 @@
-function outputChatBoxR(message)
+﻿function outputChatBoxR(message)
 	return outputChatBox(message, 200, 250, 200)
 end
 

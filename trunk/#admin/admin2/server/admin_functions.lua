@@ -1,4 +1,4 @@
--- NEEDS CHECKING
+﻿-- NEEDS CHECKING
 -- stuff has that comment, search for it
 
 aFunctions = {

@@ -1,4 +1,4 @@
---
+﻿--
 --
 -- admin_serverprefs.lua
 --
