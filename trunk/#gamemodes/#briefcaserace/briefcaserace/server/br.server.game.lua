@@ -1,4 +1,4 @@
---TO DO
+﻿--TO DO
 -- in server.spawn, track timers that spawn players and timers that show gui, so they can be destroyed if the map ends, etc. (done, need testing)
 -- make team menu gui support higher number of teams (screen only shows up to 17 teams right now)
 -- make variable teams option.. teams are auto-generated as player count increases. 6 players per team? what skins do they use? (done, needs testing)

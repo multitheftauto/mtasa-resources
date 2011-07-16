@@ -1,4 +1,4 @@
---
+﻿--
 -- racemidvote_server.lua
 --
 -- Mid-race random map vote and

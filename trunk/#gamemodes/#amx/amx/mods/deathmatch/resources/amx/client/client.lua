@@ -1,4 +1,4 @@
-resourceRoot = getResourceRootElement(getThisResource())
+﻿resourceRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 
 local dxDrawText = dxDrawText

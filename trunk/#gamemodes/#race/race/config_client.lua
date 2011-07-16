@@ -1,4 +1,4 @@
---
+﻿--
 -- config_client.lua
 --
 

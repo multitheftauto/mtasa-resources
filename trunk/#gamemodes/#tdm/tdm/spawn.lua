@@ -1,4 +1,4 @@
---[[Specifications for MTASA Deathmatch-type gamemodes
+﻿--[[Specifications for MTASA Deathmatch-type gamemodes
 
 After having some deep thoughts about it, I'm fairly confident we should do them as following:
 

@@ -1,4 +1,4 @@
-local guiTextLabel = nil
+﻿local guiTextLabel = nil
 local guiTextLabelTeamName = nil
 local guiTextLabelText = nil
 

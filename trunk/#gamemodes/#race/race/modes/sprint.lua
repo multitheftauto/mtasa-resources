@@ -1,4 +1,4 @@
-Sprint = setmetatable({}, RaceMode)
+﻿Sprint = setmetatable({}, RaceMode)
 Sprint.__index = Sprint
 
 Sprint:register('Sprint')

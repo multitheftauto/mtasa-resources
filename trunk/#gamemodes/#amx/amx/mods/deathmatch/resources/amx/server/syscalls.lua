@@ -1,4 +1,4 @@
-function argsToMTA(amx, prototype, ...)
+﻿function argsToMTA(amx, prototype, ...)
 	if type(amx) == 'userdata' then
 		local amxName = table.find(g_LoadedAMXs, 'cptr', amx)
 		if not amxName then

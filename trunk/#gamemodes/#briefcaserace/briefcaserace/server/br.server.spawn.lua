@@ -1,4 +1,4 @@
--- TO DO:
+﻿-- TO DO:
 
 --[[addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
 function (resource)

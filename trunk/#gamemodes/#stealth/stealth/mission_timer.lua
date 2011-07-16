@@ -1,4 +1,4 @@
---Mission timer by AlienX
+﻿--Mission timer by AlienX
 
 --Usage:
 --In your scripts you need to have added an event handle that the timer will call once the time is up...

@@ -1,4 +1,4 @@
--- Capture the Vehicle by BrophY©, if you wish to modify, keep copyright notice and credits in the file
+ï»¿-- Capture the Vehicle by BrophY©, if you wish to modify, keep copyright notice and credits in the file
 -- Credits to Talidan, Dragon and Ransom for help and testing
 
 local root = getRootElement ()

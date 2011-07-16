@@ -1,4 +1,4 @@
---[[
+﻿--[[
 <team name="" red="" green="" blue="">
 	<camera lookX="" lookY="" lookZ="" posX="" posY="" posZ=""/>
 	<weapon model="" ammo=""/>

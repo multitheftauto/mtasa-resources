@@ -1,4 +1,4 @@
-Freeroam = setmetatable({}, RaceMode)
+﻿Freeroam = setmetatable({}, RaceMode)
 Freeroam.__index = Freeroam
 
 Freeroam:register('Freeroam')

@@ -1,4 +1,4 @@
---
+﻿--
 -- editor_support_server.lua
 --
 

@@ -1,4 +1,4 @@
-function onResourceStart( resourcename )
+﻿function onResourceStart( resourcename )
 	if ( resourcename == getThisResource () ) then
 		createPickup ( 2514.5061035156, 6305.181640625, 5.0202980041504, 2, 34, 120000, 15 )
 		createPickup ( 2491.2346191406, 6230.4038085938, 11.139559745789, 2, 29, 60000, 60 )

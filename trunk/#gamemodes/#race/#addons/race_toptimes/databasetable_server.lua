@@ -1,4 +1,4 @@
---
+﻿--
 -- databasetable_server.lua
 --
 -- A Lua table which is loaded/saved from the sqlite database

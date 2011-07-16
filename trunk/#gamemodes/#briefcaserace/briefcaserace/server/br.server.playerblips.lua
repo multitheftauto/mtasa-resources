@@ -1,4 +1,4 @@
-local root = getRootElement()
+﻿local root = getRootElement()
 local MAX_DIST = 300
 local color = {255, 0, 0}
 local blips = {}

@@ -1,4 +1,4 @@
-g_MapObjAttrs = {
+﻿g_MapObjAttrs = {
 	spawnpoint = { 'position', 'rotation', 'vehicle', 'paintjob', 'upgrades' },
 	checkpoint = { 'id', 'nextid', 'position', 'size', 'color', 'type', 'vehicle', 'paintjob', 'upgrades' },
 	object = { 'position', 'rotation', 'model' },

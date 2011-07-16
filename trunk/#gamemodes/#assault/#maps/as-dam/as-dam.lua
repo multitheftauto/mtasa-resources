@@ -1,4 +1,4 @@
-local bombs = {}
+﻿local bombs = {}
 
 function startRound( attack )
 	attacker = attack

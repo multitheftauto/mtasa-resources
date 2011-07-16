@@ -1,4 +1,4 @@
-function onResourceStart( resourcename )
+﻿function onResourceStart( resourcename )
 	KWKHYDRASTRIKEDM_vehicles = getElementsByType("vehicle")
 	for k,v in ipairs(KWKHYDRASTRIKEDM_vehicles) do
 		setVehicleFuelTankExplodable ( v, true )

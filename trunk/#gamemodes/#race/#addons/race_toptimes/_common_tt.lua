@@ -1,4 +1,4 @@
---
+﻿--
 -- common_tt.lua
 --	Common setting for server and client
 --

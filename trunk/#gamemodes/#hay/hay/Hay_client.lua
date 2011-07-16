@@ -1,4 +1,4 @@
-local leveltop = 0
+﻿local leveltop = 0
 local localPlayer = getLocalPlayer()
 local localPlayerLevel = "-"
 local scoreLabel

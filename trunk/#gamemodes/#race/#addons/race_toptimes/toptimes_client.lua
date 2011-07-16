@@ -1,4 +1,4 @@
---
+﻿--
 -- toptimes_client.lua
 --
 

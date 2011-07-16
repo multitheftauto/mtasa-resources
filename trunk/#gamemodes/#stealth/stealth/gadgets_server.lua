@@ -1,4 +1,4 @@
-
+﻿
 --TRIGGERS THE CLOAKING CLIENT FUNCTIONS
 addEvent ("cloaktheplayer", true )
 

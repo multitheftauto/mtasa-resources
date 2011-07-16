@@ -1,4 +1,4 @@
--- This script catches vehicle damage-by-weapon events from the client and triggers the onVehicleNonWeaponDamage event when for vehicle damage that wasn't done by a weapon.
+﻿-- This script catches vehicle damage-by-weapon events from the client and triggers the onVehicleNonWeaponDamage event when for vehicle damage that wasn't done by a weapon.
 -- How it works: after receiving damage-by-weapon event, wait MAX_IGNORE_TIME. If onVehicleDamage is triggered in that time, ignore the event.
 --    This is a hacky way to ignore vehicle damage done by weapons, but should be good enough for our purposes.
 

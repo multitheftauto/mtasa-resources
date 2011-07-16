@@ -1,4 +1,4 @@
---
+﻿--
 -- racewar_server.lua
 --
 

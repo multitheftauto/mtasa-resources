@@ -1,4 +1,4 @@
---
+﻿--
 -- common_rw.lua
 --	Common setting for server and client
 --

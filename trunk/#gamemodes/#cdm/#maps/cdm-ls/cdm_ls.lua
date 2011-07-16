@@ -1,4 +1,4 @@
-function onResourceStart( resourcename )
+﻿function onResourceStart( resourcename )
 	ls_vehicles = getElementsByType("vehicle")
 	for k,v in ipairs(ls_vehicles) do
 		setVehicleFuelTankExplodable ( v, true )

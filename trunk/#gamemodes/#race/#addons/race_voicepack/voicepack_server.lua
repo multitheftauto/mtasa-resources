@@ -1,4 +1,4 @@
-local g_Root = getRootElement()
+﻿local g_Root = getRootElement()
 
 local mapMode = ""
 

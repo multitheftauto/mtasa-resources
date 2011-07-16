@@ -1,4 +1,4 @@
-local carrierLabel
+﻿local carrierLabel
 local localPlayer = getLocalPlayer()
 
 addEventHandler("onClientResourceStart", getResourceRootElement(),

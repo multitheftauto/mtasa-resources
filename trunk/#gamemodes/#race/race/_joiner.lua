@@ -1,4 +1,4 @@
---
+﻿--
 -- joiner.lua
 --
 -- 1. Delay onPlayerJoin until client loaded

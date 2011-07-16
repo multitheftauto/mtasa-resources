@@ -1,4 +1,4 @@
-nametag = {}
+﻿nametag = {}
 local nametags = {}
 local g_screenX,g_screenY = guiGetScreenSize()
 local bHideNametags = false

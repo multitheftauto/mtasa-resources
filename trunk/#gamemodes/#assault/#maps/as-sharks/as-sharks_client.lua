@@ -1,4 +1,4 @@
-setTimer ( setTime, 60000, 1, 12, 00 )
+﻿setTimer ( setTime, 60000, 1, 12, 00 )
 
 function cancelSharkDamage  ( attacker, weapon, bodypart )
 	if weapon == 53 and attacker == getLocalPlayer() and getElementModel(getLocalPlayer()) == 124 then
