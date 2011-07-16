@@ -1,0 +1,193 @@
+<map mod="deathmatch" auto_balance="on" friendly_fire="on">
+   <meta>
+      <author>Dragon</author>
+      <description>Capture the Flag</description>
+   </meta>
+   <settings respawnTime="4500" roundTime="600000" spawnScreen="on" blips="team"/>
+   <camera posX="-730" posY="1908.5" posZ="7" lookX="-736" lookY="1908.5" lookZ="2.875"/>
+   <team name="Red" colorR="255" colorG="0" colorB="0">
+      <skin model="84"/>
+      <flag name="Red Flag" posX="477.94497680664" posY="-558.48797607422" posZ="125.3876953125"/>
+      <spawnpoint posX="474.01864624023" posY="-536.04333496094" posZ="126.34929656982" rot="90" randx="5" randy="5" randz="0" skin="84"/>
+   </team>
+   <team name="Blue" colorR="0" colorG="0" colorB="255">
+      <skin model="274"/>
+      <flag name="Blue Flag" posX="595.84381103516" posY="-548.07659912109" posZ="125.40620422363"/>
+      <spawnpoint posX="600.20202636719" posY="-516.13201904297" posZ="126.37656402588" rot="90" randx="5" randy="3" randz="0" skin="274"/>
+   </team>
+   
+    <object id="object (bonaplazagr_LAn) (1)" dimension="0" interior="0" model="3989" posX="450.0126953125" posY="-505.36889648438" posZ="119.89617156982" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (LAriverSec5b_LAn) (1)" dimension="0" interior="0" model="4029" posX="433.5517578125" posY="-598.69543457031" posZ="119.89615631104" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (LAriverSec5b_LAn) (2)" dimension="0" interior="0" model="4029" posX="531.81982421875" posY="-641.28515625" posZ="119.89665222168" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (las2plaza1bit) (1)" dimension="0" interior="0" model="5142" posX="456.51953125" posY="-527.50512695313" posZ="130.82054138184" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (laenwblkB1) (1)" dimension="0" interior="0" model="5628" posX="481.869140625" posY="-571.79040527344" posZ="128.46510314941" rotX="0" rotY="0" rotZ="9.1552734375e-005" />
+    <object id="object (MelBlok01_LAwN) (1)" dimension="0" interior="0" model="5787" posX="498.26513671875" posY="-495.64636230469" posZ="129.35900878906" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (gaz7_LAW) (1)" dimension="0" interior="0" model="6150" posX="502.91796875" posY="-602.27111816406" posZ="130.29557800293" rotX="0" rotY="0" rotZ="76.515502929688" />
+    <object id="object (uninstps_LAS01) (1)" dimension="0" interior="0" model="4881" posX="498.5625" posY="-558.92175292969" posZ="122.19303131104" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (vgnbuild1new) (1)" dimension="0" interior="0" model="7658" posX="613.84765625" posY="-516.70727539063" posZ="124.37465667725" rotX="0" rotY="0" rotZ="270" />
+    <object id="object (burgalrystore_SFS) (1)" dimension="0" interior="0" model="11092" posX="503.31884765625" posY="-573.80847167969" posZ="126.99910736084" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (cos_liquorshop) (1)" dimension="0" interior="0" model="12843" posX="509.3193359375" posY="-506.49926757813" posZ="124.35113525391" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (cos_liqinside) (1)" dimension="0" interior="0" model="12844" posX="512.29345703125" posY="-506.49975585938" posZ="126.32684326172" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (cos_liqinsidebits) (1)" dimension="0" interior="0" model="12845" posX="512.19873046875" posY="-506.8076171875" posZ="126.49013519287" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (sw_block01) (1)" dimension="0" interior="0" model="12850" posX="567.115234375" posY="-605.40551757813" posZ="124.29638671875" rotX="0" rotY="0" rotZ="75.355194091797" />
+    <object id="object (sw_blockbit05) (1)" dimension="0" interior="0" model="12923" posX="544.51806640625" posY="-566.58520507813" posZ="129.27931213379" rotX="0" rotY="0" rotZ="89.999969482422" />
+    <object id="object (sw_shopflat04) (1)" dimension="0" interior="0" model="12962" posX="547.4169921875" posY="-541.34411621094" posZ="124.35928344727" rotX="0" rotY="0" rotZ="180.00012207031" />
+    <object id="object (sw_block07) (1)" dimension="0" interior="0" model="12964" posX="505.94091796875" posY="-552.68359375" posZ="124.33177947998" rotX="0" rotY="0" rotZ="270" />
+    <object id="object (crack_int2) (1)" dimension="0" interior="0" model="11086" posX="371.71630859375" posY="-735.53234863281" posZ="133.45053100586" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (vgsSairportland15) (1)" dimension="0" interior="0" model="8356" posX="657.2255859375" posY="-536.59375" posZ="124.375" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (vgsSairportland15) (2)" dimension="0" interior="0" model="8356" posX="577.22412109375" posY="-496.71936035156" posZ="124.37457275391" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (vgsSairportland15) (3)" dimension="0" interior="0" model="8356" posX="657.17578125" posY="-496.69604492188" posZ="124.40000152588" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (vgsSairportland15) (4)" dimension="0" interior="0" model="8356" posX="577.22412109375" posY="-525.66931152344" posZ="124.34957122803" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (vgsSairportland15) (5)" dimension="0" interior="0" model="8356" posX="613.77587890625" posY="-565.66955566406" posZ="124.35581970215" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (vgsSairportland15) (6)" dimension="0" interior="0" model="8356" posX="574.361328125" posY="-609.41052246094" posZ="124.37451171875" rotX="0" rotY="0" rotZ="76.171813964844" />
+    <object id="object (vgsSairportland15) (7)" dimension="0" interior="0" model="8356" posX="657.2255859375" posY="-565.66857910156" posZ="124.39124298096" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (vgsSairportland15) (8)" dimension="0" interior="0" model="8356" posX="657.2255859375" posY="-605.66857910156" posZ="124.40000152588" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (BTOLAND8_LAS) (1)" dimension="0" interior="0" model="4806" posX="525.2216796875" posY="-540.30749511719" posZ="124.32214355469" rotX="0" rotY="0" rotZ="258.75" />
+    <object id="object (tempsf_4_sfe) (1)" dimension="0" interior="0" model="10056" posX="632.30029296875" posY="-504.28833007813" posZ="138.44459533691" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (ballys02_lvs) (1)" dimension="0" interior="0" model="8392" posX="634.27490234375" posY="-644.8857421875" posZ="153.54591369629" rotX="0" rotY="0" rotZ="9.1552734375e-005" />
+    <object id="object (vgsSairportland15) (9)" dimension="0" interior="0" model="8356" posX="677.13623046875" posY="-637.41052246094" posZ="124.52450561523" rotX="0" rotY="0" rotZ="76.171813964844" />
+    <object id="object (vgsSairportland15) (10)" dimension="0" interior="0" model="8356" posX="581.27392578125" posY="-574.37097167969" posZ="124.34957122803" rotX="0" rotY="0" rotZ="90.000091552734" />
+    <object id="object (conhoos4) (1)" dimension="0" interior="0" model="3285" posX="483.41064453125" posY="-578.99523925781" posZ="126.22793579102" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (conhoos4) (2)" dimension="0" interior="0" model="3285" posX="479.95947265625" posY="-578.99523925781" posZ="126.22793579102" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (shbbyhswall06_lvs) (1)" dimension="0" interior="0" model="8650" posX="515.4658203125" posY="-554.74255371094" posZ="124.96647644043" rotX="0" rotY="0" rotZ="270" />
+    <object id="object (shbbyhswall06_lvs) (2)" dimension="0" interior="0" model="8650" posX="520.4443359375" posY="-559.59753417969" posZ="123.79772949219" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (sw_block05) (1)" dimension="0" interior="0" model="13131" posX="587.61083984375" posY="-498.76452636719" posZ="124.30065917969" rotX="0" rotY="0" rotZ="89.999969482422" />
+    <object id="object (CE_photoblock) (1)" dimension="0" interior="0" model="13363" posX="572.32763671875" posY="-534.59606933594" posZ="125.03984832764" rotX="0" rotY="0" rotZ="0" />
+    <object id="object (crackfactjump_SFS) (1)" dimension="0" interior="0" model="11011" posX="595.451171875" posY="-561.10534667969" posZ="128.33525085449" rotX="0" rotY="0" rotZ="89.999969482422" />
+    <object id="object (CE_terminal1) (1)" dimension="0" interior="0" model="13295" posX="589.81396484375" posY="-598.75805664063" posZ="130.85168457031" rotX="0" rotY="0" rotZ="89.999969482422" />
+    <object id="object (tunnelentrance) (1)" dimension="0" interior="0" model="972" posX="388.02294921875" posY="-596.34375" posZ="114.91305541992" rotX="0" rotY="0" rotZ="180" />
+    <object id="object (tunnelentrance) (2)" dimension="0" interior="0" model="972" posX="577.416015625" posY="-643.75695800781" posZ="114.84019470215" rotX="0" rotY="0" rotZ="9.1552734375e-005" />
+    <object id="object (CJ_SPORTS_WALL) (1)" dimension="0" interior="0" model="2395" posX="544.1650390625" posY="-655.70422363281" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (2)" dimension="0" interior="0" model="2395" posX="547.8642578125" posY="-655.70422363281" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (3)" dimension="0" interior="0" model="2395" posX="540.43994140625" posY="-655.70422363281" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (4)" dimension="0" interior="0" model="2395" posX="540.43994140625" posY="-658.42919921875" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (5)" dimension="0" interior="0" model="2395" posX="540.43994140625" posY="-661.15368652344" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (6)" dimension="0" interior="0" model="2395" posX="540.43994140625" posY="-663.87841796875" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (7)" dimension="0" interior="0" model="2395" posX="540.43994140625" posY="-666.57861328125" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (8)" dimension="0" interior="0" model="2395" posX="540.43994140625" posY="-669.30407714844" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (9)" dimension="0" interior="0" model="2395" posX="540.43994140625" posY="-672.03002929688" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (10)" dimension="0" interior="0" model="2395" posX="544.1650390625" posY="-658.42919921875" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (11)" dimension="0" interior="0" model="2395" posX="547.89013671875" posY="-658.42919921875" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (12)" dimension="0" interior="0" model="2395" posX="544.1650390625" posY="-661.15393066406" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (13)" dimension="0" interior="0" model="2395" posX="544.1650390625" posY="-663.87939453125" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (14)" dimension="0" interior="0" model="2395" posX="544.1650390625" posY="-666.57958984375" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (15)" dimension="0" interior="0" model="2395" posX="544.1650390625" posY="-669.30456542969" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (16)" dimension="0" interior="0" model="2395" posX="544.1650390625" posY="-672.03002929688" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (17)" dimension="0" interior="0" model="2395" posX="547.89013671875" posY="-661.15368652344" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (18)" dimension="0" interior="0" model="2395" posX="547.89013671875" posY="-663.87866210938" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (19)" dimension="0" interior="0" model="2395" posX="547.89013671875" posY="-666.57836914063" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (20)" dimension="0" interior="0" model="2395" posX="547.89013671875" posY="-669.30407714844" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (CJ_SPORTS_WALL) (21)" dimension="0" interior="0" model="2395" posX="547.89013671875" posY="-672.02880859375" posZ="124.38661193848" rotX="269.97381591797" rotY="0" rotZ="180" />
+    <object id="object (Dr_GsNEW10) (1)" dimension="0" interior="0" model="14394" posX="516.83056640625" posY="-543.23168945313" posZ="124.07936096191" rotX="0" rotY="0" rotZ="270" />
+    <object id="object (ballys02_lvs) (2)" dimension="0" interior="0" model="8392" posX="626.10595703125" posY="-596.46740722656" posZ="153.98550415039" rotX="0" rotY="0" rotZ="258.75" />
+    <object id="object (sky4plaz2_LAn) (1)" dimension="0" interior="0" model="4603" posX="537.90869140625" posY="-648.97253417969" posZ="137.67443847656" rotX="0" rotY="0" rotZ="345.23486328125" />
+    <object id="object (newbuildsm01) (1)" dimension="0" interior="0" model="4019" posX="476.1611328125" posY="-637.53100585938" posZ="114.4885559082" rotX="0" rotY="0" rotZ="166.17150878906" />
+    <object id="object (stolenbuilds11) (1)" dimension="0" interior="0" model="4572" posX="422.08251953125" posY="-610.76586914063" posZ="140.79635620117" rotX="0" rotY="0" rotZ="166.17169189453" />
+    <object id="object (tempsf_4_sfe) (2)" dimension="0" interior="0" model="10056" posX="418.802734375" posY="-544.10363769531" posZ="127.20709228516" rotX="0" rotY="0" rotZ="180.00012207031" />
+    <object id="object (tempsf_4_sfe) (3)" dimension="0" interior="0" model="10056" posX="551.75244140625" posY="-464.44775390625" posZ="138.72257995605" rotX="0" rotY="0" rotZ="90.000213623047" />
+    <object id="object (sky4plaz2_LAn) (2)" dimension="0" interior="0" model="4603" posX="474.462890625" posY="-446.650390625" posZ="132.19592285156" rotX="0" rotY="0" rotZ="179.92266845703" />
+    <object id="object (stolenbuilds11) (2)" dimension="0" interior="0" model="4572" posX="410.9755859375" posY="-469.27905273438" posZ="136.12930297852" rotX="0" rotY="0" rotZ="87.421691894531" />
+    <object id="object (ballys02_lvs) (3)" dimension="0" interior="0" model="8392" posX="612.1005859375" posY="-423.30297851563" posZ="153.52226257324" rotX="0" rotY="0" rotZ="89.999969482422" />
+	
+	<Zombie_spawn posX="588.54071044922" posY="-621.59490966797" posZ="125.72838592529" rotZ="0" />
+    <Zombie_spawn posX="579.53894042969" posY="-613.39697265625" posZ="125.60388183594" rotZ="0" />
+    <Zombie_spawn posX="519.98217773438" posY="-580.47973632813" posZ="125.57839202881" rotZ="210.44999694824" />
+    <Zombie_spawn posX="538.02648925781" posY="-562.6201171875" posZ="125.55970001221" rotZ="170.56999206543" />
+    <Zombie_spawn posX="545.50708007813" posY="-574.39862060547" posZ="125.55970001221" rotZ="49.850006103516" />
+    <Zombie_spawn posX="554.91735839844" posY="-569.13989257813" posZ="125.55970001221" rotZ="89.684997558594" />
+    <Zombie_spawn posX="546.69287109375" posY="-604.71252441406" posZ="125.57839202881" rotZ="0" />
+    <Zombie_spawn posX="539.94152832031" posY="-610.47863769531" posZ="125.65351104736" rotZ="9.9249877929688" />
+    <Zombie_spawn posX="573.70013427734" posY="-624.65289306641" posZ="130.32305908203" rotZ="71.225006103516" />
+    <Zombie_spawn posX="595.71856689453" posY="-633.21600341797" posZ="125.72838592529" rotZ="0" />
+    <Zombie_spawn posX="618.3369140625" posY="-592.29705810547" posZ="125.60388183594" rotZ="77.415008544922" />
+    <Zombie_spawn posX="605.91003417969" posY="-584.59094238281" posZ="125.59512329102" rotZ="328.64498901367" />
+    <Zombie_spawn posX="602.48986816406" posY="-572.53942871094" posZ="125.59512329102" rotZ="269.19006347656" />
+    <Zombie_spawn posX="590.53393554688" posY="-556.35809326172" posZ="125.77031707764" rotZ="53.595001220703" />
+    <Zombie_spawn posX="611.71051025391" posY="-567.228515625" posZ="125.63334655762" rotZ="334.19500732422" />
+    <Zombie_spawn posX="619.20129394531" posY="-553.07659912109" posZ="125.59512329102" rotZ="99.700012207031" />
+    <Zombie_spawn posX="604.50256347656" posY="-528.09838867188" posZ="130.23751831055" rotZ="25.804992675781" />
+    <Zombie_spawn posX="600.00347900391" posY="-502.82400512695" posZ="125.60388183594" rotZ="161.54998779297" />
+    <Zombie_spawn posX="616.3310546875" posY="-499.67337036133" posZ="125.60388183594" rotZ="45.654998779297" />
+    <Zombie_spawn posX="573.39654541016" posY="-485.94305419922" posZ="128.0753326416" rotZ="119.64001464844" />
+    <Zombie_spawn posX="560.65289306641" posY="-477.70401000977" posZ="125.57845306396" rotZ="139.57998657227" />
+    <Zombie_spawn posX="567.91143798828" posY="-493.86422729492" posZ="125.60388183594" rotZ="169.48999023438" />
+    <Zombie_spawn posX="588.37725830078" posY="-506.33456420898" posZ="125.60388183594" rotZ="159.52001953125" />
+    <Zombie_spawn posX="575.82604980469" posY="-527.45544433594" posZ="125.57888031006" rotZ="29.774993896484" />
+    <Zombie_spawn posX="610.83868408203" posY="-509.23522949219" posZ="130.23751831055" rotZ="93.295013427734" />
+    <Zombie_spawn posX="548.70172119141" posY="-505.99267578125" posZ="125.12036132813" rotZ="230.38999938965" />
+    <Zombie_spawn posX="542.47296142578" posY="-513.97448730469" posZ="131.60586547852" rotZ="0" />
+    <Zombie_spawn posX="546.11517333984" posY="-506.03921508789" posZ="125.59441375732" rotZ="127.80499267578" />
+    <Zombie_spawn posX="541.12023925781" posY="-513.81164550781" posZ="125.59441375732" rotZ="69.789978027344" />
+    <Zombie_spawn posX="537.95825195313" posY="-532.77648925781" posZ="125.59441375732" rotZ="0" />
+    <Zombie_spawn posX="540.97100830078" posY="-522.09539794922" posZ="125.59441375732" rotZ="95.280029296875" />
+    <Zombie_spawn posX="534.42742919922" posY="-521.03137207031" posZ="125.59441375732" rotZ="256.77996826172" />
+    <Zombie_spawn posX="546.52062988281" posY="-529.38189697266" posZ="130.83773803711" rotZ="129.60998535156" />
+    <Zombie_spawn posX="527.94061279297" posY="-533.095703125" posZ="125.59441375732" rotZ="39.700012207031" />
+    <Zombie_spawn posX="496.40548706055" posY="-567.81848144531" posZ="119.27026367188" rotZ="95.280029296875" />
+    <Zombie_spawn posX="514.05340576172" posY="-567.16412353516" posZ="119.84222412109" rotZ="350.0299987793" />
+    <Zombie_spawn posX="495.07330322266" posY="-540.76458740234" posZ="125.56690979004" rotZ="169.48999023438" />
+    <Zombie_spawn posX="493.00100708008" posY="-563.3720703125" posZ="125.56690979004" rotZ="324.26998901367" />
+    <Zombie_spawn posX="483.29556274414" posY="-558.98400878906" posZ="125.57661437988" rotZ="99.700012207031" />
+    <Zombie_spawn posX="483.43319702148" posY="-541.60626220703" posZ="125.57661437988" rotZ="89.730010986328" />
+    <Zombie_spawn posX="484.98419189453" posY="-531.45202636719" posZ="125.74966430664" rotZ="35.730010986328" />
+    <Zombie_spawn posX="484.72259521484" posY="-524.10046386719" posZ="125.74966430664" rotZ="129.60998535156" />
+    <Zombie_spawn posX="482.62008666992" posY="-515.62579345703" posZ="125.56958770752" rotZ="109.67001342773" />
+    <Zombie_spawn posX="484.55236816406" posY="-480.88925170898" posZ="128.08631896973" rotZ="129.60998535156" />
+    <Zombie_spawn posX="489.57214355469" posY="-477.43078613281" posZ="128.08631896973" rotZ="99.700012207031" />
+    <Zombie_spawn posX="482.86099243164" posY="-477.36584472656" posZ="125.58632659912" rotZ="129.60998535156" />
+    <Zombie_spawn posX="467.705078125" posY="-500.5715637207" posZ="127.276222229" rotZ="300.17999267578" />
+    <Zombie_spawn posX="468.59085083008" posY="-510.84762573242" posZ="125.57668304443" rotZ="237.16003417969" />
+    <Zombie_spawn posX="468.59829711914" posY="-514.90295410156" posZ="125.57643890381" rotZ="310.14999389648" />
+    <Zombie_spawn posX="467.75521850586" posY="-533.55523681641" posZ="127.25026702881" rotZ="220.42001342773" />
+    <Zombie_spawn posX="469.60433959961" posY="-546.71746826172" posZ="125.57846832275" rotZ="319.0400390625" />
+    <Zombie_spawn posX="462.91061401367" posY="-558.95672607422" posZ="125.55911254883" rotZ="270.26998901367" />
+    <Zombie_spawn posX="463.59829711914" posY="-575.47033691406" posZ="128.36967468262" rotZ="296.07501220703" />
+    <Zombie_spawn posX="445.93603515625" posY="-575.81787109375" posZ="128.37481689453" rotZ="179.46002197266" />
+    <Zombie_spawn posX="432.61553955078" posY="-589.79284667969" posZ="125.57659912109" rotZ="298.46499633789" />
+    <Zombie_spawn posX="482.76232910156" posY="-602.66790771484" posZ="125.57839202881" rotZ="0" />
+    <Zombie_spawn posX="487.26873779297" posY="-582.88977050781" posZ="125.57839202881" rotZ="190.50999450684" />
+    <Zombie_spawn posX="507.57720947266" posY="-609.72137451172" posZ="132.83546447754" rotZ="0" />
+    <Zombie_spawn posX="519.04486083984" posY="-612.25714111328" posZ="132.83544921875" rotZ="330.08999633789" />
+    <Zombie_spawn posX="576.00152587891" posY="-571.03521728516" posZ="125.59512329102" rotZ="159.52001953125" />
+    <Zombie_spawn posX="577.82000732422" posY="-578.14123535156" posZ="125.76387023926" rotZ="97.265014648438" />
+    <Zombie_spawn posX="568.88287353516" posY="-581.30560302734" posZ="125.59512329102" rotZ="210.44999694824" />
+    <Zombie_spawn posX="549.18640136719" posY="-582.21801757813" posZ="125.55970001221" rotZ="179.46002197266" />
+    <Zombie_spawn posX="517.56805419922" posY="-570.46966552734" posZ="125.92748260498" rotZ="159.52001953125" />
+    <Zombie_spawn posX="482.01873779297" posY="-512.56268310547" posZ="125.61181640625" rotZ="69.789978027344" />
+    <Zombie_spawn posX="457.50497436523" posY="-500.84561157227" posZ="132.85391235352" rotZ="0" />
+    <Zombie_spawn posX="465.63049316406" posY="-500.18463134766" posZ="132.78851318359" rotZ="0" />
+    <Zombie_spawn posX="452.40640258789" posY="-501.39706420898" posZ="127.90728759766" rotZ="79.760009765625" />
+    <Zombie_spawn posX="458.15869140625" posY="-509.90679931641" posZ="127.76660919189" rotZ="142.92004394531" />
+    <Zombie_spawn posX="452.73980712891" posY="-508.32781982422" posZ="125.60109710693" rotZ="129.60998535156" />
+    <Zombie_spawn posX="453.60357666016" posY="-523.74365234375" posZ="125.89766693115" rotZ="89.730010986328" />
+    <Zombie_spawn posX="453.60360717773" posY="-543.66857910156" posZ="125.68286132813" rotZ="59.820007324219" />
+    <Zombie_spawn posX="449.43499755859" posY="-547.59094238281" posZ="125.82074737549" rotZ="0" />
+    <Zombie_spawn posX="452.12619018555" posY="-553.50946044922" posZ="127.80084991455" rotZ="39.700012207031" />
+    <Zombie_spawn posX="457.77212524414" posY="-554.67669677734" posZ="132.85157775879" rotZ="89.730010986328" />
+    <Zombie_spawn posX="520.95343017578" posY="-564.60546875" posZ="128.0149230957" rotZ="252.36000061035" />
+    <Zombie_spawn posX="534.68353271484" posY="-559.32672119141" posZ="129.71492004395" rotZ="149.54998779297" />
+    <Zombie_spawn posX="545.2294921875" posY="-551.2080078125" posZ="125.55970001221" rotZ="260.29998779297" />
+    <Zombie_spawn posX="569.11462402344" posY="-553.08245849609" posZ="125.59512329102" rotZ="330.08999633789" />
+    <Zombie_spawn posX="575.84033203125" posY="-541.55523681641" posZ="125.57888031006" rotZ="139.57998657227" />
+    <Zombie_spawn posX="553.41772460938" posY="-541.97796630859" posZ="125.55345153809" rotZ="264.22500610352" />
+    <Zombie_spawn posX="553.41772460938" posY="-534.54718017578" posZ="125.55345153809" rotZ="260.29998779297" />
+    <Zombie_spawn posX="553.84857177734" posY="-530.38421630859" posZ="125.55345153809" rotZ="320.11999511719" />
+    <Zombie_spawn posX="553.59283447266" posY="-517.34674072266" posZ="125.5980758667" rotZ="220.42001342773" />
+    <Zombie_spawn posX="553.56011962891" posY="-514.96978759766" posZ="125.58625793457" rotZ="326.25500488281" />
+    <Zombie_spawn posX="512.38354492188" posY="-516.64404296875" posZ="125.78620910645" rotZ="230.38999938965" />
+    <Zombie_spawn posX="512.30603027344" posY="-533.93463134766" posZ="125.78620910645" rotZ="280.23999023438" />
+    <Zombie_spawn posX="511.40966796875" posY="-539.724609375" posZ="125.56690979004" rotZ="340.05999755859" />
+    <Zombie_spawn posX="500.18350219727" posY="-537.54534912109" posZ="125.56690979004" rotZ="9.9700012207031" />
+    <Zombie_spawn posX="522.88958740234" posY="-534.90802001953" posZ="125.73955535889" rotZ="41.684997558594" />
+    <Zombie_spawn posX="525.05889892578" posY="-546.50964355469" posZ="125.33238220215" rotZ="190.50999450684" />
+    <Zombie_spawn posX="544.05847167969" posY="-546.88012695313" posZ="125.33238220215" rotZ="230.38999938965" />
+    <Zombie_spawn posX="589.55578613281" posY="-525.07775878906" posZ="125.3515625" rotZ="29.910003662109" />
+    <Zombie_spawn posX="538.46801757813" posY="-495.34869384766" posZ="125.35113525391" rotZ="0" />
+    <Zombie_spawn posX="527.14416503906" posY="-506.8444519043" posZ="125.36709594727" rotZ="116.43994140625" />
+    <Zombie_spawn posX="523.97894287109" posY="-516.95690917969" posZ="125.36709594727" rotZ="99.700012207031" />
+    <Zombie_spawn posX="524.17895507813" posY="-526.39880371094" posZ="125.36709594727" rotZ="119.64001464844" />
+    <Zombie_spawn posX="501.50064086914" posY="-524.52062988281" posZ="125.76461791992" rotZ="0" />
+    <Zombie_spawn posX="557.84381103516" posY="-595.41656494141" posZ="125.35107421875" rotZ="0" />
+    <Zombie_spawn posX="569.69262695313" posY="-597.6533203125" posZ="125.37656402588" rotZ="0" />
+    <Zombie_spawn posX="528.236328125" posY="-576.54217529297" posZ="125.33238220215" rotZ="250.32998657227" />
+</map>

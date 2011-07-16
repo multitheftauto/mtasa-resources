@@ -1,0 +1,40 @@
+<def name="Basic element types definition">
+	<element name="object" friendlyname="Object" icon="client/images/icons/object.png" shortcut="model">
+		<data name="model" type="objectID" description="object model" default="1337" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="doublesided" type="selection:false,true" description="MTA double sidedness" required="false" />
+	</element>
+	<element name="selectWorldObject" friendlyname="World object" icon="client/images/crosshair.png" shortcut="selworld" minver="1.1.0">
+		<data name="selworld" default="0" notes="Hook to start Select World Building Mode"/>
+	</element>
+	<element name="pickup" friendlyname="Pickup" icon="client/images/icons/pickup.png">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="type" type="pickupType" description="pickup type" default="health" />
+		<data name="amount" type="number" description="hp points, armor points or weapon ammo" default="100" />
+		<data name="respawn" type="integer" description="respawn time in miliseconds" default="30000" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="vehicle" friendlyname="Vehicle" icon="client/images/icons/vehicle.png" shortcut="model">
+		<data name="model" type="vehicleID" description="vehicle model" default="405" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
+		<data name="color" type="vehiclecolors" description="vehicle colors" required="false" />
+		<data name="paintjob" type="selection:0,1,2,3" description="vehicle paintjob" required="false" />
+		<data name="upgrades" type="vehicleupgrades" description="installed vehicle upgrades" required="false" />
+		<data name="plate" type="plate" description="number plate" required="false" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="marker" friendlyname="Marker" icon="client/images/icons/marker.png" >
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="type" type="markerType" description="marker type" default="cylinder" />
+		<data name="size" type="number" description="marker size" default="1" />
+		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+</def>

@@ -1,0 +1,32 @@
+<map>
+
+<camera posX="-2599.462158" posY="948.766052" posZ="111.269463" targetX="-2653.292480" targetY="896.747070" targetZ="77.588188" />
+
+<maplimit>
+	<point x="-2606.7839355469" y="809.72906494141" />
+	<point x="-2605.8474121094" y="1005.7124023438" />
+	<point x="-2750.7673339844" y="1004.4500732422" />
+	<point x="-2750.86328125" y="812.63458251953" />
+</maplimit>
+
+<team1 id="mercspawns">
+	<spawnpoint id="team1" posX="-2639.459961" posY="825.457703" posZ="50.644753" rot="90" skin="285"/>
+	<spawnpoint id="team1" posX="-2638.056885" posY="827.322083" posZ="50.644753" rot="90" skin="285"/>
+	<spawnpoint id="team1" posX="-2636.905762" posY="826.442688" posZ="50.644753" rot="90" skin="285"/>
+	<spawnpoint id="team1" posX="-2635.345459" posY="825.292786" posZ="50.644753" rot="90" skin="285"/>	
+	<spawnpoint id="team1" posX="-2629.705566" posY="825.112732" posZ="50.644753" rot="90" skin="285"/>
+	<spawnpoint id="team1" posX="-2635.482910" posY="823.431030" posZ="50.644753" rot="90" skin="285"/>
+	<spawnpoint id="team1" posX="-2632.972168" posY="823.199646" posZ="50.644753" rot="90" skin="285"/>
+	<spawnpoint id="team1" posX="-2632.078125" posY="828.147034" posZ="50.644753" rot="90" skin="285"/>
+</team1>
+
+<team2 id="spyspawns">
+	<spawnpoint id="team2" posX="-2705.293945" posY="979.707947" posZ="54.980690" rot="90" skin="163"/>
+	<spawnpoint id="team2" posX="-2701.030273" posY="980.398682" posZ="54.980690" rot="90" skin="163"/>
+	<spawnpoint id="team2" posX="-2697.732178" posY="979.928711" posZ="54.980690" rot="90" skin="163"/>
+	<spawnpoint id="team2" posX="-2707.673096" posY="979.481140" posZ="54.980690" rot="90" skin="163"/>
+	<spawnpoint id="team2" posX="-2711.011475" posY="979.190491" posZ="54.980690" rot="90" skin="163"/>
+	<spawnpoint id="team2" posX="-2703.333984" posY="979.332886" posZ="54.980690" rot="90" skin="163"/>
+</team2>
+
+</map>

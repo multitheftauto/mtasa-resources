@@ -1,0 +1,5 @@
+<meta>
+	<info author="Talidan + lil_Toady" type="script" version="1.0.0" description="A resource to handle weapon replacement when collecting pickups.  Based on work by lil_Toady" />
+	<script src="handler_server.lua" type="server"  />
+	<script src="handler_client.lua" type="client" />
+</meta>

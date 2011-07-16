@@ -1,0 +1,22 @@
+<meta>
+	<info author="Talidan" version="1.0.0" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode" edf:definition="edf/dm.edf" />
+	<include resource="killmessages" />
+	<include resource="playercolors" />
+	<include resource="deathpickups" />
+	<include resource="spawnmanager" />
+	<include resource="missiontimer" />
+	<include resource="scoreboard" />
+	
+	<script src="logic.lua" />
+	<script src="spawn.lua" />
+	
+	<script src="logic_client.lua" type="client"/>
+	<file src="images/frag.png" />
+	<file src="edf/spawnpoint.png" />
+	
+	<!--Utils-->
+	<script src="utils/client_anim.lua" type="client" />
+	<script src="utils/textlib_anim.lua" type="client" />
+	<script src="utils/textlib_s.lua" type="server" />
+	<script src="utils/textlib.lua" type="client" />
+</meta>

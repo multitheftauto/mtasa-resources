@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<* = call ( getResourceFromName("ajax"), "start", getResourceName(getThisResource()) ) *>
+		<link rel="stylesheet" type="text/css" href="main.css" />
+		<script src ='main.js' type = 'text/javascript'></script>
+	</head>
+	<body onload="performancebrowserLoad()">
+	    <div id="wraparea">
+	        <div id="searcharea">
+                <div style="display:none;visibility:hidden" id="queryUser"><* = getAccountName(user) *></div>
+
+                <table border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="top"><label for="queryTarget"> Target: </label>&nbsp;</td>
+                    <td valign="top"><select name="queryTarget" id="queryTarget" onchange="performQueryFast()" onkeyup="performQueryFast()" onclick="performQueryFast()" onload="performQueryFast()">
+                    </select></td>
+                    <td><img src='pad.gif' /></td>
+                    <td rowspan="3" valign="top"><label for="queryCategory"> Category: </label>&nbsp;</td>
+                    <td rowspan="3">
+                      <select name="queryCategory" size="6" id="queryCategory" onchange="performQueryFast()" onkeyup="performQueryFast()" onclick="performQueryFast()" onload="performQueryFast()">
+                      </select></td>
+                    <td><img src='pad.gif' /></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><img src='pad.gif' /></td>
+                    <td><img src='pad.gif' /></td>
+                  </tr>
+                  <tr>
+                    <td><label for="queryShowClients"> Incl. clients: </label>&nbsp;</td>
+                    <td><input type="checkbox" id="queryShowClients" onchange="performQueryFast()" onkeyup="performQueryFast()"/>&nbsp;</td>
+                    <td><img src='pad.gif' /></td>
+                    <td><img src='pad.gif' /></td>
+                    <td><label for="queryFilter"> Options: </label>&nbsp;</td>
+                    <td>
+                      <input type="text" id="queryOptions" onchange="performQuerySlow()" onkeyup="performQuerySlow()"/></td>
+                    <td><img src='pad.gif' />&nbsp;</td>
+                    <td><img src='pad.gif' />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><label id="warningLabel1"></label>&nbsp;</td>
+                    <td><img src='pad.gif' /></td>
+                    <td><img src='pad.gif' /></td>
+                    <td><label for="queryOptions"> Filter: </label>&nbsp;</td>
+                    <td>
+                      <input type="text" id="queryFilter" onchange="performQuerySlow()" onkeyup="performQuerySlow()"/></td>
+                    <td><img src='pad.gif' /></td>
+                    <td><img src='loading.gif' id="searchingSpinner" style="display:none;" /></td>
+                  </tr>
+                </table>
+
+	        </div>
+	        <div id="statusarea">
+			    <label id="statusLabel0">&nbsp;</label>
+			    <label id="statusLabel1"></label>
+			    <label id="statusLabel2"></label>
+	        </div>
+		    <div id="contentarea">
+		    <table id="performancebrowser-table">
+			    <thead>
+				    <tr id="headerSections" />
+				    <tr id="headers" />
+			    </thead>
+			    <tbody id="performancebrowser" />
+		    </table>
+            </div>
+        </div>
+	</body>
+</html>

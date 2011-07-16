@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<script src='/bans.js' type='text/javascript'></script>
+</head>
+<body>
+<table width="100%" cellpadding="0" cellpadding="0" border="1">
+<tr style="background: #898B5E;font-weight:bold;color: #DEDECF;"><td>IP</td><td>Nick</td><td>Date</td><td>Time</td><td>By</td></tr>
+<*
+	local node = getBansXML()
+	if ( node ) then
+		local bans = 0
+		while ( xmlFindSubNode ( node, "ip", bans ) ~= false ) do
+			local ban = xmlFindSubNode ( node, "ip", bans )
+			local ip = xmlNodeGetAttribute ( ban, "address" )
+			local nick = xmlFindSubNode ( ban, "nick", 0 )
+			local banner = xmlFindSubNode ( ban, "banner", 0 )
+			local reason = xmlFindSubNode ( ban, "reason", 0 )
+			local date = xmlFindSubNode ( ban, "date", 0 )
+			local time = xmlFindSubNode ( ban, "time", 0 )
+			if ( nick ) then nick = xmlNodeGetValue ( nick ) else nick = "Unknown" end
+			if ( banner ) then banner = xmlNodeGetValue ( banner ) else banner = "Unknown" end
+			if ( reason ) then reason = xmlNodeGetValue ( reason ) else reason = "Unknown" end
+			if ( date ) then date = xmlNodeGetValue ( date ) else date = "Unknown" end
+			if ( time ) then time = xmlNodeGetValue ( time ) else time = "Unknown" end
+			httpWrite ( "<tr style=\"cursor: pointer;\" id=\""..ip.."\" onclick=\"rowSelect();\"><td style='font-weight: bold;'>"..ip.."</td><td>"..nick.."</td><td>"..date.."</td><td>"..time.."</td><td>"..banner.."</td></tr>" )
+			bans = bans + 1
+		end
+	end
+*>
+</table>
+</body>

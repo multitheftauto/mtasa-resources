@@ -1,0 +1,42 @@
+<meta>
+	<info name="Race War" description="Team racing add on" author="ccw" type="script" addon="race" version="0.0.3" build="r431 29Aug09"/>
+
+	<script src="_common_rw.lua" type="server"/>
+	<script src="util_rw_server.lua" type="server"/>
+	<script src="racewar_server.lua" type="server"/>
+
+	<config src="help.xml" type="client" />
+
+
+	<settings>
+		<!-- *****************************************************
+			 All these settings are adjustable in the Admin Panel:
+				1. start admin
+				2. press 'p'
+				3. select Resources tab
+				4. double click on 'race_racewar'
+			 ***************************************************** -->
+
+		<setting name="*numrounds" value="3"
+					friendlyname="Number of rounds"
+					group="Setting"
+					accept="1-10"
+					desc="The number of rounds per war."
+					/>
+
+		<setting name="*ptsprefix" value="$"
+					friendlyname="Points prefix"
+					group="Setting"
+					accept="*"
+					desc="A string to prepend to the points value."
+					/>
+
+		<setting name="*ptspostfix" value=",000"
+					friendlyname="Points postfix"
+					group="Setting"
+					accept="*"
+					desc="A string to append to the points value."
+					/>
+	</settings>
+
+</meta>

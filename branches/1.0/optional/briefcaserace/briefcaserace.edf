@@ -1,0 +1,16 @@
+<def name="Briefcase Race">
+	<element name="briefcase" friendlyname="Briefcase spawnpoint" instructions="Place your briefcase in a position where it can be picked up.">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<marker size="0.5" type="corona" color="#ffff00ff" />
+	</element>
+	<element name="objective" friendlyname="Objective point" instructions="Place your objective point in a position where the briefcase is to be delivered.">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<marker size="3" type="cylinder" color="#9370dbaa" />
+	</element>
+	<element name="spawnpoint" friendlyname="Spawnpoint">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="number" default="0" />
+		<data name="skin" type="skinID" default="0" />
+		<ped model="!skin!" position="!position!" rotZ="!rotation!" />
+	</element>
+</def>

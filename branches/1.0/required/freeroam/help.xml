@@ -1,0 +1,37 @@
+<help popup="yes">
+Freeroam GUI
+
+When you first join, you are given an image of the San Andreas map. Doubleclick an area on the map to spawn. Once you've spawned, you can either press F1 for a selection of buttons for common functions, or type a command as listed below:
+
+Player:
+ ss / setskin [id]
+ wp / give [weaponid] [ammo]
+ ac / addclothes [type] [texture] [model]
+ rc / removeclothes [type]
+ ap / alpha [value] (Transparency)
+ jp / jetpack (or press J)
+ setstyle [fightingstyle]
+ anim [lib] [name]
+ 
+Vehicles:
+ cv / createvehicle [vehicleid]
+ au / addupgrade [upgradeid]
+ ru / removeupgrade [upgradeid]
+ pj / paintjob [paintjobid]
+ rp / repair
+ cl / color [colorid]
+ f / flip
+
+Tools:
+ wt / warpto [playername]
+ sp / setpos [x] [y] [z] [rot]
+ gp / getpos
+
+Environment:
+ st / settime [hours] [minutes]
+ sw / setweather [weatherid]
+ speed / setgamespeed [value]
+ grav / setgravity [value]
+
+If you want to use a different key for bringing up/hiding the interface, you can use the bind command. For example: "/bind r fr" will bind the R key to showing/hiding the window.
+</help>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Home in the Hills" author="Blue Zircon" description="Race with many hills starting by Mad Dogs mansion" version="0" />
+  <map src="Home in the Hills.map" />
+  <settings>
+    <setting name="#weather" value="3" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="270" />
+  </settings>
+</meta>

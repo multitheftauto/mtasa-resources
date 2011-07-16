@@ -1,0 +1,16 @@
+<help>Capture the Flag
+
+Capture any of the other teams' flag and retrieve it 
+to your own to receive points. Whichever team has the
+most points by the end of the round wins it.
+
+Rounds: Press F3 inbetween rounds to select a new team
+        when the next round starts. If you choose not
+        to select a new team, you will be automatically
+        assigned to the next team on the list.
+        Note: in maps that have spawnscreen disabled,
+        pressing F3 would assign you to the team with
+        the least players in it.
+
+Spawnscreen: Use the arrow keys to navigate between teams
+             and press Enter to join one.</help>

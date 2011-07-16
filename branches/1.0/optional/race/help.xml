@@ -1,0 +1,22 @@
+<help>
+/new                - Start a vote for a new random map
+/rate 0-10          - Rate map (Map Ratings)
+/map                - Show mapinfo (Map Info)
+/soundvolume 0-100  - set soundvolume of the additional sounds (Voice Pack)
+
+Keys
+----
+F3         - Change team (Racewars)
+F4         - Toggle bigdar (Traffic sensor)
+F5         - Show top times (Toptimes)
+Enter/Exit - Kill player
+
+Admins
+------
+/config           - Configure Race addons
+/ghostmode        - Toggle collisions
+/checkmap mapname - Find a map
+/nextmap mapname  - Set the next map
+/random           - Change to a random map
+Change other settings in the Admin panel
+</help>

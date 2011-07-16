@@ -1,0 +1,19 @@
+<def name="Interiors">
+	<element name="interiorEntry" friendlyname="Interior warp source">
+		<marker type="arrow" size="2.2" color="#e1ff00c8" interior="!interior!" />
+		<ped interior="!interior!"/>
+		<data name="position" type="coord3d" required="true" default="0,0,0" />
+		<data name="rotation" type="coord3d" required="true" default="0,0,0" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="interiorReturn" friendlyname="Interior warp return">
+		<marker type="arrow" size="2.2" color="#e1ff00c8" interior="!interior!" />
+		<ped interior="!interior!"/>
+		<data name="refid" type="element:interiorEntry" required="true" default="" />
+		<data name="position" type="coord3d" required="true" default="0,0,0" />
+		<data name="rotation" type="coord3d" required="true" default="0,0,0" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+</def>

@@ -1,0 +1,10 @@
+<meta>
+    <info author="Aeron" name="Hay" version="1" type="gamemode"/>
+	<include resource="scoreboard"/>
+    <script src="Hay.lua" />
+    <script src="Hay_client.lua" type="client"/>
+	<settings>
+		<setting name="*levels" value="[50]"/>
+		<setting name="*blocks" value="[245]"/>
+	</settings>
+</meta>

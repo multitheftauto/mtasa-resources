@@ -1,0 +1,13 @@
+<meta>
+	<info author="erorr404,jbeta" version="1.0.0" description="Basic scores" />
+	<include resource="scoreboard" />
+	<script src="scores.lua" type="server" />
+	<export function="updateActiveColumns" type="server" />
+	<settings>
+		<setting name="*kills" value="[true]"/>
+		<setting name="*deaths" value="[true]"/>
+		<setting name="*self" value="[true]"/>
+		<setting name="*status" value="[false]"/>
+		<setting name="*ratio" value="[false]"/>
+	</settings>
+</meta>

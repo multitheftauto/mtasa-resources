@@ -1,0 +1,34 @@
+<group>
+<range start="2718171136" end="2718236671" country="JP" />
+<range start="2724790272" end="2724855807" country="CN" />
+<range start="2725249024" end="2725314559" country="NZ" />
+<range start="2727411712" end="2727608319" country="AU" />
+<range start="2717974528" end="2718171135" country="US" />
+<range start="2718236672" end="2718629887" country="US" />
+<range start="2718695424" end="2718760959" country="US" />
+<range start="2718826496" end="2719285247" country="US" />
+<range start="2719350784" end="2719416319" country="US" />
+<range start="2719481856" end="2719547391" country="US" />
+<range start="2719678464" end="2720399359" country="US" />
+<range start="2720464896" end="2721382399" country="US" />
+<range start="2721382400" end="2721447935" country="CA" />
+<range start="2721447936" end="2722627583" country="US" />
+<range start="2722693120" end="2722758655" country="CA" />
+<range start="2722758656" end="2723479551" country="US" />
+<range start="2723479552" end="2723545087" country="CA" />
+<range start="2723610624" end="2724724735" country="US" />
+<range start="2724855808" end="2724921343" country="CA" />
+<range start="2724921344" end="2725249023" country="US" />
+<range start="2725314560" end="2725904383" country="US" />
+<range start="2725969920" end="2727018495" country="US" />
+<range start="2727018496" end="2727084031" country="CA" />
+<range start="2727084032" end="2727346175" country="US" />
+<range start="2725904384" end="2725969919" country="VE" />
+<range start="2718629888" end="2718695423" country="EU" />
+<range start="2718760960" end="2718826495" country="EU" />
+<range start="2719285248" end="2719350783" country="EU" />
+<range start="2719416320" end="2719481855" country="EU" />
+<range start="2719547392" end="2719678463" country="EU" />
+<range start="2720399360" end="2720464895" country="EU" />
+<range start="2723545088" end="2723610623" country="EU" />
+</group>

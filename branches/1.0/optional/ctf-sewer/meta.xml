@@ -1,0 +1,10 @@
+<meta>
+    <info author="jhxp" type="map" gamemodes="ctf" />
+    <script src="ctf-sewer.lua" />
+    <map src="ctf-sewer.map" />
+    <include resource="maplimits" />
+    
+    <settings> 
+		<setting name="#weather" value="[ 11 ]" />
+    </settings> 
+</meta>

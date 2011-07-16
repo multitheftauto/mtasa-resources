@@ -1,0 +1,44 @@
+body {
+	font-family: "Trebuchet MS", Arial, sans-serif;
+	font-size: 0.8em;
+}
+pre {text-indent: 30px}
+
+#toparea {
+	position: absolute; 
+	top:0px; 
+	right:0px; 
+	left:0px; 
+	height:23px; 
+	background:#555555; 
+	color:#FFFFFF; 
+	padding:7px;
+}
+
+#contentarea {
+	position:absolute;
+	top: 50px;
+	left: 0px;
+}
+
+/* scoreboard styles */
+#scoreboard-table {
+	margin-left: 2%;
+	width: 96%;
+	background-color:#CCCCCC;
+}
+
+#headers {
+	background: #999999;
+	font-weight:bold;
+	color: #EEEEEE;
+}
+
+td.player#name {
+	padding-left: 10px;
+}
+
+.team {
+	font-weight: bold;
+	background-color:#EEEEEE;
+}

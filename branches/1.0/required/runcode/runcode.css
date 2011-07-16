@@ -1,0 +1,46 @@
+body {
+	font-family: "Trebuchet MS", Arial, sans-serif;
+	font-size: 0.8em;
+}
+pre {text-indent: 30px}
+
+#toparea {
+	position: absolute; 
+	top:0px; 
+	right:0px; 
+	left:0px; 
+	height:23px; 
+	background:#555555; 
+	color:#FFFFFF; 
+	padding:7px;
+}
+
+#contentarea {
+	position:absolute;
+	top: 50px;
+	left: 0px;
+	margin-left: 25px;
+}
+
+#codefield {
+	background-color: #EEE;
+	border: 2px solid #999;
+	font-weight: bold;
+	font-size: 1em;
+}
+
+#button {
+	width: 20%;
+}
+
+#results {
+	font-size: 1em;
+}
+
+.result {
+	color: #4B4D25;
+}
+
+.error {
+	color: #EE2323;
+}

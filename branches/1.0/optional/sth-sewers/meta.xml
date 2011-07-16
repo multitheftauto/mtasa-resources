@@ -1,0 +1,9 @@
+<meta>
+    <info author="Slothman" description="sewer complex map" version="1" type="map" gamemodes="stealth"/>
+	<map src="sewers.map"/>
+	<settings>
+		<setting name="#time" value="22:38" />
+		<setting name="#weather" value="[1]" />
+		<setting name="#waveheight" value="[0]" />
+	</settings>
+</meta>

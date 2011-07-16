@@ -1,0 +1,19 @@
+<meta>
+	<info author="driver2" name="Assault" version="1.1" description="Assault" type="gamemode"/>
+	<include resource="missiontimer" />
+	
+	<script src="assault.lua" />
+	<script src="assault_client.lua" type="client" />
+	
+	<include resource="scoreboard" />
+	<include resource="helpmanager" />
+	
+	<export function="triggerObjective" />
+	
+	<file src="logo.png" type="client" />
+	<file src="blackpixel.png" type="client" />
+	
+	<settings>
+		<setting name="#teamBalance" value="1" />
+	</settings>
+</meta>

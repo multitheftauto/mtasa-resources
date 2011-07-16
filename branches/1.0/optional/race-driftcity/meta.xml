@@ -1,0 +1,12 @@
+<meta>
+   <info type="map" gamemodes="race" name="Drift City" author="KWKSND" description="A Great Custom Map For Infernus Drifting" version="1.0"/>
+   <map src="KWK DRIFT CITY.map"/>
+   <settings>
+      <setting name="#duration" value="600"/>
+      <setting name="#time" value="23:0"/>
+      <setting name="#respawntime" value="7"/>
+      <setting name="#weather" value="10"/>
+      <setting name="#respawn" value="timelimit"/>
+   </settings>
+</meta>
+

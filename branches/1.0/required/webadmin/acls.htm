@@ -1,0 +1,625 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<* = call(getResourceFromName("ajax"),"start", getResourceName(getThisResource()) ) *>
+</head>
+<body>
+<!--
+resource.[name]
+resource.[name].function.[funcname]
+resource.[name].file.[filename]
+general.[something]
+command.[command]
+function.[name]
+-->
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css.css" />
+	<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="ie-70.css" />
+	<![endif]-->
+	<script>
+		var lastAcls = null;
+		var currentaclid = -1;
+		function updateACLs(updateSearch)
+		{
+			getACLs(
+				function (acls)
+				{
+					lastAcls = acls;
+					var html = "<br/>";
+					var acllist = document.getElementById("acllistcontent");
+					for ( var i = 0; i < acls.length; i++ )
+					{
+						var removeIcon = "<img src='icon_minus_8_on_F.png' onclick='doRemoveACL(\"" + acls[i].name + "\");' style='cursor:pointer;'/>"
+						html += "<div>" + removeIcon + " <span class='acl' onclick='showAclRights(" + i + ", null);'>" + acls[i].name + "</span></div>";
+					}
+					acllist.innerHTML = html;
+					
+					if ( updateSearch )
+						doSearch();
+				}
+			);
+		}
+		
+		function doSearch()
+		{
+			var search = document.getElementById("searchtext").value;
+			showAclRights ( currentaclid, search );
+		}
+		
+		function showAclRights(aclid, search)
+		{
+			currentaclid = aclid;
+			
+			var acltopbar = document.getElementById("acltopbar");
+			var rightslist = document.getElementById("rightslist");
+			var welcometext = document.getElementById("welcometext");
+			var acllist = document.getElementById("acllist");
+			var acltopbarname = document.getElementById("acltopbarname");
+			var rightsarea = document.getElementById("rightsarea");
+			var rightstable = document.getElementById("rightstable");
+			var rights = lastAcls[aclid].rights;
+			
+			rights = rights.sort(
+				function(a,b) 
+				{ 
+					if ( a.name.toLowerCase() < b.name.toLowerCase() )
+						return -1;
+					else if ( a.name.toLowerCase() > b.name.toLowerCase() ) 
+						return 1;
+					else
+						return 0; 
+				}
+			);
+			
+			while ( rightstable.rows.length != 0 )
+			{
+				rightstable.deleteRow(0);
+			}
+			
+			var html = "";
+			var j = 3;
+			var activerow = null;
+			var isfirstrow = true;
+			for ( var i = 0; i < rights.length; i++ )
+			{
+				if ( search == null || search == "" || rights[i].name.toLowerCase().indexOf(search.toLowerCase()) != -1 )
+				{
+					var type = getSectionName(rights[i].name);
+					if ( isfirstrow || type != getSectionName(rights[i-1].name) )
+					{
+						var row = rightstable.insertRow(-1);
+						var cell = row.insertCell(-1);
+						cell.colSpan = 3;
+						cell.innerHTML = type;
+						if ( isfirstrow )
+							cell.className = "headercell_first";
+						else
+							cell.className = "headercell";
+						j = 3;
+						isfirstrow = false;
+						activerow = rightstable.insertRow(-1);
+					}
+					
+					if ( j == 0 )
+					{
+						activerow = rightstable.insertRow(-1);
+						j = 3;
+					}
+					
+					var cell = activerow.insertCell(-1);
+					cell.className = "rightcell";
+					cell.title = getFriendlyName(rights[i].name) + " [" + rights[i].name + "]";
+					var removeIcon = "<img src='icon_minus_8_on_F.png' onclick='removeRight(\"" + rights[i].name + "\");' style='cursor:pointer;'/>"
+					if ( rights[i].access )
+						cell.innerHTML = removeIcon + " <span style='color: green; font-weight:bold'>ALLOW</span> " + getShortName(rights[i].name);
+					else
+						cell.innerHTML = removeIcon + " <span style='color: red; font-weight:bold'>DISALLOW</span> " + getShortName(rights[i].name);
+					j--;
+				}
+			}
+			
+			updateRightNamePreview();
+			
+			acltopbarname.innerHTML = "ACL: " + lastAcls[aclid].name;
+			acllist.style.display = "none";
+			rightslist.style.display = "block";
+			acltopbar.style.display = "block";
+			welcometext.style.display = "none";
+			rightsarea.style.display = "block";
+		}
+		
+		function doRemoveACL(aclname)
+		{
+			if ( confirm("Are you sure you want to remove the ACL '" + aclname + "'? This cannot be undone.") )
+			{
+				removeACL ( aclname, 
+					function(success)
+					{
+						if (success)
+						{
+							updateACLs(); // update the list
+						}
+						else
+						{
+							alert("Could not remove the ACL.");
+						}
+					}
+				);
+			}
+		}
+		function removeRight(rightname)
+		{
+			if ( confirm("Are you sure you want to remove the right '" + rightname + "' from the ACL '" + lastAcls[currentaclid].name + "'? This cannot be undone.") )
+			{
+				removeACLRight ( lastAcls[currentaclid].name, rightname, 
+					function(success)
+					{
+						if (success)
+						{
+							updateACLs(true); // update the list
+						}
+						else
+						{
+							alert("Could not remove right from ACL.");
+						}
+					}
+				);
+			}
+		}
+		
+		function addRight()
+		{
+			setACLRight ( lastAcls[currentaclid].name, getRightNameFromTab(selectedTab), document.getElementById('allowaccess').checked,
+				function(success)
+				{
+					if (success)
+					{
+						updateACLs(true); // update the list
+						clearNewRightFields();
+					}
+					else
+					{
+						alert("Could not add right to ACL.");
+					}
+				}
+			);
+		}
+		
+		function addAcl()
+		{
+			var aclname = document.getElementById('addaclname').value;
+			for ( var i = 0; i < lastAcls.length; i++ )
+			{
+				if ( aclname == lastAcls[i].name )
+				{
+					alert("An ACL with that name already exists. Please choose another name.");
+					return;
+				}
+			}
+					
+			createACL ( aclname, 
+				function(success)
+				{
+					if (success)
+					{
+						document.getElementById('addaclname').value = "";
+						updateACLs();
+					}
+					else
+					{
+						alert("Could not add new ACL.");
+					}
+				}
+			);
+		}
+		
+		function showAclList()
+		{
+			var acltopbar = document.getElementById("acltopbar");
+			var rightslist = document.getElementById("rightslist");
+			var welcometext = document.getElementById("welcometext");
+			var acllist = document.getElementById("acllist");
+			var rightsarea = document.getElementById("rightsarea");
+			var search = document.getElementById("searchtext");
+			search.value = "";
+			acllist.style.display = "block";
+			rightsarea.style.display = "none";
+			acltopbar.style.display = "none";
+			welcometext.style.display = "inline";
+		}
+		
+		function getFriendlyName(aclname)
+		{
+			var aclparts = aclname.split(".");
+			if ( aclparts.length == 2 ) 
+			{
+				if ( aclparts[0] == "resource" )
+					return "Access the resource '" + aclparts[1] + "'";
+				else if ( aclparts[0] == "general" )
+					return "Have the general right '" + aclparts[1] + "'";
+				else if ( aclparts[0] == "command" )
+					return "Use the console command '" + aclparts[1] + "'";
+				else if ( aclparts[0] == "function" )
+					return "Use the script function '" + aclparts[1] + "'";
+			}
+			else if ( aclparts.length == 4 )
+			{
+				if ( aclparts[0] == "resource" && aclparts[2] == "function" )
+					return "Call the exported function '" + aclname[3] + "' in resource '" + aclname[1] + "'";
+				else if ( aclparts[0] == "resource" && aclparts[2] == "file" )
+					return "Access the file '" + aclname[3] + "' in resource '" + aclname[1] + "'";
+			}
+			else if ( aclparts.length > 2 )
+			{
+				if ( aclparts[0] == "resource" )
+				{
+					var name = "";
+					for ( var i = 2; i < aclparts.length; i++ )
+						name += aclparts[i] + ".";
+					if ( name != "" )
+						name = name.substr(0, name.length-1);
+					return "Access the feature '" + name + "' in resource '" + aclparts[1] + "'";
+				}
+			}
+			return "Have the right '" + aclname + "'";
+		}
+		
+		function getSectionName(aclname)
+		{
+			var aclparts = aclname.split(".");
+			if ( aclparts.length == 2 ) 
+			{
+				if ( aclparts[0] == "resource" )
+					return "Resources";
+				else if ( aclparts[0] == "general" )
+					return "General rights";
+				else if ( aclparts[0] == "command" )
+					return "Console commands";
+				else if ( aclparts[0] == "function" )
+					return "Functions";
+			}
+			else if ( aclparts.length == 4 )
+			{
+				if ( aclparts[0] == "resource" && aclparts[2] == "function" )
+					return "Exported resource functions"
+				else if ( aclparts[0] == "resource" && aclparts[2] == "file" )
+					return "Resource files";
+			}
+			else if ( aclparts.length > 2 )
+			{
+				if ( aclparts[0] == "resource" )
+				{
+					if ( aclparts[2] == "file" )
+						return "Resource files"
+					else
+						return "Resource features"
+				}
+			}
+			return "Other";
+		}
+		
+		function getShortName(aclname)
+		{
+			var aclparts = aclname.split(".");
+			if ( aclparts.length == 2 ) 
+			{
+				if ( aclparts[0] == "resource" )
+					return aclparts[1];
+				else if ( aclparts[0] == "general" )
+					return aclparts[1] ;
+				else if ( aclparts[0] == "command" )
+					return aclparts[1];
+				else if ( aclparts[0] == "function" )
+					return aclparts[1] ;
+			}
+			else if ( aclparts.length == 4 )
+			{
+				if ( aclparts[0] == "resource" && aclparts[2] == "function" )
+					return aclparts[1] + ": " + aclparts[3];
+				else if ( aclparts[0] == "resource" && aclparts[2] == "file" )
+					return aclparts[1] + ": " + aclparts[3];
+			}
+			else if ( aclparts.length > 2 )
+			{
+				if ( aclparts[0] == "resource" )
+				{
+					var startat = 2;
+					if ( aclparts[2] == "file" )
+						startat = 3;
+					var name = "";
+					for ( var i = startat; i < aclparts.length; i++ )
+						name += aclparts[i] + ".";
+					if ( name != "" )
+						name = name.substr(0, name.length-1);
+					return aclparts[1] + ": " + name
+				}
+			}
+			return aclname;
+		}
+		
+		var selectedTab = 1;
+		tabdescriptions = ["access to a console command", "access to a resource's exported script function", "access to an internal MTA script function", 
+		"access to a general feature", "access to a resource", "access to a resource http file", "access to a feature specified by a resource"];
+		function showRightSetting(id)
+		{
+			selectedTab = id;
+			var addrightsetting1 = document.getElementById("addrightsetting1");
+			var addrightsetting2 = document.getElementById("addrightsetting2");
+			var addrightsetting3 = document.getElementById("addrightsetting3");
+			var addrightsetting4 = document.getElementById("addrightsetting4");
+			var addrightsetting5 = document.getElementById("addrightsetting5");
+			var addrightsetting6 = document.getElementById("addrightsetting6");
+			var addrightsetting7 = document.getElementById("addrightsetting7");
+			
+			addrightsetting1.style.display = (id == 1 ? "block":"none");
+			addrightsetting2.style.display = (id == 2 ? "block":"none");
+			addrightsetting3.style.display = (id == 3 ? "block":"none");
+			addrightsetting4.style.display = (id == 4 ? "block":"none");
+			addrightsetting5.style.display = (id == 5 ? "block":"none");
+			addrightsetting6.style.display = (id == 6 ? "block":"none");
+			addrightsetting7.style.display = (id == 7 ? "block":"none");
+			
+			document.getElementById("addrighttab1").className = (id == 1 ? "addrighttab_active":"addrighttab");
+			document.getElementById("addrighttab2").className = (id == 2 ? "addrighttab_active":"addrighttab");
+			document.getElementById("addrighttab3").className = (id == 3 ? "addrighttab_active":"addrighttab");
+			document.getElementById("addrighttab4").className = (id == 4 ? "addrighttab_active":"addrighttab");
+			document.getElementById("addrighttab5").className = (id == 5 ? "addrighttab_active":"addrighttab");
+			document.getElementById("addrighttab6").className = (id == 6 ? "addrighttab_active":"addrighttab");
+			document.getElementById("addrighttab7").className = (id == 7 ? "addrighttab_active":"addrighttab");
+			
+			updateAccess();
+			
+		}
+		
+		function updateAccess()
+		{
+			var allowaccess = document.getElementById("allowaccess");
+			if ( allowaccess.checked )
+				document.getElementById("addrighttabdescription").innerHTML = "Allow " + tabdescriptions[selectedTab-1];
+			else
+				document.getElementById("addrighttabdescription").innerHTML = "Deny " + tabdescriptions[selectedTab-1];
+				
+			updateRightNamePreview();
+		}
+		
+		var wasValid = false;
+		function updateRightNamePreview()
+		{
+			var rightnamepreview = document.getElementById("rightnamepreview");
+			rightnamepreview.innerHTML = getRightNameFromTab(selectedTab);
+			var validtab = validateTab();
+			if ( validtab != wasValid )
+			{
+				wasValid = validtab;
+				document.getElementById("addButton").disabled = !validtab;
+			}
+		}
+		
+		function getRightNameFromTab(tabid)
+		{
+			switch(selectedTab)
+			{
+				case 1:
+					return "command." + document.getElementById("addrightsetting1Command").value;
+				case 2:
+					return "resource." + document.getElementById("addrightsetting2Resource").value + ".function." + document.getElementById("addrightsetting2Func").value;
+				case 3:
+					return "function." + document.getElementById("addrightsetting3Func").value;
+				case 4:
+					return "general." + document.getElementById("addrightsetting4Name").value;
+				case 5:
+					return "resource." + document.getElementById("addrightsetting5Resource").value;
+				case 6:
+					return "resource." + document.getElementById("addrightsetting6Resource").value + ".file." + document.getElementById("addrightsetting6Filename").value;
+				case 7:
+					return "resource." +  document.getElementById("addrightsetting7Resource").value + "." +  document.getElementById("addrightsetting7Feature").value;
+			}
+		}
+		
+		function clearNewRightFields()
+		{
+			document.getElementById("addrightsetting1Command").value = "";
+			document.getElementById("addrightsetting2Func").value = "";
+			document.getElementById("addrightsetting3Func").value = "";
+			document.getElementById("addrightsetting4Name").value = "";
+			document.getElementById("addrightsetting6Filename").value = "";
+			document.getElementById("addrightsetting7Feature").value = "";
+		}
+		
+		function validateTab(tabid)
+		{
+			if ( lastAcls )
+			{
+				var rightname = getRightNameFromTab(tabid) ;
+				var activeacl = lastAcls[currentaclid].rights;
+				for ( var i = 0; i < activeacl.length; i++ )
+				{
+					if ( activeacl[i].name == rightname )
+					{
+						rightnamepreview.innerHTML += " <span style='color:red; font-weight:bold;'>[already in ACL]</span>";
+						return false;
+					}
+				}
+			}
+			
+			switch(selectedTab)
+			{
+				case 1:
+					return document.getElementById("addrightsetting1Command").value != "";
+				case 2:
+					return  document.getElementById("addrightsetting2Func").value != "";
+				case 3:
+					return document.getElementById("addrightsetting3Func").value != "";
+				case 4:
+					return document.getElementById("addrightsetting4Name").value != "";
+				case 5:
+					return true;
+				case 6:
+					return document.getElementById("addrightsetting6Filename").value != "";
+				case 7:
+					return document.getElementById("addrightsetting7Feature").value != "";
+			}
+		}
+		
+		function clearSearch()
+		{
+			document.getElementById("searchtext").value = "";
+			doSearch();
+		}
+	</script>
+
+</head>
+
+<body bgcolor="#ffffff" style="font-family:'Trebuchet MS',Arial,sans-serif;font-size:0.8em;" onload="updateACLs();updateAccess();">
+
+	<div id="acllist">
+		<div id="acllistcontent">
+			
+		</div>
+		<div id="addaclarea">
+			<div id="addacltopbar">
+				Add new ACL
+			</div>
+			<div id="addaclcontent">
+			<div class="formfield"><label for="addaclname">ACL Name:</label> <input type="text" id="addaclname" /> <input type="button" onclick="addAcl();" value="add" /></div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="rightsarea"  style="display:none;">
+		<div id="rightslist">
+			<table id="rightstable">
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div id="addrightsarea">
+			<div id="addrightstopbar">
+				Add new right
+			</div>
+			<div id="addrightscontent">
+				<div id="addrightstabs">
+					<div class="addrighttab_active" onclick="showRightSetting(1);" id="addrighttab1">Console command</div>
+					<div class="addrighttab" onclick="showRightSetting(2);" id="addrighttab2">Exported resource function</div>
+					<div class="addrighttab" onclick="showRightSetting(3);" id="addrighttab3">Function</div>
+					<div class="addrighttab" onclick="showRightSetting(4);" id="addrighttab4">General</div>
+					<div class="addrighttab" onclick="showRightSetting(5);" id="addrighttab5">Resource</div>
+					<div class="addrighttab" onclick="showRightSetting(6);" id="addrighttab6">Resource file</div>
+					<div class="addrighttab" onclick="showRightSetting(7);" id="addrighttab7">Resource feature</div>
+				</div>
+				<div id="addrightssettings">
+					<div id="addrightsettingspadding">
+						<div style="position: absolute; background: #888888; top:0px; left:0px; right:0px; height: 24px;">
+						<div style="float:right;" id="addrighttabdescription"></div><div style="float:left;"><input type="checkbox" id="allowaccess" onclick="updateAccess();" onchange="updateAccess();"/> <label for="allowaccess" style="font-weight:bold;">Allow access</label></div>
+						</div>
+						<div class="addrighttabpane" id="addrightsetting1">
+							<label for="addrightsetting1Command">Command:</label> <input type="text" id="addrightsetting1Command" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" />
+						</div>
+						<div class="addrighttabpane" id="addrightsetting2" style="display:none;">
+							<div class="formfield">
+							<label for="addrightsetting2Resource">Resource: </label>
+							
+							<select id="addrightsetting2Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" onclick="updateRightNamePreview();">
+							<*
+							local resourceNames = {}
+							for _,resource in ipairs(getResources()) do
+								table.insert(resourceNames,getResourceName(resource))
+							end
+							table.sort(resourceNames)
+							for _,name in ipairs(resourceNames) do
+								*>
+									<option><* = name *></option>
+								<*
+							end
+							*>
+							</select></div>
+							<div class="formfield">
+							<label for="addrightsetting2Func">Function:</label> <input type="text" id="addrightsetting2Func" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" /></div>
+						</div>
+						<div class="addrighttabpane" id="addrightsetting3" style="display:none;">
+							<label for="addrightsetting3Func">Function name:</label> <input type="text" id="addrightsetting3Func" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();"/>
+						</div>
+						
+						<div class="addrighttabpane" id="addrightsetting4" style="display:none;">
+							<label for="addrightsetting4Name">Name:</label> <input type="text" id="addrightsetting4Name" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" />
+						</div>
+						
+						<div class="addrighttabpane" id="addrightsetting5" style="display:none;">
+							<label for="addrightsetting5Resource">Resource:</label> <select id="addrightsetting5Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();">
+							<*
+							local resourceNames = {}
+							for _,resource in ipairs(getResources()) do
+								table.insert(resourceNames,getResourceName(resource))
+							end
+							table.sort(resourceNames)
+							for _,name in ipairs(resourceNames) do
+								*>
+									<option><* = name *></option>
+								<*
+							end
+							*>
+							</select>
+						</div>
+						
+						<div class="addrighttabpane" id="addrightsetting6" style="display:none;">
+							<div class="formfield">
+							<label for="addrightsetting6Resource">Resource:</label> <select id="addrightsetting6Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" onclick="updateRightNamePreview();">
+							<*
+							local resourceNames = {}
+							for _,resource in ipairs(getResources()) do
+								table.insert(resourceNames,getResourceName(resource))
+							end
+							table.sort(resourceNames)
+							for _,name in ipairs(resourceNames) do
+								*>
+									<option><* = name *></option>
+								<*
+							end
+							*>
+							</select></div>
+							<div class="formfield">
+							<label for="addrightsetting6Filename">File name:</label> <input type="text" id="addrightsetting6Filename" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" />
+							</div>
+							</select>
+						</div>
+						
+						<div class="addrighttabpane" id="addrightsetting7" style="display:none;">
+							<div class="formfield">
+							<label for="addrightsetting7Resource">Resource:</label> <select id="addrightsetting7Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" onclick="updateRightNamePreview();">
+							<*
+							local resourceNames = {}
+							for _,resource in ipairs(getResources()) do
+								table.insert(resourceNames,getResourceName(resource))
+							end
+							table.sort(resourceNames)
+							for _,name in ipairs(resourceNames) do
+								*>
+									<option><* = name *></option>
+								<*
+							end
+							*>
+							</select></div>
+							<div class="formfield">
+							<label for="addrightsetting7Feature">Feature:</label> <input type="text" id="addrightsetting7Feature" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();" />
+							</div>
+							</select>
+						</div>
+						<div id="addrightbottombar"<div style="float:right;"><input type="button" value="add" onclick="addRight();" id="addButton" disabled="disabled"/></div><span style="font-weight:bold;">Right name: </span><span id="rightnamepreview"></span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="topbar">
+		<span id="welcometext">ACLs are a set of permissions that you can apply to groups of users. Click on an ACL to modify it's rights.</span>
+		<div id="acltopbar" style="display:none;"><!--src="icon_x_8_on_F.png"-->
+		<div id="acltopbarsearchbox">Search: <input type="text" id="searchtext" onchange="doSearch();" onkeyup="doSearch();" style='margin-right:5px;'><span  onclick="clearSearch();" style='cursor:pointer;font-weight:normal;'>clear</span></div>
+		<div id="acltopbarbackbutton"><input type="button" value="< Back" onclick="showAclList();" /></div><div id="acltopbarname"></div></div>
+	</div>
+	
+	
+
+</body>
+</body>
+</html>

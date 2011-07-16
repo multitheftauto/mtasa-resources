@@ -1,0 +1,9 @@
+<meta>
+	<info author="erorr404" type="script" version="1.0.1" />
+	<script src="deathpickups.lua" />
+	<settings>
+		<setting name="*timeout" value="[30000]"/>
+		<setting name="*only_current" value="[false]"/>
+		<setting name="*radius" value="[1]"/>
+	</settings>
+</meta>

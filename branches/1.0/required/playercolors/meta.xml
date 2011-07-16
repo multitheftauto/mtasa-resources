@@ -1,0 +1,9 @@
+<meta>
+	<script src="playercolors.lua" type="server" />
+	<settings>
+		<setting name="color_range" value="[ [ 50, 255 ] ]" />
+	</settings>
+	
+	<export function="getPlayerColor" type="server" />
+	<export function="getPlayerColour" type="server" />
+</meta>

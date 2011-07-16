@@ -1,0 +1,3 @@
+<map>
+	<test value="123" table='[{"abc":55},4,3,531,null]' />
+</map>

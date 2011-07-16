@@ -1,0 +1,457 @@
+<skins>
+  <!--
+    Special thanks to Talidan and Slothman for the skins list
+  -->
+	<group name="Special">
+		<skin model="1" name="Truth" />
+		<skin model="2" name="Maccer" />
+		<skin model="265" name="Tenpenny" />
+		<skin model="266" name="Pulaski" />
+		<skin model="267" name="Hern" />
+		<skin model="268" name="Dwayne" />
+		<skin model="269" name="Big Smoke" />
+		<skin model="270" name="Sweet" />
+		<skin model="271" name="Ryder" />
+		<skin model="272" name="Forelli Guy" />
+		<skin model="290" name="Rose" />
+		<skin model="291" name="Kent Paul" />
+		<skin model="292" name="Cesar" />
+		<skin model="293" name="OG Loc" />
+		<skin model="294" name="Wuzi Mu" />
+		<skin model="295" name="Mike Toreno" />
+		<skin model="296" name="Jizzy" />
+		<skin model="297" name="Madd Dogg" />
+		<skin model="298" name="Catalina" />
+		<skin model="299" name="Claude from GTA 3" />
+		<skin model="300" name="Ryder" />
+		<skin model="301" name="Ryder Robber" />
+		<skin model="302" name="Emmet" />
+		<skin model="303" name="Andre" />
+		<skin model="304" name="Kendl" />
+		<skin model="305" name="Jethro" />
+		<skin model="306" name="Zero" />
+		<skin model="307" name="T-bone Mendez" />
+		<skin model="308" name="Sindaco Guy" />
+		<skin model="309" name="Janitor" />
+		<skin model="310" name="Big Bear" />
+		<skin model="311" name="Big Smoke with Vest" />
+		<skin model="312" name="Physco" />
+	</group>
+	<group name="Beach">
+		<skin model="18" name="Black Beachguy" />
+		<skin model="45" name="Beach Mustache" />
+		<skin model="92" name="Rollergirl" />
+		<skin model="96" name="Soccer Player" />
+		<skin model="97" name="Baywatch Dude" />
+		<skin model="138" name="Bikini Tattoo" />
+		<skin model="139" name="Yellow Bikini" />
+		<skin model="140" name="Buxom Bikini" />
+		<skin model="154" name="Beach Blonde" />
+		<skin model="251" name="Lifeguard" />
+		<skin model="252" name="Naked Freak" />
+	</group>
+	<group name="Casual Generics">
+		<skin model="7" name="Casual Jeanjacket" />
+		<skin model="10" name="Old Fat Lady" />
+		<skin model="14" name="Floral Shirt" />
+		<skin model="15" name="Plaid Baldy" />
+		<skin model="20" name="Fresh Prince" />
+		<skin model="23" name="Skater Kid" />	
+		<skin model="32" name="Eyepatch" />
+		<skin model="39" name="Old Maid" />
+		<skin model="53" name="Golf Lady" />
+		<skin model="54" name="Hispanic Woman" />
+		<skin model="56" name="Legwarmers 1" />
+		<skin model="58" name="Chinese Plaid" />
+		<skin model="60" name="Chinese Casual" />
+		<skin model="62" name="Pajama Man 1" />
+		<skin model="69" name="Denim Girl" />
+		<skin model="72" name="Bearded Hippie" />
+		<skin model="88" name="Casual Old Lady" />
+		<skin model="93" name="Hoop Earrings 1" />
+		<skin model="101" name="Jacket Hippie" />
+		<skin model="136" name="Old Rasta" />
+		<skin model="142" name="African 1" />
+		<skin model="143" name="Sam Jackson" />
+		<skin model="170" name="PubeStache Tshirt" />
+		<skin model="182" name="Pajama Man 2" />
+		<skin model="184" name="Neckbeard" />
+		<skin model="188" name="Green Shirt" />
+		<skin model="215" name="Explorer" />
+		<skin model="217" name="Staff Guy" />
+		<skin model="218" name="Old Woman" />
+		<skin model="220" name="African 2" />
+		<skin model="221" name="Beardo Casual" />
+		<skin model="222" name="Beardo Clubbing" />
+		<skin model="224" name="Elderly Asian 1" />
+		<skin model="225" name="Elderly Asian 2" />
+		<skin model="226" name="Legwarmers 2" />
+		<skin model="229" name="Asian Tourist" />
+		<skin model="231" name="Grannie" />
+		<skin model="232" name="Grouchy lady" />
+		<skin model="233" name="Hoop Earrings 2" />
+		<skin model="234" name="Buzzcut" />
+		<skin model="236" name="Happy Old Man" />
+		<skin model="250" name="Green Tshirt" />
+		<skin model="262" name="Pajama Man 2 b" />
+	</group>	
+	<group name="Celebrities">	
+		<skin model="20" name="Fresh Prince" />
+		<skin model="91" name="Sharon Stone" />
+		<skin model="143" name="Sam Jackson" />
+		<skin model="147" name="Sigmund Freud" />
+		<skin model="240" name="Hugh Grant" />
+		<skin model="251" name="Lifeguard" />
+		<skin model="258" name="Joe Pesci" />
+		<skin model="259" name="Chris Penn" />
+	</group>
+	<group name="Country">
+		<skin model="31" name="Fat Cowgirl" />
+		<skin model="33" name="Bounty Hunter" />
+		<skin model="34" name="Marlboro Man" />
+		<skin model="44" name="Tatooed Plaid" />
+		<skin model="128" name="Native Rancher" />
+		<skin model="129" name="Native Librarian" />
+		<skin model="130" name="Native Ugly" />
+		<skin model="131" name="Native Sexy" />
+		<skin model="132" name="Native Geezer" />
+		<skin model="133" name="Furys Trucker" />
+		<skin model="157" name="Farmer Girl" />
+		<skin model="158" name="Farmer" />
+		<skin model="159" name="Farmer Redneck" />
+		<skin model="160" name="Bald Redneck" />
+		<skin model="161" name="Smoking Cowboy" />
+		<skin model="162" name="Inbred" />
+		<skin model="196" name="Aunt May" />
+		<skin model="197" name="Smoking Maid" />
+		<skin model="198" name="Ranch Cowgirl" />
+		<skin model="199" name="Heidi" />
+		<skin model="200" name="Hairy Redneck" />
+		<skin model="201" name="Trucker Girl" />
+		<skin model="202" name="Beer Trucker" />
+		<skin model="236" name="Happy Old Man" />
+		<skin model="261" name="Southerner" />
+	</group>
+	<group name="Duplicates">
+		<skin model="25" name="Varsity jacket" />
+		<skin model="66" name="Varsity Bandits" />
+		<skin model="56" name="Legwarmers 1" />
+		<skin model="226" name="Legwarmers 2" />
+		<skin model="221" name="Beardo Casual" />
+		<skin model="222" name="Beardo Clubbing" />
+		<skin model="247" name="Biker Vest" />
+		<skin model="254" name="Biker Vest b" />
+	</group>
+	<group name="Authorities">
+		<skin model="71" name="Security Guard" />
+		<skin model="163" name="Casino Bouncer 1" />
+		<skin model="164" name="Casino Bouncer 2" />
+		<skin model="165" name="Agent Kay" />
+		<skin model="166" name="Agent Jay" />
+	</group>
+	<group name="Firemen">
+		<skin model="277" name="Fireman LS" />
+		<skin model="278" name="Fireman LV" />
+		<skin model="279" name="Fireman SF" />
+	</group>
+	<group name="Medics">
+		<skin model="274" name="Medic 1" />
+		<skin model="275" name="Medic 2" />
+		<skin model="276" name="Medic 3" />
+	</group>
+	<group name="Military">
+		<skin model="73" name="Flag Bandana" />
+		<skin model="179" name="War Vet" />
+		<skin model="287" name="Army" />
+	</group>
+	<group name="Police">
+		<skin model="190" name="Barbara Schternvart" />
+		<skin model="246" name="Cop Stripper" />
+		<skin model="280" name="Cop 1" />
+		<skin model="281" name="Cop 2" />
+		<skin model="282" name="Cop 3" />
+		<skin model="283" name="Cop 4" />
+		<skin model="284" name="Cop 5" />
+		<skin model="285" name="SWAT" />
+		<skin model="286" name="FBI" />
+		<skin model="288" name="Cop 6" />
+	</group>
+	<group name="Fatties">
+		<skin model="10" name="Old Fat Lady" />
+		<skin model="31" name="Fat Cowgirl" />
+		<skin model="38" name="Old Golf Lady" />
+		<skin model="39" name="Old Maid" />
+		<skin model="53" name="Golf Lady" />
+		<skin model="54" name="Hispanic Woman" />
+		<skin model="88" name="Casual Old Lady" />
+		<skin model="89" name="Cleaning Lady" />
+		<skin model="103" name="Baller Jacket" />
+		<skin model="103" name="Baller Jacket" />
+		<skin model="105" name="Grove Sweater" />
+		<skin model="130" name="Native Ugly" />
+		<skin model="151" name="Melanie" />
+		<skin model="182" name="Pajama Man 2" />
+		<skin model="197" name="Smoking Maid" />
+		<skin model="199" name="Heidi" />
+		<skin model="207" name="Grove Booty" />
+		<skin model="218" name="Old Woman" />
+		<skin model="231" name="Grannie" />
+		<skin model="232" name="Grouchy lady" />
+		<skin model="245" name="Ghetto Ho" />
+		<skin model="258" name="Joe Pesci" />
+		<skin model="259" name="Chris Penn" />
+	</group>
+	<group name="Formal Generics">
+		<skin model="9" name="Business Lady" />
+		<skin model="17" name="Black suit" />
+		<skin model="57" name="Chinese Businessman" />
+		<skin model="61" name="Pilot" />
+		<skin model="76" name="Businesswoman 1" />
+		<skin model="141" name="Cute Librarian" />
+		<skin model="147" name="Sigmund Freud" />
+		<skin model="148" name="Businesswoman 2" />
+		<skin model="149" name="Businesswoman 2 b" />
+		<skin model="150" name="Businesswoman 3" />
+		<skin model="169" name="Asian Escort" />
+		<skin model="186" name="Teacher" />
+		<skin model="187" name="Japanese Businessman 1" />
+		<skin model="219" name="Lady In Red" />
+		<skin model="227" name="Japanese Businessman 2" />
+		<skin model="228" name="Japanese Businessman 3" />
+		<skin model="255" name="Limo Driver" />
+		<skin model="263" name="Asian Hostess" />
+	</group>
+	<group name="Fighters">
+		<skin model="49" name="Ninja Sensei" />
+		<skin model="80" name="Red Boxer" />
+		<skin model="81" name="Blue Boxer" />
+		<skin model="180" name="Bball Player" />
+		<skin model="203" name="Ninja 1" />
+		<skin model="204" name="Ninja 2" />
+	</group>
+	<group name="Gangs">
+		<skin model="114" name="Aztecas Stripes" />
+		<skin model="115" name="Aztecas Jacket" />
+		<skin model="116" name="Aztecas Shorts" />
+		<skin model="13" name="Homegirl" />
+		<skin model="102" name="Baller Shirt" />
+		<skin model="103" name="Baller Jacket" />
+		<skin model="104" name="Baller Sweater" />
+		<skin model="100" name="Biker Blackshirt" />
+		<skin model="247" name="Biker Vest" />
+		<skin model="248" name="Biker Headband" />
+		<skin model="254" name="Biker Vest b" />
+		<skin model="121" name="Da Nang Army" />
+		<skin model="122" name="Da Nang Bandana" />
+		<skin model="123" name="Da Nang Shades" />
+		<skin model="0" name="CJ" />
+		<skin model="105" name="Grove Sweater" />
+		<skin model="106" name="Grove Topbutton" />
+		<skin model="107" name="Grove Jersey" />
+		<skin model="207" name="Grove Booty" />
+		<skin model="125" name="Mafia Enforcer" />
+		<skin model="126" name="Mafia Wiseguy" />
+		<skin model="127" name="Mafia Hitman" />
+		<skin model="173" name="Rifa Hat" />
+		<skin model="174" name="Rifa Vest" />
+		<skin model="175" name="Rifa Suspenders" />
+		<skin model="111" name="Russian Muscle" />
+		<skin model="112" name="Russian Hitman" />
+		<skin model="113" name="Russian Boss" />
+		<skin model="120" name="Sindacco Suit" />
+		<skin model="124" name="Sindacco Muscle" />
+		<skin model="117" name="Triad 1" />
+		<skin model="118" name="Triad 2" />
+		<skin model="119" name="Triad 3" />
+		<skin model="108" name="Vagos Topless" />
+		<skin model="109" name="Vagos Pants" />
+		<skin model="110" name="Vagos Shorts" />
+	</group>
+	<group name="Gangstas">
+		<skin model="19" name="Beach Gangsta" />
+		<skin model="21" name="Striped Gangsta" />
+		<skin model="22" name="Orange Sportsman" />
+		<skin model="28" name="Black Dealer" />
+		<skin model="29" name="White Dealer" />
+		<skin model="30" name="Religious Essey" />
+		<skin model="47" name="Top Button Essey" />
+		<skin model="67" name="Red Bandana" />
+		<skin model="143" name="Sam Jackson" />
+		<skin model="241" name="Afro Brother" />
+		<skin model="242" name="Dreadlock Brother" />
+		<skin model="243" name="Ghetto Booty" />
+	</group>
+	<group name="Girlfriends">
+		<skin model="190" name="Barbara Schternvart" />
+		<skin model="191" name="Helena Wankstein" />
+		<skin model="192" name="Michelle Cannes" />
+		<skin model="193" name="Katie Zhan" />
+		<skin model="194" name="Millie Perkins" />
+		<skin model="195" name="Denise Robinson" />
+	</group>
+	<group name="Homeless">
+		<skin model="77" name="Bag Lady" />
+		<skin model="78" name="Homeless Scarf" />
+		<skin model="79" name="Fat Homeless" />
+		<skin model="95" name="Poor Old Man" />
+		<skin model="134" name="Homeless Smoker" />
+		<skin model="135" name="Skullcap Hobo" />
+		<skin model="137" name="Boxhead" />
+		<skin model="200" name="Hairy Redneck" />
+		<skin model="212" name="Tin Foil Hat" />
+		<skin model="213" name="Hobo Elvis" />
+		<skin model="230" name="Hooded Hobo" />
+	</group>
+	<group name="Nightclubbers">
+		<skin model="43" name="Porn Producer" />
+		<skin model="46" name="Dark Romeo" />
+		<skin model="59" name="Chinese Romeo" />
+		<skin model="185" name="Nervous Guy" />
+		<skin model="223" name="Greasy Nightclubber" />
+		<skin model="240" name="Hugh Grant" />
+	</group>
+	<group name="Sex Industry">
+		<skin model="43" name="Porn Producer" />
+		<skin model="63" name="Trashy Hooker" />
+		<skin model="64" name="Transvestite" />
+		<skin model="75" name="Skanky Hooker" />
+		<skin model="85" name="Furcoat Hooker" />
+		<skin model="87" name="Firecrotch" />
+		<skin model="90" name="Barely Covered" />
+		<skin model="152" name="Schoolgirl 1" />
+		<skin model="178" name="Masked Stripper" />
+		<skin model="237" name="Leopard Hooker" />
+		<skin model="238" name="Amazon" />
+		<skin model="244" name="Lace Stripper" />
+		<skin model="245" name="Ghetto Ho" />
+		<skin model="246" name="Cop Stripper" />
+		<skin model="249" name="Pimp" />
+		<skin model="256" name="Shoolgirl 2" />
+		<skin model="257" name="Bondage Girl" />
+	</group>
+	<group name="Sports">
+		<skin model="13" name="Homegirl" />
+		<skin model="21" name="Striped Gangsta" />
+		<skin model="22" name="Orange Sportsman" />
+		<skin model="23" name="Skater Kid" />
+		<skin model="24" name="LS Coach" />
+		<skin model="25" name="Varsity jacket" />
+		<skin model="36" name="Mailman" />
+		<skin model="51" name="Black Bicyclist" />
+		<skin model="52" name="White Bicyclist" />
+		<skin model="53" name="Golf Lady" />
+		<skin model="66" name="Varsity Bandits" />
+		<skin model="80" name="Red Boxer" />
+		<skin model="81" name="Blue Boxer" />
+		<skin model="92" name="Rollergirl" />
+		<skin model="94" name="Andy Capp" />
+		<skin model="96" name="Soccer Player" />
+		<skin model="99" name="Rollerguy" />
+		<skin model="180" name="Bball Player" />`
+		<skin model="195" name="Denise Robinson" />
+	</group>
+	<group name="Tough Guys">
+		<skin model="0" name="CJ" />
+		<skin model="18" name="Black Beachguy" />
+		<skin model="28" name="Black Dealer" />
+		<skin model="30" name="Religious Essey" />
+		<skin model="33" name="Bounty Hunter" />
+		<skin model="183" name="Klingon" />
+	</group>
+	<group name="Tourists">
+		<skin model="26" name="Hiker" />
+		<skin model="35" name="Fisherman" />
+		<skin model="37" name="Baseball Dad" />
+		<skin model="38" name="Old Golf Lady" />
+		<skin model="210" name="Sloppy Tourist" />
+		<skin model="235" name="Retired Tourist" />
+	</group>
+	<group name="Wealthy">
+		<skin model="12" name="Classy Gold Hooker" />
+		<skin model="40" name="Classy Dark Hooker" />
+		<skin model="41" name="Tracksuit Girl" />
+		<skin model="55" name="Rich Bitch" />
+		<skin model="91" name="Sharon Stone" />
+		<skin model="99" name="Rollerguy" />
+		<skin model="216" name="Turtleneck" />
+		<skin model="240" name="Hugh Grant" />
+	</group>
+	<group name="Weirdos">
+		<skin model="75" name="Skanky Hooker" />
+		<skin model="137" name="Boxhead" />
+		<skin model="151" name="Melanie" />
+		<skin model="167" name="Chicken" />
+		<skin model="181" name="Punk" />
+		<skin model="212" name="Tin Foil Hat" />
+		<skin model="213" name="Hobo Elvis" />
+		<skin model="230" name="Hooded Hobo" />
+		<skin model="241" name="Afro Brother" />
+		<skin model="242" name="Dreadlock Brother" />
+		<skin model="252" name="Naked Freak" />
+		<skin model="264" name="Whoopee the Clown" />
+	</group>
+	<group name="Barbers">
+		<skin model="156" name="Old Reece" />
+		<skin model="176" name="Style Barber" />
+		<skin model="177" name="Vanilla Ice Barber" />
+	</group>
+	<group name="Career Workers">
+		<skin model="61" name="Pilot" />
+		<skin model="68" name="Preist" />
+		<skin model="70" name="Scientist" />
+		<skin model="147" name="Sigmund Freud" />
+	</group>
+	<group name="Casino Workers">
+		<skin model="11" name="Card Dealer 1" />
+		<skin model="82" name="Fatty Elvis" />
+		<skin model="83" name="Whitesuit Elvis" />
+		<skin model="84" name="Bluesuit Elvis" />
+		<skin model="163" name="Casino Bouncer 1" />
+		<skin model="164" name="Casino Bouncer 2" />
+		<skin model="169" name="Asian Escort" />
+		<skin model="171" name="Card Dealer 2" />
+		<skin model="172" name="Card Dealer 3" />
+		<skin model="189" name="Valet" />
+		<skin model="213" name="Hobo Elvis" />
+		<skin model="214" name="Caligula Waitress" />
+	</group>
+	<group name="Construction Workers">
+		<skin model="16" name="Earmuff Worker" />
+		<skin model="27" name="Construction 1" />
+		<skin model="153" name="Foreman" />
+		<skin model="260" name="Construction 2" />
+	</group>
+	<group name="Drug Workers">
+		<skin model="28" name="Black Dealer" />
+		<skin model="29" name="White Dealer" />
+		<skin model="144" name="Drug Worker 1" />
+		<skin model="145" name="Drug Worker 2" />
+		<skin model="146" name="Drug Worker 3" />
+	</group>
+	<group name="Food Workers">
+		<skin model="155" name="Pizza Guy" />
+		<skin model="167" name="Chicken" />
+		<skin model="168" name="Hotdog Vender" />
+		<skin model="205" name="Burger Girl" />
+		<skin model="209" name="Noodle Vender" />
+		<skin model="264" name="Whoopee the Clown" />
+	</group>
+	<group name="Other Workers">
+		<skin model="36" name="Mailman" />
+		<skin model="50" name="Mechanic" />
+		<skin model="71" name="Security Guard" />
+		<skin model="189" name="Valet" />
+		<skin model="211" name="Staff Girl" />
+		<skin model="217" name="Staff Guy" />
+		<skin model="251" name="Lifeguard" />
+		<skin model="253" name="Bus Driver" />
+		<skin model="255" name="Limo Driver" />
+	</group>
+	<group name="Truckers">
+		<skin model="128" name="Native Rancher" />
+		<skin model="133" name="Furys Trucker" />
+		<skin model="201" name="Trucker Girl" />
+		<skin model="202" name="Beer Trucker" />
+		<skin model="206" name="Money Trucker" />
+	</group>
+</skins>

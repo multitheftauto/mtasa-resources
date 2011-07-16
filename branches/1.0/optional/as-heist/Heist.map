@@ -1,0 +1,301 @@
+<map mod="deathmatch" version="1.0">
+
+	<meta>
+		<author>norby89</author>
+		<version>1.0</version>
+		<name>Heist</name>
+		<description>Heist at Caligula's Casino</description>
+	</meta>
+
+	<assaultSettings timelimit="720" finishType="objective" finishObjective="hideout" author="norby89"
+		time="18:00" weather="2" description="Attackers need to rob Caligula's Casino while the cops are trying to stop them." 
+		conqueredMessage="attackers pulled off the heist!" defendedMessage="cops arrested the attackers" />
+
+
+  <!--sphinx-->
+	<camera type="spawn" posX="2139.1770019531" posY="1286.3607177734" posZ="34.195938110352" targetX="2239.1762695313" targetY="1285.9699707031" targetZ="30.308029174805" />
+
+  <!--caligula's-->
+	<camera type="selectTeam" posX="2025.0883789063" posY="1762.2784423828" posZ="127.34687805176" targetX="2099.400390625" targetY="1695.3626708984" targetZ="77.94841003418" />
+
+  <!--fountain-->
+	<camera type="finish" posX="2086.8442382813" posY="1686.8214111328" posZ="10.409673690796" targetX="2182.6240234375" targetY="1658.0771484375" targetZ="38.365436553955" />
+
+<!--
+		attackers 1,1;24,50;29,300;30,40;[44,1]
+		 
+		defenders 3,1;22,50;28,300
+	*	defenders 22,50;28,300;25,20
+	**	defenders 23,40;26,20;32,200
+	***	defenders 23,60;27,20;32,200;31,40;45,1
+	****   defenders 23,60;27,20;32,300;31,40;34,5;45,1
+-->
+
+  <!--hide out-->
+	<spawngroup type="attacker" req="">
+		<spawnarea posX="2482.3891601563" posY="2711.54296875" posZ="10.8203125" skins="241,242" weapons="1,1;24,50;29,300;30,40" />
+		<spawnarea posX="2483.2319335938" posY="2729.4641113281" posZ="10.8203125" skins="241,242" weapons="1,1;24,50;29,300;30,40" />
+	</spawngroup>
+  
+  <!--police station-->
+	<spawngroup type="defender" req="">
+		<spawnarea posX="2286.0966796875" posY="2451.3186035156" posZ="10.8203125" skins="280,281" weapons="3,1;22,50;28,300" />
+		<spawnarea posX="2286.8122558594" posY="2468.3259277344" posZ="10.8203125" skins="284" weapons="3,1;22,50;28,300" />
+	</spawngroup>
+	
+  <!--police station [*] 'same'-->
+	<spawngroup type="defender" req="bombs,outfits">
+		<spawnarea posX="2286.0966796875" posY="2451.3186035156" posZ="10.8203125" skins="280,281" weapons="22,50;28,300;25,20" />
+		<spawnarea posX="2286.8122558594" posY="2468.3259277344" posZ="10.8203125" skins="284" weapons="22,50;28,300;25,20" />
+	</spawngroup>
+
+  <!--securicar-->
+	<spawngroup type="attacker" req="securicar">
+		<spawnarea posX="2503.0588378906" posY="2385.9008789063" posZ="10.8203125" skins="241,242" weapons="1,1;24,50;29,300;30,40" />
+		<spawnarea posX="2502.3752441406" posY="2373.1296386719" posZ="10.8203125" skins="241,242" weapons="1,1;24,50;29,300;30,40" />
+	</spawngroup>
+	
+  <!--securicar [**]-->
+	<spawngroup type="defender" req="securicar">
+		<spawnarea posX="2306.37109375" posY="2439.6374511719" posZ="3.2734375" skins="280,281" weapons="23,40;26,20;32,200" />
+		<spawnarea posX="2300.8625488281" posY="2478.9030761719" posZ="3.2734375" skins="280,281" weapons="23,40;26,20;32,200" />
+	</spawngroup>
+	
+
+  <!--park (forced respawn)-->
+	<spawngroup type="attacker" req="park">
+		<spawnarea posX="2300.2937011719" posY="1752.8531494141" posZ="10.8203125" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
+		<spawnarea posX="2286.4440917969" posY="1755.3640136719" posZ="10.8203125" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
+	</spawngroup>
+	
+  <!--park (forced respawn)-->
+	<spawngroup type="defender" req="park">
+		<spawnarea posX="2126.0776367188" posY="1664.4136962891" posZ="10.8203125" skins="163-166" weapons="23,40;26,20;32,200" />
+		<spawnarea posX="2108.2106933594" posY="1662.1553955078" posZ="10.8203125" skins="163-166" weapons="23,40;26,20;32,200" />
+	</spawngroup>
+	
+  <!--casino-->
+	<spawngroup type="attacker" req="casino">
+		<spawnarea posX="2236.0695800781" posY="1678.3342285156" posZ="1008.359375" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
+		<spawnarea posX="2235.9333496094" posY="1697.1225585938" posZ="1008.359375" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
+	</spawngroup>
+
+  <!--casino-->
+	<spawngroup type="defender" req="casino">
+		<spawnarea posX="2240.9733886719" posY="1571.0397949219" posZ="1008.359375" skins="163-166" weapons="23,40;26,20;32,200" />
+		<spawnarea posX="2230.6560058594" posY="1571.0856933594" posZ="1008.359375" skins="163-166" weapons="23,40;26,20;32,200" />
+	</spawngroup>
+
+  <!--keycard-->
+	<spawngroup type="attacker" req="keycard">
+		<spawnarea posX="2146.662109375" posY="1615.3170166016" posZ="1000.96875" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
+	</spawngroup>
+
+  <!--keycard-->
+	<spawngroup type="defender" req="keycard">
+		<spawnarea posX="2157.4304199219" posY="1602.7133789063" posZ="999.96875" skins="163-166" weapons="23,40;26,20;32,200" />
+	</spawngroup>
+
+  <!--vault [***] 'same'-->
+	<spawngroup type="defender" req="vault">
+		<spawnarea posX="2157.4304199219" posY="1602.7133789063" posZ="999.96875" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
+	</spawngroup>
+	
+  <!--money 'same (first)'-->
+	<spawngroup type="defender" req="money">
+		<spawnarea posX="2157.4304199219" posY="1602.7133789063" posZ="999.96875" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
+		<spawnarea posX="2209.3520507813" posY="1585.1184082031" posZ="999.9765625" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
+		<spawnarea posX="2201.8005371094" posY="1584.9268798828" posZ="999.9765625" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
+	</spawngroup>
+	
+  <!--door2 'same'-->
+	<spawngroup type="defender" req="door2">
+		<spawnarea posX="2209.3520507813" posY="1585.1184082031" posZ="999.9765625" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
+		<spawnarea posX="2201.8005371094" posY="1584.9268798828" posZ="999.9765625" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
+	</spawngroup>
+ 
+  <!--backdoor-->
+	<spawngroup type="attacker" req="backdoor">
+		<spawnarea posX="2300.2937011719" posY="1752.8531494141" posZ="10.8203125" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
+		<spawnarea posX="2286.4440917969" posY="1755.3640136719" posZ="10.8203125" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
+	</spawngroup>
+
+  <!--backdoor [****]-->
+	<spawngroup type="defender" req="backdoor">
+		<spawnarea posX="2375.7607421875" posY="1662.3673095703" posZ="10.8203125" skins="285" weapons="23,60;27,20;32,300;31,40;34,5;45,1" />
+		<spawnarea posX="2399.0087890625" posY="1650.6439208984" posZ="10.925335884094" skins="285" weapons="23,60;27,20;32,300;31,40;34,5;45,1" />
+	</spawngroup>
+
+
+	<objective name="Explosives" description="Get some explosives for the heist." successText="explosives stolen" id="bombs" req=""
+		stay="4" stayText="Stealing explosives..." posX="2538.3825683594" posY="2084.0224609375" posZ="9.9" />
+  <!--[*]-->
+	<objective name="Clown Outfits" description="Change your outfit." successText="outfits stolen" id="outfits" req=""
+		stay="4" stayText="Stealing outfits..." posX="2090.5561523438" posY="2223.6850585938" posZ="10" />
+  <!--[**]-->
+	<objective name="Securicar" description="You need to find a getaway car, there's a van in a parking lot near Roca Escalante, go and take it." successText="vehicle stolen" id="securicar" req="bombs,outfits" type="custom"
+		posX="2511.1518554688" posY="2389.1252441406" posZ="11.3" />
+
+	<objective name="Parking the Van" description="Park the securicar outside Caligula's and prepare for the heist." successText="attackers are ready to enter the casino" id="park" req="securicar" type="custom"
+		posX="2319.7976074219" posY="1733.6467285156" posZ="9.9" />
+
+	<objective name="Casino" description="Enter the casino." successText="attackers entered the casino" id="casino" req="park"
+		forcedRespawn="both" posX="2230.2995605469" posY="1604.4698486328" posZ="1004.9" interior="1" />
+
+	<objective name="KeyCard" description="The keycard must be here somewhere.. search the place and find it among the fake ones." successText="keycard found!" id="key" req="casino" type="custom"
+		posX="2230.2995605469" posY="1604.4698486328" posZ="1006.1860351563" />
+
+	<objective name="Open the Door" description=" Great! Now open the door that leads to the vault." successText="door opened" id="keycard" req="key"
+		stay="5" stayText="Using keycard..." posX="2147.7609863281" posY="1605.7556152344" posZ="1004.9" interior="1" />
+  <!--[***]-->
+	<objective name="Vault" description="Plant the explosives on the vault door." successText="attackers reached the vault" id="vault" req="keycard"
+		stay="10" stayText="Planting bomb..." posX="2144.1257324219" posY="1625.6141357422" posZ="992.5" interior="1" />
+  <!--!moneybags, !door2-->
+  <!--[****]-->
+	<objective name="Backdoor" description="It seems that the explosion blocked the door you came in, find another way out!" successText="attackers left the casino" id="backdoor" req="money" type="custom"
+		posX="2292.8254394531" posY="1746.7397460938" posZ="10.8203125" interior="1" />
+
+	<objective name="Hideout" description="Take the van and head home, you're rich babey!" successText="" id="hideout" req="backdoor" type="custom"
+		forcedRespawn="both" posX="1064.2473144531" posY="2083.5190429688" posZ="9.8" />
+
+  <!--!moneybags-->
+	<objective name="" description="KABOOM! Steal the cash!." successText="money stolen" id="money" req="vault" type="custom"
+		posX="1897.0667724609" posY="-577.16253662109" posZ="37.314128875732" />
+  <!--!door2-->
+	<objective name="" description="There's a locked door that leads to the exit, use the card to open it." successText="" id="door2" req="money"
+		stay="5" stayText="Using keycard..." posX="2167.2712402344" posY="1618.6923828125" posZ="998.8" interior="1" />
+
+
+  <!--outside LV (10 freeways)-->
+	<vehicle posX="2467.5532226563" posY="2728.4362792969" posZ="11" model="463" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2466.7907714844" posY="2722.6540527344" posZ="11" model="463" rotX="0" rotY="0" rotZ="120" />
+	<vehicle posX="2468.6352539063" posY="2718.0834960938" posZ="11" model="463" rotX="0" rotY="0" rotZ="80" />
+	<vehicle posX="2469.4113769531" posY="2712.951171875" posZ="11" model="463" rotX="0" rotY="0" rotZ="70" />
+	<vehicle posX="2466.3879394531" posY="2708.5241699219" posZ="11" model="463" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2461.3806152344" posY="2713.5407714844" posZ="11" model="463" rotX="0" rotY="0" rotZ="110" />
+	<vehicle posX="2459.6140136719" posY="2720.1328125" posZ="11" model="463" rotX="0" rotY="0" rotZ="100" />
+	<vehicle posX="2459.8125" posY="2727.8583984375" posZ="11" model="463" rotX="0" rotY="0" rotZ="80" />
+	<vehicle posX="2463.7229003906" posY="2734.1076660156" posZ="11" model="463" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2472.0913085938" posY="2733.2463378906" posZ="11" model="463" rotX="0" rotY="0" rotZ="100" />
+
+  <!--police station (7 police cars and 7 bikes)-->
+	<vehicle posX="2282.1743164063" posY="2476.9421386719" posZ="11" model="598" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2277.7426757813" posY="2476.9421386719" posZ="11" model="598" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2273.4143066406" posY="2476.9421386719" posZ="11" model="598" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2269.0412597656" posY="2476.9421386719" posZ="11" model="598" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2260.5046386719" posY="2476.9421386719" posZ="11" model="598" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2256.0744628906" posY="2476.9421386719" posZ="11" model="598" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2251.5812988281" posY="2476.9421386719" posZ="11" model="598" rotX="0" rotY="0" rotZ="180" />
+	  <vehicle posX="2282.2150878906" posY="2442.564453125" posZ="11" model="523" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2277.9287109375" posY="2442.564453125" posZ="11" model="523" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2273.4577636719" posY="2442.564453125" posZ="11" model="523" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2269.3195800781" posY="2442.564453125" posZ="11" model="523" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2260.4204101563" posY="2442.564453125" posZ="11" model="523" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2256.1840820313" posY="2442.564453125" posZ="11" model="523" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2251.9208984375" posY="2442.564453125" posZ="11" model="523" rotX="0" rotY="0" rotZ="0" />
+
+  <!--securicar (3 rumpos, 2 moonbeams + elegy and cheetah)-->
+	<vehicle posX="2510.845703125" posY="2384.3251953125" posZ="11.3" model="440" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2510.845703125" posY="2379.474609375" posZ="11.3" model="440" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2510.845703125" posY="2374.8410644531" posZ="11.3" model="440" rotX="0" rotY="0" rotZ="90" />
+	  <vehicle posX="2510.845703125" posY="2355.3420410156" posZ="11.3" model="418" rotX="0" rotY="0" rotZ="90" />
+	  <vehicle posX="2510.845703125" posY="2360.3239746094" posZ="11.3" model="418" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2482.2548828125" posY="2354.0056152344" posZ="5" model="562" rotX="0" rotY="0" rotZ="270" />
+	<vehicle posX="2492.6809082031" posY="2358.8872070313" posZ="5" model="415" rotX="0" rotY="0" rotZ="280" />
+
+  <!--securicar (5 FBI ranchers, 5 police cars + rhino)-->
+	<vehicle posX="2314.3254394531" posY="2495.4833984375" posZ="3.5" model="490" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2314.3254394531" posY="2490.349609375" posZ="3.5" model="490" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2314.3254394531" posY="2485.3215332031" posZ="3.5" model="490" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2314.3254394531" posY="2480.3098144531" posZ="3.5" model="490" rotX="0" rotY="0" rotZ="90" />
+	<vehicle posX="2314.3254394531" posY="2470.4113769531" posZ="3.5" model="490" rotX="0" rotY="0" rotZ="90" />
+	  <vehicle posX="2312.2429199219" posY="2430.1044921875" posZ="3.5" model="598" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2303.5166015625" posY="2430.1044921875" posZ="3.5" model="598" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2299.1618652344" posY="2430.1044921875" posZ="3.5" model="598" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2294.7592773438" posY="2430.1044921875" posZ="3.5" model="598" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2290.4118652344" posY="2430.1044921875" posZ="3.5" model="598" rotX="0" rotY="0" rotZ="0" />
+	<vehicle name="TANK" id="tank" posX="2225.6103515625" posY="2457.9113769531" posZ="-6.5" model="432" rotX="0" rotY="0" rotZ="270" />
+
+  <!--park (6 rumpos, 7 sanchez)-->
+	<vehicle posX="2286.7900390625" posY="1714.9923095703" posZ="11.5" model="440" rotX="0" rotY="0" rotZ="10" />
+	<vehicle posX="2291.7387695313" posY="1716.2124023438" posZ="11.5" model="440" rotX="0" rotY="0" rotZ="345" />
+	<vehicle posX="2296.2937011719" posY="1716.4753417969" posZ="11.5" model="440" rotX="0" rotY="0" rotZ="15" />
+	<vehicle posX="2301.1623535156" posY="1715.1898193359" posZ="11.5" model="440" rotX="0" rotY="0" rotZ="10" />
+	<vehicle posX="2306.5031738281" posY="1714.1430664063" posZ="11.5" model="440" rotX="0" rotY="0" rotZ="350" />
+	<vehicle posX="2312.2028808594" posY="1714.4458007813" posZ="11.5" model="440" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2258.712890625" posY="1759.8835449219" posZ="11.5" model="468" rotX="0" rotY="0" rotZ="290" />
+	  <vehicle posX="2260.6345214844" posY="1755.6575927734" posZ="11.5" model="468" rotX="0" rotY="0" rotZ="270" />
+	  <vehicle posX="2258.1823730469" posY="1746.3990478516" posZ="11.5" model="468" rotX="0" rotY="0" rotZ="280" />
+	  <vehicle posX="2265.0610351563" posY="1748.1328125" posZ="11.5" model="468" rotX="0" rotY="0" rotZ="260" />
+	  <vehicle posX="2264.9128417969" posY="1755.7841796875" posZ="11.5" model="468" rotX="0" rotY="0" rotZ="300" />
+	  <vehicle posX="2269.0620117188" posY="1760.3634033203" posZ="11.5" model="468" rotX="0" rotY="0" rotZ="270" />
+	  <vehicle posX="2271.2902832031" posY="1753.3599853516" posZ="11.5" model="468" rotX="0" rotY="0" rotZ="280" />
+
+  <!--park (5 FBI ranchers, 3 enforcers, 1 SWAT van, 2 helis-->
+	<vehicle posX="2400.5593261719" posY="1677.2122802734" posZ="11.5" model="490" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2393.9951171875" posY="1677.2122802734" posZ="11.5" model="490" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2387.7272949219" posY="1677.2122802734" posZ="11.5" model="490" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2381.1105957031" posY="1677.2122802734" posZ="11.5" model="490" rotX="0" rotY="0" rotZ="180" />
+	<vehicle posX="2374.9084472656" posY="1677.2122802734" posZ="11.5" model="490" rotX="0" rotY="0" rotZ="180" />
+	  <vehicle posX="2363.5163574219" posY="1671.8043212891" posZ="11.5" model="427" rotX="0" rotY="0" rotZ="270" />
+	  <vehicle posX="2363.5163574219" posY="1658.9357910156" posZ="11.5" model="427" rotX="0" rotY="0" rotZ="270" />
+	  <vehicle posX="2363.5163574219" posY="1652.4575195313" posZ="11.5" model="427" rotX="0" rotY="0" rotZ="270" />
+	<vehicle posX="2372.7731933594" posY="1648.8093261719" posZ="11.5" model="601" rotX="0" rotY="0" rotZ="0" />
+	  <vehicle posX="2392.4799804688" posY="1637.8582763672" posZ="11.5" model="497" rotX="0" rotY="0" rotZ="410" />
+	  <vehicle posX="2415.2495117188" posY="1637.8582763672" posZ="11.5" model="497" rotX="0" rotY="0" rotZ="420" />
+
+	<object name="door" id="door" posX="2148.55" posY="1604.64" posZ="1006.50" rotX="0" rotY="0" rotZ="180" model="3089" />
+	<object name="doortwo" id="doortwo" posX="2168.65" posY="1619.41" posZ="1000.32" rotX="0" rotY="0" rotZ="270" model="3089" />
+	<object name="vaultdoor" id="vaultdoor" posX="2144.19" posY="1627.05" posZ="994.25" rotX="0" rotY="0" rotZ="180" model="2634" />
+	<object name="pillar" id="pillar" posX="2144.50" posY="1607.15" posZ="1007.00" rotX="0" rotY="0" rotZ="0" model="3441" />
+	<object name="garagedoor" id="gdoor" posX="1055.60" posY="2091.33" posZ="15.75" rotX="0" rotY="0" rotZ="0" model="3294" />
+	<object name="garagedoortwo" id="gdoortwo" posX="1055.60" posY="2084.10" posZ="15.75" rotX="0" rotY="0" rotZ="0" model="3294" />
+
+  <!-- ramp -->
+	<object name="object (127)" posX="2308.67" posY="1762.32" posZ="9.81" rotX="0" rotY="0" rotZ="0" model="12918" />
+	<object name="object (128)" posX="2305.98" posY="1756.78" posZ="12.82" rotX="0" rotY="0" rotZ="5.16" model="8302" />
+	<object name="object (129)" posX="2305.09" posY="1751.61" posZ="10.37" rotX="0" rotY="0" rotZ="5.16" model="8302" />
+	<object name="object (130)" posX="2310.85" posY="1756.79" posZ="12.75" rotX="0" rotY="0" rotZ="16.62" model="8302" />
+	<object name="object (131)" posX="2310.99" posY="1752.11" posZ="10.52" rotX="0" rotY="0" rotZ="16.62" model="8302" />
+
+		<card id="card1" posX="2190.88" posY="1604.05" posZ="1005.06" />
+		<card id="card2" posX="2218.52" posY="1616.66" posZ="1006.18" />
+		<card id="card3" posX="2218.22" posY="1590.59" posZ="1006.18" />
+		<card id="card4" posX="2255.22" posY="1615.72" posZ="1006.18" />
+		<card id="card5" posX="2277.16" posY="1589.81" posZ="1006.18" />
+		<card id="card6" posX="2256.11" posY="1596.50" posZ="1006.18" />
+		<card id="card7" posX="2242.46" posY="1592.19" posZ="1006.18" />
+		<card id="card8" posX="2273.22" posY="1563.42" posZ="1008.36" />
+		
+		<money id="money1" posX="2145.56" posY="1629.27" posZ="993.58" />
+		<money id="money2" posX="2143.00" posY="1632.18" posZ="993.58" />
+		<money id="money3" posX="2145.12" posY="1633.68" posZ="993.58" />
+		<money id="money4" posX="2142.57" posY="1636.09" posZ="993.58" />
+		<money id="money5" posX="2142.05" posY="1638.60" posZ="993.58" />
+		<money id="money6" posX="2145.23" posY="1638.00" posZ="993.58" />
+		<money id="money7" posX="2146.53" posY="1640.82" posZ="993.58" />
+		<money id="money8" posX="2144.59" posY="1641.70" posZ="993.58" />
+		<money id="money9" posX="2142.19" posY="1640.66" posZ="993.58" />
+		<money id="money10" posX="2147.08" posY="1636.23" posZ="993.58" />
+
+	<pickup name="AK47" posX="2218.25" posY="1613.61" posZ="999.98" type="30" amount="50" respawn="5000" />
+	<pickup name="GRENADE" posX="2150.33" posY="1619.47" posZ="1000.97" type="16" amount="5" respawn="5000" />
+
+<!--
+	Ambulance 416				Police Car (Los Santos) 596 
+	Barracks 433				Police Car (San Fierro) 597 
+	Enforcer 427				Police Ranger 599 
+	FBI Rancher 490				Rhino 432 
+	FBI Truck 528				S.W.A.T. 601 
+	Fire Truck 407				Securicar 428 
+	Fire Truck (Ladder) 544
+	HPV1000 523
+	Patriot 470
+	Police Car (Las Venturas) 598
+	
+	biker cop 284				normal 241 - 242
+	police 280 - 281				clown 264
+	FBI 163 - 166
+	swat 285
+-->
+</map>

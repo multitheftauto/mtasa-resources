@@ -1,0 +1,15 @@
+<meta>
+	<info name="Voice Pack" description="Voice Pack addon for Race" author="Flobu and dragon" type="script" addon="race" version="1.0"/>
+
+	<script src="voicepack_server.lua" type="server"/>
+	
+	<script src="voicepack_client.lua" type="client"/>
+	
+	<file src="audio/raceon.mp3"/>
+	<file src="audio/wasted.mp3"/>
+	<file src="audio/timesup.mp3"/>
+	<file src="audio/jobfail.mp3"/>
+	<file src="audio/jobcomplete.mp3"/>
+	<file src="audio/nicework.mp3"/>
+	
+</meta>

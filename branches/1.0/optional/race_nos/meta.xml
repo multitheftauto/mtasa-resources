@@ -1,0 +1,14 @@
+<meta>
+	<info author="50p" version="0.4" name="Need for Speed NOS" description="NFS-like NOS addon for Race" type="script" addon="race" build="r40 2Sep09" />
+
+	<script src="s_main.lua" />
+	<script src="c_main.lua" type="client" />
+	<script src="c_positioning.lua" type="client" />
+
+	<file src="gauge/nos_arrow.png" />
+	<file src="gauge/nos_gauge.png" />
+
+
+	<export function="setVehicleNOS" type="server" />
+	<!-- <export function="setVehicleNOS" type="client" /> -->
+</meta>

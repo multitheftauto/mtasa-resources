@@ -1,0 +1,8 @@
+<menu>
+  <item section="Main"    page="server\http\accounts.htm"   icon="server\http\images\accounts.png" name="Manage Accounts" alt="Manage admin accounts" />
+  <item section="Main"    page="server\http\access.htm"     icon="server\http\images\access.png"   name="Access Log" alt="View the admin system access log" />
+  <item section="Server"  page="server\http\players.htm"    icon="server\http\images\players.png"  name="Players" alt="Control the players in the server, live" />
+  <item section="Server"  page="server\http\server.htm"     icon="server\http\images\server.png"   name="Server Settings" alt="Setup up the server options" />
+  <item section="Server"  page="server\http\bans.htm"       icon="server\http\images\bans.png"     name="Manage Bans" alt="Manage Server Bans" />
+  <item section="Misc."   page="server\http\manual.htm"     icon="server\http\images\manual.png"   name="Manual" alt="Admin System Manual" />
+</menu>

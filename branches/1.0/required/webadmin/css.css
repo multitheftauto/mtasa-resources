@@ -1,0 +1,189 @@
+#topbar, #addrightstopbar, #addacltopbar  {
+	position: absolute; 
+	top:0px; 
+	right:0px; 
+	left:0px; 
+	height:23px; 
+	background:#555555; 
+	color:#FFFFFF; 
+	padding:7px;
+	font-weight:bold;
+}
+
+#datasets {
+	position: absolute; 
+	right: 0px; 
+	top: 37px; 
+	width: 20%; 
+	bottom: 0px;
+	background:#555555;
+	overflow:auto; 
+}
+
+.acl {
+	padding: 5px;
+	padding-left: 10px;
+	font-weight:bold;
+	cursor:pointer;
+}
+
+#acllist, #rightsarea {
+	position: absolute; 
+	left:0px; 
+	top: 37px; 
+	bottom: 20px; 
+	right: 0px; 
+	overflow:auto; 
+	border-top: none;
+}
+
+#rightsarea {
+	overflow:hide; 
+}
+
+#rightslist , #acllistcontent{
+	height: 50%;
+	overflow:auto;
+	padding-left:10px;
+}
+
+#acllistcontent {
+	padding:8px;
+}
+
+#addrightsarea, #addaclarea {
+	position: absolute;
+	left:0px;
+	right:0px;
+	height: 50%;
+	bottom: 0px;
+	overflow:hide;
+}
+
+#addaclarea {
+	height:30%;
+}
+
+.indent {
+	padding-left: 10px;
+}
+
+#topbar {
+	position: absolute; 
+	top:0px; 
+	right:0px; 
+	left:0px; 
+	height:23px; 
+	background:#555555; 
+	color:#FFFFFF; 
+	padding:7px;"
+}
+
+#acltopbarname {
+	font-size: 1.2em;
+	font-weight: bold;
+
+}
+
+#acltopbarbackbutton {
+	padding-right: 10px;
+	float:left;
+}
+
+.headercell_first, .headercell {
+	width: 50px;
+	font-size: 1.2em;
+	font-weight: bold;
+	vertical-align: top;
+	color: #888888;
+}
+
+.headercell {
+	border-top: 2px solid #888888;
+}
+
+.rightcell {
+	width: 33%;
+}
+
+#rightstable {
+	width:100%;
+	font-size: 1.0em;
+}
+
+#acltopbarsearchbox {
+	float: right;
+}
+
+#addrightscontent, #addaclcontent {
+	position: absolute;
+	top: 47px;
+	bottom: 0px;
+	left:20px;
+	right:20px;
+}
+
+#addrightstabs {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 20%;
+	bottom: 0px;
+}
+
+#addrightssettings {
+	position: absolute;
+	left: 20%;
+	top: 0px;
+	width: 80%;
+	bottom: 0px;
+	border: 3px solid #888888;
+	border-left: 5px solid #888888;
+}
+
+#addrightsettingspadding {
+	padding:8px;
+}
+
+.addrighttab, .addrighttab_active {
+	font-size: 1.2em;
+	font-weight: bold;
+	cursor:pointer;
+	padding: 3px;
+	padding-left: 8px;
+	background: #DDDDDD;
+	margin-bottom: 2px;
+}
+
+.addrighttab_active {
+	background: #888888;
+}
+
+.addrighttabpane label, #addaclcontent label  {
+  display: block;
+  float: left;
+  width: 130px;
+  padding: 3px 5px;
+  margin: 0 0 5px 0;
+  text-align: left;
+}
+
+
+.formfield {
+	clear: both;
+}
+
+.addrighttabpane {
+	position: absolute;
+	top: 30px;
+}
+
+#addrightbottombar {
+	position: absolute; 
+	background: #888888; 
+	bottom: 0px; 
+	left:0px; 
+	right:0px; 
+	height: 24px;
+	padding-top:4px;
+}

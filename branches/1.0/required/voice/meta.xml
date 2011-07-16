@@ -1,0 +1,32 @@
+<meta>
+    <info author="Talidan + Fenix" description="A handler resource to account for common uses for voice support" type="utility" version="1.0.0" />
+	<!--Client -->
+	<script src="cGlobals.lua" type="client" />
+	<script src="cDrawIcon.lua" type="client" />
+	<script src="cPlayerMuting.lua" type="client" />
+	
+	<export function="setPlayerMuted" type="client" />
+	<export function="isPlayerMuted" type="client" />
+
+	<file src="images/voice.png" />
+
+	<!--Server -->
+	<script src="sGlobals.lua" type="server" />
+	<script src="sDefaultChannelManager.lua" type="server" />
+	<script src="sChannelManager.lua" type="server" />
+	<script src="sPlayerMuting.lua" type="server" />
+	
+	<export function="setPlayerMuted" type="server" />
+	<export function="isPlayerMuted" type="server" />
+	<export function="getPlayerMutedByList" type="server" />
+	<export function="getPlayerChannel" type="server" />
+	<export function="setPlayerChannel" type="server" />
+	<export function="getPlayersInChannel" type="server" />
+	<export function="getNextEmptyChannel" type="server" />
+	
+	
+	<settings>
+		<setting name="*show_chat_icon" value="[true]" description="This will display an icon over a player's head when he/she is speaking over the microphone."/>
+		<setting name="*autoassign_to_teams" value="[true]" description="This will automatically assign players into a team if they join the team"/>
+	</settings>
+</meta>

@@ -1,0 +1,17 @@
+<meta>
+	<script src="controlinterface.lua" type="client" />
+	<script src="convert.lua" type="client" />
+	<script src="move_keyboard.lua" type="client" validate="false"/>
+
+	<!-- client functions -->
+	<export function="attachElement" type="client" />
+	<export function="detachElement" type="client" />
+	<export function="setMoveSpeeds" type="client" />
+	<export function="setRotateSpeeds" type="client" />
+	<export function="getAttachedElement" type="client" />
+	<export function="getMoveSpeeds" type="client" />
+	<export function="getRotateSpeeds" type="client" />
+	<export function="toggleAxesLock" type="client" />
+	<export function="enable" type="client" />
+	<export function="disable" type="client" />
+</meta>

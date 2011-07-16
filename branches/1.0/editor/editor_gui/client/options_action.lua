@@ -1,0 +1,129 @@
+optionsActions = {}
+--7 - 16
+function optionsActions.enableSounds (value)
+	enableSound = value
+end
+
+function optionsActions.smoothCamMove (value)
+	local loaded = 	freecam.setFreecamOption ( "smoothMovement", value )
+	if ( loaded ) then
+		setFreecamSpeeds()
+	else
+		addEventHandler ( "onClientResourceStart", getRootElement(), waitForFreecam )
+	end
+end
+
+function waitForFreecam(resource)
+	if resource ~= getResourceFromName("freecam") then return end
+	freecam.setFreecamOption ( "smoothMovement", dialog.smoothCamMove:getValue() )
+	setFreecamSpeeds()
+	removeEventHandler ( "onClientResourceStart", getRootElement(), waitForFreecam )
+end
+
+function setFreecamSpeeds()
+	local freecamRes = getResourceFromName("freecam")
+
+	freecam.setFreecamOption ( "invertMouseLook", dialog.invertMouseLook:getValue() )
+	freecam.setFreecamOption ( "normalMaxSpeed", dialog.normalMove:getValue() )
+	freecam.setFreecamOption ( "fastMaxSpeed", dialog.fastMove:getValue() )
+	freecam.setFreecamOption ( "slowMaxSpeed", dialog.slowMove:getValue() )
+	freecam.setFreecamOption ( "mouseSensitivity", dialog.mouseSensitivity:getValue() )
+end
+
+---This part decides whether gui should be refreshed or not
+local iconSize,topmenuAlign,bottommenuAlign 
+local doesGUINeedRefreshing = false
+function dumpGUISettings()
+	doesGUINeedRefreshing = false
+	iconSize = dialog.iconSize:getRow()
+	topmenuAlign = dialog.topAlign:getRow()
+	bottommenuAlign = dialog.bottomAlign:getRow()
+end
+
+local iconSizes = { small = 32, medium = 48, large = 64 }
+function optionsActions.iconSize (value)
+	guiConfig.iconSize = iconSizes[value]
+	if value ~= iconSize then
+		doesGUINeedRefreshing = true
+	end
+end
+
+function optionsActions.topAlign (value)
+	guiConfig.topMenuAlign = value
+	if value ~= topmenuAlign then
+		doesGUINeedRefreshing = true
+	end
+end
+
+function optionsActions.bottomAlign (value)
+	guiConfig.elementIconsAlign = value
+	if value ~= bottommenuAlign then
+		doesGUINeedRefreshing = true
+	end
+end
+
+function updateGUI()
+	if doesGUINeedRefreshing then
+		destroyAllIconGUI()
+		createGUILayout()
+		refreshElementIcons()
+		nextEDF()
+	end
+end
+   -- void setRotateSpeeds(num slow, num medium, num fast)
+      -- void setMoveSpeeds(num slow, num medium, num fast)
+	     -- void setRotateSpeeds(num slow, num medium, num fast)
+---Movement action
+ -- move_cursor
+   -- num num num getRotateSpeeds()
+	-- Command executed! Results: 0.25 [number], 2 [number], 10 [number]
+ -- move_freecam
+   -- num num num getRotateSpeeds()
+	-- Command executed! Results: 1 [number], 8 [number], 40 [number]
+ -- move_keyboard
+   -- num num num getMoveSpeeds()
+	-- Command executed! Results: 0.025 [number], 0.25 [number], 2 [number]
+   -- num num num getRotateSpeeds()
+	-- Command executed! Results: 0.25 [number], 2 [number], 10 [number]
+	
+
+function optionsActions.normalElemMove (value)
+	local slow, normal, fast = move_keyboard.getMoveSpeeds ()
+	if getResourceFromName("move_keyboard") then
+		setEditorMoveSpeeds()
+	else
+		addEventHandler ( "onClientResourceStart", getRootElement(), waitForResources )
+	end
+end
+
+local res1,res2,res3
+function waitForResources(resource)
+	if getResourceName(resource) == "move_keyboard" then
+		res1 = true
+	elseif getResourceName(resource) == "move_cursor" then
+		res2 = true
+	elseif getResourceName(resource) == "move_freecam" then
+		res3 = true
+	end
+	if ( res1 ) and ( res2 ) and ( res3 ) then
+		setEditorMoveSpeeds()
+	end
+end
+
+function setEditorMoveSpeeds()
+	local kbRes = getResourceFromName("move_keyboard")
+	local cRes = getResourceFromName("move_cursor")
+	local fRes = getResourceFromName("move_freecam")
+	
+	move_keyboard.setMoveSpeeds ( dialog.slowElemMove:getValue(), dialog.normalElemMove:getValue(), dialog.fastElemMove:getValue())
+	--
+	move_keyboard.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
+	move_cursor.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
+	move_freecam.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
+
+	move_keyboard.toggleAxesLock ( dialog.lockToAxes:getValue() )
+end
+
+function optionsActions.enableDumpSave(value)
+	triggerServerEvent("dumpSaveSettings", getRootElement(), value, dialog.dumpSaveInterval:getValue())
+end

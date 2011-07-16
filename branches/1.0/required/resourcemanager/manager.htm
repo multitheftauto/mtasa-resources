@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <* = call ( getResourceFromName("ajax"), "start", getResourceName(getThisResource()) ) *>
+        <link rel="stylesheet" type="text/css" href="css.css" />
+        <script src ='script.js' type = 'text/javascript'></script>
+    </head>
+    <body onload="performSearch();">
+    <div style="position:absolute; top:39px;left:0px;right:0px;bottom:0px;overflow:auto;" id="resultlist">
+		<table style="width:99.5%" id="resourcelist" cellpadding="0" cellspacing="0">
+	        <tbody>
+	          
+	        </tbody>
+	    </table>
+	</div>
+	
+    <div id="resourceinfo" style="display: none;">
+		<div id="resourceinfotopbar"><div style="float:right; text-align:right;"><input type="button" onClick="hideInfo();" value="close" /><input type="button" onClick="refreshInfo();" value="refresh" /></div><span id='resourcename' style='font-weight:bold;padding-left:5px;'></span></div>	
+        <div id="resourceinfocontent" style="padding: 10px; display: none;"></div><img src='/ajax/loading.gif' id="resourceInfoLoading" style="display:none;padding:20px;" />
+		<div id="bottombar">
+			<div id="startstopbuttons" style="position: absolute; right: 0px; width:100%; top:0px;bottom:0px; text-align:right;padding-top:3px; padding-right: 3px;"></div>
+		</div>	
+        
+    </div>
+	
+	<div id="searcharea">
+		<strong>Search</strong> <input type="text" id="searchText" onchange="performSearchDelayed()" onkeyup="performSearchDelayed()"/> 
+		<select id="searchState" onchange="performSearchDelayed()" onkeyup="performSearchDelayed()">
+		<option>any</option><option>loaded</option><option>running</option><option>failed to load</option></select>
+		<img src='/ajax/loading.gif' id="searchingSpinner" style="display:none;" />
+	</div>
+</html>
+</body>

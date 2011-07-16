@@ -1,0 +1,15 @@
+<def name="Deathmatch">
+	<setting name="frag_limit" friendlyname="Frag limit" type="integer" description="Frag limit (default: 10)" default="10" required="false"/>
+	<setting name="time_limit" friendlyname="Time limit" type="integer" description="Time limit in seconds (default: 600)" default="600" required="false"/>
+	<setting name="respawn_time" friendlyname="Respawn time" type="integer" description="Respawn time in seconds (default: 10)" default="10" required="false"/>
+	<setting name="spawn_weapons" friendlyname="Spawn Weapons" type="string" description="These are the weapons the player spawns with by default.  Default is a Colt45 with 100 ammo.  Weapons are set in the format of &quot;weaponID:ammo,weaponID:ammo,weaponID:ammo...&quot;, e.g. &quot;22:100,31:40,26:20&quot;" default="22:100" required="false"/>
+	
+	<element name="spawnpoint" friendlyname="Spawnpoint" icon="edf/spawnpoint.png">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="coord3d" default="0,0,0" />
+		<data name="skin" type="integer" default="121" />
+		<data name="interior" type="integer" default="0" />
+		<data name="dimension" type="integer" default="0" />
+		<ped model="!skin!" rotation="!rotation!" interior="!interior!" dimension="!dimension!" />
+	</element>
+</def>

@@ -1,0 +1,96 @@
+body {
+	font-family: "Trebuchet MS", Arial, sans-serif;
+	font-size: 0.8em;
+}
+pre {text-indent: 30px}
+
+#wraparea {
+	position:absolute;
+	top: 0px;
+	right:0px;
+	left:0px;
+	color:#FFFFFF;
+	padding:0px;
+}
+
+#searcharea {
+	background:#555555;
+	color:#FFFFFF;
+	padding:7px;
+}
+
+#statusarea {
+	color:#FFFFFF;
+	padding:5px;
+	font-weight:normal;
+	text-align: center;
+	font-size: medium;
+	background-color: #333;
+	border-top-width: medium;
+	border-right-width: thick;
+	border-bottom-width: medium;
+	border-left-width: thick;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #555;
+	border-right-color: #555;
+	border-bottom-color: #555;
+	border-left-color: #555;
+}
+
+#statusLabel1 {
+	color: #999;
+}
+#statusLabel2 {
+	font-size: large;
+	color: #FFC;
+}
+#warningLabel1 {
+	font-weight:bold;
+	color: #F88;
+}
+
+#contentarea {
+	padding-top: 7px;
+}
+
+/* performancebrowser styles */
+#performancebrowser-table {
+	margin-left: 2%;
+	width: 96%;
+	background-color:#CCCCCC;
+	color:#000000; 
+}
+
+#headerSections {
+	background: #888888;
+	font-weight:bold;
+	color: #ffff7f;
+	text-align: center;
+}
+#headers {
+	background: #aaaaaa;
+	font-weight:bold;
+	color: #EEEEEE;
+}
+
+.team {
+	font-weight: bold;
+	background-color:#EEEEEE;
+}
+
+.main {
+}
+
+.sub {
+	color:#405030;
+	padding-left: 10px;
+	font-size: small;
+}
+
+
+.formfield {
+	clear: both;
+}

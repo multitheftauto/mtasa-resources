@@ -1,0 +1,75 @@
+<map mod="deathmatch" version="1.0">
+
+
+	<assaultSettings  finishType="objective" finishObjective="silo"
+	 description="Break into Area 51, steal some research material and transfer them via satellite"
+	 defenderText="Defend Area51!" conqueredMessage="breached base security" />
+	
+	
+	<camera type="spawn" posX="63.238327" posY="1734.043457" posZ="79.515587" targetX="162.780304" targetY="1848.157349" targetZ="21.248180" />
+	<camera type="selectTeam" posX="63.238327" posY="1734.043457" posZ="79.515587" targetX="162.780304" targetY="1848.157349" targetZ="21.248180" />
+	<camera type="finish" posX="278.143402" posY="1893.017334" posZ="34.772522" targetX="261.3470" targetY="1876.7758" targetZ="8.4375" />
+
+	
+	<spawngroup type="attacker" req="">
+		<spawnarea posX="-89.011269" posY="1358.188721" posZ="10.933815" skins="121,122" weapons="24,30;29,300;16,1" />
+		<spawnarea posX="-80.011269" posY="1358.188721" posZ="10.933815" skins="121,122" weapons="24,30;29,300" />
+	</spawngroup>
+	<spawngroup type="attacker" req="fence">
+		<spawnarea posX="119.748901" posY="1908.070190" posZ="19.380320" skins="121,122" weapons="24,30;29,300;16,1" />
+	</spawngroup>
+	<spawngroup type="attacker" req="security">
+		<spawnarea posX="257.576019" posY="1856.780762" posZ="9.418190" skins="121,122" weapons="24,30;29,300;16,1" />
+	</spawngroup>
+	<spawngroup type="defender" req="">
+		<spawnarea posX="212.923569" posY="1914.887939" posZ="18.301003" skins="163,166" weapons="23,30;29,300;16,1" />
+	</spawngroup>
+	<spawngroup type="defender" req="fence">
+		<spawnarea posX="212.923569" posY="1914.887939" posZ="18.301003" skins="163,166" weapons="23,30;29,300" />
+		<weapon model="23" ammo="30" />
+		<weapon model="29" ammo="300" />
+	</spawngroup>
+	<spawngroup type="defender" req="security">
+		<spawnarea posX="269.5421" posY="1816.5134" posZ="5.703125" skins="163,166" weapons="23,30;29,300" />
+	</spawngroup>
+	
+	
+	<!-- Objective: Fence -->
+	<objective name="Fence" description="Breach the fence to establish safe trespassing for your team"
+		successText="~team~ breached the fence" id="fence" req=""
+		posX="104.998581" posY="1920.971924" posZ="17.437483" stay="10" stayText="Securing checkpoint.." />
+		
+	<!-- Objective: Security Room -->
+	<objective name="Security Room" description="Get into the first security room"
+		successText="~team~ entered the security room" id="security" req="fence"
+		posX="245.619247" posY="1859.633545" posZ="13.084013" stay="1" stayText="Capturing.."
+		defenderDescription="Defend the security room!" successTextForDefender="Security has been breached!" />
+	
+	<!-- Objective: Control room -->
+	<objective name="Control room" description="Disable the roof lock of the silo to allow satellite communication"
+		stay="4" stayText="Hacking Computer.."
+		successText="~team~ reached the control room" id="control" req="security"
+		posX="212.4135" posY="1823.0537" posZ="6.414" />
+	
+	<!-- Objective: Laboratory -->
+	<objective name="Laboratory" description="Get into the laboratory and steal the research"
+		successText="~team~ got into the lab" id="lab" req="security"
+		posX="270.897491" posY="1858.643311" posZ="7.757813" />
+	
+	<!-- Objective: Missile Silo -->
+	<objective name="Missile Silo" description="Retract the roof and send the research data to your base"
+		successText="~team~ successfully transfered the information"
+		id="silo" req="lab,control" posX="261.3470" posY="1876.7758" posZ="8.4375" stay="2" stayText="Transmitting data.." />
+
+
+	<vehicle name="" posX="-85.281013" posY="1339.174316" posZ="13.297609" model="489" rotX="" rotY="" rotZ="" />
+	<vehicle name="" posX="-100.469193" posY="1345.415894" posZ="12.696682" model="455" rotX="" rotY="" rotZ="" />
+	<vehicle name="" posX="-85.312737" posY="1374.101196" posZ="12.773438" model="492" rotX="" rotY="" rotZ="" noRespawn="0" />
+	<vehicle name="" posX="-101.778259" posY="1355.081909" posZ="12.521187" model="496" rotX="" rotY="" rotZ="" />
+	<vehicle name="" posX="-54.867508" posY="1355.313232" posZ="12.226997" model="424" rotX="" rotY="" rotZ="" />
+
+	<pickup name="Sniper" posX="160.623734" posY="1933.336182" posZ="34.398438" type="34" ammo="100" respawn="10" />
+	
+	<object name="roof" posX="280.996704" posY="1876.698120" posZ="14.849337" rotZ="1.71887339" rotY="-2.57831008" rotX="90.2407954" model="10828" />
+  
+</map>

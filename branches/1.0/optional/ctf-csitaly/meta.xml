@@ -1,0 +1,9 @@
+<meta>
+    <info author="Ratt" description="CS Italy" version="1" type="map" gamemodes="ctf" />
+    <script src="script.lua" />
+    <map src="ctf-csitaly.map" />
+	<settings>
+		<setting name="time" value="12:00" />
+		<setting name="weather" value="[11]" />
+	</settings>
+</meta>

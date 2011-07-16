@@ -1,0 +1,8 @@
+<settings>
+	<enablesounds>1</enablesounds>
+	<camera_normal_speed>20</camera_normal_speed>
+	<camera_max_speed>56</camera_max_speed>
+	<camera_min_speed>14</camera_min_speed>
+	<camera_look_sensitivity>53</camera_look_sensitivity>
+	<camera_smooth_movement>1</camera_smooth_movement>
+</settings>

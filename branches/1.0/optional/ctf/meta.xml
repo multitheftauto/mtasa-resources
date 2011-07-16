@@ -1,0 +1,14 @@
+<meta>
+	<info author="Aeron (core) and Black Dragon (game)" version="1.0" type="gamemode" name="Capture the Flag" edf:definition="edf/ctf.edf" />
+	<include resource="missiontimer" />
+	
+	<script src="ctf.lua" />
+	<config src="help.xml" type="client" />
+	<include resource="spawnmanager"/>
+	<include resource="scoreboard"/>
+	
+	<file src="edf/spawnpoint.png" />
+	<file src="edf/flag.png" />
+	<file src="edf/team.png" />
+	<file src="edf/weapon.png" />
+</meta>

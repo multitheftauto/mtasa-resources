@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Errand" author="Ransom" description="A loop race starting in the city going to country" version="0" />
+  <map src="Errand.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="250" />
+  </settings>
+</meta>

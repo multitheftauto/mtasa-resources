@@ -1,0 +1,14 @@
+<def name="Stealth">
+	<setting name="camera" friendlyname="Spawnscreen camera" type="camera" description="The starting position and look-at of the spawnscreen camera.  This is required in order to stream any necessary objects before spawning players." default="0,0,0,0,0,0" required="false"/>
+
+	<element name="mercenaryspawn" friendlyname="Mercenary Spawnpoint" icon="edf/mercenaryspawn.png">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="coord3d" default="0,0,0" />
+		<ped model="285" rotation="!rotation!"/>
+	</element>
+	<element name="spyspawn" friendlyname="Spy Spawnpoint" icon="edf/spyspawn.png">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="coord3d" default="0,0,0" />
+		<ped model="163" rotation="!rotation!"/>
+	</element>
+</def>

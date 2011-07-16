@@ -1,0 +1,102 @@
+<presets>
+	<location	id="LV Meat Factory"	posX="965.38"	posY="2159.33"	posZ="1010.02"	world="1"/>
+	<location	id="Ammu-Nation 1"	posX="286.15"	posY="-41.54"	posZ="1000.57"	world="1"/>
+	<location	id="Ammu-Nation 2"	posX="285.8"	posY="-85.45"	posZ="1000.54"	world="4"/>
+	<location	id="Ammu-Nation 3"	posX="296.92"	posY="-111.97"	posZ="1000.57"	world="6"/>
+	<location	id="Ammu-Nation 4"	posX="316.53"	posY="-169.61"	posZ="998.66"	world="6"/>
+	<location	id="Ammu-Nation 5 (2 floors)"	posX="309.38"	posY="-136.3"	posZ="999.60"	world="7"/>
+	<location	id="Atrium lobby entrance"	posX="1726.19"	posY="-1638.01"	posZ="19.27"	world="18"/>
+	<location	id="Atrium lobby exit"	posX="1700.74"	posY="-1668.48"	posZ="19.22"	world="18"/>
+	<location	id="Bar 1 (Gaydar Station)"	posX="493.39"	posY="-24.92"	posZ="999.69"	world="17"/>
+	<location	id="Bar 2 (Ten Green Bottles)"	posX="501.98"	posY="-67.75"	posZ="997.84"	world="11"/>
+	<location	id="Gay Gordo's Barbershop"	posX="418.65"	posY="-84.14"	posZ="1000.96"	world="3"/>
+	<location	id="Macisla's Barbershop"	posX="412.02"	posY="-54.55"	posZ="1000.96"	world="12"/>
+	<location	id="Reece's Barbershop"	posX="411.63"	posY="-23.33"	posZ="1000.8"	world="2"/>
+	<location	id="LS Tattoo Parlour"	posX="-204.44"	posY="-27.15"	posZ="1001.3"	world="16"/>
+	<location	id="Hemlock Tattoo"	posX="-204.44"	posY="-9.17"	posZ="1001.3"	world="17"/>
+	<location	id="LV Tattoo Parlour"	posX="-204.44"	posY="-44.35"	posZ="1001.3"	world="3"/>
+	<location	id="Zip"	posX="161.39"	posY="-96.69"	posZ="1000.81"	world="18"/>
+	<location	id="Binco"	posX="207.74"	posY="-111.42"	posZ="1004.27"	world="15"/>
+	<location	id="Victim"	posX="227.29"	posY="-7.43"	posZ="1001.26"	world="5"/>
+	<location	id="Didier Sachs"	posX="204.33"	posY="-168.7"	posZ="999.58"	world="14"/>
+	<location	id="Sub Urban"	posX="203.78"	posY="-49.89"	posZ="1000.8"	world="1"/>
+	<location	id="Train Hard"	posX="207.06"	posY="-139.81"	posZ="1002.52"	world="3"/>
+	<location	id="RC Zero's Shop"	posX="-2241.07"	posY="128.52"	posZ="1034.42"	world="6"/>
+	<location	id="RC Zero's Battlefield"	posX="-975.57"	posY="1061.13"	posZ="1345.67"	world="10"/>
+	<location	id="Colonel Fuhrberger's House"	posX="2807.62"	posY="-1174.1"	posZ="1024.58"	world="8"/>
+	<location	id="Johnson House"	posX="2496.05"	posY="-1692.73"	posZ="1013.75"	world="3"/>
+	<location	id="Big Smoke's Crack Palace"	posX="2541.7"	posY="-1304.01"	posZ="1024.07"	world="2"/>
+	<location	id="The Crack Den"	posX="318.57"	posY="1115.21"	posZ="1082.98"	world="5"/>
+	<location	id="Burning Desire House"	posX="2352.34"	posY="-1181.25"	posZ="1027"	world="5"/>
+	<location	id="The Casino"	posX="1133.07"	posY="-12.77"	posZ="999.75"	world="12"/>
+	<location	id="The Four Dragons Casino"	posX="2018.95"	posY="1017.09"	posZ="995.88"	world="10"/>
+	<location	id="The Caligulas Casino"	posX="2233.91"	posY="1714.73"	posZ="1011.38"	world="1"/>
+	<location	id="Caligulas Casino (Roof access)"	posX="2264.49"	posY="1619.58"	posZ="1089.5"	world="1"/>
+	<location	id="Driving School"	posX="-2029.72"	posY="-119.55"	posZ="1034.17"	world="3"/>
+	<location	id="Abandoned AC Tower (safehouse)"	posX="422.16"	posY="2536.52"	posZ="9.01"	world="10"/>
+	<location	id="Diner 1"	posX="460.1"	posY="-88.43"	posZ="998.62"	world="4"/>
+	<location	id="Diner 2"	posX="459.35"	posY="-111.01"	posZ="998.72"	world="5"/>
+	<location	id="Restaurant 1"	posX="452.89"	posY="-18.18"	posZ="1000.18"	world="1"/>
+	<location	id="Restaurant 2"	posX="441.98"	posY="-49.92"	posZ="998.69"	world="6"/>
+	<location	id="Cafe shop (Catalina)"	posX="681.58"	posY="-473.42"	posZ="15.59"	world="1"/>
+	<location	id="Lil Probe Inn (UFO Bar)"	posX="-229.03"	posY="1401.23"	posZ="26.77"	world="18"/>
+	<location	id="Liberty City"	posX="-750.80"	posY="491.00"	posZ="1371.70"	world="1"/>
+	<location	id="Stadium 1"	posX="-1400.21"	posY="106.89"	posZ="1032.27"	world="1"/>
+	<location	id="Stadium 2 (Bloodbowl)"	posX="-1394.20"	posY="987.62"	posZ="1023.96"	world="15"/>
+	<location	id="Stadium 3 (Kickstart)"	posX="-1410.72"	posY="1591.16"	posZ="1052.53"	world="14"/>
+	<location	id="San Fierro Chunk (cutscene place)"	posX="-2015.66"	posY="147.20"	posZ="29.31"	world="14"/>
+	<location	id="Andromada"	posX="315.48"	posY="984.13"	posZ="1959.11"	world="9"/>
+	<location	id="Shamal"	posX="1.61"	posY="34.74"	posZ="1199.0"	world="1"/>
+	<location	id="Inside Track Betting (Chinatown SF)"	posX="-2166.01"	posY="643.05"	posZ="1057.59"	world="1"/>
+	<location	id="The Four Dragons Casino (office)"	posX="2004.01"	posY="1027.42"	posZ="33.53"	world="11"/>
+	<location	id="Millie's Bedroom"	posX="347.52"	posY="306.77"	posZ="999.15"	world="6"/>
+	<location	id="Warehouse"	posX="1401.3"	posY="-15.5"	posZ="1002.9"	world="1"/>
+	<location	id="Big Bear's apartment"	posX="1527.38"	posY="-11.02"	posZ="1002.1"	world="3"/>
+	<location	id="Record Label Hallway"	posX="1037.9"	posY="5.35"	posZ="1001.28"	world="3"/>
+	<location	id="Brothel"	posX="944.8"	posY="1.96"	posZ="1000.93"	world="3"/>
+	<location	id="Brothel 2"	posX="963.0"	posY="-47.2"	posZ="1001.12"	world="3"/>
+	<location	id="The Sherman's Dam Generator Hall"	posX="-956.6"	posY="1862.23"	posZ="9.01"	world="17"/>
+	<location	id="Budget Inn Motel Room"	posX="447.52"	posY="511.49"	posZ="1001.4"	world="12"/>
+	<location	id="Rusty Brown's - Ring Donuts"	posX="378.29"	posY="-188.9"	posZ="1000.61"	world="17"/>
+	<location	id="Francis Int. Airport (Baggage Claim)"	posX="-1860.82"	posY="59.74"	posZ="1062.14"	world="14"/>
+	<location	id="Burger Shot"	posX="363.11"	posY="-74.88"	posZ="1000.55"	world="10"/>
+	<location	id="Cluckin' Bell"	posX="365.67"	posY="-11.61"	posZ="1000.87"	world="9"/>
+	<location	id="Well Stacked Pizza Co."	posX="372.35"	posY="-133.55"	posZ="1000.45"	world="5"/>
+	<location	id="Inside Track Betting"	posX="834.82"	posY="7.42"	posZ="1003.18"	world="3"/>
+	<location	id="Los Santos Gym"	posX="772.11"	posY="-5"	posZ="999.69"	world="5"/>
+	<location	id="San Fierro Gym"	posX="774.21"	posY="-50.02"	posZ="999.69"	world="6"/>
+	<location	id="Las Venturas Gym"	posX="773.58"	posY="-78.2"	posZ="999.69"	world="7"/>
+	<location	id="Madd Dogg's Mansion 1"	posX="1260.58"	posY="-785.31"	posZ="1090.96"	world="5"/>
+	<location	id="Madd Dogg's Mansion 2"	posX="1299.08"	posY="-796.83"	posZ="1083.03"	world="5"/>
+	<location	id="Jefferson Motel"	posX="2214.34"	posY="-1150.51"	posZ="1024.8"	world="15"/>
+	<location	id="Las Venturas Planning Dep."	posX="390.87"	posY="173.81"	posZ="1007.39"	world="3"/>
+	<location	id="LSPD HQ"	posX="246.78"	posY="62.2"	posZ="1002.64"	world="6"/>
+	<location	id="SFPD HQ"	posX="246.62"	posY="112.1"	posZ="1003.2"	world="10"/>
+	<location	id="LVPD HQ"	posX="238.66"	posY="139.35"	posZ="1002.05"	world="3"/>
+	<location	id="Police Station 1"	posX="322.72"	posY="306.4"	posZ="999.11"	world="5"/>
+	<location	id="Sex Shop"	posX="-100.33"	posY="-24.92"	posZ="999.74"	world="3"/>
+	<location	id="Big Spread Ranch"	posX="1212.02"	posY="-25.86"	posZ="1000.09"	world="3"/>
+	<location	id="The Pig Pen"	posX="1204.81"	posY="-12.79"	posZ="1000.09"	world="2"/>
+	<location	id="Jizzy's Pleasure Domes"	posX="-2661.01"	posY="1417.74"	posZ="921.31"	world="3"/>
+	<location	id="Safe House 1"	posX="223.04"	posY="1287.26"	posZ="1081.2"	world="1"/>
+	<location	id="Safe House 2"	posX="260.98"	posY="1284.55"	posZ="1079.3"	world="4"/>
+	<location	id="Safe House 3"	posX="140.18"	posY="1366.58"	posZ="1082.97"	world="5"/>
+	<location	id="Safe House 4"	posX="82.95"	posY="1322.44"	posZ="1082.89"	world="9"/>
+	<location	id="Safe House 5"	posX="-283.55"	posY="1470.98"	posZ="1083.45"	world="15"/>
+	<location	id="Safe House 6"	posX="-260.6"	posY="1456.62"	posZ="1083.45"	world="4"/>
+	<location	id="Safe House 7"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	world="8"/>
+	<location	id="Safe House 8"	posX="-68.69"	posY="1351.97"	posZ="1079.28"	world="6"/>
+	<location	id="Safe House 9"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	world="6"/>
+	<location	id="Safe House 10"	posX="2233.8"	posY="-1115.36"	posZ="1049.91"	world="5"/>
+	<location	id="Safe House 11"	posX="2365.3"	posY="-1134.92"	posZ="1049.91"	world="8"/>
+	<location	id="Safe House 12"	posX="2282.91"	posY="-1140.29"	posZ="1049.91"	world="11"/>
+	<location	id="Safe House 13"	posX="2196.79"	posY="-1204.35"	posZ="1048.05"	world="6"/>
+	<location	id="Safe House 14"	posX="2270.39"	posY="-1210.45"	posZ="1046.57"	world="10"/>
+	<location	id="Safe House 15"	posX="2308.79"	posY="-1212.88"	posZ="1048.03"	world="6"/>
+	<location	id="Safe House 16"	posX="2217.54"	posY="-1076.29"	posZ="1049.52"	world="1"/>
+	<location	id="Safe House 17"	posX="2237.59"	posY="-1080.87"	posZ="1048.07"	world="2"/>
+	<location	id="Safe House 18"	posX="2317.82"	posY="-1026.75"	posZ="1049.21"	world="9"/>
+	<location	id="24/7 shop 1"	posX="-30.95"	posY="-91.71"	posZ="1002.55"	world="18"/>
+	<location	id="24/7 shop 2"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	world="6"/>
+	<location	id="24/7 shop 3"	posX="-27.31"	posY="-31.38"	posZ="1002.55"	world="4"/>
+</presets>

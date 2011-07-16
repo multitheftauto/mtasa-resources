@@ -1,0 +1,30 @@
+<meta>
+  <info name="AMX" author="adamix" type="gamemode" />
+
+  <script src="server/defines.lua" type="server" />
+  <script src="server/util.lua" type="server" />
+  <script src="server/_triggerqueue.lua" type="server" />
+  <script src="server/rcon.lua" type="server" />
+  <script src="server/syscalls.lua" type="server" />
+  <script src="server/events.lua" type="server" />
+  <script src="server/amx.lua" type="server" />
+
+  <script src="client/util.lua" type="client" />
+  <script src="client/anim.lua" type="client" />
+  <script src="client/arrowmarkers.lua" type="client" />
+  <script src="client/mouselook.lua" type="client" />
+  <script src="client/client.lua" type="client" />
+  <script src="client/bars.lua" type="client" />
+  <script src="client/garages.lua" type="client" />
+  
+  <file src="client/logo_small.png" />
+  <file src="client/closebtn.png" />
+  <file src="client/closebtn_hover.png" />
+  
+  <!-- <include resource="amxscoreboard" /> -->
+  
+  <settings>
+    <setting name="filterscripts" value="" />
+    <setting name="plugins" value="" />
+  </settings>
+</meta>

@@ -1,0 +1,58 @@
+<meta>
+
+    <info author="erorr404" type="map" gamemodes="briefcaserace" />
+
+    <map src="briefcaserace-sf.map" />
+    <script src="mapstuff.lua" type="server"/>
+
+    <settings>
+
+	<!-- the weather ID -->
+        <setting name="#weather" value="[ 3 ]" />
+
+	<!-- the position of the idle cam: an array of numbers corresponding to - x, y, z, lx, ly, lz, roll, fov (same as setCameraMatrix() function args) -->
+        <setting name="#idlecam" value="[ [-1606.7691650391, 1106.5153808594, 31.579252243042, -1606.4222412109, 1105.5905761719, 31.423093795776, 0, 70] ]" />
+
+	<!-- the game speed (how fast everything moves): e.g. 1 (normal), 0.5 (half speed), 10 (max speed) -->
+        <setting name="#gamespeed" value="[ 1 ]" />
+
+	<!-- the number of points needed to win the game (a player gets 100 points for delivering a briefcase) -->
+        <setting name="#pointlimit" value="[ 1000 ]" />
+
+	<!-- the time limit in minutes. If no one reaches the point limit by this time, the game will end. Possible values: [ false ] - no time limit, [ 30 ] - 30 minute time limit -->
+        <setting name="#timelimit" value="[ 60 ]" />
+
+	<!-- a boolean indicating whether the briefcase can only be deliverd on foot: [ false ] - on foot or in car, [ true ] - only on foot -->
+        <setting name="#onfootonly" value="[ false ]" />
+
+	<!-- A boolean indicating whether to hide the destination blip from enemies (players without the blip): [ true ] - hide, [ false ] - don't hide -->
+	<!-- Note: destinations are always hidden from enemy teams, so this setting only applies to non-team games -->
+        <setting name="#hide" value="[ true ]" />
+
+	<!-- how long the briefcase needs to be idle before it resets, in seconds -->
+        <setting name="#idletime" value="[ 300 ]" />
+
+	<!-- the weapons and ammo that players spawn with: key is the weapon ID number, value is the ammo number, e.g. [ {30:500} ] gives 500 AK-47 rounds -->
+        <setting name="#weapons" value="[ { '1':1, '22':200, '17':4, '29':330 } ]" />
+
+	<!-- A boolean indicating whether or not this is a game between teams: [ true ], [ false ] -->
+        <setting name="#teamgame" value="[ false ]" />
+
+	<!-- automatic teams - a boolean indicating whether teams will be generated automatically based on player count (teams only): [ true ], [ false ] -->
+        <setting name="#autoteams" value="[ false ]" />
+
+	<!-- the max number of players per team (autoteams only). When all teams have the max number of players, a new team will be generated. -->
+        <setting name="#autoteamsmaxplayers" value="[ 4 ]" />
+
+	<!-- A boolean indicating whether friendly fire is enabled (teams only): [ true ], [ false ] -->
+        <setting name="#ff" value="[ true ]" />
+
+	<!-- the skins used for each team (teams only): key is the team name, value is a comma seperated string of skin IDs, e.g. [ {'Ballas':'105,106'} ] -->
+        <setting name="#teamskins" value="[ {} ]" />
+
+	<!-- A boolean indicating whether to show debug output: [ true ], [ false ] -->
+        <setting name="#debug" value="[ true ]" />
+
+    </settings>
+
+</meta>

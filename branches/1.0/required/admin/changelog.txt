@@ -1,0 +1,83 @@
+-------------------------------------
+-- Version 1.1 Development Preview --
+-------------------------------------
+# Fixed errors when synchronizing server data with client by initializing events on resource start
+# Fixed 'Output player information to console on select' in options
+# Fixed 'Output admin messages to chat box' in options
+# Kick and ban buttons now ask for a reason
+# Fixed player count in server tab
+# Fixed paintjob list button lock
+# Changed meta slashes to resolve compability issues
+# New register syntax: register [<nick>] <password>
+# Added search box for player list
+# Added 'Shout' button
+# Added Welcome message button in Server tab
+# Added Ban button to spectator
+# 'Warp player to' button now works
+# Added country resolving
+
+-------------------------------------
+-- Version 1.2 Development Preview --
+-------------------------------------
+
+# Fixed stuck country flags
+# Fixed vehicle customizations window being opened when player has no vehicle
+# Fixed errors and warings for 'Blow' and 'Destroy' buttons
+# Vehicle customizations window now shows vehicle upgrades already installed
+# Vehicle customizations window now can show upgrade names
+# Added 'Remove all' in vehicle customizations to remove vehicle upgrades
+# ACL Clean-up/setup - Start for console commands and groups support
+# Added server side code for multi groups support
+# Fixed the execute box warning label not going away when clicking on it
+# Added cities to player area
+# Some code improvements
+# Added client side multi groups support
+# Added the default ACL setup file
+# Fixed mute not always working
+# Dynamic player data is now synced on change rather than on timer
+# Player money are now synced
+#(not working) Added 'Set Money' button
+# Player list now scrollable with arrow keys
+# Input box now can be accepted with 'Enter' key
+# Message box can be accepted with 'Enter' and canceled with 'n' keys
+# Completely rewritten spectator
+# Made the ip2country database be 2.5 times smaller without any loss of data, which also pretty much increased the loading speed
+# Fixed 'give vehicle' code being broken with vehicles on the same name
+# Fixed 'Select' button in interior window
+
+
+
+-------------------------------------
+	BUGS
+-------------------------------------
+
+* Some vehicles cant be created via admin (ie. slamvan) (WARNING: admin_server.lua Bad arg. Lines: 716-722) WORKS NOW???
+* Setting interiors not working
+* 
+*
+*
+*
+*
+
+
+
+---------------------------------------------------------
+
+	               TO BE TESTED  
+(Probably already tested at least once, re-test if bored.)
+
+---------------------------------------------------------
+
+* Fixed buttons lock up caused by messages list global variable matching message box
+* Fixed vehicles being not warped to the right dimension and interior
+* Fixed interior and dimension not being applied to warped player
+* Fixed hardcoded weathers count
+* Added console commands support (still has to be hardly tested)
+* Fixed errors and warnings when kicking/banning
+* Added Serial bans support
+* Vehicle change now warps previous passengers into the new vehicle
+* All vehicle change messages will now be sent to passengers
+* Player can now be switched with arrow keys in spectator
+* Fixed slap button in spectator
+
+

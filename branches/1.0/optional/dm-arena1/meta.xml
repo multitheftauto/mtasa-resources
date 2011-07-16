@@ -1,0 +1,16 @@
+<meta>
+    <info gamemodes="deathmatch,tdm" type="map" author="jhxp" version="1.0" description="First concept map for MTASA DM ever made. Designed for Team DeathMatch" />
+    <map src="dm-arena1.map" dimension="0" />
+    <settings>
+        <setting name="#maxplayers" value="[ 128 ]" />
+        <setting name="#respawn_time" value="[ 10 ]" />
+        <setting name="#gamespeed" value="[ 1 ]" />
+        <setting name="#minplayers" value="[ 0 ]" />
+        <setting name="#gravity" value="[ 0.008000 ]" />
+        <setting name="#waveheight" value="[ 0 ]" />
+        <setting name="#time_limit" value="[ 600 ]" />
+        <setting name="#locked_time" value="[ false ]" />
+        <setting name="#weather" value="[ 4 ]" />
+        <setting name="#time" value="12:0" />
+    </settings>
+</meta>

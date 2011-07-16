@@ -1,0 +1,35 @@
+<def name="Race">
+	<setting name="respawn" friendlyname="Respawn type" type="selection:timelimit,none" description="Whether respawn is enabled or not.  If enabled, a timelimit must be specified" default="timelimit" required="true"/>
+	<setting name="duration" friendlyname="Race duration" type="natural" description="The length of the race, in seconds.  Default is 30 minutes." default="1800" required="true"/>
+	<setting name="vehicleweapons" friendlyname="Enabled vehicle weapons" type="selection:true,false" description="Whether vehicle weapons are enabled or not.  Vehicles weapons include Hunter/Hydra/Tank rockets" default="false" required="true"/>
+	<setting name="ghostmode" friendlyname="Ghost mode" type="selection:true,false" description="Whether Ghost Mode is enabled.  This mode allows vehicles to drive through each other during the race." default="false" required="true"/>
+	<setting name="skins" friendlyname="Driver skins" type="selection:cj,random" description="What kind of skins players will spawn as.  CJ means that players will spawn as CJ, with varying motor clothes on.  Random means that random ped skins will be used." default="cj" required="true"/>
+	<setting name="respawntime" friendlyname="Respawn delay" type="natural" description="Time from death to respawn in seconds. Default is 5." default="5" required="true"/>
+
+	<element name="spawnpoint" friendlyname="Spawnpoint" icon="edf/spawnpoint.png">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="coord3d" default="0,0,0" />
+		<data name="vehicle" type="vehicleID" default="522" />
+		<vehicle model="!vehicle!" rotation="!rotation!"/>
+	</element>
+	<element name="checkpoint" friendlyname="Checkpoint" icon="edf/checkpoint.png">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="type" type="selection:checkpoint,ring,corona" default="checkpoint" />
+		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
+		<data name="size" type="number" description="marker size" default="2.25" />
+		<data name="nextid" type="element:checkpoint" description="The next checkpoint after this one" required="false" default="" />
+		<data name="vehicle" type="vehicleID" required="false"/>
+		<marker color="!color!" type="!type!" size="!size!"/>
+	</element>
+	<element name="racepickup" friendlyname="Race pickup" icon="edf/pickup.png">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="type" type="selection:nitro,repair,vehiclechange" description="The type of pickup.  Can repair the vehicle, add a Nitro, or change the player's vehicle" default="nitro" />
+		<data name="respawn" type="integer" default="0" description="The respawn time in miliseconds" />
+		<data name="vehicle" type="vehicleID" default="522" description="The vehicle model, if a vehiclechange pickup" required="false" />
+		<object model="2221" position="0,0,0" />
+		<object model="1346" position="0,0,0" editorOnly="true"/>
+	</element>
+	
+	<script src="edf/edf.lua" />
+	<script src="edf/edf_client.lua" type="client" />
+</def>

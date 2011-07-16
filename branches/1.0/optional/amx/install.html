@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html>
+<head>
+	<title>MTA AMX compatibility layer</title>
+	<link rel="stylesheet" href="img/style.css" type="text/css">
+</head>
+<body>
+	
+	<h1><em>amx</em> - MTA AMX compatibility layer</h1>
+	
+	<img class="rightscreen" src="img/screen.png">
+	
+	<h2 id="introduction">Introduction</h2>
+	<p><em>amx</em> is a software package that allows the execution of unmodified San Andreas: MultiPlayer 0.2.2 gamemodes, filterscripts and plugins on Multi Theft Auto: San Andreas 1.0 servers. It is open source, and a prebuilt binary for Windows is available.</p>
+	
+	<ul>
+		<li><a href="#licence">Licence</a></li>
+		<li><a href="#compatibility">Compatibility</a></li>
+		<li><a href="#extrafeatures">Extra features</a></li>
+		<li><a href="#installation">Installation</a></li>
+		<li><a href="#running">Running gamemodes and filterscripts</a></li>
+		<li><a href="#newpawn">New Pawn scripting functions</a></li>
+		<li><a href="#newlua">New Lua scripting functions</a></li>
+		<li><a href="#newevents">New MTA events</a></li>
+		<li><a href="#pawnluainteraction">Pawn-Lua interaction</a></li>
+		<li><a href="#limitations">Limitations</a></li>
+		<li><a href="#credits">Author and thanks</a></li>
+	</ul>
+	
+	<h2 id="licence">Licence</h2>
+	<p><em>amx</em> is free and open source. You are allowed to use and modify it free of charge in any way you please.</p>
+	<p>You are allowed to redistribute (modified) versions of <em>amx</em>, provided that you:</p>
+	<ul>
+		<li>do not charge for them,</li>
+		<li>keep the original credits and licence intact,</li>
+		<li>clearly list any modifications you made, and</li>
+		<li>do not present them as an official version.</li>
+	</ul>
+	
+	<h2 id="compatibility">Compatibility</h2>
+	<p>Compatibility is quite high:</p>
+	<ul>
+		<li>Almost all SA-MP <strong>scripting functions</strong> and <strong>callbacks</strong> are implemented.</li>
+		<li><strong>Database</strong> functions (db_*) are implemented.</li>
+		<li>SA-MP server <strong>plugins</strong> work unmodified.</li>
+		<li>SA-MP style <strong>rcon</strong> commands are available from the server console and the ingame console.</li>
+	</ul>
+	<p>See <a href="#limitations">Limitations</a> for a list of features that are currently missing.</p>
+	
+	<h2 id="extrafeatures">Extra features</h2>
+	<p>Apart from being compatible, <em>amx</em> also offers a number of extra features:</p>
+	<ul>
+		<li><p><strong>Scriptfiles</strong> of a gamemode can not only be placed in a central folder like in SA-MP, they will also be detected when placed <strong>in the gamemode's folder</strong>. This means that files of different gamemodes are kept apart and can no longer conflict: you can have several gamemodes that use the same file names, and be assured they won't overwrite each other's files.</p></li>
+		<li><p><strong>New native scripting functions</strong> (include a_amx.inc to use these):</p>
+			<ul>
+				<li><a href="#pwn_AddPlayerClothes">AddPlayerClothes</a></li>
+				<li><a href="#pwn_GetPlayerClothes">GetPlayerClothes</a></li>
+				<li><a href="#pwn_RemovePlayerClothes">RemovePlayerClothes</a></li>
+				<li><a href="#pwn_ShowPlayerMarker">ShowPlayerMarker</a></li>
+				<li><a href="#pwn_GetVehicleVelocity">GetVehicleVelocity</a></li>
+				<li><a href="#pwn_SetVehicleVelocity">SetVehicleVelocity</a></li>
+				<li><a href="#pwn_SetVehicleModel">SetVehicleModel</a></li>
+			</ul>
+		</li>
+		<li><p>In addition to these new native functions, gamemodes run in <em>amx</em> can also <strong>call Lua scripts</strong>. Lua scripts can in turn call public Pawn functions.</p>
+		
+		<p>Using Lua not only gives you access to the wide range of MTA functions that offer a lot of functionality that SA-MP doesn't have, but also allows you to write code in a much more comfortable and efficient fashion than Pawn. For example, while Pawn is a subset of C and requires you to create a temporary buffer and call one or more functions to concatenate strings, you can simply do <code>str1 = str2 .. str3</code> in Lua.</p>
+		</li>
+		<li><p>You can <strong>load plugins dynamically</strong>, while the server is running. Use the <code>loadplugin</code> console command for this.</p></li>
+	</ul>
+	
+	<h2 id="installation">Installation</h2>
+	<p><em>amx</em> consists of a binary server module (.dll/.so) and a Lua resource. It will only run on MTA:SA 1.0 and later. Installation steps are lined out below.</p>
+	<h3>Extracting</h3>
+	<p>Extract the "mods" folder into your MTA "server" directory.</p>
+	
+	<h3>Configuration</h3>
+	<ul>
+		<li><p>Open server/mods/deathmatch/mtaserver.conf in a text editor. Add the following line within the <code>&lt;config&gt;</code> node:</p>
+			<code class="block" lang="xml"><span class="xmltag">&lt;module</span> <span class="xmlprop">src=</span><span class="str">"king.dll"</span><span class="xmltag">/&gt;</span></code>
+			<p>(Use "king.so" on Linux systems). This will instruct the MTA server to load the module on startup.</p>
+		</li>
+		<li><p>At this point you can add the <em>amx</em> resource to the autostart list if you want. Doing this will allow you to use SA-MP style rcon commands in the server console as soon as the server is started.</p>
+			<code class="block" lang="xml"><span class="xmltag">&lt;resource</span> <span class="xmlprop">src=</span><span class="str">"amx"</span> <span class="xmlprop">startup=</span><span class="str">"1"</span> <span class="xmlprop">protected=</span><span class="str">"0"</span><span class="xmltag">/&gt;</span></code>
+			<p>Save and close mtaserver.conf.</p>
+		</li>
+		<li><p>Give <em>amx</em> the necessary permissions. Open server/mods/deathmatch/acl.xml and add the following within the root <code>&lt;acl&gt;</code> node:</p>
+			<code class="block" lang="xml">   <span class="xmltag">&lt;group</span> <span class="xmlprop">name=</span><span class="str">"AMX"</span><span class="xmltag">&gt;</span>
+     <span class="xmltag">&lt;acl</span> <span class="xmlprop">name=</span><span class="str">"AMX"</span><span class="xmltag">/&gt;</span>
+     <span class="xmltag">&lt;object</span> <span class="xmlprop">name=</span><span class="str">"resource.amx"</span><span class="xmltag">/&gt;</span>
+   <span class="xmltag">&lt;/group</span><span class="xmltag">&gt;</span>
+   <span class="xmltag">&lt;acl</span> <span class="xmlprop">name=</span><span class="str">"AMX"</span><span class="xmltag">&gt;</span>
+     <span class="xmltag">&lt;right</span> <span class="xmlprop">name=</span><span class="str">"general.ModifyOtherObjects"</span> <span class="xmlprop">access=</span><span class="str">"true"</span><span class="xmltag">/&gt;</span>
+     <span class="xmltag">&lt;right</span> <span class="xmlprop">name=</span><span class="str">"function.startResource"</span> <span class="xmlprop">access=</span><span class="str">"true"</span><span class="xmltag">/&gt;</span>
+     <span class="xmltag">&lt;right</span> <span class="xmlprop">name=</span><span class="str">"function.stopResource"</span> <span class="xmlprop">access=</span><span class="str">"true"</span><span class="xmltag">/&gt;</span>
+   <span class="xmltag">&lt;/acl</span><span class="xmltag">&gt;</span></code>
+		<p>Save and close acl.xml.</p>
+		</li>
+	</ul>
+	
+	<h3>Migrating gamemodes, filterscripts, plugins from an SA-MP server</h3>
+	<p>If you have an SA-MP server with a number of modes and scripts that you would like to host on your MTA server, you can easily migrate these with an automated tool. For Windows, a graphical click-through wizard is provided: amxdeploy.exe (.NET Framework 2.0 required). For Linux there is an interactive Perl script: amxdeploy.pl. Simply run the tool appropriate for your operating system and follow the instructions. The tool will:</p>
+	<ul>
+		<li>install the selected SA-MP gamemodes and filterscripts as MTA resources,</li>
+		<li>copy the selected plugins to MTA,</li>
+		<li>copy all scriptfiles to MTA,</li>
+		<li>set up the MTA mapcycler resource according to the gamemode cycling configuration in SA-MP's server.cfg, and</li>
+		<li>set up the autostart filterscripts and plugins according to SA-MP's server.cfg.</li>
+	</ul>
+	
+	<h4>Special note for Linux users infamiliar with Perl</h4>
+	<p>amxdeploy.pl uses some modules that are not part of a standard Perl installation. These are:</p>
+	<ul>
+		<li>File::Copy::Recursive</li>
+		<li>XML::Twig</li>
+	</ul>
+	<p>If you don't have these yet, you need to install them before you can run the script. To do this, open a terminal, switch to root and start <code>cpan</code>. If this is the first time you start <code>cpan</code>, it will walk you through some configuration (selection of download mirrors etc.). After it's set up, type <code>install &lt;modname&gt;</code> for each module to download and install it, for example: <code>install XML::Twig</code>.</p>
+	
+	<p>Once the modules are installed you should be able to run the script without problems: <code>perl amxdeploy.pl</code>.</p>
+	
+	<h3>Maintenance of your MTA server</h3>
+	<p>The migration tool is mainly meant for moving over files from an SA-MP server to a fresh <em>amx</em> install. To add SA-MP content to your MTA server at a later point, you probably want to take the manual route. Information about this is lined out below.</p>
+	<ul>
+		<li><p>In SA-MP, there is one folder that contains all gamemodes and another that contains all filterscripts. In MTA, it is the convention to create a separate resource (i.e. folder) for each gamemode. <em>amx</em> follows the MTA convention for better integration, which means that a resource needs to be created for each gamemode and filterscript. The naming convention for these is amx-<i>name</i> for gamemodes and amx-fs-<i>name</i> for filterscripts.</p>
+		<p>So, to <strong>add a new gamemode or filterscript</strong>, you create a folder in server/mods/deathmatch/resources/, place one or more .amx files and any external files ("scriptfiles") in it, and add an appropriate meta.xml. Alternatively you can dump all scriptfiles together in server/mods/deathmatch/resources/amx/scriptfiles, SA-MP style.</p>
+		<p>The meta.xml files of gamemodes and filterscripts are slightly different. Two resources, amx-test and amx-fs-test, are included with the <em>amx</em> download as examples. Most times you can simply copy-paste these to a new resource and adjust the names in it.</p></li>
+		
+		<li><p>To specify what <strong>filterscripts to autostart</strong> when <em>amx</em> loads, open server/mods/deathmatch/resources/amx/meta.xml and edit the "filterscripts" setting. Its value is a list of filterscript names separated by spaces. For example:</p>
+		<code class="block" lang="xml"><span class="xmltag">&lt;setting</span> <span class="xmlprop">name=</span><span class="str">"filterscripts"</span> <span class="xmlprop">value=</span><span class="str">"adminspec vactions"</span><span class="xmltag">/&gt;</span></code>
+		<p>This will start the resources amx-fs-adminspec and amx-fs-vactions.</p>
+		</li>
+		
+		<li><p><strong>Plugins</strong> go in server/mods/deathmatch/resources/amx/plugins. Additionally you need to specify what plugins to load when <em>amx</em> starts: open server/mods/deathmatch/resources/amx/meta.xml and edit the "plugins" setting. Its value consists of the names of the plugins to start, separated by spaces. For example:</p>
+		<code class="block" lang="xml"><span class="xmltag">&lt;setting</span> <span class="xmlprop">name=</span><span class="str">"plugins"</span> <span class="xmlprop">value=</span><span class="str">"irc sampmysql"</span><span class="xmltag">/&gt;</span></code>
+		<p>This will load irc.dll and sampmysql.dll on Windows, or .so on Linux.</p>
+		</li>
+		
+		<li><p>jbeta's mapcycler resource (shipped with the MTA server) is used for automatic <strong>map cycling</strong>. The cycling is configured in server/mods/deathmatch/resources/mapcycler/mapcycle.xml. For each gamemode, add a line like this:</p>
+		
+		<code class="block" lang="xml"><span class="xmltag">&lt;game</span> <span class="xmlprop">mode=</span><span class="str">"amx"</span> <span class="xmlprop">map=</span><span class="str">"amx-name"</span> <span class="xmlprop">rounds=</span><span class="str">"1"</span><span class="xmltag">/&gt;</span></code>
+		
+		<p>By default, the gamemodes are run in the order in which they appear in the list; you can also opt to randomly select the next mode from the list by setting the <code>type</code> attribute of the root <code>&lt;cycle&gt;</code> node to <code>"shuffle"</code>.</p>
+		<p>Automatic cycling will <strong>only</strong> happen when the mapcycler resource is started. You can start it manually (<code>start mapcycler</code>) or add it to the autostart list of your server (mtaserver.conf). If mapcycler is not started, <em>amx</em> will let players vote on the next mode instead.</p></li>
+	</ul>
+	
+	<h3>Finishing up</h3>
+	<ul>
+		<li><p>If you are planning to compile Pawn scripts that use the new native functions provided by <em>amx</em>, place a_amx.inc in your Pawno "include" directory.</p></li>
+		 <li><p>You are done!</p></li>
+	</ul>
+	
+	<h2 id="running">Running gamemodes and filterscripts</h2>
+	<p>Before you can run sa-mp modes or filterscripts, you need to start the <em>amx</em> resource. Type this command in the server console or as admin in the ingame console:</p>
+	<code class="block" lang="console">start amx</code>
+	<p>Alternatively you can add it to the autostart list of your server, in mtaserver.conf. Once <em>amx</em> is started you can use the following commands to start and stop gamemodes and filterscripts:
+	<code class="block" lang="console">start amx-<i>name</i>
+stop amx-<i>name</i>
+start amx-fs-<i>name</i>
+stop amx-fs-<i>name</i></code>
+	</p><p>Alternatively, you can use the SA-MP style <code>changemode</code> and (<code>un</code>)<code>loadfs</code> commands. At most one gamemode can be running at any time, the number of running filterscripts is unlimited.</p>
+	
+	<p>Go ahead and try starting the example gamemode (amx-test) and filterscript (amx-fs-test).</p>
+	
+	<h2 id="newpawn">New Pawn scripting functions</h2>
+	<p>Here follows a quick reference for the new Pawn native functions <em>amx</em> introduces. To use them, <code>#include &lt;a_amx&gt;</code> in Pawno.</p>
+	
+	<h3 id="pwn_AddPlayerClothes">AddPlayerClothes</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> AddPlayerClothes <span class="br">(</span> playerid, type, index <span class="br">)</span>;</code>
+	<p>Applies the specified clothing to a player. See the <a href="http://development.mtasa.com/index.php?title=CJ_Clothes">clothes page</a> for a list of valid type and index ID's. <em>Note:</em> this function only has a visible effect on players with the CJ skin.</p>
+	
+	<h3 id="pwn_GetPlayerClothes">GetPlayerClothes</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> GetPlayerClothes <span class="br">(</span> playerid, type <span class="br">)</span>;</code>
+	<p>Returns the clothes index of the specified type which the player is currently wearing. See the <a href="http://development.mtasa.com/index.php?title=CJ_Clothes">clothes page</a> for a list of valid type and index ID's. <em>Note:</em> the returned value is only relevant for players with the CJ skin.</p>
+	
+	<h3 id="pwn_RemovePlayerClothes">RemovePlayerClothes</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> RemovePlayerClothes <span class="br">(</span> playerid, type <span class="br">)</span>;</code>
+	<p>Removes the specified clothing from a player. See the <a href="http://development.mtasa.com/index.php?title=CJ_Clothes">clothes page</a> for a list of valid type ID's. <em>Note:</em> this function only has a visible effect on players with the CJ skin.</p>
+	
+	<h3 id="pwn_ShowPlayerMarker">ShowPlayerMarker</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> ShowPlayerMarker <span class="br">(</span> playerid, show <span class="br">)</span>;</code>
+	<p>Shows or hides the blip of one specific player.</p>
+	
+	<h3 id="pwn_GetVehicleVelocity">GetVehicleVelocity</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> GetVehicleVelocity <span class="br">(</span> vehicleid, &amp;<span class="type">Float</span>:vx, &amp;<span class="type">Float</span>:vy, &amp;<span class="type">Float</span>:vz <span class="br">)</span>;</code>
+	<p>Returns the velocity of a vehicle along the x, y and z axes. No more manual speed calculation with timers.</p>
+	
+	<h3 id="pwn_SetVehicleVelocity">SetVehicleVelocity</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> SetVehicleVelocity <span class="br">(</span> vehicleid, <span class="type">Float</span>:vx, <span class="type">Float</span>:vy, <span class="type">Float</span>:vz <span class="br">)</span>;</code>
+	<p>Sets the velocity of a vehicle. Make it jump or suddenly come to a halt.</p>
+	
+	<h3 id="pwn_SetVehicleModel">SetVehicleModel</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> SetVehicleModel <span class="br">(</span> vehicleid, model <span class="br">)</span></code>
+	<p>Changes the model of a vehicle; more practical than destroying and recreating it.</p>
+	
+	<h3 id="pwn_lua">lua</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> lua <span class="br">(</span> <span class="kw1">const</span> fnName<span class="br">[</span><span class="br">]</span>, <span class="br">{</span><span class="type">Float</span>,_<span class="br">}</span>:... <span class="br">)</span>;</code>
+	<p>Calls a Lua function. The function must be defined in a .lua file in the same resource as the calling .amx, and must have been registered earlier with <a href="#lua_amxRegisterLuaPrototypes">amxRegisterLuaPrototypes</a>. See also <a href="#pawnluainteraction">Pawn-Lua interaction</a>.</p>
+	
+	<p>Example:</p>
+	<code class="block" lang="pawn"><span class="kw1">new</span> playerid = lua<span class="br">(</span><span class="str">"luaTestfn1"</span>, 1.3, <span class="str">"Test string"</span><span class="br">)</span>;</code>
+	
+	<h3 id="pwn_amxRegisterPawnPrototypes">amxRegisterPawnPrototypes</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> amxRegisterPawnPrototypes <span class="br">(</span> <span class="kw1">const</span> prototype<span class="br">[</span><span class="br">]</span><span class="br">[</span><span class="br">]</span> <span class="br">)</span>;</code>
+	<p>Registers prototypes for public functions that can be subsequently called from Lua scripts with <a href="#lua_pawn">pawn</a>. The prototype list <strong>must be terminated with an empty string</strong>. See also <a href="#pawnluainteraction">Pawn-Lua interaction</a>.</p>
+	
+	<p>This example code registers two functions. The first one takes a float and a string argument and returns a player ID, the second takes a player ID and returns nothing:</p>
+	<code class="block" lang="pawn"><span class="kw1">new</span> prototypes<span class="br">[</span><span class="br">]</span><span class="br">[</span><span class="br">]</span> = <span class="br">{</span>
+    <span class="str">"p:pawnTestfn1"</span>, <span class="br">{</span> <span class="str">"f"</span>, <span class="str">"s"</span> <span class="br">}</span>,
+    <span class="str">"pawnTestfn2"</span>, <span class="br">{</span> <span class="str">"p"</span> <span class="br">}</span>,
+    <span class="str">""</span>
+<span class="br">}</span>;
+amxRegisterPawnPrototypes<span class="br">(</span>prototypes<span class="br">)</span>;</code>
+	
+	<h3 id="pwn_amxVersion">amxVersion</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> amxVersion <span class="br">(</span> &amp;<span class="type">Float</span>:ver <span class="br">)</span>;</code>
+	<p>Retrieves the <em>amx</em> version as a floating point number, e.g. <code>1.3</code>.</p>
+	
+	<h3 id="pwn_amxVersionString">amxVersionString</h3>
+	<code class="block" lang="pawn"><span class="kw1">native</span> amxVersionString <span class="br">(</span> buffer<span class="br">[</span><span class="br">]</span>, size <span class="br">)</span>;</code>
+	<p>Retrieves the complete <em>amx</em> version string.</p>
+	
+	
+	<h2 id="newlua">New Lua scripting functions</h2>
+	<p>A number of new Lua functions were also introduced.</p>
+	
+	<h3 id="lua_pawn">pawn</h3>
+	<code class="block" lang="lua"><span class="type">variant</span> pawn <span class="br">(</span> <span class="type">string</span> fnName, ... <span class="br">)</span></code>
+	<p>Calls a Pawn function. The function must be public, must be defined in an .amx file in the same resource as the calling .lua, and must have been registered earlier with <a href="#pwn_amxRegisterPawnPrototypes">amxRegisterPawnPrototypes</a>.</p>
+	
+	<p>Example:</p>
+	<code class="block" lang="lua"><span class="kw1">local</span> player = pawn<span class="br">(</span><span class="str">'pawnTestfn1'</span>, 0.5, <span class="str">'Test string'</span><span class="br">)</span></code>
+	
+	<h3 id="lua_amxIsPluginLoaded">amxIsPluginLoaded</h3>
+	<code class="block" lang="lua"><span class="type">bool</span> amxIsPluginLoaded <span class="br">(</span> <span class="type">string</span> pluginName <span class="br">)</span></code>
+	<p>Checks if a specific SA-MP server plugin is currently loaded. pluginName is the name of the plugin without a file extension.</p>
+	
+	<h3 id="lua_amxRegisterLuaPrototypes">amxRegisterLuaPrototypes</h3>
+	<code class="block" lang="lua"><span class="type">bool</span> amxRegisterLuaPrototypes <span class="br">(</span> <span class="type">table</span> prototypes <span class="br">)</span></code>
+	<p>Registers prototypes of Lua functions that can subsequently be called from a Pawn script with <a href="#pwn_lua">lua</a>. See also <a href="#pawnluainteraction">Pawn-Lua interaction</a>.</p>
+	
+	<p>The following example code registers two functions - the first one takes a float and a string argument and returns a player element, the second takes a player element and returns nothing:</p>
+	<code class="block" lang="lua">amxRegisterLuaPrototypes<span class="br">(</span>
+    <span class="br">{</span>
+        <span class="br">[</span><span class="str">'p:luaTestfn1'</span><span class="br">]</span> = <span class="br">{</span> <span class="str">'f'</span>, <span class="str">'s'</span> <span class="br">}</span>,
+        <span class="br">[</span><span class="str">'luaTestfn2'</span><span class="br">]</span>   = <span class="br">{</span> <span class="str">'p'</span> <span class="br">}</span>
+    <span class="br">}</span>
+<span class="br">)</span></code>
+	
+	<h3 id="lua_amxVersion">amxVersion</h3>
+	<code class="block" lang="lua"><span class="type">float</span> amxVersion <span class="br">(</span> <span class="br">)</span></code>
+	<p>Returns the <em>amx</em> version as a floating point number, for example <code>1.3</code>.</p>
+	
+	<h3 id="lua_amxVersionString">amxVersionString</h3>
+	<code class="block" lang="lua"><span class="type">string</span> amxVersionString <span class="br">(</span> <span class="br">)</span></code>
+	<p>Returns the complete <em>amx</em> version string.</p>
+	
+	
+	<h2 id="newevents">New MTA events</h2>
+	<p><em>amx</em> also provides events for detecting when .amx files are loaded and unloaded.</p>
+	
+	<h3 id="lua_onAMXStart">onAMXStart</h3>
+	<code class="block" lang="lua">onAMXStart <span class="br">(</span> <span class="type">resource</span> res, <span class="type">string</span> amxName <span class="br">)</span></code>
+	<p>Triggered when an .amx file has just finished loading and initializing. The source of this event is the root element of the resource containing the .amx file. <code>res</code> is the resource pointer to this resource. <code>amxName</code> is the name of the .amx file minus the extension.</p>
+	
+	<p>You should only call <a href="#lua_pawn">pawn</a> after this event has triggered; if you call it in the main body of a Lua script, .amx files won't have registered their functions yet.</p>
+	
+	<h3 id="lua_onAMXStop">onAMXStop</h3>
+	<code class="block" lang="lua">onAMXStop <span class="br">(</span> <span class="type">resource</span> res, <span class="type">string</span> amxName <span class="br">)</span></code>
+	<p>Triggered when an .amx file was unloaded. The source of this event is the root element of the resource containing the .amx file. <code>res</code> is the resource pointer to this resource. <code>amxName</code> is the name of the .amx file minus the extension.</p>
+	
+	
+	<h2 id="pawnluainteraction">Pawn-Lua interaction</h2>
+	<p><em>amx</em> allows developers to enrich their gamemodes and other scripts with Lua code, which is easier and more efficient to write than Pawn. To make this possible, a new Pawn function, <a href="#pwn_lua">lua</a> was added to call Lua functions, and a Lua function called <a href="#lua_pawn">pawn</a> correspondingly calls public Pawn functions.</p>
+	
+	<p>A resource that uses the interaction functions will contain both one or more .amx files (<code>&lt;amx/&gt;</code> in meta.xml) and serverside MTA scripts (<code>&lt;script/&gt;</code>). Both Pawn and Lua scripts can only call other-language scripts that are in the same resource.</p>
+	
+	<h3>Registering prototypes</h3>
+	<p>Before you can call a function with <a href="#pwn_lua">lua</a> or <a href="#lua_pawn">pawn</a> you need to define its prototype, which consists of the types of its arguments and return value. Each type corresponds to a single letter:</p>
+	
+	<table>
+		<thead>
+			<tr><th>Letter</th><th>Type</th></tr>
+		</thead>
+		<tbody>
+			<tr><td><strong>b</strong></td><td>boolean</td></tr>
+			<tr><td><strong>i</strong></td><td>integer</td></tr>
+			<tr><td><strong>f</strong></td><td>floating point</td></tr>
+			<tr><td><strong>s</strong></td><td>string</td></tr>
+			<tr><td><strong>p</strong></td><td>player</td></tr>
+			<tr><td><strong>v</strong></td><td>vehicle</td></tr>
+			<tr><td><strong>o</strong></td><td>object</td></tr>
+			<tr><td><strong>u</strong></td><td>pickup</td></tr>
+		</tbody>
+	</table>
+	
+	<p>Pawn functions are registered with <a href="#pwn_amxRegisterPawnPrototypes">amxRegisterPawnPrototypes</a>, Lua functions with <a href="#lua_amxRegisterLuaPrototypes">amxRegisterLuaPrototypes</a>. Both functions associate a number of function names with their argument types and (optionally) return type. To specify a return type, prepend the function name with the type letter followed by a colon (:), for example: <code>f:testfn</code>. If you do not specify a return type (i.e. only specify the name, <code>testfn</code>), "i" will be assumed.</p>
+	<p>See the syntax sections of the two registration functions for the precise syntax to use.</p>
+	
+	<h3>Calling other-language functions</h3>
+	<p>Use <a href="#pwn_lua">lua</a> to call a Lua function from Pawn, and <a href="#lua_pawn">pawn</a> to call a Pawn function from Lua. The functions have the same syntax: a string containing the name of the function, followed by the arguments to the function. <em>amx</em> takes care of any necessary argument and return value conversions: for example an .amx vehicle ID passed to <a href="#pwn_lua">lua</a> will arrive in the Lua function as an MTA vehicle element, and vice versa (provided the correct prototype was registered for the Lua function).</p>
+	
+	<h3>Passing arguments by reference</h3>
+	<p>It is possible to pass arguments by-reference from Pawn to Lua - however this is <strong>not</strong> possible in the opposite direction.</p>
+	<p>To make an argument be passed by reference, modifications in both the Lua function's prototype and body are necessary. In the prototype, prepend the type letter with a <code>&amp;</code>. In the function's code, write <code>_[argname]</code> instead of <code>argname</code> for reading and writing the argument (<code>argname</code> holds the memory address in the .amx of the argument).</p>
+	
+	<h3>Limitations</h3>
+	<p>Some limitations apply to cross-language calling.</p>
+	<ul>
+		<li>Only scalar values (numbers, players, vehicles...) and strings can be passed as arguments; Pawn arrays and Lua tables are not supported.</li>
+		<li>Functions can only return scalar values (no strings or other arrays).</li>
+		<li>As stated in the previous section, by-reference arguments can only be passed from Pawn to Lua, not from Lua to Pawn.</li>
+	</ul>
+	
+	<h3>Example</h3>
+	<p>This example code demonstrates registering prototypes and calling other-language functions, with arguments passed by value and by reference.</p>
+	<code class="block" lang="pawn"><span class="kw1">#include</span> &lt;a_samp&gt;
+<span class="kw1">#include</span> &lt;a_amx&gt;
+
+main<span class="br">(</span><span class="br">)</span> <span class="br">{</span>
+    <span class="kw1">new</span> prototypes<span class="br">[</span><span class="br">]</span><span class="br">[</span><span class="br">]</span> = <span class="br">{</span>
+       <span class="str">"p:testfn"</span>, <span class="br">{</span> <span class="str">"p"</span>, <span class="str">"f"</span>, <span class="str">"s"</span> <span class="br">}</span>,
+       <span class="str">""</span>
+    <span class="br">}</span>;
+    amxRegisterPawnPrototypes<span class="br">(</span>prototypes<span class="br">)</span>;
+<span class="br">}</span>
+
+<span class="kw1">public</span> testfn<span class="br">(</span>playerid, <span class="type">Float</span>:f, str<span class="br">[</span><span class="br">]</span><span class="br">)</span> <span class="br">{</span>
+    printf<span class="br">(</span><span class="str">"pawn&gt; testfn: %d %.1f %s"</span>, playerid, f, str<span class="br">)</span>;
+    <span class="kw1">return</span> playerid;
+<span class="br">}</span>
+
+<span class="kw1">public</span> OnGameModeInit<span class="br">(</span><span class="br">)</span> <span class="br">{</span>
+    <span class="kw1">new</span> vehicleid = CreateVehicle<span class="br">(</span>415, 0.0, 0.0, 3.0, -90.0, 0, 1, 5000<span class="br">)</span>;
+    <span class="kw1">new</span> vehicletype = 0;
+    <span class="comment">// vehicletype is passed by reference</span>
+    <span class="kw1">new</span> success = lua<span class="br">(</span><span class="str">"getVehicleType"</span>, vehicleid, vehicletype, <span class="str">"Test text from Pawn"</span><span class="br">)</span>;
+    <span class="kw1">if</span><span class="br">(</span>success<span class="br">)</span>
+        printf<span class="br">(</span><span class="str">"pawn&gt; Vehicle type: %d"</span>, vehicletype<span class="br">)</span>;
+    
+    SetGameModeText<span class="br">(</span><span class="str">"Blank Script"</span><span class="br">)</span>;
+    AddPlayerClass<span class="br">(</span>0, 1958.3783, 1343.1572, 15.3746, 269.1425, 0, 0, 0, 0, 0, 0<span class="br">)</span>;
+    <span class="kw1">return</span> 1;
+<span class="br">}</span>
+
+<span class="kw1">public</span> OnPlayerRequestClass<span class="br">(</span>playerid, classid<span class="br">)</span> <span class="br">{</span>
+    SetPlayerPos<span class="br">(</span>playerid, 1958.3783, 1343.1572, 15.3746<span class="br">)</span>;
+    SetPlayerCameraPos<span class="br">(</span>playerid, 1958.3783, 1343.1572, 15.3746<span class="br">)</span>;
+    SetPlayerCameraLookAt<span class="br">(</span>playerid, 1958.3783, 1343.1572, 15.3746<span class="br">)</span>;
+    <span class="kw1">return</span> 1;
+<span class="br">}</span>
+</code>
+
+	<code class="block" lang="lua"><span class="kw1">function</span> getVehicleType<span class="br">(</span>vehicle, pVehicleType, str<span class="br">)</span>
+    print<span class="br">(</span><span class="str">'lua&gt; '</span> .. str<span class="br">)</span>
+    print<span class="br">(</span><span class="str">'lua&gt; '</span> .. _<span class="br">[</span>pVehicleType<span class="br">]</span><span class="br">)</span>
+    <span class="kw1">local</span> model = getElementModel<span class="br">(</span>vehicle<span class="br">)</span>
+    <span class="kw1">if</span> model <span class="kw1">then</span>
+        _<span class="br">[</span>pVehicleType<span class="br">]</span> = model
+        <span class="kw1">return</span> true
+    <span class="kw1">else</span>
+        <span class="kw1">return</span> false
+    <span class="kw1">end</span>
+<span class="kw1">end</span>
+
+addEventHandler<span class="br">(</span><span class="str">'onAMXStart'</span>, root,
+    <span class="kw1">function</span><span class="br">(</span><span class="br">)</span>
+        <span class="comment">-- Note that we are calling pawn() from the onAMXStart event instead of</span>
+        <span class="comment">-- in the main script body. Calling it from the main body would fail as</span>
+        <span class="comment">-- the Pawn functions have not yet been registered at that point.</span>
+        <span class="kw1">local</span> player = pawn<span class="br">(</span><span class="str">'testfn'</span>, getRandomPlayer<span class="br">(</span><span class="br">)</span>, 0.8, <span class="str">'Test string from Lua'</span><span class="br">)</span>
+        <span class="kw1">if</span> player <span class="kw1">then</span>
+            print<span class="br">(</span><span class="str">'lua&gt; '</span> .. getClientName<span class="br">(</span>player<span class="br">)</span><span class="br">)</span>
+        <span class="kw1">else</span>
+            print<span class="br">(</span><span class="str">'lua&gt; No random player'</span><span class="br">)</span>
+        <span class="kw1">end</span>
+    <span class="kw1">end</span>
+<span class="br">)</span>
+
+amxRegisterLuaPrototypes<span class="br">(</span><span class="br">{</span>
+    <span class="br">[</span><span class="str">'b:getVehicleType'</span><span class="br">]</span> = <span class="br">{</span> <span class="str">'v'</span>, <span class="str">'&amp;i'</span>, <span class="str">'s'</span> <span class="br">}</span>
+<span class="br">}</span><span class="br">)</span></code>
+
+	<p>Sample output of this code:</p>
+	<code class="block">lua&gt; Test text from Pawn
+lua&gt; 0
+pawn&gt; Vehicle type: 415
+pawn&gt; testfn: 1 0.8 Test string from Lua
+lua&gt; arc_</code>
+	
+	<h2 id="limitations">Limitations</h2>
+	<p>Even though <em>amx</em> offers a high level of compatibility, not everything is perfect. Below is a list of limitations that may or may not be addressed in later versions of <em>amx</em> and Multi Theft Auto.
+	</p><ul>
+		<li><p>The following scripting functions are currently not implemented and will have no effect when called: AllowAdminTeleport, AllowInteriorWeapons, AllowPlayerTeleport, DisableInteriorEnterExits, EnableStuntBonusForAll, EnableStuntBonusForPlayer, EnableTirePopping (tire popping is always on), EnableZoneNames, LimitGlobalChatRadius, PlayerPlaySound, SendDeathMessage (use the "killmessages" resource on your server instead for graphical death messages), SetDeathDropAmount, SetDisabledWeapons, SetEchoDestination, SetNameTagDrawDistance, SetPlayerDisabledWeapons, SetTeamCount, SetVehicleNumberPlate, ShowPlayerNameTagForPlayer, TextDrawSetProportional, UsePlayerPedAnims.</p></li>
+		<li><p>Story character skins (Big Smoke, Ten Penny etc.) are currently not available in MTA. <em>amx</em> will replace these by lookalike skins until they are added.</p></li>
+	</ul>
+	
+	<h2 id="credits">Author and thanks</h2>
+	<p><em>amx</em> was developed by arc_. Special thanks go out to:</p>
+	<ul>
+		<li><p>Everyone who tested or participated in group tests during development, especially <strong>MeKorea</strong> who quite literally tried out every mode and filterscript he could find. His testing brought a large number of minor and not so minor flaws to light which could then be fixed.</p></li>
+		<li><p><strong>The MTA team</strong>, for providing such a tremendous platform to develop on. Thanks to MTA I got to know the amazingly fast yet powerful scripting language Lua, and got a good bunch of C++ practice as well.</p></li>
+	</ul>
+</body>
+</html>

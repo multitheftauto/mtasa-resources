@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="RC War Z" author="Aeron" description="RC Baron war around Zs special modeled terrain" version="1" />
+  <map src="RC War Z.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#respawntime" value="6" />
+    <setting name="#duration" value="360" />
+  </settings>
+</meta>

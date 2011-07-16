@@ -1,0 +1,461 @@
+<map>
+<interiorEntry	id="SPECIAL1"	posX="-225.433"	posY="1397.02"	posZ="69.0501"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SPECIAL1"	posX="-224.733"	posY="1395.82"	posZ="172.05"	rotation="0"	interior="0"	dimension="0"	/>
+<interiorEntry	id="SPECIAL2"	posX="2896.57"	posY="57.2165"	posZ="0"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SPECIAL2"	posX="2980.16"	posY="76.1581"	posZ="0"	rotation="0"	interior="0"	dimension="1"	/>
+<interiorEntry	id="SPECIAL3"	posX="-1749.35"	posY="869.279"	posZ="24.0593"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SPECIAL3"	posX="-1753.85"	posY="885.679"	posZ="295.059"	rotation="0"	interior="0"	dimension="2"	/>
+<interiorEntry	id="SPECIAL4"	posX="-1753.75"	posY="883.965"	posZ="294.645"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SPECIAL4"	posX="-1749.38"	posY="865.158"	posZ="24.1455"	rotation="0"	interior="0"	dimension="3"	/>
+<interiorEntry	id="ABATOIR"	posX="966.608"	posY="2160.68"	posZ="9.82222"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="ABATOIR"	posX="965.38"	posY="2159.33"	posZ="1010.02"	rotation="270"	interior="1"	dimension="0"	/>
+<interiorEntry	id="AMMUN1"	posX="1368.35"	posY="-1279.06"	posZ="12.55"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN1"	posX="286.15"	posY="-41.54"	posZ="1000.57"	rotation="90"	interior="1"	dimension="0"	/>
+<interiorEntry	id="AMMUN1 (2)"	posX="-2625.85"	posY="208.345"	posZ="3.98935"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN1 (2)"	posX="286.15"	posY="-41.54"	posZ="1000.57"	rotation="5400.06"	interior="1"	dimension="1"	/>
+<interiorEntry	id="AMMUN2"	posX="242.668"	posY="-178.478"	posZ="0.621441"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN2"	posX="285.8"	posY="-85.45"	posZ="1000.54"	rotation="-269.903"	interior="4"	dimension="0"	/>
+<interiorEntry	id="AMMUN2 (2)"	posX="2333.43"	posY="61.5173"	posZ="25.7342"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN2 (2)"	posX="285.8"	posY="-85.45"	posZ="1000.54"	rotation="-90"	interior="4"	dimension="1"	/>
+<interiorEntry	id="AMMUN2 (3)"	posX="2159.51"	posY="943.329"	posZ="9.82339"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN2 (3)"	posX="285.8"	posY="-85.45"	posZ="1000.54"	rotation="-3870.01"	interior="4"	dimension="2"	/>
+<interiorEntry	id="AMMUN2 (4)"	posX="2539.04"	posY="2083.56"	posZ="9.82222"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN2 (4)"	posX="285.8"	posY="-85.45"	posZ="1000.54"	rotation="90"	interior="4"	dimension="3"	/>
+<interiorEntry	id="AMMUN3"	posX="777.231"	posY="1871.47"	posZ="3.97687"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN3"	posX="296.92"	posY="-111.97"	posZ="1000.57"	rotation="300.994"	interior="6"	dimension="3"	/>
+<interiorEntry	id="AMMUN3 (2)"	posX="-315.676"	posY="829.868"	posZ="13.4266"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN3 (2)"	posX="296.92"	posY="-111.97"	posZ="1000.57"	rotation="300.994"	interior="6"	dimension="4"	/>
+<interiorEntry	id="AMMUN3 (3)"	posX="-2093.51"	posY="-2464.79"	posZ="29.6404"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN3 (3)"	posX="296.92"	posY="-111.97"	posZ="1000.57"	rotation="319"	interior="6"	dimension="5"	/>
+<interiorEntry	id="AMMUN3 (4)"	posX="2400.5"	posY="-1981.48"	posZ="12.5604"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN3 (4)"	posX="296.92"	posY="-111.97"	posZ="1000.57"	rotation="0"	interior="6"	dimension="6"	/>
+<interiorEntry	id="AMMUN5"	posX="-1508.89"	posY="2610.8"	posZ="54.8902"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="AMMUN5"	posX="316.53"	posY="-169.61"	posZ="998.66"	rotation="180"	interior="6"	dimension="0"	/>
+<interiorEntry	id="ATRIUME"	posX="1727.64"	posY="-1636.88"	posZ="19.2198"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="ATRIUME"	posX="1726.19"	posY="-1638.01"	posZ="19.27"	rotation="180"	interior="18"	dimension="0"	/>
+<interiorEntry	id="ATRIUMX"	posX="1699.36"	posY="-1667.16"	posZ="19.2198"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="ATRIUMX"	posX="1700.74"	posY="-1668.48"	posZ="19.22"	rotation="270"	interior="18"	dimension="0"	/>
+<interiorEntry	id="BAR1"	posX="1836.9"	posY="-1681.75"	posZ="12.3635"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BAR1"	posX="493.39"	posY="-24.92"	posZ="999.69"	rotation="90"	interior="17"	dimension="0"	/>
+<interiorEntry	id="BAR1 (2)"	posX="-2551.79"	posY="193.778"	posZ="5.21905"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BAR1 (2)"	posX="493.39"	posY="-24.92"	posZ="999.69"	rotation="105"	interior="17"	dimension="1"	/>
+<interiorEntry	id="BAR1 (3)"	posX="2507.44"	posY="1242.31"	posZ="9.83339"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BAR1 (3)"	posX="493.39"	posY="-24.92"	posZ="999.69"	rotation="-3600.01"	interior="17"	dimension="2"	/>
+<interiorEntry	id="BAR2"	posX="2309.62"	posY="-1643.63"	posZ="13.8385"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BAR2"	posX="501.98"	posY="-67.75"	posZ="997.84"	rotation="93"	interior="11"	dimension="0"	/>
+<interiorEntry	id="BAR2 (2)"	posX="-2242.69"	posY="-88.2558"	posZ="34.3578"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BAR2 (2)"	posX="501.98"	posY="-67.75"	posZ="997.84"	rotation="3691.82"	interior="11"	dimension="1"	/>
+<interiorEntry	id="BAR2 (3)"	posX="2441.15"	posY="2065.15"	posZ="9.8472"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BAR2 (3)"	posX="501.98"	posY="-67.75"	posZ="997.84"	rotation="180"	interior="11"	dimension="2"	/>
+<interiorEntry	id="BARBER2"	posX="672.355"	posY="-496.834"	posZ="15.3751"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BARBER2"	posX="418.65"	posY="-84.14"	posZ="1000.96"	rotation="-88.9025"	interior="3"	dimension="0"	/>
+<interiorEntry	id="BARBER2 (2)"	posX="-1449.87"	posY="2591.85"	posZ="54.8378"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BARBER2 (2)"	posX="418.65"	posY="-84.14"	posZ="1000.96"	rotation="360"	interior="3"	dimension="1"	/>
+<interiorEntry	id="BARBER2 (3)"	posX="823.629"	posY="-1588.9"	posZ="12.5764"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BARBER2 (3)"	posX="418.65"	posY="-84.14"	posZ="1000.96"	rotation="-1297.58"	interior="3"	dimension="2"	/>
+<interiorEntry	id="BARBER2 (4)"	posX="-2571.18"	posY="246.698"	posZ="9.64213"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BARBER2 (4)"	posX="418.65"	posY="-84.14"	posZ="1000.96"	rotation="-138"	interior="3"	dimension="3"	/>
+<interiorEntry	id="BARBER2 (5)"	posX="2080.36"	posY="2122.13"	posZ="9.82222"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BARBER2 (5)"	posX="418.65"	posY="-84.14"	posZ="1000.96"	rotation="180"	interior="3"	dimension="4"	/>
+<interiorEntry	id="BARBER3"	posX="2723.76"	posY="-2026.72"	posZ="12.5753"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BARBER3"	posX="412.02"	posY="-54.55"	posZ="1000.96"	rotation="90"	interior="12"	dimension="0"	/>
+<interiorEntry	id="BARBERS"	posX="2070.86"	posY="-1793.84"	posZ="12.661"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BARBERS"	posX="411.63"	posY="-23.33"	posZ="1000.8"	rotation="-90"	interior="2"	dimension="0"	/>
+<interiorEntry	id="BURHOUS"	posX="2808"	posY="-1175.99"	posZ="24.7745"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="BURHOUS"	posX="2807.62"	posY="-1174.1"	posZ="1024.58"	rotation="-180"	interior="8"	dimension="0"	/>
+<interiorEntry	id="CARLS"	posX="2495.33"	posY="-1690.75"	posZ="13.7847"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CARLS"	posX="2496.05"	posY="-1692.73"	posZ="1013.75"	rotation="0"	interior="3"	dimension="0"	/>
+<interiorEntry	id="CARTER"	posX="2540.08"	posY="-1304"	posZ="33.9877"	rotation="270"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CARTER"	posX="2541.7"	posY="-1304.01"	posZ="1024.07"	rotation="90"	interior="2"	dimension="0"	/>
+<interiorEntry	id="CASINO2"	posX="1659.42"	posY="2249.69"	posZ="10.0664"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CASINO2"	posX="1133.07"	posY="-12.77"	posZ="999.75"	rotation="0"	interior="12"	dimension="0"	/>
+<interiorEntry	id="CLOTHGP"	posX="1456.77"	posY="-1138.02"	posZ="23.2872"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CLOTHGP"	posX="161.39"	posY="-96.69"	posZ="1000.81"	rotation="-141"	interior="18"	dimension="0"	/>
+<interiorEntry	id="CLOTHGP (2)"	posX="-1883.2"	posY="865.473"	posZ="34.2601"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CLOTHGP (2)"	posX="161.39"	posY="-96.69"	posZ="1000.81"	rotation="129"	interior="18"	dimension="1"	/>
+<interiorEntry	id="CLOTHGP (3)"	posX="2572.07"	posY="1904.83"	posZ="10.0231"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CLOTHGP (3)"	posX="161.39"	posY="-96.69"	posZ="1000.81"	rotation="180"	interior="18"	dimension="2"	/>
+<interiorEntry	id="CLOTHGP (4)"	posX="2090.58"	posY="2224.2"	posZ="10.0579"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CLOTHGP (4)"	posX="161.39"	posY="-96.69"	posZ="1000.81"	rotation="180"	interior="18"	dimension="3"	/>
+<interiorEntry	id="CSCHP"	posX="2244.47"	posY="-1665.36"	posZ="14.4839"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSCHP"	posX="207.74"	posY="-111.42"	posZ="1004.27"	rotation="-363"	interior="15"	dimension="0"	/>
+<interiorEntry	id="CSCHP (2)"	posX="-2375.32"	posY="910.293"	posZ="44.4578"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSCHP (2)"	posX="207.74"	posY="-111.42"	posZ="1004.27"	rotation="5507.58"	interior="15"	dimension="1"	/>
+<interiorEntry	id="CSCHP (3)"	posX="1657.01"	posY="1733.33"	posZ="10.0209"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSCHP (3)"	posX="207.74"	posY="-111.42"	posZ="1004.27"	rotation="90"	interior="15"	dimension="2"	/>
+<interiorEntry	id="CSCHP (4)"	posX="2102.69"	posY="2257.49"	posZ="10.0579"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSCHP (4)"	posX="207.74"	posY="-111.42"	posZ="1004.27"	rotation="270"	interior="15"	dimension="3"	/>
+<interiorEntry	id="CSDESGN"	posX="461.158"	posY="-1499.98"	posZ="30.1742"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSDESGN"	posX="227.29"	posY="-7.43"	posZ="1001.26"	rotation="100"	interior="5"	dimension="0"	/>
+<interiorEntry	id="CSDESGN (2)"	posX="-1694.76"	posY="951.599"	posZ="24.2706"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSDESGN (2)"	posX="227.29"	posY="-7.43"	posZ="1001.26"	rotation="92"	interior="5"	dimension="1"	/>
+<interiorEntry	id="CSDESGN (3)"	posX="2802.34"	posY="2430.6"	posZ="10.061"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSDESGN (3)"	posX="227.29"	posY="-7.43"	posZ="1001.26"	rotation="125"	interior="5"	dimension="2"	/>
+<interiorEntry	id="CSEXL"	posX="453.868"	posY="-1478.07"	posZ="29.9609"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSEXL"	posX="204.33"	posY="-168.7"	posZ="999.58"	rotation="129"	interior="14"	dimension="0"	/>
+<interiorEntry	id="CSSPRT"	posX="499.637"	posY="-1360.4"	posZ="15.4261"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSSPRT"	posX="207.06"	posY="-139.81"	posZ="1002.52"	rotation="-45"	interior="3"	dimension="0"	/>
+<interiorEntry	id="CSSPRT (2)"	posX="2825.74"	posY="2407.44"	posZ="10.061"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="CSSPRT (2)"	posX="207.06"	posY="-139.81"	posZ="1002.52"	rotation="125"	interior="3"	dimension="1"	/>
+<interiorEntry	id="DAMIN"	posX="-594.874"	posY="2018.21"	posZ="59.6792"	rotation="330"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DAMIN"	posX="-959.671"	posY="1955.55"	posZ="8.08044"	rotation="270"	interior="17"	dimension="0"	/>
+<interiorEntry	id="DESHOUS"	posX="423.99"	posY="2536.49"	posZ="15.19"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DESHOUS"	posX="422.16"	posY="2536.52"	posZ="9.01"	rotation="270"	interior="10"	dimension="0"	/>
+<!-- Diners are commented out due to their poor collisions -->
+<!--<interiorEntry	id="DINER1"	posX="-1941.72"	posY="2379.54"	posZ="48.7008"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER1"	posX="460.1"	posY="-88.43"	posZ="998.62"	rotation="292"	interior="4"	dimension="0"	/>
+<interiorEntry	id="DINER1 (2)"	posX="386.918"	posY="-1817.79"	posZ="6.90008"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER1 (2)"	posX="460.1"	posY="-88.43"	posZ="998.62"	rotation="90"	interior="4"	dimension="1"	/>
+<interiorEntry	id="DINER1 (3)"	posX="1376.89"	posY="2327.79"	posZ="9.82222"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER1 (3)"	posX="460.1"	posY="-88.43"	posZ="998.62"	rotation="270"	interior="4"	dimension="2"	/>
+<interiorEntry	id="DINER2"	posX="-206"	posY="1062.21"	posZ="18.8298"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER2"	posX="459.35"	posY="-111.01"	posZ="998.72"	rotation="308.648"	interior="5"	dimension="0"	/>
+<interiorEntry	id="DINER2 (2)"	posX="-53.87"	posY="1189.17"	posZ="18.4108"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER2 (2)"	posX="459.35"	posY="-111.01"	posZ="998.72"	rotation="308.648"	interior="5"	dimension="1"	/>
+<interiorEntry	id="DINER2 (3)"	posX="291.974"	posY="-195.463"	posZ="0.852"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER2 (3)"	posX="459.35"	posY="-111.01"	posZ="998.72"	rotation="-269.903"	interior="5"	dimension="2"	/>
+<interiorEntry	id="DINER2 (4)"	posX="2863.23"	posY="-1439.44"	posZ="10.0083"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER2 (4)"	posX="459.35"	posY="-111.01"	posZ="998.72"	rotation="270"	interior="5"	dimension="3"	/>
+<interiorEntry	id="DINER2 (5)"	posX="-1700.01"	posY="1380.49"	posZ="6.20434"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER2 (5)"	posX="459.35"	posY="-111.01"	posZ="998.72"	rotation="3729.57"	interior="5"	dimension="4"	/>
+<interiorEntry	id="DINER2 (6)"	posX="-2524.11"	posY="1216.16"	posZ="36.4496"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER2 (6)"	posX="459.35"	posY="-111.01"	posZ="998.72"	rotation="-90"	interior="5"	dimension="5"	/>
+<interiorEntry	id="DINER2 (7)"	posX="2368.06"	posY="1983.19"	posZ="10.003"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DINER2 (7)"	posX="459.35"	posY="-111.01"	posZ="998.72"	rotation="125"	interior="5"	dimension="6"	/> -->
+<interiorEntry	id="DRIVES"	posX="-2029.72"	posY="-120.926"	posZ="34.1691"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DRIVES"	posX="-2029.72"	posY="-119.55"	posZ="1034.17"	rotation="180"	interior="3"	dimension="0"	/>
+<interiorEntry	id="DRIVES2"	posX="-2026.92"	posY="-101.459"	posZ="34.259"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="DRIVES2"	posX="-2026.92"	posY="-103.48"	posZ="1034.27"	rotation="0"	interior="3"	dimension="0"	/>
+<interiorEntry	id="FDBURG"	posX="811.982"	posY="-1616.02"	posZ="12.618"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="-1169.58"	interior="10"	dimension="0"	/>
+<interiorEntry	id="FDBURG (2)"	posX="1199.13"	posY="-918.071"	posZ="42.3243"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (2)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="180"	interior="10"	dimension="1"	/>
+<interiorEntry	id="FDBURG (3)"	posX="-1912.27"	posY="828.025"	posZ="34.5615"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (3)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="334"	interior="10"	dimension="2"	/>
+<interiorEntry	id="FDBURG (4)"	posX="-2336.95"	posY="-166.646"	posZ="34.3573"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (4)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="270"	interior="10"	dimension="3"	/>
+<interiorEntry	id="FDBURG (5)"	posX="-2356.48"	posY="1008.01"	posZ="49.9036"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (5)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="-180"	interior="10"	dimension="4"	/>
+<interiorEntry	id="FDBURG (6)"	posX="2366.74"	posY="2071.02"	posZ="9.8218"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (6)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="90"	interior="10"	dimension="5"	/>
+<interiorEntry	id="FDBURG (7)"	posX="2472.68"	posY="2033.88"	posZ="9.822"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (7)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="90"	interior="10"	dimension="6"	/>
+<interiorEntry	id="FDBURG (8)"	posX="2169.86"	posY="2795.79"	posZ="9.89528"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (8)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="270"	interior="10"	dimension="7"	/>
+<interiorEntry	id="FDBURG (9)"	posX="1872.24"	posY="2072.07"	posZ="9.82222"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (9)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="270"	interior="10"	dimension="8"	/>
+<interiorEntry	id="FDBURG (10)"	posX="1158.43"	posY="2072.02"	posZ="9.82222"	rotation="-45.3"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDBURG (10)"	posX="363.11"	posY="-74.88"	posZ="1000.55"	rotation="270"	interior="10"	dimension="9"	/>
+<interiorEntry	id="FDCHICK"	posX="172.727"	posY="1176.68"	posZ="13.773"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="190.224"	interior="9"	dimension="0"	/>
+<interiorEntry	id="FDCHICK (2)"	posX="-1213.71"	posY="1830.46"	posZ="40.9335"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (2)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="312"	interior="9"	dimension="1"	/>
+<interiorEntry	id="FDCHICK (3)"	posX="-2155.03"	posY="-2460.28"	posZ="29.8484"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (3)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="229"	interior="9"	dimension="2"	/>
+<interiorEntry	id="FDCHICK (4)"	posX="2419.95"	posY="-1509.8"	posZ="23.1568"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (4)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="270"	interior="9"	dimension="3"	/>
+<interiorEntry	id="FDCHICK (5)"	posX="2397.83"	posY="-1898.65"	posZ="12.7131"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (5)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="0"	interior="9"	dimension="4"	/>
+<interiorEntry	id="FDCHICK (6)"	posX="928.525"	posY="-1352.77"	posZ="12.4344"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (6)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="90"	interior="9"	dimension="5"	/>
+<interiorEntry	id="FDCHICK (7)"	posX="-1815.84"	posY="618.678"	posZ="34.2989"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (7)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="208"	interior="9"	dimension="6"	/>
+<interiorEntry	id="FDCHICK (8)"	posX="-2671.53"	posY="258.344"	posZ="3.64932"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (8)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="5400.06"	interior="9"	dimension="7"	/>
+<interiorEntry	id="FDCHICK (9)"	posX="2638.58"	posY="1671.18"	posZ="10.0231"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (9)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="90"	interior="9"	dimension="8"	/>
+<interiorEntry	id="FDCHICK (10)"	posX="2393.18"	posY="2041.66"	posZ="9.8472"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (10)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="0"	interior="9"	dimension="9"	/>
+<interiorEntry	id="FDCHICK (11)"	posX="2838.43"	posY="2407.26"	posZ="10.061"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (11)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="224"	interior="9"	dimension="10"	/>
+<interiorEntry	id="FDCHICK (12)"	posX="2102.69"	posY="2228.76"	posZ="10.0579"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDCHICK (12)"	posX="365.67"	posY="-11.61"	posZ="1000.87"	rotation="270"	interior="9"	dimension="11"	/>
+<interiorEntry	id="FDPIZA"	posX="1367.27"	posY="248.388"	posZ="18.6229"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="69.0975"	interior="5"	dimension="0"	/>
+<interiorEntry	id="FDPIZA (2)"	posX="2333.43"	posY="75.0488"	posZ="25.7342"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (2)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="-90"	interior="5"	dimension="1"	/>
+<interiorEntry	id="FDPIZA (3)"	posX="2333.43"	posY="75.0488"	posZ="25.7342"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (3)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="-90"	interior="5"	dimension="2"	/>
+<interiorEntry	id="FDPIZA (4)"	posX="1367.27"	posY="248.388"	posZ="18.6229"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (4)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="69.0975"	interior="5"	dimension="3"	/>
+<interiorEntry	id="FDPIZA (5)"	posX="203.334"	posY="-202.532"	posZ="0.600709"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (5)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="-180"	interior="5"	dimension="4"	/>
+<interiorEntry	id="FDPIZA (6)"	posX="2105.32"	posY="-1806.49"	posZ="12.6941"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (6)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="92"	interior="5"	dimension="5"	/>
+<interiorEntry	id="FDPIZA (7)"	posX="-1808.69"	posY="945.863"	posZ="23.8648"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (7)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="3824.59"	interior="5"	dimension="6"	/>
+<interiorEntry	id="FDPIZA (8)"	posX="-1721.13"	posY="1359.01"	posZ="6.19634"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (8)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="96"	interior="5"	dimension="7"	/>
+<interiorEntry	id="FDPIZA (9)"	posX="2638.58"	posY="1849.97"	posZ="10.0231"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (9)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="90"	interior="5"	dimension="8"	/>
+<interiorEntry	id="FDPIZA (10)"	posX="2756.01"	posY="2477.05"	posZ="10.061"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (10)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="181"	interior="5"	dimension="9"	/>
+<interiorEntry	id="FDPIZA (11)"	posX="2351.89"	posY="2532.19"	posZ="9.82217"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (11)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="180"	interior="5"	dimension="10"	/>
+<interiorEntry	id="FDPIZA (12)"	posX="2083.49"	posY="2224.2"	posZ="10.0579"	rotation="-0.100006"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDPIZA (12)"	posX="372.35"	posY="-133.55"	posZ="1000.45"	rotation="180"	interior="5"	dimension="11"	/>
+<interiorEntry	id="FDREST1"	posX="419.191"	posY="-1428.71"	posZ="31.8959"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDREST1"	posX="452.89"	posY="-18.18"	posZ="1000.18"	rotation="129"	interior="1"	dimension="0"	/>
+<interiorEntry	id="FDREST1 (2)"	posX="-2463.06"	posY="132.287"	posZ="34.198"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDREST1 (2)"	posX="452.89"	posY="-18.18"	posZ="1000.18"	rotation="5359.06"	interior="1"	dimension="1"	/>
+<interiorEntry	id="FDREST1 (3)"	posX="2489.87"	posY="2065.15"	posZ="9.8472"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDREST1 (3)"	posX="452.89"	posY="-18.18"	posZ="1000.18"	rotation="180"	interior="1"	dimension="2"	/>
+<interiorEntry	id="FDREST1 (4)"	posX="1693.19"	posY="2209.13"	posZ="10.0212"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="FDREST1 (4)"	posX="452.89"	posY="-18.18"	posZ="1000.18"	rotation="180"	interior="1"	dimension="3"	/>
+<interiorEntry	id="GANG"	posX="2351.97"	posY="-1169.86"	posZ="27.0309"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GANG"	posX="2352.34"	posY="-1181.25"	posZ="1027"	rotation="0"	interior="5"	dimension="0"	/>
+<interiorEntry	id="GENOTB"	posX="1288.8"	posY="271.002"	posZ="18.5554"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GENOTB"	posX="834.82"	posY="7.42"	posZ="1003.18"	rotation="-2285.19"	interior="3"	dimension="0"	/>
+<interiorEntry	id="GENOTB (2)"	posX="1631.86"	posY="-1172.57"	posZ="23.1349"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GENOTB (2)"	posX="834.82"	posY="7.42"	posZ="1003.18"	rotation="-3240.3"	interior="3"	dimension="1"	/>
+<interiorEntry	id="GF1"	posX="2402.52"	posY="-1715.28"	posZ="14.13"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GF1"	posX="243.75"	posY="304.82"	posZ="999.14"	rotation="270"	interior="1"	dimension="0"	/>
+<interiorEntry	id="GF2"	posX="-2574.04"	posY="1152.31"	posZ="55.72"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GF2"	posX="266.56"	posY="304.95"	posZ="999.14"	rotation="270"	interior="2"	dimension="0"	/>
+<interiorEntry	id="GF3"	posX="-382.67"	posY="-1438.83"	posZ="26.12"	rotation="270"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GF3"	posX="292.89"	posY="309.90"	posZ="999.15"	rotation="90"	interior="3"	dimension="0"	/>
+<interiorEntry	id="GF4"	posX="-1800.21"	posY="1200.576"	posZ="25.119"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GF4"	posX="300.239"	posY="300.584"	posZ="999.15"	rotation="0"	interior="4"	dimension="0"	/>
+<interiorEntry	id="GF5"	posX="-1390.186"	posY="2638.72"	posZ="55.98"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GF5"	posX="322.25"	posY="302.42"	posZ="999.15"	rotation="0"	interior="5"	dimension="0"	/>
+<interiorEntry	id="GF6"	posX="2037.22"	posY="2721.81"	posZ="11.29"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GF6"	posX="343.74"	posY="305.0347"	posZ="999.15"	rotation="180"	interior="6"	dimension="0"	/>
+<interiorEntry	id="GYM1"	posX="2229.63"	posY="-1721.63"	posZ="12.6529"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GYM1"	posX="772.11"	posY="-5"	posZ="999.69"	rotation="497"	interior="5"	dimension="0"	/>
+<interiorEntry	id="GYM2"	posX="-2270.46"	posY="-155.957"	posZ="34.3573"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GYM2"	posX="774.21"	posY="-50.02"	posZ="999.69"	rotation="270"	interior="6"	dimension="0"	/>
+<interiorEntry	id="GYM3"	posX="1968.7"	posY="2295.3"	posZ="15.4955"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="GYM3"	posX="773.58"	posY="-78.2"	posZ="999.69"	rotation="180"	interior="7"	dimension="0"	/>
+<interiorEntry	id="JUMP1"	posX="2268.07"	posY="1619.59"	posZ="93.9124"	rotation="270"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="JUMP1"	posX="2264.49"	posY="1619.58"	posZ="1089.5"	rotation="270"	interior="1"	dimension="0"	/>
+<interiorEntry	id="JUMP2"	posX="2268.14"	posY="1675.89"	posZ="93.9124"	rotation="270"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="JUMP2"	posX="2264.48"	posY="1675.93"	posZ="1089.5"	rotation="270"	interior="1"	dimension="0"	/>
+<interiorEntry	id="LACRAK"	posX="2166.2"	posY="-1671.47"	posZ="14.1977"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LACRAK"	posX="318.57"	posY="1115.21"	posZ="1082.98"	rotation="220"	interior="5"	dimension="0"	/>
+<interiorEntry	id="LACS1"	posX="2112.73"	posY="-1211.7"	posZ="22.9614"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LACS1"	posX="203.78"	posY="-49.89"	posZ="1000.8"	rotation="180"	interior="1"	dimension="0"	/>
+<interiorEntry	id="LACS1 (2)"	posX="-2491.98"	posY="-29.1065"	posZ="24.817"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LACS1 (2)"	posX="203.78"	posY="-49.89"	posZ="1000.8"	rotation="90"	interior="1"	dimension="1"	/>
+<interiorEntry	id="LACS1 (3)"	posX="2779.12"	posY="2453.54"	posZ="10.061"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LACS1 (3)"	posX="203.78"	posY="-49.89"	posZ="1000.8"	rotation="125"	interior="1"	dimension="2"	/>
+<interiorEntry	id="LAHS1B"	posX="-2058.97"	posY="889.859"	posZ="60.9137"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LAHS1B"	posX="223.04"	posY="1287.26"	posZ="1081.2"	rotation="362"	interior="1"	dimension="0"	/>
+<interiorEntry	id="LAHS2A"	posX="-2139.85"	posY="1189.84"	posZ="54.7634"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LAHS2A"	posX="260.98"	posY="1284.55"	posZ="1079.3"	rotation="179"	interior="4"	dimension="0"	/>
+<interiorEntry	id="LAHS2A (2)"	posX="-2152.4"	posY="1250.16"	posZ="24.9503"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LAHS2A (2)"	posX="260.98"	posY="1284.55"	posZ="1079.3"	rotation="362"	interior="4"	dimension="1"	/>
+<interiorEntry	id="LAHS2A (3)"	posX="-1955.25"	posY="1190.6"	posZ="44.4531"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LAHS2A (3)"	posX="260.98"	posY="1284.55"	posZ="1079.3"	rotation="180"	interior="4"	dimension="2"	/>
+<interiorEntry	id="LASTRIP"	posX="2421.52"	posY="-1220.65"	posZ="24.6085"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LASTRIP"	posX="1204.81"	posY="-12.79"	posZ="1000.09"	rotation="-180"	interior="2"	dimension="0"	/>
+<interiorEntry	id="LASTRIP (2)"	posX="2506.74"	posY="2120.39"	posZ="9.8472"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="LASTRIP (2)"	posX="1204.81"	posY="-12.79"	posZ="1000.09"	rotation="0"	interior="2"	dimension="1"	/>
+<interiorEntry	id="MADDOGS"	posX="1259.39"	posY="-785.332"	posZ="91.042"	rotation="270"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="MADDOGS"	posX="1260.58"	posY="-785.31"	posZ="1090.96"	rotation="90"	interior="5"	dimension="0"	/>
+<interiorEntry	id="MAFCAS"	posX="2196.92"	posY="1676.52"	posZ="11.368"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="MAFCAS"	posX="2233.91"	posY="1714.73"	posZ="1011.38"	rotation="90"	interior="1"	dimension="0"	/>
+<interiorEntry	id="MDDOGS"	posX="1298.34"	posY="-797.968"	posZ="83.1574"	rotation="-8"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="MDDOGS"	posX="1299.08"	posY="-796.83"	posZ="1083.03"	rotation="200"	interior="5"	dimension="0"	/>
+<interiorEntry	id="MOTEL1"	posX="2232.87"	posY="-1159.71"	posZ="24.9416"	rotation="-90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="MOTEL1"	posX="2214.34"	posY="-1150.51"	posZ="1024.8"	rotation="90"	interior="15"	dimension="0"	/>
+<interiorEntry	id="PAPER"	posX="2412.6"	posY="1123.81"	posZ="9.8529"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="PAPER"	posX="390.87"	posY="173.81"	posZ="1007.39"	rotation="270"	interior="3"	dimension="0"	/>
+<interiorEntry	id="PDOMES"	posX="-2661.35"	posY="1424.39"	posZ="23.0043"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="PDOMES"	posX="-2661.01"	posY="1417.74"	posZ="921.31"	rotation="15"	interior="3"	dimension="0"	/>
+<interiorEntry	id="PDOMES2"	posX="-2625.33"	posY="1412.62"	posZ="6.13148"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="PDOMES2"	posX="-2637.45"	posY="1402.24"	posZ="905.46"	rotation="0"	interior="3"	dimension="0"	/>
+<interiorEntry	id="POLICE1"	posX="627.642"	posY="-571.789"	posZ="16.907"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="POLICE1"	posX="246.78"	posY="62.2"	posZ="1002.64"	rotation="-85.9025"	interior="6"	dimension="0"	/>
+<interiorEntry	id="POLICE1 (2)"	posX="1554.95"	posY="-1674.99"	posZ="15.3283"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="POLICE1 (2)"	posX="246.78"	posY="62.2"	posZ="1002.64"	rotation="90"	interior="6"	dimension="1"	/>
+<interiorEntry	id="POLICE3"	posX="2337.1"	posY="2459.05"	posZ="14.0417"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="POLICE3"	posX="288.75"	posY="167.65"	posZ="1006.18"	rotation="180"	interior="3"	dimension="0"	/>
+<interiorEntry	id="POLICE4"	posX="2286.96"	posY="2432.21"	posZ="9.9369"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="POLICE4"	posX="238.66"	posY="139.35"	posZ="1002.05"	rotation="180"	interior="3"	dimension="0"	/>
+<interiorEntry	id="RCPLAY"	posX="-2242.01"	posY="128.521"	posZ="34.4174"	rotation="94"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="RCPLAY"	posX="-2241.07"	posY="128.52"	posZ="1034.42"	rotation="270"	interior="6"	dimension="0"	/>
+<interiorEntry	id="REST2"	posX="-857.938"	posY="1535.56"	posZ="21.6348"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="REST2"	posX="441.98"	posY="-49.92"	posZ="998.69"	rotation="323"	interior="6"	dimension="0"	/>
+<interiorEntry	id="REST2 (2)"	posX="-1887.43"	posY="749.592"	posZ="44.4658"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="REST2 (2)"	posX="441.98"	posY="-49.92"	posZ="998.69"	rotation="3691.82"	interior="6"	dimension="1"	/>
+<interiorEntry	id="RYDER"	posX="2459.43"	posY="-1690.91"	posZ="13.54"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="RYDER"	posX="2468.18"	posY="-1698.29"	posZ="1013.5"	rotation="90"	interior="2"	dimension="0"	/>
+<interiorEntry	id="SEXSHOP"	posX="2086.42"	posY="2074.48"	posZ="10.2043"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SEXSHOP"	posX="-100.33"	posY="-24.92"	posZ="999.74"	rotation="270"	interior="3"	dimension="0"	/>
+<interiorEntry	id="SFHSB1"	posX="-2627.09"	posY="2309.93"	posZ="7.35039"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSB1"	posX="140.18"	posY="1366.58"	posZ="1082.97"	rotation="-90"	interior="5"	dimension="0"	/>
+<interiorEntry	id="SFHSB1 (2)"	posX="-2684.77"	posY="819.657"	posZ="49.0326"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSB1 (2)"	posX="140.18"	posY="1366.58"	posZ="1082.97"	rotation="186"	interior="5"	dimension="1"	/>
+<interiorEntry	id="SFHSB3"	posX="-2569.1"	posY="795.796"	posZ="48.9819"	rotation="-40"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSB3"	posX="82.95"	posY="1322.44"	posZ="1082.89"	rotation="2"	interior="9"	dimension="0"	/>
+<interiorEntry	id="SFHSB3 (2)"	posX="-2539.92"	posY="767.238"	posZ="39.0419"	rotation="-40"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSB3 (2)"	posX="82.95"	posY="1322.44"	posZ="1082.89"	rotation="270"	interior="9"	dimension="1"	/>
+<interiorEntry	id="SFHSM1"	posX="-2401.5"	posY="869.344"	posZ="43.3889"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSM1"	posX="-283.55"	posY="1470.98"	posZ="1083.45"	rotation="270"	interior="15"	dimension="0"	/>
+<interiorEntry	id="SFHSM2"	posX="-2627.09"	posY="2283.33"	posZ="7.3178"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSM2"	posX="-260.6"	posY="1456.62"	posZ="1083.45"	rotation="270"	interior="4"	dimension="0"	/>
+<interiorEntry	id="SFHSS1"	posX="-2084.21"	posY="1160.33"	posZ="49.2421"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="362"	interior="8"	dimension="0"	/>
+<interiorEntry	id="SFHSS1 (2)"	posX="-1913.32"	posY="1252.89"	posZ="18.5367"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (2)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="362"	interior="8"	dimension="1"	/>
+<interiorEntry	id="SFHSS1 (3)"	posX="-1820.62"	posY="1116.27"	posZ="45.5432"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (3)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="180"	interior="8"	dimension="2"	/>
+<interiorEntry	id="SFHSS1 (4)"	posX="-1742.78"	posY="1174.34"	posZ="24.1582"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (4)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="362"	interior="8"	dimension="3"	/>
+<interiorEntry	id="SFHSS1 (5)"	posX="-2157.2"	posY="889.192"	posZ="79.0246"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (5)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="274"	interior="8"	dimension="4"	/>
+<interiorEntry	id="SFHSS1 (6)"	posX="-2234.16"	posY="830.667"	posZ="53.5143"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (6)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="92"	interior="8"	dimension="5"	/>
+<interiorEntry	id="SFHSS1 (7)"	posX="-2159.69"	posY="1048.74"	posZ="79.03"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (7)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="280"	interior="8"	dimension="6"	/>
+<interiorEntry	id="SFHSS1 (8)"	posX="-2239.22"	posY="962.248"	posZ="65.6541"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (8)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="89"	interior="8"	dimension="7"	/>
+<interiorEntry	id="SFHSS1 (9)"	posX="-2112.58"	posY="745.657"	posZ="68.582"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (9)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="180"	interior="8"	dimension="8"	/>
+<interiorEntry	id="SFHSS1 (10)"	posX="-2205.27"	posY="743.061"	posZ="49.4742"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (10)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="185"	interior="8"	dimension="9"	/>
+<interiorEntry	id="SFHSS1 (11)"	posX="-2636.13"	posY="2351.92"	posZ="7.59756"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (11)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="-90"	interior="8"	dimension="10"	/>
+<interiorEntry	id="SFHSS1 (12)"	posX="-2591.41"	posY="-158.542"	posZ="3.36046"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (12)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="90"	interior="8"	dimension="11"	/>
+<interiorEntry	id="SFHSS1 (13)"	posX="-2558.79"	posY="-79.623"	posZ="10.0789"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (13)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="0"	interior="8"	dimension="12"	/>
+<interiorEntry	id="SFHSS1 (14)"	posX="-2514.04"	posY="-170.797"	posZ="24.2706"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (14)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="-90"	interior="8"	dimension="13"	/>
+<interiorEntry	id="SFHSS1 (15)"	posX="-2447.62"	posY="820.771"	posZ="34.256"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (15)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="-182"	interior="8"	dimension="14"	/>
+<interiorEntry	id="SFHSS1 (16)"	posX="-2338.61"	posY="579.323"	posZ="27.0123"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (16)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="-182"	interior="8"	dimension="15"	/>
+<interiorEntry	id="SFHSS1 (17)"	posX="-2321.97"	posY="819.509"	posZ="44.3052"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (17)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="-182"	interior="8"	dimension="16"	/>
+<interiorEntry	id="SFHSS1 (18)"	posX="-2401.48"	posY="930.783"	posZ="44.4973"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (18)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="-94"	interior="8"	dimension="17"	/>
+<interiorEntry	id="SFHSS1 (19)"	posX="-2381.23"	posY="1281.01"	posZ="22.1852"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (19)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="269"	interior="8"	dimension="18"	/>
+<interiorEntry	id="SFHSS1 (20)"	posX="-2279.5"	posY="1148.84"	posZ="61.0751"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (20)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="260"	interior="8"	dimension="19"	/>
+<interiorEntry	id="SFHSS1 (21)"	posX="-2280.55"	posY="916.429"	posZ="65.6849"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS1 (21)"	posX="-42.58"	posY="1405.61"	posZ="1083.45"	rotation="260"	interior="8"	dimension="20"	/>
+<interiorEntry	id="SFHSS2"	posX="-2626.29"	posY="2359.75"	posZ="8.00576"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS2"	posX="-68.69"	posY="1351.97"	posZ="1079.28"	rotation="-90"	interior="6"	dimension="0"	/>
+<interiorEntry	id="SFHSS2 (2)"	posX="-2591.41"	posY="-95.538"	posZ="3.44458"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS2 (2)"	posX="-68.69"	posY="1351.97"	posZ="1079.28"	rotation="90"	interior="6"	dimension="1"	/>
+<interiorEntry	id="SFHSS2 (3)"	posX="-2541.61"	posY="-145.321"	posZ="14.7826"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS2 (3)"	posX="-68.69"	posY="1351.97"	posZ="1079.28"	rotation="0"	interior="6"	dimension="2"	/>
+<interiorEntry	id="SFHSS2 (4)"	posX="-2449.72"	posY="921.163"	posZ="57.2093"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS2 (4)"	posX="-68.69"	posY="1351.97"	posZ="1079.28"	rotation="-182"	interior="6"	dimension="3"	/>
+<interiorEntry	id="SFHSS2 (5)"	posX="-2372.92"	posY="692.687"	posZ="34.138"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SFHSS2 (5)"	posX="-68.69"	posY="1351.97"	posZ="1079.28"	rotation="-182"	interior="6"	dimension="4"	/>
+<interiorEntry	id="STADDIRT"	posX="1100.72"	posY="1597.29"	posZ="12.54"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="STADDIRT"	posX="-1400.0179"	posY="-663.382"	posZ="1051.232"	rotation="85"	interior="4"	dimension="0"	/>
+<interiorEntry	id="STADSTUNT"	posX="1093.99"	posY="1597.04"	posZ="12.54"	rotation="7"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="STADSTUNT"	posX="-1464.942"	posY="1556.091"	posZ="1052.53"	rotation="0"	interior="14"	dimension="0"	/>
+<interiorEntry	id="STAD8TRACK"	posX="2779.80"	posY="-1812.735"	posZ="11.84"	rotation="211"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="STAD8TRACK"	posX="-1407.80"	posY="-269.016"	posZ="1043.65"	rotation="343"	interior="7"	dimension="0"	/>
+<interiorEntry	id="STADBLOOD"	posX="2727.618"	posY="-1826.647"	posZ="11.8"	rotation="168"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="STADBLOOD"	posX="-1463.46"	posY="941.49"	posZ="1036.64"	rotation="306"	interior="15"	dimension="0"	/>
+<interiorEntry	id="STRIP2"	posX="693.632"	posY="1966.4"	posZ="4.56038"	rotation="-180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="STRIP2"	posX="1212.02"	posY="-25.86"	posZ="1000.09"	rotation="198.385"	interior="3"	dimension="0"	/>
+<interiorEntry	id="STRIP2 (2)"	posX="2543.15"	posY="1025.16"	posZ="9.82133"	rotation="-180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="STRIP2 (2)"	posX="1212.02"	posY="-25.86"	posZ="1000.09"	rotation="-3780.01"	interior="3"	dimension="1"	/>
+<interiorEntry	id="SVCUNT"	posX="-369.456"	posY="1169.14"	posZ="19.3978"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVCUNT"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	rotation="230"	interior="6"	dimension="0"	/>
+<interiorEntry	id="SVCUNT (2)"	posX="794.884"	posY="-506.702"	posZ="17.1238"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVCUNT (2)"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	rotation="180"	interior="6"	dimension="1"	/>
+<interiorEntry	id="SVCUNT (3)"	posX="2236.53"	posY="167.997"	posZ="27.196"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVCUNT (3)"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	rotation="180"	interior="6"	dimension="2"	/>
+<interiorEntry	id="SVCUNT (4)"	posX="206.802"	posY="-112.542"	posZ="3.98153"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVCUNT (4)"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	rotation="-350.903"	interior="6"	dimension="3"	/>
+<interiorEntry	id="SVCUNT (5)"	posX="-1533.1"	posY="2656.65"	posZ="55.275"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVCUNT (5)"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	rotation="180"	interior="6"	dimension="4"	/>
+<interiorEntry	id="SVCUNT (6)"	posX="-1051.47"	posY="1549.76"	posZ="32.496"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVCUNT (6)"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	rotation="300"	interior="6"	dimension="5"	/>
+<interiorEntry	id="SVCUNT (7)"	posX="-2075.91"	posY="-2312.55"	posZ="30.1313"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVCUNT (7)"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	rotation="50"	interior="6"	dimension="6"	/>
+<interiorEntry	id="SVCUNT (8)"	posX="-1438.72"	posY="-1544.58"	posZ="100.713"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVCUNT (8)"	posX="2333.11"	posY="-1077.1"	posZ="1048.04"	rotation="0"	interior="6"	dimension="7"	/>
+<interiorEntry	id="SVHOT1"	posX="-2425.94"	posY="337.87"	posZ="35.997"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVHOT1"	posX="2233.8"	posY="-1115.36"	posZ="1049.91"	rotation="-118"	interior="5"	dimension="0"	/>
+<interiorEntry	id="SVLAMD"	posX="1684.74"	posY="-2099"	posZ="12.8507"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVLAMD"	posX="2365.3"	posY="-1134.92"	posZ="1049.91"	rotation="-180"	interior="8"	dimension="1"	/>
+<interiorEntry	id="SVLAMD (2)"	posX="315.684"	posY="-1769.81"	posZ="3.62877"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVLAMD (2)"	posX="2365.3"	posY="-1134.92"	posZ="1049.91"	rotation="180"	interior="8"	dimension="2"	/>
+<interiorEntry	id="SVLAMD (3)"	posX="893.617"	posY="-1636.3"	posZ="13.9872"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVLAMD (3)"	posX="2365.3"	posY="-1134.92"	posZ="1049.91"	rotation="-180"	interior="8"	dimension="3"	/>
+<interiorEntry	id="SVLAMD (4)"	posX="2449.17"	posY="689.839"	posZ="10.471"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVLAMD (4)"	posX="2365.3"	posY="-1134.92"	posZ="1049.91"	rotation="450"	interior="8"	dimension="4"	/>
+<interiorEntry	id="SVLAMD (5)"	posX="1408.05"	posY="1897.08"	posZ="10.5873"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVLAMD (5)"	posX="2365.3"	posY="-1134.92"	posZ="1049.91"	rotation="450"	interior="8"	dimension="5"	/>
+<interiorEntry	id="SVLAMD (6)"	posX="929.122"	posY="2006.43"	posZ="10.4781"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVLAMD (6)"	posX="2365.3"	posY="-1134.92"	posZ="1049.91"	rotation="450"	interior="8"	dimension="6"	/>
+<interiorEntry	id="SVLASM"	posX="2111.23"	posY="-1279.71"	posZ="24.9546"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVLASM"	posX="2282.91"	posY="-1140.29"	posZ="1049.91"	rotation="180"	interior="11"	dimension="0"	/>
+<interiorEntry	id="SVLASM (2)"	posX="2483.38"	posY="-1996.19"	posZ="12.8507"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVLASM (2)"	posX="2282.91"	posY="-1140.29"	posZ="1049.91"	rotation="-180"	interior="11"	dimension="1"	/>
+<interiorEntry	id="SVSFBG"	posX="1331.94"	posY="-633.096"	posZ="108.245"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVSFBG"	posX="2196.79"	posY="-1204.35"	posZ="1048.05"	rotation="-1.90253"	interior="6"	dimension="0"	/>
+<interiorEntry	id="SVSFBG (2)"	posX="-2099.68"	posY="897.485"	posZ="75.9661"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVSFBG (2)"	posX="2196.79"	posY="-1204.35"	posZ="1048.05"	rotation="4374.68"	interior="6"	dimension="1"	/>
+<interiorEntry	id="SVSFBG (3)"	posX="-2027.73"	posY="-40.5488"	posZ="37.8263"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVSFBG (3)"	posX="2196.79"	posY="-1204.35"	posZ="1048.05"	rotation="4139.7"	interior="6"	dimension="2"	/>
+<interiorEntry	id="SVSFMD"	posX="-2454.44"	posY="-135.879"	posZ="25.2223"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVSFMD"	posX="2270.39"	posY="-1210.45"	posZ="1046.57"	rotation="90"	interior="10"	dimension="0"	/>
+<interiorEntry	id="SVSFSM"	posX="-2213.54"	posY="720.845"	posZ="48.4262"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVSFSM"	posX="2308.79"	posY="-1212.88"	posZ="1048.03"	rotation="36"	interior="6"	dimension="0"	/>
+<interiorEntry	id="SVSFSM (2)"	posX="-2700.32"	posY="820.308"	posZ="48.999"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVSFSM (2)"	posX="2308.79"	posY="-1212.88"	posZ="1048.03"	rotation="-180"	interior="6"	dimension="1"	/>
+<interiorEntry	id="SVSFSM (3)"	posX="2818.75"	posY="2140.56"	posZ="13.7132"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVSFSM (3)"	posX="2308.79"	posY="-1212.88"	posZ="1048.03"	rotation="360"	interior="6"	dimension="2"	/>
+<interiorEntry	id="SVVGHO1"	posX="2238.99"	posY="1285.05"	posZ="9.82528"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVVGHO1"	posX="2217.54"	posY="-1076.29"	posZ="1049.52"	rotation="-3870.01"	interior="1"	dimension="0"	/>
+<interiorEntry	id="SVVGHO1 (2)"	posX="2226.03"	posY="1837.92"	posZ="9.964"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVVGHO1 (2)"	posX="2217.54"	posY="-1076.29"	posZ="1049.52"	rotation="90"	interior="1"	dimension="1"	/>
+<interiorEntry	id="SVVGHO2"	posX="1965.11"	posY="1622.54"	posZ="11.879"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVVGHO2"	posX="2237.59"	posY="-1080.87"	posZ="1048.07"	rotation="270"	interior="2"	dimension="0"	/>
+<interiorEntry	id="SVVGHO2 (2)"	posX="2374.55"	posY="2167.88"	posZ="9.8472"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVVGHO2 (2)"	posX="2237.59"	posY="-1080.87"	posZ="1048.07"	rotation="125"	interior="2"	dimension="1"	/>
+<interiorEntry	id="SVVGMD"	posX="1274.28"	posY="2522.47"	posZ="9.99299"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="SVVGMD"	posX="2317.82"	posY="-1026.75"	posZ="1049.21"	rotation="270"	interior="9"	dimension="0"	/>
+<interiorEntry	id="TATinterior2"	posX="-2491.98"	posY="-38.9587"	posZ="24.817"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="TATinterior2"	posX="-204.44"	posY="-9.17"	posZ="1001.3"	rotation="90"	interior="17"	dimension="0"	/>
+<interiorEntry	id="TATinterior3"	posX="2094.7"	posY="2122.13"	posZ="9.82222"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="TATinterior3"	posX="-204.44"	posY="-44.35"	posZ="1001.3"	rotation="180"	interior="3"	dimension="0"	/>
+<interiorEntry	id="TATinteriorO"	posX="2068.71"	posY="-1779.84"	posZ="12.5103"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="TATinteriorO"	posX="-204.44"	posY="-27.15"	posZ="1001.3"	rotation="-90"	interior="16"	dimension="0"	/>
+<interiorEntry	id="TATinteriorO (2)"	posX="1975.79"	posY="-2036.65"	posZ="12.5753"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="TATinteriorO (2)"	posX="-204.44"	posY="-27.15"	posZ="1001.3"	rotation="90"	interior="16"	dimension="1"	/>
+<interiorEntry	id="TRICAS"	posX="2019.49"	posY="1007.11"	posZ="9.82133"	rotation="90"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="TRICAS"	posX="2018.95"	posY="1017.09"	posZ="995.88"	rotation="-3690.01"	interior="10"	dimension="0"	/>
+<interiorEntry	id="TSDINER"	posX="681.579"	posY="-473.419"	posZ="15.592"	rotation="180"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="TSDINER"	posX="681.58"	posY="-473.42"	posZ="15.59"	rotation="180"	interior="1"	dimension="0"	/>
+<interiorEntry	id="UFOBAR"	posX="-88.5875"	posY="1378.36"	posZ="9.56984"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="UFOBAR"	posX="-229.03"	posY="1401.23"	posZ="26.77"	rotation="270"	interior="18"	dimension="0"	/>
+<interiorEntry	id="WUZIBET"	posX="-2155.92"	posY="645.38"	posZ="52.37"	rotation="270"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="WUZIBET"	posX="-2158.675"	posY="642.8"	posZ="1052.4"	rotation="134"	interior="1"	dimension="0"	/>
+<interiorEntry	id="X7_11B"	posX="1833.54"	posY="-1843.38"	posZ="12.5595"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11B"	posX="-30.95"	posY="-91.71"	posZ="1002.55"	rotation="90"	interior="18"	dimension="0"	/>
+<interiorEntry	id="X7_11B (2)"	posX="1315.49"	posY="-897.843"	posZ="38.571"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11B (2)"	posX="-30.95"	posY="-91.71"	posZ="1002.55"	rotation="180"	interior="18"	dimension="1"	/>
+<interiorEntry	id="X7_11B (3)"	posX="2546.71"	posY="1972.28"	posZ="9.822"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11B (3)"	posX="-30.95"	posY="-91.71"	posZ="1002.55"	rotation="180"	interior="18"	dimension="2"	/>
+<interiorEntry	id="X7_11B (4)"	posX="2884.83"	posY="2453.28"	posZ="10.061"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11B (4)"	posX="-30.95"	posY="-91.71"	posZ="1002.55"	rotation="224"	interior="18"	dimension="3"	/>
+<interiorEntry	id="X7_11S"	posX="-181.004"	posY="1034.83"	posZ="18.8298"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11S"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	rotation="381.648"	interior="6"	dimension="0"	/>
+<interiorEntry	id="X7_11S (2)"	posX="-1562.63"	posY="-2732.98"	posZ="47.7435"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11S (2)"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	rotation="237"	interior="6"	dimension="1"	/>
+<interiorEntry	id="X7_11S (3)"	posX="1352.31"	posY="-1758.3"	posZ="12.5149"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11S (3)"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	rotation="-2520.26"	interior="6"	dimension="2"	/>
+<interiorEntry	id="X7_11S (4)"	posX="2247.66"	posY="2396.26"	posZ="9.8218"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11S (4)"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	rotation="0"	interior="6"	dimension="3"	/>
+<interiorEntry	id="X7_11S (5)"	posX="2452.47"	posY="2065.15"	posZ="9.8472"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11S (5)"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	rotation="180"	interior="6"	dimension="4"	/>
+<interiorEntry	id="X7_11S (6)"	posX="2194.38"	posY="1991.02"	posZ="11.301"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11S (6)"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	rotation="90"	interior="6"	dimension="5"	/>
+<interiorEntry	id="X7_11S (7)"	posX="2097.76"	posY="2224.2"	posZ="10.0579"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11S (7)"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	rotation="180"	interior="6"	dimension="6"	/>
+<interiorEntry	id="X7_11S (8)"	posX="1937.25"	posY="2307.17"	posZ="9.82222"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X7_11S (8)"	posX="-26.69"	posY="-57.81"	posZ="1002.55"	rotation="90"	interior="6"	dimension="7"	/>
+<interiorEntry	id="X711S2"	posX="1000.33"	posY="-919.924"	posZ="41.2368"	rotation="0"	dimension="0"	interior="0"	/>
+<interiorReturn	refid="X711S2"	posX="-27.31"	posY="-31.38"	posZ="1002.55"	rotation="97"	interior="4"	dimension="0"	/>
+</map>

@@ -1,0 +1,60 @@
+<meta>
+	<info author="Slothman and Talidan" type="gamemode" name="Stealth" version="3.0.0" edf:definition="edf/stealth.edf" />
+
+	<config src="help.xml" type="client"/>
+    <script src="mission_timer.lua" />
+    <script src="gadgets_server.lua" />
+    <script src="gadgets_client.lua" type="client"/>
+    <script src="stealthmain_client.lua" type="client"/>
+	<script src="stealthmain_server.lua"/>
+    <script src="noisebar.lua" type="client"/>
+    <script src="noiseblip.lua" type="client"/>
+	<script src="spycam.lua" type="client"/>
+
+	<file src="riot_shield.txd" />
+	<file src="riot_shield.dff" />
+	<file src="riot_shield.col" />
+	<file src="armor.png" />
+	<file src="camera.png" />
+	<file src="cloak.png" />
+	<file src="goggles.png" />
+	<file src="mine.png" />
+	<file src="radar.png" />
+	<file src="shield.png" />
+	<file src="ricochet1.mp3" />
+	<file src="ricochet2.mp3" />
+	<file src="ricochet3.mp3" />
+	
+	<file src="edf/mercenaryspawn.png" />
+	<file src="edf/spyspawn.png" />
+
+	<include resource="missiontimer" />
+	<include resource="scoreboard" />
+	<include resource="killmessages" />
+	<include resource="maplimits" />
+
+	<settings>
+		<setting name="roundlimit" value="[6]" /> <!-- round length in minutes -->
+		<setting name="round_countlimit" value="[4]" /> <!-- number of rounds untill map cycler is activated. 1 round = play 2 matches, 1 on each team -->
+		<setting name="uziammo" value="[150]" />
+		<setting name="teamdamage" value="[1]" /> <!--  0 for team protection off, 1 for team protection on -->
+		<setting name="teambalance" value="[1]" /> <!--   difference limit of amount of players between teams -->
+		<setting name="spazammo" value="[25]" /> <!--  ammo amounts -->
+		<setting name="m4ammo" value="[100]" />
+		<setting name="shotgunammo" value="[25]" />
+		<setting name="sniperammo" value="[20]" />
+		<setting name="ak47ammo" value="[120]" />
+		<setting name="rifleammo" value="[40]" />
+		<setting name="deserteagleammo" value="[45]" />
+		<setting name="pistolammo" value="[132]" />
+		<setting name="uziammo" value="[150]" />
+		<setting name="tec9ammo" value="[150]" />
+		<setting name="silencedammo" value="[65]" />
+		<setting name="grenadeammo" value="[4]" />
+		<setting name="satchelammo" value="[4]" />
+		<setting name="teargasammo" value="[4]" />
+		<setting name="molatovammo" value="[4]" />
+		<!--Table of weapons that lasersight is enabled.  Just use [ ] if you want to disable.  Note this wont work for weapons that laser sight is not coded for (atm only Sniper + M4) -->
+		<setting name="lasersight" value="[ [ 31, 34 ] ]" />
+	</settings>
+</meta>

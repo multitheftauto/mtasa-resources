@@ -1,0 +1,546 @@
+<map>
+
+   <vehicle id="Sentinel" model="405" posX="-1988.01171875" posY="128.8193359375" posZ="27.413967132568" rotX="0" rotY="359.99450683594" rotZ="1.7303466796875" />
+   <vehicle id="Blista Compact" model="496" posX="-1987.8955078125" posY="119.84765625" posZ="27.255165100098" rotX="0.0439453125" rotY="359.99450683594" rotZ="0.1702880859375" />
+   <vehicle id="Cabbie" model="438" posX="-1988.1220703125" posY="153.2861328125" posZ="27.541885375977" rotX="359.68688964844" rotY="359.99450683594" rotZ="1.636962890625" />
+   <vehicle id="Primo" model="547" posX="-2121.0244140625" posY="-65.552734375" posZ="34.978286743164" rotX="0.1593017578125" rotY="354.89135742188" rotZ="90.159301757813" />
+   <vehicle id="Towtruck" model="525" posX="-2135.02734375" posY="-89.98828125" posZ="35.194862365723" rotX="358.08288574219" rotY="0" rotZ="0.54931640625" />
+   <vehicle id="Bravura" model="401" posX="-2146.1630859375" posY="-74.96484375" posZ="35.023021697998" rotX="359.96704101563" rotY="355.31982421875" rotZ="269.13757324219" />
+   <vehicle id="Comet" model="480" posX="-2226.357421875" posY="110.927734375" posZ="35.094833374023" rotX="359.82421875" rotY="0.120849609375" rotZ="86.484375" />
+   <vehicle id="Hotdog" model="588" posX="-2266.82421875" posY="101.4541015625" posZ="35.079223632813" rotX="358.68713378906" rotY="0" rotZ="270.25817871094" />
+   <vehicle id="Hermes" model="474" posX="-2265.7451171875" posY="113.26953125" posZ="34.93420791626" rotX="359.97253417969" rotY="359.99450683594" rotZ="268.55529785156" />
+   <vehicle id="Picador" model="600" posX="-2719.046875" posY="-19.7490234375" posZ="4.0581398010254" rotX="358.96179199219" rotY="359.98901367188" rotZ="269.85717773438" />
+   <vehicle id="Hustler" model="545" posX="-2689.6572265625" posY="-21.97265625" posZ="4.1470279693604" rotX="0" rotY="359.99450683594" rotZ="359.8681640625" />
+   <vehicle id="Willard" model="529" posX="-2702.048828125" posY="-35.1923828125" posZ="3.8851654529572" rotX="359.72534179688" rotY="355.18798828125" rotZ="0.0494384765625" />
+   <vehicle id="Taxi" model="420" posX="-2674.3564453125" posY="630.21484375" posZ="14.231581687927" rotX="359.72534179688" rotY="0" rotZ="91.367797851563" />
+   <vehicle id="Ambulance" model="416" posX="-2674.701171875" posY="593.3447265625" posZ="14.602635383606" rotX="0.0384521484375" rotY="359.60998535156" rotZ="271.78527832031" />
+   <vehicle id="Fortune" model="526" posX="-2685.69140625" posY="629.3486328125" posZ="14.221195220947" rotX="359.99450683594" rotY="359.99450683594" rotZ="109.79736328125" />
+   <vehicle id="Tahoma" model="566" posX="-2379.6845703125" posY="940.9580078125" posZ="45.148422241211" rotX="0.318603515625" rotY="355.18249511719" rotZ="358.9892578125" />
+   <vehicle id="Buffalo" model="402" posX="-2424.142578125" posY="955.7841796875" posZ="45.128551483154" rotX="359.96154785156" rotY="0" rotZ="269.59899902344" />
+   <vehicle id="Sadler" model="543" posX="-2366.3017578125" posY="953.89453125" posZ="45.197452545166" rotX="359.04418945313" rotY="355.10009765625" rotZ="269.24743652344" />
+   <vehicle id="Phoenix" model="603" posX="-2644.2919921875" posY="1288.32421875" posZ="6.9482574462891" rotX="0.06591796875" rotY="355.31982421875" rotZ="293.78540039063" />
+   <vehicle id="Admiral" model="445" posX="-2622.6494140625" posY="1377.64453125" posZ="7.0113940238953" rotX="0.4998779296875" rotY="359.99450683594" rotZ="0.4010009765625" />
+   <vehicle id="Remington" model="534" posX="-1702.7158203125" posY="1325.73828125" posZ="6.831328868866" rotX="0.472412109375" rotY="355.37475585938" rotZ="45.620727539063" />
+   <vehicle id="Regina" model="479" posX="-1644.8173828125" posY="1304.2744140625" posZ="6.8242444992065" rotX="359.61547851563" rotY="359.99450683594" rotZ="314.24194335938" />
+   <vehicle id="BF-400" model="581" posX="-1691.9912109375" posY="1370.4921875" posZ="6.7756929397583" rotX="359.35729980469" rotY="0" rotZ="223.25866699219" />
+   <vehicle id="Merit" model="551" posX="-2011.4521484375" posY="898.359375" posZ="45.1686668396" rotX="359.9560546875" rotY="355.17700195313" rotZ="179.75830078125" />
+   <vehicle id="Clover" model="542" posX="-1921.458984375" posY="857.0478515625" posZ="36.324989318848" rotX="10.508422851563" rotY="354.45190429688" rotZ="89.423217773438" />
+   <vehicle id="Sultan" model="560" posX="-1521.9306640625" posY="503.5" posZ="6.8845739364624" rotX="359.8681640625" rotY="359.99450683594" rotZ="269.9560546875" />
+   <vehicle id="Nebula" model="516" posX="-1522.03125" posY="499.560546875" posZ="7.0137038230896" rotX="359.98901367188" rotY="0" rotZ="269.64294433594" />
+   <vehicle id="Yosemite" model="554" posX="-1570.771484375" posY="502.4140625" posZ="7.1789183616638" rotX="359.11010742188" rotY="355.693359375" rotZ="157.86804199219" />
+   <vehicle id="Burrito" model="482" posX="-2389.83203125" posY="-162.6826171875" posZ="35.435382843018" rotX="359.24743652344" rotY="0.010986328125" rotZ="21.538696289063" />
+   <vehicle id="Greenwood" model="492" posX="-2416.6015625" posY="-122.75" posZ="35.024833679199" rotX="0.010986328125" rotY="5.1580810546875" rotZ="179.47814941406" />
+   <vehicle id="Club" model="589" posX="-2344.775390625" posY="-124.5888671875" posZ="34.970581054688" rotX="0" rotY="359.99450683594" rotZ="359.67590332031" />
+   <vehicle id="Esperanto" model="419" posX="-2461.5205078125" posY="703.666015625" posZ="34.887161254883" rotX="0" rotY="354.27062988281" rotZ="270.45043945313" />
+   <vehicle id="Sunrise" model="550" posX="-2425.26953125" posY="741.4716796875" posZ="34.834278106689" rotX="359.57153320313" rotY="359.99450683594" rotZ="0.3460693359375" />
+   <vehicle id="Euros" model="587" posX="-2482.109375" posY="741.828125" posZ="34.740894317627" rotX="359.65393066406" rotY="0" rotZ="359.69787597656" />
+   <vehicle id="Elegant" model="507" posX="-1594.234375" posY="673.6240234375" posZ="7.0127997398376" rotX="359.76379394531" rotY="359.99450683594" rotZ="0.0274658203125" />
+   <vehicle id="Perennial" model="404" posX="-1628.419921875" posY="651.1083984375" posZ="6.9198617935181" rotX="359.73083496094" rotY="0" rotZ="180.2197265625" />
+   <vehicle id="Huntley" model="579" posX="-2737.0361328125" posY="-295.912109375" posZ="6.9439601898193" rotX="0.0164794921875" rotY="359.912109375" rotZ="227.79052734375" />
+   <vehicle id="Stretch" model="409" posX="-2735.1708984375" posY="-312.7802734375" posZ="6.9080266952515" rotX="0" rotY="354.53430175781" rotZ="135.8349609375" />
+   <vehicle id="Cadrona" model="527" posX="-2781.5185546875" posY="-281.615234375" posZ="6.7543392181396" rotX="359.96704101563" rotY="359.99450683594" rotZ="179.560546875" />
+   <vehicle id="Moonbeam" model="418" posX="-2269.9892578125" posY="503.533203125" posZ="35.182834625244" rotX="0.054931640625" rotY="355.166015625" rotZ="270.05493164063" />
+   <vehicle id="Utility Van" model="552" posX="-2247.482421875" posY="531.9208984375" posZ="34.82642364502" rotX="358.9013671875" rotY="359.57153320313" rotZ="331.41906738281" />
+   <vehicle id="Sentinel" model="405" posX="-2206.0283203125" posY="503.69140625" posZ="34.963432312012" rotX="0" rotY="353.90258789063" rotZ="269.46716308594" />
+   <vehicle id="Landstalker" model="400" posX="-2197.7021484375" posY="983.751953125" posZ="80.092308044434" rotX="359.99450683594" rotY="0" rotZ="91.373291015625" />
+   <vehicle id="Feltzer" model="533" posX="-2197.1357421875" posY="996.056640625" posZ="79.709091186523" rotX="359.99450683594" rotY="0" rotZ="91.104125976563" />
+   <vehicle id="Nebula" model="516" posX="-2202.103515625" posY="1016.384765625" posZ="79.764495849609" rotX="359.98901367188" rotY="355.02868652344" rotZ="269.26940917969" />
+   <vehicle id="Primo" model="547" posX="-1891.3779296875" posY="1112.1044921875" posZ="45.103507995605" rotX="0.1593017578125" rotY="354.89135742188" rotZ="180.75256347656" />
+   <vehicle id="Banshee" model="429" posX="-1876.8154296875" posY="1057.13671875" posZ="45.045108795166" rotX="359.99450683594" rotY="355.13305664063" rotZ="359.49462890625" />
+
+    <spawnpoint id="spawn_0" posX="-1972.919921875" posY="124.5810546875" posZ="27.694049835205" rot="20.871612548828" skin="0" />
+    <spawnpoint id="spawn_1" posX="-1982.9814453125" posY="151.6787109375" posZ="27.6875" rot="165.0693359375" skin="0" />
+    <spawnpoint id="spawn_2" posX="-2135.04296875" posY="-98.46484375" posZ="35.3203125" rot="334.24490356445" skin="0" />
+    <spawnpoint id="spawn_3" posX="-2107.435546875" posY="-62.671875" posZ="35.3203125" rot="105.19845581055" skin="0" />
+    <spawnpoint id="spawn_4" posX="-2244.455078125" posY="121.7880859375" posZ="35.3203125" rot="154.00598144531" skin="0" />
+    <spawnpoint id="spawn_5" posX="-2231.3671875" posY="106.5" posZ="35.3203125" rot="90.399627685547" skin="0" />
+    <spawnpoint id="spawn_6" posX="-2673.3671875" posY="-4.2119140625" posZ="6.1328125" rot="121.27169799805" skin="0" />
+    <spawnpoint id="spawn_7" posX="-2714.83984375" posY="-37.763671875" posZ="4.328125" rot="303.92767333984" skin="0" />
+    <spawnpoint id="spawn_8" posX="-2698.7880859375" posY="632.5263671875" posZ="14.454549789429" rot="230.86198425293" skin="0" />
+    <spawnpoint id="spawn_9" posX="-2662.1162109375" posY="634.908203125" posZ="14.453125" rot="180.70863342285" skin="0" />
+    <spawnpoint id="spawn_10" posX="-2397.4853515625" posY="932.736328125" posZ="45.4453125" rot="334.86563110352" skin="0" />
+    <spawnpoint id="spawn_11" posX="-2376.1884765625" posY="989.8369140625" posZ="49.057788848877" rot="156.91735839844" skin="0" />
+    <spawnpoint id="spawn_12" posX="-2623.4091796875" posY="1408.8408203125" posZ="7.1015625" rot="198.50675964355" skin="249" />
+    <spawnpoint id="spawn_13" posX="-2650.1142578125" posY="1343.9501953125" posZ="7.185152053833" rot="331.65209960938" skin="249" />
+    <spawnpoint id="spawn_14" posX="-1683.9951171875" posY="1364.3935546875" posZ="7.1796875" rot="142.94256591797" skin="0" />
+    <spawnpoint id="spawn_15" posX="-1660.1630859375" posY="1336.244140625" posZ="7.1807155609131" rot="164.85510253906" skin="0" />
+    <spawnpoint id="spawn_16" posX="-1933.21875" posY="866.6181640625" posZ="38.5078125" rot="67.805908203125" skin="0" />
+    <spawnpoint id="spawn_17" posX="-1982.693359375" posY="897.306640625" posZ="45.203125" rot="74.386810302734" skin="0" />
+    <spawnpoint id="spawn_18" posX="-1559.6884765625" posY="484.6845703125" posZ="7.1796875" rot="320.63262939453" skin="0" />
+    <spawnpoint id="spawn_19" posX="-1522.1767578125" posY="494.3037109375" posZ="7.1796875" rot="77.506988525391" skin="0" />
+    <spawnpoint id="spawn_20" posX="-2429.3515625" posY="-183.814453125" posZ="35.3203125" rot="348.51635742188" skin="0" />
+    <spawnpoint id="spawn_21" posX="-2365.240234375" posY="-188.9736328125" posZ="35.3203125" rot="40.531921386719" skin="0" />
+    <spawnpoint id="spawn_22" posX="-2442.6943359375" posY="751.130859375" posZ="35.17862701416" rot="181.38430786133" skin="0" />
+    <spawnpoint id="spawn_23" posX="-2410.9404296875" posY="715.216796875" posZ="35.171875" rot="78.006866455078" skin="0" />
+    <spawnpoint id="spawn_24" posX="-1616.205078125" posY="681.2275390625" posZ="7.1875" rot="176.48980712891" skin="0" />
+    <spawnpoint id="spawn_25" posX="-1584.6728515625" posY="652.705078125" posZ="7.1875" rot="72.464172363281" skin="0" />
+    <spawnpoint id="spawn_26" posX="-2722.9970703125" posY="-315.7900390625" posZ="7.1801328659058" rot="95.832458496094" skin="0" />
+    <spawnpoint id="spawn_27" posX="-2732.9052734375" posY="-277.208984375" posZ="7.195240020752" rot="227.74731445313" skin="0" />
+    <spawnpoint id="spawn_28" posX="-2273.4375" posY="515.6650390625" posZ="35.116176605225" rot="335.04144287109" skin="0" />
+    <spawnpoint id="spawn_29" posX="-2233.685546875" posY="524.9208984375" posZ="35.171875" rot="12.642700195313" skin="0" />
+    <spawnpoint id="spawn_30" posX="-2215.8857421875" posY="1051.611328125" posZ="80.0078125" rot="202.5387878418" skin="0" />
+    <spawnpoint id="spawn_31" posX="-2174.8583984375" posY="975.2158203125" posZ="80" rot="10.775024414063" skin="0" />
+    <spawnpoint id="spawn_32" posX="-1867.6708984375" posY="1078.6904296875" posZ="46.083118438721" rot="52.320434570313" skin="0" />
+    <spawnpoint id="spawn_33" posX="-1894.537109375" posY="1144.734375" posZ="45.4453125" rot="189.24513244629" skin="0" />
+
+    <spawnpoint id="spawn_34" posX="-1614.9619140625" posY="1081.607421875" posZ="7.1875" rot="210.86656188965" skin="0" />
+    <spawnpoint id="spawn_35" posX="-1784.396484375" posY="960.69921875" posZ="24.890625" rot="195.51292419434" skin="0" />
+    <spawnpoint id="spawn_36" posX="-2026.4990234375" posY="555.6884765625" posZ="35.171875" rot="279.46075439453" skin="0" />
+    <spawnpoint id="spawn_37" posX="-2154.080078125" posY="287.71484375" posZ="35.3203125" rot="357.48135375977" skin="0" />
+    <spawnpoint id="spawn_38" posX="-2612.17578125" posY="128.5546875" posZ="4.3346643447876" rot="190.78872680664" skin="0" />
+    <spawnpoint id="spawn_39" posX="-2690.8984375" posY="281.224609375" posZ="4.328125" rot="255.62554931641" skin="0" />
+    <spawnpoint id="spawn_40" posX="-2534.064453125" posY="661.482421875" posZ="28.244243621826" rot="179.50561523438" skin="0" />
+    <spawnpoint id="spawn_41" posX="-2284.1669921875" posY="-118.2763671875" posZ="35.3203125" rot="103.70428466797" skin="0" />
+    <spawnpoint id="spawn_42" posX="-2028.14453125" posY="-98.1552734375" posZ="35.1640625" rot="44.481567382813" skin="0" />
+    <spawnpoint id="spawn_43" posX="-2238.052734375" posY="215.9228515625" posZ="35.3203125" rot="93.387939453125" skin="0" />
+    <spawnpoint id="spawn_44" posX="-2480.2060546875" posY="374.3759765625" posZ="35.1171875" rot="327.69146728516" skin="0" />
+    <spawnpoint id="spawn_45" posX="-2245.521484375" posY="777.0947265625" posZ="49.4453125" rot="154.75305175781" skin="0" />
+    <spawnpoint id="spawn_46" posX="-1720.44140625" posY="102.9970703125" posZ="3.5546875" rot="40.674743652344" skin="0" />
+    <spawnpoint id="spawn_47" posX="-1844.447265625" posY="-213.2490234375" posZ="17.920309066772" rot="351.16958618164" skin="0" />
+    <spawnpoint id="spawn_48" posX="-2158.29296875" posY="-433.822265625" posZ="35.3359375" rot="335.18975830078" skin="0" />
+    <spawnpoint id="spawn_49" posX="-2529.380859375" posY="-12.59375" posZ="25.6171875" rot="255.91668701172" skin="0" />
+    <spawnpoint id="spawn_50" posX="-2388.0390625" posY="-62.228515625" posZ="35.3203125" rot="125.85855102539" skin="0" />
+    <spawnpoint id="spawn_51" posX="-2373.7138671875" posY="532.341796875" posZ="27.24555015564" rot="15.295959472656" skin="0" />
+
+  <briefcase id="briefcase_0" posX="-1531.339600" posY="687.697021" posZ="7.187500"/>
+  <briefcase id="briefcase_1" posX="-1752.209717" posY="246.891159" posZ="6.645340"/>
+  <briefcase id="briefcase_2" posX="-2027.503052" posY="-54.364349" posZ="35.386024"/>
+  <briefcase id="briefcase_3" posX="-2482.062012" posY="-284.752747" posZ="40.544395"/>
+  <briefcase id="briefcase_4" posX="-2314.570068" posY="101.148849" posZ="35.398438"/>
+  <briefcase id="briefcase_5" posX="-2648.423828" posY="-29.900179" posZ="6.132813"/>
+  <briefcase id="briefcase_6" posX="-2802.729004" posY="1007.782837" posZ="48.113464"/>
+  <briefcase id="briefcase_7" posX="-2456.390625" posY="639.602173" posZ="33.028984"/>
+  <briefcase id="briefcase_8" posX="-2367.014648" posY="1396.322754" posZ="7.203770"/>
+  <briefcase id="briefcase_9" posX="-1954.263672" posY="1332.795776" posZ="7.187500"/>
+  <briefcase id="briefcase_10" posX="-1733.756348" posY="884.232605" posZ="25.085938"/>
+  <briefcase id="briefcase_11" posX="-2099.006592" posY="293.692780" posZ="37.688751"/>
+  <briefcase id="briefcase_12" posX="-1951.669800" posY="704.025635" posZ="46.562500"/>
+  <briefcase id="briefcase_13" posX="-2342.747070" posY="986.370911" posZ="50.695313"/>
+  <briefcase id="briefcase_14" posX="-1989.588013" posY="1040.332642" posZ="55.726563"/>
+  <briefcase id="briefcase_15" posX="-1731.119629" posY="1525.778320" posZ="7.187500"/>
+  <briefcase id="briefcase_16" posX="-1460.342163" posY="1143.172363" posZ="7.187500"/>
+  <briefcase id="briefcase_17" posX="-2598.453857" posY="1129.071167" posZ="55.691368"/>
+  <briefcase id="briefcase_18" posX="-2566.130371" posY="439.349213" posZ="14.880854"/>
+  <briefcase id="briefcase_19" posX="-2211.563477" posY="582.866455" posZ="35.169136"/>
+
+    <objective id="objective_1" posX="-1476.79296875" posY="430.1650390625" posZ="6.1875" />
+    <objective id="objective_2" posX="-1560.8310546875" posY="65.880859375" posZ="16.328125" />
+    <objective id="objective_3" posX="-1473.6953125" posY="483.6044921875" posZ="0.17742538452148" />
+    <objective id="objective_4" posX="-1708.4501953125" posY="11.603515625" posZ="2.5546875" />
+    <objective id="objective_5" posX="-1628.6923828125" posY="157.0205078125" posZ="0.9609375" />
+    <objective id="objective_6" posX="-1385" posY="-348.53515625" posZ="13.1484375" />
+    <objective id="objective_7" posX="-1442.1826171875" posY="1.212890625" posZ="5" />
+    <objective id="objective_8" posX="-1344.28125" posY="-133.640625" posZ="5.0069427490234" />
+    <objective id="objective_9" posX="-1362.2490234375" posY="-493.35546875" posZ="13.171875" />
+    <objective id="objective_10" posX="-1904.3876953125" posY="-452.7216796875" posZ="24.171875" />
+    <objective id="objective_11" posX="-2110.998046875" posY="-444.0546875" posZ="37.734375" />
+    <objective id="objective_12" posX="-2051.470703125" posY="-406.59375" posZ="37.734375" />
+    <objective id="objective_13" posX="-2376.103515625" posY="-594.9755859375" posZ="131.1171875" />
+    <objective id="objective_14" posX="-2521.095703125" posY="-622.666015625" posZ="131.75651550293" />
+    <objective id="objective_15" posX="-2652.314453125" posY="-282.3369140625" posZ="6.4974584579468" />
+    <objective id="objective_16" posX="-2648.4326171875" posY="18.9228515625" posZ="5.1328125" />
+    <objective id="objective_17" posX="-2738.9130859375" posY="124.6513671875" posZ="3.5390625" />
+    <objective id="objective_18" posX="-2738.4345703125" posY="-169.7255859375" posZ="3.7567462921143" />
+    <objective id="objective_19" posX="-2533.408203125" posY="-19.29296875" posZ="15.428846359253" />
+    <objective id="objective_20" posX="-2471.201171875" posY="-316.283203125" posZ="40.623870849609" />
+    <objective id="objective_21" posX="-2316.4677734375" posY="-362.03515625" posZ="66.321655273438" />
+    <objective id="objective_22" posX="-2287.318359375" posY="-22.3466796875" posZ="34.3125" />
+    <objective id="objective_23" posX="-2130.7841796875" posY="-247.9833984375" posZ="34.3203125" />
+    <objective id="objective_24" posX="-2186.591796875" posY="-218.1083984375" posZ="35.515625" />
+    <objective id="objective_25" posX="-2221.609375" posY="-142.59765625" posZ="34.3203125" />
+    <objective id="objective_26" posX="-2207.3564453125" posY="73.0576171875" posZ="34.327877044678" />
+    <objective id="objective_27" posX="-2228.89453125" posY="251.84765625" posZ="34.3203125" />
+    <objective id="objective_28" posX="-2524.29296875" posY="328.826171875" posZ="26.765625" />
+    <objective id="objective_29" posX="-2480.6650390625" posY="405.330078125" posZ="26.773574829102" />
+    <objective id="objective_30" posX="-2558.390625" posY="660.189453125" posZ="13.453125" />
+    <objective id="objective_31" posX="-2976.0576171875" posY="502.4228515625" posZ="1.4296875" />
+    <objective id="objective_32" posX="-2910.6015625" posY="-71.998046875" posZ="2.1219935417175" />
+    <objective id="objective_33" posX="-2453.6640625" posY="-93.8798828125" posZ="29.1875" />
+    <objective id="objective_34" posX="-2218.1484375" posY="-341.43359375" posZ="43.798828125" />
+    <objective id="objective_35" posX="-2321.673828125" posY="-144.3466796875" posZ="34.5546875" />
+    <objective id="objective_36" posX="-2462.1005859375" posY="133.0634765625" posZ="34.171875" />
+    <objective id="objective_37" posX="-2491.080078125" posY="132.087890625" posZ="24.874284744263" />
+    <objective id="objective_38" posX="-2547.6611328125" posY="174.501953125" posZ="12.0390625" />
+    <objective id="objective_39" posX="-2561.13671875" posY="310.01171875" posZ="14.9453125" />
+    <objective id="objective_40" posX="-2619.849609375" posY="400.3408203125" posZ="3.3015837669373" />
+    <objective id="objective_41" posX="-2568.33203125" posY="626.4306640625" posZ="26.806203842163" />
+    <objective id="objective_42" posX="-2784.3818359375" posY="765.9599609375" posZ="49.5078125" />
+    <objective id="objective_43" posX="-2661.95703125" posY="1426.6474609375" posZ="22.8984375" />
+    <objective id="objective_44" posX="-2651.8994140625" posY="1446.1787109375" posZ="40.829467773438" />
+    <objective id="objective_45" posX="-2681.345703125" posY="1452.470703125" posZ="6.1015625" />
+    <objective id="objective_46" posX="-2564.681640625" posY="1220.2490234375" posZ="40.2109375" />
+    <objective id="objective_47" posX="-2807.5087890625" posY="1162.55859375" posZ="19.3125" />
+    <objective id="objective_48" posX="-2792.275390625" posY="1201.669921875" posZ="19.2734375" />
+    <objective id="objective_49" posX="-2801.078125" posY="959.2548828125" posZ="45.791534423828" />
+    <objective id="objective_50" posX="-2913.7333984375" posY="1019.3955078125" posZ="35.6953125" />
+    <objective id="objective_51" posX="-2651.1962890625" posY="954.7578125" posZ="70.959915161133" />
+    <objective id="objective_52" posX="-2699.287109375" posY="847.375" posZ="69.703125" />
+    <objective id="objective_53" posX="-2683.1220703125" posY="784.3349609375" posZ="48.984375" />
+    <objective id="objective_54" posX="-2497.0771484375" posY="767.947265625" posZ="34.171875" />
+    <objective id="objective_55" posX="-2566.7119140625" posY="852.0732421875" posZ="54.134037017822" />
+    <objective id="objective_56" posX="-2180.1767578125" posY="609.35546875" posZ="34.1640625" />
+    <objective id="objective_57" posX="-2178.8330078125" posY="715.6435546875" posZ="52.890625" />
+    <objective id="objective_58" posX="-2184.0458984375" posY="645.2705078125" posZ="48.4375" />
+    <objective id="objective_59" posX="-2947.611328125" posY="502.5810546875" posZ="1.4296875" />
+    <objective id="objective_60" posX="-1819.255859375" posY="-150.4912109375" posZ="8.3984375" />
+    <objective id="objective_61" posX="-1822.9833984375" posY="-95.8095703125" posZ="14.109375" />
+    <objective id="objective_62" posX="-1709.810546875" posY="403.89453125" posZ="6.4189829826355" />
+    <objective id="objective_63" posX="-1652.5009765625" posY="258.015625" posZ="0.17742347717285" />
+    <objective id="objective_64" posX="-2213.0400390625" posY="142.5517578125" posZ="34.3203125" />
+    <objective id="objective_65" posX="-1960.9267578125" posY="127.0712890625" posZ="26.6875" />
+    <objective id="objective_66" posX="-2051.0732421875" posY="84.068359375" posZ="27.397680282593" />
+    <objective id="objective_67" posX="-2133.5439453125" posY="-43.021484375" posZ="34.3203125" />
+    <objective id="objective_68" posX="-2070.3955078125" posY="306.9814453125" posZ="40.9921875" />
+    <objective id="objective_69" posX="-2134.0517578125" posY="262.71875" posZ="37.976802825928" />
+    <objective id="objective_70" posX="-2132.201171875" posY="162.7216796875" posZ="41.25" />
+    <objective id="objective_71" posX="-2321.673828125" posY="220.0302734375" posZ="34.3125" />
+    <objective id="objective_72" posX="-2078.1416015625" posY="1427.63671875" posZ="6.1015625" />
+    <objective id="objective_73" posX="-1976.37109375" posY="1224.6083984375" posZ="30.662090301514" />
+    <objective id="objective_74" posX="-1894.4169921875" posY="1396.0859375" posZ="0.3828239440918" />
+    <objective id="objective_75" posX="-1943.0703125" posY="1503.865234375" posZ="6.1843090057373" />
+    <objective id="objective_76" posX="-1839.630859375" posY="1543.685546875" posZ="6.1875" />
+    <objective id="objective_77" posX="-1724.9150390625" posY="1435.556640625" posZ="0.40672874450684" />
+    <objective id="objective_78" posX="-1631.3720703125" posY="1423.1962890625" posZ="6.185188293457" />
+    <objective id="objective_79" posX="-1660.2529296875" posY="1370.419921875" posZ="8.8046875" />
+    <objective id="objective_80" posX="-1669.033203125" posY="1391.1474609375" posZ="8.8046875" />
+    <objective id="objective_81" posX="-1569.3447265625" posY="1267.5712890625" posZ="0.453125" />
+    <objective id="objective_82" posX="-1461.384765625" posY="1019.1435546875" posZ="0.7890625" />
+    <objective id="objective_83" posX="-1464.4267578125" posY="1143.349609375" posZ="6.1845531463623" />
+    <objective id="objective_84" posX="-1481.02734375" posY="690.150390625" posZ="0.3203125" />
+    <objective id="objective_85" posX="-1606.2275390625" posY="673.6611328125" posZ="-6.2421875" />
+    <objective id="objective_86" posX="-1725.4658203125" posY="546.2861328125" posZ="38.875034332275" />
+    <objective id="objective_87" posX="-1979.4619140625" posY="461.68359375" posZ="27.690353393555" />
+    <objective id="objective_88" posX="-1781.72265625" posY="544.7294921875" posZ="34.104568481445" />
+    <objective id="objective_89" posX="-1680.4580078125" posY="698.5908203125" posZ="29.6015625" />
+    <objective id="objective_90" posX="-1793.466796875" posY="769.826171875" posZ="23.890625" />
+    <objective id="objective_91" posX="-1749.28125" posY="870.3466796875" posZ="24.0859375" />
+    <objective id="objective_92" posX="-1711.9892578125" posY="1059.4970703125" posZ="16.5859375" />
+    <objective id="objective_93" posX="-1828.7412109375" posY="1052.7109375" posZ="45.078125" />
+    <objective id="objective_94" posX="-1947.0673828125" posY="1000.71484375" posZ="34.175628662109" />
+    <objective id="objective_95" posX="-1936.22265625" posY="883.2451171875" posZ="37.51273727417" />
+    <objective id="objective_96" posX="-1967.017578125" posY="655.072265625" posZ="45.5625" />
+    <objective id="objective_97" posX="-1893.7177734375" posY="431.9228515625" posZ="34.171875" />
+    <objective id="objective_98" posX="-2415.9794921875" posY="338.7294921875" posZ="34.178676605225" />
+    <objective id="objective_99" posX="-2503.4501953125" posY="302.5322265625" posZ="34.1171875" />
+    <objective id="objective_100" posX="-2701.3837890625" posY="634.0849609375" posZ="13.454549789429" />
+    <objective id="objective_101" posX="-2426.234375" posY="537.2373046875" posZ="29.078125" />
+    <objective id="objective_102" posX="-2308.921875" posY="724.447265625" posZ="48.4248046875" />
+    <objective id="objective_103" posX="-1659.0205078125" posY="1214.79296875" posZ="20.15625" />
+    <objective id="objective_104" posX="-1655.572265625" posY="1209.435546875" posZ="12.671875" />
+    <objective id="objective_105" posX="-1686.4140625" posY="1203.1181640625" posZ="31.96875" />
+    <objective id="objective_106" posX="-1705.396484375" posY="1222.00390625" posZ="29.078125" />
+    <objective id="objective_107" posX="-1786.8046875" posY="1212.681640625" posZ="31.65625" />
+    <objective id="objective_108" posX="-1787.0810546875" posY="1292.65234375" posZ="21.567390441895" />
+    <objective id="objective_109" posX="-2088.87890625" posY="953.951171875" posZ="68.538230895996" />
+    <objective id="objective_110" posX="-2343.7373046875" posY="1024.9326171875" posZ="49.6953125" />
+    <objective id="objective_111" posX="-2423.19921875" posY="1158.619140625" posZ="54.4375" />
+    <objective id="objective_112" posX="-2314.1650390625" posY="1066.595703125" posZ="64.5859375" />
+    <objective id="objective_113" posX="-2079.43359375" posY="1066.380859375" posZ="64.565933227539" />
+    <objective id="objective_114" posX="-1697.73828125" posY="1035.5888671875" posZ="44.2109375" />
+    <objective id="objective_115" posX="-1683.2685546875" posY="1110.048828125" posZ="53.703125" />
+    <objective id="objective_116" posX="-1594.3583984375" posY="769.712890625" posZ="5.8203125" />
+    <objective id="objective_117" posX="-1918.888671875" posY="671.4208984375" posZ="45.5625" />
+    <objective id="objective_118" posX="-1949.8798828125" posY="792.5810546875" posZ="54.723075866699" />
+    <objective id="objective_119" posX="-2049.591796875" posY="784.724609375" posZ="63.15625" />
+    <objective id="objective_120" posX="-2189.82421875" posY="968.75390625" posZ="79" />
+    <objective id="objective_121" posX="-2218.5810546875" posY="1051.0751953125" posZ="79.0078125" />
+    <objective id="objective_122" posX="-2073.5751953125" posY="905.0537109375" posZ="63.137344360352" />
+    <objective id="objective_123" posX="-2104.033203125" posY="654.609375" posZ="51.3671875" />
+    <objective id="objective_124" posX="-2109.791015625" posY="474.166015625" posZ="34.171875" />
+    <objective id="objective_125" posX="-2132.244140625" posY="351.548828125" posZ="34.171875" />
+    <objective id="objective_126" posX="-2224.306640625" posY="368.07421875" posZ="34.3203125" />
+    <objective id="objective_127" posX="-2273.234375" posY="533.9267578125" posZ="34.015625" />
+
+  <vehicle id="Banshee" model="429" posX="-1659.7280273438" posY="1212.6510009766" posZ="13.354104042053" rotX="359.94250488281" rotY="359.89959716797" rotZ="298.74291992188" />
+  <vehicle id="Tampa" model="549" posX="-1575.2491455078" posY="1118.3813476563" posZ="6.8861865997314" rotX="359.97277832031" rotY="359.9384765625" rotZ="359.63806152344" />
+  <vehicle id="Sentinel" model="405" posX="-2214.1591796875" posY="306.38388061523" posZ="34.992889404297" rotX="0.0009765625" rotY="359.9716796875" rotZ="359.77935791016" />
+  <vehicle id="Sabre" model="475" posX="-2171.8989257813" posY="102.63773345947" posZ="35.125267028809" rotX="359.75329589844" rotY="359.99975585938" rotZ="270.48614501953" />
+  <vehicle id="Primo" model="547" posX="-2172.0639648438" posY="-36.285877227783" posZ="34.978797912598" rotX="0.16015625" rotY="354.89819335938" rotZ="180.53948974609" />
+  <vehicle id="Bullet" model="541" posX="-2068.59765625" posY="-83.672142028809" posZ="34.770362854004" rotX="359.51184082031" rotY="0.038818359375" rotZ="359.74365234375" />
+  <vehicle id="Rumpo" model="440" posX="-2081.2121582031" posY="-83.735153198242" posZ="35.288494110107" rotX="359.32330322266" rotY="0.0003662109375" rotZ="0.166015625" />
+  <vehicle id="Flash" model="565" posX="-2248.1813964844" posY="-173.16156005859" posZ="34.797733306885" rotX="359.59350585938" rotY="0.007568359375" rotZ="0.373779296875" />
+  <vehicle id="Elegant" model="507" posX="-2352.2358398438" posY="-124.83045959473" posZ="35.138721466064" rotX="359.76708984375" rotY="0.00390625" rotZ="0.1517333984375" />
+  <vehicle id="Sentinel" model="405" posX="-2471.3608398438" posY="903.62390136719" posZ="62.942024230957" rotX="358.06842041016" rotY="354.27587890625" rotZ="269.67901611328" />
+  <vehicle id="Washington" model="421" posX="-2410.1940917969" posY="341.87908935547" posZ="34.839553833008" rotX="359.99926757813" rotY="0.00079345703125" rotZ="147.927734375" />
+  <vehicle id="Stallion" model="439" posX="-2272.7385253906" posY="702.31713867188" posZ="49.158988952637" rotX="0.076416015625" rotY="0.00091552734375" rotZ="179.90637207031" />
+  <vehicle id="PCJ600" model="461" posX="-2281.3754882813" posY="732.62744140625" posZ="49.025901794434" rotX="358.95727539063" rotY="359.54522705078" rotZ="134.16418457031" />
+  <vehicle id="Yankee" model="456" posX="-2461.9582519531" posY="786.70941162109" posZ="35.345817565918" rotX="359.93518066406" rotY="359.99755859375" rotZ="89.8818359375" />
+  <vehicle id="Blista Compact" model="496" posX="-2451.5183105469" posY="741.73791503906" posZ="34.73314666748" rotX="0.0447998046875" rotY="0.00360107421875" rotZ="359.9248046875" />
+  <vehicle id="Rancher" model="489" posX="-2438.3852539063" posY="741.33142089844" posZ="35.15966796875" rotX="359.73980712891" rotY="0.00054931640625" rotZ="359.82751464844" />
+  <vehicle id="Tahoma" model="566" posX="-2117.3356933594" posY="820.24597167969" posZ="69.343780517578" rotX="0.31591796875" rotY="359.99987792969" rotZ="359.62371826172" />
+  <vehicle id="Jester" model="559" posX="-2197.8947753906" posY="1034.0609130859" posZ="79.665542602539" rotX="359.99230957031" rotY="359.99182128906" rotZ="180.09143066406" />
+  <vehicle id="Elegy" model="562" posX="-2106.8464355469" posY="899.70001220703" posZ="76.359573364258" rotX="359.49926757813" rotY="359.99926757813" rotZ="0.076904296875" />
+  <vehicle id="Admiral" model="445" posX="-2071.4885253906" posY="963.48937988281" posZ="60.810924530029" rotX="357.11047363281" rotY="358.90661621094" rotZ="199.78973388672" />
+  <!--vehicle id="Maverick" model="487" posX="-1564.9201660156" posY="53.293228149414" posZ="17.514429092407" rotX="0.24664306640625" rotY="359.72387695313" rotZ="88.416625976563" /-->
+  <vehicle id="Police" model="596" posX="-1611.9061279297" posY="674.00598144531" posZ="6.9092884063721" rotX="359.69592285156" rotY="359.99768066406" rotZ="359.53045654297" />
+  <!--vehicle id="Police Maverick" model="497" posX="-1680.4874267578" posY="705.93499755859" posZ="30.766315460205" rotX="0.2994384765625" rotY="359.68383789063" rotZ="270.79650878906" /-->
+  <vehicle id="Ranger" model="599" posX="-1599.5697021484" posY="651.26293945313" posZ="7.3828129768372" rotX="0.508544921875" rotY="0.220947265625" rotZ="180.37567138672" />
+  <vehicle id="NRG500" model="522" posX="-1695.7467041016" posY="77.394386291504" posZ="3.0845899581909" rotX="358.52087402344" rotY="0" rotZ="297.72814941406" />
+  <vehicle id="Bobcat" model="422" posX="-1834.4189453125" posY="-109.14827728271" posZ="5.638659954071" rotX="359.17633056641" rotY="0.00189208984375" rotZ="180.03393554688" />
+  <vehicle id="Alpha" model="602" posX="-1849.5676269531" posY="-169.22514343262" posZ="9.0465908050537" rotX="359.76049804688" rotY="357.34143066406" rotZ="270.78033447266" />
+  <vehicle id="Packer" model="443" posX="-1728.779296875" posY="-119.27233886719" posZ="4.1864347457886" rotX="359.92578125" rotY="359.93737792969" rotZ="314.4462890625" />
+  <vehicle id="Picador" model="600" posX="-1812.2353515625" posY="-191.08258056641" posZ="13.453280448914" rotX="0.4415283203125" rotY="352.880859375" rotZ="270.58526611328" />
+  <vehicle id="Linerunner" model="403" posX="-1834.0803222656" posY="127.66390228271" posZ="15.723261833191" rotX="0.0262451171875" rotY="359.98229980469" rotZ="292.92150878906" />
+  <!--vehicle id="Dinghy" model="473" posX="-1651.44921875" posY="253.89738464355" posZ="-0.26298341155052" rotX="5.1439819335938" rotY="359.69506835938" rotZ="90.598022460938" /-->
+  <vehicle id="Patriot" model="470" posX="-1463.486328125" posY="477.26504516602" posZ="7.1808614730835" rotX="359.73175048828" rotY="359.99401855469" rotZ="268.05798339844" />
+  <vehicle id="Fire Truck" model="407" posX="-2022.4865722656" posY="84.170135498047" posZ="28.305028915405" rotX="356.52197265625" rotY="0.228515625" rotZ="270.89074707031" />
+  <vehicle id="Sultan" model="560" posX="-1989.4293212891" posY="272.35809326172" posZ="34.881488800049" rotX="359.72644042969" rotY="359.99963378906" rotZ="88.428894042969" />
+  <vehicle id="Elegy" model="562" posX="-1951.6105957031" posY="265.69506835938" posZ="40.708847045898" rotX="359.61541748047" rotY="0.1051025390625" rotZ="221.21392822266" />
+  <vehicle id="Savanna" model="567" posX="-2034.3037109375" posY="170.32034301758" posZ="28.705377578735" rotX="0.469970703125" rotY="0.0003662109375" rotZ="89.958862304688" />
+  <vehicle id="Regina" model="479" posX="-2265.2429199219" posY="145.02108764648" posZ="34.954597473145" rotX="359.52844238281" rotY="359.99066162109" rotZ="269.40026855469" />
+  <vehicle id="Mesa" model="500" posX="-2264.8940429688" posY="212.48370361328" posZ="35.269565582275" rotX="358.47924804688" rotY="359.99890136719" rotZ="269.73059082031" />
+  <vehicle id="Stafford" model="580" posX="-2442.8264160156" posY="140.65036010742" posZ="34.750682830811" rotX="359.99951171875" rotY="359.96105957031" rotZ="90.486328125" />
+  <vehicle id="Mountain Bike" model="510" posX="-2344.1520996094" posY="78.178291320801" posZ="34.916618347168" rotX="359.43841552734" rotY="0" rotZ="311.7314453125" />
+  <vehicle id="Buffalo" model="402" posX="-2489.8549804688" posY="90.38304901123" posZ="25.414422988892" rotX="358.66052246094" rotY="0.0130615234375" rotZ="180.3759765625" />
+  <vehicle id="Sanchez" model="468" posX="-2140.7158203125" posY="-423.51858520508" posZ="35.005084991455" rotX="359.86779785156" rotY="0" rotZ="32.076538085938" />
+  <vehicle id="Hotring Racer" model="494" posX="-2159.4794921875" posY="-398.03082275391" posZ="35.231887817383" rotX="359.92761230469" rotY="0.0438232421875" rotZ="314.30413818359" />
+  <vehicle id="Virgo" model="491" posX="-1724.5328369141" posY="318.51638793945" posZ="6.8365745544434" rotX="359.99108886719" rotY="354.01141357422" rotZ="314.82855224609" />
+  <vehicle id="Taxi" model="420" posX="-2658.6767578125" posY="352.50769042969" posZ="4.0566215515137" rotX="359.73815917969" rotY="353.39489746094" rotZ="0.05755615234375" />
+  <vehicle id="Cadrona" model="527" posX="-1672.4675292969" posY="441.56726074219" posZ="6.8958234786987" rotX="359.9716796875" rotY="0.00018310546875" rotZ="224.98529052734" />
+  <vehicle id="Monster" model="444" posX="-1786.9261474609" posY="1204.6994628906" posZ="25.496305465698" rotX="0.0001220703125" rotY="0" rotZ="179.66314697266" />
+  <vehicle id="Windsor" model="555" posX="-2585.8039550781" posY="328.81231689453" posZ="4.5363039970398" rotX="359.86511230469" rotY="359.88098144531" rotZ="89.700561523438" />
+  <vehicle id="Perennial" model="404" posX="-2668.2541503906" posY="267.92697143555" posZ="4.0712323188782" rotX="359.74011230469" rotY="0.0108642578125" rotZ="179.39215087891" />
+  <vehicle id="Camper" model="483" posX="-2565.7473144531" posY="143.46797180176" posZ="4.3292751312256" rotX="359.89837646484" rotY="0.00927734375" rotZ="321.07177734375" />
+  <vehicle id="Jester" model="559" posX="-2717.1748046875" posY="217.4772644043" posZ="4.0626401901245" rotX="356.88000488281" rotY="0.017333984375" rotZ="270.99450683594" />
+  <vehicle id="Club" model="589" posX="-2795.9272460938" posY="209.60957336426" posZ="6.8462953567505" rotX="0.00494384765625" rotY="0.00360107421875" rotZ="90.143859863281" />
+  <vehicle id="BF Injection" model="424" posX="-2813.4182128906" posY="94.894424438477" posZ="6.8833422660828" rotX="358.77917480469" rotY="355.47436523438" rotZ="179.80596923828" />
+  <vehicle id="Nebula" model="516" posX="-2796.6667480469" posY="-26.792730331421" posZ="7.0229463577271" rotX="359.98986816406" rotY="359.99291992188" rotZ="90.068115234375" />
+  <vehicle id="Regina" model="479" posX="-2616.5183105469" posY="-143.83071899414" posZ="4.1310725212097" rotX="359.65710449219" rotY="359.99072265625" rotZ="269.75305175781" />
+  <vehicle id="Romero" model="442" posX="-2669.716796875" posY="-34.817043304443" posZ="4.168541431427" rotX="0.7490234375" rotY="359.99700927734" rotZ="0.068115234375" />
+  <vehicle id="Emperor" model="585" posX="-2623.49609375" posY="-55.083549499512" posZ="3.9229092597961" rotX="359.60705566406" rotY="359.99963378906" rotZ="180.13244628906" />
+  <vehicle id="Camper" model="483" posX="-2505.8022460938" posY="-5.895327091217" posZ="25.674407958984" rotX="359.89776611328" rotY="353.64929199219" rotZ="180.68603515625" />
+  <vehicle id="Broadway" model="575" posX="-2426.16015625" posY="-98.691665649414" posZ="34.847110748291" rotX="359.72430419922" rotY="354.77612304688" rotZ="180.25549316406" />
+  <vehicle id="Cheetah" model="415" posX="-2747.0209960938" posY="-306.35720825195" posZ="6.8102326393127" rotX="0.2808837890625" rotY="359.96154785156" rotZ="229.08428955078" />
+  <vehicle id="Admiral" model="445" posX="-2769.9177246094" posY="-295.19372558594" posZ="6.9147825241089" rotX="359.99291992188" rotY="359.99682617188" rotZ="0.1162109375" />
+  <vehicle id="Clover" model="542" posX="-2701.6413574219" posY="-136.4846496582" posZ="3.9949178695679" rotX="0.03924560546875" rotY="354.73352050781" rotZ="0.6014404296875" />
+  <vehicle id="Trolley" model="449" posX="-2264.716796875" posY="531.22338867188" posZ="35.57642364502" rotX="359.79541015625" rotY="0" rotZ="0.4090576171875" />
+  <vehicle id="Sadler" model="543" posX="-2361.5832519531" posY="577.40710449219" posZ="24.709468841553" rotX="359.00634765625" rotY="0.01348876953125" rotZ="180.37677001953" />
+  <vehicle id="Ambulance" model="416" posX="-2648.8698730469" posY="629.92205810547" posZ="14.602878570557" rotX="0.0401611328125" rotY="359.62365722656" rotZ="89.558837890625" />
+  <vehicle id="Super GT" model="506" posX="-2592.4426269531" posY="665.97320556641" posZ="27.51838684082" rotX="359.95202636719" rotY="359.99548339844" rotZ="89.994262695313" />
+  <vehicle id="Landstalker" model="400" posX="-2543.0783691406" posY="587.10205078125" posZ="14.546175003052" rotX="359.99334716797" rotY="0.00146484375" rotZ="270.66229248047" />
+  <vehicle id="Glendale" model="466" posX="-2572.7326660156" posY="622.17175292969" posZ="14.195739746094" rotX="0.0135498046875" rotY="0.01123046875" rotZ="89.559204101563" />
+  <vehicle id="Securicar" model="428" posX="-2443.0246582031" posY="525.08868408203" posZ="30.039924621582" rotX="0.3486328125" rotY="0.212890625" rotZ="358.9833984375" />
+  <vehicle id="Pony" model="413" posX="-2425.7788085938" posY="518.47052001953" posZ="30.017562866211" rotX="358.99993896484" rotY="0" rotZ="42.133422851563" />
+  <vehicle id="Remington" model="534" posX="-2302.1735839844" posY="405.060546875" posZ="34.814777374268" rotX="0.4716796875" rotY="354.88604736328" rotZ="224.47253417969" />
+  <vehicle id="Huntley" model="579" posX="-2496.0036621094" posY="431.01766967773" posZ="27.70924949646" rotX="359.44012451172" rotY="0.0194091796875" rotZ="317.17004394531" />
+  <vehicle id="Comet" model="480" posX="-2634.9455566406" posY="931.33068847656" posZ="71.528755187988" rotX="6.6385498046875" rotY="357.20489501953" rotZ="23.94287109375" />
+  <vehicle id="Previon" model="436" posX="-2663.5659179688" posY="805.49163818359" posZ="49.644985198975" rotX="355.93505859375" rotY="0.153076171875" rotZ="359.47045898438" />
+  <vehicle id="Sanchez" model="468" posX="-2570.9753417969" posY="796.43090820313" posZ="49.412075042725" rotX="351.29992675781" rotY="1.7652587890625" rotZ="193.14361572266" />
+  <vehicle id="Cheetah" model="415" posX="-2723.5114746094" posY="977.17761230469" posZ="54.221675872803" rotX="0.37274169921875" rotY="0.0013427734375" rotZ="3.3123779296875" />
+  <vehicle id="Quadbike" model="471" posX="-2567.3813476563" posY="991.60375976563" posZ="77.755096435547" rotX="359.24340820313" rotY="0.0010986328125" rotZ="358.00671386719" />
+  <vehicle id="Police" model="596" posX="-2755.5908203125" posY="773.18737792969" posZ="54.027694702148" rotX="359.69616699219" rotY="355.01123046875" rotZ="178.98754882813" />
+  <vehicle id="Willard" model="529" posX="-2838.2531738281" posY="918.17742919922" posZ="43.688831329346" rotX="359.72680664063" rotY="359.99853515625" rotZ="273.91955566406" />
+  <vehicle id="NRG500" model="522" posX="-2898.7087402344" posY="1070.2830810547" posZ="31.6607837677" rotX="355.85455322266" rotY="0.09033203125" rotZ="271.56353759766" />
+  <vehicle id="Oceanic" model="467" posX="-1903.3728027344" posY="-233.37930297852" posZ="25.078527450562" rotX="1.2406616210938" rotY="354.51525878906" rotZ="92.611267089844" />
+  <vehicle id="Cabbie" model="438" posX="-2065.0209960938" posY="-286.78289794922" posZ="35.490657806396" rotX="359.62829589844" rotY="354.65838623047" rotZ="90.329833984375" />
+  <vehicle id="Phoenix" model="603" posX="-2308.58984375" posY="-58.142108917236" posZ="35.151420593262" rotX="0.066162109375" rotY="0.02081298828125" rotZ="181.38934326172" />
+  <vehicle id="Hustler" model="545" posX="-2630.8139648438" posY="1378.5660400391" posZ="6.9560785293579" rotX="0.5013427734375" rotY="0.001708984375" rotZ="359.68859863281" />
+  <vehicle id="Stretch" model="409" posX="-2617.8708496094" posY="1376.5338134766" posZ="6.9278163909912" rotX="0.4986572265625" rotY="359.90222167969" rotZ="1.02685546875" />
+  <vehicle id="Mesa" model="500" posX="-2490.6079101563" posY="1215.2883300781" posZ="37.530628204346" rotX="358.52392578125" rotY="359.99975585938" rotZ="323.07348632813" />
+  <vehicle id="Blista Compact" model="496" posX="-2480.7873535156" posY="1068.4488525391" posZ="55.471153259277" rotX="0.71527099609375" rotY="359.99920654297" rotZ="0.392578125" />
+  <vehicle id="Roadtrain" model="515" posX="-2407.5786132813" posY="978.65295410156" posZ="46.316673278809" rotX="359.57409667969" rotY="359.994140625" rotZ="180.53094482422" />
+  <vehicle id="Rancher" model="489" posX="-2354.3276367188" posY="982.3828125" posZ="50.813980102539" rotX="359.72436523438" rotY="359.99670410156" rotZ="191.39477539063" />
+  <vehicle id="Elegant" model="507" posX="-2178.6040039063" posY="1184.3087158203" posZ="55.404586791992" rotX="359.76751708984" rotY="359.9970703125" rotZ="90.354858398438" />
+  <vehicle id="Vortex" model="539" posX="-2344.763671875" posY="1393.6285400391" posZ="6.605348110199" rotX="359.87548828125" rotY="0.009521484375" rotZ="79.760498046875" />
+  <vehicle id="Kart" model="571" posX="-2023.1318359375" posY="1329.6058349609" posZ="6.3951077461243" rotX="359.82702636719" rotY="1.1769409179688" rotZ="81.941528320313" />
+  <vehicle id="Sandking" model="495" posX="-2327.1120605469" posY="1139.9935302734" posZ="53.911041259766" rotX="3.28125" rotY="355.78942871094" rotZ="210.85736083984" />
+  <vehicle id="Coach" model="437" posX="-2901.2141113281" posY="500.20617675781" posZ="5.0171570777893" rotX="0.029052734375" rotY="359.89892578125" rotZ="90.441772460938" />
+  <!--vehicle id="Squalo" model="446" posX="-2969.7573242188" posY="496.84555053711" posZ="-0.54924976825714" rotX="1.8255615234375" rotY="359.93646240234" rotZ="0.904541015625" /-->
+  <vehicle id="Bandito" model="568" posX="-2739.8588867188" posY="1089.1014404297" posZ="46.602069854736" rotX="357.35015869141" rotY="3.4901123046875" rotZ="336.2119140625" />
+  <vehicle id="Super GT" model="506" posX="-1953.4063720703" posY="585.66754150391" posZ="34.821868896484" rotX="358.94152832031" rotY="0.0037841796875" rotZ="0.1220703125" />
+  <vehicle id="Alpha" model="602" posX="-1794.4403076172" posY="738.748046875" posZ="34.902759552002" rotX="359.80517578125" rotY="354.91131591797" rotZ="88.887390136719" />
+  <vehicle id="Admiral" model="445" posX="-1750.1596679688" posY="954.77923583984" posZ="24.617172241211" rotX="359.99291992188" rotY="0.00164794921875" rotZ="90.210327148438" />
+  <vehicle id="Solair" model="458" posX="-2276.0437011719" posY="889.81170654297" posZ="66.527740478516" rotX="359.9765625" rotY="359.99694824219" rotZ="270.48577880859" />
+  <vehicle id="Merit" model="551" posX="-2102.2937011719" posY="653.92108154297" posZ="52.168376922607" rotX="359.96148681641" rotY="0.00592041015625" rotZ="270.45336914063" />
+  <vehicle id="Voodoo" model="412" posX="-1579.9399414063" posY="833.15277099609" posZ="7.1060562133789" rotX="358.58215332031" rotY="0.0029296875" rotZ="270.05871582031" />
+  <vehicle id="BF400" model="581" posX="-1835.7408447266" posY="827.38543701172" posZ="31.619943618774" rotX="10.459899902344" rotY="9.74365234375" rotZ="47.870971679688" />
+  <vehicle id="Flash" model="565" posX="-1975.4125976563" posY="724.12127685547" posZ="44.994239807129" rotX="359.59417724609" rotY="354.580078125" rotZ="271.20568847656" />
+  <vehicle id="Utility Van" model="552" posX="-1997.0447998047" posY="870.15911865234" posZ="45.067749023438" rotX="359.17956542969" rotY="355.73406982422" rotZ="359.59545898438" />
+  <vehicle id="Sabre" model="475" posX="-1856.0043945313" posY="1112.9344482422" posZ="45.237731933594" rotX="359.71557617188" rotY="0.03369140625" rotZ="180.56079101563" />
+  <vehicle id="BMX" model="481" posX="-1909.9067382813" posY="895.82543945313" posZ="34.687294006348" rotX="358.79724121094" rotY="0" rotZ="165.11871337891" />
+  <vehicle id="DFT30" model="578" posX="-1741.6864013672" posY="1422.9896240234" posZ="7.8127384185791" rotX="359.91424560547" rotY="0.0272216796875" rotZ="179.72357177734" />
+  <vehicle id="Landstalker" model="400" posX="-1648.3425292969" posY="1307.9947509766" posZ="7.1245012283325" rotX="359.99560546875" rotY="0.09063720703125" rotZ="314.69659423828" />
+  <vehicle id="Primo" model="547" posX="-1992.2770996094" posY="1083.2697753906" posZ="55.305957794189" rotX="0.16015625" rotY="359.99963378906" rotZ="89.997253417969" />
+  <vehicle id="Burrito" model="482" posX="-1833.2868652344" posY="342.05889892578" posZ="17.288524627686" rotX="359.1591796875" rotY="0.01629638671875" rotZ="132.59796142578" />
+  <vehicle id="Caddy" model="457" posX="-2459.1513671875" posY="-234.60081481934" posZ="39.304164886475" rotX="355.76989746094" rotY="0.51837158203125" rotZ="92.2490234375" />
+  <vehicle id="Newsvan" model="582" posX="-2501.8781738281" posY="-602.87524414063" posZ="132.61975097656" rotX="359.56164550781" rotY="0.0146484375" rotZ="180.19152832031" />
+  <vehicle id="Turismo" model="451" posX="-2396.30859375" posY="-594.54730224609" posZ="132.35694885254" rotX="359.53259277344" rotY="0.0068359375" rotZ="305.00427246094" />
+  <!--vehicle id="Sparrow" model="469" posX="-2123.9631347656" posY="-130.89862060547" posZ="35.300300598145" rotX="0.400634765625" rotY="359.5595703125" rotZ="11.103515625" /-->
+  <!--vehicle id="Tropic" model="454" posX="-1469.1237792969" posY="1024.5026855469" posZ="0.14884793758392" rotX="1.89892578125" rotY="0.0394287109375" rotZ="270.8203125" /-->
+  <vehicle id="Huntley" model="579" posX="-1736.7088623047" posY="820.15905761719" posZ="24.792518615723" rotX="359.21752929688" rotY="359.92388916016" rotZ="196.27239990234" />
+  <vehicle id="Boxville" model="498" posX="-1887.3787841797" posY="975.04870605469" posZ="35.159637451172" rotX="359.4091796875" rotY="355.37243652344" rotZ="350.54077148438" />
+  <vehicle id="Greenwood" model="492" posX="-2140.1435546875" posY="425.38009643555" posZ="34.872802734375" rotX="0.011474609375" rotY="354.5615234375" rotZ="354.11871337891" />
+  <vehicle id="Fortune" model="526" posX="-2220.9790039063" posY="573.03576660156" posZ="34.85767364502" rotX="359.99877929688" rotY="354.53759765625" rotZ="89.761474609375" />
+  <vehicle id="Sweeper" model="574" posX="-1734.4346923828" posY="591.13970947266" posZ="24.597150802612" rotX="0.0780029296875" rotY="359.9677734375" rotZ="336.6611328125" />
+  <vehicle id="Buffalo" model="402" posX="-1698.8729248047" posY="1035.6069335938" posZ="45.044033050537" rotX="359.96459960938" rotY="0.002685546875" rotZ="90.355834960938" />
+  <!--vehicle id="Predator" model="430" posX="-1891.0930175781" posY="1400.3017578125" posZ="-0.25309920310974" rotX="1.279052734375" rotY="359.97888183594" rotZ="90.188842773438" /-->
+  <vehicle id="Buccaneer" model="518" posX="-1883.7788085938" posY="1309.046875" posZ="6.7862787246704" rotX="0.0023193359375" rotY="355.24884033203" rotZ="315.62902832031" />
+  <vehicle id="Barracks" model="433" posX="-1530.1832275391" posY="446.48294067383" posZ="7.6248846054077" rotX="0.0010986328125" rotY="359.98413085938" rotZ="359.56878662109" />
+  <!--vehicle id="Cargobob" model="548" posX="-1608.5267333984" posY="285.65817260742" posZ="8.7706050872803" rotX="1.0388793945313" rotY="359.99255371094" rotZ="358.00305175781" /-->
+  <vehicle id="Freeway" model="463" posX="-1983.4976806641" posY="1184.6203613281" posZ="44.837352752686" rotX="359.96166992188" rotY="0" rotZ="91.007934570313" />
+  <vehicle id="Solair" model="458" posX="-1996.9379882813" posY="494.55654907227" posZ="34.967700958252" rotX="0.04376220703125" rotY="354.873046875" rotZ="0.8046875" />
+  <vehicle id="Uranus" model="558" posX="-2157.7058105469" posY="1043.8439941406" posZ="79.634254455566" rotX="359.46343994141" rotY="0.0068359375" rotZ="270.48193359375" />
+  <vehicle id="Washington" model="421" posX="-2125.7292480469" posY="654.69738769531" posZ="52.250396728516" rotX="359.99963378906" rotY="0.00164794921875" rotZ="90.384643554688" />
+  <vehicle id="BF400" model="581" posX="-2559.8562011719" posY="232.18336486816" posZ="9.8067378997803" rotX="349.46960449219" rotY="357.99206542969" rotZ="136.53015136719" />
+  <vehicle id="Mr. Whoopee" model="423" posX="-2631.4997558594" posY="44.1018409729" posZ="4.2793145179749" rotX="0.55548095703125" rotY="354.28063964844" rotZ="88.117919921875" />
+  <vehicle id="FBI Rancher" model="490" posX="-2753.9936523438" posY="400.26580810547" posZ="4.355420589447" rotX="0.4061279296875" rotY="353.20819091797" rotZ="179.42205810547" />
+  <vehicle id="Slamvan" model="535" posX="-2601.8210449219" posY="446.91983032227" posZ="14.292284965515" rotX="359.79711914063" rotY="355.08483886719" rotZ="1.8551635742188" />
+
+    <vehicle id="Cabbie" model="438" posX="-1449.4423828125" posY="-279.298828125" posZ="14.069793701172" rotX="359.68688964844" rotY="354.7705078125" rotZ="65.681762695313" />
+    <vehicle id="Taxi" model="420" posX="-1388.03125" posY="-351.6376953125" posZ="13.85231590271" rotX="359.736328125" rotY="355.166015625" rotZ="16.309204101563" />
+    <vehicle id="Oceanic" model="467" posX="-1399.2978515625" posY="-324.7900390625" posZ="13.811094284058" rotX="0.02197265625" rotY="354.62768554688" rotZ="32.019653320313" />
+    <vehicle id="Utility Van" model="552" posX="-1632.794921875" posY="-415.07421875" posZ="13.841689109802" rotX="359.12109375" rotY="0.010986328125" rotZ="169.99145507813" />
+    <vehicle id="Baggage" model="485" posX="-1496.37890625" posY="-509.5498046875" posZ="13.804626464844" rotX="359.53308105469" rotY="359.99450683594" rotZ="103.02978515625" />
+    <vehicle id="PCJ-600" model="461" posX="-1546.1513671875" posY="-448.2080078125" posZ="5.5990319252014" rotX="357.35778808594" rotY="359.67041015625" rotZ="246.56616210938" />
+    <vehicle id="NRG-500" model="522" posX="-1368.32421875" posY="-4.7578125" posZ="5.5677423477173" rotX="358.90686035156" rotY="0" rotZ="270.49987792969" />
+    <vehicle id="Rancher" model="489" posX="-1359.6337890625" posY="-39.40625" posZ="6.1440663337708" rotX="359.74182128906" rotY="359.98901367188" rotZ="178.88488769531" />
+    <vehicle id="Picador" model="600" posX="-1444.220703125" posY="-40.279296875" posZ="5.7168951034546" rotX="359.08264160156" rotY="359.98901367188" rotZ="179.60998535156" />
+    <vehicle id="Bobcat" model="422" posX="-1442.232421875" posY="-116.8681640625" posZ="5.9905877113342" rotX="359.17602539063" rotY="359.99450683594" rotZ="88.643188476563" />
+    <vehicle id="Elegant" model="507" posX="-1369.99609375" posY="-92.1318359375" posZ="5.8248977661133" rotX="359.78576660156" rotY="0" rotZ="268.97827148438" />
+    <vehicle id="Comet" model="480" posX="-1371.955078125" posY="-60.4892578125" posZ="5.773024559021" rotX="359.74182128906" rotY="0" rotZ="358.58276367188" />
+    <vehicle id="Alpha" model="602" posX="-1353.630859375" posY="-220.4091796875" posZ="5.805805683136" rotX="359.77478027344" rotY="0" rotZ="89.950561523438" />
+    <vehicle id="Walton" model="478" posX="-1355.580078125" posY="-246.7275390625" posZ="5.9957709312439" rotX="359.23645019531" rotY="359.99450683594" rotZ="359.26391601563" />
+    <vehicle id="Buffalo" model="402" posX="-1475.4375" posY="-236.94140625" posZ="5.831600189209" rotX="359.96154785156" rotY="0" rotZ="88.165283203125" />
+    <vehicle id="Intruder" model="546" posX="-1444.1767578125" posY="-247.2890625" posZ="5.7244610786438" rotX="0" rotY="359.99450683594" rotZ="179.384765625" />
+    <vehicle id="FBI Rancher" model="490" posX="-1893.5498046875" posY="-635.0009765625" posZ="24.721281051636" rotX="0.4119873046875" rotY="359.99450683594" rotZ="0.626220703125" />
+    <vehicle id="Cadrona" model="527" posX="-1921.845703125" posY="-372.130859375" posZ="24.887056350708" rotX="359.96704101563" rotY="359.99450683594" rotZ="161.56494140625" />
+    <vehicle id="Regina" model="479" posX="-2152.990234375" posY="-456.255859375" posZ="35.139171600342" rotX="359.65942382813" rotY="359.99450683594" rotZ="227.25219726563" />
+    <vehicle id="Virgo" model="491" posX="-2224.09375" posY="-219.826171875" posZ="35.203342437744" rotX="0.0054931640625" rotY="1.73583984375" rotZ="178.63220214844" />
+    <vehicle id="Jester" model="559" posX="-2162.1083984375" posY="-155.18359375" posZ="34.899715423584" rotX="359.98901367188" rotY="355.11108398438" rotZ="0.4339599609375" />
+    <vehicle id="Club" model="589" posX="-2213.4873046875" posY="-83.388671875" posZ="34.978420257568" rotX="0" rotY="0" rotZ="0.5657958984375" />
+    <vehicle id="Nebula" model="516" posX="-2269.236328125" posY="65.6220703125" posZ="34.99796295166" rotX="359.98901367188" rotY="0" rotZ="268.93981933594" />
+    <vehicle id="Phoenix" model="603" posX="-2272.615234375" posY="3.9736328125" posZ="35.158622741699" rotX="0.06591796875" rotY="0" rotZ="270.33508300781" />
+    <vehicle id="Broadway" model="575" posX="-2196.9208984375" posY="196.390625" posZ="34.922660827637" rotX="359.71984863281" rotY="0" rotZ="359.92309570313" />
+    <vehicle id="Cement Truck" model="524" posX="-2105.580078125" posY="208.4462890625" posZ="36.189258575439" rotX="0.59326171875" rotY="359.90661621094" rotZ="270.46142578125" />
+    <vehicle id="Moonbeam" model="418" posX="-2105.0322265625" posY="499.357421875" posZ="35.182777404785" rotX="0.054931640625" rotY="355.166015625" rotZ="270.3076171875" />
+    <vehicle id="Savanna" model="567" posX="-2151.24609375" posY="543.9345703125" posZ="34.960632324219" rotX="0.4669189453125" rotY="354.97375488281" rotZ="180.44494628906" />
+    <vehicle id="Yosemite" model="554" posX="-2219.5673828125" posY="428.712890625" posZ="35.253383636475" rotX="359.14306640625" rotY="0" rotZ="1.2744140625" />
+    <vehicle id="Solair" model="458" posX="-2188.505859375" posY="293.1533203125" posZ="34.99560546875" rotX="359.97253417969" rotY="359.99450683594" rotZ="180.31860351563" />
+    <vehicle id="Stratum" model="561" posX="-1675.8154296875" posY="912.3564453125" posZ="24.555961608887" rotX="0.10986328125" rotY="0.0384521484375" rotZ="269.81323242188" />
+    <vehicle id="Huntley" model="579" posX="-1595.4658203125" posY="986.9208984375" posZ="7.0441346168518" rotX="359.36828613281" rotY="354.814453125" rotZ="217.21618652344" />
+    <vehicle id="Towtruck" model="525" posX="-1713.2734375" posY="1205.330078125" posZ="24.983943939209" rotX="358.10485839844" rotY="0.1593017578125" rotZ="135.68664550781" />
+    <vehicle id="Rumpo" model="440" posX="-1768.0927734375" posY="1111.9638671875" posZ="45.488224029541" rotX="356.78100585938" rotY="359.99450683594" rotZ="179.912109375" />
+    <vehicle id="Tahoma" model="566" posX="-1801.4189453125" posY="1006.119140625" posZ="24.593149185181" rotX="0.3076171875" rotY="354.94079589844" rotZ="180.93383789063" />
+    <vehicle id="Esperanto" model="419" posX="-1996.8359375" posY="963.6396484375" posZ="45.164619445801" rotX="0" rotY="354.55627441406" rotZ="0.2471923828125" />
+    <vehicle id="Euros" model="587" posX="-2052.8662109375" posY="1156.1533203125" posZ="45.170402526855" rotX="359.65393066406" rotY="0" rotZ="359.93408203125" />
+    <vehicle id="Mesa" model="500" posX="-2206.0986328125" posY="1324.67578125" posZ="7.2095437049866" rotX="358.42346191406" rotY="354.40795898438" rotZ="269.08813476563" />
+    <vehicle id="Glendale" model="466" posX="-2641.470703125" posY="1377.5908203125" posZ="6.8927021026611" rotX="0.0604248046875" rotY="0.1593017578125" rotZ="0.4449462890625" />
+    <vehicle id="Cadrona" model="527" posX="-2638.8203125" posY="1331.9794921875" posZ="6.9106960296631" rotX="359.96704101563" rotY="359.99450683594" rotZ="269.74182128906" />
+    <vehicle id="Emperor" model="585" posX="-2530.2578125" posY="1229.3798828125" posZ="37.013511657715" rotX="359.59899902344" rotY="0" rotZ="31.563720703125" />
+
+    <vehicle id="Police Ranger" model="599" posX="-2367.05859375" posY="1023.33984375" posZ="50.889171600342" rotX="0.50537109375" rotY="359.99450683594" rotZ="181.27990722656" />
+    <vehicle id="Sentinel" model="405" posX="-2393.8603515625" posY="887.357421875" posZ="45.241703033447" rotX="0" rotY="354.20471191406" rotZ="180.12084960938" />
+    <vehicle id="Buffalo" model="402" posX="-2521.9521484375" posY="832.4560546875" posZ="49.730525970459" rotX="359.96704101563" rotY="355.20446777344" rotZ="358.97827148438" />
+    <vehicle id="Hermes" model="474" posX="-2746.4599609375" posY="626.9892578125" posZ="27.600080490112" rotX="359.97253417969" rotY="354.92980957031" rotZ="0.977783203125" />
+    <vehicle id="Primo" model="547" posX="-2751.0087890625" posY="472.2734375" posZ="4.6923494338989" rotX="1.7633056640625" rotY="354.84741210938" rotZ="91.455688476563" />
+    <vehicle id="Washington" model="421" posX="-2849.0478515625" posY="381.9833984375" posZ="4.3080539703369" rotX="359.99450683594" rotY="354.44641113281" rotZ="359.82971191406" />
+    <vehicle id="BF Injection" model="424" posX="-2840.4189453125" posY="296.1279296875" posZ="9.6865491867065" rotX="359.96154785156" rotY="354.97375488281" rotZ="198.73718261719" />
+    <vehicle id="Sunrise" model="550" posX="-2702.1025390625" posY="98.5947265625" posZ="4.0773630142212" rotX="359.58801269531" rotY="354.96826171875" rotZ="358.79699707031" />
+    <vehicle id="Infernus" model="411" posX="-2637.0126953125" posY="164.640625" posZ="4.0673933029175" rotX="0" rotY="0" rotZ="180.75256347656" />
+    <vehicle id="Club" model="589" posX="-2599.705078125" posY="100.1025390625" posZ="3.9132430553436" rotX="0" rotY="355.1220703125" rotZ="0.2032470703125" />
+    <vehicle id="Vincent" model="540" posX="-2506.111328125" posY="-107.4765625" posZ="25.398937225342" rotX="359.71435546875" rotY="355.25939941406" rotZ="179.04968261719" />
+    <vehicle id="Sabre" model="475" posX="-2504.623046875" posY="-214.8701171875" posZ="25.342670440674" rotX="359.72534179688" rotY="354.89685058594" rotZ="269.09362792969" />
+    <vehicle id="Sadler" model="543" posX="-2638.326171875" posY="-205.64453125" posZ="4.0692701339722" rotX="358.97827148438" rotY="354.53430175781" rotZ="89.895629882813" />
+    <vehicle id="Sentinel" model="405" posX="-2764.8525390625" posY="-295.2802734375" posZ="6.9140596389771" rotX="0" rotY="0" rotZ="0.3515625" />
+    <vehicle id="Pony" model="413" posX="-2817.3154296875" posY="-422.875" posZ="7.1920962333679" rotX="358.91235351563" rotY="355.078125" rotZ="359.92858886719" />
+    <vehicle id="Super GT" model="506" posX="-2531.7412109375" posY="-601.822265625" posZ="132.26679992676" rotX="359.95056152344" rotY="359.99450683594" rotZ="179.92858886719" />
+    <vehicle id="Blista Compact" model="496" posX="-2399.75" posY="-589.607421875" posZ="132.36456298828" rotX="0.0439453125" rotY="359.99450683594" rotZ="305.20568847656" />
+    <vehicle id="Premier" model="426" posX="-2394.697265625" posY="-609.556640625" posZ="132.39122009277" rotX="0" rotY="0" rotZ="215.39794921875" />
+    <vehicle id="Pony" model="413" posX="-2000.5703125" posY="-182.9931640625" posZ="35.856159210205" rotX="358.79150390625" rotY="355.0341796875" rotZ="0.15380859375" />
+    <vehicle id="Savanna" model="567" posX="-2071.8603515625" posY="35.451171875" posZ="35.113227844238" rotX="0.4669189453125" rotY="355.22644042969" rotZ="91.494140625" />
+    <vehicle id="Trashmaster" model="408" posX="-2092.9951171875" posY="94.9892578125" posZ="35.866641998291" rotX="1.2908935546875" rotY="0" rotZ="89.741821289063" />
+    <vehicle id="Sentinel" model="405" posX="-2093.5771484375" posY="315.734375" posZ="34.960414886475" rotX="0" rotY="354.21020507813" rotZ="270.28015136719" />
+    <vehicle id="Nebula" model="516" posX="-2416.55859375" posY="15.23046875" posZ="35.027400970459" rotX="359.54956054688" rotY="355.02868652344" rotZ="359.97253417969" />
+    <vehicle id="Cadrona" model="527" posX="-2432.494140625" posY="-163.271484375" posZ="35.05033493042" rotX="359.18701171875" rotY="0.3460693359375" rotZ="269.208984375" />
+    <vehicle id="Buccaneer" model="518" posX="-2322.5185546875" posY="-124.4443359375" posZ="34.983276367188" rotX="359.96704101563" rotY="359.91760253906" rotZ="359.75280761719" />
+    <vehicle id="Comet" model="480" posX="-2710.3466796875" posY="12.775390625" posZ="4.0282230377197" rotX="359.74182128906" rotY="355.28686523438" rotZ="179.912109375" />
+    <vehicle id="Feltzer" model="533" posX="-2364.4130859375" posY="672.8564453125" posZ="34.806247711182" rotX="359.98901367188" rotY="355.02868652344" rotZ="90.895385742188" />
+    <vehicle id="Landstalker" model="400" posX="-2544.765625" posY="638.646484375" posZ="27.904830932617" rotX="359.98901367188" rotY="0" rotZ="269.52209472656" />
+    <vehicle id="Vincent" model="540" posX="-2134.630859375" posY="757.1806640625" posZ="69.343994140625" rotX="359.71435546875" rotY="355.25939941406" rotZ="0.0439453125" />
+    <vehicle id="Fortune" model="526" posX="-1891.8818359375" posY="697.576171875" posZ="45.134971618652" rotX="359.99450683594" rotY="354.814453125" rotZ="1.1590576171875" />
+    <vehicle id="Bravura" model="401" posX="-1837.2333984375" posY="613.013671875" posZ="34.870109558105" rotX="359.96704101563" rotY="355.06713867188" rotZ="91.0546875" />
+    <vehicle id="Stallion" model="439" posX="-1932.30859375" posY="585.50390625" posZ="35.015033721924" rotX="359.03869628906" rotY="0.0054931640625" rotZ="0.4888916015625" />
+    <vehicle id="Burrito" model="482" posX="-2023.228515625" posY="388.96484375" posZ="35.291957855225" rotX="359.12658691406" rotY="359.99450683594" rotZ="254.58618164063" />
+    <vehicle id="Intruder" model="546" posX="-2065.7021484375" posY="558.7646484375" posZ="34.815376281738" rotX="0" rotY="354.990234375" rotZ="270.7470703125" />
+    <vehicle id="Remington" model="534" posX="-1891.9267578125" posY="877.794921875" posZ="34.81379699707" rotX="0.472412109375" rotY="354.88586425781" rotZ="359.41223144531" />
+    <vehicle id="Taxi" model="420" posX="-2241.8134765625" posY="957.548828125" posZ="66.446578979492" rotX="0.3955078125" rotY="359.96154785156" rotZ="90.582275390625" />
+    <vehicle id="Bobcat" model="422" posX="-2290.8134765625" posY="813.0673828125" posZ="49.354988098145" rotX="359.07165527344" rotY="354.03442382813" rotZ="90.466918945313" />
+    <vehicle id="Sultan" model="560" posX="-2289.640625" posY="573.13671875" posZ="34.795692443848" rotX="359.8681640625" rotY="354.94079589844" rotZ="90.741577148438" />
+
+    <vehicle id="Voodoo" model="412" posX="-2804.13671875" posY="-170.8486328125" posZ="6.943172454834" rotX="0.186767578125" rotY="354.75402832031" rotZ="359.52758789063" />
+    <vehicle id="Caddy" model="457" posX="-2593.1103515625" posY="-297.0849609375" posZ="22.885746002197" rotX="358.87390136719" rotY="0.4833984375" rotZ="64.9072265625" />
+    <vehicle id="Elegy" model="562" posX="-2544.6533203125" posY="44.2822265625" posZ="16.179170608521" rotX="359.53857421875" rotY="354.75952148438" rotZ="89.1650390625" />
+    <vehicle id="Buffalo" model="402" posX="-2641.748046875" posY="212.8935546875" posZ="4.0825157165527" rotX="359.96154785156" rotY="355.17700195313" rotZ="270.51635742188" />
+    <vehicle id="Emperor" model="585" posX="-2544.1904296875" posY="366.2900390625" posZ="19.888299942017" rotX="357.81372070313" rotY="355.25939941406" rotZ="178.10485839844" />
+    <vehicle id="Premier" model="426" posX="-2745.3251953125" posY="381.5283203125" posZ="3.9866516590118" rotX="0" rotY="352.15026855469" rotZ="0.4998779296875" />
+    <vehicle id="Turismo" model="451" posX="-2509.96875" posY="328.8662109375" posZ="34.820541381836" rotX="359.6484375" rotY="359.99450683594" rotZ="245.302734375" />
+    <vehicle id="Primo" model="547" posX="-2509.71875" posY="367.46484375" posZ="34.850620269775" rotX="0.0439453125" rotY="359.99450683594" rotZ="61.693725585938" />
+    <vehicle id="Previon" model="436" posX="-2430.14453125" posY="572.888671875" posZ="24.582138061523" rotX="359.40673828125" rotY="5.55908203125" rotZ="269.384765625" />
+    <vehicle id="Sabre" model="475" posX="-2274.0517578125" posY="1041.095703125" posZ="83.567268371582" rotX="359.74731445313" rotY="354.78698730469" rotZ="180.00549316406" />
+    <vehicle id="Tahoma" model="566" posX="-2217.65234375" posY="1088.435546875" posZ="79.708229064941" rotX="0.3131103515625" rotY="354.93530273438" rotZ="270.14831542969" />
+    <vehicle id="Fortune" model="526" posX="-2427.6328125" posY="1369.603515625" posZ="6.8768815994263" rotX="359.99450683594" rotY="354.814453125" rotZ="271.12609863281" />
+    <vehicle id="Manana" model="410" posX="-2017.3203125" posY="1281.2373046875" posZ="6.7648596763611" rotX="359.42321777344" rotY="354.29809570313" rotZ="261.52404785156" />
+    <vehicle id="Boxville" model="498" posX="-1835.0888671875" posY="1425.634765625" posZ="7.255512714386" rotX="359.39575195313" rotY="359.99450683594" rotZ="179.18151855469" />
+    <vehicle id="Yankee" model="456" posX="-1871.3662109375" posY="1415.1875" posZ="7.3558392524719" rotX="0.010986328125" rotY="0.0714111328125" rotZ="224.54956054688" />
+    <vehicle id="Windsor" model="555" posX="-1655.24609375" posY="1315.1005859375" posZ="6.7235350608826" rotX="359.86267089844" rotY="359.86267089844" rotZ="314.0771484375" />
+    <vehicle id="Huntley" model="579" posX="-1663.28515625" posY="1214.1845703125" posZ="7.1790452003479" rotX="359.24743652344" rotY="359.92309570313" rotZ="255.35522460938" />
+    <vehicle id="Police SF" model="597" posX="-1610.169921875" posY="1135.2119140625" posZ="6.8054776191711" rotX="359.67590332031" rotY="0" rotZ="180.02197265625" />
+    <vehicle id="Bus" model="431" posX="-1523.1845703125" posY="886.9013671875" posZ="7.2104868888855" rotX="359.51110839844" rotY="355.59448242188" rotZ="354.86938476563" />
+    <vehicle id="Enforcer" model="427" posX="-1573.5576171875" posY="742.8740234375" posZ="-5.1102228164673" rotX="0.0164794921875" rotY="0" rotZ="271.42272949219" />
+    <vehicle id="S.W.A.T." model="601" posX="-1639.2373046875" posY="661.8505859375" posZ="-5.4833850860596" rotX="0.010986328125" rotY="0" rotZ="90.90087890625" />
+    <vehicle id="Police SF" model="597" posX="-1592.263671875" posY="749.8056640625" posZ="-5.474093914032" rotX="359.68139648438" rotY="0" rotZ="359.65942382813" />
+    <vehicle id="Police SF" model="597" posX="-1596.4052734375" posY="750" posZ="-5.4744110107422" rotX="359.68139648438" rotY="0" rotZ="359.736328125" />
+    <vehicle id="Police SF" model="597" posX="-1572.544921875" posY="706.0341796875" posZ="-5.4757647514343" rotX="359.68139648438" rotY="0" rotZ="269.92858886719" />
+    <vehicle id="Patriot" model="470" posX="-1362.611328125" posY="477.322265625" posZ="7.1804327964783" rotX="359.73083496094" rotY="359.99450683594" rotZ="269.6044921875" />
+    <vehicle id="Patriot" model="470" posX="-1463.515625" posY="323.734375" posZ="7.1806373596191" rotX="359.73083496094" rotY="359.99450683594" rotZ="181.96105957031" />
+    <vehicle id="Burrito" model="482" posX="-1602.84765625" posY="92.427734375" posZ="3.6636745929718" rotX="359.08813476563" rotY="359.98352050781" rotZ="157.20336914063" />
+    <vehicle id="Clover" model="542" posX="-1822.4951171875" posY="-241.0732421875" posZ="18.041101455688" rotX="0.0384521484375" rotY="354.7265625" rotZ="270.02746582031" />
+    <vehicle id="Mule" model="414" posX="-2111.6396484375" posY="-236.2158203125" posZ="35.4140625" rotX="0" rotY="0" rotZ="29.50927734375" />
+    <vehicle id="Blade" model="536" posX="-2599.955078125" posY="2.7724609375" posZ="3.9882497787476" rotX="0" rotY="354.64416503906" rotZ="0.032958984375" />
+    <vehicle id="Sabre" model="475" posX="-2688.294921875" posY="267.9462890625" posZ="4.1393628120422" rotX="359.74731445313" rotY="0" rotZ="180.41748046875" />
+    <vehicle id="Primo" model="547" posX="-2543.345703125" posY="598.8818359375" posZ="14.188794136047" rotX="0.1593017578125" rotY="359.99450683594" rotZ="270.67016601563" />
+    <vehicle id="Merit" model="551" posX="-2592.423828125" posY="655.578125" posZ="27.612913131714" rotX="359.9560546875" rotY="0" rotZ="90.225219726563" />
+    <vehicle id="Tampa" model="549" posX="-2580.1337890625" posY="898.6025390625" posZ="64.681594848633" rotX="359.96704101563" rotY="359.9560546875" rotZ="179.98901367188" />
+    <vehicle id="Sunrise" model="550" posX="-2567.888671875" posY="1147.712890625" posZ="55.543395996094" rotX="359.56604003906" rotY="359.99450683594" rotZ="336.82983398438" />
+    <vehicle id="Oceanic" model="467" posX="-2400.91796875" posY="1131.2607421875" posZ="55.473575592041" rotX="0.02197265625" rotY="0" rotZ="344.78393554688" />
+    <vehicle id="Glendale" model="466" posX="-1915.71484375" posY="1185.517578125" posZ="45.109344482422" rotX="0.010986328125" rotY="354.40795898438" rotZ="90.368041992188" />
+    <vehicle id="Washington" model="421" posX="-1801.4931640625" posY="875.26953125" posZ="24.694261550903" rotX="359.99450683594" rotY="354.13879394531" rotZ="179.74731445313" />
+    <vehicle id="Super GT" model="506" posX="-1720.2490234375" posY="1007.7744140625" posZ="17.290287017822" rotX="359.95056152344" rotY="359.99450683594" rotZ="270.48889160156" />
+    <vehicle id="Rancher" model="489" posX="-1703.9228515625" posY="1003.73046875" posZ="17.728721618652" rotX="359.736328125" rotY="359.99450683594" rotZ="90.016479492188" />
+    <vehicle id="Cadrona" model="527" posX="-1721.3193359375" posY="696.44921875" posZ="24.524799346924" rotX="359.96704101563" rotY="354.80346679688" rotZ="177.35778808594" />
+    <vehicle id="Glendale Damaged" model="604" posX="-1833.939453125" posY="422.224609375" posZ="16.917856216431" rotX="359.96704101563" rotY="0.098876953125" rotZ="320.44921875" />
+    <vehicle id="Majestic" model="517" posX="-1674.4794921875" posY="438.9423828125" posZ="7.0346388816833" rotX="359.99450683594" rotY="0" rotZ="224.51110839844" />
+    <vehicle id="Yosemite" model="554" posX="-1732.970703125" posY="127.095703125" posZ="3.6387469768524" rotX="359.1650390625" rotY="359.99450683594" rotZ="24.439086914063" />
+    <vehicle id="Roadtrain" model="515" posX="-1816.9384765625" posY="2.5244140625" posZ="16.131774902344" rotX="359.50561523438" rotY="0" rotZ="271.21398925781" />
+
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (1)" posX="-1414.0733642578" posY="-408.06683349609" posZ="12.630916595459" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (2)" posX="-1538.5050048828" posY="-439.71356201172" posZ="6" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (3)" posX="-2320.5632324219" posY="-161.33142089844" posZ="35.5546875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (4)" posX="-2752.1159667969" posY="-262.63070678711" posZ="7.195240020752" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (5)" posX="-2648.4448242188" posY="18.943477630615" posZ="6.1328125" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (6)" posX="-2765.4038085938" posY="375.68978881836" posZ="6.3359375" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (7)" posX="-2669.4287109375" posY="639.23376464844" posZ="14.453125" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (8)" posX="-2667.3920898438" posY="639.22393798828" posZ="14.453125" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (9)" posX="-2819.4235839844" posY="1118.208984375" posZ="28.630367279053" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (10)" posX="-2606.5061035156" posY="1433.0220947266" posZ="7.1875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (11)" posX="-1590.9420166016" posY="1244.1649169922" posZ="7.174861907959" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (12)" posX="-1763.0008544922" posY="746.23309326172" posZ="34.28401184082" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (13)" posX="-1943.2497558594" posY="486.98852539063" posZ="31.96875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (14)" posX="-1922.8393554688" posY="281.41345214844" posZ="41.046875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (15)" posX="-2136.7238769531" posY="-117.61213684082" posZ="36.519073486328" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (16)" posX="-2333.3681640625" posY="222.04664611816" posZ="36.313209533691" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (17)" posX="-2411.1381835938" posY="-271.59814453125" posZ="39.778980255127" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (18)" posX="-2286.7666015625" posY="1102.4060058594" posZ="80.06315612793" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (19)" posX="-2111.7307128906" posY="973.76098632813" posZ="71.515625" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (20)" posX="-1740.7126464844" posY="867.16479492188" posZ="25.0859375" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (21)" posX="-2069.0112304688" posY="659.34521484375" posZ="52.785011291504" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (22)" posX="-2184.0832519531" posY="646.60437011719" posZ="49.4375" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (23)" posX="-1976.9948730469" posY="170.90119934082" posZ="27.694049835205" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (24)" posX="-1527.1884765625" posY="447.05227661133" posZ="7.1875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (25)" posX="-1717.9936523438" posY="-39.060302734375" posZ="3.5546875" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (26)" posX="-1850.7552490234" posY="-167.58799743652" posZ="9.1632261276245" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (27)" posX="-2118.0537109375" posY="-418.93853759766" posZ="35.53125" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (28)" posX="-2412.0471191406" posY="-578.60906982422" posZ="132.74143981934" rotX="0" rotY="0" rotZ="0" />
+    <pickup type="health" amount="100" respawn="60000" id="pickup (health) (29)" posX="-1942.6811523438" posY="666.44342041016" posZ="47.703125" rotX="0" rotY="0" rotZ="0" />
+
+</map>

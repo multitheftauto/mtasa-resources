@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Suburban Speedway" author="BLASTAxerox" description="Simple Figure8 type course round Suburbia Generica Los Santos.  Respect to the BLASTA crew." version="0" />
+  <map src="Suburban Speedway.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="200" />
+  </settings>
+</meta>

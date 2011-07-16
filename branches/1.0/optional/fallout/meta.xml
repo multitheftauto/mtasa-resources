@@ -1,0 +1,8 @@
+<meta>
+    <info author="Ransom" version="3" type="gamemode" name="Fallout"/>
+    <config src="help.xml" type="client"/>
+    <include resource="scoreboard"/>
+    <script src="fallout.lua" />
+    <script src="falloutclient.lua" type="client" />
+    <script src="freecamclient.lua" type="client" />
+</meta>

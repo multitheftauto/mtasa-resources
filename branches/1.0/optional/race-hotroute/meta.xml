@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Hot Route" author="Ransom" description="Find the quickest route across San Andreas. The easiest routes ARE BLOCKED." version="0" />
+  <map src="Hot Route.map" />
+  <settings>
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="660" />
+  </settings>
+</meta>

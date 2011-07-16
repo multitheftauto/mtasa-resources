@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Bandito" author="Unknown" description="Bandito - first MTA map ever" version="1.1" />
+  <map src="Bandito.map" />
+  <settings>
+    <setting name="#weather" value="5" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="180" />
+  </settings>
+</meta>

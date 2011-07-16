@@ -1,0 +1,12 @@
+<meta>
+	<info author="erorr404" type="script" name="Briefcase" description="Attaches briefcase to player's hand" showInResourceBrowser="true" version="1.0.0" />
+
+	<script src="briefcase.lua" type="client" />
+	<!-- script src="briefcase_server.lua" type="server" / -->
+
+	<export function="addBriefcaseHolder" type="client" />
+	<export function="removeBriefcaseHolder" type="client" />
+	<export function="createIdleBriefcase" type="client" />
+	<export function="destroyIdleBriefcase" type="client" />
+
+</meta>

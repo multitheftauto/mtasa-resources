@@ -1,0 +1,6 @@
+<meta>
+    <info author="Iggy" version="1.0" type="map" gamemodes="ctf" />
+    <include resource="scoreboard" />
+    <script src="tbdlua.lua"/>
+    <map src="ctf-tbd.map" />
+</meta>

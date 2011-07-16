@@ -1,0 +1,116 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<* = call(getResourceFromName("ajax"),"start", getResourceName(getThisResource()) ) *>
+</head>
+<body>
+    
+<html>
+<head>
+	<script language="JavaScript" src="FusionCharts.js"></script>
+	<link rel="stylesheet" type="text/css" href="css.css" />
+	<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="ie-70.css" />
+	<![endif]-->
+	<script>
+		function updateChart()
+		{		
+			var stats = "";
+			var charttype = document.getElementById("charttype").value;
+			var i = 0;
+			while(true)
+			{
+				var statItem = document.getElementById("stat" + i);
+				if ( !statItem )
+					break;
+				if ( statItem.checked == true ) 
+				{
+					stats = stats + statItem.value + ",";
+				}
+				i++;
+			}
+			if ( stats != "" )  {
+				stats = stats.substr(0,stats.length-1);
+				var myChart = new FusionCharts(charttype + ".swf", "myChartId", "850", "300");
+				myChart.setDataURL("elements.xml?stats=" + stats + "|" + charttype);
+				myChart.render("chart");
+			}
+			else
+				document.getElementById("chart").innerHTML = "";
+			
+		}
+		
+		function toggleDatasets()
+		{
+			var datasets = document.getElementById("datasets");
+			var toggleButton = document.getElementById("toggleButton");
+			var chart = document.getElementById("chart");
+			if ( toggleButton.value == "hide datasets" ) 
+			{
+				datasets.style.display = "none";
+				toggleButton.value = "show datasets";
+				chart.style.width = "97%";
+			}
+			else
+			{
+				datasets.style.display = "block";
+				toggleButton.value = "hide datasets";
+				chart.style.width = "78%";
+			}
+		}
+	</script>
+</head>
+
+<body bgcolor="#ffffff" style="font-family:'Trebuchet MS',Arial,sans-serif;font-size:0.8em;">
+
+	<div id="chart" style="position: absolute; left:0px; top: 37px; bottom: 0px; width: 78%; overflow:auto;bacground: red;vertical-align:top; padding: 10px;">
+	Select datasets from the list on the right to begin.
+	</div>
+	
+	<div id="topbar">
+		<div style="float:right;"><input type="button" value="hide datasets" onclick="toggleDatasets();" id="toggleButton"/></div>
+		<select id="charttype" onchange="updateChart();" onkeyup="updateChart();">
+			<option disabled="disabled" style='font-weight:bold;color:black;'>Single Value Charts</option>
+			<option value="FCF_Line">Line chart</option>
+			<option disabled="disabled" style='font-weight:bold;color:black;'>Multiple Value Charts</option>
+			<option value="FCF_StackedArea2D">Stacked area chart</option>
+			<option value="FCF_MSLine">Line chart</option>
+			<option value="FCF_StackedColumn2D">Stacked columns</option>
+			<option value="FCF_StackedColumn3D">Stacked columns 3D</option>
+			<option value="FCF_Pie2D">Pie chart (now)</option>
+			<option value="FCF_Pie3D">Pie chart 3D (now)</option>
+		</select>
+		<input type="button" value="refresh" onclick="updateChart();"/>
+
+	</div>
+	
+	<div id="datasets">
+
+			<*
+			resourceStats = call(getThisResource(),"getStatListByResource")
+			for p,q in pairs(resourceStats) do
+				resname = getResourceInfo(p, "name")
+				if ( resname == false ) then
+					resname = getResourceName(p)
+				end
+				*>
+				<div style="background:#444444; font-weight:bold;padding:3px;padding-left:7px;"><*= resname *></div>
+				<div style="padding-left: 10px; padding-right: 10px;background:#777777; ">
+				<*
+				local i = 0
+				for k,v in pairs(q) do
+					*>
+					<input type="checkbox" id="stat<* = i *>" value="<* = k *>" title="<* = v.description *>" onchange="updateChart();"/><label for="stat<* =i *>" title="<* = v.description *>"><* = v.name *></label><br/>
+					<*
+					i= i+1
+				end
+				*>
+				</div>
+				<*
+			end
+			*>
+	</div>
+	
+
+</body>
+</body>
+</html>

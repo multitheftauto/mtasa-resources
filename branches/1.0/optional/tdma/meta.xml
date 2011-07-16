@@ -1,0 +1,27 @@
+<meta>
+    <info author="AlienX" description="Team Death Match Arena" name="Team Death Match Arena" version="1" type="gamemode"/>
+	<include resource="killmessages" />
+	<include resource="scoreboard" />
+
+	<!-- Load the core -->
+	<script src="Main/tdma_core.lua" type="server" />
+	<script src="Main/tdma_core_client.lua" type="client" />
+	<script src="Main/Included/pickup_system.lua" type="server" />
+	<script src="Main/Included/vehicle_system.lua" type="server" />
+
+	<!-- Load additions -->
+	<script src="Additions/mission_timer.lua" type="server" />   
+	<script src="Additions/team_identifcation.lua" type="client" />  
+
+	<!-- Load Spawn Protection --> 
+	<script src="Spawn_Protection/spawn_protectionS.lua" type="server" />
+	<script src="Spawn_Protection/spawn_protectionC.lua" type="client" />
+
+	<!-- Load Scoreboard Stats -->
+	<script src="Scoreboard/tdma_scoreboard_stats.lua" type="server" />
+
+	<!-- Load Help File Data -->
+	<config src="help.xml" type="client"/>
+
+    <map src="Main/tdma_core.map" />
+</meta>

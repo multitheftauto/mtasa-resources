@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>Multi Theft Auto - Resource Browser</title>
+        <* = call(getResourceFromName("ajax"),"start", getResourceName(getThisResource()) ) *>
+        <link rel="stylesheet" type="text/css" href="css.css" />
+        <script src ='script.js' type = 'text/javascript'></script>
+    </head>
+    <body onLoad="resourceListUpdate();setCurrentResource('resourcemanager');" style="margin: 5px;">
+    <div id="header">
+		<div id="servername"><* = getServerName() *></div>
+	</div>
+    <div style="position:absolute;top:130px;left:0px;bottom:0px;width:200px;overflow:auto;">
+	    <div id="tabmenu">
+	    </div>
+	</div>
+	<div style="position: absolute; left: 200px; top: 130px; right: 0px; bottom: 3px;border-left:4px solid #555555;border-top:1px solid #555555;background:#555555;">
+		<iframe style="position: absolute; left: 0px; top: 0px; width:99.5%; bottom: 0px; overflow: auto; border:0px;overflow-x:hidden;" frameborder="0px" name="content" id="content" scrolling="no"></iframe>
+	</div>
+</body>
+</html>

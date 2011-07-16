@@ -1,0 +1,65 @@
+<meta>
+	<info name="Toptimes" description="Toptimes addon for Race" author="ccw" type="script" addon="race" version="0.0.3" build="r472 02Oct09"/>
+
+	<script src="_common_tt.lua" type="server"/>
+	<script src="util_tt_server.lua" type="server"/>
+	<script src="databasetable_server.lua" type="server"/>
+	<script src="maptimes_server.lua" type="server"/>
+	<script src="toptimes_server.lua" type="server"/>
+
+	<script src="_common_tt.lua" type="client"/>
+	<script src="util_tt_client.lua" type="client"/>
+	<script src="toptimes_client.lua" type="client"/>
+
+	<file src="img/timepassedbg.png"/>
+	<file src="img/blank.png"/>
+
+
+	<settings>
+		<!-- *****************************************************
+			 All these settings are adjustable in the Admin Panel:
+				1. start admin
+				2. press 'p'
+				3. select Resources tab
+				4. double click on 'race_toptimes'
+			 ***************************************************** -->
+
+		<setting name="*numtimes" value="8"
+					friendlyname="Number of top times"
+					group="Setting"
+					accept="1-30"
+					desc="The number of top times to show."
+					/>
+
+		<setting name="*startshow" value="false"
+					friendlyname="Show at start"
+					group="Setting"
+					accept="false,true"
+					desc="Set to true to show the table at the start of each race."
+					/>
+
+		<setting name="*gui_x" value="0.7"
+					friendlyname="Table position X"
+					group="Interface"
+					accept="0.00-1.00"
+					desc="The position of the table on the screen."
+					/>
+
+		<setting name="*gui_y" value="0.02"
+					friendlyname="Table position Y"
+					group="Interface"
+					accept="0.00-1.00"
+					desc="The position of the table on the screen."
+					/>
+
+		<setting name="*admingroup" value="Admin,SuperModerator"
+					friendlyname="Admin group list"
+					group="_Advanced"
+					accept="*"
+					examples="Admin,Moderator,SuperModerator"
+					desc="To issue certain commands, the player must belong to one of the groups listed."
+					/>
+
+	</settings>
+
+</meta>

@@ -1,0 +1,32 @@
+<meta>
+<include resource="ajax"/>
+	<info author="eAi" showInResourceBrowser="true" name="Admin" description="Various useful pages of administration tools" pages="acls.htm|ACLs,groups.htm|Groups" noDefaultPage="true" />
+	<script src="admin.lua" type="server" />
+	<html src="acls.htm" />
+	<html src="groups.htm" />
+	<html src="admin.js" raw="true"/>
+	<html src="icon_minus_8_on_F.png" raw="true"/>
+	<html src="icon_plus_8_on_F.png" raw="true"/>
+	<html src="icon_x_8_on_F.png" raw="true"/>
+
+	<html src="ie-70.css" raw="true"/>
+	<html src="css.css" raw="true"/>
+	<html src="groups.css" raw="true"/>
+	
+	<!-- ACLS -->
+	<export function="getACLs" http="true" />
+	<export function="setACLRight" http="true" />
+	<export function="removeACLRight" http="true" />
+	<export function="createACL" http="true" />
+	<export function="removeACL" http="true" />
+	
+	<!-- GROUPS -->
+	<export function="getGroups" http="true" />
+	<export function="addObjectToGroup" http="true" />
+	<export function="addACLToGroup" http="true" />
+	<export function="removeObjectFromGroup" http="true" />
+	<export function="removeACLFromGroup" http="true" />
+	<export function="removeGroup" http="true" />
+	<export function="addGroup" http="true" />
+	<export function="isAccountNameValid" http="true" />
+</meta>

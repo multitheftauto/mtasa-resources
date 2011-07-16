@@ -1,0 +1,8 @@
+<meta>
+    <info author="Black Dragon" version="1.0" type="gamemode" name="Classic Death Match"/>
+    <script src="cdm.lua" />
+    <script src="cdm_client.lua" type="client" />
+    <config src="help.xml" type="client" />
+    <include resource="scoreboard"/>
+    <include resource="spawnmanager"/>
+</meta>

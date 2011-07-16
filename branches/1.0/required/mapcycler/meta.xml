@@ -1,0 +1,14 @@
+<meta>
+	<info author="jbeta" type="script" description="Mode/map cycler script" version="1.0.0"/>
+	<include resource="mapmanager" />
+	<include resource="votemanager" />
+	<script src="mapcycler.lua" type="server"/>
+	<script src="list_mode.lua" type="server"/>
+	<script src="vote_mode.lua" type="server"/>
+	<script src="random_mode.lua" type="server"/>
+	<settings>
+		<setting name="*mode" value="vote" />
+		<setting name="*vote_rounds" value="[1]" />
+		<setting name="*random_rounds" value="[1]" />
+	</settings>
+</meta>

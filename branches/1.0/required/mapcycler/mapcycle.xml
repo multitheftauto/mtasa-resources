@@ -1,0 +1,25 @@
+<cycle type="shuffle">
+	<game mode="assault" map="as-area51" rounds="1"/>
+	<game mode="assault" map="as-cliff" rounds="1"/>
+	<game mode="assault" map="as-dam" rounds="1"/>
+	<game mode="assault" map="as-docks" rounds="1"/>
+	<game mode="assault" map="as-sharks" rounds="1"/>
+	<game mode="assault" map="as-ship" rounds="1"/>
+	<game mode="ctf" map="ctf-bombsite" rounds="1"/>
+	<game mode="ctf" map="ctf-canals" rounds="1"/>
+	<game mode="ctf" map="ctf-csitaly" rounds="1"/>
+	<game mode="ctf" map="ctf_goldcove" rounds="1"/>
+	<game mode="ctf" map="ctf-sewer" rounds="1"/>
+	<game mode="ctv" map="ctv-ls" rounds="1"/>
+	<game mode="stealth" map="sth-carrier" rounds="1"/>
+	<game mode="stealth" map="sth-chinatown" rounds="1"/>
+	<game mode="stealth" map="sth-factory" rounds="1"/>
+	<game mode="stealth" map="sth-sewers" rounds="1"/>
+	<game mode="stealth" map="sth-ritzy" rounds="1"/>
+	<game mode="stealth" map="sth-marker" rounds="1"/>
+	<game mode="tdma" map="tdm-gridlock" rounds="1"/>
+	<game mode="tdma" map="tdma_downtown" rounds="1"/>
+	<game mode="tdma" map="tdma_nomansland" rounds="1"/>
+	<game mode="tdma" map="tdm-canals" rounds="1"/>
+	<game mode="tdma" map="tdm-tbd" rounds="1"/>
+</cycle>

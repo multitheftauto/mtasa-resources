@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Airport Speedway" author="BLASTAxerox" description="Easy race around the airport with some gradual turns.  Designed for high speed fun.  Respect to the BLASTA crew." version="0" />
+  <map src="Airport Speedway.map" />
+  <settings>
+    <setting name="#weather" value="4" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="240" />
+  </settings>
+</meta>

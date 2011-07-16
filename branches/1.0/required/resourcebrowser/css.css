@@ -1,0 +1,99 @@
+body {
+	margin: 20px;
+	padding: 0px;
+	background: #000000;
+	font: bold 1em "Trebuchet MS", Arial, sans-serif; }
+
+pre {text-indent: 30px}
+
+#servername {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	font-weight:bold;
+	color: white;
+}
+
+#header {
+	background: url('banner_b_gd.png') no-repeat;
+	position: absolute;
+	left:0px;
+	top:0px;
+	right:0px;
+	height:120px;
+}
+
+#tabmenu div.inactive_noDefaultPage {
+	color: #999999;
+	padding-left: 6px;
+}
+
+#tabmenu div.inactive {
+	cursor: pointer;
+	color: #999999;
+	padding-left: 6px;
+}
+
+#tabmenu div.inactive_subpage {
+	cursor: pointer;
+	color: #999999;
+	padding-left: 22px;
+}
+
+#tabmenu div.active_noDefaultPage {
+	color: #999999;
+	color: #FFFFFF;
+	background: #555555;
+	padding-left: 6px;
+	margin: 0;
+	text-decoration: none;	
+}
+
+#tabmenu div.active_subpage {
+	color: #FFFFFF;
+	background: #555555;
+	padding-left: 22px;
+	margin: 0;
+	text-decoration: none;
+	cursor: pointer;	
+}
+
+#tabmenu div.active {
+	color: #FFFFFF;
+	background: #555555;
+	padding-left: 6px;
+	margin: 0;
+	text-decoration: none;
+	cursor: pointer;	
+}
+
+#tabmenu span.active {
+	cursor: pointer;
+	background: #ABAD85;
+	border-bottom: 3px solid #ABAD85; }
+
+#tabmenu a:hover {
+	color: #fff;
+	background: #ADC09F; }
+
+#tabmenu a:visited {
+	color: #E8E9BE; }
+
+#tabmenu a.active:hover {
+	background: #ABAD85;
+	color: #DEDECF; }
+
+#content {font: "Trebuchet MS", Arial, sans-serif;
+	text-align: justify;
+	background: #FFFFFF;
+	padding: 0px;
+	border: 2px solid black;
+	border-top: none;
+	height: 100%;
+	z-index: 2;	}
+
+#content a {
+	text-decoration: none;
+	color: #E8E9BE; }
+
+#content a:hover { background: #898B5E; }

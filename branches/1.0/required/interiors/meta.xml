@@ -1,0 +1,12 @@
+<meta>
+	<info author="Talidan" description="Interiors script" edf:definition="interiors.edf" type="script" version="2.0" />
+	<script src="interiorexp.lua" type="server" />
+	<script src="interiors_client.lua" type="client" />
+	<script src="client_anim.lua" type="client" /> <!-- courtesy or arc_ -->
+	<map src="interiors.map" />
+	
+	<export function="getInteriorMarker" type="server" />
+	<export function="getInteriorName" type="server" />
+	<export function="getInteriorMarker" type="client" />
+	<export function="getInteriorName" type="client" />
+</meta>

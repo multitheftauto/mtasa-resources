@@ -1,0 +1,74 @@
+<def name="Basic element types definition">
+	<element name="object" friendlyname="Object">
+		<data name="model" type="objectID" description="object model" default="1337" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="marker" friendlyname="Marker">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="type" type="markerType" description="marker type" default="cylinder" />
+		<data name="size" type="number" description="marker size" default="1" />
+		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="pickup" friendlyname="Pickup">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="type" type="pickupType" description="pickup type" default="health" />
+		<data name="amount" type="number" description="hp points, armor points or weapon ammo" default="100" />
+		<data name="respawn" type="integer" description="respawn time in miliseconds" default="30000" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="vehicle" friendlyname="Vehicle">
+		<data name="model" type="vehicleID" description="vehicle model" default="405" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
+		<data name="color" type="vehiclecolors" description="vehicle colors" required="false" />
+		<data name="paintjob" type="selection:0,1,2,3" description="vehicle paintjob" required="false" />
+		<data name="upgrades" type="vehicleupgrades" description="installed vehicle upgrades" required="false" />
+		<data name="plate" type="plate" description="number plate" required="false" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="blip" friendlyname="Radar blip">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="icon" type="blipID" description="blip icon" default="0" />
+		<data name="size" type="integer" description="blip size" default="2" />
+		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="radararea" friendlyname="Radar area">
+		<data name="posX" type="number" description="x axis west corner position" default="0" />
+		<data name="posY" type="number" description="y axis south corner position" default="0" />
+		<data name="sizeX" type="number" description="x axis size" default="20" />
+		<data name="sizeY" type="number" description="y axis size" default="20" />
+		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="colshape" friendlyname="Collision shape">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="type" type="colshapeType" description="colshape type" default="sphere" />
+		<data name="radius" type="number" description="colshape radius" default="1" />
+		<data name="width" type="number" description="colshape width" default="1" />
+		<data name="depth" type="number" description="colshape height" default="1" />
+		<data name="height" type="number" description="colshape depth" default="1" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="ped" friendlyname="Ped">
+		<data name="model" type="skinID" description="ped skin model" default="0" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotZ" type="number" description="Z rotation" default="0" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="water" friendlyname="Water" icon="client/images/icons/water.png">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="sizeX" type="natural" description="The width of the water" default="20" />
+		<data name="sizeY" type="natural" description="The breadth of the water" default="20" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+</def>

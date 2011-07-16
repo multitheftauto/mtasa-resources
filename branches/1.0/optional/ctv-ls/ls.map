@@ -1,0 +1,93 @@
+<map mod="deathmatch" author="BrophY" version="1.0">
+
+	<base team="team1" teamName="Grove" teamColor="0,255,30" posX="2493" posY="-1669" posZ="13.34" rot="0" markerX="2491.511" markerY="-1668.122" markerZ="13.3973" markercolor="0,255,30" blip="62" skins="105,107" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
+	
+	<base team="team2" teamName="Balla" teamColor="204,51,255" posX="2210" posY="-1160" posZ="25.8" rot="0" markerX="2216.947" markerY="-1166.182" markerZ="25.7265" markercolor="138,0,84" blip="59" skins="102,104" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
+	
+	<base team="team3" teamName="Cop" teamColor="26,198,255" posX="1587" posY="-1689" posZ="5.90" rot="354.872" markerX="1601.79" markerY="-1608.60" markerZ="13.482" markercolor="0,48,194" blip="58" skins="280,288" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
+	
+	<base team="team4" teamName="Russian" teamColor="255,255,0" posX="860" posY="-1224" posZ="20" rot="270" markerX="867.07" markerY="-1209.60" markerZ="16.97" markercolor="255,255,0" blip="60" skins="124,127" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
+	
+	<target model="428" posX="2795.1708" posY="-2417.6420" posZ="13.755" rotX="0" rotY="0" rotZ="90.0"  plate="CASHRAID" colors="ran,0,0,0" />
+	<target model="428" posX="1751.620" posY="-2434.8952" posZ="13.679" rotX="0" rotY="0" rotZ="143.7" plate="FARTVAN" colors="ran,0,0,0" />
+	<target model="423" posX="373.2777" posY="-2038.6815" posZ="7.694" rotX="0" rotY="0" rotZ="0" plate="WHOOPEE" colors="ran,0,0,0" />
+	<target model="498" posX="-51.416" posY="-1141.7901" posZ="1.147" rotX="0" rotY="0" rotZ="65.0" plate="SNIFFER" colors="ran,0,0,0" />
+	<target model="599" posX="616.809" posY="-586.840" posZ="17.422" rotX="0" rotY="0" rotZ="180.0" plate="PIGSRUS" colors="ran,0,0,0" />
+	<target model="403" posX="76.403" posY="-260.9655" posZ="2.1844" rotX="0" rotY="0" rotZ="0" plate="POOBAG" colors="ran,0,0,0" />
+	<target model="491" posX="1371.8496" posY="196.714" posZ="19.32" rotX="0" rotY="0" rotZ="335.0" plate="VIRGIN" colors="ran,0,0,0" />
+	<target model="580" posX="2549.145" posY="72.234" posZ="26.273" rotX="0" rotY="0" rotZ="90.0" plate="MAFIA" colors="ran,0,0,0" />
+	<target model="409" posX="2038.6103" posY="1007.955" posZ="10.48" rotX="0" rotY="0" rotZ="0.0" plate="LOADED" colors="0,0,0,0" />
+	<target model="433" posX="282.614" posY="1934.0120" posZ="18.078" rotX="0" rotY="0" rotZ="270.0" plate="SEXMEPLZ" />
+  
+<vehicle id="Blade" model="536" posX="2478.7646484375" posY="-1654.8846435547" posZ="13.061017990112" rotX="0.17684936523438" rotY="359.90573120117" rotZ="90.762481689453" color="37 1 0 0"/>
+<vehicle id="Blade" model="536" posX="2473.5192871094" posY="-1703.7185058594" posZ="13.2639503479" rotX="359.93017578125" rotY="359.87384033203" rotZ="0.2540283203125" color="71 96 0 0"/>
+<vehicle id="Slamvan" model="535" posX="2473.498046875" posY="-1692.962890625" posZ="13.279903411865" rotX="359.78179931641" rotY="359.98260498047" rotZ="0.51571655273438" color="3 1 0 0"/>
+<vehicle id="Remington" model="534" posX="2510.4973144531" posY="-1687.7150878906" posZ="13.283197402954" rotX="0.54904174804688" rotY="359.13201904297" rotZ="47.54345703125" color="62 62 0 0"/>
+<vehicle id="Tornado" model="576" posX="2516.5534667969" posY="-1672.1772460938" posZ="13.533418655396" rotX="350.84329223633" rotY="357.65942382813" rotZ="66.598968505859" color="72 1 0 0"/>
+<vehicle id="Voodoo" model="412" posX="2498.1743164063" posY="-1682.5749511719" posZ="13.207612037659" rotX="359.7942199707" rotY="0.63418579101563" rotZ="94.146392822266" color="29 8 0 0"/>
+<vehicle id="Voodoo" model="412" posX="2506.9260253906" posY="-1662.5093994141" posZ="13.221127510071" rotX="359.79595947266" rotY="359.41979980469" rotZ="28.706390380859" color="34 1 0 0"/>
+<vehicle id="Virgo" model="491" posX="2489.4953613281" posY="-1683.0386962891" posZ="13.094097137451" rotX="359.9638671875" rotY="0.00372314453125" rotZ="91.927307128906" color="30 72 0 0"/>
+<vehicle id="Voodoo" model="412" posX="2469.6596679688" posY="-1670.5531005859" posZ="13.195945739746" rotX="359.64312744141" rotY="4.7464599609375" rotZ="13.854431152344" color="81 81 0 0"/>
+<vehicle id="Club" model="589" posX="2443.107421875" posY="-1642.4849853516" posZ="13.117697715759" rotX="359.65130615234" rotY="0.065155029296875" rotZ="1.6986999511719" color="23 23 0 0"/>
+<vehicle id="Voodoo" model="412" posX="2438.9064941406" posY="-1673.6285400391" posZ="13.337705612183" rotX="358.05584716797" rotY="1.0936279296875" rotZ="30.031433105469" color="8 90 0 0"/>
+<vehicle id="BMX" model="481" posX="2428.3901367188" posY="-1679.6228027344" posZ="13.281137466431" rotX="358.5456237793" rotY="358.74810791016" rotZ="276.24151611328" color="65 9 0 0"/>
+<vehicle id="BMX" model="481" posX="2425.0637207031" posY="-1679.587890625" posZ="13.281498908997" rotX="358.88729858398" rotY="358.74771118164" rotZ="270.03033447266" color="3 3 0 0"/>
+<vehicle id="Mountain Bike" model="510" posX="2426.8139648438" posY="-1677.5802001953" posZ="13.328928947449" rotX="359.66552734375" rotY="358.75527954102" rotZ="271.31652832031" color="5 5 0 0"/>
+<vehicle id="Pizzaboy" model="448" posX="2403.9245605469" posY="-1643.5180664063" posZ="13.146607398987" rotX="359.48455810547" rotY="0" rotZ="358.88299560547" color="3 6 0 0"/>
+<vehicle id="FCR900" model="521" posX="2384.7854003906" posY="-1646.5063476563" posZ="13.101160049438" rotX="358.98065185547" rotY="0.01397705078125" rotZ="3.371826171875" color="115 118 0 0"/>
+<vehicle id="Rumpo" model="440" posX="2436.1420898438" posY="-1637.2836914063" posZ="13.552604675293" rotX="359.2412109375" rotY="0.21566772460938" rotZ="89.740966796875" color="66 66 0 0"/>
+<vehicle id="Moonbeam" model="418" posX="2411.9870605469" posY="-1663.7739257813" posZ="13.555432319641" rotX="0.0540771484375" rotY="5.0696105957031" rotZ="89.144195556641" color="114 114 0 0"/>
+<vehicle id="Buffalo" model="402" posX="2297.764404" posY="-1645.7164" posZ="14.5922" rotX="0" rotY="0" rotZ="0" color="110 110 0 0"/>
+
+<vehicle id="Police" model="596" posX="1585.2247314453" posY="-1671.6488037109" posZ="5.6148734092712" rotX="359.70922851563" rotY="0.034698486328125" rotZ="89.262268066406"/>
+<vehicle id="Police" model="596" posX="1601.7092285156" posY="-1683.8018798828" posZ="5.6132845878601" rotX="359.69607543945" rotY="0.0257568359375" rotZ="269.51104736328"/>
+<vehicle id="Police" model="596" posX="1601.7786865234" posY="-1687.8969726563" posZ="5.6177358627319" rotX="359.70736694336" rotY="359.88586425781" rotZ="270.5783996582"/>
+<vehicle id="Police" model="596" posX="1591.5568847656" posY="-1710.2550048828" posZ="5.6125121116638" rotX="359.69598388672" rotY="359.98254394531" rotZ="178.96551513672"/>
+<vehicle id="HPV1000" model="523" posX="1586.0966796875" posY="-1667.7934570313" posZ="5.4577841758728" rotX="359.24859619141" rotY="9.1552734375e-005" rotZ="89.895172119141"/>
+<vehicle id="HPV1000" model="523" posX="1605.1812744141" posY="-1667.2348632813" posZ="5.4547472000122" rotX="359.18725585938" rotY="359.56713867188" rotZ="3.6345520019531"/>
+<vehicle id="S.W.A.T." model="601" posX="1602.1975097656" posY="-1627.9503173828" posZ="13.250089645386" rotX="359.37347412109" rotY="0.003448486328125" rotZ="90.116577148438"/>
+<vehicle id="S.W.A.T." model="601" posX="1602.0379638672" posY="-1622.5090332031" posZ="13.247161865234" rotX="359.37353515625" rotY="0.0137939453125" rotZ="89.091094970703"/>
+<vehicle id="S.W.A.T." model="601" posX="1601.8820800781" posY="-1617.6854248047" posZ="13.246748924255" rotX="359.37222290039" rotY="0.012054443359375" rotZ="90.835510253906"/>
+<vehicle id="FBI Rancher" model="490" posX="1553.767578125" posY="-1614.1684570313" posZ="13.512787818909" rotX="0.40359497070313" rotY="0.016632080078125" rotZ="177.93707275391"/>
+<vehicle id="FBI Rancher" model="490" posX="1558.5274658203" posY="-1614.3057861328" posZ="13.512625694275" rotX="0.40402221679688" rotY="0.016815185546875" rotZ="177.83520507813"/>
+<vehicle id="Ranger" model="599" posX="1575.2971191406" posY="-1615.1033935547" posZ="13.576893806458" rotX="0.50723266601563" rotY="0.34262084960938" rotZ="359.13903808594"/>
+<vehicle id="Ranger" model="599" posX="1525.7034912109" posY="-1628.6439208984" posZ="13.583289146423" rotX="0.49114990234375" rotY="0.15237426757813" rotZ="179.005859375"/>
+<vehicle id="Barracks" model="433" posX="1535.6917724609" posY="-1677.3676757813" posZ="13.820940971375" rotX="0.000701904296875" rotY="0.01507568359375" rotZ="180.66609191895"/>
+<vehicle id="Patriot" model="470" posX="1535.8148193359" posY="-1667.1082763672" posZ="13.376211166382" rotX="359.73223876953" rotY="359.9987487793" rotZ="179.85699462891"/>
+<vehicle id="Enforcer" model="427" posX="1514.9145507813" posY="-1660.1333007813" posZ="13.676959037781" rotX="359.92694091797" rotY="359.9758605957" rotZ="269.54797363281"/>
+<vehicle id="Enforcer" model="427" posX="1518.455078125" posY="-1655.4686279297" posZ="13.672099113464" rotX="0.02117919921875" rotY="359.9866027832" rotZ="269.38049316406"/>
+<vehicle id="FBI Truck" model="528" posX="1602.9031982422" posY="-1700.0183105469" posZ="5.9374632835388" rotX="0.34149169921875" rotY="0.009124755859375" rotZ="89.298065185547" color="0 0 0 0"/>
+<vehicle id="FBI Truck" model="528" posX="1583.5952148438" posY="-1711.4835205078" posZ="5.9356799125671" rotX="0.31124877929688" rotY="0.005706787109375" rotZ="181.1494140625" color="0 0 0 0"/>
+<vehicle id="Patriot" model="470" posX="1570.4693603516" posY="-1711.6447753906" posZ="5.8864631652832" rotX="359.73721313477" rotY="359.9997253418" rotZ="0.15493774414063" color="43 0 0 0"/>
+
+<vehicle id="Clover" model="542" posX="2205.6120605469" posY="-1177.0168457031" posZ="25.424877166748" rotX="359.97201538086" rotY="359.9504699707" rotZ="269.99517822266" color="84 36 0 0"/>
+<vehicle id="Clover" model="542" posX="2228.7863769531" posY="-1177.1397705078" posZ="25.471858978271" rotX="0.03887939453125" rotY="0.006134033203125" rotZ="270.97125244141" color="31 93 0 0"/>
+<vehicle id="Slamvan" model="535" posX="2224.2692871094" posY="-1111.8800048828" posZ="25.885433197021" rotX="356.18743896484" rotY="6.2045288085938" rotZ="170.79833984375" color="55 1 0 0"/>
+<vehicle id="Previon" model="436" posX="2206.6489257813" posY="-1134.5711669922" posZ="25.475547790527" rotX="359.49456787109" rotY="6.7992858886719" rotZ="77.154144287109" color="92 1 0 0"/>
+<vehicle id="Previon" model="436" posX="2197.74609375" posY="-1106.1704101563" posZ="24.972127914429" rotX="358.61596679688" rotY="2.9484252929688" rotZ="155.54693603516" color="109 1 0 0"/>
+<vehicle id="Landstalker" model="400" posX="2205.578203125" posY="-1157.007275391" posZ="25.820550918579" rotX="359.99551391602" rotY="359.99249267578" rotZ="270.2297668457" color="123 1 0 0"/>
+<vehicle id="Hotknife" model="434" posX="2171.4890136719" posY="-1090.0935058594" posZ="25.481269836426" rotX="359.50289916992" rotY="359.90664672852" rotZ="154.697265625" color="1 1 0 0"/>
+<vehicle id="Bus" model="431" posX="2296.2919921875" posY="-1133.4848632813" posZ="26.979763031006" rotX="359.74841308594" rotY="2.01513671875" rotZ="194.63597106934" color="71 87 0 0"/>
+<vehicle id="Merit" model="551" posX="2222.8293457031" posY="-1096.1928710938" posZ="28.586261749268" rotX="13.286895751953" rotY="354.66738891602" rotZ="15.243194580078" color="91 1 0 0"/>
+<vehicle id="Primo" model="547" posX="2205.5869140625" posY="-1169.0013427734" posZ="25.466911315918" rotX="0.29718017578125" rotY="359.96810913086" rotZ="88.903869628906" color="37 1 0 0"/>
+<vehicle id="Sunrise" model="550" posX="2241.96875" posY="-1144.8197021484" posZ="25.642627716064" rotX="2.9163208007813" rotY="355.22833251953" rotZ="256.79141235352" color="62 62 0 0"/>
+<vehicle id="Voodoo" model="412" posX="2227.7416992188" posY="-1162.6635742188" posZ="25.603693008423" rotX="359.39108276367" rotY="359.52221679688" rotZ="90.8232421875" color="37 8 0 0"/>
+<vehicle id="Washington" model="421" posX="2161.6701660156" posY="-1152.7368164063" posZ="23.823093414307" rotX="0.0384521484375" rotY="5.7192993164063" rotZ="270.58288574219" color="25 1 0 0"/>
+<vehicle id="Towtruck" model="525" posX="2147.5581054688" posY="-1161.7198486328" posZ="23.706819534302" rotX="358.22927856445" rotY="359.90289306641" rotZ="89.770202636719" color="22 30 0 0"/>
+
+<vehicle id="Stretch" model="409" posX="902.80993652344" posY="-1246.5250244141" posZ="15.362350463867" rotX="357.88626098633" rotY="3.89111328125" rotZ="265.45629882813" color="0 0 0 0"/>
+<vehicle id="Stretch" model="409" posX="902.72503662109" posY="-1242.3873291016" posZ="15.702958106995" rotX="358.81915283203" rotY="5.2215881347656" rotZ="270.52236938477" color="1 1 0 0"/>
+<vehicle id="Admiral" model="445" posX="881.52325439453" posY="-1268.2213134766" posZ="14.631078720093" rotX="359.05786132813" rotY="359.58416748047" rotZ="179.76745605469" color="41 41 0 0"/>
+<vehicle id="Admiral" model="445" posX="877.28192138672" posY="-1268.4755859375" posZ="14.610640525818" rotX="0.81976318359375" rotY="0.038055419921875" rotZ="357.11029052734" color="42 42 0 0"/>
+<vehicle id="Flash" model="565" posX="910.40765380859" posY="-1262.1243896484" posZ="14.490026473999" rotX="1.8727111816406" rotY="358.37649536133" rotZ="89.174285888672" color="81 27 0 0"/>
+<vehicle id="Washington" model="421" posX="887.64491699219" posY="-1198.094550781" posZ="16.860439300537" rotX="359.99932861328" rotY="0.013458251953125" rotZ="178.0011352539" color="30 1 0 0"/>
+<vehicle id="BMX" model="481" posX="908.71246337891" posY="-1232.4846191406" posZ="16.514110565186" rotX="358.60458374023" rotY="359.45883178711" rotZ="242.1012878418" color="46 46 0 0"/>
+<vehicle id="BMX" model="481" posX="910.40557861328" posY="-1231.5314941406" posZ="16.490997314453" rotX="358.47302246094" rotY="359.8639831543" rotZ="240.63200378418" color="65 9 0 0"/>
+<vehicle id="Sandking" model="495" posX="881.88677978516" posY="-1178.0681152344" posZ="17.3483543396" rotX="0.9735107421875" rotY="0.06494140625" rotZ="179.34008789063" color="123 124 0 0"/>
+<vehicle id="Caddy" model="457" posX="862.72302246094" posY="-1231.5554199219" posZ="14.438219070435" rotX="0.27685546875" rotY="356.58969116211" rotZ="3.9905700683594" color="34 1 0 0"/>
+<vehicle id="Flash" model="565" posX="916.54144287109" posY="-1201.8151855469" posZ="16.608848571777" rotX="359.53143310547" rotY="359.87951660156" rotZ="38.326354980469" color="42 42 0 0"/>
+<vehicle id="Perennial" model="404" posX="937.30657958984" posY="-1192.6652832031" posZ="18.426057815552" rotX="5.6357421875" rotY="5.5948181152344" rotZ="3.7131652832031" color="109 100 0 0"/>
+<vehicle id="Wayfarer" model="586" posX="938.052734375" posY="-1200.0789794922" posZ="17.378545761108" rotX="6.4090881347656" rotY="0.087432861328125" rotZ="359.14794921875" color="8 1 0 0"/>
+<vehicle id="Ambulance" model="416" posX="937.76751708984" posY="-1278.1079101563" posZ="15.198893547058" rotX="2.8550109863281" rotY="4.7792053222656" rotZ="358.61544799805" color="1 3 0 0"/>
+
+  </map>

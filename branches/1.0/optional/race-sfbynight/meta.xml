@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="SF by Night" author="erorr404" description="A challenging race across San Fierro at night." version="0" />
+  <map src="SF by Night.map" />
+  <settings>
+    <setting name="#time" value="2:0" />
+    <setting name="#weather" value="5" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#respawntime" value="20" />
+    <setting name="#duration" value="360" />
+  </settings>
+</meta>

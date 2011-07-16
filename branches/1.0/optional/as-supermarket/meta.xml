@@ -1,0 +1,6 @@
+<meta>
+    <info author="Ratt" type="map" gamemodes="assault" />
+    <map src="as-supermarket.map" />
+    <script src="as-supermarket.lua" />
+	<config src="help.xml" type="client" />
+</meta>

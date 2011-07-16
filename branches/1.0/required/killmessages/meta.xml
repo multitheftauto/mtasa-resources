@@ -1,0 +1,125 @@
+<meta>
+	<info author="Talidan + Iggy" type="script" version="2.0.1"/>
+	<script src="utils/textlib.lua" type="client"/>
+	<script src="utils/imagelib.lua" type="client"/>
+	<script src="killmessages_client.lua" type="client"/>
+	<script src="killmessages_server.lua" type="server"/>
+	<script src="gui.lua" type="client"/>
+	<script src="definitions.lua" type="client"/>
+	<!--All icons courtesy of Iggy-->
+	<file src="icons/fist.png"/>
+	<file src="icons/brassknuckle.png"/>
+	<file src="icons/golfclub.png"/>
+	<file src="icons/nitestick.png"/>
+	<file src="icons/knifecur.png"/>
+	<file src="icons/bat.png"/>
+	<file src="icons/shovel.png"/>
+	<file src="icons/poolcue.png"/>
+	<file src="icons/katana.png"/>
+	<file src="icons/chnsaw.png"/>
+	<file src="icons/gun_dildo1.png"/>
+	<file src="icons/gun_dildo2.png"/>
+	<file src="icons/gun_vibe1.png"/>
+	<file src="icons/flowera.png"/>
+	<file src="icons/gun_cane.png"/>
+	<file src="icons/grenade.png"/>
+	<file src="icons/teargas.png"/>
+	<file src="icons/molotov.png"/>
+	<file src="icons/colt45.png"/>
+	<file src="icons/Silenced.png"/>
+	<file src="icons/desert_eagle.png"/>
+	<file src="icons/chromegun.png"/>
+	<file src="icons/sawnoff.png"/>
+	<file src="icons/shotgspa.png"/>
+	<file src="icons/micro_uzi.png"/>
+	<file src="icons/mp5lng.png"/>
+	<file src="icons/ak47.png"/>
+	<file src="icons/m4.png"/>
+	<file src="icons/tec9.png"/>
+	<file src="icons/cuntgun.png"/>
+	<file src="icons/sniper.png"/>
+	<file src="icons/rocketla.png"/>
+	<file src="icons/heatseek.png"/>
+	<file src="icons/flame.png"/>
+	<file src="icons/minigun.png"/>
+	<file src="icons/satchel.png"/>
+	<file src="icons/explosion.png"/>
+	<file src="icons/suicide.png"/>
+	<file src="icons/rammed.png"/>
+	<file src="icons/hunter.png"/>
+	<file src="icons/fall.png"/>
+	<file src="icons/drowned.png"/>
+	<file src="icons/generic.png"/>
+	<file src="icons/headshot.png"/>
+	<file src="icons/406.png"/>
+	<file src="icons/408.png"/>
+	<file src="icons/416.png"/>
+	<file src="icons/417.png"/>
+	<file src="icons/423.png"/>
+	<file src="icons/424.png"/>
+	<file src="icons/427.png"/>
+	<file src="icons/428.png"/>
+	<file src="icons/429.png"/>
+	<file src="icons/432.png"/>
+	<file src="icons/433.png"/>
+	<file src="icons/434.png"/>
+	<file src="icons/441.png"/>
+	<file src="icons/443.png"/>
+	<file src="icons/448.png"/>
+	<file src="icons/457.png"/>
+	<file src="icons/460.png"/>
+	<file src="icons/462.png"/>
+	<file src="icons/463.png"/>
+	<file src="icons/464.png"/>
+	<file src="icons/468.png"/>
+	<file src="icons/470.png"/>
+	<file src="icons/471.png"/>
+	<file src="icons/480.png"/>
+	<file src="icons/485.png"/>
+	<file src="icons/486.png"/>
+	<file src="icons/508.png"/>
+	<file src="icons/511.png"/>
+	<file src="icons/512.png"/>
+	<file src="icons/513.png"/>
+	<file src="icons/520.png"/>
+	<file src="icons/524.png"/>
+	<file src="icons/528.png"/>
+	<file src="icons/530.png"/>
+	<file src="icons/531.png"/>
+	<file src="icons/532.png"/>
+	<file src="icons/539.png"/>
+	<file src="icons/564.png"/>
+	<file src="icons/568.png"/>
+	<file src="icons/571.png"/>
+	<file src="icons/572.png"/>
+	<file src="icons/573.png"/>
+	<file src="icons/574.png"/>
+	<file src="icons/578.png"/>
+	<file src="icons/588.png"/>
+	<file src="icons/593.png"/>
+	<file src="icons/599.png"/>
+	<file src="icons/bigtruck.png"/>
+	<file src="icons/bike.png"/>
+	<file src="icons/boat.png"/>
+	<file src="icons/boxtruck.png"/>
+	<file src="icons/bus.png"/>
+	<file src="icons/cars.png"/>
+	<file src="icons/copcar.png"/>
+	<file src="icons/crotchrocket.png"/>
+	<file src="icons/firetruck.png"/>
+	<file src="icons/maverick.png"/>
+	<file src="icons/monstertruck.png"/>
+	<file src="icons/plane.png"/>
+	<file src="icons/rccopter.png"/>
+	<file src="icons/roundvan.png"/>
+	<file src="icons/sparrow.png"/>
+	<file src="icons/train.png"/>
+	<file src="icons/fireextinguisher.png"/>
+
+	<export function="outputMessage" type="server"/>
+	<export function="outputMessage" type="client"/>
+	<export function="outputKillMessage" type="server"/>
+	<export function="outputKillMessage" type="client"/>
+	<export function="setKillMessageStyle" type="client"/>
+	<export function="setKillMessageStyle" type="server"/>
+</meta>

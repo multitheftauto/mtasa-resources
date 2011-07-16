@@ -1,0 +1,13 @@
+<meta>
+    <info author="Coookie" description="CoookiePirates" version="1" type="map" gamemodes="stealth"/>
+	<map src="sth-CoookiePirates.map"/>
+
+	<script src="piratescars.lua" />
+	<script src="cars.lua" type="Client" />
+	<script src="cars2.lua" />
+	<settings>
+		<setting name="#time" value="06:00" />
+		<setting name="#weather" value="[4]" />
+		<setting name="#waveheight" value="[00]" />
+	</settings>
+</meta>

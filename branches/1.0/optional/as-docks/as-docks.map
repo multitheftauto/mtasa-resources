@@ -1,0 +1,168 @@
+<map mod="deathmatch" version="1.0">
+
+	<meta>
+		<author>BB101</author>
+		<version>1.0</version>
+		<name>Docks</name>
+		<description>The rednecks have stolen the weed, get it back</description>
+	</meta>
+
+	<assaultSettings timelimit="600" finishType="objective" finishObjective="chimney" author="BB101"
+		time="23:00" weather="9" description="The rednecks have stolen the weed, get it back" />
+	
+	<camera posX="2648.0" posY="-2276.6" posZ="80.3"
+		targetX="2770.2" targetY="-2437.6" targetZ="13.6" type="spawn" />
+	<camera posX="2648.0" posY="-2276.6" posZ="80.3"
+		targetX="2770.2" targetY="-2437.6" targetZ="13.6" type="selectTeam" />
+	<camera posX="2900.6" posY="-2313.8" posZ="89.0"
+		targetX="2804.6" targetY="-2437.1" targetZ="13.6" type="finish" />
+
+
+	<spawngroup type="attacker" req="">
+		<spawnarea posX="2255.2829589844" posY="-2597.3410644531" posZ="7.8724122047424" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2255.4260253906" posY="-2610.5500488281" posZ="7.8724122047424" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2271.6975097656" posY="-2569.3381347656" posZ="7.8724122047424" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	</spawngroup>
+	<spawngroup type="attacker" req="crane">
+		<spawnarea posX="2378.6672363281" posY="-2675.2712402344" posZ="13.225337028503" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2390.7661132813" posY="-2686.4162597656" posZ="13.221364021301" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	</spawngroup>
+	<spawngroup type="attacker" req="emptywarehouse">
+		<spawnarea posX="2416.6901855469" posY="-2452.8032226563" posZ="13.627876281738" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2431.5878906250" posY="-2467.8208007813" posZ="13.632774353027" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2406.0373535156" posY="-2476.9370117188" posZ="13.630989074707" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	</spawngroup>
+	<spawngroup type="attacker" req="landing">
+		<spawnarea posX="2606.5617675781" posY="-2461.7009277344" posZ="8.0919113159180" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2592.8227539063" posY="-2461.3054199219" posZ="3.0000000000000" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2635.1435546875" posY="-2458.2248535156" posZ="13.632812500000" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	</spawngroup>
+	<spawngroup type="attacker" req="storebuilding">
+		<spawnarea posX="2776.8986816406" posY="-2465.7636718750" posZ="13.648437500000" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2776.8986816406" posY="-2427.8469238281" posZ="13.636352539063" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2776.8986816406" posY="-2484.3718261719" posZ="13.644185066223" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	</spawngroup>
+	<spawngroup type="attacker" req="anchor">
+		<spawnarea posX="2842.3647460938" posY="-2526.2685546875" posZ="17.815242767334" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2825.0007324219" posY="-2522.1721191406" posZ="17.748908996582" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+		<spawnarea posX="2845.1433105469" posY="-2520.7841796875" posZ="17.748908996582" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	</spawngroup>
+	<spawngroup type="defender" req="">
+		<spawnarea posX="2378.6672363281" posY="-2675.2712402344" posZ="13.225337028503" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+		<spawnarea posX="2390.7661132813" posY="-2686.4162597656" posZ="13.221364021301" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	</spawngroup>
+	<spawngroup type="defender" req="crane">
+		<spawnarea posX="2527.8571777344" posY="-2527.7194824219" posZ="13.660000000000" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+		<spawnarea posX="2527.5410156250" posY="-2552.6442871094" posZ="13.660000000000" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	</spawngroup>
+	<spawngroup type="defender" req="barracks">
+		<spawnarea posX="2635.1105957031" posY="-2462.4536132813" posZ="3.0000000000000" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+		<spawnarea posX="2639.6818847656" posY="-2386.0551757813" posZ="13.632812500000" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	</spawngroup>
+	<spawngroup type="defender" req="landing">
+		<spawnarea posX="2776.8986816406" posY="-2465.7636718750" posZ="13.648437500000" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+		<spawnarea posX="2776.8986816406" posY="-2427.8469238281" posZ="13.636352539063" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+		<spawnarea posX="2776.8986816406" posY="-2484.3718261719" posZ="13.644185066223" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	</spawngroup>
+	<spawngroup type="defender" req="storebuilding">
+		<spawnarea posX="2837.1372070313" posY="-2376.9409179688" posZ="12.074504852295" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+		<spawnarea posX="2838.1184082031" posY="-2336.6904296875" posZ="12.047684669495" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+		<spawnarea posX="2848.4194335938" posY="-2363.3398437500" posZ="22.798677444458" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	</spawngroup>
+	<attackerSpawn posX="2255.2829589844" posY="-2597.3410644531" posZ="7.8724122047424" req="" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2255.4260253906" posY="-2610.5500488281" posZ="7.8724122047424" req="" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2271.6975097656" posY="-2569.3381347656" posZ="7.8724122047424" req="" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2378.6672363281" posY="-2675.2712402344" posZ="13.225337028503" req="crane" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2390.7661132813" posY="-2686.4162597656" posZ="13.221364021301" req="crane" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2416.6901855469" posY="-2452.8032226563" posZ="13.627876281738" req="emptywarehouse" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2431.5878906250" posY="-2467.8208007813" posZ="13.632774353027" req="emptywarehouse" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2406.0373535156" posY="-2476.9370117188" posZ="13.630989074707" req="emptywarehouse" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2606.5617675781" posY="-2461.7009277344" posZ="8.0919113159180" req="landing" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2592.8227539063" posY="-2461.3054199219" posZ="3.0000000000000" req="landing" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2635.1435546875" posY="-2458.2248535156" posZ="13.632812500000" req="landing" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2776.8986816406" posY="-2465.7636718750" posZ="13.648437500000" req="storebuilding" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2776.8986816406" posY="-2427.8469238281" posZ="13.636352539063" req="storebuilding" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2776.8986816406" posY="-2484.3718261719" posZ="13.644185066223" req="storebuilding" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2842.3647460938" posY="-2526.2685546875" posZ="17.815242767334" req="anchor" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2825.0007324219" posY="-2522.1721191406" posZ="17.748908996582" req="anchor" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<attackerSpawn posX="2845.1433105469" posY="-2520.7841796875" posZ="17.748908996582" req="anchor" weapons="4,1;24,28;30,500;16,2" skins="108,109,110" />
+	<defenderSpawn posX="2378.6672363281" posY="-2675.2712402344" posZ="13.225337028503" req="" weapons="6,1;26,24;33,50;18,2" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2390.7661132813" posY="-2686.4162597656" posZ="13.221364021301" req="" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2527.8571777344" posY="-2527.7194824219" posZ="13.660000000000" req="crane" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2527.5410156250" posY="-2552.6442871094" posZ="13.660000000000" req="crane" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2635.1105957031" posY="-2462.4536132813" posZ="3.0000000000000" req="barracks" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2639.6818847656" posY="-2386.0551757813" posZ="13.632812500000" req="barracks" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2776.8986816406" posY="-2465.7636718750" posZ="13.648437500000" req="landing" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2776.8986816406" posY="-2427.8469238281" posZ="13.636352539063" req="landing" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2776.8986816406" posY="-2484.3718261719" posZ="13.644185066223" req="landing" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2837.1372070313" posY="-2376.9409179688" posZ="12.074504852295" req="storebuilding" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2838.1184082031" posY="-2336.6904296875" posZ="12.047684669495" req="storebuilding" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+	<defenderSpawn posX="2848.4194335938" posY="-2363.3398437500" posZ="22.798677444458" req="storebuilding" weapons="6,1;26,24;33,50;18,5" skins="158,159,160,161,162" />
+
+	<objective name="Crane" description="Sabotage the crane to prevent the enemy crew from loading the goods"
+		posX="2380.9250488281" posY="-2689.5749511719" posZ="12.5" id="crane" req="" />
+	<objective name="Empty Warehouse" description="Storm the warehouse" stay="15" stayText="Assaulting"
+		successText="Secured the area" id="emptywarehouse" req="crane" posX="2413.7907714844" posY="-2471.3579101563" posZ="12.6" />
+	<objective name="Barracks" description="Burn down their barracks" stay="3" stayText="Preparing Gasoline..."
+		successText="Ignited the gasoline!" id="barracks" req="emptywarehouse" posX="2538.7834472656" posY="-2536.7368164063" posZ="12.5" />
+	<objective name="Landing" description="Get the boats to prevent them from escaping" stay="3" stayText="Securing"
+		successText="Got the boats" id="landing" req="barracks" posX="2622.3081054688" posY="-2462.0231933594" posZ="12" />
+	<objective name="Eastern Docks" description="Secure the control room" stay="5" stayText="Securing"
+		successText="Search and Secure complete!" id="storebuilding" req="landing" posX="2730.9633789063" posY="-2450.158203125" posZ="16.5" />
+	<objective name="Front Anchor" description="Lock the anchor to prevent cheap escape" stay="5" stayText="Jamming..."
+		successText="Anchor jammed!" id="anchor" req="storebuilding" posX="2837.8015136719" posY="-2541.8510742188" posZ="17.3" />
+	<objective name="Bridge" description="Get controll of their Ship" stay="5" stayText="Planting..."
+		successText="Bridge Secured!" id="chimney" req="anchor" posX="2837.9565429688" posY="-2363.5166015625" posZ="30" />
+
+	<pickup name="Sniper" posX="2274.5692382813" posY="-2563.45" posZ="18.8" type="weapon" weapon="34" ammo="25" respawn="60000" />
+	<pickup name="Grenades" posX="2837.8713378906" posY="-2519.6989746094" posZ="21.0" type="weapon" weapon="16" ammo="5" respawn="10000" />
+	<pickup name="Minigun" posX="2839.6149902344" posY="-2377.3361816406" posZ="20.0" type="weapon" weapon="38" ammo="25" respawn="10000" />
+
+	<vehicle name="Vortex1" posX="2261.734130" posY="-2570.097656" posZ="9.432775" model="539" rotX="" rotY="" rotZ="90.0" />
+	<vehicle name="Vortex2" posX="2259.782714" posY="-2560.717285" posZ="9.303191" model="539" rotX="" rotY="" rotZ="90.0" />
+	<vehicle name="Burrito1" posX="2261.486816" posY="-2591.980224" posZ="9.419463" model="482" rotX="" rotY="" rotZ="90.0" />
+	<vehicle name="Burrito2" posX="2246.755371" posY="-2561.979736" posZ="9.304687" model="482" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Burrito3" posX="2245.857421" posY="-2588.710205" posZ="9.301453" model="482" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Savannah1" posX="2261.442871" posY="-2626.779296" posZ="14.585426" model="567" rotX="" rotY="0" rotZ="90.0" />
+	<vehicle name="Walton1" posX="2391.349853" posY="-2668.437011" posZ="13.664062" model="478" rotX="" rotY="" rotZ="90.0" />
+	<vehicle name="Walton2" posX="2404.099365" posY="-2668.485351" posZ="13.664062" model="478" rotX="" rotY="" rotZ="90.0" />
+	<vehicle name="Sadler1" posX="2388.806152" posY="-2657.792968" posZ="13.664062" model="605" rotX="" rotY="" rotZ="270.0" />
+	<vehicle name="Sadler2" posX="2403.074951" posY="-2657.998779" posZ="13.664062" model="605" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Sanchez1" posX="2779.160888" posY="-2448.391113" posZ="13.635770" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez2" posX="2779.067138" posY="-2464.432128" posZ="13.635793" model="468" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Sanchez3" posX="2787.847412" posY="-2447.161621" posZ="13.633648" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez4" posX="2787.812011" posY="-2464.254150" posZ="13.633657" model="468" rotX="" rotY="" rotZ="0.0" />
+	<vehicle name="Sanchez5" posX="2795.515625" posY="-2448.417724" posZ="13.631776" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez6" posX="2795.595214" posY="-2464.672119" posZ="13.631757" model="468" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Sanchez7" posX="2795.482421875" posY="-2486.7106933594" posZ="13.655770" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez8" posX="2779.9011230469" posY="-2502.0991210938" posZ="13.655793" model="468" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Sanchez9" posX="2780.3559570313" posY="-2486.2631835938" posZ="13.653648" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez10" posX="2787.8103027344" posY="-2501.7551269531" posZ="13.653657" model="468" rotX="" rotY="" rotZ="0.0" />
+	<vehicle name="Sanchez11" posX="2788.0161132813" posY="-2486.4636230469" posZ="13.651776" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez12" posX="2795.677734375" posY="-2502.2736816406" posZ="13.651757" model="468" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Sanchez13" posX="2779.126953125" posY="-2409.3701171875" posZ="13.635770" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez14" posX="2794.7109375" posY="-2426.0852050781" posZ="13.635793" model="468" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Sanchez15" posX="2795.4565429688" posY="-2409.68359375" posZ="13.633648" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez16" posX="2787.6586914063" posY="-2426.8999023438" posZ="13.633657" model="468" rotX="" rotY="" rotZ="0.0" />
+	<vehicle name="Sanchez17" posX="2787.7976074219" posY="-2409.7250976563" posZ="13.631776" model="468" rotX="" rotY="" rotZ="180.0" />
+	<vehicle name="Sanchez18" posX="2779.3894042969" posY="-2425.7727050781" posZ="13.631757" model="468" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Sultan1" posX="2416.0" posY="-2460.0" posZ="13.6" model="560" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Sultan2" posX="2412.0" posY="-2463.0" posZ="13.6" model="560" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Sultan3" posX="2408.0" posY="-2467.0" posZ="13.6" model="560" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Sultan5" posX="2404.0" posY="-2470.0" posZ="13.6" model="560" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Savannah2" posX="2600.0080566406" posY="-2429.2727050781" posZ="13.254539489746" model="567" rotX="" rotY="0" rotZ="320.0" />
+	<vehicle name="Pony1" posX="2568.3676757813" posY="-2418.2333984375" posZ="13.339334487915" model="413" rotX="" rotY="0" rotZ="320.0" />
+	<vehicle name="Pony2" posX="2557.0727539063" posY="-2406.4858398438" posZ="13.339883804321" model="413" rotX="" rotY="0" rotZ="320.0" />
+	<vehicle name="Linerunner1" posX="2590.8610839844" posY="-2412.4545898438" posZ="13.537014961243" model="403" rotX="" rotY="0" rotZ="40.0" />
+	<vehicle name="Dinghy1" posX="2595.0251464844" posY="-2475.9072265625" posZ="0.0" model="473" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Dinghy2" posX="2605.1398925781" posY="-2476.0922851563" posZ="0.0" model="473" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Dinghy3" posX="2615.1196289063" posY="-2476.2475585938" posZ="0.0" model="473" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Dinghy4" posX="2623.9638671875" posY="-2476.4157714844" posZ="0.0" model="473" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Dinghy5" posX="2632.2465820313" posY="-2476.5422363281" posZ="0.0" model="473" rotX="" rotY="0" rotZ="270.0" />
+	<vehicle name="Dinghy6" posX="2817.5048828125" posY="-2390.9443359375" posZ="0.0" model="473" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Dinghy7" posX="2817.5048828125" posY="-2382.0725097656" posZ="0.0" model="473" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Dinghy8" posX="2817.5048828125" posY="-2442.8935546875" posZ="0.0" model="473" rotX="" rotY="0" rotZ="0.0" />
+	<vehicle name="Dinghy9" posX="2817.5048828125" posY="-2434.2031250000" posZ="0.0" model="473" rotX="" rotY="0" rotZ="0.0" />
+
+</map>
+

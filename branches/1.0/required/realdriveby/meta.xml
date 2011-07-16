@@ -1,0 +1,44 @@
+<meta>
+	<info author="Talidan" name="RealDriveby" description="Real drive-bys" type="script" version="2.0.0" />
+	<script src="driveby_client.lua" type="client" />
+	<script src="exports_client.lua" type="client" />
+	<script src="driveby_server.lua" type="server" />
+	
+	<!--utils-->
+	<script src="utils/textlib.lua" type="client" />
+	<script src="utils/client_anim.lua" type="client" />
+	<script src="utils/textlib_anim.lua" type="client" />
+	
+	<settings>
+		<!--Weapon ids that the driver can use.  For no weapons just use "[[ ]]"-->
+		<setting name="driveby_driver" value="[[ 22,23,24,26,28,29,32 ]]"/>
+		
+		<!--Weapon ids that passngers can use-->
+		<setting name="driveby_passenger" value="[[ 22,23,24,25,26,28,29,32,30,31,33 ]]"/>
+		
+		<!--Defines the shot delay for individual weapons that arent meant for driveby, in the format of 'weapon':time(ms)-->
+		<setting name="driveby_shot_delay" value="[{ '22':300,'23':300,'24':800,'26':700 }]"/>
+		
+		<!--Vehicles that cannot be drivebyd inside-->
+		<setting name="driveby_blocked_vehicles" value="[[ 432,601,437,431,592,553,577,488,497,548,563,512,476,447,425,519,520,460,417,469,487,513,441,464,501,465,564,538,449,537,539,570472,473,493,595,484,430,453,452,446,454,606,591,607,611,610,590,569,611,435,608,584,450 ]]"/>
+		
+		<!--Whether or not turning should be enabled for vehicles (excluding bikes) while in driveby mode-->
+		<setting name="driveby_steer_cars" value="[true]"/>
+		
+		<!--Whether or not turning should be enabled for bikes/motorbikes while in driveby mode-->
+		<setting name="driveby_steer_bikes" value="[true]"/>
+		
+		<!--Whether a weapon should be equiped as soon as you enter a vehicle. -->
+		<setting name="driveby_auto_equip" value="[false]"/>
+	</settings>
+	<export function="setDriverDrivebyAbility" type="client" />
+	<export function="setPassengerDrivebyAbility" type="client" />
+	<export function="getDriverDrivebyAbility" type="client" />
+	<export function="getPassengerDrivebyAbility" type="client" />
+	<export function="setWeaponShotDelay" type="client" />
+	<export function="getWeaponShotDelay" type="client" />
+	<export function="setDrivebySteeringAbility" type="client" />
+	<export function="getDrivebySteeringAbility" type="client" />
+	<export function="setDrivebyAutoEquip" type="client" />
+	<export function="getDrivebyAutoEquip" type="client" />
+</meta>

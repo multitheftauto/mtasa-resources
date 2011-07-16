@@ -1,0 +1,29 @@
+<help popup="no">
+The following votes are handled by this manager:
+
+/votemap *
+Starts a vote to launch a random map running on the current gamemode.
+
+/votemap some_gamemode some_map
+Starts a vote to launch "some_map" running on the gamemode "some_gamemode".
+
+/votemap some_map
+Starts a vote to launch "some_map" running on the current gamemode.
+
+/votemap some_gamemode
+Starts a vote to launch a map compatible with "some_gamemode".
+
+/votemode
+Starts a vote to launch a gamemode and a map compatible with it.
+
+/votekick playername [reason]
+Starts a vote to kill the player by the specified name.
+
+/voteban playername [reason]
+Starts a vote to kill the player by the specified name.
+
+/votekill playername [reason]
+Starts a vote to kill the player by the specified name.
+
+Note that some of these modes may be disabled in your current server.
+</help>

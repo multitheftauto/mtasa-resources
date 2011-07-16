@@ -1,0 +1,290 @@
+<meta>
+	<info author="Talidan, jbeta" description="Map editor GUI" />
+	<!--required resources-->
+	<include resource="msgbox" />
+	<include resource="tooltip" />
+	<!--clientside logic-->
+		<!--client utils-->
+<!-- 		<script src="crun.client.lua" type="client"/> -->
+		<script src="client/orderedPairs.lua" type="client"/>
+		<script src="client/vehicleupgrades.lua" type="client"/>
+		<script src="client/editingControls.lua" type="client"/>
+		<script src="client/controlinterface.lua" type="client"/>
+		<script src="client/interface.lua" type="client"/>
+		<script src="client/client_anim.lua" type="client"/>
+	<script src="client/me_gui.lua" type="client"/>
+	<script src="client/buttonclicked.lua" type="client"/>
+	<script src="client/highlighting.lua" type="client"/>
+	<script src="client/guiGetMouseOverElement.lua" type="client"/>
+	<script src="client/orderedPairs.lua" type="client"/>
+	<script src="client/elementproperties.lua" type="client"/>
+	<script src="client/options_gui.lua" type="client"/>
+	<script src="client/options_backend.lua" type="client"/>
+	<script src="client/options_action.lua" type="client"/>
+	<script src="client/locations.lua" type="client"/>
+	<config src="client/presets.xml" type="client"/>
+	<script src="client/mapsettings_gui.lua" type="client"/>
+	<script src="client/mapsettings_backend.lua" type="client"/>
+	<script src="client/mapsettings_gamemodesettings.lua" type="client"/>
+	<script src="client/definitions.lua" type="client"/>
+	<script src="client/save.lua" type="client"/>
+	<script src="client/load.lua" type="client"/>
+	<script src="client/test.lua" type="client"/>
+	<script src="client/autosnap.lua" type="client"/>
+	<script src="client/currentbrowser.lua" type="client"/>
+	<script src="client/guiworldclick.lua" type="client"/>
+	<script src="client/disablegui.lua" type="client"/>
+	<script src="client/vehicleupgrades.lua" type="client"/>
+	<script src="client/tutorialfunctions.lua" type="client"/>
+	<script src="client/tutorialdefinition.lua" type="client"/>
+	<script src="client/outputmessage.lua" type="client"/>
+	<script src="client/welcome.lua" type="client"/>
+	<script src="client/getCameraRotation.lua" type="client" validate="false"/>
+	<!--serverside exports-->
+	<export function="loadsave_getResources" type="server"/>
+	<export function="outputMessage" type="server"/>
+	<!--clientside exports-->
+	<export function="outputMessage" type="client"/>
+	<export function="setGUIShowing" type="client"/>
+	<export function="setHUDAlpha" type="client"/>
+	<export function="guiGetMouseOverElement" type="client"/>
+	<export function="closeSaveDialog" type="client"/>
+	<export function="closeLoadDialog" type="client"/>
+	<export function="guiGetMouseOverElement" type="client"/>
+	<export function="guiShowMessageBox" type="client"/>
+	<export function="openPropertiesBox" type="client"/>
+	<export function="restoreSaveDialog" type="client"/>
+	<export function="stopTest" type="client"/>
+	<!--Browser-->
+	<script src="client/browser/browserList.lua" type="client"/>
+	<script src="client/browser/browser.lua" type="client"/>
+	<script src="client/browser/previewelement.lua" type="client"/>
+	<script src="client/browser/clientsearch.lua" type="client"/>
+	<script src="client/browser/freelook.lua" type="client"/> <!--Credits to norby89-->
+	<config src="client/browser/objects.xml" type="client"/> <!--Credits to Fusion and the rest of the alw crew for new categories-->
+	<config src="client/browser/skins.xml" type="client"/> <!--Credits to Slothman-->
+	<config src="client/browser/vehicles.xml" type="client"/>
+	<!--serverside logic-->
+	<script src="server/guiserverlink.lua" type="server"/>
+<!-- 	<script src="run.server.lua" type="server"/> -->
+	<script src="server/interface.lua" type="server"/>
+	<!--gui icons-->
+	<!--Most icons courtesy of the Evaraldo Crystal icon gallery-->
+	<file src="client/images/select.png"/>
+	<file src="client/images/line.png"/>
+
+	<file src="client/images/elementmenu/generic.png"/>
+	
+	<file src="client/images/topmenu/second/current_elements.png"/>
+	<file src="client/images/topmenu/second/map_settings.png"/>
+	<file src="client/images/topmenu/second/definitions.png"/>
+	<file src="client/images/topmenu/second/test.png"/> <!--From the Tango Icon library-->
+	
+	<file src="client/images/topmenu/new.png"/>
+	<file src="client/images/topmenu/open.png"/>
+	<file src="client/images/topmenu/save.png"/>
+	<file src="client/images/topmenu/save_as.png"/>
+	<file src="client/images/topmenu/options.png"/>
+	<file src="client/images/topmenu/undo.png"/> <!--From the Tango Icon library-->
+	<file src="client/images/topmenu/redo.png"/>  <!--From the Tango Icon library-->
+	<file src="client/images/topmenu/locations.png"/> 
+	
+	<!--vehicle colors-->
+	<file src="client/images/vcolors/vcolor_0.png"/>
+	<file src="client/images/vcolors/vcolor_1.png"/>
+	<file src="client/images/vcolors/vcolor_2.png"/>
+	<file src="client/images/vcolors/vcolor_3.png"/>
+	<file src="client/images/vcolors/vcolor_4.png"/>
+	<file src="client/images/vcolors/vcolor_5.png"/>
+	<file src="client/images/vcolors/vcolor_6.png"/>
+	<file src="client/images/vcolors/vcolor_7.png"/>
+	<file src="client/images/vcolors/vcolor_8.png"/>
+	<file src="client/images/vcolors/vcolor_9.png"/>
+	<file src="client/images/vcolors/vcolor_10.png"/>
+	<file src="client/images/vcolors/vcolor_11.png"/>
+	<file src="client/images/vcolors/vcolor_12.png"/>
+	<file src="client/images/vcolors/vcolor_13.png"/>
+	<file src="client/images/vcolors/vcolor_14.png"/>
+	<file src="client/images/vcolors/vcolor_15.png"/>
+	<file src="client/images/vcolors/vcolor_16.png"/>
+	<file src="client/images/vcolors/vcolor_17.png"/>
+	<file src="client/images/vcolors/vcolor_18.png"/>
+	<file src="client/images/vcolors/vcolor_19.png"/>
+	<file src="client/images/vcolors/vcolor_20.png"/>
+	<file src="client/images/vcolors/vcolor_21.png"/>
+	<file src="client/images/vcolors/vcolor_22.png"/>
+	<file src="client/images/vcolors/vcolor_23.png"/>
+	<file src="client/images/vcolors/vcolor_24.png"/>
+	<file src="client/images/vcolors/vcolor_25.png"/>
+	<file src="client/images/vcolors/vcolor_26.png"/>
+	<file src="client/images/vcolors/vcolor_27.png"/>
+	<file src="client/images/vcolors/vcolor_28.png"/>
+	<file src="client/images/vcolors/vcolor_29.png"/>
+	<file src="client/images/vcolors/vcolor_30.png"/>
+	<file src="client/images/vcolors/vcolor_31.png"/>
+	<file src="client/images/vcolors/vcolor_32.png"/>
+	<file src="client/images/vcolors/vcolor_33.png"/>
+	<file src="client/images/vcolors/vcolor_34.png"/>
+	<file src="client/images/vcolors/vcolor_35.png"/>
+	<file src="client/images/vcolors/vcolor_36.png"/>
+	<file src="client/images/vcolors/vcolor_37.png"/>
+	<file src="client/images/vcolors/vcolor_38.png"/>
+	<file src="client/images/vcolors/vcolor_39.png"/>
+	<file src="client/images/vcolors/vcolor_40.png"/>
+	<file src="client/images/vcolors/vcolor_41.png"/>
+	<file src="client/images/vcolors/vcolor_42.png"/>
+	<file src="client/images/vcolors/vcolor_43.png"/>
+	<file src="client/images/vcolors/vcolor_44.png"/>
+	<file src="client/images/vcolors/vcolor_45.png"/>
+	<file src="client/images/vcolors/vcolor_46.png"/>
+	<file src="client/images/vcolors/vcolor_47.png"/>
+	<file src="client/images/vcolors/vcolor_48.png"/>
+	<file src="client/images/vcolors/vcolor_49.png"/>
+	<file src="client/images/vcolors/vcolor_50.png"/>
+	<file src="client/images/vcolors/vcolor_51.png"/>
+	<file src="client/images/vcolors/vcolor_52.png"/>
+	<file src="client/images/vcolors/vcolor_53.png"/>
+	<file src="client/images/vcolors/vcolor_54.png"/>
+	<file src="client/images/vcolors/vcolor_55.png"/>
+	<file src="client/images/vcolors/vcolor_56.png"/>
+	<file src="client/images/vcolors/vcolor_57.png"/>
+	<file src="client/images/vcolors/vcolor_58.png"/>
+	<file src="client/images/vcolors/vcolor_59.png"/>
+	<file src="client/images/vcolors/vcolor_60.png"/>
+	<file src="client/images/vcolors/vcolor_61.png"/>
+	<file src="client/images/vcolors/vcolor_62.png"/>
+	<file src="client/images/vcolors/vcolor_63.png"/>
+	<file src="client/images/vcolors/vcolor_64.png"/>
+	<file src="client/images/vcolors/vcolor_65.png"/>
+	<file src="client/images/vcolors/vcolor_66.png"/>
+	<file src="client/images/vcolors/vcolor_67.png"/>
+	<file src="client/images/vcolors/vcolor_68.png"/>
+	<file src="client/images/vcolors/vcolor_69.png"/>
+	<file src="client/images/vcolors/vcolor_70.png"/>
+	<file src="client/images/vcolors/vcolor_71.png"/>
+	<file src="client/images/vcolors/vcolor_72.png"/>
+	<file src="client/images/vcolors/vcolor_73.png"/>
+	<file src="client/images/vcolors/vcolor_74.png"/>
+	<file src="client/images/vcolors/vcolor_75.png"/>
+	<file src="client/images/vcolors/vcolor_76.png"/>
+	<file src="client/images/vcolors/vcolor_77.png"/>
+	<file src="client/images/vcolors/vcolor_78.png"/>
+	<file src="client/images/vcolors/vcolor_79.png"/>
+	<file src="client/images/vcolors/vcolor_80.png"/>
+	<file src="client/images/vcolors/vcolor_81.png"/>
+	<file src="client/images/vcolors/vcolor_82.png"/>
+	<file src="client/images/vcolors/vcolor_83.png"/>
+	<file src="client/images/vcolors/vcolor_84.png"/>
+	<file src="client/images/vcolors/vcolor_85.png"/>
+	<file src="client/images/vcolors/vcolor_86.png"/>
+	<file src="client/images/vcolors/vcolor_87.png"/>
+	<file src="client/images/vcolors/vcolor_88.png"/>
+	<file src="client/images/vcolors/vcolor_89.png"/>
+	<file src="client/images/vcolors/vcolor_90.png"/>
+	<file src="client/images/vcolors/vcolor_91.png"/>
+	<file src="client/images/vcolors/vcolor_92.png"/>
+	<file src="client/images/vcolors/vcolor_93.png"/>
+	<file src="client/images/vcolors/vcolor_94.png"/>
+	<file src="client/images/vcolors/vcolor_95.png"/>
+	<file src="client/images/vcolors/vcolor_96.png"/>
+	<file src="client/images/vcolors/vcolor_97.png"/>
+	<file src="client/images/vcolors/vcolor_98.png"/>
+	<file src="client/images/vcolors/vcolor_99.png"/>
+	<file src="client/images/vcolors/vcolor_100.png"/>
+	<file src="client/images/vcolors/vcolor_101.png"/>
+	<file src="client/images/vcolors/vcolor_102.png"/>
+	<file src="client/images/vcolors/vcolor_103.png"/>
+	<file src="client/images/vcolors/vcolor_104.png"/>
+	<file src="client/images/vcolors/vcolor_105.png"/>
+	<file src="client/images/vcolors/vcolor_106.png"/>
+	<file src="client/images/vcolors/vcolor_107.png"/>
+	<file src="client/images/vcolors/vcolor_108.png"/>
+	<file src="client/images/vcolors/vcolor_109.png"/>
+	<file src="client/images/vcolors/vcolor_110.png"/>
+	<file src="client/images/vcolors/vcolor_111.png"/>
+	<file src="client/images/vcolors/vcolor_112.png"/>
+	<file src="client/images/vcolors/vcolor_113.png"/>
+	<file src="client/images/vcolors/vcolor_114.png"/>
+	<file src="client/images/vcolors/vcolor_115.png"/>
+	<file src="client/images/vcolors/vcolor_116.png"/>
+	<file src="client/images/vcolors/vcolor_117.png"/>
+	<file src="client/images/vcolors/vcolor_118.png"/>
+	<file src="client/images/vcolors/vcolor_119.png"/>
+	<file src="client/images/vcolors/vcolor_120.png"/>
+	<file src="client/images/vcolors/vcolor_121.png"/>
+	<file src="client/images/vcolors/vcolor_122.png"/>
+	<file src="client/images/vcolors/vcolor_123.png"/>
+	<file src="client/images/vcolors/vcolor_124.png"/>
+	<file src="client/images/vcolors/vcolor_125.png"/>
+	<file src="client/images/vcolors/vcolor_126.png"/>
+
+	<!-- Blips -->
+	<file src="client/images/blips/0.png"/>
+	<file src="client/images/blips/1.png"/>
+	<file src="client/images/blips/2.png"/>
+	<file src="client/images/blips/3.png"/>
+	<file src="client/images/blips/4.png"/>
+	<file src="client/images/blips/5.png"/>
+	<file src="client/images/blips/6.png"/>
+	<file src="client/images/blips/7.png"/>
+	<file src="client/images/blips/8.png"/>
+	<file src="client/images/blips/9.png"/>
+	<file src="client/images/blips/10.png"/>
+	<file src="client/images/blips/11.png"/>
+	<file src="client/images/blips/12.png"/>
+	<file src="client/images/blips/13.png"/>
+	<file src="client/images/blips/14.png"/>
+	<file src="client/images/blips/15.png"/>
+	<file src="client/images/blips/16.png"/>
+	<file src="client/images/blips/17.png"/>
+	<file src="client/images/blips/18.png"/>
+	<file src="client/images/blips/19.png"/>
+	<file src="client/images/blips/20.png"/>
+	<file src="client/images/blips/21.png"/>
+	<file src="client/images/blips/22.png"/>
+	<file src="client/images/blips/23.png"/>
+	<file src="client/images/blips/24.png"/>
+	<file src="client/images/blips/25.png"/>
+	<file src="client/images/blips/26.png"/>
+	<file src="client/images/blips/27.png"/>
+	<file src="client/images/blips/28.png"/>
+	<file src="client/images/blips/29.png"/>
+	<file src="client/images/blips/30.png"/>
+	<file src="client/images/blips/31.png"/>
+	<file src="client/images/blips/32.png"/>
+	<file src="client/images/blips/33.png"/>
+	<file src="client/images/blips/34.png"/>
+	<file src="client/images/blips/35.png"/>
+	<file src="client/images/blips/36.png"/>
+	<file src="client/images/blips/37.png"/>
+	<file src="client/images/blips/38.png"/>
+	<file src="client/images/blips/39.png"/>
+	<file src="client/images/blips/40.png"/>
+	<file src="client/images/blips/41.png"/>
+	<file src="client/images/blips/42.png"/>
+	<file src="client/images/blips/43.png"/>
+	<file src="client/images/blips/44.png"/>
+	<file src="client/images/blips/45.png"/>
+	<file src="client/images/blips/46.png"/>
+	<file src="client/images/blips/47.png"/>
+	<file src="client/images/blips/48.png"/>
+	<file src="client/images/blips/49.png"/>
+	<file src="client/images/blips/50.png"/>
+	<file src="client/images/blips/51.png"/>
+	<file src="client/images/blips/52.png"/>
+	<file src="client/images/blips/53.png"/>
+	<file src="client/images/blips/54.png"/>
+	<file src="client/images/blips/55.png"/>
+	<file src="client/images/blips/56.png"/>
+	<file src="client/images/blips/57.png"/>
+	<file src="client/images/blips/58.png"/>
+	<file src="client/images/blips/59.png"/>
+	<file src="client/images/blips/60.png"/>
+	<file src="client/images/blips/61.png"/>
+	<file src="client/images/blips/62.png"/>
+	<file src="client/images/blips/63.png"/>
+
+	<!-- Palette -->
+	<file src="client/images/palette.png"/>
+	<file src="client/images/alpha.png"/>
+</meta>

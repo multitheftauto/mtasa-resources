@@ -1,0 +1,35 @@
+<meta>
+	<info author="jbeta" type="script" version="1.0.5" name="Map manager" description="Gamemode / map manager" showInResourceBrowser="true"/>
+	
+	<script src="mapmanager_main.lua"/>
+	<script src="mapmanager_exports.lua"/>
+	<script src="mapmanager_http.lua"/>
+	
+	<settings>
+		<setting name="*ASE" value="[true]"/>
+		<setting name="*messages" value="[true]"/>
+		<setting name="*color" value="#E1AA5A"/>
+		<setting name="*currentmap" value="[true]"/>
+	</settings>
+	
+	<export function="changeGamemode"/>
+	<export function="changeGamemodeByName" http="true"/>
+	<export function="changeGamemodeMap"/>
+	<export function="getCachedGamemodeList" http="true"/>
+	<export function="getGamemodes"/>
+	<export function="getGamemodesCompatibleWithMap" />
+	<export function="getMaps"/>
+	<export function="getMapsCompatibleWithGamemode" http="true" />
+	<export function="getRunningGamemode" http="true"/>
+	<export function="getRunningGamemodeMap" http="true"/>
+	<export function="isGamemode"/>
+	<export function="isGamemodeCompatibleWithMap"/>
+	<export function="isMap"/>
+	<export function="isMapCompatibleWithGamemode"/>
+	<export function="stopGamemode"/>
+	<export function="stopGamemodeMap"/>
+	
+	<html src="mapmanager.htm" default="true"/>
+	<html src="mapmanager.css" raw="true"/>
+	<html src="mapmanager.js" raw="true"/>
+</meta>

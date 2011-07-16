@@ -1,0 +1,38 @@
+<meta>
+	<info author="Talidan" version="1.0.0" description="Utility resource to handle teams" />
+	<script src="main.lua" type="server" />
+	<script src="main_client.lua" type="client" />
+	<script src="drawdefinitions.lua" type="client" />
+	<script src="draw.lua" type="client" />
+	<!--<script src="crun.client.lua" type="client" /> -->
+
+	<file src="images/backdrop.png" />
+	<file src="images/team.png" />
+	
+ 	<export function="handlePlayer" type="server" />
+	<export function="handlePlayer" type="client" />
+	<export function="autoBalance" type="server" />
+	
+	<settings>
+		<!-- "balance_teams" means that when trying to join a team, 
+		you wont be able to join a team with too many players in already -->
+		<setting name="balance_teams" value="[ true ]" />
+
+		<!-- "balance_threshold" means the amount of difference there 
+		has to be between teams to enable "balance_teams" -->
+		<setting name="balance_threshold" value="[1]" />
+		
+		<!-- "autobalance_teams" means that teammanager will allow gamemodes to  
+		forcefully move players to another team if the teams are unfair -->
+		<setting name="autobalance_teams" value="[ true ]" />		
+		
+		<!-- "autobalance_threshold" means the amount of times the gamemode   
+		requests for a forced autobalance before it is taken into effect -->
+		<setting name="autobalance_threshold" value="[3]" />
+		
+		<!-- "friendly_fire" sets whether friendly fire is enabled.  'true'
+		means players will take damage when shot. -->
+		<setting name="friendly_fire" value="[ false ]" />
+		
+	</settings>
+</meta>

@@ -1,0 +1,53 @@
+<map mod="deathmatch" version="1.0">
+
+
+	<assaultSettings timelimit="300" finishType="objective" finishObjective="freight" author="driver2"
+		time="22:00" weather="9" description="A rival band expects a new delivery by ship, destroy it." />
+		
+	<camera posX="-1448.827026" posY="1503.699585" posZ="25.376719"
+		targetX="-1385.593750" targetY="1491.384277" targetZ="12.064482" type="spawn" />
+	<camera posX="-1448.827026" posY="1503.699585" posZ="25.376719"
+		targetX="-1385.593750" targetY="1491.384277" targetZ="12.064482" type="selectTeam" />
+	<camera posX="-1388.417847" posY="1496.854980" posZ="4.328906"
+		targetX="-1425.171387" targetY="1495.883789" targetZ="3.519865" type="finish" />
+
+
+	<spawngroup type="attacker" req="">
+		<spawnarea posX="-2313.221680" posY="1543.666748" posZ="18.433815" weapons="4,1;22,40;29,500" skins="206" />
+	</spawngroup>
+	<spawngroup type="attacker" req="antenna">
+		<spawnarea posX="-1468.970947" posY="1488.646851" posZ="7.910450" weapons="4,1;22,40;31,300" skins="206" />
+	</spawngroup>
+	<spawngroup type="defender" req="">
+		<spawnarea posX="-1369.820679" posY="1488.727661" posZ="10.699440" weapons="4,1;22,40;30,270" skins="116" />
+	</spawngroup>
+
+
+	<objective name="Antenna" description="Sabotage the antenna to prevent the enemy crew from calling for help"
+		posX="-1379.053223" posY="1489.674927" posZ="18.072646" stay="2" stayText="Sabotaging antenna.." id="antenna" req="" />
+	<objective name="Freight Room" description="Plant a bomb to destroy the freight" stay="4" stayText="Planting bomb.."
+		posX="-1434.921021" posY="1488.679077" posZ="0.867188" id="freight" req="antenna" />
+
+
+	<pickup name="Sniper" posX="-1380.263916" posY="1496.500244" posZ="14.343750" type="34" ammo="10" respawn="10" />
+	<pickup name="m4" posX="-1380.291992" posY="1483.103394" posZ="14.343750" type="31" ammo="300" respawn="10" />
+	<pickup name="rocketlauncher" posX="-2474.540039" posY="1553.350098" posZ="33.734375" type="35" ammo="10" respawn="10" />
+	<pickup name="grenades" posX="-2477.512207" posY="1547.075806" posZ="24.148438" type="16" ammo="4" respawn="10" />
+	<pickup name="minigun" posX="-2384.696777" posY="1554.838867" posZ="14.234375" type="38" ammo="200" respawn="30" />
+	<pickup name="ak" posX="-2373.498779" posY="1530.540405" posZ="32.359375" type="30" ammo="300" respawn="10" />
+	<pickup name="rifle" posX="-2314.911377" posY="1553.435791" posZ="19.265800" type="33" ammo="30" respawn="10" />
+	<pickup name="rifle" posX="-2314.050537" posY="1537.678589" posZ="19.273438" type="33" ammo="30" respawn="10" />
+
+	<vehicle posX="-2318.338379" posY="1527.752808" posZ="1.476893" model="446" />
+	<vehicle posX="-2342.699219" posY="1520.966431" posZ="1.449315" model="452" />
+	
+	<vehicle posX="-2303.121826" posY="1557.785767" posZ="1.567757" model="493" />
+	<vehicle posX="-2309.121826" posY="1557.785767" posZ="1.567757" model="493" />
+	<vehicle posX="-2315.121826" posY="1557.785767" posZ="1.567757" model="493" />
+	<vehicle posX="-2320.306641" posY="1560.704590" posZ="1.520212" model="473" />
+	
+	<vehicle posX="-2328.639648" posY="1538.553467" posZ="17.828125" model="488" />
+	<vehicle posX="-2328.639648" posY="1554.553467" posZ="17.828125" model="487" />
+	<vehicle posX="-2344.795898" posY="1545.799927" posZ="26.546875" model="487" />
+
+</map>

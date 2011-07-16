@@ -1,0 +1,4 @@
+<meta>
+    <info author="AlienX" description="TDMA Dam Wars" version="1" type="map" gamemodes="tdma"/>
+    <map src="damwars.map" />
+</meta>

@@ -1,0 +1,79 @@
+<meta>
+	<!-- arc_'s Freeroam script                                                  -->
+	
+	<!-- You are allowed to modify this resource or add functionality to it.     -->
+	<!-- You may use the modified resource in your server and redistribute it.   -->
+	<!-- However, the original credits and this license must always stay intact. -->
+	<!-- Also, give your modified resource a different name, like "<yournick>'s  -->
+	<!-- extended freeroam", to avoid confusion for users.                       -->
+	
+	<info name="Freeroam GUI" author="arc_" version="1.3.4" />
+	
+	<script src="util_server.lua" type="server" />
+	<script src="fr_server.lua" type="server" />
+	
+	<script src="util.lua" type="client" />
+	<script src="gui.lua" type="client" />
+	<script src="fr_client.lua" type="client" />
+	
+	<export function="appendControl" type="client" />
+	
+	<file src="colorselect.png" />
+	<file src="localplayerblip.png" />
+	<file src="map.png" />
+	<file src="playerblip.png" />
+	<file src="vehiclecolors.png" />
+	
+	<config src="animations.xml" type="client" />
+	<config src="interiors.xml" type="client" />
+	<config src="skins.xml" type="client" />
+	<config src="stats.xml" type="client" />
+	<config src="vehicles.xml" type="client" />
+	<config src="weapons.xml" type="client" />
+	<config src="weather.xml" type="client" />
+	<config src="help.xml" type="client" />
+	
+	<settings>
+		<!-- Set any of the "true" options to "false" to disable that functionality.                   -->
+		<!-- If you modify this file you need to /refresh your server for the changes to take effect   -->
+		<!-- (this will restart freeroam and therefore delete all vehicles that players created).      -->
+		<!-- Use the runcode resource and the set() function to change a setting while freeroam        -->
+		<!-- is running without having to refresh.                                                     -->
+		
+		
+		<setting name="*spawnmaponstart" value="true" />
+		<setting name="*spawnmapondeath" value="true" />
+		<setting name="*welcometextonstart" value="true" />
+		
+		<setting name="*alpha" value="true" />
+		<setting name="*anim" value="true" />
+		<setting name="*clothes" value="true" />
+		<setting name="*createvehicle" value="true" />
+		<setting name="*gamespeed/enabled" value="true" />
+		<setting name="*gamespeed/min" value="[0.2]" />
+		<setting name="*gamespeed/max" value="[3.0]" />
+		<setting name="*gravity/enabled" value="true" />
+		<setting name="*gravity/min" value="[0]" />
+		<setting name="*gravity/max" value="[0.1]" />
+		<setting name="*jetpack" value="true" />
+		<setting name="*kill" value="true" />
+		<setting name="*lights" value="true" />
+		<setting name="*paintjob" value="true" />
+		<setting name="*repair" value="true" />
+		<setting name="*setskin" value="true" />
+		<setting name="*setstyle" value="true" />
+		<setting name="*stats" value="true" />
+		<setting name="*time/freeze" value="true" />
+		<setting name="*time/set" value="true" />
+		<setting name="*upgrades" value="true" />
+		<setting name="*warp" value="true" />
+		<setting name="*weapons/enabled" value="true" />          <!-- Can players give themselves weapons? -->
+		<setting name="*weapons/vehiclesenabled" value="true" />  <!-- Can players fire vehicle weapons? -->
+		<setting name="*weapons/disallowed" value="[[]]" />     <!-- Comma-separated list of specific weapon ID's that players are not allowed to give to themselves -->
+		<setting name="*weather" value="true" />
+		<setting name="*vehicles/maxidletime" value="[300000]" />  <!-- Time in ms before a vehicle without passengers gets destroyed -->
+		<setting name="*vehicles/idleexplode" value="false" />     <!-- If set to false, vehicles simply disappear when they time out instead of exploding -->
+		<setting name="*vehicles/maxperplayer" value="[2]" />     <!-- Maximum number of vehicles a player can have at the same time -->
+		<setting name="*vehicles/disallowed" value="[[]]" />   <!-- Comma-separated list of vehicles that players may not create -->
+	</settings>
+</meta>

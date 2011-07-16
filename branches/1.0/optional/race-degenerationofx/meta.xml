@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-16"?>
+<meta>
+  <info type="map" gamemodes="race" name="Degeneration Of X" author="Dross... spawns added and altered by Ransom" description="Beta" version="0" />
+  <map src="Degeneration Of X.map" />
+  <settings>
+    <setting name="#time" value="4:0" />
+    <setting name="#respawn" value="timelimit" />
+    <setting name="#duration" value="780" />
+  </settings>
+</meta>

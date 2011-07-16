@@ -1,0 +1,55 @@
+<map mod="deathmatch" auto_balance="on" friendly_fire="on">
+   <meta>
+      <author>Iggy</author>
+      <description>Capture the Flag</description>
+   </meta>
+   <settings respawnTime="5000" spawnScreen="off" blips="team"/>
+   <camera posX="-28.943" posY="2275" posZ="135" lookX="-28.943" lookY="2253.67" lookZ="122.345"/>
+   <team name="Red" colorR="255" colorG="0" colorB="0">
+      <flag name="Red Flag" posX="-84.589508" posY="2265.892822" posZ="124.840591"/>
+      <spawnpoint posX="-81.023941" posY="2265.370361" posZ="124.710129" rot="259" randx="5" randy="5" randz="0" skin="30"/>
+   </team>
+   <team name="Blue" colorR="0" colorG="0" colorB="255">
+      <flag name="Blue Flag" posX="40.254105" posY="2240.463623" posZ="125.898399"/>
+      <spawnpoint posX="23.702797" posY="2244.688965" posZ="126.340065" rot="78" randx="5" randy="3" randz="0" skin="31"/>
+   </team>
+   <object name="Steelwalkway2" posX="-28.457384" posY="2256.076172" posZ="119.824303" rotX="0" rotY="0" rotZ="78.750012264417" model="4106"/>
+   <object name="SteelWalkway1" posX="-29.226976" posY="2252.177246" posZ="119.829681" rotX="0" rotY="0" rotZ="-101.25000758343" model="4106"/>
+   <object name="Ramp1" posX="-59.645931" posY="2259.594727" posZ="120.539581" rotX="117.7427696036" rotY="0" rotZ="-101.25000758343" model="2790"/>
+   <object name="Ramp2" posX="-61.737026" posY="2260.002441" posZ="119.393814" rotX="117.7427696036" rotY="0" rotZ="-101.25000758343" model="2790"/>
+   <object name="Ramp3" posX="-59.766739" posY="2258.849121" posZ="120.521255" rotX="117.7427696036" rotY="0" rotZ="-101.25000758343" model="2790"/>
+   <object name="Ramp4" posX="-62.387360" posY="2259.370850" posZ="119.120583" rotX="117.7427696036" rotY="0" rotZ="-101.25000758343" model="2790"/>
+   <object name="object (9)" posX="-4.854885" posY="2252.285889" posZ="116.909737" rotX="0" rotY="0" rotZ="-281.24997013549" model="11496"/>
+   <object name="object (10)" posX="-5.845533" posY="2247.401367" posZ="116.890327" rotX="0" rotY="0" rotZ="-461.24993268755" model="11496"/>
+   <object name="object (11)" posX="-21.516867" posY="2250.534424" posZ="116.890251" rotX="0" rotY="0" rotZ="-461.24993268755" model="11496"/>
+   <object name="object (13)" posX="-20.531717" posY="2255.408936" posZ="116.890251" rotX="0" rotY="0" rotZ="-281.24997013549" model="11496"/>
+   <object name="object (14)" posX="-37.188179" posY="2253.653809" posZ="116.890160" rotX="0" rotY="0" rotZ="-461.24993268755" model="11496"/>
+   <object name="object (15)" posX="-36.210911" posY="2258.530518" posZ="116.890205" rotX="0" rotY="0" rotZ="-281.24991283971" model="11496"/>
+   <object name="object (16)" posX="-52.865967" posY="2256.768555" posZ="116.875137" rotX="0" rotY="0" rotZ="-461.24993268755" model="11496"/>
+   <object name="object (17)" posX="-51.900581" posY="2261.646729" posZ="116.888672" rotX="0" rotY="0" rotZ="-281.24991283971" model="11496"/>
+   <object name="object (19)" posX="-62.563446" posY="2256.723145" posZ="116.959717" rotX="90.240852733105" rotY="0" rotZ="-101.24995028765" model="2789"/>
+   <object name="object (20)" posX="-61.541489" posY="2261.825439" posZ="116.959808" rotX="90.240852733105" rotY="0" rotZ="-101.24995028765" model="2789"/>
+   <object name="object (21)" posX="6.256882" posY="2247.182373" posZ="123.238319" rotX="0" rotY="0" rotZ="78.750012264417" model="3578"/>
+   <object name="object (23)" posX="5.350747" posY="2255.705566" posZ="121.884583" rotX="0" rotY="0" rotZ="46.718864023408" model="3578"/>
+   <object name="object (25)" posX="12.409809" posY="2263.190918" posZ="121.877022" rotX="0" rotY="0" rotZ="46.718864023408" model="3578"/>
+   <object name="object (26)" posX="-0.151859" posY="2241.002686" posZ="121.952888" rotX="0" rotY="0" rotZ="79.609391661334" model="3578"/>
+   <object name="object (27)" posX="-68.275673" posY="2261.050537" posZ="121.216400" rotX="0" rotY="0" rotZ="78.750012264417" model="3578"/>
+   <object name="object (28)" posX="-64.839676" posY="2251.911621" posZ="119.361206" rotX="0" rotY="2.5783100780887" rotZ="68.436771952063" model="3578"/>
+   <object name="object (29)" posX="-59.295155" posY="2267.435303" posZ="118.649124" rotX="0" rotY="2.5783100780887" rotZ="71.797169420505" model="3578"/>
+   <object name="object (30)" posX="-57.972515" posY="2271.448730" posZ="118.482147" rotX="0" rotY="2.5783100780887" rotZ="71.797169420505" model="3578"/>
+   <object name="object (31)" posX="-0.914237" posY="2236.929443" posZ="121.933121" rotX="0" rotY="0" rotZ="79.609391661334" model="3578"/>
+   <object name="object (33)" posX="-58.544159" posY="2264.706787" posZ="117.973457" rotX="0" rotY="0" rotZ="71.874518722848" model="944"/>
+   <object name="object (34)" posX="-12.360746" posY="2255.947754" posZ="117.975037" rotX="0" rotY="0" rotZ="78.750012264417" model="944"/>
+   <object name="object (35)" posX="-17.937132" posY="2249.792725" posZ="117.840248" rotX="0" rotY="0" rotZ="-33.750021626402" model="1685"/>
+   <object name="object (38)" posX="-43.331841" posY="2258.025391" posZ="117.668503" rotX="0" rotY="0" rotZ="-123.74994560665" model="3631"/>
+   <object name="object (40)" posX="-0.768286" posY="2244.151855" posZ="117.637939" rotX="0" rotY="0" rotZ="-101.24995028765" model="1431"/>
+   <object name="object (41)" posX="-38.301266" posY="2253.350098" posZ="117.852722" rotX="0" rotY="0" rotZ="101.25000758343" model="1421"/>
+   <object name="object (42)" posX="-18.355545" posY="2257.135742" posZ="117.098083" rotX="0" rotY="0" rotZ="-134.99997191405" model="1762"/>
+   <object name="object (43)" posX="-19.304991" posY="2255.975586" posZ="117.091225" rotX="0" rotY="0" rotZ="-78.750012264417" model="1769"/>
+   <object name="object (46)" posX="-8.960450" posY="2248.890869" posZ="117.089104" rotX="0" rotY="0" rotZ="-112.49997659504" model="2094"/>
+   <object name="object (47)" posX="-50.105679" posY="2261.566895" posZ="117.838669" rotX="0" rotY="0" rotZ="56.25001694541" model="1685"/>
+   <object name="object (50)" posX="-28.487242" posY="2254.406738" posZ="117.779984" rotX="0" rotY="0" rotZ="78.750012264417" model="1368"/>
+   <object name="object (51)" posX="-29.194407" posY="2254.556396" posZ="117.779892" rotX="0" rotY="0" rotZ="-101.25000758343" model="1368"/>
+   <object name="object (53)" posX="-36.243359" posY="2259.349121" posZ="117.888405" rotX="0" rotY="0" rotZ="-22.499995319008" model="1454"/>
+</map>
+
