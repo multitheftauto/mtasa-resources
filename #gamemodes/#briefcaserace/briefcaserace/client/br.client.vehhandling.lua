@@ -1,5 +1,4 @@
 ﻿local root = getRootElement()
-local localPlayer = getLocalPlayer()
 
 MAX_SPEED = 0.65
 

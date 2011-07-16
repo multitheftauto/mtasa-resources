@@ -1,5 +1,4 @@
 ﻿local root = getRootElement()
-local localPlayer = getLocalPlayer()
 local thisResource = getThisResource()
 local thisResourceRoot = getResourceRootElement(thisResource)
 local g_suspendedCamera = {}

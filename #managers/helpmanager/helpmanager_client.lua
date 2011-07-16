@@ -1,5 +1,4 @@
-﻿local localPlayer = getLocalPlayer()
-local rootElement = getRootElement()
+﻿local rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 local pagesXml
 

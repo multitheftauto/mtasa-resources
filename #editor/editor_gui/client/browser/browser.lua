@@ -2,7 +2,6 @@
 browser = {}
 browserGUI = {}
 BROWSER_DIMENSION = nil
-local localPlayer = getLocalPlayer()
 local screenX,screenY = guiGetScreenSize()
 local catNodes
 local cachedElements = {}

@@ -1,5 +1,4 @@
-﻿local localPlayer  = getLocalPlayer()
-local MAX_THICKNESS = 1.2
+﻿local MAX_THICKNESS = 1.2
 local thickness
 local drawLine
 local color = 1694433280

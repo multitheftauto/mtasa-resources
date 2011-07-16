@@ -44,7 +44,6 @@ local ROTATION_Y_SPEED = 3.8
 -- Static global variables
 local thisResource = getThisResource()
 local rootElement = getRootElement()
-local localPlayer = getLocalPlayer()
 local serverGravity = getGravity()
 local supermanPlayers = {}
 

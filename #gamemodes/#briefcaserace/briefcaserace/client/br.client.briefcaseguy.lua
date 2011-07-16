@@ -1,5 +1,4 @@
 ﻿local root = getRootElement()
-local localPlayer = getLocalPlayer()
 local inVehicle = false -- safer to use a flag instead of checking isPedInVehicle(), cause sometimes the effects might not get removed when removeVehicle is called (client reports that isPedInVehicle() is false, but for some reason the effects have not yet been removed)
 
 function addVehicleEffects()

@@ -1,5 +1,4 @@
-﻿local localPlayer = getLocalPlayer()
-local screenX,screenY = guiGetScreenSize()
+﻿local screenX,screenY = guiGetScreenSize()
 local spectateButton
 addEvent("swaptoggle", true )
 

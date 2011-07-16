@@ -1,5 +1,4 @@
-﻿local localPlayer = getLocalPlayer()
-local root = getRootElement()
+﻿local root = getRootElement()
 local g_screenX,g_screenY = guiGetScreenSize()
 local BONE_ID = 8
 local WORLD_OFFSET = 0.4

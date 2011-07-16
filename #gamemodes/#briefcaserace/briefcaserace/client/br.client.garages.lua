@@ -1,7 +1,6 @@
 ﻿local GARAGE_USE_PENALTY = 30000 -- number of milliseconds to wait until using the garage again
 
 local garageElements = {}
-local localPlayer = getLocalPlayer()
 local lastUseTime = 0
 local randomMessages = {	"Hope you like the new paint.",
 							"Have a nice day.",

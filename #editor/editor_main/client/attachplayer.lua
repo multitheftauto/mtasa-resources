@@ -1,5 +1,4 @@
-﻿local localPlayer = getLocalPlayer()
-local attachPlayersEnabled = false
+﻿local attachPlayersEnabled = false
 
 
 function getCameraRotation ()

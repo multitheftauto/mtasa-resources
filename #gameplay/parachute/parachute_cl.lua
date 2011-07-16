@@ -10,7 +10,6 @@ turnspeed = 1.5 -- rotation speed when turning
 lastspeed = 0
 opentime = 1000
 
-localPlayer = getLocalPlayer ()
 local lastAnim = {}
 local lastTick
 local removing = false

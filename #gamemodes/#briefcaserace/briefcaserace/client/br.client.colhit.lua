@@ -1,5 +1,4 @@
-﻿local localPlayer = getLocalPlayer()
-local briefcaseTube = false
+﻿local briefcaseTube = false
 local objectiveTube = false
 
 local SEND_DELAY = 500

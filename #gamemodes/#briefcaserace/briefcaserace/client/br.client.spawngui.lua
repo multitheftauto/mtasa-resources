@@ -6,7 +6,6 @@ addEvent("doCreateTeamMenu", true)
 addEvent("doShowPlayerTeamMenu", true)
 
 local root = getRootElement()
-local localPlayer = getLocalPlayer()
 
 local screenX, screenY
 

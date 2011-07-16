@@ -6,7 +6,6 @@ local x_rotation = 45 -- limits how far forwards the player will dip while skydi
 local rotation_accelerate = 0.75 -- speed at which the player dips forward while skydiving
 local freefall_speed = 0.2 -- minimum freefall speed the player can have
 
-local localPlayer = getLocalPlayer()
 local lastTick
 local warning
 divingTick = 0
