@@ -1,7 +1,6 @@
 ﻿SETTINGS_REFRESH = 2000 -- Interval in which team channels are refreshed, in MS.
 bShowChatIcons = true
 
-localPlayer = getLocalPlayer()
 voicePlayers = {}
 globalMuted = {}
 

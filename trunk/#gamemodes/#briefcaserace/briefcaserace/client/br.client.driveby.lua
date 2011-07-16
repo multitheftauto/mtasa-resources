@@ -5,7 +5,7 @@ function (resource)
 end
 )
 
---[[local localPlayer = getLocalPlayer()
+--[[
 local lastSeat = 0
 
 function toggleDriveBy()

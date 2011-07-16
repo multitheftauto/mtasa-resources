@@ -1,5 +1,4 @@
 ﻿local root = getRootElement()
-local localPlayer = getLocalPlayer()
 
 local idleBriefcase = false
 local streamedIn = false

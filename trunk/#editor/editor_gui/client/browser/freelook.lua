@@ -4,7 +4,6 @@ local rotX, rotY = 0, 0
 local cameraDistance = 0
 local isEnabled = false
 local rootElement = getRootElement()
-local localPlayer = getLocalPlayer()
 --coldnt figure out a "this event is already handled" bug so events are always handed until browser is turned off
 local isHandled1, isHandled2
 -- local tx, ty, tz = 0, 0, 0

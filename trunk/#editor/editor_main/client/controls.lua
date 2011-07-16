@@ -77,7 +77,6 @@ function getControls()
 end
 
 --Turn all controls into commands
-local localPlayer = getLocalPlayer()
 addEvent ( "onControlPressed" )
 local function parseControls ( command, keyState )
 	--Get the key name

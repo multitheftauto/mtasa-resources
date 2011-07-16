@@ -6,7 +6,6 @@ local updateInterval = 1000 --ms
 local visibilityCheckInterval = 500 --ms
 local indent = ' '
 
-local localPlayer = getLocalPlayer()
 local playerTeam = getPlayerTeam(localPlayer)
 local playerParent = getElementParent(localPlayer)
 local rootElement = getRootElement()

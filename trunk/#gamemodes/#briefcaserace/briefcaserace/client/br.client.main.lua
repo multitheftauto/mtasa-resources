@@ -38,7 +38,6 @@ BLIP_DISTANCE_LIMIT = 250
 TEAM_BLIP_DISTANCE_LIMIT = 150
 
 local root = getRootElement()
-local localPlayer = getLocalPlayer()
 local indicator = false
 local briefcaseBlip = false
 

@@ -1,5 +1,4 @@
-﻿local localPlayer = getLocalPlayer()
-local interiorAnims = {}
+﻿local interiorAnims = {}
 local setInteriorMarkerZ = {
 	interiorEntry = function(marker,z)
 		local interiorElement = getElementParent(marker)

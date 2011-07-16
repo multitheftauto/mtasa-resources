@@ -26,7 +26,6 @@ local options = {
 local mouseFrameDelay = 0
 
 local rootElement = getRootElement()
-local localPlayer = getLocalPlayer()
 
 local getKeyState = getKeyState
 do

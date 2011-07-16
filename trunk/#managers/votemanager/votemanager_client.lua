@@ -1,5 +1,4 @@
 ﻿local rootElement = getRootElement()
-local localPlayer = getLocalPlayer()
 
 local voteWindow
 local boundVoteKeys = {}

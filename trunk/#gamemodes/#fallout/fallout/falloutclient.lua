@@ -1,5 +1,4 @@
 ﻿--outputChatBox ( "Fallout Client Loaded", 255, 127, 0 ) --DEBUG
-localPlayer =  getLocalPlayer ()
 fadeCamera ( true ) --Remove MTA fade
 gameOver = false
 local shakingPieces = {}

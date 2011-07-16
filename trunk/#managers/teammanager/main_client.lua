@@ -1,7 +1,5 @@
 ﻿local teamsTable
 
-localPlayer = getLocalPlayer()
-
 function handlePlayer (teams,gamemodeName)
 	--If its an array, convert it
 	if teams[1] then
