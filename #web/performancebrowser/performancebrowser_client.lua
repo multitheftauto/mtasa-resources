@@ -1,4 +1,4 @@
---
+﻿--
 --
 -- performancebrowser_client.lua
 --

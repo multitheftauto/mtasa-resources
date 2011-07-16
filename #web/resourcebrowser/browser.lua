@@ -1,4 +1,4 @@
-function getResourcesByState ( state )
+﻿function getResourcesByState ( state )
     local allResources = getResources()
 	local matchingResources = {}
 	

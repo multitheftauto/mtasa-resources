@@ -1,4 +1,4 @@
-local root = getRootElement ()
+﻿local root = getRootElement ()
 local resourceRoot = getResourceRootElement ( getThisResource () )
 local textTable = {}
 

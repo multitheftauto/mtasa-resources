@@ -1,4 +1,4 @@
-local mta_getResourceInfo = getResourceInfo
+﻿local mta_getResourceInfo = getResourceInfo
 
 function getResourcesSearch ( partialName, state )
     local allResources = getResources()
