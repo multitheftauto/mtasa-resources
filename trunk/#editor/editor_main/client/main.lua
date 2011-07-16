@@ -609,7 +609,7 @@ end
 function makeVehicleStatic(vehicle)
 	vehicle = vehicle or source
 	setVehicleDamageProof(vehicle, true)
-	setVehicleFrozen(vehicle, true)
+	setElementFrozen(vehicle, true)
 	setElementCollisionsEnabled(vehicle, false)
 end
 addEventHandler("doSetVehicleStatic", getRootElement(), makeVehicleStatic)

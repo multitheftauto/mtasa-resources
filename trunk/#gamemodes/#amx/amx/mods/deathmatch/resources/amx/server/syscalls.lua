@@ -1054,7 +1054,7 @@ end
 
 function SetObjectPos(amx, object, x, y, z)
 	if(getElementType(object) == 'vehicle') then 
-		setVehicleFrozen(object, true)
+		setElementFrozen(object, true)
 	end
 	
 	setElementPosition(object, x, y, z)
@@ -1062,7 +1062,7 @@ function SetObjectPos(amx, object, x, y, z)
 	if(getElementType(object) == 'vehicle') then 
 		setVehicleTurnVelocity(object, 0, 0, 0)
 		setElementVelocity(object, 0, 0, 0)
-		setTimer(setVehicleFrozen, 500, 1, object, false)
+		setTimer(setElementFrozen, 500, 1, object, false)
 	end
 end
 

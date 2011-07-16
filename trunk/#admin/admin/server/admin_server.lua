@@ -330,7 +330,7 @@ function aSetPlayerFrozen ( player, state )
 		triggerEvent ( "onPlayerFreeze", player, state )
 		local vehicle = getPedOccupiedVehicle( player )
 		if vehicle then
-			setVehicleFrozen ( vehicle, state )
+			setElementFrozen ( vehicle, state )
 		end
 		return true
 	end

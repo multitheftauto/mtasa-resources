@@ -498,7 +498,7 @@ function RaceMode.playerFreeze(player, bRespawn, bDontFix)
 	if not bDontFix then
 		fixVehicle(vehicle)
 	end
-	setVehicleFrozen(vehicle, true)
+	setElementFrozen(vehicle, true)
     setVehicleDamageProof(vehicle, true)
 	Override.setCollideWorld( "ForVehicleJudder", vehicle, 0 )
 	Override.flushAll()
@@ -516,7 +516,7 @@ function RaceMode.playerUnfreeze(player, bDontFix)
 	end
     setVehicleDamageProof(vehicle, false)
     setVehicleEngineState(vehicle, true)
-	setVehicleFrozen(vehicle, false)
+	setElementFrozen(vehicle, false)
 
 	-- Remove things added for freeze only
 	Override.setCollideWorld( "ForVehicleJudder", vehicle, nil )

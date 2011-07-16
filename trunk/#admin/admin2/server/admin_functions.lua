@@ -38,10 +38,10 @@ aFunctions = {
 			setPlayerMuted ( player, false )
 		end,
 		['freeze'] = function ( player )
-			setPedFrozen ( player, true )
+			setElementFrozen ( player, true )
 		end,
 		['unfreeze'] = function ( player )
-			setPedFrozen ( player, false )
+			setElementFrozen ( player, false )
 		end,
 		['shout'] = function ( player, text )
 			local textDisplay = textCreateDisplay ()
