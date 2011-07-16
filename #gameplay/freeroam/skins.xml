@@ -1,4 +1,39 @@
-<catalog type="skin">		
+<catalog type="skin">
+	<group name="Special">
+		<skin id="1" name="Truth" keywords="truth,male,white,hippie"/>
+		<skin id="2" name="Maccer" keywords="maccer,male,white,wanker"/>
+		<skin id="265" name="Tenpenny" keywords="officer,tenpenny,male,black,cop"/>
+		<skin id="266" name="Pulaski" keywords="officer,pulaski,male,white,cop"/>
+		<skin id="267" name="Hern" keywords="officer,hern,male,latin"/>
+		<skin id="268" name="Dwayne" keywords="dwayne,male,white,mechanic"/>
+		<skin id="269" name="Big Smoke" keywords="big,smoke,male,fat,black,grove,street"/>
+		<skin id="270" name="Sweet" keywords="male,sweet,johnson,black,grove,street"/>
+		<skin id="271" name="Ryder" keywords="male,grove,street,black,ryder"/>
+		<skin id="272" name="Forelli Guy" keywords="forelli,white,itallian"/>
+		<skin id="290" name="Rose" keywords="rose,white,vice,city,lawyer"/>
+		<skin id="291" name="Kent Paul" keywords="kent,paul,white,vice,city"/>
+		<skin id="292" name="Cesar" keywords="cesar,lastin,male"/>
+		<skin id="293" name="OG Loc" keywords="og,loc,black,rapper,grove,street,male"/>
+		<skin id="294" name="Wuzi Mu" keywords="wuzi,mu,chinese,china,town,male"/>
+		<skin id="295" name="Mike Toreno" keywords="mike,toreno,government,agent,white,male"/>
+		<skin id="296" name="Jizzy" keywords="jizzy,club,pimp,black,male"/>
+		<skin id="297" name="Madd Dogg" keywords="madd,dogg,black,rapper,male"/>
+		<skin id="298" name="Catalina" keywords="catalina,liberty,city,latin,female"/>
+		<skin id="299" name="Claude" keywords="calude,libery,city,gta,3,III,white,male,silent,protagonist"/>
+		<skin id="300" name="Ryder" keywords="ryder,male,grove,street,black"/>
+		<skin id="301" name="Ryder Robber" keywords="ryder,robber,male,grove,street,black"/>
+		<skin id="302" name="Emmet" keywords="emmet,male,old,black,guns,weapon,dealer"/>
+		<skin id="303" name="Andre" keywords="andre,white,male"/>
+		<skin id="304" name="Kendl" keywords="kendl,johnson,black,female"/>
+		<skin id="305" name="Jethro" keywords="jethro,male,white,mechanic"/>
+		<skin id="306" name="Zero" keywords="zero,male,white,nerd"/>
+		<skin id="307" name="T-bone Mendez" keywords="t,bone,mendez,t-bone,latin,male"/>
+		<skin id="308" name="Sindaco Guy" keywords="sindaco,italian,male,white"/>
+		<skin id="309" name="Janitor" keywords="janitor,casino,male,latin"/>
+		<skin id="310" name="Big Bear" keywords="big,bear,druggie,grove,sreet"/>
+		<skin id="311" name="Big Smoke Vest" keywords="big,smoke,male,fat,black,grove,street,ballas"/>
+		<skin id="312" name="Physco" keywords="physco,army,camo,camoflage,male,white"/>
+	</group>
 	<group name="Beach">
 		<skin id="18" name="Black Beachguy" keywords="shorts,guy,male,barefoot,necklace,jewelry,glasses,sunglasses,earrings,topless,shirtless"/>
 		<skin id="45" name="Beach Mustache" keywords="topless,shirtless,shorts,necklace,jewelry,sunglasses,glasses,shoeless,barefoot,white,guy,male"/>
