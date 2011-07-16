@@ -1,4 +1,4 @@
-local GAMEMODE_LIST_SEPARATOR = string.byte(',')
+﻿local GAMEMODE_LIST_SEPARATOR = string.byte(',')
 
 function changeGamemode(gamemode, map, ignorePlayerCount)
 	if not isGamemode(gamemode) then

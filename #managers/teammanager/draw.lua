@@ -1,4 +1,4 @@
-local definition,teamsTable
+﻿local definition,teamsTable
 local xAbsOffset = 0
 local scriptRequestedMenu
 

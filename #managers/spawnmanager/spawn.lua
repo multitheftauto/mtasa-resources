@@ -1,4 +1,4 @@
-local spawnWave = false
+﻿local spawnWave = false
 local spawnWaveTimer = false
 local quedSpawns = {}
 addEvent ( "onSpawnpointUse" )

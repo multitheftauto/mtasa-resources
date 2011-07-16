@@ -1,4 +1,4 @@
-function startCycler_random()
+﻿function startCycler_random()
 	addCommandHandler("skipmap", cycleMap_random, true)
 	
 	cycleMap_random()

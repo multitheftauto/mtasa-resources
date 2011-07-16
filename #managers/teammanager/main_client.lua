@@ -1,4 +1,4 @@
-local teamsTable
+﻿local teamsTable
 
 localPlayer = getLocalPlayer()
 

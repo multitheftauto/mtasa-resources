@@ -1,4 +1,4 @@
-currentGamemode = nil
+﻿currentGamemode = nil
 currentGamemodeMap = nil
 nextGamemode = nil
 nextGamemodeMap = nil
