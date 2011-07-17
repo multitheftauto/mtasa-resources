@@ -50,6 +50,7 @@ g_RPCFunctions = {
 	setTime = { option = 'time.set', descr = 'Changing time' },
 	setTimeFrozen = { option = 'time.freeze', descr = 'Freezing time' },
 	setVehicleColor = true,
+	setVehicleHeadLightColor = true,
 	setVehicleOverrideLights = { option = 'lights', descr = 'Forcing lights' },
 	setVehiclePaintjob = { option = 'paintjob', descr = 'Applying paintjobs' },
 	setVehicleRotation = true,
