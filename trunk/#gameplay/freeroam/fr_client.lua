@@ -1016,87 +1016,6 @@ end
 ---------------------------
 -- Color
 ---------------------------
-function colorInit()
-	local vehicle = getPedOccupiedVehicle(g_Me)
-	if not vehicle then
-		errMsg('You need to be in a car to change its colors.')
-		closeWindow(wndColor)
-		return
-	end
-	guiRadioButtonSetSelected(getControl(wndColor, 'colorslot1'), true)
-	local color1 = getVehicleColor(vehicle)
-	setColorSelection(color1)
-end
-
-function colorSlotSelect()
-	local colors = { getVehicleColor(getPedOccupiedVehicle(g_Me)) }
-	for i=1,2 do
-		if guiRadioButtonGetSelected(getControl(wndColor, 'colorslot' .. i)) then
-			setColorSelection(colors[i])
-			break
-		end
-	end
-end
-
-function applyColor(relX, relY)
-	local vehicle = getPedOccupiedVehicle(g_Me)
-	if not vehicle then
-		return
-	end
-	
-	local xIndex = math.floor(relX / (1/11))
-	local yIndex = math.floor(relY / (1/12))
-	local colorID = yIndex*11 + xIndex
-	if colorID > 126 then
-		return
-	end
-	
-	local colors = { getVehicleColor(vehicle) }
-	for i=1,2 do
-		if guiRadioButtonGetSelected(getControl(wndColor, 'colorslot' .. i)) then
-			colors[i] = colorID
-			break
-		end
-	end
-	server.setVehicleColor(vehicle, unpack(colors))
-	
-	setColorSelection(colorID)
-end
-
-function setColorSelection(colorID)
-	local xIndex = math.fmod(colorID, 11)
-	local yIndex = math.floor(colorID/11)
-	guiSetPosition(
-		getControl(wndColor, 'vehiclecolor', 'selection'),
-		xIndex/11 + (1/11)/2 - (9/440)/2,
-		yIndex/12 + (1/12)/2 - (9/480)/2,
-		true
-	)
-end
-
-wndColor = {
-	'wnd',
-	text = 'Vehicle colors',
-	width = 460,
-	controls = {
-		{'img',
-			src='vehiclecolors.png',
-			id='vehiclecolor',
-			width=440,
-			height=480,
-			controls={
-				{'img', src='colorselect.png', id='selection', width=9, height=9}
-			},
-			onclick=applyColor,
-			ondoubleclick=function() closeWindow(wndColor) end
-		},
-		{'lbl', text='Color slot:'},
-		{'rad', id='colorslot1', text='1', onclick=colorSlotSelect},
-		{'rad', id='colorslot2', text='2', onclick=colorSlotSelect},
-		{'btn', id='close', closeswindow=true}
-	},
-	oncreate = colorInit
-}
 
 function setColorCommand(cmd, ...)
 	local vehicle = getPedOccupiedVehicle(g_Me)
@@ -1105,13 +1024,47 @@ function setColorCommand(cmd, ...)
 	end
 	local colors = { getVehicleColor(vehicle) }
 	local args = { ... }
-	for i=1,4 do
+	for i=1,6 do
 		colors[i] = args[i] and tonumber(args[i]) or colors[i]
 	end
 	server.setVehicleColor(vehicle, unpack(colors))
 end
 addCommandHandler('color', setColorCommand)
 addCommandHandler('cl', setColorCommand)
+
+function openColorPicker()
+	editingVehicle = getPedOccupiedVehicle(localPlayer)
+	if (editingVehicle) then
+		colorPicker.openSelect(colors)
+	end
+end
+
+function closedColorPicker()
+	local r1, g1, b1, r2, g2, b2 = getVehicleColor(editingVehicle, true)
+	server.setVehicleColor(editingVehicle, r1, g1, b1, r2, g2, b2)
+	local r, g, b = getVehicleHeadLightColor(editingVehicle)
+	server.setVehicleHeadLightColor(editingVehicle, r, g, b)
+	editingVehicle = nil
+end
+
+function updateColor()
+	if (not colorPicker.isSelectOpen) then return end
+	local r, g, b = colorPicker.updateTempColors()
+	if (editingVehicle and isElement(editingVehicle)) then
+		local r1, g1, b1, r2, g2, b2 = getVehicleColor(editingVehicle, true)
+		if (guiCheckBoxGetSelected(checkColor1)) then
+			r1, g1, b1 = r, g, b
+		end
+		if (guiCheckBoxGetSelected(checkColor2)) then
+			r2, g2, b2 = r, g, b
+		end
+		if (guiCheckBoxGetSelected(checkColor3)) then
+			setVehicleHeadLightColor(editingVehicle, r, g, b)
+		end
+		setVehicleColor(editingVehicle, r1, g1, b1, r2, g2, b2)
+	end
+end
+addEventHandler("onClientRender", root, updateColor)
 
 ---------------------------
 -- Paintjob
@@ -1396,6 +1349,7 @@ end
 function mainWndClose()
 	killTimer(updateTimer)
 	updateTimer = nil
+	colorPicker.closeSelect()
 end
 
 function onEnterVehicle(vehicle)
@@ -1467,7 +1421,7 @@ wndMain = {
 		{'btn', id='repair', onclick=repairVehicle},
 		{'btn', id='flip', onclick=flipVehicle},
 		{'btn', id='upgrades', window=wndUpgrades},
-		{'btn', id='color', window=wndColor},
+		{'btn', id='color', onclick=openColorPicker},
 		{'btn', id='paintjob', window=wndPaintjob},
 		{'br'},
 		{'chk', id='lightson', text='Lights on', onclick=forceLightsOn},
@@ -1519,6 +1473,7 @@ function toggleFRWindow()
 	if isWindowOpen(wndMain) then
 		showCursor(false)
 		hideAllWindows()
+		colorPicker.closeSelect()
 	else
 		showCursor(true)
 		showAllWindows()

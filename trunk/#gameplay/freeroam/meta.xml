@@ -22,7 +22,6 @@
 	<file src="localplayerblip.png" />
 	<file src="map.png" />
 	<file src="playerblip.png" />
-	<file src="vehiclecolors.png" />
 	
 	<config src="animations.xml" type="client" />
 	<config src="interiors.xml" type="client" />
@@ -32,6 +31,10 @@
 	<config src="weapons.xml" type="client" />
 	<config src="weather.xml" type="client" />
 	<config src="help.xml" type="client" />
+	
+	<script src="colorpicker/colorpicker.lua" type="client" />	
+	<file src="colorpicker/palette.png" />
+	<file src="colorpicker/alpha.png" />
 	
 	<settings>
 		<!-- Set any of the "true" options to "false" to disable that functionality.                   -->
