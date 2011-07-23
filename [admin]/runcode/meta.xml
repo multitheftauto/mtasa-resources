@@ -1,26 +1,23 @@
 <meta>
 	<info author="jbeta" name="Scripting console" type="script" version="1.0.1" showInResourceBrowser="true" />
+	
+	<include resource="ajax" />
+	
 	<script src="client.lua" type="client"/>
 	<script src="client_util.lua" type="client"/>
 	<script src="server.lua" type="server"/>
 	<script src="server_util.lua" type="server"/>
 
 	<html src="runcode.htm" default="true"/>
-	<html src="runcode.js" raw="true"/>
 	<html src="runcode.css" raw="true"/>
+	<html src="runcode.js" raw="true"/>
 	
-	<!-- codepress files - http://codepress.org -->
-	<html src="codepress\codepress.js" raw="true"/>
-	<html src="codepress\codepress.html"/>
-	<html src="codepress\codepress.css" raw="true"/>
-	<html src="codepress\engines\gecko.js" raw="true"/>
-	<html src="codepress\engines\khtml.js" raw="true"/>
-	<html src="codepress\engines\msie.js" raw="true"/>
-	<html src="codepress\engines\older.js" raw="true"/>
-	<html src="codepress\engines\opera.js" raw="true"/>
-	<html src="codepress\images\line-numbers.png" raw="true"/>
-	<html src="codepress\languages\lua.js" raw="true"/>
-	<html src="codepress\languages\lua.css" raw="true"/>
+	<!-- codemirror files http://codemirror.net/ -->
+	<html src="codemirror\codemirror.js" raw="true"/>
+	<html src="codemirror\codemirror.css" raw="true"/>
+	<html src="codemirror\docs.css" raw="true"/>
+	<html src="codemirror\neat.css" raw="true"/>
+	<html src="codemirror\lua.js" raw="true"/>
 
 	<export function="httpRun" http="true"/>
 </meta>
