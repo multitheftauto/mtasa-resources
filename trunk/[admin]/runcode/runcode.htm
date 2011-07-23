@@ -1,24 +1,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
-	<head>
-		<* = call ( getResourceFromName("ajax"), "start", getResourceName(getThisResource()) ) *>
-		<script src="runcode.js" type="text/javascript"></script>
-		<link rel="stylesheet" type="text/css" href="runcode.css"/>
-		<script src="codepress\codepress.js" type="text/javascript"></script>
-	</head>
-	<body onLoad="onBodyLoad()">
-		<div id="toparea">This page allows you to run Lua strings on the server.</div>
-		<div id="contentarea" align="center">
-			<button onclick="codefield.toggleEditor()">Toggle CodePress</button>
-			<button onclick="codefield.toggleLineNumbers()">Toggle line numbers</button>
-			<button onclick="codefield.toggleAutoComplete()">Toggle auto-complete</button>
-			<br />
-			<textarea id="codefield" class="codepress lua" cols="60" rows="10"></textarea>
-			<br />
-			<input type="button" id="button" value="Run code" onClick="webRun()"/>
-			<br />
-			<br />
-			<span id="results" />
-		</div>
-	</body>
+  <head>
+	<* = exports.ajax:start(getResourceName(getThisResource())) *>
+    <title>Runcode</title>
+	<link rel="stylesheet" type="text/css" href="runcode.css"/>
+	<script src="runcode.js" type="text/javascript"></script>
+	
+    <link rel="stylesheet" href="codemirror/codemirror.css">
+    <script src="codemirror/codemirror.js"></script>
+    <script src="codemirror/lua.js"></script>
+    <link rel="stylesheet" href="codemirror/neat.css">
+    <style>.CodeMirror {border: 1px solid black;}</style>
+    <link rel="stylesheet" href="codemirror/docs.css">
+  </head>
+  <body onLoad="onBodyLoad()">
+	<div id="toparea">This page allows you to run Lua strings on the server.</div>
+    <div>
+		<textarea id="code" name="code"></textarea>
+		<input type="button" id="button" value="Run code" onClick="webRun()"/>
+	</div>
+  </body>
 </html>
