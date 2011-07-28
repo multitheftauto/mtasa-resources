@@ -71,6 +71,9 @@ local function onClientRender_keyboard()
 		return
 	end
 	if (selectedElement) then
+		if (getElementType(selectedElement) == "vehicle" and getVehicleType(selectedElement) == "Train") then
+			setTrainDerailed(selectedElement, true)
+		end
 		if not (getCommandState("mod_rotate")) then -- set position
 			if movementType ~= MOVEMENT_MOVE then
 				setMovementType("move")

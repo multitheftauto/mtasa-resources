@@ -43,6 +43,10 @@ function setModel.vehicleID ( model )
 		setElementModel(browser.mainElement, model)
 		fixVehicle ( browser.mainElement )
 	end
+	
+	if (getElementType(browser.mainElement) == "vehicle" and getVehicleType(browser.mainElement) == "Train") then
+		setTrainDerailed(browser.mainElement, true)
+	end
 
 	setElementPosition(browser.mainElement, tx, ty, tz + randomOffset)
 	setElementAlpha(browser.mainElement, 255)

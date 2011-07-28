@@ -721,6 +721,10 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	
 	if not isElement(element) then return end
 	
+	if getElementType(element) == "vehicle" and getVehicleType(element) == "Train" then
+		setTrainDerailed(element, true)
+	end
+	
 	if not triggerEvent ( "onClientElementSelect", element, submode, shortcut ) then return false end
 	
 	if g_selectedElement then

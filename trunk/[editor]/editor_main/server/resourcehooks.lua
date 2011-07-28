@@ -113,6 +113,11 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 
 	for i, element in ipairs(getElementChildren(baseElement)) do
 		local elementType = getElementType(element)
+		if (elementType == "vehicle" and getVehicleType(element) == "Train") then
+			setTrainDerailed(element, true)
+			local x, y, z = getElementPosition(element)
+			setElementPosition(element, x, y, z)
+		end
 		if not resourceTable[elementType] then
 			resourceTable[elementType] = edf.edfGetResourceForElementType(elementType)
 		end
