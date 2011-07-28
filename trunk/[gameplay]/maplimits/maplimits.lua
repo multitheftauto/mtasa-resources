@@ -87,6 +87,7 @@ function onPlayerWasted()
 end
 
 function stuff( player, flag )
+	if (not isElement(player)) then return end
 	--local one = getTickCount()
 	if #mapLimits ~= 0 then
 		local x, y, z = getElementPosition( player )
