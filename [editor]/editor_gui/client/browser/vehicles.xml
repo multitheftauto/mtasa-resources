@@ -197,6 +197,13 @@
 			<vehicle	model="508"	keywords=""	/>
 			<vehicle	model="582"	keywords=""	/>
 		</group>				
+		<group	name="Trains">
+			<vehicle	model="537"	keywords=""	name="Freight"	/>
+			<vehicle	model="538"	keywords=""	name="Brown Streak"	/>
+			<vehicle	model="449"	keywords=""	name="Tram"	/>
+			<vehicle	model="569"	keywords=""	name="Flat Freight"	/>
+			<vehicle	model="590"	keywords=""	name="Box Freight"	/>
+		</group>
 	</group>					
 	<group	name="Misc">				
 		<group	name="Other">			

@@ -31,6 +31,11 @@ local edfCreateBasic = {
 	end,
 	vehicle = function(cdata)
 		local vehicle = createVehicle(cdata.model, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3], cdata.plate)
+		if (getElementType(vehicle) == "vehicle" and getVehicleType(vehicle) == "Train") then
+			setTrainDerailed(vehicle, true)
+			setElementPosition(vehicle, cdata.position[1], cdata.position[2], cdata.position[3])
+			setElementRotation(vehicle, cdata.rotation[1], cdata.rotation[2], cdata.rotation[3])
+		end
 		if cdata.color then
 			setVehicleColor ( vehicle, cdata.color[1], cdata.color[2], cdata.color[3], cdata.color[4] )
 		end
@@ -678,6 +683,9 @@ function edfCloneElement(theElement, editorMode )
 		local oldElement = theElement
 		theElement = cloneElement(theElement)
 		
+		if (getElementType(theElement) == "vehicle" and getVehicleType(theElement) == "Train") then
+			setTrainDerailed(theElement, true)
+		end
 		if getElementType(oldElement) == "object" and isElementDoubleSided(oldElement) then
 			setElementDoubleSided(theElement, true)
 		end

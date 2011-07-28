@@ -141,7 +141,14 @@ end
 addEventHandler ("onClientResourceStart",getRootElement(),
 	function(resource)
 		if resource ~= getResourceFromName"freeroam" then return end
-		outputMessage ( "Editor test mode enabled.  Press F1 to show/hide controls", 0, 180, 0, 7000 )
+		local message = "Editor test mode enabled.  Press F1 to show/hide controls"
+		for i, vehicle in ipairs(getElementsByType("vehicle")) do
+			if (getVehicleType(vehicle) == "Train" and getElementDimension(vehicle) == getElementDimension(localPlayer)) then
+				message = message.." (Any trains are moved to the nearest track)"
+				break
+			end
+		end
+		outputMessage ( message, 0, 180, 0, 7000 )
 		local button = freeroam.appendControl ( "wndMain", {"btn", text="Stop testing"})
 		addEventHandler ( "onClientGUIClick",button,stopTest, false )
 		local workingInterior = editor_main.getWorkingInterior()
