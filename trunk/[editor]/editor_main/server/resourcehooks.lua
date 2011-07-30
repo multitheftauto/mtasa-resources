@@ -108,10 +108,10 @@ end
 
 function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 	local tick = getTickCount()
-	
 	local resourceTable = resourceTable or {}
 
 	for i, element in ipairs(getElementChildren(baseElement)) do
+		flattenTreeRuns = flattenTreeRuns + 1
 		local elementType = getElementType(element)
 		if (elementType == "vehicle" and getVehicleType(element) == "Train") then
 			setTrainDerailed(element, true)
@@ -156,6 +156,7 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 		end
 		
 		if getTickCount() >= tick + 500 then
+			triggerClientEvent(root, "saveLoadProgressBar", root, flattenTreeRuns)
 			coroutine.yield()
 			tick = getTickCount()
 		end

@@ -126,10 +126,14 @@ function handleOpenResource()
 		loadedMap = openingResourceName 
 		passNewMapSettings()
 		if not openingOnStart then
-			local outputStr = tostring(getPlayerName ( openingSource )).." opened map "..tostring(openingResourceName)..". (opening took "..math.floor(getTickCount() - openingStartTick).." ms)"
+			local playerName = "No longer connected player"
+			if (isElement(openingSource)) then
+				triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
+				playerName = getPlayerName ( openingSource )
+			end
+			local outputStr = playerName.." opened map "..tostring(openingResourceName)..". (opening took "..math.floor(getTickCount() - openingStartTick).." ms)"
 			editor_gui.outputMessage ( outputStr, root,255,0,0)
 			outputDebugString ( outputStr )
-			triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
 			dumpSave()
 		else
 			loadedMap = openingMapName
@@ -145,6 +149,8 @@ function handleOpenResource()
 		openingMapElement     = nil
 		openingMapName        = nil
 		
+		flattenTreeRuns = 0
+		triggerClientEvent(root, "saveLoadProgressBar", root, true)
 		return
 	end
 	
@@ -193,6 +199,7 @@ function openResource( resourceName, onStart )
 		openingStartTick    = getTickCount()
 		
 		editor_gui.outputMessage ( "Opening map "..tostring(openingResourceName).."...", root,0,0,255,600000)
+		triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
 		
 		local maps = getResourceFiles ( map, "map" )
 		local mapName = DUMP_RESOURCE
@@ -213,10 +220,17 @@ function openResource( resourceName, onStart )
 				-- Un/Load the neccessary definitions
 				reloadEDFDefinitions(newEDF,true)
 			end
-
+			local T1 = getTickCount()
 			local mapElement = loadMapData ( mapNode, mapContainer, false )
+			local T2 = getTickCount()
+			outputDebugString(tostring(#getElementChildren(mapElement)))
+			--triggerClientEvent(root, "saveLoadProgressBar", root, (T2 - T1) * 11)
 			openingMapElement = mapElement
+			if (#getElementChildren(mapElement) > 200) then
+				triggerClientEvent(root, "saveLoadProgressBar", root, 0, #getElementChildren(mapElement))
+			end
 			openResourceCoroutine = coroutine.create(flattenTree)
+			--outputDebugString(tostring(flattenTree))
 			setTimer(handleOpenResource,50,1)
 			coroutine.resume(openResourceCoroutine,mapElement,mapContainer)
 			--flattenTree ( mapElement, mapContainer )
