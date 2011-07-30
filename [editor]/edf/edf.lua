@@ -1094,8 +1094,10 @@ function edfAddElementNodeData(node, resource)
 				-- update the data field's datatype
 				dataFields[dname].datatype = xmlNodeGetAttribute(subnode,"type")
 										 or dataFields[dname].datatype
-
-				local validValues = gettok(dataFields[dname].datatype, 2, 58)
+				local validValues
+				if (dataFields[dname].datatype) then
+					validValues = gettok(dataFields[dname].datatype, 2, 58)
+				end
 				if validValues then
 					dataFields[dname].validvalues = split(validValues, 44)
 					dataFields[dname].datatype = gettok(dataFields[dname].datatype, 1, 58)

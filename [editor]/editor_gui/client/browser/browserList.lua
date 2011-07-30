@@ -67,7 +67,9 @@ local function updateActivatedBrowsers()
 					end
 				else --if its a linear table then there's only 1 column to set
 					local pos = guiGridListAddRow ( self.gridlist )
-					guiGridListSetItemText(self.gridlist,pos,1,rowColumns,false,false)
+					if (rowColumns) then
+						guiGridListSetItemText(self.gridlist,pos,1,rowColumns,false,false)
+					end
 				end
 				i = i + 1
 			end

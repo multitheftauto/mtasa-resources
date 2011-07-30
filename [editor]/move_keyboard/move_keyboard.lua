@@ -180,6 +180,7 @@ local function onClientRender_keyboard()
 
 			else
 				local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
+				if (not tempRotX) then return false end
 				
 				-- conversion to XYZ order
 				tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)

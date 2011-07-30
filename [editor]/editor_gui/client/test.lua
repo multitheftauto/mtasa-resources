@@ -1,20 +1,22 @@
-﻿local editorRes = getResourceFromName"editor_main"
+﻿local editorRes = getResourceFromName("editor_main")
 local testDialog = {}
 local hideDialog
 local g_suspended
---
+local inBasicTest = false
 local lastTestGamemode
 
 function createTestDialog()
 	testDialog.window = guiCreateWindow ( screenX/2 - 110, screenY/2 - 145, 220, 290, "TEST", false )
 	testDialog.gamemodesList = guiCreateGridList ( 0.02, 0.08, 0.98, 0.75, true, testDialog.window )
-	testDialog.test = guiCreateButton ( 0.02, 0.84, 0.46, 0.12, "Test", true, testDialog.window )
-	testDialog.cancel = guiCreateButton ( 0.5, 0.84, 0.46, 0.12, "Cancel", true, testDialog.window )
+	testDialog.basic = guiCreateButton ( 0.02, 0.84, 0.30, 0.12, "Basic Test", true, testDialog.window )
+	testDialog.test = guiCreateButton ( 0.35, 0.84, 0.29, 0.12, "Full Test", true, testDialog.window )
+	testDialog.cancel = guiCreateButton ( 0.65, 0.84, 0.30, 0.12, "Cancel", true, testDialog.window )
 	guiGridListAddColumn ( testDialog.gamemodesList, "Gamemodes", 0.8 )
 	--
 	guiSetVisible ( testDialog.window, false )
-	addEventHandler ( "onClientGUIClick",testDialog.cancel,testHideDialog,false )
-	addEventHandler ( "onClientGUIClick",testDialog.test,testStart,false )
+	addEventHandler ( "onClientGUIClick", testDialog.cancel, testHideDialog, false )
+	addEventHandler ( "onClientGUIClick", testDialog.test, testStart, false )
+	addEventHandler ( "onClientGUIClick", testDialog.basic, basicTest, false )
 	--
 	if getElementData ( localPlayer, "waitingToStart" ) then
 		bindControl ( "toggle_test", "down", stopTest )
@@ -22,6 +24,7 @@ function createTestDialog()
 	else
 		bindControl ( "toggle_test", "down", quickTest )
 	end
+	bindControl ( "toggle_basictest", "down", basicTest )
 end
 
 function quickTest()
@@ -32,7 +35,6 @@ function quickTest()
 	unbindControl ( "toggle_test", "down", quickTest )
 	if tutorialVars.test then tutorialNext() end
 end
-
 
 function testShowDialog()
 	setGUIShowing(false)
@@ -65,21 +67,25 @@ function confirmTest()
 	triggerServerEvent ( "testResource",localPlayer, false )
 end
 
-addEvent ("suspendGUI",true)
-addEventHandler("suspendGUI",getRootElement(),
-	function()
-		if g_suspended then return end
-		g_suspended = true
-		guiSetVisible ( testDialog.window, false )
-		guiSetInputEnabled ( false )
-		freezeTime ( false )
-		showCursor(false)
-		editor_main.suspend ()
-		addCommandHandler ( "stoptest", stopTest )
-	end
-)
+function suspendGUI()
+	if g_suspended then return end
+	g_suspended = true
+	guiSetVisible ( testDialog.window, false )
+	guiSetInputEnabled ( false )
+	freezeTime ( false )
+	showCursor(false)
+	editor_main.suspend ()
+	addCommandHandler ( "stoptest", stopTest )
+	if (not inBasicTest) then return end
+	inBasicTest = false
+	removeEventHandler("onClientPlayerDamage", localPlayer, noDamageInBasicTest)
+	toggleControl("fire", true)
+	toggleControl("enter_exit", true)
+	toggleControl("enter_passenger", true)
+end
+addEvent("suspendGUI", true)
+addEventHandler("suspendGUI", root, suspendGUI)
 
-addEvent ( "resumeGUI", true )
 function resumeGUI ()
 	if getElementData ( localPlayer, "waitingToStart" ) then
 		setElementData ( localPlayer, "waitingToStart", nil, false )
@@ -92,21 +98,19 @@ function resumeGUI ()
 	setElementDimension ( localPlayer, editor_main.getWorkingDimension() )
 	setElementAlpha ( localPlayer, 0 )
 	fadeCamera ( true )
-	--showCursor(true)
 	removeCommandHandler ( "stoptest", stopTest )
 	if not g_suspended then return end
-	--
 	setGUIShowing(true)
 	guiSetInputEnabled ( false )
 	setWorldClickEnabled ( true )
 	editor_main.resume (true)
-	--editor_main.toggleEditorKeys(true)
 	g_suspended = false
 end
-addEventHandler("resumeGUI",getRootElement(),resumeGUI)
+addEvent("resumeGUI", true)
+addEventHandler("resumeGUI", root, resumeGUI)
 
 function stopTest()
---[[	for k,player in ipairs(getElementsByType("player")) do
+	--[[for k,player in ipairs(getElementsByType("player")) do
 		if player ~= getLocalPlayer() then
 			setElementDimension(player, editor_main.getWorkingDimension())
 		end
@@ -138,23 +142,63 @@ function testStart()
 	end
 end
 
-addEventHandler ("onClientResourceStart",getRootElement(),
-	function(resource)
-		if resource ~= getResourceFromName"freeroam" then return end
-		local message = "Editor test mode enabled.  Press F1 to show/hide controls"
-		for i, vehicle in ipairs(getElementsByType("vehicle")) do
-			if (getVehicleType(vehicle) == "Train" and getElementDimension(vehicle) == getElementDimension(localPlayer)) then
-				message = message.." (Any trains are moved to the nearest track)"
-				break
-			end
+local function freeroamStarting(resource)
+	if resource ~= getResourceFromName("freeroam") then return end
+	local message = "Editor test mode enabled.  Press F1 to show/hide controls"
+	for i, vehicle in ipairs(getElementsByType("vehicle")) do
+		if (getVehicleType(vehicle) == "Train" and getElementDimension(vehicle) == getElementDimension(localPlayer)) then
+			message = message.." (Any trains are moved to the nearest track)"
+			break
 		end
-		outputMessage ( message, 0, 180, 0, 7000 )
-		local button = freeroam.appendControl ( "wndMain", {"btn", text="Stop testing"})
-		addEventHandler ( "onClientGUIClick",button,stopTest, false )
-		local workingInterior = editor_main.getWorkingInterior()
-		setElementInterior(localPlayer,workingInterior)
-		setCameraInterior(workingInterior)
-		bindControl ( "toggle_test", "down", stopTest )
-	end	
-)
+	end
+	outputMessage ( message, 0, 180, 0, 7000 )
+	local button = freeroam.appendControl ( "wndMain", {"btn", text="Stop testing"})
+	addEventHandler ( "onClientGUIClick",button,stopTest, false )
+	local workingInterior = editor_main.getWorkingInterior()
+	setElementInterior(localPlayer,workingInterior)
+	setCameraInterior(workingInterior)
+	bindControl ( "toggle_test", "down", stopTest )
+end
+addEventHandler("onClientResourceStart", root, freeroamStarting)
 
+function basicTest()
+	if (g_suspended) then return end
+
+	if (inBasicTest) then
+		outputDebugString("stopping basic test")
+		freezeTime(true, currentMapSettings.timeHour, currentMapSettings.timeMinute)
+		setWeather(currentMapSettings.weather)
+		setElementDimension(localPlayer, editor_main.getWorkingDimension())
+		setElementAlpha(localPlayer, 0)
+		fadeCamera(true)
+		setGUIShowing(true)
+		guiSetInputEnabled(false)
+		setWorldClickEnabled(true)
+		editor_main.resume(true)
+		inBasicTest = false
+		removeEventHandler("onClientPlayerDamage", localPlayer, noDamageInBasicTest)
+		toggleControl("fire", true)
+		toggleControl("enter_exit", true)
+		toggleControl("enter_passenger", true)
+	else
+		outputDebugString("starting basic test")
+		editor_main.dropElement()
+		guiSetVisible(testDialog.window, false)
+		guiSetInputEnabled(false)
+		freezeTime(false)
+		showCursor(false)
+		editor_main.suspend ()
+		setCameraTarget(localPlayer)
+		toggleControl("fire", false)
+		toggleControl("enter_exit", false)
+		toggleControl("enter_passenger", false)
+		inBasicTest = true
+		addEventHandler("onClientPlayerDamage", localPlayer, noDamageInBasicTest)
+		outputChatBox("Press F6 to leave basic test", 0, 255, 0)
+		bindControl ( "toggle_basictest", "down", basicTest )
+	end
+end
+
+function noDamageInBasicTest()
+	cancelEvent()
+end
