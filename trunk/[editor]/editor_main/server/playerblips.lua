@@ -24,7 +24,7 @@ function checkColor(c)
 end
 
 function createPlayerBlip(player,size,r,g,b,a)
-	if isElement(player) and getElementType(player)=="player" and not playerBlips[player] then
+	if blipContainer and isElement(player) and getElementType(player)=="player" and not playerBlips[player] then
 		size = size and tonumber(size) or 2
 		
 		local colorR, colorG, colorB, colorA

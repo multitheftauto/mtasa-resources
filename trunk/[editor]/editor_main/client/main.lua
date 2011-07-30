@@ -1,5 +1,4 @@
-﻿local root = getRootElement()
-local thisResource = getThisResource()
+﻿local thisResource = getThisResource()
 local thisResourceRoot = getResourceRootElement(thisResource)
 local g_suspendedCamera = {}
 local g_screenX, g_screenY = guiGetScreenSize ()
@@ -58,6 +57,8 @@ local DRAG_CAMERA_MINIMAL_DISTANCE = 2
 
 local g_lastClick = { tick=getTickCount() }
 local DOUBLE_CLICK_MAX_DELAY = 500 -- In ticks
+
+setCloudsEnabled(false) -- We don't need clouds.
 
 -- PRIVATE
 local isColless = {

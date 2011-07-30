@@ -1,7 +1,6 @@
 ﻿g_in_test = false
 local g_restoreEDF, dumpTimer
 local thisRoot = getResourceRootElement(getThisResource())
-local root = getRootElement()
 local g_default_spawnmaponstart,g_default_spawnmapondeath,g_defaultwelcometextonstart
 local restoreGUIOnMapStop, restoreGUIOnGamemodeMapStop, startGamemodeOnStop
 local freeroamRes = getResourceFromName "freeroam"
@@ -220,36 +219,34 @@ function openResource( resourceName, onStart )
 			openResourceCoroutine = coroutine.create(flattenTree)
 			setTimer(handleOpenResource,50,1)
 			coroutine.resume(openResourceCoroutine,mapElement,mapContainer)
---			flattenTree ( mapElement, mapContainer )
---			outputDebugString("Loading map took "..getTickCount()-tick.." ms")
---			destroyElement ( mapElement )
---			mapName = string.sub(mapPath, 1, -5)
+			--flattenTree ( mapElement, mapContainer )
+			--outputDebugString("Loading map took "..getTickCount()-tick.." ms")
+			--destroyElement ( mapElement )
+			--mapName = string.sub(mapPath, 1, -5)
 			xmlUnloadFile ( mapNode )
 		end
 		
 		returnValue = true
---[[		loadedMap = resourceName 
+		--[[loadedMap = resourceName 
 		passNewMapSettings()
 		returnValue = true]]
 		if not onStart then
---			editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
+			--editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
 		else
 			openingMapName = mapName
 		end
---		triggerEvent("onMapOpened", thisResourceRoot, map)
+		--triggerEvent("onMapOpened", thisResourceRoot, map)
 	else
 		returnValue = false
 	end
 	if onStart then
 		return returnValue
 	else
---		triggerClientEvent ( source, "saveloadtest_return", source, "open", returnValue )
---		dumpSave()
+		--triggerClientEvent ( source, "saveloadtest_return", source, "open", returnValue )
+		--dumpSave()
 	end
 end
 addEventHandler ( "openResource", rootElement, openResource )
-
-
 
 ---Save
 
@@ -328,7 +325,6 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			return
 		end
 	end
-	editor_gui.outputMessage("The map is being saved... (this could take a while)", root,255,0,0)
 	if ( loadedMap ) and ( loadedMap ~= resourceName ) then
 		metaNodes = copyResourceFiles ( getResourceFromName(loadedMap), resource )
 	end
@@ -339,6 +335,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	local rootElements = {}
 	local usedResources = {}
 	local tick = getTickCount()
+	local showSaveWarningOnce = false
 	for i, element in ipairs(getElementChildren(baseElement)) do  --Find parents to start with
 		--ignore representations and destroyed elements
 		if not edf.edfIsRepresentation(element) and getElementDimension(element) ~= DESTROYED_ELEMENT_DIMENSION then
@@ -363,6 +360,10 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 					saveResourceCoroutine = nil
 				end
 			end, 200, 1)
+			if (not showSaveWarningOnce and iniTick < getTickCount() - 3000) then
+				editor_gui.outputMessage("The map is being saved... (this could take a while)", root,255,0,0)
+				showSaveWarningOnce = true
+			end
 			coroutine.yield()
 			tick = getTickCount()
 		end
@@ -397,7 +398,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 		--add an ID attribute first off
 		xmlNodeSetAttribute(elementNode, "id", getElementID(element))
 		--dump raw properties from the getters
---		outputDebugString(tostring(loadedEDF).."["..tostring(edf.edfGetCreatorResource(element)).."]"..".elements["..tostring(getElementType(element)).."].data")
+		--outputDebugString(tostring(loadedEDF).."["..tostring(edf.edfGetCreatorResource(element)).."]"..".elements["..tostring(getElementType(element)).."].data")
 		for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
 			local value
 			if specialSyncers[dataField] then
@@ -772,7 +773,7 @@ function restoreGUIOnMapStop(resource)
 	if g_restoreEDF then
 		--Start the edf resource again if it was stopped
 		blockMapManager(g_restoreEDF) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
---		setTimer(startResource, 50, 1, g_restoreEDF, false, false, true, false, false, false, false, false, true)
+		--setTimer(startResource, 50, 1, g_restoreEDF, false, false, true, false, false, false, false, false, true)
 		setTimer(edf.edfStartResource,50,1,g_restoreEDF)
 		g_restoreEDF = nil
 	end
