@@ -1,7 +1,6 @@
 ï»¿-- Capture the Vehicle by BrophY©, if you wish to modify, keep copyright notice and credits in the file
 -- Credits to Talidan, Dragon and Ransom for help and testing
 
-local root = getRootElement ()
 local round = 0
 
 addEventHandler('onResourceStart', getResourceRootElement(getThisResource()),
@@ -84,9 +83,14 @@ function onCTVMapStart (startedMap)
 	capture3 = createMarker ( tonumber(team3markerX), tonumber(team3markerY), tonumber(team3markerZ), "cylinder", 4, tonumber(team3col1), tonumber(team3col2), tonumber(team3col3), 127 )
 	capture4 = createMarker ( tonumber(team4markerX), tonumber(team4markerY), tonumber(team4markerZ), "cylinder", 4, tonumber(team4col1), tonumber(team4col2), tonumber(team4col3), 127 )
 	createBlipAttachedTo ( capture1, tonumber(team1markerblip) )
-	createBlipAttachedTo ( capture2, tonumber(team2markerblip)  )
+	createBlipAttachedTo ( capture2, tonumber(team2markerblip) )
 	createBlipAttachedTo ( capture3, tonumber(team3markerblip) )
 	createBlipAttachedTo ( capture4, tonumber(team4markerblip) )
+	setElementData(capture1, "teamName", getElementData(baseTeamb1, "teamName"))
+	setElementData(capture2, "teamName", getElementData(baseTeamb2, "teamName"))
+	setElementData(capture3, "teamName", getElementData(baseTeamb3, "teamName"))
+	setElementData(capture4, "teamName", getElementData(baseTeamb4, "teamName"))
+	
 	setWeather ( 14 )
 	setTime ( 5, 30 )
 	startRound ()
@@ -317,11 +321,14 @@ function markerHit ( player )
 	if player == vanController then
 		if source == capture1 or source == capture2 or source == capture3 or source == capture4 then
 			local team = getPlayerTeam( vanController )
+			local markerTeamName = getElementData(source, "teamName")
 			local teamName = getTeamName( team )
-			local r, g, b = getTeamColor( team )
-			showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, teamName .. " have captured the vehicle!" )
-			addPlayerScore(player, 10)
-			endRound()
+			if (markerTeamName == teamName) then
+				local r, g, b = getTeamColor( team )
+				showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, teamName .. " have captured the vehicle!" )
+				addPlayerScore(player, 10)
+				endRound()
+			end
 		end
 	end
 end

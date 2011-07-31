@@ -1,61 +1,60 @@
 ï»¿-- Capture the Vehicle by BrophY©, if you wish to modify, keep copyright notice and credits in the file
 -- Credits to Talidan, Dragon and Ransom for help and testing
 
-local root = getRootElement ()
-local bases = {}
+bases = {}
 
 -- Right, lets get down to the main spawnscreen code
 
 function onCTVSpawnMapStart (startedMap)
-		local mapRoot = getResourceRootElement(startedMap)
-		setMapName ( "Capture the Vehicle" )
-		---get all the base elements ready
-		for k,v in ipairs(getElementsByType ( "base", mapRoot )) do
-			if getElementData ( v, "team" ) == "team1" then
-				baseTeam1 = v
-			elseif getElementData ( v, "team" ) == "team2" then
-				baseTeam2 = v
-			elseif getElementData ( v, "team" ) == "team3" then
-				baseTeam3 = v
-			elseif getElementData ( v, "team" ) == "team4" then
-				baseTeam4 = v
-			end
+	local mapRoot = getResourceRootElement(startedMap)
+	setMapName ( "Capture the Vehicle" )
+	---get all the base elements ready
+	for k,v in ipairs(getElementsByType ( "base", mapRoot )) do
+		if getElementData ( v, "team" ) == "team1" then
+			baseTeam1 = v
+		elseif getElementData ( v, "team" ) == "team2" then
+			baseTeam2 = v
+		elseif getElementData ( v, "team" ) == "team3" then
+			baseTeam3 = v
+		elseif getElementData ( v, "team" ) == "team4" then
+			baseTeam4 = v
 		end
-		team1name = getElementData ( baseTeam1, "teamName" )
-		team2name = getElementData ( baseTeam2, "teamName" )
-		team3name = getElementData ( baseTeam3, "teamName" )
-		team4name = getElementData ( baseTeam4, "teamName" )
-		setRuleValue ( "Team 1", "" ..team1name.. "" )
-		setRuleValue ( "Team 2", "" ..team2name.. "" )
-		setRuleValue ( "Team 3", "" ..team3name.. "" )
-		setRuleValue ( "Team 4", "" ..team4name.. "" )
-		team1color = getElementData ( baseTeam1, "teamColor" )
-		team1col1 = gettok ( team1color, 1, 44 )
-		team1col2 = gettok ( team1color, 2, 44 )
-		team1col3 = gettok ( team1color, 3, 44 )
-		team2color = getElementData ( baseTeam2, "teamColor" )
-		team2col1 = gettok ( team2color, 1, 44 )
-		team2col2 = gettok ( team2color, 2, 44 )
-		team2col3 = gettok ( team2color, 3, 44 )
-		team3color = getElementData ( baseTeam3, "teamColor" )
-		team3col1 = gettok ( team3color, 1, 44 )
-		team3col2 = gettok ( team3color, 2, 44 )
-		team3col3 = gettok ( team3color, 3, 44 )
-		team4color = getElementData ( baseTeam4, "teamColor" )
-		team4col1 = gettok ( team4color, 1, 44 )
-		team4col2 = gettok ( team4color, 2, 44 )
-		team4col3 = gettok ( team4color, 3, 44 )
-		varTeam1 = createTeam ( tostring(team1name), team1col1, team1col2, team1col3 )
-		varTeam2 = createTeam ( tostring(team2name), team2col1, team2col2, team2col3 )
-		varTeam3 = createTeam ( tostring(team3name), team3col1, team3col2, team3col3 )
-		varTeam4 = createTeam ( tostring(team4name), team4col1, team4col2, team4col3 )
-		bases[varTeam1] = baseTeam1
-		bases[varTeam2] = baseTeam2
-		bases[varTeam3] = baseTeam3
-		bases[varTeam4] = baseTeam4
-		
-		spawnText ()
 	end
+	team1name = getElementData ( baseTeam1, "teamName" )
+	team2name = getElementData ( baseTeam2, "teamName" )
+	team3name = getElementData ( baseTeam3, "teamName" )
+	team4name = getElementData ( baseTeam4, "teamName" )
+	setRuleValue ( "Team 1", "" ..team1name.. "" )
+	setRuleValue ( "Team 2", "" ..team2name.. "" )
+	setRuleValue ( "Team 3", "" ..team3name.. "" )
+	setRuleValue ( "Team 4", "" ..team4name.. "" )
+	team1color = getElementData ( baseTeam1, "teamColor" )
+	team1col1 = gettok ( team1color, 1, 44 )
+	team1col2 = gettok ( team1color, 2, 44 )
+	team1col3 = gettok ( team1color, 3, 44 )
+	team2color = getElementData ( baseTeam2, "teamColor" )
+	team2col1 = gettok ( team2color, 1, 44 )
+	team2col2 = gettok ( team2color, 2, 44 )
+	team2col3 = gettok ( team2color, 3, 44 )
+	team3color = getElementData ( baseTeam3, "teamColor" )
+	team3col1 = gettok ( team3color, 1, 44 )
+	team3col2 = gettok ( team3color, 2, 44 )
+	team3col3 = gettok ( team3color, 3, 44 )
+	team4color = getElementData ( baseTeam4, "teamColor" )
+	team4col1 = gettok ( team4color, 1, 44 )
+	team4col2 = gettok ( team4color, 2, 44 )
+	team4col3 = gettok ( team4color, 3, 44 )
+	varTeam1 = createTeam ( tostring(team1name), team1col1, team1col2, team1col3 )
+	varTeam2 = createTeam ( tostring(team2name), team2col1, team2col2, team2col3 )
+	varTeam3 = createTeam ( tostring(team3name), team3col1, team3col2, team3col3 )
+	varTeam4 = createTeam ( tostring(team4name), team4col1, team4col2, team4col3 )
+	bases[varTeam1] = baseTeam1
+	bases[varTeam2] = baseTeam2
+	bases[varTeam3] = baseTeam3
+	bases[varTeam4] = baseTeam4
+	
+	spawnText ()
+end
 
 function onCTVSpawnMapStop (startedMap)
 	for k,v in ipairs(getElementsByType ( "player" )) do
