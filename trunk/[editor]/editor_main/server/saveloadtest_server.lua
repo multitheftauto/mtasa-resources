@@ -1,6 +1,5 @@
 ﻿g_in_test = false
 local g_restoreEDF, dumpTimer
-local thisRoot = getResourceRootElement(getThisResource())
 local g_default_spawnmaponstart,g_default_spawnmapondeath,g_defaultwelcometextonstart
 local restoreGUIOnMapStop, restoreGUIOnGamemodeMapStop, startGamemodeOnStop
 local freeroamRes = getResourceFromName "freeroam"
@@ -220,44 +219,27 @@ function openResource( resourceName, onStart )
 				-- Un/Load the neccessary definitions
 				reloadEDFDefinitions(newEDF,true)
 			end
-			local T1 = getTickCount()
 			local mapElement = loadMapData ( mapNode, mapContainer, false )
-			local T2 = getTickCount()
-			outputDebugString(tostring(#getElementChildren(mapElement)))
-			--triggerClientEvent(root, "saveLoadProgressBar", root, (T2 - T1) * 11)
 			openingMapElement = mapElement
-			if (#getElementChildren(mapElement) > 200) then
+			-- Map may take a while to load so show loading bar
+			if (#getElementChildren(mapElement) > 500) then
 				triggerClientEvent(root, "saveLoadProgressBar", root, 0, #getElementChildren(mapElement))
 			end
 			openResourceCoroutine = coroutine.create(flattenTree)
-			--outputDebugString(tostring(flattenTree))
 			setTimer(handleOpenResource,50,1)
 			coroutine.resume(openResourceCoroutine,mapElement,mapContainer)
-			--flattenTree ( mapElement, mapContainer )
-			--outputDebugString("Loading map took "..getTickCount()-tick.." ms")
-			--destroyElement ( mapElement )
-			--mapName = string.sub(mapPath, 1, -5)
-			xmlUnloadFile ( mapNode )
+			xmlUnloadFile(mapNode)
 		end
 		
 		returnValue = true
-		--[[loadedMap = resourceName 
-		passNewMapSettings()
-		returnValue = true]]
 		if not onStart then
-			--editor_gui.outputMessage ( tostring(getPlayerName ( source )).." opened map "..tostring(resourceName)..".", root,255,0,0)
-		else
 			openingMapName = mapName
 		end
-		--triggerEvent("onMapOpened", thisResourceRoot, map)
 	else
 		returnValue = false
 	end
 	if onStart then
 		return returnValue
-	else
-		--triggerClientEvent ( source, "saveloadtest_return", source, "open", returnValue )
-		--dumpSave()
 	end
 end
 addEventHandler ( "openResource", rootElement, openResource )
@@ -579,7 +561,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 			--add an ID attribute first off
 			xmlNodeSetAttribute(elementNode, "id", getElementID(element))
 			--dump raw properties from the getters
-	--		outputDebugString(tostring(loadedEDF).."["..tostring(edf.edfGetCreatorResource(element)).."]"..".elements["..tostring(getElementType(element)).."].data")
+			--outputDebugString(tostring(loadedEDF).."["..tostring(edf.edfGetCreatorResource(element)).."]"..".elements["..tostring(getElementType(element)).."].data")
 			for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
 				local value
 				if specialSyncers[dataField] then
@@ -650,9 +632,7 @@ function (gamemodeName)
 	--local success = saveResource ( TEST_RESOURCE, true )
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
 	local success = coroutine.resume(saveResourceCoroutine, TEST_RESOURCE, true, nil, nil, gamemodeName)
-	if ( success ) then
-		--beginTest(client,gamemodeName)
-	else
+	if ( not success ) then
 		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 		"Dummy 'editor_test' resource may be corrupted!" )
 		return false	
@@ -728,7 +708,7 @@ function beginTest(client,gamemodeName)
 	for i,player in ipairs(getElementsByType"player") do
 		setElementDimension ( player, 0 )
 	end
-	setElementData ( thisRoot, "g_in_test", true )
+	setElementData ( resourceRoot, "g_in_test", true )
 	set ( "*freeroam.welcometextonstart", "false" )
 	set ( "*freeroam.spawnmaponstart", "false" )
 	addEvent("onPollStart")
@@ -792,13 +772,13 @@ function restoreGUIOnMapStop(resource)
 		g_restoreEDF = nil
 	end
 	setTimer(triggerClientEvent, 50, 1, getRootElement(), "resumeGUI", getRootElement())
-	setElementData ( thisRoot, "g_in_test", nil )
+	setElementData ( resourceRoot, "g_in_test", nil )
 	removeEventHandler ( "onResourceStop", source, restoreGUIOnMapStop )
 end
 
 -- dump settings
 function dumpSave()
-	if getBool("enableDumpSave", true) and not getElementData(thisRoot, "g_in_test") and not isEditorOpeningResource() and not isEditorSaving() then
+	if getBool("enableDumpSave", true) and not getElementData(resourceRoot, "g_in_test") and not isEditorOpeningResource() and not isEditorSaving() then
 		quickSave(false,true)
 	end
 end
