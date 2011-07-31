@@ -105,6 +105,7 @@ function resumeGUI ()
 	setWorldClickEnabled ( true )
 	editor_main.resume (true)
 	g_suspended = false
+	setCloudsEnabled(false)
 end
 addEvent("resumeGUI", true)
 addEventHandler("resumeGUI", root, resumeGUI)
@@ -165,7 +166,6 @@ function basicTest()
 	if (g_suspended) then return end
 
 	if (inBasicTest) then
-		outputDebugString("stopping basic test")
 		freezeTime(true, currentMapSettings.timeHour, currentMapSettings.timeMinute)
 		setWeather(currentMapSettings.weather)
 		setElementDimension(localPlayer, editor_main.getWorkingDimension())
@@ -181,7 +181,6 @@ function basicTest()
 		toggleControl("enter_exit", true)
 		toggleControl("enter_passenger", true)
 	else
-		outputDebugString("starting basic test")
 		editor_main.dropElement()
 		guiSetVisible(testDialog.window, false)
 		guiSetInputEnabled(false)

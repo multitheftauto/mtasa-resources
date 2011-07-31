@@ -1,5 +1,4 @@
 ﻿-- implement bounding box checking
-local root = getRootElement()
 
 local ignoreAllSurfaces = true
 local moveSpeed = {slow = .025, medium = .25, fast = 2} -- meters per frame
@@ -71,6 +70,10 @@ local function onClientRender_keyboard()
 		return
 	end
 	if (selectedElement) then
+		if (not isElement(selectedElement)) then
+			selectedElement = nil
+			return
+		end
 		if (getElementType(selectedElement) == "vehicle" and getVehicleType(selectedElement) == "Train") then
 			setTrainDerailed(selectedElement, true)
 		end
