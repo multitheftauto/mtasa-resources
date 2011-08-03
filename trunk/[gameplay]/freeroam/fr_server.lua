@@ -300,7 +300,7 @@ function giveMeVehicles(vehicles)
 	local px, py, pz, prot
 	local radius = 3
 	local playerVehicle = getPedOccupiedVehicle(source)
-	if playerVehicle then
+	if playerVehicle and isElement(playerVehicle) then
 		px, py, pz = getElementPosition(playerVehicle)
 		prot, prot, prot = getVehicleRotation(playerVehicle)
 	else
@@ -315,6 +315,7 @@ function giveMeVehicles(vehicles)
 
 	local vehicleList = g_PlayerData[source].vehicles
 	local vehicle
+	if ( not vehicles ) then return end
 	for i,vehID in ipairs(vehicles) do
 		if vehID < 400 or vehID > 611 then
 			errMsg(vehID ..' is incorrect vehicle model', source)
@@ -323,6 +324,7 @@ function giveMeVehicles(vehicles)
 				unloadVehicle(vehicleList[1])
 			end
 			vehicle = createVehicle(vehID, vx, vy, vz, 0, 0, vrot)
+			if (not isElement(vehicle)) then return end
 			setElementInterior(vehicle, getElementInterior(source))
 			setElementDimension(vehicle, getElementDimension(source))
 			table.insert(vehicleList, vehicle)

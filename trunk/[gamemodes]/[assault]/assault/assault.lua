@@ -1,5 +1,4 @@
 ﻿
-root = getRootElement()
 assaultTimers = {}
 
 --[[
@@ -1179,6 +1178,7 @@ function showTextForPlayer ( source, time, red, green, blue, scale, pos, text )
 	local textItem = textCreateTextItem ( text, 0.5, pos, 2, red, green, blue, 255, scale, "center" )
 	textDisplayAddText ( textDisplay, textItem )
 	textDisplayAddObserver ( textDisplay, source )
+	if ( time < 50 ) then time = 50 end
 	setTimer(textDestroyTextItem, time, 1, textItem)
 	setTimer(textDestroyDisplay, time, 1, textDisplay)
 end
@@ -1515,7 +1515,7 @@ addEventHandler( "onGamemodeMapStop", getRootElement(), stopAssaultMap )
 addEventHandler( "onResourceStop", getResourceRootElement(getThisResource()), stopAssault )
 
 -- Custom gamemode Events
-addEvent("onAssaultObjectiveReached","objective")
+addEvent("onAssaultObjectiveReached")
 addEvent("onAssaultStartRound")
 addEvent("onAssaultCreateObjective")
 addEvent("onAssaultEndRound")

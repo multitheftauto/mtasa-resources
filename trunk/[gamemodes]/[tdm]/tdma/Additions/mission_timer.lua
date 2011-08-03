@@ -11,7 +11,7 @@ local time = 0
 
 function misTmrStart ( name )
 	if ( name ~= getThisResource() ) then return end
-	addEvent ( "missionTimerActivated", "timerID, player" )
+	addEvent ( "missionTimerActivated", false )
 	setTimer ( missionTimerTick, 1000, 0 )
 end
 addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()), misTmrStart )

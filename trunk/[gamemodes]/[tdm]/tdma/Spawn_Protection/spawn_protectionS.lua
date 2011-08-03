@@ -1,15 +1,20 @@
-﻿root = getRootElement()
-SPTick = {}
+﻿SPTick = {}
 tdmaSPTimer = {}
 
 function endOfSpawnProtection ( player, marker )
-	detachElements ( marker, player )
-	destroyElement ( marker )
-	--local theTimer = getElementData ( player, "tdma.SPTimer" )
-	local theTimer = tdmaSPTimer[player]
-	killTimer ( theTimer )
-	setElementData ( player, "tdma.SPMarker", false )
-	--outputChatBox ( "You are no longer spawn protected", player )
+	if ( isElement(marker) ) then
+		if ( isElement(player) ) then
+			detachElements ( marker, player )
+		end
+		destroyElement ( marker )
+	end
+	if ( isElement(player) ) then
+		--local theTimer = getElementData ( player, "tdma.SPTimer" )
+		local theTimer = tdmaSPTimer[player]
+		killTimer ( theTimer )
+		setElementData ( player, "tdma.SPMarker", false )
+		--outputChatBox ( "You are no longer spawn protected", player )
+	end
 end
 
 function countdownSpawnProtection ( player, marker )
@@ -50,6 +55,9 @@ function startSpawnProtection ( source )
 end
 
 function spawnProtectToggle ( player, toggle )
+	if ( not isElement(player) ) then
+		return
+	end
 	if ( toggle ) then
 		setElementData ( player, "tdma.sp", "y" )
 		if xDebug then outputDebugString ( "Player " .. getPlayerName(player) .. " is spawn protected" ) end
@@ -64,7 +72,7 @@ function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 	if ( theMarker ) then
 		destroyElement ( theMarker )
 		--killTimer ( getElementData ( source, "tdma.SPTimer" ) )
-		killTimer ( tdmaSPTimer[source] )
+		if ( isTimer(tdmaSPTimer[source]) ) then killTimer ( tdmaSPTimer[source] ) end
 	end
 end
 addEventHandler ( "onPlayerWasted", root, xonPlayerWasted )
@@ -75,7 +83,7 @@ function onPlayerQuit ( )
 	if ( theMarker ) then 
 		destroyElement ( theMarker )
 		--killTimer ( getElementData ( source, "tdma.SPTimer" ) )
-		killTimer ( tdmaSPTimer[player] )
+		if ( isTimer(tdmaSPTimer[source]) ) then killTimer ( tdmaSPTimer[source] ) end
 	end
 end 
 addEventHandler( "onPlayerQuit", root, onPlayerQuit )
