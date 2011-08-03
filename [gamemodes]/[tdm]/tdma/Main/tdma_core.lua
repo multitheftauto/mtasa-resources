@@ -2,7 +2,6 @@
 --| Team Death Match Game Mode |
 --|     Created By AlienX      |
 --+----------------------------+
-root = getRootElement()
 debugEnabled = true
 
 --Game mode variables
@@ -299,7 +298,10 @@ end
 function onPlayerQuit ( )
 	destroyBlipsAttachedTo ( source )
 	setPlayerTeam ( source, nil )
-	destroyElement ( getElementData( source, "tdma.teamMarker" ) )
+	local marker = getElementData( source, "tdma.teamMarker" )
+	if ( isElement(marker) ) then
+		destroyElement ( marker )
+	end
 	setElementData ( source, "tdma.teamMarker", nil )
 end 
 addEventHandler( "onPlayerQuit", root, onPlayerQuit )

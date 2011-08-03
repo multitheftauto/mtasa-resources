@@ -12,8 +12,6 @@ gameShowMoney = false
 gameShowWantedLevel = false
 gameShowKDRatio = false
 
-root = getRootElement()
-
 function onMapLoad ( name )
 	if getThisResource() ~= name then return end
 	
@@ -195,7 +193,15 @@ function gameTick ()
 				local xplayerDeaths = playerDeaths
 				local xplayerKills = playerKills
 				if xplayerDeaths == 0 then xplayerDeaths = 1 end
-				local playerkdr = tostring(( tonumber(xplayerKills) / tonumber(xplayerDeaths) ))
+				local xplayerKills = tonumber(xplayerKills)
+				local xplayerDeaths = tonumber(xplayerDeaths)
+				if (not xplayerKills) then
+					xplayerKills = 0
+				end
+				if (not xplayerDeaths) then
+					xplayerDeaths = 0
+				end
+				local playerkdr = tostring(( xplayerKills / xplayerDeaths ))
 				setElementData ( v, "kdr", math.ceil(playerkdr) )
 			end
 		end
