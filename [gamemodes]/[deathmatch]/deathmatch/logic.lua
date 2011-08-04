@@ -1,6 +1,6 @@
 ﻿g_Root = getRootElement()
 local CAMERA_LOAD_DELAY = 6000 --Time left for the camera to stream in the map.
-local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText
+local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText,g_ProcessWastedHandler
 local announcementText,processWasted
 local mapTimers = {}
 
@@ -57,7 +57,10 @@ function dmMapStart(resource,mapRoot)
 			g_Weapons[weapon] = ammo
 		end
 	end
-	addEventHandler ( "onPlayerWasted", g_Root, processWasted )
+	if (not g_ProcessWastedHandler) then
+		addEventHandler ( "onPlayerWasted", g_Root, processWasted )
+	end
+	g_ProcessWastedHandler = true
 	processSpawnStart(CAMERA_LOAD_DELAY)
 	setTimer ( initiateGame, CAMERA_LOAD_DELAY, 1 )
 end

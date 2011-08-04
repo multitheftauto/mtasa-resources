@@ -1,6 +1,5 @@
 ﻿--Modified by Ransom
 players = getElementsByType ( "player" )
-root = getRootElement ()
 scoreboardRes = getResourceFromName("scoreboard")
 
 addEventHandler("onResourceStop",getResourceRootElement(getThisResource()),
@@ -55,20 +54,19 @@ local objects = {}
 local moving = {}
 local xy_speed
 local z_speed
-local root = getRootElement()
 local barrier_x
 local barrier_y
 local barrier_r
 
 function move ()
---outputDebugString("move entered")
+	--outputDebugString("move entered")
 	local rand
 	repeat
 		rand = math.random ( 1, options.b )
 	until (moving[rand] ~= 1)
 	local object = objects[ rand ]
 	local move = math.random ( 0, 5 )
---outputDebugString("move: " .. move)
+	--outputDebugString("move: " .. move)
 	local x,y,z
 	local x2,y2,z2 = getElementPosition ( object )
 	local free = {}
@@ -77,56 +75,56 @@ function move ()
 	x = x2 / -4
 	y = y2 / -4
 	z = z2 / 3
-	if (move == 0)  and (x ~= 1) and (free[x-1][y][z] == 0) then
+	if (move == 0)  and (x ~= 1) and (free[x-1] and free[x-1][y] and free[x-1][y][z] == 0) then
 		moving[rand] = 1
 		local s = 4000 - xy_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
 		x = x - 1
 		matrix[x][y][z] = 1
---outputDebugString("moving obj")
+		--outputDebugString("moving obj")
 		moveObject ( object, s, x2 + 4, y2, z2, 0, 0, 0 )
-	elseif (move == 1) and (x ~= options.x) and (free[x+1][y][z] == 0) then
+	elseif (move == 1) and (x ~= options.x) and (free[x+1] and free[x+1][y] and free[x+1][y][z] == 0) then
 		moving[rand] = 1
 		local s = 4000 - xy_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
 		x = x + 1
 		matrix[x][y][z] = 1
---outputDebugString("moving obj")
+		--outputDebugString("moving obj")
 		moveObject ( object, s, x2 - 4, y2, z2, 0, 0, 0 )
-	elseif (move == 2) and (y ~= 1) and (free[x][y-1][z] == 0) then
+	elseif (move == 2) and (y ~= 1) and (free[x] and free[x][y-1] and free[x][y-1][z] == 0) then
 		moving[rand] = 1
 		local s = 4000 - xy_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
 		y = y - 1
 		matrix[x][y][z] = 1
---outputDebugString("moving obj")
+		--outputDebugString("moving obj")
 		moveObject ( object, s, x2, y2 + 4, z2, 0, 0, 0 )
-	elseif (move == 3) and (y ~= options.y) and (free[x][y+1][z] == 0) then
+	elseif (move == 3) and (y ~= options.y) and (free[x] and free[x][y+1] and free[x][y+1][z] == 0) then
 		moving[rand] = 1
 		local s = 4000 - xy_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
 		y = y + 1
 		matrix[x][y][z] = 1
---outputDebugString("moving obj")
+		--outputDebugString("moving obj")
 		moveObject ( object, s, x2, y2 - 4, z2, 0, 0, 0 )
-	elseif (move == 4) and (z ~= 1) and (free[x][y][z-1] == 0) then
+	elseif (move == 4) and (z ~= 1) and (free[x] and free[x][y] and free[x][y][z-1] == 0) then
 		moving[rand] = 1
 		local s = 3000 - z_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
 		z = z - 1
 		matrix[x][y][z] = 1
---outputDebugString("moving obj")
+		--outputDebugString("moving obj")
 		moveObject ( object, s, x2, y2, z2 - 3, 0, 0, 0 )
-	elseif (move == 5) and (z ~= options.z) and (free[x][y][z+1] == 0) then
+	elseif (move == 5) and (z ~= options.z) and (free[x] and free[x][y] and free[x][y][z+1] == 0) then
 		moving[rand] = 1
 		local s = 3000 - z_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
 		z = z + 1
 		matrix[x][y][z] = 1
---outputDebugString("moving obj")
+		--outputDebugString("moving obj")
 		moveObject ( object, s, x2, y2, z2 + 3, 0, 0, 0 )
 	end
---	setTimer ("move", 100 )
+	--	setTimer ("move", 100 )
 end
 
 
