@@ -226,7 +226,7 @@ function aSpectator.Render ()
 	local x, y, z = getElementPosition ( aSpectator.Spectating )
 
 	if ( not x ) then
-		dxDrawText ( "Error recieving coordinates", sx - 170, 200, nil, nil, tocolor ( 255, 0, 0, 255 ), 1 )
+		dxDrawText ( "Error recieving coordinates", sx - 170, 200, sx - 170, 200, tocolor ( 255, 0, 0, 255 ), 1 )
 		return
 	end
 
@@ -237,14 +237,14 @@ function aSpectator.Render ()
 	setCameraMatrix ( ox, oy, oz, x, y, z )
 
 	local sx, sy = guiGetScreenSize ()
-	dxDrawText ( "Spectating: "..getPlayerName ( aSpectator.Spectating ), sx - 170, 200, nil, nil, tocolor ( 255, 255, 255, 255 ), 1 )
+	dxDrawText ( "Spectating: "..getPlayerName ( aSpectator.Spectating ), sx - 170, 200, sx - 170, 200, tocolor ( 255, 255, 255, 255 ), 1 )
 	if ( _DEBUG ) then
-		dxDrawText ( "DEBUG:\nAngleX: "..aSpectator.AngleX.."\nAngleZ: "..aSpectator.AngleZ.."\n\nOffset: "..aSpectator.Offset.."\nX: "..ox.."\nY: "..oy.."\nZ: "..oz.."\nDist: "..getDistanceBetweenPoints3D ( x, y, z, ox, oy, oz ), sx - 170, sy - 180, nil, nil, tocolor ( 255, 255, 255, 255 ), 1 )
+		dxDrawText ( "DEBUG:\nAngleX: "..aSpectator.AngleX.."\nAngleZ: "..aSpectator.AngleZ.."\n\nOffset: "..aSpectator.Offset.."\nX: "..ox.."\nY: "..oy.."\nZ: "..oz.."\nDist: "..getDistanceBetweenPoints3D ( x, y, z, ox, oy, oz ), sx - 170, sy - 180, sx - 170, sy - 180, tocolor ( 255, 255, 255, 255 ), 1 )
 	else
 		if ( isCursorShowing () ) then
-			dxDrawText ( "Tip: mouse2 - toggle free camera mode", 20, sy - 50, nil, nil, tocolor ( 255, 255, 255, 255 ), 1 )
+			dxDrawText ( "Tip: mouse2 - toggle free camera mode", 20, sy - 50, 20, sy - 50, tocolor ( 255, 255, 255, 255 ), 1 )
 		else
-			dxDrawText ( "Tip: Use mouse scroll to zoom in/out", 20, sy - 50, nil, nil, tocolor ( 255, 255, 255, 255 ), 1 )
+			dxDrawText ( "Tip: Use mouse scroll to zoom in/out", 20, sy - 50, 20, sy - 50, tocolor ( 255, 255, 255, 255 ), 1 )
 		end
 	end
 end

@@ -4,7 +4,7 @@ local guiTextLabelText = nil
 
 function showPlayerTheirTeam(player, text, r, g, b)
 	if ( player == getLocalPlayer() ) then
-		if ( guiTextLabel ) then
+		if ( guiTextLabel and isElement(guiTextLabel) ) then
 			guiSetText ( guiTextLabelTeamName, text )
 			guiLabelSetColor ( guiTextLabelTeamName, r, g, b )
 		else

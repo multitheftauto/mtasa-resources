@@ -429,7 +429,10 @@ end
 function setControlText(...)
 	local args = {...}
 	local text = table.remove(args)
-	guiSetText(getControl(unpack(args)), text)
+	local element = getControl(unpack(args))
+	if (element and isElement(element)) then
+		guiSetText(element, text)
+	end
 end
 
 function setControlNumber(...)
