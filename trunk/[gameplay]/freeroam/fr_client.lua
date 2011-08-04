@@ -632,6 +632,7 @@ end
 
 addEventHandler('onClientPlayerChangeNick', g_Root,
 	function(oldNick, newNick)
+		if (not g_PlayerData) then return end
 		local player = g_PlayerData[source]
 		player.name = newNick
 		if player.gui.mapLabel then
@@ -1488,12 +1489,14 @@ function getPlayers()
 end
 
 function joinHandler(player)
+	if (not g_PlayerData) then return end
 	g_PlayerData[player or source] = { name = getPlayerName(player or source), gui = {} }
 end
 addEventHandler('onClientPlayerJoin', g_Root, joinHandler)
 
 addEventHandler('onClientPlayerQuit', g_Root,
 	function()
+		if (not g_PlayerData) then return end
 		table.each(g_PlayerData[source].gui, destroyElement)
 		g_PlayerData[source] = nil
 	end
