@@ -1242,7 +1242,7 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 				outputChatBox ( "Error setting gravity.", source, 255, 0, 0 )
 			end
 		elseif ( action == "setblurlevel" ) then
-
+			setElementData(resourceRoot, "blurlevel", data)
 		elseif ( action == "setwaveheight" ) then
 			if ( not setWaveHeight ( data ) ) then
 				outputChatBox ( "Error setting wave height.", source, 255, 0, 0 )
