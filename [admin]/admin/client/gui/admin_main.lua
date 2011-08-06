@@ -193,11 +193,12 @@ function aAdminMenu ()
 		aTab3.Speed			= guiCreateEdit ( 0.35, 0.55, 0.135, 0.04, "1", true, aTab3.Tab )
 		aTab3.SpeedSet		= guiCreateButton ( 0.50, 0.55, 0.10, 0.04, "Set", true, aTab3.Tab, "setgamespeed" )
 						  guiCreateLabel ( 0.63, 0.55, 0.09, 0.04, "( 0-10 )", true, aTab3.Tab )
-
+						  
 		aTab3.BlurCurrent		= guiCreateLabel ( 0.05, 0.60, 0.25, 0.04, "Blur Level: 36", true, aTab3.Tab )
 		aTab3.Blur			= guiCreateEdit ( 0.35, 0.60, 0.135, 0.04, "36", true, aTab3.Tab )
 		aTab3.BlurSet		= guiCreateButton ( 0.50, 0.60, 0.10, 0.04, "Set", true, aTab3.Tab, "setblurlevel" )
 						  guiCreateLabel ( 0.63, 0.60, 0.09, 0.04, "( 0-255 )", true, aTab3.Tab )
+						  setBlurOnStart()
 
 		aTab3.WavesCurrent	= guiCreateLabel ( 0.05, 0.65, 0.25, 0.04, "Wave Height: "..getWaveHeight(), true, aTab3.Tab )
 		aTab3.Waves			= guiCreateEdit ( 0.35, 0.65, 0.135, 0.04, "0", true, aTab3.Tab )

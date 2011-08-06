@@ -237,3 +237,19 @@ function secondsToTimeDesc( seconds )
 	return ""
 end
 
+function setBlurOnStart()
+	local blur = getElementData(resourceRoot, "blurlevel") or 36
+	setBlurLevel(blur)
+	guiSetText(aTab3.BlurCurrent, "Blur Level: "..tostring(blur))
+	guiSetText(aTab3.Blur, tostring(blur))
+end
+
+function handleBlurLevelChange(dataName)
+	if (dataName == "blurlevel") then
+		local blur = getElementData(source, "blurlevel")
+		setBlurLevel(blur)
+		guiSetText(aTab3.BlurCurrent, "Blur Level: "..tostring(blur))
+		guiSetText(aTab3.Blur, tostring(blur))
+	end
+end
+addEventHandler("onClientElementDataChange", resourceRoot, handleBlurLevelChange)
