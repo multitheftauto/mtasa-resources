@@ -219,7 +219,7 @@ end
 function aSpectator.Render ()
 	local sx, sy = guiGetScreenSize ()
 	if ( not aSpectator.Spectating ) then
-		dxDrawText ( "Nobody to spectate", sx - 170, 200, nil, nil, tocolor ( 255, 0, 0, 255 ), 1 )
+		dxDrawText ( "Nobody to spectate", sx - 170, 200, sx - 170, 200, tocolor ( 255, 0, 0, 255 ), 1 )
 		return
 	end
 
