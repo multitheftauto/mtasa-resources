@@ -1127,6 +1127,11 @@ function edfAddElementNodeData(node, resource)
 				if dname == typeDefinition.shortcut then
 					isValidShortcut = true
 				end
+
+				-- Fixup incorrect race edf
+				if name == "checkpoint" and dname == "vehicle" and not dataFields[dname].default then
+					dataFields[dname].default = 522
+				end
 			end
 		end
 		j = j + 1

@@ -108,3 +108,17 @@ function table.shallowcopy(t)
 	end
 	return result
 end
+
+
+--------------------------------------------------------------------------------
+-- Coroutines
+--------------------------------------------------------------------------------
+-- Make sure errors inside coroutines get printed somewhere
+_coroutine_resume = coroutine.resume
+function coroutine.resume(...)
+	local state,result = _coroutine_resume(...)
+	if not state then
+		outputDebugString( tostring(result), 1 )	-- Output error message
+	end
+	return state,result
+end
