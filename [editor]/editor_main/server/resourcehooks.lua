@@ -111,7 +111,7 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 	local resourceTable = resourceTable or {}
 
 	for i, element in ipairs(getElementChildren(baseElement)) do
-		flattenTreeRuns = flattenTreeRuns + 1
+		flattenTreeRuns = ( flattenTreeRuns or 0 ) + 1
 		local elementType = getElementType(element)
 		if (elementType == "vehicle" and getVehicleType(element) == "Train") then
 			setTrainDerailed(element, true)
