@@ -37,6 +37,9 @@ addEventHandler ( "saveloadtest_return", getRootElement(),
 			reason = reason or ""
 			editor_gui.guiShowMessageBox ( "Test could not be started! "..reason, "error", "Error", true )
 			editor_gui.stopTest()
+		elseif ( command == "close" ) then
+			editor_gui.closeSaveDialog()
+			editor_gui.closeLoadDialog()
 		end
 	end
 )

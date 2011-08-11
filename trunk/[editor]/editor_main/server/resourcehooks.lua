@@ -63,8 +63,10 @@ end
 
 
 function getResourceFiles ( resource, fileType )
-	local meta = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
-	if not meta then return false end
+	local resource = getResourceName(resource)
+	if (not resource) then return false, "no resource" end
+	local meta = xmlLoadFile ( ':' .. resource .. '/' .. "meta.xml" )
+	if not meta then return false, "no meta" end
 	local files = {}
 	local fileAttributes = {}
 	local i = 0
