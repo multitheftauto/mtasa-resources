@@ -33,7 +33,7 @@ end
 
 function outputMessage ( text, r, g, b, time )
 	cleanup()
-	if type(test) ~= "string" then
+	if type(text) ~= "string" then
 		return false
 	end
 	message.r = r or 255
