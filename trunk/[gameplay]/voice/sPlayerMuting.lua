@@ -18,7 +18,7 @@
 	end
 
 	function updateMutedBroadcast ( player )
-		local currentChannel = getPlayerChannel(source)
+		local currentChannel = getPlayerChannel(player)
 		if tonumber(currentChannel) then
 			setPlayerVoiceBroadcastTo ( player, getPlayersInChannel ( currentChannel ), getPlayerMutedByList ( player )  )
 		else --It's an element
@@ -28,17 +28,17 @@
 
 
 	function addPlayerMutedBy ()
-		mutedBy[source] = mutedBy[source] or {}
-		mutedBy[source][client] = true
-		updateMutedBroadcast ( source )
+		mutedBy[client] = mutedBy[client] or {}
+		mutedBy[client][source] = true
+		updateMutedBroadcast ( client )
 	end
 	addEventHandler ( "voice_mutePlayerForPlayer", root, addPlayerMutedBy )
 
 	function removePlayerMutedBy ()
-		if mutedBy[source] then
-			mutedBy[source][client] = nil
+		if mutedBy[client] then
+			mutedBy[client][source] = nil
 			--Refresh the player
-			updateMutedBroadcast ( source )
+			updateMutedBroadcast ( client )
 		end
 	end
 	addEventHandler ( "voice_unmutePlayerForPlayer", root, removePlayerMutedBy )
