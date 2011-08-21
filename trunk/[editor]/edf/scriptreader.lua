@@ -42,6 +42,8 @@ function readScripts ( server, client, resource )
 	end 
 end
 
+local BOM = string.char(0xEF)..string.char(0xBB)..string.char(0xBF)
+
 function getScript ( path, resource )
 	local script = fileOpen(":" .. getResourceName(resource) .. "/" .. path, true) 
 	if not script then return false end
@@ -49,6 +51,9 @@ function getScript ( path, resource )
     while not fileIsEOF(script) do
         scriptString = scriptString..fileRead(script, BUFFER_SIZE)
     end
+	if string.sub(scriptString,1,3) == BOM then
+		scriptString = string.sub(scriptString,4)
+	end
     fileClose(script) 
 	--Attempt to load this script
 	local loadFunction, errorMsg = loadstring ( scriptString, path )
