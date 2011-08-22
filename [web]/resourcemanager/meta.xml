@@ -13,4 +13,5 @@
 	<export function="restartResource" http="true" />
 	<export function="stopResource" http="true" />
 	<export function="getResourcesSearch" http="true" />
+	<export function="refreshResources" http="true" />
 </meta>

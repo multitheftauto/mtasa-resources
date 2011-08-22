@@ -28,6 +28,8 @@
 		<select id="searchState" onchange="performSearchDelayed()" onkeyup="performSearchDelayed()">
 		<option>any</option><option>loaded</option><option>running</option><option>failed to load</option></select>
 		<img src='/ajax/loading.gif' id="searchingSpinner" style="display:none;" />
+		<input type="button" id="refreshbutton" value="refresh" onClick="refreshResourcesButton(false)" />
+		<input type="button" id="refreshallbutton" value="refreshall" onClick="refreshResourcesButton(true)" />
 	</div>
 </html>
 </body>
