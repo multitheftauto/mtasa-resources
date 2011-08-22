@@ -11,9 +11,9 @@ setTimer (
 	    local time = getRealTime()
 
 		stats[nodepos] = {}
-		stats[nodepos].time=time.hour .. ":" .. string.format("%.2d", time.minute)
+		stats[nodepos].time = time.hour .. ":" .. string.format("%.2d", time.minute)
 		for k,v in pairs(registeredStats) do
-			stats[nodepos][k] = call(v.resource, v.func)
+			stats[nodepos][k] = tostring(call(v.resource, v.func))
 		end
 		
 		nodepos = nodepos + 1;
