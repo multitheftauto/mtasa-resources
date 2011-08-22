@@ -1,7 +1,7 @@
 <*
 
-local colors 		= {"0080C0", "8000C0", "884400", "C08000", "880000", "008800", "000088"}
-local border_colors = {"0080C0", "8000C0", "884400", "C08000", "880000", "008800", "000088"}
+local colors 		= {"FF0000", "00FF00", "0000FF", "FFFF00", "00FFFF", "FF00FF", "FFFFFF", "80FFFF", "FF80FF", "FFFF80", "80FF00"}
+local border_colors = {"FF0000", "00FF00", "0000FF", "FFFF00", "00FFFF", "FF00FF", "FFFFFF", "80FFFF", "FF80FF", "FFFF80", "80FF00"}
 
 function split(str, delim, maxNb)
 	-- Eliminate bad cases...

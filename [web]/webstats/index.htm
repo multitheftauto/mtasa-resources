@@ -7,11 +7,18 @@
 <html>
 <head>
 	<script language="JavaScript" src="FusionCharts.js"></script>
-	<link rel="stylesheet" type="text/css" href="css.css" />
-	<!--[if IE 7]>
-		<link rel="stylesheet" type="text/css" href="ie-70.css" />
-	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="css.css" id="stylesheet" />
+
 	<script>
+		function onLoad ()
+		{
+			updateChart();
+			if (navigator.appName == "Microsoft Internet Explorer")
+			{
+				document.getElementById("stylesheet").href = "ie-70.css"; // Oh Microsoft :|
+			}
+		}
+		
 		function updateChart()
 		{		
 			var stats = "";
@@ -60,7 +67,7 @@
 	</script>
 </head>
 
-<body bgcolor="#ffffff" style="font-family:'Trebuchet MS',Arial,sans-serif;font-size:0.8em;">
+<body bgcolor="#ffffff" style="font-family:'Trebuchet MS',Arial,sans-serif;font-size:0.8em;" onLoad="onLoad()">
 
 	<div id="chart" style="position: absolute; left:0px; top: 37px; bottom: 0px; width: 78%; overflow:auto;bacground: red;vertical-align:top; padding: 10px;">
 	Select datasets from the list on the right to begin.
@@ -69,11 +76,9 @@
 	<div id="topbar">
 		<div style="float:right;"><input type="button" value="hide datasets" onclick="toggleDatasets();" id="toggleButton"/></div>
 		<select id="charttype" onchange="updateChart();" onkeyup="updateChart();">
-			<option disabled="disabled" style='font-weight:bold;color:black;'>Single Value Charts</option>
-			<option value="FCF_Line">Line chart</option>
-			<option disabled="disabled" style='font-weight:bold;color:black;'>Multiple Value Charts</option>
-			<option value="FCF_StackedArea2D">Stacked area chart</option>
+			<option value="FCF_Line">Line chart (Single Value)</option>
 			<option value="FCF_MSLine">Line chart</option>
+			<option value="FCF_StackedArea2D">Stacked area chart</option>
 			<option value="FCF_StackedColumn2D">Stacked columns</option>
 			<option value="FCF_StackedColumn3D">Stacked columns 3D</option>
 			<option value="FCF_Pie2D">Pie chart (now)</option>
@@ -99,7 +104,7 @@
 				local i = 0
 				for k,v in pairs(q) do
 					*>
-					<input type="checkbox" id="stat<* = i *>" value="<* = k *>" title="<* = v.description *>" onchange="updateChart();"/><label for="stat<* =i *>" title="<* = v.description *>"><* = v.name *></label><br/>
+					<input type="checkbox" id="stat<* = tostring(i) *>" value="<* = k *>" title="<* = v.description *>" onchange="updateChart();"/><label for="stat<* = tostring(i) *>" title="<* = v.description *>"><* = v.name *></label><br/>
 					<*
 					i= i+1
 				end
