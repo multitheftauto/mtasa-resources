@@ -121,6 +121,29 @@ function performSearch()
 	);
 }
 
+function refreshResourcesButton (refreshall)
+{
+	document.getElementById("refreshallbutton").value = ""
+	document.getElementById("refreshallbutton").disabled = true
+	document.getElementById("refreshbutton").value = ""
+	document.getElementById("refreshbutton").disabled = true
+	
+	refreshResources(refreshall,
+		function ()
+		{
+			performSearch()
+			setTimeout("showRefreshButtons()",5000);
+		}
+	);
+}
+
+function showRefreshButtons ()
+{
+	document.getElementById("refreshallbutton").value = "refreshall";
+	document.getElementById("refreshallbutton").disabled = false;
+	document.getElementById("refreshbutton").value = "refresh";
+	document.getElementById("refreshbutton").disabled = false;
+}
 
 function getButtons ( resource, resourceState )
 {
