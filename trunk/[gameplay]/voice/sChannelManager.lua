@@ -41,7 +41,7 @@
 		--Update all players in this channel of the new player in this channel
 		playersInChannel = getPlayersInChannel ( id )
 		for i,v in ipairs(playersInChannel) do
-			setPlayerVoiceBroadcastTo ( v, playersInChannel, getPlayerMutedByList ( player )  )
+			setPlayerVoiceBroadcastTo ( v, playersInChannel )
 		end
 		return true
 	end

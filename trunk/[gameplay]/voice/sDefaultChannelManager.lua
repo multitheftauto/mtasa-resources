@@ -24,20 +24,20 @@
 	function setPlayerDefaultChannel ( player )
 		local team = getPlayerTeam(player)
 		if team and settings.autoassign_to_teams then --He has a team, so let's put him in that team's voice channel
-			return setPlayerInternalChannel ( player, team, getPlayerMutedByList(player) )
+			return setPlayerInternalChannel ( player, team )
 		else --If he doesn't have a team, stick him in the root
-			return setPlayerInternalChannel ( player, root, getPlayerMutedByList(player) )
+			return setPlayerInternalChannel ( player, root )
 		end
 	end
 
 
-	function setPlayerInternalChannel ( player, element, muted )
+	function setPlayerInternalChannel ( player, element )
 		if playerChannels[player] == element then
 			return false
 		end
 		playerChannels[player] = element
 		channels[element] = player
-		setPlayerVoiceBroadcastTo ( player, element, muted )
+		setPlayerVoiceBroadcastTo ( player, element )
 		return true
 	end
 end

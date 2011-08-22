@@ -17,20 +17,15 @@
 		return tableToArray(mutedBy[player] or {})
 	end
 
-	function updateMutedBroadcast ( player )
-		local currentChannel = getPlayerChannel(player)
-		if tonumber(currentChannel) then
-			setPlayerVoiceBroadcastTo ( player, getPlayersInChannel ( currentChannel ), getPlayerMutedByList ( player )  )
-		else --It's an element
-			setPlayerVoiceBroadcastTo ( player, currentChannel, getPlayerMutedByList ( player ) )
-		end
+	function updateMuted ( player )
+		setPlayerVoiceIgnoreFrom ( player, getPlayerMutedByList ( player ) )
 	end
 
 
 	function addPlayerMutedBy ()
 		mutedBy[client] = mutedBy[client] or {}
 		mutedBy[client][source] = true
-		updateMutedBroadcast ( client )
+		updateMuted ( client )
 	end
 	addEventHandler ( "voice_mutePlayerForPlayer", root, addPlayerMutedBy )
 
@@ -38,7 +33,7 @@
 		if mutedBy[client] then
 			mutedBy[client][source] = nil
 			--Refresh the player
-			updateMutedBroadcast ( client )
+			updateMuted ( client )
 		end
 	end
 	addEventHandler ( "voice_unmutePlayerForPlayer", root, removePlayerMutedBy )
