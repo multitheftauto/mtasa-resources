@@ -184,3 +184,20 @@ function fileCopy ( path, fromResource, targetPath, targetResource )
 		return false
 	end
 end
+
+-- Make a copy of the meta and map files for a resource
+function backupMetaAndMaps(resource)
+	local resName = getResourceName(resource)
+	if not resName then return end
+	local bakPath = "/_editor_backup/"
+
+	-- Copy meta
+	fileCopy ( "meta.xml", resource, bakPath .. "meta.xml", resource );
+
+	-- Copy maps
+	local mapTable = getResourceFiles ( resource, "map" )
+	if not mapTable then return end
+	for _, mapPath in ipairs(mapTable) do
+		fileCopy ( mapPath, resource, bakPath .. mapPath, resource );
+	end
+end

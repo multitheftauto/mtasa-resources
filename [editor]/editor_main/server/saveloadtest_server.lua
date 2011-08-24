@@ -495,6 +495,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 			quickSaveCoroutine = nil
 			return false
 		end
+        backupMetaAndMaps(resource)
 		for key, mapPath in ipairs(mapTable) do
 			if ( not removeResourceFile ( resource, mapPath, "map" ) ) then
 				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, loadedMap,
@@ -610,6 +611,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
 		xmlUnloadFile ( metaNode )
+        backupMetaAndMaps(resource)
 		if ( not dump and loadedMap == DUMP_RESOURCE ) then
 			editor_gui.loadsave_getResources("saveAs", client)
 			quickSaveCoroutine = nil
