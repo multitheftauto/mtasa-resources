@@ -19,6 +19,12 @@ local xmlVariants = {
 ["lockToAxes"]="movement_lock_to_axes",
 ["autosnap"]="currentbrowser_autosnap",
 ["tutorialOnStart"]="tutorial_on_start",
+["enableBox"]="enablebox",
+["enableXYZlines"]="enablexyzlines",
+["precisionLevel"]="precisionlevel",
+["precisionRotLevel"]="precisionrotlevel",
+["enablePrecisionSnap"]="enableprecisionsnap",
+["enablePrecisionRotation"]="enableprecisionrotation",
 }
 local nodeTypes = {
 ["enableSounds"]="bool",
@@ -41,6 +47,12 @@ local nodeTypes = {
 ["autosnap"]="bool",
 ["tutorialOnStart"]="bool",
 ["enableDumpSave"]="bool",
+["enableBox"]="bool",
+["precisionLevel"]={"10","5","2","1","0.1","0.01","0.001","0.0001"},
+["precisionRotLevel"]={"180","90","45","30","20","10","5","1"},
+["enablePrecisionSnap"]="bool",
+["enablePrecisionRotation"]="bool",
+["enableXYZlines"]="bool",
 }
 local defaults = {
 ["enableSounds"]=true,
@@ -62,6 +74,12 @@ local defaults = {
 ["lockToAxes"]=false,
 ["autosnap"]=true,
 ["tutorialOnStart"]=true,
+["enableBox"]=true,
+["precisionLevel"]="0.1",
+["precisionRotLevel"]="30",
+["enablePrecisionSnap"]=true,
+["enablePrecisionRotation"]=false,
+["enableXYZlines"]=true,
 }
 
 --stuff involving xml and dumping

@@ -1,7 +1,8 @@
-﻿local MAX_THICKNESS = 1.2
-local thickness
+﻿local localPlayer  = getLocalPlayer()
+local MAX_THICKNESS = 1.2
+--local c
 local drawLine
-local color = 1694433280
+--local color = 1694433280
 local attachedToElement
 
 --Element types to ignore the element matrix of.  They do not have rotation
@@ -32,7 +33,7 @@ local function renderGridlines()
 	if not minX or not minY or not minZ or not maxX or not maxY or not maxZ then return end
 	local camX,camY,camZ = getCameraMatrix()
 	--Work out our line thickness
-	thickness = (100/getDistanceBetweenPoints3D(camX,camY,camZ,x,y,z)) * MAX_THICKNESS
+	local thickness = (100/getDistanceBetweenPoints3D(camX,camY,camZ,x,y,z)) * MAX_THICKNESS
 	--
 	local elementMatrix = (getElementMatrix(attachedToElement) and not ignoreMatrix[getElementType(attachedToElement)]) 
 							and matrix(getElementMatrix(attachedToElement))
@@ -83,13 +84,47 @@ local function renderGridlines()
 	--
 	for i,draw in ipairs(drawLines) do
 		if ( not vectorCompare ( draw[1], furthestNode ) ) and ( not vectorCompare ( draw[2], furthestNode ) ) then
-			drawLine ( unpack(draw) )
+			drawLine (draw[1],draw[2],tocolor(200,0,0,180),thickness)
 		end
 	end
 end
-addEventHandler ( "onClientRender", getRootElement(), renderGridlines )
 
-function drawLine ( vecOrigin, vecTarget )
+function drawXYZLines()
+	if not isElement(attachedToElement) then return end
+	if getElementDimension(attachedToElement) ~= getElementDimension(localPlayer) then return end
+	local radius = getElementRadius(attachedToElement)
+	local x,y,z = getElementPosition(attachedToElement)
+	local xx,xy,xz = getPositionFromElementAtOffset(attachedToElement,radius,0,0)
+	local yx,yy,yz = getPositionFromElementAtOffset(attachedToElement,0,radius,0)
+	local zx,zy,zz = getPositionFromElementAtOffset(attachedToElement,0,0,radius)
+	drawLine({x,y,z},{xx,xy,xz},tocolor(200,0,0,200),1.7)
+	drawLine({x,y,z},{yx,yy,yz},tocolor(0,200,0,200),1.7)
+	drawLine({x,y,z},{zx,zy,zz},tocolor(0,0,200,200),1.7)
+	
+end
+
+function doBasicElementRenders()
+	if not isElement(attachedToElement) then return end
+	if exports["editor_gui"]:sx_getOptionData("enableBox") then renderGridlines() end
+	if exports["editor_gui"]:sx_getOptionData("enableXYZlines") then drawXYZLines() end
+	
+end
+addEventHandler ( "onClientRender", getRootElement(), doBasicElementRenders )
+
+function getPositionFromElementAtOffset(element,x,y,z)
+   if not x or not y or not z then
+      return false
+   end
+		local ox,oy,oz = getElementPosition(element)
+        local matrix = getElementMatrix ( element )
+		if not matrix then return ox+x,oy+y,oz+z end
+        local offX = x * matrix[1][1] + y * matrix[2][1] + z * matrix[3][1] + matrix[4][1]
+        local offY = x * matrix[1][2] + y * matrix[2][2] + z * matrix[3][2] + matrix[4][2]
+        local offZ = x * matrix[1][3] + y * matrix[2][3] + z * matrix[3][3] + matrix[4][3]
+        return offX, offY, offZ
+end
+
+function drawLine(vecOrigin, vecTarget,color,thickness)
 	local startX,startY = getScreenFromWorldPosition(vecOrigin[1],vecOrigin[2],vecOrigin[3],10)
 	local endX,endY = getScreenFromWorldPosition(vecTarget[1],vecTarget[2],vecTarget[3],10)
 	if not startX or not startY or not endX or not endY then 
@@ -104,9 +139,7 @@ function vectorCompare ( vec1,vec2 )
 end
 
 function getOffsetRelativeToElement ( element, x, y, z )
-	--Convert this into a lua matrix
 	local elementMatrix = matrix{getElementMatrix(element)}
 	elementMatrix = matrix{x,y,z} * elementMatrix
 	return elementMatrix
 end
-

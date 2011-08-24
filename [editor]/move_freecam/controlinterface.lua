@@ -10,6 +10,41 @@ local keybinds = {}
 local keybinds_backup = {}
 local keyStates = { down = true, up = true, both = true }
 
+function math.round(number, decimals)
+    decimals = decimals or 0
+    return tonumber(("%."..decimals.."f"):format(number))
+end
+
+function roundToLevel(number, decimals,method)
+    decimals = decimals or 1
+    return math[method](number/decimals)*decimals
+end
+
+function sticknumbertoMult(number,mult,mode)
+	number = number/mult
+	number = math[mode](number)*mult
+	return number
+end
+
+_setElementPosition = setElementPosition
+function setElementPosition(element,x,y,z,warp)
+	local exactsnap = exports["editor_gui"]:sx_getOptionData("enablePrecisionSnap")
+	local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("precisionLevel"))
+	--outputDebugString("snaplevel:"..tostring(snaplevel).."snapmode:"..tostring(exactsnap))
+	if exactsnap then
+		if snaplevel <= 1 then
+			x = roundToLevel(x,snaplevel,"round")
+			y = roundToLevel(y,snaplevel,"round")
+			z = roundToLevel(z,snaplevel,"round")
+		else
+			x = sticknumbertoMult(x,snaplevel,"round")
+			y = sticknumbertoMult(y,snaplevel,"round")
+			z = sticknumbertoMult(z,snaplevel,"round")
+		end
+	end
+	_setElementPosition(element,x,y,z,warp)
+end
+
 --!get controls if editor_main is started after this
 addEventHandler("onClientResourceStart", rootElement,
 	function(resource)
