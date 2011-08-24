@@ -1,7 +1,34 @@
 ﻿optionsActions = {}
---7 - 16
+optionsData = {}
+function sx_getOptionData(var)
+	return (optionsData[var] or false)
+end
 function optionsActions.enableSounds (value)
 	enableSound = value
+end
+
+function optionsActions.enableBox(value)
+	optionsData.enableBox = value
+end
+
+function optionsActions.enableXYZlines(value)
+	optionsData.enableXYZlines = value
+end
+
+function optionsActions.enablePrecisionRotation(value)
+	optionsData.enablePrecisionRotation = value
+end
+
+function optionsActions.enablePrecisionSnap(value)
+	optionsData.enablePrecisionSnap = value
+end
+
+function optionsActions.precisionLevel(value)
+	optionsData.precisionLevel = tonumber(value)
+end
+
+function optionsActions.precisionRotLevel(value)
+	optionsData.precisionRotLevel = tonumber(value)
 end
 
 function optionsActions.smoothCamMove (value)

@@ -1,4 +1,5 @@
 ﻿-- implement bounding box checking
+local lastKEYSTATES = {}
 
 local ignoreAllSurfaces = true
 local moveSpeed = {slow = .025, medium = .25, fast = 2} -- meters per frame
@@ -63,6 +64,13 @@ local function getCoordsWithBoundingBox(origX, origY, origZ)
 	-- leave for now..
 	local newX, newY, newZ = origX, origY, origZ
 	return newX, newY, newZ
+end
+
+function getCommandTogSTATE(cmd)
+	if getCommandState(cmd) == lastKEYSTATES[cmd] then
+		return false
+	end
+	return getCommandState(cmd)
 end
 
 local function onClientRender_keyboard()
@@ -146,102 +154,200 @@ local function onClientRender_keyboard()
 			end
 
 		elseif (not getCommandState("reset_rotation")) then -- set rotation
-			if movementType ~= MOVEMENT_ROTATE then
-				setMovementType("rotate")
-				movementType = MOVEMENT_ROTATE
-			end
-
-			local speed
-			if (getCommandState("mod_slow_speed")) then
-				speed = rotateSpeed.slow
-			elseif (getCommandState("mod_fast_speed")) then
-				speed = rotateSpeed.fast
-			else
-				speed = rotateSpeed.medium
-			end
-
-			if (getElementType(selectedElement) == "ped") or getElementType(selectedElement) == "player" then
-				local tempRot = rotZ
-
-				-- right/left
-				if (getCommandState("element_move_right")) then
-					tempRot = tempRot - speed
+			local exactsnap = exports["editor_gui"]:sx_getOptionData("enablePrecisionRotation")
+			local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("precisionRotLevel"))
+			if exactsnap then -- if we want a exact rotation lets fix keyboard...
+				if movementType ~= MOVEMENT_ROTATE then
+					setMovementType("rotate")
+					movementType = MOVEMENT_ROTATE
 				end
-				if (getCommandState("element_move_left")) then
-			        	tempRot = tempRot + speed
-				end
-				tempRot = tempRot % 360
 
-				-- check if rotation changed
-				if (not (tempRot == rotZ)) then
-					if (getElementType(selectedElement) == "ped") then
-						setElementRotation(selectedElement, 0,0,-tempRot%360)
-						setPedRotation(selectedElement, tempRot)
-					end
-				end
-				rotZ = tempRot
-
-			else
-				local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
-				if (not tempRotX) then return false end
+				local speed = snaplevel
 				
-				-- conversion to XYZ order
-				tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)
-				tempRotX = math.deg(tempRotX)
-				tempRotY = math.deg(tempRotY)
-				tempRotZ = math.deg(tempRotZ)
+				if (getElementType(selectedElement) == "ped") or getElementType(selectedElement) == "player" then
+					local tempRot = rotZ
 
-				-- roll
-				if (getCommandState("element_move_forward")) then
-					if rotFlipped then
-						tempRotY = tempRotY - speed
-					else
-						tempRotY = tempRotY + speed
+					-- right/left
+					if (getCommandTogSTATE("element_move_right")) then
+						tempRot = tempRot - speed
 					end
-				elseif (getCommandState("element_move_backward")) then
-					if rotFlipped then
-						tempRotY = tempRotY + speed
-					else
-						tempRotY = tempRotY - speed
+					if (getCommandTogSTATE("element_move_left")) then
+							tempRot = tempRot + speed
 					end
-				end
-				
-				-- not sure why, maybe rotation conversion has singularity
-				if tempRotY > 90 or tempRotY < -90 then
-					rotFlipped = not rotFlipped
-				end
+					tempRot = tempRot % 360
 
-				-- pitch
-				if (getCommandState("element_move_upwards")) then
-					tempRotX = tempRotX + speed
-				elseif (getCommandState("element_move_downwards")) then
-					tempRotX = tempRotX - speed
-				end
-
-				-- spin
-				if (getCommandState("element_move_right")) then
-					tempRotZ = tempRotZ + speed
-				elseif (getCommandState("element_move_left")) then
-					tempRotZ = tempRotZ - speed
-				end
-				
-				-- conversion back to YXZ order
-				tempRotX, tempRotY, tempRotZ = convertRotationToMTA(math.rad(tempRotX), math.rad(tempRotY), math.rad(tempRotZ))
-
-				-- check if rotation changed
-				if (not (tempRotX == rotX and tempRotY == rotY and tempRotZ == rotZ)) then
-					setElementRotation(selectedElement, tempRotX, tempRotY, tempRotZ)
-					--Peds dont have their rotation updated with their attached parents
-					for i,element in ipairs(getAttachedElements(selectedElement)) do
-						if getElementType(element) == "ped" then
-							setElementRotation(element, 0,0,-tempRotZ%360)
-							setPedRotation(element, tempRotZ%360)
+					-- check if rotation changed
+					if (not (tempRot == rotZ)) then
+						if (getElementType(selectedElement) == "ped") then
+							setElementRotation(selectedElement, 0,0,-tempRot%360)
+							setPedRotation(selectedElement, tempRot)
 						end
 					end
-					rotX, rotY, rotZ = tempRotX, tempRotY, tempRotZ
+					rotZ = tempRot
+
+				else
+					local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
+					if (not tempRotX) then return false end
+					
+					-- conversion to XYZ order
+					tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)
+					tempRotX = math.deg(tempRotX)
+					tempRotY = math.deg(tempRotY)
+					tempRotZ = math.deg(tempRotZ)
+
+					-- roll
+					if (getCommandTogSTATE("element_move_forward")) then
+						if rotFlipped then
+							tempRotY = tempRotY - speed
+						else
+							tempRotY = tempRotY + speed
+						end
+					elseif (getCommandTogSTATE("element_move_backward")) then
+						if rotFlipped then
+							tempRotY = tempRotY + speed
+						else
+							tempRotY = tempRotY - speed
+						end
+					end
+					
+					-- not sure why, maybe rotation conversion has singularity
+					if tempRotY > 90 or tempRotY < -90 then
+						rotFlipped = not rotFlipped
+					end
+
+					-- pitch
+					if (getCommandTogSTATE("element_move_upwards")) then
+						tempRotX = tempRotX + speed
+					elseif (getCommandTogSTATE("element_move_downwards")) then
+						tempRotX = tempRotX - speed
+					end
+
+					-- spin
+					if (getCommandTogSTATE("element_move_right")) then
+						tempRotZ = tempRotZ + speed
+					elseif (getCommandTogSTATE("element_move_left")) then
+						tempRotZ = tempRotZ - speed
+					end
+					
+					-- conversion back to YXZ order
+					tempRotX, tempRotY, tempRotZ = convertRotationToMTA(math.rad(tempRotX), math.rad(tempRotY), math.rad(tempRotZ))
+
+					-- check if rotation changed
+					if (not (tempRotX == rotX and tempRotY == rotY and tempRotZ == rotZ)) then
+						setElementRotation(selectedElement, tempRotX, tempRotY, tempRotZ)
+						--Peds dont have their rotation updated with their attached parents
+						for i,element in ipairs(getAttachedElements(selectedElement)) do
+							if getElementType(element) == "ped" then
+								setElementRotation(element, 0,0,-tempRotZ%360)
+								setPedRotation(element, tempRotZ%360)
+							end
+						end
+						rotX, rotY, rotZ = tempRotX, tempRotY, tempRotZ
+					end
+				end
+				lastKEYSTATES["element_move_right"] = getCommandState("element_move_right")
+				lastKEYSTATES["element_move_left"] = getCommandState("element_move_left")
+				lastKEYSTATES["element_move_forward"] = getCommandState("element_move_forward")
+				lastKEYSTATES["element_move_backward"] = getCommandState("element_move_backward")
+				lastKEYSTATES["element_move_upwards"] = getCommandState("element_move_upwards")
+				lastKEYSTATES["element_move_downwards"] = getCommandState("element_move_downwards")
+			else
+				if movementType ~= MOVEMENT_ROTATE then
+					setMovementType("rotate")
+					movementType = MOVEMENT_ROTATE
+				end
+
+				local speed
+				if (getCommandState("mod_slow_speed")) then
+					speed = rotateSpeed.slow
+				elseif (getCommandState("mod_fast_speed")) then
+					speed = rotateSpeed.fast
+				else
+					speed = rotateSpeed.medium
+				end
+
+				if (getElementType(selectedElement) == "ped") or getElementType(selectedElement) == "player" then
+					local tempRot = rotZ
+
+					-- right/left
+					if (getCommandState("element_move_right")) then
+						tempRot = tempRot - speed
+					end
+					if (getCommandState("element_move_left")) then
+							tempRot = tempRot + speed
+					end
+					tempRot = tempRot % 360
+
+					-- check if rotation changed
+					if (not (tempRot == rotZ)) then
+						if (getElementType(selectedElement) == "ped") then
+							setElementRotation(selectedElement, 0,0,-tempRot%360)
+							setPedRotation(selectedElement, tempRot)
+						end
+					end
+					rotZ = tempRot
+
+				else
+					local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
+					if (not tempRotX) then return false end
+					
+					-- conversion to XYZ order
+					tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)
+					tempRotX = math.deg(tempRotX)
+					tempRotY = math.deg(tempRotY)
+					tempRotZ = math.deg(tempRotZ)
+
+					-- roll
+					if (getCommandState("element_move_forward")) then
+						if rotFlipped then
+							tempRotY = tempRotY - speed
+						else
+							tempRotY = tempRotY + speed
+						end
+					elseif (getCommandState("element_move_backward")) then
+						if rotFlipped then
+							tempRotY = tempRotY + speed
+						else
+							tempRotY = tempRotY - speed
+						end
+					end
+					
+					-- not sure why, maybe rotation conversion has singularity
+					if tempRotY > 90 or tempRotY < -90 then
+						rotFlipped = not rotFlipped
+					end
+
+					-- pitch
+					if (getCommandState("element_move_upwards")) then
+						tempRotX = tempRotX + speed
+					elseif (getCommandState("element_move_downwards")) then
+						tempRotX = tempRotX - speed
+					end
+
+					-- spin
+					if (getCommandState("element_move_right")) then
+						tempRotZ = tempRotZ + speed
+					elseif (getCommandState("element_move_left")) then
+						tempRotZ = tempRotZ - speed
+					end
+					
+					-- conversion back to YXZ order
+					tempRotX, tempRotY, tempRotZ = convertRotationToMTA(math.rad(tempRotX), math.rad(tempRotY), math.rad(tempRotZ))
+
+					-- check if rotation changed
+					if (not (tempRotX == rotX and tempRotY == rotY and tempRotZ == rotZ)) then
+						setElementRotation(selectedElement, tempRotX, tempRotY, tempRotZ)
+						--Peds dont have their rotation updated with their attached parents
+						for i,element in ipairs(getAttachedElements(selectedElement)) do
+							if getElementType(element) == "ped" then
+								setElementRotation(element, 0,0,-tempRotZ%360)
+								setPedRotation(element, tempRotZ%360)
+							end
+						end
+						rotX, rotY, rotZ = tempRotX, tempRotY, tempRotZ
+					end
 				end
 			end
-
 		else -- reset rotation
 			if (rotX and rotY and rotZ) then
 				if getCommandState("mod_rotate") then

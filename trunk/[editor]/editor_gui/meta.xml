@@ -44,6 +44,7 @@
 	<export function="loadsave_getResources" type="server"/>
 	<export function="outputMessage" type="server"/>
 	<!--clientside exports-->
+	<export function="sx_getOptionData" type="client"/>
 	<export function="outputMessage" type="client"/>
 	<export function="setGUIShowing" type="client"/>
 	<export function="setHUDAlpha" type="client"/>
