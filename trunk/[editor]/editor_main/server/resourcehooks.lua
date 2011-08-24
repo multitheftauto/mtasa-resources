@@ -157,7 +157,7 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 			flattenTree ( element, newParent, editorElement, resourceTable )
 		end
 		
-		if getTickCount() >= tick + 500 then
+		if getTickCount() >= tick + 500 or ( DEBUG_LOADSAVE and i < 40 ) then
 			triggerClientEvent(root, "saveLoadProgressBar", root, flattenTreeRuns)
 			coroutine.yield()
 			tick = getTickCount()
