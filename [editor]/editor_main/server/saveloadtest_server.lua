@@ -362,7 +362,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			local creatorResource = getResourceName(edf.edfGetCreatorResource(element))
 			usedResources[creatorResource] = true
 		end
-		if (getTickCount() > tick + 200) then
+		if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 			setTimer(function()
 				if (coroutine.status(saveResourceCoroutine) == "suspended") then
 					coroutine.resume(saveResourceCoroutine)
@@ -391,7 +391,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	local tick = getTickCount()
 	
 	for i, element in ipairs(rootElements) do
-		if (getTickCount() > tick + 200) then
+		if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 			setTimer(function()
 				if (coroutine.status(saveResourceCoroutine) == "suspended") then
 					coroutine.resume(saveResourceCoroutine)
@@ -517,7 +517,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		local usedResources = {}
 		local showSaveWarningOnce = false
 		for i, element in ipairs(getElementChildren(baseElement)) do  --Find parents to start with
-			if (getTickCount() > tick + 200) then
+			if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 				setTimer(function()
 					if (coroutine.status(quickSaveCoroutine) == "suspended") then
 						coroutine.resume(quickSaveCoroutine)
@@ -558,7 +558,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 			xmlNodeSetAttribute(xmlNode, "edf:definitions", usedDefinitions)
 		end	
 		for i, element in ipairs(rootElements) do
-			if (getTickCount() > tick + 200) then
+			if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 				setTimer(function()
 					if (coroutine.status(quickSaveCoroutine) == "suspended") then
 						coroutine.resume(quickSaveCoroutine)
