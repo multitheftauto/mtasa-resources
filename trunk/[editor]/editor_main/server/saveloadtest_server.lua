@@ -297,6 +297,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			saveResourceCoroutine = nil
 			return false
 		end
+        backupMetaAndMaps(resource)
 		for i,fileType in ipairs(fileTypes) do
 			local files, err = getResourceFiles(resource, fileType)
 			if (err and err == "no meta") then
@@ -611,7 +612,6 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
 		xmlUnloadFile ( metaNode )
-        backupMetaAndMaps(resource)
 		if ( not dump and loadedMap == DUMP_RESOURCE ) then
 			editor_gui.loadsave_getResources("saveAs", client)
 			quickSaveCoroutine = nil
