@@ -140,7 +140,7 @@ local function cmdBanIP(ip)
 	if not ip then
 		return 'banip <ip>'
 	end
-	if banIP(ip) then
+	if addBan(ip) then
 		return 'Added ' .. ip .. ' to the ban list'
 	else
 		return 'Failed to ban ' .. ip
@@ -261,11 +261,16 @@ local function cmdUnbanIP(ip)
 	if not ip then
 		return 'unbanip <ip>'
 	end
-	if unbanIP(ip) then
-		return 'Removed ' .. ip .. ' from the ban list'
-	else
-		return 'Failed to unban ' .. ip
+	for banID, ban in ipairs (getBans()) do
+		if getBanIP(ban) == ip then
+			if removeBan(ban) then		
+				return 'Removed ' .. ip .. ' from the ban list'
+			else
+				return 'Failed to unban ' .. ip
+			end
+		end
 	end
+	return 'Failed to unban ' .. ip
 end
 
 local function cmdUnloadFS(fsname)

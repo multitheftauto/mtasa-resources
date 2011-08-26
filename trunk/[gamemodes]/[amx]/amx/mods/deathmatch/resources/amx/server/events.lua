@@ -585,7 +585,7 @@ addEventHandler('onPlayerClick', root,
 	end
 )
 
-addEvent('onPlayerChangeNick', root,
+addEventHandler('onPlayerChangeNick', root,
 	function()
 		cancelEvent()
 	end
