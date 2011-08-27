@@ -68,6 +68,9 @@ addEventHandler("onResourceStart", thisResourceRoot,
 --[[ user command handlers ]]--
 
 function vote.map.handler(source,cmd,...)
+	if not getResourceFromName("mapmanager") or getResourceState(getResourceFromName("mapmanager")) ~= "running" then
+		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
+	end
     local resource1Name = #{...}>0 and table.concat({...},' ',1,1) or nil
     local resource2Name = #{...}>1 and table.concat({...},' ',2)   or nil
 	source = source or serverConsole
@@ -136,6 +139,9 @@ function vote.map.handler(source,cmd,...)
 end
 
 function vote.mode.handler(source,cmd)
+	if not getResourceFromName("mapmanager") or getResourceState(getResourceFromName("mapmanager")) ~= "running" then
+		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
+	end
 	source = source or serverConsole
 
 	if isDisabled(cmd, source) then
@@ -302,6 +308,9 @@ end
 --[[ exported functions ]]--
 
 function voteMap(resource1, resource2)
+	if not getResourceFromName("mapmanager") or getResourceState(getResourceFromName("mapmanager")) ~= "running" then
+		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
+	end
 	local gamemode, map
 	if resource1 then
         if resource1 == "*" then
@@ -471,6 +480,9 @@ function voteKill(player, reason)
 end
 
 function voteBetweenModes(...)
+	if not getResourceFromName("mapmanager") or getResourceState(getResourceFromName("mapmanager")) ~= "running" then
+		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
+	end
 	local args = {...}
 	if #args < 2 then return end
 	
@@ -532,6 +544,9 @@ function voteBetweenModes(...)
 end
 
 function voteBetweenModesThenMaps(...)
+	if not getResourceFromName("mapmanager") or getResourceState(getResourceFromName("mapmanager")) ~= "running" then
+		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
+	end
 	local args = {...}
 	if #args < 2 then
 		return false, errorCode.twoModesNeeded
@@ -583,6 +598,9 @@ function voteBetweenModesThenMaps(...)
 end
 
 function voteBetweenMaps(...)
+	if not getResourceFromName("mapmanager") or getResourceState(getResourceFromName("mapmanager")) ~= "running" then
+		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
+	end
 	local args = {...}
 	if #args < 2 then
 		return false, errorCode.twoMapsNeeded
@@ -623,6 +641,9 @@ function voteBetweenMaps(...)
 end
 
 function voteBetweenGamemodeCompatibleMaps(gamemode)
+	if not getResourceFromName("mapmanager") or getResourceState(getResourceFromName("mapmanager")) ~= "running" then
+		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
+	end
 	local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(gamemode)
 	
 	-- limit it to eight random maps
@@ -728,6 +749,9 @@ end
 
 -- Find all maps which match the query string
 function findMaps( query, gamemode )
+	if not getResourceFromName("mapmanager") or getResourceState(getResourceFromName("mapmanager")) ~= "running" then
+		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
+	end
 	local results = {}
 	--escape all meta chars
 	query = string.gsub(query, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
