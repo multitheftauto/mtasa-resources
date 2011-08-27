@@ -1206,7 +1206,7 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 			end
 			mdata = data..":"..data2
 		elseif ( action == "setpassword" ) then
-			if ( data == "" ) then
+			if ( not data or data == "" ) then
 				setServerPassword ( nil )
 				action = "resetpassword"
 			elseif ( string.len ( data ) > 32 ) then
