@@ -70,6 +70,9 @@ end
 
 addEvent ( "saveAsShowDialog", true )
 function saveShowDialog( resources )
+	if ( exports.editor_main:getMode() ~= 2 ) then
+		exports.editor_main:setMode(2)
+	end
 	setGUIShowing(false)
 	guiSetInputEnabled ( true )
 	setWorldClickEnabled ( false )
