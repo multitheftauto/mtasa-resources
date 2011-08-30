@@ -65,3 +65,25 @@ function table.each(t, callback, ...)
 	end
 	return t
 end
+
+function table.merge ( ... )
+	local ret = { }
+	
+	for index, tbl in ipairs ( {...} ) do
+		for index, val in ipairs ( tbl ) do
+			table.insert ( ret, val )
+		end
+	end
+	
+	return ret
+end
+
+function table.find ( tbl, val )
+	for index, value in ipairs ( tbl ) do
+		if value == val then
+			return index
+		end
+	end
+	
+	return false
+end

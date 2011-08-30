@@ -4,6 +4,9 @@
 	<!-- <script src="vehiclenodes_.lua" type="client"/> -->
 	<script src="util.lua" type="client"/>
 	<script src="client.lua" type="client"/>
+	<script src="linedrawer.lua" type="client"/>
+	
+	<file src="overlay.fx"/>
 	
 	<script src="vehiclenodes.lua" type="server"/>
 	<script src="MinHeap.lua" type="server"/>

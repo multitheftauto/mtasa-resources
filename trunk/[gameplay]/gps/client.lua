@@ -11,9 +11,11 @@ addCommandHandler('path',
 		fadeCamera(true)
 		setCameraTarget(getLocalPlayer())
 		
+		removeLinePoints ( )
 		table.each(getElementsByType('marker'), destroyElement)
 		for i,node in ipairs(path) do
 			createMarker(node.x, node.y, node.z, 'corona', 5, 50, 0, 255, 200)
+			addLinePoint ( node.x, node.y )
 		end
 	end
 )
@@ -29,9 +31,11 @@ addCommandHandler('path2',
 		fadeCamera(true)
 		setCameraTarget(getLocalPlayer())
 		
+		removeLinePoints ( )
 		table.each(getElementsByType('marker'), destroyElement)
 		for i,node in ipairs(path) do
 			createMarker(node.x, node.y, node.z, 'corona', 5, 50, 0, 255, 200)
+			addLinePoint ( node.x, node.y )
 		end
 	end
 )
