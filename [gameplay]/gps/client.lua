@@ -17,6 +17,24 @@ addCommandHandler('path',
 		end
 	end
 )
+addCommandHandler('path2', 
+	function(command, tox, toy, toz)
+		local x,y,z = getElementPosition(getLocalPlayer())
+		local path = server.calculatePathByCoords(x, y, z, tox, toy, toz)
+		if not path then
+			outputConsole('No path found')
+			return
+		end
+		server.spawnPlayer(getLocalPlayer(), path[1].x, path[1].y, path[1].z)
+		fadeCamera(true)
+		setCameraTarget(getLocalPlayer())
+		
+		table.each(getElementsByType('marker'), destroyElement)
+		for i,node in ipairs(path) do
+			createMarker(node.x, node.y, node.z, 'corona', 5, 50, 0, 255, 200)
+		end
+	end
+)
 
 local function getAreaID(x, y)
 	return math.floor((y + 3000)/750)*8 + math.floor((x + 3000)/750)
