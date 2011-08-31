@@ -59,6 +59,7 @@ local g_lastClick = { tick=getTickCount() }
 local DOUBLE_CLICK_MAX_DELAY = 500 -- In ticks
 
 setCloudsEnabled(false) -- We don't need clouds.
+setAmbientSoundEnabled("gunfire", false) -- We don't need random gun shots.
 
 -- PRIVATE
 local isColless = {
