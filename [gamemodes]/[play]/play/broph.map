@@ -1,35 +1,78 @@
 <map mod="deathmatch" version="1.0" time="13:00" weather="0">
 
-  <meta>
-    <author>BrophY</author>
-    <version>1.0</version>
-  </meta>
+	<meta>
+		<author>BrophY</author>
+		<version>1.0</version>
+	</meta>
   
-  <welcome message="Fear the Magicbeans!" />
-  <welcome message="Fear IJs's underpants, they are radioactive!" />
-  <welcome message="This map is sponsored by Bernie's Healthfarm" />
-  <welcome message="Remember to drop by Pete's Place!" />
-  <welcome message="BiffCo Construction are now hiring!" />
-  <welcome message="This map was payed for by Bastage Ltd" />
+	<welcome message="Fear the Magicbeans!" />
+	<welcome message="Fear IJs's underpants, they are radioactive!" />
+	<welcome message="This map is sponsored by Bernie's Healthfarm" />
+	<welcome message="Remember to drop by Pete's Place!" />
+	<welcome message="BiffCo Construction are now hiring!" />
+	<welcome message="This map was payed for by Bastage Ltd" />
  
-<vehicle id="Monster" model="557" posX="-676.43225097656" posY="962.98449707031" posZ="12.507791519165" rotX="0.041015625" rotY="0.002777099609375" rotZ="92.063659667969" color="1 1 0 0"/>
-<vehicle id="Monster" model="557" posX="-676.67596435547" posY="968.88238525391" posZ="12.507817268372" rotX="0.0118408203125" rotY="359.99993896484" rotZ="89.458343505859" color="1 1 0 0"/>
-<vehicle id="Banshee" model="429" posX="-696.71008300781" posY="947.44274902344" posZ="11.961327552795" rotX="0.61502075195313" rotY="0.50155639648438" rotZ="43.260345458984" color="0 0 0 0"/>
-<vehicle id="Banshee" model="429" posX="-700.66668701172" posY="946.43811035156" posZ="12.032683372498" rotX="0.59564208984375" rotY="0.66677856445313" rotZ="41.218505859375" color="3 1 0 0"/>
-<vehicle id="Bullet" model="541" posX="-708.88635253906" posY="939.77947998047" posZ="12.079864501953" rotX="359.51644897461" rotY="0.46926879882813" rotZ="180.60076904297" color="6 0 0 0"/>
-<vehicle id="BMX" model="481" posX="-679.98175048828" posY="931.08044433594" posZ="11.648596763611" rotX="358.77349853516" rotY="0" rotZ="88.025115966797" color="14 1 0 0"/>
-<vehicle id="BMX" model="481" posX="-679.97430419922" posY="932.28381347656" posZ="11.64875125885" rotX="358.79806518555" rotY="0" rotZ="87.565948486328" color="46 46 0 0"/>
-<vehicle id="Sparrow" model="469" posX="-655.177734375" posY="963.35192871094" posZ="12.175182342529" rotX="0.28692626953125" rotY="359.76095581055" rotZ="89.811737060547" color="1 3 0 0"/>
-<vehicle id="Sanchez" model="468" posX="-681.74114990234" posY="912.31903076172" posZ="11.776277542114" rotX="0.20944213867188" rotY="0.05963134765625" rotZ="189.92041015625" color="5 46 0 0"/>
-<vehicle id="Sanchez" model="468" posX="-680.06512451172" posY="912.44622802734" posZ="11.779381752014" rotX="0.21258544921875" rotY="0.04974365234375" rotZ="191.75022888184" color="6 46 0 0"/>
-<vehicle id="Sanchez" model="468" posX="-678.29089355469" posY="912.71087646484" posZ="11.77979183197" rotX="0.21450805664063" rotY="359.99993896484" rotZ="200.86721801758" color="53 53 0 0"/>
-<vehicle id="Jetmax" model="493" posX="-649.33892822266" posY="867.71429443359" posZ="-0.10552111268044" rotX="3.1608276367188" rotY="359.79431152344" rotZ="228.00956726074" color="1 6 0 0"/>
-<vehicle id="Dinghy" model="473" posX="-661.28826904297" posY="876.15618896484" posZ="-0.30112856626511" rotX="5.7645263671875" rotY="359.92028808594" rotZ="227.04466247559" color="56 53 0 0"/>
-<vehicle id="Marquis" model="484" posX="-647.07635498047" posY="876.42327880859" posZ="0.22773677110672" rotX="1.3659973144531" rotY="359.89028930664" rotZ="226.89096069336" color="1 7 0 0"/>
-<vehicle id="Bandito" model="568" posX="-696.35430908203" posY="929.35675048828" posZ="12.135828971863" rotX="359.94763183594" rotY="359.08135986328" rotZ="178.99200439453" color="56 29 0 0"/>
-<vehicle id="Beagle" model="511" posX="-696.59759521484" posY="897.68084716797" posZ="13.838381767273" rotX="2.5280456542969" rotY="358.68106079102" rotZ="176.86285400391" color="3 0 0 0"/>
-<vehicle id="Buffalo" model="402" posX="-686.66400146484" posY="969.24591064453" posZ="11.975840568542" rotX="0.35421752929688" rotY="0.002593994140625" rotZ="89.380676269531" color="79 45 0 0"/>
-<vehicle id="Sabre" model="475" posX="-687.01416015625" posY="963.00555419922" posZ="11.94958114624" rotX="0.247802734375" rotY="359.99755859375" rotZ="89.711608886719" color="86 29 0 0"/>
-<vehicle id="Caddy" model="457" posX="-686.92352294922" posY="966.03717041016" posZ="11.767498970032" rotX="0.49252319335938" rotY="359.99969482422" rotZ="89.163909912109" color="13 1 0 0"/>
- 
+	<vehicle id="Monster" model="557" posX="-676.43225097656" posY="962.98449707031" posZ="12.507791519165" rotX="0.041015625" rotY="0.002777099609375" rotZ="92.063659667969" color="1 1 0 0"/>
+	<vehicle id="Monster" model="557" posX="-676.67596435547" posY="968.88238525391" posZ="12.507817268372" rotX="0.0118408203125" rotY="359.99993896484" rotZ="89.458343505859" color="1 1 0 0"/>
+	<vehicle id="Banshee" model="429" posX="-696.71008300781" posY="947.44274902344" posZ="11.961327552795" rotX="0.61502075195313" rotY="0.50155639648438" rotZ="43.260345458984" color="0 0 0 0"/>
+	<vehicle id="Banshee" model="429" posX="-700.66668701172" posY="946.43811035156" posZ="12.032683372498" rotX="0.59564208984375" rotY="0.66677856445313" rotZ="41.218505859375" color="3 1 0 0"/>
+	<vehicle id="Bullet" model="541" posX="-708.88635253906" posY="939.77947998047" posZ="12.079864501953" rotX="359.51644897461" rotY="0.46926879882813" rotZ="180.60076904297" color="6 0 0 0"/>
+	<vehicle id="BMX" model="481" posX="-679.98175048828" posY="931.08044433594" posZ="11.648596763611" rotX="358.77349853516" rotY="0" rotZ="88.025115966797" color="14 1 0 0"/>
+	<vehicle id="BMX" model="481" posX="-679.97430419922" posY="932.28381347656" posZ="11.64875125885" rotX="358.79806518555" rotY="0" rotZ="87.565948486328" color="46 46 0 0"/>
+	<vehicle id="Sparrow" model="469" posX="-655.177734375" posY="963.35192871094" posZ="12.175182342529" rotX="0.28692626953125" rotY="359.76095581055" rotZ="89.811737060547" color="1 3 0 0"/>
+	<vehicle id="Sanchez" model="468" posX="-681.74114990234" posY="912.31903076172" posZ="11.776277542114" rotX="0.20944213867188" rotY="0.05963134765625" rotZ="189.92041015625" color="5 46 0 0"/>
+	<vehicle id="Sanchez" model="468" posX="-680.06512451172" posY="912.44622802734" posZ="11.779381752014" rotX="0.21258544921875" rotY="0.04974365234375" rotZ="191.75022888184" color="6 46 0 0"/>
+	<vehicle id="Sanchez" model="468" posX="-678.29089355469" posY="912.71087646484" posZ="11.77979183197" rotX="0.21450805664063" rotY="359.99993896484" rotZ="200.86721801758" color="53 53 0 0"/>
+	<vehicle id="Jetmax" model="493" posX="-649.33892822266" posY="867.71429443359" posZ="-0.10552111268044" rotX="3.1608276367188" rotY="359.79431152344" rotZ="228.00956726074" color="1 6 0 0"/>
+	<vehicle id="Dinghy" model="473" posX="-661.28826904297" posY="876.15618896484" posZ="-0.30112856626511" rotX="5.7645263671875" rotY="359.92028808594" rotZ="227.04466247559" color="56 53 0 0"/>
+	<vehicle id="Marquis" model="484" posX="-647.07635498047" posY="876.42327880859" posZ="0.22773677110672" rotX="1.3659973144531" rotY="359.89028930664" rotZ="226.89096069336" color="1 7 0 0"/>
+	<vehicle id="Bandito" model="568" posX="-696.35430908203" posY="929.35675048828" posZ="12.135828971863" rotX="359.94763183594" rotY="359.08135986328" rotZ="178.99200439453" color="56 29 0 0"/>
+	<vehicle id="Beagle" model="511" posX="-696.59759521484" posY="897.68084716797" posZ="13.838381767273" rotX="2.5280456542969" rotY="358.68106079102" rotZ="176.86285400391" color="3 0 0 0"/>
+	<vehicle id="Buffalo" model="402" posX="-686.66400146484" posY="969.24591064453" posZ="11.975840568542" rotX="0.35421752929688" rotY="0.002593994140625" rotZ="89.380676269531" color="79 45 0 0"/>
+	<vehicle id="Sabre" model="475" posX="-687.01416015625" posY="963.00555419922" posZ="11.94958114624" rotX="0.247802734375" rotY="359.99755859375" rotZ="89.711608886719" color="86 29 0 0"/>
+	<vehicle id="Caddy" model="457" posX="-686.92352294922" posY="966.03717041016" posZ="11.767498970032" rotX="0.49252319335938" rotY="359.99969482422" rotZ="89.163909912109" color="13 1 0 0"/>
+	<vehicle id="Sparrow" model="469" posX="2526.2568359375" posY="-1677.2841796875" posZ="20.030225753784" rotX="0" rotY="0" rotZ="92"/>
+    <vehicle id="Sanchez" model="468" posX="2508.7180175781" posY="-1680.5684814453" posZ="13.306875228882" rotX="0" rotY="0" rotZ="48"/>
+    <vehicle id="Sanchez" model="468" posX="2506.615234375" posY="-1682.3541259766" posZ="13.306875228882" rotX="0" rotY="0" rotZ="47.999267578125"/>
+    <vehicle id="Sanchez" model="468" posX="2504.4423828125" posY="-1684.2093505859" posZ="13.306875228882" rotX="0" rotY="0" rotZ="47.999267578125"/>
+    <vehicle id="Monster" model="557" posX="2512.29296875" posY="-1675.3764648438" posZ="13.848390579224" rotX="0" rotY="0" rotZ="90"/>
+    <vehicle id="Monster" model="557" posX="2512.6125488281" posY="-1669.4129638672" posZ="13.848390579224" rotX="0" rotY="0" rotZ="90"/>
+    <vehicle id="Buffalo" model="402" posX="2473.427734375" posY="-1692.5140380859" posZ="13.454607009888" rotX="0" rotY="0" rotZ="0"/>
+    <vehicle id="Bandito" model="568" posX="2466.70703125" posY="-1687.7796630859" posZ="13.490362167358" rotX="0" rotY="0" rotZ="272.5"/>
+    <vehicle id="Caddy" model="457" posX="2505.1008300781" posY="-1651.4028320313" posZ="13.346396446228" rotX="0" rotY="0" rotZ="136"/>
+    <vehicle id="Sabre" model="475" posX="2459.9895019531" posY="-1670.2042236328" posZ="13.395637512207" rotX="0" rotY="0" rotZ="0" color="86,1,0,0"/>
+    <vehicle id="Bullet" model="541" posX="2452.68359375" posY="-1670.0334472656" posZ="13.1951379776" rotX="0" rotY="0" rotZ="0"/>
+    <vehicle id="Banshee" model="429" posX="2447.8659667969" posY="-1669.9348144531" posZ="13.169283866882" rotX="0" rotY="0" rotZ="0"/>
+    <vehicle id="Banshee" model="429" posX="2443.0258789063" posY="-1669.8189697266" posZ="13.254557609558" rotX="0" rotY="0" rotZ="0"/>
+    <vehicle id="Monster" model="557" posX="-2398.5610351563" posY="-611.85290527344" posZ="133.04846191406" rotX="0" rotY="0" rotZ="36"/>
+    <vehicle id="Monster" model="557" posX="-2393.6850585938" posY="-608.3828125" posZ="133.04846191406" rotX="0" rotY="0" rotZ="35.996704101563"/>
+    <vehicle id="Buffalo" model="402" posX="-2393.4907226563" posY="-599.73876953125" posZ="132.58843994141" rotX="0" rotY="0" rotZ="125.5"/>
+    <vehicle id="Bandito" model="568" posX="-2396.79296875" posY="-594.94836425781" posZ="132.74308776855" rotX="0" rotY="0" rotZ="125.49682617188"/>
+    <vehicle id="Caddy" model="457" posX="-2407.7419433594" posY="-577.97015380859" posZ="132.47640991211" rotX="0" rotY="0" rotZ="126"/>
+    <vehicle id="Sabre" model="475" posX="-2403.4738769531" posY="-585.46215820313" posZ="132.54843139648" rotX="0" rotY="0" rotZ="126" color="86,1,0,0"/>
+    <vehicle id="Bullet" model="541" posX="-2399.7482910156" posY="-590.07781982422" posZ="132.34843444824" rotX="0" rotY="0" rotZ="123.99987792969"/>
+    <vehicle id="Banshee" model="429" posX="-2416.1259765625" posY="-589.61535644531" posZ="132.3984375" rotX="0" rotY="0" rotZ="213.99719238281"/>
+    <vehicle id="Banshee" model="429" posX="-2411.0979003906" posY="-586.19421386719" posZ="132.3984375" rotX="0" rotY="0" rotZ="213.99719238281"/>
+    <vehicle id="Sanchez" model="468" posX="-2389.4606933594" posY="-604.095703125" posZ="132.53031921387" rotX="0" rotY="0" rotZ="124"/>
+    <vehicle id="Sanchez" model="468" posX="-2388.0568847656" posY="-606.24896240234" posZ="132.53031921387" rotX="0" rotY="0" rotZ="123.99719238281"/>
+    <vehicle id="Sanchez" model="468" posX="-2386.5554199219" posY="-608.55224609375" posZ="132.53031921387" rotX="0" rotY="0" rotZ="123.99719238281"/>
+    <vehicle id="Sparrow" model="469" posX="-2444.1838378906" posY="-604.26513671875" posZ="132.51147460938" rotX="0" rotY="0" rotZ="300"/>
+    <vehicle id="Sanchez" model="468" posX="2030.5123291016" posY="1557.0339355469" posZ="10.580312728882" rotX="0" rotY="0" rotZ="272"/>
+    <vehicle id="Sanchez" model="468" posX="2030.7028808594" posY="1559.1748046875" posZ="10.580312728882" rotX="0" rotY="0" rotZ="271.99951171875"/>
+    <vehicle id="Sanchez" model="468" posX="2031.1046142578" posY="1561.4478759766" posZ="10.580312728882" rotX="0" rotY="0" rotZ="271.99951171875"/>
+    <vehicle id="Monster" model="557" posX="2025.6492919922" posY="1535.8363037109" posZ="11.120292663574" rotX="0" rotY="0" rotZ="270"/>
+    <vehicle id="Monster" model="557" posX="2024.8865966797" posY="1526.9187011719" posZ="11.120292663574" rotX="0" rotY="0" rotZ="270"/>
+    <vehicle id="Buffalo" model="402" posX="2024.3311767578" posY="1519.9007568359" posZ="10.760312080383" rotX="0" rotY="0" rotZ="270"/>
+    <vehicle id="Bandito" model="568" posX="2024.1086425781" posY="1515.0710449219" posZ="10.79531288147" rotX="0" rotY="0" rotZ="270"/>
+    <vehicle id="Caddy" model="457" posX="2024.5035400391" posY="1510.8114013672" posZ="10.549660682678" rotX="0" rotY="0" rotZ="270"/>
+    <vehicle id="Sabre" model="475" posX="2024.2908935547" posY="1506.1636962891" posZ="10.72031211853" rotX="0" rotY="0" rotZ="270" color="86,1,0,0"/>
+    <vehicle id="Bullet" model="541" posX="2024.7091064453" posY="1499.3103027344" posZ="10.520312309265" rotX="0" rotY="0" rotZ="270"/>
+    <vehicle id="Banshee" model="429" posX="2025.9349365234" posY="1490.2434082031" posZ="10.5703125" rotX="0" rotY="0" rotZ="270"/>
+    <vehicle id="Banshee" model="429" posX="2025.6474609375" posY="1494.671875" posZ="10.5703125" rotX="0" rotY="0" rotZ="270"/>
+    <vehicle id="Sparrow" model="469" posX="2024.5600585938" posY="1623.0500488281" posZ="12.002040863037" rotX="0" rotY="0" rotZ="270"/>
+    
+	<spawnpoint id="ranch" posX="-711" posY="957" posZ="12.4" rotation="90"></spawnpoint>
+	<spawnpoint id="pirate" posX="2005" posY="1543" posZ="13.5" rotX="270"></spawnpoint>
+	<spawnpoint id="grove" posX="2485" posY="-1667" posZ="13.3" rotX="0"></spawnpoint>
+	<spawnpoint id="hill" posX="-2405" posY="-598" posZ="132.6" rotX="128"></spawnpoint>
 </map>

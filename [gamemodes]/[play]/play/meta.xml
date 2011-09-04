@@ -1,6 +1,15 @@
 <meta>
 	<info author="BrophY" description="A playtest/freeroam mode" version="1" type="gamemode" />
 	<include resource="freeroam" />
+	<include resource="spawnmanager" />
+	
+	<settings>
+		<setting name="*spawnreset" value="onSpawn"
+				 friendlyname="Spawn Reset"
+				 accept="onSpawn,onServerEmpty,onServerStart"
+				 desc="When should a new spawnpoint be chosen?"
+		/>
+	</settings>
 	
 	<map src="broph.map" />
 	<script src="broph.lua"/>
