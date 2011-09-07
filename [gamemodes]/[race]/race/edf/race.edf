@@ -18,7 +18,7 @@
 		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
 		<data name="size" type="number" description="marker size" default="2.25" />
 		<data name="nextid" type="element:checkpoint" description="The next checkpoint after this one" required="false" default="" />
-		<data name="vehicle" type="vehicleID" default="522" required="false"/>
+		<data name="vehicle" type="vehicleID" required="false"/>
 		<marker color="!color!" type="!type!" size="!size!"/>
 	</element>
 	<element name="racepickup" friendlyname="Race pickup" icon="edf/pickup.png">
