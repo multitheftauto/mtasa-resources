@@ -6,9 +6,10 @@ local trailers = {
 }
 
 function getVehicleNameFromModel(ID)
-	local name = getVehicleNameFromModelMTA(ID)
+	if not ID then return "" end
+	local name = getVehicleNameFromModelMTA(ID) or ""
 	if #name > 0 then return name end
-	return trailers[ID]
+	return trailers[ID] or ""
 end
 
 -- gets a friendly name from a category ID
