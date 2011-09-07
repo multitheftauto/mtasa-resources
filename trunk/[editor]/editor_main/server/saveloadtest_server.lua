@@ -297,7 +297,6 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			saveResourceCoroutine = nil
 			return false
 		end
-        backupMetaAndMaps(resource)
 		for i,fileType in ipairs(fileTypes) do
 			local files, err = getResourceFiles(resource, fileType)
 			if (err and err == "no meta") then
@@ -496,7 +495,6 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 			quickSaveCoroutine = nil
 			return false
 		end
-        backupMetaAndMaps(resource)
 		for key, mapPath in ipairs(mapTable) do
 			if ( not removeResourceFile ( resource, mapPath, "map" ) ) then
 				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, loadedMap,
