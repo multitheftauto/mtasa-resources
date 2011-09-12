@@ -33,6 +33,7 @@ local function syncID(element, id)
 	else
 		setElementID(element, id)
 		setElementData(element, "me:ID", id)
+		setElementData(element, "id", id)
 		removeElementData(element, "me:autoID")
 	end
 end
