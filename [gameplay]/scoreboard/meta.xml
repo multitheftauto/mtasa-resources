@@ -1,20 +1,80 @@
 <meta>
-	<info author="jbeta" type="script" name="Scoreboard" showInResourceBrowser="true" version="1.0.0" />
-	<script src="scoreboard_exports.lua" type="server"/>
-	<script src="scoreboard_http.lua" type="server"/>
-	<script src="scoreboard_client.lua" type="client"/>
+	<info author="Awwu" type="script" name="Scoreboard" description="DirectX scoreboard resource" showInResourceBrowser="true" version="2.7.0"/>
 
+	<script src="dxscoreboard_exports.lua" type="server" />
+	<script src="dxscoreboard_http.lua" type="server" />
+	<script src="dxscoreboard_client.lua" type="client" />
+	<script src="dxscoreboard_clientsettings.lua" type="client" />
+	<script src="dxscoreboard_shared.lua" type="server" />
+	<script src="dxscoreboard_shared.lua" type="client" />
+	
+	<script src="colorpicker/colorpicker.lua" type="client" />
+	<file src="colorpicker/palette.png" />
+	<file src="colorpicker/alpha.png" />
+	
+	<file src="arrow.png" />
+	
+	<!-- HTTP functions, original files by jbeta -->
+	<export function="getScoreboardColumns" type="server" http="true" />
+	<export function="getScoreboardRows" type="server" http="true" />
 	<html src="scoreboard.htm" default="true"/>
 	<html src="scoreboard.css" raw="true" />
 	<html src="scoreboard.js" raw="true" />
-
-	<export function="getScoreboardColumns" type="server" http="true" />
-	<export function="getScoreboardRows" type="server" http="true" />
-
+	
+	<!-- Server functions -->
+	<export function="scoreboardAddColumn" type="server"/>
+	<export function="scoreboardRemoveColumn" type="server"/>
+	<export function="scoreboardClearColumns" type="server"/>
+	<export function="scoreboardResetColumns" type="server"/>
+	<export function="scoreboardSetForced" type="server"/>
+	<export function="scoreboardSetSortBy" type="server" />
+	<export function="scoreboardGetColumnPriority" type="server" />
+	<export function="scoreboardSetColumnPriority" type="server" />
+	<export function="scoreboardGetColumnCount" type="server" />
+	<export function="scoreboardForceTeamsVisible" type="server" />
+	<export function="scoreboardForceTeamsHidden" type="server" />
+	<export function="isPrioritySlotFree" type="server" />
+	<export function="getNextFreePrioritySlot" type="server" />
+	
+	<!-- Client functions -->
+	<export function="scoreboardAddColumn" type="client"/>
+	<export function="scoreboardRemoveColumn" type="client"/>
+	<export function="scoreboardClearColumns" type="client"/>
+	<export function="scoreboardResetColumns" type="client"/>
+	<export function="scoreboardSetForced" type="client"/>
+	<export function="scoreboardSetColumnTextFunction" type="client"/>
+	<export function="scoreboardSetSortBy" type="client" />
+	<export function="scoreboardGetColumnPriority" type="client" />
+	<export function="scoreboardSetColumnPriority" type="client" />
+	<export function="scoreboardGetColumnCount" type="client" />
+	<export function="scoreboardGetTopCornerPosition" type="client" />
+	<export function="scoreboardGetSize" type="client" />
+	<export function="isPrioritySlotFree" type="client" />
+	<export function="getNextFreePrioritySlot" type="client" />
+	<export function="scoreboardGetSelectedRows" type="client" />
+	
+	<!-- Compability -->
 	<export function="addScoreboardColumn" type="server"/>
 	<export function="removeScoreboardColumn" type="server"/>
 	<export function="resetScoreboardColumns" type="server"/>
 	<export function="setPlayerScoreboardForced" type="server"/>
-
 	<export function="setScoreboardForced" type="client"/>
+	
+	<settings>
+		<setting name="*forceShowTeams" value="false"
+			friendlyname="Force teams to be shown"
+			group="General"
+			accept="false,true"
+			desc="Should the teams be always visible on the scoreboard, no matter what user has in the settings?" />
+		<setting name="*forceHideTeams" value="false"
+			friendlyname="Force teams to be hidden"
+			group="General"
+			accept="false,true"
+			desc="Should the teams be always hidden on the scoreboard, no matter what user has in the settings?" />
+		<setting name="*allowColorcodedNames" value="false"
+			friendlyname="Allow colorcoded names"
+			group="General"
+			accept="false,true"
+			desc="Should the player's color code be used as the display color in scoreboard?" />
+	</settings>
 </meta>
