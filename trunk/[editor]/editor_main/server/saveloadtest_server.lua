@@ -99,11 +99,12 @@ addEventHandler("newResource", rootElement,
 			return
 		end
 		
-		editor_gui.outputMessage (getPlayerName(client).." started a new map.", root,255,0,0)
 		if ( loadedMap ) then
 			local currentMap = getResourceFromName ( loadedMap )
-			stopResource ( currentMap )
-			loadedMap = DUMP_RESOURCE
+			if ( currentMap ) then
+				stopResource ( currentMap )
+				loadedMap = DUMP_RESOURCE
+			end
 		end
 		for index, child in ipairs(getElementChildren(mapContainer)) do
 			destroyElement(child)
@@ -112,6 +113,7 @@ addEventHandler("newResource", rootElement,
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
 		triggerEvent("onNewMap", thisResourceRoot)
 		dumpSave()
+		editor_gui.outputMessage(getPlayerName(client).." started a new map.", root, 255, 0, 0)
 	end
 )
 
@@ -187,12 +189,12 @@ function openResource( resourceName, onStart )
 		for index,child in ipairs(getElementChildren(mapContainer)) do
 			destroyElement(child)
 		end
-		local maps = getResourceFiles ( map, "map" )
+		local maps, mapsErr = getResourceFiles ( map, "map" )
 		local mapName = DUMP_RESOURCE
 		
 		if (not maps) then
 			triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", false )
-			editor_gui.outputMessage ( "Unable to open "..tostring(resourceName).." (no map file found in the resource)", root, 255, 0, 0, 5000)
+			editor_gui.outputMessage ( "Unable to open "..tostring(resourceName).." ("..tostring(mapsErr)..")", root, 255, 0, 0, 5000)
 			return false
 		end
 		
@@ -487,18 +489,19 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 	if ( loadedMap ) then
 		local tick = getTickCount()
 		local iniTick = getTickCount()
+		local resourceName = tostring(dump and DUMP_RESOURCE or loadedMap)
 		local resource = getResourceFromName ( dump and DUMP_RESOURCE or loadedMap )
 		local mapTable = getResourceFiles ( resource, "map" )
 		if ( not mapTable ) then
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, loadedMap,
-			"Could not overwrite resource, the target resource may be corrupt." )
+			"Could not overwrite resource, "..resourceName.." may be corrupt, consider deleting the resource." )
 			quickSaveCoroutine = nil
 			return false
 		end
 		for key, mapPath in ipairs(mapTable) do
 			if ( not removeResourceFile ( resource, mapPath, "map" ) ) then
 				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, loadedMap,
-				"Could not overwrite resource.  The map resource may be in .zip format." )
+				"Could not overwrite resource. The "..resourceName.." may be in .zip format." )
 				quickSaveCoroutine = nil
 				return false
 			end
