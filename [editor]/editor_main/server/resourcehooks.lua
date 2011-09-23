@@ -61,8 +61,15 @@ function clearResourceMeta ( resource, quick ) --removes settings and info nodes
 	return true
 end
 
-
 function getResourceFiles ( resource, fileType )
+	local resourceExists = false
+	for i, res in ipairs(getResources()) do
+		if ( res == resource) then
+			resourceExists = true
+			break
+		end
+	end
+	if (not resourceExists) then return false, "no resource" end
 	local resource = getResourceName(resource)
 	if (not resource) then return false, "no resource" end
 	local meta = xmlLoadFile ( ':' .. resource .. '/' .. "meta.xml" )
