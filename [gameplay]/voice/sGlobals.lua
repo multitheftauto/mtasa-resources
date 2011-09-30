@@ -26,7 +26,7 @@
 
 	function checkValidPlayer ( player )
 		if not isElement(player) or getElementType(player) ~= "player" then
-			outputDebugString ( "setPlayerMuted: Bad 'player' argument", 2 )
+			outputDebugString ( "setPlayerVoiceMuted: Bad 'player' argument", 2 )
 			return false
 		end
 		return true
