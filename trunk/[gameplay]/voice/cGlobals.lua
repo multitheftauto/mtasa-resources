@@ -7,7 +7,7 @@ globalMuted = {}
 ---
 addEventHandler ( "onClientPlayerVoiceStart", root,
 	function()
-		if isPlayerMuted ( source ) then
+		if isPlayerVoiceMuted ( source ) then
 			cancelEvent()
 			return
 		end
@@ -30,7 +30,7 @@ addEventHandler ( "onClientPlayerQuit", root,
 
 function checkValidPlayer ( player )
 	if not isElement(player) or getElementType(player) ~= "player" then
-		outputDebugString ( "is/setPlayerMuted: Bad 'player' argument", 2 )
+		outputDebugString ( "is/setPlayerVoiceMuted: Bad 'player' argument", 2 )
 		return false
 	end
 	return true
