@@ -26,7 +26,6 @@ local function groundhit(ped)
 end
 -- reduced code duplication here
 function cleanUp ( )
-	outputChatBox("cleanup")
 	-- no longer on the rope so unset our variables and remove our handlers
 	onrope = false
 	removeEventHandler("onClientColShapeHit", colshape, groundhit)
@@ -52,27 +51,21 @@ local function createLandingSphere( x, y, z, forceWait )
 	if ( forceWait ) then
 		-- wait 500ms for it to load then try again ( should only take 1 attempt but even so it'l be handled if not)
 		setTimer(createLandingSphere, 500, 1, x, y, z)
-		outputChatBox("Waiting.")
 		return
 	end
 	-- if the ground position is < 0 it's likely we are about to land in water though make sure the water level here is higher as well (area 51 e.g.)
 	if ( groundPos < 0 and waterPos > groundPos ) then
 		-- Create our sphere here and setup a hit event so we can cleanup
 		colshape = createColSphere(x,y,waterPos, 2)
-		outputChatBox("Water")
-		outputChatBox(waterPos)
 	else
 		-- Create our sphere here and setup a hit event so we can cleanup
 		colshape = createColSphere(x,y,groundPos, 2)
-		outputChatBox("Ground")
-		outputChatBox(groundPos)
 	end
 	addEventHandler("onClientColShapeHit", colshape, groundhit)
 end
 function smartanimbreak ( x, y, z )
 	-- don't create 2 colspheres or we end up with a leak
 	if ( onrope == true ) then
-		outputChatBox("Already on the rope!")
 		return
 	end
 	-- check position against rope position.
