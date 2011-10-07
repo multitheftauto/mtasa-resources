@@ -48,7 +48,7 @@ local function createLandingSphere( x, y, z, forceWait )
 	-- get the water position
 	local waterPos = getWaterLevel ( x, y, z, true )
 	-- ground not loaded... wait
-	if ( forceWait ) then
+	if ( forceWait or groundPos == 0 ) then
 		-- wait 500ms for it to load then try again ( should only take 1 attempt but even so it'l be handled if not)
 		setTimer(createLandingSphere, 500, 1, x, y, z)
 		return
@@ -56,10 +56,10 @@ local function createLandingSphere( x, y, z, forceWait )
 	-- if the ground position is < 0 it's likely we are about to land in water though make sure the water level here is higher as well (area 51 e.g.)
 	if ( groundPos < 0 and waterPos > groundPos ) then
 		-- Create our sphere here and setup a hit event so we can cleanup
-		colshape = createColSphere(x,y,waterPos, 2)
+		colshape = createColSphere(x,y,waterPos, 3)
 	else
 		-- Create our sphere here and setup a hit event so we can cleanup
-		colshape = createColSphere(x,y,groundPos, 2)
+		colshape = createColSphere(x,y,groundPos, 3)
 	end
 	addEventHandler("onClientColShapeHit", colshape, groundhit)
 end
