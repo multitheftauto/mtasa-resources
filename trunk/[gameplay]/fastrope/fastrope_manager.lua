@@ -85,7 +85,7 @@ function createFastRopeOnHeli(player, heli, side, time, offset)
 end
 
 local function frope_playerjoin ( )
-	for k,v in ipairs(getElementsByType(fastropes)) do
+	for k,v in ipairs(fastropes) do
 		local time = v.expiretime - getTickCount()
 		if ( time > 0 ) then
 			triggerClientEvent(source, "frope_createFastRope", source, v.x, v.y, v.z, v.expiretime - getTickCount())
@@ -106,7 +106,7 @@ function addPlayerToFastRope(player, id)
 		end
 		removePedFromVehicle(player)
 	end
-	setElementPosition(player, fastropes[id].x, fastropes[id].y, fastropes[id].z)
+	setElementPosition(player, fastropes[id].x, fastropes[id].y, fastropes[id].z - 1)
 	setPedAnimation(player, "ped", "abseil", -1, false, true, false, true)
 	triggerClientEvent(player, "frope_smartAnimBreak", player, fastropes[id].x,fastropes[id].y,fastropes[id].z)
 	triggerEvent ( "onPlayerFastRope", player, id, fastropes[id][heli] )
