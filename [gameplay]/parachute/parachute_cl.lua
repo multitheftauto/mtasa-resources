@@ -124,7 +124,7 @@ local function onRender ( )
 		end
 	end
 	--Render remote players
-	for k,player in ipairs(getElementsByType"player") do
+	for k,player in ipairs(getElementsByType("player", root, true)) do
 		if player ~= localPlayer and getElementData ( player, "parachuting" ) and isElementStreamedIn(player) then
 			local velX,velY,velZ = getElementVelocity ( player )
 			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
