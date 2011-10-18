@@ -13,6 +13,10 @@
 	<file src="colorpicker/alpha.png" />
 	
 	<file src="arrow.png" />
+
+	<!-- Render target speed up -->
+	<script src="dxscoreboard_rt.lua" type="client" />
+	<file src="rt_blend.fx" type="client" />
 	
 	<!-- HTTP functions, original files by jbeta -->
 	<export function="getScoreboardColumns" type="server" http="true" />
@@ -20,7 +24,7 @@
 	<html src="scoreboard.htm" default="true"/>
 	<html src="scoreboard.css" raw="true" />
 	<html src="scoreboard.js" raw="true" />
-	
+
 	<!-- Server functions -->
 	<export function="scoreboardAddColumn" type="server"/>
 	<export function="scoreboardRemoveColumn" type="server"/>
@@ -76,5 +80,10 @@
 			group="General"
 			accept="false,true"
 			desc="Should the player's color code be used as the display color in scoreboard?" />
+		<setting name="*scrollStep" value="4"
+			friendlyname="Number of lines to scroll"
+			group="General"
+			accept="1-10"
+			desc="How many lines to scroll each time the mouse wheel is moved or the up/down buttons pressed" />
 	</settings>
 </meta>

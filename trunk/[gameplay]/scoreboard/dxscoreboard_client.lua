@@ -125,10 +125,12 @@ function iif( cond, arg1, arg2 )
 	return arg2
 end
 
-function drawScoreboard()
-	local sX, sY = guiGetScreenSize()
+function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 	if #scoreboardColumns ~= 0 then
-		
+
+		--
+		-- In/out animation
+		--
 		local currentSeconds = getTickCount() / 1000
 		local deltaSeconds = currentSeconds - scoreboardDimensions.lastSeconds
 		scoreboardDimensions.lastSeconds = currentSeconds
@@ -309,12 +311,22 @@ function drawScoreboard()
 				if scoreboardDimensions.phase < 1 then scoreboardDimensions.phase = 1 end
 			end
 		end
-		
-		if scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
+
+		--
+		-- Draw scoreboard background
+		--
+		if (not rtPass or onlyAnim) and scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
 			dxDrawRectangle( (sX/2)-(scoreboardDimensions.width/2), (sY/2)-(scoreboardDimensions.height/2), scoreboardDimensions.width, scoreboardDimensions.height, cScoreboardBackground, drawOverGUI )
 		end
-		
+
+		-- Check if anything else to do
+		if not scoreboardDrawn or onlyAnim then
+			return
+		end		
+
+		--
 		-- Update the scoreboard content
+		--
 		local currentTick = getTickCount()
 		if (currentTick - scoreboardTicks.lastUpdate > scoreboardTicks.updateInterval and (scoreboardToggled or scoreboardForced)) or forceScoreboardUpdate then
 			forceScoreboardUpdate = false
@@ -491,6 +503,9 @@ function drawScoreboard()
 			scoreboardTicks.lastUpdate = currentTick
 		end
 		
+		--
+		-- Draw scoreboard content
+		--
 		if scoreboardDrawn then
 			scoreboardDimensions.height = calculateHeight()
 			scoreboardDimensions.width = calculateWidth()
@@ -568,23 +583,19 @@ function drawScoreboard()
 				end
 				x = x + s(column.width + 10)
 			end
-			dxDrawLine( topX+s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), topX+scoreboardDimensions.width-s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cBorder, s(1), true )
+			dxDrawLine( topX+s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), topX+scoreboardDimensions.width-s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cBorder, s(1), drawOverGUI )
 			
 			y = y+s(5)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont )
 			while ( index < firstVisibleIndex+maxPerWindow and scoreboardContent[index] ) do
 				local x = s(10)
 				local element = scoreboardContent[index]["__SCOREBOARDELEMENT__"]
+				local team, player
 				
 				if element and isElement( element ) and getElementType( element ) == "team" then
 					dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cTeam, drawOverGUI )
 					-- Highlight the the row on which the cursor lies on
-					if isCursorShowing() then
-						local cX, cY = getCursorPosition()
-						local sX, sY = guiGetScreenSize()
-						cX, cY = cX*sX, cY*sY
-						if cX >= topX+s(5) and cX <= topX+scoreboardDimensions.width-s(5) and cY >= y and cY <= y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ) then
-							dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cHighlight, drawOverGUI )
-						end
+					if checkCursorOverRow( rtPass, topX+s(5), topX+scoreboardDimensions.width-s(5), y, y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ) ) then
+						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cHighlight, drawOverGUI )
 					end
 					-- Highlight selected row
 					if selectedRows[element] then
@@ -643,13 +654,8 @@ function drawScoreboard()
 						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cSelection, drawOverGUI )
 					end
 					-- Highlight the the row on which the cursor lies on
-					if isCursorShowing() then
-						local cX, cY = getCursorPosition()
-						local sX, sY = guiGetScreenSize()
-						cX, cY = cX*sX, cY*sY
-						if cX >= topX+s(5) and cX <= topX+scoreboardDimensions.width-s(5) and cY >= y and cY <= y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ) then
-							dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cHighlight, drawOverGUI )
-						end
+					if checkCursorOverRow( rtPass, topX+s(5), topX+scoreboardDimensions.width-s(5), y, y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ) ) then
+						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cHighlight, drawOverGUI )
 					end
 					-- Highlight selected row
 					if selectedRows[element] then
@@ -916,7 +922,8 @@ function scoreboardGetTopCornerPosition()
 	if scoreboardDrawn then
 		local sX, sY = guiGetScreenSize()
 		local topX, topY = (sX/2)-(calculateWidth()/2), (sY/2)-(calculateHeight()/2)
-		return topX, topY
+		topY = topY - 15		-- Extra 15 pixels for the scroll up button
+		return math.floor(topX), math.floor(topY+1)
 	end
 	return false
 end
@@ -983,11 +990,13 @@ function scrollScoreboard( _, _, upOrDown )
 	if isCursorShowing() then
 		local index = firstVisibleIndex
 		local maxPerWindow = getMaxPerWindow()
-		index = index + upOrDown
-		if index < 1 or (index+maxPerWindow-1 > #scoreboardContent) then
-			-- Do nothing
-		else
-			firstVisibleIndex = index
+		local highestIndex = #scoreboardContent - maxPerWindow + 1
+		if index >= 1 and index <= highestIndex then
+			local newIndex = math.max(1,math.min(index + upOrDown * serverInfo.scrollStep,highestIndex))
+			if index ~= newIndex then
+				firstVisibleIndex = newIndex
+				bForceUpdate = true
+			end
 		end
 	end
 end
