@@ -20,6 +20,7 @@ end
 forceShowTeams = toboolean( get( "forceShowTeams" ) ) or false
 forceHideTeams = toboolean( get( "forceHideTeams" ) ) or false
 allowColorcodedNames = toboolean( get( "allowColorcodedNames" ) ) or false
+scrollStep = tonumber( get( "scrollStep" ) ) or 1
 
 local function iif( cond, arg1, arg2 )
 	if cond then
@@ -206,6 +207,7 @@ function requestServerInfo()
 	output.forceshowteams = forceShowTeams
 	output.forcehideteams = forceHideTeams
 	output.allowcolorcodes = allowColorcodedNames
+	output.scrollStep = scrollStep
 	output.server = getServerName()
 	output.players = getMaxPlayers()
 	output.gamemode = false
