@@ -7,7 +7,6 @@
 local rtShader
 local rt
 local lastUpdateTime = 0
-local scoreboardDrawnLast
 
 
 addEventHandler( "onClientResourceStart", resourceRoot, 
@@ -26,9 +25,8 @@ function drawScoreboard()
 		savedRowsNext = {}
 	end
 
-	if not scoreboardDrawnLast then
+	if not scoreboardDrawn then
 		doDrawScoreboard ( false--[[rtPass]], true--[[onlyAnim]], guiGetScreenSize() )
-		scoreboardDrawnLast = scoreboardDrawn
 		bForceUpdate = true
 		return
 	end
@@ -88,7 +86,6 @@ function drawScoreboard()
 		-- Restore drawOverGUI settings
 		drawOverGUI = drawOverGUISaved
 
-		scoreboardDrawnLast = scoreboardDrawn
 		dxSetRenderTarget ()
 	end
 
