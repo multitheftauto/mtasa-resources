@@ -1,6 +1,6 @@
 <meta>
     <info name="fastrope" version="1.0.0" type="script" author="Cazomino05" description="fastrope script for MTA 1.1.1" />
-
+	<min_mta_version client="1.1.1-9.03250"/>
     <!-- Required Server-Scripts -->
     <script src="fastrope_manager.lua" type="server" />
 
