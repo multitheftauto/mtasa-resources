@@ -146,6 +146,7 @@ function doUpdateRows(rows) {
 				cell.className = rowClassName;
 				cell.innerHTML = rows[i][j].toString().htmlEntities();
 			    cell.bgColor = applyTint( rowBgColor, columnTints[j-1] );
+                cell.style.whiteSpace = "pre";
 			    
 				row.appendChild ( cell );
 			}
