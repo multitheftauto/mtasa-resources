@@ -2,6 +2,10 @@ local floor = math.floor
 
 addCommandHandler('path', 
 	function(command, node1, node2)
+		if not tonumber(node1) or not tonumber(node2) then
+			outputChatBox("Usage: /path node1 node2", 255, 0, 0)
+			return
+		end
 		local path = server.calculatePathByNodeIDs(tonumber(node1), tonumber(node2))
 		if not path then
 			outputConsole('No path found')
@@ -21,6 +25,10 @@ addCommandHandler('path',
 )
 addCommandHandler('path2', 
 	function(command, tox, toy, toz)
+		if not tonumber(tox) or not tonumber(toy) then
+			outputChatBox("Usage: /path2 x y z (z is optional)", 255, 0, 0)
+			return
+		end
 		local x,y,z = getElementPosition(getLocalPlayer())
 		local path = server.calculatePathByCoords(x, y, z, tox, toy, toz)
 		if not path then
