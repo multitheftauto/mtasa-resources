@@ -432,7 +432,8 @@ function restorePlayer(id, player, bNoFade, bDontFix)
         setElementVelocity( vehicle, 0,0,0 )
         setVehicleTurnVelocity( vehicle, 0,0,0 )
 		setElementPosition(vehicle, unpack(bkp.position))
-		setVehicleRotation(vehicle, unpack(bkp.rotation))
+		local rx, ry, rz = unpack(bkp.rotation)
+		setVehicleRotation(vehicle, rx or 0, ry or 0, rz or 0)
 		if not bDontFix then
 			fixVehicle(vehicle)
 		end
