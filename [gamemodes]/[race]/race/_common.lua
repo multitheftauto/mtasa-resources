@@ -232,6 +232,9 @@ function Timer:setTimer( theFunction, timeInterval, timesToExecute, ... )
     self.count = timesToExecute
     self.dodestroy = false
     self.args = { ... }
+	if timeInterval < 50 then
+		timeInterval = 50
+	end
     self.timer = setTimer( function() self:handleFunctionCall() end, timeInterval, timesToExecute )
 end
 

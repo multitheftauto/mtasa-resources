@@ -10,6 +10,7 @@ function()
 end )
 
 function spawnFunct ( passedPlayer )
+	if (not isElement(passedPlayer)) then return false end
     r = 20
 	angle = math.random(133, 308) --random angle between 0 and 359.99
 	centerX = -12
