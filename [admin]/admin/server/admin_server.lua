@@ -920,6 +920,9 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			else
 				action = nil
 			end
+		elseif ( action == "removefromteam" ) then
+			mdata = getTeamName( getPlayerTeam( player ) )
+			setPlayerTeam ( player, nil )
 		elseif ( action == "setinterior" ) then
 			action = nil
 			for id, interior in ipairs ( aInteriors ) do

@@ -69,6 +69,11 @@
       <player>You have been moved to the $data team$by_admin_4plr.</player>
       <log>ADMIN: $admin has moved $player to the $data team</log>
     </group>
+	<group action="removefromteam" r="255" g="255" b="0">
+      <admin>$player has been removed from the $data team.</admin>
+      <player>You have been removed from the $data team$by_admin_4plr.</player>
+      <log>ADMIN: $admin has removed $player from the $data team</log>
+    </group>
     <group action="setinterior" r="0" g="255" b="0">
       <admin>$player has been moved to the $data interior.</admin>
       <player>You have been moved to the $data interior$by_admin_4plr.</player>
