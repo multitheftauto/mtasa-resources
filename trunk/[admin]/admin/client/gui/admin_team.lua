@@ -37,6 +37,7 @@ function aPlayerTeam ( player )
 		aTeamCancel		= guiCreateButton ( 0.77, 0.73, 0.20, 0.09, "Cancel", true, aTeamForm )
 		aTeamAccept		= guiCreateButton ( 0.55, 0.88, 0.20, 0.09, "Select", true, aTeamForm )
 		aTeamClose		= guiCreateButton ( 0.77, 0.88, 0.20, 0.09, "Close", true, aTeamForm )
+		aTeamRemove		= guiCreateButton ( 0.55, 0.78, 0.42, 0.09, "Remove From Team", true, aTeamForm )
 		addEventHandler ( "onClientGUIClick", aTeamForm, aClientTeamClick )
 		addEventHandler ( "onClientGUIDoubleClick", aTeamForm, aClientTeamDoubleClick )
 		--Register With Admin Form
@@ -114,6 +115,12 @@ function aClientTeamClick ( button )
 			end
 		elseif ( source == aTeamClose ) then
 			aPlayerTeamClose ( false )
+		elseif ( source == aTeamRemove ) then
+			if getPlayerTeam( aTeamSelect ) then
+				triggerServerEvent ( "aPlayer", getLocalPlayer(), aTeamSelect, "removefromteam", nil )
+			else
+				aMessageBox( "warning", "This player is not in a team!")
+			end
 		end
 	end
 end
@@ -133,6 +140,7 @@ function aNewTeamShow ( bool )
 	guiSetVisible ( aTeamBlue, bool )
 	guiSetVisible ( aTeamCreate, bool )
 	guiSetVisible ( aTeamCancel, bool )
+	guiSetVisible ( aTeamRemove, not bool )
 end
 
 function aTeamsRefresh ()
