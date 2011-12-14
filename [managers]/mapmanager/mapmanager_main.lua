@@ -122,6 +122,16 @@ addEventHandler("onResourceStart", rootElement,
 
 addEventHandler("onResourceStop", rootElement, 
 	function (stoppedResource)
+		-- Incase the resource being stopped has been deleted
+		local stillExists = false
+		for i, res in ipairs(getResources()) do
+			if res == stoppedResource then
+				stillExists = true
+				break
+			end
+		end
+		if not stillExists then return end
+		
 		local resourceRoot = getResourceRootElement(stoppedResource)
 		if stoppedResource == currentGamemode then
 			triggerEvent("onGamemodeStop", resourceRoot, currentGamemode)
