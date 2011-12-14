@@ -26,9 +26,11 @@ function aSetupACL ()
 		local totalAdded = 0
 		for id, acl in ipairs ( aclList () ) do
 			local aclName = aclGetName ( acl )
-			local node = temp_acl_nodes[aclName] or temp_acl_nodes["Default"]
-			if node then
-				totalAdded = totalAdded + aACLLoad ( acl, node )
+			if string.sub(aclName,1,8) ~= "autoACL_" then
+				local node = temp_acl_nodes[aclName] or temp_acl_nodes["Default"]
+				if node then
+					totalAdded = totalAdded + aACLLoad ( acl, node )
+				end
 			end
 		end
 		if totalAdded > 0 then
