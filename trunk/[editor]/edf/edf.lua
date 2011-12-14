@@ -908,7 +908,7 @@ function edfSetElementRotation(element, rx, ry, rz)
 	
 	local etype = getElementType(element)
 	if etype == "object" then
-		if setObjectRotation(element, rx, ry, rz) then
+		if rx and ry and rz and setObjectRotation(element, rx, ry, rz) then
 			triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
 			return true
 		end

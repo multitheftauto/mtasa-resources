@@ -446,7 +446,7 @@ function restorePlayer(id, player, bNoFade, bDontFix)
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 
 		RaceMode.playerFreeze(player, true, bDontFix)
-        outputDebug( 'MISC', 'restorePlayer: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
+        outputDebug( 'MISC', 'restorePlayer: setElementFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
         removeVehicleUpgrade(vehicle, 1010) -- remove nitro
 		TimerManager.destroyTimersFor("unfreeze",player)
 		TimerManager.createTimerFor("map","unfreeze",player):setTimer(restorePlayerUnfreeze, 2000, 1, id, player, bDontFix)

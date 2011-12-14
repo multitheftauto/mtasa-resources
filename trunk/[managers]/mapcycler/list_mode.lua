@@ -202,7 +202,7 @@ function outputNextMode(sourcePlayer)
 end
 
 function skipMap(sourcePlayer, command)
-	if not canPlayerUseFunction(sourcePlayer, command) then
+	if not hasObjectPermissionTo(sourcePlayer, command, false) then
 		--! deny access
 		--! return false
 	end

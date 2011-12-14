@@ -490,7 +490,7 @@ function joinHandlerBoth(player)
             g_Vehicles[player] = vehicle
 			Override.setAlpha( "ForRCVehicles", player, g_RCVehicleIDs[spawnpoint.vehicle] and 0 or nil )
             RaceMode.playerFreeze(player)
-            outputDebug( 'MISC', 'joinHandlerBoth: setVehicleFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
+            outputDebug( 'MISC', 'joinHandlerBoth: setElementFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
             if bPlayerJoined and g_CurrentRaceMode.running then
                 unfreezePlayerWhenReady(player)
             end
@@ -579,7 +579,7 @@ function unfreezePlayerWhenReady(player)
         TimerManager.createTimerFor("map",player):setTimer( unfreezePlayerWhenReady, 500, 1, player )
     else
         RaceMode.playerUnfreeze(player)
-        outputDebug( 'MISC', 'unfreezePlayerWhenReady: setVehicleFrozen false for ' .. tostring(getPlayerName(player)) )
+        outputDebug( 'MISC', 'unfreezePlayerWhenReady: setElementFrozen false for ' .. tostring(getPlayerName(player)) )
     end
 end
 

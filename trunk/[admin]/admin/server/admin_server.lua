@@ -176,6 +176,16 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 end )
 
 addEventHandler ( "onResourceStop", _root, function ( resource )
+	-- Incase the resource being stopped has been deleted
+	local stillExists = false
+	for i, res in ipairs(getResources()) do
+		if res == resource then
+			stillExists = true
+			break
+		end
+	end
+	if not stillExists then return end
+	
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then

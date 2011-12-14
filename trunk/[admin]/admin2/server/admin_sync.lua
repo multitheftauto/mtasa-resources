@@ -16,7 +16,7 @@ addEventHandler ( "aSync", _root, function ( type, data )
 		if ( not isElement( data ) ) then return end
 		aPlayers[source]["sync"] = data
 		tableOut["mute"] = isPlayerMuted ( data )
-		tableOut["freeze"] = isPedFrozen ( data )
+		tableOut["freeze"] = isElementFrozen ( data )
 		tableOut["money"] = getPlayerMoney ( data )
 		tableOut["version"] = getPlayerVersion ( data )
 		local account = getPlayerAccount ( data )
