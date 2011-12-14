@@ -11,7 +11,7 @@
 aViewMessageForm = nil
 
 function aViewMessage ( id )
-	if ( aMessageForm == nil ) then
+	if ( aViewMessageForm == nil ) then
 		local x, y = guiGetScreenSize()
 		aViewMessageForm	= guiCreateWindow ( x / 2 - 150, y / 2 - 125, 300, 250, "", false )
 					   guiCreateLabel ( 0.05, 0.10, 0.30, 0.09, "Category:", true, aViewMessageForm )
