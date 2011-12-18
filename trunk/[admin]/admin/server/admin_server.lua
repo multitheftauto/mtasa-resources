@@ -18,6 +18,7 @@ aInteriors = {}
 aStats = {}
 aReports = {}
 aWeathers = {}
+aNickChangeTime = {}
 
 function notifyPlayerLoggedIn(player)
 	outputChatBox ( "Press 'p' to open your admin panel", player )
@@ -381,6 +382,7 @@ end
 
 addEventHandler ( "onPlayerQuit", root, function ()
 	aPlayers[source] = nil
+	aNickChangeTime[source] = nil
 end )
 
 addEvent ( "aPlayerVersion", true )
@@ -1440,3 +1442,14 @@ function checkClient(checkAccess,player,...)
 	end
 	return false
 end
+
+function checkNickOnChange(old, new)
+	if aNickChangeTime[source] and aNickChangeTime[source] + tonumber(get("*nickChangeDelay")) > getTickCount() then
+		cancelEvent()
+		outputChatBox("You can only change your name once every "..(tonumber(get("*nickChangeDelay"))/1000).." seconds", source, 255, 0, 0)
+		return false
+	else
+		aNickChangeTime[source] = getTickCount()
+	end
+end
+addEventHandler("onPlayerChangeNick", root, checkNickOnChange)

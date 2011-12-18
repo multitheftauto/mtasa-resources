@@ -285,6 +285,13 @@
 					accept="true,false"
 					desc="Displays country flags next to players, set to false to save about 3MB of server RAM."
 					/>
+		
+		<setting name="*nickChangeDelay" value="5000"
+					friendlyname="Nick change delay"
+					group="Durations"
+					accept="500-60000"
+					desc="Time in miliseconds between a player being able to change their name to prevent nick change spam"
+					/>
  </settings>
 
 </meta>
