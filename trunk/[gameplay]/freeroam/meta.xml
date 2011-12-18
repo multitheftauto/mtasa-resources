@@ -78,5 +78,7 @@
 		<setting name="*vehicles/idleexplode" value="false" />     <!-- If set to false, vehicles simply disappear when they time out instead of exploding -->
 		<setting name="*vehicles/maxperplayer" value="[2]" />     <!-- Maximum number of vehicles a player can have at the same time -->
 		<setting name="*vehicles/disallowed" value="[[]]" />   <!-- Comma-separated list of vehicles that players may not create -->
+		<setting name="*chat/mainChatDelay" value="1000" />   <!-- Miliseconds between each message a player can send through main chat -->
+		<setting name="*chat/blockRepeatMessages" value="true" />   <!-- Prevent a player from saying the same thing twice in a row to spam -->
 	</settings>
 </meta>

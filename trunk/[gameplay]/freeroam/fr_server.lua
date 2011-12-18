@@ -2,6 +2,8 @@
 g_ResRoot = getResourceRootElement(getThisResource())
 g_PlayerData = {}
 g_VehicleData = {}
+local chatTime = {}
+local lastChatMessage = {}
 
 g_ArmedVehicles = {
 	[425] = true,
@@ -400,6 +402,18 @@ addEventHandler('onPlayerChat', g_Root,
 	function(msg, type)
 		if type == 0 then
 			cancelEvent()
+			if chatTime[source] and chatTime[source] + tonumber(get("*chat/mainChatDelay")) > getTickCount() then
+				outputChatBox("Stop spamming main chat!", source, 255, 0, 0)
+				return
+			else
+				chatTime[source] = getTickCount()
+			end
+			if get("*chat/blockRepeatMessages") == "true" and lastChatMessage[source] and lastChatMessage[source] == msg then
+				outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
+				return
+			else
+				lastChatMessage[source] = msg
+			end
 			local r, g, b = getPlayerNametagColor(source)
 			outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. msg:gsub('#%x%x%x%x%x%x', ''), g_Root, r, g, b, true)
 			outputServerLog( "CHAT: " .. getPlayerName(source) .. ": " .. msg )
@@ -499,6 +513,8 @@ function quitHandler(player)
 	end
 	table.each(g_PlayerData[player].vehicles, unloadVehicle)
 	g_PlayerData[player] = nil
+	chatTime[player] = nil
+	lastChatMessage[player] = nil
 end
 addEventHandler('onPlayerQuit', g_Root, quitHandler)
 
