@@ -6,6 +6,7 @@ g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 server = createServerCallInterface()
+guiSetInputMode("no_binds_when_editing")
 
 ---------------------------
 -- Set skin window
@@ -465,6 +466,113 @@ wndStats = {
 		{'btn', id='close', closeswindow=true}
 	},
 	oncreate = initStats
+}
+
+---------------------------
+-- Bookmarks window
+---------------------------
+
+local bookmarkList
+local bookmarks = {}
+
+function initBookmarks ()
+	bookmarkList = wndBookmarks.controls[1].element
+	if bookmarks then return end
+	addEventHandler("onClientGUIDoubleClick",bookmarkList,gotoBookmark)
+end
+
+function loadBookmarks ()
+	local xml = xmlLoadFile("bookmarks.xml")
+	if not xml then
+		xml = xmlCreateFile("bookmarks.xml","catalog")
+	end
+	guiGridListClear(bookmarkList)
+	for i,child in ipairs (xmlNodeGetChildren(xml) or {}) do
+		local row = guiGridListAddRow(bookmarkList)
+		guiGridListSetItemText(bookmarkList,row,1,tostring(xmlNodeGetAttribute(child,"name")),false,false)
+		guiGridListSetItemText(bookmarkList,row,2,tostring(xmlNodeGetAttribute(child,"zone")),false,false)
+		bookmarks[row+1] = {tonumber(xmlNodeGetAttribute(child,"x")),tonumber(xmlNodeGetAttribute(child,"y")),tonumber(xmlNodeGetAttribute(child,"z"))}
+	end
+end
+
+function saveBookmarks ()
+	if fileExists("bookmarks.xml") then
+		fileDelete("bookmarks.xml")
+	end
+	local xml = xmlCreateFile("bookmarks.xml","catalog")
+	for row=0,(guiGridListGetRowCount(bookmarkList)-1) do
+		local child = xmlCreateChild(xml,"bookmark")
+		xmlNodeSetAttribute(child,"name",guiGridListGetItemText(bookmarkList,row,1))
+		xmlNodeSetAttribute(child,"zone",guiGridListGetItemText(bookmarkList,row,2))
+		xmlNodeSetAttribute(child,"x",tostring(bookmarks[row+1][1]))
+		xmlNodeSetAttribute(child,"y",tostring(bookmarks[row+1][2]))
+		xmlNodeSetAttribute(child,"z",tostring(bookmarks[row+1][3]))
+	end
+	xmlSaveFile(xml)
+	xmlUnloadFile(xml)
+end
+
+function saveLocation ()
+	local name = getControlText(wndBookmarks,"bookmarkname")
+	if name ~= "" then
+		local x,y,z = getElementPosition(g_Me)
+		local zone = getZoneName(x,y,z,false)
+		if x and y and z then
+			local row = guiGridListAddRow(bookmarkList)
+			guiGridListSetItemText(bookmarkList,row,1,name,false,false)
+			guiGridListSetItemText(bookmarkList,row,2,zone,false,false)
+			bookmarks[row+1] = {x,y,z}
+			setControlText(wndBookmarks,"bookmarkname","")
+			saveBookmarks()
+		end
+	else
+		outputChatBox("Please enter a name for the bookmark")
+	end
+end
+
+function deleteLocation ()
+	local row,column = guiGridListGetSelectedItem(bookmarkList)
+	if row and row ~= -1 then
+		guiGridListRemoveRow(bookmarkList,row)
+		saveBookmarks()
+	end
+end
+
+function gotoBookmark ()
+	local row,column = guiGridListGetSelectedItem(bookmarkList)
+	if row and row ~= -1 then
+		fadeCamera(false)
+		if isPlayerDead(g_Me) then
+			setTimer(server.spawnMe,1000,1,unpack(bookmarks[row+1]))
+		else
+			setTimer(setElementPosition,1000,1,g_Me,unpack(bookmarks[row+1]))
+		end
+		setTimer(function () fadeCamera(true) setCameraTarget(g_Me) end,2000,1)
+	end
+end
+
+wndBookmarks = {
+	'wnd',
+	text = 'Bookmarks',
+	width = 400,
+	x = -300,
+	y = 0.2,
+	controls = {
+		{
+			'lst',
+			id='bookmarklist',
+			width=400,
+			columns={
+				{text='Name', attr='name', width=0.3},
+				{text='Zone', attr='zone', width=0.6}
+			}
+		},
+		{'txt', id='bookmarkname', text='', width=225},
+		{'btn', id='save current location', onclick=saveLocation, width=150},
+		{'btn', id='delete selected location', onclick=deleteLocation, width=225},
+		{'btn', id='close', closeswindow=true, width=150}
+	},
+	oncreate = initBookmarks
 }
 
 ---------------------------
@@ -1399,6 +1507,7 @@ wndMain = {
 		{'btn', id='playergrav', text='grav', window=wndGravity},
 		{'btn', id='warp', window=wndWarp},
 		{'btn', id='stats', window=wndStats},
+		{'btn', id='bookmarks', window=wndBookmarks},
 		{'br'},
 		{'chk', id='jetpack', onclick=toggleJetPack},
 		{'chk', id='falloff', text='fall off bike', onclick=toggleFallOffBike},
@@ -1456,6 +1565,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), doesPedHaveJetPack(g_Me))
 		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPedBeKnockedOffBike(g_Me))
 		setJetpackMaxHeight ( 9001 )
+		
 		triggerServerEvent('onLoadedAtClient', g_ResRoot, g_Me)
 	end
 )
