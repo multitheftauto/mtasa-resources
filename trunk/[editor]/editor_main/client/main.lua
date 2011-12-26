@@ -1,4 +1,4 @@
-﻿local thisResource = getThisResource()
+local thisResource = getThisResource()
 local thisResourceRoot = getResourceRootElement(thisResource)
 local g_suspendedCamera = {}
 local g_screenX, g_screenY = guiGetScreenSize ()
@@ -237,7 +237,11 @@ addEventHandler("onClientRender", root,
     			local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
     			local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
     			local modelName = tostring( engineGetModelNameFromID( buildingInfo.id ) )
-    			line1 = buildingInfo.id .. " (" .. modelName .. ")"
+				if ( buildingInfo.LODid ~= nil ) then
+    				line1 = buildingInfo.id .. " (" .. modelName .. ")" .. " LOD: " .. buildingInfo.LODid
+				else
+    				line1 = buildingInfo.id .. " (" .. modelName .. ")"
+				end
 				line2 = "[world]"
 				line3 = roundedDistance .. " m"
     			g_worldBuildingInfo = buildingInfo
@@ -1119,7 +1123,7 @@ function processCameraLineOfSight()
 	-- get collision point on the line
 	local surfaceFound, targetX, targetY, targetZ, targetElement,
             nx, ny, nz, material, lighting, piece,
-            buildingId, bx, by, bz, brx, bry, brz
+            buildingId, bx, by, bz, brx, bry, brz, buildingLOD
 		= processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
 
 	-- if there is none, use the end point of the vector as the collision point
@@ -1127,7 +1131,7 @@ function processCameraLineOfSight()
 	    targetX, targetY, targetZ = endX, endY, endZ
 	end
 	
-	local buildingInfo = buildingId and { id=buildingId, x=bx, y=by, z=bz, rx=brx, ry=bry, rz=brz }
+	local buildingInfo = buildingId and { LODid=buildingLOD, id=buildingId, x=bx, y=by, z=bz, rx=brx, ry=bry, rz=brz }
 
 	return targetX, targetY, targetZ, targetElement, buildingInfo
 end
@@ -1142,7 +1146,7 @@ function processCursorLineOfSight()
 
 	local surfaceFound, targetX, targetY, targetZ, targetElement,
             nx, ny, nz, material, lighting, piece,
-            buildingId, bx, by, bz, brx, bry, brz
+            buildingId, bx, by, bz, brx, bry, brz, buildingLOD
         = processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
 
 	-- if there is none, use the end point of the vector as the collision point
@@ -1150,7 +1154,7 @@ function processCursorLineOfSight()
 	    targetX, targetY, targetZ = endX, endY, endZ
 	end
 
-	local buildingInfo = buildingId and { id=buildingId, x=bx, y=by, z=bz, rx=brx, ry=bry, rz=brz }
+	local buildingInfo = buildingId and { LODid=buildingLOD, id=buildingId, x=bx, y=by, z=bz, rx=brx, ry=bry, rz=brz }
 	
 	return targetX, targetY, targetZ, targetElement, buildingInfo
 end
