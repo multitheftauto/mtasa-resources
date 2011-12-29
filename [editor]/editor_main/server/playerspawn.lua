@@ -1,4 +1,6 @@
 ﻿local disable = function() cancelEvent() end
+local pickupsDisabled = false
+
 addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()),
 	function()
 		for i,player in ipairs(getElementsByType"player") do
@@ -17,9 +19,11 @@ addEventHandler ( "onPlayerJoin", getRootElement(),
 )
 
 function disablePickups(bool)
-	if bool then
+	if bool and not pickupsDisabled then
+		pickupsDisabled = true
 		addEventHandler ( "onPickupHit", getRootElement(), disable )
 	else
+		pickupsDisabled = false
 		removeEventHandler ( "onPickupHit", getRootElement(), disable )
 	end
 end

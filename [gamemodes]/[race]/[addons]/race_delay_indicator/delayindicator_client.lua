@@ -65,6 +65,7 @@ function hideDelayDisplay(front)
 		if pastTime >= TIME_TO_DISPLAY then
 			delayDisplayFront:visible(false)
 		else
+			if pastTime < 50 then pastTime = 50 end
 			setTimer(hideDelayDisplay, pastTime, 1, true)
 			-- outputChatBox("front dalassen")
 		end
@@ -73,6 +74,7 @@ function hideDelayDisplay(front)
 		if pastTime >= TIME_TO_DISPLAY then
 			delayDisplayBehind:visible(false)
 		else
+			if pastTime < 50 then pastTime = 50 end
 			setTimer(hideDelayDisplay, pastTime, 1, false)
 			-- outputChatBox("behind dalassen")
 		end

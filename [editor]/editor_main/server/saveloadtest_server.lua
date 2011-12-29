@@ -750,12 +750,14 @@ function stopTest()
 	restoreSettings()
 	if g_in_test == "gamemode" then
 		local gamemode = mapmanager.getRunningGamemode()
-		if not ( addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), restoreGUIOnMapStop ) ) then
+		if not gamemode or not ( addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), restoreGUIOnMapStop ) ) then
 			addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
 		end
 		mapmanager.stopGamemode()
 	else
-		addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
+		if testRes then
+			addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
+		end
 		resetMapInfo()
 	end
 	setupMapSettings()

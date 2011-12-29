@@ -87,11 +87,13 @@ function shiftUpGUI()
 	for i=config.lines,2,-1 do
 		local y = config.startY*screenY + (config.iconHeight*(i-1)) + (config.iconHeight - config.textHeight)/2
 		local targetY = config.startY*screenY + (config.iconHeight*(i-2)) + (config.iconHeight - config.textHeight)/2
-		for k,part in ipairs(contentMessages[i]) do
-			local x,realY = getWidgetPosition(part)
+		if contentMessages[i] then
+			for k,part in ipairs(contentMessages[i]) do
+				local x,realY = getWidgetPosition(part)
 
-			local diffY = realY - y
-			setWidgetPosition(part,x,targetY + diffY)
+				local diffY = realY - y
+				setWidgetPosition(part,x,targetY + diffY)
+			end
 		end
 	end	
 	for i=1,config.lines-1 do

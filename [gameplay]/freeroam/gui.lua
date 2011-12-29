@@ -430,7 +430,7 @@ function setControlText(...)
 	local args = {...}
 	local text = table.remove(args)
 	local element = getControl(unpack(args))
-	if (element and isElement(element)) then
+	if (element and isElement(element) and text) then
 		guiSetText(element, text)
 	end
 end
