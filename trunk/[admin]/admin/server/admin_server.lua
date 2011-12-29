@@ -847,7 +847,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 		elseif ( action == "freeze" )  then
 			if ( isPlayerFrozen ( player ) ) then action = "un"..action end
 			aSetPlayerFrozen ( player, not isPlayerFrozen ( player ) )
-		elseif ( action == "nick" )  then
+		elseif ( action == "setnick" )  then
 			local playername = getPlayerName(player)
 			if setPlayerName( player, data ) then
 				outputChatBox ( "You changed '"..playername.."' to '"..data.."'!", source, 255, 100, 70 )

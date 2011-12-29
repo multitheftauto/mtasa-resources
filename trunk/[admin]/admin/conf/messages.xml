@@ -23,6 +23,9 @@
       <all>$player has been muted$by_admin_4all. $data2</all>
       <log>ADMIN: $admin has muted $player $data $data2</log>
     </group>
+	<group action="setnick" r="255" g="0" b="0">
+      <log>ADMIN: $player name changed to $data2 $by_admin_4all.</log>
+    </group>
     <group action="unmute" r="0" g="255" b="100">
       <all>$player has been unmuted$by_admin_4all.</all>
       <log>ADMIN: $admin has unmuted $player</log>
