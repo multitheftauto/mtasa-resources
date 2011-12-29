@@ -1439,7 +1439,7 @@ function updateGUI(updateVehicle)
 	if updateVehicle then
 		-- update current vehicle
 		local vehicle = getPedOccupiedVehicle(g_Me)
-		if vehicle then
+		if vehicle and isElement(vehicle) then
 			setControlText(wndMain, 'curvehicle', getVehicleName(vehicle))
 		else
 			setControlText(wndMain, 'curvehicle', 'On foot')

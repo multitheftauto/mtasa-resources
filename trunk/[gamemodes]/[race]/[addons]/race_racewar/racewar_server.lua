@@ -514,7 +514,7 @@ function Racewar.changePlayerTeam( player, newTeamIndex )
 			Racewar.output( getPlayerName(player) .. " has joined '" .. getTeamName(newTeam).. "'" )
 			textDisplayAddObserver( newsDisplay, player )
 			textDisplayAddObserver( statusDisplay, player )
-		elseif oldTeam then
+		elseif oldTeam and isElement(oldTeam) then
 			setPlayerTeam(player, nil )
 			Racewar.output( getPlayerName(player) .. " has left '" .. getTeamName(oldTeam).. "'")
 			textDisplayRemoveObserver( newsDisplay, player )

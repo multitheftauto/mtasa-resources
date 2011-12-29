@@ -58,7 +58,7 @@
 		gadgetlabel = guiCreateLabel ( 0.05, .62, 40, 20, "", true, gadgeticon )
 		guiLabelSetColor ( gadgetlabel, 1, 1, 1 )
 	end
-	guiSetText ( gadgetlabel, gadgetuses )
+	guiSetText ( gadgetlabel, gadgetuses or "" )
 	if goggleson == 1 then
 		hideGogglesGUI()
 		goggleson = 0

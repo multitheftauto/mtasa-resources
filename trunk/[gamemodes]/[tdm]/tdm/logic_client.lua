@@ -75,7 +75,7 @@ addEventHandler ( "onClientElementDataChange", g_Root,
 
 function updateScores()
 	local localTeam = getPlayerTeam(g_LocalPlayer)
-	if not localTeam then return end
+	if not localTeam or not isElement(localTeam) then return end
 	local currentScore = getElementData(localTeam,"Score")
 	fragText:text(tostring(currentScore))
 	if source == g_LocalPlayer then
@@ -108,10 +108,12 @@ function updateScores()
 	end
 	--Quickly account for drawing positions
 	for i=rank,1,-1 do
-		if currentScore == getElementData ( teams [i], "Score" ) then
-			rank = i
-		else
-			break
+		if isElement ( teams[i] ) then
+			if currentScore == getElementData ( teams [i], "Score" ) then
+				rank = i
+			else
+				break
+			end
 		end
 	end
 	--Calculate spread 

@@ -52,7 +52,9 @@ function level(dataName)
 			text = "Leader: -".." ("..maxLevel..")"
 		end
 		text = text.."\nYour level: "..localPlayerLevel
-		guiSetText ( scoreLabel, text )
+		if scoreLabel then
+			guiSetText ( scoreLabel, text )
+		end
 end
 addEventHandler ( "onClientElementDataChange",getRootElement(),level )
 

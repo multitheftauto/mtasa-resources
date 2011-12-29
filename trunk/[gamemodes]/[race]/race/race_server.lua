@@ -827,7 +827,9 @@ addEventHandler('onPlayerQuit', g_Root,
 		destroyBlipsAttachedTo(source)
 		table.removevalue(g_Players, source)
 		if g_Vehicles[source] then
-			destroyElement(g_Vehicles[source])
+			if isElement(g_Vehicles[source]) then
+				destroyElement(g_Vehicles[source])
+			end
 			g_Vehicles[source] = nil
 		end
 		if g_CurrentRaceMode then
