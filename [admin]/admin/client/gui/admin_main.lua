@@ -836,7 +836,7 @@ function aClientClick ( button )
 					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"mute\" )" ) end
 					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "freeze" )
 					elseif ( source == aTab1.Spectate ) then aSpectate ( player )
-					elseif ( source == aTab1.Nick ) then aInputBox ( "Set Nick", "Enter the new nick of the player", name, "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"nick\", $value )" )
+					elseif ( source == aTab1.Nick ) then aInputBox ( "Set Nick", "Enter the new nick of the player", name, "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setnick\", $value )" )
 					elseif ( source == aTab1.Shout ) then aInputBox ( "Shout", "Enter text to be shown on player's screen", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"shout\", $value )" )
 					elseif ( source == aTab1.SetHealth ) then aInputBox ( "Set Health", "Enter the health value", "100", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"sethealth\", $value )" )
 					elseif ( source == aTab1.SetArmour ) then aInputBox ( "Set Armour", "Enter the armour value", "100", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setarmour\", $value )" )

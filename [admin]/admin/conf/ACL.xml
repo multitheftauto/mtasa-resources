@@ -22,6 +22,7 @@
     <right name="command.kick" access="true" />
     <right name="command.freeze" access="true" />
     <right name="command.mute" access="true" />
+	<right name="command.setnick" access="true" />
     <right name="command.shout" access="true" />
     <right name="command.spectate" access="true" />
     <right name="command.slap" access="true" />
@@ -94,6 +95,7 @@
     <right name="command.kick" access="true" />
     <right name="command.freeze" access="true" />
     <right name="command.mute" access="true" />
+	<right name="command.setnick" access="true" />
     <right name="command.shout" access="true" />
     <right name="command.spectate" access="true" />
     <right name="command.slap" access="true" />
@@ -166,6 +168,7 @@
     <right name="command.kick" access="false" />
     <right name="command.freeze" access="true" />
     <right name="command.mute" access="true" />
+	<right name="command.setnick" access="true" />
     <right name="command.shout" access="true" />
     <right name="command.spectate" access="true" />
     <right name="command.slap" access="true" />
@@ -238,6 +241,7 @@
     <right name="command.kick" access="false" />
     <right name="command.freeze" access="false" />
     <right name="command.mute" access="false" />
+	<right name="command.setnick" access="false" />
     <right name="command.shout" access="false" />
     <right name="command.spectate" access="false" />
     <right name="command.slap" access="false" />
