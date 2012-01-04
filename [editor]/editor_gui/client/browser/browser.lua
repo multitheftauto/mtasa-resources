@@ -171,7 +171,6 @@ function browser.gridlistSelect (cellrow)
 		if isElement(browser.mainElement) then
 			enableElementLook(true,browser.mainElement)
 		end
-		guiSetVisible ( browser.window,false)
 		removeEventHandler ( "onClientRender", getRootElement(), rotateMesh )	
 	end
 	if ( tutorialVars.callBack ) then
@@ -291,7 +290,6 @@ function browser.toggleCursor()
 		if isElement(browser.mainElement) then
 			enableElementLook(true,browser.mainElement,270,-15)
 		end
-		guiSetVisible ( browser.window,false)
 		removeEventHandler ( "onClientRender", getRootElement(), rotateMesh )
 	end
 end

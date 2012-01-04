@@ -126,6 +126,7 @@ end
 
 function drawLine(vecOrigin, vecTarget,color,thickness)
 	local startX,startY = getScreenFromWorldPosition(vecOrigin[1],vecOrigin[2],vecOrigin[3],10)
+	if (not vecTarget[1]) then return false end
 	local endX,endY = getScreenFromWorldPosition(vecTarget[1],vecTarget[2],vecTarget[3],10)
 	if not startX or not startY or not endX or not endY then 
 		return false
