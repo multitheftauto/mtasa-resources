@@ -187,6 +187,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 	elseif wndClass == 'lst' then
 		elem = guiCreateGridList(relX, relY, relWidth, relHeight, true, parentWnd.element)
 		if wnd.columns then
+			guiGridListSetSortingEnabled(elem, false)
 			for i, column in ipairs(wnd.columns) do
 				guiGridListAddColumn(elem, column.text or column.attr or '', column.width or 0.9)
 			end
