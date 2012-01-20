@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -22,12 +22,16 @@ aMessageBox = {
 	Result = false;
 }
 
+addEvent ( EVENT_MESSAGE_BOX, true )
+
 function messageBox ( message, icon, type )
 	if ( message ) then
 		return aMessageBox.Show ( message, icon or MB_INFO, type or MB_OK )
 	end
 	return false
 end
+
+addEventHandler ( EVENT_MESSAGE_BOX, getLocalPlayer(), messageBox )
 
 function aMessageBox.Show ( message, icon, type )
 	local x, y = guiGetScreenSize()
@@ -73,14 +77,14 @@ function aMessageBox.Show ( message, icon, type )
 	guiSetVisible ( aMessageBox.Form, true )
 	guiBringToFront ( aMessageBox.Form )
 
-	guiSetVisible ( aMessageBox.Warning, type == MB_WARNING )
-	guiSetVisible ( aMessageBox.Question, type == MB_QUESTION )
-	guiSetVisible ( aMessageBox.Error, type == MB_ERROR )
-	guiSetVisible ( aMessageBox.Info, type == MB_INFO )
+	guiSetVisible ( aMessageBox.Warning, icon == MB_WARNING )
+	guiSetVisible ( aMessageBox.Question, icon == MB_QUESTION )
+	guiSetVisible ( aMessageBox.Error, icon == MB_ERROR )
+	guiSetVisible ( aMessageBox.Info, icon == MB_INFO )
 
 	--guiSetVisible ( aInputForm, false )
 
-	if ( action == MB_YESNO ) then
+	if ( type == MB_YESNO ) then
 		guiSetVisible ( aMessageBox.Yes, true )
 		guiSetVisible ( aMessageBox.No, true )
 		guiSetVisible ( aMessageBox.Ok, false )

@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -8,17 +8,19 @@
 *
 **************************************]]
 
-aVehicleForm = nil
-aVehicleCustomizePlayer = nil
-aVehicleCustomizeVehicle = nil
-aVehicleUpgrades = {}
-aUpgradeNames = {}
+aVehicle = {
+	Form = nil,
+	Upgrades = {},
+	Names = {},
+	Last = nil
+}
 
-function aVehicleCustomize ( player )
-	if ( aVehicleForm == nil ) then
+function aVehicle.Open ( vehicle )
+	if ( not aVehicle.Form ) then
 		local x, y = guiGetScreenSize()
-		aVehicleForm		= guiCreateWindow ( x / 2 - 300, y / 2 - 150, 600, 450, "Vehicle Customizations", false )
+		aVehicle.Form		= guiCreateWindow ( x / 2 - 300, y / 2 - 150, 600, 450, "Vehicle Customizations", false )
 
+		aVehicle.Names = {}
 		local node = xmlLoadFile ( "conf\\upgrades.xml" )
 		if ( node ) then
 			local upgrades = 0
@@ -26,7 +28,7 @@ function aVehicleCustomize ( player )
 				local upgrade = xmlFindChild ( node, "upgrade", upgrades )
 				local id = tonumber ( xmlNodeGetAttribute ( upgrade, "id" ) )
 				local name = xmlNodeGetAttribute ( upgrade, "name" )
-				aUpgradeNames[id] = name
+				aVehicle.Names[id] = name
 				upgrades = upgrades + 1
 			end
 		end
@@ -34,150 +36,148 @@ function aVehicleCustomize ( player )
 		local c = 1
 		for i = 1, 17 do
 			if ( i ~= 12 ) then
-				guiCreateLabel ( 0.05, 0.05 * ( c + 1 ), 0.15, 0.05, getVehicleUpgradeSlotName ( i - 1 )..":", true, aVehicleForm )
-				aVehicleUpgrades[c] = {}
-				aVehicleUpgrades[c].id = i - 1
-				aVehicleUpgrades[c].edit = guiCreateEdit ( 0.25, 0.05 * ( c + 1 ), 0.27, 0.048, "", true, aVehicleForm )
-				aVehicleUpgrades[c].drop = guiCreateStaticImage ( 0.485, 0.05 * ( c + 1 ), 0.035, 0.048, "client\\images\\dropdown.png", true, aVehicleForm )
-				aVehicleUpgrades[c].list = guiCreateGridList ( 0.25, 0.05 * ( c + 1 ), 0.27, 0.25, true, aVehicleForm )
-				aVehicleUpgrades[c].label = guiCreateLabel ( 0.54, 0.05 * ( c + 1 ), 0.05, 0.07, "(0)", true, aVehicleForm )
-				guiEditSetReadOnly ( aVehicleUpgrades[c].edit, true )
-				guiGridListAddColumn( aVehicleUpgrades[c].list, "Upgrade ID", 0.90 )
-				guiSetVisible ( aVehicleUpgrades[c].list, false )
+				guiCreateLabel ( 0.05, 0.05 * ( c + 1 ), 0.15, 0.05, getVehicleUpgradeSlotName ( i - 1 )..":", true, aVehicle.Form )
+				aVehicle.Upgrades[c] = {}
+				aVehicle.Upgrades[c].id = i - 1
+				aVehicle.Upgrades[c].combo = guiCreateComboBox ( 0.25, 0.05 * ( c + 1 ), 0.27, 0.048, "None", true, aVehicle.Form )
+				aVehicle.Upgrades[c].label = guiCreateLabel ( 0.54, 0.05 * ( c + 1 ), 0.05, 0.07, "(0)", true, aVehicle.Form )
 				c = c + 1
 			end
 		end
 
-		aVehicleUpgradeAll	= guiCreateButton ( 0.04, 0.92, 0.15, 0.05, "Total pimp", true, aVehicleForm )
-		aVehicleRemoveAll	= guiCreateButton ( 0.20, 0.92, 0.15, 0.05, "Remove All", true, aVehicleForm )
-		aVehicleUpgrade	= guiCreateButton ( 0.375, 0.92, 0.20, 0.05, "Pimp", true, aVehicleForm )
+		aVehicle.UpgradeAll	= guiCreateButton ( 0.04, 0.92, 0.15, 0.05, "Total pimp", true, aVehicle.Form )
+		aVehicle.RemoveAll	= guiCreateButton ( 0.20, 0.92, 0.15, 0.05, "Remove All", true, aVehicle.Form )
+		aVehicle.Upgrade		= guiCreateButton ( 0.375, 0.92, 0.20, 0.05, "Pimp", true, aVehicle.Form )
 
-		guiCreateStaticImage ( 0.60, 0.10, 0.002, 0.80, "client\\images\\dot.png", true, aVehicleForm )
+		guiCreateStaticImage ( 0.60, 0.10, 0.002, 0.80, "client\\images\\dot.png", true, aVehicle.Form )
 
-					   guiCreateLabel ( 0.63, 0.10, 0.15, 0.05, "Paint job:", true, aVehicleForm )
-		aVehiclePaintjob	= guiCreateEdit ( 0.79, 0.10, 0.09, 0.048, "0", true, aVehicleForm )
-		aVehiclePaintjobDrop	= guiCreateStaticImage ( 0.845, 0.10, 0.035, 0.048, "client\\images\\dropdown.png", true, aVehicleForm )
-		aVehiclePaintjobList	= guiCreateGridList ( 0.79, 0.10, 0.09, 0.25, true, aVehicleForm )
-					   guiEditSetReadOnly ( aVehiclePaintjob, true )
-					   guiGridListAddColumn( aVehiclePaintjobList, "", 0.65 )
-					   guiSetVisible ( aVehiclePaintjobList, false )
-		for i = 0, 3 do guiGridListSetItemText ( aVehiclePaintjobList, guiGridListAddRow ( aVehiclePaintjobList ), 1, tostring ( i ), false, false ) end
-		aVehiclePaintjobSet	= guiCreateButton ( 0.90, 0.10, 0.07, 0.048, "Set", true, aVehicleForm )
-					   guiCreateLabel ( 0.63, 0.15, 0.15, 0.05, "Vehicle Color:", true, aVehicleForm )
-					   guiCreateLabel ( 0.63, 0.20, 0.15, 0.05, "Color1:", true, aVehicleForm )
-					   guiCreateLabel ( 0.63, 0.25, 0.15, 0.05, "Color2:", true, aVehicleForm )
-					   guiCreateLabel ( 0.63, 0.30, 0.15, 0.05, "Color3:", true, aVehicleForm )
-					   guiCreateLabel ( 0.63, 0.35, 0.15, 0.05, "Color4:", true, aVehicleForm )
-		aVehicleColor1		= guiCreateEdit ( 0.79, 0.20, 0.09, 0.048, "0", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor1, 3 )
-		aVehicleColor2		= guiCreateEdit ( 0.79, 0.25, 0.09, 0.048, "0", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor2, 3 )
-		aVehicleColor3		= guiCreateEdit ( 0.79, 0.30, 0.09, 0.048, "0", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor3, 3 )
-		aVehicleColor4		= guiCreateEdit ( 0.79, 0.35, 0.09, 0.048, "0", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor4, 3 )
-					   guiCreateLabel ( 0.90, 0.20, 0.08, 0.05, "(0-126)", true, aVehicleForm )
-					   guiCreateLabel ( 0.90, 0.25, 0.08, 0.05, "(0-126)", true, aVehicleForm )
-					   guiCreateLabel ( 0.90, 0.30, 0.08, 0.05, "(0-126)", true, aVehicleForm )
-					   guiCreateLabel ( 0.90, 0.35, 0.08, 0.05, "(0-126)", true, aVehicleForm )
-		aVehicleColorScheme	= guiCreateButton ( 0.63, 0.41, 0.20, 0.05, "View color IDs", true, aVehicleForm )
-		aVehicleColorSet	= guiCreateButton ( 0.84, 0.41, 0.14, 0.05, "Set", true, aVehicleForm )
-		aVehicleUpgradeNames = guiCreateCheckBox ( 0.63, 0.60, 0.30, 0.04, "Show upgrade names", false, true, aVehicleForm )
-					   if ( aGetSetting ( "aVehicleUpgradeNames" ) ) then guiCheckBoxSetSelected ( aVehicleUpgradeNames, true ) end
-		aVehicleClose		= guiCreateButton ( 0.86, 0.92, 0.19, 0.05, "Close", true, aVehicleForm )
+					   	  guiCreateLabel ( 0.63, 0.10, 0.15, 0.05, "Paint job:", true, aVehicle.Form )
+		aVehicle.Paintjob		= guiCreateEdit ( 0.79, 0.10, 0.09, 0.048, "0", true, aVehicle.Form )
+		aVehicle.PaintjobDrop	= guiCreateStaticImage ( 0.845, 0.10, 0.035, 0.048, "client\\images\\dropdown.png", true, aVehicle.Form )
+		aVehicle.PaintjobList	= guiCreateGridList ( 0.79, 0.10, 0.09, 0.25, true, aVehicle.Form )
+					   	  guiEditSetReadOnly ( aVehicle.Paintjob, true )
+					   	  guiGridListAddColumn( aVehicle.PaintjobList, "", 0.65 )
+					   	  guiSetVisible ( aVehicle.PaintjobList, false )
 
-		aVehicleColorForm	= guiCreateWindow ( x / 2 - 280, y / 2 - 150, 540, 215, "Vehicle Color Scheme", false )
-					   guiCreateStaticImage ( 0.01, 0.08, 0.98, 0.80, "client\\images\\colorscheme.png", true, aVehicleColorForm )
-		aVehicleColorClose	= guiCreateButton ( 0.86, 0.86, 0.19, 0.15, "Close", true, aVehicleColorForm )
-					   guiSetVisible ( aVehicleColorForm, false )
-		guiSetVisible ( aVehicleForm, false )
-		addEventHandler ( "onClientGUIDoubleClick", aVehicleForm, aClientVehicleDoubleClick )
-		addEventHandler ( "onClientGUIClick", aVehicleForm, aClientVehicleClick )
-		addEventHandler ( "onClientGUIClick", aVehicleColorClose, aClientVehicleClick )
+						  for i = 0, 3 do
+							guiGridListSetItemText ( aVehicle.PaintjobList, guiGridListAddRow ( aVehicle.PaintjobList ), 1, tostring ( i ), false, false )
+						  end
+
+		aVehicle.PaintjobSet	= guiCreateButton ( 0.90, 0.10, 0.07, 0.048, "Set", true, aVehicle.Form )
+					   	  guiCreateLabel ( 0.63, 0.15, 0.15, 0.05, "Vehicle Color:", true, aVehicle.Form )
+					   	  guiCreateLabel ( 0.63, 0.20, 0.15, 0.05, "Color1:", true, aVehicle.Form )
+					   	  guiCreateLabel ( 0.63, 0.25, 0.15, 0.05, "Color2:", true, aVehicle.Form )
+					   	  guiCreateLabel ( 0.63, 0.30, 0.15, 0.05, "Color3:", true, aVehicle.Form )
+					   	  guiCreateLabel ( 0.63, 0.35, 0.15, 0.05, "Color4:", true, aVehicle.Form )
+		aVehicle.Color1		= guiCreateEdit ( 0.79, 0.20, 0.09, 0.048, "0", true, aVehicle.Form ) guiEditSetMaxLength ( aVehicle.Color1, 3 )
+		aVehicle.Color2		= guiCreateEdit ( 0.79, 0.25, 0.09, 0.048, "0", true, aVehicle.Form ) guiEditSetMaxLength ( aVehicle.Color2, 3 )
+		aVehicle.Color3		= guiCreateEdit ( 0.79, 0.30, 0.09, 0.048, "0", true, aVehicle.Form ) guiEditSetMaxLength ( aVehicle.Color3, 3 )
+		aVehicle.Color4		= guiCreateEdit ( 0.79, 0.35, 0.09, 0.048, "0", true, aVehicle.Form ) guiEditSetMaxLength ( aVehicle.Color4, 3 )
+					   	  guiCreateLabel ( 0.90, 0.20, 0.08, 0.05, "(0-126)", true, aVehicle.Form )
+					   	  guiCreateLabel ( 0.90, 0.25, 0.08, 0.05, "(0-126)", true, aVehicle.Form )
+					   	  guiCreateLabel ( 0.90, 0.30, 0.08, 0.05, "(0-126)", true, aVehicle.Form )
+					   	  guiCreateLabel ( 0.90, 0.35, 0.08, 0.05, "(0-126)", true, aVehicle.Form )
+		aVehicle.ColorScheme	= guiCreateButton ( 0.63, 0.41, 0.20, 0.05, "View color IDs", true, aVehicle.Form )
+		aVehicle.ColorSet		= guiCreateButton ( 0.84, 0.41, 0.14, 0.05, "Set", true, aVehicle.Form )
+		aVehicle.UpgradeNames 	= guiCreateCheckBox ( 0.63, 0.60, 0.30, 0.04, "Show upgrade names", false, true, aVehicle.Form )
+					   	  if ( aGetSetting ( "aVehicleUpgradeNames" ) ) then guiCheckBoxSetSelected ( aVehicle.UpgradeNames, true ) end
+		aVehicle.Close		= guiCreateButton ( 0.86, 0.92, 0.19, 0.05, "Close", true, aVehicle.Form )
+
+		aVehicle.ColorForm	= guiCreateWindow ( x / 2 - 280, y / 2 - 150, 540, 215, "Vehicle Color Scheme", false )
+					   	  guiCreateStaticImage ( 0.01, 0.08, 0.98, 0.80, "client\\images\\colorscheme.png", true, aVehicle.ColorForm )
+		aVehicle.ColorClose	= guiCreateButton ( 0.86, 0.86, 0.19, 0.15, "Close", true, aVehicle.ColorForm )
+					   	  guiSetVisible ( aVehicle.ColorForm, false )
+		guiSetVisible ( aVehicle.Form, false )
+
+		addEventHandler ( "onClientGUIClick", aVehicle.Form, aVehicle.onClick )
+		addEventHandler ( "onClientGUIClick", aVehicle.ColorClose, aVehicle.onClick )
 		--Register With Admin Form
-		aRegister ( "VehicleCustomize", aVehicleForm, aVehicleCustomize, aVehicleCustomizeClose )
+		aRegister ( "VehicleCustomize", aVehicle.Form, aVehicle.Customize, aVehicle.CustomizeClose )
+
 	end
-	local vehicle = getPedOccupiedVehicle ( player )
 	if ( vehicle ) then
 		local update = true
-		if ( isElement ( aVehicleCustomizeVehicle ) ) then
-			if ( getElementModel ( aVehicleCustomizeVehicle ) == getElementModel ( vehicle ) ) then
+		if ( isElement ( aVehicle.Last ) ) then
+			if ( getElementModel ( aVehicle.Last ) == getElementModel ( vehicle ) ) then
 				update = false
 			end
 		end
-		guiSetText ( aVehicleForm, "Vehicle Customizations ("..tostring ( getVehicleName ( vehicle ) )..")" )
-		aVehicleCustomizePlayer = player
-		aVehicleCustomizeVehicle = vehicle
-		if ( update ) then aVehicleCheckUpgrades ( vehicle ) end
-		aVehicleCheckCurrentUpgrades ( vehicle )
-		guiSetVisible ( aVehicleForm, true )
-		guiBringToFront ( aVehicleForm )
+		guiSetText ( aVehicle.Form, "Vehicle Customizations ("..tostring ( getVehicleName ( vehicle ) )..")" )
+		aVehicle.Last = vehicle
+		if ( update ) then
+			aVehicle.CheckUpgrades ( vehicle )
+		end
+		aVehicle.CheckCurrentUpgrades ( vehicle )
+		guiSetVisible ( aVehicle.Form, true )
+		guiBringToFront ( aVehicle.Form )
 	end
 end
 
-function aVehicleCustomizeClose ( destroy )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceVehicle ) ) ) then
-		if ( aVehicleForm ) then
+function aVehicle.CustomizeClose ( destroy )
+	if ( destroy ) then
+		if ( aVehicle.Form ) then
 			removeEventHandler ( "onClientGUIClick", aVehicleForm, aClientVehicleClick )
 			removeEventHandler ( "onClientGUIDoubleClick", aVehicleForm, aClientVehicleDoubleClick )
 			removeEventHandler ( "onClientGUIClick", aVehicleColorClose, aClientVehicleClick )
-			destroyElement ( aVehicleForm )
-			destroyElement ( aVehicleColorForm )
+			destroyElement ( aVehicle.Form )
+			destroyElement ( aVehicle.ColorForm )
 			aVehicleCustomizePlayer = nil
 			aVehicleCustomizeVehicle = nil
 			aVehicleForm = nil
 			aVehicleUpgrades = {}
 		end
 	else
-		guiSetVisible ( aVehicleForm, false )
-		guiSetVisible ( aVehicleColorForm, false )
+		guiSetVisible ( aVehicle.Form, false )
+		guiSetVisible ( aVehicle.ColorForm, false )
 	end
 end
 
-function aVehicleCheckUpgrades ( vehicle )
+function aVehicle.CheckUpgrades ( vehicle )
 	if ( vehicle ) then
-		for slot, v in ipairs ( aVehicleUpgrades ) do
-			guiGridListClear ( aVehicleUpgrades[slot].list )
-			local row = guiGridListAddRow ( aVehicleUpgrades[slot].list )
-			guiGridListSetItemText ( aVehicleUpgrades[slot].list, row, 1, "", false, false )
-			local upgrades = getVehicleCompatibleUpgrades ( vehicle, aVehicleUpgrades[slot].id )
-			guiSetText ( aVehicleUpgrades[slot].label, "("..#upgrades..")" )
-			guiSetText ( aVehicleUpgrades[slot].edit, "" )
-			if ( getVehicleUpgradeOnSlot ( vehicle, aVehicleUpgrades[slot].id ) > 0 ) then
-				if ( guiCheckBoxGetSelected ( aVehicleUpgradeNames ) ) then
-					guiSetText ( aVehicleUpgrades[slot].edit, tostring ( aUpgradeNames[getVehicleUpgradeOnSlot ( vehicle, aVehicleUpgrades[slot].id )] ) )
+		for slot, v in ipairs ( aVehicle.Upgrades ) do
+			guiComboBoxClear ( aVehicle.Upgrades[slot].combo )
+			local row = guiComboBoxAddItem ( aVehicle.Upgrades[slot].list, "None" )
+
+			local upgrades = getVehicleCompatibleUpgrades ( vehicle, aVehicle.Upgrades[slot].id )
+			guiSetText ( aVehicle.Upgrades[slot].label, "("..#upgrades..")" )
+			guiSetText ( aVehicle.Upgrades[slot].combo, "None" )
+			if ( getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id ) > 0 ) then
+				if ( guiCheckBoxGetSelected ( aVehicle.UpgradeNames ) ) then
+					guiSetText ( aVehicle.Upgrades[slot].combo, tostring ( aUpgradeNames[getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id )] ) )
 				else
-					guiSetText ( aVehicleUpgrades[slot].edit, tostring ( getVehicleUpgradeOnSlot ( vehicle, aVehicleUpgrades[slot].id ) ) )
+					guiSetText ( aVehicle.Upgrades[slot].combo, tostring ( getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id ) ) )
 				end
 			end
 			for i, upgrade in ipairs ( upgrades ) do
-				local row = guiGridListAddRow ( aVehicleUpgrades[slot].list )
-				if ( guiCheckBoxGetSelected ( aVehicleUpgradeNames ) ) then
-					guiGridListSetItemText ( aVehicleUpgrades[slot].list, row, 1, tostring ( aUpgradeNames[tonumber(upgrade)] ), false, false )
+				local row = guiGridListAddRow ( aVehicle.Upgrades[slot].list )
+				if ( guiCheckBoxGetSelected ( aVehicle.UpgradeNames ) ) then
+					guiGridListSetItemText ( aVehicle.Upgrades[slot].list, row, 1, tostring ( aVehicle.Names[tonumber(upgrade)] ), false, false )
 				else
-					guiGridListSetItemText ( aVehicleUpgrades[slot].list, row, 1, tostring ( upgrade ), false, false )
+					guiGridListSetItemText ( aVehicle.Upgrades[slot].list, row, 1, tostring ( upgrade ), false, false )
 				end
 			end
 		end
-	else
-		outputChatBox ( "You must be in a vehicle.", player, 255, 0, 0 )
 	end
 end
 
-function aVehicleCheckCurrentUpgrades ( vehicle )
-	if ( vehicle and isElement( vehicle ) ) then
-		for slot, v in ipairs ( aVehicleUpgrades ) do
-			if ( getVehicleUpgradeOnSlot ( vehicle, aVehicleUpgrades[slot].id ) > 0 ) then
-				if ( guiCheckBoxGetSelected ( aVehicleUpgradeNames ) ) then
-					guiSetText ( aVehicleUpgrades[slot].edit, tostring ( aUpgradeNames[getVehicleUpgradeOnSlot ( vehicle, aVehicleUpgrades[slot].id )] ) )
+function aVehicle.CheckCurrentUpgrades ( vehicle )
+	if ( vehicle ) then
+		for slot, v in ipairs ( aVehicle.Upgrades ) do
+			if ( getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id ) > 0 ) then
+				if ( guiCheckBoxGetSelected ( aVehicle.UpgradeNames ) ) then
+					guiSetText ( aVehicle.Upgrades[slot].edit, tostring ( aVehicle.Names[getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id )] ) )
 				else
-					guiSetText ( aVehicleUpgrades[slot].edit, tostring ( getVehicleUpgradeOnSlot ( vehicle, aVehicleUpgrades[slot].id ) ) )
+					guiSetText ( aVehicle.Upgrades[slot].edit, tostring ( getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id ) ) )
 				end
 			else
-				guiSetText ( aVehicleUpgrades[slot].edit, "" )
+				guiSetText ( aVehicle.Upgrades[slot].edit, "" )
 			end
 		end
 	end
 end
 
 function aGetVehicleUpgradeFromName ( uname )
-	for id, name in pairs ( aUpgradeNames ) do
+	for id, name in pairs ( aVehicle.Names ) do
 		if ( name == uname ) then
 			return id
 		end
@@ -185,30 +185,7 @@ function aGetVehicleUpgradeFromName ( uname )
 	return false
 end
 
-function aClientVehicleDoubleClick ( button )
-	if ( button == "left" ) then
-		if ( source == aVehiclePaintjobList ) then
-			if ( guiGridListGetSelectedItem ( source ) ~= -1 ) then
-				local paintjob = guiGridListGetItemText ( source, guiGridListGetSelectedItem ( source ), 1 )
-				guiSetText ( aVehiclePaintjob, tostring ( paintjob ) )
-			end
-					guiSetVisible ( source, false )
-		else
-			for id, element in ipairs ( aVehicleUpgrades ) do
-				if ( source == element.list ) then
-					if ( guiGridListGetSelectedItem ( source ) ~= -1 ) then
-						local upgrade = guiGridListGetItemText ( source, guiGridListGetSelectedItem ( source ), 1 )
-						guiSetText ( element.edit, tostring ( upgrade ) )
-					end
-					guiSetVisible ( source, false )
-					return
-				end
-			end
-		end
-	end
-end
-
-function aClientVehicleClick ( button )
+function aVehicle.onClick ( button, state )
 	if ( source ~= aVehiclePaintjobList ) then guiSetVisible ( aVehiclePaintjobList, false ) end
 	if ( button == "left" ) then
 		for id, element in ipairs ( aVehicleUpgrades ) do

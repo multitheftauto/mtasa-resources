@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -8,143 +8,144 @@
 *
 **************************************]]
 
-aTeamForm = nil
-aTeamSelect = nil
+aTeam = {
+	Form = nil
+}
 
-function aPlayerTeam ( player )
-	if ( aTeamForm == nil ) then
+function aTeam.Show ()
+	if ( not aTeam.Form ) then
 		local x, y = guiGetScreenSize()
-		aTeamForm		= guiCreateWindow ( x / 2 - 150, y / 2 - 125, 300, 250, "Player Team Management", false )
-		aTeamLabel		= guiCreateLabel ( 0.03, 0.09, 0.94, 0.07, "Select a team from the list or create a new one", true, aTeamForm )
-					  guiLabelSetHorizontalAlign ( aTeamLabel, "center" )
-					  guiLabelSetColor ( aTeamLabel, 255, 0, 0 )
-		aTeamList		= guiCreateGridList ( 0.03, 0.18, 0.50, 0.71, true, aTeamForm )
-					  guiGridListAddColumn( aTeamList, "Teams", 0.85 )
-		aTeamRefresh		= guiCreateButton ( 0.03, 0.90, 0.50, 0.08, "Refresh", true, aTeamForm )
-		aTeamNew		= guiCreateButton ( 0.55, 0.18, 0.42, 0.09, "New Team", true, aTeamForm, "createteam" )
-		aTeamDelete		= guiCreateButton ( 0.55, 0.28, 0.42, 0.09, "Delete Team", true, aTeamForm, "destroyteam" )
-		aTeamNameLabel	= guiCreateLabel 	( 0.55, 0.19, 0.42, 0.07, "Team Name:", true, aTeamForm )
-		aTeamColor		= guiCreateLabel 	( 0.55, 0.37, 0.42, 0.11, "Color:", true, aTeamForm )
-		aTeamR		= guiCreateLabel 	( 0.70, 0.37, 0.42, 0.11, "R:", true, aTeamForm )
-		aTeamG		= guiCreateLabel 	( 0.70, 0.48, 0.42, 0.11, "G:", true, aTeamForm )
-		aTeanB			= guiCreateLabel 	( 0.70, 0.59, 0.42, 0.11, "B:", true, aTeamForm )
-		aTeamName		= guiCreateEdit 	( 0.55, 0.26, 0.42, 0.10, "", true, aTeamForm )
-		aTeamRed		= guiCreateEdit 	( 0.80, 0.36, 0.15, 0.10, "0", true, aTeamForm )
-		aTeamGreen		= guiCreateEdit 	( 0.80, 0.47, 0.15, 0.10, "0", true, aTeamForm )
-		aTeamBlue		= guiCreateEdit 	( 0.80, 0.58, 0.15, 0.10, "0", true, aTeamForm )
-		aTeamCreate		= guiCreateButton ( 0.55, 0.73, 0.20, 0.09, "Create", true, aTeamForm, "createteam" )
-		aTeamCancel		= guiCreateButton ( 0.77, 0.73, 0.20, 0.09, "Cancel", true, aTeamForm )
-		aTeamAccept		= guiCreateButton ( 0.55, 0.88, 0.20, 0.09, "Select", true, aTeamForm )
-		aTeamClose		= guiCreateButton ( 0.77, 0.88, 0.20, 0.09, "Close", true, aTeamForm )
-		addEventHandler ( "onClientGUIClick", aTeamForm, aClientTeamClick )
-		addEventHandler ( "onClientGUIDoubleClick", aTeamForm, aClientTeamDoubleClick )
+		aTeam.Form		= guiCreateWindow ( x / 2 - 150, y / 2 - 125, 300, 250, "Player Team Management", false )
+		aTeam.Label		= guiCreateLabel ( 0.03, 0.09, 0.94, 0.07, "Select a team from the list or create a new one", true, aTeam.Form )
+					  guiLabelSetHorizontalAlign ( aTeam.Label, 2 )
+					  guiLabelSetColor ( aTeam.Label, 255, 0, 0 )
+		aTeam.List		= guiCreateGridList ( 0.03, 0.18, 0.50, 0.71, true, aTeam.Form )
+					  guiGridListAddColumn( aTeam.List, "Teams", 0.85 )
+		aTeam.Update	= guiCreateButton ( 0.03, 0.90, 0.50, 0.08, "Refresh", true, aTeam.Form )
+		aTeam.New		= guiCreateButton ( 0.55, 0.18, 0.42, 0.09, "New Team", true, aTeam.Form, "createteam" )
+		aTeam.Delete	= guiCreateButton ( 0.55, 0.28, 0.42, 0.09, "Delete Team", true, aTeam.Form, "destroyteam" )
+		aTeam.NameLabel	= guiCreateLabel 	( 0.55, 0.19, 0.42, 0.07, "Team Name:", true, aTeam.Form )
+		aTeam.Color		= guiCreateLabel 	( 0.55, 0.37, 0.42, 0.11, "Color:", true, aTeam.Form )
+					  guiCreateColorPicker 	( 0.70, 0.37, 0.27, 0.11, 255, 0, 0, true, aTeam.Form )
+		aTeam.R		= guiCreateLabel 	( 0.70, 0.37, 0.42, 0.11, "R:", true, aTeam.Form )
+		aTeam.G		= guiCreateLabel 	( 0.70, 0.48, 0.42, 0.11, "G:", true, aTeam.Form )
+		aTeam.B		= guiCreateLabel 	( 0.70, 0.59, 0.42, 0.11, "B:", true, aTeam.Form )
+		aTeam.Name		= guiCreateEdit 	( 0.55, 0.26, 0.42, 0.10, "", true, aTeam.Form )
+		aTeam.Red		= guiCreateEdit 	( 0.80, 0.36, 0.15, 0.10, "0", true, aTeam.Form )
+		aTeam.Green		= guiCreateEdit 	( 0.80, 0.47, 0.15, 0.10, "0", true, aTeam.Form )
+		aTeam.Blue		= guiCreateEdit 	( 0.80, 0.58, 0.15, 0.10, "0", true, aTeam.Form )
+		aTeam.Create	= guiCreateButton ( 0.55, 0.73, 0.20, 0.09, "Create", true, aTeam.Form, "createteam" )
+		aTeam.Cancel	= guiCreateButton ( 0.77, 0.73, 0.20, 0.09, "Cancel", true, aTeam.Form )
+		aTeam.Accept	= guiCreateButton ( 0.55, 0.88, 0.20, 0.09, "Select", true, aTeam.Form )
+		aTeam.Hide		= guiCreateButton ( 0.77, 0.88, 0.20, 0.09, "Close", true, aTeam.Form )
+
+		addEventHandler ( "onClientGUIClick", aTeam.Form, aTeam.onClick )
+		addEventHandler ( "onClientGUIDoubleClick", aTeam.Form, aTeam.onDoubleClick )
 		--Register With Admin Form
-		aRegister ( "PlayerTeam", aTeamForm, aPlayerTeam, aPlayerTeamClose )
+		aRegister ( "PlayerTeam", aTeam.Form, aTeam.Show, aTeam.Close )
 	end
-	aTeamSelect = player
-	guiGridListClear ( aTeamList )
-	for id, team in ipairs ( getElementsByType ( "team" ) ) do
-		local row = guiGridListAddRow ( aTeamList )
-		guiGridListSetItemText ( aTeamList, row, 1, getTeamName ( team ), false, false )
-	end
-	guiSetVisible ( aTeamForm, true )
-	guiBringToFront ( aTeamForm )
-	aNewTeamShow ( false )
+	aTeam.Refresh ()
+	aTeam.ShowNew ( false )
+	guiSetVisible ( aTeam.Form, true )
+	guiBringToFront ( aTeam.Form )
 end
 
-function aPlayerTeamClose ( destroy )
+function aTeam.Close ( destroy )
 	guiSetInputEnabled ( false )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceTeam ) ) ) then
-		if ( aTeamForm ) then
-			removeEventHandler ( "onClientGUIClick", aTeamForm, aClientTeamClick )
-			removeEventHandler ( "onClientGUIDoubleClick", aTeamForm, aClientTeamDoubleClick )
-			destroyElement ( aTeamForm )
-			aTeamForm = nil
+	if ( destroy ) then
+		if ( aTeam.Form ) then
+			removeEventHandler ( "onClientGUIClick", aTeam.Form, aTeam.onClick )
+			removeEventHandler ( "onClientGUIDoubleClick", aTeam.Form, aTeam.onDoubleClick )
+			destroyElement ( aTeam.Form )
+			aTeam.Form = nil
 		end
 	else
-		guiSetVisible ( aTeamForm, false )
+		guiSetVisible ( aTeam.Form, false )
 	end
 end
 
-function aClientTeamDoubleClick ( button )
+function aTeam.onDoubleClick ( button )
 	if ( button == "left" ) then
-		if ( source == aTeamList ) then
-			if ( guiGridListGetSelectedItem ( aTeamList ) ~= -1 ) then
-				local team = guiGridListGetItemText ( aTeamList, guiGridListGetSelectedItem ( aTeamList ), 1 )
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aTeamSelect, "setteam", getTeamFromName ( team ) )
+		if ( source == aTeam.List ) then
+			if ( guiGridListGetSelectedItem ( aTeam.List ) ~= -1 ) then
+				local team = guiGridListGetItemText ( aTeam.List, guiGridListGetSelectedItem ( aTeam.List ), 1 )
+				triggerServerEvent ( "aPlayer", getLocalPlayer(), getSelectedPlayer(), "setteam", getTeamFromName ( team ) )
 				aPlayerTeamClose ( false )
 			end
 		end
 	end
 end
 
-function aClientTeamClick ( button )
+function aTeam.onClick ( button )
 	if ( button == "left" ) then
-		if ( source == aTeamNew ) then
-			aNewTeamShow ( true )
-		elseif ( source == aTeamRefresh ) then
-			aTeamsRefresh()
-		elseif ( source == aTeamDelete ) then
-			if ( guiGridListGetSelectedItem ( aTeamList ) == -1 ) then
+		if ( source == aTeam.New ) then
+			aTeam.ShowNew ( true )
+		elseif ( source == aTeam.Update ) then
+			aTeam.Refresh ()
+		elseif ( source == aTeam.Delete ) then
+			if ( guiGridListGetSelectedItem ( aTeam.List ) == -1 ) then
 				messageBox ( "No team selected!", MB_WARNING )
 			else
-				local team = guiGridListGetItemText ( aTeamList, guiGridListGetSelectedItem ( aTeamList ), 1 )
-				if ( messageBox ( "Are you sure to delete \""..team.."\"?", MB_QUESTION ) ) then
+				local team = guiGridListGetItemData ( aTeam.List, guiGridListGetSelectedItem ( aTeam.List ), 1 )
+				if ( messageBox ( "Are you sure to delete \""..getTeamName ( team ).."\"?", MB_QUESTION, MB_YESNO ) ) then
 					triggerServerEvent ( "aTeam", getLocalPlayer(), "destroyteam", team )
 				end
 			end
-			setTimer ( aTeamsRefresh, 2000, 1 )
-		elseif ( source == aTeamCreate ) then
-			local team = guiGetText ( aTeamName )
+			setTimer ( aTeam.Refresh, 2000, 1 )
+		elseif ( source == aTeam.Create ) then
+			local team = guiGetText ( aTeam.Name )
 			if ( ( team == nil ) or ( team == false ) or ( team == "" ) ) then
 				messageBox ( "Enter the team name!", MB_WARNING )
 			elseif ( getTeamFromName ( team ) ) then
 				messageBox ( "A team with this name already exists", MB_ERROR )
 			else
-				triggerServerEvent ( "aTeam", getLocalPlayer(), "createteam", team, guiGetText ( aTeamRed ), guiGetText ( aTeamGreen ), guiGetText ( aTeamBlue ) )
-				aNewTeamShow ( false )
+				triggerServerEvent ( "aTeam", getLocalPlayer(), "createteam", team, guiGetText ( aTeam.Red ), guiGetText ( aTeam.Green ), guiGetText ( aTeam.Blue ) )
+				aTeam.ShowNew ( false )
 			end
-			setTimer ( aTeamsRefresh, 2000, 1 )
-		elseif ( source == aTeamName ) then
+			setTimer ( aTeam.Refresh, 2000, 1 )
+		elseif ( source == aTeam.Name ) then
 			guiSetInputEnabled ( true )
-		elseif ( source == aTeamCancel ) then
-			aNewTeamShow ( false )
-		elseif ( source == aTeamAccept ) then
-			if ( guiGridListGetSelectedItem ( aTeamList ) == -1 ) then
+		elseif ( source == aTeam.Cancel ) then
+			aTeam.ShowNew ( false )
+		elseif ( source == aTeam.Accept ) then
+			if ( guiGridListGetSelectedItem ( aTeam.List ) == -1 ) then
 				messageBox ( "No team selected!", MB_WARNING )
 			else
-				local team = guiGridListGetItemText ( aTeamList, guiGridListGetSelectedItem ( aTeamList ), 1 )
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aTeamSelect, "setteam", getTeamFromName ( team ) )
-				guiSetVisible ( aTeamForm, false )
+				local team = guiGridListGetItemData ( aTeam.List, guiGridListGetSelectedItem ( aTeam.List ), 1 )
+				triggerServerEvent ( "aPlayer", getLocalPlayer(), getSelectedPlayer(), "setteam", team )
+				guiSetVisible ( aTeam.Form, false )
 			end
-		elseif ( source == aTeamClose ) then
-			aPlayerTeamClose ( false )
+		elseif ( source == aTeam.Hide ) then
+			aTeam.Close ( false )
 		end
 	end
 end
 
-function aNewTeamShow ( bool )
-	guiSetVisible ( aTeamNew, not bool )
-	guiSetVisible ( aTeamDelete, not bool )
-	guiSetVisible ( aTeamNameLabel, bool )
-	guiSetVisible ( aTeamName, bool )
-	guiSetVisible ( aTeamColor, bool )
-	guiSetVisible ( aTeamR, bool )
-	guiSetVisible ( aTeamG, bool )
-	guiSetVisible ( aTeanB, bool )
-	guiSetVisible ( aTeamRed, bool )
-	guiSetVisible ( aTeamGreen, bool )
-	guiSetVisible ( aTeamBlue, bool )
-	guiSetVisible ( aTeamCreate, bool )
-	guiSetVisible ( aTeamCancel, bool )
+function aTeam.ShowNew ( bool )
+	guiSetVisible ( aTeam.New, not bool )
+	guiSetVisible ( aTeam.Delete, not bool )
+	guiSetVisible ( aTeam.NameLabel, bool )
+	guiSetVisible ( aTeam.Name, bool )
+	guiSetVisible ( aTeam.Color, bool )
+	guiSetVisible ( aTeam.R, bool )
+	guiSetVisible ( aTeam.G, bool )
+	guiSetVisible ( aTeam.B, bool )
+	guiSetVisible ( aTeam.Red, bool )
+	guiSetVisible ( aTeam.Green, bool )
+	guiSetVisible ( aTeam.Blue, bool )
+	guiSetVisible ( aTeam.Create, bool )
+	guiSetVisible ( aTeam.Cancel, bool )
 end
 
-function aTeamsRefresh ()
-	if ( aTeamList ) then
-		guiGridListClear ( aTeamList )
+function aTeam.Refresh ()
+	if ( aTeam.List ) then
+		guiGridListClear ( aTeam.List )
 		for id, team in ipairs ( getElementsByType ( "team" ) ) do
-			local row = guiGridListAddRow ( aTeamList )
-			guiGridListSetItemText ( aTeamList, row, 1, getTeamName ( team ), false, false )
+			local row = guiGridListAddRow ( aTeam.List )
+			local r, g, b = getTeamColor ( team )
+			guiGridListSetItemText ( aTeam.List, row, 1, getTeamName ( team ), false, false )
+			guiGridListSetItemColor ( aTeam.List, row, 1, r, g, b )
+			guiGridListSetItemData ( aTeam.List, row, 1, team )
 		end
 	end
 end

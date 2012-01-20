@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -42,7 +42,7 @@ function aPlayerInterior ( player )
 end
 
 function aPlayerInteriorClose ( destroy )
-	if ( ( destroy ) or ( aPerformanceInterior and guiCheckBoxGetSelected ( aPerformanceInterior ) ) ) then
+	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInterior ) ) ) then
 		if ( aInteriorForm ) then
 			removeEventHandler ( "onClientGUIDoubleClick", aInteriorForm, aClientInteriorDoubleClick )
 			removeEventHandler ( "onClientGUIClick", aInteriorForm, aClientInteriorClick )

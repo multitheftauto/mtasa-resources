@@ -181,14 +181,6 @@
       <admin>ASE map info has been changed to '$data'</admin>
       <log>ADMIN: $admin has changed ASE map info to '$data'</log>
     </group>
-    <group action="setwelcome" r="225" g="170" b="90">
-      <admin>Welcome message has been set to '$data'</admin>
-      <log>ADMIN: $admin has set welcome message to '$data'</log>
-    </group>
-    <group action="resetwelcome" r="225" g="170" b="90">
-      <admin>Welcome message has been reset</admin>
-      <log>ADMIN: $admin has reset the welcome message</log>
-    </group>
     <group action="setpassword" r="225" g="170" b="90">
       <admin>Server password set to '$data'</admin>
       <log>ADMIN: $admin has set server password to '$data'</log>
@@ -224,6 +216,18 @@
     <group action="setblurlevel" r="225" g="170" b="90">
       <all>Blur level set to '$data' by Admin</all>
       <log>ADMIN: $admin has set blur level to '$data'</log>
+    </group>
+    <group action="setheathazelevel" r="225" g="170" b="90">
+      <all>Heat haze level set to '$data' by Admin</all>
+      <log>ADMIN: $admin has set heat haze level to '$data'</log>
+    </group>
+    <group action="setworldproperty" r="225" g="170" b="90">
+      <all>Admin has $data '$data2' world property</all>
+      <log>ADMIN: $admin has $data '$data2' world property</log>
+    </group>
+    <group action="setglitch" r="225" g="170" b="90">
+      <all>Admin has $data '$data2' glitch</all>
+      <log>ADMIN: $admin has $data '$data2' glitch</log>
     </group>
   </server>
   <bans>

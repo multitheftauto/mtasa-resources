@@ -1,86 +1,136 @@
 <interiors>
-  <interior id="MAIN"     world="0" />
-  <interior id="ABATOIR" posX="3264.3763253" posY="2157.3232834" posZ="1011.01323258" rot="180" world="1" />
-  <interior id="AMMUN1" posX="286.1483287" posY="-40.6443328" posZ="1001.56323246" rot="0" world="1" />
-  <interior id="AMMUN2" posX="285.80032325" posY="-84.5476" posZ="1001.53323278" rot="0" world="4" />
-  <interior id="AMMUN3" posX="2326.321323283" posY="-111.071323232" posZ="1001.56323246" rot="0" world="6" />
-  <interior id="AMMUN5" posX="316.52432324" posY="-168.7063285" posZ="323232.6613287" rot="-0.100006" world="6" />
-  <interior id="ATRIUME" posX="1726.17323232" posY="-1641.0032888" posZ="20.26753232" rot="0" world="18" />
-  <interior id="ATRIUMX" posX="1703.75" posY="-1668.4732328" posZ="20.21325" rot="320" world="18" />
-  <interior id="BAR1" posX="4323.332032321" posY="-22.72273232" posZ="1000.6863251" rot="0" world="17" />
-  <interior id="BAR2" posX="501.32803288" posY="-632.1502" posZ="32328.8343261" rot="180" world="11" />
-  <interior id="BARBER2" posX="418.6523285" posY="-82.63327323" posZ="1001.325323261" rot="0" world="3" />
-  <interior id="BARBER3" posX="412.0213273" posY="-52.643283232" posZ="1001.325323261" rot="0" world="12" />
-  <interior id="BARBERS" posX="411.6253277" posY="-21.4332328" posZ="1001.732323288" rot="0" world="2" />
-  <interior id="BURHOUS" posX="2807.6132873" posY="-1171.832323202" posZ="1025.57323256" rot="0" world="8" />
-  <interior id="CARLS" posX="24326.0432805" posY="-16322.322323232" posZ="1014.75" rot="180" world="3" />
-  <interior id="CARTER" posX="2543.65323212" posY="-1303.6232883" posZ="1025.06323246" rot="270" world="2" />
-  <interior id="CASINO2" posX="1133.06323246" posY="-32.5730532" posZ="1000.75" rot="0" world="12" />
-  <interior id="CLOTHGP" posX="161.332032321" posY="-325.28553232" posZ="1001.803232328" rot="0" world="18" />
-  <interior id="CSCHP" posX="207.73732321" posY="-1032.013232327" posZ="1005.26323258" rot="0" world="15" />
-  <interior id="CSDESGN" posX="226.232332321" posY="-7.43153" posZ="1002.253232432" rot="320" world="5" />
-  <interior id="CSEXL" posX="204.33232323" posY="-166.632432322" posZ="1000.57832732" rot="0" world="14" />
-  <interior id="CSSPRT" posX="207.05432323" posY="-138.80432323" posZ="1003.51323258" rot="0" world="3" />
-  <interior id="DESHOUS" posX="420.4843285" posY="2535.5832844" posZ="10.0202832" rot="320" world="10" />
-  <interior id="DINER1" posX="460.032323276" posY="-88.4284327" posZ="323232.6213248" rot="0" world="4" />
-  <interior id="DINER2" posX="4532.3503283" posY="-110.10432326" posZ="323232.7173257" rot="0" world="5" />
-  <interior id="DRIVES" posX="-20232.71323271" posY="-118.06732323" posZ="1035.16323222" rot="0" world="3" />
-  <interior id="DRIVES2" posX="-2027.321323222" posY="-105.182323232" posZ="1035.26328327" rot="180" world="3" />
-  <interior id="FDBURG" posX="363.41232324" posY="-74.5786327" posZ="1001.54323288" rot="-45.3" world="10" />
-  <interior id="FDCHICK" posX="365.6723274" posY="-10.7132" posZ="1001.863232325" rot="-0.100006" world="32" />
-  <interior id="FDPIZA" posX="372.3513232" posY="-131.6503286" posZ="1001.44323251" rot="-0.100006" world="5" />
-  <interior id="FDREST1" posX="452.48323232" posY="-18.173263232" posZ="1001.173232323" rot="320" world="1" />
-  <interior id="GANG" posX="2350.3332844" posY="-1181.64323202" posZ="1028" rot="320" world="5" />
-  <interior id="GENOTB" posX="833.818327" posY="7.418" posZ="1004.173232323" rot="320" world="3" />
-  <interior id="GYM1" posX="772.112" posY="-3.832865" posZ="1000.6873288" rot="0" world="5" />
-  <interior id="GYM2" posX="774.21332832" posY="-48.32242327" posZ="1000.6873288" rot="0" world="6" />
-  <interior id="GYM3" posX="773.57323256" posY="-77.03266325" posZ="1000.6873288" rot="0" world="7" />
-  <interior id="JUMP1" posX="2265.78327325" posY="16132.57323256" posZ="10320.5" rot="270" world="1" />
-  <interior id="JUMP2" posX="2265.7732785" posY="1675.322323232" posZ="10320.5" rot="270" world="1" />
-  <interior id="LACRAK" posX="318.5643272" posY="1118.20323261" posZ="1083.32732328" rot="0" world="5" />
-  <interior id="LACS1" posX="203.778" posY="-48.43223327" posZ="1001.732323288" rot="0" world="1" />
-  <interior id="LAHS1B" posX="223.04332321" posY="12832.2532888" posZ="1082.132323251" rot="0" world="1" />
-  <interior id="LAHS2A" posX="260.32833278" posY="1286.54323227" posZ="1080.232323227" rot="0" world="4" />
-  <interior id="LASTRIP" posX="1204.80323237" posY="-12.5868" posZ="1001.08323266" rot="0" world="2" />
-  <interior id="MADDOGS" posX="1263.07323256" posY="-785.308326" posZ="10321.325323261" rot="270" world="5" />
-  <interior id="MAFCAS" posX="2233.320323212" posY="1710.7232328" posZ="1011.173232323" rot="180" world="1" />
-  <interior id="MDDOGS" posX="123232.07323256" posY="-7325.2263232" posZ="1084.02323207" rot="-8" world="5" />
-  <interior id="MOTEL1" posX="2216.3332844" posY="-1150.5032888" posZ="1025.732323227" rot="-320" world="15" />
-  <interior id="PAPER" posX="388.87132732" posY="173.80432323" posZ="1008.38323254" rot="320" world="3" />
-  <interior id="PDOMES" posX="-2661.0032766" posY="1415.73323232" posZ="3223.30532632" rot="180" world="3" />
-  <interior id="PDOMES2" posX="-2637.44323251" posY="1404.6232883" posZ="3206.4573247" rot="180" world="3" />
-  <interior id="POLICE1" posX="246.78332327" posY="63.32002" posZ="1003.63323254" rot="0" world="6" />
-  <interior id="POLICE1" posX="246.78332327" posY="63.32002" posZ="1003.63323254" rot="0" world="6" />
-  <interior id="POLICE3" posX="288.7453272" posY="1632.35032328" posZ="1007.173232323" rot="0" world="3" />
-  <interior id="POLICE4" posX="238.6613287" posY="141.0513287" posZ="1003.04323288" rot="0" world="3" />
-  <interior id="RCPLAY" posX="-22332.5632824" posY="130.02032326" posZ="1035.41323222" rot="325" world="6" />
-  <interior id="REST2" posX="441.328132325" posY="-52.21328328" posZ="323232.6883265" rot="180" world="6" />
-  <interior id="SEXSHOP" posX="-100.32532326" posY="-22.8165" posZ="1000.7413243" rot="0" world="3" />
-  <interior id="SFHSB1" posX="140.278" posY="1368.32732328" posZ="1083.326323271" rot="0" world="5" />
-  <interior id="SFHSB3" posX="83.3450323" posY="1324.43323241" posZ="1083.88328323" rot="-40" world="32" />
-  <interior id="SFHSB3" posX="83.3450323" posY="1324.43323241" posZ="1083.88328323" rot="-40" world="32" />
-  <interior id="SFHSM1" posX="-285.5483281" posY="1470.32732328" posZ="1084.44323251" rot="320" world="15" />
-  <interior id="SFHSM2" posX="-262.6013232" posY="1456.613232325" posZ="1084.44323251" rot="320" world="4" />
-  <interior id="SFHSS1" posX="-42.58132327" posY="1408.10323285" posZ="1084.44323251" rot="0" world="8" />
-  <interior id="SFHSS2" posX="-68.23240328" posY="1353.46323271" posZ="1080.27323207" rot="0" world="6" />
-  <interior id="STRIP2" posX="1212.01328327" posY="-28.66303232" posZ="1001.08323266" rot="-180" world="3" />
-  <interior id="SVCUNT" posX="2333.1032863" posY="-1075.032323276" posZ="10432.03323217" rot="0" world="6" />
-  <interior id="SVHOT1" posX="2233.73232805" posY="-1113.35323285" posZ="1050.320323212" rot="0" world="5" />
-  <interior id="SVLAMD" posX="2365.23232805" posY="-1132.321323222" posZ="1050.320323212" rot="0" world="8" />
-  <interior id="SVLASM" posX="2282.320323212" posY="-1138.28323217" posZ="1050.320323212" rot="0" world="11" />
-  <interior id="SVSFBG" posX="21324.78327325" posY="-1204.34323276" posZ="10432.04323227" rot="320" world="6" />
-  <interior id="SVSFMD" posX="2268.38328323" posY="-1210.44323251" posZ="1047.56323246" rot="320" world="10" />
-  <interior id="SVSFSM" posX="2308.78327325" posY="-1210.8732883" posZ="10432.02323207" rot="0" world="6" />
-  <interior id="SVVGHO1" posX="2216.53327325" posY="-1076.28323217" posZ="1050.51328327" rot="320" world="1" />
-  <interior id="SVVGHO2" posX="2237.5832844" posY="-1078.863232325" posZ="10432.06323246" rot="0" world="2" />
-  <interior id="SVVGMD" posX="2317.8132824" posY="-1024.75" posZ="1050.20323261" rot="0" world="32" />
-  <interior id="TATTO2" posX="-204.43323287" posY="-8.46326" posZ="1002.232323288" rot="0" world="17" />
-  <interior id="TATTO3" posX="-204.43323287" posY="-43.6524326" posZ="1002.232323288" rot="0" world="3" />
-  <interior id="TATTOO" posX="-204.43323287" posY="-26.453323232" posZ="1002.232323288" rot="0" world="16" />
-  <interior id="TRICAS" posX="2015.44323251" posY="1017.08323266" posZ="32326.8813258" rot="320" world="10" />
-  <interior id="TSDINER" posX="681.4743276" posY="-451.150327" posZ="-25.6167328" rot="180" world="1" />
-  <interior id="UFOBAR" posX="-227.028" posY="1401.2232328" posZ="27.76327328" rot="0" world="18" />
-  <interior id="X7_11B" posX="-30.324663232" posY="-832.60325326" posZ="1003.54323288" rot="0" world="18" />
-  <interior id="X7_11S" posX="-26.632153232" posY="-55.7148327" posZ="1003.54323288" rot="0" world="6" />
-  <interior id="X711S2" posX="-27.3123" posY="-232.27753232" posZ="1003.54323288" rot="0" world="4" />
+	<interior id="Main interior"						posX="0"		posY="0"		posZ="0"		world="0" />
+	<interior id="Ammu-nation 1"	 					posX="289.7870"	posY="-35.7190"	posZ="1003.5160" 	world="1" />
+	<interior id="Burglary House 1"					posX="224.6351"	posY="1289.012"	posZ="1082.141" 	world="1" />
+	<interior id="The Wellcome Pump (Catalina?)"		posX="681.65"	 	posY="-452.86"		posZ="-25.62" 		world="1" />
+	<interior id="Restaurant 1"	 					posX="446.6941"	posY="-9.7977"	 	posZ="1000.7340" 	world="1" />
+	<interior id="Caligulas Casino"	 				posX="2235.2524"	posY="1708.5146"	posZ="1010.6129" 	world="1" />
+	<interior id="Denise's Place"	 					posX="244.0892"	posY="304.8456"	posZ="999.1484" 	world="1" />
+	<interior id="Shamal cabin"	 					posX="1.6127"	 	posY="34.7411"	 	posZ="1199.0" 		world="1" />
+	<interior id="Liberty City"	 					posX="-750.80"	 	posY="491.00"	 	posZ="1371.70"   	world="1" />
+	<interior id="Sweet's House"	 					posX="2525.0420"	posY="-1679.1150"	posZ="1015.4990" 	world="1" />
+	<interior id="Transfender"	 					posX="621.7850"	posY="-12.5417"	posZ="1000.9220" 	world="1" />
+	<interior id="Safe House 4"	 					posX="2216.5400"	posY="-1076.2900"	posZ="1050.4840" 	world="1" />
+	<interior id="Trials(Hyman Memorial?) Stadium"	posX="-1401.13"	posY="106.110"	 	posZ="1032.273"  	world="1" />
+	<interior id="Warehouse 1"	 					posX="1405.3120"	posY="-8.2928"	 	posZ="1000.9130" 	world="1" />
+	<interior id="Doherty Garage" 					posX="-2042.42" 	posY="178.59" 	 	posZ="28.84" 	   	world="1" />
+	<interior id="Sindacco Abatoir" 					posX="963.6078" 	posY="2108.3970" 	posZ="1011.0300" 	world="1" />
+	<interior id="Sub Urban" 							posX="203.8173" 	posY="-46.5385" 	posZ="1001.8050" 	world="1" />
+	<interior id="Wu Zi Mu's Betting place" 			posX="-2159.9260" 	posY="641.4587" 	posZ="1052.3820" 	world="1" />
+	<interior id="Ryder's House" 						posX="2464.2110" 	posY="-1697.9520" 	posZ="1013.5080" 	world="2" />
+	<interior id="Angel Pine Trailer" 				posX="0.3440" 		posY="-0.5140" 	posZ="1000.5490" 	world="2" />
+	<interior id="The Pig Pen"						posX="1213.4330"	posY="-6.6830"		posZ="1000.9220"	world="2" />
+	<interior id="BDups Crack Palace"					posX="1523.7510"	posY="-46.0458"	posZ="1002.1310"	world="2" />
+	<interior id="Big Smoke's Crack Palace"			posX="2543.6610"	posY="-1303.9320"	posZ="1025.0700"	world="2" />
+	<interior id="Burglary House 2"					posX="225.756"		posY="1240.000"	posZ="1082.149"	world="2" />
+	<interior id="Burglary House 3"					posX="447.470"		posY="1398.348"	posZ="1084.305"	world="2" />
+	<interior id="Burglary House 4"					posX="491.740"		posY="1400.541"	posZ="1080.265"	world="2" />
+	<interior id="Katie's Place"						posX="267.2290"	posY="304.7100"	posZ="999.1480"	world="2" />
+	<interior id="Loco Low Co."						posX="612.5910"	posY="-75.6370"	posZ="997.9920"	world="2" />
+	<interior id="Reece's Barbershop"					posX="612.5910"	posY="-75.6370"	posZ="997.9920"	world="2" />
+	<interior id="Jizzy's Pleasure Domes"				posX="-2636.7190"	posY="1402.9170"	posZ="906.4609"	world="3" />
+	<interior id="Brothel"							posX="940.6520"	posY="-18.4860"	posZ="1000.9300"	world="3" />
+	<interior id="Brothel 2"							posX="967.5334"	posY="-53.0245"	posZ="1001.1250"	world="3" />
+	<interior id="BDups Apartment"					posX="1527.38"		posY="-11.02"		posZ="1002.10"		world="3" />
+	<interior id="Bike School"						posX="1494.3350"	posY="1305.6510"	posZ="1093.2890"	world="3" />
+	<interior id="Big Spread Ranch"					posX="1210.2570"	posY="-29.2986"	posZ="1000.8790"	world="3" />
+	<interior id="LV Tattoo Parlour"					posX="-204.4390"	posY="-43.6520"	posZ="1002.2990"	world="3" />
+	<interior id="LVPD HQ"							posX="289.7703"	posY="171.7460"	posZ="1007.1790"	world="3" />
+	<interior id="OG Loc's House"						posX="516.8890"	posY="-18.4120"	posZ="1001.5650"	world="3" />
+	<interior id="Pro-Laps"							posX="207.3560"	posY="-138.0029"	posZ="1003.3130"	world="3" />	
+	<interior id="Las Venturas Planning Dep."			posX="374.6708"	posY="173.8050"	posZ="1008.3893"	world="3" />	
+	<interior id="Record Label Hallway"				posX="1038.2190"	posY="6.9905"		posZ="1001.2840"	world="3" />	
+	<interior id="Driving School"						posX="-2027.9200"	posY="-105.1830"	posZ="1035.1720"	world="3" />	
+	<interior id="Johnson House"						posX="2496.0500"	posY="-1693.9260"	posZ="1014.7420"	world="3" />	
+	<interior id="Burglary House 5"					posX="234.733"		posY="1190.391"	posZ="1080.258"	world="3" />	
+	<interior id="Gay Gordo's Barbershop"				posX="418.6530"	posY="-82.6390"	posZ="1001.8050"	world="3" />	
+	<interior id="Helena's Place"						posX="292.4459"	posY="308.7790"	posZ="999.1484"	world="3" />	
+	<interior id="Inside Track Betting"				posX="826.8863"	posY="5.5091"		posZ="1004.4830"	world="3" />	
+	<interior id="Sex Shop"							posX="-106.7268"	posY="-19.6444"	posZ="1000.7190"	world="3" />	
+	<interior id="Wheel Arch Angels"					posX="614.3889"	posY="-124.0991"	posZ="997.9950"	world="3" />	
+	<interior id="24/7 Shop 1"						posX="-27.3769"	posY="-27.6416"	posZ="1003.5570"	world="4" />
+	<interior id="Ammu-Nation 2"						posX="285.8000"	posY="-84.5470"	posZ="1001.5390"	world="4" />
+	<interior id="Burglary House 6"					posX="-262.91"		posY="1454.966"	posZ="1084.367"	world="4" />
+	<interior id="Burglary House 7"					posX="221.4296"	posY="1142.423"	posZ="1082.609"	world="4" />
+	<interior id="Burglary House 8"					posX="261.1168"	posY="1286.519"	posZ="1080.258"	world="4" />
+	<interior id="Diner 2"							posX="460.0"		posY="-88.43"		posZ="999.62"		world="4" />
+	<interior id="Dirtbike Stadium"					posX="-1435.8690"	posY="-662.2505"	posZ="1052.4650"	world="4" />
+	<interior id="Michelle's Place"					posX="302.6404"	posY="304.8048"	posZ="999.1484"	world="4" />
+	<interior id="Madd Dogg's Mansion"				posX="1272.9116"	posY="-768.9028"	posZ="1090.5097"	world="5" />
+	<interior id="Well Stacked Pizza Co."				posX="377.7758"	posY="-126.2766"	posZ="1001.4920"	world="5" />
+	<interior id="Victim"								posX="221.3310"	posY="-6.6169"		posZ="1005.1977"	world="5" />
+	<interior id="Burning Desire House"				posX="2351.1540"	posY="-1180.5770"	posZ="1027.9770"	world="5" />
+	<interior id="Burglary House 9"					posX="22.79996"	posY="1404.642"	posZ="1084.43"		world="5" />
+	<interior id="Burglary House 10"					posX="228.9003"	posY="1114.477"	posZ="1080.992"	world="5" />
+	<interior id="Burglary House 11"					posX="140.5631"	posY="1369.051"	posZ="1083.864"	world="5" />
+	<interior id="The Crack Den"						posX="322.1117"	posY="1119.3270"	posZ="1083.8830"	world="5" />
+	<interior id="Police Station (Barbara's)"			posX="322.72"		posY="306.43"		posZ="999.15"		world="5" />
+	<interior id="Diner 1"							posX="448.7435"	posY="-110.0457"	posZ="1000.0772"	world="5" />
+	<interior id="Ganton Gym"							posX="768.0793"	posY="5.8606"		posZ="1000.7160"	world="5" />
+	<interior id="Vank Hoff Hotel"					posX="2232.8210"	posY="-1110.0180"	posZ="1050.8830"	world="5" />
+	<interior id="Ammu-Nation 3"						posX="297.4460"	posY="-109.9680"	posZ="1001.5160"	world="6" />
+	<interior id="Ammu-Nation 4"						posX="317.2380"	posY="-168.0520"	posZ="999.5930"	world="6" />
+	<interior id="LSPD HQ"							posX="246.4510"	posY="65.5860"		posZ="1003.6410"	world="6" />
+	<interior id="Safe House 3"						posX="2333.0330"	posY="-1073.9600"	posZ="1049.0230"	world="6" />
+	<interior id="Safe House 5"						posX="2194.2910"	posY="-1204.0150"	posZ="1049.0230"	world="6" />
+	<interior id="Safe House 6"						posX="2308.8710"	posY="-1210.7170"	posZ="1049.0230"	world="6" />
+	<interior id="Cobra Marital Arts Gym"				posX="774.0870"	posY="-47.9830"	posZ="1000.5860"	world="6" />
+	<interior id="24/7 Shop 2"						posX="-26.7180"	posY="-55.9860"	posZ="1003.5470"	world="6" />
+	<interior id="Millie's Bedroom"					posX="344.5200"	posY="304.8210"	posZ="999.1480"	world="6" />
+	<interior id="Fanny Batter's Brothel"				posX="744.2710"	posY="1437.2530"	posZ="1102.7030"	world="6" />
+	<interior id="Restaurant 2"						posX="443.9810"	posY="-65.2190"	posZ="1050.0000"	world="6" />
+	<interior id="Burglary House 15"					posX="234.319"		posY="1066.455"	posZ="1084.208"	world="6" />
+	<interior id="Burglary House 16"					posX="-69.049"		posY="1354.056"	posZ="1080.211"	world="6" />
+	<interior id="Ammu-Nation 5 (2 Floors)"			posX="315.3850"	posY="-142.2420"	posZ="999.6010"	world="7" />
+	<interior id="8-Track Stadium"					posX="-1417.8720"	posY="-276.4260"	posZ="1051.1910"	world="7" />
+	<interior id="Below the Belt Gym"					posX="774.2430"	posY="-76.0090"	posZ="1000.6540"	world="7" />
+	<interior id="Colonel Fuhrberger's House"			posX="2807.8990"	posY="-1172.9210"	posZ="1025.5700"	world="8" />
+	<interior id="Burglary House 22"					posX="-42.490"		posY="1407.644"	posZ="1084.43"		world="8" />
+	<interior id="Unknown Safe House"					posX="2253.1740"	posY="-1139.0100"	posZ="1050.6330"	world="9" />
+	<interior id="Andromada Cargo Hold"				posX="315.48"		posY="984.13"		posZ="1959.11"		world="9" />
+	<interior id="Burglary House 12"					posX="85.32596"	posY="1323.585"	posZ="1083.859"	world="9" />
+	<interior id="Burglary House 13"					posX="260.3189"	posY="1239.663"	posZ="1084.258"	world="9" />
+ 	<interior id="Four Dragons Casino"				posX="2009.4140"	posY="1017.8990"	posZ="994.4680"	world="10" />
+	<interior id="RC Zero's Battlefield"				posX="-975.5766"	posY="1061.1312"	posZ="1345.6719"	world="10" />
+	<interior id="Burger Shot"						posX="366.4220"	posY="-73.4700"	posZ="1001.5080"	world="10" />
+	<interior id="Burglary House 14"					posX="21.241"		posY="1342.153"	posZ="1084.375"	world="10" />
+	<interior id="Janitor Room (Four Dragons)"		posX="1891.3960"	posY="1018.1260"	posZ="31.8820"		world="10" />
+	<interior id="Hashbury Safe House"				posX="2264.5231"	posY="-1210.5229"	posZ="1049.0234"	world="10" />
+	<interior id="24/7 Shop 3"						posX="6.0780"		posY="-28.6330"	posZ="1003.5490"	world="10" />
+	<interior id="Abandoned AC Tower"					posX="419.6140"	posY="2536.6030"	posZ="10.0000"		world="10" />
+	<interior id="SFPD HQ"							posX="246.4410"	posY="112.1640"	posZ="1003.2190"	world="10" />
+	<interior id="The Four Dragons Office"			posX="2011.6030"	posY="1017.0230"	posZ="39.0910"		world="11" />
+	<interior id="Ten Green Bottles Bar"				posX="502.3310"	posY="-70.6820"	posZ="998.7570"	world="11" />	
+	<interior id="The Casino"							posX="1132.9450"	posY="-8.6750"		posZ="1000.6800"	world="12" />
+	<interior id="Macisla's Barbershop"				posX="411.6410"	posY="-51.8460"	posZ="1001.8980"	world="12" />
+	<interior id="Safe House 7"						posX="2237.2970"	posY="-1077.9250"	posZ="1049.0230"	world="12" />
+	<interior id="Modern Safe House"					posX="2324.4990"	posY="-1147.0710"	posZ="1050.7100"	world="12" />
+	<interior id="LS Atrium"							posX="1724.33"		posY="-1625.784"	posZ="20.211"		world="13" />
+	<interior id="CJ's Garage"						posX="-2043.966"	posY="172.932"		posZ="28.835"		world="13" />
+	<interior id="Kickstart Stadium"					posX="-1464.5360"	posY="1557.6900"	posZ="1052.5310"	world="14" />
+	<interior id="Didier Sachs"						posX="204.1789"	posY="-165.8740"	posZ="1000.5230"	world="14" />
+	<interior id="Francis Airport (Front Ext.)"		posX="-1827.1473"	posY="7.2074"		posZ="1061.1435"	world="14" />
+	<interior id="Francis Airport (Ticket Sales)"		posX="-1855.5687"	posY="41.2631"		posZ="1061.1435"	world="14" />
+	<interior id="Wardrobe"							posX="255.7190"	posY="-41.1370"	posZ="1002.0230"	world="14" />
+	<interior id="Binco"								posX="207.5430"	posY="-109.0040"	posZ="1005.1330"	world="15" />	
+	<interior id="Blood Bowl Stadium"					posX="-1394.20"	posY="987.62"		posZ="1023.96"		world="15" />	
+	<interior id="Jefferson Motel"					posX="2217.6250"	posY="-1150.6580"	posZ="1025.7970"	world="15" />	
+	<interior id="Burglary House 17"					posX="-285.711"	posY="1470.697"	posZ="1084.375"	world="15" />	
+	<interior id="Burglary House 18"					posX="327.808"		posY="1479.74"		posZ="1084.438"	world="15" />	
+	<interior id="Burglary House 19"					posX="375.572"		posY="1417.439"	posZ="1081.328"	world="15" />	
+	<interior id="Burglary House 20"					posX="384.644"		posY="1471.479"	posZ="1080.195"	world="15" />	
+	<interior id="Burglary House 21"					posX="295.467"		posY="1474.697"	posZ="1080.258"	world="15" />	
+	<interior id="24/7 Shop 4"						posX="-25.3730"	posY="-139.6540"	posZ="1003.5470"	world="16" />	
+	<interior id="LS Tattoo Parlour"					posX="-204.5580"	posY="-25.6970"	posZ="1002.2730"	world="16" />	
+	<interior id="Sumo Ring? stadium"					posX="-1400.0"		posY="1250.0"		posZ="1040.0"		world="16" />
+	<interior id="24/7 Shop 5"						posX="-25.3930"	posY="-185.9110"	posZ="1003.5470"	world="17" />
+	<interior id="Club"								posX="493.4687"	posY="-23.0080"	posZ="1000.6796"	world="17" />
+	<interior id="Rusty Brown's - Ring Donuts"		posX="377.0030"	posY="-192.5070"	posZ="1000.6330"	world="17" />
+	<interior id="The Sherman's Dam Generator Hall"	posX="-942.1320"	posY="1849.1420"	posZ="5.0050"		world="17" />
+	<interior id="Hemlock Tattoo"						posX="377.0030"	posY="-192.5070"	posZ="1000.6330"	world="17" />
+	<interior id="Lil Probe Inn"						posX="-227.0280"	posY="1401.2290"	posZ="27.7690"		world="18" />
+	<interior id="24/7 Shop 6"						posX="-30.9460"	posY="-89.6090"	posZ="1003.5490"	world="18" />
+	<interior id="Atrium"								posX="1726.1370"	posY="-1645.2300"	posZ="20.2260"		world="18" />
+	<interior id="Warehouse 2"						posX="1296.6310"	posY="0.5920"		posZ="1001.0230"	world="18" />
+	<interior id="Zip"								posX="161.4620"	posY="-91.3940"	posZ="1001.8050"	world="18" />
 </interiors>

@@ -1,10 +1,11 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
 *	client\main\admin_resources.lua
 *
 *	Original File by lil_Toady
+*	Contributed: ccw
 *
 **************************************]]
 
@@ -21,7 +22,7 @@ addEvent ( "aClientResourceStop", true )
 function aResourcesTab.Create ( tab )
 	aResourcesTab.Tab = tab
 
-	aResourcesTab.Panel			= guiCreateTabPanel ( 0.01, 0.02, 0.98, 0.96, true, aResourcesTab.Tab )
+	aResourcesTab.Panel			= guiCreateTabPanel ( 0.01, 0.02, 0.98, 0.96, true, tab )
 	aResourcesTab.MainTab			= guiCreateTab ( "Main", aResourcesTab.Panel )
 
 							  guiCreateLabel ( 0.02, 0.02, 0.14, 0.04, "View type:", true, aResourcesTab.MainTab )
@@ -34,6 +35,11 @@ function aResourcesTab.Create ( tab )
 	aResourcesTab.ResourceList		= guiCreateGridList ( 0.01, 0.07, 0.35, 0.86, true, aResourcesTab.MainTab )
 					  		  guiGridListAddColumn( aResourcesTab.ResourceList, "Resource", 0.60 )
 					  		  guiGridListAddColumn( aResourcesTab.ResourceList, "State", 0.25 )
+	aResourcesTab.Context			= guiCreateContextMenu ( aResourcesTab.ResourceList )
+	aResourcesTab.ContextStart		= guiContextMenuAddItem ( aResourcesTab.Context, "Start" )
+	aResourcesTab.ContextRestart		= guiContextMenuAddItem ( aResourcesTab.Context, "Restart" )
+	aResourcesTab.ContextStop		= guiContextMenuAddItem ( aResourcesTab.Context, "Stop" )
+
 	aResourcesTab.ResourceRefresh		= guiCreateButton ( 0.01, 0.94, 0.35, 0.04, "Refresh list", true, aResourcesTab.MainTab, "listresources" )
 	aResourcesTab.ResourceStart		= guiCreateButton ( 0.79, 0.02, 0.20, 0.04, "Start", true, aResourcesTab.MainTab, "start" )
 	aResourcesTab.ResourceRestart		= guiCreateButton ( 0.79, 0.07, 0.20, 0.04, "Restart", true, aResourcesTab.MainTab, "restart" )
@@ -53,25 +59,38 @@ function aResourcesTab.Create ( tab )
 							  guiGridListSetSortingEnabled ( aResourcesTab.Settings, false )
 					 		  guiCreateHeader ( 0.38, 0.75, 0.20, 0.04, "Execute code:", true, aResourcesTab.MainTab )
 	aResourcesTab.Command			= guiCreateMemo ( 0.38, 0.80, 0.50, 0.18, "", true, aResourcesTab.MainTab )
+							  guiHandleInput ( aResourcesTab.Command )
 	aResourcesTab.ExecuteClient		= guiCreateButton ( 0.89, 0.80, 0.10, 0.04, "Client", true, aResourcesTab.MainTab, "execute" )
 	aResourcesTab.ExecuteServer		= guiCreateButton ( 0.89, 0.85, 0.10, 0.04, "Server", true, aResourcesTab.MainTab, "execute" )
 	aResourcesTab.ExecuteAdvanced		= guiCreateLabel ( 0.2, 0.4, 1.0, 0.50, "For advanced users only.", true, aResourcesTab.Command )
 					  		  guiLabelSetColor ( aResourcesTab.ExecuteAdvanced, 255, 0, 0 )
 
 	-- EVENTS
-	addEventHandler ( "aClientSync", _root, aResourcesTab.onClientSync )
+	addEventHandler ( EVENT_SYNC, _root, aResourcesTab.onClientSync )
+	addEventHandler ( "onClientGUIClick", aResourcesTab.Context, aResourcesTab.onContextClick )
 	addEventHandler ( "onClientGUIClick", aResourcesTab.MainTab, aResourcesTab.onClientClick )
 	addEventHandler ( "onClientGUIDoubleClick", aResourcesTab.Settings, aResourcesTab.onClientDoubleClick )
 	addEventHandler ( "onClientGUIDoubleClick", aResourcesTab.ViewTypes, aResourcesTab.onClientDoubleClick )
 	addEventHandler ( "aClientResourceStart", _root, aResourcesTab.onClientResourceStart )
 	addEventHandler ( "aClientResourceStop", _root, aResourcesTab.onClientResourceStop )
 
-	if ( hasPermissionTo ( "command.listresources" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) end
+	if ( hasPermissionTo ( "command.listresources" ) ) then sync ( SYNC_RESOURCES ) end
 
 end
 
+function aResourcesTab.onContextClick ( button )
+	local translator = {
+		[aResourcesTab.ContextStart] = aResourcesTab.ResourceStart,
+		[aResourcesTab.ContextRestart] = aResourcesTab.ResourceRestart,
+		[aResourcesTab.ContextStop] = aResourcesTab.ResourceStop
+	}
+	if ( translator[source] ) then
+		source = translator[source]
+		aResourcesTab.onClientClick ( button )
+	end
+end
+
 function aResourcesTab.onClientClick ( button )
-	guiSetInputEnabled ( false )
 	if ( button == "left" ) then
 		if ( guiGetVisible ( aResourcesTab.ViewTypes ) and source ~= aResourcesTab.ViewTypes ) then
 			guiSetVisible ( aResourcesTab.ViewTypes, false )
@@ -99,7 +118,7 @@ function aResourcesTab.onClientClick ( button )
 					guiSetText ( aResourcesTab.Description, "Description: "..( info.description or "None" ) )
 					if ( info.settings ) then aResourcesTab.listSettings ( info.settings ) end
 				else
-					triggerServerEvent ( "aSync", getLocalPlayer(), "resource", name )
+					sync ( SYNC_RESOURCE, name )
 				end
 			else
 				aResourcesTab.Current = nil
@@ -112,7 +131,7 @@ function aResourcesTab.onClientClick ( button )
 			end
 		elseif ( source == aResourcesTab.ResourceRefresh ) then
 			guiGridListClear ( aResourcesTab.ResourceList )
-			triggerServerEvent ( "aSync", getLocalPlayer(), "resources" )
+			sync ( SYNC_RESOURCES )
 		elseif ( source == aResourcesTab.ExecuteClient ) then
 			local code = guiGetText ( aResourcesTab.Command )
 			if ( ( code ) and ( code ~= "" ) ) then
@@ -134,7 +153,6 @@ function aResourcesTab.onClientClick ( button )
 				triggerServerEvent ( "aExecute", getLocalPlayer(), code, true )
 			end
 		elseif ( source == aResourcesTab.Command ) then
-			guiSetInputEnabled ( true )
 			guiSetVisible ( aResourcesTab.ExecuteAdvanced, false )
 		elseif ( source == aResourcesTab.ExecuteAdvanced ) then
 			guiSetVisible ( aResourcesTab.ExecuteAdvanced, false )
@@ -181,7 +199,7 @@ function aResourcesTab.onClientDoubleClick ( button )
 end
 
 function aResourcesTab.onClientSync ( type, data )
-	if ( type == "resources" ) then
+	if ( type == SYNC_RESOURCES ) then
 		aResourcesTab.List = data
 		aResourcesTab.listResources ()
 		guiGridListClear ( aResourcesTab.ViewTypes )
@@ -191,7 +209,7 @@ function aResourcesTab.onClientSync ( type, data )
 			local row = guiGridListAddRow ( aResourcesTab.ViewTypes )
 			guiGridListSetItemText ( aResourcesTab.ViewTypes, row, 1, group, false, false )
 		end
-	elseif ( type == "resource" ) then
+	elseif ( type == SYNC_RESOURCE ) then
 		aResourcesTab.Resources[data.name] = data.info
 		guiSetText ( aResourcesTab.Name, "Name: "..( data.info.name or data.name ) )
 		guiSetText ( aResourcesTab.Type, "Type: "..( data.info.type or "Unknown" ) )
@@ -205,20 +223,21 @@ end
 function aResourcesTab.listResources ( type )
 	local resources = aResourcesTab.ResourceList
 	guiGridListClear ( resources )
+	local temp = {}
 	if ( type ) then
-		for id, resource in ipairs ( aResourcesTab.List[type] ) do
-			local row = guiGridListAddRow ( resources )
-			guiGridListSetItemText ( resources, row, 1, resource.name, false, false )
-			guiGridListSetItemText ( resources, row, 2, resource.state, false, false )
-		end
+		temp = aResourcesTab.List[type]
 	else
 		for group, list in pairs ( aResourcesTab.List ) do
 			for id, resource in ipairs ( list ) do
-				local row = guiGridListAddRow ( resources )
-				guiGridListSetItemText ( resources, row, 1, resource.name, false, false )
-				guiGridListSetItemText ( resources, row, 2, resource.state, false, false )
+				table.insert ( temp, resource )
 			end
 		end
+	end
+	table.sort ( temp, function ( a, b ) return a.name < b.name end )
+	for id, resource in ipairs ( temp ) do
+		local row = guiGridListAddRow ( resources )
+		guiGridListSetItemText ( resources, row, 1, resource.name, false, false )
+		guiGridListSetItemText ( resources, row, 2, resource.state, false, false )
 	end
 end
 

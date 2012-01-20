@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -12,11 +12,12 @@ aAdminMain = {
 	Form = nil,
 	Panel = nil,
 	Tabs = {},
+	Tab = nil,
 	Widgets = {},
 	Refresh = 0
 }
 
-addEvent ( "aClientAdminMenu", true )
+addEvent ( EVENT_SYNC, true )
 addEvent ( "onAdminInitialize", true )
 addEvent ( "onAdminRefresh", false )
 
@@ -33,24 +34,31 @@ function aAdminMain.Open ()
 		aAdminMain.AddTab ( "Server", aServerTab, "server" )
 		aAdminMain.AddTab ( "Bans", aBansTab, "bans" )
 		aAdminMain.AddTab ( "Admin Chat", aChatTab, "adminchat" )
-		aAdminMain.AddTab ( "ACL", aACLTab, "acl" )
-		aAdminMain.AddTab ( "Options", aOptionsTab )
+		aAdminMain.AddTab ( "Rights", aAclTab, "acl" )
+		aAdminMain.AddTab ( "Network", aNetworkTab )
 
 		addEventHandler ( "onClientGUITabSwitched", _root, aAdminMain.Switch )
 		addEventHandler ( "onAdminInitialize", aAdminMain.Form, aAdminMain.Initialize )
  
 		triggerEvent ( "onAdminInitialize", aAdminMain.Form )
 	end
+	guiSetAlpha ( aAdminMain.Form, 0 )
+	guiBlendElement ( aAdminMain.Form, 0.8 )
 	guiSetVisible ( aAdminMain.Form, true )
 	showCursor ( true )
 end
 
 function aAdminMain.Close ( destroy )
+	guiSetInputEnabled ( false )
+	for id, widget in pairs ( aAdminMain.Widgets ) do
+		widget.close ( destroy )
+	end
 	if ( destroy ) then
 		destroyElement ( aAdminMain.Form )
 		aAdminMain.Form = nil
 	else
-		guiSetVisible ( aAdminMain.Form, false )
+		guiBlendElement ( aAdminMain.Form, 0, true )
+		--guiSetVisible ( aAdminMain.Form, false )
 	end
 	guiSetInputEnabled ( false )
 	showCursor ( false )
@@ -62,19 +70,8 @@ function aAdminMain.Initialize ()
 	end
 end
 
-addEventHandler ( "aClientAdminMenu", _root, function ()
-	guiSetInputEnabled ( false )
-	if ( aAdminMain.Form ) and ( guiGetVisible ( aAdminMain.Form ) == true ) then
-		for id, widget in pairs ( aAdminMain.Widgets ) do
-			widget.close ( false )
-		end
-		aAdminMain.Close ( false )
-	else
-		aAdminMain.Open ()
-	end
-end )
-
 function aAdminMain.Switch ( tab )
+	aAdminMain.Tab = tab
 	local id = aAdminMain.GetTab ( tab )
 	if ( id ) then
 		if ( not aAdminMain.Tabs[id].Loaded ) then
@@ -104,8 +101,10 @@ function aRegister ( name, welement, fopen, fclose )
 end
 
 addEventHandler ( "onClientRender", _root, function ()
-	if ( getTickCount () > aAdminMain.Refresh ) then
-		triggerEvent ( "onAdminRefresh", _root )
-		aAdminMain.Refresh = getTickCount () + 100
+	if ( aAdminMain.Form and guiGetVisible ( aAdminMain.Form ) and aAdminMain.Tab ) then
+		if ( getTickCount () > aAdminMain.Refresh ) then
+			triggerEvent ( "onAdminRefresh", aAdminMain.Tab )
+			aAdminMain.Refresh = getTickCount () + 100
+		end
 	end
 end )

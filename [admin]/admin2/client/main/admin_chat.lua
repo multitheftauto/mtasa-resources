@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -17,13 +17,13 @@ addEvent ( "aClientAdminChat", true )
 function aChatTab.Create ( tab )
 	aChatTab.Tab = tab
 
-	aChatTab.AdminChat	= guiCreateMemo ( 0.01, 0.02, 0.78, 0.89, "", true, aChatTab.Tab )
+	aChatTab.AdminChat	= guiCreateMemo ( 0.01, 0.02, 0.78, 0.89, "", true, tab )
 					  guiSetProperty ( aChatTab.AdminChat, "ReadOnly", "true" )
-	aChatTab.AdminPlayers	= guiCreateGridList ( 0.80, 0.02, 0.19, 0.83, true, aChatTab.Tab )
+	aChatTab.AdminPlayers	= guiCreateGridList ( 0.80, 0.02, 0.19, 0.83, true, tab )
 					  guiGridListAddColumn ( aChatTab.AdminPlayers, "Admins", 0.90 )
-	aChatTab.AdminChatSound	= guiCreateCheckBox ( 0.81, 0.87, 0.18, 0.04, "Play Sound", true, true, aChatTab.Tab )
-	aChatTab.AdminText	= guiCreateEdit ( 0.01, 0.92, 0.78, 0.06, "", true, aChatTab.Tab )
-	aChatTab.AdminSay		= guiCreateButton ( 0.80, 0.92, 0.19, 0.06, "Say", true, aChatTab.Tab )
+	aChatTab.AdminChatSound	= guiCreateCheckBox ( 0.81, 0.87, 0.18, 0.04, "Play Sound", true, true, tab )
+	aChatTab.AdminText	= guiCreateEdit ( 0.01, 0.92, 0.78, 0.06, "", true, tab )
+	aChatTab.AdminSay		= guiCreateButton ( 0.80, 0.92, 0.19, 0.06, "Say", true, tab )
 
 	if ( aGetSetting ( "adminChatSound" ) ) then guiCheckBoxSetSelected ( aChatTab.AdminChatSound, true ) end
 
@@ -33,8 +33,8 @@ function aChatTab.Create ( tab )
 	addEventHandler ( "onClientResourceStop", getResourceRootElement(), aChatTab.onClientResourceStop )
 	addEventHandler ( "onClientGUIClick", aChatTab.Tab, aChatTab.onClientClick )
 	addEventHandler ( "onClientGUIAccepted", aChatTab.AdminText, aChatTab.onClientGUIAccepted )
-	addEventHandler ( "aClientSync", _root, aChatTab.onClientSync )
-	addEventHandler ( "onAdminRefresh", _root, aChatTab.onRefresh )
+	addEventHandler ( EVENT_SYNC, _root, aChatTab.onClientSync )
+	addEventHandler ( "onAdminRefresh", aChatTab.Tab, aChatTab.onRefresh )
 end
 
 function aChatTab.onClientClick ( button )
@@ -54,7 +54,7 @@ function aChatTab.onClientClick ( button )
 end
 
 function aChatTab.onClientSync ( type, table )
-	if ( type == "admins" ) then
+	if ( type == SYNC_ADMINS ) then
 		--if ( guiGridListGetRowCount ( aChatTab.AdminPlayers ) > 0 ) then guiGridListClear ( aChatTab.AdminPlayers ) end
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( table[player]["admin"] == false ) and ( player == getLocalPlayer() ) then
@@ -126,10 +126,8 @@ function aChatTab.onClientResourceStop ()
 end
 
 function aChatTab.onRefresh ()
-	if ( guiGetSelectedTab ( getElementParent( aChatTab.Tab ) ) == aChatTab.Tab ) then
-		if ( getTickCount() >= aChatTab.LastSync ) then
-			triggerServerEvent ( "aSync", getLocalPlayer(), "admins" )
-			aChatTab.LastSync = getTickCount() + 15000
-		end
+	if ( getTickCount() >= aChatTab.LastSync ) then
+		sync ( SYNC_ADMINS )
+		aChatTab.LastSync = getTickCount() + 15000
 	end
 end

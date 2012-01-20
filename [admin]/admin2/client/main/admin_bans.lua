@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -17,6 +17,7 @@ function aBansTab.Create ( tab )
 
 	aBansTab.BansListSearch = guiCreateEdit ( 0.01, 0.02, 0.3, 0.04, "", true, aBansTab.Tab )
 					  guiCreateInnerImage ( "client\\images\\search.png", aBansTab.BansListSearch )
+					  guiHandleInput ( aBansTab.BansListSearch )
 	aBansTab.BansList		= guiCreateGridList ( 0.01, 0.07, 0.80, 0.91, true, aBansTab.Tab )
 					  guiGridListAddColumn ( aBansTab.BansList, "Name", 0.22 )
 					  guiGridListAddColumn ( aBansTab.BansList, "IP", 0.25 )
@@ -31,14 +32,13 @@ function aBansTab.Create ( tab )
 
 	addEventHandler ( "onClientGUIChanged", aBansTab.BansListSearch, aBansTab.onBansListSearch )
 	addEventHandler ( "onClientGUIClick", aBansTab.Tab, aBansTab.onClientClick )
-	addEventHandler ( "aClientSync", _root, aBansTab.onClientSync )
+	addEventHandler ( EVENT_SYNC, _root, aBansTab.onClientSync )
 
 	guiGridListClear ( aBansTab.BansList )
-	triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
+	sync ( SYNC_BANS )
 end
 
 function aBansTab.onClientClick ( button )
-	guiSetInputEnabled ( false )
 	if ( button == "left" ) then
 		if ( source == aBansTab.Details ) then
 			if ( guiGridListGetSelectedItem ( aBansTab.BansList ) == -1 ) then
@@ -57,10 +57,7 @@ function aBansTab.onClientClick ( button )
 			end
 		elseif ( source == aBansTab.BansRefresh ) then
 			guiGridListClear ( aBansTab.BansList )
-			triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
-		elseif ( source == aBansTab.BansListSearch ) then
-			guiSetInputEnabled ( true )
-			return
+			sync ( SYNC_BANS )
 		end
 	end
 end
@@ -84,10 +81,10 @@ function aBansTab.onBansListSearch ()
 end
 
 function aBansTab.onClientSync ( type, data )
-	if ( type == "bans" ) then
+	if ( type == SYNC_BANS ) then
 		aBansTab.List = data
 		aBansTab.Refresh ()
-	elseif ( type == "ban" ) then
+	elseif ( type == SYNC_BAN ) then
 		if ( data.type == "a" ) then
 			aBansTab.List[data.id] = data.ban
 			aBansTab.AddRow ( data.id, data.ban )
