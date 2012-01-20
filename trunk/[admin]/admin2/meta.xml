@@ -12,33 +12,42 @@
   
   <script src="server/admin_settings.lua" 	      type="server" />
   <script src="server/admin_wrapper.lua" 		      type="server" />
+  <script src="server/admin_proxy.lua" 	      type="server" />
   <script src="server/admin_functions.lua" 	      type="server" />
   <script src="server/admin_server.lua" 			        type="server" />
+  <script src="server/admin_storage.lua" 			        type="server" />
+  <script src="server/admin_session.lua" 			        type="server" />
   <script src="server/admin_sync.lua" 				        type="server" />
   <script src="server/admin_commands.lua" 			      type="server" />
   <script src="server/admin_ip2c.lua" 				        type="server" />
-  <script src="server/admin_ACL.lua" 				          type="server" />
+  <script src="server/admin_acl.lua" 				          type="server" />
   <script src="server/admin_bans.lua"                 type="server" />
+  <script src="server/admin_network.lua"                 type="server" />
+  <script src="server/admin_messagebox.lua"                 type="server" />
 
   <script src="client/admin_coroutines.lua" 			        type="client" />
   <script src="client/admin_wrapper.lua" 			        type="client" />
-  <script src="client/admin_ACL.lua" 				          type="client" />
+  <script src="client/admin_gui.lua" 			        type="client" />
   <script src="client/admin_settings.lua"             type="client" />
+  <script src="client/admin_session.lua" 			        type="client" />
+  <script src="client/admin_proxy.lua" 			        type="client" />
   <script src="client/main/admin.lua" 			          type="client" />
   <script src="client/main/admin_players.lua"	        type="client" />
   <script src="client/main/admin_resources.lua"	      type="client" />
   <script src="client/main/admin_server.lua"	        type="client" />
   <script src="client/main/admin_bans.lua"	          type="client" />
   <script src="client/main/admin_chat.lua"	          type="client" />
-  <script src="client/main/admin_options.lua"	        type="client" />
+  <script src="client/main/admin_network.lua"	        type="client" />
   <script src="client/main/admin_acl.lua"	            type="client" />
+  <script src="client/main/admin_map.lua"	            type="client" />
+  <script src="client/widgets/admin_messagebox.lua" 	type="client" />
+  <script src="client/widgets/admin_inputbox.lua" 		type="client" />
+  <script src="client/widgets/admin_color.lua"			type="client" />
   <script src="client/widgets/admin_performance.lua" 	type="client" />
   <script src="client/widgets/admin_messages.lua" 		type="client" />
   <script src="client/widgets/admin_message.lua" 		  type="client" />
   <script src="client/widgets/admin_spectator.lua" 		type="client" />
   <script src="client/widgets/admin_editor.lua" 		  type="client" />
-  <script src="client/widgets/admin_messagebox.lua" 	type="client" />
-  <script src="client/widgets/admin_inputbox.lua" 		type="client" />
   <script src="client/widgets/admin_team.lua" 			  type="client" />
   <script src="client/widgets/admin_skin.lua" 			  type="client" />
   <script src="client/widgets/admin_stats.lua" 			  type="client" />
@@ -49,6 +58,8 @@
   <script src="client/widgets/admin_report.lua" 		  type="client" />
   <script src="client/widgets/admin_acl.lua" 			    type="client" />
 
+  <export function="dataExchange" 					          http="true" />
+
   <!--Required XML configs kept in /conf/ folder-->
   <config src="conf/interiors.xml" 					          type="client" />
   <config src="conf/weathers.xml" 					          type="client" />
@@ -57,7 +68,6 @@
   <config src="conf/stats.xml" 						            type="client" />
   <config src="conf/messages.xml"					            type="server" />
   <config src="conf/commands.xml"					            type="server" />
-  <config src="conf/web.xml"						              type="server" />
   <config src="conf/ACL.xml"						              type="server" />
 
   <!--Images-->
@@ -70,6 +80,9 @@
   <file src="client/images/dropdown.png" />
   <file src="client/images/colorscheme.png" />
   <file src="client/images/empty.png" />
+  <file src="client/images/palette.png" />
+  <file src="client/images/black.png" />
+  <file src="client/images/blue.png" />
   
   <!--Country flags by Christoph Brill-->
   <file src="client/images/flags/ac.png" />
@@ -208,4 +221,25 @@
   <file src="client/images/flags/yt.png" />
   <file src="client/images/flags/yu.png" />
   <file src="client/images/flags/za.png" />
+  
+  <settings>
+  	<setting name="*pingkicker" value="0"
+		   group="Automatic scripts"
+		   friendlyname="Ping kicker"
+		   accept="0-1000"
+		   desc="Max ping allowed (0 - off)"
+	/>
+  	<setting name="*fpskicker" value="0"
+		   group="Automatic scripts"
+		   friendlyname="FPS kicker"
+		   accept="0-100"
+		   desc="Lowest fps allowed: 25-75 (0 - off)"
+	/>
+	<setting name="*idlekicker" value="0"
+		   group="Automatic scripts"
+		   friendlyname="Idle Kicker"
+		   accept="0-100"
+		   desc="Maximum time a player can stay idle (minutes, 0 - off)."
+	/>
+  </settings>
 </meta>

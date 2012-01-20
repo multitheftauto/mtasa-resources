@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -7,67 +7,8 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-_guiprotected = {}
 
-function guiCreateHeader ( x, y, w, h, text, relative, parent )
-	local header = guiCreateLabel ( x, y, w, h, text, relative, parent )
-	if ( header ) then
-		guiLabelSetColor ( header, 255, 0, 0 )
-		guiSetFont ( header, "default-bold-small" )
-		return header
-	end
-	return false
-end
-
-function guiCreateInnerImage ( image, parent, above )
-	local sx, sy = guiGetSize ( parent, false )
-	local img = nil
-	if ( above ) then
-		img = guiCreateStaticImage ( 0, 0, 0, 0, image, false, getElementParent ( parent ) )
-		local px, py = guiGetPosition ( parent, false )
-		guiSetPosition ( img, px + sx - sy, py, false )
-	else
-		img = guiCreateStaticImage ( 0, 0, 0, 0, image, false, parent )
-		guiSetPosition ( img, sx - sy, 0, false )
-	end
-	guiSetSize ( img, sy, sy, false )
-	return img
-end
-
-_guiCreateTab = guiCreateTab
-function guiCreateTab ( name, parent, right )
-	local tab = _guiCreateTab ( name, parent )
-	if ( tab ) then
-		if ( right ) then
-			right = "general.tab_"..right
-			if ( not hasPermissionTo ( right ) ) then
-				guiSetEnabled ( tab, false )
-				_guiprotected[right] = tab
-			end
-		end
-		return tab
-	end
-	return false
-end
-
-_guiCreateButton = guiCreateButton
-function guiCreateButton ( x, y, w, h, text, relative, parent, right )
-	local button = _guiCreateButton ( x, y, w, h, text, relative, parent )
-	if ( button ) then
-		if ( right ) then
-			right = "command."..right
-			if ( not hasPermissionTo ( right ) ) then
-				guiSetEnabled ( button, false )
-				_guiprotected[right] = button
-			end
-		end
-		guiSetFont ( button, "default-bold-small" )
-		return button
-	end
-	return false
-end
-
-_getVehicleNameFromModel = getVehicleNameFromModel
+local _getVehicleNameFromModel = getVehicleNameFromModel
 function getVehicleNameFromModel ( id )
 	local avehspecial = { [596] = "Police LS",
 				    [597] = "Police SF",
@@ -88,7 +29,7 @@ function getVehicleNameFromModel ( id )
 	return _getVehicleNameFromModel ( id )
 end
 
-_getVehicleModelFromName = getVehicleModelFromName
+local _getVehicleModelFromName = getVehicleModelFromName
 function getVehicleModelFromName ( name )
 	local avehspecial = { ["Police LS"] = 596,
 				    ["Police SF"] = 597,
@@ -126,4 +67,8 @@ function getPlayerFromNick ( nick )
 		if ( getPlayerName ( player ) == nick ) then return player end
 	end
 	return false
+end
+
+function stripColorCodes ( text )
+	return string.gsub ( text, '#%x%x%x%x%x%x', '' )
 end

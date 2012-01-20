@@ -1,4 +1,4 @@
-﻿-- NEEDS CHECKING
+-- NEEDS CHECKING
 -- stuff has that comment, search for it
 
 aFunctions = {
@@ -15,9 +15,9 @@ aFunctions = {
 			end
 			return success, name
 		end,
-		['destroyteam'] = function ( name )
-			local team = getTeamFromName ( name )
-			if ( getTeamFromName ( name ) ) then
+		['destroyteam'] = function ( team )
+			if ( ( team ) and ( isElement ( team ) ) and ( getElementType ( team ) == "team" ) ) then
+				local name = getTeamName ( team )
 				return destroyElement ( team ), name
 			else
 				return false
@@ -29,7 +29,7 @@ aFunctions = {
 			setTimer ( kickPlayer, 100, 1, player, source, data )
 		end,
 		['ban'] = function ( player, data )
-			setTimer ( banPlayer, 100, 1, player, source, data )
+			setTimer ( banPlayer, 100, 1, player, true, true, true, source, data )
 		end,
 		['mute'] = function ( player )
 			setPlayerMuted ( player, true )
@@ -38,10 +38,10 @@ aFunctions = {
 			setPlayerMuted ( player, false )
 		end,
 		['freeze'] = function ( player )
-			setElementFrozen ( player, true )
+			setPedFrozen ( player, true )
 		end,
 		['unfreeze'] = function ( player )
-			setElementFrozen ( player, false )
+			setPedFrozen ( player, false )
 		end,
 		['shout'] = function ( player, text )
 			local textDisplay = textCreateDisplay ()
@@ -98,8 +98,6 @@ aFunctions = {
 			return false
 		end,
 		['setinterior'] = function ( player, data )
-			-- NEEDS CHECKING
-			action = nil
 			for id, interior in ipairs ( aInteriors ) do
 				if ( interior["id"] == data ) then
 					local vehicle = getPedOccupiedVehicle ( player )
@@ -113,10 +111,10 @@ aFunctions = {
 						setElementPosition ( player, x, y, z + 0.2 )
 						setPedRotation ( player, rot )
 					end
-					action = "interior"
-					mdata = data
+					return true, interior["id"]
 				end
 			end
+			return false
 		end,
 		['setdimension'] = function ( player, dimension )
 			local dimension = tonumber ( dimension )
@@ -201,16 +199,13 @@ aFunctions = {
 		end,
 		['slap'] = function ( player, data )
 			if ( getElementHealth ( player ) > 0 ) and ( not isPedDead ( player ) ) then
-				if ( ( not data ) or ( not tonumber ( data ) ) ) then data = 20 end
-				if ( ( tonumber ( data ) >= 0 ) ) then
-					if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
-					else setElementHealth ( player, getElementHealth ( player ) - data ) end
-					local x, y, z = getElementVelocity ( player )
-					setElementVelocity ( player, x , y, z + 0.2 )
-					return true, data
-				else
-					return false
-				end
+				local slap = tonumber ( data )
+				if ( ( not slap ) or ( not tonumber ( slap ) ) ) then slap = 20 end
+				if ( slap > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
+				else setElementHealth ( player, getElementHealth ( player ) - slap ) end
+				local x, y, z = getElementVelocity ( player )
+				setElementVelocity ( player, x , y, z + 0.2 )
+				return true, slap
 			else
 				return false
 			end
@@ -255,7 +250,7 @@ aFunctions = {
 				outputChatBox ( "Invalid Paint job ID", source, 255, 0, 0 )
 				return false
 			end
-			return true, data
+			return true, id
 		end,
 		['setcolor'] = function ( player, vehicle, ... )
 			local data = { ... }
@@ -302,42 +297,38 @@ aFunctions = {
 				outputChatBox ( "Error setting game type.", source, 255, 0, 0 )
 				return false
 			end
-			triggerEvent ( "aSync", source, "server" )
+			requestSync ( source, SYNC_SERVER )
+			return true, tostring ( game )
 		end,
 		['setmap'] = function ( map )
 			if ( not setMapName ( tostring ( map ) ) ) then
 				outputChatBox ( "Error setting map name.", source, 255, 0, 0 )
 				return false
 			end
-			triggerEvent ( "aSync", source, "server" )
-		end,
-		['setwelcome'] = function ( text )
-			if ( ( not text ) or ( text == "" ) ) then
-				aRemoveSetting ( "welcome" )
-				return "resetwelcome"
-			else
-				aSetSetting ( "welcome", tostring ( text ) )
-				return true, text
-			end
+			requestSync ( source, SYNC_SERVER )
+			return true, tostring ( map )
 		end,
 		['settime'] = function ( minutes, seconds )
 			if ( not setTime ( tonumber ( minutes ), tonumber ( seconds ) ) ) then
 				outputChatBox ( "Error setting time.", source, 255, 0, 0 )
 				return false
 			end
-			return true, data..":"..data2
+			return true, tostring ( minutes )..":"..tostring ( seconds )
 		end,
 		['setpassword'] = function ( password )
 			if ( not password or password == "" ) then
 				setServerPassword ( nil )
+				requestSync ( source, SYNC_SERVER )
 				return "resetpassword"
 			elseif ( string.len ( password ) > 32 ) then
 				outputChatBox ( "Set password: 32 characters max", source, 255, 0, 0 )
+				return false
 			elseif ( not setServerPassword ( password ) ) then
 				outputChatBox ( "Error setting password", source, 255, 0, 0 )
 				return false
 			end
-			triggerEvent ( "aSync", source, "server" )
+			requestSync ( source, SYNC_SERVER )
+			return true, password
 		end,
 		['setweather'] = function ( id )
 			if ( not setWeather ( tonumber ( id ) ) ) then
@@ -372,7 +363,18 @@ aFunctions = {
 			return true, gravity
 		end,
 		['setblurlevel'] = function ( level )
-	
+			if ( not setBlurLevel ( level ) ) then
+				outputChatBox ( "Error setting blur level.", source, 255, 0, 0 )
+				return false
+			end
+			return true, level
+		end,
+		['setheathazelevel'] = function ( level )
+			if ( not setHeatHaze ( level ) ) then
+				outputChatBox ( "Error setting heat haze level.", source, 255, 0, 0 )
+				return false
+			end
+			return true, level
 		end,
 		['setwaveheight'] = function ( height )
 			if ( not setWaveHeight ( height ) ) then
@@ -380,6 +382,25 @@ aFunctions = {
 				return false
 			end
 			return true, height
+		end,
+		['setworldproperty'] = function ( property, enabled )
+			if ( enabled ) then
+				local v = enabled == "on" or enabled == "enabled" or enabled == "true"
+				return setWorldSpecialPropertyEnabled ( property, v ), iif ( v, "enabled", "disabled" ), property
+			else
+				return false
+			end
+		end,
+		['setglitch'] = function ( glitch, enabled )
+			if ( enabled ) then
+				local v = enabled == "on" or enabled == "enabled" or enabled == "true"
+				return setGlitchEnabled ( glitch, v ), iif ( v, "enabled", "disabled" ), glitch
+			else
+				return false
+			end
+		end,
+		['shutdown'] = function ( reason )
+			shutdown ( iif ( reason, tostring ( reason ), nil ) )
 		end
 	},
 	admin = {

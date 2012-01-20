@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -56,4 +56,71 @@ function table.size(tab)
         end
     end
     return length
+end
+
+function table.iadd ( tab1, tab2 )
+	for k, v in ipairs ( tab2 ) do
+		table.insert ( tab1, v )
+	end
+	return tab1
+end
+
+function iif ( cond, arg1, arg2 )
+	if ( cond ) then
+		return arg1
+	end
+	return arg2
+end
+
+function getVehicleOccupants ( vehicle )
+	local tableOut = {}
+	local seats = getVehicleMaxPassengers ( vehicle ) + 1
+	for i = 0, seats do
+		local passenger = getVehicleOccupant ( vehicle, i )
+		if ( passenger ) then table.insert ( tableOut, passenger ) end
+	end
+	return tableOut
+end
+
+function getWeatherNameFromID ( weather )
+	return iif ( aWeathers[weather], aWeathers[weather], "Unknown" )
+end
+
+function warpPlayer ( p, to )
+	function warp ( p, to )
+		local x, y, z = getElementPosition ( to )
+		local r = getPedRotation ( to )
+		x = x - math.sin ( math.rad ( r ) ) * 2
+		y = y + math.cos ( math.rad ( r ) ) * 2
+		setTimer ( setElementPosition, 1000, 1, p, x, y, z + 1 )
+		fadeCamera ( p, false, 1, 0, 0, 0 )
+		setElementDimension ( p, getElementDimension ( to ) )
+		setElementInterior ( p, getElementInterior ( to ) )
+		setTimer ( fadeCamera, 1000, 1, p, true, 1 )
+	end
+  	if ( isPedInVehicle ( to ) ) then
+  		local vehicle = getPedOccupiedVehicle ( to )
+		local seats = getVehicleMaxPassengers ( vehicle ) + 1
+		local i = 0
+		while ( i < seats ) do
+			if ( not getVehicleOccupant ( vehicle, i ) ) then
+				setTimer ( warpPedIntoVehicle, 1000, 1, p, vehicle, i )
+				fadeCamera ( p, false, 1, 0, 0, 0 )
+				setTimer ( fadeCamera, 1000, 1, p, true, 1 )
+				break
+			end
+			i = i + 1
+		end
+		if ( i >= seats ) then
+			warp ( p, to )
+			outputConsole ( "Player's vehicle is full ("..getVehicleName ( vehicle ).." - Seats: "..seats..")", p )
+		end
+	else
+		warp ( p, to )
+	end
+end
+
+function getMonthName ( month )
+	local names = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
+	return names[month]
 end

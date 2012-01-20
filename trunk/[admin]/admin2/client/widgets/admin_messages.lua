@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -8,92 +8,108 @@
 *
 **************************************]]
 
-aMessagesForm = nil
-_messages = nil
+aMessages = {
+	Form = nil,
+	Messages = {}
+}
 
-function aViewMessages ( player )
-	if ( aMessagesForm == nil ) then
+function aMessages.Open ()
+	if ( not aMessages.Form ) then
 		local x, y = guiGetScreenSize()
-		aMessagesForm	= guiCreateWindow ( x / 2 - 250, y / 2 - 125, 500, 250, "View Messages", false )
+		aMessages.Form	= guiCreateWindow ( x / 2 - 250, y / 2 - 125, 500, 350, "View Messages", false )
 
-		aMessagesList		= guiCreateGridList ( 0.03, 0.09, 0.75, 0.85, true, aMessagesForm )
-					   guiGridListAddColumn( aMessagesList, "#", 0.10 )
-					   guiGridListAddColumn( aMessagesList, "Subject", 0.50 )
-					   guiGridListAddColumn( aMessagesList, "Date", 0.20 )
-					   guiGridListAddColumn( aMessagesList, "Author", 0.15 )
-		aMessagesRead	= guiCreateButton ( 0.80, 0.20, 0.15, 0.09, "Read", true, aMessagesForm )
-		aMessagesDelete	= guiCreateButton ( 0.80, 0.30, 0.15, 0.09, "Delete", true, aMessagesForm )
-		aMessagesRefresh	= guiCreateButton ( 0.80, 0.65, 0.15, 0.09, "Refresh", true, aMessagesForm )
-		aMessagesClose	= guiCreateButton ( 0.80, 0.85, 0.15, 0.09, "Close", true, aMessagesForm )
-		addEventHandler ( "aMessage", _root, aMessagesSync )
-		addEventHandler ( "onClientGUIClick", aMessagesForm, aClientMessagesClick )
-		addEventHandler ( "onClientGUIDoubleClick", aMessagesForm, aClientMessagesDoubleClick )
+		aMessages.List	= guiCreateGridList ( 0.02, 0.07, 0.30, 0.83, true, aMessages.Form )
+					  guiGridListSetSortingEnabled ( aMessages.List, false )
+					  guiGridListAddColumn( aMessages.List, "Subject", 0.60 )
+					  guiGridListAddColumn( aMessages.List, "Date", 0.28 )
+		aMessages.Delete	= guiCreateButton ( 0.84, 0.07, 0.15, 0.055, "Delete", true, aMessages.Form )
+		aMessages.Refresh	= guiCreateButton ( 0.02, 0.92, 0.30, 0.055, "Refresh", true, aMessages.Form )
+		aMessages.Exit	= guiCreateButton ( 0.84, 0.92, 0.15, 0.055, "Close", true, aMessages.Form )
+
+		aMessages.Author 	= guiCreateLabel ( 0.36, 0.10, 0.50, 0.54, "Author: -", true, aMessages.Form )
+		aMessages.Subject	= guiCreateLabel ( 0.36, 0.15, 0.50, 0.54, "Subject: -", true, aMessages.Form )
+		aMessages.Category = guiCreateLabel ( 0.36, 0.20, 0.50, 0.54, "Category: -", true, aMessages.Form )
+		aMessages.Date 	= guiCreateLabel ( 0.36, 0.25, 0.50, 0.54, "Date: -", true, aMessages.Form )
+		aMessages.Text	= guiCreateMemo ( 0.36, 0.30, 0.59, 0.64, "", true, aMessages.Form )
+
 		--Register With Admin Form
-		aRegister ( "Messages", aMessagesForm, aViewMessages, aViewMessagesClose )
+		aRegister ( "Messages", aMessages.Form, aMessages.Open, aMessages.Close )
 	end
-	guiSetVisible ( aMessagesForm, true )
-	guiBringToFront ( aMessagesForm )
+
+	addEventHandler ( "aMessage", getRootElement(), aMessages.onSync )
+	addEventHandler ( "onClientGUIClick", aMessages.Form, aMessages.onClick )
+
+	guiSetVisible ( aMessages.Form, true )
+	guiBringToFront ( aMessages.Form )
 	triggerServerEvent ( "aMessage", getLocalPlayer(), "get" )
 end
 
-function aViewMessagesClose ( destroy )
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceMessage ) ) ) then
-		if ( aMessagesForm ) then
-			removeEventHandler ( "onClientGUIClick", aMessagesForm, aClientMessagesClick )
-			removeEventHandler ( "onClientGUIDoubleClick", aMessagesForm, aClientMessagesDoubleClick )
-			destroyElement ( aMessagesForm )
-			aMessagesForm = nil
+function aMessages.Close ( destroy )
+	if ( aMessages.Form ) then
+		removeEventHandler ( "aMessage", getRootElement(), aMessages.onSync )
+		removeEventHandler ( "onClientGUIClick", aMessages.Form, aMessages.onClick )
+		if ( destroy ) then
+			destroyElement ( aMessages.Form )
+			aMessages.Form = nil
+		else
+			guiSetVisible ( aMessages.Form, false )
 		end
-	else
-		if aMessagesForm then guiSetVisible ( aMessagesForm, false ) end
 	end
 end
 
-function aMessagesSync ( action, data )
+function aMessages.onSync ( action, data )
 	if ( action == "get" ) then
-		_messages = data
-		guiGridListClear ( aMessagesList )
+		local storage = {}
 		for id, message in ipairs ( data ) do
-			local row = guiGridListAddRow ( aMessagesList )
-			guiGridListSetItemText ( aMessagesList, row, 1, tostring ( id ), false, false )
-			if ( message.read ) then guiGridListSetItemText ( aMessagesList, row, 2, message.subject, false, false )
-			else guiGridListSetItemText ( aMessagesList, row, 2, "* "..message.subject, false, false ) end
-			guiGridListSetItemText ( aMessagesList, row, 3, message.time, false, false )
-			guiGridListSetItemText ( aMessagesList, row, 4, message.author, false, false )
-		end
-	end
-end
+			if ( not storage[message.author] ) then
+				storage[message.author] = {}
+			end
 
-function aClientMessagesDoubleClick ( button )
-	if ( button == "left" ) then
-		if ( source == aMessagesList ) then
-			local row = guiGridListGetSelectedItem ( aMessagesList )
-			if ( row ~= -1 ) then
-				local id = guiGridListGetItemText ( aMessagesList, row, 1 )
-				aViewMessage ( tonumber ( id ) )
+			message.id = id
+			table.insert ( storage[message.author], message )
+		end
+		aMessages.Messages = storage
+
+		local list = aMessages.List
+		local id = 1
+		guiGridListClear ( aMessages.List )
+		for user, messages in pairs ( storage ) do
+			local row = guiGridListAddRow ( list )
+			guiGridListSetItemText ( list, row, 1, tostring ( user ), true, false )
+
+			for i, message in ipairs ( messages ) do
+				local row = guiGridListAddRow ( list )
+				guiGridListSetItemText ( list, row, 1, message.subject, false, false )
+				guiGridListSetItemText ( list, row, 2, message.time, false, false )
+				if ( not message.read ) then
+					guiGridListSetItemColor ( list, row, 1, 255, 50, 50 )
+					guiGridListSetItemColor ( list, row, 2, 255, 50, 50 )
+				end
+
+				id = id + 1
 			end
 		end
 	end
 end
 
-function aClientMessagesClick ( button )
+function aMessages.onClick ( button )
 	if ( button == "left" ) then
-		if ( source == aMessagesClose ) then
-			aViewMessagesClose ( false )
-		elseif ( source == aMessagesRefresh ) then
+		if ( source == aMessages.Exit ) then
+			aMessages.Close ()
+		elseif ( source == aMessages.Refresh ) then
 			triggerServerEvent ( "aMessage", getLocalPlayer(), "get" )
-		elseif ( source == aMessagesRead ) then
-			local row = guiGridListGetSelectedItem ( aMessagesList )
+		elseif ( source == aMessages.Read ) then
+			local row = guiGridListGetSelectedItem ( aMessages.List )
 			if ( row == -1 ) then aMessageBox ( "Warning", "No message selected!", nil )
 			else
-				local id = guiGridListGetItemText ( aMessagesList, row, 1 )
+				local id = guiGridListGetItemText ( aMessages.List, row, 1 )
 				aViewMessage ( tonumber ( id ) )
 			end
-		elseif ( source == aMessagesDelete ) then
-			local row = guiGridListGetSelectedItem ( aMessagesList )
+		elseif ( source == aMessages.Delete ) then
+			local row = guiGridListGetSelectedItem ( aMessages.List )
 			if ( row == -1 ) then aMessageBox ( "Warning", "No message selected!" )
 			else
-				local id = guiGridListGetItemText ( aMessagesList, row, 1 )
+				local id = guiGridListGetItemText ( aMessages.List, row, 1 )
 				triggerServerEvent ( "aMessage", getLocalPlayer(), "delete", tonumber ( id ) )
 			end
 		end

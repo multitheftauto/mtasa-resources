@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -64,19 +64,21 @@ end
 
 function aCommandToArgs ( argv, args )
 	for id, argt in ipairs ( split ( args, 44 ) ) do
-		if ( argt == "T" ) then argv[id] = getTeamFromName ( argv[id] )
-		elseif ( argt == "P" ) then argv[id] = getPlayerWildcard ( argv[id] )
-		elseif ( argt == "t" ) then argv[id] = { argv[id] }
-		elseif ( argt == "s" ) then argv[id] = tostring ( argv[id] )
-		elseif ( argt == "i" ) then argv[id] = tonumber ( argv[id] )
-		elseif ( argt == "t-" ) then
-			local atable = {}
-			for i = id, #argv do table.insert ( atable, argv[id] ) table.remove ( argv, id ) end
-			argv[id] = atable
-		elseif ( argt == "s-" ) then
-			local string = ""
-			for i = id, #argv do string = string.." "..argv[i] table.remove ( argv, i ) end
-			argv[id] = string
+		if ( argv[id] ) then
+			if ( argt == "T" ) then argv[id] = getTeamFromName ( argv[id] )
+			elseif ( argt == "P" ) then argv[id] = getPlayerWildcard ( argv[id] )
+			elseif ( argt == "t" ) then argv[id] = { argv[id] }
+			elseif ( argt == "s" ) then argv[id] = tostring ( argv[id] )
+			elseif ( argt == "i" ) then argv[id] = tonumber ( argv[id] )
+			elseif ( argt == "t-" ) then
+				local atable = {}
+				for i = id, #argv do table.insert ( atable, argv[id] ) table.remove ( argv, id ) end
+				argv[id] = atable
+			elseif ( argt == "s-" ) then
+				local string = ""
+				for i = id, #argv do string = string.." "..argv[i] table.remove ( argv, i ) end
+				argv[id] = string
+			end
 		end
 	end
 	return argv
