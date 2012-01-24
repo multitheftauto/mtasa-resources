@@ -1,4 +1,4 @@
-﻿--Modified by Ransom
+--Modified by Ransom
 players = getElementsByType ( "player" )
 scoreboardRes = getResourceFromName("scoreboard")
 
@@ -11,7 +11,7 @@ end )
 
 function spawnFunct ( passedPlayer )
 	if (not isElement(passedPlayer)) then return false end
-    r = 20
+	r = 20
 	angle = math.random(133, 308) --random angle between 0 and 359.99
 	centerX = -12
 	centerY = -10
@@ -63,20 +63,38 @@ function move ()
 	--outputDebugString("move entered")
 	local rand
 	repeat
-		rand = math.random ( 1, options.b )
+		rand = math.random( 1, options.b )
 	until (moving[rand] ~= 1)
 	local object = objects[ rand ]
-	local move = math.random ( 0, 5 )
+	local move = math.random( 0, 5 )
 	--outputDebugString("move: " .. move)
 	local x,y,z
 	local x2,y2,z2 = getElementPosition ( object )
-	local free = {}
-	copyTable(matrix,free)
-	getFree(free)
+	--Purge old player positions
+	for x = 1,options.x do
+		for y = 1,options.y do
+			for z = 1,options.z do
+				if (matrix[x][y][z] == 2) then
+					matrix[x][y][z] = 0
+				end
+			end
+		end
+	end
+	--Fill in new player positions
+	local players = getElementsByType( "player" )
+	for k,v in ipairs(players) do
+		x,y,z = getElementPosition( v )
+		x = math.floor(x / -4 + 0.5)
+		y = math.floor(y / -4 + 0.5)
+		z = math.floor(z / 3 + 0.5)
+		if (x >= 1) and (x <= options.x) and (y >= 1) and (y <= options.y) and (z >= 1) and (z <= options.z) and (matrix[x][y][z] == 0) then
+			matrix[x][y][z] = 2
+		end
+	end
 	x = x2 / -4
 	y = y2 / -4
 	z = z2 / 3
-	if (move == 0)  and (x ~= 1) and (free[x-1] and free[x-1][y] and free[x-1][y][z] == 0) then
+	if (move == 0)  and (x ~= 1) and (matrix[x-1][y][z] == 0) then
 		moving[rand] = 1
 		local s = 4000 - xy_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
@@ -84,7 +102,7 @@ function move ()
 		matrix[x][y][z] = 1
 		--outputDebugString("moving obj")
 		moveObject ( object, s, x2 + 4, y2, z2, 0, 0, 0 )
-	elseif (move == 1) and (x ~= options.x) and (free[x+1] and free[x+1][y] and free[x+1][y][z] == 0) then
+	elseif (move == 1) and (x ~= options.x) and (matrix[x+1][y][z] == 0) then
 		moving[rand] = 1
 		local s = 4000 - xy_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
@@ -92,7 +110,7 @@ function move ()
 		matrix[x][y][z] = 1
 		--outputDebugString("moving obj")
 		moveObject ( object, s, x2 - 4, y2, z2, 0, 0, 0 )
-	elseif (move == 2) and (y ~= 1) and (free[x] and free[x][y-1] and free[x][y-1][z] == 0) then
+	elseif (move == 2) and (y ~= 1) and (matrix[x][y-1][z] == 0) then
 		moving[rand] = 1
 		local s = 4000 - xy_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
@@ -100,7 +118,7 @@ function move ()
 		matrix[x][y][z] = 1
 		--outputDebugString("moving obj")
 		moveObject ( object, s, x2, y2 + 4, z2, 0, 0, 0 )
-	elseif (move == 3) and (y ~= options.y) and (free[x] and free[x][y+1] and free[x][y+1][z] == 0) then
+	elseif (move == 3) and (y ~= options.y) and (matrix[x][y+1][z] == 0) then
 		moving[rand] = 1
 		local s = 4000 - xy_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
@@ -108,7 +126,7 @@ function move ()
 		matrix[x][y][z] = 1
 		--outputDebugString("moving obj")
 		moveObject ( object, s, x2, y2 - 4, z2, 0, 0, 0 )
-	elseif (move == 4) and (z ~= 1) and (free[x] and free[x][y] and free[x][y][z-1] == 0) then
+	elseif (move == 4) and (z ~= 1) and (matrix[x][y][z-1] == 0) then
 		moving[rand] = 1
 		local s = 3000 - z_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
@@ -116,7 +134,7 @@ function move ()
 		matrix[x][y][z] = 1
 		--outputDebugString("moving obj")
 		moveObject ( object, s, x2, y2, z2 - 3, 0, 0, 0 )
-	elseif (move == 5) and (z ~= options.z) and (free[x] and free[x][y] and free[x][y][z+1] == 0) then
+	elseif (move == 5) and (z ~= options.z) and ((matrix[x][y][z+1] == 0) or ((z ~= options.z-1) and (matrix[x][y][z+1] == 2) and (matrix[x][y][z+2] ~= 1))) then
 		moving[rand] = 1
 		local s = 3000 - z_speed * z
 		setTimer (done, s, 1, rand, x, y, z)
@@ -128,12 +146,11 @@ function move ()
 	--	setTimer ("move", 100 )
 end
 
-
 function onThisResourceStart ( )
 	call(scoreboardRes,"addScoreboardColumn","Current level")
 	call(scoreboardRes,"addScoreboardColumn","Max level")
 	call(scoreboardRes,"addScoreboardColumn","Health")
-	--outputChatBox("* Haystack-em-up v1.43 by Aeron", root, 255, 100, 100)  --PFF meta is good enough :P
+	--outputChatBox("* Haystack-em-up v1.44 by Aeron", root, 255, 100, 100)  --PFF meta is good enough :P
 	--Calculate speed velocity
 	xy_speed = 2000 / (options.z + 1)
 	z_speed = 1500 / (options.z + 1)
@@ -212,38 +229,9 @@ function done ( id, x, y, z )
 	matrix[x][y][z] = 0
 end
 
-function getFree ( src )
-	local x,y,z
-	local players = getElementsByType( "player" )
-	for k,v in ipairs(players) do
-		x,y,z = getElementPosition( v )
-		x = math.floor(x / -4 + 0.5)
-		y = math.floor(y / -4 + 0.5)
-		z = math.floor(z / 3 + 0.5)
-		if (x >= 1) and (x <= options.x) and (y >= 1) and (y <= options.y) and (z >= 1) and (z <= options.z) then
-			src[x][y][z] = 2
-		end
-	end
-end
-
-function copyTable ( src, des )
-	for k,v in ipairs(src) do
-		if (type(v) == "table") then
-			des[k] = {}
-			copyTable(src[k],des[k])
-		else
-			des[k] = v
-		end
-	end
-end
-
-
-
 --addEventHandler( "onResourceStart", root, function() onMapLoad() end)
 --addEventHandler( "onPickupHit", root, function() onPickupHit() end)
 --addEventHandler( "onPlayerJoin", root, function() onPlayerJoin() end)
 
 addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), onThisResourceStart)
 addEventHandler( "onPickupHit", root, onPickupHit)
-
-
