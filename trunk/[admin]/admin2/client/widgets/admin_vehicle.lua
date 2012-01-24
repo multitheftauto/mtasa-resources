@@ -39,7 +39,7 @@ function aVehicle.Open ( vehicle )
 				guiCreateLabel ( 0.05, 0.05 * ( c + 1 ), 0.15, 0.05, getVehicleUpgradeSlotName ( i - 1 )..":", true, aVehicle.Form )
 				aVehicle.Upgrades[c] = {}
 				aVehicle.Upgrades[c].id = i - 1
-				aVehicle.Upgrades[c].combo = guiCreateComboBox ( 0.25, 0.05 * ( c + 1 ), 0.27, 0.048, "None", true, aVehicle.Form )
+				aVehicle.Upgrades[c].combo = guiCreateComboBox ( 0.25, 0.05 * ( c + 1 ), 0.27, 0.248, "None", true, aVehicle.Form )
 				aVehicle.Upgrades[c].label = guiCreateLabel ( 0.54, 0.05 * ( c + 1 ), 0.05, 0.07, "(0)", true, aVehicle.Form )
 				c = c + 1
 			end
@@ -136,7 +136,7 @@ function aVehicle.CheckUpgrades ( vehicle )
 	if ( vehicle ) then
 		for slot, v in ipairs ( aVehicle.Upgrades ) do
 			guiComboBoxClear ( aVehicle.Upgrades[slot].combo )
-			local row = guiComboBoxAddItem ( aVehicle.Upgrades[slot].list, "None" )
+			local row = guiComboBoxAddItem ( aVehicle.Upgrades[slot].combo, "None" )
 
 			local upgrades = getVehicleCompatibleUpgrades ( vehicle, aVehicle.Upgrades[slot].id )
 			guiSetText ( aVehicle.Upgrades[slot].label, "("..#upgrades..")" )
@@ -149,11 +149,10 @@ function aVehicle.CheckUpgrades ( vehicle )
 				end
 			end
 			for i, upgrade in ipairs ( upgrades ) do
-				local row = guiGridListAddRow ( aVehicle.Upgrades[slot].list )
 				if ( guiCheckBoxGetSelected ( aVehicle.UpgradeNames ) ) then
-					guiGridListSetItemText ( aVehicle.Upgrades[slot].list, row, 1, tostring ( aVehicle.Names[tonumber(upgrade)] ), false, false )
+					guiComboBoxAddItem ( aVehicle.Upgrades[slot].combo, tostring ( aVehicle.Names[tonumber(upgrade)] ) )
 				else
-					guiGridListSetItemText ( aVehicle.Upgrades[slot].list, row, 1, tostring ( upgrade ), false, false )
+					guiComboBoxAddItem ( aVehicle.Upgrades[slot].combo, tostring ( upgrade ) )
 				end
 			end
 		end
@@ -165,12 +164,12 @@ function aVehicle.CheckCurrentUpgrades ( vehicle )
 		for slot, v in ipairs ( aVehicle.Upgrades ) do
 			if ( getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id ) > 0 ) then
 				if ( guiCheckBoxGetSelected ( aVehicle.UpgradeNames ) ) then
-					guiSetText ( aVehicle.Upgrades[slot].edit, tostring ( aVehicle.Names[getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id )] ) )
+					guiSetText ( aVehicle.Upgrades[slot].combo, tostring ( aVehicle.Names[getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id )] ) )
 				else
-					guiSetText ( aVehicle.Upgrades[slot].edit, tostring ( getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id ) ) )
+					guiSetText ( aVehicle.Upgrades[slot].combo, tostring ( getVehicleUpgradeOnSlot ( vehicle, aVehicle.Upgrades[slot].id ) ) )
 				end
 			else
-				guiSetText ( aVehicle.Upgrades[slot].edit, "" )
+				guiSetText ( aVehicle.Upgrades[slot].combo, "" )
 			end
 		end
 	end
@@ -188,15 +187,6 @@ end
 function aVehicle.onClick ( button, state )
 	if ( source ~= aVehiclePaintjobList ) then guiSetVisible ( aVehiclePaintjobList, false ) end
 	if ( button == "left" ) then
-		for id, element in ipairs ( aVehicleUpgrades ) do
-			if ( source ~= element.list ) then guiSetVisible ( element.list, false ) end
-			if ( source == element.edit ) then
-				guiBringToFront ( element.drop )
-			elseif ( source == element.drop ) then
-				guiSetVisible ( element.list, true )
-				guiBringToFront ( element.list )
-			end
-		end
 		if ( source == aVehiclePaintjob ) then
 			guiBringToFront ( aVehiclePaintjobDrop )
 		elseif ( source == aVehicleClose ) then

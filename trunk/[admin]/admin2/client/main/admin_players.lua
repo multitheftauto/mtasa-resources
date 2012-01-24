@@ -39,11 +39,13 @@ function aPlayersTab.Create ( tab )
 	aPlayersTab.Spectate		= guiCreateButton ( 0.71, 0.215, 0.13, 0.04, "Spectate", true, tab, "spectate" )
 	aPlayersTab.Slap			= guiCreateButton ( 0.85, 0.215, 0.13, 0.04, "Slap! "..aPlayersTab.CurrentSlap.." _", true, tab, "slap" )
 	aPlayersTab.SlapDropDown	= guiCreateInnerImage ( "client\\images\\dropdown.png", aPlayersTab.Slap, true )
-	aPlayersTab.SlapOptions		= guiCreateGridList ( 0.85, 0.215, 0.13, 0.40, true, tab )
+	aPlayersTab.SlapOptions		= guiCreateGridList ( 0.85, 0.215, 0.13, 0.42, true, tab )
 					  	  guiGridListSetSortingEnabled ( aPlayersTab.SlapOptions, false )
-					  	  guiGridListAddColumn( aPlayersTab.SlapOptions, "", 0.85 )
+					  	  guiGridListAddColumn( aPlayersTab.SlapOptions, "", 0.60 )
+						  guiGridListAddColumn( aPlayersTab.SlapOptions, "", 0.60 )
 					  	  guiSetVisible ( aPlayersTab.SlapOptions, false )
-					  	  for i = 0, 10 do guiGridListSetItemText ( aPlayersTab.SlapOptions, guiGridListAddRow ( aPlayersTab.SlapOptions ), 1, tostring ( i * 10 ), false, false ) end
+					  	  for i = 0, 5 do guiGridListSetItemText ( aPlayersTab.SlapOptions, guiGridListAddRow ( aPlayersTab.SlapOptions ), 2, tostring ( i * 20 ), false, false ) end
+						  guiGridListRemoveColumn( aPlayersTab.SlapOptions, 1 )
 	aPlayersTab.SetNick		= guiCreateButton ( 0.71, 0.260, 0.13, 0.04, "Set nick", true, tab, "setnick" )
 	aPlayersTab.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, tab, "shout" )
 	aPlayersTab.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, tab, "setgroup" )
@@ -91,9 +93,11 @@ function aPlayersTab.Create ( tab )
 	aPlayersTab.GiveWeapon		= guiCreateButton ( 0.71, 0.485, 0.27, 0.04, "Give: "..getWeaponNameFromID ( aPlayersTab.CurrentWeapon ), true, tab )
 	aPlayersTab.WeaponDropDown	= guiCreateInnerImage ( "client\\images\\dropdown.png", aPlayersTab.GiveWeapon, true )
 	aPlayersTab.WeaponOptions	= guiCreateGridList ( 0.71, 0.485, 0.27, 0.48, true, tab )
-						  guiGridListAddColumn( aPlayersTab.WeaponOptions, "", 0.85 )
+						  guiGridListAddColumn( aPlayersTab.WeaponOptions, "", 0.83 )
+						  guiGridListAddColumn( aPlayersTab.WeaponOptions, "", 0.83 ) -- that's a hack to remove spaces in the first column
 						  guiSetVisible ( aPlayersTab.WeaponOptions, false )
-						  for i = 1, 46 do if ( getWeaponNameFromID ( i ) ~= false ) then guiGridListSetItemText ( aPlayersTab.WeaponOptions, guiGridListAddRow ( aPlayersTab.WeaponOptions ), 1, getWeaponNameFromID ( i ), false, false ) end end
+						  for i = 1, 46 do if ( getWeaponNameFromID ( i ) ~= false ) then guiGridListSetItemText ( aPlayersTab.WeaponOptions, guiGridListAddRow ( aPlayersTab.WeaponOptions ), 2, getWeaponNameFromID ( i ), false, false ) end end
+						  guiGridListRemoveColumn( aPlayersTab.WeaponOptions, 1 )
 	aPlayersTab.SetMoney		= guiCreateButton ( 0.71, 0.530, 0.13, 0.04, "Set Money", true, tab, "setmoney" )
 	aPlayersTab.SetStats		= guiCreateButton ( 0.85, 0.530, 0.13, 0.04, "Set Stats", true, tab, "setstat" )
 	aPlayersTab.JetPack		= guiCreateButton ( 0.71, 0.575, 0.27, 0.04, "Give JetPack", true, tab, "jetpack" )
@@ -108,14 +112,16 @@ function aPlayersTab.Create ( tab )
 	aPlayersTab.VehicleDropDown 	= guiCreateInnerImage ( "client\\images\\dropdown.png", aPlayersTab.GiveVehicle, true )
 	local gx, gy 			= guiGetSize ( aPlayersTab.GiveVehicle, false )
 	aPlayersTab.VehicleOptions	= guiCreateGridList ( 0, 0, gx, 200, false )
-						  guiGridListAddColumn( aPlayersTab.VehicleOptions, "", 0.85 )
+						  guiGridListAddColumn( aPlayersTab.VehicleOptions, "", 0.83 )
+						  guiGridListAddColumn( aPlayersTab.VehicleOptions, "", 0.83 )
 						  guiSetAlpha ( aPlayersTab.VehicleOptions, 0.80 )
 						  guiSetVisible ( aPlayersTab.VehicleOptions, false )
 						  for i = 0, 211 do
 							if ( getVehicleNameFromModel ( 400 + i ) ~= "" ) then
-								guiGridListSetItemText ( aPlayersTab.VehicleOptions, guiGridListAddRow ( aPlayersTab.VehicleOptions ), 1, getVehicleNameFromModel ( 400 + i ), false, false )
+								guiGridListSetItemText ( aPlayersTab.VehicleOptions, guiGridListAddRow ( aPlayersTab.VehicleOptions ), 2, getVehicleNameFromModel ( 400 + i ), false, false )
 							end
 						  end
+						  guiGridListRemoveColumn( aPlayersTab.VehicleOptions, 1 )
 
 	-- EVENTS
 
@@ -423,7 +429,7 @@ function aPlayersTab.onRefresh ()
 		return
 	end
 
-	guiSetText ( aPlayersTab.Name, "Name: "..getPlayerName ( player ) )
+	guiSetText ( aPlayersTab.Name, "Name: "..stripColorCodes ( getPlayerName ( player ) ) )
 	guiSetText ( aPlayersTab.Mute, iif ( aPlayers[player].mute, "Unmute", "Mute" ) )
 	guiSetText ( aPlayersTab.Freeze, iif ( aPlayers[player].freeze, "Unfreeze", "Freeze" ) )
 

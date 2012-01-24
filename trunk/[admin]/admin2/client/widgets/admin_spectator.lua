@@ -11,17 +11,17 @@
 aSpectator = { Offset = 5, AngleX = 0, AngleZ = 30, Spectating = nil }
 
 function aSpectate ( player )
-	if ( player == getLocalPlayer() ) then
-		aMessageBox ( "error", "Can not spectate yourself" )
-		return
-	end
+	--if ( player == getLocalPlayer() ) then
+	--	messageBox ( "Can not spectate yourself", MB_ERROR, MB_OK )
+	--	return
+	--end
 	aSpectator.Spectating = player
 	if ( ( not aSpectator.Actions ) or ( not guiGetVisible ( aSpectator.Actions ) ) ) then
-		aSpectator.Initialize ()
+		aSpectator.Open ()
 	end
 end
 
-function aSpectator.Initialize ()
+function aSpectator.Open ()
 	if ( aSpectator.Actions == nil ) then
 		local x, y = guiGetScreenSize()
 		aSpectator.Actions		= guiCreateWindow ( x - 190, y / 2 - 200, 160, 400, "Actions", false )
@@ -32,16 +32,18 @@ function aSpectator.Initialize ()
 		aSpectator.SetHealth		= guiCreateButton ( 0.10, 0.33, 0.80, 0.05, "Set Health", true, aSpectator.Actions )
 		aSpectator.SetArmour		= guiCreateButton ( 0.10, 0.39, 0.80, 0.05, "Set Armour", true, aSpectator.Actions )
 		aSpectator.SetStats		= guiCreateButton ( 0.10, 0.45, 0.80, 0.05, "Set Stats", true, aSpectator.Actions )
-		aSpectator.Slap			= guiCreateButton ( 0.10, 0.51, 0.80, 0.05, "Slap! "..aCurrentSlap.."hp", true, aSpectator.Actions )
+		aSpectator.Slap			= guiCreateButton ( 0.10, 0.51, 0.80, 0.05, "Slap! 20hp", true, aSpectator.Actions )
 		aSpectator.Slaps			= guiCreateGridList ( 0.10, 0.51, 0.80, 0.48, true, aSpectator.Actions )
-					  		  guiGridListAddColumn( aSpectator.Slaps, "", 0.85 )
+					  		  guiGridListAddColumn ( aSpectator.Slaps, "", 0.60 )
+							  guiGridListAddColumn ( aSpectator.Slaps, "", 0.60 )
 					  		  guiSetVisible ( aSpectator.Slaps, false )
 		local i = 0
-		while i <= 10 do
-			guiGridListSetItemText ( aSpectator.Slaps, guiGridListAddRow ( aSpectator.Slaps ), 1, tostring ( i * 10 ), false, false )
+		while i <= 5 do
+			guiGridListSetItemText ( aSpectator.Slaps, guiGridListAddRow ( aSpectator.Slaps ), 2, tostring ( i * 20 ), false, false )
 			i = i + 1
 		end
-		
+							  guiGridListRemoveColumn ( aSpectator.Slaps, "", 1 )
+
 		aSpectator.Skip			= guiCreateCheckBox ( 0.08, 0.85, 0.84, 0.04, "Skip dead players", true, true, aSpectator.Actions )
 					  		  guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
 		aSpectator.Back			= guiCreateButton ( 0.10, 0.93, 0.80, 0.05, "Back", true, aSpectator.Actions )
@@ -58,16 +60,19 @@ function aSpectator.Initialize ()
 		aSpectator.Prev			= guiCreateButton ( x / 2 - 100, y - 50, 70, 30, "< Previous", false )
 		aSpectator.Next			= guiCreateButton ( x / 2 + 30,  y - 50, 70, 30, "Next >", false )
 
-		addEventHandler ( "onClientGUIClick", _root, aSpectator.ClientClick )
-		addEventHandler ( "onClientGUIDoubleClick", _root, aSpectator.ClientDoubleClick )
+		addEventHandler ( "onClientGUIClick", aSpectator.Actions, aSpectator.ClientClick )
+		addEventHandler ( "onClientGUIClick", aSpectator.Players, aSpectator.ClientClick )
+		addEventHandler ( "onClientGUIClick", aSpectator.Prev, aSpectator.ClientClick )
+		addEventHandler ( "onClientGUIClick", aSpectator.Next, aSpectator.ClientClick )
 
-		aRegister ( "Spectator", aSpectator.Actions, aSpectator.ShowGUI, aSpectator.Close )
+		aRegister ( "Spectator", aSpectator.Actions, aSpectator.Open, aSpectator.Close )
 	end
 
 	bindKey ( "arrow_l", "down", aSpectator.SwitchPlayer, -1 )
 	bindKey ( "arrow_r", "down", aSpectator.SwitchPlayer, 1 )
 	bindKey ( "mouse_wheel_up", "down", aSpectator.MoveOffset, -1 )
 	bindKey ( "mouse_wheel_down", "down", aSpectator.MoveOffset, 1 )
+	bindKey ( "mouse2", "both", aSpectator.Cursor )
 	addEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
 	addEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
 	addEventHandler ( "onClientCursorMove", _root, aSpectator.CursorMove )
@@ -77,7 +82,7 @@ function aSpectator.Initialize ()
 	guiSetVisible ( aSpectator.Players, true )
 	guiSetVisible ( aSpectator.Next, true )
 	guiSetVisible ( aSpectator.Prev, true )
-	aAdminMenuClose ( false )
+	aAdminMain.Close ( false, "Spectator" )
 
 	showCursor ( true )
 end
@@ -92,53 +97,41 @@ function aSpectator.Cursor ( key, state )
 end
 
 function aSpectator.Close ( destroy )
-	unbindKey ( "arrow_l", "down", aSpectator.SwitchPlayer, -1 )
-	unbindKey ( "arrow_r", "down", aSpectator.SwitchPlayer, 1 )
-	unbindKey ( "mouse_wheel_up", "down", aSpectator.MoveOffset, -1 )
-	unbindKey ( "mouse_wheel_down", "down", aSpectator.MoveOffset, 1 )
-	removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
-	removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
-	removeEventHandler ( "onClientMouseMove", _root, aSpectator.MouseMove )
-	removeEventHandler ( "onClientRender", _root, aSpectator.Render )
-
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceSpectator ) ) ) then
-		if ( aSpectator.Actions ) then
-			removeEventHandler ( "onClientGUIClick", _root, aSpectator.ClientClick )
-			removeEventHandler ( "onClientGUIDoubleClick", _root, aSpectator.ClientDoubleClick )
+	if ( aSpectator.Actions ) then
+		unbindKey ( "arrow_l", "down", aSpectator.SwitchPlayer, -1 )
+		unbindKey ( "arrow_r", "down", aSpectator.SwitchPlayer, 1 )
+		unbindKey ( "mouse_wheel_up", "down", aSpectator.MoveOffset, -1 )
+		unbindKey ( "mouse_wheel_down", "down", aSpectator.MoveOffset, 1 )
+		unbindKey ( "mouse2", "both", aSpectator.Cursor )
+		removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
+		removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
+		removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
+		removeEventHandler ( "onClientRender", _root, aSpectator.Render )
+	
+		if ( destroy ) then
 			destroyElement ( aSpectator.Actions )
 			destroyElement ( aSpectator.Players )
 			destroyElement ( aSpectator.Next )
 			destroyElement ( aSpectator.Prev )
 			aSpectator.Actions = nil
+		else
+			guiSetVisible ( aSpectator.Actions, false )
+			guiSetVisible ( aSpectator.Players, false )
+			guiSetVisible ( aSpectator.Next, false )
+			guiSetVisible ( aSpectator.Prev, false )
 		end
-	else
-		guiSetVisible ( aSpectator.Actions, false )
-		guiSetVisible ( aSpectator.Players, false )
-		guiSetVisible ( aSpectator.Next, false )
-		guiSetVisible ( aSpectator.Prev, false )
 	end
 	setCameraTarget ( getLocalPlayer() )
 	aSpectator.Spectating = nil
-	showCursor ( true )
-	aAdminMenu()
-end
-
-function aSpectator.ClientDoubleClick ( button )
-	if ( source == aSpectator.Slaps ) then
-		if ( guiGridListGetSelectedItem ( aSpectator.Slaps ) ~= -1 ) then
-			aCurrentSlap = guiGridListGetItemText ( aSpectator.Slaps, guiGridListGetSelectedItem ( aSpectator.Slaps ), 1 )
-			guiSetText ( aTab1.Slap, "Slap! "..aCurrentSlap.."hp" )
-			guiSetText ( aSpectator.Slap, "Slap! "..aCurrentSlap.."hp" )
-		end
-		guiSetVisible ( aSpectator.Slaps, false )
-	end
 end
 
 function aSpectator.ClientClick ( button )
 	if ( source == aSpectator.Slaps ) then return end
 	guiSetVisible ( aSpectator.Slaps, false )
 	if ( button == "left" ) then
-		if ( source == aSpectator.Back ) then aSpectator.Close ( false )
+		if ( source == aSpectator.Back ) then
+			aSpectator.Close ( false )
+			aAdminMain.Open ()
 		elseif ( source == aSpectator.Ban ) then triggerEvent ( "onClientGUIClick", aTab1.Ban, "left" )
 		elseif ( source == aSpectator.Kick ) then triggerEvent ( "onClientGUIClick", aTab1.Kick, "left" )
 		elseif ( source == aSpectator.Freeze ) then triggerEvent ( "onClientGUIClick", aTab1.Freeze, "left" )
@@ -153,17 +146,6 @@ function aSpectator.ClientClick ( button )
 			if ( guiGridListGetSelectedItem ( source ) ~= -1 ) then
 				aSpectate ( getPlayerFromNick ( guiGridListGetItemText ( source, guiGridListGetSelectedItem ( source ), 1 ) ) )
 			end
-		end
-	elseif ( button == "right" ) then
-		if ( source == aSpectator.Slap ) then
-			guiSetVisible ( aSpectator.Slaps, true )
-		else
-			local show = not isCursorShowing()
-			guiSetVisible ( aSpectator.Actions, show )
-			guiSetVisible ( aSpectator.Players, show )
-			guiSetVisible ( aSpectator.Next, show )
-			guiSetVisible ( aSpectator.Prev, show )
-			showCursor ( show )
 		end
 	end
 end
@@ -214,14 +196,14 @@ end
 function aSpectator.Render ()
 	local sx, sy = guiGetScreenSize ()
 	if ( not aSpectator.Spectating ) then
-		dxDrawText ( "Nobody to spectate", sx - 170, 200, nil, nil, tocolor ( 255, 0, 0, 255 ), 1 )
+		dxDrawText ( "Nobody to spectate", sx - 170, 200, sx - 170, 200, tocolor ( 255, 0, 0, 255 ), 1 )
 		return
 	end
 
 	local x, y, z = getElementPosition ( aSpectator.Spectating )
 
 	if ( not x ) then
-		dxDrawText ( "Error recieving coordinates", sx - 170, 200, nil, nil, tocolor ( 255, 0, 0, 255 ), 1 )
+		dxDrawText ( "Error recieving coordinates", sx - 170, 200, sx - 170, 200, tocolor ( 255, 0, 0, 255 ), 1 )
 		return
 	end
 
@@ -232,14 +214,14 @@ function aSpectator.Render ()
 	setCameraMatrix ( ox, oy, oz, x, y, z )
 
 	local sx, sy = guiGetScreenSize ()
-	dxDrawText ( "Spectating: "..getPlayerName ( aSpectator.Spectating ), sx - 170, 200, nil, nil, tocolor ( 255, 255, 255, 255 ), 1 )
+	dxDrawText ( "Spectating: "..getPlayerName ( aSpectator.Spectating ), sx - 170, 200, sx - 170, 200, tocolor ( 255, 255, 255, 255 ), 1 )
 	if ( _DEBUG ) then
-		dxDrawText ( "DEBUG:\nAngleX: "..aSpectator.AngleX.."\nAngleZ: "..aSpectator.AngleZ.."\n\nOffset: "..aSpectator.Offset.."\nX: "..ox.."\nY: "..oy.."\nZ: "..oz.."\nDist: "..getDistanceBetweenPoints3D ( x, y, z, ox, oy, oz ), sx - 170, sy - 180, nil, nil, tocolor ( 255, 255, 255, 255 ), 1 )
+		dxDrawText ( "DEBUG:\nAngleX: "..aSpectator.AngleX.."\nAngleZ: "..aSpectator.AngleZ.."\n\nOffset: "..aSpectator.Offset.."\nX: "..ox.."\nY: "..oy.."\nZ: "..oz.."\nDist: "..getDistanceBetweenPoints3D ( x, y, z, ox, oy, oz ), sx - 170, sy - 180, sx - 170, sy - 180, tocolor ( 255, 255, 255, 255 ), 1 )
 	else
 		if ( isCursorShowing () ) then
-			dxDrawText ( "Tip: mouse2 - toggle free camera mode", 20, sy - 50, nil, nil, tocolor ( 255, 255, 255, 255 ), 1 )
+			dxDrawText ( "Tip: mouse2 - toggle free camera mode", 20, sy - 50, 20, sy - 50, tocolor ( 255, 255, 255, 255 ), 1 )
 		else
-			dxDrawText ( "Tip: Use mouse scroll to zoom in/out", 20, sy - 50, nil, nil, tocolor ( 255, 255, 255, 255 ), 1 )
+			dxDrawText ( "Tip: Use mouse scroll to zoom in/out", 20, sy - 50, 20, sy - 50, tocolor ( 255, 255, 255, 255 ), 1 )
 		end
 	end
 end
