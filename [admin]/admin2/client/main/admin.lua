@@ -14,12 +14,22 @@ aAdminMain = {
 	Tabs = {},
 	Tab = nil,
 	Widgets = {},
-	Refresh = 0
+	Refresh = 0,
+	Hidden = false
 }
 
 addEvent ( EVENT_SYNC, true )
 addEvent ( "onAdminInitialize", true )
 addEvent ( "onAdminRefresh", false )
+
+addEvent ( "aClientAdminMenu", true )
+addEventHandler ( "aClientAdminMenu", _root, function ()
+	if ( ( ( aAdminMain.Form ) and ( guiGetVisible ( aAdminMain.Form ) == true ) ) or ( aAdminMain.Hidden ) ) then
+		aAdminMain.Close ( false )
+	else
+		aAdminMain.Open ()
+	end
+end )
 
 function aAdminMain.Open ()
 	if ( aAdminMain.Form == nil ) then
@@ -46,12 +56,20 @@ function aAdminMain.Open ()
 	guiBlendElement ( aAdminMain.Form, 0.8 )
 	guiSetVisible ( aAdminMain.Form, true )
 	showCursor ( true )
+	aAdminMain.Hidden = false
 end
 
-function aAdminMain.Close ( destroy )
+function aAdminMain.Close ( destroy, exception )
+	if ( exception ) then
+		aAdminMain.Hidden = true
+	else
+		aAdminMain.Hidden = false
+	end
 	guiSetInputEnabled ( false )
-	for id, widget in pairs ( aAdminMain.Widgets ) do
-		widget.close ( destroy )
+	for name, widget in pairs ( aAdminMain.Widgets ) do
+		if ( name ~= exception ) then
+			widget.close ( destroy )
+		end
 	end
 	if ( destroy ) then
 		destroyElement ( aAdminMain.Form )

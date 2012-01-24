@@ -10,15 +10,6 @@
 
 local aSession = {}
 
-addEvent ( "aClientAdminMenu", true )
-addEventHandler ( "aClientAdminMenu", _root, function ()
-	if ( aAdminMain.Form ) and ( guiGetVisible ( aAdminMain.Form ) == true ) then
-		aAdminMain.Close ( false )
-	else
-		aAdminMain.Open ()
-	end
-end )
-
 addEvent ( EVENT_SESSION, true )
 addEventHandler ( EVENT_SESSION, getLocalPlayer(), function ( data )
 	local changed = false
