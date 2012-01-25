@@ -106,7 +106,7 @@ function aclGetAccountGroups ( account, ignoreall )
 end
 
 function getResourceSettings( resName, bCountOnly )
-	local allowedAccess = { ['*']=true }
+	local allowedAccess = { ['*'] = true, ['#'] = true, ['@'] = true }
 	local allowedTypes  = { ['boolean']=true, ['number']=true, ['string']=true, ['table']=true }
 	local count = 0
 

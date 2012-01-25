@@ -48,6 +48,9 @@ function aSetupCommands()
 end
 
 function aCommand ( admin, command, ... )
+	if ( get ( "consolecommands" ) ~= true ) then
+		return
+	end
 	local call = _commands[command]
 	if ( call ) then
 		if ( hasObjectPermissionTo ( admin, "command."..call.action ) ) then
