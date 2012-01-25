@@ -19,6 +19,7 @@
     <command handler="setskin" call="setskin" args="P,i" />
     <command handler="setstat" call="setstat" args="P,i,i" />
     <command handler="setteam" call="setteam" args="P,T" />
+    <command handler="setnick" call="setteam" args="P,s" />
     <command handler="setinterior" call="setinterior" args="P,i" />
     <command handler="setdimension" call="setdimension" args="P,i" />
     <command handler="jetpack" call="jetpack" args="P" />
@@ -26,6 +27,7 @@
     <command handler="giveweapon" call="giveweapon" args="P,i,i" />
     <command handler="slap" call="slap" args="P,i" />
     <command handler="warpto" call="warp" args="P" />
+    <command handler="getscreen" call="getscreen" args="P" />
   </player>
   <team>
     <command handler="createteam" call="createteam" args="s,i,i,i" />

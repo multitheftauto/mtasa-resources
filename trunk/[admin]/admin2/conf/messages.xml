@@ -116,6 +116,10 @@
       <admin>You have warped to $player</admin>
       <log>ADMIN: $admin has warped to $player</log>
     </group>
+    <group action="getscreen" r="0" g="200" b="50">
+      <player>Your screen is being checked by $admin</player>
+      <log>ADMIN: $admin took $player's screen shot</log>
+    </group>
     <group action="warpto" r="0" g="200" b="50">
       <admin>$player has been warped to $data</admin>
       <player>You have been warped to $data by Admin</player>

@@ -46,6 +46,7 @@ enum ({
 	"EVENT_ADMIN_CHAT",
 	"EVENT_ADMIN_OPEN",
 	"EVENT_MESSAGE_BOX",
+	"EVENT_SCREEN_SHOT",
 
 	"EVENT_RESOURCE_START",
 	"EVENT_RESOURCE_STOP",
@@ -93,6 +94,18 @@ enum ({
 	"PROXY_BLUR",
 	"PROXY_SPECIAL"
 }, "ap" )
+
+-- SCREENSHOT DEFINITIONS
+enum ({
+	"SCREENSHOT_SAVE",
+	"SCREENSHOT_DELETE"
+}, "sc" )
+
+enum ({
+	"SCREENSHOT_QLOW",
+	"SCREENSHOT_QMEDIUM",
+	"SCREENSHOT_QHIGH"
+}, "scq" )
 
 if ( not _DEBUG ) then
 	function outputDebugString ()
