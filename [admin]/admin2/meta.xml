@@ -24,6 +24,7 @@
   <script src="server/admin_bans.lua"                 type="server" />
   <script src="server/admin_network.lua"                 type="server" />
   <script src="server/admin_messagebox.lua"                 type="server" />
+  <script src="server/admin_screenshot.lua"                 type="server" />
 
   <script src="client/admin_coroutines.lua" 			        type="client" />
   <script src="client/admin_wrapper.lua" 			        type="client" />
@@ -53,6 +54,7 @@
   <script src="client/widgets/admin_stats.lua" 			  type="client" />
   <script src="client/widgets/admin_vehicle.lua" 		  type="client" />
   <script src="client/widgets/admin_interior.lua" 		type="client" />
+  <script src="client/widgets/admin_screenshot.lua" 		type="client" />
   <script src="client/widgets/admin_ban.lua" 			    type="client" />
   <script src="client/widgets/admin_warp.lua" 			  type="client" />
   <script src="client/widgets/admin_report.lua" 		  type="client" />
@@ -68,6 +70,7 @@
   <config src="conf/stats.xml" 						            type="client" />
   <config src="conf/messages.xml"					            type="server" />
   <config src="conf/commands.xml"					            type="server" />
+  <config src="conf/screenshots.xml"					            type="server" />
   <config src="conf/ACL.xml"						              type="server" />
 
   <!--Images-->

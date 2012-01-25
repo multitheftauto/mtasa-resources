@@ -26,11 +26,13 @@
     <right name="command.setarmour" access="true" />
     <right name="command.setmoney" access="true" />
     <right name="command.setskin" access="true" />
+    <right name="command.setnick" access="true" />
     <right name="command.setteam" access="true" />
     <right name="command.giveweapon" access="true" />
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.getscreen" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
     <!--Teams related-->
@@ -106,10 +108,12 @@
     <right name="command.setmoney" access="true" />
     <right name="command.setskin" access="true" />
     <right name="command.setteam" access="true" />
+    <right name="command.setnick" access="true" />
     <right name="command.giveweapon" access="true" />
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.getscreen" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
     <!--Teams related-->
@@ -185,10 +189,12 @@
     <right name="command.setmoney" access="false" />
     <right name="command.setskin" access="true" />
     <right name="command.setteam" access="true" />
+    <right name="command.setnick" access="false" />
     <right name="command.giveweapon" access="true" />
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.getscreen" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
     <!--Teams related-->
@@ -264,10 +270,12 @@
     <right name="command.setmoney" access="false" />
     <right name="command.setskin" access="false" />
     <right name="command.setteam" access="false" />
+    <right name="command.setnick" access="false" />
     <right name="command.giveweapon" access="false" />
     <right name="command.setstat" access="false" />
     <right name="command.jetpack" access="false" />
     <right name="command.warp" access="false" />
+    <right name="command.getscreen" access="false" />
     <right name="command.setdimension" access="false" />
     <right name="command.setinterior" access="false" />
     <!--Vehicle related-->

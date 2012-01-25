@@ -70,7 +70,7 @@ function aPlayerInitialize ( player )
 	aPlayers[player].countryname = getPlayerCountryName ( player )
 	aPlayers[player].money = getPlayerMoney ( player )
 	aPlayers[player].muted = isPlayerMuted ( player )
-	aPlayers[player].frozen = isPedFrozen ( player )
+	aPlayers[player].frozen = isElementFrozen ( player )
 end
 
 function aAction ( type, action, admin, player, data, more )

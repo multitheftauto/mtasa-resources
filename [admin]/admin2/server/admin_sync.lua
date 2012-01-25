@@ -16,7 +16,7 @@ addEventHandler ( EVENT_SYNC, _root, function ( type, data )
 		if ( not isElement( data ) ) then return end
 		aPlayers[source]["sync"] = data
 		tableOut["mute"] = isPlayerMuted ( data )
-		tableOut["freeze"] = isPedFrozen ( data )
+		tableOut["freeze"] = isElementFrozen ( data )
 		tableOut["money"] = getPlayerMoney ( data )
 		tableOut["version"] = getPlayerVersion ( data )
 		local account = getPlayerAccount ( data )
@@ -123,7 +123,7 @@ addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource ()
 				aPlayers[player].money = money
 			end
 
-			local frozen = isPedFrozen ( player )
+			local frozen = isElementFrozen ( player )
 			prev = data.frozen or false
 			if ( frozen ~= prev ) then
 				triggerEvent ( "onPlayerFrozen", player, frozen )
