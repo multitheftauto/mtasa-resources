@@ -1,0 +1,221 @@
+<*
+	local admin = false
+    if ( not isGuestAccount ( user ) ) then
+    	if ( hasObjectPermissionTo ( "user."..getAccountName ( user ), "command.getscreen", false ) ) then
+    		admin = true
+        end
+    end
+*>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <*= call ( getResourceFromName("ajax"), "start", getResourceName(getThisResource()) ) *>
+    <style type="text/css">
+		img
+		{
+			width: 240px;
+			height: 180px;
+			float: left;
+		}
+		
+		div.screenshot
+		{
+			background-color: #EEE;
+			height: 180px;
+			padding: 5px;
+			margin: 5px;
+		}
+		
+		div.description
+		{
+			margin-left: 250px;
+		}
+		
+		h4
+		{
+			margin: 0;
+			padding: 2px;
+			background-color: #555555;
+			color: #EEE;
+		}
+		
+		div.search
+		{
+			background-color: #555555;
+			padding: 3px 7px;;
+			color: #EEE;
+		}
+		
+		p.timestamp
+		{
+			font-size: 12px;	
+		}
+		
+		a, a:visited, a:hover
+		{
+			color: #C60;	
+		}
+	</style>
+    <script type="text/javascript">
+		function scr_del ( id )
+		{
+			if ( confirm ( "Are you sure you want to delete this screenshot?" ) )
+			{
+				document.del.delete.value = id;
+				document.del.submit();
+			}
+		}
+	</script>
+</head>
+<body>
+    <*
+    local db = dbConnect ( "sqlite", "conf\\settings.db" )
+    
+    function htmlspecialchars ( string )
+    	string = string.gsub ( string, "&", "&amp;" )
+        string = string.gsub ( string, '"', "&quot;" )
+        string = string.gsub ( string, "<", "&lt;" )
+        return tostring ( string.gsub ( string, ">", "&gt;" ) )
+    end
+    
+    function getformdata ( name, default, min, max )
+        if ( form[name] and tonumber ( form[name] ) ) then
+        	local t = tonumber ( form[name] )
+            if ( t >= min and t <= max ) then
+            	return t
+            end
+        end
+        return default
+    end
+    
+    function exec ( q, ... )
+    	dbExec ( db, q, ... )
+    end
+    
+    function query ( q, ... )
+    	local handle = dbQuery ( db, q, ... )
+        local result = dbPoll ( handle, -1 )
+        dbFree ( handle )
+        return result or {}
+    end
+
+	if ( form['delete'] and admin ) then
+        local id = tonumber ( form['delete'] )
+        if ( id ) then
+        	exec ( "DELETE FROM screenshots WHERE rowid="..id )
+		end
+    end
+    
+    local players = query ( "SELECT DISTINCT player FROM screenshots WHERE player IS NOT NULL ORDER BY player ASC" )
+    local admins = query ( "SELECT DISTINCT admin FROM screenshots WHERE admin IS NOT NULL ORDER BY admin ASC" )
+    
+    local order_columns = { 'time', 'player', 'admin' }
+    local order_dirs = { 'DESC', 'ASC' }
+    
+    local search_player = getformdata ( 'player', 0, 0, table.getn ( players ) );    
+    local search_admin = getformdata ( 'admin', 0, 0, table.getn ( admins ) );
+    local search_order = getformdata ( 'order', 1, 1, 3 );
+    local search_direction = getformdata ( 'direction', 1, 1, 2 );
+    local search_show = getformdata ( 'show', 10, 10, 30 );
+    
+    local q = "FROM screenshots WHERE 1=1"
+    if ( search_player > 0 and players[search_player].player ) then
+    	q = q.." AND player='"..players[search_player].player.."'"
+    end
+    if ( search_admin > 0 and admins[search_admin].admin ) then
+    	q = q.." AND admin='"..admins[search_admin].admin.."'"
+    end
+    
+    local count = query ( "SELECT COUNT(*) as count "..q )[1].count
+    local pages = math.ceil ( count / search_show )
+    if ( pages <= 0 ) then
+    	pages = 1
+    end
+    
+    local search_page = getformdata ( 'page', 1, 1, pages )
+    
+    local data = query ( "SELECT rowid, * "..q.." ORDER BY "..order_columns[search_order].." "..order_dirs[search_direction].." LIMIT "..( ( search_page - 1 ) * search_show )..","..search_show )
+	*>
+    <div class="search">
+    	<form name="del" method="post" action="">
+        	<input name="delete" type="hidden" value="-1" />
+        </form>
+    	<form name="srch" method="get" action="">
+        	<strong>Filters &gt; </strong> 
+        	<label>Player: <select name="player" onchange="document.srch.submit ();">
+            	<option value="0">Any</option>
+            <*
+            for i, row in ipairs ( players ) do
+            	*>
+                <option value="<*=tostring(i)*>"<* if ( i == search_player ) then httpWrite ( ' selected="selected"' ) end*>><*=htmlspecialchars ( row.player )*></option>
+                <*
+            end
+            *>
+            </select></label>
+            <label>Admin: <select name="admin" onchange="document.srch.submit ();">
+            	<option value="0">Any</option>
+            <*
+            for i, row in ipairs ( admins ) do
+            	*>
+                <option value="<*=tostring(i)*>"<* if ( i == search_admin ) then httpWrite ( ' selected="selected"' ) end*>><*=htmlspecialchars ( row.admin )*></option>
+                <*
+            end
+            *>
+            </select></label>
+            <label>Order by: <select name="order" onchange="document.srch.submit ();">
+            	<option value="1"<* if ( search_order == 1 ) then httpWrite ( ' selected="selected"' ) end*>>Time</option>
+                <option value="2"<* if ( search_order == 2 ) then httpWrite ( ' selected="selected"' ) end*>>Player name</option>
+                <option value="3"<* if ( search_order == 3 ) then httpWrite ( ' selected="selected"' ) end*>>Admin name</option>
+            </select></label>
+            <select name="direction" onchange="document.srch.submit ();">
+            	<option value="1"<* if ( search_direction == 1 ) then httpWrite ( ' selected="selected"' ) end*>>DESC</option>
+                <option value="2"<* if ( search_direction == 2 ) then httpWrite ( ' selected="selected"' ) end*>>ASC</option>
+            </select>
+            <label style="float: right;">&nbsp;Show per page: <select name="show" onchange="document.srch.submit ();">
+            	<*
+                for i = 1,3 do
+                *>
+                <option value="<*=tostring(i*10)*>"<* if ( i*10 == search_show ) then httpWrite ( ' selected="selected"' ) end*>><*=tostring(i*10)*></option>
+                <*
+                end
+                *>
+            </select></label> 
+            <label style="float: right;">Page: <select name="page" onchange="document.srch.submit ();">
+            	<*
+                for i = 1,pages do
+                *>
+                <option value="<*=tostring(i)*>"<* if ( i == search_page ) then httpWrite ( ' selected="selected"' ) end*>><*=tostring(i)*></option>
+                <*
+                end
+                *>
+            </select></label>
+        </form>
+    </div>
+    <*
+
+    for id, row in ipairs ( data ) do
+    	local time = getRealTime ( row.time )
+    	local real_time = string.format ( "%.2d.%.2d.%.2d at %.2d:%.2d", time.monthday, time.month + 1, time.year + 1900, time.hour, time.minute )
+    *>
+        <div class="screenshot">
+            <a href="/admin/http/screenshot.htm?file=<*=row.file*>"><img src="/admin/http/screenshot.htm?file=<*=row.file*>" alt="Screenshot"></a>
+            <div class="description">
+                <h4>
+                	Player: <*=htmlspecialchars ( row.player )*>
+               		<* if ( admin ) then *>
+                    <a style="float: right;" href="#" onclick="scr_del ( <*=tostring(row.rowid)*> ); return false;">Delete</a>
+                    <* end *>
+                </h4>
+                <p>
+                	<*=row.description*>
+                </p>
+                <p class="timestamp">
+                    Taken by <*=htmlspecialchars ( row.admin )*> <* if ( row.time ) then *> on <*=real_time*> <* end *>
+                </p>
+            </div>
+        </div>
+    <*
+    end
+    *>
+</body>
+</html>
