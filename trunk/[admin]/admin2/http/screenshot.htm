@@ -1,0 +1,11 @@
+<*
+if ( form and form['file'] ) then
+	filename = form['file']
+    if ( not fileExists ( "screenshots\\"..filename ) ) then
+    	return
+    end
+	httpSetResponseHeader ( "content-type", "image/jpeg" )
+	local file = fileOpen ( "screenshots\\"..filename )
+    httpWrite ( fileRead ( file, fileGetSize ( file ) ) )
+end
+*>

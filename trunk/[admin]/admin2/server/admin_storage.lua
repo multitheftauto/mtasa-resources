@@ -9,15 +9,10 @@
 **************************************]]
 
 function aSetupStorage ()
-	local query = executeSQLSelect ( "sqlite_master", "name", "name='admin_alias'" )
-	if ( not query or not query[1] ) then
-		executeSQLCreateTable ( "admin_alias", "ip TEXT, serial TEXT, name TEXT, time INTEGER" )
-	end
+	--local query = db.query ( "SELECT name FROM sqlite_master WHERE name='admin_alias'" )
 
-	local query = executeSQLSelect ( "sqlite_master", "name", "name='admin_warnings'" )
-	if ( not query or not query[1] ) then
-		executeSQLCreateTable ( "admin_warnings", "ip TEXT, serial TEXT, admin TEXT, reason TEXT, time INTEGER" )
-	end
+	db.exec ( "CREATE TABLE IF NOT EXISTS alias ( ip TEXT, serial TEXT, name TEXT, time INTEGER )" )
+	db.exec ( "CREATE TABLE IF NOT EXISTS warnings ( ip TEXT, serial TEXT, name TEXT, time INTEGER )" )
 
 	local node = xmlLoadFile ( "conf\\interiors.xml" )
 	if ( node ) then
