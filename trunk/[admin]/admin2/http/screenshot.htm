@@ -7,5 +7,6 @@ if ( form and form['file'] ) then
 	httpSetResponseHeader ( "content-type", "image/jpeg" )
 	local file = fileOpen ( "screenshots\\"..filename )
     httpWrite ( fileRead ( file, fileGetSize ( file ) ) )
+	fileClose ( file )
 end
 *>
