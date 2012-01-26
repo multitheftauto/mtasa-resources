@@ -135,6 +135,8 @@
     local search_page = getformdata ( 'page', 1, 1, pages )
     
     local data = query ( "SELECT rowid, * "..q.." ORDER BY "..order_columns[search_order].." "..order_dirs[search_direction].." LIMIT "..( ( search_page - 1 ) * search_show )..","..search_show )
+
+    destroyElement ( db ) -- it better not fail before it gets here, stupid mta!
 	*>
     <div class="search">
     	<form name="del" method="post" action="">
