@@ -10,6 +10,7 @@ local lastTick
 local warning
 divingTick = 0
 divingSpeed = nil
+local g_skydivers = {}
 
 local function onRender()
 	--Process the local player
@@ -119,7 +120,7 @@ local function onRender()
 		end
 	end
 	--Process remote players
-	for k,player in ipairs(getElementsByType"player") do
+	for player,bool in ipairs(g_skydivers) do
 		if player ~= localPlayer and getElementData ( player, "skydiving" ) and isElementStreamedIn(player) then
 			local velX,velY,velZ = getElementVelocity ( player )
 			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
@@ -146,6 +147,7 @@ function onSkyDivingWasted()
 	stopSkyDiving()
 	setPedAnimation(localPlayer)
 	setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, false)
+	g_skydivers[localPlayer] = nil
 end
 
 function stopSkyDiving()
@@ -157,6 +159,7 @@ function stopSkyDiving()
 	removeEventHandler ( "onClientRender", root, warningText )
 	divingSpeed = nil
 	divingTick = 0
+	g_skydivers[localPlayer] = nil
 end
 
 local g_screenX,g_screenY = guiGetScreenSize()
@@ -177,3 +180,14 @@ end
 function isPlayerSkyDiving(player)
 	return getElementData(player, "skydiving", false)
 end
+
+function updateSkyDiving ( data, oldval )
+	if ( source ~= localPlayer and data == "skydiving" ) then
+		if ( getElementData ( source, "skydiving" ) == true ) then
+			g_skydivers[source] = true
+		else
+			g_skydivers[source] = nil			
+		end
+	end
+end
+addEventHandler ( "onClientElementDataChange", root, updateSkyDiving )
