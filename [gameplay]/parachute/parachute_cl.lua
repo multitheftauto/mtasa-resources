@@ -13,7 +13,7 @@ opentime = 1000
 local lastAnim = {}
 local lastTick
 local removing = false
-
+local g_parachuters = {}
 local function onResourceStart ( resource )
 	bindKey ( "fire", "down", onFire )
 	bindKey ( "enter_exit", "down", onEnter )
@@ -124,7 +124,7 @@ local function onRender ( )
 		end
 	end
 	--Render remote players
-	for k,player in ipairs(getElementsByType("player", root, true)) do
+	for player,t in ipairs(g_parachuters) do
 		if player ~= localPlayer and getElementData ( player, "parachuting" ) and isElementStreamedIn(player) then
 			local velX,velY,velZ = getElementVelocity ( player )
 			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
@@ -178,6 +178,7 @@ function onWasted()
 end
 
 function addLocalParachute()
+	g_parachuters[localPlayer] = true
 	local x,y,z = getElementPosition ( localPlayer )
 	local chute = createObject ( 3131, x,y,z )
 	setElementDimension(chute, getElementDimension( localPlayer ) )
@@ -192,6 +193,7 @@ function removeParachute(player,type)
 		if removing then return end
 		removing = true
 	end
+	g_parachuters[player] = nil
 
 	local chute = getPlayerParachute ( player )
 	 setTimer ( setPedAnimation, t(3000), 1, player )
@@ -249,6 +251,7 @@ addEventHandler ( "doAddParachuteToPlayer", root,
 		setElementDimension( chute, getElementDimension( source ) )
 		setElementStreamable(chute, false )
 		openChute ( chute, source, opentime )
+		g_parachuters[source] = true
 	end
 )
 
@@ -259,9 +262,11 @@ addEventHandler ( "doRemoveParachuteFromPlayer", root,
 		if not isPedOnGround ( source ) or not getPedContactElement ( source ) then
 			setPedNewAnimation ( source, nil, "PARACHUTE", "PARA_Land", t(3000), false, true, false )
 			removeParachute(source, "land" )
+			g_parachuters[source] = nil
 		else
 			setPedNewAnimation ( source, nil, "PARACHUTE", "PARA_Land_Water", t(3000), false, true, true )
 			removeParachute(source, "water" )
+			g_parachuters[source] = nil
 		end
 	end
 )
