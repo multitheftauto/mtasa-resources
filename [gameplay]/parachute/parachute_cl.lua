@@ -178,7 +178,6 @@ function onWasted()
 end
 
 function addLocalParachute()
-	g_parachuters[localPlayer] = true
 	local x,y,z = getElementPosition ( localPlayer )
 	local chute = createObject ( 3131, x,y,z )
 	setElementDimension(chute, getElementDimension( localPlayer ) )
@@ -193,7 +192,6 @@ function removeParachute(player,type)
 		if removing then return end
 		removing = true
 	end
-	g_parachuters[player] = nil
 
 	local chute = getPlayerParachute ( player )
 	 setTimer ( setPedAnimation, t(3000), 1, player )
@@ -251,7 +249,6 @@ addEventHandler ( "doAddParachuteToPlayer", root,
 		setElementDimension( chute, getElementDimension( source ) )
 		setElementStreamable(chute, false )
 		openChute ( chute, source, opentime )
-		g_parachuters[source] = true
 	end
 )
 
@@ -262,11 +259,9 @@ addEventHandler ( "doRemoveParachuteFromPlayer", root,
 		if not isPedOnGround ( source ) or not getPedContactElement ( source ) then
 			setPedNewAnimation ( source, nil, "PARACHUTE", "PARA_Land", t(3000), false, true, false )
 			removeParachute(source, "land" )
-			g_parachuters[source] = nil
 		else
 			setPedNewAnimation ( source, nil, "PARACHUTE", "PARA_Land_Water", t(3000), false, true, true )
 			removeParachute(source, "water" )
-			g_parachuters[source] = nil
 		end
 	end
 )
@@ -296,3 +291,14 @@ end
 function isPlayerParachuting(player)
 	return getElementData(player, "parachuting", false)
 end
+
+function updateParachuting ( data, oldval )
+	if ( source ~= localPlayer and data == "parachuting" ) then
+		if ( getElementData ( source, "parachuting" ) == true ) then
+			g_parachuters[source] = true
+		else
+			g_parachuters[source] = nil			
+		end
+	end
+end
+addEventHandler ( "onClientElementDataChange", root, updateParachuting )
