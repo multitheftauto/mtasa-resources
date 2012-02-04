@@ -1,0 +1,23 @@
+<meta>
+	<info author="lil_Toady, Flobu &amp; dragon" version="0.5" />
+
+	<script src="definitions.lua" type="client" />
+	<script src="definitions.lua" type="server" />
+  	<script src="traffic_common.lua" type="client" />
+  	<script src="traffic_common.lua" type="server" />
+	
+	<script src="client/traffic_client.lua" type="client" />
+	<script src="client/traffic_interpolation.lua" type="client" />
+	<script src="client/traffic_processor.lua" type="client" />
+	
+  	<script src="server/traffic_server.lua" type="server" />
+  	<script src="server/traffic_wrapper.lua" type="server" />
+
+  	<script src="definitions/area_paths.lua" type="client" />
+  	<script src="definitions/area_paths.lua" type="server" />
+  	<script src="definitions/area_limits.lua" type="server" />
+  	<script src="definitions/area_vehicles.lua" type="server" />
+	
+	<script src="definitions/nodes.lua" type="client" />
+	<script src="definitions/nodes.lua" type="server" />
+</meta>
