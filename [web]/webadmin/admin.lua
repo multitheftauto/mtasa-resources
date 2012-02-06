@@ -14,6 +14,7 @@ function getACLs()
 end
 
 function setACLRight( aclname, rightname, access )
+	if not checkCaller( "setACLRight" ) then return end
 	local acl = aclGet(aclname)
 	if ( acl ) then
 		if ( aclSetRight ( acl, rightname, access ) ) then
@@ -26,6 +27,7 @@ function setACLRight( aclname, rightname, access )
 end
 
 function removeACLRight ( aclname, rightname )
+	if not checkCaller( "removeACLRight" ) then return end
 	local acl = aclGet ( aclname )
 	if ( acl ) then
 		if ( aclRemoveRight ( acl, rightname ) ) then
@@ -38,6 +40,7 @@ function removeACLRight ( aclname, rightname )
 end
 
 function createACL ( aclname )
+	if not checkCaller( "createACL" ) then return end
 	if ( aclCreate ( aclname ) ~= false ) then
 		if ( aclSave () ) then
 			return true;
@@ -47,6 +50,7 @@ function createACL ( aclname )
 end
 
 function removeACL ( aclname )
+	if not checkCaller( "removeACL" ) then return end
 	local acl = aclGet ( aclname )
 	if ( acl ) then
 		if ( aclDestroy ( acl ) ) then
@@ -77,6 +81,7 @@ function getGroups()
 end
 
 function addObjectToGroup(groupname, objectname)
+	if not checkCaller( "addObjectToGroup" ) then return end
 	local aclgroup = aclGetGroup(groupname)
 	if ( aclgroup ) then
 		return aclGroupAddObject ( aclgroup, objectname )
@@ -84,6 +89,7 @@ function addObjectToGroup(groupname, objectname)
 end
 
 function addACLToGroup(groupname, aclname)
+	if not checkCaller( "addACLToGroup" ) then return end
 	local aclgroup = aclGetGroup(groupname)
 	if ( aclgroup ) then
 		local acl = aclGet ( aclname )
@@ -94,6 +100,7 @@ function addACLToGroup(groupname, aclname)
 end
 
 function removeObjectFromGroup ( groupname, objectname )
+	if not checkCaller( "removeObjectFromGroup" ) then return end
 	local group = aclGetGroup ( groupname )
 	if ( group ) then
 		if ( aclGroupRemoveObject ( group, objectname ) ) then
@@ -106,6 +113,7 @@ function removeObjectFromGroup ( groupname, objectname )
 end
 
 function removeACLFromGroup ( groupname, aclname )
+	if not checkCaller( "removeACLFromGroup" ) then return end
 	local group = aclGetGroup ( groupname )
 	if ( group ) then
 		local acl = aclGet(aclname)
@@ -121,6 +129,7 @@ function removeACLFromGroup ( groupname, aclname )
 end
 
 function removeGroup ( groupname )
+	if not checkCaller( "removeGroup" ) then return end
 	local group = aclGetGroup ( groupname )
 	if ( group ) then
 		if ( aclDestroyGroup ( group ) ) then
@@ -132,7 +141,8 @@ function removeGroup ( groupname )
 	return false
 end
 
-function addGroup ( groupname ) 
+function addGroup ( groupname )
+	if not checkCaller( "addGroup" ) then return end
 	if ( aclCreateGroup ( groupname ) ) then
 		if ( aclSave() ) then
 			return true
@@ -146,4 +156,12 @@ function isAccountNameValid ( accountname )
 		return true
 	end
 	return false
+end
+
+function checkCaller( funcname )
+	if not user then
+		outputDebugString ( funcname .. " can only be called via http", 2 )
+		return false
+	end
+	return true
 end

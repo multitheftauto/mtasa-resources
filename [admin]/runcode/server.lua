@@ -79,6 +79,7 @@ addCommandHandler("crun",
 
 -- http interface run export
 function httpRun(commandstring)
+	if not user then outputDebugString ( "httpRun can only be called via http", 2 ) return end
 	local notReturned
 	--First we test with return
 	local commandFunction,errorMsg = loadstring("return "..commandstring)
