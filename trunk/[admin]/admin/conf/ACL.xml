@@ -3,10 +3,7 @@
     Access List of commands Admin System uses.
     
     This is the default setup.
-    
-    Editing this file will not update the ACL settings
-    if the admin resources has been started at least once
-    on the server.
+
   -->
   <acl name="Admin">
     <!--This is the ACL for Admin group-->
@@ -72,6 +69,9 @@
     <right name="command.setgamespeed" access="true" />
     <right name="command.setgravity" access="true" />
     <right name="command.settime" access="true" />
+    <right name="function.setServerConfigSetting" access="true" />
+    <right name="function.updateResourceACLRequest" access="true" />
+    <right name="command.aclrequest" access="true" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
     <right name="command.unban" access="true" />
