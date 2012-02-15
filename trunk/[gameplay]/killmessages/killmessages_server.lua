@@ -63,12 +63,12 @@ function KillMessages_onPlayerWasted ( totalammo, killer, killerweapon, bodypart
 			end
 		end
 		local triggered = triggerEvent ( "onPlayerKillMessage", source,killer,killerweapon,bodypart )
-		--outputDebugString ( "Cancelled: "..tostring(triggered) )
+				--outputDebugString ( "Cancelled: "..tostring(triggered) )
 		if ( triggered ) then
 			eventTriggered ( source,killer,killerweapon,bodypart,false,usedVehicle)
 		end
 	else
-		local triggered = triggerEvent ( "onPlayerKillMessage", getRandomPlayer(),false,killerweapon,bodypart )
+		local triggered = triggerEvent ( "onPlayerKillMessage", source,false,killerweapon,bodypart )
 		--outputDebugString ( "Cancelled: "..tostring(triggered) )
 		if ( triggered ) then
 			eventTriggered ( source,false,killerweapon,bodypart,false,usedVehicle)
