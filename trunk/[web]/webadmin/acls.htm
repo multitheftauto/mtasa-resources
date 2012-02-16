@@ -304,14 +304,17 @@ function.[name]
 			var aclparts = aclname.split(".");
 			if ( aclparts.length == 2 ) 
 			{
-				if ( aclparts[0] == "resource" )
+				if (aclparts[0] == "resource") {
+					if (aclparts[1] == "*")
+						return "[all resources]";
 					return aclparts[1];
-				else if ( aclparts[0] == "general" )
-					return aclparts[1] ;
-				else if ( aclparts[0] == "command" )
+				}
+				else if (aclparts[0] == "general")
 					return aclparts[1];
-				else if ( aclparts[0] == "function" )
-					return aclparts[1] ;
+				else if (aclparts[0] == "command")
+					return aclparts[1];
+				else if (aclparts[0] == "function")
+					return aclparts[1];
 			}
 			else if ( aclparts.length == 4 )
 			{
@@ -409,6 +412,8 @@ function.[name]
 				case 4:
 					return "general." + document.getElementById("addrightsetting4Name").value;
 				case 5:
+					if (document.getElementById("addrightsetting5Resource").value == "[all resources]")
+						return "resource.*";
 					return "resource." + document.getElementById("addrightsetting5Resource").value;
 				case 6:
 					return "resource." + document.getElementById("addrightsetting6Resource").value + ".file." + document.getElementById("addrightsetting6Filename").value;
@@ -547,6 +552,7 @@ function.[name]
 						
 						<div class="addrighttabpane" id="addrightsetting5" style="display:none;">
 							<label for="addrightsetting5Resource">Resource:</label> <select id="addrightsetting5Resource" onkeyup="updateRightNamePreview();" onchange="updateRightNamePreview();">
+							<option>[all resources]</option>
 							<*
 							local resourceNames = {}
 							for _,resource in ipairs(getResources()) do
