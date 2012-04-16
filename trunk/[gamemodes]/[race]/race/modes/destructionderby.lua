@@ -62,11 +62,15 @@ function DestructionDerby:handleFinishActivePlayer(player)
 	self.rankingBoard:add(player, timePassed)
 	-- Do remove
 	finishActivePlayer(player)
+	if rank and rank > 1 then
+		triggerEvent( "onPlayerFinishDD",player,tonumber( rank ) )
+	end
 	-- Update ranking board if one player left
 	local activePlayers = getActivePlayers()
 	if #activePlayers == 1 then
 		self.rankingBoard:add(activePlayers[1], timePassed)
 		showMessage(getPlayerName(activePlayers[1]) .. ' is the final survivor!', 0, 255, 0)
+		triggerEvent( "onPlayerWinDD",activePlayers[1] )
 	end
 end
 
