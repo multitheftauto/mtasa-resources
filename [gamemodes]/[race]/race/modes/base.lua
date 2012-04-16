@@ -323,6 +323,7 @@ function RaceMode:onPlayerWasted(player)
 	end
 	if g_MapOptions.respawn == 'none' then
 		removeActivePlayer( player )
+		TimerManager.createTimerFor("map",player):setTimer(clientCall, 2000, 1, player, 'Spectate.start', 'auto')
 		if getActivePlayerCount() < 1 and g_CurrentRaceMode.running then
 			RaceMode.endMap()
 		end
