@@ -61,6 +61,7 @@ function DestructionDerby:handleFinishActivePlayer(player)
 	local timePassed = self:getTimePassed()
 	self.rankingBoard:add(player, timePassed)
 	-- Do remove
+	local rank = self:getPlayerRank(player)
 	finishActivePlayer(player)
 	if rank and rank > 1 then
 		triggerEvent( "onPlayerFinishDD",player,tonumber( rank ) )
