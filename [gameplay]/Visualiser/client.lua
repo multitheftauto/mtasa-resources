@@ -7,7 +7,7 @@ local screenStartX = screenStartX * 0
 local SPECHEIGHT = (SPECWIDTH / 16) * 7  -- height (changing requires palette adjustments too)
 local screenStartY = SPECHEIGHT / 2
 local BANDS = 40
-
+local use_dx = true
 
 local peakData, ticks, maxbpm, startTime, release, peak, peaks
 function reset ( )
