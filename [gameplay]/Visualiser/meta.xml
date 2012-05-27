@@ -1,6 +1,6 @@
 <meta>
   <info type="script" />
-  <min_mta_version client="1.3.0-9.04123" />
+  <min_mta_version client="1.3.0-9.04162" />
   <script src="client.lua" type="client" />
   <script src="server.lua" type="server" />
   <file src="texreptransform.fx" />
