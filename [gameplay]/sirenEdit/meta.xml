@@ -1,0 +1,8 @@
+<meta>
+    	<info author="Cazomino05" name="GUI Siren Modifier" version="1.0" type="misc" />
+	<min_mta_version client="1.3.0-9.04123" server="1.3.0-9.04123" />
+	<script src="complex.lua" type="client" />
+	<script src="matrix.lua" type="client" />
+	<script src="script.lua" type="client" />
+	<script src="server.lua" type="server" />
+</meta>
