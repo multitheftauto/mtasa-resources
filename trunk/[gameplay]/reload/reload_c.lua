@@ -1,6 +1,7 @@
 ﻿addCommandHandler("Reload weapon",
 	function()
-		triggerServerEvent("onPlayerReload",getLocalPlayer())
+		if (not isPedInVehicle(localPlayer) and not isPedOnGround(localPlayer) and not getPedContactElement(localPlayer)) then return end
+		triggerServerEvent("onPlayerReload", localPlayer)
 	end
 )
 
