@@ -1,6 +1,7 @@
 ﻿addCommandHandler("Reload weapon",
 	function()
-		if (not isPedInVehicle(localPlayer) and not isPedOnGround(localPlayer) and not getPedContactElement(localPlayer) and not doesPedHaveJetPack(localPlayer)) then return end
+		local task = getPedSimplestTask(localPlayer)
+		if ((task == "TASK_SIMPLE_JUMP" or task == "TASK_SIMPLE_IN_AIR") and not doesPedHaveJetPack(localPlayer)) then return end
 		triggerServerEvent("onPlayerReload", localPlayer)
 	end
 )
