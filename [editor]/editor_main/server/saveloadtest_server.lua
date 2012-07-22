@@ -237,7 +237,7 @@ function openResource( resourceName, onStart )
 		end
 		
 		returnValue = true
-		if not onStart then
+		if onStart then
 			openingMapName = mapName
 		end
 	else
