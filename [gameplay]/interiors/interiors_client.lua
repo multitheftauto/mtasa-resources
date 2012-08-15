@@ -157,7 +157,7 @@ end
 local opposite = { ["interiorReturn"] = "entry",["interiorEntry"] = "return" }
 local idLoc = { ["interiorReturn"] = "refid",["interiorEntry"] = "id" }
 function colshapeHit( player, matchingDimension )
-	if getElementType ( player ) ~= "player" then return end
+	if not isElement ( player ) or getElementType ( player ) ~= "player" then return end
 	if player ~= localPlayer then return end
 	if ( not matchingDimension ) or ( isPedInVehicle ( player ) ) or 
 	( doesPedHaveJetPack ( player ) ) or ( not isPedOnGround ( player ) ) or 
