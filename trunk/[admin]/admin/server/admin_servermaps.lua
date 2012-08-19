@@ -15,39 +15,48 @@ function getServerMaps (loadList)
 		tableOut = {}
 		-- local deletedMaps = {}
 		local gamemodes = {}
-		gamemodes = call(getResourceFromName("mapmanager"), "getGamemodes")
-		for id,gamemode in ipairs (gamemodes) do
-			tableOut[id] = {}
-			tableOut[id].name = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
-			tableOut[id].resname = getResourceName(gamemode)
-			tableOut[id].maps = {}
-			local maps = call(getResourceFromName("mapmanager"), "getMapsCompatibleWithGamemode" , gamemode)
-			for _,map in ipairs (maps) do
-				table.insert(tableOut[id]["maps"] ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
+		local mapmanager = getResourceFromName("mapmanager")
+		if mapmanager and getResourceState ( mapmanager ) == "running" then
+			gamemodes = call(mapmanager, "getGamemodes")
+			for id,gamemode in ipairs (gamemodes) do
+				tableOut[id] = {}
+				tableOut[id].name = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
+				tableOut[id].resname = getResourceName(gamemode)
+				tableOut[id].maps = {}
+				local maps = call(mapmanager, "getMapsCompatibleWithGamemode" , gamemode)
+				for _,map in ipairs (maps) do
+					table.insert(tableOut[id]["maps"] ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
+				end
+				table.sort(tableOut[id]["maps"], sortCompareFunction)
 			end
-			table.sort(tableOut[id]["maps"], sortCompareFunction)
+			table.sort((tableOut), sortCompareFunction)
+			table.insert(tableOut, {name = "no gamemode", resname = "no gamemode", maps = {}})
+			local countGmodes = #tableOut
+			local maps = call(mapmanager, "getMapsCompatibleWithGamemode")
+			for id,map in ipairs (maps) do
+				-- if fileOpen(":"..getResourceName(map).."/deleted") then
+					-- table.insert(deletedMaps ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
+				-- else
+					table.insert(tableOut[countGmodes]["maps"] ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
+				-- end
+			end
+			-- table.sort(deletedMaps, sortCompareFunction)
+			table.sort(tableOut[countGmodes]["maps"], sortCompareFunction)
+			-- table.insert(tableOut, {name = "deleted maps", resname = "deleted maps", maps = {}})
+			-- local countGmodes = countGmodes + 1
+			-- tableOut[countGmodes]["maps"] = deletedMaps
 		end
-		table.sort((tableOut), sortCompareFunction)
-		table.insert(tableOut, {name = "no gamemode", resname = "no gamemode", maps = {}})
-		local countGmodes = #tableOut
-		local maps = call(getResourceFromName("mapmanager"), "getMapsCompatibleWithGamemode")
-		for id,map in ipairs (maps) do
-			-- if fileOpen(":"..getResourceName(map).."/deleted") then
-				-- table.insert(deletedMaps ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
-			-- else
-				table.insert(tableOut[countGmodes]["maps"] ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
-			-- end
-		end
-		-- table.sort(deletedMaps, sortCompareFunction)
-		table.sort(tableOut[countGmodes]["maps"], sortCompareFunction)
-		-- table.insert(tableOut, {name = "deleted maps", resname = "deleted maps", maps = {}})
-		-- local countGmodes = countGmodes + 1
-		-- tableOut[countGmodes]["maps"] = deletedMaps
 	end
-	local map = call(getResourceFromName("mapmanager"), "getRunningGamemodeMap")
-	local gamemode = call(getResourceFromName("mapmanager"), "getRunningGamemode")
-	gamemode = gamemode and getResourceName(gamemode) or "N/A"
-	map = map and getResourceName(map) or "N/A"
+	local mapmanager = getResourceFromName("mapmanager")
+	if mapmanager and getResourceState (mapmanager) == "running" then
+		local map = call(mapmanager, "getRunningGamemodeMap")
+		local gamemode = call(mapmanager, "getRunningGamemode")
+		gamemode = gamemode and getResourceName(gamemode) or "N/A"
+		map = map and getResourceName(map) or "N/A"
+	else
+		gamemode = getGameType () or "N/A"
+		map = getMapName () or "N/A"
+	end
 	triggerClientEvent(source ,"getMaps_c", source, tableOut, gamemode, map)
 end
 addEvent("getMaps_s", true)
