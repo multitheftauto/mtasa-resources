@@ -39,7 +39,9 @@ local function addToQueue(player, name, source, args)
 			args[i] = table.deepcopy(a)
 		end
 	end
-	table.insert(playerData[player].pending, { name = name, source = source, args = args })
+	if playerData[player] and playerData[player].pending then
+		table.insert(playerData[player].pending, { name = name, source = source, args = args })
+	end
 end
 
 
