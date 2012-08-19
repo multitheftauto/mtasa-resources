@@ -473,15 +473,17 @@ wndStats = {
 ---------------------------
 
 local bookmarkList
-local bookmarks = {}
+local bookmarks
 
 function initBookmarks ()
 	bookmarkList = wndBookmarks.controls[1].element
 	if bookmarks then return end
+	loadBookmarks ()
 	addEventHandler("onClientGUIDoubleClick",bookmarkList,gotoBookmark)
 end
 
 function loadBookmarks ()
+	bookmarks = {}
 	local xml = xmlLoadFile("bookmarks.xml")
 	if not xml then
 		xml = xmlCreateFile("bookmarks.xml","catalog")
@@ -533,6 +535,7 @@ end
 function deleteLocation ()
 	local row,column = guiGridListGetSelectedItem(bookmarkList)
 	if row and row ~= -1 then
+		table.remove(bookmarks,row+1)
 		guiGridListRemoveRow(bookmarkList,row)
 		saveBookmarks()
 	end
