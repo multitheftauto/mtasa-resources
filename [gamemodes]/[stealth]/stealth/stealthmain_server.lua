@@ -121,7 +121,7 @@ function onStealthPlayerJoin ()
 	bindKey ( source, "F3", "down", selectTeamKey )
 	thisplayer = source
 	setCameraFixed(source,"cameramode",getRootElement(), thisplayer)
-	destroyshield = setTimer ( destroyElement, 3000, 1, dummyshield )
+	destroyshield = setTimer ( function (shield) if isElement ( shield ) then destroyElement ( shield ) end end, 3000, 1, dummyshield )
 	setCameraFixed(source,"cameramode",getRootElement(), thisplayer)
 	triggerClientEvent(source,"swaptoggle",getRootElement(), thisplayer, teamswap)
 	textDisplayAddObserver ( waitDisplay, thisplayer )
@@ -514,8 +514,10 @@ function spectateNext (source) -- THIS IS THE FUNCTION USED TO SWICH WHO IS BEIN
 				outputSpectateMessage("Nobody to Spectate",source) -- IF ITS JUST THE 1 PLAYER, SPECTATING IS IMPOSSIBLE
 			else
 				specPlayer = specPlayer+1
-				while isPedDead ( playersTable[specPlayer] ) do
-					specPlayer = specPlayer+1
+				if isElement ( playersTable[specPlayer] ) then
+					while isPedDead ( playersTable[specPlayer] ) do
+						specPlayer = specPlayer+1
+					end
 				end
 				if specPlayer > playerCount then
 					specPlayer = 1
