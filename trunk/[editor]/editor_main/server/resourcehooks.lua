@@ -149,6 +149,7 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 			creationParameters.position = {edf.edfGetElementPosition(element)}
 			creationParameters.rotation = {edf.edfGetElementRotation(element)}
 			creationParameters.interior = edf.edfGetElementInterior(element) or nil
+			creationParameters.alpha = edf.edfGetElementAlpha(element) or 255
 
 			local editorElement = edf.edfRepresentElement(element, fromResource, creationParameters, true)
 			if newEditorParent then

@@ -21,6 +21,10 @@ local function syncElementInterior(element, int)
 	edf.edfSetElementInterior(element, int)
 end
 
+local function syncElementAlpha(element, alpha)
+	edf.edfSetElementAlpha(element, alpha)
+end
+
 local function syncParent(element, parent)
 	setElementData(element, "me:parent", parent)
 end
@@ -43,6 +47,7 @@ local specialSyncers = {
 	rotation = syncElementRotation,
 	dimension = syncElementDimension,
 	interior = syncElementInterior,
+	alpha = syncElementAlpha,
 	parent = syncParent,
 	id = syncID,
 }

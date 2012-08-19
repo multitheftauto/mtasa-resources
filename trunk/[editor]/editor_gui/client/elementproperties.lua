@@ -560,6 +560,9 @@ local function addEDFPropertyControlsForElement( element )
 		elseif dataField == "interior" then
 			applier = commonApplier.interior
 			initialValue = edf.edfGetElementInterior (element)
+		elseif dataField == "alpha" then
+			applier = commonApplier.alpha
+			initialValue = edf.edfGetElementAlpha (element) or 255
 		else
 			applier = function (control) edf.edfSetElementProperty(selectedElement, dataField, control:getValue()) end
 			initialValue = edf.edfGetElementProperty (element, dataField)
