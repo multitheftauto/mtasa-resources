@@ -46,6 +46,8 @@
 	<export function="edfSetElementInterior" />	<!--bool-->
 	<export function="edfGetElementDimension" />	<!--number-->
 	<export function="edfSetElementDimension" />	<!--bool-->
+	<export function="edfGetElementAlpha" />	<!--number-->
+	<export function="edfSetElementAlpha" />	<!--bool-->
 	<export function="edfGetElementProperty" />	<!--var-->
 	<export function="edfSetElementProperty" />	<!--bool-->
 	<export function="edfGetResourceForElementType" /> <!-- string -->
@@ -62,6 +64,8 @@
 	<export function="edfSetElementInterior" type="client" />	<!--bool-->
 	<export function="edfGetElementDimension" type="client" />	<!--number-->
 	<export function="edfSetElementDimension" type="client" />	<!--bool-->
+	<export function="edfGetElementAlpha" type="client" />	<!--number-->
+	<export function="edfSetElementAlpha" type="client" />	<!--bool-->
 	<export function="edfGetElementProperty" type="client" />	<!--var-->
 	<export function="edfSetElementProperty" type="client" />	<!--bool-->
 	<export function="edfGetElementDistanceToBase" type="client" />  <!--number-->

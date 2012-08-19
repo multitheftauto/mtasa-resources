@@ -1,5 +1,6 @@
 ﻿local localPlayer  = getLocalPlayer()
 local MAX_THICKNESS = 1.2
+local MAX_THICKNESS_AngleHelper = .8
 --local c
 local drawLine
 --local color = 1694433280
@@ -89,18 +90,24 @@ local function renderGridlines()
 	end
 end
 
+function getElementBoundRadius(elem)
+	local x0, y0, z0, x1, y1, z1 = edf.edfGetElementBoundingBox(elem)
+	return math.max(x0+x1,y0+y1,z0+z1)*1.3
+end
+
 function drawXYZLines()
 	if not isElement(attachedToElement) then return end
+	local camX,camY,camZ = getCameraMatrix()
 	if getElementDimension(attachedToElement) ~= getElementDimension(localPlayer) then return end
-	local radius = getElementRadius(attachedToElement)
+	local radius = (tonumber(edf.edfGetElementRadius(attachedToElement)) or .3)*1.2
 	local x,y,z = getElementPosition(attachedToElement)
 	local xx,xy,xz = getPositionFromElementAtOffset(attachedToElement,radius,0,0)
 	local yx,yy,yz = getPositionFromElementAtOffset(attachedToElement,0,radius,0)
 	local zx,zy,zz = getPositionFromElementAtOffset(attachedToElement,0,0,radius)
-	drawLine({x,y,z},{xx,xy,xz},tocolor(200,0,0,200),1.7)
-	drawLine({x,y,z},{yx,yy,yz},tocolor(0,200,0,200),1.7)
-	drawLine({x,y,z},{zx,zy,zz},tocolor(0,0,200,200),1.7)
-	
+	local thickness = (100/getDistanceBetweenPoints3D(camX,camY,camZ,x,y,z)) * MAX_THICKNESS_AngleHelper
+	drawLine({x,y,z},{xx,xy,xz},tocolor(200,0,0,200),thickness)
+	drawLine({x,y,z},{yx,yy,yz},tocolor(0,200,0,200),thickness)
+	drawLine({x,y,z},{zx,zy,zz},tocolor(0,0,200,200),thickness)	
 end
 
 function doBasicElementRenders()

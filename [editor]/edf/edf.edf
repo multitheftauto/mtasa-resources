@@ -5,6 +5,7 @@
 		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="alpha" type="integer" description="Alpha" default="255" />
 	</element>
 	<element name="marker" friendlyname="Marker">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />

@@ -5,6 +5,7 @@
 		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="alpha" type="integer" description="Alpha Level" default="255"/>
 		<data name="doublesided" type="selection:false,true" description="MTA double sidedness" required="false" />
 	</element>
 	<element name="selectWorldObject" friendlyname="World object" icon="client/images/crosshair.png" shortcut="selworld" minver="1.1.0">
@@ -28,6 +29,7 @@
 		<data name="plate" type="plate" description="number plate" required="false" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="alpha" type="integer" description="Alpha Level" default="255"/>
 	</element>
 	<element name="marker" friendlyname="Marker" icon="client/images/icons/marker.png" >
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />

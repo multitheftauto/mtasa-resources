@@ -205,6 +205,20 @@ function edfGetElementDimension(element)
         return getElementData(element, "edf:dimension") or 0
 end
 
+function edfGetElementAlpha(element)
+		if isBasic[getElementType(element)] then
+			return getElementAlpha(element)
+		else
+			local handle = edfGetHandle(element)
+			if handle then
+					return getElementAlpha(handle)
+			else
+					return getElementData(element, "alpha")
+			end
+		end
+        return getElementData(element, "alpha") or 255
+end
+
 function edfSetElementDimension(element, dimension)
         if dimension then
                 if isBasic[getElementType(element)] then
@@ -215,6 +229,21 @@ function edfSetElementDimension(element, dimension)
                                 return setElementDimension(handle, dimension)
                         else
                                 setElementData(element, "edf:dimension", dimension or 0)
+                        end
+                end
+        end
+end
+
+function edfSetElementAlpha(element, alpha)
+        if alpha then
+                if isBasic[getElementType(element)] then
+                        return setElementAlpha(element, alpha)
+                else
+                        local handle = edfGetHandle(element)
+                        if handle then
+                                return setElementAlpha(handle, alpha)
+                        else
+                                setElementData(element, "alpha", alpha or 255)
                         end
                 end
         end

@@ -429,8 +429,10 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	--ensure a dimension & interior is set
 	parentData.dimension = parentData.dimension or 0
 	parentData.interior = parentData.interior or 0
+	parentData.alpha = parentData.alpha or 255
 	
 	setElementDimension ( theElement, parentData.dimension )
+	setElementAlpha ( theElement, parentData.alpha )
 
 	-- if there are children,
 	if #elementDefinition.children > 0 then
@@ -453,6 +455,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 			)
 			-- setObjectScale(dummyElement,0)
 			setElementDimension(dummyElement, parentData.dimension)
+			setElementAlpha(dummyElement, parentData.alpha)
 			setElementInterior(dummyElement, parentData.interior)
 			
 			setElementParent(dummyElement, theElement)
@@ -508,6 +511,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 					
 					setElementInterior(component, parentData.interior)
 					setElementDimension(component, parentData.dimension)
+					setElementAlpha(component, parentData.alpha)
 					
 				-- if it is a custom type,
 				else
@@ -588,6 +592,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 	parametersTable.rotation = parametersTable.rotation or {0,0,0}
 	parametersTable.interior = parametersTable.interior or 0
 	parametersTable.dimension = parametersTable.dimension or 0
+	parametersTable.alpha = parametersTable.alpha or 255
 
 	if isBasic[elementType] then
 		local childData = {}
@@ -604,6 +609,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 		
 		setElementInterior(theElement, parametersTable.interior)
 		setElementDimension(theElement, parametersTable.dimension)
+		setElementAlpha(theElement, parametersTable.alpha)
 		
 		-- setElementData if it is not an edf property
 		for dataField, dataValue in pairs(parametersTable) do
@@ -626,6 +632,8 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 				setElementInterior(newElement, dataValue)
 			elseif dataField == "dimension" then
 				setElementDimension(newElement, dataValue)
+			elseif dataField == "alpha" then
+				setElementAlpha(newElement, dataValue)
 			else
 				setElementData(newElement, dataField, dataValue)
 			end
@@ -668,6 +676,7 @@ function edfCloneElement(theElement, editorMode )
 	parametersTable.rotation = {edfGetElementRotation(theElement)} or {0,0,0}
 	parametersTable.interior = edfGetElementInterior(theElement) or 0
 	parametersTable.dimension = edfGetElementDimension(theElement) or 0
+	parametersTable.alpha = edfGetElementAlpha(theElement) or 255
 	
 	if isBasic[elementType] then
 		local childData = {}
@@ -695,6 +704,7 @@ function edfCloneElement(theElement, editorMode )
 		
 		setElementInterior(theElement, parametersTable.interior)
 		setElementDimension(theElement, parametersTable.dimension)
+		setElementAlpha(theElement, parametersTable.alpha)
 	else
 		local newElement = cloneElement(theElement)
 		if not newElement then
@@ -960,12 +970,28 @@ function edfGetElementDimension(element)
 	return getElementDimension(element) or tonumber(getElementData(element, "edf:dimension")) or 0
 end
 
+function edfGetElementAlpha(element)
+	return getElementAlpha(element) or tonumber(getElementData(element, "alpha")) or 255
+end
+
 function edfSetElementDimension(element, dimension)
 	setElementDimension(element, dimension)
 	if getElementChildrenCount( element ) > 0 then
 		for k, child in ipairs( getElementChildren( element ) ) do
 			if edfGetParent(child) == edfGetParent(element) then
 				edfSetElementDimension( child, dimension )
+			end
+		end
+	end
+	return true
+end
+
+function edfSetElementAlpha(element, alpha)
+	setElementAlpha(element, alpha)
+	if getElementChildrenCount( element ) > 0 then
+		for k, child in ipairs( getElementChildren( element ) ) do
+			if edfGetParent(child) == edfGetParent(element) then
+				edfSetElementAlpha( child, alpha )
 			end
 		end
 	end
