@@ -1,5 +1,9 @@
 <meta>
 	<info author="erorr404,jbeta,Talidan" description="Map editor's main component" edf:definition="editor_main.edf" />
+	
+	<!-- Script to shutdown the running gamemode and maps, because otherwise you get trouble -->
+	<script src="gamemodestopper.lua" type="server" />
+	
 	<include resource="freecam"/>
 	<include resource="move_freecam"/>
 	<include resource="move_cursor"/>
@@ -74,7 +78,7 @@
 	<script src="server/undoredo_action.lua" type="server"/>
 	<script src="server/undoredo_main.lua" type="server"/>
 	<script src="server/undoredo_move.lua" type="server"/>
-
+	
 	<!-- exported client functions -->
 	<export function="startEditor" type="client"/>
 	<export function="selectElement" type="client"/>
