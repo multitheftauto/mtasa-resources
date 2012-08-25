@@ -410,14 +410,16 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 		--add an ID attribute first off
 		xmlNodeSetAttribute(elementNode, "id", getElementID(element))
 		for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
-			local value
-			if ( specialSyncers[dataField] ) then
-				value = specialSyncers[dataField](element)
-			else
-				value = edf.edfGetElementProperty(element, dataField)
-			end
-			if ( type(value) == "number" or type(value) == "string" ) then
-				xmlNodeSetAttribute(elementNode, dataField, value )
+			if (dataField ~= "color1" and dataField ~= "color2" and dataField ~= "color3" and dataField ~= "color4") then
+				local value
+				if ( specialSyncers[dataField] ) then
+					value = specialSyncers[dataField](element)
+				else
+					value = edf.edfGetElementProperty(element, dataField)
+				end
+				if ( type(value) == "number" or type(value) == "string" ) then
+					xmlNodeSetAttribute(elementNode, dataField, value )
+				end
 			end
 		end
 		-- dump properties to attributes
@@ -430,10 +432,17 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 				xmlNodeSetAttribute(elementNode, "rotX", toAttribute(dataValue[1]))
 				xmlNodeSetAttribute(elementNode, "rotY", toAttribute(dataValue[2]))
 				xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(dataValue[3]))
-			elseif ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) then
+			elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
 				xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
 			end
 		end
+		-- Save vehicle colors
+		if ( getElementType(element) == "vehicle" ) then
+			local vc = {getVehicleColor(element, true)}
+			local colorString = vc[1]..","..vc[2]..","..vc[3]..","..vc[4]..","..vc[5]..","..vc[6]..","..vc[7]..","..vc[8]..","..vc[9]..","..vc[10]..","..vc[11]..","..vc[12]
+			xmlNodeSetAttribute(elementNode, "color", toAttribute(colorString))
+		end
+		
 		dumpNodes ( elementNode, elementChildren[element], elementChildren )
 	end
 	
@@ -583,14 +592,16 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 			xmlNodeSetAttribute(elementNode, "id", getElementID(element))
 			--dump raw properties from the getters
 			for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
-				local value
-				if ( specialSyncers[dataField] ) then
-					value = specialSyncers[dataField](element)
-				else
-					value = edf.edfGetElementProperty(element, dataField)
-				end
-				if type(value) == "number" or type(value) == "string" then
-					xmlNodeSetAttribute(elementNode, dataField, value )
+				if (dataField ~= "color1" and dataField ~= "color2" and dataField ~= "color3" and dataField ~= "color4") then
+					local value
+					if ( specialSyncers[dataField] ) then
+						value = specialSyncers[dataField](element)
+					else
+						value = edf.edfGetElementProperty(element, dataField)
+					end
+					if type(value) == "number" or type(value) == "string" then
+						xmlNodeSetAttribute(elementNode, dataField, value )
+					end
 				end
 			end
 			-- dump properties to attributes
@@ -603,10 +614,17 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 					xmlNodeSetAttribute(elementNode, "rotX", toAttribute(dataValue[1]))
 					xmlNodeSetAttribute(elementNode, "rotY", toAttribute(dataValue[2]))
 					xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(dataValue[3]))
-				elseif ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) then
+				elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
 					xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
 				end
 			end
+			-- Save vehicle colors
+			if ( getElementType(element) == "vehicle" ) then
+				local vc = {getVehicleColor(element, true)}
+				local colorString = vc[1]..","..vc[2]..","..vc[3]..","..vc[4]..","..vc[5]..","..vc[6]..","..vc[7]..","..vc[8]..","..vc[9]..","..vc[10]..","..vc[11]..","..vc[12]
+				xmlNodeSetAttribute(elementNode, "color", toAttribute(colorString))
+			end
+			
 			dumpNodes ( elementNode, elementChildren[element], elementChildren )
 		end
 		xmlSaveFile(xmlNode)	

@@ -15,8 +15,21 @@
 	},
 	vehicle = {
 		model = getElementModel,
-		color = function(element)
-			return {getVehicleColor(element)}
+		color1 = function(element)
+			local vehCol = {getVehicleColor(element, true)}
+			return {vehCol[1], vehCol[2], vehCol[3]}
+		end,
+		color2 = function(element)
+			local vehCol = {getVehicleColor(element, true)}
+			return {vehCol[4], vehCol[5], vehCol[6]}
+		end,
+		color3 = function(element)
+			local vehCol = {getVehicleColor(element, true)}
+			return {vehCol[7], vehCol[8], vehCol[9]}
+		end,
+		color4 = function(element)
+			local vehCol = {getVehicleColor(element, true)}
+			return {vehCol[10], vehCol[11], vehCol[12]}
 		end,
 		upgrades = getVehicleUpgrades,
 		plate = getVehiclePlateText,
@@ -114,9 +127,41 @@ propertySetters = {
 			if model then return setElementModel(element, model)
 			else return false end
 		end,
-		color = function(element, colorsTable)
-			if colorsTable then return setVehicleColor(element, unpack(colorsTable))
-			else return false end
+		color1 = function(element, colorsTable)
+			if colorsTable then
+				local colorsTable = {getColorFromString(colorsTable)}
+				local otherColors = {getVehicleColor(element, true)}
+				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], otherColors[7], otherColors[8], otherColors[9], otherColors[10], otherColors[11], otherColors[12])
+			else 
+				return false
+			end
+		end,
+		color2 = function(element, colorsTable)
+			if colorsTable then
+				local colorsTable = {getColorFromString(colorsTable)}
+				local otherColors = {getVehicleColor(element, true)}
+				return setVehicleColor(element, otherColors[1], otherColors[2], otherColors[3], colorsTable[1], colorsTable[2], colorsTable[3], otherColors[7], otherColors[8], otherColors[9], otherColors[10], otherColors[11], otherColors[12])
+			else 
+				return false
+			end
+		end,
+		color3 = function(element, colorsTable)
+			if colorsTable then
+				local colorsTable = {getColorFromString(colorsTable)}
+				local otherColors = {getVehicleColor(element, true)}
+				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], colorsTable[1], colorsTable[2], colorsTable[3], otherColors[10], otherColors[11], otherColors[12])
+			else 
+				return false
+			end
+		end,
+		color4 = function(element, colorsTable)
+			if colorsTable then
+				local colorsTable = {getColorFromString(colorsTable)}
+				local otherColors = {getVehicleColor(element, true)}
+				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], otherColors[7], otherColors[8], otherColors[9], colorsTable[1], colorsTable[2], colorsTable[3])
+			else 
+				return false
+			end
 		end,
 		upgrades = function(element, upgradesTable)
 			if upgradesTable then

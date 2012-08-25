@@ -37,7 +37,7 @@ local edfCreateBasic = {
 			setElementRotation(vehicle, cdata.rotation[1], cdata.rotation[2], cdata.rotation[3])
 		end
 		if cdata.color then
-			setVehicleColor ( vehicle, cdata.color[1], cdata.color[2], cdata.color[3], cdata.color[4] )
+			setVehicleColor ( vehicle, unpack(cdata.color) )
 		end
 		if cdata.upgrades then
 			for i, upgrade in ipairs(cdata.upgrades) do
