@@ -133,7 +133,7 @@
 	<file src="client/images/icons/pickup.png" type="client"/>
 	
 	<settings>
-		<setting name="*admingroup" value="Admin"
+		<setting name="*admingroup" value="Admin,MapEditor"
 						friendlyname="Admin group list"
 						accept="*"
 						examples="Admin,Moderator,SuperModerator"
