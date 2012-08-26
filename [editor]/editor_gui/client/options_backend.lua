@@ -7,6 +7,7 @@ local xmlVariants = {
 ["slowMove"]="camera_min_speed",
 ["mouseSensitivity"]="camera_look_sensitivity",
 ["smoothCamMove"]="camera_smooth_movement",
+["invertMouseLook"]="invert_mouse_look",
 ["iconSize"]="icon_size",
 ["topAlign"]="alignment_topmenu",
 ["bottomAlign"]="alignment_bottommenu",
