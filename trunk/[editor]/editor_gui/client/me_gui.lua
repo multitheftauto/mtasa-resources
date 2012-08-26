@@ -169,7 +169,9 @@ function refreshElementIcons()
 				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false) --, getResourceFromName(key)) 
 			else
 				--otherwise create edf's icon
-				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, ":"..resource.."/"..iconDir, false)
+				if (getResourceFromName(resource)) then -- To prevent debug when trying to load from a not yet started resource
+					theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, ":"..resource.."/"..iconDir, false)
+				end
 			end
 			if not theIcon then
 				--if edf's icon was not made successfully, then create a generic one.
