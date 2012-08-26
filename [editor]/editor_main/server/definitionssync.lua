@@ -110,7 +110,8 @@ function reloadEDFDefinitions(newEDF,noOutput)
 				end
 			end
 			if loaded == false then
-				outputDebugString ( "loading "..resourceName.." def." )
+				outputServerLog ( "loading "..resourceName.." def." )
+				outputConsole ( "loading "..resourceName.." def." )
 				--Only accept server config files and general files (for edf icons)
 				-- startResource ( getResourceFromName(resourceName),false,true,false,false,false,false,false,true)
 				blockMapManager ( resource ) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
@@ -135,7 +136,8 @@ function reloadEDFDefinitions(newEDF,noOutput)
 					end
 				end
 				if loaded == true then
-					outputDebugString ( "unloading "..resourceName.." def." )
+					outputServerLog ( "unloading "..resourceName.." def." )
+					outputConsole ( "unloading "..resourceName.." def." )
 					-- stopResource ( getResourceFromName(resourceName) )
 					edf.edfStopResource ( resource )
 				end
