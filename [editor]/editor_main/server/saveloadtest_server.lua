@@ -139,6 +139,12 @@ function handleOpenResource()
 			loadedMap = openingMapName
 			outputConsole ( "Loaded map in "..math.floor(getTickCount()-openingStartTick).." ms" )
 		end
+		
+		-- Make sure all just loaded objects have collisions so they can be seleted
+		for i, obj in pairs(getElementsByType("object")) do
+			setElementCollisionsEnabled(obj, true)
+		end
+		
 		triggerEvent("onMapOpened", mapContainer, openingResource)
 		flattenTreeRuns = 0
 		triggerClientEvent(root, "saveLoadProgressBar", root, true)
