@@ -7,7 +7,8 @@
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
 		<data name="alpha" type="integer" description="Alpha Level" default="255"/>
 		<data name="doublesided" type="selection:false,true" description="MTA double sidedness" required="false" />
-		<data name="scale" type="number" description="Object scale" default="1" />
+		<data name="scale" type="number" description="Object scale" default="1" required="false"/>
+		<data name="collisions" type="selection:true,false" description="Object collisions" required="false" default="true" />
 	</element>
 	<element name="selectWorldObject" friendlyname="World object" icon="client/images/crosshair.png" shortcut="selworld" minver="1.1.0">
 		<data name="selworld" default="0" notes="Hook to start Select World Building Mode"/>

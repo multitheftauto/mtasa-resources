@@ -183,6 +183,11 @@ function basicTest()
 		toggleControl("fire", true)
 		toggleControl("enter_exit", true)
 		toggleControl("enter_passenger", true)
+		
+		-- Force object collisions (since they must be enabled when editing)
+		for i, obj in pairs(getElementsByType("object")) do
+			setElementCollisionsEnabled(obj, true)
+		end
 	else
 		editor_main.dropElement()
 		guiSetVisible(testDialog.window, false)
@@ -199,6 +204,15 @@ function basicTest()
 		addEventHandler("onClientPlayerDamage", localPlayer, noDamageInBasicTest)
 		outputChatBox("Press F6 to leave basic test", 0, 255, 0)
 		bindControl ( "toggle_basictest", "down", basicTest )
+		
+		-- Make any collisionless objects collisionless for basic test
+		for i, obj in pairs(getElementsByType("object")) do
+			outputDebugString(type(getElementData(obj, "collisions")).." "..tostring(getElementData(obj, "collisions")))
+			local objectCollision = getElementData(obj, "collisions")
+			if (objectCollision and objectCollision == "false") then
+				setElementCollisionsEnabled(obj, false)
+			end
+		end
 	end
 end
 
