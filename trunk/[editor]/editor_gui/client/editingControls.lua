@@ -498,7 +498,6 @@ eC.catalogID = {
 			end
 		end
 		self.cancelled = nil
-		outputDebugString(tostring(self.category))
 		startBrowser( self.IDType, callback, self.category, tonumber(self:getValue()), autoSet )
 		triggerEvent( "onClientControlBrowserLaunch", self.GUI.launchBrowserButton )
 	end,

@@ -816,7 +816,7 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 		end
 	end
 
-	outputDebugString("Attached element: " .. getElementType(element))
+	outputConsole("Attached element: " .. getElementType(element))
 	return true
 end
 
@@ -870,7 +870,7 @@ function dropElement(releaseLock,clonedrop)
 	g_selectedElement = false
 	g_selectedPart = false
 	
-	outputDebugString("Detached element.")
+	outputConsole("Detached element.")
 	
 	if getCommandState("clone_drop_modifier") and clonedrop then
 		return doCloneElement(droppedElement)
@@ -1008,7 +1008,7 @@ function setWorkingInterior( interior )
 end
 
 function suspend(leavePlayersAttached)
-	outputDebugString("Suspending editor_main.")
+	outputConsole("Suspending editor_main.")
 
 	local move_resource
 	if (g_submode == MOUSE_SUBMODE) then
@@ -1041,7 +1041,7 @@ function suspend(leavePlayersAttached)
 end
 
 function resume(dontEnableMove)
-	outputDebugString("Resuming editor_main.")
+	outputConsole("Resuming editor_main.")
 	
 	local move_resource
 	if (g_submode == MOUSE_SUBMODE) then
