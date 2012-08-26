@@ -6,6 +6,8 @@
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
 		<data name="alpha" type="integer" description="Alpha" default="255" />
+		<data name="doublesided" type="selection:false,true" description="MTA double sidedness" required="false" />
+		<data name="scale" type="number" description="Object scale" default="1" />
 	</element>
 	<element name="marker" friendlyname="Marker">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />

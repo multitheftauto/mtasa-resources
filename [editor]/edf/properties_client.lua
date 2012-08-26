@@ -8,6 +8,7 @@
 				return getElementData(element,"doublesided")=="true" and "true" or "false"
 			end
 		end,
+		scale = getObjectScale,
 	},
 	ped = {
 		model = getElementModel,
@@ -111,6 +112,12 @@ propertySetters = {
 				return setElementData(element,"doublesided",bon=="true" and "true" or "false")
 			end
 		end,
+		scale = function(element, scale) 
+				if ( scale ) then 
+					return setObjectScale(element, scale)
+				end
+				return false
+			end,
 	},
 	ped = {
 		model = function(element, model)
