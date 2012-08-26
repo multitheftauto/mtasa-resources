@@ -975,7 +975,10 @@ function edfGetElementAlpha(element)
 end
 
 function edfSetElementDimension(element, dimension)
-	setElementDimension(element, dimension)
+	local success = setElementDimension(element, dimension)
+	if (not success) then -- For some unknown reason peds sometimes can't get their dimension set, MTA bug
+		return false
+	end
 	if getElementChildrenCount( element ) > 0 then
 		for k, child in ipairs( getElementChildren( element ) ) do
 			if edfGetParent(child) == edfGetParent(element) then

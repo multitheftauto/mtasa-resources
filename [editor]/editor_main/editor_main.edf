@@ -42,4 +42,12 @@
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
 	</element>
+	<element name="ped" friendlyname="Ped" icon="client/images/icons/ped.png">
+		<data name="model" type="skinID" description="ped skin model" default="0" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotZ" type="number" description="Z rotation" default="0" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="frozen" type="selection:false,true" description="Frozen" required="false" default="false"/>
+	</element>
 </def>

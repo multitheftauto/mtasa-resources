@@ -556,6 +556,3 @@ c.selection = function(var,validTypes)
 end
 
 --c.vehicleupgrades
-
---c.vehiclecolors
-c.vehiclecolours = c.vehiclecolors
