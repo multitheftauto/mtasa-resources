@@ -788,6 +788,9 @@ function stopTest()
 		local x,y,z = getElementPosition(player)
 		setTimer(spawnPlayer,50,1,player,x,y,z,0,0,0,getWorkingDimension())
 	end
+	
+	-- Send the map settings (delay is required to work probably because EDF not loaded) #7091
+	setTimer(passNewMapSettings, 1000, 1)
 end
 addEventHandler("stopTest", root, stopTest)
 
