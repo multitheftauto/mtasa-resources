@@ -180,7 +180,12 @@ end
 function ActionDestroy:setElement(element)
 	if (element and isElement(element)) then
 		self.element = element
-		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
+		local setDimension = edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
+		if (not setDimension) then -- For some unknown reason peds sometimes can't get their dimension set, MTA bug
+			-- If we can't make it undo-deleted then we'll have to fully delete it
+			destroyElement(element)
+			return false
+		end
 
 		self.parentOf = getElementsWithParent(self.element)
 		for k,element in ipairs(self.parentOf) do

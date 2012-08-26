@@ -131,6 +131,7 @@
 	<file src="client/images/icons/object.png" type="client"/>
 	<file src="client/images/icons/vehicle.png" type="client"/>
 	<file src="client/images/icons/pickup.png" type="client"/>
+	<file src="client/images/icons/ped.png" type="client"/>
 	
 	<settings>
 		<setting name="*admingroup" value="Admin,MapEditor"
