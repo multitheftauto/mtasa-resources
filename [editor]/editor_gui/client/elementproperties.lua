@@ -1003,5 +1003,6 @@ end
 function pulloutAction.Delete()
 	editor_main.destroySelectedElement()
 	toggleProperties()
+	move_keyboard.disable()
 end
 
