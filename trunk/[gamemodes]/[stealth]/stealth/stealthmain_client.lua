@@ -487,6 +487,7 @@ addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResourc
 		guiLabelSetHorizontalAlign(TeamSelect_Label[2],"left",false)
 		addEventHandler ( "onClientGUIClick", TeamSelect_Red, TeamSelected)
 		addEventHandler ( "onClientGUIClick", TeamSelect_Blue, TeamSelected)
+		guiSetVisible(TeamSelect_Window[1], false)
 	end
 )
 
