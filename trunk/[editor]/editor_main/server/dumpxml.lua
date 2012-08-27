@@ -131,6 +131,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	
 	--[[ mapmanager settings ]]--
 	local settings = {}
+	
 	settings["#time"] = (currentMapSettings.timeHour or mapSettingDefaults.timeHour)..":"..(currentMapSettings.timeMinute or mapSettingDefaults.timeMinute)
 	settings["#gamespeed"] = toJSON(currentMapSettings.gamespeed or mapSettingDefaults.gamespeed)
 	settings["#gravity"] = toJSON(tonumber(currentMapSettings.gravity or mapSettingDefaults.gravity)) --!FIXME
@@ -140,10 +141,17 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	settings["#minplayers"] = toJSON(currentMapSettings.minPlayers or mapSettingDefaults.minPlayers)
 	settings["#maxplayers"] = toJSON(currentMapSettings.maxPlayers or mapSettingDefaults.maxPlayers)
 	
-	--add any gamemode settings to the info table
-	for row, value in pairs(currentMapSettings.gamemodeSettings or {}) do
-		local data = currentMapSettings.rowData[row].internalName
-		settings['#'..data] = toJSON(value)
+	-- Add any gamemode settings to the info table
+	if ( currentMapSettings.gamemodeSettings and #currentMapSettings.gamemodeSettings > 0 ) then
+	
+		for row, value in pairs(currentMapSettings.gamemodeSettings) do
+			local data = currentMapSettings.rowData[row].internalName
+			settings['#'..data] = toJSON(value)
+		end
+	else -- Try currentMapSettings.newSettings
+		for row, value in pairs(currentMapSettings.newSettings or {}) do
+			settings['#'..row] = toJSON(value)
+		end
 	end
 	
 	--get the settings node or create one if it doesn't exist
