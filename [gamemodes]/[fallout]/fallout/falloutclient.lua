@@ -3,6 +3,11 @@ fadeCamera ( true ) --Remove MTA fade
 gameOver = false
 local shakingPieces = {}
 
+function initGame()
+	triggerServerEvent("serverClientLoad", root) -- Tells the server than the client is ready.
+end
+addEventHandler("onClientResourceStart", resourceRoot, initGame, false)
+
 function shakeOnRender()
 	if gameOver == false then
 	    local currentTick = getTickCount()
@@ -23,21 +28,21 @@ function shakeOnRender()
 	    end
 	end
 end
-addEventHandler ( "onClientRender", getRootElement(), shakeOnRender )
+addEventHandler ( "onClientRender", root, shakeOnRender )
 
 function ShakePieces ( fallingPiece )
-        --we store the time when the piece was told to shake under a table, so multiple objects can be stored
-        shakingPieces[fallingPiece] = getTickCount()
+	--we store the time when the piece was told to shake under a table, so multiple objects can be stored
+	shakingPieces[fallingPiece] = getTickCount()
 end
 addEvent("clientShakePieces",true) --For triggering from server
-addEventHandler("clientShakePieces", getRootElement(), ShakePieces)
+addEventHandler("clientShakePieces", root, ShakePieces)
 
 function DetectionOff ( fallingPiece )
     checkStatusTimer = nil
 	gameOver = true
 end
 addEvent("lossDetectionOff",true) --For triggering from server
-addEventHandler("lossDetectionOff", getRootElement(), DetectionOff)
+addEventHandler("lossDetectionOff", root, DetectionOff)
 
 function checkStatusB ( )
 	local x, y, z =  getElementPosition ( localPlayer )
@@ -65,4 +70,4 @@ function checkStatus ( )
     checkStatusTimer = setTimer ( checkStatusB, 500, 0 )                 
 	end
 addEvent("clientCheckStatus",true) --For triggering from server
-addEventHandler("clientCheckStatus", getRootElement(), checkStatus)
+addEventHandler("clientCheckStatus", root, checkStatus)
