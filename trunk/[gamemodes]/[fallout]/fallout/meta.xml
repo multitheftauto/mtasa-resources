@@ -1,5 +1,5 @@
 <meta>
-    <info author="Ransom" version="3" type="gamemode" name="Fallout"/>
+    <info author="Ransom" version="4" type="gamemode" name="Fallout"/>
     <config src="help.xml" type="client"/>
     <include resource="scoreboard"/>
     <script src="fallout.lua" />

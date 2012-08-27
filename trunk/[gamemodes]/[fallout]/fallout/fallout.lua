@@ -14,14 +14,16 @@ callSpeedC = 750  --Default:750 Call speed when 15 or less boards exist
 --------------
 ---/OPTIONS---
 --------------
-root = getRootElement ()
-outputChatBox ( "Fallout V2 by Ransom loaded", root, 255, 127, 0 ) --DEBUG
+outputChatBox ( "Fallout V4 by Ransom loaded", root, 255, 127, 0 ) --DEBUG
 --outputChatBox ( "Fallout Server Loaded", root, 255, 127, 0 ) --DEBUG
 
-call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Rank", getRootElement(), 2, .08 )-----|Add scoreboard columns
-call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Wins", getRootElement(), 3, .08 )-----|
-call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Losses", getRootElement(), 4, .08 )---|
-call(getResourceFromName("scoreboard"), "addScoreboardColumn", "W/L Ratio", getRootElement(), 5, .1)--|
+function resourceStart()
+	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Rank", getRootElement(), 2, .08 )-----|Add scoreboard columns
+	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Wins", getRootElement(), 3, .08 )-----|
+	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Losses", getRootElement(), 4, .08 )---|
+	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "W/L Ratio", getRootElement(), 5, .1)--|
+end
+addEventHandler("onResourceStart", resourceRoot, resourceStart)
 
 -----------
 ---DISPLAYS
@@ -220,13 +222,8 @@ function quickKill ( player, key, keyState )
 end
 
 function activateSpectate ( player ) --Don't setTimer loop serverside, will cause bug when 2 players come in
-	--DISABLED ALL DEBUG---DEBUG---   DEBUG---   DEBUG---   DEBUG---   DEBUG---   DEBUG---
-	--setCameraPosition ( player, 1558.367, -1346.678, 630 )
-	--setTimer ( setCameraLookAt, 500, 1, player, 1558.367, -1301.059, 603.105469 )
-	setCameraMatrix( player, 1558.367, -1346.678, 630, 1558.367, -1301.059, 603.105469) 
-	--setTimer ( triggerClientEvent, 1000, 1, player, "clientActivateFreeCam", player, true ) --Allow freecam spectate
-    --textDisplayAddObserver ( spectatorCamDisplay, player )
-    --outputChatBox ( "spectator testing" ) -- DEBUG-- DEBUG-- DEBUG-- DEBUG-- DEBUG-- DEBUG
+	setCameraMatrix( player, 1558.367, -1346.678, 630, 1558.367, -1301.059, 603.105469)
+	triggerClientEvent ( player, "clientActivateFreeCam", player, true )	
 end
 
 function playerWasted ( )
@@ -270,7 +267,6 @@ function PlayerJoin ( )
     --setTimer ( setCameraPosition, 1000, 1, source, 1558.367, -1346.678, 630 )
   	--setTimer ( setCameraLookAt, 2000, 1, source, 1558.367, -1301.059, 603.105469 )    
 	setCameraMatrix( source, 1558.367, -1346.678, 630, 1558.367, -1301.059, 603.105469)
-	setTimer ( triggerClientEvent, 1000, 1, source, "clientActivateFreeCam", source, true ) --Allow freecam spectate
 end
 addEventHandler ( "onPlayerJoin", getRootElement(), PlayerJoin )
 
@@ -348,7 +344,6 @@ function cleanupOldGame ()
 		textDisplayRemoveObserver( suicideDisplay, v )
 		textDisplayRemoveObserver ( spectatorCamDisplay, v )
 		--setCameraMode (source, "player" )  ------------DEBUG-DEBUG      -DEBUG      -DEBUG      -DEBUG
-		triggerClientEvent( v, "clientActivateFreeCam", v, false )
 		setCameraTarget( v, v )
 	end
 	winnersList = nil
@@ -399,3 +394,11 @@ function ResourceStop ( ) --Prevent invisible bug, reset cam on unload
 	call(getResourceFromName("scoreboard"), "removeScoreboardColumn", "W/L Ratio" )
 end
 addEventHandler ( "onResourceStop", root, ResourceStop )
+
+function clientLoad() -- Indicate to the gamemode than the client is loaded
+	if not getPlayerTeam(client) then --Check if its not playing
+		triggerClientEvent ( client, "clientActivateFreeCam", client, true ) -- Start spectating
+	end
+end
+addEvent ( "serverClientLoad", true )
+addEventHandler ( "serverClientLoad", root, clientLoad )

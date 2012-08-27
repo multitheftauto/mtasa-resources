@@ -10,15 +10,15 @@ local rotX, rotY = 0,0
 spectateActivated = false
 
 function freecamLoad ( name )
-	if name ~= getThisResource() then return end
+	
 end
-addEventHandler ( "onClientResourceStart", getRootElement(), freecamLoad )
+addEventHandler ( "onClientResourceStart", resourceRoot, freecamLoad )
 
 function activateFreeCam ( status )
 	spectateActivated = status
 end
 addEvent("clientActivateFreeCam", true) --For triggering from server
-addEventHandler("clientActivateFreeCam", getRootElement(), activateFreeCam)
+addEventHandler("clientActivateFreeCam", root, activateFreeCam)
 
 function freecamFrame ()
 	if ( spectateActivated == true ) then
@@ -153,7 +153,7 @@ function freecamFrame ()
 	end
 end
 ------------------addEvent("shakePieces") --For triggering from server
-addEventHandler ( "onClientRender", getRootElement(), freecamFrame )
+addEventHandler ( "onClientRender", root, freecamFrame )
 
 function freecamMouse (cX,cY,aX,aY)
     local width, height = guiGetScreenSize()
@@ -169,7 +169,7 @@ function freecamMouse (cX,cY,aX,aY)
         rotY = 200
     end
 end
-addEventHandler ("onClientCursorMove",getRootElement(), freecamMouse )
+addEventHandler ("onClientCursorMove", root, freecamMouse )
 
  
 function onGUIClicked (element)
@@ -178,4 +178,4 @@ function onGUIClicked (element)
 		guiSetText(element,dbg_col[collision])
 	end
 end
-addEventHandler ("onClientGUIClicked",getRootElement(), onGUIClicked )
+addEventHandler ("onClientGUIClicked", root, onGUIClicked )
