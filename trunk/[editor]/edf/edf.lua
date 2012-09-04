@@ -692,11 +692,15 @@ function edfCloneElement(theElement, editorMode )
 		local oldElement = theElement
 		theElement = cloneElement(theElement)
 		
+		-- For things that cloneElement doesn't actually clone
 		if (getElementType(theElement) == "vehicle" and getVehicleType(theElement) == "Train") then
 			setTrainDerailed(theElement, true)
 		end
 		if getElementType(oldElement) == "object" and isElementDoubleSided(oldElement) then
 			setElementDoubleSided(theElement, true)
+		end
+		if getElementType(oldElement) == "object" then
+			setObjectScale(theElement, getObjectScale(oldElement))
 		end
 		if getElementType(oldElement) == "vehicle" then
 			setVehiclePaintjob(theElement, getVehiclePaintjob(oldElement))
