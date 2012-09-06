@@ -175,11 +175,11 @@ function dumpPosition()
 	locations.y:setValue(y)
 	locations.z:setValue(z)
 	locations.world:setValue(world)
-	--
-	local name = guiGetText(locations.bname)
-	if bookmarksTable[name] or interiorsTable[name] then
-		guiSetText ( locations.bname, "" )
-	end
+	-- Whatever bname is it was never implemented
+	-- local name = guiGetText(locations.bname)
+	-- if bookmarksTable[name] or interiorsTable[name] then
+		-- guiSetText ( locations.bname, "" )
+	-- end
 end
 
 function setInterior()

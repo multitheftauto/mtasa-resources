@@ -207,7 +207,6 @@ function basicTest()
 		
 		-- Make any collisionless objects collisionless for basic test
 		for i, obj in pairs(getElementsByType("object")) do
-			outputDebugString(type(getElementData(obj, "collisions")).." "..tostring(getElementData(obj, "collisions")))
 			local objectCollision = getElementData(obj, "collisions")
 			if (objectCollision and objectCollision == "false") then
 				setElementCollisionsEnabled(obj, false)
