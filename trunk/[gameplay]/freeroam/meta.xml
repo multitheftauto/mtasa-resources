@@ -46,8 +46,16 @@
 		
 		<setting name="*spawnmaponstart" value="true" />
 		<setting name="*spawnmapondeath" value="true" />
-		<setting name="*welcometextonstart" value="true" />
-		
+		<setting name="*welcometextonstart" value="true" 
+					friendlyname="Welcome text on start"
+					accept="true,false"
+					group="Misc"/>
+		<setting name="*removeHex" value="true"
+					friendlyname="Remove HEX Codes"
+					accept="true,false"
+					group="Misc"
+					desc="Setting this to true will remove all HEX codes from players' nick when displayed."
+					/>
 		<setting name="*alpha" value="true" />
 		<setting name="*anim" value="true" />
 		<setting name="*clothes" value="true" />
