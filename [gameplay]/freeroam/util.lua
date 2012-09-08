@@ -380,3 +380,34 @@ function applyToLeaves(t, callback)
 		end
 	end
 end
+
+addEventHandler("onClientResourceStart", resourceRoot, 
+function ()
+	triggerServerEvent("onPlayerCheckForHexCodes", getLocalPlayer())
+end
+)
+
+addEvent("onServerProvideHexCodesSetting", true)
+addEventHandler("onServerProvideHexCodesSetting", getRootElement(),
+function (remove)
+	hexCodesDisabled = remove
+end)
+
+_getPlayerName = getPlayerName
+
+function getPlayerName(player)
+	if hexCodesDisabled then
+		return string.gsub(_getPlayerName(player), "#%x%x%x%x%x%x", "")
+	else
+		return _getPlayerName(player)
+	end
+end
+
+
+
+
+
+
+
+
+
