@@ -66,6 +66,9 @@ function aSynchCoroutineFunc( type, data )
 			tableOut[id]["numsettings"] = numsettings
 			tableOut[id]["state"] = state
 			tableOut[id]["type"] = type
+			tableOut[id]["fullName"] = getResourceInfo(resource, "name") or "Unknown"
+			tableOut[id]["author"] = getResourceInfo(resource, "author") or "Unknown"
+			tableOut[id]["version"] = getResourceInfo(resource, "version") or "Unknown"
 			
 			if ( getTickCount() > tick + 100 ) then
 				-- Execution exceeded 100ms so pause and resume in 100ms
@@ -164,6 +167,7 @@ function aSynchCoroutineFunc( type, data )
 		end
 		tableOut["unread"] = unread
 		tableOut["total"] = total
+
 	end
 	if (isElement(source)) then -- Incase the source has quit during coroutine loading
 		triggerClientEvent ( source, "aClientSync", theSource, type, tableOut )

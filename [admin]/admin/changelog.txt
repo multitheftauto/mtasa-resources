@@ -46,18 +46,27 @@
 # Fixed 'Select' button in interior window
 
 
+--- This log lacks changes in version 1.3 ---
+
+-------------------------------------
+-- Version 1.3.1 --
+-------------------------------------
+
+# Added custom Ban duration when banning player via GUI
+# Added ability to Delete resource in 'Resoruces' tab (new ACL right 'command.delete')
+# Added ability to stop all resources in 'Resources' tab
+# Added setting 'removeHex' which removes HEX codes from players nicks when displayed or sent in message (default is set to true)
+# More informatios about resources now showing in 'Resources' tab
+
+
 
 -------------------------------------
 	BUGS
 -------------------------------------
 
-* Some vehicles cant be created via admin (ie. slamvan) (WARNING: admin_server.lua Bad arg. Lines: 716-722) WORKS NOW???
-* Setting interiors not working
 * 
-*
-*
-*
-*
+* 
+* 
 
 
 

@@ -31,6 +31,15 @@ function notifyPlayerLoggedIn(player)
 	end
 end
 
+_getPlayerName = getPlayerName
+function getPlayerName(player)
+if get("hexRemove") == "true" then
+	return string.gsub(_getPlayerName(player), "#%x%x%x%x%x%x", "")
+else
+	return _getPlayerName(player)
+end
+end
+
 addEventHandler ( "onResourceStart", _root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
@@ -1165,6 +1174,13 @@ addEventHandler ( "aVehicle", _root, function ( player, action, data )
 	return false
 end )
 
+function stopAllResources ()
+for i, resource in ipairs(getResources()) do
+	stopResource(resource)
+end
+	return true
+end
+
 addEvent ( "aResource", true )
 addEventHandler ( "aResource", _root, function ( name, action )
 	if checkClient( "command."..action, source, 'aResource', action ) then return end
@@ -1174,6 +1190,8 @@ addEventHandler ( "aResource", _root, function ( name, action )
 		if ( action == "start" ) then if ( startResource ( getResourceFromName ( name ), true ) ) then text = "started" end
 		elseif ( action == "restart" ) then if ( restartResource ( getResourceFromName ( name ) ) ) then text = "restarted" end
 		elseif ( action == "stop" ) then if ( stopResource ( getResourceFromName ( name ) ) ) then text = "stopped" end
+		elseif ( action == "delete" ) then if ( deleteResource ( getResourceFromName ( name ) ) ) then text = "deleted" end
+		elseif ( action == "stopall" ) then if ( stopAllResources ( ) ) then text = "All Stopped" end
 		else action = nil
 		end
 		if ( text ~= "" ) then

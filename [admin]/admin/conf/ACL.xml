@@ -19,7 +19,7 @@
     <right name="command.kick" access="true" />
     <right name="command.freeze" access="true" />
     <right name="command.mute" access="true" />
-	<right name="command.setnick" access="true" />
+    <right name="command.setnick" access="true" />
     <right name="command.shout" access="true" />
     <right name="command.spectate" access="true" />
     <right name="command.slap" access="true" />
@@ -54,6 +54,7 @@
     <right name="command.start" access="true" />
     <right name="command.stop" access="true" />
     <right name="command.stopall" access="false" />
+    <right name="command.delete" access="true" />
     <right name="command.restart" access="true" />
     <right name="command.execute" access="true" />
     <!--Server related-->
@@ -275,6 +276,7 @@
     <right name="command.stopall" access="false" />
     <right name="command.restart" access="false" />
     <right name="command.execute" access="false" />
+    <right name="command.delete" access="false" />
     <!--Server related-->
     <right name="command.setpassword" access="false" />
     <right name="command.setwelcome" access="false" />
