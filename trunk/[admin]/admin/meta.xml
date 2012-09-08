@@ -292,6 +292,12 @@
 					accept="500-60000"
 					desc="Time in miliseconds between a player being able to change their name to prevent nick change spam"
 					/>
+
+		<setting name="*hexRemove" value="true"
+					friendlyname="Remove HEX Codes"
+					accept="true,false"
+					desc="Setting this to true will remove all HEX codes from players nick when displayed."
+					/>
  </settings>
 
 </meta>

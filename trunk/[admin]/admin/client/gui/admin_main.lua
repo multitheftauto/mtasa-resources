@@ -129,15 +129,25 @@ function aAdminMenu ()
 						  guiGridListAddColumn( aTab2.ResourceList, "Resource", 0.55 )
 						  guiGridListAddColumn( aTab2.ResourceList, "", 0.05 )
 						  guiGridListAddColumn( aTab2.ResourceList, "State", 0.35 )
+						  guiGridListAddColumn( aTab2.ResourceList, "Full Name", 0.6 )
+						  guiGridListAddColumn( aTab2.ResourceList, "Author", 0.4 )
+						  guiGridListAddColumn( aTab2.ResourceList, "Version", 0.2 )
 		aTab2.ResourceInclMaps	= guiCreateCheckBox ( 0.03, 0.91, 0.15, 0.04, "Include Maps", false, true, aTab2.Tab )
 		aTab2.ResourceRefresh	= guiCreateButton ( 0.20, 0.915, 0.18, 0.04, "Refresh list", true, aTab2.Tab, "listresources" )
 		aTab2.ResourceSettings	= guiCreateButton ( 0.40, 0.05, 0.20, 0.04, "Settings", true, aTab2.Tab )
 		aTab2.ResourceStart	= guiCreateButton ( 0.40, 0.10, 0.20, 0.04, "Start", true, aTab2.Tab, "start" )
 		aTab2.ResourceRestart	= guiCreateButton ( 0.40, 0.15, 0.20, 0.04, "Restart", true, aTab2.Tab, "restart" )
 		aTab2.ResourceStop	= guiCreateButton ( 0.40, 0.20, 0.20, 0.04, "Stop", true, aTab2.Tab, "stop" )
+		aTab2.ResourceDelete	= guiCreateButton ( 0.40, 0.25, 0.20, 0.04, "Delete", true, aTab2.Tab, "delete" )
+		aTab2.ResourcesStopAll	= guiCreateButton ( 0.63, 0.2, 0.20, 0.04, "Stop All Resources", true, aTab2.Tab, "stopall" )
 		aTab2.ResourceFailture	= guiCreateButton ( 0.63, 0.10, 0.25, 0.04, "Get Load Failture", true, aTab2.Tab )
-						  guiSetVisible ( aTab2.ResourceFailture, false )
-		aModules			= guiCreateTabPanel ( 0.40, 0.25, 0.57, 0.38, true, aTab2.Tab )
+						 guiSetVisible ( aTab2.ResourceFailture, false )
+		--aModules			= guiCreateTabPanel ( 0.40, 0.25, 0.57, 0.38, true, aTab2.Tab ) --What's that for?
+							guiCreateHeader(0.40, 0.3, 0.3, 0.04, "Resource Informations:", true, aTab2.Tab)
+		aTab2.ResourceName			= guiCreateLabel ( 0.41, 0.35, 0.6, 0.03, "Full Name: ", true, aTab2.Tab )
+		aTab2.ResourceAuthor		= guiCreateLabel ( 0.41, 0.4, 0.6, 0.03, "Author: ", true, aTab2.Tab )
+		aTab2.ResourceVersion		= guiCreateLabel ( 0.41, 0.45, 0.6, 0.03, "Version: ", true, aTab2.Tab )
+		aTab2.ResourceVersion		= guiCreateLabel ( 0.41, 0.45, 0.6, 0.03, "Version: ", true, aTab2.Tab )
 						  guiCreateLabel ( 0.40, 0.77, 0.20, 0.03, "Actions log:", true, aTab2.Tab )
 		aTab2.LogLine1		= guiCreateLabel ( 0.41, 0.81, 0.50, 0.03, "", true, aTab2.Tab )
 		aTab2.LogLine2		= guiCreateLabel ( 0.41, 0.84, 0.50, 0.03, "", true, aTab2.Tab )
@@ -443,6 +453,9 @@ function aClientSync ( type, table )
 				guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
 				guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
 				guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
+				guiGridListSetItemText ( aTab2.ResourceList, row, 4, resource["fullName"], false, false )
+				guiGridListSetItemText ( aTab2.ResourceList, row, 5, resource["author"], false, false )
+				guiGridListSetItemText ( aTab2.ResourceList, row, 6, resource["version"], false, false )
 			end
 		end
 	elseif ( type == "loggedout" ) then
@@ -523,8 +536,19 @@ function aClientSync ( type, table )
 			playSoundFrontEnd ( 18 )
 		end
 		guiSetText ( aTab1.Messages, table["unread"].."/"..table["total"].." unread messages" )
+		
 	end
 end
+
+_getPlayerName = getPlayerName
+
+			function getPlayerName(player)
+				if guiCheckBoxGetSelected(aTab1.HideColorCodes) then
+					return string.gsub(_getPlayerName(player), "#%x%x%x%x%x%x", "")
+				else
+					return _getPlayerName(player)
+				end
+			end
 
 function aClientGUITabSwitched( selectedTab )
 	if getElementParent( selectedTab ) == aTabPanel then
@@ -664,6 +688,10 @@ function aClientPlayerChangeNick ( oldNick, newNick )
 end
 
 function aClientLog ( text )
+	if text == "deleted" then
+		guiGridListClear ( aTab2.ResourceList )
+		triggerServerEvent ( "aSync", getLocalPlayer(), "resources" )	
+	end
 	text = "#"..aLogLines..": "..text
 	if ( guiGetText ( aTab2.LogLine1 ) == "" ) then guiSetText ( aTab2.LogLine1, text )
 	elseif ( guiGetText ( aTab2.LogLine2 ) == "" ) then guiSetText ( aTab2.LogLine2, text )
@@ -677,6 +705,7 @@ function aClientLog ( text )
 		guiSetText ( aTab2.LogLine4, guiGetText ( aTab2.LogLine5 ) )
 		guiSetText ( aTab2.LogLine5, text )
 	end
+	
 	aLogLines = aLogLines + 1
 end
 
@@ -932,19 +961,24 @@ function aClientClick ( button )
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
 			if ( source == aTab2.ResourceListSearch ) then
 				guiSetInputEnabled ( true )
-			elseif ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceSettings ) ) then
+			elseif ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
 				else
 					if ( source == aTab2.ResourceStart ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "start" )
 					elseif ( source == aTab2.ResourceRestart ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "restart" )
 					elseif ( source == aTab2.ResourceStop ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "stop" )
+					elseif ( source == aTab2.ResourceDelete ) then aMessageBox ( "warning", "Are you sure you want to stop and delete resource '" .. guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) .. "' ?", "triggerServerEvent ( \"aResource\", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), \"delete\" )" )
 					elseif ( source == aTab2.ResourceSettings ) then aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ) ) )
 					end
-				end
+				end				
+			elseif ( source == aTab2.ResourcesStopAll ) then aMessageBox ( "warning", "Are you sure you want to stop all resources? This will also stop 'admin' resource.", "triggerServerEvent ( \"aResource\", getLocalPlayer(), nil, \"stopall\" )" )
 			elseif ( source == aTab2.ResourceList ) then
 				guiSetVisible ( aTab2.ResourceFailture, false )
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
+					guiSetText(aTab2.ResourceName, "Full Name: " .. guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem ( aTab2.ResourceList ), 4))
+					guiSetText(aTab2.ResourceAuthor, "Author: " .. guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem ( aTab2.ResourceList ), 5))
+					guiSetText(aTab2.ResourceVersion, "Version: " .. guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem ( aTab2.ResourceList ), 6))
 					if ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 3 ) == "Failed to load" ) then
 						guiSetVisible ( aTab2.ResourceFailture, true )
 					end

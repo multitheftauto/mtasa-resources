@@ -87,11 +87,13 @@ local aBanDurations = {}
 function aBanInputBox ( player )
 	-- parse 'bandurations' setting
 	local durations = {}
+	table.insert( durations, "Custom:" )
 	for i,dur in ipairs( split( g_Prefs.bandurations, string.byte(',') ) ) do
 		if tonumber( dur ) then
 			table.insert( durations, tonumber( dur ) )
 		end
 	end
+	
 	-- destroy form if number of durations has changed
 	if #aBanDurations ~= #durations then
 		if aBanInputForm then
@@ -102,11 +104,11 @@ function aBanInputBox ( player )
 	end
 	aBanDurations = durations
 	if ( aBanInputForm == nil ) then
-		local height1 = 80 
+		local height1 = 100 
 		local height2 = math.floor( #aBanDurations * 1.02 * 15 ) + 20
 		local height = math.max(height1,height2)
 		local x, y = guiGetScreenSize()
-		aBanInputForm			= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, height + 130, "", false )
+		aBanInputForm			= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 400, height + 130, "", false )
 							  guiWindowSetSizable ( aBanInputForm, false )
 		guiSetAlpha(aBanInputForm, 1)		
 		y = 24
@@ -118,7 +120,7 @@ function aBanInputBox ( player )
 		aBanInputValue			= guiCreateEdit ( 35, y, 230, 24, "", false, aBanInputForm )
 		y = y + 33
 
-		aBanInputRadioSet1bg	= guiCreateTabPanel( 10, y, 115, 80, false, aBanInputForm)
+		aBanInputRadioSet1bg	= guiCreateTabPanel( 10, y, 120, 100, false, aBanInputForm)
 		aBanInputRadioSet1		= guiCreateStaticImage(0,0,1,1, 'client\\images\\empty.png', true, aBanInputRadioSet1bg)
 		guiSetAlpha ( aBanInputRadioSet1bg, 0.3 )
 		guiSetProperty ( aBanInputRadioSet1, 'InheritsAlpha', 'false' )
@@ -127,7 +129,7 @@ function aBanInputBox ( player )
 		aBanInputRadio1A		= guiCreateRadioButton ( 50, 20, 50, 15, "IP", false, aBanInputRadioSet1 )
 		aBanInputRadio1B		= guiCreateRadioButton ( 50, 35, 120, 15, "Serial", false, aBanInputRadioSet1 )
 
-		aBanInputRadioSet2bg	= guiCreateTabPanel( 135, y, 160, height2, false, aBanInputForm)
+		aBanInputRadioSet2bg	= guiCreateTabPanel( 135, y, 260, height2, false, aBanInputForm)
 		aBanInputRadioSet2		= guiCreateStaticImage(0,0,1,1, 'client\\images\\empty.png', true, aBanInputRadioSet2bg)
 		guiSetAlpha ( aBanInputRadioSet2bg, 0.3 )
 		guiSetProperty ( aBanInputRadioSet2, 'InheritsAlpha', 'false' )
@@ -136,14 +138,21 @@ function aBanInputBox ( player )
 		aBanInputRadio2Label	= guiCreateLabel ( 10, yy, 270, 15, "Duration:", false, aBanInputRadioSet2 )
 		aBanInputRadio2s = {}
 		for i,dur in ipairs(aBanDurations) do
-			aBanInputRadio2s[i] = guiCreateRadioButton ( 70, yy, 120, 15, "-", false, aBanInputRadioSet2 )
+			aBanInputRadio2s[i] = guiCreateRadioButton ( 70, yy, 90, 15, "-", false, aBanInputRadioSet2 )
 			yy = yy + 15
 		end
+		customDuration      = guiCreateEdit ( 138, 3, 50, 24, "", false, aBanInputRadioSet2 )
+		customType      = guiCreateComboBox ( 190, 4, 65, 80, "Mins", false, aBanInputRadioSet2 )
+						  guiComboBoxAddItem(customType, "Mins")
+						  guiComboBoxAddItem(customType, "Hours")
+						  guiComboBoxAddItem(customType, "Days")
 		y = y + height + 10
-				
+							
 		aBanInputOk			= guiCreateButton ( 90, y, 55, 17, "Ok", false, aBanInputForm )
 		aBanInputCancel		= guiCreateButton ( 150, y, 55, 17, "Cancel", false, aBanInputForm )
 		y = y + 30
+		
+							
 		
 		guiSetSize ( aBanInputForm, guiGetSize ( aBanInputForm, false ), y, false )
 		
@@ -158,11 +167,15 @@ function aBanInputBox ( player )
 
 	-- update duration values in the form
 	for i,dur in ipairs(aBanDurations) do
-		guiSetText ( aBanInputRadio2s[i], dur>0 and secondsToTimeDesc(dur) or "1000 years" )
+		if dur == "Custom:" then
+		guiSetText ( aBanInputRadio2s[i], "Custom:" )
+		else
+		guiSetText ( aBanInputRadio2s[i], dur>0 and secondsToTimeDesc(dur) or "Permanent" )
+		end
 	end
 
 	guiSetInputEnabled ( true )
-	guiSetText ( aBanInputForm, "Ban player " .. getPlayerName(player) )
+	guiSetText ( aBanInputForm, "Ban player " .. string.gsub(getPlayerName(player), "#%x%x%x%x%x%x", "" ))
 	guiSetText ( aBanInputLabel, "Enter the ban reason" )
 	aHideFloaters()
 	guiSetVisible ( aBanInputForm, true )
@@ -212,7 +225,17 @@ function aBanInputBoxFinish ()
 	local seconds = false
 	for i,dur in ipairs(aBanDurations) do
 		if guiRadioButtonGetSelected( aBanInputRadio2s[i] ) then
+			if guiGetText(aBanInputRadio2s[i]) == "Custom:" then
+				if guiComboBoxGetItemText(customType, guiComboBoxGetSelected(customType)) == "Mins" then
+				 seconds = guiGetText(customDuration) * 60
+				elseif guiComboBoxGetItemText(customType, guiComboBoxGetSelected(customType)) == "Hours" then
+				 seconds = guiGetText(customDuration) * 3600
+				elseif guiComboBoxGetItemText(customType, guiComboBoxGetSelected(customType)) == "Days" then
+				 seconds = guiGetText(customDuration) * 86400
+				end
+			else
 			seconds = dur
+			end
 		end
 	end
 
@@ -229,10 +252,12 @@ function aBanInputBoxFinish ()
 		aMessageBox ( "error", "No duration selected!" )
 		return
 	end
-
+	
 	-- Send ban info to the server
 	triggerServerEvent ( "aPlayer", getLocalPlayer(), aBanInputPlayer, "ban", reason, seconds, bUseSerial )
-
+			
+	
+	
 	-- Clear input
 	guiSetText ( aBanInputValue, "" )
 	for i,dur in ipairs(aBanDurations) do
