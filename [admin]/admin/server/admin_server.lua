@@ -1098,6 +1098,11 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 	return false
 end )
 
+function hex2rgb(hex)
+  hex = hex:gsub("#","")
+  return tonumber("0x"..hex:sub(1,2)), tonumber("0x"..hex:sub(3,4)), tonumber("0x"..hex:sub(5,6))
+end
+
 addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", _root, function ( player, action, data )
 	if checkClient( "command."..action, source, 'aVehicle', action ) then return end
@@ -1134,21 +1139,18 @@ addEventHandler ( "aVehicle", _root, function ( player, action, data )
 					outputChatBox ( "Invalid Paint job ID", source, 255, 0, 0 )
 				end
 			elseif ( action == "setcolor" ) then
-				for k, color in ipairs ( data ) do
-					local c = tonumber ( color )
-					if ( c ) then
-						if ( c < 0 ) or ( c > 126 ) then
-							action = nil
-						end
-					else
+					r, g, b = hex2rgb(data[1])
+					r2, g2, b2 = hex2rgb(data[2])
+					r3, g3, b3 = hex2rgb(data[3])
+					r4, g4, b4 = hex2rgb(data[4])
+					if ( not setVehicleColor ( vehicle, r, g, b, r2, g2, b2, r3, g3, b3, r4, g4, b4 ) ) then
 						action = nil
 					end
-				end
-				if ( action ~= nil ) then
-					if ( not setVehicleColor ( vehicle, tonumber(data[1]), tonumber(data[2]), tonumber(data[3]), tonumber(data[4]) ) ) then
+			elseif ( action == "setlights" ) then
+					r, g, b = hex2rgb(data[1])
+					if ( not setVehicleHeadLightColor ( vehicle, r, g, b) ) then
 						action = nil
 					end
-				end
 			elseif ( action == "blowvehicle" ) then
 				setTimer ( blowVehicle, 100, 1, vehicle )
 			elseif ( action == "destroyvehicle" ) then
@@ -1238,6 +1240,8 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 				outputChatBox ( "Error setting time.", source, 255, 0, 0 )
 			end
 			mdata = data..":"..data2
+		elseif ( action == "shutdown" ) then
+			setTimer(shutdown, 2000, 1, data)
 		elseif ( action == "setpassword" ) then
 			if ( not data or data == "" ) then
 				setServerPassword ( nil )
@@ -1280,6 +1284,11 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 				action = nil
 			else
 				mdata = data
+			end
+		elseif ( action == "setfpslimit" ) then
+			if ( not setFPSLimit ( tonumber ( data ) ) ) then
+				action = nil
+				outputChatBox ( "Error setting FPS Limit.", source, 255, 0, 0 )
 			end
 		else
 			action = nil

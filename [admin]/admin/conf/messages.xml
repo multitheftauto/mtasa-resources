@@ -178,6 +178,11 @@
       <player>Your vehicle color has been changed$by_admin_4plr.</player>
       <log>ADMIN: $admin has changed color of $player's vehicle</log>
     </group>
+	<group action="setlights" r="225" g="170" b="90">
+      <admin>$player's vehicle lights color changed</admin>
+      <player>Your vehicle lights color has been changed$by_admin_4plr.</player>
+      <log>ADMIN: $admin has changed lights color of $player's vehicle</log>
+    </group>
   </vehicle>
   <resource>
     

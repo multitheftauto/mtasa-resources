@@ -43,6 +43,7 @@
   <script src="client/gui/admin_report.lua" type="client" />
   <script src="client/gui/admin_acl.lua" type="client" />
   <script src="client/gui/admin_settings.lua" type="client" />
+  <script src="client/colorpicker/colorpicker.lua" type="client" />
 
   <!--Exported Functions-->
   <export function="getPlayerCountry"/>
@@ -68,6 +69,10 @@
   <file src="client/images/dropdown.png" />
   <file src="client/images/colorscheme.png" />
   <file src="client/images/empty.png" />
+  <file src="client/colorpicker/sv.png" />
+  <file src="client/colorpicker/cursor.png" />
+  <file src="client/colorpicker/blank.png" />
+  <file src="client/colorpicker/h.png" />
   
   <!--Country flags by Christoph Brill-->
   <file src="client/images/flags/ac.png" />
@@ -208,7 +213,7 @@
   <file src="client/images/flags/za.png" />
   
   <!--HTTP Server Stuff-->
-  <!--Not finished yet
+  <!--Not finished yet 
   <export function="httpLoad" http="true" />
   <export function="httpGetPlayerList" http="true" />
   <export function="httpGetMenuItems" http="true" />
@@ -222,7 +227,7 @@
   <html src="server/http/bans.htm" default="true"/>
   <html src="server/http/admin.css" raw="true"/>
   <html src="server/http/admin.js" raw="true"/>
-
+		
   <html src="server/http/images/header.png" raw="true"/>
   <html src="server/http/images/manual.png" raw="true"/>
   <html src="server/http/images/back.png" raw="true"/>

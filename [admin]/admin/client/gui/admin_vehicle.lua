@@ -69,17 +69,17 @@ function aVehicleCustomize ( player )
 					   guiCreateLabel ( 0.63, 0.25, 0.15, 0.05, "Color2:", true, aVehicleForm )
 					   guiCreateLabel ( 0.63, 0.30, 0.15, 0.05, "Color3:", true, aVehicleForm )
 					   guiCreateLabel ( 0.63, 0.35, 0.15, 0.05, "Color4:", true, aVehicleForm )
-		aVehicleColor1		= guiCreateEdit ( 0.79, 0.20, 0.09, 0.048, "0", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor1, 3 )
-		aVehicleColor2		= guiCreateEdit ( 0.79, 0.25, 0.09, 0.048, "0", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor2, 3 )
-		aVehicleColor3		= guiCreateEdit ( 0.79, 0.30, 0.09, 0.048, "0", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor3, 3 )
-		aVehicleColor4		= guiCreateEdit ( 0.79, 0.35, 0.09, 0.048, "0", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor4, 3 )
-					   guiCreateLabel ( 0.90, 0.20, 0.08, 0.05, "(0-126)", true, aVehicleForm )
-					   guiCreateLabel ( 0.90, 0.25, 0.08, 0.05, "(0-126)", true, aVehicleForm )
-					   guiCreateLabel ( 0.90, 0.30, 0.08, 0.05, "(0-126)", true, aVehicleForm )
-					   guiCreateLabel ( 0.90, 0.35, 0.08, 0.05, "(0-126)", true, aVehicleForm )
-		aVehicleColorScheme	= guiCreateButton ( 0.63, 0.41, 0.20, 0.05, "View color IDs", true, aVehicleForm )
+		aVehicleColor1		= guiCreateEdit ( 0.79, 0.20, 0.13, 0.048, "#000000", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor1, 7 )
+		aVehicleColor2		= guiCreateEdit ( 0.79, 0.25, 0.13, 0.048, "#000000", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor2, 7 )
+		aVehicleColor3		= guiCreateEdit ( 0.79, 0.30, 0.13, 0.048, "#000000", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor3, 7 )
+		aVehicleColor4		= guiCreateEdit ( 0.79, 0.35, 0.13, 0.048, "#000000", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor4, 7 )
+			
+		--aVehicleColorScheme	= guiCreateButton ( 0.63, 0.41, 0.20, 0.05, "View color IDs", true, aVehicleForm )
 		aVehicleColorSet	= guiCreateButton ( 0.84, 0.41, 0.14, 0.05, "Set", true, aVehicleForm )
-		aVehicleUpgradeNames = guiCreateCheckBox ( 0.63, 0.60, 0.30, 0.04, "Show upgrade names", false, true, aVehicleForm )
+		guiCreateLabel ( 0.63, 0.5, 0.15, 0.05, "Lights Color:", true, aVehicleForm )
+		aLightsColor = guiCreateEdit ( 0.79, 0.5, 0.13, 0.048, "#ffffff", true, aVehicleForm ) guiEditSetMaxLength ( aLightsColor, 7 )
+		aLightsColorSet	= guiCreateButton ( 0.93, 0.5, 0.05, 0.05, "Set", true, aVehicleForm )
+		aVehicleUpgradeNames = guiCreateCheckBox ( 0.63, 0.7, 0.30, 0.04, "Show upgrade names", false, true, aVehicleForm )
 					   if ( aGetSetting ( "aVehicleUpgradeNames" ) ) then guiCheckBoxSetSelected ( aVehicleUpgradeNames, true ) end
 		aVehicleClose		= guiCreateButton ( 0.86, 0.92, 0.19, 0.05, "Close", true, aVehicleForm )
 
@@ -229,6 +229,8 @@ function aClientVehicleClick ( button )
 			guiSetVisible ( aVehicleColorForm, false )
 		elseif ( source == aVehicleColorSet ) then
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setcolor", { guiGetText ( aVehicleColor1 ), guiGetText ( aVehicleColor2 ), guiGetText ( aVehicleColor3 ), guiGetText ( aVehicleColor4 ) } )
+		elseif ( source == aLightsColorSet ) then
+			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setlights", { guiGetText ( aLightsColor ) } )
 		elseif ( source == aVehicleColorScheme ) then
 			guiSetVisible ( aVehicleColorForm, true )
 			guiBringToFront ( aVehicleColorForm )
@@ -246,6 +248,16 @@ function aClientVehicleClick ( button )
 		elseif ( source == aVehicleUpgradeNames ) then
 			aVehicleCheckUpgrades ( aVehicleCustomizeVehicle )
 			aSetSetting ( "aVehicleUpgradeNames", guiCheckBoxGetSelected ( aVehicleUpgradeNames ) )
+		elseif source == aVehicleColor1 then
+			openPicker("vehicleColor1", guiGetText(aVehicleColor1), "Set vehicle color")
+		elseif source == aVehicleColor2 then
+			openPicker("vehicleColor2", guiGetText(aVehicleColor2), "Set vehicle color")
+		elseif source == aVehicleColor3 then
+			openPicker("vehicleColor3", guiGetText(aVehicleColor3), "Set vehicle color")
+		elseif source == aVehicleColor4 then
+			openPicker("vehicleColor4", guiGetText(aVehicleColor4), "Set vehicle color")
+		elseif source == aLightsColor then
+			openPicker("lightsColor", "#ffffff", "Set lights color")
 		elseif ( source == aVehicleUpgrade ) then
 			local tableOut = {}
 			for id, element in ipairs ( aVehicleUpgrades ) do
@@ -264,3 +276,21 @@ function aClientVehicleClick ( button )
 		end
 	end
 end
+
+
+addEvent("onColorPickerOK", true)
+addEventHandler("onColorPickerOK", root, 
+function (id, hex)
+if id == "vehicleColor1" then
+	guiSetText(aVehicleColor1, hex)
+elseif id == "vehicleColor2" then
+	guiSetText(aVehicleColor2, hex)
+elseif id == "vehicleColor3" then
+	guiSetText(aVehicleColor3, hex)
+elseif id == "vehicleColor4" then
+	guiSetText(aVehicleColor4, hex)
+elseif id == "lightsColor" then
+	guiSetText(aLightsColor, hex)
+end
+end)
+
