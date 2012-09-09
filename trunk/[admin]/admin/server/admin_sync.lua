@@ -116,6 +116,7 @@ function aSynchCoroutineFunc( type, data )
 		tableOut["game"] = getGameType()
 		tableOut["map"] = getMapName()
 		tableOut["password"] = getServerPassword()
+		tableOut["fps"] = getFPSLimit()
 	elseif ( type == "rights" ) then
 		for gi, group in ipairs ( aclListGroups() ) do
 			for oi, object in ipairs ( aclGroupListObjects ( group ) ) do

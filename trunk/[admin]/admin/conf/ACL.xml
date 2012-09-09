@@ -70,8 +70,10 @@
     <right name="command.setgamespeed" access="true" />
     <right name="command.setgravity" access="true" />
     <right name="command.settime" access="true" />
+    <right name="command.setfpslimit" access="true" />
     <right name="function.setServerConfigSetting" access="true" />
     <right name="function.updateResourceACLRequest" access="true" />
+    <right name="function.shutdown" access="true" />
     <right name="command.aclrequest" access="true" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
@@ -290,6 +292,8 @@
     <right name="command.setgamespeed" access="false" />
     <right name="command.setgravity" access="false" />
     <right name="command.settime" access="false" />
+    <right name="function.shutdown" access="false" />
+    <right name="command.setfpslimit" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="false" />
     <right name="command.unban" access="false" />

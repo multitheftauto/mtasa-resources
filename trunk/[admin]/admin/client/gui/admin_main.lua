@@ -176,6 +176,7 @@ function aAdminMenu ()
 		aTab3.SetGameType		= guiCreateButton ( 0.80, 0.15, 0.18, 0.04, "Set Game Type", true, aTab3.Tab, "setgame" )
 		aTab3.SetMapName		= guiCreateButton ( 0.80, 0.20, 0.18, 0.04, "Set Map Name", true, aTab3.Tab, "setmap" )
 		aTab3.SetWelcome		= guiCreateButton ( 0.80, 0.25, 0.18, 0.04, "Welcome Message", true, aTab3.Tab, "setwelcome" )
+		aTab3.Shutdown		= guiCreateButton ( 0.80, 0.3, 0.18, 0.04, "Shutdown", true, aTab3.Tab, "shutdown" )
 						  guiCreateStaticImage ( 0.05, 0.32, 0.50, 0.0025, "client\\images\\dot.png", true, aTab3.Tab )
 		aTab3.WeatherCurrent	= guiCreateLabel ( 0.05, 0.35, 0.45, 0.05, "Current Weather: "..getWeather().." ("..getWeatherNameFromID ( getWeather() )..")", true, aTab3.Tab )
 		aTab3.WeatherDec		= guiCreateButton ( 0.05, 0.40, 0.035, 0.04, "<", true, aTab3.Tab )
@@ -208,6 +209,12 @@ function aAdminMenu ()
 		aTab3.Waves			= guiCreateEdit ( 0.35, 0.60, 0.135, 0.04, "0", true, aTab3.Tab )
 		aTab3.WavesSet		= guiCreateButton ( 0.50, 0.60, 0.10, 0.04, "Set", true, aTab3.Tab, "setwaveheight" )
 					 	 guiCreateLabel ( 0.63, 0.60, 0.09, 0.04, "( 0-100 )", true, aTab3.Tab )
+		
+		aTab3.FPSCurrent	= guiCreateLabel ( 0.05, 0.65, 0.25, 0.04, "FPS Limit: 38", true, aTab3.Tab )
+		aTab3.FPS			= guiCreateEdit ( 0.35, 0.65, 0.135, 0.04, "38", true, aTab3.Tab )
+		aTab3.FPSSet		= guiCreateButton ( 0.50, 0.65, 0.10, 0.04, "Set", true, aTab3.Tab, "setfpslimit" )
+					 	 guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-100 )", true, aTab3.Tab )
+					 	 
 
 		aTab4 = {}
 		aTab4.Tab			= guiCreateTab ( "Bans", aTabPanel, "bans" )
@@ -487,6 +494,8 @@ function aClientSync ( type, table )
 		guiSetText ( aTab3.Password, "Password: "..( table["password"] or "None" ) )
 		guiSetText ( aTab3.GameType, "Game Type: "..( table["game"] or "None" ) )
 		guiSetText ( aTab3.MapName, "Map Name: "..( table["map"] or "None" ) )
+		guiSetText ( aTab3.FPSCurrent, "FPS Limit: "..( table["fps"] or "N/A" ) )
+		guiSetText ( aTab3.FPS, table["fps"] or "38" )
 	elseif ( type == "bansdirty" ) then
 		g_GotLatestBansList = false
 		if aAdminForm and guiGetVisible ( aAdminForm ) and guiGetSelectedTab( aTabPanel ) == aTab4.Tab then
@@ -1004,6 +1013,7 @@ function aClientClick ( button )
 			elseif ( source == aTab3.SetMapName ) then aInputBox ( "Map Name", "Enter map name:", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"setmap\", $value )" )
 			elseif ( source == aTab3.SetWelcome ) then aInputBox ( "Welcome Message", "Enter the server welcome message:", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"setwelcome\", $value )" )
 			elseif ( source == aTab3.SetPassword ) then aInputBox ( "Server password", "Enter server password: (32 characters max)", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"setpassword\", $value )" )
+			elseif ( source == aTab3.Shutdown ) then aInputBox ( "Shutdown the server", "Enter shutdown reason:", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"shutdown\", $value )" )
 			elseif ( source == aTab3.ResetPassword ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setpassword", "" )
 			elseif ( ( source == aTab3.WeatherInc ) or ( source == aTab3.WeatherDec ) ) then
 				local id = tonumber ( gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
@@ -1027,6 +1037,9 @@ function aClientClick ( button )
 			elseif ( source == aTab3.SpeedSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setgamespeed", guiGetText ( aTab3.Speed ) )
 			elseif ( source == aTab3.GravitySet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setgravity", guiGetText ( aTab3.Gravity ) )
 			elseif ( source == aTab3.WavesSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setwaveheight", guiGetText ( aTab3.Waves ) )
+			elseif ( source == aTab3.FPSSet ) then 
+			triggerServerEvent ( "aServer", getLocalPlayer(), "setfpslimit", guiGetText ( aTab3.FPS ) )
+			triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
 			end
 		-- TAB 4, BANS
 		elseif ( getElementParent ( source ) == aTab4.Tab ) then

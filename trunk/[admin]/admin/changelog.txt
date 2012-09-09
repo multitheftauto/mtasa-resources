@@ -57,6 +57,10 @@
 # Added ability to stop all resources in 'Resources' tab
 # Added setting 'removeHex' which removes HEX codes from players nicks when displayed or sent in message (default is set to true)
 # More informatios about resources now showing in 'Resources' tab
+# Added ability to shutdown the server in 'Server' tab
+# Changing vehicle's color now supports new RGB system, color is picked using color picker
+# Vehicle's lights color can now be changed
+# Server FPS Limit can now be changed in 'Server' tab
 
 
 
