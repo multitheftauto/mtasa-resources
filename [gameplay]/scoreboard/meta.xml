@@ -1,5 +1,5 @@
 <meta>
-	<info author="Awwu" type="script" name="Scoreboard" description="DirectX scoreboard resource" showInResourceBrowser="true" version="2.7.0"/>
+	<info author="Awwu" type="script" name="Scoreboard" description="DirectX scoreboard resource" showInResourceBrowser="true" version="2.7.1"/>
 
 	<script src="dxscoreboard_exports.lua" type="server" />
 	<script src="dxscoreboard_http.lua" type="server" />
@@ -53,6 +53,7 @@
 	<export function="scoreboardGetColumnCount" type="client" />
 	<export function="scoreboardGetTopCornerPosition" type="client" />
 	<export function="scoreboardGetSize" type="client" />
+	<export function="scoreboardForceUpdate" type="client" />
 	<export function="isPrioritySlotFree" type="client" />
 	<export function="getNextFreePrioritySlot" type="client" />
 	<export function="scoreboardGetSelectedRows" type="client" />

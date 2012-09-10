@@ -1,5 +1,5 @@
 <meta>
-    <info author="Talidan + Fenix" description="A handler resource to account for common uses for voice support" type="utility" version="1.0.1" />
+    <info author="Talidan + Fenix" description="A handler resource to account for common uses for voice support" type="utility" version="1.1.0" />
 	<!--Client -->
 	<script src="cGlobals.lua" type="client" />
 	<script src="cDrawIcon.lua" type="client" />
@@ -9,6 +9,9 @@
 	<export function="isPlayerVoiceMuted" type="client" />
 
 	<file src="images/voice.png" />
+	<file src="images/voice_small.png" />
+	<file src="images/voice_small_muted.png" />
+
 
 	<!--Server -->
 	<script src="sGlobals.lua" type="server" />
