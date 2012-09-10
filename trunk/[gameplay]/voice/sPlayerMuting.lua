@@ -22,7 +22,7 @@
 	end
 
 
-	function addPlayerMutedBy ()
+	function addPlayerMutedBy ()	
 		mutedBy[client] = mutedBy[client] or {}
 		mutedBy[client][source] = true
 		updateMuted ( client )
@@ -37,6 +37,14 @@
 		end
 	end
 	addEventHandler ( "voice_unmutePlayerForPlayer", root, removePlayerMutedBy )
+	
+	function addPlayerMutedByTable (players) --Single packet for multiple muted players
+		for i,player in ipairs(players) do
+			source = player
+			addPlayerMutedBy()
+		end
+	end
+	addEventHandler ( "voice_muteTableForPlayer", root, addPlayerMutedByTable )
 
 	addEventHandler ( "onPlayerQuit", root, 
 		function()

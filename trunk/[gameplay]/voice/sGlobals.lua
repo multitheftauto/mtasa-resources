@@ -3,6 +3,8 @@
 	SETTINGS_REFRESH = 5000 -- Interval in which team channels are refreshed, in MS.
 	resourceRoot = getResourceRootElement(getThisResource())
 
+	setElementData ( resourceRoot, "voice_enabled", true ) -- REMOVE IN 1.4
+	
 	------------------
 	playerChannels = {}
 	channels = {}
@@ -13,6 +15,7 @@
 	------------------
 	addEvent("voice_mutePlayerForPlayer", true)
 	addEvent("voice_unmutePlayerForPlayer", true)
+	addEvent("voice_muteTableForPlayer", true)
 
 	------------------
 	--Function to convert { moo=true,boo=true } into { moo,boo }

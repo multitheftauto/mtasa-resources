@@ -641,6 +641,20 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 									dxDrawText( partOfName, xPos, 			y, 			topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
 									xPos = xPos + textLength
 								end
+							elseif type( content ) == "table" and column.name ~= "name" then
+								if content.type == "image" and content.src then
+									local itemHeight = dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont )
+									content.height = content.height or itemHeight
+									content.width = content.width or itemHeight
+									local itemWidth = content.height/itemHeight * content.width
+
+									content.color = content.color or tocolor(255,255,255,255)
+									content.rot = content.rot or 0
+									content.rotOffX = content.rotOffX or 0
+									content.rotOffY = content.rotOffY or 0
+									
+									dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
+								end
 							else
 								dxDrawText( content, topX+theX+s(1), 	y+s(1), 	topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
 								dxDrawText( content, topX+theX, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
@@ -700,6 +714,20 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 									dxDrawText( partOfName, xPos+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 									dxDrawText( partOfName, xPos, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 									xPos = xPos + textLength
+								end
+							elseif type( content ) == "table" and column.name ~= "name" then
+								if content.type == "image" and content.src then
+									local itemHeight = dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont )
+									content.height = content.height or itemHeight
+									content.width = content.width or itemHeight
+									local itemWidth = itemHeight/content.height * content.width
+
+									content.color = content.color or tocolor(255,255,255,255)
+									content.rot = content.rot or 0
+									content.rotOffX = content.rotOffX or 0
+									content.rotOffY = content.rotOffY or 0
+									
+									dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
 								end
 							else
 								dxDrawText( content, topX+theX+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
@@ -1106,27 +1134,31 @@ function scoreboardClickHandler( button, state, cX, cY )
 		local topX, topY = (sX/2)-(calculateWidth()/2), (sY/2)-(calculateHeight()/2)
 		local xMin, xMax, yMin, yMax = topX, topX+calculateWidth(), topY, topY+calculateHeight()
 		local maxPerWindow = getMaxPerWindow()
+		local clickedColumn = false  --This var is used if we clicked *anywhere* in the column
 		if cX >= xMin and cX <= xMax and cY >= yMin and cY <= yMax then
-			local clickedOnColumn = false
+			local clickedOnColumnHeader = false --This var is used if we clicked on the column header itself
 			local x = s(10)
 			local y = s(5)+s(3)
 			if (serverInfo.server or serverInfo.players) and showServerInfo then y = y + dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
 			if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then y = y + dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
 			for key, column in ipairs( scoreboardColumns ) do
-				if cX >= topX+x and cX <= topX+x+s(column.width) and cY >= topY+y and cY <= topY+y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ) then
-					clickedOnColumn = column.name
+				if cX >= topX+x and cX <= topX+x+s(column.width) then
+					clickedColumn = column.name
+					if cY >= topY+y and cY <= topY+y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ) then
+						clickedOnColumnHeader = column.name
+					end
 				end
 				x = x + s(column.width + 10)
 			end
-			if clickedOnColumn then
-				if sortBy.what == clickedOnColumn then -- last click was this column
+			if clickedOnColumnHeader then
+				if sortBy.what == clickedOnColumnHeader then -- last click was this column
 					sortBy.dir = sortBy.dir + 2
 					if sortBy.dir > 1 then 
 						sortBy.what = "__NONE__"
 						sortBy.dir = -1
 					end
 				else
-					sortBy.what = clickedOnColumn
+					sortBy.what = clickedOnColumnHeader
 					sortBy.dir = -1
 				end
 				forceScoreboardUpdate = true
@@ -1173,7 +1205,7 @@ function scoreboardClickHandler( button, state, cX, cY )
 				local font = iif( element and isElement( element ) and getElementType( element ) == "team", teamHeaderFont, contentFont )
 				if cX >= topX+s(5) and cX <= topX+width-s(5) and cY >= y and cY <= y+dxGetFontHeight( fontscale(font, scoreboardScale), font ) then
 					local selected = (not selectedRows[element]) == true
-					local triggered = triggerEvent( "onClientPlayerScoreboardClick", element, selected, cX, cY )
+					local triggered = triggerEvent( "onClientPlayerScoreboardClick", element, selected, cX, cY, clickedColumn )
 					if triggered then
 						selectedRows[element] = not selectedRows[element]
 					end
@@ -1195,3 +1227,8 @@ function removeResourceScoreboardColumns( resource )
 	end
 end
 addEventHandler( "onClientResourceStop", getRootElement(), removeResourceScoreboardColumns )
+
+function scoreboardForceUpdate ()
+	bForceUpdate = true
+	return true
+end
