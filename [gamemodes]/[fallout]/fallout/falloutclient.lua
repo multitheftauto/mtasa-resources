@@ -67,7 +67,7 @@ setTimer ( checkHax, 1000, 0 )
 
 function checkStatus ( )
     gameOver = false --Reset as this is new game time
-    checkStatusTimer = setTimer ( checkStatusB, 500, 0 )                 
-	end
-addEvent("clientCheckStatus",true) --For triggering from server
+    checkStatusTimer = setTimer ( checkStatusB, 500, 0 )
+end
+addEvent("clientCheckStatus", true) --For triggering from server
 addEventHandler("clientCheckStatus", root, checkStatus)
