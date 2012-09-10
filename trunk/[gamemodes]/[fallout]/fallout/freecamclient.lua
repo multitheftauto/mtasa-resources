@@ -16,6 +16,9 @@ addEventHandler ( "onClientResourceStart", resourceRoot, freecamLoad )
 
 function activateFreeCam ( status )
 	spectateActivated = status
+	if (status == false) then
+		setCameraTarget(localPlayer)
+	end
 end
 addEvent("clientActivateFreeCam", true) --For triggering from server
 addEventHandler("clientActivateFreeCam", root, activateFreeCam)

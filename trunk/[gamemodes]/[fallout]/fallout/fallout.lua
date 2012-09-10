@@ -223,7 +223,7 @@ end
 
 function activateSpectate ( player ) --Don't setTimer loop serverside, will cause bug when 2 players come in
 	setCameraMatrix( player, 1558.367, -1346.678, 630, 1558.367, -1301.059, 603.105469)
-	triggerClientEvent ( player, "clientActivateFreeCam", player, true )	
+	triggerClientEvent ( player, "clientActivateFreeCam", player, true )
 end
 
 function playerWasted ( )
@@ -272,6 +272,13 @@ addEventHandler ( "onPlayerJoin", getRootElement(), PlayerJoin )
 
 function PlayerQuit ( )
 	players = getElementsByType ( "player" )
+	-- Remove the player that is disconnecting
+	for k, player in pairs(players) do
+		if (player == source) then
+			players[k] = nil
+			break
+		end
+	end
 end
 addEventHandler ( "onPlayerQuit", root, PlayerQuit )
 
@@ -281,6 +288,7 @@ addEventHandler ( "onPlayerQuit", root, PlayerQuit )
 
 function spawnPlayers ()
 	for k,v in pairs(players) do
+		triggerClientEvent( v, "clientActivateFreeCam", v, false )
 		setPlayerTeam ( v, teamAlive )
 		textDisplayAddObserver ( countDownDisplay, v )
 		spawningBoard = math.random ( 1, tableSize ) --Choose random spawn board
