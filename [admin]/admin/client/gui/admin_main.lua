@@ -771,6 +771,9 @@ function aClientGUIChanged ()
 					guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
 					guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
 					guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
+					guiGridListSetItemText ( aTab2.ResourceList, row, 4, resource["fullName"], false, false )
+					guiGridListSetItemText ( aTab2.ResourceList, row, 5, resource["author"], false, false )
+					guiGridListSetItemText ( aTab2.ResourceList, row, 6, resource["version"], false, false )
 				end
 			end
 		else
@@ -781,6 +784,9 @@ function aClientGUIChanged ()
 						guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
 						guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
 						guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
+						guiGridListSetItemText ( aTab2.ResourceList, row, 4, resource["fullName"], false, false )
+						guiGridListSetItemText ( aTab2.ResourceList, row, 5, resource["author"], false, false )
+						guiGridListSetItemText ( aTab2.ResourceList, row, 6, resource["version"], false, false )
 					end
 				end
 			end
