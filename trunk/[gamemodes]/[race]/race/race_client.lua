@@ -456,9 +456,20 @@ function handleHitPickup(pickup)
 			return
 		end
 		g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
+		alignVehicleWithUp()
+		setElementModel(g_Vehicle, pickup.vehicle)
+		vehicleChanging(g_MapOptions.classicchangez, pickup.vehicle)
+	elseif pickup.type == 'nitro' then
+		addVehicleUpgrade(g_Vehicle, 1010)
+	elseif pickup.type == 'repair' then
+		fixVehicle(g_Vehicle)
 	end
 	triggerServerEvent('onPlayerPickUpRacePickupInternal', g_Me, pickup.id, pickup.respawn)
 	playSoundFrontEnd(46)
+end
+
+function removeVehicleNitro()
+	removeVehicleUpgrade(g_Vehicle, 1010)
 end
 
 function unloadPickup(pickupID)
@@ -697,8 +708,11 @@ function checkpointReached(elem)
 		return
 	end
 	
-	if g_Checkpoints[g_CurrentCheckpoint].vehicle then
+	if g_Checkpoints[g_CurrentCheckpoint].vehicle and g_Checkpoints[g_CurrentCheckpoint].vehicle ~= getElementModel(g_Vehicle) then
 		g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
+		alignVehicleWithUp()
+		setElementModel(g_Vehicle, g_Checkpoints[g_CurrentCheckpoint].vehicle)
+		vehicleChanging(g_MapOptions.classicchangez, g_Checkpoints[g_CurrentCheckpoint].vehicle)
 	end
 	triggerServerEvent('onPlayerReachCheckpointInternal', g_Me, g_CurrentCheckpoint)
 	playSoundFrontEnd(43)
