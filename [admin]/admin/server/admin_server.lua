@@ -34,7 +34,11 @@ end
 _getPlayerName = getPlayerName
 function getPlayerName(player)
 if get("hexRemove") == "true" then
+if string.find(_getPlayerName(player), "#%x%x%x%x%x%x") then
 	return string.gsub(_getPlayerName(player), "#%x%x%x%x%x%x", "")
+else
+	return _getPlayerName(player)
+end
 else
 	return _getPlayerName(player)
 end
