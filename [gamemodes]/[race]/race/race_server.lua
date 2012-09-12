@@ -630,9 +630,8 @@ addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 		local checkpoint = g_Checkpoints[checkpointNum]
 		if checkpoint.vehicle then
 			if getElementModel(vehicle) ~= tonumber(checkpoint.vehicle) then
-				clientCall(source, 'alignVehicleWithUp')
+				clientCall(source, 'removeVehicleNitro')
 				setVehicleID(vehicle, checkpoint.vehicle)
-				clientCall(source, 'vehicleChanging', g_MapOptions.classicchangez, tonumber(checkpoint.vehicle))
 				if checkpoint.paintjob or checkpoint.upgrades then
 					setVehiclePaintjobAndUpgrades(vehicle, checkpoint.paintjob, checkpoint.upgrades)
 				else
@@ -665,16 +664,15 @@ addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 			clientCall(g_Root, 'unloadPickup', pickupID)
 			TimerManager.createTimerFor("map"):setTimer(ServerLoadPickup, tonumber(respawntime), 1, pickupID)
 		end
-		if pickup.type == 'repair' then
-			fixVehicle(vehicle)
-		elseif pickup.type == 'nitro' then
+		if pickup.type == 'nitro' then
 			addVehicleUpgrade(vehicle, 1010)
 		elseif pickup.type == 'vehiclechange' then
 			if getElementModel(vehicle) ~= tonumber(pickup.vehicle) then
-				clientCall(source, 'alignVehicleWithUp')
+				clientCall(source, 'removeVehicleNitro')
 				setVehicleID(vehicle, pickup.vehicle)
-				setVehiclePaintjobAndUpgrades(vehicle, pickup.paintjob, pickup.upgrades)
-				clientCall(source, 'vehicleChanging', g_MapOptions.classicchangez, tonumber(pickup.vehicle))
+				if pickup.paintjob or pickup.upgrades then
+					setVehiclePaintjobAndUpgrades(vehicle, pickup.paintjob, pickup.upgrades)
+				end
 			end
 		end
 		triggerEvent('onPlayerPickUpRacePickup', source, pickupID, pickup.type, pickup.vehicle)
