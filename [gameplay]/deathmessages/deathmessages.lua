@@ -18,7 +18,8 @@ addEventHandler("onPlayerWasted", root,
 			else
 				message = getPlayerName(source).." committed suicide."
 			end
-		else
+		end
+		if not message then
 			message = getPlayerName(source).." died."
 		end
 		if weapon and get("show_weapon") then
