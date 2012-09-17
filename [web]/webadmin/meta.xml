@@ -1,9 +1,10 @@
 <meta>
 <include resource="ajax"/>
-	<info author="eAi" showInResourceBrowser="true" name="Admin" description="Various useful pages of administration tools" pages="acls.htm|ACLs,groups.htm|Groups" noDefaultPage="true" />
+	<info author="eAi" showInResourceBrowser="true" name="Admin" description="Various useful pages of administration tools" pages="acls.htm|ACLs,groups.htm|Groups,players.htm|Players" noDefaultPage="true" />
 	<script src="admin.lua" type="server" />
 	<html src="acls.htm" />
 	<html src="groups.htm" />
+	<html src="players.htm" />
 	<html src="admin.js" raw="true"/>
 	<html src="icon_minus_8_on_F.png" raw="true"/>
 	<html src="icon_plus_8_on_F.png" raw="true"/>
@@ -29,4 +30,9 @@
 	<export function="removeGroup" http="true" />
 	<export function="addGroup" http="true" />
 	<export function="isAccountNameValid" http="true" />
+
+	<!-- PLAYERS -->
+	<export function="serverKickPlayer" http="true" />
+ 	<export function="serverBanPlayer" http="true" />
+
 </meta>

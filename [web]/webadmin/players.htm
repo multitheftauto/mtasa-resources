@@ -1,0 +1,94 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<!-- Players tab made by miki_cz, using code snippets from other tabs -->
+
+<* = call(getResourceFromName("ajax"),"start", getResourceName(getThisResource()) ) *>
+<!--
+resource.[name]
+resource.[name].function.[funcname]
+resource.[name].file.[filename]
+general.[something]
+command.[command]
+function.[name]
+-->
+<script>
+
+function webKickPlayer (playerName)
+{
+
+var reason = prompt('Enter the reason for kicking of player ' + playerName);
+if (reason) 
+{
+serverKickPlayer ( playerName, reason,
+					
+						function(success)
+						{
+							if (success)
+							{
+								alert('You kicked player ' + playerName); 
+							}
+							else
+							{
+								alert("Could not kick player");
+							}
+						}
+					
+				);
+}
+	
+	}
+	
+function webBanPlayer (playerName)
+{
+
+var reason = prompt('Enter the reason for banning of player ' + playerName);
+if (reason) 
+{
+var duration = prompt('Enter duration of BAN in hours, you can use 0.5 for 30 mins etc.. type in 0 for permanent ban.');
+if (duration)
+{
+serverBanPlayer ( playerName, reason, duration,
+					
+						function(success)
+						{
+							if (success)
+							{
+								alert('You banned player ' + playerName); 
+							}
+							else
+							{
+								alert("Could not ban player");
+							}
+						}
+					
+				);
+}
+}
+	}
+	
+
+</script>
+<head>
+	<link rel="stylesheet" type="text/css" href="css.css" />
+<div id="topbar">
+		<span id="welcometext">You can manage players on server here.</span>
+	</div>
+</head>
+</br>
+</br>
+</br>
+<body>
+<table border="1">
+<tr>
+<th>Nick</th>
+<th>Ping</th>
+<th>Actions</th>
+</tr>
+<*
+for i, player in ipairs(getElementsByType("player")) do
+	httpWrite("<tr><td>" .. getPlayerName(player) .. "</td><td>" .. getPlayerPing(player) .. "</td><td><input type=\"button\" value=\"Kick\" onClick=\"webKickPlayer('" .. getPlayerName(player) .. "');\"></input><input type=\"button\" value=\"Ban\" onClick=\"webBanPlayer('" .. getPlayerName(player) .. "');\"></input></td></tr>")
+	
+end
+*>
+</table>
+</body>
