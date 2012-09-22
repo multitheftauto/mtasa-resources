@@ -199,7 +199,9 @@ function openResource( resourceName, onStart )
 		local mapName = DUMP_RESOURCE
 		
 		if (not maps) then
-			triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", false )
+			if (openingSource) then
+				triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", false )
+			end
 			editor_gui.outputMessage ( "Unable to open "..tostring(resourceName).." ("..tostring(mapsErr)..")", root, 255, 0, 0, 5000)
 			return false
 		end
@@ -211,7 +213,9 @@ function openResource( resourceName, onStart )
 		openingStartTick    = getTickCount()
 		
 		editor_gui.outputMessage ( "Opening map "..tostring(openingResourceName).."...", root,0,0,255,600000)
-		triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
+		if (openingSource) then
+			triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
+		end
 		
 		for key,mapPath in ipairs(maps) do
 			local mapNode = xmlLoadFile ( ':' .. getResourceName(map) .. '/' .. mapPath )
