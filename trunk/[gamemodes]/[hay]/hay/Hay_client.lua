@@ -86,3 +86,10 @@ addEventHandler ( "onClientResourceStop",getResourceRootElement(getThisResource(
 		toggleControl ( "enter_exit", true )
 	end
 )
+
+addEventHandler( "onClientPlayerSpawn", localPlayer,
+	function()
+		setTimer(setCameraTarget, 112, 1, localPlayer ) -- Make them face the haystack. 
+		-- Has to be on a timer and 112ms is the lowest it worked for me.
+	end
+)
