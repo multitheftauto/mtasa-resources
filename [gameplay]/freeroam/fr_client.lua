@@ -806,18 +806,32 @@ addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
 
 function setPosCommand(cmd, x, y, z, r)
+	-- Handle setpos if used like: x, y, z, r or x,y,z,r
+	local x, y, z, r = string.gsub(x or "", ",", " "), string.gsub(y or "", ",", " "), string.gsub(z or "", ",", " "), string.gsub(r or "", ",", " ")
+	-- Extra handling for x,y,z,r
+	if (x and y == "" and not tonumber(x)) then
+		x, y, z, r = unpack(split(x, " "))
+	end
+	
 	local px, py, pz = getElementPosition(g_Me)
 	local pr = getPedRotation(g_Me)
-	if not x or x == '-' or not tonumber(x) then
-		x = px
+	
+	-- If somebody doesn't provide all XYZ explain that we will use their current X Y or Z.
+	local message = ""
+	if (not tonumber(x)) then
+		message = "X "
 	end
-	if not y or y == '-' or not tonumber(y) then
-		y = py
+	if (not tonumber(y)) then
+		message = message.."Y "
 	end
-	if not z or z == '-' or not tonumber(z) then
-		z = pz
+	if (not tonumber(z)) then
+		message = message.."Z "
 	end
-	setPlayerPosition(tonumber(x), tonumber(y), tonumber(z))
+	if (message ~= "") then
+		outputChatBox(message.."arguments were not provided. Using your current "..message.."values instead.", 255, 255, 0)
+	end
+	
+	setPlayerPosition(tonumber(x) or px, tonumber(y) or py, tonumber(z) or pz)
 	if (isPedInVehicle(g_Me)) then
 		local vehicle = getPedOccupiedVehicle(g_Me)
 		if (vehicle and isElement(vehicle) and getVehicleController(vehicle) == g_Me) then
