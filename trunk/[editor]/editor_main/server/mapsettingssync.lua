@@ -20,6 +20,13 @@ mapSettingDefaults = defaults
 currentMapSettings = defaults
 currentMapSettings.gamemodeSettings = {}
 
+metaSettingsFormat = {
+	["locked_time"] = "lockTime",
+	["minplayers"] = "minPlayers",
+	["maxplayers"] = "maxPlayers",
+	
+}
+
 local mapSettingAction = {
 	timeHour = function ( value )
 		setTime(value, currentMapSettings.timeMinute)
@@ -202,7 +209,12 @@ function getSettings(resource)
 				if string.find(name,"*") == 1 or string.find(name,"#") == 1 or string.find(name,"@") == 1 then
 					name = string.sub(name,2)
 				end
-				settings[name] = value
+				-- Map editor and settings in meta may use different names so we have to rename some
+				if (metaSettingsFormat[name]) then
+					settings[metaSettingsFormat[name]] = value
+				else
+					settings[name] = value
+				end
 			end
 		end
 	end
