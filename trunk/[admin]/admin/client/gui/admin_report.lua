@@ -42,7 +42,6 @@ end
 addCommandHandler ( "report", aReport )
 
 function aReportClose ( )
-	guiSetInputEnabled ( false )
 	if ( aReportForm ) then
 		removeEventHandler ( "onClientGUIClick", aReportForm, aClientReportClick )
 		removeEventHandler ( "onClientGUIDoubleClick", aReportForm, aClientReportDoubleClick )
@@ -86,9 +85,9 @@ function aClientReportClick ( button )
 				aReportClose ()
 			end
 		elseif ( source == aReportSubject ) then
-			guiSetInputEnabled ( true )
+			
 		elseif ( source == aReportMessage ) then
-			guiSetInputEnabled ( true )
+			
 		elseif ( source == aReportCancel ) then
 			aReportClose ()
 		elseif ( source == aReportDropDown ) then

@@ -63,7 +63,7 @@ function guiClick(button)
 	if button == "left" then
 		if ( getElementParent ( source ) == aTabMap.Tab ) then
 			if source == aTabMap.MapListSearch then
-				guiSetInputEnabled(true)
+				
 			elseif source == aTabMap.RefreshList then
 				guiGridListClear(aTabMap.MapList)
 				triggerServerEvent("getMaps_s", getLocalPlayer(), true)
