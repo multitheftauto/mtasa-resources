@@ -20,7 +20,6 @@ aWeathers = {}
 _weathers_max = 0
 
 function aClientAdminMenu ()
-	guiSetInputEnabled ( false )
 	if ( aAdminForm ) and ( guiGetVisible ( aAdminForm ) == true ) then
 		for id, widget in pairs ( _widgets ) do
 			widget.close ( false )
@@ -59,11 +58,11 @@ function aAdminResourceStart ()
 	aLoadSettings ()
 	triggerServerEvent ( "aPermissions", getLocalPlayer() )
 	setTimer( function() triggerServerEvent ( "aPlayerVersion", getLocalPlayer(), getVersion() ) end, 2000, 1 )
+	guiSetInputMode ( "no_binds_when_editing" )
 end
 
 function aAdminResourceStop ()
 	showCursor ( false )
-	guiSetInputEnabled ( false )
 end
 
 function aRegister ( name, welement, fopen, fclose )

@@ -379,7 +379,6 @@ function aAdminMenuClose ( destroy )
 		guiSetVisible ( aTab1.VehicleOptions, false )
 		guiSetVisible ( aAdminForm, false )
 	end
-	guiSetInputEnabled ( false )
 	showCursor ( false )
 end
 
@@ -836,7 +835,6 @@ function aClientDoubleClick ( button )
 end
 
 function aClientClick ( button )
-	guiSetInputEnabled ( false )
 	if ( ( source == aTab1.WeaponOptions ) or ( source == aTab1.VehicleOptions ) or ( source == aTab1.SlapOptions ) ) then return
 	else
 		if ( guiGetVisible ( aTab1.WeaponOptions ) ) then guiSetVisible ( aTab1.WeaponOptions, false ) end
@@ -849,7 +847,7 @@ function aClientClick ( button )
 			if ( source == aTab1.Messages ) then
 				aViewMessages()
 			elseif ( source == aTab1.PlayerListSearch ) then
-				guiSetInputEnabled ( true )
+				
 			elseif ( source == aTab1.HideColorCodes ) then
 				updateColorCodes()
 			elseif ( source == aTab1.AnonAdmin ) then
@@ -965,7 +963,7 @@ function aClientClick ( button )
 		-- TAB 2, RESOURCES
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
 			if ( source == aTab2.ResourceListSearch ) then
-				guiSetInputEnabled ( true )
+				
 			elseif ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
@@ -998,7 +996,7 @@ function aClientClick ( button )
 			elseif ( source == aTab2.ExecuteServer ) then
 				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then triggerServerEvent ( "aExecute", getLocalPlayer(), guiGetText ( aTab2.Command ), true ) end
 			elseif ( source == aTab2.Command ) then
-				guiSetInputEnabled ( true )
+				
 				guiSetVisible ( aTab2.ExecuteAdvanced, false )
 			elseif ( source == aTab2.ExecuteAdvanced ) then
 				guiSetVisible ( aTab2.ExecuteAdvanced, false )
@@ -1080,7 +1078,7 @@ function aClientClick ( button )
 					guiSetText ( aTab5.AdminText, "" )
 				end
 			elseif ( source == aTab5.AdminText ) then
-				guiSetInputEnabled ( true )
+				
 			end
 		-- TAB 6, OPTIONS
 		elseif ( getElementParent ( source ) == aTab6.Tab ) then
@@ -1101,11 +1099,11 @@ function aClientClick ( button )
 			elseif ( source == aTab6.AutoLogin ) then
 				triggerServerEvent ( "aAdmin", getLocalPlayer(), "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
 			elseif ( source == aTab6.PasswordOld ) then
-				guiSetInputEnabled ( true )
+				
 			elseif ( source == aTab6.PasswordNew ) then
-				guiSetInputEnabled ( true )
+				
 			elseif ( source == aTab6.PasswordConfirm ) then
-				guiSetInputEnabled ( true )
+				
 			elseif ( source == aTab6.PasswordChange ) then
 				local passwordNew, passwordConf = guiGetText ( aTab6.PasswordNew ), guiGetText ( aTab6.PasswordConfirm )
 				if ( passwordNew == "" ) then aMessageBox ( "error", "Enter the new password" )

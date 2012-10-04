@@ -51,7 +51,6 @@ function aPlayerTeam ( player )
 end
 
 function aPlayerTeamClose ( destroy )
-	guiSetInputEnabled ( false )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceTeam ) ) ) then
 		if ( aTeamForm ) then
 			removeEventHandler ( "onClientGUIClick", aTeamForm, aClientTeamClick )
@@ -102,7 +101,7 @@ function aClientTeamClick ( button )
 			end
 			setTimer ( aTeamsRefresh, 2000, 1 )
 		elseif ( source == aTeamName ) then
-			guiSetInputEnabled ( true )
+			
 		elseif ( source == aTeamCancel ) then
 			aNewTeamShow ( false )
 		elseif ( source == aTeamAccept ) then

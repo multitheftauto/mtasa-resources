@@ -28,7 +28,6 @@ function aInputBox ( title, message, default, action )
 		--Register With Admin Form
 		aRegister ( "InputBox", aInputForm, aInputBox, aInputBoxClose )
 	end
-	guiSetInputEnabled ( true )
 	guiSetText ( aInputForm, title )
 	guiSetText ( aInputLabel, message )
 	guiSetText ( aInputValue, default )
@@ -39,7 +38,6 @@ function aInputBox ( title, message, default, action )
 end
 
 function aInputBoxClose ( destroy )
-	guiSetInputEnabled ( false )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
 		if ( aInputForm ) then
 			removeEventHandler ( "onClientGUIClick", aInputForm, aInputBoxClick )
@@ -174,7 +172,6 @@ function aBanInputBox ( player )
 		end
 	end
 
-	guiSetInputEnabled ( true )
 	guiSetText ( aBanInputForm, "Ban player " .. string.gsub(getPlayerName(player), "#%x%x%x%x%x%x", "" ))
 	guiSetText ( aBanInputLabel, "Enter the ban reason" )
 	aHideFloaters()
@@ -184,7 +181,6 @@ function aBanInputBox ( player )
 end
 
 function aBanInputBoxClose ( destroy )
-	guiSetInputEnabled ( false )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
 		if ( aBanInputForm ) then
 			removeEventHandler ( "onClientGUIClick", aBanInputForm, aBanInputBoxClick )
@@ -342,7 +338,6 @@ function aMuteInputBox ( player )
 		guiSetText ( aMuteInputRadio2s[i], dur>0 and secondsToTimeDesc(dur) or "Until reconnect" )
 	end
 
-	guiSetInputEnabled ( true )
 	guiSetText ( aMuteInputForm, "Mute player " .. getPlayerName(player) )
 	guiSetText ( aMuteInputLabel, "Enter the mute reason" )
 	aHideFloaters()
@@ -352,7 +347,6 @@ function aMuteInputBox ( player )
 end
 
 function aMuteInputBoxClose ( destroy )
-	guiSetInputEnabled ( false )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
 		if ( aMuteInputForm ) then
 			removeEventHandler ( "onClientGUIClick", aMuteInputForm, aMuteInputBoxClick )
