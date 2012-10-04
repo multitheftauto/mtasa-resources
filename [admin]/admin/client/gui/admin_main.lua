@@ -549,16 +549,6 @@ function aClientSync ( type, table )
 	end
 end
 
-_getPlayerName = getPlayerName
-
-			function getPlayerName(player)
-				if guiCheckBoxGetSelected(aTab1.HideColorCodes) then
-					return string.gsub(_getPlayerName(player), "#%x%x%x%x%x%x", "")
-				else
-					return _getPlayerName(player)
-				end
-			end
-
 function aClientGUITabSwitched( selectedTab )
 	if getElementParent( selectedTab ) == aTabPanel then
 		if selectedTab == aTab2.Tab then
