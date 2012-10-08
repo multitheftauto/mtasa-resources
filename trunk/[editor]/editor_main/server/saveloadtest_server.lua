@@ -435,13 +435,17 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 		-- dump properties to attributes
 		for dataName, dataValue in orderedPairs(getMapElementData(element)) do
 			if ( dataName == "position" ) then
-				xmlNodeSetAttribute(elementNode, "posX", toAttribute(dataValue[1]))
-				xmlNodeSetAttribute(elementNode, "posY", toAttribute(dataValue[2]))
-				xmlNodeSetAttribute(elementNode, "posZ", toAttribute(dataValue[3]))
+				xmlNodeSetAttribute(elementNode, "posX", toAttribute(round(dataValue[1], 5)))
+				xmlNodeSetAttribute(elementNode, "posY", toAttribute(round(dataValue[2], 5)))
+				xmlNodeSetAttribute(elementNode, "posZ", toAttribute(round(dataValue[3], 5)))
 			elseif ( dataName == "rotation" ) then
-				xmlNodeSetAttribute(elementNode, "rotX", toAttribute(dataValue[1]))
-				xmlNodeSetAttribute(elementNode, "rotY", toAttribute(dataValue[2]))
-				xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(dataValue[3]))
+				xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
+				xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
+				xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
+			elseif ( dataName == "posX" or dataName == "posY" or dataName == "posZ") then
+				xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 5)))
+			elseif ( dataName == "rotX" or dataName == "rotY" or dataName == "rotZ") then
+				xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 3)))
 			elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
 				xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
 			end
@@ -617,13 +621,17 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 			-- dump properties to attributes
 			for dataName, dataValue in orderedPairs(getMapElementData(element)) do
 				if ( dataName == "position" ) then
-					xmlNodeSetAttribute(elementNode, "posX", toAttribute(dataValue[1]))
-					xmlNodeSetAttribute(elementNode, "posY", toAttribute(dataValue[2]))
-					xmlNodeSetAttribute(elementNode, "posZ", toAttribute(dataValue[3]))
+					xmlNodeSetAttribute(elementNode, "posX", toAttribute(round(dataValue[1], 5)))
+					xmlNodeSetAttribute(elementNode, "posY", toAttribute(round(dataValue[2], 5)))
+					xmlNodeSetAttribute(elementNode, "posZ", toAttribute(round(dataValue[3], 5)))
 				elseif ( dataName == "rotation" ) then
-					xmlNodeSetAttribute(elementNode, "rotX", toAttribute(dataValue[1]))
-					xmlNodeSetAttribute(elementNode, "rotY", toAttribute(dataValue[2]))
-					xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(dataValue[3]))
+					xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
+					xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
+					xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
+				elseif ( dataName == "posX" or dataName == "posY" or dataName == "posZ") then
+					xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 5)))
+				elseif ( dataName == "rotX" or dataName == "rotY" or dataName == "rotZ") then
+					xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 3)))
 				elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
 					xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
 				end
@@ -876,4 +884,9 @@ function getBool(var,default)
         return default
     end
     return result == 'true'
+end
+
+function round(num, idp)
+	local mult = 10^(idp or 0)
+	return math.floor(num * mult + 0.5) / mult
 end
