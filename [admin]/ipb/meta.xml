@@ -1,0 +1,6 @@
+<meta>
+	<info author="Arran" version="0.1" type="script" name="IPB" description="Ingame Performance Browser"/>
+
+	<script src="ipbs.lua" type="server"/>
+	<script src="ipbc.lua" type="client"/>
+</meta>
