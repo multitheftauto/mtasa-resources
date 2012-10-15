@@ -704,6 +704,10 @@ end
 --Find a player which matches best
 function getPlayerByNamepart(namePart)
 	if not namePart then return false end
+	-- Before searching see if somebody already has the exact name specified
+	if getPlayerFromName(namePart) then
+		return getPlayerFromName(namePart)
+	end
 	namePart = string.lower(namePart)
 	--escape all metachars
 	namePart = string.gsub(namePart, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
