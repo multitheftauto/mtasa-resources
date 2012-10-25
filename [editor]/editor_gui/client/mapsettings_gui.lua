@@ -40,7 +40,7 @@ function createMapSettings()
 	mapsettings.cancel = guiCreateButton ( 0.780357142, 0.919444, 0.22857142, 0.05555555, "Cancel", true, mapsettings.window )
 	
 	--create environment settings
-	mapsettings.lockTime = editingControl.boolean:create{["x"]=0.26,["y"]=0.04,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=mapsettings.environmentTab,["label"]="Locked time"}
+	mapsettings.locked_time = editingControl.boolean:create{["x"]=0.26,["y"]=0.04,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=mapsettings.environmentTab,["label"]="Locked time"}
 	guiCreateMinimalLabel ( 0.02, 0.06, "Time:", true, mapsettings.environmentTab )
 	mapsettings.timeHour = editingControl.natural:create{["x"]=0.08,["y"]=0.04,["width"]=0.07,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["maxLength"]=2,["max"]=23}
 	mapsettings.timeMinute = editingControl.natural:create{["x"]=0.16,["y"]=0.04,["width"]=0.07,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["maxLength"]=2,["max"]=59}
@@ -71,10 +71,10 @@ function createMapSettings()
 	mapsettings.waveheight:addChangeHandler(function(self) if self:getValue() then setWaveHeight(self:getValue()) end end )
 	
 	guiCreateMinimalLabel ( 0.35, 0.5, "Minimum players:", true, mapsettings.environmentTab )
-	mapsettings.minPlayers = editingControl.number:create{["x"]=0.52,["y"]=0.48,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3,["max"]=128}
+	mapsettings.minplayers = editingControl.number:create{["x"]=0.52,["y"]=0.48,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3,["max"]=128}
 	
 	guiCreateMinimalLabel ( 0.35, 0.68, "Maximum players:", true, mapsettings.environmentTab )
-	mapsettings.maxPlayers = editingControl.number:create{["x"]=0.52,["y"]=0.64,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3,["min"]=2,["max"]=128}
+	mapsettings.maxplayers = editingControl.number:create{["x"]=0.52,["y"]=0.64,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3,["min"]=2,["max"]=128}
 	--create the gamemode settings tab
 	mapsettings.settingsList = guiCreateGridList ( 0.02, 0.02, 0.3, 0.95, true, mapsettings.gamemodeSettingsTab )
 	guiGridListAddColumn ( mapsettings.settingsList, "Settings", 0.8 )
@@ -183,15 +183,15 @@ function confirmMapSettings ()
 		-- guiShowMessageBox ( "Invalid META \"Author\" specified", "error", "Bad Value", true )
 		-- return
 	-- end
-	if not tonumber(mapsettings.maxPlayers:getValue()) then
+	if not tonumber(mapsettings.maxplayers:getValue()) then
 		guiShowMessageBox ( 'Invalid "Maximum Players" specified', "error", "Bad Value", true )
 		return
 	end
-	if not tonumber(mapsettings.minPlayers:getValue()) then
+	if not tonumber(mapsettings.minplayers:getValue()) then
 		guiShowMessageBox ( 'Invalid "Minimum Players" specified', "error", "Bad Value", true )
 		return
 	end
-	if mapsettings.minPlayers:getValue() >=  mapsettings.maxPlayers:getValue() then
+	if mapsettings.minplayers:getValue() >=  mapsettings.maxplayers:getValue() then
 		guiShowMessageBox ( 'Invalid "Minimum Players" specified', "error", "Bad Value", true )
 		return
 	end

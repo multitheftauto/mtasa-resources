@@ -6,7 +6,7 @@ currentMapSettings = {}
 local mapSettingFunctionsGet = {}
 local mapSettingFunctionsSet = {}
 local mapSettingTypes = { 
-"lockTime",
+"locked_time",
 "timeHour",
 "timeMinute",
 "gamespeed",
@@ -16,8 +16,8 @@ local mapSettingTypes = {
 "metaDescription",
 "metaName",
 "metaVersion",
-"maxPlayers",
-"minPlayers"
+"maxplayers",
+"minplayers"
 }
 mapSettingSpecial = {
 ["availGamemodes"] = "gridlist",
