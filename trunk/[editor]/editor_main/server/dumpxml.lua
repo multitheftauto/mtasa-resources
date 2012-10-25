@@ -137,9 +137,9 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	settings["#gravity"] = toJSON(tonumber(currentMapSettings.gravity or mapSettingDefaults.gravity)) --!FIXME
 	settings["#weather"] = toJSON(currentMapSettings.weather or mapSettingDefaults.weather)
 	settings["#waveheight"] = toJSON(currentMapSettings.waveheight or mapSettingDefaults.waveheight)
-	settings["#locked_time"] = toJSON(currentMapSettings.lockTime or mapSettingDefaults.lockTime)
-	settings["#minplayers"] = toJSON(currentMapSettings.minPlayers or mapSettingDefaults.minPlayers)
-	settings["#maxplayers"] = toJSON(currentMapSettings.maxPlayers or mapSettingDefaults.maxPlayers)
+	settings["#locked_time"] = toJSON(currentMapSettings.locked_time or mapSettingDefaults.locked_time)
+	settings["#minplayers"] = toJSON(currentMapSettings.minplayers or mapSettingDefaults.minplayers)
+	settings["#maxplayers"] = toJSON(currentMapSettings.maxplayers or mapSettingDefaults.maxplayers)
 	
 	-- Add any gamemode settings to the info table
 	if ( currentMapSettings.gamemodeSettings and #currentMapSettings.gamemodeSettings > 0 ) then

@@ -2,7 +2,7 @@
 local defaults = {
 	gamespeed = 1,
 	gravity = "0.008",
-	lockTime = false,
+	locked_time = false,
 	timeHour = 12,
 	timeMinute = 00,
 	waveheight = 0,
@@ -12,7 +12,7 @@ local defaults = {
 	metaName = "",
 	metaVersion = "1.0.0",
 	minPlayers = 0,
-	maxPlayers = 128,
+	maxplayers = 128,
 }
 
 -- This function is required because defaults get overwritten. #7405
@@ -20,7 +20,7 @@ function makeSettingsDefault()
 	defaults = {
 		gamespeed = 1,
 		gravity = "0.008",
-		lockTime = false,
+		locked_time = false,
 		timeHour = 12,
 		timeMinute = 00,
 		waveheight = 0,
@@ -30,7 +30,7 @@ function makeSettingsDefault()
 		metaName = "",
 		metaVersion = "1.0.0",
 		minPlayers = 0,
-		maxPlayers = 128,
+		maxplayers = 128,
 	}
 	return defaults
 end
@@ -38,13 +38,6 @@ end
 mapSettingDefaults = defaults
 currentMapSettings = defaults
 currentMapSettings.gamemodeSettings = {}
-
-metaSettingsFormat = {
-	["locked_time"] = "lockTime",
-	["minplayers"] = "minPlayers",
-	["maxplayers"] = "maxPlayers",
-	
-}
 
 local mapSettingAction = {
 	timeHour = function ( value )
@@ -72,7 +65,7 @@ local mapSettingAction = {
 
 	waveheight = setWaveHeight,
 	
-	lockTime = function(value)
+	locked_time = function(value)
 		if (value) then
 			setMinuteDuration(100000)
 		else
@@ -211,7 +204,7 @@ function passNewMapSettings()
 		settings[settingName] = fromJSON(settingValue)
 	end
 	currentMapSettings.minPlayers =	settings.minplayers or currentMapSettings.minPlayers
-	currentMapSettings.maxPlayers =	settings.maxplayers or currentMapSettings.maxPlayers
+	currentMapSettings.maxplayers =	settings.maxplayers or currentMapSettings.maxplayers
 	--Resource info
 	local gamemodesString = getResourceInfo(mapResource,"gamemodes") or ""
 	--compile the added gamemodes into an array
@@ -255,12 +248,7 @@ function getSettings(resource)
 				if string.find(name,"*") == 1 or string.find(name,"#") == 1 or string.find(name,"@") == 1 then
 					name = string.sub(name,2)
 				end
-				-- Map editor and settings in meta may use different names so we have to rename some
-				if (metaSettingsFormat[name]) then
-					settings[metaSettingsFormat[name]] = value
-				else
-					settings[name] = value
-				end
+				settings[name] = value
 			end
 		end
 	end
