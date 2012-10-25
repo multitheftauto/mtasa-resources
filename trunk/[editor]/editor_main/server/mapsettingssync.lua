@@ -1,6 +1,4 @@
-﻿local rootElement = getRootElement()
-
---current settings' table, initially default map settings
+﻿--current settings' table, initially default map settings
 local defaults = {
 	gamespeed = 1,
 	gravity = "0.008",
@@ -16,6 +14,27 @@ local defaults = {
 	minPlayers = 0,
 	maxPlayers = 128,
 }
+
+-- This function is required because defaults get overwritten. #7405
+function makeSettingsDefault()
+	defaults = {
+		gamespeed = 1,
+		gravity = "0.008",
+		lockTime = false,
+		timeHour = 12,
+		timeMinute = 00,
+		waveheight = 0,
+		weather = 0,
+		metaAuthor = "",
+		metaDescription = "",
+		metaName = "",
+		metaVersion = "1.0.0",
+		minPlayers = 0,
+		maxPlayers = 128,
+	}
+	return defaults
+end
+
 mapSettingDefaults = defaults
 currentMapSettings = defaults
 currentMapSettings.gamemodeSettings = {}
@@ -66,7 +85,7 @@ local mapSettingAction = {
 function doSaveNewMapSettings( newMapSettings, hidden )
 	if client and not hidden and not isPlayerAllowedToDoEditorAction(client,"mapSettings") then
 		editor_gui.outputMessage ("You don't have permissions to change the map settings!", client,255,0,0)
-		triggerClientEvent ( client, "syncMapSettings", rootElement, currentMapSettings )
+		triggerClientEvent ( client, "syncMapSettings", root, currentMapSettings )
 		return
 	end
 	
@@ -77,10 +96,10 @@ function doSaveNewMapSettings( newMapSettings, hidden )
 		end
 	end
 	if not hidden then
-		editor_gui.outputMessage ( getPlayerName(client).." updated the map settings.", rootElement, 255, 255, 0 )
+		editor_gui.outputMessage ( getPlayerName(client).." updated the map settings.", root, 255, 255, 0 )
 		for k,v in ipairs(getElementsByType("player")) do
 			if v ~= client then
-				triggerClientEvent ( v, "syncMapSettings", rootElement, currentMapSettings )
+				triggerClientEvent ( v, "syncMapSettings", root, currentMapSettings )
 			end
 		end
 		--start definitions from added gamemodes if necessary
@@ -99,11 +118,11 @@ function doSaveNewMapSettings( newMapSettings, hidden )
 			end
 		end
 		if edfLoaded then
-			triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+			triggerClientEvent('syncEDFDefinitions', root, allEDF)
 		end
 	end
 end
-addEventHandler ( "doSaveMapSettings", rootElement, doSaveNewMapSettings )
+addEventHandler ( "doSaveMapSettings", root, doSaveNewMapSettings )
 
 function setupMapSettings()
 	resetMapInfo()
@@ -128,17 +147,44 @@ function setupMapSettings()
 end
 addEventHandler ( "onResourceStart", thisResourceRoot, setupMapSettings )
 
-addEventHandler ( "onClientGUILoaded", getRootElement(),
+addEventHandler ( "onClientGUILoaded", root,
 	function()
 		triggerClientEvent ( client, "syncMapSettings", client, currentMapSettings )
 	end
 )
 
 function passDefaultMapSettings()
-	currentMapSettings = defaults
+	currentMapSettings = makeSettingsDefault()
 	currentMapSettings.gamemodeSettings = {}
+	currentMapSettings.addedGamemodes = {}
 	doSaveNewMapSettings(currentMapSettings, true)
-	triggerClientEvent ( rootElement, "syncMapSettings", rootElement, currentMapSettings )
+
+	-- Unload definitions
+	local loadedDefs = edf.edfGetLoadedEDFResources()
+	for k, resourceName in ipairs(allEDF.addedEDF) do
+		if ( resourceName ~= "editor_main" ) then
+			local resource = getResourceFromName(resourceName)
+			if ( resource ) then
+				local loaded = false
+				for k, loadedResource in ipairs(loadedDefs) do
+					if ( loadedResource == resource ) then
+						loaded = true
+						break
+					end
+				end
+				if ( loaded == true ) then
+					outputServerLog("Unloading "..resourceName.." def.")
+					outputConsole("Unloading "..resourceName.." def.")
+					edf.edfStopResource(resource)
+				end
+			else
+				table.remove(allEDF.availEDF, k)
+			end
+		end
+	end
+	
+	setClientAddedEDFs({getResourceFromName("editor_main")})
+	triggerClientEvent(root, "syncMapSettings", root, currentMapSettings)
 end
 
 function passNewMapSettings()
@@ -192,7 +238,7 @@ function passNewMapSettings()
 	--
 	currentMapSettings.newSettings = settings
 	-- sync it
-	triggerClientEvent ( rootElement, "syncMapSettings", rootElement, currentMapSettings )
+	triggerClientEvent ( root, "syncMapSettings", root, currentMapSettings )
 end
 
 function getSettings(resource)
