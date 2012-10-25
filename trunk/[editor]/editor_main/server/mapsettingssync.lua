@@ -11,7 +11,7 @@ local defaults = {
 	metaDescription = "",
 	metaName = "",
 	metaVersion = "1.0.0",
-	minPlayers = 0,
+	minplayers = 0,
 	maxplayers = 128,
 }
 
@@ -29,7 +29,7 @@ function makeSettingsDefault()
 		metaDescription = "",
 		metaName = "",
 		metaVersion = "1.0.0",
-		minPlayers = 0,
+		minplayers = 0,
 		maxplayers = 128,
 	}
 	return defaults
@@ -203,7 +203,7 @@ function passNewMapSettings()
 	for settingName,settingValue in pairs(settings) do
 		settings[settingName] = fromJSON(settingValue)
 	end
-	currentMapSettings.minPlayers =	settings.minplayers or currentMapSettings.minPlayers
+	currentMapSettings.minplayers =	settings.minplayers or currentMapSettings.minplayers
 	currentMapSettings.maxplayers =	settings.maxplayers or currentMapSettings.maxplayers
 	--Resource info
 	local gamemodesString = getResourceInfo(mapResource,"gamemodes") or ""
