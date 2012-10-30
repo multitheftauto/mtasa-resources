@@ -66,10 +66,7 @@ function receiveStats(rtype, stat1, stat2)
 		end
 	elseif (rtype == 2) then
 		guiGridListClear(grid)
-		-- Problems occur here:
-		for i=1, guiGridListGetColumnCount(grid) do
-			guiGridListRemoveColumn(grid, i)
-		end
+		removeColumns()
 		-- Add columns
 		for index, data in pairs(stat1) do
 			guiGridListAddColumn(grid, stat1[index], 0.2)
@@ -93,16 +90,22 @@ end
 addEvent("ipb.recStats", true)
 addEventHandler("ipb.recStats", root, receiveStats)
 
--- For testing problems:
-
 function removeColumns()
+	-- Hack fix for #5620 (guiGridListAddColumn returns wrong index after deleting Columns)
+	-- Delete all the columns many times
 	for i=0, guiGridListGetColumnCount(grid) do
-		outputDebugString("removing column id a "..i.." "..tostring(guiGridListRemoveColumn(grid, i)))
 		guiGridListRemoveColumn(grid, i)
 	end
 	for i=0, guiGridListGetColumnCount(grid) do
-		outputDebugString("removing column id b "..i.." "..tostring(guiGridListRemoveColumn(grid, i)))
+		guiGridListRemoveColumn(grid, i)
+	end
+	for i=0, guiGridListGetColumnCount(grid) do
+		guiGridListRemoveColumn(grid, i)
+	end
+	for i=0, guiGridListGetColumnCount(grid) do
+		guiGridListRemoveColumn(grid, i)
+	end
+	for i=0, guiGridListGetColumnCount(grid) do
 		guiGridListRemoveColumn(grid, i)
 	end
 end
-addCommandHandler("removecolumns", removeColumns)
