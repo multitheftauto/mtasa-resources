@@ -1,6 +1,11 @@
 <meta>
-	<info author="Arran" version="0.1" type="script" name="IPB" description="Ingame Performance Browser"/>
+	<info author="Arran" version="0.2" type="script" name="IPB" description="Ingame Performance Browser"/>
 
 	<script src="ipbs.lua" type="server"/>
 	<script src="ipbc.lua" type="client"/>
+	
+	<settings>
+		<setting name="SaveHighCPUResources" value="true" friendlyname="Save to RAM (every 5 seconds) CPU usage of resources that are using over 10% to debug when web/ingame PB isn't accessible" accept="true,false"/>
+		<setting name="NotifyIPBUsersOfHighUsage" value="50" friendlyname="Requires SaveHighCPUResources to be enabled. Will notify any IPB users if a resources goes over the specified value of CPU %. Default is 50. Set to 1000 to disable." accept="10-1000"/>
+	</settings>
 </meta>
