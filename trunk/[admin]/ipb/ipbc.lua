@@ -1,4 +1,5 @@
 local resX, resY = guiGetScreenSize()
+local comboCategories = {"Server info", "Lua timing", "Lua memory", "Packet usage", "Sqlite timing", "Bandwidth reduction", "Bandwidth usage", "Server timing", "Function timing", "Debug info", "Debug table", "Help", "Lib memory"}
 
 function onStart()
 	window = guiCreateWindow((resX / 2) - 400, (resY / 2) - 259, 800, 518, "MTA:SA Ingame Performance Browser", false)
@@ -14,23 +15,14 @@ function onStart()
 	labelShowing = guiCreateLabel(193, 59, 192, 20, "Showing stats of: server", false, window)
 	
 	comboCategory = guiCreateComboBox(259, 28, 150, 300, "Server info", false, window)
-	guiComboBoxAddItem(comboCategory, "Server info")
-	guiComboBoxAddItem(comboCategory, "Lua timing")
-	guiComboBoxAddItem(comboCategory, "Lua memory")
-	guiComboBoxAddItem(comboCategory, "Packet usage")
-	guiComboBoxAddItem(comboCategory, "Sqlite timing")
-	guiComboBoxAddItem(comboCategory, "Bandwidth reduction")
-	guiComboBoxAddItem(comboCategory, "Bandwidth usage")
-	guiComboBoxAddItem(comboCategory, "Server timing")
-	guiComboBoxAddItem(comboCategory, "Function timing")
-	guiComboBoxAddItem(comboCategory, "Debug info")
-	guiComboBoxAddItem(comboCategory, "Debug table")
-	guiComboBoxAddItem(comboCategory, "Help")
-	guiComboBoxAddItem(comboCategory, "Lib memory")
+	for i, cat in ipairs(comboCategories) do
+		guiComboBoxAddItem(comboCategory, cat)
+	end
 	addEventHandler("onClientGUIComboBoxAccepted", comboCategory, askForAnotherCategory, false)
 	
 	grid = guiCreateGridList(12, 91, 774, 410, false, window)
 	guiGridListSetSelectionMode(grid, 0)
+	guiGridListSetSortingEnabled(grid, false)
 	editTarget = guiCreateEdit(60, 26, 122, 21, "server", false, window)
 	guiSetEnabled(editTarget, false)
 	includeClientsCheckbox = guiCreateCheckBox(103, 59, 16, 16, "", false, false, window)
@@ -58,6 +50,7 @@ end
 
 function receiveStats(rtype, stat1, stat2)
 	if (rtype == 1) then
+		-- We're opening IPB
 		guiSetVisible(window, true)
 		showCursor(true)
 		-- Add columns
@@ -65,21 +58,27 @@ function receiveStats(rtype, stat1, stat2)
 			guiGridListAddColumn(grid, stat1[index], 0.2)
 		end
 	elseif (rtype == 2) then
+		-- We're changing category
 		guiGridListClear(grid)
 		removeColumns()
 		-- Add columns
 		for index, data in pairs(stat1) do
 			guiGridListAddColumn(grid, stat1[index], 0.2)
-			--outputDebugString("adding column "..stat1[index])
 		end
 	end
-	-- Add a ton of rows
-	for i=1, 200 do
-		guiGridListAddRow(grid)
-	end
+	-- We're adding IPB stats
 	for index, data in pairs(stat2) do
+		-- See if we need to add a new row
+		if (guiGridListGetRowCount(grid) < index) then
+			guiGridListAddRow(grid)
+		end
 		for index2, data2 in pairs(data) do
-			guiGridListSetItemText(grid, index - 1, index2, tostring(data2).."  ", false, false)
+			if (#tostring(data2) < 2) then
+				-- Make it so we can actually see column titles as auto size column ignores size of column title
+				guiGridListSetItemText(grid, index - 1, index2, tostring(data2).."            ", false, false)
+			else
+				guiGridListSetItemText(grid, index - 1, index2, tostring(data2).."  ", false, false)
+			end
 		end
 	end
 	-- Make columns short
