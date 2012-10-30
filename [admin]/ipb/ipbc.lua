@@ -67,6 +67,9 @@ function receiveStats(rtype, stat1, stat2)
 		-- We're opening IPB
 		guiSetVisible(window, true)
 		showCursor(true)
+		-- Clear out any old columns
+		guiGridListClear(grid)
+		removeColumns()
 		-- Add columns
 		for index, data in pairs(stat1) do
 			guiGridListAddColumn(grid, stat1[index], 0.2)
