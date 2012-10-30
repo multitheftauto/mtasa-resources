@@ -1,24 +1,30 @@
 local updateFrequency = 2000
 local listeners = {}
 
-function startListening(player)
-	if (not hasObjectPermissionTo(player, "general.http", false)) then
-		outputChatBox("Error: access denied", player, 255, 0, 0)
-		return
+function accessCheck(object)
+	if (hasObjectPermissionTo(object, "general.http", false)) then
+		return true
+	else
+		if (getElementType(object) == "player") then
+			outputChatBox("Error: access denied", object, 255, 0, 0)
+		end
+		return false
 	end
-	listeners[player] = {"Server info", "", ""}
-	outputChatBox("IPB: Started listening", player, 0, 255, 0)
-	
-	local stat1, stat2 = getPerformanceStats("Server info")
+end
+
+function startListening(player)
+	if (not accessCheck(player)) then return end
+	if (not listeners[player]) then
+		listeners[player] = {"Server info", "", ""}
+	end
+	local stat1, stat2 = getPerformanceStats(listeners[player][1], listeners[player][2], listeners[player][3])
 	triggerClientEvent(player, "ipb.recStats", player, 1, stat1, stat2)
 end
 addCommandHandler("perfbrowse", startListening)
+addCommandHandler("ipb", startListening)
 
 function changeCategory(newCategory)
-	if (not hasObjectPermissionTo(client, "general.http", false)) then
-		outputChatBox("Error: access denied", client, 255, 0, 0)
-		return
-	end
+	if (not accessCheck(client)) then return end
 	listeners[client][1] = newCategory
 	local stat1, stat2 = getPerformanceStats(newCategory)
 	triggerClientEvent(client, "ipb.recStats", client, 2, stat1, stat2)
@@ -27,10 +33,7 @@ addEvent("ipb.changeCat", true)
 addEventHandler("ipb.changeCat", root, changeCategory)
 
 function changeOptionsAndFilter(options, filter)
-	if (not hasObjectPermissionTo(client, "general.http", false)) then
-		outputChatBox("Error: access denied", client, 255, 0, 0)
-		return
-	end
+	if (not accessCheck(client)) then return end
 	listeners[client][2] = options
 	listeners[client][3] = filter
 	local stat1, stat2 = getPerformanceStats(listeners[client][1], listeners[client][2], listeners[client][3])
