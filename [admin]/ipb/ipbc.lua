@@ -1,5 +1,5 @@
 local resX, resY = guiGetScreenSize()
-local comboCategories = {"Server info", "Lua timing", "Lua memory", "Packet usage", "Sqlite timing", "Bandwidth reduction", "Bandwidth usage", "Server timing", "Function timing", "Debug info", "Debug table", "Help", "Lib memory"}
+local comboCategories = {"Server info", "Lua timing", "Lua time recordings", "Lua memory", "Packet usage", "Sqlite timing", "Bandwidth reduction", "Bandwidth usage", "Server timing", "Function timing", "Debug info", "Debug table", "Help", "Lib memory"}
 local optionsAndFilterTyping = nil
 
 function onStart()
@@ -80,7 +80,7 @@ function receiveStats(rtype, stat1, stat2)
 		removeColumns()
 		-- Add columns
 		for index, data in pairs(stat1) do
-			guiGridListAddColumn(grid, stat1[index], 0.2)
+			guiGridListAddColumn(grid, data, 0.2)
 		end
 	end
 	-- We're adding IPB stats
@@ -94,7 +94,7 @@ function receiveStats(rtype, stat1, stat2)
 				-- Make it so we can actually see column titles as auto size column ignores size of column title
 				guiGridListSetItemText(grid, index - 1, index2, tostring(data2).."            ", false, false)
 			else
-				guiGridListSetItemText(grid, index - 1, index2, tostring(data2).."  ", false, false)
+				guiGridListSetItemText(grid, index - 1, index2, tostring(data2).."   ", false, false)
 			end
 		end
 	end
