@@ -1,5 +1,6 @@
 local resX, resY = guiGetScreenSize()
 local comboCategories = {"Server info", "Lua timing", "Lua memory", "Packet usage", "Sqlite timing", "Bandwidth reduction", "Bandwidth usage", "Server timing", "Function timing", "Debug info", "Debug table", "Help", "Lib memory"}
+local optionsAndFilterTyping = nil
 
 function onStart()
 	window = guiCreateWindow((resX / 2) - 400, (resY / 2) - 259, 800, 518, "MTA:SA Ingame Performance Browser", false)
@@ -28,14 +29,27 @@ function onStart()
 	includeClientsCheckbox = guiCreateCheckBox(103, 59, 16, 16, "", false, false, window)
 	guiSetEnabled(includeClientsCheckbox, false)
 	optionsBox = guiCreateEdit(556, 28, 122, 21, "", false, window)
-	guiSetEnabled(optionsBox, false)
 	filterBox = guiCreateEdit(556, 59, 122, 21, "", false, window)
-	guiSetEnabled(filterBox, false)
+	addEventHandler("onClientGUIChanged", optionsBox, chooseOptionsAndFilter)
+	addEventHandler("onClientGUIChanged", filterBox, chooseOptionsAndFilter)
 	
 	closeButton = guiCreateButton(730, 30, 56, 30, "Close", false, window)
 	addEventHandler("onClientGUIClick", closeButton, closeStats, false)
 end
 addEventHandler("onClientResourceStart", resourceRoot, onStart)
+
+function chooseOptionsAndFilter()
+	if (isTimer(optionsAndFilterTyping)) then
+		killTimer(optionsAndFilterTyping)
+	end
+	optionsAndFilterTyping = setTimer(optionsAndFilterUpdate, 1000, 1)
+end
+
+function optionsAndFilterUpdate()
+	local options = guiGetText(optionsBox)
+	local filter = guiGetText(filterBox)
+	triggerServerEvent("ipb.changeOptionsAndFilter", root, options, filter)
+end
 
 function askForAnotherCategory()
 	local item = guiComboBoxGetSelected(comboCategory)
