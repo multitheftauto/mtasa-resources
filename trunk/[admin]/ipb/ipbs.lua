@@ -14,7 +14,7 @@ function getPerformanceStatsIPB(category, options, filter)
 end
 
 function accessCheck(object)
-	if (hasObjectPermissionTo(object, "general.http", false)) then
+	if (hasObjectPermissionTo(object, get("AccessRightName"), false)) then
 		return true
 	else
 		if (getElementType(object) == "player") then
@@ -70,10 +70,11 @@ function saveHighCPUResources()
 	if (get("SaveHighCPUResources") ~= "true") then return end
 	local stat1, stat2 = getPerformanceStatsIPB("Lua timing")
 	-- Now find any that use too much CPU
+	local saveHighCPUResourcesAmount = tonumber(get("SaveHighCPUResourcesAmount")) or 10
 	for i, stat in ipairs(stat2) do
 		local usage = string.gsub(stat[2], "[^0-9.]", "")
 		local usage = math.floor(tonumber(usage) or 0)
-		if (usage > 10) then
+		if (usage > saveHighCPUResourcesAmount) then
 			-- Notify IPB users if necessary.
 			if (usage > tonumber(get("NotifyIPBUsersOfHighUsage"))) then
 				for player, data in pairs(listeners) do

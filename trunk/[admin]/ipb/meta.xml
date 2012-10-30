@@ -5,7 +5,9 @@
 	<script src="ipbc.lua" type="client"/>
 	
 	<settings>
-		<setting name="SaveHighCPUResources" value="true" friendlyname="Save to RAM (every 5 seconds) CPU usage of resources that are using over 10% to debug when web/ingame PB isn't accessible" accept="true,false"/>
-		<setting name="NotifyIPBUsersOfHighUsage" value="50" friendlyname="Requires SaveHighCPUResources to be enabled. Will notify any IPB users if a resources goes over the specified value of CPU %. Default is 50. Set to 1000 to disable." accept="10-1000"/>
+		<setting name="*SaveHighCPUResources" value="true" friendlyname="Save to RAM (every 5 seconds) CPU usage of resources that are using over specified % to debug when web/ingame PB isn't accessible" accept="true,false"/>
+		<setting name="*SaveHighCPUResourcesAmount" value="10" friendlyname="The amount of CPU a resource must use before being logged as a high CPU user. Default: 10" accept="1-1000"/>
+		<setting name="*NotifyIPBUsersOfHighUsage" value="50" friendlyname="Requires SaveHighCPUResources to be enabled. Will notify any IPB users if a resources goes over the specified value of CPU %. Default is 50. Set to 1000 to disable." accept="10-1000"/>
+		<setting name="*AccessRightName" value="general.http" friendlyname="The name of the access right that a player needs in order to be able to use IPB. Default: general.http"/>
 	</settings>
 </meta>
