@@ -92,8 +92,14 @@ function toggleDriveby()
 				end
 			end
 		else
-			switchTo = lastSlot
-			switchToWeapon = getPedWeapon ( localPlayer, lastSlot )
+			local lastSlotWeapon = getPedWeapon ( localPlayer, lastSlot )
+			for key,weaponID in ipairs(weaponsTable) do --If our last used weapon is a valid weapon
+				if weaponID == lastSlotWeapon then
+					switchTo = lastSlot
+					switchToWeapon = lastSlotWeapon
+					break
+				end
+			end
 		end
 		--If a valid weapon was not found, dont set anything.
 		if not switchTo then return end
