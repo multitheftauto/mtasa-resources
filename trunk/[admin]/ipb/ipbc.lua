@@ -1,5 +1,5 @@
 local resX, resY = guiGetScreenSize()
-local comboCategories = {"Server info", "Lua timing", "Lua time recordings", "Lua memory", "Packet usage", "Sqlite timing", "Bandwidth reduction", "Bandwidth usage", "Server timing", "Function timing", "Debug info", "Debug table", "Help", "Lib memory"}
+local comboCategories = {"Server info", "Lua timing", "Lua time recordings", "Lua memory", "Packet usage", "Sqlite timing", "Bandwidth reduction", "Bandwidth usage", "Server timing", "Function stats", "Debug info", "Debug table", "Help", "Lib memory"}
 local optionsAndFilterTyping = nil
 
 function onStart()
