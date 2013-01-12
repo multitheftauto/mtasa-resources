@@ -209,13 +209,26 @@ end
 
 ----------------------------------------------------------------------------------------
 --
--- Set to true to enable commands "makecsv" and "iptest"
+-- How to update admin\conf\IpToCountryCompact.csv:
 --
+-- 1. Download IPV4 CSV from http://software77.net/geo-ip/ and put IpToCountry.csv in admin\conf\
+-- 2. Set 'makeAndTestCompactCsv' (below) to true
+-- 3. (Re)start admin
+-- 4. Type this command in client console: makecsv
+-- 5. Wait for 'makeCompactCsv done' message in client console
+-- 6. Set 'makeAndTestCompactCsv' (below) to false
+-- 7. Brand new'IpToCountryCompact.csv' should now be in admin\conf\ and will be used when admin is restarted
+--
+----------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------
+-- Set to true to enable commands "makecsv" and "iptest"
 ----------------------------------------------------------------------------------------
 local makeAndTestCompactCsv = false
 
 
 if makeAndTestCompactCsv then
+	outputServerLog( "Warning! makeAndTestCompactCsv is true" )
 
 	local makeCor
 
@@ -339,7 +352,7 @@ if makeAndTestCompactCsv then
 	end
 
 	function ipTest()
-		ipTestDo ( "DE", "46.1.2.3" )
+		ipTestDo ( "TR", "46.1.2.3" )
 		ipTestDo ( "ES", "88.1.2.3" )
 		ipTestDo ( "FR", "109.1.2.3" )
 		ipTestDo ( "AR", "190.1.2.3" )
