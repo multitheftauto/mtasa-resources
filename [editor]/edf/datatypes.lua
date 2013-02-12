@@ -96,7 +96,7 @@ end
 
 c.objectID = function(var)
 	local var = c.number(var)
-	if var and var >= 615 and var <= 18630 then
+	if var and ((var >= 615 and var <= 18630) or (var >= 321 and var <= 373)) then
 		return var
 	else
 		return nil
