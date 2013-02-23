@@ -32,4 +32,5 @@
 	
 	<script src="edf/edf.lua" />
 	<script src="edf/edf_client.lua" type="client" />
+	<script src="edf/edf_client_cp_lines.lua" type="client" />
 </def>
