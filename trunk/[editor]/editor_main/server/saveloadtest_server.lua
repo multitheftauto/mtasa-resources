@@ -48,7 +48,7 @@ function startUp()
 	if ( enabled ) then
 		if ( not openResource(DUMP_RESOURCE, true) ) then
 			outputConsole("Could not open dump. Creating new dump.")
-			saveResource(DUMP_RESOURCE, true)
+			saveResource(DUMP_RESOURCE, false)
 		else
 			if #getElementsByType("player") > 0 then
 				editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the previously loaded map. Use 'new' to start a new map.", root, 255, 255, 0, 20000)
@@ -198,7 +198,7 @@ function openResource( resourceName, onStart )
 		local maps, mapsErr = getResourceFiles ( map, "map" )
 		local mapName = DUMP_RESOURCE
 		
-		if (not maps) then
+		if (not maps or #maps == 0) then
 			if (openingSource) then
 				triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", false )
 			end
