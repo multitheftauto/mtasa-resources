@@ -415,48 +415,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			coroutine.yield()
 			tick = getTickCount()
 		end
-		-- create element subnode
-		local elementNode = xmlCreateChild(xmlNode, getElementType(element))
-		--add an ID attribute first off
-		xmlNodeSetAttribute(elementNode, "id", getElementID(element))
-		for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
-			if (dataField ~= "color1" and dataField ~= "color2" and dataField ~= "color3" and dataField ~= "color4") then
-				local value
-				if ( specialSyncers[dataField] ) then
-					value = specialSyncers[dataField](element)
-				else
-					value = edf.edfGetElementProperty(element, dataField)
-				end
-				if ( type(value) == "number" or type(value) == "string" ) then
-					xmlNodeSetAttribute(elementNode, dataField, value )
-				end
-			end
-		end
-		-- dump properties to attributes
-		for dataName, dataValue in orderedPairs(getMapElementData(element)) do
-			if ( dataName == "position" ) then
-				xmlNodeSetAttribute(elementNode, "posX", toAttribute(round(dataValue[1], 5)))
-				xmlNodeSetAttribute(elementNode, "posY", toAttribute(round(dataValue[2], 5)))
-				xmlNodeSetAttribute(elementNode, "posZ", toAttribute(round(dataValue[3], 5)))
-			elseif ( dataName == "rotation" ) then
-				xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
-				xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
-				xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
-			elseif ( dataName == "posX" or dataName == "posY" or dataName == "posZ") then
-				xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 5)))
-			elseif ( dataName == "rotX" or dataName == "rotY" or dataName == "rotZ") then
-				xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 3)))
-			elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
-				xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
-			end
-		end
-		-- Save vehicle colors
-		if ( getElementType(element) == "vehicle" ) then
-			local vc = {getVehicleColor(element, true)}
-			local colorString = vc[1]..","..vc[2]..","..vc[3]..","..vc[4]..","..vc[5]..","..vc[6]..","..vc[7]..","..vc[8]..","..vc[9]..","..vc[10]..","..vc[11]..","..vc[12]
-			xmlNodeSetAttribute(elementNode, "color", toAttribute(colorString))
-		end
-		
+		local elementNode = createElementAttributesForSaving(xmlNode, element)
 		dumpNodes ( elementNode, elementChildren[element], elementChildren )
 	end
 	
@@ -600,49 +559,7 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 				coroutine.yield()
 				tick = getTickCount()
 			end
-			-- create element subnode
-			local elementNode = xmlCreateChild(xmlNode, getElementType(element))
-			--add an ID attribute first off
-			xmlNodeSetAttribute(elementNode, "id", getElementID(element))
-			--dump raw properties from the getters
-			for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
-				if (dataField ~= "color1" and dataField ~= "color2" and dataField ~= "color3" and dataField ~= "color4") then
-					local value
-					if ( specialSyncers[dataField] ) then
-						value = specialSyncers[dataField](element)
-					else
-						value = edf.edfGetElementProperty(element, dataField)
-					end
-					if type(value) == "number" or type(value) == "string" then
-						xmlNodeSetAttribute(elementNode, dataField, value )
-					end
-				end
-			end
-			-- dump properties to attributes
-			for dataName, dataValue in orderedPairs(getMapElementData(element)) do
-				if ( dataName == "position" ) then
-					xmlNodeSetAttribute(elementNode, "posX", toAttribute(round(dataValue[1], 5)))
-					xmlNodeSetAttribute(elementNode, "posY", toAttribute(round(dataValue[2], 5)))
-					xmlNodeSetAttribute(elementNode, "posZ", toAttribute(round(dataValue[3], 5)))
-				elseif ( dataName == "rotation" ) then
-					xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
-					xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
-					xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
-				elseif ( dataName == "posX" or dataName == "posY" or dataName == "posZ") then
-					xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 5)))
-				elseif ( dataName == "rotX" or dataName == "rotY" or dataName == "rotZ") then
-					xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 3)))
-				elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
-					xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
-				end
-			end
-			-- Save vehicle colors
-			if ( getElementType(element) == "vehicle" ) then
-				local vc = {getVehicleColor(element, true)}
-				local colorString = vc[1]..","..vc[2]..","..vc[3]..","..vc[4]..","..vc[5]..","..vc[6]..","..vc[7]..","..vc[8]..","..vc[9]..","..vc[10]..","..vc[11]..","..vc[12]
-				xmlNodeSetAttribute(elementNode, "color", toAttribute(colorString))
-			end
-			
+			local elementNode = createElementAttributesForSaving(xmlNode, element)
 			dumpNodes ( elementNode, elementChildren[element], elementChildren )
 		end
 		xmlSaveFile(xmlNode)	
@@ -666,6 +583,69 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 		editor_gui.loadsave_getResources("saveAs", client)
 	end
 	quickSaveCoroutine = nil
+end
+
+function createElementAttributesForSaving(xmlNode, element)
+	-- Create element subnode
+	local elementNode = xmlCreateChild(xmlNode, getElementType(element))
+	-- Add an ID attribute first off
+	xmlNodeSetAttribute(elementNode, "id", getElementID(element))
+	-- Dump raw properties from the getters
+	for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
+		if (dataField ~= "color1" and dataField ~= "color2" and dataField ~= "color3" and dataField ~= "color4") then
+			local value
+			if ( specialSyncers[dataField] ) then
+				value = specialSyncers[dataField](element)
+			else
+				value = edf.edfGetElementProperty(element, dataField)
+			end
+			if type(value) == "number" or type(value) == "string" then
+				xmlNodeSetAttribute(elementNode, dataField, value )
+			end
+		end
+	end
+	-- Dump properties to attributes
+	local posSetX, posSetY, posSetZ = false, false, false
+	for dataName, dataValue in orderedPairs(getMapElementData(element)) do
+		if ( dataName == "position" ) then
+			xmlNodeSetAttribute(elementNode, "posX", toAttribute(round(dataValue[1], 5)))
+			xmlNodeSetAttribute(elementNode, "posY", toAttribute(round(dataValue[2], 5)))
+			xmlNodeSetAttribute(elementNode, "posZ", toAttribute(round(dataValue[3], 5)))
+			posSetX, posSetY, posSetZ = true, true, true
+		elseif ( dataName == "rotation" ) then
+			xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
+			xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
+			xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
+		elseif ( dataName == "posX" or dataName == "posY" or dataName == "posZ") then
+			xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 5)))
+			if (dataName == "posX") then
+				posSetX = true
+			elseif (dataName == "posY") then
+				posSetY = true
+			else
+				posSetZ = true
+			end
+		elseif ( dataName == "rotX" or dataName == "rotY" or dataName == "rotZ") then
+			xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 3)))
+		elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
+			xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
+		end
+	end
+	-- Ensure that the element has a position set, else the map file can't load
+	if (not posSetX or not posSetY or not posSetZ) then
+		outputDebugString("Using getElementPosition as bad element data for "..tostring(element), 2)
+		local x, y, z = getElementPosition(element)
+		xmlNodeSetAttribute(elementNode, "posX", toAttribute(round(x, 5)))
+		xmlNodeSetAttribute(elementNode, "posY", toAttribute(round(y, 5)))
+		xmlNodeSetAttribute(elementNode, "posZ", toAttribute(round(z, 5)))
+	end
+	-- Save vehicle colors
+	if ( getElementType(element) == "vehicle" ) then
+		local vc = {getVehicleColor(element, true)}
+		local colorString = vc[1]..","..vc[2]..","..vc[3]..","..vc[4]..","..vc[5]..","..vc[6]..","..vc[7]..","..vc[8]..","..vc[9]..","..vc[10]..","..vc[11]..","..vc[12]
+		xmlNodeSetAttribute(elementNode, "color", toAttribute(colorString))
+	end
+	return elementNode
 end
 
 local testBackupNodes = {}
