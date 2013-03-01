@@ -63,39 +63,9 @@ function dumpMap ( xml, save, baseElement )
 	end
 end
 
-function dumpNodes ( xml, elementTable, elementChildren )
+function dumpNodes ( xmlNode, elementTable, elementChildren )
 	for i, element in ipairs(elementTable) do
-		-- create element subnode
-		local elementNode = xmlCreateChild(xml, getElementType(element))
-		--add an ID attribute first off
-		xmlNodeSetAttribute(elementNode, "id", getElementID(element))
-		--dump raw properties from the getters
---		outputDebugString(tostring(loadedEDF).."["..tostring(edf.edfGetCreatorResource(element)).."]"..".elements["..tostring(getElementType(element)).."].data")
-		for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
-			local value
-			if specialSyncers[dataField] then
-				value = specialSyncers[dataField](element)
-			else
-				value = edf.edfGetElementProperty(element, dataField)
-			end
-			if type(value) == "number" or type(value) == "string" then
-				xmlNodeSetAttribute(elementNode, dataField, value )
-			end
-		end
-		-- dump properties to attributes
-		for dataName, dataValue in orderedPairs(getMapElementData(element)) do
-			if dataName == "position" then
-				xmlNodeSetAttribute(elementNode, "posX", toAttribute(dataValue[1]))
-				xmlNodeSetAttribute(elementNode, "posY", toAttribute(dataValue[2]))
-				xmlNodeSetAttribute(elementNode, "posZ", toAttribute(dataValue[3]))
-			elseif dataName == "rotation" then
-				xmlNodeSetAttribute(elementNode, "rotX", toAttribute(dataValue[1]))
-				xmlNodeSetAttribute(elementNode, "rotY", toAttribute(dataValue[2]))
-				xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(dataValue[3]))
-			elseif not specialSyncers[dataName] or dataValue ~= getWorkingDimension() then
-				xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
-			end
-		end
+		local elementNode = createElementAttributesForSaving(xmlNode, element)
 		dumpNodes ( elementNode, elementChildren[element], elementChildren )
 	end
 end
