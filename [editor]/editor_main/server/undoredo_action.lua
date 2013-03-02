@@ -107,6 +107,18 @@ end
 
 function ActionCreate:performUndo()
 	if (self.element and isElement(self.element)) then
+		if ( getElementType ( self.element ) == "removeWorldObject" ) then
+			local model = getElementData ( self.element, "model" )
+			local lodModel = getElementData ( self.element, "lodModel" )
+			local posX = getElementData ( self.element, "posX" )
+			local posY = getElementData ( self.element, "posY" )
+			local posZ = getElementData ( self.element, "posZ" )
+			local interior = getElementData ( self.element, "interior" )
+			local radius = getElementData ( self.element, "radius" )
+			restoreWorldModel ( model, radius, posX, posY, posZ, interior )
+			restoreWorldModel ( lodModel, radius, posX, posY, posZ, interior )
+		end
+
 		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
 		triggerEvent("onElementDestroy", self.element)
 		triggerClientEvent(rootElement, "onClientElementDestroyed", self.element)
@@ -118,6 +130,21 @@ end
 
 function ActionCreate:performRedo()
 	if (self.element and isElement(self.element)) then
+		if ( getElementType ( self.element ) == "removeWorldObject" ) then
+			local model = getElementData ( self.element, "model" )
+			local lodModel = getElementData ( self.element, "lodModel" )
+			local posX = getElementData ( self.element, "posX" )
+			local posY = getElementData ( self.element, "posY" )
+			local posZ = getElementData ( self.element, "posZ" )
+			local interior = getElementData ( self.element, "interior" )
+			local radius = getElementData ( self.element, "radius" )
+			removeWorldModel ( model, radius, posX, posY, posZ, interior )
+			removeWorldModel ( lodModel, radius, posX, posY, posZ, interior )
+			edf.edfSetElementDimension(self.element, getWorkingDimension())
+
+			return true
+		end
+
 		edf.edfSetElementDimension(self.element, getWorkingDimension())
 		triggerEvent("onElementCreate", self.element)
 		triggerClientEvent(rootElement, "onClientElementCreate", self.element)

@@ -555,4 +555,13 @@ c.selection = function(var,validTypes)
 	end
 end
 
+c.radius = function(var)
+	local var = c.number(var)
+	if var then
+		return var
+	else
+		return nil
+	end
+end
+
 --c.vehicleupgrades

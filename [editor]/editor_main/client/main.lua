@@ -229,7 +229,7 @@ addEventHandler("onClientRender", root,
         -- HUD when selecting a world building
 		g_worldBuildingInfo = nil
         if g_SelectWorldBuildingMode_main then
-            local line1 = "[SELECT WORLD OBJECT]"
+            local line1 = ( not g_RemoveWorldBuildingMode_main and "[SELECT WORLD OBJECT]" or "[REMOVE WORLD OBJECT]" )
             local line2 = ""
             local line3 = ""
      		if not targetElement and buildingInfo then
@@ -1131,7 +1131,7 @@ function processCameraLineOfSight()
 	    targetX, targetY, targetZ = endX, endY, endZ
 	end
 	
-	local buildingInfo = buildingId and { LODid=buildingLOD, id=buildingId, x=bx, y=by, z=bz, rx=brx, ry=bry, rz=brz }
+	local buildingInfo = buildingId and { LODid=buildingLOD, id=buildingId, x=( bx == 0 and targetX or bx ), y=( by == 0 and targetY or by ), z=( bz == 0 and targetZ or bz ), rx=brx, ry=bry, rz=brz }
 
 	return targetX, targetY, targetZ, targetElement, buildingInfo
 end
@@ -1154,7 +1154,7 @@ function processCursorLineOfSight()
 	    targetX, targetY, targetZ = endX, endY, endZ
 	end
 
-	local buildingInfo = buildingId and { LODid=buildingLOD, id=buildingId, x=bx, y=by, z=bz, rx=brx, ry=bry, rz=brz }
+	local buildingInfo = buildingId and { LODid=buildingLOD, id=buildingId, x=( bx == 0 and targetX or bx ), y=( by == 0 and targetY or by ), z=( bz == 0 and targetZ or bz ), rx=brx, ry=bry, rz=brz }
 	
 	return targetX, targetY, targetZ, targetElement, buildingInfo
 end
@@ -1254,25 +1254,40 @@ end
 addEvent ( "onClientElementPreCreate" )
 addEventHandler( "onClientElementPreCreate", root,
 	function ( elementType, resourceName, creationParameters, attachLater, shortcut )
-		if shortcut == "selworld" then
+		if ( shortcut == "selworld" or elementType == "removeWorldObject" ) then
 			g_SelectWorldBuildingMode_main = true
-			cancelEvent()
+			g_RemoveWorldBuildingMode_main = ( elementType == "removeWorldObject" )
+			cancelEvent ( )
 		end
 	end
 )
 
 -- Catch click and create copy of a world building
 function handleWorldBuildingMode(keyState)
-	if keyState == "down" then
+	if ( keyState == "down" ) then
 		if g_SelectWorldBuildingMode_main then
-        	if g_worldBuildingInfo then
-        		creationParameters = {}
-        		creationParameters.model = g_worldBuildingInfo.id
-        		creationParameters.position = { g_worldBuildingInfo.x, g_worldBuildingInfo.y, g_worldBuildingInfo.z }
-        		creationParameters.rotation = { g_worldBuildingInfo.rx, g_worldBuildingInfo.ry, g_worldBuildingInfo.rz }
-        		doCreateElement("object", "editor_main", creationParameters)
+			if g_worldBuildingInfo then
+				if ( g_RemoveWorldBuildingMode_main ) then
+					local tempElement = createObject ( g_worldBuildingInfo.id, g_worldBuildingInfo.x, g_worldBuildingInfo.y, g_worldBuildingInfo.z )
+					local radius = ( edf.edfGetElementRadius ( tempElement ) or 15 ) + 2
+					destroyElement ( tempElement )
+					creationParameters = {}
+					creationParameters.model = g_worldBuildingInfo.id
+					creationParameters.lodModel = g_worldBuildingInfo.LODid
+					creationParameters.radius = radius
+					creationParameters.position = { g_worldBuildingInfo.x, g_worldBuildingInfo.y, g_worldBuildingInfo.z }
+					creationParameters.interior = g_workingInterior
+					triggerServerEvent ( "doCreateElement", localPlayer, "removeWorldObject", "editor_main", creationParameters, false )
+				else
+					creationParameters = {}
+					creationParameters.model = g_worldBuildingInfo.id
+					creationParameters.position = { g_worldBuildingInfo.x, g_worldBuildingInfo.y, g_worldBuildingInfo.z }
+					creationParameters.rotation = { g_worldBuildingInfo.rx, g_worldBuildingInfo.ry, g_worldBuildingInfo.rz }
+					doCreateElement("object", "editor_main", creationParameters)
+				end
         	end
 			g_SelectWorldBuildingMode_main = false
+			g_RemoveWorldBuildingMode_main = false
 			return true
 		end
 	end
@@ -1283,5 +1298,6 @@ end
 function maybeCancelWorldBuildingMode(keyState)
 	if keyState == "down" then
 		g_SelectWorldBuildingMode_main = false
+		g_RemoveWorldBuildingMode_main = false
 	end
 end
