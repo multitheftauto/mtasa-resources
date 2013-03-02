@@ -78,7 +78,10 @@
 	<script src="server/undoredo_action.lua" type="server"/>
 	<script src="server/undoredo_main.lua" type="server"/>
 	<script src="server/undoredo_move.lua" type="server"/>
-	
+
+	<!-- World object remover -->
+	<script src="server/removeWorldObject.lua" type="server"/>
+
 	<!-- exported client functions -->
 	<export function="startEditor" type="client"/>
 	<export function="selectElement" type="client"/>
@@ -132,6 +135,7 @@
 	<file src="client/images/icons/vehicle.png" type="client"/>
 	<file src="client/images/icons/pickup.png" type="client"/>
 	<file src="client/images/icons/ped.png" type="client"/>
+	<file src="client/images/icons/wor.png" type="client"/>
 	
 	<settings>
 		<setting name="*admingroup" value="Admin,MapEditor"

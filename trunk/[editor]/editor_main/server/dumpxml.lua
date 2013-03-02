@@ -144,6 +144,15 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		end
 	end
 
+	--Add the mapEditorScriptingExtension_s.lua script to meta
+	local scriptName = "mapEditorScriptingExtension_s.lua"
+	local scriptChild = xmlFindChild ( xml, "script", 0 )
+	if ( not scriptChild or xmlNodeGetAttribute ( scriptChild, "src" ) ~= scriptName ) then
+		local scriptNode = xmlCreateChild ( xml, "script" )
+		xmlNodeSetAttribute ( scriptNode, "src", scriptName )
+	end
+	fileCopy ( "server/".. scriptName, getThisResource ( ), scriptName, resource )
+
 	return xmlSaveFile(xml)
 end
 

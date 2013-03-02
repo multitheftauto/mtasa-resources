@@ -37,6 +37,8 @@ addEvent ( "quickSaveResource", true )
 addEventHandler ( "onResourceStart", thisResourceRoot,
 	function()
 		refreshResources(false)
+		setOcclusionsEnabled ( false )
+		restoreAllWorldModels ( )
 		destroyElement( rootElement )
 		mapContainer = createElement("mapContainer")
 		setTimer(startUp, 1000, 1)
@@ -109,6 +111,7 @@ addEventHandler("newResource", rootElement,
 		for index, child in ipairs(getElementChildren(mapContainer)) do
 			destroyElement(child)
 		end
+		restoreAllWorldModels ( )
 		passDefaultMapSettings()
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
 		triggerEvent("onNewMap", thisResourceRoot)
@@ -206,6 +209,7 @@ function openResource( resourceName, onStart )
 			return false
 		end
 		
+		restoreAllWorldModels ( )
 		openingOnStart      = onStart
 		openingResourceName = resourceName
 		openingSource       = source
@@ -239,6 +243,17 @@ function openResource( resourceName, onStart )
 			-- Map may take a while to load so show loading bar
 			if (#getElementChildren(mapElement) > 500) then
 				triggerClientEvent(root, "saveLoadProgressBar", root, 0, #getElementChildren(mapElement))
+			end
+			for _, element in ipairs ( getElementChildren ( mapElement, "removeWorldObject" ) ) do
+				local model = getElementData ( element, "model" )
+				local lodModel = getElementData ( element, "lodModel" )
+				local posX = getElementData ( element, "posX" )
+				local posY = getElementData ( element, "posY" )
+				local posZ = getElementData ( element, "posZ" )
+				local interior = getElementData ( element, "interior" )
+				local radius = getElementData ( element, "radius" )
+				removeWorldModel ( model, radius, posX, posY, posZ, interior )
+				removeWorldModel ( lodModel, radius, posX, posY, posZ, interior )
 			end
 			openResourceCoroutine = coroutine.create(flattenTree)
 			setTimer(handleOpenResource,50,1)
@@ -789,6 +804,8 @@ function stopTest()
 	
 	-- Send the map settings (delay is required to work probably because EDF not loaded) #7091
 	setTimer(passNewMapSettings, 1000, 1)
+	
+	triggerEvent("editor.fullTestEnded", client)
 end
 addEventHandler("stopTest", root, stopTest)
 
