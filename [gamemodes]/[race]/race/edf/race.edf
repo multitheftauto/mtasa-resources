@@ -27,7 +27,8 @@
 		<data name="respawn" type="integer" default="0" description="The respawn time in miliseconds" />
 		<data name="vehicle" type="vehicleID" default="522" description="The vehicle model, if a vehiclechange pickup" required="false" />
 		<object model="2221" position="0,0,0" />
-		<object model="1346" position="0,0,0" editorOnly="true"/>
+		<object model="1234" position="0,0,0" editorOnly="true" alpha="0"/>
+		<marker position="0,0,0" type="corona" color="#00000000" editorOnly="true"/>
 	</element>
 	
 	<script src="edf/edf.lua" />
