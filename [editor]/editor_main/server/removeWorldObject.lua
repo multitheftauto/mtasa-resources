@@ -20,9 +20,7 @@ addEventHandler ( "onElementCreate", root, onWorldObjectCreateOrDestroy )
 addEventHandler ( "onElementDestroy", root, onWorldObjectCreateOrDestroy )
 
 function applyWorldObjectRemoval()
-	outputDebugString("applyWorldObjectRemoval")
 	for index, element in ipairs(getElementsByType("removeWorldObject")) do
-		outputDebugString("applyWorldObjectRemoval removeWorldObject")
 		local model = getElementData ( element, "model" )
 		local lodModel = getElementData ( element, "lodModel" )
 		local posX = getElementData ( element, "posX" )
