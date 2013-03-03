@@ -61,9 +61,9 @@ function drawCheckpointConnections()
             local pos = i / #lineList
             local invpos = 1 - pos
             local color = tocolor(pos*255,0,invpos*255,255)
-            dxDrawLine3D ( line.s.x,line.s.y,line.s.z, line.d.x,line.d.y,line.d.z, color, width, true )
-            dxDrawLine3D ( line.d.x,line.d.y,line.d.z, line.p1.x,line.p1.y,line.p1.z, color, width, true )
-            dxDrawLine3D ( line.d.x,line.d.y,line.d.z, line.p2.x,line.p2.y,line.p2.z, color, width, true )
+            dxDrawLine3D ( line.s.x,line.s.y,line.s.z, line.d.x,line.d.y,line.d.z, color, width, false )
+            dxDrawLine3D ( line.d.x,line.d.y,line.d.z, line.p1.x,line.p1.y,line.p1.z, color, width, false )
+            dxDrawLine3D ( line.d.x,line.d.y,line.d.z, line.p2.x,line.p2.y,line.p2.z, color, width, false )
         end
     end
 end
