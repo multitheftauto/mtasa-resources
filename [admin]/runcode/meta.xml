@@ -20,5 +20,5 @@
 	<html src="codemirror\lua.js" raw="true"/>
 
 	<export function="httpRun" http="true"/>
+	<min_mta_version>1.3.1</min_mta_version>
 </meta>
-
