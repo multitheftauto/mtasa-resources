@@ -884,6 +884,10 @@ function getBool(var,default)
 end
 
 function round(num, idp)
+	num = tonumber(num)
+	if not num then
+		return 0
+	end
 	local mult = 10^(idp or 0)
 	return math.floor(num * mult + 0.5) / mult
 end
