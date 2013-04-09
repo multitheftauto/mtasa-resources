@@ -108,6 +108,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	settings["#weather"] = toJSON(currentMapSettings.weather or mapSettingDefaults.weather)
 	settings["#waveheight"] = toJSON(currentMapSettings.waveheight or mapSettingDefaults.waveheight)
 	settings["#locked_time"] = toJSON(currentMapSettings.locked_time or mapSettingDefaults.locked_time)
+	settings["#useLODs"] = toJSON(currentMapSettings.useLODs or mapSettingDefaults.useLODs)
 	settings["#minplayers"] = toJSON(currentMapSettings.minplayers or mapSettingDefaults.minplayers)
 	settings["#maxplayers"] = toJSON(currentMapSettings.maxplayers or mapSettingDefaults.maxplayers)
 	
@@ -143,16 +144,38 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 			end
 		end
 	end
-
-	--Add the mapEditorScriptingExtension_s.lua script to meta
+	
+	--Add the mapEditorScriptingExtension scripts to meta
 	local scriptName = "mapEditorScriptingExtension_s.lua"
-	local scriptChild = xmlFindChild ( xml, "script", 0 )
-	if ( not scriptChild or xmlNodeGetAttribute ( scriptChild, "src" ) ~= scriptName ) then
-		local scriptNode = xmlCreateChild ( xml, "script" )
-		xmlNodeSetAttribute ( scriptNode, "src", scriptName )
+	local foundScriptInMeta = false
+	for i, child in ipairs(xmlNodeGetChildren(xml)) do
+		if (xmlNodeGetAttribute(child, "src") == scriptName) then
+			foundScriptInMeta = true
+			break
+		end
 	end
-	fileCopy ( "server/".. scriptName, getThisResource ( ), scriptName, resource )
-
+	if (not foundScriptInMeta) then
+		local scriptNode = xmlCreateChild(xml, "script")
+		xmlNodeSetAttribute(scriptNode, "src", scriptName)
+		xmlNodeSetAttribute(scriptNode, "type", "server")
+	end
+	fileCopy("server/".. scriptName, getThisResource(), scriptName, resource)
+	
+	local scriptName = "mapEditorScriptingExtension_c.lua"
+	local foundScriptInMeta = false
+	for i, child in ipairs(xmlNodeGetChildren(xml)) do
+		if (xmlNodeGetAttribute(child, "src") == scriptName) then
+			foundScriptInMeta = true
+			break
+		end
+	end
+	if (not foundScriptInMeta) then
+		local scriptNode = xmlCreateChild(xml, "script")
+		xmlNodeSetAttribute(scriptNode, "src", scriptName)
+		xmlNodeSetAttribute(scriptNode, "type", "client")
+	end
+	fileCopy("client/".. scriptName, getThisResource(), scriptName, resource)
+	
 	return xmlSaveFile(xml)
 end
 
