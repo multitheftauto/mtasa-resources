@@ -7,6 +7,7 @@ local mapSettingFunctionsGet = {}
 local mapSettingFunctionsSet = {}
 local mapSettingTypes = { 
 "locked_time",
+"useLODs",
 "timeHour",
 "timeMinute",
 "gamespeed",

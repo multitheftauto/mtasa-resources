@@ -41,6 +41,7 @@ function createMapSettings()
 	
 	--create environment settings
 	mapsettings.locked_time = editingControl.boolean:create{["x"]=0.26,["y"]=0.04,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=mapsettings.environmentTab,["label"]="Locked time"}
+	mapsettings.useLODs = editingControl.boolean:create{["x"]=0.46,["y"]=0.04,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=mapsettings.environmentTab,["label"]="Use LODs"}
 	guiCreateMinimalLabel ( 0.02, 0.06, "Time:", true, mapsettings.environmentTab )
 	mapsettings.timeHour = editingControl.natural:create{["x"]=0.08,["y"]=0.04,["width"]=0.07,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["maxLength"]=2,["max"]=23}
 	mapsettings.timeMinute = editingControl.natural:create{["x"]=0.16,["y"]=0.04,["width"]=0.07,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["maxLength"]=2,["max"]=59}
