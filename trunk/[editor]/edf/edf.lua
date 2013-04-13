@@ -157,7 +157,7 @@ addEventHandler("onResourceStart", rootElement,
 				edfStarted[resource] = true
 			end
 			-- Notify that the load has been successful
-			outputDebugString("Loaded definitions for '"..resourcename.."'.",0,180,180,255)
+			outputConsole("Loaded definitions for '"..resourcename.."'.")
 		end
 	end
 )
@@ -189,7 +189,7 @@ function edfStartResource ( resource )
 		if not def then return end
 		edfStarted[resource] = true
 		-- Notify that the load has been successful
-		outputDebugString("Loaded definitions for '"..getResourceName(resource).."'.",0,180,180,255)
+		outputConsole("Loaded definitions for '"..getResourceName(resource).."'.")
 		return true
 	else
 		edfStarted[resource] = false

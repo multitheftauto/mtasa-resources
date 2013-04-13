@@ -48,7 +48,7 @@ addEventHandler ( "doCreateElement", rootElement,
 		)
 		
 		if edfElement then
-			outputDebugString ( "Created '"..elementType..":"..tostring(edfElement).."' from '"..resourceName.."'" )
+			outputConsole ( "Created '"..elementType..":"..tostring(edfElement).."' from '"..resourceName.."'" )
 			setupNewElement(edfElement, creatorResource, client, attachLater, shortcut)
 		else
 			outputDebugString ( "Failed to create '"..elementType.."' from '"..resourceName.."'" )
@@ -69,7 +69,7 @@ addEventHandler ( "doCloneElement", rootElement,
 		local clone = edf.edfCloneElement(source,true)
 		
 		if clone then
-			outputDebugString ( "Cloned '"..getElementType(source).."'." )
+			outputConsole ( "Cloned '"..getElementType(source).."'." )
 			setupNewElement(clone, creator or edf.edfGetCreatorResource(source), client, true, false, attachMode)
 			setLockedElement(source, nil)
 		else
@@ -90,7 +90,7 @@ addEventHandler ( "doDestroyElement", rootElement,
 		
 		local locked = getLockedElement(client)
 		if forced or locked == source then
-			outputDebugString ( "Deleted '"..getElementType(source).."'." )
+			outputConsole ( "Deleted '"..getElementType(source).."'." )
 			
 			if locked then
 				setLockedElement(client, nil)
