@@ -376,7 +376,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	local showSaveWarningOnce = false
 	for i, element in ipairs(getElementChildren(baseElement)) do --Find parents to start with
 		--ignore representations and destroyed elements
-		if not edf.edfIsRepresentation(element) and getElementDimension(element) ~= DESTROYED_ELEMENT_DIMENSION then
+		if not edf.edfIsRepresentation(element) and getElementDimension(element) ~= DESTROYED_ELEMENT_DIMENSION and not justCreated[element] then
 			local parent = getElementData ( element, "me:parent" )
 			if not parent or getElementType(parent) == "map" then
 				table.insert ( rootElements, element )
@@ -533,8 +533,8 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 				coroutine.yield()
 				tick = getTickCount()
 			end
-			-- Ignore representations and destroyed elements
-			if ( not edf.edfIsRepresentation(element) and getElementDimension(element) ~= DESTROYED_ELEMENT_DIMENSION ) then
+			-- Ignore representations, destroyed elements, unplaced items
+			if ( not edf.edfIsRepresentation(element) and getElementDimension(element) ~= DESTROYED_ELEMENT_DIMENSION and not justCreated[element]) then
 				local parent = getElementData ( element, "me:parent" )
 				if ( not parent or getElementType(parent) == "map" ) then
 					table.insert ( rootElements, element )
