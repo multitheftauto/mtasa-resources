@@ -55,10 +55,12 @@ function aSetupACL ()
 		end
 
 		local check = temp[aclGetName ( acl )] or temp['Default']
-		for right, access in pairs ( check ) do
-			if ( list[right] == nil ) then
-				aclSetRight ( acl, right, access )
-				updated = updated + 1
+		if string.sub(aclGetName( acl ),1,8) ~= "autoACL_" then
+			for right, access in pairs ( check ) do
+				if ( list[right] == nil ) then
+					aclSetRight ( acl, right, access )
+					updated = updated + 1
+				end
 			end
 		end
 
