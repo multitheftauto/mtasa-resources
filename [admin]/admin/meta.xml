@@ -18,6 +18,7 @@
   <script src="server/admin_servermaps.lua" />
   <script src="server/admin_ACL.lua" />
   <script src="server/admin_settings.lua" />
+  <script src="server/admin_screenshot.lua" />
   <script src="server/http/admin_http.lua" />
   <script src="client/admin_clientjoiner.lua" type="client" />
   <script src="client/admin_clientprefs.lua" type="client" />
@@ -43,6 +44,7 @@
   <script src="client/gui/admin_report.lua" type="client" />
   <script src="client/gui/admin_acl.lua" type="client" />
   <script src="client/gui/admin_settings.lua" type="client" />
+  <script src="client/gui/admin_screenshot.lua" type="client" />
   <script src="client/colorpicker/colorpicker.lua" type="client" />
 
   <!--Exported Functions-->
