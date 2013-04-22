@@ -294,6 +294,7 @@
     <right name="command.settime" access="false" />
     <right name="function.shutdown" access="false" />
     <right name="command.setfpslimit" access="false" />
+    <right name="command.fetchRemote" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="false" />
     <right name="command.unban" access="false" />
