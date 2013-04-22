@@ -30,6 +30,7 @@ function aAdminMenu ()
 		aTab1 = {}	
 		aTab1.Tab			= guiCreateTab ( "Players", aTabPanel, "players" )
 		aTab1.Messages		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "0/0 unread messages", true, aTab1.Tab )
+		aTab1.ScreenShots		= guiCreateButton ( 0.75, 0.065, 0.23, 0.04, "screenshots", true, aTab1.Tab )
 		aTab1.PlayerListSearch 	= guiCreateEdit ( 0.03, 0.05, 0.16, 0.04, "", true, aTab1.Tab )
 						  guiCreateStaticImage ( 0.19, 0.05, 0.035, 0.04, "client\\images\\search.png", true, aTab1.Tab )
 		aTab1.HideColorCodes= guiCreateCheckBox ( 0.037, 0.94, 0.20, 0.04, "Hide color codes", true, true, aTab1.Tab )
@@ -846,6 +847,8 @@ function aClientClick ( button )
 		if ( getElementParent ( source ) == aTab1.Tab ) then
 			if ( source == aTab1.Messages ) then
 				aViewMessages()
+			elseif ( source == aTab1.ScreenShots ) then
+				aPlayerScreenShot()
 			elseif ( source == aTab1.PlayerListSearch ) then
 				
 			elseif ( source == aTab1.HideColorCodes ) then
