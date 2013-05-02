@@ -29,8 +29,8 @@ function removeResourceFile ( resource, path, filetype )
 	return fileDelete ( ':' .. getResourceName(resource) .. '/' .. path )
 end
 
-local quickRemove = { map=true, setting=true, settings=true, script=true }
 local quickRemove = { map=true, setting=true, settings=true }
+
 function clearResourceMeta ( resource, quick ) --removes settings and info nodes
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	while true do
