@@ -30,6 +30,7 @@ function removeResourceFile ( resource, path, filetype )
 end
 
 local quickRemove = { map=true, setting=true, settings=true, script=true }
+local quickRemove = { map=true, setting=true, settings=true }
 function clearResourceMeta ( resource, quick ) --removes settings and info nodes
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	while true do
@@ -49,7 +50,9 @@ function clearResourceMeta ( resource, quick ) --removes settings and info nodes
 	local nodes = xmlNodeGetChildren ( metaNode )
 	for key, node in ipairs(nodes) do
 		if quick then
-			if quickRemove[xmlNodeGetName ( node )] then
+			local name = xmlNodeGetAttribute ( node, "src" ) or ""
+			local nodeName = xmlNodeGetName ( node )
+			if ( quickRemove [ nodeName ] or nodeName == "script" and name:find ( "mapEditorScriptingExtension" ) ) then
 				xmlDestroyNode ( node )
 			end
 		else
