@@ -64,18 +64,6 @@ function aACLLoad ( acl, node )
 	return added
 end
 
-_hasObjectPermissionTo = hasObjectPermissionTo
-function hasObjectPermissionTo ( object, action )
-	if ( ( isElement ( object ) ) and ( getElementType ( object ) == "player" ) ) then
-		if ( aclGetAccount ( object ) ) then
-			return _hasObjectPermissionTo ( aclGetAccount ( object ), action )
-		end
-	else
-		return _hasObjectPermissionTo ( object, action )
-	end
-	return false
-end
-
 function aclGetAccount ( player )
 	local account = getPlayerAccount ( player )
 	if ( isGuestAccount ( account ) ) then return false
