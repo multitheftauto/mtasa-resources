@@ -5,7 +5,7 @@
 -- Use command 'cplines' to toggle display
 --
 
-local showHelpText = true
+local showHelpText = false
 local showCheckpointLines = true
 local updatesPerFrame = 10   -- How many checkpoints to update per frame
 local lineList = {}
