@@ -24,8 +24,8 @@ function aPlayerScreenShot (player)
 		guiGridListAddColumn(aScreenShotList,"Player",0.31 )
 		guiGridListAddColumn(aScreenShotList,"Admin",0.31 )
 		guiGridListAddColumn(aScreenShotList,"Date",0.27 )
-		addEventHandler("onClientGUIClick",aScreenShotForm,aClientTeamClick)
-		addEventHandler("onClientGUIDoubleClick",aScreenShotForm,aClientTeamDoubleClick)
+		addEventHandler("onClientGUIClick",aScreenShotForm,aScreenShotsClick)
+		addEventHandler("onClientGUIDoubleClick",aScreenShotForm,aScreenShotsDoubleClick)
 		aRegister("PlayerScreenShot",aScreenShotForm,aPlayerScreenShot,aPlayerScreenShotClose)
 	end
 	guiSetVisible(aScreenShotForm,true)
@@ -42,14 +42,14 @@ end
 
 function aPlayerScreenShotClose ()
 	if ( aScreenShotForm ) then
-		removeEventHandler ( "onClientGUIClick", aScreenShotForm, aClientTeamClick )
-		removeEventHandler ( "onClientGUIDoubleClick", aScreenShotForm, aClientTeamDoubleClick )
+		removeEventHandler ( "onClientGUIClick", aScreenShotForm, aScreenShotsClick )
+		removeEventHandler ( "onClientGUIDoubleClick", aScreenShotForm, aScreenShotsDoubleClick )
 		destroyElement ( aScreenShotForm )
 		aScreenShotForm,aScreenShotList,aScreenShotNew,aScreenShotDelete,aScreenShotView,aScreenShotRefresh,aScreenShotClose,aScreenShotForm = nil,nil,nil,nil,nil,nil,nil,nil
 	end
 end
 
-function aClientTeamDoubleClick (button)
+function aScreenShotsDoubleClick (button)
 	if button == "left" then
 		if source == aScreenShotList then
 			local row = guiGridListGetSelectedItem(aScreenShotList)
@@ -60,7 +60,7 @@ function aClientTeamDoubleClick (button)
 	end
 end
 
-function aClientTeamClick (button)
+function aScreenShotsClick (button)
 	if button == "left" then
 		if source == aScreenShotClose then
 			aPlayerScreenShotClose()
@@ -112,7 +112,7 @@ addEventHandler("aClientScreenShot",resourceRoot,
 			aScreenShotWindows[player].window = guiCreateWindow((x/2)-400,(y/2)-300,800,600,title,false)
 			aScreenShotWindows[player].label = guiCreateLabel(0,0,1,1,"Loading...",true,aScreenShotWindows[player].window)
 			aScreenShotWindows[player].button = guiCreateButton(0.93,0.95,0.6,0.4,"Close",true,aScreenShotWindows[player].window)
-			addEventHandler ( "onClientGUIClick", aScreenShotWindows[player].button, aClientTeamClick )
+			addEventHandler ( "onClientGUIClick", aScreenShotWindows[player].button, aScreenShotsClick )
 			guiLabelSetHorizontalAlign(aScreenShotWindows[player].label,"center")
 			guiLabelSetVerticalAlign(aScreenShotWindows[player].label,"center")
 		elseif action == "list" then
@@ -133,7 +133,7 @@ addEventHandler("aClientScreenShot",resourceRoot,
 				fileWrite(file,data)
 				fileClose(file)
 				aScreenShotWindows[player].screenshot = guiCreateStaticImage(0,0,1,1,"screenshots/"..time..".jpg",true,aScreenShotWindows[player].window)
-				addEventHandler ( "onClientGUIClick", aScreenShotWindows[player].screenshot, aClientTeamClick )
+				addEventHandler ( "onClientGUIClick", aScreenShotWindows[player].screenshot, aScreenShotsClick )
 				guiBringToFront(aScreenShotWindows[player].button)
 				if isElement(player) and isElement(aScreenShotList) then
 					local row = guiGridListAddRow(aScreenShotList)
