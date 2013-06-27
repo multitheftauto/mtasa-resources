@@ -1,0 +1,40 @@
+<meta>
+	<info description="Anti-Cheat Control Panel" auther="ccw" version="0.1.4" type="script" />
+	<min_mta_version server="1.3.1" client="1.3.1"></min_mta_version>
+
+	<script src="_common.lua"/>
+	<script src="s_joiner.lua"/>
+	<script src="s_main.lua"/>
+	<script src="s_settings.lua"/>
+	<script src="s_img_mod.lua"/>
+
+	<script src="_common.lua" type="client" />
+	<script src="c_joiner.lua" type="client" />
+	<script src="c_main.lua" type="client" />
+	<script src="c_settings.lua" type="client"/>
+	<script src="c_gui.lua" type="client" />
+	<script src="c_gui_ac.lua" type="client" />
+	<script src="c_gui_block_mods.lua" type="client" />
+	<script src="c_gui_config.lua" type="client" />
+
+
+	<settings>
+		<setting name="*admingroup" value="Admin,AdminPlus"
+					friendlyname="Admin group list"
+					group="_Advanced"
+					accept="*"
+					examples="Admin,Moderator,SuperModerator"
+					desc="To use this resource, the player must belong to one of the groups listed."
+					/>
+	</settings>
+
+	<!--
+		Allow these rights by typing the following into the server or client console:
+		aclrequest allow acpanel all
+	-->
+	<aclrequest>
+        <right name="function.setServerConfigSetting" access="true"></right>
+        <right name="function.kickPlayer" access="true"></right>
+        <right name="function.fetchRemote" access="true"></right>
+	</aclrequest>
+</meta>
