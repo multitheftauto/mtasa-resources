@@ -36,6 +36,7 @@ function isImgModBlocked( name )
 	--outputDebug( "Checking " .. name .. " against type " .. tostring(type) )
 	--outputDebug( tostring(defText) )
 
+	--[[
 	local lineList = split(defText,"\n")
 	for _,line in ipairs(lineList) do
 		--outputDebug( "Checking " .. name .. " against line " .. tostring(line) )
@@ -43,6 +44,11 @@ function isImgModBlocked( name )
 			return true
 		end
 	end
+	]]--
+	if (string.find(defText, name)) then
+		return true
+	end
+	return false
 end
 
 
