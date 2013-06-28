@@ -31,7 +31,6 @@ addEventHandler ( "onResourceStart", resourceRoot,
 
 function isImgModBlocked( name )
 	local defText = getBlockDefText()
-	--local defText = string.gsub(defText, string.char(10), "")
 
 	local type = getPanelSetting( "blockmods.type" )
 	--outputDebug( "Checking " .. name .. " against type " .. tostring(type) )
