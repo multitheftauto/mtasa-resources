@@ -1,5 +1,5 @@
 <meta>
-	<info description="Anti-Cheat Control Panel" auther="ccw" version="0.1.4" type="script" />
+	<info description="Anti-Cheat Control Panel" author="ccw" version="0.1.5" type="script" />
 	<min_mta_version server="1.3.1" client="1.3.1"></min_mta_version>
 
 	<script src="_common.lua"/>
@@ -16,6 +16,7 @@
 	<script src="c_gui_ac.lua" type="client" />
 	<script src="c_gui_block_mods.lua" type="client" />
 	<script src="c_gui_config.lua" type="client" />
+	<script src="c_model_switcher.lua" type="client" />
 
 
 	<settings>
@@ -25,6 +26,13 @@
 					accept="*"
 					examples="Admin,Moderator,SuperModerator"
 					desc="To use this resource, the player must belong to one of the groups listed."
+					/>
+		<setting name="*switchplayermodels" value="false"
+					friendlyname="Switch player model if modified"
+					group="_Advanced"
+					accept="true,false"
+					examples="true,false"
+					desc="Rather than kick a player for modified player model, switch them to an unmodified model on their client only, so the server and other players will still see the normal skin. Bear in mind that if your scripts use client side skin checks this could affect them. If you enable this you won't need to have 'Player Models' listed in block Img mods.."
 					/>
 	</settings>
 

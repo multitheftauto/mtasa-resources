@@ -13,7 +13,20 @@ function ( filename, modList )
 			local msg = "Modified " .. mod.name .. " in " .. filename .. " not allowed"
 			kickPlayer( source, msg )
 			--outputDebug( msg )
-			break
+			return
+		end
+	end
+	
+	-- Get list of modified player models
+	local modifiedPlayerModels = {}
+	if get("*switchplayermodels") == "true" and filename == "gta3.img" then
+		for _,mod in ipairs(modList) do
+			if tonumber(mod.id) < 313 and string.find(mod.name, ".dff") then
+				table.insert(modifiedPlayerModels, tonumber(mod.id))
+			end
+		end
+		if #modifiedPlayerModels > 0 then
+			triggerClientEvent(player, "acpanel.gotModifiedPlayerModelsList", player, modifiedPlayerModels)
 		end
 	end
 end
