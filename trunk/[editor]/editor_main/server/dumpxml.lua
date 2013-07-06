@@ -47,6 +47,11 @@ function dumpMap ( xml, save, baseElement )
 		end
 	end
 
+	-- Loverly hack for race checkpoint scale
+	if usedResources['race'] then
+		usedResources['editor_main'] = true
+	end
+
 	-- Save in the map node the used definitions
 	local usedDefinitions = ""
 	for resource in pairs(usedResources) do
