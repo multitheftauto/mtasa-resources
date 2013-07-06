@@ -455,9 +455,17 @@ function handleHitPickup(pickup)
 		if pickup.vehicle == getElementModel(g_Vehicle) then
 			return
 		end
+		local health = nil
 		g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
 		alignVehicleWithUp()
+		if checkModelIsAirplane(pickup.vehicle) then -- Hack fix for Issue #4104
+			health = getElementHealth(g_Vehicle)
+		end
 		setElementModel(g_Vehicle, pickup.vehicle)
+		if health then
+			fixVehicle(g_Vehicle)
+			setElementHealth(g_Vehicle, health)
+		end
 		vehicleChanging(g_MapOptions.classicchangez, pickup.vehicle)
 	elseif pickup.type == 'nitro' then
 		addVehicleUpgrade(g_Vehicle, 1010)
@@ -710,8 +718,16 @@ function checkpointReached(elem)
 	
 	if g_Checkpoints[g_CurrentCheckpoint].vehicle and g_Checkpoints[g_CurrentCheckpoint].vehicle ~= getElementModel(g_Vehicle) then
 		g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
+		local health = nil
 		alignVehicleWithUp()
+		if checkModelIsAirplane(g_Checkpoints[g_CurrentCheckpoint].vehicle) then -- Hack fix for Issue #4104
+			health = getElementHealth(g_Vehicle)
+		end
 		setElementModel(g_Vehicle, g_Checkpoints[g_CurrentCheckpoint].vehicle)
+		if health then
+			fixVehicle(g_Vehicle)
+			setElementHealth(g_Vehicle, health)
+		end
 		vehicleChanging(g_MapOptions.classicchangez, g_Checkpoints[g_CurrentCheckpoint].vehicle)
 	end
 	triggerServerEvent('onPlayerReachCheckpointInternal', g_Me, g_CurrentCheckpoint)
