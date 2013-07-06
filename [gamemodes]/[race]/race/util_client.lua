@@ -161,6 +161,12 @@ function checkVehicleIsHelicopter()
 	end
 end
 
+function checkModelIsAirplane(g_VehicleModel)
+	if g_VehicleModel == 592 or g_VehicleModel == 577 or g_VehicleModel == 511 or g_VehicleModel == 512 or g_VehicleModel == 593 or g_VehicleModel == 520 or g_VehicleModel == 553 or g_VehicleModel == 476 or g_VehicleModel == 519 or g_VehicleModel == 460 or g_VehicleModel == 513 or g_VehicleModel == 539 then
+		return true
+	end
+end
+
 -----------------------------
 -- Table extensions
 
