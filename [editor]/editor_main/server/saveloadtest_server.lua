@@ -406,7 +406,10 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			tick = getTickCount()
 		end
 	end
-	
+	-- Loverly hack for race checkpoint scale
+	if usedResources['race'] then
+		usedResources['editor_main'] = true
+	end
 	-- Save in the map node the used definitions
 	local usedDefinitions = ""
 	for resource in pairs(usedResources) do
@@ -548,6 +551,10 @@ function quickSaveCoroutineFunction(saveAs, dump, client)
 				local creatorResource = getResourceName(edf.edfGetCreatorResource(element))
 				usedResources[creatorResource] = true
 			end
+		end
+		-- Loverly hack for race checkpoint scale
+		if usedResources['race'] then
+			usedResources['editor_main'] = true
 		end
 		-- Save in the map node the used definitions
 		local usedDefinitions = ""

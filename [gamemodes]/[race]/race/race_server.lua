@@ -270,7 +270,7 @@ function loadMap(res)
 	g_Checkpoints = map:getAll('checkpoint')
 	
 	-- if map isn't made in the new editor or map is an old race map multiplicate the checkpointsize with 4
-	local madeInNewEditor = map.def and map.def:find("editor_main")
+	local madeInNewEditor = map.def and ( map.def:find("editor_main") or map.def:find("race") )
 	if not madeInNewEditor or map:isRaceFormat() then
 		for i,checkpoint in ipairs(g_Checkpoints) do
 			checkpoint.size = checkpoint.size and checkpoint.size*4 or 4
