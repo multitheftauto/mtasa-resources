@@ -20,6 +20,8 @@ aReports = {}
 aWeathers = {}
 aNickChangeTime = {}
 
+local aUnmuteTimerList = {}
+
 function notifyPlayerLoggedIn(player)
 	outputChatBox ( "Press 'p' to open your admin panel", player )
 	local unread = 0
@@ -213,6 +215,15 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 		end
 		xmlSaveFile ( node )
 		xmlUnloadFile ( node )
+		
+		-- Unmute anybody muted by admin
+		for i, player in ipairs(getElementsByType("player")) do
+			local serial = getPlayerSerial( player )
+			if (aUnmuteTimerList[serial]) then
+				aUnmuteTimerList[serial] = nil
+				setPlayerMuted(player, false)
+			end
+		end
 	end
 	aclSave ()
 end )
@@ -300,7 +311,6 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 end )
 
 -- Allows for timed mutes across reconnects
-local aUnmuteTimerList = {}
 function aAddUnmuteTimer( player, length )
 	aRemoveUnmuteTimer( player )
 	local serial = getPlayerSerial( player )
