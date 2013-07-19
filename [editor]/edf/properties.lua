@@ -18,6 +18,14 @@ propertyGetters = {
 			end
 		end,
 		scale = getObjectScale,
+		breakable = function(element)
+			local breakable = getElementData(element,"breakable")
+			if breakable =="true" or breakable == false then 
+				return "true"
+			else 
+				return "false"
+			end
+		end,
 	},
 	ped = {
 		model = getElementModel,
@@ -122,11 +130,14 @@ propertySetters = {
 			end
 		end,
 		scale = function(element, scale) 
-				if ( scale ) then 
-					return setObjectScale(element, scale)
-				end
-				return false
-			end,
+			if ( scale ) then 
+				return setObjectScale(element, scale)
+			end
+			return false
+		end,
+		breakable = function(element, breakable)
+			return setElementData(element,"breakable",breakable=="true" and "true" or "false")
+		end,
 	},
 	ped = {
 		model = setElementModel,
