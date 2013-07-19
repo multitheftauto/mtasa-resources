@@ -178,6 +178,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		local scriptNode = xmlCreateChild(xml, "script")
 		xmlNodeSetAttribute(scriptNode, "src", scriptName)
 		xmlNodeSetAttribute(scriptNode, "type", "client")
+		xmlNodeSetAttribute(scriptNode, "validate", "false")
 	end
 	fileCopy("client/".. scriptName, getThisResource(), scriptName, resource)
 	

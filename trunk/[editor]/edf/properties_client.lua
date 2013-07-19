@@ -9,6 +9,7 @@
 			end
 		end,
 		scale = getObjectScale,
+		breakable = function(element) return tostring(isObjectBreakable(element)) end,
 	},
 	ped = {
 		model = getElementModel,
@@ -113,11 +114,14 @@ propertySetters = {
 			end
 		end,
 		scale = function(element, scale) 
-				if ( scale ) then 
-					return setObjectScale(element, scale)
-				end
-				return false
-			end,
+			if ( scale ) then 
+				return setObjectScale(element, scale)
+			end
+			return false
+		end,
+		breakable = function(element, breakable)
+			return setObjectBreakable(element, breakable == "true")
+		end,	
 	},
 	ped = {
 		model = function(element, model)

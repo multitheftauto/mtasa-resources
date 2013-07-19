@@ -9,6 +9,7 @@
 		<data name="doublesided" type="selection:false,true" description="MTA double sidedness" required="false" />
 		<data name="scale" type="number" description="Object scale" default="1" required="false"/>
 		<data name="collisions" type="selection:true,false" description="Object collisions" required="false" default="true" />
+		<data name="breakable" type="selection:true,false" description="Object breakablity" required="false" default="true" />
 	</element>
 	<element name="removeWorldObject" friendlyname="World object remover" icon="client/images/icons/wor.png" shortcut="removeworld" minver="1.3.0">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
