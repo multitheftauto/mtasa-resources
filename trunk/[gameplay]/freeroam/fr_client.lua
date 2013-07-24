@@ -609,11 +609,7 @@ end
 ---------------------------
 do
 	local screenWidth, screenHeight = guiGetScreenSize()
-	if screenHeight < 700 then
-		g_MapSide = (350 * (screenHeight / screenWidth) * 1.5)
-	else
-		g_MapSide = (700 * (screenHeight / screenWidth) * 1.5)
-	end
+	g_MapSide = (screenHeight * 0.85)
 end
 
 function setPosInit()
