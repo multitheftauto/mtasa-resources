@@ -610,9 +610,9 @@ end
 do
 	local screenWidth, screenHeight = guiGetScreenSize()
 	if screenHeight < 700 then
-		g_MapSide = 450
+		g_MapSide = (350 * (screenHeight / screenWidth) * 1.5)
 	else
-		g_MapSide = 700
+		g_MapSide = (700 * (screenHeight / screenWidth) * 1.5)
 	end
 end
 
