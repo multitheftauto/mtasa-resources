@@ -102,6 +102,7 @@ local function onRender()
 					setElementRotation ( localPlayer, rotX, 0, rotZ )
 					if not warning and processLineOfSight ( x,y,z, x,y,z-WARNING_HEIGHT, true, false,false,true,false,false,false,false,localPlayer ) then
 						addEventHandler ( "onClientRender", root, warningText )
+						warningText() -- Prevent the event handler being called next frame
 					end			
 				end
 			elseif isPedOnGround ( localPlayer ) and getElementData(localPlayer,"skydiving") then
