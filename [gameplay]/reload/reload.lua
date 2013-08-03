@@ -15,6 +15,7 @@ end
 --addEventHandler("onResourceStart",getResourceRootElement(),bindReloadForAllPlayers) -- Enable when issue 4532 is fixed
 
 --Please remove the following when issue 4532 is fixt:
+--Actually please don't since then we can't have client side checks to prevent instant reload exploit
 
 addEvent("onPlayerReload",true)
 addEventHandler("onPlayerReload",getRootElement(),
