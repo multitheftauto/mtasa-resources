@@ -223,7 +223,7 @@ end
 
 function activateSpectate ( player ) --Don't setTimer loop serverside, will cause bug when 2 players come in
 	setCameraMatrix( player, 1558.367, -1346.678, 630, 1558.367, -1301.059, 603.105469)
-	triggerClientEvent ( player, "clientActivateFreeCam", player, true )
+	exports.freecam:setPlayerFreecamEnabled( player )
 end
 
 function playerWasted ( )
@@ -288,7 +288,7 @@ addEventHandler ( "onPlayerQuit", root, PlayerQuit )
 
 function spawnPlayers ()
 	for k,v in pairs(players) do
-		triggerClientEvent( v, "clientActivateFreeCam", v, false )
+		exports.freecam:setPlayerFreecamDisabled( v )
 		setPlayerTeam ( v, teamAlive )
 		textDisplayAddObserver ( countDownDisplay, v )
 		spawningBoard = math.random ( 1, tableSize ) --Choose random spawn board
@@ -389,7 +389,8 @@ function newGame ()
 	countdown = 3 --Set here for first game only
 	setTimer ( newGameCountdown, 3000, 1 )
 end
-newGame () --Initiate first game
+addEventHandler("onResourceStart", resourceRoot, newGame) --Initiate first game
+-- I had to put this in the event handler else got debug about freecam not running
 
 function ResourceStop ( ) --Prevent invisible bug, reset cam on unload
 	players = getElementsByType ( "player" )
@@ -405,7 +406,7 @@ addEventHandler ( "onResourceStop", root, ResourceStop )
 
 function clientLoad() -- Indicate to the gamemode than the client is loaded
 	if not getPlayerTeam(client) then --Check if its not playing
-		triggerClientEvent ( client, "clientActivateFreeCam", client, true ) -- Start spectating
+		exports.freecam:setPlayerFreecamEnabled( client ) -- Start spectating
 	end
 end
 addEvent ( "serverClientLoad", true )
