@@ -26,8 +26,11 @@ function onResourceStartOrStop ( )
 			local objID = getElementModel(object)
 			local lodModel = LOD_MAP[objID]
 			if (lodModel) then
-				local lodObj = cloneElement(object)
-				local setm = setElementModel(lodObj, lodModel)
+				local x,y,z = getElementPosition(object)
+				local rx,ry,rz = getElementRotation(object)
+				local lodObj = createObject(lodModel,x,y,z,rx,ry,rz,true)
+				setElementInterior(lodObj, getElementInterior(object) )
+				setElementDimension(lodObj, getElementDimension(object) )
 				setElementParent(lodObj, object)
 				setLowLODElement(object, lodObj)
 				table.insert(usedLODModels, lodModel)
