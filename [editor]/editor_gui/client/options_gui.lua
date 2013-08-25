@@ -6,7 +6,6 @@ interiorsNames = {}
 
 function createOptionsDialog()
 	dialog.window		=	guiCreateWindow ( screenX/2 - 320, screenY/2 - 180, 640, 360, "OPTIONS", false )
-	guiWindowSetMovable ( dialog.window, false )
 	guiWindowSetSizable ( dialog.window, false )
 	guiSetVisible(dialog.window, false )
 	

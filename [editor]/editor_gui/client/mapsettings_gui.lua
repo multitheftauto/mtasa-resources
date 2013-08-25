@@ -26,7 +26,6 @@ weather = {
 
 function createMapSettings()
 	mapsettings.window		=	guiCreateWindow ( screenX/2 - 320, screenY/2 - 180, 640, 360, "MAP SETTINGS", false )
-	--guiWindowSetMovable ( mapsettings.window, false )
 	guiSetVisible(mapsettings.window, false )
 	guiWindowSetSizable ( mapsettings.window, false )
 	
