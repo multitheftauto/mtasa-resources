@@ -1,5 +1,5 @@
 sfxBrowser = {}
-screenWidth, screenHeight = guiGetScreenSize()
+local screenWidth, screenHeight = guiGetScreenSize()
 
 function sfxBrowser:new()
 	local object = setmetatable({}, {__index = sfxBrowser})
@@ -49,11 +49,11 @@ function sfxBrowser:constructor()
 	addEventHandler("onClientGUIClick", self.m_GUI.sfxGrid, function(...) self:sfxGrid_Click(...) end, false)
 	addEventHandler("onClientGUIDoubleClick", self.m_GUI.sfxGrid, function(...) self:sfxGrid_DoubleClick(...) end, false)
 	addEventHandler("onClientGUIClick", self.m_GUI.closeButton, function(...) self:closeButton_Click(...) end, false)
+	addEventHandler("onClientGUIClick", self.m_GUI.loopedCheck, function(...) self:loopedCheck_Click(...) end, false)
 end
 
 function sfxBrowser:open()
 	guiSetVisible(self.m_GUI.window, true)
-	outputDebugString("[DEBUG] sfxBrowser:open")
 end
 
 function sfxBrowser:close()
@@ -63,7 +63,6 @@ function sfxBrowser:close()
 	if self.m_Sound and isElement(self.m_Sound) then
 		destroyElement(self.m_Sound)
 	end
-	outputDebugString("[DEBUG] sfxBrowser:close")
 end
 
 function sfxBrowser:isOpen()
@@ -84,18 +83,20 @@ function sfxBrowser:updateLuacode()
 end
 
 function sfxBrowser:playCurrent()
-	outputDebugString("[DEBUG] sfxBrowser:playCurrent")
-	
 	if self.m_Sound and isElement(self.m_Sound) then
 		destroyElement(self.m_Sound)
 	end
 	
 	if not self.m_CurrentContainer or not self.m_CurrentBank or not self.m_CurrentSFX then
 		outputChatBox("Please select a sound first!", 255, 0, 0)
-		return
+		return false
 	end
 	
 	self.m_Sound = playSFX(self.m_CurrentContainer, self.m_CurrentBank, self.m_CurrentSFX, guiCheckBoxGetSelected(self.m_GUI.loopedCheck))
+	if not self.m_Sound then
+		outputChatBox("Some audio files are missing! Please check your GTASA\Audio\SFX\ folder!", 255, 0, 0)
+		return false
+	end
 	
 	-- Reset progressbar and its timer
 	guiProgressBarSetProgress(self.m_GUI.soundProgress, 0)
@@ -115,7 +116,7 @@ function sfxBrowser:playCurrent()
 			if progress >= 100 then
 				killTimer(self.m_ProgressTimer)
 			end
-		end, 150, 0
+		end, 100, 0
 	)
 end
 
@@ -217,6 +218,13 @@ function sfxBrowser:closeButton_Click(button, state)
 		showCursor(false)
 	end
 end
+
+function sfxBrowser:loopedCheck_Click(button, state)
+	if button == "left" and state == "up" then
+		self:updateLuacode()
+	end
+end
+
 
 local browser
 addCommandHandler("sfxbrowser",
