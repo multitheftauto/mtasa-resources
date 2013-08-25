@@ -155,8 +155,6 @@ function createPropertiesBox()
 	guiSetProperty(spnProperties, "VertStepSize", "0.15")
 
 	guiSetVisible( wndProperties, false )
-	guiWindowSetMovable( wndProperties, true )
-	guiWindowSetSizable( wndProperties, true )
 
 	lblTypeCaption = guiCreateLabel(
 		layout.padding.left,
