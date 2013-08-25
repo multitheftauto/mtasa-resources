@@ -1,0 +1,7 @@
+<meta>
+	<info author="Jusonex" name="sfxBrowser" description="Audio SFX browser - Plays GTA sounds" version="1.0" type="misc" />
+	<min_client_version client="1.3.4"/>
+	
+	<script src="sfxBrowser.lua" type="client" />
+	<script src="sfxBrowser_data.lua" type="client" />
+</meta>
