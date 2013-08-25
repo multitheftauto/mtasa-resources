@@ -63,9 +63,7 @@ function aAdminMain.Open ()
 end
 
 function aAdminMain.Close ()
-	guiSetInputEnabled ( false )
 	guiSetVisible ( aAdminMain.Form, false )
-	guiSetInputEnabled ( false )
 	showCursor ( false )
 end
 
