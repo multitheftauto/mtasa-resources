@@ -108,10 +108,10 @@ local function onRender ( )
 				else
 					if velZ >= FALL_VELOCITY then --they're going to have to fall down at this speed
 						removeParachute(localPlayer,"land")
-						setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, true)
+						setPedAnimation(localPlayer,"PARACHUTE","FALL_skyDive_DIE", -1, true, true, true, true)
 					else
 						removeParachute(localPlayer,"land")
-						setPedNewAnimation ( localPlayer, nil, "PARACHUTE", "PARA_Land", t(3000), false, true, false )
+						setPedNewAnimation ( localPlayer, nil, "PARACHUTE", "PARA_Land", -1, false, true, true, false )
 					end
 				end				
 			end
@@ -119,7 +119,7 @@ local function onRender ( )
 			local posX,posY,posZ = getElementPosition(localPlayer)
 			if testLineAgainstWater ( posX,posY,posZ + 10, posX,posY,posZ) then --Shoot a small line to see if in water
 				removeParachute(localPlayer,"water")
-				setPedNewAnimation ( localPlayer, nil, "PARACHUTE", "PARA_Land_Water", t(3000), false, true, true )
+				setPedNewAnimation ( localPlayer, nil, "PARACHUTE", "PARA_Land_Water", -1, false, true, true, false )
 			end
 		end
 	end
@@ -194,9 +194,9 @@ function removeParachute(player,type)
 	end
 
 	local chute = getPlayerParachute ( player )
-	 setTimer ( setPedAnimation, t(3000), 1, player )
-	 openingChutes[chute] = nil
-	 if chute then
+	setTimer ( setPedAnimation, t(3000), 1, player )
+	openingChutes[chute] = nil
+	if chute then
 		if type == "land" then
 			Animation.createAndPlay(
 			  chute,
@@ -257,14 +257,13 @@ addEvent ( "doRemoveParachuteFromPlayer", true)
 addEventHandler ( "doRemoveParachuteFromPlayer", root,
 	function()
 		if not isPedOnGround ( source ) or not getPedContactElement ( source ) then
-			setPedNewAnimation ( source, nil, "PARACHUTE", "PARA_Land", t(3000), false, true, false )
+			setPedNewAnimation ( source, nil, "PARACHUTE", "PARA_Land", -1, false, true, true, false )
 			removeParachute(source, "land" )
 		else
-			setPedNewAnimation ( source, nil, "PARACHUTE", "PARA_Land_Water", t(3000), false, true, true )
+			setPedNewAnimation ( source, nil, "PARACHUTE", "PARA_Land_Water", -1, false, true, true, false )
 			removeParachute(source, "water" )
 		end
-	end
-)
+	end)
 
 function setPedNewAnimation ( ped, elementData, animgroup, animname, ... )
 	if animname ~= lastAnim[ped] then
