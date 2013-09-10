@@ -79,11 +79,11 @@ function vote.map.handler(source,cmd,...)
 		return
 	end
 
-	local sourceUserName
+	local sourceSerial
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserNameSafe(source)
+		sourceSerial = getPlayerSerial(source)
 	end
-	if source ~= serverConsole and vote.map.blockedPlayers[sourceUserName] then
+	if source ~= serverConsole and vote.map.blockedPlayers[sourceSerial] then
 		outputVoteManager(cmd..": you have to wait "..vote.map.locktime.." seconds before starting another map vote.", source)
 	else
 		local resource1, resource2
@@ -122,8 +122,8 @@ function vote.map.handler(source,cmd,...)
 					triggerClientEvent(source,"doSendVote",rootElement,1)
 				end
                 if vote.map.locktime >= 0.05 then
-                    vote.map.blockedPlayers[sourceUserName] = true
-                    setTimer(removeLock, vote.map.locktime * 1000, 1, sourceUserName, "map")
+                    vote.map.blockedPlayers[sourceSerial] = true
+                    setTimer(removeLock, vote.map.locktime * 1000, 1, sourceSerial, "map")
                 end
 			end
 		else
@@ -148,11 +148,11 @@ function vote.mode.handler(source,cmd)
 		return
 	end
 	
-	local sourceUserName
+	local sourceSerial
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserNameSafe(source)
+		sourceSerial = getPlayerSerial(source)
 	end
-	if source ~= serverConsole and vote.mode.blockedPlayers[sourceUserName] then
+	if source ~= serverConsole and vote.mode.blockedPlayers[sourceSerial] then
 		outputVoteManager(cmd..": you have to wait "..vote.mode.locktime.." seconds before starting another mode vote.", source)
 	else
 		local gamemodes = exports.mapmanager:getGamemodes()
@@ -177,8 +177,8 @@ function vote.mode.handler(source,cmd)
 			outputVoteManager("Mode vote started by "..getPlayerName(source)..".")
 			if source ~= serverConsole then
                 if vote.mode.locktime >= 0.05 then
-                    vote.mode.blockedPlayers[sourceUserName] = true
-                    setTimer(removeLock, vote.mode.locktime * 1000, 1, sourceUserName, "mode")
+                    vote.mode.blockedPlayers[sourceSerial] = true
+                    setTimer(removeLock, vote.mode.locktime * 1000, 1, sourceSerial, "mode")
                 end
 			end
 		else
@@ -198,11 +198,11 @@ function vote.kick.handler(source,cmd,playername,...)
 		return
 	end
 	
-	local sourceUserName
+	local sourceSerial
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserNameSafe(source)
+		sourceSerial = getPlayerSerial(source)
 	end
-	if source ~= serverConsole and vote.kick.blockedPlayers[sourceUserName] then
+	if source ~= serverConsole and vote.kick.blockedPlayers[sourceSerial] then
 		outputVoteManager(cmd..": you have to wait "..vote.kick.locktime.." seconds before starting another votekick.", source)
 	else
 		local reason = table.concat({...}," ")
@@ -216,8 +216,8 @@ function vote.kick.handler(source,cmd,playername,...)
 			if source ~= serverConsole then
 				triggerClientEvent(source,"doSendVote",rootElement,1)
                 if vote.kick.locktime >= 0.05 then
-                    vote.kick.blockedPlayers[sourceUserName] = true
-                    setTimer(removeLock, vote.kick.locktime * 1000, 1, sourceUserName, "kick")
+                    vote.kick.blockedPlayers[sourceSerial] = true
+                    setTimer(removeLock, vote.kick.locktime * 1000, 1, sourceSerial, "kick")
                 end
 			end
 		else
@@ -237,11 +237,11 @@ function vote.ban.handler(source,cmd,playername,...)
 		return
 	end
 	
-	local sourceUserName
+	local sourceSerial
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserNameSafe(source)
+		sourceSerial = getPlayerSerial(source)
 	end
-	if source ~= serverConsole and vote.ban.blockedPlayers[sourceUserName] then
+	if source ~= serverConsole and vote.ban.blockedPlayers[sourceSerial] then
 		outputVoteManager(cmd..": you have to wait "..vote.ban.locktime.." seconds before starting another voteban.", source)
 	else
 		local reason = table.concat({...}," ")
@@ -255,8 +255,8 @@ function vote.ban.handler(source,cmd,playername,...)
 			if source ~= serverConsole then
 				triggerClientEvent(source,"doSendVote",rootElement,1)
                 if vote.ban.locktime >= 0.05 then
-                    vote.ban.blockedPlayers[sourceUserName] = true
-                    setTimer(removeLock, vote.ban.locktime * 1000, 1, sourceUserName, "ban")
+                    vote.ban.blockedPlayers[sourceSerial] = true
+                    setTimer(removeLock, vote.ban.locktime * 1000, 1, sourceSerial, "ban")
                 end
 			end
 		else
@@ -276,11 +276,11 @@ function vote.kill.handler(source,cmd,playername,...)
 		return
 	end
 	
-	local sourceUserName
+	local sourceSerial
 	if source ~= serverConsole then
-		sourceUserName = getPlayerUserNameSafe(source)
+		sourceSerial = getPlayerSerial(source)
 	end
-	if vote.kill.blockedPlayers[sourceUserName] then
+	if vote.kill.blockedPlayers[sourceSerial] then
 		outputVoteManager(cmd..": you have to wait "..vote.kill.locktime.." seconds before starting another votekill.", source)
 	else
 		local reason = table.concat({...}," ")
@@ -292,8 +292,8 @@ function vote.kill.handler(source,cmd,playername,...)
 			outputVoteManager("Votekill started by "..getPlayerName(source)..".")
 			triggerClientEvent(source,"doSendVote",rootElement,1)
             if vote.kill.locktime >= 0.05 then
-                vote.kill.blockedPlayers[sourceUserName] = true
-                setTimer(removeLock, vote.kill.locktime * 1000, 1, sourceUserName, "kill")
+                vote.kill.blockedPlayers[sourceSerial] = true
+                setTimer(removeLock, vote.kill.locktime * 1000, 1, sourceSerial, "kill")
             end
 		else
 			if voteKillReturnCode == errorCode.pollAlreadyRunning then
