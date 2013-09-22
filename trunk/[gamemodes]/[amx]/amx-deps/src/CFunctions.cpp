@@ -104,7 +104,7 @@ int CFunctions::amxLoad(lua_State *luaVM) {
 		return 1;
 	}
 	
-	path amxPath = path("mods/deathmatch/resources") / resName / amxName;
+	path amxPath = path("mods/deathmatch/resources/[gamemodes]/[amx]/") / resName / amxName;
 
 	// Load .amx
 	AMX *amx = new AMX;
