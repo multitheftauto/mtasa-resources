@@ -40,13 +40,6 @@ public OnGameModeInit()
 	return 1;
 }
 
-// Player GUI Dialog
-#define DIALOG_STYLE_MSGBOX		0
-#define DIALOG_STYLE_INPUT		1
-#define DIALOG_STYLE_LIST		2
-
-native ShowPlayerDialog(playerid, dialogid, style, caption[], info[], button1[], button2[]);
-
 public OnGameModeExit()
 {
 	return 1;
