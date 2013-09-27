@@ -31,6 +31,7 @@
   <script src="client/gui/admin_maps.lua" type="client" />
   <script src="client/gui/admin_messages.lua" type="client" />
   <script src="client/gui/admin_message.lua" type="client" />
+  <script src="client/gui/admin_moddetails.lua" type="client" />
   <script src="client/gui/admin_spectator.lua" type="client" />
   <script src="client/gui/admin_editor.lua" type="client" />
   <script src="client/gui/admin_messagebox.lua" type="client" />

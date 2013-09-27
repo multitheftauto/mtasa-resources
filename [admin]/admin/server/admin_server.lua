@@ -1346,6 +1346,16 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 	end
 end )
 
+addEvent ( "aModdetails", true )
+addEventHandler ( "aModdetails", resourceRoot, function ( action, player )
+	if checkClient( false, client, 'aModdetails', action ) then return end
+	if ( hasObjectPermissionTo ( client, "general.adminpanel" ) ) then
+		if ( action == "get" ) then
+			triggerClientEvent ( client, "aModdetails", resourceRoot, "get", getPlayerImgModsList(player), player )
+		end
+	end
+end )
+
 addEvent ( "aBans", true )
 addEventHandler ( "aBans", _root, function ( action, data )
 	if checkClient( "command."..action, source, 'aBans', action ) then return end
