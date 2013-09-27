@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -53,30 +53,46 @@ function aAdminMenu ()
 		aTab1.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aTab1.Tab, "shout" )
 		aTab1.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aTab1.Tab, "setgroup" )
 	
-						  guiCreateHeader ( 0.25, 0.08, 0.20, 0.04, "Player:", true, aTab1.Tab )
-		aTab1.Name			= guiCreateLabel ( 0.26, 0.125, 0.30, 0.035, "Name: N/A", true, aTab1.Tab )
-		aTab1.IP			= guiCreateLabel ( 0.26, 0.170, 0.30, 0.035, "IP: N/A", true, aTab1.Tab )
-		aTab1.Serial		= guiCreateLabel ( 0.26, 0.215, 0.435, 0.035, "Serial: N/A", true, aTab1.Tab )
+		local y = 0.03		-- Start y coord
+		local A = 0.045		-- Large line gap
+		local B = 0.035		-- Small line gap
+
+						     guiCreateHeader ( 0.25, y, 0.20, 0.04, "Player:", true, aTab1.Tab )
+y=y+A   aTab1.Name			= guiCreateLabel ( 0.26, y, 0.30, 0.035, "Name: N/A", true, aTab1.Tab )
+y=y+A   aTab1.IP			= guiCreateLabel ( 0.26, y, 0.30, 0.035, "IP: N/A", true, aTab1.Tab )
+		aTab1.CountryCode	= guiCreateLabel ( 0.45, y, 0.04, 0.035, "", true, aTab1.Tab )
+		aTab1.Flag	  = guiCreateStaticImage ( 0.40, y, 0.025806, 0.021154, "client\\images\\empty.png", true, aTab1.Tab )
+y=y+A   aTab1.Serial		= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Serial: N/A", true, aTab1.Tab )
 		--aTab1.Username		= guiCreateLabel ( 0.26, 0.245, 0.435, 0.035, "Username: N/A", true, aTab1.Tab )
-		aTab1.Version		= guiCreateLabel ( 0.26, 0.245, 0.435, 0.035, "Version: N/A", true, aTab1.Tab )
-		aTab1.Accountname	= guiCreateLabel ( 0.26, 0.275, 0.435, 0.035, "Account Name: N/A", true, aTab1.Tab )
-		aTab1.Groups		= guiCreateLabel ( 0.26, 0.305, 0.435, 0.035, "Groups: N/A", true, aTab1.Tab )
-		aTab1.Flag			= guiCreateStaticImage ( 0.40, 0.170, 0.025806, 0.021154, "client\\images\\empty.png", true, aTab1.Tab )
-		aTab1.CountryCode	= guiCreateLabel ( 0.45, 0.170, 0.04, 0.035, "", true, aTab1.Tab )
-						  guiCreateHeader ( 0.25, 0.350, 0.20, 0.04, "Game:", true, aTab1.Tab )
-		aTab1.Health		= guiCreateLabel ( 0.26, 0.395, 0.20, 0.04, "Health: 0%", true, aTab1.Tab )
-		aTab1.Armour		= guiCreateLabel ( 0.45, 0.395, 0.20, 0.04, "Armour: 0%", true, aTab1.Tab )
-		aTab1.Skin			= guiCreateLabel ( 0.26, 0.440, 0.20, 0.04, "Skin: N/A", true, aTab1.Tab )
-		aTab1.Team			= guiCreateLabel ( 0.45, 0.440, 0.20, 0.04, "Team: None", true, aTab1.Tab )
-		aTab1.Weapon		= guiCreateLabel ( 0.26, 0.485, 0.35, 0.04, "Weapon: N/A", true, aTab1.Tab )
-		aTab1.Ping			= guiCreateLabel ( 0.26, 0.530, 0.20, 0.04, "Ping: 0", true, aTab1.Tab )
-		aTab1.Money			= guiCreateLabel ( 0.45, 0.530, 0.20, 0.04, "Money: 0", true, aTab1.Tab )
-		aTab1.Area			= guiCreateLabel ( 0.26, 0.575, 0.44, 0.04, "Area: Unknown", true, aTab1.Tab )
-		aTab1.PositionX		= guiCreateLabel ( 0.26, 0.620, 0.30, 0.04, "X: 0", true, aTab1.Tab )
-		aTab1.PositionY		= guiCreateLabel ( 0.26, 0.665, 0.30, 0.04, "Y: 0", true, aTab1.Tab )
-		aTab1.PositionZ		= guiCreateLabel ( 0.26, 0.710, 0.30, 0.04, "Z: 0", true, aTab1.Tab )
-		aTab1.Dimension		= guiCreateLabel ( 0.26, 0.755, 0.20, 0.04, "Dimension: 0", true, aTab1.Tab )
-		aTab1.Interior		= guiCreateLabel ( 0.45, 0.755, 0.20, 0.04, "Interior: 0", true, aTab1.Tab )
+y=y+B   aTab1.Version		= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Version: N/A", true, aTab1.Tab )
+y=y+B   aTab1.Accountname	= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Account Name: N/A", true, aTab1.Tab )
+y=y+B   aTab1.Groups		= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Groups: N/A", true, aTab1.Tab )
+y=y+A   aTab1.ACDetected	= guiCreateLabel ( 0.26, y, 0.30, 0.035, "AC Detected: N/A", true, aTab1.Tab )
+y=y+B   aTab1.ACD3D			= guiCreateLabel ( 0.26, y, 0.30, 0.035, "D3D9.DLL: N/A", true, aTab1.Tab )
+y=y+B   aTab1.ACModInfo		= guiCreateLabel ( 0.26, y, 0.20, 0.035, "Img Mods: N/A", true, aTab1.Tab )
+		aTab1.ACModDetails = guiCreateButton ( 0.46, y, 0.13, 0.04, "Details", true, aTab1.Tab )
+
+
+		B = 0.040
+y=y+A  				         guiCreateHeader ( 0.25, y, 0.20, 0.04, "Game:", true, aTab1.Tab )
+y=y+A   aTab1.Health		= guiCreateLabel ( 0.26, y, 0.20, 0.04, "Health: 0%", true, aTab1.Tab )
+		aTab1.Armour		= guiCreateLabel ( 0.45, y, 0.20, 0.04, "Armour: 0%", true, aTab1.Tab )
+y=y+B   aTab1.Skin			= guiCreateLabel ( 0.26, y, 0.20, 0.04, "Skin: N/A", true, aTab1.Tab )
+		aTab1.Team			= guiCreateLabel ( 0.45, y, 0.20, 0.04, "Team: None", true, aTab1.Tab )
+y=y+B   aTab1.Weapon		= guiCreateLabel ( 0.26, y, 0.35, 0.04, "Weapon: N/A", true, aTab1.Tab )
+y=y+B   aTab1.Ping			= guiCreateLabel ( 0.26, y, 0.20, 0.04, "Ping: 0", true, aTab1.Tab )
+		aTab1.Money			= guiCreateLabel ( 0.45, y, 0.20, 0.04, "Money: 0", true, aTab1.Tab )
+y=y+B   aTab1.Area			= guiCreateLabel ( 0.26, y, 0.44, 0.04, "Area: Unknown", true, aTab1.Tab )
+y=y+B   aTab1.PositionX		= guiCreateLabel ( 0.26, y, 0.30, 0.04, "X: 0", true, aTab1.Tab )
+y=y+B   aTab1.PositionY		= guiCreateLabel ( 0.26, y, 0.30, 0.04, "Y: 0", true, aTab1.Tab )
+y=y+B   aTab1.PositionZ		= guiCreateLabel ( 0.26, y, 0.30, 0.04, "Z: 0", true, aTab1.Tab )
+y=y+B   aTab1.Dimension		= guiCreateLabel ( 0.26, y, 0.20, 0.04, "Dimension: 0", true, aTab1.Tab )
+		aTab1.Interior		= guiCreateLabel ( 0.45, y, 0.20, 0.04, "Interior: 0", true, aTab1.Tab )
+
+y=y+A  				         guiCreateHeader ( 0.25, y, 0.20, 0.04, "Vehicle:", true, aTab1.Tab )
+y=y+A  aTab1.Vehicle		= guiCreateLabel ( 0.26, y, 0.35, 0.04, "Vehicle: N/A", true, aTab1.Tab )
+y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Health: 0%", true, aTab1.Tab )
+
 		aTab1.SetHealth		= guiCreateButton ( 0.71, 0.395, 0.13, 0.04, "Set Health", true, aTab1.Tab, "sethealth" )
 		aTab1.SetArmour		= guiCreateButton ( 0.85, 0.395, 0.13, 0.04, "Set Armour", true, aTab1.Tab, "setarmour" )
 		aTab1.SetSkin		= guiCreateButton ( 0.71, 0.440, 0.13, 0.04, "Set Skin", true, aTab1.Tab, "setskin" )
@@ -94,9 +110,6 @@ function aAdminMenu ()
 		aTab1.JetPack		= guiCreateButton ( 0.71, 0.575, 0.27, 0.04, "Give JetPack", true, aTab1.Tab, "jetpack" )
 		aTab1.Warp			= guiCreateButton ( 0.71, 0.620, 0.27, 0.04, "Warp to player", true, aTab1.Tab, "warp" )
 		aTab1.WarpTo		= guiCreateButton ( 0.71, 0.665, 0.27, 0.04, "Warp player to..", true, aTab1.Tab, "warp" )
-						  guiCreateHeader ( 0.25, 0.805, 0.20, 0.04, "Vehicle:", true, aTab1.Tab )
-		aTab1.Vehicle		= guiCreateLabel ( 0.26, 0.850, 0.35, 0.04, "Vehicle: N/A", true, aTab1.Tab )
-		aTab1.VehicleHealth	= guiCreateLabel ( 0.26, 0.895, 0.25, 0.04, "Vehicle Health: 0%", true, aTab1.Tab )
 		aTab1.VehicleFix		= guiCreateButton ( 0.71, 0.84, 0.13, 0.04, "Fix", true, aTab1.Tab, "repair" )
 		aTab1.VehicleDestroy	= guiCreateButton ( 0.71, 0.89, 0.13, 0.04, "Destroy", true, aTab1.Tab, "destroyvehicle" )
 		aTab1.VehicleBlow		= guiCreateButton ( 0.85, 0.84, 0.13, 0.04, "Blow", true, aTab1.Tab, "blowvehicle" )
@@ -409,6 +422,9 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Version, "Version: "..( aPlayers[player]["version"] or "" ) )
 			guiSetText ( aTab1.Accountname, "Account Name: "..( aPlayers[player]["accountname"] or "" ) )
 			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
+			guiSetText ( aTab1.ACDetected, "AC Detected: "..( aPlayers[player]["acdetected"] or "" ) )
+			guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..( aPlayers[player]["d3d9dll"] or "" ) )
+			guiSetText ( aTab1.ACModInfo, "Img Mods: "..( aPlayers[player]["imgmodsnum"] or "" ) )
 			if ( isPlayerDead ( player ) ) then guiSetText ( aTab1.Health, "Health: Dead" )
 			else guiSetText ( aTab1.Health, "Health: "..math.ceil ( getElementHealth ( player ) ).."%" ) end
 			guiSetText ( aTab1.Armour, "Armour: "..math.ceil ( getPedArmor ( player ) ).."%" )
@@ -614,6 +630,9 @@ function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
 	aPlayers[source]["serial"] = serial
 	aPlayers[source]["admin"] = admin
 	aPlayers[source]["country"] = country
+	aPlayers[source]["acdetected"] = "..."
+	aPlayers[source]["d3d9dll"] = ""
+	aPlayers[source]["imgmodsnum"] = ""
 	local row = guiGridListAddRow ( aTab1.PlayerList )
 	guiGridListSetItemPlayerName ( aTab1.PlayerList, row, 1, getPlayerName ( source ), false, false )
 	if ( admin ) then
@@ -893,6 +912,8 @@ function aClientClick ( button )
 					elseif ( source == aTab1.Admin ) then
 						if ( aPlayers[player]["admin"] ) then aMessageBox ( "warning", "Revoke admin rights from "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setgroup\", false )" )
 						else aMessageBox ( "warning", "Give admin rights to "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setgroup\", true )" ) end
+					elseif ( source == aTab1.ACModDetails ) then
+						aViewModdetails(player)
 					end
 				end
 			elseif ( source == aTab1.VehicleDropDown ) then
@@ -914,11 +935,21 @@ function aClientClick ( button )
 					local player = aAdminRefresh ()
 					if ( player ) then
 						triggerServerEvent ( "aSync", getLocalPlayer(), "player", player )
-						if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then outputConsole ( "Name: "..aPlayers[player]["name"]..", IP: "..aPlayers[player]["IP"]..", Serial: "..aPlayers[player]["serial"]..", Community Username: "..aPlayers[player]["username"]..", Account Name: "..aPlayers[player]["accountname"] ) end
+						if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then
+							outputConsole ( "Name: "..aPlayers[player]["name"]
+										..", IP: "..aPlayers[player]["IP"]
+										..", Serial: "..aPlayers[player]["serial"]
+									--	..", Community Username: "..aPlayers[player]["username"]
+										..", Account Name: "..aPlayers[player]["accountname"]
+										..", D3D9.DLL: "..aPlayers[player]["d3d9dll"] )
+						end
 						guiSetText ( aTab1.IP, "IP: "..aPlayers[player]["IP"] )
 						guiSetText ( aTab1.Serial, "Serial: "..aPlayers[player]["serial"] )
 						--guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
 						guiSetText ( aTab1.Accountname, "Account Name: "..aPlayers[player]["accountname"] )
+						guiSetText ( aTab1.ACDetected, "AC Detected: "..aPlayers[player]["acdetected"] )
+						guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..aPlayers[player]["d3d9dll"] )
+						guiSetText ( aTab1.ACModInfo, "Img Mods: "..aPlayers[player]["imgmodsnum"] )
 						local countryCode = aPlayers[player]["country"]
 						loadFlagImage ( aTab1.Flag, countryCode )
 						if not countryCode then
@@ -940,6 +971,9 @@ function aClientClick ( button )
 					guiSetText ( aTab1.Version, "Version: N/A" )
 					guiSetText ( aTab1.Accountname, "Account Name: N/A" )
 					guiSetText ( aTab1.Groups, "Groups: N/A" )
+					guiSetText ( aTab1.ACDetected, "AC Detected: N/A" )
+					guiSetText ( aTab1.ACD3D, "D3D9.DLL: N/A" )
+					guiSetText ( aTab1.ACModInfo, "Img Mods: N/A" )
 					guiSetText ( aTab1.Mute, "Mute" )
 					guiSetText ( aTab1.Freeze, "Freeze" )
 					guiSetText ( aTab1.Admin, "Give admin rights" )
