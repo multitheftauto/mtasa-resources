@@ -26,6 +26,9 @@ function aSynchCoroutineFunc( type, data )
 		tableOut["version"] = aPlayers[data]["version"]
 		tableOut["accountname"] = getPlayerAccountName ( data ) or "N/A"
 		tableOut["groups"] = "None"
+		tableOut["acdetected"] = getPlayerACDetectedList( data )
+		tableOut["d3d9dll"] = getPlayerD3D9DLLHash( data )
+		tableOut["imgmodsnum"] = getPlayerImgModsCount( data )
 		local account = getPlayerAccount ( data )
 		if ( isGuestAccount ( account ) ) then
 			tableOut["groups"] = "Not logged in"
@@ -50,6 +53,9 @@ function aSynchCoroutineFunc( type, data )
 				tableOut[player]["serial"] = getPlayerSerial ( player )
 				tableOut[player]["country"] = aPlayers[player]["country"]
 				tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
+				tableOut[player]["acdetected"] = getPlayerACDetectedList( player )
+				tableOut[player]["d3d9dll"] = getPlayerD3D9DLLHash( player )
+				tableOut[player]["imgmodsnum"] = getPlayerImgModsCount( player )
 			end
 		end
 	elseif ( type == "resources" ) then
@@ -304,3 +310,77 @@ function table.size(tab)
     end
     return length
 end
+
+
+----------------------------------------
+-- AC getPlayer functions
+----------------------------------------
+function getPlayerACDetectedList( player )
+	return getPlayerACInfo( player ).DetectedAC
+end
+
+function getPlayerD3D9DLLHash( player )
+	return getPlayerACInfo( player ).d3d9MD5
+end
+
+function getPlayerImgModsCount( player )
+	return #getPlayerModInfoStore( player ).list
+end
+
+function getPlayerImgModsList( player )
+	return getPlayerModInfoStore( player ).list
+end
+
+----------------------------------------
+-- Save mod info info
+----------------------------------------
+addEventHandler( "onPlayerModInfo", root,
+	function ( filename, modList )
+		local store = getPlayerModInfoStore( source )
+		for _,mod in ipairs(modList) do			-- Check each modified item
+			if not store.dic[mod.name] then
+				store.dic[mod.name] = true
+				table.insert( store.list, mod )
+			end
+		end
+	end
+)
+
+addEventHandler( "onResourceStart", resourceRoot,
+	function()
+		for _,player in ipairs( getElementsByType("player") ) do
+			resendPlayerModInfo( player )
+		end
+	end
+)
+
+addEventHandler( "onPlayerQuit", root,
+	function()
+		modInfoStore[ source ] = nil
+	end
+)
+
+----------------------------------------
+-- Place to save mod info about each player
+----------------------------------------
+modInfoStore = {}
+function getPlayerModInfoStore( player )
+	if not modInfoStore[ player ] then
+		modInfoStore[ player ] = {}
+		modInfoStore[ player ].dic = {}
+		modInfoStore[ player ].list = {}
+	end
+	return modInfoStore[ player ]
+end
+
+----------------------------------------
+-- Backwards compat version of getPlayerACInfo
+----------------------------------------
+_getPlayerACInfo = getPlayerACInfo
+function getPlayerACInfo( player )
+	if not _getPlayerACInfo then
+		return { ["DetectedAC"]="", ["d3d9MD5"]="", ["d3d9Size"]=0 }
+	end
+	return _getPlayerACInfo( player )
+end
+

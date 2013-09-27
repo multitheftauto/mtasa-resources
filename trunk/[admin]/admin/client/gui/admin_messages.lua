@@ -40,6 +40,7 @@ end
 function aViewMessagesClose ( destroy )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceMessage ) ) ) then
 		if ( aMessagesForm ) then
+			removeEventHandler ( "aMessage", _root, aMessagesSync )
 			removeEventHandler ( "onClientGUIClick", aMessagesForm, aClientMessagesClick )
 			removeEventHandler ( "onClientGUIDoubleClick", aMessagesForm, aClientMessagesDoubleClick )
 			destroyElement ( aMessagesForm )
