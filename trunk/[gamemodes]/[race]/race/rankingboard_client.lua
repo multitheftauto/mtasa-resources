@@ -19,10 +19,10 @@ function RankingBoard.call(id, fn, ...)
 	RankingBoard[fn](RankingBoard.instances[id], ...)
 end
 
-function RankingBoard:setDirection(direction)
+function RankingBoard:setDirection(direction,plrcount)
 	self.direction = direction
 	if direction == 'up' then
-		self.highestPos = #g_Players
+		self.highestPos = plrcount
 		self.position = self.highestPos + 1
 	end
 end
