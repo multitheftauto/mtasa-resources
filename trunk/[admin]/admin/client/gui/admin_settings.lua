@@ -26,7 +26,7 @@ function aManageSettings ( resName )
 		aSettingsExit		= guiCreateButton ( 0.80, 0.93, 0.17, 0.04, "Close", true, aSettingsTab )
 		aSettingDesc		= guiCreateMemo ( 0.03, 0.80, 0.75, 0.17, "", true, aSettingsTab )
 		addEvent ( "aAdminSettings", true )
-		addEventHandler ( "aAdminSettings", getLocalPlayer(), aAdminSettings )
+		addEventHandler ( "aAdminSettings", localPlayer, aAdminSettings )
 		addEventHandler ( "onClientGUIClick", aSettingsForm, aClientSettingsClick )
 		addEventHandler ( "onClientGUIDoubleClick", aSettingsForm, aClientSettingsDoubleClick )
 		--Register With Admin Form
@@ -36,7 +36,7 @@ function aManageSettings ( resName )
 	guiSetText( aSettingDesc, "" )
 	guiMemoSetReadOnly ( aSettingDesc, true )
 	guiGridListClear( aSettingsList )
-	triggerServerEvent ( "aAdmin", getLocalPlayer(), "settings", "getall", resName )
+	triggerServerEvent ( "aAdmin", localPlayer, "settings", "getall", resName )
 	guiSetVisible ( aSettingsForm, true )
 	guiBringToFront ( aSettingsForm )
 end
@@ -61,7 +61,7 @@ function aAdminSettings ( type, resName, settingstable )
 		return
 	end
 	if type == "change" then
-		triggerServerEvent ( "aAdmin", getLocalPlayer(), "settings", "getall", resName )
+		triggerServerEvent ( "aAdmin", localPlayer, "settings", "getall", resName )
 	elseif type == "getall" then
 		aSettingsData["settings"] = settingstable
 		local rowindex = { [1] = 0 }
@@ -133,7 +133,7 @@ function aClientSettingsDoubleClick ( button )
 				aInputBox ( "Change setting",
 							"Enter new value for '".. friendlyname .."'",
 							tostring(current),
-							"triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"settings\", \"change\", \""..aSettingsData["resName"].."\", \""..name.."\", $value )" )
+							"settingChange", aSettingsData["resName"], name )
 			end
 		end
 	end

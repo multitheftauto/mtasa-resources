@@ -9,8 +9,9 @@
 **************************************]]
 
 aMessageForm = nil
+local varOne, varTwo, varThree = vOne, vTwo, vThree
 
-function aMessageBox ( type, message, action )
+function aMessageBox ( type, message, action, vOne, vTwo, vThree )
 	local x, y = guiGetScreenSize()
 	if ( aMessageForm == nil ) then
 		aMessageForm	= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 110, "", false )
@@ -63,6 +64,7 @@ function aMessageBox ( type, message, action )
 		guiSetVisible ( aMessageYes, true )
 		guiSetVisible ( aMessageNo, true )
 		aMessageAction = action
+		varOne, varTwo, varThree = vOne, vTwo, vThree
 	else
 		guiSetVisible ( aMessageOk, true )
 	end
@@ -93,7 +95,7 @@ function aMessageBoxAccept ( key, state )
 		else
 			if ( key == "enter" ) then
 				if ( aMessageAction ~= nil ) then 
-					loadstring(aMessageAction)()
+					runMessageAction(aMessageAction)
 				end
 				aMessageAction = nil
 				aMessageBoxClose ( false )
@@ -109,7 +111,7 @@ function aMessageBoxClick ( button )
 	if ( button == "left" ) then
 		if ( source == aMessageYes ) then
 			if ( aMessageAction ~= nil ) then 
-				loadstring(aMessageAction)()
+				runMessageAction(aMessageAction)
 			end
 			aMessageAction = nil
 			aMessageBoxClose ( false )
@@ -117,6 +119,34 @@ function aMessageBoxClick ( button )
 			aMessageAction = nil
 			aMessageBoxClose ( false )
 		end
+	end
+end
+
+function runMessageAction(action)
+	if (action == "aclDestroyGroup") then
+		triggerServerEvent("aAdmin", localPlayer, "acldestroy", "group", varOne)
+	elseif (action == "aclDestroy") then
+		triggerServerEvent("aAdmin", localPlayer, "acldestroy", "acl", varOne)
+	elseif (action == "revokeAdmin") then
+		triggerServerEvent("aPlayer", localPlayer, varOne, "setgroup", false)
+	elseif (action == "giveAdmin") then
+		triggerServerEvent("aPlayer", localPlayer, varOne, "setgroup", true)
+	elseif (action == "stopDelete") then
+		triggerServerEvent("aResource", localPlayer, varOne, "delete")
+	elseif (action == "stopAll") then
+		triggerServerEvent("aResource", localPlayer, nil, "stopall")
+	elseif (action == "unbanSerial") then
+		triggerServerEvent("aBans", localPlayer, "unbanserial", varOne)
+	elseif (action == "unbanIP") then
+		triggerServerEvent("aBans", localPlayer, "unbanip", varOne)
+	elseif (action == "unmute") then
+		triggerServerEvent("aPlayer", localPlayer, varOne, "mute")
+	elseif (action == "deleteMap") then
+		triggerServerEvent("deleteRevertMap_s", localPlayer, true, varOne, varTwo)
+	elseif (action == "spectatorClose") then
+		aSpectator.Close(false)
+	elseif (action == "deleteTeam") then
+		triggerServerEvent("aTeam", localPlayer, "destroyteam", varOne)
 	end
 end
 
