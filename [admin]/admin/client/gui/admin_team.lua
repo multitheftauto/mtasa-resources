@@ -86,7 +86,7 @@ function aClientTeamClick ( button )
 				aMessageBox ( "warning", "No team selected!" )
 			else
 				local team = guiGridListGetItemText ( aTeamList, guiGridListGetSelectedItem ( aTeamList ), 1 )
-				aMessageBox ( "question", "Are you sure to delete \""..team.."\"?", "triggerServerEvent ( \"aTeam\", getLocalPlayer(), \"destroyteam\", \""..team.."\" )" )
+				aMessageBox ( "question", "Are you sure to delete \""..team.."\"?", "deleteTeam", team )
 			end
 			setTimer ( aTeamsRefresh, 2000, 1 )
 		elseif ( source == aTeamCreate ) then

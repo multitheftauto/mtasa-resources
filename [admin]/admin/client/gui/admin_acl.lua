@@ -48,12 +48,12 @@ function aManageACL ()
 		aclDisplayOptions ( "", "" )
 
 		addEvent ( "aAdminACL", true )
-		addEventHandler ( "aAdminACL", getLocalPlayer(), aAdminACL )
+		addEventHandler ( "aAdminACL", localPlayer, aAdminACL )
 		addEventHandler ( "onClientGUIClick", aAclForm, aClientACLClick )
 		addEventHandler ( "onClientGUIDoubleClick", aAclForm, aClientACLDoubleClick )
 		--Register With Admin Form
 		aRegister ( "ACLManage", aAclForm, aManageACL, aACLClose )
-		triggerServerEvent ( "aAdmin", getLocalPlayer(), "sync", "aclgroups" )
+		triggerServerEvent ( "aAdmin", localPlayer, "sync", "aclgroups" )
 	end
 	guiSetVisible ( aAclForm, true )
 	guiBringToFront ( aAclForm )
@@ -173,9 +173,9 @@ function aClientACLDoubleClick ( button )
 					for i, acl in ipairs ( aAclData["acl"] ) do
 						if ( acl == clicked ) then
 							if ( state == "-" ) then
-								triggerServerEvent ( "aAdmin", getLocalPlayer(), "sync", "aclgroups" )
+								triggerServerEvent ( "aAdmin", localPlayer, "sync", "aclgroups" )
 							else
-								triggerServerEvent ( "aAdmin", getLocalPlayer(), "sync", "aclrights", clicked )
+								triggerServerEvent ( "aAdmin", localPlayer, "sync", "aclrights", clicked )
 							end
 							return
 						end
@@ -184,9 +184,9 @@ function aClientACLDoubleClick ( button )
 					for i, group in ipairs ( aAclData["groups"] ) do
 						if ( group == clicked ) then
 							if ( state == "-" ) then
-								triggerServerEvent ( "aAdmin", getLocalPlayer(), "sync", "aclgroups" )
+								triggerServerEvent ( "aAdmin", localPlayer, "sync", "aclgroups" )
 							else
-								triggerServerEvent ( "aAdmin", getLocalPlayer(), "sync", "aclobjects", clicked )
+								triggerServerEvent ( "aAdmin", localPlayer, "sync", "aclobjects", clicked )
 							end
 							return
 						end
@@ -210,17 +210,17 @@ function aClientACLClick ( button )
 		if ( source == aACLExit ) then
 			aACLClose ( false )
 		elseif ( source == aACLCreateGroup ) then
-			aInputBox ( "Create ACL Group", "Enter group name:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"aclcreate\", \"group\", $value )" )
+			aInputBox ( "Create ACL Group", "Enter group name:", "", "aclCreateGroup" )
 		elseif ( source == aACLCreateACL ) then
-			aInputBox ( "Create ACL", "Enter acl name:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"aclcreate\", \"acl\", $value )" )
+			aInputBox ( "Create ACL", "Enter acl name:", "", "aclCreate" )
 		elseif ( source == aACLAddObject ) then
-			aInputBox ( "Create ACL Group", "Enter object name:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"acladd\", \"object\", \""..aAclData["current"].."\", $value )" )
+			aInputBox ( "Create ACL Group", "Enter object name:", "", "aclAddObject", aAclData["current"] )
 		elseif ( source == aACLAddRight ) then
-			aInputBox ( "Create ACL", "Enter right name:", "", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"acladd\", \"right\", \""..aAclData["current"].."\", $value )" )
+			aInputBox ( "Create ACL", "Enter right name:", "", "aclAddRight", aAclData["current"] )
 		elseif ( source == aACLDestroyGroup ) then
-			aMessageBox ( "warning", "Are you sure to destroy "..aAclData["current"].." group?", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"acldestroy\", \"group\", \""..aAclData["current"].."\" )" )
+			aMessageBox ( "warning", "Are you sure to destroy "..aAclData["current"].." group?", "aclDestroyGroup", aAclData["current"])
 		elseif ( source == aACLDestroyACL ) then
-			aMessageBox ( "warning", "Are you sure to destroy "..aAclData["current"].." ACL?", "triggerServerEvent ( \"aAdmin\", getLocalPlayer(), \"acldestroy\", \"acl\", \""..aAclData["current"].."\" )" )
+			aMessageBox ( "warning", "Are you sure to destroy "..aAclData["current"].." ACL?", "aclDestroy", aAclData["current"])
 		elseif ( ( source == aACLRemoveObject ) or ( source == aACLAddACL ) or ( source == aACLRemoveACL ) ) then
 			guiSetVisible ( aACLAddObject, false )
 			guiSetVisible ( aACLRemoveObject, false )
@@ -249,11 +249,11 @@ function aClientACLClick ( button )
 		elseif ( source == aACLOk ) then
 			local action = guiGetText ( aACLActionLabel )
 			if ( action == "Remove Object:" ) then
-				triggerServerEvent ( "aAdmin", getLocalPlayer(), "aclremove", "object", aAclData["current"], guiGetText ( aACLDropCurrent ) )
+				triggerServerEvent ( "aAdmin", localPlayer, "aclremove", "object", aAclData["current"], guiGetText ( aACLDropCurrent ) )
 			elseif ( action == "Add ACL:" ) then
-				triggerServerEvent ( "aAdmin", getLocalPlayer(), "acladd", "acl", aAclData["current"], guiGetText ( aACLDropCurrent ) )
+				triggerServerEvent ( "aAdmin", localPlayer, "acladd", "acl", aAclData["current"], guiGetText ( aACLDropCurrent ) )
 			elseif ( action == "Remove ACL:" ) then
-				triggerServerEvent ( "aAdmin", getLocalPlayer(), "aclremove", "acl", aAclData["current"], guiGetText ( aACLDropCurrent ) )
+				triggerServerEvent ( "aAdmin", localPlayer, "aclremove", "acl", aAclData["current"], guiGetText ( aACLDropCurrent ) )
 			end
 		end
 	end

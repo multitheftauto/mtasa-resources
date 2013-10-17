@@ -96,7 +96,7 @@ function guiClick(button)
 					triggerServerEvent("setNextMap_s", getLocalPlayer(), mapName)
 				end
 			elseif source == aTabMap.Delete then
-				aMessageBox ( "question", "Are you sure to delete '"..mapName.."'?", "triggerServerEvent(\"deleteRevertMap_s\", getLocalPlayer(), true, \""..mapResName.."\", \""..mapName.."\")" )
+				aMessageBox ( "question", "Are you sure to delete '"..mapName.."'?", "deleteMap", mapResName, mapName )
 			elseif source == aTabMap.Revert then
 				triggerServerEvent("deleteRevertMap_s", getLocalPlayer(), false, mapResName, mapName)
 			end

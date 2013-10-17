@@ -185,7 +185,7 @@ function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 	if ( guiCheckBoxGetSelected ( aSpectator.Skip ) ) then players = aSpectator.GetAlive()
 	else players = getElementsByType ( "player" ) end
 	if ( #players <= 0 ) then
-		aMessageBox ( "question", "Nobody to spectate, exit spectator?", "aSpectator.Close ( false )" )
+		aMessageBox ( "question", "Nobody to spectate, exit spectator?", "spectatorClose" )
 		return
 	end
 	local current = 1
@@ -196,7 +196,7 @@ function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 	end
 	local next = ( ( current - 1 + inc ) % #players ) + 1
 	if ( next == current ) then
-		aMessageBox ( "question", "Nobody else to spectate, exit spectator?", "aSpectator.Close ( false )" )
+		aMessageBox ( "question", "Nobody else to spectate, exit spectator?", "spectatorClose" )
 		return
 	end
 	aSpectator.Spectating = players[next]

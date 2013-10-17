@@ -331,9 +331,9 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		bindKey ( "arrow_d", "down", aPlayerListScroll, 1 )
 		bindKey ( "arrow_u", "down", aPlayerListScroll, -1 )
 
-		triggerServerEvent ( "aSync", getLocalPlayer(), "players" )
-		if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", getLocalPlayer(), "messages" ) end
-		triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
+		triggerServerEvent ( "aSync", localPlayer, "players" )
+		if ( hasPermissionTo ( "command.listmessages" ) ) then triggerServerEvent ( "aSync", localPlayer, "messages" ) end
+		triggerServerEvent ( "aSync", localPlayer, "server" )
 		triggerEvent ( "onAdminInitialize", resourceRoot )
 		showCursor ( true )
 
@@ -349,7 +349,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 	if element and getElementType(element)=="vehicle" then
 		element = getVehicleController(element)
 	end
-	if element and getElementType(element)=="player" and element ~= getLocalPlayer() then
+	if element and getElementType(element)=="player" and element ~= localPlayer then
 		for row=0,guiGridListGetRowCount( aTab1.PlayerList )-1 do
 			if ( guiGridListGetItemPlayerName ( aTab1.PlayerList, row, 1 ) == getPlayerName ( element ) ) then
 				guiGridListSetSelectedItem ( aTab1.PlayerList, row, 1 )
@@ -413,7 +413,7 @@ end
 
 function aAdminRefresh ()
 	if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) ~= -1 ) then
-		local player = getPlayerFromNick ( guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 ) )
+		local player = getPlayerFromName ( guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 ) )
 		if ( player and aPlayers[player] ) then
 			guiSetText ( aTab1.Name, "Name: "..aPlayers[player]["name"] )
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unmute", "Mute" ) )
@@ -486,7 +486,7 @@ function aClientSync ( type, table )
 	elseif ( type == "admins" ) then
 		--if ( guiGridListGetRowCount ( aTab5.AdminPlayers ) > 0 ) then guiGridListClear ( aTab5.AdminPlayers ) end
 		for id, player in ipairs(getElementsByType("player")) do
-			if ( table[player]["admin"] == false ) and ( player == getLocalPlayer() ) then
+			if ( table[player]["admin"] == false ) and ( player == localPlayer ) then
 				aAdminDestroy()
 				break
 			elseif aPlayers[player] then
@@ -516,7 +516,7 @@ function aClientSync ( type, table )
 		g_GotLatestBansList = false
 		if aAdminForm and guiGetVisible ( aAdminForm ) and guiGetSelectedTab( aTabPanel ) == aTab4.Tab then
 			-- Request full bans list if bans tab is displayed when 'bansdirty' is received
-			triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
+			triggerServerEvent ( "aSync", localPlayer, "bans" )
 		end
 	elseif ( type == "bans" or type == "bansmore" ) then
 		if type == "bans" then
@@ -571,20 +571,20 @@ function aClientGUITabSwitched( selectedTab )
 			-- Handle initial update of resources list
 			if guiGridListGetRowCount( aTab2.ResourceList ) == 0 then
 				if ( hasPermissionTo ( "command.listresources" ) ) then 
-					triggerServerEvent ( "aSync", getLocalPlayer(), "resources" ) 
+					triggerServerEvent ( "aSync", localPlayer, "resources" ) 
 				end
 			end
 		elseif selectedTab == aTabMap.Tab then
 			-- Handle initial update of map list
 			if guiGridListGetRowCount( aTabMap.MapList ) == 0 then
 				if ( hasPermissionTo ( "command.listresources" ) ) then 
-					triggerServerEvent ( "getMaps_s", getLocalPlayer(), getLocalPlayer(), true ) 
+					triggerServerEvent ( "getMaps_s", localPlayer, localPlayer, true ) 
 				end
 			end
 		elseif selectedTab == aTab4.Tab then
 			if not g_GotLatestBansList then
 				-- Request full bans list if bans tab is selected and current list is out of date
-				triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
+				triggerServerEvent ( "aSync", localPlayer, "bans" )
 			end
 		end	
 	end 
@@ -708,7 +708,7 @@ end
 function aClientLog ( text )
 	if text == "deleted" then
 		guiGridListClear ( aTab2.ResourceList )
-		triggerServerEvent ( "aSync", getLocalPlayer(), "resources" )	
+		triggerServerEvent ( "aSync", localPlayer, "resources" )	
 	end
 	text = "#"..aLogLines..": "..text
 	if ( guiGetText ( aTab2.LogLine1 ) == "" ) then guiSetText ( aTab2.LogLine1, text )
@@ -731,7 +731,7 @@ function aClientAdminChat ( message )
 	guiSetText ( aTab5.AdminChat, guiGetText ( aTab5.AdminChat )..""..getPlayerName ( source )..": "..message )
 	guiSetProperty ( aTab5.AdminChat, "CaratIndex", tostring ( string.len ( guiGetText ( aTab5.AdminChat ) ) ) )
 	if ( guiCheckBoxGetSelected ( aTab6.AdminChatOutput ) ) then outputChatBox ( "ADMIN> "..getPlayerName ( source )..": "..message, 255, 0, 0 ) end
-	if ( ( guiCheckBoxGetSelected ( aTab5.AdminChatSound ) ) and ( source ~= getLocalPlayer() ) ) then playSoundFrontEnd ( 13 ) end
+	if ( ( guiCheckBoxGetSelected ( aTab5.AdminChatSound ) ) and ( source ~= localPlayer ) ) then playSoundFrontEnd ( 13 ) end
 end
 
 function aSetCurrentAmmo ( ammo )
@@ -748,7 +748,7 @@ function aClientGUIAccepted ( element )
 		local message = guiGetText ( aTab5.AdminText )
 		if ( ( message ) and ( message ~= "" ) ) then 
 			if ( gettok ( message, 1, 32 ) == "/clear" ) then guiSetText ( aTab5.AdminChat, "" )
-			else triggerServerEvent ( "aAdminChat", getLocalPlayer(), message ) end
+			else triggerServerEvent ( "aAdminChat", localPlayer, message ) end
 			guiSetText ( aTab5.AdminText, "" )
 		end
 	end
@@ -882,36 +882,35 @@ function aClientClick ( button )
 					aMessageBox ( "error", "No player selected!" )
 				else
 					local name = guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 )
-					local escname = string.gsub( name,"([\"])", "\\\"" )
-					local player = getPlayerFromNick ( name )
-					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..name, "Enter the kick reason", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"kick\", $value )" )
+					local player = getPlayerFromName ( name )
+					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..name, "Enter the kick reason", "", "kickPlayer", player )
 					elseif ( source == aTab1.Ban ) then aBanInputBox ( player )
-					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "slap", aCurrentSlap )
-					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"mute\" )" ) end
-					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "freeze" )
+					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", localPlayer, player, "slap", aCurrentSlap )
+					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..name.."?", "unmute", player ) end
+					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", localPlayer, player, "freeze" )
 					elseif ( source == aTab1.Spectate ) then aSpectate ( player )
-					elseif ( source == aTab1.Nick ) then aInputBox ( "Set Nick", "Enter the new nick of the player", name, "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setnick\", $value )" )
-					elseif ( source == aTab1.Shout ) then aInputBox ( "Shout", "Enter text to be shown on player's screen", "", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"shout\", $value )" )
-					elseif ( source == aTab1.SetHealth ) then aInputBox ( "Set Health", "Enter the health value", "100", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"sethealth\", $value )" )
-					elseif ( source == aTab1.SetArmour ) then aInputBox ( "Set Armour", "Enter the armour value", "100", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setarmour\", $value )" )
+					elseif ( source == aTab1.Nick ) then aInputBox ( "Set Nick", "Enter the new nick of the player", name, "setNick", player )
+					elseif ( source == aTab1.Shout ) then aInputBox ( "Shout", "Enter text to be shown on player's screen", "", "shout", player )
+					elseif ( source == aTab1.SetHealth ) then aInputBox ( "Set Health", "Enter the health value", "100", "setHealth", player )
+					elseif ( source == aTab1.SetArmour ) then aInputBox ( "Set Armour", "Enter the armour value", "100", "setArmor", player )
 					elseif ( source == aTab1.SetTeam ) then aPlayerTeam ( player )
 					elseif ( source == aTab1.SetSkin ) then aPlayerSkin ( player )
 					elseif ( source == aTab1.SetInterior ) then aPlayerInterior ( player )
-					elseif ( source == aTab1.JetPack ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "jetpack" )
-					elseif ( source == aTab1.SetMoney ) then aInputBox ( "Set Money", "Enter the money value", "0", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setmoney\", $value )" )
+					elseif ( source == aTab1.JetPack ) then triggerServerEvent ( "aPlayer", localPlayer, player, "jetpack" )
+					elseif ( source == aTab1.SetMoney ) then aInputBox ( "Set Money", "Enter the money value", "0", "setMoney", player )
 					elseif ( source == aTab1.SetStats ) then aPlayerStats ( player )
-					elseif ( source == aTab1.SetDimension ) then aInputBox ( "Dimension ID Required", "Enter Dimension ID between 0  and 65535", "0", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setdimension\", $value )" )
-					elseif ( source == aTab1.GiveVehicle ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "givevehicle", aCurrentVehicle )
-					elseif ( source == aTab1.GiveWeapon ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "giveweapon", aCurrentWeapon, aCurrentAmmo )
-					elseif ( source == aTab1.Warp ) then triggerServerEvent ( "aPlayer", getLocalPlayer(), player, "warp" )
+					elseif ( source == aTab1.SetDimension ) then aInputBox ( "Dimension ID Required", "Enter Dimension ID between 0  and 65535", "0", "setDimension", player)
+					elseif ( source == aTab1.GiveVehicle ) then triggerServerEvent ( "aPlayer", localPlayer, player, "givevehicle", aCurrentVehicle )
+					elseif ( source == aTab1.GiveWeapon ) then triggerServerEvent ( "aPlayer", localPlayer, player, "giveweapon", aCurrentWeapon, aCurrentAmmo )
+					elseif ( source == aTab1.Warp ) then triggerServerEvent ( "aPlayer", localPlayer, player, "warp" )
 					elseif ( source == aTab1.WarpTo ) then aPlayerWarp ( player )
-					elseif ( source == aTab1.VehicleFix ) then triggerServerEvent ( "aVehicle", getLocalPlayer(), player, "repair" )
-					elseif ( source == aTab1.VehicleBlow ) then triggerServerEvent ( "aVehicle", getLocalPlayer(), player, "blowvehicle" )
-					elseif ( source == aTab1.VehicleDestroy ) then triggerServerEvent ( "aVehicle", getLocalPlayer(), player, "destroyvehicle" )
+					elseif ( source == aTab1.VehicleFix ) then triggerServerEvent ( "aVehicle", localPlayer, player, "repair" )
+					elseif ( source == aTab1.VehicleBlow ) then triggerServerEvent ( "aVehicle", localPlayer, player, "blowvehicle" )
+					elseif ( source == aTab1.VehicleDestroy ) then triggerServerEvent ( "aVehicle", localPlayer, player, "destroyvehicle" )
 					elseif ( source == aTab1.VehicleCustomize ) then aVehicleCustomize ( player )
 					elseif ( source == aTab1.Admin ) then
-						if ( aPlayers[player]["admin"] ) then aMessageBox ( "warning", "Revoke admin rights from "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setgroup\", false )" )
-						else aMessageBox ( "warning", "Give admin rights to "..name.."?", "triggerServerEvent ( \"aPlayer\", getLocalPlayer(), getPlayerFromNick ( \""..escname.."\" ), \"setgroup\", true )" ) end
+						if ( aPlayers[player]["admin"] ) then aMessageBox ( "warning", "Revoke admin rights from "..name.."?", "revokeAdmin", player )
+						else aMessageBox ( "warning", "Give admin rights to "..name.."?", "giveAdmin", player ) end
 					elseif ( source == aTab1.ACModDetails ) then
 						aViewModdetails(player)
 					end
@@ -934,7 +933,7 @@ function aClientClick ( button )
 				if ( guiGridListGetSelectedItem( aTab1.PlayerList ) ~= -1 ) then
 					local player = aAdminRefresh ()
 					if ( player ) then
-						triggerServerEvent ( "aSync", getLocalPlayer(), "player", player )
+						triggerServerEvent ( "aSync", localPlayer, "player", player )
 						if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then
 							outputConsole ( "Name: "..aPlayers[player]["name"]
 										..", IP: "..aPlayers[player]["IP"]
@@ -1005,14 +1004,14 @@ function aClientClick ( button )
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
 				else
-					if ( source == aTab2.ResourceStart ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "start" )
-					elseif ( source == aTab2.ResourceRestart ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "restart" )
-					elseif ( source == aTab2.ResourceStop ) then triggerServerEvent ( "aResource", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "stop" )
-					elseif ( source == aTab2.ResourceDelete ) then aMessageBox ( "warning", "Are you sure you want to stop and delete resource '" .. guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) .. "' ?", "triggerServerEvent ( \"aResource\", getLocalPlayer(), guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), \"delete\" )" )
+					if ( source == aTab2.ResourceStart ) then triggerServerEvent ( "aResource", localPlayer, guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "start" )
+					elseif ( source == aTab2.ResourceRestart ) then triggerServerEvent ( "aResource", localPlayer, guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "restart" )
+					elseif ( source == aTab2.ResourceStop ) then triggerServerEvent ( "aResource", localPlayer, guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ), "stop" )
+					elseif ( source == aTab2.ResourceDelete ) then aMessageBox ( "warning", "Are you sure you want to stop and delete resource '" .. guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) .. "' ?", "stopDelete", guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) )
 					elseif ( source == aTab2.ResourceSettings ) then aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ) ) )
 					end
 				end				
-			elseif ( source == aTab2.ResourcesStopAll ) then aMessageBox ( "warning", "Are you sure you want to stop all resources? This will also stop 'admin' resource.", "triggerServerEvent ( \"aResource\", getLocalPlayer(), nil, \"stopall\" )" )
+			elseif ( source == aTab2.ResourcesStopAll ) then aMessageBox ( "warning", "Are you sure you want to stop all resources? This will also stop 'admin' resource.", "stopAll" )
 			elseif ( source == aTab2.ResourceList ) then
 				guiSetVisible ( aTab2.ResourceFailture, false )
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
@@ -1027,11 +1026,11 @@ function aClientClick ( button )
 				aManageACL()
 			elseif ( source == aTab2.ResourceRefresh or source == aTab2.ResourceInclMaps ) then
 				guiGridListClear ( aTab2.ResourceList )
-				triggerServerEvent ( "aSync", getLocalPlayer(), "resources" )
+				triggerServerEvent ( "aSync", localPlayer, "resources" )
 			elseif ( source == aTab2.ExecuteClient ) then
 				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then aExecute ( guiGetText ( aTab2.Command ), true ) end
 			elseif ( source == aTab2.ExecuteServer ) then
-				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then triggerServerEvent ( "aExecute", getLocalPlayer(), guiGetText ( aTab2.Command ), true ) end
+				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then triggerServerEvent ( "aExecute", localPlayer, guiGetText ( aTab2.Command ), true ) end
 			elseif ( source == aTab2.Command ) then
 				
 				guiSetVisible ( aTab2.ExecuteAdvanced, false )
@@ -1040,12 +1039,12 @@ function aClientClick ( button )
 			end
 		-- TAB 3, WORLD
 		elseif ( getElementParent ( source ) == aTab3.Tab ) then
-			if ( source == aTab3.SetGameType ) then aInputBox ( "Game Type", "Enter game type:", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"setgame\", $value )" )
-			elseif ( source == aTab3.SetMapName ) then aInputBox ( "Map Name", "Enter map name:", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"setmap\", $value )" )
-			elseif ( source == aTab3.SetWelcome ) then aInputBox ( "Welcome Message", "Enter the server welcome message:", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"setwelcome\", $value )" )
-			elseif ( source == aTab3.SetPassword ) then aInputBox ( "Server password", "Enter server password: (32 characters max)", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"setpassword\", $value )" )
-			elseif ( source == aTab3.Shutdown ) then aInputBox ( "Shutdown the server", "Enter shutdown reason:", "", "triggerServerEvent ( \"aServer\", getLocalPlayer(), \"shutdown\", $value )" )
-			elseif ( source == aTab3.ResetPassword ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setpassword", "" )
+			if ( source == aTab3.SetGameType ) then aInputBox ( "Game Type", "Enter game type:", "", "setGameType" )
+			elseif ( source == aTab3.SetMapName ) then aInputBox ( "Map Name", "Enter map name:", "", "setMapName" )
+			elseif ( source == aTab3.SetWelcome ) then aInputBox ( "Welcome Message", "Enter the server welcome message:", "", "setWelcome" )
+			elseif ( source == aTab3.SetPassword ) then aInputBox ( "Server password", "Enter server password: (32 characters max)", "", "setServerPassword" )
+			elseif ( source == aTab3.Shutdown ) then aInputBox ( "Shutdown the server", "Enter shutdown reason:", "", "serverShutdown" )
+			elseif ( source == aTab3.ResetPassword ) then triggerServerEvent ( "aServer", localPlayer, "setpassword", "" )
 			elseif ( ( source == aTab3.WeatherInc ) or ( source == aTab3.WeatherDec ) ) then
 				local id = tonumber ( gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
 				if ( id ) then
@@ -1054,9 +1053,9 @@ function aClientClick ( button )
 				else
 					guiSetText ( aTab3.Weather, ( 14 ).." ("..getWeatherNameFromID ( 14 )..")" ) 
 				end
-			elseif ( source == aTab3.WeatherSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setweather", gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
-			elseif ( source == aTab3.WeatherBlend ) then triggerServerEvent ( "aServer", getLocalPlayer(), "blendweather", gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
-			elseif ( source == aTab3.TimeSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "settime", guiGetText ( aTab3.TimeH ), guiGetText ( aTab3.TimeM ) )
+			elseif ( source == aTab3.WeatherSet ) then triggerServerEvent ( "aServer", localPlayer, "setweather", gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
+			elseif ( source == aTab3.WeatherBlend ) then triggerServerEvent ( "aServer", localPlayer, "blendweather", gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
+			elseif ( source == aTab3.TimeSet ) then triggerServerEvent ( "aServer", localPlayer, "settime", guiGetText ( aTab3.TimeH ), guiGetText ( aTab3.TimeM ) )
 			elseif ( ( source == aTab3.SpeedInc ) or ( source == aTab3.SpeedDec ) ) then
 				local value = tonumber ( guiGetText ( aTab3.Speed ) )
 				if ( value ) then
@@ -1065,12 +1064,12 @@ function aClientClick ( button )
 				else
 					guiSetText ( aTab3.Speed, "1" ) 
 				end
-			elseif ( source == aTab3.SpeedSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setgamespeed", guiGetText ( aTab3.Speed ) )
-			elseif ( source == aTab3.GravitySet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setgravity", guiGetText ( aTab3.Gravity ) )
-			elseif ( source == aTab3.WavesSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setwaveheight", guiGetText ( aTab3.Waves ) )
+			elseif ( source == aTab3.SpeedSet ) then triggerServerEvent ( "aServer", localPlayer, "setgamespeed", guiGetText ( aTab3.Speed ) )
+			elseif ( source == aTab3.GravitySet ) then triggerServerEvent ( "aServer", localPlayer, "setgravity", guiGetText ( aTab3.Gravity ) )
+			elseif ( source == aTab3.WavesSet ) then triggerServerEvent ( "aServer", localPlayer, "setwaveheight", guiGetText ( aTab3.Waves ) )
 			elseif ( source == aTab3.FPSSet ) then 
-			triggerServerEvent ( "aServer", getLocalPlayer(), "setfpslimit", guiGetText ( aTab3.FPS ) )
-			triggerServerEvent ( "aSync", getLocalPlayer(), "server" )
+			triggerServerEvent ( "aServer", localPlayer, "setfpslimit", guiGetText ( aTab3.FPS ) )
+			triggerServerEvent ( "aSync", localPlayer, "server" )
 			end
 		-- TAB 4, BANS
 		elseif ( getElementParent ( source ) == aTab4.Tab ) then
@@ -1088,22 +1087,22 @@ function aClientClick ( button )
 				else
 					local selip = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 2 )
 					local selserial = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 3 )
-					if ( aBans["Serial"][selserial] ) then aMessageBox ( "question", "Unban Serial "..selserial.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanserial\", \""..selserial.."\" )" )
-					else aMessageBox ( "question", "Unban IP "..selip.."?", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanip\", \""..selip.."\" )" ) end
+					if ( aBans["Serial"][selserial] ) then aMessageBox ( "question", "Unban Serial "..selserial.."?", "unbanSerial", selserial )
+					else aMessageBox ( "question", "Unban IP "..selip.."?", "unbanIP", selip ) end
 				end
 			elseif ( source == aTab4.UnbanIP ) then
-				aInputBox ( "Unban IP", "Enter IP to be unbanned", "", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanip\", $value )" )
+				aInputBox ( "Unban IP", "Enter IP to be unbanned", "", "unbanIP" )
 			elseif ( source == aTab4.UnbanSerial ) then
-				aInputBox ( "Unban Serial", "Enter Serial to be unbanned", "", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"unbanserial\", $value )" )
+				aInputBox ( "Unban Serial", "Enter Serial to be unbanned", "", "unbanSerial" )
 			elseif ( source == aTab4.BanIP ) then
-				aInputBox ( "Add IP Ban", "Enter IP to be banned", "", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"banip\", $value )" )
+				aInputBox ( "Add IP Ban", "Enter IP to be banned", "", "banIP")
 			elseif ( source == aTab4.BanSerial ) then
-				aInputBox ( "Add Serial Ban", "Enter Serial to be banned", "", "triggerServerEvent ( \"aBans\", getLocalPlayer(), \"banserial\", $value )" )
+				aInputBox ( "Add Serial Ban", "Enter Serial to be banned", "", "banSerial" )
 			elseif ( source == aTab4.BansRefresh ) then
 				guiGridListClear ( aTab4.BansList )
-				triggerServerEvent ( "aSync", getLocalPlayer(), "bans" )
+				triggerServerEvent ( "aSync", localPlayer, "bans" )
 			elseif ( source == aTab4.BansMore ) then
-				triggerServerEvent ( "aSync", getLocalPlayer(), "bansmore", guiGridListGetRowCount( aTab4.BansList ) )
+				triggerServerEvent ( "aSync", localPlayer, "bansmore", guiGridListGetRowCount( aTab4.BansList ) )
 			end
 		-- TAB 5, ADMIN CHAT
 		elseif ( getElementParent ( source ) == aTab5.Tab ) then
@@ -1111,7 +1110,7 @@ function aClientClick ( button )
 				local message = guiGetText ( aTab5.AdminText )
 				if ( ( message ) and ( message ~= "" ) ) then
 					if ( gettok ( message, 1, 32 ) == "/clear" ) then guiSetText ( aTab5.AdminChat, "" )
-					else triggerServerEvent ( "aAdminChat", getLocalPlayer(), message ) end
+					else triggerServerEvent ( "aAdminChat", localPlayer, message ) end
 					guiSetText ( aTab5.AdminText, "" )
 				end
 			elseif ( source == aTab5.AdminText ) then
@@ -1134,7 +1133,7 @@ function aClientClick ( button )
 			elseif ( source == aTab6.PerformanceAdvanced ) then
 				aPerformance()
 			elseif ( source == aTab6.AutoLogin ) then
-				triggerServerEvent ( "aAdmin", getLocalPlayer(), "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
+				triggerServerEvent ( "aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
 			elseif ( source == aTab6.PasswordOld ) then
 				
 			elseif ( source == aTab6.PasswordNew ) then
@@ -1147,11 +1146,11 @@ function aClientClick ( button )
 				elseif ( passwordConf == "" ) then aMessageBox ( "error", "Confirm the new password" )
 				elseif ( string.len ( passwordNew ) < 4 ) then aMessageBox ( "error", "The new password must be at least 4 characters long" )
 				elseif ( passwordNew ~= passwordConf ) then aMessageBox ( "error", "Confirmed password doesn't match" )
-				else triggerServerEvent ( "aAdmin", getLocalPlayer(), "password", guiGetText ( aTab6.PasswordOld ), passwordNew, passwordConf ) end
+				else triggerServerEvent ( "aAdmin", localPlayer, "password", guiGetText ( aTab6.PasswordOld ), passwordNew, passwordConf ) end
 			end
 		end
 	elseif ( button == "right" ) then
-		if ( source == aTab1.GiveWeapon ) then aInputBox ( "Weapon Ammo", "Ammo value from 1 to 9999", "100", "aSetCurrentAmmo ( $value )" )
+		if ( source == aTab1.GiveWeapon ) then aInputBox ( "Weapon Ammo", "Ammo value from 1 to 9999", "100", "setCurrentAmmo" )
 		end
 	end
 end
@@ -1171,7 +1170,7 @@ function aClientRender ()
 			else aLastCheck = getTickCount() + 50 end
 		end
 		if ( getTickCount() >= aLastSync ) then
-			triggerServerEvent ( "aSync", getLocalPlayer(), "admins" )
+			triggerServerEvent ( "aSync", localPlayer, "admins" )
 			aLastSync = getTickCount() + 15000
 		end
 	end
@@ -1204,12 +1203,12 @@ end
 
 -- anon admin
 function isAnonAdmin()
-	return getElementData( getLocalPlayer(), "AnonAdmin" ) == true
+	return getElementData( localPlayer, "AnonAdmin" ) == true
 end
 
 function setAnonAdmin( bOn )
 	guiCheckBoxSetSelected ( aTab1.AnonAdmin, bOn )
-	setElementData( getLocalPlayer(), "AnonAdmin", bOn )
+	setElementData( localPlayer, "AnonAdmin", bOn )
 end
 
 function loadFlagImage( guiStaticImage, countryCode )

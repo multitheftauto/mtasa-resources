@@ -9,8 +9,9 @@
 **************************************]]
 
 aInputForm = nil
+local varOne, varTwo = nil, nil
 
-function aInputBox ( title, message, default, action )
+function aInputBox ( title, message, default, action, vOne, vTwo )
 	if ( aInputForm == nil ) then
 		local x, y = guiGetScreenSize()
 		aInputForm		= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 110, "", false )
@@ -35,6 +36,8 @@ function aInputBox ( title, message, default, action )
 	guiSetVisible ( aInputForm, true )
 	guiBringToFront ( aInputForm )
 	aInputAction = action
+	varOne = vOne
+	varTwo = vTwo
 end
 
 function aInputBoxClose ( destroy )
@@ -57,13 +60,60 @@ function keepEscapeCharacter ( text )
 end
 
 function aInputBoxAccepted ()
-	loadstring ( string.gsub ( aInputAction, "$value", "\""..keepEscapeCharacter( guiGetText ( aInputValue ) ).."\"" ) )()
+	--loadstring ( string.gsub ( aInputAction, "$value", "\""..keepEscapeCharacter( guiGetText ( aInputValue ) ).."\"" ) )()
 end
 
 function aInputBoxClick ( button )
 	if ( button == "left" ) then
 		if ( source == aInputOk ) then
-			loadstring ( string.gsub ( aInputAction, "$value", "\""..keepEscapeCharacter( guiGetText ( aInputValue ) ).."\"" ) )()
+			--loadstring ( string.gsub ( aInputAction, "$value", "\""..keepEscapeCharacter( guiGetText ( aInputValue ) ).."\"" ) )()
+			
+			if (aInputAction == "kickPlayer") then
+				triggerServerEvent("aPlayer", localPlayer, varOne, "kick", guiGetText(aInputValue))
+			elseif (aInputAction == "setHealth") then
+				triggerServerEvent("aPlayer", localPlayer, varOne, "sethealth", guiGetText(aInputValue))
+			elseif (aInputAction == "setArmor") then
+				triggerServerEvent("aPlayer", localPlayer, varOne, "setarmour", guiGetText(aInputValue))
+			elseif (aInputAction == "setNick") then
+				triggerServerEvent("aPlayer", localPlayer, varOne, "setnick", guiGetText(aInputValue))
+			elseif (aInputAction == "shout") then
+				triggerServerEvent("aPlayer", localPlayer, varOne, "shout", guiGetText(aInputValue))
+			elseif (aInputAction == "setMoney") then
+				triggerServerEvent("aPlayer", localPlayer, varOne, "setmoney", guiGetText(aInputValue))
+			elseif (aInputAction == "setDimension") then
+				triggerServerEvent("aPlayer", localPlayer, varOne, "setdimension", guiGetText(aInputValue))
+			elseif (aInputAction == "setCurrentAmmo") then
+				aSetCurrentAmmo(guiGetText(aInputValue))
+			elseif (aInputAction == "setGameType") then
+				triggerServerEvent("aServer", localPlayer, "setgame", guiGetText(aInputValue))
+			elseif (aInputAction == "setMapName") then
+				triggerServerEvent("aServer", localPlayer, "setmap", guiGetText(aInputValue))
+			elseif (aInputAction == "setWelcome") then
+				triggerServerEvent("aServer", localPlayer, "setwelcome", guiGetText(aInputValue))
+			elseif (aInputAction == "setServerPassword") then
+				triggerServerEvent("aServer", localPlayer, "setpassword", guiGetText(aInputValue))
+			elseif (aInputAction == "serverShutdown") then
+				triggerServerEvent("aServer", localPlayer, "shutdown", guiGetText(aInputValue))
+			elseif (aInputAction == "unbanIP") then
+				triggerServerEvent("aBans", localPlayer, "unbanip", guiGetText(aInputValue))
+			elseif (aInputAction == "unbanSerial") then
+				triggerServerEvent("aBans", localPlayer, "unbanserial", guiGetText(aInputValue))
+			elseif (aInputAction == "banIP") then
+				triggerServerEvent("aBans", localPlayer, "banip", guiGetText(aInputValue))
+			elseif (aInputAction == "banSerial") then
+				triggerServerEvent("aBans", localPlayer, "banserial", guiGetText(aInputValue))
+			elseif (aInputAction == "settingChange") then
+				triggerServerEvent("aAdmin", localPlayer, "settings", "change", varOne, varTwo, guiGetText(aInputValue))
+			elseif (aInputAction == "aclCreateGroup") then
+				triggerServerEvent("aAdmin", localPlayer, "aclcreate", "group", guiGetText(aInputValue))
+			elseif (aInputAction == "aclCreate") then
+				triggerServerEvent("aAdmin", localPlayer, "aclcreate", "acl", guiGetText(aInputValue))
+			elseif (aInputAction == "aclAddObject") then
+				triggerServerEvent("aAdmin", localPlayer, "acladd", "object", varOne, guiGetText(aInputValue))
+			elseif (aInputAction == "aclAddRight") then
+				triggerServerEvent("aAdmin", localPlayer, "acladd", "right", varOne, guiGetText(aInputValue))
+			end
+			
 			aInputAction = nil
 			aInputBoxClose ( false )
 		elseif ( source == aInputCancel ) then
@@ -250,7 +300,7 @@ function aBanInputBoxFinish ()
 	end
 	
 	-- Send ban info to the server
-	triggerServerEvent ( "aPlayer", getLocalPlayer(), aBanInputPlayer, "ban", reason, seconds, bUseSerial )
+	triggerServerEvent ( "aPlayer", localPlayer, aBanInputPlayer, "ban", reason, seconds, bUseSerial )
 			
 	
 	
@@ -397,7 +447,7 @@ function aMuteInputBoxFinish ()
 	end
 
 	-- Send mute info to the server
-	triggerServerEvent ( "aPlayer", getLocalPlayer(), aMuteInputPlayer, "mute", reason, seconds )
+	triggerServerEvent ( "aPlayer", localPlayer, aMuteInputPlayer, "mute", reason, seconds )
 
 	-- Clear input
 	guiSetText ( aMuteInputValue, "" )
