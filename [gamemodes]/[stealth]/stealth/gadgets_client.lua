@@ -110,7 +110,7 @@ addEventHandler ( "onClientPlayerDamage", getRootElement(),
 function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHICH FUNCTION TO TRIGGER
 	local inacar = isPedInVehicle ( getLocalPlayer () )
 	if inacar == false then
-		local isDead = isPlayerDead(getLocalPlayer ())
+		local isDead = isPedDead(getLocalPlayer ())
 		if (isDead == false) then
 			if chosengadget == "mines" then
 				if gadgetuses >0 then
@@ -284,7 +284,7 @@ function goggletaskcheck ()
 end
 
 function goggletoggle()
-	local isDead = isPlayerDead(getLocalPlayer ())
+	local isDead = isPedDead(getLocalPlayer ())
 	if (isDead == false) then
 		if goggleson == 0 then
 			player = getLocalPlayer ()
@@ -348,7 +348,7 @@ function radarblipburst()
 		for pkey, playerv in pairs(allplayers) do
 			local revealedguysteam = getPlayerTeam (playerv)
 			if revealedguysteam == team1 then
-				local isDead = isPlayerDead(playerv)
+				local isDead = isPedDead(playerv)
 				if (isDead == false) then
 					local blipX, blipY, blipZ = getElementPosition ( playerv )
 					local theblip = createBlip ( blipX, blipY, blipZ, 0, 2, 255, 0, 0, 75)
@@ -356,7 +356,7 @@ function radarblipburst()
 				end
 			end
 			if revealedguysteam == team2 then
-				local isDead = isPlayerDead(playerv)
+				local isDead = isPedDead(playerv)
 				if (isDead == false) then
 					local blipX, blipY, blipZ = getElementPosition ( playerv )
 					local theblip = createBlip ( blipX, blipY, blipZ, 0, 2, 0, 0, 255, 75)
