@@ -545,7 +545,7 @@ function gotoBookmark ()
 	local row,column = guiGridListGetSelectedItem(bookmarkList)
 	if row and row ~= -1 then
 		fadeCamera(false)
-		if isPlayerDead(g_Me) then
+		if isPedDead(g_Me) then
 			setTimer(server.spawnMe,1000,1,unpack(bookmarks[row+1]))
 		else
 			setTimer(setElementPosition,1000,1,g_Me,unpack(bookmarks[row+1]))
@@ -669,7 +669,7 @@ function setPlayerPosition(x, y, z)
 				if hit then
 					local waterZ = getWaterLevel(x, y, 100)
 					z = (waterZ and math.max(groundZ, waterZ) or groundZ) + distanceToGround
-					if isPlayerDead(g_Me) then
+					if isPedDead(g_Me) then
 						server.spawnMe(x, y, z)
 					else
 						setElementPosition(elem, x, y, z)
@@ -689,7 +689,7 @@ function setPlayerPosition(x, y, z)
 			0
 		)
 	else
-		if isPlayerDead(g_Me) then
+		if isPedDead(g_Me) then
 			server.spawnMe(x, y, z + distanceToGround)
 		else
 			setElementPosition(elem, x, y, z + distanceToGround)

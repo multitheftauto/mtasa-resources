@@ -32,7 +32,7 @@ function animateParachuteOpen()
 				if overboardDifference >= overboardTime then
 					setObjectScale ( object, 1 )
 					changeVelocity = true
-					if not isPlayerDead ( player ) then
+					if not isPedDead ( player ) then
 						setPedAnimation ( player, "PARACHUTE", "PARA_float", -1, false, false, false )
 					end
 					openingChutes[object] = nil
