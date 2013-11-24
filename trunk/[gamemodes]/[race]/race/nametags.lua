@@ -49,7 +49,7 @@ addEventHandler ( "onClientRender", g_Root,
 		local x,y,z = getCameraMatrix()
 		for player in pairs(nametags) do 
 			while true do
-				if not isPedInVehicle(player) or isPedDead(player) then break end
+				if not isPedInVehicle(player) or isPlayerDead(player) then break end
 				local vehicle = getPedOccupiedVehicle(player)
 				local px,py,pz = getElementPosition ( vehicle )
 				local pdistance = getDistanceBetweenPoints3D ( x,y,z,px,py,pz )

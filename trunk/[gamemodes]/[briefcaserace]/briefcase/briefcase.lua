@@ -65,7 +65,7 @@ function ()
 			break
 		end
 		if (isElementStreamedIn(v.player)) then
-			if (not isPedInVehicle(v.player) and not isPedDead(v.player)) then -- not isPedInVehicle(v.player) and 
+			if (not isPedInVehicle(v.player) and not isPlayerDead(v.player)) then -- not isPedInVehicle(v.player) and 
 				local rotationOffset = -90
 				local weapID = getPedWeapon(v.player)
 				--local ammo = getPedTotalAmmo(v.player) -- this might not work on remote players?

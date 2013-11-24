@@ -425,7 +425,7 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.ACDetected, "AC Detected: "..( aPlayers[player]["acdetected"] or "" ) )
 			guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..( aPlayers[player]["d3d9dll"] or "" ) )
 			guiSetText ( aTab1.ACModInfo, "Img Mods: "..( aPlayers[player]["imgmodsnum"] or "" ) )
-			if ( isPedDead ( player ) ) then guiSetText ( aTab1.Health, "Health: Dead" )
+			if ( isPlayerDead ( player ) ) then guiSetText ( aTab1.Health, "Health: Dead" )
 			else guiSetText ( aTab1.Health, "Health: "..math.ceil ( getElementHealth ( player ) ).."%" ) end
 			guiSetText ( aTab1.Armour, "Armour: "..math.ceil ( getPedArmor ( player ) ).."%" )
 			guiSetText ( aTab1.Skin, "Skin: "..iif ( getElementModel ( player ), getElementModel ( player ), "N/A" ) )

@@ -19,7 +19,7 @@ local function onRender()
 	local tickDiff =  currentTick - lastTick
 	lastTick = currentTick
 	if tickDiff > 0 then
-		if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not doesPedHaveJetPack(localPlayer) and not isElementAttached(localPlayer) and not isPedDead(localPlayer) then
+		if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not doesPedHaveJetPack(localPlayer) and not isElementAttached(localPlayer) and not isPlayerDead(localPlayer) then
 			local velX, velY, velZ = getElementVelocity ( localPlayer ) 
 			local x,y,z = getElementPosition(localPlayer)
 			if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0 ) 
