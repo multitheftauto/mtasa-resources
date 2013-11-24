@@ -1317,7 +1317,7 @@ function setCurrentCheckpoint(i, bOtherPlayer)
 end
 
 function isPlayerRaceDead(player)
-	return not getElementHealth(player) or getElementHealth(player) < 1e-45 or isPedDead(player)
+	return not getElementHealth(player) or getElementHealth(player) < 1e-45 or isPlayerDead(player)
 end
 
 function isPlayerFinished(player)

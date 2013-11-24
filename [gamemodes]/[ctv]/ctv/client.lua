@@ -37,7 +37,7 @@ function getHealthBarColor()
 	end
 	local driver = getVehicleController(theVan)
 	local r, g, b, a
-	if driver and not isPedDead(driver) and getPlayerTeam(driver) then
+	if driver and not isPlayerDead(driver) and getPlayerTeam(driver) then
 		r, g, b = getTeamColor(getPlayerTeam(driver))
 		a = 255
 	else

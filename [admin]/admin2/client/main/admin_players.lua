@@ -433,7 +433,7 @@ function aPlayersTab.onRefresh ()
 	guiSetText ( aPlayersTab.Mute, iif ( aPlayers[player].mute, "Unmute", "Mute" ) )
 	guiSetText ( aPlayersTab.Freeze, iif ( aPlayers[player].freeze, "Unfreeze", "Freeze" ) )
 
-	if ( isPedDead ( player ) ) then guiSetText ( aPlayersTab.Health, "Health: Dead" )
+	if ( isPlayerDead ( player ) ) then guiSetText ( aPlayersTab.Health, "Health: Dead" )
 	else guiSetText ( aPlayersTab.Health, "Health: "..math.ceil ( getElementHealth ( player ) ).."%" ) end
 
 	guiSetText ( aPlayersTab.Armour, "Armour: "..math.ceil ( getPedArmor ( player ) ).."%" )

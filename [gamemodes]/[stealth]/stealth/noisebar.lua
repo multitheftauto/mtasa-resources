@@ -64,7 +64,7 @@ function reducesoundlevel ( thisplayer )
 	setElementData ( getLocalPlayer (), "noiselevel", soundlevel )
 	if soundlevel > 0 then
 		if blipshowing == 0 then
-			local isDead = isPedDead(getLocalPlayer ())
+			local isDead = isPlayerDead(getLocalPlayer ())
 			if (isDead == false) then
 				blipshowing = 1
 			end

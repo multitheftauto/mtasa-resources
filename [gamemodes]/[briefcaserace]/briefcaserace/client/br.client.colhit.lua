@@ -35,7 +35,7 @@ assert(getElementType(hitElement))
 	if (getTickCount()-lastSendTick_bri <= SEND_DELAY) then
 		return
 	end
-	if (isPedDead(localPlayer)) then
+	if (isPlayerDead(localPlayer)) then
 		return
 	end
 	if (getElementType(hitElement) == "player" and hitElement == localPlayer) then

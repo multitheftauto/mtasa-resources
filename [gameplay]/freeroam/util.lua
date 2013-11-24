@@ -61,9 +61,9 @@ function destroyBlipsAttachedTo(elem)
 	return wasDestroyed
 end
 
-local _isPedDead = isPedDead
-function isPedDead(player)
-	return _isPedDead(player) or isPlayerTerminated(player)
+local _isPlayerDead = isPlayerDead
+function isPlayerDead(player)
+	return _isPlayerDead(player) or isPlayerTerminated(player)
 end
 
 function isPlayerTerminated(player)
