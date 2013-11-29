@@ -8,10 +8,11 @@ end
 addEventHandler ( "onResourceStart", resourceRoot, onResourceStart )
 
 function requestAddParachute ()
-	local plrs = {}
-	for key,player in ipairs(getElementsByType"player") do
-		if player ~= source then
-			table.insert(plrs, player)
+	local plrs = getElementsByType("player")
+	for key,player in ipairs(plrs) do
+		if player == source then
+			table.remove(plrs, key)
+			break
 		end
 	end
 	triggerClientEvent(plrs, "doAddParachuteToPlayer", source)
@@ -21,10 +22,11 @@ addEventHandler ( "requestAddParachute", root, requestAddParachute )
 
 function requestRemoveParachute ()
 	takeWeapon ( source, 46 )
-	local plrs = {}
-	for key,player in ipairs(getElementsByType"player") do
-		if player ~= source then
-			table.insert(plrs, player)
+	local plrs = getElementsByType("player")
+	for key,player in ipairs(plrs) do
+		if player == source then
+			table.remove(plrs, key)
+			break
 		end
 	end
 	triggerClientEvent(plrs, "doAddParachuteToPlayer", source)
