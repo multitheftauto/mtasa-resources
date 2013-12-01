@@ -58,7 +58,7 @@ function startUp()
 				addEventHandler("onPlayerJoin", rootElement, onJoin)
 			end
 		end
-		dumpTimer = setTimer(dumpSave, dumpInterval, 0)
+		dumpTimer = setTimer(maybeDumpSave, dumpInterval, 0)
 	end
 	for i,player in ipairs(getElementsByType("player")) do
 		local account = getPlayerAccount(player)
@@ -487,6 +487,11 @@ end
 addEventHandler("quickSaveResource", rootElement, quickSave)
 
 function quickSaveCoroutineFunction(saveAs, dump, client)
+	doQuickSaveCoroutineFunction(saveAs, dump, client)
+	lastTimeQuickSaveCompleted = getTickCount()
+end
+
+function doQuickSaveCoroutineFunction(saveAs, dump, client)
 	if ( loadedMap ) then
 		local tick = getTickCount()
 		local iniTick = getTickCount()
@@ -812,7 +817,7 @@ function stopTest()
 	-- Send the map settings (delay is required to work probably because EDF not loaded) #7091
 	setTimer(passNewMapSettings, 1000, 1)
 	
-	triggerEvent("editor.fullTestEnded", client)
+	triggerEvent("editor.fullTestEnded", client or root)
 end
 addEventHandler("stopTest", root, stopTest)
 
@@ -842,6 +847,13 @@ function dumpSave()
 	end
 end
 
+-- Only start autosave if its been at least 'dumpInterval' since previous save finished
+function maybeDumpSave()
+	if not lastTimeQuickSaveCompleted or getTickCount() - lastTimeQuickSaveCompleted >= dumpInterval * 0.9 then
+		dumpSave()
+	end
+end
+
 addEvent("dumpSaveSettings", true)
 addEventHandler("dumpSaveSettings", root,
 	function(enabled, interval)
@@ -851,12 +863,12 @@ addEventHandler("dumpSaveSettings", root,
 			end
 			set("dumpSaveInterval", tostring(interval))
 			dumpInterval = tonumber(interval)*1000
-			dumpTimer = setTimer(dumpSave, dumpInterval, 0)
+			dumpTimer = setTimer(maybeDumpSave, dumpInterval, 0)
 		end
 		if enabled ~= getBool("enableDumpSave", true) then
 			set("enableDumpSave", tostring(enabled))
 			if enabled then
-				dumpTimer = setTimer(dumpSave, dumpInterval, 0)
+				dumpTimer = setTimer(maybeDumpSave, dumpInterval, 0)
 			elseif isTimer(dumpTimer) then
 				killTimer(dumpTimer)
 				dumpTimer = nil
