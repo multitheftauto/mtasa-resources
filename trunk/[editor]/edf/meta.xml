@@ -1,4 +1,5 @@
 <meta>
+	<min_mta_version client="1.3.0-9.03783"/>
 	<info author="jbeta" description="Element Definition Format" edf:definition="edf.edf" />
 	<script src="sharedutil.lua" />
 	<script src="sharedutil.lua" type="client" />
