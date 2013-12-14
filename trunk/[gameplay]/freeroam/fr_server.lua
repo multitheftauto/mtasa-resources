@@ -319,6 +319,9 @@ function giveMeVehicles(vehicles)
 	local vehicle
 	if ( not vehicles ) then return end
 	for i,vehID in ipairs(vehicles) do
+		if i > getOption('vehicles.maxperplayer') then
+			break
+		end
 		if vehID < 400 or vehID > 611 then
 			errMsg(vehID ..' is incorrect vehicle model', source)
 		elseif not table.find(getOption('vehicles.disallowed'), vehID) then
