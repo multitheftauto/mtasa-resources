@@ -29,7 +29,7 @@ function requestRemoveParachute ()
 			break
 		end
 	end
-	triggerClientEvent(plrs, "doAddParachuteToPlayer", source)
+	triggerClientEvent(plrs, "doRemoveParachuteFromPlayer", source)
 end
 addEvent ( "requestRemoveParachute", true )
 addEventHandler ( "requestRemoveParachute", root, requestRemoveParachute )
