@@ -121,7 +121,7 @@ local function onRender()
 		end
 	end
 	--Process remote players
-	for player,bool in ipairs(g_skydivers) do
+	for player,bool in pairs(g_skydivers) do
 		if player ~= localPlayer and getElementData ( player, "skydiving" ) and isElementStreamedIn(player) then
 			local velX,velY,velZ = getElementVelocity ( player )
 			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
