@@ -369,7 +369,7 @@ function warpTo(leaf)
 			return
 		end
 	end
-	local player = getPlayerFromNick(leaf.name)
+	local player = getPlayerFromName(leaf.name)
 	if player then
 		server.warpMe(player)
 	end
@@ -399,7 +399,7 @@ wndWarp = {
 
 function warpToCommand(cmd, player)
 	if player then
-		player = getPlayerFromNick(player)
+		player = getPlayerFromName(player)
 		if player then
 			server.warpMe(player)
 		end
@@ -777,7 +777,7 @@ function getPosCommand(cmd, playerName)
 	local player, sentenceStart
 	
 	if playerName then
-		player = getPlayerFromNick(playerName)
+		player = getPlayerFromName(playerName)
 		if not player then
 			errMsg('There is no player named "' .. playerName .. '".')
 			return
