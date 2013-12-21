@@ -660,7 +660,7 @@ function setPlayerPosition(x, y, z)
 		else
 			fadeCamera(false)
 		end
-		setTimer(setCameraMatrix, 1000, 1, x, y, z)
+		setTimer(setCameraMatrix, 1000, 1, x, y, z, x, y, z + 100)
 		local grav = getGravity()
 		setGravity(0.001)
 		g_TeleportTimer = setTimer(
