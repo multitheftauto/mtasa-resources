@@ -1,5 +1,5 @@
 <meta>
-	<info author="eAi, QA Team" description="This resource provides a 'free' controllable camera to 'fly' around the map with" version="1.0" />
+	<info author="eAi, QA Team" description="This resource provides a 'free' controllable camera to 'fly' around the map with" version="1.1" />
 	<script src="freecam.lua" type="client" />
 	<script src="freecam_server.lua" type="server" />	
 	<!-- server functions -->
