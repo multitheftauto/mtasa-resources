@@ -17,15 +17,13 @@ local options = {
 	maxYAngle = 188,
 	key_fastMove = "lshift",
 	key_slowMove = "lalt",
-	key_forward = "w",
-	key_backward = "s",
-	key_left = "a",
-	key_right = "d"
+	key_forward = "forwards",
+	key_backward = "backwards",
+	key_left = "left",
+	key_right = "right"
 }
 
 local mouseFrameDelay = 0
-
-local rootElement = getRootElement()
 
 local getKeyState = getKeyState
 do
@@ -70,25 +68,25 @@ local function freecamFrame ()
 	
 	    -- Check to see if the forwards/backwards keys are pressed
 	    local speedKeyPressed = false
-	    if getKeyState ( options.key_forward ) then
+	    if getControlState ( options.key_forward ) then
 			speed = speed + acceleration 
 	        speedKeyPressed = true
 	    end
-		if getKeyState ( options.key_backward ) then
+		if getControlState ( options.key_backward ) then
 			speed = speed - acceleration 
 	        speedKeyPressed = true
 	    end
 
 	    -- Check to see if the strafe keys are pressed
 	    local strafeSpeedKeyPressed = false
-		if getKeyState ( options.key_right ) then
+		if getControlState ( options.key_right ) then
 	        if strafespeed > 0 then -- for instance response
 	            strafespeed = 0
 	        end
 	        strafespeed = strafespeed - acceleration / 2
 	        strafeSpeedKeyPressed = true
 	    end
-		if getKeyState ( options.key_left ) then
+		if getControlState ( options.key_left ) then
 	        if strafespeed < 0 then -- for instance response
 	            strafespeed = 0
 	        end
@@ -133,10 +131,10 @@ local function freecamFrame ()
 	else
 		speed = 0
 		strafespeed = 0
-		if getKeyState ( options.key_forward ) then speed = mspeed end
-		if getKeyState ( options.key_backward ) then speed = -mspeed end
-		if getKeyState ( options.key_left ) then strafespeed = mspeed end
-		if getKeyState ( options.key_right ) then strafespeed = -mspeed end
+		if getControlState ( options.key_forward ) then speed = mspeed end
+		if getControlState ( options.key_backward ) then speed = -mspeed end
+		if getControlState ( options.key_left ) then strafespeed = mspeed end
+		if getControlState ( options.key_right ) then strafespeed = -mspeed end
 	end
 
     -- Work out the distance between the target and the camera (should be 100 units)
@@ -247,8 +245,8 @@ function setFreecamEnabled (x, y, z)
 	if (x and y and z) then
 	    setCameraMatrix ( x, y, z )
 	end
-	addEventHandler("onClientRender", rootElement, freecamFrame)
-	addEventHandler("onClientCursorMove",rootElement, freecamMouse)
+	addEventHandler("onClientRender", root, freecamFrame)
+	addEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", true)
 	
 	return true
@@ -263,8 +261,8 @@ function setFreecamDisabled()
 	velocityX,velocityY,velocityZ = 0,0,0
 	speed = 0
 	strafespeed = 0
-	removeEventHandler("onClientRender", rootElement, freecamFrame)
-	removeEventHandler("onClientCursorMove",rootElement, freecamMouse)
+	removeEventHandler("onClientRender", root, freecamFrame)
+	removeEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", false)
 	
 	return true
@@ -288,10 +286,10 @@ function setFreecamOption(theOption, value)
 end
 
 addEvent("doSetFreecamEnabled", true)
-addEventHandler("doSetFreecamEnabled", rootElement, setFreecamEnabled)
+addEventHandler("doSetFreecamEnabled", root, setFreecamEnabled)
 
 addEvent("doSetFreecamDisabled", true)
-addEventHandler("doSetFreecamDisabled", rootElement, setFreecamDisabled)
+addEventHandler("doSetFreecamDisabled", root, setFreecamDisabled)
 
 addEvent("doSetFreecamOption")
-addEventHandler("doSetFreecamOption", rootElement, setFreecamOption)
+addEventHandler("doSetFreecamOption", root, setFreecamOption)
