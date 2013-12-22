@@ -84,6 +84,8 @@ end
 function stopAnimation()
 	server.setPedAnimation(g_Me, false)
 end
+addCommandHandler("stopanim", stopAnimation)
+bindKey("lshift", "down", "stopanim")
 
 wndAnim = {
 	'wnd',
