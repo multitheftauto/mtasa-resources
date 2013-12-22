@@ -127,6 +127,9 @@ function spawnPlayerAtSpawnpoint ( player, spawnpoint, useWave )
 		quedSpawns[player].team = team
 		return true
 	else
+		if (type(team) == "string") then
+			team = getTeamFromName(team)
+		end
 		spawnPlayer ( player, x, y, z, rot, skin, interior, dimension, team )
 		triggerEvent ( "onSpawnpointUse", spawnpoint, player )
 		return true
