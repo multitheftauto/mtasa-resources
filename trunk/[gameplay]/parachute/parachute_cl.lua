@@ -10,6 +10,26 @@ turnspeed = 1.5 -- rotation speed when turning
 lastspeed = 0
 opentime = 1000
 
+-- Save bandwidth by converting these strings into numbers for "animation_state" element data
+local animIDs = {
+	"PARA_decel",
+	"PARA_steerL",
+	"PARA_steerR",
+	"PARA_float",
+	"FALL_skyDive_DIE",
+	"PARA_Land",
+	"PARA_Land_Water",
+}
+
+function getAnimIDFromName(animName)
+	for i, anim in ipairs(animIDs) do
+		if (anim == animName) then
+			return i
+		end
+	end
+	return false
+end
+
 local lastAnim = {}
 local lastTick
 local removing = false
@@ -129,6 +149,7 @@ local function onRender ( )
 			local velX,velY,velZ = getElementVelocity ( player )
 			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
 			local animation = getElementData ( player, "animation_state" )
+			local animation = animIDs[animation]
 			setPedNewAnimation ( player, nil, "PARACHUTE", animation, -1, false, true, false )
 			local _,rotY = getElementRotation(player)
 			--Sync the turning rotation
@@ -269,6 +290,7 @@ function setPedNewAnimation ( ped, elementData, animgroup, animname, ... )
 	if animname ~= lastAnim[ped] then
 		lastAnim[ped] = animname
 		if elementData ~= nil then
+			local animID = getAnimIDFromName(animname)
 			setElementData ( ped, elementData, animname )
 		end
 		return setPedAnimation ( ped, animgroup, animname, ... )
