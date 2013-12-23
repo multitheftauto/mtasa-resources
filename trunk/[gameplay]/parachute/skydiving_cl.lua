@@ -192,3 +192,8 @@ function updateSkyDiving ( data, oldval )
 	end
 end
 addEventHandler ( "onClientElementDataChange", root, updateSkyDiving )
+
+function skyDivingQuit()
+	g_skydivers[source] = nil
+end
+addEventHandler("onClientPlayerQuit", root, skyDivingQuit)
