@@ -34,6 +34,8 @@ local lastAnim = {}
 local lastTick
 local removing = false
 local g_parachuters = {}
+local parachutes = {}
+
 local function onResourceStart ( resource )
 	bindKey ( "fire", "down", onFire )
 	bindKey ( "enter_exit", "down", onEnter )
@@ -203,6 +205,7 @@ function addLocalParachute()
 	local chute = createObject ( 3131, x,y,z )
 	setElementDimension(chute, getElementDimension( localPlayer ) )
 	setElementStreamable(chute, false )
+	parachutes[localPlayer] = chute
 	openChute ( chute, localPlayer, opentime )
 	setElementData ( localPlayer, "parachuting", true )
 	triggerServerEvent ( "requestAddParachute", localPlayer )
@@ -252,6 +255,7 @@ function removeParachute(player,type)
 		removeEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
 		triggerServerEvent ( "requestRemoveParachute", localPlayer )
 	end
+	parachutes[player] = nil
 end
 
 function animationParachute_land(chute,xoff)
@@ -269,10 +273,10 @@ addEventHandler ( "doAddParachuteToPlayer", root,
 		local chute = createObject ( 3131, x, y, z )
 		setElementDimension( chute, getElementDimension( source ) )
 		setElementStreamable(chute, false )
+		parachutes[source] = chute
 		openChute ( chute, source, opentime )
 	end
 )
-
 
 addEvent ( "doRemoveParachuteFromPlayer", true)
 addEventHandler ( "doRemoveParachuteFromPlayer", root,
@@ -298,15 +302,8 @@ function setPedNewAnimation ( ped, elementData, animgroup, animname, ... )
 	return true
 end
 
-function getPlayerParachute ( player ) --Lazy, but im assuming no other resource will attach parachutes to the player
-	for k,object in ipairs(getAttachedElements(player)) do
-		if getElementType(object)=="object" then
-			if getElementModel(object) == 3131 then
-				return object
-			end
-		end
-	end
-	return false
+function getPlayerParachute(player)
+	return parachutes[player] or false
 end
 
 function isPlayerParachuting(player)
@@ -323,3 +320,12 @@ function updateParachuting ( data, oldval )
 	end
 end
 addEventHandler ( "onClientElementDataChange", root, updateParachuting )
+
+function playerQuitWhenParachuting()
+	if (isPlayerParachuting(source)) then
+		destroyElement(getPlayerParachute(source))
+		parachutes[source] = nil
+		g_parachuters[source] = nil
+	end
+end
+addEventHandler("onClientPlayerQuit", root, playerQuitWhenParachuting)
