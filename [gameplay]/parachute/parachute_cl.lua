@@ -295,7 +295,7 @@ function setPedNewAnimation ( ped, elementData, animgroup, animname, ... )
 		lastAnim[ped] = animname
 		if elementData ~= nil then
 			local animID = getAnimIDFromName(animname)
-			setElementData ( ped, elementData, animname )
+			setElementData ( ped, elementData, animID )
 		end
 		return setPedAnimation ( ped, animgroup, animname, ... )
 	end
