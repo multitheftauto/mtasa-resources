@@ -53,6 +53,11 @@ local function createLandingSphere( x, y, z, forceWait )
 		setTimer(createLandingSphere, 500, 1, x, y, z)
 		return
 	end
+	-- prevent people from being able to heli drop from any height and not die
+	local pX, pY, pZ = getElementPosition(localPlayer)
+	if (groundPos < pZ - 10) then
+		groundPos = pZ - 10
+	end
 	-- if the ground position is < 0 it's likely we are about to land in water though make sure the water level here is higher as well (area 51 e.g.)
 	if ( groundPos < 0 and waterPos > groundPos ) then
 		-- Create our sphere here and setup a hit event so we can cleanup
