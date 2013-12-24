@@ -126,6 +126,7 @@ local function onRender()
 			local velX,velY,velZ = getElementVelocity ( player )
 			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
 			local animation = getElementData ( player, "animation_state" )
+			local animation = animIDs[animation]
 			setPedNewAnimation ( player, nil, "PARACHUTE", animation, -1, false, true, false )
 			local rotX = getElementRotation(player)
 			if ( animation == "FALL_SkyDive_Accel" ) then

@@ -11,7 +11,7 @@ lastspeed = 0
 opentime = 1000
 
 -- Save bandwidth by converting these strings into numbers for "animation_state" element data
-local animIDs = {
+animIDs = {
 	"PARA_decel",
 	"PARA_steerL",
 	"PARA_steerR",
@@ -19,6 +19,11 @@ local animIDs = {
 	"FALL_skyDive_DIE",
 	"PARA_Land",
 	"PARA_Land_Water",
+	"FALL_skyDive",
+	"FALL_SkyDive_Accel",
+	"FALL_SkyDive_L",
+	"FALL_SkyDive_R",
+	"FALL_skyDive",
 }
 
 function getAnimIDFromName(animName)
