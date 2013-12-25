@@ -1,6 +1,8 @@
 <meta>
 	<info author="erorr404,jbeta,Talidan" description="Map editor's main component" edf:definition="editor_main.edf" />
 	
+	<min_mta_version server="1.3.0-9.04584" />
+	
 	<!-- Script to shutdown the running gamemode and maps, because otherwise you get trouble -->
 	<script src="gamemodestopper.lua" type="server" />
 	
