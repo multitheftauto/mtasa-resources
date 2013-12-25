@@ -68,25 +68,25 @@ local function freecamFrame ()
 	
 	    -- Check to see if the forwards/backwards keys are pressed
 	    local speedKeyPressed = false
-	    if getControlState ( options.key_forward ) then
+	    if getControlState ( options.key_forward ) and not getKeyState("arrow_u") then
 			speed = speed + acceleration 
 	        speedKeyPressed = true
 	    end
-		if getControlState ( options.key_backward ) then
+		if getControlState ( options.key_backward ) and not getKeyState("arrow_d") then
 			speed = speed - acceleration 
 	        speedKeyPressed = true
 	    end
 
 	    -- Check to see if the strafe keys are pressed
 	    local strafeSpeedKeyPressed = false
-		if getControlState ( options.key_right ) then
+		if getControlState ( options.key_right ) and not getKeyState("arrow_r") then
 	        if strafespeed > 0 then -- for instance response
 	            strafespeed = 0
 	        end
 	        strafespeed = strafespeed - acceleration / 2
 	        strafeSpeedKeyPressed = true
 	    end
-		if getControlState ( options.key_left ) then
+		if getControlState ( options.key_left ) and not getKeyState("arrow_l") then
 	        if strafespeed < 0 then -- for instance response
 	            strafespeed = 0
 	        end
