@@ -378,7 +378,7 @@ function precreateGuiElements()
     if donePrecreate then
         return
     end
-    outputDebugString( 'votemanager precreateGuiElements' )
+    --outputDebugString( 'votemanager precreateGuiElements' )
     local window = guiCreateWindowFromCache(10,10,100,100,'a',false )
     if not window then
         return
