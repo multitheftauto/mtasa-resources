@@ -101,7 +101,7 @@ function copyResourceFiles ( fromResource, targetResource )
 		targetPaths[fileType] = {}
 		local paths,attr = getResourceFiles(fromResource,fileType)
 		for j,filePath in ipairs(paths) do
-			fileCopy ( filePath, fromResource, filePath, targetResource )
+			fileCopy ( ":" .. getResourceName(fromResource) .. "/" .. filePath, ":" .. getResourceName(targetResource) .. "/" .. filePath, false )
 			local data = attr[filePath]
 			data.src = filePath
 			table.insert ( targetPaths[fileType], data )
@@ -175,23 +175,4 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 		end
 	end
 	return true
-end
-
-function fileCopy ( path, fromResource, targetPath, targetResource )
-	local sourceFile = fileOpen(':' .. getResourceName(fromResource) .. '/' .. path, true)
-	if sourceFile then
-		local readBuffer = 0
-		local buffer
-		local targetFile = fileCreate (':' .. getResourceName(targetResource) .. '/' .. targetPath)
-		while not fileIsEOF(sourceFile) do
-			buffer = fileRead(sourceFile, 500)
-			readBuffer = readBuffer + 500
-			fileWrite ( targetFile, buffer )
-		end
-		fileClose(sourceFile)
-		fileClose(targetFile)
-		return true
-	else
-		return false
-	end
 end

@@ -164,7 +164,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		xmlNodeSetAttribute(scriptNode, "src", scriptName)
 		xmlNodeSetAttribute(scriptNode, "type", "server")
 	end
-	fileCopy("server/".. scriptName, getThisResource(), scriptName, resource)
+	fileCopy("server/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
 	
 	local scriptName = "mapEditorScriptingExtension_c.lua"
 	local foundScriptInMeta = false
@@ -180,7 +180,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		xmlNodeSetAttribute(scriptNode, "type", "client")
 		xmlNodeSetAttribute(scriptNode, "validate", "false")
 	end
-	fileCopy("client/".. scriptName, getThisResource(), scriptName, resource)
+	fileCopy("client/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
 	
 	return xmlSaveFile(xml)
 end
