@@ -1036,10 +1036,12 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			end
 		elseif ( action == "slap" ) then
 			if ( getElementHealth ( player ) > 0 ) and ( not isPedDead ( player ) ) then
-				if ( ( not data ) or ( not tonumber ( data ) ) ) then data = 20 end
-				if ( ( tonumber ( data ) >= 0 ) ) then
-					if ( tonumber ( data ) > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
-					else setElementHealth ( player, getElementHealth ( player ) - data ) end
+				local slap = tonumber(data) or 20
+				if ( slap >= 0 ) then
+					if ( slap > 0 ) then
+						if ( slap > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
+						else setElementHealth ( player, getElementHealth ( player ) - data ) end
+					end
 					local x, y, z = getElementVelocity ( player )
 					setElementVelocity ( player, x , y, z + 0.2 )
 					mdata = data
