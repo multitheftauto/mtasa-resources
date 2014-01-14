@@ -216,6 +216,12 @@ function addLocalParachute()
 	triggerServerEvent ( "requestAddParachute", localPlayer )
 end
 
+function setPedAnimationDelayed(player)
+	if (isElement(player)) then
+		setPedAnimation(player)
+	end
+end
+
 function removeParachute(player,type)
 	if player == localPlayer then
 		if removing then return end
@@ -223,7 +229,7 @@ function removeParachute(player,type)
 	end
 
 	local chute = getPlayerParachute ( player )
-	setTimer ( setPedAnimation, t(3000), 1, player )
+	setTimer ( setPedAnimationDelayed, t(3000), 1, player )
 	openingChutes[chute] = nil
 	if chute then
 		if type == "land" then
