@@ -1,4 +1,4 @@
-= Introduction =
+= Latest resources zip =
 
 Latest resources are now stored here:
 http://mirror.mtasa.com/mtasa/resources/
