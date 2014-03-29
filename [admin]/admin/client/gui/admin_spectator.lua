@@ -91,40 +91,42 @@ function aSpectator.Cursor ( key, state )
 end
 
 function aSpectator.Close ( destroy )
-	unbindKey ( "arrow_l", "down", aSpectator.SwitchPlayer, -1 )
-	unbindKey ( "arrow_r", "down", aSpectator.SwitchPlayer, 1 )
-	unbindKey ( "mouse_wheel_up", "down", aSpectator.MoveOffset, -1 )
-	unbindKey ( "mouse_wheel_down", "down", aSpectator.MoveOffset, 1 )
-	unbindKey ( "mouse2", "both", aSpectator.Cursor )
-	removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
-	removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
-	removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
-	removeEventHandler ( "onClientPreRender", _root, aSpectator.Render )
+    if ( aSpectator.Spectating ) then
+        unbindKey ( "arrow_l", "down", aSpectator.SwitchPlayer, -1 )
+        unbindKey ( "arrow_r", "down", aSpectator.SwitchPlayer, 1 )
+        unbindKey ( "mouse_wheel_up", "down", aSpectator.MoveOffset, -1 )
+        unbindKey ( "mouse_wheel_down", "down", aSpectator.MoveOffset, 1 )
+        unbindKey ( "mouse2", "both", aSpectator.Cursor )
+        removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
+        removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
+        removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
+        removeEventHandler ( "onClientPreRender", _root, aSpectator.Render )
 
-	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceSpectator ) ) ) then
-		if ( aSpectator.Actions ) then
-			removeEventHandler ( "onClientGUIClick", _root, aSpectator.ClientClick )
-			removeEventHandler ( "onClientGUIDoubleClick", _root, aSpectator.ClientDoubleClick )
-			destroyElement ( aSpectator.Actions )
-			destroyElement ( aSpectator.Players )
-			destroyElement ( aSpectator.Next )
-			destroyElement ( aSpectator.Prev )
-			aSpectator.Actions = nil
-		end
-	else
-		guiSetVisible ( aSpectator.Actions, false )
-		guiSetVisible ( aSpectator.Players, false )
-		guiSetVisible ( aSpectator.Next, false )
-		guiSetVisible ( aSpectator.Prev, false )
-	end
-	setCameraTarget ( getLocalPlayer() )
-    local x, y, z = getElementPosition(getLocalPlayer())
-    setElementPosition(getLocalPlayer(), x, y, z+1)
-    setElementVelocity (getLocalPlayer(), 0, 0, 0)
-    setElementFrozen ( getLocalPlayer(), false )
-	aSpectator.Spectating = nil
-	showCursor ( true )
-	aAdminMenu()
+        if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceSpectator ) ) ) then
+            if ( aSpectator.Actions ) then
+                removeEventHandler ( "onClientGUIClick", _root, aSpectator.ClientClick )
+                removeEventHandler ( "onClientGUIDoubleClick", _root, aSpectator.ClientDoubleClick )
+                destroyElement ( aSpectator.Actions )
+                destroyElement ( aSpectator.Players )
+                destroyElement ( aSpectator.Next )
+                destroyElement ( aSpectator.Prev )
+                aSpectator.Actions = nil
+            end
+        else
+            guiSetVisible ( aSpectator.Actions, false )
+            guiSetVisible ( aSpectator.Players, false )
+            guiSetVisible ( aSpectator.Next, false )
+            guiSetVisible ( aSpectator.Prev, false )
+        end
+        setCameraTarget ( getLocalPlayer() )
+        local x, y, z = getElementPosition(getLocalPlayer())
+        setElementPosition(getLocalPlayer(), x, y, z+1)
+        setElementVelocity (getLocalPlayer(), 0, 0, 0)
+        setElementFrozen ( getLocalPlayer(), false )
+        aSpectator.Spectating = nil
+        showCursor ( true )
+        aAdminMenu()
+    end
 end
 
 function aSpectator.ClientDoubleClick ( button )
