@@ -357,6 +357,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 			end
 		end
 	end
+    toggleControl("chatbox", false)
 end
 
 function aAdminMenuClose ( destroy )
@@ -394,6 +395,7 @@ function aAdminMenuClose ( destroy )
 		guiSetVisible ( aAdminForm, false )
 	end
 	showCursor ( false )
+    toggleControl("chatbox", true)
 end
 
 function aMainSaveSettings ()
