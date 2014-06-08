@@ -1,6 +1,7 @@
 <meta>
 	<info author="jbeta" name="Scripting console" type="script" version="1.0.1" showInResourceBrowser="true" />
-	
+	<oop>true</oop>
+
 	<include resource="ajax" />
 	
 	<script src="client.lua" type="client"/>
