@@ -78,7 +78,13 @@ addEventHandler ( "onControlPressed",  rootElement,
 		commandState[key] = keyStateToBool[keyState]
 		if keybinds[key] then
 			if keybinds[key][keyState] then
-				for handlerFunction, args in pairs(keybinds[key][keyState]) do
+				-- Make a deep copy to prevent "invalid key to next" (which appears when the table gets modified within the loop)
+				local bindsCopy = {}
+				for k, v in pairs(keybinds[key][keyState]) do
+					bindsCopy[k] = v
+				end
+				
+				for handlerFunction, args in pairs(bindsCopy) do
 					handlerFunction ( key, keyState, unpack(args) )
 				end
 			end
