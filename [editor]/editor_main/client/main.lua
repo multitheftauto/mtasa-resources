@@ -295,9 +295,6 @@ addEventHandler("onClientElementStreamOut", root,
 )
 
 function startEditor()
-	--load editor controls from the xml
-	processControls()
-	
 	setWorkingInterior(0)
 
 	attachPlayers(true)

@@ -110,6 +110,7 @@ addEventHandler("onClientResourceStart", getRootElement(),
 			freecam.setFreecamOption("key_right", cc.camera_move_right)
 		elseif resource == thisResource then
 			bindKey ("lctrl","both",blockMTAControls )
+			processControls()
 		end
 	end
 )
