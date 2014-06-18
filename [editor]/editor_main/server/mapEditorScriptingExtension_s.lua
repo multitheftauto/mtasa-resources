@@ -11,7 +11,7 @@ function onResourceStartOrStop ( )
 		local posX = getElementData ( object, "posX" )
 		local posY = getElementData ( object, "posY" )
 		local posZ = getElementData ( object, "posZ" )
-		local interior = getElementData ( object, "interior" )
+		local interior = getElementData ( object, "interior" ) or 0
 		local radius = getElementData ( object, "radius" )
 		if ( eventName == "onResourceStart" ) then
 			removeWorldModel ( model, radius, posX, posY, posZ, interior )
