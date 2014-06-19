@@ -83,7 +83,7 @@ function Bigdar.render()
 	-- Ensure map allows it, and player not dead, and in a vehicle and not spectating
 	local vehicle = getPedOccupiedVehicle(g_Me)
 	if	 not Bigdar.allowed
-		or isPlayerDead(g_Me)
+		or isPedDead(g_Me)
 		or isPlayerFinished(g_Me)
 		or not vehicle
 		or getCameraTarget() ~= vehicle
@@ -134,7 +134,7 @@ function Bigdar.render()
 
 	-- For each 'other player'
 	for i,player in ipairs(Bigdar.allPlayers) do
-		if player ~= g_Me and not isPlayerDead(player) and not isPlayerFinished(player) then
+		if player ~= g_Me and not isPedDead(player) and not isPlayerFinished(player) then
 
 			-- Get other pos
 			local ox, oy, oz = getElementPosition(player)
