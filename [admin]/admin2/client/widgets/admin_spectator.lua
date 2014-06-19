@@ -237,7 +237,7 @@ end
 function aSpectator.GetAlive ()
 	local alive = {}
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
-		if ( not isPlayerDead ( player ) ) then
+		if ( not isPedDead ( player ) ) then
 			table.insert ( alive, player )
 		end
 	end

@@ -354,7 +354,7 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unstfu", "Stfu" ) )
 			guiSetText ( aTab1.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
 			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
-			if ( isPlayerDead ( player ) ) then guiSetText ( aTab1.Health, "Health: Dead" )
+			if ( isPedDead ( player ) ) then guiSetText ( aTab1.Health, "Health: Dead" )
 			else guiSetText ( aTab1.Health, "Health: "..math.ceil ( getElementHealth ( player ) ).."%" ) end
 			guiSetText ( aTab1.Armour, "Armour: "..math.ceil ( getPlayerArmor ( player ) ).."%" )
 			guiSetText ( aTab1.Skin, "Skin: "..iif ( getPlayerSkin ( player ), getPlayerSkin ( player ), "N/A" ) )
