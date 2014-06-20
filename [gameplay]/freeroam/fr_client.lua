@@ -1203,7 +1203,7 @@ function paintjobInit()
 	end
 	local paint = getVehiclePaintjob(vehicle)
 	if paint then
-		guiGridListSetSelectedItem(getControl(wndPaintjob, 'paintjoblist'), paint+1)
+		guiGridListSetSelectedItem(getControl(wndPaintjob, 'paintjoblist'), paint+1, 1)
 	end
 end
 
