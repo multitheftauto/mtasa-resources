@@ -1,32 +1,38 @@
-﻿addCommandHandler("Reload weapon",
-	function()
-		local task = getPedSimplestTask(localPlayer)
-		
-		-- Prevent instant reload while performing a jump
-		if ((task == "TASK_SIMPLE_JUMP" or task == "TASK_SIMPLE_IN_AIR" or task == "TASK_SIMPLE_LAND") and not doesPedHaveJetPack(localPlayer)) then return end
-		
-		-- If you reload and press shift at the exact same time you're able to instant reload so temporarily disable jump
-		if (isControlEnabled("jump")) then
-			toggleControl("jump", false)
-			addEventHandler("onClientRender", root, enableJump)
+﻿local blockedTasks = 
+{
+	"TASK_SIMPLE_IN_AIR", -- We're falling or in a jump.
+	"TASK_SIMPLE_JUMP", -- We're beginning a jump
+	"TASK_SIMPLE_LAND", -- We're landing from a jump
+	"TASK_SIMPLE_GO_TO_POINT", -- In MTA, this is the player probably walking to a car to enter it
+	"TASK_SIMPLE_NAMED_ANIM", -- We're performing a setPedAnimation
+	"TASK_SIMPLE_CAR_OPEN_DOOR_FROM_OUTSIDE", -- Opening a car door
+	"TASK_SIMPLE_CAR_GET_IN", -- Entering a car
+	"TASK_SIMPLE_CLIMB", -- We're climbing or holding on to something
+	"TASK_SIMPLE_SWIM",
+	"TASK_SIMPLE_HIT_HEAD", -- When we try to jump but something hits us on the head
+	"TASK_SIMPLE_FALL", -- We fell
+	"TASK_SIMPLE_GET_UP" -- We're getting up from a fall
+}
+
+local function reloadWeapon()
+	-- Usually, getting the simplest task is enough to suffice
+	local task = getPedSimplestTask (localPlayer) 
+
+	-- Iterate through our list of blocked tasks
+	for idx, badTask in ipairs(blockedTasks) do
+		-- If the player is performing any unwanted tasks, do not fire an event to reload
+		if (task == badTask) then
+			return
 		end
-		
-		triggerServerEvent("onPlayerReload", localPlayer)
 	end
-)
-
-bindKey("r","down","Reload weapon")
-
--- Disable jumping for at least 4 frames after pressing reload to prevent instant reload
-
-local frames = 0
-
-function enableJump()
-	if (frames >= 3) then
-		toggleControl("jump", true)
-		removeEventHandler("onClientRender", root, enableJump)
-		frames = 0
-	else
-		frames = frames + 1
-	end
+	
+	triggerServerEvent("onPlayerReload", localPlayer)
 end
+
+-- The jump task is not instantly detectable and bindKey works quicker than getControlState
+-- If you try to reload and jump at the same time, you will be able to instant reload.
+-- We work around this by adding an unnoticable delay to foil this exploit.
+local function reloadWeaponHack()
+	setTimer(reloadWeapon, 50, 1)
+end
+bindKey("r", "down", reloadWeaponHack)
