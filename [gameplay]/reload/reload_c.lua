@@ -32,7 +32,7 @@ end
 -- The jump task is not instantly detectable and bindKey works quicker than getControlState
 -- If you try to reload and jump at the same time, you will be able to instant reload.
 -- We work around this by adding an unnoticable delay to foil this exploit.
-local function reloadWeaponHack()
+addCommandHandler("Reload weapon", function()
 	setTimer(reloadWeapon, 50, 1)
-end
-bindKey("r", "down", reloadWeaponHack)
+end)
+bindKey("r", "down", "Reload weapon")
