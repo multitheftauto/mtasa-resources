@@ -1,25 +1,5 @@
-﻿function forceReload(p)
-	reloadPedWeapon (p)
+﻿function reloadWeapon()
+	reloadPedWeapon(client)
 end
-addCommandHandler("Reload weapon",forceReload)
-
-function bindPlayerReloadKey(p)
-	bindKey(p,"r","down","Reload weapon")
-end
-
-function bindReloadForAllPlayers()
-	for k,v in ipairs(getElementsByType("player")) do
-		bindPlayerReloadKey(v)
-	end
-end
---addEventHandler("onResourceStart",getResourceRootElement(),bindReloadForAllPlayers) -- Enable when issue 4532 is fixed
-
---Please remove the following when issue 4532 is fixt:
---Actually please don't since then we can't have client side checks to prevent instant reload exploit
-
-addEvent("onPlayerReload",true)
-addEventHandler("onPlayerReload",getRootElement(),
-	function()
-		reloadPedWeapon (source)
-	end
-)
+addEvent("relWep", true)
+addEventHandler("relWep", root, reloadWeapon)
