@@ -2,4 +2,4 @@
 	reloadPedWeapon(client)
 end
 addEvent("relWep", true)
-addEventHandler("relWep", root, reloadWeapon)
+addEventHandler("relWep", resourceRoot, reloadWeapon)

@@ -26,7 +26,7 @@ local function reloadWeapon()
 		end
 	end
 	
-	triggerServerEvent("relWep", root)
+	triggerServerEvent("relWep", resourceRoot)
 end
 
 -- The jump task is not instantly detectable and bindKey works quicker than getControlState
