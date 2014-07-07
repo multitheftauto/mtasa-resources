@@ -841,10 +841,10 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			end
 			if bUseSerial then
 				outputChatBox ( "You banned serial " .. getPlayerSerial( player ), source, 255, 100, 70 )
-				setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds )
+				setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds or 0 )
 			else
 				outputChatBox ( "You banned IP " .. getPlayerIP( player ), source, 255, 100, 70 )
-				setTimer ( banPlayer, 100, 1, player, true, false, false, source, reason, seconds )
+				setTimer ( banPlayer, 100, 1, player, true, false, false, source, reason, seconds or 0 )
 			end
 			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bansdirty" )
 		elseif ( action == "mute" )  then
