@@ -213,7 +213,7 @@ function addLocalParachute()
 	parachutes[localPlayer] = chute
 	openChute ( chute, localPlayer, opentime )
 	setElementData ( localPlayer, "parachuting", true )
-	triggerServerEvent ( "requestAddParachute", localPlayer )
+	triggerServerEvent ( "requestAddParachute", resourceRoot )
 end
 
 function setPedAnimationDelayed(player)
@@ -264,7 +264,7 @@ function removeParachute(player,type)
 		setTimer ( setElementData, 1000, 1, localPlayer, "parachuting", false )
 		setTimer ( function() removing = false end, 1100, 1)
 		removeEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
-		triggerServerEvent ( "requestRemoveParachute", localPlayer )
+		triggerServerEvent ( "requestRemoveParachute", resourceRoot )
 	end
 	parachutes[player] = nil
 end
