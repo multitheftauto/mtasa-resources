@@ -16,7 +16,6 @@
 	<script src="client/buttonclicked.lua" type="client"/>
 	<script src="client/highlighting.lua" type="client"/>
 	<script src="client/guiGetMouseOverElement.lua" type="client"/>
-	<script src="client/orderedPairs.lua" type="client"/>
 	<script src="client/elementproperties.lua" type="client"/>
 	<script src="client/options_gui.lua" type="client"/>
 	<script src="client/options_backend.lua" type="client"/>
@@ -34,7 +33,6 @@
 	<script src="client/currentbrowser.lua" type="client"/>
 	<script src="client/guiworldclick.lua" type="client"/>
 	<script src="client/disablegui.lua" type="client"/>
-	<script src="client/vehicleupgrades.lua" type="client"/>
 	<script src="client/tutorialfunctions.lua" type="client"/>
 	<script src="client/tutorialdefinition.lua" type="client"/>
 	<script src="client/outputmessage.lua" type="client"/>
