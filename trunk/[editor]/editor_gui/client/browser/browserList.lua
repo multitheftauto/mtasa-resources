@@ -174,6 +174,9 @@ function browserList:setSize(x,y)--only supports absolute positioning for now
 	self.gridlistSizeY = y - 23
 	self.gridlistRowCount = math.ceil((y-25)/ROW_HEIGHT)
 	self.scrollDistance = self.rowCount - self.gridlistRowCount
+	if self.scrollDistance == 0 then
+		self.scrollDistance = 1
+	end
 	self.rowMultiplier = self.scrollDistance/100
 	guiSetSize ( self.gridlist,x,y,false)
 	local scrollbarX = guiGetSize ( self.gridlist, false )
@@ -187,6 +190,9 @@ function browserList:setRows(rowTable)
 	self.rowCount = #rowTable --total number of rows
 	self.rowList = rowTable
 	self.scrollDistance = self.rowCount - self.gridlistRowCount
+	if self.scrollDistance == 0 then
+		self.scrollDistance = 1
+	end
 	self.rowMultiplier = self.scrollDistance/100 --how much 1% of a scrollbar would represent
 	-- self.stepSize = 1/((self.gridlistRowCount/9.34) * self.rowMultiplier )
 	--guiSetProperty(self.scrollbar,"StepSize",tostring(self.stepSize) )
