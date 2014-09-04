@@ -818,7 +818,7 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 end
 
 function dropElement(releaseLock,clonedrop)
-	if not g_selectedElement then
+	if not g_selectedElement or not isElement(g_selectedElement) then
 		return false
 	end
 	
