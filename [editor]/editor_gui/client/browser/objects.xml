@@ -3650,6 +3650,7 @@
          <object model="2257" name="Frame_Clip_4" keywords=""/>
          <object model="2256" name="Frame_Clip_3" keywords=""/>
          <object model="2255" name="Frame_Clip_2" keywords=""/>
+         <object model="2254" name="Frame_Clip_1" keywords=""/>
          <object model="2239" name="CJ_MLIGHT16" keywords=""/>
          <object model="2238" name="CJ_LAVA_LAMP" keywords=""/>
          <object model="2196" name="WORK_LAMP1" keywords=""/>
@@ -7130,7 +7131,6 @@
          <object model="2251" name="Plant_Pot_20" keywords=""/>
          <object model="2252" name="Plant_Pot_21" keywords=""/>
          <object model="2253" name="Plant_Pot_22" keywords=""/>
-         <object model="2254" name="Frame_Clip_1" keywords=""/>
          <object model="2345" name="Plant_Pot_23" keywords=""/>
          <object model="2811" name="GB_romanpot01" keywords=""/>
          <object model="3409" name="grassplant" keywords=""/>

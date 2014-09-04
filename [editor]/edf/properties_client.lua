@@ -129,7 +129,7 @@ propertySetters = {
 			else return false end
 		end,
 		rotZ = function(element, rot) 
-			if tonumber(rot) then return setPedRotation(element,rot)
+			if tonumber(rot) then return setElementRotation(element, 0, 0, rot)
 			else return false end
 		end,
 	},

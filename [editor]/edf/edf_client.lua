@@ -103,14 +103,8 @@ end
 function edfGetElementRotation(element)
 	local etype = getElementType(element)
 	local rx, ry, rz
-	if etype == "object" then
+	if etype == "object" or etype == "vehicle" or etype == "player" or etype == "ped" then
 		rx, ry, rz = getElementRotation(element)
-	elseif etype == "vehicle" then
-		rx, ry, rz = getElementRotation(element)
-	elseif etype == "player" or etype == "ped" then
-		rx = 0
-		ry = 0
-		rz = getPedRotation(element)
 	else
 		local handle = edfGetHandle(element)
 		if handle then
@@ -152,12 +146,8 @@ end
 function edfSetElementRotation(element, rx, ry, rz)
 	if rx and ry and rz then
 		local etype = getElementType(element)
-		if etype == "object" then
+		if etype == "object" or etype == "vehicle" or etype == "player" or etype == "ped" then
 			return setElementRotation(element, rx, ry, rz)
-		elseif etype == "vehicle" then
-			return setElementRotation(element, rx, ry, rz)
-		elseif etype == "player" or etype == "ped" then
-			return setPedRotation(element, rz)
 		else
 			local handle = edfGetHandle(element)
 			if handle then
