@@ -665,6 +665,7 @@ function setPlayerPosition(x, y, z)
 		setTimer(setCameraMatrix, 1000, 1, x, y, z)
 		local grav = getGravity()
 		setGravity(0.001)
+		if g_TeleportTimer then killTimer(g_TeleportTimer) end
 		g_TeleportTimer = setTimer(
 			function()
 				local hit, groundX, groundY, groundZ = processLineOfSight(x, y, 3000, x, y, -3000)
