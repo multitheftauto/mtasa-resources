@@ -72,6 +72,7 @@ function assignID ( theElement )
 			local newID = idString .. " ("..i..")"
 			if getElementByID ( newID ) == false then
 				setElementID( theElement, newID )
+				setElementData( theElement, "id", newID )
 				setElementData( theElement, "me:ID", newID )
 				setElementData( theElement, "me:autoID", true )
 				break
