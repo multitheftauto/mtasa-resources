@@ -215,6 +215,35 @@
   <file src="client/images/flags/yt.png" />
   <file src="client/images/flags/yu.png" />
   <file src="client/images/flags/za.png" />
+  <!-- More country flags from http://bugs.mtasa.com/view.php?id=8571 -->
+  <file src="client/images/flags/ge.png" />
+  <file src="client/images/flags/gr.png" />
+  <file src="client/images/flags/hk.png" />
+  <file src="client/images/flags/hn.png" />
+  <file src="client/images/flags/ht.png" />
+  <file src="client/images/flags/ir.png" />
+  <file src="client/images/flags/jo.png" />
+  <file src="client/images/flags/kg.png" />
+  <file src="client/images/flags/kr.png" />
+  <file src="client/images/flags/kz.png" />
+  <file src="client/images/flags/lb.png" />
+  <file src="client/images/flags/md.png" />
+  <file src="client/images/flags/mk.png" />
+  <file src="client/images/flags/my.png" />
+  <file src="client/images/flags/np.png" />
+  <file src="client/images/flags/nz.png" />
+  <file src="client/images/flags/om.png" />
+  <file src="client/images/flags/pg.png" />
+  <file src="client/images/flags/rs.png" />
+  <file src="client/images/flags/sa.png" />
+  <file src="client/images/flags/sc.png" />
+  <file src="client/images/flags/sg.png" />
+  <file src="client/images/flags/si.png" />
+  <file src="client/images/flags/th.png" />
+  <file src="client/images/flags/tk.png" />
+  <file src="client/images/flags/tr.png" />
+  <file src="client/images/flags/tw.png" />
+  <file src="client/images/flags/ve.png" />
   
   <!--HTTP Server Stuff-->
   <!--Not finished yet 
