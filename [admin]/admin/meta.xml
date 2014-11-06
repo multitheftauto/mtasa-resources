@@ -244,6 +244,8 @@
   <file src="client/images/flags/tr.png" />
   <file src="client/images/flags/tw.png" />
   <file src="client/images/flags/ve.png" />
+  <!-- HR (Crotia flag) was missing http://bugs.mtasa.com/view.php?id=8594 -->
+  <file src="client/images/flags/hr.png" />
   
   <!--HTTP Server Stuff-->
   <!--Not finished yet 
