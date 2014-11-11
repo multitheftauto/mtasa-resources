@@ -64,7 +64,7 @@ function setDrivebySteeringAbility ( vehicles, bikes )
 		return false
 	end
 	settings.steerCars = vehicles
-	settings.steerBikes = bikes or true
+	settings.steerBikes = type(bikes) ~= "boolean" and true or bikes
 end
 
 function getDrivebySteeringAbility ( dbType )
