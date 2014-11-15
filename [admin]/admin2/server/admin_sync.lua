@@ -133,7 +133,6 @@ addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource ()
 			local muted = isPlayerMuted ( player )
 			prev = data.muted or false
 			if ( muted ~= prev ) then
-				triggerEvent ( "onPlayerMuted", player, muted )
 				aPlayers[player].muted = muted
 			end
 		end
@@ -156,10 +155,18 @@ addEventHandler ( "onPlayerFrozen", _root, function ( state )
 	end
 end )
 
-addEventHandler ( "onPlayerMuted", _root, function ( state )
+addEventHandler ( "onPlayerMuted", _root, function ()
 	for player, data in pairs ( aPlayers ) do
 		if ( data.sync == source ) then
-			triggerClientEvent ( player, EVENT_SYNC, source, SYNC_PLAYER, { ["mute"] = state } )
+			triggerClientEvent ( player, EVENT_SYNC, source, SYNC_PLAYER, { ["mute"] = true } )
+		end
+	end
+end )
+
+addEventHandler ( "onPlayerUnmute", _root, function ()
+	for player, data in pairs ( aPlayers ) do
+		if ( data.sync == source ) then
+			triggerClientEvent ( player, EVENT_SYNC, source, SYNC_PLAYER, { ["mute"] = false } )
 		end
 	end
 end )
