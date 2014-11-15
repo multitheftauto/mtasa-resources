@@ -76,6 +76,14 @@ function processPlayerSpawn ( player )
 	end
 	fadeCamera(player,true)
 	setCameraTarget(player,player)
+	
+	-- Remove the respawn timer
+	for i, timer in ipairs(mapTimers) do
+		if (timer == sourceTimer) then
+			table.remove(mapTimers, i)
+			break
+		end
+	end
 end
 addEventHandler ( "onPlayerJoin", g_Root, processPlayerSpawn )
 
@@ -84,5 +92,3 @@ function setStats ( player )
 		setPedStat ( player, statID, value )
 	end
 end
-
-addCommandHandler ( "kill", killPed )

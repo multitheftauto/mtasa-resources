@@ -2,7 +2,7 @@
 local CAMERA_LOAD_DELAY = 6000 --Time left for the camera to stream in the map.
 local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText,g_ProcessWastedHandler
 local announcementText,processWasted
-local mapTimers = {}
+mapTimers = {}
 
 local defaults = {
 	fragLimit = 10,
@@ -150,9 +150,7 @@ function processEnd(winner,draw)
 	g_FragLimitText:sync()
 	g_FragLimitText = nil
 	for i,timer in ipairs(mapTimers) do
-		if isTimer ( timer ) then
-			killTimer ( timer )
-		end
+		killTimer ( timer )
 	end
 	mapTimers = {}
 	destroyElement(g_MissionTimer)
