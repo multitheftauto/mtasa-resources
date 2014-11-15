@@ -197,15 +197,6 @@ function reboot()
 	dmMapStart(g_MapResource,g_MapRoot)
 end
 
-function isTimer ( timer )
-	for i,v in ipairs(getTimers()) do
-		if timer == v then 
-			return true
-		end
-	end
-	return false
-end
-
 addEventHandler ( "onPickupUse", root,
 	function ( player )
 		if getPickupType ( source ) == 2 and getPickupWeapon ( source ) == 22 then
