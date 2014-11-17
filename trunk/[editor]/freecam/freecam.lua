@@ -20,7 +20,11 @@ local options = {
 	key_forward = "forwards",
 	key_backward = "backwards",
 	key_left = "left",
-	key_right = "right"
+	key_right = "right",
+	key_forward_veh = "accelerate",
+	key_backward_veh = "brake_reverse",
+	key_left_veh = "vehicle_left",
+	key_right_veh = "vehicle_right"
 }
 
 local mouseFrameDelay = 0
@@ -68,25 +72,25 @@ local function freecamFrame ()
 	
 	    -- Check to see if the forwards/backwards keys are pressed
 	    local speedKeyPressed = false
-	    if getControlState ( options.key_forward ) and not getKeyState("arrow_u") then
+	    if ( getControlState ( options.key_forward ) or getControlState ( options.key_forward_veh ) ) and not getKeyState("arrow_u") then
 			speed = speed + acceleration 
 	        speedKeyPressed = true
 	    end
-		if getControlState ( options.key_backward ) and not getKeyState("arrow_d") then
+		if ( getControlState ( options.key_backward ) or getControlState ( options.key_backward_veh ) ) and not getKeyState("arrow_d") then
 			speed = speed - acceleration 
 	        speedKeyPressed = true
 	    end
 
 	    -- Check to see if the strafe keys are pressed
 	    local strafeSpeedKeyPressed = false
-		if getControlState ( options.key_right ) and not getKeyState("arrow_r") then
+		if ( getControlState ( options.key_right ) or getControlState ( options.key_right_veh ) ) and not getKeyState("arrow_r") then
 	        if strafespeed > 0 then -- for instance response
 	            strafespeed = 0
 	        end
 	        strafespeed = strafespeed - acceleration / 2
 	        strafeSpeedKeyPressed = true
 	    end
-		if getControlState ( options.key_left ) and not getKeyState("arrow_l") then
+		if ( getControlState ( options.key_left ) or getControlState ( options.key_left_veh ) ) and not getKeyState("arrow_l") then
 	        if strafespeed < 0 then -- for instance response
 	            strafespeed = 0
 	        end
@@ -131,10 +135,18 @@ local function freecamFrame ()
 	else
 		speed = 0
 		strafespeed = 0
-		if getControlState ( options.key_forward ) then speed = mspeed end
-		if getControlState ( options.key_backward ) then speed = -mspeed end
-		if getControlState ( options.key_left ) then strafespeed = mspeed end
-		if getControlState ( options.key_right ) then strafespeed = -mspeed end
+		if getControlState ( options.key_forward ) or getControlState ( options.key_forward_veh ) then
+			speed = mspeed
+		end
+		if getControlState ( options.key_backward ) or getControlState ( options.key_backward_veh ) then
+			speed = -mspeed
+		end
+		if getControlState ( options.key_left ) or getControlState ( options.key_left_veh ) then
+			strafespeed = mspeed
+		end
+		if getControlState ( options.key_right ) or getControlState ( options.key_right_veh ) then
+			strafespeed = -mspeed
+		end
 	end
 
     -- Work out the distance between the target and the camera (should be 100 units)
