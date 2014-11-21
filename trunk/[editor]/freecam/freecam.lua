@@ -27,17 +27,33 @@ local options = {
 	key_right_veh = "vehicle_right"
 }
 
+local controlToKey = {
+	["forwards"] = "w",
+	["backwards"] = "s",
+	["left"] = "a",
+	["right"] = "d",
+	["accelerate"] = "w",
+	["brake_reverse"] = "s",
+	["vehicle_left"] = "a",
+	["vehicle_right"] = "d",
+}
+
 local mouseFrameDelay = 0
 
-local getKeyState = getKeyState
-do
-	local mta_getKeyState = getKeyState
-	function getKeyState(key)
-		if isMTAWindowActive() then
-			return false
-		else
-			return mta_getKeyState(key)
-		end
+local mta_getKeyState = getKeyState
+function getKeyState(key)
+	if isMTAWindowActive() then
+		return false
+	end
+	if key == "lshift" or key == "lalt" or key == "arrow_u" or key == "arrow_d" or key == "arrow_l" or key == "arrow_r" then
+		return mta_getKeyState(key)
+	end
+	if isPedDead(localPlayer) then
+		-- We must use getKeyState when dead we also have to hope they're using WASD
+		return mta_getKeyState(controlToKey[key])
+	else
+		-- We can use getControlState
+		return getControlState(key)
 	end
 end
 
@@ -72,25 +88,25 @@ local function freecamFrame ()
 	
 	    -- Check to see if the forwards/backwards keys are pressed
 	    local speedKeyPressed = false
-	    if ( getControlState ( options.key_forward ) or getControlState ( options.key_forward_veh ) ) and not getKeyState("arrow_u") then
+	    if ( getKeyState ( options.key_forward ) or getKeyState ( options.key_forward_veh ) ) and not getKeyState("arrow_u") then
 			speed = speed + acceleration 
 	        speedKeyPressed = true
 	    end
-		if ( getControlState ( options.key_backward ) or getControlState ( options.key_backward_veh ) ) and not getKeyState("arrow_d") then
+		if ( getKeyState ( options.key_backward ) or getControlState ( options.key_backward_veh ) ) and not getKeyState("arrow_d") then
 			speed = speed - acceleration 
 	        speedKeyPressed = true
 	    end
 
 	    -- Check to see if the strafe keys are pressed
 	    local strafeSpeedKeyPressed = false
-		if ( getControlState ( options.key_right ) or getControlState ( options.key_right_veh ) ) and not getKeyState("arrow_r") then
+		if ( getKeyState ( options.key_right ) or getKeyState ( options.key_right_veh ) ) and not getKeyState("arrow_r") then
 	        if strafespeed > 0 then -- for instance response
 	            strafespeed = 0
 	        end
 	        strafespeed = strafespeed - acceleration / 2
 	        strafeSpeedKeyPressed = true
 	    end
-		if ( getControlState ( options.key_left ) or getControlState ( options.key_left_veh ) ) and not getKeyState("arrow_l") then
+		if ( getKeyState ( options.key_left ) or getKeyState ( options.key_left_veh ) ) and not getKeyState("arrow_l") then
 	        if strafespeed < 0 then -- for instance response
 	            strafespeed = 0
 	        end
@@ -135,16 +151,16 @@ local function freecamFrame ()
 	else
 		speed = 0
 		strafespeed = 0
-		if getControlState ( options.key_forward ) or getControlState ( options.key_forward_veh ) then
+		if getKeyState ( options.key_forward ) or getKeyState ( options.key_forward_veh ) then
 			speed = mspeed
 		end
-		if getControlState ( options.key_backward ) or getControlState ( options.key_backward_veh ) then
+		if getKeyState ( options.key_backward ) or getKeyState ( options.key_backward_veh ) then
 			speed = -mspeed
 		end
-		if getControlState ( options.key_left ) or getControlState ( options.key_left_veh ) then
+		if getKeyState ( options.key_left ) or getKeyState ( options.key_left_veh ) then
 			strafespeed = mspeed
 		end
-		if getControlState ( options.key_right ) or getControlState ( options.key_right_veh ) then
+		if getKeyState ( options.key_right ) or getKeyState ( options.key_right_veh ) then
 			strafespeed = -mspeed
 		end
 	end
