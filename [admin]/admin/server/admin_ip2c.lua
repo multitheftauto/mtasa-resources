@@ -9,7 +9,9 @@
 **************************************]]
 
 local aCountries = {}
-local makeCor
+local IP2C_FILENAME = "conf/IpToCountryCompact.csv"
+local IP2C_UPDATE_URL = "http://mirror.multitheftauto.com/mtasa/scripts/IpToCountryCompact.csv"
+local IP2C_UPDATE_INTERVAL_SECONDS = 60 * 60 * 24 * 1	-- Update no more than once a day
 
 function getPlayerCountry ( player )
 	return getIpCountry ( getPlayerIP ( player ) )
@@ -38,90 +40,69 @@ end
 -- Returns false if aCountries is not ready
 function loadIPGroupsIsReady ()
 	if ( get ( "*useip2c" ) == "false" ) then return false end
-	if ( #aCountries == 0 and not makeCor) then
-    	makeCor = coroutine.create(loadIPGroupsWorker)
-    	coroutine.resume(makeCor)
+	if not ipGroupsStatus then
+		ipGroupsStatus = "working"
+		CoroutineSleeper:new( loadIPGroupsWorker )
 	end
-	return makeCor == nil
+	return ipGroupsStatus == "ready"
 end
 setTimer( loadIPGroupsIsReady, 1000, 1 )
 
+
 -- Load all IP groups from "conf/IpToCountryCompact.csv"
-function loadIPGroupsWorker ()
+function loadIPGroupsWorker ( cor )
+
+	-- Maybe update file using the 'internet'
+	checkForIp2cFileUpdate( cor )
+
+	-- Read file
 	unrelPosReset()
-
-	local readFilename = "conf/IpToCountryCompact.csv";
-	local hReadFile = fileOpen( readFilename, true )
-	if not hReadFile then
-		outputHere ( "Cannot read " .. readFilename )
-		return
-	end
-
-	local buffer = ""
 	local tick = getTickCount()
+	local fileReader = FileLineReader:new( IP2C_FILENAME )
 	while true do
-		local endpos = string.find(buffer, "\n")
+		local line = fileReader:readLine()
+		if not line then
+			break
+		end
 
-		if makeCor and ( getTickCount() > tick + 50 ) then
-			-- Execution exceeded 50ms so pause and resume in 50ms
-			setTimer(function()
-				local status = coroutine.status(makeCor)
-				if (status == "suspended") then
-					coroutine.resume(makeCor)
-				elseif (status == "dead") then
-					makeCor = nil
-				end
-			end, 50, 1)
-			coroutine.yield()
+		-- See if time to pause execution
+		if getTickCount() > tick + 50 then
+			cor:sleep(50)
 			tick = getTickCount()
 		end
-		
-		-- If can't find CR, try to load more from the file
-		if not endpos then
-			if fileIsEOF( hReadFile ) then
-				break
+
+		-- Parse line
+		local parts = split( line, string.byte(',') )
+		if #parts > 2 then
+			local rstart = tonumber(parts[1])
+			local rend = tonumber(parts[2])
+			local rcountry = parts[3]
+
+			-- Relative to absolute numbers
+			rstart = unrelRange ( rstart )
+			rend = unrelRange ( rend )
+
+			-- Top byte is group
+			local group = math.floor( rstart / 0x1000000 )
+
+			-- Remove top byte from ranges
+			rstart = rstart - group * 0x1000000
+			rend = rend - group * 0x1000000
+
+			if not aCountries[group] then
+				aCountries[group] = {}
 			end
-			buffer = buffer .. fileRead( hReadFile, 500 )
-		end
+			local count = #aCountries[group] + 1
 
-		if endpos then
-			-- Process line
-			local line = string.sub(buffer, 1, endpos - 1)
-			buffer = string.sub(buffer, endpos + 1)
-
-			local parts = split( line, string.byte(',') )
-			if #parts > 2 then
-				local rstart = tonumber(parts[1])
-				local rend = tonumber(parts[2])
-				local rcountry = parts[3]
-
-				-- Relative to absolute numbers
-				rstart = unrelRange ( rstart )
-				rend = unrelRange ( rend )
-
-				-- Top byte is group
-				local group = math.floor( rstart / 0x1000000 )
-
-				-- Remove top byte from ranges
-				rstart = rstart - group * 0x1000000
-				rend = rend - group * 0x1000000
-
-				if not aCountries[group] then
-					aCountries[group] = {}
-				end
-				local count = #aCountries[group] + 1
-
-				-- Add country/IP range to aCountries
-				local buffer = ByteBuffer:new()
-				buffer:writeInt24( rstart )
-				buffer:writeInt24( rend )
-				buffer:writeBytes( rcountry, 2 )
-				aCountries[group][count] = buffer.data
-			end
+			-- Add country/IP range to aCountries
+			local buffer = ByteBuffer:new()
+			buffer:writeInt24( rstart )
+			buffer:writeInt24( rend )
+			buffer:writeBytes( rcountry, 2 )
+			aCountries[group][count] = buffer.data
 		end
 	end
-	fileClose(hReadFile)
-	makeCor = nil
+	ipGroupsStatus = "ready"
 	collectgarbage("collect")
 
 	-- Update currently connected players
@@ -200,164 +181,173 @@ function unrelRange( v )
 end
 
 
--- IP2C logging
-function outputHere( msg )
-	--outputServerLog ( msg )
-	outputChatBox ( msg )
+----------------------------------------------------------------------------------------
+-- Check MTA HQ for possible update of IpToCountry file
+----------------------------------------------------------------------------------------
+function checkForIp2cFileUpdate( cor )
+	-- Time for update?
+	local timeNow = getRealTime().timestamp
+	local lastUpdateTime = tonumber( get( "ip2cUpdateTime" ) ) or 0
+	local timeSinceUpdate = timeNow - lastUpdateTime
+	if ( timeSinceUpdate >= 0 and timeSinceUpdate < IP2C_UPDATE_INTERVAL_SECONDS ) then
+		return	-- Not yet
+	end
+
+	set( "ip2cUpdateTime", timeNow )
+
+	-- Get md5
+	local fetchedMd5,errno = fetchRemoteContent( cor, IP2C_UPDATE_URL .. ".md5" );
+	if errno ~= 0 then return end
+
+	-- check md5 against current file
+	local currentMd5 = md5( fileLoadContent( IP2C_FILENAME ) );
+	if currentMd5 == string.upper(fetchedMd5) then
+		return  -- We already have the latest file
+	end
+
+	-- Fetch remote ip2c file
+	local fetchedCsv,errno = fetchRemoteContent( cor, IP2C_UPDATE_URL );
+	if errno ~= 0 then return end
+
+	-- Check download was correct
+	local newMd5 = md5( fetchedCsv );
+	if newMd5 ~= string.upper(fetchedMd5) then
+		return  -- Download error, or md5 file incorrect
+	end
+
+	-- Update file
+	fileSaveContent( IP2C_FILENAME, fetchedCsv );
 end
 
 
 ----------------------------------------------------------------------------------------
---
--- How to update admin\conf\IpToCountryCompact.csv:
---
--- 1. Download IPV4 CSV from http://software77.net/geo-ip/ and put IpToCountry.csv in admin\conf\
--- 2. Set 'makeAndTestCompactCsv' (below) to true
--- 3. (Re)start admin
--- 4. Type this command in client console: makecsv
--- 5. Wait for 'makeCompactCsv done' message in client console
--- 6. Set 'makeAndTestCompactCsv' (below) to false
--- 7. Brand new'IpToCountryCompact.csv' should now be in admin\conf\ and will be used when admin is restarted
---
+-- Fetch remote content and wait for response
 ----------------------------------------------------------------------------------------
+function fetchRemoteContent( cor, url )
+	local dataOut,errnoOut = nil, nil
+	if fetchRemote( url, 2, function(data,errno) dataOut=data errnoOut=errno end ) then
+		while( errnoOut == nil ) do
+			cor:sleep(50)
+		end
+	end
+	return dataOut,errnoOut or -1
+end
 
 ----------------------------------------------------------------------------------------
--- Set to true to enable commands "makecsv" and "iptest"
+-- Load file contents to a string
 ----------------------------------------------------------------------------------------
-local makeAndTestCompactCsv = false
+function fileLoadContent( filename )
+	local hFile = fileOpen( filename )
+	if ( hFile ) then
+		local data = fileRead( hFile, fileGetSize( hFile ) )
+		fileClose( hFile )
+		return data
+	else
+		return false
+	end
+end
 
+----------------------------------------------------------------------------------------
+-- Save a string to file
+----------------------------------------------------------------------------------------
+function fileSaveContent( filename, data )
+	local hFile = fileCreate( filename )
+	if ( hFile ) then
+		fileWrite( hFile, data )
+		fileClose( hFile )
+		return true
+	else
+		return false
+	end
+end
 
-if makeAndTestCompactCsv then
-	outputServerLog( "Warning! makeAndTestCompactCsv is true" )
+----------------------------------------------------------------------------------------
+-- FileLineReader
+--   Read a file line by line
+----------------------------------------------------------------------------------------
+FileLineReader = {
+	-- filename is file to read
+	new = function(self, filename)
+		local obj = setmetatable({}, { __index = FileLineReader })
+		self.hFile = fileOpen( filename )
+		self.buffer = ""
+		return obj
+	end,
 
-	local makeCor
-
-	-- Takes a 'IPV4 CSV' file sourced from http://software77.net/geo-ip/
-	-- and makes a smaller one for use by Admin
-	addCommandHandler ( "makecsv",
-		function ()
-			local status = makeCor and coroutine.status(makeCor)
-			if (status == "suspended") then
-				outputHere( "Please wait" )
-				return
-			end
-			makeCor = coroutine.create ( makeCompactCsvWorker )
-			coroutine.resume ( makeCor )
+	-- Close file
+	close = function(self)
+		if self.hFile then
+			fileClose( self.hFile )
 		end
-	)
+		self.hFile = nil
+	end,
 
-
-	function makeCompactCsvWorker ()
-		outputHere ( "makeCompactCsv started" )
-		relPosReset()
-
-		local readFilename = "conf/IpToCountry.csv";
-		local hReadFile = fileOpen( readFilename, true )
-		if not hReadFile then
-			outputHere ( "Cannot read " .. readFilename )
-			return
-		end
-
-		local writeFilename = "conf/IpToCountryCompact.csv";
-		local hWriteFile = fileCreate( writeFilename, true )
-		if not hWriteFile then
-			fileClose(hReadFile)
-			outputHere ( "Cannot create " .. writeFilename )
-			return
-		end
-
-		local tick = getTickCount()
-
-		local cur = {}
-		local buffer = ""
+	-- Read line. Return false if EOF
+	readLine = function(self)
+		if not self.hFile then return false end
 		while true do
-
-			if ( makeCor and getTickCount() > tick + 50 ) then
-				-- Execution exceeded 50ms so pause and resume in 50ms
-				setTimer(function()
-					local status = coroutine.status(makeCor)
-					if (status == "suspended") then
-						coroutine.resume(makeCor)
-					elseif (status == "dead") then
-						makeCor = nil
-					end
-				end, 50, 1)
-				coroutine.yield()
-				tick = getTickCount()
-			end
-
-			local endpos = string.find(buffer, "\n")
-
-			-- If can't find CR, try to load more from the file
-			if not endpos then
-				if fileIsEOF( hReadFile ) then
-					break
-				end
-				buffer = buffer .. fileRead( hReadFile, 500 )
-			end
-
+			local endpos = string.find(self.buffer, "\n")
+			-- Found '\n' ?
 			if endpos then
-				-- Process line
-				local line = string.sub(buffer, 1, endpos - 1)
-				buffer = string.sub(buffer, endpos + 1)
-
-				-- If not a comment line
-				if string.sub(line,1,1) ~= '#' then
-					-- Parse out required fields
-					local _,_,rstart,rend,rcountry = string.find(line, '"(%w+)","(%w+)","%w+","%w+","(%w+)"' )
-					if rcountry then
-
-						rstart = tonumber(rstart)
-						rend = tonumber(rend)
-
-						--
-						-- Save memory by joining ranges here
-						--
-						local group = math.floor( rstart / 0x1000000 )
-						if group == cur.group and rstart == cur.rend + 1 and rcountry == cur.rcountry then
-							-- We can extend previous range
-							cur.rend = rend
-						else
-							-- Otherwise flush previous range
-							writeCountryRange(hWriteFile, cur.rstart, cur.rend, cur.rcountry)
-							-- and start a new one
-							cur.group = group
-							cur.rstart = rstart
-							cur.rend = rend
-							cur.rcountry = rcountry
-						end
-					end
-				end
+				local line = string.sub(self.buffer, 1, endpos - 1)
+				self.buffer = string.sub(self.buffer, endpos + 1)
+				return line
 			end
+			-- Get more bytes if possible
+			if fileIsEOF( self.hFile ) then
+				if string.len( self.buffer ) > 0 then
+					-- Last line has no '\n'
+					local line = self.buffer
+					self.buffer = ""
+					return line
+				end
+				self:close()
+				return false
+			end
+			self.buffer = self.buffer .. fileRead( self.hFile, 500 )
 		end
-		-- Flush last range
-		writeCountryRange(hWriteFile, cur.rstart, cur.rend, cur.rcountry)
-		fileClose(hWriteFile)
-		fileClose(hReadFile)
-		outputHere ( "makeCompactCsv done" )
-	end
+	end,
+}
 
-	function writeCountryRange(hWriteFile, rstart, rend, rcountry)
-		if not rstart then return end
-		-- Absolute to relative numbers
-		rstart = relRange( rstart )
-		rend = relRange( rend )
-		-- Output line
-		fileWrite( hWriteFile, rstart .. "," .. rend .. "," .. rcountry .. "\n" )
-	end
+----------------------------------------------------------------------------------------
+-- CoroutineSleeper
+--   Wrapper for coroutine which can sleep and automatically resume
+----------------------------------------------------------------------------------------
+CoroutineSleeper = {
+	-- myFunc is coroutine entry point
+	new = function(self, myFunc, ...)
+		local obj = setmetatable({}, { __index = CoroutineSleeper })
+		-- Use inner function to call myFunc, so we can auto :detach when finished
+    	obj.handle = coroutine.create( function(obj, ...)
+											myFunc(obj, ...)
+											obj:detach()
+										end )
+		coroutine.resume(obj.handle,obj, ...)
+		return obj
+	end,
 
-	function ipTestDo( c, ip )
-		local country = getIpCountry ( ip )
-		outputHere ( "ip " .. ip .. " is in " .. tostring(country) .. " (Expected " .. c .. ")" )
-	end
+	-- Remove ref to coroutine
+	detach = function(self)
+		self.handle = nil
+	end,
 
-	function ipTest()
-		ipTestDo ( "TR", "46.1.2.3" )
-		ipTestDo ( "ES", "88.1.2.3" )
-		ipTestDo ( "FR", "109.1.2.3" )
-		ipTestDo ( "AR", "190.1.2.3" )
-		ipTestDo ( "AU", "203.1.2.3" )
-	end
+	-- Check if still has ref to coroutine
+	isAttached = function(self)
+		return self.handle ~= nil
+	end,
 
-	addCommandHandler ( "iptest", ipTest )
-end
+	-- Sleep for a bit, then automatically resume
+	sleep = function(self, ms)
+		if not self:isAttached() then return end
+		setTimer( function()
+    		if not self:isAttached() then return end
+			local status = coroutine.status(self.handle)
+			if (status == "suspended") then
+				coroutine.resume(self.handle)
+			elseif (status == "dead") then
+				self.handle = nil
+			end
+		end, math.max( ms, 50 ), 1 )
+		coroutine.yield()
+	end,
+}
