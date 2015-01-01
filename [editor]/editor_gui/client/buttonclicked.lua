@@ -16,13 +16,15 @@ function buttonClicked(mouseButton, state )
 				tutorialNext()
 			end
 		else
-			--if we need to outbranch, these could be made into events later
-			playSoundFrontEnd ( 41 )
-			--iconData stores the appropriate function to call for a button.  The button itself is passed as a var incase its an element icon.
-			if (iconData[currentButton].name == "save" or iconData[currentButton].name == "save as") then
-				exports.editor_main:dropElement()
+			if currentButton then
+				--if we need to outbranch, these could be made into events later
+				playSoundFrontEnd ( 41 )
+				--iconData stores the appropriate function to call for a button.  The button itself is passed as a var incase its an element icon.
+				if (iconData[currentButton].name == "save" or iconData[currentButton].name == "save as") then
+					exports.editor_main:dropElement()
+				end
+				iconData[currentButton]["clicked"]( currentButton, mouseButton )	
 			end
-			iconData[currentButton]["clicked"]( currentButton, mouseButton )	
 		end
 	end
 end

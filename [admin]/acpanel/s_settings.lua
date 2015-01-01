@@ -219,12 +219,6 @@ function onGotVersInfo( responseData, errno )
 
 		local ver = string.sub( getVersion().sortable, 0, 3 )
 
--- ## REMOVE ME ##
---outputChatBox("## REMOVE ME ##")
---if ver=="1.4" then
---	ver="1.3"
---end
-
 		releaseMinVersion = string.match( responseData, "default: " ..ver .. ".(.-)[^0-9.-]" )
 		latestMinVersion = string.match( responseData, "minclientversion: " .. ver .. ".(.-)[^0-9.-]" )
 
@@ -232,7 +226,7 @@ function onGotVersInfo( responseData, errno )
 			releaseMinVersion = ver .. "." .. releaseMinVersion
 			latestMinVersion = ver .. "." .. latestMinVersion
 
-			if isValidVersionString(releaseMinVersion) and isValidVersionString(releaseMinVersion) then
+			if isValidVersionString(releaseMinVersion) and isValidVersionString(latestMinVersion) then
 				setPanelSetting( "lastFetchedReleaseVersion", releaseMinVersion )
 				setPanelSetting( "lastFetchedLatestVersion", latestMinVersion )
 				sendAllSettingsToClient()
