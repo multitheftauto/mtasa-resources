@@ -201,9 +201,6 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	setCloudsEnabled(g_GameOptions.cloudsenable)
 	setBlurLevel(g_GameOptions.blurlevel)
 	g_dxGUI.mapdisplay:visible(g_GameOptions.showmapname)
-	if engineSetAsynchronousLoading then
-		engineSetAsynchronousLoading( g_GameOptions.asyncloading )
-	end
 
 	-- checkpoints
 	g_Checkpoints = checkpoints
@@ -300,9 +297,6 @@ function updateOptions ( gameoptions, mapoptions )
 	setCloudsEnabled(g_GameOptions.cloudsenable)
 	setBlurLevel(g_GameOptions.blurlevel)
 	g_dxGUI.mapdisplay:visible(g_GameOptions.showmapname)
-	if engineSetAsynchronousLoading then
-		engineSetAsynchronousLoading( g_GameOptions.asyncloading )
-	end
 end
 
 function launchRace(duration)
