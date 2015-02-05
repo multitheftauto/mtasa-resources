@@ -184,5 +184,5 @@ end
 addEvent ("onClientKillmessagesLoaded",true)
 addEventHandler ( "onClientKillmessagesLoaded", getRootElement(),
 function()
-	triggerClientEvent(source,"doSetKillMessageStyle",source,config.startX,config.startY,config.alignX,config.lines,config.startFade,config.fadeTime)
+	triggerClientEvent(client,"doSetKillMessageStyle",client,config.startX,config.startY,config.alignX,config.lines,config.startFade,config.fadeTime)
 end )

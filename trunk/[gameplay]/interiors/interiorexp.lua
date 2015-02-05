@@ -106,11 +106,11 @@ local idLoc = { ["interiorReturn"] = "refid",["interiorEntry"] = "id" }
 addEventHandler ( "doTriggerServerEvents",getRootElement(),
 	function( interior, resource, id )
 		local eventCanceled1,eventCanceled2 = false,false
-		eventCanceled1 = triggerEvent ( "onPlayerInteriorHit", source, interior, resource, id )
-		eventCanceled2 = triggerEvent ( "onInteriorHit", interior, source )
+		eventCanceled1 = triggerEvent ( "onPlayerInteriorHit", client, interior, resource, id )
+		eventCanceled2 = triggerEvent ( "onInteriorHit", interior, client )
 		if ( eventCanceled2 ) and ( eventCanceled1 ) then
-			triggerClientEvent ( source, "doWarpPlayerToInterior", source, interior, resource, id )
-			setTimer ( setPlayerInsideInterior, 1000, 1, source, interior, resource, id )
+			triggerClientEvent ( client, "doWarpPlayerToInterior", client, interior, resource, id )
+			setTimer ( setPlayerInsideInterior, 1000, 1, client, interior, resource, id )
 		end
 	end
 )
