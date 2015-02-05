@@ -3,7 +3,7 @@
 		{},
 		{
 			__index = function(t, k)
-				t[k] = function(...) triggerServerEvent('onServerCall', g_Me, k, ...) end
+				t[k] = function(...) triggerServerEvent('onServerCall', resourceRoot, k, ...) end
 				return t[k]
 			end
 		}
@@ -383,12 +383,12 @@ end
 
 addEventHandler("onClientResourceStart", resourceRoot, 
 function ()
-	triggerServerEvent("onPlayerCheckForHexCodes", getLocalPlayer())
+	triggerServerEvent("onPlayerCheckForHexCodes", resourceRoot)
 end
 )
 
 addEvent("onServerProvideHexCodesSetting", true)
-addEventHandler("onServerProvideHexCodesSetting", getRootElement(),
+addEventHandler("onServerProvideHexCodesSetting", resourceRoot,
 function (remove)
 	hexCodesDisabled = remove
 end)
