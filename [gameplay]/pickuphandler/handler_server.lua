@@ -16,8 +16,8 @@
 
 addEvent ( "ph_onPlayerPickupAccept", true )
 addEventHandler ( "ph_onPlayerPickupAccept", root,
-	function ( player )
-		usePickup ( source, player )
-		playSoundFrontEnd ( player, 18 )
+	function ()
+		usePickup ( source, client )
+		playSoundFrontEnd ( client, 18 )
 	end 
 )

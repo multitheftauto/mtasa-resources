@@ -3,11 +3,11 @@ local count = 0
 addEvent("onFastRopeDestroy")
 addEvent("onFastRopeCreate")
 addEvent("onPlayerFastRope")
-function disableAnims ( ped )
-	setPedAnimation(source)
+function disableAnims ()
+	setPedAnimation(client)
 end
 addEvent("frope_animoff", true)
-addEventHandler("frope_animoff", getRootElement(), disableAnims)
+addEventHandler("frope_animoff", resourceRoot, disableAnims)
 
 local function destroyFastRope ( id )
 	local heli = fastropes[id].heli

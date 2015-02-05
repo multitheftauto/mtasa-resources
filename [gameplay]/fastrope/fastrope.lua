@@ -13,14 +13,14 @@ end
 -- set on rope to false
 local function setOffRope ( )
 	if ( source == localPlayer and onrope == true ) then
-		triggerServerEvent("frope_animoff", localPlayer)
+		triggerServerEvent("frope_animoff", resourceRoot)
 		setTimer(cleanUp, 1000, 1)
 	end
 end
 -- handle ground hit
 local function groundhit(ped)
 	if ( ped == localPlayer and onrope == true) then
-		triggerServerEvent("frope_animoff", localPlayer)
+		triggerServerEvent("frope_animoff", resourceRoot)
 		setTimer(cleanUp, 1000, 1)
 	end
 end
