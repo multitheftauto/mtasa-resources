@@ -150,9 +150,9 @@ addEventHandler('onPlayerJoin', g_Root, joinHandler)
 
 addEvent('onLoadedAtClient', true)
 addEventHandler('onLoadedAtClient', g_ResRoot,
-	function(player)
-		if getOption('spawnmaponstart') and isPedDead(player) then
-			clientCall(player, 'showWelcomeMap')
+	function()
+		if getOption('spawnmaponstart') and isPedDead(client) then
+			clientCall(client, 'showWelcomeMap')
 		end
 	end,
 	false
@@ -177,7 +177,7 @@ addEventHandler('onPlayerWasted', g_Root,
 )
 
 addEvent('onClothesInit', true)
-addEventHandler('onClothesInit', g_Root,
+addEventHandler('onClothesInit', resourceRoot,
 	function()
 		local result = {}
 		local texture, model
@@ -198,19 +198,19 @@ addEventHandler('onClothesInit', g_Root,
 		-- get current player clothes { type = {texture=texture, model=model} }
 		result.playerClothes = {}
 		for type=0,17 do
-			texture, model = getPedClothes(source, type)
+			texture, model = getPedClothes(client, type)
 			if texture then
 				result.playerClothes[type] = {texture = texture, model = model}
 			end
 		end
-		triggerClientEvent(source, 'onClientClothesInit', source, result)
+		triggerClientEvent(client, 'onClientClothesInit', resourceRoot, result)
 	end
 )
 
 addEvent('onPlayerGravInit', true)
-addEventHandler('onPlayerGravInit', g_Root,
+addEventHandler('onPlayerGravInit', resourceRoot,
 	function()
-		triggerClientEvent('onClientPlayerGravInit', source, getPedGravity(source))
+		triggerClientEvent(root, 'onClientPlayerGravInit', resourceRoot, getPedGravity(client))
 	end
 )
 
@@ -530,8 +530,9 @@ addEventHandler('onResourceStop', g_ResRoot,
 )
 
 addEvent('onServerCall', true)
-addEventHandler('onServerCall', g_Root,
+addEventHandler('onServerCall', resourceRoot,
 	function(fnName, ...)
+		source = client		-- Some called functions require 'source' to be set to the triggering client
 		local fnInfo = g_RPCFunctions[fnName]
 		if fnInfo and ((type(fnInfo) == 'boolean' and fnInfo) or (type(fnInfo) == 'table' and getOption(fnInfo.option))) then
 			local fn = _G

@@ -190,12 +190,12 @@ function clothesInit()
 		return
 	end
 	if not g_Clothes then
-		triggerServerEvent('onClothesInit', g_Me)
+		triggerServerEvent('onClothesInit', resourceRoot)
 	end
 end
 
 addEvent('onClientClothesInit', true)
-addEventHandler('onClientClothesInit', g_Root,
+addEventHandler('onClientClothesInit', resourceRoot,
 	function(clothes)
 		g_Clothes = clothes.allClothes
 		for i,typeGroup in ipairs(g_Clothes) do
@@ -292,11 +292,11 @@ addCommandHandler('rc', removeClothesCommand)
 -- Player gravity window
 ---------------------------
 function playerGravInit()
-	triggerServerEvent('onPlayerGravInit', g_Me)
+	triggerServerEvent('onPlayerGravInit', resourceRoot)
 end
 
 addEvent('onClientPlayerGravInit', true)
-addEventHandler('onClientPlayerGravInit', g_Root,
+addEventHandler('onClientPlayerGravInit', resourceRoot,
 	function(curgravity)
 		setControlText(wndGravity, 'gravval', string.sub(tostring(curgravity), 1, 6))
 	end
@@ -1582,7 +1582,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPedBeKnockedOffBike(g_Me))
 		setJetpackMaxHeight ( 9001 )
 		
-		triggerServerEvent('onLoadedAtClient', g_ResRoot, g_Me)
+		triggerServerEvent('onLoadedAtClient', g_ResRoot)
 	end
 )
 
