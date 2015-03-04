@@ -7650,6 +7650,7 @@
          <object model="1250" name="smashbarpost" keywords=""/>
          <object model="1251" name="smashbar" keywords=""/>
          <object model="1282" name="Barrierm" keywords=""/>
+         <object model="1373" name="traincross1" keywords=""/>
          <object model="1374" name="traincross2" keywords=""/>
          <object model="1407" name="DYN_F_R_WOOD_1" keywords=""/>
          <object model="1408" name="DYN_F_WOOD_2" keywords=""/>
