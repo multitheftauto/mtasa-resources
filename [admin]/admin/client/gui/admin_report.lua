@@ -38,6 +38,10 @@ function aReport ( player )
 	end
 	guiBringToFront ( aReportForm )
 	showCursor ( true )
+	
+	if ( aAdminForm == null or guiGetVisible ( aAdminForm ) == false ) then
+		guiSetInputMode ( "no_binds_when_editing" )
+	end
 end
 addCommandHandler ( "report", aReport )
 
@@ -48,6 +52,10 @@ function aReportClose ( )
 		destroyElement ( aReportForm )
 		aReportForm = nil
 		showCursor ( false )
+		
+		if ( aAdminForm == null or guiGetVisible ( aAdminForm ) == false ) then
+			guiSetInputMode ( "allow_binds" )
+		end
 	end
 end
 
