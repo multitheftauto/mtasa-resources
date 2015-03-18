@@ -83,7 +83,8 @@ function aClientReportClick ( button )
 			if ( ( string.len ( guiGetText ( aReportSubject ) ) < 1 ) or ( string.len ( guiGetText ( aReportMessage ) ) < 5 ) ) then
 				aMessageBox ( "error", "Subject/Message missing." )
 			else
-				aMessageBox ( "info", "Your message has been submited and will be processed as soon as possible." )
+				aMessageBox ( "info", "Your message has been submitted and will be processed as soon as possible." )
+				guiSetVisible ( aMessageOk, false )
 				setTimer ( aMessageBoxClose, 3000, 1, true )
 				local tableOut = {}
 				tableOut.category = guiGetText ( aReportCategory )
