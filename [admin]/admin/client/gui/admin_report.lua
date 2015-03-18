@@ -37,9 +37,9 @@ function aReport ( player )
 		addEventHandler ( "onClientGUIDoubleClick", aReportForm, aClientReportDoubleClick )
 	end
 	guiBringToFront ( aReportForm )
-	showCursor ( true )
 	
 	if ( aAdminForm == null or guiGetVisible ( aAdminForm ) == false ) then
+		showCursor ( true )
 		guiSetInputMode ( "no_binds_when_editing" )
 	end
 end
@@ -51,9 +51,9 @@ function aReportClose ( )
 		removeEventHandler ( "onClientGUIDoubleClick", aReportForm, aClientReportDoubleClick )
 		destroyElement ( aReportForm )
 		aReportForm = nil
-		showCursor ( false )
 		
 		if ( aAdminForm == null or guiGetVisible ( aAdminForm ) == false ) then
+			showCursor ( false )
 			guiSetInputMode ( "allow_binds" )
 		end
 	end
