@@ -359,7 +359,7 @@ wndGravity = {
 ---------------------------
 
 function warpInit()
-	local players = table.map(getElementsByType('player'), function(p) return { name = getPlayerName(p) } end)
+	local players = table.map(getElementsByType('player'), function(p) return { player = p, name = getPlayerName(p) } end)
 	table.sort(players, function(a, b) return a.name < b.name end)
 	bindGridListToTable(wndWarp, 'playerlist', players, true)
 end
@@ -371,10 +371,7 @@ function warpTo(leaf)
 			return
 		end
 	end
-	local player = getPlayerFromName(leaf.name)
-	if player then
-		server.warpMe(player)
-	end
+	server.warpMe(leaf.player)
 	closeWindow(wndWarp)
 end
 
