@@ -371,7 +371,9 @@ function warpTo(leaf)
 			return
 		end
 	end
-	server.warpMe(leaf.player)
+	if isElement(leaf.player) then
+		server.warpMe(leaf.player)
+	end
 	closeWindow(wndWarp)
 end
 
