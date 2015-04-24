@@ -229,7 +229,7 @@ function applyClothes(cloth)
 	if cloth.wearing then
 		cloth.wearing = false
 		setControlText(wndClothes, 'addremove', 'add')
-		server.removePlayerClothes(g_Me, cloth.parent.type)
+		server.removePedClothes(g_Me, cloth.parent.type)
 	else
 		local prevClothIndex = table.find(cloth.siblings, 'wearing', true)
 		if prevClothIndex then
@@ -282,7 +282,7 @@ addCommandHandler('ac', addClothesCommand)
 function removeClothesCommand(cmd, type)
 	type = type and tonumber(type)
 	if type then
-		server.removePlayerClothes(g_Me, type)
+		server.removePedClothes(g_Me, type)
 	end
 end
 addCommandHandler('removeclothes', removeClothesCommand)
