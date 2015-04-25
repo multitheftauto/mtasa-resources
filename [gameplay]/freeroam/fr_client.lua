@@ -688,6 +688,7 @@ function setPlayerPosition(x, y, z)
 					end
 					killTimer(g_TeleportTimer)
 					g_TeleportTimer = nil
+					grav = nil
 				end
 			end,
 			500,
