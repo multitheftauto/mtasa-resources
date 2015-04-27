@@ -315,7 +315,7 @@ function applyPlayerGrav()
 end
 
 function setGravityCommand(cmd, grav)
-	grav = grav and tonumber(grav)
+	local grav = grav and tonumber(grav)
 	if grav then
 		server.setPedGravity(g_Me, tonumber(grav))
 	end
@@ -661,10 +661,13 @@ function setPlayerPosition(x, y, z)
 		else
 			fadeCamera(false)
 		end
-		setTimer(setCameraMatrix, 1000, 1, x, y, z)
-		local grav = getGravity()
-		setGravity(0.001)
-		if g_TeleportTimer then killTimer(g_TeleportTimer) end
+		if isTimer(g_TeleportMatrixTimer) then killTimer(g_TeleportMatrixTimer) end
+		g_TeleportMatrixTimer = setTimer(setCameraMatrix, 1000, 1, x, y, z)
+		if not grav then
+			grav = getGravity()
+			setGravity(0.001)
+		end
+		if isTimer(g_TeleportTimer) then killTimer(g_TeleportTimer) end
 		g_TeleportTimer = setTimer(
 			function()
 				local hit, groundX, groundY, groundZ = processLineOfSight(x, y, 3000, x, y, -3000)
@@ -685,6 +688,7 @@ function setPlayerPosition(x, y, z)
 					end
 					killTimer(g_TeleportTimer)
 					g_TeleportTimer = nil
+					grav = nil
 				end
 			end,
 			500,
