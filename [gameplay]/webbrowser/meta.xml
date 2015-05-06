@@ -1,0 +1,9 @@
+<meta>
+	<info author="Jusonex, Audifire" type="misc" version="1.0.0" name="webbrowser"/>
+	<oop>true</oop>
+	
+	<script src="client.lua" type="client"/>
+	<script src="WebBrowserGUI.lua" type="client"/>
+	
+	<file src="chromiumIcon.png" />
+</meta>
