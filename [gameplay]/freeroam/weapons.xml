@@ -59,6 +59,7 @@
 	</group>
 	
 	<group name="Special">
+		<weapon id="41" name="Spraycan" />
 		<weapon id="43" name="Camera" />
 		<weapon id="42" name="Fire extinguisher" />
 		<weapon id="45" name="Infrared goggles" />
