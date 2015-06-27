@@ -97,14 +97,18 @@ local fileTypes = { "script","file","config","html" }
 function copyResourceFiles ( fromResource, targetResource )
 	local targetPaths = {}
 	local copiedFiles = {}
-	for i,fileType in ipairs(fileTypes) do
+	for i, fileType in ipairs(fileTypes) do
 		targetPaths[fileType] = {}
-		local paths,attr = getResourceFiles(fromResource,fileType)
-		for j,filePath in ipairs(paths) do
-			fileCopy ( ":" .. getResourceName(fromResource) .. "/" .. filePath, ":" .. getResourceName(targetResource) .. "/" .. filePath, false )
-			local data = attr[filePath]
-			data.src = filePath
-			table.insert ( targetPaths[fileType], data )
+		local paths, attr = getResourceFiles(fromResource, fileType)
+		if paths then
+			for j,filePath in ipairs(paths) do
+				fileCopy ( ":" .. getResourceName(fromResource) .. "/" .. filePath, ":" .. getResourceName(targetResource) .. "/" .. filePath, false )
+				local data = attr[filePath]
+				data.src = filePath
+				table.insert ( targetPaths[fileType], data )
+			end
+		else
+			outputDebugString("copyResourceFiles: getResourceFiles returned "..tostring(paths).." and "..tostring(attr).." for "..tostring(fromResource).." and "..tostring(fileType))
 		end
 	end
 	--Return a table of new target paths

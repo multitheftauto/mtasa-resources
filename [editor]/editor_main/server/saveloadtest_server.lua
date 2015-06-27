@@ -690,7 +690,7 @@ function (gamemodeName)
 	g_restoreEDF = nil
 	triggerClientEvent ( root, "suspendGUI", client )
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
-	local success = coroutine.resume(saveResourceCoroutine, TEST_RESOURCE, true, nil, nil, gamemodeName)
+	local success = coroutine.resume(saveResourceCoroutine, TEST_RESOURCE, true, nil, client, gamemodeName)
 	if ( not success ) then
 		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
 		"Dummy 'editor_test' resource may be corrupted!" )
