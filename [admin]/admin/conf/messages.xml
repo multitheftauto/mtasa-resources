@@ -183,6 +183,11 @@
       <player>Your vehicle lights color has been changed$by_admin_4plr.</player>
       <log>ADMIN: $admin has changed lights color of $player's vehicle</log>
     </group>
+	<group action="setplates" r="225" g="170" b="90">
+      <admin>$player's license plates have been changed to '$data'</admin>
+      <player>Your vehicle license plates have been changed to '$data'$by_admin_4plr</player>
+      <log>ADMIN: $admin has changed license plates of $player's vehicle to '$data'</log>
+    </group>
   </vehicle>
   <resource>
     
