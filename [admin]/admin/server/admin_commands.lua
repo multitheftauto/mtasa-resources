@@ -58,7 +58,7 @@ end
 function aCommand ( admin, command, ... )
 	local call = _commands[command]
 	if ( call ) then
-		if ( ( aclGetAccount ( admin ) ) and ( hasObjectPermissionTo ( aclGetAccount ( admin ), "command."..call.action ) ) ) then
+		if ( hasObjectPermissionTo ( admin, "command."..call.action ) ) then
 			local arg, errormsg = aCommandToArgs ( { ... }, call.args )
 			if not errormsg then
 				if ( call.type == "player" ) then triggerEvent ( "aPlayer", admin, arg[1], call.action, arg[2], arg[3], arg[4] )
