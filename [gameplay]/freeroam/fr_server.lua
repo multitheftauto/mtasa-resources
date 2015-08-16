@@ -283,6 +283,7 @@ function warpMe(targetPlayer)
 	setCameraInterior(source, interior)
 end
 
+local sawnoffAntiAbuse = {}
 function giveMeWeapon(weapon, amount)
 	if weapon and weapon > 50 then
 		return
@@ -291,6 +292,19 @@ function giveMeWeapon(weapon, amount)
 		errMsg((getWeaponNameFromID(weapon) or tostring(weapon)) .. 's are not allowed', source)
 	else
 		giveWeapon(source, weapon, amount, true)
+		if weapon == 26 then
+			if not sawnoffAntiAbuse[source] then
+				setControlState (source, "aim_weapon", false)
+				setControlState (source, "fire", false)
+				toggleControl (source, "fire", false)
+				reloadPedWeapon (source)
+				sawnoffAntiAbuse[source] = setTimer (function(source)
+					if not source then return end
+					toggleControl (source, "fire", true)
+					sawnoffAntiAbuse[source] = nil
+				end, 3000, 1, source)
+			end
+        end
 	end
 end
 
