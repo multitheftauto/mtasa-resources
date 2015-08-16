@@ -1154,6 +1154,9 @@ addEventHandler ( "aVehicle", _root, function ( player, action, data )
 					if ( not setVehicleHeadLightColor ( vehicle, r, g, b) ) then
 						action = nil
 					end
+			elseif ( action == "setplates" ) then
+				mdata = data[1]
+				setVehiclePlateText ( vehicle, data[1] )
 			elseif ( action == "blowvehicle" ) then
 				setTimer ( blowVehicle, 100, 1, vehicle )
 			elseif ( action == "destroyvehicle" ) then
