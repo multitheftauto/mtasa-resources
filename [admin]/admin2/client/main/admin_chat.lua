@@ -19,13 +19,15 @@ function aChatTab.Create ( tab )
 
 	aChatTab.AdminChat	= guiCreateMemo ( 0.01, 0.02, 0.78, 0.89, "", true, tab )
 					  guiSetProperty ( aChatTab.AdminChat, "ReadOnly", "true" )
-	aChatTab.AdminPlayers	= guiCreateGridList ( 0.80, 0.02, 0.19, 0.83, true, tab )
+	aChatTab.AdminPlayers	= guiCreateGridList ( 0.80, 0.02, 0.19, 0.8, true, tab )
 					  guiGridListAddColumn ( aChatTab.AdminPlayers, "Admins", 0.90 )
-	aChatTab.AdminChatSound	= guiCreateCheckBox ( 0.81, 0.87, 0.18, 0.04, "Play Sound", true, true, tab )
+	aChatTab.AdminChatSound	= guiCreateCheckBox ( 0.81, 0.83, 0.18, 0.04, "Play Sound", false, true, tab )
+	aChatTab.AdminChatOutput	= guiCreateCheckBox ( 0.81, 0.87, 0.18, 0.04, "Output", false, true, tab )
 	aChatTab.AdminText	= guiCreateEdit ( 0.01, 0.92, 0.78, 0.06, "", true, tab )
 	aChatTab.AdminSay		= guiCreateButton ( 0.80, 0.92, 0.19, 0.06, "Say", true, tab )
 
 	if ( aGetSetting ( "adminChatSound" ) ) then guiCheckBoxSetSelected ( aChatTab.AdminChatSound, true ) end
+	if ( aGetSetting ( "adminChatOutput" ) ) then guiCheckBoxSetSelected ( aChatTab.AdminChatOutput, true ) end
 
 	addEventHandler ( "aClientAdminChat", _root, aChatTab.onClientAdminChat )
 	addEventHandler ( "aClientPlayerJoin", _root, aChatTab.onClientPlayerJoin )
@@ -57,9 +59,9 @@ function aChatTab.onClientSync ( type, table )
 	if ( type == SYNC_ADMINS ) then
 		--if ( guiGridListGetRowCount ( aChatTab.AdminPlayers ) > 0 ) then guiGridListClear ( aChatTab.AdminPlayers ) end
 		for id, player in ipairs(getElementsByType("player")) do
-			if ( table[player]["admin"] == false ) and ( player == getLocalPlayer() ) then
-				aAdminDestroy()
-				break
+			if ( not table[player] or not table[player]["admin"] ) and ( player == getLocalPlayer() ) then
+				-- aAdminDestroy()
+				return
 			else
 				aPlayers[player]["groups"] = table[player]["groups"]
 				if ( table[player]["chat"] ) then
@@ -117,12 +119,13 @@ end
 function aChatTab.onClientAdminChat ( message )
 	guiSetText ( aChatTab.AdminChat, guiGetText ( aChatTab.AdminChat )..""..getPlayerName ( source )..": "..message )
 	guiSetProperty ( aChatTab.AdminChat, "CaratIndex", tostring ( string.len ( guiGetText ( aChatTab.AdminChat ) ) ) )
-	if ( guiCheckBoxGetSelected ( aOptionsTab.AdminChatOutput ) ) then outputChatBox ( "ADMIN> "..getPlayerName ( source )..": "..message, 255, 0, 0 ) end
+	if ( guiCheckBoxGetSelected ( aChatTab.AdminChatOutput ) ) then outputChatBox ( "ADMIN> "..getPlayerName ( source )..": "..message, 255, 0, 0 ) end
 	if ( ( guiCheckBoxGetSelected ( aChatTab.AdminChatSound ) ) and ( source ~= getLocalPlayer() ) ) then playSoundFrontEnd ( 13 ) end
 end
 
 function aChatTab.onClientResourceStop ()
 	aSetSetting ( "adminChatSound", guiCheckBoxGetSelected ( aChatTab.AdminChatSound ) )
+	aSetSetting("adminChatOutput", guiCheckBoxGetSelected(aChatTab.AdminChatOutput));
 end
 
 function aChatTab.onRefresh ()
