@@ -299,7 +299,7 @@ function giveMeWeapon(weapon, amount)
 				toggleControl (source, "fire", false)
 				reloadPedWeapon (source)
 				sawnoffAntiAbuse[source] = setTimer (function(source)
-					if not source then return end
+					if not isElement(source) then return end
 					toggleControl (source, "fire", true)
 					sawnoffAntiAbuse[source] = nil
 				end, 3000, 1, source)
