@@ -387,6 +387,13 @@ aFunctions = {
 			end
 			return true, height
 		end,
+		['setfpslimit'] = function ( limit )
+			if ( not setFPSLimit ( limit ) ) then
+				outputChatBox ( "Error setting fps limit.", source, 255, 0, 0 )
+				return false
+			end
+			return true, limit
+		end,
 		['setworldproperty'] = function ( property, enabled )
 			if ( enabled ) then
 				local v = enabled == "on" or enabled == "enabled" or enabled == "true"

@@ -217,6 +217,10 @@
       <all>Waves height set to '$data' by Admin</all>
       <log>ADMIN: $admin has set waves height to '$data'</log>
     </group>
+    <group action="setfpslimit" r="225" g="170" b="90">
+      <all>FPS limit set to '$data' by Admin</all>
+      <log>ADMIN: $admin has set fps limit to '$data'</log>
+    </group>
     <group action="setblurlevel" r="225" g="170" b="90">
       <all>Blur level set to '$data' by Admin</all>
       <log>ADMIN: $admin has set blur level to '$data'</log>
