@@ -889,8 +889,12 @@ wndSpawnMap = {
 ---------------------------
 
 function setInterior(leaf)
-	server.setElementInterior(g_Me, leaf.world)
 	local vehicle = getPedOccupiedVehicle(g_Me)
+	if vehicle and getVehicleController (vehicle) ~= g_Me then
+		outputChatBox ("* Only the driver may set interior/dimension", 255, 0, 0)
+		return
+	end
+	server.setElementInterior(g_Me, leaf.world)
 	if vehicle then
 		server.setElementInterior(vehicle, leaf.world)
 		for i=0,getVehicleMaxPassengers(vehicle) do
