@@ -46,11 +46,15 @@ colorPicker = {
 			noteX = 18,
 			noteY = 378,
 			ra1X = 18,
-			ra1Y = 398,
+			ra1Y = 390,
 			ra2X = 88,
-			ra2Y = 398,
-			ra3X = 168,
-			ra3Y = 398
+			ra2Y = 390,
+			ra3X = 18,
+			ra3Y = 405,
+			ra4X = 88,
+			ra4Y = 405,
+			ra5X = 168,
+			ra5Y = 397,
 		}
 	},
 	constructor = function( info )
@@ -150,7 +154,7 @@ colorPicker = {
 		-- Create the color history
 		if not colorHistory then
 			colorHistory = {}
-			for i=1,9 do
+			for i=1,15 do
 				colorHistory[i] = { 255, 255, 255, 200 }
 			end
 		end
@@ -169,6 +173,12 @@ colorPicker = {
 												70, 15, "Color 2", true, false, colorPicker.GUI.selectWindow)
 		
 		checkColor3 = guiCreateCheckBox(info.selectWindow.ra3X, info.selectWindow.ra3Y,
+												70, 15, "Color 3", true, false, colorPicker.GUI.selectWindow)
+		
+		checkColor4 = guiCreateCheckBox(info.selectWindow.ra4X, info.selectWindow.ra4Y,
+												70, 15, "Color 4", true, false, colorPicker.GUI.selectWindow)
+		
+		checkColor5 = guiCreateCheckBox(info.selectWindow.ra5X, info.selectWindow.ra5Y,
 												75, 15, "Headlights", true, false, colorPicker.GUI.selectWindow)
 
 		colorPicker.avoidRecursion = false
@@ -286,7 +296,7 @@ colorPicker = {
 	addCurrentColorToHistory = function()
 		-- First look up in color history to check if the
 		-- current color is already present there
-		for i=1,9 do
+		for i=1,15 do
 			local color = colorHistory[i]
 			if color[1] == colorPicker.value[1] and
 			   color[2] == colorPicker.value[2] and
