@@ -4,16 +4,8 @@
 -- Scoreboard render target support stuff
 --
 
-local rtShader
 local rt
 local lastUpdateTime = 0
-
-
-addEventHandler( "onClientResourceStart", resourceRoot, 
-	function ( resource )
-		rtShader = dxCreateShader ( "rt_blend.fx" )
-	end
-)
 
 
 -- drawScoreboard
@@ -81,7 +73,9 @@ function drawScoreboard()
 		drawOverGUI = false
 
 		-- Draw all text to rt
+    	dxSetBlendMode( "modulate_add" )
 		doDrawScoreboard ( true --[[rtPass]], false --[[onlyAnim]], getRequiredRtSize() )
+        dxSetBlendMode( "blend" )
 
 		-- Restore drawOverGUI settings
 		drawOverGUI = drawOverGUISaved
@@ -94,11 +88,11 @@ function drawScoreboard()
 		return
 	end
 
-	-- Draw rt
+	-- Draw rt to the screen
 	local x, y = scoreboardGetTopCornerPosition()
-
-	dxSetShaderValue( rtShader, "sTexture0", rt );
-	dxDrawImage( x, y, sX, sY, rtShader, 0, 0, 0, tocolor(255,255,255), drawOverGUI )
+	dxSetBlendMode( "add" )
+	dxDrawImage( x, y, sX, sY, rt, 0, 0, 0, tocolor(255,255,255), drawOverGUI )
+	dxSetBlendMode( "blend" )
 end
 
 

@@ -16,7 +16,6 @@
 
 	<!-- Render target speed up -->
 	<script src="dxscoreboard_rt.lua" type="client" />
-	<file src="rt_blend.fx" type="client" />
 	
 	<!-- HTTP functions, original files by jbeta -->
 	<export function="getScoreboardColumns" type="server" http="true" />
