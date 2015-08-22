@@ -1,0 +1,12 @@
+<meta>
+	<info type="script" name="Ghost racer" description="Record/playback addon for Race" addon="race" author="Awwu" version="1.0.4" build="r1337" />
+	
+	<script src="global_server.lua" type="server" />
+	<script src="record_server.lua" type="server" />
+	<script src="playback_server.lua" type="server" />
+	
+	<script src="global_client.lua" type="client" />
+	<script src="record_client.lua" type="client" />
+	<script src="playback_client.lua" type="client" />
+	<script src="nametags.lua" type="client" />
+</meta>
