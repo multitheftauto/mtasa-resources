@@ -90,6 +90,9 @@ function GhostPlayback:loadGhost()
 				self.blip = createBlipAttachedTo( self.ped, 0, 1, 150, 150, 150, 50 )
 				setElementParent( self.blip, self.ped )
 				warpPedIntoVehicle( self.ped, self.vehicle )
+                -- Disable client to server syncing to fix the ghost car jumping about
+				setElementSyncer( self.ped, false )
+				setElementSyncer( self.vehicle, false )
 				
 				outputDebugString( "Found a valid ghost file for " .. mapName )
 				self.hasGhost = true
