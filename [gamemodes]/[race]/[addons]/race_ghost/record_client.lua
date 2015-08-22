@@ -7,7 +7,7 @@ addEvent( "onClientPlayerPickUpRacePickup", true )
 addEvent( "onClientPlayerRaceWasted", true )
 addEvent( "onClientPlayerFinished", true )
 
-function GhostRecord:create( resourceName )
+function GhostRecord:create()
 	local result = {
 		positionTimer = nil,
 		recording = {},
@@ -16,13 +16,13 @@ function GhostRecord:create( resourceName )
 		keyStates = {},
 		lastPressed = {},
 		vehicleType = nil,
-		last = {},
-		resourceName = resourceName,
+		last = {}
 	}
 	return setmetatable( result, self )
 end
 
-function GhostRecord:init()
+function GhostRecord:init( mapName )
+	self.currentMapName = mapName
 	self.checkForCountdownEnd_HANDLER = function() self:checkForCountdownEnd() end
 	addEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER )
 	outputDebug( "Waiting for start..." )
@@ -42,6 +42,12 @@ function GhostRecord:destroy()
 		self.positionTimer = nil
 		self.updateExactPosition_HANDLER = nil
 	end
+	if isTimer( self.flushTimer ) then
+		killTimer( self.flushTimer )
+	end
+	self.flushTimer = nil
+	self.timeToSend = nil
+	self.currentMapName = self.currentMapName .. "deleted"
 	self = nil
 end
 
@@ -146,7 +152,22 @@ end
 function GhostRecord:saveGhost( rank, time )
 	if time < globalInfo.bestTime and rank == 1 then
 		outputDebug( "Improved ghost time." )
-		triggerServerEvent( "onGhostDataReceive", getLocalPlayer(), self.recording, time, getPlayerName( getLocalPlayer() ), self.resourceName )
+		triggerServerEvent( "onDebug", resourceRoot, "Want to send ghost file", self.currentMapName )
+		self.timeToSend = time
+		-- Delay sending the data to prevent freeze on the finish line
+		self.flushTimer = setTimer( function() self:saveGhostFlush() end, 4000, 1 )
+		setTimer( function() outputChatBox( "Saving your run for the ghost driver", 200, 200, 0 ) end, 1000, 1 )
+	end
+end
+
+function GhostRecord:saveGhostFlush()
+	if isTimer( self.flushTimer ) then
+		killTimer( self.flushTimer )
+	end
+	self.flushTimer = nil
+	if self.timeToSend then
+		triggerServerEvent( "onGhostDataReceive", getLocalPlayer(), self.recording, self.timeToSend, getPlayerName( getLocalPlayer() ), self.currentMapName )
+		self.timeToSend = nil
 	end
 end
 
@@ -251,15 +272,17 @@ end
 
 addEventHandler( "onClientMapStarting", g_Root,
 	function ( mapInfo )
-		if recording then
-			recording:stopRecording()
-			recording:destroy()
+		if recorder then
+			recorder:stopRecording()
+			recorder:saveGhostFlush()
+			recorder:destroy()
+			recorder = nil
 		end
-		
+
 		-- Check if the map is actually a racing map
 		if mapInfo.modename == "Sprint" then
-			recording = GhostRecord:create( mapInfo.resname )
-			recording:init()
+			recorder = GhostRecord:create()
+			recorder:init( mapInfo.resname )
 		end
 	end
 )

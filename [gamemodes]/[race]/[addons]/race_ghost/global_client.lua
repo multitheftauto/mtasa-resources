@@ -45,3 +45,53 @@ addEventHandler( "onClientResourceStart", getResourceRootElement(),
 		triggerServerEvent ( "onRaceGhostResourceStarted", g_Root )
 	end
 )
+
+---------------------------------------------------------------------------
+-- Math extentions
+---------------------------------------------------------------------------
+function math.lerp(from,to,alpha)
+    return from + (to-from) * alpha
+end
+
+function math.unlerp(from,to,pos)
+	if ( to == from ) then
+		return 1
+	end
+	return ( pos - from ) / ( to - from )
+end
+
+function math.lerprot(from,to,alpha)
+	while from - to > 180 do
+		to = to + 360
+	end
+	while from - to < -180 do
+		to = to - 360
+	end
+	return math.lerp(from,to,alpha)
+end
+
+function math.clamp(low,value,high)
+	return math.max(low,math.min(value,high))
+end
+
+function math.evalCurve( curve, input )
+	-- First value
+	if input<curve[1][1] then
+		return curve[1][2]
+	end
+	-- Interp value
+	for idx=2,#curve do
+		if input<curve[idx][1] then
+			local x1 = curve[idx-1][1]
+			local y1 = curve[idx-1][2]
+			local x2 = curve[idx][1]
+			local y2 = curve[idx][2]
+			-- Find pos between input points
+			local alpha = (input - x1)/(x2 - x1);
+			-- Map to output points
+			return math.lerp(y1,y2,alpha)
+		end
+	end
+	-- Last value
+	return curve[#curve][2]
+end

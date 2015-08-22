@@ -1,12 +1,46 @@
 <meta>
-	<info type="script" name="Ghost racer" description="Record/playback addon for Race" addon="race" author="Awwu" version="1.0.4" build="r1337" />
+	<info type="script" name="Ghost racer" description="Record/playback addon for Race" addon="race" author="Awwu" version="1.0.5" build="r1337" />
 	
 	<script src="global_server.lua" type="server" />
 	<script src="record_server.lua" type="server" />
 	<script src="playback_server.lua" type="server" />
+	<script src="xtra_stuff_server.lua" type="server" />
 	
 	<script src="global_client.lua" type="client" />
 	<script src="record_client.lua" type="client" />
 	<script src="playback_client.lua" type="client" />
+	<script src="xtra_stuff_client.lua" type="client" />
 	<script src="nametags.lua" type="client" />
+
+	<settings>
+		<!-- *****************************************************
+			 All these settings are adjustable in the Admin Panel:
+				1. start admin
+				2. press 'p'
+				3. select Resources tab
+				4. double click on 'race_ghost'
+			 ***************************************************** -->
+
+		<setting name="*alphavalue" value="100"
+					friendlyname="Alpha value"
+					group="General"
+					accept="0-255"
+					desc="Alpha of ghost racer. Set between 0 and 255."
+					/>
+
+		<setting name="*verboselog" value="false"
+					friendlyname="Verbose log"
+					group="General"
+					accept="false,true"
+					desc="Set to true for 'useful' messages in the server log."
+					/>
+
+		<setting name="*admingroup" value="Admin,SuperModerator"
+					friendlyname="Admin group list"
+					group="_Advanced"
+					accept="*"
+					examples="Admin,Moderator,SuperModerator"
+					desc="To issue certain commands, the player must belong to one of the groups listed."
+					/>
+    </settings>
 </meta>

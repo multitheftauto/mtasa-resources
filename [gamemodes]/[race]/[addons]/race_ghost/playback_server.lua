@@ -38,6 +38,17 @@ function GhostPlayback:destroy()
 	self = nil
 end
 
+function GhostPlayback:deleteGhost()
+	local mapName = getResourceName( self.map )
+	if fileExists( "ghosts/" .. mapName .. ".ghost" ) then
+		fileDelete( "ghosts/" .. mapName .. ".ghost" )
+		self:destroy()
+		playback = nil
+		return true
+	end
+	return false
+end
+
 function GhostPlayback:loadGhost()
 	-- Load the old ghost if there is one
 	local mapName = getResourceName( self.map )
@@ -68,6 +79,7 @@ function GhostPlayback:loadGhost()
 		while (node) do
 			if type( node ) ~= "userdata" then
 				outputDebugString( "race_ghost - playback_server.lua: Invalid node data while loading ghost: " .. type( node ) .. ":" .. tostring( node ), 1 )
+				self.recording = {}
 				break
 			end
 			
@@ -81,10 +93,43 @@ function GhostPlayback:loadGhost()
 			node = xmlFindChild( ghost, "n", index )
 		end
 		xmlUnloadFile( ghost )
-			
+
+		-- Validate
+		local bValidForMap = isBesttimeValidForMap( self.map, self.bestTime )
+		local bValidForRecording = isBesttimeValidForRecording( self.recording, self.bestTime )
+		if not bValidForMap or not bValidForRecording then
+			-- Use backup file if it exists
+			local backup = xmlLoadFile( "ghosts/" .. mapName .. ".backup" )
+			if backup then
+				xmlUnloadFile( backup )
+				copyFile( "ghosts/" .. mapName .. ".ghost", "ghosts/" .. mapName .. ".invalid" )
+				copyFile( "ghosts/" .. mapName .. ".backup", "ghosts/" .. mapName .. ".ghost" )
+				fileDelete( "ghosts/" .. mapName .. ".backup" )
+				outputDebugServer( "Trying backup as found an invalid ghost file", mapName, nil, " (Besttime not valid for recording. Error: " .. getRecordingBesttimeError( self.recording, self.bestTime ) .. ")" )
+				self.recording = {}
+				return self:loadGhost()
+			end
+			if not bValidForMap then
+				outputDebugServer( "Found an invalid ghost file", mapName, nil, " (Besttime not valid for map. Error: " .. getMapBesttimeError( self.map, self.bestTime ) .. ")" )
+			end
+			if not bValidForRecording then
+				outputDebugServer( "Found an invalid ghost file", mapName, nil, " (Besttime not valid for recording. Error: " .. getRecordingBesttimeError( self.recording, self.bestTime ) .. ")" )
+			end
+			return false
+		end
+	
 		-- Create the ped & vehicle
 		for _, v in ipairs( self.recording ) do
 			if v.ty == "st" then
+				-- Check start is near a spawnpoint
+				local bestDist = math.huge
+				for _,spawnpoint in ipairs(getElementsByType("spawnpoint")) do
+					bestDist = math.min( bestDist, getDistanceBetweenPoints3D( v.x, v.y, v.z, getElementPosition(spawnpoint) ) )
+				end
+				if bestDist > 5 then
+					outputDebugServer( "Found an invalid ghost file", mapName, nil, " (Spawn point too far away - " .. bestDist .. ")" )
+					return false
+				end
 				self.ped = createPed( v.p, v.x, v.y, v.z )
 				self.vehicle = createVehicle( v.m, v.x, v.y, v.z, v.rX, v.rY, v.rZ )
 				self.blip = createBlipAttachedTo( self.ped, 0, 1, 150, 150, 150, 50 )
@@ -93,14 +138,13 @@ function GhostPlayback:loadGhost()
                 -- Disable client to server syncing to fix the ghost car jumping about
 				setElementSyncer( self.ped, false )
 				setElementSyncer( self.vehicle, false )
-				
-				outputDebugString( "Found a valid ghost file for " .. mapName )
+				outputDebugServer( "Found a valid ghost", mapName, nil, " (Besttime dif: " .. getRecordingBesttimeError( self.recording, self.bestTime ) .. ")" )
 				self.hasGhost = true
 				return true
 			end
 		end
-		return true
 	end
+	outputDebugServer( "No ghost file", mapName, nil )
 	return false
 end
 

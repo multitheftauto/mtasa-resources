@@ -20,7 +20,7 @@ addEventHandler( "onPlayerRaceWasted", g_Root,
 
 addEventHandler( "onPlayerFinish", g_Root, 
 	function( ... )
-		triggerClientEvent( source, "onClientPlayerFinished", source, ... )
+		triggerClientEvent( root, "onClientPlayerFinished", source, ... )
 	end
 )
 
@@ -68,13 +68,12 @@ _triggerClientEvent = triggerClientEvent
 function triggerClientEvent( triggerFor, name, theElement, ... )
 	local params = { ... }
 	if type( triggerFor ) == "string" then
-		local temp = name
-		name = triggerFor
-		theElement = temp
-		triggerFor = g_Root
 		params = { theElement, ... }
+		theElement = name
+		name = triggerFor
+		triggerFor = g_Root
 	end
-	
+
 	if triggerFor == g_Root then
 		local players = getElementsByType( "player" )
 		for k, player in ipairs( players ) do
@@ -93,4 +92,62 @@ function triggerClientEvent( triggerFor, name, theElement, ... )
 			end
 		end
 	end
+end
+
+
+---------------------------------------------------------------------------
+--
+-- Recording validation
+--
+--
+--
+---------------------------------------------------------------------------
+
+-- Check the best time is after the last recorded item time, but not too far afterwards
+function isBesttimeValidForRecording( recording, bestTime )
+	local terror = getRecordingBesttimeError( recording, bestTime )
+	return terror >= 0 and terror < 2000
+end
+
+function getRecordingBesttimeError( recording, bestTime )
+	-- get time of last item
+	local t
+	for idx = #recording,1,-1 do
+		local v = recording[idx]
+		t = tonumber(v.t)
+		if t then
+			break
+		end
+	end
+	-- Calc error
+	if t then
+		return bestTime - t
+	end
+	return math.huge
+end
+
+
+-- Check the best time is not (much) less than the map toptime
+function isBesttimeValidForMap( map, bestTime )
+	local terror = getMapBesttimeError( map, bestTime )
+	outputDebug ( "isBesttimeValidForMap dif:" .. tostring(terror) )
+	return terror >= -1000
+end
+
+function getMapBesttimeError( map, bestTime )
+	-- get time of map top time
+	local t
+	local mapName = getResourceInfo(map, "name") or getResourceName(map)
+	local tableName = 'race maptimes Sprint ' .. mapName
+	local res = executeSQLQuery( "SELECT * from ? WHERE rowid=1", tableName )
+	if res and #res >= 1 then
+		t = tonumber(res[1]["timeMs"])
+	end
+
+	-- Calc error
+	if t then
+		return bestTime - t
+	end
+	outputDebugString ( "ghost_racer: getMapBesttimeError - Can't find toptime for " .. tostring(mapName) )
+	return 0
 end

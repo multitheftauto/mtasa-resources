@@ -2,10 +2,12 @@ addEvent( "onGhostDataReceive", true )
 
 addEventHandler( "onGhostDataReceive", g_Root,
 	function( recording, bestTime, racer, mapName )
-		-- May be inaccurate, if recording is still being sent when map changes
-		--[[local currentMap = exports.mapmanager:getRunningGamemodeMap()
-		local mapName = getResourceName( currentMap )--]]
-		
+		if not isBesttimeValidForRecording( recording, bestTime ) then
+			outputDebugServer( "Received an invalid ghost recording", mapName, racer, " (Besttime not valid for recording. Error: " .. getRecordingBesttimeError( recording, bestTime ) .. ")" )
+			return
+		end
+
+		outputDebugServer( "Saving ghost file", mapName, racer, " (Besttime dif: " .. getRecordingBesttimeError( recording, bestTime ) .. ")" )		
 		-- Create a backup in case of a cheater run
 		local ghost = xmlLoadFile( "ghosts/" .. mapName .. ".ghost" )
 		if ghost then
@@ -33,7 +35,11 @@ addEventHandler( "onGhostDataReceive", g_Root,
 			for _, info in ipairs( recording ) do
 				local node = xmlCreateChild( ghost, "n" )
 				for k, v in pairs( info ) do
-					xmlNodeSetAttribute( node, tostring( k ), tostring( v ) )
+					if type(v) == "number" then
+						xmlNodeSetAttribute( node, tostring( k ), math.floor(v * 10000 + 0.5) / 10000 )
+					else
+						xmlNodeSetAttribute( node, tostring( k ), tostring( v ) )
+					end
 				end
 			end
 			xmlSaveFile( ghost )
