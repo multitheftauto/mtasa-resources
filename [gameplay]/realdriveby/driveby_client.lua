@@ -288,7 +288,7 @@ function fadeOutHelp()
 end
 
 local function onWeaponSwitchWhileDriveby (prevSlot, curSlot)
-	if source == localPlayer and isPedDoingGangDriveby(source) then	
+	if isPedDoingGangDriveby(source) then	
 		limitDrivebySpeed(getPedWeapon(source, curSlot))
 	end
 end
