@@ -286,3 +286,10 @@ function fadeOutHelp()
 	helpAnimation = Animation.createAndPlay(helpText, Animation.presets.dxTextFadeOut(300))
 	setTimer ( function() helpText:color(255,255,255,0) end, 300, 1 )
 end
+
+local function onWeaponSwitchWhileDriveby (prevSlot, curSlot)
+	if isPedDoingGangDriveby(source) then	
+		limitDrivebySpeed(getPedWeapon(source, curSlot))
+	end
+end
+addEventHandler ("onClientPlayerWeaponSwitch", localPlayer, onWeaponSwitchWhileDriveby)
