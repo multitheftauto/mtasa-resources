@@ -7,3 +7,5 @@ A resource can be seen as being partly equivalent to a program running in an ope
 This project maintains a list of up-to-date resources that come with Multi Theft Auto. These can be checked out by anyone that wishes to run a dedicated server with the latest resources.
 
 For a collection of user created resources, head over to our [Community](https://community.mtasa.com) web page which serves as a place for hosting our community's resources.
+
+To report a bug or suggest an idea, head over to our [Bugtracker](http://bugs.mtasa.com).
