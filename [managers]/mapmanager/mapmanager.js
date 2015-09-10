@@ -59,6 +59,8 @@ function gamemodeListRefresh () {
 			otherMapsLabel.id = "none-label";
 			otherMapsLabel.className = "mapsheader";
 			otherMapsLabel.innerHTML = "non-gamemode maps";
+
+			otherMapsContainer.headerLabel = otherMapsLabel;
 			
 			mainContainer.appendChild ( otherMapsLabel );
 			mainContainer.appendChild ( otherMapsContainer );
