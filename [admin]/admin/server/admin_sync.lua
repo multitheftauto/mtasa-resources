@@ -211,10 +211,18 @@ addEventHandler ( "onPlayerMoneyChange", _root, function ( prev, new )
 	end
 end )
 
-addEventHandler ( "onPlayerMute", _root, function ( state )
+addEventHandler ( "onPlayerMute", _root, function()
 	for player, sync in pairs ( aPlayers ) do
 		if ( sync["sync"] == source ) then
-			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = state } )
+			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = true } )
+		end
+	end
+end )
+
+addEventHandler ( "onPlayerUnmute", _root, function()
+	for player, sync in pairs ( aPlayers ) do
+		if ( sync["sync"] == source ) then
+			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = false } )
 		end
 	end
 end )
