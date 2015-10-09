@@ -108,7 +108,6 @@ function requestSync ( player, type )
 	triggerEvent ( EVENT_SYNC, player, type )
 end
 
-addEvent ( "onPlayerMuted", false )
 addEvent ( "onPlayerFrozen", false )
 addEvent ( "onPlayerMoneyChange", false )
 addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource () ), function()
@@ -155,7 +154,7 @@ addEventHandler ( "onPlayerFrozen", _root, function ( state )
 	end
 end )
 
-addEventHandler ( "onPlayerMuted", _root, function ()
+addEventHandler ( "onPlayerMute", _root, function ()
 	for player, data in pairs ( aPlayers ) do
 		if ( data.sync == source ) then
 			triggerClientEvent ( player, EVENT_SYNC, source, SYNC_PLAYER, { ["mute"] = true } )

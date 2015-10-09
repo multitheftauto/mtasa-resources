@@ -287,7 +287,6 @@ function getPlayerAccountName( player )
 	return account and getAccountName ( account )
 end
 
-addEvent ( "onPlayerMute", false )
 function aSetPlayerMuted ( player, state, length )
 	if ( setPlayerMuted ( player, state ) ) then
 		if not state then
@@ -295,7 +294,6 @@ function aSetPlayerMuted ( player, state, length )
 		elseif state and length and length > 0 then
 			aAddUnmuteTimer( player, length )
 		end
-		triggerEvent ( "onPlayerMute", player, state )
 		return true
 	end
 	return false
