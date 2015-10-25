@@ -12,7 +12,8 @@ function WebBrowserGUI:constructor()
 	self.m_BackButton:setEnabled(false)
 	self.m_ForwardButton = GuiButton(42, 25, 32, 32, ">", false, self.m_Window)
 	self.m_ForwardButton:setEnabled(false)
-	self.m_EditAddress = GuiEdit(77, 25, sizeX - 157, 32, "Please enter an address", false, self.m_Window)
+	self.m_EditAddress = GuiEdit(77, 25, sizeX - 192, 32, "Please enter an address", false, self.m_Window)
+	self.m_DevButton = GuiButton(sizeX - 110, 25, 32, 32, "✎", false, self.m_Window)
 	self.m_LoadButton = GuiButton(sizeX - 75, 25, 32, 32, "➽", false, self.m_Window)
 	self.m_ButtonClose = GuiButton(sizeX - 38, 25, 24, 24, "✖", false, self.m_Window)
 	self.m_ButtonClose:setProperty("NormalTextColour", "FFFF2929")
@@ -41,6 +42,7 @@ function WebBrowserGUI:Browser_Created()
 	addEventHandler("onClientGUIClick", self.m_BackButton, function(...) self:BackButton_Click(...) end, false)
 	addEventHandler("onClientGUIClick", self.m_ForwardButton, function(...) self:ForwardButton_Click(...) end, false)
 	addEventHandler("onClientGUIClick", self.m_ButtonClose, function(...) self:CloseButton_Click(...) end, false)
+	addEventHandler("onClientGUIClick", self.m_DevButton, function(...) self:DevButton_Click(...) end, false)
 
 	self:loadURL("https://mtasa.com/")
 end
@@ -116,6 +118,17 @@ function WebBrowserGUI:CloseButton_Click(button, state)
 		showCursor(false)
 		--GuiElement.setInputMode("no_binds_when_editing")
 		WebBrowserGUI.instance = nil
+	end
+end
+
+function WebBrowserGUI:DevButton_Click(button, state)
+	if button == "left" and state == "up" then
+		if not getDevelopmentMode() then
+			exports.msgbox:guiShowMessageBox("You have to enable the development using setDevelopmentMode", "error", "Development mode required", false)
+			return
+		end
+		
+		self.m_Browser:getBrowser():toggleDevTools(true)
 	end
 end
 -- \\ GUI Navigation

@@ -1,6 +1,8 @@
 <meta>
 	<info author="Jusonex, Audifire" type="misc" version="1.0.0" name="webbrowser"/>
+	<min_mta_version client="1.5.1"/>
 	<oop>true</oop>
+	<include resource="msgbox"/>
 	
 	<script src="client.lua" type="client"/>
 	<script src="WebBrowserGUI.lua" type="client"/>
