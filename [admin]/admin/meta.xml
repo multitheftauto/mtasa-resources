@@ -209,6 +209,8 @@
   <file src="client/images/flags/uk.png" />
   <file src="client/images/flags/um.png" />
   <file src="client/images/flags/us.png" />
+  <!-- UY (Uruguay flag) was missing http://bugs.mtasa.com/view.php?id=9056 -->
+  <file src="client/images/flags/uy.png" />
   <file src="client/images/flags/vn.png" />
   <file src="client/images/flags/wf.png" />
   <file src="client/images/flags/ws.png" />
