@@ -635,6 +635,12 @@ end
 
 function setPosClick()
 	setPlayerPosition(getControlNumbers(wndSetPos, {'x', 'y', 'z'}))
+	if getElementInterior(g_Me) ~= 0 then
+		if isPedInVehicle(g_Me) and getVehicleController(getPedOccupiedVehicle(g_Me)) == g_Me then
+			server.setElementInterior(getPedOccupiedVehicle(g_Me), 0)
+		end
+		server.setElementInterior(g_Me, 0)
+	end
 	closeWindow(wndSetPos)
 end
 
