@@ -634,24 +634,26 @@ function fillInPosition(relX, relY, btn)
 end
 
 function setPosClick()
-	setPlayerPosition(getControlNumbers(wndSetPos, {'x', 'y', 'z'}))
-	if getElementInterior(g_Me) ~= 0 then
-		if isPedInVehicle(g_Me) and getVehicleController(getPedOccupiedVehicle(g_Me)) == g_Me then
-			server.setElementInterior(getPedOccupiedVehicle(g_Me), 0)
+	if setPlayerPosition(getControlNumbers(wndSetPos, {'x', 'y', 'z'})) ~= false then
+		if getElementInterior(g_Me) ~= 0 then
+			if isPedInVehicle(g_Me) and getVehicleController(getPedOccupiedVehicle(g_Me)) == g_Me then
+				server.setElementInterior(getPedOccupiedVehicle(g_Me), 0)
+			end
+			server.setElementInterior(g_Me, 0)
 		end
-		server.setElementInterior(g_Me, 0)
+		closeWindow(wndSetPos)
 	end
-	closeWindow(wndSetPos)
 end
 
 function setPlayerPosition(x, y, z)
 	local elem = getPedOccupiedVehicle(g_Me)
 	local distanceToGround
 	local isVehicle
-	if elem then
-		if getPlayerOccupiedSeat(g_Me) ~= 0 then
+	if elem and isPedInVehicle(g_Me) then
+		local controller = getVehicleController(elem)
+		if controller and controller ~= g_Me then
 			errMsg('Only the driver of the vehicle can set its position.')
-			return
+			return false
 		end
 		distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(elem) + 3
 		isVehicle = true
@@ -683,7 +685,7 @@ function setPlayerPosition(x, y, z)
 					if isPedDead(g_Me) then
 						server.spawnMe(x, y, z)
 					else
-						setElementPosition(elem, x, y, z)
+						server.setMyPos(x, y, z)
 					end
 					setCameraPlayerMode()
 					setGravity(grav)
@@ -704,7 +706,7 @@ function setPlayerPosition(x, y, z)
 		if isPedDead(g_Me) then
 			server.spawnMe(x, y, z + distanceToGround)
 		else
-			setElementPosition(elem, x, y, z + distanceToGround)
+			server.setMyPos(x, y, z + distanceToGround)
 			if isVehicle then
 				setTimer(setElementVelocity, 100, 1, elem, 0, 0, 0)
 				setTimer(setVehicleTurnVelocity, 100, 1, elem, 0, 0, 0)
