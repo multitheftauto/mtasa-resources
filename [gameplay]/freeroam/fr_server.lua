@@ -58,7 +58,8 @@ g_RPCFunctions = {
 	setVehicleRotation = true,
 	setWeather = { option = 'weather', descr = 'Setting weather' },
 	spawnMe = true,
-	warpMe = { option = 'warp', descr = 'Warping' }
+	warpMe = { option = 'warp', descr = 'Warping' },
+	setMyPos = true
 }
 
 g_OptionDefaults = {
@@ -272,15 +273,15 @@ function warpMe(targetPlayer)
 					local x, y, z = getElementPosition(vehicle)
 					spawnMe(x + 4, y, z + 1)
 				end
+				local interior = getElementInterior(targetPlayer)
+				setElementInterior(source, interior)
+				setCameraInterior(source, interior)
 				warpPedIntoVehicle(source, vehicle, i)
 				return
 			end
 		end
 		outputChatBox('No free seats left in ' .. getPlayerName(targetPlayer) .. '\'s vehicle.', source, 255, 0, 0)
 	end
-	local interior = getElementInterior(targetPlayer)
-	setElementInterior(source, interior)
-	setCameraInterior(source, interior)
 end
 
 function giveMeWeapon(weapon, amount)
@@ -443,6 +444,29 @@ addEventHandler('onVehicleEnter', g_Root,
 		end
 	end
 )
+
+function setMyPos(x, y, z)
+	if isElement(source) and getElementType(source) == "player" then
+		if isPedInVehicle(source) then
+			local veh = getPedOccupiedVehicle (source)
+			if getVehicleController (veh) then
+				if getVehicleController(veh) == source then
+					setElementPosition (veh, x, y, z)
+					for s = 1, getVehicleMaxPassengers (veh) do
+						local occ = getVehicleOccupant (veh, s)
+						if occ then
+							setElementInterior (occ, getElementInterior(veh))
+						end
+					end
+				end
+			else
+				removePedFromVehicle(source)
+			end
+		end
+		setElementPosition (source, x, y, z)
+		fadeCamera (source, true)
+	end
+end
 
 addEventHandler('onVehicleExit', g_Root,
 	function(player, seat)
