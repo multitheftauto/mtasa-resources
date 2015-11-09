@@ -454,6 +454,7 @@ function setMyPos(x, y, z)
 			if getVehicleController (veh) then
 				if getVehicleController(veh) == source then
 					setElementPosition (veh, x, y, z)
+					setElementInterior (veh, getElementInterior (source))
 					for s = 1, getVehicleMaxPassengers (veh) do
 						local occ = getVehicleOccupant (veh, s)
 						if occ then
