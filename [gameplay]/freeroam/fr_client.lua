@@ -636,7 +636,7 @@ end
 function setPosClick()
 	if setPlayerPosition(getControlNumbers(wndSetPos, {'x', 'y', 'z'})) ~= false then
 		if getElementInterior(g_Me) ~= 0 then
-			if isPedInVehicle(g_Me) and getVehicleController(getPedOccupiedVehicle(g_Me)) == g_Me then
+			if getPedOccupiedVehicle(g_Me) and getVehicleController(getPedOccupiedVehicle(g_Me)) == g_Me then
 				server.setElementInterior(getPedOccupiedVehicle(g_Me), 0)
 			end
 			server.setElementInterior(g_Me, 0)
@@ -649,7 +649,7 @@ function setPlayerPosition(x, y, z)
 	local elem = getPedOccupiedVehicle(g_Me)
 	local distanceToGround
 	local isVehicle
-	if elem and isPedInVehicle(g_Me) then
+	if elem and getPedOccupiedVehicle(g_Me) then
 		local controller = getVehicleController(elem)
 		if controller and controller ~= g_Me then
 			errMsg('Only the driver of the vehicle can set its position.')
