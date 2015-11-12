@@ -448,27 +448,27 @@ addEventHandler('onVehicleEnter', g_Root,
 )
 
 function setMyPos(x, y, z)
-	if isElement(source) and getElementType(source) == "player" then
-		if isPedInVehicle(source) then
-			local veh = getPedOccupiedVehicle (source)
-			if getVehicleController (veh) then
-				if getVehicleController(veh) == source then
-					setElementPosition (veh, x, y, z)
-					setElementInterior (veh, getElementInterior (source))
-					for s = 1, getVehicleMaxPassengers (veh) do
-						local occ = getVehicleOccupant (veh, s)
-						if occ then
-							setElementInterior (occ, getElementInterior(veh))
-						end
-					end
+	if not isElement(client) or getElementType(client) == "player" then
+		return
+	end 
+
+	local veh = getPedOccupiedVehicle (client)
+	if veh then
+		if getVehicleController(veh) == client then
+			setElementPosition (veh, x, y, z)
+			setElementInterior (veh, getElementInterior (client))
+			for s = 1, getVehicleMaxPassengers (veh) do
+				local occ = getVehicleOccupant (veh, s)
+				if occ then
+					setElementInterior (occ, getElementInterior(veh))
 				end
-			else
-				removePedFromVehicle(source)
 			end
+		else
+			removePedFromVehicle(source)
 		end
-		setElementPosition (source, x, y, z)
-		fadeCamera (source, true)
 	end
+	setElementPosition (client, x, y, z)
+	fadeCamera (client, true)
 end
 
 addEventHandler('onVehicleExit', g_Root,
