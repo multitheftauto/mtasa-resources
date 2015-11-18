@@ -448,7 +448,7 @@ addEventHandler('onVehicleEnter', g_Root,
 )
 
 function setMyPos(x, y, z)
-	if not isElement(client) or getElementType(client) == "player" then
+	if not isElement(client) or getElementType(client) ~= "player" then
 		return
 	end 
 
