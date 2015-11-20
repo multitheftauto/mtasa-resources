@@ -126,7 +126,7 @@ function addWeapon(leaf, amount)
 	if type(leaf) ~= 'table' then
 		leaf = getSelectedGridListLeaf(wndWeapon, 'weaplist')
 		amount = getControlNumber(wndWeapon, 'amount')
-		if not amount or not leaf then
+		if not amount or not leaf or not leaf.id then
 			return
 		end
 	end
