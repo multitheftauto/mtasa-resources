@@ -58,7 +58,8 @@ g_RPCFunctions = {
 	setVehicleRotation = true,
 	setWeather = { option = 'weather', descr = 'Setting weather' },
 	spawnMe = true,
-	warpMe = { option = 'warp', descr = 'Warping' }
+	warpMe = { option = 'warp', descr = 'Warping' },
+	setMyPos = true
 }
 
 g_OptionDefaults = {
@@ -254,10 +255,13 @@ function warpMe(targetPlayer)
 	end
 
 	local vehicle = getPedOccupiedVehicle(targetPlayer)
+	local interior = getElementInterior(targetPlayer)
 	if not vehicle then
 		-- target player is not in a vehicle - just warp next to him
 		local x, y, z = getElementPosition(targetPlayer)
 		clientCall(source, 'setPlayerPosition', x + 2, y, z)
+		setElementInterior(source, interior)
+		setCameraInterior(source, interior)
 	else
 		-- target player is in a vehicle - warp into it if there's space left
 		if getPedOccupiedVehicle(source) then
@@ -272,15 +276,14 @@ function warpMe(targetPlayer)
 					local x, y, z = getElementPosition(vehicle)
 					spawnMe(x + 4, y, z + 1)
 				end
+				setElementInterior(source, interior)
+				setCameraInterior(source, interior)
 				warpPedIntoVehicle(source, vehicle, i)
 				return
 			end
 		end
 		outputChatBox('No free seats left in ' .. getPlayerName(targetPlayer) .. '\'s vehicle.', source, 255, 0, 0)
 	end
-	local interior = getElementInterior(targetPlayer)
-	setElementInterior(source, interior)
-	setCameraInterior(source, interior)
 end
 
 function giveMeWeapon(weapon, amount)
@@ -443,6 +446,30 @@ addEventHandler('onVehicleEnter', g_Root,
 		end
 	end
 )
+
+function setMyPos(x, y, z)
+	if not isElement(client) or getElementType(client) ~= "player" then
+		return
+	end 
+
+	local veh = getPedOccupiedVehicle (client)
+	if veh then
+		if getVehicleController(veh) == client then
+			setElementPosition (veh, x, y, z)
+			setElementInterior (veh, getElementInterior (client))
+			for s = 1, getVehicleMaxPassengers (veh) do
+				local occ = getVehicleOccupant (veh, s)
+				if occ then
+					setElementInterior (occ, getElementInterior(veh))
+				end
+			end
+		else
+			removePedFromVehicle(source)
+		end
+	end
+	setElementPosition (client, x, y, z)
+	fadeCamera (client, true)
+end
 
 addEventHandler('onVehicleExit', g_Root,
 	function(player, seat)
