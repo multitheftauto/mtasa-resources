@@ -1164,7 +1164,7 @@ function setColorCommand(cmd, ...)
 	end
 	local colors = { getVehicleColor(vehicle) }
 	local args = { ... }
-	for i=1,6 do
+	for i=1,12 do
 		colors[i] = args[i] and tonumber(args[i]) or colors[i]
 	end
 	server.setVehicleColor(vehicle, unpack(colors))
@@ -1180,8 +1180,8 @@ function openColorPicker()
 end
 
 function closedColorPicker()
-	local r1, g1, b1, r2, g2, b2 = getVehicleColor(editingVehicle, true)
-	server.setVehicleColor(editingVehicle, r1, g1, b1, r2, g2, b2)
+	local r1, g1, b1, r2, g2, b2, r3, g3, b3, r4, g4, b4 = getVehicleColor(editingVehicle, true)
+	server.setVehicleColor(editingVehicle, r1, g1, b1, r2, g2, b2, r3, g3, b3, r4, g4, b4)
 	local r, g, b = getVehicleHeadLightColor(editingVehicle)
 	server.setVehicleHeadLightColor(editingVehicle, r, g, b)
 	editingVehicle = nil
@@ -1191,7 +1191,7 @@ function updateColor()
 	if (not colorPicker.isSelectOpen) then return end
 	local r, g, b = colorPicker.updateTempColors()
 	if (editingVehicle and isElement(editingVehicle)) then
-		local r1, g1, b1, r2, g2, b2 = getVehicleColor(editingVehicle, true)
+		local r1, g1, b1, r2, g2, b2, r3, g3, b3, r4, g4, b4  = getVehicleColor(editingVehicle, true)
 		if (guiCheckBoxGetSelected(checkColor1)) then
 			r1, g1, b1 = r, g, b
 		end
@@ -1199,9 +1199,15 @@ function updateColor()
 			r2, g2, b2 = r, g, b
 		end
 		if (guiCheckBoxGetSelected(checkColor3)) then
+			r3, g3, b3 = r, g, b
+		end
+		if (guiCheckBoxGetSelected(checkColor4)) then
+			r4, g4, b4 = r, g, b
+		end
+		if (guiCheckBoxGetSelected(checkColor5)) then
 			setVehicleHeadLightColor(editingVehicle, r, g, b)
 		end
-		setVehicleColor(editingVehicle, r1, g1, b1, r2, g2, b2)
+		setVehicleColor(editingVehicle, r1, g1, b1, r2, g2, b2, r3, g3, b3, r4, g4, b4)
 	end
 end
 addEventHandler("onClientRender", root, updateColor)
