@@ -702,6 +702,7 @@ function aClientPlayerChangeNick ( oldNick, newNick )
 		for row=0,guiGridListGetRowCount(gridlist)-1 do
 			if ( guiGridListGetItemPlayerName ( gridlist, row, 1 ) == oldNick ) then
 				guiGridListSetItemPlayerName ( gridlist, row, 1, newNick, false, false )
+				aPlayers[source]["name"] = newNick
 			end
 		end
 	end
