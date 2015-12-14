@@ -309,7 +309,11 @@ end
 function applyPlayerGrav()
 	local grav = getControlNumber(wndGravity, 'gravval')
 	if grav then
-		server.setPedGravity(g_Me, grav)
+		if not doesPedHaveJetPack (g_Me) then
+			server.setPedGravity(g_Me, grav)
+		else
+			outputChatBox ("* Error: #FFFFFFYou can not set gravity while having a jetpack", 255, 0, 0, true)
+		end
 	end
 	closeWindow(wndGravity)
 end
@@ -317,7 +321,11 @@ end
 function setGravityCommand(cmd, grav)
 	local grav = grav and tonumber(grav)
 	if grav then
-		server.setPedGravity(g_Me, tonumber(grav))
+		if not doesPedHaveJetPack (g_Me) then
+			server.setPedGravity(g_Me, tonumber(grav))
+		else
+			outputChatBox ("* Error: #FFFFFFYou can not set gravity while having a jetpack", 255, 0, 0, true)
+		end
 	end
 end
 addCommandHandler('setgravity', setGravityCommand)
