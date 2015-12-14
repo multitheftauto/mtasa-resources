@@ -286,6 +286,7 @@ function warpMe(targetPlayer)
 	end
 end
 
+local sawnoffAntiAbuse = {}
 function giveMeWeapon(weapon, amount)
 	if weapon and weapon > 50 then
 		return
@@ -294,8 +295,29 @@ function giveMeWeapon(weapon, amount)
 		errMsg((getWeaponNameFromID(weapon) or tostring(weapon)) .. 's are not allowed', source)
 	else
 		giveWeapon(source, weapon, amount, true)
+		if weapon == 26 then
+			if not sawnoffAntiAbuse[source] then
+				setControlState (source, "aim_weapon", false)
+				setControlState (source, "fire", false)
+				toggleControl (source, "fire", false)
+				reloadPedWeapon (source)
+				sawnoffAntiAbuse[source] = setTimer (function(source)
+					if not source then return end
+					toggleControl (source, "fire", true)
+					sawnoffAntiAbuse[source] = nil
+				end, 3000, 1, source)
+			end
+        end
 	end
 end
+
+function killSawnOffTimersOnQuit()
+	if isTimer (sawnoffAntiAbuse[source]) then
+		killTimer (sawnoffAntiAbuse[source])
+		sawnoffAntiAbuse[source] = nil
+	end
+end
+addEventHandler ("onPlayerQuit", root, killSawnOffTimersOnQuit)
 
 function giveMeVehicles(vehicles)
 	if type(vehicles) == 'number' then
@@ -561,6 +583,15 @@ addEventHandler('onServerCall', resourceRoot,
 	function(fnName, ...)
 		source = client		-- Some called functions require 'source' to be set to the triggering client
 		local fnInfo = g_RPCFunctions[fnName]
+
+		-- Custom check made to intercept the jetpack on custom gravity
+		if fnInfo and type(fnInfo) ~= "boolean" and tostring(fnInfo.option) == "jetpack" then
+			if tonumber(("%.3f"):format(getPedGravity(source))) ~= 0.008 then
+				errMsg("* You may use jetpack only if the gravity is set to 0.008", source)
+				return
+			end
+		end
+
 		if fnInfo and ((type(fnInfo) == 'boolean' and fnInfo) or (type(fnInfo) == 'table' and getOption(fnInfo.option))) then
 			local fn = _G
 			for i,pathpart in ipairs(fnName:split('.')) do
