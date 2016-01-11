@@ -1,3 +1,11 @@
 <meta>
-  <script src="playerblips.lua" type="server" />
+	<info author="Noki" type="script" name="playerblips"/>
+	<script src="playerblips.lua" type="server"/>
+	<settings>
+		<setting name="use_team_colors" value="false"/> 		<!-- Set to true to enable, anything else will not use teams. Default: false -->
+		<setting name="blip_color" value="[ [ 0, 255, 0 ] ]"/> 	<!-- Default blip color if se_team_colors is not enabled. Default: [ [ 0, 255, 0 ] ] -->
+		<setting name="blip_size" value="2"/> 					<!-- Size of a player blip. Default: 2 -->
+		<setting name="blip_alpha" value="255"/> 				<!-- Alpha value of a player blip (0 - 255). Default: 255 -->
+	</settings>
+	<oop>true</oop>
 </meta>
