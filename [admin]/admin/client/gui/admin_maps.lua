@@ -34,8 +34,8 @@ function createMapTab()
 end
 
 function loadMaps(gamemodeMapTable, gamemode, map)
-	guiSetText(aTabMap.CurMap,"Current Map: "..map)
-	guiSetText(aTabMap.CurGamemode,"Current Gamemode: "..gamemode)
+	guiSetText(aTabMap.CurMap,"Current Map: ".. tostring ( map or "N/A" ) )
+	guiSetText(aTabMap.CurGamemode,"Current Gamemode: ".. tostring ( gamemode or "N/A" ) );
 	if gamemodeMapTable then
 		aGamemodeMapTable = gamemodeMapTable
 		for id,gamemode in pairs (gamemodeMapTable) do
