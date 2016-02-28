@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -899,14 +899,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			if ( vehicle ) then seat = getPedOccupiedVehicleSeat ( player ) end
 			local x, y, z = getElementPosition ( player )
 			data = tonumber ( data )
-			if ( spawnPlayer ( player, x, y, z, getPedRotation ( player ), data, getElementInterior ( player ), getElementDimension ( player ), getPlayerTeam ( player ) ) ) then
-				fadeCamera ( player, true )
-				if ( vehicle ) then warpPedIntoVehicle ( player, vehicle, seat ) end
-				if ( jetpack ) then givePedJetPack ( player ) end
-				mdata = data
-			else
-				action = nil
-			end
+			setElementModel(player, data)
 		elseif ( action == "setmoney" ) then
 			mdata = data
 			if ( not setPlayerMoney ( player, data ) ) then
