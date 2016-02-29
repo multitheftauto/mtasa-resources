@@ -894,10 +894,12 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			end
 		elseif ( action == "setskin" ) then
 			data = tonumber ( data )
-			mdata = data
-			if ( not setElementModel( player, data) ) then
-				outputChatBox( "Invalid skin ID", source, 255, 0, 0 )
+			if ( setElementModel( player, data) ) then
+				mdata = data
+				outputChatBox ( "'"..getPlayerName( source ).."' changed your skin to '"..data.."'!", player, 255, 100, 70 )
+			else
 				action = nil
+				outputChatBox( "Invalid skin ID", source, 255, 0, 0 )
 			end
 		elseif ( action == "setmoney" ) then
 			mdata = data
