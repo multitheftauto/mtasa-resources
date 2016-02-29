@@ -894,6 +894,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			end
 		elseif ( action == "setskin" ) then
 			data = tonumber ( data )
+			mdata = data
 			if ( not setElementModel( player, data) ) then
 				outputChatBox( "Invalid skin ID", source, 255, 0, 0 )
 				action = nil
