@@ -893,13 +893,11 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				action = nil
 			end
 		elseif ( action == "setskin" ) then
-			local vehicle = getPedOccupiedVehicle ( player )
-			local jetpack = doesPedHaveJetPack ( player )
-			local seat = 0
-			if ( vehicle ) then seat = getPedOccupiedVehicleSeat ( player ) end
-			local x, y, z = getElementPosition ( player )
 			data = tonumber ( data )
-			setElementModel(player, data)
+			if ( not setElementModel( player, data) ) then
+				outputChatBox( "Invalid skin ID", source, 255, 0, 0 )
+				action = nil
+			end
 		elseif ( action == "setmoney" ) then
 			mdata = data
 			if ( not setPlayerMoney ( player, data ) ) then
