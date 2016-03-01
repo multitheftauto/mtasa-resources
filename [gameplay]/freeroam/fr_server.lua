@@ -312,7 +312,7 @@ function giveMeWeapon(weapon, amount)
 end
 
 function killSawnOffTimersOnQuit()
-	if isTimer (sawnoffAntiAbuse[source]) then
+	if sawnoffAntiAbuse[source] and isTimer (sawnoffAntiAbuse[source]) then
 		killTimer (sawnoffAntiAbuse[source])
 		sawnoffAntiAbuse[source] = nil
 	end
