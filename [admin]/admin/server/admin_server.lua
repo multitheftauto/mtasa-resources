@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -893,19 +893,12 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				action = nil
 			end
 		elseif ( action == "setskin" ) then
-			local vehicle = getPedOccupiedVehicle ( player )
-			local jetpack = doesPedHaveJetPack ( player )
-			local seat = 0
-			if ( vehicle ) then seat = getPedOccupiedVehicleSeat ( player ) end
-			local x, y, z = getElementPosition ( player )
 			data = tonumber ( data )
-			if ( spawnPlayer ( player, x, y, z, getPedRotation ( player ), data, getElementInterior ( player ), getElementDimension ( player ), getPlayerTeam ( player ) ) ) then
-				fadeCamera ( player, true )
-				if ( vehicle ) then warpPedIntoVehicle ( player, vehicle, seat ) end
-				if ( jetpack ) then givePedJetPack ( player ) end
+			if ( setElementModel( player, data) ) then
 				mdata = data
 			else
 				action = nil
+				outputChatBox( "Invalid skin ID", source, 255, 0, 0 )
 			end
 		elseif ( action == "setmoney" ) then
 			mdata = data
