@@ -1,5 +1,3 @@
-﻿local thisResource = getThisResource()
-local bool = { [false]=true, [true]=true }
 local missionTimers = {}
 local readyPlayerList = {}
 addEvent"onMissionTimerElapsed"
@@ -12,14 +10,14 @@ addEventHandler("onPlayerQuit",root,
 
 addEventHandler ("onResourceStop",root,
 	function()
-		for i,timer in ipairs(getElementsByType("missiontimer",source)) do
+		for i,timer in pairs(getElementsByType("missiontimer",source)) do
 			destroyElement(timer)
 		end
 	end
 )
 
 function createMissionTimer ( duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
-	sourceResource = sourceResource or thisResource
+	sourceResource = sourceResource or resourceRoot
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
 	--Setup data
@@ -62,7 +60,7 @@ function getMissionTimerTime ( timer )
 end
 
 function setMissionTimerFrozen ( timer, frozen )	
-	if not bool[frozen] then return false end
+	if not type(frozen) == "boolean" then return false end
 
 	if missionTimers[timer] then
 		if frozen == missionTimers[timer].frozen then return false end
