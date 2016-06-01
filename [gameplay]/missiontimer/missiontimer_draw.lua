@@ -1,4 +1,4 @@
-﻿local screenX,screenY = guiGetScreenSize()
+local screenX,screenY = guiGetScreenSize()
 local bgWidth,bgHeight = 100, 20
 
 --Robbed from arc_
@@ -26,7 +26,7 @@ function msToTimeStr(ms)
 end
 
 
-addEventHandler ( "onClientRender", rootElement,
+addEventHandler ( "onClientRender", root,
 	function()
 		for timer,data in pairs(missionTimers) do
 			local msPassed = 0
