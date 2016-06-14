@@ -821,28 +821,42 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 		if ( action == "kick" ) then
 			local reason = data or ""
 			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
-			setTimer ( kickPlayer, 100, 1, player, source, reason )
+			local isAnonAdmin = getElementData(source, "AnonAdmin")
+			if isAnonAdmin then
+				setTimer ( kickPlayer, 100, 1, player, root, reason )
+			else
+				setTimer ( kickPlayer, 100, 1, player, source, reason )
+			end
 		elseif ( action == "ban" ) then
 			local reason = data or ""
 			local seconds = tonumber(additional) and tonumber(additional) > 0 and tonumber(additional)
 			local bUseSerial = additional2
+			local isAnonAdmin = getElementData(source, "AnonAdmin")
 			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
 			more = seconds and ( "(" .. secondsToTimeDesc(seconds) .. ")" ) or ""
-			if bUseSerial and getPlayerName ( player ) then
+			if bUseSerial and getPlayerName ( player ) and not isAnonAdmin then
 				-- Add banned player name to the reason
 				reason = reason .. " (nick: " .. getPlayerName ( player ) .. ")"
 			end
 			-- Add account name of banner to the reason
 			local adminAccountName = getAccountName ( getPlayerAccount ( source ) )
-			if adminAccountName and adminAccountName ~= getPlayerName( source ) then
+			if adminAccountName and adminAccountName ~= getPlayerName( source ) and not isAnonAdmin then
 				reason = reason .. " (by " .. adminAccountName .. ")"
 			end
 			if bUseSerial then
 				outputChatBox ( "You banned serial " .. getPlayerSerial( player ), source, 255, 100, 70 )
-				setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds or 0 )
+				if isAnonAdmin then
+					setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), root, reason, seconds or 0 )
+				else
+					setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds or 0 )
+				end
 			else
 				outputChatBox ( "You banned IP " .. getPlayerIP( player ), source, 255, 100, 70 )
-				setTimer ( banPlayer, 100, 1, player, true, false, false, source, reason, seconds or 0 )
+				if isAnonAdmin then
+					setTimer ( banPlayer, 100, 1, player, true, false, false, nil, reason, seconds or 0 )
+				else
+					setTimer ( banPlayer, 100, 1, player, true, false, false, source, reason, seconds or 0 )
+				end
 			end
 			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bansdirty" )
 		elseif ( action == "mute" )  then
@@ -865,7 +879,13 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			end
 		elseif ( action == "shout" ) then
 			local textDisplay = textCreateDisplay ()
-			local textItem = textCreateTextItem ( "(ADMIN)"..getPlayerName ( source )..":\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
+			local textItem
+			local anon = getElementData( admin, "AnonAdmin" ) 
+			if (anon) then
+				textItem = textCreateTextItem ( "ADMIN:\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
+			else
+				textItem = textCreateTextItem ( "(ADMIN)"..getPlayerName ( source )..":\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
+			end
 			textDisplayAddText ( textDisplay, textItem )
 			textDisplayAddObserver ( textDisplay, player )
 			setTimer ( textDestroyTextItem, 5000, 1, textItem )
