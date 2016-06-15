@@ -846,7 +846,12 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			if bUseSerial then
 				outputChatBox ( "You banned serial " .. getPlayerSerial( player ), source, 255, 100, 70 )
 				if isAnonAdmin then
-					setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), root, reason, seconds or 0 )
+
+					setTimer ( function()
+						local tBan = addBan( nil, nil, getPlayerSerial(player), "Anonymous admin", reason, seconds or 0 )
+						setBanAdmin(tBan,adminAccountName)
+					end, 100, 1)
+					
 				else
 					setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds or 0 )
 				end
