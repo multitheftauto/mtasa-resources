@@ -127,8 +127,8 @@ end
 addEvent("onClientMissionTimerDownloaded",true)
 addEventHandler ( "onClientMissionTimerDownloaded", root, 
 	function()
+		table.insert( readyPlayerList, client )
 		for timer,data in pairs(missionTimers) do
-			table.insert( readyPlayerList, client )
 			triggerClientEvent ( client, "setupNewMissionTimer", timer, getMissionTimerTime(timer), data.countdown, data.timerFormat, data.x, data.y, data.bg, data.font, data.scale, data.r, data.g, data.b )
 		end
 	end
