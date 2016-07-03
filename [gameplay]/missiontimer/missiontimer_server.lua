@@ -59,7 +59,7 @@ function getMissionTimerTime ( timer )
 end
 
 function setMissionTimerFrozen ( timer, frozen )	
-	if not type(frozen) == "boolean" then return false end
+	if type(frozen) ~= "boolean" then return false end
 
 	if missionTimers[timer] then
 		if frozen == missionTimers[timer].frozen then return false end
