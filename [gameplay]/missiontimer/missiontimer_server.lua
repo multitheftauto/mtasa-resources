@@ -8,7 +8,7 @@ addEventHandler("onPlayerQuit",root,
 	end
 )
 
-addEventHandler ("onResourceStop",root,
+addEventHandler ("onResourceStop",resourceRoot,
 	function()
 		for i,timer in pairs(getElementsByType("missiontimer",source)) do
 			destroyElement(timer)
@@ -17,7 +17,6 @@ addEventHandler ("onResourceStop",root,
 )
 
 function createMissionTimer ( duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
-	sourceResource = sourceResource or resourceRoot
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
 	--Setup data
@@ -125,7 +124,7 @@ function timeElapsed ( timer )
 end
 
 addEvent("onClientMissionTimerDownloaded",true)
-addEventHandler ( "onClientMissionTimerDownloaded", root, 
+addEventHandler ( "onClientMissionTimerDownloaded", resourceRoot, 
 	function()
 		table.insert( readyPlayerList, client )
 		for timer,data in pairs(missionTimers) do
