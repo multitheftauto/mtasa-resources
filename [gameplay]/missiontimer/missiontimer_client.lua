@@ -4,11 +4,11 @@ addEvent ( "onClientMissionTimerElapsed", true )
 
 addEventHandler("onClientResourceStart",resourceRoot,
 	function()
-		triggerServerEvent ( "onClientMissionTimerDownloaded", root )
+		triggerServerEvent ( "onClientMissionTimerDownloaded", resourceRoot )
 	end
 )
 
-addEventHandler ("onClientResourceStop",root,
+addEventHandler ("onClientResourceStop",resourceRoot,
 	function()
 		for i,timer in ipairs(getElementsByType("missiontimer",source)) do
 			destroyElement(timer)
