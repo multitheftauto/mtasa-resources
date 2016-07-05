@@ -96,7 +96,8 @@ g_OptionDefaults = {
 	weapons = {
 		enabled = true,
 		vehiclesenabled = true,
-		disallowed = {}
+		disallowed = {},
+		kniferestrictions = true
 	},
 	weather = true,
 	welcometextonstart = true,
@@ -245,6 +246,12 @@ function spawnMe(x, y, z)
 	else
 		spawnPlayer(source, x, y, z, 0, getPedSkin(source))
 	end
+	
+	if ( getOption('weapons.kniferestrictions') ) then
+		addEventHandler ( "onPlayerStealthKill", client, knifeCancelEvent )
+		setTimer ( removeKnifeRestrictions, 5000, 1, client )
+	end
+	
 	setCameraTarget(source, source)
 	setCameraInterior(source, getElementInterior(source))
 end
@@ -469,10 +476,26 @@ addEventHandler('onVehicleEnter', g_Root,
 	end
 )
 
+function knifeCancelEvent ()
+	outputChatBox ( "Knife restrictions are in place", source, 255, 0, 0 )
+	cancelEvent(true,"Knife restrictions")
+end
+function removeKnifeRestrictions (player)
+	if not isElement(player) or getElementType(player) ~= "player" then
+		return
+	end 
+	removeEventHandler ( "onPlayerStealthKill", player, knifeCancelEvent )
+end
+
 function setMyPos(x, y, z)
 	if not isElement(client) or getElementType(client) ~= "player" then
 		return
 	end 
+	
+	if ( getOption('weapons.kniferestrictions') ) then
+		addEventHandler ( "onPlayerStealthKill", client, knifeCancelEvent )
+		setTimer ( removeKnifeRestrictions, 5000, 1, client )
+	end
 
 	local veh = getPedOccupiedVehicle (client)
 	if veh then
