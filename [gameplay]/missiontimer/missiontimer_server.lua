@@ -1,18 +1,22 @@
-﻿local thisResource = getThisResource()
-local bool = { [false]=true, [true]=true }
 local missionTimers = {}
+local readyPlayerList = {}
 addEvent"onMissionTimerElapsed"
 
-addEventHandler ("onResourceStop",root,
+addEventHandler("onPlayerQuit",root,
 	function()
-		for i,timer in ipairs(getElementsByType("missiontimer",source)) do
+		table.removevalue( readyPlayerList, source )
+	end
+)
+
+addEventHandler ("onResourceStop",resourceRoot,
+	function()
+		for i,timer in pairs(getElementsByType("missiontimer",source)) do
 			destroyElement(timer)
 		end
 	end
 )
 
 function createMissionTimer ( duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
-	sourceResource = sourceResource or thisResource
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
 	--Setup data
@@ -22,7 +26,7 @@ function createMissionTimer ( duration, countdown, timerFormat, x, y, bg, font, 
 	--
 	missionTimers[element].timer = setTimer ( timeElapsed, duration, 1, element )
 	addEventHandler ( "onElementDestroy", element, cleanupMissionTimer )
-	triggerClientEvent ( "setupNewMissionTimer", element, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
+	triggerClientEvent ( readyPlayerList, "setupNewMissionTimer", element, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 	return element
 end
 
@@ -37,7 +41,7 @@ function setMissionTimerTime ( timer, time )
 		end
 		missionTimers[timer].timer = setTimer ( timeElapsed, missionTimers[timer].duration, 1, timer )
 		
-		triggerClientEvent ( "setMissionTimerRemainingTime", timer, time )
+		triggerClientEvent ( readyPlayerList, "setMissionTimerRemainingTime", timer, time )
 		return true
 	end
 	return false
@@ -55,7 +59,7 @@ function getMissionTimerTime ( timer )
 end
 
 function setMissionTimerFrozen ( timer, frozen )	
-	if not bool[frozen] then return false end
+	if type(frozen) ~= "boolean" then return false end
 
 	if missionTimers[timer] then
 		if frozen == missionTimers[timer].frozen then return false end
@@ -72,7 +76,7 @@ function setMissionTimerFrozen ( timer, frozen )
 			missionTimers[timer].timer = setTimer ( timeElapsed, missionTimers[timer].duration, 1, timer )
 			missionTimers[timer].originalTick = getTickCount()
 		end
-		return triggerClientEvent ( "setMissionTimerFrozen", timer, frozen )
+		return triggerClientEvent ( readyPlayerList, "setMissionTimerFrozen", timer, frozen )
 	end
 	return false
 end
@@ -86,7 +90,7 @@ function setMissionTimerHurryTime ( timer, time )
 	if not time or not tonumber(time) then return nil end
 	
 	if missionTimers[timer] then
-		return triggerClientEvent ( "setMissionTimerHurryTime", timer, time )
+		return triggerClientEvent ( readyPlayerList, "setMissionTimerHurryTime", timer, time )
 	end
 	return false
 end
@@ -98,7 +102,7 @@ function setMissionTimerFormat( timer, timerFormat )
 	if missionTimers[timer] then
 		missionTimers[timer].timerFormat = timerFormat
 		
-		return triggerClientEvent ( "setMissionTimerFormat", timer, timerFormat )
+		return triggerClientEvent ( readyPlayerList, "setMissionTimerFormat", timer, timerFormat )
 	end
 	return false
 end
@@ -120,10 +124,21 @@ function timeElapsed ( timer )
 end
 
 addEvent("onClientMissionTimerDownloaded",true)
-addEventHandler ( "onClientMissionTimerDownloaded", root, 
+addEventHandler ( "onClientMissionTimerDownloaded", resourceRoot, 
 	function()
+		table.insert( readyPlayerList, client )
 		for timer,data in pairs(missionTimers) do
-			triggerClientEvent ( source, "setupNewMissionTimer", timer, getMissionTimerTime(timer), data.countdown, data.timerFormat, data.x, data.y, data.bg, data.font, data.scale, data.r, data.g, data.b )
+			triggerClientEvent ( client, "setupNewMissionTimer", timer, getMissionTimerTime(timer), data.countdown, data.timerFormat, data.x, data.y, data.bg, data.font, data.scale, data.r, data.g, data.b )
 		end
 	end
 )
+
+function table.removevalue(t, val)
+	for i,v in ipairs(t) do
+		if v == val then
+			table.remove(t, i)
+			return i
+		end
+	end
+	return false
+end

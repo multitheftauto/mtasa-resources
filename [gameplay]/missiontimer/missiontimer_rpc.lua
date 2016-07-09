@@ -1,34 +1,33 @@
-﻿addEvent ( "setupNewMissionTimer", true )
-addEventHandler ( "setupNewMissionTimer", rootElement,
+addEvent ( "setupNewMissionTimer", true )
+addEventHandler ( "setupNewMissionTimer", root,
 	function(duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 		setupMissionTimer ( source, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
 	end
 )
 
 addEvent ( "setMissionTimerRemainingTime", true )
-addEventHandler ( "setMissionTimerRemainingTime", rootElement,
+addEventHandler ( "setMissionTimerRemainingTime", root,
 	function(remaining)
 		setMissionTimerTime ( source, remaining )
 	end
 )
 
 addEvent ( "setMissionTimerFrozen", true )
-addEventHandler ( "setMissionTimerFrozen", rootElement,
+addEventHandler ( "setMissionTimerFrozen", root,
 	function(frozen)
 		setMissionTimerFrozen ( source, frozen )
 	end
 )
 
 addEvent ( "setMissionTimerHurryTime", true )
-addEventHandler ( "setMissionTimerHurryTime", rootElement,
+addEventHandler ( "setMissionTimerHurryTime", root,
 	function(time)
 		setMissionTimerHurryTime ( source, time )
 	end
 )
 
-
 addEvent ( "setMissionTimerFormat", true )
-addEventHandler ( "setMissionTimerFormat", rootElement,
+addEventHandler ( "setMissionTimerFormat", root,
 	function(timerFormat)
 		setMissionTimerFormat ( source, timerFormat )
 	end

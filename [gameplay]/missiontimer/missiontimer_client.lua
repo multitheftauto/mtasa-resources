@@ -1,16 +1,14 @@
-﻿rootElement = getRootElement()
-thisResource = getThisResource()
 missionTimers = {}
 bool = { [false]=true, [true]=true }
 addEvent ( "onClientMissionTimerElapsed", true )
 
 addEventHandler("onClientResourceStart",resourceRoot,
 	function()
-		triggerServerEvent ( "onClientMissionTimerDownloaded", getLocalPlayer() )
+		triggerServerEvent ( "onClientMissionTimerDownloaded", resourceRoot )
 	end
 )
 
-addEventHandler ("onClientResourceStop",rootElement,
+addEventHandler ("onClientResourceStop",resourceRoot,
 	function()
 		for i,timer in ipairs(getElementsByType("missiontimer",source)) do
 			destroyElement(timer)
@@ -19,7 +17,7 @@ addEventHandler ("onClientResourceStop",rootElement,
 )
 
 function createMissionTimer ( duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
-	sourceResource = sourceResource or thisResource
+	sourceResource = sourceResource or resource
 	local element = createElement ( "missiontimer" )
 	setElementParent ( element, getResourceDynamicElementRoot(sourceResource) )
 	setupMissionTimer ( element, duration, countdown, timerFormat, x, y, bg, font, scale, r, g, b )
@@ -116,4 +114,3 @@ function onMissionTimerDestroy()
 	end
 	missionTimers[source] = nil
 end
-
