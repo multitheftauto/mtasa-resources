@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -853,14 +853,23 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 					end, 100, 1)
 					
 				else
-					setTimer ( addBan, 100, 1, nil, nil, getPlayerSerial(player), source, reason, seconds or 0 )
+					setTimer ( function()
+						local tBan = addBan( nil, nil, getPlayerSerial(player), source, reason, seconds or 0 )
+						setBanAdmin(tBan,adminAccountName)
+					end, 100, 1)
 				end
 			else
 				outputChatBox ( "You banned IP " .. getPlayerIP( player ), source, 255, 100, 70 )
 				if isAnonAdmin then
-					setTimer ( banPlayer, 100, 1, player, true, false, false, nil, reason, seconds or 0 )
+					setTimer ( function()
+						local tBan = banPlayer( player, true, false, false, nil, reason, seconds or 0 )
+						setBanAdmin(tBan,adminAccountName)
+					end, 100, 1)
 				else
-					setTimer ( banPlayer, 100, 1, player, true, false, false, source, reason, seconds or 0 )
+					setTimer ( function()
+						local tBan = banPlayer( player, true, false, false, source, reason, seconds or 0 )
+						setBanAdmin(tBan,adminAccountName)
+					end, 100, 1)
 				end
 			end
 			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bansdirty" )
@@ -1378,21 +1387,27 @@ addEventHandler ( "aModdetails", resourceRoot, function ( action, player )
 end )
 
 addEvent ( "aBans", true )
-addEventHandler ( "aBans", _root, function ( action, data )
+addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2 )
 	if checkClient( "command."..action, source, 'aBans', action ) then return end
 	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
 		local mdata = ""
 		local more = ""
 		if ( action == "banip" ) then
 			mdata = data
-			if ( not addBan ( data,nil,nil,source ) ) then
+			local newban = addBan ( data,nil,nil,source,arg2 )
+			if ( not newban ) then
 				action = nil
+			else
+				setBanNick (newban, arg1)
 			end
 		elseif ( action == "banserial" ) then
 			mdata = data
 			if ( isValidSerial ( data ) ) then
-				if ( not addBan ( nil,nil, string.upper ( data ),source ) ) then
+				local newban = addBan ( nil,nil, string.upper ( data ),source,arg2 )
+				if ( not newban ) then
 					action = nil
+				else
+					setBanNick (newban, arg1)
 				end
 			else
 				outputChatBox ( "Error - Invalid serial", source, 255, 0, 0 )
