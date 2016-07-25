@@ -1399,6 +1399,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2 )
 				action = nil
 			else
 				setBanNick (newban, arg1)
+				setBanAdmin(newban, getAccountName(getPlayerAccount(source)))
 			end
 		elseif ( action == "banserial" ) then
 			mdata = data
@@ -1407,6 +1408,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2 )
 				if ( not newban ) then
 					action = nil
 				else
+					setBanAdmin(newban, getAccountName(getPlayerAccount(source)))
 					setBanNick (newban, arg1)
 				end
 			else
