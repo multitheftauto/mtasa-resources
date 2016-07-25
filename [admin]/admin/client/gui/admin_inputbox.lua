@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -29,6 +29,32 @@ function aInputBox ( title, message, default, action, vOne, vTwo )
 		--Register With Admin Form
 		aRegister ( "InputBox", aInputForm, aInputBox, aInputBoxClose )
 	end
+	if not action or action ~= "banSerial" and action ~= "banIP" then
+		guiSetSize(aInputForm, 300, 110, false)
+		guiSetPosition(aInputOk, 90, 80, false)
+		guiSetPosition(aInputCancel, 150, 80, false)
+
+		if isElement(banSerialLbl) then destroyElement(banSerialLbl) end
+		if isElement(banNickEdit) then destroyElement(banNickEdit) end
+		if isElement(banReasonEdit) then destroyElement(banReasonEdit) end
+	else
+		guiSetSize(aInputForm, 300, 170, false)
+		guiSetPosition(aInputOk, 90, 140, false)
+		guiSetPosition(aInputCancel, 150, 140, false)
+
+		if not isElement(banSerialLbl) then
+			banSerialLbl = guiCreateLabel ( 20, 75, 270, 15, "Enter player nick & reason", false, aInputForm )
+			guiLabelSetHorizontalAlign ( banSerialLbl, "center" )
+		end
+		if not isElement(banNickEdit) then
+			banNickEdit = guiCreateEdit ( 35, 95, 60, 24, "Nick", false, aInputForm )
+		end
+		if not isElement(banReasonEdit) then
+			banReasonEdit = guiCreateEdit ( 100, 95, 165, 24, "Reason", false, aInputForm )
+		end
+	end
+	
+
 	guiSetText ( aInputForm, title )
 	guiSetText ( aInputLabel, message )
 	guiSetText ( aInputValue, default )
@@ -99,9 +125,9 @@ function aInputBoxClick ( button )
 			elseif (aInputAction == "unbanSerial") then
 				triggerServerEvent("aBans", localPlayer, "unbanserial", guiGetText(aInputValue))
 			elseif (aInputAction == "banIP") then
-				triggerServerEvent("aBans", localPlayer, "banip", guiGetText(aInputValue))
+				triggerServerEvent("aBans", localPlayer, "banip", guiGetText(aInputValue), guiGetText(banNickEdit), guiGetText(banReasonEdit))
 			elseif (aInputAction == "banSerial") then
-				triggerServerEvent("aBans", localPlayer, "banserial", guiGetText(aInputValue))
+				triggerServerEvent("aBans", localPlayer, "banserial", guiGetText(aInputValue), guiGetText(banNickEdit), guiGetText(banReasonEdit))
 			elseif (aInputAction == "settingChange") then
 				triggerServerEvent("aAdmin", localPlayer, "settings", "change", varOne, varTwo, guiGetText(aInputValue))
 			elseif (aInputAction == "aclCreateGroup") then
