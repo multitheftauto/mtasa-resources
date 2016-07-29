@@ -248,8 +248,7 @@ function spawnMe(x, y, z)
 	end
 	
 	if ( getOption('weapons.kniferestrictions') ) then
-		addEventHandler ( "onPlayerStealthKill", client, knifeCancelEvent )
-		setTimer ( removeKnifeRestrictions, 5000, 1, client )
+		setPlayerKnifeRestricted ( client )
 	end
 	
 	setCameraTarget(source, source)
@@ -476,14 +475,26 @@ addEventHandler('onVehicleEnter', g_Root,
 	end
 )
 
+function setPlayerKnifeRestricted ( player )
+	g_PlayerData[player].timers = g_PlayerData[player].timers or {}
+	if g_PlayerData[player].timers.knifeProtection then
+		resetTimer ( g_PlayerData[player].timers.knifeProtection )
+	else
+		addEventHandler ( "onPlayerStealthKill", player, knifeCancelEvent )
+		g_PlayerData[player].timers.knifeProtection =  setTimer ( removeKnifeRestrictions, 5000, 1, player )
+	end
+end
+
 function knifeCancelEvent ()
 	outputChatBox ( "Knife restrictions are in place", source, 255, 0, 0 )
 	cancelEvent(true,"Knife restrictions")
 end
+
 function removeKnifeRestrictions (player)
 	if not isElement(player) or getElementType(player) ~= "player" then
 		return
 	end 
+	g_PlayerData[player].timers.knifeProtection = nil
 	removeEventHandler ( "onPlayerStealthKill", player, knifeCancelEvent )
 end
 
@@ -493,8 +504,7 @@ function setMyPos(x, y, z)
 	end 
 	
 	if ( getOption('weapons.kniferestrictions') ) then
-		addEventHandler ( "onPlayerStealthKill", client, knifeCancelEvent )
-		setTimer ( removeKnifeRestrictions, 5000, 1, client )
+		setPlayerKnifeRestricted ( client )
 	end
 
 	local veh = getPedOccupiedVehicle (client)
