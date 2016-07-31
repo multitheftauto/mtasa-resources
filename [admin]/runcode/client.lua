@@ -1,4 +1,6 @@
-﻿local function runString (commandstring)
+﻿me = localPlayer
+
+local function runString (commandstring)
 	outputChatBoxR("Executing client-side command: "..commandstring)
 	local notReturned
 	--First we test with return

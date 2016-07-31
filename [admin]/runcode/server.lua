@@ -1,6 +1,7 @@
 ﻿local rootElement = getRootElement()
 
 function runString (commandstring, outputTo, source)
+	me = source
 	local sourceName
 	if source then
 		sourceName = getPlayerName(source)
