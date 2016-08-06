@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -163,6 +163,7 @@ function aSynchCoroutineFunc( type, data )
 			tableOut[i].ip = getBanIP(ban)
 			tableOut[i].serial = getBanSerial(ban)
 			tableOut[i].reason = getBanReason(ban)
+			tableOut[i].unban = getUnbanTime(ban)
 		end
 	elseif ( type == "messages" ) then
 		local unread, total = 0, 0
@@ -391,4 +392,3 @@ function getPlayerACInfo( player )
 	end
 	return _getPlayerACInfo( player )
 end
-

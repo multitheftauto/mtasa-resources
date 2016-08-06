@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -19,6 +19,7 @@ function aBanDetails ( ip )
 		aBanDate		= guiCreateLabel ( 0.03, 0.30, 0.80, 0.09, "", true, aBanForm )
 		aBanTime		= guiCreateLabel ( 0.03, 0.40, 0.80, 0.09, "", true, aBanForm )
 		aBanBanner		= guiCreateLabel ( 0.03, 0.50, 0.80, 0.09, "", true, aBanForm )
+		aBanUnban		= guiCreateLabel ( 0.03, 0.60, 0.80, 0.09, "", true, aBanForm )
 		aBanClose		= guiCreateButton ( 0.80, 0.88, 0.17, 0.08, "Close", true, aBanForm )
 
 		guiSetVisible ( aBanForm, false )
@@ -32,8 +33,14 @@ function aBanDetails ( ip )
 		guiSetText ( aBanDate, "Date: "..iif ( aBans["IP"][ip]["date"], aBans["IP"][ip]["date"], "Unknown" ) )
 		guiSetText ( aBanTime, "Time: "..iif ( aBans["IP"][ip]["time"], aBans["IP"][ip]["time"], "Unknown" ) )
 		guiSetText ( aBanBanner, "Banned by: "..iif ( aBans["IP"][ip]["banner"], aBans["IP"][ip]["banner"], "Unknown" ) )
+		local unban = tostring(aBans["IP"][ip]["unban"])
+		if not unban or unban == "0" then
+			guiSetText ( aBanUnban, "Unban: Permanent", unban)
+		else
+			guiSetText ( aBanUnban, "Unban: "..FormatDate("d/m/y h:i:s", "'", unban) )
+		end
 		if ( aBanReason ) then destroyElement ( aBanReason ) end
-		aBanReason = guiCreateLabel ( 0.03, 0.60, 0.80, 0.30, "Reason: "..iif ( aBans["IP"][ip]["reason"], aBans["IP"][ip]["reason"], "Unknown" ), true, aBanForm )
+		aBanReason = guiCreateLabel ( 0.03, 0.70, 0.80, 0.30, "Reason: "..iif ( aBans["IP"][ip]["reason"], aBans["IP"][ip]["reason"], "Unknown" ), true, aBanForm )
 		guiLabelSetHorizontalAlign ( aBanReason, "left", true )
 		guiSetVisible ( aBanForm, true )
 		guiBringToFront ( aBanForm )
@@ -43,8 +50,14 @@ function aBanDetails ( ip )
 		guiSetText ( aBanDate, "Date: "..iif ( aBans["Serial"][ip]["date"], aBans["Serial"][ip]["date"], "Unknown" ) )
 		guiSetText ( aBanTime, "Time: "..iif ( aBans["Serial"][ip]["time"], aBans["Serial"][ip]["time"], "Unknown" ) )
 		guiSetText ( aBanBanner, "Banned by: "..iif ( aBans["Serial"][ip]["banner"], aBans["Serial"][ip]["banner"], "Unknown" ) )
+		local unban = tostring(aBans["Serial"][ip]["unban"])
+		if not unban or unban == "0" then
+			guiSetText ( aBanUnban, "Unban: Permanent", unban)
+		else
+			guiSetText ( aBanUnban, "Unban: "..FormatDate("d/m/y h:i:s", "'", unban) )
+		end
 		if ( aBanReason ) then destroyElement ( aBanReason ) end
-		aBanReason = guiCreateLabel ( 0.03, 0.60, 0.80, 0.30, "Reason: "..iif ( aBans["Serial"][ip]["reason"], aBans["Serial"][ip]["reason"], "Unknown" ), true, aBanForm )
+		aBanReason = guiCreateLabel ( 0.03, 0.70, 0.80, 0.30, "Reason: "..iif ( aBans["Serial"][ip]["reason"], aBans["Serial"][ip]["reason"], "Unknown" ), true, aBanForm )
 		guiLabelSetHorizontalAlign ( aBanReason, "left", true )
 		guiSetVisible ( aBanForm, true )
 		guiBringToFront ( aBanForm )
