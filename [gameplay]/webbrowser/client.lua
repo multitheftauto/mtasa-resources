@@ -6,7 +6,7 @@ addEventHandler("onClientResourceStart", resourceRoot,
 		bindKey("lalt", "down", function(button, state) showCursor(not isCursorShowing()) end)
 		
 		-- Create Chromium icon
-		local icon = GuiStaticImage.create(0, screenHeight - 48, 48, 48, "chromiumIcon.png", false)
+		local icon = GuiStaticImage(0, screenHeight - 48, 48, 48, "chromiumIcon.png", false)
 		addEventHandler("onClientGUIClick", icon,
 			function(button, state)
 				if button == "left" and state == "up" then
