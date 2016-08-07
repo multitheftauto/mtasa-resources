@@ -49,7 +49,7 @@ function aInputBox ( title, message, default, action, vOne, vTwo )
 		-- time duration:
 
 		if not isElement(banSerialCombo) then
-			banSerialCombo = guiCreateComboBox ( 180, 135, 75, 4*20+20, "Perm", false, aInputForm )
+			banSerialCombo = guiCreateComboBox ( 180, 80, 120, 100, "Perm", false, aInputForm )
 				guiComboBoxAddItem(banSerialCombo, "Mins")
 				guiComboBoxAddItem(banSerialCombo, "Hours")
 				guiComboBoxAddItem(banSerialCombo, "Days")
@@ -57,24 +57,27 @@ function aInputBox ( title, message, default, action, vOne, vTwo )
 		end
 
 		if not isElement(durationEdit) then
-			durationEdit = guiCreateEdit ( 110, 135, 60, 24, "", false, aInputForm )
+			durationEdit = guiCreateEdit ( 110, 80, 60, 24, "", false, aInputForm )
 		end
+		guiSetText(durationEdit, "")
 
 		if not isElement(banDurationLbl) then
-			banDurationLbl = guiCreateLabel ( 40, 138, 50, 15, "Duration:", false, aInputForm )
+			banDurationLbl = guiCreateLabel ( 40, 83, 50, 15, "Duration:", false, aInputForm )
 			guiLabelSetHorizontalAlign ( banDurationLbl, "center" )
 		end
 
 		if not isElement(banSerialLbl) then
-			banSerialLbl = guiCreateLabel ( 20, 75, 270, 15, "Enter player nick & reason", false, aInputForm )
+			banSerialLbl = guiCreateLabel ( 20, 110, 270, 15, "Enter player nick & reason", false, aInputForm )
 			guiLabelSetHorizontalAlign ( banSerialLbl, "center" )
 		end
+
 		if not isElement(banNickEdit) then
-			banNickEdit = guiCreateEdit ( 35, 95, 60, 24, "", false, aInputForm )
+			banNickEdit = guiCreateEdit ( 35, 130, 60, 24, "", false, aInputForm )
 		end
 		guiSetText(banNickEdit, "Nick")
+
 		if not isElement(banReasonEdit) then
-			banReasonEdit = guiCreateEdit ( 100, 95, 165, 24, "", false, aInputForm )
+			banReasonEdit = guiCreateEdit ( 100, 130, 165, 24, "", false, aInputForm )
 		end
 		guiSetText(banReasonEdit, "Reason")
 	end
