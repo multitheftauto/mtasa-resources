@@ -17,6 +17,7 @@
 	<script src="scriptreaderkeybinds.lua" type="client" />
 	<script src="scriptreader.lua" />
 	<script src="scriptreader_client.lua" type="client" />
+	<oop>true</oop>
 	
 	<export function="edfStartResource" />				<!--bool-->
 	<export function="edfStopResource" />				<!--bool-->	
