@@ -13,6 +13,14 @@
 	return newMap
 end
 
+function insertResourceFile ( resource, path, filetype )
+	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
+    local node = xmlCreateChild ( metaNode, filetype )
+    xmlNodeSetAttribute ( node, "src", path )
+	xmlSaveFile ( metaNode )
+	xmlUnloadFile ( metaNode )
+end
+
 function removeResourceFile ( resource, path, filetype )
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	local i = 0

@@ -325,6 +325,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			saveResourceCoroutine = nil
 			return false
 		end
+        backupMapFiles( resourceName )
 		for i,fileType in ipairs(fileTypes) do
 			local files, err = getResourceFiles(resource, fileType)
 			if (err and err == "no meta") then
@@ -493,6 +494,9 @@ end
 
 function doQuickSaveCoroutineFunction(saveAs, dump, client)
 	if ( loadedMap ) then
+        if not dump then
+            backupMapFiles( loadedMap )
+        end
 		local tick = getTickCount()
 		local iniTick = getTickCount()
 		local resourceName = tostring(dump and DUMP_RESOURCE or loadedMap)

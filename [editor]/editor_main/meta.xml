@@ -75,6 +75,7 @@
 	<script src="server/resourcehooks.lua" type="server"/>
 	<script src="server/dumpxml.lua" type="server" />
 	<script src="server/saveloadtest_server.lua" type="server"/>
+	<script src="server/save_backup.lua" type="server"/>
 
 	<!-- undo/redo -->
 	<script src="server/undoredo_action.lua" type="server"/>
