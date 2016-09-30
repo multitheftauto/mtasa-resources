@@ -37,7 +37,7 @@ addEventHandler('onGamemodeMapStart', g_Root,
 		outputDebugString('onGamemodeMapStart(' .. getResourceName(mapres) .. ')')
 		if getTotalPlayerCount() == 0 then
 			outputDebugString('Stopping map')
-			triggerEvent('onGamemodeMapStop', g_Root)
+			triggerEvent('onGamemodeMapStop', g_Root, mapres)
             return
 		end
         gotoState('LoadingMap')
@@ -841,7 +841,7 @@ addEventHandler('onPlayerQuit', g_Root,
         
 		if getTotalPlayerCount() < 2 then
 			outputDebugString('Stopping map')
-			triggerEvent('onGamemodeMapStop', g_Root)
+			triggerEvent('onGamemodeMapStop', g_Root, exports.mapmanager:getRunningGamemodeMap())
 		else
 			if stateAllowsPostFinish() and g_CurrentRaceMode.running then
 				gotoState('EveryoneFinished')
