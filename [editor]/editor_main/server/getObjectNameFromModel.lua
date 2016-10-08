@@ -14260,5 +14260,5 @@
 }
 
 function getObjectNameFromModel ( id )
-	return objectNames[id] or false
+    return objectNames[id] or false
 end
