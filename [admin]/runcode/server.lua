@@ -18,7 +18,7 @@ function runString (commandstring, outputTo, source)
 		return
 	end
 	--Finally, lets execute our function
-	results = { pcall(commandFunction) }
+	local results = { pcall(commandFunction) }
 	if not results[1] then
 		--It failed.
 		outputChatBoxR("Error: "..results[2], outputTo)
@@ -92,7 +92,7 @@ function httpRun(commandstring)
 		return "Error: "..errorMsg
 	end
 	--Finally, lets execute our function
-	results = { pcall(commandFunction) }
+	local results = { pcall(commandFunction) }
 	if not results[1] then
 		--It failed.
 		return "Error: "..results[2]

@@ -15,7 +15,7 @@ local function runString (commandstring)
 		return
 	end
 	--Finally, lets execute our function
-	results = { pcall(commandFunction) }
+	local results = { pcall(commandFunction) }
 	if not results[1] then
 		--It failed.
 		outputChatBoxR("Error: "..results[2])
