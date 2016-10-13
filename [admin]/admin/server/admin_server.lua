@@ -1475,6 +1475,7 @@ addEventHandler ( "aAdminChat", _root, function ( chat )
 			triggerClientEvent ( player, "aClientAdminChat", source, chat )
 		end
 	end
+	outputServerLog ("(ADMIN CHAT) "..tostring(getPlayerName(source))..": "..chat)
 end )
 
 addEventHandler('onElementDataChange', root,
