@@ -21,6 +21,12 @@ function WebBrowserGUI:constructor()
 	self.m_ButtonClose:setFont("default-bold-small")
 	
 	self.m_Browser = GuiBrowser(5, 62, sizeX - 10, sizeY - 67, false, false, false, self.m_Window)
+
+	if not self.m_Browser then
+		outputChatBox( "Can't create browser. Check Settings->Web Browser" )
+		self.m_Window:destroy()
+		return
+	end
 	
 	local browser = self.m_Browser:getBrowser()
 	addEventHandler("onClientBrowserCreated", browser, function(...) self:Browser_Created(...) end)
