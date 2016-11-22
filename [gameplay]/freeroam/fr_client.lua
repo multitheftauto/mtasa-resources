@@ -114,6 +114,11 @@ wndAnim = {
 
 addCommandHandler('anim',
 	function(command, lib, name)
+		if lib and name then
+		if string.lower(lib) == "finale" and string.lower(name) == "fin_jump_on" or string.lower(lib) == "finale2" and string.lower(name) == "fin_cop1_climbout" then
+			return outputChatBox ("* This animation may not be set by a command", 255, 0, 0)
+			end
+		end
 		server.setPedAnimation(g_Me, lib, name, true, true)
 	end
 )
