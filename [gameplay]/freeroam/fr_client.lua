@@ -114,10 +114,12 @@ wndAnim = {
 
 addCommandHandler('anim',
 	function(command, lib, name)
-		if lib and name then
-		if string.lower(lib) == "finale" and string.lower(name) == "fin_jump_on" or string.lower(lib) == "finale2" and string.lower(name) == "fin_cop1_climbout" then
-			return outputChatBox ("* This animation may not be set by a command", 255, 0, 0)
-			end
+		if lib and name and (
+			(lib:lower() == "finale" and name:lower() == "fin_jump_on") or
+			(lib:lower() == "finale2" and name:lower() == "fin_cop1_climbout")
+		) then
+			errMsg('This animation may not be set by command.')
+			return
 		end
 		server.setPedAnimation(g_Me, lib, name, true, true)
 	end
