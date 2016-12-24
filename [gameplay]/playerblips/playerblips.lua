@@ -7,18 +7,22 @@ resourceRoot = getResourceRootElement ( getThisResource () )
 function onResourceStart ( resource )
   	for id, player in ipairs( getElementsByType ( "player" ) ) do
 		if ( players[player] ) then
-			createBlipAttachedTo ( player, 0, 2, players[source][1], players[source][2], players[source][3] )
+			local blip = createBlipAttachedTo ( player, 0, 2, players[source][1], players[source][2], players[source][3] )
+			setElementData ( player, "blip", blip )
 		else
-			createBlipAttachedTo ( player, 0, 2, color[1], color[2], color[3] )
+			local blip = createBlipAttachedTo ( player, 0, 2, color[1], color[2], color[3] )
+			setElementData ( player, "blip", blip )
 		end
 	end
 end
 
 function onPlayerSpawn ( spawnpoint )
 	if ( players[source] ) then
-		createBlipAttachedTo ( source, 0, 2, players[source][1], players[source][2], players[source][3] )
+		local blip = createBlipAttachedTo ( source, 0, 2, players[source][1], players[source][2], players[source][3] )
+		setElementData ( source, "blip", blip )
 	else
-		createBlipAttachedTo ( source, 0, 2, color[1], color[2], color[3] )
+		local blip = createBlipAttachedTo ( source, 0, 2, color[1], color[2], color[3] )
+		setElementData ( source, "blip", blip )
 	end
 end
 
@@ -36,9 +40,11 @@ function setBlipsColor ( source, commandName, r, g, b )
   		for id, player in ipairs( getElementsByType ( "player" ) ) do
 			destroyBlipsAttachedTo ( player )
 			if ( players[player] ) then
-				createBlipAttachedTo ( player, 0, 2, players[source][1], players[source][2], players[source][3] )
+				local blip = createBlipAttachedTo ( player, 0, 2, players[source][1], players[source][2], players[source][3] )
+				setElementData ( player, "blip", blip )
 			else
-				createBlipAttachedTo ( player, 0, 2, color[1], color[2], color[3] )
+				local blip = createBlipAttachedTo ( player, 0, 2, color[1], color[2], color[3] )
+				setElementData ( player, "blip", blip )
 			end
 		end
 	end
@@ -52,6 +58,26 @@ function setBlipColor ( source, commandName, r, g, b )
 	end
 end
 
+function setPlayerBlipColor ( source, commandName, player, r, g, b)
+	if not player or not r or not g or not b then
+		outputChatBox("Syntax: /setblipcolor <player name> <r> <g> <b>", source)
+	return end
+	local target = getPlayerFromPartialName(player)
+	if not target then 
+		outputChatBox("There is no player with that nickname.", source)
+	return end 
+	local blip = getElementData(target, "blip")
+	if not blip then 
+		outputChatBox("Unexepted error.", source)
+	return end
+	if r > 0 and r < 256 and g > 0 and g < 256 and b > 0 and g < 256 then
+		setBlipColor(target, r, g, b)
+	else 
+		outputChatBox("Bad color.", source)
+	end
+end
+
+addCommandHandler ( "setblipcolor", setPlayerBlipColor)
 addCommandHandler ( "setblipscolor", setBlipsColor )
 addCommandHandler ( "setblipcolor", setBlipColor )
 addEventHandler ( "onResourceStart", resourceRoot, onResourceStart )
@@ -68,4 +94,16 @@ function destroyBlipsAttachedTo(player)
 			end
 		end
 	end
+end
+
+function getPlayerFromPartialName(name)
+    local name = name and name:gsub("#%x%x%x%x%x%x", ""):lower() or nil
+    if name then
+        for _, player in ipairs(getElementsByType("player")) do
+            local name_ = getPlayerName(player):gsub("#%x%x%x%x%x%x", ""):lower()
+            if name_:find(name, 1, true) then
+                return player
+            end
+        end
+    end
 end
