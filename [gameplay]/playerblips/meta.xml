@@ -1,3 +1,4 @@
 <meta>
   <script src="playerblips.lua" type="server" />
+  <oop>true</oop>
 </meta>
