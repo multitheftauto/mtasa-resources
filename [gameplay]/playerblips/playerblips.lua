@@ -5,16 +5,22 @@ local color = get("blip_color")
 local colors = {}
 local blip = {}
 
-if (useTeams == "true") then
-	useTeams = true
-else
-	useTeams = false
-end
+addEventHandler("onResourceStart", resourceRoot,
+	function ()
+		if (useTeams == "true") then
+			useTeams = true
+		else
+			useTeams = false
+			addCommandHandler("setblipcolor", setBlipColor)
+			addCommandHandler("setblipscolor", setBlipsColor)
+		end
+	end
+)
 
 function createPlayerBlip(plr)
 	if (not plr or not isElement(plr) or plr.type ~= "player") then return false end
 	local r, g, b
-	if useTeams and plr.team then
+	if (useTeams and plr.team) then
 		r, g, b = plr.team:getColor()
 	elseif (colors[plr]) then
 		r, g, b = colors[plr][1], colors[plr][2], colors[plr][3]
@@ -28,25 +34,25 @@ function createPlayerBlip(plr)
 	end
 end
 
-function setBlipColor(plr, _, r, g, b)
-	if (useTeams) then return end
-	if (tonumber(b)) then
-		colors[plr] = {r, g, b}
-		createPlayerBlip(plr)
+function setBlipColor(player, _, r, g, b)
+	if (tonumber(r) and tonumber(g) and tonumber(b)) then
+		colors[player] = {r, g, b}
+		createPlayerBlip(player)
+	else
+		outputChatBox("Couldn't change blip color - invalid arguments specified", player)
 	end
 end
-addCommandHandler("setblipcolor", setBlipColor)
 
-function setBlipsColor(_, _, r, g, b)
-	if (useTeams) then return end
-	if (tonumber(b)) then
+function setBlipsColor(player, _, r, g, b)
+	if (tonumber(r) and tonumber(g) and tonumber(b)) then
 		color = {tonumber(r), tonumber(g), tonumber(b)}
 		for i, plr in ipairs(Element.getAllByType("player")) do
 			createPlayerBlip(plr)
 		end
+	else
+		outputChatBox("Couldn't change blips color - invalid arguments specified", player)
 	end
 end
-addCommandHandler("setblipscolor", setBlipsColor)
 
 function destroyPlayerBlip(plr)
 	blip[plr]:destroy()
