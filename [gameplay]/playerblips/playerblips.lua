@@ -1,71 +1,23 @@
-﻿-- needs configurable blip colors, and team support
-root = getRootElement ()
-color = { 0, 255, 0 }
-players = {}
-resourceRoot = getResourceRootElement ( getThisResource () )
+blips = {}
 
-function onResourceStart ( resource )
-  	for id, player in ipairs( getElementsByType ( "player" ) ) do
-		if ( players[player] ) then
-			createBlipAttachedTo ( player, 0, 2, players[source][1], players[source][2], players[source][3] )
-		else
-			createBlipAttachedTo ( player, 0, 2, color[1], color[2], color[3] )
-		end
-	end
-end
-
-function onPlayerSpawn ( spawnpoint )
-	if ( players[source] ) then
-		createBlipAttachedTo ( source, 0, 2, players[source][1], players[source][2], players[source][3] )
-	else
-		createBlipAttachedTo ( source, 0, 2, color[1], color[2], color[3] )
-	end
-end
-
-function onPlayerQuit ()
-	destroyBlipsAttachedTo ( source )
-end
-
-function onPlayerWasted ( totalammo, killer, killerweapon )
-	destroyBlipsAttachedTo ( source )
-end
-
-function setBlipsColor ( source, commandName, r, g, b )
-	if ( tonumber ( b ) ) then
-		color = { tonumber ( r ), tonumber ( g ), tonumber ( b ) }
-  		for id, player in ipairs( getElementsByType ( "player" ) ) do
-			destroyBlipsAttachedTo ( player )
-			if ( players[player] ) then
-				createBlipAttachedTo ( player, 0, 2, players[source][1], players[source][2], players[source][3] )
+function createBlips()
+  	for i, player in ipairs( getElementsByType ( "player" ) ) do
+		if ( not isPlayerDead( player ) ) then
+			local r, g, b = getTeamColor( getPlayerTeam( player ) )
+			if ( not blips[player] ) then
+				blips[player] = createBlipAttachedTo( player, 0, 2, r, g, b, 255 )
 			else
-				createBlipAttachedTo ( player, 0, 2, color[1], color[2], color[3] )
+				setBlipColor( blips[player], r, g, b, 255 )
 			end
 		end
 	end
 end
+addEventHandler( "onResourceStart", resourceRoot, createBlips )
+setTimer( createBlips, 500, 0 )
 
-function setBlipColor ( source, commandName, r, g, b )
-	if ( tonumber ( b ) ) then
-		destroyBlipsAttachedTo ( source )
-		players[source] = { tonumber ( r ), tonumber ( g ), tonumber ( b ) }
-  		createBlipAttachedTo ( source, 0, 2, players[source][1], players[source][2], players[source][3] )
-	end
+function destroyBlip()
+	destroyElement( blips[source] )
+	blips[source] = nil
 end
-
-addCommandHandler ( "setblipscolor", setBlipsColor )
-addCommandHandler ( "setblipcolor", setBlipColor )
-addEventHandler ( "onResourceStart", resourceRoot, onResourceStart )
-addEventHandler ( "onPlayerSpawn", root, onPlayerSpawn )
-addEventHandler ( "onPlayerQuit", root, onPlayerQuit )
-addEventHandler ( "onPlayerWasted", root, onPlayerWasted )
-
-function destroyBlipsAttachedTo(player)
-	local attached = getAttachedElements ( player )
-	if ( attached ) then
-		for k,element in ipairs(attached) do
-			if getElementType ( element ) == "blip" then
-				destroyElement ( element )
-			end
-		end
-	end
-end
+addEventHandler( "onPlayerQuit", root, destroyBlip )
+addEventHandler( "onPlayerWasted", root, destroyBlip )
