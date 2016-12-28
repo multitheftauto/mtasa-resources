@@ -217,6 +217,7 @@ addEventHandler('onPlayerGravInit', resourceRoot,
 )
 
 function setMySkin(skinid)
+	if getElementModel(source) == skinid then return end
 	if isPedDead(source) then
 		local x, y, z = getElementPosition(source)
 		if isPedTerminated(source) then
