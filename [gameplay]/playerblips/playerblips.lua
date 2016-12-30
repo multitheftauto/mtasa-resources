@@ -12,7 +12,6 @@ addEventHandler("onResourceStart", resourceRoot,
 		else
 			useTeams = false
 			addCommandHandler("setblipcolor", setBlipColor)
-			addCommandHandler("setblipscolor", setBlipsColor)
 		end
 	end
 )
@@ -40,17 +39,6 @@ function setBlipColor(player, _, r, g, b)
 		createPlayerBlip(player)
 	else
 		outputChatBox("Couldn't change blip color - invalid arguments specified", player)
-	end
-end
-
-function setBlipsColor(player, _, r, g, b)
-	if (tonumber(r) and tonumber(g) and tonumber(b)) then
-		color = {tonumber(r), tonumber(g), tonumber(b)}
-		for i, plr in ipairs(Element.getAllByType("player")) do
-			createPlayerBlip(plr)
-		end
-	else
-		outputChatBox("Couldn't change blips color - invalid arguments specified", player)
 	end
 end
 
