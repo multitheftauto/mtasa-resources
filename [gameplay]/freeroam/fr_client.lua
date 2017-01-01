@@ -208,6 +208,7 @@ wndWeapon = {
 }
 
 function giveWeaponCommand(cmd, weapon, amount)
+	if isCommandOnCD(cmd) then return end
 	weapon = tonumber(weapon) or getWeaponIDFromName(weapon)
 	if not weapon then
 		return
@@ -366,6 +367,7 @@ function applyPlayerGrav()
 end
 
 function setGravityCommand(cmd, grav)
+	if isCommandOnCD(cmd) then return end
 	local grav = grav and tonumber(grav)
 	if grav then
 		server.setPedGravity(g_Me, tonumber(grav))
@@ -450,6 +452,7 @@ wndWarp = {
 }
 
 function warpToCommand(cmd, player)
+	if isCommandOnCD(cmd) then return end
 	if player then
 		player = getPlayerFromName(player)
 		if player then
@@ -1024,6 +1027,7 @@ wndCreateVehicle = {
 }
 
 function createVehicleCommand(cmd, ...)
+	if isCommandOnCD(cmd) then return end
 	local vehID
 	local vehiclesToCreate = {}
 	local args = { ... }
