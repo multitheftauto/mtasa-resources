@@ -11,12 +11,41 @@ guiSetInputMode("no_binds_when_editing")
 -- Place to store the ticks for anti spam:
 local antiCommandSpam = {}
 
+-- Additional protection:
+-- Settings:
+local command_ddos_protection = true
+local tries_required_to_trigger = 15
+local duration_of_global_ban = 10000 -- in milliseconds
+
+-- Store the tries for forced global cooldown
+local command_tries = 0
+local global_cooldown = 0
 function isCommandOnCD(cmd)
 	local tick = getTickCount()
+
+	-- check if a global cd is active
+	if command_ddos_protection and global_cooldown ~= 0 then
+		if tick - global_cooldown <= duration_of_global_ban then
+			outputChatBox ("* You are banned from using commands for "..math.ceil((duration_of_global_ban/1000)-((tick-global_cooldown)/1000)).." more seconds due to continuous spam*", 255, 0, 0)
+			return true
+		end
+	end
+
 	if antiCommandSpam[cmd] and tick-antiCommandSpam[cmd] < 2000 then
+		if command_ddos_protection then
+			command_tries = command_tries + 1
+			if command_tries >= tries_required_to_trigger then
+				-- activate a global command cooldown
+				global_cooldown = tick
+				command_tries = 0
+			end
+		end
 		outputChatBox ("* Failed, don't spam the '"..tostring(cmd).."' command! *", 255, 0, 0)
 		return true
 	else
+		if command_ddos_protection then
+			command_tries = 0
+		end
 		antiCommandSpam[cmd] = tick
 		return false
 	end
