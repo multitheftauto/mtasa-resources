@@ -8,15 +8,20 @@ g_Me = getLocalPlayer()
 server = createServerCallInterface()
 guiSetInputMode("no_binds_when_editing")
 
--- Freeroam cooldown timer for commands (miliseconds, 1000 = 1 sec):
-local frCommandCooldownTime = 2000
+-- Place to store the ticks for anti spam:
+local antiCommandSpam = {}
 
--- Place to store our cmd cooldown timers:
-local commandCDTimers = {}
-
-function cmdCDActive(cmd)
-	outputChatBox ("* Failed, don't spam the '"..tostring(cmd).."' command! *", 255, 0, 0)
+function isCommandOnCD(cmd)
+	local tick = getTickCount()
+	if antiCommandSpam[cmd] and tick-antiCommandSpam[cmd] < 2000 then
+		outputChatBox ("* Failed, don't spam the '"..tostring(cmd).."' command! *", 255, 0, 0)
+		return true
+	else
+		antiCommandSpam[cmd] = tick
+		return false
+	end
 end
+
 ---------------------------
 -- Set skin window
 ---------------------------
@@ -65,10 +70,7 @@ wndSkin = {
 }
 
 function setSkinCommand(cmd, skin)
-	if cmd then
-		if isTimer(commandCDTimers[cmd]) then cmdCDActive(cmd) return end
-		commandCDTimers[cmd] = setTimer(function()end, frCommandCooldownTime, 1)
-	end
+	if isCommandOnCD(cmd) then return end
 	skin = skin and tonumber(skin)
 	if skin then
 		server.setMySkin(skin)
