@@ -33,12 +33,17 @@ function createPlayerBlip(plr)
 	end
 end
 
-function setBlipColor(player, _, r, g, b)
-	if (tonumber(r) and tonumber(g) and tonumber(b)) then
-		colors[player] = {r, g, b}
-		createPlayerBlip(player)
+function setBlipColor(plr, _, r, g, b)
+	r, g, b = tonumber(r), tonumber(g), tonumber(b)
+	if (r and g and b) then
+		if (r >= 0 and r <= 255 and g >= 0 and g <= 255 and b >= 0 and b <= 255) then
+			colors[plr] = {r, g, b}
+			createPlayerBlip(plr)
+		else
+			outputChatBox("Couldn't change blip color - numbers must be between 0 and 255", plr, 255, 0, 0)
+		end
 	else
-		outputChatBox("Couldn't change blip color - invalid arguments specified", player)
+		outputChatBox("Couldn't change blip color - invalid arguments specified", plr, 255, 0, 0)
 	end
 end
 
