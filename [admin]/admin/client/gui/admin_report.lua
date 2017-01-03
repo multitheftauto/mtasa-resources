@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -87,9 +87,14 @@ function aReportSelectPlayer ( )
 		for _, player in pairs (getElementsByType("player")) do
 			guiGridListSetItemText(playerList, guiGridListAddRow(playerList), 1, getPlayerName(player), false, false)
 		end
-		local btnSelectPlayer = guiCreateButton(0.335, 0.93, 0.33, 0.05, "Select", true, aSelectPlayer)
+		local btnSelectPlayer = guiCreateButton(0.57, 0.93, 0.33, 0.05, "Select", true, aSelectPlayer)
 		addEventHandler ( "onClientGUIClick", btnSelectPlayer, function ( )
 			guiSetText ( aReportPlayer, guiGridListGetItemText ( playerList, guiGridListGetSelectedItem ( playerList ), 1 ) )
+			destroyElement ( aSelectPlayer )
+			aSelectPlayer = nil
+		end, false )
+		local btnClose = guiCreateButton(0.10, 0.93, 0.33, 0.05, "Close", true, aSelectPlayer)
+		addEventHandler ( "onClientGUIClick", btnClose, function ( )
 			destroyElement ( aSelectPlayer )
 			aSelectPlayer = nil
 		end, false )
@@ -136,10 +141,7 @@ function aClientReportClick ( button )
 				local tableOut = {}
 				if ( guiGetVisible ( aReportPlayer ) ) then
 					local text = guiGetText ( aReportPlayer )
-					if ( text == "" ) then
-						aMessageBox ( "error", "Reported player missing." )
-						return
-					else
+					if ( text ~= "" ) then
 						tableOut.suspect = text
 					end
 				end
