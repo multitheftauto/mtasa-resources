@@ -1,4 +1,4 @@
-﻿CONTROL_MARGIN_RIGHT = 5
+CONTROL_MARGIN_RIGHT = 5
 LINE_MARGIN = 5
 LINE_HEIGHT = 16
 
@@ -10,6 +10,12 @@ guiSetInputMode("no_binds_when_editing")
 
 -- Place to store the ticks for anti spam:
 local antiCommandSpam = {}
+
+-- Local settings received from server
+local command_ddos_protection
+local tries_required_to_trigger
+local tries_required_to_trigger_exceptions
+local duration_of_global_ban
 
 -- Settings are stored in meta.xml
 addEvent("spamProtectionSettings", true)
@@ -31,40 +37,43 @@ function isCommandOnCD(cmd, exception)
 	-- check if a global cd is active
 	if command_ddos_protection == "true" and global_cooldown ~= 0 then
 		if tick - global_cooldown <= duration_of_global_ban then
-			errMsg ("* You are banned from using commands for "..math.ceil((duration_of_global_ban/1000)-((tick-global_cooldown)/1000)).." more seconds due to continuous spam*")
+			local duration = math.ceil((duration_of_global_ban-tick-global_cooldown)/1000)
+			errMsg("You are banned from using commands for " .. duration .." seconds due to continuous spam")
 			return true
 		end
 	end
 
-	if command_ddos_protection == "true" then
-		if not antiCommandSpam[cmd] then
-			antiCommandSpam[cmd] = {time = tick, tries = 1}
-			return false
-		end
-
-		local oldTime = antiCommandSpam[cmd].time
-
-		if tick-oldTime > 2000 then
-			antiCommandSpam[cmd].time = tick
-			antiCommandSpam[cmd].tries = 1 
-			return false
-		end
-
-		antiCommandSpam[cmd].tries = antiCommandSpam[cmd].tries + 1
-
-
-		if exception and antiCommandSpam[cmd].tries < tries_required_to_trigger_exceptions then return false end
-
-		if exception == nil and antiCommandSpam[cmd].tries < tries_required_to_trigger then return false end
-
-		-- activate a global command cooldown
-		global_cooldown = tick
-		antiCommandSpam[cmd].tries = 0
-		errMsg ("* Failed, don't spam the '"..tostring(cmd).."' command! *")
-		return true
-	else
+	if command_ddos_protection != "true" then
 		return false
 	end
+
+	if not antiCommandSpam[cmd] then
+		antiCommandSpam[cmd] = {time = tick, tries = 1}
+		return false
+	end
+
+	local oldTime = antiCommandSpam[cmd].time
+	if (tick-oldTime) > 2000 then
+		antiCommandSpam[cmd].time = tick
+		antiCommandSpam[cmd].tries = 1 
+		return false
+	end
+
+	antiCommandSpam[cmd].tries = antiCommandSpam[cmd].tries + 1
+
+	if exception and (antiCommandSpam[cmd].tries < tries_required_to_trigger_exceptions) then
+		return false
+	end
+
+	if (exception == nil) and (antiCommandSpam[cmd].tries < tries_required_to_trigger) then
+		return false
+	end
+
+	-- activate a global command cooldown
+	global_cooldown = tick
+	antiCommandSpam[cmd].tries = 0
+	errMsg("Failed, do not spam the '" .. tostring(cmd) .. "' command!")
+	return true
 end
 
 ---------------------------
