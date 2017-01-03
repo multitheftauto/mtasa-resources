@@ -11,42 +11,58 @@ guiSetInputMode("no_binds_when_editing")
 -- Place to store the ticks for anti spam:
 local antiCommandSpam = {}
 
--- Additional protection:
--- Settings:
-local command_ddos_protection = true
-local tries_required_to_trigger = 15
-local duration_of_global_ban = 10000 -- in milliseconds
+-- Settings are stored in meta.xml
+addEvent("spamProtectionSettings", true)
+function spamProtectionSettings(settings)
+	if settings then
+		command_ddos_protection = settings.command_spam_protection
+		tries_required_to_trigger = settings.tries_required_to_trigger
+		tries_required_to_trigger_exceptions = settings.tries_required_to_trigger_low
+		duration_of_global_ban = settings.command_spam_ban_duration
+	end
+end
+addEventHandler("spamProtectionSettings", localPlayer, spamProtectionSettings)
 
 -- Store the tries for forced global cooldown
-local command_tries = 0
 local global_cooldown = 0
-function isCommandOnCD(cmd)
+function isCommandOnCD(cmd, exception)
 	local tick = getTickCount()
 
 	-- check if a global cd is active
-	if command_ddos_protection and global_cooldown ~= 0 then
+	if command_ddos_protection == "true" and global_cooldown ~= 0 then
 		if tick - global_cooldown <= duration_of_global_ban then
-			outputChatBox ("* You are banned from using commands for "..math.ceil((duration_of_global_ban/1000)-((tick-global_cooldown)/1000)).." more seconds due to continuous spam*", 255, 0, 0)
+			errMsg ("* You are banned from using commands for "..math.ceil((duration_of_global_ban/1000)-((tick-global_cooldown)/1000)).." more seconds due to continuous spam*")
 			return true
 		end
 	end
 
-	if antiCommandSpam[cmd] and tick-antiCommandSpam[cmd] < 2000 then
-		if command_ddos_protection then
-			command_tries = command_tries + 1
-			if command_tries >= tries_required_to_trigger then
-				-- activate a global command cooldown
-				global_cooldown = tick
-				command_tries = 0
-			end
+	if command_ddos_protection == "true" then
+		if not antiCommandSpam[cmd] then
+			antiCommandSpam[cmd] = {time = tick, tries = 1}
+			return false
 		end
-		outputChatBox ("* Failed, don't spam the '"..tostring(cmd).."' command! *", 255, 0, 0)
+
+		local oldTime = antiCommandSpam[cmd].time
+
+		if tick-oldTime > 2000 then
+			antiCommandSpam[cmd].time = tick
+			antiCommandSpam[cmd].tries = 1 
+			return false
+		end
+
+		antiCommandSpam[cmd].tries = antiCommandSpam[cmd].tries + 1
+
+
+		if exception and antiCommandSpam[cmd].tries < tries_required_to_trigger_exceptions then return false end
+
+		if exception == nil and antiCommandSpam[cmd].tries < tries_required_to_trigger then return false end
+
+		-- activate a global command cooldown
+		global_cooldown = tick
+		antiCommandSpam[cmd].tries = 0
+		errMsg ("* Failed, don't spam the '"..tostring(cmd).."' command! *")
 		return true
 	else
-		if command_ddos_protection then
-			command_tries = 0
-		end
-		antiCommandSpam[cmd] = tick
 		return false
 	end
 end
@@ -174,6 +190,7 @@ addCommandHandler('anim',
 ---------------------------
 
 function addWeapon(leaf, amount)
+	if isCommandOnCD("giveweapon", true) then return end
 	if type(leaf) ~= 'table' then
 		leaf = getSelectedGridListLeaf(wndWeapon, 'weaplist')
 		amount = getControlNumber(wndWeapon, 'amount')
