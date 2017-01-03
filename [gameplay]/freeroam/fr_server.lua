@@ -156,6 +156,12 @@ addEventHandler('onLoadedAtClient', g_ResRoot,
 		if getOption('spawnmaponstart') and isPedDead(client) then
 			clientCall(client, 'showWelcomeMap')
 		end
+		local settings = {}
+		settings["command_spam_protection"] = get("command_spam_protection")
+		settings["tries_required_to_trigger"] = get("tries_required_to_trigger")
+		settings["tries_required_to_trigger_low"] = get("tries_required_to_trigger_low_priority")
+		settings["command_spam_ban_duration"] = get("command_spam_ban_duration")
+		clientCall(client, 'spamProtectionSettings', settings)
 	end,
 	false
 )
