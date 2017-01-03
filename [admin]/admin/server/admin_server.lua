@@ -1375,7 +1375,6 @@ addEventHandler ( "onPlayerChat", root, function ( message )
 	if ( size == g_Prefs.maxchatmsgs ) then
 		table.remove( chatHistory[source], 1 )
 		size = size - 1
-		outputChatBox("removed")
 	end
 	chatHistory[source][size + 1] = message
 end )
