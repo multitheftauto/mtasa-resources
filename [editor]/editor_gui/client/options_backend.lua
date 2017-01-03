@@ -85,103 +85,103 @@ local defaults = {
 
 --stuff involving xml and dumping
 function doActions()
-	for name,v in pairs(nodeTypes) do
-		if ( optionsActions[name] ) and ( dialog[name] ) then
-			optionsActions[name]( dialog[name]:getValue() )
-		end
-	end
+    for name,v in pairs(nodeTypes) do
+        if ( optionsActions[name] ) and ( dialog[name] ) then
+            optionsActions[name]( dialog[name]:getValue() )
+        end
+    end
 end
 
 function loadXMLSettings()
-	--this should use xmlLoadFile afterwards
-	if settingsXML then
-		xmlUnloadFile ( settingsXML )
-	end
-	settingsXML = xmlLoadFile ( "settings.xml" )
-	if not settingsXML then createSettingsXML() end
-	if not settingsXML then
-		outputMessage ( "Map editor settings could not be created!.", 255,0,0 )
-		return
-	end
-	--
-	local settingsNodes = {}
-	for gui,nodeName in pairs(xmlVariants) do
-		local node = xmlFindChild ( settingsXML, nodeName, 0 )
-		if node then
-			settingsNodes[gui] = node
-		else
-			settingsNodes[gui] = xmlCreateChild ( settingsXML, nodeName )
-		end
-	end
-	
-	local settingsTable = {}
-	for gui,node in pairs(settingsNodes) do
-		local value
-		if nodeTypes[gui] == "bool" then
-			nodeValue = getNodeValue ( node, defaults[gui] )
-			value = bools[xmlNodeGetValue ( node )]
-		elseif nodeTypes[gui] == "progress" then
-			value = tonumber(getNodeValue ( node, defaults[gui] ))
-		elseif type(nodeTypes[gui]) == "table" then
-			value = tostring(getNodeValue ( node, defaults[gui] ))
-			local valid = false
-			for key,valuePossibility in pairs(nodeTypes[gui]) do
-				if value == valuePossibility then
-					valid = true
-				end
-			end
-			if not valid then value = defaults[gui] end
-		end
-		settingsTable[gui] = value
-	end
-	inputSettings ( settingsTable )
-	doActions()
+    --this should use xmlLoadFile afterwards
+    if settingsXML then
+        xmlUnloadFile ( settingsXML )
+    end
+    settingsXML = xmlLoadFile ( "settings.xml" )
+    if not settingsXML then createSettingsXML() end
+    if not settingsXML then
+        outputMessage ( "Map editor settings could not be created!.", 255,0,0 )
+        return
+    end
+    --
+    local settingsNodes = {}
+    for gui,nodeName in pairs(xmlVariants) do
+        local node = xmlFindChild ( settingsXML, nodeName, 0 )
+        if node then
+            settingsNodes[gui] = node
+        else
+            settingsNodes[gui] = xmlCreateChild ( settingsXML, nodeName )
+        end
+    end
+    
+    local settingsTable = {}
+    for gui,node in pairs(settingsNodes) do
+        local value
+        if nodeTypes[gui] == "bool" then
+            nodeValue = getNodeValue ( node, defaults[gui] )
+            value = bools[xmlNodeGetValue ( node )]
+        elseif nodeTypes[gui] == "progress" then
+            value = tonumber(getNodeValue ( node, defaults[gui] ))
+        elseif type(nodeTypes[gui]) == "table" then
+            value = tostring(getNodeValue ( node, defaults[gui] ))
+            local valid = false
+            for key,valuePossibility in pairs(nodeTypes[gui]) do
+                if value == valuePossibility then
+                    valid = true
+                end
+            end
+            if not valid then value = defaults[gui] end
+        end
+        settingsTable[gui] = value
+    end
+    inputSettings ( settingsTable )
+    doActions()
 end
 
 function getNodeValue ( node, default )
-	local value = xmlNodeGetValue ( node )
-	if ( value ) then
-		return value
-	else
-		xmlNodeSetValue ( node, tostring(default) )
-	end
-	xmlSaveFile ( settingsXML )
+    local value = xmlNodeGetValue ( node )
+    if ( value ) then
+        return value
+    else
+        xmlNodeSetValue ( node, tostring(default) )
+    end
+    xmlSaveFile ( settingsXML )
 end
 
 function createSettingsXML()
-	local xml = xmlCreateFile ( "settings.xml", "settings" )
-	for gui,nodeName in pairs(xmlVariants) do
-		local node = xmlCreateChild ( xml, nodeName )
-		xmlNodeSetValue ( node, tostring(defaults[gui]) )
-	end
-	xmlSaveFile ( xml )
-	xmlUnloadFile ( xml )
-	if settingsXML then
-		xmlUnloadFile ( settingsXML )
-	end
-	settingsXML = xmlLoadFile ( "settings.xml" )
+    local xml = xmlCreateFile ( "settings.xml", "settings" )
+    for gui,nodeName in pairs(xmlVariants) do
+        local node = xmlCreateChild ( xml, nodeName )
+        xmlNodeSetValue ( node, tostring(defaults[gui]) )
+    end
+    xmlSaveFile ( xml )
+    xmlUnloadFile ( xml )
+    if settingsXML then
+        xmlUnloadFile ( settingsXML )
+    end
+    settingsXML = xmlLoadFile ( "settings.xml" )
 end
 
 function inputSettings ( settingsTable )
-	for gui,value in pairs(settingsTable) do
-		dialog[gui]:setValue(value)
-	end
-	optionsSettings = settingsTable
+    for gui,value in pairs(settingsTable) do
+        dialog[gui]:setValue(value)
+    end
+    optionsSettings = settingsTable
 end
 
 function dumpSettings() --this does the reverse of input settings.  Dumps the current GUI into a table, and saves it to XML.
-	for gui,nodeName in pairs(xmlVariants) do
-		local value = dialog[gui]:getValue()
-		optionsSettings[gui] = value
-		--save to xml
-		local node = xmlFindChild ( settingsXML, nodeName, 0 )
-		if not node then node = xmlCreateChild ( settingsXML, nodeName ) end
-		xmlNodeSetValue ( node, tostring(value) )
-	end
+    for gui,nodeName in pairs(xmlVariants) do
+        local value = dialog[gui]:getValue()
+        optionsSettings[gui] = value
+        --save to xml
+        local node = xmlFindChild ( settingsXML, nodeName, 0 )
+        if not node then node = xmlCreateChild ( settingsXML, nodeName ) end
+        xmlNodeSetValue ( node, tostring(value) )
+    end
 end
 
 function restoreDefaults()
-	for gui,value in pairs(defaults) do
-		dialog[gui]:setValue(value)
-	end
-end	
+    for gui,value in pairs(defaults) do
+        dialog[gui]:setValue(value)
+    end
+end    

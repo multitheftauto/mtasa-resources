@@ -28,29 +28,29 @@ end
 ---------------------------------------------------------------------------
 function backupMapFiles( srcResourceName )
     local time = getRealTime()
-	local dateString = string.format( '%04d%02d%02d%02d%02d%02d'
-						,time.year + 1900
-						,time.month + 1
-						,time.monthday
-						,time.hour
-						,time.minute
-						,time.second
-						)
+    local dateString = string.format( '%04d%02d%02d%02d%02d%02d'
+                        ,time.year + 1900
+                        ,time.month + 1
+                        ,time.monthday
+                        ,time.hour
+                        ,time.minute
+                        ,time.second
+                        )
 
-	local backupResource = getMapBackupResource()
-	local backupResourceName = getResourceName( backupResource )
+    local backupResource = getMapBackupResource()
+    local backupResourceName = getResourceName( backupResource )
 
     -- Copy resource maps to backup directory
     local files = getResourceFiles( getResourceFromName( srcResourceName ), "map" )
     if files then
-	    for j,srcFilename in ipairs(files) do
+        for j,srcFilename in ipairs(files) do
             local backupFilename = dateString.."_"..srcFilename;
             local srcFilePath = ":"..srcResourceName.."/"..srcFilename
             local backupFilePath = ":"..backupResourceName.."/"..backupFilename
             if fileCopy( srcFilePath, backupFilePath, true ) then
                 insertResourceFile( backupResource, backupFilename, "mapbackup" )
             end
-	    end
+        end
     end
 
     -- Tidy once
@@ -75,7 +75,7 @@ function tidyMapBackups()
     local minNumFiles = 30
     local maxNumFiles = 300
 
-	local backupResource = getMapBackupResource()
+    local backupResource = getMapBackupResource()
 
     local files = getResourceFiles( backupResource, "mapbackup" )
     if files then

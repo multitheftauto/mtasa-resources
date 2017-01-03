@@ -60,11 +60,11 @@ end
 function setPlayerFlying(player, state)
   if state == true then state = true
   else 
-	state = nil 
+    state = nil 
     local self = Superman
     if isPlayerFlying(player) then
       self:restorePlayer(player)
-	end
+    end
   end
 
   supermanPlayers[player] = state
@@ -121,11 +121,11 @@ local function isPedInWater(ped)
 end
 
 local function isnan(x)
-	math.inf = 1/0
-	if x == math.inf or x == -math.inf or x ~= x then
-		return true
-	end
-	return false
+    math.inf = 1/0
+    if x == math.inf or x == -math.inf or x ~= x then
+        return true
+    end
+    return false
 end
 
 local function getVector2DAngle(vec)
@@ -264,7 +264,7 @@ function Superman:processMovingFlight(player, Velocity)
   local currentAngle = getVector2DAngle(Velocity)
   local diff = angleDiff(currentAngle, previousAngle)
   if isnan(diff) then
-	diff = 0
+    diff = 0
   end
   local calculatedYRotation = -diff * MAX_Y_ROTATION / MAX_ANGLE_SPEED
 

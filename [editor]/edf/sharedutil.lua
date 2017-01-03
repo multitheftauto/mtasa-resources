@@ -1,3 +1,3 @@
 ﻿function isClient()
-	return getLocalPlayer and true
+    return getLocalPlayer and true
 end
