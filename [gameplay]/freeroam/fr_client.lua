@@ -37,13 +37,13 @@ function isCommandOnCD(cmd, exception)
 	-- check if a global cd is active
 	if command_ddos_protection == "true" and global_cooldown ~= 0 then
 		if tick - global_cooldown <= duration_of_global_ban then
-			local duration = math.ceil((duration_of_global_ban-tick-global_cooldown)/1000)
+			local duration = math.ceil((duration_of_global_ban-tick+global_cooldown)/1000)
 			errMsg("You are banned from using commands for " .. duration .." seconds due to continuous spam")
 			return true
 		end
 	end
 
-	if command_ddos_protection != "true" then
+	if command_ddos_protection ~= "true" then
 		return false
 	end
 
