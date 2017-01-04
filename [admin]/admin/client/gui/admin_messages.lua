@@ -104,9 +104,11 @@ function aClientMessagesClick ( button )
 				triggerServerEvent ( "aMessage", getLocalPlayer(), "delete", tonumber ( id ) )
 			end
 		elseif ( source == aMessagesBanSerial ) then
-			aInputBox ( "Add Serial Ban", "Enter Serial to be banned", _messages[tonumber ( guiGridListGetItemText ( aMessagesList, guiGridListGetSelectedItem ( aMessagesList ), 1 ) )].suspect.serial, "banSerial" )
+			local data = _messages[tonumber ( guiGridListGetItemText ( aMessagesList, guiGridListGetSelectedItem ( aMessagesList ), 1 ) )]
+			aInputBox ( "Add Serial Ban", "Enter Serial to be banned", data.suspect.serial, "banSerial", _, _, data.suspect.name, data.category )
 		elseif ( source == aMessagesBanIP ) then
-			aInputBox ( "Add IP Ban", "Enter IP to be banned", _messages[tonumber ( guiGridListGetItemText ( aMessagesList, guiGridListGetSelectedItem ( aMessagesList ), 1 ) )].suspect.ip, "banIP" )
+			local data = _messages[tonumber ( guiGridListGetItemText ( aMessagesList, guiGridListGetSelectedItem ( aMessagesList ), 1 ) )]
+			aInputBox ( "Add IP Ban", "Enter IP to be banned", data.suspect.ip, "banIP", _, _, data.suspect.name, data.category )
 		elseif ( source == aMessagesList ) then
 			local row = guiGridListGetSelectedItem ( aMessagesList )
 			if ( row == -1 ) then
