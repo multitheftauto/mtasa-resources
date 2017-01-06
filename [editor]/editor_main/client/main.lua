@@ -296,7 +296,7 @@ addEventHandler("onClientElementStreamOut", root,
 
 function startEditor()
 	setWorkingInterior(0)
-
+	disableCharacterSounds()
 	attachPlayers(true)
 	--disable these for now
 	-- disableGameHUD()
@@ -332,6 +332,7 @@ end
 function stopEditor()
 	attachPlayers(false)
 	engineSetAsynchronousLoading ( true, false )
+	resetWorldSounds()
 end
 addEventHandler("onClientResourceStop", thisResourceRoot, stopEditor)
 
@@ -1072,6 +1073,7 @@ function resume(dontEnableMove)
 		showCrosshair(false,true)
 	end
 	attachPlayers(true)
+	disableCharacterSounds()
 	g_suspended = false
 end
 
@@ -1297,4 +1299,9 @@ function maybeCancelWorldBuildingMode(keyState)
 		g_SelectWorldBuildingMode_main = false
 		g_RemoveWorldBuildingMode_main = false
 	end
+end
+
+function disableCharacterSounds()
+	-- CJ stealth breathing, fall screaming etc.
+	setWorldSoundEnabled ( 25, false )
 end
