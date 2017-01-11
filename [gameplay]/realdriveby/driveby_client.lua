@@ -21,6 +21,7 @@ local function setupDriveby( player, seat )
 		toggleDriveby()
 	end
 	exitingVehicle = false
+	lastSlot = 0
 end
 addEventHandler( "onClientPlayerVehicleEnter", localPlayer, setupDriveby )
 
