@@ -97,7 +97,15 @@ addEventHandler("doSendDriveBySettings",localPlayer, function ( newSettings, the
 		peds[i] = v 
 		pedowner[v] = i
 	end
-end )
+	if eject_on_driveby_fix then
+		--[[ Block driveby when exiting vehicle: 
+  		setPedDoingGangDriveby ejects the player if he is trying to get out of the vehicle (without animations ) ]]
+		addEventHandler ( "onClientVehicleStartExit", root, function ( player )
+		if player == localPlayer then
+			exitingvehicle = true
+		end
+	end
+end )	
 
 
 -- Use driveby --
@@ -296,15 +304,6 @@ functions.toggleTurningKeys = function(vehicleID, state)
 	end
 end
 
-
---[[ Block driveby when exiting vehicle: 
-  setPedDoingGangDriveby ejects the player if he is trying to get out of the vehicle (without animations ) ]]
-addEventHandler ( "onClientVehicleStartExit", root, function ( player )
-	if player == localPlayer then
-		exitingvehicle = true
-	end
-end )
-	
 
 --This function simply sets up the driveby upon vehicle entry
 addEventHandler( "onClientPlayerVehicleEnter", localPlayer, function ( _, seat )
