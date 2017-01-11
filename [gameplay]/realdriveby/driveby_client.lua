@@ -261,10 +261,8 @@ function limitedKeyPress (key,keyState,speed)
 		limiterTimer = setTimer ( pressKey,speed, 0, "vehicle_fire" )
 	else
 		shooting = false
-		for k,timer in ipairs(getTimers()) do
-			if timer == limiterTimer then
-				killTimer ( limiterTimer )
-			end
+		if isTimer ( limiterTimer ) then
+			killTimer ( limiterTimer )
 		end
 	end
 end
