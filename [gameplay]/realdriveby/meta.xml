@@ -30,6 +30,9 @@
 		
 		<!--Whether a weapon should be equiped as soon as you enter a vehicle. -->
 		<setting name="driveby_auto_equip" value="[false]"/>
+		
+		<!--Block instant eject when using driveby while exiting vehicle -->
+		<setting name="block_instant_eject" value="[true]"/>
 	</settings>
 	<export function="setDriverDrivebyAbility" type="client" />
 	<export function="setPassengerDrivebyAbility" type="client" />

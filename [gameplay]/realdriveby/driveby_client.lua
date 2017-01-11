@@ -1,6 +1,7 @@
 ﻿local driver = false
 local shooting = false
 local helpText,helpAnimation
+local exitingVehicle = false 
 lastSlot = 0
 settings = {}
 
@@ -18,6 +19,7 @@ local function setupDriveby( player, seat )
 	if settings.autoEquip then
 		toggleDriveby()
 	end
+	exitingVehicle = false
 end
 addEventHandler( "onClientPlayerVehicleEnter", localPlayer, setupDriveby )
 
@@ -54,6 +56,13 @@ addEventHandler("doSendDriveBySettings",localPlayer,
 			newTable[vehicleID] = true
 		end
 		settings.blockedVehicles = newTable
+		if settings.blockInstantEject then
+			addEventHandler ( "onClientVehicleStartExit", root, function ( player )
+				if player == localPlayer then
+					exitingVehicle = true
+				end
+			end )
+		end
 	end
 )
 
@@ -67,6 +76,7 @@ function toggleDriveby()
 	--Has he got a weapon equiped?
 	local equipedWeapon = getPedWeaponSlot( localPlayer )
 	if equipedWeapon == 0 then
+		if exitingVehicle then return end
 		--Decide whether he is a driver or passenger
 		if ( driver ) then weaponsTable = settings.driver
 		else weaponsTable = settings.passenger end
@@ -141,6 +151,7 @@ function removeKeyToggles(vehicle)
 	toggleControl ( "vehicle_secondary_fire",true )
 	toggleTurningKeys(getElementModel(vehicle),true)
 	fadeOutHelp()
+	exitingVehicle = false
 	removeEventHandler ( "onClientPlayerVehicleExit",localPlayer,removeKeyToggles )
 end
 
