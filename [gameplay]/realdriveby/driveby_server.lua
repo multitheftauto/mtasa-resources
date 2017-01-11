@@ -6,7 +6,7 @@
 	steerCars = get"driveby_steer_cars" == true,
 	steerBikes = get"driveby_steer_bikes" == true,
 	autoEquip = get"driveby_auto_equip" or false,
-	ejectOnDrivebyFix = get"eject_on_driveby_fix == true,
+	ejectOnDrivebyFix = get"eject_on_driveby_fix" == true,
 	bikeHitboxFix = get"bike_hitbox_fix" == true,
 }
 --Remove any BS IDs by checking them
