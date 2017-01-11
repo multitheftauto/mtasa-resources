@@ -58,6 +58,18 @@ addEventHandler("doSendDriveBySettings",localPlayer,
 			newTable[vehicleID] = true
 		end
 		settings.blockedVehicles = newTable
+		settings.driverallowed = {}
+		if settings.driver[1] then
+			for i=1, #settings.driver do
+				settings.driverallowed[settings.driver[i]] = true
+			end
+		end
+		settings.passengerallowed = {}
+		if settings.passenger[1] then
+			for i=1, #settings.passenger do
+				settings.passengerallowed[settings.driver[i]] = true
+			end
+		end
 		if settings.blockInstantEject then
 			addEventHandler ( "onClientVehicleStartExit", root, function ( player )
 				if player == localPlayer then
@@ -80,13 +92,14 @@ function toggleDriveby()
 	if equipedWeapon == 0 then
 		if exitingVehicle then return end
 		--Decide whether he is a driver or passenger
-		if ( driver ) then weaponsTable = settings.driver
-		else weaponsTable = settings.passenger end
 		--We need to get the switchTo weapon by finding any valid IDs
 		local switchTo
 		local switchToWeapon
+		local lastSlotWeapon = getPedWeapon ( localPlayer, lastSlot )
+		local weaponsTableAllowed = driver and settings.driverallowed or settings.passengerallowed
 		local lastSlotAmmo = getPedTotalAmmo ( localPlayer, lastSlot )
-		if not lastSlotAmmo or lastSlotAmmo == 0 or getSlotFromWeapon(getPedWeapon (localPlayer,lastSlot)) == 0 then
+		if not lastSlotAmmo or lastSlotAmmo == 0 or getSlotFromWeapon(lastSlotWeapon) == 0 or not weaponsTableAllowed[lastSlotWeapon] then
+			local weaponsTable = driver and settings.driver or settings.passenger
 			for key,weaponID in ipairs(weaponsTable) do
 				local slot = getSlotFromWeapon ( weaponID )
 				local weapon = getPedWeapon ( localPlayer, slot )
@@ -104,14 +117,8 @@ function toggleDriveby()
 				end
 			end
 		else
-			local lastSlotWeapon = getPedWeapon ( localPlayer, lastSlot )
-			for key,weaponID in ipairs(weaponsTable) do --If our last used weapon is a valid weapon
-				if weaponID == lastSlotWeapon then
-					switchTo = lastSlot
-					switchToWeapon = lastSlotWeapon
-					break
-				end
-			end
+			switchTo = lastSlot
+			switchToWeapon = lastSlotWeapon
 		end
 		--If a valid weapon was not found, dont set anything.
 		if not switchTo then return end
@@ -172,12 +179,12 @@ function switchDrivebyWeapon(key,progress)
 	if currentWeapon == 1 then currentWeapon = 0 end --If its a brass knuckle, set it to a fist to avoid confusion
 	local currentSlot = getPedWeaponSlot(localPlayer)
 	if currentSlot == 0 then return end
-	if ( driver ) then weaponsTable = settings.driver
-	else weaponsTable = settings.passenger end
+	local weaponsTable = driver and settings.driver or settings.passenger
+	local weaponsTableAllowed = driver and settings.driverallowed or settings.passengerallowed
 	--Compile a list of the player's weapons
 	local switchTo
 	for key,weaponID in ipairs(weaponsTable) do
-		if weaponID == currentWeapon then
+		if weaponID == currentWeapon or not weaponsTableAllowed[currentWeapon] then
 			local i = key + progress
 			--We keep looping the table until we go back to our original key
 			while i ~= key do
