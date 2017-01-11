@@ -19,7 +19,7 @@ for key,weaponID in ipairs(settings.driver) do
 end
 for key,weaponID in ipairs(settings.passenger) do
 	if not validDrivebyWeapons[weaponID] then
-		table.remove ( settings.driver, key )
+		table.remove ( settings.passenger, key )
 	end
 end
 
