@@ -2,6 +2,7 @@
 local shooting = false
 local helpText,helpAnimation
 local exitingVehicle = false 
+local block
 lastSlot = 0
 settings = {}
 
@@ -158,6 +159,7 @@ end
 
 --This function handles the driveby switch weapon key
 function switchDrivebyWeapon(key,progress)
+	if block then return end
 	progress = tonumber(progress)
 	if not progress then return end
 	--If the fire button is being pressed dont switch
@@ -241,7 +243,6 @@ function unbindFire()
 	removeEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
 end
 
-local block
 function limitedKeyPress (key,keyState,speed)
 	if keyState == "down" then
 		if block == true then return end
