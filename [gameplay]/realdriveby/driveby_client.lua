@@ -67,7 +67,7 @@ addEventHandler("doSendDriveBySettings",localPlayer,
 		settings.passengerallowed = {}
 		if settings.passenger[1] then
 			for i=1, #settings.passenger do
-				settings.passengerallowed[settings.driver[i]] = true
+				settings.passengerallowed[settings.passenger[i]] = true
 			end
 		end
 		if settings.blockInstantEject then
