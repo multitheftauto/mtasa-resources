@@ -89,5 +89,29 @@
 		<setting name="*vehicles/disallowed" value="[[]]" />   <!-- Comma-separated list of vehicles that players may not create -->
 		<setting name="*chat/mainChatDelay" value="1000" />   <!-- Miliseconds between each message a player can send through main chat -->
 		<setting name="*chat/blockRepeatMessages" value="true" />   <!-- Prevent a player from saying the same thing twice in a row to spam -->
+		<setting name="@command_spam_protection" value="true"
+					friendlyname="Command Spam Protection"
+					accept="true,false"
+					group="Command Spam Protection"
+					desc="This settings enables/disables protection against command spam that can form a type of DoS-attack capable of lagging or crashing the server "
+					/>
+		<setting name="@tries_required_to_trigger" value="[5]"
+					friendlyname="Tries to trigger"
+					accept="positive number"
+					group="Command Spam Protection"
+					desc="How many tries under 2 seconds will trigger the spam protection?"
+					/>
+		<setting name="@tries_required_to_trigger_low_priority" value="[5]"
+					friendlyname="Tries to trigger - low priority"
+					accept="positive number"
+					group="Command Spam Protection"
+					desc="How many tries under 2 seconds will trigger the spam protection for low priority commands/actions such as giving ammo"
+					/>
+		<setting name="@command_spam_ban_duration" value="[10000]"
+					friendlyname="Suspend Duration"
+					accept="positive number"
+					group="Command Spam Protection"
+					desc="How many milliseconds will a global command ban last? (ignoring all calls from a spamming client)"
+					/>
 	</settings>
 </meta>

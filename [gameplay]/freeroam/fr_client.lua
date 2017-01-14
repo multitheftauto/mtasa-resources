@@ -1,4 +1,4 @@
-﻿CONTROL_MARGIN_RIGHT = 5
+CONTROL_MARGIN_RIGHT = 5
 LINE_MARGIN = 5
 LINE_HEIGHT = 16
 
@@ -7,6 +7,74 @@ g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 server = createServerCallInterface()
 guiSetInputMode("no_binds_when_editing")
+
+-- Place to store the ticks for anti spam:
+local antiCommandSpam = {}
+
+-- Local settings received from server
+local command_ddos_protection
+local tries_required_to_trigger
+local tries_required_to_trigger_exceptions
+local duration_of_global_ban
+
+-- Settings are stored in meta.xml
+addEvent("spamProtectionSettings", true)
+function spamProtectionSettings(settings)
+	if settings then
+		command_ddos_protection = settings.command_spam_protection
+		tries_required_to_trigger = settings.tries_required_to_trigger
+		tries_required_to_trigger_exceptions = settings.tries_required_to_trigger_low
+		duration_of_global_ban = settings.command_spam_ban_duration
+	end
+end
+addEventHandler("spamProtectionSettings", localPlayer, spamProtectionSettings)
+
+-- Store the tries for forced global cooldown
+local global_cooldown = 0
+function isCommandOnCD(cmd, exception)
+	local tick = getTickCount()
+
+	-- check if a global cd is active
+	if command_ddos_protection == "true" and global_cooldown ~= 0 then
+		if tick - global_cooldown <= duration_of_global_ban then
+			local duration = math.ceil((duration_of_global_ban-tick+global_cooldown)/1000)
+			errMsg("You are banned from using commands for " .. duration .." seconds due to continuous spam")
+			return true
+		end
+	end
+
+	if command_ddos_protection ~= "true" then
+		return false
+	end
+
+	if not antiCommandSpam[cmd] then
+		antiCommandSpam[cmd] = {time = tick, tries = 1}
+		return false
+	end
+
+	local oldTime = antiCommandSpam[cmd].time
+	if (tick-oldTime) > 2000 then
+		antiCommandSpam[cmd].time = tick
+		antiCommandSpam[cmd].tries = 1 
+		return false
+	end
+
+	antiCommandSpam[cmd].tries = antiCommandSpam[cmd].tries + 1
+
+	if exception and (antiCommandSpam[cmd].tries < tries_required_to_trigger_exceptions) then
+		return false
+	end
+
+	if (exception == nil) and (antiCommandSpam[cmd].tries < tries_required_to_trigger) then
+		return false
+	end
+
+	-- activate a global command cooldown
+	global_cooldown = tick
+	antiCommandSpam[cmd].tries = 0
+	errMsg("Failed, do not spam the '" .. tostring(cmd) .. "' command!")
+	return true
+end
 
 ---------------------------
 -- Set skin window
@@ -56,6 +124,7 @@ wndSkin = {
 }
 
 function setSkinCommand(cmd, skin)
+	if isCommandOnCD(cmd) then return end
 	skin = skin and tonumber(skin)
 	if skin then
 		server.setMySkin(skin)
@@ -130,6 +199,7 @@ addCommandHandler('anim',
 ---------------------------
 
 function addWeapon(leaf, amount)
+	if isCommandOnCD("giveweapon", true) then return end
 	if type(leaf) ~= 'table' then
 		leaf = getSelectedGridListLeaf(wndWeapon, 'weaplist')
 		amount = getControlNumber(wndWeapon, 'amount')
@@ -164,6 +234,7 @@ wndWeapon = {
 }
 
 function giveWeaponCommand(cmd, weapon, amount)
+	if isCommandOnCD(cmd) then return end
 	weapon = tonumber(weapon) or getWeaponIDFromName(weapon)
 	if not weapon then
 		return
@@ -322,6 +393,7 @@ function applyPlayerGrav()
 end
 
 function setGravityCommand(cmd, grav)
+	if isCommandOnCD(cmd) then return end
 	local grav = grav and tonumber(grav)
 	if grav then
 		server.setPedGravity(g_Me, tonumber(grav))
@@ -406,6 +478,7 @@ wndWarp = {
 }
 
 function warpToCommand(cmd, player)
+	if isCommandOnCD(cmd) then return end
 	if player then
 		player = getPlayerFromName(player)
 		if player then
@@ -980,6 +1053,7 @@ wndCreateVehicle = {
 }
 
 function createVehicleCommand(cmd, ...)
+	if isCommandOnCD(cmd) then return end
 	local vehID
 	local vehiclesToCreate = {}
 	local args = { ... }
