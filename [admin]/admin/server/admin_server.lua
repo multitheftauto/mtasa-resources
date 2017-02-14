@@ -173,7 +173,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 				aReportCategories[i].subject = xmlNodeGetValue ( child )
 			end
 		end
-	xmlUnloadFile ( node )
+		xmlUnloadFile ( node )
 	end
 		
 	local node = xmlLoadFile ( "conf\\messages.xml" )
