@@ -2,7 +2,7 @@
     <categories>
         <category isPlayerReport="false">Question</category>
         <category isPlayerReport="false">Suggestion</category>
-        <category isPlayerReport="true">Cheater/Moder</category>
+        <category isPlayerReport="true">Cheater/Modder</category>
         <category isPlayerReport="false">Other</category>
     </categories>
 </messages>
