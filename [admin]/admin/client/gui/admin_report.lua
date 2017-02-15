@@ -12,12 +12,16 @@ aReportForm = nil
 local reportCategories
 local aSelectPlayer = nil
 
-addEvent ( "onReport", true )
-function aReport ( categories )
-	if not reportCategories then
-		reportCategories = categories
-	end
+function aReport ( )
 	if ( aReportForm == nil ) then
+		reportCategories = {}
+		for i,cat in ipairs( split( g_Prefs.reportCategories, string.byte(',') ) ) do
+			table.insert ( reportCategories, { subject = cat } )
+		end
+		for i,cat in ipairs( split( g_Prefs.playerReportCategories, string.byte(',') ) ) do
+			table.insert ( reportCategories, { subject = cat, playerReport = true } )
+		end
+		
 		local x, y = guiGetScreenSize()
 		aReportForm		= guiCreateWindow ( x / 2 - 150, y / 2 - 170, 300, 340, "Contact Admin", false )
 					   guiCreateLabel ( 0.05, 0.11, 0.20, 0.07, "Category:", true, aReportForm )
@@ -32,15 +36,15 @@ function aReport ( categories )
 		aReportCategories	= guiCreateGridList ( 0.30, 0.10, 0.65, 0.28, true, aReportForm )
 					   guiGridListAddColumn( aReportCategories, "", 0.85 )
 					   guiSetVisible ( aReportCategories, false )
-						for _, category in pairs(reportCategories) do
-							guiGridListSetItemText ( aReportCategories, guiGridListAddRow ( aReportCategories ), 1, category.subject, false, false )
+						for a=1, #reportCategories do
+							guiGridListSetItemText ( aReportCategories, guiGridListAddRow ( aReportCategories ), 1, reportCategories[a].subject, false, false )
 						end
 						guiSetText( aReportCategory, reportCategories[1].subject )
-		aReportSubject		= guiCreateEdit ( 0.30, 0.18, 0.65, 0.07, "", true, aReportForm )
-		aReportPlayer		= guiCreateLabel ( 0.30, 0.27, 0.50, 0.07, "", true, aReportForm )
-		aReportMessage		= guiCreateMemo ( 0.05, 0.41, 0.90, 0.42, "", true, aReportForm )
-		aReportAccept		= guiCreateButton ( 0.40, 0.88, 0.25, 0.09, "Send", true, aReportForm )
-		aReportCancel		= guiCreateButton ( 0.70, 0.88, 0.25, 0.09, "Cancel", true, aReportForm )
+		aReportSubject	= guiCreateEdit ( 0.30, 0.18, 0.65, 0.07, "", true, aReportForm )
+		aReportPlayer	= guiCreateLabel ( 0.30, 0.27, 0.50, 0.07, "", true, aReportForm )
+		aReportMessage	= guiCreateMemo ( 0.05, 0.41, 0.90, 0.42, "", true, aReportForm )
+		aReportAccept	= guiCreateButton ( 0.40, 0.88, 0.25, 0.09, "Send", true, aReportForm )
+		aReportCancel	= guiCreateButton ( 0.70, 0.88, 0.25, 0.09, "Cancel", true, aReportForm )
 		
 		if ( not reportCategories[1].playerReport ) then
 			guiSetVisible ( aReportPlayer, false )
@@ -54,7 +58,7 @@ function aReport ( categories )
 	guiBringToFront ( aReportForm )
 	showCursor ( true )
 end
-addEventHandler( "onReport", localPlayer, aReport )
+addCommandHandler ( "report", aReport )
 
 
 function aReportClose ( )
@@ -107,9 +111,9 @@ function aClientReportDoubleClick ( button )
 			if ( guiGridListGetSelectedItem ( aReportCategories ) ~= -1 ) then
 				local cat = guiGridListGetItemText ( aReportCategories, guiGridListGetSelectedItem ( aReportCategories ), 1 )
 				guiSetText ( aReportCategory, cat )
-				for _, category in pairs(reportCategories) do
-					if ( category.subject == cat ) then
-						if ( category.playerReport ) then
+				for i=1, #reportCategories do
+					if ( reportCategories[i].subject == cat ) then
+						if ( reportCategories[i].playerReport ) then
 							guiSetVisible ( aReportPlayer, true )
 							guiSetVisible ( aReportLblPlayer, true )
 							guiSetVisible ( aReportBtnPlayer, true )

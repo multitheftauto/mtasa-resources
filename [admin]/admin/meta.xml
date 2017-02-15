@@ -337,9 +337,19 @@
 					/>
 					
 		<setting name="*maxchatmsgs" value="10"
-					friendlyname="Max chat log messages."
+					friendlyname="Max chat log messages"
 					accept="1-1000"
 					desc="Maximum chat log messages per player to store. Decreasing this value may save some of server RAM."
+					/>
+					
+		<setting name="*reportCategories" value="Question,Suggestion,Other"
+					friendlyname="Report categories"
+					desc="List of non player report categories."
+					/>
+
+		<setting name="*playerReportCategories" value="Cheater/Modder,Spammer"
+					friendlyname="Player report categories"
+					desc="List of report categories for reporting players."
 					/>
 
  </settings>

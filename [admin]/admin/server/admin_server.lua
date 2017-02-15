@@ -17,7 +17,6 @@ aLogMessages = {}
 aInteriors = {}
 aStats = {}
 aReports = {}
-aReportCategories = {}
 aWeathers = {}
 aNickChangeTime = {}
 
@@ -99,79 +98,66 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	end
 	local node = xmlLoadFile ( "conf\\reports.xml" )
 	if ( node ) then
-		local messageNode = xmlNodeGetChildren ( node )
-		if ( messageNode ) then
-			for i, subnode in pairs ( messageNode ) do
-				if ( i ~= 1) then
-					local author = xmlFindChild ( subnode, "author", 0 )
-					local subject = xmlFindChild ( subnode, "subject", 0 )
-					local category = xmlFindChild ( subnode, "category", 0 )
-					local text = xmlFindChild ( subnode, "text", 0 )
-					local time = xmlFindChild ( subnode, "time", 0 )
-					local read = ( xmlFindChild ( subnode, "read", 0 ) ~= false )
-					local suspect = xmlFindChild ( subnode, "suspect", 0 )
-					local id = #aReports + 1
-					aReports[id] = {}
-					if ( author ) then aReports[id].author = xmlNodeGetValue ( author )
-					else aReports[id].author = "" end
-					if ( category ) then aReports[id].category = xmlNodeGetValue ( category )
-					else aReports[id].category = "" end
-					if ( subject ) then aReports[id].subject = xmlNodeGetValue ( subject )
-					else aReports[id].subject = "" end
-					if ( text ) then aReports[id].text = xmlNodeGetValue ( text )
-					else aReports[id].text = "" end
-					if ( time ) then aReports[id].time = xmlNodeGetValue ( time )
-					else aReports[id].time = "" end
-					if ( suspect ) then 
-						aReports[id].suspect = { 
-							name = xmlNodeGetAttribute ( suspect, "name" ),
-							username = xmlNodeGetAttribute ( suspect, "username" ),
-							ip = xmlNodeGetAttribute ( suspect, "ip" ),
-							serial = xmlNodeGetAttribute ( suspect, "serial" ),
-							version = xmlNodeGetAttribute ( suspect, "version" ),
-							chatLog = xmlNodeGetValue ( suspect )
-						}
-					else aReports[id].suspect = false end
-					aReports[id].read = read
+		local messages = 0
+		while ( xmlFindChild ( node, "message", messages ) ) do
+			subnode = xmlFindChild ( node, "message", messages )
+			local author = xmlFindChild ( subnode, "author", 0 )
+			local subject = xmlFindChild ( subnode, "subject", 0 )
+			local category = xmlFindChild ( subnode, "category", 0 )
+			local text = xmlFindChild ( subnode, "text", 0 )
+			local time = xmlFindChild ( subnode, "time", 0 )
+			local read = ( xmlFindChild ( subnode, "read", 0 ) ~= false )
+			local suspect = xmlFindChild ( subnode, "suspect", 0 )
+			local id = #aReports + 1
+			aReports[id] = {}
+			if ( author ) then aReports[id].author = xmlNodeGetValue ( author )
+			else aReports[id].author = "" end
+			if ( category ) then aReports[id].category = xmlNodeGetValue ( category )
+			else aReports[id].category = "" end
+			if ( subject ) then aReports[id].subject = xmlNodeGetValue ( subject )
+			else aReports[id].subject = "" end
+			if ( text ) then aReports[id].text = xmlNodeGetValue ( text )
+			else aReports[id].text = "" end
+			if ( time ) then aReports[id].time = xmlNodeGetValue ( time )
+			else aReports[id].time = "" end
+			if ( suspect ) then 
+				aReports[id].suspect = { 
+					name = xmlNodeGetAttribute ( suspect, "name" ),
+					username = xmlNodeGetAttribute ( suspect, "username" ),
+					ip = xmlNodeGetAttribute ( suspect, "ip" ),
+					serial = xmlNodeGetAttribute ( suspect, "serial" ),
+					version = xmlNodeGetAttribute ( suspect, "version" ),
+					chatLog = xmlNodeGetValue ( suspect )
+				}
+			else aReports[id].suspect = false end
+			aReports[id].read = read
+			messages = messages + 1
+		end
+		-- Remove duplicates
+		local a = 1
+		while a <= #aReports do
+			local b = a + 1
+			while b <= #aReports do
+				if table.cmp( aReports[a], aReports[b] ) then
+					table.remove( aReports, b )
+					b = b - 1
 				end
+				b = b + 1
 			end
-			-- Remove duplicates
-			local a = 1
-			while a <= #aReports do
-				local b = a + 1
-				while b <= #aReports do
-					if table.cmp( aReports[a], aReports[b] ) then
-						table.remove( aReports, b )
-						b = b - 1
-					end
-					b = b + 1
-				end
-				a = a + 1
-			end
-			-- Upgrade time from '4/9 5:9' to '2009-09-04 05:09'
-			for id, rep in ipairs ( aReports ) do
-				if string.find( rep.time, "/" ) then
-					local monthday, month, hour, minute = string.match( rep.time, "^(.-)/(.-) (.-):(.-)$" )
-					rep.time = string.format( '%04d-%02d-%02d %02d:%02d', 2009, month + 1, monthday, hour, minute )
-				end
-			end
-			-- Sort messages by time
-			table.sort(aReports, function(a,b) return(a.time < b.time) end)
-			-- Limit number of messages
-			while #aReports > g_Prefs.maxmsgs do
-				table.remove( aReports, 1 )
+			a = a + 1
+		end
+		-- Upgrade time from '4/9 5:9' to '2009-09-04 05:09'
+		for id, rep in ipairs ( aReports ) do
+			if string.find( rep.time, "/" ) then
+				local monthday, month, hour, minute = string.match( rep.time, "^(.-)/(.-) (.-):(.-)$" )
+				rep.time = string.format( '%04d-%02d-%02d %02d:%02d', 2009, month + 1, monthday, hour, minute )
 			end
 		end
-		local categoryNode = xmlFindChild ( node, "categories", 0 )
-		if ( categoryNode ) then
-			for i, child in pairs ( xmlNodeGetChildren ( categoryNode ) ) do
-				aReportCategories[i] = {}
-				local isReport = xmlNodeGetAttribute ( child, "isPlayerReport" )
-				if ( isReport and isReport == "true" ) then
-					aReportCategories[i].playerReport = true
-				end
-				aReportCategories[i].subject = xmlNodeGetValue ( child )
-			end
+		-- Sort messages by time
+		table.sort(aReports, function(a,b) return(a.time < b.time) end)
+		-- Limit number of messages
+		while #aReports > g_Prefs.maxmsgs do
+			table.remove( aReports, 1 )
 		end
 		xmlUnloadFile ( node )
 	end
@@ -1453,10 +1439,6 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 	for id, p in ipairs ( getElementsByType ( "player" ) ) do
 		if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( "aSync", p, "messages" ) end
 	end
-end )
-
-addCommandHandler ( "report", function ( player )
-	triggerClientEvent ( player, "onReport", player, aReportCategories )
 end )
 
 addEvent ( "aModdetails", true )
