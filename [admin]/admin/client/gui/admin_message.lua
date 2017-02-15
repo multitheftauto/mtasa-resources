@@ -46,13 +46,9 @@ function aViewMessage ( id )
 		guiSetText ( aViewMessageAuthor, _messages[id].author )
 		guiSetText ( aViewMessageText, _messages[id].text )
 		guiSetVisible ( aViewMessageForm, true )
-		if ( _messages[id].suspect ) then
-			guiSetVisible ( aViewMessageLabelSuspect, true )
-			guiSetVisible ( aViewMessageSuspect, true )
-		else
-			guiSetVisible ( aViewMessageLabelSuspect, false )
-			guiSetVisible ( aViewMessageSuspect, false )
-		end
+		local isVisible = _messages[id].suspect ~= nil
+		guiSetVisible ( aViewMessageLabelSuspect, isVisible )
+		guiSetVisible ( aViewMessageSuspect, isVisible )
 		guiBringToFront ( aViewMessageForm )
 		triggerServerEvent ( "aMessage", getLocalPlayer(), "read", id )
 	end
