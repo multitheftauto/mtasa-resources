@@ -9,7 +9,7 @@
 function aBlockModsTab.Create ( tab )
 	aBlockModsTab.Tab = tab
 
-	xpos = 10
+	xpos = 20
 	ypos = 10
 
 	local label1 = guiCreateLabel ( xpos, ypos, 100, 16, "Img file blocking", false, tab )

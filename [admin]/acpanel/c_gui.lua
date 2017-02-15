@@ -48,6 +48,7 @@ function aAdminMain.Open ()
 		aAdminMain.Panel		= guiCreateTabPanel ( 0.01, 0.05, 0.98, 0.95, true, aAdminMain.Form )
 
 		aAdminMain.AddTab ( "Status", aAntiCheatTab, "anticheat" )
+		aAdminMain.AddTab ( "Status #2", aAntiCheatTab2, "anticheat" )
 		aAdminMain.AddTab ( "Block Img Mods", aBlockModsTab, "mods" )
 		aAdminMain.AddTab ( "Server Config", aServerConfigTab, "server" )
 

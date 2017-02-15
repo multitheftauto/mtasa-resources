@@ -4,7 +4,7 @@
 -- _common.lua
 --
 
-_version = "0.1.7"
+_version = "0.1.8"
 
 MIN_CLIENT_VERSION_FOR_MOD_BLOCKS = "1.3.1-9.04818"
 

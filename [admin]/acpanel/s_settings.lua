@@ -51,63 +51,33 @@ function setPanelSetting(name, value)
 	startDelayedSave()
 
 	local minclientconfig_type = getPanelSetting("minclientconfig.type")
-	-- If name is "lastFetchedLatestVersion" and minclientconfig.type is "latest"
-	--		Then set minclientversion
-	-- If name is "lastFetchedReleaseVersion" and minclientconfig.type is "release"
-	--		Then set minclientversion
-	-- If name is "minclientconfig.customText" and minclientconfig.type is "custom"
-	--		Then set minclientversion
-	if
-		( name == "lastFetchedLatestVersion" and minclientconfig_type == "latest" )
-		or
-		( name == "lastFetchedReleaseVersion" and minclientconfig_type == "release" )
-		or
-		( name == "minclientconfig.customText" and minclientconfig_type == "custom" )
-	then
-		--outputDebug("Setting minclientversion to " .. value )
-		setServerConfigSetting( "minclientversion", value, true )
+	local minclientconfig_customText = getPanelSetting("minclientconfig.customText")
+
+	-- Handle when "minclientconfig.customText" is changed by user
+	if ( name == "minclientconfig.customText" and minclientconfig_type == "custom" ) then
+		setServerConfigSetting( "minclientversion_auto_update", "0", true )
+		setServerConfigSetting( "minclientversion", minclientconfig_customText, true )
 	end
 
-	if name == "minclientconfig.type" or name == "blockmods.type" then
+	-- Handle when "minclientconfig.type" is changed by user
+	if name == "minclientconfig.type" then
+		if minclientconfig_type == "none" then
+			setServerConfigSetting( "minclientversion_auto_update", "0", true )
+			setServerConfigSetting( "minclientversion", "", true )
 
-		if minclientconfig_type == "latest" then
+		elseif minclientconfig_type == "custom" then
+			setServerConfigSetting( "minclientversion_auto_update", "0", true )
+			setServerConfigSetting( "minclientversion", minclientconfig_customText, true )
+
+		elseif minclientconfig_type == "release" then
+			setServerConfigSetting( "minclientversion_auto_update", "1", true )
+			setServerConfigSetting( "minclientversion", getPanelSetting("lastFetchedReleaseVersion"), true )
+
+		elseif minclientconfig_type == "latest" then
+			setServerConfigSetting( "minclientversion_auto_update", "2", true )
 			setServerConfigSetting( "minclientversion", getPanelSetting("lastFetchedLatestVersion"), true )
 		end
-
-		if minclientconfig_type == "release" then
-			setServerConfigSetting( "minclientversion", getPanelSetting("lastFetchedReleaseVersion"), true )
-		end
-
-		if minclientconfig_type == "custom" then
-			setServerConfigSetting( "minclientversion", getPanelSetting("minclientconfig.customText"), true )
-		end
-
-		if minclientconfig_type == "none" then
-			setServerConfigSetting( "minclientversion", "", true )
-		end
-
 	end
---[[
-	if name == "minclientconfig.type" and minclientconfig_type == "latest" then
-		setServerConfigSetting( "minclientversion", getPanelSetting("lastFetchedLatestVersion"), true )
-	end
-
-	if name == "minclientconfig.type" and minclientconfig_type == "release" then
-		setServerConfigSetting( "minclientversion", getPanelSetting("lastFetchedReleaseVersion"), true )
-	end
-
-	if name == "minclientconfig.type" and minclientconfig_type == "custom" then
-		setServerConfigSetting( "minclientversion", getPanelSetting("minclientconfig.customText"), true )
-	end
-
-	if name == "minclientconfig.type" and minclientconfig_type == "none" then
-		setServerConfigSetting( "minclientversion", "", true )
-	end
-
-	if name == "blockmods.type" and minclientconfig_type == "none" then
-		setServerConfigSetting( "minclientversion", "", true )
-	end
---]]
 end
 
 
@@ -161,6 +131,9 @@ function maybeSetDefault( name, value )
 		aSettings.Cache[name] = value
 	end
 end
+function setSetting( name, value )
+	aSettings.Cache[name] = value
+end
 
 ---------------------------------------------------------
 -- Actually do load
@@ -184,13 +157,28 @@ function doLoad()
 	maybeSetDefault( "lastFetchedLatestVersion", "1.3.2" )
 
 	local minclientversion = getServerConfigSetting("minclientversion")
+	local minclientversion_auto_update = getServerConfigSetting("minclientversion_auto_update")
+
+	-- Determine "minclientconfig.type" from mtaserver.conf
+	if minclientversion_auto_update == "0" then
+		if minclientversion == "" then
+			setSetting( "minclientconfig.type", "none" )
+		else
+			setSetting( "minclientconfig.type", "custom" )
+		end
+	elseif minclientversion_auto_update == "1" then
+		setSetting( "minclientconfig.type", "release" )
+	elseif minclientversion_auto_update == "2" then
+		setSetting( "minclientconfig.type", "latest" )
+	end
+
+	-- Ensure "minclientconfig.customText" is not blank
 	if minclientversion == "" then
-		maybeSetDefault( "minclientconfig.type", "none" )
 		maybeSetDefault( "minclientconfig.customText", "1.3.2-9.01234" )
 	else
-		maybeSetDefault( "minclientconfig.type", "custom" )
 		maybeSetDefault( "minclientconfig.customText", minclientversion )
 	end
+
 	GetVersInfoFromRemoteServer()
 end
 

@@ -31,6 +31,7 @@ function aAntiCheatTab.Create ( tab )
 				{ id=17, desc="Speed / wall hacks" },
 				{ id=18, desc="Modifed game files" },
 				{ id=21, desc="Trainers / custom gta_sa.exe" },
+				{ id=26, desc="Anti-cheat component blocked" },
 			}
 
 	local disabledAcDesc = getServerConfigSetting( "disableac" )
@@ -57,14 +58,14 @@ function aAntiCheatTab.Create ( tab )
 		ypos = ypos + 14
 	end
 
-	ypos = ypos + 2
+	ypos = ypos + 5
 
 	local msg = "To turn OFF an AC#, add number to <disabledac> setting in mtaserver.conf and restart server"
 	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
 	guiLabelSetColor(label1, unpack(colorYellow) )
-	guiSetFont(label1, "default-small" )
+	guiSetFont(label1, "default-bold-small" )
 
-	ypos = ypos + 20
+	ypos = ypos + 50
 
 
 	------------------------------------------------------------------------------
@@ -78,6 +79,9 @@ function aAntiCheatTab.Create ( tab )
 				{ id=15, sver="1.3.1-9.04791", cver="1.3.1-9.04791", desc="Disallow disabled driver signing" },
 				{ id=16, sver="1.3.1-9.05097", cver="1.3.1-9.05097", desc="Disallow disabled AC components" },
 				{ id=20, sver="1.3.1-9.05097", cver="1.3.1-9.05097", desc="Disallow modified gta3.img" },
+				{ id=22, sver="1.3.4-9.05884", cver="1.3.4-9.05884", desc="Disallow resource download errors/corruption (Lua script files)" },
+				{ id=23, sver="1.3.4-9.05884", cver="1.5.2-9.07911", desc="Disallow resource download errors/corruption (Non-Lua files e.g. png,dff)" },
+				{ id=28, sver="1.3.4-9.05884", cver="1.3.4-9.05884", desc="Disallow Linux Wine" },
 			}
 
 	local enableSdDesc = getServerConfigSetting( "enablesd" )
@@ -110,7 +114,7 @@ function aAntiCheatTab.Create ( tab )
 		end
 	end
 
-	ypos = ypos + 2
+	ypos = ypos + 5
 
 	local msg = "To turn ON a SD#, add number to <enabledsd> setting in mtaserver.conf and restart server"
 	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
@@ -118,76 +122,6 @@ function aAntiCheatTab.Create ( tab )
 	guiLabelSetColor(label1, unpack(colorYellow) )
 
 	ypos = ypos + 25
-
-
-	------------------------------------------------------------------------------
-	------------------------------------------------------------------------------
-	-- Verify client files
-	------------------------------------------------------------------------------
-	------------------------------------------------------------------------------
-	gtaDataFiles =  {
-			  {   1, "data/animgrp.dat" },
-			  {   3, "data/ar_stats.dat" },
-			  {   0, "data/carmods.dat" },
-			  {   5, "data/clothes.dat" },
-			  {   7, "data/default.dat" },
-			  {   9, "data/default.ide" },
-			  {  11, "data/gta.dat" },
-			  {  25, "data/maps" },
-			  {   6, "data/object.dat" },
-			  {  13, "data/peds.ide" },
-			  {  15, "data/pedstats.dat" },
-			  {  17, "data/txdcut.ide" },
-			  {  14, "data/vehicles.ide" },
-			  {  20, "data/weapon.dat" },
-			  {   4, "data/melee.dat" },
-			  {  16, "data/water.dat" },
-			  {  18, "data/water1.dat" },
-			  {   2, "data/handling.cfg" },
-			  {  19, "models/coll/weapons.col" },
-			  {  21, "data/plants.dat" },
-			  {  23, "data/furnitur.dat" },
-			  {  24, "data/procobj.dat" },
-			  {   8, "data/surface.dat" },
-			  {  12, "data/surfinfo.dat" },
-			  {  22, "anim/ped.ifp" },
-			 }
-
-	local msg = "Client files which are allowed to be customized:"
-	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
-
-	ypos = ypos + 20
-
-	local gridlist		= guiCreateGridList ( xpos, ypos, 300, 100, false, tab )
-	local col1 = 				  	  guiGridListAddColumn ( gridlist, "Filename", 0.65 )
-	local col2 =				  	  guiGridListAddColumn ( gridlist, "Allowed", 0.25 )
-
-	local verifyFlagsString = getServerConfigSetting( "verifyclientsettingsstring" )
-
-	for _,info in ipairs(gtaDataFiles) do
-		local id = info[1]
-		local file = info[2]
-		local c = string.sub(verifyFlagsString, id+1, id+1 )
-		local allowed = (c == "1")
-		--	outputDebug(""
-		--		.. " included:" .. tostring(included)
-		--		.. " c:" .. tostring(c)
-		--		.. " id:" .. tostring(id)
-		--		.. " file:" .. tostring(file)
-		--		)
-
-		local row = guiGridListAddRow ( gridlist )
-		guiGridListSetItemText( gridlist, row, col1, file, false, false )
-
-		if allowed then
-			guiGridListSetItemText( gridlist, row, col2, "Allowed", false, false )
-			guiGridListSetItemColor( gridlist, row, col2, unpack(colorRed) )
-		else
-			guiGridListSetItemText( gridlist, row, col2, "Blocked", false, false )
-			guiGridListSetItemColor( gridlist, row, col2, unpack(colorGreen) )
-		end
-
-	end
 
 	aAntiCheatTab.Refresh()
 
