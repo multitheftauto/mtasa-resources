@@ -1,7 +1,7 @@
 <meta>
+	<script src="move_keyboard.lua" type="client" validate="false"/>
 	<script src="controlinterface.lua" type="client" />
 	<script src="convert.lua" type="client" />
-	<script src="move_keyboard.lua" type="client" validate="false"/>
 
 	<!-- client functions -->
 	<export function="attachElement" type="client" />
