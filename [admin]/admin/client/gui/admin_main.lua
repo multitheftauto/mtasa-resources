@@ -19,6 +19,50 @@ aBans = {}
 aLastSync = 0
 aResources = {}
 
+local weaponsTable = {
+	"Fist",
+	"Brassknuckle",
+	"Golfclub",
+	"Nightstick",
+	"Knife",
+	"Bat",
+	"Shovel",
+	"Poolstick",
+	"Katana",
+	"Chainsaw",
+	"Colt 45",
+	"Silenced",
+	"Deagle",
+	"Shotgun",
+	"Sawed-off",
+	"Combat Shotgun",
+	"Uzi",
+	"MP5",
+	"Tec-9",
+	"AK-47",
+	"M4",
+	"Rifle",
+	"Sniper",
+	"Rocket Launcher",
+	"Rocket Launcher HS",
+	"Flamethrower",
+	"Minigun",
+	"Grenade",
+	"Teargas",
+	"Molotov",
+	"Satchel",
+	"Spraycan",
+	"Fire Extinguisher",
+	"Camera",
+	"Dildo",
+	"Vibrator",
+	"Flower",
+	"Cane",
+	"Nightvision",
+	"Infrared",
+	"Parachute",
+}
+
 function aAdminMenu ()
 	if ( aAdminForm == nil ) then
 		local x, y = guiGetScreenSize()
@@ -104,7 +148,8 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab1.WeaponOptions	= guiCreateGridList ( 0.71, 0.485, 0.27, 0.48, true, aTab1.Tab )
 						  guiGridListAddColumn( aTab1.WeaponOptions, "", 0.85 )
 						  guiSetVisible ( aTab1.WeaponOptions, false )
-						  for i = 1, 46 do if ( getWeaponNameFromID ( i ) ~= false ) then guiGridListSetItemText ( aTab1.WeaponOptions, guiGridListAddRow ( aTab1.WeaponOptions ), 1, getWeaponNameFromID ( i ), false, false ) end end
+						  --for i = 1, 46 do if ( getWeaponNameFromID ( i ) ) then guiGridListSetItemText ( aTab1.WeaponOptions, guiGridListAddRow ( aTab1.WeaponOptions ), 1, getWeaponNameFromID ( i ), false, false ) end end
+						  for a,b in pairs(weaponsTable) do guiGridListSetItemText ( aTab1.WeaponOptions, guiGridListAddRow ( aTab1.WeaponOptions ), 1, b, false, false ) end
 		aTab1.SetMoney		= guiCreateButton ( 0.71, 0.530, 0.13, 0.04, "Set Money", true, aTab1.Tab, "setmoney" )
 		aTab1.SetStats		= guiCreateButton ( 0.85, 0.530, 0.13, 0.04, "Set Stats", true, aTab1.Tab, "setstat" )
 		aTab1.JetPack		= guiCreateButton ( 0.71, 0.575, 0.27, 0.04, "Give JetPack", true, aTab1.Tab, "jetpack" )
