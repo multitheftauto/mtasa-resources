@@ -5,23 +5,24 @@ local g_screenX,g_screenY = guiGetScreenSize()
 local visibleText = {}
 ------
 local defaults = {
-	fX							= 0.5,
-	fY							= 0.5,
-	bRelativePosition			= true,
+	fX						= 0.5,
+	fY						= 0.5,
+	bRelativePosition				= true,
 	strText						= "",
-	bVerticalAlign 				= "center",
-	bHorizontalAlign 			= "center",
+	bVerticalAlign 					= "center",
+	bHorizontalAlign 				= "center",
 	tColor 						= {255,255,255,255},
 	fScale 						= 1,
 	strFont 					= "default",
 	strType						= "normal",
 	tAttributes					= {},
 	bPostGUI 					= false,
+	bColorCoded					= true,
 	bClip 						= false,
 	bWordWrap	 				= true,
 	bVisible 					= true,
-	tBoundingBox				= false, --If a bounding box is not set, it will not be used.
-	bRelativeBoundingBox		= true,
+	tBoundingBox					= false, --If a bounding box is not set, it will not be used.
+	bRelativeBoundingBox				= true,
 }
 
 local validFonts = {
@@ -31,7 +32,7 @@ local validFonts = {
 	arial						= true,
 	pricedown					= true,
 	bankgothic					= true,
-	diploma						= true,
+	diploma					= true,
 	beckett						= true,
 }
 
@@ -123,7 +124,12 @@ function dxText:destroy()
 end
 
 function dxText:extent()
-	local extent = dxGetTextWidth ( self.strText, self.fScale, self.strFont )
+	if ( self.bColorCoded == true ) then
+		text = string.gsub ( self.strText, "#%x%x%x%x%x%x", "" )
+	else
+		text = self.strText
+	end
+	local extent = dxGetTextWidth ( text, self.fScale, self.strFont )
 	if self.strType == "stroke" or self.strType == "border" then
 		extent = extent + self.tAttributes[1]
 	end
@@ -256,7 +262,7 @@ addEventHandler ( "onClientRender", getRootElement(),
 						for offsetX=-outlinesize,outlinesize,outlinesize do
 							for offsetY=-outlinesize,outlinesize,outlinesize do
 								if not (offsetX == 0 and offsetY == 0) then
-									dxDrawText(self.strText, l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI )
+									dxDrawText(self.strText, l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded )
 								end
 							end
 						end
@@ -267,9 +273,9 @@ addEventHandler ( "onClientRender", getRootElement(),
 					att3 = att3 or 0
 					att4 = att4 or 0
 					att5 = att5 or self.tColor[4]
-					dxDrawText(self.strText, l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI )
+					dxDrawText(self.strText, l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded )
 				end
-				dxDrawText ( self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI )
+				dxDrawText ( self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded )
 				break
 			end
 		end
