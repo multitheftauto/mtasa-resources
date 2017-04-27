@@ -17,7 +17,6 @@ local defaults = {
 	strType						= "normal",
 	tAttributes					= {},
 	bPostGUI 					= false,
-	bColorCoded					= true,
 	bClip 						= false,
 	bWordWrap	 				= true,
 	bVisible 					= true,
@@ -124,12 +123,7 @@ function dxText:destroy()
 end
 
 function dxText:extent()
-	if ( self.bColorCoded == true ) then
-		text = string.gsub ( self.strText, "#%x%x%x%x%x%x", "" )
-	else
-		text = self.strText
-	end
-	local extent = dxGetTextWidth ( text, self.fScale, self.strFont )
+	local extent = dxGetTextWidth ( self.strText, self.fScale, self.strFont )
 	if self.strType == "stroke" or self.strType == "border" then
 		extent = extent + self.tAttributes[1]
 	end
