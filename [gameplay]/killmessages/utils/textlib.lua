@@ -27,12 +27,12 @@ local defaults = {
 
 local validFonts = {
 	default						= true,
-	["default-bold"]			= true,
+	["default-bold"]				= true,
 	clear						= true,
 	arial						= true,
 	pricedown					= true,
 	bankgothic					= true,
-	diploma					= true,
+	diploma						= true,
 	beckett						= true,
 }
 
@@ -49,14 +49,14 @@ local validAlignTypes = {
 	right						= true,
 }
 
-function dxText:create( text, x, y, relative )
+function dxText:create(text, x, y, relative)
 	assert(not self.fX, "attempt to call method 'create' (a nil value)")
-	if ( type(text) ~= "string" ) or ( not tonumber(x) ) or ( not tonumber(y) ) then
+	if type(text) ~= "string" or not tonumber(x) or not tonumber(y) then
 		outputDebugString ( "dxText:create - Bad argument", 0, 112, 112, 112 )
 		return false
 	end
     local new = {}
-	setmetatable( new, dxText_mt )
+	setmetatable(new, dxText_mt)
 	--Add default settings
 	for i,v in pairs(defaults) do
 		new[i] = v
@@ -96,7 +96,7 @@ function dxText:color(r,g,b,a)
 	g = g or self.tColor[2]
 	b = b or self.tColor[3]
 	a = a or self.tColor[4]
-	self.tColor = { r,g,b,a }
+	self.tColor = {r,g,b,a}
 	return true
 end
 
@@ -124,12 +124,12 @@ function dxText:destroy()
 end
 
 function dxText:extent()
-	if ( self.bColorCoded == true ) then
-		text = string.gsub ( self.strText, "#%x%x%x%x%x%x", "" )
+	if self.bColorCoded then
+		text = string.gsub(self.strText, "#%x%x%x%x%x%x", "")
 	else
 		text = self.strText
 	end
-	local extent = dxGetTextWidth ( text, self.fScale, self.strFont )
+	local extent = dxGetTextWidth(text, self.fScale, self.strFont)
 	if self.strType == "stroke" or self.strType == "border" then
 		extent = extent + self.tAttributes[1]
 	end
@@ -137,7 +137,7 @@ function dxText:extent()
 end
 
 function dxText:height()
-	local height = dxGetFontHeight ( self.fScale, self.strFont )
+	local height = dxGetFontHeight(self.fScale, self.strFont)
 	if self.strType == "stroke" or self.strType == "border" then
 		height = height + self.tAttributes[1]
 	end
@@ -261,8 +261,8 @@ addEventHandler ( "onClientRender", getRootElement(),
 					if outlinesize > 0 then
 						for offsetX=-outlinesize,outlinesize,outlinesize do
 							for offsetY=-outlinesize,outlinesize,outlinesize do
-								if not (offsetX == 0 and offsetY == 0) then
-									dxDrawText(self.strText, l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded )
+								if not offsetX == 0 and offsetY == 0 then
+									dxDrawText(self.strText, l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
 								end
 							end
 						end
@@ -273,9 +273,9 @@ addEventHandler ( "onClientRender", getRootElement(),
 					att3 = att3 or 0
 					att4 = att4 or 0
 					att5 = att5 or self.tColor[4]
-					dxDrawText(self.strText, l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded )
+					dxDrawText(self.strText, l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
 				end
-				dxDrawText ( self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded )
+				dxDrawText(self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
 				break
 			end
 		end
@@ -285,7 +285,7 @@ addEventHandler ( "onClientRender", getRootElement(),
 if addEvent ( "updateDisplays", true ) then
 	addEventHandler ( "updateDisplays", getRootElement(),
 		function(self)
-			setmetatable( self, dxText_mt )
+			setmetatable(self, dxText_mt)
 			--Remove any old ones with the same id
 			for text,_ in pairs(visibleText) do
 				if text.id == self.id then
