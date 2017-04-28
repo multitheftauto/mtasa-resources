@@ -202,6 +202,41 @@ function dxText:boundingBox(left,top,right,bottom,relative)
 	return true
 end
 
+function dxCreateCustomDX(text,left,top,right,bottom,color,scale,font,alignX,alignY,clip,wordBreak,postGUI)
+	if not text or not left or not top then
+		return false
+	end
+	local xOffset = nil
+	local fpat = "(.-)#(%x%x%x%x%x%x)"
+	local s, e, cap, col = text:find(fpat,1)
+	local last_end = 1
+	if not alignX then
+		alignX = "left"
+	elseif alignX == "center" then
+		xOffset = -(dxGetTextWidth(string.gsub(text,"#%x%x%x%x%x%x",""),scale,font)/2)
+	else
+		xOffset = 0
+	end
+	while s do
+		if cap == "" and col then
+			color = tocolor(tonumber("0x" .. col:sub(1, 2)), tonumber("0x" .. col:sub(3, 4)), tonumber("0x" .. col:sub(5, 6)), 255)
+		end
+		if s ~= 1 or cap ~= "" then
+			dxDrawText(cap, left + xOffset, top, left + xOffset, bottom, color, scale, font, alignX, alignY, false, false, postGUI)
+			xOffset = xOffset + dxGetTextWidth(cap, scale, font)
+			color = tocolor(tonumber("0x" .. col:sub(1, 2)), tonumber("0x" .. col:sub(3, 4)), tonumber("0x" .. col:sub(5, 6)), 255)
+		end
+		last_end = e + 1
+		s, e, cap, col = text:find(fpat, last_end)
+	end
+	if last_end <= #text then
+		cap = text:sub(last_end)
+		dxDrawText(cap, left + (xOffset), top, left + (xOffset), bottom, color, scale, font, alignX, alignY, false, false, postGUI)
+		xOffset = xOffset + dxGetTextWidth(cap, scale, font)
+	end
+	return true
+end
+
 addEventHandler ( "onClientRender", getRootElement(),
 	function()
 		for self,_ in pairs(visibleText) do
@@ -262,7 +297,7 @@ addEventHandler ( "onClientRender", getRootElement(),
 						for offsetX=-outlinesize,outlinesize,outlinesize do
 							for offsetY=-outlinesize,outlinesize,outlinesize do
 								if not offsetX == 0 and offsetY == 0 then
-									dxDrawText(self.strText, l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
+									dxCreateCustomDX(self.strText, l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
 								end
 							end
 						end
@@ -273,9 +308,9 @@ addEventHandler ( "onClientRender", getRootElement(),
 					att3 = att3 or 0
 					att4 = att4 or 0
 					att5 = att5 or self.tColor[4]
-					dxDrawText(self.strText, l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
+					dxCreateCustomDX(self.strText, l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
 				end
-				dxDrawText(self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
+				dxCreateCustomDX(self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
 				break
 			end
 		end
