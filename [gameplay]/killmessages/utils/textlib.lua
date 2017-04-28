@@ -52,7 +52,7 @@ local validAlignTypes = {
 function dxText:create(text, x, y, relative)
 	assert(not self.fX, "attempt to call method 'create' (a nil value)")
 	if type(text) ~= "string" or not tonumber(x) or not tonumber(y) then
-		outputDebugString ( "dxText:create - Bad argument", 0, 112, 112, 112 )
+		outputDebugString("dxText:create - Bad argument",0,112,112,112)
 		return false
 	end
     local new = {}
@@ -61,7 +61,7 @@ function dxText:create(text, x, y, relative)
 	for i,v in pairs(defaults) do
 		new[i] = v
 	end
-	idAssign = idAssign + 1
+	idAssign = idAssign+1
 	new.id = idPrefix..idAssign
 	new.strText = text or new.strText
 	new.fX = x or new.fX
@@ -80,7 +80,7 @@ function dxText:text(text)
 end
 
 function dxText:position(x,y,relative)
-	if not tonumber(x) then return self.fX, self.fY end
+	if not tonumber(x) then return self.fX,self.fY end
 	self.fX = x
 	self.fY = y
 	if type(relative) == "boolean" then
@@ -125,11 +125,11 @@ end
 
 function dxText:extent()
 	if self.bColorCoded then
-		text = string.gsub(self.strText, "#%x%x%x%x%x%x", "")
+		text = string.gsub(self.strText,"#%x%x%x%x%x%x","")
 	else
 		text = self.strText
 	end
-	local extent = dxGetTextWidth(text, self.fScale, self.strFont)
+	local extent = dxGetTextWidth(text,self.fScale,self.strFont)
 	if self.strType == "stroke" or self.strType == "border" then
 		extent = extent + self.tAttributes[1]
 	end
@@ -169,16 +169,16 @@ function dxText:wordWrap(bool)
 end
 
 function dxText:type(type,...)
-	if not validTypes[type] then return self.strType, unpack(self.tAttributes) end
+	if not validTypes[type] then return self.strType,unpack(self.tAttributes) end
 	self.strType = type
 	self.tAttributes = {...}
 	return true
 end
 
 function dxText:align(horzA, vertA)
-	if not validAlignTypes[horzA] then return self.bHorizontalAlign, self.bVerticalAlign end
+	if not validAlignTypes[horzA] then return self.bHorizontalAlign,self.bVerticalAlign end
 	vertA = vertA or self.bVerticalAlign
-	self.bHorizontalAlign, self.bVerticalAlign = horzA, vertA
+	self.bHorizontalAlign,self.bVerticalAlign = horzA,vertA
 	return true
 end
 
@@ -208,7 +208,7 @@ function dxCreateCustomDX(text,left,top,right,bottom,color,scale,font,alignX,ali
 	end
 	local xOffset = nil
 	local fpat = "(.-)#(%x%x%x%x%x%x)"
-	local s, e, cap, col = text:find(fpat,1)
+	local s,e,cap,col = text:find(fpat,1)
 	local last_end = 1
 	if not alignX then
 		alignX = "left"
@@ -219,25 +219,25 @@ function dxCreateCustomDX(text,left,top,right,bottom,color,scale,font,alignX,ali
 	end
 	while s do
 		if cap == "" and col then
-			color = tocolor(tonumber("0x" .. col:sub(1, 2)), tonumber("0x" .. col:sub(3, 4)), tonumber("0x" .. col:sub(5, 6)), 255)
+			color = tocolor(tonumber("0x"..col:sub(1,2)), tonumber("0x"..col:sub(3,4)), tonumber("0x"..col:sub(5,6)),255)
 		end
 		if s ~= 1 or cap ~= "" then
-			dxDrawText(cap, left + xOffset, top, left + xOffset, bottom, color, scale, font, alignX, alignY, false, false, postGUI)
-			xOffset = xOffset + dxGetTextWidth(cap, scale, font)
-			color = tocolor(tonumber("0x" .. col:sub(1, 2)), tonumber("0x" .. col:sub(3, 4)), tonumber("0x" .. col:sub(5, 6)), 255)
+			dxDrawText(cap,left+xOffset,top,left+xOffset,bottom,color,scale,font,alignX,alignY,false,false,postGUI)
+			xOffset = xOffset+dxGetTextWidth(cap,scale,font)
+			color = tocolor(tonumber("0x"..col:sub(1,2)), tonumber("0x"..col:sub(3,4)), tonumber("0x"..col:sub(5,6)),255)
 		end
-		last_end = e + 1
-		s, e, cap, col = text:find(fpat, last_end)
+		last_end = e+1
+		s,e,cap,col = text:find(fpat,last_end)
 	end
 	if last_end <= #text then
 		cap = text:sub(last_end)
-		dxDrawText(cap, left + (xOffset), top, left + (xOffset), bottom, color, scale, font, alignX, alignY, false, false, postGUI)
-		xOffset = xOffset + dxGetTextWidth(cap, scale, font)
+		dxDrawText(cap,left+xOffset,top,left+xOffset,bottom,color,scale,font,alignX,alignY,false,false,postGUI)
+		xOffset = xOffset+dxGetTextWidth(cap,scale,font)
 	end
 	return true
 end
 
-addEventHandler ( "onClientRender", getRootElement(),
+addEventHandler("onClientRender",getRootElement(),
 	function()
 		for self,_ in pairs(visibleText) do
 			while true do
@@ -297,7 +297,7 @@ addEventHandler ( "onClientRender", getRootElement(),
 						for offsetX=-outlinesize,outlinesize,outlinesize do
 							for offsetY=-outlinesize,outlinesize,outlinesize do
 								if not offsetX == 0 and offsetY == 0 then
-									dxCreateCustomDX(self.strText, l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
+									dxCreateCustomDX(self.strText,l+offsetX,t+offsetY,r+offsetX,b+offsetY,tocolor(att2,att3,att4,att5),self.fScale,self.strFont,self.bHorizontalAlign,self.bVerticalAlign,self.bClip,self.bWordWrap,self.bPostGUI,self.bColorCoded)
 								end
 							end
 						end
@@ -308,19 +308,19 @@ addEventHandler ( "onClientRender", getRootElement(),
 					att3 = att3 or 0
 					att4 = att4 or 0
 					att5 = att5 or self.tColor[4]
-					dxCreateCustomDX(self.strText, l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
+					dxCreateCustomDX(self.strText,l+shadowDist,t+shadowDist,r+shadowDist,b+shadowDist,tocolor(att2,att3,att4,att5),self.fScale,self.strFont,self.bHorizontalAlign,self.bVerticalAlign,self.bClip,self.bWordWrap,self.bPostGUI,self.bColorCoded)
 				end
-				dxCreateCustomDX(self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCoded)
+				dxCreateCustomDX(self.strText,l,t,r,b,tocolor(unpack(self.tColor)),self.fScale,self.strFont,self.bHorizontalAlign,self.bVerticalAlign,self.bClip,self.bWordWrap,self.bPostGUI,self.bColorCoded)
 				break
 			end
 		end
 	end
 )
 
-if addEvent ( "updateDisplays", true ) then
-	addEventHandler ( "updateDisplays", getRootElement(),
+if addEvent("updateDisplays",true) then
+	addEventHandler("updateDisplays",getRootElement(),
 		function(self)
-			setmetatable(self, dxText_mt)
+			setmetatable(self,dxText_mt)
 			--Remove any old ones with the same id
 			for text,_ in pairs(visibleText) do
 				if text.id == self.id then
