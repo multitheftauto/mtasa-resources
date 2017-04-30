@@ -1,13 +1,46 @@
 <meta>
-	<info author="Arran" version="0.2" type="script" name="IPB" description="Ingame Performance Browser"/>
+    <oop>true</oop>
+    <info name="IPB" author="Arran, Necktrox" version="0.3.0" type="script" description="Ingame Performance Browser"></info>
 
-	<script src="ipbs.lua" type="server"/>
-	<script src="ipbc.lua" type="client"/>
-	
-	<settings>
-		<setting name="*SaveHighCPUResources" value="true" friendlyname="Save to RAM (every 5 seconds) CPU usage of resources that are using over specified % to debug when web/ingame PB isn't accessible" accept="true,false"/>
-		<setting name="*SaveHighCPUResourcesAmount" value="10" friendlyname="The amount of CPU a resource must use before being logged as a high CPU user. Default: 10" accept="1-1000"/>
-		<setting name="*NotifyIPBUsersOfHighUsage" value="50" friendlyname="Requires SaveHighCPUResources to be enabled. Will notify any IPB users if a resources goes over the specified value of CPU %. Default is 50. Set to 1000 to disable." accept="10-1000"/>
-		<setting name="*AccessRightName" value="general.http" friendlyname="The name of the access right that a player needs in order to be able to use IPB. Default: general.http"/>
-	</settings>
+    <script type="shared" src="shared/alarm.lua"></script>
+    <script type="shared" src="shared/constants.lua"></script>
+    <script type="shared" src="shared/hook.lua"></script>
+
+    <script type="server" src="server/access.lua"></script>
+    <script type="server" src="server/settings.lua"></script>
+    <script type="server" src="server/sync.lua"></script>
+
+    <script type="client" src="client/access.lua"></script>
+    <script type="client" src="client/gui.lua"></script>
+    <script type="client" src="client/settings.lua"></script>
+    <script type="client" src="client/sync.lua"></script>
+
+    <settings>
+        <setting name="*SaveHighCPUResources"
+            group="Logging"
+            friendlyname="Enable/Disable usage logging"
+            desc="Save to RAM (every 5 seconds) CPU usage of resources that are using over specified % to debug when web/ingame PB isn't accessible"
+            value="true"
+            accept="true,false"/>
+
+        <setting name="*SaveHighCPUResourcesAmount"
+            group="Logging"
+            friendlyname="Minimum CPU % to log usage"
+            desc="The amount of CPU a resource must use before being logged as a high CPU user. Default: 10"
+            value="10"
+            accept="1-1000"/>
+
+        <setting name="*NotifyIPBUsersOfHighUsage"
+            group="Logging"
+            friendlyname="Minimum CPU % to notify admins"
+            desc="Requires SaveHighCPUResources to be enabled. Will notify any IPB users if a resources goes over the specified value of CPU %. Default is 50. Set to 1000 to disable."
+            value="50"
+            accept="10-1000"/>
+
+        <setting name="*AccessRightName"
+            group="Access"
+            friendlyname="Required ACL access right"
+            value="general.http"
+            desc="The name of the access right that a player needs in order to be able to use IPB. Default: general.http"/>
+    </settings>
 </meta>
