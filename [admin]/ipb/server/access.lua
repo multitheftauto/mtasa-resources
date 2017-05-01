@@ -1,6 +1,6 @@
 
 function Player:hasIPBAccess()
-	return self:hasPermissionTo(g_Settings["AccessRightName"], false)
+    return self:hasPermissionTo(g_Settings["AccessRightName"], false)
 end
 
 function onIPBCommand(player)
