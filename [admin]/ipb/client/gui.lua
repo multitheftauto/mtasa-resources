@@ -121,26 +121,31 @@ function GUI:setVisible(visible)
         self.optionsTimer = nil
         self.filterTimer = nil
 
-        return triggerServerEvent("ipb.toggle", localPlayer, visible)
+        triggerServerEvent("ipb.toggle", localPlayer, visible)
+    else
+        if visible then
+            if not self.updateTimer then
+                self.updateTimer = Timer(function () self:updateStatistics(STATS_MODE_REFRESH) end, UPDATE_FREQUENCY, 0)
+            end
+        else
+            if self.updateTimer and isTimer(self.updateTimer) then
+                self.updateTimer:destroy()
+            end
+
+            self.updateTimer = nil
+        end
     end
 
     if visible then
-        if not self.updateTimer then
-            self.updateTimer = Timer(function () self:updateStatistics(STATS_MODE_REFRESH) end, UPDATE_FREQUENCY, 0)
-        end
-
         if self.autoDestroyTimer and isTimer(self.autoDestroyTimer) then
             self.autoDestroyTimer:destroy()
         end
 
         self.autoDestroyTimer = nil
     else
-        if self.updateTimer and isTimer(self.updateTimer) then
-            self.updateTimer:destroy()
+        if not self.autoDestroyTimer then
+            self.autoDestroyTimer = Timer(function () self:destroy() end, 60000, 1)
         end
-
-        self.updateTimer = nil
-        self.autoDestroyTimer = Timer(function () self:destroy() end, 60000, 1)
     end
 end
 
