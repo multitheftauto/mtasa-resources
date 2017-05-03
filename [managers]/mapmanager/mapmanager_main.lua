@@ -52,13 +52,13 @@ addEventHandler("onPlayerJoin", rootElement,
 	end
 )
 
-addEventHandler("onResourceStart", rootElement, 
+addEventHandler("onResourceStart", rootElement,
 	function (startedResource)
 		--Is this resource a gamemode?
 		if isGamemode(startedResource) then
 			--Check no gamemode is running already
 			if getRunningGamemode() then
-                return
+				return
 			end
 			if triggerEvent("onGamemodeStart", getResourceRootElement(startedResource), startedResource) then
 				currentGamemode = startedResource
@@ -72,7 +72,7 @@ addEventHandler("onResourceStart", rootElement,
 					outputMapManager("Gamemode '"..gamemodeName.."' started" .. name .. "." )
 				end
 				--We need to wait a while to see if any maps were started.  If not, lets try and start a random one
-				setTimer( 
+				setTimer(
 					function()
 						if not getRunningGamemodeMap() then
 							--Lets check if there are any maps for this gamemode
@@ -82,7 +82,7 @@ addEventHandler("onResourceStart", rootElement,
 								changeGamemodeMap (maps[math.random(1,#maps)])
 							end
 						end
-					end, 
+					end,
 				50, 1 )
 			else
 				currentGamemode = nil
@@ -104,7 +104,7 @@ addEventHandler("onResourceStart", rootElement,
 					--Setup our announcements
 					local gamemodeMapName = getResourceInfo(currentGamemodeMap, "name") or getResourceName(currentGamemodeMap)
 					applyMapSettings( currentGamemodeMap )
-					
+
 					if get("ASE") then
 						setMapName(gamemodeMapName)
 					end
@@ -120,7 +120,7 @@ addEventHandler("onResourceStart", rootElement,
 	end
 )
 
-addEventHandler("onResourceStop", rootElement, 
+addEventHandler("onResourceStop", rootElement,
 	function (stoppedResource)
 		-- Incase the resource being stopped has been deleted
 		local stillExists = false
@@ -130,15 +130,17 @@ addEventHandler("onResourceStop", rootElement,
 				break
 			end
 		end
-		if not stillExists then return end
-		
-		local resourceRoot = getResourceRootElement(stoppedResource)
+
+		local resourceRoot = stillExists and getResourceRootElement(stoppedResource)
+
 		if stoppedResource == currentGamemode then
-			triggerEvent("onGamemodeStop", resourceRoot, currentGamemode)
-			
+			if stillExists then
+				triggerEvent("onGamemodeStop", resourceRoot, currentGamemode)
+			end
+
 			currentGamemode = nil
 			setGameType(false)
-			
+
 			if currentGamemodeMap then
 				stopResource(currentGamemodeMap)
 			elseif nextGamemode then
@@ -150,12 +152,14 @@ addEventHandler("onResourceStop", rootElement,
 				end
 			end
 		elseif stoppedResource == currentGamemodeMap then
-			triggerEvent("onGamemodeMapStop", resourceRoot, currentGamemodeMap)
-			
+			if stillExists then
+				triggerEvent("onGamemodeMapStop", resourceRoot, currentGamemodeMap)
+			end
+
 			currentGamemodeMap = nil
 			resetMapInfo()
 			setMapName("None")
-			
+
 			if nextGamemode then
 				startGamemodeT(nextGamemode)
 				nextGamemode = nil
@@ -171,8 +175,99 @@ addEventHandler("onResourceStop", rootElement,
 	end
 )
 
+addEventHandler("onResourceStart", resourceRoot,
+	function ()
+		-- Investigate if there is a starting/running gamemode
+		local gamemodeRequiresRestart = false
+
+		for index, gamemode in pairs(getGamemodes()) do
+			local gamemodeState = getResourceState(gamemode)
+
+			if gamemodeState == "starting" or gamemodeState == "running" then
+				if not currentGamemode then
+					outputServerLog(("mapmanager: Running gamemode %q found"):format(getResourceName(gamemode)))
+					currentGamemode = gamemode
+				else
+					outputServerLog(("mapmanager: Stopping running gamemode %q"):format(getResourceName(gamemode)))
+					stopResource(gamemode)
+					gamemodeRequiresRestart = true
+				end
+			end
+		end
+
+		-- Search for starting/running maps
+		local runningMaps = {}
+
+		for index, map in pairs(getMaps()) do
+			local mapState = getResourceState(map)
+
+			if mapState == "starting" or mapState == "running" then
+				runningMaps[#runningMaps + 1] = map
+			end
+		end
+
+		-- Investigate if there is a starting/running compatible map
+		if runningMaps[1] then
+			if currentGamemode then
+				-- Select the first starting/running compatible map for our gamemode
+				for index, map in pairs(runningMaps) do
+					if not currentGamemodeMap and isMapCompatibleWithGamemode(map, currentGamemode) then
+						outputServerLog(("mapmanager: Running map %q found"):format(getResourceName(map)))
+						currentGamemodeMap = map
+					else
+						outputServerLog(("mapmanager: Stopping running map %q"):format(getResourceName(map)))
+						stopResource(map)
+					end
+				end
+			else
+				-- Select a random map from the list because we have no running gamemode
+				currentGamemodeMap = table.remove(runningMaps, math.random(#runningMaps))
+				outputServerLog(("mapmanager: Running map %q found"):format(getResourceName(currentGamemodeMap)))
+
+				-- Stop the remaining maps
+				for index, map in pairs(runningMaps) do
+					outputServerLog(("mapmanager: Stopping running map %q"):format(getResourceName(map)))
+					stopResource(map)
+				end
+			end
+		end
+
+		-- a) Stopping gamemodes is dangerous and the stopping gamemodes might stop essential resources for the current gamemode
+		-- b) A gamemode and a map are running, but the map and/or gamemode might be stuck/error'ed
+		if gamemodeRequiresRestart or (currentGamemode and currentGamemodeMap) then
+			nextGamemode = currentGamemode
+			nextGamemodeMap = currentGamemodeMap
+			return stopGamemode()
+		end
+
+		if currentGamemode and not currentGamemodeMap then
+			-- A gamemode, but no map; are running
+			local maps = getMapsCompatibleWithGamemode(currentGamemode)
+
+			if maps and maps[1] then
+				local randomMap = maps[math.random(#maps)]
+				outputServerLog(("mapmanager: Starting random map %q for gamemode %q"):format(getResourceName(randomMap), getResourceName(currentGamemode)))
+				return setTimer(changeGamemodeMap, 50, 1, randomMap, nil, true)
+			else
+				outputServerLog("mapmanager: Running gamemode has no compatible maps")
+			end
+		elseif not currentGamemode and currentGamemodeMap then
+			-- A map, but no gamemode; are running
+			local gamemodes = getGamemodesCompatibleWithMap(currentGamemodeMap)
+
+			if gamemodes and gamemodes[1] then
+				local randomGamemode = gamemodes[math.random(#gamemodes)]
+				outputServerLog(("mapmanager: Starting random gamemode %q for map %q"):format(getResourceName(randomGamemode), getResourceName(currentGamemodeMap)))
+				return setTimer(changeGamemode, 50, 1, randomGamemode, currentGamemodeMap, true)
+			else
+				outputServerLog("mapmanager: Running map has no compatible gamemodes")
+			end
+		end
+	end,
+false)
+
 function changeGamemodeMap_cmd(source, command, ...)
-    local mapName = #{...}>0 and table.concat({...},' ') or nil
+	local mapName = #{...}>0 and table.concat({...},' ') or nil
 	source = source or serverConsole
 
 	local map
@@ -190,7 +285,7 @@ function changeGamemodeMap_cmd(source, command, ...)
 		outputMapManager("Usage: /"..command.." map",source)
 		return false
 	end
-	
+
 	local gamemode = currentGamemode
 	if not isGamemode(gamemode) then
 		outputMapManager("No gamemode is running.",source)
@@ -205,7 +300,7 @@ end
 addCommandHandler("changemap", changeGamemodeMap_cmd, true)
 
 function changeGamemode_cmd(source, command, gamemodeName,...)
-    local mapName = #{...}>0 and table.concat({...},' ') or nil
+	local mapName = #{...}>0 and table.concat({...},' ') or nil
 	source = source or serverConsole
 
 	local gamemode
@@ -228,7 +323,7 @@ function changeGamemode_cmd(source, command, gamemodeName,...)
 		outputMapManager("Usage: /"..command.." gamemode [map]",source)
 		return false
 	end
-	
+
 	local map
 	if mapName then
 		map = getMapFromName(mapName)
@@ -249,7 +344,7 @@ addCommandHandler("changemode", changeGamemode_cmd, true)
 
 function stopGamemode_cmd(source)
 	source = source or serverConsole
-	
+
 	if currentGamemode then
 		stopGamemode()
 		local gamemodeName = getResourceInfo(currentGamemode, "name") or getResourceName(currentGamemode)
@@ -262,7 +357,7 @@ addCommandHandler("stopmode", stopGamemode_cmd, true)
 
 function stopGamemodeMap_cmd(source)
 	source = source or serverConsole
-	
+
 	if currentGamemodeMap then
 		stopGamemodeMap()
 		local mapName = getResourceInfo(currentGamemodeMap, "name") or getResourceName(currentGamemodeMap)
@@ -294,12 +389,12 @@ function outputGamemodeListToConsole(source)
 		else
 			gamemodeFriendlyName = ""
 		end
-		
+
 		local numberOfCompatibleMaps = #getMapsCompatibleWithGamemode(gamemode)
-		
+
 		local s = "s"
 		if numberOfCompatibleMaps == 1 then s="" end
-		
+
 		outputMapManagerConsole(getResourceName(gamemode) .. gamemodeFriendlyName .. " [".. numberOfCompatibleMaps .. " map"..s.."]", source)
 	end
 end
@@ -311,7 +406,7 @@ function outputMapListToConsole(source, command, gamemodeName)
 	if not gamemodeName then
 		local allMaps = getMaps()
 		local numberOfMaps = #allMaps
-		
+
 		if numberOfMaps == 0 then
 			outputMapManagerConsole("There are no maps.", source)
 		else
@@ -319,7 +414,7 @@ function outputMapListToConsole(source, command, gamemodeName)
 			if numberOfMaps == 1 then s="" end
 			outputMapManagerConsole("There are "..numberOfMaps.." map"..s..":", source)
 		end
-		
+
 		for k, map in ipairs(allMaps) do
 			local gamemodeMapFriendlyName = getResourceInfo(map, "name")
 			if gamemodeMapFriendlyName then
@@ -335,13 +430,13 @@ function outputMapListToConsole(source, command, gamemodeName)
 			outputMapManager("Gamemode '"..gamemodeName.."' does not exist.", source)
 			return false
 		end
-		
+
 		local compatibleMaps = getMapsCompatibleWithGamemode(gamemode)
 		if not compatibleMaps then
 			outputMapManager("Gamemode '"..gamemodeName.."' does not exist.", source)
 			return false
 		end
-		
+
 		local numberOfCompatibleMaps = #compatibleMaps
 		if numberOfCompatibleMaps == 0 then
 			outputMapManagerConsole("'"..gamemodeName.."' has no maps.", source)
@@ -350,7 +445,7 @@ function outputMapListToConsole(source, command, gamemodeName)
 			if numberOfCompatibleMaps == 1 then s="" end
 			outputMapManagerConsole("'"..gamemodeName.."' has "..#compatibleMaps.." map"..s..":", source)
 		end
-		
+
 		for k, map in ipairs(compatibleMaps) do
 			local gamemodeMapFriendlyName = getResourceInfo(map, "name")
 			if gamemodeMapFriendlyName then
@@ -365,7 +460,7 @@ end
 addCommandHandler("maps",outputMapListToConsole)
 
 function startGamemode(gamemode)
-	if not startResource(gamemode) then
+	if not startResource(gamemode, true) then
 		error("mapmanager: gamemode resource could not be started.", 2)
 		return false
 	end
@@ -419,18 +514,18 @@ function doesMapSupportPlayerCount( map )
 	local mapName = getResourceName(map)
 	local minPlayers = tonumber(get(mapName..".minplayers"))
 	local maxPlayers = tonumber(get(mapName..".maxplayers"))
-	
+
 	local playersIn = getPlayerCount()
 	if minPlayers and minPlayers > playersIn then
 		outputMapManager( (minPlayers).." or more players are required to start '"..mapName.."'" )
 		return false
 	end
-	
+
 	if maxPlayers and maxPlayers < playersIn then
 		outputMapManager( (maxPlayers).." or less players are required to start '"..mapName.."'" )
 		return false
 	end
-		
+
 	return true
 end
 
@@ -466,18 +561,18 @@ end
 
 function getMapFromName ( name )
 	local resource = getResourceFromName ( name )
-	if resource then 
+	if resource then
 		return resource
 	end
 	if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then -- If this version has refreshResources, refresh resources.
 		refreshResources(false)
 	end
 	local resource = getResourceFromName ( name ) --and try get the resource again.
-	if resource then 
+	if resource then
 		return resource
 	end
 	name = string.lower(name) --Remove case sensitivity.  May cause minor problems with linux servers.
-	--Loop through and find resources with a matching 'name' param 
+	--Loop through and find resources with a matching 'name' param
 	for i,resource in ipairs(getMaps()) do
 		local infoName = getResourceInfo ( resource, "name" )
 		if (infoName and (string.lower(infoName) == name)) then
