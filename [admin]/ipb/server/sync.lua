@@ -35,9 +35,14 @@ addEventHandler("onPlayerQuit", root,
 
 addEvent("ipb.toggle", true)
 addEventHandler("ipb.toggle", root,
-    function (enabled)
+    function (enabled, category)
         if enabled and client:hasIPBAccess() then
             addListener(client)
+
+            if category then
+                g_Listener[client].category = category
+            end
+
             sendListenerStats(client, STATS_MODE_NEW_LISTENER)
         else
             removeListener(client)

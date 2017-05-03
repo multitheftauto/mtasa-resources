@@ -121,7 +121,7 @@ function GUI:setVisible(visible)
         self.optionsTimer = nil
         self.filterTimer = nil
 
-        triggerServerEvent("ipb.toggle", localPlayer, visible)
+        triggerServerEvent("ipb.toggle", localPlayer, visible, self.categoryItem)
     else
         if visible then
             if not self.updateTimer then
@@ -188,7 +188,7 @@ function GUI:onTargetUpdate()
     self.category:autoHeight()
     self.categoryItem = self.category:getItemText(self.category:getSelected())
 
-    triggerServerEvent("ipb.toggle", localPlayer, text == "Server")
+    triggerServerEvent("ipb.toggle", localPlayer, text == "Server", false)
 
     if text == "Client" then
         if not self.updateTimer then
