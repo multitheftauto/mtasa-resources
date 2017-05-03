@@ -28,7 +28,7 @@ function saveHighCPUResources()
             end
 
             -- Record this high usage to table
-            table.insert(g_HighUsageResources, 1, {row[1], row[2], getCurrentTimeString()})
+            table.insert(g_HighUsageResources, 1, {row[1], row[2], getDateTimeString()})
 
             -- Make sure it won't get too big
             table.remove(g_HighUsageResources, 1000)
@@ -37,7 +37,9 @@ function saveHighCPUResources()
 end
 Timer(saveHighCPUResources, 5000, 0)
 
-function getCurrentTimeString()
+function getDateTimeString()
     local time = getRealTime()
-    return ("%02d:%02d:%02d"):format(time.hour, time.minute, time.second)
+    local weekday = ({"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"})[time.weekday + 1]
+    -- Weekday, DD.MM.YYYY, hh:mm:ss
+    return ("%s, %02d.%02d.%d, %02d:%02d:%02d"):format(weekday, time.monthday, time.month + 1, time.year + 1900, time.hour, time.minute, time.second)
 end

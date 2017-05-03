@@ -4,7 +4,7 @@ GUI = {}
 local screenWidth, screenHeight = guiGetScreenSize()
 
 local comboCategories = {
-    server = {"Server info", "Lua timing", "Lua time recordings", "Lua memory", "Packet usage", "Sqlite timing", "Bandwidth reduction", "Bandwidth usage", "Server timing", "Function stats", "Debug info", "Debug table", "Help", "Lib memory"},
+    server = {"Server info", "Lua timing", "Lua time recordings", "Lua memory", "Packet usage", "Sqlite timing", "Bandwidth reduction", "Bandwidth usage", "Server timing", "Function stats", "Debug info", "Debug table", "Lib memory", "Help"},
     client = {"Lua timing", "Lua time recordings", "Lua memory", "Lib memory", "Packet usage", "Help"},
 }
 
@@ -188,12 +188,16 @@ function GUI:onTargetUpdate()
     self.category:autoHeight()
     self.categoryItem = self.category:getItemText(self.category:getSelected())
 
+    self.statistics:wipe()
+
     triggerServerEvent("ipb.toggle", localPlayer, text == "Server", false)
 
     if text == "Client" then
         if not self.updateTimer then
             self.updateTimer = Timer(function () self:updateStatistics(STATS_MODE_REFRESH) end, UPDATE_FREQUENCY, 0)
         end
+
+        self:updateStatistics(STATS_MODE_NEW_LISTENER)
     else
         if self.updateTimer and isTimer(self.updateTimer) then
             self.updateTimer:destroy()
