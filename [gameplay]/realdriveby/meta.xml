@@ -30,6 +30,13 @@
 		
 		<!--Whether a weapon should be equiped as soon as you enter a vehicle. -->
 		<setting name="driveby_auto_equip" value="[false]"/>
+		
+		<!-- Fixes the hitbox when someone is using driveby on a bike.
+		Only use this if you have your own clientsided damage system, where the attacker triggers the damage -->
+		<setting name="bike_hitbox_fix" value="[false]"/>
+		
+		<!-- Fixes the eject-bug (using driveby while exiting the vehicle ejects you) -->
+		<setting name="eject_on_driveby_fix" value="[true]"/>
 	</settings>
 	<export function="setDriverDrivebyAbility" type="client" />
 	<export function="setPassengerDrivebyAbility" type="client" />
