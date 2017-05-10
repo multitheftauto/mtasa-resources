@@ -803,7 +803,7 @@ function updatePlayerBlips()
 	local mapControl = getControl(wnd, 'map')
 	for elem,player in pairs(g_PlayerData) do
 		if not player.gui.mapBlip then
-			player.gui.mapBlip = guiCreateStaticImage(0, 0, 9, 9, elem == g_Me and 'localplayerblip.png' or 'playerblip.png', false, mapControl)
+			player.gui.mapBlip = guiCreateStaticImage(0, 0, 9, 9, elem == g_Me and 'i/localplayerblip.png' or 'i/playerblip.png', false, mapControl)
 			player.gui.mapLabelShadow = guiCreateLabel(0, 0, 100, 14, player.name, false, mapControl)
 			local labelWidth = guiLabelGetTextExtent(player.gui.mapLabelShadow)
 			guiSetSize(player.gui.mapLabelShadow, labelWidth, 14, false)
@@ -855,7 +855,7 @@ wndSetPos = {
 	text = 'Set position',
 	width = g_MapSide + 20,
 	controls = {
-		{'img', id='map', src='map.png', width=g_MapSide, height=g_MapSide, onclick=fillInPosition, ondoubleclick=setPosClick},
+		{'img', id='map', src='i/map.png', width=g_MapSide, height=g_MapSide, onclick=fillInPosition, ondoubleclick=setPosClick},
 		{'txt', id='x', text='', width=60},
 		{'txt', id='y', text='', width=60},
 		{'txt', id='z', text='', width=60},
@@ -964,7 +964,7 @@ wndSpawnMap = {
 	text = 'Select spawn position',
 	width = g_MapSide + 20,
 	controls = {
-		{'img', id='map', src='map.png', width=g_MapSide, height=g_MapSide, ondoubleclick=spawnMapDoubleClick},
+		{'img', id='map', src='i/map.png', width=g_MapSide, height=g_MapSide, ondoubleclick=spawnMapDoubleClick},
 		{'lbl', text='Welcome to freeroam. Double click a location on the map to spawn.', width=g_MapSide-60, align='center'},
 		{'btn', id='close', closeswindow=true}
 	},
