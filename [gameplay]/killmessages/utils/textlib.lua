@@ -5,12 +5,12 @@ local g_screenX,g_screenY = guiGetScreenSize()
 local visibleText = {}
 ------
 local defaults = {
-	fX							= 0.5,
-	fY							= 0.5,
-	bRelativePosition			= true,
+	fX						= 0.5,
+	fY						= 0.5,
+	bRelativePosition				= true,
 	strText						= "",
-	bVerticalAlign 				= "center",
-	bHorizontalAlign 			= "center",
+	bVerticalAlign 					= "center",
+	bHorizontalAlign 				= "center",
 	tColor 						= {255,255,255,255},
 	fScale 						= 1,
 	strFont 					= "default",
@@ -20,13 +20,13 @@ local defaults = {
 	bClip 						= false,
 	bWordWrap	 				= true,
 	bVisible 					= true,
-	tBoundingBox				= false, --If a bounding box is not set, it will not be used.
-	bRelativeBoundingBox		= true,
+	tBoundingBox					= false, --If a bounding box is not set, it will not be used.
+	bRelativeBoundingBox				= true,
 }
 
 local validFonts = {
 	default						= true,
-	["default-bold"]			= true,
+	["default-bold"]				= true,
 	clear						= true,
 	arial						= true,
 	pricedown					= true,
