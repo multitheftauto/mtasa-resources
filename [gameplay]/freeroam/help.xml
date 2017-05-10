@@ -34,4 +34,6 @@ Environment:
  grav / setgravity [value]
 
 If you want to use a different key for bringing up/hiding the interface, you can use the bind command. For example: "/bind r fr" will bind the R key to showing/hiding the window.
+
+Some animations will not be displayed if you're using the Steam or patched (1.01) versions of this game.
 </help>
