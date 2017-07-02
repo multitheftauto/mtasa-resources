@@ -1,6 +1,6 @@
 <meta>
 	<oop>true</oop>
-	<info author="BrophY" description="A playtest/freeroam mode" version="1" type="gamemode" />
+	<info author="BrophY" description="A playtest/freeroam mode" version="1.5" type="gamemode" />
 	<include resource="freeroam" />
 	<script src="broph.lua"/>
 	
