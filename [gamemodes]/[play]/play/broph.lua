@@ -74,7 +74,7 @@ local playerVehicles = {}
 
 local function spawn(player)
 
-	if player and isElement(player) and getElementType(player) == "player" then
+	if player and isElement(player) then
 		local x,y,z,r = unpack(spawnpoints[math.random(1,#spawnpoints)])
 		spawnPlayer(player,x+math.random(-3,3),y+math.random(-3,3),z,r,validSkins[math.random(1,#validSkins)],0,0)
 		fadeCamera(player, true)
@@ -92,7 +92,7 @@ end
 
 local function onWasted()
 
-	local t = get("playerRespawnTime")
+	local t = tonumber(get("playerRespawnTime")) or 5000
 	setTimer(spawn,(t > 50 and t or 50),1,source)
 
 end
@@ -113,7 +113,7 @@ end
 
 local function onEnter(player)
 
-	local t = get("vehicleRespawnTime")
+	local t = tonumber(get("vehicleRespawnTime")) or 60000
 	source.damageProof = false
 	source.frozen = false
 	local vehicledata = vehiclesToSpawn[source]
@@ -145,7 +145,7 @@ end
 
 local function onExit()
 	
-	local t = get("vehicleExpireTime")
+	local t = tonumber(get("vehicleExpireTime")) or 600000
 	vehicleDestroyTimers[source] = setTimer(destroyVehicle,(t > 50 and t or 50),1,source)
 	addEventHandler("onVehicleEnter",source,destroyTimer)
 
