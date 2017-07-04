@@ -77,7 +77,7 @@ function colorPicker.create(id, start, title)
   addEventHandler("onClientGUIBlur", cp.gui.window, cp.handlers.guiBlur, false)
   addEventHandler("onClientGUIClick", cp.gui.okb, cp.handlers.pickColor, false)
   addEventHandler("onClientGUIClick", cp.gui.closeb, cp.handlers.destroy, false)  
-  showCursor(true)
+  --showCursor(true)
   return cp
 end
 
