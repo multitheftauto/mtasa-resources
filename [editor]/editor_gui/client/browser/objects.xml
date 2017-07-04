@@ -2428,7 +2428,7 @@
       <object model="330" name="Phone" keywords="mission,missions,mobilephone,cellphone,CJ"/>
       <object model="331" name="Brass_Knuckles" keywords="weapon,1"/>
       <object model="333" name="Golf_Club" keywords="weapon,2"/>
-      <object model="334" name="Night_Strick" keywords="weapon,3"/>
+      <object model="334" name="Night_Stick" keywords="weapon,3"/>
       <object model="335" name="Knife" keywords="weapon,4"/>
       <object model="336" name="Baseball_Bat" keywords="weapon,5"/>
       <object model="337" name="Shovel" keywords="weapon,6"/>
