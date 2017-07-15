@@ -161,7 +161,7 @@ function colshapeHit( player, matchingDimension )
 	if player ~= localPlayer then return end
 	if ( not matchingDimension ) or ( isPedInVehicle ( player ) ) or 
 	( doesPedHaveJetPack ( player ) ) or ( not isPedOnGround ( player ) ) or 
-	( getControlState ( "aim_weapon" ) ) or ( blockPlayer ) 
+	( getPedControlState ( player, "aim_weapon" ) ) or ( blockPlayer ) 
 	then return end
 	local interior = interiorFromCol[source]
 	local id = getElementData ( interior, idLoc[getElementType(interior)] ) 
