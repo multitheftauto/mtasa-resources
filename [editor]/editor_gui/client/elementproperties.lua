@@ -679,7 +679,7 @@ local function applyPropertiesChanges()
 	guiSetProperty(btnApply,      "Disabled", "False")
 	guiSetProperty(spnProperties, "Disabled", "False")
 
-	toggleProperties()
+	toggleProperties(true)
 end
 
 function closePropertiesBox()
