@@ -1,4 +1,33 @@
-﻿addEvent ("onClientPlayerKillMessage",true)
+local specialVehicleDamagerModels =
+{
+	[520] = true,
+	[425] = true,
+}
+
+function onAirstrikeDamaged(att, wep, loss)
+	local localVeh = getPedOccupiedVehicle(localPlayer)
+	if att and getElementType(att) == "player" and att ~= localPlayer and localVeh and source == localVeh and loss > 0 then
+		if isPedInVehicle(att) and specialVehicleDamagerModels[getElementModel(getPedOccupiedVehicle(att))] then
+			if not isTimer(hydradmgcd) then
+				hydradmgcd = setTimer(function() end, 100, 1)
+				setElementData(localPlayer, "km.hydradmg", att, false)
+				setTimer(setElementData, 500, 1, localPlayer, "km.hydradmg", false)
+			end
+		end
+	end
+end
+addEventHandler ("onClientVehicleDamage", root, onAirstrikeDamaged)
+	
+function onClientWasted(killer, weapon, bodypart)
+	if isPedInVehicle(source) and getElementData(source, "km.hydradmg") then
+		return triggerServerEvent("onWastedPlayerKillMessageRequest", localPlayer, getElementData(source, "km.hydradmg"), 59, 0)
+	else
+		triggerServerEvent("onWastedPlayerKillMessageRequest", source, killer, weapon, bodypart)
+	end
+end
+addEventHandler ("onClientPlayerWasted", localPlayer, onClientWasted)
+
+addEvent ("onClientPlayerKillMessage",true)
 function onClientPlayerKillMessage ( killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
 	if wasEventCancelled() then return end
 	outputKillMessage ( source, wr,wg,wb,killer,kr,kg,kb,weapon,width,resource )
