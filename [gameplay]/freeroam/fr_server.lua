@@ -623,6 +623,15 @@ addEventHandler('onServerCall', resourceRoot,
 	function(fnName, ...)
 		source = client		-- Some called functions require 'source' to be set to the triggering client
 		local fnInfo = g_RPCFunctions[fnName]
+
+		-- Custom check made to intercept the jetpack on custom gravity
+		if fnInfo and type(fnInfo) ~= "boolean" and tostring(fnInfo.option) == "jetpack" then
+			if tonumber(("%.3f"):format(getPedGravity(source))) ~= 0.008 then
+				errMsg("* You may use jetpack only if the gravity is set to 0.008", source)
+				return
+			end
+		end
+
 		if fnInfo and ((type(fnInfo) == 'boolean' and fnInfo) or (type(fnInfo) == 'table' and getOption(fnInfo.option))) then
 			local fn = _G
 			for i,pathpart in ipairs(fnName:split('.')) do
