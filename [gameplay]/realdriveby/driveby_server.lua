@@ -5,7 +5,8 @@
 	blockedVehicles = get"driveby_blocked_vehicles" or { 432,601,437,431,592,553,577,488,497,548,563,512,476,447,425,519,520,460,417,469,487,513,441,464,501,465,564,538,449,537,539,570,472,473,493,595,484,430,453,452,446,454,606,591,607,611,610,590,569,611,435,608,584,450 },
 	steerCars = get"driveby_steer_cars" == true,
 	steerBikes = get"driveby_steer_bikes" == true,
-	autoEquip = get"driveby_auto_equip" or false
+	autoEquip = get"driveby_auto_equip" or false,
+	blockInstantEject = get"block_instant_eject" == true,
 }
 --Remove any BS IDs by checking them
 local validDrivebyWeapons = { [22]=true,[23]=true,[24]=true,[25]=true,
@@ -19,7 +20,7 @@ for key,weaponID in ipairs(settings.driver) do
 end
 for key,weaponID in ipairs(settings.passenger) do
 	if not validDrivebyWeapons[weaponID] then
-		table.remove ( settings.driver, key )
+		table.remove ( settings.passenger, key )
 	end
 end
 
