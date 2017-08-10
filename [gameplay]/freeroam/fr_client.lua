@@ -976,13 +976,25 @@ wndSpawnMap = {
 -- Interior window
 ---------------------------
 
+local function fade2(x,y,z)
+	setPlayerPosition(x,y,z)
+	setCameraTarget(g_Me)
+	fadeCamera(true,1)
+end
+
+local function fade(x,y,z,i)
+	setCameraMatrix(x,y,z)
+	setCameraInterior(i)
+	server.setElementInterior(g_Me, i)
+	setTimer(fade2,1000,1,x,y,z)
+end
+
 function setInterior(leaf)
 	local vehicle = getPedOccupiedVehicle(g_Me)
 	if vehicle and getVehicleController (vehicle) ~= g_Me then
 		outputChatBox ("* Only the driver may set interior/dimension", 255, 0, 0)
 		return
 	end
-	server.setElementInterior(g_Me, leaf.world)
 	if vehicle then
 		server.setElementInterior(vehicle, leaf.world)
 		for i=0,getVehicleMaxPassengers(vehicle) do
@@ -993,8 +1005,8 @@ function setInterior(leaf)
 			end
 		end
 	end
-	setCameraInterior(leaf.world)
-	setPlayerPosition(leaf.posX, leaf.posY, leaf.posZ + 1)
+	fadeCamera(false,1)
+	setTimer(fade,1000,1,leaf.posX, leaf.posY, leaf.posZ, leaf.world)
 	closeWindow(wndSetInterior)
 end
 
