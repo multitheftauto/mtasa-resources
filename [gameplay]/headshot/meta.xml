@@ -1,4 +1,11 @@
 <meta>
-	<info author="jbeta" type="script" version="1.0.0" />
+	<info author="jbeta" type="script" version="1.1.0" />
 	<script src="headshot.lua" type="server" />
+	<settings>
+		<setting name="*removeHeadOnHeadshot" value="true"
+			friendlyname="Blows off player's head on headshot"
+			group="General"
+			accept="false,true"
+			desc="Should player lose his head when he gets headshot?" />
+	</settings>
 </meta>
