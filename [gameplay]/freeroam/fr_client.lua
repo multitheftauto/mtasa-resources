@@ -11,6 +11,9 @@ guiSetInputMode("no_binds_when_editing")
 -- Place to store the ticks for anti spam:
 local antiCommandSpam = {}
 
+-- Player's current gravity set by gravity window --
+local playerGravity = getGravity()
+
 -- Local settings received from server
 local command_ddos_protection
 local tries_required_to_trigger
@@ -387,6 +390,7 @@ end
 function applyPlayerGrav()
 	local grav = getControlNumber(wndGravity, 'gravval')
 	if grav then
+		playerGravity = grav
 		server.setPedGravity(g_Me, grav)
 	end
 	closeWindow(wndGravity)
@@ -396,6 +400,7 @@ function setGravityCommand(cmd, grav)
 	if isCommandOnCD(cmd) then return end
 	local grav = grav and tonumber(grav)
 	if grav then
+		playerGravity = grav
 		server.setPedGravity(g_Me, tonumber(grav))
 	end
 end
@@ -752,7 +757,7 @@ function setPlayerPosition(x, y, z)
 		if isTimer(g_TeleportMatrixTimer) then killTimer(g_TeleportMatrixTimer) end
 		g_TeleportMatrixTimer = setTimer(setCameraMatrix, 1000, 1, x, y, z)
 		if not grav then
-			grav = getGravity()
+			grav = playerGravity
 			setGravity(0.001)
 		end
 		if isTimer(g_TeleportTimer) then killTimer(g_TeleportTimer) end
