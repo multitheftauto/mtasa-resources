@@ -1,4 +1,4 @@
-local showColorCodes = false; 		-- Shows player's names colorcoded if set to true, and if set to false it doesn't
+local showColorCodes = true; 		-- Shows player's names colorcoded if set to true, and if set to false it doesn't
 local defaultHexCode = "#4E5768"; 	-- Hex code for what color to output messages in (only used if showColorCodes is true)
 
 
