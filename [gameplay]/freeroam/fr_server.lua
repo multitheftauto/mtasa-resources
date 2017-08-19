@@ -1,4 +1,4 @@
-﻿g_Root = getRootElement()
+g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_PlayerData = {}
 g_VehicleData = {}
@@ -479,6 +479,13 @@ addEventHandler('onVehicleEnter', g_Root,
 			toggleControl(player, 'vehicle_fire', false)
 			toggleControl(player, 'vehicle_secondary_fire', false)
 		end
+		-- Fast Hunter/Hydra on custom gravity fix
+		if getElementModel(source) == 425 or getElementModel(source) == 520 then
+			if getPedGravity(player) ~= 0.008 then
+				g_PlayerData[player].previousGravity = getPedGravity(player)
+				setPedGravity(player, 0.008)
+			end
+		end
 	end
 )
 
@@ -553,6 +560,11 @@ addEventHandler('onVehicleExit', g_Root,
 			toggleControl(player, 'vehicle_fire', true)
 			toggleControl(player, 'vehicle_secondary_fire', true)
 		end
+			
+		if g_PlayerData[player].previousGravity then
+			setPedGravity(player, g_PlayerData[player].previousGravity)
+			g_PlayerData[player].previousGravity = nil
+		end
 	end
 )
 
@@ -572,6 +584,12 @@ addEventHandler('onVehicleExplode', g_Root,
 		end
 		if not g_VehicleData[source].timers.destroy then
 			g_VehicleData[source].timers.destroy = setTimer(unloadVehicle, 5000, 1, source)
+		end
+		if getVehicleController(source) then
+			if g_PlayerData[getVehicleController(source)].previousGravity then
+				setPedGravity(getVehicleController(source), g_PlayerData[getVehicleController(source)].previousGravity)
+				g_PlayerData[getVehicleController(source)].previousGravity = nil
+			end
 		end
 	end
 )
