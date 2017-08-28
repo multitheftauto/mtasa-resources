@@ -50,7 +50,7 @@ addEventHandler('onClientPlayerQuit', root,
 	function(reason)
 
 		if showColorCodes then
-			outputChatBox(defaultHexCode .. '* ' .. RGBToHex(getPlayerNametagColor()) .. getPlayerName(source) .. defaultHexCode .. ' has left the game [' .. reason .. ']', 255, 100, 100, true)
+			outputChatBox(defaultHexCode .. '* ' .. RGBToHex(getPlayerNametagColor(source)) .. getPlayerName(source) .. defaultHexCode .. ' has left the game [' .. reason .. ']', 255, 100, 100, true)
 		else
 			outputChatBox('* ' .. getPlayerName(source) .. ' has left the game [' .. reason .. ']', 255, 100, 100)
 		end
