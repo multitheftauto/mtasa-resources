@@ -981,17 +981,17 @@ wndSpawnMap = {
 -- Interior window
 ---------------------------
 
-local function fade2(x,y,z)
+local function setPositionAfterInterior(x,y,z)
 	setPlayerPosition(x,y,z)
 	setCameraTarget(g_Me)
 	fadeCamera(true,1)
 end
 
-local function fade(x,y,z,i)
+function setPlayerInterior(x,y,z,i)
 	setCameraMatrix(x,y,z)
 	setCameraInterior(i)
 	server.setElementInterior(g_Me, i)
-	setTimer(fade2,1000,1,x,y,z)
+	setTimer(setPositionAfterInterior,1000,1,x,y,z)
 end
 
 function setInterior(leaf)
@@ -1011,7 +1011,7 @@ function setInterior(leaf)
 		end
 	end
 	fadeCamera(false,1)
-	setTimer(fade,1000,1,leaf.posX, leaf.posY, leaf.posZ, leaf.world)
+	setTimer(setPlayerInterior,1000,1,leaf.posX, leaf.posY, leaf.posZ, leaf.world)
 	closeWindow(wndSetInterior)
 end
 
