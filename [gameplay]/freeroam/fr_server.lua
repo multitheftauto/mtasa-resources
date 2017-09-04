@@ -272,9 +272,8 @@ function warpMe(targetPlayer)
 	if not vehicle then
 		-- target player is not in a vehicle - just warp next to him
 		local x, y, z = getElementPosition(targetPlayer)
-		clientCall(source, 'setPlayerPosition', x + 2, y, z)
-		setElementInterior(source, interior)
-		setCameraInterior(source, interior)
+		fadeCamera(source,false,1)
+		setTimer(clientCall,1000,1,source,'setPlayerInterior', x + 2, y, z,interior)
 	else
 		-- target player is in a vehicle - warp into it if there's space left
 		if getPedOccupiedVehicle(source) then
