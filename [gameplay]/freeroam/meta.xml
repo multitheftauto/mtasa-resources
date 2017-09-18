@@ -74,19 +74,16 @@
 		<setting name="*setskin" value="true" />
 		<setting name="*setstyle" value="true" />
 		<setting name="*stats" value="true" />
-		<setting name="*time/freeze" value="true" />
-		<setting name="*time/set" value="true" />
 		<setting name="*upgrades" value="true" />
 		<setting name="*warp" value="true" />
 		<setting name="*weapons/enabled" value="true" />          <!-- Can players give themselves weapons? -->
 		<setting name="*weapons/vehiclesenabled" value="true" />  <!-- Can players fire vehicle weapons? -->
-		<setting name="*weapons/disallowed" value="[[]]" />     <!-- Comma-separated list of specific weapon ID's that players are not allowed to give to themselves -->
+		<setting name="*weapons/disallowed" value="[[38]]" />     <!-- Comma-separated list of specific weapon ID's that players are not allowed to give to themselves -->
 		<setting name="*weapons/kniferestrictions" value="true" />     <!-- Stealth kills are restricted when warping and changing position for 5 seconds -->
-		<setting name="*weather" value="true" />
 		<setting name="*vehicles/maxidletime" value="[300000]" />  <!-- Time in ms before a vehicle without passengers gets destroyed -->
 		<setting name="*vehicles/idleexplode" value="false" />     <!-- If set to false, vehicles simply disappear when they time out instead of exploding -->
 		<setting name="*vehicles/maxperplayer" value="[2]" />     <!-- Maximum number of vehicles a player can have at the same time -->
-		<setting name="*vehicles/disallowed" value="[[]]" />   <!-- Comma-separated list of vehicles that players may not create -->
+		<setting name="*vehicles/disallowed" value="[[432]]" />   <!-- Comma-separated list of vehicles that players may not create -->
 		<setting name="*chat/mainChatDelay" value="1000" />   <!-- Miliseconds between each message a player can send through main chat -->
 		<setting name="*chat/blockRepeatMessages" value="true" />   <!-- Prevent a player from saying the same thing twice in a row to spam -->
 		<setting name="@command_spam_protection" value="true"
