@@ -19,7 +19,7 @@ addEventHandler("onPlayerDamage", getRootElement(),
 addEventHandler("onPlayerSpawn", getRootElement(), 
 	function()
 		-- Restore head if it got blown off
-		if removeHeadOnHeadshot and source:isHeadless() then
+		if removeHeadOnHeadshot and isPedHeadless(source) then
 			setPedHeadless(source, false)
 		end
 	end
