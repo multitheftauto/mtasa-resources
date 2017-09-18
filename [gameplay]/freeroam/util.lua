@@ -1,15 +1,3 @@
-﻿function createServerCallInterface()
-	return setmetatable(
-		{},
-		{
-			__index = function(t, k)
-				t[k] = function(...) triggerServerEvent('onServerCall', resourceRoot, k, ...) end
-				return t[k]
-			end
-		}
-	)
-end
-
 addEvent('onClientCall', true)
 addEventHandler('onClientCall', getResourceRootElement(getThisResource()),
 	function(fnName, ...)
@@ -25,16 +13,16 @@ addEventHandler('onClientCall', getResourceRootElement(getThisResource()),
 
 function setCameraPlayerMode()
 	local r
-	local vehicle = getPedOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if vehicle then
 		local rx, ry, rz = getElementRotation(vehicle)
 		r = rz
 	else
-		r = getPedRotation(g_Me)
+		r = getPedRotation(localPlayer)
 	end
-	local x, y, z = getElementPosition(g_Me)
+	local x, y, z = getElementPosition(localPlayer)
 	setCameraMatrix(x - 4*math.cos(math.rad(r + 90)), y - 4*math.sin(math.rad(r + 90)), z + 1, x, y, z + 1)
-	setTimer(setCameraTarget, 100, 1, g_Me)
+	setTimer(setCameraTarget, 100, 1, localPlayer)
 end
 
 function getPlayerOccupiedSeat(player)
@@ -381,7 +369,7 @@ function applyToLeaves(t, callback)
 	end
 end
 
-addEventHandler("onClientResourceStart", resourceRoot, 
+addEventHandler("onClientResourceStart", resourceRoot,
 function ()
 	triggerServerEvent("onPlayerCheckForHexCodes", resourceRoot)
 end
@@ -402,12 +390,3 @@ function getPlayerName(player)
 		return _getPlayerName(player)
 	end
 end
-
-
-
-
-
-
-
-
-

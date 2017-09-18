@@ -1,9 +1,12 @@
-﻿g_gridListContents = {}   -- info about binded gridlists
-g_openedWindows = {}      -- {window1table = true, window2table = true, ...}
+local CONTROL_MARGIN_RIGHT = 5
+local LINE_MARGIN = 5
+local LINE_HEIGHT = 16
+local g_gridListContents = {}   -- info about binded gridlists
+local g_openedWindows = {}      -- {window1table = true, window2table = true, ...}
+local g_protectedElements = {}
+local GRIDLIST_UPDATE_CHUNK_SIZE = 10
 
-GRIDLIST_UPDATE_CHUNK_SIZE = 10
-
-classInfo = {
+local classInfo = {
 	wnd = {className = 'Window', padding = {25, 10, 10, 10}, isContainer = true},
 	tbp = {className = 'TabPanel'},
 	tab = {className = 'Tab', padding = 10, isContainer = true},
@@ -15,10 +18,6 @@ classInfo = {
 	lst = {className = 'GridList', width = 250, height = 400},
 	img = {className = 'StaticImage'}
 }
-
-function getTextWidth(text)
-	return 8*text:len()
-end
 
 function createWindow(wnd, rebuild)
 	if wnd.element then
@@ -37,6 +36,13 @@ function createWindow(wnd, rebuild)
 	
 	_planWindow(wnd)
 	_buildWindow(wnd)
+end
+
+local function onProtectedClick(btn,state,x,y)
+
+	if isFunctionOnCD(g_protectedElements[source]) then return end
+	g_protectedElements[source](btn,state,x,y)
+
 end
 
 function _planWindow(wnd, baseWnd, parentWnd, x, y, maxHeightInLine)
@@ -71,8 +77,7 @@ function _planWindow(wnd, baseWnd, parentWnd, x, y, maxHeightInLine)
 		
 		text = wnd.text or wnd.id or ''
 		if not wnd.width then
-			wnd.width = (classInfo[wndClass].width or getTextWidth(text)) +
-				(not classInfo[wndClass].isContainer and (padding[2] + padding[4]) or 0)
+			wnd.width = (classInfo[wndClass].width or (8*text:len()) + (not classInfo[wndClass].isContainer and (padding[2] + padding[4]) or 0))
 		end
 		if not wnd.height and not classInfo[wndClass].isContainer then
 			wnd.height = (classInfo[wndClass].height or LINE_HEIGHT) + padding[1] + padding[3]
@@ -259,7 +264,12 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		clickhandler = function() closeWindow(baseWnd) end
 	end
 	if clickhandler then
-		addEventHandler('onClientGUIClick', elem, clickhandler, false)
+		if wnd.ClickSpamProtected then
+			g_protectedElements[elem] = clickhandler
+			addEventHandler('onClientGUIClick', elem, onProtectedClick, false)
+		else
+			addEventHandler('onClientGUIClick', elem, clickhandler, false)
+		end
 	end
 	if wnd.ondoubleclick then
 		local doubleclickhandler
@@ -271,7 +281,12 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		else
 			doubleclickhandler = wnd.ondoubleclick
 		end
-		addEventHandler('onClientGUIDoubleClick', elem, doubleclickhandler, false)
+		if wnd.DoubleClickSpamProtected then
+			g_protectedElements[elem] = doubleclickhandler
+			addEventHandler('onClientGUIDoubleClick', elem, onProtectedClick, false)
+		else
+			addEventHandler('onClientGUIDoubleClick', elem, doubleclickhandler, false)
+		end
 	end
 	
 	if wnd.oncreate then
@@ -559,15 +574,28 @@ function bindGridListToTable(...)
 	if not listdata.clickHandlersSet then
 		-- set item click handler
 		if gridListControlData.onitemclick then
-			addEventHandler('onClientGUIClick', gridlist,
-				function()
-					local leaf = getSelectedGridListLeaf(gridListControlData)
-					if leaf then
-						gridListControlData.onitemclick(leaf)
-					end
-				end,
-				false
-			)
+			if gridListControlData.ClickSpamProtected then
+				addEventHandler('onClientGUIClick', gridlist,
+					function()
+						if isFunctionOnCD(gridListControlData.onitemclick) then return end
+						local leaf = getSelectedGridListLeaf(gridListControlData)
+						if leaf then
+							gridListControlData.onitemclick(leaf)
+						end
+					end,
+					false
+				)
+			else
+				addEventHandler('onClientGUIClick', gridlist,
+					function()
+						local leaf = getSelectedGridListLeaf(gridListControlData)
+						if leaf then
+							gridListControlData.onitemclick(leaf)
+						end
+					end,
+					false
+				)
+			end
 		end
 		
 		-- set double click handler
@@ -590,7 +618,12 @@ function bindGridListToTable(...)
 						table.insert(listdata.currentPath, tonumber(selData))
 					else
 						if gridListControlData.onitemdoubleclick then
-							gridListControlData.onitemdoubleclick(clickedNode, selRow)
+							if gridListControlData.DoubleClickSpamProtected then
+								if isFunctionOnCD(gridListControlData.onitemdoubleclick) then return end
+								gridListControlData.onitemdoubleclick(clickedNode, selRow)
+							else
+								gridListControlData.onitemdoubleclick(clickedNode, selRow)
+							end
 						end
 						return
 					end
