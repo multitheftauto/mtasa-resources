@@ -94,6 +94,20 @@ function aInputBox ( title, message, default, action, vOne, vTwo, defaultNick, d
 	varTwo = vTwo
 end
 
+addEventHandler("onClientGUIClick", guiRoot, 
+    function()
+        if source == banNickEdit then
+            if guiGetText(banNickEdit) == "Nick" then
+                guiSetText(banNickEdit, "")
+            end
+        elseif source == banReasonEdit then
+            if guiGetText(banReasonEdit) == "Reason" then
+                guiSetText(banReasonEdit, "")
+            end
+        end    
+    end
+)
+
 function aInputBoxClose ( destroy )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
 		if ( aInputForm ) then
