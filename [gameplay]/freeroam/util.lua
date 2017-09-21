@@ -1,5 +1,5 @@
 addEvent('onClientCall', true)
-addEventHandler('onClientCall', getResourceRootElement(getThisResource()),
+addEventHandler('onClientCall',resourceRoot,
 	function(fnName, ...)
 		local fn = _G
 		local path = fnName:split('.')
@@ -366,27 +366,5 @@ function applyToLeaves(t, callback)
 				callback(item)
 			end
 		end
-	end
-end
-
-addEventHandler("onClientResourceStart", resourceRoot,
-function ()
-	triggerServerEvent("onPlayerCheckForHexCodes", resourceRoot)
-end
-)
-
-addEvent("onServerProvideHexCodesSetting", true)
-addEventHandler("onServerProvideHexCodesSetting", resourceRoot,
-function (remove)
-	hexCodesDisabled = remove
-end)
-
-_getPlayerName = getPlayerName
-
-function getPlayerName(player)
-	if hexCodesDisabled then
-		return string.gsub(_getPlayerName(player), "#%x%x%x%x%x%x", "")
-	else
-		return _getPlayerName(player)
 	end
 end
