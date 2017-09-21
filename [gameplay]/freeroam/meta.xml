@@ -7,6 +7,7 @@
 	<!-- Also, give your modified resource a different name, like "<yournick>'s  -->
 	<!-- extended freeroam", to avoid confusion for users.                       -->
 
+	<oop>true</oop>
 	<info name="Freeroam GUI" author="arc_" version="1.5.4" />
 
 	<script src="util_server.lua" type="server" />
@@ -91,6 +92,11 @@
 					accept="true,false"
 					group="Command Spam Protection"
 					desc="This settings enables/disables protection against command spam that can form a type of DoS-attack capable of lagging or crashing the server"
+					/>
+		<setting name="@command_exception_commands" value="[ [ 'sp' ] ]"
+					friendlyname="Exception commands"
+					group="Command Spam Protection"
+					desc="Exception commands (to not filter with antispam detection)"
 					/>
 		<setting name="@tries_required_to_trigger" value="[5]"
 					friendlyname="Tries to trigger"

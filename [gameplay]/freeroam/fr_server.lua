@@ -140,37 +140,57 @@ function joinHandler(player)
 	end
 end
 addEventHandler('onPlayerJoin', root, joinHandler)
-local settingsToSend = {"command_spam_protection","tries_required_to_trigger","tries_required_to_trigger_low_priority","command_spam_ban_duration",}
+
+local settingsToSend =
+{
+	["command_spam_protection"] = true,
+	["tries_required_to_trigger"] = true,
+	["tries_required_to_trigger_low_priority"] = true,
+	["command_spam_ban_duration"] = true,
+	["command_exception_commands"] = true,
+	["removeHex"] = true,
+	["spawnmapondeath"] = true,
+}
+
+local function updateSettings()
+
+	local settings = {}
+	for setting,_ in pairs(settingsToSend) do settings[setting] = getOption(setting) end
+	return settings
+
+end
+
 addEvent('onLoadedAtClient', true)
 addEventHandler('onLoadedAtClient', resourceRoot,
 	function()
 		if getOption('spawnmaponstart') and isPedDead(client) then
 			clientCall(client, 'showWelcomeMap')
 		end
-		local settings = {}
-		for _,setting in ipairs(settingsToSend) do settings[setting] = get(setting) end
+		local settings = updateSettings()
 		clientCall(client, 'freeroamSettings', settings)
 	end,
 	false
 )
 
-addEventHandler('onPlayerWasted', root,
-	function()
-		if not getOption('spawnmapondeath') then
-			return
-		end
-		local player = source
-		setTimer(
-			function()
-				if isPedDead(player) then
-					clientCall(player, 'showMap')
-				end
-			end,
-			2000,
-			1
-		)
+function onSettingChange(key,_,new)
+
+	if not settingsToSend[gettok(key,#split(key,"."),".")] then return end
+	local settings = updateSettings()
+	for index,player in ipairs(getElementsByType("player")) do
+		clientCall(player, 'freeroamSettings', settings)
 	end
-)
+
+end
+
+addEventHandler("onSettingChange",root,onSettingChange)
+
+function showMap(player)
+
+	if isPedDead(player) then
+		clientCall(player, "showMap")
+	end
+
+end
 
 addEvent('onClothesInit', true)
 addEventHandler('onClothesInit', resourceRoot,
@@ -207,7 +227,7 @@ addEvent('onPlayerGravInit', true)
 addEventHandler('onPlayerGravInit', root,
 	function()
 		if client ~= source then return end
-		triggerClientEvent(root, 'onClientPlayerGravInit', resourceRoot, getPedGravity(client))
+		triggerClientEvent(client, 'onClientPlayerGravInit', client, getPedGravity(client))
 	end
 )
 
@@ -227,7 +247,6 @@ function setMySkin(skinid)
 		setCameraInterior(source, interior)
 	else
 		setElementModel(source, skinid)
-		setElementHealth(source, 100)
 	end
 	setCameraTarget(source, source)
 	setCameraInterior(source, getElementInterior(source))
@@ -266,7 +285,6 @@ function warpMe(targetPlayer)
 	else
 		-- target player is in a vehicle - warp into it if there's space left
 		if getPedOccupiedVehicle(source) then
-			--removePlayerFromVehicle(source)
 			outputChatBox('Get out of your vehicle first.', source)
 			return
 		end
@@ -312,57 +330,34 @@ function giveMeWeapon(weapon, amount)
 	end
 end
 
-function giveMeVehicles(vehicles)
-	if type(vehicles) == 'number' then
-		vehicles = { vehicles }
-	end
-
+function giveMeVehicles(vehID)
 	local px, py, pz, prot
-	local radius = 3
-	local playerVehicle = getPedOccupiedVehicle(source)
-	if playerVehicle and isElement(playerVehicle) then
-		px, py, pz = getElementPosition(playerVehicle)
-		prot, prot, prot = getVehicleRotation(playerVehicle)
-	else
-		px, py, pz = getElementPosition(source)
-		prot = getPedRotation(source)
-	end
-	local offsetRot = math.rad(prot)
-	local vx = px + radius * math.cos(offsetRot)
-	local vy = py + radius * math.sin(offsetRot)
-	local vz = pz + 2
-	local vrot = prot
-
+	local element = getPedOccupiedVehicle(source) or source
+	local px,py,pz = getElementPosition(element)
+	local _,_,prot = getElementRotation(element)
+	local posVector = Vector3(px,py,pz+2)
+	local rotVector = Vector3(0,0,prot)
+	local vehMatrix = Matrix(posVector,rotVector)
 	local vehicleList = g_PlayerData[source].vehicles
-	local vehicle
-	if ( not vehicles ) then return end
-	for i,vehID in ipairs(vehicles) do
-		if i > getOption('vehicles.maxperplayer') then
-			break
-		end
-		if not table.find(getOption('vehicles.disallowed'), vehID) then
-			if #vehicleList >= getOption('vehicles.maxperplayer') then
-				unloadVehicle(vehicleList[1])
-			end
-			vehicle = createVehicle(vehID, vx, vy, vz, 0, 0, vrot)
-			if (not isElement(vehicle)) then return end
-			setElementInterior(vehicle, getElementInterior(source))
-			setElementDimension(vehicle, getElementDimension(source))
+	if not vehID then return end
+	if not table.find(getOption('vehicles.disallowed'), vehID) then
+		if #vehicleList >= getOption('vehicles.maxperplayer') then unloadVehicle(vehicleList[1]) end
+		local vehPos = posVector+vehMatrix.right*3
+		local vehicle = Vehicle(vehID, vehPos, rotVector) or false
+		if vehicle then
+			vehicle.interior = source.interior
+			vehicle.dimension = source.dimension
 			table.insert(vehicleList, vehicle)
 			g_VehicleData[vehicle] = { creator = source, timers = {} }
-			if vehID == 464 then
-				warpPedIntoVehicle(source, vehicle)
-			elseif not g_Trailers[vehID] then
+			if g_Trailers[vehID] then
 				if getOption('vehicles.idleexplode') then
 					g_VehicleData[vehicle].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, vehicle)
 				end
 				g_VehicleData[vehicle].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, vehicle)
 			end
-			vx = vx + 4
-			vz = vz + 4
-		else
-			errMsg(getVehicleNameFromModel(vehID):gsub('y$', 'ie') .. 's are not allowed', source)
 		end
+	else
+		errMsg(getVehicleNameFromModel(vehID):gsub('y$', 'ie') .. 's are not allowed', source)
 	end
 end
 

@@ -93,14 +93,3 @@ function table.removevalue(t, val)
 	end
 	return false
 end
-
-addEvent("onPlayerCheckForHexCodes", true)
-addEventHandler("onPlayerCheckForHexCodes", resourceRoot,
-function ()
-	local hexColorsRemoving = get("removeHex")
-	if hexColorsRemoving == "true" then
-		triggerClientEvent(client, "onServerProvideHexCodesSetting", resourceRoot, true)
-	else
-		triggerClientEvent(client, "onServerProvideHexCodesSetting", resourceRoot, false)
-	end
-end)
