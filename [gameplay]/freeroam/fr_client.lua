@@ -25,7 +25,9 @@ local playerGravity = getGravity() -- Player's current gravity set by gravity wi
 -- Local settings received from server
 local g_settings = {}
 
+local _getPlayerName = getPlayerName
 local _addCommandHandler = addCommandHandler
+
 
 -- Settings are stored in meta.xml
 function freeroamSettings(settings)
@@ -39,7 +41,7 @@ local global_cooldown = 0
 function isFunctionOnCD(func, exception)
 	local tick = getTickCount()
 	-- check if a global cd is active
-	if g_settings.command_spam_protection == "true" and global_cooldown ~= 0 then
+	if g_settings.command_spam_protection and global_cooldown ~= 0 then
 		if tick - global_cooldown <= g_settings.command_spam_ban_duration then
 			local duration = math.ceil((g_settings.command_spam_ban_duration-tick+global_cooldown)/1000)
 			errMsg("You are banned from using commands for " .. duration .." seconds due to continuous spam")
@@ -47,7 +49,7 @@ function isFunctionOnCD(func, exception)
 		end
 	end
 
-	if g_settings.command_spam_protection ~= "true" then
+	if not g_settings.command_spam_protection then
 		return false
 	end
 
@@ -59,7 +61,7 @@ function isFunctionOnCD(func, exception)
 	local oldTime = antiCommandSpam[func].time
 	if (tick-oldTime) > 2000 then
 		antiCommandSpam[func].time = tick
-		antiCommandSpam[func].tries = 1
+		antiCommandSpam[func].tries = 1 
 		return false
 	end
 
@@ -68,7 +70,7 @@ function isFunctionOnCD(func, exception)
 	if exception and (antiCommandSpam[func].tries < g_settings.g_settings.tries_required_to_trigger_low_priority) then
 		return false
 	end
-
+	
 	if (exception == nil) and (antiCommandSpam[func].tries < g_settings.tries_required_to_trigger) then
 		return false
 	end
@@ -85,6 +87,10 @@ local function executeCommand(cmd,...)
 	local func = commands[cmd]
 	cmd = string.lower(cmd)
 	if not commands[cmd] then return end
+	if table.find(g_settings["command_exception_commands"],cmd) then
+		func(cmd,...)
+		return
+	end
 	if isFunctionOnCD(func) then return end
 	func(cmd,...)
 
@@ -600,6 +606,7 @@ function loadBookmarks ()
 		guiGridListSetItemText(bookmarkList,row,2,tostring(xmlNodeGetAttribute(child,"zone")),false,false)
 		bookmarks[row+1] = {tonumber(xmlNodeGetAttribute(child,"x")),tonumber(xmlNodeGetAttribute(child,"y")),tonumber(xmlNodeGetAttribute(child,"z"))}
 	end
+	xmlUnloadFile(xml)
 end
 
 function saveBookmarks ()
@@ -1091,21 +1098,13 @@ wndCreateVehicle = {
 }
 
 function createVehicleCommand(cmd, ...)
-	local vehID
-	local vehiclesToCreate = {}
-	local args = { ... }
-	for i,v in ipairs(args) do
-		vehID = tonumber(v)
-		if not vehID then
-			vehID = getVehicleModelFromName(v)
-		end
-		if vehID and math.floor(vehID) >= 400 and math.floor(vehID) <= 611 then
-			table.insert(vehiclesToCreate, math.floor(vehID))
-		else
-			errMsg('No such vehicle model')
-		end
+	local args = {...}
+	vehID = getVehicleModelFromName(table.concat(args," ")) or tonumber(args[1]) and math.floor(tonumber(args[1])) or false
+	if vehID and vehID >= 400 and vehID <= 611 then
+		server.giveMeVehicles(vehID)
+	else
+		errMsg("Invalid vehicle model")
 	end
-	server.giveMeVehicles(vehiclesToCreate)
 end
 addCommandHandler('createvehicle', createVehicleCommand)
 addCommandHandler('cv', createVehicleCommand)
@@ -1761,24 +1760,29 @@ function joinHandler(player)
 	if (not g_PlayerData) then return end
 	g_PlayerData[player or source] = { name = getPlayerName(player or source), gui = {} }
 end
+
+function quitHandler()
+	if (not g_PlayerData) then return end
+	table.each(g_PlayerData[source].gui, destroyElement)
+	g_PlayerData[source] = nil
+end
+
+function wastedHandler()
+	onExitVehicle(localPlayer)
+	if g_settings["spawnmapondeath"] then
+		setTimer(showMap,2000,1)
+	end
+end
+
 addEventHandler('onClientPlayerJoin', root, joinHandler)
-
-addEventHandler('onClientPlayerQuit', root,
-	function()
-		if (not g_PlayerData) then return end
-		table.each(g_PlayerData[source].gui, destroyElement)
-		g_PlayerData[source] = nil
-	end
-)
-
-addEventHandler('onClientPlayerWasted', localPlayer,
-	function()
-		onExitVehicle(localPlayer)
-	end
-)
-
+addEventHandler('onClientPlayerQuit', root, quitHandler)
+addEventHandler('onClientPlayerWasted', localPlayer, wastedHandler)
 addEventHandler('onClientPlayerVehicleEnter', localPlayer, onEnterVehicle)
 addEventHandler('onClientPlayerVehicleExit', localPlayer, onExitVehicle)
+
+function getPlayerName(player)
+	return g_settings["removeHex"] and player.name:gsub("#%x%x%x%x%x%x","") or player.name
+end
 
 addEventHandler('onClientResourceStop', resourceRoot,
 	function()
