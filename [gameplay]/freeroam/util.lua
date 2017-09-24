@@ -38,17 +38,6 @@ function getPlayerOccupiedSeat(player)
 	return false
 end
 
-function destroyBlipsAttachedTo(elem)
-	local wasDestroyed = false
-	for i,attached in ipairs(getAttachedElements(elem)) do
-		if getElementType(attached) == 'blip' then
-			destroyElement(attached)
-			wasDestroyed = true
-		end
-	end
-	return wasDestroyed
-end
-
 local _isPedDead = isPedDead
 function isPedDead(player)
 	return _isPedDead(player) or isPlayerTerminated(player)
@@ -173,37 +162,6 @@ function table.map(t, callback)
 		t[k] = callback(v)
 	end
 	return t
-end
-
-function table.dump(t, caption, depth)
-	if not depth then
-		depth = 1
-	end
-	if depth == 1 and caption then
-		outputConsole(caption .. ':')
-	end
-	if not t then
-		outputConsole('Table is nil')
-	elseif type(t) ~= 'table' then
-		outputConsole('Argument passed is of type ' .. type(t))
-		local str = tostring(t)
-		if str then
-			outputConsole(str)
-		end
-	else
-		local braceIndent = string.rep('  ', depth-1)
-		local fieldIndent = braceIndent .. '  '
-		outputConsole(braceIndent .. '{')
-		for k,v in pairs(t) do
-			if type(v) == 'table' and k ~= 'siblings' and k ~= 'parent' then
-				outputConsole(fieldIndent .. tostring(k) .. ' = ')
-				table.dump(v, nil, depth+1)
-			else
-				outputConsole(fieldIndent .. tostring(k) .. ' = ' .. tostring(v))
-			end
-		end
-		outputConsole(braceIndent .. '}')
-	end
 end
 
 function table.flatten(t, result)
