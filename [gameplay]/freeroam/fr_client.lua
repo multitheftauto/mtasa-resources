@@ -1,4 +1,5 @@
 local commands = {}
+local customSpawnTable = false
 local allowedStyles =
 {
 	[4] = true,
@@ -7,6 +8,12 @@ local allowedStyles =
 	[7] = true,
 	[15] = true,
 	[16] = true,
+}
+local internallyBannedWeapons = -- Fix for some debug warnings
+{
+	[19] = true,
+	[20] = true,
+	[21] = true,
 }
 local server = setmetatable(
 		{},
@@ -21,18 +28,20 @@ guiSetInputMode("no_binds_when_editing")
 
 local antiCommandSpam = {} -- Place to store the ticks for anti spam:
 local playerGravity = getGravity() -- Player's current gravity set by gravity window --
+local knifeRestrictionsOn = false
 
 -- Local settings received from server
 local g_settings = {}
-
-local _getPlayerName = getPlayerName
 local _addCommandHandler = addCommandHandler
-
+local _setElementPosition = setElementPosition
 
 -- Settings are stored in meta.xml
 function freeroamSettings(settings)
 	if settings then
 		g_settings = settings
+		for index,player in ipairs(getElementsByType("player")) do
+			updateName(player,getPlayerName(player))
+		end
 	end
 end
 
@@ -100,6 +109,32 @@ local function addCommandHandler(cmd,func)
 
 	commands[cmd] = func
 	_addCommandHandler(cmd,executeCommand,false)
+
+end
+
+local function cancelKnifeEvent()
+
+	cancelEvent()
+	outputChatBox("Knife restrictions are in place",255,0,0)
+
+end
+
+local function resetKnifing()
+
+	knifeRestrictionsOn = false
+	removeEventHandler("onClientPlayerStealthKill",localPlayer,cancelKnifeEvent)
+
+end
+
+local function setElementPosition(element,x,y,z)
+
+	if g_settings["weapons/kniferestrictions"] and not knifeRestrictionsOn then
+		knifeRestrictionsOn = true
+		addEventHandler("onClientPlayerStealthKill",localPlayer,cancelKnifeEvent)
+		setTimer(resetKnifing,5000,1)
+	end
+	
+	_setElementPosition(element,x,y,z)
 
 end
 
@@ -234,6 +269,10 @@ function addWeapon(leaf, amount)
 			return
 		end
 	end
+	if amount < 1 then
+		outputChatBox("Invalid amount",255,0,0)
+		return
+	end
 	server.giveMeWeapon(leaf.id, amount)
 end
 
@@ -262,11 +301,11 @@ wndWeapon = {
 }
 
 function giveWeaponCommand(cmd, weapon, amount)
-	weapon = tonumber(weapon) or getWeaponIDFromName(weapon)
-	if not weapon then return end
-	amount = amount and tonumber(amount) or 500
-	if amount < 1 then return end
-	server.giveMeWeapon(math.floor(weapon), amount)
+	weapon = tonumber(weapon) and math.floor(tonumber(weapon)) or weapon and getWeaponIDFromName(weapon) or 0
+	amount = amount and math.floor(tonumber(amount)) or 500
+	if amount < 1 or weapon < 1 or weapon > 46 then return end
+	if internallyBannedWeapons[weapon] then return end
+	server.giveMeWeapon(weapon, amount)
 end
 addCommandHandler('give', giveWeaponCommand)
 addCommandHandler('wp', giveWeaponCommand)
@@ -466,6 +505,32 @@ wndGravity = {
 -- Warp to player window
 ---------------------------
 
+local function warpMe(targetPlayer)
+
+	if not g_settings["warp"] then
+		outputChatBox("Warping is disallowed!",255,0,0)
+		return
+	end
+
+	local vehicle = getPedOccupiedVehicle(targetPlayer)
+	local interior = getElementInterior(targetPlayer)
+	if not vehicle then
+		-- target player is not in a vehicle - just warp next to him
+		local vec = targetPlayer.position + targetPlayer.matrix.right*2
+		local x, y, z = vec.x,vec.y,vec.z
+		if localPlayer.interior ~= interior then
+			fadeCamera(false,1)
+			setTimer(setPlayerInterior,1000,1,x,y,z,interior)
+		else
+			setPlayerPosition(x,y,z)
+		end
+	else
+		-- target player is in a vehicle - warp into it if there's space left
+		server.warpMeIntoVehicle(vehicle)
+	end
+
+end
+
 function warpInit()
 	local players = table.map(getElementsByType('player'), function(p) return { player = p, name = getPlayerName(p) } end)
 	table.sort(players, function(a, b) return a.name < b.name end)
@@ -480,7 +545,7 @@ function warpTo(leaf)
 		end
 	end
 	if isElement(leaf.player) then
-		server.warpMe(leaf.player)
+		warpMe(leaf.player)
 	end
 	closeWindow(wndWarp)
 end
@@ -511,7 +576,7 @@ function warpToCommand(cmd, player)
 	if player then
 		player = getPlayerFromName(player)
 		if player then
-			server.warpMe(player)
+			warpMe(player)
 		end
 	else
 		createWindow(wndWarp)
@@ -654,15 +719,9 @@ function deleteLocation ()
 end
 
 function gotoBookmark ()
-	local row,column = guiGridListGetSelectedItem(bookmarkList)
+	local row = guiGridListGetSelectedItem(bookmarkList)
 	if row and row ~= -1 then
-		fadeCamera(false)
-		if isPedDead(localPlayer) then
-			setTimer(server.spawnMe,1000,1,unpack(bookmarks[row+1]))
-		else
-			setTimer(setElementPosition,1000,1,localPlayer,unpack(bookmarks[row+1]))
-		end
-		setTimer(function () fadeCamera(true) setCameraTarget(localPlayer) end,2000,1)
+		setPlayerPosition(unpack(bookmarks[row+1]))
 	end
 end
 
@@ -747,18 +806,67 @@ end
 function setPosClick()
 	if setPlayerPosition(getControlNumbers(wndSetPos, {'x', 'y', 'z'})) ~= false then
 		if getElementInterior(localPlayer) ~= 0 then
-			if getPedOccupiedVehicle(localPlayer) and getVehicleController(getPedOccupiedVehicle(localPlayer)) == localPlayer then
+			local vehicle = localPlayer.vehicle
+			if vehicle and vehicle.interior ~= 0 then
 				server.setElementInterior(getPedOccupiedVehicle(localPlayer), 0)
+				local occupants = vehicle.occupants
+				for seat,occupant in pairs(occupants) do
+					if occupant.interior ~= 0 then
+						server.setElementInterior(occupant,0)
+					end
+				end
 			end
-			server.setElementInterior(localPlayer, 0)
+			if localPlayer.interior ~= 0 then
+				server.setElementInterior(localPlayer,0)
+			end
 		end
 		closeWindow(wndSetPos)
 	end
 end
 
-function setPlayerPosition(x, y, z)
+local function forceFade()
+
+	fadeCamera(false,0)
+
+end
+
+local function calmVehicle(veh)
+
+	if not isElement(veh) then return end
+	local z = veh.rotation.z
+	veh.velocity = Vector3(0,0,0)
+	veh.turnVelocity = Vector3(0,0,0)
+	veh.rotation = Vector3(0,0,z)
+	if not (localPlayer.inVehicle and localPlayer.vehicle) then
+		server.warpMeIntoVehicle(veh)
+	end
+
+end
+
+local function retryTeleport(elem,x,y,z,isVehicle,distanceToGround)
+
+	local hit, groundX, groundY, groundZ = processLineOfSight(x, y, 3000, x, y, -3000)
+	if hit then
+		local waterZ = getWaterLevel(x, y, 100)
+		z = (waterZ and math.max(groundZ, waterZ) or groundZ) + distanceToGround
+		setElementPosition(elem,x, y, z + distanceToGround)
+		setCameraPlayerMode()
+		setGravity(grav)
+		if isVehicle then
+			server.fadeVehiclePassengersCamera(true)
+			setTimer(calmVehicle,100,1,elem)
+		else
+			fadeCamera(true)
+		end
+		killTimer(g_TeleportTimer)
+		g_TeleportTimer = nil
+		grav = nil
+	end
+
+end
+
+function setPlayerPosition(x, y, z, skipDeadCheck)
 	local elem = getPedOccupiedVehicle(localPlayer)
-	local distanceToGround
 	local isVehicle
 	if elem and getPedOccupiedVehicle(localPlayer) then
 		local controller = getVehicleController(elem)
@@ -766,13 +874,19 @@ function setPlayerPosition(x, y, z)
 			errMsg('Only the driver of the vehicle can set its position.')
 			return false
 		end
-		distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(elem) + 3
 		isVehicle = true
 	else
 		elem = localPlayer
-		distanceToGround = 0.4
 		isVehicle = false
 	end
+	if isPedDead(localPlayer) and not skipDeadCheck then
+		customSpawnTable = {x,y,z}
+		fadeCamera(false,0)
+		addEventHandler("onClientPreRender",root,forceFade)
+		outputChatBox("You will be respawned to your specified location",0,255,0)
+		return
+	end
+	local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(elem)
 	local hit, hitX, hitY, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
 	if not hit then
 		if isVehicle then
@@ -787,43 +901,33 @@ function setPlayerPosition(x, y, z)
 			setGravity(0.001)
 		end
 		if isTimer(g_TeleportTimer) then killTimer(g_TeleportTimer) end
-		g_TeleportTimer = setTimer(
-			function()
-				local hit, groundX, groundY, groundZ = processLineOfSight(x, y, 3000, x, y, -3000)
-				if hit then
-					local waterZ = getWaterLevel(x, y, 100)
-					z = (waterZ and math.max(groundZ, waterZ) or groundZ) + distanceToGround
-					if isPedDead(localPlayer) then
-						server.spawnMe(x, y, z)
-					else
-						server.setMyPos(x, y, z)
-					end
-					setCameraPlayerMode()
-					setGravity(grav)
-					if isVehicle then
-						server.fadeVehiclePassengersCamera(true)
-					else
-						fadeCamera(true)
-					end
-					killTimer(g_TeleportTimer)
-					g_TeleportTimer = nil
-					grav = nil
-				end
-			end,
-			500,
-			0
-		)
+		g_TeleportTimer = setTimer(retryTeleport,50,0,elem,x,y,z,isVehicle,distanceToGround)
 	else
-		if isPedDead(localPlayer) then
-			server.spawnMe(x, y, z + distanceToGround)
-		else
-			server.setMyPos(x, y, z + distanceToGround)
-			if isVehicle then
-				setTimer(setElementVelocity, 100, 1, elem, 0, 0, 0)
-				setTimer(setVehicleTurnVelocity, 100, 1, elem, 0, 0, 0)
-			end
+		setElementPosition(elem,x, y, z + distanceToGround)
+		if isVehicle then
+			setTimer(calmVehicle,100,1,elem)
 		end
 	end
+end
+
+local blipPlayers = {}
+
+local function destroyBlip()
+
+	blipPlayers[source] = nil
+
+end
+
+local function warpToBlip()
+
+	local wnd = isWindowOpen(wndSpawnMap) and wndSpawnMap or wndSetPos
+	local elem = blipPlayers[source]
+	
+	if isElement(elem) then
+		warpMe(elem)
+		closeWindow(wnd)
+	end
+
 end
 
 function updatePlayerBlips()
@@ -844,38 +948,39 @@ function updatePlayerBlips()
 			guiSetFont(player.gui.mapLabel, 'default-bold-small')
 			guiLabelSetColor(player.gui.mapLabel, 0, 0, 0)
 			for i,name in ipairs({'mapBlip', 'mapLabelShadow'}) do
-				addEventHandler('onClientGUIDoubleClick', player.gui[name],
-					function()
-						server.warpMe(elem)
-						closeWindow(wnd)
-					end,
-					false
-				)
+				blipPlayers[player.gui[name]] = elem
+				addEventHandler('onClientGUIDoubleClick', player.gui[name],warpToBlip,false)
+				addEventHandler("onClientElementDestroy", player.gui[name],destroyBlip)
 			end
 		end
 		local x, y = getElementPosition(elem)
+		local visible = (localPlayer.interior == elem.interior and localPlayer.dimension == elem.dimension)
 		x = math.floor((x + 3000) * g_MapSide / 6000) - 4
 		y = math.floor((3000 - y) * g_MapSide / 6000) - 4
 		guiSetPosition(player.gui.mapBlip, x, y, false)
 		guiSetPosition(player.gui.mapLabelShadow, x + 14, y - 4, false)
 		guiSetPosition(player.gui.mapLabel, x + 13, y - 5, false)
+		guiSetVisible(player.gui.mapBlip,visible)
+		guiSetVisible(player.gui.mapLabelShadow,visible)
+		guiSetVisible(player.gui.mapLabel,visible)
 	end
 end
 
-addEventHandler('onClientPlayerChangeNick', root,
-	function(oldNick, newNick)
-		if (not g_PlayerData) then return end
-		local player = g_PlayerData[source]
-		player.name = newNick
-		if player.gui.mapLabel then
-			guiSetText(player.gui.mapLabelShadow, newNick)
-			guiSetText(player.gui.mapLabel, newNick)
-			local labelWidth = guiLabelGetTextExtent(player.gui.mapLabelShadow)
-			guiSetSize(player.gui.mapLabelShadow, labelWidth, 14, false)
-			guiSetSize(player.gui.mapLabel, labelWidth, 14, false)
-		end
+function updateName(oldNick, newNick)
+	if (not g_PlayerData) then return end
+	local source = getElementType(source) == "player" and source or oldNick
+	local player = g_PlayerData[source]
+	player.name = newNick
+	if player.gui.mapLabel then
+		guiSetText(player.gui.mapLabelShadow, newNick)
+		guiSetText(player.gui.mapLabel, newNick)
+		local labelWidth = guiLabelGetTextExtent(player.gui.mapLabelShadow)
+		guiSetSize(player.gui.mapLabelShadow, labelWidth, 14, false)
+		guiSetSize(player.gui.mapLabel, labelWidth, 14, false)
 	end
-)
+end
+
+addEventHandler('onClientPlayerChangeNick', root,updateName)
 
 function closePositionWindow()
 	removeEventHandler('onClientRender', root, updatePlayerBlips)
@@ -921,7 +1026,7 @@ function getPosCommand(cmd, playerName)
 	else
 		outputChatBox(sentenceStart .. 'on foot', 0, 255, 0)
 	end
-	outputChatBox(sentenceStart .. 'at (' .. string.format("%.5f", px) .. ' ' .. string.format("%.5f", py) .. ' ' .. string.format("%.5f", pz) .. ')', 0, 255, 0)
+	outputChatBox(sentenceStart .. 'at {' .. string.format("%.5f", px) .. ', ' .. string.format("%.5f", py) .. ', ' .. string.format("%.5f", pz) .. '}', 0, 255, 0)
 end
 addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
@@ -939,15 +1044,9 @@ function setPosCommand(cmd, x, y, z, r)
 	
 	-- If somebody doesn't provide all XYZ explain that we will use their current X Y or Z.
 	local message = ""
-	if (not tonumber(x)) then
-		message = "X "
-	end
-	if (not tonumber(y)) then
-		message = message.."Y "
-	end
-	if (not tonumber(z)) then
-		message = message.."Z "
-	end
+	message = message .. (tonumber(x) and "" or "X ")
+	message = message .. (tonumber(y) and "" or "Y ")
+	message = message .. (tonumber(z) and "" or "Z ")
 	if (message ~= "") then
 		outputChatBox(message.."arguments were not provided. Using your current "..message.."values instead.", 255, 255, 0)
 	end
@@ -962,6 +1061,7 @@ function setPosCommand(cmd, x, y, z, r)
 		setPedRotation(localPlayer, tonumber(r) or pr)
 	end
 end
+
 addCommandHandler('setpos', setPosCommand)
 addCommandHandler('sp', setPosCommand)
 
@@ -1010,7 +1110,7 @@ wndSpawnMap = {
 local function setPositionAfterInterior(x,y,z)
 	setPlayerPosition(x,y,z)
 	setCameraTarget(localPlayer)
-	fadeCamera(true,1)
+	fadeCamera(true)
 end
 
 function setPlayerInterior(x,y,z,i)
@@ -1036,7 +1136,7 @@ function setInterior(leaf)
 			end
 		end
 	end
-	fadeCamera(false,1)
+	fadeCamera(false)
 	setTimer(setPlayerInterior,1000,1,leaf.posX, leaf.posY, leaf.posZ, leaf.world)
 	closeWindow(wndSetInterior)
 end
@@ -1527,6 +1627,25 @@ addCommandHandler('sw', setWeatherCommand)
 ---------------------------
 -- Game speed
 ---------------------------
+
+function setMyGameSpeed(speed)
+
+	speed = speed and tonumber(speed) or 1
+
+	if g_settings["gamespeed/enabled"] then
+		if speed > g_settings["gamespeed/max"] then
+			outputChatBox(('Maximum allowed gamespeed is %.5f'):format(g_settings['gamespeed/max']), 255, 0, 0)
+		elseif speed < g_settings["gamespeed/min"] then
+			outputChatBox(('Minimum allowed gamespeed is %.5f'):format(g_settings['gamespeed/min']), 255, 0, 0)
+		else
+			setGameSpeed(speed)
+		end
+	else
+		outputChatBox("Setting game speed is disallowed!",255,0,0)
+	end
+
+end
+
 function gameSpeedInit()
 	setControlNumber(wndGameSpeed, 'speed', getGameSpeed())
 end
@@ -1538,7 +1657,7 @@ end
 function applyGameSpeed()
 	speed = getControlNumber(wndGameSpeed, 'speed')
 	if speed then
-		server.setMyGameSpeed(speed)
+		setMyGameSpeed(speed)
 	end
 	closeWindow(wndGameSpeed)
 end
@@ -1575,7 +1694,7 @@ wndGameSpeed = {
 function setGameSpeedCommand(cmd, speed)
 	speed = speed and tonumber(speed)
 	if speed then
-		server.setMyGameSpeed(speed)
+		setMyGameSpeed(speed)
 	end
 end
 
@@ -1634,7 +1753,11 @@ function onExitVehicle(vehicle)
 end
 
 function killLocalPlayer()
-	server.killPed(localPlayer)
+	if g_settings["kill"] then
+		setElementHealth(localPlayer,0)
+	else
+		outputChatBox("Killing yourself is disallowed!",255,0,0)
+	end
 end
 
 function alphaCommand(command, alpha)
@@ -1774,11 +1897,29 @@ function wastedHandler()
 	end
 end
 
+local function removeForcedFade()
+
+	removeEventHandler("onClientPreRender",root,forceFade)
+
+end
+
+local function checkCustomSpawn()
+
+	if type(customSpawnTable) == "table" then
+		local x,y,z = unpack(customSpawnTable)
+		setPlayerPosition(x,y,z,true)
+		customSpawnTable = false
+		setTimer(removeForcedFade,100,1)
+	end
+
+end
+
 addEventHandler('onClientPlayerJoin', root, joinHandler)
 addEventHandler('onClientPlayerQuit', root, quitHandler)
 addEventHandler('onClientPlayerWasted', localPlayer, wastedHandler)
 addEventHandler('onClientPlayerVehicleEnter', localPlayer, onEnterVehicle)
 addEventHandler('onClientPlayerVehicleExit', localPlayer, onExitVehicle)
+addEventHandler("onClientPlayerSpawn", localPlayer, checkCustomSpawn)
 
 function getPlayerName(player)
 	return g_settings["removeHex"] and player.name:gsub("#%x%x%x%x%x%x","") or player.name

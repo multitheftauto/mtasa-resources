@@ -33,15 +33,12 @@ g_RPCFunctions = {
 	giveMeVehicles = { option = 'createvehicle', descr = 'Creating vehicles' },
 	giveMeWeapon = { option = 'weapons.enabled', descr = 'Getting weapons' },
 	givePedJetPack = { option = 'jetpack', descr = 'Getting a jetpack' },
-	killPed = { option = 'kill', descr = 'Killing yourself' },
 	removePedClothes = { option = 'clothes', descr = 'Modifying clothes' },
 	removePedFromVehicle = true,
 	removePedJetPack = { option = 'jetpack', descr = 'Removing a jetpack' },
 	removeVehicleUpgrade = { option = 'upgrades', descr = 'Adding/removing upgrades' },
 	setElementAlpha = { option = 'alpha', descr = 'Changing your alpha' },
-	setElementPosition = true,
 	setElementInterior = true,
-	setMyGameSpeed = { option = 'gamespeed.enabled', descr = 'Setting game speed' },
 	setMySkin = { option = 'setskin', descr = 'Setting skin' },
 	setPedAnimation = { option = 'anim', descr = 'Setting an animation' },
 	setPedFightingStyle = { option = 'setstyle', descr = 'Setting fighting style' },
@@ -51,9 +48,7 @@ g_RPCFunctions = {
 	setVehicleHeadLightColor = true,
 	setVehicleOverrideLights = { option = 'lights', descr = 'Forcing lights' },
 	setVehiclePaintjob = { option = 'paintjob', descr = 'Applying paintjobs' },
-	spawnMe = true,
-	warpMe = { option = 'warp', descr = 'Warping' },
-	setMyPos = true
+	warpMeIntoVehicle = true,
 }
 
 g_OptionDefaults = {
@@ -72,7 +67,6 @@ g_OptionDefaults = {
 		max = 0.1
 	},
 	jetpack = true,
-	kill = true,
 	lights = true,
 	paintjob = true,
 	repair = true,
@@ -81,10 +75,6 @@ g_OptionDefaults = {
 	spawnmaponstart = true,
 	spawnmapondeath = true,
 	stats = true,
-	time = {
-		set = true,
-		freeze = true
-	},
 	upgrades = true,
 	warp = true,
 	weapons = {
@@ -93,7 +83,6 @@ g_OptionDefaults = {
 		disallowed = {},
 		kniferestrictions = true
 	},
-	weather = true,
 	welcometextonstart = true,
 	vehicles = {
 		maxidletime = 60000,
@@ -141,7 +130,7 @@ function joinHandler(player)
 end
 addEventHandler('onPlayerJoin', root, joinHandler)
 
-local settingsToSend =
+local settingsToSend = 
 {
 	["command_spam_protection"] = true,
 	["tries_required_to_trigger"] = true,
@@ -150,6 +139,12 @@ local settingsToSend =
 	["command_exception_commands"] = true,
 	["removeHex"] = true,
 	["spawnmapondeath"] = true,
+	["weapons/kniferestrictions"] = true,
+	["kill"] = true,
+	["warp"] = true,
+	["gamespeed/enabled"] = true,
+	["gamespeed/min"] = true,
+	["gamespeed/max"] = true,
 }
 
 local function updateSettings()
@@ -226,7 +221,7 @@ addEventHandler('onClothesInit', resourceRoot,
 addEvent('onPlayerGravInit', true)
 addEventHandler('onPlayerGravInit', root,
 	function()
-		if client ~= source then return end
+		if client ~= source then return end 
 		triggerClientEvent(client, 'onClientPlayerGravInit', client, getPedGravity(client))
 	end
 )
@@ -262,54 +257,45 @@ function spawnMe(x, y, z)
 		spawnPlayer(source, x, y, z, 0, getPedSkin(source))
 	end
 	
-	if ( getOption('weapons.kniferestrictions') ) then
-		setPlayerKnifeRestricted ( client )
-	end
-	
 	setCameraTarget(source, source)
 	setCameraInterior(source, getElementInterior(source))
 end
 
-function warpMe(targetPlayer)
+function warpMeIntoVehicle(vehicle)
+
+	if not isElement(vehicle) then return end
+
 	if isPedDead(source) then
 		spawnMe()
 	end
-
-	local vehicle = getPedOccupiedVehicle(targetPlayer)
-	local interior = getElementInterior(targetPlayer)
-	if not vehicle then
-		-- target player is not in a vehicle - just warp next to him
-		local x, y, z = getElementPosition(targetPlayer)
-		fadeCamera(source,false,1)
-		setTimer(clientCall,1000,1,source,'setPlayerInterior', x + 2, y, z,interior)
-	else
-		-- target player is in a vehicle - warp into it if there's space left
-		if getPedOccupiedVehicle(source) then
-			outputChatBox('Get out of your vehicle first.', source)
+	
+	if getPedOccupiedVehicle(source) then
+		outputChatBox('Get out of your vehicle first.', source, 255,0,0)
+		return
+	end
+	local interior = getElementInterior(vehicle)
+	local numseats = getVehicleMaxPassengers(vehicle)
+	local driver = getVehicleController(vehicle)
+	for i=0,numseats do
+		if not getVehicleOccupant(vehicle, i) then
+			if isPedDead(source) then
+				local x, y, z = getElementPosition(vehicle)
+				spawnMe(x + 4, y, z + 1)
+			end
+			setElementInterior(source, interior)
+			setCameraInterior(source, interior)
+			warpPedIntoVehicle(source, vehicle, i)
 			return
 		end
-		local numseats = getVehicleMaxPassengers(vehicle)
-		for i=0,numseats do
-			if not getVehicleOccupant(vehicle, i) then
-				if isPedDead(source) then
-					local x, y, z = getElementPosition(vehicle)
-					spawnMe(x + 4, y, z + 1)
-				end
-				setElementInterior(source, interior)
-				setCameraInterior(source, interior)
-				warpPedIntoVehicle(source, vehicle, i)
-				return
-			end
-		end
-		outputChatBox('No free seats left in ' .. getPlayerName(targetPlayer) .. '\'s vehicle.', source, 255, 0, 0)
 	end
+	if isElement(driver) then
+		outputChatBox('No free seats left in ' .. getPlayerName(driver) .. '\'s vehicle.', source, 255, 0, 0)
+	end
+
 end
 
 local sawnoffAntiAbuse = {}
 function giveMeWeapon(weapon, amount)
-	if weapon and weapon > 50 then
-		return
-	end
 	if table.find(getOption('weapons.disallowed'), weapon) then
 		errMsg((getWeaponNameFromID(weapon) or tostring(weapon)) .. 's are not allowed', source)
 	else
@@ -347,6 +333,7 @@ function giveMeVehicles(vehID)
 		if vehicle then
 			vehicle.interior = source.interior
 			vehicle.dimension = source.dimension
+			if vehicle.vehicleType == "Bike" then vehicle.velocity = Vector3(0,0,-0.01) end
 			table.insert(vehicleList, vehicle)
 			g_VehicleData[vehicle] = { creator = source, timers = {} }
 			if g_Trailers[vehID] then
@@ -371,17 +358,6 @@ function setPedGravity(player, grav)
 		_setPlayerGravity(player, grav)
 	end
 end
-
-function setMyGameSpeed(speed)
-	if speed < getOption('gamespeed.min') then
-		errMsg(('Minimum allowed gamespeed is %.5f'):format(getOption('gamespeed.min')), source)
-	elseif speed > getOption('gamespeed.max') then
-		errMsg(('Maximum allowed gamespeed is %.5f'):format(getOption('gamespeed.max')), source)
-	else
-		clientCall(source, 'setGameSpeed', speed)
-	end
-end
-
 
 function fadeVehiclePassengersCamera(toggle)
 	local vehicle = getPedOccupiedVehicle(source)
@@ -446,57 +422,6 @@ addEventHandler('onVehicleEnter', root,
 		end
 	end
 )
-
-function setPlayerKnifeRestricted ( player )
-	g_PlayerData[player].timers = g_PlayerData[player].timers or {}
-	if g_PlayerData[player].timers.knifeProtection then
-		resetTimer ( g_PlayerData[player].timers.knifeProtection )
-	else
-		addEventHandler ( "onPlayerStealthKill", player, knifeCancelEvent )
-		g_PlayerData[player].timers.knifeProtection =  setTimer ( removeKnifeRestrictions, 5000, 1, player )
-	end
-end
-
-function knifeCancelEvent ()
-	outputChatBox ( "Knife restrictions are in place", source, 255, 0, 0 )
-	cancelEvent(true,"Knife restrictions")
-end
-
-function removeKnifeRestrictions (player)
-	if not isElement(player) or getElementType(player) ~= "player" then
-		return
-	end
-	g_PlayerData[player].timers.knifeProtection = nil
-	removeEventHandler ( "onPlayerStealthKill", player, knifeCancelEvent )
-end
-
-function setMyPos(x, y, z)
-	if not isElement(client) or getElementType(client) ~= "player" then
-		return
-	end
-	
-	if ( getOption('weapons.kniferestrictions') ) then
-		setPlayerKnifeRestricted ( client )
-	end
-
-	local veh = getPedOccupiedVehicle (client)
-	if veh then
-		if getVehicleController(veh) == client then
-			setElementPosition (veh, x, y, z)
-			setElementInterior (veh, getElementInterior (client))
-			for s = 1, getVehicleMaxPassengers (veh) do
-				local occ = getVehicleOccupant (veh, s)
-				if occ then
-					setElementInterior (occ, getElementInterior(veh))
-				end
-			end
-		else
-			removePedFromVehicle(source)
-		end
-	end
-	setElementPosition (client, x, y, z)
-	fadeCamera (client, true)
-end
 
 addEventHandler('onVehicleExit', root,
 	function(player, seat)
@@ -615,4 +540,8 @@ addEventHandler('onServerCall', resourceRoot,
 
 function clientCall(player, fnName, ...)
 	triggerClientEvent(player, 'onClientCall', resourceRoot, fnName, ...)
+end
+
+function getPlayerName(player)
+	return getOption("removeHex") and player.name:gsub("#%x%x%x%x%x%x","") or player.name
 end
