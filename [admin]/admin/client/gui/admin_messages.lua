@@ -21,13 +21,17 @@ function aViewMessages ( player )
 					   guiGridListAddColumn( aMessagesList, "Subject", 0.46 )
 					   guiGridListAddColumn( aMessagesList, "Date", 0.23 )
 					   guiGridListAddColumn( aMessagesList, "Author", 0.19 )
-		aMessagesRead	= guiCreateButton ( 0.86, 0.20, 0.12, 0.09, "Read", true, aMessagesForm )
-		aMessagesDelete	= guiCreateButton ( 0.86, 0.30, 0.12, 0.09, "Delete", true, aMessagesForm )
+		aMessagesRead		= guiCreateButton ( 0.86, 0.15, 0.12, 0.09, "Read", true, aMessagesForm )
+		aMessagesDelete		= guiCreateButton ( 0.86, 0.25, 0.12, 0.09, "Delete", true, aMessagesForm )
+		aMessagesBanSerial	= guiCreateButton ( 0.86, 0.40, 0.12, 0.09, "Ban serial", true, aMessagesForm )
+		aMessagesBanIP		= guiCreateButton ( 0.86, 0.50, 0.12, 0.09, "Ban IP", true, aMessagesForm )
 		aMessagesRefresh	= guiCreateButton ( 0.86, 0.65, 0.12, 0.09, "Refresh", true, aMessagesForm )
-		aMessagesClose	= guiCreateButton ( 0.86, 0.85, 0.12, 0.09, "Close", true, aMessagesForm )
+		aMessagesClose		= guiCreateButton ( 0.86, 0.85, 0.12, 0.09, "Close", true, aMessagesForm )
 		addEventHandler ( "aMessage", _root, aMessagesSync )
 		addEventHandler ( "onClientGUIClick", aMessagesForm, aClientMessagesClick )
 		addEventHandler ( "onClientGUIDoubleClick", aMessagesForm, aClientMessagesDoubleClick )
+		guiSetEnabled( aMessagesBanSerial, false )
+		guiSetEnabled( aMessagesBanIP, false )
 		--Register With Admin Form
 		aRegister ( "Messages", aMessagesForm, aViewMessages, aViewMessagesClose )
 	end
@@ -98,6 +102,32 @@ function aClientMessagesClick ( button )
 			else
 				local id = guiGridListGetItemText ( aMessagesList, row, 1 )
 				triggerServerEvent ( "aMessage", getLocalPlayer(), "delete", tonumber ( id ) )
+			end
+		elseif ( source == aMessagesBanSerial ) then
+			local data = _messages[tonumber ( guiGridListGetItemText ( aMessagesList, guiGridListGetSelectedItem ( aMessagesList ), 1 ) )]
+			aInputBox ( "Add Serial Ban", "Enter Serial to be banned", data.suspect.serial, "banSerial", _, _, data.suspect.name, data.category )
+		elseif ( source == aMessagesBanIP ) then
+			local data = _messages[tonumber ( guiGridListGetItemText ( aMessagesList, guiGridListGetSelectedItem ( aMessagesList ), 1 ) )]
+			aInputBox ( "Add IP Ban", "Enter IP to be banned", data.suspect.ip, "banIP", _, _, data.suspect.name, data.category )
+		elseif ( source == aMessagesList ) then
+			local row = guiGridListGetSelectedItem ( aMessagesList )
+			if ( row == -1 ) then
+				guiSetEnabled( aMessagesBanSerial, false )
+				guiSetEnabled( aMessagesBanIP, false )
+			else
+				local id = tonumber(guiGridListGetItemText ( aMessagesList, row, 1 ))
+				local suspectInfo = _messages[id].suspect
+				if ( suspectInfo ) then
+					if ( hasPermissionTo ( "command.banserial" ) ) then
+						guiSetEnabled( aMessagesBanSerial, true )
+					end
+					if ( hasPermissionTo ( "command.banip" ) ) then
+						guiSetEnabled( aMessagesBanIP, true )
+					end
+				else
+					guiSetEnabled( aMessagesBanSerial, false )
+					guiSetEnabled( aMessagesBanIP, false )
+				end
 			end
 		end
 	end

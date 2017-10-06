@@ -335,6 +335,23 @@
 					accept="500-60000"
 					desc="Time in miliseconds between a player being able to change their name to prevent nick change spam"
 					/>
+					
+		<setting name="*maxchatmsgs" value="10"
+					friendlyname="Max chat log messages"
+					accept="1-1000"
+					desc="Maximum chat log messages per player to store. Decreasing this value may save some of server RAM."
+					/>
+					
+		<setting name="*reportCategories" value="Question,Suggestion,Other"
+					friendlyname="Report categories"
+					desc="List of non player report categories."
+					/>
+
+		<setting name="*playerReportCategories" value="Cheater/Modder,Spammer"
+					friendlyname="Player report categories"
+					desc="List of report categories for reporting players."
+					/>
+
  </settings>
 
 </meta>

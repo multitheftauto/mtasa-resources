@@ -1,4 +1,4 @@
-﻿function isTimer(timer)
+function isTimer(timer)
 	return table.find(getTimers(), timer) ~= false
 end
 
@@ -14,7 +14,7 @@ function isPedTerminated(player)
 end
 
 function errMsg(msg, player)
-	outputChatBox(msg, player or g_Root, 255, 0, 0)
+	outputChatBox(msg, player or root, 255, 0, 0)
 end
 
 function table.find(t, ...)
@@ -93,17 +93,3 @@ function table.removevalue(t, val)
 	end
 	return false
 end
-
-addEvent("onPlayerCheckForHexCodes", true)
-addEventHandler("onPlayerCheckForHexCodes", resourceRoot,
-function ()
-	local hexColorsRemoving = get("removeHex")
-	if hexColorsRemoving == "true" then
-		triggerClientEvent(client, "onServerProvideHexCodesSetting", resourceRoot, true)
-	else
-		triggerClientEvent(client, "onServerProvideHexCodesSetting", resourceRoot, false)
-	end
-end)
-
-
-

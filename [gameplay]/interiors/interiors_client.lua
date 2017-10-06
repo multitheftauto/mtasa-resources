@@ -159,9 +159,11 @@ local idLoc = { ["interiorReturn"] = "refid",["interiorEntry"] = "id" }
 function colshapeHit( player, matchingDimension )
 	if not isElement ( player ) or getElementType ( player ) ~= "player" then return end
 	if player ~= localPlayer then return end
-	if ( not matchingDimension ) or ( isPedInVehicle ( player ) ) or 
+	if ( not matchingDimension ) or ( getPedOccupiedVehicle ( player ) ) or 
 	( doesPedHaveJetPack ( player ) ) or ( not isPedOnGround ( player ) ) or 
-	( getPedControlState ( player, "aim_weapon" ) ) or ( blockPlayer ) 
+	( getPedControlState ( player, "aim_weapon" ) ) or ( blockPlayer ) or 
+	( isPedDoingTask ( player, "TASK_COMPLEX_ENTER_CAR_AS_DRIVER") ) or 
+	( isPedDoingTask ( player, "TASK_COMPLEX_ENTER_CAR_AS_PASSENGER") ) 
 	then return end
 	local interior = interiorFromCol[source]
 	local id = getElementData ( interior, idLoc[getElementType(interior)] ) 

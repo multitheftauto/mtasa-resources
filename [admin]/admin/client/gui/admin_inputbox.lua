@@ -11,7 +11,7 @@
 aInputForm = nil
 local varOne, varTwo = nil, nil
 
-function aInputBox ( title, message, default, action, vOne, vTwo )
+function aInputBox ( title, message, default, action, vOne, vTwo, defaultNick, defaultReason )
 	if ( aInputForm == nil ) then
 		local x, y = guiGetScreenSize()
 		aInputForm		= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 170, "", false )
@@ -74,12 +74,12 @@ function aInputBox ( title, message, default, action, vOne, vTwo )
 		if not isElement(banNickEdit) then
 			banNickEdit = guiCreateEdit ( 35, 130, 60, 24, "", false, aInputForm )
 		end
-		guiSetText(banNickEdit, "Nick")
+		guiSetText(banNickEdit, defaultNick or "Nick")
 
 		if not isElement(banReasonEdit) then
 			banReasonEdit = guiCreateEdit ( 100, 130, 165, 24, "", false, aInputForm )
 		end
-		guiSetText(banReasonEdit, "Reason")
+		guiSetText(banReasonEdit, defaultReason or "Reason")
 	end
 	
 
@@ -93,6 +93,20 @@ function aInputBox ( title, message, default, action, vOne, vTwo )
 	varOne = vOne
 	varTwo = vTwo
 end
+
+addEventHandler("onClientGUIClick", guiRoot, 
+    function()
+        if source == banNickEdit then
+            if guiGetText(banNickEdit) == "Nick" then
+                guiSetText(banNickEdit, "")
+            end
+        elseif source == banReasonEdit then
+            if guiGetText(banReasonEdit) == "Reason" then
+                guiSetText(banReasonEdit, "")
+            end
+        end    
+    end
+)
 
 function aInputBoxClose ( destroy )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
