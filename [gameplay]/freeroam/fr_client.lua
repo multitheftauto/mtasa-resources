@@ -25,6 +25,7 @@ local server = setmetatable(
 		}
 	)
 guiSetInputMode("no_binds_when_editing")
+setCameraClip(true, false)
 
 local antiCommandSpam = {} -- Place to store the ticks for anti spam:
 local playerGravity = getGravity() -- Player's current gravity set by gravity window --
@@ -39,6 +40,9 @@ local _setElementPosition = setElementPosition
 function freeroamSettings(settings)
 	if settings then
 		g_settings = settings
+		for _,gui in ipairs(disableBySetting) do
+			guiSetEnabled(getControl(gui.parent,gui.id),g_settings["gui/"..gui.id])
+		end
 		for index,player in ipairs(getElementsByType("player")) do
 			updateName(player,getPlayerName(player))
 		end
@@ -70,7 +74,7 @@ function isFunctionOnCD(func, exception)
 	local oldTime = antiCommandSpam[func].time
 	if (tick-oldTime) > 2000 then
 		antiCommandSpam[func].time = tick
-		antiCommandSpam[func].tries = 1 
+		antiCommandSpam[func].tries = 1
 		return false
 	end
 
@@ -112,17 +116,22 @@ local function addCommandHandler(cmd,func)
 
 end
 
-local function cancelKnifeEvent()
+local function cancelKnifeEvent(target)
 
-	cancelEvent()
-	outputChatBox("Knife restrictions are in place",255,0,0)
-
+	if knifingDisabled then
+		cancelEvent()
+		errMsg("Knife restrictions are in place")
+	end
+	
+	if g_PlayerData[localPlayer].knifing or g_PlayerData[target].knifing then
+		cancelEvent()
+	end
+	
 end
 
 local function resetKnifing()
 
 	knifeRestrictionsOn = false
-	removeEventHandler("onClientPlayerStealthKill",localPlayer,cancelKnifeEvent)
 
 end
 
@@ -130,7 +139,6 @@ local function setElementPosition(element,x,y,z)
 
 	if g_settings["weapons/kniferestrictions"] and not knifeRestrictionsOn then
 		knifeRestrictionsOn = true
-		addEventHandler("onClientPlayerStealthKill",localPlayer,cancelKnifeEvent)
 		setTimer(resetKnifing,5000,1)
 	end
 	
@@ -511,7 +519,17 @@ local function warpMe(targetPlayer)
 		outputChatBox("Warping is disallowed!",255,0,0)
 		return
 	end
+	
+	if targetPlayer == localPlayer then
+		outputChatBox("You can't warp to yourself!",255,0,0)
+		return
+	end
 
+	if g_PlayerData[targetPlayer].warping then
+		outputChatBox("This player has disabled warping to them!",255,0,0)
+		return
+	end
+	
 	local vehicle = getPedOccupiedVehicle(targetPlayer)
 	local interior = getElementInterior(targetPlayer)
 	if not vehicle then
@@ -1705,6 +1723,31 @@ addCommandHandler('speed', setGameSpeedCommand)
 -- Main window
 ---------------------------
 
+function toggleWarping()
+	
+	local state = guiCheckBoxGetSelected( getControl(wndMain, 'disablewarp') )
+	triggerServerEvent("onFreeroamLocalSettingChange",localPlayer,"warping",state)
+	outputChatBox("You "..(state and "disabled" or "enabled").." others warping to you",255,255,0)
+
+end
+
+function toggleKnifing()
+
+	local state = guiCheckBoxGetSelected( getControl(wndMain, 'disableknife') )
+	triggerServerEvent("onFreeroamLocalSettingChange",localPlayer,"knifing",state)
+	outputChatBox("You "..(state and "disabled" or "enabled").." knifekills",255,255,0)
+
+end
+
+function toggleGhostmode()
+
+	local state = guiCheckBoxGetSelected( getControl(wndMain, 'antiram') )
+	triggerServerEvent("onFreeroamLocalSettingChange",localPlayer,"ghostmode",state)
+	outputChatBox("You "..(state and "disabled" or "enabled").." other players ramming your vehicle",255,255,0)
+
+
+end
+
 function updateGUI(updateVehicle)
 	-- update position
 	local x, y, z = getElementPosition(localPlayer)
@@ -1738,18 +1781,41 @@ function mainWndClose()
 	colorPicker.closeSelect()
 end
 
-function onEnterVehicle(vehicle)
-	setControlText(wndMain, 'curvehicle', getVehicleName(vehicle))
-	showControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
-	guiCheckBoxSetSelected(getControl(wndMain, 'lightson'), getVehicleOverrideLights(vehicle) == 2)
-	guiCheckBoxSetSelected(getControl(wndMain, 'lightsoff'), getVehicleOverrideLights(vehicle) == 1)
+function hasDriverGhost(vehicle)
+
+	if not g_PlayerData then return end
+	if not isElement(vehicle) then return end
+	if getElementType(vehicle) ~= "vehicle" then return end
+	
+	local driver = getVehicleController(vehicle)
+	if g_PlayerData[driver] and g_PlayerData[driver].ghostmode then return true end
+	return false
+	
 end
 
-function onExitVehicle(vehicle)
-	setControlText(wndMain, 'curvehicle', 'On foot')
-	hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
-	closeWindow(wndUpgrades)
-	closeWindow(wndColor)
+function onEnterVehicle(vehicle,seat)
+	if source == localPlayer then
+		setControlText(wndMain, 'curvehicle', getVehicleName(vehicle))
+		showControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
+		guiCheckBoxSetSelected(getControl(wndMain, 'lightson'), getVehicleOverrideLights(vehicle) == 2)
+		guiCheckBoxSetSelected(getControl(wndMain, 'lightsoff'), getVehicleOverrideLights(vehicle) == 1)
+	end
+	if seat == 0 and g_PlayerData[source] then
+		setVehicleGhost(vehicle,hasDriverGhost(vehicle))
+	end
+end
+
+function onExitVehicle(vehicle,seat)
+	if not vehicle then
+		setControlText(wndMain, 'curvehicle', 'On foot')
+		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
+		closeWindow(wndUpgrades)
+		closeWindow(wndColor)
+	elseif vehicle and seat == 0 then
+		if source and g_PlayerData[source] then
+			setVehicleGhost(vehicle,hasDriverGhost(vehicle))
+		end
+	end	
 end
 
 function killLocalPlayer()
@@ -1790,8 +1856,14 @@ wndMain = {
 		{'btn', id='stats', window=wndStats},
 		{'btn', id='bookmarks', window=wndBookmarks},
 		{'br'},
+		
 		{'chk', id='jetpack', onclick=toggleJetPack},
 		{'chk', id='falloff', text='fall off bike', onclick=toggleFallOffBike},
+		{'br'},
+		
+		{'chk', id='disablewarp', text='disable warp', onclick=toggleWarping},
+		{'chk', id='disableknife', text='disable knifing', onclick=toggleKnifing},
+		{'chk', id='antiram', text='anti-ramming (vehicle ghostmode)', onclick=toggleGhostmode},
 		{'br'},
 		
 		{'lbl', text='Pos:'},
@@ -1831,6 +1903,13 @@ wndMain = {
 	onclose = mainWndClose
 }
 
+disableBySetting = 
+{
+	{parent=wndMain, id="antiram"},
+	{parent=wndMain, id="disablewarp"},
+	{parent=wndMain, id="disableknife"},
+}
+
 function errMsg(msg)
 	outputChatBox(msg, 255, 0, 0)
 end
@@ -1839,15 +1918,13 @@ addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		fadeCamera(true)
 		setTimer(getPlayers, 1000, 1)
-		
-		bindKey('f1', 'down', toggleFRWindow)
+		setJetpackMaxHeight ( 9001 )
+		triggerServerEvent('onLoadedAtClient', resourceRoot)
 		createWindow(wndMain)
 		hideAllWindows()
+		bindKey('f1', 'down', toggleFRWindow)
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), doesPedHaveJetPack(localPlayer))
 		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPedBeKnockedOffBike(localPlayer))
-		setJetpackMaxHeight ( 9001 )
-		
-		triggerServerEvent('onLoadedAtClient', resourceRoot)
 	end
 )
 
@@ -1886,14 +1963,27 @@ end
 
 function quitHandler()
 	if (not g_PlayerData) then return end
+	local veh = getPedOccupiedVehicle(source)
+	local seat = (veh and getVehicleController(veh) == localPlayer) and 0 or 1
+	if seat == 0 then
+		onExitVehicle(veh,0)
+	end
 	table.each(g_PlayerData[source].gui, destroyElement)
 	g_PlayerData[source] = nil
 end
 
 function wastedHandler()
-	onExitVehicle(localPlayer)
-	if g_settings["spawnmapondeath"] then
-		setTimer(showMap,2000,1)
+	if source == localPlayer then
+		onExitVehicle()
+		if g_settings["spawnmapondeath"] then
+			setTimer(showMap,2000,1)
+		end
+	else
+		local veh = getPedOccupiedVehicle(source)
+		local seat = (veh and getVehicleController(veh) == localPlayer) and 0 or 1
+		if seat == 0 then
+			onExitVehicle(veh,0)
+		end
 	end
 end
 
@@ -1916,9 +2006,9 @@ end
 
 addEventHandler('onClientPlayerJoin', root, joinHandler)
 addEventHandler('onClientPlayerQuit', root, quitHandler)
-addEventHandler('onClientPlayerWasted', localPlayer, wastedHandler)
-addEventHandler('onClientPlayerVehicleEnter', localPlayer, onEnterVehicle)
-addEventHandler('onClientPlayerVehicleExit', localPlayer, onExitVehicle)
+addEventHandler('onClientPlayerWasted', root, wastedHandler)
+addEventHandler('onClientPlayerVehicleEnter', root, onEnterVehicle)
+addEventHandler('onClientPlayerVehicleExit', root, onExitVehicle)
 addEventHandler("onClientPlayerSpawn", localPlayer, checkCustomSpawn)
 
 function getPlayerName(player)
@@ -1931,3 +2021,59 @@ addEventHandler('onClientResourceStop', resourceRoot,
 		setPedAnimation(localPlayer, false)
 	end
 )
+
+function setVehicleGhost(sourceVehicle,value)
+
+	local vehicles = getElementsByType("vehicle")
+	for _,vehicle in ipairs(vehicles) do
+		local vehicleGhost = hasDriverGhost(vehicle)
+		setElementCollidableWith(sourceVehicle,vehicle,not value)
+		setElementCollidableWith(vehicle,sourceVehicle,not value)
+		if value == false and vehicleGhost == true then
+			setElementCollidableWith(sourceVehicle,vehicle,not vehicleGhost)
+			setElementCollidableWith(vehicle,sourceVehicle,not vehicleGhost)
+		end
+	end
+
+end
+
+local function onStreamIn()
+
+	if source.type ~= "vehicle" then return end
+	setVehicleGhost(source,hasDriverGhost(source))
+
+end
+
+local function onLocalSettingChange(key,value)
+
+	g_PlayerData[source][key] = value
+	
+	if key == "ghostmode" then
+		local sourceVehicle = getPedOccupiedVehicle(source)
+		if sourceVehicle then
+			setVehicleGhost(sourceVehicle,hasDriverGhost(sourceVehicle))
+		end
+	end
+
+end
+
+local function renderKnifingTag()
+	if not g_PlayerData then return end
+	for _,p in ipairs (getElementsByType ("player", root, true)) do
+		if g_PlayerData[p] and g_PlayerData[p].knifing then
+			local px,py,pz = getElementPosition(p)
+			local x,y,d = getScreenFromWorldPosition (px, py, pz+1.3)
+			if x and y and d < 20 then
+				dxDrawText ("Disabled Knifing", x+1, y+1, x, y, tocolor (0, 0, 0), 0.5, "bankgothic", "center")
+				dxDrawText ("Disabled Knifing", x, y, x, y, tocolor (220, 220, 0), 0.5, "bankgothic", "center")
+			end
+		end
+    end
+end
+
+addEventHandler ("onClientRender", root, renderKnifingTag)
+
+addEvent("onClientFreeroamLocalSettingChange",true)
+addEventHandler("onClientFreeroamLocalSettingChange",root,onLocalSettingChange)
+addEventHandler("onClientPlayerStealthKill",localPlayer,cancelKnifeEvent)
+addEventHandler("onClientElementStreamIn",root,onStreamIn)
