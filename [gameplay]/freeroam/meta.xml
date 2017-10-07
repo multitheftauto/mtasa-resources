@@ -87,6 +87,9 @@
 		<setting name="*vehicles/disallowed" value="[[432]]" />   <!-- Comma-separated list of vehicles that players may not create -->
 		<setting name="*chat/mainChatDelay" value="1000" />   <!-- Miliseconds between each message a player can send through main chat -->
 		<setting name="*chat/blockRepeatMessages" value="true" />   <!-- Prevent a player from saying the same thing twice in a row to spam -->
+		<setting name="*gui/antiram" value="true" />
+		<setting name="*gui/disablewarp" value="true" />
+		<setting name="*gui/disableknife" value="true" />
 		<setting name="@command_spam_protection" value="true"
 					friendlyname="Command Spam Protection"
 					accept="true,false"
