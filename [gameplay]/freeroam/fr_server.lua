@@ -115,14 +115,23 @@ addEventHandler('onResourceStart', resourceRoot,
 	end
 )
 
+function onLocalSettingChange(setting,value)
+
+	if client ~= source then return end
+	g_PlayerData[client].settings[setting] = value
+	triggerClientEvent("onClientFreeroamLocalSettingChange",client,setting,value)
+
+end
+
 function joinHandler(player)
 	if not player then
 		player = source
 	end
 	local r, g, b = math.random(50, 255), math.random(50, 255), math.random(50, 255)
 	setPlayerNametagColor(player, r, g, b)
-	g_PlayerData[player] = { vehicles = {} }
+	g_PlayerData[player] = { vehicles = {}, settings={} }
 	g_PlayerData[player].blip = createBlipAttachedTo(player, 0, 2, r, g, b)
+	addEventHandler("onFreeroamLocalSettingChange",player,onLocalSettingChange)
 	if getOption('welcometextonstart') then
 		outputChatBox('Welcome to Freeroam', player, 0, 255, 0)
 		outputChatBox('Press F1 to show/hide controls', player, 0, 255, 0)
@@ -145,6 +154,9 @@ local settingsToSend =
 	["gamespeed/enabled"] = true,
 	["gamespeed/min"] = true,
 	["gamespeed/max"] = true,
+	["gui/antiram"] = true,
+	["gui/disablewarp"] = true,
+	["gui/disableknife"] = true,
 }
 
 local function updateSettings()
@@ -152,6 +164,14 @@ local function updateSettings()
 	local settings = {}
 	for setting,_ in pairs(settingsToSend) do settings[setting] = getOption(setting) end
 	return settings
+
+end
+
+local function sendSettings(player,settingPlayer,settings)
+
+	for setting,value in pairs(settings) do
+		triggerClientEvent(player,"onClientFreeroamLocalSettingChange",settingPlayer,setting,value)
+	end
 
 end
 
@@ -163,6 +183,12 @@ addEventHandler('onLoadedAtClient', resourceRoot,
 		end
 		local settings = updateSettings()
 		clientCall(client, 'freeroamSettings', settings)
+		for player,data in pairs(g_PlayerData) do
+			if player ~= client then
+				local settings = data.settings
+				setTimer(sendSettings,1500,1,client,player,settings)
+			end
+		end
 	end,
 	false
 )
@@ -506,6 +532,7 @@ function quitHandler(player)
 		sawnoffAntiAbuse[source] = nil
 	end
 	table.each(g_PlayerData[source].vehicles, unloadVehicle)
+	removeEventHandler("onFreeroamLocalSettingChange",source,onLocalSettingChange)
 	g_PlayerData[source] = nil
 	chatTime[source] = nil
 	lastChatMessage[source] = nil
@@ -545,3 +572,5 @@ end
 function getPlayerName(player)
 	return getOption("removeHex") and player.name:gsub("#%x%x%x%x%x%x","") or player.name
 end
+
+addEvent("onFreeroamLocalSettingChange",true)
