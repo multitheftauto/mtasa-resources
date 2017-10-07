@@ -278,7 +278,7 @@ function addWeapon(leaf, amount)
 		end
 	end
 	if amount < 1 then
-		outputChatBox("Invalid amount",255,0,0)
+		errMsg("Invalid amount")
 		return
 	end
 	server.giveMeWeapon(leaf.id, amount)
@@ -516,17 +516,17 @@ wndGravity = {
 local function warpMe(targetPlayer)
 
 	if not g_settings["warp"] then
-		outputChatBox("Warping is disallowed!",255,0,0)
+		errMsg("Warping is disallowed!")
 		return
 	end
 	
 	if targetPlayer == localPlayer then
-		outputChatBox("You can't warp to yourself!",255,0,0)
+		errMsg("You can't warp to yourself!")
 		return
 	end
 
 	if g_PlayerData[targetPlayer].warping then
-		outputChatBox("This player has disabled warping to them!",255,0,0)
+		errMsg("This player has disabled warping to them!")
 		return
 	end
 	
@@ -723,7 +723,7 @@ function saveLocation ()
 			saveBookmarks()
 		end
 	else
-		outputChatBox("Please enter a name for the bookmark")
+		errMsg("Please enter a name for the bookmark")
 	end
 end
 
@@ -1141,7 +1141,7 @@ end
 function setInterior(leaf)
 	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if vehicle and getVehicleController (vehicle) ~= localPlayer then
-		outputChatBox ("* Only the driver may set interior/dimension", 255, 0, 0)
+		errMsg("* Only the driver may set interior/dimension")
 		return
 	end
 	if vehicle then
@@ -1652,14 +1652,14 @@ function setMyGameSpeed(speed)
 
 	if g_settings["gamespeed/enabled"] then
 		if speed > g_settings["gamespeed/max"] then
-			outputChatBox(('Maximum allowed gamespeed is %.5f'):format(g_settings['gamespeed/max']), 255, 0, 0)
+			errMsg(('Maximum allowed gamespeed is %.5f'):format(g_settings['gamespeed/max']))
 		elseif speed < g_settings["gamespeed/min"] then
-			outputChatBox(('Minimum allowed gamespeed is %.5f'):format(g_settings['gamespeed/min']), 255, 0, 0)
+			errMsg(('Minimum allowed gamespeed is %.5f'):format(g_settings['gamespeed/min']))
 		else
 			setGameSpeed(speed)
 		end
 	else
-		outputChatBox("Setting game speed is disallowed!",255,0,0)
+		errMsg("Setting game speed is disallowed!")
 	end
 
 end
@@ -1743,7 +1743,7 @@ function toggleGhostmode()
 
 	local state = guiCheckBoxGetSelected( getControl(wndMain, 'antiram') )
 	triggerServerEvent("onFreeroamLocalSettingChange",localPlayer,"ghostmode",state)
-	outputChatBox("You "..(state and "disabled" or "enabled").." other players ramming your vehicle",255,255,0)
+	outputChatBox("You "..(state and "disabled" or "enabled").." other players ramming to you",255,255,0)
 
 
 end
@@ -1822,7 +1822,7 @@ function killLocalPlayer()
 	if g_settings["kill"] then
 		setElementHealth(localPlayer,0)
 	else
-		outputChatBox("Killing yourself is disallowed!",255,0,0)
+		errMsg("Killing yourself is disallowed!")
 	end
 end
 
@@ -1911,7 +1911,7 @@ disableBySetting =
 }
 
 function errMsg(msg)
-	outputChatBox(msg, 255, 0, 0)
+	outputChatBox(msg,255,0,0)
 end
 
 addEventHandler('onClientResourceStart', resourceRoot,
