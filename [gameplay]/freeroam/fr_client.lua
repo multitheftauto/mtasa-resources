@@ -1806,7 +1806,7 @@ function onEnterVehicle(vehicle,seat)
 end
 
 function onExitVehicle(vehicle,seat)
-	if not vehicle then
+	if eventName == "onClientPlayerVehicleExit" then
 		setControlText(wndMain, 'curvehicle', 'On foot')
 		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
 		closeWindow(wndUpgrades)
