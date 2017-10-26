@@ -52,7 +52,7 @@ propertyGetters = {
 		upgrades = getVehicleUpgrades,
 		plate = getVehiclePlateText,
 		sirens = function(vehicle)
-				return getVehicleSirensOn(vehicle) and "On" or "Off"
+				return getVehicleSirensOn(vehicle) and "true" or "false"
 			end,
 		paintjob = function(vehicle) return tostring(getVehiclePaintjob(vehicle)) end,
 	},
@@ -199,7 +199,7 @@ propertySetters = {
 		paintjob = setVehiclePaintjob,
 		plate = setVehiclePlateText,
 		sirens = function(vehicle, bon)
-			return setVehicleSirensOn(vehicle, bon == "On" and true or false)
+			return setVehicleSirensOn(vehicle, bon == "true" and true or false)
 		end
 	},
 	marker = {
