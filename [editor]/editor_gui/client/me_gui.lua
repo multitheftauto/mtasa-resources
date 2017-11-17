@@ -291,7 +291,7 @@ end
 
 function toggleHUDShowing(k1,k2,state)
 	setGUIShowing(not guiShowing)
-	showPlayerHudComponent("radar", guiShowing)
+	setPlayerHudComponentVisible("radar", guiShowing)
 	showChat ( guiShowing )
 end
 

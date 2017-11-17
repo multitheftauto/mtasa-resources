@@ -21,6 +21,9 @@ local function browserListGridlistClick( button,state,x,y )
 				row = row + startKey 
 			end
 			self:setSelected(row)
+			if button == "right" then
+				toggleFavourite(self.gridlist)
+			end
 		end
 	end
 end
