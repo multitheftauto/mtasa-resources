@@ -1,4 +1,4 @@
-﻿local function getStringFromColor( R, G, B, A )
+local function getStringFromColor( R, G, B, A )
 	if R and G and B then
 		A = A or 255
 		return "#"..string.format("%02x",R)..string.format("%02x",G)..string.format("%02x",B)..string.format("%02x",A)
@@ -51,6 +51,9 @@ propertyGetters = {
 		end,
 		upgrades = getVehicleUpgrades,
 		plate = getVehiclePlateText,
+		sirens = function(vehicle)
+				return getVehicleSirensOn(vehicle) and "true" or "false"
+			end,
 		paintjob = function(vehicle) return tostring(getVehiclePaintjob(vehicle)) end,
 	},
 	marker = {
@@ -193,7 +196,11 @@ propertySetters = {
 			end
 			return true
 		end,
-		paintjob = setVehiclePaintjob
+		paintjob = setVehiclePaintjob,
+		plate = setVehiclePlateText,
+		sirens = function(vehicle, bon)
+			return setVehicleSirensOn(vehicle, bon == "true" and true or false)
+		end
 	},
 	marker = {
 		type = setMarkerType,

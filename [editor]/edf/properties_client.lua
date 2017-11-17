@@ -1,4 +1,4 @@
-﻿propertyGetters = {
+propertyGetters = {
 	object = {
 		model = getElementModel,
 		doublesided = function(element)
@@ -35,6 +35,9 @@
 		end,
 		upgrades = getVehicleUpgrades,
 		plate = getVehiclePlateText,
+		sirens = function(vehicle)
+				return getVehicleSirensOn(vehicle) and "true" or "false"
+			end,
 		paintjob = function(vehicle) return tostring(getVehiclePaintjob(vehicle)) end,
 	},
 	marker = {
@@ -190,7 +193,11 @@ propertySetters = {
 				return false
 			end
 		end,
-		paintjob = setVehiclePaintjob
+		paintjob = setVehiclePaintjob,
+		plate = setVehiclePlateText,
+		sirens = function(vehicle, bon)
+			return setVehicleSirensOn(vehicle, bon == "true" and true or false)
+		end
 	},
 	marker = {
 		type = function(element, markerType)
