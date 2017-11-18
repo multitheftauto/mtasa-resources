@@ -110,7 +110,7 @@ end
 
 c.vehicleID = function(var)
 	local var = c.number(var)
-	if vehicleIDs[var] then
+	if vehicleIDs[vehicle] then
 		return var
 	else
 		return nil
