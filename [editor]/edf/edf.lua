@@ -415,22 +415,14 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 		parentData[dataField] = checkedData
 	end
 
-	-- get the position and rotation
-	parentData.position = parentData.position or { edfGetElementPosition(theElement) }
-	if not parentData.position[1] then
-		parentData.position = {0,0,0}
-	end
+	-- get basic element properties
+	parentData.position = { edfGetElementPosition(theElement) }
+	parentData.rotation = { edfGetElementRotation(theElement) }
+	parentData.dimension = edfGetElementDimension(theElement)
+	parentData.interior = edfGetElementInterior(theElement)
+	parentData.alpha = edfGetElementAlpha(theElement)
 
-	parentData.rotation = parentData.rotation or { edfGetElementRotation(theElement) }
-	if not parentData.rotation[1] then
-		parentData.rotation = {0,0,0}
-	end
-
-	--ensure a dimension & interior is set
-	parentData.dimension = parentData.dimension or 0
-	parentData.interior = parentData.interior or 0
-	parentData.alpha = parentData.alpha or 255
-
+	setElementInterior( theElement, parentData.interior)
 	setElementDimension ( theElement, parentData.dimension )
 	setElementAlpha ( theElement, parentData.alpha )
 
