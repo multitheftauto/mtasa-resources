@@ -611,7 +611,7 @@ local function sendInitialParameters()
 			newElementType,
 			newElementResource,
 			parametersTable,
-			false --don't attach it later
+			true -- attach this element to the cursor after creation
 		)
 	end
 
