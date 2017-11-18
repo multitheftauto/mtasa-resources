@@ -103,14 +103,9 @@ c.objectID = function(var)
 	end
 end
 
-local vehicleIDs = {}
-for _, v in ipairs(getValidVehicleModels()) do
-	vehicleIDs[v] = true
-end
-
 c.vehicleID = function(var)
 	local var = c.number(var)
-	if vehicleIDs[vehicle] then
+	if var and getVehicleNameFromModel(var) then
 		return var
 	else
 		return nil
