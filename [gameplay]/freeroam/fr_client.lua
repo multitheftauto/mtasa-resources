@@ -1743,7 +1743,7 @@ function toggleGhostmode()
 
 	local state = guiCheckBoxGetSelected( getControl(wndMain, 'antiram') )
 	triggerServerEvent("onFreeroamLocalSettingChange",localPlayer,"ghostmode",state)
-	outputChatBox("You "..(state and "disabled" or "enabled").." other players ramming to you",255,255,0)
+	outputChatBox("You "..(state and "disabled" or "enabled").." other players ramming your vehicle",255,255,0)
 
 
 end
@@ -1806,7 +1806,7 @@ function onEnterVehicle(vehicle,seat)
 end
 
 function onExitVehicle(vehicle,seat)
-	if eventName == "onClientPlayerVehicleExit" then
+	if eventName == "onClientPlayerVehicleExit" and source == localPlayer then
 		setControlText(wndMain, 'curvehicle', 'On foot')
 		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
 		closeWindow(wndUpgrades)
