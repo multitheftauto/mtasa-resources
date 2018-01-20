@@ -8,8 +8,9 @@
 *
 **************************************]]
 
-function aSynchCoroutineFunc( type, data )
+function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 	local source = source -- Needed
+	local maxBanCount = 100
 	if checkClient( false, source, 'aSync', type ) then return end
 	local cor = aSyncCoroutine
 	local tableOut = {}
@@ -175,17 +176,72 @@ function aSynchCoroutineFunc( type, data )
 		end
 		tableOut["unread"] = unread
 		tableOut["total"] = total
+	elseif ( type == "bansearch" ) then
 
+			if not g_Bans then
+			local bans = getBans()
+			g_Bans = {}
+			-- Reverse
+			for i = #bans,1,-1 do
+				table.insert( g_Bans, bans[i] )
+			end
+		end
+		local from = ( tonumber( data ) or 0 ) + 1
+		local to = math.min( from+24, #g_Bans )
+		tableOut.total = #g_Bans
+		local cnt = 1
+		for b=1,#g_Bans do
+				
+				i = b - from + 1
+				ban = g_Bans[b]
+				local seconds = getBanTime(ban)
+				tableOut[i] = {}
+				tableOut[i].nick = getBanUsername(ban) or getBanNick(ban)
+				tableOut[i].seconds = seconds
+				tableOut[i].banner = getBanAdmin(ban)
+				tableOut[i].ip = getBanIP(ban)
+				tableOut[i].serial = getBanSerial(ban)
+				tableOut[i].reason = getBanReason(ban)
+				tableOut[i].unban = getUnbanTime(ban)
+				local tType = getNeededTagType (data[1],ban)
+				if getNeededTagType (data[1],ban) and string.match (string.lower(tType),string.lower(data[2])) then
+					if (isElement(source)) then -- In case the source has quit during coroutine loading
+						if cnt <= maxBanCount then
+						cnt = cnt + 1
+						triggerClientEvent ( source, "aClientSync", theSource, type, tableOut,data )
+						else
+						triggerClientEvent ( source, "aClientSync", theSource, "message", false,{"error","Be more specific in your search query! (keyword returns more than 100 matches) search not completed due to server load, it's limited to displaying the first 100 results now."} )
+						cnt = nil
+						return
+						end
+					end
+				end
+		end
+		triggerClientEvent ( source, "aClientSync", theSource, "banlistend", false ) --Tell the player the loop has ended
+		return
+		
 	end
 	if (isElement(source)) then -- Incase the source has quit during coroutine loading
 		triggerClientEvent ( source, "aClientSync", theSource, type, tableOut )
 	end
 end
 
+
+function getNeededTagType (tagType,ban)
+if tagType=="IP" and getBanIP (ban) then return getBanIP (ban) end
+if tagType=="Serial" and getBanSerial (ban)  then return getBanSerial (ban) end
+if tagType=="Name" and  getBanNick (ban) then return getBanNick (ban) end
+if tagType=="By" and  getBanAdmin (ban) then return getBanAdmin (ban) end
+if tagType=="Reason" and getBanReason (ban) then return getBanReason (ban) end
+return false
+end
+
 addEvent("aSync", true)
-addEventHandler("aSync", _root, function(type, data) 
+addEventHandler("aSync", _root, function(typed, data) 
 	aSyncCoroutine = coroutine.create(aSynchCoroutineFunc)
-	coroutine.resume(aSyncCoroutine, type, data)
+	coroutine.resume(aSyncCoroutine, typed, data)
+
+	
 end )
 
 addEvent ( "onPlayerMoneyChange", false )
