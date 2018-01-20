@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -20,8 +20,8 @@ function aMessageBox ( type, message, action, vOne, vTwo, vThree )
 		aMessageQuestion	= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\question.png", false, aMessageForm )
 		aMessageError		= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\error.png", false, aMessageForm )
 		aMessageInfo		= guiCreateStaticImage ( 10, 32, 60, 60, "client\\images\\info.png", false, aMessageForm )
-		aMessageLabel		= guiCreateLabel ( 100, 32, 180, 16, "", false, aMessageForm )
-					  guiLabelSetHorizontalAlign ( aMessageLabel, "center" )
+		aMessageLabel		= guiCreateLabel ( 100, 32, 180, 64, "", false, aMessageForm )
+		guiLabelSetHorizontalAlign ( aMessageLabel, "center",true )
 		aMessageYes		= guiCreateButton ( 120, 70, 55, 17, "Yes", false, aMessageForm )
 		aMessageNo		= guiCreateButton ( 180, 70, 55, 17, "No", false, aMessageForm )
 		aMessageOk		= guiCreateButton ( 160, 70, 55, 17, "Ok", false, aMessageForm )
@@ -37,14 +37,14 @@ function aMessageBox ( type, message, action, vOne, vTwo, vThree )
 	guiSetText ( aMessageLabel, tostring ( message ) )
 	local width = guiLabelGetTextExtent ( aMessageLabel )
 	if ( width > 180 ) then 
-		guiSetSize ( aMessageForm, 100 + width + 20, 110, false )
-		guiSetSize ( aMessageLabel, width, 16, false )
+		guiSetSize ( aMessageForm,  500, 120, false )
+		guiSetSize ( aMessageLabel, 350, 100, false )
 	else
-		guiSetSize ( aMessageForm, 300, 110, false )
-		guiSetSize ( aMessageLabel, 180, 16, false )
+		guiSetSize ( aMessageForm, 300, 120, false )
+		guiSetSize ( aMessageLabel, 150, 16, false )
 	end
 	local sx, sy = guiGetSize ( aMessageForm, false )
-	guiSetPosition ( aMessageOk, sx / 2 - 22, 70, false )
+	guiSetPosition ( aMessageOk, sx / 2 - 22, 90, false )
 	guiSetPosition ( aMessageForm, x / 2 - sx / 2, y / 2 - sy / 2, false )
 	guiBringToFront ( aMessageForm )
 	guiSetVisible ( aMessageWarning, false )

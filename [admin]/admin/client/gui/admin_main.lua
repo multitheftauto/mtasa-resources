@@ -19,6 +19,12 @@ aBans = {}
 aLastSync = 0
 aResources = {}
 
+function guiComboBoxAdjustHeight ( combobox, itemcount )
+    if getElementType ( combobox ) ~= "gui-combobox" or type ( itemcount ) ~= "number" then error ( "Invalid arguments @ 'guiComboBoxAdjustHeight'", 2 ) end
+    local width = guiGetSize ( combobox, false )
+    return guiSetSize ( combobox, width, ( itemcount * 20 ) + 20, false )
+end
+
 function aAdminMenu ()
 	if ( aAdminForm == nil ) then
 		local x, y = guiGetScreenSize()
@@ -36,6 +42,7 @@ function aAdminMenu ()
 		aTab1.HideColorCodes= guiCreateCheckBox ( 0.037, 0.94, 0.20, 0.04, "Hide color codes", true, true, aTab1.Tab )
 		aTab1.PlayerList		= guiCreateGridList ( 0.03, 0.10, 0.20, 0.83, true, aTab1.Tab )
 						  guiGridListAddColumn( aTab1.PlayerList, "Player Name", 0.85 )
+						  guiGridListSetSortingEnabled ( aTab1.PlayerList, false )
 						  for id, player in ipairs ( getElementsByType ( "player" ) ) do guiGridListSetItemPlayerName ( aTab1.PlayerList, guiGridListAddRow ( aTab1.PlayerList ), 1, getPlayerName ( player ), false, false ) end
 		aTab1.Kick			= guiCreateButton ( 0.71, 0.125, 0.13, 0.04, "Kick", true, aTab1.Tab, "kick" )
 		aTab1.Ban			= guiCreateButton ( 0.85, 0.125, 0.13, 0.04, "Ban", true, aTab1.Tab, "ban" )
@@ -232,7 +239,35 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 
 		aTab4 = {}
 		aTab4.Tab			= guiCreateTab ( "Bans", aTabPanel, "bans" )
-		aTab4.BansList		= guiCreateGridList ( 0.03, 0.05, 0.80, 0.87, true, aTab4.Tab )
+		aTab4.BansList		= guiCreateGridList ( 0.03, 0.12, 0.80, 0.8, true, aTab4.Tab )
+		aTab4.EditBox		= guiCreateEdit ( 0.03, 0.05, 0.54, 0.05, "", true, aTab4.Tab )
+		aTab4.ComboBox		= guiCreateComboBox ( 0.58, 0.05, 0.12, 0.05, "Select", true, aTab4.Tab )
+		aTab4.Button		= guiCreateButton ( 0.71, 0.05, 0.12, 0.05, "Search...", true, aTab4.Tab )
+		aTab4.ProgressBar		= guiCreateProgressBar ( 0.03, 0.88, 0.8, 0.05, true, aTab4.Tab )
+						guiSetVisible (aTab4.ProgressBar,false)
+						local ComboBoxItems = {"Serial","IP","Name","By","Reason"}
+							for i,ComboBoxIndividualItems in ipairs (ComboBoxItems) do
+								guiComboBoxAddItem (aTab4.ComboBox,ComboBoxIndividualItems)
+							end
+						guiComboBoxAdjustHeight (aTab4.ComboBox,#ComboBoxItems)
+						ComboBoxItems = nil
+						guiComboBoxSetSelected (aTab4.ComboBox,0)
+						
+						
+				function searchBans()
+				local searchText = guiGetText (aTab4.EditBox)
+					if searchText == "" then
+					triggerServerEvent ( "aSync", localPlayer, "bans" )
+					else
+					local itemBoxSelected = guiComboBoxGetSelected(aTab4.ComboBox)
+					local text = guiComboBoxGetItemText(aTab4.ComboBox, itemBoxSelected)
+					guiGridListClear (aTab4.BansList)
+					triggerServerEvent ( "aSync", localPlayer, "bansearch",{text,searchText})
+					end
+				
+				end
+				addEventHandler("onClientGUIClick", aTab4.Button, searchBans,false) 
+						
 						  guiGridListAddColumn( aTab4.BansList, "Name", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "IP", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "Serial", 0.22 )
@@ -250,7 +285,6 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab4.BanIP			= guiCreateButton ( 0.85, 0.40, 0.13, 0.04, "Ban IP", true, aTab4.Tab, "banip" )
 		aTab4.BanSerial		= guiCreateButton ( 0.85, 0.45, 0.13, 0.04, "Ban Serial", true, aTab4.Tab, "banserial" )
 		aTab4.BansRefresh		= guiCreateButton ( 0.85, 0.85, 0.13, 0.04, "Refresh", true, aTab4.Tab, "listbans" )
-
 		aTab4.BansTotal		= guiCreateLabel ( 0.20, 0.94, 0.31, 0.04, "Showing  0 / 0  bans", true, aTab4.Tab )
 		aTab4.BansMore		= guiCreateButton ( 0.50, 0.94, 0.13, 0.04, "Get more...", true, aTab4.Tab, "listbans" )
 
@@ -464,7 +498,7 @@ function aAdminRefresh ()
 	end
 end
 
-function aClientSync ( type, table )
+function aClientSync ( type, table, data )
 	if ( type == "player" and aPlayers[source] ) then
 		for type, data in pairs ( table ) do
 			aPlayers[source][type] = data
@@ -571,8 +605,87 @@ function aClientSync ( type, table )
 		end
 		guiSetText ( aTab1.Messages, table["unread"].."/"..table["total"].." unread messages" )
 		
+		
+	elseif ( type == "bansearch" ) then
+				g_GotLatestBansList = true
+			guiGridListClear ( aTab4.BansList )
+			aBans = {}
+			aBans["Serial"] = {}
+			aBans["IP"] = {}
+		
+		if g_GotLatestBansList then
+
+			for i=1,#table do
+				local ban = table[i]
+				if ban.serial then
+					aBans["Serial"][ban.serial] = ban
+				end
+				if ban.ip then
+					aBans["IP"][ban.ip] = ban
+				end
+			local tType = getNeededTagType (data[1],ban)
+			if tType and string.match (string.lower(tType),string.lower(data[2])) then
+			
+				local time, date = "-", "-"
+				if ban.seconds then
+					local realTime = getRealTime( ban.seconds )
+					time = string.format("%02d:%02d", realTime.hour, realTime.minute )
+					date = string.format("%04d-%02d-%02d", realTime.year + 1900, realTime.month + 1, realTime.monthday )
+				end
+				
+				local reason = ban["reason"] and ban["reason"]~="nil" and ban["reason"] or ""
+				local row = guiGridListAddRow ( aTab4.BansList )
+					guiGridListSetItemText ( aTab4.BansList, row, 1, ban["nick"]	or "n/a", false, false )
+					guiGridListSetItemText ( aTab4.BansList, row, 2, ban.ip			or "n/a", false, false )
+					guiGridListSetItemText ( aTab4.BansList, row, 3, ban.serial		or "n/a", false, false )
+					guiGridListSetItemText ( aTab4.BansList, row, 4, ban["banner"]	or "n/a", false, false )
+					guiGridListSetItemText ( aTab4.BansList, row, 5, date,					false, false )
+					guiGridListSetItemText ( aTab4.BansList, row, 6, time,					false, false )
+					guiGridListSetItemText ( aTab4.BansList, row, 8, reason, false, false )
+				local unban = "Permanent"
+				
+				if ban.unban and tonumber(ban.unban) ~= 0 then
+					unban = FormatDate("d/m/y h:i:s", "'", tostring(ban.unban))
+				end
+				guiGridListSetItemText ( aTab4.BansList, row, 7, unban, false, false )
+			end
+			end
+		end
+			local total = tonumber(table.total) or 0
+			local amount = guiGridListGetRowCount( aTab4.BansList )
+			local w,h = guiGetSize (aTab4.BansList,true)
+			guiSetSize (aTab4.BansList,w,0.75,true)
+			if amount <total then
+			guiProgressBarSetProgress (aTab4.ProgressBar,50+(amount))
+			guiSetVisible (aTab4.ProgressBar,true)
+			end
+			guiSetText( aTab4.BansTotal, "Found  " .. amount .. " / " .. total .. "  bans" )
+			
+		elseif ( type == "banlistend" ) then
+		guiSetVisible (aTab4.ProgressBar,false)
+		local w,h = guiGetSize (aTab4.BansList,true)
+		guiSetSize (aTab4.BansList,w,0.8,true)
+		
+		elseif ( type == "message" ) then
+			aMessageBox (data[1],data[2])
+		guiSetVisible (aTab4.ProgressBar,false)
+		local w,h = guiGetSize (aTab4.BansList,true)
+		guiSetSize (aTab4.BansList,w,0.8,true)
+			
 	end
 end
+
+function getNeededTagType (tagType,ban)
+if tagType=="IP" and ban.ip then return ban.ip end
+if tagType=="Serial" and ban.serial then return ban.serial end
+if tagType=="Name" and ban["nick"] then return ban["nick"] end
+if tagType=="By" and ban["banner"] then return ban["banner"] end
+if tagType=="Reason" and ban["reason"] then return ban["reason"] end
+return false
+end
+
+
+
 
 function aClientGUITabSwitched( selectedTab )
 	if getElementParent( selectedTab ) == aTabPanel then

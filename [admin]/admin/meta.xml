@@ -1,5 +1,5 @@
 <meta>
-  <info author="lil_Toady" type="misc" version="1.3.1" />
+  <info author="lil_Toady" type="misc" version="1.5.5" />
   <min_mta_version server="1.3.3" client="1.3.0-9.03772"/>
   <!--
     Admin System Meta File.
@@ -308,7 +308,7 @@
 					desc="Duration options for the mute window. Comma seperated list in seconds. 0 means no duration limit."
 					/>
 
-		<setting name="*securitylevel" value="2"
+		<setting name="*securitylevel" value="1"
 					friendlyname="Security level"
 					group="_Advanced"
 					accept="0-2"
