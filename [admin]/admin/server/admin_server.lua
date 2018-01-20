@@ -1611,13 +1611,13 @@ end
 addEventHandler("onPlayerChangeNick", root, checkNickOnChange)
 
 addEventHandler ("onUnban",root,function(theBan,responsibleElement)
-	if getElementType (responsibleElement)=="player" then
+	if isElement(responsibleElement) and getElementType (responsibleElement)=="player" then
 		outputServerLog ("BAN: "..getPlayerName(responsibleElement).."["..getAccountName (getPlayerAccount(responsibleElement)).."] ["..getPlayerSerial (responsibleElement).."] ["..getPlayerIP (responsibleElement).."] unbanned player "..(getBanNick(theBan) or "unknown").." ["..(getBanIP (theBan) or getBanSerial(theBan)).."] ")
 	end
 end)
 
 addEventHandler ("onBan",root,function(theBan)
-	if getElementType (source)=="player" then
+	if isElement(source) and getElementType (source)=="player" then
 		outputServerLog ("BAN: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] banned player "..(getBanNick(theBan) or "unknown").." ["..(getBanIP (theBan) or getBanSerial(theBan)).."] ")
 	end
 end)
