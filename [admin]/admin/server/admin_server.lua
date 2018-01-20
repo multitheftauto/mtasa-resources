@@ -706,11 +706,16 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				mdata = "Group "..name
 				if ( not aclCreateGroup ( name ) ) then
 					action = nil
+				else
+				
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
 				end
 			elseif ( arg[1] == "acl" ) then
 				mdata = "ACL "..name
 				if ( not aclCreate ( name ) ) then
 					action = nil
+				else
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
 				end
 			end
 			triggerEvent ( "aAdmin", source, "sync", "aclgroups" )
@@ -723,6 +728,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			if ( aclGetGroup ( name ) ) then
 				mdata = "Group "..name
 				aclDestroyGroup ( aclGetGroup ( name ) )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] destroyed "..mdata)
 			else
 				action = nil
 			end
@@ -730,6 +736,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			if ( aclGet ( name ) ) then
 				mdata = "ACL "..name
 				aclDestroy ( aclGet ( name ) )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] destroyed "..mdata)
 			else
 				action = nil
 			end
@@ -747,6 +754,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					outputChatBox ( "Error adding object '"..tostring ( object ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
 					mdata2 = "Object '"..arg[3].."'"
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..object.." to ACL Group "..arg[2])
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
 				end
 			elseif ( arg[1] == "acl" ) then
@@ -758,6 +766,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				else
 					mdata2 = "ACL '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..mdata2.." to Group "..arg[2])
 				end
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
@@ -769,6 +778,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				else
 					mdata2 = "Right '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..mdata2.." to ACL "..arg[2])
 				end
 			end
 		else
@@ -788,6 +798,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				else
 					mdata2 = "Object '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
 				end
 			elseif ( arg[1] == "acl" ) then
 				local group = aclGetGroup ( arg[2] )
@@ -798,6 +809,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				else
 					mdata2 = "ACL '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
 				end
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
@@ -809,13 +821,14 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					mdata = "ACL '"..arg[2].."'"
 					mdata2 = "Right '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2.." from "..mdata)
 				end
 			end
 		else
 			action = nil
 		end
 	end
-	if ( action ~= nil ) then aAction ( "admin", action, source, false, mdata, mdata2 ) end
+	--if ( action ~= nil ) then aAction ( "admin", action, source, false, mdata, mdata2 ) end
 end )
 
 
@@ -848,7 +861,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
 			local isAnonAdmin = getElementData(source, "AnonAdmin")
 			if isAnonAdmin then
-				setTimer ( kickPlayer, 100, 1, player, root, reason )
+				setTimer ( kickPlayer, 100, 1, player, "Anonymous admin", reason )
 			else
 				setTimer ( kickPlayer, 100, 1, player, source, reason )
 			end
@@ -1485,6 +1498,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 			action = nil
 			for i,ban in ipairs(getBans ()) do
 				if getBanIP(ban) == data then
+				
 					action = removeBan ( ban, source )
 				end
 			end
@@ -1595,3 +1609,15 @@ function checkNickOnChange(old, new)
 	end
 end
 addEventHandler("onPlayerChangeNick", root, checkNickOnChange)
+
+addEventHandler ("onUnban",root,function(theBan,responsibleElement)
+	if isElement(responsibleElement) and getElementType (responsibleElement)=="player" then
+		outputServerLog ("BAN: "..getPlayerName(responsibleElement).."["..getAccountName (getPlayerAccount(responsibleElement)).."] ["..getPlayerSerial (responsibleElement).."] ["..getPlayerIP (responsibleElement).."] unbanned player "..(getBanNick(theBan) or "unknown").." ["..(getBanIP (theBan) or getBanSerial(theBan)).."] ")
+	end
+end)
+
+addEventHandler ("onBan",root,function(theBan)
+	if isElement(source) and getElementType (source)=="player" then
+		outputServerLog ("BAN: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] banned player "..(getBanNick(theBan) or "unknown").." ["..(getBanIP (theBan) or getBanSerial(theBan)).."] ")
+	end
+end)
