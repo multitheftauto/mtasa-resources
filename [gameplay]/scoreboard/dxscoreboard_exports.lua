@@ -2,8 +2,9 @@ MAX_PRIRORITY_SLOT = 500
 
 scoreboardColumns = {
 	{ ["name"] = "name", ["width"] = 200, ["friendlyName"] = "Name", ["priority"] = 1 },
-	{ ["name"] = "ping", ["width"] = 40, ["friendlyName"] = "Ping", ["priority"] = MAX_PRIRORITY_SLOT }
+	{ ["name"] = "ping", ["width"] = 40, ["friendlyName"] = "Ping", ["priority"] = MAX_PRIRORITY_SLOT },
 }
+
 resourceColumns = {}
 
 function toboolean( bool )
@@ -20,7 +21,12 @@ end
 forceShowTeams = toboolean( get( "forceShowTeams" ) ) or false
 forceHideTeams = toboolean( get( "forceHideTeams" ) ) or false
 allowColorcodedNames = toboolean( get( "allowColorcodedNames" ) ) or false
+showCountries = toboolean( get( "showCountries" ) ) or false
 scrollStep = tonumber( get( "scrollStep" ) ) or 1
+
+if showCountries then
+	table.insert (scoreboardColumns, { ["name"] = "Country", ["width"] = 50, ["friendlyName"] = "Country", ["priority"] = MAX_PRIRORITY_SLOT-1, ["isImage"] = true, ["imageW"] = 18, ["imageH"] = 12 })
+end
 
 local function iif( cond, arg1, arg2 )
 	if cond then
@@ -29,7 +35,8 @@ local function iif( cond, arg1, arg2 )
 	return arg2
 end
 
-function scoreboardAddColumn( name, forElement, width, friendlyName, priority )
+--scoreboardAddColumn (dataName,source,width,friendlyName,priority,isImage,imageW,imageH) 
+function scoreboardAddColumn( name, forElement, width, friendlyName, priority, isImage, imageW, imageH )
 	if type( name ) == "string" then
 		width = tonumber( width ) or 70
 		friendlyName = friendlyName or name
@@ -44,16 +51,16 @@ function scoreboardAddColumn( name, forElement, width, friendlyName, priority )
 						return false
 					end
 				end
-				table.insert( scoreboardColumns, { ["name"] = name, ["width"] = width, ["friendlyName"] = friendlyName, ["priority"] = priority } )
+				table.insert( scoreboardColumns, { ["name"] = name, ["width"] = width, ["friendlyName"] = friendlyName, ["priority"] = priority, ["isImage"] = isImage, ["imageW"] = imageW, ["imageH"] = imageH } )
 				table.sort( scoreboardColumns, function ( a, b ) return a.priority < b.priority end )
 				if sourceResource then
 					if not resourceColumns[sourceResource] then resourceColumns[sourceResource] = {} end
 					table.insert ( resourceColumns[sourceResource], name )
 				end
-				return triggerClientEvent( getRootElement(), "doScoreboardAddColumn", getRootElement(), name, width, friendlyName, priority, sourceResource )
+				return triggerClientEvent( getRootElement(), "doScoreboardAddColumn", getRootElement(), name, width, friendlyName, priority, sourceResource, isImage, imageW, imageH )
 			end
 		else
-			return triggerClientEvent( forElement, "doScoreboardAddColumn", getRootElement(), name, width, friendlyName, priority, sourceResource )
+			return triggerClientEvent( forElement, "doScoreboardAddColumn", getRootElement(), name, width, friendlyName, priority, sourceResource, isImage, imageW, imageH )
 		end
 	end
 	return false
@@ -106,6 +113,7 @@ function scoreboardResetColumns( forElement )
 		if result then
 			scoreboardAddColumn( "name", 200, "Name" )
 			scoreboardAddColumn( "ping", 40, "Ping" )
+			scoreboardAddColumn( "Country", 50, "Country", 20, true, 12, 8 )
 		end
 		return result
 	else
@@ -195,7 +203,7 @@ end
 
 function onClientDXScoreboardResourceStart()
 	for key, column in ipairs( scoreboardColumns ) do
-		triggerClientEvent( client, "doScoreboardAddColumn", getRootElement(), column.name, column.width, column.friendlyName, column.priority )
+		triggerClientEvent( client, "doScoreboardAddColumn", getRootElement(), column.name, column.width, column.friendlyName, column.priority, nil, column.isImage, column.imageW, column.imageH )
 	end
 end
 addEvent( "onClientDXScoreboardResourceStart", true )
