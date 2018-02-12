@@ -715,6 +715,19 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 									dxDrawText( partOfName, xPos, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 									xPos = xPos + textLength
 								end
+								elseif column.isImage then
+									if type(content)=="table" then
+										if fileExists (content[1]) then
+										dxDrawImage( topX+theX, y+s(1), (column.imageW or 17)*scoreboardScale, 	(column.imageH or 11)*scoreboardScale, content[1], 0, 0, 0, cWhite, drawOverGUI )
+								dxDrawText( content[2], topX+theX+s(1)+((column.imageW or 17)*scoreboardScale)+2, y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+								dxDrawText( content[2], topX+theX+((column.imageW or 17)*scoreboardScale)+2, y, topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+										
+										end
+								else
+									if fileExists (content) then
+										dxDrawImage( topX+theX, y+s(1), column.imageW or 17, column.imageH or 15, content[1], 0, 0, 0, cWhite, drawOverGUI )
+									end
+								end
 							elseif type( content ) == "table" and column.name ~= "name" then
 								if content.type == "image" and content.src then
 									local itemHeight = dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont )
@@ -728,6 +741,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 									content.rotOffY = content.rotOffY or 0
 									
 									dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
+									
 								end
 							else
 								dxDrawText( content, topX+theX+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
@@ -748,7 +762,7 @@ end
 
 -- FUNCTIONS
 -- addColumn
-function scoreboardAddColumn( name, width, friendlyName, priority, textFunction, fromResource )
+function scoreboardAddColumn( name, width, friendlyName, priority, textFunction, fromResource, isImage, imageW, imageH )
 	if type( name ) == "string" then
 		width = width or 70
 		friendlyName = friendlyName or name
@@ -756,15 +770,15 @@ function scoreboardAddColumn( name, width, friendlyName, priority, textFunction,
 		fixPrioritySlot( priority )
 		textFunction = textFunction or nil
 		fromResource = sourceResource or fromResource or nil
-		
 		if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
 			for key, value in ipairs( scoreboardColumns ) do
 				if name == value.name then
 					return false
 				end
 			end
-			table.insert( scoreboardColumns, { ["name"] = name, ["width"] = width, ["friendlyName"] = friendlyName, ["priority"] = priority, ["textFunction"] = textFunction } )
+			table.insert( scoreboardColumns, { ["name"] = name, ["width"] = width, ["friendlyName"] = friendlyName, ["priority"] = priority, ["textFunction"] = textFunction, ["isImage"] = isImage, ["imageW"] = imageW, ["imageH"] = imageH } )
 			table.sort( scoreboardColumns, function ( a, b ) return a.priority < b.priority end )
+
 			if fromResource then
 				if not resourceColumns[fromResource] then resourceColumns[fromResource] = {} end
 				table.insert ( resourceColumns[fromResource], name )
@@ -775,10 +789,11 @@ function scoreboardAddColumn( name, width, friendlyName, priority, textFunction,
 	return false
 end
 
+
 addEvent( "doScoreboardAddColumn", true )
 addEventHandler( "doScoreboardAddColumn", getResourceRootElement(),
-	function ( name, width, friendlyName, priority, fromResource )
-		scoreboardAddColumn( name, width, friendlyName, priority, nil, fromResource )
+	function ( name, width, friendlyName, priority, fromResource, isImage, imageW, imageH )
+		scoreboardAddColumn( name, width, friendlyName, priority, nil, fromResource, isImage, imageW, imageH )
 	end
 )
 
