@@ -1,12 +1,13 @@
 <meta>
-	<info author="Awwu" type="script" name="Scoreboard" description="DirectX scoreboard resource" showInResourceBrowser="true" version="2.7.1"/>
+	<info author="Awwu" type="script" name="Scoreboard" description="DirectX scoreboard resource" showInResourceBrowser="true" version="2.7.2"/>
 
+	<script src="dxscoreboard_shared.lua" type="server" />
 	<script src="dxscoreboard_exports.lua" type="server" />
 	<script src="dxscoreboard_http.lua" type="server" />
 	<script src="dxscoreboard_client.lua" type="client" />
 	<script src="dxscoreboard_clientsettings.lua" type="client" />
-	<script src="dxscoreboard_shared.lua" type="server" />
 	<script src="dxscoreboard_shared.lua" type="client" />
+	<script src="dxscoreboard_countries.lua" type="server" />
 	
 	<script src="colorpicker/colorpicker.lua" type="client" />
 	<file src="colorpicker/palette.png" />
@@ -70,6 +71,11 @@
 			group="General"
 			accept="false,true"
 			desc="Should the teams be always visible on the scoreboard, no matter what user has in the settings?" />
+		<setting name="*showCountries" value="true"
+			friendlyname="Show countries"
+			group="General"
+			accept="false,true"
+			desc="Should country flags be displayed in TAB?" />
 		<setting name="*forceHideTeams" value="false"
 			friendlyname="Force teams to be hidden"
 			group="General"
