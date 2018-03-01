@@ -719,9 +719,12 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 									if type(content)=="table" then
 										if fileExists (content[1]) then
 										dxDrawImage( topX+theX, y+s(1), (column.imageW or 17)*scoreboardScale, 	(column.imageH or 11)*scoreboardScale, content[1], 0, 0, 0, cWhite, drawOverGUI )
-								dxDrawText( content[2], topX+theX+s(1)+((column.imageW or 17)*scoreboardScale)+2, y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-								dxDrawText( content[2], topX+theX+((column.imageW or 17)*scoreboardScale)+2, y, topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-										
+											dxDrawText( content[2], topX+theX+s(1)+((column.imageW or 17)*scoreboardScale)+2, y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+											dxDrawText( content[2], topX+theX+((column.imageW or 17)*scoreboardScale)+2, y, topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+										else
+											dxDrawText( content[2], topX+theX+s(1)+(0*scoreboardScale), y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+											dxDrawText( content[2], topX+theX+(0*scoreboardScale), y, topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+
 										end
 								else
 									if fileExists (content) then
