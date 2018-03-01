@@ -13,7 +13,7 @@ showCountries = toboolean( get( "showCountries" ) ) or false
 
 if showCountries then
 local countryData = "Country"
-local defaultCountryIndicator = "US" --If something somehow fails and setting is enabled in meta.xml
+local defaultCountryIndicator = "N/A" --If something somehow fails and setting is enabled in meta.xml
 	for i,players in ipairs(getElementsByType("player")) do
 		local cCode = exports.admin:getPlayerCountry(players)
 		setElementData(players,countryData,{":admin/client/images/flags/"..string.lower(cCode or defaultCountryIndicator)..".png",cCode or defaultCountryIndicator})
