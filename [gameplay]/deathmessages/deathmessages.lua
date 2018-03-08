@@ -1,6 +1,4 @@
-﻿local root = getRootElement()
-
-addEventHandler("onPlayerWasted", root,
+addEventHandler("onPlayerWasted", getRootElement(),
 	function (ammo, killer, weapon, bodypart)
 		local r, g, b = getColorFromString(string.upper(get("color")))
 		local message
@@ -15,7 +13,7 @@ addEventHandler("onPlayerWasted", root,
 						message = message .. " ("..getVehicleName(killer)..")"
 					end
 				end
-			else
+			else--> if its the source itself
 				message = getPlayerName(source).." committed suicide."
 			end
 		end
