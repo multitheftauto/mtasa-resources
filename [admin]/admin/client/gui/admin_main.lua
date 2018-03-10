@@ -971,6 +971,14 @@ function aClientDoubleClick ( button )
 		if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
 			aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) )
 		end
+	elseif ( source == aTab4.BansList ) then
+		if ( guiGridListGetSelectedItem ( aTab4.BansList ) == -1 ) then
+			aMessageBox ( "error", "No ban row selected!" )
+		else
+			local selip = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 2 )
+			local selserial = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 3 )
+			aBanDetails ( aBans["Serial"][selserial] and selserial or selip )
+		end
 	end
 	if ( guiGetVisible ( aTab1.WeaponOptions ) ) then guiSetVisible ( aTab1.WeaponOptions, false ) end
 	if ( guiGetVisible ( aTab1.VehicleOptions ) ) then guiSetVisible ( aTab1.VehicleOptions, false ) end

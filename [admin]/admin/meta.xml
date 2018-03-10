@@ -3,7 +3,7 @@
   <min_mta_version server="1.3.3" client="1.3.0-9.03772"/>
   <!--
     Admin System Meta File.
-    
+
     WARNING: We give no support for edited
              versions of the admin system.
   -->
@@ -77,8 +77,8 @@
   <file src="client/colorpicker/cursor.png" />
   <file src="client/colorpicker/blank.png" />
   <file src="client/colorpicker/h.png" />
-  
-  <!--Country flags by Christoph Brill-->
+
+  <!--Country flags for IP2C-->
   <file src="client/images/flags/ac.png" />
   <file src="client/images/flags/ad.png" />
   <file src="client/images/flags/ae.png" />
@@ -174,7 +174,9 @@
   <file src="client/images/flags/lt.png" />
   <file src="client/images/flags/lu.png" />
   <file src="client/images/flags/lv.png" />
+  <file src="client/images/flags/lk.png" />
   <file src="client/images/flags/ly.png" />
+  <file src="client/images/flags/ma.png" />
   <file src="client/images/flags/mc.png" />
   <file src="client/images/flags/mg.png" />
   <file src="client/images/flags/mh.png" />
@@ -209,7 +211,6 @@
   <file src="client/images/flags/uk.png" />
   <file src="client/images/flags/um.png" />
   <file src="client/images/flags/us.png" />
-  <!-- UY (Uruguay flag) was missing http://bugs.mtasa.com/view.php?id=9056 -->
   <file src="client/images/flags/uy.png" />
   <file src="client/images/flags/vn.png" />
   <file src="client/images/flags/wf.png" />
@@ -218,7 +219,6 @@
   <file src="client/images/flags/yt.png" />
   <file src="client/images/flags/yu.png" />
   <file src="client/images/flags/za.png" />
-  <!-- More country flags from http://bugs.mtasa.com/view.php?id=8571 -->
   <file src="client/images/flags/ge.png" />
   <file src="client/images/flags/gr.png" />
   <file src="client/images/flags/hk.png" />
@@ -233,6 +233,7 @@
   <file src="client/images/flags/md.png" />
   <file src="client/images/flags/mk.png" />
   <file src="client/images/flags/my.png" />
+  <file src="client/images/flags/mx.png" />
   <file src="client/images/flags/np.png" />
   <file src="client/images/flags/nz.png" />
   <file src="client/images/flags/om.png" />
@@ -246,12 +247,12 @@
   <file src="client/images/flags/tk.png" />
   <file src="client/images/flags/tr.png" />
   <file src="client/images/flags/tw.png" />
+  <file src="client/images/flags/tt.png" />
   <file src="client/images/flags/ve.png" />
-  <!-- HR (Crotia flag) was missing http://bugs.mtasa.com/view.php?id=8594 -->
   <file src="client/images/flags/hr.png" />
-  
+
   <!--HTTP Server Stuff-->
-  <!--Not finished yet 
+  <!--Not finished yet
   <export function="httpLoad" http="true" />
   <export function="httpGetPlayerList" http="true" />
   <export function="httpGetMenuItems" http="true" />
@@ -278,7 +279,7 @@
   <html src="server/http/images/password.png" raw="true"/>
   <html src="server/http/images/bans.png" raw="true"/>
   -->
- 
+
  <settings>
 		<!-- *****************************************************
 			 All these settings are adjustable in the Admin Panel:
