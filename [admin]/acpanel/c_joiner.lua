@@ -13,7 +13,7 @@
 --
 ------------------------------------------------------
 ------------------------------------------------------
-addEventHandler("onClientResourceStart", resourceRoot, 
+addEventHandler("onClientResourceStart", resourceRoot,
 	function ()
 		-- Tell server we are ready
 		triggerServerEvent( "onResourceLoadedAtClient_internal", resourceRoot, getLocalPlayer() )

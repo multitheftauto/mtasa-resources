@@ -1053,13 +1053,13 @@ function SetNameTagDrawDistance(amx, distance)
 end
 
 function SetObjectPos(amx, object, x, y, z)
-	if(getElementType(object) == 'vehicle') then 
+	if(getElementType(object) == 'vehicle') then
 		setElementFrozen(object, true)
 	end
 	
 	setElementPosition(object, x, y, z)
 	
-	if(getElementType(object) == 'vehicle') then 
+	if(getElementType(object) == 'vehicle') then
 		setVehicleTurnVelocity(object, 0, 0, 0)
 		setElementVelocity(object, 0, 0, 0)
 		setTimer(setElementFrozen, 500, 1, object, false)
@@ -2701,7 +2701,7 @@ g_SAMPSyscallPrototypes = {
 	GetObjectAlpha = {'o'},
 	SetObjectAlpha = {'o', 'i'},
 	GetWaveHeight = {},
-	SetWaveHeight = {'f'}, 
+	SetWaveHeight = {'f'},
 	SetWaterLevel = {'f'},
 	GetDistanceBetweenPoints2D = {'f', 'f', 'f', 'f'},
 	GetDistanceBetweenPoints3D = {'f', 'f', 'f', 'f', 'f', 'f'},

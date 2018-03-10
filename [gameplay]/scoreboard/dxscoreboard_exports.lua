@@ -35,7 +35,7 @@ local function iif( cond, arg1, arg2 )
 	return arg2
 end
 
---scoreboardAddColumn (dataName,source,width,friendlyName,priority,isImage,imageW,imageH) 
+--scoreboardAddColumn (dataName,source,width,friendlyName,priority,isImage,imageW,imageH)
 function scoreboardAddColumn( name, forElement, width, friendlyName, priority, isImage, imageW, imageH )
 	if type( name ) == "string" then
 		width = tonumber( width ) or 70

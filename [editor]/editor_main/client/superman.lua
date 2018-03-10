@@ -59,8 +59,8 @@ end
 
 function setPlayerFlying(player, state)
   if state == true then state = true
-  else 
-	state = nil 
+  else
+	state = nil
     local self = Superman
     if isPlayerFlying(player) then
       self:restorePlayer(player)

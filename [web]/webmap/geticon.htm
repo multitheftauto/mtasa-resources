@@ -3,8 +3,8 @@ local id = form.id
 if id and tonumber(id) >= 1 and tonumber(id) <= 63 then
 	local file = fileOpen ( "icons/" .. id .. ".png" )
 	if file then
-		while not fileIsEOF(file) do            
-	        buffer = fileRead(file, 500)         
+		while not fileIsEOF(file) do
+	        buffer = fileRead(file, 500)
 	        httpWrite(buffer, buffer:len())
 	    end
 	    fileClose(file)

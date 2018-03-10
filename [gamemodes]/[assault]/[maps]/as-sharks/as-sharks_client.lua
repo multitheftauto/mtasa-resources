@@ -70,9 +70,9 @@ function getDistanceBetweenPoints3D ( Ax,Ay,Az,Bx,By,Bz )
 	if ( not tonumber(Ax) ) or ( not tonumber(Ay) ) or ( not tonumber(Az) ) or ( not tonumber(Bx) ) or ( not tonumber(By) ) or ( not tonumber(Bz) ) then
 		return false
 	end
-	local dx = Ax-Bx 
-	local dy = Ay-By 
-	local dz = Az-Bz 
+	local dx = Ax-Bx
+	local dy = Ay-By
+	local dz = Az-Bz
 	local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
 	return distance
 end

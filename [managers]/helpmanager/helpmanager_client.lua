@@ -18,7 +18,7 @@ addEvent("doHideHelp", true)
 addEvent("onHelpShown")
 addEvent("onHelpHidden")
 
-addEventHandler("onClientResourceStart", thisResourceRoot, 
+addEventHandler("onClientResourceStart", thisResourceRoot,
 	function ()
 		wndHelp  = guiCreateWindow(.2, .2, .6, .6, "Help", true)
 		wndBlock = guiCreateWindow(0, 0, 1, 1, "", true)

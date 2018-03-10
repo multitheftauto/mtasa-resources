@@ -196,7 +196,7 @@ int CFunctions::amxCall(lua_State *luaVM) {
 			}
 			case LUA_TNUMBER: {
 				std::string str = lua_tostring(luaVM, i);
-				if(str.find(".")!=std::string::npos) 
+				if(str.find(".")!=std::string::npos)
 				{
 					float fval = lua_tonumber(luaVM, i);
 					cell val = *(cell*)&fval;

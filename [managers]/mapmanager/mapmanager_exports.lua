@@ -22,7 +22,7 @@ function changeGamemode(gamemode, map, ignorePlayerCount)
 	end
 
     -- Special thing if trying to start a gamemode which is already running, and mapmanger does not know about it.
-	if currentGamemode == nil and getResourceState(gamemode) == "running" then 
+	if currentGamemode == nil and getResourceState(gamemode) == "running" then
 	    currentGamemode = gamemode
     end
 
@@ -150,7 +150,7 @@ function getMapsCompatibleWithGamemode(gamemode)
 		
 		compatibleMaps = {}
 		for i,theResource in ipairs(resourceList) do
-			if isMap(theResource) and isMapCompatibleWithGamemode(theResource, gamemode) then				
+			if isMap(theResource) and isMapCompatibleWithGamemode(theResource, gamemode) then
 				table.insert(compatibleMaps, theResource)
 			end
 		end

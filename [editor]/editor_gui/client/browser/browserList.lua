@@ -10,7 +10,7 @@ local function browserListGridlistClick( button,state,x,y )
 	ignore = false
 	if getElementType(source) ~= "gui-gridlist" then return end
 	for self,oldScrollPosition in pairs(activatedBrowsers) do
-		if source == self.gridlist then 
+		if source == self.gridlist then
 			-- local startKey = math.ceil(guiScrollBarGetScrollPosition(self.scrollbar) * self.rowMultiplier)
 			local startKey = self.startKey
 			local row = guiGridListGetSelectedItem ( self.gridlist )
@@ -18,7 +18,7 @@ local function browserListGridlistClick( button,state,x,y )
 				row = 0
 				--Possibly add a check if row ~= self.selected.
 			else
-				row = row + startKey 
+				row = row + startKey
 			end
 			self:setSelected(row)
 			if button == "right" then
@@ -30,7 +30,7 @@ end
 
 local function browserListDoubleClick(button,state,x,y)
 	for self,oldScrollPosition in pairs(activatedBrowsers) do
-		if source == self.gridlist then 
+		if source == self.gridlist then
 			if self.doubleClickCallback then
 				self.doubleClickCallback()
 			end
@@ -53,7 +53,7 @@ local function updateActivatedBrowsers()
 		local position = self.position
 		if position < 0 then position = 0 end
 		if position ~= oldScrollPosition then
-			guiGridListClear ( self.gridlist ) 
+			guiGridListClear ( self.gridlist )
 			local centre = math.ceil(position * self.rowMultiplier)
 			local startKey = centre + 1
 			local targetKey = startKey + self.gridlistRowCount - 1
@@ -61,7 +61,7 @@ local function updateActivatedBrowsers()
 			local i = startKey
 			while i ~= targetKey do
 				rowColumns = self.rowList[i]
-				if type(rowColumns) == "table" then 
+				if type(rowColumns) == "table" then
 					local pos = guiGridListAddRow ( self.gridlist )
 					for columnID, text in ipairs(rowColumns) do
 						if (text) then
@@ -107,7 +107,7 @@ local function browserListScrollList ( key, newRepeatDelay )
 			cellrow = cellrow + 1
 			if cellrow > rowCount then
 				cellrow = 1
-			end	
+			end
 		end
 		self:setSelected(cellrow)
 		self:centre(cellrow)
@@ -137,7 +137,7 @@ end
 
 local function gridlistScroll(key,keyState)
 	for self,oldScrollPosition in pairs(activatedBrowsers) do
-		if guiGetMouseOverElement() == self.gridlist then	
+		if guiGetMouseOverElement() == self.gridlist then
 			--get the current position
 			local row = (self.position*self.rowMultiplier) + (self.gridlistRowCount/2)
 			--local row = math.floor(row)
@@ -159,17 +159,17 @@ end
 function browserList:create(x,y,width,height,columnTable,relative,parent)
     local new = {}
     setmetatable( new, browserList_mt )
-    new.gridlist = guiCreateGridList (x,y,width,height,relative,parent)	
+    new.gridlist = guiCreateGridList (x,y,width,height,relative,parent)
 	guiGridListSetSortingEnabled ( new.gridlist,false )
 	local x,y = guiGetSize ( new.gridlist, false )
 	new.scrollbar = guiCreateScrollBar(x - 20,0,20,y,false,false,new.gridlist)
 	new.gridlistSizeY = y - 23
 	new.gridlistRowCount = math.ceil((y-25)/ROW_HEIGHT) --The number of rows you can fit into it
 	for key,columnSubTable in pairs(columnTable) do
-		for columnName,width in pairs(columnSubTable) do 
+		for columnName,width in pairs(columnSubTable) do
 			guiGridListAddColumn ( new.gridlist,tostring(columnName),width )
 		end
-	end	
+	end
 	return new
 end
 
@@ -222,7 +222,7 @@ function browserList:setRows(rowTable)
 	local target = self.gridlistRowCount + 2
 	while i ~= target do
 		local rowColumns = rowTable[i]
-		if type(rowColumns) == "table" then 
+		if type(rowColumns) == "table" then
 			local pos = guiGridListAddRow ( self.gridlist )
 			for columnID, text in ipairs(rowColumns) do
 				guiGridListSetItemText(self.gridlist,pos,columnID,text,false,false)

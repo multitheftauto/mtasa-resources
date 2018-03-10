@@ -22,16 +22,16 @@ function resourceListUpdate () {
 			if ( resourceTable.length == 0 )
 				htmlOut = "No resources?!"
 			else
-			{   
+			{
 				resourceTable = resourceTable.sort(
-					function(a,b) 
-					{ 
+					function(a,b)
+					{
 						if ( a.name.toLowerCase() < b.name.toLowerCase() )
 							return -1;
-						else if ( a.name.toLowerCase() > b.name.toLowerCase() ) 
+						else if ( a.name.toLowerCase() > b.name.toLowerCase() )
 							return 1;
 						else
-							return 0; 
+							return 0;
 					}
 				);
 				
@@ -40,13 +40,13 @@ function resourceListUpdate () {
 					if ( resourceTable[i].resource != thisResource )
 					{
 						var resname = resourceTable[i].name;
-						if ( resname == false ) 
+						if ( resname == false )
 							resname = resourceTable[i].resource.name;
 						
 
 						var onclick = "onclick=\"setCurrentResource('" + resourceTable[i].resource.name + "')\"";
 						var classname="inactive";
-						if ( resourceTable[i].resource.name == currentResourceName && currentPageName == "" ) 
+						if ( resourceTable[i].resource.name == currentResourceName && currentPageName == "" )
 							classname="active";
 						
 						if ( resourceTable[i].noDefaultPage ) {
@@ -54,7 +54,7 @@ function resourceListUpdate () {
 							onclick = "";
 						}
 						
-						htmlOut += "<div id='resource-" + resourceTable[i].resource.name + "' class='" + classname + 
+						htmlOut += "<div id='resource-" + resourceTable[i].resource.name + "' class='" + classname +
 						"' title='" + resourceTable[i].description + "' " + onclick + " >" + resname + "</div>\n"
 						
 						if ( resourceTable[i].pages != false ) {
@@ -72,7 +72,7 @@ function resourceListUpdate () {
 									
 								var onclick = "onclick=\"setCurrentPage('" + resourceTable[i].resource.name + "','" + pagename + "')\"";
 								
-								htmlOut += "<div id='resource-" + resourceTable[i].resource.name + "-" + pagename + "' class='" + classname + 
+								htmlOut += "<div id='resource-" + resourceTable[i].resource.name + "-" + pagename + "' class='" + classname +
 								"' " + onclick + " >" + name + "</div>\n"
 							}
 						}

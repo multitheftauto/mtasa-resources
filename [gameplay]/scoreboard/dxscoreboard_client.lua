@@ -53,7 +53,7 @@ selectedRows = {}
 
 addEvent( "onClientPlayerScoreboardClick" )
 
-addEventHandler( "onClientResourceStart", getResourceRootElement( getThisResource() ), 
+addEventHandler( "onClientResourceStart", getResourceRootElement( getThisResource() ),
 	function ( resource )
 		cScoreboardBackground = tocolor( defaultSettings.bg_color.r, defaultSettings.bg_color.g, defaultSettings.bg_color.b, defaultSettings.bg_color.a )
 		cSelection = tocolor( defaultSettings.selection_color.r, defaultSettings.selection_color.g, defaultSettings.selection_color.b, defaultSettings.selection_color.a )
@@ -112,7 +112,7 @@ function openSettingsWindow()
 end
 addCommandHandler( "Open scoreboard settings", openSettingsWindow )
 
-addCommandHandler( "scoreboard", 
+addCommandHandler( "scoreboard",
 	function ()
 		scoreboardToggled = not scoreboardToggled
 	end
@@ -179,7 +179,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 			
 			local maxChange = deltaSeconds * 30*drawSpeed
 			local maxWidthDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToWidth - scoreboardDimensions.width, maxChange )
-			local maxHeightDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToHeight - scoreboardDimensions.height, maxChange )	
+			local maxHeightDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToHeight - scoreboardDimensions.height, maxChange )
 			
 			if scoreboardDimensions.width < phases[scoreboardDimensions.phase].incToWidth then
 				scoreboardDimensions.width = scoreboardDimensions.width + maxWidthDiff * phases[scoreboardDimensions.phase].width
@@ -322,7 +322,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 		-- Check if anything else to do
 		if not scoreboardDrawn or onlyAnim then
 			return
-		end		
+		end
 
 		--
 		-- Update the scoreboard content
@@ -397,7 +397,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 				for key, team in ipairs( teams ) do
 
 					-- Add teams to sorting table first
-					teamSortTable[teamSortTableIndex] = {}	
+					teamSortTable[teamSortTableIndex] = {}
 					for key, column in ipairs( scoreboardColumns ) do
 						local content
 						if column.name == "name" then
@@ -518,7 +518,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 				firstVisibleIndex = 1
 			end
 			
-			if firstVisibleIndex > 1 then 
+			if firstVisibleIndex > 1 then
 				dxDrawImage( sX/2-8, topY-15, 17, 11, "arrow.png", 0, 0, 0, cWhite, drawOverGUI )
 			end
 			if firstVisibleIndex+maxPerWindow <= #scoreboardContent and #scoreboardContent > maxPerWindow then
@@ -1171,7 +1171,7 @@ function scoreboardClickHandler( button, state, cX, cY )
 			if clickedOnColumnHeader then
 				if sortBy.what == clickedOnColumnHeader then -- last click was this column
 					sortBy.dir = sortBy.dir + 2
-					if sortBy.dir > 1 then 
+					if sortBy.dir > 1 then
 						sortBy.what = "__NONE__"
 						sortBy.dir = -1
 					end

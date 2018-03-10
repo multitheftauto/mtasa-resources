@@ -1,7 +1,7 @@
 ﻿local rootElement = getRootElement()
 local getVehicleNameFromModelMTA = getVehicleNameFromModel
 local trailers = {
-	[606]="Baggage Trailer (Covered)", [607]="Baggage Trailer (Uncovered)", [610]="Farm Trailer", [611]="Street Clean - Trailer", 
+	[606]="Baggage Trailer (Covered)", [607]="Baggage Trailer (Uncovered)", [610]="Farm Trailer", [611]="Street Clean - Trailer",
 	[584]="Petrol Trailer", [608]="Stairs", [435]="Cargo Trailer 1", [450]="Cargo Trailer 2", [591]="Cargo Trailer 3"
 }
 
@@ -38,7 +38,7 @@ local nameFromCategoryID = {
 
 -- assigns a new unique ID to an element
 function assignID ( theElement )
-	local creatorResource = edf.edfGetCreatorResource(theElement) 
+	local creatorResource = edf.edfGetCreatorResource(theElement)
 	if creatorResource == edf.res then
 		creatorResource = thisResource
 	end

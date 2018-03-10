@@ -7,7 +7,7 @@ addEventHandler( "onGhostDataReceive", g_Root,
 			return
 		end
 
-		outputDebugServer( "Saving ghost file", mapName, racer, " (Besttime dif: " .. getRecordingBesttimeError( recording, bestTime ) .. ")" )		
+		outputDebugServer( "Saving ghost file", mapName, racer, " (Besttime dif: " .. getRecordingBesttimeError( recording, bestTime ) .. ")" )
 		-- Create a backup in case of a cheater run
 		local ghost = xmlLoadFile( "ghosts/" .. mapName .. ".ghost" )
 		if ghost then

@@ -47,7 +47,7 @@ local function drawPresetMenu ()
 		--Draw the icon
 		x,y = (definition.icon[1])*screenX + xAbsOffset, (definition.icon[2] + yOffset)*screenY
 		width,height = definition.icon[3]*screenX,definition.icon[4]*screenY
-		dxDrawImage ( x, y, width, height, "images/team.png", 0, 0, 0, teamColor, false )		
+		dxDrawImage ( x, y, width, height, "images/team.png", 0, 0, 0, teamColor, false )
 		--Draw the text
 		x,y = (definition.text[1])*screenX + xAbsOffset, (definition.text[2] + yOffset)*screenY
 		width,height = definition.text[3]*screenX,definition.text[4]*screenY
@@ -110,7 +110,7 @@ function guiClicked()
 	local row = guiGridListGetSelectedItem ( gridlist )
 	if row == -1 then return end
 	local teamName = guiGridListGetItemText ( gridlist, row, 1 )
-	local team = getTeamFromName(teamName) 
+	local team = getTeamFromName(teamName)
 	if  team == getPlayerTeam(localPlayer) or
 		triggerServerEvent ( "rpc_playerTeamSwitch", localPlayer, team ) then
 		

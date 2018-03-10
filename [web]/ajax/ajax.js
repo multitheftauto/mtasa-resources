@@ -27,7 +27,7 @@ function decode( uri ) {
 }
 
 
-function AJAXRequest( method, url, data, process, async, dosend) {  
+function AJAXRequest( method, url, data, process, async, dosend) {
     var self = this;
 
     // check the dom to see if this is IE or not
@@ -95,7 +95,7 @@ function AJAXRequest( method, url, data, process, async, dosend) {
     // only fails is dosend is false
     // you'd do this to set special request headers
     if ( dosend || typeof dosend == 'undefined' ) {
-	    if ( !data ) data=""; 
+	    if ( !data ) data="";
 	    self.AJAX.send(data);
     }
     return self.AJAX;
@@ -199,7 +199,7 @@ function callFunction ( resourceName, functionName, returnFunction, errorFunctio
 	}
 
 
-    new AJAXRequest(method, url, data, 
+    new AJAXRequest(method, url, data,
     /* This is an anonymous function that handles every ajax return, processes it and passes it on to the function that needs it */
     function ( AJAX )
     {
@@ -223,8 +223,8 @@ function callFunction ( resourceName, functionName, returnFunction, errorFunctio
 									return resourceManager.get(value.substr(3));
 								}
 							}
-							return value;  
-						});	
+							return value;
+						});
 						var argumentList = "";
 						for ( i = 0; i < values.length ; i++ )
 						{

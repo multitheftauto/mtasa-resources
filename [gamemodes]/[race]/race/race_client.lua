@@ -150,7 +150,7 @@ end
 
 function TravelScreen.show( mapName, authorName )
     TravelScreen.startTime = getTickCount()
-    g_dxGUI['travelText2']:text(mapName) 
+    g_dxGUI['travelText2']:text(mapName)
 	g_dxGUI['travelText3']:text(authorName and "Author: " .. authorName or "")
     showGUIComponents('travelImage', 'travelText1', 'travelText2', 'travelText3')
 	guiMoveToBack(g_GUI['travelImage'])
@@ -673,7 +673,7 @@ function updateSpectatingCheckpointsAndRank()
 		local rankValue = getElementData(watchedPlayer, 'race rank') or 0
 		if rankValue ~= rankValuePrev then
 			rankValuePrev = rankValue
-			setRankDisplay( rankValue )	
+			setRankDisplay( rankValue )
 		end
 	end
 end
@@ -1136,7 +1136,7 @@ function MovePlayerAway.update(nozcheck)
 				else
 					_,_, MovePlayerAway.rotZ = getElementRotation(camTarget)
 				end
-			end  
+			end
 		end
 		local vehicle = g_Vehicle
 		if vehicle then

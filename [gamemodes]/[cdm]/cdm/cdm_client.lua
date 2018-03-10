@@ -14,7 +14,7 @@ function destroyAttachedVehicleBlips()
 				destroyElement(b)
 			end
 		end
-	end	
+	end
 end
 
 function createBlipsAttachedToVehicles()
@@ -22,7 +22,7 @@ function createBlipsAttachedToVehicles()
 	for k,v in ipairs(vehicles) do
 		createBlipAttachedTo ( v, 0, 1, 255, 255, 0, 255 )
 	end
-end	
+end
 
 function showVehicles( command, keyState )
 	local vehicles = getElementsByType( "vehicle" )

@@ -28,7 +28,7 @@ addEventHandler ( "saveloadtest_return", getRootElement(),
 			else
 				editor_gui.guiShowMessageBox ( "Map resource could not be saved! "..reason, "error", "Error", true )
 				editor_gui.restoreSaveDialog()
-			end	
+			end
 		elseif ( command ) == "quickSave" then
 			reason = reason or "The target resource may be in .zip format or corrupted."
 			editor_gui.guiShowMessageBox ( "Map resource could not be saved! "..reason, "error", "Error", true )

@@ -29,7 +29,7 @@ addEventHandler ( "onResourceStart", _local, function ()
 		local temp = {}
 		for i, player in ipairs ( getElementsByType ( "player" ) ) do
 			if not PLAYER_VEHICLECOUNT[player] then
-				PLAYER_VEHICLECOUNT[player] = 0 
+				PLAYER_VEHICLECOUNT[player] = 0
 			end
 			local areaID = getAreaFromPos ( getElementPosition ( player ) )
 			if areaID then
@@ -93,7 +93,7 @@ addEventHandler ( "onResourceStart", _local, function ()
 					outputDebugString("UNLOAD: "..tostring(unload))
 				end
 			end
-		end	
+		end
 	end, 100, 0 )
 	
 	setTimer ( function ()
@@ -141,7 +141,7 @@ addEventHandler ( "onPlayerJoin", root,
 )
 
 addEvent("onPlayerFinishedDownloadTraffic", true)
-addEventHandler ("onPlayerFinishedDownloadTraffic", _root, 
+addEventHandler ("onPlayerFinishedDownloadTraffic", _root,
 	function()
 		if ( DEBUG ) then
 			outputDebugString("send vehs on join for "..tostring(getPlayerName(source)))

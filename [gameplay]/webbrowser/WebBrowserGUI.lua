@@ -126,7 +126,7 @@ function WebBrowserGUI:loadURL(url)
 		self.m_Browser:getBrowser():loadURL(url)
 		return
 	elseif url:sub(0, 7)  ~= "http://" and url:sub(0, 8) ~= "https://" then
-		url = "http://"..url	
+		url = "http://"..url
 	end
 	
 	if Browser.isDomainBlocked(url, true) then

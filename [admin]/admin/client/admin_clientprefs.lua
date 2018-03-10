@@ -14,7 +14,7 @@ g_Prefs = {}
 ------------------------------------------------------
 ------------------------------------------------------
 addEvent( "onClientUpdatePrefs", true )
-addEventHandler("onClientUpdatePrefs", resourceRoot, 
+addEventHandler("onClientUpdatePrefs", resourceRoot,
 	function ( prefs )
 		g_Prefs = prefs
 	end

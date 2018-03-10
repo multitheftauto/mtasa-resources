@@ -90,7 +90,7 @@ end
 
 
 function aServerConfigTab.getTypeFromGui()
-	for _,info in ipairs(aServerConfigTab.radioButtons) do	
+	for _,info in ipairs(aServerConfigTab.radioButtons) do
 		if guiRadioButtonGetSelected( info.button ) then
 			return info.type
 		end

@@ -117,7 +117,7 @@ function calcTime ( timeLeft )
 	
 	timeLeft = tonumber(timeLeft)
 	timeSecs = math.mod(timeLeft, 60)
-	timeMins = math.mod((timeLeft / 60), 60)	
+	timeMins = math.mod((timeLeft / 60), 60)
 	timeHours = (timeLeft / 3600)
 	
 	if ( timeHours >= 1 ) then

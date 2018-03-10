@@ -51,7 +51,7 @@ function setMissionTimerTime ( timer, time )
 		if isTimer( missionTimers[timer].timer ) then
 			killTimer ( missionTimers[timer].timer )
 		end
-		missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", element )			
+		missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", element )
 			
 		return true
 	end
@@ -80,7 +80,7 @@ function setMissionTimerFrozen ( timer, frozen )
 			missionTimers[timer].timer = nil
 			missionTimers[timer].duration = getMissionTimerTime ( timer )
 		else
-			missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", timer )		
+			missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", timer )
 			missionTimers[timer].originalTick = getTickCount()
 		end
 		return true

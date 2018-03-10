@@ -58,7 +58,7 @@ function getMissionTimerTime ( timer )
 	return false
 end
 
-function setMissionTimerFrozen ( timer, frozen )	
+function setMissionTimerFrozen ( timer, frozen )
 	if type(frozen) ~= "boolean" then return false end
 
 	if missionTimers[timer] then
@@ -124,7 +124,7 @@ function timeElapsed ( timer )
 end
 
 addEvent("onClientMissionTimerDownloaded",true)
-addEventHandler ( "onClientMissionTimerDownloaded", resourceRoot, 
+addEventHandler ( "onClientMissionTimerDownloaded", resourceRoot,
 	function()
 		table.insert( readyPlayerList, client )
 		for timer,data in pairs(missionTimers) do

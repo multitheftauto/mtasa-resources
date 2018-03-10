@@ -64,7 +64,7 @@ function aMessageBox.Show ( message, icon, type )
 	guiSetText ( aMessageBox.Form, aMessageBox.type[type] )
 	guiSetText ( aMessageBox.Label, tostring ( message ) )
 	local width = guiLabelGetTextExtent ( aMessageBox.Label )
-	if ( width > 180 ) then 
+	if ( width > 180 ) then
 		guiSetSize ( aMessageBox.Form, 100 + width + 20, 110, false )
 		guiSetSize ( aMessageBox.Label, width, 16, false )
 	else

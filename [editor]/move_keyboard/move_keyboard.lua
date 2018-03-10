@@ -372,7 +372,7 @@ local function onClientRender_keyboard()
 end
 
 local function rotateWithMouseWheel(key, keyState)
-	if rotationless or (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then 
+	if rotationless or (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then
 		return
 	end
 	local speed

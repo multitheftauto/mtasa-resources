@@ -237,7 +237,7 @@ return false
 end
 
 addEvent("aSync", true)
-addEventHandler("aSync", _root, function(typed, data) 
+addEventHandler("aSync", _root, function(typed, data)
 	aSyncCoroutine = coroutine.create(aSynchCoroutineFunc)
 	coroutine.resume(aSyncCoroutine, typed, data)
 

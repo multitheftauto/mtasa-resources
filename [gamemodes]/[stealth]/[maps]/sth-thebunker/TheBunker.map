@@ -13,7 +13,7 @@
       <spawnpoint id="team2" posX="591.330322" posY="-2432.421631" posZ="10.565441" rot="360" skin="163"/>
       <spawnpoint id="team2" posX="593.322998" posY="-2428.558838" posZ="10.565441" rot="360" skin="163"/>
       <spawnpoint id="team2" posX="588.584961" posY="-2419.622314" posZ="10.565441" rot="167" skin="163"/>
-   </team2>		
+   </team2>
 	<object name="object" posX="1000.272949" posY="-2425.197998" posZ="35.003868" rotX="0.0000" rotY="0.0000" rotZ="269.7591" model="13297" />
 	<object name="object (1)" posX="706.830078" posY="-2391.677002" posZ="54.525734" rotX="0.0000" rotY="0.0000" rotZ="209.5985" model="13157" />
 	<object name="object (2)" posX="863.693848" posY="-2397.894287" posZ="60.047440" rotX="0.0000" rotY="0.0000" rotZ="352.2651" model="13147" />

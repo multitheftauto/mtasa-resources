@@ -33,7 +33,7 @@ function addActionElementCreate()
 	assert(tempAction, "failed to add element Create action")
 	-- insert the action into the list
 	insertAction(tempAction)
-end 
+end
 addEventHandler("onElementCreate_undoredo", root, addActionElementCreate)
 
 -- move

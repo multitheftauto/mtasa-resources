@@ -640,9 +640,9 @@ function onCarrierVehicleDamage(loss)
 	local player = theBriefcase:getCarrier()
 	assert(not settings.teams or isPlayerOnValidTeam(player), "Player not on valid team")
 	assert(isPedInVehicle(player) and getPedOccupiedVehicle(player) == source, "onCarrierVehicleDamage - carrier not in a vehicle or his vehicle isn't the one that was damaged.")
-	-- dropLoss is the least amount of damage that needs to be done to drop the orb           
+	-- dropLoss is the least amount of damage that needs to be done to drop the orb
 	--local dropLoss = 25 -- old value
-	--local dropLoss = (getElementHealth(source) + loss)^3/5000000 -- make it a function of current vehicle health - if healthy, more damage is required to drop orb, if unhealthy, less damage is required 
+	--local dropLoss = (getElementHealth(source) + loss)^3/5000000 -- make it a function of current vehicle health - if healthy, more damage is required to drop orb, if unhealthy, less damage is required
 	-- dropLoss = the minimum health loss required in order to drop the briefcase: a function of the vehicle type and it's health
 	--local dropLoss = getDropLossFromHealth(source, getElementHealth(source) + loss)
 	local dropThreshold = getDropThresholdFromVehicle(source)
@@ -867,7 +867,7 @@ function addCarrierEvents(player)
 	local success
 	success = addEventHandler("onPlayerVehicleEnter", player, onCarrierVehicleEnter) -- unreliable
 	if (not success) then outputDebugString("could not add onPlayerVehicleEnter event for carrier")	end---
-	success = addEventHandler("onPlayerVehicleExit", player, onCarrierVehicleExit) -- unreliable -- onPlayerStartExitVehicle?	
+	success = addEventHandler("onPlayerVehicleExit", player, onCarrierVehicleExit) -- unreliable -- onPlayerStartExitVehicle?
 	if (not success) then outputDebugString("could not add onPlayerVehicleExit event for carrier")	end---
 	addEventHandler("onPlayerQuit", player, onCarrierQuit)
 	local vehicle = getPedOccupiedVehicle(player)

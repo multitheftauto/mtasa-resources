@@ -130,7 +130,7 @@ function vote.map.handler(source,cmd,...)
 			if voteMapReturnCode == errorCode.pollAlreadyRunning then
 				outputVoteManager(cmd..": another poll is in progress.", source)
 			elseif voteMapReturnCode == errorCode.noGamemodeRunning then
-				outputVoteManager(cmd..": no gamemode is running, you must specify a mode for the map.", source)            
+				outputVoteManager(cmd..": no gamemode is running, you must specify a mode for the map.", source)
 			elseif voteMapReturnCode == errorCode.invalidMap then
 				outputVoteManager(cmd..": invalid map name.", source)
 			end

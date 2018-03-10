@@ -36,7 +36,7 @@ function aMessageBox ( type, message, action, vOne, vTwo, vThree )
 	guiSetText ( aMessageForm, type )
 	guiSetText ( aMessageLabel, tostring ( message ) )
 	local width = guiLabelGetTextExtent ( aMessageLabel )
-	if ( width > 180 ) then 
+	if ( width > 180 ) then
 		guiSetSize ( aMessageForm,  500, 120, false )
 		guiSetSize ( aMessageLabel, 350, 100, false )
 	else
@@ -94,7 +94,7 @@ function aMessageBoxAccept ( key, state )
 			end
 		else
 			if ( key == "enter" ) then
-				if ( aMessageAction ~= nil ) then 
+				if ( aMessageAction ~= nil ) then
 					runMessageAction(aMessageAction)
 				end
 				aMessageAction = nil
@@ -110,7 +110,7 @@ end
 function aMessageBoxClick ( button )
 	if ( button == "left" ) then
 		if ( source == aMessageYes ) then
-			if ( aMessageAction ~= nil ) then 
+			if ( aMessageAction ~= nil ) then
 				runMessageAction(aMessageAction)
 			end
 			aMessageAction = nil

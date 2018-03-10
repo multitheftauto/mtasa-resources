@@ -1,6 +1,6 @@
 local floor = math.floor
 
-addCommandHandler('path', 
+addCommandHandler('path',
 	function(command, node1, node2)
 		if not tonumber(node1) or not tonumber(node2) then
 			outputChatBox("Usage: /path node1 node2", 255, 0, 0)
@@ -23,7 +23,7 @@ addCommandHandler('path',
 		end
 	end
 )
-addCommandHandler('path2', 
+addCommandHandler('path2',
 	function(command, tox, toy, toz)
 		if not tonumber(tox) or not tonumber(toy) then
 			outputChatBox("Usage: /path2 x y z (z is optional)", 255, 0, 0)

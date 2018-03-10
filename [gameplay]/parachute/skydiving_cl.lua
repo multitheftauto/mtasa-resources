@@ -20,10 +20,10 @@ local function onRender()
 	lastTick = currentTick
 	if tickDiff > 0 then
 		if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not doesPedHaveJetPack(localPlayer) and not isElementAttached(localPlayer) and not isPedDead(localPlayer) then
-			local velX, velY, velZ = getElementVelocity ( localPlayer ) 
+			local velX, velY, velZ = getElementVelocity ( localPlayer )
 			local x,y,z = getElementPosition(localPlayer)
-			if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0 ) 
-			and not isElementInWater(localPlayer) and not testLineAgainstWater ( x,y,z,x,y,z + 12) then	
+			if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0 )
+			and not isElementInWater(localPlayer) and not testLineAgainstWater ( x,y,z,x,y,z + 12) then
 
 				if not getElementData(localPlayer,"skydiving") then
 					if not processLineOfSight ( x,y,z, x,y,z-MIN_GROUND_HEIGHT, true, true,false,true,true,false,false,false,localPlayer ) and not testLineAgainstWater ( x,y,z - MIN_GROUND_HEIGHT,x,y,z) then
@@ -34,7 +34,7 @@ local function onRender()
 						-- let 1 second pass before starting the skydive, stops instant skydiving when jumping over high gaps
 						if currentTick > (divingTick + t(900)) then
 							setElementData(localPlayer,"skydiving",true)
-							setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_skyDive", -1, true, true, false )	
+							setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_skyDive", -1, true, true, false )
 							setPedWeaponSlot(localPlayer,11)
 							toggleControl ( "next_weapon", false )
 							toggleControl ( "previous_weapon", false )
@@ -58,7 +58,7 @@ local function onRender()
 						end
 					end
 					
-					if ( getMoveState "forwards" ) then	
+					if ( getMoveState "forwards" ) then
 						accel = true
 						local dirX = math.sin ( math.rad ( rotZ ) )
 						local dirY = math.cos ( math.rad ( rotZ ) )
@@ -73,10 +73,10 @@ local function onRender()
 						elseif getMoveState"right" then
 							rotZ = rotZ + a(3,tickDiff)
 						end
-					elseif ( getMoveState"left" ) then 
+					elseif ( getMoveState"left" ) then
 						rotZ = rotZ - a(3,tickDiff)
 						setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_SkyDive_L", -1, true, true, false )
-					elseif ( getMoveState"right" ) then 
+					elseif ( getMoveState"right" ) then
 						rotZ = rotZ + a(3,tickDiff)
 						setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_SkyDive_R", -1, true, true, false )
 					else
@@ -84,7 +84,7 @@ local function onRender()
 							rotX = rotX - a(rotation_accelerate,tickDiff)
 						end
 						setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "FALL_skyDive", -1, true, true, false )
-					end	
+					end
 					if not accel then
 						local speed = getDistanceBetweenPoints3D(0,0,0,velX,velY,velZ)
 						if speed > slow_speed then
@@ -103,18 +103,18 @@ local function onRender()
 					if not warning and processLineOfSight ( x,y,z, x,y,z-WARNING_HEIGHT, true, false,false,true,false,false,false,false,localPlayer ) then
 						addEventHandler ( "onClientRender", root, warningText )
 						warningText() -- Prevent the event handler being called next frame
-					end			
+					end
 				end
 			elseif isPedOnGround ( localPlayer ) and getElementData(localPlayer,"skydiving") then
 				setPedNewAnimation(localPlayer,"animation_state","PARACHUTE","FALL_skyDive_DIE", t(3000), false, true, true)
 				toggleControl ( "next_weapon", true )
-				toggleControl ( "previous_weapon", true )	
+				toggleControl ( "previous_weapon", true )
 				stopSkyDiving()
 			elseif (testLineAgainstWater ( x,y,z,x,y,z + 12) or isElementInWater(localPlayer)) and getElementData(localPlayer,"skydiving") then
 				toggleControl ( "next_weapon", true )
-				toggleControl ( "previous_weapon", true )					
+				toggleControl ( "previous_weapon", true )
 				stopSkyDiving()
-				setPedAnimation(localPlayer)	
+				setPedAnimation(localPlayer)
 			elseif divingTick > 0 then
 				divingTick = 0
 			end
@@ -169,13 +169,13 @@ local shadowColor = tocolor(0,0,0)
 local color = tocolor(255,255,255)
 function warningText()
 	warning = true
-	dxDrawText ( "Open your parachute!", 
-		0 + 3, g_screenY*0.75 + 3, 
-		g_screenX, g_screenY, 
+	dxDrawText ( "Open your parachute!",
+		0 + 3, g_screenY*0.75 + 3,
+		g_screenX, g_screenY,
 		shadowColor, 2, "default", "center", "top", false, true, false )
-	dxDrawText ( "Open your parachute!", 
-		0, g_screenY*0.75, 
-		g_screenX, g_screenY, 
+	dxDrawText ( "Open your parachute!",
+		0, g_screenY*0.75,
+		g_screenX, g_screenY,
 		color, 2, "default", "center", "top", false, true, false )
 end
 
@@ -188,7 +188,7 @@ function updateSkyDiving ( data, oldval )
 		if ( getElementData ( source, "skydiving" ) == true ) then
 			g_skydivers[source] = true
 		else
-			g_skydivers[source] = nil			
+			g_skydivers[source] = nil
 		end
 	end
 end

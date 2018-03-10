@@ -21,7 +21,7 @@ function hideHighlighter()
 	local resourceText = guiGetText ( selectedResourceText )
 	if ( string.find( resourceText, "%)", -1) ) and ( string.find( resourceText, "%(", -29) ) then--this check should not be required, but just incase
 		setSelectedResourceText ( string.sub ( resourceText, 1, -31 ) )
-	end 
+	end
 end
 
 function topMenuMouseOver ( source )

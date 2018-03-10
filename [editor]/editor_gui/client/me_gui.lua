@@ -125,7 +125,7 @@ function refreshElementIcons()
 	for resource,tableElements in pairs(resourceElementDefinitions) do
 		if currentSelectedResource == false then
 			currentSelectedResource = resource
-			if ( currentSelectedResource == defaultElementDefinition ) then 
+			if ( currentSelectedResource == defaultElementDefinition ) then
 				setSelectedResourceText ( "DEFAULT" )
 			else
 				setSelectedResourceText ( string.upper(currentSelectedResource) )
@@ -166,7 +166,7 @@ function refreshElementIcons()
 			local posX = ((k)*guiConfig.iconSize) + menuButtonsOffset
 			if not iconDir then --if edf never passed an icon
 				--create a generic one
-				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false) --, getResourceFromName(key)) 
+				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false) --, getResourceFromName(key))
 			else
 				--otherwise create edf's icon
 				if (getResourceFromName(resource)) then -- To prevent debug when trying to load from a not yet started resource
@@ -175,7 +175,7 @@ function refreshElementIcons()
 			end
 			if not theIcon then
 				--if edf's icon was not made successfully, then create a generic one.
-				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false) 
+				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false)
 			end
 			addEventHandler ( "onClientGUIMouseDown", theIcon, buttonClicked, false )
 			
@@ -201,7 +201,7 @@ function refreshElementIcons()
 				elementIcons[oldIcon]["labelName"] = oldFriendlyName.." ["..oldResource.."]"
 				--set the current one with name [resource] too.
 				elementIcons[theIcon]["labelName"] = friendlyName.." ["..resource.."]"
-			end	
+			end
 			
 			nameTable[elementName] = {}
 			nameTable[elementName]["resource"] = resource
@@ -306,8 +306,8 @@ function setGUIShowing(state)
 		end
 	end
 	currentButton = false
-	if state == false then 
-		guiSetVisible ( selected, false ) 
+	if state == false then
+		guiSetVisible ( selected, false )
 		setSelectedText ( 0.5, 0.5, "" )
 		if guiGetVisible(currentBrowserGUI.browser) then
 			wasCurrentBrowserShowing = true
@@ -331,7 +331,7 @@ function setHUDAlpha(level)
 		returnValue = guiSetAlpha ( icon, level )
 		if not returnValue then isFalse = true end
 	end
-	guiSetAlpha ( selected, level ) 
+	guiSetAlpha ( selected, level )
 	guiSetAlpha(selectedResourceText, level )
 	guiSetAlpha(selectedResourceShadow, level )
 	currentHUDAlpha = level
@@ -350,7 +350,7 @@ function destroyAllIconGUI()
 		destroyElement ( icon )
 	end
 	currentButton = false
-	guiSetVisible ( selected, false ) 
+	guiSetVisible ( selected, false )
 	destroyElement ( selected )
 	setSelectedText ( 0.5, 0.5, "" )
 	destroyElement ( selectedText )
@@ -393,7 +393,7 @@ function nextEDF ()
 		guiSetVisible ( icons, false )
 	end
 	newKey = next ( edfResourcesNext, currentSelectedResource )
-	if newKey == nil then 
+	if newKey == nil then
 		for key,value in pairs(edfResourcesNext) do
 			newKey = key
 			break
@@ -403,7 +403,7 @@ function nextEDF ()
 		guiSetVisible ( icons, true )
 	end
 	currentSelectedResource = newKey
-	if ( currentSelectedResource == defaultElementDefinition ) then 
+	if ( currentSelectedResource == defaultElementDefinition ) then
 		setSelectedResourceText ( "DEFAULT" )
 	else
 		setSelectedResourceText ( string.upper(currentSelectedResource) )
@@ -441,7 +441,7 @@ function prevEDF ()
 		guiSetVisible ( icons, true )
 	end
 	currentSelectedResource = newKey
-	if ( currentSelectedResource == defaultElementDefinition ) then 
+	if ( currentSelectedResource == defaultElementDefinition ) then
 		setSelectedResourceText ( "DEFAULT" )
 	else
 		setSelectedResourceText ( string.upper(currentSelectedResource) )
@@ -466,7 +466,7 @@ function guiCreateMinimalLabel(x,y,width,height,text,relative,parent)
 	--Syntax 2 (x,y,text,relative,parent)
 		local label = guiCreateLabel(x,y,screenX,screenY,width,height,text)
 		resetLabelCanvasSize ( label )
-		return label	
+		return label
 	end
 end
 

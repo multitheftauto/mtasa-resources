@@ -33,7 +33,7 @@ function aAdminMenu ()
 						  guiSetText ( aAdminForm, "Admin Panel   -   v".._version )
 						  guiCreateLabel ( 0.75, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )
 		aTabPanel			= guiCreateTabPanel ( 0.01, 0.05, 0.98, 0.95, true, aAdminForm )
-		aTab1 = {}	
+		aTab1 = {}
 		aTab1.Tab			= guiCreateTab ( "Players", aTabPanel, "players" )
 		aTab1.Messages		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "0/0 unread messages", true, aTab1.Tab )
 		aTab1.ScreenShots		= guiCreateButton ( 0.75, 0.065, 0.23, 0.04, "screenshots", true, aTab1.Tab )
@@ -266,7 +266,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 					end
 				
 				end
-				addEventHandler("onClientGUIClick", aTab4.Button, searchBans,false) 
+				addEventHandler("onClientGUIClick", aTab4.Button, searchBans,false)
 						
 						  guiGridListAddColumn( aTab4.BansList, "Name", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "IP", 0.22 )
@@ -692,15 +692,15 @@ function aClientGUITabSwitched( selectedTab )
 		if selectedTab == aTab2.Tab then
 			-- Handle initial update of resources list
 			if guiGridListGetRowCount( aTab2.ResourceList ) == 0 then
-				if ( hasPermissionTo ( "command.listresources" ) ) then 
-					triggerServerEvent ( "aSync", localPlayer, "resources" ) 
+				if ( hasPermissionTo ( "command.listresources" ) ) then
+					triggerServerEvent ( "aSync", localPlayer, "resources" )
 				end
 			end
 		elseif selectedTab == aTabMap.Tab then
 			-- Handle initial update of map list
 			if guiGridListGetRowCount( aTabMap.MapList ) == 0 then
-				if ( hasPermissionTo ( "command.listresources" ) ) then 
-					triggerServerEvent ( "getMaps_s", localPlayer, localPlayer, true ) 
+				if ( hasPermissionTo ( "command.listresources" ) ) then
+					triggerServerEvent ( "getMaps_s", localPlayer, localPlayer, true )
 				end
 			end
 		elseif selectedTab == aTab4.Tab then
@@ -708,8 +708,8 @@ function aClientGUITabSwitched( selectedTab )
 				-- Request full bans list if bans tab is selected and current list is out of date
 				triggerServerEvent ( "aSync", localPlayer, "bans" )
 			end
-		end	
-	end 
+		end
+	end
 end
 
 function aMessage ( )
@@ -831,7 +831,7 @@ end
 function aClientLog ( text )
 	if text == "deleted" then
 		guiGridListClear ( aTab2.ResourceList )
-		triggerServerEvent ( "aSync", localPlayer, "resources" )	
+		triggerServerEvent ( "aSync", localPlayer, "resources" )
 	end
 	text = "#"..aLogLines..": "..text
 	if ( guiGetText ( aTab2.LogLine1 ) == "" ) then guiSetText ( aTab2.LogLine1, text )
@@ -869,7 +869,7 @@ end
 function aClientGUIAccepted ( element )
 	if ( element == aTab5.AdminText ) then
 		local message = guiGetText ( aTab5.AdminText )
-		if ( ( message ) and ( message ~= "" ) ) then 
+		if ( ( message ) and ( message ~= "" ) ) then
 			if ( gettok ( message, 1, 32 ) == "/clear" ) then guiSetText ( aTab5.AdminChat, "" )
 			else triggerServerEvent ( "aAdminChat", localPlayer, message ) end
 			guiSetText ( aTab5.AdminText, "" )
@@ -1107,7 +1107,7 @@ function aClientClick ( button )
 					guiSetText ( aTab1.Mute, "Mute" )
 					guiSetText ( aTab1.Freeze, "Freeze" )
 					guiSetText ( aTab1.Admin, "Give admin rights" )
-					guiSetText ( aTab1.Health, "Health: 0%" ) 
+					guiSetText ( aTab1.Health, "Health: 0%" )
 					guiSetText ( aTab1.Armour, "Armour: 0%" )
 					guiSetText ( aTab1.Skin, "Skin: N/A" )
 					guiSetText ( aTab1.Team, "Team: None" )
@@ -1141,7 +1141,7 @@ function aClientClick ( button )
 					elseif ( source == aTab2.ResourceDelete ) then aMessageBox ( "warning", "Are you sure you want to stop and delete resource '" .. guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) .. "' ?", "stopDelete", guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) )
 					elseif ( source == aTab2.ResourceSettings ) then aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ) ) )
 					end
-				end				
+				end
 			elseif ( source == aTab2.ResourcesStopAll ) then aMessageBox ( "warning", "Are you sure you want to stop all resources? This will also stop 'admin' resource.", "stopAll" )
 			elseif ( source == aTab2.ResourceList ) then
 				guiSetVisible ( aTab2.ResourceFailture, false )
@@ -1182,7 +1182,7 @@ function aClientClick ( button )
 					if ( ( source == aTab3.WeatherInc ) and ( id < _weathers_max ) ) then guiSetText ( aTab3.Weather, ( id + 1 ).." ("..getWeatherNameFromID ( id + 1 )..")" )
 					elseif ( ( source == aTab3.WeatherDec ) and ( id > 0 ) ) then guiSetText ( aTab3.Weather, ( id - 1 ).." ("..getWeatherNameFromID ( id - 1 )..")" ) end
 				else
-					guiSetText ( aTab3.Weather, ( 14 ).." ("..getWeatherNameFromID ( 14 )..")" ) 
+					guiSetText ( aTab3.Weather, ( 14 ).." ("..getWeatherNameFromID ( 14 )..")" )
 				end
 			elseif ( source == aTab3.WeatherSet ) then triggerServerEvent ( "aServer", localPlayer, "setweather", gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
 			elseif ( source == aTab3.WeatherBlend ) then triggerServerEvent ( "aServer", localPlayer, "blendweather", gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
@@ -1193,12 +1193,12 @@ function aClientClick ( button )
 					if ( ( source == aTab3.SpeedInc ) and ( value < 10 ) ) then guiSetText ( aTab3.Speed, tostring ( value + 1 ) )
 					elseif ( ( source == aTab3.SpeedDec ) and ( value > 0 ) ) then guiSetText ( aTab3.Speed, tostring ( value - 1 ) ) end
 				else
-					guiSetText ( aTab3.Speed, "1" ) 
+					guiSetText ( aTab3.Speed, "1" )
 				end
 			elseif ( source == aTab3.SpeedSet ) then triggerServerEvent ( "aServer", localPlayer, "setgamespeed", guiGetText ( aTab3.Speed ) )
 			elseif ( source == aTab3.GravitySet ) then triggerServerEvent ( "aServer", localPlayer, "setgravity", guiGetText ( aTab3.Gravity ) )
 			elseif ( source == aTab3.WavesSet ) then triggerServerEvent ( "aServer", localPlayer, "setwaveheight", guiGetText ( aTab3.Waves ) )
-			elseif ( source == aTab3.FPSSet ) then 
+			elseif ( source == aTab3.FPSSet ) then
 			triggerServerEvent ( "aServer", localPlayer, "setfpslimit", guiGetText ( aTab3.FPS ) )
 			triggerServerEvent ( "aSync", localPlayer, "server" )
 			end

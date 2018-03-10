@@ -99,7 +99,7 @@ var CodeMirror = (function() {
     connect(input, "paste", function(){fastPoll();});
     connect(input, "cut", function(){fastPoll();});
     
-    // IE throws unspecified error in certain cases, when 
+    // IE throws unspecified error in certain cases, when
     // trying to access activeElement before onload
     var hasFocus; try { hasFocus = (targetDocument.activeElement == input); } catch(e) { }
     if (hasFocus) setTimeout(onFocus, 20);

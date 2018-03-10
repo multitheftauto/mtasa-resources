@@ -116,7 +116,7 @@ addEventHandler("doShowPoll", rootElement,
 		
 		--determine if we have to append nomination number
 		local nominationString = ""
-		if pollData.nomination > 1 then 
+		if pollData.nomination > 1 then
 			nominationString = " (nomination "..pollData.nomination..")"
 		end
 		
@@ -296,7 +296,7 @@ function sendVote_bind(key)
 				else
 					cacheVoteNumber = ""
 				end
-			else		
+			else
 				cacheTimer = setTimer(sendVote, 500, 1, tonumber(cacheVoteNumber))
 			end
 		end

@@ -35,7 +35,7 @@ if ( statsList == nil ) then
 	statsList = ""
 end
 
-args =  split(querystring.stats,"|") 
+args =  split(querystring.stats,"|")
 charttype = args [2]
 if ( charttype == nil ) then
 	httpWrite ( "Must specify a chart type!" )
@@ -43,7 +43,7 @@ end
 
 local registeredStats = call(thisresource, "getRegisteredStats")
 
-if ( charttype == "FCF_Line" ) then	
+if ( charttype == "FCF_Line" ) then
 	yAxisName = registeredStats[split(args[1], ",")[1]].name
 else
 	yAxisName = ""
@@ -88,7 +88,7 @@ end
 		q = statsRequired[1]
 		for k,v in ipairs(stats) do *>
 			<set name='<* = v.time *>' value='<* = v[q] *>' hoverText=''/>
-	 <* end 
+	 <* end
 	end
 	*>
 </graph>

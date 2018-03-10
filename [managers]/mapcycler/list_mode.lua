@@ -144,7 +144,7 @@ function readCycleXml(xmlFile)
 	end
 end
 
-function getGameNodeInfo(gameNode)	
+function getGameNodeInfo(gameNode)
 	local info = {}
 	
 	-- get the gamemode, and verify it's a gamemode

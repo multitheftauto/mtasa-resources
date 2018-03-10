@@ -655,7 +655,7 @@ function bindGridListToTable(...)
 				end
 		}
 		
-		local attr		
+		local attr
 		applyToLeaves(t,
 			function(leaf)
 				-- move modifiable attributes into shadow so that __newindex triggers

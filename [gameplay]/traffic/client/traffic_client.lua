@@ -5,7 +5,7 @@ NODE_LOSTDISTANCE = 100
 NODE_LOSTTIME = 10000
 CONTROLS = {"vehicle_left","vehicle_right","brake_reverse","accelerate","handbrake","horn"}
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement(), 
+addEventHandler ( "onClientResourceStart", getResourceRootElement(),
 	function()
 		triggerServerEvent("onPlayerFinishedDownloadTraffic", _local)
 		outputChatBox("Press X to warp you in the next traffic vehicle", 0, 255, 0)
@@ -43,7 +43,7 @@ addEventHandler ( "onClientPreRender", _root, function ()
 end )
 
 -- addEvent ( "onSyncerChange", true )
--- addEventHandler ( "onSyncerChange", _root, 
+-- addEventHandler ( "onSyncerChange", _root,
 	-- function (node, next)
 		-- local ped = getVehicleController(source)
 		-- if _peds[ped] then
@@ -56,7 +56,7 @@ end )
 			-- pedFormQueue(ped, next, node)
 			-- pedProcessSyncer(ped)
 		-- end
-	-- end 
+	-- end
 -- )
 
 -- addEventHandler ( "onClientPlayerQuit", _root, function ()
@@ -174,7 +174,7 @@ function pedProcessSyncer ( ped )
 	-- dxDrawLine3D( matrix[4][1], matrix[4][2], matrix[4][3], matrix[4][1] + matrix[1][2], matrix[4][2] + matrix[2][2], matrix[4][3] + matrix[3][2], tocolor ( 0, 255, 0), 3)
 	-- dxDrawLine3D( matrix[4][1], matrix[4][2], matrix[4][3], matrix[4][1] + matrix[1][3], matrix[4][2] + matrix[2][3], matrix[4][3] + matrix[3][3], tocolor ( 0, 255, 0), 3)
 	
-	local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(vehicle) - 0.25 
+	local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(vehicle) - 0.25
 	local tx, ty, tz
 	local process = {}
 	local sideLineDistance = getVehicleType(vehicle) == "Bike" and 0.5 or 1
@@ -420,7 +420,7 @@ addEventHandler ( "onClientRender", _root, function()
 					-- for i,v in pairs(node.neighbours) do
 						-- neighbours = neighbours..tostring(i).."("..tostring(v)..")"..", "
 					-- end
-					-- dxDrawText ( 
+					-- dxDrawText (
 						-- "node: "..tostring(node.id)..
 						-- "\nlanes: "..tostring(node.leftlanes).." "..tostring(node.rightlanes)..
 						-- "\nneighbours: "..tostring(neighbours)..
@@ -455,7 +455,7 @@ addEventHandler ( "onClientRender", _root, function()
 								local node = _peds[ped].node
 								local node_id = "None"
 								if ( node ) then node_id = node.id end
-								dxDrawText ( 
+								dxDrawText (
 									"area: "..areaID..
 									"\nzonename: "..tostring(getZoneName(x,y,z)).." ("..tostring(getZoneName(x,y,z,true))..")"..
 									"\nspeed: "..math.floor(getVehicleSpeed(veh))..
@@ -530,7 +530,7 @@ addCommandHandler("pos", function()
 
 SHOWALLNODES = 70
 
-addEventHandler ( "onClientRender", _root, 
+addEventHandler ( "onClientRender", _root,
 	function()
 		if SHOWALLNODES then
 			local x,y,z = getElementPosition ( _local )
@@ -550,7 +550,7 @@ addEventHandler ( "onClientRender", _root,
 						-- for i,v in pairs(node.neighbours) do
 							-- neighbours = neighbours..tostring(i).."("..tostring(v)..")"..", "
 						-- end
-						-- dxDrawText ( 
+						-- dxDrawText (
 							-- "node: "..tostring(node.id)..
 							-- "\nneighbours: "..tostring(neighbours)..
 							-- "\nwidth: "..tostring(node.width)..
@@ -574,7 +574,7 @@ addEventHandler ( "onClientRender", _root,
 								neighbours = neighbours..tostring(i).."("..tostring(v)..")"..", "
 							end
 							--[[
-							dxDrawText ( 
+							dxDrawText (
 								"node: "..tostring(node.id)..
 								"\nneighbours: "..tostring(neighbours)..
 								"\nnavinbs: "..tostring(table.concat(node.navinbs,", "))..
@@ -595,7 +595,7 @@ addEventHandler ( "onClientRender", _root,
 							-- for i,v in pairs(node.nbs) do
 								-- neighbours = neighbours..tostring(i).."("..tostring(v)..")"..", "
 							-- end
-							-- dxDrawText ( 
+							-- dxDrawText (
 								-- "node: "..tostring(node.id)..
 								-- "\nneighbours: "..tostring(neighbours)..
 								-- "\nwidth: "..tostring(node.width)..

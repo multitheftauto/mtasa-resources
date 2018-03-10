@@ -191,11 +191,11 @@ function onThisResourceStart ( )
 	
 	--Calculate tower center and barrier radius
 	barrier_x = (options.x + 1) * -2
-	barrier_y = (options.y + 1) * -2	
-	if (options.x > options.y) then 
-		barrier_r = options.x / 2 + 20 
+	barrier_y = (options.y + 1) * -2
+	if (options.x > options.y) then
+		barrier_r = options.x / 2 + 20
 	else
-		barrier_r = options.y / 2 + 20 
+		barrier_r = options.y / 2 + 20
 	end
 	
 	--Place top-haybail + minigun
@@ -209,7 +209,7 @@ end
 function barrier ()
 	local barrier = createColCircle ( barrier_x, barrier_y, barrier_r )
 	addEventHandler ( "onColShapeLeave", barrier, function ( p )
-		if ( getElementType ( p ) == "player" ) then 
+		if ( getElementType ( p ) == "player" ) then
 			killPed ( p )
 			outputChatBox( "* Killed: Don't walk away.", p, 255, 100, 100 )
 			end

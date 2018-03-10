@@ -528,7 +528,7 @@ addEventHandler('onClientElementStreamOut', root,
 					destroyElement(vehInfo.blip)
 				end
 				vehInfo.blip = nil
-			end 
+			end
 			serverAMXEvent('OnVehicleStreamOut', getElemID(source), getElemID(getLocalPlayer()))
 		elseif getElementType(source) == 'player' then
 			serverAMXEvent('OnPlayerStreamOut', getElemID(source), getElemID(getLocalPlayer()))
@@ -859,8 +859,8 @@ function renderTextLabels()
 				local vw = getElementDimension(g_Me)
 				--[[if textlabel.attached then
 					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, true, true, true, true, false, false, textlabel.attachedTo)
-				else]] --неработает, похоже функция isLineOfSightClear не работает с аргументом ignoredElement.
-					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, false, false)--пока так, потом разберутся с функцией сделаем как нужно :)
+				else]] --неработает, похоже функция isLineOfSightClearне работает с аргументом ignoredElement.
+					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, false, false)--пока так, потом разберутся с функцией сделаекак нужно :)
 				--end
 				local len = string.len(textlabel.text)
 				if screenX and dist <= textlabel.dist and vw == textlabel.vw then
@@ -1354,7 +1354,7 @@ function createListDialog()
 		addEventHandler("onClientGUIClick", listButton2, OnListDialogButton2Click, false)
 end
 
-function createInputDialog()	
+function createInputDialog()
 		inputDialog = nil
 		inputWindow = guiCreateWindow(screenWidth/2 - 541/2,screenHeight/2 - 352/2,541,352,"",false)
 		guiWindowSetMovable(listWindow,false)

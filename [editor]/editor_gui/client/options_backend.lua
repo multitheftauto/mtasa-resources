@@ -184,4 +184,4 @@ function restoreDefaults()
 	for gui,value in pairs(defaults) do
 		dialog[gui]:setValue(value)
 	end
-end	
+end

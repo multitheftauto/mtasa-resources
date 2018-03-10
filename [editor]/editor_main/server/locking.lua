@@ -17,7 +17,7 @@ function setLockedElement(client, element)
 	end
 end
 
-addEventHandler("doLockElement", root, 
+addEventHandler("doLockElement", root,
 	function ()
 		setLockedElement(client, source)
 	end

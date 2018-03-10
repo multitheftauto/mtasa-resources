@@ -125,7 +125,7 @@ local function onClientRender_freecam()
 		local distance = getDistanceBetweenPoints3D ( camX, camY, camZ, targetX, targetY, targetZ )
 		targetX = camX + ((targetX - camX)/distance) * maxMoveDistance
 		targetY = camY + ((targetY - camY)/distance) * maxMoveDistance
-		targetZ = camZ + ((targetZ - camZ)/distance) * maxMoveDistance		
+		targetZ = camZ + ((targetZ - camZ)/distance) * maxMoveDistance
 	    
 		-- process line, checking for water and surfaces
 		local surfaceFound, surfaceX, surfaceY, surfaceZ, element = processLineOfSight(camX, camY, camZ, targetX, targetY, targetZ, true, true, true, true, true, true, false, true, selectedElement)

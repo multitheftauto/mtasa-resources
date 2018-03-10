@@ -22,7 +22,7 @@ function performSearch()
 	var searchText = document.getElementById("searchText").value;
 	var searchState = document.getElementById("searchState").value;
 	
-	if ( searchState == "any" ) 
+	if ( searchState == "any" )
 		searchState = "";
 	getResourcesSearch ( searchText, searchState,
 		function ( resourceTable, stateTable )
@@ -33,14 +33,14 @@ function performSearch()
 				resourceTable[i].state = stateTable[i];
 			}
 			resourceTable = resourceTable.sort(
-				function(a,b) 
-				{ 
+				function(a,b)
+				{
 					if ( a.name.toLowerCase() < b.name.toLowerCase() )
 						return -1;
-					else if ( a.name.toLowerCase() > b.name.toLowerCase() ) 
+					else if ( a.name.toLowerCase() > b.name.toLowerCase() )
 						return 1;
 					else
-						return 0; 
+						return 0;
 				}
 			);
 				
@@ -59,7 +59,7 @@ function performSearch()
 				resourceFromName[resourceTable[i].name] = resourceTable[i];
 
 				if (  i == 0 || resourceTable[i-1].name.substr(0,1).toLowerCase() != resourceTable[i].name.substr(0,1).toLowerCase())
-				{	
+				{
 					// add some padding cells if the last row wasn't filled
 					if ( activerow != null )
 					{
@@ -72,14 +72,14 @@ function performSearch()
 					var row = resourceList.insertRow (-1);
 					
 					var letterCell = row.insertCell(-1);
-					if ( i == 0 ) 
+					if ( i == 0 )
 						letterCell.className = "lettercell_first";
 					else
 						letterCell.className = "lettercell";
 					letterCell.innerHTML =  resourceTable[i].name.substr(0,1).toUpperCase();
 					
 					var cell = row.insertCell(-1);
-					if ( i != 0 ) 
+					if ( i != 0 )
 						cell.className = "letterrowcontentcell";
 						
 					contentTable = document.createElement("table");
@@ -89,7 +89,7 @@ function performSearch()
 					cell.appendChild(contentTable);
 				}
 
-				if ( resourceTable[i].state == "loaded" ) 
+				if ( resourceTable[i].state == "loaded" )
 					col = "#FF7F00";
 				else if ( resourceTable[i].state == "running" )
 					col = "#338833";
@@ -102,7 +102,7 @@ function performSearch()
 				}
 				var cell = activerow.insertCell(-1);
 				cell.className = "resourcecell";
-				cell.innerHTML = "<div id='resource-" + resourceTable[i].name + "' style='cursor: pointer; color:" + col + "' onClick='showInfo(\"" + resourceTable[i].name + "\")'><span style='font-weight: bold;'>" 
+				cell.innerHTML = "<div id='resource-" + resourceTable[i].name + "' style='cursor: pointer; color:" + col + "' onClick='showInfo(\"" + resourceTable[i].name + "\")'><span style='font-weight: bold;'>"
 					+ resourceTable[i].name + "</span></div>";
 				
 				j--;
@@ -154,7 +154,7 @@ function getButtons ( resource, resourceState )
 		html += "<input type='button' onClick=\"stopResourceButton('" + resource.name + "')\" value='stop'>" +
 		"<input type='button' onClick=\"restartResourceButton('" + resource.name + "')\" value='restart'>";
 		
-	} 
+	}
 	else if ( resourceState == "loaded" )
 	{
 		html += "<input type='button' onClick=\"startResourceButton('" + resource.name + "')\" value='start'>";
@@ -183,7 +183,7 @@ function startResourceButton ( resourceName )
 				function ( state ) {
 					newState = state;
 					
-					if ( state == "loaded" ) 
+					if ( state == "loaded" )
 						col = "#FF7F00";
 					else if ( state == "running" )
 						col = "#338833";
@@ -213,7 +213,7 @@ function restartResourceButton ( resourceName )
 				function ( state ) {
 					newState = state;
 					
-					if ( state == "loaded" ) 
+					if ( state == "loaded" )
 						col = "#FF7F00";
 					else if ( state == "running" )
 						col = "#338833";
@@ -241,7 +241,7 @@ function stopResourceButton ( resourceName )
 				function ( state ) {
 					newState = state;
 					
-					if ( state == "loaded" ) 
+					if ( state == "loaded" )
 						col = "#FF7F00";
 					else if ( state == "running" )
 						col = "#338833";
@@ -287,7 +287,7 @@ function getInfo ( resource )
     document.getElementById ( "resourceInfoLoading" ).style.display = "inline";
     document.getElementById ( "resourceinfocontent" ).style.display = "none";
 	
-	getResourceInfo( resource, 
+	getResourceInfo( resource,
         function ( result ) /* called when the results arrive, each result in a seperate variable */
         {
             var contentarea = document.getElementById ( "resourceinfocontent" );

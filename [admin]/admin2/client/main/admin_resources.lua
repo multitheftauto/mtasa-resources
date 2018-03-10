@@ -165,7 +165,7 @@ function aResourcesTab.onClientClick ( button )
 			local row = guiGridListGetSelectedItem ( aResourcesTab.ViewTypes )
 			if ( row ~= -1 ) then
 				local type = guiGridListGetItemText ( aResourcesTab.ViewTypes, row, 1 )
-				guiSetText ( aResourcesTab.View, type )		
+				guiSetText ( aResourcesTab.View, type )
 				guiSetVisible ( aResourcesTab.ViewTypes, false )
 				if ( type == "All" ) then type = nil end
 				aResourcesTab.listResources ( type, aResourcesTab.List )

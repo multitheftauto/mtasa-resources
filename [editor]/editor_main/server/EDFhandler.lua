@@ -39,7 +39,7 @@ function registerEDF( resource )
 end
 addEventHandler ( "onEDFLoad", rootElement, registerEDF)
 	
-addEventHandler ( "onEDFUnload", rootElement, 
+addEventHandler ( "onEDFUnload", rootElement,
 	function ( resource )
 		loadedEDF[resource] = nil
 		for i, player in ipairs(getElementsByType"player") do

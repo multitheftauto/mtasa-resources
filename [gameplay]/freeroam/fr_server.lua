@@ -139,7 +139,7 @@ function joinHandler(player)
 end
 addEventHandler('onPlayerJoin', root, joinHandler)
 
-local settingsToSend = 
+local settingsToSend =
 {
 	["command_spam_protection"] = true,
 	["tries_required_to_trigger"] = true,
@@ -247,7 +247,7 @@ addEventHandler('onClothesInit', resourceRoot,
 addEvent('onPlayerGravInit', true)
 addEventHandler('onPlayerGravInit', root,
 	function()
-		if client ~= source then return end 
+		if client ~= source then return end
 		triggerClientEvent(client, 'onClientPlayerGravInit', client, getPedGravity(client))
 	end
 )

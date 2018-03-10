@@ -1,11 +1,11 @@
 #topbar, #addacltopbar, #addgrouptopbar, #addobjecttopbar  {
-	position: absolute; 
-	top:0px; 
-	right:0px; 
-	left:0px; 
-	height:23px; 
-	background:#555555; 
-	color:#FFFFFF; 
+	position: absolute;
+	top:0px;
+	right:0px;
+	left:0px;
+	height:23px;
+	background:#555555;
+	color:#FFFFFF;
 	padding:7px;
 	font-weight:bold;
 }
@@ -15,13 +15,13 @@
 }
 
 #datasets {
-	position: absolute; 
-	right: 0px; 
-	top: 37px; 
-	width: 20%; 
+	position: absolute;
+	right: 0px;
+	top: 37px;
+	width: 20%;
 	bottom: 0px;
 	background:#555555;
-	overflow:auto; 
+	overflow:auto;
 }
 
 .acl {
@@ -32,17 +32,17 @@
 }
 
 #grouplist, #grouparea {
-	position: absolute; 
-	left:0px; 
-	top: 37px; 
-	bottom: 20px; 
-	right: 0px; 
-	overflow:auto; 
+	position: absolute;
+	left:0px;
+	top: 37px;
+	bottom: 20px;
+	right: 0px;
+	overflow:auto;
 	border-top: none;
 }
 
 #grouparea  {
-	overflow:hide; 
+	overflow:hide;
 }
 
 #rightslist , #grouplistcontent{
@@ -75,13 +75,13 @@
 }
 
 #topbar {
-	position: absolute; 
-	top:0px; 
-	right:0px; 
-	left:0px; 
-	height:23px; 
-	background:#555555; 
-	color:#FFFFFF; 
+	position: absolute;
+	top:0px;
+	right:0px;
+	left:0px;
+	height:23px;
+	background:#555555;
+	color:#FFFFFF;
 	padding:7px;"
 }
 
@@ -108,7 +108,7 @@
 	border-top: 2px solid #888888;
 }
 
-img { 
+img {
 	vertical-align: middle;
 }
 
@@ -279,11 +279,11 @@ padding: 8px;
 }
 
 #addobjectbottombar, #addaclbottombar {
-	position: absolute; 
-	background: #888888; 
-	bottom: 0px; 
-	left:0px; 
-	right:0px; 
+	position: absolute;
+	background: #888888;
+	bottom: 0px;
+	left:0px;
+	right:0px;
 	height: 24px;
 	padding-top:4px;
 }

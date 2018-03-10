@@ -47,7 +47,7 @@ CodeMirror.defineMode("lua", function(config, parserConfig) {
     "table.concat","table.insert","table.maxn","table.remove","table.sort"
   ]);
   var keywords = wordRE(["and","break","elseif","false","nil","not","or","return",
-			 "true","function", "end", "if", "then", "else", "do", 
+			 "true","function", "end", "if", "then", "else", "do",
 			 "while", "repeat", "until", "for", "in", "local" ]);
 
   var indentTokens = wordRE(["function", "if","repeat","for","while", "\\(", "{"]);
@@ -68,7 +68,7 @@ CodeMirror.defineMode("lua", function(config, parserConfig) {
         return (state.cur = bracketed(readBracket(stream), "comment"))(stream, state);
       stream.skipToEnd();
       return "comment";
-    } 
+    }
     if (ch == "\"" || ch == "'")
       return (state.cur = string(ch))(stream, state);
     if (ch == "[" && /[\[=]/.test(stream.peek()))

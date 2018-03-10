@@ -120,8 +120,8 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 			else aReports[id].text = "" end
 			if ( time ) then aReports[id].time = xmlNodeGetValue ( time )
 			else aReports[id].time = "" end
-			if ( suspect ) then 
-				aReports[id].suspect = { 
+			if ( suspect ) then
+				aReports[id].suspect = {
 					name = xmlNodeGetAttribute ( suspect, "name" ),
 					username = xmlNodeGetAttribute ( suspect, "username" ),
 					ip = xmlNodeGetAttribute ( suspect, "ip" ),
@@ -210,7 +210,7 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 		end
 	else
 		local node = xmlLoadFile ( "conf\\reports.xml" )
-		if ( node ) then 
+		if ( node ) then
 			while ( xmlFindChild ( node, "message", 0 ) ~= false ) do
 				local subnode = xmlFindChild ( node, "message", 0 )
 				xmlDestroyNode ( subnode )
@@ -437,7 +437,7 @@ addEventHandler ( "aPlayerVersion", _root, function ( version )
 		end
 		-- If version does not have a built in version check, maybe show a message box advising an upgrade
 		if version.number < 259 or ( version.mta == "1.0.3" and rc < 3 ) then
-			triggerClientEvent ( source, "aClientShowUpgradeMessage", source )	
+			triggerClientEvent ( source, "aClientShowUpgradeMessage", source )
 		end
 	end
 
@@ -507,7 +507,7 @@ addCommandHandler ( "unregister", function ( player, command, arg1, arg2 )
 		end
 	end
 	outputChatBox ( "Unregistering account '"..username.."' "..result, player, 255, 100, 70 )
-	outputServerLog ( "ADMIN: "..getAdminNameForLog ( player ).." unregistering account '"..username.."' "..result.." (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )	
+	outputServerLog ( "ADMIN: "..getAdminNameForLog ( player ).." unregistering account '"..username.."' "..result.." (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )
 end )
 
 -- Returns "name" or "name(accountname)" if they differ
@@ -932,7 +932,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 		elseif ( action == "shout" ) then
 			local textDisplay = textCreateDisplay ()
 			local textItem
-			local anon = getElementData( admin, "AnonAdmin" ) 
+			local anon = getElementData( admin, "AnonAdmin" )
 			if (anon) then
 				textItem = textCreateTextItem ( "ADMIN:\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
 			else
@@ -1016,7 +1016,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 					setElementInterior ( player, interior["world"] )
 					local x, y, z = interior["x"] or 0, interior["y"] or 0, interior["z"] or 0
 					local rot = interior["r"] or 0
-					if ( vehicle ) then 
+					if ( vehicle ) then
 						setElementInterior ( vehicle, interior["world"] )
 						setElementPosition ( vehicle, x, y, z + 0.2 )
 					else
@@ -1527,7 +1527,7 @@ end )
 addEvent ( "aExecute", true )
 addEventHandler ( "aExecute", _root, function ( action, echo )
 	if checkClient( "command.execute", source, 'aExecute', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then 
+	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then
 		local result = loadstring("return " .. action)()
 		if ( echo == true ) then
 			local restring = ""

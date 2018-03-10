@@ -116,22 +116,22 @@ propertySetters = {
 				return setElementData(element,"doublesided",bon=="true" and "true" or "false")
 			end
 		end,
-		scale = function(element, scale) 
-			if ( scale ) then 
+		scale = function(element, scale)
+			if ( scale ) then
 				return setObjectScale(element, scale)
 			end
 			return false
 		end,
 		breakable = function(element, breakable)
 			return setObjectBreakable(element, breakable == "true")
-		end,	
+		end,
 	},
 	ped = {
 		model = function(element, model)
 			if model then return setElementModel(element, model)
 			else return false end
 		end,
-		rotZ = function(element, rot) 
+		rotZ = function(element, rot)
 			if tonumber(rot) then return setElementRotation(element, 0, 0, rot)
 			else return false end
 		end,
@@ -146,7 +146,7 @@ propertySetters = {
 				local colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], otherColors[7], otherColors[8], otherColors[9], otherColors[10], otherColors[11], otherColors[12])
-			else 
+			else
 				return false
 			end
 		end,
@@ -155,7 +155,7 @@ propertySetters = {
 				local colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, otherColors[1], otherColors[2], otherColors[3], colorsTable[1], colorsTable[2], colorsTable[3], otherColors[7], otherColors[8], otherColors[9], otherColors[10], otherColors[11], otherColors[12])
-			else 
+			else
 				return false
 			end
 		end,
@@ -164,7 +164,7 @@ propertySetters = {
 				local colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], colorsTable[1], colorsTable[2], colorsTable[3], otherColors[10], otherColors[11], otherColors[12])
-			else 
+			else
 				return false
 			end
 		end,
@@ -173,7 +173,7 @@ propertySetters = {
 				local colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], otherColors[7], otherColors[8], otherColors[9], colorsTable[1], colorsTable[2], colorsTable[3])
-			else 
+			else
 				return false
 			end
 		end,

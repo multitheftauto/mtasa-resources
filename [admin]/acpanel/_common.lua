@@ -59,7 +59,7 @@ end
 
 -- Typical call:  if hasbit(x, bit(3)) then ...
 function math.hasbit(x, p)
-  return x % (p + p) >= p       
+  return x % (p + p) >= p
 end
 
 
@@ -107,7 +107,7 @@ aBlockModsTab_presets = {
 					"tec9.dff" .. newline ..
 					"sniper.dff",
 					
-	 playerModels = 
+	 playerModels =
 [[cj.dff
 truth.dff
 maccer.dff
@@ -422,7 +422,7 @@ aBlockModsTab = {
 }
 
 function aBlockModsTab.getInfoForType(type)
-	for _,info in ipairs(aBlockModsTab.radioButtons) do	
+	for _,info in ipairs(aBlockModsTab.radioButtons) do
 		if info.type == type then
 			return info
 		end
@@ -452,7 +452,7 @@ aServerConfigTab = {
 
 
 function aServerConfigTab.getInfoForType(type)
-	for _,info in ipairs(aServerConfigTab.radioButtons) do	
+	for _,info in ipairs(aServerConfigTab.radioButtons) do
 		if info.type == type then
 			return info
 		end

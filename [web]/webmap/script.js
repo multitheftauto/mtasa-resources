@@ -15,16 +15,16 @@ var bliplist = new Object;
 function init()
 {
 	map = new OpenLayers.Map( $('map'), {'maxResolution': 360/512, 'maxExtent':new OpenLayers.Bounds(-90.0,-90.0,90.0,90.0),
-	'numZoomLevels':6, 
+	'numZoomLevels':6,
 	});
 	
 	map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
 
-	maplayer = new OpenLayers.Layer.WMS( "San Andreas Map", 
+	maplayer = new OpenLayers.Layer.WMS( "San Andreas Map",
 					"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_map', format: 'image/png' } );
 	map.addLayer(maplayer);
 	
-	aeriallayer = new OpenLayers.Layer.WMS( "San Andreas Aerial Map", 
+	aeriallayer = new OpenLayers.Layer.WMS( "San Andreas Aerial Map",
 					"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_aerial_map', format: 'image/png' } );
 	map.addLayer(aeriallayer);
 		
@@ -80,7 +80,7 @@ function gtaCoordToLonLat(x, y)
 var blipUpdateCount = 0;
 function updateBlips()
 {
-	getAllBlips ( 
+	getAllBlips (
 		function ( blips )
 		{
 			for ( var k = 0; k < blips.length; k++ )
@@ -110,7 +110,7 @@ function updateBlips()
 						delete bliplist[j];
 					}
 				}
-			}     
+			}
 						   
 						  
 		   
@@ -124,7 +124,7 @@ function updateBlips()
 var updateCount = 0;
 function updatePlayerInfo()
 {
-	players ( 
+	players (
 		function ( playerinfo )
 		{
 			for ( var i = 0; i < playerinfo.length; i++ )
@@ -162,7 +162,7 @@ function updatePlayerInfo()
 						delete playerlist[j];
 					}
 				}
-			}     
+			}
 						   
 						  
 		   
@@ -248,5 +248,5 @@ function showplayerinfo(evt) {
 		popup = null;
 	}
 	OpenLayers.Event.stop(evt);
-}        
+}
 

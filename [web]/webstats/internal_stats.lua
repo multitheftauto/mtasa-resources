@@ -28,7 +28,7 @@ end
 publichatcount = 0
 teamchatcount = 0
 totalchatcount = 0
-addEventHandler ( "onPlayerChat",  getRootElement(), 
+addEventHandler ( "onPlayerChat",  getRootElement(),
 	function(message,messageType)
 		if messageType == 0 or messageType == 1 then
 			publichatcount = publichatcount + 1
@@ -62,7 +62,7 @@ end
 
 call(getThisResource(), "registerStat", getThisResource(), "getDamageCount", "Damage Given", "The amount of damage players have taken")
 damagecount = 0
-addEventHandler ( "onPlayerDamage",  getRootElement(), 
+addEventHandler ( "onPlayerDamage",  getRootElement(),
 	function( attacker, attackerweapon, bodypart, loss )
 		damagecount = damagecount + loss
 	end
@@ -76,7 +76,7 @@ end
 
 call(getThisResource(), "registerStat", getThisResource(), "getVehiclesWastedCount", "Vehicles Wasted", "The number of vehicles destroyed")
 vehicleswasted = 0
-addEventHandler ( "onVehicleExplode",  getRootElement(), 
+addEventHandler ( "onVehicleExplode",  getRootElement(),
 	function(  )
 		vehicleswasted = vehicleswasted + 1
 	end

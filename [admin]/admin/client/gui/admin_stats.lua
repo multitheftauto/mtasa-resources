@@ -89,7 +89,7 @@ function aClientStatsClick ( button )
 						triggerServerEvent ( "aPlayer", getLocalPlayer(), aStatsSelect, "setstat", id, value )
 					else
 						aMessageBox ( "error", "Not numerical value (0-1000)" )
-					end				
+					end
 				return
 				end
 			end

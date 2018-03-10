@@ -99,7 +99,7 @@ function processControls()
 	end
 end
 
-addEventHandler("onClientResourceStart", getRootElement(), 
+addEventHandler("onClientResourceStart", getRootElement(),
 	function (resource)
 		if resource == getResourceFromName("freecam") then
 			freecam.setFreecamOption("key_fastMove", cc.mod_fast_speed)

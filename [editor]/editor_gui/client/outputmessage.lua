@@ -53,7 +53,7 @@ function outputMessage ( text, r, g, b, time )
 		local movetime = movedistance/MOVE_SPEED
 		time = math.max(time,movetime)
 		--Create our animations
-		table.insert(message.timers, setTimer ( function() 
+		table.insert(message.timers, setTimer ( function()
 			doAnimation(setX,{{ from = 5, to = 5 - movedistance, time = time, fn = setX }}) end, MOVE_DELAY, 1 ))
 		doAnimation(setAlpha,
 			{{ from = 1, to = 140, time = FADE_TIME, fn = setAlpha }})

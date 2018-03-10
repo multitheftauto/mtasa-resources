@@ -522,7 +522,7 @@ function joinHandlerBoth(player)
                     end
                 end
             end
-            warpPedIntoVehicle(player, vehicle)	
+            warpPedIntoVehicle(player, vehicle)
         end
         
 		destroyBlipsAttachedTo(player)
@@ -612,7 +612,7 @@ function setRandomSeedForMap( type )
     for i,char in ipairs( { string.byte(g_MapInfo.name,1,g_MapInfo.name:len()) } ) do
         seed = math.mod( seed * 11 + char, 216943)
     end
-    math.randomseed(seed)    
+    math.randomseed(seed)
 end
 
 
@@ -690,7 +690,7 @@ addEventHandler('onPlayerWasted', g_Root,
 				local x, y, z = getElementPosition(source)
 				spawnPlayer(source, x, y, z, 0, getElementModel(source))
 				if g_Vehicles[source] then
-					warpPedIntoVehicle(source, g_Vehicles[source])	
+					warpPedIntoVehicle(source, g_Vehicles[source])
 				end
 			else
 				setPlayerStatus( source, "dead", "" )
@@ -1045,7 +1045,7 @@ function setPlayerNotReady( player )
     activateNotReadyText()
 end
 
--- Alter not ready timeout 
+-- Alter not ready timeout
 function setPlayerReady( player )
 	setPlayerStatus( player, "alive", nil )
     g_NotReady[player] = false
@@ -1238,7 +1238,7 @@ function MoveAway.update ()
 	for player,_ in pairs(MoveAway.list) do
 		if isPedDead(player) or getElementHealth(player) == 0 then
 			local vehicle = g_Vehicles[player]
-			if isElement(vehicle) then 
+			if isElement(vehicle) then
 				setElementVelocity(vehicle,0,0,0)
 				setVehicleTurnVelocity(vehicle,0,0,0)
 				Override.setCollideOthers( "ForMoveAway", vehicle, 0 )
@@ -1325,7 +1325,7 @@ TimerManager.createTimerFor("raceresource","integrity"):setTimer(
 		if g_IntegrityFailCount > 1 then
 			outputRace( "Race script integrity compromised - Restarting" )
 			exports.mapmanager:changeGamemode( getResourceFromName('race') )
-		end	
+		end
 	end,
 	1000,0
 )

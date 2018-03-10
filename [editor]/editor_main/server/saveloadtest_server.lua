@@ -6,7 +6,7 @@ local freeroamRes = getResourceFromName "freeroam"
 local TEST_RESOURCE = "editor_test"
 local DUMP_RESOURCE = "editor_dump"
 local dumpInterval = get("dumpSaveInterval") and tonumber(get("dumpSaveInterval"))*1000 or 60000
-local fileTypes = { "script","map","file","config","html" } 
+local fileTypes = { "script","map","file","config","html" }
 local specialFileTypes = { "script","file","config","html" }
 local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 
@@ -282,12 +282,12 @@ function saveResource(resourceName, test)
 		return false
 	end
 	if ( isEditorOpeningResource() ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
+		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 		"You cannot save while a map is being opened" )
 		return false
 	end
 	if ( isEditorSaving() ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
+		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 		"You cannot save while another save or load is in progress" )
 		return false
 	end
@@ -320,7 +320,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if ( resource ) then
 		--Clear out old files from the resource
 		if (not mapmanager.isMap ( resource )) then
-			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
+			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 			"You cannot overwrite non-map resources." )
 			saveResourceCoroutine = nil
 			return false
@@ -573,7 +573,7 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		if ( usedDefinitions ~= "" ) then
 			usedDefinitions = string.sub(usedDefinitions, 1, #usedDefinitions - 1)
 			xmlNodeSetAttribute(xmlNode, "edf:definitions", usedDefinitions)
-		end	
+		end
 		for i, element in ipairs(rootElements) do
 			if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 				setTimer(function()
@@ -593,7 +593,7 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 			local elementNode = createElementAttributesForSaving(xmlNode, element)
 			dumpNodes ( elementNode, elementChildren[element], elementChildren )
 		end
-		xmlSaveFile(xmlNode)	
+		xmlSaveFile(xmlNode)
 		xmlUnloadFile(xmlNode)
 		local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
@@ -696,21 +696,21 @@ function (gamemodeName)
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
 	local success = coroutine.resume(saveResourceCoroutine, TEST_RESOURCE, true, nil, client, gamemodeName)
 	if ( not success ) then
-		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 		"Dummy 'editor_test' resource may be corrupted!" )
-		return false	
+		return false
 	end
 end )
 
 function beginTest(client,gamemodeName)
 	if ( isEditorSaving() or isEditorOpeningResource() ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
+		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false,
 		"Cannot begin test while a save or load is in progress" )
 		return false
 	end
 	local testMap = getResourceFromName(TEST_RESOURCE)
 	if ( not mapmanager.isMap(testMap) ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
+		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false,
 		"Dummy 'editor_test' resource may be corrupted!" )
 		return false
 	end
@@ -726,7 +726,7 @@ function beginTest(client,gamemodeName)
 		set ( "*freeroam.spawnmapondeath", "false" )
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (1)" )
 			return false
 		end
@@ -738,14 +738,14 @@ function beginTest(client,gamemodeName)
 				restoreSettings()
 				g_restoreEDF = nil
 				removeEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
-				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (2)" )
 				return false
 			end
 		else
 			if not mapmanager.changeGamemode(gamemode,testMap) then
 				restoreSettings()
-				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (3)" )
 				return false
 			end
@@ -754,12 +754,12 @@ function beginTest(client,gamemodeName)
 	else
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (4)" )
 			return false
 		end
 		if getResourceState(testMap) ~= "running" and not startResource ( testMap, true ) then
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (5)" )
 			return false
 		end

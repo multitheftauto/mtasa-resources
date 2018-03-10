@@ -12,7 +12,7 @@
 	end
 
 	--Returns a list of players of which have muted the specified player
-	function getPlayerVoiceMutedByList ( player ) 
+	function getPlayerVoiceMutedByList ( player )
 		if not checkValidPlayer ( player ) then return false end
 		return tableToArray(mutedBy[player] or {})
 	end
@@ -22,7 +22,7 @@
 	end
 
 
-	function addPlayerMutedBy ()	
+	function addPlayerMutedBy ()
 		mutedBy[client] = mutedBy[client] or {}
 		mutedBy[client][source] = true
 		updateMuted ( client )
@@ -46,7 +46,7 @@
 	end
 	addEventHandler ( "voice_muteTableForPlayer", root, addPlayerMutedByTable )
 
-	addEventHandler ( "onPlayerQuit", root, 
+	addEventHandler ( "onPlayerQuit", root,
 		function()
 			mutedBy[source] = nil
 			globalMuted[source] = nil

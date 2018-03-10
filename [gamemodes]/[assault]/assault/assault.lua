@@ -257,7 +257,7 @@ function waitForStart( player )
 	--setTimer(setCameraLookAt,1000,1,player, options.camera["spawn"].targetX, options.camera["spawn"].targetY, options.camera["spawn"].targetZ )
 	--triggerClientEvent(player,"customSetCamera", player, 0, 0, 20,  -33.486911773682, 35.214984893799, 4 )
 	--toggleAllControls( player, false )
-	setCameraMatrix(player,options.camera["spawn"].posX,options.camera["spawn"].posY,options.camera["spawn"].posZ,options.camera["spawn"].targetX, options.camera["spawn"].targetY, options.camera["spawn"].targetZ) 
+	setCameraMatrix(player,options.camera["spawn"].posX,options.camera["spawn"].posY,options.camera["spawn"].posZ,options.camera["spawn"].targetX, options.camera["spawn"].targetY, options.camera["spawn"].targetZ)
 end
 
 function waitEndRound( player )
@@ -383,15 +383,15 @@ function onObjectiveLeave( player )
 end
 -- Counts the time players are in an objective, if it has a timelimit
 function objectiveCount(objectiveId)
-	if (waiting) then 
+	if (waiting) then
 		stopObjectiveTimer(objectiveId)
 		hideProgressForAll(objectiveId)
 		return
 	end
 
-	if (isElement(status[objectiveId].colShape) == false) then 
-		stopObjectiveTimer(objectiveId) 
-		return 
+	if (isElement(status[objectiveId].colShape) == false) then
+		stopObjectiveTimer(objectiveId)
+		return
 	end
 	local allPlayers = getElementsWithinColShape( status[objectiveId].colShape, "player" )
 	-- colShape is empty or does not exist - stop timer
@@ -534,7 +534,7 @@ function objectiveReached( objectiveId, playerTable )
 	
 	if (objectiveReached.successText ~= "") then
 		messageForAttacker = string.gsub(objectiveReached.successText,"~team~",teamName)
-		messageForDefender = string.gsub(objectiveReached.successText,"~team~",teamName)	
+		messageForDefender = string.gsub(objectiveReached.successText,"~team~",teamName)
 	end
 	if (objectiveReached.successTextForDefender ~= "") then
 		messageForDefender = string.gsub(objectiveReached.successTextForDefender,"~team~",teamName)
@@ -724,7 +724,7 @@ Players and Teams
 ]]
 
 -- Makes a player join team1 if there arent too many already
-function joinTeam1( source ) 
+function joinTeam1( source )
 	if (countPlayersInTeam(team1) - countPlayersInTeam(team2) > options.teamBalance - 1) then
 		showTextForPlayer ( source, 2000, 255, 0, 0, 1.4, 0.62, "Can't join "..team1Name.." (too many players)" )
 	else
@@ -864,7 +864,7 @@ end
 function forcedRespawn()
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
-		if (getPlayerTeam(v) ~= false) then 
+		if (getPlayerTeam(v) ~= false) then
 			spawnPlayerTeam(v)
 		end
 	end
@@ -1335,13 +1335,13 @@ function readOptions( startedMap )
 		options.camera[cameraType].targetZ = getElementData2(v,"targetZ",true)
 	end
 	
-	if (options.camera.spawn == nil) then 
+	if (options.camera.spawn == nil) then
 		errors[#errors+1] = "Required camera element of type 'spawn' not found"
 	end
-	if (options.camera.selectTeam == nil) then 
+	if (options.camera.selectTeam == nil) then
 		errors[#errors+1] = "Required camera element of type 'selectTeam' not found"
 	end
-	if (options.camera.finish == nil) then 
+	if (options.camera.finish == nil) then
 		errors[#errors+1] = "Required camera element of type 'finish' not found"
 	end
 
@@ -1469,12 +1469,12 @@ function selectTeamCreateDisplay()
 	local stext2 = textCreateTextItem ( "Press F1 to spawn " ..team1Name.. "", 0.501, 0.501, "low", 0, 0, 0, 255, 1.4, "center" )
 	local stext3 = textCreateTextItem ( "Press F2 to spawn " ..team2Name.. "", 0.501, 0.551, "low", 0, 0, 0, 255, 1.4, "center" )
 	local stext4 = textCreateTextItem ( "Press F3 to return to the spawn screen", 0.501, 0.601, "low", 0, 0, 0, 255, 1.4, "center" )
-	local stext5 = textCreateTextItem ( "Press F9 for help", 0.501, 0.651, "low", 0, 0, 0, 255, 1.4, "center" ) 
+	local stext5 = textCreateTextItem ( "Press F9 for help", 0.501, 0.651, "low", 0, 0, 0, 255, 1.4, "center" )
 	local text = textCreateTextItem ( "Select your spawn", 0.5, 0.3, "low", 255, 255, 255, 255, 2, "center" )
 	local text2 = textCreateTextItem ( "Press F1 to spawn " ..team1Name.. "", 0.5, 0.5, "low", 255, 255, 255, 255, 1.4, "center" )
 	local text3 = textCreateTextItem ( "Press F2 to spawn " ..team2Name.. "", 0.5, 0.55, "low", 255, 255, 255, 255, 1.4, "center" )
 	local text4 = textCreateTextItem ( "Press F3 to return to the spawn screen", 0.5, 0.6, "low", 255, 255, 255, 255, 1.4, "center" )
-	local text5 = textCreateTextItem ( "Press F9 for help", 0.5, 0.65, "low", 255, 255, 255, 255, 1.4, "center" ) 
+	local text5 = textCreateTextItem ( "Press F9 for help", 0.5, 0.65, "low", 255, 255, 255, 255, 1.4, "center" )
 	textDisplayAddText ( selectTeamDisplay, stext )
 	textDisplayAddText ( selectTeamDisplay, stext2 )
 	textDisplayAddText ( selectTeamDisplay, stext3 )

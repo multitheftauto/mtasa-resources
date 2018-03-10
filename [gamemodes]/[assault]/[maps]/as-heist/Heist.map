@@ -8,7 +8,7 @@
 	</meta>
 
 	<assaultSettings timelimit="720" finishType="objective" finishObjective="hideout" author="norby89"
-		time="18:00" weather="2" description="Attackers need to rob Caligula's Casino while the cops are trying to stop them." 
+		time="18:00" weather="2" description="Attackers need to rob Caligula's Casino while the cops are trying to stop them."
 		conqueredMessage="attackers pulled off the heist!" defendedMessage="cops arrested the attackers" />
 
 
@@ -282,12 +282,12 @@
 	<pickup name="GRENADE" posX="2150.33" posY="1619.47" posZ="1000.97" type="16" amount="5" respawn="5000" />
 
 <!--
-	Ambulance 416				Police Car (Los Santos) 596 
-	Barracks 433				Police Car (San Fierro) 597 
-	Enforcer 427				Police Ranger 599 
-	FBI Rancher 490				Rhino 432 
-	FBI Truck 528				S.W.A.T. 601 
-	Fire Truck 407				Securicar 428 
+	Ambulance 416				Police Car (Los Santos) 596
+	Barracks 433				Police Car (San Fierro) 597
+	Enforcer 427				Police Ranger 599
+	FBI Rancher 490				Rhino 432
+	FBI Truck 528				S.W.A.T. 601
+	Fire Truck 407				Securicar 428
 	Fire Truck (Ladder) 544
 	HPV1000 523
 	Patriot 470

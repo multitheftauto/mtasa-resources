@@ -152,7 +152,7 @@ if isEditor() then
 															rotation = { 0, 0, rz },
 															velocity = { 0, 0, 0 },
 															turnvelocity = { 0, 0, 0 },
-															geardown = false }		
+															geardown = false }
 					
 					g_CurrentRaceMode.checkpointBackups[player].goingback = false
 				end

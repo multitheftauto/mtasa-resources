@@ -103,7 +103,7 @@ end
 function processWasted( totalammo, killer, killerweapon, bodypart )
 	if killer and (getElementType(killer) == "player" or getElementType(killer) == "vehicle") then --Give the killer credit
 		killer = (getElementType(killer) == "player") and killer or getVehicleOccupant(killer)
-		if killer == source then --He killed himself. 
+		if killer == source then --He killed himself.
 			setElementData ( killer, "Score", getElementData(killer,"Score") - 1 )
 		else
 			local newScore = getElementData(killer,"Score") + 1
@@ -131,7 +131,7 @@ function processRanks()
 		local previousPlayer = players[i-1]
 		if players[i-1] then
 			local previousScore = getElementData ( previousPlayer, "Score" )
-			local playerScore = getElementData ( player, "Score" ) 
+			local playerScore = getElementData ( player, "Score" )
 			if previousScore == playerScore then
 				setElementData ( player, "Rank", getElementData( previousPlayer, "Rank" ) )
 			else
@@ -140,7 +140,7 @@ function processRanks()
 		else
 			setElementData ( player, "Rank", 1 )
 		end
-	end	
+	end
 end
 
 
@@ -155,7 +155,7 @@ function processEnd(winner,draw)
 	mapTimers = {}
 	destroyElement(g_MissionTimer)
 	setTimer ( reboot, 15000, 1 )
-	if not winner then 
+	if not winner then
 		if draw then
 			for i,player in ipairs(getElementsByType"player") do
 				toggleAllControls(player,true,true,false)
@@ -168,7 +168,7 @@ function processEnd(winner,draw)
 			announcementText:sync()
 			return
 		else
-			return 
+			return
 		end
 	end
 	--Freeze all players,except the winner
@@ -191,7 +191,7 @@ function reboot()
 		exports.scoreboard:setPlayerScoreboardForced ( player, false )
 	end
 	announcementText:visible(false)
-	announcementText:sync()	
+	announcementText:sync()
 	dmMapStart(g_MapResource,g_MapRoot)
 end
 

@@ -101,7 +101,7 @@ function getResourceFiles ( resource, fileType )
 	return files,fileAttributes
 end
 
-local fileTypes = { "script","file","config","html" } 
+local fileTypes = { "script","file","config","html" }
 function copyResourceFiles ( fromResource, targetResource )
 	local targetPaths = {}
 	local copiedFiles = {}

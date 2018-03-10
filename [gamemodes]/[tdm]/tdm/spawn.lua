@@ -5,7 +5,7 @@ After having some deep thoughts about it, I'm fairly confident we should do them
 There should be three new, or reworked gamemodes, replacing modes like tdma and cdm, and to some extent freeroam.
 Short list and description of these gamemodes:
 - deathmatch - a new gamemode, it doesn't have a counterpart in current or previous sets of resources/gamemodes.
-The aim of this mode is simple - no teams, free for all, whoever hits the fraglimit, or has the most frags by the time map ends, wins. 
+The aim of this mode is simple - no teams, free for all, whoever hits the fraglimit, or has the most frags by the time map ends, wins.
 This Gamemode is meant for relatively smaller servers (up to 16 players), but if proper maps are made and used, could be more as well. Should be mostly a foot-based gamemode with pickups, utilising custom maps scheme the most.
 
 - team deathmatch - this should obviously replace tdma, either it should be an 'updated tdma', or rewritten from scratch.

@@ -17,7 +17,7 @@ All buttons hide the message box by default
 
 
 RETURNS:
-Returns 3 gui elements of the each button the gui window.  If these dont exist nil is returned instead.  You can attach these to a 
+Returns 3 gui elements of the each button the gui window.  If these dont exist nil is returned instead.  You can attach these to a
 onClientGUIClick event to do whatever you want.
 --------------------------------------------------------]]
 
@@ -55,7 +55,7 @@ function guiShowMessageBox ( message, boxType, title, forceShowing, button1, but
 		button1 = "OK"
 		buttonCount = 1
 	end
-	local cover 
+	local cover
 	if ( forceShowing ) then
 		cover = guiCreateButton ( 0, 0, 1, 1, "", true )
 		guiSetAlpha ( cover, 0 )

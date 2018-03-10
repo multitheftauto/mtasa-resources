@@ -73,7 +73,7 @@ function pedInterpolate ( ped )
 	for i = 1, #_peds[ped].nodes do
 		table.insert (_peds[ped].queue, _peds[ped].nodes[i])
 		if i <= #_peds[ped].nodes - 2 then
-			local angle = math.abs( 	math.abs(math.deg(math.atan2(_peds[ped].nodes[i+2].y - _peds[ped].nodes[i+1].y, _peds[ped].nodes[i+2].x - _peds[ped].nodes[i+1].x))) - 
+			local angle = math.abs( 	math.abs(math.deg(math.atan2(_peds[ped].nodes[i+2].y - _peds[ped].nodes[i+1].y, _peds[ped].nodes[i+2].x - _peds[ped].nodes[i+1].x))) -
 										math.abs(math.deg(math.atan2(_peds[ped].nodes[i+1].y - _peds[ped].nodes[i].y, _peds[ped].nodes[i+1].x - _peds[ped].nodes[i].x)))
 									)
 			if angle > CURVE_INTERPOLATION then

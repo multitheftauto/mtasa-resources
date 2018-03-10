@@ -20,7 +20,7 @@
 	<oop>true</oop>
 	
 	<export function="edfStartResource" />				<!--bool-->
-	<export function="edfStopResource" />				<!--bool-->	
+	<export function="edfStopResource" />				<!--bool-->
 	
 	<export function="edfLoadDefinition" />				<!--bool-->
 	<export function="edfUnloadDefinition" />				<!--bool-->

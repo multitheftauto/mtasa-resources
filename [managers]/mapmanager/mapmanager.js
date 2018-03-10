@@ -143,7 +143,7 @@ function expandMapList( gamemode ) {
 				mapLabel.className = "map";
 				
 				if ( gamemodeContainer != otherMapsContainer ) {
-					mapLabel.gamemodeName = gamemode.name;				
+					mapLabel.gamemodeName = gamemode.name;
 					mapLabel.style.cursor = "pointer"
 					mapLabel.onclick = function (){
 										changeGamemodeByName ( this.gamemodeName, this.mapName, function() { highlightRunning(); } );

@@ -6,8 +6,8 @@ lastnode = nil
 UPDATE_FREQUENCY = 60 -- seconds
 statsByResource = {}
 
-setTimer ( 
-	function() 
+setTimer (
+	function()
 	    local time = getRealTime()
 
 		stats[nodepos] = {}
@@ -32,7 +32,7 @@ function registerStat(resource, func, name, description)
 	statsByResource[resource][statname] = registeredStats[statname]
 end
 
-function getCurrentStats () 
+function getCurrentStats ()
 	local currStats = {}
 	local arrpos = nodepos
 	local stopat = arrpos
@@ -48,7 +48,7 @@ function getCurrentStats ()
 			arrpos = 1
 		end
 		i = i + 1
-	until arrpos == stopat 
+	until arrpos == stopat
 	
 	return currStats
 end

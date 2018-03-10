@@ -144,7 +144,7 @@ end
 function endRound ()
 	destroyBlipsAttachedTo ( van )
 	destroyElement ( van )
-	destroyElement ( vanMarker ) 
+	destroyElement ( vanMarker )
 	van = nil
 	setTimer( nextRound, 5000, 1 )
 end
@@ -277,7 +277,7 @@ function playerExitVehicle( vehicle, seat, playerJacked )
 		local team = getPlayerTeam( source )
 		if team then
 			local r, g, b = getTeamColor( team )
-			showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, getTeamName(team).."s have lost the vehicle!" )	
+			showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, getTeamName(team).."s have lost the vehicle!" )
 		end
 		setMarkerColor ( vanMarker, 255, 255, 255, 255 )
 		vanPlayer = nil

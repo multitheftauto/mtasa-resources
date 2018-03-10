@@ -8,7 +8,7 @@ if querystring["resource"] ~= "" then
 			function <* = v *> (  ) {
 				var args = new Array();
 				for ( var i = 0; i < arguments.length - 1 ; i++ )
-			    {	
+			    {
 					args[i] = arguments[i];
 				}
 

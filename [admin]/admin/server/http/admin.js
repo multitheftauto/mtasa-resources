@@ -23,8 +23,8 @@ function setCurrentPage ( page )
 		pagePrev = pageCurrent;
 	}
 	pageCurrent = page;
-	new AJAXRequest ( "GET", pageCurrent, null, 
-		function ( AJAX ) { 
+	new AJAXRequest ( "GET", pageCurrent, null,
+		function ( AJAX ) {
 			if ( AJAX.readyState == 4 && AJAX.status == 200 )
 			{
 				document.getElementById('page').innerHTML = AJAX.responseText;
@@ -42,7 +42,7 @@ function setPreviousPage ( )
 {
 	if ( pagePrev != undefined )
 	{
-		setCurrentPage ( pagePrev );	
+		setCurrentPage ( pagePrev );
 	}
 }
 

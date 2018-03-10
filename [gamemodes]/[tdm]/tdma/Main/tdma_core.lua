@@ -28,7 +28,7 @@ function onMapLoad ( name )
 
 	--outputChatBox ( "LOADING NEW MAP... PLEASE WAIT" )
 
-	mapResource = getResourceRootElement(name)	
+	mapResource = getResourceRootElement(name)
 	
 	if xDebug then outputDebugString ( "Starting TDMA Main Control Suite" ) end
 	if xDebug then outputDebugString ( "STARTED... Proceeding to load gamemode... WAIT!" ) end
@@ -303,7 +303,7 @@ function onPlayerQuit ( )
 		destroyElement ( marker )
 	end
 	setElementData ( source, "tdma.teamMarker", nil )
-end 
+end
 addEventHandler( "onPlayerQuit", root, onPlayerQuit )
 
 function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
@@ -316,7 +316,7 @@ function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 			local a = setTimer ( respawnThePlayer, 3000, 1, source, vTeam )
 			if not ( a ) then
 				respawnThePlayer ( source, vTeam )
-			end 
+			end
 		end
 		
 		if ( attacker ) then
@@ -434,7 +434,7 @@ function setupBases( startedMap )
 		local tMin = getElementData ( tSettings[1], "m" )
 		if ( tMin ) then gameTimeMin = tMin end
 		local tLocked = getElementData ( tSettings[1], "locked" )
-		if ( tLocked ) then 
+		if ( tLocked ) then
 			gameTimeLocked = tLocked
 			setTimer ( lockTime, 1000, 0 )
 			if xDebug2 then outputDebugString ( "Timer is Locked" ) end
@@ -523,7 +523,7 @@ function playerSpawned ( )
 		giveWeapon ( source, v.id, v.ammo )
 	end
 end
-addEventHandler ( "onPlayerSpawn", root, playerSpawned ) 
+addEventHandler ( "onPlayerSpawn", root, playerSpawned )
 
 function firstSpawn ( source )
 	local thePlayer = source
@@ -548,7 +548,7 @@ function firstSpawn ( source )
 	end
 	
 	if ( allDone ) then
-		if xDebug then outputDebugString ( "Spawning player " .. getPlayerName(thePlayer) .. " (ALLDONE) Team: " .. foundTeam.name ) end		
+		if xDebug then outputDebugString ( "Spawning player " .. getPlayerName(thePlayer) .. " (ALLDONE) Team: " .. foundTeam.name ) end
 		spawnThePlayer ( thePlayer, foundTeam )
 		setElementData ( thePlayer, "tdma.teamid", foundTeamID )
 		showTextForPlayer ( thePlayer, 5000, tonumber(foundTeam.red), tonumber(foundTeam.green), tonumber(foundTeam.blue), 1.5, "You have been automatically assigned to team " .. foundTeam.name )

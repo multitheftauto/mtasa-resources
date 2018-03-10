@@ -82,7 +82,7 @@ end
 -- Interface functions
 --
 function Create(x, y, text, _foreground, _background, _border)
-	if not x or not y or not text 
+	if not x or not y or not text
 	   or type(x) ~= "number" or type(y) ~= "number" or type(text) ~= "string"
 	then
 		return false

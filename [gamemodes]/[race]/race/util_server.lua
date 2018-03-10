@@ -84,7 +84,7 @@ function destroyAllMessages()
     for key,value in pairs(g_Messages) do
         destroyMessage(key)
     end
-    g_Messages = {}  
+    g_Messages = {}
 end
 
 

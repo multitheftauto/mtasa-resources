@@ -1,7 +1,7 @@
 <meta>
 	<info author="eAi, QA Team" description="This resource provides a 'free' controllable camera to 'fly' around the map with" version="1.1" />
 	<script src="freecam.lua" type="client" />
-	<script src="freecam_server.lua" type="server" />	
+	<script src="freecam_server.lua" type="server" />
 	<!-- server functions -->
 	<export function="setPlayerFreecamEnabled" />
 	<export function="setPlayerFreecamDisabled" />

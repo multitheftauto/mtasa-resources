@@ -108,6 +108,6 @@ function setSaveEditBoxMapName()
 		guiSetText ( saveDialog.mapName, "" )
 	else
 		mapName = guiGridListGetItemText ( saveDialog.mapsList, row, 1 )
-		guiSetText ( saveDialog.mapName, mapName ) 
+		guiSetText ( saveDialog.mapName, mapName )
 	end
 end

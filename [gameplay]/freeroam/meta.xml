@@ -33,7 +33,7 @@
 	<config src="weather.xml" type="client" />
 	<config src="help.xml" type="client" />
 
-	<script src="colorpicker/colorpicker.lua" type="client" />	
+	<script src="colorpicker/colorpicker.lua" type="client" />
 	<file src="colorpicker/palette.png" />
 	<file src="colorpicker/alpha.png" />
 

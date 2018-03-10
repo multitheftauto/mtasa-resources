@@ -33,11 +33,11 @@ addEventHandler ( "onPlayerWasted", getRootElement (),
 		else
 			local droppedWeapons = {}
 			for slot=0, 12 do
-				local ammo = getPedTotalAmmo(source, slot) 
+				local ammo = getPedTotalAmmo(source, slot)
 				if (getPedWeapon(source, slot) ~= 0) then
 					local weapon = getPedWeapon(source, slot)
 					local ammo = getPedTotalAmmo(source, slot)
-					table.insert(droppedWeapons, {weapon, ammo})					
+					table.insert(droppedWeapons, {weapon, ammo})
 				end
 			end
 			DropAllWeapons(droppedWeapons)
@@ -56,5 +56,5 @@ function DropAllWeapons ( droppedWeapons )
 		local pickup = createPickup(x, y, pZ, 2, t[1], timeout, t[2])
 		addEventHandler ( "onPickupHit", pickup, onDeathPickupHit )
 		timers[pickup] = setTimer ( destroyDeathPickup, timeout, 1, pickup )
-	end	
+	end
 end

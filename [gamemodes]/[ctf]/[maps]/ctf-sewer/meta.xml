@@ -4,7 +4,7 @@
     <map src="ctf-sewer.map" />
     <include resource="maplimits" />
     
-    <settings> 
+    <settings>
 		<setting name="#weather" value="[ 11 ]" />
-    </settings> 
+    </settings>
 </meta>

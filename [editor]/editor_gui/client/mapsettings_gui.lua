@@ -88,7 +88,7 @@ function createMapSettings()
 	guiLabelSetColor ( mapsettings.required, 16, 108, 11 )
 	mapsettings.description = guiCreateLabel( 0.34, 0.16, 0.65, 1, "", true, mapsettings.gamemodeSettingsTab )
 	guiSetFont ( mapsettings.description, "default-small" )
-	guiLabelSetHorizontalAlign ( mapsettings.description, "left", true ) 
+	guiLabelSetHorizontalAlign ( mapsettings.description, "left", true )
 	toggleSettingsGUI(false)
 	--create the META tab
 	mapsettings.metaName = editingControl.string:create{["x"]=0.12,["y"]=0.04,["width"]=0.3,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.metaTab, ["maxLength"]=30}
@@ -173,13 +173,13 @@ function confirmMapSettings ()
 		guiShowMessageBox ( "Invalid META \"Version\" specified", "error", "Bad Value", true )
 		return
 	end
-	if not mapsettings.timeHour:getValue() or not mapsettings.timeMinute:getValue() 
+	if not mapsettings.timeHour:getValue() or not mapsettings.timeMinute:getValue()
 		or mapsettings.timeHour:getValue() > 23 or mapsettings.timeMinute:getValue() > 59 then
 		guiShowMessageBox ( "Invalid Time specified", "error", "Bad Value", true )
 		return
 	end
 
-	-- if mapsettings.metaAuthor:getValue() == "" then 
+	-- if mapsettings.metaAuthor:getValue() == "" then
 		-- guiShowMessageBox ( "Invalid META \"Author\" specified", "error", "Bad Value", true )
 		-- return
 	-- end

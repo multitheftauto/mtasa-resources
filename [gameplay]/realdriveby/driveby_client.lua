@@ -1,7 +1,7 @@
 ﻿local driver = false
 local shooting = false
 local helpText,helpAnimation
-local exitingVehicle = false 
+local exitingVehicle = false
 local block
 lastSlot = 0
 settings = {}
@@ -10,7 +10,7 @@ settings = {}
 --This function simply sets up the driveby upon vehicle entry
 local function setupDriveby( player, seat )
 	--If his seat is 0, store the fact that he's a driver
-	if seat == 0 then 
+	if seat == 0 then
 		driver = true
 	else
 		driver = false
@@ -225,15 +225,15 @@ addCommandHandler ( "Previous driveby weapon", switchDrivebyWeapon )
 local limiterTimer
 function limitDrivebySpeed ( weaponID )
 	local speed = settings.shotdelay[tostring(weaponID)]
-	if not speed then 
-		if not isControlEnabled ( "vehicle_fire" ) then 
+	if not speed then
+		if not isControlEnabled ( "vehicle_fire" ) then
 			toggleControl ( "vehicle_fire", true )
 		end
 		removeEventHandler("onClientPlayerVehicleExit",localPlayer,unbindFire)
 		removeEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
 		unbindKey ( "vehicle_fire", "both", limitedKeyPress )
 	else
-		if isControlEnabled ( "vehicle_fire" ) then 
+		if isControlEnabled ( "vehicle_fire" ) then
 			toggleControl ( "vehicle_fire", false )
 			addEventHandler("onClientPlayerVehicleExit",localPlayer,unbindFire)
 			addEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
@@ -244,7 +244,7 @@ end
 
 function unbindFire()
 	unbindKey ( "vehicle_fire", "both", limitedKeyPress )
-	if not isControlEnabled ( "vehicle_fire" ) then 
+	if not isControlEnabled ( "vehicle_fire" ) then
 			toggleControl ( "vehicle_fire", true )
 	end
 	removeEventHandler("onClientPlayerVehicleExit",localPlayer,unbindFire)
@@ -306,7 +306,7 @@ function fadeOutHelp()
 end
 
 local function onWeaponSwitchWhileDriveby (prevSlot, curSlot)
-	if isPedDoingGangDriveby(source) then	
+	if isPedDoingGangDriveby(source) then
 		limitDrivebySpeed(getPedWeapon(source, curSlot))
 	end
 end

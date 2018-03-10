@@ -35,7 +35,7 @@
 						if string.find ( model, tonumber(query) ) then
 							table.insert ( results, object )
 							foundCache[model] = true
-						end	
+						end
 					end
 				end
 			end
@@ -62,7 +62,7 @@ function recursiveLookup ( node, elemtype, cache, parent )
 			cache[key] = {}
 			cache[key]["model"] = model
 			cache[key]["name"] = name
-			cache[key]["parent"] = parent		
+			cache[key]["parent"] = parent
 			local keywordString = xmlNodeGetAttribute ( objectnode, "keywords" )
 			local keywordTable = split ( keywordString, 44 )
 			cache[key]["keywords"] = {}

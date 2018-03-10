@@ -19,7 +19,7 @@
 
 	------------------
 	--Function to convert { moo=true,boo=true } into { moo,boo }
-	function tableToArray (tbl) 
+	function tableToArray (tbl)
 		local newtable = {}
 		for k,v in pairs(tbl) do
 			table.insert ( newtable, k )
@@ -37,7 +37,7 @@
 
 	------------------
 	--Monitor our settings so they dynamically update
-	setTimer ( 
+	setTimer (
 		function()
 			local show_chat_icon = get ( "show_chat_icon" )
 			if show_chat_icon ~= settings.voice_show_chat_icon then

@@ -591,7 +591,7 @@ end
 
 	-- what happens when an objective is reached
 function checkObjective ( obj, players )
-	if ( obj.id == "securicar" ) then 
+	if ( obj.id == "securicar" ) then
 		scriptEndSecuricar()
 		setTimer ( scriptRemoveSecuricar, 1000, 1 )
 	elseif ( obj.id == "park" ) then

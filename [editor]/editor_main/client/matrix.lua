@@ -456,7 +456,7 @@ function matrix.dogauss( mtx )
 		end
 		-- start parsing rows
 		for i = j-1,1,-1 do
-			-- check if element is not already zero			
+			-- check if element is not already zero
 			if not fiszero(mtx[i][j]) then
 				local factor = mtx[i][j]
 				for _j = j+1,columns do

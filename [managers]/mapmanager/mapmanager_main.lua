@@ -52,7 +52,7 @@ addEventHandler("onPlayerJoin", rootElement,
 	end
 )
 
-addEventHandler("onResourceStart", rootElement, 
+addEventHandler("onResourceStart", rootElement,
 	function (startedResource)
 		--Is this resource a gamemode?
 		if isGamemode(startedResource) then
@@ -72,7 +72,7 @@ addEventHandler("onResourceStart", rootElement,
 					outputMapManager("Gamemode '"..gamemodeName.."' started" .. name .. "." )
 				end
 				--We need to wait a while to see if any maps were started.  If not, lets try and start a random one
-				setTimer( 
+				setTimer(
 					function()
 						if not getRunningGamemodeMap() then
 							--Lets check if there are any maps for this gamemode
@@ -82,7 +82,7 @@ addEventHandler("onResourceStart", rootElement,
 								changeGamemodeMap (maps[math.random(1,#maps)])
 							end
 						end
-					end, 
+					end,
 				50, 1 )
 			else
 				currentGamemode = nil
@@ -120,7 +120,7 @@ addEventHandler("onResourceStart", rootElement,
 	end
 )
 
-addEventHandler("onResourceStop", rootElement, 
+addEventHandler("onResourceStop", rootElement,
 	function (stoppedResource)
 		-- Incase the resource being stopped has been deleted
 		local stillExists = false
@@ -466,18 +466,18 @@ end
 
 function getMapFromName ( name )
 	local resource = getResourceFromName ( name )
-	if resource then 
+	if resource then
 		return resource
 	end
 	if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then -- If this version has refreshResources, refresh resources.
 		refreshResources(false)
 	end
 	local resource = getResourceFromName ( name ) --and try get the resource again.
-	if resource then 
+	if resource then
 		return resource
 	end
 	name = string.lower(name) --Remove case sensitivity.  May cause minor problems with linux servers.
-	--Loop through and find resources with a matching 'name' param 
+	--Loop through and find resources with a matching 'name' param
 	for i,resource in ipairs(getMaps()) do
 		local infoName = getResourceInfo ( resource, "name" )
 		if (infoName and (string.lower(infoName) == name)) then

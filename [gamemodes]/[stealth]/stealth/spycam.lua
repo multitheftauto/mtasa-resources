@@ -19,13 +19,13 @@ function spyCamFrame ()
 	end
 	if buttonStates["left"] == true then
 		aX = -moveSpeed
-	end	
+	end
 	if buttonStates["forwards"] == true then
 		aY = -moveSpeed
-	end	
+	end
 	if buttonStates["backwards"] == true then
 		aY = moveSpeed
-	end	
+	end
 	rotX = rotX + aX
     rotY = rotY - aY
     -- limit the camera to stop it going too far up or down, left or right
@@ -36,7 +36,7 @@ function spyCamFrame ()
     end
 	if rotX < minXBound then
         rotX = minXBound
-    elseif rotX > maxXBound then	
+    elseif rotX > maxXBound then
         rotX = maxXBound
     end
 	
@@ -45,7 +45,7 @@ function spyCamFrame ()
     local cameraAngleY = rotY / 120
 
     local freeModeAngleX = math.sin(cameraAngleX / 2)
-    local freeModeAngleY = math.cos(cameraAngleX / 2) 
+    local freeModeAngleY = math.cos(cameraAngleX / 2)
     local yangle = cameraAngleY / 1.5 -- the 1.5 limits the ammount the camera can rotate, decrease it to increase the amount
 
     local freeModeAngleZ = math.sin(yangle)
@@ -126,7 +126,7 @@ function toggleSpyCam()
 		--setCameraPosition ( spyCamX,spyCamY,spyCamZ )
 		--setCameraLookAt ( spyCamTargetX, spyCamTargetY, spyCamTargetZ )
 		--toggleCameraFixedMode ( true )
-		setCameraMatrix(spyCamX, spyCamY, spyCamZ, spyCamTargetX, spyCamTargetY, spyCamTargetZ) 
+		setCameraMatrix(spyCamX, spyCamY, spyCamZ, spyCamTargetX, spyCamTargetY, spyCamTargetZ)
 		firstTime = true
 		camFixed = true
 		fadeSpyCam ( true )
@@ -170,7 +170,7 @@ function bindCamKeys ( state )
 		unbindKey ( "right", "both", setButtonState )
 		unbindKey ( "left", "both", setButtonState )
 		unbindKey ( "forwards", "both", setButtonState )
-		unbindKey ( "backwards", "both", setButtonState )	
+		unbindKey ( "backwards", "both", setButtonState )
 	end
 end
 

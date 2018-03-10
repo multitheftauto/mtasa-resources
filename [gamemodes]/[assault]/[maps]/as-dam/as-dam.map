@@ -6,7 +6,7 @@
   <camera type="spawn" posX="506" posY="569" posZ="46" targetX="536" targetY="709" targetZ="4" />  <camera type="selectTeam" posX="506" posY="569" posZ="46" targetX="536" targetY="709" targetZ="4" />
   <camera type="finish" posX="-631.987" posY="1843.968" posZ="10" targetX="-610.744" targetY="1920.229" targetZ="7" />
   
-  <objective name="Explosive 1" description="Steal the explosives in the quarry" 
+  <objective name="Explosive 1" description="Steal the explosives in the quarry"
   	id="exp1" req="" stay="8" stayText="Stealing explosives.."
 	posX="559.321411" posY="822.928101" posZ="-31.153337"
 	successText="Explosives stolen" defenderDescription="Prevent the other team from stealing the explosives" />
@@ -69,24 +69,24 @@
   </spawngroup>
 
   <spawngroup req="leave" type="attacker">
-	<spawnarea name="attacker after quarry" posX="861.462402" posY="865.448669" posZ="13.370245" rotZ="360" weapons="29,200" skins="122,124" />  
+	<spawnarea name="attacker after quarry" posX="861.462402" posY="865.448669" posZ="13.370245" rotZ="360" weapons="29,200" skins="122,124" />
 	<spawnarea name="attacker after quarry" posX="514.339905" posY="658.217529" posZ="3.063502" rotZ="360" weapons="29,200" skins="122,124" />
   </spawngroup>
   <spawngroup req="leave" type="defender">
 	<spawnarea name="defender - after quarry" posX="998.369141" posY="1047.931274" posZ="48.151497" rotZ="360" weapons="31,300" skins="282,283" />
-	<spawnarea name="defender after quarry" posX="386.042633" posY="902.457886" posZ="20.740034" rotZ="360" weapons="31,300" skins="282,283" />  
-	<spawnarea name="defender after quarry" posX="-297.683319" posY="1311.318604" posZ="54.028942" rotZ="360" weapons="31,300" skins="282,283" />  
+	<spawnarea name="defender after quarry" posX="386.042633" posY="902.457886" posZ="20.740034" rotZ="360" weapons="31,300" skins="282,283" />
+	<spawnarea name="defender after quarry" posX="-297.683319" posY="1311.318604" posZ="54.028942" rotZ="360" weapons="31,300" skins="282,283" />
 	<spawnarea name="defender after quarry" posX="-92.572441" posY="1349.131226" posZ="10.370790" rotZ="360" weapons="31,300" skins="282,283" />
   </spawngroup>
   
   <spawngroup req="dam" type="attacker">
-	<spawnarea name="attacker dam" posX="-395.116516" posY="1131.294922" posZ="15.894697" rotZ="360" weapons="31,300;24,21" skins="122,124" />  
+	<spawnarea name="attacker dam" posX="-395.116516" posY="1131.294922" posZ="15.894697" rotZ="360" weapons="31,300;24,21" skins="122,124" />
 	<spawnarea name="attacker dam" posX="-297.425537" posY="1747.491821" posZ="42.706184" rotZ="360" weapons="31,300;24,21" skins="122,124" />
 	<spawnarea name="attacker dam" posX="-750.795593" posY="1635.094604" posZ="27.189108" rotZ="360" weapons="31,300;24,21" skins="122,124" />
   </spawngroup>
   <spawngroup req="dam" type="defender">
-	<spawnarea name="defender dam" posX="-910.461060" posY="2006.659912" posZ="60.932747" rotZ="360" weapons="30,300;24,21" skins="282,283" />  
-	<spawnarea name="defender dam" posX="-810.474060" posY="1815.639893" posZ="7.018691" rotZ="360" weapons="30,300;24,21" skins="282,283" />  
+	<spawnarea name="defender dam" posX="-910.461060" posY="2006.659912" posZ="60.932747" rotZ="360" weapons="30,300;24,21" skins="282,283" />
+	<spawnarea name="defender dam" posX="-810.474060" posY="1815.639893" posZ="7.018691" rotZ="360" weapons="30,300;24,21" skins="282,283" />
 	<spawnarea name="defender dam" posX="-507.941376" posY="1995.848267" posZ="60.572983" rotZ="360" weapons="30,300;24,21" skins="282,283" />
   </spawngroup>
   

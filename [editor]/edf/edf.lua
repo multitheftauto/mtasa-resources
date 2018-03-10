@@ -105,7 +105,7 @@ local edfCreateBasic = {
 		return ped
 	end,
 	water = function(cdata)
-		return createWater ( 
+		return createWater (
 			cdata.position[1] - cdata.sizeX/2, cdata.position[2] - cdata.sizeY/2, cdata.position[3],
 			cdata.position[1] + cdata.sizeX/2, cdata.position[2] - cdata.sizeY/2, cdata.position[3],
 			cdata.position[1] - cdata.sizeX/2, cdata.position[2] + cdata.sizeY/2, cdata.position[3],
@@ -331,7 +331,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 			else
 				table.insert(serverScripts,name)
 			end
-		end			
+		end
 		i = i + 1
 	until false
 	readScripts(serverScripts,clientScripts,fromResource)
@@ -1017,7 +1017,7 @@ function edfSetElementPropertyForRepresentations(element,property,value)
 	--Check if the property is inherited to reps
 	for k,child in ipairs(getElementChildren(element)) do
 		if edfGetAncestor(child) == element then --Check that the child is a representation of the element
-			local inherited = getElementData(child,"edf:inherited") 
+			local inherited = getElementData(child,"edf:inherited")
 			if inherited then
 				--Check that the property is inherited to this child
 				if inherited[property] then
@@ -1078,7 +1078,7 @@ function edfAddElementNodeData(node, resource)
 									   
 	--update the type shortcut
 	typeDefinition.shortcut = xmlNodeGetAttribute(node,"shortcut")
-									   or typeDefinition.shortcut	
+									   or typeDefinition.shortcut
 	local isValidShortcut
 	-- update the type createable state
   -- If the "createable" attribute is not present, xmlNodeGetAttribute returns nil and then

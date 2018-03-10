@@ -38,7 +38,7 @@ end
 
 ---
 
-setTimer ( 
+setTimer (
 	function()
 		bShowChatIcons = getElementData ( resourceRoot, "show_chat_icon", show_chat_icon )
 	end,

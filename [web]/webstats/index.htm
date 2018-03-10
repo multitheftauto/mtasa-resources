@@ -20,7 +20,7 @@
 		}
 		
 		function updateChart()
-		{		
+		{
 			var stats = "";
 			var charttype = document.getElementById("charttype").value;
 			var i = 0;
@@ -29,7 +29,7 @@
 				var statItem = document.getElementById("stat" + i);
 				if ( !statItem )
 					break;
-				if ( statItem.checked == true ) 
+				if ( statItem.checked == true )
 				{
 					stats = stats + statItem.value + ",";
 				}
@@ -51,7 +51,7 @@
 			var datasets = document.getElementById("datasets");
 			var toggleButton = document.getElementById("toggleButton");
 			var chart = document.getElementById("chart");
-			if ( toggleButton.value == "hide datasets" ) 
+			if ( toggleButton.value == "hide datasets" )
 			{
 				datasets.style.display = "none";
 				toggleButton.value = "show datasets";

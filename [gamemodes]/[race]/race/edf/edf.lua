@@ -7,7 +7,7 @@ addEventHandler ( "onMapOpened", root,
 			local object = getRepresentation(pickup, "object")
 			if object then
 				setElementModel ( object, g_ModelForPickupType[pickupType] or 1337 )
-			end		
+			end
 		end
 		for i,checkpoint in ipairs(getElementsByType"checkpoint") do
 			local marker = getRepresentation(checkpoint, "marker")

@@ -144,7 +144,7 @@ addCommandHandler('rate',
 function updateMapNames()
 	local sql = executeSQLQuery("SELECT * FROM mapratings")
 	local needUpdate
-	if sql and #sql > 0 then 
+	if sql and #sql > 0 then
 		for i=1,math.min(5,#sql) do
 			if not getResourceFromName(sql[math.random(1,#sql)].mapname) then
 				needUpdate = true

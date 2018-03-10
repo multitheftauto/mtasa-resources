@@ -71,7 +71,7 @@ end
 function table.find ( theTable, value )
 	for i,v in pairs(theTable) do
 		if v == value then
-			return 
+			return
 		end
 	end
 	return false

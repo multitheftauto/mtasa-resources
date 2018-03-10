@@ -13,7 +13,7 @@ function (resource)
 		-- resource not yet started
 --outputDebugString("briefcase    resource not yet started")
 		addEventHandler("onClientResourceStart", root, onBriefcaseStart)
-	end	
+	end
 end
 )
 

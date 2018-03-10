@@ -36,7 +36,7 @@ local function renderGridlines()
 	--Work out our line thickness
 	local thickness = (100/getDistanceBetweenPoints3D(camX,camY,camZ,x,y,z)) * MAX_THICKNESS
 	--
-	local elementMatrix = (getElementMatrix(attachedToElement) and not ignoreMatrix[getElementType(attachedToElement)]) 
+	local elementMatrix = (getElementMatrix(attachedToElement) and not ignoreMatrix[getElementType(attachedToElement)])
 							and matrix(getElementMatrix(attachedToElement))
 	if not elementMatrix then
 		--Make them into absolute coords
@@ -45,15 +45,15 @@ local function renderGridlines()
 	end
 	--
 	local face1 = matrix{
-		 	{minX,maxY,minZ,1}, 
-			{minX,maxY,maxZ,1}, 
-			{maxX,maxY,maxZ,1}, 
+		 	{minX,maxY,minZ,1},
+			{minX,maxY,maxZ,1},
+			{maxX,maxY,maxZ,1},
 			{maxX,maxY,minZ,1},
 		}
 	local face2 = matrix{
 			{minX,minY,minZ,1},
-			{minX,minY,maxZ,1}, 
-			{maxX,minY,maxZ,1}, 
+			{minX,minY,maxZ,1},
+			{maxX,minY,maxZ,1},
 			{maxX,minY,minZ,1},
 		}
 	if elementMatrix then
@@ -107,7 +107,7 @@ function drawXYZLines()
 	local thickness = (100/getDistanceBetweenPoints3D(camX,camY,camZ,x,y,z)) * MAX_THICKNESS_AngleHelper
 	drawLine({x,y,z},{xx,xy,xz},tocolor(200,0,0,200),thickness)
 	drawLine({x,y,z},{yx,yy,yz},tocolor(0,200,0,200),thickness)
-	drawLine({x,y,z},{zx,zy,zz},tocolor(0,0,200,200),thickness)	
+	drawLine({x,y,z},{zx,zy,zz},tocolor(0,0,200,200),thickness)
 end
 
 function doBasicElementRenders()
@@ -135,7 +135,7 @@ function drawLine(vecOrigin, vecTarget,color,thickness)
 	local startX,startY = getScreenFromWorldPosition(vecOrigin[1],vecOrigin[2],vecOrigin[3],10)
 	if (not vecTarget[1]) then return false end
 	local endX,endY = getScreenFromWorldPosition(vecTarget[1],vecTarget[2],vecTarget[3],10)
-	if not startX or not startY or not endX or not endY then 
+	if not startX or not startY or not endX or not endY then
 		return false
 	end
 	

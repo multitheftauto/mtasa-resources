@@ -121,15 +121,15 @@ function math.round ( value )
 end
 
 function scrollDown()
-	if browserElementLookOptions.distance + browserElementLookOptions.scrollUnits < browserElementLookOptions.maxDistance 
-		then browserElementLookOptions.distance = browserElementLookOptions.distance + browserElementLookOptions.scrollUnits 
+	if browserElementLookOptions.distance + browserElementLookOptions.scrollUnits < browserElementLookOptions.maxDistance
+		then browserElementLookOptions.distance = browserElementLookOptions.distance + browserElementLookOptions.scrollUnits
 		else browserElementLookOptions.distance = browserElementLookOptions.maxDistance
 	end
 end
 
-function scrollUp() 
-	if browserElementLookOptions.distance - browserElementLookOptions.scrollUnits > browserElementLookOptions.minDistance 
-		then browserElementLookOptions.distance = browserElementLookOptions.distance - browserElementLookOptions.scrollUnits 
+function scrollUp()
+	if browserElementLookOptions.distance - browserElementLookOptions.scrollUnits > browserElementLookOptions.minDistance
+		then browserElementLookOptions.distance = browserElementLookOptions.distance - browserElementLookOptions.scrollUnits
 		else browserElementLookOptions.distance = browserElementLookOptions.minDistance
 	end
 end
@@ -140,7 +140,7 @@ function enableElementLook (dontChangeFixedMode, target, newRotX, newRotY)
 		return false
 	end
 	
-	if target then 
+	if target then
 		browserElementLookOptions.target = target
 	else browserElementLookOptions.target = getLocalPlayer()
 	end
@@ -175,7 +175,7 @@ function setFreelookEvents(bool)
 		isHandled2 = addEventHandler("onClientCursorMove",rootElement,elementLookMouse)
 	else
 		removeEventHandler("onClientRender", rootElement, elementLookFrame)
-		removeEventHandler("onClientCursorMove",rootElement,elementLookMouse)	
+		removeEventHandler("onClientCursorMove",rootElement,elementLookMouse)
 		isHandled1,isHandled2 = false,false
 	end
 end

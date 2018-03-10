@@ -61,15 +61,15 @@ addEventHandler ( "onClientRender", root,
 			output = output:gsub("%%s",s)
 			output = output:gsub("%%cs",cs)
 			
-			dxDrawText ( output, 
-				x, 
-				y, 
-				x, 
-				y, 
-				color, 
-				scale, 
-				data.font or "default-bold", 
-				"center", 
+			dxDrawText ( output,
+				x,
+				y,
+				x,
+				y,
+				color,
+				scale,
+				data.font or "default-bold",
+				"center",
 				"center" )
 		end
 	end

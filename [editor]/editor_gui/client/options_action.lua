@@ -58,7 +58,7 @@ function setFreecamSpeeds()
 end
 
 ---This part decides whether gui should be refreshed or not
-local iconSize,topmenuAlign,bottommenuAlign 
+local iconSize,topmenuAlign,bottommenuAlign
 local doesGUINeedRefreshing = false
 function dumpGUISettings()
 	doesGUINeedRefreshing = false

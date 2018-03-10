@@ -1,4 +1,4 @@
-﻿local blockedTasks = 
+﻿local blockedTasks =
 {
 	"TASK_SIMPLE_IN_AIR", -- We're falling or in a jump.
 	"TASK_SIMPLE_JUMP", -- We're beginning a jump
@@ -16,7 +16,7 @@
 
 local function reloadWeapon()
 	-- Usually, getting the simplest task is enough to suffice
-	local task = getPedSimplestTask (localPlayer) 
+	local task = getPedSimplestTask (localPlayer)
 
 	-- Iterate through our list of blocked tasks
 	for idx, badTask in ipairs(blockedTasks) do

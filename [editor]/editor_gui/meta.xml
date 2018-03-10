@@ -86,7 +86,7 @@
 	<file src="client/images/topmenu/options.png"/>
 	<file src="client/images/topmenu/undo.png"/> <!--From the Tango Icon library-->
 	<file src="client/images/topmenu/redo.png"/>  <!--From the Tango Icon library-->
-	<file src="client/images/topmenu/locations.png"/> 
+	<file src="client/images/topmenu/locations.png"/>
 	
 	<!-- Blips -->
 	<file src="client/images/blips/0.png"/>

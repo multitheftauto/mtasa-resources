@@ -164,12 +164,12 @@ String.prototype.htmlEntities = function () {
 
 function showSpinner()
 {
-    document.getElementById("searchingSpinner").style.display = "inline";	
+    document.getElementById("searchingSpinner").style.display = "inline";
 }
 
 function hideSpinner()
 {
-    document.getElementById("searchingSpinner").style.display = "none";	
+    document.getElementById("searchingSpinner").style.display = "none";
 }
 
 

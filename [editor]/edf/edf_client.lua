@@ -13,12 +13,12 @@ for k, theType in ipairs(basicTypes) do
 	isBasic[theType] = true
 end
 
-local radiusFuncs = { 
+local radiusFuncs = {
 	object = getElementRadius,
 	marker = getMarkerSize,
 	ped = getElementRadius,
 	vehicle = getElementRadius,
-	pickup = function() return 0.5 end 
+	pickup = function() return 0.5 end
 }
 
 local function getRadius ( element )
@@ -261,7 +261,7 @@ function edfSetElementPropertyForRepresentations(element,property,value)
 	--Check if the property is inherited to reps
 	for k,child in ipairs(getElementChildren(element)) do
 		if edfGetAncestor(child) == element then --Check that the child is a representation of the element
-			local inherited = getElementData(child,"edf:inherited") 
+			local inherited = getElementData(child,"edf:inherited")
 			if inherited then
 				--Check that the property is inherited to this child
 				if inherited[property] then
@@ -337,7 +337,7 @@ function edfGetElementBoundingBox ( element )
 				biggestRadius = radius
 				biggestElement = representation
 			end
-		end		
+		end
 	end
 	local a,b,c,d,e,f = getElementBoundingBox(biggestElement)
 	if a then

@@ -52,7 +52,7 @@ function colorPicker.create(id, start, title)
   cp.gui.editb = guiCreateLabel(338, 211, 64, 20, "B: 0", false, cp.gui.window)
   cp.gui.okb = guiCreateButton(336, 235, 64, 24, "OK", false, cp.gui.window)
   cp.gui.closeb = guiCreateButton(336, 265, 64, 24, "Cancel", false, cp.gui.window)
-  guiWindowSetSizable(cp.gui.window, false)	
+  guiWindowSetSizable(cp.gui.window, false)
 
   cp.handlers = {}
   cp.handlers.mouseDown = function() cp:mouseDown() end
@@ -76,7 +76,7 @@ function colorPicker.create(id, start, title)
   addEventHandler("onClientGUIFocus", cp.gui.window, cp.handlers.guiFocus, false)
   addEventHandler("onClientGUIBlur", cp.gui.window, cp.handlers.guiBlur, false)
   addEventHandler("onClientGUIClick", cp.gui.okb, cp.handlers.pickColor, false)
-  addEventHandler("onClientGUIClick", cp.gui.closeb, cp.handlers.destroy, false)  
+  addEventHandler("onClientGUIClick", cp.gui.closeb, cp.handlers.destroy, false)
   showCursor(true)
   return cp
 end
@@ -98,16 +98,16 @@ function colorPicker:mouseDown()
     self.gui.track = source
     local cx, cy = getCursorPosition()
     self:mouseMove(sw*cx, sh*cy)
-  end  
+  end
 end
 
 function colorPicker:mouseUp(button, state)
   if not state or state ~= "down" then
-    if self.gui.track then 
-      triggerEvent("onColorPickerChange", root, self.id, self.color.hex, self.color.r, self.color.g, self.color.b) 
+    if self.gui.track then
+      triggerEvent("onColorPickerChange", root, self.id, self.color.hex, self.color.r, self.color.g, self.color.b)
     end
-    self.gui.track = false 
-  end  
+    self.gui.track = false
+  end
 end
 
 function colorPicker:mouseMove(x,y)
@@ -120,7 +120,7 @@ function colorPicker:mouseMove(x,y)
     elseif source == self.gui.hbar then
       local offset = y - (gy + 32)
       self.color.h = (255-offset)/255
-    end 
+    end
     self:updateColor()
   end
 end
@@ -174,7 +174,7 @@ function colorPicker:destroy()
   removeEventHandler("onClientGUIFocus", self.gui.window, self.handlers.guiFocus)
   removeEventHandler("onClientGUIBlur", self.gui.window, self.handlers.guiBlur)
   removeEventHandler("onClientGUIClick", self.gui.okb, self.handlers.pickColor)
-  removeEventHandler("onClientGUIClick", self.gui.closeb, self.handlers.destroy)  
+  removeEventHandler("onClientGUIClick", self.gui.closeb, self.handlers.destroy)
   destroyElement(self.gui.window)
   pickerTable[self.id] = nil
   setmetatable(self, nil)
@@ -215,17 +215,17 @@ end
 function rgb2hsv(r, g, b)
   r, g, b = r/255, g/255, b/255
   local max, min = math.max(r, g, b), math.min(r, g, b)
-  local h, s 
+  local h, s
   local v = max
   local d = max - min
   s = max == 0 and 0 or d/max
-  if max == min then 
+  if max == min then
     h = 0
-  elseif max == r then 
+  elseif max == r then
     h = (g - b) / d + (g < b and 6 or 0)
-  elseif max == g then 
+  elseif max == g then
     h = (b - r) / d + 2
-  elseif max == b then 
+  elseif max == b then
     h = (r - g) / d + 4
   end
   h = h/6

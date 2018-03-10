@@ -125,7 +125,7 @@ addEvent ("killcameraobject", true )
 
 function removecamball(player)
 	coltable = getElementsByType ( "colshape" )
-	for theKey,thecol in ipairs(coltable) do 
+	for theKey,thecol in ipairs(coltable) do
 		if getElementData ( thecol, "camowner" ) == player then
 			setElementData ( thecol, "type", nil )
 			destroyElement ( thecol )
@@ -152,7 +152,7 @@ function maketheshield (player)
 	end
 end
 	
-addEventHandler("shieldup", getRootElement() , maketheshield)	
+addEventHandler("shieldup", getRootElement() , maketheshield)
 
 
 

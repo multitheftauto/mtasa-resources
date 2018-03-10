@@ -86,7 +86,7 @@ function doSaveNewMapSettings( newMapSettings, hidden )
 	
 	currentMapSettings = newMapSettings
 	for setting, value in pairs(currentMapSettings) do
-		if mapSettingAction[setting] then 
+		if mapSettingAction[setting] then
 			mapSettingAction[setting](value)
 		end
 	end
@@ -135,7 +135,7 @@ function setupMapSettings()
 		end
 	end
 	for setting, value in pairs(currentMapSettings) do
-		if mapSettingAction[setting] then 
+		if mapSettingAction[setting] then
 			mapSettingAction[setting](value)
 		end
 	end
@@ -189,7 +189,7 @@ function passNewMapSettings()
 	local settings = getSettings(mapResource)
 	for settingName,settingValue in pairs(defaults) do
 		if settings[settingName] then
-			currentMapSettings[settingName] = fromJSON(settings[settingName]) 
+			currentMapSettings[settingName] = fromJSON(settings[settingName])
 			if currentMapSettings[settingName] == nil then
 				currentMapSettings[settingName] = settings[settingName]
 			end
@@ -220,7 +220,7 @@ function passNewMapSettings()
 	local gamemodes = mapmanager.getGamemodes()
 	for k,gamemodeRes in ipairs(gamemodes) do
 		local gamemodeName = getResourceName ( gamemodeRes )
-		if ( gamemodesArray[gamemodeName] ) then 
+		if ( gamemodesArray[gamemodeName] ) then
 			table.insert ( currentMapSettings.addedGamemodes, gamemodeName )
 		else
 			table.insert ( currentMapSettings.availGamemodes, gamemodeName )

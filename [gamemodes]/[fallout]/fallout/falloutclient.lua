@@ -54,7 +54,7 @@ function checkStatusB ( )
 	    killTimer ( checkStatusTimer )
 	    checkStatusTimer = nil
 	end
-end 
+end
 
 function checkHax ( )
 	weapon = getPedWeapon ( localPlayer ) --anti cheat protection

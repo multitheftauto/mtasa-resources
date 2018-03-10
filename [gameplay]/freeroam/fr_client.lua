@@ -1815,7 +1815,7 @@ function onExitVehicle(vehicle,seat)
 		if source and g_PlayerData[source] then
 			setVehicleGhost(vehicle,hasDriverGhost(vehicle))
 		end
-	end	
+	end
 end
 
 function killLocalPlayer()
@@ -1903,7 +1903,7 @@ wndMain = {
 	onclose = mainWndClose
 }
 
-disableBySetting = 
+disableBySetting =
 {
 	{parent=wndMain, id="antiram"},
 	{parent=wndMain, id="disablewarp"},

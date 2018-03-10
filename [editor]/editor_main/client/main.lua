@@ -143,9 +143,9 @@ local specialIntersections = {
 
 function startWhenLoaded()
 	engineSetAsynchronousLoading ( false, true )
-	if getElementData(thisResourceRoot,"g_in_test") then 
+	if getElementData(thisResourceRoot,"g_in_test") then
 		setElementData ( localPlayer, "waitingToStart", true, false )
-		return 
+		return
 	else
 		setElementData ( localPlayer, "waitingToStart", nil, false )
 	end
@@ -176,7 +176,7 @@ addEventHandler("onClientRender", root,
 			labelCenterX,labelCenterY = g_screenX/2, g_screenY/2
 		else
 			if editor_gui.guiGetMouseOverElement() then return end
-			labelCenterX,labelCenterY, endX,endY,endZ = getCursorPosition()		
+			labelCenterX,labelCenterY, endX,endY,endZ = getCursorPosition()
 			if not labelCenterX or labelCenterX == 0 or labelCenterX == 1 or labelCenterY == 0 or labelCenterY == 1 then
 				return
 			end
@@ -206,7 +206,7 @@ addEventHandler("onClientRender", root,
 
 		local targetElement, targetX, targetY, targetZ, buildingInfo = getTargetedElement()
 		if targetElement and not g_SelectWorldBuildingMode_main then
-			if targetElement ~= g_targetedPart then	
+			if targetElement ~= g_targetedPart then
 				g_targetedPart = targetElement
 				g_targetedElement = edf.edfGetAncestor(targetElement)
 			end
@@ -217,7 +217,7 @@ addEventHandler("onClientRender", root,
 			createHighlighterText ( labelCenterX,labelCenterY,
 							getElementID(g_targetedElement) or "",
 							"["..getElementType(g_targetedElement).."]",
-							roundedDistance .. " m" 
+							roundedDistance .. " m"
 			)
 		else
 			if g_targetedElement then
@@ -258,7 +258,7 @@ addEventHandler("onClientRender", root,
 			crosshairState(CROSSHAIR_MOUSEOVER)
 		else
 			local waterCollision, wCX, wCY, wCZ = testLineAgainstWater(camX, camY, camZ, endX, endY, endZ)
-			local groundCollision, gCX, gCY, gCZ = 
+			local groundCollision, gCX, gCY, gCZ =
 				processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer)
 	
 			if waterCollision and groundCollision then
@@ -446,8 +446,8 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 
 	if not isElement(clickedElement) then clickedElement = nil end
 	if keyState == "down" then
-		if ((getTickCount() - DOUBLE_CLICK_MAX_DELAY) <= g_lastClick.tick) 
-			and g_lastClick.key == key 
+		if ((getTickCount() - DOUBLE_CLICK_MAX_DELAY) <= g_lastClick.tick)
+			and g_lastClick.key == key
 			and g_lastClick.element == clickedElement then
 			return processDoubleClick ( clickedElement, key )
 		end
@@ -529,7 +529,7 @@ function getTargetedElement(hitX, hitY, hitZ)
 	local camX, camY, camZ = getCameraMatrix()
 	
 	-- check for collisionless elements between camera and collision point
-	local tempElement, tempHitX, tempHitY, tempHitZ = 
+	local tempElement, tempHitX, tempHitY, tempHitZ =
 		processLineForElements(camX, camY, camZ, targetX, targetY, targetZ)
 
 	-- if collisionless element was found in front of the collision point, use it
@@ -573,7 +573,7 @@ function createHighlighterText ( absX,absY,text1,text2,text3 )
 	xPos = absX - (extent/2)
 	yPos = absY + 16
 	dxDrawText ( text3, xPos + 1, yPos + 1, xPos + extent, yPos + height, -16777216, INFO_SCALE, INFO_FONT )
-	dxDrawText ( text3, xPos, yPos, xPos + extent, yPos + height, INFO_COLOR, INFO_SCALE, INFO_FONT )  
+	dxDrawText ( text3, xPos, yPos, xPos + extent, yPos + height, INFO_COLOR, INFO_SCALE, INFO_FONT )
 	return true
 end
 
@@ -686,7 +686,7 @@ function getCameraLine()
 	local distance = getDistanceBetweenPoints3D ( camX, camY, camZ, endX, endY, endZ )
 	targetX = camX + ((endX - camX)/distance) * g_maxSelectDistance
 	targetY = camY + ((endY - camY)/distance) * g_maxSelectDistance
-	targetZ = camZ + ((endZ - camZ)/distance) * g_maxSelectDistance	
+	targetZ = camZ + ((endZ - camZ)/distance) * g_maxSelectDistance
 	
 	return camX, camY, camZ, endX, endY, endZ
 end
@@ -803,14 +803,14 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	-- if not openProperties then
 		-- local cursorX, cursorY = 0.5,0.5
 		-- local absoluteX = math.ceil(g_screenX*cursorX)
-		-- local absoluteY = math.ceil(g_screenY*cursorY)		
+		-- local absoluteY = math.ceil(g_screenY*cursorY)
 		-- worldX, worldY, worldZ = getWorldFromScreenPosition ( absoluteX, absoluteY, 100 )
 		-- triggerEvent ( "onClientCursorMove", root, cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ )
 	-- end
 	
 	if ( shortcut ) then
-		if not openProperties then 
-			editor_gui.openPropertiesBox( element, false, shortcut ) 
+		if not openProperties then
+			editor_gui.openPropertiesBox( element, false, shortcut )
 		end
 	end
 

@@ -797,7 +797,7 @@ function openPropertiesBox( element, resourceName, shortcut )
 	guiSetVisible(wndProperties, true)
 	isPropertiesOpen = true
 	
-	if ( shortcut ) then 
+	if ( shortcut ) then
 		for k,control in ipairs(addedControls) do
 			if control:getLabel() == shortcut then
 				--Focus the control to the shortcut
@@ -886,30 +886,30 @@ function propertiesResize()
 	local windowWidth,windowHeight = guiGetSize ( source, layout.relative )
 	--Resize the scrollpane
 	local spnWidth = guiGetSize ( spnProperties, layout.relative )
-	guiSetSize ( 
+	guiSetSize (
 		spnProperties,
-		spnWidth, 
+		spnWidth,
 		windowHeight - layout.button.height - scrollbarThumbSize - layout.padding.bottom + 2,
-		layout.relative 
+		layout.relative
 	)
 	--Reposition the line
 	guiSetPosition (
 		lineImg,
-		layout.padding.left, 
-		windowHeight - layout.padding.bottom - 8, 
+		layout.padding.left,
+		windowHeight - layout.padding.bottom - 8,
 		layout.relative
 	)
 	--Reposition the OK, cancel and pullout buttons
-	guiSetPosition ( 
+	guiSetPosition (
 		btnApply,
 		layout.padding.left,
 		windowHeight - layout.padding.bottom,
 		layout.relative
 	)
-	guiSetPosition ( 
-		btnCancel,	
-		layout.padding.left + layout.button.width + 10, 
-		windowHeight - layout.padding.bottom, 
+	guiSetPosition (
+		btnCancel,
+		layout.padding.left + layout.button.width + 10,
+		windowHeight - layout.padding.bottom,
 		layout.relative
 	)
 	guiSetPosition (
@@ -968,12 +968,12 @@ local function pulloutClick(button, state)
 	if source ~= gdlAction then
 		guiSetEnabled ( btnPullout, true )
 		guiSetVisible ( gdlAction, false )
-		removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )	
+		removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
 		return
 	end
 	local item = guiGridListGetSelectedItem ( gdlAction )
 	if item == -1 then return end
-	removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )	
+	removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
 	guiSetEnabled ( btnPullout, true )
 	guiSetVisible(gdlAction,false)
 	pulloutAction[guiGridListGetItemText(gdlAction,item,1)]()

@@ -52,14 +52,14 @@ function setPlayerVoiceMuted ( player, muted, synchronise )
 		globalMuted[player] = true
 		addMutedToXML ( player )
 		setElementData ( player, DATA_NAME, VOICE_MUTED, false )
-		if synchronise ~= false then 
+		if synchronise ~= false then
 			triggerServerEvent ( "voice_mutePlayerForPlayer", player )
 		end
 	elseif not muted and globalMuted[player] then
 		globalMuted[player] = nil
 		removeMutedFromXML ( player )
 		setElementData ( player, DATA_NAME, VOICE_IDLE, false )
-		if synchronise ~= false then 
+		if synchronise ~= false then
 			triggerServerEvent ( "voice_unmutePlayerForPlayer", player )
 		end
 	end
@@ -80,7 +80,7 @@ addCommandHandler ( "mutevoice",
 			return
 		end
 	
-		local player = getPlayerFromName ( playerName ) 
+		local player = getPlayerFromName ( playerName )
 		if not player then
 			outputConsole ( "mutevoice: Unknown player '"..playerName.."'" )
 			return
@@ -88,12 +88,12 @@ addCommandHandler ( "mutevoice",
 		
 		if isPlayerVoiceMuted ( player ) then
 			outputConsole ( "mutevoice: Player '"..playerName.."' is already muted!" )
-			return	
+			return
 		end
 		
 		if player == localPlayer then
 			outputConsole ( "mutevoice: You cannot mute yourself!" )
-			return			
+			return
 		end
 		
 		setPlayerVoiceMuted ( player, true )
@@ -109,7 +109,7 @@ addCommandHandler ( "unmutevoice",
 			return
 		end
 	
-		local player = getPlayerFromName ( playerName ) 
+		local player = getPlayerFromName ( playerName )
 		if not player then
 			outputConsole ( "unmutevoice: Unknown player '"..playerName.."'" )
 			return
@@ -117,7 +117,7 @@ addCommandHandler ( "unmutevoice",
 		
 		if not isPlayerVoiceMuted ( player ) then
 			outputConsole ( "unmutevoice: Player '"..playerName.."' is not muted" )
-			return	
+			return
 		end
 		
 		setPlayerVoiceMuted ( player, false )
@@ -129,7 +129,7 @@ addCommandHandler ( "unmutevoice",
 
 addEventHandler ( "onClientResourceStart", resourceRoot,
 	function()
-		if isVoiceEnabled() then 	
+		if isVoiceEnabled() then
 			cacheMutedFromXML ()
 			
 			if getResourceFromName"scoreboard" then
@@ -185,7 +185,7 @@ function cacheMutedFromXML ()
 	
 	local nodes = xmlNodeGetChildren ( file )
 	for i,node in ipairs(nodes) do
-		local name = xmlNodeGetAttribute ( node, "name" ) 
+		local name = xmlNodeGetAttribute ( node, "name" )
 		if name then
 			xmlCache[name] = true
 		end

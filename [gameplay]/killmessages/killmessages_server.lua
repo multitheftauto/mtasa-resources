@@ -144,12 +144,12 @@ end
 
 function outputMessage ( message, visibleTo, r, g, b, font )
 	if type(message) ~= "string" and type(message) ~= "table" then
-		outputDebugString ( "outputMessage - Bad 'message' argument", 0, 112, 112, 112 ) 
-		return false 
+		outputDebugString ( "outputMessage - Bad 'message' argument", 0, 112, 112, 112 )
+		return false
 	end
-	if not isElement(visibleTo) then 
-		outputDebugString ( "outputMessage - Bad argument", 0, 112, 112, 112 ) 
-		return false 
+	if not isElement(visibleTo) then
+		outputDebugString ( "outputMessage - Bad argument", 0, 112, 112, 112 )
+		return false
 	end
 	--Turn any resources into resource names
 	if type(message) == "table" then

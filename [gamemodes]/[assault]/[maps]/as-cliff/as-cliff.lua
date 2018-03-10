@@ -59,7 +59,7 @@ function doAssaultEndRound()
 		destroyBlipsAttachedTo ( truck )
 	end
 	
-	if ( objectives.finish ) then 
+	if ( objectives.finish ) then
 		destroyElement ( cols.finalblip )
 		cols.finalblip = nil
 		removeEventHandler ( "onColShapeHit", cols.exitCol, outside )

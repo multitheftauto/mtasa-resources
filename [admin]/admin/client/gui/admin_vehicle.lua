@@ -239,7 +239,7 @@ function aClientVehicleClick ( button )
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setcolor", { guiGetText ( aVehicleColor1 ), guiGetText ( aVehicleColor2 ), guiGetText ( aVehicleColor3 ), guiGetText ( aVehicleColor4 ) } )
 		elseif ( source == aLightsColorSet ) then
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setlights", { guiGetText ( aLightsColor ) } )
-		elseif ( source == aLicensePlateSet ) then 
+		elseif ( source == aLicensePlateSet ) then
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setplates", { guiGetText ( aLicensePlate ) } )
 		elseif ( source == aVehicleColorScheme ) then
 			guiSetVisible ( aVehicleColorForm, true )
@@ -289,7 +289,7 @@ end
 
 
 addEvent("onColorPickerOK", true)
-addEventHandler("onColorPickerOK", root, 
+addEventHandler("onColorPickerOK", root,
 function (id, hex)
 if id == "vehicleColor1" then
 	guiSetText(aVehicleColor1, hex)

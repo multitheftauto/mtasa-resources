@@ -1,4 +1,4 @@
-function enterVehicle ( player, seat, jacked ) 
+function enterVehicle ( player, seat, jacked )
     if ( getElementModel(source) ) then
         cancelEvent()
     end

@@ -52,7 +52,7 @@ function movetocam(thisplayer)
 		if cameraData then
 			local x,y,z = unpack(cameraData[1])
 			local a,b,c = unpack(cameraData[2])
-			setCameraMatrix(x, y, z, a, b, c)	
+			setCameraMatrix(x, y, z, a, b, c)
 		end
 	end
 end
@@ -81,19 +81,19 @@ function starttheround(player)
 				guiSetVisible ( spiesMenu, true )
 			else
 				guiSetVisible ( mercenariesMenu, true )
-			end	
+			end
 		end
 		if teamname == "BLUE" then
 			if aretheyswapped == 0 then
 				guiSetVisible ( mercenariesMenu, true )
 			else
 				guiSetVisible ( spiesMenu, true )
-			end	
+			end
 		end
 	end
 	if goggleson == 1 then
-		local tableofplayers = getElementsByType("player") 
-		for tableKey, tableValue in pairs(tableofplayers) do 
+		local tableofplayers = getElementsByType("player")
+		for tableKey, tableValue in pairs(tableofplayers) do
 			iscloaked = getElementData ( tableValue, "stealthmode" )
 			if iscloaked == "on" then
 				setElementModel ( tableValue, 111 )
@@ -228,9 +228,9 @@ addEventHandler( "onClientGamemodeMapStop", getRootElement(), stealthmapstop )
 
 
 --[[-------------------------------------------------------------------------
-To hide or show your menu, use 
+To hide or show your menu, use
 guiSetVisible ( spiesMenu, bool showing )
-or 
+or
 guiSetVisible ( mercenariesMenu, bool showing )
 
 Where bool showing can be true or false appropriately.
@@ -462,7 +462,7 @@ function TeamSelected ( button, state, absoluteX, absoluteY, worldX, worldY, wor
 		showCursor ( false )
 		triggerServerEvent ("dojoinTeam2", getLocalPlayer(), getLocalPlayer() )
 		guiSetVisible ( TeamSelect_Window[1], false )
-	end 
+	end
 end
 
 addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),

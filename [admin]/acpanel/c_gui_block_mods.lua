@@ -100,7 +100,7 @@ end
 
 
 function aBlockModsTab.getTypeFromGui()
-	for _,info in ipairs(aBlockModsTab.radioButtons) do	
+	for _,info in ipairs(aBlockModsTab.radioButtons) do
 		if guiRadioButtonGetSelected( info.button ) then
 			return info.type
 		end

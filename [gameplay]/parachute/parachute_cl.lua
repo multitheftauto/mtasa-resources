@@ -55,7 +55,7 @@ local function onRender ( )
 	if tickDiff > 0 then
 		if ( getElementData ( localPlayer, "parachuting" ) ) then
 			if ( changeVelocity ) then
-				velX, velY, velZ = getElementVelocity ( localPlayer )  
+				velX, velY, velZ = getElementVelocity ( localPlayer )
 				if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0) then
 					
 					_,rotY,rotZ = getElementRotation ( localPlayer )
@@ -63,19 +63,19 @@ local function onRender ( )
 					local currentfallspeed = s(fallspeed)
 					local currentmovespeed = s(movespeed)
 					
-					if ( getMoveState ( "backwards" ) ) then 
+					if ( getMoveState ( "backwards" ) ) then
 						currentfallspeed = s(slowfallspeed)
 					end
 					
 					-- going too fast, slow down to appropriate speed
-					if ( velZ < currentfallspeed ) then 
+					if ( velZ < currentfallspeed ) then
 						if ( lastspeed < 0 ) then
 							if ( lastspeed >= currentfallspeed ) then
 								velZ = currentfallspeed
 							else
 								velZ = lastspeed + s(haltspeed)
 							end
-						end 
+						end
 					-- going too slow, speed back up to appropriate speed
 					elseif ( velZ > currentfallspeed ) then
 						velZ = currentfallspeed
@@ -91,9 +91,9 @@ local function onRender ( )
 					velX = dirX * currentmovespeed
 					velY = dirY * currentmovespeed
 					if ( velZ == currentfallspeed ) then
-						if ( getMoveState ( "backwards" ) ) then 
+						if ( getMoveState ( "backwards" ) ) then
 							setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "PARA_decel", -1, false, true, false )
-							if  getMoveState ( "left" ) then 
+							if  getMoveState ( "left" ) then
 								rotZ = rotZ - a(turnspeed,tickDiff)
 								if y_turn_offset > rotY then
 									rotY = rotY + a(rotation_accelerate,tickDiff)
@@ -102,19 +102,19 @@ local function onRender ( )
 								rotZ = rotZ + a(turnspeed ,tickDiff)
 								if -y_turn_offset < rotY then
 									rotY = rotY - a(rotation_accelerate,tickDiff)
-								end					
+								end
 							elseif 0 > math.floor(rotY) then
 								rotY = rotY + a(rotation_accelerate,tickDiff)
 							elseif 0 < math.floor(rotY) then
 								rotY = rotY - a(rotation_accelerate,tickDiff)
 							end
-						elseif ( getMoveState ( "left" ) ) then 
+						elseif ( getMoveState ( "left" ) ) then
 							rotZ = rotZ - a(turnspeed,tickDiff)
 							if y_turn_offset > rotY then
 								rotY = rotY + a(rotation_accelerate,tickDiff)
 							end
 							setPedNewAnimation ( localPlayer, "animation_state", "PARACHUTE", "PARA_steerL", -1, false, true, false )
-						elseif ( getMoveState ( "right" ) ) then 
+						elseif ( getMoveState ( "right" ) ) then
 							rotZ = rotZ + a(turnspeed ,tickDiff)
 							if -y_turn_offset < rotY then
 								rotY = rotY - a(rotation_accelerate,tickDiff)
@@ -127,11 +127,11 @@ local function onRender ( )
 							elseif 0 < math.floor(rotY) then
 								rotY = rotY - a(rotation_accelerate,tickDiff)
 							end
-						end		
+						end
 						setPedRotation ( localPlayer, -rotZ )
 						setElementRotation ( localPlayer,0,rotY, rotZ )
 					end
-					setElementVelocity ( localPlayer, velX, velY, velZ )    
+					setElementVelocity ( localPlayer, velX, velY, velZ )
 				else
 					if velZ >= FALL_VELOCITY then --they're going to have to fall down at this speed
 						removeParachute(localPlayer,"land")
@@ -140,7 +140,7 @@ local function onRender ( )
 						removeParachute(localPlayer,"land")
 						setPedNewAnimation ( localPlayer, nil, "PARACHUTE", "PARA_Land", -1, false, true, true, false )
 					end
-				end				
+				end
 			end
 			
 			local posX,posY,posZ = getElementPosition(localPlayer)
@@ -326,7 +326,7 @@ function updateParachuting ( data, oldval )
 		if ( getElementData ( source, "parachuting" ) == true ) then
 			g_parachuters[source] = true
 		else
-			g_parachuters[source] = nil			
+			g_parachuters[source] = nil
 		end
 	end
 end

@@ -80,12 +80,12 @@ addEventHandler ( "onPlayerWasted", root, xonPlayerWasted )
 function onPlayerQuit ( )
 	--a fix for markers not being deleted when their in SP Mode, and quit the server.
 	local theMarker = getElementData( source, "tdma.SPMarker" )
-	if ( theMarker ) then 
+	if ( theMarker ) then
 		destroyElement ( theMarker )
 		--killTimer ( getElementData ( source, "tdma.SPTimer" ) )
 		if ( isTimer(tdmaSPTimer[source]) ) then killTimer ( tdmaSPTimer[source] ) end
 	end
-end 
+end
 addEventHandler( "onPlayerQuit", root, onPlayerQuit )
 
 function spawnProtectionStart ( player )

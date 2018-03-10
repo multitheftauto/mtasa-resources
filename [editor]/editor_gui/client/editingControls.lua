@@ -660,7 +660,7 @@ eC.dropdown = {
 	dropdownClick = function ( self, passedSource )
 		if type(passedSource) ~= "string" then source = passedSource end
 		if source == self.GUI.gridlist or source == self.GUI.button then
-			if self.isOpen == false then					
+			if self.isOpen == false then
 				self.isOpen = true
 				
 				guiSetSize ( self.GUI.gridlist, self.dropWidth, self.dropHeight, self.relative )
@@ -679,7 +679,7 @@ eC.dropdown = {
 				
 				guiBringToFront ( self.GUI.button )
 				
-				if cellrow ~= -1 then 
+				if cellrow ~= -1 then
 					self:setValue(cellrow+1)
 				else
 					--ensure one is selected
@@ -1586,7 +1586,7 @@ eC.vehicleupgrades = {
 		
 		self.GUI.list = guiCreateGridList(info.x, info.y, info.width, gridlistHeight, info.relative, info.parent)
 		guiGridListSetSortingEnabled(self.GUI.list, false)
-		guiGridListSetSelectionMode(self.GUI.list, 0)		
+		guiGridListSetSelectionMode(self.GUI.list, 0)
 		guiGridListAddColumn(self.GUI.list, "Upgrade",  .4)
 		guiGridListAddColumn(self.GUI.list, "Installed?", .2)
 		
@@ -1696,7 +1696,7 @@ eC.vehicleupgrades = {
 			buttonCaption = "Remove"
 		else
 			buttonCaption = "Add"
-		end	
+		end
 		guiSetText(self.GUI.button, buttonCaption)
 	end,
 	toggleUpgrade = function( self )

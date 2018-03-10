@@ -24,7 +24,7 @@ function autoSnap ( element )
 	if not visibleElements[getElementType(element)] then return false end
 	--
 	local radius = edf.edfGetElementRadius ( element )
-	if not radius then 
+	if not radius then
 		--Lets assume the radius is 5 and try again next frame
 		radius = 5
 		if not snapElement then
@@ -35,7 +35,7 @@ function autoSnap ( element )
 		snapElement = nil
 	end
 	local maxDist = radius
-	--	
+	--
 	local realDistance = ( maxDist / elementDiameter ) * camDistance
 	local camX,camY,camZ,cameraLookX,cameraLookY,cameraLookZ = getCameraMatrix()
 	--we move backwards from the camera angle, invert the vector

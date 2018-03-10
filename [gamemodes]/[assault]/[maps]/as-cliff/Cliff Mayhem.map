@@ -34,7 +34,7 @@
 		stay="8" stayText="Planting bomb..." posX="1896.9552001953" posY="-577.51696777344" posZ="37.314125061035" />
 
 	<objective name="Bomb 03" description="They have stolen a chemical weapon, you can't detonate the bombs until you take the weapon to a safe distance. For now plant some C4s." successText="bomb placed" id="bomb03" req="cabin" markerType="checkpoint"
-		stay="8" stayText="Planting bomb..." posX="1952.8793945313" posY="-594.69110107422" posZ="25.04545211792" />	
+		stay="8" stayText="Planting bomb..." posX="1952.8793945313" posY="-594.69110107422" posZ="25.04545211792" />
 
 	<objective name="Bomb 04" description="They have stolen a chemical weapon, you can't detonate the bombs until you take the weapon to a safe distance. For now plant some C4s." successText="bomb placed" id="bomb04" req="cabin" markerType="checkpoint"
 		stay="8" stayText="Planting bomb..." posX="1924.0235595703" posY="-590.04144287109" posZ="30.181875228882" />

@@ -62,8 +62,8 @@ function createLocationsMenu()
 		xmlUnloadFile ( bookmarksXML )
 	end
 	bookmarksXML = xmlLoadFile ( "bookmarks.xml" )
-	if not bookmarksXML then 
-		bookmarksXML = xmlCreateFile ( "bookmarks.xml","bookmarks") 
+	if not bookmarksXML then
+		bookmarksXML = xmlCreateFile ( "bookmarks.xml","bookmarks")
 		local newNode = xmlCreateChild ( bookmarksXML, "location" )
 		xmlNodeSetAttribute ( newNode, "id", "Grove Street" )
 		xmlNodeSetAttribute ( newNode, "posX", 2483 )
@@ -105,9 +105,9 @@ function addBookmark ()
 		guiShowMessageBox ( 'No location name was specified!', "error", "Bad value", true )
 		return
 	end
-	if bookmarksTable[name] then 
+	if bookmarksTable[name] then
 		guiShowMessageBox ( 'A location of name "'..name..'" already exists!', "error", "Conflict", true )
-		return 
+		return
 	end
 	bookmarksTable[name] = {}
 	bookmarksTable[name].posX = x

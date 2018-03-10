@@ -64,7 +64,7 @@ function startMidMapVoteForRandomMap(player)
 	if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 30000 then
 		if player then
 			outputRace( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
-		end 
+		end
 		return
 	end
 
@@ -310,7 +310,7 @@ function startMidMapVoteForRestartMap(player)
 	if not stateAllowsRestartMapVote() then
 		if player then
 			outputRace( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
-		end 
+		end
 		return
 	end
 
@@ -431,7 +431,7 @@ addCommandHandler('forcevote',
 
 ---------------------------------------------------------------------------
 --
--- getRandomMapCompatibleWithGamemode 
+-- getRandomMapCompatibleWithGamemode
 --
 -- This should go in mapmanager, but ACL needs doing
 --

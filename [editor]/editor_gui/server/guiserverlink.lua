@@ -22,11 +22,11 @@ function loadsave_getResources ( dialog, player )
 			for i,gamemode in ipairs(gamemodes) do
 				local prefix = ","
 				if i == 1 then prefix = "" end
-				mapInfo["gamemodes"] = mapInfo["gamemodes"]..prefix..getResourceName(gamemode) 
+				mapInfo["gamemodes"] = mapInfo["gamemodes"]..prefix..getResourceName(gamemode)
 			end
 		elseif mapmanager.isGamemode ( resource ) then
 			mapInfo["type"] = "gamemode"
-		else 
+		else
 			mapInfo["type"] = "script"
 		end
 		mapInfo["version"] = getResourceInfo ( resource, "version" ) or ""

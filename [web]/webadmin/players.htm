@@ -17,7 +17,7 @@ function webKickPlayer (playerName)
 {
 
 var reason = prompt('Enter the reason for kicking of player ' + playerName);
-if (reason) 
+if (reason)
 {
 serverKickPlayer ( playerName, reason,
 					
@@ -25,7 +25,7 @@ serverKickPlayer ( playerName, reason,
 						{
 							if (success)
 							{
-								alert('You kicked player ' + playerName); 
+								alert('You kicked player ' + playerName);
 							}
 							else
 							{
@@ -42,7 +42,7 @@ function webBanPlayer (playerName)
 {
 
 var reason = prompt('Enter the reason for banning of player ' + playerName);
-if (reason) 
+if (reason)
 {
 var duration = prompt('Enter duration of BAN in hours, you can use 0.5 for 30 mins etc.. type in 0 for permanent ban.');
 if (duration)
@@ -53,7 +53,7 @@ serverBanPlayer ( playerName, reason, duration,
 						{
 							if (success)
 							{
-								alert('You banned player ' + playerName); 
+								alert('You banned player ' + playerName);
 							}
 							else
 							{

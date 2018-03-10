@@ -6,19 +6,19 @@ addEvent"onPlayerPickUpRacePickup"
 addEvent"onPlayerRaceWasted"
 addEvent"onPlayerFinish"
 
-addEventHandler( "onPlayerPickUpRacePickup", g_Root, 
+addEventHandler( "onPlayerPickUpRacePickup", g_Root,
 	function( ... )
 		triggerClientEvent( source, "onClientPlayerPickUpRacePickup", source, ... )
 	end
 )
 
-addEventHandler( "onPlayerRaceWasted", g_Root, 
+addEventHandler( "onPlayerRaceWasted", g_Root,
 	function( ... )
 		triggerClientEvent( source, "onClientPlayerRaceWasted", source, ... )
 	end
 )
 
-addEventHandler( "onPlayerFinish", g_Root, 
+addEventHandler( "onPlayerFinish", g_Root,
 	function( ... )
 		triggerClientEvent( root, "onClientPlayerFinished", source, ... )
 	end

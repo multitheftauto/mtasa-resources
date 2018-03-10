@@ -94,7 +94,7 @@ function aInputBox ( title, message, default, action, vOne, vTwo, defaultNick, d
 	varTwo = vTwo
 end
 
-addEventHandler("onClientGUIClick", guiRoot, 
+addEventHandler("onClientGUIClick", guiRoot,
     function()
         if source == banNickEdit then
             if guiGetText(banNickEdit) == "Nick" then
@@ -104,7 +104,7 @@ addEventHandler("onClientGUIClick", guiRoot,
             if guiGetText(banReasonEdit) == "Reason" then
                 guiSetText(banReasonEdit, "")
             end
-        end    
+        end
     end
 )
 
@@ -239,13 +239,13 @@ function aBanInputBox ( player )
 	end
 	aBanDurations = durations
 	if ( aBanInputForm == nil ) then
-		local height1 = 100 
+		local height1 = 100
 		local height2 = math.floor( #aBanDurations * 1.02 * 15 ) + 20
 		local height = math.max(height1,height2)
 		local x, y = guiGetScreenSize()
 		aBanInputForm			= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 400, height + 130, "", false )
 							  guiWindowSetSizable ( aBanInputForm, false )
-		guiSetAlpha(aBanInputForm, 1)		
+		guiSetAlpha(aBanInputForm, 1)
 		y = 24
 
 		aBanInputLabel			= guiCreateLabel ( 20, y, 270, 15, "", false, aBanInputForm )
@@ -394,7 +394,7 @@ function aBanInputBoxFinish ()
 	-- Clear input
 	guiSetText ( aBanInputValue, "" )
 	for i,dur in ipairs(aBanDurations) do
-		guiRadioButtonSetSelected( aBanInputRadio2s[i], false ) 
+		guiRadioButtonSetSelected( aBanInputRadio2s[i], false )
 	end
 end
 
@@ -430,7 +430,7 @@ function aMuteInputBox ( player )
 		local x, y = guiGetScreenSize()
 		aMuteInputForm			= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 150 + #aMuteDurations * 15, "", false )
 							  guiWindowSetSizable ( aMuteInputForm, false )
-		guiSetAlpha(aMuteInputForm, 1)		
+		guiSetAlpha(aMuteInputForm, 1)
 		y = 24
 
 		aMuteInputLabel			= guiCreateLabel ( 20, y, 270, 15, "", false, aMuteInputForm )
@@ -440,7 +440,7 @@ function aMuteInputBox ( player )
 		aMuteInputValue			= guiCreateEdit ( 35, y, 230, 24, "", false, aMuteInputForm )
 		y = y + 33
 
-		local height2 = math.floor( #aMuteDurations * 1.02 * 15 ) + 20 
+		local height2 = math.floor( #aMuteDurations * 1.02 * 15 ) + 20
 		aMuteInputRadioSet2bg			= guiCreateTabPanel( 55, y, 300-55*2, height2, false, aMuteInputForm)
 		aMuteInputRadioSet2				= guiCreateStaticImage(0,0,1,1, 'client\\images\\empty.png', true, aMuteInputRadioSet2bg)
 		guiSetAlpha ( aMuteInputRadioSet2bg, 0.3 )
@@ -539,6 +539,6 @@ function aMuteInputBoxFinish ()
 	-- Clear input
 	guiSetText ( aMuteInputValue, "" )
 	for i,dur in ipairs(aMuteDurations) do
-		guiRadioButtonSetSelected( aMuteInputRadio2s[i], false ) 
+		guiRadioButtonSetSelected( aMuteInputRadio2s[i], false )
 	end
 end

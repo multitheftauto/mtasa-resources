@@ -46,7 +46,7 @@ function createGui(options)
 	end
 	
 	-- General Map Information
-	if (justCreated) then 
+	if (justCreated) then
 		assaultGuiGrid2 = guiCreateGridList(0.02,0.1,0.96,0.3,true,tabMap)
 		guiGridListAddColumn(assaultGuiGrid2,"Option",0.2)
 		guiGridListAddColumn(assaultGuiGrid2,"Value",0.8)
@@ -257,7 +257,7 @@ end
 
 
 
-addEventHandler("onClientResourceStart", getRootElement(getThisResource()), 
+addEventHandler("onClientResourceStart", getRootElement(getThisResource()),
 	function()
 		triggerServerEvent("assaultClientScriptLoaded", getLocalPlayer())
 	end

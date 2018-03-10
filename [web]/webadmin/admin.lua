@@ -21,7 +21,7 @@ function setACLRight( aclname, rightname, access )
 			if ( aclSave() ) then
 				return true
 			end
-		end 
+		end
 	end
 	return false
 end
@@ -176,10 +176,10 @@ function serverKickPlayer (playerName, reason)
 end
 
 function serverBanPlayer (playerName, reason, duration)
-	if duration then 
-	duration = duration * 3600 
-	else 
-	duration = 0 
+	if duration then
+	duration = duration * 3600
+	else
+	duration = 0
 	end
 	if banPlayer(getPlayerFromName(playerName), false, false, true, getRootElement(), reason, duration) then
 	return true
