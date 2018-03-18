@@ -54,7 +54,7 @@ end
 function GhostRecord:checkForCountdownEnd()
 	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
 	if vehicle then
-		local frozen = isVehicleFrozen( vehicle )
+		local frozen = isElementFrozen( vehicle )
 		if not frozen then
 			self.currentVehicleType = getElementModel( vehicle )
 			local pedModel = getElementModel( getLocalPlayer() )
@@ -72,7 +72,7 @@ function GhostRecord:waitForNewVehicle()
 	if vehicle then
 		local vHealth = getElementHealth( vehicle )
 		local pHealth = getElementHealth( getLocalPlayer() )
-		local frozen = isVehicleFrozen( vehicle )
+		local frozen = isElementFrozen( vehicle )
 		if vHealth > 99 and pHealth > 99 and not frozen then
 			local ticks = getTickCount() - self.startTick
 			table.insert( self.recording, { ty = "sp", t = ticks } )
@@ -174,7 +174,7 @@ end
 function GhostRecord:checkStateChanges()
 	-- Keys
 	for _, v in ipairs( keyNames ) do
-		local state = getControlState( v )
+		local state = getPedControlState( v )
 		if not state and analogNames[v] then
 			-- Not a really good implementation, but didn't think if anything else
 			state = getAnalogControlState( v ) >= 0.5

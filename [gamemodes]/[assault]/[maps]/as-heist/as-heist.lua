@@ -37,7 +37,7 @@ function playerStats ( spawnpoint )
 		setTimer ( setElementInterior, 200, 1, source, 1 )
 	end
 	if ( getPlayerTeam ( source ) == attackers ) then
-		showPlayerHudComponent( source, "money", true )
+		setPlayerHudComponentVisible( source, "money", true )
 		setPlayerWantedLevel ( source, wanted )
 		--setPlayerMoney ( source, money )
 	end

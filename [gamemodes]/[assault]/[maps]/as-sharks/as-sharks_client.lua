@@ -15,7 +15,7 @@ function setupSpawn  ()
 				killTimer ( v )
 			end
 		end
-		showPlayerHudComponent ( "breath", false )
+		setPlayerHudComponentVisible ( "breath", false )
 		setTimer ( toggleControl, 1000, 1, "jump", false )
 		setElementAlpha( getLocalPlayer(), 0 )
 		--lol = toggleControl ( "jump", false )
@@ -28,7 +28,7 @@ function setupSpawn  ()
 			end
 		end
 		eatTimer = setTimer ( isBeingEaten, 200, 0 )
-		showPlayerHudComponent ( "breath", true )
+		setPlayerHudComponentVisible ( "breath", true )
 		setElementAlpha( getLocalPlayer(), 255 )
 		toggleControl ( "jump", true )
 		setGameSpeed ( 1 )

@@ -150,7 +150,7 @@ function startAssault(resource)
 		setElementDataLocal(v,"assaultToggleLogo",false)
 		setElementDataLocal(v,"assaultCreateGui",false)
 		setElementDataLocal(v,"assaultClientScriptLoaded",false)
-		showPlayerHudComponent( v, "money", false )
+		setPlayerHudComponentVisible( v, "money", false )
 	end
 
 	attackerDisplay = textCreateDisplay()
@@ -971,7 +971,7 @@ function onPlayerJoin ()
 	triggerClientEvent2( source, "assaultCreateGui", options )
 	textDisplayAddObserver( statusDisplay, source )
 	setElementData(source, "score", 0)
-	showPlayerHudComponent( source, "money", false )
+	setPlayerHudComponentVisible( source, "money", false )
 	if (noMapLoaded == true) then
 		setNoMapLoaded( source, true )
 	else

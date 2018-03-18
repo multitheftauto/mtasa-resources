@@ -45,7 +45,7 @@ function toggleNOS( key, state )
 	if veh and not isEditingPosition then
 		if state == "up" then
 			removeVehicleUpgrade( veh, 1010 );
-			setControlState( "vehicle_fire", false );
+			setPedControlState( "vehicle_fire", false );
 			setElementData( veh, "NOS", nos );
 		else
 			clicktick = getTickCount( );
@@ -53,7 +53,7 @@ function toggleNOS( key, state )
 			if vehnos then nos = vehnos end
 			if nos > 0 then
 				addVehicleUpgrade( veh, 1010 );
-				setControlState( "vehicle_fire", true );
+				setPedControlState( "vehicle_fire", true );
 				setElementData( veh, "NOS", nos );
 			end
 		end
@@ -99,7 +99,7 @@ addEventHandler( "onClientRender", g_Root,
 					dxDrawImage( g_tGaugePosition[ 1 ] + 45, g_tGaugePosition[ 2 ] + 41, 10, 40, "gauge/nos_arrow.png", nosangle, 0, -11, tocolor( 255, 0, 0 ) );
 
 					local nitro = getVehicleUpgradeOnSlot( veh, 8 );
-					if ( getControlState( "vehicle_fire" ) and type( nitro ) == "number" and nitro ~= 0 ) then
+					if ( getPedControlState( "vehicle_fire" ) and type( nitro ) == "number" and nitro ~= 0 ) then
 						if nos > 0 then
 							nos = nos - .2;
 							if getTickCount() - clicktick > 20000 then
@@ -107,14 +107,14 @@ addEventHandler( "onClientRender", g_Root,
 								if nitroID then
 									removeVehicleUpgrade( veh, nitroID );
 									addVehicleUpgrade( veh, nitroID );
-									setControlState( "vehicle_fire", false );
-									setControlState( "vehicle_fire", true );
+									setPedControlState( "vehicle_fire", false );
+									setPedControlState( "vehicle_fire", true );
 									clicktick = getTickCount();
 								end
 							end
 						else
 							removeVehicleUpgrade( veh, 1010 );
-							setControlState( "vehicle_fire", false );
+							setPedControlState( "vehicle_fire", false );
 							setElementData( veh, "NOS", 0 );
 						end
 					end

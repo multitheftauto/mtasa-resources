@@ -1,4 +1,4 @@
--- Capture the Vehicle by BrophY©, if you wish to modify, keep copyright notice and credits in the file
+-- Capture the Vehicle by BrophY, if you wish to modify, keep copyright notice and credits in the file
 -- Credits to Talidan, Dragon and Ransom for help and testing
 
 bases = {}
@@ -188,15 +188,15 @@ function spawnText ()
 end
 
 function hudDisplay ( player, bool )
-	showPlayerHudComponent ( player, "ammo", bool )
-	showPlayerHudComponent ( player, "area_name", bool )
-	showPlayerHudComponent ( player, "armour", bool )
-	showPlayerHudComponent ( player, "breath", bool )
-	showPlayerHudComponent ( player, "health", bool )
-	showPlayerHudComponent ( player, "money", bool )
-	showPlayerHudComponent ( player, "radar", bool )
-	showPlayerHudComponent ( player, "vehicle_name", bool )
-	showPlayerHudComponent ( player, "weapon", bool )
+	setPlayerHudComponentVisible ( player, "ammo", bool )
+	setPlayerHudComponentVisible ( player, "area_name", bool )
+	setPlayerHudComponentVisible ( player, "armour", bool )
+	setPlayerHudComponentVisible ( player, "breath", bool )
+	setPlayerHudComponentVisible ( player, "health", bool )
+	setPlayerHudComponentVisible ( player, "money", bool )
+	setPlayerHudComponentVisible ( player, "radar", bool )
+	setPlayerHudComponentVisible ( player, "vehicle_name", bool )
+	setPlayerHudComponentVisible ( player, "weapon", bool )
 end
 
 addEventHandler( "onGamemodeMapStart", getRootElement (), onCTVSpawnMapStart )

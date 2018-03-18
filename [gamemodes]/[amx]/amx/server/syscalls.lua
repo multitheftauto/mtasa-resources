@@ -471,7 +471,7 @@ end
 function EnableZoneNames(amx, enable)
 	g_ShowZoneNames = enable
 	for i,data in pairs(g_Players) do
-		showPlayerHudComponent(data.elem, 'area_name', enable)
+		setPlayerHudComponentVisible(data.elem, 'area_name', enable)
 	end
 end
 
@@ -1477,13 +1477,13 @@ function TogglePlayerSpectating(amx, player, enable)
 	if enable then
 		fadeCamera(player, true)
 		setCameraMatrix(player, 75.461357116699, 64.600051879883, 51.685581207275, 149.75857543945, 131.53228759766, 40.597320556641)
-		showPlayerHudComponent(player, 'radar', false)
+		setPlayerHudComponentVisible(player, 'radar', false)
 	else
 		if isPedDead(player) then
 			spawnPlayerBySelectedClass(player)
 		end
 		setCameraTarget(player, player)
-		showPlayerHudComponent(player, 'radar', true)
+		setPlayerHudComponentVisible(player, 'radar', true)
 	end
 end
 

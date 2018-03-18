@@ -708,14 +708,14 @@ function getControlFromMouseKey( mouseKey )
 end
 
 function disableGameHUD()
-	showPlayerHudComponent("area_name", false)
-	showPlayerHudComponent("armour", false)
-	showPlayerHudComponent("breath", false)
-	showPlayerHudComponent("clock", false)
-	showPlayerHudComponent("health", false)
-	showPlayerHudComponent("money", false)
-	showPlayerHudComponent("vehicle_name", false)
-	showPlayerHudComponent("weapon", false)
+	setPlayerHudComponentVisible("area_name", false)
+	setPlayerHudComponentVisible("armour", false)
+	setPlayerHudComponentVisible("breath", false)
+	setPlayerHudComponentVisible("clock", false)
+	setPlayerHudComponentVisible("health", false)
+	setPlayerHudComponentVisible("money", false)
+	setPlayerHudComponentVisible("vehicle_name", false)
+	setPlayerHudComponentVisible("weapon", false)
 end
 
 -- PUBLIC

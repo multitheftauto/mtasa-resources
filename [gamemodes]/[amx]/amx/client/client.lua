@@ -127,7 +127,7 @@ function startClassSelection(classInfo)
 	setElementCollisionsEnabled(g_Me, false)
 
 	-- interaction
-	showPlayerHudComponent('radar', false)
+	setPlayerHudComponentVisible('radar', false)
 	if not g_ClassSelectionInfo.selectedclass then
 		g_ClassSelectionInfo.selectedclass = 0
 	end
@@ -195,7 +195,7 @@ function destroyClassSelGUI()
 		g_ClassSelectionInfo.gui = nil
 		removeEventHandler('onClientRender', root, renderClassSelText)
 	end
-	showPlayerHudComponent('radar', true)
+	setPlayerHudComponentVisible('radar', true)
 	setCameraTarget(g_Me)
 	setGravity(0.008)
 	setElementCollisionsEnabled(g_Me, true)
@@ -250,8 +250,8 @@ function showIntroScene()
 	if introSceneShown then
 		return
 	end
-	showPlayerHudComponent('area_name', false)
-	showPlayerHudComponent('radar', false)
+	setPlayerHudComponentVisible('area_name', false)
+	setPlayerHudComponentVisible('radar', false)
 	fadeCamera(true)
 
 	local scene = table.random(g_IntroScenes)
@@ -859,8 +859,8 @@ function renderTextLabels()
 				local vw = getElementDimension(g_Me)
 				--[[if textlabel.attached then
 					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, true, true, true, true, false, false, textlabel.attachedTo)
-				else]] --íåðàáîòàåò, ïîõîæå ôóíêöèÿ isLineOfSightClearíå ðàáîòàåò ñ àðãóìåíòîì ignoredElement.
-					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, false, false)--ïîêà òàê, ïîòîì ðàçáåðóòñÿ ñ ôóíêöèåé ñäåëàåêàê íóæíî :)
+				else]] --Ã­Ã¥Ã°Ã Ã¡Ã®Ã²Ã Ã¥Ã², Ã¯Ã®ÃµÃ®Ã¦Ã¥ Ã´Ã³Ã­ÃªÃ¶Ã¨Ã¿ isLineOfSightClearÃ­Ã¥ Ã°Ã Ã¡Ã®Ã²Ã Ã¥Ã² Ã± Ã Ã°Ã£Ã³Ã¬Ã¥Ã­Ã²Ã®Ã¬ ignoredElement.
+					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, false, false)--Ã¯Ã®ÃªÃ  Ã²Ã Ãª, Ã¯Ã®Ã²Ã®Ã¬ Ã°Ã Ã§Ã¡Ã¥Ã°Ã³Ã²Ã±Ã¿ Ã± Ã´Ã³Ã­ÃªÃ¶Ã¨Ã¥Ã© Ã±Ã¤Ã¥Ã«Ã Ã¥ÃªÃ Ãª Ã­Ã³Ã¦Ã­Ã® :)
 				--end
 				local len = string.len(textlabel.text)
 				if screenX and dist <= textlabel.dist and vw == textlabel.vw then
@@ -1335,7 +1335,7 @@ end
 
 function TogglePlayerClock(amxName, toggle)
 	setMinuteDuration(toggle and 1000 or 2147483647)
-	showPlayerHudComponent('clock', toggle)
+	setPlayerHudComponentVisible('clock', toggle)
 end
 
 function createListDialog()
