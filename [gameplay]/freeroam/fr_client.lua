@@ -550,9 +550,8 @@ local function warpMe(targetPlayer)
 end
 
 function warpInit()
-	local players = table.map(getElementsByType('player'), function(p) return { player = p, name = getPlayerName(p) } end)
-	table.sort(players, function(a, b) return a.name < b.name end)
-	bindGridListToTable(wndWarp, 'playerlist', players, true)
+	setControlText(wndWarp, 'search', '')
+	warpUpdate()
 end
 
 function warpTo(leaf)
@@ -568,11 +567,33 @@ function warpTo(leaf)
 	closeWindow(wndWarp)
 end
 
+function warpUpdate()
+	local function getPlayersByPartName(text)
+		if not text or text == '' then
+			return getElementsByType("player")
+		else
+			local players = {}
+			for _, player in ipairs(getElementsByType("player")) do
+				if string.find(getPlayerName(player):gsub("#%x%x%x%x%x%x", ""):upper(), text:upper(), 1, true) then
+					table.insert(players, player)
+				end
+			end
+			return players
+		end
+	end
+	
+	local text = getControlText(wndWarp, 'search')
+	local players = table.map(getPlayersByPartName(text), function(p) return { player = p, name = getPlayerName(p) } end)
+	table.sort(players, function(a, b) return a.name < b.name end)
+	bindGridListToTable(wndWarp, 'playerlist', players, true)
+end
+
 wndWarp = {
 	'wnd',
 	text = 'Warp to player',
 	width = 300,
 	controls = {
+		{'txt', id='search', text='', width = 280, onchanged=warpUpdate},
 		{
 			'lst',
 			id='playerlist',
@@ -1944,6 +1965,9 @@ function toggleFRWindow()
 		hideAllWindows()
 		colorPicker.closeSelect()
 	else
+		if guiGetInputMode() ~= "no_binds_when_editing" then
+			guiSetInputMode("no_binds_when_editing")
+		end
 		showCursor(true)
 		showAllWindows()
 	end
