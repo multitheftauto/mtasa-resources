@@ -161,7 +161,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 		end
 		xmlUnloadFile ( node )
 	end
-		
+
 	local node = xmlLoadFile ( "conf\\messages.xml" )
 	if ( node ) then
 		for id, type in ipairs ( _types ) do
@@ -201,7 +201,7 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 		end
 	end
 	if not stillExists then return end
-	
+
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
@@ -238,7 +238,7 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 		end
 		xmlSaveFile ( node )
 		xmlUnloadFile ( node )
-		
+
 		-- Unmute anybody muted by admin
 		for i, player in ipairs(getElementsByType("player")) do
 			local serial = getPlayerSerial( player )
@@ -707,7 +707,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				if ( not aclCreateGroup ( name ) ) then
 					action = nil
 				else
-				
+
 				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
 				end
 			elseif ( arg[1] == "acl" ) then
@@ -889,7 +889,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 						local tBan = addBan( nil, nil, getPlayerSerial(player), "Anonymous admin", reason, seconds or 0 )
 						setBanAdmin(tBan,adminAccountName)
 					end, 100, 1)
-					
+
 				else
 					setTimer ( function()
 						local tBan = addBan( nil, nil, getPlayerSerial(player), source, reason, seconds or 0 )
@@ -1498,7 +1498,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 			action = nil
 			for i,ban in ipairs(getBans ()) do
 				if getBanIP(ban) == data then
-				
+
 					action = removeBan ( ban, source )
 				end
 			end
@@ -1513,7 +1513,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 		else
 			action = nil
 		end
-	
+
 		if ( action ~= nil ) then
 			aAction ( "bans", action, source, false, mdata, more )
 			triggerEvent ( "aSync", source, "sync", "bansdirty" )

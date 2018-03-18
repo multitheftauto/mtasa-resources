@@ -54,7 +54,7 @@ function aAdminMain.Open ()
 
 		addEventHandler ( "onClientGUITabSwitched", resourceRoot, aAdminMain.Switch )
 		addEventHandler ( "onAdminInitialize", aAdminMain.Form, aAdminMain.Initialize )
- 
+
 		triggerEvent ( "onAdminInitialize", aAdminMain.Form )
 	end
 	guiSetAlpha ( aAdminMain.Form, 1 )

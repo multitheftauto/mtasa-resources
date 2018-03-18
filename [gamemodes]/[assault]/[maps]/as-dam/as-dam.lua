@@ -1,4 +1,4 @@
-﻿local bombs = {}
+local bombs = {}
 
 function startRound( attack )
 	attacker = attack
@@ -42,33 +42,33 @@ function endRound( conquered )
 	for i, v in pairs ( bombs ) do
 		destroyBomb ( i )
 	end
-	
+
 	if (conquered == false) then return end
 	setTimer(explosions,1000,1)
 
-	
-	
+
+
 end
 
 function explosions()
 	setTimer(createExplosion,300,1,-607.230408,1924.516479,6.000000,10)
 	setTimer(createExplosion,300,1,-607.230408,1924.516479,6.000000,1)
-	
+
 	setTimer(createExplosion,600,1,-613.370,1905.743,7,10)
 	setTimer(createExplosion,600,1,-613.370,1905.743,7,1)
 
 	setTimer(createExplosion,900,1,-619.370,1881.743,7,10)
 	setTimer(createExplosion,900,1,-619.370,1881.743,7,1)
-	
+
 	setTimer(createExplosion,1200,1,-626.370,1860.743,7,7)
 	setTimer(createExplosion,1200,1,-626.370,1860.743,7,1)
-	
+
 	setTimer(createExplosion,1300,1,-629.370,1842.743,7,7)
 	setTimer(createExplosion,1300,1,-629.370,1842.743,7,1)
-	
+
 	setTimer(createExplosion,100,1,-830.455383,1973.126587,6.000008,10)
 	setTimer(createExplosion,100,1,-830.455383,1973.126587,6.000008,1)
-	
+
 	setTimer(createExplosion,300,1,-783.043030,2147.322998,59.382813,10)
 	setTimer(createExplosion,300,1,-783.043030,2147.322998,59.382813,1)
 end
@@ -87,7 +87,7 @@ function placeBomb ( obj, players )
 	local rx, ry, rz = getElementData ( bomb, "bombRotX" ), getElementData ( bomb, "bombRotY" ), getElementData ( bomb, "bombRotZ" )
 	local bombglow = createMarker ( x, y, z, "corona", 1, 255, 255, 200, 80 )
 	bombs[ID] = createObject ( 1654, x, y, z, rx, ry, rz )
-	
+
 	setElementData ( bombs[ID], "bombglow", bombglow )
 	if ( players ) then
 		for i, v in ipairs ( players ) do

@@ -1,4 +1,4 @@
-﻿--Mission timer by AlienX
+--Mission timer by AlienX
 
 --Usage:
 --In your scripts you need to have added an event handle that the timer will call once the time is up...
@@ -23,7 +23,7 @@ function createMissionTimer ( player, timeSeconds, direction, textSize, textPosX
 	missionTimers[missionTimersCount]["player"] = player
 	missionTimers[missionTimersCount]["id"] = missionTimersCount
 	missionTimers[missionTimersCount]["showforall"] = showForAll
-	
+
 	if ( direction == ">" ) then
 		missionTimers[missionTimersCount]["time"] = "0"
 	elseif ( direction == "<" ) then
@@ -31,7 +31,7 @@ function createMissionTimer ( player, timeSeconds, direction, textSize, textPosX
 	else
 		missionTimers[missionTimersCount]["time"] = timeSeconds
 	end
-	
+
 	missionTimers[missionTimersCount]["direction"] = direction
 	missionTimers[missionTimersCount]["textDisplay"] = 0
 	missionTimers[missionTimersCount]["textItem"] = 0
@@ -94,36 +94,36 @@ function calcTime ( timeLeft )
 	local timeHours = 0
 	local timeMins = 0
 	local timeSecs = 0
-	
+
 	timeLeft = tonumber(timeLeft)
 	----outputDebugString ( "timeLeft = " .. timeLeft )
-	
+
 	timeSecs = math.mod(timeLeft, 60)
 	----outputDebugString ( "timeSeconds = " .. timeSecs )
-	
+
 	timeMins = math.mod((timeLeft / 60), 60)
 	----outputDebugString ( "timeMins = " .. timeMins )
-	
+
 	timeHours = (timeLeft / 3600)
 	----outputDebugString ( "timeHours = " .. timeHours )
-	
+
 	if ( timeHours >= 1 ) then
 		----outputDebugString ( "Time hours is above or equal too 1" )
 		calcString = formatStr(tostring(timeHours)) .. ":"
 	end
 	calcString = calcString .. formatStr(string.format("%.0d", tostring(timeMins))) .. ":" .. formatStr(tostring(timeSecs))
-	
+
 	----outputDebugString ( "calcString = " .. calcString )
 	return calcString
 end
 
 function formatStr ( formatString )
 	local aString = tostring(formatString)
-	
+
 	if ( #aString == 1 ) then
 		aString = "0" .. aString
 	end
-	
+
 	if ( #aString == 0 ) then
 		aString = "00"
 	end
@@ -148,7 +148,7 @@ function missionTimerTick()
 				end
 			elseif ( theTimer["direction"] == ">" ) then
 				--Counting Up
-				
+
 			else
 				--Set a default value of Down.
 				theTimer["direction"] = "<"

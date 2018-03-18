@@ -14,7 +14,7 @@ addCommandHandler('path',
 		server.spawnPlayer(getLocalPlayer(), path[1].x, path[1].y, path[1].z)
 		fadeCamera(true)
 		setCameraTarget(getLocalPlayer())
-		
+
 		removeLinePoints ( )
 		table.each(getElementsByType('marker'), destroyElement)
 		for i,node in ipairs(path) do
@@ -38,7 +38,7 @@ addCommandHandler('path2',
 		server.spawnPlayer(getLocalPlayer(), path[1].x, path[1].y, path[1].z)
 		fadeCamera(true)
 		setCameraTarget(getLocalPlayer())
-		
+
 		removeLinePoints ( )
 		table.each(getElementsByType('marker'), destroyElement)
 		for i,node in ipairs(path) do
@@ -61,7 +61,7 @@ end
 addEventHandler('onClientRender', getRootElement(),
 	function()
 		local db = vehicleNodes
-		
+
 		local camX, camY, camZ = getCameraMatrix()
 		local x, y, z = getElementPosition(getLocalPlayer())
 		local areaID = getAreaID(x, y)

@@ -17,25 +17,25 @@ function init()
 	map = new OpenLayers.Map( $('map'), {'maxResolution': 360/512, 'maxExtent':new OpenLayers.Bounds(-90.0,-90.0,90.0,90.0),
 	'numZoomLevels':6,
 	});
-	
+
 	map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
 
 	maplayer = new OpenLayers.Layer.WMS( "San Andreas Map",
 					"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_map', format: 'image/png' } );
 	map.addLayer(maplayer);
-	
+
 	aeriallayer = new OpenLayers.Layer.WMS( "San Andreas Aerial Map",
 					"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_aerial_map', format: 'image/png' } );
 	map.addLayer(aeriallayer);
-		
+
 	map.zoomTo(2);
-	
+
 	blipmarkers = new OpenLayers.Layer.Markers("Radar Blips");
 	map.addLayer(blipmarkers);
-	
+
 	playermarkers = new OpenLayers.Layer.Markers("Players");
 	map.addLayer(playermarkers);
-	
+
 	updatePlayerInfo();
 	updateBlips();
 }
@@ -95,7 +95,7 @@ function updateBlips()
 				}
 				bliplist[blips[k].element.id].data = blips[k];
 				bliplist[blips[k].element.id].lastUpdate = blipUpdateCount;
-				
+
 				/*if ( playerinfo[i].isdead )
 					playerlist[playerinfo[i].name].feature.marker.icon = deadicon;
 				else
@@ -111,11 +111,11 @@ function updateBlips()
 					}
 				}
 			}
-						   
-						  
-		   
+
+
+
 			blipUpdateCount++;
-			
+
 			setTimeout(updateBlips, 5000);
 		}
 	);
@@ -132,22 +132,22 @@ function updatePlayerInfo()
 				if  ( playerlist[playerinfo[i].name] == null ) {
 					playerlist[playerinfo[i].name] = new Object();
 					playerlist[playerinfo[i].name].feature = addPlayerMarker(playerinfo[i]);
-					
-					
+
+
 				} else {
 					var latlong = gtaCoordToLonLat(playerinfo[i].pos.x, playerinfo[i].pos.y);
 					playerlist[playerinfo[i].name].feature.lonlat = latlong;
-					
-					 
-						  
+
+
+
 					if ( playerToFollow == playerinfo[i].name )
 						map.setCenter(latlong, map.getZoom(), false, false);
-						
+
 					playerlist[playerinfo[i].name].feature.marker.moveTo(map.getLayerPxFromLonLat(latlong));
 				}
 				playerlist[playerinfo[i].name].data = playerinfo[i];
 				playerlist[playerinfo[i].name].lastUpdate = updateCount;
-				
+
 				/*if ( playerinfo[i].isdead )
 					playerlist[playerinfo[i].name].feature.marker.icon = deadicon;
 				else
@@ -163,18 +163,18 @@ function updatePlayerInfo()
 					}
 				}
 			}
-						   
-						  
-		   
+
+
+
 			updateCount++;
-			
+
 			setTimeout(updatePlayerInfo, 1000);
 		}
 	);
 }
 function checkSendMessage(e)
 {
-	
+
 	var characterCode
 
 	if(e && e.which){ //if which property of event object is supported (NN4)
@@ -225,18 +225,18 @@ function showplayerinfo(evt) {
 		var html = playerinfo.name + "<br/><div style='font-size: 0.8em;'>";
 		if ( playerinfo.vehicle != null )
 			html += "In vehicle: " + playerinfo.vehicle + "<br/>";
-		
+
 		popupPlayer= this.playerName;
-		
+
 		html += "Send: <input type='text' id='sendMessageBox' onkeyup='checkSendMessage(event);' />"
 		if ( popupPlayer == playerToFollow )
 			var checked = "checked='checked'";
-			
+
 		html += "<input type='checkbox' id='followPlayerCheckbox' onclick='followPlayer();' " + checked + " onchange='followPlayer();' /> <label for='followPlayerCheckbox'>Follow</label>"
 		html += "</div>";
-		
-		
-		
+
+
+
 		popup = this.feature.createPopup(true);
 		popup.setContentHTML(html);
 		popup.setBackgroundColor("#888888");

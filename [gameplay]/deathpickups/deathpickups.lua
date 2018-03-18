@@ -1,4 +1,4 @@
-﻿local timers = {} -- timers for existing pickups
+local timers = {} -- timers for existing pickups
 
 local function onDeathPickupHit ( player, matchingDimension )
 	if matchingDimension then
@@ -22,7 +22,7 @@ addEventHandler ( "onPlayerWasted", getRootElement (),
 	function ( source_ammo, killer, killer_weapon, bodypart )
 		local pX, pY, pZ = getElementPosition ( source )
 		local timeout = get("timeout")
-		
+
 		if get("only_current") then
 			local source_weapon = getPedWeapon ( source )
 			if ( source_weapon and source_weapon ~= 0 and source_ammo ) then

@@ -89,7 +89,7 @@ end )
 function pedProcessSyncer ( ped )
 
 	local vehicle = getElementParent ( ped )
-	
+
 	if not vehicle then
 		return
 	end
@@ -105,11 +105,11 @@ function pedProcessSyncer ( ped )
 	end
 	local x, y, z = getElementPosition ( vehicle )
 	local nx, ny, nz = next.x, next.y, next.z
-	
+
 	if DEBUG then
 		dxDrawLine3D ( x, y, z, nx, ny, nz, tocolor ( 255, 0, 255, 255 ), 10 )
 	end
-	
+
 	local stop
 	local controls = {}
 	local limit = SPEED_LIMIT[_peds[ped].nodes[1].type]
@@ -157,23 +157,23 @@ function pedProcessSyncer ( ped )
 		controls["brake_reverse"] = false
 		controls["accelerate"] = true
 	end
-	
+
 	local horn = false
-	
+
 	local sightLength = math.pow(getVehicleSpeed(vehicle)/10, 2)
 	sightLength = sightLength < 4 and 4 or sightLength
 	sightLength = sightLength > 30 and 30 or sightLength
-	
+
 	if 1500 > getTickCount() - _peds[ped].stopStartTime then
 		sightLength = _peds[ped].stopLength or sightLength
 	end
-	
+
 	local matrix = getElementMatrix(vehicle)
-	
+
 	-- dxDrawLine3D( matrix[4][1], matrix[4][2], matrix[4][3], matrix[4][1] + matrix[1][1], matrix[4][2] + matrix[2][1], matrix[4][3] + matrix[3][1], tocolor ( 0, 255, 0), 3)
 	-- dxDrawLine3D( matrix[4][1], matrix[4][2], matrix[4][3], matrix[4][1] + matrix[1][2], matrix[4][2] + matrix[2][2], matrix[4][3] + matrix[3][2], tocolor ( 0, 255, 0), 3)
 	-- dxDrawLine3D( matrix[4][1], matrix[4][2], matrix[4][3], matrix[4][1] + matrix[1][3], matrix[4][2] + matrix[2][3], matrix[4][3] + matrix[3][3], tocolor ( 0, 255, 0), 3)
-	
+
 	local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(vehicle) - 0.25
 	local tx, ty, tz
 	local process = {}
@@ -189,7 +189,7 @@ function pedProcessSyncer ( ped )
 			end
 		end
 	end
-	
+
 	local hitElement = process[1]
 	-- for _,elem in ipairs(process) do
 		-- if elem then
@@ -197,7 +197,7 @@ function pedProcessSyncer ( ped )
 			-- break
 		-- end
 	-- end
-	
+
 	if hitElement then
 		stop = not _peds[ped].panic
 		horn = HORN_ENABLED
@@ -215,7 +215,7 @@ function pedProcessSyncer ( ped )
 	else
 		HORN_STARTTIME[ped] = getTickCount()
 	end
-	
+
 	if ( stop ) then
 		_peds[ped].stopStartTime = getTickCount()
 		_peds[ped].stopLength = sightLength
@@ -274,7 +274,7 @@ function pedProcessSyncer ( ped )
 			controls["accelerate"] = false
 		end
 	end
-	
+
 	sightLength = getVehicleType(vehicle) == "Bike" and 2 or 4
 	sideLineDistance = getVehicleType(vehicle) == "Bike" and 0 or 1
 	for i=-sideLineDistance, sideLineDistance, 0.5 do
@@ -298,7 +298,7 @@ function pedProcessSyncer ( ped )
 		controls["vehicle_left"] = controls["vehicle_right"]
 		controls["vehicle_right"] = controls["vehicle_left"]
 	end
-	
+
 	for i=-sideLineDistance, sideLineDistance, 0.5 do
 		x, y, z = getMatrixOffsets(matrix, i, 0, 0)
 		tx, ty, tz = getMatrixOffsets(matrix, i, -sightLength, 0)
@@ -320,7 +320,7 @@ function pedProcessSyncer ( ped )
 		controls["vehicle_left"] = controls["vehicle_right"]
 		controls["vehicle_right"] = controls["vehicle_left"]
 	end
-	
+
 	sightLength = sightLength/2
 	sideLineDistance = sideLineDistance*2
 	for i=-sideLineDistance, sideLineDistance, 1 do
@@ -339,7 +339,7 @@ function pedProcessSyncer ( ped )
 			break
 		end
 	end
-	
+
 	for i=-sideLineDistance, sideLineDistance, 1 do
 		x, y, z = getMatrixOffsets(matrix, 0, i, 0)
 		tx, ty, tz = getMatrixOffsets(matrix, -sightLength, i, 0)
@@ -356,9 +356,9 @@ function pedProcessSyncer ( ped )
 			break
 		end
 	end
-	
+
 	setElementData(vehicle, "next", next.id)
-	
+
 	if _peds[ped].parked and distance < 3 then
 		for control in pairs(controls) do
 			controls[control] = false
@@ -367,14 +367,14 @@ function pedProcessSyncer ( ped )
 		setVehicleEngineState(vehicle, false)
 		_peds[ped].parked = true
 	end
-	
+
 	for control, state in pairs(controls) do
 		if _peds[ped].controls[control] ~= state then
 			setPedControlState(ped, control, state)
 			setElementData(vehicle, control, state)
 		end
 	end
-	
+
 	_peds[ped].controls = controls
 	-- setElementData(vehicle, "trafficSettings", _peds[ped])
 end
@@ -538,7 +538,7 @@ addEventHandler ( "onClientRender", _root,
 			local areaIDVeh = getAreaFromPos ( x, y, z )
 			-- outputChatBox(tostring(areaID))
 			if not areaID then return end
-			
+
 			-- for _, node in pairs (AREA_PATHS[areaIDVeh]) do
 				-- -- outputChatBox(tostring(getDistanceBetweenPoints3D ( node.x, node.y, node.z, x,y,z )))
 				-- if getDistanceBetweenPoints3D ( node.x, node.y, node.z, x,y,z ) < SHOWALLNODES then
@@ -560,7 +560,7 @@ addEventHandler ( "onClientRender", _root,
 					-- end
 				-- end
 			-- end
-			
+
 			if AREA_PATHS_ALL then
 				for _, node in pairs (AREA_PATHS_ALL[areaID].veh) do
 					-- outputChatBox(tostring(getDistanceBetweenPoints3D ( node.x, node.y, node.z, x,y,z )))
@@ -613,11 +613,11 @@ addEventHandler ( "onClientRender", _root,
 						local dx, dy = getScreenFromWorldPosition ( node.x, node.y, next.z)
 						if ( dx and dy ) then
 							-- dxDrawLine3D(node.x, node.y, gz+0.5, node.x+(node.dirx/100), node.y+(node.diry/100), gz+0.5, tocolor (255,255,255), 3)
-							
+
 							--dxDrawLine3D(node.x, node.y, next.z+1, next.x, next.y, next.z+1, tocolor ( 255, 0, 255), 12)
-							
+
 							local lanes = tostring(node.leftlanes).." "..tostring(node.rightlanes)
-							
+
 							-- if node.dy > 0 then
 								-- lanes = tostring(node.rightlanes).." "..tostring(node.leftlanes).." changed"
 							-- end

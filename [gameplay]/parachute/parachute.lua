@@ -1,4 +1,4 @@
-﻿
+
 local function onResourceStart ( resource )
 	local players = getElementsByType ( "player" )
 	for k, v in pairs ( players ) do

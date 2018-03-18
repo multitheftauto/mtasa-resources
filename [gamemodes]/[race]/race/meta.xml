@@ -1,6 +1,6 @@
 <meta>
 	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="1.0.1" build="r1025 09Jan15" edf:definition="edf/race.edf"/>
-	
+
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
 	<include resource="votemanager"/>
@@ -40,7 +40,7 @@
 	<script src="override_client.lua" type="client"/>
 	<script src="editor_support_client.lua" type="client"/>
 	<config src="help.xml" type="client" />
-	
+
 	<file src="img/progress_health_bg.png"/>
 	<file src="img/progress_health.png"/>
 	<file src="img/progress_speed_bg.png"/>
@@ -61,23 +61,23 @@
 	<file src="img/killmessage.png"/>
 
 	<file src="audio/mission_accomplished.mp3"/>
-	
+
 	<file src="model/nitro.dff"/>
 	<file src="model/nitro.txd"/>
 	<file src="model/repair.dff"/>
 	<file src="model/repair.txd"/>
 	<file src="model/vehiclechange.dff"/>
 	<file src="model/vehiclechange.txd"/>
-	
+
 	<file src="edf/checkpoint.png"/>
 	<file src="edf/pickup.png"/>
 	<file src="edf/spawnpoint.png"/>
-	
+
 	<export function="getTimePassed" type="server"/>
 	<export function="getPlayerRank" type="server"/>
 	<export function="isPlayerFinished" type="server"/>
 	<export function="getPlayerVehicle" type="server"/>
-	
+
 	<settings>
 		<!-- *****************************************************
 			 All these settings are adjustable in the Admin Panel:

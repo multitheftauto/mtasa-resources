@@ -1,4 +1,4 @@
-﻿dxText = {}
+dxText = {}
 dxText_mt = { __index = dxText }
 local idAssign,idPrefix = 0,"s"
 ------

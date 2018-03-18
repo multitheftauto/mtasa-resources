@@ -64,7 +64,7 @@ function AJAXRequest( method, url, data, process, async, dosend) {
             ;
         }
     }
-    
+
     self.process = process;
 
     // create an anonymous function to log state changes
@@ -232,7 +232,7 @@ function callFunction ( resourceName, functionName, returnFunction, errorFunctio
 							if ( i != values.length - 1 )
 								argumentList += ",";
 						}
-			
+
 						var funcCall = "globalReturnTemp(" + argumentList + ");";
 
 						eval ( funcCall );
@@ -262,6 +262,6 @@ function callFunction ( resourceName, functionName, returnFunction, errorFunctio
         }
 
     }
-    
+
     , true);
 }

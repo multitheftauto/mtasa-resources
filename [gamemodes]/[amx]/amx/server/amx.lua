@@ -1,4 +1,4 @@
-﻿g_LoadedAMXs = {}
+g_LoadedAMXs = {}
 g_Events = {}
 
 g_Players = {}
@@ -23,14 +23,14 @@ addEventHandler('onResourceStart', g_ResRoot,
 			outputDebugString('The amx module (king.dll/so) isn\'t loaded. It is required for amx to function. Please add it to your server config and restart your server.', 1)
 			return
 		end
-		
+
 		table.each(getElementsByType('player'), joinHandler)
-		
+
 		local plugins = get('amx.plugins')
 		if plugins then
 			table.each(plugins:split(), amxLoadPlugin)
 		end
-		
+
 		local filterscripts = get('amx.filterscripts')
 		if filterscripts then
 			filterscripts = filterscripts:split()
@@ -46,7 +46,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 				end
 			end
 		end
-		
+
 		exports.amxscoreboard:addScoreboardColumn('Score')
 	end,
 	false
@@ -73,13 +73,13 @@ function loadAMX(fileName, res)
 	else
 		amx.type = 'gamemode'
 	end
-	
+
 	local hAMX = fileOpen(':' .. getResourceName(res) .. '/' .. fileName, true)
 	if not hAMX then
 		outputDebugString('Error opening ' .. fileName, 1)
 		return false
 	end
-	
+
 	-- read header
 	amx.flags = readWORDAt(hAMX, 8)
 	amx.COD = readDWORDAt(hAMX, 0xC)
@@ -95,26 +95,26 @@ function loadAMX(fileName, res)
 	amx.publics = readPrefixTable(hAMX, amx.publics, amx.natives - amx.publics, true)
 	amx.natives = readPrefixTable(hAMX, amx.natives, amx.libraries - amx.natives, false)
 	amx.libraries = nil
-	
+
 	fileClose(hAMX)
-	
+
 	local alreadyGameModeRunning = getRunningGameMode() and true
 	local alreadySyncingWeapons = isWeaponSyncingNeeded()
 	if alreadyGameModeRunning and amx.type == 'gamemode' then
 		outputDebugString('Not loading ' .. fileName .. ' - a gamemode is already running', 1)
 		return false
 	end
-	
+
 	amx.cptr = amxLoad(getResourceName(res), amx.name .. '.amx')
 	if not amx.cptr then
 		outputDebugString('Error loading ' .. fileName, 1)
 		return false
 	end
-	
+
 	-- set up reading/writing of code and data section
 	amx.memCOD = setmetatable({ amx = amx.cptr }, { __index = amxMTReadCODCell })
 	amx.memDAT = setmetatable({ amx = amx.cptr }, { __index = amxMTReadDATCell, __newindex = amxMTWriteDATCell })
-	
+
 	g_LoadedAMXs[amx.name] = amx
 
 	amx.pickups = {}
@@ -131,9 +131,9 @@ function loadAMX(fileName, res)
 	amx.markers = {}
 	amx.dbresults = {}
 	amx.slothbots = {}
-	
+
 	clientCall(root, 'addAMX', amx.name, amx.type)
-	
+
 	-- run initialization
 	if amx.type == 'gamemode' then
 		setWeather(10)
@@ -145,11 +145,11 @@ function loadAMX(fileName, res)
 		procCallInternal(amx, 'OnFilterScriptInit')
 	end
 	procCallInternal(amx, amx.main)
-	
+
 	for id,player in pairs(g_Players) do
 		procCallInternal(amx, 'OnPlayerConnect', id)
 	end
-	
+
 	if not alreadySyncingWeapons and isWeaponSyncingNeeded(amx) then
 		clientCall(root, 'enableWeaponSyncing', true)
 	end
@@ -160,7 +160,7 @@ addEvent('onAMXStart')
 
 function unloadAMX(amx, notifyClient)
 	outputDebugString('Unloading ' .. amx.name .. '.amx')
-	
+
 	if amx.type == 'gamemode' then
 		procCallInternal(amx, 'OnGameModeExit')
 		fadeCamera(root, false, 0)
@@ -168,26 +168,26 @@ function unloadAMX(amx, notifyClient)
 	elseif amx.type == 'filterscript' then
 		procCallInternal(amx, 'OnFilterScriptExit')
 	end
-	
+
 	amxUnload(amx.cptr)
-	
+
 	for i,elemtype in ipairs({'pickups', 'vehicles', 'objects', 'gangzones','bots','markers','textlabels','textdraws'}) do
 		for id,data in pairs(amx[elemtype]) do
 			removeElem(amx, elemtype, data.elem)
 			destroyElement(data.elem)
 		end
 	end
-	
+
 	for i,vehinfo in pairs(amx.vehicles) do
 		if vehinfo.respawntimer then
 			killTimer(vehinfo.respawntimer)
 			vehinfo.respawntimer = nil
 		end
 	end
-	
+
 	table.each(amx.timers, killTimer)
 	table.each(amx.files, fileClose)
-	
+
 	if notifyClient == nil or notifyClient == true then
 		clientCall(root, 'removeAMX', amx.name)
 	end
@@ -197,7 +197,7 @@ function unloadAMX(amx, notifyClient)
 			table.each(g_Players, 'elem', unbindKey, g_ControlMapping[key], 'down', procCallInternal)
 		end
 	end
-	
+
 	g_LoadedAMXs[amx.name] = nil
 	if not isWeaponSyncingNeeded() then
 		clientCall(root, 'enableWeaponSyncing', false)
@@ -299,7 +299,7 @@ function procCallInternal(amx, nameOrOffset, ...)
 		outputDebugString('procCallInternal called with amx=nil, proc name=' .. nameOrOffset, 2)
 		return
 	end
-	
+
 	local prevProc = amx.proc
 	amx.proc = nameOrOffset
 	local ret

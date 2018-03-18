@@ -1,4 +1,4 @@
-﻿if isVoiceEnabled() then
+if isVoiceEnabled() then
 	function setPlayerVoiceMuted ( player, muted )
 		if not checkValidPlayer ( player ) then return false end
 		muted = not not muted or nil
@@ -37,7 +37,7 @@
 		end
 	end
 	addEventHandler ( "voice_unmutePlayerForPlayer", root, removePlayerMutedBy )
-	
+
 	function addPlayerMutedByTable (players) --Single packet for multiple muted players
 		for i,player in ipairs(players) do
 			source = player

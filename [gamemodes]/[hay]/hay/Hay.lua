@@ -188,7 +188,7 @@ function onThisResourceStart ( )
 		matrix[x][y][z] = 1
 		createObject ( 1305, x * -4, y * -4, z * 3, math.random ( 0, 359 ), math.random ( 0, 359 ), math.random ( 0, 359 ) )
 	end
-	
+
 	--Calculate tower center and barrier radius
 	barrier_x = (options.x + 1) * -2
 	barrier_y = (options.y + 1) * -2
@@ -197,7 +197,7 @@ function onThisResourceStart ( )
 	else
 		barrier_r = options.y / 2 + 20
 	end
-	
+
 	--Place top-haybail + minigun
 	createObject ( 3374, barrier_x, barrier_y, options.z * 3 + 3 )
 	thePickup = createPickup ( barrier_x, barrier_y, options.z * 3 + 6, 3, 2880, 1 )

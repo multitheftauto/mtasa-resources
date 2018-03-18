@@ -1,4 +1,4 @@
-﻿function getElementInfo ( element )
+function getElementInfo ( element )
     local data = getAllElementData(element)
     local childCount = getElementChildren(element)
     if ( childCount ) then

@@ -1,4 +1,4 @@
-﻿local customKills = {}
+local customKills = {}
 local config = {
 ["lines"] = 5,
 ["startY"] = 0.35,
@@ -132,7 +132,7 @@ function outputMessage ( message, r, g, b, font )
 	if startX < 0 then
 		startX = screenX + startX
 	end
-	
+
 	for i,part in ipairs(message) do
 		if type(part) == "table" and part[1] == "image" then
 			if not part.resource and not part.resourceName then
@@ -140,7 +140,7 @@ function outputMessage ( message, r, g, b, font )
 			end
 		end
 	end
-	
+
 	drawLine ( message, startX, y, config.align, config.lines, r, g, b, font, 1 )
 	fadeLine ( config.lines )
 end

@@ -59,7 +59,7 @@ function aAdminMenu ()
 		aTab1.Nick			= guiCreateButton ( 0.71, 0.260, 0.13, 0.04, "Set Nick", true, aTab1.Tab )
 		aTab1.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aTab1.Tab, "shout" )
 		aTab1.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aTab1.Tab, "setgroup" )
-	
+
 		local y = 0.03		-- Start y coord
 		local A = 0.045		-- Large line gap
 		local B = 0.035		-- Small line gap
@@ -184,7 +184,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aLogLines = 1
 
 		createMapTab()
-		
+
 		aTab3 = {}
 		aTab3.Tab			= guiCreateTab ( "Server", aTabPanel, "server" )
 		aTab3.Server		= guiCreateLabel ( 0.05, 0.05, 0.70, 0.05, "Server: Unknown", true, aTab3.Tab )
@@ -230,12 +230,12 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab3.Waves			= guiCreateEdit ( 0.35, 0.60, 0.135, 0.04, "0", true, aTab3.Tab )
 		aTab3.WavesSet		= guiCreateButton ( 0.50, 0.60, 0.10, 0.04, "Set", true, aTab3.Tab, "setwaveheight" )
 					 	 guiCreateLabel ( 0.63, 0.60, 0.09, 0.04, "( 0-100 )", true, aTab3.Tab )
-		
+
 		aTab3.FPSCurrent	= guiCreateLabel ( 0.05, 0.65, 0.25, 0.04, "FPS Limit: 38", true, aTab3.Tab )
 		aTab3.FPS			= guiCreateEdit ( 0.35, 0.65, 0.135, 0.04, "38", true, aTab3.Tab )
 		aTab3.FPSSet		= guiCreateButton ( 0.50, 0.65, 0.10, 0.04, "Set", true, aTab3.Tab, "setfpslimit" )
 					 	 guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-100 )", true, aTab3.Tab )
-					 	 
+
 
 		aTab4 = {}
 		aTab4.Tab			= guiCreateTab ( "Bans", aTabPanel, "bans" )
@@ -252,8 +252,8 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 						guiComboBoxAdjustHeight (aTab4.ComboBox,#ComboBoxItems)
 						ComboBoxItems = nil
 						guiComboBoxSetSelected (aTab4.ComboBox,0)
-						
-						
+
+
 				function searchBans()
 				local searchText = guiGetText (aTab4.EditBox)
 					if searchText == "" then
@@ -264,10 +264,10 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 					guiGridListClear (aTab4.BansList)
 					triggerServerEvent ( "aSync", localPlayer, "bansearch",{text,searchText})
 					end
-				
+
 				end
 				addEventHandler("onClientGUIClick", aTab4.Button, searchBans,false)
-						
+
 						  guiGridListAddColumn( aTab4.BansList, "Name", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "IP", 0.22 )
 						  guiGridListAddColumn( aTab4.BansList, "Serial", 0.22 )
@@ -276,7 +276,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 						  guiGridListAddColumn( aTab4.BansList, "Time", 0.13 )
 						  guiGridListAddColumn( aTab4.BansList, "Unban Date", 0.25 )
 						  guiGridListAddColumn( aTab4.BansList, "Reason", 0.8 )
-						
+
 						  guiGridListSetSortingEnabled( aTab4.BansList, false )
 		aTab4.Details		= guiCreateButton ( 0.85, 0.10, 0.13, 0.04, "Details", true, aTab4.Tab )
 		aTab4.Unban			= guiCreateButton ( 0.85, 0.20, 0.13, 0.04, "Unban", true, aTab4.Tab, "unban" )
@@ -604,15 +604,15 @@ function aClientSync ( type, table, data )
 			playSoundFrontEnd ( 18 )
 		end
 		guiSetText ( aTab1.Messages, table["unread"].."/"..table["total"].." unread messages" )
-		
-		
+
+
 	elseif ( type == "bansearch" ) then
 				g_GotLatestBansList = true
 			guiGridListClear ( aTab4.BansList )
 			aBans = {}
 			aBans["Serial"] = {}
 			aBans["IP"] = {}
-		
+
 		if g_GotLatestBansList then
 
 			for i=1,#table do
@@ -625,14 +625,14 @@ function aClientSync ( type, table, data )
 				end
 			local tType = getNeededTagType (data[1],ban)
 			if tType and string.match (string.lower(tType),string.lower(data[2])) then
-			
+
 				local time, date = "-", "-"
 				if ban.seconds then
 					local realTime = getRealTime( ban.seconds )
 					time = string.format("%02d:%02d", realTime.hour, realTime.minute )
 					date = string.format("%04d-%02d-%02d", realTime.year + 1900, realTime.month + 1, realTime.monthday )
 				end
-				
+
 				local reason = ban["reason"] and ban["reason"]~="nil" and ban["reason"] or ""
 				local row = guiGridListAddRow ( aTab4.BansList )
 					guiGridListSetItemText ( aTab4.BansList, row, 1, ban["nick"]	or "n/a", false, false )
@@ -643,7 +643,7 @@ function aClientSync ( type, table, data )
 					guiGridListSetItemText ( aTab4.BansList, row, 6, time,					false, false )
 					guiGridListSetItemText ( aTab4.BansList, row, 8, reason, false, false )
 				local unban = "Permanent"
-				
+
 				if ban.unban and tonumber(ban.unban) ~= 0 then
 					unban = FormatDate("d/m/y h:i:s", "'", tostring(ban.unban))
 				end
@@ -660,18 +660,18 @@ function aClientSync ( type, table, data )
 			guiSetVisible (aTab4.ProgressBar,true)
 			end
 			guiSetText( aTab4.BansTotal, "Found  " .. amount .. " / " .. total .. "  bans" )
-			
+
 		elseif ( type == "banlistend" ) then
 		guiSetVisible (aTab4.ProgressBar,false)
 		local w,h = guiGetSize (aTab4.BansList,true)
 		guiSetSize (aTab4.BansList,w,0.8,true)
-		
+
 		elseif ( type == "message" ) then
 			aMessageBox (data[1],data[2])
 		guiSetVisible (aTab4.ProgressBar,false)
 		local w,h = guiGetSize (aTab4.BansList,true)
 		guiSetSize (aTab4.BansList,w,0.8,true)
-			
+
 	end
 end
 
@@ -846,7 +846,7 @@ function aClientLog ( text )
 		guiSetText ( aTab2.LogLine4, guiGetText ( aTab2.LogLine5 ) )
 		guiSetText ( aTab2.LogLine5, text )
 	end
-	
+
 	aLogLines = aLogLines + 1
 end
 
@@ -933,7 +933,7 @@ function aClientScroll ( element )
 end
 
 function aClientCursorMove ( rx, ry, x, y )
-	
+
 end
 
 function aClientMouseEnter ( element )
@@ -1000,7 +1000,7 @@ function aClientClick ( button )
 			elseif ( source == aTab1.ScreenShots ) then
 				aPlayerScreenShot()
 			elseif ( source == aTab1.PlayerListSearch ) then
-				
+
 			elseif ( source == aTab1.HideColorCodes ) then
 				updateColorCodes()
 			elseif ( source == aTab1.AnonAdmin ) then
@@ -1130,7 +1130,7 @@ function aClientClick ( button )
 		-- TAB 2, RESOURCES
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
 			if ( source == aTab2.ResourceListSearch ) then
-				
+
 			elseif ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
@@ -1163,7 +1163,7 @@ function aClientClick ( button )
 			elseif ( source == aTab2.ExecuteServer ) then
 				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then triggerServerEvent ( "aExecute", localPlayer, guiGetText ( aTab2.Command ), true ) end
 			elseif ( source == aTab2.Command ) then
-				
+
 				guiSetVisible ( aTab2.ExecuteAdvanced, false )
 			elseif ( source == aTab2.ExecuteAdvanced ) then
 				guiSetVisible ( aTab2.ExecuteAdvanced, false )
@@ -1245,7 +1245,7 @@ function aClientClick ( button )
 					guiSetText ( aTab5.AdminText, "" )
 				end
 			elseif ( source == aTab5.AdminText ) then
-				
+
 			end
 		-- TAB 6, OPTIONS
 		elseif ( getElementParent ( source ) == aTab6.Tab ) then
@@ -1266,11 +1266,11 @@ function aClientClick ( button )
 			elseif ( source == aTab6.AutoLogin ) then
 				triggerServerEvent ( "aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
 			elseif ( source == aTab6.PasswordOld ) then
-				
+
 			elseif ( source == aTab6.PasswordNew ) then
-				
+
 			elseif ( source == aTab6.PasswordConfirm ) then
-				
+
 			elseif ( source == aTab6.PasswordChange ) then
 				local passwordNew, passwordConf = guiGetText ( aTab6.PasswordNew ), guiGetText ( aTab6.PasswordConfirm )
 				if ( passwordNew == "" ) then aMessageBox ( "error", "Enter the new password" )

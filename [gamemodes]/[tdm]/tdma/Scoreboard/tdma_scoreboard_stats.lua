@@ -1,4 +1,4 @@
-﻿--+----------------------------+
+--+----------------------------+
 --|     Scoreboard Editor      |
 --|     Created By AlienX      |
 --+----------------------------+
@@ -14,12 +14,12 @@ gameShowKDRatio = false
 
 function onMapLoad ( name )
 	if getThisResource() ~= name then return end
-	
+
 	--FOR MASS TESTS:
 	showKills ( true )
 	showDeaths ( true )
 	showKDRatio ( true )
-	
+
 	for k,v in ipairs(getElementsByType("player")) do
 		if ( v ) then
 			setElementData ( v, "kills", 0 )
@@ -31,7 +31,7 @@ function onMapLoad ( name )
 			setElementData ( v, "kdr", 0.0 )
 		end
 	end
-	
+
 	setTimer ( gameTick, 1000, 0 )
 end
 addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), onMapLoad)
@@ -50,7 +50,7 @@ addEventHandler( "onResourceStop", root, onMapFinish)
 
 function onMapFinish ( name )
 	if getThisResource() ~= name then return end
-	
+
 	showKills ( false )
 	showDeaths ( false )
 	showStatus ( false )
@@ -58,7 +58,7 @@ function onMapFinish ( name )
 	showMoney ( false )
 	showWantedLevel ( false )
 	showKDRatio ( false )
-	
+
 end
 addEventHandler( "onResourceStop", root, onMapFinish)
 
@@ -165,7 +165,7 @@ function gameTick ()
 					setElementData ( v, "health", playerHP .. "%" )
 				end
 			end
-			
+
 			local playerVehicle = getPedOccupiedVehicle(v)
 			if ( playerVehicle ) then
 				--Inside one
@@ -174,17 +174,17 @@ function gameTick ()
 				--On foot
 				setElementData ( v, "status", "Foot" )
 			end
-			
+
 			local playerMoney = getPlayerMoney(v)
 			if ( playerMoney ) then
 				setElementData ( v, "money", "$" .. playerMoney )
 			end
-			
+
 			local playerWantedLevel = getPlayerWantedLevel(v)
 			if ( playerWantedLevel ) then
 				setElementData ( v, "wanted level", playerWantedLevel )
 			end
-			
+
 			local playerDeaths = getElementData ( v, "deaths" )
 			local playerKills = getElementData ( v, "kills" )
 			if ( playerDeaths == 0 and playerKills == 0 ) then
@@ -217,7 +217,7 @@ function onPlayerJoin ()
 	setElementData ( source, "money", "$0" )
 	setElementData ( source, "wanted level", "0" )
 	setElementData ( source, "kdr", 0.0 )
-	
+
 	if ( gameShowKills ) then
 		showKills ( false )
 		showKills ( true )
@@ -252,11 +252,11 @@ addEventHandler ( "onPlayerJoin", root, onPlayerJoin )
 function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 	--Source = person who was wasted
 	--Attacker = person who did the killing
-	
+
 	local wastedDeaths = getElementData ( source, "deaths" )
 	wastedDeaths = wastedDeaths + 1
 	setElementData ( source, "deaths", wastedDeaths )
-	
+
 	if ( attacker ) then
 		if not ( attacker == source ) then
 		    if ( getPlayerTeam(attacker) ~= getPlayerTeam(source) ) then

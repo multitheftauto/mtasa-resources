@@ -1,4 +1,4 @@
-﻿-- makes any arrow markers move up and down like in single player
+-- makes any arrow markers move up and down like in single player
 
 local streamedMarkers = {}		-- { marker = { (baseX, baseY, baseZ | offsetX, offsetY, offsetZ, attachedTo = elem), anim = anim } }
 local sin = math.sin

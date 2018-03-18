@@ -1,4 +1,4 @@
-﻿
+
 --TRIGGERS THE CLOAKING CLIENT FUNCTIONS
 addEvent ("cloaktheplayer", true )
 
@@ -151,7 +151,7 @@ function maketheshield (player)
 		attachElements( shield, player, .2, .5, .2 )
 	end
 end
-	
+
 addEventHandler("shieldup", getRootElement() , maketheshield)
 
 

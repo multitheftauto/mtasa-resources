@@ -3,7 +3,7 @@
 
 	<assaultSettings timelimit="300" finishType="objective" finishObjective="freight" author="driver2"
 		time="22:00" weather="9" description="A rival band expects a new delivery by ship, destroy it." />
-		
+
 	<camera posX="-1448.827026" posY="1503.699585" posZ="25.376719"
 		targetX="-1385.593750" targetY="1491.384277" targetZ="12.064482" type="spawn" />
 	<camera posX="-1448.827026" posY="1503.699585" posZ="25.376719"
@@ -40,12 +40,12 @@
 
 	<vehicle posX="-2318.338379" posY="1527.752808" posZ="1.476893" model="446" />
 	<vehicle posX="-2342.699219" posY="1520.966431" posZ="1.449315" model="452" />
-	
+
 	<vehicle posX="-2303.121826" posY="1557.785767" posZ="1.567757" model="493" />
 	<vehicle posX="-2309.121826" posY="1557.785767" posZ="1.567757" model="493" />
 	<vehicle posX="-2315.121826" posY="1557.785767" posZ="1.567757" model="493" />
 	<vehicle posX="-2320.306641" posY="1560.704590" posZ="1.520212" model="473" />
-	
+
 	<vehicle posX="-2328.639648" posY="1538.553467" posZ="17.828125" model="488" />
 	<vehicle posX="-2328.639648" posY="1554.553467" posZ="17.828125" model="487" />
 	<vehicle posX="-2344.795898" posY="1545.799927" posZ="26.546875" model="487" />

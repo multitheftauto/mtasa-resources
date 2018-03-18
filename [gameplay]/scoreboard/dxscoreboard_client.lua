@@ -63,11 +63,11 @@ addEventHandler( "onClientResourceStart", getResourceRootElement( getThisResourc
 		cBorder = tocolor( defaultSettings.border_color.r, defaultSettings.border_color.g, defaultSettings.border_color.b, defaultSettings.border_color.a )
 		cServerInfo = tocolor( defaultSettings.serverinfo_color.r, defaultSettings.serverinfo_color.g, defaultSettings.serverinfo_color.b, defaultSettings.serverinfo_color.a )
 		cContent = tocolor( defaultSettings.content_color.r, defaultSettings.content_color.g, defaultSettings.content_color.b, defaultSettings.content_color.a )
-		
+
 		bindKey( triggerKey, "down", "Toggle scoreboard", "1" )
 		bindKey( triggerKey, "up", "Toggle scoreboard", "0" )
 		bindKey( settingsKey, "down", "Open scoreboard settings", "1" )
-		
+
 		addEventHandler( "onClientRender", getRootElement(), drawScoreboard )
 		triggerServerEvent( "onClientDXScoreboardResourceStart", getRootElement() )
 		readScoreboardSettings()
@@ -135,52 +135,52 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 		local deltaSeconds = currentSeconds - scoreboardDimensions.lastSeconds
 		scoreboardDimensions.lastSeconds = currentSeconds
 		deltaSeconds = math.clamp( 0, deltaSeconds, 1/25 )
-			
+
 		if scoreboardToggled or scoreboardForced then
 			local phases = {
 				[1] = {
 					["width"] 		= s(10),
 					["height"] 		= s(5),
-					
+
 					["incToWidth"] 	= s(10),
 					["incToHeight"] = s(5),
-				
+
 					["decToWidth"] 	= 0,
 					["decToHeight"] = 0
 				},
 				[2] = {
 					["width"] 	= s(40),
 					["height"] 	= s(5),
-						
+
 					["incToWidth"] 	= calculateWidth(),
 					["incToHeight"] = s(5),
-						
+
 					["decToWidth"] 	= s(10),
 					["decToHeight"] = s(5)
-						
+
 				},
 				[3] = {
 					["width"] 		= calculateWidth(),
 					["height"] 		= s(30),
-						
+
 					["incToWidth"] 	= calculateWidth(),
 					["incToHeight"] = calculateHeight(),
-						
+
 					["decToWidth"] 	= calculateWidth(),
 					["decToHeight"] = s(5)
 				}
 			}
-		
+
 			if not useAnimation then
 				scoreboardDimensions.width = calculateWidth()
 				scoreboardDimensions.height = calculateHeight()
 				scoreboardDimensions.phase = #phases
 			end
-			
+
 			local maxChange = deltaSeconds * 30*drawSpeed
 			local maxWidthDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToWidth - scoreboardDimensions.width, maxChange )
 			local maxHeightDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToHeight - scoreboardDimensions.height, maxChange )
-			
+
 			if scoreboardDimensions.width < phases[scoreboardDimensions.phase].incToWidth then
 				scoreboardDimensions.width = scoreboardDimensions.width + maxWidthDiff * phases[scoreboardDimensions.phase].width
 				if scoreboardDimensions.width > phases[scoreboardDimensions.phase].incToWidth then
@@ -192,7 +192,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					scoreboardDimensions.width = phases[scoreboardDimensions.phase].incToWidth
 				end
 			end
-				
+
 			if scoreboardDimensions.height < phases[scoreboardDimensions.phase].incToHeight then
 				scoreboardDimensions.height = scoreboardDimensions.height + maxHeightDiff * phases[scoreboardDimensions.phase].height
 				if scoreboardDimensions.height > phases[scoreboardDimensions.phase].incToHeight then
@@ -204,7 +204,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					scoreboardDimensions.height = phases[scoreboardDimensions.phase].incToHeight
 				end
 			end
-				
+
 			if 	scoreboardDimensions.width == phases[scoreboardDimensions.phase].incToWidth and
 				scoreboardDimensions.height == phases[scoreboardDimensions.phase].incToHeight then
 				if phases[scoreboardDimensions.phase + 1] then
@@ -228,36 +228,36 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 				[1] = {
 					["width"] 		= s(10),
 					["height"] 		= s(5),
-					
+
 					["incToWidth"] 	= s(10),
 					["incToHeight"] = s(5),
-				
+
 					["decToWidth"] 	= 0,
 					["decToHeight"] = 0
 				},
 				[2] = {
 					["width"] 	= s(40),
 					["height"] 	= s(5),
-						
+
 					["incToWidth"] 	= calculateWidth(),
 					["incToHeight"] = s(5),
-						
+
 					["decToWidth"] 	= s(10),
 					["decToHeight"] = s(5)
-						
+
 				},
 				[3] = {
 					["width"] 		= calculateWidth(),
 					["height"] 		= s(30),
-						
+
 					["incToWidth"] 	= calculateWidth(),
 					["incToHeight"] = calculateHeight(),
-						
+
 					["decToWidth"] 	= calculateWidth(),
 					["decToHeight"] = s(5)
 				}
 			}
-		
+
 			if scoreboardDrawn then
 				unbindKey( "mouse2", "both", showTheCursor )
 				unbindKey( "mouse_wheel_up", "down", scrollScoreboard, -1 )
@@ -268,17 +268,17 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 				end
 			end
 			scoreboardDrawn = false
-			
+
 			if not useAnimation then
 				scoreboardDimensions.width = 0
 				scoreboardDimensions.height = 0
 				scoreboardDimensions.phase = 1
 			end
-			
+
 			local maxChange = deltaSeconds * 30*drawSpeed
 			local maxWidthDiff = math.clamp( -maxChange, scoreboardDimensions.width - phases[scoreboardDimensions.phase].decToWidth, maxChange )
 			local maxHeightDiff = math.clamp( -maxChange, scoreboardDimensions.height - phases[scoreboardDimensions.phase].decToHeight, maxChange )
-			
+
 			if scoreboardDimensions.width > phases[scoreboardDimensions.phase].decToWidth then
 				scoreboardDimensions.width = scoreboardDimensions.width - maxWidthDiff * phases[scoreboardDimensions.phase].width
 				if scoreboardDimensions.width < phases[scoreboardDimensions.phase].decToWidth then
@@ -290,7 +290,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					scoreboardDimensions.width = phases[scoreboardDimensions.phase].decToWidth
 				end
 			end
-				
+
 			if scoreboardDimensions.height > phases[scoreboardDimensions.phase].decToHeight then
 				scoreboardDimensions.height = scoreboardDimensions.height - maxHeightDiff * phases[scoreboardDimensions.phase].height
 				if scoreboardDimensions.height < phases[scoreboardDimensions.phase].decToHeight then
@@ -302,11 +302,11 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					scoreboardDimensions.height = phases[scoreboardDimensions.phase].decToHeight
 				end
 			end
-				
+
 			if 	scoreboardDimensions.width == phases[scoreboardDimensions.phase].decToWidth and
 				scoreboardDimensions.height == phases[scoreboardDimensions.phase].decToHeight and
 				scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
-				
+
 				scoreboardDimensions.phase = scoreboardDimensions.phase - 1
 				if scoreboardDimensions.phase < 1 then scoreboardDimensions.phase = 1 end
 			end
@@ -332,10 +332,10 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 			forceScoreboardUpdate = false
 			scoreboardContent = {}
 			local index = 1
-			
+
 			local sortTableIndex = 1
 			local sortTable = {}
-			
+
 			local players = getElementsByType( "player" )
 			for key, player in ipairs( players ) do
 				if not getPlayerTeam( player ) or not (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) or serverInfo.forcehideteams then
@@ -386,7 +386,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 				scoreboardContent[index] = value
 				index = index + 1
 			end
-			
+
 			if (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) and not serverInfo.forcehideteams then
 				-- And then the teams
 				local teamSortTableIndex = 1
@@ -439,7 +439,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 						teamSortTable[teamSortTableIndex]["__SCOREBOARDELEMENT__"] = team
 					end
 					teamSortTableIndex = teamSortTableIndex + 1
-					
+
 					-- and then the players
 					sortTableIndex = 1
 					sortTable[team] = {}
@@ -493,7 +493,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					local team = content["__SCOREBOARDELEMENT__"]
 					scoreboardContent[index] = content
 					index = index + 1
-					
+
 					for key, value in ipairs( sortTable[team] ) do
 						scoreboardContent[index] = value
 						index = index + 1
@@ -502,29 +502,29 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 			end
 			scoreboardTicks.lastUpdate = currentTick
 		end
-		
+
 		--
 		-- Draw scoreboard content
 		--
 		if scoreboardDrawn then
 			scoreboardDimensions.height = calculateHeight()
 			scoreboardDimensions.width = calculateWidth()
-			
+
 			local topX, topY = (sX/2)-(calculateWidth()/2), (sY/2)-(calculateHeight()/2)
 			local index = firstVisibleIndex
 			local maxPerWindow = getMaxPerWindow()
-			
+
 			if firstVisibleIndex > #scoreboardContent-maxPerWindow+1 then
 				firstVisibleIndex = 1
 			end
-			
+
 			if firstVisibleIndex > 1 then
 				dxDrawImage( sX/2-8, topY-15, 17, 11, "arrow.png", 0, 0, 0, cWhite, drawOverGUI )
 			end
 			if firstVisibleIndex+maxPerWindow <= #scoreboardContent and #scoreboardContent > maxPerWindow then
 				dxDrawImage( sX/2-8, topY+scoreboardDimensions.height+4, 17, 11, "arrow.png", 180, 0, 0, cWhite, drawOverGUI )
 			end
-			
+
 			local y = topY+s(5)
 			if serverInfo.server and showServerInfo then
 				dxDrawText( "Server: " .. serverInfo.server, topX+s(5), y, topX+scoreboardDimensions.width-s(10), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
@@ -546,7 +546,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 			end
 			if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then y = y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
 			y = y+s(3)
-			
+
 			local textLength = dxGetTextWidth( "Hold RMB to enable scrolling/sorting", fontscale(rmbFont, s(0.75)), rmbFont )
 			local textHeight = dxGetFontHeight( fontscale(rmbFont, s(0.75)), rmbFont )
 			dxDrawText( "Hold RMB to enable scrolling/sorting", sX/2-(textLength/2), topY+scoreboardDimensions.height-textHeight-s(2), sX/2+(textLength/2), topY+scoreboardDimensions.height-s(2), cWhite, fontscale(serverInfoFont, s(0.75)), rmbFont, "left", "top", false, false, drawOverGUI )
@@ -559,7 +559,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 			dxDrawLine( bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, 	bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+1), cSettingsBox, 1, drawOverGUI )
 			dxDrawLine( bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, 	bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, cSettingsBox, 1, drawOverGUI )
 			dxDrawLine( bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+1), 							bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+1), cSettingsBox, 1, drawOverGUI )
-			
+
 			local x = s(10)
 			for key, column in ipairs( scoreboardColumns ) do
 				if x ~= s(10) then
@@ -584,13 +584,13 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 				x = x + s(column.width + 10)
 			end
 			dxDrawLine( topX+s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), topX+scoreboardDimensions.width-s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cBorder, s(1), drawOverGUI )
-			
+
 			y = y+s(5)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont )
 			while ( index < firstVisibleIndex+maxPerWindow and scoreboardContent[index] ) do
 				local x = s(10)
 				local element = scoreboardContent[index]["__SCOREBOARDELEMENT__"]
 				local team, player
-				
+
 				if element and isElement( element ) and getElementType( element ) == "team" then
 					dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cTeam, drawOverGUI )
 					-- Highlight the the row on which the cursor lies on
@@ -601,7 +601,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					if selectedRows[element] then
 						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cHighlight, drawOverGUI )
 					end
-					
+
 					for key, column in ipairs( scoreboardColumns ) do
 						local r, g, b, a = fromcolor( cContent )
 						if not useColors then
@@ -652,7 +652,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 									content.rot = content.rot or 0
 									content.rotOffX = content.rotOffX or 0
 									content.rotOffY = content.rotOffY or 0
-									
+
 									dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
 								end
 							else
@@ -675,7 +675,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					if selectedRows[element] then
 						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cHighlight, drawOverGUI )
 					end
-						
+
 					for key, column in ipairs( scoreboardColumns ) do
 						local r, g, b, a = fromcolor( cContent )
 						if not useColors then
@@ -742,9 +742,9 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 									content.rot = content.rot or 0
 									content.rotOffX = content.rotOffX or 0
 									content.rotOffY = content.rotOffY or 0
-									
+
 									dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
-									
+
 								end
 							else
 								dxDrawText( content, topX+theX+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
@@ -1126,7 +1126,7 @@ function getMaxPerWindow()
 	availableHeight = availableHeight-s(5)-dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont )
 	availableHeight = availableHeight-s(5)-dxGetFontHeight( fontscale(rmbFont, s(0.75)), rmbFont )
 	availableHeight = availableHeight-s(2)
-	
+
 	local index = firstVisibleIndex
 	local count = 0
 	local height = 0
@@ -1181,7 +1181,7 @@ function scoreboardClickHandler( button, state, cX, cY )
 				end
 				forceScoreboardUpdate = true
 			end
-				
+
 			-- Settings button
 			local bottomX, bottomY = topX+calculateWidth(), topY+calculateHeight()
 			textLength = dxGetTextWidth( "settings...", fontscale(sbFont, s(sbFontScale)), sbFont )
@@ -1194,7 +1194,7 @@ function scoreboardClickHandler( button, state, cX, cY )
 				end
 			end
 		end
-		
+
 		-- Scroll buttons
 		if firstVisibleIndex > 1 then
 			if cX >= sX/2-8 and cX <= sX/2-8+17 and cY >= topY-15 and cY <=  topY-15+11 then
@@ -1206,7 +1206,7 @@ function scoreboardClickHandler( button, state, cX, cY )
 				scrollScoreboard( nil, nil, 1 )
 			end
 		end
-		
+
 		-- Player/team click
 		local y = topY+s(5)
 		if (serverInfo.server or serverInfo.players) and showServerInfo then y = y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end

@@ -1,4 +1,4 @@
-﻿loadDialog = {}
+loadDialog = {}
 local open
 local mainRes = getResourceFromName"editor_main"
 local openResources = {}

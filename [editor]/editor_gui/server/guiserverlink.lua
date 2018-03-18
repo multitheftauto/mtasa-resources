@@ -1,4 +1,4 @@
-﻿addEvent ( "loadsave_getResources",true )
+addEvent ( "loadsave_getResources",true )
 addEvent ( "callServerside", true )
 
 function serversideCall ( resourceName, functionName, ... )

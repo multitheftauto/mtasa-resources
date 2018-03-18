@@ -1,4 +1,4 @@
-﻿local driver = false
+local driver = false
 local shooting = false
 local helpText,helpAnimation
 local exitingVehicle = false
@@ -288,7 +288,7 @@ function toggleTurningKeys(vehicleID, state)
 		end
 	end
 end
-	
+
 function fadeInHelp()
 	if helpAnimation then helpAnimation:remove() end
 	local _,_,_,a = helpText:color()

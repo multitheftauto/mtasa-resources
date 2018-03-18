@@ -1,4 +1,4 @@
-﻿--outputChatBox ( "Fallout Client Loaded", 255, 127, 0 ) --DEBUG
+--outputChatBox ( "Fallout Client Loaded", 255, 127, 0 ) --DEBUG
 fadeCamera ( true ) --Remove MTA fade
 gameOver = false
 local shakingPieces = {}

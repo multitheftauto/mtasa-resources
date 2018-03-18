@@ -1,4 +1,4 @@
-﻿local g_root = getRootElement()
+local g_root = getRootElement()
 local camDistance = 5
 local elementDiameter = 1
 local snapElement
@@ -19,7 +19,7 @@ function autoSnap ( element )
 	--Check if the element exists in the 3D word
 	local elemX,elemY,elemZ = getElementPosition ( element )
 	if not elemX or not elemY or not elemZ then return false end
-	
+
 	--check if its a visible element, if its not then leave the camera at its arbritrary position
 	if not visibleElements[getElementType(element)] then return false end
 	--

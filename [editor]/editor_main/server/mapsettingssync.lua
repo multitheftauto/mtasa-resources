@@ -1,4 +1,4 @@
-﻿--current settings' table, initially default map settings
+--current settings' table, initially default map settings
 local defaults = {
 	gamespeed = 1,
 	gravity = "0.008",
@@ -53,7 +53,7 @@ local mapSettingAction = {
 	weather = function ( value )
 		setWeather(value)
 	end,
-	
+
 	gravity = function(value)
 		setGravity(value)
 		setTimer(function()
@@ -62,11 +62,11 @@ local mapSettingAction = {
 			end
 		end, 1000, 1)
 	end,
-	
+
 	gamespeed = setGameSpeed,
 
 	waveheight = setWaveHeight,
-	
+
 	locked_time = function(value)
 		if (value) then
 			setMinuteDuration(100000)
@@ -83,7 +83,7 @@ function doSaveNewMapSettings( newMapSettings, hidden )
 		triggerClientEvent ( client, "syncMapSettings", root, currentMapSettings )
 		return
 	end
-	
+
 	currentMapSettings = newMapSettings
 	for setting, value in pairs(currentMapSettings) do
 		if mapSettingAction[setting] then
@@ -177,7 +177,7 @@ function passDefaultMapSettings()
 			end
 		end
 	end
-	
+
 	setClientAddedEDFs({getResourceFromName("editor_main")})
 	triggerClientEvent(root, "syncMapSettings", root, currentMapSettings)
 end
@@ -214,7 +214,7 @@ function passNewMapSettings()
 	for k,gamemodeName in ipairs(split(gamemodesString,string.byte(','))) do
 		gamemodesArray[gamemodeName] = true
 	end
-	
+
 	currentMapSettings.availGamemodes = {}
 	currentMapSettings.addedGamemodes = {}
 	local gamemodes = mapmanager.getGamemodes()

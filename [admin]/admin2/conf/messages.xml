@@ -174,7 +174,7 @@
     </group>
   </vehicle>
   <resource>
-    
+
   </resource>
   <server>
     <group action="setgame" r="225" g="170" b="90">

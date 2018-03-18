@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -101,7 +101,7 @@ function aClientTeamClick ( button )
 			end
 			setTimer ( aTeamsRefresh, 2000, 1 )
 		elseif ( source == aTeamName ) then
-			
+
 		elseif ( source == aTeamCancel ) then
 			aNewTeamShow ( false )
 		elseif ( source == aTeamAccept ) then

@@ -1,4 +1,4 @@
-﻿allEDF = {}
+allEDF = {}
 
 addEventHandler ( "onClientGUILoaded", rootElement,
 	function()
@@ -92,7 +92,7 @@ function reloadEDFDefinitions(newEDF,noOutput)
 		triggerClientEvent(client, 'syncEDFDefinitions', rootElement, allEDF)
 		return
 	end
-	
+
 	if client and not noOutput then
 		editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
 	end

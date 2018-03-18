@@ -1,4 +1,4 @@
-﻿local WARNING_HEIGHT = 300 -- height at which the 'open your parachute' message is shown
+local WARNING_HEIGHT = 300 -- height at which the 'open your parachute' message is shown
 local slow_speed = 0.75 -- overall (x,y,z) speed limit after which z_accelerate is used
 local accelerate_speed = 0.03 -- forward acceleration speed while holding forward (skydiving)
 local z_accelerate = 0.007 -- forward acceleration while not holding any controls (freefalling)
@@ -30,7 +30,7 @@ local function onRender()
 						if divingTick == 0 then
 							divingTick = currentTick
 						end
-						
+
 						-- let 1 second pass before starting the skydive, stops instant skydiving when jumping over high gaps
 						if currentTick > (divingTick + t(900)) then
 							setElementData(localPlayer,"skydiving",true)
@@ -46,7 +46,7 @@ local function onRender()
 				else
 					-- after a few seconds start checking for slow/upwards freefalling (wait a while to avoid speeding up the moment you start diving)
 					if (not divingSpeed) and currentTick > (divingTick + t(3000)) then divingSpeed = true end
-					
+
 					local rotX,_,rotZ = getElementRotation ( localPlayer )
 					rotZ = -rotZ
 					local accel
@@ -57,7 +57,7 @@ local function onRender()
 							velZ = -s(freefall_speed)
 						end
 					end
-					
+
 					if ( getMoveState "forwards" ) then
 						accel = true
 						local dirX = math.sin ( math.rad ( rotZ ) )

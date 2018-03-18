@@ -1,4 +1,4 @@
-﻿-- This client script is completely controlled by the server
+-- This client script is completely controlled by the server
 Countdown = {}
 Countdown.__index = Countdown
 Countdown.instances = {}
@@ -14,7 +14,7 @@ function Countdown:start(info)
 	for k,v in pairs(info) do
 		self[k] = v
 	end
-	
+
 	self.images.width = resAdjust(self.images.width)
 	self.images.height = resAdjust(self.images.height)
 	if self.background then
@@ -31,7 +31,7 @@ function Countdown:start(info)
 			nil
 		)
 	end
-	
+
 	self.value = self.startvalue
 end
 

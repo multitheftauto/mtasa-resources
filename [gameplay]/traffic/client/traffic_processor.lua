@@ -16,9 +16,9 @@ function pedInitialize ( ped, node, next )
 	_peds[ped].findNodeStartTime = getTickCount()
 	_peds[ped].collideStartTimeFront = 0
 	_peds[ped].collideStartTimeBack = 0
-	
+
 	_peds[ped].debug = {}
-	
+
 	if node and next then
 		pedFormQueue ( ped, getNode ( next ), getNode ( node ) )
 	end
@@ -28,7 +28,7 @@ end
 
 function pedFormQueue ( ped, node, prev )
 	_peds[ped].nodes = {}
-	
+
 	for i, marker in ipairs(_peds[ped].debug) do
 		destroyElement(marker)
 	end
@@ -44,7 +44,7 @@ function pedFormQueue ( ped, node, prev )
 			i = i - 2
 		end
 	end
-	
+
 	for i, node in ipairs ( _peds[ped].nodes ) do
 		if DEBUG then
 			table.insert ( _peds[ped].debug, createMarker ( node.x, node.y, node.z, "corona", 1, 255, 255, 0, 255 ) )
@@ -58,7 +58,7 @@ function pedFormQueue ( ped, node, prev )
 	end
 
 	pedInterpolate(ped)
-	
+
 	_peds[ped].findNodeStartTime = getTickCount()
 	-- for i, v in ipairs ( _peds[ped].nodes ) do
 		-- table.insert ( _peds[ped].debug, createMarker ( v.x, v.y, v.z, "corona", 1, 255, 0, 0, 255 ) )
@@ -83,9 +83,9 @@ function pedInterpolate ( ped )
 					table.insert(queue, _peds[ped].nodes[j])
 				end
 				table.remove(_peds[ped].nodes, i)
-				
+
 				local interpolation = Interpolation.Bezier (unpack(queue))
-				
+
 				for i = 0, MAX_QUEUE do
 					local node = interpolation:evalRational(i/MAX_QUEUE, {1,2.5,1})
 					table.insert ( _peds[ped].queue, node)
@@ -99,13 +99,13 @@ function pedInterpolate ( ped )
 	-- if #angles > 0 then
 		-- outputDebugString("angles: "..table.concat(angles,", "))
 	-- end
-	
+
 	if ( DEBUG ) then
 		-- var_dump(_peds[ped].queue)
 		-- for i, v in ipairs ( _peds[ped].queue ) do
 			-- table.insert ( _peds[ped].debug, createMarker ( v.x, v.y, v.z, "corona", 1, 0, 0, 255, 255 ) )
 		-- end
-		
+
 		for i, v in ipairs ( _peds[ped].nodes ) do
 			table.insert ( _peds[ped].debug, createMarker ( v.x, v.y, v.z, "corona", 1, 255, 0, 0, 255 ) )
 		end

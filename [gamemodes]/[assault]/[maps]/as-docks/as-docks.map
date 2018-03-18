@@ -9,7 +9,7 @@
 
 	<assaultSettings timelimit="600" finishType="objective" finishObjective="chimney" author="BB101"
 		time="23:00" weather="9" description="The rednecks have stolen the weed, get it back" />
-	
+
 	<camera posX="2648.0" posY="-2276.6" posZ="80.3"
 		targetX="2770.2" targetY="-2437.6" targetZ="13.6" type="spawn" />
 	<camera posX="2648.0" posY="-2276.6" posZ="80.3"

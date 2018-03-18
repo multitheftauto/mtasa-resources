@@ -1,8 +1,8 @@
-﻿local spawnWave = false
+local spawnWave = false
 local spawnWaveTimer = false
 local quedSpawns = {}
 addEvent ( "onSpawnpointUse" )
-	
+
 function createSpawnpoint ( x, y, z, rot, skin, interior, dimension )
 	if not tonumber(x) then outputDebugString("createSpawnpoint: Bad 'x' position specified",0,255,128,0) return false end
 	if not tonumber(y) then outputDebugString("createSpawnpoint: Bad 'y' position specified",0,255,128,0) return false end

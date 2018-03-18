@@ -1,4 +1,4 @@
-﻿addEvent ("onPlayerTeamSwitch")
+addEvent ("onPlayerTeamSwitch")
 local settings = {
 	"balance_teams",
 	"balance_threshold",

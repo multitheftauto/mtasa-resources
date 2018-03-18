@@ -1,4 +1,4 @@
-﻿function elementSearch ( cachetable, query, results, foundCache )
+function elementSearch ( cachetable, query, results, foundCache )
 	if not foundCache then foundCache = {} end
 	query = string.lower(query)
 	if results == nil then results = {} end
@@ -14,7 +14,7 @@
 					foundCache[model] = true
 					matches = true
 				end
-					
+
 				if ( string.find ( string.lower(object["name"]), query ) ) and not matches then
 					table.insert ( results, object )
 					foundCache[model] = true

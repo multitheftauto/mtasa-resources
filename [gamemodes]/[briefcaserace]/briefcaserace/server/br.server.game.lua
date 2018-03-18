@@ -1,4 +1,4 @@
-﻿--TO DO
+--TO DO
 -- in server.spawn, track timers that spawn players and timers that show gui, so they can be destroyed if the map ends, etc. (done, need testing)
 -- make team menu gui support higher number of teams (screen only shows up to 17 teams right now)
 -- make variable teams option.. teams are auto-generated as player count increases. 6 players per team? what skins do they use? (done, needs testing)
@@ -97,7 +97,7 @@ local idleBriefcaseTimer = nil
 -- gets settings
 -- creates a briefcase and an objective and sets player points to 0 when map starts
 function startGame()
-	
+
 		displayMessageForPlayers(1, "Briefcase Race")
    		-- set players' points to 0
 		local players = getElementsByType("player")
@@ -128,7 +128,7 @@ function startGame()
 	addEventHandler( "onPlayerBriefcaseHit", root,		onPlayerBriefcaseHit_brgame)
 	addEventHandler( "onPlayerObjectiveHit", root,		onPlayerObjectiveHit_brgame);
 	addEventHandler( "onPlayerQuit", root,				onPlayerQuit_brgame)
-	
+
 	-- spawn players who are ready or show them a team menu
 	-- this also makes them ready
 	if (not settings.teams) then
@@ -136,7 +136,7 @@ function startGame()
 	else
 		init_teamSpawn()
 	end
-	
+
 	-- set a time limit if there is one
 	if (settings.tlimit) then
 		timerElement = exports.missiontimer:createMissionTimer(settings.tlimit*60*1000, true, false, 0.5, 20, true, "default-bold", 1)
@@ -190,14 +190,14 @@ function endGame(showScores, tellMapCycler)
 	removeEventHandler( "onPlayerBriefcaseHit", root,		onPlayerBriefcaseHit_brgame)
 	removeEventHandler( "onPlayerObjectiveHit", root,		onPlayerObjectiveHit_brgame)
 	removeEventHandler( "onPlayerQuit", root,				onPlayerQuit_brgame)
-	
+
 	-- stop players from spawning [or selecting teams?]
 	if (not settings.teams) then
 		end_ffaSpawn()
 	else
 		end_teamSpawn()
 	end
-	
+
 	-- remove all players from readyPlayers -- unecessary as they're removed in br.server.spawn now ?
 	local tempTable = {}
 	for i,v in ipairs(getReadyPlayers()) do -- copy the table of ready players
@@ -206,7 +206,7 @@ function endGame(showScores, tellMapCycler)
 	for i,v in ipairs(tempTable) do -- remove them from the original table
 		removeReadyPlayer(v)
 	end
-	
+
 	if (showScores) then
 		--[[forceScoreboardForAllPlayers(true)
 		setTimer(forceScoreboardForAllPlayers, 10000, 1, false)
@@ -218,20 +218,20 @@ function endGame(showScores, tellMapCycler)
 --			setTimer(call, 10000, 1, mapmanagerResource, "stopGamemode") -- server crashes?
 --		end
 	end
-	
+
 	if (tellMapCycler) then
 		local mapCyclerResource = getResourceFromName("mapcycler")
 		if (mapCyclerResource and getResourceState(mapCyclerResource) == "running") then
 			triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
 		end
 	end
-	
+
 	-- remove the time limit timer if there is one
 	if (timerElement) then
 		destroyElement(timerElement)
 		timerElement = false
 	end
-	
+
 	gameStarted = false
 end
 
@@ -367,7 +367,7 @@ function setPlayerReady(source)
 			end
 		end
 	end
-	
+
 	return true
 end
 
@@ -392,9 +392,9 @@ function setPlayerNotReady(source)
 			end
 		end
 	end
-	
+
 	removeReadyPlayer(source)
-	
+
 	-- remove the briefcase if it exists
 	if (theBriefcase) then
 		if (theBriefcase:getCarrier()) then -- carried
@@ -415,7 +415,7 @@ function setPlayerNotReady(source)
 			scheduleClientEvent(source, "clientDestroyTeamObjective", root, team)
 		end
 	end
-	
+
 	return true
 end
 
@@ -734,7 +734,7 @@ function addCarrier(player)
 		killTimer(idleBriefcaseTimer)
 		idleBriefcaseTimer = false
 	end
-	
+
 	-- block this player's points if he was lastCarrier
 	local blockPoints = false
 	if (lastCarrier) then
@@ -764,7 +764,7 @@ function addCarrier(player)
 		-- increase score
 		pointLimitReached = increasePoints(player, PICKUP_PTS)
 	end
-	
+
 	if (pointLimitReached) then
 		endGame(true, true)
 	else

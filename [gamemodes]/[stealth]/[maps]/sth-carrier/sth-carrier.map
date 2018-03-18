@@ -11,7 +11,7 @@
     <mercenaryspawn id="mercenaryspawn (11)" interior="0" posX="-1256.48828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
     <mercenaryspawn id="mercenaryspawn (12)" interior="0" posX="-1257.98828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
     <mercenaryspawn id="mercenaryspawn (13)" interior="0" posX="-1259.23828125" posY="500.1923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
-    
+
 	<spyspawn id="spyspawn (1)" interior="0" posX="-1426.0520019531" posY="504.42425537109" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
     <spyspawn id="spyspawn (2)" interior="0" posX="-1427.5517578125" posY="504.423828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
     <spyspawn id="spyspawn (3)" interior="0" posX="-1429.0517578125" posY="504.423828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
@@ -20,7 +20,7 @@
     <spyspawn id="spyspawn (6)" interior="0" posX="-1429.3017578125" posY="506.173828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
     <spyspawn id="spyspawn (7)" interior="0" posX="-1427.5517578125" posY="506.173828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
     <spyspawn id="spyspawn (8)" interior="0" posX="-1426.0517578125" posY="506.173828125" posZ="3.0390625" rotX="0" rotY="0" rotZ="0" />
-	
+
     <object id="object (cxrf_a51_stairs08) (1)" dimension="0" interior="0" model="16731" name="object" posX="-1429.888794" posY="516.342834" posZ="5.574392" rotX="0" rotY="0" rotZ="0" />
     <object id="object (cxrf_a51_stairs08) (2)" dimension="0" interior="0" model="16731" name="object (1)" posX="-1446.8017578125" posY="516.34375" posZ="0.88095301389694" rotX="0" rotY="0" rotZ="0" />
     <object id="object (cos_sbanksteps01) (1)" dimension="0" interior="0" model="12958" name="object (2)" posX="-1338.510742" posY="487.263000" posZ="14.077453" rotX="0" rotY="0" rotZ="0" />

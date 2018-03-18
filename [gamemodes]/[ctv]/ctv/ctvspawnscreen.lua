@@ -1,4 +1,4 @@
-﻿-- Capture the Vehicle by BrophY�, if you wish to modify, keep copyright notice and credits in the file
+-- Capture the Vehicle by BrophY©, if you wish to modify, keep copyright notice and credits in the file
 -- Credits to Talidan, Dragon and Ransom for help and testing
 
 bases = {}
@@ -52,7 +52,7 @@ function onCTVSpawnMapStart (startedMap)
 	bases[varTeam2] = baseTeam2
 	bases[varTeam3] = baseTeam3
 	bases[varTeam4] = baseTeam4
-	
+
 	spawnText ()
 end
 
@@ -107,7 +107,7 @@ function spawnTeam ( source, key, keyState, team )
 	playSoundFrontEnd ( source, 6 )
 	setPlayerTeam ( source, team )
 	createBlipAttachedTo ( source, 0, 2, r, g, b, 140 )
-	
+
 	local weapon1 = getElementData ( teamBase, "weapon1" )
 	local weapon1id = tonumber ( gettok ( weapon1, 1, 44 ) )
 	local weapon1ammo = tonumber ( gettok ( weapon1, 2, 44 ) )

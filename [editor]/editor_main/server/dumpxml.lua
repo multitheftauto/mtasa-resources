@@ -1,4 +1,4 @@
-﻿local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
+local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 function toAttribute(value)
 	if type(value) == "table" then
 		if type(value[1]) == "table" then --Assume its a camera type
@@ -81,7 +81,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	extraNodes = extraNodes or {}
 	--[[ info tag ]]--
 	local infoNode = xmlCreateChild(xml, "info")
-	
+
 	local info = {}
 	info.author = currentMapSettings.metaAuthor
 	info.type = "map"
@@ -98,15 +98,15 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 			setResourceInfo ( resource, attributeName, attributeValue )
 		end
 	end
-	
+
 	--Add the actual map
 	local mapNode = xmlCreateChild ( xml, "map" )
 	xmlNodeSetAttribute ( mapNode, "src", filename )
 	xmlNodeSetAttribute ( mapNode, "dimension", tostring(dimension) )
-	
+
 	--[[ mapmanager settings ]]--
 	local settings = {}
-	
+
 	settings["#time"] = (currentMapSettings.timeHour or mapSettingDefaults.timeHour)..":"..(currentMapSettings.timeMinute or mapSettingDefaults.timeMinute)
 	settings["#gamespeed"] = toJSON(currentMapSettings.gamespeed or mapSettingDefaults.gamespeed)
 	settings["#gravity"] = toJSON(tonumber(currentMapSettings.gravity or mapSettingDefaults.gravity)) --!FIXME
@@ -116,10 +116,10 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	settings["#useLODs"] = toJSON(currentMapSettings.useLODs or mapSettingDefaults.useLODs)
 	settings["#minplayers"] = toJSON(currentMapSettings.minplayers or mapSettingDefaults.minplayers)
 	settings["#maxplayers"] = toJSON(currentMapSettings.maxplayers or mapSettingDefaults.maxplayers)
-	
+
 	-- Add any gamemode settings to the info table
 	if ( currentMapSettings.gamemodeSettings and #currentMapSettings.gamemodeSettings > 0 ) then
-	
+
 		for row, value in pairs(currentMapSettings.gamemodeSettings) do
 			local data = currentMapSettings.rowData[row].internalName
 			settings['#'..data] = toJSON(value)
@@ -129,17 +129,17 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 			settings['#'..row] = toJSON(value)
 		end
 	end
-	
+
 	--get the settings node or create one if it doesn't exist
 	local settingsNode = xmlCreateChild(xml, "settings")
-	
+
 	--dump the settings there
 	for settingName, settingValue in pairs(settings) do
 		local settingNode = xmlCreateChild(settingsNode, "setting")
 		xmlNodeSetAttribute(settingNode, "name", settingName)
 		xmlNodeSetAttribute(settingNode, "value", settingValue)
 	end
-	
+
 	--Add any copied files to meta as well
 	for fileType,files in pairs(extraNodes) do
 		for key,attr in ipairs(files) do
@@ -149,7 +149,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 			end
 		end
 	end
-	
+
 	--Add the mapEditorScriptingExtension scripts to meta
 	local scriptName = "mapEditorScriptingExtension_s.lua"
 	local foundScriptInMeta = false
@@ -165,7 +165,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		xmlNodeSetAttribute(scriptNode, "type", "server")
 	end
 	fileCopy("server/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
-	
+
 	local scriptName = "mapEditorScriptingExtension_c.lua"
 	local foundScriptInMeta = false
 	for i, child in ipairs(xmlNodeGetChildren(xml)) do
@@ -181,7 +181,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		xmlNodeSetAttribute(scriptNode, "validate", "false")
 	end
 	fileCopy("client/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
-	
+
 	return xmlSaveFile(xml)
 end
 

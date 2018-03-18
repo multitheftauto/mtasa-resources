@@ -28,7 +28,7 @@ function aBanDetails ( ip )
 		guiSetVisible ( aBanForm, false )
 		addEventHandler ( "onClientGUIClick", aBanForm, aClientBanClick )
 		addEventHandler ( "onClientGUISize", aBanForm, aBanDetailsWindowResize, false )
-		
+
 		--Register With Admin Form
 		aRegister ( "BanDetails", aBanForm, aBanDetails, aBanDetailsClose )
 	end

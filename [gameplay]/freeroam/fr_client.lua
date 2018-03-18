@@ -83,7 +83,7 @@ function isFunctionOnCD(func, exception)
 	if exception and (antiCommandSpam[func].tries < g_settings.g_settings.tries_required_to_trigger_low_priority) then
 		return false
 	end
-	
+
 	if (exception == nil) and (antiCommandSpam[func].tries < g_settings.tries_required_to_trigger) then
 		return false
 	end
@@ -122,11 +122,11 @@ local function cancelKnifeEvent(target)
 		cancelEvent()
 		errMsg("Knife restrictions are in place")
 	end
-	
+
 	if g_PlayerData[localPlayer].knifing or g_PlayerData[target].knifing then
 		cancelEvent()
 	end
-	
+
 end
 
 local function resetKnifing()
@@ -141,7 +141,7 @@ local function setElementPosition(element,x,y,z)
 		knifeRestrictionsOn = true
 		setTimer(resetKnifing,5000,1)
 	end
-	
+
 	_setElementPosition(element,x,y,z)
 
 end
@@ -519,7 +519,7 @@ local function warpMe(targetPlayer)
 		errMsg("Warping is disallowed!")
 		return
 	end
-	
+
 	if targetPlayer == localPlayer then
 		errMsg("You can't warp to yourself!")
 		return
@@ -529,7 +529,7 @@ local function warpMe(targetPlayer)
 		errMsg("This player has disabled warping to them!")
 		return
 	end
-	
+
 	local vehicle = getPedOccupiedVehicle(targetPlayer)
 	local interior = getElementInterior(targetPlayer)
 	if not vehicle then
@@ -804,7 +804,7 @@ end
 function setPosInit()
 	local x, y, z = getElementPosition(localPlayer)
 	setControlNumbers(wndSetPos, { x = x, y = y, z = z })
-	
+
 	addEventHandler('onClientRender', root, updatePlayerBlips)
 end
 
@@ -940,7 +940,7 @@ local function warpToBlip()
 
 	local wnd = isWindowOpen(wndSpawnMap) and wndSpawnMap or wndSetPos
 	local elem = blipPlayers[source]
-	
+
 	if isElement(elem) then
 		warpMe(elem)
 		closeWindow(wnd)
@@ -1023,7 +1023,7 @@ wndSetPos = {
 
 function getPosCommand(cmd, playerName)
 	local player, sentenceStart
-	
+
 	if playerName then
 		player = getPlayerFromName(playerName)
 		if not player then
@@ -1036,7 +1036,7 @@ function getPosCommand(cmd, playerName)
 		player = localPlayer
 		sentenceStart = 'You are '
 	end
-	
+
 	local px, py, pz = getElementPosition(player)
 	local vehicle = getPedOccupiedVehicle(player)
 	if vehicle then
@@ -1056,10 +1056,10 @@ function setPosCommand(cmd, x, y, z, r)
 	if (x and y == "" and not tonumber(x)) then
 		x, y, z, r = unpack(split(x, " "))
 	end
-	
+
 	local px, py, pz = getElementPosition(localPlayer)
 	local pr = getPedRotation(localPlayer)
-	
+
 	-- If somebody doesn't provide all XYZ explain that we will use their current X Y or Z.
 	local message = ""
 	message = message .. (tonumber(x) and "" or "X ")
@@ -1068,7 +1068,7 @@ function setPosCommand(cmd, x, y, z, r)
 	if (message ~= "") then
 		outputChatBox(message.."arguments were not provided. Using your current "..message.."values instead.", 255, 255, 0)
 	end
-	
+
 	setPlayerPosition(tonumber(x) or px, tonumber(y) or py, tonumber(z) or pz)
 	if (isPedInVehicle(localPlayer)) then
 		local vehicle = getPedOccupiedVehicle(localPlayer)
@@ -1292,14 +1292,14 @@ function addRemoveUpgrade(selUpgrade)
 	if not vehicle then
 		return
 	end
-	
+
 	if not selUpgrade then
 		selUpgrade = getSelectedGridListLeaf(wndUpgrades, 'upgradelist')
 		if not selUpgrade then
 			return
 		end
 	end
-	
+
 	if selUpgrade.installed then
 		-- remove upgrade
 		selUpgrade.installed = false
@@ -1724,7 +1724,7 @@ addCommandHandler('speed', setGameSpeedCommand)
 ---------------------------
 
 function toggleWarping()
-	
+
 	local state = guiCheckBoxGetSelected( getControl(wndMain, 'disablewarp') )
 	triggerServerEvent("onFreeroamLocalSettingChange",localPlayer,"warping",state)
 	outputChatBox("You "..(state and "disabled" or "enabled").." others warping to you",255,255,0)
@@ -1752,10 +1752,10 @@ function updateGUI(updateVehicle)
 	-- update position
 	local x, y, z = getElementPosition(localPlayer)
 	setControlNumbers(wndMain, {xpos=math.ceil(x), ypos=math.ceil(y), zpos=math.ceil(z)})
-	
+
 	-- update jetpack toggle
 	guiCheckBoxSetSelected( getControl(wndMain, 'jetpack'), doesPedHaveJetPack(localPlayer) )
-	
+
 	if updateVehicle then
 		-- update current vehicle
 		local vehicle = getPedOccupiedVehicle(localPlayer)
@@ -1786,11 +1786,11 @@ function hasDriverGhost(vehicle)
 	if not g_PlayerData then return end
 	if not isElement(vehicle) then return end
 	if getElementType(vehicle) ~= "vehicle" then return end
-	
+
 	local driver = getVehicleController(vehicle)
 	if g_PlayerData[driver] and g_PlayerData[driver].ghostmode then return true end
 	return false
-	
+
 end
 
 function onEnterVehicle(vehicle,seat)
@@ -1856,16 +1856,16 @@ wndMain = {
 		{'btn', id='stats', window=wndStats},
 		{'btn', id='bookmarks', window=wndBookmarks},
 		{'br'},
-		
+
 		{'chk', id='jetpack', onclick=toggleJetPack},
 		{'chk', id='falloff', text='fall off bike', onclick=toggleFallOffBike},
 		{'br'},
-		
+
 		{'chk', id='disablewarp', text='disable warp', onclick=toggleWarping},
 		{'chk', id='disableknife', text='disable knifing', onclick=toggleKnifing},
 		{'chk', id='antiram', text='anti-ramming (vehicle ghostmode)', onclick=toggleGhostmode},
 		{'br'},
-		
+
 		{'lbl', text='Pos:'},
 		{'lbl', id='xpos', text='x', width=45},
 		{'lbl', id='ypos', text='y', width=45},
@@ -1874,7 +1874,7 @@ wndMain = {
 		{'btn', id='setinterior', text='int', window=wndSetInterior},
 		{'br'},
 		{'br'},
-		
+
 		{'lbl', text='Vehicles'},
 		{'br'},
 		{'lbl', text='Current:'},
@@ -1891,7 +1891,7 @@ wndMain = {
 		{'chk', id='lightsoff', text='Lights off', onclick=forceLightsOff},
 		{'br'},
 		{'br'},
-		
+
 		{'lbl', text='Environment'},
 		{'br'},
 		{'btn', id='time', window=wndTime},
@@ -2047,7 +2047,7 @@ end
 local function onLocalSettingChange(key,value)
 
 	g_PlayerData[source][key] = value
-	
+
 	if key == "ghostmode" then
 		local sourceVehicle = getPedOccupiedVehicle(source)
 		if sourceVehicle then

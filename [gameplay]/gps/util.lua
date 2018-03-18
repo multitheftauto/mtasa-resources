@@ -68,13 +68,13 @@ end
 
 function table.merge ( ... )
 	local ret = { }
-	
+
 	for index, tbl in ipairs ( {...} ) do
 		for index, val in ipairs ( tbl ) do
 			table.insert ( ret, val )
 		end
 	end
-	
+
 	return ret
 end
 
@@ -84,6 +84,6 @@ function table.find ( tbl, val )
 			return index
 		end
 	end
-	
+
 	return false
 end

@@ -191,7 +191,7 @@ function GhostRecord:checkStateChanges()
 						donotrecord = true
 					end
 				end
-			
+
 				if not donotrecord then
 					table.insert( self.recording, { ty = "k", k = v, s = state, t = ticks } )
 					self.keyStates[v] = state
@@ -203,7 +203,7 @@ function GhostRecord:checkStateChanges()
 			end
 		end
 	end
-	
+
 	-- Vehicle change
 	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
 	if vehicle then

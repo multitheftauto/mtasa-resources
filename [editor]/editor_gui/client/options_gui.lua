@@ -1,4 +1,4 @@
-﻿local guiCreateLabel = guiCreateMinimalLabel
+local guiCreateLabel = guiCreateMinimalLabel
 local tabpanel
 dialog = {}
 interiors = {}
@@ -8,7 +8,7 @@ function createOptionsDialog()
 	dialog.window		=	guiCreateWindow ( screenX/2 - 320, screenY/2 - 180, 640, 360, "OPTIONS", false )
 	guiWindowSetSizable ( dialog.window, false )
 	guiSetVisible(dialog.window, false )
-	
+
 	tabpanel = guiCreateTabPanel ( 0.02388, 0.09444, 0.9582, 0.81389, true, dialog.window )
 	dialog.generalTab = guiCreateTab("General",tabpanel)
 	dialog.cameraTab = guiCreateTab("Camera",tabpanel)
@@ -17,17 +17,17 @@ function createOptionsDialog()
 	dialog.ok = guiCreateButton ( 0.5, 0.919444, 0.22857142, 0.05555555, "OK", true, dialog.window )
 	dialog.cancel = guiCreateButton ( 0.780357142, 0.919444, 0.22857142, 0.05555555, "Cancel", true, dialog.window )
 	dialog.restoreDefaults = guiCreateButton ( 0.02, 0.919444, 0.22857142, 0.05555555, "Restore defaults", true, dialog.window )
-	
+
 	--create general settings
 	dialog.enableSounds = editingControl.boolean:create{["x"]=0.02,["y"]=0.02,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable Sounds"}
 	guiCreateLabel ( 0.02, 0.14, 1, 0.1, "Icon size:", true, dialog.generalTab )
 	guiCreateLabel ( 0.02, 0.34, 1, 0.1, "Control panel alignment:", true, dialog.generalTab )
 	guiCreateLabel ( 0.02, 0.54, 1, 0.1, "Element creation panel alignment:", true, dialog.generalTab )
-	
+
 	dialog.iconSize = editingControl.dropdown:create{["x"]=0.02,["y"]=0.2,["width"]=0.30,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.35,["relative"]=true,["parent"]=dialog.generalTab,["rows"]={"small","medium","large"}}
 	dialog.topAlign = editingControl.dropdown:create{["x"]=0.02,["y"]=0.4,["width"]=0.30,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.35,["relative"]=true,["parent"]=dialog.generalTab,["rows"]={"left","right","center"}}
 	dialog.bottomAlign = editingControl.dropdown:create{["x"]=0.02,["y"]=0.6,["width"]=0.30,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.35,["relative"]=true,["parent"]=dialog.generalTab,["rows"]={"left","right","center"}}
-	
+
 	dialog.tutorialOnStart = editingControl.boolean:create{["x"]=0.02,["y"]=0.8,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Query for tutorial on start"}
 
 	---------------------------------
@@ -46,7 +46,7 @@ function createOptionsDialog()
 	guiCreateLabel ( 0.02, 0.22, 1, 0.1, "Fast camera move speed:", true, dialog.cameraTab )
 	guiCreateLabel ( 0.02, 0.42, 1, 0.1, "Slow camera move speed:", true, dialog.cameraTab )
 	guiCreateLabel ( 0.02, 0.72, 1, 0.1, "Look sensitivity:", true, dialog.cameraTab )
-	
+
 	dialog.normalMove = editingControl.slider:create{["x"]=0.02,["y"]=0.08,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.cameraTab,
 		["min"]=1,
 		["max"]=6,
@@ -63,7 +63,7 @@ function createOptionsDialog()
 		["min"]=0.01,
 		["max"]=1.3,
 	}
-	
+
 	dialog.smoothCamMove = editingControl.boolean:create{["x"]=0.5,["y"]=0.06,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.cameraTab,["label"]="Smooth Camera movement"}
 	dialog.invertMouseLook = editingControl.boolean:create{["x"]=0.5,["y"]=0.16,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.cameraTab,["label"]="Invert mouse look"}
 	--create movement settings
@@ -74,7 +74,7 @@ function createOptionsDialog()
 	guiCreateLabel ( 0.5, 0.32, 1, 0.1, "Fast element rotation speed:", true, dialog.movementTab )
 	guiCreateLabel ( 0.5, 0.52, 1, 0.1, "Slow element rotation speed:", true, dialog.movementTab )
 
-	
+
 	dialog.normalElemMove = editingControl.slider:create{["x"]=0.02,["y"]=0.18,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.movementTab,
 		["min"]=0.075,
 		["max"]=0.5,

@@ -59,16 +59,16 @@ function refreshServerScoreboard()
 		table.insert( scoreboardNewColumns, { ["name"] = column.name, ["size"] = column.width/calculateWidth() } )
 	end
 	httpColumns = scoreboardNewColumns
-	
+
 	local scoreboardNewRows = {}
-	
+
 	local players = getElementsByType( "player" )
 	for key, player in ipairs( players ) do
 		if isElement( player ) and not getPlayerTeam( player ) then
 			table.insert( scoreboardNewRows, getRowData( player ) )
 		end
 	end
-	
+
 	local teams = getElementsByType( "team" )
 	for key, team in ipairs( teams ) do
 		if isElement( team ) then

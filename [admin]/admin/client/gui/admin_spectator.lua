@@ -50,11 +50,11 @@ function aSpectator.Initialize ()
 			guiGridListSetItemText ( aSpectator.Slaps, guiGridListAddRow ( aSpectator.Slaps ), 1, tostring ( i * 10 ), false, false )
 			i = i + 1
 		end
-		
+
 		aSpectator.Skip			= guiCreateCheckBox ( 0.08, 0.85, 0.84, 0.04, "Skip dead players", true, true, aSpectator.Actions )
 					  		  guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
 		aSpectator.Back			= guiCreateButton ( 0.10, 0.93, 0.80, 0.05, "Back", true, aSpectator.Actions )
-	
+
 		aSpectator.Players		= guiCreateWindow ( 30, y / 2 - 200, 160, 400, "Players", false )
 			  	  	  		  guiWindowSetSizable ( aSpectator.Players, false )
 		aSpectator.PlayerList		= guiCreateGridList ( 0.03, 0.07, 0.94, 0.92, true, aSpectator.Players )
@@ -84,7 +84,7 @@ function aSpectator.Initialize ()
 	addEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
 	addEventHandler ( "onClientCursorMove", _root, aSpectator.CursorMove )
 	addEventHandler ( "onClientPreRender", _root, aSpectator.Render )
-	
+
 	guiSetVisible ( aSpectator.Actions, true )
 	guiSetVisible ( aSpectator.Players, true )
 	guiSetVisible ( aSpectator.Next, true )

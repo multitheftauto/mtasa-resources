@@ -1,4 +1,4 @@
-﻿local spectators = {}
+local spectators = {}
 local getPlayerSpectatee = {}
 resourceRoot = getResourceRootElement(getThisResource())
 
@@ -70,7 +70,7 @@ function joinTeam1( source )
 	end
 end
 addEventHandler ( "dojoinTeam1", getRootElement(), joinTeam1 )
- 
+
 addEvent("dojoinTeam2",true )
 function joinTeam2( source )
 	if (countPlayersInTeam(team2) - countPlayersInTeam(team1) > balanceamount) then
@@ -81,7 +81,7 @@ function joinTeam2( source )
 	end
 end
 addEventHandler ( "dojoinTeam2", getRootElement(), joinTeam2 )
- 
+
 function selectTeam( player )
 	setPlayerTeam(player, nil)
 	local thisplayer = player

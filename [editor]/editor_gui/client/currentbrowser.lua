@@ -1,4 +1,4 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 currentBrowserGUI = {}
 currentBrowser = {}
 local cSelectedElement,workingDimension,hiddenDimension
@@ -12,7 +12,7 @@ local ignoredTable = {}
 local setElementDimension = setElementDimension
 do
 	local mta_setElementDimension = setElementDimension
-	
+
 	function setElementDimension ( element, dimension )
 		mta_setElementDimension ( element, dimension )
 		if getElementChildrenCount( element ) > 0 then
@@ -116,7 +116,7 @@ function currentBrowser.update(elementArray)
 				elementList[k] = {}
 				elementList[k]["resource"] = resource
 				elementList[k]["name"] = elementName
-				
+
 				nameTable[elementName] = {}
 				nameTable[elementName]["resource"] = resource
 				nameTable[elementName]["friendlyName"] = friendlyName
@@ -322,7 +322,7 @@ function clearOtherResourceElements ( elemTable, resourceName )
 	if not getResourceFromName("edf") then
 		return elemTable
 	end
-	
+
 	local newTable = {}
 	for key,value in ipairs(elemTable) do
 		local creator = edf.edfGetCreatorResource (value)

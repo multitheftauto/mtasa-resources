@@ -4,7 +4,7 @@ local defaultHexCode = "#4E5768"; 	-- Hex code for what color to output messages
 
 -- This function converts RGB colors to colorcodes like #ffffff
 function RGBToHex(red, green, blue, alpha)
-	
+
 	-- Make sure RGB values passed to this function are correct
 	if( ( red < 0 or red > 255 or green < 0 or green > 255 or blue < 0 or blue > 255 ) or ( alpha and ( alpha < 0 or alpha > 255 ) ) ) then
 		return nil
@@ -22,7 +22,7 @@ end
 
 addEventHandler('onClientPlayerJoin', root,
 	function()
-		
+
 		if showColorCodes then
 			outputChatBox(defaultHexCode .. '* ' .. RGBToHex(getPlayerNametagColor(source)) .. getPlayerName(source) .. defaultHexCode .. ' has joined the game', 255, 100, 100, true)
 		else
@@ -35,7 +35,7 @@ addEventHandler('onClientPlayerJoin', root,
 
 addEventHandler('onClientPlayerChangeNick', root,
 	function(oldNick, newNick)
-		
+
 		if showColorCodes then
 			outputChatBox(defaultHexCode .. '* ' .. RGBToHex(getPlayerNametagColor(source)) .. oldNick .. defaultHexCode .. ' is now known as ' .. RGBToHex(getPlayerNametagColor(source)) .. newNick, 255, 100, 100, true)
 		else

@@ -1,4 +1,4 @@
-﻿definitionsDialog = {}
+definitionsDialog = {}
 local allEDF = {}
 
 

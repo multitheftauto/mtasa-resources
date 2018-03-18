@@ -95,7 +95,7 @@ addEventHandler("playmus", root, function ( url )
 		-- Calculate our bars by the fft data
 		calc ( fftData, stream )
 	end)
-		
+
 end)
 -- Util stuff
 function timetostring ( input, input2 )
@@ -227,7 +227,7 @@ function calc ( fft, stream )
 							value.pos = dir == "down" and value.pos + movespeed or value.pos - movespeed
 							value.posx = value.posx + (movespeed <= 2 and math.random(-movespeed,movespeed) or math.random(-1, 1))
 							value.alpha = value.alpha - (AlphaMulti) - math.random(1, 4)
-							
+
 							if ( value.alpha <= 0 ) then
 								peaks[x][key] = nil
 							end

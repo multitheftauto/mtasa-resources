@@ -21,7 +21,7 @@ function aReport ( )
 		for i,cat in ipairs( split( g_Prefs.playerReportCategories, string.byte(',') ) ) do
 			table.insert ( reportCategories, { subject = cat, playerReport = true } )
 		end
-		
+
 		local x, y = guiGetScreenSize()
 		aReportForm		= guiCreateWindow ( x / 2 - 150, y / 2 - 170, 300, 340, "Contact Admin", false )
 					   guiCreateLabel ( 0.05, 0.11, 0.20, 0.07, "Category:", true, aReportForm )
@@ -45,7 +45,7 @@ function aReport ( )
 		aReportMessage	= guiCreateMemo ( 0.05, 0.41, 0.90, 0.42, "", true, aReportForm )
 		aReportAccept	= guiCreateButton ( 0.40, 0.88, 0.25, 0.09, "Send", true, aReportForm )
 		aReportCancel	= guiCreateButton ( 0.70, 0.88, 0.25, 0.09, "Cancel", true, aReportForm )
-		
+
 		if ( not reportCategories[1].playerReport ) then
 			guiSetVisible ( aReportPlayer, false )
 			guiSetVisible ( aReportLblPlayer, false )
@@ -158,9 +158,9 @@ function aClientReportClick ( button )
 				aReportClose ()
 			end
 		elseif ( source == aReportSubject ) then
-			
+
 		elseif ( source == aReportMessage ) then
-			
+
 		elseif ( source == aReportCancel ) then
 			aReportClose ()
 		elseif ( source == aReportDropDown ) then

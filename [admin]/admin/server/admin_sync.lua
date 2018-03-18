@@ -76,7 +76,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 			tableOut[id]["fullName"] = getResourceInfo(resource, "name") or "Unknown"
 			tableOut[id]["author"] = getResourceInfo(resource, "author") or "Unknown"
 			tableOut[id]["version"] = getResourceInfo(resource, "version") or "Unknown"
-			
+
 			if ( getTickCount() > tick + 100 ) then
 				-- Execution exceeded 100ms so pause and resume in 100ms
 				setTimer(function()
@@ -191,7 +191,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		tableOut.total = #g_Bans
 		local cnt = 1
 		for b=1,#g_Bans do
-				
+
 				i = b - from + 1
 				ban = g_Bans[b]
 				local seconds = getBanTime(ban)
@@ -219,7 +219,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		end
 		triggerClientEvent ( source, "aClientSync", theSource, "banlistend", false ) --Tell the player the loop has ended
 		return
-		
+
 	end
 	if (isElement(source)) then -- Incase the source has quit during coroutine loading
 		triggerClientEvent ( source, "aClientSync", theSource, type, tableOut )
@@ -241,7 +241,7 @@ addEventHandler("aSync", _root, function(typed, data)
 	aSyncCoroutine = coroutine.create(aSynchCoroutineFunc)
 	coroutine.resume(aSyncCoroutine, typed, data)
 
-	
+
 end )
 
 addEvent ( "onPlayerMoneyChange", false )

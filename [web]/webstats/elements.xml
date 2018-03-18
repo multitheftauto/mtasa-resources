@@ -52,7 +52,7 @@ end
 <graph caption='' xAxisName='Time' yAxisName='<* = yAxisName *>'  showNames='1' animation='0' rotateNames='1' decimalPrecision='0' formatNumberScale='0' yAxisMinValue="0" yAxisMaxValue="10">
 	<*
 	stats = call ( thisresource, "getCurrentStats" )
-	
+
 	if ( charttype == "FCF_StackedArea2D" or charttype == "FCF_StackedColumn2D" or charttype=="FCF_StackedColumn3D" or charttype=="FCF_MSLine" ) then
 		*>
 		<categories >
@@ -60,7 +60,7 @@ end
 			<category name='<* = v.time *>' />
 			<* end *>
 		</categories>
-		
+
 		<*
 		local statsRequired = split(args[1], ",")
 		local i = 0

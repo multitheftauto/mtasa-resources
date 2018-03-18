@@ -1,4 +1,4 @@
-﻿local screenX, screenY = guiGetScreenSize ()
+local screenX, screenY = guiGetScreenSize ()
 local lastPickup,overlayText,overlayShowing
 ---
 local BG_COLOR = tocolor(0,0,0,130)

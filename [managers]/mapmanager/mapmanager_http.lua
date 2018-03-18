@@ -1,4 +1,4 @@
-﻿local cachedGamemodeList
+local cachedGamemodeList
 local recacheInterval = 5000 --ms
 local lastRecacheTime = 0
 

@@ -1,4 +1,4 @@
-﻿-- Default values
+-- Default values
 local DEFAULT_FRAME_COUNT = 10
 local DEFAULT_BACKGROUND  = { r = 255, g = 255, b = 128 }
 local DEFAULT_FOREGROUND  = { r = 0,   g = 0,   b = 0   }
@@ -119,7 +119,7 @@ function Create(x, y, text, _foreground, _background, _border)
 	else
 		border = DEFAULT_BORDER
 	end
-	
+
 	local newTooltip = createElement("__tooltip")
 	setElementData(newTooltip, "x", x)
 	setElementData(newTooltip, "y", y)

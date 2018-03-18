@@ -3,9 +3,9 @@
 		<author>AlienX</author>
 		<description>TDMA Map File</description>
 	</meta>
-	
+
 	<gamesettings interior="10" respawntime="3000" maxkills="60" ff="off" />
-	
+
 	<base team="Balla" red="0" green="0" blue="255" >
 		<weapon model="4" ammo="1"/>
 		<weapon model="23" ammo="80"/>
@@ -16,7 +16,7 @@
 		<skin model="104"/>
 		<spawn posX="-974" posY="1061" posZ="1347" rot="90" randx="5" randy="5" randz="0"/>
 	</base>
-	
+
 	<base team="Grove" red="0" green="255" blue="0" >
 		<weapon model="4" ammo="1"/>
 		<weapon model="23" ammo="80"/>
@@ -27,7 +27,7 @@
 		<skin model="107"/>
 		<spawn posX="-1131" posY="1057" posZ="1347" rot="270" randx="5" randy="5" randz="0"/>
 	</base>
-	
+
 	<randomPickup posX="-1090.0135498047" posY="1045.1580810547" posZ="1347.3598632813" />
 	<randomPickup posX="-1085.4008789063" posY="1049.4132080078" posZ="1346.8569335938" />
 	<randomPickup posX="-1066.0760498047" posY="1087.591796875" posZ="1346.4808349609" />

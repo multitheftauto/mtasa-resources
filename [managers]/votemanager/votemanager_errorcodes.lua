@@ -1,4 +1,4 @@
-﻿errorCode = {
+errorCode = {
 	--startPoll error codes: 1x
 	pollAlreadyRunning = 10,
 	lessThanTwoOptions = 11,

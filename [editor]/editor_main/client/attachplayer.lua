@@ -1,4 +1,4 @@
-﻿local attachPlayersEnabled = false
+local attachPlayersEnabled = false
 
 
 function getCameraRotation ()
@@ -8,7 +8,7 @@ function getCameraRotation ()
 	--Convert to degrees
 	rotx = math.deg(rotx)
 	rotz = math.deg(rotz)
-	
+
  	return rotx, 180, rotz
 end
 

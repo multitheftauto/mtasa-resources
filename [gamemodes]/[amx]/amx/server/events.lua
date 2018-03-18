@@ -1,4 +1,4 @@
-﻿-------------------------------
+-------------------------------
 -- Players
 
 function gameModeInit(player)
@@ -59,12 +59,12 @@ function joinHandler(player)
 	if playerJoined then
 		player = source
 	end
-	
+
 	local playerID = addElem(g_Players, player)
 	setElementData(player, 'ID', playerID)
 	clientCall(player, 'setAMXVersion', amxVersionString())
 	clientCall(player, 'setPlayerID', playerID)
-	
+
 	-- Keybinds
 	bindKey(player, 'F4', 'down', "changeclass")
 	bindKey(player, 'enter_exit', 'down', removePedJetPack)
@@ -82,8 +82,8 @@ function joinHandler(player)
 		bindKey(player, v, 'both', mtaKeyStateChange)
 	end
 	g_Players[playerID].updatetimer = setTimer(procCallOnAll, 100, 0, 'OnPlayerUpdate', playerID)
-	
-	
+
+
 	if playerJoined then
 		if getRunningGameMode() then
 			gameModeInit(player)
@@ -100,19 +100,19 @@ function joinHandler(player)
 				for id,textdraw in pairs(amx.textdraws) do
 					clientCall(player, 'TextDrawCreate', amx.name, id, table.deshadowize(textdraw, true))
 				end
-				
+
 				-- send menus
 				for i,menu in pairs(amx.menus) do
 					clientCall(player, 'CreateMenu', amx.name, i, menu)
 				end
-				
+
 				-- send 3d text labels
 				for i,label in pairs(amx.textlabels) do
 					clientCall(player, 'Create3DTextLabel', amx.name, i, label)
 				end
-				
+
 				procCallInternal(amx, 'OnPlayerConnect', playerID)
-				
+
 			end
 		)
 	end
@@ -266,9 +266,9 @@ addEventHandler('onPlayerChat', root,
 		if not procCallOnAll('OnPlayerText', getElemID(source), msg) then
 			return
 		end
-		
+
 		local r, g, b = getPlayerNametagColor(source)
-		
+
 		if g_GlobalChatRadius then
 			local x, y, z = getElementPosition(source)
 			for i,data in pairs(g_Players) do
@@ -386,7 +386,7 @@ addEventHandler('onVehicleEnter', root,
 		g_Players[playerID].vehicle = source
 		setPlayerState(player, seat == 0 and PLAYER_STATE_DRIVER or PLAYER_STATE_PASSENGER)
 		procCallInternal(amx, 'OnPlayerEnterVehicle', playerID, vehID, seat ~= 0 and 1 or 0)
-		
+
 		if amx.vehicles[vehID] and amx.vehicles[vehID].respawntimer then
 			killTimer(amx.vehicles[vehID].respawntimer)
 			amx.vehicles[vehID].respawntimer = nil
@@ -401,7 +401,7 @@ addEventHandler('onVehicleExit', root,
 		if not amx then
 			return
 		end
-		
+
 		if isPed(player) then
 			local pedID = getElemID(player)
 			g_Bots[pedID].vehicle = nil
@@ -409,12 +409,12 @@ addEventHandler('onVehicleExit', root,
 			procCallOnAll('OnBotExitVehicle', pedID, vehID)
 			return
 		end
-		
+
 		local playerID = getElemID(player)
 		g_Players[playerID].vehicle = nil
 		procCallOnAll('OnPlayerExitVehicle', playerID, vehID)
 		setPlayerState(player, PLAYER_STATE_ONFOOT)
-		
+
 		for i=0,getVehicleMaxPassengers(source) do
 			if getVehicleOccupant(source, i) then
 				return
@@ -443,9 +443,9 @@ addEventHandler('onVehicleExplode', root,
 		if not amx then
 			return
 		end
-		
+
 		procCallOnAll('OnVehicleDeath', vehID, 0)		-- NOES, MY VEHICLE DIED
-		
+
 		if amx.vehicles[vehID].respawntimer then
 			killTimer(amx.vehicles[vehID].respawntimer)
 			amx.vehicles[vehID].respawntimer = nil
@@ -461,7 +461,7 @@ addEventHandler('onVehicleDamage', root,
 		if not amx then
 			return
 		end
-		
+
 		procCallOnAll('OnVehicleDamage', vehID, loss)
 	end
 )
@@ -535,7 +535,7 @@ addEventHandler('onPickupUse', root,
 		--end
 		local pickup = source
 		local model = getElementModel(pickup)
-		
+
 		if isCustomPickup(pickup) then
 			return
 		end
@@ -569,7 +569,7 @@ addEventHandler('onPlayerClick', root,
 		if mouseButton == 'right' then iButton = 2 end
 		if buttonState == 'up' then iState = 0 end
 		if buttonState == 'down' then iState = 1 end
-		
+
 		procCallOnAll('OnPlayerClickWorld', playerID, iButton, iState, worldPosX, worldPosY, worldPosZ)
 		if elem == nil then return end
 		if getElementType(elem) == 'player' then
@@ -581,7 +581,7 @@ addEventHandler('onPlayerClick', root,
 		if getElementType(elem) == 'vehicle' then
 			procCallOnAll('OnPlayerClickWorldVehicle', playerID, iButton, iState, elemID, worldPosX, worldPosY, worldPosZ)
 		end
-		
+
 	end
 )
 

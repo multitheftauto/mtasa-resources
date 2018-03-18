@@ -1,4 +1,4 @@
-﻿local res = getThisResource()
+local res = getThisResource()
 browser = {}
 browserGUI = {}
 BROWSER_DIMENSION = nil
@@ -34,7 +34,7 @@ function createBrowser()
 	--
 	browserGUI.list:addCallback(browser.gridlistSelect)
 	browserGUI.list:addDoubleClickCallback(browser.applySelected)
-		
+
 	addEventHandler ("onClientGUIClick",browserGUI.ok,browser.browserSelected,false)
 	addEventHandler ("onClientGUIClick",browserGUI.cancel,browser.browserCancelled,false)
 end
@@ -232,7 +232,7 @@ function createCategoriesTable ( node, nodeid )
 			local reps = string.rep("|  ", nodeid)
 			if reps == nil or reps == false then reps = "" end
 			local name = k
-			
+
 			dropdownArray[progress] =  reps.."|--"..name
 			catNodes[progress] = value
 			progress = progress + 1
@@ -297,7 +297,7 @@ end
 
 function browser.browserSelected(button)
 	if button ~= "left" and button ~= "browser_confirm" then return end
-	
+
 	browser.applySelected()
 end
 

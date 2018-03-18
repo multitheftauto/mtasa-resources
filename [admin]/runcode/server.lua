@@ -1,9 +1,9 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 
 function runString (commandstring, outputTo, source)
 	me = source
 	local sourceName = source and getPlayerName(source) or "Console"
-	
+
 	outputChatBoxR(sourceName.." executed command: "..commandstring, outputTo, true)
 	local notReturned
 	--First we test with return
@@ -24,7 +24,7 @@ function runString (commandstring, outputTo, source)
 		outputChatBoxR("Error: "..results[2], outputTo)
 		return
 	end
-	
+
 	local resultsString = ""
 	local first = true
 	for i = 2, #results do
@@ -39,12 +39,12 @@ function runString (commandstring, outputTo, source)
 		end
 		resultsString = resultsString..tostring(results[i]).." ["..resultType.."]"
 	end
-	
+
 	if #results > 1 then
 		outputChatBoxR("Command results: " ..resultsString)
 		return
 	end
-	
+
 	outputChatBoxR("Command executed!")
 end
 

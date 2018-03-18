@@ -1,4 +1,4 @@
-﻿function players()
+function players()
 	local players = getElementsByType("player")
 	local tbl = {}
 	for k,v in ipairs(players) do

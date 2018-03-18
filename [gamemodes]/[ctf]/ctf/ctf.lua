@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 <team name="" colorR="" colorG="" colorB="">
 	<flag name="" posX="" posY="" posZ="" />
 	<spawnpoint posX="" posY="" posZ="" rot="" model="" />
@@ -70,7 +70,7 @@ function CTF_gamemodeMapStart ( startedMap )
 	CTF_roundTime = CTF_roundTime or get(mapName..".roundTime")
 	CTF_spawnscreen = CTF_spawnscreen or get(mapName..".spawnScreen")
 	CTF_blips = CTF_blips or get(mapName..".blips")
-	
+
 	if ( not CTF_respawnTime ) then
 		outputDebugString( "* CTF Warning: Respawn time not set. Defaulting to 4.5 seconds.", 2 )
 		CTF_respawnTime = 4500
@@ -80,7 +80,7 @@ function CTF_gamemodeMapStart ( startedMap )
 		outputDebugString( "* CTF Warning: Round time not set. Defaulting to 10 minutes.", 2 )
 		CTF_roundTime = 600000
 	end
-	
+
 	if ( CTF_spawnscreen == "on" ) then
 		CTF_spawnscreen = true
 	end
@@ -264,7 +264,7 @@ function CTF_endRound()
 	setTimer ( destroyElement, 9000, 1, CTF_missionTimer)
 	setTimer( CTF_newRound, 10000, 1 )
 end
-	
+
 
 function CTF_newRound()
 	triggerEvent( "onRoundFinished", getResourceRootElement(getThisResource()) )
@@ -329,8 +329,8 @@ function CTF_newRound()
 	CTF_missionTimer = exports.missiontimer:createMissionTimer (CTF_roundTime,true,true,0.5,20,true,"default-bold",1)
 	addEventHandler ( "onMissionTimerElapsed", CTF_missionTimer, CTF_endRound )
 end
-		
-	
+
+
 
 function CTF_onPlayerJoin ( )
 	setElementData( source, "col", nil )

@@ -1,4 +1,4 @@
-﻿function initVehicleSystem()
+function initVehicleSystem()
 	local gameVehicles = getElementsByType("vehicle", mapResource)
 	for k,v in ipairs(gameVehicles) do
 		toggleVehicleRespawn ( v, true )

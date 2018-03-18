@@ -1,4 +1,4 @@
-﻿addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
 function (resource)
 	exports.realdriveby:setDriverDrivebyAbility()
 	exports.realdriveby:setPassengerDrivebyAbility(22, 28, 29, 32)

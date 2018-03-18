@@ -1,4 +1,4 @@
-﻿local config = {
+local config = {
 ["lines"] = 5,
 ["startY"] = 0.35,
 ["textHeight"] = 16,

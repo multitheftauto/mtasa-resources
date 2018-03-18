@@ -1,4 +1,4 @@
-﻿local loadedMap = false
+local loadedMap = false
 local totalBar = 0
 local loadingBar = 0
 local resX, resY = guiGetScreenSize()

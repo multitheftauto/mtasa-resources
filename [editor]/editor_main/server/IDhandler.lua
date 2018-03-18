@@ -1,4 +1,4 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 local getVehicleNameFromModelMTA = getVehicleNameFromModel
 local trailers = {
 	[606]="Baggage Trailer (Covered)", [607]="Baggage Trailer (Uncovered)", [610]="Farm Trailer", [611]="Street Clean - Trailer",
@@ -42,16 +42,16 @@ function assignID ( theElement )
 	if creatorResource == edf.res then
 		creatorResource = thisResource
 	end
-	
+
 	local elementType = getElementType( theElement )
 	local elementDefinition = loadedEDF[creatorResource].elements[elementType]
 	local elementID = getElementID( theElement )
-	
+
 	-- if it doesn't have an ID or it isn't unique,
 	if not ( elementID and getElementByID( elementID ) == theElement ) then
 		-- prepare the ID string. Append the element type first,
 		local idString = elementType
-		
+
 		-- then all category-based properties' values' names,
 		if elementDefinition then
 			for dataField, dataDefinition in pairs( elementDefinition.data ) do
@@ -65,7 +65,7 @@ function assignID ( theElement )
 				end
 			end
 		end
-	
+
 		-- and lastly, find an unused index, and set the ID
 		local i = 1
 		while true do

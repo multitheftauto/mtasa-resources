@@ -1,4 +1,4 @@
-﻿-- CTF-Sewer script by jhxp , contains parts of two scripts:
+-- CTF-Sewer script by jhxp , contains parts of two scripts:
 -- giveWeaponsOnSpawn for CTF: CS Italy by Ratt
 -- assault (respawning vehicles) by driver2
 
@@ -36,7 +36,7 @@ function respawnVehicle(vehicle)
 	rotY = getElementData(vehicle,"rotY")
 	rotZ = getElementData(vehicle,"rotZ")
 	spawnVehicle ( vehicle, posX, posY, posZ, rotX, rotY, rotZ )
-	
+
 end
 --[[
 function onVehicleExit()

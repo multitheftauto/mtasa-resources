@@ -261,7 +261,7 @@ addEventHandler ( "aBans", _root, function ( action, data )
 		else
 			action = nil
 		end
-	
+
 		if ( action ~= nil ) then
 			aAction ( "bans", action, source, false, mdata, more )
 			triggerEvent ( "aSync", source, "sync", "bans" )

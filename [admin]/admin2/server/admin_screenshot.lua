@@ -35,7 +35,7 @@ local aScreenShots = {
 addEvent ( EVENT_SCREEN_SHOT, true )
 addEventHandler ( EVENT_SCREEN_SHOT, _root, function ( action, id, ... )
 	if ( action == SCREENSHOT_SAVE ) then
-		
+
 	elseif ( action == SCREENSHOT_DELETE ) then
 
 	end
@@ -110,7 +110,7 @@ addEventHandler ( "onPlayerScreenShot", _root, function ( resource, status, jpeg
 	if ( resource ~= getThisResource () ) then
 		return
 	end
-	
+
 	local data = aScreenShots.pending[tag]
 	if ( not data ) then
 		return

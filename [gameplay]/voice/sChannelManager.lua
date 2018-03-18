@@ -1,4 +1,4 @@
-﻿if isVoiceEnabled() then
+if isVoiceEnabled() then
 	addEventHandler ( "onPlayerQuit", root,
 		function()
 			local previousChannel = playerChannels[source]

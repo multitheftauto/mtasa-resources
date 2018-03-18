@@ -83,7 +83,7 @@ local dataFunctions = {
 		end
 	end,
 	[EXCHANGE_DELINK] = function ()
-		
+
 	end,
 	[EXCHANGE_CHAT] = function ()
 

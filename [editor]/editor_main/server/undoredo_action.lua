@@ -1,4 +1,4 @@
-﻿local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
+local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 local rootElement = getRootElement()
 
 -- ACTION CLASSES
@@ -201,7 +201,7 @@ local function getElementsWithParent(element, base, res)
 	if getElementData(base, "me:parent") == element then
 		table.insert(res, base)
 	end
-	
+
 	return res
 end
 function ActionDestroy:setElement(element)
@@ -218,7 +218,7 @@ function ActionDestroy:setElement(element)
 		for k,element in ipairs(self.parentOf) do
 			setElementData(element, "me:parent", nil)
 		end
-		
+
 		self.references = getElementData(element,"me:references")
 		if self.references then
 			for refElement,property in pairs(self.references) do
@@ -241,7 +241,7 @@ function ActionDestroy:performUndo()
 		for k,element in ipairs(self.parentOf) do
 			setElementData(element, "me:parent", self.element)
 		end
-		
+
 		if self.references then
 			for refElement,property in pairs(self.references) do
 				edf.edfSetElementProperty(refElement, property, self.element)
@@ -262,7 +262,7 @@ function ActionDestroy:performRedo()
 		for k,element in ipairs(self.parentOf) do
 			setElementData(element, "me:parent", nil)
 		end
-		
+
 		if self.references then
 			for refElement,property in pairs(self.references) do
 				edf.edfSetElementProperty(refElement, property, nil)

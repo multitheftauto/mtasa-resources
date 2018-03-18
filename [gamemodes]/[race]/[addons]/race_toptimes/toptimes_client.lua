@@ -1,4 +1,4 @@
-﻿--
+--
 -- toptimes_client.lua
 --
 
@@ -294,7 +294,7 @@ end
 --
 ---------------------------------------------------------------------------
 function CToptimes:onMapStarting(mapinfo)
-	
+
 	self.bAutoShow			= false
 	self.bGettingUpdates	= false	 -- Updates are automatically cleared on the server at the start of a new map,
 	self.listStatus		 = 'Empty'
@@ -316,7 +316,7 @@ end
 --
 ---------------------------------------------------------------------------
 function CToptimes:onMapStopping()
-	
+
 	self.bAutoShow			= false
 	self.bGettingUpdates	= false	 -- Updates are automatically cleared on the server at the start of a new map,
 	self.listStatus		 = 'Empty'

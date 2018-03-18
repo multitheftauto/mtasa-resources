@@ -1,4 +1,4 @@
-﻿local definition,teamsTable
+local definition,teamsTable
 local xAbsOffset = 0
 local scriptRequestedMenu
 
@@ -96,7 +96,7 @@ function presetClicked()
 		playSoundFrontEnd ( 1 )
 		if  highlighter == getPlayerTeam(localPlayer) or
 			triggerServerEvent ( "rpc_playerTeamSwitch", localPlayer, highlighter, scriptRequestedMenu ) then
-			
+
 			removeEventHandler ( "onClientRender", root, drawPresetMenu )
 			removeEventHandler ( "onClientRender", root, drawInfo )
 			unbindKey ( "mouse1", "down", presetClicked )
@@ -113,7 +113,7 @@ function guiClicked()
 	local team = getTeamFromName(teamName)
 	if  team == getPlayerTeam(localPlayer) or
 		triggerServerEvent ( "rpc_playerTeamSwitch", localPlayer, team ) then
-		
+
 		guiSetVisible ( panel, false )
 		removeEventHandler ( "onClientRender", root, drawInfo )
 		showCursor(false)
@@ -181,5 +181,5 @@ function getFullTeams()
 	end
 	return teams
 end
-	
-	
+
+

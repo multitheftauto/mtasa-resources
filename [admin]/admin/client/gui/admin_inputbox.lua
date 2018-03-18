@@ -44,7 +44,7 @@ function aInputBox ( title, message, default, action, vOne, vTwo, defaultNick, d
 		guiSetSize(aInputForm, 300, 210, false)
 		guiSetPosition(aInputOk, 90, 180, false)
 		guiSetPosition(aInputCancel, 150, 180, false)
-		
+
 
 		-- time duration:
 
@@ -81,7 +81,7 @@ function aInputBox ( title, message, default, action, vOne, vTwo, defaultNick, d
 		end
 		guiSetText(banReasonEdit, defaultReason or "Reason")
 	end
-	
+
 
 	guiSetText ( aInputForm, title )
 	guiSetText ( aInputLabel, message )
@@ -135,7 +135,7 @@ function aInputBoxClick ( button )
 	if ( button == "left" ) then
 		if ( source == aInputOk ) then
 			--loadstring ( string.gsub ( aInputAction, "$value", "\""..keepEscapeCharacter( guiGetText ( aInputValue ) ).."\"" ) )()
-			
+
 			if (aInputAction == "kickPlayer") then
 				triggerServerEvent("aPlayer", localPlayer, varOne, "kick", guiGetText(aInputValue))
 			elseif (aInputAction == "setHealth") then
@@ -200,7 +200,7 @@ function aInputBoxClick ( button )
 			elseif (aInputAction == "aclAddRight") then
 				triggerServerEvent("aAdmin", localPlayer, "acladd", "right", varOne, guiGetText(aInputValue))
 			end
-			
+
 			aInputAction = nil
 			aInputBoxClose ( false )
 		elseif ( source == aInputCancel ) then
@@ -228,7 +228,7 @@ function aBanInputBox ( player )
 			table.insert( durations, tonumber( dur ) )
 		end
 	end
-	
+
 	-- destroy form if number of durations has changed
 	if #aBanDurations ~= #durations then
 		if aBanInputForm then
@@ -251,7 +251,7 @@ function aBanInputBox ( player )
 		aBanInputLabel			= guiCreateLabel ( 20, y, 270, 15, "", false, aBanInputForm )
 		guiLabelSetHorizontalAlign ( aBanInputLabel, "center" )
 		y = y + 23
-		
+
 		aBanInputValue			= guiCreateEdit ( 35, y, 230, 24, "", false, aBanInputForm )
 		y = y + 33
 
@@ -282,15 +282,15 @@ function aBanInputBox ( player )
 						  guiComboBoxAddItem(customType, "Hours")
 						  guiComboBoxAddItem(customType, "Days")
 		y = y + height + 10
-							
+
 		aBanInputOk			= guiCreateButton ( 90, y, 55, 17, "Ok", false, aBanInputForm )
 		aBanInputCancel		= guiCreateButton ( 150, y, 55, 17, "Cancel", false, aBanInputForm )
 		y = y + 30
-		
-							
-		
+
+
+
 		guiSetSize ( aBanInputForm, guiGetSize ( aBanInputForm, false ), y, false )
-		
+
 		guiSetProperty ( aBanInputForm, "AlwaysOnTop", "true" )
 		aBanInputPlayer = nil
 
@@ -385,12 +385,12 @@ function aBanInputBoxFinish ()
 		aMessageBox ( "error", "No duration selected!" )
 		return
 	end
-	
+
 	-- Send ban info to the server
 	triggerServerEvent ( "aPlayer", localPlayer, aBanInputPlayer, "ban", reason, seconds, bUseSerial )
-			
-	
-	
+
+
+
 	-- Clear input
 	guiSetText ( aBanInputValue, "" )
 	for i,dur in ipairs(aBanDurations) do

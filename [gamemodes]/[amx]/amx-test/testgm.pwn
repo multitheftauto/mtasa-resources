@@ -18,13 +18,13 @@ public OnGameModeInit()
 	print("This gamemode doesn't do anything.");
 	print("It is simply an example of a gamemode resource.");
 	print("");
-	
+
 	new File:f = fopen("file.txt", io_read);
 	new buffer[512];
 	fread(f, buffer, sizeof(buffer));
 	fclose(f);
 	printf("%s", buffer);
-	
+
 	AddPlayerClass(0, 1958.3783, 1343.1572, 15.3746, 269.1425, 0, 0, 0, 0, 0, 0);
 	SetRuleValue("nya", "test");
 	new buf[64];

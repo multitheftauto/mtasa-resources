@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -48,7 +48,7 @@ function aAdminMenu ()
 						  for i = 0, 10 do guiGridListSetItemText ( aTab1.SlapOptions, guiGridListAddRow ( aTab1.SlapOptions ), 1, tostring ( i * 10 ), false, false ) end
 		aTab1.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aTab1.Tab, "shout" )
 		aTab1.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aTab1.Tab, "setgroup" )
-	
+
 						  guiCreateHeader ( 0.25, 0.08, 0.20, 0.04, "The nub:", true, aTab1.Tab )
 		aTab1.Name			= guiCreateLabel ( 0.26, 0.125, 0.30, 0.035, "Name: N/A", true, aTab1.Tab )
 		aTab1.IP			= guiCreateLabel ( 0.26, 0.170, 0.30, 0.035, "IP: N/A", true, aTab1.Tab )
@@ -613,7 +613,7 @@ function aClientScroll ( element )
 end
 
 function aClientCursorMove ( rx, ry, x, y )
-	
+
 end
 
 function aClientMouseEnter ( element )

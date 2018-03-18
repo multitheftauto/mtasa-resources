@@ -16,7 +16,7 @@ addEventHandler ( "onResourceStart", _local, function ()
 		AREA_ACTIVE[areaID] = false
 		AREA_VEHICLECOUNT[areaID] = 0
 	end
-	
+
 	for i, player in ipairs(getElementsByType("player")) do
 		bindKey(player, "x", "down", warpIntoNextVehicle)
 		bindKey(player, "m", "down", spawnNearVehicle)
@@ -49,7 +49,7 @@ addEventHandler ( "onResourceStart", _local, function ()
 		end
 	end, 1000, 0 )
 	--]]
-	
+
 	---[[
 	-- Set up area preloader timer OLD
 	setTimer ( function ()
@@ -95,7 +95,7 @@ addEventHandler ( "onResourceStart", _local, function ()
 			end
 		end
 	end, 100, 0 )
-	
+
 	setTimer ( function ()
 		for veh in pairs ( TRAFFIC_VEHICLES ) do
 			if getElementChild(veh, 0) then
@@ -103,7 +103,7 @@ addEventHandler ( "onResourceStart", _local, function ()
 			end
 		end
 	end, 10000, 0 )
-	
+
 	setTimer ( function ()
 		local syncer
 		for veh in pairs ( TRAFFIC_VEHICLES ) do
@@ -407,7 +407,7 @@ function warpIntoNextVehicle(player)
 			nearest = veh
 		end
 	end
-	
+
 	if nearest then
 		local i = 0
 		repeat
@@ -429,12 +429,12 @@ function spawnNearVehicle(player)
 		-- table.insert (nb, neighbour)
 	-- end
 	-- local next = getNode(nb[math.random ( 1, #nb )])
-	
-	
+
+
 	-- rot in richtung gruen entweder verbunden lanes 0 2 oder nicht verbunden 2 0
 	outputDebugString("nodeID: "..tostring(node.id))
 	-- outputDebugString("navinbs: "..tostring(table.concat(node.navinbs,", ")))
-	
+
 	-- for _,naviID in pairs(node.navinbs) do
 		-- naviNode = getNaviNode(naviID)
 		-- -- outputDebugString("naviID: "..tostring(naviID).." "..tostring(naviNode.nb))
@@ -445,7 +445,7 @@ function spawnNearVehicle(player)
 				-- local neighbourNode = getNode(neighbourID)
 				-- -- outputDebugString("neighbourNodeID: "..tostring(neighbourID).." navinbs = "..tostring(table.concat(node.navinbs,", ")))
 				-- for _,nbnaviID in pairs(neighbourNode.navinbs) do
-					
+
 					-- if (naviID == nbnaviID) then
 						-- naviNeighbourNode = neighbourNode
 						-- outputDebugString("found NextNodeID: "..tostring(neighbourID))
@@ -456,7 +456,7 @@ function spawnNearVehicle(player)
 			-- end
 		-- end
 	-- end
-	
+
 	-- if (naviNode.rightlanes > naviNode.leftlanes) then
 		-- next = naviNeighbourNode
 	-- elseif (naviNode.rightlanes < naviNode.leftlanes) then
@@ -468,8 +468,8 @@ function spawnNearVehicle(player)
 		-- end
 		-- next = getNode(nb[math.random ( 1, #nb )])
 	-- end
-	
+
 	local next = pathsFindNextNode(node.id)
-	
+
 	createVehicleOnNodes(node, next)
 end

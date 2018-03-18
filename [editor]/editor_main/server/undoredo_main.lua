@@ -1,4 +1,4 @@
-﻿local root = getRootElement()
+local root = getRootElement()
 -- make sure events dont get called more than once in a row!
 
 -- action list

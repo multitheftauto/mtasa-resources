@@ -1,4 +1,4 @@
-﻿local useTeams = get("use_team_colors")
+local useTeams = get("use_team_colors")
 local blipSize = get("blip_size")
 local blipAlpha = get("blip_alpha")
 local color = get("blip_color")

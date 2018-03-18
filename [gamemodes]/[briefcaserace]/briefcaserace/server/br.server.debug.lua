@@ -1,4 +1,4 @@
-﻿function debugMessage(message, consoleOnly)
+function debugMessage(message, consoleOnly)
 	if (settings.dbg) then
 		message = "SERVER debug: " .. message
 		outputConsole(message)

@@ -27,7 +27,7 @@ addEventHandler ( "onClientRender", _root, function ()
 		end
 		return
 	end
-	
+
 	--local tick = getTickCount()
 	--if ( tick > check ) then
 	--	aMap.permission = hasPermissionTo ( "command.warp" )

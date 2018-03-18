@@ -34,7 +34,7 @@ end
 function copyFile( fileName, newName )
 	local newFile = fileCreate( newName )
 	local oldFile = fileOpen( fileName, true )
-	
+
 	if newFile and oldFile then
 		local buffer
 		while not fileIsEOF( oldFile ) do

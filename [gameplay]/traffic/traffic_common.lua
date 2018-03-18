@@ -80,13 +80,13 @@ function calcNodeLaneOffset ( node, rot, prevNode )
 	end
 	beforeLeft, beforeRight = left, right
 	local offset = LANE_OFFSET
-	
+
 	if (prevNaviNode and prevNaviNode.width > 0) then
 		offset = prevNaviNode.width / 8
 	end
-	
+
 	local x, y = math.cos ( math.rad ( rot ) ) * offset, math.sin ( math.rad ( rot ) ) * offset
-	
+
 	-- doesn't work as good, we don't know the lanes direction
 	if ( left + right <= 1 ) then
 		return 0, 0
@@ -211,7 +211,7 @@ function pathsFindNextNode(nodeID, ignored)
 			--]]
 		end
 	end
-	
+
 	if (#possibleNeighbours > 0) then
 		return possibleNeighbours[math.random ( 1, #possibleNeighbours )]
 	else
@@ -300,7 +300,7 @@ function var_dump(...)
 			else
 				name = ""
 			end
- 
+
 			local o = ""
 			if type(v) == "string" then
 				table.insert(output,name..type(v).."("..v:len()..") \""..v.."\"")
@@ -329,7 +329,7 @@ function var_dump(...)
 						end
 						local keyString, keyTable = var_dump(newModifiers,key)
 						local valueString, valueTable = var_dump(newModifiers,value)
- 
+
 						if #keyTable == 1 and #valueTable == 1 then
 							table.insert(output,indentation.."["..keyString.."] => "..valueString)
 						elseif #keyTable == 1 then

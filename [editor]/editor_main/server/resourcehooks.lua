@@ -1,4 +1,4 @@
-﻿function addResourceMap ( resource, filename, dimension )
+function addResourceMap ( resource, filename, dimension )
 	if not resource then return false end
 	dimension = dimension or 0
 	local currentFiles = getResourceFiles ( resource, "map" )
@@ -176,10 +176,10 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 			makeElementStatic(editorElement)
 
 			setElementData(editorElement, "me:dimension", elementDimension)
-			
+
 			flattenTree ( element, newParent, editorElement, resourceTable )
 		end
-		
+
 		if getTickCount() >= tick + 500 or ( DEBUG_LOADSAVE and i < 40 ) then
 			triggerClientEvent(root, "saveLoadProgressBar", root, flattenTreeRuns)
 			coroutine.yield()

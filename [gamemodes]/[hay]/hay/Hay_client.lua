@@ -1,4 +1,4 @@
-﻿local leveltop = 0
+local leveltop = 0
 local localPlayerLevel = "-"
 local scoreLabel
 

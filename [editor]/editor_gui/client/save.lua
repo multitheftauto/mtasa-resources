@@ -1,4 +1,4 @@
-﻿local TEST_RESOURCE = "editor_test"
+local TEST_RESOURCE = "editor_test"
 local DUMP_RESOURCE = "editor_dump"
 local mapsInfo = {}
 local resourcesInfo = {}

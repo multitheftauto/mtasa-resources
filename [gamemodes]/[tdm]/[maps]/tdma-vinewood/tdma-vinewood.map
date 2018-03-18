@@ -5,7 +5,7 @@
 	</meta>
 
 	<gamesettings interior="0" respawntime="3000" maxkills="60" ff="off" />
-	
+
 	<base team="Police" red="0" green="0" blue="255" >
 		<weapon model="3" ammo="1"/>
 		<weapon model="23" ammo="60"/>
@@ -17,7 +17,7 @@
 		<skin model="287"/>
 		<spawn posX="974.30" posY="-761.07" posZ="112.06" rot="124" randx="5" randy="5" randz="0"/>
 	</base>
-	
+
 	<base team="Terrorist" red="255" green="0" blue="0" >
 		<weapon model="5" ammo="1"/>
 		<weapon model="24" ammo="20"/>
@@ -29,7 +29,7 @@
 		<skin model="124"/>
 		<spawn posX="866.911" posY="-861.42" posZ="77.48" rot="356" randx="5" randy="5" randz="0"/>
 	</base>
-	
+
     <pickup id="pickup (M4) (1)" amount="300" dimension="0" interior="0" posX="977.64294433594" posY="-770.45068359375" posZ="112.20262908936" respawn="5000" type="31" />
     <pickup id="pickup (AK-47) (1)" amount="300" dimension="0" interior="0" posX="859.58117675781" posY="-847.24603271484" posZ="77.375" respawn="5000" type="30" />
     <pickup id="pickup (health) (1)" amount="100" dimension="0" interior="0" posX="860.25238037109" posY="-849.02551269531" posZ="81.0234375" respawn="30000" type="health" />

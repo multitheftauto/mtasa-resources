@@ -4,7 +4,7 @@
 	<script src="cGlobals.lua" type="client" />
 	<script src="cDrawIcon.lua" type="client" />
 	<script src="cPlayerMuting.lua" type="client" />
-	
+
 	<export function="setPlayerVoiceMuted" type="client" />
 	<export function="isPlayerVoiceMuted" type="client" />
 
@@ -18,7 +18,7 @@
 	<script src="sDefaultChannelManager.lua" type="server" />
 	<script src="sChannelManager.lua" type="server" />
 	<script src="sPlayerMuting.lua" type="server" />
-	
+
 	<export function="setPlayerVoiceMuted" type="server" />
 	<export function="isPlayerVoiceMuted" type="server" />
 	<export function="getPlayerVoiceMutedByList" type="server" />
@@ -27,7 +27,7 @@
 	<export function="getPlayersInChannel" type="server" />
 	<export function="getNextEmptyChannel" type="server" />
 
-	
+
 	<settings>
 		<setting name="*show_chat_icon" value="[true]" description="This will display an icon over a player's head when he/she is speaking over the microphone."/>
 		<setting name="*autoassign_to_teams" value="[true]" description="This will automatically assign players into a team if they join the team"/>

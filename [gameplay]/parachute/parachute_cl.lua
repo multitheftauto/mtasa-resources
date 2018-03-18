@@ -1,4 +1,4 @@
-﻿FALL_VELOCITY = 0.9 -- how fast you have to be going (z) before you stop landing properly and just hit the ground
+FALL_VELOCITY = 0.9 -- how fast you have to be going (z) before you stop landing properly and just hit the ground
 MIN_GROUND_HEIGHT = 20 -- how high above the ground you need to be before parachuting will start
 local y_turn_offset = 20 -- limits how far to the sides the player will lean when turning left or right
 local rotation_accelerate = 0.5 -- speed at which the player will lean when turning
@@ -57,16 +57,16 @@ local function onRender ( )
 			if ( changeVelocity ) then
 				velX, velY, velZ = getElementVelocity ( localPlayer )
 				if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0) then
-					
+
 					_,rotY,rotZ = getElementRotation ( localPlayer )
 					rotZ = -rotZ
 					local currentfallspeed = s(fallspeed)
 					local currentmovespeed = s(movespeed)
-					
+
 					if ( getMoveState ( "backwards" ) ) then
 						currentfallspeed = s(slowfallspeed)
 					end
-					
+
 					-- going too fast, slow down to appropriate speed
 					if ( velZ < currentfallspeed ) then
 						if ( lastspeed < 0 ) then
@@ -79,7 +79,7 @@ local function onRender ( )
 					-- going too slow, speed back up to appropriate speed
 					elseif ( velZ > currentfallspeed ) then
 						velZ = currentfallspeed
-						
+
 						if lastspeed <= velZ then
 							currentmovespeed = currentmovespeed / 2
 						end
@@ -142,7 +142,7 @@ local function onRender ( )
 					end
 				end
 			end
-			
+
 			local posX,posY,posZ = getElementPosition(localPlayer)
 			if testLineAgainstWater ( posX,posY,posZ + 10, posX,posY,posZ) then --Shoot a small line to see if in water
 				removeParachute(localPlayer,"water")

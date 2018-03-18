@@ -1,4 +1,4 @@
-﻿--------------Below is not config
+--------------Below is not config
 addEvent "onControlPressed"
 addEvent "onEditorSuspended"
 addEvent "onEditorResumed"

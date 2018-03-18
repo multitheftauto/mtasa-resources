@@ -1,4 +1,4 @@
-﻿g_Root = getRootElement()
+g_Root = getRootElement()
 local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText
 local announcementText,processWasted
 local mapTimers = {}

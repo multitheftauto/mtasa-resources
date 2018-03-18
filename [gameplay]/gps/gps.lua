@@ -33,12 +33,12 @@ end
 
 local function calculatePath(db, nodeFrom, nodeTo)
 	local next = next
-	
+
 	local g = { [nodeFrom] = 0 }		-- { node = g }
 	local hcache = {}					-- { node = h }
 	local parent = {}					-- { node = parent }
 	local openheap = MinHeap.new()
-	
+
 	local function h(node)
 		if hcache[node] then
 			return hcache[node]
@@ -60,28 +60,28 @@ local function calculatePath(db, nodeFrom, nodeTo)
 	}
 	setmetatable(nodeFrom, nodeMT)
 	openheap:insertvalue(nodeFrom)
-	
+
 	local current
 	while not openheap:empty() do
 		current = openheap:deleteindex(0)
 		if current == nodeTo then
 			break
 		end
-		
+
 		local successors = {}
 		for id,distance in pairs(current.neighbours) do
 			local successor = getNodeByID(db, id)
 			local successor_g = g[current] + distance*distance
 			if not g[successor] or g[successor] > successor_g then
 				setmetatable(successor, nodeMT)
-				
+
 				g[successor] = successor_g
 				openheap:insertvalue(successor)
 				parent[successor] = current
 			end
 		end
 	end
-	
+
 	if current == nodeTo then
 		local path = {}
 		repeat

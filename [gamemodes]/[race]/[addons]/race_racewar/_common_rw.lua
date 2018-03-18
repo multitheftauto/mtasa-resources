@@ -1,4 +1,4 @@
-﻿--
+--
 -- common_rw.lua
 --	Common setting for server and client
 --
@@ -85,7 +85,7 @@ function table.find(t, ...)
 		end
 		return false
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil

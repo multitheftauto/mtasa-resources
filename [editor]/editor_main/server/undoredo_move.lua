@@ -1,17 +1,17 @@
-﻿justCreated = {}
+justCreated = {}
 local selectedElements = {}
 
 local function isElementMoved(element)
 	if not selectedElements[element] then
 		return false
 	end
-	
+
 	local oldX,  oldY,  oldZ  = selectedElements[element].oldX,  selectedElements[element].oldY,  selectedElements[element].oldZ
 	local oldRX, oldRY, oldRZ = selectedElements[element].oldRX, selectedElements[element].oldRY, selectedElements[element].oldRZ
-	
+
 	local newX,  newY,  newZ  = edf.edfGetElementPosition(element)
 	local newRX, newRY, newRZ = edf.edfGetElementRotation(element)
-	
+
 	return oldX ~= newX or oldY ~= newY or oldZ ~= newZ or oldRX ~= newRX or oldRY ~= newRY or oldRZ ~= newRZ
 end
 
@@ -38,7 +38,7 @@ addEventHandler("onElementDrop", getRootElement(),
 			selectedElements[source] = nil
 			return
 		end
-		
+
 		--ignore the first placement
 		if justCreated[source] then
 			justCreated[source] = nil

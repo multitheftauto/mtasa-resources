@@ -10,30 +10,30 @@ if(typeof infosoftglobal == "undefined") var infosoftglobal = new Object();
 if(typeof infosoftglobal.FusionChartsUtil == "undefined") infosoftglobal.FusionChartsUtil = new Object();
 infosoftglobal.FusionCharts = function(swf, id, w, h, debugMode, registerWithJS, c, scaleMode, lang, detectFlashVersion, autoInstallRedirect){
 	if (!document.getElementById) { return; }
-	
+
 	//Flag to see whether data has been set initially
 	this.initialDataSet = false;
-	
+
 	//Create container objects
 	this.params = new Object();
 	this.variables = new Object();
 	this.attributes = new Array();
-	
+
 	//Set attributes for the SWF
 	if(swf) { this.setAttribute('swf', swf); }
 	if(id) { this.setAttribute('id', id); }
 	if(w) { this.setAttribute('width', w); }
 	if(h) { this.setAttribute('height', h); }
-	
+
 	//Set background color
 	if(c) { this.addParam('bgcolor', c); }
-	
+
 	//Set Quality
 	this.addParam('quality', 'high');
-	
+
 	//Add scripting access parameter
 	this.addParam('allowScriptAccess', 'always');
-	
+
 	//Pass width and height to be appended as chartWidth and chartHeight
 	this.addVariable('chartWidth', w);
 	this.addVariable('chartHeight', h);
@@ -46,21 +46,21 @@ infosoftglobal.FusionCharts = function(swf, id, w, h, debugMode, registerWithJS,
 	//Whether to registed with JavaScript
 	registerWithJS = registerWithJS ? registerWithJS : 0;
 	this.addVariable('registerWithJS', registerWithJS);
-	
+
 	//Scale Mode of chart
 	scaleMode = scaleMode ? scaleMode : 'noScale';
 	this.addVariable('scaleMode', scaleMode);
 	//Application Message Language
 	lang = lang ? lang : 'EN';
 	this.addVariable('lang', lang);
-	
+
 	//Whether to auto detect and re-direct to Flash Player installation
 	this.detectFlashVersion = detectFlashVersion?detectFlashVersion:1;
 	this.autoInstallRedirect = autoInstallRedirect?autoInstallRedirect:1;
-	
+
 	//Ger Flash Player version
 	this.installedVer = infosoftglobal.FusionChartsUtil.getPlayerVersion();
-	
+
 	if (!window.opera && document.all && this.installedVer.major > 7) {
 		// Only add the onunload cleanup if the Flash Player version supports External Interface and we are in IE
 		infosoftglobal.FusionCharts.doPrepUnload = true;
@@ -171,12 +171,12 @@ infosoftglobal.FusionCharts.prototype = {
 			//Render the chart
 			var n = (typeof elementId == 'string') ? document.getElementById(elementId) : elementId;
 			n.innerHTML = this.getSWFHTML();
-			
+
 			//Added for .NET AJAX and <FORM> compatibility
 			if(!document.embeds[this.getAttribute('id')] && !window[this.getAttribute('id')])
 		      	window[this.getAttribute('id')]=document.getElementById(this.getAttribute('id'));
 			 //or else document.forms[formName/formIndex][chartId]
-			
+
 			return true;
 		}
 	}
@@ -282,7 +282,7 @@ infosoftglobal.FusionChartsUtil.getChartObject = function(id)
   }
   if (!chartRef)
 	chartRef  = document.getElementById(id);
-  
+
   return chartRef;
 }
 

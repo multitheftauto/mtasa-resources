@@ -1,4 +1,4 @@
-﻿local g_Root = getRootElement()
+local g_Root = getRootElement()
 local g_ResRoot = getResourceRootElement(getThisResource())
 
 local g_MapResName
@@ -34,7 +34,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 
 		-- Create non-unique index to speed up WHERE when using [playername]
 		executeSQLQuery("CREATE INDEX IF NOT EXISTS IDX_MAPRATINGS_PLAYERNAME on mapRatings(playername)")
-		
+
 		-- Perform upgrade from an old version if necessary
 		updateMapNames()
 
@@ -72,10 +72,10 @@ addEventHandler('onPollStarting', g_Root,
 	function(poll)
 		for index, item in ipairs(poll) do
 			if item[1] == "Yes" then return end
-			
+
 			local mapname = item[1]
 			local map = item[4]
-			
+
 			if map then
 				local rating = getMapRating(getResourceName(map))
 				if rating then

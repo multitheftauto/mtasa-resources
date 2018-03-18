@@ -1,4 +1,4 @@
-﻿--Fallout By Ransom
+--Fallout By Ransom
 --Special Thanks arc_, lil_toady, eAi, IJs, jbeta, Talidan
 
 --------------
@@ -80,7 +80,7 @@ function createBoard () --MOVE BOARD CREATION TO CLIENTSIDE
 		end
 	end
 end
- 
+
 function triggerClientFall ( fallingPiece )
     if gameOver == false then --Stop timer setting when winner is declared, avoid board recretaion problems
 		triggerClientEvent ( "clientShakePieces", getRootElement(), fallingPiece )

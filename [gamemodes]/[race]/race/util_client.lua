@@ -1,4 +1,4 @@
-﻿g_Root = getRootElement()
+g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 
@@ -261,7 +261,7 @@ function table.popLast(t,val)
     return last
 end
 
-	
+
 
 -----------------------------
 -- String extensions

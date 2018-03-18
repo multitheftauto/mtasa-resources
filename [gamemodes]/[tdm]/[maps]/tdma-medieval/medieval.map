@@ -3,9 +3,9 @@
 		<author>NOzolS</author>
 		<description>TDMA Map File</description>
 	</meta>
-	
+
 	<gamesettings respawntime="3000" interior="0" maxkills="60" ff="off" />
-	
+
 	<base team="Highborns" red="0" green="0" blue="255" >
 		<weapon model="4" ammo="1"/>
 		<weapon model="23" ammo="80"/>
@@ -16,7 +16,7 @@
 		<skin model="84"/>
 		<spawn posX="1833.4583" posY="-3048.8496" posZ="7" rot="18.3616" randx="5" randy="5" randz="0"/>
 	</base>
-	
+
 	<base team="Hicks" red="0" green="255" blue="0" >
 		<weapon model="4" ammo="1"/>
 		<weapon model="23" ammo="80"/>
@@ -27,7 +27,7 @@
 		<skin model="132"/>
 		<spawn posX="1776.0464" posY="-3002.7166" posZ="9.2" rot="217.8602" randx="5" randy="5" randz="0"/>
 	</base>
-	
+
 	<randomPickup posX="1839.1283" posY="-3056.8452" posZ="10.6037" />
 	<randomPickup posX="1807.2777" posY="-3048.9905" posZ="11.7731" />
 	<randomPickup posX="1799.8274" posY="-3031.9763" posZ="6.1077" />

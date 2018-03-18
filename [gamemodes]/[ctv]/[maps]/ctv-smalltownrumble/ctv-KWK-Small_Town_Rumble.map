@@ -4,7 +4,7 @@
     <base team="team2" teamName="Red" teamColor="255,0,0" posX="308.81741333008" posY="100.28813934326" posZ="6.3144116401672" rot="270" markerX="308.81741333008" markerY="100.28813934326" markerZ="3" markercolor="255,0,0" blip="59" skins="18,19" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
     <base team="team3" teamName="Green" teamColor="0,255,0" posX="57.443801879883" posY="-186.78948974609" posZ="3.7055292129517" rot="270" markerX="57.443801879883" markerY="-186.78948974609" markerZ="0" markercolor="0,255,0" blip="62" skins="105,107" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
     <base team="team4" teamName="Yellow" teamColor="255,255,0" posX="200.00956726074" posY="-373.90408325195" posZ="6.9762525558472" rot="270" markerX="200.00956726074" markerY="-373.90408325195" markerZ="5" markercolor="255,255,0" blip="60" skins="108,109,110" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
-    
+
     <target model="471" posX="261.38784790039" posY="-85.28742980957" posZ="2.5125000476837" rotX="0" rotY="0" rotZ="270.27026367188" plate="CASHRAID" colors="6,0,0,0"  />
     <target model="423" posX="215.18957519531" posY="-157.69459533691" posZ="1.7083369493484" rotX="0" rotY="0" rotZ="218.02600097656" plate="WOOPS" colors="5,34,0,0" />
     <target model="448" posX="203.82363891602" posY="-182.59429931641" posZ="1.2483441829681" rotX="0" rotY="0" rotZ="218.02368164063" plate="PIZZOFF" colors="3,6,0,0"  />
@@ -15,17 +15,17 @@
     <target model="403" posX="327.17276000977" posY="-34.508129119873" posZ="2.249849319458" rotX="0" rotY="0" rotZ="180.54052734375" />
     <target model="574" posX="94.397521972656" posY="-165.21282958984" posZ="2.387683391571" rotX="0" rotY="0" rotZ="270.27026367188" />
     <target model="556" posX="876.49877929688" posY="-29.853218078613" posZ="63.686210632324" rotX="0" rotY="0" rotZ="159.51965332031" />
-  
+
 	<object id="object (pltschlhnger02_lvs) (1)" dimension="0" interior="0" model="8251" posX="162.69358825684" posY="91.074653625488" posZ="5.221531867981" rotX="0" rotY="0" rotZ="246.671875" />
 	<object id="object (pltschlhnger02_lvs) (2)" dimension="0" interior="0" model="8251" posX="308.81741333008" posY="100.28813934326" posZ="6.3144116401672" rotX="0" rotY="0" rotZ="302.77709960938" />
 	<object id="object (pltschlhnger02_lvs) (3)" dimension="0" interior="0" model="8251" posX="57.443801879883" posY="-186.78948974609" posZ="3.7055292129517" rotX="0" rotY="0" rotZ="267.943359375" />
 	<object id="object (pltschlhnger02_lvs) (4)" dimension="0" interior="0" model="8251" posX="200.00956726074" posY="-373.90408325195" posZ="6.9762525558472" rotX="0" rotY="0" rotZ="76.116882324219" />
-    
+
     <object id="object (a51_spottower) (1)" dimension="0" interior="0" model="3279" posX="207.73425292969" posY="-251.23963928223" posZ="0.42118525505066" rotX="0" rotY="0" rotZ="270.43969726563" />
     <object id="object (a51_spottower) (2)" dimension="0" interior="0" model="3279" posX="251.3021697998" posY="-46.546867370605" posZ="0.42840361595154" rotX="0" rotY="0" rotZ="270.439453125" />
     <object id="object (a51_spottower) (3)" dimension="0" interior="0" model="3279" posX="148.23547363281" posY="-156.50459289551" posZ="0.3905543088913" rotX="0" rotY="0" rotZ="179.90197753906" />
     <object id="object (a51_spottower) (4)" dimension="0" interior="0" model="3279" posX="297.72650146484" posY="-127.11506652832" posZ="1.7805610895157" rotX="0" rotY="0" rotZ="90.341552734375" />
- 
+
     <pickup type="health" id="pickup (health) (1)" posX="199.78984069824" posY="-107.57906341553" posZ="1.5510902404785" rotX="0" rotY="0" rotZ="0" />
     <pickup type="health" id="pickup (health) (2)" posX="213.32431030273" posY="-183.38616943359" posZ="1.578125" rotX="0" rotY="0" rotZ="0" />
     <pickup id="pickup (M4) (1)" posX="212.59121704102" posY="-367.32034301758" posZ="5.902871131897" rotX="0" rotY="0" rotZ="0" type="31" />
@@ -49,7 +49,7 @@
     <pickup id="pickup (satchel) (1)" amount="1" dimension="0" interior="0" posX="158.48516845703" posY="-107.5260925293" posZ="4.8964710235596" respawn="60000" rotX="0" rotY="0" rotZ="0" type="39" />
     <pickup id="pickup (Molotov) (1)" amount="1" dimension="0" interior="0" posX="244.65129089355" posY="-187.06838989258" posZ="10.096265792847" respawn="60000" rotX="0" rotY="0" rotZ="0" type="18" />
     <pickup id="pickup (teargas) (1)" amount="1" dimension="0" interior="0" posX="309.57446289063" posY="-108.44901275635" posZ="3.5417914390564" respawn="60000" rotX="0" rotY="0" rotZ="0" type="17" />
- 
+
     <vehicle id="vehicle (Yosemite) (1)" color="0,1,0,0" dimension="0" interior="0" model="554" paintjob="false" plate="KWKSND" posX="250.06991577148" posY="-310.32467651367" posZ="1.7785751819611" rotX="0" rotY="0" rotZ="357.51226806641" upgrades="1010,1025,1087" />
     <vehicle id="vehicle (Yosemite) (2)" color="6,1,0,0" dimension="0" interior="0" model="554" paintjob="false" plate="KWKSND" posX="86.389022827148" posY="-193.73092651367" posZ="1.7072454690933" rotX="0" rotY="0" rotZ="178.12719726563" upgrades="1010,1025,1087" />
     <vehicle id="vehicle (Yosemite) (3)" color="121,1,0,0" dimension="0" interior="0" model="554" paintjob="false" plate="DREDD" posX="174.63806152344" posY="52.684516906738" posZ="2.6246874332428" rotX="0" rotY="0" rotZ="245.29663085938" upgrades="1010,1025,1087" />
@@ -80,5 +80,5 @@
     <vehicle id="vehicle (Dumper) (1)" model="406" posX="110.39011383057" posY="-164.55204772949" posZ="2.9500000476837" rotX="0" rotY="0" rotZ="272.92749023438" />
     <vehicle id="vehicle (Mule) (1)" model="414" posX="210" posY="-30.829513549805" posZ="1.7281250953674" rotX="0" rotY="0" rotZ="0" />
     <vehicle id="vehicle (Sentinel) (2)" model="405" posX="201.8994140625" posY="-140.50390625" posZ="1.5858917236328" rotX="0" rotY="0" rotZ="0" />
-  
+
 </map>

@@ -1,4 +1,4 @@
-﻿-- TO DO
+-- TO DO
 -- stop game physics from making OBJECTS spin and fall
 -- make it possible for elements to hit surfaces properly
 
@@ -160,7 +160,7 @@ local function zoomWithMouseWheel(key, keyState)
 	    else
 	       	speed = zoomSpeed.medium
 	    end
-		
+
 	    if getCommandState"zoom_in" then
    	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
 			processCursorMove ()
@@ -227,13 +227,13 @@ local function zoomWithMouseWheel(key, keyState)
 	    else
 	       	speed = zoomSpeed.medium
 	    end
-		
+
 	    if key == "zoom_in" then
    	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
 	    else --if key == "zoom_out"
 	       	maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
 	    end
-		
+
 		--force an update if an element is selected
 		if selectedElement then
 			local elemX, elemY, elemZ = getElementPosition(selectedElement)
@@ -275,7 +275,7 @@ function attachElement(element)
 			collisionless = true
 		end
 	end
-	
+
 	enable()
 
 	return true

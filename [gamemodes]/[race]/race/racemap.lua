@@ -1,4 +1,4 @@
-﻿g_MapObjAttrs = {
+g_MapObjAttrs = {
 	spawnpoint = { 'position', 'rotation', 'vehicle', 'paintjob', 'upgrades' },
 	checkpoint = { 'id', 'nextid', 'position', 'size', 'color', 'type', 'vehicle', 'paintjob', 'upgrades' },
 	object = { 'position', 'rotation', 'model' },
@@ -70,7 +70,7 @@ function RaceMap.load(res)
 		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no <race /> node in meta.xml', 2)
 		return false
 	end
-	
+
 	local xml = xmlLoadFile(':' .. getResourceName(res) .. '/' .. file)
 	if not xml then
 		outputDebugString('Error opening ' .. file, 2)

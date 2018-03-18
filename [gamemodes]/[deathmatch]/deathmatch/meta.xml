@@ -6,14 +6,14 @@
 	<include resource="spawnmanager" />
 	<include resource="missiontimer" />
 	<include resource="scoreboard" />
-	
+
 	<script src="logic.lua" />
 	<script src="spawn.lua" />
-	
+
 	<script src="logic_client.lua" type="client"/>
 	<file src="images/frag.png" />
 	<file src="edf/spawnpoint.png" />
-	
+
 	<!--Utils-->
 	<script src="utils/client_anim.lua" type="client" />
 	<script src="utils/textlib_anim.lua" type="client" />

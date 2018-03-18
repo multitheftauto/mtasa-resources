@@ -1,4 +1,4 @@
-﻿local BUFFER_SIZE = 500
+local BUFFER_SIZE = 500
 local SCRIPT_G = {}
 local CLIENTSCRIPTS = {} ---Used to send to joining players etc
 
@@ -88,7 +88,7 @@ addEventHandler ( "onPlayerJoin", root,
 		if getElementData(getResourceRootElement(getResourceFromName("editor_main")),"g_in_test") then
 			return
 		end
-		
+
 		for resource,data in pairs(CLIENTSCRIPTS) do
 			local scriptInfo = {}
 			local clientScripts

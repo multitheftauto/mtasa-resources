@@ -177,7 +177,7 @@ end
 function aResourcesTab.onClientDoubleClick ( button )
 	if ( button == "left" ) then
 		if ( source == aResourcesTab.ViewTypes ) then
-			
+
 		elseif ( source == aResourcesTab.Settings ) then
 			local settings = aResourcesTab.Settings
 			if ( source ~= settings ) then

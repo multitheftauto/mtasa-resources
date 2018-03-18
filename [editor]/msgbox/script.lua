@@ -1,4 +1,4 @@
-﻿--[[-----------DOCUMENTATION---------------
+--[[-----------DOCUMENTATION---------------
 SYNTAX:
 guibutton,guibutton,guibutton = guiShowMessageBox ( string message, string boxType, string title [, string button1, string button2, stringbutton3] )
 REQUIRED ARGUMENTS
@@ -61,7 +61,7 @@ function guiShowMessageBox ( message, boxType, title, forceShowing, button1, but
 		guiSetAlpha ( cover, 0 )
 		addEventHandler ( "onClientGUIClick", cover, bringMsgBoxToFront )
 	end
-	
+
 	local formPosX = screenX / 2 - msgBox.sizeX/2
 	local formPosY = screenY / 2 - msgBox.sizeY/2
 	aMessage.Form	= guiCreateWindow ( formPosX,formPosY, msgBox.sizeX, msgBox.sizeY, title, false )

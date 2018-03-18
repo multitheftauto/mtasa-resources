@@ -29,7 +29,7 @@ function table.find(t, ...)
 		end
 		return false
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil
@@ -106,7 +106,7 @@ aBlockModsTab_presets = {
 					"satchel.dff" .. newline ..
 					"tec9.dff" .. newline ..
 					"sniper.dff",
-					
+
 	 playerModels =
 [[cj.dff
 truth.dff

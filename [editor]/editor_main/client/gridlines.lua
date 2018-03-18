@@ -1,4 +1,4 @@
-﻿local localPlayer  = getLocalPlayer()
+local localPlayer  = getLocalPlayer()
 local MAX_THICKNESS = 1.2
 local MAX_THICKNESS_AngleHelper = .8
 --local c
@@ -19,7 +19,7 @@ end
 local function renderGridlines()
 	if not isElement(attachedToElement) then return end
 	if getElementDimension(attachedToElement) ~= getElementDimension(localPlayer) then return end
-	
+
 	local x,y,z = edf.edfGetElementPosition(attachedToElement)
 	if not x then return end
 
@@ -30,7 +30,7 @@ local function renderGridlines()
 			minX,minY,minZ,maxX,maxY,maxZ = -radius,-radius,-radius,radius,radius,radius
 		end
 	end
-	
+
 	if not minX or not minY or not minZ or not maxX or not maxY or not maxZ then return end
 	local camX,camY,camZ = getCameraMatrix()
 	--Work out our line thickness
@@ -60,7 +60,7 @@ local function renderGridlines()
 		face1 = face1*elementMatrix
 		face2 = face2*elementMatrix
 	end
-	
+
 	local faces = { face1,face2	}
 	local drawLines,furthestNode,furthestDistance = {},{},0
 	--Draw rectangular faces
@@ -114,7 +114,7 @@ function doBasicElementRenders()
 	if not isElement(attachedToElement) then return end
 	if exports["editor_gui"]:sx_getOptionData("enableBox") then renderGridlines() end
 	if exports["editor_gui"]:sx_getOptionData("enableXYZlines") then drawXYZLines() end
-	
+
 end
 addEventHandler ( "onClientRender", getRootElement(), doBasicElementRenders )
 
@@ -138,7 +138,7 @@ function drawLine(vecOrigin, vecTarget,color,thickness)
 	if not startX or not startY or not endX or not endY then
 		return false
 	end
-	
+
 	return dxDrawLine ( startX,startY,endX,endY,color,thickness, false)
 end
 

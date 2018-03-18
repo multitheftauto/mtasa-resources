@@ -11,7 +11,7 @@
   />
   <!--
     Admin System Meta File.
-    
+
     WARNING: We give no support for edited
              versions of the admin system.
   -->
@@ -74,7 +74,7 @@
 
   <html src="http/screenshots.htm" />
   <html src="http/screenshot.htm" />
-  
+
   <export function="dataExchange" 					        http="true" />
 
   <!--Required XML configs kept in /conf/ folder-->
@@ -100,7 +100,7 @@
   <file src="client/images/palette.png" />
   <file src="client/images/black.png" />
   <file src="client/images/blue.png" />
-  
+
   <!--Country flags by Christoph Brill-->
   <file src="client/images/flags/ac.png" />
   <file src="client/images/flags/ad.png" />
@@ -239,7 +239,7 @@
   <file src="client/images/flags/yt.png" />
   <file src="client/images/flags/yu.png" />
   <file src="client/images/flags/za.png" />
-  
+
   <settings>
   	<setting name="#pingkicker" value="0"
 		   group="Automatic scripts"

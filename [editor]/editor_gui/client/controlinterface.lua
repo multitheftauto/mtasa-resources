@@ -1,4 +1,4 @@
-﻿local function onControlsLoaded()
+local function onControlsLoaded()
 	bindControl ( "toggle_gui_display","down", toggleHUDShowing )
 	bindControl ( "edf_prev", "down", scrollEDF )
 	bindControl ( "edf_next", "down", scrollEDF )
@@ -83,7 +83,7 @@ addEventHandler ( "onControlPressed",  rootElement,
 				for k, v in pairs(keybinds[key][keyState]) do
 					bindsCopy[k] = v
 				end
-				
+
 				for handlerFunction, args in pairs(bindsCopy) do
 					handlerFunction ( key, keyState, unpack(args) )
 				end

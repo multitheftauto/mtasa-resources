@@ -1,4 +1,4 @@
-﻿RaceMode = {}
+RaceMode = {}
 RaceMode.__index = RaceMode
 
 RaceMode.registeredModes = {}
@@ -234,7 +234,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		-- Regular checkpoint
 		local vehicle = RaceMode.getPlayerVehicle(player)
 		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getVehicleTurnVelocity(vehicle) }, geardown = getVehicleLandingGearDown(vehicle) or false }
-		
+
 		self.checkpointBackups[player].goingback = true
 		TimerManager.destroyTimersFor("checkpointBackup",player)
 		TimerManager.createTimerFor("map","checkpointBackup",player):setTimer(lastCheckpointWasSafe, 5000, 1, self.id, player)
@@ -443,7 +443,7 @@ function restorePlayer(id, player, bNoFade, bDontFix)
 			setVehicleID(vehicle, bkp.vehicle)
 		end
 		warpPedIntoVehicle(player, vehicle)
-		
+
         setVehicleLandingGearDown(vehicle,bkp.geardown)
 
 		RaceMode.playerFreeze(player, true, bDontFix)

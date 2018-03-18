@@ -1,4 +1,4 @@
-﻿pickups = {}
+pickups = {}
 pickups_count = 0
 pickups_weapons = {"5", "9", "22", "23", "24", "25", "26", "27", "28", "29", "32", "30", "31", "33", "34", "16", "18"}
 pickups_weaponsAmmo = {"1", "1", "50", "50", "50", "25", "15", "20", "150", "159", "135", "100", "100", "30", "25", "6", "6"}
@@ -39,7 +39,7 @@ end
 
 function generatePickup ( pID )
 	local pType = math.random(0,8)
-	
+
 	if ( pType == 0 ) then
 		--Health
 		--createPickup ( float x, float y, float z, int type, int amount/weapon, [ int respawnTime = 30000, int ammo = 50 ] )
@@ -121,7 +121,7 @@ local foundIt = false
 			foundIt = true
 			cancelEvent()
 			--outputDebugString ( "Found this pickup! - Weapon Model: " .. tostring(v["pWeapon"]) .. " Ammo: " .. tostring(v["pAmmo"]) .. " Type: " .. tostring(v["pType"]) )
-			
+
 			if ( v["pType"] == 0 ) then
 				--Give player health
 				setElementHealth ( source, 100 )
@@ -140,7 +140,7 @@ local foundIt = false
 					updatePlayerInfoBar ( source, 5000, "You obtained a " .. getWeaponNameFromID(v["pWeapon"]) .. " with " .. v["pAmmo"] .. " rounds" )
 				end
 			end
-			
+
 			destroyElement ( v["pID"] )
 			setTimer ( generatePickup, math.random(30000, 120000), 1, v["id"] )
 
@@ -148,7 +148,7 @@ local foundIt = false
 			break
 		end
 	end
-	
+
 	--Stops crappy spawning of dual weapons that we seem to have at the moment.
 	if ( foundIt == false ) then
 		destroyElement ( hitPickup )
@@ -160,14 +160,14 @@ function getRandomWeapon()
 	local randomID = math.random(1,tableSize)
 	local i = 0
 	local returnValue = nil
-	
+
 	for k,v in ipairs(pickups_weapons) do
 		i = i + 1
 		if ( i == randomID ) then
 			returnValue = v
 		end
 	end
-	
+
 	if ( returnValue ~= nil ) then
 		return returnValue
 	else

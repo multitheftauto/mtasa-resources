@@ -7,7 +7,7 @@
 
 <settings auto_balance="on" friendly_fire="on" respawnTime="10000" roundTime="1800000" spawnScreen="on" blips="all"/>
 <camera posX="-991.407166" posY="4556.547852" posZ="1.936604" lookX="-1103.094971" lookY="4586.042480" lookZ="15.233397"/>
-   
+
 <team name="Red" colorR="255" colorG="0" colorB="0">
       <flag name="" posX="-1140.771240" posY="4569.386719" posZ="8.523922" />
       <flag name="" posX="-1122.877441" posY="5334.434082" posZ="8.448919" />

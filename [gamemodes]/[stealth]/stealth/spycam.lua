@@ -1,4 +1,4 @@
-﻿--this was heavilly based on freecam, thanks eAi
+--this was heavilly based on freecam, thanks eAi
 --max rots are half the distance either way
 local buttonStates = {}
 local maxRot = 90
@@ -39,7 +39,7 @@ function spyCamFrame ()
     elseif rotX > maxXBound then
         rotX = maxXBound
     end
-	
+
     -- work out an angle in radians based on the number of pixels the cursor has moved (ever)
     local cameraAngleX = rotX / 120
     local cameraAngleY = rotY / 120
@@ -84,12 +84,12 @@ function placeSpyCam ( x,y,z, rot )
 	if ( not tonumber(rot) ) then return false end
 	if not getZoneName ( x,y,z ) then return false end
 	rotX = rot * -4
-	
+
 	minXBound = rotX - ( (maxRotX/2) * 4 )
 	maxXBound = rotX + ( (maxRotX/2) * 4 )
-	
+
 	rot = math.rad ( rot )
-	
+
 	spyCamTargetX,spyCamTargetY,spyCamTargetZ = x,y,z
 	spyCamX = spyCamTargetX
 	spyCamY = spyCamTargetY

@@ -1,4 +1,4 @@
-﻿enableSound = true --this enables or disables sound.  For the options menu
+enableSound = true --this enables or disables sound.  For the options menu
 isCurrentButtonElement = false --this checks whether the currently highlighted button is an element icon, so EDF info can appear.
 currentSelectedResource = false --this defines the currently selected resource
 local wasCurrentBrowserShowing = false
@@ -107,7 +107,7 @@ end
 addEventHandler ( "doUnloadEDF", root, destroyElementIcons )
 
 edfResourcesNext = {}
-	
+
 function refreshElementIcons()
 	currentBrowser.update()
 	currentBrowserGUI.dropdown:setValue(1)
@@ -178,20 +178,20 @@ function refreshElementIcons()
 				theIcon = guiCreateStaticImage ( posX, screenY - guiConfig.iconSize, guiConfig.iconSize, guiConfig.iconSize, iconPath.."elementmenu/generic.png", false)
 			end
 			addEventHandler ( "onClientGUIMouseDown", theIcon, buttonClicked, false )
-			
+
 			--store the icon type, and the function action of the button
 			iconData[theIcon] = {}
 			iconData[theIcon]["type"] = "elementIcons"
 			iconData[theIcon]["clicked"] = elementIcons_Clicked
 			iconData[theIcon]["mouseOver"] = elementIconsMouseOver
-			
+
 			--store this under the element icons table
 			elementIcons[theIcon] = {}
 			elementIcons[theIcon]["name"] = friendlyName
 			elementIcons[theIcon]["elementName"] = elementName
 			elementIcons[theIcon]["resource"] = resource
-			
-		
+
+
 			--check if any other elements used the name
 			if nameTable[elementName] ~= nil then
 				--since we found another element with the same name, set the old name to element [resource]
@@ -202,7 +202,7 @@ function refreshElementIcons()
 				--set the current one with name [resource] too.
 				elementIcons[theIcon]["labelName"] = friendlyName.." ["..resource.."]"
 			end
-			
+
 			nameTable[elementName] = {}
 			nameTable[elementName]["resource"] = resource
 			nameTable[elementName]["friendlyName"] = friendlyName
@@ -226,7 +226,7 @@ function refreshElementIcons()
 		setGUIShowing(false)
 	end
 end
-	
+
 function createGUILayout()
 	---create all of our top menu
 	local gap = guiConfig.iconSize/2 --this calculates the gap in between the topMenu and the secondTopMenu
@@ -238,20 +238,20 @@ function createGUILayout()
 	else
 		menuButtonsOffset = ( screenX - ( (guiConfig.iconSize * #menuButtons) + gap + (guiConfig.iconSize * #secondMenuButtons) ) )/2 --this works out where to start creating the top menu's gui, so it's centred.
 	end
-	
+
 	local x
 	for k,v in pairs(menuButtons) do --centre our top menu buttons
 		local name = v["name"]
 		x = ((k-1)*guiConfig.iconSize) + menuButtonsOffset
 		local pathName = string.gsub(name, " ", "_" )
 		v["icon"] = guiCreateStaticImage ( x, 0, guiConfig.iconSize, guiConfig.iconSize, iconPath.."topmenu/"..pathName..".png", false )
-		
+
 		iconData[v["icon"]] = {}
 		iconData[v["icon"]]["type"] = "menuButtons"
 		iconData[v["icon"]]["name"] = name --for highlighting.lua
 		iconData[v["icon"]]["clicked"] = topMenuClicked[name]
 		iconData[v["icon"]]["mouseOver"] = topMenuMouseOver
-		
+
 		addEventHandler ( "onClientGUIMouseDown", v["icon"], buttonClicked, false )
 	end
 	for k,v in pairs(secondMenuButtons) do --centre our top menu buttons
@@ -263,25 +263,25 @@ function createGUILayout()
 		iconData[v["icon"]]["name"] = name --for highlighting.lua
 		iconData[v["icon"]]["clicked"] = topMenuClicked[name]
 		iconData[v["icon"]]["mouseOver"] = topMenuMouseOver
-		
+
 		addEventHandler ( "onClientGUIMouseDown", v["icon"], buttonClicked, false )
 	end
-	
+
 	--create our highlighters
 	selected = guiCreateStaticImage ( 0, 0, guiConfig.iconSize, guiConfig.iconSize, iconPath.."select.png", false )
 	selectedShadow =  guiCreateLabel ( 0, 0, screenX, 16, "", false )
 	selectedText =  guiCreateLabel ( 0, 0, screenX, 16, "", false )
-	
+
 	local resourceX = ( 5/960 * screenX )
 	local resourceY = ( screenY - 85 )
 	selectedResourceShadow =  guiCreateLabel ( resourceX, resourceY, screenX, 16, "", false )
 	selectedResourceText =  guiCreateLabel ( resourceX + 1, resourceY + 1, screenX, 16, "", false )
-	
+
 	guiLabelSetColor ( selectedResourceText, 200, 25, 25 )
 	guiLabelSetColor ( selectedText, 255, 255, 255 )
 	guiLabelSetColor ( selectedResourceShadow, 0, 0, 0 )
 	guiLabelSetColor ( selectedShadow, 0, 0, 0 )
-	
+
 	guiSetVisible ( selected, false )
 	setHUDAlpha(currentHUDAlpha)
 	if getElementData ( localPlayer, "waitingToStart" ) then

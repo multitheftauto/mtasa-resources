@@ -185,7 +185,7 @@ function GhostPlayback:updateGhostState()
 			setElementModel( self.vehicle, vehicleType )
 		end
 		self.currentIndex = self.currentIndex + 1
-		
+
 		if not self.recording[self.currentIndex] then
 			self:stopPlayback( true )
 			self.fadeoutStart = getTickCount()
@@ -208,10 +208,10 @@ addEventHandler( "onClientGhostDataReceive", g_Root,
 		if playback then
 			playback:destroy()
 		end
-		
+
 		globalInfo.bestTime = bestTime
 		globalInfo.racer = racer
-		
+
 		playback = GhostPlayback:create( recording, ped, vehicle )
 		playback:preparePlayback()
 	end

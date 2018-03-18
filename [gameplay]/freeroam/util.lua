@@ -58,7 +58,7 @@ function table.find(t, ...)
 		end
 		return false
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil
@@ -92,7 +92,7 @@ function table.findall(t, ...)
 		end
 		return result
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil
@@ -237,7 +237,7 @@ function _addXMLChildrenToTable(parentNode, leafName, leafAttrs, targetTable)
 		i = i + 1
 		groupNode = xmlFindChild(parentNode, 'group', i)
 	end
-	
+
 	i = 0
 	local leafNode = xmlFindChild(parentNode, leafName, 0)
 	while leafNode do

@@ -8,16 +8,16 @@
 	<script src="dxscoreboard_clientsettings.lua" type="client" />
 	<script src="dxscoreboard_shared.lua" type="client" />
 	<script src="dxscoreboard_countries.lua" type="server" />
-	
+
 	<script src="colorpicker/colorpicker.lua" type="client" />
 	<file src="colorpicker/palette.png" />
 	<file src="colorpicker/alpha.png" />
-	
+
 	<file src="arrow.png" />
 
 	<!-- Render target speed up -->
 	<script src="dxscoreboard_rt.lua" type="client" />
-	
+
 	<!-- HTTP functions, original files by jbeta -->
 	<export function="getScoreboardColumns" type="server" http="true" />
 	<export function="getScoreboardRows" type="server" http="true" />
@@ -39,7 +39,7 @@
 	<export function="scoreboardForceTeamsHidden" type="server" />
 	<export function="isPrioritySlotFree" type="server" />
 	<export function="getNextFreePrioritySlot" type="server" />
-	
+
 	<!-- Client functions -->
 	<export function="scoreboardAddColumn" type="client"/>
 	<export function="scoreboardRemoveColumn" type="client"/>
@@ -57,14 +57,14 @@
 	<export function="isPrioritySlotFree" type="client" />
 	<export function="getNextFreePrioritySlot" type="client" />
 	<export function="scoreboardGetSelectedRows" type="client" />
-	
+
 	<!-- Compability -->
 	<export function="addScoreboardColumn" type="server"/>
 	<export function="removeScoreboardColumn" type="server"/>
 	<export function="resetScoreboardColumns" type="server"/>
 	<export function="setPlayerScoreboardForced" type="server"/>
 	<export function="setScoreboardForced" type="client"/>
-	
+
 	<settings>
 		<setting name="*forceShowTeams" value="false"
 			friendlyname="Force teams to be shown"

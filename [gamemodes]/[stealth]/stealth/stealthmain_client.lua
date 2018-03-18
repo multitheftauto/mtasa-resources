@@ -1,4 +1,4 @@
-﻿local screenX,screenY = guiGetScreenSize()
+local screenX,screenY = guiGetScreenSize()
 local spectateButton
 addEvent("swaptoggle", true )
 
@@ -172,13 +172,13 @@ function confirmSelections ( button, state, absoluteX, absoluteY, worldX, worldY
 			setSelectedWeapon ( teamName, "spygadget", randID )
 		end
 	end
-	
+
 	--now we retrieve the new selections, incase they have changed
 	primarySelection = getSelectedWeapon ( teamName, "primary" )
 	secondarySelection = getSelectedWeapon ( teamName, "secondary" )
 	throwableSelection = getSelectedWeapon ( teamName, "throwable" )
 	spygadgetSelection = getSelectedWeapon ( teamName, "spygadget" )
-	
+
 	---now do whatever you want with these selections.  ive left outputChatBox as an example.  remember to use guiSetVisible to hide the menu.
 	if (sitthisoneout) then
 		killTimer (sitthisoneout)
@@ -189,7 +189,7 @@ function confirmSelections ( button, state, absoluteX, absoluteY, worldX, worldY
 		guiSetVisible ( mercenariesMenu, false )
 		triggerServerEvent ("domercspawn", getLocalPlayer (), thisplayer )
 	end
-	
+
 	if teamName == "spies" then
 		guiSetVisible ( spiesMenu, false )
 		triggerServerEvent ("dospyspawn", getLocalPlayer (), thisplayer )
@@ -337,17 +337,17 @@ function setupStealthMenus ( name )
 	--create our OK buttons
 	spiesOK = guiCreateButton ( 0.4, 0.85, 0.20, 0.15, "OK", true, spiesMenu )
 	mercenariesOK = guiCreateButton ( 0.4, 0.85, 0.20, 0.15, "OK", true, mercenariesMenu )
-	
+
 	--make it so they cant be moved or sized
 --	guiWindowSetMovable ( spiesMenu, false )
 --	guiWindowSetMovable ( mercenariesMenu, false )
 --	guiWindowSetSizable ( spiesMenu, false )
 --	guiWindowSetSizable ( mercenariesMenu, false )
-	
+
 	--hide them by default
 	guiSetVisible ( mercenariesMenu, false )
 	guiSetVisible ( spiesMenu, false )
-	
+
 	addEventHandler ( "onClientGUIClick", mercenariesOK, confirmSelections )
 	addEventHandler ( "onClientGUIClick", spiesOK, confirmSelections )
 end
@@ -441,7 +441,7 @@ function drawLasers()
 				else
 					targetX,targetY,targetZ = extendLine ( boneX,boneY,boneZ,startX,startY,startZ - 0.1,500 )
 				end
-				
+
 				local bool,hitX,hitY,hitZ = processLineOfSight ( startX,startY,startZ,targetX,targetY,targetZ, true, true, true, true, true, false, false, true )
 				if not bool or not hitX then
 					hitX,hitY,hitZ = targetX,targetY,targetZ
@@ -451,7 +451,7 @@ function drawLasers()
 		end
 	end
 end
- 
+
 function TeamSelected ( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clicked )
 	thisplayer = getLocalPlayer ()
 	if source == TeamSelect_Red then
@@ -497,7 +497,7 @@ function showTeamWindow ()
 	showCursor ( true )
 end
 addEventHandler ( "doshowTeamWindow",getRootElement(), showTeamWindow )
-		
+
 function extendLine ( x,y,z,x2,y2,z2,length )
 	local vx = x2 - x
 	local vy = y2 - y

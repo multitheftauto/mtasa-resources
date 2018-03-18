@@ -1,16 +1,16 @@
 <meta>
 	<info author="erorr404,jbeta,Talidan" description="Map editor's main component" edf:definition="editor_main.edf" />
-	
+
 	<min_mta_version server="1.3.0-9.04584" />
-	
+
 	<!-- Script to shutdown the running gamemode and maps, because otherwise you get trouble -->
 	<script src="gamemodestopper.lua" type="server" />
-	
+
 	<include resource="freecam"/>
 	<include resource="move_freecam"/>
 	<include resource="move_cursor"/>
 	<include resource="move_keyboard"/>
-	
+
 	<!-- added events -->
 	<script src="client/clientevents.lua" type="client"/>
 	<script src="server/serverevents.lua" type="server"/>
@@ -18,7 +18,7 @@
 	<!-- global vars -->
 	<script src="server/globals.lua" type="server"/>
 	<script src="client/globals.lua" type="client"/>
-	
+
 	<!-- utils -->
 	<script src="client/controlinterface.lua" type="client"/>
 	<script src="server/util.lua" type="server" />
@@ -37,7 +37,7 @@
 	<!-- call interfaces -->
 	<script src="server/interface.lua" type="server"/>
 	<script src="client/interface.lua" type="client"/>
-	
+
 	<!-- freeroam dependency check -->
 	<script src="server/freeroam.lua" type="server" />
 
@@ -63,13 +63,13 @@
 
 	<!-- controls loading -->
 	<script src="client/controls.lua" type="client"/>
-	
+
 	<!--player attachment and spawning-->
 	<script src="client/superman.lua" type="client" validate="false"/>
 	<script src="client/attachplayer.lua" type="client" validate="false"/>
 	<script src="server/playerspawn.lua" type="server"/>
 	<script src="server/playerblips.lua" type="server"/>
-	
+
 	<!-- saving/loading/testing -->
 	<script src="client/saveloadtest_client.lua" type="client"/>
 	<script src="server/resourcehooks.lua" type="server"/>
@@ -139,7 +139,7 @@
 	<file src="client/images/icons/pickup.png" type="client"/>
 	<file src="client/images/icons/ped.png" type="client"/>
 	<file src="client/images/icons/wor.png" type="client"/>
-	
+
 	<settings>
 		<setting name="*admingroup" value="Admin,MapEditor"
 						friendlyname="Admin group list"

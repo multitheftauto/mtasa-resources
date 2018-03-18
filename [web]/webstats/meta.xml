@@ -16,12 +16,12 @@
 	<html src="FusionCharts.js" raw="true"/>
 	<html src="ie-70.css" raw="true"/>
 	<html src="css.css" raw="true"/>
-	
+
 	<export function="getCurrentStats" http="true" />
 	<export function="registerStat" />
 	<export function="getRegisteredStats" />
 	<export function="getStatListByResource" />
-	
+
 	<!-- Internal stats -->
 	<export function="getVehicleCount" />
 	<export function="getObjectCount" />

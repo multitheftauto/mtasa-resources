@@ -1,7 +1,7 @@
 <meta>
 	<info author="eAi" description="Shows a pretty element tree in the web browser" showInResourceBrowser="true" name="Element browser" />
 	<update url="http://code.opencoding.net/mta/updatesite" />
-	
+
 	<script src="elementbrowser.lua" />
 	<include resource="ajax"/>
 	<export function="getRootElement" http="true"/>
@@ -16,6 +16,6 @@
 	<html src="loading.gif" raw="true"/>
 	<html src="script.js" raw="true" />
 	<html src="css.css" raw="true" />
-	
+
 	<map src="map.map"/>
 </meta>

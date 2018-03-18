@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -32,10 +32,10 @@ function aViewMessage ( id )
 		aViewMessageText	= guiCreateMemo ( 0.05, 0.42, 0.90, 0.44, "", true, aViewMessageForm )
 					   guiMemoSetReadOnly ( aViewMessageText, true )
 		aViewMessageCloseB	= guiCreateButton ( 0.77, 0.86, 0.20, 0.09, "Close", true, aViewMessageForm )
-		
+
 		addEventHandler ( "onClientGUIClick", aViewMessageForm, aClientMessageClick )
 		addEventHandler ( "onClientGUIClick", aViewMessageSuspect, aViewSuspectInfo )
-		
+
 		--Register With Admin Form
 		aRegister ( "Message", aViewMessageForm, aViewMessage, aViewMessageClose )
 	end

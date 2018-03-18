@@ -1,11 +1,11 @@
-﻿local mta_getResourceInfo = getResourceInfo
+local mta_getResourceInfo = getResourceInfo
 
 function getResourcesSearch ( partialName, state )
     local allResources = getResources()
-	
+
 	local listChunk = {}
 	local stateChunk = {}
-	
+
 	for k,v in ipairs(allResources) do
 		local resourceName = getResourceName(v)
 		local resourceState = getResourceState(v)
@@ -14,7 +14,7 @@ function getResourcesSearch ( partialName, state )
 			table.insert(stateChunk, resourceState)
 		end
 	end
-   
+
 	return listChunk, stateChunk
 end
 
@@ -37,6 +37,6 @@ function getRealTimes(sek)
 	if time.second < 10 then time.second = "0"..time.second end
 	if time.month+1 < 10 then time.month = "0"..(time.month+1) end
 	if time.monthday < 10 then time.monthday = "0"..time.monthday end
-	
+
 	return (time.year+1900).."-"..time.month.."-"..time.monthday.." "..time.hour..":"..time.minute..":"..time.second
 end

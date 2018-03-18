@@ -1,4 +1,4 @@
-﻿local GAMEMODE_LIST_SEPARATOR = string.byte(',')
+local GAMEMODE_LIST_SEPARATOR = string.byte(',')
 
 function changeGamemode(gamemode, map, ignorePlayerCount)
 	if not isGamemode(gamemode) then
@@ -73,7 +73,7 @@ function changeGamemodeMap(map, gamemode, ignorePlayerCount)
 			outputDebugString("mapmanager: Map does not support player count.",1)
 			return false
 		end
-		
+
 		if currentGamemodeMap then
 			nextGamemodeMap = map
 			stopGamemodeMap()
@@ -86,7 +86,7 @@ end
 
 function getGamemodes()
 	local resourceList = getResources()
-	
+
 	local gamemodeList = {}
 	for i,theResource in ipairs(resourceList) do
 		if isGamemode(theResource) then
@@ -102,12 +102,12 @@ function getGamemodesCompatibleWithMap(map)
 		outputDebugString("getGamemodesCompatibleWithMap: Invalid map resource.", 1)
 		return false
 	end
-	
+
 	local gmListString = getResourceInfo(map, "gamemodes")
 	if not gmListString then
 		return {}
 	end
-		
+
 	local compatibleGamemodes = {}
 	local gmNameList = split(gmListString, GAMEMODE_LIST_SEPARATOR)
 	for i, gmName in ipairs(gmNameList) do
@@ -116,7 +116,7 @@ function getGamemodesCompatibleWithMap(map)
 			table.insert(compatibleGamemodes, gamemode)
 		end
 	end
-	
+
 	return compatibleGamemodes
 end
 
@@ -129,7 +129,7 @@ function getMaps()
 			table.insert(mapList, theResource)
 		end
 	end
-	
+
 	return mapList
 end
 
@@ -147,7 +147,7 @@ function getMapsCompatibleWithGamemode(gamemode)
 		end
 	elseif isGamemode(gamemode) then
 		local resourceList = getResources()
-		
+
 		compatibleMaps = {}
 		for i,theResource in ipairs(resourceList) do
 			if isMap(theResource) and isMapCompatibleWithGamemode(theResource, gamemode) then
@@ -158,7 +158,7 @@ function getMapsCompatibleWithGamemode(gamemode)
 		outputDebugString("getMapsCompatibleWithGamemode: Invalid gamemode resource.", 1)
 		return false
 	end
-	
+
 	return compatibleMaps
 end
 
@@ -186,7 +186,7 @@ function isGamemodeCompatibleWithMap(gamemode, map)
 		outputDebugString("isGamemodeCompatibleWithMap: Invalid map resource.", 1)
 		return false
 	end
-	
+
 	return isMapCompatibleWithGamemode(map, gamemode)
 end
 
@@ -206,13 +206,13 @@ function isMapCompatibleWithGamemode(map, gamemode)
 		outputDebugString("isMapCompatibleWithGamemode: Invalid gamemode resource.", 1)
 		return false
 	end
-	
+
 	for i, compatibleGamemode in ipairs(getGamemodesCompatibleWithMap(map)) do
 		if gamemode == compatibleGamemode then
 			return true
 		end
 	end
-	
+
 	return false
 end
 

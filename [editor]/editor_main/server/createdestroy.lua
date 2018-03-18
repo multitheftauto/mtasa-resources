@@ -1,4 +1,4 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 local WAIT_LOAD_INTERVAL = 100 --ms
 
 function makeElementStatic(element)
@@ -24,7 +24,7 @@ function setupNewElement(element, creatorResource, creatorClient, attachLater,sh
 		setTimer(triggerClientEvent, WAIT_LOAD_INTERVAL, 1, creatorClient, "doSelectElement", element, selectionSubmode, shortcut )
 	end
 	justCreated[element] = true --mark it so undoredo ignores first placement
-	
+
 	triggerEvent("onElementCreate", element)
 	triggerClientEvent(rootElement, "onClientElementCreate", element)
 end
@@ -35,9 +35,9 @@ addEventHandler ( "doCreateElement", rootElement,
 			editor_gui.outputMessage ("You don't have permissions to create a new element!", client,255,0,0)
 			return
 		end
-		
+
 		parameters = parameters or {}
-		
+
 		local creatorResource = getResourceFromName( resourceName )
 		local edfElement = edf.edfCreateElement (
 			elementType,
@@ -46,7 +46,7 @@ addEventHandler ( "doCreateElement", rootElement,
 			parameters,
 			true --editor mode
 		)
-		
+
 		if edfElement then
 			outputConsole ( "Created '"..elementType..":"..tostring(edfElement).."' from '"..resourceName.."'" )
 			setupNewElement(edfElement, creatorResource, client, attachLater, shortcut)
@@ -62,12 +62,12 @@ addEventHandler ( "doCloneElement", rootElement,
 			editor_gui.outputMessage ("You don't have permissions to clone an element!", client,255,0,0)
 			return
 		end
-		
+
 		if creator then
 			edf.edfSetCreatorResource(source,creator)
 		end
 		local clone = edf.edfCloneElement(source,true)
-		
+
 		if clone then
 			outputConsole ( "Cloned '"..getElementType(source).."'." )
 			setupNewElement(clone, creator or edf.edfGetCreatorResource(source), client, true, false, attachMode)
@@ -87,18 +87,18 @@ addEventHandler ( "doDestroyElement", rootElement,
 			editor_gui.outputMessage ("You don't have permissions to delete someone else's element!", client,255,0,0)
 			return
 		end
-		
+
 		local locked = getLockedElement(client)
 		if forced or locked == source then
 			outputConsole ( "Deleted '"..getElementType(source).."'." )
-			
+
 			if locked then
 				setLockedElement(client, nil)
 			end
-			
+
 			triggerEvent("onElementDestroy", source)
 			triggerClientEvent(rootElement, "onClientElementDestroyed", source)
-			
+
 			triggerEvent ( "onElementDestroy_undoredo", source )
 		end
 	end

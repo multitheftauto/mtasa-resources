@@ -1,4 +1,4 @@
-﻿local edfSettings = {}
+local edfSettings = {}
 rowData = {}
 mapsettings.rowValues = {}
 mapsettings.gamemodeSettings = {}
@@ -101,7 +101,7 @@ function settingsListClicked()
 			key = "validvalues"
 			rows = split(token2,44)
 		end
-		
+
 		valueWidget = editingControl[dataType]:create{x=208,y=182,label="Enabled",parent=mapsettings.gamemodeSettingsTab,[key]=rows}
 		if mapsettings.rowValues[row] then
 			valueWidget:setValue(mapsettings.rowValues[row])

@@ -1,7 +1,7 @@
 // LUA mode. Ported to CodeMirror 2 from Franciszek Wawrzak's
 // CodeMirror 1 mode.
 // highlights keywords, strings, comments (no leveling supported! ("[==[")), tokens, basic indenting
- 
+
 CodeMirror.defineMode("lua", function(config, parserConfig) {
   var indentUnit = config.indentUnit;
 
@@ -12,7 +12,7 @@ CodeMirror.defineMode("lua", function(config, parserConfig) {
     return new RegExp("^(?:" + words.join("|") + ")$", "i");
   }
   var specials = wordRE(parserConfig.specials || []);
- 
+
   // long list of standard functions from lua manual
   var builtins = wordRE([
     "_G","_VERSION","assert","collectgarbage","dofile","error","getfenv","getmetatable","ipairs","load",
@@ -108,7 +108,7 @@ CodeMirror.defineMode("lua", function(config, parserConfig) {
       return "string";
     };
   }
-    
+
   return {
     startState: function(basecol) {
       return {basecol: basecol || 0, indentDepth: 0, cur: normal};

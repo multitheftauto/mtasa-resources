@@ -415,9 +415,9 @@ aFunctions = {
 		end
 	},
 	admin = {
-	
+
 	},
 	bans = {
-	
+
 	}
 }

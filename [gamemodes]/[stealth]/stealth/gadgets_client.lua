@@ -1,4 +1,4 @@
-﻿function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
+function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 	player = getLocalPlayer ()
 	local x, y = guiGetScreenSize()
 	x = x * 0.052

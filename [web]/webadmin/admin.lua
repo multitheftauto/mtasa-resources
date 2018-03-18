@@ -1,4 +1,4 @@
-﻿-- ACLs
+-- ACLs
 function getACLs()
 	local tbl = {}
 	local acls = aclList()
@@ -68,7 +68,7 @@ function getGroups()
 	local acls = aclGroupList()
 	if ( acls ) then
 		for k,v in ipairs(acls) do
-			
+
 			local acltbl = {}
 			local groupacls = aclGroupListACL(v)
 			for l,w in ipairs(groupacls) do

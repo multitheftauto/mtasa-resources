@@ -1,13 +1,13 @@
 <map mod="deathmatch" author="BrophY" version="1.0">
 
 	<base team="team1" teamName="Grove" teamColor="0,255,30" posX="2493" posY="-1669" posZ="13.34" rot="0" markerX="2491.511" markerY="-1668.122" markerZ="13.3973" markercolor="0,255,30" blip="62" skins="105,107" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
-	
+
 	<base team="team2" teamName="Balla" teamColor="204,51,255" posX="2210" posY="-1160" posZ="25.8" rot="0" markerX="2216.947" markerY="-1166.182" markerZ="25.7265" markercolor="138,0,84" blip="59" skins="102,104" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
-	
+
 	<base team="team3" teamName="Cop" teamColor="26,198,255" posX="1587" posY="-1689" posZ="5.90" rot="354.872" markerX="1601.79" markerY="-1608.60" markerZ="13.482" markercolor="0,48,194" blip="58" skins="280,288" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
-	
+
 	<base team="team4" teamName="Russian" teamColor="255,255,0" posX="860" posY="-1224" posZ="20" rot="270" markerX="867.07" markerY="-1209.60" markerZ="16.97" markercolor="255,255,0" blip="60" skins="124,127" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
-	
+
 	<target model="428" posX="2795.1708" posY="-2417.6420" posZ="13.755" rotX="0" rotY="0" rotZ="90.0"  plate="CASHRAID" colors="ran,0,0,0" />
 	<target model="428" posX="1751.620" posY="-2434.8952" posZ="13.679" rotX="0" rotY="0" rotZ="143.7" plate="FARTVAN" colors="ran,0,0,0" />
 	<target model="423" posX="373.2777" posY="-2038.6815" posZ="7.694" rotX="0" rotY="0" rotZ="0" plate="WHOOPEE" colors="ran,0,0,0" />
@@ -18,7 +18,7 @@
 	<target model="580" posX="2549.145" posY="72.234" posZ="26.273" rotX="0" rotY="0" rotZ="90.0" plate="MAFIA" colors="ran,0,0,0" />
 	<target model="409" posX="2038.6103" posY="1007.955" posZ="10.48" rotX="0" rotY="0" rotZ="0.0" plate="LOADED" colors="0,0,0,0" />
 	<target model="433" posX="282.614" posY="1934.0120" posZ="18.078" rotX="0" rotY="0" rotZ="270.0" plate="SEXMEPLZ" />
-  
+
 <vehicle id="Blade" model="536" posX="2478.7646484375" posY="-1654.8846435547" posZ="13.061017990112" rotX="0.17684936523438" rotY="359.90573120117" rotZ="90.762481689453" color="37 1 0 0"/>
 <vehicle id="Blade" model="536" posX="2473.5192871094" posY="-1703.7185058594" posZ="13.2639503479" rotX="359.93017578125" rotY="359.87384033203" rotZ="0.2540283203125" color="71 96 0 0"/>
 <vehicle id="Slamvan" model="535" posX="2473.498046875" posY="-1692.962890625" posZ="13.279903411865" rotX="359.78179931641" rotY="359.98260498047" rotZ="0.51571655273438" color="3 1 0 0"/>

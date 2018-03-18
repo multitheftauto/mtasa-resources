@@ -1,4 +1,4 @@
-﻿local stats = {
+local stats = {
 	[69]=900,
 	[70]=999,
 	[71]=999,
@@ -18,16 +18,16 @@
 
 do
         local random = math.random
- 
+
         function table.shuffle(t)
                 local n = #t
- 
+
                 while n > 1 do
                         local k = random(n)
                         n = n - 1
                         t[n], t[k] = t[k], t[n]
                 end
- 
+
                 return t
         end
 end
@@ -76,7 +76,7 @@ function processPlayerSpawn ( player )
 	end
 	fadeCamera(player,true)
 	setCameraTarget(player,player)
-	
+
 	-- Remove the respawn timer
 	for i, timer in ipairs(mapTimers) do
 		if (timer == sourceTimer) then

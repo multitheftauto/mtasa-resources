@@ -1,4 +1,4 @@
-﻿registeredStats = {}
+registeredStats = {}
 stats = {}
 nodepos = 1
 maxstatrecords = 60  -- 1  hours worth
@@ -15,7 +15,7 @@ setTimer (
 		for k,v in pairs(registeredStats) do
 			stats[nodepos][k] = tostring(call(v.resource, v.func))
 		end
-		
+
 		nodepos = nodepos + 1;
 		if ( nodepos > maxstatrecords ) then
 			nodepos = 1
@@ -49,7 +49,7 @@ function getCurrentStats ()
 		end
 		i = i + 1
 	until arrpos == stopat
-	
+
 	return currStats
 end
 

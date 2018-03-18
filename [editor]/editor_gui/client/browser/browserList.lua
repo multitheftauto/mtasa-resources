@@ -1,4 +1,4 @@
-﻿browserList = {}
+browserList = {}
 browserList_mt = { __index = browserList }
 local activatedBrowsers = {}
 local ROW_HEIGHT = 14
@@ -111,7 +111,7 @@ local function browserListScrollList ( key, newRepeatDelay )
 		end
 		self:setSelected(cellrow)
 		self:centre(cellrow)
-		
+
 		newRepeatDelay = newRepeatDelay - acceleration
 		if newRepeatDelay < maximum then newRepeatDelay = maximum end
 		if isScrolling then

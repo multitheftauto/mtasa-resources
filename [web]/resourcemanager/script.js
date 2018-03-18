@@ -21,13 +21,13 @@ function performSearch()
 	document.getElementById("searchingSpinner").style.display = "inline";
 	var searchText = document.getElementById("searchText").value;
 	var searchState = document.getElementById("searchState").value;
-	
+
 	if ( searchState == "any" )
 		searchState = "";
 	getResourcesSearch ( searchText, searchState,
 		function ( resourceTable, stateTable )
         {
-		
+
 			for ( i = 0; i < resourceTable.length; i += 1 )
 			{
 				resourceTable[i].state = stateTable[i];
@@ -43,14 +43,14 @@ function performSearch()
 						return 0;
 				}
 			);
-				
+
 			var resourceList = document.getElementById ( "resourcelist" );
-		
+
 			while ( resourceList.rows.length != 0 )
 			{
 				resourceList.deleteRow(0);
 			}
-			
+
 			var contentTable = null;
 			var activerow = null;
 			var j = 3;
@@ -68,20 +68,20 @@ function performSearch()
 							cell.className = "resourcecell";
 						}
 					}
-					
+
 					var row = resourceList.insertRow (-1);
-					
+
 					var letterCell = row.insertCell(-1);
 					if ( i == 0 )
 						letterCell.className = "lettercell_first";
 					else
 						letterCell.className = "lettercell";
 					letterCell.innerHTML =  resourceTable[i].name.substr(0,1).toUpperCase();
-					
+
 					var cell = row.insertCell(-1);
 					if ( i != 0 )
 						cell.className = "letterrowcontentcell";
-						
+
 					contentTable = document.createElement("table");
 					contentTable.className = "resourcelisttable";
 					activerow = contentTable.insertRow(-1);
@@ -104,10 +104,10 @@ function performSearch()
 				cell.className = "resourcecell";
 				cell.innerHTML = "<div id='resource-" + resourceTable[i].name + "' style='cursor: pointer; color:" + col + "' onClick='showInfo(\"" + resourceTable[i].name + "\")'><span style='font-weight: bold;'>"
 					+ resourceTable[i].name + "</span></div>";
-				
+
 				j--;
 			}
-			
+
 			// add some padding cells if the last row wasn't filled
 			if ( activerow != null )
 			{
@@ -127,7 +127,7 @@ function refreshResourcesButton (refreshall)
 	document.getElementById("refreshallbutton").disabled = true
 	document.getElementById("refreshbutton").value = ""
 	document.getElementById("refreshbutton").disabled = true
-	
+
 	refreshResources(refreshall,
 		function ()
 		{
@@ -153,14 +153,14 @@ function getButtons ( resource, resourceState )
 		html += "<input type='button' value='start' disabled='true'>";
 		html += "<input type='button' onClick=\"stopResourceButton('" + resource.name + "')\" value='stop'>" +
 		"<input type='button' onClick=\"restartResourceButton('" + resource.name + "')\" value='restart'>";
-		
+
 	}
 	else if ( resourceState == "loaded" )
 	{
 		html += "<input type='button' onClick=\"startResourceButton('" + resource.name + "')\" value='start'>";
 		html += "<input type='button' value='stop' disabled='true'>" +
 		"<input type='button'  value='restart'  disabled='true'>";
-		
+
 	}
 	else // failed
 	{
@@ -182,7 +182,7 @@ function startResourceButton ( resourceName )
 			getResourceState ( resource,
 				function ( state ) {
 					newState = state;
-					
+
 					if ( state == "loaded" )
 						col = "#FF7F00";
 					else if ( state == "running" )
@@ -190,7 +190,7 @@ function startResourceButton ( resourceName )
 					else
 						col = "#FF3333";
 					document.getElementById ( "resource-" + resource.name ) .style.color = col;
-					
+
 					if ( currentResourceInfo == resource )
 						document.getElementById( "startstopbuttons" ).innerHTML = getButtons ( resource, newState );
 				}
@@ -212,7 +212,7 @@ function restartResourceButton ( resourceName )
 			getResourceState ( resource,
 				function ( state ) {
 					newState = state;
-					
+
 					if ( state == "loaded" )
 						col = "#FF7F00";
 					else if ( state == "running" )
@@ -220,7 +220,7 @@ function restartResourceButton ( resourceName )
 					else
 						col = "#FF3333";
 					document.getElementById ( "resource-" + resource.name ) .style.color = col;
-					
+
 					if ( currentResourceInfo == resource )
 						document.getElementById( "startstopbuttons" ).innerHTML = getButtons ( resource, newState );
 				}
@@ -233,14 +233,14 @@ function restartResourceButton ( resourceName )
 function stopResourceButton ( resourceName )
 {
 	var resource = resourceFromName[resourceName];
-	
+
 	stopResource ( resource,
 		function ( wasSuccessful ) {
 			var newState;
 			getResourceState ( resource,
 				function ( state ) {
 					newState = state;
-					
+
 					if ( state == "loaded" )
 						col = "#FF7F00";
 					else if ( state == "running" )
@@ -248,7 +248,7 @@ function stopResourceButton ( resourceName )
 					else
 						col = "#FF3333";
 					document.getElementById ( "resource-" + resource.name ) .style.color = col;
-					
+
 					if ( currentResourceInfo == resource )
 						document.getElementById( "startstopbuttons" ).innerHTML = getButtons ( resource, newState );
 				}
@@ -266,11 +266,11 @@ function showInfo ( resourceName )
     getInfo ( resource );
 
 	var resourceInfoHeight = (window.pageYOffset + window.innerHeight/4)
-	
+
     document.getElementById ( "resourceinfo" ).style.display = "inline";
-	
+
 	document.getElementById( "resultlist" ).style.right = "30%";
-	
+
 	document.getElementById("startstopbuttons" ).innerHTML = getButtons(resource, "waiting");
 }
 
@@ -286,7 +286,7 @@ function getInfo ( resource )
     lastResource = resource;
     document.getElementById ( "resourceInfoLoading" ).style.display = "inline";
     document.getElementById ( "resourceinfocontent" ).style.display = "none";
-	
+
 	getResourceInfo( resource,
         function ( result ) /* called when the results arrive, each result in a seperate variable */
         {
@@ -304,18 +304,18 @@ function getInfo ( resource )
                 html += "Last started: " + result.starttime + "<br/>";
 
             html += "Loaded: " + result.loadtime + "<br/>";
-			
+
 			if ( result.author != false )
 				html += "Author: " + result.author + "<br/>";
 			if ( result.version != false )
 				html += "Version: " + result.version + "<br/>";
-			
+
 			document.getElementById( "resourcename" ).innerHTML = resource.name;
 
             contentarea.innerHTML = html;
 
             document.getElementById ( "resourceInfoLoading" ).style.display = "none";
-			
+
 			document.getElementById("startstopbuttons" ).innerHTML = getButtons(resource, result.state);
         }
 	);

@@ -1,4 +1,4 @@
-﻿g_ScreenX,g_ScreenY = guiGetScreenSize()
+g_ScreenX,g_ScreenY = guiGetScreenSize()
 g_Root = getRootElement()
 g_ResourceRoot = getResourceRootElement(getThisResource())
 g_LocalPlayer = getLocalPlayer()

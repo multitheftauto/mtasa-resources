@@ -273,7 +273,7 @@
   <html src="server/http/bans.htm" default="true"/>
   <html src="server/http/admin.css" raw="true"/>
   <html src="server/http/admin.js" raw="true"/>
-		
+
   <html src="server/http/images/header.png" raw="true"/>
   <html src="server/http/images/manual.png" raw="true"/>
   <html src="server/http/images/back.png" raw="true"/>
@@ -329,27 +329,27 @@
 					accept="true,false"
 					desc="Ban IP's that attempt to send fake admin packets."
 					/>
-					
+
 		<setting name="*useip2c" value="true"
 					friendlyname="useip2c"
 					group="_Advanced"
 					accept="true,false"
 					desc="Displays country flags next to players, set to false to save about 3MB of server RAM."
 					/>
-		
+
 		<setting name="*nickChangeDelay" value="5000"
 					friendlyname="Nick change delay"
 					group="Durations"
 					accept="500-60000"
 					desc="Time in miliseconds between a player being able to change their name to prevent nick change spam"
 					/>
-					
+
 		<setting name="*maxchatmsgs" value="10"
 					friendlyname="Max chat log messages"
 					accept="1-1000"
 					desc="Maximum chat log messages per player to store. Decreasing this value may save some of server RAM."
 					/>
-					
+
 		<setting name="*reportCategories" value="Question,Suggestion,Other"
 					friendlyname="Report categories"
 					desc="List of non player report categories."

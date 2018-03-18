@@ -1,4 +1,4 @@
-﻿local interiorAnims = {}
+local interiorAnims = {}
 local setInteriorMarkerZ = {
 	interiorEntry = function(marker,z)
 		local interiorElement = getElementParent(marker)
@@ -179,7 +179,7 @@ addEventHandler ( "doWarpPlayerToInterior",localPlayer,
 		resource = getResourceFromName(resource)
 		local oppositeType = opposite[getElementType(interior)]
 		local targetInterior = interiors[resource][id][oppositeType]
-		
+
 		local x = getElementData ( targetInterior, "posX" )
 		local y = getElementData ( targetInterior, "posY" )
 		local z = getElementData ( targetInterior, "posZ" ) + 1

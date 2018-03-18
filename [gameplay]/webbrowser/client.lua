@@ -4,7 +4,7 @@ addEventHandler("onClientResourceStart", resourceRoot,
 	function()
 		-- Register bind for toggling the mouse cursor
 		bindKey("lalt", "down", function(button, state) showCursor(not isCursorShowing()) end)
-		
+
 		-- Create Chromium icon
 		local icon = GuiStaticImage(0, screenHeight - 48, 48, 48, "chromiumIcon.png", false)
 		addEventHandler("onClientGUIClick", icon,
