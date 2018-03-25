@@ -38,6 +38,7 @@
 	<script src="client/outputmessage.lua" type="client"/>
 	<script src="client/welcome.lua" type="client"/>
 	<script src="client/getCameraRotation.lua" type="client" validate="false"/>
+	<script src="client/input_gui.lua" type="client"/>
 	<!--serverside exports-->
 	<export function="loadsave_getResources" type="server"/>
 	<export function="outputMessage" type="server"/>

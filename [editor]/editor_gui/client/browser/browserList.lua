@@ -22,7 +22,7 @@ local function browserListGridlistClick( button,state,x,y )
 			end
 			self:setSelected(row)
 			if button == "right" then
-				toggleFavourite(self.gridlist)
+				--toggleFavourite(self.gridlist)
 			end
 		end
 	end
@@ -294,6 +294,9 @@ function browserList:setSelected(value)
 	if self.callback then
 		self.callback(value)
 	end
+  if(value ~= 0)then
+    browser.checkForFavorite()
+  end
 	return true
 end
 function browserList:getSelected()

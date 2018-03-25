@@ -1,4 +1,4 @@
-local res = getThisResource()
+﻿local res = getThisResource()
 browser = {}
 browserGUI = {}
 BROWSER_DIMENSION = nil
@@ -6,8 +6,9 @@ local screenX,screenY = guiGetScreenSize()
 local catNodes
 local cachedElements = {}
 local path = "client/browser/"
-local xmlFiles = { ["objectID"] = getResourceConfig(path.."objects.xml"), ["skinID"] = getResourceConfig(path.."skins.xml"), ["vehicleID"] = getResourceConfig(path.."vehicles.xml"), ["favourite"] = (xmlLoadFile("client/browser/favourites.xml") or xmlCreateFile("client/browser/favourites.xml", "favourite")) }
+local xmlFiles = { ["objectID"] = getResourceConfig(path.."objects.xml"), ["skinID"] = getResourceConfig(path.."skins.xml"), ["vehicleID"] = getResourceConfig(path.."vehicles.xml"), ["favorites"] = (xmlLoadFile("client/browser/favorites.xml") or xmlCreateFile("client/browser/favorites.xml", "favorites")), ["lastUsed"] = (xmlLoadFile("client/browser/lastused.xml") or xmlCreateFile("client/browser/lastused.xml", "lastused")) }
 local elementCatalogs = { ["objectID"]="object",["vehicleID"]="vehicle",["skinID"]="skin" }
+local dropdownArray = { "All Categories", "Favorites", "Last used" }
 local searchModel, searchMax
 local isScrolling
 local searchTimerDelay,ignoreSearch
@@ -19,11 +20,12 @@ local returnX,returnY,returnZ,returnRX,returnRY,returnRZ,returnInterior
 function createBrowser()
 	browserGUI.window = guiCreateWindow 	( 0, 0, 0.25, 1, "Browse...", true )
 	guiSetVisible ( browserGUI.window, false )
-	browserGUI.dropdown = editingControl.dropdown:create{["x"]=12,["y"]=25,["width"]=screenX*0.25,["height"]=20,["dropWidth"]=screenX*0.25,["dropHeight"]=200,["relative"]=false,["parent"]=browserGUI.window,["rows"]={"All categories", "Favourites"}}
+	browserGUI.dropdown = editingControl.dropdown:create{["x"]=12,["y"]=25,["width"]=screenX*0.25,["height"]=20,["dropWidth"]=screenX*0.25,["dropHeight"]=200,["relative"]=false,["parent"]=browserGUI.window,["rows"]=dropdownArray}
 	browserGUI.list = browserList:create( 12, 85, screenX*0.25, screenY*1-112, { {["Element"]=0.95-(60/(screenX*0.25))},{["[ID]"]=40/(screenX*0.25)}},false, browserGUI.window )
 	browserGUI.search = guiCreateEdit ( 12, 50, screenX*0.25, 30, "Search...", false, browserGUI.window )
-	browserGUI.ok = guiCreateButton ( 12, screenY-24, screenX*0.125 - 2, 40, "OK", false, browserGUI.window )
-	browserGUI.cancel = guiCreateButton ( screenX*0.125 + 12 + 2, screenY-24, screenX*0.125 - 2, 40, "Cancel", false, browserGUI.window )
+	browserGUI.ok = guiCreateButton ( 12, screenY-24, screenX*0.11 - 2, 40, "OK", false, browserGUI.window )
+	browserGUI.cancel = guiCreateButton ( screenX*0.11 + 12 + 2, screenY-24, screenX*0.11 - 2, 40, "Cancel", false, browserGUI.window )
+	browserGUI.favorites = guiCreateButton ( screenX*0.22 + 12 + 2, screenY-24, screenX*0.03 - 2, 40, "❤", false, browserGUI.window )
 	browserGUI.searchProgress = guiCreateLabel ( 0, 0, 1, 0.1, "", true )
 	browserGUI.searchModel = guiCreateLabel ( 0, 0, 1, 0.1, "", true )
 	guiSetVisible ( browserGUI.searchProgress, false )
@@ -37,6 +39,7 @@ function createBrowser()
 
 	addEventHandler ("onClientGUIClick",browserGUI.ok,browser.browserSelected,false)
 	addEventHandler ("onClientGUIClick",browserGUI.cancel,browser.browserCancelled,false)
+	addEventHandler ("onClientGUIClick",browserGUI.favorites,browser.browserFavourite,false)
 end
 
 function browser.initiate ( theType, initialCat, initialModel )
@@ -54,9 +57,8 @@ function browser.initiate ( theType, initialCat, initialModel )
 	browserGUI.dropdown:destroy()
 	--
 	browserGUI.list:enable(cc.browser_up,cc.browser_down)
-	progress = 3
-	catNodes = { cachedElements[initiatedType], cachedElements["favourite"] }
-	dropdownArray = { "All Categories", "Favourites" }
+	catNodes = { cachedElements[initiatedType], cachedElements["favorites"], cachedElements["lastUsed"] }
+	progress = #dropdownArray + 1
 	createCategoriesTable ( cachedElements[initiatedType] )
 	--
 	browserGUI.dropdown = editingControl.dropdown:create{["x"]=12,["y"]=25,["width"]=screenX*0.25,["height"]=20,["dropWidth"]=screenX*0.25,["dropHeight"]=200,["relative"]=false,["parent"]=browserGUI.window,["rows"]=dropdownArray}
@@ -89,7 +91,8 @@ function startBrowser ( elementType, callback, initialCat, initialModel, remembe
 	if not cachedElements[elementType] then
 		cachedElements[elementType] = cacheElements(xmlFiles[elementType], elementCatalogs[elementType])
 	end
-	cachedElements["favourite"] = cacheElements(xmlFiles["favourite"], elementCatalogs[elementType])
+	cachedElements["favorites"] = cacheElements(xmlFiles["favorites"], elementCatalogs[elementType])
+	cachedElements["lastUsed"] = cacheElements(xmlFiles["lastUsed"], elementCatalogs[elementType])
 	browser.enabled = true
 	returnX,returnY,returnZ,returnRX,returnRY,returnRZ = getCameraMatrix()
 	returnInterior = getCameraInterior()
@@ -265,7 +268,7 @@ function browser.dropdownSelect ( element )
 		browser.prepareSearch()
 	end
 end
-addEventHandler ( "onClientDropDownSelect", getRootElement(), browser.dropdownSelect )--------
+addEventHandler ( "onClientDropDownSelect", getRootElement(), browser.dropdownSelect )
 
 
 function browser.toggleCursor()
@@ -301,6 +304,45 @@ function browser.browserSelected(button)
 	browser.applySelected()
 end
 
+function browser.saveLastUsed(model,name)
+  local nodes = xmlNodeGetChildren(xmlFiles["lastUsed"])
+  for i,n in ipairs(nodes)do
+    if xmlNodeGetAttribute(n,"model") == tostring(model) then
+      xmlDestroyNode(n)
+      break
+    end
+  end
+  local node = xmlCreateChild(xmlFiles["lastUsed"], elementCatalogs[initiatedType])
+  xmlNodeSetAttribute(node, "model", model)
+  xmlNodeSetAttribute(node, "name", name)
+  xmlNodeSetAttribute(node, "keywords", "")
+  xmlSaveFile(xmlFiles["lastUsed"])
+end
+
+function browser.checkForFavorite()
+	local model = browserGUI.list:getSelectedText()[2]
+	if ( model ) and ( model ~= "" ) then
+    if browser.isInFavourite(model) then
+      guiSetProperty( browserGUI.favorites, "NormalTextColour", tocolor(0,255,0,255) )
+      guiSetProperty( browserGUI.favorites, "HoverTextColour", tocolor(0,255,0,255) )
+    else
+      guiSetProperty( browserGUI.favorites, "NormalTextColour", tocolor(255,0,0,255) )
+      guiSetProperty( browserGUI.favorites, "HoverTextColour", tocolor(255,0,0,255) )
+    end
+  end
+end
+
+function browser.isInFavourite(model)
+  local nodes = xmlNodeGetChildren(xmlFiles["favorites"])
+  local model = tostring(model)
+  for i,n in ipairs(nodes)do
+    if xmlNodeGetAttribute(n,"model") == model then
+      return true
+    end
+  end
+  return false
+end
+
 function browser.applySelected()
 	if tutorialVars.browserDisableKeys then return end
 	local selection = browserGUI.list:getSelected()
@@ -313,12 +355,70 @@ function browser.applySelected()
 			callbackFunction(initiatedType,cat,tonumber(model))
 			rememberValues[initiatedType].category = cat
 			rememberValues[initiatedType].model = tonumber(model)
+      local name = browserGUI.list:getSelectedText()[1]
+      browser.saveLastUsed(tonumber(model),name)
 		end
 		if ( tutorialVars.browserOK == initiatedType ) then
 			tutorialNext ()
 		end
 	end
 	browser.close()
+end
+
+function browser.browserFavourite(button)
+	if button == "left" then
+    local model = browserGUI.list:getSelectedText()[2]
+    if ( model ) and ( model ~= "" ) then
+      if browser.isInFavourite(model) then
+        local nodes = xmlNodeGetChildren(xmlFiles["favorites"])
+        local model = tostring(model)
+        for i,n in ipairs(nodes)do
+          if xmlNodeGetAttribute(n,"model") == model then
+            xmlDestroyNode(n)
+            break
+          end
+        end
+      else
+        local name = browserGUI.list:getSelectedText()[1]
+        local node = xmlCreateChild(xmlFiles["favorites"], elementCatalogs[initiatedType])
+        xmlNodeSetAttribute(node, "model", model)
+        xmlNodeSetAttribute(node, "name", name)
+        xmlNodeSetAttribute(node, "keywords", "")
+        xmlSaveFile(xmlFiles["favorites"])
+      end
+      cachedElements["favorites"] = cacheElements(xmlFiles["favorites"], elementCatalogs[initiatedType])
+      catNodes[2] = cachedElements["favorites"]
+      browser.checkForFavorite()
+      if browserGUI.dropdown:getRow() == 2 then
+          browser.prepareSearch()
+      end
+    end
+  else
+    if browserGUI.dropdown:getRow() == 2 then
+      local selected = browserGUI.list:getSelectedText()
+      if selected then
+        local name = browserGUI.list:getSelectedText()[1]
+        local model = browserGUI.list:getSelectedText()[2]
+        if ( model ) and ( model ~= "" ) then
+          inputGui("Rename "..name.." to ...","Write new name",function(button,state,newName,modelID)
+            if string.len(newName) > 0 and string.len(newName) < 30 then
+              local nodes = xmlNodeGetChildren(xmlFiles["favorites"])
+              local model = tostring(model)
+              for i,n in ipairs(nodes)do
+                if xmlNodeGetAttribute(n,"model") == modelID then
+                  xmlNodeSetAttribute(n, "name", newName)
+                  cachedElements["favorites"] = cacheElements(xmlFiles["favorites"], elementCatalogs[initiatedType])
+                  catNodes[2] = cachedElements["favorites"]
+                  browser.prepareSearch()
+                  break
+                end
+              end
+            end
+          end,tostring(model))
+        end
+      end
+    end
+  end
 end
 
 function browser.browserCancelled(button)
@@ -350,10 +450,12 @@ function showCursor(state)
 end
 
 addEventHandler("onClientResourceStop", resourceRoot,
-	function ()
-		xmlSaveFile(xmlFiles["favourite"])
-		xmlUnloadFile(xmlFiles["favourite"])
-	end)
+function ()
+  xmlSaveFile(xmlFiles["favorites"])
+  xmlSaveFile(xmlFiles["lastUsed"])
+  xmlUnloadFile(xmlFiles["favorites"])
+  xmlUnloadFile(xmlFiles["lastUsed"])
+end)
 
 local lastCallTick = 0
 
@@ -368,26 +470,26 @@ function toggleFavourite (gridlist)
 	local results = elementSearch(catNodes[2], model)
 	for i, data in pairs(results) do
 		if data["model"] == model then --has to be exact match
-			for i, node in pairs(xmlNodeGetChildren(xmlFiles["favourite"])) do
+			for i, node in pairs(xmlNodeGetChildren(xmlFiles["favorites"])) do
 				if xmlNodeGetAttribute(node, "model") == model then
 					xmlDestroyNode(node)
 					break
 				end
 			end
-			cachedElements["favourite"] = cacheElements(xmlFiles["favourite"], elementCatalogs[initiatedType])
-			catNodes[2] = cachedElements["favourite"]
+			cachedElements["favorites"] = cacheElements(xmlFiles["favorites"], elementCatalogs[initiatedType])
+			catNodes[2] = cachedElements["favorites"]
 			if browserGUI.dropdown:getRow() == 2 then
-				browser.prepareSearch() --to force reload of 'Favourites'
+				browser.prepareSearch() --to force reload of 'Favorites'
 			end
-			outputMessage(elementCatalogs[initiatedType]:gsub("^%l", string.upper) .. " '" .. name .. "' removed from favourites.", 50, 255, 50)
+			outputMessage(elementCatalogs[initiatedType]:gsub("^%l", string.upper) .. " '" .. name .. "' removed from favorites.", 50, 255, 50)
 			return
 		end
 	end
-	local node = xmlCreateChild(xmlFiles["favourite"], elementCatalogs[initiatedType])
+	local node = xmlCreateChild(xmlFiles["favorites"], elementCatalogs[initiatedType])
 	xmlNodeSetAttribute(node, "model", model)
 	xmlNodeSetAttribute(node, "name", name)
 	xmlNodeSetAttribute(node, "keywords", "")
-	cachedElements["favourite"] = cacheElements(xmlFiles["favourite"], elementCatalogs[initiatedType])
-	catNodes[2] = cachedElements["favourite"]
-	outputMessage(elementCatalogs[initiatedType]:gsub("^%l", string.upper) .. " '" .. name .. "' added to favourites.", 50, 255, 50)
+	cachedElements["favorites"] = cacheElements(xmlFiles["favorites"], elementCatalogs[initiatedType])
+	catNodes[2] = cachedElements["favorites"]
+	outputMessage(elementCatalogs[initiatedType]:gsub("^%l", string.upper) .. " '" .. name .. "' added to favorites.", 50, 255, 50)
 end
