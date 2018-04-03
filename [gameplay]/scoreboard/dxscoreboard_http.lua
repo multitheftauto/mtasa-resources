@@ -35,7 +35,7 @@ local function calculateWidth()
 end
 
 local function getRowData( element )
-	local rowData = { getElementType( element ), }
+	local rowData = { getElementType( element ) }
 	for key, column in ipairs( httpColumns ) do
 		if column.name == "name" then
 			table.insert( rowData, getName( element ) )
