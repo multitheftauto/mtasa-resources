@@ -184,7 +184,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		guiBringToFront(elem)
 		g_openedWindows[wnd] = true
 	elseif wndClass == 'chk' then
-		elem = guiCreateCheckBox(relX, relY, relWidth, relHeight, wnd.text or wnd.id or '', false, true, parentWnd.element)
+		elem = guiCreateCheckBox(relX, relY, relWidth, relHeight, wnd.text or wnd.id or '', wnd.selected or false, true, parentWnd.element)
 	elseif wndClass == 'tbp' then
 		elem = guiCreateTabPanel(relX, relY, relWidth, relHeight, true, parentWnd.element)
 	elseif wndClass == 'tab' then
