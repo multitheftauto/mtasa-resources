@@ -12,16 +12,21 @@ end
 showCountries = toboolean( get( "showCountries" ) ) or false
 
 if showCountries then
-local countryData = "Country"
-local defaultCountryIndicator = "N/A" --If something somehow fails and setting is enabled in meta.xml
-	for i,players in ipairs(getElementsByType("player")) do
-		local cCode = exports.admin:getPlayerCountry(players)
-		setElementData(players,countryData,{":admin/client/images/flags/"..string.lower(cCode or defaultCountryIndicator)..".png",cCode or defaultCountryIndicator})
+	local isAdminResourceRunning = getResourceFromName( "admin" )
+	isAdminResourceRunning = isAdminResourceRunning and getResourceState( isAdminResourceRunning ) == "running"
+
+	local countryData = "Country"
+	local defaultCountryIndicator = "N/A" -- If something somehow fails and setting is enabled in meta.xml
+
+	for i, player in ipairs( getElementsByType( "player" ) ) do
+		local cCode = isAdminResourceRunning and exports.admin:getPlayerCountry( player ) or defaultCountryIndicator
+		setElementData( player, countryData, {":admin/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
 	end
 
-	function setScoreboardData ()
-		local cCode = exports.admin:getPlayerCountry(source)
-		setElementData(source, countryData,{":admin/client/images/flags/"..string.lower(cCode or defaultCountryIndicator)..".png",cCode or defaultCountryIndicator})
+	function setScoreboardData()
+		local cCode = isAdminResourceRunning and exports.admin:getPlayerCountry( source ) or defaultCountryIndicator
+		setElementData( source, countryData, {":admin/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
 	end
-addEventHandler("onPlayerJoin", getRootElement(), setScoreboardData)
+
+	addEventHandler( "onPlayerJoin", getRootElement(), setScoreboardData )
 end
