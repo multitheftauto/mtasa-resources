@@ -155,6 +155,10 @@ end
 --      Setup joining/joined containers and put all current players into g_RootJoining
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
+		if not isRaceResourceReady() then
+			return
+		end
+
         -- Create a joining player node and a joined player node
         table.each(getElementsByType('plrcontainer'), destroyElement)
         g_RootJoining = createElement( 'plrcontainer', 'plrs joining' )

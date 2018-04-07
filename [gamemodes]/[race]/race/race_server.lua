@@ -776,8 +776,11 @@ addEventHandler('onPollDraw', g_Root,
 -- Recharge scoreboard columns if required
 addEventHandler('onResourceStart', g_Root,
 	function(res)
-		local resourceName = getResourceName(res)
-		if resourceName == 'scoreboard' then
+		if not isRaceResourceReady() then
+			return
+		end
+
+		if getResourceName(res) == 'scoreboard' then
 			TimerManager.createTimerFor("raceresource"):setTimer( addRaceScoreboardColumns, 1000, 1 )
 		end
 	end
@@ -786,6 +789,20 @@ addEventHandler('onResourceStart', g_Root,
 
 addEventHandler('onResourceStart', g_ResRoot,
 	function()
+		local mapManager = getResourceFromName('mapmanager')
+		local mapManagerState = getResourceState(mapManager)
+
+		if mapManagerState == 'loaded' then
+			outputDebugString('Starting required mapmanager resource...')
+			startResource(mapManager, true)
+			restartResource(resource)
+			return
+		elseif mapManagerState ~= 'running' then
+			outputDebugString('mapmanager resource is required for the default race gamemode to work correctly. Please add mapmanager inside the resources folder.', 1)
+			cancelEvent()
+			return
+		end
+
 		outputDebugString('Race resource starting')
 		startAddons()
 	end
@@ -809,6 +826,10 @@ end
 
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
+		if not isRaceResourceReady() then
+			return
+		end
+
         gotoState( 'Race resource stopping' )
         fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')

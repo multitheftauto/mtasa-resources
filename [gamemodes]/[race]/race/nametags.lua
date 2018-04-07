@@ -107,6 +107,10 @@ addEventHandler ( "onClientRender", g_Root,
 ---------------THE FOLLOWING IS THE MANAGEMENT OF NAMETAGS-----------------
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
+		if not isRaceResourceReady() then
+			return
+		end
+
 		for i,player in ipairs(getElementsByType"player") do
 			if player ~= g_Me then
 				nametag.create ( player )

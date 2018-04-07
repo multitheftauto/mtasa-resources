@@ -439,7 +439,7 @@ addCommandHandler('forcevote',
 
 addEventHandler('onResourceStart', getRootElement(),
 	function( res )
-		if exports.mapmanager:isMap( res ) then
+		if isRaceResourceReady() and exports.mapmanager:isMap( res ) then
 			setMapLastTimePlayed( res )
 		end
 	end

@@ -132,6 +132,10 @@ addEventHandler('_onClientPlayerJoin', g_Root,
 --      Call the deferred onClientResourceStart event handlers, then tell the server we are loaded.
 addEventHandler('_onClientResourceStart', g_ResRoot,
 	function()
+		if not isRaceResourceReady() then
+			return
+		end
+
         callSavedEventHandlers( 'onClientResourceStart', source )
         if _DEBUG_TIMING then
     		setTimer(

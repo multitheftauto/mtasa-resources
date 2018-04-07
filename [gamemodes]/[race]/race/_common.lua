@@ -323,6 +323,11 @@ function matrixToRotations( matrix )
 
 	return rx, ry, rz
 end
+
+-- Check if the race resource is ready to be started
+function isRaceResourceReady()
+	return getResourceState(getResourceFromName('mapmanager')) == 'running'
+end
 ---------------------------------------------------------------------------
 
 

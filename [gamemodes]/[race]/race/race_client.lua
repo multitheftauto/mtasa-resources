@@ -13,6 +13,10 @@ g_Objects = {}
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
+		if not isRaceResourceReady() then
+			return
+		end
+
 		g_Players = getElementsByType('player')
 
         fadeCamera(false,0.0)
