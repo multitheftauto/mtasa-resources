@@ -136,34 +136,34 @@
 					desc="Set to true to disable collisions."
 					/>
 
-        <setting name="*ghostalpha" value="false"
+		<setting name="*ghostalpha" value="false"
 					friendlyname="Ghost alpha"
 					accept="false,true"
 					group="Graphics"
 					desc="Set to true to make vehicle semi-transparent when collisions are disabled."
 					/>
 
-        <setting name="*randommaps" value="false"
+		<setting name="*randommaps" value="false"
 					friendlyname="Random maps"
 					accept="false,true"
 					group="Gameplay"
 					desc="Set to true to make the next map selection automatic."
 					/>
 
-        <setting name="#statskey" value="name"
+		<setting name="#statskey" value="name"
 					accept="name,serial"
 					group="none"
 					desc="To identify players for stats."
 					/>
 
-        <setting name="*vehiclecolors" value="random"
+		<setting name="*vehiclecolors" value="random"
 					friendlyname="Vehicle colors"
 					accept="file,random"
 					group="Graphics"
 					desc="Set to file to use the server file: mods\deathmatch\vehiclecolors.conf"
 					/>
 
-        <setting name="*skins" value="cj"
+		<setting name="*skins" value="cj"
 					friendlyname="Driver skin"
 					group="Graphics"
 					accept="*"
@@ -171,21 +171,21 @@
 					desc="Choose a driver skin. Acceptable values can be 'cj' or 'random' or a range list like this:'7 10 16-20 15'"
 					/>
 
-        <setting name="*vehicleweapons" value="true"
+		<setting name="*vehicleweapons" value="true"
 					friendlyname="Vehicle weapons"
 					group="Gameplay"
 					accept="false,true"
 					desc="Set to true to allow vehicle weapons."
 					/>
 
-        <setting name="*autopimp" value="true"
+		<setting name="*autopimp" value="true"
 					friendlyname="Auto pimp"
 					group="Graphics"
 					accept="false,true"
 					desc="Set to true to apply a selection of visual upgrades to vehicles."
 					/>
 
-        <setting name="*firewater" value="false"
+		<setting name="*firewater" value="false"
 					friendlyname="Fire water"
 					group="Graphics"
 					accept="false,true"
@@ -303,7 +303,7 @@
 					desc="Set to true to show the map author name on the travelling screen."
 					/>
 
-        <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
+		<setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
 		<setting name="*skins_map_can_override"  friendlyname="Driver skin map override" group="Graphics" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
 		<setting name="*vehicleweapons_map_can_override"  friendlyname="Vehicle weapons map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
 		<setting name="*autopimp_map_can_override"  friendlyname="Auto pimp map override" group="Graphics" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
@@ -313,20 +313,20 @@
 
 		<setting name="*ghostmode_warning_if_map_override"  friendlyname="Ghost mode override warning" group="Gameplay" value="true" accept="false,true" desc="Set to true to issue a warning to players in the chatbox, if the map overrides this setting"/>
 		<setting name="*vehicleweapons_warning_if_map_override"  friendlyname="Vehicle weapons override warning" group="Gameplay" value="true" accept="false,true" desc="Set to true to issue a warning to players in the chatbox, if the map overrides this setting"/>
-    </settings>
+	</settings>
 
 
-    <!--
-        Settings in the map files
-        +++++++++++++++++++++++++
-        To add the 'ghostmode','skins','vehicleweapons','autopimp','firewater','classicchangez' or 'hunterminigun'
-        setting to a map, insert (or update) a <settings...> section into the maps meta.xml file.
-        For example:
+	<!--
+		Settings in the map files
+		+++++++++++++++++++++++++
+		To add the 'ghostmode','skins','vehicleweapons','autopimp','firewater','classicchangez' or 'hunterminigun'
+		setting to a map, insert (or update) a <settings...> section into the maps meta.xml file.
+		For example:
 
-        <settings>
-            <setting name="*vehicleweapons" value="false"/>
-            <setting name="*autopimp" value="false"/>
-        </settings>
-    -->
+		<settings>
+			<setting name="*vehicleweapons" value="false"/>
+			<setting name="*autopimp" value="false"/>
+		</settings>
+	-->
 
 </meta>

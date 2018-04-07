@@ -169,13 +169,13 @@ function problemChangingMap()
 	outputRace( 'Changing to random map in 5 seconds' )
 	local currentMap = exports.mapmanager:getRunningGamemodeMap()
 	TimerManager.createTimerFor("resource","mapproblem"):setTimer(
-        function()
+		function()
 			-- Check that something else hasn't already changed the map
 			if currentMap == exports.mapmanager:getRunningGamemodeMap() then
-	            startRandomMap()
+				startRandomMap()
 			end
-        end,
-        math.random(4500,5500), 1 )
+		end,
+		math.random(4500,5500), 1 )
 end
 
 

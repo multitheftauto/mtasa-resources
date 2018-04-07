@@ -10,11 +10,11 @@ addEventHandler('onClientCall_race', resourceRoot,
 		for i,pathpart in ipairs(path) do
 			fn = fn[pathpart]
 		end
-        if not fn then
-            outputDebugString( 'onClientCall_race fn is nil for ' .. tostring(fnName) )
-        else
-    		fn(...)
-        end
+		if not fn then
+			outputDebugString( 'onClientCall_race fn is nil for ' .. tostring(fnName) )
+		else
+			fn(...)
+		end
 	end
 )
 
@@ -105,7 +105,7 @@ function msToTimeStr(ms)
 end
 
 function getTickTimeStr()
-    return msToTimeStr(getTickCount())
+	return msToTimeStr(getTickCount())
 end
 
 function resAdjust(num)
@@ -247,18 +247,18 @@ function table.create(keys, vals)
 end
 
 function table.insertUnique(t,val)
-    if not table.find(t, val) then
-        table.insert(t,val)
-    end
+	if not table.find(t, val) then
+		table.insert(t,val)
+	end
 end
 
 function table.popLast(t,val)
-    if #t==0 then
-        return false
-    end
-    local last = t[#t]
-    table.remove(t)
-    return last
+	if #t==0 then
+		return false
+	end
+	local last = t[#t]
+	table.remove(t)
+	return last
 end
 
 
@@ -284,29 +284,29 @@ end
 
 
 function clamp( lo, value, hi )
-    return math.max( lo, math.min( value, hi ) )
+	return math.max( lo, math.min( value, hi ) )
 end
 
 
 function outputDebug( chan, msg )
-    if _DEBUG_LOG then
-        if not msg then
-            msg = chan
-            chan = 'UNDEF'
-        end
-        if table.find(_DEBUG_LOG,chan) then
-            outputConsole( getTickTimeStr() .. ' cDEBUG: ' .. msg )
-            outputDebugString( getTickTimeStr() .. ' cDEBUG: ' .. msg )
-        end
-    end
-    if g_bPipeDebug then
-        outputConsole( getTickTimeStr() .. ' cDEBUG: ' .. (msg or chan) )
-    end
+	if _DEBUG_LOG then
+		if not msg then
+			msg = chan
+			chan = 'UNDEF'
+		end
+		if table.find(_DEBUG_LOG,chan) then
+			outputConsole( getTickTimeStr() .. ' cDEBUG: ' .. msg )
+			outputDebugString( getTickTimeStr() .. ' cDEBUG: ' .. msg )
+		end
+	end
+	if g_bPipeDebug then
+		outputConsole( getTickTimeStr() .. ' cDEBUG: ' .. (msg or chan) )
+	end
 end
 
 function outputWarning( msg )
-    outputConsole( getTickTimeStr() .. ' cWARNING: ' .. msg )
-    outputDebugString( getTickTimeStr() .. ' cWARNING: ' .. msg )
+	outputConsole( getTickTimeStr() .. ' cWARNING: ' .. msg )
+	outputDebugString( getTickTimeStr() .. ' cWARNING: ' .. msg )
 end
 
 
@@ -318,14 +318,14 @@ local fadeInFinTimer = Timer:create()
 
 _fadeCamera = fadeCamera
 function fadeCamera(fadeIn,timeToFade,...)
-    _fadeCamera (fadeIn,timeToFade,...)
-    local ticksToFade = (not timeToFade or timeToFade < 1) and 0 or timeToFade * 1000
-    if not fadeIn then
-        fadeInFinTimer:killTimer()
+	_fadeCamera (fadeIn,timeToFade,...)
+	local ticksToFade = (not timeToFade or timeToFade < 1) and 0 or timeToFade * 1000
+	if not fadeIn then
+		fadeInFinTimer:killTimer()
 		triggerEvent( 'onClientScreenFadedOut', g_Root )
-    else
-        fadeInFinTimer:setTimer( onfadeInFin, math.max(50,ticksToFade/8), 1 )
-    end
+	else
+		fadeInFinTimer:setTimer( onfadeInFin, math.max(50,ticksToFade/8), 1 )
+	end
 end
 
 function onfadeInFin()

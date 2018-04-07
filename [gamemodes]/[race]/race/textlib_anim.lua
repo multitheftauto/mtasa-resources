@@ -37,8 +37,8 @@ function Animation.presets.dxTextMove(endX, endY, time, loop, startX, startY, sp
 	-- dxTextMove(endX, endY, [ time = 1000, loop = false, startX = current X, startY = current Y, speedUpSlowDown = false ])
 	if type(endX) ~= 'table' then
 		return { from = speedUpSlowDown and -math.pi/2 or 0, to = speedUpSlowDown and math.pi/2 or 1,
-		         time = time or 1000, repeats = loop and 0 or 1, fn = Animation.presets.dxTextMove,
-		         startX = startX, startY = startY, endX = endX, endY = endY, speedUpSlowDown = speedUpSlowDown }
+				 time = time or 1000, repeats = loop and 0 or 1, fn = Animation.presets.dxTextMove,
+				 startX = startX, startY = startY, endX = endX, endY = endY, speedUpSlowDown = speedUpSlowDown }
 	else
 		local elem, value, phase = endX, endY, time
 		if phase.speedUpSlowDown then
@@ -62,9 +62,9 @@ function Animation.presets.dxTextMoveResize(endX, endY, endScale, time, loop, st
 	--   startScale = currentScale, speedUpSlowDown = false ])
 	if type(endX) ~= 'table' then
 		return { from = speedUpSlowDown and -math.pi/2 or 0, to = speedUpSlowDown and math.pi/2 or 1,
-		         time = time or 1000, repeats = loop and 0 or 1, transform = math.sin, fn = Animation.presets.dxTextMoveResize,
-		         startX = startX, startY = startY, startScale = startScale,
-		         endX = endX, endY = endY, endScale = endScale, speedUpSlowDown = speedUpSlowDown }
+				 time = time or 1000, repeats = loop and 0 or 1, transform = math.sin, fn = Animation.presets.dxTextMoveResize,
+				 startX = startX, startY = startY, startScale = startScale,
+				 endX = endX, endY = endY, endScale = endScale, speedUpSlowDown = speedUpSlowDown }
 	else
 		local elem, value, phase = endX, endY, endScale
 		if phase.speedUpSlowDown then

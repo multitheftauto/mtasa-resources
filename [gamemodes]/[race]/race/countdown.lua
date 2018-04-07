@@ -129,12 +129,12 @@ function Countdown:update()
 		end
 	end
 	if not self:isClient() then
-	    if self.countitem then
-		    textItemSetText(self.countitem, self.texts[self.value] or tostring(self.value))
-            if textItemGetText(self.countitem) == '' then
- 		        textItemSetText(self.textitem, '')
-            end
-        end
+		if self.countitem then
+			textItemSetText(self.countitem, self.texts[self.value] or tostring(self.value))
+			if textItemGetText(self.countitem) == '' then
+				textItemSetText(self.textitem, '')
+			end
+		end
 		if self.singleitem then
 			local singletext = self.texts[self.value] or tostring(self.value)
 			if singletext ~= '' and self.text then

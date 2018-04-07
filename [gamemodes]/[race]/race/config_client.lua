@@ -211,7 +211,7 @@ function closeConfigMenu ()
 		gui = {}
 		guiData = {}
 	end
-    showCursor ( false )
+	showCursor ( false )
 end
 
 

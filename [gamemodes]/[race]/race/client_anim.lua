@@ -1,7 +1,7 @@
 --[[
 
   Client animation library by arc_
-               Version 1.0.0
+			   Version 1.0.0
 
   Licence
   ----------------
@@ -18,7 +18,7 @@
 
   Terminology
 
-    - Animation: a sequence of phases that act on one or more elements
+	- Animation: a sequence of phases that act on one or more elements
 	  and follow each other sequentially in time.
 
 	  Multiple animations can be running at the same time. All defined
@@ -34,7 +34,7 @@
 	  callback function will be called onClientRender with the following
 	  arguments:
 
-	    phase.fn(element elem, float param, table phase)
+		phase.fn(element elem, float param, table phase)
 
 	  Specifying time and callback function is optional. If no time is
 	  specified but a function is, phase.fn(elem) will be called once.
@@ -57,7 +57,7 @@
 
   Definition of a phase
 
-    A phase is simply a table containing properties and (optionally) subphases.
+	A phase is simply a table containing properties and (optionally) subphases.
 	Available phase properties are: (the values for the properties are examples,
 	not default values)
 
@@ -67,7 +67,7 @@
 		[time = 1000,]      -- the time (in ms) in which to go from start to end
 		[fn = callback,]    -- the function to call on each frame update
 		[repeats = 5,]      -- how many times to run this phase before going on to
-		                    --   the next. defaults to 1
+							--   the next. defaults to 1
 
 		[subphase1,]        -- optional subphases. if one or more of these are included,
 		[subphase2,]        --   only the "repeats" property is valid for this parent phase
@@ -76,7 +76,7 @@
 
   Available functions
 
-    anim = Animation.create(elem, phase1, phase2, ...)
+	anim = Animation.create(elem, phase1, phase2, ...)
 	  Creates and returns a new animation. This means nothing more than
 	  creating a new phase, putting the specified phases in it as subphases,
 	  and making the functions of the Animation class available to it.
@@ -125,7 +125,7 @@
 
   Examples
 
-    Fade in a picture:
+	Fade in a picture:
 
 	  local pict = guiCreateStaticImage(...)
 	  Animation.createAndPlay(pict, { from = 0, to = 1, time = 2000, fn = guiSetAlpha })
@@ -144,20 +144,20 @@
 	Move a label left and right forever, without presets:
 
 	  function guiSetX(elem, x)
-	      local curX, curY = guiGetPosition(elem, false)
+		  local curX, curY = guiGetPosition(elem, false)
 		  guiSetPosition(elem, x, curY, false)
 	  end
 	  local label = guiCreateLabel(10, 100, 150, 20, 'Test', false)
 	  Animation.createAndPlay(
-	      label,
+		  label,
 		  {
-		      repeats = 0,
+			  repeats = 0,
 			  { from = 10, to = 200, time = 2000, fn = guiSetX },
 			  { from = 200, to = 10, time = 2000, fn = guiSetX }
 		  }
 	  )
 
-                                                 ]]--
+												 ]]--
 
 Phase = {}
 Phase.__index = Phase
@@ -391,7 +391,7 @@ end
 
   The preset functions return phases for commonly used animation effects.
 
-                                                                           ]]--
+																		   ]]--
 Animation.presets = {}
 
 function Animation.presets.guiPulse(time, value, phase)
@@ -429,8 +429,8 @@ function Animation.presets.guiMove(endX, endY, time, loop, startX, startY, speed
 	-- guiMove(endX, endY, [ time = 1000, loop = false, startX = current X, startY = current Y, speedUpSlowDown = false ])
 	if type(endX) ~= 'userdata' then
 		return { from = speedUpSlowDown and -math.pi/2 or 0, to = speedUpSlowDown and math.pi/2 or 1,
-		         time = time or 1000, repeats = loop and 0 or 1, fn = Animation.presets.guiMove,
-		         startX = startX, startY = startY, endX = endX, endY = endY, speedUpSlowDown = speedUpSlowDown }
+				 time = time or 1000, repeats = loop and 0 or 1, fn = Animation.presets.guiMove,
+				 startX = startX, startY = startY, endX = endX, endY = endY, speedUpSlowDown = speedUpSlowDown }
 	else
 		local elem, value, phase = endX, endY, time
 		if phase.speedUpSlowDown then
@@ -448,9 +448,9 @@ function Animation.presets.guiMoveResize(endX, endY, endWidth, endHeight, time, 
 	--   startWidth = current width, startHeight = current height, speedUpSlowDown = false ])
 	if type(endX) ~= 'userdata' then
 		return { from = speedUpSlowDown and -math.pi/2 or 0, to = speedUpSlowDown and math.pi/2 or 1,
-		         time = time or 1000, repeats = loop and 0 or 1, transform = math.sin, fn = Animation.presets.guiMoveResize,
-		         startX = startX, startY = startY, startWidth = startWidth, startHeight = startHeight,
-		         endX = endX, endY = endY, endWidth = endWidth, endHeight = endHeight, speedUpSlowDown = speedUpSlowDown }
+				 time = time or 1000, repeats = loop and 0 or 1, transform = math.sin, fn = Animation.presets.guiMoveResize,
+				 startX = startX, startY = startY, startWidth = startWidth, startHeight = startHeight,
+				 endX = endX, endY = endY, endWidth = endWidth, endHeight = endHeight, speedUpSlowDown = speedUpSlowDown }
 	else
 		local elem, value, phase = endX, endY, endWidth
 		if phase.speedUpSlowDown then

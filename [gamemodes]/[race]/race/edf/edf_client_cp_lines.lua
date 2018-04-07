@@ -32,52 +32,52 @@ addCommandHandler( "cplines",
 function drawCheckpointConnections()
 	local checkpoints = getElementsByType("checkpoint")
 
-    -- Trim line list
-    while #lineList > #checkpoints do
-        table.remove( lineList, #lineList )
-    end
+	-- Trim line list
+	while #lineList > #checkpoints do
+		table.remove( lineList, #lineList )
+	end
 
-    -- Update line list (a few cps at a time)
-    local numToDo = math.min( updatesPerFrame, #checkpoints )
-    for i=1,numToDo do
-        curIdx = curIdx % #checkpoints
-        local checkpoint = checkpoints[curIdx + 1]
+	-- Update line list (a few cps at a time)
+	local numToDo = math.min( updatesPerFrame, #checkpoints )
+	for i=1,numToDo do
+		curIdx = curIdx % #checkpoints
+		local checkpoint = checkpoints[curIdx + 1]
 
-        lineList[curIdx + 1] = false
+		lineList[curIdx + 1] = false
 
 		local nextID = exports.edf:edfGetElementProperty ( checkpoint, "nextid" )
 		if isElement(nextID) then
 			local dx,dy,dz = exports.edf:edfGetElementPosition(nextID)
 			if dx then
-                local sx,sy,sz = exports.edf:edfGetElementPosition(checkpoint)
-    			if sx then
+				local sx,sy,sz = exports.edf:edfGetElementPosition(checkpoint)
+				if sx then
 
-                    -- Make arrow points
-                    local s = Vector3D:new(sx,sy,sz+1)
-                    local d = Vector3D:new(dx,dy,dz+1)
-                    local dir = d:SubV(s)
-                    local length = dir:Length()
-                    local mid = s:AddV(dir:Mul(0.5))
-                    dir:Normalize()
+					-- Make arrow points
+					local s = Vector3D:new(sx,sy,sz+1)
+					local d = Vector3D:new(dx,dy,dz+1)
+					local dir = d:SubV(s)
+					local length = dir:Length()
+					local mid = s:AddV(dir:Mul(0.5))
+					dir:Normalize()
 
-                    local left = dir:CrossV(Vector3D:new(0,0,1))
-                    left.z = 0
-                    left:Normalize()
-                    left = left:Mul(2)
+					local left = dir:CrossV(Vector3D:new(0,0,1))
+					left.z = 0
+					left:Normalize()
+					left = left:Mul(2)
 
-                    local p = d:SubV(dir:Mul(3))
-                    local p1 = p:AddV(left)
-                    local p2 = p:SubV(left)
+					local p = d:SubV(dir:Mul(3))
+					local p1 = p:AddV(left)
+					local p2 = p:SubV(left)
 
-                    lineList[curIdx + 1] = {s=s,d=d,p1=p1,p2=p2,m=mid,length=length}
-    			end
+					lineList[curIdx + 1] = {s=s,d=d,p1=p1,p2=p2,m=mid,length=length}
+				end
 			end
 		end
 
-        curIdx = curIdx + 1
-    end
+		curIdx = curIdx + 1
+	end
 
-    -- Draw line list
+	-- Draw line list
 	if showCheckpointLines then
 		local postGui = not isCursorShowing() and not isMTAWindowActive()
 		local camX,camY,camZ = getCameraMatrix()
@@ -134,7 +134,7 @@ addEventHandler('onClientHUDRender', root, drawCheckpointConnections)
 -- mafs
 ---------------------------------------------------------------------------
 function math.lerp(from,alpha,to)
-    return from + (to-from) * alpha
+	return from + (to-from) * alpha
 end
 
 function math.unlerp(from,pos,to)

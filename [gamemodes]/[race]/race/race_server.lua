@@ -38,15 +38,15 @@ addEventHandler('onGamemodeMapStart', g_Root,
 		if getTotalPlayerCount() == 0 then
 			outputDebugString('Stopping map')
 			triggerEvent('onGamemodeMapStop', g_Root, mapres)
-            return
+			return
 		end
-        gotoState('LoadingMap')
-        -- set up all players as not ready
-        for i,player in ipairs(getElementsByType('player')) do
-            setPlayerNotReady(player)
-        end
-        -- tell clients new map is loading
-        clientCall(g_Root, 'notifyLoadingMap', getResourceInfo(mapres, "name") or getResourceName(mapres), g_GameOptions.showauthorname and getResourceInfo( mapres , "author") )
+		gotoState('LoadingMap')
+		-- set up all players as not ready
+		for i,player in ipairs(getElementsByType('player')) do
+			setPlayerNotReady(player)
+		end
+		-- tell clients new map is loading
+		clientCall(g_Root, 'notifyLoadingMap', getResourceInfo(mapres, "name") or getResourceName(mapres), g_GameOptions.showauthorname and getResourceInfo( mapres , "author") )
 
 		if g_CurrentRaceMode then
 			outputDebugString('Unloading previous map')
@@ -58,8 +58,8 @@ addEventHandler('onGamemodeMapStart', g_Root,
 -- continue loading map after onGamemodeMapStart has completed
 function doLoadMap(mapres)
 	if not loadMap(mapres) then
-        -- Select another map on load error
-        problemChangingMap()
+		-- Select another map on load error
+		problemChangingMap()
 		return
 	end
 	g_CurrentRaceMode = RaceMode.getApplicableMode():create()
@@ -216,15 +216,15 @@ function loadMap(res)
 	local map = RaceMap.load(res)
 	if not map then
 		outputDebugString( 'Error loading map ' .. tostring(getResourceName(res)) )
-        outputChatBox( 'Error loading map ' .. tostring(getResourceName(res)) )
+		outputChatBox( 'Error loading map ' .. tostring(getResourceName(res)) )
 		return false
 	end
 
 	-- set options
-    g_MapInfo = getMapInfo(res)
-    g_MapInfo.name      = map.info['name'] or 'unnamed'
+	g_MapInfo = getMapInfo(res)
+	g_MapInfo.name      = map.info['name'] or 'unnamed'
 	g_MapInfo.author    = map.info['author']
-    g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
+	g_MapInfo.resname   = map.info['resname'] or getResourceName(res)
 
 	g_SavedMapSettings = {}
 	g_SavedMapSettings.duration			= map.duration
@@ -331,10 +331,10 @@ end
 -- Called from:
 --      onGamemodeMapStart
 function startRace()
-    gotoState('PreGridCountdown')
+	gotoState('PreGridCountdown')
 	setElementData( g_ResRoot, "info", {mapInfo = g_MapInfo, mapOptions = g_MapOptions, gameOptions = g_GameOptions}, false )
 	AddonOverride.removeAll()
-    triggerEvent('onMapStarting', g_Root, g_MapInfo, g_MapOptions, g_GameOptions )
+	triggerEvent('onMapStarting', g_Root, g_MapInfo, g_MapOptions, g_GameOptions )
 	g_Players = {}
 	TimerManager.createTimerFor("map","spawn"):setTimer(joinHandlerByTimer, 500, 0)
 	if g_CurrentRaceMode:isRanked() then
@@ -355,7 +355,7 @@ function launchRace()
 	end
 	g_CurrentRaceMode:launch()
 	g_CurrentRaceMode.running = true
-    gotoState('Running')
+	gotoState('Running')
 end
 
 g_RaceStartCountdown = Countdown.create(6, launchRace)
@@ -377,32 +377,32 @@ g_RaceStartCountdown:addClientHook(0, 'playSoundFrontEnd', 45)
 -- note: player is always nil on entry
 
 function joinHandlerByEvent()
-    setPlayerNotReady(source)
-    joinHandlerBoth()
+	setPlayerNotReady(source)
+	joinHandlerBoth()
 end
 
 function joinHandlerByTimer()
-    joinHandlerBoth()
+	joinHandlerBoth()
 end
 
 function joinHandlerBoth(player)
 	if #g_Spawnpoints == 0 then
- 		-- start vote if no map is loaded
+		-- start vote if no map is loaded
 		if not TimerManager.hasTimerFor("watchdog") then
-            TimerManager.createTimerFor("map","watchdog"):setTimer(
-                function()
-                    if #g_Spawnpoints == 0 then
-                        outputDebugString('No map loaded; showing votemanager')
+			TimerManager.createTimerFor("map","watchdog"):setTimer(
+				function()
+					if #g_Spawnpoints == 0 then
+						outputDebugString('No map loaded; showing votemanager')
 						TimerManager.destroyTimersFor("spawn")
-                        RaceMode.endMap()
-                    end
-                end,
-                1000, 1 )
-        end
-        return
-    else
+						RaceMode.endMap()
+					end
+				end,
+				1000, 1 )
+		end
+		return
+	else
 		TimerManager.destroyTimersFor("watchdog")
-    end
+	end
 	if TimerManager.hasTimerFor("spawn") then
 		for i,p in ipairs(getElementsByType('player')) do
 			if not table.find(g_Players, p) then
@@ -411,14 +411,14 @@ function joinHandlerBoth(player)
 			end
 		end
 		if not player then
-            -- Is everyone ready?
-            if howManyPlayersNotReady() == 0 then
+			-- Is everyone ready?
+			if howManyPlayersNotReady() == 0 then
 				TimerManager.destroyTimersFor("spawn")
-                if stateAllowsGridCountdown() then
-                    gotoState('GridCountdown')
-			        g_RaceStartCountdown:start()
-                end
-    		end
+				if stateAllowsGridCountdown() then
+					gotoState('GridCountdown')
+					g_RaceStartCountdown:start()
+				end
+			end
 			return
 		end
 	end
@@ -427,114 +427,114 @@ function joinHandlerBoth(player)
 		player = source
 		setPlayerStatus( player, "joined", "" )
 	else
-        setPlayerStatus( player, "not ready", "" )
-    end
-    if not player then
-        outputDebug( 'MISC', 'joinHandler: player==nil' )
-        return
-    end
+		setPlayerStatus( player, "not ready", "" )
+	end
+	if not player then
+		outputDebug( 'MISC', 'joinHandler: player==nil' )
+		return
+	end
 
 	table.insert(g_Players, player)
-    local vehicle
+	local vehicle
 	if true then
-        local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint(player)
+		local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint(player)
 
-        local x, y, z = unpack(spawnpoint.position)
-        -- Set random seed dependant on map name, so everyone gets the same models
-        setRandomSeedForMap('clothes')
+		local x, y, z = unpack(spawnpoint.position)
+		-- Set random seed dependant on map name, so everyone gets the same models
+		setRandomSeedForMap('clothes')
 
-        if g_MapOptions.skins == 'cj' then
-            spawnPlayer(player, x + 4, y, z, 0, 0)
+		if g_MapOptions.skins == 'cj' then
+			spawnPlayer(player, x + 4, y, z, 0, 0)
 
-            local clothes = { [16] = math.random(12, 13), [17] = 7 }    -- 16=Hats(12:helmet 13:moto) 17=Extra(7:garageleg)
-            for vehicles,vehicleclothes in pairs(g_VehicleClothes) do
-                if table.find(vehicles, spawnpoint.vehicle) then
-                    for type,index in pairs(vehicleclothes) do
-                        clothes[type] = index or nil
-                    end
-                end
-            end
-            local texture, model
-            for type,index in pairs(clothes) do
-                texture, model = getClothesByTypeIndex(type, index)
-                addPedClothes(player, texture, model, type)
-            end
-        elseif g_MapOptions.skins == 'random' then
-            repeat until spawnPlayer(player, x + 4, y, z, 0, math.random(9, 288))
-        else
-            local ok
-            for i=1,20 do
-                ok = spawnPlayer(player, x + 4, y, z, 0, getRandomFromRangeList(g_MapOptions.skins))
-                if ok then break end
-            end
-            if not ok then
-                spawnPlayer(player, x + 4, y, z, 0, 264)
-            end
-        end
+			local clothes = { [16] = math.random(12, 13), [17] = 7 }    -- 16=Hats(12:helmet 13:moto) 17=Extra(7:garageleg)
+			for vehicles,vehicleclothes in pairs(g_VehicleClothes) do
+				if table.find(vehicles, spawnpoint.vehicle) then
+					for type,index in pairs(vehicleclothes) do
+						clothes[type] = index or nil
+					end
+				end
+			end
+			local texture, model
+			for type,index in pairs(clothes) do
+				texture, model = getClothesByTypeIndex(type, index)
+				addPedClothes(player, texture, model, type)
+			end
+		elseif g_MapOptions.skins == 'random' then
+			repeat until spawnPlayer(player, x + 4, y, z, 0, math.random(9, 288))
+		else
+			local ok
+			for i=1,20 do
+				ok = spawnPlayer(player, x + 4, y, z, 0, getRandomFromRangeList(g_MapOptions.skins))
+				if ok then break end
+			end
+			if not ok then
+				spawnPlayer(player, x + 4, y, z, 0, 264)
+			end
+		end
 
 		setPlayerSpectating(player, false)
-        setPlayerNotReady( player )
-        setPedStat(player, 160, 1000)
-        setPedStat(player, 229, 1000)
-        setPedStat(player, 230, 1000)
+		setPlayerNotReady( player )
+		setPedStat(player, 160, 1000)
+		setPedStat(player, 229, 1000)
+		setPedStat(player, 230, 1000)
 
-        if spawnpoint.vehicle then
-            setRandomSeedForMap('vehiclecolors')
+		if spawnpoint.vehicle then
+			setRandomSeedForMap('vehiclecolors')
 			-- Replace groups of unprintable characters with a space, and then remove any leading space
 			local plate = getPlayerName(player):gsub( '[^%a%d]+', ' ' ):gsub( '^ ', '' )
 			vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, plate:sub(1, 8))
 			if setElementSyncer then
 				setElementSyncer( vehicle, false )
 			end
-            g_Vehicles[player] = vehicle
+			g_Vehicles[player] = vehicle
 			Override.setAlpha( "ForRCVehicles", player, g_RCVehicleIDs[spawnpoint.vehicle] and 0 or nil )
-            RaceMode.playerFreeze(player)
-            outputDebug( 'MISC', 'joinHandlerBoth: setElementFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
-            if bPlayerJoined and g_CurrentRaceMode.running then
-                unfreezePlayerWhenReady(player)
-            end
+			RaceMode.playerFreeze(player)
+			outputDebug( 'MISC', 'joinHandlerBoth: setElementFrozen true for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
+			if bPlayerJoined and g_CurrentRaceMode.running then
+				unfreezePlayerWhenReady(player)
+			end
 
 			if g_MapOptions.respawn == 'none' and not stateAllowsSpawnInNoRespawnMap() then
-                g_CurrentRaceMode.setPlayerIsFinished(player)
-                setElementPosition(vehicle, 0, 0, 0)
-            end
+				g_CurrentRaceMode.setPlayerIsFinished(player)
+				setElementPosition(vehicle, 0, 0, 0)
+			end
 
-            if spawnpoint.paintjob or spawnpoint.upgrades then
-                setVehiclePaintjobAndUpgrades(vehicle, spawnpoint.paintjob, spawnpoint.upgrades)
-            else
-                if g_MapOptions.autopimp then
-                    pimpVehicleRandom(vehicle)
-                end
-                if g_GameOptions.vehiclecolors == 'random' then
-                    setRandomSeedForMap('vehiclecolors')
-                    local vehicleColorFixed = false
-                    for vehicleID,color in pairs(g_FixedColorVehicles) do
-                        if vehicleID == tonumber(spawnpoint.vehicle) then
-                            if color then
-                                setVehicleColor(vehicle, color[1], color[2], color[3], color[4])
-                            end
-                            vehicleColorFixed = true
-                            break
-                        end
-                    end
-                    if not vehicleColorFixed then
-                        setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
-                    end
-                end
-            end
-            warpPedIntoVehicle(player, vehicle)
-        end
+			if spawnpoint.paintjob or spawnpoint.upgrades then
+				setVehiclePaintjobAndUpgrades(vehicle, spawnpoint.paintjob, spawnpoint.upgrades)
+			else
+				if g_MapOptions.autopimp then
+					pimpVehicleRandom(vehicle)
+				end
+				if g_GameOptions.vehiclecolors == 'random' then
+					setRandomSeedForMap('vehiclecolors')
+					local vehicleColorFixed = false
+					for vehicleID,color in pairs(g_FixedColorVehicles) do
+						if vehicleID == tonumber(spawnpoint.vehicle) then
+							if color then
+								setVehicleColor(vehicle, color[1], color[2], color[3], color[4])
+							end
+							vehicleColorFixed = true
+							break
+						end
+					end
+					if not vehicleColorFixed then
+						setVehicleColor(vehicle, math.random(0, 126), math.random(0, 126), 0, 0)
+					end
+				end
+			end
+			warpPedIntoVehicle(player, vehicle)
+		end
 
 		destroyBlipsAttachedTo(player)
-        createBlipAttachedTo(player, 0, 1, 200, 200, 200)
-        g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
-    end
+		createBlipAttachedTo(player, 0, 1, 200, 200, 200)
+		g_CurrentRaceMode:onPlayerJoin(player, spawnpoint)
+	end
 
-    -- Send client all info
-    local playerInfo = {}
-    playerInfo.admin    = isPlayerInACLGroup(player, g_GameOptions.admingroup)
-    playerInfo.testing  = _TESTING
-    playerInfo.joined   = bPlayerJoined
+	-- Send client all info
+	local playerInfo = {}
+	playerInfo.admin    = isPlayerInACLGroup(player, g_GameOptions.admingroup)
+	playerInfo.testing  = _TESTING
+	playerInfo.joined   = bPlayerJoined
 	local duration = bPlayerJoined and (g_MapOptions.duration and (g_MapOptions.duration - g_CurrentRaceMode:getTimePassed()) or true)
 	clientCall(player, 'initRace', vehicle, g_Checkpoints, g_Objects, g_Pickups, g_MapOptions, g_CurrentRaceMode:isRanked(), duration, g_GameOptions, g_MapInfo, playerInfo )
 
@@ -570,16 +570,16 @@ addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
 --      launchRace
 function unfreezePlayerWhenReady(player)
 	if not isValidPlayer(player) then
-        outputDebug( 'MISC', 'unfreezePlayerWhenReady: not isValidPlayer(player)' )
+		outputDebug( 'MISC', 'unfreezePlayerWhenReady: not isValidPlayer(player)' )
 		return
 	end
-    if isPlayerNotReady(player) then
-        outputDebug( 'MISC', 'unfreezePlayerWhenReady: isPlayerNotReady(player) for ' .. tostring(getPlayerName(player)) )
-        TimerManager.createTimerFor("map",player):setTimer( unfreezePlayerWhenReady, 500, 1, player )
-    else
-        RaceMode.playerUnfreeze(player)
-        outputDebug( 'MISC', 'unfreezePlayerWhenReady: setElementFrozen false for ' .. tostring(getPlayerName(player)) )
-    end
+	if isPlayerNotReady(player) then
+		outputDebug( 'MISC', 'unfreezePlayerWhenReady: isPlayerNotReady(player) for ' .. tostring(getPlayerName(player)) )
+		TimerManager.createTimerFor("map",player):setTimer( unfreezePlayerWhenReady, 500, 1, player )
+	else
+		RaceMode.playerUnfreeze(player)
+		outputDebug( 'MISC', 'unfreezePlayerWhenReady: setElementFrozen false for ' .. tostring(getPlayerName(player)) )
+	end
 end
 
 
@@ -599,20 +599,20 @@ end
 -- players have different skin/clothes.
 -- For smooth gameplay, ensure everyone has the same skin setup including crash helmet etc.
 function setRandomSeedForMap( type )
-    local seed = 0
-    if type == 'clothes' then
-        seed = 100                  -- All players get the same driver skin/clothes
-    elseif type == 'upgrades' then
-        seed = 0                    -- All players get the same set of vehicle upgrades
-    elseif type == 'vehiclecolors' then
-        seed = getTickCount()       -- Allow vehicle colors to vary between players
-    else
-        outputWarning( 'Unknown setRandomSeedForMap type ' .. type )
-    end
-    for i,char in ipairs( { string.byte(g_MapInfo.name,1,g_MapInfo.name:len()) } ) do
-        seed = math.mod( seed * 11 + char, 216943)
-    end
-    math.randomseed(seed)
+	local seed = 0
+	if type == 'clothes' then
+		seed = 100                  -- All players get the same driver skin/clothes
+	elseif type == 'upgrades' then
+		seed = 0                    -- All players get the same set of vehicle upgrades
+	elseif type == 'vehiclecolors' then
+		seed = getTickCount()       -- Allow vehicle colors to vary between players
+	else
+		outputWarning( 'Unknown setRandomSeedForMap type ' .. type )
+	end
+	for i,char in ipairs( { string.byte(g_MapInfo.name,1,g_MapInfo.name:len()) } ) do
+		seed = math.mod( seed * 11 + char, 216943)
+	end
+	math.randomseed(seed)
 end
 
 
@@ -622,9 +622,9 @@ addEvent('onPlayerReachCheckpointInternal', true)
 addEventHandler('onPlayerReachCheckpointInternal', g_Root,
 	function(checkpointNum)
 		if checkClient( false, source, 'onPlayerReachCheckpointInternal' ) then return end
-        if not stateAllowsCheckpoint() then
-            return
-        end
+		if not stateAllowsCheckpoint() then
+			return
+		end
 		local vehicle = g_Vehicles[source]
 		local checkpoint = g_Checkpoints[checkpointNum]
 		if checkpoint.vehicle then
@@ -758,8 +758,8 @@ addEventHandler('onGamemodeMapStop', g_Root,
 			setElementData ( player, "race rank", "" )
 			setElementData ( player, "checkpoint", "" )
 		end
-        fadeCamera ( g_RootPlayers, false, 0.0, 0,0, 0 )
-        gotoState('NoMap')
+		fadeCamera ( g_RootPlayers, false, 0.0, 0,0, 0 )
+		gotoState('NoMap')
 		unloadAll()
 	end
 )
@@ -830,8 +830,8 @@ addEventHandler('onResourceStop', g_ResRoot,
 			return
 		end
 
-        gotoState( 'Race resource stopping' )
-        fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
+		gotoState( 'Race resource stopping' )
+		fadeCamera ( g_Root, false, 0.0, 0,0, 0 )
 		outputDebugString('Resource stopping')
 		unloadAll()
 		exports.scoreboard:removeScoreboardColumn('race rank')
@@ -898,14 +898,14 @@ end
 
 addEvent('onRequestKillPlayer', true)
 addEventHandler('onRequestKillPlayer', g_Root,
-    function()
+	function()
 		if checkClient( false, source, 'onRequestKillPlayer' ) then return end
-        local player = source
-        if stateAllowsKillPlayer() then
-            setElementHealth(player, 0)
-            toggleAllControls(player,false, true, false)
-        end
-    end
+		local player = source
+		if stateAllowsKillPlayer() then
+			setElementHealth(player, 0)
+			toggleAllControls(player,false, true, false)
+		end
+	end
 )
 
 function toggleServerGhostmode(player)
@@ -1038,7 +1038,7 @@ g_NotReadyMaxWait = nil
 -- Remove ref if player quits
 addEventHandler('onPlayerQuit', g_Root,
 	function()
-        g_NotReady[source] = nil
+		g_NotReady[source] = nil
 		g_SavedVelocity[source] = nil
 	end
 )
@@ -1046,32 +1046,32 @@ addEventHandler('onPlayerQuit', g_Root,
 -- Give 10 seconds for joining players to become not ready
 addEventHandler('onPlayerJoining', g_Root,
 	function()
-        g_JoinerExtraWait = getTickCount() + 10000
+		g_JoinerExtraWait = getTickCount() + 10000
 	end
 )
 
 -- Give 5 seconds for first player to start joining
 addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
-        g_JoinerExtraWait = getTickCount() + 5000
+		g_JoinerExtraWait = getTickCount() + 5000
 		g_NotReadyMaxWait = false
 	end
 )
 
 -- Give 30 seconds for not ready players to become ready
 function setPlayerNotReady( player )
-    g_NotReady[player] = true
-    g_NotReadyTimeout = getTickCount() + 20000 + 10000
-    if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 15000 end
-    activateNotReadyText()
+	g_NotReady[player] = true
+	g_NotReadyTimeout = getTickCount() + 20000 + 10000
+	if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 15000 end
+	activateNotReadyText()
 end
 
 -- Alter not ready timeout
 function setPlayerReady( player )
 	setPlayerStatus( player, "alive", nil )
-    g_NotReady[player] = false
-    g_NotReadyTimeout = getTickCount() + 20000
-    if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 10000 end
+	g_NotReady[player] = false
+	g_NotReadyTimeout = getTickCount() + 20000
+	if _DEBUG_TIMING then g_NotReadyTimeout = g_NotReadyTimeout - 10000 end
 	-- Set max timeout to 30 seconds after first person is ready
 	if not g_NotReadyMaxWait then
 		g_NotReadyMaxWait = getTickCount() + 30000
@@ -1083,57 +1083,57 @@ function setPlayerReady( player )
 end
 
 function isPlayerNotReady( player )
-    return g_NotReady[player]
+	return g_NotReady[player]
 end
 
 
 function howManyPlayersNotReady()
-    local count = 0
-    for i,player in ipairs(g_Players) do
-        if isPlayerNotReady(player) then
-            count = count + 1
-        end
-    end
-    if g_JoinerExtraWait and g_JoinerExtraWait > getTickCount() then
-        count = count + 1 -- If the JoinerExtraWait is set, pretend someone is not ready
-    end
-    if g_NotReadyTimeout and g_NotReadyTimeout < getTickCount() then
-        count = 0       -- If the NotReadyTimeout has passed, pretend everyone is ready
-    end
-    if g_NotReadyMaxWait and g_NotReadyMaxWait < getTickCount() then
-        count = 0       -- If the NotReadyMaxWait has passed, pretend everyone is ready
-    end
-    return count, names
+	local count = 0
+	for i,player in ipairs(g_Players) do
+		if isPlayerNotReady(player) then
+			count = count + 1
+		end
+	end
+	if g_JoinerExtraWait and g_JoinerExtraWait > getTickCount() then
+		count = count + 1 -- If the JoinerExtraWait is set, pretend someone is not ready
+	end
+	if g_NotReadyTimeout and g_NotReadyTimeout < getTickCount() then
+		count = 0       -- If the NotReadyTimeout has passed, pretend everyone is ready
+	end
+	if g_NotReadyMaxWait and g_NotReadyMaxWait < getTickCount() then
+		count = 0       -- If the NotReadyMaxWait has passed, pretend everyone is ready
+	end
+	return count, names
 end
 
 
 function activateNotReadyText()
-    if stateAllowsNotReadyMessage() then
-        if not g_NotReadyDisplay then
+	if stateAllowsNotReadyMessage() then
+		if not g_NotReadyDisplay then
 			TimerManager.createTimerFor("raceresource","notready"):setTimer( updateNotReadyText, 100, 0 )
-	        g_NotReadyDisplay = textCreateDisplay()
-	        g_NotReadyTextItems[1] = textCreateTextItem('', 0.5, 0.7, 'medium', 255, 235, 215, 255, 1.5, 'center', 'center')
-	        textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[1])
-        end
-    end
+			g_NotReadyDisplay = textCreateDisplay()
+			g_NotReadyTextItems[1] = textCreateTextItem('', 0.5, 0.7, 'medium', 255, 235, 215, 255, 1.5, 'center', 'center')
+			textDisplayAddText(g_NotReadyDisplay, g_NotReadyTextItems[1])
+		end
+	end
 end
 
 function updateNotReadyText()
-    if howManyPlayersNotReady() == 0 then
-        deactiveNotReadyText()
-    end
+	if howManyPlayersNotReady() == 0 then
+		deactiveNotReadyText()
+	end
 	if g_NotReadyDisplay then
-        -- Make sure all ready players are observers
-        for i,player in ipairs(g_Players) do
-            if isPlayerNotReady(player) then
-                textDisplayRemoveObserver(g_NotReadyDisplay, player)
-            else
-                if not textDisplayIsObserver(g_NotReadyDisplay, player) then
-                    textDisplayAddObserver(g_NotReadyDisplay, player)
-                    g_NotReadyDisplayOnTime = getTickCount()
-                end
-            end
-        end
+		-- Make sure all ready players are observers
+		for i,player in ipairs(g_Players) do
+			if isPlayerNotReady(player) then
+				textDisplayRemoveObserver(g_NotReadyDisplay, player)
+			else
+				if not textDisplayIsObserver(g_NotReadyDisplay, player) then
+					textDisplayAddObserver(g_NotReadyDisplay, player)
+					g_NotReadyDisplayOnTime = getTickCount()
+				end
+			end
+		end
 		-- Only show 'Waiting for other players...' if there actually are any other players
 		if getTotalPlayerCount() > 1 then
 			textItemSetText(g_NotReadyTextItems[1], 'Waiting for other players...' )
@@ -1142,21 +1142,21 @@ function updateNotReadyText()
 end
 
 function deactiveNotReadyText()
-    if g_NotReadyDisplay then
+	if g_NotReadyDisplay then
 		TimerManager.destroyTimersFor("notready")
-        -- Ensure message is displayed for at least 2 seconds
-        local hideDisplayDelay  = math.max(50,math.min(2000,2000+g_NotReadyDisplayOnTime - getTickCount()))
-        local display           = g_NotReadyDisplay;
-        local textItems         = { g_NotReadyTextItems[1] };
+		-- Ensure message is displayed for at least 2 seconds
+		local hideDisplayDelay  = math.max(50,math.min(2000,2000+g_NotReadyDisplayOnTime - getTickCount()))
+		local display           = g_NotReadyDisplay;
+		local textItems         = { g_NotReadyTextItems[1] };
 		TimerManager.createTimerFor("raceresource"):setTimer(
-            function()
-		        textDestroyDisplay(display)
-		        textDestroyTextItem(textItems[1])
-            end,
-            hideDisplayDelay, 1 )
+			function()
+				textDestroyDisplay(display)
+				textDestroyTextItem(textItems[1])
+			end,
+			hideDisplayDelay, 1 )
 		g_NotReadyDisplay = nil
 		g_NotReadyTextItems[1] = nil
-    end
+	end
 end
 
 
@@ -1370,13 +1370,13 @@ addCommandHandler('pipedebug',
 		if not _TESTING and not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
-        if g_PipeDebugTo then
-            clientCall(g_PipeDebugTo, 'setPipeDebug', false)
-        end
-        g_PipeDebugTo = (arg == "1") and player
-        if g_PipeDebugTo then
-            clientCall(g_PipeDebugTo, 'setPipeDebug', true)
-        end
+		if g_PipeDebugTo then
+			clientCall(g_PipeDebugTo, 'setPipeDebug', false)
+		end
+		g_PipeDebugTo = (arg == "1") and player
+		if g_PipeDebugTo then
+			clientCall(g_PipeDebugTo, 'setPipeDebug', true)
+		end
 	end
 )
 

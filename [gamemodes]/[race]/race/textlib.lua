@@ -54,7 +54,7 @@ function dxText:create( text, x, y, relative, strFont, fScale, horzA )
 		outputDebugString ( "dxText:create - Bad argument", 0, 112, 112, 112 )
 		return false
 	end
-    local new = {}
+	local new = {}
 	setmetatable( new, dxText_mt )
 	--Add default settings
 	for i,v in pairs(defaults) do

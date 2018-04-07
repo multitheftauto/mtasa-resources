@@ -40,10 +40,10 @@ end
 
 g_Messages = {}		-- { player =  { display = display, textitem = textitem, timer = timer } }
 function showMessage(text, r, g, b, player)
-    local ypos = 0.25
+	local ypos = 0.25
 	if not player then
 		player = g_Root
-        ypos = 0.35
+		ypos = 0.35
 	end
 
 	if g_Messages[player] then
@@ -81,10 +81,10 @@ function destroyMessage(player)
 end
 
 function destroyAllMessages()
-    for key,value in pairs(g_Messages) do
-        destroyMessage(key)
-    end
-    g_Messages = {}
+	for key,value in pairs(g_Messages) do
+		destroyMessage(key)
+	end
+	g_Messages = {}
 end
 
 
@@ -94,7 +94,7 @@ function setVehicleID(vehicle, id)
 	if player then
 		Override.setAlpha( "ForRCVehicles", player, g_RCVehicleIDs[id] and 0 or nil )
 	end
-    if g_GameOptions.vehiclecolors == 'random' then
+	if g_GameOptions.vehiclecolors == 'random' then
 		setRandomSeedForMap('vehiclecolors')
 		local vehicleColorFixed = false
 		for vehicleID,color in pairs(g_FixedColorVehicles) do
@@ -167,7 +167,7 @@ function getVehicleCompatibleUpgradesGrouped(vehicle)
 end
 
 function pimpVehicleRandom(vehicle)
-    setRandomSeedForMap('upgrades')
+	setRandomSeedForMap('upgrades')
 	if not g_PimpableVehicles then
 		g_PimpableVehicles = table.create(
 			{
@@ -426,9 +426,9 @@ function table.filter(t, callback, cmpval)
 end
 
 function table.insertUnique(t,val)
-    if not table.find(t, val) then
-        table.insert(t,val)
-    end
+	if not table.find(t, val) then
+		table.insert(t,val)
+	end
 end
 
 
@@ -464,43 +464,43 @@ end
 
 
 function getTickTimeStr()
-    return msToTimeStr(getTickCount())
+	return msToTimeStr(getTickCount())
 end
 
 
 function outputDebug( chan, msg )
-    if _DEBUG_LOG then
-        if not msg then
-            msg = chan
-            chan = 'UNDEF'
-        end
-        if table.find(_DEBUG_LOG,chan) then
-            outputDebugString( getTickTimeStr() .. ' DEBUG: ' .. msg )
-        end
-    end
-    if g_PipeDebugTo then
-        if not table.find(getElementsByType('player'), g_PipeDebugTo) then
-            outputWarning( 'cleared g_PipeDebugTo' )
-            g_PipeDebugTo = nil
-        else
-            outputConsole( getTickTimeStr() .. ' DEBUG: ' .. (msg or chan), g_PipeDebugTo )
-        end
-    end
+	if _DEBUG_LOG then
+		if not msg then
+			msg = chan
+			chan = 'UNDEF'
+		end
+		if table.find(_DEBUG_LOG,chan) then
+			outputDebugString( getTickTimeStr() .. ' DEBUG: ' .. msg )
+		end
+	end
+	if g_PipeDebugTo then
+		if not table.find(getElementsByType('player'), g_PipeDebugTo) then
+			outputWarning( 'cleared g_PipeDebugTo' )
+			g_PipeDebugTo = nil
+		else
+			outputConsole( getTickTimeStr() .. ' DEBUG: ' .. (msg or chan), g_PipeDebugTo )
+		end
+	end
 end
 
 
 -- Always send to server window
 -- and all client consoles
 function outputWarning( msg )
-    outputDebugString( getTickTimeStr() .. ' WARNING: ' .. msg )
-    outputConsole( getTickTimeStr() .. ' WARNING: ' .. msg )
+	outputDebugString( getTickTimeStr() .. ' WARNING: ' .. msg )
+	outputConsole( getTickTimeStr() .. ' WARNING: ' .. msg )
 end
 
 -- Always send to server window
 -- and chat box window
 function outputError( msg )
-    outputDebugString( getTickTimeStr() .. ' ERROR: ' .. msg )
-    outputChatBox( getTickTimeStr() .. ' ERROR: ' .. msg )
+	outputDebugString( getTickTimeStr() .. ' ERROR: ' .. msg )
+	outputChatBox( getTickTimeStr() .. ' ERROR: ' .. msg )
 end
 
 
@@ -513,18 +513,18 @@ end
 --
 ---------------------------------------------------------------------------
 function getRealDateTimeNowString()
-    return getRealDateTimeString( getRealTime() )
+	return getRealDateTimeString( getRealTime() )
 end
 
 function getRealDateTimeString( time )
-    return string.format( '%04d-%02d-%02d %02d:%02d:%02d'
-                        ,time.year + 1900
-                        ,time.month + 1
-                        ,time.monthday
-                        ,time.hour
-                        ,time.minute
-                        ,time.second
-                        )
+	return string.format( '%04d-%02d-%02d %02d:%02d:%02d'
+						,time.year + 1900
+						,time.month + 1
+						,time.monthday
+						,time.hour
+						,time.minute
+						,time.second
+						)
 end
 
 function getRealTimeSeconds()
@@ -558,27 +558,27 @@ end
 
 -- get string or default
 function getString(var,default)
-    local result = get(var)
-    if not result then
-        return default
-    end
-    return tostring(result)
+	local result = get(var)
+	if not result then
+		return default
+	end
+	return tostring(result)
 end
 
 -- get number or default
 function getNumber(var,default)
-    local result = get(var)
-    if not result then
-        return default
-    end
-    return tonumber(result)
+	local result = get(var)
+	if not result then
+		return default
+	end
+	return tonumber(result)
 end
 
 -- get true or false or default
 function getBool(var,default)
-    local result = get(var)
-    if not result then
-        return default
-    end
-    return result == 'true'
+	local result = get(var)
+	if not result then
+		return default
+	end
+	return result == 'true'
 end

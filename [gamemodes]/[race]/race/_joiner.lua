@@ -66,7 +66,7 @@ function callSavedEventHandlers(eventName, eventSource, ...)
 		if isElement(triggeredElem) then
 			while true do
 				if triggeredElem == handler.elem then
-	                source = eventSource
+					source = eventSource
 					handler.fn(...)
 					break
 				end
@@ -90,36 +90,36 @@ end
 -- getElementsByType patch
 _getElementsByType = getElementsByType
 function getElementsByType( type, startat )
-    startat = startat or getRootElement()
-    if type ~= 'player' then
-        return _getElementsByType( type, startat )
-    else
-        return _getElementsByType( type, onlyJoined(startat) )
-    end
+	startat = startat or getRootElement()
+	if type ~= 'player' then
+		return _getElementsByType( type, startat )
+	else
+		return _getElementsByType( type, onlyJoined(startat) )
+	end
 end
 
 -- getDeadPlayers patch
 _getDeadPlayers = getDeadPlayers
 function getDeadPlayers()
-    local deadPlayers = _getDeadPlayers()
-    for i,player in ipairs(getElementChildren(g_RootJoining)) do
-        table.removevalue(deadPlayers,player)
-    end
-    return deadPlayers
+	local deadPlayers = _getDeadPlayers()
+	for i,player in ipairs(getElementChildren(g_RootJoining)) do
+		table.removevalue(deadPlayers,player)
+	end
+	return deadPlayers
 end
 
 -- getPlayerCount patch
 _getPlayerCount = getPlayerCount
 function getPlayerCount()
-    return g_RootPlayers and getElementChildrenCount(g_RootPlayers) or 0
+	return g_RootPlayers and getElementChildrenCount(g_RootPlayers) or 0
 end
 
 -- getRandomPlayer patch
 function getRandomPlayer()
-    if getPlayerCount() < 1 then
-        return nil
-    end
-    return getElementChildren(g_RootPlayers)[ math.random(1,getPlayerCount()) ]
+	if getPlayerCount() < 1 then
+		return nil
+	end
+	return getElementChildren(g_RootPlayers)[ math.random(1,getPlayerCount()) ]
 end
 
 
@@ -131,13 +131,13 @@ end
 
 -- If g_Root, change to g_RootPlayers
 function onlyJoined(player)
-    if player == g_Root then
-        if not g_RootPlayers then
-            return getResourceRootElement(getThisResource())    -- return an element which will have no players
-        end
-        return g_RootPlayers
-    end
-    return player
+	if player == g_Root then
+		if not g_RootPlayers then
+			return getResourceRootElement(getThisResource())    -- return an element which will have no players
+		end
+		return g_RootPlayers
+	end
+	return player
 end
 
 -- Number of players, both pending and joined
@@ -159,15 +159,15 @@ addEventHandler('onResourceStart', g_ResRoot,
 			return
 		end
 
-        -- Create a joining player node and a joined player node
-        table.each(getElementsByType('plrcontainer'), destroyElement)
-        g_RootJoining = createElement( 'plrcontainer', 'plrs joining' )
-        g_RootPlayers = createElement( 'plrcontainer', 'plrs joined' )
-        -- Put all current players into 'joining' group
-        for i,player in ipairs(_getElementsByType('player')) do
-            setElementParent( player, g_RootJoining )
+		-- Create a joining player node and a joined player node
+		table.each(getElementsByType('plrcontainer'), destroyElement)
+		g_RootJoining = createElement( 'plrcontainer', 'plrs joining' )
+		g_RootPlayers = createElement( 'plrcontainer', 'plrs joined' )
+		-- Put all current players into 'joining' group
+		for i,player in ipairs(_getElementsByType('player')) do
+			setElementParent( player, g_RootJoining )
 
-        end
+		end
 	end
 )
 
@@ -175,7 +175,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 --      Clean up
 addEventHandler('onResourceStop', g_ResRoot,
 	function()
-        table.each(getElementsByType('plrcontainer'), destroyElement)
+		table.each(getElementsByType('plrcontainer'), destroyElement)
 		g_RootJoining = nil
 		g_RootPlayers = nil
 	end
@@ -184,10 +184,10 @@ addEventHandler('onResourceStop', g_ResRoot,
 -- Real onPlayerJoin event was fired
 --      Move player element to g_RootJoining
 addEventHandler('_onPlayerJoin', g_Root,
-    function ()
-        setElementParent( source, g_RootJoining )
-        triggerEvent( 'onPlayerJoining', source );
-    end
+	function ()
+		setElementParent( source, g_RootJoining )
+		triggerEvent( 'onPlayerJoining', source );
+	end
 )
 
 -- onPlayerQuit
@@ -203,19 +203,19 @@ addEvent('onLoadedAtClient', true)
 addEventHandler('onLoadedAtClient', resourceRoot,
 	function( player )
 		if checkClient( false, player, 'onLoadedAtClient' ) then return end
-        -- Tell other clients; join completed for this player
-        triggerClientEvent( g_RootPlayers, 'onOtherJoinCompleteAtServer', resourceRoot, player )
+		-- Tell other clients; join completed for this player
+		triggerClientEvent( g_RootPlayers, 'onOtherJoinCompleteAtServer', resourceRoot, player )
 
-        setElementParent( player, g_RootPlayers )
+		setElementParent( player, g_RootPlayers )
 
-        -- Tell client; join completed; and send a list of all joined players
-        triggerClientEvent( player, 'onMyJoinCompleteAtServer', resourceRoot, getElementChildren(g_RootPlayers) )
+		-- Tell client; join completed; and send a list of all joined players
+		triggerClientEvent( player, 'onMyJoinCompleteAtServer', resourceRoot, getElementChildren(g_RootPlayers) )
 
-        -- Call deferred onPlayerJoin event handlers
-        callSavedEventHandlers( 'onPlayerJoin', player )
+		-- Call deferred onPlayerJoin event handlers
+		callSavedEventHandlers( 'onPlayerJoin', player )
 
-        -- Custom event for joiner aware event handlers
-        triggerEvent( 'onPlayerJoined', player )
+		-- Custom event for joiner aware event handlers
+		triggerEvent( 'onPlayerJoined', player )
 	end
 )
 

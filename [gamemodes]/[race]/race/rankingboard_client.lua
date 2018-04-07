@@ -67,7 +67,7 @@ function RankingBoard:add(name, time)
 	table.insert(self.labels, posLabelShadow)
 	table.insert(self.labels, playerLabel)
 	table.insert(self.labels, playerLabelShadow)
-    playSoundFrontEnd(7)
+	playSoundFrontEnd(7)
 	if doBoardScroll then
 		guiSetAlpha(posLabel, 0)
 		guiSetAlpha(posLabelShadow, 0)
@@ -139,48 +139,48 @@ local spareElems = {}
 local donePrecreate = false
 
 function RankingBoard.precreateLabels(count)
-    donePrecreate = false
-    while #spareElems/4 < count do
-        local label, shadow = createShadowedLabel(10, 1, 20, 10, 'a' )
-        destroyElementToSpare(label)
-        destroyElementToSpare(shadow)
+	donePrecreate = false
+	while #spareElems/4 < count do
+		local label, shadow = createShadowedLabel(10, 1, 20, 10, 'a' )
+		destroyElementToSpare(label)
+		destroyElementToSpare(shadow)
 	end
-    donePrecreate = true
+	donePrecreate = true
 end
 
 function destroyElementToSpare(elem)
-    table.insertUnique( spareElems, elem )
-    guiSetVisible(elem, false)
+	table.insertUnique( spareElems, elem )
+	guiSetVisible(elem, false)
 end
 
 function createShadowedLabelFromSpare(x, y, width, height, text, align)
 
-    if #spareElems < 2 then
-        if not donePrecreate then
-            outputDebug( 'OPTIMIZATION', 'createShadowedLabel' )
-        end
-	    return createShadowedLabel(x, y, width, height, text, align)
-    else
-        local shadow = table.popLast( spareElems )
-	    guiSetSize(shadow, width, height, false)
-	    guiSetText(shadow, text)
-	    --guiLabelSetColor(shadow, 0, 0, 0)
-	    guiSetPosition(shadow, x + 1, y + 1, false)
-        guiSetVisible(shadow, true)
+	if #spareElems < 2 then
+		if not donePrecreate then
+			outputDebug( 'OPTIMIZATION', 'createShadowedLabel' )
+		end
+		return createShadowedLabel(x, y, width, height, text, align)
+	else
+		local shadow = table.popLast( spareElems )
+		guiSetSize(shadow, width, height, false)
+		guiSetText(shadow, text)
+		--guiLabelSetColor(shadow, 0, 0, 0)
+		guiSetPosition(shadow, x + 1, y + 1, false)
+		guiSetVisible(shadow, true)
 
-        local label = table.popLast( spareElems )
-	    guiSetSize(label, width, height, false)
-	    guiSetText(label, text)
-	    --guiLabelSetColor(label, 255, 255, 255)
-	    guiSetPosition(label, x, y, false)
-        guiSetVisible(label, true)
-	    if align then
-		    guiLabelSetHorizontalAlign(shadow, align)
-		    guiLabelSetHorizontalAlign(label, align)
-        else
-		    guiLabelSetHorizontalAlign(shadow, 'left')
-		    guiLabelSetHorizontalAlign(label, 'left')
-	    end
-        return label, shadow
-    end
+		local label = table.popLast( spareElems )
+		guiSetSize(label, width, height, false)
+		guiSetText(label, text)
+		--guiLabelSetColor(label, 255, 255, 255)
+		guiSetPosition(label, x, y, false)
+		guiSetVisible(label, true)
+		if align then
+			guiLabelSetHorizontalAlign(shadow, align)
+			guiLabelSetHorizontalAlign(label, align)
+		else
+			guiLabelSetHorizontalAlign(shadow, 'left')
+			guiLabelSetHorizontalAlign(label, 'left')
+		end
+		return label, shadow
+	end
 end

@@ -63,7 +63,7 @@ function callSavedEventHandlers(eventName, eventSource, ...)
 		if isElement(triggeredElem) then
 			while true do
 				if triggeredElem == handler.elem then
-	                source = eventSource
+					source = eventSource
 					handler.fn(...)
 					break
 				end
@@ -87,12 +87,12 @@ end
 -- getElementsByType patch
 _getElementsByType = getElementsByType
 function getElementsByType( type, startat )
-    startat = startat or getRootElement()
-    if type ~= 'player' then
-        return _getElementsByType( type, startat )
-    else
-        return filterTable(_getElementsByType( type, startat ))
-    end
+	startat = startat or getRootElement()
+	if type ~= 'player' then
+		return _getElementsByType( type, startat )
+	else
+		return filterTable(_getElementsByType( type, startat ))
+	end
 end
 
 
@@ -104,13 +104,13 @@ end
 
 -- Remove players not joined from a table
 function filterTable(playerList)
-    local result = {}
-    for i,player in ipairs(playerList) do
-        if table.find(g_JoinedPlayers,player) then
-            table.insert(result,player)
-        end
-    end
-    return result
+	local result = {}
+	for i,player in ipairs(playerList) do
+		if table.find(g_JoinedPlayers,player) then
+			table.insert(result,player)
+		end
+	end
+	return result
 end
 
 
@@ -123,9 +123,9 @@ end
 -- Real onClientPlayerJoin event was fired
 --      Do nothing
 addEventHandler('_onClientPlayerJoin', g_Root,
-    function ()
-        triggerEvent( 'onClientPlayerJoining', source );
-    end
+	function ()
+		triggerEvent( 'onClientPlayerJoining', source );
+	end
 )
 
 -- Real onClientResourceStart event was fired
@@ -136,16 +136,16 @@ addEventHandler('_onClientResourceStart', g_ResRoot,
 			return
 		end
 
-        callSavedEventHandlers( 'onClientResourceStart', source )
-        if _DEBUG_TIMING then
-    		setTimer(
-                function()
-                    triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
-                end,
-                math.random(1000,15000), 1 )
-        else
-    		triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
-	    end
+		callSavedEventHandlers( 'onClientResourceStart', source )
+		if _DEBUG_TIMING then
+			setTimer(
+				function()
+					triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
+				end,
+				math.random(1000,15000), 1 )
+		else
+			triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
+		end
 	end
 )
 
@@ -154,9 +154,9 @@ addEventHandler('_onClientResourceStart', g_ResRoot,
 addEvent('onMyJoinCompleteAtServer', true)
 addEventHandler('onMyJoinCompleteAtServer', resourceRoot,
 	function(allJoinedPlayersAtServer)
-        for i,player in ipairs(allJoinedPlayersAtServer) do
-            table.insertUnique(g_JoinedPlayers,player)
-        end
+		for i,player in ipairs(allJoinedPlayersAtServer) do
+			table.insertUnique(g_JoinedPlayers,player)
+		end
 	end
 )
 
@@ -166,21 +166,21 @@ addEventHandler('onMyJoinCompleteAtServer', resourceRoot,
 addEvent('onOtherJoinCompleteAtServer', true)
 addEventHandler('onOtherJoinCompleteAtServer', resourceRoot,
 	function( player )
-        table.insertUnique(g_JoinedPlayers,player)
+		table.insertUnique(g_JoinedPlayers,player)
 
-        -- Call deferred onClientPlayerJoin event handlers
-        callSavedEventHandlers( 'onClientPlayerJoin', player )
+		-- Call deferred onClientPlayerJoin event handlers
+		callSavedEventHandlers( 'onClientPlayerJoin', player )
 
-        -- Custom event for joiner aware event handlers
-        triggerEvent( 'onClientPlayerJoined', player )
+		-- Custom event for joiner aware event handlers
+		triggerEvent( 'onClientPlayerJoined', player )
 	end
 )
 
 -- onClientPlayerQuit
 --   Remove player from JoinedPlayers list
 addEventHandler('onClientPlayerQuit', g_Root,
-    function ()
-        table.removevalue(g_JoinedPlayers, source)
-    end
+	function ()
+		table.removevalue(g_JoinedPlayers, source)
+	end
 )
 

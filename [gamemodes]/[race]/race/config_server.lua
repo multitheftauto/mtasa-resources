@@ -6,12 +6,12 @@
 -- The Command
 --------------------------------
 addCommandHandler('config',
-    function(player)
+	function(player)
 		if not isPlayerInACLGroup(player, g_GameOptions.admingroup) then
 			return
 		end
 		triggerClientEvent( player, 'onClientOpenConfig', player )
-    end
+	end
 )
 
 --------------------------------
