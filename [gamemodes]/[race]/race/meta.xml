@@ -5,7 +5,7 @@
 	<include resource="scoreboard"/>
 	<include resource="votemanager"/>
 	<include resource="helpmanager" />
-
+	<include resource="mapmanager" />
 
 	<script src="_common.lua" type="server"/>
 	<script src="_joiner.lua" type="server"/>
