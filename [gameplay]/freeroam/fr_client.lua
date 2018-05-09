@@ -36,6 +36,10 @@ local g_settings = {}
 local _addCommandHandler = addCommandHandler
 local _setElementPosition = setElementPosition
 
+if not (g_PlayerData) then
+    g_PlayerData = {}
+end
+
 -- Settings are stored in meta.xml
 function freeroamSettings(settings)
 	if settings then
@@ -2048,12 +2052,14 @@ addEventHandler('onClientResourceStop', resourceRoot,
 
 function setVehicleGhost(sourceVehicle,value)
 
-	local vehicles = getElementsByType("vehicle")
-	for _,vehicle in ipairs(vehicles) do
+	  local vehicles = getElementsByType("vehicle")
+	  for _,vehicle in ipairs(vehicles) do
 		local vehicleGhost = hasDriverGhost(vehicle)
-		setElementCollidableWith(sourceVehicle,vehicle,not value)
-		setElementCollidableWith(vehicle,sourceVehicle,not value)
-		if value == false and vehicleGhost == true then
+		if isElement(sourceVehicle) and isElement(vehicle) then
+		   setElementCollidableWith(sourceVehicle,vehicle,not value)
+		   setElementCollidableWith(vehicle,sourceVehicle,not value)
+		end
+		if value == false and vehicleGhost == true and isElement(sourceVehicle) and isElement(vehicle) then
 			setElementCollidableWith(sourceVehicle,vehicle,not vehicleGhost)
 			setElementCollidableWith(vehicle,sourceVehicle,not vehicleGhost)
 		end
