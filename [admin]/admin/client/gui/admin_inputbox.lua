@@ -11,7 +11,7 @@
 aInputForm = nil
 local varOne, varTwo = nil, nil
 
-function aInputBox ( title, message, default, action, vOne, vTwo )
+function aInputBox ( title, message, default, action, vOne, vTwo, defaultNick, defaultReason )
 	if ( aInputForm == nil ) then
 		local x, y = guiGetScreenSize()
 		aInputForm		= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 170, "", false )
@@ -44,7 +44,7 @@ function aInputBox ( title, message, default, action, vOne, vTwo )
 		guiSetSize(aInputForm, 300, 210, false)
 		guiSetPosition(aInputOk, 90, 180, false)
 		guiSetPosition(aInputCancel, 150, 180, false)
-		
+
 
 		-- time duration:
 
@@ -74,14 +74,14 @@ function aInputBox ( title, message, default, action, vOne, vTwo )
 		if not isElement(banNickEdit) then
 			banNickEdit = guiCreateEdit ( 35, 130, 60, 24, "", false, aInputForm )
 		end
-		guiSetText(banNickEdit, "Nick")
+		guiSetText(banNickEdit, defaultNick or "Nick")
 
 		if not isElement(banReasonEdit) then
 			banReasonEdit = guiCreateEdit ( 100, 130, 165, 24, "", false, aInputForm )
 		end
-		guiSetText(banReasonEdit, "Reason")
+		guiSetText(banReasonEdit, defaultReason or "Reason")
 	end
-	
+
 
 	guiSetText ( aInputForm, title )
 	guiSetText ( aInputLabel, message )
@@ -93,6 +93,20 @@ function aInputBox ( title, message, default, action, vOne, vTwo )
 	varOne = vOne
 	varTwo = vTwo
 end
+
+addEventHandler("onClientGUIClick", guiRoot,
+    function()
+        if source == banNickEdit then
+            if guiGetText(banNickEdit) == "Nick" then
+                guiSetText(banNickEdit, "")
+            end
+        elseif source == banReasonEdit then
+            if guiGetText(banReasonEdit) == "Reason" then
+                guiSetText(banReasonEdit, "")
+            end
+        end
+    end
+)
 
 function aInputBoxClose ( destroy )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
@@ -121,7 +135,7 @@ function aInputBoxClick ( button )
 	if ( button == "left" ) then
 		if ( source == aInputOk ) then
 			--loadstring ( string.gsub ( aInputAction, "$value", "\""..keepEscapeCharacter( guiGetText ( aInputValue ) ).."\"" ) )()
-			
+
 			if (aInputAction == "kickPlayer") then
 				triggerServerEvent("aPlayer", localPlayer, varOne, "kick", guiGetText(aInputValue))
 			elseif (aInputAction == "setHealth") then
@@ -186,7 +200,7 @@ function aInputBoxClick ( button )
 			elseif (aInputAction == "aclAddRight") then
 				triggerServerEvent("aAdmin", localPlayer, "acladd", "right", varOne, guiGetText(aInputValue))
 			end
-			
+
 			aInputAction = nil
 			aInputBoxClose ( false )
 		elseif ( source == aInputCancel ) then
@@ -214,7 +228,7 @@ function aBanInputBox ( player )
 			table.insert( durations, tonumber( dur ) )
 		end
 	end
-	
+
 	-- destroy form if number of durations has changed
 	if #aBanDurations ~= #durations then
 		if aBanInputForm then
@@ -225,19 +239,19 @@ function aBanInputBox ( player )
 	end
 	aBanDurations = durations
 	if ( aBanInputForm == nil ) then
-		local height1 = 100 
+		local height1 = 100
 		local height2 = math.floor( #aBanDurations * 1.02 * 15 ) + 20
 		local height = math.max(height1,height2)
 		local x, y = guiGetScreenSize()
 		aBanInputForm			= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 400, height + 130, "", false )
 							  guiWindowSetSizable ( aBanInputForm, false )
-		guiSetAlpha(aBanInputForm, 1)		
+		guiSetAlpha(aBanInputForm, 1)
 		y = 24
 
 		aBanInputLabel			= guiCreateLabel ( 20, y, 270, 15, "", false, aBanInputForm )
 		guiLabelSetHorizontalAlign ( aBanInputLabel, "center" )
 		y = y + 23
-		
+
 		aBanInputValue			= guiCreateEdit ( 35, y, 230, 24, "", false, aBanInputForm )
 		y = y + 33
 
@@ -268,15 +282,15 @@ function aBanInputBox ( player )
 						  guiComboBoxAddItem(customType, "Hours")
 						  guiComboBoxAddItem(customType, "Days")
 		y = y + height + 10
-							
+
 		aBanInputOk			= guiCreateButton ( 90, y, 55, 17, "Ok", false, aBanInputForm )
 		aBanInputCancel		= guiCreateButton ( 150, y, 55, 17, "Cancel", false, aBanInputForm )
 		y = y + 30
-		
-							
-		
+
+
+
 		guiSetSize ( aBanInputForm, guiGetSize ( aBanInputForm, false ), y, false )
-		
+
 		guiSetProperty ( aBanInputForm, "AlwaysOnTop", "true" )
 		aBanInputPlayer = nil
 
@@ -371,16 +385,16 @@ function aBanInputBoxFinish ()
 		aMessageBox ( "error", "No duration selected!" )
 		return
 	end
-	
+
 	-- Send ban info to the server
 	triggerServerEvent ( "aPlayer", localPlayer, aBanInputPlayer, "ban", reason, seconds, bUseSerial )
-			
-	
-	
+
+
+
 	-- Clear input
 	guiSetText ( aBanInputValue, "" )
 	for i,dur in ipairs(aBanDurations) do
-		guiRadioButtonSetSelected( aBanInputRadio2s[i], false ) 
+		guiRadioButtonSetSelected( aBanInputRadio2s[i], false )
 	end
 end
 
@@ -416,7 +430,7 @@ function aMuteInputBox ( player )
 		local x, y = guiGetScreenSize()
 		aMuteInputForm			= guiCreateWindow ( x / 2 - 150, y / 2 - 64, 300, 150 + #aMuteDurations * 15, "", false )
 							  guiWindowSetSizable ( aMuteInputForm, false )
-		guiSetAlpha(aMuteInputForm, 1)		
+		guiSetAlpha(aMuteInputForm, 1)
 		y = 24
 
 		aMuteInputLabel			= guiCreateLabel ( 20, y, 270, 15, "", false, aMuteInputForm )
@@ -426,7 +440,7 @@ function aMuteInputBox ( player )
 		aMuteInputValue			= guiCreateEdit ( 35, y, 230, 24, "", false, aMuteInputForm )
 		y = y + 33
 
-		local height2 = math.floor( #aMuteDurations * 1.02 * 15 ) + 20 
+		local height2 = math.floor( #aMuteDurations * 1.02 * 15 ) + 20
 		aMuteInputRadioSet2bg			= guiCreateTabPanel( 55, y, 300-55*2, height2, false, aMuteInputForm)
 		aMuteInputRadioSet2				= guiCreateStaticImage(0,0,1,1, 'client\\images\\empty.png', true, aMuteInputRadioSet2bg)
 		guiSetAlpha ( aMuteInputRadioSet2bg, 0.3 )
@@ -525,6 +539,6 @@ function aMuteInputBoxFinish ()
 	-- Clear input
 	guiSetText ( aMuteInputValue, "" )
 	for i,dur in ipairs(aMuteDurations) do
-		guiRadioButtonSetSelected( aMuteInputRadio2s[i], false ) 
+		guiRadioButtonSetSelected( aMuteInputRadio2s[i], false )
 	end
 end

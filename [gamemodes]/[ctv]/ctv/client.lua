@@ -1,4 +1,4 @@
-﻿-- vehicle health bar added by arc_
+-- vehicle health bar added by arc_
 
 local theVan
 local screenWidth, screenHeight = guiGetScreenSize()
@@ -13,7 +13,7 @@ healthbar.color = { 255, 255, 255, 0 }
 
 addEventHandler('onClientResourceStart', getResourceRootElement(getThisResource()),
 	function()
-		showPlayerHudComponent('area_name', false)
+		setPlayerHudComponentVisible('area_name', false)
 		triggerServerEvent('onLoadedAtClient', getLocalPlayer())
 		setTimer(checkVehicleDrowned, 2000, 0)
 	end

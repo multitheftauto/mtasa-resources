@@ -1,4 +1,4 @@
-﻿_triggerClientEvent = triggerClientEvent
+_triggerClientEvent = triggerClientEvent
 
 local playerData = {}			-- { player = { loaded = bool, pending = {...} } }
 
@@ -55,7 +55,7 @@ function triggerClientEvent(...)
 	end
 	name = table.remove(args, 1)
 	source = table.remove(args, 1)
-	
+
 	if triggerFor == getRootElement() then
 		-- trigger for everyone
 		local triggerNow = true

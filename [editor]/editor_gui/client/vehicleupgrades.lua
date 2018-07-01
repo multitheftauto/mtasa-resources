@@ -1,4 +1,4 @@
-﻿compatibleUpgrades={}
+compatibleUpgrades={}
 
 compatibleUpgrades[400]={}
 	compatibleUpgrades[400][8]={1008,1009,1010}

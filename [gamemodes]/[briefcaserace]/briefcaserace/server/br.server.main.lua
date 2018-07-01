@@ -1,4 +1,4 @@
-﻿root = getRootElement()
+root = getRootElement()
 runningMap = false
 teams = {} -- used for team game, the participating teams
 createdTeams = {} -- the teams created by this resource, they are destroyed when a map stops
@@ -24,7 +24,7 @@ addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
 function (resource)
 
 	local resourceRoot = getResourceRootElement(resource)
-	
+
 	addEventHandler( "onGamemodeMapStart", root,		onGamemodeMapStart_brmain)
 
 	addEventHandler( "onResourceStart", root,			onResourceStart_brmain)

@@ -1,4 +1,4 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 
 local elementDefinitions = {}
 
@@ -23,7 +23,7 @@ function doCreateElement ( elementType, resourceName, creationParameters, attach
 		local targetX, targetY, targetZ = processCameraLineOfSight()
 		creationParameters.position = {targetX, targetY, targetZ + .5}
 	end
-		
+
 	local requiresCreationBox = false
 	for dataField, dataDefinition in pairs(elementDefinitions[resourceName][elementType].data) do
 		-- if it is required, doesn't have a default, and we don't have an initial value, show the creation box

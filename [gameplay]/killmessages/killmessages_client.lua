@@ -1,4 +1,4 @@
-﻿addEvent ("onClientPlayerKillMessage",true)
+addEvent ("onClientPlayerKillMessage",true)
 function onClientPlayerKillMessage ( killer,weapon,wr,wg,wb,kr,kg,kb,width,resource )
 	if wasEventCancelled() then return end
 	outputKillMessage ( source, wr,wg,wb,killer,kr,kg,kb,weapon,width,resource )
@@ -6,9 +6,9 @@ end
 addEventHandler ("onClientPlayerKillMessage",getRootElement(),onClientPlayerKillMessage)
 
 function outputKillMessage ( source, wr,wg,wb,killer,kr,kg,kb,weapon,width,resource )
-	if not iconWidths[weapon] then 
+	if not iconWidths[weapon] then
 		if type(weapon) ~= "string" then
-			weapon = 999 
+			weapon = 999
 		end
 	end
 	local killerName
@@ -21,22 +21,22 @@ function outputKillMessage ( source, wr,wg,wb,killer,kr,kg,kb,weapon,width,resou
 	if not tonumber(kb) then kb = 255 end
 	if ( source ) then
 		if isElement ( source ) then
-			if getElementType ( source ) == "player" then 
+			if getElementType ( source ) == "player" then
 				wastedName = getPlayerName ( source )
-			else 
+			else
 			outputDebugString ( "outputKillMessage - Invalid 'wasted' player specified",0,0,0,100)
 			return false end
 		elseif type(source) == "string" then
 			wastedName = source
 		end
-	else 
+	else
 		outputDebugString ( "outputKillMessage - Invalid 'wasted' player specified",0,0,0,100)
 	return false end
 	if ( killer ) then
 		if isElement ( killer ) then
 			if getElementType ( killer ) == "player" then
 				killerName = getPlayerName ( killer )
-			else 
+			else
 				outputDebugString ( "outputKillMessage - Invalid 'killer' player specified",0,0,0,100)
 			return false end
 		elseif type(killer) == "string" then

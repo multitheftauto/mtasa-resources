@@ -21,7 +21,7 @@
 		<skin model="14" name="Floral Shirt" />
 		<skin model="15" name="Plaid Baldy" />
 		<skin model="20" name="Fresh Prince" />
-		<skin model="23" name="Skater Kid" />	
+		<skin model="23" name="Skater Kid" />
 		<skin model="32" name="Eyepatch" />
 		<skin model="39" name="Old Maid" />
 		<skin model="53" name="Golf Lady" />
@@ -59,8 +59,8 @@
 		<skin model="236" name="Happy Old Man" />
 		<skin model="250" name="Green Tshirt" />
 		<skin model="262" name="Pajama Man 2 b" />
-	</group>	
-	<group name="Celebrities">	
+	</group>
+	<group name="Celebrities">
 		<skin model="20" name="Fresh Prince" />
 		<skin model="91" name="Sharon Stone" />
 		<skin model="143" name="Sam Jackson" />

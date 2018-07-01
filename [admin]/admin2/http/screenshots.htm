@@ -17,7 +17,7 @@
 			height: 180px;
 			float: left;
 		}
-		
+
 		div.screenshot
 		{
 			background-color: #EEE;
@@ -25,12 +25,12 @@
 			padding: 5px;
 			margin: 5px;
 		}
-		
+
 		div.description
 		{
 			margin-left: 250px;
 		}
-		
+
 		h4
 		{
 			margin: 0;
@@ -38,22 +38,22 @@
 			background-color: #555555;
 			color: #EEE;
 		}
-		
+
 		div.search
 		{
 			background-color: #555555;
 			padding: 3px 7px;;
 			color: #EEE;
 		}
-		
+
 		p.timestamp
 		{
-			font-size: 12px;	
+			font-size: 12px;
 		}
-		
+
 		a, a:visited, a:hover
 		{
-			color: #C60;	
+			color: #C60;
 		}
 	</style>
     <script type="text/javascript">
@@ -70,14 +70,14 @@
 <body>
     <*
     local db = dbConnect ( "sqlite", "conf\\settings.db" )
-    
+
     function htmlspecialchars ( string )
     	string = string.gsub ( string, "&", "&amp;" )
         string = string.gsub ( string, '"', "&quot;" )
         string = string.gsub ( string, "<", "&lt;" )
         return tostring ( string.gsub ( string, ">", "&gt;" ) )
     end
-    
+
     function getformdata ( name, default, min, max )
         if ( form[name] and tonumber ( form[name] ) ) then
         	local t = tonumber ( form[name] )
@@ -87,11 +87,11 @@
         end
         return default
     end
-    
+
     function exec ( q, ... )
     	dbExec ( db, q, ... )
     end
-    
+
     function query ( q, ... )
     	local handle = dbQuery ( db, q, ... )
         local result = dbPoll ( handle, -1 )
@@ -105,19 +105,19 @@
         	exec ( "DELETE FROM screenshots WHERE rowid="..id )
 		end
     end
-    
+
     local players = query ( "SELECT DISTINCT player FROM screenshots WHERE player IS NOT NULL ORDER BY player ASC" )
     local admins = query ( "SELECT DISTINCT admin FROM screenshots WHERE admin IS NOT NULL ORDER BY admin ASC" )
-    
+
     local order_columns = { 'time', 'player', 'admin' }
     local order_dirs = { 'DESC', 'ASC' }
-    
-    local search_player = getformdata ( 'player', 0, 0, table.getn ( players ) );    
+
+    local search_player = getformdata ( 'player', 0, 0, table.getn ( players ) );
     local search_admin = getformdata ( 'admin', 0, 0, table.getn ( admins ) );
     local search_order = getformdata ( 'order', 1, 1, 3 );
     local search_direction = getformdata ( 'direction', 1, 1, 2 );
     local search_show = getformdata ( 'show', 10, 10, 30 );
-    
+
     local q = "FROM screenshots WHERE 1=1"
     if ( search_player > 0 and players[search_player].player ) then
     	q = q.." AND player='"..players[search_player].player.."'"
@@ -125,15 +125,15 @@
     if ( search_admin > 0 and admins[search_admin].admin ) then
     	q = q.." AND admin='"..admins[search_admin].admin.."'"
     end
-    
+
     local count = query ( "SELECT COUNT(*) as count "..q )[1].count
     local pages = math.ceil ( count / search_show )
     if ( pages <= 0 ) then
     	pages = 1
     end
-    
+
     local search_page = getformdata ( 'page', 1, 1, pages )
-    
+
     local data = query ( "SELECT rowid, * "..q.." ORDER BY "..order_columns[search_order].." "..order_dirs[search_direction].." LIMIT "..( ( search_page - 1 ) * search_show )..","..search_show )
 
     destroyElement ( db ) -- it better not fail before it gets here, stupid mta!
@@ -143,7 +143,7 @@
         	<input name="delete" type="hidden" value="-1" />
         </form>
     	<form name="srch" method="get" action="">
-        	<strong>Filters &gt; </strong> 
+        	<strong>Filters &gt; </strong>
         	<label>Player: <select name="player" onchange="document.srch.submit ();">
             	<option value="0">Any</option>
             <*
@@ -181,7 +181,7 @@
                 <*
                 end
                 *>
-            </select></label> 
+            </select></label>
             <label style="float: right;">Page: <select name="page" onchange="document.srch.submit ();">
             	<*
                 for i = 1,pages do

@@ -1,4 +1,4 @@
-﻿-- giveWeaponsOnSpawn for CTF: Bombsite Italy by Ratt
+-- giveWeaponsOnSpawn for CTF: Bombsite Italy by Ratt
 
 function giveWeaponsOnSpawn ( spawnpoint, team )
 	giveWeapon ( source, 24, 112 ) -- Gives the Desert Eagle weapon with 112 ammo

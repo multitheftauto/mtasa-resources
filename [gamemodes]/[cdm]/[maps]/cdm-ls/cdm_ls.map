@@ -279,5 +279,5 @@
 	<pickup type="37" respawn="120000" amount="50" posX="2677.0710449219" posY="-1432.0540771484" posZ="16.257228851318" />
 	<pickup type="39" respawn="120000" amount="3" posX="1644.8675537109" posY="-1007.8929443359" posZ="50.0546875" />
 	<pickup type="27" respawn="120000" amount="20" posX="1128.2272949219" posY="-1546.1849365234" posZ="22.750453948975" />
-	
+
 </map>

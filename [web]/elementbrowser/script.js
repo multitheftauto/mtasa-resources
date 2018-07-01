@@ -1,10 +1,10 @@
 function load()
-{	
+{
 	var root = null;
-	getRootElement ( 
-		function ( rootElement ) 
-		{    
-			root = rootElement; 
+	getRootElement (
+		function ( rootElement )
+		{
+			root = rootElement;
 			generateNode ( root, null );
 		}
 	);
@@ -90,7 +90,7 @@ function onNodeClick(e) {
 	}
 }
 
-/** 
+/**
 Generates a new 'li' element for the specified MTA game element, with the parent element specified
 Specifying null as the parentid uses the root of the tree as the parent
 **/
@@ -99,7 +99,7 @@ function generateNode ( element, parentid )
 	var parent = null;
 	if ( parentid == null )
 		parent = document.getElementById("tree");
-	else 
+	else
 		parent = document.getElementById("C" + parentid );
 
 	var node = document.getElementById("E" + element.id);

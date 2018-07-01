@@ -1,4 +1,4 @@
-﻿--outputChatBox ( "Fallout Client Loaded", 255, 127, 0 ) --DEBUG
+--outputChatBox ( "Fallout Client Loaded", 255, 127, 0 ) --DEBUG
 fadeCamera ( true ) --Remove MTA fade
 gameOver = false
 local shakingPieces = {}
@@ -54,7 +54,7 @@ function checkStatusB ( )
 	    killTimer ( checkStatusTimer )
 	    checkStatusTimer = nil
 	end
-end 
+end
 
 function checkHax ( )
 	weapon = getPedWeapon ( localPlayer ) --anti cheat protection

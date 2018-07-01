@@ -1,9 +1,12 @@
-﻿g_gridListContents = {}   -- info about binded gridlists
-g_openedWindows = {}      -- {window1table = true, window2table = true, ...}
+local CONTROL_MARGIN_RIGHT = 5
+local LINE_MARGIN = 5
+local LINE_HEIGHT = 16
+local g_gridListContents = {}   -- info about binded gridlists
+local g_openedWindows = {}      -- {window1table = true, window2table = true, ...}
+local g_protectedElements = {}
+local GRIDLIST_UPDATE_CHUNK_SIZE = 10
 
-GRIDLIST_UPDATE_CHUNK_SIZE = 10
-
-classInfo = {
+local classInfo = {
 	wnd = {className = 'Window', padding = {25, 10, 10, 10}, isContainer = true},
 	tbp = {className = 'TabPanel'},
 	tab = {className = 'Tab', padding = 10, isContainer = true},
@@ -15,10 +18,6 @@ classInfo = {
 	lst = {className = 'GridList', width = 250, height = 400},
 	img = {className = 'StaticImage'}
 }
-
-function getTextWidth(text)
-	return 8*text:len()
-end
 
 function createWindow(wnd, rebuild)
 	if wnd.element then
@@ -34,19 +33,26 @@ function createWindow(wnd, rebuild)
 			return
 		end
 	end
-	
+
 	_planWindow(wnd)
 	_buildWindow(wnd)
+end
+
+local function onProtectedClick(btn,state,x,y)
+
+	if isFunctionOnCD(g_protectedElements[source]) then return end
+	g_protectedElements[source](btn,state,x,y)
+
 end
 
 function _planWindow(wnd, baseWnd, parentWnd, x, y, maxHeightInLine)
 	-- simulate building a window to get the proper height
 	local wndClass = wnd[1]
-	
+
 	if not maxHeightInLine then
 		maxHeightInLine = LINE_HEIGHT
 	end
-	
+
 	local text, padding, parentPadding
 	if wndClass ~= 'br' then
 		padding = classInfo[wndClass].padding
@@ -68,18 +74,17 @@ function _planWindow(wnd, baseWnd, parentWnd, x, y, maxHeightInLine)
 			padding = table.rep(0, 4)
 			classInfo[wndClass].padding = padding
 		end
-		
+
 		text = wnd.text or wnd.id or ''
 		if not wnd.width then
-			wnd.width = (classInfo[wndClass].width or getTextWidth(text)) +
-				(not classInfo[wndClass].isContainer and (padding[2] + padding[4]) or 0)
+			wnd.width = (classInfo[wndClass].width or (8*text:len()) + (not classInfo[wndClass].isContainer and (padding[2] + padding[4]) or 0))
 		end
 		if not wnd.height and not classInfo[wndClass].isContainer then
 			wnd.height = (classInfo[wndClass].height or LINE_HEIGHT) + padding[1] + padding[3]
 		end
 	end
 	parentPadding = parentWnd and classInfo[parentWnd[1]].padding
-	
+
 	if wndClass == 'br' or (not classInfo[wndClass].isContainer and x + wnd.width > parentWnd.width - parentPadding[2]) then
 		-- line wrap
 		x = parentPadding[4]
@@ -97,7 +102,7 @@ function _planWindow(wnd, baseWnd, parentWnd, x, y, maxHeightInLine)
 		wnd.y = y
 	end
 	wnd.parent = parentWnd
-	
+
 	if wnd.controls then
 		local childX, childY = padding[4], padding[1]
 		local childMaxHeightInLine = LINE_HEIGHT
@@ -109,7 +114,7 @@ function _planWindow(wnd, baseWnd, parentWnd, x, y, maxHeightInLine)
 			wnd.height = childY + childMaxHeightInLine + padding[3]
 		end
 	end
-	
+
 	if wnd.tabs then
 		local maxTabHeight = 0
 		for id, tab in pairs(wnd.tabs) do
@@ -122,7 +127,7 @@ function _planWindow(wnd, baseWnd, parentWnd, x, y, maxHeightInLine)
 		end
 		wnd.height = maxTabHeight
 	end
-	
+
 	if classInfo[wndClass].isContainer then
 		return elem
 	else
@@ -138,7 +143,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 	if wndClass == 'br' then
 		return
 	end
-	
+
 	local relX, relY, relWidth, relHeight
 	if parentWnd then
 		if wnd.x and wnd.y then
@@ -148,7 +153,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		relWidth = wnd.width / parentWnd.width
 		relHeight = wnd.height / parentWnd.height
 	end
-	
+
 	local elem
 	if wndClass == 'wnd' then
 		local screenWidth, screenHeight = guiGetScreenSize()
@@ -201,7 +206,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		end
 	end
 	wnd.element = elem
-	
+
 	if wnd.controls then
 		for id, controlwnd in pairs(wnd.controls) do
 			_buildWindow(controlwnd, baseWnd or wnd, wnd)
@@ -213,7 +218,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 			_buildWindow(tab, baseWnd, wnd)
 		end
 	end
-	
+
 	if wnd.rows then
 		if wnd.rows.xml then
 			-- get rows from xml
@@ -224,7 +229,7 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 			bindGridListToTable(wnd, not gridListHasCache(wnd) and wnd.rows or false, false)
 		end
 	end
-	
+
 	local clickhandler = nil
 	if wnd.onclick then
 		if wndClass == 'img' then
@@ -259,7 +264,12 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		clickhandler = function() closeWindow(baseWnd) end
 	end
 	if clickhandler then
-		addEventHandler('onClientGUIClick', elem, clickhandler, false)
+		if wnd.ClickSpamProtected then
+			g_protectedElements[elem] = clickhandler
+			addEventHandler('onClientGUIClick', elem, onProtectedClick, false)
+		else
+			addEventHandler('onClientGUIClick', elem, clickhandler, false)
+		end
 	end
 	if wnd.ondoubleclick then
 		local doubleclickhandler
@@ -271,9 +281,14 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		else
 			doubleclickhandler = wnd.ondoubleclick
 		end
-		addEventHandler('onClientGUIDoubleClick', elem, doubleclickhandler, false)
+		if wnd.DoubleClickSpamProtected then
+			g_protectedElements[elem] = doubleclickhandler
+			addEventHandler('onClientGUIDoubleClick', elem, onProtectedClick, false)
+		else
+			addEventHandler('onClientGUIDoubleClick', elem, doubleclickhandler, false)
+		end
 	end
-	
+
 	if wnd.oncreate then
 		wnd.oncreate()
 	end
@@ -304,7 +319,7 @@ function closeWindow(...)
 		if not args[i].element then
 			return
 		end
-		
+
 		if args[i].onclose then
 			args[i].onclose()
 		end
@@ -368,7 +383,7 @@ function getControlData(...)
 	else
 		currentData = args[1]
 	end
-	
+
 	for i=2,#args do
 		if args[i] == '..' then
 			currentData = currentData.parent
@@ -397,7 +412,7 @@ function getControl(...)
 		-- if a control element was passed
 		return ({...})[1]
 	end
-	
+
 	local data = getControlData(...)
 	if not data then
 		return false
@@ -525,7 +540,7 @@ function bindGridListToTable(...)
 	-- t = table to set. If false, use the cached table
 	-- expandLastLevel = if a group occurs in the list with only leaves as direct children,
 	--    show those leaves under the group name in the list
-	
+
 	-- Makes a table created by xmlToTable() browsable in a gridlist.
 	local args = {...}
 	local expandLastLevel = table.remove(args)
@@ -533,11 +548,11 @@ function bindGridListToTable(...)
 	if t and not treeHasMetaInfo(t) then
 		addTreeMetaInfo(t)
 	end
-	
+
 	local gridListControlData = getControlData(unpack(args))
 	local gridlist = gridListControlData.element
 	local columns = table.merge({}, gridListControlData.columns, 'attr')
-	
+
 	-- currentPath: list of indices to follow through the groups table
 	-- to get to the current group. f.e. {1,3} = third child group of first main group
 	local listdata = g_gridListContents[gridListControlData]
@@ -555,27 +570,40 @@ function bindGridListToTable(...)
 		t = g_gridListContents[gridListControlData].data
 	end
 	_updateBindedGridList(gridlist, listdata, expandLastLevel)
-	
+
 	if not listdata.clickHandlersSet then
 		-- set item click handler
 		if gridListControlData.onitemclick then
-			addEventHandler('onClientGUIClick', gridlist,
-				function()
-					local leaf = getSelectedGridListLeaf(gridListControlData)
-					if leaf then
-						gridListControlData.onitemclick(leaf)
-					end
-				end,
-				false
-			)
+			if gridListControlData.ClickSpamProtected then
+				addEventHandler('onClientGUIClick', gridlist,
+					function()
+						if isFunctionOnCD(gridListControlData.onitemclick) then return end
+						local leaf = getSelectedGridListLeaf(gridListControlData)
+						if leaf then
+							gridListControlData.onitemclick(leaf)
+						end
+					end,
+					false
+				)
+			else
+				addEventHandler('onClientGUIClick', gridlist,
+					function()
+						local leaf = getSelectedGridListLeaf(gridListControlData)
+						if leaf then
+							gridListControlData.onitemclick(leaf)
+						end
+					end,
+					false
+				)
+			end
 		end
-		
+
 		-- set double click handler
 		addEventHandler('onClientGUIDoubleClick', gridlist,
 			function()
 				local listdata = g_gridListContents[gridListControlData]
 				local previousGroup = followTreePath(listdata.data, listdata.currentPath)
-				
+
 				local selData, selRow = getSelectedGridListData(gridlist)
 				if not selData then
 					return
@@ -590,7 +618,12 @@ function bindGridListToTable(...)
 						table.insert(listdata.currentPath, tonumber(selData))
 					else
 						if gridListControlData.onitemdoubleclick then
-							gridListControlData.onitemdoubleclick(clickedNode, selRow)
+							if gridListControlData.DoubleClickSpamProtected then
+								if isFunctionOnCD(gridListControlData.onitemdoubleclick) then return end
+								gridListControlData.onitemdoubleclick(clickedNode, selRow)
+							else
+								gridListControlData.onitemdoubleclick(clickedNode, selRow)
+							end
 						end
 						return
 					end
@@ -602,14 +635,14 @@ function bindGridListToTable(...)
 		)
 		listdata.clickHandlersSet = true
 	end
-	
+
 	local modifiableCols = table.findall(gridListControlData.columns, 'enablemodify', true)
 	if #modifiableCols then
 		local mt = {
 			__index = function(leaf, k)
 				return leaf.shadow[k]
 			end,
-		
+
 			__newindex =
 				function(leaf, k, v)
 					if k ~= 'row' and leaf.row then
@@ -621,8 +654,8 @@ function bindGridListToTable(...)
 					end
 				end
 		}
-		
-		local attr		
+
+		local attr
 		applyToLeaves(t,
 			function(leaf)
 				-- move modifiable attributes into shadow so that __newindex triggers
@@ -659,23 +692,23 @@ function _updateBindedGridList(gridlist, listdata, expandLastLevel, isContinuati
 	-- If expandLastLevel is true, when entering a view of groups with leaves right under
 	-- them, the leaves will be displayed in the list under the group headers
 	-- (instead of having to double click the group to view the leaves)
-	
+
 	-- isContinuation is used for adding list items in small groups at frame updates
 	-- to improve responsiveness. Do not specify this parameter when calling this
 	-- function.
-	
+
 	-- find current group
 	local group = followTreePath(listdata.data, listdata.currentPath)
 	local toDisplay = group.children or group
-	
+
 	if not isContinuation then
 		-- clear eventual previous event
 		if _updateGridListOnFrame then
 			_removeGridListFrameUpdate(listdata)
 		end
-		
+
 		guiGridListClear(gridlist)
-	
+
 		-- set update event if necessary
 		if not expandLastLevel and toDisplay[1][1] ~= 'group' then
 			_updateGridListOnFrame = function()
@@ -683,12 +716,12 @@ function _updateBindedGridList(gridlist, listdata, expandLastLevel, isContinuati
 			end
 			addEventHandler('onClientRender', getRootElement(), _updateGridListOnFrame)
 		end
-		
+
 		-- update path label if necessary
 		if listdata.pathlbl then
 			guiSetText(listdata.pathlbl, treePathToString(listdata.data, listdata.currentPath))
 		end
-		
+
 		-- add row to go back to parent group if necessary
 		if #(listdata.currentPath) > 0 then
 			guiGridListAddRow(gridlist)
@@ -696,7 +729,7 @@ function _updateBindedGridList(gridlist, listdata, expandLastLevel, isContinuati
 			guiGridListSetItemData(gridlist, 0, 1, '0')
 		end
 	end
-	
+
 	-- display the group contents
 	local rowID, leafRowID
 	if expandLastLevel or toDisplay[1][1] == 'group' then

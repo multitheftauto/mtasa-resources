@@ -1,10 +1,10 @@
-﻿local screenX, screenY = guiGetScreenSize ()
+local screenX, screenY = guiGetScreenSize ()
 local lastPickup,overlayText,overlayShowing
 ---
 local BG_COLOR = tocolor(0,0,0,130)
 local TEXT_COLOR = tocolor(255,255,255,255)
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResource() ), 
+addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResource() ),
 	function()
 		bindKey ( "tab", "down", "Replace weapon", "" )
 	end
@@ -18,12 +18,12 @@ local function hideOverlay()
 end
 
 addEvent ( "ph_onClientPickupHit", true )
-addEventHandler ( "ph_onClientPickupHit", root, 
+addEventHandler ( "ph_onClientPickupHit", root,
 	function ()
 		local p_weapon = getPickupWeapon ( source )
 		local p_slot = getSlotFromWeapon ( p_weapon )
 		local weapon = getPedWeapon ( localPlayer, p_slot )
-		if ( not weapon ) or ( weapon == 0 ) or ( getPedTotalAmmo ( localPlayer, p_slot ) == 0 ) or ( weapon == p_weapon ) then 
+		if ( not weapon ) or ( weapon == 0 ) or ( getPedTotalAmmo ( localPlayer, p_slot ) == 0 ) or ( weapon == p_weapon ) then
 			triggerServerEvent ( "ph_onPlayerPickupAccept", source, localPlayer )
 		else
 			local key = next(getBoundKeys"Replace weapon") or 'Replace Weapon'
@@ -35,7 +35,7 @@ addEventHandler ( "ph_onClientPickupHit", root,
 			setTimer ( hideOverlay, 3000, 1 )
 			lastPickup = source
 		end
-	end 
+	end
 )
 
 function pickupWeapon ()
@@ -57,7 +57,7 @@ function drawOverlay()
 	--Draw our background
 	dxDrawRectangle ( screenX - 170, screenY / 4, 170, 70, BG_COLOR, false )
 	--Draw our text
-	 dxDrawText ( overlayText, screenX - 165, screenY / 4 + 5, screenX - 5, screenY / 4 + 65, TEXT_COLOR, 1, 
+	 dxDrawText ( overlayText, screenX - 165, screenY / 4 + 5, screenX - 5, screenY / 4 + 65, TEXT_COLOR, 1,
 			"default-bold-small", "left", "center", false, true, false )
 end
 

@@ -1,4 +1,4 @@
-﻿--
+--
 -- Anti-Cheat Control Panel
 --
 -- s_img_mod.lua
@@ -16,7 +16,7 @@ function ( filename, modList )
 			return
 		end
 	end
-	
+
 	-- Get list of modified player models
 	local modifiedPlayerModels = {}
 	if get("*switchplayermodels") == "true" and filename == "gta3.img" then

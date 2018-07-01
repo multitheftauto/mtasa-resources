@@ -109,7 +109,7 @@ end
 
 function aChatTab.onClientGUIAccepted ( element )
 	local message = guiGetText ( aChatTab.AdminText )
-	if ( ( message ) and ( message ~= "" ) ) then 
+	if ( ( message ) and ( message ~= "" ) ) then
 		if ( gettok ( message, 1, 32 ) == "/clear" ) then guiSetText ( aChatTab.AdminChat, "" )
 		else triggerServerEvent ( "aAdminChat", getLocalPlayer(), message ) end
 		guiSetText ( aChatTab.AdminText, "" )

@@ -1,4 +1,4 @@
-﻿function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
+function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 	player = getLocalPlayer ()
 	local x, y = guiGetScreenSize()
 	x = x * 0.052
@@ -30,7 +30,7 @@
 		guiLabelSetColor ( gadgetlabel, 1, 1, 1 )
 	end
 	if spygadgetSelection == "cloak" then
-		chosengadget = "cloak"	
+		chosengadget = "cloak"
 		gadgetuses = 3
 		gadgeticon = guiCreateStaticImage (x, y, 40, 40, "cloak.png", false)
 		gadgetlabel = guiCreateLabel ( 0.05, .62, 40, 20, "", true, gadgeticon )
@@ -44,7 +44,7 @@
 		guiLabelSetColor ( gadgetlabel, 1, 1, 1 )
 	end
 	if spygadgetSelection == "armor" then
-		chosengadget = "armor"	
+		chosengadget = "armor"
 		gadgetuses = nil
 		gadgeticon = guiCreateStaticImage (x, y, 40, 40, "armor.png", false)
 		setElementData ( getLocalPlayer(), "armor", true )
@@ -52,7 +52,7 @@
 		guiLabelSetColor ( gadgetlabel, 1, 1, 1 )
 	end
 	if spygadgetSelection == "shield" then
-		chosengadget = "shield"	
+		chosengadget = "shield"
 		gadgetuses = nil
 		gadgeticon = guiCreateStaticImage (x, y, 40, 40, "shield.png", false)
 		gadgetlabel = guiCreateLabel ( 0.05, .62, 40, 20, "", true, gadgeticon )
@@ -258,10 +258,10 @@ function goggletaskcheck ()
 			if gogglestype == 45 then
 				showInfraredGUI()
 			end
-			local tableofplayers = getElementsByType("player") 
-			for tableKey, tableValue in pairs(tableofplayers) do 
+			local tableofplayers = getElementsByType("player")
+			for tableKey, tableValue in pairs(tableofplayers) do
 				iscloaked = getElementData ( tableValue, "stealthmode" )
-				if iscloaked == "on" then			
+				if iscloaked == "on" then
 					setElementAlpha ( tableValue, 255 )
 				end
 			end
@@ -271,8 +271,8 @@ function goggletaskcheck ()
 		if goggleson == 1 then
 			goggleson = 0
 			hideGogglesGUI()
-			local tableofplayers = getElementsByType("player") 
-			for tableKey, tableValue in pairs(tableofplayers) do 
+			local tableofplayers = getElementsByType("player")
+			for tableKey, tableValue in pairs(tableofplayers) do
 				iscloaked = getElementData ( tableValue, "stealthmode" )
 				if iscloaked == "on" then
 					local player = tableValue
@@ -311,9 +311,9 @@ function clientsetup (resource)
 	loadtheshield = setTimer ( shieldload, 3000, 1 )
 end
 
-addCommandHandler ( "Use Gadget/Spectate Next", 
+addCommandHandler ( "Use Gadget/Spectate Next",
 	function ( command, state )
-		if state == "0" then 
+		if state == "0" then
 			deactivategadget()
 		else
 			activategadget()
@@ -388,7 +388,7 @@ function camerastart()
 				playSoundFrontEnd(37)
 				cameraplaced = 0
 				camera = nil
-				triggerServerEvent ("killcameraobject", getLocalPlayer (), player )		
+				triggerServerEvent ("killcameraobject", getLocalPlayer (), player )
 			else
 				lookingthroughcamera = 1
 				toggleControl ("fire", false )
@@ -467,11 +467,11 @@ function shieldup ()
 		toggleControl ("fire", false )
 		toggleControl ("aim_weapon", false )
 		toggleControl ("jump", false )
-		setControlState ( "aim_weapon", true )
-		setControlState ( "jump", true )
+		setPedControlState ( "aim_weapon", true )
+		setPedControlState ( "jump", true )
 	else
 		toggleControl ("jump", false )
-		toggleControl ("sprint", false )		
+		toggleControl ("sprint", false )
 	end
 	blockcheck = setTimer ( shieldingyet, 300, 0, player )
 end
@@ -533,8 +533,8 @@ function deactivategadget ()
 		toggleControl ("aim_weapon", true )
 		toggleControl ("jump", true )
 		toggleControl ("sprint", true )
-		setControlState ( "aim_weapon", false )
-		setControlState ( "jump", false )
+		setPedControlState ( "aim_weapon", false )
+		setPedControlState ( "jump", false )
 		if shieldon == 1 then
 			local player = getLocalPlayer ()
 			triggerServerEvent ("shielddown", getLocalPlayer (), player, currentweapon )
@@ -596,7 +596,7 @@ function refreshNightvisionGoggles ()
 		elseif ( getElementData ( item, "type" ) == "acamera" ) then
 			if not nightvisionGUI[item] then
 				addNightvisionGUI(item, "CAMERA")
-			end	
+			end
 		end
 	end
 	for element,label in pairs(nightvisionGUI) do

@@ -63,7 +63,7 @@ addEventHandler("playmus", root, function ( url )
         dxSetShaderValue ( shader_cinema, "gHScale", 1 )
 	dxSetShaderValue ( shader_cinema, "gVScale", 1 )
 	dxSetShaderValue ( shader_cinema, "gHOffset", 0 )
-	dxSetShaderValue ( shader_cinema, "gVOffset", 0 ) 
+	dxSetShaderValue ( shader_cinema, "gVOffset", 0 )
 	if not shader_cinema then
 		outputChatBox( "Could not create shader. Please use debugscript 3" )
 		return
@@ -95,7 +95,7 @@ addEventHandler("playmus", root, function ( url )
 		-- Calculate our bars by the fft data
 		calc ( fftData, stream )
 	end)
-		
+
 end)
 -- Util stuff
 function timetostring ( input, input2 )
@@ -117,10 +117,10 @@ end
 function getAverageBPM ( )
 	return maxbpm / bpmcount
 end
-function min ( num1, num2 ) 
+function min ( num1, num2 )
 	return num1 <= num2 and num1 or num2
 end
-function max ( num1, num2 ) 
+function max ( num1, num2 )
 	return num1 >= num2 and num1 or num2
 end
 function calc ( fft, stream )
@@ -227,7 +227,7 @@ function calc ( fft, stream )
 							value.pos = dir == "down" and value.pos + movespeed or value.pos - movespeed
 							value.posx = value.posx + (movespeed <= 2 and math.random(-movespeed,movespeed) or math.random(-1, 1))
 							value.alpha = value.alpha - (AlphaMulti) - math.random(1, 4)
-							
+
 							if ( value.alpha <= 0 ) then
 								peaks[x][key] = nil
 							end

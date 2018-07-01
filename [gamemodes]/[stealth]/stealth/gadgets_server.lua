@@ -1,4 +1,4 @@
-﻿
+
 --TRIGGERS THE CLOAKING CLIENT FUNCTIONS
 addEvent ("cloaktheplayer", true )
 
@@ -125,7 +125,7 @@ addEvent ("killcameraobject", true )
 
 function removecamball(player)
 	coltable = getElementsByType ( "colshape" )
-	for theKey,thecol in ipairs(coltable) do 
+	for theKey,thecol in ipairs(coltable) do
 		if getElementData ( thecol, "camowner" ) == player then
 			setElementData ( thecol, "type", nil )
 			destroyElement ( thecol )
@@ -151,8 +151,8 @@ function maketheshield (player)
 		attachElements( shield, player, .2, .5, .2 )
 	end
 end
-	
-addEventHandler("shieldup", getRootElement() , maketheshield)	
+
+addEventHandler("shieldup", getRootElement() , maketheshield)
 
 
 

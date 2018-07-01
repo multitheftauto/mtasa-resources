@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -11,14 +11,14 @@
 function getServerMaps (loadList)
 	if checkClient( true, source, 'getServerMaps' ) then return end
 	local tableOut
-	
+
 	-- Check if 'mapmanager' resource exists
-	if ( not getResourceFromName("mapmanager") ) then 
+	if ( not getResourceFromName("mapmanager") ) then
 		-- 'mapmanager' resource doesn't exist, send fake data
 		triggerClientEvent(source ,"getMaps_c", source, { }, nil, nil )
 		return false;
 	end
-	
+
 	if loadList then
 		tableOut = {}
 		-- local deletedMaps = {}
@@ -63,15 +63,15 @@ addEventHandler("getMaps_s", getRootElement(), getServerMaps)
 
 function startGamemodeMap(gamemode, map)
 	if checkClient( true, source, 'startGamemodeMap' ) then return end
-	
-	if ( not getResourceFromName("mapmanager") ) then 
-		if ( source ) then 
+
+	if ( not getResourceFromName("mapmanager") ) then
+		if ( source ) then
 			outputChatBox ( "Please start the mapmanager resource to use this action.", source, 255, 0, 0 );
 		end
-		
+
 		return false;
-	end 
-	
+	end
+
 	if gamemode == "no gamemode" then
 		call(getResourceFromName("mapmanager"), "changeGamemodeMap", getResourceFromName(map))
 	else

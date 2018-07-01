@@ -1,4 +1,4 @@
-﻿function argsToMTA(amx, prototype, ...)
+function argsToMTA(amx, prototype, ...)
 	if type(amx) == 'userdata' then
 		local amxName = table.find(g_LoadedAMXs, 'cptr', amx)
 		if not amxName then
@@ -7,7 +7,7 @@
 		end
 		amx = g_LoadedAMXs[amxName]
 	end
-	
+
 	local args = { ... }
 	local val
 	local argMissing = false
@@ -66,7 +66,7 @@
 			indexOffset = indexOffset + 3
 		end
 	end
-	
+
 	return args, argMissing
 end
 local argsToMTA = argsToMTA
@@ -80,7 +80,7 @@ function argsToSAMP(amx, prototype, ...)
 		end
 		amx = g_LoadedAMXs[amxName]
 	end
-	
+
 	local args = { ... }
 	for i,v in ipairs(args) do
 		if type(v) == 'nil' then
@@ -118,7 +118,7 @@ function syscall(amx, svc, prototype, ...)		-- svc = service number (= index in 
 	end
 
 	local args, argMissing = argsToMTA(amx, prototype, ...)
-	
+
 	if argMissing then
 		return 0
 	end
@@ -167,7 +167,7 @@ local skinReplace = {
 	[149] = 0,
 	[208] = 0,
 	[273] = 0,
-	
+
 	-- story skins
 	[1] = 261,		-- The Truth
 	[2] = 37,		-- Mack
@@ -244,7 +244,7 @@ function AddStaticPickup(amx, model, type, x, y, z)
 			mtaPickupAmount = model
 		end
 	end
-	
+
 	local pickup = createPickup(x, y, z, mtaPickupType, mtaPickupAmount)
 	if not pickup then
 		outputDebugString('Failed to create pickup of model ' .. model, 2)
@@ -270,7 +270,7 @@ function AddStaticVehicleEx(amx, model, x, y, z, angle, color1, color2, respawnD
 	if not g_PoliceVehicles[model] then
 		if(color1 <= 0 and color1 >= 126) then color1 = math.random(1, 126) end
 		if(color2 <= 0 and color2 >= 126) then color2 = math.random(1, 126) end
-		
+
 		setVehicleColor(vehicle, color1, color2, 0, 0)
 	end
 	local vehID = addElem(amx, 'vehicles', vehicle)
@@ -471,7 +471,7 @@ end
 function EnableZoneNames(amx, enable)
 	g_ShowZoneNames = enable
 	for i,data in pairs(g_Players) do
-		showPlayerHudComponent(data.elem, 'area_name', enable)
+		setPlayerHudComponentVisible(data.elem, 'area_name', enable)
 	end
 end
 
@@ -655,7 +655,7 @@ local function getPlayerObjectPos(amx, player, objID)
 	if not obj then
 		return false
 	end
-	
+
 	if obj.moving then
 		local curtick = getTickCount()
 		if curtick >= obj.moving.starttick + obj.moving.duration then
@@ -928,7 +928,7 @@ function MovePlayerObject(amx, player, objID, x, y, z, speed)
 end
 
 function PlayerPlaySound(amx, player, soundID, x, y, z)
-	
+
 end
 
 function PlayerSpectatePlayer(amx, player, playerToSpectate, mode)
@@ -1023,7 +1023,7 @@ function SetCameraBehindPlayer(amx, player)
 end
 
 function SetDeathDropAmount(amx, amount)
-	
+
 end
 
 function SetDisabledWeapons(amx, ...)
@@ -1031,7 +1031,7 @@ function SetDisabledWeapons(amx, ...)
 end
 
 function SetEchoDestination(amx)
-	
+
 end
 
 function SetGameModeText(amx, gamemodeName)
@@ -1049,17 +1049,17 @@ function SetMenuColumnHeader(amx, menu, column, text)
 end
 
 function SetNameTagDrawDistance(amx, distance)
-	
+
 end
 
 function SetObjectPos(amx, object, x, y, z)
-	if(getElementType(object) == 'vehicle') then 
+	if(getElementType(object) == 'vehicle') then
 		setElementFrozen(object, true)
 	end
-	
+
 	setElementPosition(object, x, y, z)
-	
-	if(getElementType(object) == 'vehicle') then 
+
+	if(getElementType(object) == 'vehicle') then
 		setVehicleTurnVelocity(object, 0, 0, 0)
 		setElementVelocity(object, 0, 0, 0)
 		setTimer(setElementFrozen, 500, 1, object, false)
@@ -1102,7 +1102,7 @@ function SetPlayerColor(amx, player, r, g, b)
 end
 
 function SetPlayerDisabledWeapons(amx, player, ...)
-	
+
 end
 
 function SetPlayerFacingAngle(amx, player, angle)
@@ -1221,7 +1221,7 @@ function SetTimerEx(amx, fnName, interval, repeating, fmt, ...)
 			vals[i] = amx.memDAT[val]
 		end
 	end
-	
+
 	if repeating then
 		local timer = setTimer(procCallInternal, interval, 0, amx.name, fnName, unpack(vals))
 		return table.insert(amx.timers, timer)
@@ -1250,7 +1250,7 @@ function SetVehicleModel(amx, vehicle, model)
 end
 
 function SetVehicleNumberPlate(amx, vehicle, plate)
-	
+
 end
 
 function SetVehicleParamsForPlayer(amx, vehicle, player, isObjective, doorsLocked)
@@ -1477,13 +1477,13 @@ function TogglePlayerSpectating(amx, player, enable)
 	if enable then
 		fadeCamera(player, true)
 		setCameraMatrix(player, 75.461357116699, 64.600051879883, 51.685581207275, 149.75857543945, 131.53228759766, 40.597320556641)
-		showPlayerHudComponent(player, 'radar', false)
+		setPlayerHudComponentVisible(player, 'radar', false)
 	else
 		if isPedDead(player) then
 			spawnPlayerBySelectedClass(player)
 		end
 		setCameraTarget(player, player)
-		showPlayerHudComponent(player, 'radar', true)
+		setPlayerHudComponentVisible(player, 'radar', true)
 	end
 end
 
@@ -1574,7 +1574,7 @@ end
 function format(amx, outBuf, outBufSize, fmt, ...)
 	local args = { ... }
 	local i = 0
-	
+
 	fmt = fmt:gsub('[^%%]%%$', '%%%%'):gsub('%%i', '%%d')
 	for c in fmt:gmatch('%%[%-%d%.]*(%*?%a)') do
 		i = i + 1
@@ -2212,7 +2212,7 @@ function Create3DTextLabel(amx, text, r, g, b, a, x, y, z, dist, vw, los)
 	local id = table.insert(amx.textlabels, textlabel)
 
 	textlabel.id = id
-	
+
 	clientCall(root, 'Create3DTextLabel', amx.name, id, textlabel)
 	return id
 end
@@ -2226,7 +2226,7 @@ function CreatePlayer3DTextLabel(amx, player, text, r, g, b, a, x, y, z, dist, v
 	local id = table.insert(amx.textlabels, textlabel)
 
 	textlabel.id = id
-	
+
 	clientCall(root, 'Create3DTextLabel', amx.name, id, textlabel)
 	return id
 end
@@ -2355,7 +2355,7 @@ g_SAMPSyscallPrototypes = {
 	CreatePickup = {'i', 'i', 'f', 'f', 'f'},
 	CreatePlayerObject = {'p', 'i', 'f', 'f', 'f', 'f', 'f', 'f'},
 	CreateVehicle = {'i', 'f', 'f', 'f', 'f', 'i', 'i', 'i'},
-	
+
 	DestroyMenu = {'m'},
 	DestroyObject = {'o'},
 	DestroyPickup = {'u'},
@@ -2432,7 +2432,7 @@ g_SAMPSyscallPrototypes = {
 	GetWeaponName = {'i', 'r', 'i'},
 	GivePlayerMoney = {'p', 'i'},
 	GivePlayerWeapon = {'p', 'i', 'i'},
-	
+
 	HideMenuForPlayer = {'m', 'p'},
 
 	IsPlayerAdmin = {'p'},
@@ -2560,9 +2560,9 @@ g_SAMPSyscallPrototypes = {
 	TogglePlayerSpectating = {'p', 'b'},
 
 	UsePlayerPedAnims = {},
-	
+
 	ShowCursor = {'p', 'b', 'b'},
-	
+
 	CreateBot = { 'i', 'f', 'f', 'f', 's'},
 	DestroyBot = {'z'},
 	IsBotInWater = {'z'},
@@ -2603,8 +2603,8 @@ g_SAMPSyscallPrototypes = {
 	GetBotVehicleSeat = {'z'},
 	GetBotVelocity = {'z', 'r', 'r', 'r'},
 	SetBotVelocity = {'z', 'f', 'f', 'f'},
-	
-	
+
+
 	-- players
 	IsPlayerInWater = {'p'},
 	IsPlayerOnFire = {'p'},
@@ -2633,7 +2633,7 @@ g_SAMPSyscallPrototypes = {
 	GetPlayerSkillLevel = {'p', 'i'},
 	SetPlayerSkillLevel = {'p', 'i', 'i'},
 	SetPlayerArmedWeapon = {'p', 'i'},
-	
+
 	-- vehicles
 	GetVehicleEngineState = {'v'},
 	SetVehicleEngineState = {'v', 'b'},
@@ -2667,7 +2667,7 @@ g_SAMPSyscallPrototypes = {
 	GetPickupWeapon = {'u'},
 	GetPickupAmount = {'u'},
 	GetPickupAmmo = {'u'},
-	
+
 	-- markers
 	CreateMarker = {'f', 'f', 'f', 's', 'f', 'i', 'i', 'i', 'i'},
 	DestroyMarker = {'k'},
@@ -2684,7 +2684,7 @@ g_SAMPSyscallPrototypes = {
 	IsPlayerInMarker = {'k', 'p'},
 	IsBotInMarker = {'k', 'z'},
 	IsVehicleInMarker = {'k', 'v'},
-	
+
 	-- misc
 	SetSkyGradient = {'i','i','i','i','i','i'},
 	ResetSkyGradient = {},
@@ -2701,25 +2701,25 @@ g_SAMPSyscallPrototypes = {
 	GetObjectAlpha = {'o'},
 	SetObjectAlpha = {'o', 'i'},
 	GetWaveHeight = {},
-	SetWaveHeight = {'f'}, 
+	SetWaveHeight = {'f'},
 	SetWaterLevel = {'f'},
 	GetDistanceBetweenPoints2D = {'f', 'f', 'f', 'f'},
 	GetDistanceBetweenPoints3D = {'f', 'f', 'f', 'f', 'f', 'f'},
 	md5hash = {'s', 'r', 'i'},
-	
+
 	-- rules
 	SetRuleValue = {'s', 's'},
 	GetRuleValue = {'s', 'r', 'i'},
 	RemoveRuleValue = {'s'},
-	
+
 	-- dialogs
 	ShowPlayerDialog = {'p', 'i', 'i', 's','s', 's', 's', client=true},
-	
+
 	-- scoreboard
 	AddScoreboardColumn = {'s'},
 	RemoveScoreboardColumn = {'s'},
 	SetScoreboardData = {'p', 's', 's'},
-	
+
 	-- dummy
 	ConnectNPC = {'s', 's'},
 	IsPlayerNPC = {'p'},
@@ -2734,10 +2734,10 @@ g_SAMPSyscallPrototypes = {
 	Update3DTextLabelText = {'a', 'c', 's'},
 	UpdatePlayer3DTextLabelText = {'p', 'a', 'c', 's'},
 	PlayCrimeReportForPlayer  = {'p', 'i', 'i'},
-	
+
 	IsPlayerInRangeOfPoint = {'p', 'f', 'f', 'f', 'f'},
 	GetPlayerSurfingVehicleID = {'p'},
-	
+
 	-- player data
 	SetPlayerDataInt = {'p', 's', 'i'},
 	GetPlayerDataInt = {'p', 's'},
@@ -2750,14 +2750,14 @@ g_SAMPSyscallPrototypes = {
 	IsPlayerDataSet = {'p', 's'},
 	ResetPlayerData = {'p', 's'},
 	ResetAllPlayerData = {'p'},
-	
+
 	AddEventHandler = {'s', 's'},
 	RemoveEventHandler = {'s'},
-	
+
 	gpci = {'p', 'r', 'i'},
-	
+
 	AttachObjectToVehicle = {'o', 'v', 'f', 'f', 'f', 'f', 'f', 'f'},
-	
+
 	acos = {'f'},
 	asin = {'f'},
 	atan = {'f'},
@@ -2773,7 +2773,7 @@ g_SAMPSyscallPrototypes = {
 	db_num_rows = {'d'},
 	db_open = {'s'},
 	db_query = {'i', 's'},
-	
+
 	floatstr = {'s'},
 	format = {'r', 'i', 's'},
 

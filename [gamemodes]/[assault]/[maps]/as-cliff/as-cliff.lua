@@ -1,4 +1,4 @@
-﻿local root = getRootElement()
+local root = getRootElement()
 local objectives = {}
 local weps = {}
 local cols = {}
@@ -18,10 +18,10 @@ function spawnTruck ( delay )
 	local x, y, z = getElementData ( truck, "posX" ), getElementData ( truck, "posY" ), getElementData ( truck, "posZ" )
 	local rz = getElementData ( truck, "rotZ" )
 	delay = delay or 5000
-	
+
 	setTimer ( spawnVehicle, delay, 1, truck, x, y, z, 0, 0, rz )
 	setTimer ( setElementHealth, delay + 100, 1, truck, 2500 )
-	
+
 	if ( objectives.truck ~= "unlock" ) then
 		setTimer ( setVehicleLocked, delay + 100, 1, truck, true )
 	else setTimer ( attachRockets, delay + 100, 1 )
@@ -30,7 +30,7 @@ end
 
 function doAssaultStartRound()
 	spawnTruck ( 3000 )
-	
+
 	local gate1 = getElementByID ( "gate01" )
 	local gate2 = getElementByID ( "gate02" )
 	local x1, y1, z1 = getElementData ( gate1, "posX" ), getElementData ( gate1, "posY" ), getElementData ( gate1, "posZ" )
@@ -48,7 +48,7 @@ function doAssaultEndRound()
 			destroyBomb ( i )
 		end
 	end
-	
+
 	if ( objectives.truck ) then
 		local rocket = getElementData ( truck, "rocket" )
 		local rocket2 = getElementData ( truck, "rocket2" )
@@ -58,8 +58,8 @@ function doAssaultEndRound()
 		destroyElement ( rocket2 )
 		destroyBlipsAttachedTo ( truck )
 	end
-	
-	if ( objectives.finish ) then 
+
+	if ( objectives.finish ) then
 		destroyElement ( cols.finalblip )
 		cols.finalblip = nil
 		removeEventHandler ( "onColShapeHit", cols.exitCol, outside )
@@ -79,13 +79,13 @@ function doAssaultEndRound()
 			weps.rpg = nil
 		end
 	end
-	
+
 	objectives = {}
 end
 
 	-- === OBJECTIVES ===
 	-- ====================
-	
+
 function destroyBlipsAttachedTo ( element )
 	local attachedElements = getAttachedElements ( element )
 	for i, v in ipairs ( attachedElements ) do
@@ -115,7 +115,7 @@ function placeBomb ( ID, players )
 	local rx, ry, rz = getElementData ( bomb, "rotX" ), getElementData ( bomb, "rotY" ), getElementData ( bomb, "rotZ" )
 	local bombglow = createMarker ( x, y, z, "corona", 1, 255, 255, 200, 80 )
 	bombs[ID] = createObject ( 1654, x, y, z, rx, ry, rz )
-	
+
 	setElementData ( bombs[ID], "bombglow", bombglow )
 	if ( players ) then
 		for i, v in ipairs ( players ) do
@@ -144,7 +144,7 @@ function moveGate ()
 	setTimer ( createExplosion, 90, 1, 1912.75, -424.06, 36.32, 1 )
 	setTimer ( createExplosion, 100, 1, 1912.75, -424.06, 32.32, 10 )
 	setTimer ( createExplosion, 750, 1, 1904.75, -424.06, 34.32, 10 )
-	
+
 	destroyBomb ( 6 )
 	destroyBomb ( 7 )
 end
@@ -167,7 +167,7 @@ function createWeapon ()
 	destroyElement ( cols.altCol )
 	cols.altCol = nil
 end
-	
+
 	-- === GRAND FINALE ===
 	-- ======================
 
@@ -218,21 +218,21 @@ end
 function checkObjective( obj, players )
 	if ( obj.id == "bomb01" ) then
 		placeBomb ( 1, players )
-		
+
 	elseif ( obj.id == "bomb02" ) then
 		placeBomb ( 2, players )
-		
+
 	elseif ( obj.id == "bomb03" ) then
 		placeBomb ( 3, players )
 		placeBomb ( 4 )
-		
+
 	elseif ( obj.id == "bomb04" ) then
 		placeBomb ( 5, players )
-		
+
 	elseif ( obj.id == "gate" ) then
 		placeBomb ( 6, players )
 		placeBomb ( 7 )
-		
+
 		cols.count = 10
 		local textDisplay = textCreateDisplay()
 		local text = textCreateTextItem ( tostring ( cols.count ), 0.5, 0.7, "high", 255, 255, 255, 200, 3, "center", "center" )
@@ -242,7 +242,7 @@ function checkObjective( obj, players )
 		textDisplayAddText ( textDisplay, text )
 		setTimer ( updateCount, 1000, 11, textDisplay, text )
 		setTimer ( moveGate, 10000, 1 )
-		
+
 	elseif ( obj.id == "truck" ) then
 		unlockCar()
 		attachRockets()
@@ -253,16 +253,16 @@ end
 function createObjective ( obj )
 	if ( obj.id == "bomb01" ) then
 		objectives.bomb = true
-		
+
 	elseif ( obj.id =="truck" ) then
 		objectives[obj.id] = true
-		
+
 	elseif ( obj.id == "finish" ) then
 		objectives[obj.id] = true
 		cols.exitCol = createColTube ( obj.posX, obj.posY, obj.posZ, 70, 10 )
 		cols.finalblip = createBlip ( obj.posX, obj.posY, obj.posZ, 0, 2, 0, 245, 184, 255 )
 		addEventHandler ( "onColShapeHit", cols.exitCol, outside )
-		
+
 	elseif ( obj.id == "alt_obj" ) then
 		objectives[obj.id] = true
 		cols.altCol = createColCircle ( obj.posX, obj.posY, 1 )

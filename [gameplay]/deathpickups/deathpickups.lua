@@ -1,4 +1,4 @@
-﻿local timers = {} -- timers for existing pickups
+local timers = {} -- timers for existing pickups
 
 local function onDeathPickupHit ( player, matchingDimension )
 	if matchingDimension then
@@ -22,7 +22,7 @@ addEventHandler ( "onPlayerWasted", getRootElement (),
 	function ( source_ammo, killer, killer_weapon, bodypart )
 		local pX, pY, pZ = getElementPosition ( source )
 		local timeout = get("timeout")
-		
+
 		if get("only_current") then
 			local source_weapon = getPedWeapon ( source )
 			if ( source_weapon and source_weapon ~= 0 and source_ammo ) then
@@ -33,11 +33,11 @@ addEventHandler ( "onPlayerWasted", getRootElement (),
 		else
 			local droppedWeapons = {}
 			for slot=0, 12 do
-				local ammo = getPedTotalAmmo(source, slot) 
+				local ammo = getPedTotalAmmo(source, slot)
 				if (getPedWeapon(source, slot) ~= 0) then
 					local weapon = getPedWeapon(source, slot)
 					local ammo = getPedTotalAmmo(source, slot)
-					table.insert(droppedWeapons, {weapon, ammo})					
+					table.insert(droppedWeapons, {weapon, ammo})
 				end
 			end
 			DropAllWeapons(droppedWeapons)
@@ -56,5 +56,5 @@ function DropAllWeapons ( droppedWeapons )
 		local pickup = createPickup(x, y, pZ, 2, t[1], timeout, t[2])
 		addEventHandler ( "onPickupHit", pickup, onDeathPickupHit )
 		timers[pickup] = setTimer ( destroyDeathPickup, timeout, 1, pickup )
-	end	
+	end
 end

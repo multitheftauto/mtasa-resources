@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -25,7 +25,7 @@ function aAdminMenu ()
 						  guiSetText ( aAdminForm, "Admin Menu - v".._version )
 						  guiCreateLabel ( 0.73, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )
 		aTabPanel			= guiCreateTabPanel ( 0.01, 0.05, 0.98, 0.95, true, aAdminForm )
-		aTab1 = {}	
+		aTab1 = {}
 		aTab1.Tab			= guiCreateTab ( "Players", aTabPanel, "players" )
 		aTab1.Messages		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "0/0 unread messages", true, aTab1.Tab )
 						  guiSetAlpha ( aPlayerAdvanced, 0.7 )
@@ -48,7 +48,7 @@ function aAdminMenu ()
 						  for i = 0, 10 do guiGridListSetItemText ( aTab1.SlapOptions, guiGridListAddRow ( aTab1.SlapOptions ), 1, tostring ( i * 10 ), false, false ) end
 		aTab1.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aTab1.Tab, "shout" )
 		aTab1.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aTab1.Tab, "setgroup" )
-	
+
 						  guiCreateHeader ( 0.25, 0.08, 0.20, 0.04, "The nub:", true, aTab1.Tab )
 		aTab1.Name			= guiCreateLabel ( 0.26, 0.125, 0.30, 0.035, "Name: N/A", true, aTab1.Tab )
 		aTab1.IP			= guiCreateLabel ( 0.26, 0.170, 0.30, 0.035, "IP: N/A", true, aTab1.Tab )
@@ -580,7 +580,7 @@ end
 function aClientGUIAccepted ( element )
 	if ( element == aTab5.AdminText ) then
 		local message = guiGetText ( aTab5.AdminText )
-		if ( ( message ) and ( message ~= "" ) ) then 
+		if ( ( message ) and ( message ~= "" ) ) then
 			if ( gettok ( message, 1, 32 ) == "/clear" ) then guiSetText ( aTab5.AdminChat, "" )
 			else triggerServerEvent ( "aAdminChat", getLocalPlayer(), message ) end
 			guiSetText ( aTab5.AdminText, "" )
@@ -613,7 +613,7 @@ function aClientScroll ( element )
 end
 
 function aClientCursorMove ( rx, ry, x, y )
-	
+
 end
 
 function aClientMouseEnter ( element )
@@ -748,7 +748,7 @@ function aClientClick ( button )
 					guiSetText ( aTab1.Mute, "Stfu" )
 					guiSetText ( aTab1.Freeze, "Freeze" )
 					guiSetText ( aTab1.Admin, "Give admin rights" )
-					guiSetText ( aTab1.Health, "Health: 0%" ) 
+					guiSetText ( aTab1.Health, "Health: 0%" )
 					guiSetText ( aTab1.Armour, "Armour: 0%" )
 					guiSetText ( aTab1.Skin, "Skin: N/A" )
 					guiSetText ( aTab1.Team, "Team: None" )
@@ -814,7 +814,7 @@ function aClientClick ( button )
 					if ( ( source == aTab3.WeatherInc ) and ( id < _weathers_max ) ) then guiSetText ( aTab3.Weather, ( id + 1 ).." ("..getWeatherNameFromID ( id + 1 )..")" )
 					elseif ( ( source == aTab3.WeatherDec ) and ( id > 0 ) ) then guiSetText ( aTab3.Weather, ( id - 1 ).." ("..getWeatherNameFromID ( id - 1 )..")" ) end
 				else
-					guiSetText ( aTab3.Weather, ( 14 ).." ("..getWeatherNameFromID ( 14 )..")" ) 
+					guiSetText ( aTab3.Weather, ( 14 ).." ("..getWeatherNameFromID ( 14 )..")" )
 				end
 			elseif ( source == aTab3.WeatherSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setweather", gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
 			elseif ( source == aTab3.WeatherBlend ) then triggerServerEvent ( "aServer", getLocalPlayer(), "blendweather", gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
@@ -825,7 +825,7 @@ function aClientClick ( button )
 					if ( ( source == aTab3.SpeedInc ) and ( value < 10 ) ) then guiSetText ( aTab3.Speed, tostring ( value + 1 ) )
 					elseif ( ( source == aTab3.SpeedDec ) and ( value > 0 ) ) then guiSetText ( aTab3.Speed, tostring ( value - 1 ) ) end
 				else
-					guiSetText ( aTab3.Speed, "1" ) 
+					guiSetText ( aTab3.Speed, "1" )
 				end
 			elseif ( source == aTab3.SpeedSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setgamespeed", guiGetText ( aTab3.Speed ) )
 			elseif ( source == aTab3.GravitySet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setgravity", guiGetText ( aTab3.Gravity ) )

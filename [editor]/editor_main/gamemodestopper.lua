@@ -1,4 +1,4 @@
-﻿function isResourceRunning(res)
+function isResourceRunning(res)
 	return getResourceState(res)=="running"
 end
 
@@ -10,7 +10,7 @@ function isMap(res)
 	return exports.mapmanager:isMap(res)
 end
 
-addEventHandler("onResourceStart", getResourceRootElement(), 
+addEventHandler("onResourceStart", getResourceRootElement(),
 	function()
 		for index,resource in ipairs(getResources()) do
 			if isResourceRunning(resource) and (isGamemode(resource) or isMap(resource)) then

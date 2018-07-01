@@ -1,4 +1,4 @@
-﻿dxImage = {}
+dxImage = {}
 dxImage_mt = { __index = dxImage }
 local g_screenX,g_screenY = guiGetScreenSize()
 local visibleImages = {}

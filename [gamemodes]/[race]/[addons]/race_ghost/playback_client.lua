@@ -16,7 +16,7 @@ function GhostPlayback:create( recording, ped, vehicle )
 	}
 	setElementCollisionsEnabled( result.ped, false )
 	setElementCollisionsEnabled( result.vehicle, false )
-	setVehicleFrozen( result.vehicle, true )
+	setElementFrozen( result.vehicle, true )
 	setElementAlpha( result.ped, g_GameOptions.alphavalue )
 	setElementAlpha( result.vehicle, g_GameOptions.alphavalue )
 	return setmetatable( result, self )
@@ -55,10 +55,10 @@ end
 function GhostPlayback:checkForCountdownEnd()
 	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
 	if vehicle then
-		local frozen = isVehicleFrozen( vehicle )
+		local frozen = isElementFrozen( vehicle )
 		if not frozen then
 			outputDebug( "Playback started." )
-			setVehicleFrozen( self.vehicle, false )
+			setElementFrozen( self.vehicle, false )
 			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
 			self:startPlayback()
 			setElementAlpha( self.vehicle, g_GameOptions.alphavalue )
@@ -103,7 +103,7 @@ function GhostPlayback:stopPlayback( finished )
 					setBlipColor( blip, 0, 0, 0, 0 )
 				end
 				setElementPosition( self.vehicle, 0, 0, 0 )
-				setVehicleFrozen( self.vehicle, true )
+				setElementFrozen( self.vehicle, true )
 				setElementAlpha( self.vehicle, 0 )
 				setElementAlpha( self.ped, 0 )
 			end, 5000, 1
@@ -185,7 +185,7 @@ function GhostPlayback:updateGhostState()
 			setElementModel( self.vehicle, vehicleType )
 		end
 		self.currentIndex = self.currentIndex + 1
-		
+
 		if not self.recording[self.currentIndex] then
 			self:stopPlayback( true )
 			self.fadeoutStart = getTickCount()
@@ -208,10 +208,10 @@ addEventHandler( "onClientGhostDataReceive", g_Root,
 		if playback then
 			playback:destroy()
 		end
-		
+
 		globalInfo.bestTime = bestTime
 		globalInfo.racer = racer
-		
+
 		playback = GhostPlayback:create( recording, ped, vehicle )
 		playback:preparePlayback()
 	end

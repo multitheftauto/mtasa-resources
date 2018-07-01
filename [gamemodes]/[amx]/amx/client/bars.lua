@@ -1,4 +1,4 @@
-﻿local VehicleBars = false
+local VehicleBars = false
 
 players = getElementsByType ( "player" )
 

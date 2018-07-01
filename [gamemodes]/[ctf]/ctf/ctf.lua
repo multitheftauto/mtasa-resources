@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 <team name="" colorR="" colorG="" colorB="">
 	<flag name="" posX="" posY="" posZ="" />
 	<spawnpoint posX="" posY="" posZ="" rot="" model="" />
@@ -28,7 +28,7 @@ function CTF_gamemodeMapStop( startedMap )
 		local playerCol = getElementData( v, "col" )
 		if ( playerCol ~= nil ) then
 			local playerColObject = getElementData( playerCol, "object" )
-			local playerColMarker = getElementData( playerCol, "marker" ) 
+			local playerColMarker = getElementData( playerCol, "marker" )
 			detachElements ( playerColObject, v )
 			detachElements ( playerColMarker, v )
 			setElementData( playerCol, "object", nil )
@@ -70,7 +70,7 @@ function CTF_gamemodeMapStart ( startedMap )
 	CTF_roundTime = CTF_roundTime or get(mapName..".roundTime")
 	CTF_spawnscreen = CTF_spawnscreen or get(mapName..".spawnScreen")
 	CTF_blips = CTF_blips or get(mapName..".blips")
-	
+
 	if ( not CTF_respawnTime ) then
 		outputDebugString( "* CTF Warning: Respawn time not set. Defaulting to 4.5 seconds.", 2 )
 		CTF_respawnTime = 4500
@@ -80,8 +80,8 @@ function CTF_gamemodeMapStart ( startedMap )
 		outputDebugString( "* CTF Warning: Round time not set. Defaulting to 10 minutes.", 2 )
 		CTF_roundTime = 600000
 	end
-	
-	if ( CTF_spawnscreen == "on" ) then 
+
+	if ( CTF_spawnscreen == "on" ) then
 		CTF_spawnscreen = true
 	end
 	if ( ( CTF_blips ~= "team" ) and ( CTF_blips ~= "all" ) ) then
@@ -94,7 +94,7 @@ function CTF_gamemodeMapStart ( startedMap )
 		CTF_weapons[k] = {}
 		CTF_weapons[k].model = getElementData( v, "model" )
 		CTF_weapons[k].ammo = getElementData( v, "ammo" )
-	end	
+	end
 	outputDebugString( "* CTF Info: Respawn time: " ..tostring(CTF_respawnTime) .. ", round time: " .. tostring(CTF_roundTime) .. ", spawnscreen: " .. tostring(CTF_spawnscreen) .. ", blips: " .. tostring(CTF_blips) .. ". " )
 	local teams = getElementsByType ( "team", CTF_mapRoot )
 	CTF_annDisp = textCreateDisplay ()
@@ -134,9 +134,9 @@ function CTF_gamemodeMapStart ( startedMap )
 				return
 			else
 				local x,y,z,object,marker,col
-				for flagKey,flagValue in ipairs(flags) do			
+				for flagKey,flagValue in ipairs(flags) do
 					local x,y,z = tonumber( getElementData ( flagValue, "posX" ) ), tonumber( getElementData ( flagValue, "posY" ) ), tonumber( getElementData ( flagValue, "posZ" ) )
-					local object = createObject( 2993, x, y, z )		
+					local object = createObject( 2993, x, y, z )
 					local marker = createMarker( x, y, z, "arrow", 2, r, g, b, 255 )
 					local col = createColSphere( x, y, z, 1 )
 					local sblip = createBlip ( x, y, z, 0, 3, r, g, b, 25 )
@@ -219,7 +219,7 @@ function CTF_endRound()
 	local tieFlag = false
 	for k,v in ipairs(teams) do
 		local teamScore = getElementData( v, "score" )
-		if ( teamScore >= maxScore ) then 
+		if ( teamScore >= maxScore ) then
 			maxScore = teamScore
 			winningTeam = v
 		end
@@ -249,7 +249,7 @@ function CTF_endRound()
 		local playerCol = getElementData( v, "col" )
 		if ( playerCol ~= nil ) then
 			local playerColObject = getElementData( playerCol, "object" )
-			local playerColMarker = getElementData( playerCol, "marker" ) 
+			local playerColMarker = getElementData( playerCol, "marker" )
 			detachElements ( playerColObject, v )
 			detachElements ( playerColMarker, v )
 			setElementData( playerColObject, "object", nil )
@@ -264,7 +264,7 @@ function CTF_endRound()
 	setTimer ( destroyElement, 9000, 1, CTF_missionTimer)
 	setTimer( CTF_newRound, 10000, 1 )
 end
-	
+
 
 function CTF_newRound()
 	triggerEvent( "onRoundFinished", getResourceRootElement(getThisResource()) )
@@ -329,8 +329,8 @@ function CTF_newRound()
 	CTF_missionTimer = exports.missiontimer:createMissionTimer (CTF_roundTime,true,true,0.5,20,true,"default-bold",1)
 	addEventHandler ( "onMissionTimerElapsed", CTF_missionTimer, CTF_endRound )
 end
-		
-	
+
+
 
 function CTF_onPlayerJoin ( )
 	setElementData( source, "col", nil )
@@ -361,7 +361,7 @@ function CTF_onPlayerWasted ( totalammo, killer, killerweapon, bodypart )
 	-- Handle respawn
 	if ( CTF_roundOn ) then
 		fadeCamera ( player, false, CTF_respawnTime/500, 000, 000, 000 )
-		setTimer( fadeCamera, CTF_respawnTime, 1, player, true ) 
+		setTimer( fadeCamera, CTF_respawnTime, 1, player, true )
 		setTimer( CTF_spawnPlayer, CTF_respawnTime, 1, player )
 	end
 end
@@ -375,9 +375,9 @@ function CTF_flag_check ( )
 	local player = source --It's important. Trust me.
 	if ( playerCol ~= nil ) then
 		local playerColObject = getElementData( playerCol, "object" )
-		local playerColMarker = getElementData( playerCol, "marker" ) 
+		local playerColMarker = getElementData( playerCol, "marker" )
 		local playerColTeam = getElementData( playerCol, "team" )
-		local playerColFlag = getElementData( playerCol, "flag" ) 
+		local playerColFlag = getElementData( playerCol, "flag" )
 		local r,g,b = getTeamColor ( getPlayerTeam( source ) )
 	    	local x,y,z = getElementPosition( source )
 		detachElements ( playerColObject, source )
@@ -403,7 +403,7 @@ function CTF_onColShapeHit ( player )
 	local colFlag = getElementData( source, "flag" )
 	local colMarker = getElementData( source, "marker" )
 	local colTeam = getElementData( source, "team" )
-	local r,g,b = getTeamColor ( playerTeam ) 
+	local r,g,b = getTeamColor ( playerTeam )
 	if ( playerTeam == colTeam ) then
 		local x,y,z = tonumber( getElementData ( colFlag, "posX" ) ), tonumber( getElementData ( colFlag, "posY" ) ), tonumber( getElementData ( colFlag, "posZ" ) )
 		local x2,y2,z2 = getElementPosition( colObject )

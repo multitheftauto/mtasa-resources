@@ -1,4 +1,4 @@
-﻿local g_root = getRootElement()
+local g_root = getRootElement()
 local screenX,screenY = guiGetScreenSize()
 local BOX_COLOR,BOX_HEIGHT = -1358954496, 19
 local FADE_TIME = 300
@@ -43,14 +43,14 @@ function popup(text)
 	popupText = text
 	local width = dxGetTextWidth ( text, fontSize, TEXT_FONT )
 	if (width + 5) > screenX then --We'll need to perform the scroll anim
-		setTimer ( 
+		setTimer (
 		function()
 			popupMove = true
 			popupMoveStart = getTickCount()
 		end,
 		MOVE_DELAY,
 		1
-		)	
+		)
 	end
 	popupFade = "in"
 	textShown = true
@@ -60,7 +60,7 @@ function drawRectangle()
 	dxDrawRectangle ( 0, screenY - BOX_HEIGHT, screenX, BOX_HEIGHT, BOX_COLOR, true )
 end
 
-function drawText()	
+function drawText()
 	local changeStartX,alpha = nil
 	local fontHeight = dxGetFontHeight ( fontSize, TEXT_FONT )
 	local fontWidth = dxGetTextWidth ( popupText, fontSize, TEXT_FONT )

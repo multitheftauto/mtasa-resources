@@ -46,7 +46,7 @@ pre {text-indent: 30px}
 	background: #555555;
 	padding-left: 6px;
 	margin: 0;
-	text-decoration: none;	
+	text-decoration: none;
 }
 
 #tabmenu div.active_subpage {
@@ -55,7 +55,7 @@ pre {text-indent: 30px}
 	padding-left: 22px;
 	margin: 0;
 	text-decoration: none;
-	cursor: pointer;	
+	cursor: pointer;
 }
 
 #tabmenu div.active {
@@ -64,7 +64,7 @@ pre {text-indent: 30px}
 	padding-left: 6px;
 	margin: 0;
 	text-decoration: none;
-	cursor: pointer;	
+	cursor: pointer;
 }
 
 #tabmenu span.active {

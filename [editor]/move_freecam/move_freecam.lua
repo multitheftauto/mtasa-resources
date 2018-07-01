@@ -1,4 +1,4 @@
-﻿-- TO DO
+-- TO DO
 -- stop game physics from making OBJECTS spin and fall
 -- make it possible for elements to hit surfaces properly
 
@@ -106,7 +106,7 @@ local function zoomWithMouseWheel(key, keyState)
 	    else
 	       	speed = zoomSpeed.medium
 	    end
-		
+
 	    if key == "zoom_in" then
    	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
 	    else --if key == "zoom_out"
@@ -118,15 +118,15 @@ end
 local function onClientRender_freecam()
 	if (selectedElement) then
 		setElementVelocity(selectedElement,0,0,0) --!w
-	
+
 	    camX, camY, camZ, targetX, targetY, targetZ = getCameraMatrix()
-	   	
+
 		-- alter the vector length to fit the maximum distance
 		local distance = getDistanceBetweenPoints3D ( camX, camY, camZ, targetX, targetY, targetZ )
 		targetX = camX + ((targetX - camX)/distance) * maxMoveDistance
 		targetY = camY + ((targetY - camY)/distance) * maxMoveDistance
-		targetZ = camZ + ((targetZ - camZ)/distance) * maxMoveDistance		
-	    
+		targetZ = camZ + ((targetZ - camZ)/distance) * maxMoveDistance
+
 		-- process line, checking for water and surfaces
 		local surfaceFound, surfaceX, surfaceY, surfaceZ, element = processLineOfSight(camX, camY, camZ, targetX, targetY, targetZ, true, true, true, true, true, true, false, true, selectedElement)
 		local waterFound, waterX, waterY, waterZ = testLineAgainstWater(camX, camY, camZ, targetX, targetY, targetZ)
@@ -178,7 +178,7 @@ local function onClientRender_freecam()
 		else
 			setElementPosition(selectedElement, targetX, targetY, targetZ)
 		end
-		
+
 		rotX, rotY, rotZ = getElementRotation(selectedElement)
 	end
 end

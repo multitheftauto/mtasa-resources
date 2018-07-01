@@ -1,4 +1,4 @@
-﻿local leveltop = 0
+local leveltop = 0
 local localPlayerLevel = "-"
 local scoreLabel
 
@@ -89,7 +89,7 @@ addEventHandler ( "onClientResourceStop",getResourceRootElement(getThisResource(
 
 addEventHandler( "onClientPlayerSpawn", localPlayer,
 	function()
-		setTimer(setCameraTarget, 112, 1, localPlayer ) -- Make them face the haystack. 
+		setTimer(setCameraTarget, 112, 1, localPlayer ) -- Make them face the haystack.
 		-- Has to be on a timer and 112ms is the lowest it worked for me.
 	end
 )

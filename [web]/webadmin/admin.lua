@@ -1,4 +1,4 @@
-﻿-- ACLs
+-- ACLs
 function getACLs()
 	local tbl = {}
 	local acls = aclList()
@@ -21,7 +21,7 @@ function setACLRight( aclname, rightname, access )
 			if ( aclSave() ) then
 				return true
 			end
-		end 
+		end
 	end
 	return false
 end
@@ -68,7 +68,7 @@ function getGroups()
 	local acls = aclGroupList()
 	if ( acls ) then
 		for k,v in ipairs(acls) do
-			
+
 			local acltbl = {}
 			local groupacls = aclGroupListACL(v)
 			for l,w in ipairs(groupacls) do
@@ -176,10 +176,10 @@ function serverKickPlayer (playerName, reason)
 end
 
 function serverBanPlayer (playerName, reason, duration)
-	if duration then 
-	duration = duration * 3600 
-	else 
-	duration = 0 
+	if duration then
+	duration = duration * 3600
+	else
+	duration = 0
 	end
 	if banPlayer(getPlayerFromName(playerName), false, false, true, getRootElement(), reason, duration) then
 	return true

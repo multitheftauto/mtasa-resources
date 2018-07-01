@@ -15,8 +15,16 @@ function aSpectate ( player )
 		aMessageBox ( "error", "Can not spectate yourself" )
 		return
 	end
+
+	if not aSpectator.Interior and not aSpectator.Dimension then
+		aSpectator.Interior = getElementInterior( getLocalPlayer() )
+		aSpectator.Dimension = getElementDimension( getLocalPlayer() )
+	end
+
 	aSpectator.Spectating = player
     setElementFrozen ( getLocalPlayer(), true )
+    setElementInterior( getLocalPlayer(), getElementInterior( player ) )
+    setElementDimension( getLocalPlayer(), getElementDimension( player ) )
 	if ( ( not aSpectator.Actions ) or ( not guiGetVisible ( aSpectator.Actions ) ) ) then
 		aSpectator.Initialize ()
 	end
@@ -42,11 +50,11 @@ function aSpectator.Initialize ()
 			guiGridListSetItemText ( aSpectator.Slaps, guiGridListAddRow ( aSpectator.Slaps ), 1, tostring ( i * 10 ), false, false )
 			i = i + 1
 		end
-		
+
 		aSpectator.Skip			= guiCreateCheckBox ( 0.08, 0.85, 0.84, 0.04, "Skip dead players", true, true, aSpectator.Actions )
 					  		  guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
 		aSpectator.Back			= guiCreateButton ( 0.10, 0.93, 0.80, 0.05, "Back", true, aSpectator.Actions )
-	
+
 		aSpectator.Players		= guiCreateWindow ( 30, y / 2 - 200, 160, 400, "Players", false )
 			  	  	  		  guiWindowSetSizable ( aSpectator.Players, false )
 		aSpectator.PlayerList		= guiCreateGridList ( 0.03, 0.07, 0.94, 0.92, true, aSpectator.Players )
@@ -76,7 +84,7 @@ function aSpectator.Initialize ()
 	addEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
 	addEventHandler ( "onClientCursorMove", _root, aSpectator.CursorMove )
 	addEventHandler ( "onClientPreRender", _root, aSpectator.Render )
-	
+
 	guiSetVisible ( aSpectator.Actions, true )
 	guiSetVisible ( aSpectator.Players, true )
 	guiSetVisible ( aSpectator.Next, true )
@@ -123,6 +131,8 @@ function aSpectator.Close ( destroy )
             guiSetVisible ( aSpectator.Prev, false )
         end
         setCameraTarget ( getLocalPlayer() )
+        setElementInterior( getLocalPlayer(), aSpectator.Interior )
+        setElementDimension( getLocalPlayer(), aSpectator.Dimension )
         local x, y, z = getElementPosition(getLocalPlayer())
         setElementPosition(getLocalPlayer(), x, y, z+1)
         setElementVelocity (getLocalPlayer(), 0, 0, 0)
@@ -130,6 +140,8 @@ function aSpectator.Close ( destroy )
         aSpectator.Spectating = nil
         showCursor ( true )
         aAdminMenu()
+        aSpectator.Dimension = nil
+        aSpectator.Interior = nil
     end
 end
 
@@ -207,6 +219,8 @@ function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 	end
 	aSpectator.Spectating = players[next]
     setElementFrozen ( getLocalPlayer(), true )
+    setElementInterior( getLocalPlayer(), getElementInterior( aSpectator.Spectating ) )
+    setElementDimension( getLocalPlayer(), getElementDimension( aSpectator.Spectating ) )
 end
 
 function aSpectator.CursorMove ( rx, ry, x, y )

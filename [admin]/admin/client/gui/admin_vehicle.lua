@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -73,7 +73,7 @@ function aVehicleCustomize ( player )
 		aVehicleColor2		= guiCreateEdit ( 0.79, 0.25, 0.13, 0.048, "#000000", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor2, 7 )
 		aVehicleColor3		= guiCreateEdit ( 0.79, 0.30, 0.13, 0.048, "#000000", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor3, 7 )
 		aVehicleColor4		= guiCreateEdit ( 0.79, 0.35, 0.13, 0.048, "#000000", true, aVehicleForm ) guiEditSetMaxLength ( aVehicleColor4, 7 )
-			
+
 		--aVehicleColorScheme	= guiCreateButton ( 0.63, 0.41, 0.20, 0.05, "View color IDs", true, aVehicleForm )
 		aVehicleColorSet	= guiCreateButton ( 0.84, 0.41, 0.14, 0.05, "Set", true, aVehicleForm )
 		guiCreateLabel ( 0.63, 0.5, 0.15, 0.05, "Lights Color:", true, aVehicleForm )
@@ -85,17 +85,17 @@ function aVehicleCustomize ( player )
 
 		aVehicleColorForm	= guiCreateWindow ( x / 2 - 280, y / 2 - 150, 540, 215, "Vehicle Color Scheme", false )
 					   guiCreateStaticImage ( 0.01, 0.08, 0.98, 0.80, "client\\images\\colorscheme.png", true, aVehicleColorForm )
-		
-		
+
+
 		guiCreateLabel ( 0.63, 0.61, 0.15, 0.05, "License Plate:", true, aVehicleForm )
 		aLicensePlate = guiCreateEdit ( 0.79, 0.61, 0.13, 0.048, "", true, aVehicleForm ) guiEditSetMaxLength ( aLicensePlate, 8 )
 		aLicensePlateSet = guiCreateButton ( 0.93, 0.61, 0.05, 0.05, "Set", true, aVehicleForm )
-		
-		
+
+
 		aVehicleColorClose	= guiCreateButton ( 0.86, 0.86, 0.19, 0.15, "Close", true, aVehicleColorForm )
 					   guiSetVisible ( aVehicleColorForm, false )
 		guiSetVisible ( aVehicleForm, false )
-	
+
 		addEventHandler ( "onClientGUIDoubleClick", aVehicleForm, aClientVehicleDoubleClick )
 		addEventHandler ( "onClientGUIClick", aVehicleForm, aClientVehicleClick )
 		addEventHandler ( "onClientGUIClick", aVehicleColorClose, aClientVehicleClick )
@@ -239,7 +239,7 @@ function aClientVehicleClick ( button )
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setcolor", { guiGetText ( aVehicleColor1 ), guiGetText ( aVehicleColor2 ), guiGetText ( aVehicleColor3 ), guiGetText ( aVehicleColor4 ) } )
 		elseif ( source == aLightsColorSet ) then
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setlights", { guiGetText ( aLightsColor ) } )
-		elseif ( source == aLicensePlateSet ) then 
+		elseif ( source == aLicensePlateSet ) then
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setplates", { guiGetText ( aLicensePlate ) } )
 		elseif ( source == aVehicleColorScheme ) then
 			guiSetVisible ( aVehicleColorForm, true )
@@ -289,7 +289,7 @@ end
 
 
 addEvent("onColorPickerOK", true)
-addEventHandler("onColorPickerOK", root, 
+addEventHandler("onColorPickerOK", root,
 function (id, hex)
 if id == "vehicleColor1" then
 	guiSetText(aVehicleColor1, hex)

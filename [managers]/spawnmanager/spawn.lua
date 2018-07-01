@@ -1,8 +1,8 @@
-﻿local spawnWave = false
+local spawnWave = false
 local spawnWaveTimer = false
 local quedSpawns = {}
 addEvent ( "onSpawnpointUse" )
-	
+
 function createSpawnpoint ( x, y, z, rot, skin, interior, dimension )
 	if not tonumber(x) then outputDebugString("createSpawnpoint: Bad 'x' position specified",0,255,128,0) return false end
 	if not tonumber(y) then outputDebugString("createSpawnpoint: Bad 'y' position specified",0,255,128,0) return false end
@@ -29,7 +29,7 @@ function setSpawnpointRotation ( spawnpoint, rotation )
 	if not tonumber(rotation) then outputDebugString("setSpawnpointRotation: Bad rotation specified",0,255,128,0) return false end
 	setElementData ( spawnpoint, "rot", rotation )
 	return true
-end	
+end
 
 function setSpawnpointSkin ( spawnpoint, skin )
 	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointSkin: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
@@ -38,7 +38,7 @@ function setSpawnpointSkin ( spawnpoint, skin )
 	skin = math.ceil(skin)
 	setElementData ( spawnpoint, "skin", skin )
 	return true
-end	
+end
 
 function setSpawnpointTeam ( spawnpoint, team )
 	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointTeam: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
@@ -48,25 +48,25 @@ function setSpawnpointTeam ( spawnpoint, team )
 	skin = math.ceil(skin)
 	setElementData ( spawnpoint, "team", skin )
 	return true
-end	
+end
 
 function getSpawnpointRotation ( spawnpoint )
 	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointRotation: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
 	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointRotation: Bad element specified",0,255,128,0) return false end
 	return getElementData ( spawnpoint, "rot" ) or 0
-end	
+end
 
 function getSpawnpointSkin ( spawnpoint )
 	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointSkin: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
 	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointSkin: Bad element specified",0,255,128,0) return false end
 	return getElementData ( spawnpoint, "skin" ) or 0
-end	
+end
 
 function getSpawnpointTeam ( spawnpoint )
 	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointTeam: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
 	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointTeam: Bad spawnpoint element specified",0,255,128,0) return false end
 	return getElementData ( spawnpoint, "team" )
-end	
+end
 
 function setSpawnWave ( enabled, wavetime )
 	if ( enabled ) then

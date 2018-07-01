@@ -1,17 +1,5 @@
-﻿function createServerCallInterface()
-	return setmetatable(
-		{},
-		{
-			__index = function(t, k)
-				t[k] = function(...) triggerServerEvent('onServerCall', resourceRoot, k, ...) end
-				return t[k]
-			end
-		}
-	)
-end
-
 addEvent('onClientCall', true)
-addEventHandler('onClientCall', getResourceRootElement(getThisResource()),
+addEventHandler('onClientCall',resourceRoot,
 	function(fnName, ...)
 		local fn = _G
 		local path = fnName:split('.')
@@ -25,16 +13,16 @@ addEventHandler('onClientCall', getResourceRootElement(getThisResource()),
 
 function setCameraPlayerMode()
 	local r
-	local vehicle = getPedOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if vehicle then
 		local rx, ry, rz = getElementRotation(vehicle)
 		r = rz
 	else
-		r = getPedRotation(g_Me)
+		r = getPedRotation(localPlayer)
 	end
-	local x, y, z = getElementPosition(g_Me)
+	local x, y, z = getElementPosition(localPlayer)
 	setCameraMatrix(x - 4*math.cos(math.rad(r + 90)), y - 4*math.sin(math.rad(r + 90)), z + 1, x, y, z + 1)
-	setTimer(setCameraTarget, 100, 1, g_Me)
+	setTimer(setCameraTarget, 100, 1, localPlayer)
 end
 
 function getPlayerOccupiedSeat(player)
@@ -48,17 +36,6 @@ function getPlayerOccupiedSeat(player)
 		end
 	end
 	return false
-end
-
-function destroyBlipsAttachedTo(elem)
-	local wasDestroyed = false
-	for i,attached in ipairs(getAttachedElements(elem)) do
-		if getElementType(attached) == 'blip' then
-			destroyElement(attached)
-			wasDestroyed = true
-		end
-	end
-	return wasDestroyed
 end
 
 local _isPedDead = isPedDead
@@ -81,7 +58,7 @@ function table.find(t, ...)
 		end
 		return false
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil
@@ -115,7 +92,7 @@ function table.findall(t, ...)
 		end
 		return result
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil
@@ -185,37 +162,6 @@ function table.map(t, callback)
 		t[k] = callback(v)
 	end
 	return t
-end
-
-function table.dump(t, caption, depth)
-	if not depth then
-		depth = 1
-	end
-	if depth == 1 and caption then
-		outputConsole(caption .. ':')
-	end
-	if not t then
-		outputConsole('Table is nil')
-	elseif type(t) ~= 'table' then
-		outputConsole('Argument passed is of type ' .. type(t))
-		local str = tostring(t)
-		if str then
-			outputConsole(str)
-		end
-	else
-		local braceIndent = string.rep('  ', depth-1)
-		local fieldIndent = braceIndent .. '  '
-		outputConsole(braceIndent .. '{')
-		for k,v in pairs(t) do
-			if type(v) == 'table' and k ~= 'siblings' and k ~= 'parent' then
-				outputConsole(fieldIndent .. tostring(k) .. ' = ')
-				table.dump(v, nil, depth+1)
-			else
-				outputConsole(fieldIndent .. tostring(k) .. ' = ' .. tostring(v))
-			end
-		end
-		outputConsole(braceIndent .. '}')
-	end
 end
 
 function table.flatten(t, result)
@@ -291,7 +237,7 @@ function _addXMLChildrenToTable(parentNode, leafName, leafAttrs, targetTable)
 		i = i + 1
 		groupNode = xmlFindChild(parentNode, 'group', i)
 	end
-	
+
 	i = 0
 	local leafNode = xmlFindChild(parentNode, leafName, 0)
 	while leafNode do
@@ -380,34 +326,3 @@ function applyToLeaves(t, callback)
 		end
 	end
 end
-
-addEventHandler("onClientResourceStart", resourceRoot, 
-function ()
-	triggerServerEvent("onPlayerCheckForHexCodes", resourceRoot)
-end
-)
-
-addEvent("onServerProvideHexCodesSetting", true)
-addEventHandler("onServerProvideHexCodesSetting", resourceRoot,
-function (remove)
-	hexCodesDisabled = remove
-end)
-
-_getPlayerName = getPlayerName
-
-function getPlayerName(player)
-	if hexCodesDisabled then
-		return string.gsub(_getPlayerName(player), "#%x%x%x%x%x%x", "")
-	else
-		return _getPlayerName(player)
-	end
-end
-
-
-
-
-
-
-
-
-

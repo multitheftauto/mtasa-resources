@@ -1,7 +1,7 @@
-﻿--[[
+--[[
 	Collection of functions to detect if a line hits a shape
 
-	Special thanks to Rayco "XeNMaX" Hernandez García for his BIG help.
+	Special thanks to Rayco "XeNMaX" Hernandez GarcÃ­a for his BIG help.
 ]]
 
 local ZERO_TOLERANCE = 0.000001
@@ -60,11 +60,11 @@ collisionTest = { }
 collisionTest.Rectangle = function(lineStart, lineEnd, rectangleCenter, sizeX, sizeY )
     -- check if line intersects rectangle around element
 	local ratio = rectangleCenter.z / lineEnd.z
-	
+
 	lineEnd.x = rectangleCenter.x * lineEnd.x
 	lineEnd.y = rectangleCenter.y * lineEnd.y
 	lineEnd.z = rectangleCenter.z
-	
+
 	if lineEnd.x < (rectangleCenter.x + sizeX/2) and lineEnd.x > (rectangleCenter.x - sizeX/2) then
 		if lineEnd.y < (rectangleCenter.y + sizeY/2) and lineEnd.y > (rectangleCenter.y - sizeY/2) then
 			return lineEnd
@@ -141,7 +141,7 @@ collisionTest.Cylinder = function(lineStart, lineEnd, cylCenter, cylRadius, cylH
 
 		if (fDiscr < 0.0) then
 			return nil
-		
+
 		elseif (fDiscr > ZERO_TOLERANCE) then
 			fRoot = math.sqrt(fDiscr)
 			fInv = 1.0 / fA2

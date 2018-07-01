@@ -4,9 +4,9 @@
 *
 *  ml_base, External lua add-on module
 *
-*  Copyright © 2003-2008 MTA.  All Rights Reserved.
+*  Copyright Â© 2003-2008 MTA.  All Rights Reserved.
 *
-*  Grand Theft Auto is © 2002-2003 Rockstar North
+*  Grand Theft Auto is Â© 2002-2003 Rockstar North
 *
 *  THE FOLLOWING SOURCES ARE PART OF THE MULTI THEFT
 *  AUTO SOFTWARE DEVELOPMENT KIT AND ARE RELEASED AS
@@ -103,7 +103,7 @@ int CFunctions::amxLoad(lua_State *luaVM) {
 		lua_pushboolean(luaVM, 0);
 		return 1;
 	}
-	
+
 	path amxPath = path("mods/deathmatch/resources/[gamemodes]/[amx]/") / resName / amxName;
 
 	// Load .amx
@@ -151,7 +151,7 @@ int CFunctions::amxLoad(lua_State *luaVM) {
 
 	lua_register(props.resourceVM, "pawn", CFunctions::pawn);
 	loadedAMXs[amx] = props;
-	
+
 	lua_getfield(luaVM, LUA_REGISTRYINDEX, "amx");
 	lua_getfield(luaVM, -1, resName);
 	if(lua_isnil(luaVM, -1)) {
@@ -196,7 +196,7 @@ int CFunctions::amxCall(lua_State *luaVM) {
 			}
 			case LUA_TNUMBER: {
 				std::string str = lua_tostring(luaVM, i);
-				if(str.find(".")!=std::string::npos) 
+				if(str.find(".")!=std::string::npos)
 				{
 					float fval = lua_tonumber(luaVM, i);
 					cell val = *(cell*)&fval;
@@ -237,7 +237,7 @@ int CFunctions::amxCall(lua_State *luaVM) {
 			lua_pushboolean(luaVM, 0);
 		return 1;
 	}
-	
+
 	// Return value
 	lua_pushnumber(luaVM, ret);
 	return 1;
@@ -428,7 +428,7 @@ int CFunctions::pawn(lua_State *luaVM) {
 	}
 	if(!amx)
 		return luaL_error(luaVM, "No Pawn function named %s exists", fnName);
-	
+
 	int mainTop = lua_gettop(mainVM);
 
 	string resName;

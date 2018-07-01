@@ -7,7 +7,7 @@
 	<html src="geticon.htm" />
 	<info author="eAi" name="Map" showInResourceBrowser="true"/>
 	<html src="icons\02.png" raw="true" />
-	
+
 	<export function="players" http="true" />
 	<export function="sendPlayerMessage" http="true" />
 	<export function="getAllBlips" http="true" />

@@ -1,4 +1,4 @@
-﻿local resourceRoot = getResourceRootElement(getThisResource())
+local resourceRoot = getResourceRootElement(getThisResource())
 
 --[[
 local function fndebug(...)
@@ -8,7 +8,7 @@ local function fndebug(...)
 		_G[name] = function(...)
 			local args = { ... }
 			local result = fn(...)
-			
+
 			local logstr = 'Client: ' .. name .. '('
 			for i,a in ipairs(args) do
 				if i > 1 then
@@ -156,7 +156,7 @@ function table.find(t, ...)
 		end
 		return false
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil

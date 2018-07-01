@@ -1,10 +1,10 @@
-﻿local edfSettings = {}
+local edfSettings = {}
 rowData = {}
 mapsettings.rowValues = {}
 mapsettings.gamemodeSettings = {}
 local valueWidget
 local isHandled
-addEventHandler ( "doLoadEDF", getRootElement(), 
+addEventHandler ( "doLoadEDF", getRootElement(),
 function(tableEDF, resource)
 	--store all our data neatly under the resource
 	edfSettings[resource] = tableEDF["settings"]
@@ -16,7 +16,7 @@ function(tableEDF, resource)
 	triggerServerEvent ( "doSaveMapSettings", getLocalPlayer(), currentMapSettings, true )
 end )
 
-addEventHandler ( "doUnloadEDF", getRootElement(), 
+addEventHandler ( "doUnloadEDF", getRootElement(),
 function(resource)
 	--store all our data neatly under the resource
 	edfSettings[resource] = nil
@@ -39,7 +39,7 @@ function refreshGamemodeSettings()
 			count = count + 1
 			local subRow = guiGridListAddRow ( mapsettings.settingsList )
 			guiGridListSetItemText ( mapsettings.settingsList, subRow, 1, dataName, false, false )
-			rowData[subRow] = dataInfo 
+			rowData[subRow] = dataInfo
 			rowData[subRow].resourceName = resourceName
 			rowData[subRow].internalName = dataName
 			mapsettings.rowValues[subRow] = dataInfo.default
@@ -68,7 +68,7 @@ function settingsListClicked()
 	if row == previousRow then return end
 	if ( valueWidget ) and ( previousRow ) then
 		mapsettings.rowValues[previousRow] = valueWidget:getValue()
-		if ( mapsettings.rowValues[previousRow] == "" or mapsettings.rowValues[previousRow] == nil ) and ( rowData[previousRow] ) and ( rowData[previousRow].default ) then 
+		if ( mapsettings.rowValues[previousRow] == "" or mapsettings.rowValues[previousRow] == nil ) and ( rowData[previousRow] ) and ( rowData[previousRow].default ) then
 			mapsettings.rowValues[previousRow] = rowData[previousRow].default
 		end
 	end
@@ -76,12 +76,12 @@ function settingsListClicked()
 		toggleSettingsGUI(true)
 		guiSetText ( mapsettings.required, requiredText[data.required] or "Optional" )
 		local name = data.internalName
-		if ( data.friendlyname  ) then 
-			name = data.friendlyname 
+		if ( data.friendlyname  ) then
+			name = data.friendlyname
 		end
 		guiSetText ( mapsettings.friendlyName, name )
 		--
-		if ( data.description ) then 
+		if ( data.description ) then
 			guiSetText ( mapsettings.description, data.description )
 		end
 		--
@@ -101,7 +101,7 @@ function settingsListClicked()
 			key = "validvalues"
 			rows = split(token2,44)
 		end
-		
+
 		valueWidget = editingControl[dataType]:create{x=208,y=182,label="Enabled",parent=mapsettings.gamemodeSettingsTab,[key]=rows}
 		if mapsettings.rowValues[row] then
 			valueWidget:setValue(mapsettings.rowValues[row])
@@ -120,13 +120,13 @@ function toggleSettingsGUI(bool)
 			isHandled = true
 			addEventHandler ( "onClientGUIMouseDown",getRootElement(),applyGamemodeSettings )
 		end
-	else 
+	else
 		isHandled = false
-		removeEventHandler ( "onClientGUIMouseDown",getRootElement(),applyGamemodeSettings ) 
+		removeEventHandler ( "onClientGUIMouseDown",getRootElement(),applyGamemodeSettings )
 		if previousRow ~= -1 then
 			if valueWidget then
 				mapsettings.rowValues[previousRow] = valueWidget:getValue()
-				if ( mapsettings.rowValues[previousRow] == "" or mapsettings.rowValues[previousRow] == nil ) and ( rowData[previousRow] ) and ( rowData[previousRow].default ) then 
+				if ( mapsettings.rowValues[previousRow] == "" or mapsettings.rowValues[previousRow] == nil ) and ( rowData[previousRow] ) and ( rowData[previousRow].default ) then
 					mapsettings.rowValues[previousRow] = rowData[previousRow].default
 				end
 			end
@@ -150,7 +150,7 @@ function applyGamemodeSettings()
 	local row = guiGridListGetSelectedItem ( mapsettings.settingsList )
 	if row == -1 then return end
 	mapsettings.rowValues[row] = valueWidget:getValue()
-	if ( mapsettings.rowValues[row] == "" or mapsettings.rowValues[row] == nil ) and ( rowData[row] ) and ( rowData[row].default ) then 
+	if ( mapsettings.rowValues[row] == "" or mapsettings.rowValues[row] == nil ) and ( rowData[row] ) and ( rowData[row].default ) then
 		mapsettings.rowValues[row] = rowData[row].default
 	end
 end

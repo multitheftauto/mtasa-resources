@@ -1,4 +1,4 @@
-﻿---------------------------------------------------------------------
+---------------------------------------------------------------------
 --private variables
 ---------------------------------------------------------------------
 
@@ -64,18 +64,18 @@ local edfCreateBasic = {
 			pAmount = tonumber(cdata.type)
 			pAmmo = cdata.amount
 		end
-		
+
 		local pickup
 		if pAmmo then
 			pickup = createPickup(cdata.position[1], cdata.position[2], cdata.position[3], pType, pAmount, cdata.respawn, pAmmo)
 		else
 			pickup = createPickup(cdata.position[1], cdata.position[2], cdata.position[3], pType, pAmount, cdata.respawn)
 		end
-		
+
 		--! workaround
 		setElementData(pickup, "amount", pAmount)
 		setElementData(pickup, "respawn", cdata.respawn)
-		
+
 		return pickup
 	end,
 	blip = function(cdata)
@@ -105,7 +105,7 @@ local edfCreateBasic = {
 		return ped
 	end,
 	water = function(cdata)
-		return createWater ( 
+		return createWater (
 			cdata.position[1] - cdata.sizeX/2, cdata.position[2] - cdata.sizeY/2, cdata.position[3],
 			cdata.position[1] + cdata.sizeX/2, cdata.position[2] - cdata.sizeY/2, cdata.position[3],
 			cdata.position[1] - cdata.sizeX/2, cdata.position[2] + cdata.sizeY/2, cdata.position[3],
@@ -127,14 +127,14 @@ addEventHandler("onResourceStart", rootElement,
 		if getResourceInfo(resource,"edf:represent") == "false" then
 			return
 		end
-		
+
 		if mapmanager.isMap(resource) then
 			outputDebugString('Going to represent map ' .. getResourceName(resource),0,180,180,255)
 			-- if it's a map, represent it
 			local startedResourceRoot = getResourceRootElement(resource)
 			local startedResourceMaps = getElementChildren(startedResourceRoot)
 			local gamemodes = mapmanager.getGamemodesCompatibleWithMap(resource)
-			
+
 			for i,gamemode in ipairs(gamemodes) do
 				if edf[gamemode] then
 					for k, map in ipairs(startedResourceMaps) do
@@ -148,7 +148,7 @@ addEventHandler("onResourceStart", rootElement,
 		else
 			if edfStarted[resource] then return end
 			local resourcename = getResourceName(resource)
-			
+
 			-- otherwise it may contain an edf definition
 			local def = edfLoadDefinition(resource)
 			-- stop here if it couldn't be loaded
@@ -208,7 +208,7 @@ end
 --Loads [fromResource]'s definition to edf[inResource] (alreadyLoaded is for circular-inclusion protection purposes)
 function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 	local fromResourceName = getResourceName(fromResource)
-	
+
 	--get the EDF filename
 	local definitionName = getResourceInfo(fromResource, "edf:definition")
 	if not definitionName then
@@ -220,28 +220,28 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 		outputDebugString(fromResourceName .. ': couldn\'t load edf file', 1)
 		return false
 	end
-	
+
 	--if we weren't told where to load it, it's in the def for the same resource we loaded it from
 	if not inResource then inResource = fromResource end
-	
+
 	--create a new table if there is no definition loaded
 	edf[inResource] = edf[inResource] or {}
 	local definition = edf[inResource]
-	
+
 	--store the definition name
 	edf[inResource].definitionName = xmlNodeGetAttribute(definitionRoot,"name")
-	
+
 	createdRepresentations[inResource] = {}
-	
+
 	--load all extended resources to be used as a base, and avoid circular extension
 	local extends = xmlNodeGetAttribute(definitionRoot,"extends")
 	if extends then
 		--get all extended resource names separated by commas
 		extends = split(extends,44)
-		
+
 		alreadyLoaded = alreadyLoaded or {}
 		alreadyLoaded[fromResourceName] = true
-		
+
 		--for each resource it extends
 		for k, extendedResourceName in ipairs(extends) do
 			-- ignore it if it's the base definition, as it's always loaded
@@ -257,9 +257,9 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 			end
 		end
 	end
-	
+
 	local i
-	
+
 	definition.elements = {}
 	--this loop stores node data and parents for every element in the loaded EDF definition
 	i = 0
@@ -278,51 +278,51 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 			--add the node parents to the type definition
 			edfAddElementNodeParents(node,inResource)
 		end
-		
+
 		i = i + 1
 	until false
-	
+
 	--this loop stores the children data for every element in the EDF
 	i = 0
 	repeat
 		--try to get a new node until we go out of range
 		local node = xmlFindChild(definitionRoot,"element",i)
 		if not node then break end
-		
+
 		--check the element has a defined type name
 		local name = getValidElementNodeAttribute(node,"name")
 		if name then
 			--add the children data to the type definition
 			edfAddElementNodeChildren(node,inResource)
 		end
-		
+
 		i = i + 1
 	until false
-	
+
 	definition.settings = {}
 	i = 0
 	repeat
 		--try to get a new node until we go out of range
 		local node = xmlFindChild(definitionRoot,"setting",i)
 		if not node then break end
-		
+
 		--check the element has a defined type name
 		local name = getValidElementNodeAttribute(node,"name")
 		if name then
 			--add the children data to the type definition
 			edfAddSettingNodeData(node,inResource)
 		end
-		
+
 		i = i + 1
 	until false
-	
+
 	i = 0
 	local serverScripts,clientScripts = {},{}
 	repeat
 		--try to get a new node until we go out of range
 		local node = xmlFindChild(definitionRoot,"script",i)
 		if not node then break end
-		
+
 		--check the element has a defined type name
 		local name = getValidElementNodeAttribute(node,"src")
 		if name then
@@ -331,7 +331,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 			else
 				table.insert(serverScripts,name)
 			end
-		end			
+		end
 		i = i + 1
 	until false
 	readScripts(serverScripts,clientScripts,fromResource)
@@ -341,7 +341,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 		triggerFrom = getResourceRootElement(fromResource)
 	end
 	triggerEvent("onEDFLoad",triggerFrom,fromResource)
-	
+
 	xmlUnloadFile(definitionRoot)
 
 	return true
@@ -374,35 +374,35 @@ function edfUnloadDefinition(resource)
 		end
 	end
 	edf[resource] = nil
-	
+
 	triggerEvent("onEDFUnload",rootElement,resource)
-	
+
 	return true
 end
 
 --Represents an [element] according to its definition in edf[resource].elements
 function edfRepresentElement(theElement, resource, parentData, editorMode, restricted)
 	local elementType = getElementType(theElement)
-	
+
 	-- make elementDefinition point to the element's definition
 	local elementDefinition = edf[resource]["elements"][elementType]
-	
+
 	-- quit if that resource doesn't have a representation for it
 	if not elementDefinition then
 		outputDebugString('No definition for ' .. elementType)
 		return false
 	end
-	
+
 	-- if a creator resource doesn't exist, set it as the new resource
 	setElementData ( theElement, "edf:creatorResource", getResourceName(resource) )
-	
+
 	-- don't represent it if that'd make it go over the instance limit
 	local limit = elementDefinition.limit
 	if limit and #getElementsByType(elementType) > limit then
 		outputDebugString("'"..elementType.."' limit exceeded, not representing.",2)
 		return false
 	end
-	
+
 	-- check all defined fields for validity and stores them in a parent data table
 	local parentData = parentData or {}
 	for dataField, dataDefinition in pairs(elementDefinition.data) do
@@ -411,26 +411,26 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 			outputDebugString('Failed validation for ' .. elementType .. '!' .. dataField)
 			return false
 		end
-		
+
 		parentData[dataField] = checkedData
 	end
-	
+
 	-- get the position and rotation
 	parentData.position = parentData.position or { edfGetElementPosition(theElement) }
 	if not parentData.position[1] then
 		parentData.position = {0,0,0}
 	end
-	
+
 	parentData.rotation = parentData.rotation or { edfGetElementRotation(theElement) }
 	if not parentData.rotation[1] then
 		parentData.rotation = {0,0,0}
 	end
-	
+
 	--ensure a dimension & interior is set
 	parentData.dimension = parentData.dimension or 0
 	parentData.interior = parentData.interior or 0
 	parentData.alpha = parentData.alpha or 255
-	
+
 	setElementDimension ( theElement, parentData.dimension )
 	setElementAlpha ( theElement, parentData.alpha )
 
@@ -438,11 +438,11 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	if #elementDefinition.children > 0 then
 		-- determine if the element children will be glued together
 		-- (always glue them if we're on editor mode)
-		
+
 		glued = elementDefinition.glued or editorMode
-		
+
 		local dummyElement
-		
+
 		if glued then
 			dummyElement = createObject(
 				DUMMY_ID,
@@ -457,7 +457,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 			setElementDimension(dummyElement, parentData.dimension)
 			setElementAlpha(dummyElement, parentData.alpha)
 			setElementInterior(dummyElement, parentData.interior)
-			
+
 			setElementParent(dummyElement, theElement)
 			setElementData(dummyElement, "edf:rep", true)
 			setElementData(dummyElement, "edf:dummy", true)
@@ -466,7 +466,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 			--
 			triggerClientEvent ( "hideDummy", dummyElement )
 		end
-		
+
 		-- for each child,
 		for index, definedChild in ipairs(elementDefinition.children) do
 			local component, componentHandle
@@ -489,7 +489,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 							-- get it from the parent data table
 							local parentDataField = string.sub(dataValue,2,-2)
 							dataValue = parentData[parentDataField]
-							
+
 						-- if it is a position or rotation, add the parent's
 						elseif
 							dataField == "position" or dataField == "rotation"
@@ -500,32 +500,32 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 							end
 							dataValue = newCoord
 						end
-						
+
 						childData[dataField] = dataValue
 					end
-					
+
 					-- create our basic element
 					component = edfCreateBasic[definedChild.type](childData)
 
 					componentHandle = component
-					
+
 					setElementInterior(component, parentData.interior)
 					setElementDimension(component, parentData.dimension)
 					setElementAlpha(component, parentData.alpha)
-					
+
 				-- if it is a custom type,
 				else
 					-- build a restriction table if we don't have one,
 					restricted = restricted or {}
 					-- and mark our current type as restricted
 					restricted[elementType] = true
-					
+
 					-- if the type was restricted, warn and don't do anything
 					if restricted[definedChild.type] then
 						outputDebugString("Circular inclusion in element '"..elementType.."': you can't include the type '"..definedChild.type.."' again.",2)
 					else
 						component = createElement(definedChild.type)
-					
+
 						-- we'll build a new table with this element's data,
 						-- based on that of its parent
 						local subParentData = parentData
@@ -544,12 +544,12 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 							end
 							subParentData[dataField] = dataField
 						end
-						
+
 						component = edfRepresentElement(component, resource, subParentData, editorMode, restricted)
 						componentHandle = edfGetHandle(component)
 					end
 				end
-				
+
 				if component then
 					setElementData (component,"edf:inherited",inherited)
 					setElementParent(component, theElement)
@@ -565,29 +565,29 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 			end
 		end --for loop
 	end --if check
-	
+
 	return theElement
 end
 
 --Creates an [elementType] element as defined in [fromResource] and represents it
 function edfCreateElement(elementType, creatorClient, fromResource, parametersTable, editorMode)
 	local theElement
-	
+
 	if not isElement(creatorClient) or getElementType(creatorClient)~="player" then
 		outputDebugString("edfCreateElement: Non-existing creator specified",1)
 		return false
 	end
-	
+
 	if not edf[fromResource] then
 		outputDebugString("edfCreateElement: Resource '"..getResourceName(fromResource).."'s definition isn't loaded.",1)
 		return false
 	end
-	
+
 	if not edf[fromResource]["elements"][elementType] then
 		outputDebugString("edfCreateElement: Resource '"..getResourceName(fromResource).."' doesn't define type '"..elementType.."'.",1)
 		return false
 	end
-	
+
 	parametersTable = parametersTable or {}
 	parametersTable.position = parametersTable.position or {0,0,0}
 	parametersTable.rotation = parametersTable.rotation or {0,0,0}
@@ -607,11 +607,11 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 		end
 
 		theElement = edfCreateBasic[elementType](childData)
-		
+
 		setElementInterior(theElement, parametersTable.interior)
 		setElementDimension(theElement, parametersTable.dimension)
 		setElementAlpha(theElement, parametersTable.alpha)
-		
+
 		-- setElementData if it is not an edf property
 		for dataField, dataValue in pairs(parametersTable) do
 			if not edf[fromResource]["elements"][elementType].data[dataField] then
@@ -639,7 +639,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 				setElementData(newElement, dataField, dataValue)
 			end
 		end
-		
+
 		theElement = edfRepresentElement(newElement, fromResource, parametersTable, editorMode)
 		if not theElement then
 			destroyElement(newElement)
@@ -649,7 +649,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 
 	edfSetCreatorResource(theElement,fromResource)
 	edfSetCreatorClient(theElement,creatorClient)
-	
+
 	return theElement
 end
 
@@ -661,24 +661,24 @@ function edfCloneElement(theElement, editorMode )
 	local creatorResource = edfGetCreatorResource(theElement)
 	local creatorClient = edfGetCreatorClient(theElement)
 	local elementType = getElementType(theElement)
-	
+
 	if not edf[creatorResource] then
 		outputDebugString("edfCreateElement: Resource '"..getResourceName(fromResource).."'s definition isn't loaded.",1)
 		return false
 	end
-	
+
 	if not edf[creatorResource]["elements"][elementType] then
 		outputDebugString("edfCreateElement: Resource '"..getResourceName(fromResource).."' doesn't define type '"..elementType.."'.",1)
 		return false
 	end
-	
+
 	parametersTable = {}
 	parametersTable.position = {edfGetElementPosition(theElement)} or {0,0,0}
 	parametersTable.rotation = {edfGetElementRotation(theElement)} or {0,0,0}
 	parametersTable.interior = edfGetElementInterior(theElement) or 0
 	parametersTable.dimension = edfGetElementDimension(theElement) or 0
 	parametersTable.alpha = edfGetElementAlpha(theElement) or 255
-	
+
 	if isBasic[elementType] then
 		local childData = {}
 		for property, propertyData in pairs(edf[creatorResource]["elements"][elementType].data) do
@@ -689,10 +689,10 @@ function edfCloneElement(theElement, editorMode )
 			--store the value, or its default
 			childData[property] = parametersTable[property] or propertyData.default
 		end
-		
+
 		local oldElement = theElement
 		theElement = cloneElement(theElement)
-		
+
 		-- For things that cloneElement doesn't actually clone
 		if (getElementType(theElement) == "vehicle" and getVehicleType(theElement) == "Train") then
 			setTrainDerailed(theElement, true)
@@ -706,7 +706,7 @@ function edfCloneElement(theElement, editorMode )
 		if getElementType(oldElement) == "vehicle" then
 			setVehiclePaintjob(theElement, getVehiclePaintjob(oldElement))
 		end
-		
+
 		setElementInterior(theElement, parametersTable.interior)
 		setElementDimension(theElement, parametersTable.dimension)
 		setElementAlpha(theElement, parametersTable.alpha)
@@ -715,7 +715,7 @@ function edfCloneElement(theElement, editorMode )
 		if not newElement then
 			return false
 		end
-		
+
 		for dataField, dataValue in pairs(parametersTable) do
 			if dataField == "position" then
 				edfSetElementPosition(newElement, dataValue[1], dataValue[2], dataValue[3])
@@ -725,7 +725,7 @@ function edfCloneElement(theElement, editorMode )
 				setElementData(newElement, dataField, dataValue)
 			end
 		end
-		
+
 		theElement = edfRepresentElement(newElement, creatorResource, parametersTable, editorMode)
 		if not theElement then
 			destroyElement(newElement)
@@ -735,7 +735,7 @@ function edfCloneElement(theElement, editorMode )
 
 	edfSetCreatorResource(theElement,creatorResource)
 	edfSetCreatorClient(theElement,creatorClient)
-	
+
 	return theElement
 end
 
@@ -760,7 +760,7 @@ function edfGetLoadedEDFResources()
 	for resource in pairs(edf) do
 		table.insert(loadedDefinitions, resource)
 	end
-	
+
 	return loadedDefinitions
 end
 
@@ -851,7 +851,7 @@ function edfGetElementPosition(element)
 			pz = tonumber(getElementData(element,"posZ"))
 		end
 	end
-	
+
 	if px and py and pz then
 		return px, py, pz
 	else
@@ -875,7 +875,7 @@ function edfGetElementRotation(element)
 			rz = tonumber(getElementData(element,"rotZ"))
 		end
 	end
-	
+
 	if rx and ry and rz then
 		return rx, ry, rz
 	else
@@ -914,7 +914,7 @@ end
 function edfSetElementRotation(element, rx, ry, rz)
 	local ancestor = edfGetAncestor(element) or element
 	setElementData(ancestor, "rotation", {rx, ry, rz})
-	
+
 	local etype = getElementType(element)
 	if etype == "object" or etype == "vehicle" then
 		if rx and ry and rz and setElementRotation(element, rx, ry, rz) then
@@ -998,7 +998,7 @@ end
 function edfSetElementProperty(element, property, value)
 	--Set the value for any representations
 	edfSetElementPropertyForRepresentations(element,property,value)
-	
+
 	local elementType = getElementType(element)
 	-- if our property is an entity attribute we have access to, set it
 	if propertySetters[elementType] and propertySetters[elementType][property] then
@@ -1017,7 +1017,7 @@ function edfSetElementPropertyForRepresentations(element,property,value)
 	--Check if the property is inherited to reps
 	for k,child in ipairs(getElementChildren(element)) do
 		if edfGetAncestor(child) == element then --Check that the child is a representation of the element
-			local inherited = getElementData(child,"edf:inherited") 
+			local inherited = getElementData(child,"edf:inherited")
 			if inherited then
 				--Check that the property is inherited to this child
 				if inherited[property] then
@@ -1052,9 +1052,9 @@ end
 function edfAddElementNodeData(node, resource)
 	-- get the element type name
 	local name = xmlNodeGetAttribute(node,"name")
-	
+
 	local typeDefinition = edf[resource]["elements"][name]
-	
+
 	-- update the type instance limit
 	typeDefinition.limit = tonumber(xmlNodeGetAttribute(node,"limit"))
 								or typeDefinition.limit
@@ -1067,18 +1067,18 @@ function edfAddElementNodeData(node, resource)
 	-- update the type icon
 	typeDefinition.icon = xmlNodeGetAttribute(node,"icon")
 									   or typeDefinition.icon
-									   
+
 	--update the name of the parent
 	typeDefinition.parentName = xmlNodeGetAttribute(node,"parentName")
 									   or typeDefinition.parentName
-									   
+
 	--update the description of the parent
 	typeDefinition.parentDescription = xmlNodeGetAttribute(node,"parentDescription")
 									   or typeDefinition.parentDescription
-									   
+
 	--update the type shortcut
 	typeDefinition.shortcut = xmlNodeGetAttribute(node,"shortcut")
-									   or typeDefinition.shortcut	
+									   or typeDefinition.shortcut
 	local isValidShortcut
 	-- update the type createable state
   -- If the "createable" attribute is not present, xmlNodeGetAttribute returns nil and then
@@ -1089,19 +1089,19 @@ function edfAddElementNodeData(node, resource)
 	-- update the type glue state
 	typeDefinition.glued = convert.boolean(xmlNodeGetAttribute(node,"glued"))
 								or typeDefinition.glued
-	
+
 	-- declare the data fields table for this type
 	typeDefinition.data = typeDefinition.data or {}
 	-- make dataFields a reference to it to keep it short
 	local dataFields = typeDefinition.data
-	
+
 	-- this loop adds all data fields to the definition table for our type
 	local j = 0
 	repeat
 		-- try to get a new data node until we go out of range
 		local subnode = xmlFindChild(node,"data",j)
 		if not subnode then break end
-		
+
 		-- get the data field's name
 		local dname = xmlNodeGetAttribute(subnode,"name")
 		if dname then
@@ -1157,7 +1157,7 @@ function edfAddElementNodeData(node, resource)
 	if not isValidShortcut then
 		typeDefinition.shortcut = nil
 	end
-	
+
 	return true
 end
 
@@ -1165,12 +1165,12 @@ end
 function edfAddElementNodeChildren(node, resource)
 	-- get the element type name
 	local name = xmlNodeGetAttribute(node,"name")
-	
+
 	-- declare the children table for this type
 	edf[resource]["elements"][name].children = edf[resource]["elements"][name].children or {}
 	-- make childrenTable a reference to it to keep it short
 	local childrenTable = edf[resource]["elements"][name].children
-	
+
 	-- for each basic type that could be used as a children,
 	for typeName, typeDefinition in pairs(edf[thisResource]["elements"]) do
 		local k = 0
@@ -1178,13 +1178,13 @@ function edfAddElementNodeChildren(node, resource)
 			--try to get a new node until we go out of range
 			local subnode = xmlFindChild(node,typeName,k)
 			if not subnode then break end
-			
+
 			-- create a child table
 			local child = {}
 			child.type = typeName
 			child.editorOnly = convert.boolean(xmlNodeGetAttribute(subnode, "editorOnly"))
 			child.data = {}
-			
+
 			-- make dataFields point to the data fields from the typedef to keep it short
 			local dataFields = typeDefinition.data
 
@@ -1197,7 +1197,7 @@ function edfAddElementNodeChildren(node, resource)
 			k = k + 1
 		until false
 	end
-	
+
 	-- for each known custom element type that could be used as a children,
 	for typeName, typeDefinition in pairs(edf[resource]["elements"]) do
 		local k = 0
@@ -1205,12 +1205,12 @@ function edfAddElementNodeChildren(node, resource)
 			--try to get a new node until we go out of range
 			local subnode = xmlFindChild(node,typeName,k)
 			if not subnode then break end
-			
+
 			-- create a child table
 			local child = {}
 			child.type = typeName
 			child.data = {}
-			
+
 			-- make dataFields point to the data fields from the typedef to keep it short
 			local dataFields = typeDefinition.data
 
@@ -1223,7 +1223,7 @@ function edfAddElementNodeChildren(node, resource)
 			k = k + 1
 		until false
 	end
-	
+
 	return true
 end
 
@@ -1231,19 +1231,19 @@ end
 function edfAddElementNodeParents(node, resource)
 	-- get the element type name
 	local name = xmlNodeGetAttribute(node,"name")
-	
+
 	-- declare the parents table for this type
 	edf[resource]["elements"][name].parents = edf[resource]["elements"][name].parents or {}
 	-- make parentsTable a reference to it to keep it short
 	local parentsTable = edf[resource]["elements"][name].parents
-	
+
 	-- for each parent tag,
 	local k = 0
 	repeat
 		--try to get a new node until we go out of range
 		local subnode = xmlFindChild(node,"parent",k)
 		if not subnode then break end
-		
+
 		local parentType = xmlNodeGetAttribute(subnode, "type")
 		if parentType then
 			table.insert(parentsTable, parentType)
@@ -1253,7 +1253,7 @@ function edfAddElementNodeParents(node, resource)
 		edf[resource]["elements"][name].parentDescription = edf[resource]["elements"][name].parentDescription or xmlNodeGetAttribute(subnode, "description")
 		k = k + 1
 	until false
-	
+
 	return true
 end
 
@@ -1261,10 +1261,10 @@ end
 function edfAddSettingNodeData(node, resource)
 	-- get the element type name
 	local name = xmlNodeGetAttribute(node,"name")
-	
+
 	edf[resource]["settings"][name] = edf[resource]["settings"][name] or {}
 	local settingDefinition = edf[resource]["settings"][name]
-	
+
 	-- update the setting description
 	settingDefinition.description = xmlNodeGetAttribute(node,"description")
 								or settingDefinition.description
@@ -1290,7 +1290,7 @@ function edfAddSettingNodeData(node, resource)
 	else
 		settingDefinition.default = nil
 	end
-	
+
 	-- update the setting required flag
 	local requiredAttribute = xmlNodeGetAttribute(node,"required")
 	if requiredAttribute then
@@ -1308,12 +1308,12 @@ function edfGetChildData(node, dataFields)
 
 	for dataField, fieldProperties in pairs(dataFields) do
 		local datatype = fieldProperties.datatype
-		
+
 		-- if we don't have a conversion function for this datatype, default to string
 		if not convert[datatype] then
 			datatype = "string"
 		end
-		
+
 		-- get the default value
 		local default = fieldProperties.default
 
@@ -1373,9 +1373,9 @@ function edfCheckElementData(theElement, dataField, dataDefinition)
 		if not convert[correctType] then
 			correctType = "string"
 		end
-		
+
 		local convertedValue = convert[correctType](theData, dataDefinition.validvalues)
-		
+
 		-- if the attribute has an invalid type,
 		if convertedValue == nil then
 			-- output a warning
@@ -1398,7 +1398,7 @@ function edfCheckElementData(theElement, dataField, dataDefinition)
 			return false
 		end
 	end
-	
+
 	-- we set the new element data in case we have changed it
 	setElementData(theElement, dataField, theData)
 

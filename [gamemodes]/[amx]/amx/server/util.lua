@@ -1,4 +1,4 @@
-﻿g_ResRoot = getResourceRootElement(getThisResource())
+g_ResRoot = getResourceRootElement(getThisResource())
 
 --[[
 local function fndebug(...)
@@ -8,7 +8,7 @@ local function fndebug(...)
 		_G[name] = function(...)
 			local args = { ... }
 			local result = fn(...)
-			
+
 			local logstr = 'Server: ' .. name .. '('
 			for i,a in ipairs(args) do
 				if i > 1 then
@@ -151,7 +151,7 @@ g_Keys = {
 	[101] = '/',
 	[102] = '#',
 	[103] = '\\',
-	[104] = '=', 
+	[104] = '=',
 }
 
 g_EventNames = {
@@ -337,7 +337,7 @@ function addElem(amx, listname, elem)
 	else
 		list = amx[listname]
 	end
-	
+
 	local id
 	local globList
 	local newtable = { elem = elem }
@@ -352,7 +352,7 @@ function addElem(amx, listname, elem)
 			globList[id] = newtable
 		end
 	end
-	
+
 	if not id then
 		id = 0
 		while list[id] do
@@ -373,7 +373,7 @@ function removeElem(amx, listname, elem)
 	else
 		list = amx[listname]
 	end
-	
+
 	local id = table.find(list, 'elem', elem)
 	if id then
 		list[id] = nil
@@ -481,7 +481,7 @@ function table.find(t, ...)
 		end
 		return false
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil
@@ -677,7 +677,7 @@ local string, fileSetPos, fileRead = string, fileSetPos, fileRead
 
 function getResourceAMXFiles(res)
 	local result = false
-	
+
 	local meta = xmlLoadFile(':' .. getResourceName(res) .. '/' .. 'meta.xml' )
 	if not meta then
 		return false
@@ -889,7 +889,7 @@ function cell2float(cell)
 	if cell == 0 then
 		return 0
 	end
-	
+
 	local sign = cell >= 0x80000000 and -1 or 1
 	local exp = (math.floor(cell / (2^23)) % (2^8)) - 127
 	local mantissa = (cell % (2^23)) / (2^23)
@@ -901,7 +901,7 @@ function float2cell(float)
 		return 0
 	end
 	local ldexp = math.ldexp
-	
+
 	-- sign bit
 	local sign = 0
 	if float < 0 then
@@ -947,9 +947,9 @@ function string.double(dbl)
 	if dbl == 0 then
 		return ('\0'):rep(8)
 	end
-	
+
 	local floor, ldexp = math.floor, math.ldexp
-	
+
 	-- sign bit
 	local sign = 0
 	if dbl < 0 then

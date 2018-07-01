@@ -1,4 +1,4 @@
-﻿definitionsDialog = {}
+definitionsDialog = {}
 local allEDF = {}
 
 
@@ -89,7 +89,7 @@ function setEDF(gui)
 end
 
 addEvent ("syncEDFDefinitions",true)
-addEventHandler ( "syncEDFDefinitions", getRootElement(), 
+addEventHandler ( "syncEDFDefinitions", getRootElement(),
 function ( newEDF )
 	allEDF = newEDF
 	setEDF("availEDF")

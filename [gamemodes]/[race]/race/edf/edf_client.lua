@@ -1,4 +1,4 @@
-﻿g_ModelForPickupType = { nitro = 2221, repair = 2222, vehiclechange = 2223 }
+g_ModelForPickupType = { nitro = 2221, repair = 2222, vehiclechange = 2223 }
 models = {}
 
 startTick = getTickCount()
@@ -8,7 +8,7 @@ function onStart() --Callback triggered by edf
 		models[name] = {}
 		models[name].txd = engineLoadTXD(':race/model/' .. name .. '.txd')
 		engineImportTXD(models[name].txd, id)
-		
+
 		models[name].dff = engineLoadDFF(':race/model/' .. name .. '.dff', id)
 		engineReplaceModel(models[name].dff, id)
 	end

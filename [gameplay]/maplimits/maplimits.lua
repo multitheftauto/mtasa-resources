@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 <maplimit>
 	<point x="" y="" />
 	<point x="" y="" />
@@ -102,7 +102,7 @@ function stuff( player, flag )
 		end
 		if ( flag ~= newFlag ) then
 			if ( getElementInterior (player) == 0 ) then --dont trigger on interiors
-				if ( newFlag ) then    
+				if ( newFlag ) then
 					if ( not isPedDead( player ) ) then	--Lol, inefficient. Bite me.
 						textDisplayAddObserver ( mapl_disp, player )
 					end
@@ -111,7 +111,7 @@ function stuff( player, flag )
 				end
 			end
 		end
-		if newFlag and ( not isPedDead( player ) ) then			
+		if newFlag and ( not isPedDead( player ) ) then
 			if ( getElementInterior (player) == 0 ) then --dont trigger on interiors
 				local playerHP = getElementHealth( player )
 				if ( playerHP > 10 ) then

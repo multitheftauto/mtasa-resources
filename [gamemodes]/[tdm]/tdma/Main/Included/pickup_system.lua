@@ -1,4 +1,4 @@
-﻿pickups = {}
+pickups = {}
 pickups_count = 0
 pickups_weapons = {"5", "9", "22", "23", "24", "25", "26", "27", "28", "29", "32", "30", "31", "33", "34", "16", "18"}
 pickups_weaponsAmmo = {"1", "1", "50", "50", "50", "25", "15", "20", "150", "159", "135", "100", "100", "30", "25", "6", "6"}
@@ -39,31 +39,31 @@ end
 
 function generatePickup ( pID )
 	local pType = math.random(0,8)
-	
+
 	if ( pType == 0 ) then
 		--Health
 		--createPickup ( float x, float y, float z, int type, int amount/weapon, [ int respawnTime = 30000, int ammo = 50 ] )
 		thePickup = createPickup ( pickups[pID]["x"], pickups[pID]["y"], pickups[pID]["z"], 0, 100 )
-		if ( thePickup ) then 
-			pickups[pID]["pID"] = thePickup 
+		if ( thePickup ) then
+			pickups[pID]["pID"] = thePickup
 			pickups[pID]["pType"] = 0
 			pickups[pID]["pAmount"] = 100
 			pickups[pID]["pWeapon"] = 0
 			pickups[pID]["pAmmo"] = 0
-		else 
-			--outputDebugString ( "unable to create pickup ID " .. pID ) 
+		else
+			--outputDebugString ( "unable to create pickup ID " .. pID )
 		end
 	elseif ( pType == 1 ) then
 		--Armor
 		thePickup = createPickup ( pickups[pID]["x"], pickups[pID]["y"], pickups[pID]["z"], 1, 100 )
-		if ( thePickup ) then 
-			pickups[pID]["pID"] = thePickup 
+		if ( thePickup ) then
+			pickups[pID]["pID"] = thePickup
 			pickups[pID]["pType"] = 1
 			pickups[pID]["pAmount"] = 100
 			pickups[pID]["pWeapon"] = 0
 			pickups[pID]["pAmmo"] = 0
-		else 
-			--outputDebugString ( "unable to create pickup ID " .. pID ) 
+		else
+			--outputDebugString ( "unable to create pickup ID " .. pID )
 		end
 	elseif ( pType >= 2 ) then
 		--Weapon
@@ -72,14 +72,14 @@ function generatePickup ( pID )
 			local idWeapon = pickups_weapons[randomID]
 			local idAmmo = pickups_weaponsAmmo[randomID]
 			thePickup = createPickup ( pickups[pID]["x"], pickups[pID]["y"], pickups[pID]["z"], 2, idWeapon, 30000, idAmmo  )
-			if ( thePickup ) then 
-				pickups[pID]["pID"] = thePickup 
+			if ( thePickup ) then
+				pickups[pID]["pID"] = thePickup
 				pickups[pID]["pType"] = 2
 				pickups[pID]["pAmount"] = 0
 				pickups[pID]["pWeapon"] = idWeapon
 				pickups[pID]["pAmmo"] = idAmmo
-			else 
-				--outputDebugString ( "unable to create pickup ID " .. pID ) 
+			else
+				--outputDebugString ( "unable to create pickup ID " .. pID )
 			end
 		else
 			local idWeapon = pickups[pID]["weaponid"]
@@ -92,23 +92,23 @@ function generatePickup ( pID )
 					if v == idWeapon then
 						wFound = true
 						WeaponAmmo = pickups_weaponsAmmo[wFndCount]
-					end 
+					end
 				end
 				if ( wFound == false ) then
 					WeaponAmmo = 25
 				end
 			end
 			thePickup = createPickup ( pickups[pID]["x"], pickups[pID]["y"], pickups[pID]["z"], 2, idWeapon, 30000, WeaponAmmo  )
-			if ( thePickup ) then 
-				pickups[pID]["pID"] = thePickup 
+			if ( thePickup ) then
+				pickups[pID]["pID"] = thePickup
 				pickups[pID]["pType"] = 2
 				pickups[pID]["pAmount"] = 0
 				pickups[pID]["pWeapon"] = idWeapon
 				pickups[pID]["pAmmo"] = WeaponAmmo
-			else 
-				--outputDebugString ( "unable to create pickup ID " .. pID ) 
+			else
+				--outputDebugString ( "unable to create pickup ID " .. pID )
 			end
-		end 
+		end
 
 	end
 	--outputDebugString ( "Installed pickup ID " .. pID .. "[" .. tostring(thePickup) .. ", with a type of: " .. pType )
@@ -121,7 +121,7 @@ local foundIt = false
 			foundIt = true
 			cancelEvent()
 			--outputDebugString ( "Found this pickup! - Weapon Model: " .. tostring(v["pWeapon"]) .. " Ammo: " .. tostring(v["pAmmo"]) .. " Type: " .. tostring(v["pType"]) )
-			
+
 			if ( v["pType"] == 0 ) then
 				--Give player health
 				setElementHealth ( source, 100 )
@@ -140,7 +140,7 @@ local foundIt = false
 					updatePlayerInfoBar ( source, 5000, "You obtained a " .. getWeaponNameFromID(v["pWeapon"]) .. " with " .. v["pAmmo"] .. " rounds" )
 				end
 			end
-			
+
 			destroyElement ( v["pID"] )
 			setTimer ( generatePickup, math.random(30000, 120000), 1, v["id"] )
 
@@ -148,7 +148,7 @@ local foundIt = false
 			break
 		end
 	end
-	
+
 	--Stops crappy spawning of dual weapons that we seem to have at the moment.
 	if ( foundIt == false ) then
 		destroyElement ( hitPickup )
@@ -160,15 +160,15 @@ function getRandomWeapon()
 	local randomID = math.random(1,tableSize)
 	local i = 0
 	local returnValue = nil
-	
+
 	for k,v in ipairs(pickups_weapons) do
 		i = i + 1
 		if ( i == randomID ) then
 			returnValue = v
 		end
 	end
-	
-	if ( returnValue ~= nil ) then 
+
+	if ( returnValue ~= nil ) then
 		return returnValue
 	else
 		return false

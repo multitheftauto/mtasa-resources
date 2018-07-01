@@ -1,4 +1,4 @@
-﻿local spectators = {}
+local spectators = {}
 local getPlayerSpectatee = {}
 resourceRoot = getResourceRootElement(getThisResource())
 
@@ -23,7 +23,7 @@ function teamstealthgamestart()
 	team1 = createTeam("RED",255,0,0)
 	team2 = createTeam("BLUE",0,0,255)
 	teamprotect = get("stealth.teamdamage")
-	if teamprotect == 1 then	
+	if teamprotect == 1 then
 		setTeamFriendlyFire( team1, false )
 		setTeamFriendlyFire( team2, false )
 	elseif teamprotect == 0 then
@@ -70,7 +70,7 @@ function joinTeam1( source )
 	end
 end
 addEventHandler ( "dojoinTeam1", getRootElement(), joinTeam1 )
- 
+
 addEvent("dojoinTeam2",true )
 function joinTeam2( source )
 	if (countPlayersInTeam(team2) - countPlayersInTeam(team1) > balanceamount) then
@@ -81,7 +81,7 @@ function joinTeam2( source )
 	end
 end
 addEventHandler ( "dojoinTeam2", getRootElement(), joinTeam2 )
- 
+
 function selectTeam( player )
 	setPlayerTeam(player, nil)
 	local thisplayer = player
@@ -135,7 +135,7 @@ function teamstealthmapstart(startedMap)
 	roundstart = setTimer ( startstealthround, 15000, 1, player )
 	setElementData ( team1, "Score", 0 )
 	setElementData ( team2, "Score", 0 )
-	round_count = 0	
+	round_count = 0
 	local teams = {team1,team2}
 	local stealthplayers = getElementsByType("player")
 	for index, thisplayer in ipairs(stealthplayers) do
@@ -146,7 +146,7 @@ function teamstealthmapstart(startedMap)
 		selectTeam (thisplayer)
 	end
 	teamprotect = get("stealth.teamprotect")
-	if teamprotect == 1 then	
+	if teamprotect == 1 then
 		setTeamFriendlyFire( team1, false )
 		setTeamFriendlyFire( team2, false )
 	elseif teamprotect == 0 then
@@ -176,7 +176,7 @@ function teamstealthmapstart(startedMap)
 	local mapgravity = get(getResourceName(currentmap)..".#gravity")
 	if mapgravity then
 		setGravity ( mapgravity )
-	end	
+	end
 	--Create our camera element (if settings system was used)
 	if ( not getElementsByType"camera"[1] ) and ( get(getResourceName(currentmap)..".camera") ) then
 		local cameraInfo = get(getResourceName(currentmap)..".camera")
@@ -237,7 +237,7 @@ end
 addEventHandler( "onGamemodeMapStop", getRootElement(), teamstealthmapstop )
 
 function startstealthround()
-	local alltheplayers = getElementsByType("player") 
+	local alltheplayers = getElementsByType("player")
 	for index, thisplayer in ipairs(alltheplayers) do
 		triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
 		textDisplayRemoveObserver( redwinsdisplay, thisplayer )
@@ -286,7 +286,7 @@ addEvent ("domercspawn", true )
 function mercspawn(thisplayer)
 	currentmap = call(getResourceFromName"mapmanager","getRunningGamemodeMap")
 	local mapinterior = get(getResourceName(currentmap)..".#interior")
-	if mapinterior == false then 
+	if mapinterior == false then
 		mapinterior = 0
 	end
 	mercteamspawns = getElementByID("mercspawns")
@@ -297,8 +297,8 @@ function mercspawn(thisplayer)
 		mercpoints = getElementsByType ( "mercenaryspawn", mapRoot or getRootElement() )
 	end
 	local random = math.random ( 1, table.getn ( mercpoints ) )
-	local posX = getElementData(mercpoints[random], "posX") 
-	local posY = getElementData(mercpoints[random], "posY") 
+	local posX = getElementData(mercpoints[random], "posX")
+	local posY = getElementData(mercpoints[random], "posY")
 	local posZ = getElementData(mercpoints[random], "posZ")
 	local rot = getElementData(mercpoints[random], "rot") or getElementData(mercpoints[random], "rotZ") or 0
 	spawnPlayer ( thisplayer, posX, posY, posZ, rot, 285, mapinterior )
@@ -319,7 +319,7 @@ addEvent ("dospyspawn", true )
 function spyspawn(thisplayer)
 	currentmap = call(getResourceFromName"mapmanager","getRunningGamemodeMap")
 	local mapinterior = get(getResourceName(currentmap)..".#interior")
-	if mapinterior == false then 
+	if mapinterior == false then
 		mapinterior = 0
 	end
 	spyteamspawns = getElementByID("spyspawns")
@@ -330,8 +330,8 @@ function spyspawn(thisplayer)
 		spypoints = getElementsByType ( "spyspawn", mapRoot or getRootElement() )
 	end
 	local random = math.random ( 1, table.getn ( spypoints ) )
-	local posX = getElementData(spypoints[random], "posX") 
-	local posY = getElementData(spypoints[random], "posY") 
+	local posX = getElementData(spypoints[random], "posX")
+	local posY = getElementData(spypoints[random], "posY")
 	local posZ = getElementData(spypoints[random], "posZ")
 	local rot = getElementData(spypoints[random], "rot") or getElementData(spypoints[random], "rotZ") or 0
 	spawnPlayer ( thisplayer, posX, posY, posZ, rot, 163, mapinterior )
@@ -409,7 +409,7 @@ function gearup (thisplayer, primarySelection, secondarySelection, throwableSele
 	end
 	if secondarySelection == "uzis" then
 		giveWeapon ( thisplayer, 28, uziammo )
-	end	
+	end
 	if secondarySelection == "tec-9s" then
 		giveWeapon ( thisplayer, 32, tec9ammo )
 	end
@@ -471,7 +471,7 @@ function stealthplayerdied ( totalAmmo, killer, killerWeapon, bodypart )
 	if playingaround == 1 then
 		if freshround ~= 1 then
 			local deadguysteam = getPlayerTeam ( source )
-			local teammates = getPlayersInTeam ( deadguysteam ) 
+			local teammates = getPlayersInTeam ( deadguysteam )
 			for playerKey, playerValue in ipairs(teammates) do
 				local isDead = isPedDead(playerValue)
 				if (isDead == false) then return end
@@ -501,8 +501,8 @@ function spectateNext (source) -- THIS IS THE FUNCTION USED TO SWICH WHO IS BEIN
 	if playingaround == 1 then  -- IF A ROUND IS IN PROGRESS
 		if ( isPedDead ( source ) ) then --IF THE PLAYER IS DEAD
 			local specPlayer = getPlayerSpectatee[source] -- gets the spectatee player
-			if not specPlayer then 
-				specPlayer = 1 
+			if not specPlayer then
+				specPlayer = 1
 				spectators[source] = true
 			end
 			local deadplayerTeam = getPlayerTeam(source)
@@ -522,7 +522,7 @@ function spectateNext (source) -- THIS IS THE FUNCTION USED TO SWICH WHO IS BEIN
 				if specPlayer > playerCount then
 					specPlayer = 1
 				end
-				--setCameraMode ( source, "player" )    
+				--setCameraMode ( source, "player" )
 				setCameraTarget ( source, playersTable[specPlayer] )
 				outputSpectateMessage("Now spectating "..getPlayerName(playersTable[specPlayer]),source)
 				getPlayerSpectatee[source] = specPlayer
@@ -563,7 +563,7 @@ function stealthroundended( timerID, player )
 				if ( getElementData ( gadget, "type" ) == "alandmine" ) then
 					destroyElement ( gadget ) --DESTROYS ALL LANDMINES AT THE END OF EVERY ROUND
 				elseif ( getElementData ( gadget, "type" ) == "acamera" ) then
-					destroyElement ( gadget ) --DESTROYS ALL CAMERAS AT THE END OF EVERY ROUND		
+					destroyElement ( gadget ) --DESTROYS ALL CAMERAS AT THE END OF EVERY ROUND
 				end
 			end
 			local objectlist = getElementsByType ( "object" )
@@ -578,7 +578,7 @@ function stealthroundended( timerID, player )
 				end
 			end
 			local team1survivers = 0
-			local team2survivers = 0	
+			local team2survivers = 0
 			local firstteam = getPlayersInTeam ( team1 )
 			for index, thisplayer in ipairs(firstteam) do
 				setElementData ( thisplayer, "waitingtospawn", "indeed" )
@@ -589,7 +589,7 @@ function stealthroundended( timerID, player )
 					team1survivers = team1survivers +1
 					killPed(thisplayer, thisplayer, 99, 99)
 				end
-			end	
+			end
 			local secondteam = getPlayersInTeam ( team2 )
 			for index, thisplayer in ipairs(secondteam) do
 				setElementData ( thisplayer, "waitingtospawn", "indeed" )
@@ -597,7 +597,7 @@ function stealthroundended( timerID, player )
 				triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
 				local isDead = isPedDead(thisplayer)
 				if (isDead == false) then
-					team2survivers = team2survivers +1		
+					team2survivers = team2survivers +1
 					killPed(thisplayer, thisplayer, 99, 99)
 				end
 			end
@@ -615,7 +615,7 @@ function stealthroundended( timerID, player )
 				end
 				local teampoints = getElementData ( team1, "Score" )
 				setElementData ( team1, "Score", teampoints+1  )
-			end	
+			end
 			if team2survivers > team1survivers then
 				local alltheplayers = getElementsByType("player")
 				for index, thisplayer in ipairs(alltheplayers) do
@@ -623,7 +623,7 @@ function stealthroundended( timerID, player )
 				end
 				local teampoints = getElementData ( team2, "Score" )
 				setElementData ( team2, "Score", teampoints+1  )
-			end	
+			end
 			if team2survivers == team1survivers then
 				local alltheplayers = getElementsByType("player")
 				for index, thisplayer in ipairs(alltheplayers) do

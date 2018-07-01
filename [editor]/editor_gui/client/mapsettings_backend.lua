@@ -1,11 +1,11 @@
-﻿--store defaults
+--store defaults
 local MINUTE_DURATION = 2147483647
 local SET_TIME_TIMER
 local previousEnvironment,radioWeather = {}
 currentMapSettings = {}
 local mapSettingFunctionsGet = {}
 local mapSettingFunctionsSet = {}
-local mapSettingTypes = { 
+local mapSettingTypes = {
 "locked_time",
 "useLODs",
 "timeHour",
@@ -62,7 +62,7 @@ local function deepTableEqual(table1, table2)
 			return false
 		end
 	end
-	
+
 	return true
 end
 
@@ -101,7 +101,7 @@ addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResourc
 )
 
 addEvent ( "syncMapSettings",true)
-addEventHandler ( "syncMapSettings", getRootElement(), 
+addEventHandler ( "syncMapSettings", getRootElement(),
 function ( newMapSettings )
 	currentMapSettings = newMapSettings
 	freezeTime ( true, currentMapSettings.timeHour, currentMapSettings.timeMinute )
@@ -142,15 +142,15 @@ function setMapSettings()
 	for gui,value in pairs(currentMapSettings) do
 		local theType = mapSettingSpecial[gui]
 		if theType then
-			if 	mapSettingFunctionsSet[theType] then 
-				mapSettingFunctionsSet[theType](gui) 
+			if 	mapSettingFunctionsSet[theType] then
+				mapSettingFunctionsSet[theType](gui)
 			end
 		else
-			mapsettings[gui]:setValue(value) 
+			mapsettings[gui]:setValue(value)
 		end
 		--[[
-		if mapSettingAction[gui] then 
-			mapSettingAction[gui]() 
+		if mapSettingAction[gui] then
+			mapSettingAction[gui]()
 		end
 		]]
 	end

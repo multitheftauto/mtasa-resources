@@ -19,7 +19,7 @@
 
   <!--Outside @ Lighthouse and Sub-->
 	<camera type="finish" posX="1974.6202392578" posY="-342.96154785156" posZ="24.719261169434" targetX="1987.9140625" targetY="-243.84912109375" targetZ="23.052671432495" />
-	
+
 
 	<objective name="Find a way in" description="The gate is closed, you'll have to find another way in." successText="attackers reached the facility" id="way_in" req=""
 		posX="1821.666015625" posY="-513.634765625" posZ="74.7" />
@@ -34,7 +34,7 @@
 		stay="8" stayText="Planting bomb..." posX="1896.9552001953" posY="-577.51696777344" posZ="37.314125061035" />
 
 	<objective name="Bomb 03" description="They have stolen a chemical weapon, you can't detonate the bombs until you take the weapon to a safe distance. For now plant some C4s." successText="bomb placed" id="bomb03" req="cabin" markerType="checkpoint"
-		stay="8" stayText="Planting bomb..." posX="1952.8793945313" posY="-594.69110107422" posZ="25.04545211792" />	
+		stay="8" stayText="Planting bomb..." posX="1952.8793945313" posY="-594.69110107422" posZ="25.04545211792" />
 
 	<objective name="Bomb 04" description="They have stolen a chemical weapon, you can't detonate the bombs until you take the weapon to a safe distance. For now plant some C4s." successText="bomb placed" id="bomb04" req="cabin" markerType="checkpoint"
 		stay="8" stayText="Planting bomb..." posX="1924.0235595703" posY="-590.04144287109" posZ="30.181875228882" />
@@ -54,7 +54,7 @@
 <!--
   defenders: katana, pistol, shotgun, uzi
 	8,1;22,50;25,20;28,300
-	
+
   attackers: knife, silenced pistol, mp5, molotov
 	4,1;23,50;29,300;18,5
 -->
@@ -64,7 +64,7 @@
 		<spawnarea posX="1955.0000000000" posY="-245.00000000000" posZ="-0.500000000000" skins="287" weapons="4,1;23,50;29,300;18,5" />
 		<spawnarea posX="2007.0000000000" posY="-237.00000000000" posZ="-0.500000000000" skins="287" weapons="4,1;23,50;29,300;18,5" />
 	</spawngroup>
-	
+
   <!-- cliff-->
 	<spawngroup type="defender" req="">
 		<spawnarea posX="2039.0941162109" posY="-600.56982421875" posZ="68.539886474609" skins="32,34" weapons="8,1;22,50;25,20;28,300" />
@@ -81,7 +81,7 @@
 		<spawnarea posX="2039.0941162109" posY="-600.56982421875" posZ="68.539886474609" skins="32,34" weapons="8,1;22,50;25,20;28,300" />
 		<spawnarea posX="1933.9559326172" posY="-537.55841064453" posZ="20.024095535278" skins="32,34" weapons="8,1;22,50;25,20;28,300" />
 	</spawngroup>
-	
+
   <!--balconies-->
 	<spawngroup type="attacker" req="way_in">
 		<spawnarea posX="1847.4204101563" posY="-534.79620361328" posZ="61.475925445557" skins="287" weapons="4,1;23,50;29,300;18,5" />
@@ -197,7 +197,7 @@
 
 	<object name="object (92)" id="gate01" posX="1930.543579" posY="-424.722748" posZ="32.6725" rotX="0" rotY="0" rotZ="357.60" model="10828" />
 	<object name="object (53)" id="gate02" posX="1895.132568" posY="-423.219879" posZ="32.6700" rotX="0" rotY="0" rotZ="177.58" model="10828" />
-		
+
 		<bomb id="bomb1" posX="1905.12" posY="-563.82" posZ="29.28" rotX="0" rotY="20.63" rotZ="146.10" />
 		<bomb id="bomb2" posX="1897.31" posY="-576.98" posZ="36.53" rotX="-92.82" rotY="88.24" rotZ="179.91" />
 		<bomb id="bomb3" posX="1952.68" posY="-596.17" posZ="25.77" rotX="0" rotY="0" rotZ="135.22" />

@@ -1,4 +1,4 @@
-﻿---Preset definitons for drawing team select layouts, for 2 and 4 teams.  After that it just uses gridlists
+---Preset definitons for drawing team select layouts, for 2 and 4 teams.  After that it just uses gridlists
 screenX,screenY = guiGetScreenSize()
 presetSpawnScreen = {
 	aspect = 4/3,
@@ -11,7 +11,7 @@ presetSpawnScreen = {
 	},
 	[4] = {
 		interval = 0.180989583333,
-		text = { 0.388671875,0.3046875,0.3369140625,0.0729166667 },		
+		text = { 0.388671875,0.3046875,0.3369140625,0.0729166667 },
 		icon = { path="images/team.png",0.2216796875,0.265625,0.11328125,0.1510416667},
 		backdrop = {path="images/backdrop.png",0.2216796875,0.265625,0.490234375,0.1510416667}, --positioned from the centre
 	}

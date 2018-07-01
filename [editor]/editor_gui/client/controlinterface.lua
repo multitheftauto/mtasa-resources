@@ -1,4 +1,4 @@
-﻿local function onControlsLoaded()
+local function onControlsLoaded()
 	bindControl ( "toggle_gui_display","down", toggleHUDShowing )
 	bindControl ( "edf_prev", "down", scrollEDF )
 	bindControl ( "edf_next", "down", scrollEDF )
@@ -41,7 +41,7 @@ function bindControl ( control, keyState, handlerFunction, ... )
 	if keyState == "up" or keyState == "both" then
 		keybinds[control] = keybinds[control] or {}
 		keybinds[control][hitState] = keybinds[control][hitState] or {}
-		keybinds[control][hitState][handlerFunction] = {...}	
+		keybinds[control][hitState][handlerFunction] = {...}
 	end
 	return true
 end
@@ -83,7 +83,7 @@ addEventHandler ( "onControlPressed",  rootElement,
 				for k, v in pairs(keybinds[key][keyState]) do
 					bindsCopy[k] = v
 				end
-				
+
 				for handlerFunction, args in pairs(bindsCopy) do
 					handlerFunction ( key, keyState, unpack(args) )
 				end

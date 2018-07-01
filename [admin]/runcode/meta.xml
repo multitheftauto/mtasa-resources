@@ -3,7 +3,7 @@
 	<oop>true</oop>
 
 	<include resource="ajax" />
-	
+
 	<script src="client.lua" type="client"/>
 	<script src="client_util.lua" type="client"/>
 	<script src="server.lua" type="server"/>
@@ -12,7 +12,7 @@
 	<html src="runcode.htm" default="true"/>
 	<html src="runcode.css" raw="true"/>
 	<html src="runcode.js" raw="true"/>
-	
+
 	<!-- codemirror files http://codemirror.net/ -->
 	<html src="codemirror\codemirror.js" raw="true"/>
 	<html src="codemirror\codemirror.css" raw="true"/>

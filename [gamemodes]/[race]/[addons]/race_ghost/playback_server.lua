@@ -53,7 +53,7 @@ function GhostPlayback:loadGhost()
 	-- Load the old ghost if there is one
 	local mapName = getResourceName( self.map )
 	local ghost = xmlLoadFile( "ghosts/" .. mapName .. ".ghost" )
-	
+
 	-- Replace with backup if original doesn't exist
 	if not ghost then
 		local backup = xmlLoadFile( "ghosts/" .. mapName .. ".backup" )
@@ -64,7 +64,7 @@ function GhostPlayback:loadGhost()
 			fileDelete( "ghosts/" .. mapName .. ".backup" )
 		end
 	end
-	
+
 	if ghost then
 		-- Retrieve info about the ghost maker
 		local info = xmlFindChild( ghost, "i", 0 )
@@ -72,7 +72,7 @@ function GhostPlayback:loadGhost()
 			self.racer = xmlNodeGetAttribute( info, "r" ) or "unknown"
 			self.bestTime = tonumber( xmlNodeGetAttribute( info, "t" ) ) or math.huge
 		end
-		
+
 		-- Construct a table
 		local index = 0
 		local node = xmlFindChild( ghost, "n", index )
@@ -82,7 +82,7 @@ function GhostPlayback:loadGhost()
 				self.recording = {}
 				break
 			end
-			
+
 			local attributes = xmlNodeGetAttributes( node )
 			local row = {}
 			for k, v in pairs( attributes ) do
@@ -117,7 +117,7 @@ function GhostPlayback:loadGhost()
 			end
 			return false
 		end
-	
+
 		-- Create the ped & vehicle
 		for _, v in ipairs( self.recording ) do
 			if v.ty == "st" then
@@ -159,7 +159,7 @@ addEventHandler( "onMapStarting", g_Root,
 		if playback then
 			playback:destroy()
 		end
-		
+
 		playback = GhostPlayback:create( exports.mapmanager:getRunningGamemodeMap() )
 		playback:loadGhost()
 		playback:sendGhostData()

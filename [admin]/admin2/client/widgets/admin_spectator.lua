@@ -47,7 +47,7 @@ function aSpectator.Open ()
 		aSpectator.Skip			= guiCreateCheckBox ( 0.08, 0.85, 0.84, 0.04, "Skip dead players", true, true, aSpectator.Actions )
 					  		  guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
 		aSpectator.Back			= guiCreateButton ( 0.10, 0.93, 0.80, 0.05, "Back", true, aSpectator.Actions )
-	
+
 		aSpectator.Players		= guiCreateWindow ( 30, y / 2 - 200, 160, 400, "Players", false )
 			  	  	  		  guiWindowSetSizable ( aSpectator.Players, false )
 		aSpectator.PlayerList		= guiCreateGridList ( 0.03, 0.07, 0.94, 0.92, true, aSpectator.Players )
@@ -107,7 +107,7 @@ function aSpectator.Close ( destroy )
 		removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
 		removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
 		removeEventHandler ( "onClientRender", _root, aSpectator.Render )
-	
+
 		if ( destroy ) then
 			destroyElement ( aSpectator.Actions )
 			destroyElement ( aSpectator.Players )

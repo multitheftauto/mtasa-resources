@@ -1,4 +1,4 @@
-﻿mapSettingsCamera = {}
+mapSettingsCamera = {}
 mapsettings = {}
 screenX, screenY = guiGetScreenSize()
 weather = {
@@ -28,7 +28,7 @@ function createMapSettings()
 	mapsettings.window		=	guiCreateWindow ( screenX/2 - 320, screenY/2 - 180, 640, 360, "MAP SETTINGS", false )
 	guiSetVisible(mapsettings.window, false )
 	guiWindowSetSizable ( mapsettings.window, false )
-	
+
 	local tabpanel = guiCreateTabPanel ( 0.02388, 0.09444, 0.9582, 0.81389, true, mapsettings.window )
 	mapsettings.environmentTab = guiCreateTab("Environment",tabpanel)
 	mapsettings.gamemodeSettingsTab = guiCreateTab("Gamemode settings",tabpanel)
@@ -37,7 +37,7 @@ function createMapSettings()
 
 	mapsettings.ok = guiCreateButton ( 0.5, 0.919444, 0.22857142, 0.05555555, "OK", true, mapsettings.window )
 	mapsettings.cancel = guiCreateButton ( 0.780357142, 0.919444, 0.22857142, 0.05555555, "Cancel", true, mapsettings.window )
-	
+
 	--create environment settings
 	mapsettings.locked_time = editingControl.boolean:create{["x"]=0.26,["y"]=0.04,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=mapsettings.environmentTab,["label"]="Locked time"}
 	mapsettings.useLODs = editingControl.boolean:create{["x"]=0.46,["y"]=0.04,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=mapsettings.environmentTab,["label"]="Use LODs"}
@@ -62,17 +62,17 @@ function createMapSettings()
 	--
 	guiCreateMinimalLabel ( 0.02, 0.5, "Gamespeed:", true, mapsettings.environmentTab )
 	mapsettings.gamespeed = editingControl.number:create{["x"]=0.16,["y"]=0.48,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3}
-	
+
 	guiCreateMinimalLabel ( 0.02, 0.68, "Gravity:", true, mapsettings.environmentTab )
 	mapsettings.gravity = editingControl.number:create{["x"]=0.16,["y"]=0.64,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true}
-	
+
 	guiCreateMinimalLabel ( 0.02, 0.86, "Wave Height:", true, mapsettings.environmentTab )
 	mapsettings.waveheight = editingControl.number:create{["x"]=0.16,["y"]=0.82,["width"]=0.1,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true,["min"]=0,["max"]=100}
 	mapsettings.waveheight:addChangeHandler(function(self) if self:getValue() then setWaveHeight(self:getValue()) end end )
-	
+
 	guiCreateMinimalLabel ( 0.35, 0.5, "Minimum players:", true, mapsettings.environmentTab )
 	mapsettings.minplayers = editingControl.number:create{["x"]=0.52,["y"]=0.48,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3,["max"]=128}
-	
+
 	guiCreateMinimalLabel ( 0.35, 0.68, "Maximum players:", true, mapsettings.environmentTab )
 	mapsettings.maxplayers = editingControl.number:create{["x"]=0.52,["y"]=0.64,["width"]=0.08,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.environmentTab,["positive"]=true, ["maxLength"]=3,["min"]=2,["max"]=128}
 	--create the gamemode settings tab
@@ -88,20 +88,20 @@ function createMapSettings()
 	guiLabelSetColor ( mapsettings.required, 16, 108, 11 )
 	mapsettings.description = guiCreateLabel( 0.34, 0.16, 0.65, 1, "", true, mapsettings.gamemodeSettingsTab )
 	guiSetFont ( mapsettings.description, "default-small" )
-	guiLabelSetHorizontalAlign ( mapsettings.description, "left", true ) 
+	guiLabelSetHorizontalAlign ( mapsettings.description, "left", true )
 	toggleSettingsGUI(false)
 	--create the META tab
 	mapsettings.metaName = editingControl.string:create{["x"]=0.12,["y"]=0.04,["width"]=0.3,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.metaTab, ["maxLength"]=30}
-	
+
 	guiCreateMinimalLabel ( 0.02, 0.06, "Name:", true, mapsettings.metaTab )
 	mapsettings.metaAuthor = editingControl.string:create{["x"]=0.12,["y"]=0.2,["width"]=0.3,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.metaTab, ["maxLength"]=30}
-	
+
 	guiCreateMinimalLabel ( 0.02, 0.22, "Author:", true, mapsettings.metaTab )
 	mapsettings.metaVersion = editingControl.string:create{["x"]=0.12,["y"]=0.36,["width"]=0.3,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.metaTab, ["maxLength"]=30}
-	
+
 	guiCreateMinimalLabel ( 0.02, 0.38, "Version:", true, mapsettings.metaTab )
 	mapsettings.metaDescription = editingControl.string:create{["x"]=0.16,["y"]=0.54,["width"]=0.7,["height"]=0.11,["relative"]=true,["parent"]=mapsettings.metaTab, ["maxLength"]=60}
-	
+
 	guiCreateMinimalLabel ( 0.02, 0.56, "Description:", true, mapsettings.metaTab )
 	--create the gamemodes tab
 	mapsettings.availGamemodes = guiCreateGridList ( 0.02, 0.02, 0.3, 0.95, true, mapsettings.gamemodesTab )
@@ -173,13 +173,13 @@ function confirmMapSettings ()
 		guiShowMessageBox ( "Invalid META \"Version\" specified", "error", "Bad Value", true )
 		return
 	end
-	if not mapsettings.timeHour:getValue() or not mapsettings.timeMinute:getValue() 
+	if not mapsettings.timeHour:getValue() or not mapsettings.timeMinute:getValue()
 		or mapsettings.timeHour:getValue() > 23 or mapsettings.timeMinute:getValue() > 59 then
 		guiShowMessageBox ( "Invalid Time specified", "error", "Bad Value", true )
 		return
 	end
 
-	-- if mapsettings.metaAuthor:getValue() == "" then 
+	-- if mapsettings.metaAuthor:getValue() == "" then
 		-- guiShowMessageBox ( "Invalid META \"Author\" specified", "error", "Bad Value", true )
 		-- return
 	-- end

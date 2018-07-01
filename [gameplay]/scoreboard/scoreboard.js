@@ -13,18 +13,18 @@ function updateHeaders() {
 			while ( columnHeaders.hasChildNodes() ) {
 				columnHeaders.removeChild ( columnHeaders.firstChild );
 			}
-			
+
 			if ( columns.length != 0 ) {
 				for ( i = 0; i < columns.length; i++ ) {
 					var columnElement = document.createElement("td");
 					var columnName = columns[i].name.htmlEntities();
 					columnNames[i] = columnName;
-					
+
 					columnElement.className = "header";
 					columnElement.id        = "column-" + columnName;
 					columnElement.innerHTML = columnName;
 					columnElement.style.width = (columns.size * 100) + "%";
-					
+
 					columnHeaders.appendChild ( columnElement );
 				}
 			}
@@ -39,12 +39,12 @@ function updateRows() {
 			while ( scoreboardElement.hasChildNodes() ) {
 				scoreboardElement.removeChild ( scoreboardElement.firstChild );
 			}
-			
+
 			if ( scoreboardRows.length != 0 ) {
 				for ( i = 0; i < scoreboardRows.length; i++ ) {
 					var row = document.createElement("tr");
 					row.className = scoreboardRows[i][0]
-					
+
 					for ( j = 1; j < scoreboardRows[i].length; j++ ) {
 						var cell = document.createElement("td");
 						cell.id = columnNames[j-1];
@@ -52,7 +52,7 @@ function updateRows() {
 						cell.innerHTML = scoreboardRows[i][j].toString().htmlEntities();
 						row.appendChild ( cell );
 					}
-					
+
 					scoreboardElement.appendChild ( row )
 				}
 			}

@@ -1,8 +1,8 @@
-﻿--[[
+--[[
 	matrix v 0.2.8
-	
+
 	Lua 5.1 compatible
-	
+
 	'matrix' provides a good selection of matrix functions.
 
 	With simple matrices this script is quite useful, though for more
@@ -10,9 +10,9 @@
 	Matrices of size 100x100 can still be handled very well.
 	The error for the determinant and the inverted matrix is around 10^-9
  	with a 100x100 matrix and an element range from -100 to 100.
- 	
+
  	Characteristics:
-	
+
 	- functions called via matrix.<function> should be able to handle
 	  any table matrix of structure t[i][j] = value
 	- can handle a type of complex matrix
@@ -29,17 +29,17 @@
 	- vectors can be multiplied scalar via num = vec1^'T' * vec2
 		where num will be a matrix with the result in mtx[1][1],
 		or use num = vec1:scalar( vec2 ), where num is a number
-		
+
 	Sites:
 		http://luaforge.net/projects/LuaMatrix
 		http://lua-users.org/wiki/SimpleMatrix
-		
+
 	Licensed under the same terms as Lua itself.
-	
+
 	Developers:
 		Michael Lutz (chillcode)
 		David Manura http://lua-users.org/wiki/DavidManura
-		
+
 	MODIFIED TO SUIT THE MTA SCRIPTING SYSTEM
 ]]--
 
@@ -265,24 +265,24 @@ function matrix.det( m1 )
 
 	-- check if matrix is quadratic
 	assert(#m1 == #m1[1], "matrix not square")
-	
+
 	local size = #m1
-	
+
 	if size == 1 then
 		return m1[1][1]
 	end
-	
+
 	if size == 2 then
 		return m1[1][1]*m1[2][2] - m1[2][1]*m1[1][2]
 	end
-	
+
 	if size == 3 then
 		return ( m1[1][1]*m1[2][2]*m1[3][3] + m1[1][2]*m1[2][3]*m1[3][1] + m1[1][3]*m1[2][1]*m1[3][2]
 			- m1[1][3]*m1[2][2]*m1[3][1] - m1[1][1]*m1[2][3]*m1[3][2] - m1[1][2]*m1[2][1]*m1[3][3] )
 	end
-	
+
 	--// no symbolic matrix supported below here
-	
+
 	local fiszero, abs
 	if matrix.type( m1 ) == "complex" then
 		fiszero = fiszerocomplex
@@ -291,7 +291,7 @@ function matrix.det( m1 )
 		fiszero = fiszeronumber
 		abs = math.abs
 	end
-	
+
 	--// matrix is bigger than 3x3
 	-- get determinant
 	-- using Gauss elimination and Laplace
@@ -456,7 +456,7 @@ function matrix.dogauss( mtx )
 		end
 		-- start parsing rows
 		for i = j-1,1,-1 do
-			-- check if element is not already zero			
+			-- check if element is not already zero
 			if not fiszero(mtx[i][j]) then
 				local factor = mtx[i][j]
 				for _j = j+1,columns do
@@ -512,7 +512,7 @@ function matrix.invert( m1 )
 end
 
 --// matrix.sqrt ( m1 [,iters] )
--- calculate the square root of a matrix using "Denman�Beavers square root iteration"
+-- calculate the square root of a matrix using "DenmanBeavers square root iteration"
 -- condition: matrix rows == matrix columns; must have a invers matrix and a square root
 -- if called without additional arguments, the function finds the first nearest square root to
 -- input matrix, there are others but the error between them is very small
@@ -700,7 +700,7 @@ function matrix.type( mtx )
 	end
 	return "number"
 end
-	
+
 -- local functions to copy matrix values
 local num_copy = function( num )
 	return num

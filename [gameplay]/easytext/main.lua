@@ -1,4 +1,4 @@
-﻿local root = getRootElement ()
+local root = getRootElement ()
 local resourceRoot = getResourceRootElement ( getThisResource () )
 local textTable = {}
 
@@ -15,7 +15,7 @@ function displayMessageForPlayer ( player, textID, message, duration, posX, posY
 		textTable[player][textID].item = textCreateTextItem ( "", .5, .5, "medium", 255, 255, 255, 255, 2, "center", "center" )
 		textDisplayAddText ( textTable[player][textID].display, textTable[player][textID].item )
 		textDisplayAddObserver ( textTable[player][textID].display, player )
-	end 
+	end
 	duration = duration or 5000
 	posX = posX or 0.5
 	posY = posY or 0.5

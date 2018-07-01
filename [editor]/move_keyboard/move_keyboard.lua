@@ -1,4 +1,4 @@
-﻿-- implement bounding box checking
+-- implement bounding box checking
 local lastKEYSTATES = {}
 
 local ignoreAllSurfaces = true
@@ -38,7 +38,7 @@ local function getCameraRotation ()
 	--Convert to degrees
 	rotx = math.deg(rotx)
 	rotz = -math.deg(rotz)
-	
+
  	return rotx, 180, rotz
 end
 
@@ -163,7 +163,7 @@ local function onClientRender_keyboard()
 				end
 
 				local speed = snaplevel
-				
+
 				if (getElementType(selectedElement) == "ped") or getElementType(selectedElement) == "player" then
 					local tempRot = rotZ
 
@@ -188,7 +188,7 @@ local function onClientRender_keyboard()
 				else
 					local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
 					if (not tempRotX) then return false end
-					
+
 					-- conversion to XYZ order
 					tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)
 					tempRotX = math.deg(tempRotX)
@@ -209,7 +209,7 @@ local function onClientRender_keyboard()
 							tempRotY = tempRotY - speed
 						end
 					end
-					
+
 					-- not sure why, maybe rotation conversion has singularity
 					if tempRotY > 90 or tempRotY < -90 then
 						rotFlipped = not rotFlipped
@@ -228,7 +228,7 @@ local function onClientRender_keyboard()
 					elseif (getCommandTogSTATE("element_move_left")) then
 						tempRotZ = tempRotZ - speed
 					end
-					
+
 					-- conversion back to YXZ order
 					tempRotX, tempRotY, tempRotZ = convertRotationToMTA(math.rad(tempRotX), math.rad(tempRotY), math.rad(tempRotZ))
 
@@ -290,7 +290,7 @@ local function onClientRender_keyboard()
 				else
 					local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
 					if (not tempRotX) then return false end
-					
+
 					-- conversion to XYZ order
 					tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)
 					tempRotX = math.deg(tempRotX)
@@ -311,7 +311,7 @@ local function onClientRender_keyboard()
 							tempRotY = tempRotY - speed
 						end
 					end
-					
+
 					-- not sure why, maybe rotation conversion has singularity
 					if tempRotY > 90 or tempRotY < -90 then
 						rotFlipped = not rotFlipped
@@ -330,7 +330,7 @@ local function onClientRender_keyboard()
 					elseif (getCommandState("element_move_left")) then
 						tempRotZ = tempRotZ - speed
 					end
-					
+
 					-- conversion back to YXZ order
 					tempRotX, tempRotY, tempRotZ = convertRotationToMTA(math.rad(tempRotX), math.rad(tempRotY), math.rad(tempRotZ))
 
@@ -372,7 +372,7 @@ local function onClientRender_keyboard()
 end
 
 local function rotateWithMouseWheel(key, keyState)
-	if rotationless or (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then 
+	if rotationless or (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then
 		return
 	end
 	local speed

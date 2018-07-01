@@ -106,7 +106,7 @@ function aAclTab.onClick ( key, state )
 		local row = guiGridListGetSelectedItem ( aAclTab.ViewTypes )
 		if ( row ~= -1 ) then
 			local type = guiGridListGetItemText ( aAclTab.ViewTypes, row, 1 )
-			guiSetText ( aAclTab.View, type )		
+			guiSetText ( aAclTab.View, type )
 			guiSetVisible ( aAclTab.ViewTypes, false )
 			aAclTab.RefreshAccess ()
 		end

@@ -1,4 +1,4 @@
-﻿local SCRIPT_G = {}
+local SCRIPT_G = {}
 local TEMP_SCRIPT_STORE = {}
 local RESOURCE_SCRIPT_COUNT = {}
 local REQUIRED_FILES = {}

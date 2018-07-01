@@ -125,7 +125,7 @@ end
 
 function aServerTab.onClientClick ( button )
 	if ( button == "left" ) then
-		if ( source == aServerTab.SetGameType ) then 
+		if ( source == aServerTab.SetGameType ) then
 			local gametype = inputBox ( "Map Name", "Enter map name:" )
 			if ( gametype ) then
 				triggerServerEvent ( "aServer", getLocalPlayer(), "setgame", gametype )
@@ -155,7 +155,7 @@ function aServerTab.onClientClick ( button )
 				if ( ( source == aServerTab.WeatherInc ) and ( id < aServerTab.WeatherMax ) ) then guiSetText ( aServerTab.Weather, ( id + 1 ).." ("..getWeatherNameFromID ( id + 1 )..")" )
 				elseif ( ( source == aServerTab.WeatherDec ) and ( id > 0 ) ) then guiSetText ( aServerTab.Weather, ( id - 1 ).." ("..getWeatherNameFromID ( id - 1 )..")" ) end
 			else
-				guiSetText ( aServerTab.Weather, ( 14 ).." ("..getWeatherNameFromID ( 14 )..")" ) 
+				guiSetText ( aServerTab.Weather, ( 14 ).." ("..getWeatherNameFromID ( 14 )..")" )
 			end
 		elseif ( source == aServerTab.WeatherSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setweather", gettok ( guiGetText ( aServerTab.Weather ), 1, 32 ) )
 		elseif ( source == aServerTab.WeatherBlend ) then triggerServerEvent ( "aServer", getLocalPlayer(), "blendweather", gettok ( guiGetText ( aServerTab.Weather ), 1, 32 ) )
@@ -166,7 +166,7 @@ function aServerTab.onClientClick ( button )
 				if ( ( source == aServerTab.SpeedInc ) and ( value < 10 ) ) then guiSetText ( aServerTab.Speed, tostring ( value + 1 ) )
 				elseif ( ( source == aServerTab.SpeedDec ) and ( value > 0 ) ) then guiSetText ( aServerTab.Speed, tostring ( value - 1 ) ) end
 			else
-				guiSetText ( aServerTab.Speed, "1" ) 
+				guiSetText ( aServerTab.Speed, "1" )
 			end
 		elseif ( source == aServerTab.SpeedSet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setgamespeed", guiGetText ( aServerTab.Speed ) )
 		elseif ( source == aServerTab.GravitySet ) then triggerServerEvent ( "aServer", getLocalPlayer(), "setgravity", guiGetText ( aServerTab.Gravity ) )

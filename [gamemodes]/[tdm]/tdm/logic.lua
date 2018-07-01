@@ -1,4 +1,4 @@
-﻿g_Root = getRootElement()
+g_Root = getRootElement()
 local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText
 local announcementText,processWasted
 local mapTimers = {}
@@ -106,7 +106,7 @@ function processWasted( totalammo, killer, killerweapon, bodypart )
 	if killer and (getElementType(killer) == "player" or getElementType(killer) == "vehicle") then --Give the killer credit
 		local killerTeam = getPlayerTeam(killer)
 		killer = (getElementType(killer) == "player") and killer or getVehicleOccupant(killer)
-		if killer == source then --He killed himself. 
+		if killer == source then --He killed himself.
 			setElementData ( killerTeam, "Score", getElementData(killerTeam,"Score") - 1 )
 		elseif getPlayerTeam ( killer ) ~= getPlayerTeam ( source ) then
 			local newScore = getElementData(killerTeam,"Score") + 1
@@ -138,7 +138,7 @@ function processRanks()
 		local previousTeam = teams [i-1]
 		if teams[i-1] then
 			local previousScore = getElementData ( previousTeam, "Score" )
-			local teamScore = getElementData ( team, "Score" ) 
+			local teamScore = getElementData ( team, "Score" )
 			if previousScore == teamScore then
 				setElementData ( team, "Rank", getElementData ( previousTeam, "Rank" ) )
 			else
@@ -147,7 +147,7 @@ function processRanks()
 		else
 			setElementData ( team, "Rank", 1 )
 		end
-	end	
+	end
 end
 
 
@@ -164,7 +164,7 @@ function processEnd(winner,draw)
 	end
 	mapTimers = {}
 	setTimer ( reboot, 15000, 1 )
-	if not winner then 
+	if not winner then
 		if draw then
 			for i,player in ipairs(getElementsByType"player") do
 				toggleAllControls(player,true,true,false)
@@ -177,7 +177,7 @@ function processEnd(winner,draw)
 			announcementText:sync()
 			return
 		else
-			return 
+			return
 		end
 	end
 	--Freeze all players,except the winner
@@ -200,13 +200,13 @@ function reboot()
 		exports.scoreboard:setPlayerScoreboardForced ( player, false )
 	end
 	announcementText:visible(false)
-	announcementText:sync()	
+	announcementText:sync()
 	dmMapStart(g_MapResource,g_MapRoot)
 end
 
 function isTimer ( timer )
 	for i,v in ipairs(getTimers()) do
-		if timer == v then 
+		if timer == v then
 			return true
 		end
 	end

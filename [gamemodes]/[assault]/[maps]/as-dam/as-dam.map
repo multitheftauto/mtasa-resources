@@ -1,31 +1,32 @@
 <map mod="deathmatch" version="1.0">
 
-  
+
   <assaultSettings finishType="all" description="Steal explosives, destroy the dam" />
-  
-  <camera type="spawn" posX="506" posY="569" posZ="46" targetX="536" targetY="709" targetZ="4" />  <camera type="selectTeam" posX="506" posY="569" posZ="46" targetX="536" targetY="709" targetZ="4" />
+
+  <camera type="spawn" posX="506" posY="569" posZ="46" targetX="536" targetY="709" targetZ="4" />
+  <camera type="selectTeam" posX="506" posY="569" posZ="46" targetX="536" targetY="709" targetZ="4" />
   <camera type="finish" posX="-631.987" posY="1843.968" posZ="10" targetX="-610.744" targetY="1920.229" targetZ="7" />
-  
-  <objective name="Explosive 1" description="Steal the explosives in the quarry" 
+
+  <objective name="Explosive 1" description="Steal the explosives in the quarry"
   	id="exp1" req="" stay="8" stayText="Stealing explosives.."
 	posX="559.321411" posY="822.928101" posZ="-31.153337"
 	successText="Explosives stolen" defenderDescription="Prevent the other team from stealing the explosives" />
-  
+
   <objective name="Explosive 2" description="Steal the explosives in the quarry"
   	id="exp2" req="" stay="8" stayText="Stealing explosives.."
 	posX="677.674805" posY="841.297485" posZ="-43.960938"
 	successText="Explosives stolen" defenderDescription="Prevent the other team from stealing the explosives" />
-  
+
   <objective name="Explosive 3" description="Steal the explosives in the quarry"
   	id="exp3" req="" stay="10" stayText="Stealing explosives.."
 	posX="437.602264" posY="901.292725" posZ="-7.390396"
 	successText="Explosives stolen" defenderDescription="Prevent the other team from stealing the explosives" />
-  
+
   <objective name="Leave the quarry" description="Make your way out of the quarry!"
   	type="custom" id="leave" req="exp1,exp2,exp3"
 	posX="607.214844" posY="871.688110" posZ="-41.339630" forcedRespawn="both"
 	successText="Attackers escaped the quarry!" defenderDescription="Prevent the other team from escaping the quarry!" />
-  
+
   <objective name="Reach the dam" description="Get near the dam"
   	type="custom" id="dam" req="leave"
 	posX="-712.367126" posY="2063.582520" posZ="60.882820"
@@ -36,20 +37,20 @@
 	posX="-607.230408" posY="1924.516479" posZ="6.000000"
 	successText="Bomb planted"  defenderDescription="Prevent the other team from planting the bombs!"
 	bombPosX="-607.456" bombPosY="1924.6" bombPosZ="6.05" bombRotX="-90" bombRotY="0" bomtRotZ="0" />
-	
+
   <objective name="Plant Bomb 2" description="Plant several boms on and around the dam"
   	id="bomb2" req="dam" stay="10" stayText="Planting explosives.."
 	posX="-830.455383" posY="1973.126587" posZ="6.000008"
 	successText="Bomb planted" defenderDescription="Prevent the other team from planting the bombs!"
 	bombPosX="-830.45" bombPosY="1973" bombPosZ="6.05" bombRotX="-90" bombRotY="0" bomtRotZ="0" />
-  
+
   <objective name="Plant Bomb 3" description="Plant several boms on and around the dam"
   	id="bomb3" req="dam" stay="10" stayText="Planting explosives.."
 	posX="-783.043030" posY="2147.322998" posZ="59.382813"
 	successText="Bomb planted" defenderDescription="Prevent the other team from planting the bombs!"
 	bombPosX="-782.8" bombPosY="2146.82" bombPosZ="60" bombRotX="0" bombRotY="0" bombRotZ="180" />
 
-  
+
   <spawngroup req="" type="attacker">
 	<spawnarea name="attacker" posX="520.062439" posY="657.482239" posZ="2.350243" rotZ="360" weapons="29,200;24,14" skins="122,124" />
 	<spawnarea name="attacker" posX="1000.145203" posY="962.748535" posZ="10.480690" rotZ="360" weapons="30,120;24,14" skins="122,124" />
@@ -59,7 +60,7 @@
 	<spawnarea name="defender" posX="390.232666" posY="902.287598" posZ="20.658554" rotZ="360" weapons="31,300;24,14" skins="282,283" />
 	<spawnarea name="defender" posX="639.960693" posY="890.002869" posZ="-43.293060" rotZ="360" weapons="31,300;24,14" skins="282,283" />
   </spawngroup>
-  
+
   <spawngroup req="exp1,exp2,exp3" type="attacker">
 	<spawnarea name="attacker 2" posX="602.478271" posY="844.592224" posZ="-43.606873" rotZ="360" weapons="30,300,24,14" skins="122,124" />
   </spawngroup>
@@ -69,27 +70,27 @@
   </spawngroup>
 
   <spawngroup req="leave" type="attacker">
-	<spawnarea name="attacker after quarry" posX="861.462402" posY="865.448669" posZ="13.370245" rotZ="360" weapons="29,200" skins="122,124" />  
+	<spawnarea name="attacker after quarry" posX="861.462402" posY="865.448669" posZ="13.370245" rotZ="360" weapons="29,200" skins="122,124" />
 	<spawnarea name="attacker after quarry" posX="514.339905" posY="658.217529" posZ="3.063502" rotZ="360" weapons="29,200" skins="122,124" />
   </spawngroup>
   <spawngroup req="leave" type="defender">
 	<spawnarea name="defender - after quarry" posX="998.369141" posY="1047.931274" posZ="48.151497" rotZ="360" weapons="31,300" skins="282,283" />
-	<spawnarea name="defender after quarry" posX="386.042633" posY="902.457886" posZ="20.740034" rotZ="360" weapons="31,300" skins="282,283" />  
-	<spawnarea name="defender after quarry" posX="-297.683319" posY="1311.318604" posZ="54.028942" rotZ="360" weapons="31,300" skins="282,283" />  
+	<spawnarea name="defender after quarry" posX="386.042633" posY="902.457886" posZ="20.740034" rotZ="360" weapons="31,300" skins="282,283" />
+	<spawnarea name="defender after quarry" posX="-297.683319" posY="1311.318604" posZ="54.028942" rotZ="360" weapons="31,300" skins="282,283" />
 	<spawnarea name="defender after quarry" posX="-92.572441" posY="1349.131226" posZ="10.370790" rotZ="360" weapons="31,300" skins="282,283" />
   </spawngroup>
-  
+
   <spawngroup req="dam" type="attacker">
-	<spawnarea name="attacker dam" posX="-395.116516" posY="1131.294922" posZ="15.894697" rotZ="360" weapons="31,300;24,21" skins="122,124" />  
+	<spawnarea name="attacker dam" posX="-395.116516" posY="1131.294922" posZ="15.894697" rotZ="360" weapons="31,300;24,21" skins="122,124" />
 	<spawnarea name="attacker dam" posX="-297.425537" posY="1747.491821" posZ="42.706184" rotZ="360" weapons="31,300;24,21" skins="122,124" />
 	<spawnarea name="attacker dam" posX="-750.795593" posY="1635.094604" posZ="27.189108" rotZ="360" weapons="31,300;24,21" skins="122,124" />
   </spawngroup>
   <spawngroup req="dam" type="defender">
-	<spawnarea name="defender dam" posX="-910.461060" posY="2006.659912" posZ="60.932747" rotZ="360" weapons="30,300;24,21" skins="282,283" />  
-	<spawnarea name="defender dam" posX="-810.474060" posY="1815.639893" posZ="7.018691" rotZ="360" weapons="30,300;24,21" skins="282,283" />  
+	<spawnarea name="defender dam" posX="-910.461060" posY="2006.659912" posZ="60.932747" rotZ="360" weapons="30,300;24,21" skins="282,283" />
+	<spawnarea name="defender dam" posX="-810.474060" posY="1815.639893" posZ="7.018691" rotZ="360" weapons="30,300;24,21" skins="282,283" />
 	<spawnarea name="defender dam" posX="-507.941376" posY="1995.848267" posZ="60.572983" rotZ="360" weapons="30,300;24,21" skins="282,283" />
   </spawngroup>
-  
+
   <vehicle name="v" posX="-425.672943" posY="1163.015381" posZ="0.972062" rotZ="360" model="446" />
   <vehicle name="v" posX="-420.031433" posY="1171.847046" posZ="0.982211" rotZ="360" model="446" />
   <vehicle name="v" posX="-419.924988" posY="1149.054565" posZ="1.053401" rotZ="360" model="446" />
@@ -133,14 +134,14 @@
   <vehicle name="vehicle change pickup (4)" posX="-792.561768" posY="1817.179688" posZ="1.469003" rotX="" rotY="" rotZ="" model="430" />
   <vehicle name="vehicle change pickup (5)" posX="-513.157349" posY="1965.391724" posZ="60.975548" rotX="" rotY="" rotZ="" model="470" />
   <vehicle name="vehicle change pickup (6)" posX="-526.189087" posY="1963.811646" posZ="60.789860" rotX="" rotY="" rotZ="" model="470" />
-  
+
   <vehicle name="vehicle change pickup (7)" posX="-904.125305" posY="1984.671631" posZ="61.414063" rotX="" rotY="" rotZ="180" model="468" />
   <vehicle name="vehicle change pickup (8)" posX="-906.876953" posY="1987.139648" posZ="61.414063" rotX="" rotY="" rotZ="180" model="468" />
   <vehicle name="vehicle change pickup (9)" posX="-909.344055" posY="1990.532349" posZ="61.414063" rotX="" rotY="" rotZ="180" model="468" />
   <vehicle name="vehicle change pickup (10)" posX="-912.240662" posY="1992.702637" posZ="61.414063" rotX="" rotY="" rotZ="180" model="468" />
   <vehicle name="vehicle change pickup (11)" posX="-933.672485" posY="2027.029419" posZ="61.414063" rotX="" rotY="" rotZ="180" model="528" />
   <vehicle name="vehicle change pickup (12)" posX="-927.142883" posY="2033.493164" posZ="61.420456" rotX="" rotY="" rotZ="180" model="470" />
-  
+
   <vehicle name="vehicle change pickup (13)" posX="-290.714111" posY="1775.011719" posZ="43.187500" rotX="" rotY="" rotZ="" model="496" />
   <vehicle name="vehicle change pickup (14)" posX="-299.143005" posY="1775.707031" posZ="43.187500" rotX="" rotY="" rotZ="" model="550" />
   <vehicle name="vehicle change pickup (15)" posX="-289.230438" posY="1728.729492" posZ="43.187500" rotX="" rotY="" rotZ="" model="468" />
@@ -166,5 +167,5 @@
   <vehicle name="vehicle change pickup (32)" posX="-88.45" posY="1347.691" posZ="10.78" rotX="" rotY="" rotZ="266" model="468" />
   <vehicle name="vehicle change pickup (32)" posX="-88.45" posY="1349.691" posZ="10.78" rotX="" rotY="" rotZ="266" model="468" />
   <vehicle name="vehicle change pickup (32)" posX="-80.94" posY="1372.343" posZ="10.48" rotX="" rotY="" rotZ="" model="560" />
-  
+
 </map>

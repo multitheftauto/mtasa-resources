@@ -1,4 +1,4 @@
-﻿-- giveWeaponsOnSpawn for CTF: CS Italy by Ratt
+-- giveWeaponsOnSpawn for CTF: CS Italy by Ratt
 
 addEventHandler('onResourceStart', resourceRoot,
 	function()

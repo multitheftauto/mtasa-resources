@@ -164,7 +164,7 @@ function guiSetContextMenu ( element, menu )
 		contextSource = source
 		if ( getElementType ( source ) == "gui-gridlist" and guiGridListGetSelectedItem ( source ) == -1 ) then
 			return
-		end 
+		end
 		if ( button == "right" ) then
 			local sx, sy = guiGetScreenSize()
 			local x, y = getCursorPosition ()

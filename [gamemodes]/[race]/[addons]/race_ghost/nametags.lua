@@ -17,7 +17,7 @@ local NAMETAG_OUTLINE_THICKNESS = 1.2
 --
 local NAMETAG_ALPHA_DIFF = NAMETAG_DISTANCE - NAMETAG_ALPHA_DISTANCE
 local NAMETAG_ALPHA_DISSAPEAR_DIFF = NAMETAG_ALPHA_DISTANCE - NAMETAG_ALPHA_DISSAPEAR_DISTANCE
-NAMETAG_SCALE = 1/NAMETAG_SCALE * 800 / g_screenY 
+NAMETAG_SCALE = 1/NAMETAG_SCALE * 800 / g_screenY
 
 -- Ensure the name tag doesn't get too big
 local maxScaleCurve = { {0, 0}, {3, 3}, {13, 5} }
@@ -55,29 +55,29 @@ function GhostPlayback:drawGhostNametag( info )
 		local r,g,b = 150,150,150
 		local offset = (scale) * NAMETAG_TEXT_BAR_SPACE/2
 		dxDrawText ( info.name, sx, sy - offset, sx, sy - offset, tocolor(r,g,b,textalpha), textscale*NAMETAG_TEXTSIZE, "default", "center", "bottom", false, false, false )
-		
+
 		--We draw three parts to make the healthbar.  First the outline/background
 		local drawX = sx - NAMETAG_WIDTH*scale/2
 		drawY = sy + offset
 		--[[local width,height =  NAMETAG_WIDTH*scale, NAMETAG_HEIGHT*scale
 		dxDrawRectangle ( drawX, drawY, width, height, tocolor(0,0,0,alpha) )
-		--Next the inner background 
+		--Next the inner background
 		local health = getElementHealth(vehicle)
 		health = math.max(health - 250, 0)/750
 		local p = -510*(health^2)
 		local r,g = math.max(math.min(p + 255*health + 255, 255), 0), math.max(math.min(p + 765*health, 255), 0)
-		dxDrawRectangle ( 	drawX + outlineThickness, 
-										drawY + outlineThickness, 
-										width - outlineThickness*2, 
-										height - outlineThickness*2, 
-										tocolor(r,g,0,0.4*alpha) 
+		dxDrawRectangle ( 	drawX + outlineThickness,
+										drawY + outlineThickness,
+										width - outlineThickness*2,
+										height - outlineThickness*2,
+										tocolor(r,g,0,0.4*alpha)
 									)
 					--Finally, the actual health
-					dxDrawRectangle ( 	drawX + outlineThickness, 
-										drawY + outlineThickness, 
-										health*(width - outlineThickness*2), 
-										height - outlineThickness*2, 
-										tocolor(r,g,0,alpha) 
+					dxDrawRectangle ( 	drawX + outlineThickness,
+										drawY + outlineThickness,
+										health*(width - outlineThickness*2),
+										height - outlineThickness*2,
+										tocolor(r,g,0,alpha)
 									)--]]
 		dxDrawText ( info.time, sx, drawY, sx, drawY, tocolor(r,g,b,textalpha), textscale*NAMETAG_TEXTSIZE*0.8, "default", "center", "top", false, false, false )
 	end

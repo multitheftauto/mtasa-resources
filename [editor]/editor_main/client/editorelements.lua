@@ -1,4 +1,4 @@
-﻿editorElements = { }
+editorElements = { }
 
 function isEditorElement(element)
 	if not element or not isElement(element) or not editorElements[element] then

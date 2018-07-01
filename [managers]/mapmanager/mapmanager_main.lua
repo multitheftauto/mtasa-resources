@@ -1,4 +1,4 @@
-﻿currentGamemode = nil
+currentGamemode = nil
 currentGamemodeMap = nil
 nextGamemode = nil
 nextGamemodeMap = nil
@@ -52,7 +52,7 @@ addEventHandler("onPlayerJoin", rootElement,
 	end
 )
 
-addEventHandler("onResourceStart", rootElement, 
+addEventHandler("onResourceStart", rootElement,
 	function (startedResource)
 		--Is this resource a gamemode?
 		if isGamemode(startedResource) then
@@ -72,7 +72,7 @@ addEventHandler("onResourceStart", rootElement,
 					outputMapManager("Gamemode '"..gamemodeName.."' started" .. name .. "." )
 				end
 				--We need to wait a while to see if any maps were started.  If not, lets try and start a random one
-				setTimer( 
+				setTimer(
 					function()
 						if not getRunningGamemodeMap() then
 							--Lets check if there are any maps for this gamemode
@@ -82,7 +82,7 @@ addEventHandler("onResourceStart", rootElement,
 								changeGamemodeMap (maps[math.random(1,#maps)])
 							end
 						end
-					end, 
+					end,
 				50, 1 )
 			else
 				currentGamemode = nil
@@ -104,7 +104,7 @@ addEventHandler("onResourceStart", rootElement,
 					--Setup our announcements
 					local gamemodeMapName = getResourceInfo(currentGamemodeMap, "name") or getResourceName(currentGamemodeMap)
 					applyMapSettings( currentGamemodeMap )
-					
+
 					if get("ASE") then
 						setMapName(gamemodeMapName)
 					end
@@ -120,7 +120,7 @@ addEventHandler("onResourceStart", rootElement,
 	end
 )
 
-addEventHandler("onResourceStop", rootElement, 
+addEventHandler("onResourceStop", rootElement,
 	function (stoppedResource)
 		-- Incase the resource being stopped has been deleted
 		local stillExists = false
@@ -131,14 +131,14 @@ addEventHandler("onResourceStop", rootElement,
 			end
 		end
 		if not stillExists then return end
-		
+
 		local resourceRoot = getResourceRootElement(stoppedResource)
 		if stoppedResource == currentGamemode then
 			triggerEvent("onGamemodeStop", resourceRoot, currentGamemode)
-			
+
 			currentGamemode = nil
 			setGameType(false)
-			
+
 			if currentGamemodeMap then
 				stopResource(currentGamemodeMap)
 			elseif nextGamemode then
@@ -151,11 +151,11 @@ addEventHandler("onResourceStop", rootElement,
 			end
 		elseif stoppedResource == currentGamemodeMap then
 			triggerEvent("onGamemodeMapStop", resourceRoot, currentGamemodeMap)
-			
+
 			currentGamemodeMap = nil
 			resetMapInfo()
 			setMapName("None")
-			
+
 			if nextGamemode then
 				startGamemodeT(nextGamemode)
 				nextGamemode = nil
@@ -190,7 +190,7 @@ function changeGamemodeMap_cmd(source, command, ...)
 		outputMapManager("Usage: /"..command.." map",source)
 		return false
 	end
-	
+
 	local gamemode = currentGamemode
 	if not isGamemode(gamemode) then
 		outputMapManager("No gamemode is running.",source)
@@ -228,7 +228,7 @@ function changeGamemode_cmd(source, command, gamemodeName,...)
 		outputMapManager("Usage: /"..command.." gamemode [map]",source)
 		return false
 	end
-	
+
 	local map
 	if mapName then
 		map = getMapFromName(mapName)
@@ -249,7 +249,7 @@ addCommandHandler("changemode", changeGamemode_cmd, true)
 
 function stopGamemode_cmd(source)
 	source = source or serverConsole
-	
+
 	if currentGamemode then
 		stopGamemode()
 		local gamemodeName = getResourceInfo(currentGamemode, "name") or getResourceName(currentGamemode)
@@ -262,7 +262,7 @@ addCommandHandler("stopmode", stopGamemode_cmd, true)
 
 function stopGamemodeMap_cmd(source)
 	source = source or serverConsole
-	
+
 	if currentGamemodeMap then
 		stopGamemodeMap()
 		local mapName = getResourceInfo(currentGamemodeMap, "name") or getResourceName(currentGamemodeMap)
@@ -294,12 +294,12 @@ function outputGamemodeListToConsole(source)
 		else
 			gamemodeFriendlyName = ""
 		end
-		
+
 		local numberOfCompatibleMaps = #getMapsCompatibleWithGamemode(gamemode)
-		
+
 		local s = "s"
 		if numberOfCompatibleMaps == 1 then s="" end
-		
+
 		outputMapManagerConsole(getResourceName(gamemode) .. gamemodeFriendlyName .. " [".. numberOfCompatibleMaps .. " map"..s.."]", source)
 	end
 end
@@ -311,7 +311,7 @@ function outputMapListToConsole(source, command, gamemodeName)
 	if not gamemodeName then
 		local allMaps = getMaps()
 		local numberOfMaps = #allMaps
-		
+
 		if numberOfMaps == 0 then
 			outputMapManagerConsole("There are no maps.", source)
 		else
@@ -319,7 +319,7 @@ function outputMapListToConsole(source, command, gamemodeName)
 			if numberOfMaps == 1 then s="" end
 			outputMapManagerConsole("There are "..numberOfMaps.." map"..s..":", source)
 		end
-		
+
 		for k, map in ipairs(allMaps) do
 			local gamemodeMapFriendlyName = getResourceInfo(map, "name")
 			if gamemodeMapFriendlyName then
@@ -335,13 +335,13 @@ function outputMapListToConsole(source, command, gamemodeName)
 			outputMapManager("Gamemode '"..gamemodeName.."' does not exist.", source)
 			return false
 		end
-		
+
 		local compatibleMaps = getMapsCompatibleWithGamemode(gamemode)
 		if not compatibleMaps then
 			outputMapManager("Gamemode '"..gamemodeName.."' does not exist.", source)
 			return false
 		end
-		
+
 		local numberOfCompatibleMaps = #compatibleMaps
 		if numberOfCompatibleMaps == 0 then
 			outputMapManagerConsole("'"..gamemodeName.."' has no maps.", source)
@@ -350,7 +350,7 @@ function outputMapListToConsole(source, command, gamemodeName)
 			if numberOfCompatibleMaps == 1 then s="" end
 			outputMapManagerConsole("'"..gamemodeName.."' has "..#compatibleMaps.." map"..s..":", source)
 		end
-		
+
 		for k, map in ipairs(compatibleMaps) do
 			local gamemodeMapFriendlyName = getResourceInfo(map, "name")
 			if gamemodeMapFriendlyName then
@@ -419,18 +419,18 @@ function doesMapSupportPlayerCount( map )
 	local mapName = getResourceName(map)
 	local minPlayers = tonumber(get(mapName..".minplayers"))
 	local maxPlayers = tonumber(get(mapName..".maxplayers"))
-	
+
 	local playersIn = getPlayerCount()
 	if minPlayers and minPlayers > playersIn then
 		outputMapManager( (minPlayers).." or more players are required to start '"..mapName.."'" )
 		return false
 	end
-	
+
 	if maxPlayers and maxPlayers < playersIn then
 		outputMapManager( (maxPlayers).." or less players are required to start '"..mapName.."'" )
 		return false
 	end
-		
+
 	return true
 end
 
@@ -466,18 +466,18 @@ end
 
 function getMapFromName ( name )
 	local resource = getResourceFromName ( name )
-	if resource then 
+	if resource then
 		return resource
 	end
 	if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then -- If this version has refreshResources, refresh resources.
 		refreshResources(false)
 	end
 	local resource = getResourceFromName ( name ) --and try get the resource again.
-	if resource then 
+	if resource then
 		return resource
 	end
 	name = string.lower(name) --Remove case sensitivity.  May cause minor problems with linux servers.
-	--Loop through and find resources with a matching 'name' param 
+	--Loop through and find resources with a matching 'name' param
 	for i,resource in ipairs(getMaps()) do
 		local infoName = getResourceInfo ( resource, "name" )
 		if (infoName and (string.lower(infoName) == name)) then

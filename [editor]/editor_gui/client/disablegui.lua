@@ -1,4 +1,4 @@
-﻿local active = true
+local active = true
 local toggleHistory = {}
 
 

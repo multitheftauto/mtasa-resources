@@ -1,4 +1,4 @@
-﻿g_FixedColorVehicles = {
+g_FixedColorVehicles = {
 	[416] = {1, 3, 0, 0},
 	[433] = {43, 0, 0, 0},
 	[438] = {6, 76, 0, 0},

@@ -37,17 +37,17 @@
 	<interior id="LV Tattoo Parlour"					posX="-204.4390"	posY="-43.6520"	posZ="1002.2990"	world="3" />
 	<interior id="LVPD HQ"							posX="289.7703"	posY="171.7460"	posZ="1007.1790"	world="3" />
 	<interior id="OG Loc's House"						posX="516.8890"	posY="-18.4120"	posZ="1001.5650"	world="3" />
-	<interior id="Pro-Laps"							posX="207.3560"	posY="-138.0029"	posZ="1003.3130"	world="3" />	
-	<interior id="Las Venturas Planning Dep."			posX="374.6708"	posY="173.8050"	posZ="1008.3893"	world="3" />	
-	<interior id="Record Label Hallway"				posX="1038.2190"	posY="6.9905"		posZ="1001.2840"	world="3" />	
-	<interior id="Driving School"						posX="-2027.9200"	posY="-105.1830"	posZ="1035.1720"	world="3" />	
-	<interior id="Johnson House"						posX="2496.0500"	posY="-1693.9260"	posZ="1014.7420"	world="3" />	
-	<interior id="Burglary House 5"					posX="234.733"		posY="1190.391"	posZ="1080.258"	world="3" />	
-	<interior id="Gay Gordo's Barbershop"				posX="418.6530"	posY="-82.6390"	posZ="1001.8050"	world="3" />	
-	<interior id="Helena's Place"						posX="292.4459"	posY="308.7790"	posZ="999.1484"	world="3" />	
-	<interior id="Inside Track Betting"				posX="826.8863"	posY="5.5091"		posZ="1004.4830"	world="3" />	
-	<interior id="Sex Shop"							posX="-106.7268"	posY="-19.6444"	posZ="1000.7190"	world="3" />	
-	<interior id="Wheel Arch Angels"					posX="614.3889"	posY="-124.0991"	posZ="997.9950"	world="3" />	
+	<interior id="Pro-Laps"							posX="207.3560"	posY="-138.0029"	posZ="1003.3130"	world="3" />
+	<interior id="Las Venturas Planning Dep."			posX="374.6708"	posY="173.8050"	posZ="1008.3893"	world="3" />
+	<interior id="Record Label Hallway"				posX="1038.2190"	posY="6.9905"		posZ="1001.2840"	world="3" />
+	<interior id="Driving School"						posX="-2027.9200"	posY="-105.1830"	posZ="1035.1720"	world="3" />
+	<interior id="Johnson House"						posX="2496.0500"	posY="-1693.9260"	posZ="1014.7420"	world="3" />
+	<interior id="Burglary House 5"					posX="234.733"		posY="1190.391"	posZ="1080.258"	world="3" />
+	<interior id="Gay Gordo's Barbershop"				posX="418.6530"	posY="-82.6390"	posZ="1001.8050"	world="3" />
+	<interior id="Helena's Place"						posX="292.4459"	posY="308.7790"	posZ="999.1484"	world="3" />
+	<interior id="Inside Track Betting"				posX="826.8863"	posY="5.5091"		posZ="1004.4830"	world="3" />
+	<interior id="Sex Shop"							posX="-106.7268"	posY="-19.6444"	posZ="1000.7190"	world="3" />
+	<interior id="Wheel Arch Angels"					posX="614.3889"	posY="-124.0991"	posZ="997.9950"	world="3" />
 	<interior id="24/7 Shop 1"						posX="-27.3769"	posY="-27.6416"	posZ="1003.5570"	world="4" />
 	<interior id="Ammu-Nation 2"						posX="285.8000"	posY="-84.5470"	posZ="1001.5390"	world="4" />
 	<interior id="Burglary House 6"					posX="-262.91"		posY="1454.966"	posZ="1084.367"	world="4" />
@@ -100,7 +100,7 @@
 	<interior id="Abandoned AC Tower"					posX="419.6140"	posY="2536.6030"	posZ="10.0000"		world="10" />
 	<interior id="SFPD HQ"							posX="246.4410"	posY="112.1640"	posZ="1003.2190"	world="10" />
 	<interior id="The Four Dragons Office"			posX="2011.6030"	posY="1017.0230"	posZ="39.0910"		world="11" />
-	<interior id="Ten Green Bottles Bar"				posX="502.3310"	posY="-70.6820"	posZ="998.7570"	world="11" />	
+	<interior id="Ten Green Bottles Bar"				posX="502.3310"	posY="-70.6820"	posZ="998.7570"	world="11" />
 	<interior id="The Casino"							posX="1132.9450"	posY="-8.6750"		posZ="1000.6800"	world="12" />
 	<interior id="Macisla's Barbershop"				posX="411.6410"	posY="-51.8460"	posZ="1001.8980"	world="12" />
 	<interior id="Safe House 7"						posX="2237.2970"	posY="-1077.9250"	posZ="1049.0230"	world="12" />
@@ -112,16 +112,16 @@
 	<interior id="Francis Airport (Front Ext.)"		posX="-1827.1473"	posY="7.2074"		posZ="1061.1435"	world="14" />
 	<interior id="Francis Airport (Ticket Sales)"		posX="-1855.5687"	posY="41.2631"		posZ="1061.1435"	world="14" />
 	<interior id="Wardrobe"							posX="255.7190"	posY="-41.1370"	posZ="1002.0230"	world="14" />
-	<interior id="Binco"								posX="207.5430"	posY="-109.0040"	posZ="1005.1330"	world="15" />	
-	<interior id="Blood Bowl Stadium"					posX="-1394.20"	posY="987.62"		posZ="1023.96"		world="15" />	
-	<interior id="Jefferson Motel"					posX="2217.6250"	posY="-1150.6580"	posZ="1025.7970"	world="15" />	
-	<interior id="Burglary House 17"					posX="-285.711"	posY="1470.697"	posZ="1084.375"	world="15" />	
-	<interior id="Burglary House 18"					posX="327.808"		posY="1479.74"		posZ="1084.438"	world="15" />	
-	<interior id="Burglary House 19"					posX="375.572"		posY="1417.439"	posZ="1081.328"	world="15" />	
-	<interior id="Burglary House 20"					posX="384.644"		posY="1471.479"	posZ="1080.195"	world="15" />	
-	<interior id="Burglary House 21"					posX="295.467"		posY="1474.697"	posZ="1080.258"	world="15" />	
-	<interior id="24/7 Shop 4"						posX="-25.3730"	posY="-139.6540"	posZ="1003.5470"	world="16" />	
-	<interior id="LS Tattoo Parlour"					posX="-204.5580"	posY="-25.6970"	posZ="1002.2730"	world="16" />	
+	<interior id="Binco"								posX="207.5430"	posY="-109.0040"	posZ="1005.1330"	world="15" />
+	<interior id="Blood Bowl Stadium"					posX="-1394.20"	posY="987.62"		posZ="1023.96"		world="15" />
+	<interior id="Jefferson Motel"					posX="2217.6250"	posY="-1150.6580"	posZ="1025.7970"	world="15" />
+	<interior id="Burglary House 17"					posX="-285.711"	posY="1470.697"	posZ="1084.375"	world="15" />
+	<interior id="Burglary House 18"					posX="327.808"		posY="1479.74"		posZ="1084.438"	world="15" />
+	<interior id="Burglary House 19"					posX="375.572"		posY="1417.439"	posZ="1081.328"	world="15" />
+	<interior id="Burglary House 20"					posX="384.644"		posY="1471.479"	posZ="1080.195"	world="15" />
+	<interior id="Burglary House 21"					posX="295.467"		posY="1474.697"	posZ="1080.258"	world="15" />
+	<interior id="24/7 Shop 4"						posX="-25.3730"	posY="-139.6540"	posZ="1003.5470"	world="16" />
+	<interior id="LS Tattoo Parlour"					posX="-204.5580"	posY="-25.6970"	posZ="1002.2730"	world="16" />
 	<interior id="Sumo Ring? stadium"					posX="-1400.0"		posY="1250.0"		posZ="1040.0"		world="16" />
 	<interior id="24/7 Shop 5"						posX="-25.3930"	posY="-185.9110"	posZ="1003.5470"	world="17" />
 	<interior id="Club"								posX="493.4687"	posY="-23.0080"	posZ="1000.6796"	world="17" />

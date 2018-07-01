@@ -29,7 +29,7 @@ static cell AMX_NATIVE_CALL n_samp(AMX *amx, const cell *params) {
 		lua_settop(mainVM, mainTop);
 		return 0;
 	}
-	
+
 	size_t numPrototypeArgs = lua_objlen(mainVM, -1);
 	cell numParams = params[0]/sizeof(cell);
 	char type;
@@ -54,7 +54,7 @@ static cell AMX_NATIVE_CALL n_samp(AMX *amx, const cell *params) {
 			lua_pushnumber(mainVM, params[i]);
 		}
 	}
-    
+
 	if(lua_pcall(mainVM, 3 + numParams, 1, 0) != 0) {
 		pModuleManager->ErrorPrintf("%lX %s\n", amx->cip, lua_tostring(mainVM, -1));
 		lua_pop(mainVM, 1);
@@ -77,7 +77,7 @@ int callLuaMTRead(lua_State *luaVM) {
 	amx_GetAddr(amx, addr, &physaddr);
 	if(!physaddr)
 		return 0;
-	
+
 	lua_getfield(luaVM, 1, "pointers");
 	luaL_checktype(luaVM, -1, LUA_TTABLE);
 	lua_pushnumber(luaVM, addr);
@@ -138,7 +138,7 @@ int callLuaMTWrite(lua_State *luaVM) {
 	amx_GetAddr(amx, addr, &physaddr);
 	if(!physaddr)
 		return 0;
-	
+
 	switch(lua_type(luaVM, 3)) {
 		case LUA_TNIL: {
 			*physaddr = 0;
@@ -178,7 +178,7 @@ int callLuaMTWrite(lua_State *luaVM) {
 			lua_getglobal(mainVM, "argsToSAMP");
 
 			lua_pushlightuserdata(mainVM, amx);
-			
+
 			lua_newtable(mainVM);
 			lua_pushnumber(mainVM, 1);
 			lua_getfield(luaVM, 1, "pointers");
@@ -234,7 +234,7 @@ static cell AMX_NATIVE_CALL n_lua(AMX *amx, const cell *params) {
 	lua_pushamxstring(resVM, amx, params[1]);
 	lua_gettable(resVM, LUA_GLOBALSINDEX);
 	luaL_checktype(resVM, -1, LUA_TFUNCTION);
-	
+
 	lua_newtable(resVM);
 	lua_pushlightuserdata(resVM, amx);
 	lua_setfield(resVM, -2, "amx");
@@ -354,7 +354,7 @@ static cell AMX_NATIVE_CALL n_amxRegisterPawnPrototypes(AMX *amx, const cell *pa
 		lua_pushvalue(mainVM, -1);
 		lua_setfield(mainVM, -3, loadedAMXs[amx].resourceName.c_str());
 	}
-	
+
 	lua_newtable(mainVM);
 	cell *pFn = physaddr;
 	int fnIndex;
@@ -383,7 +383,7 @@ static cell AMX_NATIVE_CALL n_amxRegisterPawnPrototypes(AMX *amx, const cell *pa
 			lua_setfield(mainVM, -3, "ret");
 		}
 		lua_insert(mainVM, -2);
-		
+
 		if(amx_FindPublic(amx, lua_tostring(mainVM, -2), &fnIndex) != AMX_ERR_NONE)
 			return luaL_error(mainVM, "amxRegisterPawnPrototypes: %s: no public function named %s exists", loadedAMXs[amx].resourceName.c_str(), lua_tostring(mainVM, -1));
 

@@ -1,4 +1,4 @@
-﻿--This script extends client_anim by providing a set of presets for textlib classes, mimicing the gui presets.
+--This script extends client_anim by providing a set of presets for textlib classes, mimicing the gui presets.
 local screenX,screenY = guiGetScreenSize()
 
 local function setDXAlpha(dx,alpha)

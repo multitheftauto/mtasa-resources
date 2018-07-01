@@ -1,4 +1,4 @@
-﻿local BUFFER_SIZE = 500
+local BUFFER_SIZE = 500
 local SCRIPT_G = {}
 local CLIENTSCRIPTS = {} ---Used to send to joining players etc
 
@@ -30,7 +30,7 @@ function readScripts ( server, client, resource )
 		--First we send a set of MD5s to client to see if they have the scripts already
 		local script = getScript ( path, resource )
 		if script then
-			local md5 = md5(script) 
+			local md5 = md5(script)
 			table.insert ( scriptInfo, { path = path, md5 = md5 } ) --Send it as an array so order is mantained.
 			CLIENTSCRIPTS[resource] = CLIENTSCRIPTS[resource] or {}
 			CLIENTSCRIPTS[resource][path] =  { script = script, md5 = md5, id = i }
@@ -39,13 +39,13 @@ function readScripts ( server, client, resource )
 	end
 	if clientScripts then
 		triggerClientEvent ( "requestScriptDownloads", root, scriptInfo, resourceName )
-	end 
+	end
 end
 
 local BOM = string.char(0xEF)..string.char(0xBB)..string.char(0xBF)
 
 function getScript ( path, resource )
-	local script = fileOpen(":" .. getResourceName(resource) .. "/" .. path, true) 
+	local script = fileOpen(":" .. getResourceName(resource) .. "/" .. path, true)
 	if not script then return false end
 	local scriptString = ""
     while not fileIsEOF(script) do
@@ -54,7 +54,7 @@ function getScript ( path, resource )
 	if string.sub(scriptString,1,3) == BOM then
 		scriptString = string.sub(scriptString,4)
 	end
-    fileClose(script) 
+    fileClose(script)
 	--Attempt to load this script
 	local loadFunction, errorMsg = loadstring ( scriptString, path )
 	if errorMsg then
@@ -88,7 +88,7 @@ addEventHandler ( "onPlayerJoin", root,
 		if getElementData(getResourceRootElement(getResourceFromName("editor_main")),"g_in_test") then
 			return
 		end
-		
+
 		for resource,data in pairs(CLIENTSCRIPTS) do
 			local scriptInfo = {}
 			local clientScripts
@@ -99,7 +99,7 @@ addEventHandler ( "onPlayerJoin", root,
 			local resourceName = getResourceName(resource)
 			if clientScripts then
 				triggerClientEvent ( source, "requestScriptDownloads", root, scriptInfo, resourceName )
-			end 
+			end
 		end
 	end
 )

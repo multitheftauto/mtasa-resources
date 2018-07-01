@@ -13,23 +13,29 @@ function WebBrowserGUI:constructor()
 	self.m_ForwardButton = GuiButton(42, 25, 32, 32, ">", false, self.m_Window)
 	self.m_ForwardButton:setEnabled(false)
 	self.m_EditAddress = GuiEdit(77, 25, sizeX - 192, 32, "Please enter an address", false, self.m_Window)
-	self.m_DevButton = GuiButton(sizeX - 110, 25, 32, 32, "✎", false, self.m_Window)
-	self.m_LoadButton = GuiButton(sizeX - 75, 25, 32, 32, "➽", false, self.m_Window)
-	self.m_ButtonClose = GuiButton(sizeX - 38, 25, 24, 24, "✖", false, self.m_Window)
+	self.m_DevButton = GuiButton(sizeX - 110, 25, 32, 32, "â", false, self.m_Window)
+	self.m_LoadButton = GuiButton(sizeX - 75, 25, 32, 32, "â½", false, self.m_Window)
+	self.m_ButtonClose = GuiButton(sizeX - 38, 25, 24, 24, "â", false, self.m_Window)
 	self.m_ButtonClose:setProperty("NormalTextColour", "FFFF2929")
 	self.m_ButtonClose:setProperty("HoverTextColour", "FF990909")
 	self.m_ButtonClose:setFont("default-bold-small")
-	
+
 	self.m_Browser = GuiBrowser(5, 62, sizeX - 10, sizeY - 67, false, false, false, self.m_Window)
-	
+
+	if not self.m_Browser then
+		outputChatBox( "Can't create browser. Check Settings->Web Browser" )
+		self.m_Window:destroy()
+		return
+	end
+
 	local browser = self.m_Browser:getBrowser()
 	addEventHandler("onClientBrowserCreated", browser, function(...) self:Browser_Created(...) end)
 	addEventHandler("onClientBrowserNavigate", browser, function(...) self:Browser_Navigate(...) end)
 	addEventHandler("onClientBrowserWhitelistChange", root, function(...) self:Browser_WhitelistChange(...) end)
 	addEventHandler("onClientBrowserDocumentReady", browser, function(...) self:Browser_DocumentReady(...) end)
-	
+
 	self.m_RequestedURL = ""
-	
+
 	showCursor(true)
 	GuiElement.setInputMode("no_binds_when_editing")
 end
@@ -65,7 +71,7 @@ end
 function WebBrowserGUI:Browser_DocumentReady()
 	self.m_Window:setText("Web browser: " .. tostring(self.m_Browser:getBrowser():getTitle()))
 	self.m_EditAddress:setText(tostring(self.m_Browser:getBrowser():getURL()))
-	
+
 	self.m_BackButton:setEnabled(self.m_Browser:getBrowser():canNavigateBack())
 	self.m_ForwardButton:setEnabled(self.m_Browser:getBrowser():canNavigateForward())
 end
@@ -104,7 +110,7 @@ function WebBrowserGUI:DevButton_Click(button, state)
 			exports.msgbox:guiShowMessageBox("You have to enable the development using setDevelopmentMode", "error", "Development mode required", false)
 			return
 		end
-		
+
 		self.m_Browser:getBrowser():toggleDevTools(true)
 	end
 end
@@ -120,15 +126,15 @@ function WebBrowserGUI:loadURL(url)
 		self.m_Browser:getBrowser():loadURL(url)
 		return
 	elseif url:sub(0, 7)  ~= "http://" and url:sub(0, 8) ~= "https://" then
-		url = "http://"..url	
+		url = "http://"..url
 	end
-	
+
 	if Browser.isDomainBlocked(url, true) then
 		self.m_RequestedURL = url
 		Browser.requestDomains({url}, true)
 		return
 	end
-	
+
 	self.m_EditAddress:setText(url)
 	self.m_Browser:getBrowser():loadURL(url)
 end

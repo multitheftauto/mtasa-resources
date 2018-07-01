@@ -1,4 +1,4 @@
-﻿--
+--
 -- racemidvote_server.lua
 --
 -- Mid-race random map vote and
@@ -64,7 +64,7 @@ function startMidMapVoteForRandomMap(player)
 	if not stateAllowsRandomMapVote() or g_CurrentRaceMode:getTimeRemaining() < 30000 then
 		if player then
 			outputRace( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
-		end 
+		end
 		return
 	end
 
@@ -206,7 +206,7 @@ function startNextMapVote()
 
 	-- Get all maps
 	local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(getThisResource())
-	
+
 	-- limit it to eight random maps
 	if #compatibleMaps > 8 then
 		math.randomseed(getTickCount())
@@ -224,7 +224,7 @@ function startNextMapVote()
 		compatibleMaps[i] = compatibleMaps[swapWith]
 		compatibleMaps[swapWith] = temp
 	end
-	
+
 	local poll = {
 		title="Choose the next map:",
 		visibleTo=getRootElement(),
@@ -232,12 +232,12 @@ function startNextMapVote()
 		timeout=15,
 		allowchange=true;
 		}
-	
+
 	for index, map in ipairs(compatibleMaps) do
 		local mapName = getResourceInfo(map, "name") or getResourceName(map)
 		table.insert(poll, {mapName, 'nextMapVoteResult', getRootElement(), map})
 	end
-	
+
 	local currentMap = exports.mapmanager:getRunningGamemodeMap()
 	if currentMap then
 		table.insert(poll, {"Play again", 'nextMapVoteResult', getRootElement(), currentMap})
@@ -310,7 +310,7 @@ function startMidMapVoteForRestartMap(player)
 	if not stateAllowsRestartMapVote() then
 		if player then
 			outputRace( "I'm afraid I can't let you do that, " .. getPlayerName(player) .. ".", player )
-		end 
+		end
 		return
 	end
 
@@ -431,7 +431,7 @@ addCommandHandler('forcevote',
 
 ---------------------------------------------------------------------------
 --
--- getRandomMapCompatibleWithGamemode 
+-- getRandomMapCompatibleWithGamemode
 --
 -- This should go in mapmanager, but ACL needs doing
 --

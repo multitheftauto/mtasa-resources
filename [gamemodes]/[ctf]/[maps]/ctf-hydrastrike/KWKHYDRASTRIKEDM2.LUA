@@ -34,7 +34,7 @@ function idleRespawn( num )
 	local x, y, z = getElementPosition( KWKHYDRASTRIKEDM_vehicles[num] )
 	local flag = true
 	for k,v in ipairs(players) do
-		if ( dist2DFixed( v, x, y, z ) < 62500 ) then 
+		if ( dist2DFixed( v, x, y, z ) < 62500 ) then
 			flag = false
 		end
 	end

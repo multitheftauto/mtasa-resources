@@ -1,4 +1,4 @@
-﻿local sound
+local sound
 radius = 2.6946883201599
 offset = { 0, 0, 0 }
 overboardScale = 1.05

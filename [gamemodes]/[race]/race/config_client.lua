@@ -1,4 +1,4 @@
-﻿--
+--
 -- config_client.lua
 --
 
@@ -149,7 +149,7 @@ addEventHandler('onClientReceiveAddonsInfo', g_ResRoot,
 			guiSetSize( row.description, colLengths[4], sy, false )
 			guiSetPosition( row.description, colPositions[4], py, false )
 		end
-		
+
 		x,y = guiGetSize( gui["form"], false )
 		guiSetSize( gui["form"], colPositions[5]+50, y, false )
 

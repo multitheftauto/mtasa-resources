@@ -1,4 +1,4 @@
-﻿dxText = {}
+dxText = {}
 dxText_mt = { __index = dxText }
 local idAssign,idPrefix = 0,"s"
 ------
@@ -162,14 +162,14 @@ end
 
 function dxText:sync(element)
 	element = element or getRootElement()
-	if not isElement(element) then 
-		outputDebugString ( "dxText:sync - Bad argument", 0, 112, 112, 112 ) 
-		return false 
+	if not isElement(element) then
+		outputDebugString ( "dxText:sync - Bad argument", 0, 112, 112, 112 )
+		return false
 	end
 	local type = getElementType(element)
 	if type ~= "player" and type ~= "root" then
-		outputDebugString ( "dxText:sync - Bad argument", 0, 112, 112, 112 ) 
-		return false 
+		outputDebugString ( "dxText:sync - Bad argument", 0, 112, 112, 112 )
+		return false
 	end
 	return triggerClientEvent ( element, "updateDisplaysDM", element, self )
 end

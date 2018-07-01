@@ -1,10 +1,10 @@
-﻿if isVoiceEnabled() then
+if isVoiceEnabled() then
 	TEAM_REFRESH = 4000 -- Interval in which team channels are refreshed, in MS.
 	SETTINGS_REFRESH = 5000 -- Interval in which team channels are refreshed, in MS.
 	resourceRoot = getResourceRootElement(getThisResource())
 
 	setElementData ( resourceRoot, "voice_enabled", true ) -- REMOVE IN 1.4
-	
+
 	------------------
 	playerChannels = {}
 	channels = {}
@@ -19,7 +19,7 @@
 
 	------------------
 	--Function to convert { moo=true,boo=true } into { moo,boo }
-	function tableToArray (tbl) 
+	function tableToArray (tbl)
 		local newtable = {}
 		for k,v in pairs(tbl) do
 			table.insert ( newtable, k )
@@ -37,7 +37,7 @@
 
 	------------------
 	--Monitor our settings so they dynamically update
-	setTimer ( 
+	setTimer (
 		function()
 			local show_chat_icon = get ( "show_chat_icon" )
 			if show_chat_icon ~= settings.voice_show_chat_icon then
@@ -49,7 +49,7 @@
 				settings.autoassign_to_teams = autoassign_to_teams
 				refreshPlayers()
 			end
-			
+
 		end,
 	SETTINGS_REFRESH, 0 )
 end

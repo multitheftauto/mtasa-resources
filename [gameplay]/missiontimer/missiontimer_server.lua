@@ -35,12 +35,12 @@ function setMissionTimerTime ( timer, time )
 	if missionTimers[timer] and tonumber(time) then
 		missionTimers[timer].duration = tonumber(time) or missionTimers[timer].duration
 		missionTimers[timer].originalTick = getTickCount()
-		
+
 		if isTimer(missionTimers[timer].timer) then
 			killTimer ( missionTimers[timer].timer )
 		end
 		missionTimers[timer].timer = setTimer ( timeElapsed, missionTimers[timer].duration, 1, timer )
-		
+
 		triggerClientEvent ( readyPlayerList, "setMissionTimerRemainingTime", timer, time )
 		return true
 	end
@@ -58,12 +58,12 @@ function getMissionTimerTime ( timer )
 	return false
 end
 
-function setMissionTimerFrozen ( timer, frozen )	
+function setMissionTimerFrozen ( timer, frozen )
 	if type(frozen) ~= "boolean" then return false end
 
 	if missionTimers[timer] then
 		if frozen == missionTimers[timer].frozen then return false end
-		
+
 		missionTimers[timer].frozen = frozen
 
 		if frozen then
@@ -88,7 +88,7 @@ end
 
 function setMissionTimerHurryTime ( timer, time )
 	if not time or not tonumber(time) then return nil end
-	
+
 	if missionTimers[timer] then
 		return triggerClientEvent ( readyPlayerList, "setMissionTimerHurryTime", timer, time )
 	end
@@ -98,10 +98,10 @@ end
 
 function setMissionTimerFormat( timer, timerFormat )
 	if type( timerFormat ) ~= "string" then return false end
-	
+
 	if missionTimers[timer] then
 		missionTimers[timer].timerFormat = timerFormat
-		
+
 		return triggerClientEvent ( readyPlayerList, "setMissionTimerFormat", timer, timerFormat )
 	end
 	return false
@@ -111,11 +111,11 @@ function cleanupMissionTimer()
 	for i,timer in ipairs(getTimers()) do
 		if timer == missionTimers[source].timer then
 			killTimer ( timer )
-			
+
 			break
 		end
 	end
-	
+
 	missionTimers[source] = nil
 end
 
@@ -124,7 +124,7 @@ function timeElapsed ( timer )
 end
 
 addEvent("onClientMissionTimerDownloaded",true)
-addEventHandler ( "onClientMissionTimerDownloaded", resourceRoot, 
+addEventHandler ( "onClientMissionTimerDownloaded", resourceRoot,
 	function()
 		table.insert( readyPlayerList, client )
 		for timer,data in pairs(missionTimers) do

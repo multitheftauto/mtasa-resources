@@ -114,7 +114,7 @@ end
 
 function aReleaseStorage ()
 	local node = xmlLoadFile ( "conf\\reports.xml" )
-	if ( node ) then 
+	if ( node ) then
 		local messages = 0
 		while ( xmlFindChild ( node, "message", messages ) ~= false ) do
 			local subnode = xmlFindChild ( node, "message", messages )

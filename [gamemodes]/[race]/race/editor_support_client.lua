@@ -1,4 +1,4 @@
-﻿--
+--
 -- editor_support_client.lua
 --
 
@@ -173,14 +173,14 @@ if isEditor() then
 			setElementRotation( g_Vehicle, 0,0,rz )
 			setTimer ( function ()
 						setVehicleTurnVelocity( g_Vehicle, 0, 0, 0 )
-						end, 50, 5 )				
+						end, 50, 5 )
 			setTimer ( function ()
 						setElementVelocity( g_Vehicle, 0, 0, 0 )
 						end, 50, 2 )
 
 			-- hmmm, maybe this is nice or not
 			if false then
-				setCameraBehindVehicle( g_Vehicle, pdistance )	
+				setCameraBehindVehicle( g_Vehicle, pdistance )
 			end
 
 			triggerServerEvent( "onEditorChangeForCheckpoint", resourceRoot, g_Me, nextIndex )

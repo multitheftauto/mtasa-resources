@@ -1,4 +1,4 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 
 local listMode
 local configPath = "mapcycle.xml"
@@ -27,9 +27,9 @@ function startCycler_list()
 	addCommandHandler("nextmode", outputNextMode)
 	addCommandHandler("nextmap", outputNextMode)
 	addCommandHandler("skipmap", skipMap, true)
-	
+
 	cycleMap_list()
-	
+
 	addEventHandler("onRoundFinished", rootElement, roundCounter)
 end
 
@@ -64,24 +64,24 @@ function cycleMap_list()
 			nextGameIndex = 1
 		end
 	end
-	
+
 	local gameInfo = gameList[gameIndex]
-	
+
 	local success
 	if gameInfo.map then
 		success = exports.mapmanager:changeGamemodeMap(gameInfo.map, gameInfo.mode)
 	else
 		success = exports.mapmanager:changeGamemode(gameInfo.mode)
 	end
-	
+
 	if not success then
 		return cycleMap_list()
 	end
-	
+
 	if gameInfo.rounds then
 		remainingRounds = gameInfo.rounds
 	end
-	
+
 	return true
 end
 
@@ -91,7 +91,7 @@ function readCycleXml(xmlFile)
 		outputCyclerDebugString("The cycler configuration XML is missing.",1)
 		return false
 	end
-	
+
 	local isAnyNodeValid = false
 	local nodeIndex = 0
 	while true do
@@ -113,7 +113,7 @@ function readCycleXml(xmlFile)
 			break
 		end
 	end
-	
+
 	-- choose sequential if the list is 1 item big
 	if nodeIndex == 1 then
 		listMode = "sequential"
@@ -144,9 +144,9 @@ function readCycleXml(xmlFile)
 	end
 end
 
-function getGameNodeInfo(gameNode)	
+function getGameNodeInfo(gameNode)
 	local info = {}
-	
+
 	-- get the gamemode, and verify it's a gamemode
 	local modeName = xmlNodeGetAttribute(gameNode, "mode")
 	if not modeName then
@@ -159,7 +159,7 @@ function getGameNodeInfo(gameNode)
 	if exports.mapmanager:isGamemode(info.mode) ~= true then
 		return false, errorCode.modeInvalid
 	end
-	
+
 	-- get the map, and verify it's a valid map if there's one
 	local mapName = xmlNodeGetAttribute(gameNode, "map")
 	if mapName then
@@ -171,7 +171,7 @@ function getGameNodeInfo(gameNode)
 			return false, errorCode.mapInvalid
 		end
 	end
-	
+
 	-- get the number of rounds
 	local roundsString = xmlNodeGetAttribute(gameNode, "rounds")
 	if roundsString then
@@ -184,7 +184,7 @@ function getGameNodeInfo(gameNode)
 			return false, errorCode.roundsZero
 		end
 	end
-	
+
 	return info
 end
 
@@ -197,7 +197,7 @@ function outputNextMode(sourcePlayer)
 		outputString = outputString .. " on map '"..nextMapName.."'"
 	end
 	outputString = outputString .. "."
-	
+
 	outputCycler(outputString, sourcePlayer)
 end
 

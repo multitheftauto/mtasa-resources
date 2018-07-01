@@ -47,12 +47,12 @@ function setMissionTimerTime ( timer, time )
 	if missionTimers[timer] then
 		missionTimers[timer].duration = tonumber(time) or missionTimers[timer].remaining
 		missionTimers[timer].originalTick = getTickCount()
-		
+
 		if isTimer( missionTimers[timer].timer ) then
 			killTimer ( missionTimers[timer].timer )
 		end
-		missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", element )			
-			
+		missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", element )
+
 		return true
 	end
 	return false
@@ -80,7 +80,7 @@ function setMissionTimerFrozen ( timer, frozen )
 			missionTimers[timer].timer = nil
 			missionTimers[timer].duration = getMissionTimerTime ( timer )
 		else
-			missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", timer )		
+			missionTimers[timer].timer = setTimer ( triggerEvent, missionTimers[timer].duration, 1, "onClientMissionTimerElapsed", timer )
 			missionTimers[timer].originalTick = getTickCount()
 		end
 		return true
@@ -98,7 +98,7 @@ end
 
 function setMissionTimerFormat( timer, timerFormat )
 	if type( timerFormat ) ~= "string" then return false end
-	
+
 	if missionTimers[timer] then
 		missionTimers[timer].timerFormat = timerFormat
 		missionTimers[timer].formatWidth = dxGetTextWidth(missionTimers[timer].timerFormat, missionTimers[timer].scale, missionTimers[timer].font)

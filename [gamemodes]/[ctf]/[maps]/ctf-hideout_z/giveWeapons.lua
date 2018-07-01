@@ -1,4 +1,4 @@
-﻿-- giveWeaponsOnSpawn for CTF: Hideout with zombies
+-- giveWeaponsOnSpawn for CTF: Hideout with zombies
 
 function giveWeaponsOnSpawn (  )
 	giveWeapon ( source, 25, 120 ) -- Gives the M4 weapon with 120 ammo

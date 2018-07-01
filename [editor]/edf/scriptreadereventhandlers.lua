@@ -1,4 +1,4 @@
-﻿local EVENT_HANDLERS = {}
+local EVENT_HANDLERS = {}
 
 function createEventHandlerContainerForResource(resource)
 	EVENT_HANDLERS[resource] = {}
@@ -10,13 +10,13 @@ function createAddEventHandlerFunctionForResource(resource)
 				if getPropagated == nil or type(getPropagated) ~= "boolean" then
 					getPropagated = true
 				end
-				
+
 				if addEventHandler(eventName,attachedTo,handlerFunction,getPropagated) then
 					table.insert(EVENT_HANDLERS[resource],{eventName,attachedTo,handlerFunction})
 					return true
 				end
 			end
-			
+
 			return false
 		end)
 end
@@ -33,7 +33,7 @@ function createRemoveEventHandlerFunctionForResource(resource)
 					end
 				end
 			end
-			
+
 			return false
 		end)
 end
@@ -44,6 +44,6 @@ function cleanEventHandlerContainerForResource(resource)
 			removeEventHandler(unpack(eventData))
 		end
 	end
-	
+
 	EVENT_HANDLERS[resource] = nil
 end

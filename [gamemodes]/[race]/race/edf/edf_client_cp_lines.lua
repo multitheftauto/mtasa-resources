@@ -1,4 +1,4 @@
-﻿--
+--
 -- edf_client_cp_lines.lua
 --
 -- Visualization of checkpoint connections for race
@@ -59,16 +59,16 @@ function drawCheckpointConnections()
                     local length = dir:Length()
                     local mid = s:AddV(dir:Mul(0.5))
                     dir:Normalize()
-    
+
                     local left = dir:CrossV(Vector3D:new(0,0,1))
                     left.z = 0
                     left:Normalize()
                     left = left:Mul(2)
-    
+
                     local p = d:SubV(dir:Mul(3))
                     local p1 = p:AddV(left)
                     local p2 = p:SubV(left)
-    
+
                     lineList[curIdx + 1] = {s=s,d=d,p1=p1,p2=p2,m=mid,length=length}
     			end
 			end

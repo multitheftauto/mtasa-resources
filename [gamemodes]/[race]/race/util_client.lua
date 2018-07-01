@@ -1,4 +1,4 @@
-﻿g_Root = getRootElement()
+g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 
@@ -37,7 +37,7 @@ server = createServerCallInterface()
 
 function showHUD(show)
 	for i,name in ipairs({ 'ammo', 'area_name', 'armour', 'breath', 'clock', 'health', 'money', 'vehicle_name', 'weapon' }) do
-		showPlayerHudComponent(name, show)
+		setPlayerHudComponentVisible(name, show)
 	end
 end
 
@@ -261,7 +261,7 @@ function table.popLast(t,val)
     return last
 end
 
-	
+
 
 -----------------------------
 -- String extensions

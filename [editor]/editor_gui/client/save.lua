@@ -1,4 +1,4 @@
-﻿local TEST_RESOURCE = "editor_test"
+local TEST_RESOURCE = "editor_test"
 local DUMP_RESOURCE = "editor_dump"
 local mapsInfo = {}
 local resourcesInfo = {}
@@ -108,6 +108,6 @@ function setSaveEditBoxMapName()
 		guiSetText ( saveDialog.mapName, "" )
 	else
 		mapName = guiGridListGetItemText ( saveDialog.mapsList, row, 1 )
-		guiSetText ( saveDialog.mapName, mapName ) 
+		guiSetText ( saveDialog.mapName, mapName )
 	end
 end

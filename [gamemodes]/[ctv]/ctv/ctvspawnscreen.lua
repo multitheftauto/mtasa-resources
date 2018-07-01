@@ -1,4 +1,4 @@
-ï»¿-- Capture the Vehicle by BrophY©, if you wish to modify, keep copyright notice and credits in the file
+-- Capture the Vehicle by BrophY, if you wish to modify, keep copyright notice and credits in the file
 -- Credits to Talidan, Dragon and Ransom for help and testing
 
 bases = {}
@@ -52,7 +52,7 @@ function onCTVSpawnMapStart (startedMap)
 	bases[varTeam2] = baseTeam2
 	bases[varTeam3] = baseTeam3
 	bases[varTeam4] = baseTeam4
-	
+
 	spawnText ()
 end
 
@@ -79,7 +79,7 @@ function spawnScreen ( source )
 	--setCameraMode ( source, "fixed" )
 	--setTimer ( setCameraPosition, 1000, 1, source, 160.15, -1951.68, 50 )
 	--setTimer ( setCameraLookAt, 1000, 1, source, 165, -1951.68, 50 )
-	setCameraMatrix( source, 329.94, -1985.88, 30.0, 377.36, -2043.06, 7.83 ) 
+	setCameraMatrix( source, 329.94, -1985.88, 30.0, 377.36, -2043.06, 7.83 )
 	bindKey ( source, "F1", "down", spawnTeam, varTeam1 )
 	bindKey ( source, "F2", "down", spawnTeam, varTeam2 )
 	bindKey ( source, "F3", "down", spawnTeam, varTeam3 )
@@ -107,7 +107,7 @@ function spawnTeam ( source, key, keyState, team )
 	playSoundFrontEnd ( source, 6 )
 	setPlayerTeam ( source, team )
 	createBlipAttachedTo ( source, 0, 2, r, g, b, 140 )
-	
+
 	local weapon1 = getElementData ( teamBase, "weapon1" )
 	local weapon1id = tonumber ( gettok ( weapon1, 1, 44 ) )
 	local weapon1ammo = tonumber ( gettok ( weapon1, 2, 44 ) )
@@ -169,12 +169,12 @@ function spawnText ()
 		local stext2 = textCreateTextItem ( "Press F1 to spawn " ..team1name.. "", 0.502, 0.502, "low", 0, 0, 0, 255, 1.8, "center" )
 		local stext3 = textCreateTextItem ( "Press F2 to spawn " ..team2name.. "", 0.502, 0.552, "low", 0, 0, 0, 255, 1.8, "center" )
 		local stext4 = textCreateTextItem ( "Press F3 to spawn " ..team3name.. "", 0.502, 0.602, "low", 0, 0, 0, 255, 1.8, "center" )
-		local stext5 = textCreateTextItem ( "Press F4 to spawn " ..team4name.. "", 0.502, 0.652, "low", 0, 0, 0, 255, 1.8, "center" ) 
+		local stext5 = textCreateTextItem ( "Press F4 to spawn " ..team4name.. "", 0.502, 0.652, "low", 0, 0, 0, 255, 1.8, "center" )
 		local text = textCreateTextItem ( "Select your spawn", 0.5, 0.3, "low", 255, 255, 255, 255, 2, "center" )
 		local text2 = textCreateTextItem ( "Press F1 to spawn " ..team1name.. "", 0.5, 0.5, "low", 255, 255, 255, 255, 1.8, "center" )
 		local text3 = textCreateTextItem ( "Press F2 to spawn " ..team2name.. "", 0.5, 0.55, "low", 255, 255, 255, 255, 1.8, "center" )
 		local text4 = textCreateTextItem ( "Press F3 to spawn " ..team3name.. "", 0.5, 0.6, "low", 255, 255, 255, 255, 1.8, "center" )
-		local text5 = textCreateTextItem ( "Press F4 to spawn " ..team4name.. "", 0.5, 0.65, "low", 255, 255, 255, 255, 1.8, "center" ) 
+		local text5 = textCreateTextItem ( "Press F4 to spawn " ..team4name.. "", 0.5, 0.65, "low", 255, 255, 255, 255, 1.8, "center" )
 		textDisplayAddText ( spawnDisplay, stext )
 		textDisplayAddText ( spawnDisplay, stext2 )
 		textDisplayAddText ( spawnDisplay, stext3 )
@@ -188,15 +188,15 @@ function spawnText ()
 end
 
 function hudDisplay ( player, bool )
-	showPlayerHudComponent ( player, "ammo", bool )
-	showPlayerHudComponent ( player, "area_name", bool )
-	showPlayerHudComponent ( player, "armour", bool )
-	showPlayerHudComponent ( player, "breath", bool )
-	showPlayerHudComponent ( player, "health", bool )
-	showPlayerHudComponent ( player, "money", bool )
-	showPlayerHudComponent ( player, "radar", bool )
-	showPlayerHudComponent ( player, "vehicle_name", bool )
-	showPlayerHudComponent ( player, "weapon", bool )
+	setPlayerHudComponentVisible ( player, "ammo", bool )
+	setPlayerHudComponentVisible ( player, "area_name", bool )
+	setPlayerHudComponentVisible ( player, "armour", bool )
+	setPlayerHudComponentVisible ( player, "breath", bool )
+	setPlayerHudComponentVisible ( player, "health", bool )
+	setPlayerHudComponentVisible ( player, "money", bool )
+	setPlayerHudComponentVisible ( player, "radar", bool )
+	setPlayerHudComponentVisible ( player, "vehicle_name", bool )
+	setPlayerHudComponentVisible ( player, "weapon", bool )
 end
 
 addEventHandler( "onGamemodeMapStart", getRootElement (), onCTVSpawnMapStart )

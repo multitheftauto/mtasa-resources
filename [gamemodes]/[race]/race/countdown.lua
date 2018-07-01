@@ -1,4 +1,4 @@
-﻿Countdown = {}
+Countdown = {}
 function Countdown:__index(k)
 	if Countdown[k] then
 		return Countdown[k]
@@ -77,7 +77,7 @@ function Countdown:start(player)
 	self.value = self.startvalue
 	self.id = #Countdown.instances + 1
 	Countdown.instances[self.id] = self
-	
+
 	if self:isClient() then
 		self.client.id = #Countdown.clientinstances + 1
 		Countdown.clientinstances[self.client.id] = self
@@ -97,7 +97,7 @@ function Countdown:start(player)
 			self.countitem = textCreateTextItem('', 0.5, self.text and self.ypos + 0.01 or self.ypos, 'medium', self.r or 255, self.g or 0, self.b or 0, 255, self.scale, 'center', 'top', 128 )
 			textDisplayAddText(self.display, self.countitem)
 		end
-		
+
 		if player then
 			textDisplayAddObserver(self.display, player)
 		else

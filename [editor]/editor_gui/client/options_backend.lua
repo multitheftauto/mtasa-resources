@@ -1,4 +1,4 @@
-﻿------All the tables defining stuff
+------All the tables defining stuff
 local bools = { ["false"]=false, ["true"]=true }
 local xmlVariants = {
 ["enableSounds"]="enablesounds",
@@ -113,7 +113,7 @@ function loadXMLSettings()
 			settingsNodes[gui] = xmlCreateChild ( settingsXML, nodeName )
 		end
 	end
-	
+
 	local settingsTable = {}
 	for gui,node in pairs(settingsNodes) do
 		local value
@@ -184,4 +184,4 @@ function restoreDefaults()
 	for gui,value in pairs(defaults) do
 		dialog[gui]:setValue(value)
 	end
-end	
+end

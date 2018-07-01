@@ -1,16 +1,13 @@
 <meta>
-	<info author="BrophY" description="A playtest/freeroam mode" version="1" type="gamemode" />
+	<oop>true</oop>
+	<info author="BrophY" description="A playtest/freeroam mode" version="1.5" type="gamemode" />
 	<include resource="freeroam" />
-	<include resource="spawnmanager" />
-	
-	<settings>
-		<setting name="*spawnreset" value="onSpawn"
-				 friendlyname="Spawn Reset"
-				 accept="onSpawn,onServerEmpty,onServerStart"
-				 desc="When should a new spawnpoint be chosen?"
-		/>
-	</settings>
-	
-	<map src="broph.map" />
 	<script src="broph.lua"/>
+
+	<settings>
+		<setting name="*playerRespawnTime" value="[4000]" friendlyname="Player respawn time" desc="Player respawn time after dying in milliseconds. Anything below 50 is auto-set to 50" />
+		<setting name="*vehicleRespawnTime" value="[60000]" friendlyname="Vehicle respawn time" group="Spawnpoint vehicles" desc="Vehicle respawn time after it is taken. Anything below 50 is auto-set to 50" />
+		<setting name="*vehicleExpireTime" value="[600000]" friendlyname="Vehicle expire time" group="Spawnpoint vehicles" desc="Vehicle disappear time after abandoned, timer resets if any player re-enters the vehicle. Anything below 50 is auto-set to 50" />
+	</settings>
+
 </meta>

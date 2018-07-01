@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 <team name="" red="" green="" blue="">
 	<camera lookX="" lookY="" lookZ="" posX="" posY="" posZ=""/>
 	<weapon model="" ammo=""/>
@@ -45,7 +45,7 @@ function cdm_initialize()
 		end
 		local skins = getChildren ( v, "skin" )
 		teamRoot[k].skins = {}
-		if ( #skins == 0 ) then 
+		if ( #skins == 0 ) then
 			teamRoot[k].skins[1] = 0
 			outputDebugString( "* CDM Warning: No skins were found in team #" .. k .. ". Defaulting to 0.", 2 )
 		end
@@ -156,7 +156,7 @@ function cdm_killAll()
 			killPed( v )
 		end
 	end
-end	
+end
 
 function cdm_gamemodeMapStart( startedMap )
 	cdm_initialize()

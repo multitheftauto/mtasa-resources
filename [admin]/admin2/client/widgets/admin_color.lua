@@ -181,7 +181,7 @@ function aColor.onChanged ()
 	local acc = { [aColor.R] = "r", [aColor.G] = "g", [aColor.B] = "b" }
 	if ( acc[source] ) then
 		local value = tonumber ( guiGetText ( source ) )
-		
+
 		if ( not value ) then
 			if ( guiGetText ( source ) == "" ) then aColor.Color[acc[source]] = 0
 			else guiSetText ( source, aColor.Color[acc[source]] ) end

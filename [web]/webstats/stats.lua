@@ -1,4 +1,4 @@
-﻿registeredStats = {}
+registeredStats = {}
 stats = {}
 nodepos = 1
 maxstatrecords = 60  -- 1  hours worth
@@ -6,8 +6,8 @@ lastnode = nil
 UPDATE_FREQUENCY = 60 -- seconds
 statsByResource = {}
 
-setTimer ( 
-	function() 
+setTimer (
+	function()
 	    local time = getRealTime()
 
 		stats[nodepos] = {}
@@ -15,7 +15,7 @@ setTimer (
 		for k,v in pairs(registeredStats) do
 			stats[nodepos][k] = tostring(call(v.resource, v.func))
 		end
-		
+
 		nodepos = nodepos + 1;
 		if ( nodepos > maxstatrecords ) then
 			nodepos = 1
@@ -32,7 +32,7 @@ function registerStat(resource, func, name, description)
 	statsByResource[resource][statname] = registeredStats[statname]
 end
 
-function getCurrentStats () 
+function getCurrentStats ()
 	local currStats = {}
 	local arrpos = nodepos
 	local stopat = arrpos
@@ -48,8 +48,8 @@ function getCurrentStats ()
 			arrpos = 1
 		end
 		i = i + 1
-	until arrpos == stopat 
-	
+	until arrpos == stopat
+
 	return currStats
 end
 

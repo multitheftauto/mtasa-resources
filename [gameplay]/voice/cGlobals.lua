@@ -1,4 +1,4 @@
-﻿SETTINGS_REFRESH = 2000 -- Interval in which team channels are refreshed, in MS.
+SETTINGS_REFRESH = 2000 -- Interval in which team channels are refreshed, in MS.
 bShowChatIcons = true
 
 voicePlayers = {}
@@ -38,7 +38,7 @@ end
 
 ---
 
-setTimer ( 
+setTimer (
 	function()
 		bShowChatIcons = getElementData ( resourceRoot, "show_chat_icon", show_chat_icon )
 	end,

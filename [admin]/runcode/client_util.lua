@@ -1,4 +1,4 @@
-﻿function outputChatBoxR(message)
+function outputChatBoxR(message)
 	return outputChatBox(message, 200, 250, 200)
 end
 
@@ -10,12 +10,12 @@ function map(element, level)
 	local eType = getElementType(element)
 	local eID = getElementID(element)
 	local eChildren = getElementChildren(element)
-	
+
 	local tagStart = '<'..eType
 	if eID then
 		tagStart = tagStart..' id="'..eID..'"'
 	end
-	
+
 	if #eChildren < 1 then
 		outputConsole(indent..tagStart..'"/>')
 	else

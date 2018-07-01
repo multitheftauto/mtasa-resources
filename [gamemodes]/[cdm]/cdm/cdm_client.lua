@@ -1,4 +1,4 @@
-﻿function cdm_clientResourceStart ( resourcename )
+function cdm_clientResourceStart ( resourcename )
 	if ( resourcename == getThisResource () ) then
 		bindKey ( "i", "down", "Show Vehicles", "1" )
 		bindKey ( "i", "up", "Show Vehicles", "0" )
@@ -14,7 +14,7 @@ function destroyAttachedVehicleBlips()
 				destroyElement(b)
 			end
 		end
-	end	
+	end
 end
 
 function createBlipsAttachedToVehicles()
@@ -22,7 +22,7 @@ function createBlipsAttachedToVehicles()
 	for k,v in ipairs(vehicles) do
 		createBlipAttachedTo ( v, 0, 1, 255, 255, 0, 255 )
 	end
-end	
+end
 
 function showVehicles( command, keyState )
 	local vehicles = getElementsByType( "vehicle" )

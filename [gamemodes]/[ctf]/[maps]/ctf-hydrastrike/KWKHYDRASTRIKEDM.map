@@ -7,7 +7,7 @@
 
 <settings auto_balance="on" friendly_fire="on" respawnTime="10000" roundTime="1800000" spawnScreen="on" blips="all"/>
 <camera posX="-991.407166" posY="4556.547852" posZ="1.936604" lookX="-1103.094971" lookY="4586.042480" lookZ="15.233397"/>
-   
+
 <team name="Red" colorR="255" colorG="0" colorB="0">
       <flag name="" posX="-1140.771240" posY="4569.386719" posZ="8.523922" />
       <flag name="" posX="-1122.877441" posY="5334.434082" posZ="8.448919" />
@@ -20,7 +20,7 @@
       <flag name="" posX="1656.186890" posY="4569.715820" posZ="8.528140" />
 	<spawnpoint posX="1713.783691" posY="5219.716797" posZ="8.985629" rot="179" skin="287"/>
 	<spawnpoint posX="1716.533813" posY="4684.116211" posZ="8.985629" rot="360" skin="287"/>
-</team> 
+</team>
 
 <object id="object (131)" posX="184.114868" posY="4106.999512" posZ="8.292392" rotX="0" rotY="0" rotZ="-89.999981" model="8357" />
 <object id="object (132)" posX="97.691376" posY="4193.250977" posZ="8.318995" rotX="0" rotY="0" rotZ="0" model="8357" />

@@ -1,4 +1,4 @@
-﻿g_ScreenX,g_ScreenY = guiGetScreenSize()
+g_ScreenX,g_ScreenY = guiGetScreenSize()
 g_Root = getRootElement()
 g_ResourceRoot = getResourceRootElement(getThisResource())
 g_LocalPlayer = getLocalPlayer()
@@ -73,9 +73,9 @@ function updateScores()
 	local currentScore = getElementData(g_LocalPlayer,"Score")
 	if source == g_LocalPlayer then
 		fragText:text(tostring(currentScore))
-		if (currentScore < 0) then 
-			fragText:color(255,0,0,255) 
-		else 
+		if (currentScore < 0) then
+			fragText:color(255,0,0,255)
+		else
 			fragText:color(255,255,255,255)
 		end
 		--Make the score smaller if the frag limit is 3 digits
@@ -108,8 +108,8 @@ function updateScores()
 			break
 		end
 	end
-	--Calculate spread 
-	local spreadTargetScore = (rank == 1) and 
+	--Calculate spread
+	local spreadTargetScore = (rank == 1) and
 				getElementData ( players[2] or players[1], "Score" )
 				or getElementData ( players[1], "Score" ) or 0
 	local spread = currentScore - spreadTargetScore
@@ -136,11 +136,11 @@ local function countdown(time)
 end
 
 local function hideCountdown()
-	setTimer ( 
+	setTimer (
 		function()
 			respawnText:visible(false)
-		end, 
-		600, 1 
+		end,
+		600, 1
 	)
 	Animation.createAndPlay(
 	  respawnText,

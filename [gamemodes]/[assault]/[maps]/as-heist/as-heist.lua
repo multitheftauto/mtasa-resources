@@ -1,4 +1,4 @@
-﻿local resourceRoot = getResourceRootElement ( getThisResource() )
+local resourceRoot = getResourceRootElement ( getThisResource() )
 local root = getRootElement()
 local moneybags, keycards, cols = {}, {}, {}
 local attackers, currentObj, isInterior = nil, nil, nil
@@ -13,7 +13,7 @@ local van = createVehicle ( 428, 2510.85, 2394.33, 11.30, 0, 0, 90 )
 	setElementData ( van, "rotX", 0 )
 	setElementData ( van, "rotY", 0 )
 	setElementData ( van, "rotZ", 90 )
-	
+
 	-- === MISC FUNCTIONS ===
 	-- =========================
 
@@ -37,7 +37,7 @@ function playerStats ( spawnpoint )
 		setTimer ( setElementInterior, 200, 1, source, 1 )
 	end
 	if ( getPlayerTeam ( source ) == attackers ) then
-		showPlayerHudComponent( source, "money", true )
+		setPlayerHudComponentVisible( source, "money", true )
 		setPlayerWantedLevel ( source, wanted )
 		--setPlayerMoney ( source, money )
 	end
@@ -78,7 +78,7 @@ function spawnVan ( delay, x, y, z, rx, ry, rz )
 	if ( currentObj == "none" ) then
 		setTimer ( setVehicleLocked, delay + 100, 1, van, true )
 	end
-	
+
 	textItemSetText ( display.vanText, tostring ( health ) )
 	textItemSetColor ( display.vanText, 255, 255, 255, 255 )
 	setTimer ( spawnVehicle, delay, 1, van, x, y, z, 0, 0, rz )
@@ -96,7 +96,7 @@ end
 
 	-- === ON MAP START & END ===
 	-- ============================
-	
+
 function scriptResourceStart()
 		-- some objects need to be visible inside
 	local door = getElementByID ( "door" )
@@ -130,11 +130,11 @@ function scriptStartRound ( attacker )
 	local rx, ry, rz = getElementData ( van, "rotX" ), getElementData ( van, "rotY" ), getElementData ( van, "rotZ" )
 	spawnVan ( 1000, x, y, z, rx, ry, rz )
 	addEventHandler ( "onVehicleDamage", van, damageVehicle )
-	
+
 		-- locking the tank, secret shh!
 	local tank = getElementByID ( "tank" )
 	setVehicleLocked ( tank, true )
-	
+
 		-- opening garage doors
 	local gdoor = getElementByID ( "gdoor" )
 	local gdoortwo = getElementByID ( "gdoortwo" )
@@ -151,17 +151,17 @@ function scriptEndRound ( conquered )
 	removeEventHandler ( "onVehicleEnter", van, displayHealth )
 	removeEventHandler ( "onVehicleExit", van, hideHealth )
 	removeEventHandler ( "onVehicleDamage", van, damageVehicle )
-		
+
 		-- cleaning up
 	if ( currentObj ~= "none" ) and ( currentObj ~= "bombs" ) and ( currentObj ~= "outfits" ) then
 		destroyBlipsAttachedTo ( van )
-		
+
 		if ( currentObj == "securicar" ) then
 			scriptRemoveSecuricar()
-			
+
 		elseif ( currentObj == "park" ) then
 			scriptRemovePark()
-			
+
 		elseif ( currentObj == "casino" ) then
 			scriptRemoveCasino()
 
@@ -176,7 +176,7 @@ function scriptEndRound ( conquered )
 			local door = getElementByID ( "door" )
 			local rx, ry, rz = getElementData ( door, "rotX" ), getElementData ( door, "rotY" ), getElementData ( door, "rotZ" )
 			setObjectRotation ( door, rx, ry, rz )
-		
+
 			if ( currentObj ~= "vault" ) then
 					-- putting the vault door in the right place
 				local vaultdoor = getElementByID ( "vaultdoor" )
@@ -184,14 +184,14 @@ function scriptEndRound ( conquered )
 				local rx, ry, rz = getElementData ( vaultdoor, "rotX" ), getElementData ( vaultdoor, "rotY" ), getElementData ( vaultdoor, "rotZ" )
 				setElementPosition ( vaultdoor, x, y, z )
 				setObjectRotation ( vaultdoor, rx, ry, rz )
-				
+
 					-- placing the pillar back to its original position
 				local pillar = getElementByID ( "pillar" )
 				local x, y, z = getElementData ( pillar, "posX" ), getElementData ( pillar, "posY" ), getElementData ( pillar, "posZ" )
 				local rx, ry, rz = getElementData ( pillar, "rotX" ), getElementData ( pillar, "rotY" ), getElementData ( pillar, "rotZ" )
 				setElementPosition ( pillar, x, y, z )
 				setObjectRotation ( pillar, rx, ry, rz )
-				
+
 				if ( currentObj == "money" ) then
 						-- destroy any remaining bags
 					for i, v in ipairs ( moneybags ) do
@@ -205,7 +205,7 @@ function scriptEndRound ( conquered )
 					local doortwo = getElementByID ( "doortwo" )
 					rx, ry, rz = getElementData ( doortwo, "rotX" ), getElementData ( doortwo, "rotY" ), getElementData ( doortwo, "rotZ" )
 					setObjectRotation ( doortwo, rx, ry, rz )
-					
+
 					if ( currentObj == "backdoor" ) then
 						scriptRemoveBackdoor()
 					elseif ( currentObj == "hideout" ) then
@@ -220,9 +220,9 @@ end
 	-- === OBJECTIVES ===
 	-- ====================
 
-	
+
 	-- (( OBJECTIVE: SECURICAR )) --
-	
+
 	-- check if the jacker is an attacker otherwise don't let him enter the van, OBJECTIVE DONE!
 function scriptJacker ( player, seat, jacked )
 	if ( getPlayerTeam ( player ) == attackers ) then
@@ -307,7 +307,7 @@ end
 
 
 	-- (( OBJECTIVE: CASINO )) --
-	
+
 	-- teleporting the player in the casino, making the teleport marker invisible
 function enterCasino ( player, dimension )
 	setElementInterior ( player, 1, 2233.85, 1698.85, 1008.35 )
@@ -318,7 +318,7 @@ end
 function leaveCasino ( player, dimension )
 	setElementInterior ( player, 0, 2183.67, 1677.30, 11.07 )
 end
-	
+
 	-- create 2 col markers that let you in and out the casino
 function scriptCreateCasino()
 	local x, y, z = 2195.28, 1677.15, 12.37
@@ -355,7 +355,7 @@ end
 
 
 	-- (( OBJECTIVE: KEY )) --
-	
+
 	-- creating a custom pickup, making it glow if it's a keycard
 function customPickup ( x, y, z, ID, createGlow )
 	local pickup = createPickup ( x, y, z, 3, ID, 0 )
@@ -385,7 +385,7 @@ function destroyPickup ( pickup, theTable, isGlow )
 		end
 	end
 end
-			
+
 	-- do nothing if the player is not an attacker, check if the real keycard is picked up, OBJECTIVE DONE!
 function checkCard ( player )
 	if ( getPickupType ( source ) == 3 ) then
@@ -398,7 +398,7 @@ function checkCard ( player )
 		end
 	end
 end
-	
+
 	-- creating 8 keycards scattered around the place, only 1 is real
 function scriptCreateKey()
 	local cards = getElementsByType ( "card" )
@@ -439,18 +439,18 @@ end
 
 
 	-- (( OBJECTIVE: VAULT )) --
-	
+
 	-- place a bomb and blow up the door, block the first door
 function scriptEndVault ( players )
 	local vaultdoor = getElementByID ( "vaultdoor" )
 	local pillar = getElementByID ( "pillar" )
 	local bomb = createObject ( 1252, 2144.60, 1626.80, 994.50, 0, 40, 0 )
 	local bombGlow = createMarker ( 2144.60, 1626.80, 994.50, "corona", 1, 255, 255, 200, 80 )
-	
+
 	for i, v in ipairs ( players ) do
 		setTimer ( playSoundFrontEnd, 100, 1, v, 4 )
 	end
-	
+
 	setElementInterior ( bomb, 1 )
 	setElementInterior ( bombGlow, 1 )
 	setTimer ( destroyElement, 4900, 1, bomb )
@@ -460,14 +460,14 @@ function scriptEndVault ( players )
 	setTimer ( moveObject, 1000, 1, pillar, 300, 2147.70, 1605.70, 1006.55, 0, 30, -10 ) -- rotation 0, 30, -10
 	setTimer ( moveObject, 5000, 1, vaultdoor, 400, 2142.50, 1642.00, 996.00, 30, 50 + 720, 360 ) -- rotation 30, 50, 180
 	setTimer ( moveObject, 5400, 1, vaultdoor, 600, 2142.50, 1638.00, 992.70, 60 + 360, 100, 0 ) -- rotation 90, 150, 180
-	
+
 	wanted = 3
 	wantedLevel ( wanted )
 end
 
 
 	-- (( OBJECTIVE: MONEY )) --
-	
+
 	-- increase their amount of cash, do it until all bags are picked up, OBJECTIVE DONE!
 function checkBag ( player )
 	if ( getPickupType ( source ) == 3 ) then
@@ -563,7 +563,7 @@ function endColShapeEnter ( player, dimension )
 		setTimer ( setCameraMatrix, 100, 1, root, 1039.013671875, 2087.5078125, 25.104822158813, 1114.0322265625, 2087.136718, 0 )
 		setTimer ( moveObject, 1500, 1, gdoor, 3000, x, y, 12.7 )
 		setTimer ( moveObject, 1500, 1, gdoortwo, 2000, x2, y2, 12.7 )
-		
+
 		currentObj = "theEnd"
 		setTimer ( scriptRemoveHideout, 1000, 1 )
 		setTimer ( call, 7000, 1, getResourceFromName( "assault" ), "triggerObjective", "hideout" )
@@ -577,7 +577,7 @@ function scriptCreateHideout ( obj )
 	createBlipAttachedTo ( cols.endMarker, 0, 2, 255, 128, 64, 255 )
 	addEventHandler ( "onColShapeHit", cols.endCol, endColShapeEnter )
 end
-	
+
 	-- cleaning up
 function scriptRemoveHideout()
 	removeEventHandler ( "onColShapeHit", cols.endCol, endColShapeEnter )
@@ -591,7 +591,7 @@ end
 
 	-- what happens when an objective is reached
 function checkObjective ( obj, players )
-	if ( obj.id == "securicar" ) then 
+	if ( obj.id == "securicar" ) then
 		scriptEndSecuricar()
 		setTimer ( scriptRemoveSecuricar, 1000, 1 )
 	elseif ( obj.id == "park" ) then

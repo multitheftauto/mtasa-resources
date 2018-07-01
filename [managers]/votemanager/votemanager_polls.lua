@@ -1,4 +1,4 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 local serverConsole = getElementByIndex("console", 0)
 
@@ -61,7 +61,7 @@ addEventHandler("onResourceStart", thisResourceRoot,
 			info.blockedPlayers = {}
 			addCommandHandler("vote"..name, vote[name].handler )
 		end
-		
+
 	end
 )
 
@@ -74,7 +74,7 @@ function vote.map.handler(source,cmd,...)
     local resource1Name = #{...}>0 and table.concat({...},' ',1,1) or nil
     local resource2Name = #{...}>1 and table.concat({...},' ',2)   or nil
 	source = source or serverConsole
-	
+
 	if isDisabled(cmd, source) then
 		return
 	end
@@ -130,7 +130,7 @@ function vote.map.handler(source,cmd,...)
 			if voteMapReturnCode == errorCode.pollAlreadyRunning then
 				outputVoteManager(cmd..": another poll is in progress.", source)
 			elseif voteMapReturnCode == errorCode.noGamemodeRunning then
-				outputVoteManager(cmd..": no gamemode is running, you must specify a mode for the map.", source)            
+				outputVoteManager(cmd..": no gamemode is running, you must specify a mode for the map.", source)
 			elseif voteMapReturnCode == errorCode.invalidMap then
 				outputVoteManager(cmd..": invalid map name.", source)
 			end
@@ -147,7 +147,7 @@ function vote.mode.handler(source,cmd)
 	if isDisabled(cmd, source) then
 		return
 	end
-	
+
 	local sourceSerial
 	if source ~= serverConsole then
 		sourceSerial = getPlayerSerial(source)
@@ -156,14 +156,14 @@ function vote.mode.handler(source,cmd)
 		outputVoteManager(cmd..": you have to wait "..vote.mode.locktime.." seconds before starting another mode vote.", source)
 	else
 		local gamemodes = exports.mapmanager:getGamemodes()
-		
+
 		--remove the current gamemode from the list
 		for i, gamemode in ipairs(gamemodes) do
 			if gamemode == exports.mapmanager:getRunningGamemode() then
 				table.remove(gamemodes, i)
 			end
 		end
-		
+
 		-- limit it to eight random modes
 		if #gamemodes > 8 then
 			math.randomseed(getTickCount())
@@ -171,7 +171,7 @@ function vote.mode.handler(source,cmd)
 				table.remove(gamemodes, math.random(1, #gamemodes))
 			until #gamemodes == 8
 		end
-		
+
 		local voteModeStarted, voteModeReturnCode = voteBetweenModesThenMaps(unpack(gamemodes))
 		if voteModeStarted then
 			outputVoteManager("Mode vote started by "..getPlayerName(source)..".")
@@ -197,7 +197,7 @@ function vote.kick.handler(source,cmd,playername,...)
 	if isDisabled(cmd, source) then
 		return
 	end
-	
+
 	local sourceSerial
 	if source ~= serverConsole then
 		sourceSerial = getPlayerSerial(source)
@@ -236,7 +236,7 @@ function vote.ban.handler(source,cmd,playername,...)
 	if isDisabled(cmd, source) then
 		return
 	end
-	
+
 	local sourceSerial
 	if source ~= serverConsole then
 		sourceSerial = getPlayerSerial(source)
@@ -251,7 +251,7 @@ function vote.ban.handler(source,cmd,playername,...)
 		local voteBanStarted, voteBanReturnCode = voteBan(getPlayerByNamepart(playername),reason)
 		if voteBanStarted then
 			outputVoteManager("Voteban started by "..getPlayerName(source)..".")
-			
+
 			if source ~= serverConsole then
 				triggerClientEvent(source,"doSendVote",rootElement,1)
                 if vote.ban.locktime >= 0.05 then
@@ -275,7 +275,7 @@ function vote.kill.handler(source,cmd,playername,...)
 	if isDisabled(cmd, source) then
 		return
 	end
-	
+
 	local sourceSerial
 	if source ~= serverConsole then
 		sourceSerial = getPlayerSerial(source)
@@ -341,7 +341,7 @@ function voteMap(resource1, resource2)
 		if not runningGamemode then
 			return false, errorCode.noGamemodeRunning
 		end
-        
+
         local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(runningGamemode)
         map = exports.mapmanager:getRunningGamemodeMap()
         if map then
@@ -363,7 +363,7 @@ function voteMap(resource1, resource2)
             [1]={'Yes',call,getResourceFromName("mapmanager"),"changeGamemodeMap",compatibleMaps[math.random(1, #compatibleMaps)]},
             [2]={"No",outputVoteManager,"votemap: not enough votes to change to a random map on this gamemode.",rootElement,vR,vG,vB;default=true},
         }), true
-    
+
 	-- a map, a gamemode: vote for that pair
 	elseif map and gamemode then
 		if exports.mapmanager:isMapCompatibleWithGamemode(map, gamemode) then
@@ -381,18 +381,18 @@ function voteMap(resource1, resource2)
 		else
 			return false, errorCode.mapIsntCompatible
 		end
-		
+
 	-- no map, a gamemode: vote between compatible maps for that gamemode
 	elseif not map and gamemode then
 		return voteBetweenGamemodeCompatibleMaps(gamemode)
-		
+
 	-- a map, no gamemode: vote to change current gamemode map
 	elseif map and not gamemode then
 		local runningGamemode = exports.mapmanager:getRunningGamemode()
 		if not runningGamemode then
 			return false, errorCode.noGamemodeRunning
 		end
-		
+
 		if exports.mapmanager:isMapCompatibleWithGamemode(map, runningGamemode) then
 			local mapName = getResourceInfo(map, "name") or getResourceName(map)
 			return (startPoll{
@@ -407,7 +407,7 @@ function voteMap(resource1, resource2)
 		else
 			return false, errorCode.mapIsntCompatible
 		end
-		
+
 	-- no map, no gamemode: vote between compatible maps for the running gamemode
 	else
 		local runningGamemode = exports.mapmanager:getRunningGamemode()
@@ -485,7 +485,7 @@ function voteBetweenModes(...)
 	end
 	local args = {...}
 	if #args < 2 then return end
-	
+
 	local poll = {
 		title="Choose a mode & map:",
 		visibleTo=rootElement,
@@ -493,14 +493,14 @@ function voteBetweenModes(...)
 		timeout=vote.mode.timeout,
 		allowchange=vote.mode.allowchange;
 	}
-	
+
 	local i = 1
 	for index, item in ipairs(args) do
 		--limit to eight maps
 		if i > 8 then
 			break
 		end
-		
+
 		local gamemode, map
 		if type(item) == "table" then
 			gamemode = item[1]
@@ -509,7 +509,7 @@ function voteBetweenModes(...)
 			gamemode = item
 			map = nil
 		end
-		
+
 		if map then
 			if
 				exports.mapmanager:isGamemode(gamemode) and exports.mapmanager:isMap(map)
@@ -529,7 +529,7 @@ function voteBetweenModes(...)
 			end
 		end
 	end
-	
+
 	--if there were at least two valid maps
 	modeOptions = #poll
 	if modeOptions > 2 then
@@ -551,7 +551,7 @@ function voteBetweenModesThenMaps(...)
 	if #args < 2 then
 		return false, errorCode.twoModesNeeded
 	end
-	
+
 	local poll = {
 		title="Choose a mode:",
 		visibleTo=rootElement,
@@ -559,7 +559,7 @@ function voteBetweenModesThenMaps(...)
 		timeout=vote.mode.timeout,
 		allowchange=vote.mode.allowchange;
 	}
-	
+
 	local i = 0
 	for index, gamemode in ipairs(args) do
 		i = i + 1
@@ -583,7 +583,7 @@ function voteBetweenModesThenMaps(...)
 		end
 	end
 	table.insert(poll, DONT_CHANGE_OPTION)
-	
+
 	--if there were at least two valid modes
 	modeOptions = #poll - 1 -- ignore "don't change"
 	if modeOptions > 2 then
@@ -605,7 +605,7 @@ function voteBetweenMaps(...)
 	if #args < 2 then
 		return false, errorCode.twoMapsNeeded
 	end
-	
+
 	local poll = {
 		title="Choose a map:",
 		visibleTo=rootElement,
@@ -613,7 +613,7 @@ function voteBetweenMaps(...)
 		timeout=vote.map.timeout,
 		allowchange=vote.map.allowchange;
 	}
-	
+
 	local i = 0
 	for index, map in ipairs(args) do
 		i = i + 1
@@ -626,7 +626,7 @@ function voteBetweenMaps(...)
 			table.insert(poll,{mapName, call, getResourceFromName("mapmanager"), "changeGamemodeMap", map})
 		end
 	end
-	
+
 	--if there were at least two valid maps
 	mapOptions = #poll
 	if mapOptions > 2 then
@@ -645,7 +645,7 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
 	end
 	local compatibleMaps = exports.mapmanager:getMapsCompatibleWithGamemode(gamemode)
-	
+
 	-- limit it to eight random maps
 	if #compatibleMaps > 8 then
 		math.randomseed(getTickCount())
@@ -677,7 +677,7 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
             }), true
         end
 	end
-	
+
 	local poll = {
 		title="Choose a map:",
 		visibleTo=rootElement,
@@ -685,14 +685,14 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 		timeout=vote.map.timeout,
 		allowchange=vote.map.allowchange;
 		}
-	
+
 	for index, map in ipairs(compatibleMaps) do
 		local mapName = getResourceInfo(map, "name") or getResourceName(map)
 		table.insert(poll, {mapName, call, getResourceFromName("mapmanager"), "changeGamemodeMap", map, gamemode})
 	end
-	
+
 	table.insert(poll, DONT_CHANGE_OPTION)
-	
+
 	mapOptions = #poll - 1
 	local success = startPoll(poll)
 	if success then
@@ -730,7 +730,7 @@ end
 --Find a map which matches, or nil and a text message if there is not one match
 function findMap( query, gamemode)
 	local maps = findMaps( query, gamemode )
-	
+
 	-- Make status string
 	local status = "Found " .. #maps .. " match" .. ( #maps==1 and "" or "es" )
 	for i=1,math.min(5,#maps) do

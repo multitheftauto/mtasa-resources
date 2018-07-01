@@ -1,4 +1,4 @@
-﻿--layout------------------------
+--layout------------------------
 local scrollbarThumbSize = 20 --px
 local screenX,screenY = guiGetScreenSize()
 
@@ -141,7 +141,7 @@ function createPropertiesBox()
 	guiSetProperty ( wndProperties, "AbsoluteMinSize", "w:"..layout.window.width.." h:"..layout.window.height )
 	guiSetProperty ( wndProperties, "AbsoluteMaxSize", "w:"..layout.window.width.." h:"..screenY )
 	addEventHandler ( "onClientGUISize", wndProperties, propertiesResize, false )
-	
+
 	spnProperties = guiCreateScrollPane(
 		layout.pane.x,
 		layout.pane.y,
@@ -204,7 +204,7 @@ function createPropertiesBox()
 	addEventHandler("onClientGUIChanged", edtID, function() setPropertiesChanged(true) end, false)
 
 	tooltipID = tooltip.Create(0, 0, "Unique identifier for this element.  Blank the text to allow the editor to auto-assign an ID.")
-	
+
 	lblParentCaption = guiCreateLabel(
 		layout.padding.left,
 		layout.padding.top + layout.label.height*2,
@@ -216,7 +216,7 @@ function createPropertiesBox()
 	)
 	guiLabelSetVerticalAlign ( lblParentCaption, "center" )
 	guiLabelSetColor( lblParentCaption, layout.label.R, layout.label.G, layout.label.B )
-	
+
 	cntParent = editingControl.element:create{
 		x = layout.control.x,
 		y = layout.padding.top + layout.label.height*2,
@@ -247,7 +247,7 @@ function createPropertiesBox()
 		layout.relative,
 		wndProperties
 	)
-	
+
 	btnCancel = guiCreateButton(
 		layout.padding.left + layout.button.width + 10,
 		layout.window.height - layout.padding.bottom,
@@ -258,7 +258,7 @@ function createPropertiesBox()
 		wndProperties
 	)
 
-	
+
 	btnOK = guiCreateButton(
 		layout.padding.left,
 		layout.window.height - layout.padding.bottom,
@@ -268,7 +268,7 @@ function createPropertiesBox()
 		layout.relative,
 		wndProperties
 	)
-	
+
 	btnPullout = guiCreateButton(
 		layout.window.width - layout.pulloutButton.width - layout.padding.right,
 		layout.window.height - layout.padding.bottom,
@@ -278,7 +278,7 @@ function createPropertiesBox()
 		layout.relative,
 		wndProperties
 	)
-	
+
 	gdlAction = guiCreateGridList(
 		0,
 		0,
@@ -303,7 +303,7 @@ function createPropertiesBox()
 	properties_btnCancel = btnCancel
 	properties_btnPullout = btnPullout
 
-	
+
 	addEventHandler("onClientControlBrowserLaunch", spnProperties,
 		function ()
 			guiSetVisible(wndProperties, false)
@@ -315,7 +315,7 @@ function createPropertiesBox()
 			guiSetInputEnabled(true)
 		end
 	)
-	
+
 	bindControl("properties_toggle", "down", toggleProperties)
 	-- addCommandHandler("properties", toggleProperties)
 end
@@ -354,20 +354,20 @@ local function deepTableEqual(table1, table2)
 			return false
 		end
 	end
-	
+
 	return true
 end
 
 --this function creates a new editing control and attaches it to the properties window
 local function addPropertyControl( controlType, controlLabelName, controlDescription, propertyApplier, addedParameters )
 	local controlPrototype = editingControl[controlType]
-	
+
 	-- if the control type exists,
 	if controlPrototype then
-	
+
 		-- calculate the base Y position for the next control now, in case it overflows
 		local newPropertiesYPos = propertiesYPos + controlPrototype.default.height + layout.margin.bottom --!addedParameters.height
-		
+
 		local parameters = {
 			x = layout.control.x,
 			y = propertiesYPos,
@@ -378,19 +378,19 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 			label = controlLabelName,
 			dropHeight = 200, --! for dropdowns
 		}
-		
+
 		local newControl
 
 		-- TODO: This should be done in some proper way...
 		if controlPrototype == editingControl.vehicleupgrades then
 			parameters.vehicle = selectedElement
 		end
-		
+
 		addedParameters = addedParameters or {}
 		for name, value in pairs(addedParameters) do
 			parameters[name] = value
 		end
-		
+
 		newControl = controlPrototype:create( parameters )
 		newControl:addChangeHandler(function ()
 		                            	setPropertiesChanged(true)
@@ -444,10 +444,10 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 			end
 		end
 
-		
+
 		table.insert(addedControls, newControl)
 		previousValues[newControl] = newControl:getValue()
-		
+
 		-- create the caption label indicating the editing control's name
 		local controlLabel = guiCreateLabel(
 			layout.padding.left,
@@ -471,7 +471,7 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 				descriptionTooltips[element] = tooltip
 			end
 		end
-		
+
 		-- store the new base Y position for the next control
 		propertiesYPos = newPropertiesYPos
 		local lastPadding = endPadding[controlType] or 0
@@ -513,7 +513,7 @@ local function addEDFPropertyControlsForElement( element )
 	local creatorResource = getResourceName( edf.edfGetCreatorResource ( element) )
 	local creatorDef = resourceElementDefinitions[creatorResource] or resourceElementDefinitions.editor_main --!w
 	assert(creatorDef and creatorDef[elementType], "No creator resource info.")
-	
+
 	-- restrict parent types
 	cntParent:setTypes(creatorDef[elementType].parents)
 	-- do not allow choosing the element as its own parent, or if it is a parent already, dont allow it to be a child of its own child (makes no sense)
@@ -527,13 +527,13 @@ local function addEDFPropertyControlsForElement( element )
 	else
 		cntParent:setValue(nil)
 	end
-	
+
 	--if there was a name given to the parent, then set the label as that
 	guiSetText ( lblParentCaption, creatorDef[elementType].parentName or "parent" )
 	tooltip.SetText ( tooltipParent, creatorDef[elementType].parentDescription or DEFAULT_PARENT_TEXT )
-	
+
 	local lastCreatedType
-	
+
 	local sortedFields = sortFieldsByIndex(creatorDef[elementType].data)
 	for k,v in ipairs(sortedFields) do
 		local dataField = v.dataField
@@ -581,7 +581,7 @@ end
 local function addEDFPropertyControlsForType( elementType, resourceName )
 	local def = resourceElementDefinitions[resourceName] or resourceElementDefinitions.editor_main --!w
 	assert(def and def[elementType], "The definition of the element being created isn't loaded.")
-	
+
 	local lastCreatedType
 	local sortedFields = sortFieldsByIndex(def[elementType].data)
 	for k,v in ipairs(sortedFields) do
@@ -605,7 +605,7 @@ local function sendInitialParameters()
 	end
 
 	closePropertiesBox()
-	
+
 	if triggerEvent ( "onClientElementPreCreate", root, newElementType, newElementResource, parametersTable, false ) then
 		triggerServerEvent("doCreateElement", getLocalPlayer(),
 			newElementType,
@@ -614,7 +614,7 @@ local function sendInitialParameters()
 			false --don't attach it later
 		)
 	end
-	
+
 	newElementType = nil
 	newElementResource = nil
 end
@@ -632,7 +632,7 @@ local function applyPropertiesChanges()
 		newValues.id = inputID
 		guiSetText( wndProperties, "PROPERTIES: " .. inputID )
 	end
-	
+
 	--set parent
 	local newParent = cntParent:getValue()
 	local currentParent = getElementData(selectedElement,"me:parent")
@@ -651,7 +651,7 @@ local function applyPropertiesChanges()
 	guiSetProperty(btnCancel,     "Disabled", "True")
 	guiSetProperty(btnApply,      "Disabled", "True")
 	guiSetProperty(spnProperties, "Disabled", "True")
-	
+
 	--set properties
 	for i, control in ipairs(addedControls) do
 		local value = control:getValue()
@@ -743,19 +743,19 @@ function openPropertiesBox( element, resourceName, shortcut )
 	closeCurrentBrowser()
 	editor_main.suspend(true)
 	showCursor(true)
-	
+
 	if element and resourceName then
 		local elementType = element
 		guiSetText( wndProperties, "NEW ELEMENT: " .. elementType )
-		
+
 		newElementType = elementType
 		newElementResource = resourceName
-		
+
 		guiSetText( lblType, elementType )
-		
+
 		guiSetVisible( edtID, false )
 		guiSetVisible( lblIDCaption, false )
-		
+
 		addEDFPropertyControlsForType( elementType, resourceName )
 
 		creatingNewElement = true
@@ -764,29 +764,29 @@ function openPropertiesBox( element, resourceName, shortcut )
 	else
 		selectedElement = element
 		guiSetText( wndProperties, "PROPERTIES: " .. getElementID(selectedElement) )
-		
+
 		guiSetText( edtID, getElementID ( selectedElement ) )
 		guiSetText( lblType, getElementType( selectedElement ) )
-		
+
 		guiSetVisible( edtID, true )
 		guiSetVisible( lblIDCaption, true )
-		
+
 		addEventHandler("onClientElementDataChange", selectedElement, checkForNewID)
-		
+
 		addEDFPropertyControlsForElement( selectedElement )
 
 		creatingNewElment = false
 		syncPropertiesCallback = applyPropertiesChanges
 		setPropertiesChanged(false)
 	end
-	
+
 	--Hack to ensure the OK button doesn't get pressed immediately if the properties box is opened whilst the cursor is over the OK button
 	if not getKeyState ( "mouse1" ) then --If the left mouse key isnt being pressed, we're okay to allow the OK button to be pressed
 		addEventHandler( "onClientGUIClick", btnOK, toggleProperties, false )
 	else --Otherwise, we attach a handler which waits for the left mouse button to be released before activating the OK button
 		addEventHandler ( "onClientClick", root, addOKButtonHandler )
 	end
-	
+
 	addEventHandler( "onClientGUIClick", btnCancel, cancelProperties, false )
 	addEventHandler( "onClientGUIClick", btnApply, syncPropertiesCallback, false )
 	addEventHandler( "onClientGUIClick", btnPullout, openPullout, false )
@@ -796,8 +796,8 @@ function openPropertiesBox( element, resourceName, shortcut )
 	guiSetInputEnabled(true)
 	guiSetVisible(wndProperties, true)
 	isPropertiesOpen = true
-	
-	if ( shortcut ) then 
+
+	if ( shortcut ) then
 		for k,control in ipairs(addedControls) do
 			if control:getLabel() == shortcut then
 				--Focus the control to the shortcut
@@ -886,30 +886,30 @@ function propertiesResize()
 	local windowWidth,windowHeight = guiGetSize ( source, layout.relative )
 	--Resize the scrollpane
 	local spnWidth = guiGetSize ( spnProperties, layout.relative )
-	guiSetSize ( 
+	guiSetSize (
 		spnProperties,
-		spnWidth, 
+		spnWidth,
 		windowHeight - layout.button.height - scrollbarThumbSize - layout.padding.bottom + 2,
-		layout.relative 
+		layout.relative
 	)
 	--Reposition the line
 	guiSetPosition (
 		lineImg,
-		layout.padding.left, 
-		windowHeight - layout.padding.bottom - 8, 
+		layout.padding.left,
+		windowHeight - layout.padding.bottom - 8,
 		layout.relative
 	)
 	--Reposition the OK, cancel and pullout buttons
-	guiSetPosition ( 
+	guiSetPosition (
 		btnApply,
 		layout.padding.left,
 		windowHeight - layout.padding.bottom,
 		layout.relative
 	)
-	guiSetPosition ( 
-		btnCancel,	
-		layout.padding.left + layout.button.width + 10, 
-		windowHeight - layout.padding.bottom, 
+	guiSetPosition (
+		btnCancel,
+		layout.padding.left + layout.button.width + 10,
+		windowHeight - layout.padding.bottom,
 		layout.relative
 	)
 	guiSetPosition (
@@ -934,7 +934,7 @@ function tooltipsCheckMouseMove()
 		killTimer(descriptionTimer)
 		descriptionTimer = nil
 	end
-	
+
 	if ( tooltipShowing ) then
 		tooltip.FadeOut(tooltipShowing)
 		tooltipShowing = nil
@@ -968,12 +968,12 @@ local function pulloutClick(button, state)
 	if source ~= gdlAction then
 		guiSetEnabled ( btnPullout, true )
 		guiSetVisible ( gdlAction, false )
-		removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )	
+		removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
 		return
 	end
 	local item = guiGridListGetSelectedItem ( gdlAction )
 	if item == -1 then return end
-	removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )	
+	removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
 	guiSetEnabled ( btnPullout, true )
 	guiSetVisible(gdlAction,false)
 	pulloutAction[guiGridListGetItemText(gdlAction,item,1)]()

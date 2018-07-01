@@ -1,4 +1,4 @@
-﻿--Fallout By Ransom
+--Fallout By Ransom
 --Special Thanks arc_, lil_toady, eAi, IJs, jbeta, Talidan
 
 --------------
@@ -80,7 +80,7 @@ function createBoard () --MOVE BOARD CREATION TO CLIENTSIDE
 		end
 	end
 end
- 
+
 function triggerClientFall ( fallingPiece )
     if gameOver == false then --Stop timer setting when winner is declared, avoid board recretaion problems
 		triggerClientEvent ( "clientShakePieces", getRootElement(), fallingPiece )
@@ -96,16 +96,16 @@ end
 
 function breakAwayPieces ()
 	tableSize = table.maxn (board)
-	if tableSize ~= winningBoards then                                     
-		chosenBoard = math.random ( 1, tableSize )   
+	if tableSize ~= winningBoards then
+		chosenBoard = math.random ( 1, tableSize )
 		triggerClientFall ( board[chosenBoard] ) --becomes fallingPiece parameter
-		if tableSize >= 40 then 
+		if tableSize >= 40 then
 			callSpeed = callSpeedA
-		elseif ( tableSize <= 29 ) and ( tableSize > 15 ) then                      
-			callSpeed = callSpeedB                                                                                                                         
-		elseif tableSize < 15 then                        
-			callSpeed = callSpeedC		                                                   
-		end      
+		elseif ( tableSize <= 29 ) and ( tableSize > 15 ) then
+			callSpeed = callSpeedB
+		elseif tableSize < 15 then
+			callSpeed = callSpeedC
+		end
 		table.remove ( board, chosenBoard ) --Adjust table to get rid of used board
 		setTimer ( breakAwayPieces, callSpeed, 1 )
 	end
@@ -167,7 +167,7 @@ end
 function declareWinners ()
 	triggerClientEvent ( "lossDetectionOff", getRootElement() ) --Also stop board shaking
 	gameOver = true
-	winners = getPlayersInTeam ( teamAlive )	
+	winners = getPlayersInTeam ( teamAlive )
 	firstEntry = true --This is necessary to save names on seperate lines in a varible for the winners display
 	for k,v in pairs(winners) do
 		if firstEntry == true then
@@ -178,7 +178,7 @@ function declareWinners ()
 		end
 		--outputChatBox ( "adding 1 win to: "..getClientName ( v ) ) --DEBUG--DEBUG--DEBUG--DEBUG --DEBUG
 		setElementData ( v, "Wins", ( getElementData ( v, "Wins" ) ) + 1 )
-	end			
+	end
 	if ( winnersList ) then --If no players during game... winnersList must exist here
 		textItemSetText( winnersText, "Winners:\n"..winnersList )
 	else
@@ -186,14 +186,14 @@ function declareWinners ()
 	end
 	players = getElementsByType ( "player" )
 	for k,v in pairs(players) do
-		textDisplayAddObserver ( winnersDisplay, v )	
+		textDisplayAddObserver ( winnersDisplay, v )
 		if (getElementData (v, "Losses")) == 0 then --Update W/L Ratio (checks for special case of divide by 0)
 			playerRatio = (getElementData (v, "Wins"))
 			setElementData ( v, "W/L Ratio", tostring(playerRatio) )
 		else
 			playerRatio = math.ceil ( (getElementData (v, "Wins") / getElementData (v, "Losses")) * 1000 ) / 1000
 			setElementData ( v, "W/L Ratio", tostring(playerRatio) ) --Update ratio every game. tostringed due to decimal places bug
-		end			
+		end
 	end
 	updateTournamentLeaders ()
 	--Rest is check for tournament winner stuff
@@ -202,7 +202,7 @@ function declareWinners ()
 		if tonumber(playerwins) >= scoreLimit then
 			winnerCount = winnerCount + 1
 			winnerName = getPlayerName ( v )
-		end 
+		end
 	end
 	if winnerCount == 1 then
 		textItemSetText( winnersText, ""..winnerName.." won fallout! Starting a new tournament in 15 seconds." )
@@ -211,14 +211,14 @@ function declareWinners ()
 	elseif winnerCount > 1 then
 		winTie = true
 		setTimer ( newGame, 3000, 1 )
-	else	
-		setTimer ( newGame, 3000, 1 )	
+	else
+		setTimer ( newGame, 3000, 1 )
 	end
 end
 
 function quickKill ( player, key, keyState )
 	unbindKey ( player, "space" )
-    killPed ( player )	
+    killPed ( player )
 end
 
 function activateSpectate ( player ) --Don't setTimer loop serverside, will cause bug when 2 players come in
@@ -265,7 +265,7 @@ function PlayerJoin ( )
 	--setCameraMode (source, "player" )
 	--setTimer ( setCameraMode, 500, 1, source, "fixed" ) --camera stuff not working
     --setTimer ( setCameraPosition, 1000, 1, source, 1558.367, -1346.678, 630 )
-  	--setTimer ( setCameraLookAt, 2000, 1, source, 1558.367, -1301.059, 603.105469 )    
+  	--setTimer ( setCameraLookAt, 2000, 1, source, 1558.367, -1301.059, 603.105469 )
 	setCameraMatrix( source, 1558.367, -1346.678, 630, 1558.367, -1301.059, 603.105469)
 end
 addEventHandler ( "onPlayerJoin", getRootElement(), PlayerJoin )
@@ -304,9 +304,9 @@ function spawnPlayers ()
 			y = y - math.random (0,200)/100
 		elseif changey == 1 then
 			y = y + math.random (0,200)/100
-		end				
+		end
 		spawnAngle = 360 - math.deg( math.atan2 ( (1557.987182 - x), (-1290.754272 - y) ) )
-		spawnPlayer ( v, x, y, 607.105469, spawnAngle )         
+		spawnPlayer ( v, x, y, 607.105469, spawnAngle )
 	end
 end
 
@@ -324,7 +324,7 @@ function newGameCountdown ()
 		for k,v in pairs(players) do
 			textDisplayRemoveObserver ( countDownDisplay, v )
 			triggerClientEvent ( "clientCheckStatus", getRootElement() ) --Start loser checks on client
-		end	
+		end
 		playSoundFrontEnd(root, 45)
 		--Erase countdown for displaying 'get ready' next game prior to countdown
 		if winTie == false then --needed for display consistency
@@ -339,7 +339,7 @@ end
 
 function cleanupOldGame ()
 	existingBoards = getElementsByType ( "object" )
-	for k,v in ipairs(existingBoards) do		
+	for k,v in ipairs(existingBoards) do
 		destroyElement ( v )
 	end
     gameTimers = getTimers ()
@@ -369,12 +369,12 @@ end
 function newGame ()
 	cleanupOldGame ()
 	if newTournament == true then
-		players = getElementsByType ( "player" )   
-		for k,v in pairs(players) do    
+		players = getElementsByType ( "player" )
+		for k,v in pairs(players) do
 			setElementData ( v, "Wins", 0 )---------------|Set scoreboard column data
 			setElementData ( v, "Losses", 0 )           --|
 			setElementData ( v, "W/L Ratio", 0 )----------|
-		end	
+		end
 		emptyPodium ()
 		newTournament = false
 		winTie = false

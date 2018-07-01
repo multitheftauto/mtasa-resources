@@ -67,7 +67,7 @@ aFunctions = {
 				return setPedArmor ( player, armour ), armour
 			else
 				return false
-			end	
+			end
 		end,
 		['setskin'] = function ( player, skin )
 			local skin = tonumber ( skin )
@@ -104,7 +104,7 @@ aFunctions = {
 					setElementInterior ( player, interior["world"] )
 					local x, y, z = interior["x"] or 0, interior["y"] or 0, interior["z"] or 0
 					local rot = interior["r"] or 0
-					if ( vehicle ) then 
+					if ( vehicle ) then
 						setElementInterior ( vehicle, interior["world"] )
 						setElementPosition ( vehicle, x, y, z + 0.2 )
 					else
@@ -415,9 +415,9 @@ aFunctions = {
 		end
 	},
 	admin = {
-	
+
 	},
 	bans = {
-	
+
 	}
 }

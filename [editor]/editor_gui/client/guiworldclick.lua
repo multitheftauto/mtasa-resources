@@ -1,4 +1,4 @@
-﻿addEvent "onClientGUIMouseDown"
+addEvent "onClientGUIMouseDown"
 addEvent "onClientGUIWorldClick"
 local enableWorld = true
 local lastClicked

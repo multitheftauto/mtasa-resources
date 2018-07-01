@@ -1,4 +1,4 @@
-﻿--
+--
 -- joiner_client.lua
 --
 -- see joiner.lua for details
@@ -79,12 +79,12 @@ end
 
 ----------------------------------------------------------------------------
 --
--- Function patches 
+-- Function patches
 --      Modify functions to act only on joined players
 --
 ----------------------------------------------------------------------------
 
--- getElementsByType patch 
+-- getElementsByType patch
 _getElementsByType = getElementsByType
 function getElementsByType( type, startat )
     startat = startat or getRootElement()
@@ -98,7 +98,7 @@ end
 
 ----------------------------------------------------------------------------
 --
--- Others functions 
+-- Others functions
 --
 ----------------------------------------------------------------------------
 
@@ -116,7 +116,7 @@ end
 
 ----------------------------------------------------------------------------
 --
--- Event handlers 
+-- Event handlers
 --
 ----------------------------------------------------------------------------
 

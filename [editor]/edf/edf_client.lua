@@ -1,4 +1,4 @@
-﻿addEvent ( "hideDummy", true )
+addEvent ( "hideDummy", true )
 addEvent ( "onClientElementPropertyChanged" )
 local thisResource = getThisResource()
 
@@ -13,12 +13,12 @@ for k, theType in ipairs(basicTypes) do
 	isBasic[theType] = true
 end
 
-local radiusFuncs = { 
+local radiusFuncs = {
 	object = getElementRadius,
 	marker = getMarkerSize,
 	ped = getElementRadius,
 	vehicle = getElementRadius,
-	pickup = function() return 0.5 end 
+	pickup = function() return 0.5 end
 }
 
 local function getRadius ( element )
@@ -91,7 +91,7 @@ function edfGetElementPosition(element)
 			pz = tonumber(getElementData(element,"posZ"))
 		end
 	end
-	
+
 	if px and py and pz then
 		return px, py, pz
 	else
@@ -115,7 +115,7 @@ function edfGetElementRotation(element)
 			rz = tonumber(getElementData(element,"rotZ"))
 		end
 	end
-	
+
 	if rx and ry and rz then
 		return rx, ry, rz
 	else
@@ -242,7 +242,7 @@ end
 function edfSetElementProperty(element, property, value)
 	--Set the value for any representations
 	edfSetElementPropertyForRepresentations(element,property,value)
-	
+
 	local elementType = getElementType(element)
 	-- if our property is an entity attribute we have access to, set it
 	if propertySetters[elementType] and propertySetters[elementType][property] then
@@ -261,7 +261,7 @@ function edfSetElementPropertyForRepresentations(element,property,value)
 	--Check if the property is inherited to reps
 	for k,child in ipairs(getElementChildren(element)) do
 		if edfGetAncestor(child) == element then --Check that the child is a representation of the element
-			local inherited = getElementData(child,"edf:inherited") 
+			local inherited = getElementData(child,"edf:inherited")
 			if inherited then
 				--Check that the property is inherited to this child
 				if inherited[property] then
@@ -298,7 +298,7 @@ function edfGetElementRadius(element,forced)
 		if isBasic[getElementType(edfGetHandle(element))] then
 			handleRadius = getRadius(edfGetHandle(element))
 		end
-		
+
 		local maxZ,minZ,maxXY = -math.huge,math.huge,0
 		local handle = edfGetHandle(element)
 		--get the centre point to calculate our radius
@@ -337,7 +337,7 @@ function edfGetElementBoundingBox ( element )
 				biggestRadius = radius
 				biggestElement = representation
 			end
-		end		
+		end
 	end
 	local a,b,c,d,e,f = getElementBoundingBox(biggestElement)
 	if a then

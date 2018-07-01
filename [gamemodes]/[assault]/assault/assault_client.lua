@@ -1,10 +1,10 @@
-﻿
+
 
 function createGui(options)
-	
+
 	if (logo == nil) then
 		-- Create logo
-		
+
 		local screenWidth, screenHeight = guiGetScreenSize()
 		local sizeX = screenWidth/1280
 		local sizeY = screenHeight/1024
@@ -13,10 +13,10 @@ function createGui(options)
 		outputConsole("Creating image: "..width.."x"..height)
 		logo = guiCreateStaticImage ( screenWidth/2-width/2, screenHeight/2-height/1.5, width, height, "logo.png", false, nil )
 	end
-	
+
 	if (options == nil) then return end
 	local justCreated = false
-	
+
 	if (assaultGui == nil) then
 		--outputDebugString("Creating/updating assault gui")
 		-- Get GUI from helpmanager
@@ -27,26 +27,26 @@ function createGui(options)
 
 		tabMap = guiCreateTab( "Map Information", assaultGuiTabPanel )
 		tabHelp = guiCreateTab( "Help", assaultGuiTabPanel )
-		
+
 		local version = guiCreateLabel(0.72,0.048,0.4,0.1,"Assault v1.0 by driver2",true,assaultGui)
 		guiSetAlpha(version,0.4)
-		
+
 		justCreated = true
 	end
-	
+
 	if (assaultGui == nil) then
 		--outputDebugString("test")
 	end
-	
+
 	-- TAB: Map Information
-	
+
 	if (justCreated) then
 		text = "This page displays information about the map and it's objectives. To get general help, click on 'Help'."
 		guiCreateLabel(0.02,0.04,0.94,0.2,text,true,tabMap)
 	end
-	
+
 	-- General Map Information
-	if (justCreated) then 
+	if (justCreated) then
 		assaultGuiGrid2 = guiCreateGridList(0.02,0.1,0.96,0.3,true,tabMap)
 		guiGridListAddColumn(assaultGuiGrid2,"Option",0.2)
 		guiGridListAddColumn(assaultGuiGrid2,"Value",0.8)
@@ -68,10 +68,10 @@ function createGui(options)
 	guiGridListAddRow( assaultGuiGrid2 )
 	guiGridListSetItemText( assaultGuiGrid2, 4, 1, "Description", false, false )
 	guiGridListSetItemText( assaultGuiGrid2, 4, 2, options.description, false, false )
-	
+
 	--guiGridListAutoSizeColumn(assaultGuiGrid2,1)
 	guiGridListAutoSizeColumn(assaultGuiGrid2,2)
-	
+
 	-- Objective Information
 	local objectivesTable = {}
 	if (justCreated) then
@@ -82,7 +82,7 @@ function createGui(options)
 	else
 		guiGridListClear(assaultGuiGrid)
 	end
-	
+
 	for k,v in ipairs(options.objective) do
 		guiGridListAddRow( assaultGuiGrid )
 		guiGridListSetItemText (assaultGuiGrid, k-1, 1, v.name, false, false)
@@ -90,10 +90,10 @@ function createGui(options)
 	end
 	--guiGridListAutoSizeColumn(assaultGuiGrid,1)
 	guiGridListAutoSizeColumn(assaultGuiGrid,2)
-	
-	
+
+
 	-- TAB: Help
-	
+
 	if (justCreated) then
 		local text = "What to do:\n\n"
 		text = text.."You need to reach objectives. These are usually checkpoints you need to enter, but it can also be "
@@ -107,42 +107,42 @@ function createGui(options)
 		text = text.."At the bottom of the screen, the current tasks for your team are displayed. You can cycle through them "
 		text = text.."using F4, if necessary."
 		text = text.."\n\n\n"
-		
+
 		text = text.."General Information:\n\n"
 		text = text.."This gamemode is roughly based on UnrealTournament's Assault."
-		
+
 		local helpLabel = guiCreateLabel(0.02,0.04,0.94,0.92,text,true,tabHelp)
 		guiLabelSetHorizontalAlign ( helpLabel, "left", true )
 	end
-	
-	
-	
+
+
+
 end
 
 function nextObjectivesText( objectives )
 
 	currentObjectives = objectives
-	
+
 	--outputConsole(tostring(getElementData("assaultAttackingTeam")))
 	--outputConsole("client next objectives "..tostring(getElementData(getLocalPlayer(),"assaultAttacker")))
-	
+
 	if (nextObjectivesLabel == nil) then
 		--outputConsole("Creating next objectives text label")
 		local screenWidth, screenHeight = guiGetScreenSize()
-		
+
 		-- background
 		local background = guiCreateStaticImage ( 0, screenHeight - 22, screenWidth, 22, "blackpixel.png", false, nil )
 		guiSetAlpha(background,0.5)
-		
+
 		nextObjectivesLabel = guiCreateLabel(0.1,screenHeight,screenWidth,10,"" ,false)
 		local fontHeight = guiLabelGetFontHeight(nextObjectivesLabel)
 		guiSetSize(nextObjectivesLabel,screenWidth,fontHeight,false)
 		guiSetPosition(nextObjectivesLabel,10,screenHeight - fontHeight - 4,false)
 		guiLabelSetColor(nextObjectivesLabel,255,255,255)
 		--outputChatBox(tostring(guiBringToFront(nextObjectivesLabel)))
-		
+
 	end
-	
+
 	currentObjectiveShowing = 1
 	currentObjectiveCount = #currentObjectives
 	--outputChatBox(tostring(currentObjectiveCount))
@@ -161,7 +161,8 @@ function switchObjectivesText()
 end
 
 addCommandHandler( "Switch objective text", switchObjectivesText )
-bindKey( "F4", "down", "Switch objective text" )
+
+bindKey( "F4", "down", "Switch objective text" )
 
 function setCurrentObjectiveText(number)
 	local team = getPlayerTeam(getLocalPlayer())
@@ -197,27 +198,27 @@ function calcTime ( timeLeft )
 	local timeHours = 0
 	local timeMins = 0
 	local timeSecs = 0
-	
+
 	timeLeft = tonumber(timeLeft)
 	timeSecs = math.mod(timeLeft, 60)
 	timeMins = math.mod((timeLeft / 60), 60)
 	timeHours = (timeLeft / 3600)
-	
+
 	if ( timeHours >= 1 ) then
 		calcString = formatStr(tostring(timeHours)) .. ":"
 	end
 	calcString = calcString .. formatStr(string.format("%.0d", tostring(timeMins))) .. ":" .. formatStr(tostring(timeSecs))
-	
+
 	return calcString
 end
 
 function formatStr ( formatString )
 	local aString = tostring(formatString)
-	
+
 	if ( #aString == 1 ) then
 		aString = "0" .. aString
 	end
-	
+
 	if ( #aString == 0 ) then
 		aString = "00"
 	end
@@ -238,7 +239,7 @@ function showProgress(objectiveId, bool, progress, total, stayText)
 		guiSetSize ( progressBarText[objectiveId], guiLabelGetTextExtent ( progressBarText[objectiveId] ), guiLabelGetFontHeight ( progressBarText[objectiveId] ), false )
 		guiLabelSetColor ( progressBarText[objectiveId], 255, 255, 255, 255 )
 	end
-	
+
 	if (progressBar[objectiveId] == nil) then return end
 	guiSetVisible(progressBar[objectiveId],bool)
 	guiSetVisible(progressBarText[objectiveId],bool)
@@ -257,7 +258,7 @@ end
 
 
 
-addEventHandler("onClientResourceStart", getRootElement(getThisResource()), 
+addEventHandler("onClientResourceStart", getRootElement(getThisResource()),
 	function()
 		triggerServerEvent("assaultClientScriptLoaded", getLocalPlayer())
 	end

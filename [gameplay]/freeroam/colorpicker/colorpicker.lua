@@ -60,7 +60,7 @@ colorPicker = {
 	constructor = function( info )
 		info = info or colorPicker.default
 		colorPicker.value = colorPicker.convertColorToTable(info.value)
-		
+
 		colorPicker.buttonWidth = info.width * colorPicker.default.buttonWidth
 
 		local offset = 1 --px
@@ -73,10 +73,10 @@ colorPicker = {
 			offset = offset / sizeX
 			height = height / sizeY
 		end
-	 
+
 		colorPicker.GUI = {}
 		colorPicker.children = {}
-		
+
 		-- Create the color selection window
 		local screenW, screenH = guiGetScreenSize()
 		colorPicker.selectWindow = info.selectWindow
@@ -134,7 +134,7 @@ colorPicker = {
 		colorPicker.GUI.labelH = guiCreateLabel(info.selectWindow.hslX, info.selectWindow.hslY + 3,
 		                                 10, 20, "H", false, colorPicker.GUI.selectWindow)
 		guiSetFont(colorPicker.GUI.labelH, "default-bold-small")
-		
+
 		colorPicker.children.S = guiCreateEdit(info.selectWindow.hslX + 10, info.selectWindow.hslY + info.selectWindow.hslHeight, info.selectWindow.hslWidth, info.selectWindow.hslHeight, tostring( math.floor(colorPicker.s * 255) ), false, colorPicker.GUI.selectWindow)
 		guiEditSetMaxLength(colorPicker.children.S, 3)
 		addEventHandler("onClientGUIChanged", colorPicker.children.S, colorPicker.forceNaturalAndRange)
@@ -161,23 +161,23 @@ colorPicker = {
 
 		colorPicker.GUI.historyLabel = guiCreateLabel(info.selectWindow.historyX, info.selectWindow.historyY,
 		                                       150, 15, "Recently used colors:", false, colorPicker.GUI.selectWindow)
-											   
+
 		colorPicker.GUI.noteLabel = guiCreateLabel(info.selectWindow.noteX, info.selectWindow.noteY,
 		                                       190, 15, "Click outside the window to close.", false, colorPicker.GUI.selectWindow)
 		guiSetFont( colorPicker.GUI.noteLabel, "default-small" )
-		
+
 		checkColor1 = guiCreateCheckBox(info.selectWindow.ra1X, info.selectWindow.ra1Y,
 												70, 15, "Color 1", true, false, colorPicker.GUI.selectWindow)
-		
+
 		checkColor2 = guiCreateCheckBox(info.selectWindow.ra2X, info.selectWindow.ra2Y,
 												70, 15, "Color 2", false, false, colorPicker.GUI.selectWindow)
-		
+
 		checkColor3 = guiCreateCheckBox(info.selectWindow.ra3X, info.selectWindow.ra3Y,
 												70, 15, "Color 3", false, false, colorPicker.GUI.selectWindow)
-		
+
 		checkColor4 = guiCreateCheckBox(info.selectWindow.ra4X, info.selectWindow.ra4Y,
 												70, 15, "Color 4", false, false, colorPicker.GUI.selectWindow)
-		
+
 		checkColor5 = guiCreateCheckBox(info.selectWindow.ra5X, info.selectWindow.ra5Y,
 												75, 15, "Headlights", false, false, colorPicker.GUI.selectWindow)
 
@@ -191,7 +191,7 @@ colorPicker = {
 				guiSetText(source, changedText)
 			end
 		end
-		
+
 		local inputNumber = tonumber(guiGetText( source ))
 		if inputNumber then
 			local clampedNumber = inputNumber
@@ -261,7 +261,7 @@ colorPicker = {
 	updateTempColors = function()
 		local r, g, b, a = colorPicker.value[1], colorPicker.value[2], colorPicker.value[3], colorPicker.value[4]
 		return r, g, b
-		
+
 	end,
 	openSelect = function( currentColor )
 		if colorPicker.isSelectOpen then return end
@@ -367,7 +367,7 @@ colorPicker = {
 		else
 			r, g, b, a = colorPicker.value[1] / 255, colorPicker.value[2] / 255, colorPicker.value[3] / 255, colorPicker.value[4] / 255
 		end
-		
+
 		-- Draw the lines pointing to the current selected color
 		local x = paletteX + (colorPicker.h * 255)
 		local y = paletteY + ((1 - colorPicker.s) * 255)

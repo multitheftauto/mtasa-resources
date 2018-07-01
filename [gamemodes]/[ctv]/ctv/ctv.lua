@@ -1,4 +1,4 @@
-﻿-- Capture the Vehicle by BrophY�, if you wish to modify, keep copyright notice and credits in the file
+-- Capture the Vehicle by BrophY©, if you wish to modify, keep copyright notice and credits in the file
 -- Credits to Talidan, Dragon and Ransom for help and testing
 
 local round = 0
@@ -77,7 +77,7 @@ function onCTVMapStart (startedMap)
 	local team4col1 = gettok ( team4markercolor, 1, 44 )
 	local team4col2 = gettok ( team4markercolor, 2, 44 )
 	local team4col3 = gettok ( team4markercolor, 3, 44 )
-	
+
 	capture1 = createMarker ( tonumber(team1markerX), tonumber(team1markerY), tonumber(team1markerZ), "cylinder", 4, tonumber(team1col1), tonumber(team1col2), tonumber(team1col3), 127 )
 	capture2 = createMarker ( tonumber(team2markerX), tonumber(team2markerY), tonumber(team2markerZ), "cylinder", 4, tonumber(team2col1), tonumber(team2col2), tonumber(team2col3), 127 )
 	capture3 = createMarker ( tonumber(team3markerX), tonumber(team3markerY), tonumber(team3markerZ), "cylinder", 4, tonumber(team3col1), tonumber(team3col2), tonumber(team3col3), 127 )
@@ -90,7 +90,7 @@ function onCTVMapStart (startedMap)
 	setElementData(capture2, "teamName", getElementData(baseTeamb2, "teamName"))
 	setElementData(capture3, "teamName", getElementData(baseTeamb3, "teamName"))
 	setElementData(capture4, "teamName", getElementData(baseTeamb4, "teamName"))
-	
+
 	setWeather ( 14 )
 	setTime ( 5, 30 )
 	startRound ()
@@ -137,14 +137,14 @@ function nextRound ()
 	randomVehicle = math.random(1,#allTargets)
 	--call the spawn van function, with the random target element as an argument
 	spawnVan ( allTargets[randomVehicle] )
-	
+
 	showTextForAll ( 5000, 0.5, 0.1, 100, 100, 255, 255, 2, "Capture the Vehicle: Round "..round.."" )
 end
 
 function endRound ()
 	destroyBlipsAttachedTo ( van )
 	destroyElement ( van )
-	destroyElement ( vanMarker ) 
+	destroyElement ( vanMarker )
 	van = nil
 	setTimer( nextRound, 5000, 1 )
 end
@@ -175,7 +175,7 @@ function spawnVan ( target )
 	rx = rx or 0
 	ry = ry or 0
 	rz = rz or 0
-	
+
 	--finally, create the vehicle and define it as van
 	if ( platetext ) then
 		van = createVehicle ( model, x, y, z, rx, ry, rz, platetext )
@@ -195,10 +195,10 @@ function spawnVan ( target )
 			addVehicleUpgrade ( van, v ) --and add each upgrade
 		end
 	end
-	
+
 	vanMarker = createMarker ( x, y, z, "checkpoint", 1.5, 255, 255, 255, 127 )
 	attachElements ( vanMarker, van )
-	
+
 	createBlipAttachedTo ( van, 55 )
 	triggerClientEvent('doSetVan', van)
 end
@@ -248,14 +248,14 @@ function showTextForPlayer ( player, time, x, y, red, green, blue, alpha, scale,
 	if currDisplay[player] then
 		removeTextForPlayer ( player )
 	end
-	
+
 	currDisplay[player] = textCreateDisplay ()
 	currTextItemShadow[player] = textCreateTextItem ( text, x + .002, y + .002, "medium", 0, 0, 0, alpha, scale, "center" )
 	currTextItem[player] = textCreateTextItem ( text, x, y, "medium", red, green, blue, alpha, scale, "center" )
 	textDisplayAddText ( currDisplay[player], currTextItemShadow[player] )
 	textDisplayAddText ( currDisplay[player], currTextItem[player] )
 	textDisplayAddObserver ( currDisplay[player], player )
-	
+
 	displayTimer[player] = setTimer(removeTextForPlayer, time, 1, player)
 end
 
@@ -277,7 +277,7 @@ function playerExitVehicle( vehicle, seat, playerJacked )
 		local team = getPlayerTeam( source )
 		if team then
 			local r, g, b = getTeamColor( team )
-			showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, getTeamName(team).."s have lost the vehicle!" )	
+			showTextForAll ( 5000, 0.5, 0.1, r, g, b, 200, 2.5, getTeamName(team).."s have lost the vehicle!" )
 		end
 		setMarkerColor ( vanMarker, 255, 255, 255, 255 )
 		vanPlayer = nil

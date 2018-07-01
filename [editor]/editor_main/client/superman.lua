@@ -1,4 +1,4 @@
-﻿-- Copyright (c) 2008, Alberto Alonso
+-- Copyright (c) 2008, Alberto Alonso
 --
 -- All rights reserved.
 --
@@ -59,8 +59,8 @@ end
 
 function setPlayerFlying(player, state)
   if state == true then state = true
-  else 
-	state = nil 
+  else
+	state = nil
     local self = Superman
     if isPlayerFlying(player) then
       self:restorePlayer(player)
@@ -77,7 +77,7 @@ local function iterateFlyingPlayers()
 
   return function()
     local player
-    
+
     repeat
       player = allPlayers[current]
       current = current + 1
@@ -259,7 +259,7 @@ function Superman:processMovingFlight(player, Velocity)
   -- Calculate the Y rotation for barrel rotations
   if not self.rotations[player] then self.rotations[player] = 0 end
   if not self.previousVelocity[player] then self.previousVelocity[player] = Vector3D:new(0, 0, 0) end
-  
+
   local previousAngle = getVector2DAngle(self.previousVelocity[player])
   local currentAngle = getVector2DAngle(Velocity)
   local diff = angleDiff(currentAngle, previousAngle)

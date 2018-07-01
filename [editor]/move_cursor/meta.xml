@@ -1,7 +1,7 @@
 <meta>
 	<script src="move_cursor.lua" type="client" />
     <script src="controlinterface.lua" type="client"/>
-	
+
 	<!-- client functions -->
 	<export function="attachElement" type="client" />
 	<export function="detachElement" type="client" />

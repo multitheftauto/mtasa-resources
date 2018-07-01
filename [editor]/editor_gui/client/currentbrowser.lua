@@ -1,4 +1,4 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 currentBrowserGUI = {}
 currentBrowser = {}
 local cSelectedElement,workingDimension,hiddenDimension
@@ -12,7 +12,7 @@ local ignoredTable = {}
 local setElementDimension = setElementDimension
 do
 	local mta_setElementDimension = setElementDimension
-	
+
 	function setElementDimension ( element, dimension )
 		mta_setElementDimension ( element, dimension )
 		if getElementChildrenCount( element ) > 0 then
@@ -101,7 +101,7 @@ function currentBrowser.update(elementArray)
 				if friendlyName == nil then friendlyName = elementName end
 				--check if any other elements used the name
 				local k = #dropdownArray + 1
-				dropdownArray[k] = friendlyName 
+				dropdownArray[k] = friendlyName
 				if nameTable[elementName] ~= nil then
 					--since we found another element with the same name, set the old name to element [resource]
 					local oldRow = nameTable[elementName]["row"]
@@ -112,11 +112,11 @@ function currentBrowser.update(elementArray)
 					--set the current one with name [resource] too.
 					local newText = friendlyName.." ["..resource.."]"
 					dropdownArray[k] = newText
-				end	
+				end
 				elementList[k] = {}
 				elementList[k]["resource"] = resource
 				elementList[k]["name"] = elementName
-				
+
 				nameTable[elementName] = {}
 				nameTable[elementName]["resource"] = resource
 				nameTable[elementName]["friendlyName"] = friendlyName
@@ -265,7 +265,7 @@ function currentBrowser.prepareSearch()
 	end
 end
 
-local previousInput = false 
+local previousInput = false
 function currentBrowser.searchClick()
 	if source == currentBrowserGUI.search then
 		local text = guiGetText ( source )
@@ -279,7 +279,7 @@ function currentBrowser.searchClick()
 		local text = guiGetText ( currentBrowserGUI.search )
 		if text == "" then
 			guiSetText ( currentBrowserGUI.search, "Search..." )
-		end		
+		end
 		if ( previousInput ) then
 			previousInput = false
 			guiSetInputEnabled ( false )
@@ -322,7 +322,7 @@ function clearOtherResourceElements ( elemTable, resourceName )
 	if not getResourceFromName("edf") then
 		return elemTable
 	end
-	
+
 	local newTable = {}
 	for key,value in ipairs(elemTable) do
 		local creator = edf.edfGetCreatorResource (value)
@@ -340,7 +340,7 @@ function clearDimensionElements ( elemTable )
 		if getElementDimension(value) == editor_main.getWorkingDimension() then
 			table.insert(validElements, value)
 		end
-	end	
+	end
 	return validElements
 end
 
@@ -364,7 +364,7 @@ function clearEditorElements ( elemTable )
 	return validElements
 end
 
-addEventHandler ( "onClientGUIClick", rootElement, 
+addEventHandler ( "onClientGUIClick", rootElement,
 function()
 	if source == currentBrowserGUI.search then
 		local text = guiGetText ( source )
@@ -375,7 +375,7 @@ function()
 		local text = guiGetText ( currentBrowserGUI.search )
 		if text == "" then
 			guiSetText ( currentBrowserGUI.search, "Search..." )
-		end		
+		end
 	end
 end )
 
@@ -414,7 +414,7 @@ function showCurrentBrowser ( elementArray, ignoredElements, elementType, resour
 		guiSetText ( currentBrowserGUI.close, "OK" )
 	else
 		callbackFunction = nil
-		guiSetText ( currentBrowserGUI.close, "Close" )	
+		guiSetText ( currentBrowserGUI.close, "Close" )
 	end
 	currentBrowser.prepareSearch()
 	currentBrowserGUI.gridlist:enable(cc.currentelements_up,cc.currentelements_down)
@@ -430,7 +430,7 @@ function closeCurrentBrowser()
 	currentBrowser.showing = false
 	if ( callbackFunction ) then
 		local id = currentBrowserGUI.gridlist:getSelectedText()
-		if ( not id ) then 
+		if ( not id ) then
 			callbackFunction(false)
 		else
 			callbackFunction(id)

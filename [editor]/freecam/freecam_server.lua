@@ -1,4 +1,4 @@
-﻿function setPlayerFreecamEnabled(player, x, y, z, dontChangeFixedMode)
+function setPlayerFreecamEnabled(player, x, y, z, dontChangeFixedMode)
 	return triggerClientEvent(player,"doSetFreecamEnabled", getRootElement(), x, y, z, dontChangeFixedMode)
 end
 

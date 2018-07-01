@@ -1,4 +1,4 @@
-﻿local interiors = {}
+local interiors = {}
 local interiorMarkers = {}
 local resourceFromInterior = {}
 --format interior = { [resource] = { [id] = { return= { [element],[element] }, entry=[element] } }
@@ -13,7 +13,7 @@ addEventHandler ( "onResourceStart", getRootElement(),
 function ( resource )
 	interiorLoadElements ( getResourceRootElement(resource), resource )
 	interiorCreateMarkers ( resource )
-end ) 
+end )
 
 addEventHandler ( "onResourceStop", getRootElement(),
 function ( resource )
@@ -73,7 +73,7 @@ function interiorCreateMarkers ( resource )
 		---create return markers
 		local returnInterior = interiorTypeTable["return"]
 		local retX,retY,retZ = getElementData ( returnInterior, "posX" ),getElementData ( returnInterior, "posY" ),getElementData ( returnInterior, "posZ" )
-		retX,retY,retZ = tonumber(retX),tonumber(retY),tonumber(retZ)		
+		retX,retY,retZ = tonumber(retX),tonumber(retY),tonumber(retZ)
 		--
 		local oneway = getElementData ( entryInterior, "oneway" )
 		if oneway == "true" then return end

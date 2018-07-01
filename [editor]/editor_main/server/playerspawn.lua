@@ -1,4 +1,4 @@
-﻿local disable = function() cancelEvent() end
+local disable = function() cancelEvent() end
 local pickupsDisabled = false
 
 addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()),

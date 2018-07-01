@@ -1,5 +1,5 @@
-﻿if isVoiceEnabled() then
-	addEventHandler ( "onPlayerQuit", root, 
+if isVoiceEnabled() then
+	addEventHandler ( "onPlayerQuit", root,
 		function()
 			local previousChannel = playerChannels[source]
 			--Remove them from any previous channels

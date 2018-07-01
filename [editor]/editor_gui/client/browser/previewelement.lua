@@ -1,6 +1,6 @@
-﻿tx,ty,tz = 91,100,502 --The position of 	the element
+tx,ty,tz = 91,100,502 --The position of 	the element
 local hideX,hideY,hideZ = 0,0,0 --where to hide the local player
-local rz = 0 -- The current rotation 
+local rz = 0 -- The current rotation
 local maxRadius = 5
 local camDistance = 4
 --vehicle elevation calculation
@@ -43,7 +43,7 @@ function setModel.vehicleID ( model )
 		setElementModel(browser.mainElement, model)
 		fixVehicle ( browser.mainElement )
 	end
-	
+
 	if (getElementType(browser.mainElement) == "vehicle" and getVehicleType(browser.mainElement) == "Train") then
 		setTrainDerailed(browser.mainElement, true)
 	end
@@ -92,7 +92,7 @@ function setModel.skinID ( model )
 		setElementInterior(browser.mainElement, 14)
 	end
 	setElementAlpha(browser.mainElement, 255)
-	
+
 	setTimer( setPedRotation,50,1, browser.mainElement,rz)
 	browserElementLookOptions.distance = 3
 	setCameraMatrix ( tx-5,ty,tz + randomOffset, tx,ty,tz + randomOffset )
@@ -105,9 +105,9 @@ function rotateMesh ()
 	local newRotation = rotateRate*previewTickDifference
 	newRotation = math.mod(newRotation,360)
 	rz = newRotation
-	if ( initiatedType ) == "vehicleID" then	
+	if ( initiatedType ) == "vehicleID" then
 		setElementRotation ( browser.mainElement,0,0,newRotation)
-	elseif ( initiatedType ) == "objectID" then	
+	elseif ( initiatedType ) == "objectID" then
 		setElementRotation ( browser.mainElement,0,0,newRotation)
 	elseif ( initiatedType ) == "skinID" then
 		setPedRotation ( browser.mainElement,newRotation )

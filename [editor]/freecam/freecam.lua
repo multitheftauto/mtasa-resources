@@ -1,4 +1,4 @@
-﻿-- state variables
+-- state variables
 local speed = 0
 local strafespeed = 0
 local rotX, rotY = 0,0
@@ -53,7 +53,7 @@ function getKeyState(key)
 		return mta_getKeyState(controlToKey[key])
 	else
 		-- We can use getControlState
-		return getControlState(key)
+		return getPedControlState(key)
 	end
 end
 
@@ -81,19 +81,19 @@ local function freecamFrame ()
 	elseif getKeyState ( options.key_slowMove ) then
 		mspeed = options.slowMaxSpeed
     end
-	
+
 	if options.smoothMovement then
 		local acceleration = options.acceleration
 		local decceleration = options.decceleration
-	
+
 	    -- Check to see if the forwards/backwards keys are pressed
 	    local speedKeyPressed = false
 	    if ( getKeyState ( options.key_forward ) or getKeyState ( options.key_forward_veh ) ) and not getKeyState("arrow_u") then
-			speed = speed + acceleration 
+			speed = speed + acceleration
 	        speedKeyPressed = true
 	    end
-		if ( getKeyState ( options.key_backward ) or getControlState ( options.key_backward_veh ) ) and not getKeyState("arrow_d") then
-			speed = speed - acceleration 
+		if ( getKeyState ( options.key_backward ) or getPedControlState ( options.key_backward_veh ) ) and not getKeyState("arrow_d") then
+			speed = speed - acceleration
 	        speedKeyPressed = true
 	    end
 
@@ -140,7 +140,7 @@ local function freecamFrame ()
 	    elseif speed < -mspeed then
 	        speed = -mspeed
 	    end
-	 
+
 	    if strafespeed > -(acceleration / 2) and strafespeed < (acceleration / 2) then
 	        strafespeed = 0
 	    elseif strafespeed > mspeed then
@@ -197,7 +197,7 @@ local function freecamFrame ()
     camPosX = camPosX + normalX * strafespeed
     camPosY = camPosY + normalY * strafespeed
     camPosZ = camPosZ + normalZ * strafespeed
-	
+
 	--Store the velocity
 	velocityX = (freeModeAngleX * speed) + (normalX * strafespeed)
 	velocityY = (freeModeAngleY * speed) + (normalY * strafespeed)
@@ -223,27 +223,27 @@ local function freecamMouse (cX,cY,aX,aY)
 		mouseFrameDelay = mouseFrameDelay - 1
 		return
 	end
-	
+
 	-- how far have we moved the mouse from the screen center?
     local width, height = guiGetScreenSize()
-    aX = aX - width / 2 
+    aX = aX - width / 2
     aY = aY - height / 2
-	
+
 	--invert the mouse look if specified
 	if options.invertMouseLook then
 		aY = -aY
 	end
-	
+
     rotX = rotX + aX * options.mouseSensitivity * 0.01745
     rotY = rotY - aY * options.mouseSensitivity * 0.01745
-	
+
 	local PI = math.pi
 	if rotX > PI then
 		rotX = rotX - 2 * PI
 	elseif rotX < -PI then
 		rotX = rotX + 2 * PI
 	end
-	
+
 	if rotY > PI then
 		rotY = rotY - 2 * PI
 	elseif rotY < -PI then
@@ -269,14 +269,14 @@ function setFreecamEnabled (x, y, z)
 	if isFreecamEnabled() then
 		return false
 	end
-	
+
 	if (x and y and z) then
 	    setCameraMatrix ( x, y, z )
 	end
 	addEventHandler("onClientRender", root, freecamFrame)
 	addEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", true)
-	
+
 	return true
 end
 
@@ -285,14 +285,14 @@ function setFreecamDisabled()
 	if not isFreecamEnabled() then
 		return false
 	end
-	
+
 	velocityX,velocityY,velocityZ = 0,0,0
 	speed = 0
 	strafespeed = 0
 	removeEventHandler("onClientRender", root, freecamFrame)
 	removeEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", false)
-	
+
 	return true
 end
 

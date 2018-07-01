@@ -1,4 +1,4 @@
-﻿local mainRes = getResourceFromName"editor_main"
+local mainRes = getResourceFromName"editor_main"
 topMenuClicked = {} --a table storing all functions when the topmenu is clicked
 
 --since the highlighter covers an icon button, this function acts as a redirect and triggers the function for the proper button
@@ -23,7 +23,7 @@ function buttonClicked(mouseButton, state )
 				if (iconData[currentButton].name == "save" or iconData[currentButton].name == "save as") then
 					exports.editor_main:dropElement()
 				end
-				iconData[currentButton]["clicked"]( currentButton, mouseButton )	
+				iconData[currentButton]["clicked"]( currentButton, mouseButton )
 			end
 		end
 	end
@@ -42,7 +42,7 @@ function elementIcons_Clicked ( source, mouseButton )
 		local elementType = elementIcons[source]["elementName"]
 		local resourceName = elementIcons[source]["resource"]
 		--triggerServerEvent ( "edfCreateElement", getRootElement(), elementType, resourceName )
-		call(getResourceFromName("editor_main"),"doCreateElement", elementType, resourceName )	
+		call(getResourceFromName("editor_main"),"doCreateElement", elementType, resourceName )
 	elseif mouseButton == "right" then
 		local showing = isCurrentBrowserShowing()
 		if not showing then

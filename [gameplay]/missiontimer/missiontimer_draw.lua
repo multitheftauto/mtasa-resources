@@ -6,11 +6,11 @@ function msToTimeStr(ms)
 	if not ms then
 		return ''
 	end
-	
+
 	if ms < 0 then
 		return "0","00","00"
 	end
-	
+
 	local centiseconds = tostring(math.floor(math.fmod(ms, 1000)/10))
 	if #centiseconds == 1 then
 		centiseconds = '0' .. centiseconds
@@ -21,7 +21,7 @@ function msToTimeStr(ms)
 		seconds = '0' .. seconds
 	end
 	local minutes = tostring(math.floor(s / 60))
-	
+
 	return minutes, seconds, centiseconds
 end
 
@@ -30,15 +30,15 @@ addEventHandler ( "onClientRender", root,
 	function()
 		for timer,data in pairs(missionTimers) do
 			local msPassed = 0
-			
+
 			if not data.frozen then
 				msPassed = getTickCount() - data.originalTick
 			else
 				msPassed = data.duration
 			end
-			
+
 			local color = data.colour
-			
+
 			if data.countdown then
 				if not data.frozen then
 					msPassed = data.duration - msPassed
@@ -49,27 +49,27 @@ addEventHandler ( "onClientRender", root,
 			end
 			local x,y = toposition(data.x,data.y)
 			local scale = data.scale or 1
-			
+
 			if data.bg then
 				local width,height = bgWidth*scale + math.max(data.formatWidth-bgWidth+10,0),bgHeight*scale
 				dxDrawImage ( x-width*0.5, y-height*0.5, width, height, "timeleft.png" )
 			end
-			
+
 			local m,s,cs = msToTimeStr(msPassed)
-			
+
 			local output = data.timerFormat:gsub("%%m",m)
 			output = output:gsub("%%s",s)
 			output = output:gsub("%%cs",cs)
-			
-			dxDrawText ( output, 
-				x, 
-				y, 
-				x, 
-				y, 
-				color, 
-				scale, 
-				data.font or "default-bold", 
-				"center", 
+
+			dxDrawText ( output,
+				x,
+				y,
+				x,
+				y,
+				color,
+				scale,
+				data.font or "default-bold",
+				"center",
 				"center" )
 		end
 	end

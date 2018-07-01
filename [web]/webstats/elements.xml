@@ -35,7 +35,7 @@ if ( statsList == nil ) then
 	statsList = ""
 end
 
-args =  split(querystring.stats,"|") 
+args =  split(querystring.stats,"|")
 charttype = args [2]
 if ( charttype == nil ) then
 	httpWrite ( "Must specify a chart type!" )
@@ -43,7 +43,7 @@ end
 
 local registeredStats = call(thisresource, "getRegisteredStats")
 
-if ( charttype == "FCF_Line" ) then	
+if ( charttype == "FCF_Line" ) then
 	yAxisName = registeredStats[split(args[1], ",")[1]].name
 else
 	yAxisName = ""
@@ -52,7 +52,7 @@ end
 <graph caption='' xAxisName='Time' yAxisName='<* = yAxisName *>'  showNames='1' animation='0' rotateNames='1' decimalPrecision='0' formatNumberScale='0' yAxisMinValue="0" yAxisMaxValue="10">
 	<*
 	stats = call ( thisresource, "getCurrentStats" )
-	
+
 	if ( charttype == "FCF_StackedArea2D" or charttype == "FCF_StackedColumn2D" or charttype=="FCF_StackedColumn3D" or charttype=="FCF_MSLine" ) then
 		*>
 		<categories >
@@ -60,7 +60,7 @@ end
 			<category name='<* = v.time *>' />
 			<* end *>
 		</categories>
-		
+
 		<*
 		local statsRequired = split(args[1], ",")
 		local i = 0
@@ -88,7 +88,7 @@ end
 		q = statsRequired[1]
 		for k,v in ipairs(stats) do *>
 			<set name='<* = v.time *>' value='<* = v[q] *>' hoverText=''/>
-	 <* end 
+	 <* end
 	end
 	*>
 </graph>

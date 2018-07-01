@@ -10,7 +10,7 @@ end
 function MinHeap:insertvalue(num)
 	self[self.n] = num
 	self.n = self.n + 1
-	
+
 	local child = self.n - 1
 	local parent, temp
 	while child > 0 do
@@ -45,7 +45,7 @@ function MinHeap:deleteindex(index)
 	self[index] = self[self.n-1]
 	self[self.n-1] = nil
 	self.n = self.n - 1
-	
+
 	local parent = index
 	local child, temp
 	while true do

@@ -3,10 +3,10 @@
 *  Multi Theft Auto: San Andreas - Deathmatch
 *
 *  ml_base, External lua add-on module
-*  
-*  Copyright � 2003-2008 MTA.  All Rights Reserved.
 *
-*  Grand Theft Auto is � 2002-2003 Rockstar North
+*  Copyright ï¿½ 2003-2008 MTA.  All Rights Reserved.
+*
+*  Grand Theft Auto is ï¿½ 2002-2003 Rockstar North
 *
 *  THE FOLLOWING SOURCES ARE PART OF THE MULTI THEFT
 *  AUTO SOFTWARE DEVELOPMENT KIT AND ARE RELEASED AS
@@ -147,7 +147,7 @@ MTAEXPORT void RegisterFunctions ( lua_State * luaVM )
 		pModuleManager->RegisterFunction(luaVM, "amxRegisterLuaPrototypes", CFunctions::amxRegisterLuaPrototypes);
 		pModuleManager->RegisterFunction(luaVM, "amxVersion", CFunctions::amxVersion);
 		pModuleManager->RegisterFunction(luaVM, "amxVersionString", CFunctions::amxVersionString);
-		
+
 		string resName;
 		if(!pModuleManager->GetResourceName(luaVM, resName) || resName.compare("amx"))
 			return;
@@ -183,6 +183,6 @@ MTAEXPORT bool DoPulse ( void )
 
 MTAEXPORT bool ShutdownModule ( void )
 {
-	
+
 	return true;
 }

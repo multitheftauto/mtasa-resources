@@ -34,28 +34,28 @@ function.[name]
 						html += "<div>" + removeIcon + " <span class='acl' onclick='showGroupInfo(" + i + ", null);'>" + groups[i].name + "</span></div>";
 					}
 					grouplist.innerHTML = html;
-					
+
 					if ( currentgroupid != -1 )
 						showGroupInfo(currentgroupid);
 				}
 			);
 		}
-		
 
-		function caseInsensitiveSort(a,b) 
-		{ 
+
+		function caseInsensitiveSort(a,b)
+		{
 			if ( a.toLowerCase() < b.toLowerCase() )
 				return -1;
-			else if ( a.toLowerCase() > b.toLowerCase() ) 
+			else if ( a.toLowerCase() > b.toLowerCase() )
 				return 1;
 			else
-				return 0; 
+				return 0;
 		}
-			
+
 		function showGroupInfo(groupid)
 		{
 			currentgroupid = groupid;
-			
+
 			var grouplist = document.getElementById("grouplist");
 			var grouparea = document.getElementById("grouparea");
 			var welcometext = document.getElementById("welcometext");
@@ -63,14 +63,14 @@ function.[name]
 			var groupstopbar = document.getElementById("groupstopbar");
 
 			var objects = lastGroups[groupid].objects;
-			
+
 			objects = objects.sort(caseInsensitiveSort);
-			
+
 			while ( objectstable.rows.length != 0 )
 			{
 				objectstable.deleteRow(0);
 			}
-			
+
 			var j = 3;
 			var activerow = null;
 			var isfirstrow = true;
@@ -91,22 +91,22 @@ function.[name]
 					isfirstrow = false;
 					activerow = objectstable.insertRow(-1);
 				}
-				
+
 				if ( j == 0 )
 				{
 					activerow = objectstable.insertRow(-1);
 					j = 3;
 				}
-				
+
 				var cell = activerow.insertCell(-1);
 				cell.className = "objectcell";
 				cell.title = objects[i];
 				var removeIcon = "<img src='icon_minus_8_on_F.png' onclick='removeObject(\"" + objects[i] + "\");' style='cursor:pointer;'/>"
 				cell.innerHTML = removeIcon + " "  + getShortName(objects[i]);
-				
+
 				j--;
 			}
-			
+
 			var acls = lastGroups[groupid].acls;
 			acls = acls.sort(caseInsensitiveSort);
 			var html = "";
@@ -115,7 +115,7 @@ function.[name]
 				html += "<img src='icon_minus_8_on_F.png' onclick='removeACL(\"" + acls[i] + "\");' style='cursor:pointer;'/> " + acls[i] + "<br/>";
 			}
 			document.getElementById("acllistcontent").innerHTML = html;
-			
+
 			if ( selectedTab == 1 ) {
 				if ( selectedAddObjectTab == 1 )
 					validateUser();
@@ -124,13 +124,13 @@ function.[name]
 			}
 			else
 				validateACL();
-			
+
 			groupstopbar.style.display = "block";
 			grouplist.style.display = "none";
 			welcometext.style.display = "none";
 			grouparea.style.display = "block";
 		}
-		
+
 		function getSectionName(object)
 		{
 			var parts = object.split(".");
@@ -143,7 +143,7 @@ function.[name]
 			}
 			return "Unknown";
 		}
-		
+
 		function getShortName(object)
 		{
 			var parts = object.split(".");
@@ -151,7 +151,7 @@ function.[name]
 			{
 				if ( parts[1] == "*" )
 					return "all " + parts[0] + "s";
-					
+
 				if ( parts[0] == "resource" )
 					return object.substr(9);
 				else if ( parts[0] == "user" )
@@ -159,12 +159,12 @@ function.[name]
 			}
 			return object;
 		}
-		
+
 		function doRemoveGroup(groupname)
 		{
 			if ( confirm("Are you sure you want to remove the group '" + groupname + "'? This cannot be undone.") )
 			{
-				removeGroup ( groupname, 
+				removeGroup ( groupname,
 					function(success)
 					{
 						if (success)
@@ -183,7 +183,7 @@ function.[name]
 		{
 			if ( confirm("Are you sure you want to remove the ACL '" + aclname + "' from the group '" + lastGroups[currentgroupid].name + "'? This cannot be undone.") )
 			{
-				removeACLFromGroup ( lastGroups[currentgroupid].name, aclname, 
+				removeACLFromGroup ( lastGroups[currentgroupid].name, aclname,
 					function(success)
 					{
 						if (success)
@@ -198,12 +198,12 @@ function.[name]
 				);
 			}
 		}
-		
+
 		function removeObject(objectname)
 		{
 			if ( confirm("Are you sure you want to remove the object '" + objectname + "' from the group '" + lastGroups[currentgroupid].name + "'? This cannot be undone.") )
 			{
-				removeObjectFromGroup ( lastGroups[currentgroupid].name, objectname, 
+				removeObjectFromGroup ( lastGroups[currentgroupid].name, objectname,
 					function(success)
 					{
 						if (success)
@@ -218,7 +218,7 @@ function.[name]
 				);
 			}
 		}
-		
+
 		function addObject()
 		{
 			var objectname = "";
@@ -229,10 +229,10 @@ function.[name]
 			}
 			else {
 				objectname = "resource." + document.getElementById("selectresource").value;
-				if ( objectname == "resource.[all resources]") 
+				if ( objectname == "resource.[all resources]")
 					objectname = "resource.*";
 			}
-				
+
 			addObjectToGroup ( lastGroups[currentgroupid].name, objectname,
 				function(success)
 				{
@@ -252,11 +252,11 @@ function.[name]
 				}
 			);
 		}
-		
+
 		function addACL()
 		{
 			var aclname = document.getElementById("selectacl").value;
-				
+
 			addACLToGroup ( lastGroups[currentgroupid].name, aclname,
 				function(success)
 				{
@@ -271,8 +271,8 @@ function.[name]
 				}
 			);
 		}
-		
-		
+
+
 		function doAddGroup()
 		{
 			var groupname = document.getElementById('addgroupname').value;
@@ -284,8 +284,8 @@ function.[name]
 					return;
 				}
 			}
-					
-			addGroup ( groupname, 
+
+			addGroup ( groupname,
 				function(success)
 				{
 					if (success)
@@ -300,7 +300,7 @@ function.[name]
 				}
 			);
 		}
-		
+
 		function showGroupList()
 		{
 			var grouplist = document.getElementById("grouplist");
@@ -309,27 +309,27 @@ function.[name]
 			var groupstopbar = document.getElementById("groupstopbar");
 
 			currentgroupid--;
-			
+
 			groupstopbar.style.display = "none";
 			grouplist.style.display = "block";
 			welcometext.style.display = "inline";
 			grouparea.style.display = "none";
 		}
-		
-		
+
+
 		var selectedTab = 1;
 		function showGroupArea(id)
 		{
 			selectedTab = id;
 			var grouparea1 = document.getElementById("grouparea1");
 			var grouparea2 = document.getElementById("grouparea2");
-			
+
 			grouparea1.style.display = (id == 1 ? "block":"none");
 			grouparea2.style.display = (id == 2 ? "block":"none");
 
 			document.getElementById("groupareatab1").className = (id == 1 ? "grouptab_active":"grouptab");
 			document.getElementById("groupareatab2").className = (id == 2 ? "grouptab_active":"grouptab");
-			
+
 			if ( id == 1 ) {
 				if ( selectedAddObjectTab == 1 )
 					validateUser();
@@ -339,9 +339,9 @@ function.[name]
 			else
 				validateACL();
 
-			
+
 		}
-		
+
 		var selectedAddObjectTab = 1;
 		function showAddObjectSetting(id)
 		{
@@ -349,37 +349,37 @@ function.[name]
 			var grouparea1 = document.getElementById("addobjectssetting1");
 			var grouparea2 = document.getElementById("addobjectssetting2");
 			var addobjectinfotext = document.getElementById("addobjectinfotext");
-			
+
 			grouparea1.style.display = (id == 1 ? "block":"none");
 			grouparea2.style.display = (id == 2 ? "block":"none");
-			
+
 			addobjectinfotext.innerHTML = "";
 			document.getElementById("addButton").disabled = false;
-			if ( id == 1 ) 
+			if ( id == 1 )
 				validateUser();
 			else
 				validateResource();
-				
+
 			document.getElementById("addobjecttab1").className = (id == 1 ? "addobjecttab_active":"addobjecttab");
 			document.getElementById("addobjecttab2").className = (id == 2 ? "addobjecttab_active":"addobjecttab");
 		}
-	
-		
+
+
 		function clearSearch()
 		{
 			document.getElementById("searchtext").value = "";
 			doSearch();
 		}
-		
+
 		function validateResource()
 		{
 			var addobjectinfotext = document.getElementById("addobjectinfotext");
 			var resource = document.getElementById("selectresource").value;
 			var addbutton = document.getElementById("addButton");
-			
+
 			if ( resource == "[all resources]" )
 				resource = "*";
-				
+
 			var objects = lastGroups[currentgroupid].objects;
 			var objectname = "resource." + resource;
 			for ( var i = 0; i < objects.length; i++ )
@@ -394,7 +394,7 @@ function.[name]
 			addbutton.disabled = false;
 			addobjectinfotext.innerHTML = "";
 		}
-		
+
 		var uservalidatetimeout = null;
 		function validateUser()
 		{
@@ -409,11 +409,11 @@ function.[name]
 			if ( username == ""  && !allresources ) {
 				addButton.disabled = true;
 				addobjectinfotext.innerHTML = "";
-				
+
 				if ( uservalidatetimeout != null )
 					clearTimeout(uservalidatetimeout)
 			}
-			else 
+			else
 			{
 				var objects = lastGroups[currentgroupid].objects;
 				var objectname = "user." + username;
@@ -430,7 +430,7 @@ function.[name]
 						return;
 					}
 				}
-				
+
 				if ( allresources )
 				{
 					document.getElementById("addButton").disabled = false;
@@ -446,13 +446,13 @@ function.[name]
 				}
 			}
 		}
-		
+
 		function checkUserAccount ()
 		{
 			var username = document.getElementById("txtuser").value;
 			var addobjectinfotext = document.getElementById("addobjectinfotext");
 			addobjectinfotext.innerHTML = "Checking user account exists...";
-			isAccountNameValid ( username, 
+			isAccountNameValid ( username,
 				function ( valid )
 				{
 					uservalidatetimeout = null;
@@ -464,12 +464,12 @@ function.[name]
 						document.getElementById("addButton").disabled = true;
 						addobjectinfotext.innerHTML = "Unknown user account";
 					}
-						
-					
+
+
 				}
 			);
 		}
-		
+
 		function validateACL()
 		{
 			var aclname = document.getElementById("selectacl").value;
@@ -496,7 +496,7 @@ function.[name]
 
 	<div id="grouplist">
 		<div id="grouplistcontent">
-			
+
 		</div>
 		<div id="addgrouparea">
 			<div id="addgrouptopbar">
@@ -507,7 +507,7 @@ function.[name]
 			</div>
 		</div>
 	</div>
-	
+
 	<div id="grouparea"  style="display:none;">
 		<div id="tabcontainer">
 			<div id="groupareatabs">
@@ -541,7 +541,7 @@ function.[name]
 										<div class="addobjecttabpane" id="addobjectssetting2" style="display:none;">
 											<div class="formfield">
 												<label for="selectresource">Resource: </label>
-												
+
 												<select id="selectresource" onchange="validateResource();" onclick="validateResource();" onkeyup="validateResource();">
 												<option>[all resources]</option>
 												<*
@@ -578,7 +578,7 @@ function.[name]
 								<div id="addaclcontentinput">
 									ACL:
 									<select id="selectacl" onchange="validateACL();" onclick="validateACL();" onkeyup="validateACL();">
-									
+
 									<*
 									local acls = aclList()
 									for k,v in ipairs(acls) do
@@ -601,11 +601,11 @@ function.[name]
 	<div id="topbar">
 		<span id="welcometext">Groups are collections of users and resources that can be assigned ACLs to control what they can access.</span>
 		<div id="groupstopbar" style="display:none;"><!--src="icon_x_8_on_F.png"-->
-	
+
 		<div id="groupstopbarbackbutton"><input type="button" value="< Back" onclick="showGroupList();" /></div><div id="groupstopbarname"></div></div>
 	</div>
-	
-	
+
+
 
 </body>
 </body>

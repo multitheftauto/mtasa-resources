@@ -18,10 +18,10 @@
 	<script src="scriptreader.lua" />
 	<script src="scriptreader_client.lua" type="client" />
 	<oop>true</oop>
-	
+
 	<export function="edfStartResource" />				<!--bool-->
-	<export function="edfStopResource" />				<!--bool-->	
-	
+	<export function="edfStopResource" />				<!--bool-->
+
 	<export function="edfLoadDefinition" />				<!--bool-->
 	<export function="edfUnloadDefinition" />				<!--bool-->
 	<export function="edfCreateElement" />					<!--element-->
@@ -31,7 +31,7 @@
 	<export function="edfGetLoadedEDFResources" />		<!--table-->
 	<export function="edfGetDefinition" />					<!--table-->
 	<export function="edfHasDefinition" />					<!--bool-->
-	
+
 	<export function="edfGetHandle" />				<!--element-->
 	<export function="edfGetParent" />				<!--element-->
 	<export function="edfIsRepresentation" />		<!--element-->
@@ -53,7 +53,7 @@
 	<export function="edfGetElementProperty" />	<!--var-->
 	<export function="edfSetElementProperty" />	<!--bool-->
 	<export function="edfGetResourceForElementType" /> <!-- string -->
-	
+
 	<export function="edfGetHandle" type="client" />				<!--element-->
 	<export function="edfGetParent" type="client" />				<!--element-->
 	<export function="edfGetAncestor" type="client" />				<!--element-->

@@ -1,4 +1,4 @@
-﻿g_ServerVars = {
+g_ServerVars = {
 	announce = true,
 	anticheat = false,
 	bind = '',
@@ -263,7 +263,7 @@ local function cmdUnbanIP(ip)
 	end
 	for banID, ban in ipairs (getBans()) do
 		if getBanIP(ban) == ip then
-			if removeBan(ban) then		
+			if removeBan(ban) then
 				return 'Removed ' .. ip .. ' from the ban list'
 			else
 				return 'Failed to unban ' .. ip

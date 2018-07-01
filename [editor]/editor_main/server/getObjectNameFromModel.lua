@@ -1,4 +1,4 @@
-﻿local objectNames = {
+local objectNames = {
 [615]="veg_tree3",
 [616]="veg_treea1",
 [617]="veg_treeb1",

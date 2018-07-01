@@ -1,6 +1,8 @@
-﻿local driver = false
+local driver = false
 local shooting = false
 local helpText,helpAnimation
+local exitingVehicle = false
+local block
 lastSlot = 0
 settings = {}
 
@@ -8,7 +10,7 @@ settings = {}
 --This function simply sets up the driveby upon vehicle entry
 local function setupDriveby( player, seat )
 	--If his seat is 0, store the fact that he's a driver
-	if seat == 0 then 
+	if seat == 0 then
 		driver = true
 	else
 		driver = false
@@ -18,6 +20,8 @@ local function setupDriveby( player, seat )
 	if settings.autoEquip then
 		toggleDriveby()
 	end
+	exitingVehicle = false
+	lastSlot = 0
 end
 addEventHandler( "onClientPlayerVehicleEnter", localPlayer, setupDriveby )
 
@@ -54,6 +58,25 @@ addEventHandler("doSendDriveBySettings",localPlayer,
 			newTable[vehicleID] = true
 		end
 		settings.blockedVehicles = newTable
+		settings.driverallowed = {}
+		if settings.driver[1] then
+			for i=1, #settings.driver do
+				settings.driverallowed[settings.driver[i]] = true
+			end
+		end
+		settings.passengerallowed = {}
+		if settings.passenger[1] then
+			for i=1, #settings.passenger do
+				settings.passengerallowed[settings.passenger[i]] = true
+			end
+		end
+		if settings.blockInstantEject then
+			addEventHandler ( "onClientVehicleStartExit", root, function ( player )
+				if player == localPlayer then
+					exitingVehicle = true
+				end
+			end )
+		end
 	end
 )
 
@@ -67,14 +90,16 @@ function toggleDriveby()
 	--Has he got a weapon equiped?
 	local equipedWeapon = getPedWeaponSlot( localPlayer )
 	if equipedWeapon == 0 then
+		if exitingVehicle then return end
 		--Decide whether he is a driver or passenger
-		if ( driver ) then weaponsTable = settings.driver
-		else weaponsTable = settings.passenger end
 		--We need to get the switchTo weapon by finding any valid IDs
 		local switchTo
 		local switchToWeapon
+		local lastSlotWeapon = getPedWeapon ( localPlayer, lastSlot )
+		local weaponsTableAllowed = driver and settings.driverallowed or settings.passengerallowed
 		local lastSlotAmmo = getPedTotalAmmo ( localPlayer, lastSlot )
-		if not lastSlotAmmo or lastSlotAmmo == 0 or getSlotFromWeapon(getPedWeapon (localPlayer,lastSlot)) == 0 then
+		if not lastSlotAmmo or lastSlotAmmo == 0 or getSlotFromWeapon(lastSlotWeapon) == 0 or not weaponsTableAllowed[lastSlotWeapon] then
+			local weaponsTable = driver and settings.driver or settings.passenger
 			for key,weaponID in ipairs(weaponsTable) do
 				local slot = getSlotFromWeapon ( weaponID )
 				local weapon = getPedWeapon ( localPlayer, slot )
@@ -92,14 +117,8 @@ function toggleDriveby()
 				end
 			end
 		else
-			local lastSlotWeapon = getPedWeapon ( localPlayer, lastSlot )
-			for key,weaponID in ipairs(weaponsTable) do --If our last used weapon is a valid weapon
-				if weaponID == lastSlotWeapon then
-					switchTo = lastSlot
-					switchToWeapon = lastSlotWeapon
-					break
-				end
-			end
+			switchTo = lastSlot
+			switchToWeapon = lastSlotWeapon
 		end
 		--If a valid weapon was not found, dont set anything.
 		if not switchTo then return end
@@ -141,12 +160,14 @@ function removeKeyToggles(vehicle)
 	toggleControl ( "vehicle_secondary_fire",true )
 	toggleTurningKeys(getElementModel(vehicle),true)
 	fadeOutHelp()
+	exitingVehicle = false
 	removeEventHandler ( "onClientPlayerVehicleExit",localPlayer,removeKeyToggles )
 end
 
 
 --This function handles the driveby switch weapon key
 function switchDrivebyWeapon(key,progress)
+	if block then return end
 	progress = tonumber(progress)
 	if not progress then return end
 	--If the fire button is being pressed dont switch
@@ -158,12 +179,12 @@ function switchDrivebyWeapon(key,progress)
 	if currentWeapon == 1 then currentWeapon = 0 end --If its a brass knuckle, set it to a fist to avoid confusion
 	local currentSlot = getPedWeaponSlot(localPlayer)
 	if currentSlot == 0 then return end
-	if ( driver ) then weaponsTable = settings.driver
-	else weaponsTable = settings.passenger end
+	local weaponsTable = driver and settings.driver or settings.passenger
+	local weaponsTableAllowed = driver and settings.driverallowed or settings.passengerallowed
 	--Compile a list of the player's weapons
 	local switchTo
 	for key,weaponID in ipairs(weaponsTable) do
-		if weaponID == currentWeapon then
+		if weaponID == currentWeapon or not weaponsTableAllowed[currentWeapon] then
 			local i = key + progress
 			--We keep looping the table until we go back to our original key
 			while i ~= key do
@@ -204,15 +225,15 @@ addCommandHandler ( "Previous driveby weapon", switchDrivebyWeapon )
 local limiterTimer
 function limitDrivebySpeed ( weaponID )
 	local speed = settings.shotdelay[tostring(weaponID)]
-	if not speed then 
-		if not isControlEnabled ( "vehicle_fire" ) then 
+	if not speed then
+		if not isControlEnabled ( "vehicle_fire" ) then
 			toggleControl ( "vehicle_fire", true )
 		end
 		removeEventHandler("onClientPlayerVehicleExit",localPlayer,unbindFire)
 		removeEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
 		unbindKey ( "vehicle_fire", "both", limitedKeyPress )
 	else
-		if isControlEnabled ( "vehicle_fire" ) then 
+		if isControlEnabled ( "vehicle_fire" ) then
 			toggleControl ( "vehicle_fire", false )
 			addEventHandler("onClientPlayerVehicleExit",localPlayer,unbindFire)
 			addEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
@@ -223,14 +244,13 @@ end
 
 function unbindFire()
 	unbindKey ( "vehicle_fire", "both", limitedKeyPress )
-	if not isControlEnabled ( "vehicle_fire" ) then 
+	if not isControlEnabled ( "vehicle_fire" ) then
 			toggleControl ( "vehicle_fire", true )
 	end
 	removeEventHandler("onClientPlayerVehicleExit",localPlayer,unbindFire)
 	removeEventHandler("onClientPlayerWasted",localPlayer,unbindFire)
 end
 
-local block
 function limitedKeyPress (key,keyState,speed)
 	if keyState == "down" then
 		if block == true then return end
@@ -241,17 +261,15 @@ function limitedKeyPress (key,keyState,speed)
 		limiterTimer = setTimer ( pressKey,speed, 0, "vehicle_fire" )
 	else
 		shooting = false
-		for k,timer in ipairs(getTimers()) do
-			if timer == limiterTimer then
-				killTimer ( limiterTimer )
-			end
+		if isTimer ( limiterTimer ) then
+			killTimer ( limiterTimer )
 		end
 	end
 end
 
 function pressKey ( controlName )
-	setControlState ( controlName, true )
-	setTimer ( setControlState, 150, 1, controlName, false )
+	setPedControlState ( controlName, true )
+	setTimer ( setPedControlState, 150, 1, controlName, false )
 end
 
 ---Left/right toggling
@@ -270,7 +288,7 @@ function toggleTurningKeys(vehicleID, state)
 		end
 	end
 end
-	
+
 function fadeInHelp()
 	if helpAnimation then helpAnimation:remove() end
 	local _,_,_,a = helpText:color()
@@ -288,7 +306,7 @@ function fadeOutHelp()
 end
 
 local function onWeaponSwitchWhileDriveby (prevSlot, curSlot)
-	if isPedDoingGangDriveby(source) then	
+	if isPedDoingGangDriveby(source) then
 		limitDrivebySpeed(getPedWeapon(source, curSlot))
 	end
 end

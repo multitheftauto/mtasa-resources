@@ -3,7 +3,7 @@
 <* = call(getResourceFromName("ajax"),"start", getResourceName(getThisResource()) ) *>
 </head>
 <body>
-    
+
 <html>
 <head>
 	<script language="JavaScript" src="FusionCharts.js"></script>
@@ -18,9 +18,9 @@
 				document.getElementById("stylesheet").href = "ie-70.css"; // Oh Microsoft :|
 			}
 		}
-		
+
 		function updateChart()
-		{		
+		{
 			var stats = "";
 			var charttype = document.getElementById("charttype").value;
 			var i = 0;
@@ -29,7 +29,7 @@
 				var statItem = document.getElementById("stat" + i);
 				if ( !statItem )
 					break;
-				if ( statItem.checked == true ) 
+				if ( statItem.checked == true )
 				{
 					stats = stats + statItem.value + ",";
 				}
@@ -43,15 +43,15 @@
 			}
 			else
 				document.getElementById("chart").innerHTML = "";
-			
+
 		}
-		
+
 		function toggleDatasets()
 		{
 			var datasets = document.getElementById("datasets");
 			var toggleButton = document.getElementById("toggleButton");
 			var chart = document.getElementById("chart");
-			if ( toggleButton.value == "hide datasets" ) 
+			if ( toggleButton.value == "hide datasets" )
 			{
 				datasets.style.display = "none";
 				toggleButton.value = "show datasets";
@@ -72,7 +72,7 @@
 	<div id="chart" style="position: absolute; left:0px; top: 37px; bottom: 0px; width: 78%; overflow:auto;bacground: red;vertical-align:top; padding: 10px;">
 	Select datasets from the list on the right to begin.
 	</div>
-	
+
 	<div id="topbar">
 		<div style="float:right;"><input type="button" value="hide datasets" onclick="toggleDatasets();" id="toggleButton"/></div>
 		<select id="charttype" onchange="updateChart();" onkeyup="updateChart();">
@@ -87,7 +87,7 @@
 		<input type="button" value="refresh" onclick="updateChart();"/>
 
 	</div>
-	
+
 	<div id="datasets">
 
 			<*
@@ -114,7 +114,7 @@
 			end
 			*>
 	</div>
-	
+
 
 </body>
 </body>

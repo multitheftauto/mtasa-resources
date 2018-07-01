@@ -1,4 +1,4 @@
-﻿function reloadWeapon()
+function reloadWeapon()
 	reloadPedWeapon(client)
 end
 addEvent("relWep", true)

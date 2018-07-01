@@ -1,4 +1,4 @@
-﻿local editorRes = getResourceFromName("editor_main")
+local editorRes = getResourceFromName("editor_main")
 local testDialog = {}
 local hideDialog
 local g_suspended
@@ -40,7 +40,7 @@ function testShowDialog()
 	setGUIShowing(false)
 	guiSetInputEnabled ( true )
 	setWorldClickEnabled ( false )
-	
+
 	--[[  This is for disabling gamemode testing
 	local yes,no = guiShowMessageBox ( "Are you sure you want to begin a Test?", "question", "Test?", true, "Yes", "No" )
 	addEventHandler ( "onClientGUIClick", yes, confirmTest, false )
@@ -183,7 +183,7 @@ function basicTest()
 		toggleControl("fire", true)
 		toggleControl("enter_exit", true)
 		toggleControl("enter_passenger", true)
-		
+
 		-- Force object collisions (since they must be enabled when editing)
 		for i, obj in pairs(getElementsByType("object")) do
 			setElementCollisionsEnabled(obj, true)
@@ -204,7 +204,7 @@ function basicTest()
 		addEventHandler("onClientPlayerDamage", localPlayer, noDamageInBasicTest)
 		outputChatBox("Press F6 to leave basic test", 0, 255, 0)
 		bindControl ( "toggle_basictest", "down", basicTest )
-		
+
 		-- Make any collisionless objects collisionless for basic test
 		for i, obj in pairs(getElementsByType("object")) do
 			local objectCollision = getElementData(obj, "collisions")

@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -6,7 +6,7 @@
 *
 *	Original File by lil_Toady
 *
-*	Thanks to: 
+*	Thanks to:
 *	Talidan and Slothman for Skins list
 *
 **************************************]]

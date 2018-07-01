@@ -1,4 +1,4 @@
-﻿optionsActions = {}
+optionsActions = {}
 optionsData = {}
 function sx_getOptionData(var)
 	return (optionsData[var] or false)
@@ -58,7 +58,7 @@ function setFreecamSpeeds()
 end
 
 ---This part decides whether gui should be refreshed or not
-local iconSize,topmenuAlign,bottommenuAlign 
+local iconSize,topmenuAlign,bottommenuAlign
 local doesGUINeedRefreshing = false
 function dumpGUISettings()
 	doesGUINeedRefreshing = false
@@ -112,7 +112,7 @@ end
 	-- Command executed! Results: 0.025 [number], 0.25 [number], 2 [number]
    -- num num num getRotateSpeeds()
 	-- Command executed! Results: 0.25 [number], 2 [number], 10 [number]
-	
+
 
 function optionsActions.normalElemMove (value)
 	local slow, normal, fast = move_keyboard.getMoveSpeeds ()
@@ -141,7 +141,7 @@ function setEditorMoveSpeeds()
 	local kbRes = getResourceFromName("move_keyboard")
 	local cRes = getResourceFromName("move_cursor")
 	local fRes = getResourceFromName("move_freecam")
-	
+
 	move_keyboard.setMoveSpeeds ( dialog.slowElemMove:getValue(), dialog.normalElemMove:getValue(), dialog.fastElemMove:getValue())
 	--
 	move_keyboard.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )

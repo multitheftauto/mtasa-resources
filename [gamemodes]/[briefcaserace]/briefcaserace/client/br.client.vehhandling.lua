@@ -1,4 +1,4 @@
-﻿local root = getRootElement()
+local root = getRootElement()
 
 MAX_SPEED = 0.65
 
@@ -19,9 +19,9 @@ function onFrameSlowVehicle()
 	if (element and isElement(element)) then
 
 		local velX, velY, velZ = getElementVelocity(element)
-		
+
 		local intervalTimeElapsed = getTickCount() - intervalTickStart
-		
+
 		if (intervalTimeElapsed >= intervalLength) then
 			-- reset and start pausing
 			intervalTimeElapsed = 0
@@ -38,7 +38,7 @@ function onFrameSlowVehicle()
 			pausing = false
 		end
 		lastFrameSpeed = curSpeed]]
-		
+
 		if (pausing) then
 			if (intervalTimeElapsed >= pauseTime) then
 				-- turn pausing off
@@ -55,9 +55,9 @@ function onFrameSlowVehicle()
 			end
 		else
 			-- limit speed if too fast
-		
+
 			if ( (velX^2 + velY^2) > MAX_SPEED^2 ) then
-			
+
 				-- get original angle
 				local angle
 				if ( velX > 0 ) then -- I or IV
@@ -69,14 +69,14 @@ function onFrameSlowVehicle()
 				-- get new X and Y velocity
 				local newVX = MAX_SPEED * math.cos ( angle )
 				local newVY = MAX_SPEED * math.sin ( angle )
-				
+
 				-- set new velocity
 				setElementVelocity ( element, newVX, newVY, velZ )
-				
+
 			end
 
 		end
-	
+
 	end
 end
 

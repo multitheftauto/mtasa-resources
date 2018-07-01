@@ -1,4 +1,4 @@
-﻿
+
 assaultTimers = {}
 
 --[[
@@ -12,12 +12,12 @@ function startAssaultMap(startedMap)
 		outputChatBox("Error loading map")
 		return
 	end
-	
+
 	setWeather(options.weather)
-	
+
 	-- simulate the end of a round
 	attacker = team2
-	
+
 	-- Create Objectives Text items
 	removeTextItems()
 	objectiveTextItem = {}
@@ -28,16 +28,16 @@ function startAssaultMap(startedMap)
 		-- Objectives on the right
 		--objectiveTextItem[k] = textCreateTextItem(v.name, 0.92, pos, "low", 255,255,255,255,1.4,"right")
 		--objectiveTextItemShadow[k] = textCreateTextItem(v.name, 0.921, pos + 0.001, "low", 0, 0, 0, 255, 1.4,"right")
-		
+
 		-- Objectives on the left
 		objectiveTextItem[k] = textCreateTextItem(v.name, 0.04, pos, "low", 255,255,255,255,1.4,"left")
 		objectiveTextItemShadow[k] = textCreateTextItem(v.name, 0.041, pos + 0.001, "low", 0, 0, 0, 255, 1.4,"left")
-		
+
 		textDisplayAddText( statusDisplay, objectiveTextItemShadow[k] )
 		textDisplayAddText( statusDisplay, objectiveTextItem[k] )
 		pos = pos + 0.03
 	end
-	
+
 	-- Remove player from noMapLoadedDisplay, fadeCamera and show team select display
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
@@ -47,9 +47,9 @@ function startAssaultMap(startedMap)
 		--outputConsole(getClientName(v))
 		triggerClientEvent2( v, "assaultCreateGui", options )
 	end
-	
+
 	noMapLoaded = false
-	
+
 	startRound()
 end
 --[[
@@ -61,16 +61,16 @@ function stopAssaultMap()
 	outputDebugString("Stopping assault map..")
 
 
-	
+
 	noMapLoaded = true
-	
+
 	clearAllObjectives()
 	removeTextItems()
-	
+
 	for k,v in pairs(assaultTimers) do
 		if (isTimer(v)) then killTimer(v) end
 	end
-	
+
 	-- Stop round timer
 	--if (isTimer(assaultTimers.updateTimeLeft)) then
 	--	killTimer(assaultTimers.updateTimeLeft)
@@ -81,7 +81,7 @@ function stopAssaultMap()
 		setNoMapLoaded( v, true )
 		textDisplayRemoveObserver( waitingDisplay, v )
 		textDisplayRemoveObserver( waitingDisplay2, v )
-		
+
 		--toggleAllControls( v, false )
 	end
 end
@@ -106,13 +106,13 @@ end
 
 function setNoMapLoaded( player, bool )
 	if (isElement(noMapLoadedDisplay) == false) then return end
-	
+
 	if (bool == true) then
 		textDisplayAddObserver( noMapLoadedDisplay, player )
-		
+
 	else
 		setTimer(textDisplayRemoveObserver,1000,1,noMapLoadedDisplay, player )
-		
+
 	end
 end
 
@@ -123,26 +123,26 @@ and shows a text display as long as no map is loaded
 function startAssault(resource)
 
 	noMapLoaded = true
-	
+
 	--outputChatBox("Now playing assault..")
-	
+
 	team1 = createTeam("Red",255,0,0)
 	team2 = createTeam("Blue",0,0,255)
 	team1Name = "Red"
 	team2Name = "Blue"
-	
+
 	setTeamFriendlyFire( team1, false )
 	setTeamFriendlyFire( team2, false )
 
-	
+
 
 	statusDisplay = textCreateDisplay()
 	timeLeftTextItem = textCreateTextItem( "", 0.5, 0.02, "low", 255,255,255,255,1.8, "center" )
 	textDisplayAddText( statusDisplay, timeLeftTextItem )
-	
+
 	waitingCreateDisplay()
 	selectTeamCreateDisplay()
-	
+
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
 		textDisplayAddObserver( statusDisplay, v )
@@ -150,33 +150,33 @@ function startAssault(resource)
 		setElementDataLocal(v,"assaultToggleLogo",false)
 		setElementDataLocal(v,"assaultCreateGui",false)
 		setElementDataLocal(v,"assaultClientScriptLoaded",false)
-		showPlayerHudComponent( v, "money", false )
+		setPlayerHudComponentVisible( v, "money", false )
 	end
-	
+
 	attackerDisplay = textCreateDisplay()
 	defenderDisplay = textCreateDisplay()
-	
+
 	team1Display = textCreateDisplay()
 	team2Display = textCreateDisplay()
-	
-	
+
+
 	--nextObjectiveText = textCreateTextItem("Next Objective: ", 0.5, 0.94, "low", 255,255,255,255, 1.2, "center")
 	--textDisplayAddText( attackerDisplay, nextObjectiveText )
-	
-	
+
+
 	--defenderText = textCreateTextItem("Prevent the attackers from reaching their objectives",0.5,0.94,"low",255,255,255,255,1.2,"center")
 	--textDisplayAddText( defenderDisplay, defenderText )
-	
+
 	team1Text = textCreateTextItem("You are on: Red", 0.04, 0.24, "low", 255,0,0,255, 1.2, "left")
 	team2Text = textCreateTextItem("You are on: Blue", 0.04, 0.24, "low", 0,0,255,255, 1.2, "left")
 	textDisplayAddText( team1Display, team1Text )
 	textDisplayAddText( team2Display, team2Text )
-	
+
 	roundText = textCreateTextItem( "Round 1/2", 0.5, 0.048, "low", 255,255,255,255,1.2, "center" )
 	textDisplayAddText( statusDisplay, roundText )
-	
+
 	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "score")
-	
+
 	--startAssaultMap(resource)
 end
 
@@ -200,7 +200,7 @@ function startRound()
 	respawnAllVehicles()
 	progress = 1
 	waiting = true
-	
+
 	if (attacker == team1) then
 		attacker = team2
 		timeLimit = timeReachedBefore
@@ -210,9 +210,9 @@ function startRound()
 		timeLimit = options.timelimit
 		textItemSetText(roundText,"Round 1/2")
 	end
-	
+
 	createObjectives()
-	
+
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
 		triggerClientEvent2(v,"assaultNextRound",attacker)
@@ -248,7 +248,7 @@ end
 function waitForStart( player )
 	if (isPedInVehicle( player )) then
 		removePedFromVehicle( player ) end
-	
+
 	textDisplayAddObserver( waitingDisplay, player )
 	--setCameraMode( player, "fixed" )
 	--setCameraPosition( player, 0, 0, 20 )
@@ -257,13 +257,13 @@ function waitForStart( player )
 	--setTimer(setCameraLookAt,1000,1,player, options.camera["spawn"].targetX, options.camera["spawn"].targetY, options.camera["spawn"].targetZ )
 	--triggerClientEvent(player,"customSetCamera", player, 0, 0, 20,  -33.486911773682, 35.214984893799, 4 )
 	--toggleAllControls( player, false )
-	setCameraMatrix(player,options.camera["spawn"].posX,options.camera["spawn"].posY,options.camera["spawn"].posZ,options.camera["spawn"].targetX, options.camera["spawn"].targetY, options.camera["spawn"].targetZ) 
+	setCameraMatrix(player,options.camera["spawn"].posX,options.camera["spawn"].posY,options.camera["spawn"].posZ,options.camera["spawn"].targetX, options.camera["spawn"].targetY, options.camera["spawn"].targetZ)
 end
 
 function waitEndRound( player )
 	if (isPedInVehicle( player )) then
 		removePedFromVehicle( player ) end
-	
+
 	textDisplayAddObserver( waitingDisplay2, player )
 	--setCameraMode( player, "fixed" )
 	--setTimer(setCameraPosition,1000,1,player,options.camera["finish"].posX,options.camera["finish"].posY,options.camera["finish"].posZ)
@@ -325,8 +325,8 @@ function endRound(conquered)
 		end
 	end
 	assaultTimers.startRound = setTimer(startRound, 10000, 1)
-	
-	
+
+
 end
 
 --[[
@@ -345,7 +345,7 @@ function onObjectiveHit( player )
 		objectiveId = getObjectiveIdFromElement( source )
 		if (objectiveId ~= false) then
 			local thisObjective = options.objective[status[objectiveId].key]
-			
+
 			if (thisObjective.captureType == "foot") then
 				if (isPedInVehicle(player) == true) then
 					outputChatBox("You need to be on foot to activate this objective!",player,255,0,0)
@@ -357,7 +357,7 @@ function onObjectiveHit( player )
 					return
 				end
 			end
-			
+
 			if (thisObjective.stay > 0) then
 				--outputChatBox("meh")
 				if (objectiveTimer[objectiveId] == nil) then
@@ -383,15 +383,15 @@ function onObjectiveLeave( player )
 end
 -- Counts the time players are in an objective, if it has a timelimit
 function objectiveCount(objectiveId)
-	if (waiting) then 
+	if (waiting) then
 		stopObjectiveTimer(objectiveId)
 		hideProgressForAll(objectiveId)
 		return
 	end
 
-	if (isElement(status[objectiveId].colShape) == false) then 
-		stopObjectiveTimer(objectiveId) 
-		return 
+	if (isElement(status[objectiveId].colShape) == false) then
+		stopObjectiveTimer(objectiveId)
+		return
 	end
 	local allPlayers = getElementsWithinColShape( status[objectiveId].colShape, "player" )
 	-- colShape is empty or does not exist - stop timer
@@ -399,15 +399,15 @@ function objectiveCount(objectiveId)
 		stopObjectiveTimer(objectiveId)
 		return
 	end
-	
+
 	local countPlayers = 0
 	local playerTable = {}
-	
+
 	local captureTypeBool = nil
 	local thisObjective = options.objective[status[objectiveId].key]
 	if (thisObjective.captureType == "foot") then captureTypeBool = true
 	elseif (thisObjective.captureType == "vehicle") then captureTypeBool = false end
-	
+
 	for k,v in ipairs(allPlayers) do
 		local team = getPlayerTeam(v)
 		if (isPedDead(v) == false and team == attacker and isPedInVehicle(v) ~= captureTypeBool) then
@@ -415,16 +415,16 @@ function objectiveCount(objectiveId)
 			playerTable[#playerTable+1] = v
 		end
 	end
-	
+
 	local addPerPlayer = 1
 	if (countPlayers > 1) then addPerPlayer = 1/countPlayers + 0.25 end
 	status[objectiveId].count = status[objectiveId].count + countPlayers * addPerPlayer
-	
+
 	if (countPlayers == 0) then
 		stopObjectiveTimer(objectiveId)
 		return
 	end
-	
+
 	local stay = options.objective[status[objectiveId].key].stay
 	local progress = status[objectiveId].count
 	if (progress > stay) then progress = stay end
@@ -488,23 +488,23 @@ function objectiveReached( objectiveId, playerTable )
 		return
 	end
 	if (playerTable == nil) then playerTable = {} end
-	
+
 	for k,v in ipairs(playerTable) do
 		addPoints(v,10)
 	end
 
 	clearObjective(objectiveId)
-	
+
 	status[objectiveId].reached = true
 	local key = status[objectiveId].key
-	
+
 	textItemSetColor(objectiveTextItem[key],255,0,0,255)
 
 	local objectiveReached = options.objective[key]
 	triggerEvent("onAssaultObjectiveReached",getRootElement(),objectiveReached, playerTable)
-	
+
 	progress = progress + 1
-	
+
 	-- Finished map?
 	if (options.finishType == "all") then
 		if (allObjectivesReached() == true) then
@@ -515,32 +515,32 @@ function objectiveReached( objectiveId, playerTable )
 			endRound(true)
 		end
 	end
-	
+
 	createObjectives()
 
 	local defender
 	if (attacker == team1) then defender = team2 else defender = team1 end
 	local teamName = nil
 	if (attacker == team1) then teamName = team1Name else teamName = team2Name end
-	
-	
+
+
 	local messageForAttacker = "Objective '"..objectiveReached.name.."' reached"
 	local messageForDefender = "Objective '"..objectiveReached.name.."' reached"
-	
+
 	if (objectiveReached.name == "") then
 		messageForAttacker = ""
 		messageForDefender = ""
 	end
-	
+
 	if (objectiveReached.successText ~= "") then
 		messageForAttacker = string.gsub(objectiveReached.successText,"~team~",teamName)
-		messageForDefender = string.gsub(objectiveReached.successText,"~team~",teamName)	
+		messageForDefender = string.gsub(objectiveReached.successText,"~team~",teamName)
 	end
 	if (objectiveReached.successTextForDefender ~= "") then
 		messageForDefender = string.gsub(objectiveReached.successTextForDefender,"~team~",teamName)
 	end
-	
-	
+
+
 	if (messageForAttacker ~= "") then
 		showTextForTeam(attacker,2000,255,255,255,1.4,0.6,messageForAttacker)
 	end
@@ -662,7 +662,7 @@ function createNextObjectiveText(player)
 			local objective = v
 			i = i + 1
 			objectivesTable[i] = {}
-			
+
 			objectivesTable[i].attackerText = objective.description
 			objectivesTable[i].name = objective.name
 			if (objective.defenderDescription == "") then
@@ -724,7 +724,7 @@ Players and Teams
 ]]
 
 -- Makes a player join team1 if there arent too many already
-function joinTeam1( source ) 
+function joinTeam1( source )
 	if (countPlayersInTeam(team1) - countPlayersInTeam(team2) > options.teamBalance - 1) then
 		showTextForPlayer ( source, 2000, 255, 0, 0, 1.4, 0.62, "Can't join "..team1Name.." (too many players)" )
 	else
@@ -741,18 +741,18 @@ function joinTeam2( source )
 end
 -- Makes a player join the given team
 function joinTeam( player, team )
-	
+
 	unbindKey ( player, "F1", "down", joinTeam1 )
 	unbindKey ( player, "F2", "down", joinTeam2 )
 	toggleSelectTeamDisplay(player, false)
 	setPlayerTeam(player, team)
-	
+
 	textDisplayRemoveObserver( team1Display, player )
 	textDisplayRemoveObserver( team2Display, player )
-	
+
 	if (team == team1) then textDisplayAddObserver( team1Display, player ) end
 	if (team == team2) then textDisplayAddObserver( team2Display, player ) end
-	
+
 	if (waiting ~= true) then spawnPlayerTeam(player) else waitForStart(player) end
 end
 -- Spawns a player at the right spot (based on the team he is in)
@@ -777,27 +777,27 @@ function spawnPlayerTeam( player )
 		outputDebugString("Can't spawn player '"..getPlayerName(player).."' (no team)",2)
 		return
 	end
-	
+
 	setElementDataLocal( player, "lastSpawnarea", spawnpoint)
-	
+
 	local x = spawnpoint.posX
 	local y = spawnpoint.posY
 	local z = spawnpoint.posZ
-	
+
 	if (x == nil or y == nil or z == nil) then
 		outputChatBox("Invalid checkpoint")
 	end
-	
+
 	--outputChatBox(x.." "..y.." "..z)
-	
+
 	local skins = spawnpoint.skins
 	local skin = getRandomSkin(skins)
-	
+
 	local sizeX = tonumber(spawnpoint.sizeX)
 	local sizeY = tonumber(spawnpoint.sizeY)
 	if (sizeX < 1) then sizeX = 1 end
 	if (sizeY < 1) then sizeY = 1 end
-	
+
 	local newX = x
 	local newY = y
 	if (spawnpoint.shape == "rectangle") then
@@ -810,7 +810,7 @@ function spawnPlayerTeam( player )
 		newX = x + math.cos(math.rad(angle)) * distance
 		newY = y + math.sin(math.rad(angle)) * distance
 	end
-	
+
 	if (spawnPlayer( player, newX, newY, z + 1, 0, skin ) == false) then
 		outputConsole("Failed to spawn player '"..getPlayerName(player).."'")
 	end
@@ -824,7 +824,7 @@ function getSpawnpoint(spawngroupsTable)
 		--outputChatBox("req: "..v.req)
 		if (checkRequired(v.req) == true) then
 			spawngroup = v
-			
+
 		end
 	end
 	spawnarea = spawngroup.spawnarea
@@ -864,7 +864,7 @@ end
 function forcedRespawn()
 	local players = getElementsByType("player")
 	for k,v in ipairs(players) do
-		if (getPlayerTeam(v) ~= false) then 
+		if (getPlayerTeam(v) ~= false) then
 			spawnPlayerTeam(v)
 		end
 	end
@@ -895,7 +895,7 @@ end
 
 function onPlayerWasted( ammo, attacker, weapon, bodypart )
 	destroyBlipsAttachedTo(source)
-	
+
 	if (noMapLoaded == false) then
 		if (getElementDataLocal( source, "dontRespawn" ) == true) then
 			setElementDataLocal( source, "dontRespawn", false )
@@ -916,7 +916,7 @@ end
 function selectTeam( player )
 	if (isPedInVehicle( player )) then
 		removePedFromVehicle( player ) end
-	
+
 	if (isPedDead(player) == false) then
 		setElementDataLocal( player, "dontRespawn", true )
 		killPed( player )
@@ -971,7 +971,7 @@ function onPlayerJoin ()
 	triggerClientEvent2( source, "assaultCreateGui", options )
 	textDisplayAddObserver( statusDisplay, source )
 	setElementData(source, "score", 0)
-	showPlayerHudComponent( source, "money", false )
+	setPlayerHudComponentVisible( source, "money", false )
 	if (noMapLoaded == true) then
 		setNoMapLoaded( source, true )
 	else
@@ -1026,7 +1026,7 @@ Vehicle respawn
 ####
 ]]
 function respawnAllVehicles()
-	
+
 	if (respawnVehicleTimers ~= nil) then
 		for k,v in ipairs(respawnVehicleTimers) do
 			stopVehicleRespawnTimer(v)
@@ -1049,7 +1049,7 @@ function respawnVehicle(vehicle)
 	rotY = getElementData(vehicle,"rotY")
 	rotZ = getElementData(vehicle,"rotZ")
 	spawnVehicle ( vehicle, posX, posY, posZ, rotX, rotY, rotZ )
-	
+
 end
 
 function onVehicleExit()
@@ -1136,25 +1136,25 @@ function calcTime ( timeLeft )
 	local timeHours = 0
 	local timeMins = 0
 	local timeSecs = 0
-	
+
 	timeLeft = tonumber(timeLeft)
 	--outputDebugString ( "timeLeft = " .. timeLeft )
-	
+
 	timeSecs = math.mod(timeLeft, 60)
 	--outputDebugString ( "timeSeconds = " .. timeSecs )
-	
+
 	timeMins = math.mod((timeLeft / 60), 60)
 	--outputDebugString ( "timeMins = " .. timeMins )
-	
+
 	timeHours = (timeLeft / 3600)
 	--outputDebugString ( "timeHours = " .. timeHours )
-	
+
 	if ( timeHours >= 1 ) then
 		--outputDebugString ( "Time hours is above or equal too 1" )
 		calcString = string.format("%02d:", timeHours)
 	end
 	calcString = calcString .. string.format("%02d:%02d", timeMins, timeSecs)
-	
+
 	--outputDebugString ( "calcString = " .. calcString )
 	return calcString
 end
@@ -1211,10 +1211,10 @@ function readOptions( startedMap )
 	options = {}
 	status = {}
 	errors = {}
-	
+
 	mapRoot = getResourceRootElement(startedMap)
 	options.name = getResourceName(startedMap)
-	
+
 	objectives = getElementsByType("objective",mapRoot)
 	options.objective = {}
 	for k,v in ipairs(objectives) do
@@ -1238,23 +1238,23 @@ function readOptions( startedMap )
 		options.objective[k].captureType = getElementData2(v,"captureType",false,"foot")
 		options.objective[k].defenderDescription = getElementData2(v,"defenderDescription",false,"")
 		options.objective[k].successTextForDefender = getElementData2(v,"successTextForDefender",false,"")
-		
+
 		options.objective[k].reached = false
 		status[options.objective[k].id] = {}
 		status[options.objective[k].id].reached = false
 		status[options.objective[k].id].key = k
 		status[options.objective[k].id].count = 0
 	end
-	
+
 	spawngroups = getElementsByType("spawngroup",mapRoot)
-	
+
 	options.spawngroup = {}
 	options.spawngroup.attacker = {}
 	options.spawngroup.defender = {}
 	local count = {}
 	count.attacker = 0
 	count.defender = 0
-	
+
 	for k,v in ipairs(spawngroups) do
 		local spawnType = getElementData2(v,"type",true)
 		if (spawnType ~= "attacker" and spawnType ~= "defender") then return false end
@@ -1302,9 +1302,9 @@ function readOptions( startedMap )
 			weaponsForThisGroup[key] = temp
 		end
 		local weaponsForThisGroupString = table.concat(weaponsForThisGroup,";")
-		
+
 		--outputDebugString("Weapons: "..tostring(weaponsForThisGroupString).." Skins: "..tostring(skinsForThisGroupString))
-		
+
 		for key,value in ipairs(spawnarea) do
 			if (value.skins == "0") then
 				spawnarea[key].skins = skinsForThisGroupString
@@ -1317,12 +1317,12 @@ function readOptions( startedMap )
 		end
 		options.spawngroup[spawnType][count[spawnType]].spawnarea = spawnarea
 	end
-	
+
 	local assaultSettingsNodeTable = getElementsByType("assaultSettings", mapRoot)
 	local assaultSettingsNode = assaultSettingsNodeTable[1]
-	
+
 	local cameras = getElementsByType("camera", mapRoot)
-	
+
 	options.camera = {}
 	for k,v in ipairs(cameras) do
 		local cameraType = getElementData(v,"type")
@@ -1334,26 +1334,26 @@ function readOptions( startedMap )
 		options.camera[cameraType].targetY = getElementData2(v,"targetY",true)
 		options.camera[cameraType].targetZ = getElementData2(v,"targetZ",true)
 	end
-	
-	if (options.camera.spawn == nil) then 
+
+	if (options.camera.spawn == nil) then
 		errors[#errors+1] = "Required camera element of type 'spawn' not found"
 	end
-	if (options.camera.selectTeam == nil) then 
+	if (options.camera.selectTeam == nil) then
 		errors[#errors+1] = "Required camera element of type 'selectTeam' not found"
 	end
-	if (options.camera.finish == nil) then 
+	if (options.camera.finish == nil) then
 		errors[#errors+1] = "Required camera element of type 'finish' not found"
 	end
 
 	local startedMapName = getResourceName(startedMap)
-	
+
 	-- Assault specific settings
 	options.teamBalance = tonumber(getFromSettings(nil,"teamBalance","1"))
 	if (options.teamBalance < 1) then
 		options.teamBalance = 1
 		outputDebugString("Assault: Changed teamBalance setting to '1' because of invalid value.")
 	end
-	
+
 	-- Map specific settings
 	options.time = getElementData2(assaultSettingsNode,"time", false, "12:00")
 	options.time = getFromSettings(startedMapName,"time",options.time)
@@ -1378,13 +1378,13 @@ function readOptions( startedMap )
 	options.conqueredMessage = getFromSettings(startedMapName,"conqueredMessage",options.conqueredMessage)
 	options.defendedMessage = getElementData2(assaultSettingsNode, "defendedMessage", false, "defended the base")
 	options.defendedMessage = getFromSettings(startedMapName,"defendedMessage",options.defendedMessage)
-	
+
 	options.finishObjective = getElementData2(assaultSettingsNode, "finishObjective", false, "")
 	options.finishObjective = getFromSettings(startedMapName,"finishObjective",options.finishObjective)
-	
+
 	options.finishType = getElementData2(assaultSettingsNode, "finishType", false, "")
 	options.finishType = getFromSettings(startedMapName,"finishType",options.finishType)
-	
+
 	if (options.finishObjective == "") then
 		-- finishType should be "all"
 		if (options.finishType == "objective") then
@@ -1396,9 +1396,9 @@ function readOptions( startedMap )
 		-- if finishType is not "all" and finishObjective is not "", then it has to be "objective"
 		options.finishType = "objective"
 	end
-	
+
 	--outputConsole(options.finishType.." "..options.finishObjective)
-	
+
 	local noError = true
 	for k,v in ipairs(errors) do
 		noError = false
@@ -1423,7 +1423,7 @@ function getElementData2( element, item, required, default )
 			return default
 		end
 	end
-	
+
 	return data
 end
 
@@ -1469,12 +1469,12 @@ function selectTeamCreateDisplay()
 	local stext2 = textCreateTextItem ( "Press F1 to spawn " ..team1Name.. "", 0.501, 0.501, "low", 0, 0, 0, 255, 1.4, "center" )
 	local stext3 = textCreateTextItem ( "Press F2 to spawn " ..team2Name.. "", 0.501, 0.551, "low", 0, 0, 0, 255, 1.4, "center" )
 	local stext4 = textCreateTextItem ( "Press F3 to return to the spawn screen", 0.501, 0.601, "low", 0, 0, 0, 255, 1.4, "center" )
-	local stext5 = textCreateTextItem ( "Press F9 for help", 0.501, 0.651, "low", 0, 0, 0, 255, 1.4, "center" ) 
+	local stext5 = textCreateTextItem ( "Press F9 for help", 0.501, 0.651, "low", 0, 0, 0, 255, 1.4, "center" )
 	local text = textCreateTextItem ( "Select your spawn", 0.5, 0.3, "low", 255, 255, 255, 255, 2, "center" )
 	local text2 = textCreateTextItem ( "Press F1 to spawn " ..team1Name.. "", 0.5, 0.5, "low", 255, 255, 255, 255, 1.4, "center" )
 	local text3 = textCreateTextItem ( "Press F2 to spawn " ..team2Name.. "", 0.5, 0.55, "low", 255, 255, 255, 255, 1.4, "center" )
 	local text4 = textCreateTextItem ( "Press F3 to return to the spawn screen", 0.5, 0.6, "low", 255, 255, 255, 255, 1.4, "center" )
-	local text5 = textCreateTextItem ( "Press F9 for help", 0.5, 0.65, "low", 255, 255, 255, 255, 1.4, "center" ) 
+	local text5 = textCreateTextItem ( "Press F9 for help", 0.5, 0.65, "low", 255, 255, 255, 255, 1.4, "center" )
 	textDisplayAddText ( selectTeamDisplay, stext )
 	textDisplayAddText ( selectTeamDisplay, stext2 )
 	textDisplayAddText ( selectTeamDisplay, stext3 )
@@ -1491,16 +1491,16 @@ function waitingCreateDisplay()
 	waitingDisplay = textCreateDisplay()
 	local stext = textCreateTextItem("Waiting for the round to begin..",0.501,0.701,"low",0,0,0,255,1.4, "center")
 	local text = textCreateTextItem("Waiting for the round to begin..",0.5,0.7,"low",255,255,255,255,1.4, "center")
-	
+
 	textDisplayAddText(waitingDisplay,stext)
 	textDisplayAddText(waitingDisplay,text)
-	
+
 	waitingDisplay2 = textCreateDisplay()
 	waitingText2 = textCreateTextItem("text",0.5,0.5,"low",255,255,255,255,2, "center")
 	waitingText2_2 = textCreateTextItem("text",0.501,0.501,"low",0,0,0,255,2, "center")
 	textDisplayAddText(waitingDisplay2, waitingText2_2)
 	textDisplayAddText(waitingDisplay2, waitingText2)
-	
+
 	noMapLoadedDisplay = textCreateDisplay()
 	local stext = textCreateTextItem("Assault: No map loaded..",0.501,0.701,"low",0,0,0,255,1.4, "center")
 	local text = textCreateTextItem("Assault: No map loaded..",0.5,0.7,"low",255,255,255,255,1.4, "center")

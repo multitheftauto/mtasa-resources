@@ -25,23 +25,23 @@ function sfxBrowser:constructor()
 	self.m_GUI.playButton = guiCreateButton(103, 368, 127, 34, "Play", false, self.m_GUI.window)
 	self.m_GUI.soundProgress = guiCreateProgressBar(240, 370, 359, 32, false, self.m_GUI.window)
 	self.m_GUI.closeButton = guiCreateButton(580, 20, 19, 19, "X", false, self.m_GUI.window)
-	
+
 	-- Setup gridlist columns
 	guiGridListAddColumn(self.m_GUI.containerGrid, "Container", 0.8)
 	guiGridListAddColumn(self.m_GUI.bankGrid, "Banks", 0.15)
 	guiGridListAddColumn(self.m_GUI.bankGrid, "Description", 0.8)
 	guiGridListAddColumn(self.m_GUI.sfxGrid, "SFX", 1.0)
-	
+
 	guiGridListSetSortingEnabled(self.m_GUI.bankGrid, false)
 	guiGridListSetSortingEnabled(self.m_GUI.sfxGrid, false)
 	guiWindowSetSizable(self.m_GUI.window, false)
 	guiEditSetReadOnly(self.m_GUI.luaEdit, true)
-	
+
 	for containerName in pairs(self.ms_Data) do
 		local row = guiGridListAddRow(self.m_GUI.containerGrid)
 		guiGridListSetItemText(self.m_GUI.containerGrid, row, 1, containerName, false, false)
 	end
-	
+
 	guiSetVisible(self.m_GUI.window, false)
 	addEventHandler("onClientGUIClick", self.m_GUI.playButton, function(...) self:playButton_Click(...) end, false)
 	addEventHandler("onClientGUIClick", self.m_GUI.containerGrid, function(...) self:containerGrid_Click(...) end, false)
@@ -58,7 +58,7 @@ end
 
 function sfxBrowser:close()
 	guiSetVisible(self.m_GUI.window, false)
-	
+
 	-- Stop currently playing sounds
 	if self.m_Sound and isElement(self.m_Sound) then
 		destroyElement(self.m_Sound)
@@ -86,31 +86,31 @@ function sfxBrowser:playCurrent()
 	if self.m_Sound and isElement(self.m_Sound) then
 		destroyElement(self.m_Sound)
 	end
-	
+
 	if not self.m_CurrentContainer or not self.m_CurrentBank or not self.m_CurrentSFX then
 		outputChatBox("Please select a sound first!", 255, 0, 0)
 		return false
 	end
-	
+
 	self.m_Sound = playSFX(self.m_CurrentContainer, self.m_CurrentBank, self.m_CurrentSFX, guiCheckBoxGetSelected(self.m_GUI.loopedCheck))
 	if not self.m_Sound then
 		outputChatBox("Some audio files are missing! Please check your GTASA\Audio\SFX\ folder!", 255, 0, 0)
 		return false
 	end
-	
+
 	-- Reset progressbar and its timer
 	guiProgressBarSetProgress(self.m_GUI.soundProgress, 0)
 	if self.m_ProgressTimer and isTimer(self.m_ProgressTimer) then
 		killTimer(self.m_ProgressTimer)
 	end
-	
+
 	self.m_ProgressTimer = setTimer(
 		function()
 			if self:isSoundEnded() then
 				killTimer(self.m_ProgressTimer)
 				return
 			end
-			
+
 			local progress = getSoundPosition(self.m_Sound)/getSoundLength(self.m_Sound)*100
 			guiProgressBarSetProgress(self.m_GUI.soundProgress, progress)
 			if progress >= 100 then
@@ -134,18 +134,18 @@ function sfxBrowser:containerGrid_Click(button, state)
 	if not (button == "left" and state == "up") then
 		return
 	end
-	
+
 	local selectedText = guiGridListGetItemText(self.m_GUI.containerGrid, guiGridListGetSelectedItem(self.m_GUI.containerGrid), 1)
 	if selectedText == "" then
 		return
 	end
-	
+
 	-- List sound banks
 	local containerData = self.ms_Data[selectedText]
 	if not containerData then
 		return
 	end
-	
+
 	guiGridListClear(self.m_GUI.bankGrid)
 	guiGridListClear(self.m_GUI.sfxGrid)
 	for bankNum, bankData in ipairs(containerData) do
@@ -153,7 +153,7 @@ function sfxBrowser:containerGrid_Click(button, state)
 		guiGridListSetItemText(self.m_GUI.bankGrid, row, 1, bankData.num, false, true)
 		guiGridListSetItemText(self.m_GUI.bankGrid, row, 2, bankData.desc, false, false)
 	end
-	
+
 	self.m_CurrentContainer = selectedText
 	self:updateLuacode()
 end
@@ -162,19 +162,19 @@ function sfxBrowser:bankGrid_Click(button, state)
 	if not (button == "left" and state == "up") then
 		return
 	end
-	
+
 	local selectedRow = guiGridListGetSelectedItem(self.m_GUI.bankGrid) -- rowData? might be better
 	if selectedRow == -1 then
 		return
 	end
-	
+
 	if not self.m_CurrentContainer then
 		return
 	end
-	
+
 	self.m_CurrentBank = selectedRow
 	self:updateLuacode()
-	
+
 	-- List sound IDs
 	guiGridListClear(self.m_GUI.sfxGrid)
 	local numSounds = self.ms_Data[self.m_CurrentContainer][self.m_CurrentBank+1].num
@@ -188,12 +188,12 @@ function sfxBrowser:sfxGrid_Click(button, state)
 	if not (button == "left" and state == "up") then
 		return
 	end
-	
+
 	local selectedRow = guiGridListGetSelectedItem(self.m_GUI.sfxGrid)
 	if selectedRow == -1 then
 		return
 	end
-	
+
 	self.m_CurrentSFX = selectedRow
 	self:updateLuacode()
 end
@@ -202,12 +202,12 @@ function sfxBrowser:sfxGrid_DoubleClick(button, state)
 	if not (button == "left" and state == "up") then
 		return
 	end
-	
+
 	local selectedRow = guiGridListGetSelectedItem(self.m_GUI.sfxGrid)
 	if selectedRow == -1 then
 		return
 	end
-	
+
 	self.m_CurrentSFX = selectedRow
 	self:playCurrent()
 end

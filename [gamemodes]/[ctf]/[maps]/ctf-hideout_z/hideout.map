@@ -15,7 +15,7 @@
       <flag name="Blue Flag" posX="595.84381103516" posY="-548.07659912109" posZ="125.40620422363"/>
       <spawnpoint posX="600.20202636719" posY="-516.13201904297" posZ="126.37656402588" rot="90" randx="5" randy="3" randz="0" skin="274"/>
    </team>
-   
+
     <object id="object (bonaplazagr_LAn) (1)" dimension="0" interior="0" model="3989" posX="450.0126953125" posY="-505.36889648438" posZ="119.89617156982" rotX="0" rotY="0" rotZ="0" />
     <object id="object (LAriverSec5b_LAn) (1)" dimension="0" interior="0" model="4029" posX="433.5517578125" posY="-598.69543457031" posZ="119.89615631104" rotX="0" rotY="0" rotZ="0" />
     <object id="object (LAriverSec5b_LAn) (2)" dimension="0" interior="0" model="4029" posX="531.81982421875" posY="-641.28515625" posZ="119.89665222168" rotX="0" rotY="0" rotZ="180" />
@@ -88,7 +88,7 @@
     <object id="object (sky4plaz2_LAn) (2)" dimension="0" interior="0" model="4603" posX="474.462890625" posY="-446.650390625" posZ="132.19592285156" rotX="0" rotY="0" rotZ="179.92266845703" />
     <object id="object (stolenbuilds11) (2)" dimension="0" interior="0" model="4572" posX="410.9755859375" posY="-469.27905273438" posZ="136.12930297852" rotX="0" rotY="0" rotZ="87.421691894531" />
     <object id="object (ballys02_lvs) (3)" dimension="0" interior="0" model="8392" posX="612.1005859375" posY="-423.30297851563" posZ="153.52226257324" rotX="0" rotY="0" rotZ="89.999969482422" />
-	
+
 	<Zombie_spawn posX="588.54071044922" posY="-621.59490966797" posZ="125.72838592529" rotZ="0" />
     <Zombie_spawn posX="579.53894042969" posY="-613.39697265625" posZ="125.60388183594" rotZ="0" />
     <Zombie_spawn posX="519.98217773438" posY="-580.47973632813" posZ="125.57839202881" rotZ="210.44999694824" />

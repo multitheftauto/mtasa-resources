@@ -1,4 +1,4 @@
-﻿local function getStringFromColor( R, G, B, A )
+local function getStringFromColor( R, G, B, A )
 	if R and G and B then
 		A = A or 255
 		return "#"..string.format("%02x",R)..string.format("%02x",G)..string.format("%02x",B)..string.format("%02x",A)
@@ -20,9 +20,9 @@ propertyGetters = {
 		scale = getObjectScale,
 		breakable = function(element)
 			local breakable = getElementData(element,"breakable")
-			if breakable =="true" or breakable == false then 
+			if breakable =="true" or breakable == false then
 				return "true"
-			else 
+			else
 				return "false"
 			end
 		end,
@@ -51,6 +51,9 @@ propertyGetters = {
 		end,
 		upgrades = getVehicleUpgrades,
 		plate = getVehiclePlateText,
+		sirens = function(vehicle)
+				return getVehicleSirensOn(vehicle) and "true" or "false"
+			end,
 		paintjob = function(vehicle) return tostring(getVehiclePaintjob(vehicle)) end,
 	},
 	marker = {
@@ -129,8 +132,8 @@ propertySetters = {
 				return setElementData(element,"doublesided",bon=="true" and "true" or "false")
 			end
 		end,
-		scale = function(element, scale) 
-			if ( scale ) then 
+		scale = function(element, scale)
+			if ( scale ) then
 				return setObjectScale(element, scale)
 			end
 			return false
@@ -150,7 +153,7 @@ propertySetters = {
 				local colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], otherColors[7], otherColors[8], otherColors[9], otherColors[10], otherColors[11], otherColors[12])
-			else 
+			else
 				return false
 			end
 		end,
@@ -159,7 +162,7 @@ propertySetters = {
 				local colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, otherColors[1], otherColors[2], otherColors[3], colorsTable[1], colorsTable[2], colorsTable[3], otherColors[7], otherColors[8], otherColors[9], otherColors[10], otherColors[11], otherColors[12])
-			else 
+			else
 				return false
 			end
 		end,
@@ -168,7 +171,7 @@ propertySetters = {
 				local colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], colorsTable[1], colorsTable[2], colorsTable[3], otherColors[10], otherColors[11], otherColors[12])
-			else 
+			else
 				return false
 			end
 		end,
@@ -177,7 +180,7 @@ propertySetters = {
 				local colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], otherColors[7], otherColors[8], otherColors[9], colorsTable[1], colorsTable[2], colorsTable[3])
-			else 
+			else
 				return false
 			end
 		end,
@@ -193,7 +196,11 @@ propertySetters = {
 			end
 			return true
 		end,
-		paintjob = setVehiclePaintjob
+		paintjob = setVehiclePaintjob,
+		plate = setVehiclePlateText,
+		sirens = function(vehicle, bon)
+			return setVehicleSirensOn(vehicle, bon == "true" and true or false)
+		end
 	},
 	marker = {
 		type = setMarkerType,

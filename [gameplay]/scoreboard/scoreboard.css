@@ -5,13 +5,13 @@ body {
 pre {text-indent: 30px}
 
 #toparea {
-	position: absolute; 
-	top:0px; 
-	right:0px; 
-	left:0px; 
-	height:23px; 
-	background:#555555; 
-	color:#FFFFFF; 
+	position: absolute;
+	top:0px;
+	right:0px;
+	left:0px;
+	height:23px;
+	background:#555555;
+	color:#FFFFFF;
 	padding:7px;
 }
 

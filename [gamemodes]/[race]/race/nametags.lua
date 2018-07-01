@@ -1,4 +1,4 @@
-﻿nametag = {}
+nametag = {}
 local nametags = {}
 local g_screenX,g_screenY = guiGetScreenSize()
 local bHideNametags = false
@@ -15,7 +15,7 @@ local NAMETAG_TEXTSIZE = 0.7
 local NAMETAG_OUTLINE_THICKNESS = 1.2
 --
 local NAMETAG_ALPHA_DIFF = NAMETAG_DISTANCE - NAMETAG_ALPHA_DISTANCE
-NAMETAG_SCALE = 1/NAMETAG_SCALE * 800 / g_screenY 
+NAMETAG_SCALE = 1/NAMETAG_SCALE * 800 / g_screenY
 
 -- Ensure the name tag doesn't get too big
 local maxScaleCurve = { {0, 0}, {3, 3}, {13, 5} }
@@ -47,7 +47,7 @@ addEventHandler ( "onClientRender", g_Root,
 			return
 		end
 		local x,y,z = getCameraMatrix()
-		for player in pairs(nametags) do 
+		for player in pairs(nametags) do
 			while true do
 				if not isPedInVehicle(player) or isPedDead(player) then break end
 				local vehicle = getPedOccupiedVehicle(player)
@@ -78,24 +78,24 @@ addEventHandler ( "onClientRender", g_Root,
 					drawY = sy + offset
 					local width,height =  NAMETAG_WIDTH*scale, NAMETAG_HEIGHT*scale
 					dxDrawRectangle ( drawX, drawY, width, height, tocolor(0,0,0,alpha) )
-					--Next the inner background 
+					--Next the inner background
 					local health = getElementHealth(vehicle)
 					health = math.max(health - 250, 0)/750
 					local p = -510*(health^2)
 					local r,g = math.max(math.min(p + 255*health + 255, 255), 0), math.max(math.min(p + 765*health, 255), 0)
-					dxDrawRectangle ( 	drawX + outlineThickness, 
-										drawY + outlineThickness, 
-										width - outlineThickness*2, 
-										height - outlineThickness*2, 
-										tocolor(r,g,0,0.4*alpha) 
+					dxDrawRectangle ( 	drawX + outlineThickness,
+										drawY + outlineThickness,
+										width - outlineThickness*2,
+										height - outlineThickness*2,
+										tocolor(r,g,0,0.4*alpha)
 									)
 					--Finally, the actual health
-					dxDrawRectangle ( 	drawX + outlineThickness, 
-										drawY + outlineThickness, 
-										health*(width - outlineThickness*2), 
-										height - outlineThickness*2, 
-										tocolor(r,g,0,alpha) 
-									)			
+					dxDrawRectangle ( 	drawX + outlineThickness,
+										drawY + outlineThickness,
+										health*(width - outlineThickness*2),
+										height - outlineThickness*2,
+										tocolor(r,g,0,alpha)
+									)
 				end
 				break
 			end

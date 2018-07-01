@@ -1,4 +1,4 @@
-﻿local activePoll
+local activePoll
 
 local pollTimer
 local defaultConfig = {}
@@ -30,7 +30,7 @@ function startPoll(pollData)
 	if activePoll then
 		return false, errorCode.pollAlreadyRunning
 	end
-	
+
 	--check there's at least two options
 	if #pollData < 2 then
 		return false, errorCode.lessThanTwoOptions
@@ -38,12 +38,12 @@ function startPoll(pollData)
 
 	--save this incase a random item needs to be selected after this poll has finished
 	setCurrentPollSize( #pollData )
-	
+
 	--check there's a title
 	if type(pollData.title) ~= "string" then
 		return false, errorCode.invalidTitle
 	end
-	
+
 	--check timeout's not invalid
 	if type(pollData.timeout) ~= "number" or pollData.timeout < 0 then
 		pollData.timeout = defaultConfig.timeout
@@ -85,18 +85,18 @@ function startPoll(pollData)
 	else
 		return false, errorCode.invalidVisibleTo
 	end
-	
+
 	--check that there's at least one voter
 	if playerAmount < 1 then
 		return false, errorCode.noVoters
 	end
-	
+
 	--fire the poll start event, and stop here if it was cancelled
 	local result = triggerEvent("onPollStart", thisResourceRoot)
 	if result == false then
 		return false, errorCode.startCancelled
 	end
-	
+
 	outputServerLogMaybe( string.format("Vote started '%s'", pollData.title) )
 
 	pollData.playersWhoVoted = 0
@@ -105,11 +105,11 @@ function startPoll(pollData)
 	pollData.allowedPlayers = allowedPlayers
 	--set as first nomination if it is
 	pollData.nomination = pollData.nomination or 1
-	
+
 	--set as the current active poll
 	activePoll = pollData
 	activePoll.finishesAt = getTickCount() + activePoll.timeout * 1000
-	
+
 	--create the poll tables that will be sent to the clients
 	activePoll.clientData = {
 		title=activePoll.title,
@@ -141,18 +141,18 @@ function stopPoll()
 	if not activePoll then
 		return false, errorCode.noPollRunning
 	end
-	
+
 	--fire the poll stop event, and stop here if it was cancelled
 	local result = triggerEvent("onPollStop", thisResourceRoot)
 	if result == false then
 		return false, errorCode.stopCancelled
 	end
-	
+
 	--send the signal to all viewers
 	for player in pairs(activePoll.allowedPlayers) do
 		triggerClientEvent(player, "doStopPoll", rootElement)
 	end
-	
+
 	--unload the poll
 	activePoll = nil
 	if pollTimer then
@@ -206,12 +206,12 @@ function endPoll(chosenOption)
 		killTimer(pollTimer)
 		pollTimer = nil
 	end
-	
+
 	--stop client polls
 	for player in pairs(activePoll.allowedPlayers) do
 		triggerClientEvent(player, "doStopPoll", rootElement)
 	end
-	
+
 	--if any option was elected, finish
 	if chosenOption then
 		return applyPollResults(chosenOption)
@@ -307,7 +307,7 @@ function applyPollResults(chosenOption)
 
 	if result == true then
 		outputVoteManager("Vote ended! ["..optionTable[1].."]",rootElement)
-		
+
 		local optionExecutorType = type(optionTable[2])
 		if optionExecutorType == "function" then --it is a function
 			optionTable[2](unpack(optionTable,3))
@@ -337,36 +337,36 @@ addEventHandler("onClientSendVote", rootElement,
 		if not (activePoll[voteID] or voteID == -1) then
 			return false
 		end
-		
+
 		local previousVote = activePoll.votedOption[getPlayerUserNameSafe(client)]
-		
+
 		--check if player wants to cancel his non-existing vote
 		if voteID == -1 and not previousVote then
 			return
 		end
-        
+
         --check if player wants to change to his previous vote
         if previousVote and voteID == previousVote then
 			return
 		end
-        
+
 		--check if he just wants to cancel his vote
 		if voteID == -1 and previousVote then
 			if not activePoll.allowchange then
 				outputVoteManager("You are not allowed to cancel your vote.",client)
 				return false
 			end
-			
+
 			if get("log_votes") then
 				outputServerLog(getPlayerName(client).." cancelled his vote, was "..previousVote.." ("..activePoll[previousVote][1]..")")
 			end
-		
+
 			activePoll.votedOption[getPlayerUserNameSafe(client)] = nil
 			activePoll.playersWhoVoted = activePoll.playersWhoVoted - 1
 			activePoll[previousVote].votes = activePoll[previousVote].votes - 1
 			return
 		end
-		
+
 		--else, check if he can change his vote
 		if previousVote then
 			if not activePoll.allowchange then
@@ -384,7 +384,7 @@ addEventHandler("onClientSendVote", rootElement,
 			end
 			activePoll[voteID].votes = activePoll[voteID].votes + 1
 		end
-		
+
 		activePoll.playersWhoVoted = activePoll.playersWhoVoted + 1
 		activePoll.votedOption[getPlayerUserNameSafe(client)] = voteID
 

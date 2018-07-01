@@ -1,4 +1,4 @@
-﻿local interface_mt = {
+local interface_mt = {
 	__index = function(t, k)
 		t[k] = function(...) return call(t.res, k, ...) end
 		return t[k]

@@ -1,4 +1,4 @@
-﻿--
+--
 -- racewar_server.lua
 --
 
@@ -536,8 +536,8 @@ function Racewar.updateChooseTeamDisplay()
 		chooseTeamLines[4] = textCreateTextItem ( 'Press 2 to join B',				x, y+0.149, 'low', 255, 255, 255, 255, 1.4, 'center' )
 		chooseTeamLines[5] = textCreateTextItem ( 'Press 3 to join C',				x, y+0.178, 'low', 255, 255, 255, 255, 1.4, 'center' )
 		chooseTeamLines[6] = textCreateTextItem ( 'Press F3 not to join a team',	x, y+0.209, 'low', 200, 200, 200, 255, 1.4, 'center' )
-		chooseTeamLines[7] = textCreateTextItem ( 'Press F3 to change team later',		x, y+0.239, 'low', 200, 200, 0, 255, 1.4, 'center' ) 
-		chooseTeamLines[8] = textCreateTextItem ( 'Press F9 for help',				x, y+0.269, 'low', 200, 200, 0, 255, 1.4, 'center' ) 
+		chooseTeamLines[7] = textCreateTextItem ( 'Press F3 to change team later',		x, y+0.239, 'low', 200, 200, 0, 255, 1.4, 'center' )
+		chooseTeamLines[8] = textCreateTextItem ( 'Press F9 for help',				x, y+0.269, 'low', 200, 200, 0, 255, 1.4, 'center' )
 		for i,line in ipairs(chooseTeamLines) do
 			textDisplayAddText ( chooseTeamDisplay, line )
 		end

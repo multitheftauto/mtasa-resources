@@ -141,7 +141,7 @@ InitUI ( )
 function scrollFunc(scrolled)
 	local veh = getPedOccupiedVehicle ( getLocalPlayer() )
 	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
-	if ( selectedItem ~= nil and selectedItem ~= false and selectedItem > 0 and veh ~= false ) then 
+	if ( selectedItem ~= nil and selectedItem ~= false and selectedItem > 0 and veh ~= false ) then
 		if ( scrolled == sirensX ) then
 			local sirensTable = getVehicleSirens(veh)
 			sirensTable[selectedItem].x = ( guiScrollBarGetScrollPosition ( scrolled ) / 10 ) - 5
@@ -235,7 +235,7 @@ addEventHandler("onClientGUIClick", root, btnFunc)
 function PickedBeaconStuff ( element, hex, red, green, blue )
 	local veh = getPedOccupiedVehicle ( getLocalPlayer() )
 	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
-	if ( selectedItem ~= nil and selectedItem ~= false and selectedItem > 0 and veh ~= false ) then 
+	if ( selectedItem ~= nil and selectedItem ~= false and selectedItem > 0 and veh ~= false ) then
 		local sirensTable = getVehicleSirens(veh)
 		sirensTable[selectedItem].Red = red
 		sirensTable[selectedItem].Green = green
@@ -282,7 +282,7 @@ end
 
 function test ( button, state, l, f, x, y, z, element )
 	local veh = getPedOccupiedVehicle ( getLocalPlayer() )
-	if ( element == veh and veh ~= false and bSelecting == true ) then	
+	if ( element == veh and veh ~= false and bSelecting == true ) then
 		local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
 		local sirensTable = getVehicleSirens(veh)
 
@@ -293,7 +293,7 @@ function test ( button, state, l, f, x, y, z, element )
 		vehmat[1][4] = 0
 		vehmat[2][4] = 0
 		vehmat[3][4] = 0
-		vehmat[4][4] = 1	
+		vehmat[4][4] = 1
 		local vehmatInv = matrix.invert( vehmat )
 		local result = matTransformVector( vehmatInv, {x, y, z} )
 

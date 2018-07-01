@@ -1,4 +1,4 @@
-﻿addEvent "onControlPressed"
+addEvent "onControlPressed"
 addEvent "onEditorSuspended"
 addEvent "onEditorResumed"
 local rootElement = getRootElement()
@@ -22,7 +22,7 @@ function bindControl ( control, keyState, handlerFunction, ... )
 	if keyState == "up" or keyState == "both" then
 		keybinds[control] = keybinds[control] or {}
 		keybinds[control][hitState] = keybinds[control][hitState] or {}
-		keybinds[control][hitState][handlerFunction] = {...}	
+		keybinds[control][hitState][handlerFunction] = {...}
 	end
 	return true
 end

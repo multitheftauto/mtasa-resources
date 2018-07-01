@@ -1,4 +1,4 @@
-﻿local locations = {}
+local locations = {}
 local interiorsTable, bookmarksTable
 local bookmarksXML
 --functions
@@ -17,10 +17,10 @@ function createLocationsMenu()
 	--
 	locations.plist = guiCreateGridList ( 0.02, 0.02, 0.96, 0.96, true, locations.presetTab )
 	guiGridListAddColumn ( locations.plist, "Location names", 0.85 )
-	
+
 	guiCreateLabel ( 276, 85, 70, 17, "name:", false, locations.window )
 	locations.name = guiCreateEdit ( 353, 75, 245, 30, "", false, locations.window )
-	
+
 	guiCreateLabel ( 276, 140, 70, 17, "x position:", false, locations.window )
 	guiCreateLabel ( 276, 170, 70, 17, "y position:", false, locations.window )
 	guiCreateLabel ( 276, 200, 70, 17, "z position:", false, locations.window )
@@ -28,7 +28,7 @@ function createLocationsMenu()
 	locations.y = editingControl.number:create{["x"]=353,["y"]=159,["width"]=245,["height"]=30,["relative"]=false,["maxLength"]=30,["parent"]=locations.window }
 	locations.z = editingControl.number:create{["x"]=353,["y"]=189,["width"]=245,["height"]=30,["relative"]=false,["maxLength"]=30,["parent"]=locations.window }
 	guiCreateLabel ( 276, 246, 85, 17, "interior world:", false, locations.window )
-	
+
 	locations.world = editingControl.natural:create{["x"]=386,["y"]=237,["width"]=61,["height"]=30,["relative"]=false,["parent"]=locations.window }
 	locations.go = guiCreateButton ( 352, 290, 122, 26, "Go!", false, locations.window )
 	locations.dump = guiCreateButton ( 457, 237, 142, 30, "Dump current position", false, locations.window )
@@ -37,7 +37,7 @@ function createLocationsMenu()
 	guiGridListAddColumn ( locations.blist, "Location names", 0.85 )
 	locations.badd = guiCreateButton ( 0.02, 0.87, 0.47, 0.12, "Add", true, locations.bookmarksTab )
 	locations.brem = guiCreateButton ( 0.49, 0.87, 0.47, 0.12, "Remove", true, locations.bookmarksTab )
-	
+
 	---
 	addEventHandler ( "onClientGUIClick", locations.badd, addBookmark, false )
 	addEventHandler ( "onClientGUIClick", locations.brem, removeBookmark, false )
@@ -62,8 +62,8 @@ function createLocationsMenu()
 		xmlUnloadFile ( bookmarksXML )
 	end
 	bookmarksXML = xmlLoadFile ( "bookmarks.xml" )
-	if not bookmarksXML then 
-		bookmarksXML = xmlCreateFile ( "bookmarks.xml","bookmarks") 
+	if not bookmarksXML then
+		bookmarksXML = xmlCreateFile ( "bookmarks.xml","bookmarks")
 		local newNode = xmlCreateChild ( bookmarksXML, "location" )
 		xmlNodeSetAttribute ( newNode, "id", "Grove Street" )
 		xmlNodeSetAttribute ( newNode, "posX", 2483 )
@@ -72,7 +72,7 @@ function createLocationsMenu()
 		xmlNodeSetAttribute ( newNode, "world", 0 )
 	end
 	bookmarksTable = getLocationsTable ( bookmarksXML, "location" )
-	
+
 	newTable = {}
 	for k,v in orderedPairs(bookmarksTable) do
 		table.insert ( newTable, k )
@@ -105,9 +105,9 @@ function addBookmark ()
 		guiShowMessageBox ( 'No location name was specified!', "error", "Bad value", true )
 		return
 	end
-	if bookmarksTable[name] then 
+	if bookmarksTable[name] then
 		guiShowMessageBox ( 'A location of name "'..name..'" already exists!', "error", "Conflict", true )
-		return 
+		return
 	end
 	bookmarksTable[name] = {}
 	bookmarksTable[name].posX = x

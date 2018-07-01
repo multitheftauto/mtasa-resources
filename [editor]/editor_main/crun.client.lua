@@ -1,4 +1,4 @@
-﻿local rR, rG, rB = 100, 250, 250
+local rR, rG, rB = 100, 250, 250
 
 local function npack(...)
    return {_n=select('#',...);...}

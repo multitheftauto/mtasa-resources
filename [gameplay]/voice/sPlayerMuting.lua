@@ -1,4 +1,4 @@
-﻿if isVoiceEnabled() then
+if isVoiceEnabled() then
 	function setPlayerVoiceMuted ( player, muted )
 		if not checkValidPlayer ( player ) then return false end
 		muted = not not muted or nil
@@ -12,7 +12,7 @@
 	end
 
 	--Returns a list of players of which have muted the specified player
-	function getPlayerVoiceMutedByList ( player ) 
+	function getPlayerVoiceMutedByList ( player )
 		if not checkValidPlayer ( player ) then return false end
 		return tableToArray(mutedBy[player] or {})
 	end
@@ -22,7 +22,7 @@
 	end
 
 
-	function addPlayerMutedBy ()	
+	function addPlayerMutedBy ()
 		mutedBy[client] = mutedBy[client] or {}
 		mutedBy[client][source] = true
 		updateMuted ( client )
@@ -37,7 +37,7 @@
 		end
 	end
 	addEventHandler ( "voice_unmutePlayerForPlayer", root, removePlayerMutedBy )
-	
+
 	function addPlayerMutedByTable (players) --Single packet for multiple muted players
 		for i,player in ipairs(players) do
 			source = player
@@ -46,7 +46,7 @@
 	end
 	addEventHandler ( "voice_muteTableForPlayer", root, addPlayerMutedByTable )
 
-	addEventHandler ( "onPlayerQuit", root, 
+	addEventHandler ( "onPlayerQuit", root,
 		function()
 			mutedBy[source] = nil
 			globalMuted[source] = nil

@@ -1,6 +1,6 @@
 <map mod="deathmatch" auto_balance="on" friendly_fire="on">
    <settings respawnTime="4500" spawnScreen="on" blips="team"/>
-   
+
    <maplimit>
 	<point x="2681.6374511719" y="-1416.8560791016" />
 	<point x="2636.4367675781" y="-1429.6369628906" />
@@ -25,8 +25,8 @@
 	<point x="2640.0932617188" y="-1375.7423095703" />
 	<point x="2632.3393554688" y="-1445.5172119141" />
    </maplimit>
-   
-      
+
+
    <object name="object (1)" posX="2664.895996" posY="-1446.334229" posZ="15.246881" rotX="0" rotY="0" rotZ="-142.81219415488" model="972"/>
    <object name="object (5)" posX="2580.021240" posY="-1488.084595" posZ="26.915886" rotX="0" rotY="0" rotZ="96.093387427248" model="4730"/>
    <object name="object (6)" posX="2543.639648" posY="-1712.693726" posZ="16.386707" rotX="0" rotY="0" rotZ="-232.73488342435" model="8328"/>
@@ -87,7 +87,7 @@
    <object name="object (82)" posX="2583.491699" posY="-2030.213745" posZ="4.447030" rotX="0" rotY="0" rotZ="0" model="1684"/>
    <object name="Flag stand A" posX="2604.899902" posY="-1475.219116" posZ="13.720510" rotX="0" rotY="0" rotZ="0" model="3798"/>
    <object name="Flag stand B" posX="2581.160400" posY="-2170.699951" posZ="-3.183218" rotX="0" rotY="0" rotZ="0" model="3798"/>
-   
+
    <pickup name="Sniper rifle pickup" posX="2583.088867" posY="-1731.550781" posZ="8.898438" type="34" amount="25" respawn="10000"/>
    <pickup name="Sniper rifle pickup" posX="2582.699219" posY="-1931.676758" posZ="13.882813" type="34" amount="25" respawn="10000"/>
    <pickup name="Shotgun pickup" posX="2592.202637" posY="-1461.136475" posZ="20.411047" type="25" amount="25" respawn="10000"/>
@@ -100,7 +100,7 @@
    <pickup name="HP pickup" posX="2614.884277" posY="-1729.022949" posZ="6.742188" type="health" amount="100" respawn="20000"/>
    <pickup name="HP pickup" posX="2582.438965" posY="-1487.402344" posZ="24.500000" type="health" amount="100" respawn="20000"/>
    <pickup name="HP pickup" posX="2529.599365" posY="-1848.621948" posZ="3.561879" type="health" amount="100" respawn="20000"/>
-   
+
    <team name="Da Nang Boys" colorR="236" colorG="255" colorB="159">
       <flag name="" posX="2604.899902" posY="-1475.219116" posZ="16.245487"/>
       <spawnpoint name="spawnpoint 0 " posX="2654.455322" posY="-1446.404419" posZ="15.910378" rot="135" skin="123"/>
@@ -125,7 +125,7 @@
       <spawnpoint name="spawnpoint H " posX="2513.963623" posY="-2052.368408" posZ="6.476818" rot="271" skin="115"/>
       <spawnpoint name="spawnpoint I " posX="2514.337402" posY="-2047.676880" posZ="6.448907" rot="271" skin="116"/>
    </team>
-   
+
    <vehicle name="" posX="2611.5612792969" posY="-1517.1384277344" posZ="14.332713127136" model="468" rotX="354.06427001953" rotY="0.30340576171875" rotZ="170.73883056641"/>
    <vehicle name="" posX="2609.7155761719" posY="-1515.9661865234" posZ="14.397661209106" model="468" rotX="354.01565551758" rotY="359.26104736328" rotZ="159.37451171875"/>
    <vehicle name="" posX="2619.4814453125" posY="-1523.3984375" posZ="13.905249595642" model="468" rotX="354.65884399414" rotY="359.94598388672" rotZ="178.75274658203"/>

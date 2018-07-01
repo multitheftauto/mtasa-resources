@@ -27,7 +27,7 @@ addEventHandler ( "onClientRender", root,
 					break
 				end
 				--is he on screen?
-				if not isElementOnScreen(player) then 
+				if not isElementOnScreen(player) then
 					break
 				end
 				local headX,headY,headZ = getPedBonePosition(player,BONE_ID)

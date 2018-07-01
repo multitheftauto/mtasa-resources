@@ -38,7 +38,7 @@ function doUpdateCategories(columns,categoryIndex) {
 			columnHeaders.appendChild ( columnElement );
 		}
 	}
-	
+
 	document.getElementById("queryCategory").selectedIndex = categoryIndex;
 }
 
@@ -61,7 +61,7 @@ function doUpdateTargets(columns,targetIndex) {
 			columnHeaders.appendChild ( columnElement );
 		}
 	}
-	
+
 	document.getElementById("queryTarget").selectedIndex = targetIndex;
 }
 
@@ -81,14 +81,14 @@ function doUpdateHeaderSections(columns) {
 			var columnName = columns[i].name.htmlEntities();
 			//var columnSize = columns[i].size.htmlEntities();
 			var columnSpan = columns[i].span.toString().htmlEntities();
-			
+
 			columnElement.className = "header";
 			columnElement.id        = "columnxs-" + columnName;
 			columnElement.innerHTML = columnName;
 			columnElement.style.width = '180px';
 			//columnElement.style.width = columnSize;
 			columnElement.colSpan = columnSpan;
-			
+
 			columnHeaders.appendChild ( columnElement );
 		}
 	}
@@ -111,13 +111,13 @@ function doUpdateHeaders(columns) {
             var columnTint = columns[i].tint.htmlEntities();
 			columnNames[i] = columnName;
 			columnTints[i] = columnTint;
-			
+
 			columnElement.className = "header";
 			columnElement.id        = "columnx-" + columnName;
 			columnElement.innerHTML = columnName;
 			columnElement.style.width = '180px';
 			columnElement.style.width = columnSize;
-			
+
 			columnHeaders.appendChild ( columnElement );
 		}
 	}
@@ -147,10 +147,10 @@ function doUpdateRows(rows) {
 				cell.innerHTML = rows[i][j].toString().htmlEntities();
 			    cell.bgColor = applyTint( rowBgColor, columnTints[j-1] );
                 cell.style.whiteSpace = "pre";
-			    
+
 				row.appendChild ( cell );
 			}
-			
+
 			performancebrowserElement.appendChild ( row );
 		}
 	}
@@ -164,12 +164,12 @@ String.prototype.htmlEntities = function () {
 
 function showSpinner()
 {
-    document.getElementById("searchingSpinner").style.display = "inline";	
+    document.getElementById("searchingSpinner").style.display = "inline";
 }
 
 function hideSpinner()
 {
-    document.getElementById("searchingSpinner").style.display = "none";	
+    document.getElementById("searchingSpinner").style.display = "none";
 }
 
 
@@ -225,7 +225,7 @@ function updateAll()
                 {
                     if ( typeof(headers[0]) == "object" )
                         doUpdateHeaderSections(headers[0]);
-                        
+
                     if ( typeof(headers[1]) == "object" )
                         doUpdateHeaders(headers[1]);
                 }
@@ -236,20 +236,20 @@ function updateAll()
 
             if ( typeof(newQueryOptions) == "string" )
                 document.getElementById ( "queryOptions" ).value = newQueryOptions;
-                
+
             if ( typeof(newQueryFilter) == "string" )
                 document.getElementById ( "queryFilter" ).value = newQueryFilter;
-                
+
             if ( typeof(newQueryShowClients) == "string" )
                 document.getElementById ( "queryShowClients" ).checked = (newQueryShowClients == "true");
 
 
             if ( typeof(status1) == "string" )
                 document.getElementById ( "statusLabel1" ).innerHTML = status1;
-                
+
             if ( typeof(status2) == "string" )
                 document.getElementById ( "statusLabel2" ).innerHTML = status2;
-                
+
             if ( typeof(warning1) == "string" )
                 document.getElementById ( "warningLabel1" ).innerHTML = warning1;
 
@@ -258,7 +258,7 @@ function updateAll()
                 setNextUpdateTime(500);
                 return;
             }
-                
+
             hideSpinner();
 		}
 	);

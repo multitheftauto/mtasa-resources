@@ -1,4 +1,4 @@
-﻿local root = getRootElement()
+local root = getRootElement()
 local g_screenX,g_screenY = guiGetScreenSize()
 local BONE_ID = 8
 local WORLD_OFFSET = 0.4
@@ -29,7 +29,7 @@ addEventHandler ( "onClientRender", root,
 					break
 				end
 				--is he on screen?
-				if not isElementOnScreen(player) then 
+				if not isElementOnScreen(player) then
 					break
 				end
 				local headX,headY,headZ = getPedBonePosition(player,BONE_ID)

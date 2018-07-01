@@ -73,12 +73,12 @@
 	<file src="client/images/line.png"/>
 
 	<file src="client/images/elementmenu/generic.png"/>
-	
+
 	<file src="client/images/topmenu/second/current_elements.png"/>
 	<file src="client/images/topmenu/second/map_settings.png"/>
 	<file src="client/images/topmenu/second/definitions.png"/>
 	<file src="client/images/topmenu/second/test.png"/> <!--From the Tango Icon library-->
-	
+
 	<file src="client/images/topmenu/new.png"/>
 	<file src="client/images/topmenu/open.png"/>
 	<file src="client/images/topmenu/save.png"/>
@@ -86,8 +86,8 @@
 	<file src="client/images/topmenu/options.png"/>
 	<file src="client/images/topmenu/undo.png"/> <!--From the Tango Icon library-->
 	<file src="client/images/topmenu/redo.png"/>  <!--From the Tango Icon library-->
-	<file src="client/images/topmenu/locations.png"/> 
-	
+	<file src="client/images/topmenu/locations.png"/>
+
 	<!-- Blips -->
 	<file src="client/images/blips/0.png"/>
 	<file src="client/images/blips/1.png"/>

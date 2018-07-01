@@ -1,4 +1,4 @@
-﻿--
+--
 -- Anti-Cheat Control Panel
 --
 -- s_joiner.lua

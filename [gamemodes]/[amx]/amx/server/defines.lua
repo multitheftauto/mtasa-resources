@@ -1,4 +1,4 @@
-﻿g_WeaponIDMapping = setmetatable({
+g_WeaponIDMapping = setmetatable({
 	[330] = 0,	-- Melee
 	[331] = 1,	-- Brass knuckles
 	[333] = 2,	-- Golf club

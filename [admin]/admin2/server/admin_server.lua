@@ -101,7 +101,7 @@ addEventHandler ( "aTeam", _root, function ( action, name, ... )
 			local result, mdata1, mdata2 = func ( name, ... )
 			if ( result ~= false ) then
 				if ( type ( result ) == "string" ) then action = result end
-				aAction ( "team", action, source, false, mdata1, mdata2 ) 
+				aAction ( "team", action, source, false, mdata1, mdata2 )
 			end
 		end
 	else
@@ -261,7 +261,7 @@ addEventHandler ( "aBans", _root, function ( action, data )
 		else
 			action = nil
 		end
-	
+
 		if ( action ~= nil ) then
 			aAction ( "bans", action, source, false, mdata, more )
 			triggerEvent ( "aSync", source, "sync", "bans" )
@@ -274,7 +274,7 @@ end )
 
 addEvent ( "aExecute", true )
 addEventHandler ( "aExecute", _root, function ( action, echo )
-	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then 
+	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then
 		local result = loadstring("return " .. action)()
 		if ( echo == true ) then
 			local restring = ""

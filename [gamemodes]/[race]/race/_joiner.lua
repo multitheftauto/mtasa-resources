@@ -1,11 +1,11 @@
-﻿--
+--
 -- joiner.lua
 --
 -- 1. Delay onPlayerJoin until client loaded
 -- 2. Patch the following calls to only use the joined players:
 --      getElementsByType('player')
---      getDeadPlayers 
---      getPlayerCount 
+--      getDeadPlayers
+--      getPlayerCount
 --      getRandomPlayer
 -- 3. In any call that uses getRootElement() or g_Root to specify all players, use
 --          g_RootPlayers instead. Or use the function onlyJoined(element) to handle the choice.
@@ -82,12 +82,12 @@ end
 
 ----------------------------------------------------------------------------
 --
--- Function patches 
+-- Function patches
 --      Modify functions to act only on joined players
 --
 ----------------------------------------------------------------------------
 
--- getElementsByType patch 
+-- getElementsByType patch
 _getElementsByType = getElementsByType
 function getElementsByType( type, startat )
     startat = startat or getRootElement()
@@ -98,7 +98,7 @@ function getElementsByType( type, startat )
     end
 end
 
--- getDeadPlayers patch 
+-- getDeadPlayers patch
 _getDeadPlayers = getDeadPlayers
 function getDeadPlayers()
     local deadPlayers = _getDeadPlayers()
@@ -108,13 +108,13 @@ function getDeadPlayers()
     return deadPlayers
 end
 
--- getPlayerCount patch 
+-- getPlayerCount patch
 _getPlayerCount = getPlayerCount
 function getPlayerCount()
     return g_RootPlayers and getElementChildrenCount(g_RootPlayers) or 0
 end
 
--- getRandomPlayer patch 
+-- getRandomPlayer patch
 function getRandomPlayer()
     if getPlayerCount() < 1 then
         return nil
@@ -125,7 +125,7 @@ end
 
 ----------------------------------------------------------------------------
 --
--- Others functions 
+-- Others functions
 --
 ----------------------------------------------------------------------------
 
@@ -147,7 +147,7 @@ end
 
 ----------------------------------------------------------------------------
 --
--- Event handlers 
+-- Event handlers
 --
 ----------------------------------------------------------------------------
 
@@ -163,7 +163,7 @@ addEventHandler('onResourceStart', g_ResRoot,
         for i,player in ipairs(_getElementsByType('player')) do
             setElementParent( player, g_RootJoining )
 
-        end 
+        end
 	end
 )
 

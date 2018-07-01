@@ -1,4 +1,4 @@
-﻿--[[**********************************
+--[[**********************************
 *
 *	Multi Theft Auto - Admin Panel
 *
@@ -10,7 +10,7 @@
 
 _DEBUG = false
 
-_version = '1.3.1'
+_version = '1.5.5'
 
 _root = getRootElement()
 

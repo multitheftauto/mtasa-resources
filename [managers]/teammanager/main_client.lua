@@ -1,4 +1,4 @@
-﻿local teamsTable
+local teamsTable
 
 function handlePlayer (teams,gamemodeName)
 	--If its an array, convert it

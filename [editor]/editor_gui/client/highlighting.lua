@@ -1,4 +1,4 @@
-﻿--this script does most of the work where a highlighter appears when you mouse over an icon
+--this script does most of the work where a highlighter appears when you mouse over an icon
 local textOffsetY = 2
 local textOffsetX = 5
 local resourceTextOffsetY = 37
@@ -21,7 +21,7 @@ function hideHighlighter()
 	local resourceText = guiGetText ( selectedResourceText )
 	if ( string.find( resourceText, "%)", -1) ) and ( string.find( resourceText, "%(", -29) ) then--this check should not be required, but just incase
 		setSelectedResourceText ( string.sub ( resourceText, 1, -31 ) )
-	end 
+	end
 end
 
 function topMenuMouseOver ( source )

@@ -1,4 +1,4 @@
-﻿FancyProgress = {}
+FancyProgress = {}
 FancyProgress.__index = FancyProgress
 
 function FancyProgress.create(minval, maxval, bgName, x, y, width, height, barName, barOffsetX, barOffsetY, barWidth, barHeight)

@@ -53,7 +53,7 @@ function createFastRopeOnHeli(player, heli, side, time, offset)
 			return false
 		end
 		local helix, heliy, heliz = getElementPosition(heli)
-		dump,dump,prot = getElementRotation(heli)	
+		dump,dump,prot = getElementRotation(heli)
 		local offsetRot = math.rad(prot)
 		z = heliz - 0.5
 		if ( side == "left" ) then

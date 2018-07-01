@@ -12,7 +12,7 @@ Player:
  jp / jetpack (or press J)
  setstyle [fightingstyle]
  anim [lib] [name]
- 
+
 Vehicles:
  cv / createvehicle [vehicleid]
  au / addupgrade [upgradeid]

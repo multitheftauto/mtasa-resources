@@ -1,4 +1,4 @@
-﻿addEventHandler ( "onPickupHit", root, 
+addEventHandler ( "onPickupHit", root,
 	function ( player )
 		if ( not isPedInVehicle ( player ) ) then
 			if ( getPickupType ( source ) == 2 ) then
@@ -11,7 +11,7 @@
 				end
 			end
 		end
-	end 
+	end
 )
 
 addEvent ( "ph_onPlayerPickupAccept", true )
@@ -19,5 +19,5 @@ addEventHandler ( "ph_onPlayerPickupAccept", root,
 	function ()
 		usePickup ( source, client )
 		playSoundFrontEnd ( client, 18 )
-	end 
+	end
 )

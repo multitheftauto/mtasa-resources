@@ -1,4 +1,4 @@
-﻿local blockMTAControls
+local blockMTAControls
 local thisResource = getThisResource()
 local validKeys = {
 ["mouse1"]=true,["mouse2"]=true,["mouse3"]=true,["mouse4"]=true,["mouse5"]=true,
@@ -99,7 +99,7 @@ function processControls()
 	end
 end
 
-addEventHandler("onClientResourceStart", getRootElement(), 
+addEventHandler("onClientResourceStart", getRootElement(),
 	function (resource)
 		if resource == getResourceFromName("freecam") then
 			freecam.setFreecamOption("key_fastMove", cc.mod_fast_speed)

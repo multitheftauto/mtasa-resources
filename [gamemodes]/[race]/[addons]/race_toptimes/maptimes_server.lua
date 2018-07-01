@@ -1,4 +1,4 @@
-﻿--
+--
 -- maptimes_server.lua
 --
 
@@ -220,12 +220,12 @@ function SMaptimes:getToptimes( howMany )
 	for i=1,howMany do
 		if i <= #self.dbTable.rows then
 			result[i] = {
-							timeText	= self.dbTable.rows[i].timeText, 
+							timeText	= self.dbTable.rows[i].timeText,
 							playerName	= self.dbTable.rows[i].playerName
 						}
 		else
 			result[i] = {
-							timeText	= ' -- Empty -- ', 
+							timeText	= ' -- Empty -- ',
 							playerName	= ''
 						}
 		end

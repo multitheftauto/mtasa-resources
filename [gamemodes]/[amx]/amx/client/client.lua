@@ -1,4 +1,4 @@
-ï»¿resourceRoot = getResourceRootElement(getThisResource())
+resourceRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 
 local dxDrawText = dxDrawText
@@ -113,7 +113,7 @@ end
 
 function startClassSelection(classInfo)
 	g_ClassSelectionInfo = classInfo
-	
+
 	-- environment
 	if g_StartTime then
 		setTime(unpack(g_StartTime))
@@ -125,9 +125,9 @@ function startClassSelection(classInfo)
 	end
 	setGravity(0)
 	setElementCollisionsEnabled(g_Me, false)
-	
+
 	-- interaction
-	showPlayerHudComponent('radar', false)
+	setPlayerHudComponentVisible('radar', false)
 	if not g_ClassSelectionInfo.selectedclass then
 		g_ClassSelectionInfo.selectedclass = 0
 	end
@@ -160,7 +160,7 @@ function renderClassSelText()
 	drawShadowText(g_AMXVersion, 20, screenHeight - 170, tocolor(39, 171, 250), 1, 'default-bold', 1, 230)
 	drawShadowText('Use left and right arrow keys to select class.', 20, screenHeight - 150, tocolor(240, 240, 240))
 	drawShadowText('Press SHIFT when ready to spawn.', 20, screenHeight - 136, tocolor(240, 240, 240))
-	
+
 	if not g_ClassSelectionInfo or not g_ClassSelectionInfo.selectedclass then
 		return
 	end
@@ -195,7 +195,7 @@ function destroyClassSelGUI()
 		g_ClassSelectionInfo.gui = nil
 		removeEventHandler('onClientRender', root, renderClassSelText)
 	end
-	showPlayerHudComponent('radar', true)
+	setPlayerHudComponentVisible('radar', true)
 	setCameraTarget(g_Me)
 	setGravity(0.008)
 	setElementCollisionsEnabled(g_Me, true)
@@ -250,17 +250,17 @@ function showIntroScene()
 	if introSceneShown then
 		return
 	end
-	showPlayerHudComponent('area_name', false)
-	showPlayerHudComponent('radar', false)
+	setPlayerHudComponentVisible('area_name', false)
+	setPlayerHudComponentVisible('radar', false)
 	fadeCamera(true)
-	
+
 	local scene = table.random(g_IntroScenes)
 	setCameraMatrix(scene.pos[1], scene.pos[2], scene.pos[3], scene.lookat[1], scene.lookat[2], scene.lookat[3])
 	g_StartTime = { getTime() }
 	g_StartWeather = getWeather()
 	setTime(scene.hour or 12, 0)
 	setWeather(0)
-	
+
 	introSceneShown = true
 end
 
@@ -436,7 +436,7 @@ function SetVehicleParamsForPlayer(vehicle, isObjective, doorsLocked)
 		setBlipOrdering(vehInfo.blip, 1)
 		vehInfo.blippersistent = true
 		setElementParent(vehInfo.blip, vehicle)
-		
+
 		if not vehInfo.marker then
 			local x, y, z = getElementPosition(vehicle)
 			vehInfo.marker = createMarker(x, y, z, 'arrow', 2, 255, 255, 100)
@@ -466,7 +466,7 @@ function dropVehicle(vehicle)
 		vehicleDrops[vehicle] = nil
 		return
 	end
-	
+
 	local left, back, bottom, right, front, top = getElementBoundingBox(vehicle)
 	if not bottom then
 		top = getElementDistanceFromCentreOfMassToBaseOfModel(vehicle)
@@ -477,7 +477,7 @@ function dropVehicle(vehicle)
 	end
 	local x, y, z = getElementPosition(vehicle)
 	local rx, ry, rz = getElementRotation(vehicle)
-	
+
 	local hit, hitX, hitY, hitZ = processLineOfSight(x, y, z + top, x, y, z - 10, true, false)
 	if hitZ then
 		setElementCollisionsEnabled(vehicle, true)
@@ -504,7 +504,7 @@ addEventHandler('onClientElementStreamIn', root,
 				local timer = setTimer(dropVehicle, VEHICLE_DROP_TRY_INTERVAL, VEHICLE_DROP_MAX_TRIES, source)
 				vehicleDrops[source] = { timer = timer, tries = 0 }
 			end
-			
+
 			local amx, vehID = getElemAMX(source), getElemID(source)
 			local vehInfo = amx and vehID and amx.vehicles[vehID]
 			if vehInfo and not vehInfo.blip then
@@ -528,7 +528,7 @@ addEventHandler('onClientElementStreamOut', root,
 					destroyElement(vehInfo.blip)
 				end
 				vehInfo.blip = nil
-			end 
+			end
 			serverAMXEvent('OnVehicleStreamOut', getElemID(source), getElemID(getLocalPlayer()))
 		elseif getElementType(source) == 'player' then
 			serverAMXEvent('OnPlayerStreamOut', getElemID(source), getElemID(getLocalPlayer()))
@@ -619,9 +619,9 @@ function initTextDraw(textdraw)
 	local amx = textdraw.amx
 	textdraw.id = textdraw.id or (#amx.textdraws + 1)
 	amx.textdraws[textdraw.id] = textdraw
-	
+
 	local lineHeight = 60*(textdraw.lsize or 0.5)
-	
+
 	local text = textdraw.text:gsub('~k~~(.-)~', getSAMPBoundKey)
 	local lines = {}
 	local pos, stop, c
@@ -640,20 +640,20 @@ function initTextDraw(textdraw)
 	while #lines > 0 and lines[#lines]:match('^%s*$') do
 		lines[#lines] = nil
 	end
-	
+
 	textdraw.parts = {}
 	textdraw.width = 0
 	local font = textDrawFonts[textdraw.font and textdraw.font >= 0 and textdraw.font <= #textDrawFonts and textdraw.font or 0]
 	local scale = (textdraw.lsize or 0.5) * font.lsizemul
 	font = font.font
-	
+
 	local curX
 	local curY = textdraw.y or screenHeight/2 - #lines*lineHeight/2
-	
+
 	for i,line in ipairs(lines) do
 		local colorpos = 1
 		local color
-		
+
 		while true do
 			local start = line:find('~%a~', colorpos)
 			if not start then
@@ -685,7 +685,7 @@ function initTextDraw(textdraw)
 				line = line:sub(1, start-1) .. ('#%02X%02X%02X'):format(unpack(color)) .. line:sub(colorpos)
 			end
 		end
-		
+
 		local textWidth = dxGetTextWidth(line:gsub('#%x%x%x%x%x%x', ''), scale, font)
 		textdraw.width = math.max(textdraw.width, textWidth)
 		if textdraw.align == 1 then
@@ -698,7 +698,7 @@ function initTextDraw(textdraw)
 			-- right
 			curX = textdraw.x - textWidth
 		end
-		
+
 		color = textdraw.color or tocolor(255, 255, 255)
 		colorpos = 1
 		local nextcolorpos
@@ -852,15 +852,15 @@ function renderTextLabels()
 					textlabel.Y = oY
 					textlabel.Z = oZ
 				end
-				
+
 				local screenX, screenY = getScreenFromWorldPosition(textlabel.X, textlabel.Y, textlabel.Z, textlabel.dist, false)
 				local pX, pY, pZ = getElementPosition(g_Me)
 				local dist = getDistanceBetweenPoints3D(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z)
 				local vw = getElementDimension(g_Me)
 				--[[if textlabel.attached then
 					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, true, true, true, true, false, false, textlabel.attachedTo)
-				else]] --íåðàáîòàåò, ïîõîæå ôóíêöèÿ isLineOfSightClear íå ðàáîòàåò ñ àðãóìåíòîì ignoredElement.
-					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, false, false)--ïîêà òàê, ïîòîì ðàçáåðóòñÿ ñ ôóíêöèåé ñäåëàåì êàê íóæíî :)
+				else]] --ÃƒÂ­ÃƒÂ¥ÃƒÂ°ÃƒÂ ÃƒÂ¡ÃƒÂ®ÃƒÂ²ÃƒÂ ÃƒÂ¥ÃƒÂ², ÃƒÂ¯ÃƒÂ®ÃƒÂµÃƒÂ®ÃƒÂ¦ÃƒÂ¥ ÃƒÂ´ÃƒÂ³ÃƒÂ­ÃƒÂªÃƒÂ¶ÃƒÂ¨ÃƒÂ¿ isLineOfSightClearÃƒÂ­ÃƒÂ¥ ÃƒÂ°ÃƒÂ ÃƒÂ¡ÃƒÂ®ÃƒÂ²ÃƒÂ ÃƒÂ¥ÃƒÂ² ÃƒÂ± ÃƒÂ ÃƒÂ°ÃƒÂ£ÃƒÂ³ÃƒÂ¬ÃƒÂ¥ÃƒÂ­ÃƒÂ²ÃƒÂ®ÃƒÂ¬ ignoredElement.
+					local LOS = isLineOfSightClear(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z, true, false, false)--ÃƒÂ¯ÃƒÂ®ÃƒÂªÃƒÂ  ÃƒÂ²ÃƒÂ ÃƒÂª, ÃƒÂ¯ÃƒÂ®ÃƒÂ²ÃƒÂ®ÃƒÂ¬ ÃƒÂ°ÃƒÂ ÃƒÂ§ÃƒÂ¡ÃƒÂ¥ÃƒÂ°ÃƒÂ³ÃƒÂ²ÃƒÂ±ÃƒÂ¿ ÃƒÂ± ÃƒÂ´ÃƒÂ³ÃƒÂ­ÃƒÂªÃƒÂ¶ÃƒÂ¨ÃƒÂ¥ÃƒÂ© ÃƒÂ±ÃƒÂ¤ÃƒÂ¥ÃƒÂ«ÃƒÂ ÃƒÂ¥ÃƒÂªÃƒÂ ÃƒÂª ÃƒÂ­ÃƒÂ³ÃƒÂ¦ÃƒÂ­ÃƒÂ® :)
 				--end
 				local len = string.len(textlabel.text)
 				if screenX and dist <= textlabel.dist and vw == textlabel.vw then
@@ -881,16 +881,16 @@ addEventHandler("onClientRender", root, renderTextLabels)
 function checkTextLabels()
 	for name,amx in pairs(g_AMXs) do
 		for id,textlabel in pairs(amx.textlabels) do
-		
+
 			local pX, pY, pZ = getElementPosition(g_Me)
 			local dist = getDistanceBetweenPoints3D(pX, pY, pZ, textlabel.X, textlabel.Y, textlabel.Z)
-			
+
 			if dist <= textlabel.dist then
 				textlabel.enabled = true
 			else
 				textlabel.enabled = false
 			end
-		
+
 		end
 	end
 end
@@ -1027,14 +1027,14 @@ function ShowMenuForPlayer(amxName, menuID)
 		g_CurrentMenu.anim:remove()
 		g_CurrentMenu.anim = nil
 	end
-	
+
 	local prevMenu = g_CurrentMenu
 	g_CurrentMenu = amx.menus[menuID]
 	local closebtnSide = screenWidth*(30/1024)
 	if not prevMenu then
 		g_CurrentMenu.alpha = 0
 		g_CurrentMenu.titletextdraw.alpha = 0
-		
+
 		g_CurrentMenu.closebtn = guiCreateStaticImage(g_CurrentMenu.x + g_CurrentMenu.width - closebtnSide, g_CurrentMenu.y, closebtnSide, closebtnSide, 'client/closebtn.png', false, nil)
 		guiSetAlpha(g_CurrentMenu.closebtn, 0)
 		addEventHandler('onClientMouseEnter', g_CurrentMenu.closebtn,
@@ -1044,7 +1044,7 @@ function ShowMenuForPlayer(amxName, menuID)
 			end,
 			false
 		)
-		
+
 		g_CurrentMenu.closebtnhover = guiCreateStaticImage(g_CurrentMenu.x + g_CurrentMenu.width - closebtnSide, g_CurrentMenu.y, closebtnSide, closebtnSide, 'client/closebtn_hover.png', false, nil)
 		guiSetVisible(g_CurrentMenu.closebtnhover, false)
 		guiSetAlpha(g_CurrentMenu.closebtnhover, .75)
@@ -1055,7 +1055,7 @@ function ShowMenuForPlayer(amxName, menuID)
 			end,
 			false
 		)
-		
+
 		addEventHandler('onClientGUIClick', g_CurrentMenu.closebtnhover,
 			function()
 				if not g_CurrentMenu.anim then
@@ -1064,7 +1064,7 @@ function ShowMenuForPlayer(amxName, menuID)
 			end,
 			false
 		)
-		
+
 		g_CurrentMenu.anim = Animation.createAndPlay(
 			g_CurrentMenu,
 			{ time = 500, from = 0, to = 1, fn = setMenuAlpha },
@@ -1074,7 +1074,7 @@ function ShowMenuForPlayer(amxName, menuID)
 				g_CurrentMenu.anim = nil
 			end
 		)
-		
+
 		addEventHandler('onClientRender', root, renderMenu)
 		addEventHandler('onClientClick', root, menuClickHandler)
 		showCursor(true)
@@ -1143,10 +1143,10 @@ function renderMenu()
 	if not menu then
 		return
 	end
-	
+
 	-- background
 	dxDrawRectangle(menu.x, menu.y, menu.width, menu.height, tocolor(0, 0, 0, 128*menu.alpha))
-	
+
 	local cursorX, cursorY = getCursorPosition()
 	cursorY = screenHeight*cursorY
 	-- selected row
@@ -1155,7 +1155,7 @@ function renderMenu()
 		selectedRow = math.floor((cursorY - menu.y - MENU_TOP_PADDING) / MENU_ITEM_HEIGHT)
 		dxDrawRectangle(menu.x, menu.y + MENU_TOP_PADDING + selectedRow*MENU_ITEM_HEIGHT, menu.width, MENU_ITEM_HEIGHT, tocolor(98, 152, 219, 192*menu.alpha))
 	end
-	
+
 	-- menu items
 	for column=0,1 do
 		for i,text in pairs(menu.items[column]) do
@@ -1266,11 +1266,11 @@ function checkWorldBounds()
 	if g_ClassSelectionInfo and g_ClassSelectionInfo.gui then
 		return
 	end
-	
+
 	local x, y, z, vx, vy, vz
 	local elem = getPedOccupiedVehicle(g_Me)
 	local isVehicle
-	
+
 	if elem then
 		if getVehicleController(elem) == g_Me then
 			isVehicle = true
@@ -1284,7 +1284,7 @@ function checkWorldBounds()
 	end
 	local bounds = g_WorldBounds
 	x, y, z = getElementPosition(elem)
-	
+
 	local changed = false
 	if x < bounds.xmin then
 		x = bounds.xmin
@@ -1335,7 +1335,7 @@ end
 
 function TogglePlayerClock(amxName, toggle)
 	setMinuteDuration(toggle and 1000 or 2147483647)
-	showPlayerHudComponent('clock', toggle)
+	setPlayerHudComponentVisible('clock', toggle)
 end
 
 function createListDialog()
@@ -1354,7 +1354,7 @@ function createListDialog()
 		addEventHandler("onClientGUIClick", listButton2, OnListDialogButton2Click, false)
 end
 
-function createInputDialog()	
+function createInputDialog()
 		inputDialog = nil
 		inputWindow = guiCreateWindow(screenWidth/2 - 541/2,screenHeight/2 - 352/2,541,352,"",false)
 		guiWindowSetMovable(listWindow,false)

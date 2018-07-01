@@ -2,6 +2,6 @@
     <info author="Iggy" description="Gridlock from GoW remade" version="1" type="map" gamemodes="tdma"/>
     <map src="gridlock.map" />
     <settings>
-      <setting name="waveheight" value="[0]"/>  
+      <setting name="waveheight" value="[0]"/>
     </settings>
 </meta>

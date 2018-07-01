@@ -1,4 +1,4 @@
-﻿g_in_test = false
+g_in_test = false
 local g_restoreEDF, dumpTimer
 local g_default_spawnmaponstart,g_default_spawnmapondeath,g_defaultwelcometextonstart
 local restoreGUIOnMapStop, restoreGUIOnGamemodeMapStop, startGamemodeOnStop
@@ -6,7 +6,7 @@ local freeroamRes = getResourceFromName "freeroam"
 local TEST_RESOURCE = "editor_test"
 local DUMP_RESOURCE = "editor_dump"
 local dumpInterval = get("dumpSaveInterval") and tonumber(get("dumpSaveInterval"))*1000 or 60000
-local fileTypes = { "script","map","file","config","html" } 
+local fileTypes = { "script","map","file","config","html" }
 local specialFileTypes = { "script","file","config","html" }
 local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 
@@ -100,7 +100,7 @@ addEventHandler("newResource", rootElement,
 			editor_gui.outputMessage ("Cannot create a new map while another is being saved or loaded", client, 255, 0, 0)
 			return
 		end
-		
+
 		if ( loadedMap ) then
 			local currentMap = getResourceFromName ( loadedMap )
 			if ( currentMap ) then
@@ -142,16 +142,16 @@ function handleOpenResource()
 			loadedMap = openingMapName
 			outputConsole ( "Loaded map in "..math.floor(getTickCount()-openingStartTick).." ms" )
 		end
-		
+
 		-- Make sure all just loaded objects have collisions so they can be seleted
 		for i, obj in pairs(getElementsByType("object")) do
 			setElementCollisionsEnabled(obj, true)
 		end
-		
+
 		triggerEvent("onMapOpened", mapContainer, openingResource)
 		flattenTreeRuns = 0
 		triggerClientEvent(root, "saveLoadProgressBar", root, true)
-		
+
 		openResourceCoroutine = nil
 		openingResource       = nil
 		openingResourceName   = nil
@@ -179,17 +179,17 @@ function openResource( resourceName, onStart )
 	if ( isEditorOpeningResource() ) then
 		return
 	end
-	
+
 	if ( client and not isPlayerAllowedToDoEditorAction(client, "load") ) then
 		editor_gui.outputMessage ("You don't have permissions to load another map!", client,255,0,0)
 		return
 	end
-	
+
 	if ( isEditorSaving() ) then
 		editor_gui.outputMessage ("Cannot save while another save is in progress", client,255,0,0)
 		return
 	end
-	
+
 	--need to clear undo/redo history!
 	local returnValue
 	local map = getResourceFromName ( resourceName )
@@ -200,7 +200,7 @@ function openResource( resourceName, onStart )
 		end
 		local maps, mapsErr = getResourceFiles ( map, "map" )
 		local mapName = DUMP_RESOURCE
-		
+
 		if (not maps or #maps == 0) then
 			if (openingSource) then
 				triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", false )
@@ -208,19 +208,19 @@ function openResource( resourceName, onStart )
 			editor_gui.outputMessage ( "Unable to open "..tostring(resourceName).." ("..tostring(mapsErr)..")", root, 255, 0, 0, 5000)
 			return false
 		end
-		
+
 		restoreAllWorldModels ( )
 		openingOnStart      = onStart
 		openingResourceName = resourceName
 		openingSource       = source
 		openingResource     = map
 		openingStartTick    = getTickCount()
-		
+
 		editor_gui.outputMessage ( "Opening map "..tostring(openingResourceName).."...", root,0,0,255,600000)
 		if (openingSource) then
 			triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
 		end
-		
+
 		for key,mapPath in ipairs(maps) do
 			local mapNode = xmlLoadFile ( ':' .. getResourceName(map) .. '/' .. mapPath )
 			-- read the definitons that are used in the map
@@ -260,7 +260,7 @@ function openResource( resourceName, onStart )
 			coroutine.resume(openResourceCoroutine,mapElement,mapContainer)
 			xmlUnloadFile(mapNode)
 		end
-		
+
 		returnValue = true
 		if onStart then
 			openingMapName = mapName
@@ -282,12 +282,12 @@ function saveResource(resourceName, test)
 		return false
 	end
 	if ( isEditorOpeningResource() ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
+		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 		"You cannot save while a map is being opened" )
 		return false
 	end
 	if ( isEditorSaving() ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
+		triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 		"You cannot save while another save or load is in progress" )
 		return false
 	end
@@ -320,7 +320,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if ( resource ) then
 		--Clear out old files from the resource
 		if (not mapmanager.isMap ( resource )) then
-			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName, 
+			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 			"You cannot overwrite non-map resources." )
 			saveResourceCoroutine = nil
 			return false
@@ -421,7 +421,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 		xmlNodeSetAttribute(xmlNode, "edf:definitions", usedDefinitions)
 	end
 	local tick = getTickCount()
-	
+
 	for i, element in ipairs(rootElements) do
 		if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 			setTimer(function()
@@ -437,7 +437,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 		local elementNode = createElementAttributesForSaving(xmlNode, element)
 		dumpNodes ( elementNode, elementChildren[element], elementChildren )
 	end
-	
+
 	local returnValue = xmlSaveFile(xmlNode)
 	clearResourceMeta ( resource, true )
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
@@ -573,7 +573,7 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		if ( usedDefinitions ~= "" ) then
 			usedDefinitions = string.sub(usedDefinitions, 1, #usedDefinitions - 1)
 			xmlNodeSetAttribute(xmlNode, "edf:definitions", usedDefinitions)
-		end	
+		end
 		for i, element in ipairs(rootElements) do
 			if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 				setTimer(function()
@@ -593,7 +593,7 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 			local elementNode = createElementAttributesForSaving(xmlNode, element)
 			dumpNodes ( elementNode, elementChildren[element], elementChildren )
 		end
-		xmlSaveFile(xmlNode)	
+		xmlSaveFile(xmlNode)
 		xmlUnloadFile(xmlNode)
 		local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
@@ -696,21 +696,21 @@ function (gamemodeName)
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
 	local success = coroutine.resume(saveResourceCoroutine, TEST_RESOURCE, true, nil, client, gamemodeName)
 	if ( not success ) then
-		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 		"Dummy 'editor_test' resource may be corrupted!" )
-		return false	
+		return false
 	end
 end )
 
 function beginTest(client,gamemodeName)
 	if ( isEditorSaving() or isEditorOpeningResource() ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
+		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false,
 		"Cannot begin test while a save or load is in progress" )
 		return false
 	end
 	local testMap = getResourceFromName(TEST_RESOURCE)
 	if ( not mapmanager.isMap(testMap) ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, 
+		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false,
 		"Dummy 'editor_test' resource may be corrupted!" )
 		return false
 	end
@@ -726,7 +726,7 @@ function beginTest(client,gamemodeName)
 		set ( "*freeroam.spawnmapondeath", "false" )
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (1)" )
 			return false
 		end
@@ -738,14 +738,14 @@ function beginTest(client,gamemodeName)
 				restoreSettings()
 				g_restoreEDF = nil
 				removeEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
-				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (2)" )
 				return false
 			end
 		else
 			if not mapmanager.changeGamemode(gamemode,testMap) then
 				restoreSettings()
-				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (3)" )
 				return false
 			end
@@ -754,12 +754,12 @@ function beginTest(client,gamemodeName)
 	else
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (4)" )
 			return false
 		end
 		if getResourceState(testMap) ~= "running" and not startResource ( testMap, true ) then
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false, 
+			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (5)" )
 			return false
 		end
@@ -790,7 +790,7 @@ function stopTest()
 		editor_gui.outputMessage ("You don't have permissions to enable test mode!", client,255,0,0)
 		return
 	end
-	
+
 	stopResource ( freeroamRes )
 	disablePickups(true)
 	local testRes = getResourceFromName(TEST_RESOURCE)
@@ -811,16 +811,16 @@ function stopTest()
 	setupMapSettings()
 	g_in_test = false
 	stopResource ( testRes )
-	
+
 	for index,player in ipairs(getElementsByType("player")) do
 		-- Respawn the player, to stop the player from dieing repeatedly if dead and possibly prevents other bugs
 		local x,y,z = getElementPosition(player)
 		setTimer(spawnPlayer,50,1,player,x,y,z,0,0,0,getWorkingDimension())
 	end
-	
+
 	-- Send the map settings (delay is required to work probably because EDF not loaded) #7091
 	setTimer(passNewMapSettings, 1000, 1)
-	
+
 	triggerEvent("editor.fullTestEnded", client or root)
 end
 addEventHandler("stopTest", root, stopTest)

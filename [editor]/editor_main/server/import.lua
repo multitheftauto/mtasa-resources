@@ -1,4 +1,4 @@
-﻿local root = getRootElement()
+local root = getRootElement()
 function import ( resource, cmd, resourceString )
 	if type(resource) == "string" then
 		resource = getResourceFromName(resource)
@@ -10,7 +10,7 @@ function import ( resource, cmd, resourceString )
 		outputDebugString("editor: Bad argument to 'import'",0,255,255,255)
 		return false
 	end
-	
+
 	local rootElement
 	if isElement(resource) then
 		rootElement = resource
@@ -25,7 +25,7 @@ function import ( resource, cmd, resourceString )
 	if not rootElement then
 		return false
 	end
-	
+
 	for creatorResource, dataTable in pairs(loadedEDF) do
 		for elementType in pairs(dataTable.elements) do
 			for i,element in ipairs(getElementsByType(elementType,rootElement)) do
@@ -33,7 +33,7 @@ function import ( resource, cmd, resourceString )
 			end
 		end
 	end
-	
+
 	return true
 end
 addCommandHandler("import",import)

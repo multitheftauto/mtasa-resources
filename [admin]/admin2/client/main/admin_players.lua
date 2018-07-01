@@ -272,7 +272,7 @@ function aPlayersTab.onClientClick ( button )
 				guiSetText ( aPlayersTab.Mute, "Mute" )
 				guiSetText ( aPlayersTab.Freeze, "Freeze" )
 				guiSetText ( aPlayersTab.Admin, "Give admin rights" )
-				guiSetText ( aPlayersTab.Health, "Health: 0%" ) 
+				guiSetText ( aPlayersTab.Health, "Health: 0%" )
 				guiSetText ( aPlayersTab.Armour, "Armour: 0%" )
 				guiSetText ( aPlayersTab.Skin, "Skin: N/A" )
 				guiSetText ( aPlayersTab.Team, "Team: None" )
@@ -448,7 +448,7 @@ function aPlayersTab.onRefresh ()
 	if ( getElementDimension ( player ) ) then guiSetText ( aPlayersTab.Dimension, "Dimension: "..getElementDimension ( player ) ) end
 	if ( getElementInterior ( player ) ) then guiSetText ( aPlayersTab.Interior, "Interior: "..getElementInterior ( player ) ) end
 	guiSetText ( aPlayersTab.JetPack, iif ( doesPedHaveJetPack ( player ), "Remove JetPack", "Give JetPack" ) )
-			
+
 	local weapon = getPedWeapon ( player )
 	if ( weapon ) then guiSetText ( aPlayersTab.Weapon, "Weapon: "..getWeaponNameFromID ( weapon ).." (ID: "..weapon..")" ) end
 

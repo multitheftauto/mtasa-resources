@@ -1,7 +1,7 @@
-﻿function getResourcesByState ( state )
+function getResourcesByState ( state )
     local allResources = getResources()
 	local matchingResources = {}
-	
+
 	for theKey, theResource in pairs(allResources) do
         if ( getResourceState ( theResource ) == state ) then
             local visible = getResourceInfo ( theResource, "showInResourceBrowser" )

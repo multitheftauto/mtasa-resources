@@ -1,4 +1,4 @@
-﻿local g_screenX,g_screenY = guiGetScreenSize()
+local g_screenX,g_screenY = guiGetScreenSize()
 local g_root = getRootElement()
 local message = { timers = {}, animations = {} }
 local TEXT_SCALE = 1
@@ -53,7 +53,7 @@ function outputMessage ( text, r, g, b, time )
 		local movetime = movedistance/MOVE_SPEED
 		time = math.max(time,movetime)
 		--Create our animations
-		table.insert(message.timers, setTimer ( function() 
+		table.insert(message.timers, setTimer ( function()
 			doAnimation(setX,{{ from = 5, to = 5 - movedistance, time = time, fn = setX }}) end, MOVE_DELAY, 1 ))
 		doAnimation(setAlpha,
 			{{ from = 1, to = 140, time = FADE_TIME, fn = setAlpha }})
@@ -66,7 +66,7 @@ function outputMessage ( text, r, g, b, time )
 			{{ from = 200, to = 0, time = FADE_TIME, fn = setTextAlpha }}) end, MOVE_DELAY + time - FADE_TIME, 1 ))
 		--
 		table.insert(message.timers, setTimer ( removeHandler, MOVE_DELAY + time, 1 ))
-			
+
 	else
 		message.x = screenX/2 - message.width/2
 		doAnimation (setAlpha,

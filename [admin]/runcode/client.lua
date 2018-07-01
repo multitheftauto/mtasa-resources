@@ -1,4 +1,4 @@
-﻿me = localPlayer
+me = localPlayer
 
 local function runString (commandstring)
 	outputChatBoxR("Executing client-side command: "..commandstring)
@@ -21,7 +21,7 @@ local function runString (commandstring)
 		outputChatBoxR("Error: "..results[2])
 		return
 	end
-	
+
 	local resultsString = ""
 	local first = true
 	for i = 2, #results do
@@ -41,7 +41,7 @@ local function runString (commandstring)
 		outputChatBoxR("Command results: " ..resultsString)
 		return
 	end
-	
+
 	outputChatBoxR("Command executed!")
 end
 

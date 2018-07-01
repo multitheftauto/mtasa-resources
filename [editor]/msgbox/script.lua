@@ -1,4 +1,4 @@
-﻿--[[-----------DOCUMENTATION---------------
+--[[-----------DOCUMENTATION---------------
 SYNTAX:
 guibutton,guibutton,guibutton = guiShowMessageBox ( string message, string boxType, string title [, string button1, string button2, stringbutton3] )
 REQUIRED ARGUMENTS
@@ -17,7 +17,7 @@ All buttons hide the message box by default
 
 
 RETURNS:
-Returns 3 gui elements of the each button the gui window.  If these dont exist nil is returned instead.  You can attach these to a 
+Returns 3 gui elements of the each button the gui window.  If these dont exist nil is returned instead.  You can attach these to a
 onClientGUIClick event to do whatever you want.
 --------------------------------------------------------]]
 
@@ -55,13 +55,13 @@ function guiShowMessageBox ( message, boxType, title, forceShowing, button1, but
 		button1 = "OK"
 		buttonCount = 1
 	end
-	local cover 
+	local cover
 	if ( forceShowing ) then
 		cover = guiCreateButton ( 0, 0, 1, 1, "", true )
 		guiSetAlpha ( cover, 0 )
 		addEventHandler ( "onClientGUIClick", cover, bringMsgBoxToFront )
 	end
-	
+
 	local formPosX = screenX / 2 - msgBox.sizeX/2
 	local formPosY = screenY / 2 - msgBox.sizeY/2
 	aMessage.Form	= guiCreateWindow ( formPosX,formPosY, msgBox.sizeX, msgBox.sizeY, title, false )

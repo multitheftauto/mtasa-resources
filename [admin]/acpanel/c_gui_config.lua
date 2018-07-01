@@ -9,7 +9,7 @@
 function aServerConfigTab.Create ( tab )
 	aServerConfigTab.Tab = tab
 
-	xpos = 10
+	xpos = 20
 	ypos = 10
 
 	local label1 = guiCreateLabel ( xpos, ypos, 200, 16, "Minimum allow client setting", false, tab )
@@ -90,7 +90,7 @@ end
 
 
 function aServerConfigTab.getTypeFromGui()
-	for _,info in ipairs(aServerConfigTab.radioButtons) do	
+	for _,info in ipairs(aServerConfigTab.radioButtons) do
 		if guiRadioButtonGetSelected( info.button ) then
 			return info.type
 		end

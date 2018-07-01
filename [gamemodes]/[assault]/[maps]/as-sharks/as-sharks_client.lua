@@ -1,4 +1,4 @@
-﻿setTimer ( setTime, 60000, 1, 12, 00 )
+setTimer ( setTime, 60000, 1, 12, 00 )
 
 function cancelSharkDamage  ( attacker, weapon, bodypart )
 	if weapon == 53 and attacker == getLocalPlayer() and getElementModel(getLocalPlayer()) == 124 then
@@ -15,7 +15,7 @@ function setupSpawn  ()
 				killTimer ( v )
 			end
 		end
-		showPlayerHudComponent ( "breath", false )
+		setPlayerHudComponentVisible ( "breath", false )
 		setTimer ( toggleControl, 1000, 1, "jump", false )
 		setElementAlpha( getLocalPlayer(), 0 )
 		--lol = toggleControl ( "jump", false )
@@ -28,7 +28,7 @@ function setupSpawn  ()
 			end
 		end
 		eatTimer = setTimer ( isBeingEaten, 200, 0 )
-		showPlayerHudComponent ( "breath", true )
+		setPlayerHudComponentVisible ( "breath", true )
 		setElementAlpha( getLocalPlayer(), 255 )
 		toggleControl ( "jump", true )
 		setGameSpeed ( 1 )
@@ -70,9 +70,9 @@ function getDistanceBetweenPoints3D ( Ax,Ay,Az,Bx,By,Bz )
 	if ( not tonumber(Ax) ) or ( not tonumber(Ay) ) or ( not tonumber(Az) ) or ( not tonumber(Bx) ) or ( not tonumber(By) ) or ( not tonumber(Bz) ) then
 		return false
 	end
-	local dx = Ax-Bx 
-	local dy = Ay-By 
-	local dz = Az-Bz 
+	local dx = Ax-Bx
+	local dy = Ay-By
+	local dz = Az-Bz
 	local distance = math.sqrt(dx*dx + dy*dy + dz*dz)
 	return distance
 end

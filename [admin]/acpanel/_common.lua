@@ -4,7 +4,7 @@
 -- _common.lua
 --
 
-_version = "0.1.7"
+_version = "0.1.8"
 
 MIN_CLIENT_VERSION_FOR_MOD_BLOCKS = "1.3.1-9.04818"
 
@@ -29,7 +29,7 @@ function table.find(t, ...)
 		end
 		return false
 	end
-	
+
 	local value = table.remove(args)
 	if value == '[nil]' then
 		value = nil
@@ -59,7 +59,7 @@ end
 
 -- Typical call:  if hasbit(x, bit(3)) then ...
 function math.hasbit(x, p)
-  return x % (p + p) >= p       
+  return x % (p + p) >= p
 end
 
 
@@ -106,8 +106,8 @@ aBlockModsTab_presets = {
 					"satchel.dff" .. newline ..
 					"tec9.dff" .. newline ..
 					"sniper.dff",
-					
-	 playerModels = 
+
+	 playerModels =
 [[cj.dff
 truth.dff
 maccer.dff
@@ -422,7 +422,7 @@ aBlockModsTab = {
 }
 
 function aBlockModsTab.getInfoForType(type)
-	for _,info in ipairs(aBlockModsTab.radioButtons) do	
+	for _,info in ipairs(aBlockModsTab.radioButtons) do
 		if info.type == type then
 			return info
 		end
@@ -452,7 +452,7 @@ aServerConfigTab = {
 
 
 function aServerConfigTab.getInfoForType(type)
-	for _,info in ipairs(aServerConfigTab.radioButtons) do	
+	for _,info in ipairs(aServerConfigTab.radioButtons) do
 		if info.type == type then
 			return info
 		end

@@ -53,7 +53,7 @@
 		<skin model="14" name="Floral Shirt" keywords="flowers,floral,bald,old,mustache,beard,old,guy,male"/>
 		<skin model="15" name="Plaid Baldy" keywords="bald,mustache,beard,old,guy,male"/>
 		<skin model="20" name="Fresh Prince" keywords="will,smith,yellow,black,guy,male"/>
-		<skin model="23" name="Skater Kid" keywords="dog,base,5,shorts,hat,baseball,goatee,base5,white,guy,male"/>	
+		<skin model="23" name="Skater Kid" keywords="dog,base,5,shorts,hat,baseball,goatee,base5,white,guy,male"/>
 		<skin model="32" name="Eyepatch" keywords="eye,patch,hat,baseball,old,white,guy,male"/>
 		<skin model="39" name="Old Maid" keywords="dress,sweater,fat,heavy,old,white,immigrant,bandana,girl,woman"/>
 		<skin model="53" name="Golf Lady" keywords="visor,golfer,shorts,girl,woman,old,heavy,fat"/>
@@ -91,8 +91,8 @@
 		<skin model="236" name="Happy Old Man" keywords="plaid,checker,mustache,bald,elderly,guy,male"/>
 		<skin model="250" name="Green Tshirt" keywords="white,guy,male,pubestache"/>
 		<skin model="262" name="Pajama Man 2 b" keywords="guy,male,pajamas,PJs,sleep,old,bald,cross,crucifix,christ,jesus,religious,religion,stripes,mustache,beard,black"/>
-	</group>	
-	<group name="Celebrities">	
+	</group>
+	<group name="Celebrities">
 		<skin model="20" name="Fresh Prince" keywords="will,smith,yellow,black,guy,male"/>
 		<skin model="91" name="Sharon Stone" keywords="basic,instinct,bracelet,rich,white,girl,woman,classy,heels"/>
 		<skin model="143" name="Sam Jackson" keywords="black,guy,male,hat,glasses,shades,button,Samuel"/>

@@ -1,4 +1,4 @@
-﻿local rootElement = getRootElement()
+local rootElement = getRootElement()
 
 function showHelp(element)
 	return triggerClientEvent(element, "doShowHelp", rootElement)

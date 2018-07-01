@@ -1,7 +1,7 @@
-﻿function playerDamageTaken ( attacker, weapon, bodypart )
-	local sp = getElementData( getLocalPlayer(), "tdma.sp" ) 
+function playerDamageTaken ( attacker, weapon, bodypart )
+	local sp = getElementData( getLocalPlayer(), "tdma.sp" )
 	if ( sp == "y" ) then
-		cancelEvent()	
+		cancelEvent()
 	end
 end
 addEventHandler ( "onClientPlayerDamage", getLocalPlayer(), playerDamageTaken )

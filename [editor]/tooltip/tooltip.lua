@@ -1,4 +1,4 @@
-﻿-- Default values
+-- Default values
 local DEFAULT_FRAME_COUNT = 10
 local DEFAULT_BACKGROUND  = { r = 255, g = 255, b = 128 }
 local DEFAULT_FOREGROUND  = { r = 0,   g = 0,   b = 0   }
@@ -82,7 +82,7 @@ end
 -- Interface functions
 --
 function Create(x, y, text, _foreground, _background, _border)
-	if not x or not y or not text 
+	if not x or not y or not text
 	   or type(x) ~= "number" or type(y) ~= "number" or type(text) ~= "string"
 	then
 		return false
@@ -119,7 +119,7 @@ function Create(x, y, text, _foreground, _background, _border)
 	else
 		border = DEFAULT_BORDER
 	end
-	
+
 	local newTooltip = createElement("__tooltip")
 	setElementData(newTooltip, "x", x)
 	setElementData(newTooltip, "y", y)

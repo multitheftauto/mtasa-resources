@@ -1,4 +1,4 @@
-﻿g_Root = getRootElement()
+g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_Me = getLocalPlayer()
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
@@ -14,7 +14,7 @@ g_Objects = {}
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
 		g_Players = getElementsByType('player')
-		
+
         fadeCamera(false,0.0)
 		-- create GUI
 		local screenWidth, screenHeight = guiGetScreenSize()
@@ -38,15 +38,15 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 		guiSetFont(g_GUI.timeleft, 'default-bold-small')
 		guiLabelSetHorizontalAlign(g_GUI.timeleft, 'center')
 		g_GUI.speedbar:setProgress(0)
-		
+
 		hideGUIComponents('timeleftbg', 'timeleft', 'healthbar', 'speedbar', 'ranknum', 'ranksuffix', 'checkpoint', 'timepassed')
         RankingBoard.precreateLabels(10)
-		
+
 		-- set update handlers
 		g_PickupStartTick = getTickCount()
 		addEventHandler('onClientRender', g_Root, updateBars)
 		g_WaterCheckTimer = setTimer(checkWater, 1000, 0)
-		
+
 		-- load pickup models and textures
 		for name,id in pairs(g_ModelForPickupType) do
 			engineImportTXD(engineLoadTXD('model/' .. name .. '.txd'), id)
@@ -150,7 +150,7 @@ end
 
 function TravelScreen.show( mapName, authorName )
     TravelScreen.startTime = getTickCount()
-    g_dxGUI['travelText2']:text(mapName) 
+    g_dxGUI['travelText2']:text(mapName)
 	g_dxGUI['travelText3']:text(authorName and "Author: " .. authorName or "")
     showGUIComponents('travelImage', 'travelText1', 'travelText2', 'travelText3')
 	guiMoveToBack(g_GUI['travelImage'])
@@ -177,23 +177,23 @@ end
 function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, duration, gameoptions, mapinfo, playerInfo)
     outputDebug( 'MISC', 'initRace start' )
 	unloadAll()
-	
+
 	g_Players = getElementsByType('player')
 	g_MapOptions = mapoptions
 	g_GameOptions = gameoptions
 	g_MapInfo = mapinfo
     g_PlayerInfo = playerInfo
     triggerEvent('onClientMapStarting', g_Me, mapinfo )
-	
+
 	g_dxGUI.mapdisplay:text("Map: "..g_MapInfo.name)
-	
+
 	fadeCamera(true)
 	showHUD(false)
-	
+
 	g_Vehicle = vehicle
 	setVehicleDamageProof(g_Vehicle, true)
 	OverrideClient.updateVars(g_Vehicle)
-	
+
 	--local x, y, z = getElementPosition(g_Vehicle)
 	setCameraBehindVehicle(vehicle)
 	--alignVehicleToGround(vehicle)
@@ -204,7 +204,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 
 	-- checkpoints
 	g_Checkpoints = checkpoints
-	
+
 	-- pickups
 	local object
 	local pos
@@ -225,7 +225,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 			g_Pickups[colshape].label:type("shadow",2)
         end
 	end
-	
+
 	-- objects
 	g_Objects = {}
 	local pos, rot
@@ -239,7 +239,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 		g_CurrentCheckpoint = 0
 		showNextCheckpoint()
 	end
-	
+
 	-- GUI
 	g_dxGUI.timepassed:text('0:00:00')
 	showGUIComponents('healthbar', 'speedbar', 'timepassed')
@@ -254,7 +254,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	else
 		hideGUIComponents('checkpoint')
 	end
-	
+
 	g_HurryDuration = g_GameOptions.hurrytime
 	if duration then
 		launchRace(duration)
@@ -301,16 +301,16 @@ end
 
 function launchRace(duration)
 	g_Players = getElementsByType('player')
-	
+
 	if type(duration) == 'number' then
 		showGUIComponents('timeleftbg', 'timeleft')
 		guiLabelSetColor(g_GUI.timeleft, 255, 255, 255)
 		g_Duration = duration
 		addEventHandler('onClientRender', g_Root, updateTime)
 	end
-	
+
 	setVehicleDamageProof(g_Vehicle, false)
-	
+
 	g_StartTick = getTickCount()
 end
 
@@ -673,7 +673,7 @@ function updateSpectatingCheckpointsAndRank()
 		local rankValue = getElementData(watchedPlayer, 'race rank') or 0
 		if rankValue ~= rankValuePrev then
 			rankValuePrev = rankValue
-			setRankDisplay( rankValue )	
+			setRankDisplay( rankValue )
 		end
 	end
 end
@@ -709,7 +709,7 @@ function checkpointReached(elem)
 	if elem ~= g_Vehicle or isVehicleBlown(g_Vehicle) or getElementHealth(g_Me) == 0 or Spectate.active then
 		return
 	end
-	
+
 	if g_Checkpoints[g_CurrentCheckpoint].vehicle and g_Checkpoints[g_CurrentCheckpoint].vehicle ~= getElementModel(g_Vehicle) then
 		g_PrevVehicleHeight = getElementDistanceFromCentreOfMassToBaseOfModel(g_Vehicle)
 		local health = nil
@@ -1136,7 +1136,7 @@ function MovePlayerAway.update(nozcheck)
 				else
 					_,_, MovePlayerAway.rotZ = getElementRotation(camTarget)
 				end
-			end  
+			end
 		end
 		local vehicle = g_Vehicle
 		if vehicle then
@@ -1210,7 +1210,7 @@ function unloadAll()
 	end
 	g_Checkpoints = {}
 	g_CurrentCheckpoint = nil
-	
+
 	for colshape,pickup in pairs(g_Pickups) do
 		destroyElement(colshape)
 		if pickup.object then
@@ -1222,17 +1222,17 @@ function unloadAll()
 	end
 	g_Pickups = {}
 	g_VisiblePickups = {}
-	
+
 	table.each(g_Objects, destroyElement)
 	g_Objects = {}
-	
+
 	setElementData(g_Me, 'race.checkpoint', nil)
-	
+
 	g_Vehicle = nil
 	removeEventHandler('onClientRender', g_Root, updateTime)
-	
+
 	toggleAllControls(true)
-	
+
 	if g_GUI then
 		hideGUIComponents('timeleftbg', 'timeleft', 'healthbar', 'speedbar', 'ranknum', 'ranksuffix', 'checkpoint', 'timepassed')
 		if g_GUI.hurry then
@@ -1277,7 +1277,7 @@ function makeCheckpointCurrent(i,bOtherPlayer)
 	else
 		setBlipSize(checkpoint.blip, 2)
 	end
-	
+
 	if not checkpoint.type or checkpoint.type == 'checkpoint' then
 		checkpoint.colshape = createColCircle(pos[1], pos[2], checkpoint.size + 4)
 	else

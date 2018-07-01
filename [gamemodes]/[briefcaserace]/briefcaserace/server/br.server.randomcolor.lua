@@ -1,4 +1,4 @@
-﻿local colors = {}
+local colors = {}
 local freeColors = {}
 
 -- generates N distinct colors.. the larger the N, the less distinct they will be

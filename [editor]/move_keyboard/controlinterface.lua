@@ -1,4 +1,4 @@
-﻿--------------Below is not config
+--------------Below is not config
 addEvent "onControlPressed"
 addEvent "onEditorSuspended"
 addEvent "onEditorResumed"
@@ -70,7 +70,7 @@ end
 addEventHandler("onClientResourceStart", rootElement,
 	function(resource)
 		if resource == getResourceFromName("editor_main") then
-			cc = call(resource, "getControls") 
+			cc = call(resource, "getControls")
 			if onControlsLoaded then
 				onControlsLoaded()
 			end
@@ -91,7 +91,7 @@ function bindControl ( control, keyState, handlerFunction, ... )
 	if keyState == "up" or keyState == "both" then
 		keybinds[control] = keybinds[control] or {}
 		keybinds[control][hitState] = keybinds[control][hitState] or {}
-		keybinds[control][hitState][handlerFunction] = {...}	
+		keybinds[control][hitState][handlerFunction] = {...}
 	end
 	return true
 end

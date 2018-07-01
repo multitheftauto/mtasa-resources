@@ -8,7 +8,7 @@
 	</meta>
 
 	<assaultSettings timelimit="720" finishType="objective" finishObjective="hideout" author="norby89"
-		time="18:00" weather="2" description="Attackers need to rob Caligula's Casino while the cops are trying to stop them." 
+		time="18:00" weather="2" description="Attackers need to rob Caligula's Casino while the cops are trying to stop them."
 		conqueredMessage="attackers pulled off the heist!" defendedMessage="cops arrested the attackers" />
 
 
@@ -23,7 +23,7 @@
 
 <!--
 		attackers 1,1;24,50;29,300;30,40;[44,1]
-		 
+
 		defenders 3,1;22,50;28,300
 	*	defenders 22,50;28,300;25,20
 	**	defenders 23,40;26,20;32,200
@@ -36,13 +36,13 @@
 		<spawnarea posX="2482.3891601563" posY="2711.54296875" posZ="10.8203125" skins="241,242" weapons="1,1;24,50;29,300;30,40" />
 		<spawnarea posX="2483.2319335938" posY="2729.4641113281" posZ="10.8203125" skins="241,242" weapons="1,1;24,50;29,300;30,40" />
 	</spawngroup>
-  
+
   <!--police station-->
 	<spawngroup type="defender" req="">
 		<spawnarea posX="2286.0966796875" posY="2451.3186035156" posZ="10.8203125" skins="280,281" weapons="3,1;22,50;28,300" />
 		<spawnarea posX="2286.8122558594" posY="2468.3259277344" posZ="10.8203125" skins="284" weapons="3,1;22,50;28,300" />
 	</spawngroup>
-	
+
   <!--police station [*] 'same'-->
 	<spawngroup type="defender" req="bombs,outfits">
 		<spawnarea posX="2286.0966796875" posY="2451.3186035156" posZ="10.8203125" skins="280,281" weapons="22,50;28,300;25,20" />
@@ -54,26 +54,26 @@
 		<spawnarea posX="2503.0588378906" posY="2385.9008789063" posZ="10.8203125" skins="241,242" weapons="1,1;24,50;29,300;30,40" />
 		<spawnarea posX="2502.3752441406" posY="2373.1296386719" posZ="10.8203125" skins="241,242" weapons="1,1;24,50;29,300;30,40" />
 	</spawngroup>
-	
+
   <!--securicar [**]-->
 	<spawngroup type="defender" req="securicar">
 		<spawnarea posX="2306.37109375" posY="2439.6374511719" posZ="3.2734375" skins="280,281" weapons="23,40;26,20;32,200" />
 		<spawnarea posX="2300.8625488281" posY="2478.9030761719" posZ="3.2734375" skins="280,281" weapons="23,40;26,20;32,200" />
 	</spawngroup>
-	
+
 
   <!--park (forced respawn)-->
 	<spawngroup type="attacker" req="park">
 		<spawnarea posX="2300.2937011719" posY="1752.8531494141" posZ="10.8203125" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
 		<spawnarea posX="2286.4440917969" posY="1755.3640136719" posZ="10.8203125" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
 	</spawngroup>
-	
+
   <!--park (forced respawn)-->
 	<spawngroup type="defender" req="park">
 		<spawnarea posX="2126.0776367188" posY="1664.4136962891" posZ="10.8203125" skins="163-166" weapons="23,40;26,20;32,200" />
 		<spawnarea posX="2108.2106933594" posY="1662.1553955078" posZ="10.8203125" skins="163-166" weapons="23,40;26,20;32,200" />
 	</spawngroup>
-	
+
   <!--casino-->
 	<spawngroup type="attacker" req="casino">
 		<spawnarea posX="2236.0695800781" posY="1678.3342285156" posZ="1008.359375" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
@@ -100,20 +100,20 @@
 	<spawngroup type="defender" req="vault">
 		<spawnarea posX="2157.4304199219" posY="1602.7133789063" posZ="999.96875" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
 	</spawngroup>
-	
+
   <!--money 'same (first)'-->
 	<spawngroup type="defender" req="money">
 		<spawnarea posX="2157.4304199219" posY="1602.7133789063" posZ="999.96875" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
 		<spawnarea posX="2209.3520507813" posY="1585.1184082031" posZ="999.9765625" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
 		<spawnarea posX="2201.8005371094" posY="1584.9268798828" posZ="999.9765625" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
 	</spawngroup>
-	
+
   <!--door2 'same'-->
 	<spawngroup type="defender" req="door2">
 		<spawnarea posX="2209.3520507813" posY="1585.1184082031" posZ="999.9765625" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
 		<spawnarea posX="2201.8005371094" posY="1584.9268798828" posZ="999.9765625" skins="285" weapons="23,60;27,20;32,200;31,40;45,1" />
 	</spawngroup>
- 
+
   <!--backdoor-->
 	<spawngroup type="attacker" req="backdoor">
 		<spawnarea posX="2300.2937011719" posY="1752.8531494141" posZ="10.8203125" skins="264" weapons="1,1;24,50;29,300;30,40;44,1" />
@@ -266,7 +266,7 @@
 		<card id="card6" posX="2256.11" posY="1596.50" posZ="1006.18" />
 		<card id="card7" posX="2242.46" posY="1592.19" posZ="1006.18" />
 		<card id="card8" posX="2273.22" posY="1563.42" posZ="1008.36" />
-		
+
 		<money id="money1" posX="2145.56" posY="1629.27" posZ="993.58" />
 		<money id="money2" posX="2143.00" posY="1632.18" posZ="993.58" />
 		<money id="money3" posX="2145.12" posY="1633.68" posZ="993.58" />
@@ -282,17 +282,17 @@
 	<pickup name="GRENADE" posX="2150.33" posY="1619.47" posZ="1000.97" type="16" amount="5" respawn="5000" />
 
 <!--
-	Ambulance 416				Police Car (Los Santos) 596 
-	Barracks 433				Police Car (San Fierro) 597 
-	Enforcer 427				Police Ranger 599 
-	FBI Rancher 490				Rhino 432 
-	FBI Truck 528				S.W.A.T. 601 
-	Fire Truck 407				Securicar 428 
+	Ambulance 416				Police Car (Los Santos) 596
+	Barracks 433				Police Car (San Fierro) 597
+	Enforcer 427				Police Ranger 599
+	FBI Rancher 490				Rhino 432
+	FBI Truck 528				S.W.A.T. 601
+	Fire Truck 407				Securicar 428
 	Fire Truck (Ladder) 544
 	HPV1000 523
 	Patriot 470
 	Police Car (Las Venturas) 598
-	
+
 	biker cop 284				normal 241 - 242
 	police 280 - 281				clown 264
 	FBI 163 - 166

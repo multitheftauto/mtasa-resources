@@ -1,4 +1,4 @@
-﻿allEDF = {}
+allEDF = {}
 
 addEventHandler ( "onClientGUILoaded", rootElement,
 	function()
@@ -92,7 +92,7 @@ function reloadEDFDefinitions(newEDF,noOutput)
 		triggerClientEvent(client, 'syncEDFDefinitions', rootElement, allEDF)
 		return
 	end
-	
+
 	if client and not noOutput then
 		editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
 	end
@@ -166,7 +166,7 @@ addEventHandler ( "onResourceStop",thisResourceRoot,
 
 local gamemodeToCancel
 addEventHandler ( "onGamemodeStart", rootElement,
-	function ( resource ) 
+	function ( resource )
 		if resource == gamemodeToCancel then
 			cancelEvent(true)
 			gamemodeToCancel = nil
@@ -175,7 +175,7 @@ addEventHandler ( "onGamemodeStart", rootElement,
 )
 
 function blockMapManager ( resource )
-	if mapmanager.isGamemode(resource) then 
+	if mapmanager.isGamemode(resource) then
 		gamemodeToCancel = resource
 	else
 		gamemodeToCancel = nil

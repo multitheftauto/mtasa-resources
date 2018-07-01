@@ -1,4 +1,4 @@
-﻿addEvent "onClientGUIMouseDown"
+addEvent "onClientGUIMouseDown"
 addEvent "onClientDropDownSelect"
 addEvent "onClientDropDownOpen"
 
@@ -122,7 +122,7 @@ eC.string = {
 		self.GUI.editField = guiCreateEdit( info.x, info.y, info.width, info.height, tostring(info.value), info.relative, info.parent )
 
 		self:addHandler( "onClientGUIChanged", self.GUI.editField, self.callChangeHandlers )
-		
+
 		return self
 	end,
 	setValue = function( self, value )
@@ -152,7 +152,7 @@ eC.number = {
 		if info.maxLength then
 			guiEditSetMaxLength( self.GUI.editField, info.maxLength )
 		end
-		
+
 		self.min = info.min
 		self.max = info.max
 		self.enabled = info.enabled
@@ -164,7 +164,7 @@ eC.number = {
 		self:addHandler( "onClientGUIChanged", self.GUI.editField, self.forceNumber )
 		self:addHandler( "onClientGUIChanged", self.GUI.editField, self.forceRange )
 		self:setChangeHandler( "onClientGUIChanged", self.GUI.editField, self.callChangeHandlers )
-		
+
 		return self
 	end,
 	setValue = function( self, value )
@@ -182,9 +182,9 @@ eC.number = {
 			if inputText:sub(1,1) == '-' then
 				sign = '-'
 			end
-			
+
 			changedText = string.gsub( inputText, "[^%.%d]", "" )
-			
+
 			local numberParts = split( changedText, string.byte('.') )
 			if #numberParts > 0 then
 				if #numberParts > 1 then
@@ -199,10 +199,10 @@ eC.number = {
 					changedText = numberParts[1]
 				end
 			end
-			
+
 			changedText = sign .. changedText
 		end
-		
+
 		if changedText and changedText ~= inputText then
 			guiSetText(self.GUI.editField, changedText)
 		end
@@ -244,10 +244,10 @@ eC.integer = {
 	default = eC.number.default,
 	constructor = function( self, info )
 		eC.number.constructor( self, info )
-		
+
 		self:addHandler( "onClientGUIChanged", self.GUI.editField, self.forceInteger )
 		self:setChangeHandler( "onClientGUIChanged", self.GUI.editField, self.callChangeHandlers )
-		
+
 		return self
 	end,
 	setValue = eC.number.setValue,
@@ -259,7 +259,7 @@ eC.integer = {
 		local inputText = guiGetText( source )
 		if tonumber( inputText ) then
 			local integerText = string.gsub( inputText, "%.", "" )
-			
+
 			if inputText ~= integerText then
 				guiSetText( source, integerText )
 			end
@@ -271,10 +271,10 @@ eC.natural = {
 	default = eC.integer.default,
 	constructor = function( self, info )
 		eC.integer.constructor( self, info )
-		
+
 		self:addHandler( "onClientGUIChanged", self.GUI.editField, self.forceNatural )
 		self:setChangeHandler( "onClientGUIChanged", self.GUI.editField, self.callChangeHandlers )
-		
+
 		return self
 	end,
 	setValue = eC.number.setValue,
@@ -348,13 +348,13 @@ eC.element = {
 		local editWidth = info.width * self.default.editWidth
 		local clearButtonWidth = info.width * self.default.clearButtonWidth
 		local browseButtonWidth = info.width * self.default.browseButtonWidth
-		
+
 		self.GUI.editField = guiCreateEdit( info.x, info.y, editWidth, info.height, "", info.relative, info.parent )
 		self.GUI.clearButton = guiCreateButton( info.x  + editWidth, info.y, clearButtonWidth, info.height, "X", info.relative, info.parent )
 		self.GUI.launchBrowserButton = guiCreateButton( info.x  + editWidth + clearButtonWidth, info.y, browseButtonWidth, info.height, "Browse", info.relative, info.parent )
 
 		guiEditSetReadOnly(self.GUI.editField, true)
-		
+
 		self:setIgnoredElements( info.ignoredElements )
 		if info.validvalues then
 			info.types = info.validvalues
@@ -363,7 +363,7 @@ eC.element = {
 		self:setValue( info.value )
 		self:addHandler( "onClientGUIClick", self.GUI.clearButton, self.clearValue )
 		self:addHandler( "onClientGUIClick", self.GUI.launchBrowserButton, self.launchElementBrowser )
-		
+
 		return self
 	end,
 	setValue = function( self, value )
@@ -372,10 +372,10 @@ eC.element = {
 		elseif type(value) == "string" then
 			value = getElementByID( value )
 		end
-		
+
 		if isElement(value) then
 			local valueType = getElementType(value)
-			
+
 			-- if only certain types are allowed, check our value belongs to one
 			if #self.types > 0 then
 				local isAllowed = false
@@ -389,7 +389,7 @@ eC.element = {
 					return false
 				end
 			end
-		
+
 			self.value = value
 			guiSetText( self.GUI.editField, valueType..":"..(getElementID( value ) or "<no id>") )
 			self:callChangeHandlers()
@@ -459,24 +459,24 @@ eC.catalogID = {
 		if typeParameterDatatype ~= "string" then
 			error("Catalog type string expected in 'type' parameter, got "..typeParameterDatatype..".", 2)
 		end
-		
+
 		self.IDType = info.type
-		
+
 		if isElement(info.value) then
 			info.value = getElementID( info.value ) or ""
 		else
 			info.value = tostring( info.value )
 		end
-		
+
 		local editWidth = info.width * info.editWidth
 		local buttonWidth = info.width * info.buttonWidth
 		self.GUI.editField = guiCreateEdit( info.x, info.y, editWidth, info.height, info.value, info.relative, info.parent )
 		self.GUI.launchBrowserButton = guiCreateButton( info.x  + editWidth, info.y, buttonWidth, info.height, "Browse", info.relative, info.parent )
 
 		guiEditSetReadOnly(self.GUI.editField, true)
-		
+
 		self:addHandler( "onClientGUIClick", self.GUI.launchBrowserButton, self.launchCatalogBrowser )
-		
+
 		return self
 	end,
 	setValue = function( self, value )
@@ -510,10 +510,10 @@ eC.plate = {
 	default = eC.string.default,
 	constructor = function( self, info )
 		eC.string.constructor( self, info )
-		
+
 		self:addHandler( "onClientGUIChanged", self.GUI.editField, self.forcePlate )
 		self:setChangeHandler( "onClientGUIChanged", self.GUI.editField, self.callChangeHandlers )
-		
+
 		return self
 	end,
 	setValue = eC.string.setValue,
@@ -553,22 +553,22 @@ eC.dropdown = {
 				error("At least one string is necessary in 'rows' parameter.", 2)
 			end
 		end
-	
+
 		self.GUI.gridlist = guiCreateGridList ( info.x, info.y, info.width, info.height, info.relative, info.parent )
-		
+
 		guiGridListSetScrollBars ( self.GUI.gridlist, false, false )
 		guiGridListAddColumn ( self.GUI.gridlist, " ", 0.85 )
-			
+
 		local screenX, screenY = guiGetScreenSize()
 		self.GUI.label = guiCreateLabel ( info.labelLeftPadding, info.labelTopPadding, screenX, 16, "", false, self.GUI.gridlist )
-		
+
 		guiGridListSetSortingEnabled ( self.GUI.gridlist, false )
 		guiGridListSetSelectionMode ( self.GUI.gridlist, 2 )
-		
+
 		--create a button as a hitbox instead of the header, make it invisible.
 		self.GUI.button = guiCreateButton ( 0, 0, 1, 1, "", true, self.GUI.gridlist )
 		guiSetAlpha ( self.GUI.button, 0 )
-		
+
 		self.width = info.width
 		self.height = info.height
 		self.relative = info.relative
@@ -583,13 +583,13 @@ eC.dropdown = {
 			self.enabled = true
 			self:disable()
 		end
-		
+
 		self.rows = info.rows
-		
+
 		for k, rowtext in ipairs(self.rows) do
 			guiGridListSetItemText ( self.GUI.gridlist, guiGridListAddRow ( self.GUI.gridlist ), 1, rowtext, false, false )
 		end
-		
+
 		self.row = info.rows.initial or info.value
 		if (self.weaponType) then
 			self.row = table.find ( nameToID, self.row )
@@ -598,11 +598,11 @@ eC.dropdown = {
 			self.row = self:getRowsFromName(self.row)[1]
 		end
 		self.row = self.row or 1
-		
+
 		guiGridListSetSelectedItem ( self.GUI.gridlist, self.row-1, 1 )
 		local rowText = guiGridListGetItemText ( self.GUI.gridlist, self.row-1, 1 )
 		guiSetText ( self.GUI.label, rowText )
-		
+
 		return self
 	end,
 	setValue = function( self, value, index, internal )
@@ -660,40 +660,40 @@ eC.dropdown = {
 	dropdownClick = function ( self, passedSource )
 		if type(passedSource) ~= "string" then source = passedSource end
 		if source == self.GUI.gridlist or source == self.GUI.button then
-			if self.isOpen == false then					
+			if self.isOpen == false then
 				self.isOpen = true
-				
+
 				guiSetSize ( self.GUI.gridlist, self.dropWidth, self.dropHeight, self.relative )
-				
+
 				guiBringToFront ( self.GUI.button )
 				local screenX = guiGetScreenSize()
 				guiSetSize ( self.GUI.button, screenX, 23, false )
 				guiSetAlpha ( self.GUI.button, 0 )
-				
+
 				triggerEvent ( "onClientDropDownOpen", self.GUI.gridlist )
 			else
 				local cellrow = guiGridListGetSelectedItem ( self.GUI.gridlist )
 				self.isOpen = false
-				
+
 				guiSetSize ( self.GUI.gridlist, self.width, self.height, self.relative )
-				
+
 				guiBringToFront ( self.GUI.button )
-				
-				if cellrow ~= -1 then 
+
+				if cellrow ~= -1 then
 					self:setValue(cellrow+1)
 				else
 					--ensure one is selected
 					guiGridListSetSelectedItem ( self.GUI.gridlist, self.row-1, 1 )
 					self:callChangeHandlers()
 				end
-				
+
 				triggerEvent ( "onClientDropDownSelect", self.GUI.gridlist, cellrow )
 			end
 		else
 			if source ~= rootElement then
 				local height = self.height
 				local width = self.width
-				
+
 				guiSetSize ( self.GUI.gridlist, width, height, self.relative )
 				self.isOpen = false
 				guiGridListSetSelectedItem ( self.GUI.gridlist, self.row-1, 1 )
@@ -754,21 +754,21 @@ eC.slider = {
 	},
 	constructor = function ( self, info )
 		self.relative = info.relative
-	
+
 		self.min = info.min
 		self.max = info.max
 		self.range = info.max - info.min
-		
+
 		if info.ticks then
 			self.tickwidth = 100 / info.ticks
 		end
-	
+
 		self.GUI.bar = guiCreateProgressBar ( info.x, info.y, info.width, info.height, info.relative, info.parent )
-		
+
 		local absoluteBarWidth = (guiGetSize(self.GUI.bar, false))
 		local padLeft  = 10 --px
 		local padRight = 10 --px
-		
+
 		self.GUI.minLabel = guiCreateLabel ( 0, 0, 0, 0, tostring(self.min), false, self.GUI.bar )
 		local minHeight = guiLabelGetFontHeight(self.GUI.minLabel)
 		local minExtent = guiLabelGetTextExtent(self.GUI.minLabel)
@@ -776,7 +776,7 @@ eC.slider = {
 		guiSetSize(self.GUI.minLabel, minExtent, minHeight, false)
 		guiSetFont(self.GUI.minLabel, "default-bold-small")
 		guiLabelSetColor(self.GUI.minLabel, 0, 0, 0)
-		
+
 		self.GUI.maxLabel = guiCreateLabel ( 0, 0, 0, 0, tostring(self.max), false, self.GUI.bar )
 		local maxHeight = guiLabelGetFontHeight(self.GUI.maxLabel)
 		local maxExtent = guiLabelGetTextExtent(self.GUI.maxLabel)
@@ -784,14 +784,14 @@ eC.slider = {
 		guiSetSize(self.GUI.maxLabel, maxExtent, maxHeight, false)
 		guiSetFont(self.GUI.maxLabel, "default-bold-small")
 		guiLabelSetColor(self.GUI.maxLabel, 0, 0, 0)
-		
+
 		-- It's safe to call setValue in the constructor, since there shouldn't be
 		-- any change handlers registered at this moment. -- ryden
 		self:setValue(info.value)
-		
+
 		self:addHandler( "onClientGUIClick", self.GUI.bar, self.sliderClicked, true )
 		self:addHandler( "onClientGUIMouseDown", self.GUI.bar, self.dragHandler, true )
-		
+
 		return self
 	end,
 	setValue = function( self, value )
@@ -811,7 +811,7 @@ eC.slider = {
 		if source ~= self.GUI.bar and source ~= self.GUI.minLabel and source ~= self.GUI.maxLabel then
 			return
 		end
-		
+
 		local clickedX
 		if self.relative then
 			clickedX = getCursorPosition() * (guiGetScreenSize())
@@ -827,7 +827,7 @@ eC.slider = {
 			currentStartX = currentStartX + guiGetPosition(guiParent, false)
 			guiParent = getElementParent( guiParent )
 		end
- 
+
 		local percent = 100 * ( clickedX - currentStartX ) / currentWidth
 		percent = math.min(math.max(percent, 0),100) --clamp value
 
@@ -862,15 +862,15 @@ eC.camera = {
 	constructor = function( self, info )
 		self.value = info.value
 		local eye = info.value[1]
-		
+
 		local current = tostring(math.ceil(eye[1]))..","..tostring(math.ceil(eye[2]))..","..tostring(math.ceil(eye[3]))
 		self.GUI.showButton = guiCreateButton( info.x, info.y, info.width/2, info.height, current, info.relative, info.parent )
 		self.GUI.grabButton = guiCreateButton( info.x+info.width/2, info.y, info.width/2, info.height, "Get current", info.relative, info.parent )
 		guiSetFont ( self.GUI.showButton, "default-bold-small" )
-		
+
 		self:addHandler ( "onClientGUIClick", self.GUI.showButton, self.showCamera )
 		self:addHandler ( "onClientGUIClick", self.GUI.grabButton, self.grabCamera )
-		
+
 		return self
 	end,
 	setValue = function( self, value )
@@ -880,7 +880,7 @@ eC.camera = {
 		guiSetText ( self.GUI.showButton, current )
 
 		self:callChangeHandlers()
-		
+
 		return true
 	end,
 	getValue = function( self )
@@ -923,9 +923,9 @@ eC.coord3d = {
 		self.children.numberX:addChangeHandler(function() self:callChangeHandlers() end)
 		self.children.numberY:addChangeHandler(function() self:callChangeHandlers() end)
 		self.children.numberZ:addChangeHandler(function() self:callChangeHandlers() end)
-		
+
 		self.GUI = { self.children.numberX.GUI.editField, self.children.numberY.GUI.editField, self.children.numberZ.GUI.editField, labelX, labelY, labelZ }
-		
+
 		return self
 	end,
 	setValue = function( self, value )
@@ -1322,7 +1322,7 @@ eC.color = {
 		else
 			r, g, b, a = self.value[1] / 255, self.value[2] / 255, self.value[3] / 255, self.value[4] / 255
 		end
-		
+
 		-- Draw the lines pointing to the current selected color
 		local x = paletteX + (self.h * 255)
 		local y = paletteY + ((1 - self.s) * 255)
@@ -1579,27 +1579,27 @@ eC.vehicleupgrades = {
 		else
 			error("Vehicle ID or vehicle element expected in 'vehicle' parameter, got '"..tostring(info.vehicle).."'.",2)
 		end
-	
+
 		self.selectedUpgrades = {}
-			
+
 		local gridlistHeight = info.height - info.buttonHeight
-		
+
 		self.GUI.list = guiCreateGridList(info.x, info.y, info.width, gridlistHeight, info.relative, info.parent)
 		guiGridListSetSortingEnabled(self.GUI.list, false)
-		guiGridListSetSelectionMode(self.GUI.list, 0)		
+		guiGridListSetSelectionMode(self.GUI.list, 0)
 		guiGridListAddColumn(self.GUI.list, "Upgrade",  .4)
 		guiGridListAddColumn(self.GUI.list, "Installed?", .2)
-		
+
 		self:addCompatibleUpgrades(vehicleID)
 		self:setValue(info.value)
-		
+
 		--add a handler to update the caption when the selected item changes
 		self:addHandler("onClientGUIClick", self.GUI.list, self.changeCaptionOnClick)
 		self:addHandler("onClientGUIDoubleClick", self.GUI.list, self.toggleUpgrade)
-		
+
 		self.GUI.button = guiCreateButton(info.x, info.y + gridlistHeight, info.buttonWidth, info.buttonHeight, "Add", info.relative, info.parent)
 		self:addHandler("onClientGUIClick", self.GUI.button, self.toggleUpgrade)
-		
+
 		return self
 	end,
 	addCompatibleUpgrades = function ( self, vehicleID  )
@@ -1635,7 +1635,7 @@ eC.vehicleupgrades = {
 	end,
 	setValue = function( self, ... )
 		local arg = {...}
-		
+
 		--get the list
 		local newSelectedUpgrades
 		if type(arg[1]) == "number" then
@@ -1656,29 +1656,29 @@ eC.vehicleupgrades = {
 		for i, upgradeID in ipairs(self.selectedUpgrades) do
 			guiGridListSetItemText(self.GUI.list, self.upgradeItemRows[upgradeID], 2, "", false, false)
 		end
-		
+
 		self.selectedUpgrades = {}
-		
+
 		--only take last upgrade of the same slot
 		local upgradeOnSlot = {}
 		for i, selectedUpgrade in ipairs(newSelectedUpgrades) do
 			local slotName = getVehicleUpgradeSlotName( selectedUpgrade )
 			upgradeOnSlot[slotName] = selectedUpgrade
 		end
-		
+
 		--add them to list and update selection marks
 		for k, upgradeID in pairs(upgradeOnSlot) do
 			table.insert(self.selectedUpgrades, upgradeID)
 			guiGridListSetItemText(self.GUI.list, self.upgradeItemRows[upgradeID], 2, "X", false, false)
 		end
-		
+
 		---[[!w
 		guiGridListSetSelectedItem( self.GUI.list, 1, 1 )
 		guiGridListSetSelectedItem( self.GUI.list, -1, -1 )
 		---]]
 
 		self:callChangeHandlers()
-		
+
 		return true
 	end,
 	getValue = function( self )
@@ -1687,25 +1687,25 @@ eC.vehicleupgrades = {
 	changeCaptionOnClick = function( self )
 		local selectedItem = guiGridListGetSelectedItem( self.GUI.list )
 		if not selectedItem then return end
-		
+
 		local upgradeID = tonumber(guiGridListGetItemData( self.GUI.list, selectedItem, 1 ))
 		if not upgradeID then return end
-		
+
 		local buttonCaption
 		if table.find(self.selectedUpgrades, upgradeID) then
 			buttonCaption = "Remove"
 		else
 			buttonCaption = "Add"
-		end	
+		end
 		guiSetText(self.GUI.button, buttonCaption)
 	end,
 	toggleUpgrade = function( self )
 		local selectedItem = guiGridListGetSelectedItem( self.GUI.list )
 		if not selectedItem then return end
-		
+
 		local upgradeID = tonumber(guiGridListGetItemData( self.GUI.list, selectedItem, 1 ))
 		if not upgradeID then return end
-		
+
 		local buttonCaption
 		local pos = table.find(self.selectedUpgrades, upgradeID)
 		if pos then
@@ -1722,12 +1722,12 @@ eC.vehicleupgrades = {
 					break
 				end
 			end
-			
+
 			table.insert(self.selectedUpgrades, upgradeID)
 			guiGridListSetItemText(self.GUI.list, self.upgradeItemRows[upgradeID], 2, "X", false, false)
 			buttonCaption = "Remove"
 		end
-		
+
 		---[[!w
 		guiGridListSetSelectedItem( self.GUI.list, selectedItem, 2 )
 		guiGridListSetSelectedItem( self.GUI.list, selectedItem, 1 )
@@ -1892,7 +1892,7 @@ local control_mt = {
 		if not getmetatable(info) then
 			setmetatable(info, control.default)
 		end
-	
+
 		local newControl = setmetatable({}, {__index = control})
 		newControl.GUI = {}
 		newControl.WGUI = {}
@@ -1904,7 +1904,7 @@ local control_mt = {
 		-- Apply common values for controls
 		newControl.datafield = info.datafield
 		newControl.label = info.label
-		
+
 		return newControl:constructor(info)
 	end,
 
@@ -1919,7 +1919,7 @@ local control_mt = {
 	getDataField = function( control )
 		return control.datafield
 	end,
-	
+
 	destroy = function( control )
 		if control.changeHandler then
 			removeEventHandler(unpack(control.changeHandler))
@@ -1958,7 +1958,7 @@ local control_mt = {
 			handler( control )
 		end
 	end,
-	
+
 	addHandler = function ( control, mtaEvent, fromElement, handlerFunction, getPropagated )
 		if not handlerFunction then error("handlerFunction is nil", 2) end
 		fromElement = fromElement or rootElement
@@ -1968,10 +1968,10 @@ local control_mt = {
 		table.insert( control.handlers, {mtaEvent, fromElement, wrapperFunction} )
 		-- register it as the event's handler
 		addEventHandler( mtaEvent, fromElement, wrapperFunction, (getPropagated == true) )
-		
+
 		return #control.handlers
 	end,
-	
+
 	removeHandler = function ( control, handlerIndex )
 		local packedHandler = control.handlers[handlerIndex or #control.handlers]
 		if packedHandler then

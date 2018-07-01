@@ -1,4 +1,4 @@
-﻿---Created by norby89, based upon freecam by eAi
+---Created by norby89, based upon freecam by eAi
 -- state variables
 local rotX, rotY = 0, 0
 local cameraDistance = 0
@@ -13,10 +13,10 @@ browserElementLookOptions = {
 	mouseSensitivity = 1,
 	maxYAngle = 188, -- 188.4955575 (90 degrees)
 	camZOffset = 0, -- increase if the cam is too low
-	
+
 	invertedX = -1, -- invertedX should be left unchanged
 	invertedY = -1,
-	
+
 	distance = 4,
 	minDistance = 2,
 	maxDistance = 40,
@@ -24,7 +24,7 @@ browserElementLookOptions = {
 	scrollSpeed = 0.1,
 	up = "mouse_wheel_up",
 	down = "mouse_wheel_down",
-	
+
 	target = getLocalPlayer()
 }
 
@@ -39,7 +39,7 @@ function elementLookFrame ()
 	-- work out an angle in radians based on the number of pixels the cursor has moved (ever)
 	local camAngleX = browserElementLookOptions.invertedX * rotX / 120
 	local camAngleY = browserElementLookOptions.invertedY * rotY / 120
-	
+
 	-- get the position of the target
 	local camTargetX, camTargetY, camTargetZ = getElementPosition ( browserElementLookOptions.target )  -- tx, ty, tz
 	camTargetZ = camTargetZ + browserElementLookOptions.camZOffset
@@ -48,7 +48,7 @@ function elementLookFrame ()
 	local camPosX = camTargetX + ( ( math.cos ( camAngleX ) ) * distX )
 	local camPosY = camTargetY + ( ( math.sin ( camAngleX ) ) * distX )
 	local camPosZ = camTargetZ + math.sin ( camAngleY ) * cameraDistance
-	
+
 	-- set the new camera position and target
 	setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ )
 end
@@ -59,7 +59,7 @@ function elementLookMouse ( cX, cY, aX, aY )
 	if isMTAWindowActive() then return end
 	--ignore mouse movement if the cursor is on
 	if isCursorShowing() then return end
-	
+
 	local width, height = guiGetScreenSize()
 	aX = aX - width / 2
 	aY = aY - height / 2
@@ -72,7 +72,7 @@ function elementLookMouse ( cX, cY, aX, aY )
 	elseif rotY > browserElementLookOptions.maxYAngle then
 		rotY = browserElementLookOptions.maxYAngle
 	end
-	
+
 	-- keep the angle within the 0, 360 range
 	rotX = keepInRange ( toRad(360), rotX )
 end
@@ -83,7 +83,7 @@ function resetCamDist()
 		multiplier = 0
 	end
 	local newDistance = browserElementLookOptions.scrollSpeed * multiplier
-	
+
 	if cameraDistance < browserElementLookOptions.distance then
 		if cameraDistance + newDistance < browserElementLookOptions.distance then
 			cameraDistance = cameraDistance + newDistance
@@ -121,15 +121,15 @@ function math.round ( value )
 end
 
 function scrollDown()
-	if browserElementLookOptions.distance + browserElementLookOptions.scrollUnits < browserElementLookOptions.maxDistance 
-		then browserElementLookOptions.distance = browserElementLookOptions.distance + browserElementLookOptions.scrollUnits 
+	if browserElementLookOptions.distance + browserElementLookOptions.scrollUnits < browserElementLookOptions.maxDistance
+		then browserElementLookOptions.distance = browserElementLookOptions.distance + browserElementLookOptions.scrollUnits
 		else browserElementLookOptions.distance = browserElementLookOptions.maxDistance
 	end
 end
 
-function scrollUp() 
-	if browserElementLookOptions.distance - browserElementLookOptions.scrollUnits > browserElementLookOptions.minDistance 
-		then browserElementLookOptions.distance = browserElementLookOptions.distance - browserElementLookOptions.scrollUnits 
+function scrollUp()
+	if browserElementLookOptions.distance - browserElementLookOptions.scrollUnits > browserElementLookOptions.minDistance
+		then browserElementLookOptions.distance = browserElementLookOptions.distance - browserElementLookOptions.scrollUnits
 		else browserElementLookOptions.distance = browserElementLookOptions.minDistance
 	end
 end
@@ -139,19 +139,19 @@ function enableElementLook (dontChangeFixedMode, target, newRotX, newRotY)
 	if isElementLookEnabled() then
 		return false
 	end
-	
-	if target then 
+
+	if target then
 		browserElementLookOptions.target = target
 	else browserElementLookOptions.target = getLocalPlayer()
 	end
-	
+
 	--tx, ty, tz = getElementPosition ( browserElementLookOptions.target )
 	cameraDistance = browserElementLookOptions.distance
 	if ( newRotX and newRotY ) then
 		rotX = toRad ( 360 + 90 - newRotX )
 		rotY = toRad ( newRotY )
 	end
-	
+
 	bindControl ( browserElementLookOptions.down, "down", scrollDown )
 	bindControl ( browserElementLookOptions.up, "down", scrollUp )
 	isEnabled = true
@@ -175,7 +175,7 @@ function setFreelookEvents(bool)
 		isHandled2 = addEventHandler("onClientCursorMove",rootElement,elementLookMouse)
 	else
 		removeEventHandler("onClientRender", rootElement, elementLookFrame)
-		removeEventHandler("onClientCursorMove",rootElement,elementLookMouse)	
+		removeEventHandler("onClientCursorMove",rootElement,elementLookMouse)
 		isHandled1,isHandled2 = false,false
 	end
 end

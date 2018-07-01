@@ -1,4 +1,4 @@
-﻿-- serverside selection request
+-- serverside selection request
 addEvent ( "doSelectElement", true )
 addEvent ( "doSetVehicleStatic", true )
 addEvent ( "doSetPedStatic", true )

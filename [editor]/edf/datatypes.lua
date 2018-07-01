@@ -1,4 +1,4 @@
-﻿convert = {}
+convert = {}
 local c = convert
 
 --basic datatypes--
@@ -515,7 +515,7 @@ c.camera = function(var)
 		end
 		-- local coord1 = c.coord3d {substrings[1], substrings[2], substrings[3]}
 		-- local coord2 = c.coord3d {substrings[4], substrings[5], substrings[6]}
-		
+
 		-- if coord1 and coord2 then
 			-- return {coord1, coord2}
 		-- else
@@ -524,7 +524,7 @@ c.camera = function(var)
 	elseif vType == "table" then
 		local coord1 = c.coord3d(var[1])
 		local coord2 = c.coord3d(var[2])
-		
+
 		if coord1 and coord2 then
 			return var
 		else

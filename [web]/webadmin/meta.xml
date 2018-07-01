@@ -13,14 +13,14 @@
 	<html src="ie-70.css" raw="true"/>
 	<html src="css.css" raw="true"/>
 	<html src="groups.css" raw="true"/>
-	
+
 	<!-- ACLS -->
 	<export function="getACLs" http="true" />
 	<export function="setACLRight" http="true" />
 	<export function="removeACLRight" http="true" />
 	<export function="createACL" http="true" />
 	<export function="removeACL" http="true" />
-	
+
 	<!-- GROUPS -->
 	<export function="getGroups" http="true" />
 	<export function="addObjectToGroup" http="true" />

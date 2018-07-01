@@ -1,4 +1,4 @@
-﻿--+----------------------------+
+--+----------------------------+
 --| Team Death Match Game Mode |
 --|     Created By AlienX      |
 --+----------------------------+
@@ -28,22 +28,22 @@ function onMapLoad ( name )
 
 	--outputChatBox ( "LOADING NEW MAP... PLEASE WAIT" )
 
-	mapResource = getResourceRootElement(name)	
-	
+	mapResource = getResourceRootElement(name)
+
 	if xDebug then outputDebugString ( "Starting TDMA Main Control Suite" ) end
 	if xDebug then outputDebugString ( "STARTED... Proceeding to load gamemode... WAIT!" ) end
-	
+
 	----outputDebugString ( "Setting up Bases" )
 	setupBases(name)
-		
+
 	setGameType ("Team Death Match Arena")
-	
+
 	tdma = createElement("tdmagame")
-	
+
 	versionDisplay = textCreateDisplay ()
 	local versionText = textCreateTextItem ( "Team Death Match Arena v0.9", 0.975, 0.02, "medium", 255, 255, 255, 255, 1, "right" )
 	textDisplayAddText ( versionDisplay, versionText )
-	
+
 	if ( tonumber(gameMaxKills) > 0 ) then
 	local teamText = textCreateTextItem ( "Scores", 0.01, 0.24 + textBoost, "medium", 255,255,255, 255, 1 )
 	textDisplayAddText ( versionDisplay, teamText )
@@ -60,7 +60,7 @@ function onMapLoad ( name )
 			textBoost = textBoost + 0.015
 		end
 	end
-	
+
 	for k,v in ipairs(gameTeams) do
 		if ( gameFF == "on" ) then
 			setTeamFriendlyFire ( v.team, true )
@@ -70,12 +70,12 @@ function onMapLoad ( name )
 			setTeamFriendlyFire ( v.team, false )
 		end
 	end
-	
+
 	--Start the pickup system from Included\pickup_system.lua
 	initPickupSystem()
 	--Start the vehicle system from Included\vehicle_system.lua
 	initVehicleSystem()
-	
+
 	----outputDebugString ( "Starting The Game" )
 	if xDebug then outputDebugString ( "[[[[[/*****STARTING GAME*****\]]]]]" ) end
 	startGame()
@@ -84,13 +84,13 @@ end
 addEventHandler( "onGamemodeMapStart", root, onMapLoad)
 
 function onMapUnload ( name )
-	
+
 	--outputChatBox ( "UNLOADING LEVEL... PLEASE WAIT" )
-	
+
 	for k = 1,#gameTeams do
 		destroyElement ( gameTeams[k].team )
 	end
-	
+
 	textDestroyDisplay ( versionDisplay )
 
 	--Game mode variables
@@ -104,22 +104,22 @@ function onMapUnload ( name )
 	gameTimeMin = 0
 	gameTimeLocked = false
 	versionDisplay = nil
-	
-	
-	
+
+
+
 	textBoost = 0
-	
+
 	xonPlayerWasted_Enabled = true
 	mapResource = nil
-	
+
 	destroyElement ( tdma )
-	
+
 	for k,v in ipairs(getElementsByType("player")) do
 		setPlayerTeam ( v, nil )
 		setElementData ( v, "tdma.teamid", false )
 		setElementData ( v, "tdma.playerHasSpawned", false )
 	end
-	
+
 end
 addEventHandler( "onGamemodeMapStop", root, onMapUnload)
 
@@ -142,10 +142,10 @@ if xDebug then outputDebugString ( "... DONE" ) end
 	for k,v in ipairs(playerElementTree) do
 	    setElementData ( v, "tdma.sp", "n" )
 	    setElementData ( source, "tdma.playerHasSpawned", false )
-	    
+
 		--setElementInterior ( v, 10 )
 		--setTimer ( fadeCamera, 1000, 1, v, true, 1 )
-		
+
 	    setPedStat ( v, 69, 1000 )
 	    setPedStat ( v, 70, 1000 )
 	    setPedStat ( v, 71, 1000 )
@@ -157,17 +157,17 @@ if xDebug then outputDebugString ( "... DONE" ) end
 	    setPedStat ( v, 77, 1000 )
 	    setPedStat ( v, 78, 1000 )
 	    setPedStat ( v, 79, 1000 )
-	    
-		showPlayerHudComponent ( v, "ammo", true )
-		showPlayerHudComponent ( v, "area_name", true )
-		showPlayerHudComponent ( v, "armour", true )
-		showPlayerHudComponent ( v, "breath", true )
-		showPlayerHudComponent ( v, "health", true )
-		showPlayerHudComponent ( v, "money", true )
-		showPlayerHudComponent ( v, "radar", true )
-		showPlayerHudComponent ( v, "vehicle_name", true )
-		showPlayerHudComponent ( v, "weapon", true )
-	    
+
+		setPlayerHudComponentVisible ( v, "ammo", true )
+		setPlayerHudComponentVisible ( v, "area_name", true )
+		setPlayerHudComponentVisible ( v, "armour", true )
+		setPlayerHudComponentVisible ( v, "breath", true )
+		setPlayerHudComponentVisible ( v, "health", true )
+		setPlayerHudComponentVisible ( v, "money", true )
+		setPlayerHudComponentVisible ( v, "radar", true )
+		setPlayerHudComponentVisible ( v, "vehicle_name", true )
+		setPlayerHudComponentVisible ( v, "weapon", true )
+
 	    --Setup the status bar for the player!
 		statusTextDisplay = textCreateDisplay ()
 		local statusTextItem = textCreateTextItem ( "", 0.5, 0.95, "high", 255, 255, 255, 255, 1.5 )
@@ -175,7 +175,7 @@ if xDebug then outputDebugString ( "... DONE" ) end
 		textDisplayAddObserver ( statusTextDisplay, v )
 		textDisplayAddObserver ( versionDisplay, v )
 		setElementData ( v, "tdma.status", statusTextItem )
-		
+
 		firstSpawn ( v )
 	end
 end
@@ -183,12 +183,12 @@ end
 function restartGame()
 	for k,v in ipairs(getElementsByType ( "player" )) do
 	    setElementData ( v, "tdma.sp", "n" )
-	    
+
 		fadeCamera ( v, false, 1.0, 0, 0, 0 )
 		--setElementInterior ( v, 10 )
 		--setTimer ( fadeCamera, 1000, 1, v, true, 1 )
-		
-		
+
+
 	    setPedStat ( v, 69, 1000 )
 	    setPedStat ( v, 70, 1000 )
 	    setPedStat ( v, 71, 1000 )
@@ -200,17 +200,17 @@ function restartGame()
 	    setPedStat ( v, 77, 1000 )
 	    setPedStat ( v, 78, 1000 )
 	    setPedStat ( v, 79, 1000 )
-	    
-		showPlayerHudComponent ( v, "ammo", true )
-		showPlayerHudComponent ( v, "area_name", true )
-		showPlayerHudComponent ( v, "armour", true )
-		showPlayerHudComponent ( v, "breath", true )
-		showPlayerHudComponent ( v, "health", true )
-		showPlayerHudComponent ( v, "money", true )
-		showPlayerHudComponent ( v, "radar", true )
-		showPlayerHudComponent ( v, "vehicle_name", true )
-		showPlayerHudComponent ( v, "weapon", true )
-		
+
+		setPlayerHudComponentVisible ( v, "ammo", true )
+		setPlayerHudComponentVisible ( v, "area_name", true )
+		setPlayerHudComponentVisible ( v, "armour", true )
+		setPlayerHudComponentVisible ( v, "breath", true )
+		setPlayerHudComponentVisible ( v, "health", true )
+		setPlayerHudComponentVisible ( v, "money", true )
+		setPlayerHudComponentVisible ( v, "radar", true )
+		setPlayerHudComponentVisible ( v, "vehicle_name", true )
+		setPlayerHudComponentVisible ( v, "weapon", true )
+
 		local theTeamID = getElementData( v, "tdma.teamid" )
 		local theTeam = gameTeams[theTeamID]
 		if ( theTeam ) then
@@ -259,9 +259,9 @@ function onPlayerJoin ()
 	textDisplayAddObserver ( versionDisplay, source )
 	setElementData ( source, "tdma.status", statusTextItem )
 	setElementData( source, "tdma.teamMarker", nil )
-	
+
 	if ( debugEnabled ) then outputDebugString ( getPlayerName(source) .. "> No marker for this player, Make one and attach it." ) end
-	
+
 end
 addEventHandler ( "onPlayerJoin", root, onPlayerJoin )
 
@@ -303,7 +303,7 @@ function onPlayerQuit ( )
 		destroyElement ( marker )
 	end
 	setElementData ( source, "tdma.teamMarker", nil )
-end 
+end
 addEventHandler( "onPlayerQuit", root, onPlayerQuit )
 
 function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
@@ -316,9 +316,9 @@ function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 			local a = setTimer ( respawnThePlayer, 3000, 1, source, vTeam )
 			if not ( a ) then
 				respawnThePlayer ( source, vTeam )
-			end 
+			end
 		end
-		
+
 		if ( attacker ) then
 			local pTeamID = getElementData ( attacker, "tdma.teamid" )
 			local pTeam = gameTeams[pTeamID]
@@ -366,7 +366,7 @@ function tmrRestartRound ( timerID, player )
 	if ( tostring(timerID) == tostring(rndTimer) ) then
 		destroyMissionTimer ( timerID )
 		--[[for k,v in ipairs(getElementsByType("player")) do
-			
+
 		end]]--
 		xonPlayerWasted_Enabled = true
 		for k,v in ipairs(getElementsByType("player")) do
@@ -425,7 +425,7 @@ function setupBases( startedMap )
 	gameRespawnTime = getElementData ( gSettings[1], "respawntime" )
 	gameMaxKills = getElementData ( gSettings[1], "maxkills" )
 	gameFF = getElementData( gSettings[1], "ff" )
-	
+
 	local tSettings = getElementsByType ( "gametime" )
 	--outputDebugString ( "tSettings is " .. tostring(tSettings) )
 	if tSettings and #tSettings > 0 then
@@ -434,15 +434,15 @@ function setupBases( startedMap )
 		local tMin = getElementData ( tSettings[1], "m" )
 		if ( tMin ) then gameTimeMin = tMin end
 		local tLocked = getElementData ( tSettings[1], "locked" )
-		if ( tLocked ) then 
+		if ( tLocked ) then
 			gameTimeLocked = tLocked
 			setTimer ( lockTime, 1000, 0 )
 			if xDebug2 then outputDebugString ( "Timer is Locked" ) end
 		end
 	end
-	
+
 	if xDebug2 then outputDebugString ( "Timer is " .. tHour .. " " .. tMin .. " locked:" .. tostring(tLocked) ) end
-	
+
 	if xDebug then outputDebugString ( "Searching base for data" ) end
 	for k,v in ipairs(getElementsByType ( "base" )) do
 		gameTeams[k] = {}
@@ -452,7 +452,7 @@ function setupBases( startedMap )
 		gameTeams[k].green = getElementData ( v, "green" )
 		gameTeams[k].blue = getElementData ( v, "blue" )
 		gameTeams[k].kills = 0
-		
+
 		--Weapon Data
 		gameTeams[k].weapons = {}
 		for i,j in ipairs(getChildren ( v, "weapon" )) do
@@ -460,14 +460,14 @@ function setupBases( startedMap )
 			gameTeams[k].weapons[i].id = getElementData( j, "model" )
 			gameTeams[k].weapons[i].ammo = getElementData( j, "ammo" )
 		end
-		
+
 		--Skins
 		gameTeams[k].skins = {}
 		for i,j in ipairs(getChildren ( v, "skin" )) do
 			gameTeams[k].skins[i] = {}
 			gameTeams[k].skins[i].id = getElementData( j, "model" )
 		end
-		
+
 		--Spawns
 		gameTeams[k].spawns = {}
 		for i,j in ipairs(getChildren ( v, "spawn" )) do
@@ -480,11 +480,11 @@ function setupBases( startedMap )
 			gameTeams[k].spawns[i].ry = getElementData ( j, "randy" )
 			gameTeams[k].spawns[i].rz = getElementData ( j, "randz" )
 		end
-		
+
 		gameTeams[k].team = createTeam( gameTeams[k].name, gameTeams[k].red, gameTeams[k].green, gameTeams[k].blue )
 		if xDebug then outputDebugString ( "Team created [" .. gameTeams[k].name .. "]" ) end
 	end
-	
+
 	--Spawn vehicles
 	--<gamevehicle id="NRG500" model="522" posX="-2173.5368652344" posY="681.57989501953" posZ="54.47985458374" rotX="351.66986083984" rotY="69.25244140625" rotZ="168.93634033203" colors="39,106,0,0"/>
 
@@ -515,7 +515,7 @@ function playerSpawned ( )
 	spawnProtectionStart ( player )
 	--setCameraMode ( player, "player" )
 	setCameraTarget( player, player )
-	
+
 	local theTeamID = getElementData( player, "tdma.teamid" )
 	local theTeam = gameTeams[theTeamID]
 	for k,v in ipairs(theTeam.weapons) do
@@ -523,13 +523,13 @@ function playerSpawned ( )
 		giveWeapon ( source, v.id, v.ammo )
 	end
 end
-addEventHandler ( "onPlayerSpawn", root, playerSpawned ) 
+addEventHandler ( "onPlayerSpawn", root, playerSpawned )
 
 function firstSpawn ( source )
 	local thePlayer = source
 	if xDebug then outputDebugString ( "Spawning player " .. getPlayerName(thePlayer) .. " for the very first time" ) end
 	updatePlayerInfoBar ( thePlayer, 5200, "Please wait... Spawning" )
-	
+
 	local randTeam = math.random(1,#gameTeams)
 	local foundTeam = nil
 	local foundTeamID = nil
@@ -546,9 +546,9 @@ function firstSpawn ( source )
 			allDone = true
 		end
 	end
-	
+
 	if ( allDone ) then
-		if xDebug then outputDebugString ( "Spawning player " .. getPlayerName(thePlayer) .. " (ALLDONE) Team: " .. foundTeam.name ) end		
+		if xDebug then outputDebugString ( "Spawning player " .. getPlayerName(thePlayer) .. " (ALLDONE) Team: " .. foundTeam.name ) end
 		spawnThePlayer ( thePlayer, foundTeam )
 		setElementData ( thePlayer, "tdma.teamid", foundTeamID )
 		showTextForPlayer ( thePlayer, 5000, tonumber(foundTeam.red), tonumber(foundTeam.green), tonumber(foundTeam.blue), 1.5, "You have been automatically assigned to team " .. foundTeam.name )
@@ -576,7 +576,7 @@ function spawnThePlayer ( source, team )
 	local ry = tonumber(team.spawns[randSpawn].ry)
 	local rz = tonumber(team.spawns[randSpawn].rz)
 	if xDebug then outputDebugString ( "Spawn Data: spawns size: " .. #team.spawns .. " skin: " .. randSkin .. " x:" .. x .. " y:" .. y .. " z:" .. z .. " rot:" .. rot .. " rx:" .. rx .. " ry:" .. ry .. " zr:" .. rz ) end
-	
+
 	local playerHasSpawned = getElementData(source, "tdma.playerHasSpawned")
 	if ( playerHasSpawned == false ) then
 		--setCameraMode ( source, "fixed" )
@@ -591,7 +591,7 @@ function spawnThePlayer ( source, team )
 		spawnPlayer ( source, x,y,z, tonumber(rot), tonumber(randSkin), tonumber(gameInterior) )
 	end
 	setCameraInterior ( source, tonumber(gameInterior) )
-		
+
 	--setCameraMode ( source, "player" )
 	setPlayerTeam ( source, team.team )
 	createBlipAttachedTo ( source, 0, 2, team.red, team.green, team.blue )
@@ -618,11 +618,11 @@ function respawnThePlayer ( source, team )
 		--outputDebugString ( "Respawning Player FAILED - attempting to spawn player " .. getClientName(source) .. " as model CJ[0]")
 		spawnComplete = spawnPlayer ( source, x, y, z, tonumber(rot), 0, tonumber(gameInterior) )
 	end
-	
+
 	for k,v in ipairs(team.weapons) do
 		giveWeapon ( source, v.id, v.ammo )
 	end
-	
+
 	--playerSpawned ( source, team )
 end
 
@@ -639,7 +639,7 @@ end
 
 function Event_clientScriptLoaded ( player )
 
-	
+
 	if ( player ) then
 		local p_Team = getPlayerTeam(player)
 		if ( p_Team ) then

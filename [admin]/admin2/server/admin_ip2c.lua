@@ -39,7 +39,7 @@ function getPlayerCountryName ( player )
 	return false
 end
 
-local CountryCodes = 
+local CountryCodes =
 {
 	["AC"]="Ascension Island",
 	["AD"]="Andorra",

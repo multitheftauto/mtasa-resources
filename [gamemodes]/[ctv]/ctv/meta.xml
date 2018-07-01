@@ -5,7 +5,7 @@
 	<script src="_triggerqueue.lua" />
 	<script src="ctvspawnscreen.lua" />
 	<script src="ctv.lua" />
-	
+
 	<script src="anim.lua" type="client" />
 	<script src="client.lua" type="client" />
 	<config src="help.xml" type="client" />

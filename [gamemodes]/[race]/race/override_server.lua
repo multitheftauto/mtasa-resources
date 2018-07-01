@@ -1,4 +1,4 @@
-﻿--
+--
 -- override_server.lua
 --
 
@@ -100,7 +100,7 @@ function Override.resetAll()
 		for var,valuelist in pairs(varlist) do
 			-- Set the default value for this element's var
 			if isElement ( element ) then
-				setElementData ( element, var, var.default )		
+				setElementData ( element, var, var.default )
 			end
 		end
 	end

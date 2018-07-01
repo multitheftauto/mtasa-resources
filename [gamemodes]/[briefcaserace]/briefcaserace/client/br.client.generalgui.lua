@@ -1,4 +1,4 @@
-﻿local carrierLabel
+local carrierLabel
 
 addEventHandler("onClientResourceStart", getResourceRootElement(),
 function (resource)

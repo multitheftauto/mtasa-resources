@@ -1,4 +1,4 @@
-﻿--
+--
 -- editor_support_server.lua
 --
 
@@ -152,8 +152,8 @@ if isEditor() then
 															rotation = { 0, 0, rz },
 															velocity = { 0, 0, 0 },
 															turnvelocity = { 0, 0, 0 },
-															geardown = false }		
-					
+															geardown = false }
+
 					g_CurrentRaceMode.checkpointBackups[player].goingback = false
 				end
 			end
@@ -173,7 +173,7 @@ if isEditor() then
 		g_GameOptions.firewater_map_can_override		= true
 		g_GameOptions.classicchangez_map_can_override	= true
 	end
-	
+
 	_cacheMapOptions = cacheMapOptions
 	function cacheMapOptions(map)
 		_cacheMapOptions(map)

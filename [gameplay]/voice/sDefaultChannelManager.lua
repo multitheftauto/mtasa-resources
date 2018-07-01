@@ -1,11 +1,11 @@
-﻿if isVoiceEnabled() then
-	addEventHandler ( "onPlayerJoin", root, 
+if isVoiceEnabled() then
+	addEventHandler ( "onPlayerJoin", root,
 		function()
 			setPlayerInternalChannel ( source, root )
 		end
 	)
 
-	addEventHandler ( "onResourceStart", getResourceRootElement(), 
+	addEventHandler ( "onResourceStart", getResourceRootElement(),
 		function()
 			refreshPlayers()
 		end

@@ -1,4 +1,4 @@
-﻿local clientGUILoaded = {} --We dont want to trigger client events if they havent downloaded client scripts yet
+local clientGUILoaded = {} --We dont want to trigger client events if they havent downloaded client scripts yet
 loadedEDF = {}
 
 addEventHandler ( "onResourceStart", thisResourceRoot,
@@ -38,8 +38,8 @@ function registerEDF( resource )
 	end
 end
 addEventHandler ( "onEDFLoad", rootElement, registerEDF)
-	
-addEventHandler ( "onEDFUnload", rootElement, 
+
+addEventHandler ( "onEDFUnload", rootElement,
 	function ( resource )
 		loadedEDF[resource] = nil
 		for i, player in ipairs(getElementsByType"player") do

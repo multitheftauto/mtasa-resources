@@ -5,7 +5,7 @@
 	<group name="Attractors">
 		<anim name="Stepsit_in" />
 		<anim name="Stepsit_loop" />
-		<anim name="Stepsit_out" /> 
+		<anim name="Stepsit_out" />
 	</group>
 	<group name="BAR">
 		<anim name="Barcustom_get" />
@@ -19,7 +19,7 @@
 		<anim name="Barserve_loop" />
 		<anim name="Barserve_order" />
 		<anim name="dnk_stndF_loop" />
-		<anim name="dnk_stndM_loop" /> 
+		<anim name="dnk_stndM_loop" />
 	</group>
 	<group name="BASEBALL">
 		<anim name="Bat_1" />
@@ -32,7 +32,7 @@
 		<anim name="Bat_Hit_3" />
 		<anim name="Bat_IDLE" />
 		<anim name="Bat_M" />
-		<anim name="BAT_PART" /> 
+		<anim name="BAT_PART" />
 	</group>
 	<group name="BD_FIRE">
 		<anim name="BD_Fire1" />
@@ -47,14 +47,14 @@
 		<anim name="Grlfrd_Kiss_03" />
 		<anim name="M_smklean_loop" />
 		<anim name="Playa_Kiss_03" />
-		<anim name="wash_up" /> 
+		<anim name="wash_up" />
 	</group>
 	<group name="BEACH">
 		<anim name="bather" />
 		<anim name="Lay_Bac_Loop" />
 		<anim name="ParkSit_M_loop" />
 		<anim name="ParkSit_W_loop" />
-		<anim name="SitnWait_loop_W" /> 
+		<anim name="SitnWait_loop_W" />
 	</group>
 	<group name="benchpress">
 		<anim name="gym_bp_celebrate" />
@@ -63,13 +63,13 @@
 		<anim name="gym_bp_geton" />
 		<anim name="gym_bp_up_A" />
 		<anim name="gym_bp_up_B" />
-		<anim name="gym_bp_up_smooth" /> 
+		<anim name="gym_bp_up_smooth" />
 	</group>
 	<group name="BF_injection">
 		<anim name="BF_getin_LHS" />
 		<anim name="BF_getin_RHS" />
 		<anim name="BF_getout_LHS" />
-		<anim name="BF_getout_RHS" /> 
+		<anim name="BF_getout_RHS" />
 	</group>
 	<group name="BIKED">
 		<anim name="BIKEd_Back" />
@@ -90,7 +90,7 @@
 		<anim name="BIKEd_Ride" />
 		<anim name="BIKEd_Right" />
 		<anim name="BIKEd_shuffle" />
-		<anim name="BIKEd_Still" /> 
+		<anim name="BIKEd_Still" />
 	</group>
 	<group name="BIKEH">
 		<anim name="BIKEh_Back" />
@@ -110,7 +110,7 @@
 		<anim name="BIKEh_pushes" />
 		<anim name="BIKEh_Ride" />
 		<anim name="BIKEh_Right" />
-		<anim name="BIKEh_Still" /> 
+		<anim name="BIKEh_Still" />
 	</group>
 	<group name="BIKELEAP">
 		<anim name="bk_blnce_in" />
@@ -121,7 +121,7 @@
 		<anim name="struggle_cesar" />
 		<anim name="struggle_driver" />
 		<anim name="truck_driver" />
-		<anim name="truck_getin" /> 
+		<anim name="truck_getin" />
 	</group>
 	<group name="BIKES">
 		<anim name="BIKEs_Back" />
@@ -143,7 +143,7 @@
 		<anim name="BIKEs_Right" />
 		<anim name="BIKEs_Snatch_L" />
 		<anim name="BIKEs_Snatch_R" />
-		<anim name="BIKEs_Still" /> 
+		<anim name="BIKEs_Still" />
 	</group>
 	<group name="BIKEV">
 		<anim name="BIKEv_Back" />
@@ -163,13 +163,13 @@
 		<anim name="BIKEv_pushes" />
 		<anim name="BIKEv_Ride" />
 		<anim name="BIKEv_Right" />
-		<anim name="BIKEv_Still" /> 
+		<anim name="BIKEv_Still" />
 	</group>
 	<group name="BIKE_DBZ">
 		<anim name="Pass_Driveby_BWD" />
 		<anim name="Pass_Driveby_FWD" />
 		<anim name="Pass_Driveby_LHS" />
-		<anim name="Pass_Driveby_RHS" /> 
+		<anim name="Pass_Driveby_RHS" />
 	</group>
 	<group name="BMX">
 		<anim name="BMX_back" />
@@ -189,7 +189,7 @@
 		<anim name="BMX_Ride" />
 		<anim name="BMX_Right" />
 		<anim name="BMX_sprint" />
-		<anim name="BMX_still" /> 
+		<anim name="BMX_still" />
 	</group>
 	<group name="BOMBER">
 		<anim name="BOM_Plant" />
@@ -197,7 +197,7 @@
 		<anim name="BOM_Plant_Crouch_In" />
 		<anim name="BOM_Plant_Crouch_Out" />
 		<anim name="BOM_Plant_In" />
-		<anim name="BOM_Plant_Loop" /> 
+		<anim name="BOM_Plant_Loop" />
 	</group>
 	<group name="BOX">
 		<anim name="boxhipin" />
@@ -209,7 +209,7 @@
 		<anim name="bxshwlk" />
 		<anim name="bxshwlki" />
 		<anim name="bxwlko" />
-		<anim name="catch_box" /> 
+		<anim name="catch_box" />
 	</group>
 	<group name="BSKTBALL">
 		<anim name="BBALL_def_jump_shot" />
@@ -252,14 +252,14 @@
 		<anim name="BBALL_WalkStop_R_O" />
 		<anim name="BBALL_walk_O" />
 		<anim name="BBALL_walk_start" />
-		<anim name="BBALL_walk_start_O" /> 
+		<anim name="BBALL_walk_start_O" />
 	</group>
 	<group name="BUDDY">
 		<anim name="buddy_crouchfire" />
 		<anim name="buddy_crouchreload" />
 		<anim name="buddy_fire" />
 		<anim name="buddy_fire_poor" />
-		<anim name="buddy_reload" /> 
+		<anim name="buddy_reload" />
 	</group>
 	<group name="BUS">
 		<anim name="BUS_close" />
@@ -270,7 +270,7 @@
 		<anim name="BUS_jacked_LHS" />
 		<anim name="BUS_open" />
 		<anim name="BUS_open_RHS" />
-		<anim name="BUS_pullout_LHS" /> 
+		<anim name="BUS_pullout_LHS" />
 	</group>
 	<group name="CAMERA">
 		<anim name="camcrch_cmon" />
@@ -286,7 +286,7 @@
 		<anim name="piccrch_take" />
 		<anim name="picstnd_in" />
 		<anim name="picstnd_out" />
-		<anim name="picstnd_take" /> 
+		<anim name="picstnd_take" />
 	</group>
 	<group name="CAR">
 		<anim name="Fixn_Car_Loop" />
@@ -299,7 +299,7 @@
 		<anim name="Tyd2car_low" />
 		<anim name="Tyd2car_med" />
 		<anim name="Tyd2car_TurnL" />
-		<anim name="Tyd2car_TurnR" /> 
+		<anim name="Tyd2car_TurnR" />
 	</group>
 	<group name="CARRY">
 		<anim name="crry_prtial" />
@@ -308,7 +308,7 @@
 		<anim name="liftup105" />
 		<anim name="putdwn" />
 		<anim name="putdwn05" />
-		<anim name="putdwn105" /> 
+		<anim name="putdwn105" />
 	</group>
 	<group name="CAR_CHAT">
 		<anim name="carfone_in" />
@@ -331,7 +331,7 @@
 		<anim name="CAR_Sc4_FR" />
 		<anim name="car_talkm_in" />
 		<anim name="car_talkm_loop" />
-		<anim name="car_talkm_out" /> 
+		<anim name="car_talkm_out" />
 	</group>
 	<group name="CASINO">
 		<anim name="cards_in" />
@@ -358,7 +358,7 @@
 		<anim name="Slot_Plyr" />
 		<anim name="Slot_wait" />
 		<anim name="Slot_win_out" />
-		<anim name="wof" /> 
+		<anim name="wof" />
 	</group>
 	<group name="CHAINSAW">
 		<anim name="CSAW_1" />
@@ -371,7 +371,7 @@
 		<anim name="csaw_part" />
 		<anim name="IDLE_csaw" />
 		<anim name="WEAPON_csaw" />
-		<anim name="WEAPON_csawlo" /> 
+		<anim name="WEAPON_csawlo" />
 	</group>
 	<group name="CHOPPA">
 		<anim name="CHOPPA_back" />
@@ -391,7 +391,7 @@
 		<anim name="CHOPPA_ride" />
 		<anim name="CHOPPA_Right" />
 		<anim name="CHOPPA_sprint" />
-		<anim name="CHOPPA_Still" /> 
+		<anim name="CHOPPA_Still" />
 	</group>
 	<group name="CLOTHES">
 		<anim name="CLO_Buy" />
@@ -406,7 +406,7 @@
 		<anim name="CLO_Pose_Out_O" />
 		<anim name="CLO_Pose_Shoes" />
 		<anim name="CLO_Pose_Torso" />
-		<anim name="CLO_Pose_Watch" /> 
+		<anim name="CLO_Pose_Watch" />
 	</group>
 	<group name="COACH">
 		<anim name="COACH_inL" />
@@ -414,7 +414,7 @@
 		<anim name="COACH_opnL" />
 		<anim name="COACH_opnR" />
 		<anim name="COACH_outL" />
-		<anim name="COACH_outR" /> 
+		<anim name="COACH_outR" />
 	</group>
 	<group name="COLT45">
 		<anim name="2guns_crouchfire" />
@@ -423,7 +423,7 @@
 		<anim name="colt45_fire" />
 		<anim name="colt45_fire_2hands" />
 		<anim name="colt45_reload" />
-		<anim name="sawnoff_reload" /> 
+		<anim name="sawnoff_reload" />
 	</group>
 	<group name="COP_AMBIENT">
 		<anim name="Copbrowse_in" />
@@ -437,13 +437,13 @@
 		<anim name="Coplook_out" />
 		<anim name="Coplook_shake" />
 		<anim name="Coplook_think" />
-		<anim name="Coplook_watch" /> 
+		<anim name="Coplook_watch" />
 	</group>
 	<group name="COP_DVBYZ">
 		<anim name="COP_Dvby_B" />
 		<anim name="COP_Dvby_FT" />
 		<anim name="COP_Dvby_L" />
-		<anim name="COP_Dvby_R" /> 
+		<anim name="COP_Dvby_R" />
 	</group>
 	<group name="CRACK">
 		<anim name="Bbalbat_Idle_01" />
@@ -455,21 +455,21 @@
 		<anim name="crckidle1" />
 		<anim name="crckidle2" />
 		<anim name="crckidle3" />
-		<anim name="crckidle4" /> 
+		<anim name="crckidle4" />
 	</group>
 	<group name="CRIB">
 		<anim name="CRIB_Console_Loop" />
 		<anim name="CRIB_Use_Switch" />
 		<anim name="PED_Console_Loop" />
 		<anim name="PED_Console_Loose" />
-		<anim name="PED_Console_Win" /> 
+		<anim name="PED_Console_Win" />
 	</group>
 	<group name="DAM_JUMP">
 		<anim name="DAM_Dive_Loop" />
 		<anim name="DAM_Land" />
 		<anim name="DAM_Launch" />
 		<anim name="Jump_Roll" />
-		<anim name="SF_JumpWall" /> 
+		<anim name="SF_JumpWall" />
 	</group>
 	<group name="DANCING">
 		<anim name="bd_clap" />
@@ -484,7 +484,7 @@
 		<anim name="dnce_M_b" />
 		<anim name="dnce_M_c" />
 		<anim name="dnce_M_d" />
-		<anim name="dnce_M_e" /> 
+		<anim name="dnce_M_e" />
 	</group>
 	<group name="DEALER">
 		<anim name="DEALER_DEAL" />
@@ -493,7 +493,7 @@
 		<anim name="DEALER_IDLE_02" />
 		<anim name="DEALER_IDLE_03" />
 		<anim name="DRUGS_BUY" />
-		<anim name="shop_pay" /> 
+		<anim name="shop_pay" />
 	</group>
 	<group name="DILDO">
 		<anim name="DILDO_1" />
@@ -504,13 +504,13 @@
 		<anim name="DILDO_Hit_1" />
 		<anim name="DILDO_Hit_2" />
 		<anim name="DILDO_Hit_3" />
-		<anim name="DILDO_IDLE" /> 
+		<anim name="DILDO_IDLE" />
 	</group>
 	<group name="DODGE">
 		<anim name="Cover_Dive_01" />
 		<anim name="Cover_Dive_02" />
 		<anim name="Crushed" />
-		<anim name="Crush_Jump" /> 
+		<anim name="Crush_Jump" />
 	</group>
 	<group name="DOZER">
 		<anim name="DOZER_Align_LHS" />
@@ -522,7 +522,7 @@
 		<anim name="DOZER_Jacked_LHS" />
 		<anim name="DOZER_Jacked_RHS" />
 		<anim name="DOZER_pullout_LHS" />
-		<anim name="DOZER_pullout_RHS" /> 
+		<anim name="DOZER_pullout_RHS" />
 	</group>
 	<group name="DRIVEBYS">
 		<anim name="Gang_DrivebyLHS" />
@@ -532,7 +532,7 @@
 		<anim name="Gang_DrivebyRHS_Bwd" />
 		<anim name="Gang_DrivebyRHS_Fwd" />
 		<anim name="Gang_DrivebyTop_LHS" />
-		<anim name="Gang_DrivebyTop_RHS" /> 
+		<anim name="Gang_DrivebyTop_RHS" />
 	</group>
 	<group name="FAT">
 		<anim name="FatIdle" />
@@ -552,7 +552,7 @@
 		<anim name="FatWalk_armed" />
 		<anim name="FatWalk_Csaw" />
 		<anim name="FatWalk_Rocket" />
-		<anim name="IDLE_tired" /> 
+		<anim name="IDLE_tired" />
 	</group>
 	<group name="FIGHT_B">
 		<anim name="FightB_1" />
@@ -564,7 +564,7 @@
 		<anim name="FightB_M" />
 		<anim name="HitB_1" />
 		<anim name="HitB_2" />
-		<anim name="HitB_3" /> 
+		<anim name="HitB_3" />
 	</group>
 	<group name="FIGHT_C">
 		<anim name="FightC_1" />
@@ -578,7 +578,7 @@
 		<anim name="FightC_Spar" />
 		<anim name="HitC_1" />
 		<anim name="HitC_2" />
-		<anim name="HitC_3" /> 
+		<anim name="HitC_3" />
 	</group>
 	<group name="FIGHT_D">
 		<anim name="FightD_1" />
@@ -590,13 +590,13 @@
 		<anim name="FightD_M" />
 		<anim name="HitD_1" />
 		<anim name="HitD_2" />
-		<anim name="HitD_3" /> 
+		<anim name="HitD_3" />
 	</group>
 	<group name="FIGHT_E">
 		<anim name="FightKick" />
 		<anim name="FightKick_B" />
 		<anim name="Hit_fightkick" />
-		<anim name="Hit_fightkick_B" /> 
+		<anim name="Hit_fightkick_B" />
 	</group>
 	<group name="FINALE">
 		<anim name="FIN_Climb_In" />
@@ -614,7 +614,7 @@
 		<anim name="FIN_LegsUp_L" />
 		<anim name="FIN_LegsUp_Loop" />
 		<anim name="FIN_LegsUp_R" />
-		<anim name="FIN_Let_Go" /> 
+		<anim name="FIN_Let_Go" />
 	</group>
 	<group name="FINALE2">
 		<anim name="FIN_Cop1_ClimbOut" />
@@ -624,15 +624,15 @@
 		<anim name="FIN_Cop1_Swing" />
 		<anim name="FIN_Cop2_ClimbOut" />
 		<anim name="FIN_Switch_P" />
-		<anim name="FIN_Switch_S" /> 
+		<anim name="FIN_Switch_S" />
 	</group>
 	<group name="FLAME">
-		<anim name="FLAME_fire" /> 
+		<anim name="FLAME_fire" />
 	</group>
 	<group name="Flowers">
 		<anim name="Flower_attack" />
 		<anim name="Flower_attack_M" />
-		<anim name="Flower_Hit" /> 
+		<anim name="Flower_Hit" />
 	</group>
 	<group name="FOOD">
 		<anim name="EAT_Burger" />
@@ -667,7 +667,7 @@
 		<anim name="SHP_Tray_Lift_Out" />
 		<anim name="SHP_Tray_Out" />
 		<anim name="SHP_Tray_Pose" />
-		<anim name="SHP_Tray_Return" /> 
+		<anim name="SHP_Tray_Return" />
 	</group>
 	<group name="Freeweights">
 		<anim name="gym_barbell" />
@@ -678,7 +678,7 @@
 		<anim name="gym_free_loop" />
 		<anim name="gym_free_pickup" />
 		<anim name="gym_free_putdown" />
-		<anim name="gym_free_up_smooth" /> 
+		<anim name="gym_free_up_smooth" />
 	</group>
 	<group name="GANGS">
 		<anim name="DEALER_DEAL" />
@@ -713,7 +713,7 @@
 		<anim name="shake_carK" />
 		<anim name="shake_carSH" />
 		<anim name="smkcig_prtl" />
-		<anim name="smkcig_prtl_F" /> 
+		<anim name="smkcig_prtl_F" />
 	</group>
 	<group name="GHANDS">
 		<anim name="gsign1" />
@@ -735,7 +735,7 @@
 		<anim name="RHGsign2" />
 		<anim name="RHGsign3" />
 		<anim name="RHGsign4" />
-		<anim name="RHGsign5" /> 
+		<anim name="RHGsign5" />
 	</group>
 	<group name="GHETTO_DB">
 		<anim name="GDB_Car2_PLY" />
@@ -744,24 +744,24 @@
 		<anim name="GDB_Car_PLY" />
 		<anim name="GDB_Car_RYD" />
 		<anim name="GDB_Car_SMO" />
-		<anim name="GDB_Car_SWE" /> 
+		<anim name="GDB_Car_SWE" />
 	</group>
 	<group name="goggles">
-		<anim name="goggles_put_on" /> 
+		<anim name="goggles_put_on" />
 	</group>
 	<group name="GRAFFITI">
 		<anim name="graffiti_Chkout" />
-		<anim name="spraycan_fire" /> 
+		<anim name="spraycan_fire" />
 	</group>
 	<group name="GRAVEYARD">
 		<anim name="mrnF_loop" />
 		<anim name="mrnM_loop" />
-		<anim name="prst_loopa" /> 
+		<anim name="prst_loopa" />
 	</group>
 	<group name="GRENADE">
 		<anim name="WEAPON_start_throw" />
 		<anim name="WEAPON_throw" />
-		<anim name="WEAPON_throwu" /> 
+		<anim name="WEAPON_throwu" />
 	</group>
 	<group name="GYMNASIUM">
 		<anim name="GYMshadowbox" />
@@ -787,7 +787,7 @@
 		<anim name="Pedals_fast" />
 		<anim name="Pedals_med" />
 		<anim name="Pedals_slow" />
-		<anim name="Pedals_still" /> 
+		<anim name="Pedals_still" />
 	</group>
 	<group name="HAIRCUTS">
 		<anim name="BRB_Beard_01" />
@@ -802,7 +802,7 @@
 		<anim name="BRB_Out" />
 		<anim name="BRB_Sit_In" />
 		<anim name="BRB_Sit_Loop" />
-		<anim name="BRB_Sit_Out" /> 
+		<anim name="BRB_Sit_Out" />
 	</group>
 	<group name="HEIST9">
 		<anim name="CAS_G2_GasKO" />
@@ -814,7 +814,7 @@
 		<anim name="swt_wllshoot_in_R" />
 		<anim name="swt_wllshoot_out_L" />
 		<anim name="swt_wllshoot_out_R" />
-		<anim name="Use_SwipeCard" /> 
+		<anim name="Use_SwipeCard" />
 	</group>
 	<group name="INT_HOUSE">
 		<anim name="BED_In_L" />
@@ -826,7 +826,7 @@
 		<anim name="LOU_In" />
 		<anim name="LOU_Loop" />
 		<anim name="LOU_Out" />
-		<anim name="wash_up" /> 
+		<anim name="wash_up" />
 	</group>
 	<group name="INT_OFFICE">
 		<anim name="FF_Dam_Fwd" />
@@ -838,7 +838,7 @@
 		<anim name="OFF_Sit_In" />
 		<anim name="OFF_Sit_Read" />
 		<anim name="OFF_Sit_Type_Loop" />
-		<anim name="OFF_Sit_Watch" /> 
+		<anim name="OFF_Sit_Watch" />
 	</group>
 	<group name="INT_SHOP">
 		<anim name="shop_cashier" />
@@ -848,19 +848,19 @@
 		<anim name="shop_loop" />
 		<anim name="shop_out" />
 		<anim name="shop_pay" />
-		<anim name="shop_shelf" /> 
+		<anim name="shop_shelf" />
 	</group>
 	<group name="JST_BUISNESS">
 		<anim name="girl_01" />
 		<anim name="girl_02" />
 		<anim name="player_01" />
-		<anim name="smoke_01" /> 
+		<anim name="smoke_01" />
 	</group>
 	<group name="KART">
 		<anim name="KART_getin_LHS" />
 		<anim name="KART_getin_RHS" />
 		<anim name="KART_getout_LHS" />
-		<anim name="KART_getout_RHS" /> 
+		<anim name="KART_getout_RHS" />
 	</group>
 	<group name="KISSING">
 		<anim name="BD_GF_Wave" />
@@ -877,7 +877,7 @@
 		<anim name="Grlfrd_Kiss_03" />
 		<anim name="Playa_Kiss_01" />
 		<anim name="Playa_Kiss_02" />
-		<anim name="Playa_Kiss_03" /> 
+		<anim name="Playa_Kiss_03" />
 	</group>
 	<group name="KNIFE">
 		<anim name="KILL_Knife_Ped_Damage" />
@@ -895,19 +895,19 @@
 		<anim name="knife_hit_3" />
 		<anim name="knife_IDLE" />
 		<anim name="knife_part" />
-		<anim name="WEAPON_knifeidle" /> 
+		<anim name="WEAPON_knifeidle" />
 	</group>
 	<group name="LAPDAN1">
 		<anim name="LAPDAN_D" />
-		<anim name="LAPDAN_P" /> 
+		<anim name="LAPDAN_P" />
 	</group>
 	<group name="LAPDAN2">
 		<anim name="LAPDAN_D" />
-		<anim name="LAPDAN_P" /> 
+		<anim name="LAPDAN_P" />
 	</group>
 	<group name="LAPDAN3">
 		<anim name="LAPDAN_D" />
-		<anim name="LAPDAN_P" /> 
+		<anim name="LAPDAN_P" />
 	</group>
 	<group name="LOWRIDER">
 		<anim name="F_smklean_loop" />
@@ -948,7 +948,7 @@
 		<anim name="RAP_B_Loop" />
 		<anim name="RAP_C_Loop" />
 		<anim name="Sit_relaxed" />
-		<anim name="Tap_hand" /> 
+		<anim name="Tap_hand" />
 	</group>
 	<group name="MD_CHASE">
 		<anim name="Carhit_Hangon" />
@@ -975,7 +975,7 @@
 		<anim name="MD_BIKE_Punch_F" />
 		<anim name="MD_BIKE_Shot_F" />
 		<anim name="MD_HANG_Lnd_Roll" />
-		<anim name="MD_HANG_Loop" /> 
+		<anim name="MD_HANG_Loop" />
 	</group>
 	<group name="MD_END">
 		<anim name="END_SC1_PLY" />
@@ -985,10 +985,10 @@
 		<anim name="END_SC2_PLY" />
 		<anim name="END_SC2_RYD" />
 		<anim name="END_SC2_SMO" />
-		<anim name="END_SC2_SWE" /> 
+		<anim name="END_SC2_SWE" />
 	</group>
 	<group name="MEDIC">
-		<anim name="CPR" /> 
+		<anim name="CPR" />
 	</group>
 	<group name="MISC">
 		<anim name="bitchslap" />
@@ -1031,7 +1031,7 @@
 		<anim name="Seat_talk_02" />
 		<anim name="SEAT_watch" />
 		<anim name="smalplane_door" />
-		<anim name="smlplane_door" /> 
+		<anim name="smlplane_door" />
 	</group>
 	<group name="MTB">
 		<anim name="MTB_back" />
@@ -1051,7 +1051,7 @@
 		<anim name="MTB_Ride" />
 		<anim name="MTB_Right" />
 		<anim name="MTB_sprint" />
-		<anim name="MTB_still" /> 
+		<anim name="MTB_still" />
 	</group>
 	<group name="MUSCULAR">
 		<anim name="MscleWalkst_armed" />
@@ -1070,11 +1070,11 @@
 		<anim name="MuscleWalkstart" />
 		<anim name="MuscleWalk_armed" />
 		<anim name="Musclewalk_Csaw" />
-		<anim name="Musclewalk_rocket" /> 
+		<anim name="Musclewalk_rocket" />
 	</group>
 	<group name="NEVADA">
 		<anim name="NEVADA_getin" />
-		<anim name="NEVADA_getout" /> 
+		<anim name="NEVADA_getout" />
 	</group>
 	<group name="ON_LOOKERS">
 		<anim name="lkaround_in" />
@@ -1105,7 +1105,7 @@
 		<anim name="shout_out" />
 		<anim name="wave_in" />
 		<anim name="wave_loop" />
-		<anim name="wave_out" /> 
+		<anim name="wave_out" />
 	</group>
 	<group name="OTB">
 		<anim name="betslp_in" />
@@ -1118,7 +1118,7 @@
 		<anim name="wtchrace_loop" />
 		<anim name="wtchrace_lose" />
 		<anim name="wtchrace_out" />
-		<anim name="wtchrace_win" /> 
+		<anim name="wtchrace_win" />
 	</group>
 	<group name="PARACHUTE">
 		<anim name="FALL_skyDive" />
@@ -1142,12 +1142,12 @@
 		<anim name="PARA_steerL" />
 		<anim name="PARA_steerL_O" />
 		<anim name="PARA_steerR" />
-		<anim name="PARA_steerR_O" /> 
+		<anim name="PARA_steerR_O" />
 	</group>
 	<group name="PARK">
 		<anim name="Tai_Chi_in" />
 		<anim name="Tai_Chi_Loop" />
-		<anim name="Tai_Chi_Out" /> 
+		<anim name="Tai_Chi_Out" />
 	</group>
 	<group name="PAULNMAC">
 		<anim name="Piss_in" />
@@ -1161,7 +1161,7 @@
 		<anim name="PnM_Loop_B" />
 		<anim name="wank_in" />
 		<anim name="wank_loop" />
-		<anim name="wank_out" /> 
+		<anim name="wank_out" />
 	</group>
 	<group name="ped">
 		<anim name="abseil" />
@@ -1457,20 +1457,20 @@
 		<anim name="WOMAN_walkpro" />
 		<anim name="WOMAN_walksexy" />
 		<anim name="WOMAN_walkshop" />
-		<anim name="XPRESSscratch" /> 
+		<anim name="XPRESSscratch" />
 	</group>
 	<group name="PLAYER_DVBYS">
 		<anim name="Plyr_DrivebyBwd" />
 		<anim name="Plyr_DrivebyFwd" />
 		<anim name="Plyr_DrivebyLHS" />
-		<anim name="Plyr_DrivebyRHS" /> 
+		<anim name="Plyr_DrivebyRHS" />
 	</group>
 	<group name="PLAYIDLES">
 		<anim name="shift" />
 		<anim name="shldr" />
 		<anim name="stretch" />
 		<anim name="strleg" />
-		<anim name="time" /> 
+		<anim name="time" />
 	</group>
 	<group name="POLICE">
 		<anim name="CopTraf_Away" />
@@ -1482,7 +1482,7 @@
 		<anim name="crm_drgbst_01" />
 		<anim name="Door_Kick" />
 		<anim name="plc_drgbst_01" />
-		<anim name="plc_drgbst_02" /> 
+		<anim name="plc_drgbst_02" />
 	</group>
 	<group name="POOL">
 		<anim name="POOL_ChalkCue" />
@@ -1505,18 +1505,18 @@
 		<anim name="POOL_XLong_Shot" />
 		<anim name="POOL_XLong_Shot_O" />
 		<anim name="POOL_XLong_Start" />
-		<anim name="POOL_XLong_Start_O" /> 
+		<anim name="POOL_XLong_Start_O" />
 	</group>
 	<group name="POOR">
 		<anim name="WINWASH_Start" />
-		<anim name="WINWASH_Wash2Beg" /> 
+		<anim name="WINWASH_Wash2Beg" />
 	</group>
 	<group name="PYTHON">
 		<anim name="python_crouchfire" />
 		<anim name="python_crouchreload" />
 		<anim name="python_fire" />
 		<anim name="python_fire_poor" />
-		<anim name="python_reload" /> 
+		<anim name="python_reload" />
 	</group>
 	<group name="QUAD">
 		<anim name="QUAD_back" />
@@ -1535,13 +1535,13 @@
 		<anim name="QUAD_passenger" />
 		<anim name="QUAD_reverse" />
 		<anim name="QUAD_ride" />
-		<anim name="QUAD_Right" /> 
+		<anim name="QUAD_Right" />
 	</group>
 	<group name="QUAD_DBZ">
 		<anim name="Pass_Driveby_BWD" />
 		<anim name="Pass_Driveby_FWD" />
 		<anim name="Pass_Driveby_LHS" />
-		<anim name="Pass_Driveby_RHS" /> 
+		<anim name="Pass_Driveby_RHS" />
 	</group>
 	<group name="RAPPING">
 		<anim name="Laugh_01" />
@@ -1551,14 +1551,14 @@
 		<anim name="RAP_B_IN" />
 		<anim name="RAP_B_Loop" />
 		<anim name="RAP_B_OUT" />
-		<anim name="RAP_C_Loop" /> 
+		<anim name="RAP_C_Loop" />
 	</group>
 	<group name="RIFLE">
 		<anim name="RIFLE_crouchfire" />
 		<anim name="RIFLE_crouchload" />
 		<anim name="RIFLE_fire" />
 		<anim name="RIFLE_fire_poor" />
-		<anim name="RIFLE_load" /> 
+		<anim name="RIFLE_load" />
 	</group>
 	<group name="RIOT">
 		<anim name="RIOT_ANGRY" />
@@ -1567,28 +1567,28 @@
 		<anim name="RIOT_CHANT" />
 		<anim name="RIOT_FUKU" />
 		<anim name="RIOT_PUNCHES" />
-		<anim name="RIOT_shout" /> 
+		<anim name="RIOT_shout" />
 	</group>
 	<group name="ROB_BANK">
 		<anim name="CAT_Safe_End" />
 		<anim name="CAT_Safe_Open" />
 		<anim name="CAT_Safe_Open_O" />
 		<anim name="CAT_Safe_Rob" />
-		<anim name="SHP_HandsUp_Scr" /> 
+		<anim name="SHP_HandsUp_Scr" />
 	</group>
 	<group name="ROCKET">
 		<anim name="idle_rocket" />
 		<anim name="RocketFire" />
 		<anim name="run_rocket" />
 		<anim name="walk_rocket" />
-		<anim name="WALK_start_rocket" /> 
+		<anim name="WALK_start_rocket" />
 	</group>
 	<group name="RUSTLER">
 		<anim name="Plane_align_LHS" />
 		<anim name="Plane_close" />
 		<anim name="Plane_getin" />
 		<anim name="Plane_getout" />
-		<anim name="Plane_open" /> 
+		<anim name="Plane_open" />
 	</group>
 	<group name="RYDER">
 		<anim name="RYD_Beckon_01" />
@@ -1606,7 +1606,7 @@
 		<anim name="VAN_PickUp_S" />
 		<anim name="Van_Stand" />
 		<anim name="Van_Stand_Crate" />
-		<anim name="Van_Throw" /> 
+		<anim name="Van_Throw" />
 	</group>
 	<group name="SCRATCHING">
 		<anim name="scdldlp" />
@@ -1620,13 +1620,13 @@
 		<anim name="scshrtl" />
 		<anim name="scshrtr" />
 		<anim name="sc_ltor" />
-		<anim name="sc_rtol" /> 
+		<anim name="sc_rtol" />
 	</group>
 	<group name="SHAMAL">
 		<anim name="SHAMAL_align" />
 		<anim name="SHAMAL_getin_LHS" />
 		<anim name="SHAMAL_getout_LHS" />
-		<anim name="SHAMAL_open" /> 
+		<anim name="SHAMAL_open" />
 	</group>
 	<group name="SHOP">
 		<anim name="ROB_2Idle" />
@@ -1653,23 +1653,23 @@
 		<anim name="SHP_Serve_Idle" />
 		<anim name="SHP_Serve_Loop" />
 		<anim name="SHP_Serve_Start" />
-		<anim name="Smoke_RYD" /> 
+		<anim name="Smoke_RYD" />
 	</group>
 	<group name="SHOTGUN">
 		<anim name="shotgun_crouchfire" />
 		<anim name="shotgun_fire" />
-		<anim name="shotgun_fire_poor" /> 
+		<anim name="shotgun_fire_poor" />
 	</group>
 	<group name="SILENCED">
 		<anim name="CrouchReload" />
 		<anim name="SilenceCrouchfire" />
 		<anim name="Silence_fire" />
-		<anim name="Silence_reload" /> 
+		<anim name="Silence_reload" />
 	</group>
 	<group name="SKATE">
 		<anim name="skate_idle" />
 		<anim name="skate_run" />
-		<anim name="skate_sprint" /> 
+		<anim name="skate_sprint" />
 	</group>
 	<group name="SMOKING">
 		<anim name="F_smklean_loop" />
@@ -1679,14 +1679,14 @@
 		<anim name="M_smk_in" />
 		<anim name="M_smk_loop" />
 		<anim name="M_smk_out" />
-		<anim name="M_smk_tap" /> 
+		<anim name="M_smk_tap" />
 	</group>
 	<group name="SNIPER">
-		<anim name="WEAPON_sniper" /> 
+		<anim name="WEAPON_sniper" />
 	</group>
 	<group name="SPRAYCAN">
 		<anim name="spraycan_fire" />
-		<anim name="spraycan_full" /> 
+		<anim name="spraycan_full" />
 	</group>
 	<group name="STRIP">
 		<anim name="PLY_CASH" />
@@ -1708,7 +1708,7 @@
 		<anim name="STR_C2B" />
 		<anim name="STR_Loop_A" />
 		<anim name="STR_Loop_B" />
-		<anim name="STR_Loop_C" /> 
+		<anim name="STR_Loop_C" />
 	</group>
 	<group name="SUNBATHE">
 		<anim name="batherdown" />
@@ -1728,7 +1728,7 @@
 		<anim name="SBATHE_F_LieB2Sit" />
 		<anim name="SBATHE_F_Out" />
 		<anim name="SitnWait_in_W" />
-		<anim name="SitnWait_out_W" /> 
+		<anim name="SitnWait_out_W" />
 	</group>
 	<group name="SWAT">
 		<anim name="gnstwall_injurd" />
@@ -1753,7 +1753,7 @@
 		<anim name="swt_wllshoot_in_L" />
 		<anim name="swt_wllshoot_in_R" />
 		<anim name="swt_wllshoot_out_L" />
-		<anim name="swt_wllshoot_out_R" /> 
+		<anim name="swt_wllshoot_out_R" />
 	</group>
 	<group name="SWEET">
 		<anim name="ho_ass_slapped" />
@@ -1762,7 +1762,7 @@
 		<anim name="plyr_hndshldr_01" />
 		<anim name="sweet_ass_slap" />
 		<anim name="sweet_hndshldr_01" />
-		<anim name="Sweet_injuredloop" /> 
+		<anim name="Sweet_injuredloop" />
 	</group>
 	<group name="SWIM">
 		<anim name="Swim_Breast" />
@@ -1771,7 +1771,7 @@
 		<anim name="Swim_Glide" />
 		<anim name="Swim_jumpout" />
 		<anim name="Swim_Tread" />
-		<anim name="Swim_Under" /> 
+		<anim name="Swim_Under" />
 	</group>
 	<group name="SWORD">
 		<anim name="sword_1" />
@@ -1783,7 +1783,7 @@
 		<anim name="Sword_Hit_2" />
 		<anim name="Sword_Hit_3" />
 		<anim name="sword_IDLE" />
-		<anim name="sword_part" /> 
+		<anim name="sword_part" />
 	</group>
 	<group name="TANK">
 		<anim name="TANK_align_LHS" />
@@ -1791,7 +1791,7 @@
 		<anim name="TANK_doorlocked" />
 		<anim name="TANK_getin_LHS" />
 		<anim name="TANK_getout_LHS" />
-		<anim name="TANK_open_LHS" /> 
+		<anim name="TANK_open_LHS" />
 	</group>
 	<group name="TATTOOS">
 		<anim name="TAT_ArmL_In_O" />
@@ -1850,19 +1850,19 @@
 		<anim name="TAT_Sit_Loop_T" />
 		<anim name="TAT_Sit_Out_O" />
 		<anim name="TAT_Sit_Out_P" />
-		<anim name="TAT_Sit_Out_T" /> 
+		<anim name="TAT_Sit_Out_T" />
 	</group>
 	<group name="TEC">
 		<anim name="TEC_crouchfire" />
 		<anim name="TEC_crouchreload" />
 		<anim name="TEC_fire" />
-		<anim name="TEC_reload" /> 
+		<anim name="TEC_reload" />
 	</group>
 	<group name="TRAIN">
 		<anim name="tran_gtup" />
 		<anim name="tran_hng" />
 		<anim name="tran_ouch" />
-		<anim name="tran_stmb" /> 
+		<anim name="tran_stmb" />
 	</group>
 	<group name="TRUCK">
 		<anim name="TRUCK_ALIGN_LHS" />
@@ -1881,14 +1881,14 @@
 		<anim name="TRUCK_open_RHS" />
 		<anim name="TRUCK_pullout_LHS" />
 		<anim name="TRUCK_pullout_RHS" />
-		<anim name="TRUCK_Shuffle" /> 
+		<anim name="TRUCK_Shuffle" />
 	</group>
 	<group name="UZI">
 		<anim name="UZI_crouchfire" />
 		<anim name="UZI_crouchreload" />
 		<anim name="UZI_fire" />
 		<anim name="UZI_fire_poor" />
-		<anim name="UZI_reload" /> 
+		<anim name="UZI_reload" />
 	</group>
 	<group name="VAN">
 		<anim name="VAN_close_back_LHS" />
@@ -1898,7 +1898,7 @@
 		<anim name="VAN_getout_back_LHS" />
 		<anim name="VAN_getout_back_RHS" />
 		<anim name="VAN_open_back_LHS" />
-		<anim name="VAN_open_back_RHS" /> 
+		<anim name="VAN_open_back_RHS" />
 	</group>
 	<group name="VENDING">
 		<anim name="VEND_Drink2_P" />
@@ -1906,13 +1906,13 @@
 		<anim name="vend_eat1_P" />
 		<anim name="VEND_Eat_P" />
 		<anim name="VEND_Use" />
-		<anim name="VEND_Use_pt2" /> 
+		<anim name="VEND_Use_pt2" />
 	</group>
 	<group name="VORTEX">
 		<anim name="CAR_jumpin_LHS" />
 		<anim name="CAR_jumpin_RHS" />
 		<anim name="vortex_getout_LHS" />
-		<anim name="vortex_getout_RHS" /> 
+		<anim name="vortex_getout_RHS" />
 	</group>
 	<group name="WAYFARER">
 		<anim name="WF_Back" />
@@ -1932,7 +1932,7 @@
 		<anim name="WF_pushes" />
 		<anim name="WF_Ride" />
 		<anim name="WF_Right" />
-		<anim name="WF_Still" /> 
+		<anim name="WF_Still" />
 	</group>
 	<group name="WEAPONS">
 		<anim name="SHP_1H_Lift" />
@@ -1951,7 +1951,7 @@
 		<anim name="SHP_G_Lift_Out" />
 		<anim name="SHP_Tray_In" />
 		<anim name="SHP_Tray_Out" />
-		<anim name="SHP_Tray_Pose" /> 
+		<anim name="SHP_Tray_Pose" />
 	</group>
 	<group name="WUZI">
 		<anim name="CS_Dead_Guy" />

@@ -1,4 +1,4 @@
-﻿g_MapObjAttrs = {
+g_MapObjAttrs = {
 	spawnpoint = { 'position', 'rotation', 'vehicle', 'paintjob', 'upgrades' },
 	checkpoint = { 'id', 'nextid', 'position', 'size', 'color', 'type', 'vehicle', 'paintjob', 'upgrades' },
 	object = { 'position', 'rotation', 'model' },
@@ -39,7 +39,7 @@ end
 function RaceMap.load(res)
 	--Check if there are any .<map/>'s by using the real element system first
 	local resourceRoot = getResourceRootElement(res)
-	if #getElementsByType("spawnpoint",resourceRoot) > 0 then 
+	if #getElementsByType("spawnpoint",resourceRoot) > 0 then
 		--Spawnpoints are contained within the MTA map, therefore lets assume only MTA maps were used (removes general.ModifyOtherObjects dependency)
 		local meta = xmlLoadFile(':' .. getResourceName(res) .. '/' .. 'meta.xml')
 		if not meta then
@@ -70,7 +70,7 @@ function RaceMap.load(res)
 		outputDebugString('Error while loading ' .. getResourceName(res) .. ': no <race /> node in meta.xml', 2)
 		return false
 	end
-	
+
 	local xml = xmlLoadFile(':' .. getResourceName(res) .. '/' .. file)
 	if not xml then
 		outputDebugString('Error opening ' .. file, 2)
@@ -276,8 +276,8 @@ end
 function RaceElementMap:getAll(name, type)
 	local result = {}
 	-- Block out specific stuff
-	if name == "object" then 
-		return {} 
+	if name == "object" then
+		return {}
 	elseif name == "pickup" then
 		return self:getAll("racepickup",name)
 	end

@@ -1,4 +1,4 @@
-﻿local function runString (commandstring)
+local function runString (commandstring)
 	outputChatBoxR("Executing client-side command: "..commandstring)
 	local notReturned
 	--First we test with return
@@ -57,12 +57,12 @@ function map(element, level)
 	local eType = getElementType(element)
 	local eID = getElementID(element)
 	local eChildren = getElementChildren(element)
-	
+
 	local tagStart = '<'..eType
 	if eID then
 		tagStart = tagStart..' id="'..eID..'"'
 	end
-	
+
 	if #eChildren < 1 then
 		outputConsole(indent..tagStart..'"/>')
 	else

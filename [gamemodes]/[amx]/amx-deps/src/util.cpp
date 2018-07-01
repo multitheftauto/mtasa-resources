@@ -90,7 +90,7 @@ void lua_pushamxstring(lua_State *luaVM, AMX *amx, cell addr) {
 
 void lua_pushremotevalue(lua_State *localVM, lua_State *remoteVM, int index, bool toplevel) {
 	bool seenTableList = false;
-	
+
 	switch(lua_type(remoteVM, index)) {
 		case LUA_TNIL: {
 			lua_pushnil(localVM);

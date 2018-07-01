@@ -21,6 +21,7 @@ aWeathers = {}
 aNickChangeTime = {}
 
 local aUnmuteTimerList = {}
+local chatHistory = {}
 
 function notifyPlayerLoggedIn(player)
 	outputChatBox ( "Press 'p' to open your admin panel", player )
@@ -106,6 +107,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 			local text = xmlFindChild ( subnode, "text", 0 )
 			local time = xmlFindChild ( subnode, "time", 0 )
 			local read = ( xmlFindChild ( subnode, "read", 0 ) ~= false )
+			local suspect = xmlFindChild ( subnode, "suspect", 0 )
 			local id = #aReports + 1
 			aReports[id] = {}
 			if ( author ) then aReports[id].author = xmlNodeGetValue ( author )
@@ -118,6 +120,16 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 			else aReports[id].text = "" end
 			if ( time ) then aReports[id].time = xmlNodeGetValue ( time )
 			else aReports[id].time = "" end
+			if ( suspect ) then
+				aReports[id].suspect = {
+					name = xmlNodeGetAttribute ( suspect, "name" ),
+					username = xmlNodeGetAttribute ( suspect, "username" ),
+					ip = xmlNodeGetAttribute ( suspect, "ip" ),
+					serial = xmlNodeGetAttribute ( suspect, "serial" ),
+					version = xmlNodeGetAttribute ( suspect, "version" ),
+					chatLog = xmlNodeGetValue ( suspect )
+				}
+			else aReports[id].suspect = false end
 			aReports[id].read = read
 			messages = messages + 1
 		end
@@ -149,6 +161,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 		end
 		xmlUnloadFile ( node )
 	end
+
 	local node = xmlLoadFile ( "conf\\messages.xml" )
 	if ( node ) then
 		for id, type in ipairs ( _types ) do
@@ -188,7 +201,7 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 		end
 	end
 	if not stillExists then return end
-	
+
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
@@ -197,7 +210,7 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 		end
 	else
 		local node = xmlLoadFile ( "conf\\reports.xml" )
-		if ( node ) then 
+		if ( node ) then
 			while ( xmlFindChild ( node, "message", 0 ) ~= false ) do
 				local subnode = xmlFindChild ( node, "message", 0 )
 				xmlDestroyNode ( subnode )
@@ -209,13 +222,23 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 			local subnode = xmlCreateChild ( node, "message" )
 			for key, value in pairs ( message ) do
 				if ( value ) then
-					xmlNodeSetValue ( xmlCreateChild ( subnode, key ), tostring ( value ) )
+					if ( type ( value ) == "table" ) then
+						local child = xmlCreateChild ( subnode, key )
+						xmlNodeSetValue ( child, tostring ( value.chatLog ) )
+						xmlNodeSetAttribute ( child, "name", value.name )
+						xmlNodeSetAttribute ( child, "username", value.username )
+						xmlNodeSetAttribute ( child, "ip", value.ip )
+						xmlNodeSetAttribute ( child, "serial", value.serial )
+						xmlNodeSetAttribute ( child, "version", value.version )
+					else
+						xmlNodeSetValue ( xmlCreateChild ( subnode, key ), tostring ( value ) )
+					end
 				end
 			end
 		end
 		xmlSaveFile ( node )
 		xmlUnloadFile ( node )
-		
+
 		-- Unmute anybody muted by admin
 		for i, player in ipairs(getElementsByType("player")) do
 			local serial = getPlayerSerial( player )
@@ -386,11 +409,13 @@ function aPlayerInitialize ( player )
 		aPlayers[player]["country"] = getPlayerCountry ( player )
 		aPlayers[player]["money"] = getPlayerMoney ( player )
 	end
+	chatHistory[player] = {}
 end
 
 addEventHandler ( "onPlayerQuit", root, function ()
 	aPlayers[source] = nil
 	aNickChangeTime[source] = nil
+	chatHistory[source] = nil
 end )
 
 addEvent ( "aPlayerVersion", true )
@@ -412,7 +437,7 @@ addEventHandler ( "aPlayerVersion", _root, function ( version )
 		end
 		-- If version does not have a built in version check, maybe show a message box advising an upgrade
 		if version.number < 259 or ( version.mta == "1.0.3" and rc < 3 ) then
-			triggerClientEvent ( source, "aClientShowUpgradeMessage", source )	
+			triggerClientEvent ( source, "aClientShowUpgradeMessage", source )
 		end
 	end
 
@@ -482,7 +507,7 @@ addCommandHandler ( "unregister", function ( player, command, arg1, arg2 )
 		end
 	end
 	outputChatBox ( "Unregistering account '"..username.."' "..result, player, 255, 100, 70 )
-	outputServerLog ( "ADMIN: "..getAdminNameForLog ( player ).." unregistering account '"..username.."' "..result.." (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )	
+	outputServerLog ( "ADMIN: "..getAdminNameForLog ( player ).." unregistering account '"..username.."' "..result.." (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )
 end )
 
 -- Returns "name" or "name(accountname)" if they differ
@@ -681,11 +706,16 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				mdata = "Group "..name
 				if ( not aclCreateGroup ( name ) ) then
 					action = nil
+				else
+
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
 				end
 			elseif ( arg[1] == "acl" ) then
 				mdata = "ACL "..name
 				if ( not aclCreate ( name ) ) then
 					action = nil
+				else
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
 				end
 			end
 			triggerEvent ( "aAdmin", source, "sync", "aclgroups" )
@@ -698,6 +728,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			if ( aclGetGroup ( name ) ) then
 				mdata = "Group "..name
 				aclDestroyGroup ( aclGetGroup ( name ) )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] destroyed "..mdata)
 			else
 				action = nil
 			end
@@ -705,6 +736,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			if ( aclGet ( name ) ) then
 				mdata = "ACL "..name
 				aclDestroy ( aclGet ( name ) )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] destroyed "..mdata)
 			else
 				action = nil
 			end
@@ -722,6 +754,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					outputChatBox ( "Error adding object '"..tostring ( object ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
 					mdata2 = "Object '"..arg[3].."'"
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..object.." to ACL Group "..arg[2])
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
 				end
 			elseif ( arg[1] == "acl" ) then
@@ -733,6 +766,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				else
 					mdata2 = "ACL '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..mdata2.." to Group "..arg[2])
 				end
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
@@ -744,6 +778,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				else
 					mdata2 = "Right '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..mdata2.." to ACL "..arg[2])
 				end
 			end
 		else
@@ -763,6 +798,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				else
 					mdata2 = "Object '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
 				end
 			elseif ( arg[1] == "acl" ) then
 				local group = aclGetGroup ( arg[2] )
@@ -773,6 +809,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				else
 					mdata2 = "ACL '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
 				end
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
@@ -784,13 +821,14 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					mdata = "ACL '"..arg[2].."'"
 					mdata2 = "Right '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )
+				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2.." from "..mdata)
 				end
 			end
 		else
 			action = nil
 		end
 	end
-	if ( action ~= nil ) then aAction ( "admin", action, source, false, mdata, mdata2 ) end
+	--if ( action ~= nil ) then aAction ( "admin", action, source, false, mdata, mdata2 ) end
 end )
 
 
@@ -823,7 +861,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
 			local isAnonAdmin = getElementData(source, "AnonAdmin")
 			if isAnonAdmin then
-				setTimer ( kickPlayer, 100, 1, player, root, reason )
+				setTimer ( kickPlayer, 100, 1, player, "Anonymous admin", reason )
 			else
 				setTimer ( kickPlayer, 100, 1, player, source, reason )
 			end
@@ -851,7 +889,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 						local tBan = addBan( nil, nil, getPlayerSerial(player), "Anonymous admin", reason, seconds or 0 )
 						setBanAdmin(tBan,adminAccountName)
 					end, 100, 1)
-					
+
 				else
 					setTimer ( function()
 						local tBan = addBan( nil, nil, getPlayerSerial(player), source, reason, seconds or 0 )
@@ -894,7 +932,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 		elseif ( action == "shout" ) then
 			local textDisplay = textCreateDisplay ()
 			local textItem
-			local anon = getElementData( admin, "AnonAdmin" ) 
+			local anon = getElementData( admin, "AnonAdmin" )
 			if (anon) then
 				textItem = textCreateTextItem ( "ADMIN:\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
 			else
@@ -978,7 +1016,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 					setElementInterior ( player, interior["world"] )
 					local x, y, z = interior["x"] or 0, interior["y"] or 0, interior["z"] or 0
 					local rot = interior["r"] or 0
-					if ( vehicle ) then 
+					if ( vehicle ) then
 						setElementInterior ( vehicle, interior["world"] )
 						setElementPosition ( vehicle, x, y, z + 0.2 )
 					else
@@ -1331,6 +1369,32 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 	return false
 end )
 
+addEventHandler ( "onPlayerChat", root, function ( message )
+	local size = #chatHistory[source]
+	if ( size == g_Prefs.maxchatmsgs ) then
+		table.remove( chatHistory[source], 1 )
+		size = size - 1
+	end
+	chatHistory[source][size + 1] = message
+end )
+
+function getPlayerChatHistory ( player, chunk )
+	if ( player and isElement ( player ) ) then
+		local size = #chatHistory[player]
+		chunk = tonumber(chunk)
+		if ( chunk and chunk < size ) then
+			size = chunk
+		end
+		local text = ""
+		for i=1, size do
+			text = text .. chatHistory[player][i] .. "\n"
+		end
+		return text
+	else
+		return false
+	end
+end
+
 addEvent ( "aMessage", true )
 addEventHandler ( "aMessage", _root, function ( action, data )
 	if checkClient( false, source, 'aMessage', action ) then return end
@@ -1343,6 +1407,19 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 		aReports[id].subject = tostring ( data.subject )
 		aReports[id].text = tostring ( data.message )
 		aReports[id].time = string.format( '%04d-%02d-%02d %02d:%02d', time.year + 1900, time.month + 1, time.monthday, time.hour, time.minute )
+		if ( data.suspect ) then
+			local suspectedPlayer = getPlayerFromName( data.suspect )
+			if suspectedPlayer then
+				aReports[id].suspect = {
+					name = data.suspect,
+					username = getPlayerAccountName ( suspectedPlayer ),
+					ip = getPlayerIP ( suspectedPlayer ),
+					serial = getPlayerSerial ( suspectedPlayer ),
+					version = getPlayerVersion ( suspectedPlayer ),
+					chatLog = getPlayerChatHistory ( suspectedPlayer )
+				}
+			end
+		end
 		aReports[id].read = false
 		-- PM all admins to say a new message has arrived
 		for _, p in ipairs ( getElementsByType ( "player" ) ) do
@@ -1364,6 +1441,7 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 			end
 		elseif ( action == "delete" ) then
 			if ( aReports[data] ) then
+				outputServerLog ( "ADMIN: "..getPlayerName(client).." has deleted a report with subject '"..aReports[data].subject.."'." )
 				table.remove ( aReports, data )
 			end
 			triggerClientEvent ( source, "aMessage", source, "get", aReports )
@@ -1420,6 +1498,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 			action = nil
 			for i,ban in ipairs(getBans ()) do
 				if getBanIP(ban) == data then
+
 					action = removeBan ( ban, source )
 				end
 			end
@@ -1434,7 +1513,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 		else
 			action = nil
 		end
-	
+
 		if ( action ~= nil ) then
 			aAction ( "bans", action, source, false, mdata, more )
 			triggerEvent ( "aSync", source, "sync", "bansdirty" )
@@ -1448,7 +1527,7 @@ end )
 addEvent ( "aExecute", true )
 addEventHandler ( "aExecute", _root, function ( action, echo )
 	if checkClient( "command.execute", source, 'aExecute', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then 
+	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then
 		local result = loadstring("return " .. action)()
 		if ( echo == true ) then
 			local restring = ""
@@ -1530,3 +1609,15 @@ function checkNickOnChange(old, new)
 	end
 end
 addEventHandler("onPlayerChangeNick", root, checkNickOnChange)
+
+addEventHandler ("onUnban",root,function(theBan,responsibleElement)
+	if isElement(responsibleElement) and getElementType (responsibleElement)=="player" then
+		outputServerLog ("BAN: "..getPlayerName(responsibleElement).."["..getAccountName (getPlayerAccount(responsibleElement)).."] ["..getPlayerSerial (responsibleElement).."] ["..getPlayerIP (responsibleElement).."] unbanned player "..(getBanNick(theBan) or "unknown").." ["..(getBanIP (theBan) or getBanSerial(theBan)).."] ")
+	end
+end)
+
+addEventHandler ("onBan",root,function(theBan)
+	if isElement(source) and getElementType (source)=="player" then
+		outputServerLog ("BAN: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] banned player "..(getBanNick(theBan) or "unknown").." ["..(getBanIP (theBan) or getBanSerial(theBan)).."] ")
+	end
+end)
