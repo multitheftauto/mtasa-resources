@@ -1,1 +1,4 @@
-function import(...) return call(getResourceFromName("editor_main"),"import",...) end
+function import(...)
+    local editor_main = getResourceFromName("editor_main")
+    return call(editor_main, "import", ...)
+end
