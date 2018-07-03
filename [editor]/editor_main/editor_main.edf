@@ -25,7 +25,7 @@
 	<element name="pickup" friendlyname="Pickup" icon="client/images/icons/pickup.png">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
 		<data name="type" type="pickupType" description="Pickup type" default="health" />
-		<data name="amount" type="number" description="HP points, armor points or weapon ammo" default="100" />
+		<data name="amount" type="number" description="Health points, armor points or weapon ammo" default="100" />
 		<data name="respawn" type="integer" description="Respawn time in miliseconds" default="30000" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
