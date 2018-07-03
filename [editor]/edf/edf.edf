@@ -41,6 +41,7 @@
 		<data name="sirens" type="selection:false,true" description="Vehicle sirens" required="false" default="false" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="alpha" type="integer" description="Alpha level" default="255" />
 	</element>
 	<element name="blip" friendlyname="Radar blip">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
