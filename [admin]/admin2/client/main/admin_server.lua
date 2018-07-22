@@ -126,12 +126,12 @@ end
 function aServerTab.onClientClick ( button )
 	if ( button == "left" ) then
 		if ( source == aServerTab.SetGameType ) then
-			local gametype = inputBox ( "Map Name", "Enter map name:" )
+			local gametype = inputBox ( "Game Type", "Enter game type:" )
 			if ( gametype ) then
 				triggerServerEvent ( "aServer", getLocalPlayer(), "setgame", gametype )
 			end
 		elseif ( source == aServerTab.SetMapName ) then
-			local mapname = inputBox ( "Game Type", "Enter game type:" )
+			local mapname = inputBox ( "Map Name", "Enter map name:" )
 			if ( mapname ) then
 				triggerServerEvent ( "aServer", getLocalPlayer(), "setmap", mapname )
 			end
