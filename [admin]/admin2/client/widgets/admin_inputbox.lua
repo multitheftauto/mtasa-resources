@@ -64,7 +64,6 @@ function aInputBox.Close ( destroy )
 		if ( destroy ) then
 			removeEventHandler ( "onClientGUIClick", aInputBox.Form, aInputBox.onClick )
 			removeEventHandler ( "onClientGUIAccepted", aInputBox.Value, aInputBox.Accepted )
-			aInputAction = nil
 			destroyElement ( aInputBox.Form )
 			aInputBox.Form = nil
 		else
