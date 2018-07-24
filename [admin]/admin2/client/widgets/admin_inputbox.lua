@@ -68,11 +68,6 @@ function aInputBox.Close ( destroy )
 		else
 			guiSetVisible ( aInputBox.Form, false )
 		end
-		if ( aInputBox.Thread ) then
-			if not (coroutine.status (aInputBox.Thread) == "dead") then
-				coroutine.resume ( aInputBox.Thread )
-			end
-		end
 	end
 end
 
