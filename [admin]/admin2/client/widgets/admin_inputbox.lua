@@ -50,11 +50,13 @@ function aInputBox.Show ( title, message, default )
 	aInputBox.Result = nil
 	aInputBox.Thread = sourceCoroutine
 	coroutine.yield ()
+	aInputBox.Thread = nil
 	if ( aInputBox.Result ) then
 		return guiGetText ( aInputBox.Value )
 	end
 	return false
 end
+
 
 function aInputBox.Close ( destroy )
 	guiSetInputEnabled ( false )
@@ -63,8 +65,8 @@ function aInputBox.Close ( destroy )
 			removeEventHandler ( "onClientGUIClick", aInputBox.Form, aInputBox.onClick )
 			removeEventHandler ( "onClientGUIAccepted", aInputBox.Value, aInputBox.Accepted )
 			aInputAction = nil
-			destroyElement ( aInputForm )
-			aInputForm = nil
+			destroyElement ( aInputBox.Form )
+			aInputBox.Form = nil
 		else
 			guiSetVisible ( aInputBox.Form, false )
 		end
