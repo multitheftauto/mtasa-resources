@@ -29,6 +29,7 @@ function(resource)
 end )
 
 function refreshGamemodeSettings()
+	if not mapsettings.settingsList then return false end
 	guiGridListClear ( mapsettings.settingsList )
 	local resourceCount = 0
 	for resourceName,valueTable in pairs(edfSettings) do
