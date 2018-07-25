@@ -1,0 +1,2 @@
+unloadMap = true
+allowinteriors = false

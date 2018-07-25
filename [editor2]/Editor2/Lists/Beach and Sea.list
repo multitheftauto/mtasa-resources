@@ -1,0 +1,119 @@
+#Ships, Docks, and Piers
+	1612,submarine,#submarine #navy #ship #boat #military #naval #sea #vehicle #metal
+	3406,cxref_woodjetty,#jetty #dock #pier #wood #sea #harbor #harbour
+	3578,DockBarr1_LA,#barrier #dock #roadblock #concrete
+	3620,redockrane_LAS,#crane #metal #dock #red #harbor #harbour
+	3753,dockwall_LAS2,#dock #wall #harbor #harbour #sea #concrete
+	3879,ws_jetty_SFX,#jetty #dock #pier #wood #concrete #harbor #harbour
+	3886,ws_jettynol_SFX,#jetty #dock #pier #wood #concrete #harbor #harbour
+	5108,LADocks2_las2,#dock #wall #harbor #harbour #sea #concrete #road
+	5109,sanpdmdock3_las2,#dock #wall #harbor #harbour #sea #concrete #road #curve #bend
+	5115,las2chemdock1,#dock #wall #harbor #harbour #sea #concrete #road
+	5143,las2chendock04,#dock #wall #harbor #harbour #sea #concrete #crate #cargo #yard
+	5145,sanpdmdock2_las2,#dock #wall #harbor #harbour #sea #concrete #road #corner #bend #curve #crossroad
+	5146,sanpdmdock1_las2,#dock #wall #harbor #harbour #sea #concrete #road #curve #bend
+	5154,dk_cargoshp03d,#dock #sea #metal #cargo #ship #boat #deck #passenger
+	5155,dk_cargoshp05d,#dock #sea #metal #cargo #ship #boat #deck #passenger #funnel
+	5156,dk_cargoshp24d,#dock #sea #metal #cargo #ship #boat #deck #passenger #hull
+	5157,dk_cargoshpd25d,#dock #sea #metal #cargo #ship #boat #deck #passenger
+	5158,dk_cargoshp76d,#dock #sea #metal #cargo #ship #boat #deck #passenger #railing #stair #pipe
+	5160,dkcargohull2d,#dock #sea #metal #cargo #ship #boat #deck #passenger #hull
+	5166,dkcargohull2bd,#dock #sea #metal #cargo #ship #boat #deck #passenger #hull
+	5167,dkcargohull2cd,#dock #sea #metal #cargo #ship #boat #deck #passenger #hull
+	5176,sanpdmdocka_las2,#dock #wall #harbor #harbour #sea #concrete #road #curve #bend
+	5184,mdock1a_las2,#dock #wall #harbor #harbour #sea #concrete
+	6188,gaz_pier2,#jetty #dock #pier #wood #sea #harbor #harbour
+	6189,gaz_pier1,#jetty #dock #pier #wood #sea #harbor #harbour
+	6230,canaljetty_LAw,#jetty #dock #pier #wood #sea #harbor #harbour #canal
+	6300,Pier04_LAw2,#jetty #dock #pier #wood #sea #harbor #harbour
+	8373,VegasS_jetty01,#dock #concrete #sea #harbor #harbour #vegas #wall
+	9090,vgEferryland,#dock #concrete #sea #harbor #harbour #vegas #wall
+	9229,sfn_coast03,#dock # #concrete #sea #harbor #harbour #wood #wall
+	9230,sfn_coast01,#dock #wall #harbor #harbour #sea #concrete
+	9253,sfn_coast04,#dock #wall #harbor #harbour #sea #concrete #wood
+	9257,sfn_coast05,#dock #wall #harbor #harbour #sea #concrete
+	9329,sfn_coast06,#dock #wall #harbor #harbour #sea #concrete
+	9584,freight_SFW31,#dock #sea #metal #freight #ship #boat #deck #funnel
+	9585,freight_SFW33,#dock #sea #metal #freight #ship #boat #deck #hull
+	9586,freight_deck_SFW,#dock #sea #metal #freight #ship #boat #deck #hull
+	9590,freight_interiorsfw,#dock #sea #metal #freight #ship #boat #deck #interior
+	9612,ferrybit1_sfw,#dock #wall #harbor #harbour #sea #concrete
+	9613,ferrybit3_sfw,#dock #harbor #harbour #sea #concrete
+	9818,shpbridge_sfw01,#dock #sea #metal #ship #boat #deck #interior #furniture #bridge #computer
+	9819,shpbridge_sfw02,#dock #sea #metal #ship #boat #deck #interior #furniture #bridge #computer
+	9820,shpbridge_sfw04,#dock #sea #metal #ship #boat #deck #interior #furniture #bridge #pipe
+	9821,shpbridge_sfw03,#dock #sea #metal #ship #boat #deck #interior #furniture #bridge #pipe
+	9822,shpbridge_sfw08,#dock #sea #metal #ship #boat #deck #interior #furniture #bridge #chair
+	9829,bumblister_SFW,#dock #wall #harbor #harbour #sea #concrete #wood
+	9858,ferrybit69_sfw,#dock #wall #harbor #harbour #sea #concrete
+	9902,ferryland3,#dock #wall #harbor #harbour #sea #concrete #warehouse
+	9954,pier69_sfe3,#dock #wall #harbor #harbour #sea #concrete #warehouse
+	9955,pier69_sfe1,#building #highrise #apartment #concrete
+	9956,pier69_sfe2,#dock #wall #harbor #harbour #sea #concrete #warehouse
+	9958,submarr_sfe,#submarine #navy #ship #boat #military #naval #sea #vehicle #metal
+	10140,freig2_intSFE,#dock #sea #metal #freight #ship #boat #deck #interior #crate #cargo
+	10226,shipbits2_sfe,#dock #sea #metal #ship #boat #deck #interior #pipe
+	10227,shipbits1_sfe,#dock #sea #metal #ship #boat #deck #interior #furniture #office
+	10229,freighter2b_SFE,#dock #sea #metalfreight #ship #boat #deck #railing #fence
+	10230,freighter_sfe,#dock #sea #metal #freight #ship #boat #hull
+	10300,ferryland_sfe111,#dock #wall #harbor #harbour #sea #concrete #wood
+	10301,ferry_ncoast1_sfe,#dock #wall #harbor #harbour #sea #concrete
+	10305,ferryland_sfe112,#dock #wall #harbor #harbour #sea #concrete
+	10771,CARRIER_HULL_SFSe,#dock #sea #metal #carrier #ship #boat #hull
+	10793,car_ship_03_SFSe,#dock #sea #metal #ship #boat #deck #funnel
+	10794,car_ship_04_SFSe,#dock #sea #metal #ship #boat #deck #hull
+	10795,car_ship_05_SFSe,#dock #sea #metal #ship #boat #deck
+	10824,subpen_int_SFSe,#dock #harbor #harbour #sea #concrete #interior #submarine
+	10826,subpen_ext_SFSe,#dock #wall #harbor #harbour #sea #concrete #bunker #submarine
+	10827,subbunker_ext_SFSe,#dock #wall #harbor #harbour #sea #concrete #bunker #submarine
+	10828,drydock1_SFSe,#dock #wall #harbor #harbour #sea #metal #dry
+	10830,drydock2_SFSe,#dock #roof #building #harbor #harbour #sea #metal #dry
+	10831,drydock3_SFSe,#dock #roof #building #harbor #harbour #sea #metal #dry #warehouse
+	10833,navybase_02_SFSe,#dock #roof #building #harbor #harbour #sea #metal #dry #navy #military
+	10834,navybase_03_SFSe,#dock #wall #harbor #harbour #sea #concrete #navy #military
+	10841,drydock1_SFSe01,#dock #wall #harbor #harbour #sea #metal #dry
+	11009,dk_cargoshp70_SFS02,#cargo #crate #box
+	11145,CARRIER_LOWDECK_SFS,#dock #sea #metal #carrier #ship #boat #deck #interior
+	11146,CARRIER_HANGAR_SFS,#dock #sea #metal #carrier #ship #boat #deck #interior #hangar
+	11237,CARRIER_Bits_SFSe,#dock #sea #metal #carrier #ship #boat #deck #funnel #radar
+	11495,des_ranchjetty,#jetty #dock #pier #wood #sea #harbor #harbour
+	12990,sw_jetty,#jetty #dock #pier #wood #sea #harbor #harbour
+	16502,cn2_jetty1,#jetty #dock #pier #wood #sea #harbor #harbour
+	17068,xjetty01,#jetty #dock #pier #wood #sea #harbor #harbour
+	18024,int_clothe_ship,#shop #interior #clothes #clothing #ship
+	9761,freight_alfa_SFW
+	9698,BRIDGE_argh
+	9583,freight_SFW15
+#General
+	902,Starfish,#sea #animal #starfish
+	903,seaweed,#sea #plant #seaweed #green
+	953,CJ_OYSTER,#sea #animal #oyster #shell
+	1461,DYN_LIFE_P,#dock #beach #sea #lifebelt #pier
+	1598,beachball,#sea #beach #ball #beachball
+	1599,fish1single,#sea #animal #fish #yellow
+	1600,fish2single,#sea #animal #fish #blue
+	1601,fish3s,#sea #animal #fish #blue
+	1602,jellyfish,#sea #animal #jellyfish
+	1603,jellyfish01,#sea #animal #jellyfish
+	1604,fish3single,#sea #animal #fish #blue
+	1605,fish1s,#sea #animal #fish #yellow
+	1606,fish2s,#sea #animal #fish #blue
+	1607,dolphin,#sea #animal #dolphin
+	1608,shark,#sea #animal #shark
+	1609,turtle,#sea #animal #turtle
+	1610,sandcastle1,#sea #beach #sand #sandcastle
+	1611,sandcastle2,#sea #beach #sand #sandcastle
+	1637,od_pat_hutb,#sea #beach #hut #beachhut #wood
+	1640,beachtowel04,#sea #beach #towel #green #white
+	1641,beachtowel03,#sea #beach #towel #blue #white #rockstar
+	1642,beachtowel02,#sea #beach #towel #red #white
+	1643,beachtowel01,#sea #beach #towel #red #white #yellow
+	2404,CJ_SURF_BOARD,#sea #beach #surf #surfboard #red #rockstar
+	2405,CJ_SURF_BOARD2,#sea #beach #surf #surfboard #red #blue
+	2406,CJ_SURF_BOARD3,#sea #beach #surf #surfboard #orange #red
+	2410,CJ_SURF_BOARD4,#sea #beach #surf #surfboard #pink
+	2782,CJ_OYSTER_2,#sea #animal #oyster #shell
+	6050,beachhut01_law,#sea #beach #hut #beachhut #wood
+	6295,sanpedlithus_LAw2,#sea #beach #building #lighthouse #concrete #light
+	9237,lighhouse_SFN,#sea #beach #building #lighthouse #concrete #light
+	9245,cstguard_SFN01,#sea #beach #building #coastguard #station #concrete #radar

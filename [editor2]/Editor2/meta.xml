@@ -1,0 +1,187 @@
+<meta>
+	<info type="script" name="Map Editor 2.0" author="CodyJ" description="JEditor" version="1.0.0" />
+	<oop>true</oop> <!--Barley used OOP but is required for the rotations to work properly // TODO - MOVE MATRIXES OVER TO OOP //-->
+	<script type="server" src="server/server.lua" />
+	<script type="client" src="Client/helpers.lua" />
+	<script type="client" src="Client/colorpicker.lua" />
+	<script type="client" src="Client/client.lua" />
+	<script type="client" src="Client/new Element.lua" />
+	<script type="client" src="Client/customize.lua" />
+	<script type="client" src="Client/dxEdit.lua" />
+	<script type="client" src="Client/search.lua" />
+	<script type="client" src="Client/listLoader.lua" />
+	<script type="client" src="Client/freecam_C.lua" />
+	<script type="client" src="Client/highlight.lua" />
+	
+	<script type="shared" src="Shared/QuaternionLib.lua" /> <!--Credits go to Deltanic, couldn't have done this W/O-->
+
+	
+	<file src="Shader/selectorCol.fx" />
+	<file src="Shader/highlight.fx" />
+	
+	<file src="Misc/Test.col" />
+	<file src="Misc/Test.dff" />
+	<file src="Misc/Test.txd" />
+	
+		<file src="Images/mouse.png" />
+		<file src="Images/controls.png" />
+		<file src="Images/save.png" />
+		<file src="Images/camera.png" />
+		<file src="Images/Speed.png" />
+		<file src="Images/arrow.png" />
+		<file src="Images/Boundries.png" />
+		<file src="Images/Magnets.png" />
+		<file src="Images/Snap.png" />
+		<file src="Images/Move Type.png" />
+		<file src="Images/Check.png" />
+		<file src="Images/Object.png" />
+		<file src="Images/Depth.png" />
+		<file src="Images/Rectangle.png" />
+		
+		<file src="Images/CircleSelected.png" />
+		<file src="Images/Circle.png" />
+		
+		<file src="Images/Preview.png" />
+		<file src="Images/crosshair.png" />
+		<file src="Images/crosshair_c.png" />
+
+
+		<file src="Lists/Alpha and Non Collidable.list" />
+		<file src="Lists/Nighttime Objects.list" />
+		<file src="Lists/Beach and Sea.list" />
+		<file src="Lists/buildings.list" />
+		<file src="Lists/Car parts.list" />
+		<file src="Lists/Weapon Models.list" />
+		<file src="Lists/industrial.list" />
+		<file src="Lists/interior objects.list" />
+		<file src="Lists/land masses.list" />
+		<file src="Lists/miscellaneous.list" />
+		<file src="Lists/nature.list" />
+		<file src="Lists/structures.list" />
+		<file src="Lists/transportation.list" />
+		<file src="Lists/Wires and Cables.list" />	
+		
+		<file src="Images/Movement.png" />
+		<file src="Images/Rotation.png" />
+		<file src="Images/Scale.png" />
+		
+		<file src="Images/Customize.png" />
+		<file src="Images/New Element.png" />
+		<file src="Images/Settings.png" />
+		<file src="Images/Ped Editor.png" />
+		
+		
+		<file src="Images/sv.png" />
+		<file src="Images/h.png" />
+		<file src="Images/cursor.png" />
+		<file src="Images/cursor2.png" />
+		<file src="Images/close.png" />
+		
+		
+		
+		
+		<file src="Images/letters/,.png" />
+		<file src="Images/letters/dot.png" />
+		<file src="Images/letters/'.png" />
+		<file src="Images/letters/-.png" />
+		<file src="Images/letters/;.png" />
+		<file src="Images/letters/[.png" />
+		<file src="Images/letters/].png" />
+		<file src="Images/letters/`.png" />
+		<file src="Images/letters/=.png" />
+		<file src="Images/letters/0.png" />
+		<file src="Images/letters/1.png" />
+		<file src="Images/letters/2.png" />
+		<file src="Images/letters/3.png" />
+		<file src="Images/letters/4.png" />
+		<file src="Images/letters/5.png" />
+		<file src="Images/letters/6.png" />
+		<file src="Images/letters/7.png" />
+		<file src="Images/letters/8.png" />
+		<file src="Images/letters/9.png" />
+		<file src="Images/letters/a.png" />
+		<file src="Images/letters/arrow_d.png" />
+		<file src="Images/letters/arrow_u.png" />
+		<file src="Images/letters/arrow_l.png" />
+		<file src="Images/letters/arrow_r.png" />
+		<file src="Images/letters/b.png" />
+		<file src="Images/letters/backslash.png" />
+		<file src="Images/letters/backspace.png" />
+		<file src="Images/letters/c.png" />
+		<file src="Images/letters/capslock.png" />
+		<file src="Images/letters/d.png" />
+		<file src="Images/letters/delete.png" />
+		<file src="Images/letters/e.png" />
+		<file src="Images/letters/end.png" />
+		<file src="Images/letters/enter.png" />
+		<file src="Images/letters/esc.png" />
+		<file src="Images/letters/f.png" />
+		<file src="Images/letters/f1.png" />
+		<file src="Images/letters/f2.png" />
+		<file src="Images/letters/f3.png" />
+		<file src="Images/letters/f4.png" />
+		<file src="Images/letters/f5.png" />
+		<file src="Images/letters/f6.png" />
+		<file src="Images/letters/f7.png" />
+		<file src="Images/letters/f8.png" />
+		<file src="Images/letters/f9.png" />
+		<file src="Images/letters/f10.png" />
+		<file src="Images/letters/f11.png" />
+		<file src="Images/letters/f12.png" />
+		<file src="Images/letters/g.png" />
+		<file src="Images/letters/h.png" />
+		<file src="Images/letters/home.png" />
+		<file src="Images/letters/i.png" />
+		<file src="Images/letters/insert.png" />
+		<file src="Images/letters/j.png" />
+		<file src="Images/letters/k.png" />
+		<file src="Images/letters/l.png" />
+		<file src="Images/letters/m.png" />
+		<file src="Images/letters/n.png" />
+		<file src="Images/letters/lalt.png" />
+		<file src="Images/letters/lctrl.png" />
+		<file src="Images/letters/lshift.png" />
+		<file src="Images/letters/num_0.png" />
+		<file src="Images/letters/num_1.png" />
+		<file src="Images/letters/num_2.png" />
+		<file src="Images/letters/num_3.png" />
+		<file src="Images/letters/num_4.png" />
+		<file src="Images/letters/num_5.png" />
+		<file src="Images/letters/num_6.png" />
+		<file src="Images/letters/num_7.png" />
+		<file src="Images/letters/num_8.png" />
+		<file src="Images/letters/num_9.png" />
+		<file src="Images/letters/num_add.png" />
+		<file src="Images/letters/num_dec.png" />
+		<file src="Images/letters/num_enter.png" />
+		<file src="Images/letters/num_mul.png" />
+		<file src="Images/letters/num_sub.png" />
+		<file src="Images/letters/o.png" />
+		<file src="Images/letters/p.png" />
+		<file src="Images/letters/pgup.png" />
+		<file src="Images/letters/pgdn.png" />
+		<file src="Images/letters/q.png" />
+		<file src="Images/letters/question.png" />
+		<file src="Images/letters/r.png" />
+		<file src="Images/letters/ralt.png" />
+		<file src="Images/letters/rctrl.png" />
+		<file src="Images/letters/rshift.png" />
+		<file src="Images/letters/s.png" />
+		<file src="Images/letters/slash.png" />
+		<file src="Images/letters/space.png" />
+		<file src="Images/letters/t.png" />
+		<file src="Images/letters/tab.png" />
+		<file src="Images/letters/u.png" />
+		<file src="Images/letters/v.png" />
+		<file src="Images/letters/w.png" />
+		<file src="Images/letters/x.png" />
+		<file src="Images/letters/y.png" />
+		<file src="Images/letters/z.png" />
+		
+		<file src="Images/letters/mouse1.png" />
+		<file src="Images/letters/mouse2.png" />
+		<file src="Images/letters/mouse3.png" />
+		<file src="Images/letters/mouse_wheel_up.png" />
+		<file src="Images/letters/mouse_wheel_down.png" />
+
+</meta>
