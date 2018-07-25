@@ -50,7 +50,7 @@ function aAdminMain.Open()
         aAdminMain.AddTab("Rights", aAclTab, "acl")
         aAdminMain.AddTab("Network", aNetworkTab)
 
-        addEventHandler("onClientGUITabSwitched", _root, aAdminMain.Switch)
+        addEventHandler("onClientGUITabSwitched", aAdminMain.Panel, aAdminMain.Switch)
         addEventHandler("onAdminInitialize", aAdminMain.Form, aAdminMain.Initialize)
 
         triggerEvent("onAdminInitialize", aAdminMain.Form)
