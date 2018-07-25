@@ -1003,4 +1003,3 @@ function pulloutAction.Delete()
 	toggleProperties()
 	move_keyboard.disable()
 end
-

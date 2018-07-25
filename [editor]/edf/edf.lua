@@ -1416,4 +1416,3 @@ function edfGetResourceForElementType(elementType)
 
 	return res
 end
-
