@@ -101,13 +101,7 @@ function editBoxC(input,key)
 end
 
 
-
-
-
-
 colorpicker.cfunction = function ()
-
-
 colorpicker.start = (xSize-(590*s))--984
 
 local start = colorpicker.start
