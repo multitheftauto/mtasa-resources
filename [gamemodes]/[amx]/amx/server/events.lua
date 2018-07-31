@@ -67,7 +67,7 @@ function joinHandler(player)
 
 	-- Keybinds
 	bindKey(player, 'F4', 'down', "changeclass")
-	bindKey(player, 'enter_exit', 'down', removePedJetPack)
+	bindKey(player, 'enter_exit', 'down', setPedWearingJetpack, false)
 	g_Players[playerID].keys = {}
 	local function bindControls(player, t)
 		for samp,mta in pairs(t) do
@@ -545,7 +545,7 @@ addEventHandler('onPickupUse', root,
 
 		if model == 370 then
 			-- Jetpack pickup
-			givePedJetPack(player)
+			setPedWearingJetpack(player, true)
 		end
 	end
 )
