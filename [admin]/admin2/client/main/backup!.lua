@@ -115,7 +115,7 @@ function aAdminMenu()
         end
         aTab1.SetMoney = guiCreateButton(0.71, 0.530, 0.13, 0.04, "Set Money", true, aTab1.Tab, "setmoney")
         aTab1.SetStats = guiCreateButton(0.85, 0.530, 0.13, 0.04, "Set Stats", true, aTab1.Tab, "setstat")
-        aTab1.Jetpack = guiCreateButton(0.71, 0.575, 0.27, 0.04, "Give Jetpack", true, aTab1.Tab, "jetpack")
+        aTab1.JetPack = guiCreateButton(0.71, 0.575, 0.27, 0.04, "Give JetPack", true, aTab1.Tab, "jetpack")
         aTab1.Warp = guiCreateButton(0.71, 0.620, 0.27, 0.04, "Warp to player", true, aTab1.Tab, "warp")
         aTab1.WarpTo = guiCreateButton(0.71, 0.665, 0.27, 0.04, "Warp player to..", true, aTab1.Tab, "warp")
         guiCreateHeader(0.25, 0.805, 0.20, 0.04, "Vehicle:", true, aTab1.Tab)
@@ -477,7 +477,7 @@ function aAdminRefresh()
             if (getElementInterior(player)) then
                 guiSetText(aTab1.Interior, "Interior: " .. getElementInterior(player))
             end
-            guiSetText(aTab1.Jetpack, iif(doesPlayerHaveJetpack(player), "Remove Jetpack", "Give Jetpack"))
+            guiSetText(aTab1.JetPack, iif(doesPlayerHaveJetPack(player), "Remove JetPack", "Give JetPack"))
             if (getPlayerWeapon(player)) then
                 guiSetText(
                     aTab1.Weapon,
@@ -938,7 +938,7 @@ function aClientClick(button)
                         aPlayerSkin(player)
                     elseif (source == aTab1.SetInterior) then
                         aPlayerInterior(player)
-                    elseif (source == aTab1.Jetpack) then
+                    elseif (source == aTab1.JetPack) then
                         triggerServerEvent("aPlayer", getLocalPlayer(), player, "jetpack")
                     elseif (source == aTab1.SetMoney) then
                         aInputBox(
@@ -1065,7 +1065,7 @@ function aClientClick(button)
                     guiSetText(aTab1.Money, "Money: 0")
                     guiSetText(aTab1.Dimension, "Dimension: 0")
                     guiSetText(aTab1.Interior, "Interior: 0")
-                    guiSetText(aTab1.Jetpack, "Give Jetpack")
+                    guiSetText(aTab1.JetPack, "Give JetPack")
                     guiSetText(aTab1.Weapon, "Weapon: N/A")
                     guiSetText(aTab1.Area, "Area: Unknown")
                     guiSetText(aTab1.PositionX, "X: 0")

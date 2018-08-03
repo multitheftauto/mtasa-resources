@@ -121,7 +121,7 @@ function aPlayersTab.Create(tab)
     guiGridListRemoveColumn(aPlayersTab.WeaponOptions, 1)
     aPlayersTab.SetMoney = guiCreateButton(0.71, 0.530, 0.13, 0.04, "Set Money", true, tab, "setmoney")
     aPlayersTab.SetStats = guiCreateButton(0.85, 0.530, 0.13, 0.04, "Set Stats", true, tab, "setstat")
-    aPlayersTab.Jetpack = guiCreateButton(0.71, 0.575, 0.27, 0.04, "Give Jetpack", true, tab, "jetpack")
+    aPlayersTab.JetPack = guiCreateButton(0.71, 0.575, 0.27, 0.04, "Give JetPack", true, tab, "jetpack")
     guiCreateHeader(0.23, 0.805, 0.20, 0.04, "Vehicle:", true, tab)
     aPlayersTab.Vehicle = guiCreateLabel(0.24, 0.850, 0.35, 0.04, "Vehicle: N/A", true, tab)
     aPlayersTab.VehicleHealth = guiCreateLabel(0.24, 0.895, 0.25, 0.04, "Vehicle Health: 0%", true, tab)
@@ -311,7 +311,7 @@ function aPlayersTab.onClientClick(button)
                     aSkin.Show(player)
                 elseif (source == aPlayersTab.SetInterior) then
                     aPlayerInterior(player)
-                elseif (source == aPlayersTab.Jetpack) then
+                elseif (source == aPlayersTab.JetPack) then
                     triggerServerEvent("aPlayer", getLocalPlayer(), player, "jetpack")
                 elseif (source == aPlayersTab.SetMoney) then
                     local money = inputBox("Set money", "Enter the money value")
@@ -413,7 +413,7 @@ function aPlayersTab.onClientClick(button)
                 guiSetText(aPlayersTab.Money, "Money: 0")
                 guiSetText(aPlayersTab.Dimension, "Dimension: 0")
                 guiSetText(aPlayersTab.Interior, "Interior: 0")
-                guiSetText(aPlayersTab.Jetpack, "Give Jetpack")
+                guiSetText(aPlayersTab.JetPack, "Give JetPack")
                 guiSetText(aPlayersTab.Weapon, "Weapon: N/A")
                 guiSetText(aPlayersTab.Area, "Area: Unknown")
                 guiSetText(aPlayersTab.PositionX, "X: 0")
@@ -596,7 +596,7 @@ function aPlayersTab.onRefresh()
     if (getElementInterior(player)) then
         guiSetText(aPlayersTab.Interior, "Interior: " .. getElementInterior(player))
     end
-    guiSetText(aPlayersTab.Jetpack, iif(isPedWearingJetpack(player), "Remove Jetpack", "Give Jetpack"))
+    guiSetText(aPlayersTab.JetPack, iif(doesPedHaveJetPack(player), "Remove JetPack", "Give JetPack"))
 
     local weapon = getPedWeapon(player)
     if (weapon) then

@@ -1039,13 +1039,13 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				action = nil
 			end
 		elseif ( action == "jetpack" ) then
-			if ( isPedWearingJetpack ( player ) ) then
-				setPedWearingJetpack ( player, false )
+			if ( doesPedHaveJetPack ( player ) ) then
+				removePedJetPack ( player )
 				action = "jetpackr"
 			else
 				if ( getPedOccupiedVehicle ( player ) ) then outputChatBox ( "Unable to give a jetpack - "..getPlayerName ( player ).." is in a vehicle", source, 255, 0, 0 )
 				else
-					if ( setPedWearingJetpack ( player, true ) ) then
+					if ( givePedJetPack ( player ) ) then
 						action = "jetpacka"
 					end
 				end

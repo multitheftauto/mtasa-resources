@@ -709,7 +709,7 @@ function GetPlayerSkin(amx, player)
 end
 
 function GetPlayerSpecialAction(amx, player)
-	if isPedWearingJetpack(player) then
+	if doesPedHaveJetPack(player) then
 		return SPECIAL_ACTION_USEJETPACK
 	else
 		return g_Players[getElemID(player)].specialaction or SPECIAL_ACTION_NONE
@@ -1171,10 +1171,10 @@ end
 
 function SetPlayerSpecialAction(amx, player, actionID)
 	if actionID == SPECIAL_ACTION_NONE then
-		setPedWearingJetpack(player, false)
+		removePedJetPack(player)
 		setPedAnimation(player, false)
 	elseif actionID == SPECIAL_ACTION_USEJETPACK then
-		setPedWearingJetpack(player, true)
+		givePedJetPack(player)
 	elseif g_SpecialActions[actionID] then
 		setPedAnimation(player, unpack(g_SpecialActions[actionID]))
 	end

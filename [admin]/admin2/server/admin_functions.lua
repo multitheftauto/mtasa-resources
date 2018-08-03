@@ -151,8 +151,8 @@ aFunctions = {
             end
         end,
         ["jetpack"] = function(player)
-            if (isPedWearingJetpack(player)) then
-                setPedWearingJetpack(player, false)
+            if (doesPedHaveJetPack(player)) then
+                removePedJetPack(player)
                 return true, "jetpackr"
             else
                 if (getPedOccupiedVehicle(player)) then
@@ -164,7 +164,7 @@ aFunctions = {
                         0
                     )
                 else
-                    if (setPedWearingJetpack(player, true)) then
+                    if (givePedJetPack(player)) then
                         return true, "jetpacka"
                     end
                 end
