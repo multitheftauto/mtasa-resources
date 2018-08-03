@@ -4,6 +4,9 @@ about: Create a report to help us improve
 
 ---
 
+**Which resource(s) have this problem?**
+(Please do not include the resource in the title as we will assign a label)
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
