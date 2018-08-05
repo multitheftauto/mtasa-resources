@@ -1,0 +1,1 @@
+Only remove files within this folder if bugs start, this will reset all of your settings and 'commonly' used items.

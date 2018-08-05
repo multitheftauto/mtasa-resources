@@ -1,0 +1,28 @@
+<meta>
+	<info type="script" name="JStreamer" author="CodyJ(L)" description="JStreamer Advanced Loader" version="3.2" />
+	
+	<file src="Shared/IDs.ID" />
+	
+	<script type="shared" src="Shared/settings_Sh.lua" />
+	<script type="shared" src="Shared/IDs_Sh.lua" />
+	
+	<script type="client" src="Client/WindsHandler_C.lua" />
+	<script type="client" src="Client/NightHandler_C.lua" />
+	<script type="client" src="Client/Streamer_C.lua" />
+	
+	<script type="server" src="Server/Streamer_S.lua" />
+
+	<export function="JcreateObject" type="server"/>
+	<export function="JcreateObject" type="client"/>
+	
+	<export function="JsetElementModel" type="server"/>
+	<export function="JsetElementModel" type="client"/>
+	
+	<export function="JCreateObjectDefinition" type="client"/>
+	<export function="JRemoveObjectDefinition" type="client"/>
+	
+	<export function="unloadModel" type="server"/>
+	<export function="unloadModel" type="client"/>
+	
+	<export function="isElementBroken" type="server"/>
+</meta>

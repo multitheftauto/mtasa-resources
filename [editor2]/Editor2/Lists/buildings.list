@@ -1,0 +1,1673 @@
+#Factories and Warehouses
+	3689,rdwarhusbig,#factory #warehouse #building #large #metal
+	3707,rdwarhusmed,#factory #warehouse #building #large #metal
+	3755,las2warhus_las2,#factory #warehouse #building #large #metal #overhang
+	3776,ci_bstage,#factory #warehouse #building #small #concrete
+	4860,unionstwar_LAS,#building #railway #train #railroad #large #engine #shed #warehouse
+	5129,imracompint_las2,#factory #warehouse #building #metal #interior #walkway
+	5131,imrancomp1_las2,#factory #warehouse #building #large #metal
+	5135,brkwrhus02,#factory #warehouse #building #large #concrete
+	5137,brkwrhus3_las2,#factory #warehouse #building #large #concrete
+	5138,snpdoldwrhs2_las2,#factory #warehouse #building #large #metal #overhang
+	5139,sanpedro4_las2,#factory #warehouse #building #small #concrete
+	5174,sanpedmexq4_las2,#factory #warehouse #building #small #concrete
+	5175,sanpedmexq3_las2,#warehouse #building #concrete #studio
+	5177,las2stripsshp1,#building #shop #market #concrete
+	5180,nwspltbild2_las2,#factory #warehouse #building #large #concrete
+	5183,nwspltbild1_las2,#factory #warehouse #building #large #concrete
+	5192,chemgrnd_las2,#factory #warehouse #building #small #concrete
+	5278,NEWCOMP1_las2,#factory #warehouse #building #small #concrete #yard
+	5309,las2lnew3_las2,#factory #warehouse #building #large #concrete
+	5310,las2lnew2_las2,#factory #warehouse #building #large #concrete
+	5313,newlas2sh_LAS2,#factory #warehouse #building #large #concrete #water #tower
+	5397,laeclubBlock1,#factory #warehouse #building #large #concrete
+	5728,dummybuild46_law,#factory #warehouse #building #large #concrete #sloping
+	6340,rodeo06_LAw2,#shop #restaurant #building #warehouse #concrete
+	6404,venice01b_LAw2,#shop #building #warehouse #concrete #house
+	6490,tvstudio01_LAw2,#factory #warehouse #building #large #metal
+	6925,vgnlowbuild235,#shop #warehouse #building #small #concrete
+	7019,vgnhseing111,#factory #warehouse #building #large #concrete
+	7020,vgnhseing112,#factory #warehouse #building #large #concrete
+	7021,vgnhseing113,#factory #warehouse #building #large #concrete
+	7035,vgsNwrehse17,#shop #building #24/7 #grocery #concrete
+	7269,smlbuildvgas05b,#building #warehouse #garage #concrete
+	7490,vegasnorthwrehse1,#factory #warehouse #building #large #metal
+	7492,vgnhseing40,#factory #warehouse #building #large #concrete
+	7494,vgnhseing42,#factory #warehouse #building #large #concrete
+	7495,vgnhseing43,#factory #warehouse #building #large #concrete
+	7496,vgnhseing44,#factory #warehouse #building #large #metal
+	7497,vgnorthwrehse14,#factory #warehouse #building #large #metal
+	7513,vgnwrehse69,#factory #warehouse #building #large #metal
+	7627,vgnabatoir,#factory #warehouse #building #large #metal #yard
+	7832,vgnabartoirinter,#factory #warehouse #building #large #metal
+	7861,vgnhseing8283,#factory #warehouse #building #large #concrete
+	8057,hseing01_lvs,#factory #warehouse #building #large #concrete
+	8058,vgswrehse06,#factory #warehouse #building #large #metal
+	8059,vgswrehse07,#factory #warehouse #building #large #concrete
+	8060,vgswrehse03,#factory #warehouse #building #large #metal
+	8061,vgswrehse04,#factory #warehouse #building #large #metal
+	8062,vgswrehse17,#factory #warehouse #building #large #metal
+	8063,vgswrehse16,#factory #warehouse #building #large #metal
+	8064,vgswrehse05,#factory #warehouse #building #large #concrete
+	8065,vgswrehse09,#factory #warehouse #building #large #concrete
+	8066,hseing03_lvs,#factory #warehouse #building #large #metal
+	8067,hseing02_lvs,#factory #warehouse #building #large #metal
+	8069,hseing05_lvs,#factory #warehouse #building #large #metal
+	8254,vgswrehse10,#factory #warehouse #building #large #metal
+	8255,vgswrehse13,#factory #warehouse #building #large #metal
+	8260,vgswrehse18,#shop #grocery #newsagent #concrete
+	8300,vgswrehse08,#factory #warehouse #building #large #concrete
+	8544,vgsEhseing06,#factory #warehouse #building #large #metal
+	8545,vgsEwrehse01,#factory #warehouse #building #large #metal
+	8546,vgsEwrehse02,#factory #warehouse #building #large #concrete
+	9243,hrborbuild_SFN02,#factory #warehouse #building #large #brick
+	9244,hrborbuild_SFN01,#factory #warehouse #building #small #brick
+	9247,hrbrmstr_SFN01,#factory #warehouse #building #small #brick
+	9260,hrborbuild_SFN03,#factory #warehouse #building #large #concrete
+	9680,tramstat_SFW,#factory #warehouse #building #large #brick #railway #railroad #train #engine #shed #sloping
+	10775,bigfactory_SFSe,#factory #warehouse #building #large #brick
+	10776,bigfactory2_SFSe,#factory #warehouse #building #small #brick #pipes
+	10840,bigshed_SFSe,#factory #warehouse #building #large #brick #metal
+	10843,bigshed_SFSe01,#factory #warehouse #building #small #brick #metal
+	10844,gen_whouse01_SFSe,#factory #warehouse #building #small #brick
+	10845,gen_whouse02_SFSe,#factory #warehouse #building #small #brick
+	10846,gen_whouse03_SFSe,#factory #warehouse #building #small #brick #sloping
+	10847,gen_whouse03_SFSe01,#factory #warehouse #building #small #brick
+	10856,viet_03b_SFSe,#factory #warehouse #building #small #concrete #sloping #yard
+	10965,depot_SFS,#factory #warehouse #building #small #concrete
+	10966,tankfact03_SFS,#factory #warehouse #building #large #concrete
+	11010,crackbuild_SFS,#factory #warehouse #building #small #concrete
+	11011,crackfactjump_SFS,#factory #warehouse #building #small #concrete #wrecked #destroyed #damaged
+	11012,crackfact_SFS,#factory #warehouse #building #large #concrete #wrecked #destroyed #damaged
+	11081,crackfacttanks_SFS,#factory #warehouse #water #tower #pipe #tank #metal
+	11085,crack_int1,#factory #warehouse #building #large #concrete #wrecked #destroyed #damaged
+	11086,crack_int2,#factory #warehouse #building #interior #ceiling #light #metal
+	11087,crackfactwalk,#factory #warehouse #building #interior #walkway #gantry #metal
+	11089,crackfacttanks2_SFS,#factory #warehouse #water #tower #pipe #tank #metal
+	11090,crackfactvats_SFS,#factory #warehouse #water #tower #pipe #tank #metal #base
+	11093,gen_whouse02_SFS,#factory #warehouse #building #large #brick
+	11233,crackfactwalkb,#factory #warehouse #building #interior #walkway #gantry #metal #steps #stairs
+	11234,crackfactwalkc,#factory #warehouse #building #interior #walkway #gantry #metal #steps #stairs
+	11235,crackfactwalkd,#factory #warehouse #building #interior #walkway #gantry #metal #steps #stairs
+	11236,crackfactwalke,#factory #warehouse #building #interior #walkway #gantry #metal
+	11244,gen_whouse02_SFS01,#factory #warehouse #building #small #brick
+	11290,facttanks_SFSe04,#factory #warehouse #water #tower #pipe #tank #metal
+	11293,facttanks_SFSe08,#factory #warehouse #water #tower #pipe #tank #metal
+	11295,facttanks_SFSe09,#factory #warehouse #water #tower #pipe #tank #metal
+	11461,des_nwwtower,#factory #warehouse #water #tower #pipe #tank #metal
+	11543,des_warehs,#shop #building #hotel #brick
+	12847,sprunk_fact,#factory #warehouse #building #large #metal #brewery
+	12931,CE_brewery,#factory #warehouse #building #large #brick #brewery
+	12941,sw_LastDrop,#factory #warehouse #building #small #concrete
+	12981,sw_fact01,#factory #warehouse #building #large #concrete #yard
+	12988,sw_fact02,#factory #warehouse #building #small #concrete
+	13059,CEfact03,#factory #warehouse #building #small #concrete #metal
+	13060,CE_factcomp1,#factory #warehouse #building #small #metal
+	13061,CE_factcomp2,#factory #warehouse #building #small #metal
+	13065,sw_fact03,#factory #warehouse #building #small #metal
+	13066,sw_fact04,#factory #warehouse #building #small #metal
+	13077,CE_townware,#factory #warehouse #building #small #metal
+	13078,CEwrehse07,#factory #warehouse #building #small #metal
+	13198,CE_waretank,#factory #warehouse #building #small #brick #damaged
+	14572,maintenance16,#factory #warehouse #building #small #interior #maintenance #concrete
+	14577,mafCasLoadbay01,#factory #warehouse #building #large #interior #loading #bay #concrete
+	14588,ab_abbatoir01,#factory #warehouse #building #large #interior #abbatoir #slaughterhouse #concrete
+	14784,genint_warehs,#factory #warehouse #building #large #interior #concrete
+	14795,genint3_smashtv,#factory #warehouse #building #large #interior #concrete
+	16271,des_railfac02,#factory #warehouse #building #small #metal
+	16272,des_railfac01,#factory #warehouse #building #small #metal #water #tower #pipe
+	16385,desh2_weefact2_,#factory #warehouse #building #small #metal
+	16398,desn2_peckfac1,#factory #warehouse #building #small #metal #brick
+	16399,desn2_peckfac2,#factory #warehouse #building #small #concrete
+	16400,desn2_peckfac3,#factory #warehouse #building #small #concrete
+	17012,cwsthseing26,#factory #warehouse #building #small #metal
+	17013,cuntplant05,#factory #warehouse #power #plant #small #metal
+	17014,cuntwplant01,#factory #warehouse #power #plant #small #metal
+	17015,cuntwplant07,#factory #warehouse #power #plant #metal #tower #pole
+	17016,cutnwplant09,#factory #warehouse #power #plant #metal #tower #pole
+	17017,cuntwplant10,#factory #warehouse #power #plant #metal #tower #pole
+	17021,cuntplant06,#factory #warehouse #power #plant #small #metal
+	17022,cuntwplant11,#factory #warehouse #power #plant #metal #tower #pole
+	17023,cutnwplant10,#factory #warehouse #power #plant #metal #tower #pole
+	17024,cuntwplant12,#factory #warehouse #power #plant #metal #tower #pole
+	17038,cuntw_weefactory1_,#factory #warehouse #building #small #metal
+	17040,cuntw_weefact1_,#factory #warehouse #building #small #metal
+	17049,cw_Silo01,#factory #warehouse #building #tower #silo #metal
+	17050,cw_Silo02,#factory #warehouse #building #tower #silo #metal
+	17051,cw_Silo03,#factory #warehouse #building #tower #silo #metal
+	17072,smltrukext,#factory #warehouse #building #small #metal
+	17073,smlltrukint,#factory #warehouse #building #small #metal #interior
+	17538,powerstat1_LAe2,#factory #warehouse #building #large #concrete #sloping
+	17546,hydro3_LAe,#factory #warehouse #building #small #concrete
+	17636,lae2_ground11,#factory #warehouse #building #small #metal #yard
+	18200,w_town_11,#factory #warehouse #building #small #metal
+	18365,sawmill,#factory #warehouse #building #large #metal
+	18496,w_town11b,#factory #warehouse #building #small #concrete
+#Stores and Shops
+	3988,cityhallblock2_LAn,#shop #store #building #hotel #jewelry #jewellery #cafe #large
+	4001,BailBonds1_LAn,#shop #store #building #financial #bond #large
+	4004,LAcityhall3_LAn,#shop #store #building #apartment #large
+	4011,figfree2_LAn,#shop #store #building #apartment #cinema #large
+	4018,newbuildsm02,#shop #store #building #large
+	4022,Foodmart1_lan,#shop #store #building #grocery #small
+	4048,LAcityhall4_LAn,#shop #store #building #apartment #large
+	4058,fighotblok2_LAn,#shop #store #building #apartment #large
+	4059,fighotblok3_LAn,#shop #store #building #parking #car #park
+	4060,fighotblok4_LAn,#shop #store #building #large
+	4112,build01_LAn,#shop #store #building #apartment #large
+	4114,lanBlocknew2,#shop #store #building #apartment #large
+	4117,figfree3_LAn,#shop #store #building #apartment #large #clock #tower
+	4123,cityhallblock1_LAn,#shop #store #building #apartment #large
+	4176,BailBonds2_LAn,#shop #store #building #financial #bond #small
+	4555,figfree4_LAn,#shop #store #building #apartment #large
+	4593,lan2buildblk01,#shop #store #building #apartment #large #liquor
+	4594,lan2buildblk02,#shop #store #building #apartment #large
+	4682,LAdtbuild3_LAn2,#shop #store #building #apartment #large #jewelry #jewellery
+	4683,LAdtbuild2_LAn2,#shop #store #building #apartment #large #bank
+	4708,LAdtbuild1_LAn2,#shop #store #building #apartment #large #laundry #sloping
+	4848,sanpedbeaut,#shop #store #building #small #salon
+	4850,snpedshpblk07,#shop #store #building #small
+	4877,dwntwnbit4_LAS,#shop #store #building #apartment #large
+	4880,dwntwnbit2_LAS,#shop #store #building #apartment #large
+	4894,dwntwnbit1b_LAS,#shop #store #building #apartment #large
+	5016,snpdPESS1_LAS,#shop #store #building #small
+	5017,lastripx1_LAS,#shop #store #building #small #xxx #sex
+	5040,unionliq_LAS,#shop #store #building #small #liquor
+	5042,bombshop_LAs,#shop #store #building #small #bomb #interior
+	5110,mexcrnershp2_las2,#shop #store #building #large
+	5134,snpedshprk_las2,#shop #store #building #small #plaza
+	5136,snpedshprk1_las2,#shop #store #building #small #plaza
+	5140,snpedtatshp,#shop #store #building #small
+	5142,las2plaza1bit,#shop #store #building #large #plaza
+	5173,las2jmscum12,#shop #store #building #small #barber #sport #field
+	5179,mexcrnershp_las2,#shop #store #building #small
+	5181,nwspltbild3_las2,#shop #store #building #small
+	5182,nwspltbild4_las2,#shop #store #building #small #liquor #sport #field
+	5187,mexcrnrxc_las2,#shop #store #building #small
+	5267,sanpedmexq1_las2,#shop #store #building #small #apartment
+	5392,laestripmall1,#shop #store #building #small #laundry
+	5393,laeshop1,#shop #store #building #small
+	5410,laecumpstreet,#shop #store #building #large
+	5414,laeJeffers02,#shop #store #building #large
+	5521,Idlewofuk06_LAe,#shop #store #building #small
+	5532,laesprayshop
+	5628,laenwblkB1
+	5704,archwindshop_laW
+	5709,shop03_laW01
+	5717,Sunset20_LAwN
+	5719,holbuild01_law
+	5721,holbuild04_law
+	5725,holpacific2_law
+	5726,Lawn_holbuild21
+	5727,holbuild10_law
+	5729,MelBlok02_LAwN
+	5730,MelBlok03_LAwN
+	5731,MelBlok05_LAwN
+	5733,melrose07_law
+	5734,melrose09_law
+	5737,archshop07_laW02
+	5738,hothol02_law01
+	5760,MelBlok09_LAwN
+	5761,MelBlok06_LAwN
+	5762,foodmartlawn
+	5765,sunset15_LAwN
+	5768,TaftBldg1_LAwN
+	5769,VineBlock1_LAwN
+	5771,melrose10_law
+	5781,MelBlok11_LAwN
+	5782,MelBlok12_LAwN
+	5784,MelBlok08_LAwN
+	5787,MelBlok01_LAwN
+	5792,fredricks01_LAwN
+	5810,lawnmalstrip
+	5813,lawnshop1
+	5819,lawnbuildg
+	5848,mainblk_LAwN
+	5870,sunset17_LAwN
+	5896,sunset22_LAwN
+	6048,mall_laW
+	6053,stepshop_law
+	6060,plaza2top_law
+	6061,plaza2bot_law
+	6095,offvensp02_law
+	6096,offvensp03_law
+	6098,gzbuild2_law
+	6103,gaz5_LAW
+	6104,gaz18_LAW
+	6130,mallb_laW
+	6145,gaz16_law
+	6150,gaz7_LAW
+	6151,gaz21_LAW
+	6157,gaz22_law
+	6158,gaz24_law
+	6186,gaz5_LAW01
+	6187,gaz26_law
+	6282,venice03_laW2
+	6334,rodeo02_LAw2
+	6338,sunset02_LAw2
+	6354,Sunset04_LAw2
+	6355,Sunset05_LAw2
+	6369,sunset09_LAw2
+	6406,venice04_LAw2
+	6488,countclub02_LAw2
+	6908,vgndwntwnshop2
+	6919,vgnlowbuild01
+	6924,vgnlowbuild21
+	6944,vgnshopnmall02
+	6946,vgnwalgren1
+	6947,vgnmall258
+	6977,stripshopn1
+	7088,casinoshops1
+	7234,vgsNshopchap1
+	7424,vgnmall1
+	7493,vgnabatbuild
+	7506,vgnlowbuild057
+	7507,vgnlowbuild09
+	7508,vgnlowbuild17
+	7510,vgnlowbuild236
+	7526,vgncarshow1
+	7529,vgnlowbuild18
+	7531,vgnlowmall2
+	7554,vgnhseing89
+	7599,stripshopstat
+	7650,vgnusedcar2
+	7658,vgnbuild1new
+	7985,shop13_lvs
+	8068,hseing04_lvs
+	8242,vegasSedge10
+	8401,shop05_lvs
+	8403,shop03_lvs
+	8432,shop06_lvs
+	8435,shop11_lvs
+	8436,shop12_lvs
+	8494,lowbuild01_lvs
+	8495,mall01_lvs
+	8496,lowbuild03_lvs
+	8503,shop08_lvs
+	8504,shop10_lvs
+	8505,shop14_lvs
+	8506,shop16_lvs
+	8507,shop15_lvs
+	8508,genshop01_lvs
+	8509,shop09_lvs
+	8516,shop07_lvs
+	8567,vgsEbuild04_lvs
+	8569,vgsEbuild12_lvs
+	8570,vgsEbuild09_lvs
+	8571,vgsEbuild11_lvs
+	8581,vgsEbuild06_lvs
+	8639,chnatwnmll01_lvs
+	8643,vgsEbuild01_lvs
+	8668,chnatwnmll11_lvs
+	8687,vgelwbld15_lvs
+	8688,vgelwbld16_lvs
+	8689,vgelwbld17_lvs
+	8839,vgsEcarshow1
+	8842,vgsE24hr_lvs
+	8849,vgelwbld18_lvs
+	9054,chnatwnmll14_lvs
+	9055,chnatwnmll15_lvs
+	9162,shop01_lvs
+	9163,shop04_lvs,#building #generic #walls #brown
+	9299,sfn_clothesSHOP_cm1
+	9300,sfn_town02
+	9301,tempobj_SFN04
+	9302,sfn_town01
+	9303,sfn_town03
+	9494,tempbuild_sfw41
+	9514,supasave_sfw
+	9595,tempbuild_sfw22
+	9906,tempsf_2_sfe
+	9908,anotherbuild091
+	9910,fishwarf01
+	9911,fishwarf06
+	9912,fishwarf03
+	9913,fishwarf04
+	9914,fishwarf05
+	9917,yet_another_sfe
+	9921,ferryshops1
+	9922,ferryshops2
+	9923,ferryshops3
+	9924,ferryshops4
+	9925,ferryshops5
+	9926,ferryshops07
+	9928,ferryshops08
+	9929,boring_sfe
+	9953,ottos_AUTOS_sfe
+	10025,chinatown_sfe2
+	10028,copshop_sfe
+	10030,chinatown_sfe9
+	10035,chinatown_sfe20
+	10037,chbackbit8_sfe
+	10038,chinatown_sfe8
+	10039,chinatown_sfe1
+	10045,pinkbuild4_sfe
+	10046,pinkbuild_sfe
+	10052,lowmall
+	10054,fishwarf24_sfe
+	10142,dwntwnsl01_sfe1
+	10148,bombshop
+	10288,tempsf_4_sfe2
+	10369,smallshop_10_SFS08
+	10375,subshop_SFS
+	10376,subshop2_SFS
+	10383,subshops3_SFS
+	10388,tempobj_SFS02
+	10390,mission_12_SFS
+	10391,mission_14_SFS
+	10392,smallshop_10_SFS07
+	10393,scum_SFS01
+	10423,mission_15_SFS
+	10428,hashblock1_02_SFS
+	10429,hashblock1_10_SFS
+	10430,hashblock1_08_SFS
+	10431,hashbury_03_SFS
+	10432,haight_17_SFS
+	10434,hashbury_05_SFS
+	10435,shoppie6_SFS04
+	10439,hashbury_08_SFS
+	10441,hashbury_10_SFS
+	10447,hashupass_SFS
+	10624,lowqueens1_SFS
+	10625,lowqueens2_SFS
+	10626,queens_09_SFS
+	10627,queens_02_SFS
+	10628,queens_03_SFS
+	10630,queens_10_SFS
+	10633,queens_01_SFS
+	10722,shoppie6_SFS03
+	10891,bakery_SFSe
+	10925,shoppie1_SFS
+	10949,shoppie4_SFS
+	10950,shoppie2_SFS
+	10951,shoppie3_SFS
+	10952,shoppie6_SFS
+	10953,shoppie5_SFS
+	10973,mall_03_SFS
+	10974,mall_01_SFS
+	10975,shoppie6_SFS01
+	10977,smallshop_16_SFS
+	10978,smallshop_17_SFS
+	10979,haightshop_SFS
+	10980,tempobj2_SFS02
+	10981,scum_SFS
+	10982,smallshop_10_SFS03
+	10994,shoppie6_SFS02
+	10996,smallshop_10_SFS05
+	10997,smallshop_10_SFS06
+	10999,haightshop_SFS02
+	11000,smallshop_17_SFS01
+	11092,burgalrystore_SFS
+	11301,carshow4_SFSe
+	11312,modshop2_SFSe
+	11314,modshopint2_SFSe
+	11315,sprayshopint_SFSe
+	11317,carshow_SFSe
+	11434,des_indianstore
+	11436,des_indshops1
+	11449,des_nwtshop2
+	11450,des_nwtshop07
+	11456,des_nwtshop10
+	11471,des_swtshop14
+	11475,des_swtshop02
+	11497,des_baitshop
+	11545,desn_tsblock
+	11546,desn_fuelpay
+	11615,desN_baitshop
+	12822,smalltwnbld05
+	12841,cos_pizinterior
+	12843,cos_liquorshop
+	12844,cos_liqinside
+	12845,cos_liqinsidebits
+	12849,CornerStore_01
+	12850,sw_block01
+	12855,sw_copshop
+	12862,sw_block03
+	12863,sw_genstore02
+	12923,sw_blockbit05
+	12944,sw_lasershop
+	12945,sw_dryclean01
+	12946,sw_furnistore01
+	12947,sw_musicstore01
+	12948,sw_block01a
+	12949,sw_jazzmags
+	12951,sw_shopflat01
+	12953,sw_blockbit01
+	12962,sw_shopflat04
+	12963,sw_shopflat02
+	12964,sw_block07
+	12979,sw_block09
+	12980,sw_block10
+	12982,sw_shopflat06
+	12984,sw_block11
+	13008,sw_block02
+	13012,sw_shopflat05
+	13013,sw_block12
+	13014,sw_block04
+	13015,sw_genstore01
+	13022,sw_block11a
+	13131,sw_block05
+	13363,CE_photoblock
+	13364,CE_wtownblok1
+	13761,cunte_Whisky
+	14531,int_zerosrc01
+	14661,int_tatooA01
+	14664,int_tatooA04
+	14665,int_7_11A40
+	14667,int_7_11A41
+	14670,int_7_11A42
+	14671,int_7_11A5
+	14672,int_sex01
+	14676,int_tatooA06
+	14682,int_tatooA10
+	14689,int_tatooA15
+	14668,711_c
+	14669,711_d
+	16005,desn2_stwnblok2
+	16007,desn2_cn2blok1
+	16011,des_westrn2_
+	16053,des_westrn7_01
+	16054,des_westrn9_01
+	16064,des_cn2blok4
+	16065,des_stwnshop01
+	16068,des_stripblock1
+	16069,des_stwnyelmot1_
+	16361,desn2_tsblock
+	16396,des_ntshop5_
+	16475,des_stwnbowl
+	17066,cw2_genstore
+	17503,Furniture_LAe
+	17508,BlockK_LAe2
+	17517,BarberBlock1_LAe
+	17519,market2_lae
+	17520,market1_lae
+	17521,Pawnshp_lae2
+	17522,gangshop7_lae2
+	17524,LongBeBlok1_LAe
+	17526,gangshops1_LAe
+	17529,gangshops2_LAe2
+	17531,barrio03A_LAe
+	17536,dambuild1_LAe2
+	17537,cineblock1_LAe2
+	17542,gangshops6_LAe2
+	17543,gangshops5_LAe2
+	17544,gangshops4_LAe2
+	17577,Liquorstore01_LAe2
+	17853,cine_mark_lae2
+	17862,compomark_lae2
+	18007,int_barberA12
+	18008,int_clothingA01
+	18025,clothes_sports
+	18026,clothes_shit
+	18027,CJ_BARB_2
+	18030,GAP
+	18031,clothesexl
+	18038,Gun-Shop-Vegas
+	18082,CJ_Barber2
+	18083,CJ_Barber2_1
+	18088,cj_changing_room
+	18203,wtown_bits2_05
+	18233,cuntw_town07
+	18238,cuntw_stwnfurn_
+	18240,cuntw_liquor01
+	18241,cuntw_weebuild
+	18261,cw2_photoblock
+	18264,cw2_cinemablock
+	18265,cw2_wtownblok1
+	18266,wtown_shops
+	18282,cw_tsblock
+#Graveyard
+	5777,tombston01_LAwN
+	5715,grave08_law
+	5714,grave03_law
+	5713,grave01_law
+	3878,headstones_SFSx
+	2896,casket_law
+	2895,fun_flower_law
+	16410,desn2_graves
+#Houses and Apartments
+	1675,wshxrefhse1
+	1677,wshxrefhse2
+	3167,trailer_large1_01
+	3168,trailer2_01,#caravan #outdoors #vehicle
+	3169,trailer_large2_01
+	3170,trailer_large3_01
+	3171,trailer5_01
+	3172,trailer6_01
+	3173,trailer_large4_01
+	3174,sm_airstrm_sml_
+	3175,sm_airstrm_med_
+	3178,Shack02
+	3241,conhoos2
+	3242,conhoos1
+	3246,des_westrn7_
+	3250,des_westrn9_
+	3253,des_westrn11_
+	3283,conhoos3
+	3284,conhoos5
+	3285,conhoos4
+	3303,des_bighus03
+	3304,des_bighus02
+	3305,des_bighus01
+	3306,swburbhaus02
+	3307,swburbhaus01
+	3308,swburbhaus03
+	3309,swburbhaus04
+	3310,sw_woodhaus04
+	3311,sw_woodhaus01a
+	3312,sw_woodhaus02
+	3313,sw_woodhaus03
+	3314,sw_bigburb_04
+	3315,sw_bigburb_03
+	3316,sw_bigburb_02
+	3317,sw_bigburb_01
+	3351,sw_bigburbsave
+	3353,sw_bigburbsave2
+	3355,cxrf_savhus1_
+	3356,cxrf_savhus2_
+	3362,des_ruin2_
+	3414,CE_oldhut1
+	3415,CE_loghut1
+	3417,CE_loghut02
+	3418,CE_oldhut02
+	3442,vegasxrexhse1
+	3443,vegasxrexhse2
+	3444,shabbyhouse02_lvs
+	3445,vegasxrexhse08
+	3446,vegasxrexhse10
+	3449,vegashsenew1
+	3454,vgnhseing15
+	3455,vgnhseblk1
+	3456,vgnhseblk3
+	3457,vgnhseblk2
+	3464,shabbyhouse03_lvs
+	3466,shabbyhouse01_lvs
+	3483,vegasxrexhse09
+	3484,vegasxrexhse03
+	3485,vegasxrexhse04
+	3486,vegasxrexhse05
+	3487,vegasxrexhse06
+	3488,vegasxrexhse07
+	3501,vgsxrefpartm1
+	3555,compmedhos2_LAe
+	3556,compmedhos3_LAe
+	3557,compmedhos4_LAe
+	3558,compmedhos5_LAe
+	3580,compbigho2_LAe
+	3582,compmedhos1_LAe
+	3583,compbigho3_LAe
+	3584,compproj01_LA
+	3587,nwsnpedhus1_LAS
+	3588,sanped_hse1_LAs
+	3589,compfukhouse3
+	3590,compfukhouse2
+	3595,Dingbat01Aex_LA
+	3596,Dingbat02Aex_LA
+	3597,Dingbat01Bex_LA
+	3598,hillhouse01_LA
+	3599,hillhouse02_LA
+	3600,hillhouse06_LA
+	3601,hillhouse04_LA
+	3602,hillhouse05_LA
+	3603,bevman_LAW2
+	3604,bevmangar_LAW2
+	3605,bevman3_LAW2
+	3606,bevbrkhus1
+	3607,bevman2_LAW2
+	3608,hillhouse08_LA
+	3609,hillhouse13_LA
+	3612,hillhouse12_LA
+	3613,hillhouse10_LA
+	3614,hillhouse09_LA
+	3616,midranhus2_LAS
+	3617,midranhus_LAS
+	3618,nwlaw2husjm3_Law2
+	3619,nwlaw2husjm4_Law2
+	3622,rdwarhus
+	3623,rdwarhus2
+	3624,nwwarhus
+	3626,dckwrkhut
+	3628,smallprosjmt_LAS
+	3634,nwccumphus1_LAS
+	3635,nwccumphus2_LAS
+	3639,GlenPHouse01_LAx
+	3640,GlenPHouse02_LAx
+	3641,GlenPHouse04_LAx
+	3642,GlenPHouse03_LAx
+	3644,idlebuild01_LAx
+	3646,ganghous05_LAx
+	3648,ganghous02_LAx
+	3649,ganghous01_LAx
+	3651,ganghous04_LAx
+	3653,BeachApartA1_LAx
+	3655,ganghous03_LAx
+	3661,projects01_LAx
+	3676,lawnhouseredA
+	3677,lawnhousegreyLS
+	3678,lawnhousegreyRS
+	3684,Lawnapartmnt
+	3697,project2lae2
+	3698,barrio3B_LAe
+	3700,DrugDealHs1_LAe
+	3702,barrio6B_LAe2
+	3704,barrio6a_LAe2
+	3711,BeachApartA5b
+	3713,BeachApartA5a
+	3741,CEhillhse14
+	3759,vencanhou01_LAx
+	3762,CEnwlaw4
+	3764,TCEnewhillhus02
+	3765,TCEmulhouse04_Law01
+	3783,LAs2Xref01_LAx
+	3820,box_hse_09_SFXRF
+	3821,box_hse_02_SFXRF
+	3822,box_hse_03_SFXRF
+	3823,box_hse_11_SFXRF
+	3824,box_hse_10_SFXRF
+	3825,box_hse_01_SFXRF
+	3826,box_hse_06_SFXRF
+	3827,box_hse_07_SFXRF
+	3828,box_hse_05_SFXRF
+	3829,box_hse_04_SFXRF
+	3830,box_hse_08_SFXRF
+	3842,box_hse_14_SFXRF
+	3843,box_hse_12_SFXRF
+	3844,box_hse_15_SFXRF
+	3845,box_hse_13_SFXRF
+	4178,BailBonds3_LAn
+	4861,snpedhuair2_LAS
+	4886,gngspwnhus1_LAS
+	5060,crlsafhus_LAS
+	5151,carganghud_las2
+	5341,crlsafhus_LAS2
+	5416,laeganghous205
+	5421,laesmokeshse
+	5423,laeJeffers03
+	5425,laeJeffers05
+	5444,laeChicano02
+	5445,laeChicano01
+	5446,laeChicano03
+	5447,laeChicano04
+	5448,laeChicano05
+	5450,laeChicano06
+	5451,laeChicano07
+	5452,laeChicano09
+	5453,laeChicano10
+	5461,laeGlenPark05
+	5462,laeGlenPark04
+	5475,laeIdleProj02
+	5476,laeIdleProj01
+	5520,BDupsHouse_LAe
+	5626,laecompmedhos518
+	5642,laeChicano11
+	5643,laeChicano08
+	5655,laeChicano01b
+	5656,laeChicano01c
+	5722,manns05_LAwN
+	5723,manns04_LAwN
+	5775,standard01_LAwN
+	5874,manns03_LAwN
+	5891,hblues02_LAwN
+	5892,hblues01_LAwN
+	5986,Chateau01_LAwN
+	6038,wilshire2_law
+	6039,wilshire5_law
+	6041,wilshire6_law
+	6042,venblue01_law
+	6047,wilshire1_law
+	6057,wdpanelhs09_law
+	6058,wdpanelhs08_law
+	6132,gaz8_law
+	6133,gaz9_law
+	6134,gaz11_law
+	6135,gaz13_law
+	6136,gaz15_law
+	6137,gaz12_law
+	6138,gaz10_law
+	6284,santahouse02_law2
+	6285,santahouse04_law2
+	6286,santahouse05_law2
+	6294,santahousegrp_law2
+	6436,santahouseTr_law2
+	6522,country_law2
+	6868,smlbuildvgas05
+	6920,vgnlowbuild11
+	6921,vgnlowbuild12
+	6922,vgnlowbuild13
+	6923,vgnlowbuild14
+	6926,vgnhseing68
+	7200,vgnlowbuild239
+	7287,VgsN_safehse_res
+	7489,vgnhseing34
+	7491,vgnhseing25
+	7533,newaprtmntsvgN08
+	7534,newaprtmntsvgN07
+	7535,newaprtmntsvgN03
+	7681,vegasnotxrefhse1
+	7885,vegasglfhse1
+	7929,vgwsavehse2
+	7932,vgsnotxrefhse02
+	7940,vegirlfrhouse02
+	8425,villa_inn01_lvs
+	8427,villa_inn03_lvs
+	8428,villa_inn02_lvs
+	8433,residnce01_lvs
+	8437,residntial01_lvs
+	8513,residnce01_lvs01
+	9098,vgsEsvhse01
+	9220,Villa_SFN_CHRIS_01
+	9221,Villa_SFN_CHRIS_02
+	9227,moresfnshit20
+	9228,moresfnshit22
+	9238,moresfnshit28
+	9258,preshoosml02_SFN
+	9259,preshoosbig02_SFN
+	9270,preshoosbig01_SFN01
+	9271,preshoos03_SFN01
+	9272,preshoos03_SFN02
+	9273,preshoos01_SFN03
+	9274,preshoos03_SFN03
+	9275,preshoosml02_SFN01
+	9319,preshoos03_SFN04
+	9320,preshoosbig02_SFN01
+	9322,preshoos03_SFN05
+	9323,moresfnshit29
+	9324,preshoosbig02_SFN02
+	9325,preshoos03_SFN06
+	9326,preshoos03_SFN07
+	9327,moresfnshit30
+	9328,moresfnshit31
+	9341,Villa_SFN_CHRIS_04
+	9495,tempbuild_sfw42
+	9496,sboxbld4_sfw02
+	9497,sboxbld4_sfw69
+	9498,sboxbld4_sfw70
+	9499,sboxbld4_sfw71
+	9500,sboxbld4_sfwa
+	9501,sfwbox_sfw27
+	9502,sfwbox_sfw43
+	9503,sboxbld4_sfw72
+	9504,sboxbld4_sfw73
+	9506,bigboxtmp02
+	9507,bigboxtmp03
+	9509,bigboxtmp05
+	9510,bigboxtmp06
+	9511,bigboxtmp07
+	9512,bigboxtmp08
+	9513,bigboxtmp1
+	9515,bigboxtmp18
+	9516,bigboxtmp17
+	9517,bigboxtmp16
+	9518,bigboxtmp15
+	9520,boxbuildsfw_31
+	9521,morboxes03
+	9522,morboxes04
+	9523,newvic2_sfw
+	9524,blokmod1_sfw
+	9529,blokmod3_sfw
+	9547,blokcut_sfw04
+	9549,sfw_boxwest10
+	9550,sfw_boxwest04
+	9572,blokmod3_sfw04
+	9573,newvic1_sfw
+	9576,frway_box1
+	9577,frway_box2
+	9578,blokmod2_sfw01
+	9579,blokmod2_sfw03
+	9580,sboxbld4_sfw83
+	9581,sboxbld4_sfw84
+	9592,sfw_boxwest12
+	9598,sfw_boxwest02
+	9599,vicbig_sfw1
+	9737,blokmod3_sfw69
+	9738,blokmod2_sfw69
+	9739,newvic1_sfw69b
+	9740,newvic1_sfw69
+	9741,blokmod1_sfwc
+	9742,blokmod1_sfwb
+	9748,sfw_boxwest03
+	9749,sfw_boxwest01
+	9750,sfw_boxwest05
+	9751,sfw_boxwest06
+	9752,sfw_boxwest08
+	9753,sfw_boxwest09
+	9754,sfw_boxwest11
+	9762,sfw_boxwest07
+	9763,blokcut_sfw01
+	9764,blokcut_sfw02
+	9765,blokcut_sfw03
+	9894,blokmod2_sfw
+	9895,bigboxtmp19
+	9903,pier69_models07
+	9904,pier69_models04
+	9909,vicstuff_sfe33
+	9916,jumpbuild_sfe
+	9920,vicstuff_sfe6000
+	9927,sfe_redwht2
+	9947,lbd_house1_sfe
+	9948,lbd_house2_sfe
+	9952,vicstuff_sfe6006
+	10013,vicstuff_sfe17
+	10014,vicstu69_sfe
+	10015,vicstu69b_sfe
+	10016,vicnew_sfe04
+	10017,bigvic_a1
+	10019,vicstuff_sfe45
+	10020,vicstuff_sfe22
+	10021,vicstuff_sfe06
+	10022,vicstuff_sfe04
+	10043,vicstuff_sfe6004
+	10048,vicstuff_sfe66
+	10050,vicstuff_sfe50
+	10053,fishwarf20_sfe
+	10055,fishwarf21_sfe
+	10080,fishwarf10_sfe
+	10084,fishwarf13_sfe
+	10086,aprtmnts03_sfe
+	10101,vicstuff_sfe67
+	10187,vicnew_sfe01
+	10188,vicnew_sfe02
+	10189,vicnew_sfe03
+	10278,vicstu69c_sfe
+	10287,tempsf_4_sfe3
+	10289,tempsf_3_sfe
+	10306,vicstuff_sfe38
+	10427,haight_52_SFS
+	10634,queens_06_SFS
+	10988,mission_01_SFS
+	10989,mission_02_SFS
+	10990,mission_04_SFS
+	10991,mission_05_SFS
+	10992,mission_03_SFS
+	10993,mission_06_SFS
+	10995,mission_08_SFS
+	10998,mission_11_SFS
+	11001,mission_16_SFS
+	11002,tempobj_SFS03
+	11004,mission_18_SFS
+	11433,adobe_hoose2
+	11490,des_ranch
+	11491,des_ranchbits1
+	11501,des_westrn9_03
+	11502,des_weebarn1_
+	11503,des_westrn11_05
+	12937,CE_CATshack
+	12938,sw_apartments02
+	12939,sw_apartmentsBase
+	12940,sw_apartments07
+	12991,sw_shack02
+	13681,TCEhilhouse03
+	13687,TCEhillhse02
+	13694,CEhillhse13
+	13695,CEhillhse05
+	13696,CEnewhillhus
+	13697,TCElhouse06
+	13701,TCEhilouse02
+	13721,mulhouse03_cunte
+	13724,drg_nu_ext
+	13729,CEgraveBuil01
+	13746,TCEhillhouse07
+	13747,CEhillhse06
+	13753,CEhillhouse04
+	13754,CEmulhouse04
+	13755,CEhillhouse01
+	13816,CE_safeground
+	14385,kb_tr_main
+	14388,MaddDoggs02
+	14389,MaddDoggs03
+	14390,MaddDoggs04
+	14417,MaddDoggs05
+	14418,MaddDoggs07
+	14419,MaddDoggs08
+	14420,MaddDoggs09
+	14421,MaddDoggs10
+	14422,MaddDoggs01
+	14423,MaddDoggs12
+	14424,MaddDoggs13
+	14425,MaddDoggs14
+	14426,MaddDoggs15
+	14427,MaddDoggs16
+	14428,MaddDoggs17
+	14429,MaddDoggs18
+	14430,MaddDoggs19
+	14431,MaddDoggs20
+	14471,carls_moms_kit2
+	14474,ganghse_int1
+	14475,ganghse_int2
+	14476,carlscrap
+	14484,MaddDoggs06
+	14485,MaddDoggs11
+	14492,sweets_room
+	14495,sweetshall
+	14500,immy_rooms
+	14512,immy_rooms2
+	14525,imy_otherbit
+	14526,sweetsmain
+	14534,ab_woozies01
+	14639,tr_man_main
+	14700,int2smSf01_int01
+	14701,int2Hoose2
+	14702,int2lamid01
+	14703,int2Hoose09
+	14706,int2labigtwo01
+	14707,int2labig301
+	14708,int2labigone01
+	14709,int2lamidtwo01
+	14710,int2vgshM3
+	14711,int2vgshM2
+	14712,int2Hoose11
+	14713,int2Hoose16
+	14714,int2Hoose08
+	14717,int2lasmtwo02
+	14718,int2lasmone04
+	14735,crackhoose
+	14736,AH_chiller2
+	14746,rylounge
+	14748,sfhsm1
+	14750,sfhsm2
+	14754,bigsanfranhoose
+	14755,shite
+	14756,shitlobby
+	14758,sfmansion1
+	14759,sfhsm03
+	14760,Object03
+	14771,int3int_brothel
+	14801,Bdups_main
+	14803,BDupsNEW,#room #interior #colorful #colourful
+	14859,coochie-room
+	14865,bobbi-room01
+	14889,Millie-room
+	15031,lasmall1_sv
+	15041,cunthouse
+	15042,newhouse1
+	15046,countrysavehouse
+	15048,LABIGSAVEHOUse
+	15054,svvgmedhoose
+	15055,savelamid
+	15058,midvegsavehouse
+	15059,labihalfhouse
+	16105,des_westrn11_04
+	16280,des_farmhouse1_
+	16285,des_westrn7_03
+	16689,des_westrn7_02
+	17005,farmhouse
+	17008,farmhouse01
+	17041,cuntw_stwn
+	17044,cuntw_stwnyels
+	17045,cuntw_stwnyel
+	17067,cw2_logcabins
+	17335,farmhouse02
+	17547,EBeachAp1_LAe2
+	17549,BeachBlok01_LAe2
+	17551,BeachBlok02_LAe2
+	17552,burnHous1_LAe2
+	17553,BeachBlok3_LAe2
+	17554,BeachBlok5_LAe2
+	17555,BeachBlok7_LAe2
+	17560,EBeachAp3_LAe2
+	17562,LongBeBlokx_LAe
+	17573,rydhou01_LAe2
+	17575,burgho01_LAe2
+	17679,lae2_bigblock
+	17690,lae2_blockN
+	17697,carlshou1_LAe2
+	17698,sweetshou1_LAe2
+	17699,mcstraps_LAe2
+	17700,pigpenblok1_LAe2
+	17804,LBeachApts1_LAe2
+	17807,BeachApartA4_LAe2
+	17809,BeachApartA5_LAe2
+	17859,cinemark2_lae2
+	17888,EBeachAp2_LAe2
+	17893,splitapts01
+	17894,splitapts02
+	17901,coast_apts
+	17922,coast_apts2
+	17926,sweet_faux_ent
+	17928,burnsfakeint
+	17934,coochieghous
+	17944,LngBeBlok2_LAe
+	18230,logcabinnlogs
+	18258,logcabinnlogs01
+	18259,logcabinn01
+	18267,logcabinn
+#Offices and Skyscrapers
+	3781,Lan2officeflrs
+	4002,LAcityhall2_LAn
+	4005,decoblok2_LAn
+	4006,eastcolumb1_LAn
+	4007,wellsfargo1_LAn
+	4008,decoblok1_LAn
+	4017,offblokA_LAn
+	4019,newbuildsm01,#walls #pillars
+	4021,Officessml1_lan
+	4023,newdbbuild_lan04
+	4028,lanstap
+	4033,fightplaza1_LAn
+	4113,LanOfficeBlok1
+	4193,officeblok1_Lan
+	4550,LibrTow1_LAn
+	4558,LacmEntr1_LAn
+	4559,LacmaBase1_LAn
+	4563,LAskyscrap1_LAn
+	4564,LAskyscrap2_LAn
+	4569,stolenbuilds05
+	4570,stolenbuilds08
+	4571,stolenbuilds09
+	4572,stolenbuilds11
+	4573,stolenbuilds12
+	4576,lan2newbuild1,#building #modern #hotel
+	4585,towerlan2,#skyscraper #tower #building #tall
+	4586,skyscrapn201
+	4587,skyscrapn203
+	4600,LAdtbuild10_LAn
+	4601,LAn2_gm1
+	4602,LAskyscrap4_LAn
+	4603,sky4plaz2_LAn
+	4681,LAdtbuild6_LAn2
+	4690,skyscrapn202
+	4718,gm_build4_LAn2
+	5033,unmainstat_LAS
+	5735,studoff_law
+	5736,studoff02_law
+	5740,tall2
+	5767,capitRec1_LAwN
+	5881,skyscr02_LAwN
+	5882,skyscr01_LAwN
+	5999,sunset18_LAwN
+	6059,offven02_law
+	6063,staplaz_law
+	6087,offven01_law
+	6088,offven05_law
+	6099,gaz3_law
+	6100,gaz1_law
+	6102,gaz4_LAW
+	6148,gaz19_law
+	6159,gaz25_law
+	6199,gaz27_LAW
+	6205,ja_gerrartlaw
+	6211,offven01_law01
+	6212,offven05_law01
+	6288,Pier02b_LAw2
+	6332,rodeo01_LAw2
+	6336,rodeo03_LAw2
+	6342,century01_LAw2
+	6351,rodeo05_LAw2
+	6364,sunset07_LAw2
+	6366,sunset08_LAw2
+	6368,sunset03_LAw2
+	6371,rodeo04_LAw2
+	6373,sunset11_LAw2
+	6388,SanClifft02_LAw2
+	6389,SanClift01_LAw2
+	6390,SanClifft04_LAw2
+	6391,SanClifft05_LAw2
+	6966,vegasNbank1
+	6993,vgncircus2
+	7009,vgnpolicebuild2,#police #station #building #security #cops
+	7528,downvgnbild1
+	7584,miragebuild01
+	7585,miragebuild05
+	7696,vgngebuild102
+	8391,ballys03_lvs
+	8392,ballys02_lvs
+	8393,ballys01_lvs
+	8419,vgsbldng01_lvs
+	8421,pirtehtl02_lvS
+	8422,pirtehtl01_lvS
+	8424,vagbond01_lvs
+	8434,vgsoffice01_lvs
+	8480,csrspalace01_lvs
+	8482,csrspalace02_lvs
+	8485,ballysbase_lvs
+	8488,flamingo02_lvs
+	8489,flamingo01_lvs
+	8490,flamingo03_lvs
+	8527,vagbond02_lvs
+	8528,vagbond03_lvs
+	8555,vgsEcrthse
+	8565,vgsEbuild03_lvs
+	8566,vgsEbuild02_lvs
+	8568,vgsEbuild05_lvs
+	9361,boatoffice_sfn
+	9907,monolith_sfe
+	9919,grnwhite_sfe
+	10027,bigwhiete_SFE
+	10041,BIGCENTRAL_SFE
+	10044,sfe_swank1
+	10056,tempsf_4_sfe
+	10060,aprtmnts01_sfe
+	10063,aprtmnts02_sfe
+	10143,tempsf_1_sfe
+	10308,yet_another_sfe2
+	10610,fedmint_SFS
+	10619,officymirrord_SFS
+	10676,transmitbldg_SFS,#building #roof #cover #shelter
+	10871,blacksky_SFSe
+	10945,skyscrap_SFS
+	10947,officy_SFS
+	10948,skyscrapper_SFS
+	11431,des_tepeoff01
+	11566,des_tepeoff02
+	13006,sw_office1
+	14593,paperchase04
+	14594,paperchase03
+	14595,paperchase02
+	14597,paperchase07
+	14602,paperchase01
+	16004,des_tepeoff
+	16326,des_byoffice
+	17533,tempLB1_LAe2
+#Other Buildings
+	8396,sphinx02_lvs
+	7661,venetiancpark05
+	7660,venetiancpark04
+	7636,venetiancpark03
+	7635,venetiancpark02
+	7630,venetiancpark01
+	7586,miragebuild07
+	7555,bballcpark1
+	7347,vgsn_pipeworks01
+	7344,vgsn_pipeworks
+	6223,gaz2bld_law
+	5838,ci_watertank01
+	5836,ci_watertank
+	5644,laebuildsit01a
+	5463,laebuildsit01
+	5299,las2_brigtower
+	4889,dwntwnbit2b_LAS
+	4826,grifftop2
+	4825,griffithoblas
+	4560,LacmCanop1_LAn
+	4188,bventuraENV_LAn
+	3979,bonaventura_LAn
+	3944,bistro_blok
+	3943,mid_staircase
+	3942,bistrobar
+	3941,comms02
+	3940,comms01
+	3939,hanger01
+	3932,hanger
+	3763,CE_radarmast3
+	3244,pylon_big1_
+	3107,wongs_erection2
+	3059,imy_shash_wall
+	3030,wongs_erection
+	17007,wt6supps01
+	16613,des_bigtelescope
+	16327,des_bycontowr
+	16325,des_quarryhut02
+	16310,des_quarryhut1
+	16010,des_reslab_
+	16006,ros_townhall
+	16003,drvin_ticket
+	16001,drvin_projhut
+	16000,drvin_screen
+	1596,satdishsml
+	1595,satdishbig
+	13109,sw_watertower04
+	10394,plot1_SFS
+	10357,transmitter_sfs
+	10280,lowbox_sfe
+	6298,ferris01_LAw2
+	967,bar_gatebox01
+	1638,od_pat_hut
+	1684,portakabin
+	3243,tepee_room_
+	3292,cxf_payspray_
+	3293,des_payspint
+	3504,vgsN_portaloo
+	3615,sanmonbhut1_LAW2
+	3866,demolish1_SFXRF
+	3873,Silicon04_SFS
+	3887,demolish4_SFXRF
+	3976,PoliceSt02_LAn
+	3980,LAcityhall1_LAn
+	3986,mis1_LAn
+	3998,court1_LAn
+	4013,bonavenBase_LAn
+	4014,bonaplaza_LAn
+	4079,twintjail1_LAn
+	4101,expo_LAn
+	4103,staples_LAn
+	4552,amubloksun1_LAn
+	4554,LibBase1_LAn
+	5116,las2stripbar1
+	5402,laehospground1
+	5403,laehospital1
+	5408,laeexaminerbuild1
+	5426,laeJeffers06
+	5705,filmstud1
+	5706,studiobld03_laW
+	5708,hospital_law
+	5710,cem01_law
+	5711,cem02_law
+	5712,cemint01_law
+	5716,manns01_LAwN
+	5720,holbuild02_law
+	5763,bigbuillawn
+	5835,ci_astage
+	5837,ci_guardhouse1
+	5863,filmstud4
+	5864,filmstud3
+	5865,filmstud2
+	5886,spray01_LAwN
+	6036,filler01_laW
+	6037,filler02_laW
+	6040,wilshire7_law
+	6296,veropolice_LAW2
+	6337,sunset01_LAw2
+	6863,vgsNbuild07
+	6864,vrockcafe
+	6866,circusconstruct03
+	6871,courthse_vgn
+	6872,vgn_corpbuild1
+	6873,vgn_corpbuild3
+	6874,vgn_corpbuild2
+	6875,vgn_corpbuild4
+	6962,vgsNwedchap1
+	6994,vgncircus1
+	7011,courthse_vgn01
+	7023,vgngatesecurity
+	7027,vgnamunation1
+	7094,vegaschurchy1
+	7511,vegaswtrainstat
+	7525,vgnfirestat
+	8034,flghtschl01_lvs
+	8079,hospital01_lvs
+	8130,vgschurch01_lvs
+	8131,vgschurch02_lvs
+	8136,vgSbikeschl04,#roof #rooftop #2story #twostory
+	8168,Vgs_guardhouse01
+	8169,vgs_guardhseflr
+	8230,vgSbikeschl01
+	8231,vgSbikeschl05
+	8237,vgsbikeschint
+	8397,luxorpillar01_lvs
+	8431,nucarpark01_lvs
+	8493,pirtshp01_lvs
+	8500,excalibur01_lvS
+	8575,vgstrainstation
+	8578,vgstrainstation3
+	8591,olympic01_lvs
+	8620,exclbrsign01_lvS
+	8675,wddngchpl02_lvs
+	8867,vgsEcnstrct01
+	8870,vgsEcnstrct03
+	8881,excalibur02_lvS
+	8882,excalibur03_lvS
+	8955,vgsEspray01
+	9037,csrspalace03_lvs
+	9039,csrspalace04_lvs
+	9052,pirateland06_lvS
+	9078,excalibur04_lvS
+	9106,vgsEamuntn
+	9114,wddngchpl01_lvs
+	9310,chapel_SFN
+	9593,hosbibal_sfw
+	9623,toll_SFW
+	9624,spraysfw
+	9834,hosbibal3_sfw
+	9835,hosbibal4_sfw
+	9836,hosbibal2_sfw
+	9900,landshit_09_sfe
+	9901,ferybuild_1
+	9918,posh2_sfe
+	9931,church_sfe
+	9949,pier1_sfe
+	9950,pier2_sfe
+	9951,pier3_sfe
+	10023,sfe_archybald1
+	10031,landshit_24_sfe
+	10049,Posh_thingsfe
+	10270,bigwhiete2_SFE
+	10368,cathedral_SFS
+	10377,cityhall_SFS
+	10378,ctiyhallsquare_SFS
+	10379,cityhall2_SFS
+	10380,cityhall2_SFS01
+	10381,artgallery_SFS
+	10401,hc_shed02_SFS
+	10433,hashbury_04_SFS
+	10631,ammunation_SFS
+	10829,gatehouse1_SFSe
+	10832,gatehouse2_SFSe
+	10941,Silicon11_SFS
+	10942,Silicon12_SFS
+	11008,firehouse_SFS
+	11015,drivingschoolex_SFS
+	11088,CF_ext_dem_SFS
+	11425,des_adobehooses1
+	11426,des_adobe03
+	11427,des_adobech
+	11428,des_indruin02
+	11440,des_pueblo1
+	11441,des_pueblo5
+	11442,des_pueblo3
+	11443,des_pueblo4
+	11444,des_pueblo2
+	11445,des_pueblo06
+	11446,des_pueblo07
+	11447,des_pueblo08
+	11451,des_nwsherrif
+	11454,des_nwmedcen
+	11457,des_pueblo09
+	11458,des_pueblo10
+	11459,des_pueblo11
+	11492,des_rshed1_
+	12805,CE_bigshed1
+	12925,sw_SHED01
+	12928,sw_shedInterior04
+	12929,sw_SHED06
+	12935,sw_securitycab03
+	12942,sw_shedInterior01
+	12943,sw_SHED07
+	12959,sw_library
+	12960,sw_church01
+	12978,sw_SHED02
+	12983,sw_med1
+	13007,sw_bankbits
+	13027,ce_spray
+	13190,CE_busdepot
+	13295,CE_terminal1
+	13725,opmans01_cunte
+	14408,Carter-floors04
+	14412,Carter_drugfloor
+	14413,carter-column01
+	14415,Carter-floors01
+	14444,Carter-TopFloor
+	14445,carter-column02
+	14447,carter-balcony
+	14466,carter-outside
+	14530,driveschl_main
+	14576,vault_door
+	14592,mafCasLoadbay02
+	16095,des_a51guardbox02
+	16096,des_a51guardbox04
+	16137,des_teleshed2_
+	16138,des_teleshed2_01
+	16287,des_fshed1_
+	16344,dam_genbay02
+	16348,dam_genbay04
+	16352,dam_genbay06
+	16354,dam_genbay07
+	16359,des_shed3_01
+	16364,des_quaybase
+	16376,desn2dambit01
+	16386,desn2_shed3_
+	16387,desn2_ammun
+	16563,cn2_polis
+	16564,des_stmedicentre_
+	16769,desn2_ammun04
+	16770,des_gunbldg01
+	16774,des_gunbldg
+	17688,stormdrainLAE2_02
+	17946,Carter_GROUND
+	18033,munation_main
+	18036,range_main
+	18045,mp_ammu01
+	18049,ammu_twofloor
+	18065,ab_sfAmmuMain
+	18234,cuntw_shed2_
+	18235,cuntw_weechurch_
+	18236,cuntw_shed3_
+	18274,cuntw_shed3_01
+	18552,cunts_ammun
+#Restaurants and Hotels
+	3436,motel03_lvs
+	3469,vegenmotel1
+	4016,fighotbase_LAn
+	4141,Hotelexterior1_LAn
+	4857,snpedmtsp1_LAS
+	4887,dwntwnbit1_LAS
+	4888,dwntwnbit3_LAS
+	5168,cluckinbell1_las2
+	5189,ctddwwnblk_las2
+	5406,laecrackmotel4
+	5413,laecrackmotel1
+	5418,lae711block01
+	5430,laeIdlewood11
+	5718,sunset16_LAwN
+	5732,donut01_LAwN
+	5814,lawncluckbel,#chicken #roof #dome
+	6010,lawnboigashot25
+	6257,burger01_LAw
+	6283,pier04b_LAw2
+	6907,vgndwntwnshop1
+	7037,vgnwalburger1
+	7240,vrockcafehtl
+	7387,vgnboigashot15
+	7389,vgnboigashot25
+	7426,elcidhotel_vgn
+	7509,vgnlowbuild20
+	7596,tamomotel1
+	7972,vgnboigashot10
+	7973,vgnboigashot23
+	8409,gnhotel01_lvs
+	8411,gnhotel02_lvs
+	8498,exclbr_hotl01_lvS
+	8499,exclbr_hotl02_lvS
+	8534,tikimotel01_lvs
+	8535,tikimotel02_lvs
+	8710,bnuhotel01_lvs
+	9615,donuts_sfw
+	9824,diner_SFw
+	9859,chinawning69b
+	9860,chinawning69
+	9898,boigas_sfw05
+	10193,hotelbits_Sfe07
+	10194,hotelbits_Sfe03
+	10195,hotelbits_Sfe02
+	10196,hotelbits_Sfe01
+	10197,hotelbits_Sfe04
+	10310,boigas_sfe
+	10412,poshotel1_SFS
+	10425,temphotel1_sfs
+	10446,hotelback1
+	10606,cluckbell_SFS
+	10718,poshotel1b_SFS
+	10744,BS_building_SFS
+	11469,des_bullgrill_
+	11549,des_decocafe
+	11674,des_cluckin
+	12924,sw_block06
+	12976,sw_diner1
+	13361,CE_pizza1
+	14383,burg_kit1
+	14479,motel_skuzmain1
+	14506,imy_motel_int
+	14655,trukstp01
+	14674,hotelferns1_LAn
+	14675,Hotelatrium_LAn
+	15029,genmotel2_sv
+	15030,genmotel_sv
+	15033,vegashotel_sv
+	15034,hotelgen_sv
+	15053,bigniceveghotel
+	16012,des_ntcafe
+	16066,des_bluecafe01
+	16067,des_stwnmotel02
+	16070,des_stwnhotel1
+	16106,des_nmot_
+	16143,des_telecafe
+	16144,des_telecafenc
+	16562,cn2_rosm/ot1
+	16568,cn2_rosmot02
+	16605,des_stwnmotel03
+	16673,des_nmot_02
+	16767,cluckinbell1_cn2
+	16781,cn2_ringking,#king #ring #donuts #shop #restaurant #fast #food
+	17534,cluckinbell1_LAe
+	18009,int_rest_main
+	18020,int_6burger_main
+	18021,int_din_donut_main
+	18022,int_chick_main
+	18023,int_pizzaplace
+	18029,smllrestaurant
+	18056,mp_dinerbig
+	18058,mp_dinersmall
+	18237,cuntw_dinerwst
+	18239,cuntw_restrnt1
+	18242,cuntw_stwnmotel01
+#Sports and Stadium Objects
+	3452,bballintvgn1
+	3453,bballintvgn2
+	3819,bleacher_SFSx
+	5390,laeskateparkLA
+	5400,laeskatetube1
+	6066,vengym_law
+	7416,vegasstadgrnd
+	7417,vegastadium
+	7420,vegasgolfcrs08
+	7421,vegasgolfcrs01
+	7422,vegasgolfcrs02
+	7600,vegasgolfcrs03
+	7601,vegasgolfcrs04
+	7602,vegasgolfcrs05
+	7603,vegasgolfcrs06
+	7604,vegasgolfcrs07
+	7617,vgnbballscorebrd
+	7983,vegascollege_lvS
+	8201,stadium_lvs
+	8333,stadium02_lvs
+	8417,bballcourt01_lvs
+	10385,bbgroundbit_SFS
+	10405,hc_golfcrse02_SFS
+	10406,hc_grounds04_SFS
+	10407,hc_golfcrse03_SFS
+	10408,hc_golfcrse05_SFS
+	10409,hc_golfcrse09_SFS
+	10410,hc_golfcrse10_SFS
+	10561,bbgroundbitc_SFS
+	10954,stadium_SFSe
+	10955,stadiumroof_SFS
+	13592,loopbig
+	13595,stand02
+	13598,stand03
+	13599,standblack04
+	13602,thebolla06
+	13603,stad_tag
+	13606,standblack02
+	13607,ringwalls
+	13608,sumoring
+	13609,supports
+	13610,stand04
+	13611,thebowl13
+	13612,stuntman03
+	13613,thebowl11
+	13614,thebowl12
+	13615,thebowl10
+	13616,thebolla04
+	13617,thebowl14
+	13618,thebowl16
+	13619,thebowl17
+	13620,thebowl15
+	13621,thebolla03
+	13624,inner
+	13625,stands
+	13627,stadoval
+	13631,dirtstad
+	13628,8stad
+	13632,dirtcrowds
+	13629,8screen01
+	13633,dirtouter01
+	13630,8screen
+	13634,dirtstad02
+	13642,rings
+	13650,kickcrowd01
+	13651,otunnel
+	13657,bit
+	13661,cockbars
+	13662,dirtcock
+	13659,8bar5
+	13660,8track1
+	13666,loopwee
+	13801,cunte_skatetrak
+	14449,Carter_trampoline
+	14486,madgym1
+	14488,madgymroofs
+	14778,int_boxing02
+	14779,int_boxing03
+	14780,in_bxing04
+	14781,in_bxing05
+	14782,int3int_boxing30
+	14786,ab_sfGymBeams1
+	14787,ab_sfGymBits02a
+	14788,ab_sfGymBits01a
+	14789,ab_sfGymMain1
+	14790,ab_sfGymBits03a
+	14791,a_vgsGymBoxa
+	14792,ab_vgsGymBits01a
+	14794,ab_vegasGymMain2
+	14825,int_boxing07
+	14827,ab_sfGymBits01a2
+	17511,gwforum1_LAe
+	17513,lae2_ground04
+	17515,scumgym1_LAe
+	17563,wattspark1_LAe2
+	17582,stadtplaza_lae2
+	17841,gymblok2_lae2
+#Bars, Clubs, and Casinos
+	3249,des_westsaloon_
+	6869,vegastemp1
+	6985,casinoblock2
+	6987,casinoblock5
+	6988,casinoblock3
+	6989,casinoblock4
+	7071,casinoblock41_dy
+	7263,casinoblock3_dy
+	7265,casinoblock5_dy
+	7289,casinoblock2_dy
+	7521,vgnlowbuild202
+	8395,vgEpyrmd_dy
+	8399,nightclub01_lvs
+	8400,nightclub02_lvs
+	8501,casroyale01_lvs
+	8663,triadcasno01_lvs
+	9070,casroyale02_lvs
+	9071,casroyale03_lvs
+	9072,casroyale04_lvs
+	9076,sphinx01_lvs
+	9104,vgEpyrmd_nt
+	9582,temp_SFW35
+	10398,healthclub_SFS
+	10713,gayclub_SFS
+	13132,CE_bar01
+	14399,bar2
+	14463,gs_barstuff
+	14533,pleasure-TOP
+	14536,pleasure-BOT
+	14537,pdomesBar
+	14546,pleasure-MID
+	14560,triad_bar
+	14563,triad_main
+	14581,ab_mafiaSuite01zzz
+	14590,mafCasTopfoor
+	14606,MafCasMain4
+	14607,triad_main2
+	14614,triad_main3
+	14623,MafCasMain1
+	14624,MafCasMain2
+	14625,MafCasMain3
+	14738,brothelbar
+	14777,int_5weecasino
+	14785,gen_otb
+	14808,Strip2_Building
+	14809,Strip2_Platforms
+	14815,Whhouse_main
+	14821,mc_straps_int
+	14831,LM_stripbar
+	14832,LM_stripCorner
+	14835,LM_stripColumns
+	14836,LM_strippoles
+	14838,int_strip_club
+	16021,des_geyhotbase_
+	16051,des_westsaloon_01
+	16146,des_ufoinn
+	16150,ufo_barinterior
+	16690,des_westsaloon_02
+	17523,Stripbar_lae
+	17700,pigpenblok1_LAe2
+	18018,int_bars
+	18028,smllbarinterior
+	18090,Bar_BAR1
