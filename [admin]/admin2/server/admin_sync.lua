@@ -111,8 +111,8 @@ addEventHandler(
     end
 )
 
-function requestSync(player, type)
-    triggerEvent(EVENT_SYNC, player, type)
+function requestSync(player, type, data)
+    triggerEvent(EVENT_SYNC, player, type, data)
 end
 
 addEvent("onPlayerFrozen", false)
