@@ -212,16 +212,17 @@ function aResourcesTab.onClientDoubleClick(button)
             local row = guiGridListGetSelectedItem(settings)
             if (row ~= -1) then
                 local name = tostring(guiGridListGetItemData(settings, row, 1))
-                local data = aResourcesTab.Resources[aResourcesTab.Current].info.settings[name]
+                local data = aResourcesTab.Resources[aResourcesTab.Current].settings[name]
                 local friendlyname = data.friendlyname or name
                 local current = data.current or ""
-                aInputBox(
+                local newValue = inputBox(
                     "Change setting",
                     "Enter new value for '" .. friendlyname .. "'",
                     tostring(current),
                     'triggerServerEvent ( "aResource", getLocalPlayer(), "' ..
                         aResourcesTab.Current .. '", "setsetting", { name = "' .. name .. '", value = $value } )'
                 )
+                triggerServerEvent ( "aResource", getLocalPlayer(), aResourcesTab.Current, "setsetting", name, newValue)
             end
         end
     end
@@ -246,6 +247,7 @@ function aResourcesTab.onClientSync(type, data)
         guiSetText(aResourcesTab.Version, "Version: " .. (data.info.version or "Unknown"))
         guiSetText(aResourcesTab.Description, "Description: " .. (data.info.description or "None"))
         aResourcesTab.listSettings(data.info.settings)
+        aResourcesTab.Current = data.name
     end
 end
 

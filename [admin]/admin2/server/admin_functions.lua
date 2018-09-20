@@ -346,8 +346,9 @@ aFunctions = {
             stopResource(resource)
         end,
         ["setsetting"] = function(resource, setting, value)
-            if (data and setting and value) then
+            if (setting and value) then
                 set("*" .. getResourceName(resource) .. "." .. setting, value)
+                requestSync(source, SYNC_RESOURCE, getResourceName(resource))
             end
         end
     },
