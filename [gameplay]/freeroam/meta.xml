@@ -96,22 +96,22 @@
 					group="Command Spam Protection"
 					desc="This settings enables/disables protection against command spam that can form a type of DoS-attack capable of lagging or crashing the server"
 					/>
-		<setting name="@command_exception_commands" value="[ [ 'sp' ] ]"
+		<setting name="@command_exception_commands" value="[ [ 'sp', 'setpos', 'repair', 'rp', 'anim', 'speed', 'jp', 'addupgrade', 'au' ] ]"
 					friendlyname="Exception commands"
 					group="Command Spam Protection"
 					desc="Exception commands (to not filter with antispam detection)"
 					/>
-		<setting name="@tries_required_to_trigger" value="[5]"
+		<setting name="@tries_required_to_trigger" value="[7]"
 					friendlyname="Tries to trigger"
 					accept="positive number"
 					group="Command Spam Protection"
 					desc="How many tries under 2 seconds will trigger the spam protection?"
 					/>
-		<setting name="@tries_required_to_trigger_low_priority" value="[8]"
+		<setting name="@tries_required_to_trigger_low_priority" value="[10]"
 					friendlyname="Tries to trigger - low priority"
 					accept="positive number"
 					group="Command Spam Protection"
-					desc="How many tries under 2 seconds will trigger the spam protection for low priority commands/actions such as giving ammo"
+					desc="How many tries under 2 seconds will trigger the spam protection for low priority commands/actions, such as giving ammo"
 					/>
 		<setting name="@command_spam_ban_duration" value="[10000]"
 					friendlyname="Suspend Duration"

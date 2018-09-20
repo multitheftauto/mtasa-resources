@@ -302,11 +302,11 @@ wndWeapon = {
 				{text='Weapon', attr='name'}
 			},
 			rows={xml='weapons.xml', attrs={'id', 'name'}},
-			onitemdoubleclick=function(leaf) addWeapon(leaf, 500) end,
+			onitemdoubleclick=function(leaf) addWeapon(leaf, 1500) end,
 			DoubleClickSpamProtected=true
 		},
 		{'br'},
-		{'txt', id='amount', text='500', width=60},
+		{'txt', id='amount', text='1500', width=60},
 		{'btn', id='add', onclick=addWeapon, ClickSpamProtected=true},
 		{'btn', id='close', closeswindow=true}
 	}
@@ -314,7 +314,7 @@ wndWeapon = {
 
 function giveWeaponCommand(cmd, weapon, amount)
 	weapon = tonumber(weapon) and math.floor(tonumber(weapon)) or weapon and getWeaponIDFromName(weapon) or 0
-	amount = amount and math.floor(tonumber(amount)) or 500
+	amount = amount and math.floor(tonumber(amount)) or 1500
 	if amount < 1 or weapon < 1 or weapon > 46 then return end
 	if internallyBannedWeapons[weapon] then return end
 	server.giveMeWeapon(weapon, amount)
