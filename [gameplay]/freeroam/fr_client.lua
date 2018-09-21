@@ -1972,7 +1972,7 @@ end
 addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		fadeCamera(true)
-		setTimer(getPlayers, 1000, 1)
+		getPlayers()
 		setJetpackMaxHeight ( 9001 )
 		triggerServerEvent('onLoadedAtClient', resourceRoot)
 		createWindow(wndMain)
@@ -2046,9 +2046,8 @@ function wastedHandler()
 end
 
 local function removeForcedFade()
-
 	removeEventHandler("onClientPreRender",root,forceFade)
-
+	fadeCamera(true)
 end
 
 local function checkCustomSpawn()
