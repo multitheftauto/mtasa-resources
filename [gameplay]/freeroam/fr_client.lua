@@ -47,9 +47,6 @@ function freeroamSettings(settings)
 		for _,gui in ipairs(disableBySetting) do
 			guiSetEnabled(getControl(gui.parent,gui.id),g_settings["gui/"..gui.id])
 		end
-		for index,player in ipairs(getElementsByType("player")) do
-			updateName(player,getPlayerName(player))
-		end
 	end
 end
 
