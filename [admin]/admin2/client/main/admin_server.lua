@@ -27,19 +27,13 @@ function aServerTab.Create(tab)
     aServerTab.SetMapName = guiCreateButton(0.42, 0.195, 0.18, 0.04, "Set Map Name", true, tab, "setmap")
     aServerTab.Shutdown = guiCreateButton(0.42, 0.240, 0.18, 0.04, "Shutdown", true, tab, "shutdown")
     guiCreateHeader(0.02, 0.285, 0.30, 0.035, "Server properties:", true, tab)
-    aServerTab.WeatherCurrent =
-        guiCreateLabel(
-        0.03,
-        0.330,
-        0.45,
-        0.035,
-        "Current Weather: " .. getWeather() .. " (" .. getWeatherNameFromID(getWeather()) .. ")",
-        true,
-        tab
-    )
-    --aServerTab.WeatherDec		= guiCreateButton ( 0.05, 0.40, 0.035, 0.04, "<", true, tab )
-    aServerTab.Weather = guiCreateEdit(0.35, 0.330, 0.25, 0.04, "", true, tab)
-    --aServerTab.WeatherInc		= guiCreateButton ( 0.45, 0.40, 0.035, 0.04, ">", true, tab )
+    
+    local iCurrentWeatherID = getWeather()
+    aServerTab.WeatherCurrent = guiCreateLabel(0.03, 0.330, 0.45, 0.035, "Current Weather:", true, tab)
+    aServerTab.WeatherDec = guiCreateButton(0.22, 0.330, 0.035, 0.04, "<", true, tab )
+    aServerTab.Weather = guiCreateEdit(0.258, 0.330, 0.309, 0.04, iCurrentWeatherID .. " (" .. getWeatherNameFromID(iCurrentWeatherID) .. ")", true, tab)
+    aServerTab.WeatherInc = guiCreateButton(0.568, 0.330, 0.035, 0.04, ">", true, tab )
+    
     guiEditSetReadOnly(aServerTab.Weather, true)
     aServerTab.WeatherSet = guiCreateButton(0.50, 0.375, 0.10, 0.04, "Set", true, tab, "setweather")
     aServerTab.WeatherBlend = guiCreateButton(0.35, 0.375, 0.135, 0.04, "Blend", true, tab, "blendweather")
@@ -297,17 +291,16 @@ end
 
 function aServerTab.onRefresh()
     local th, tm = getTime()
+    
     guiSetText(
         aServerTab.Players,
         "Players: " .. #getElementsByType("player") .. "/" .. gettok(guiGetText(aServerTab.Players), 2, 47)
     )
+    
     guiSetText(aServerTab.TimeCurrent, "Time: " .. string.format("%02d:%02d", th, tm))
     guiSetText(aServerTab.GravityCurrent, "Gravitation: " .. string.format("%.3f", getGravity()))
     guiSetText(aServerTab.SpeedCurrent, "Game Speed: " .. getGameSpeed())
-    guiSetText(
-        aServerTab.WeatherCurrent,
-        "Weather: " .. getWeather() .. " (" .. getWeatherNameFromID(getWeather()) .. ")"
-    )
+    
     guiSetText(aServerTab.BlurCurrent, "Blur Level: " .. getBlurLevel())
     guiSetText(aServerTab.HeatHazeCurrent, "Heat Haze Level: " .. getHeatHaze())
     guiSetText(aServerTab.WavesCurrent, "Wave Height: " .. getWaveHeight())
