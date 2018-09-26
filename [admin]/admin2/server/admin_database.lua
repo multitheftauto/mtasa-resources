@@ -7,8 +7,41 @@
 *	Original File by lil_Toady
 *
 **************************************]]
+
+-- ensure old database file gets renamed
+if(fileExists("conf\\settings.db")) then
+    local bRemoveOldFile = true
+    
+    if(not fileExists("admin.db")) then
+        local uOldFile = fileOpen("conf\\settings.db")
+        local uNewFile = fileCreate("admin.db")
+        
+        -- rename file
+        if(uOldFile and uNewFile) then
+            fileWrite(uNewFile, fileRead(uOldFile, fileGetSize(uOldFile)))
+            fileFlush(uNewFile)
+        end
+        
+        -- ensure file handlers getting closed
+        if(uOldFile) then
+            fileClose(uOldFile)
+        end
+        
+        if(uNewFile) then
+            fileClose(uNewFile)
+        end
+    else
+        bRemoveOldFile = false
+    end
+    
+    -- remove old database file on success
+    if(bRemoveOldFile) then
+        fileDelete("conf\\settings.db")
+    end
+end
+
 db = {
-    connection = dbConnect("sqlite", "conf\\settings.db"),
+    connection = dbConnect("sqlite", "admin.db"),
     results = {},
     timers = {},
     threads = {}
@@ -40,7 +73,7 @@ end
 
 function db.query(query, ...)
     local cr = coroutine.running()
-
+    
     local handle = dbQuery(db.callback, db.connection, query, ...)
 
     db.threads[handle] = cr
