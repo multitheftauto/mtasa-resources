@@ -70,13 +70,13 @@ function aResourcesTab.Create(tab)
     guiLabelSetColor(aResourcesTab.ExecuteAdvanced, 255, 0, 0)
 
     -- EVENTS
-    addEventHandler(EVENT_SYNC, _root, aResourcesTab.onClientSync)
+    addEventHandler(EVENT_SYNC, root, aResourcesTab.onClientSync)
     addEventHandler("onClientGUIClick", aResourcesTab.Context, aResourcesTab.onContextClick)
     addEventHandler("onClientGUIClick", aResourcesTab.MainTab, aResourcesTab.onClientClick)
     addEventHandler("onClientGUIDoubleClick", aResourcesTab.Settings, aResourcesTab.onClientDoubleClick)
     addEventHandler("onClientGUIDoubleClick", aResourcesTab.ViewTypes, aResourcesTab.onClientDoubleClick)
-    addEventHandler("aClientResourceStart", _root, aResourcesTab.onClientResourceStart)
-    addEventHandler("aClientResourceStop", _root, aResourcesTab.onClientResourceStop)
+    addEventHandler("aClientResourceStart", root, aResourcesTab.onClientResourceStart)
+    addEventHandler("aClientResourceStop", root, aResourcesTab.onClientResourceStop)
 
     if (hasPermissionTo("command.listresources")) then
         sync(SYNC_RESOURCES)

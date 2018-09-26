@@ -7,7 +7,7 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-_root = getRootElement()
+root = getRootElement()
 _types = {"player", "team", "vehicle", "resource", "bans", "server", "admin"}
 
 aPlayers = {}
@@ -19,12 +19,12 @@ aWeathers = {}
 
 addEventHandler(
     "onResourceStart",
-    _root,
+    root,
     function(resource)
         if (resource ~= getThisResource()) then
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
-                    triggerClientEvent(player, "aClientResourceStart", _root, getResourceName(resource))
+                    triggerClientEvent(player, "aClientResourceStart", root, getResourceName(resource))
                 end
             end
             return
@@ -42,12 +42,12 @@ addEventHandler(
 
 addEventHandler(
     "onResourceStop",
-    _root,
+    root,
     function(resource)
         if (resource ~= getThisResource()) then
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
-                    triggerClientEvent(player, "aClientResourceStop", _root, getResourceName(resource))
+                    triggerClientEvent(player, "aClientResourceStop", root, getResourceName(resource))
                 end
             end
         else
@@ -59,7 +59,7 @@ addEventHandler(
 
 addEventHandler(
     "onPlayerJoin",
-    _root,
+    root,
     function()
         aPlayerInitialize(source)
         for id, player in ipairs(getElementsByType("player")) do
@@ -82,7 +82,7 @@ addEventHandler(
 
 addEventHandler(
     "onPlayerQuit",
-    _root,
+    root,
     function()
         aPlayers[source] = nil
     end
@@ -112,7 +112,7 @@ function aAction(type, action, admin, player, data, more)
         if (node) then
             local r, g, b = node["r"], node["g"], node["b"]
             if (node["all"]) then
-                outputChatBox(aStripString(node["all"]), _root, r, g, b)
+                outputChatBox(aStripString(node["all"]), root, r, g, b)
             end
             if (node["admin"]) and (admin ~= player) then
                 outputChatBox(aStripString(node["admin"]), admin, r, g, b)
@@ -130,7 +130,7 @@ end
 addEvent("aTeam", true)
 addEventHandler(
     "aTeam",
-    _root,
+    root,
     function(action, name, ...)
         if (hasObjectPermissionTo(source, "command." .. action)) then
             local func = aFunctions.team[action]
@@ -152,7 +152,7 @@ addEventHandler(
 addEvent("aPlayer", true)
 addEventHandler(
     "aPlayer",
-    _root,
+    root,
     function(player, action, ...)
         if (hasObjectPermissionTo(source, "command." .. action)) then
             local mdata1 = ""
@@ -177,7 +177,7 @@ addEventHandler(
 addEvent("aVehicle", true)
 addEventHandler(
     "aVehicle",
-    _root,
+    root,
     function(player, action, ...)
         local vehicle = getPedOccupiedVehicle(player)
         if (not vehicle) then
@@ -216,7 +216,7 @@ addEventHandler(
 addEvent("aResource", true)
 addEventHandler(
     "aResource",
-    _root,
+    root,
     function(name, action, ...)
         if (not name or not action) then
             return
@@ -245,7 +245,7 @@ addEventHandler(
 addEvent("aServer", true)
 addEventHandler(
     "aServer",
-    _root,
+    root,
     function(action, ...)
         if (hasObjectPermissionTo(source, "command." .. action)) then
             local func = aFunctions.server[action]
@@ -267,7 +267,7 @@ addEventHandler(
 addEvent("aMessage", true)
 addEventHandler(
     "aMessage",
-    _root,
+    root,
     function(action, data)
         if (action == "new") then
             local time = getRealTime()
@@ -304,7 +304,7 @@ addEventHandler(
 addEvent("aBans", true)
 addEventHandler(
     "aBans",
-    _root,
+    root,
     function(action, data)
         if (hasObjectPermissionTo(source, "command." .. action)) then
             local mdata = ""
@@ -352,7 +352,7 @@ addEventHandler(
 addEvent("aExecute", true)
 addEventHandler(
     "aExecute",
-    _root,
+    root,
     function(action, echo)
         if (hasObjectPermissionTo(source, "command.execute")) then
             local result = loadstring("return " .. action)()
@@ -379,7 +379,7 @@ addEventHandler(
 addEvent("aAdminChat", true)
 addEventHandler(
     "aAdminChat",
-    _root,
+    root,
     function(chat)
         for id, player in ipairs(getElementsByType("player")) do
             if (aPlayers[player]["chat"]) then

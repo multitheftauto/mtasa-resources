@@ -43,7 +43,7 @@ end
 
 addEventHandler(
     EVENT_SESSION,
-    _root,
+    root,
     function(type)
         if (type == SESSION_START) then
             triggerClientEvent(

@@ -149,7 +149,7 @@ end
 
 addEventHandler(
     "onClientRender",
-    _root,
+    root,
     function()
         for element, v in pairs(guiBlendTable) do
             local a = guiGetAlpha(element) + v.inc / 40

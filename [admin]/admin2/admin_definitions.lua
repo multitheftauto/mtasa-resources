@@ -11,14 +11,6 @@ _DEBUG = true
 
 _version = "2.0"
 
-_root = getRootElement()
-
-if (getLocalPlayer) then
-    _local = getLocalPlayer()
-else
-    _local = getResourceRootElement(getThisResource())
-end
-
 function enum(args, prefix)
     for i, v in ipairs(args) do
         if (prefix) then

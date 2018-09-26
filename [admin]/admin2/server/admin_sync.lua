@@ -10,10 +10,10 @@
 addEvent(EVENT_SYNC, true)
 addEventHandler(
     EVENT_SYNC,
-    _root,
+    root,
     function(type, data)
         local tableOut = {}
-        local theSource = _root
+        local theSource = root
         if (type == SYNC_PLAYER) then
             if (not isElement(data)) then
                 return
@@ -155,7 +155,7 @@ addEventHandler(
 
 addEventHandler(
     "onPlayerMoneyChange",
-    _root,
+    root,
     function(prev, new)
         for player, data in pairs(aPlayers) do
             if (data.sync == source) then
@@ -167,7 +167,7 @@ addEventHandler(
 
 addEventHandler(
     "onPlayerFrozen",
-    _root,
+    root,
     function(state)
         for player, data in pairs(aPlayers) do
             if (data.sync == source) then
@@ -179,7 +179,7 @@ addEventHandler(
 
 addEventHandler(
     "onPlayerMute",
-    _root,
+    root,
     function()
         for player, data in pairs(aPlayers) do
             if (data.sync == source) then
@@ -191,7 +191,7 @@ addEventHandler(
 
 addEventHandler(
     "onPlayerUnmute",
-    _root,
+    root,
     function()
         for player, data in pairs(aPlayers) do
             if (data.sync == source) then

@@ -13,7 +13,7 @@ local aBans = {
 
 addEventHandler(
     "onResourceStart",
-    _local,
+    resourceRoot,
     function()
         for i, ban in ipairs(getBans()) do
             aBans.List[aBans.GenerateID(ban)] = ban
@@ -23,7 +23,7 @@ addEventHandler(
 
 addEventHandler(
     "onBan",
-    _root,
+    root,
     function(ban)
         local id = aBans.GenerateID(ban)
         aBans.List[id] = ban
@@ -34,13 +34,13 @@ addEventHandler(
             ban = getBanData(ban)
         }
 
-        aSyncData(nil, "ban", _root, data, "command.listbans")
+        aSyncData(nil, "ban", root, data, "command.listbans")
     end
 )
 
 addEventHandler(
     "onPlayerBan",
-    _root,
+    root,
     function(ban)
         local id = aBans.GenerateID(ban)
         aBans.List[id] = ban
@@ -51,13 +51,13 @@ addEventHandler(
             ban = getBanData(ban)
         }
 
-        aSyncData(nil, "ban", _root, data, "command.listbans")
+        aSyncData(nil, "ban", root, data, "command.listbans")
     end
 )
 
 addEventHandler(
     "onUnban",
-    _root,
+    root,
     function(ban)
         for id, b in pairs(aBans.List) do
             if (b == ban) then
@@ -66,7 +66,7 @@ addEventHandler(
                     id = id
                 }
 
-                aSyncData(nil, "ban", _root, data, "command.listbans")
+                aSyncData(nil, "ban", root, data, "command.listbans")
 
                 aBans.List[id] = nil
             end
