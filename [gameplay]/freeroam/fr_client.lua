@@ -1858,7 +1858,7 @@ function onEnterVehicle(vehicle,seat)
 end
 
 function onExitVehicle(vehicle,seat)
-	if eventName == "onClientPlayerVehicleExit" and source == localPlayer then
+	if (eventName == "onClientPlayerVehicleExit" and source == localPlayer) or (eventName == "onClientElementDestroy" and getElementType(source) == "vehicle" and getVehicleController(source) == localPlayer) then
 		setControlText(wndMain, 'curvehicle', 'On foot')
 		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
 		closeWindow(wndUpgrades)
@@ -2063,6 +2063,7 @@ addEventHandler('onClientPlayerQuit', root, quitHandler)
 addEventHandler('onClientPlayerWasted', root, wastedHandler)
 addEventHandler('onClientPlayerVehicleEnter', root, onEnterVehicle)
 addEventHandler('onClientPlayerVehicleExit', root, onExitVehicle)
+addEventHandler("onClientElementDestroy", root, onExitVehicle)
 addEventHandler("onClientPlayerSpawn", localPlayer, checkCustomSpawn)
 
 function getPlayerName(player)
