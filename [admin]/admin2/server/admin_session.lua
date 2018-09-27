@@ -13,7 +13,7 @@ addCommandHandler(
     "adminpanel",
     function(player)
         if (hasObjectPermissionTo(player, "general.adminpanel")) then
-            triggerClientEvent(player, "aClientAdminMenu", _root)
+            triggerClientEvent(player, "aClientAdminMenu", root)
             aPlayers[player]["chat"] = true
         end
     end
@@ -21,7 +21,7 @@ addCommandHandler(
 
 addEventHandler(
     "onPlayerLogin",
-    _root,
+    root,
     function(previous, account, auto)
         if (hasObjectPermissionTo(source, "general.adminpanel")) then
             if (aPlayers[source]["aLoaded"]) then
@@ -34,7 +34,7 @@ addEventHandler(
 addEvent(EVENT_SESSION, true)
 addEventHandler(
     EVENT_SESSION,
-    _root,
+    root,
     function(type)
         if (type == SESSION_START) then
             if (aPlayers[source]) then

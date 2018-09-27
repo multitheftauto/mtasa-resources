@@ -24,7 +24,7 @@ addEvent("onAdminRefresh", false)
 addEvent("aClientAdminMenu", true)
 addEventHandler(
     "aClientAdminMenu",
-    _root,
+    root,
     function()
         if (((aAdminMain.Form) and (guiGetVisible(aAdminMain.Form) == true)) or (aAdminMain.Hidden)) then
             aAdminMain.Close(false)
@@ -125,7 +125,7 @@ end
 
 addEventHandler(
     "onClientRender",
-    _root,
+    root,
     function()
         if (aAdminMain.Form and guiGetVisible(aAdminMain.Form) and aAdminMain.Tab) then
             if (getTickCount() > aAdminMain.Refresh) then

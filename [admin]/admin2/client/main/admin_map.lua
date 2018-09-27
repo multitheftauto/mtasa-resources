@@ -18,7 +18,7 @@ local aMap = {
 
 addEventHandler(
     "onClientRender",
-    _root,
+    root,
     function()
         if (not isPlayerMapVisible()) then
             if (aMap.last) then
@@ -87,7 +87,7 @@ addEventHandler(
 
 addEventHandler(
     "onClientClick",
-    _root,
+    root,
     function(button, state, x, y)
         if (isPlayerMapVisible() and button == "left") then
             local minX, minY, maxX, maxY = getPlayerMapBoundingBox()

@@ -117,7 +117,7 @@ function aServerTab.Create(tab)
         guiCreateCheckBox(0.66, 0.690, 0.20, 0.04, "Extra jump", false, true, tab, "setworldproperty")
 
     addEventHandler("onClientGUIClick", aServerTab.Tab, aServerTab.onClientClick)
-    addEventHandler(EVENT_SYNC, _root, aServerTab.onClientSync)
+    addEventHandler(EVENT_SYNC, root, aServerTab.onClientSync)
     addEventHandler("onAdminRefresh", aServerTab.Tab, aServerTab.onRefresh)
 
     local node = xmlLoadFile("conf\\weathers.xml")

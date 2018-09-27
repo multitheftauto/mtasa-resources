@@ -84,7 +84,7 @@ end
 
 addEventHandler(
     "onDebugMessage",
-    _root,
+    root,
     function(message, level, file, line)
         if ((level == 2) and (string.match(message, "Access denied @ '%w+'"))) then
             local func = string.sub(string.match(message, "'%w+'"), 2, -2)
@@ -214,7 +214,7 @@ local aACLFunctions = {
 addEvent(EVENT_ACL, true)
 addEventHandler(
     EVENT_ACL,
-    _root,
+    root,
     function(action, ...)
         aACLFunctions[action](...)
     end
@@ -276,7 +276,7 @@ function moo()
                 end
             end
         end
-        triggerClientEvent(source, "aAdminACL", _root, type, tableOut)
+        triggerClientEvent(source, "aAdminACL", root, type, tableOut)
     elseif (action == "aclcreate") then
         local name = arg[2]
         if ((name) and (string.len(name) >= 1)) then
