@@ -7,8 +7,14 @@
 *	Original File by lil_Toady
 *
 **************************************]]
+
+-- ensure old database file gets renamed
+if (fileExists("conf/settings.db")) then
+    fileRename("conf/settings.db", "admin.db")
+end
+
 db = {
-    connection = dbConnect("sqlite", "conf\\settings.db"),
+    connection = dbConnect("sqlite", "admin.db"),
     results = {},
     timers = {},
     threads = {}
@@ -40,7 +46,7 @@ end
 
 function db.query(query, ...)
     local cr = coroutine.running()
-
+    
     local handle = dbQuery(db.callback, db.connection, query, ...)
 
     db.threads[handle] = cr
