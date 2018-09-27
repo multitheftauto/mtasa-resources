@@ -9,7 +9,9 @@
 **************************************]]
 
 -- ensure old database file gets renamed
-fileRename("conf\\settings.db", "admin.db")
+if(fileExists("conf\\settings.db")) then
+    fileRename("conf\\settings.db", "admin.db")
+end
 
 db = {
     connection = dbConnect("sqlite", "admin.db"),
