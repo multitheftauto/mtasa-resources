@@ -7,7 +7,6 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-root = getRootElement()
 _types = {"player", "team", "vehicle", "resource", "bans", "server", "admin"}
 
 aPlayers = {}
