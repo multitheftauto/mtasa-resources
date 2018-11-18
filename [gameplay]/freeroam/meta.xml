@@ -19,10 +19,10 @@
 
 	<export function="appendControl" type="client" />
 
-	<file src="colorselect.png" />
-	<file src="localplayerblip.png" />
-	<file src="map.png" />
-	<file src="playerblip.png" />
+	<file src="img/colorselect.png" />
+	<file src="img/localplayerblip.png" />
+	<file src="img/map.png" />
+	<file src="img/playerblip.png" />
 
 	<config src="animations.xml" type="client" />
 	<config src="interiors.xml" type="client" />
