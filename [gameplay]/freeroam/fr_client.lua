@@ -183,7 +183,7 @@ wndSkin = {
 			columns={
 				{text='Skin', attr='name'}
 			},
-			rows={xml='skins.xml', attrs={'id', 'name'}},
+			rows={xml='data/skins.xml', attrs={'id', 'name'}},
 			onitemclick=showSkinID,
 			onitemdoubleclick=applySkin,
 			DoubleClickSpamProtected=true,
@@ -242,7 +242,7 @@ wndAnim = {
 			columns={
 				{text='Animation', attr='name'}
 			},
-			rows={xml='animations.xml', attrs={'name'}},
+			rows={xml='data/animations.xml', attrs={'name'}},
 			expandlastlevel=false,
 			onitemdoubleclick=applyAnimation,
 			DoubleClickSpamProtected=true,
@@ -298,7 +298,7 @@ wndWeapon = {
 			columns={
 				{text='Weapon', attr='name'}
 			},
-			rows={xml='weapons.xml', attrs={'id', 'name'}},
+			rows={xml='data/weapons.xml', attrs={'id', 'name'}},
 			onitemdoubleclick=function(leaf) addWeapon(leaf, 1500) end,
 			DoubleClickSpamProtected=true
 		},
@@ -672,7 +672,7 @@ wndStats = {
 				{text='Stat', attr='name', width=0.6},
 				{text='Value', attr='value', width=0.3, enablemodify=true}
 			},
-			rows={xml='stats.xml', attrs={'name', 'id'}},
+			rows={xml='data/stats.xml', attrs={'name', 'id'}},
 			onitemclick=selectStat,
 			onitemdoubleclick=maxStat,
 			DoubleClickSpamProtected=true
@@ -1204,7 +1204,7 @@ wndSetInterior = {
 			columns={
 				{text='Interior', attr='name'}
 			},
-			rows={xml='interiors.xml', attrs={'name', 'posX', 'posY', 'posZ', 'world'}},
+			rows={xml='data/interiors.xml', attrs={'name', 'posX', 'posY', 'posZ', 'world'}},
 			onitemdoubleclick=setInterior,
 			DoubleClickSpamProtected=true,
 		},
@@ -1238,7 +1238,7 @@ wndCreateVehicle = {
 			columns={
 				{text='Vehicle', attr='name'}
 			},
-			rows={xml='vehicles.xml', attrs={'id', 'name'}},
+			rows={xml='data/vehicles.xml', attrs={'id', 'name'}},
 			onitemdoubleclick=createSelectedVehicle,
 			DoubleClickSpamProtected=true,
 		},
@@ -1675,7 +1675,7 @@ wndWeather = {
 			columns = {
 				{text='Weather type', attr='name'}
 			},
-			rows={xml='weather.xml', attrs={'id', 'name'}},
+			rows={xml='data/weather.xml', attrs={'id', 'name'}},
 			onitemdoubleclick=applyWeather
 		},
 		{'btn', id='ok', onclick=applyWeather},

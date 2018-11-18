@@ -23,13 +23,14 @@
 	<file src="img/map.png" />
 	<file src="img/playerblip.png" />
 
-	<config src="animations.xml" type="client" />
-	<config src="interiors.xml" type="client" />
-	<config src="skins.xml" type="client" />
-	<config src="stats.xml" type="client" />
-	<config src="vehicles.xml" type="client" />
-	<config src="weapons.xml" type="client" />
-	<config src="weather.xml" type="client" />
+	<config src="data/animations.xml" type="client" />
+	<config src="data/interiors.xml" type="client" />
+	<config src="data/skins.xml" type="client" />
+	<config src="data/stats.xml" type="client" />
+	<config src="data/vehicles.xml" type="client" />
+	<config src="data/weapons.xml" type="client" />
+	<config src="data/weather.xml" type="client" />
+
 	<config src="help.xml" type="client" />
 
 	<script src="colorpicker/colorpicker.lua" type="client" />
