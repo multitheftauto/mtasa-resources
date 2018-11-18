@@ -19,7 +19,6 @@
 
 	<export function="appendControl" type="client" />
 
-	<file src="img/colorselect.png" />
 	<file src="img/localplayerblip.png" />
 	<file src="img/map.png" />
 	<file src="img/playerblip.png" />
