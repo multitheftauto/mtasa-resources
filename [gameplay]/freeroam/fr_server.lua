@@ -194,7 +194,18 @@ addEventHandler('onLoadedAtClient', resourceRoot,
 )
 
 function onSettingChange(key,_,new)
-	if not table.find(settingsToSend, gettok(key,#split(key,"."),".")) then
+	local access = key:sub(1, 1) -- we always have modifiers
+	if access ~= "*" and access ~= "#" and access ~= "@" then
+		return
+	end
+
+	local resource = key:sub(2, 9)
+	if key:sub(2, 9) ~= getThisResource().name then
+		return
+	end
+
+	local setting = key:sub(11)
+	if not table.find(settingsToSend, setting) then
 		return
 	end
 
@@ -203,8 +214,7 @@ function onSettingChange(key,_,new)
 		clientCall(player, 'freeroamSettings', settings)
 	end
 end
-
-addEventHandler("onSettingChange",root,onSettingChange)
+addEventHandler("onSettingChange", root, onSettingChange)
 
 function showMap(player)
 
