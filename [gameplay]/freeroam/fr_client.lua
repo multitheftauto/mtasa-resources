@@ -1072,16 +1072,23 @@ addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
 
 function setPosCommand(cmd, x, y, z, r)
-
-	nonSPvehicles = {[425]=true, [520]=true, [476]=true, [447]=true, [464]=true, [432]=true}
+	local nonSPvehicles = {
+		[425]=true, -- Hunter
+		[520]=true, -- Hydra
+		[476]=true, -- Rustler
+		[447]=true, -- Seasparrow
+		[464]=true, -- RC Baron
+		[432]=true, -- Rhino
+	}
 
 	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if vehicle then
-	local vehModel = getElementModel(vehicle)
+		local vehModel = getElementModel(vehicle)
 
-	if (nonSPvehicles[vehModel]) then
-		errMsg("You cannot use /sp while in this vehicle!")
-		return end
+		if nonSPvehicles[vehModel] then
+			errMsg("You cannot use /sp while in this vehicle!")
+			return
+		end
 	end
 
 	-- Handle setpos if used like: x, y, z, r or x,y,z,r
