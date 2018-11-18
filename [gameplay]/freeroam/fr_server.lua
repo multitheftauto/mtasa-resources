@@ -157,6 +157,7 @@ local settingsToSend =
 	["gui/antiram"] = true,
 	["gui/disablewarp"] = true,
 	["gui/disableknife"] = true,
+	["vehicles/disallowed_warp"] = true,
 }
 
 local function updateSettings()

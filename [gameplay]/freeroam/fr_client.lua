@@ -1072,20 +1072,11 @@ addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
 
 function setPosCommand(cmd, x, y, z, r)
-	local nonSPvehicles = {
-		[425]=true, -- Hunter
-		[520]=true, -- Hydra
-		[476]=true, -- Rustler
-		[447]=true, -- Seasparrow
-		[464]=true, -- RC Baron
-		[432]=true, -- Rhino
-	}
-
 	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if vehicle then
 		local vehModel = getElementModel(vehicle)
 
-		if nonSPvehicles[vehModel] then
+		if table.find(g_settings["vehicles/disallowed_warp"], vehModel) then
 			errMsg("You cannot use /sp while in this vehicle!")
 			return
 		end
