@@ -183,7 +183,7 @@ wndSkin = {
 			columns={
 				{text='Skin', attr='name'}
 			},
-			rows={xml='skins.xml', attrs={'id', 'name'}},
+			rows={xml='data/skins.xml', attrs={'id', 'name'}},
 			onitemclick=showSkinID,
 			onitemdoubleclick=applySkin,
 			DoubleClickSpamProtected=true,
@@ -242,7 +242,7 @@ wndAnim = {
 			columns={
 				{text='Animation', attr='name'}
 			},
-			rows={xml='animations.xml', attrs={'name'}},
+			rows={xml='data/animations.xml', attrs={'name'}},
 			expandlastlevel=false,
 			onitemdoubleclick=applyAnimation,
 			DoubleClickSpamProtected=true,
@@ -298,7 +298,7 @@ wndWeapon = {
 			columns={
 				{text='Weapon', attr='name'}
 			},
-			rows={xml='weapons.xml', attrs={'id', 'name'}},
+			rows={xml='data/weapons.xml', attrs={'id', 'name'}},
 			onitemdoubleclick=function(leaf) addWeapon(leaf, 1500) end,
 			DoubleClickSpamProtected=true
 		},
@@ -672,7 +672,7 @@ wndStats = {
 				{text='Stat', attr='name', width=0.6},
 				{text='Value', attr='value', width=0.3, enablemodify=true}
 			},
-			rows={xml='stats.xml', attrs={'name', 'id'}},
+			rows={xml='data/stats.xml', attrs={'name', 'id'}},
 			onitemclick=selectStat,
 			onitemdoubleclick=maxStat,
 			DoubleClickSpamProtected=true
@@ -978,7 +978,7 @@ function updatePlayerBlips()
 	local mapControl = getControl(wnd, 'map')
 	for elem,player in pairs(g_PlayerData) do
 		if not player.gui.mapBlip then
-			player.gui.mapBlip = guiCreateStaticImage(0, 0, 9, 9, elem == localPlayer and 'localplayerblip.png' or 'playerblip.png', false, mapControl)
+			player.gui.mapBlip = guiCreateStaticImage(0, 0, 9, 9, elem == localPlayer and 'img/localplayerblip.png' or 'img/playerblip.png', false, mapControl)
 			player.gui.mapLabelShadow = guiCreateLabel(0, 0, 100, 14, player.name, false, mapControl)
 			local labelWidth = guiLabelGetTextExtent(player.gui.mapLabelShadow)
 			guiSetSize(player.gui.mapLabelShadow, labelWidth, 14, false)
@@ -1031,7 +1031,7 @@ wndSetPos = {
 	text = 'Set position',
 	width = g_MapSide + 20,
 	controls = {
-		{'img', id='map', src='map.png', width=g_MapSide, height=g_MapSide, onclick=fillInPosition, ondoubleclick=setPosClick, DoubleClickSpamProtected=true},
+		{'img', id='map', src='img/map.png', width=g_MapSide, height=g_MapSide, onclick=fillInPosition, ondoubleclick=setPosClick, DoubleClickSpamProtected=true},
 		{'txt', id='x', text='', width=60},
 		{'txt', id='y', text='', width=60},
 		{'txt', id='z', text='', width=60},
@@ -1072,16 +1072,14 @@ addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
 
 function setPosCommand(cmd, x, y, z, r)
-
-	nonSPvehicles = {[425]=true, [520]=true, [476]=true, [447]=true, [464]=true, [432]=true}
-
 	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if vehicle then
-	local vehModel = getElementModel(vehicle)
+		local vehModel = getElementModel(vehicle)
 
-	if (nonSPvehicles[vehModel]) then
-		errMsg("You cannot use /sp while in this vehicle!")
-		return end
+		if table.find(g_settings["vehicles/disallowed_warp"], vehModel) then
+			errMsg("You cannot use /sp while in this vehicle!")
+			return
+		end
 	end
 
 	-- Handle setpos if used like: x, y, z, r or x,y,z,r
@@ -1147,7 +1145,7 @@ wndSpawnMap = {
 	text = 'Select spawn position',
 	width = g_MapSide + 20,
 	controls = {
-		{'img', id='map', src='map.png', width=g_MapSide, height=g_MapSide, ondoubleclick=spawnMapDoubleClick},
+		{'img', id='map', src='img/map.png', width=g_MapSide, height=g_MapSide, ondoubleclick=spawnMapDoubleClick},
 		{'lbl', text='Welcome to freeroam. Double click a location on the map to spawn.', width=g_MapSide-60, align='center'},
 		{'btn', id='close', closeswindow=true}
 	},
@@ -1206,7 +1204,7 @@ wndSetInterior = {
 			columns={
 				{text='Interior', attr='name'}
 			},
-			rows={xml='interiors.xml', attrs={'name', 'posX', 'posY', 'posZ', 'world'}},
+			rows={xml='data/interiors.xml', attrs={'name', 'posX', 'posY', 'posZ', 'world'}},
 			onitemdoubleclick=setInterior,
 			DoubleClickSpamProtected=true,
 		},
@@ -1240,7 +1238,7 @@ wndCreateVehicle = {
 			columns={
 				{text='Vehicle', attr='name'}
 			},
-			rows={xml='vehicles.xml', attrs={'id', 'name'}},
+			rows={xml='data/vehicles.xml', attrs={'id', 'name'}},
 			onitemdoubleclick=createSelectedVehicle,
 			DoubleClickSpamProtected=true,
 		},
@@ -1677,7 +1675,7 @@ wndWeather = {
 			columns = {
 				{text='Weather type', attr='name'}
 			},
-			rows={xml='weather.xml', attrs={'id', 'name'}},
+			rows={xml='data/weather.xml', attrs={'id', 'name'}},
 			onitemdoubleclick=applyWeather
 		},
 		{'btn', id='ok', onclick=applyWeather},
@@ -1858,7 +1856,7 @@ function onEnterVehicle(vehicle,seat)
 end
 
 function onExitVehicle(vehicle,seat)
-	if eventName == "onClientPlayerVehicleExit" and source == localPlayer then
+	if (eventName == "onClientPlayerVehicleExit" and source == localPlayer) or (eventName == "onClientElementDestroy" and getElementType(source) == "vehicle" and getPedOccupiedVehicle(localPlayer) == source) then
 		setControlText(wndMain, 'curvehicle', 'On foot')
 		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
 		closeWindow(wndUpgrades)
@@ -2063,6 +2061,7 @@ addEventHandler('onClientPlayerQuit', root, quitHandler)
 addEventHandler('onClientPlayerWasted', root, wastedHandler)
 addEventHandler('onClientPlayerVehicleEnter', root, onEnterVehicle)
 addEventHandler('onClientPlayerVehicleExit', root, onExitVehicle)
+addEventHandler("onClientElementDestroy", root, onExitVehicle)
 addEventHandler("onClientPlayerSpawn", localPlayer, checkCustomSpawn)
 
 function getPlayerName(player)

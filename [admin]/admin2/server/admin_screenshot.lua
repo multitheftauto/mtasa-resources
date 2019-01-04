@@ -34,7 +34,7 @@ local aScreenShots = {
 addEvent(EVENT_SCREEN_SHOT, true)
 addEventHandler(
     EVENT_SCREEN_SHOT,
-    _root,
+    root,
     function(action, id, ...)
         if (action == SCREENSHOT_SAVE) then
         elseif (action == SCREENSHOT_DELETE) then
@@ -122,7 +122,7 @@ addEventHandler(
 
 addEventHandler(
     "onPlayerScreenShot",
-    _root,
+    root,
     function(resource, status, jpeg, time, tag)
         collectTimedOutScreenShots()
         if (resource ~= getThisResource()) then

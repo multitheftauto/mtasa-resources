@@ -139,32 +139,32 @@ function joinHandler(player)
 end
 addEventHandler('onPlayerJoin', root, joinHandler)
 
-local settingsToSend =
-{
-	["command_spam_protection"] = true,
-	["tries_required_to_trigger"] = true,
-	["tries_required_to_trigger_low_priority"] = true,
-	["command_spam_ban_duration"] = true,
-	["command_exception_commands"] = true,
-	["removeHex"] = true,
-	["spawnmapondeath"] = true,
-	["weapons/kniferestrictions"] = true,
-	["kill"] = true,
-	["warp"] = true,
-	["gamespeed/enabled"] = true,
-	["gamespeed/min"] = true,
-	["gamespeed/max"] = true,
-	["gui/antiram"] = true,
-	["gui/disablewarp"] = true,
-	["gui/disableknife"] = true,
+local settingsToSend = {
+	"command_spam_protection",
+	"tries_required_to_trigger",
+	"tries_required_to_trigger_low_priority",
+	"command_spam_ban_duration",
+	"command_exception_commands",
+	"removeHex",
+	"spawnmapondeath",
+	"weapons/kniferestrictions",
+	"kill",
+	"warp",
+	"gamespeed/enabled",
+	"gamespeed/min",
+	"gamespeed/max",
+	"gui/antiram",
+	"gui/disablewarp",
+	"gui/disableknife",
+	"vehicles/disallowed_warp",
 }
 
 local function updateSettings()
-
 	local settings = {}
-	for setting,_ in pairs(settingsToSend) do settings[setting] = getOption(setting) end
+	for _, setting in ipairs(settingsToSend) do
+		settings[setting] = getOption(setting)
+	end
 	return settings
-
 end
 
 local function sendSettings(player,settingPlayer,settings)
@@ -194,16 +194,27 @@ addEventHandler('onLoadedAtClient', resourceRoot,
 )
 
 function onSettingChange(key,_,new)
+	local access = key:sub(1, 1) -- we always have modifiers
+	if access ~= "*" and access ~= "#" and access ~= "@" then
+		return
+	end
 
-	if not settingsToSend[gettok(key,#split(key,"."),".")] then return end
+	local resource = key:sub(2, 9)
+	if key:sub(2, 9) ~= getThisResource().name then
+		return
+	end
+
+	local setting = key:sub(11)
+	if not table.find(settingsToSend, setting) then
+		return
+	end
+
 	local settings = updateSettings()
 	for index,player in ipairs(getElementsByType("player")) do
 		clientCall(player, 'freeroamSettings', settings)
 	end
-
 end
-
-addEventHandler("onSettingChange",root,onSettingChange)
+addEventHandler("onSettingChange", root, onSettingChange)
 
 function showMap(player)
 

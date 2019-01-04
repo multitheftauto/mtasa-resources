@@ -4,6 +4,7 @@
 
 	<include resource="ajax" />
 
+	<script src="shared_util.lua" type="shared"/>
 	<script src="client.lua" type="client"/>
 	<script src="client_util.lua" type="client"/>
 	<script src="server.lua" type="server"/>

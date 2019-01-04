@@ -32,7 +32,7 @@ function aBansTab.Create(tab)
     addEventHandler("onClientGUIChanged", aBansTab.BansListSearch, aBansTab.onBansListSearch)
     addEventHandler("onClientGUIClick", aBansTab.Tab, aBansTab.onClientClick)
     addEventHandler(EVENT_SYNC, root, aBansTab.onClientSync)
-
+  
     guiSetInputMode("no_binds_when_editing")
 
     guiGridListClear(aBansTab.BansList)

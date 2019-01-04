@@ -31,7 +31,7 @@ function aChatTab.Create(tab)
     if (aGetSetting("adminChatOutput")) then
         guiCheckBoxSetSelected(aChatTab.AdminChatOutput, true)
     end
-
+  
     guiSetInputMode("no_binds_when_editing")
 
     addEventHandler("aClientAdminChat", root, aChatTab.onClientAdminChat)
