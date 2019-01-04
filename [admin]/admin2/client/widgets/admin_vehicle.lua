@@ -113,6 +113,8 @@ function aVehicle.Open(vehicle)
         guiSetVisible(aVehicle.ColorForm, false)
         guiSetVisible(aVehicle.Form, false)
 
+        guiSetInputMode("no_binds_when_editing")
+
         addEventHandler("onClientGUIClick", aVehicle.Form, aVehicle.onClick)
         addEventHandler("onClientGUIClick", aVehicle.ColorClose, aVehicle.onClick)
         --Register With Admin Form

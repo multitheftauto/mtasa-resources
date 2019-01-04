@@ -46,6 +46,8 @@ function aManageACL()
         aACLExit = guiCreateButton(0.75, 0.90, 0.27, 0.04, "Close", true, aAclForm)
         aclDisplayOptions("", "")
 
+        guiSetInputMode("no_binds_when_editing")
+
         addEvent("aAdminACL", true)
         addEventHandler("aAdminACL", getLocalPlayer(), aAdminACL)
         addEventHandler("onClientGUIClick", aAclForm, aClientACLClick)

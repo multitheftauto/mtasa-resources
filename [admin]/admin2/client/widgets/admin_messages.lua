@@ -30,6 +30,7 @@ function aMessages.Open()
         aMessages.Category = guiCreateLabel(0.36, 0.20, 0.50, 0.54, "Category: -", true, aMessages.Form)
         aMessages.Date = guiCreateLabel(0.36, 0.25, 0.50, 0.54, "Date: -", true, aMessages.Form)
         aMessages.Text = guiCreateMemo(0.36, 0.30, 0.59, 0.64, "", true, aMessages.Form)
+        guiSetInputMode("no_binds_when_editing")
 
         --Register With Admin Form
         aRegister("Messages", aMessages.Form, aMessages.Open, aMessages.Close)

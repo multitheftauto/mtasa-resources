@@ -68,15 +68,16 @@ function aResourcesTab.Create(tab)
     aResourcesTab.ExecuteAdvanced =
         guiCreateLabel(0.2, 0.4, 1.0, 0.50, "For advanced users only.", true, aResourcesTab.Command)
     guiLabelSetColor(aResourcesTab.ExecuteAdvanced, 255, 0, 0)
+    guiSetInputMode("no_binds_when_editing")
 
     -- EVENTS
-    addEventHandler(EVENT_SYNC, _root, aResourcesTab.onClientSync)
+    addEventHandler(EVENT_SYNC, root, aResourcesTab.onClientSync)
     addEventHandler("onClientGUIClick", aResourcesTab.Context, aResourcesTab.onContextClick)
     addEventHandler("onClientGUIClick", aResourcesTab.MainTab, aResourcesTab.onClientClick)
     addEventHandler("onClientGUIDoubleClick", aResourcesTab.Settings, aResourcesTab.onClientDoubleClick)
     addEventHandler("onClientGUIDoubleClick", aResourcesTab.ViewTypes, aResourcesTab.onClientDoubleClick)
-    addEventHandler("aClientResourceStart", _root, aResourcesTab.onClientResourceStart)
-    addEventHandler("aClientResourceStop", _root, aResourcesTab.onClientResourceStop)
+    addEventHandler("aClientResourceStart", root, aResourcesTab.onClientResourceStart)
+    addEventHandler("aClientResourceStop", root, aResourcesTab.onClientResourceStop)
 
     if (hasPermissionTo("command.listresources")) then
         sync(SYNC_RESOURCES)

@@ -160,6 +160,7 @@ function aPlayersTab.Create(tab)
         end
     end
     guiGridListRemoveColumn(aPlayersTab.VehicleOptions, 1)
+    guiSetInputMode("no_binds_when_editing")
 
     -- EVENTS
 
@@ -168,10 +169,10 @@ function aPlayersTab.Create(tab)
     addEventHandler("onClientGUIClick", aPlayersTab.Tab, aPlayersTab.onClientClick)
     addEventHandler("onClientGUIClick", aPlayersTab.VehicleOptions, aPlayersTab.onClientClick)
     addEventHandler("onClientGUIChanged", aPlayersTab.PlayerListSearch, aPlayersTab.onPlayerListSearch)
-    addEventHandler("onClientPlayerChangeNick", _root, aPlayersTab.onClientPlayerChangeNick)
-    addEventHandler("aClientPlayerJoin", _root, aPlayersTab.onClientPlayerJoin)
-    addEventHandler("onClientPlayerQuit", _root, aPlayersTab.onClientPlayerQuit)
-    addEventHandler(EVENT_SYNC, _root, aPlayersTab.onClientSync)
+    addEventHandler("onClientPlayerChangeNick", root, aPlayersTab.onClientPlayerChangeNick)
+    addEventHandler("aClientPlayerJoin", root, aPlayersTab.onClientPlayerJoin)
+    addEventHandler("onClientPlayerQuit", root, aPlayersTab.onClientPlayerQuit)
+    addEventHandler(EVENT_SYNC, root, aPlayersTab.onClientSync)
     addEventHandler("onClientResourceStop", getResourceRootElement(), aPlayersTab.onClientResourceStop)
     addEventHandler("onAdminRefresh", aPlayersTab.Tab, aPlayersTab.onRefresh)
 

@@ -32,13 +32,15 @@ function aChatTab.Create(tab)
         guiCheckBoxSetSelected(aChatTab.AdminChatOutput, true)
     end
 
-    addEventHandler("aClientAdminChat", _root, aChatTab.onClientAdminChat)
-    addEventHandler("aClientPlayerJoin", _root, aChatTab.onClientPlayerJoin)
-    addEventHandler("onClientPlayerQuit", _root, aChatTab.onClientPlayerQuit)
+    guiSetInputMode("no_binds_when_editing")
+
+    addEventHandler("aClientAdminChat", root, aChatTab.onClientAdminChat)
+    addEventHandler("aClientPlayerJoin", root, aChatTab.onClientPlayerJoin)
+    addEventHandler("onClientPlayerQuit", root, aChatTab.onClientPlayerQuit)
     addEventHandler("onClientResourceStop", getResourceRootElement(), aChatTab.onClientResourceStop)
     addEventHandler("onClientGUIClick", aChatTab.Tab, aChatTab.onClientClick)
     addEventHandler("onClientGUIAccepted", aChatTab.AdminText, aChatTab.onClientGUIAccepted)
-    addEventHandler(EVENT_SYNC, _root, aChatTab.onClientSync)
+    addEventHandler(EVENT_SYNC, root, aChatTab.onClientSync)
     addEventHandler("onAdminRefresh", aChatTab.Tab, aChatTab.onRefresh)
 end
 

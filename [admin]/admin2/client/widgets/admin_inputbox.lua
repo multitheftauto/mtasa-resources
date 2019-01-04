@@ -31,6 +31,7 @@ function aInputBox.Show(title, message, default)
         aInputBox.Ok = guiCreateButton(90, 80, 55, 17, "Ok", false, aInputBox.Form)
         aInputBox.Cancel = guiCreateButton(150, 80, 55, 17, "Cancel", false, aInputBox.Form)
         guiSetProperty(aInputBox.Form, "AlwaysOnTop", "true")
+        guiSetInputMode("no_binds_when_editing")
 
         addEventHandler("onClientGUIClick", aInputBox.Form, aInputBox.onClick)
         addEventHandler("onClientGUIAccepted", aInputBox.Value, aInputBox.onAccepted)

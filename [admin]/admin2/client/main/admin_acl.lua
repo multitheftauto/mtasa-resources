@@ -57,6 +57,8 @@ function aAclTab.Create(tab)
 
     aAclTab.Access = guiCreateGridList(0.01, 0.07, 0.98, 0.91, true, tab)
 
+    guiSetInputMode("no_binds_when_editing")
+
     triggerServerEvent(EVENT_ACL, getLocalPlayer(), ACL_GROUPS)
 
     addEventHandler(EVENT_ACL, getLocalPlayer(), aAclTab.onSync)

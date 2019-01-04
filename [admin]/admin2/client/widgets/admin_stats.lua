@@ -66,6 +66,8 @@ function aPlayerStats(player)
         guiCreateLabel(0.05, 0.93, 0.60, 0.05, "* Only numerical values from 0 to 1000 accepted", true, aStatsForm)
         aStatsClose = guiCreateButton(0.80, 0.90, 0.14, 0.09, "Close", true, aStatsForm)
 
+        guiSetInputMode("no_binds_when_editing")
+
         addEventHandler("onClientGUIClick", aStatsForm, aClientStatsClick)
         addEventHandler("onClientGUIChanged", aStatsForm, aClientStatsChanged)
         addEventHandler("onClientGUIAccepted", aStatsForm, aClientStatsAccepted)

@@ -39,6 +39,8 @@ function aTeam.Show()
         aTeam.Accept = guiCreateButton(0.55, 0.88, 0.20, 0.09, "Select", true, aTeam.Form)
         aTeam.Hide = guiCreateButton(0.77, 0.88, 0.20, 0.09, "Close", true, aTeam.Form)
 
+        guiSetInputMode("no_binds_when_editing")
+
         addEventHandler("onClientGUIClick", aTeam.Form, aTeam.onClick)
         addEventHandler("onClientGUIDoubleClick", aTeam.Form, aTeam.onDoubleClick)
         --Register With Admin Form

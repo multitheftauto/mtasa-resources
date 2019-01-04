@@ -61,6 +61,8 @@ function aOptionsTab.Create(tab)
         guiSetText(aOptionsTab.RefreshDelay, aGetSetting("refreshDelay"))
     end
 
+    guiSetInputMode("no_binds_when_editing")
+
     addEventHandler("onClientGUIClick", aOptionsTab.Tab, aOptionsTab.onClientClick)
     addEventHandler("aClientResourceStop", getResourceRootElement(), aOptionsTab.onClientResourceStop)
     addEventHandler("onClientGUIScroll", aOptionsTab.Tab, aOptionsTab.onClientScroll)

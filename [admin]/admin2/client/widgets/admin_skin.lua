@@ -38,6 +38,9 @@ function aSkin.Show(player)
         aSkin.Accept = guiCreateButton(0.75, 0.28, 0.27, 0.09, "Select", true, aSkin.Form, "setskin")
         aSkin.Cancel = guiCreateButton(0.75, 0.88, 0.27, 0.09, "Cancel", true, aSkin.Form)
 
+         guiSetInputMode("no_binds_when_editing")
+
+
         aSkin.Load()
         aSkin.Refresh(guiCheckBoxGetSelected(aSkin.Groups))
 

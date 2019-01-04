@@ -69,6 +69,7 @@ function aColor.Open(x, y, r, g, b, relative, parent)
         aColor.B = guiCreateEdit(155, 75, 50, 20, "", false, aColor.Form)
         aColor.Ok = guiCreateButton(155, 113, 50, 20, "ok", false, aColor.Form)
         guiSetProperty(aColor.Form, "AlwaysOnTop", "true")
+        guiSetInputMode("no_binds_when_editing")
 
         aRegister("Color", aColor.Form, aColor.Open, aColor.Close)
     end
