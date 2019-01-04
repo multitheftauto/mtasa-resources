@@ -134,7 +134,6 @@ function aServerTab.Create(tab)
     local i2 = 1
     for k,v in pairs(aServerTab.worldproperties) do
     	aServerTab[k] = guiCreateCheckBox(0.66, headerPosition + (0.045 * i2), 0.40, 0.04, v, false, true, tab, 'setworldproperty')
-    	guiSetEnabled(aServerTab[k], true)
     	i2 = i2 + 1 
     end
 
