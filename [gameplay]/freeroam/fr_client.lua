@@ -285,6 +285,15 @@ function addWeapon(leaf, amount)
 	server.giveMeWeapon(leaf.id, amount)
 end
 
+function isPlayerAiming(p)
+	if isElement(p) then
+		if getPedTask(p, "secondary", 0) == "TASK_SIMPLE_USE_GUN" then
+			return true
+		end
+	end
+	return false
+end
+
 wndWeapon = {
 	'wnd',
 	text = 'Give weapon',
@@ -314,6 +323,7 @@ function giveWeaponCommand(cmd, weapon, amount)
 	amount = amount and math.floor(tonumber(amount)) or 1500
 	if amount < 1 or weapon < 1 or weapon > 46 then return end
 	if internallyBannedWeapons[weapon] then return end
+	if isPlayerAiming(localPlayer) then errMsg ("You can't use this command while aiming a gun!") return end
 	server.giveMeWeapon(weapon, amount)
 end
 addCommandHandler('give', giveWeaponCommand)
