@@ -1,7 +1,11 @@
 function isDrivebyEnabled(player)
 	assert(isElement(player) and getElementType(player) == "player", "Bad argument @ 'isDrivebyEnabled' [Expected player at argument 1, got " .. type(player) .. "]")
 
-	return syncedPlayerStates[player] == nil and settings.enabled or syncedPlayerStates[player] or false
+	if syncedPlayerStates[player] == nil then
+		return settings.enabled
+	end
+
+	return syncedPlayerStates[player] or false
 end
 
 function setDrivebyEnabled(player, state)
