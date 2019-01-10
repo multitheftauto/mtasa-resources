@@ -1,0 +1,9 @@
+# This file must be at the root of the repository,
+# otherwise this dotfile will appear in resource zips.
+#
+# We don't want that!
+
+# admin2
+\[admin\]/admin2/admin.db
+\[admin\]/admin2/conf/reports.xml
+

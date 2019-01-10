@@ -15,6 +15,10 @@
     WARNING: We give no support for edited
              versions of the admin system.
   -->
+
+  <!-- Enable OOP -->
+  <oop>true</oop>
+
   <!--Main script files, keep them in that order or it may break-->
   <script src="admin_definitions.lua" 				        type="server" />
   <script src="admin_definitions.lua" 				        type="client" />

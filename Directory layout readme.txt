@@ -1,4 +1,4 @@
-New directory layout for MTA:SA 1.1 resources
+Directory layout for MTA:SA resources
 ---------------------------------------------
 
 Important things to note:

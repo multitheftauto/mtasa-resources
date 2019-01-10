@@ -19,18 +19,18 @@
 
 	<export function="appendControl" type="client" />
 
-	<file src="colorselect.png" />
-	<file src="localplayerblip.png" />
-	<file src="map.png" />
-	<file src="playerblip.png" />
+	<file src="img/localplayerblip.png" />
+	<file src="img/map.png" />
+	<file src="img/playerblip.png" />
 
-	<config src="animations.xml" type="client" />
-	<config src="interiors.xml" type="client" />
-	<config src="skins.xml" type="client" />
-	<config src="stats.xml" type="client" />
-	<config src="vehicles.xml" type="client" />
-	<config src="weapons.xml" type="client" />
-	<config src="weather.xml" type="client" />
+	<config src="data/animations.xml" type="client" />
+	<config src="data/interiors.xml" type="client" />
+	<config src="data/skins.xml" type="client" />
+	<config src="data/stats.xml" type="client" />
+	<config src="data/vehicles.xml" type="client" />
+	<config src="data/weapons.xml" type="client" />
+	<config src="data/weather.xml" type="client" />
+
 	<config src="help.xml" type="client" />
 
 	<script src="colorpicker/colorpicker.lua" type="client" />
@@ -85,6 +85,13 @@
 		<setting name="*vehicles/idleexplode" value="false" />     <!-- If set to false, vehicles simply disappear when they time out instead of exploding -->
 		<setting name="*vehicles/maxperplayer" value="[2]" />     <!-- Maximum number of vehicles a player can have at the same time -->
 		<setting name="*vehicles/disallowed" value="[[432]]" />   <!-- Comma-separated list of vehicles that players may not create -->
+
+		<!--
+			Comma-separated list of vehicles that players may not teleport with.
+			Defaults: Hunter, Hydra, Rustler, Seasparrow, RC Baron, Rhino
+		-->
+		<setting name="*vehicles/disallowed_warp" value="[[425, 520, 476, 447, 464, 432]]" />
+
 		<setting name="*chat/mainChatDelay" value="1000" />   <!-- Miliseconds between each message a player can send through main chat -->
 		<setting name="*chat/blockRepeatMessages" value="true" />   <!-- Prevent a player from saying the same thing twice in a row to spam -->
 		<setting name="*gui/antiram" value="true" /> <!-- Allow player to use vehicle ghostmode (anti-ram) from F1? -->
@@ -96,22 +103,22 @@
 					group="Command Spam Protection"
 					desc="This settings enables/disables protection against command spam that can form a type of DoS-attack capable of lagging or crashing the server"
 					/>
-		<setting name="@command_exception_commands" value="[ [ 'sp' ] ]"
+		<setting name="@command_exception_commands" value="[ [ 'sp', 'setpos', 'repair', 'rp', 'anim', 'speed', 'jp', 'addupgrade', 'au' ] ]"
 					friendlyname="Exception commands"
 					group="Command Spam Protection"
 					desc="Exception commands (to not filter with antispam detection)"
 					/>
-		<setting name="@tries_required_to_trigger" value="[5]"
+		<setting name="@tries_required_to_trigger" value="[7]"
 					friendlyname="Tries to trigger"
 					accept="positive number"
 					group="Command Spam Protection"
 					desc="How many tries under 2 seconds will trigger the spam protection?"
 					/>
-		<setting name="@tries_required_to_trigger_low_priority" value="[8]"
+		<setting name="@tries_required_to_trigger_low_priority" value="[10]"
 					friendlyname="Tries to trigger - low priority"
 					accept="positive number"
 					group="Command Spam Protection"
-					desc="How many tries under 2 seconds will trigger the spam protection for low priority commands/actions such as giving ammo"
+					desc="How many tries under 2 seconds will trigger the spam protection for low priority commands/actions, such as giving ammo"
 					/>
 		<setting name="@command_spam_ban_duration" value="[10000]"
 					friendlyname="Suspend Duration"

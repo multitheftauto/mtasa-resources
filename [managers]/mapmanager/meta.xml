@@ -1,5 +1,5 @@
 <meta>
-	<info author="jbeta" type="script" version="1.0.5" name="Map manager" description="Gamemode / map manager" showInResourceBrowser="true"/>
+	<info author="jbeta" type="script" version="1.0.6" name="Map manager" description="Gamemode / map manager" showInResourceBrowser="true"/>
 
 	<script src="mapmanager_main.lua"/>
 	<script src="mapmanager_exports.lua"/>
@@ -32,4 +32,11 @@
 	<html src="mapmanager.htm" default="true"/>
 	<html src="mapmanager.css" raw="true"/>
 	<html src="mapmanager.js" raw="true"/>
+
+	<aclrequest>
+        <right name="function.startResource" access="true"></right>
+        <right name="function.restartResource" access="true"></right>
+        <right name="function.stopResource" access="true"></right>
+        <right name="function.refreshResources" access="true"></right>
+	</aclrequest>
 </meta>

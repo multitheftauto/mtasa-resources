@@ -1,0 +1,20 @@
+<catalog type="stat">
+	<group name="Body">
+		<stat name="Fat" id="21" />
+		<stat name="Muscle" id="23" />
+		<stat name="Max health" id="24" />
+	</group>
+	<group name="Weapon skill">
+		<stat name="AK-47" id="77" />
+		<stat name="Desert eagle" id="71" />
+		<stat name="M4" id="78" />
+		<stat name="MP5" id="76" />
+		<stat name="Pistol" id="69" />
+		<stat name="Sawnoff shotgun" id="73" />
+		<stat name="Shotgun" id="72" />
+		<stat name="Silenced pistol" id="70" />
+		<stat name="Sniper rifle" id="79" />
+		<stat name="SPAZ-12" id="74" />
+		<stat name="Uzi" id="75" />
+	</group>
+</catalog>
