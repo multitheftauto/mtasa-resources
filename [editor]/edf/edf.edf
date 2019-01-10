@@ -10,6 +10,7 @@
 		<data name="scale" type="number" description="Object scale" default="1" required="false" />
 		<data name="collisions" type="selection:true,false" description="Object collisions" required="false" default="true" />
 		<data name="breakable" type="selection:true,false" description="Object breakablity" required="false" default="true" />
+		<data name="frozen" type="selection:false,true" description="Frozen" required="false" default="false" />
 	</element>
 	<element name="marker" friendlyname="Marker">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
@@ -39,9 +40,14 @@
 		<data name="upgrades" type="vehicleupgrades" description="Installed vehicle upgrades" required="false" />
 		<data name="plate" type="plate" description="Number plate" required="false" />
 		<data name="sirens" type="selection:false,true" description="Vehicle sirens" required="false" default="false" />
+		<data name="health" type="integer" description="Vehicle health (0-1000)" default="1000" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
 		<data name="alpha" type="integer" description="Alpha level" default="255" />
+		<data name="frozen" type="selection:false,true" description="Frozen" required="false" default="false" />
+		<data name="collisions" type="selection:true,false" description="Vehicle collisions" required="false" default="true" />
+		<data name="locked" type="selection:false,true" description="Locked" required="false" default="false" />
+		<data name="landingGearDown" type="selection:false,true" description="Set landing gear down" required="false" default="true" />
 	</element>
 	<element name="blip" friendlyname="Radar blip">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
@@ -73,7 +79,11 @@
 		<data name="rotZ" type="number" description="Z rotation" default="0" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />
 		<data name="dimension" type="integer" description="MTA dimension" default="0" />
-		<data name="frozen" type="selection:false,true" description="Frozen" default="false" />
+		<data name="frozen" type="selection:false,true" description="Frozen" required="false" default="false" />
+		<data name="collisions" type="selection:true,false" description="Ped collisions" required="false" default="true" />
+		<data name="health" type="integer" description="Ped health" default="100" />
+		<data name="armor" type="integer" description="Ped armor" default="0" />
+		<data name="alpha" type="integer" description="Alpha level" default="255" />
 	</element>
 	<element name="water" friendlyname="Water" icon="client/images/icons/water.png">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
