@@ -594,14 +594,7 @@ function warpUpdate()
 	end
 	
 	local text = getControlText(wndWarp, 'search')
-	local players = table.map(getPlayersByPartName(text), 
-		function(p) 
-			local pName = getPlayerName(p)
-			if g_settings["hidecolortext"] then
-				pName = pName:gsub("#%x%x%x%x%x%x", "")
-			end
-			return { player = p, name = pName } 
-		end)
+	local players = table.map(getPlayersByPartName(text), function(p) return { player = p, name = getPlayerName(p) } end)
 	table.sort(players, function(a, b) return a.name < b.name end)
 	bindGridListToTable(wndWarp, 'playerlist', players, true)
 end
@@ -995,17 +988,13 @@ function updatePlayerBlips()
 	local mapControl = getControl(wnd, 'map')
 	for elem,player in pairs(g_PlayerData) do
 		if not player.gui.mapBlip then
-			local playerName = player.name
-			if g_settings["hidecolortext"] then
-				playerName = playerName:gsub("#%x%x%x%x%x%x", "")
-			end
 			player.gui.mapBlip = guiCreateStaticImage(0, 0, 9, 9, elem == localPlayer and 'img/localplayerblip.png' or 'img/playerblip.png', false, mapControl)
-			player.gui.mapLabelShadow = guiCreateLabel(0, 0, 100, 14, playerName, false, mapControl)
+			player.gui.mapLabelShadow = guiCreateLabel(0, 0, 100, 14, player.name, false, mapControl)
 			local labelWidth = guiLabelGetTextExtent(player.gui.mapLabelShadow)
 			guiSetSize(player.gui.mapLabelShadow, labelWidth, 14, false)
 			guiSetFont(player.gui.mapLabelShadow, 'default-bold-small')
 			guiLabelSetColor(player.gui.mapLabelShadow, 255, 255, 255)
-			player.gui.mapLabel = guiCreateLabel(0, 0, labelWidth, 14, playerName, false, mapControl)
+			player.gui.mapLabel = guiCreateLabel(0, 0, labelWidth, 14, player.name, false, mapControl)
 			guiSetFont(player.gui.mapLabel, 'default-bold-small')
 			guiLabelSetColor(player.gui.mapLabel, 0, 0, 0)
 			for i,name in ipairs({'mapBlip', 'mapLabelShadow'}) do

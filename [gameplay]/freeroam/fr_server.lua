@@ -150,7 +150,6 @@ local settingsToSend = {
 	"weapons/kniferestrictions",
 	"kill",
 	"warp",
-	"hidecolortext",
 	"gamespeed/enabled",
 	"gamespeed/min",
 	"gamespeed/max",
