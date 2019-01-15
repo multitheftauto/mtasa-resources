@@ -77,6 +77,9 @@ addEventHandler("doSendDriveBySettings",localPlayer,
 				end
 			end )
 		end
+		if not settings.enabled then
+			toggleDriveby()
+		end
 	end
 )
 
@@ -89,7 +92,7 @@ function toggleDriveby()
 	if settings.blockedVehicles[vehicleID] then return end
 	--Has he got a weapon equiped?
 	local equipedWeapon = getPedWeaponSlot( localPlayer )
-	if equipedWeapon == 0 then
+	if settings.enabled and equipedWeapon == 0 then
 		if exitingVehicle then return end
 		--Decide whether he is a driver or passenger
 		--We need to get the switchTo weapon by finding any valid IDs
