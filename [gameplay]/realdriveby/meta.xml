@@ -3,6 +3,7 @@
 	<script src="driveby_client.lua" type="client" />
 	<script src="exports_client.lua" type="client" />
 	<script src="driveby_server.lua" type="server" />
+	<script src="exports_server.lua" type="server" />
 
 	<!--utils-->
 	<script src="utils/textlib.lua" type="client" />
@@ -33,6 +34,9 @@
 
 		<!--Block instant eject when using driveby while exiting vehicle -->
 		<setting name="block_instant_eject" value="[true]"/>
+
+		<!--Whether or not is driveby enabled for all players by default -->
+		<setting name="driveby_enabled" value="[true]"/>
 	</settings>
 	<export function="setDriverDrivebyAbility" type="client" />
 	<export function="setPassengerDrivebyAbility" type="client" />
@@ -44,4 +48,6 @@
 	<export function="getDrivebySteeringAbility" type="client" />
 	<export function="setDrivebyAutoEquip" type="client" />
 	<export function="getDrivebyAutoEquip" type="client" />
+	<export function="isDrivebyEnabled" type="shared" />
+	<export function="setDrivebyEnabled" type="shared" />
 </meta>

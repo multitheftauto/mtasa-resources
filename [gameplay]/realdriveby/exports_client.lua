@@ -91,4 +91,25 @@ function getDrivebyAutoEquip ()
 	return settings.autoEquip
 end
 
+function isDrivebyEnabled()
+	return settings.enabled
+end
 
+function setDrivebyEnabled(enabled, syncToServer)
+	local enabledType = type(enabled)
+	assert(enabledType == "boolean", "Bad argument @ 'setDrivebyEnabled' [Expected boolean at argument 1, got " .. enabledType .. "]")
+
+	settings.enabled = enabled
+
+	-- Let's remove any active player driveby state
+	if not settings.enabled then
+		toggleDriveby()
+	end
+
+	-- Sync updated state to the server unless explicitly requested not to
+	if syncToServer ~= false then
+		triggerServerEvent("driveby_syncDrivebyState", localPlayer, settings.enabled)
+	end
+end
+addEvent("driveby_setDrivebyEnabled", true)
+addEventHandler("driveby_setDrivebyEnabled", root, setDrivebyEnabled)
