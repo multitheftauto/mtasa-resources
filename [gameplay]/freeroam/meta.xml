@@ -71,6 +71,7 @@
 		<setting name="*kill" value="true" />
 		<setting name="*lights" value="true" />
 		<setting name="*paintjob" value="true" />
+		<setting name="*hidecolortext" value="true" />            <!-- Hide player colorcode *text* in F1 warp menu & map? -->
 		<setting name="*repair" value="true" />
 		<setting name="*setskin" value="true" />
 		<setting name="*setstyle" value="true" />
