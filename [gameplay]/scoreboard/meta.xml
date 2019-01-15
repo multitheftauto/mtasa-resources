@@ -81,7 +81,7 @@
 			group="General"
 			accept="false,true"
 			desc="Should the teams be always hidden on the scoreboard, no matter what user has in the settings?" />
-		<setting name="*allowColorcodedNames" value="false"
+		<setting name="*allowColorcodedNames" value="true"
 			friendlyname="Allow colorcoded names"
 			group="General"
 			accept="false,true"
