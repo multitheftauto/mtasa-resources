@@ -15,6 +15,6 @@ errorCode = {
 	twoMapsNeeded = 32,
 	noGamemodeRunning = 33,
 	mapIsntCompatible = 34,
-    twoModesNeeded = 35,
-    onlyOneCompatibleMap = 36
+	twoModesNeeded = 35,
+	onlyOneCompatibleMap = 36
 }
