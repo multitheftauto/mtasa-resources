@@ -469,6 +469,25 @@ aFunctions = {
         end,
         ["shutdown"] = function(reason)
             shutdown(iif(reason, tostring(reason), nil))
+        end,
+        ["whowas"] = function(name)
+            local name = name and name:gsub("#%x%x%x%x%x%x", ""):lower() or nil
+                if name then
+                    for _, player in ipairs(getElementsByType("player")) do
+                        local name_ = getPlayerName(player):gsub("#%x%x%x%x%x%x", ""):lower()
+                        if name_:find(name, 1, true) then
+                            local ip = getPlayerIP(player)
+                            if aNicks[ip] then
+                                outputChatBox("History for user: " + name, source, 0, 255, 0)
+                                for i, v in pairs(aNicks[ip]) do
+                                    outputChatBox(v, source, 0, 0, 255)
+                                end
+                            else
+                                outputChatBox("No history found.", source, 255, 0, 0)
+                            end
+                        end
+                    end
+                end
         end
     },
     admin = {},

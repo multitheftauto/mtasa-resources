@@ -10,6 +10,7 @@
 _types = {"player", "team", "vehicle", "resource", "bans", "server", "admin"}
 
 aPlayers = {}
+aNicks = {}
 aLogMessages = {}
 aInteriors = {}
 aStats = {}
@@ -84,6 +85,14 @@ addEventHandler(
     root,
     function()
         aPlayers[source] = nil
+        aNicks[getPlayerIP(source)] = nil
+    end
+)
+addEventHandler(
+    "onPlayerChangeNick",
+    root,
+    function(_,nNick)
+        table.insert(aNicks[getPlayerIP(source)], nNick)
     end
 )
 
@@ -94,6 +103,7 @@ function aPlayerInitialize(player)
     aPlayers[player].money = getPlayerMoney(player)
     aPlayers[player].muted = isPlayerMuted(player)
     aPlayers[player].frozen = isElementFrozen(player)
+    aNicks[getPlayerIP(player)] = {getPlayerName(player)}
 end
 
 function aAction(type, action, admin, player, data, more)

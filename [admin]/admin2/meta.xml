@@ -30,8 +30,8 @@
   <script src="server/admin_wrapper.lua" 		      		type="server" />
   <script src="server/admin_session.lua" 			        type="server" />
   <script src="server/admin_proxy.lua" 	      				type="server" />
-  <script src="server/admin_functions.lua" 	      			type="server" />
   <script src="server/admin_server.lua" 			        type="server" />
+  <script src="server/admin_functions.lua" 	      			type="server" />
   <script src="server/admin_database.lua" 			        type="server" />
   <script src="server/admin_storage.lua" 			        type="server" />
   <script src="server/admin_sync.lua" 				        type="server" />
