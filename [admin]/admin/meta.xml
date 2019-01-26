@@ -152,6 +152,7 @@
   <file src="client/images/flags/fi.png" />
   <file src="client/images/flags/fo.png" />
   <file src="client/images/flags/fr.png" />
+  <file src="client/images/flags/fj.png" />
   <file src="client/images/flags/ga.png" />
   <file src="client/images/flags/gb.png" />
   <file src="client/images/flags/gd.png" />
@@ -173,6 +174,7 @@
   <file src="client/images/flags/jm.png" />
   <file src="client/images/flags/jp.png" />
   <file src="client/images/flags/kw.png" />
+  <file src="client/images/flags/kp.png" />
   <file src="client/images/flags/lt.png" />
   <file src="client/images/flags/lu.png" />
   <file src="client/images/flags/lv.png" />
@@ -183,10 +185,12 @@
   <file src="client/images/flags/mg.png" />
   <file src="client/images/flags/mh.png" />
   <file src="client/images/flags/mt.png" />
+  <file src="client/images/flags/mu.png" />
   <file src="client/images/flags/ng.png" />
   <file src="client/images/flags/nl.png" />
   <file src="client/images/flags/no.png" />
   <file src="client/images/flags/nr.png" />
+  <file src="client/images/flags/ni.png" />
   <file src="client/images/flags/pa.png" />
   <file src="client/images/flags/pe.png" />
   <file src="client/images/flags/ph.png" />
@@ -195,12 +199,14 @@
   <file src="client/images/flags/pr.png" />
   <file src="client/images/flags/ps.png" />
   <file src="client/images/flags/pt.png" />
+  <file src="client/images/flags/pm.png" />
   <file src="client/images/flags/py.png" />
   <file src="client/images/flags/qa.png" />
   <file src="client/images/flags/re.png" />
   <file src="client/images/flags/ro.png" />
   <file src="client/images/flags/ru.png" />
   <file src="client/images/flags/rw.png" />
+  <file src="client/images/flags/sd.png" />
   <file src="client/images/flags/se.png" />
   <file src="client/images/flags/sj.png" />
   <file src="client/images/flags/sl.png" />
@@ -215,6 +221,7 @@
   <file src="client/images/flags/um.png" />
   <file src="client/images/flags/us.png" />
   <file src="client/images/flags/uy.png" />
+  <file src="client/images/flags/uz.png" />
   <file src="client/images/flags/vn.png" />
   <file src="client/images/flags/wf.png" />
   <file src="client/images/flags/ws.png" />
@@ -229,17 +236,23 @@
   <file src="client/images/flags/ht.png" />
   <file src="client/images/flags/ir.png" />
   <file src="client/images/flags/jo.png" />
+  <file src="client/images/flags/je.png" />
   <file src="client/images/flags/kg.png" />
   <file src="client/images/flags/kr.png" />
   <file src="client/images/flags/kn.png" />
   <file src="client/images/flags/kz.png" />
   <file src="client/images/flags/lb.png" />
   <file src="client/images/flags/md.png" />
+  <file src="client/images/flags/mv.png" />
+  <file src="client/images/flags/mz.png" />
   <file src="client/images/flags/me.png" />
   <file src="client/images/flags/mk.png" />
   <file src="client/images/flags/my.png" />
+  <file src="client/images/flags/mm.png" />
+  <file src="client/images/flags/mn.png" />
   <file src="client/images/flags/mx.png" />
   <file src="client/images/flags/np.png" />
+  <file src="client/images/flags/nc.png" />
   <file src="client/images/flags/nz.png" />
   <file src="client/images/flags/om.png" />
   <file src="client/images/flags/pg.png" />
@@ -255,8 +268,10 @@
   <file src="client/images/flags/tr.png" />
   <file src="client/images/flags/tw.png" />
   <file src="client/images/flags/tt.png" />
+  <file src="client/images/flags/tj.png" />
   <file src="client/images/flags/ve.png" />
   <file src="client/images/flags/hr.png" />
+  <file src="client/images/flags/xk.png" />
 
   <!--HTTP Server Stuff-->
   <!--Not finished yet
