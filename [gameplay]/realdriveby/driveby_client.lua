@@ -31,6 +31,8 @@ addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()
 		bindKey ( "mouse2", "down", "Toggle Driveby", "" )
 		bindKey ( "e", "down", "Next driveby weapon", "1" )
 		bindKey ( "q", "down", "Previous driveby weapon", "-1" )
+		bindKey ( "mouse_wheel_up", "down", "Next driveby weapon", "1" )
+		bindKey ( "mouse_wheel_down", "down", "Previous driveby weapon", "-1" )
 		toggleControl ( "vehicle_next_weapon",false )
 		toggleControl ( "vehicle_previous_weapon",false )
 		triggerServerEvent ( "driveby_clientScriptLoaded", localPlayer )
@@ -138,7 +140,7 @@ function toggleDriveby()
 		local prevw,nextw = next(getBoundKeys ( "Previous driveby weapon" )),next(getBoundKeys ( "Next driveby weapon" ))
 		if prevw and nextw then
 			if animation then Animation:remove() end
-			helpText:text( "Press '"..prevw.."' or '"..nextw.."' to change weapon" )
+			helpText:text( "Scroll or press '"..prevw.."' or '"..nextw.."' to change weapon" )
 			fadeInHelp()
 			setTimer ( fadeOutHelp, 10000, 1 )
 		end
