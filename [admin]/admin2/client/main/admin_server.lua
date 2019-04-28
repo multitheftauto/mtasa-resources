@@ -9,7 +9,28 @@
 **************************************]]
 aServerTab = {
     Weathers = {},
-    WeatherMax = 255
+    WeatherMax = 255,
+    glitches = {
+    	QuickReload = 'Quick Reload',
+    	FastMove = 'Fast Move',
+    	FastFire = 'Fast Fire',
+    	CrouchBug = 'Crouch Bug',
+    	HighCloseRangeDamage = 'High Close Range Damage',
+    	HitAnim = 'Hit Anim',
+    	FastSprint = 'Fast Sprint',
+    	BadDrivebyHitBox = 'Bad Driveby Hit Box',
+    	QuickStand = 'Quick Stand'
+    },
+    worldproperties = {
+    	HoverCars = 'Hover Cars',
+    	AirCars = 'Air Cars',
+    	ExtraBunny = 'Extra Bunny',
+    	ExtraJump = 'Extra Jump',
+    	RandomFoliage = 'Random Foliage',
+    	SniperMoon = 'Sniper Moon',
+    	ExtraAirResistance = 'Extra Air Resistance',
+    	UnderWorldWarp = 'Under World Warp'
+    }
 }
 
 function aServerTab.Create(tab)
@@ -101,20 +122,22 @@ function aServerTab.Create(tab)
     guiSetEnabled(aServerTab.IdleKicker, false)
     guiSetEnabled(aServerTab.IdleKickerSet, false)
 
-    guiCreateHeader(0.65, 0.285, 0.30, 0.035, "Allowed glitches:", true, tab)
-    aServerTab.QuickReload = guiCreateCheckBox(0.66, 0.330, 0.20, 0.04, "Quick Reload", false, true, tab, "setglitch")
-    aServerTab.FastMove = guiCreateCheckBox(0.66, 0.375, 0.20, 0.04, "Fast Move", false, true, tab, "setglitch")
-    aServerTab.FastFire = guiCreateCheckBox(0.66, 0.420, 0.20, 0.04, "Fast Fire", false, true, tab, "setglitch")
-    aServerTab.CrouchBug = guiCreateCheckBox(0.66, 0.465, 0.20, 0.04, "Crouch Bug", false, true, tab, "setglitch")
+    guiCreateHeader(0.65, 0.015, 0.30, 0.035, "Allowed glitches:", true, tab)
+    local i = 1
+    for k,v in pairs(aServerTab.glitches) do
+    	aServerTab[k] = guiCreateCheckBox(0.66, 0.015 + (0.045 * i), 0.40, 0.04, v, false, true, tab, "setglitch")
+    	i = i + 1
+    end
 
-    guiCreateHeader(0.65, 0.510, 0.30, 0.035, "Special world properties:", true, tab)
-    aServerTab.HoverCars =
-        guiCreateCheckBox(0.66, 0.555, 0.20, 0.04, "Hover cars", false, true, tab, "setworldproperty")
-    aServerTab.AirCars = guiCreateCheckBox(0.66, 0.600, 0.20, 0.04, "Air cars", false, true, tab, "setworldproperty")
-    aServerTab.ExtraBunny =
-        guiCreateCheckBox(0.66, 0.645, 0.20, 0.04, "Extra bunny", false, true, tab, "setworldproperty")
-    aServerTab.ExtraJump =
-        guiCreateCheckBox(0.66, 0.690, 0.20, 0.04, "Extra jump", false, true, tab, "setworldproperty")
+    local headerPosition = 0.060 + (0.045 * i)
+    guiCreateHeader(0.65, headerPosition, 0.30, 0.035, "Special world properties:", true, tab)
+    local i2 = 1
+    for k,v in pairs(aServerTab.worldproperties) do
+    	aServerTab[k] = guiCreateCheckBox(0.66, headerPosition + (0.045 * i2), 0.40, 0.04, v, false, true, tab, 'setworldproperty')
+    	i2 = i2 + 1 
+    end
+
+    i,i2 = nil,nil
 
     addEventHandler("onClientGUIClick", aServerTab.Tab, aServerTab.onClientClick)
     addEventHandler(EVENT_SYNC, root, aServerTab.onClientSync)
@@ -249,6 +272,46 @@ function aServerTab.onClientClick(button)
                 "crouchbug",
                 iif(guiCheckBoxGetSelected(aServerTab.CrouchBug), "on", "off")
             )
+        elseif (source == aServerTab.HighCloseRangeDamage) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setglitch",
+        		"highcloserangedamage",
+        		iif(guiCheckBoxGetSelected(aServerTab.HighCloseRangeDamage), "on", "off")
+        	)
+        elseif (source == aServerTab.HitAnim) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setglitch",
+        		"hitanim",
+        		iif(guiCheckBoxGetSelected(aServerTab.HitAnim), "on", "off")
+        	)
+        elseif (source == aServerTab.FastSprint) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setglitch",
+        		"fastsprint",
+        		iif(guiCheckBoxGetSelected(aServerTab.FastSprint), "on", "off")
+        	)
+        elseif (source == aServerTab.BadDrivebyHitBox) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setglitch",
+        		"baddrivebyhitbox",
+        		iif(guiCheckBoxGetSelected(aServerTab.BadDrivebyHitBox), "on", "off")
+        	)
+        elseif (source == aServerTab.QuickStand) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setglitch",
+        		"quickstand",
+        		iif(guiCheckBoxGetSelected(aServerTab.QuickStand), "on", "off")
+        	)
         elseif (source == aServerTab.HoverCars) then
             triggerServerEvent(
                 "aServer",
@@ -281,6 +344,38 @@ function aServerTab.onClientClick(button)
                 "extrajump",
                 iif(guiCheckBoxGetSelected(aServerTab.ExtraJump), "on", "off")
             )
+        elseif (source == aServerTab.RandomFoliage) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setworldproperty",
+        		"randomfoliage",
+        		iif(guiCheckBoxGetSelected(aServerTab.RandomFoliage), "on", "off")
+        	)
+        elseif (source == aServerTab.SniperMoon) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setworldproperty",
+        		"snipermoon",
+        		iif(guiCheckBoxGetSelected(aServerTab.SniperMoon), "on", "off")
+        	)
+        elseif (source == aServerTab.ExtraAirResistance) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setworldproperty",
+        		"extraairresistance",
+        		iif(guiCheckBoxGetSelected(aServerTab.ExtraAirResistance), "on", "off")
+        	)
+        elseif (source == aServerTab.UnderWorldWarp) then
+        	triggerServerEvent(
+        		"aServer",
+        		getLocalPlayer(),
+        		"setworldproperty",
+        		"underworldwarp",
+        		iif(guiCheckBoxGetSelected(aServerTab.UnderWorldWarp), "on", "off")
+        	)
         end
     end
 end
