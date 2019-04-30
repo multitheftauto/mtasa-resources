@@ -143,7 +143,7 @@ function aServerTab.Create(tab)
     i,i2 = nil,nil
 
     addEventHandler("onClientGUIClick", aServerTab.Tab, aServerTab.onClientClick)
-    addEventHandler('onClientGUIChanged', resourceRoot, aServerTab.onClientChanged)
+    addEventHandler('onClientGUIChanged', aServerTab.Tab, aServerTab.onClientChanged)
     addEventHandler(EVENT_SYNC, root, aServerTab.onClientSync)
     addEventHandler("onAdminRefresh", aServerTab.Tab, aServerTab.onRefresh)
 
