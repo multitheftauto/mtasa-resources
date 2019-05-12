@@ -14,7 +14,7 @@ function aViewModdetails ( player )
 	modDetailsPlayer = player
 	if ( aModdetailsForm == nil ) then
 		local x, y = guiGetScreenSize()
-		aModdetailsForm	= guiCreateWindow ( x / 2 - 250, y / 2 - 125, 500, 350, "View Modetails", false )
+		aModdetailsForm	= guiCreateWindow ( x / 2 - 250, y / 2 - 125, 500, 350, "View Mod Details", false )
 		guiWindowSetSizable( aModdetailsForm, false )
 		aModdetailsList		= guiCreateGridList ( 0.02, 0.09, 0.72, 0.85, true, aModdetailsForm )
 					   guiGridListAddColumn( aModdetailsList, "Filename", 0.3 )
@@ -79,7 +79,7 @@ function aClientModdetailsClick ( button )
 			triggerServerEvent ( "aModdetails", resourceRoot, "get", modDetailsPlayer )
 		elseif ( source == aModdetailsCopy ) then
 			setClipboard ( toJSON ( currentModDetails ) )
-			outputChatBox("* Player mod information copied to clipboard.", 255, 100, 70)
+			outputChatBox("* Player mod details copied to clipboard.", 255, 100, 70)
 		end
 	end
 end
