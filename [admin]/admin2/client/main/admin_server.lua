@@ -470,7 +470,7 @@ function aServerTab.onRefresh()
     guiCheckBoxSetSelected(aServerTab.ExtraAirResistance, isWorldSpecialPropertyEnabled("extraairresistance"))
     guiCheckBoxSetSelected(aServerTab.UnderWorldWarp, isWorldSpecialPropertyEnabled("underworldwarp"))
 
-    triggerServerEvent("aServerRefresh", localPlayer)
+    triggerServerEvent("aServerGlitchRefresh", localPlayer)
 end
 
 addEvent("aClientRefresh", true)
