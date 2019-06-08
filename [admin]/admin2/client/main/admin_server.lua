@@ -274,7 +274,7 @@ function aServerTab.onClientClick(button)
             local heathaze = guiGetText(aServerTab.HeatHaze)
             if tonumber(heathaze) then
                 triggerServerEvent("aServer", getLocalPlayer(), "setheathazelevel", heathaze)
-            elseif #hathaze == 0 then
+            elseif #heathaze == 0 then
                 triggerServerEvent("aServer", getLocalPlayer(), "setheathazelevel", 80)
                 guiSetText(aServerTab.HeatHaze, 80)
             end
