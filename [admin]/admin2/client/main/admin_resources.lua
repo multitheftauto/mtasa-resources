@@ -24,13 +24,8 @@ function aResourcesTab.Create(tab)
     aResourcesTab.Panel = guiCreateTabPanel(0.01, 0.02, 0.98, 0.96, true, tab)
     aResourcesTab.MainTab = guiCreateTab("Main", aResourcesTab.Panel)
 
-    guiCreateLabel(0.02, 0.02, 0.14, 0.04, "View type:", true, aResourcesTab.MainTab)
-    aResourcesTab.View = guiCreateButton(0.16, 0.02, 0.20, 0.04, "All", true, aResourcesTab.MainTab)
-    aResourcesTab.ViewDropDown = guiCreateInnerImage("client\\images\\dropdown.png", aResourcesTab.View, true)
-    aResourcesTab.ViewTypes = guiCreateGridList(0.16, 0.02, 0.20, 0.35, true, aResourcesTab.MainTab)
-    guiGridListSetSortingEnabled(aResourcesTab.ViewTypes, false)
-    guiGridListAddColumn(aResourcesTab.ViewTypes, "", 0.85)
-    guiSetVisible(aResourcesTab.ViewTypes, false)
+    guiCreateLabel(0.02, 0.015, 0.14, 0.04, "Filter type:", true, aResourcesTab.MainTab)
+    aResourcesTab.View = guiCreateComboBox(0.13, 0.01, 0.23, 0.35, "All", true, aResourcesTab.MainTab)
     aResourcesTab.ResourceList = guiCreateGridList(0.01, 0.07, 0.35, 0.86, true, aResourcesTab.MainTab)
     guiGridListAddColumn(aResourcesTab.ResourceList, "Resource", 0.60)
     guiGridListAddColumn(aResourcesTab.ResourceList, "State", 0.25)
@@ -74,7 +69,7 @@ function aResourcesTab.Create(tab)
     addEventHandler("onClientGUIClick", aResourcesTab.Context, aResourcesTab.onContextClick)
     addEventHandler("onClientGUIClick", aResourcesTab.MainTab, aResourcesTab.onClientClick)
     addEventHandler("onClientGUIDoubleClick", aResourcesTab.Settings, aResourcesTab.onClientDoubleClick)
-    addEventHandler("onClientGUIDoubleClick", aResourcesTab.ViewTypes, aResourcesTab.onClientDoubleClick)
+    addEventHandler("onClientGUIComboBoxAccepted", aResourcesTab.View, aResourcesTab.onClientClick)
     addEventHandler("aClientResourceStart", root, aResourcesTab.onClientResourceStart)
     addEventHandler("aClientResourceStop", root, aResourcesTab.onClientResourceStop)
 
@@ -97,9 +92,6 @@ end
 
 function aResourcesTab.onClientClick(button)
     if (button == "left") then
-        if (guiGetVisible(aResourcesTab.ViewTypes) and source ~= aResourcesTab.ViewTypes) then
-            guiSetVisible(aResourcesTab.ViewTypes, false)
-        end
         if
             ((source == aResourcesTab.ResourceStart) or (source == aResourcesTab.ResourceRestart) or
                 (source == aResourcesTab.ResourceStop))
@@ -181,30 +173,19 @@ function aResourcesTab.onClientClick(button)
             guiSetVisible(aResourcesTab.ExecuteAdvanced, false)
         elseif (source == aResourcesTab.ExecuteAdvanced) then
             guiSetVisible(aResourcesTab.ExecuteAdvanced, false)
-        elseif (source == aResourcesTab.View) then
-            guiBringToFront(aResourcesTab.ViewDropDown)
-        elseif (source == aResourcesTab.ViewDropDown) then
-            guiSetVisible(aResourcesTab.ViewTypes, true)
-            guiBringToFront(aResourcesTab.ViewTypes)
-        elseif (source == aResourcesTab.ViewTypes) then
-            local row = guiGridListGetSelectedItem(aResourcesTab.ViewTypes)
-            if (row ~= -1) then
-                local type = guiGridListGetItemText(aResourcesTab.ViewTypes, row, 1)
-                guiSetText(aResourcesTab.View, type)
-                guiSetVisible(aResourcesTab.ViewTypes, false)
-                if (type == "All") then
-                    type = nil
-                end
-                aResourcesTab.listResources(type, aResourcesTab.List)
+        elseif source == aResourcesTab.View then
+            local type = guiComboBoxGetItemText(source, source.selected)
+            if type == "All" then
+                type = nil
             end
+            aResourcesTab.listResources(type, aResourcesTab.List)
         end
     end
 end
 
 function aResourcesTab.onClientDoubleClick(button)
     if (button == "left") then
-        if (source == aResourcesTab.ViewTypes) then
-        elseif (source == aResourcesTab.Settings) then
+        if (source == aResourcesTab.Settings) then
             local settings = aResourcesTab.Settings
             if (source ~= settings) then
                 return
@@ -232,12 +213,10 @@ function aResourcesTab.onClientSync(type, data)
     if (type == SYNC_RESOURCES) then
         aResourcesTab.List = data
         aResourcesTab.listResources()
-        guiGridListClear(aResourcesTab.ViewTypes)
-        local row = guiGridListAddRow(aResourcesTab.ViewTypes)
-        guiGridListSetItemText(aResourcesTab.ViewTypes, row, 1, "All", false, false)
+        guiComboBoxClear(aResourcesTab.View)
+        guiComboBoxAddItem(aResourcesTab.View, "All")
         for group, list in pairs(data) do
-            local row = guiGridListAddRow(aResourcesTab.ViewTypes)
-            guiGridListSetItemText(aResourcesTab.ViewTypes, row, 1, group, false, false)
+            guiComboBoxAddItem(aResourcesTab.View, group)
         end
     elseif (type == SYNC_RESOURCE) then
         aResourcesTab.Resources[data.name] = data.info
