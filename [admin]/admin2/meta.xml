@@ -55,6 +55,7 @@
   <script src="client/main/admin_bans.lua"	          		type="client" />
   <script src="client/main/admin_chat.lua"	          		type="client" />
   <script src="client/main/admin_network.lua"	        	type="client" />
+  <script src="client/main/admin_options.lua"	        	type="client" />
   <script src="client/main/admin_acl.lua"	            	type="client" />
   <script src="client/main/admin_map.lua"	            	type="client" />
   <script src="client/widgets/admin_messagebox.lua" 		type="client" />

@@ -51,6 +51,7 @@ function aAdminMain.Open()
         aAdminMain.AddTab("Admin Chat", aChatTab, "adminchat")
         aAdminMain.AddTab("Rights", aAclTab, "acl")
         aAdminMain.AddTab("Network", aNetworkTab)
+        aAdminMain.AddTab("Options", aOptionsTab)
 
         addEventHandler("onClientGUITabSwitched", aAdminMain.Panel, aAdminMain.Switch)
         addEventHandler("onAdminInitialize", aAdminMain.Form, aAdminMain.Initialize)
@@ -105,6 +106,7 @@ function aAdminMain.Switch(tab)
 end
 
 function aAdminMain.AddTab(name, class, acl)
+    assert(class)
     local tab = guiCreateTab(name, aAdminMain.Panel, acl)
     table.insert(aAdminMain.Tabs, {Tab = tab, Class = class, Loaded = false})
 end

@@ -48,7 +48,7 @@ function aSpectator.Open()
             )
             i = i + 1
         end
-        guiGridListRemoveColumn(aSpectator.Slaps, "", 1)
+        guiGridListRemoveColumn(aSpectator.Slaps, 1)
 
         aSpectator.Skip = guiCreateCheckBox(0.08, 0.85, 0.84, 0.04, "Skip dead players", true, true, aSpectator.Actions)
         guiCreateLabel(0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions)
