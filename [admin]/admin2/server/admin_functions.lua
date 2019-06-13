@@ -398,9 +398,9 @@ aFunctions = {
             end
             return true, id .. " " .. getWeatherNameFromID(tonumber(id))
         end,
-        ["blendweather"] = function()
+        ["blendweather"] = function(id)
             if (not setWeatherBlended(tonumber(id))) then
-                outputChatBox("Error setting weather.", source, 255, 0, 0)
+                outputChatBox("Error blending weather.", source, 255, 0, 0)
                 return false
             end
             return true, id .. " " .. getWeatherNameFromID(tonumber(id))
