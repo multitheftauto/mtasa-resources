@@ -59,9 +59,11 @@ function aServerTab.Create(tab)
         tab
     )
     --aServerTab.WeatherDec     = guiCreateButton ( 0.05, 0.40, 0.035, 0.04, "<", true, tab )
-    aServerTab.Weather = guiCreateEdit(0.35, 0.330, 0.25, 0.04, "0", true, tab)
+    --aServerTab.Weather = guiCreateEdit(0.35, 0.330, 0.25, 0.04, "0", true, tab)
     --aServerTab.WeatherInc     = guiCreateButton ( 0.45, 0.40, 0.035, 0.04, ">", true, tab )
     --guiEditSetReadOnly(aServerTab.Weather, true)
+    aServerTab.Weather = guiCreateComboBox(0.35, 0.3225, 0.25, 0.50, "Weather", true, tab);
+
     aServerTab.WeatherSet = guiCreateButton(0.50, 0.375, 0.10, 0.04, "Set", true, tab, "setweather")
     aServerTab.WeatherBlend = guiCreateButton(0.35, 0.375, 0.135, 0.04, "Blend", true, tab, "blendweather")
 
@@ -162,6 +164,10 @@ function aServerTab.Create(tab)
         end
     end
 
+    for i = 0,19 do
+        guiComboBoxAddItem(aServerTab.Weather, i.." ("..getWeatherNameFromID(i)..")")
+    end
+
     sync(SYNC_SERVER)
 
     aServerTab.onRefresh()
@@ -205,20 +211,33 @@ function aServerTab.onClientClick(button)
                 guiSetText(aServerTab.Weather, (14) .. " (" .. getWeatherNameFromID(14) .. ")")
             end]]
         elseif (source == aServerTab.WeatherSet) then
-            local weather = guiGetText(aServerTab.Weather)
+            --[[local weather = guiGetText(aServerTab.Weather)
             if tonumber(weather) then
                 triggerServerEvent("aServer", getLocalPlayer(), "setweather", gettok(weather, 1, 32))
             elseif #weather == 0 then
                 triggerServerEvent("aServer", getLocalPlayer(), "setweather", 0)
                 guiSetText(aServerTab.Weather, 0)
+            end]]
+            local weather = guiComboBoxGetSelected(aServerTab.Weather)
+            if weather ~= -1 then
+                triggerServerEvent('aServer', getLocalPlayer(), 'setweather', gettok(guiComboBoxGetItemText(aServerTab.Weather, weather), 1, 32))
+            else
+                triggerServerEvent("aServer", getLocalPlayer(), 'setweather', 0)
             end
         elseif (source == aServerTab.WeatherBlend) then
-            triggerServerEvent(
+           --[[triggerServerEvent(
                 "aServer",
                 getLocalPlayer(),
                 "blendweather",
                 gettok(guiGetText(aServerTab.Weather), 1, 32)
-            )
+            )--]]
+
+            local weather = guiComboBoxGetSelected(aServerTab.Weather)
+            if weather ~= -1 then
+                triggerServerEvent('aServer', getLocalPlayer(), 'blendweather', gettok(guiComboBoxGetItemText(aServerTab.Weather, weather), 1, 32))
+            else
+                triggerServerEvent('aServer', getLocalPlayer(), 'blendweather', 0)
+            end
         elseif (source == aServerTab.TimeSet) then
             triggerServerEvent(
                 "aServer",
