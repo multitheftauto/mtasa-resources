@@ -479,6 +479,11 @@ function aPlayersTab.onPlayerListScroll(key, state, inc)
     else
         guiGridListSetSelectedItem(aPlayersTab.PlayerList, next, 1)
     end
+
+    -- if we finnally have selected any item
+    if guiGridListGetSelectedItem(aPlayersTab.PlayerList) ~= -1 then
+        aPlayersTab.onRefresh(true) -- from scroll
+    end
 end
 
 function aPlayersTab.onClientPlayerChangeNick(oldNick, newNick)
@@ -557,7 +562,7 @@ function aPlayersTab.onClientSync(type, table)
     end
 end
 
-function aPlayersTab.onRefresh()
+function aPlayersTab.onRefresh(fromScroll)
     local player = getSelectedPlayer()
     if (not player) then
         return
@@ -621,6 +626,14 @@ function aPlayersTab.onRefresh()
     else
         guiSetText(aPlayersTab.Vehicle, "Vehicle: Foot")
         guiSetText(aPlayersTab.VehicleHealth, "Vehicle Health: 0%")
+    end
+
+    if (fromScroll) then
+        guiSetText(aPlayersTab.IP, "IP: " .. aPlayers[player].ip)
+        guiSetText(aPlayersTab.Serial, "Serial: " .. (aPlayers[player].serial or "Unknown"))
+        guiSetText(aPlayersTab.Country, "Country: " .. (aPlayers[player].countryname or "Unknown"))
+        guiSetText(aPlayersTab.Account, "Account: " .. (aPlayers[player]["account"] or "guest"))
+        guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
     end
 
     return player
