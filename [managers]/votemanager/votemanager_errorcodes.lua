@@ -18,3 +18,7 @@ errorCode = {
 	twoModesNeeded = 35,
 	onlyOneCompatibleMap = 36
 }
+
+function getErrorCodes()
+	return errorCode
+end
