@@ -58,8 +58,7 @@ function aServerTab.Create(tab)
         true,
         tab
     )
-    aServerTab.Weather = guiCreateComboBox(0.35, 0.3225, 0.25, 0.50, "Weather", true, tab);
-
+    aServerTab.Weather = guiCreateComboBox(0.35, 0.3225, 0.25, 0.50, "Weather", true, tab)
     aServerTab.WeatherSet = guiCreateButton(0.50, 0.375, 0.10, 0.04, "Set", true, tab, "setweather")
     aServerTab.WeatherBlend = guiCreateButton(0.35, 0.375, 0.135, 0.04, "Blend", true, tab, "blendweather")
 
