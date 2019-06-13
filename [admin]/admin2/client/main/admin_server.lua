@@ -194,17 +194,6 @@ function aServerTab.onClientClick(button)
             if (reason) then
                 triggerServerEvent("aServer", getLocalPlayer(), "shutdown", reason)
             end
-       --[[ elseif ((source == aServerTab.WeatherInc) or (source == aServerTab.WeatherDec)) then
-            local id = tonumber(gettok(guiGetText(aServerTab.Weather), 1, 32))
-            if (id) then
-                if ((source == aServerTab.WeatherInc) and (id < aServerTab.WeatherMax)) then
-                    guiSetText(aServerTab.Weather, (id + 1) .. " (" .. getWeatherNameFromID(id + 1) .. ")")
-                elseif ((source == aServerTab.WeatherDec) and (id > 0)) then
-                    guiSetText(aServerTab.Weather, (id - 1) .. " (" .. getWeatherNameFromID(id - 1) .. ")")
-                end
-            else
-                guiSetText(aServerTab.Weather, (14) .. " (" .. getWeatherNameFromID(14) .. ")")
-            end]]
         elseif (source == aServerTab.WeatherSet) then
             local weather = guiComboBoxGetSelected(aServerTab.Weather)
             if weather ~= -1 then
@@ -227,17 +216,6 @@ function aServerTab.onClientClick(button)
                 guiGetText(aServerTab.TimeH),
                 guiGetText(aServerTab.TimeM)
             )
-       --[[ elseif ((source == aServerTab.SpeedInc) or (source == aServerTab.SpeedDec)) then
-            local value = tonumber(guiGetText(aServerTab.Speed))
-            if (value) then
-                if ((source == aServerTab.SpeedInc) and (value < 10)) then
-                    guiSetText(aServerTab.Speed, tostring(value + 1))
-                elseif ((source == aServerTab.SpeedDec) and (value > 0)) then
-                    guiSetText(aServerTab.Speed, tostring(value - 1))
-                end
-            else
-                guiSetText(aServerTab.Speed, "1")
-            end]]
         elseif (source == aServerTab.SpeedSet) then
             local speed = guiGetText(aServerTab.Speed)
             if tonumber(speed) then
