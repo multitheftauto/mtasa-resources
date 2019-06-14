@@ -6,15 +6,13 @@ local function loadAdditionalErrorCodes()
 	if (votemanagerResource) then
 		if (getResourceState(votemanagerResource) == "running") then
 			local votemanagerErrorCodes = exports.votemanager:getErrorCodes()
-			if (votemanagerErrorCodes) and (type(votemanagerErrorCodes) == "table") then
-				for key, code in pairs(votemanagerErrorCodes) do
-					-- If the error code is not defined here already, then set it
-					if (errorCode[key] == nil) then
-						errorCode[key] = code
-					end
-				end
-			else
-				outputDebugString("Could not load error codes from votemanager because it returned '" .. tostring(votemanagerErrorCodes) .. "' [" .. type(votemanagerErrorCodes) .. "]. Expected a table.", 1)
+
+			assert(type(votemanagerErrorCodes) == "table", "Error codes returned from votemanager are not of table type. Got [" .. type(votemanagerErrorCodes) .. "].")
+
+			for key, code in pairs(votemanagerErrorCodes) do
+				-- If the error code is defined already, error out
+				assert(errorCode[key] == nil, "Error code conflict! Error code '" .. key .. "' already defined in race!")
+				errorCode[key] = code
 			end
 		else
 			outputDebugString("Could not load error codes from votemanager because it is not running.", 1)
