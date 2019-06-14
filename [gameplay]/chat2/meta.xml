@@ -1,0 +1,13 @@
+<meta>
+  <info name="chat" type="script" version="0.1.0" author="nrzull" />
+
+  <script src="chat2_server.lua" type="server" />
+  <script src="chat2_client.lua" type="client" />
+  <file src="index.html" />
+
+  <export function="clear" type="shared" />
+  <export function="show" type="shared" />
+  <export function="output" type="shared" />
+  <export function="isVisible" type="shared" />
+  <export function="useDefaultOutput" type="server" />
+</meta>

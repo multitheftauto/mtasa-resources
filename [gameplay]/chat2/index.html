@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .chat {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        text-shadow: 0 0.25vh 0vh #000;
+        color: #ffffff;
+        overflow-x: hidden;
+        user-select: none;
+      }
+
+      .chat.hidden {
+        visibility: hidden;
+      }
+
+      .chat__messages-container {
+        position: absolute;
+        max-height: 100%;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+      }
+
+      .chat__messages {
+        position: relative;
+        height: 80%;
+        overflow-y: scroll;
+      }
+
+      .chat__messages::-webkit-scrollbar {
+        width: 0.1vh;
+      }
+
+      .chat__messages::-webkit-scrollbar-track,
+      .chat__messages::-webkit-scrollbar-thumb {
+        background-color: transparent;
+      }
+
+      .chat__message {
+        word-break: break-all;
+        font-size: 5vh;
+        line-height: 130%;
+        font-family: sans-serif;
+        font-weight: 700;
+      }
+
+      .chat__message:last-child {
+        margin-bottom: 0;
+      }
+
+      .chat__input {
+        padding: 2vh;
+        margin-top: 2vh;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        color: #fff;
+        font-size: 4vh;
+        text-shadow: 0 0.1vh 0.2vh rgba(0, 0, 0, 0.5);
+        font-family: sans-serif;
+        font-weight: 700;
+      }
+
+      .chat__input.hidden {
+        display: none;
+      }
+
+      .chat__input:focus {
+        outline: none;
+      }
+    </style>
+
+    <div class="chat hidden">
+      <div class="chat__messages">
+        <div class="chat__messages-container"></div>
+      </div>
+      <input maxlength="96" type="text" class="chat__input hidden" />
+    </div>
+
+    <script>
+      const keyCodes = {
+        t: 84,
+        enter: 13,
+        tab: 9,
+        pageUp: 33,
+        pageDown: 34
+      };
+
+      const state = {
+        show: true,
+        showInput: false,
+        inputMessage: "",
+        scroll: false,
+        canScrollToBottom: true,
+        lastRegisteredDelayCallback: null
+      };
+
+      let elements;
+
+      function show(bool) {
+        state.show = bool;
+        if (!bool) return elements.chat.classList.add("hidden");
+        elements.chat.classList.remove("hidden");
+
+        scrollToBottom();
+      }
+
+      function showInput(bool) {
+        state.showInput = bool;
+        if (!bool) return elements.input.classList.add("hidden");
+        elements.input.classList.remove("hidden");
+      }
+
+      function addMessage([message]) {
+        if (!state.show) return;
+
+        render(message);
+        scrollToBottom();
+      }
+
+      function scrollToBottom(force = false) {
+        if (force) {
+          state.canScrollToBottom = true;
+          state.lastRegisteredDelayCallback = null;
+        }
+
+        if (!state.canScrollToBottom) return;
+
+        elements.chatMessages.scrollTo({
+          top: elements.chatMessages.scrollHeight,
+          behavior: "smooth"
+        });
+      }
+
+      function preventPressTab(e) {
+        if (e.keyCode == keyCodes.tab) e.preventDefault();
+      }
+
+      function render(message) {
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("chat__message");
+        const messageFragment = document.createDocumentFragment();
+
+        processTextWithHexCode(message).forEach(({ part, color }) => {
+          const partElement = document.createElement("span");
+          partElement.innerText = part;
+          partElement.style.color = color;
+          messageFragment.appendChild(partElement);
+        });
+
+        messageElement.append(messageFragment);
+        elements.chatMessagesContainer.append(messageElement);
+      }
+
+      function scroll() {
+        if (!state.scroll) return;
+        const value = state.scroll == keyCodes.pageUp ? -5 : 5;
+        elements.chatMessages.scrollBy({ top: value });
+        setTimeout(scroll, 25);
+      }
+
+      function clear() {
+        elements.chatMessagesContainer.innerHTML = "";
+      }
+
+      function processTextWithHexCode(text) {
+        const result = [];
+        const regex = /#[0-9abcdefABCDEF]{6}/;
+        const parts = [];
+        const sharpPositions = [];
+
+        text.split("").forEach((v, i) => {
+          if (v == "#") sharpPositions.push(i);
+        });
+
+        if (!sharpPositions.length) {
+          result.push({ part: text, color: null });
+          return result;
+        }
+
+        if (sharpPositions[0] != 0) {
+          result.push({ part: text.slice(0, sharpPositions[0]), color: null });
+        }
+
+        sharpPositions.forEach((position, i, arr) => {
+          const nextPosition =
+            typeof arr[i + 1] == "number" ? arr[i + 1] : undefined;
+          parts.push(text.slice(position, nextPosition));
+        });
+
+        parts.forEach(part => {
+          if (regex.test(part)) {
+            result.push({
+              part: part.replace(regex, ""),
+              color: part.match(regex)[0]
+            });
+          } else {
+            result.push({
+              part,
+              color: null
+            });
+          }
+        });
+
+        return result;
+      }
+
+      function onKeydownInputButton(ev) {
+        if (!state.show) return;
+        if (ev.keyCode !== keyCodes.t) return;
+        if (state.showInput) return;
+
+        showInput(true);
+        setTimeout(() => {
+          mta.triggerEvent("onChat2Input", "true");
+          elements.input.focus();
+        }, 0);
+      }
+
+      function onKeydownEnterButton(ev) {
+        if (!state.show) return;
+        if (ev.keyCode !== keyCodes.enter) return;
+        if (!state.showInput) return;
+
+        const inputMessage = elements.input.value;
+        elements.input.value = "";
+
+        showInput(false);
+        mta.triggerEvent("onChat2SendMessage", inputMessage);
+        setTimeout(mta.triggerEvent, 100, "onChat2Input", "false");
+        scrollToBottom(true);
+      }
+
+      function onKeydownScrollButton(ev) {
+        const { keyCode } = ev;
+        const { pageUp, pageDown } = keyCodes;
+
+        if (!state.show) return;
+        if (keyCode !== pageUp && keyCode !== pageDown) return;
+        if (state.scroll) return;
+
+        if (keyCode == pageUp) state.scroll = pageUp;
+        else state.scroll = pageDown;
+
+        scroll();
+      }
+
+      function onKeyupScrollButton(ev) {
+        const { keyCode } = ev;
+        const { pageUp, pageDown } = keyCodes;
+
+        if (!state.show) return;
+        if (keyCode !== pageUp && keyCode !== pageDown) return;
+        if (!state.scroll) return;
+
+        state.scroll = false;
+
+        const isEndOfScroll =
+          elements.chatMessages.scrollHeight -
+            elements.chatMessages.scrollTop -
+            parseInt(getComputedStyle(elements.chatMessages).height) ==
+          1;
+
+        if (isEndOfScroll) {
+          state.canScrollToBottom = true;
+          state.lastRegisteredDelayCallback = null;
+          return;
+        }
+
+        state.canScrollToBottom = false;
+
+        let registeredCallback = function() {
+          if (!state.lastRegisteredDelayCallback) return;
+
+          if (
+            registeredCallback.uniqueId !==
+            state.lastRegisteredDelayCallback.uniqueId
+          ) {
+            return;
+          }
+
+          state.canScrollToBottom = true;
+          scrollToBottom();
+          state.lastRegisteredDelayCallback = null;
+        };
+        registeredCallback.uniqueId = Date.now();
+
+        state.lastRegisteredDelayCallback = registeredCallback;
+        setTimeout(registeredCallback, 5000);
+      }
+
+      function onDOMContentLoaded() {
+        elements = {
+          chat: document.querySelector(".chat"),
+          input: document.querySelector(".chat__input"),
+          chatMessages: document.querySelector(".chat__messages"),
+          chatMessagesContainer: document.querySelector(
+            ".chat__messages-container"
+          )
+        };
+
+        elements.input.addEventListener("keydown", preventPressTab);
+        document.addEventListener("keydown", onKeydownScrollButton);
+        document.addEventListener("keyup", onKeyupScrollButton);
+        mta.triggerEvent("onChat2Loaded");
+      }
+
+      document.addEventListener("DOMContentLoaded", onDOMContentLoaded);
+      document.addEventListener("keydown", onKeydownInputButton);
+      document.addEventListener("keydown", onKeydownEnterButton);
+    </script>
+  </body>
+</html>
