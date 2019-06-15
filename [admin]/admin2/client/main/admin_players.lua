@@ -560,16 +560,16 @@ function aPlayersTab.onRefresh()
     guiSetText(aPlayersTab.Account, "Account: " .. (aPlayers[player]["account"] or "guest"))
     guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
     if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "zz") then
-       local x, y = guiGetPosition(aPlayersTab.Country, false)
-       local width = guiLabelGetTextExtent(aPlayersTab.Country)
-       guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
-       guiSetVisible(
-           aPlayersTab.Flag,
-           guiStaticImageLoadImage(
-              aPlayersTab.Flag,
-              "client\\images\\flags\\" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
-           )
-       )
+        local x, y = guiGetPosition(aPlayersTab.Country, false)
+        local width = guiLabelGetTextExtent(aPlayersTab.Country)
+        guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
+        guiSetVisible(
+            aPlayersTab.Flag,
+            guiStaticImageLoadImage(
+                aPlayersTab.Flag,
+                "client\\images\\flags\\" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
+            )
+        )
     else
        guiSetVisible(aPlayersTab.Flag, false)
     end
@@ -628,7 +628,6 @@ function aPlayersTab.onRefresh()
         guiSetText(aPlayersTab.Vehicle, "Vehicle: Foot")
         guiSetText(aPlayersTab.VehicleHealth, "Vehicle Health: 0%")
     end
-    
     return player
 end
 
