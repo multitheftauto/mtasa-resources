@@ -282,6 +282,10 @@ function addWeapon(leaf, amount)
 		errMsg("Invalid amount")
 		return
 	end
+	if isPedReloadingWeapon(localPlayer) then
+		errMsg ("You can't get weapons while reloading a weapon!")
+		return 
+	end
 	server.giveMeWeapon(leaf.id, amount)
 end
 
@@ -323,7 +327,8 @@ function giveWeaponCommand(cmd, weapon, amount)
 	amount = amount and math.floor(tonumber(amount)) or 1500
 	if amount < 1 or weapon < 1 or weapon > 46 then return end
 	if internallyBannedWeapons[weapon] then return end
-	if isPlayerAiming(localPlayer) then errMsg ("You can't use this command while aiming a gun!") return end
+	if isPlayerAiming(localPlayer) then errMsg ("You can't use this command while aiming a weapon!") return end
+	if isPedReloadingWeapon(localPlayer) then errMsg ("You can't use this command while reloading a weapon!") return end
 	server.giveMeWeapon(weapon, amount)
 end
 addCommandHandler('give', giveWeaponCommand)
