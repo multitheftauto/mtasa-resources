@@ -596,13 +596,3 @@ function getInstigatorName( prepend )
 	g_InstigatorTime = nil
 	return age < 2000 and name and ( prepend .. name ) or nil
 end
-
-addEventHandler("onResourceStart", resourceRoot,
-	function()
-		local thisResourceName = getResourceName(getThisResource())
-		local requests = getResourceACLRequests(getThisResource())
-		if #requests > 0 then
-			outputDebugString(thisResourceName:upper()..": Some important ACL permissions are missing. To ensure the correct functioning of Mapmanager, please write: aclrequest allow mapmanager all")
-		end
-	end
-)
