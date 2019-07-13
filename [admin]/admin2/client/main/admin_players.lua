@@ -460,7 +460,7 @@ function aPlayersTab.onPlayerListScroll(key, state, inc)
         guiGridListSetSelectedItem(aPlayersTab.PlayerList, next, 1)
     end
 
-    -- if we finnally have selected any item
+    -- If we have finally selected an item
     if guiGridListGetSelectedItem(aPlayersTab.PlayerList) ~= -1 then
         aPlayersTab.onRefresh()
     end
