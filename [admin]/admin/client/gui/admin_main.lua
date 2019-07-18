@@ -358,7 +358,6 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		addEventHandler ( "onClientGUIDoubleClick", aTab1.VehicleOptions, aClientDoubleClick )
 		addEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		addEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
-		addEventHandler ( "onClientCursorMove", _root, aClientCursorMove )
 		addEventHandler ( "onClientRender", _root, aClientRender )
 		addEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
 		addEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
@@ -417,7 +416,6 @@ function aAdminMenuClose ( destroy )
 		removeEventHandler ( "onClientGUIDoubleClick", aTab1.VehicleOptions, aClientDoubleClick )
 		removeEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		removeEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
-		removeEventHandler ( "onClientCursorMove", _root, aClientCursorMove )
 		removeEventHandler ( "onClientRender", _root, aClientRender )
 		removeEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
 		removeEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
@@ -930,10 +928,6 @@ function aClientScroll ( element )
 	if ( source == aTab6.MouseSense ) then
 		guiSetText ( aTab6.MouseSenseCur, "Cursor sensivity: ("..string.sub ( guiScrollBarGetScrollPosition ( source ) / 50, 0, 4 )..")" )
 	end
-end
-
-function aClientCursorMove ( rx, ry, x, y )
-
 end
 
 function aClientMouseEnter ( element )
