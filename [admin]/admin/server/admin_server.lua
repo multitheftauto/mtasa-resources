@@ -286,16 +286,6 @@ function iif ( cond, arg1, arg2 )
 	return arg2
 end
 
-function getVehicleOccupants ( vehicle )
-	local tableOut = {}
-	local seats = getVehicleMaxPassengers ( vehicle ) + 1
-	for i = 0, seats do
-		local passenger = getVehicleOccupant ( vehicle, i )
-		if ( passenger ) then table.insert ( tableOut, passenger ) end
-	end
-	return tableOut
-end
-
 function isValidSerial ( serial )
 	-- Did you know gmatch returns an iterator function?
 	return string.gmatch ( serial, "%w%w%w%w-%w%w%w%w-%w%w%w%w-%w%w%w%w" )
