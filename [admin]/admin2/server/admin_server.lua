@@ -16,6 +16,15 @@ aStats = {}
 aReports = {}
 aWeathers = {}
 
+function updateWhowas(player)
+    if not player or not isElement(player) then return end
+    local nick = getPlayerName(player)
+    local serial = getPlayerSerial(player)
+    local ip = getPlayerIP(player)
+    db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
+    db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
+end
+
 addEventHandler(
     "onResourceStart",
     root,
@@ -27,15 +36,11 @@ addEventHandler(
                 end
             end
             return
-	else
-	    -- whowas stuff
+        else
+            -- whowas stuff
             for id, player in ipairs(getElementsByType("player")) do
-		local nick = getPlayerName(player)
-		local serial = getPlayerSerial(player)
-		local ip = getPlayerIP(player)
-		db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
-		db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
-	    end
+                updateWhowas(player)
+            end
         end
 
         aSetupACL()
@@ -62,11 +67,7 @@ addEventHandler(
             aReleaseStorage()
             -- whowas stuff
             for id, player in ipairs(getElementsByType("player")) do
-	        local nick = getPlayerName(player)
-	        local serial = getPlayerSerial(player)
-	        local ip = getPlayerIP(player)
-	        db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
-	        db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
+                updateWhowas(player)
             end
         end
         aclSave()
@@ -93,13 +94,9 @@ addEventHandler(
             end
         end
         setPedGravity(source, getGravity())
-	
-	-- whowas stuff
-	local nick = getPlayerName(source)
-	local serial = getPlayerSerial(source)
-	local ip = getPlayerIP(source)
-	db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
-	db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
+        
+        -- whowas stuff
+        updateWhowas(source)
     end
 )
 
@@ -108,13 +105,9 @@ addEventHandler(
     root,
     function()
         aPlayers[source] = nil
-		
-	-- whowas stuff
-	local nick = getPlayerName(source)
-	local serial = getPlayerSerial(source)
-	local ip = getPlayerIP(source)
-	db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
-	db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
+        
+        -- whowas stuff
+        updateWhowas(source)
     end
 )
 
