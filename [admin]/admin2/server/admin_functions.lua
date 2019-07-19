@@ -471,42 +471,42 @@ aFunctions = {
             shutdown(iif(reason, tostring(reason), nil))
         end,
         ["whowas"] = function(nick)
-			if not nick then outputChatBox("A nickname or serial is needed.", source, 255, 0, 0) return false end
-			local qh;
-			if nick:len() == 32 then
-				qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE serial='"..nick.."';")
-			elseif nick:len() <= 23 then
-				qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE name='"..nick.."';")
-			else
-				outputChatBox("That nickname or serial is too long.", source, 255, 0, 0)
-				return false
-			end
-			local whowas = dbPoll(qh, 200)
-			if #whowas > 0 then
-				for item,row in ipairs(whowas) do
-					local realTime = getRealTime().timestamp
-					local sec = realTime-row.time
-					local last = "Unknown"
-					if sec > 86400 then
-						last = math.floor(sec/86400).." day(s)"
-					elseif sec > 3600 then
-						last = math.floor(sec/3600).." hour(s)"
-					elseif sec > 60 then
-						last = math.floor(sec/60).." minute(s)"
-					else
-						last = math.floor(sec).." second(s)"
-					end
-					outputChatBox("Info printed on console (F8).", source, 255, 141, 0)
-					outputConsole("Last nickname: "..row.name)
-					outputConsole("Last serial: "..row.serial)
-					outputConsole("Last ip: "..row.ip)
-					outputConsole("Last connection: "..last)
-				end
-				return true
-			else
-				outputChatBox("We couldn't collect any info about \""..nick.."\".", source, 255, 141, 0)
-				return false
-			end
+	    if not nick then outputChatBox("A nickname or serial is needed.", source, 255, 0, 0) return false end
+	    local qh;
+	    if nick:len() == 32 then
+	    	qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE serial='"..nick.."';")
+	    elseif nick:len() <= 23 then
+	    	qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE name='"..nick.."';")
+	    else
+	    	outputChatBox("That nickname or serial is too long.", source, 255, 0, 0)
+	    	return false
+	    end
+	    local whowas = dbPoll(qh, 200)
+	    if #whowas > 0 then
+		outputChatBox("Info printed on console (F8).", source, 255, 141, 0)
+		outputConsole("Last nickname: "..whowas[#whowas].name)
+		outputConsole("Last serial: "..whowas[#whowas].serial)
+	    	for item,row in ipairs(whowas) do
+	    	    local realTime = getRealTime().timestamp
+		    local sec = realTime-row.time
+		    local last = "Unknown"
+		    if sec > 86400 then
+		        last = math.floor(sec/86400).." day(s)"
+		    elseif sec > 3600 then
+			last = math.floor(sec/3600).." hour(s)"
+		    elseif sec > 60 then
+		        last = math.floor(sec/60).." minute(s)"
+		    else
+		        last = math.floor(sec).." second(s)"
+		    end
+		    outputConsole("Last ip: "..row.ip)
+		    outputConsole("Last connection: "..last)
+	        end
+		return true
+	    else
+	        outputChatBox("We couldn't collect any info about \""..nick.."\".", source, 255, 141, 0)
+	        return false
+	    end
         end
     },
     admin = {},
