@@ -484,8 +484,7 @@ aFunctions = {
 	    local whowas = dbPoll(qh, 200)
 	    if #whowas > 0 then
 		outputChatBox("Info printed on console (F8).", source, 255, 141, 0)
-		outputConsole("Last nickname: "..whowas[#whowas].name)
-		outputConsole("Last serial: "..whowas[#whowas].serial)
+		outputConsole("Last nickname: "..whowas[#whowas].name, source)
 	    	for item,row in ipairs(whowas) do
 	    	    local realTime = getRealTime().timestamp
 		    local sec = realTime-row.time
@@ -499,8 +498,9 @@ aFunctions = {
 		    else
 		        last = math.floor(sec).." second(s)"
 		    end
-		    outputConsole("Last ip: "..row.ip)
-		    outputConsole("Last connection: "..last)
+		    outputConsole("Last serial #"..item..": "..row.serial, source)
+		    outputConsole("Last ip #"..item..": "..row.ip, source)
+		    outputConsole("Last connection #"..item..": "..last, source)
 	        end
 		return true
 	    else
