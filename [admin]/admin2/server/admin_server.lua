@@ -33,7 +33,7 @@ addEventHandler(
 		local nick = getPlayerName(player)
 		local serial = getPlayerSerial(player)
 		local ip = getPlayerIP(player)
-		db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial..";")
+		db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
 		db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
 	    end
         end
@@ -65,7 +65,7 @@ addEventHandler(
 	        local nick = getPlayerName(player)
 	        local serial = getPlayerSerial(player)
 	        local ip = getPlayerIP(player)
-	        db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial..";")
+	        db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
 	        db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
             end
         end
@@ -98,7 +98,7 @@ addEventHandler(
 	local nick = getPlayerName(source)
 	local serial = getPlayerSerial(source)
 	local ip = getPlayerIP(source)
-	db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial..";")
+	db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
 	db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
     end
 )
@@ -113,7 +113,7 @@ addEventHandler(
 	local nick = getPlayerName(source)
 	local serial = getPlayerSerial(source)
 	local ip = getPlayerIP(source)
-	db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial..";")
+	db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
 	db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
     end
 )
