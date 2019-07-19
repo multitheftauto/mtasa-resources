@@ -471,42 +471,112 @@ aFunctions = {
             shutdown(iif(reason, tostring(reason), nil))
         end,
         ["whowas"] = function(nick)
-	    if not nick then outputChatBox("A nickname or serial is needed.", source, 255, 0, 0) return false end
-	    local qh;
-	    if nick:len() == 32 then
-	    	qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE serial='"..nick.."';")
-	    elseif nick:len() <= 23 then
-	    	qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE name='"..nick.."';")
-	    else
-	    	outputChatBox("That nickname or serial is too long.", source, 255, 0, 0)
-	    	return false
-	    end
-	    local whowas = dbPoll(qh, 200)
-	    if #whowas > 0 then
-		outputChatBox("Info printed on console (F8).", source, 255, 141, 0)
-		outputConsole("Last nickname: "..whowas[#whowas].name, source)
-	    	for item,row in ipairs(whowas) do
-	    	    local realTime = getRealTime().timestamp
-		    local sec = realTime-row.time
-		    local last = "Unknown"
-		    if sec > 86400 then
-		        last = math.floor(sec/86400).." day(s)"
-		    elseif sec > 3600 then
-			last = math.floor(sec/3600).." hour(s)"
-		    elseif sec > 60 then
-		        last = math.floor(sec/60).." minute(s)"
-		    else
-		        last = math.floor(sec).." second(s)"
-		    end
-		    outputConsole("Last serial #"..item..": "..row.serial, source)
-		    outputConsole("Last ip #"..item..": "..row.ip, source)
-		    outputConsole("Last connection #"..item..": "..last, source)
-	        end
-		return true
-	    else
-	        outputChatBox("We couldn't collect any info about \""..nick.."\".", source, 255, 141, 0)
-	        return false
-	    end
+            if not nick then outputChatBox("A nickname or serial is needed.", source, 255, 0, 0) return false end
+            local printF = get("whowasprint")
+            local serial = false
+            local qh;
+            
+            if printF == "chat" then
+                printF = outputChatBox
+            else
+                printF = outputConsole
+            end
+            
+            if nick:len() == 32 then
+                serial = true
+            elseif nick:len() > 22 then
+                outputChatBox("That nickname or serial is too long/short.", source, 255, 0, 0)
+                return false
+            end
+            
+            if #aWhowas > 0 then
+                local selected = {}
+                for k,data in ipairs(aWhowas) do
+                    if (serial and data[2] == nick) or (data[1] == nick) then
+                        table.insert(selected, data)
+                    end
+                end
+                
+                if #selected > 0 then
+                    if printF == outputConsole then
+                        outputChatBox("Info printed on console (F8).", source, 255, 141, 0)
+                    end
+                    if serial then
+                        printF("Last serial: "..selected[#selected][2], source, 255, 141, 0)
+                    else
+                        printF("Last nickname: "..selected[#selected][1], source, 255, 141, 0)
+                    end
+                    
+                    local realTime = getRealTime().timestamp
+                    for item,data in ipairs(selected) do
+                        local sec = realTime-data[4]
+                        local last = "Unknown"
+                        if sec > 86400 then
+                            last = math.floor(sec/86400).." day(s)"
+                        elseif sec > 3600 then
+                        last = math.floor(sec/3600).." hour(s)"
+                        elseif sec > 60 then
+                            last = math.floor(sec/60).." minute(s)"
+                        else
+                            last = math.floor(sec).." second(s)"
+                        end
+                        if serial then
+                            printF("Last nickname #"..item..": "..data[1], source, 255, 141, 0)
+                        else
+                            printF("Last serial #"..item..": "..data[2], source, 255, 141, 0)
+                        end
+                        
+                        printF("Last ip #"..item..": "..data[3], source, 255, 141, 0)
+                        printF("Last connection #"..item..": "..last, source, 255, 141, 0)
+                    end
+                    return true
+                end
+            end
+            
+            if serial then
+                qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE serial='"..nick.."';")
+            else
+                qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE name='"..nick.."';")
+            end
+            
+            local whowas = dbPoll(qh, 200)
+            if #whowas > 0 then
+                if printF == outputConsole then
+                    outputChatBox("Info printed on console (F8).", source, 255, 141, 0)
+                end
+                if serial then
+                    printF("Last serial: "..whowas[#whowas].serial, source, 255, 141, 0)
+                else
+                    printF("Last nickname: "..whowas[#whowas].name, source, 255, 141, 0)
+                end
+                
+                local realTime = getRealTime().timestamp
+                for item,row in ipairs(whowas) do
+                    local sec = realTime-row.time
+                    local last = "Unknown"
+                    if sec > 86400 then
+                        last = math.floor(sec/86400).." day(s)"
+                    elseif sec > 3600 then
+                    last = math.floor(sec/3600).." hour(s)"
+                    elseif sec > 60 then
+                        last = math.floor(sec/60).." minute(s)"
+                    else
+                        last = math.floor(sec).." second(s)"
+                    end
+                    if serial then
+                        printF("Last nickname #"..item..": "..row.name, source, 255, 141, 0)
+                    else
+                        printF("Last serial #"..item..": "..row.serial, source, 255, 141, 0)
+                    end
+                    
+                    printF("Last ip #"..item..": "..row.ip, source, 255, 141, 0)
+                    printF("Last connection #"..item..": "..last, source, 255, 141, 0)
+                end
+                return true
+            else
+                outputChatBox("We couldn't collect any info about \""..nick.."\".", source, 255, 141, 0)
+                return false
+            end
         end
     },
     admin = {},
