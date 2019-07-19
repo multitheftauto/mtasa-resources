@@ -15,14 +15,45 @@ aInteriors = {}
 aStats = {}
 aReports = {}
 aWeathers = {}
+aWhowas = {}
+
+function saveToDatabaseWhowas(nick, serial, ip, timestamp)
+    if not nick or not serial or not ip then return end
+    if not timestamp then timestamp = getRealTime().timestamp end
+    db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
+    db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..timestamp.."');")
+end
+
+function clearRowsWhowas()
+    for k,data in ipairs(aWhowas) do
+        saveToDatabaseWhowas(data[1], data[2], data[3], data[4])
+    end
+    aWhowas = {}
+end
+
+function insertIntoWhowas(nick, serial, ip, timestamp)
+    if not nick or not serial or not ip then return end
+    if not timestamp then timestamp = getRealTime().timestamp end
+    table.insert(aWhowas, {nick, serial, ip, timestamp})
+end
 
 function updateWhowas(player)
     if not player or not isElement(player) then return end
+    
     local nick = getPlayerName(player)
     local serial = getPlayerSerial(player)
     local ip = getPlayerIP(player)
-    db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
-    db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
+    local timestamp = getRealTime().timestamp
+    if get("whowassave") == "both" then
+        local rows = tonumber(get("whowasmax")) or 100
+        if rows > 500 then rows = 500 elseif rows < 5 then rows = 5 end
+        if #aWhowas > rows then
+            clearRowsWhowas()
+        end
+        insertIntoWhowas(nick, serial, ip, timestamp)
+    else
+        saveToDatabaseWhowas(nick, serial, ip, timestamp)
+    end
 end
 
 addEventHandler(
