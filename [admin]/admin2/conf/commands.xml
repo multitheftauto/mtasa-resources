@@ -53,6 +53,7 @@
     <command handler="blendweather" call="blendweather" args="i" />
     <command handler="setgamespeed" call="setgamespeed" args="i" />
     <command handler="setgravity" call="setgravity" args="i" />
+    <command handler="whowas" call="whowas" args="s" />
   </server>
   <bans>
     <command handler="banip" call="banip" args="s" />
