@@ -27,6 +27,15 @@ addEventHandler(
                 end
             end
             return
+		else
+			-- whowas stuff
+            for id, player in ipairs(getElementsByType("player")) do
+				local nick = getPlayerName(player)
+				local serial = getPlayerSerial(player)
+				local ip = getPlayerIP(player)
+				db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."' AND ip='"..ip.."';")
+				db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
+			end
         end
 
         aSetupACL()
@@ -51,6 +60,14 @@ addEventHandler(
             end
         else
             aReleaseStorage()
+			-- whowas stuff
+            for id, player in ipairs(getElementsByType("player")) do
+				local nick = getPlayerName(player)
+				local serial = getPlayerSerial(player)
+				local ip = getPlayerIP(player)
+				db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."' AND ip='"..ip.."';")
+				db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
+			end
         end
         aclSave()
     end
@@ -76,6 +93,13 @@ addEventHandler(
             end
         end
         setPedGravity(source, getGravity())
+		
+		-- whowas stuff
+		local nick = getPlayerName(source)
+		local serial = getPlayerSerial(source)
+		local ip = getPlayerIP(source)
+		db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."' AND ip='"..ip.."';")
+		db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
     end
 )
 
@@ -84,6 +108,13 @@ addEventHandler(
     root,
     function()
         aPlayers[source] = nil
+		
+		-- whowas stuff
+		local nick = getPlayerName(source)
+		local serial = getPlayerSerial(source)
+		local ip = getPlayerIP(source)
+		db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."' AND ip='"..ip.."';")
+		db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..tostring(getRealTime().timestamp).."');")
     end
 )
 
@@ -246,7 +277,7 @@ addEventHandler(
     "aServer",
     root,
     function(action, ...)
-        if (hasObjectPermissionTo(source, "command." .. action)) then
+        if (hasObjectPermissionTo(source, "command."..action)) then
             local func = aFunctions.server[action]
             if (func) then
                 local result, mdata1, mdata2 = func(...)
