@@ -45,7 +45,8 @@ function insertIntoWhowas(nick, serial, ip, timestamp)
     table.insert(aWhowas, {nick, serial, ip, timestamp})
 end
 
-function persistPlayerWhowasInfo(player) -- Ensures that the player's information is up to date, it also ensures the integrity of the database
+-- Ensures that the player's information is up to date, it also ensures the integrity of the database
+function persistPlayerWhowasInfo(player)
     if not player or not isElement(player) then 
         return 
     end
