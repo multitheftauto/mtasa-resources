@@ -471,7 +471,10 @@ aFunctions = {
             shutdown(iif(reason, tostring(reason), nil))
         end,
         ["whowas"] = function(nick)
-            if not nick then outputChatBox("A nickname or serial is needed.", source, 255, 0, 0) return false end
+            if not nick then 
+                outputChatBox("A nickname or serial is needed.", source, 255, 0, 0) 
+                return false 
+            end
             local printF = get("whowasprint")
             local serial = false
             local qh;
@@ -514,7 +517,7 @@ aFunctions = {
                         if sec > 86400 then
                             last = math.floor(sec/86400).." day(s)"
                         elseif sec > 3600 then
-                        last = math.floor(sec/3600).." hour(s)"
+                            last = math.floor(sec/3600).." hour(s)"
                         elseif sec > 60 then
                             last = math.floor(sec/60).." minute(s)"
                         else
@@ -534,9 +537,9 @@ aFunctions = {
             end
             
             if serial then
-                qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE serial='"..nick.."';")
+                qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE serial=?;", nick)
             else
-                qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE name='"..nick.."';")
+                qh = dbQuery(db.connection, "SELECT * FROM whowas WHERE name=?;", nick)
             end
             
             local whowas = dbPoll(qh, 200)
@@ -557,7 +560,7 @@ aFunctions = {
                     if sec > 86400 then
                         last = math.floor(sec/86400).." day(s)"
                     elseif sec > 3600 then
-                    last = math.floor(sec/3600).." hour(s)"
+                        last = math.floor(sec/3600).." hour(s)"
                     elseif sec > 60 then
                         last = math.floor(sec/60).." minute(s)"
                     else
