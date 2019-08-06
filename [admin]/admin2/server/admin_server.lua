@@ -18,10 +18,14 @@ aWeathers = {}
 aWhowas = {}
 
 function saveToDatabaseWhowas(nick, serial, ip, timestamp)
-    if not nick or not serial or not ip then return end
-    if not timestamp then timestamp = getRealTime().timestamp end
-    db.exec("DELETE FROM whowas WHERE name='"..nick.."' AND serial='"..serial.."';")
-    db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES('"..nick.."','"..serial.."','"..ip.."','"..timestamp.."');")
+    if not nick or not serial or not ip then 
+        return 
+    end
+    if not timestamp then 
+        timestamp = getRealTime().timestamp 
+    end
+    db.exec("DELETE FROM whowas WHERE name=? AND serial=?;", nick, serial)
+    db.exec("INSERT INTO whowas(name,serial,ip,time) VALUES(?,?,?,?);", nick, serial, ip, timestamp)
 end
 
 function clearRowsWhowas()
@@ -32,13 +36,25 @@ function clearRowsWhowas()
 end
 
 function insertIntoWhowas(nick, serial, ip, timestamp)
-    if not nick or not serial or not ip then return end
-    if not timestamp then timestamp = getRealTime().timestamp end
+    if not nick or not serial or not ip then 
+        return 
+    end
+    if not timestamp then 
+        timestamp = getRealTime().timestamp 
+    end
     table.insert(aWhowas, {nick, serial, ip, timestamp})
 end
 
-function updateWhowas(player)
-    if not player or not isElement(player) then return end
+function persistPlayerWhowasInfo(player) -- Ensures that the player's information is up to date, it also ensures the integrity of the database
+    if not player or not isElement(player) then 
+        return 
+    end
+    if player == root then
+        for _,plr in ipairs(getElementsByType("player")) do
+            persistPlayerWhowasInfo(plr)
+        end
+        return
+    end
     
     local nick = getPlayerName(player)
     local serial = getPlayerSerial(player)
@@ -68,10 +84,7 @@ addEventHandler(
             end
             return
         else
-            -- whowas stuff
-            for id, player in ipairs(getElementsByType("player")) do
-                updateWhowas(player)
-            end
+            persistPlayerWhowasInfo(root)
         end
 
         aSetupACL()
@@ -96,10 +109,7 @@ addEventHandler(
             end
         else
             aReleaseStorage()
-            -- whowas stuff
-            for id, player in ipairs(getElementsByType("player")) do
-                updateWhowas(player)
-            end
+            persistPlayerWhowasInfo(root)
         end
         aclSave()
     end
@@ -126,8 +136,7 @@ addEventHandler(
         end
         setPedGravity(source, getGravity())
         
-        -- whowas stuff
-        updateWhowas(source)
+        persistPlayerWhowasInfo(source)
     end
 )
 
@@ -137,8 +146,7 @@ addEventHandler(
     function()
         aPlayers[source] = nil
         
-        -- whowas stuff
-        updateWhowas(source)
+        persistPlayerWhowasInfo(source)
     end
 )
 
