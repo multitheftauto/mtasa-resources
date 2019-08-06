@@ -62,7 +62,11 @@ function persistPlayerWhowasInfo(player) -- Ensures that the player's informatio
     local timestamp = getRealTime().timestamp
     if get("whowassave") == "both" then
         local rows = tonumber(get("whowasmax")) or 100
-        if rows > 500 then rows = 500 elseif rows < 5 then rows = 5 end
+        if rows > 500 then 
+            rows = 500 
+        elseif rows < 5 then 
+            rows = 5 
+        end
         if #aWhowas > rows then
             clearRowsWhowas()
         end
