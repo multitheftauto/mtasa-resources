@@ -288,7 +288,7 @@ end
 
 local serialExp = "^" .. string.rep ( "[A-F0-9]", 32 ) .. "$"
 function isValidSerial ( serial )
-	return serial:upper():match ( serialExp )
+	return serial:match ( serialExp )
 end
 
 function getWeatherNameFromID ( weather )
@@ -1471,8 +1471,9 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 			end
 		elseif ( action == "banserial" ) then
 			mdata = data
-			if ( isValidSerial ( data ) ) then
-				local newban = addBan ( nil,nil, string.upper ( data ),source,arg2, arg3 )
+			local serial = string.upper ( data )
+			if ( isValidSerial ( serial ) ) then
+				local newban = addBan ( nil,nil, serial,source,arg2, arg3 )
 				if ( not newban ) then
 					action = nil
 				else
