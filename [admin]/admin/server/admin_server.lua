@@ -286,9 +286,9 @@ function iif ( cond, arg1, arg2 )
 	return arg2
 end
 
+local serialExp = "^" .. string.rep("[A-F0-9]", 32) .. "$"
 function isValidSerial ( serial )
-	-- Did you know gmatch returns an iterator function?
-	return string.gmatch ( serial, "%w%w%w%w-%w%w%w%w-%w%w%w%w-%w%w%w%w" )
+	return serial:match ( serialExp )
 end
 
 function getWeatherNameFromID ( weather )
