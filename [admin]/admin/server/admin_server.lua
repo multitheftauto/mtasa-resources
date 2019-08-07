@@ -286,9 +286,9 @@ function iif ( cond, arg1, arg2 )
 	return arg2
 end
 
-local serialExp = "^" .. string.rep("[A-F0-9]", 32) .. "$"
+local serialExp = "^" .. string.rep ( "[A-F0-9]", 32 ) .. "$"
 function isValidSerial ( serial )
-	return serial:match ( serialExp )
+	return serial:upper():match ( serialExp )
 end
 
 function getWeatherNameFromID ( weather )
