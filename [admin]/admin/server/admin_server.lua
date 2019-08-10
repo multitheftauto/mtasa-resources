@@ -1462,7 +1462,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 		local more = ""
 		if ( action == "banip" ) then
 			mdata = data
-			local newban = addBan ( data,nil,nil,source,arg2, arg3 )
+			local newban = addBan ( data, nil, nil, source, arg2, arg3 )
 			if ( not newban ) then
 				action = nil
 			else
@@ -1473,7 +1473,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 			mdata = data
 			local serial = string.upper ( data )
 			if ( isValidSerial ( serial ) ) then
-				local newban = addBan ( nil,nil, serial,source,arg2, arg3 )
+				local newban = addBan ( nil, nil, serial, source, arg2, arg3 )
 				if ( not newban ) then
 					action = nil
 				else
