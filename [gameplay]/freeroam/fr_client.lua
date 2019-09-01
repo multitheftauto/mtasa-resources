@@ -2142,8 +2142,8 @@ local function renderKnifingTag()
 	if not g_PlayerData then return end
 	for _,p in ipairs (getElementsByType ("player", root, true)) do
 		if g_PlayerData[p] and g_PlayerData[p].knifing then
-			local px,py,pz = getElementPosition(p)
-			local x,y,d = getScreenFromWorldPosition (px, py, pz+1.3)
+			local px,py,pz = getPedBonePosition(p, 6)
+			local x,y,d = getScreenFromWorldPosition (px, py, pz+0.5)
 			if x and y and d < 20 then
 				dxDrawText ("Disabled Knifing", x+1, y+1, x, y, tocolor (0, 0, 0), 0.5, "bankgothic", "center")
 				dxDrawText ("Disabled Knifing", x, y, x, y, tocolor (220, 220, 0), 0.5, "bankgothic", "center")
