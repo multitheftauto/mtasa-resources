@@ -41,29 +41,25 @@ function aBansTab.onClientClick(button)
     if (button == "left") then
         if (source == aBansTab.Details) then
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
-                aMessageBox("error", "No ban row selected!")
+                messageBox("No ban row selected!", MB_ERROR, MB_OK)
             else
                 local ip = guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
                 aBanDetails(ip)
             end
         elseif (source == aBansTab.Unban) then
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
-                aMessageBox("error", "No ban row selected!")
+                messageBox("No ban row selected!", MB_ERROR, MB_OK)
             else
                 local selected =
                     guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
                 if (aBans["Serial"][selected]) then
-                    aMessageBox(
-                        "question",
-                        "Unban Serial " .. selected .. "?",
-                        'triggerServerEvent ( "aBans", getLocalPlayer(), "unbanserial", "' .. selected .. '" )'
-                    )
+                    if (messageBox("Unban Serial " .. selected .. "?", MB_QUESTION, MB_YESNO ) == true) then
+                        triggerServerEvent ( "aBans", getLocalPlayer(), "unbanserial", selected )
+                    end
                 else
-                    aMessageBox(
-                        "question",
-                        "Unban IP " .. selected .. "?",
-                        'triggerServerEvent ( "aBans", getLocalPlayer(), "unbanip", "' .. selected .. '" )'
-                    )
+                    if (messageBox("Unban IP " .. selected .. "?", MB_QUESTION, MB_YESNO) == true) then
+                        triggerServerEvent ( "aBans", getLocalPlayer(), "unbanip", selected )
+                    end
                 end
             end
         elseif (source == aBansTab.BansRefresh) then

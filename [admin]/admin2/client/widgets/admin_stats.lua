@@ -102,7 +102,7 @@ function aClientStatsClick(button)
                     if ((value) and (value >= 0) and (value <= 1000)) then
                         triggerServerEvent("aPlayer", getLocalPlayer(), aStatsSelect, "setstat", id, value)
                     else
-                        aMessageBox("error", "Not numerical value (0-1000)")
+                        messageBox("Not numerical value (0-1000)", MB_ERROR, MB_OK)
                     end
                     return
                 end
@@ -136,7 +136,7 @@ function aClientStatsAccepted()
             if ((value) and (value >= 0) and (value <= 1000)) then
                 triggerServerEvent("aPlayer", getLocalPlayer(), aStatsSelect, "setstat", id, value)
             else
-                aMessageBox("error", "Not numerical value (0-1000)")
+                messageBox("Not numerical value (0-1000)", MB_ERROR, MB_OK)
             end
             return
         end

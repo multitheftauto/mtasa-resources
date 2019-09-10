@@ -100,7 +100,7 @@ function aMessages.onClick(button)
         elseif (source == aMessages.Read) then
             local row = guiGridListGetSelectedItem(aMessages.List)
             if (row == -1) then
-                aMessageBox("Warning", "No message selected!", nil)
+                messageBox("No message selected!", MB_WARNING, MB_OK)
             else
                 local id = guiGridListGetItemText(aMessages.List, row, 1)
                 aViewMessage(tonumber(id))
@@ -108,7 +108,7 @@ function aMessages.onClick(button)
         elseif (source == aMessages.Delete) then
             local row = guiGridListGetSelectedItem(aMessages.List)
             if (row == -1) then
-                aMessageBox("Warning", "No message selected!")
+                messageBox("No message selected!", MB_WARNING, MB_OK)
             else
                 local id = guiGridListGetItemText(aMessages.List, row, 1)
                 triggerServerEvent("aMessage", getLocalPlayer(), "delete", tonumber(id))
