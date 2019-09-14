@@ -312,7 +312,7 @@
     <right name="command.setskygradient" access="false" />
     <right name="command.setgamespeed" access="false" />
     <right name="command.setgravity" access="false" />
-	  <right name="command.setfpslimit" access="false" />
+    <right name="command.setfpslimit" access="false" />
     <right name="command.settime" access="false" />
     <right name="command.setglitch" access="false" />
     <right name="command.setworldproperty" access="false" />
