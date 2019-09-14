@@ -375,26 +375,6 @@ function aPlayersTab.onClientClick(button)
             local player = getSelectedPlayer()
             if (player) then
                 aPlayersTab.onRefresh()
-                sync(SYNC_PLAYER, player)
-                guiSetText(aPlayersTab.IP, "IP: " .. aPlayers[player].ip)
-                guiSetText(aPlayersTab.Serial, "Serial: " .. (aPlayers[player].serial or "Unknown"))
-                guiSetText(aPlayersTab.Country, "Country: " .. (aPlayers[player].countryname or "Unknown"))
-                guiSetText(aPlayersTab.Account, "Account: " .. (aPlayers[player]["account"] or "guest"))
-                guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
-                if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "zz") then
-                    local x, y = guiGetPosition(aPlayersTab.Country, false)
-                    local width = guiLabelGetTextExtent(aPlayersTab.Country)
-                    guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
-                    guiSetVisible(
-                        aPlayersTab.Flag,
-                        guiStaticImageLoadImage(
-                            aPlayersTab.Flag,
-                            "client\\images\\flags\\" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
-                        )
-                    )
-                else
-                    guiSetVisible(aPlayersTab.Flag, false)
-                end
             else
                 guiSetText(aPlayersTab.Name, "Name: N/A")
                 guiSetText(aPlayersTab.IP, "IP: N/A")
@@ -478,6 +458,11 @@ function aPlayersTab.onPlayerListScroll(key, state, inc)
         return
     else
         guiGridListSetSelectedItem(aPlayersTab.PlayerList, next, 1)
+    end
+
+    -- If we have finally selected an item
+    if guiGridListGetSelectedItem(aPlayersTab.PlayerList) ~= -1 then
+        aPlayersTab.onRefresh()
     end
 end
 
@@ -567,6 +552,27 @@ function aPlayersTab.onRefresh()
     if (not data) then
         return
     end
+    
+    sync(SYNC_PLAYER, player)
+    guiSetText(aPlayersTab.IP, "IP: " .. aPlayers[player].ip)
+    guiSetText(aPlayersTab.Serial, "Serial: " .. (aPlayers[player].serial or "Unknown"))
+    guiSetText(aPlayersTab.Country, "Country: " .. (aPlayers[player].countryname or "Unknown"))
+    guiSetText(aPlayersTab.Account, "Account: " .. (aPlayers[player]["account"] or "guest"))
+    guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
+    if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "zz") then
+        local x, y = guiGetPosition(aPlayersTab.Country, false)
+        local width = guiLabelGetTextExtent(aPlayersTab.Country)
+        guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
+        guiSetVisible(
+            aPlayersTab.Flag,
+            guiStaticImageLoadImage(
+                aPlayersTab.Flag,
+                "client\\images\\flags\\" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
+            )
+        )
+    else
+       guiSetVisible(aPlayersTab.Flag, false)
+    end
 
     guiSetText(aPlayersTab.Name, "Name: " .. stripColorCodes(getPlayerName(player)))
     guiSetText(aPlayersTab.Mute, iif(aPlayers[player].mute, "Unmute", "Mute"))
@@ -622,7 +628,6 @@ function aPlayersTab.onRefresh()
         guiSetText(aPlayersTab.Vehicle, "Vehicle: Foot")
         guiSetText(aPlayersTab.VehicleHealth, "Vehicle Health: 0%")
     end
-
     return player
 end
 
