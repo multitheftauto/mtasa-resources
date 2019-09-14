@@ -95,13 +95,13 @@ function aOptionsTab.onClientClick(button)
                 guiGetText(aOptionsTab.PasswordNew),
                 guiGetText(aOptionsTab.PasswordConfirm)
             if (passwordNew == "") then
-                aMessageBox("error", "Enter the new password")
+                messageBox("Enter the new password", MB_ERROR, MB_OK)
             elseif (passwordConf == "") then
-                aMessageBox("error", "Confirm the new password")
+                messageBox("Confirm the new password", MB_ERROR, MB_OK)
             elseif (string.len(passwordNew) < 4) then
-                aMessageBox("error", "The new password must be at least 4 characters long")
+                messageBox("The new password must be at least 4 characters long", MB_ERROR, MB_OK)
             elseif (passwordNew ~= passwordConf) then
-                aMessageBox("error", "Confirmed password doesn't match")
+                messageBox("Confirmed password doesn't match", MB_ERROR, MB_OK)
             else
                 triggerServerEvent(
                     "aAdmin",

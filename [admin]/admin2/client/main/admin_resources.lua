@@ -97,7 +97,7 @@ function aResourcesTab.onClientClick(button)
                 (source == aResourcesTab.ResourceStop))
          then
             if (guiGridListGetSelectedItem(aResourcesTab.ResourceList) == -1) then
-                aMessageBox("error", "No resource selected!")
+                messageBox("No resource selected!", MB_ERROR, MB_OK)
             else
                 local name =
                     guiGridListGetItemText(

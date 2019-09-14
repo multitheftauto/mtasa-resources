@@ -190,7 +190,10 @@ function aSpectator.SwitchPlayer(inc, arg, inc2)
         players = getElementsByType("player")
     end
     if (#players <= 0) then
-        aMessageBox("question", "Nobody to spectate, exit spectator?", "aSpectator.Close ( false )")
+        if (messageBox("Nobody else to spectate, exit spectator?", 1, 1) == true) then
+            aSpectator.Close(false)
+            aAdminMain.Open()
+        end
         return
     end
     local current = 1
@@ -201,7 +204,10 @@ function aSpectator.SwitchPlayer(inc, arg, inc2)
     end
     local next = ((current - 1 + inc) % #players) + 1
     if (next == current) then
-        aMessageBox("question", "Nobody else to spectate, exit spectator?", "aSpectator.Close ( false )")
+        if (messageBox("Nobody else to spectate, exit spectator?", 1, 1) == true) then
+            aSpectator.Close(false)
+            aAdminMain.Open()
+        end
         return
     end
     aSpectator.Spectating = players[next]

@@ -222,19 +222,13 @@ function aClientACLClick(button)
                 'triggerServerEvent ( "aAdmin", getLocalPlayer(), "aclcreate", "acl", $value )'
             )
         elseif (source == aACLDestroyGroup) then
-            aMessageBox(
-                "warning",
-                "Are you sure to destroy " .. aAclData["current"] .. " group?",
-                'triggerServerEvent ( "aAdmin", getLocalPlayer(), "acldestroy", "group", "' ..
-                    aAclData["current"] .. '" )'
-            )
+            if (messageBox("Are you sure to destroy " .. aAclData["current"] .. " group?", MB_WARNING, MB_YESNO) == true) then
+                triggerServerEvent ( "aAdmin", getLocalPlayer(), "acldestroy", "group", aAclData["current"] )
+            end
         elseif (source == aACLDestroyACL) then
-            aMessageBox(
-                "warning",
-                "Are you sure to destroy " .. aAclData["current"] .. " ACL?",
-                'triggerServerEvent ( "aAdmin", getLocalPlayer(), "acldestroy", "acl", "' ..
-                    aAclData["current"] .. '" )'
-            )
+            if (messageBox("Are you sure to destroy " .. aAclData["current"] .. " ACL?", MB_WARNING, MB_YESNO) == true) then
+                triggerServerEvent ( "aAdmin", getLocalPlayer(), "acldestroy", "acl", aAclData["current"] )
+            end
         elseif ((source == aACLRemoveObject) or (source == aACLAddACL) or (source == aACLRemoveACL)) then
             guiSetVisible(aACLAddObject, false)
             guiSetVisible(aACLRemoveObject, false)
