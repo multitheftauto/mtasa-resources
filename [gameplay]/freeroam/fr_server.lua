@@ -375,10 +375,12 @@ function giveMeVehicles(vehID)
 			table.insert(vehicleList, vehicle)
 			g_VehicleData[vehicle] = { creator = source, timers = {} }
 			if g_Trailers[vehID] then
-				if getOption('vehicles.idleexplode') then
-					g_VehicleData[vehicle].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, vehicle)
+				if getOption('vehicles.maxidletime') >= 0 then
+					if getOption('vehicles.idleexplode') then
+						g_VehicleData[vehicle].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, vehicle)
+					end
+					g_VehicleData[vehicle].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, vehicle)
 				end
-				g_VehicleData[vehicle].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, vehicle)
 			end
 		end
 	else
@@ -472,10 +474,12 @@ addEventHandler('onVehicleExit', root,
 					return
 				end
 			end
-			if getOption('vehicles.idleexplode') then
-				g_VehicleData[source].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, source)
+			if getOption('vehicles.maxidletime') >= 0 then
+				if getOption('vehicles.idleexplode') then
+					g_VehicleData[source].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, source)
+				end
+				g_VehicleData[source].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, source)
 			end
-			g_VehicleData[source].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, source)
 		end
 		if g_ArmedVehicles[getElementModel(source)] then
 			toggleControl(player, 'vehicle_fire', true)
