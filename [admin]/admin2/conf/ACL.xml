@@ -69,13 +69,14 @@
     <right name="command.setskygradient" access="true" />
     <right name="command.setgamespeed" access="true" />
     <right name="command.setgravity" access="true" />
-	<right name="command.setfpslimit" access="true" />
+    <right name="command.setfpslimit" access="true" />
     <right name="command.settime" access="true" />
-	<right name="command.setglitch" access="true" />
-	<right name="command.setworldproperty" access="true" />
-	<right name="command.setpingkicker" access="true" />
-	<right name="command.setfpskicker" access="true" />
-	<right name="command.setidlekicker" access="true" />
+    <right name="command.setglitch" access="true" />
+    <right name="command.setworldproperty" access="true" />
+    <right name="command.setpingkicker" access="true" />
+    <right name="command.setfpskicker" access="true" />
+    <right name="command.setidlekicker" access="true" />
+    <right name="command.clearchat" access="true" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
     <right name="command.unban" access="true" />
@@ -150,13 +151,14 @@
     <right name="command.setskygradient" access="true" />
     <right name="command.setgamespeed" access="true" />
     <right name="command.setgravity" access="true" />
-	<right name="command.setfpslimit" access="true" />
+    <right name="command.setfpslimit" access="true" />
     <right name="command.settime" access="true" />
-	<right name="command.setglitch" access="true" />
-	<right name="command.setworldproperty" access="true" />
-	<right name="command.setpingkicker" access="false" />
-	<right name="command.setfpskicker" access="false" />
-	<right name="command.setidlekicker" access="false" />
+    <right name="command.setglitch" access="true" />
+    <right name="command.setworldproperty" access="true" />
+    <right name="command.setpingkicker" access="false" />
+    <right name="command.setfpskicker" access="false" />
+    <right name="command.setidlekicker" access="false" />
+    <right name="command.clearchat" access="true" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
     <right name="command.unban" access="true" />
@@ -231,13 +233,14 @@
     <right name="command.setskygradient" access="true" />
     <right name="command.setgamespeed" access="true" />
     <right name="command.setgravity" access="true" />
-	<right name="command.setfpslimit" access="true" />
+    <right name="command.setfpslimit" access="true" />
     <right name="command.settime" access="true" />
-	<right name="command.setglitch" access="false" />
-	<right name="command.setworldproperty" access="false" />
-	<right name="command.setpingkicker" access="false" />
-	<right name="command.setfpskicker" access="false" />
-	<right name="command.setidlekicker" access="false" />
+    <right name="command.setglitch" access="false" />
+    <right name="command.setworldproperty" access="false" />
+    <right name="command.setpingkicker" access="false" />
+    <right name="command.setfpskicker" access="false" />
+    <right name="command.setidlekicker" access="false" />
+    <right name="command.clearchat" access="true" />
     <!--Bans related-->
     <right name="command.ban" access="false" />
     <right name="command.unban" access="false" />
@@ -309,13 +312,14 @@
     <right name="command.setskygradient" access="false" />
     <right name="command.setgamespeed" access="false" />
     <right name="command.setgravity" access="false" />
-	<right name="command.setfpslimit" access="false" />
+    <right name="command.setfpslimit" access="false" />
     <right name="command.settime" access="false" />
-	<right name="command.setglitch" access="false" />
-	<right name="command.setworldproperty" access="false" />
-	<right name="command.setpingkicker" access="false" />
-	<right name="command.setfpskicker" access="false" />
-	<right name="command.setidlekicker" access="false" />
+    <right name="command.setglitch" access="false" />
+    <right name="command.setworldproperty" access="false" />
+    <right name="command.setpingkicker" access="false" />
+    <right name="command.setfpskicker" access="false" />
+    <right name="command.setidlekicker" access="false" />
+    <right name="command.clearchat" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="false" />
     <right name="command.unban" access="false" />

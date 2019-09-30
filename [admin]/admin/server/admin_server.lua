@@ -1349,6 +1349,8 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 				action = nil
 				outputChatBox ( "Error setting FPS Limit.", source, 255, 0, 0 )
 			end
+		elseif ( action == "clearchat" ) then
+			clearChatBox()
 		else
 			action = nil
 		end

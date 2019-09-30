@@ -469,6 +469,10 @@ aFunctions = {
         end,
         ["shutdown"] = function(reason)
             shutdown(iif(reason, tostring(reason), nil))
+        end,
+        ["clearchat"] = function()
+            clearChatBox()
+            return true
         end
     },
     admin = {},
