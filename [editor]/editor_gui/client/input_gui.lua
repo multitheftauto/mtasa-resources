@@ -3,7 +3,7 @@ function inputGui(title, desc, callback,...)
   
   local inputWindow = guiCreateWindow( 0, 0, 300, 120, title, false )
   setElementData(inputWindow, "args", {...}, false)
-  -- part copied from https://wiki.multitheftauto.com/wiki/CenterWindow
+  -- code copied from https://wiki.multitheftauto.com/wiki/CenterWindow
   local screenW, screenH = guiGetScreenSize()
   local windowW, windowH = guiGetSize(inputWindow, false)
   local x, y = (screenW - windowW) /2,(screenH - windowH) /2
@@ -33,17 +33,8 @@ function inputGuiTyping()
 	end
 end
 
-
 function inputClose()
   destroyElement(getElementParent(source))
   inputWindow = nil
   guiSetInputEnabled ( false )
 end
-
---[[
-setTimer(function()
-inputGui("test","desc",function(button,state,val,a,b,c)
-  iprint("X",val,a,b,c)
-end,"a","b","c")
-end,500,1)
-]]

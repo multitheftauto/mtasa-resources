@@ -294,9 +294,9 @@ function browserList:setSelected(value)
 	if self.callback then
 		self.callback(value)
 	end
-  if(value ~= 0)then
-    browser.checkForFavorite()
-  end
+	if(value ~= 0)then
+		browser.checkForFavorite()
+	end
 	return true
 end
 function browserList:getSelected()

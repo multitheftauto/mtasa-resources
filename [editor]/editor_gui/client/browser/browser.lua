@@ -355,8 +355,8 @@ function browser.applySelected()
 			callbackFunction(initiatedType,cat,tonumber(model))
 			rememberValues[initiatedType].category = cat
 			rememberValues[initiatedType].model = tonumber(model)
-      local name = browserGUI.list:getSelectedText()[1]
-      browser.saveLastUsed(tonumber(model),name)
+			local name = browserGUI.list:getSelectedText()[1]
+			browser.saveLastUsed(tonumber(model),name)
 		end
 		if ( tutorialVars.browserOK == initiatedType ) then
 			tutorialNext ()
