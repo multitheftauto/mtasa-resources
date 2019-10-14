@@ -7,7 +7,5 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-
-function nothing ()
-
+function nothing()
 end

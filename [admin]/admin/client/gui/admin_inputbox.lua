@@ -25,7 +25,6 @@ function aInputBox ( title, message, default, action, vOne, vTwo, defaultNick, d
 		aInputAction = nil
 
 		addEventHandler ( "onClientGUIClick", aInputForm, aInputBoxClick )
-		addEventHandler ( "onClientGUIAccepted", aInputValue, aInputBoxAccepted )
 		--Register With Admin Form
 		aRegister ( "InputBox", aInputForm, aInputBox, aInputBoxClose )
 	end
@@ -112,7 +111,6 @@ function aInputBoxClose ( destroy )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
 		if ( aInputForm ) then
 			removeEventHandler ( "onClientGUIClick", aInputForm, aInputBoxClick )
-			removeEventHandler ( "onClientGUIAccepted", aInputValue, aInputBoxAccepted )
 			aInputAction = nil
 			destroyElement ( aInputForm )
 			aInputForm = nil
@@ -125,10 +123,6 @@ end
 -- Escape character '%' will be lost when using gsub, so turn % into %%
 function keepEscapeCharacter ( text )
 	return string.gsub( text, "%%", "%%%%" )
-end
-
-function aInputBoxAccepted ()
-	--loadstring ( string.gsub ( aInputAction, "$value", "\""..keepEscapeCharacter( guiGetText ( aInputValue ) ).."\"" ) )()
 end
 
 function aInputBoxClick ( button )
@@ -465,7 +459,7 @@ function aMuteInputBox ( player )
 		aMuteInputPlayer = nil
 
 		addEventHandler ( "onClientGUIClick", aMuteInputForm, aMuteInputBoxClick )
-		addEventHandler ( "onClientGUIAccepted", aMuteInputValue, aMuteInputBoxAccepted )
+		addEventHandler ( "onClientGUIAccepted", aMuteInputValue, aMuteInputBoxFinish )
 		--Register With Admin Form
 		aRegister ( "MuteInputBox", aMuteInputForm, aMuteInputBox, aMuteInputBoxClose )
 	end
@@ -487,7 +481,7 @@ function aMuteInputBoxClose ( destroy )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceInput ) ) ) then
 		if ( aMuteInputForm ) then
 			removeEventHandler ( "onClientGUIClick", aMuteInputForm, aMuteInputBoxClick )
-			removeEventHandler ( "onClientGUIAccepted", aMuteInputValue, aMuteInputBoxAccepted )
+			removeEventHandler ( "onClientGUIAccepted", aMuteInputValue, aMuteInputBoxFinish )
 			aMuteInputPlayer = nil
 			destroyElement ( aMuteInputForm )
 			aMuteInputForm = nil
@@ -495,10 +489,6 @@ function aMuteInputBoxClose ( destroy )
 	else
 		guiSetVisible ( aMuteInputForm, false )
 	end
-end
-
-function aMuteInputBoxAccepted ()
-	aMuteInputBoxFinish()
 end
 
 function aMuteInputBoxClick ( button )

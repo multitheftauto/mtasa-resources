@@ -79,9 +79,7 @@ local function spawn(player)
 		spawnPlayer(player,x+math.random(-3,3),y+math.random(-3,3),z,r,validSkins[math.random(1,#validSkins)],0,0)
 		fadeCamera(player, true)
 		setCameraTarget(player, player)
-		showChat(player, true)
 	end
-
 end
 
 local function onJoin()
@@ -133,7 +131,6 @@ local function destroyVehicle(vehicle)
 	if vehicle and isElement(vehicle) and getElementType(vehicle) == "vehicle" then
 		destroyElement(vehicle)
 	end
-
 end
 
 local function destroyTimer()

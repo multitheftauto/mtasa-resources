@@ -36,15 +36,16 @@ local g_settings = {}
 local _addCommandHandler = addCommandHandler
 local _setElementPosition = setElementPosition
 
+if not (g_PlayerData) then
+    g_PlayerData = {}
+end
+
 -- Settings are stored in meta.xml
 function freeroamSettings(settings)
 	if settings then
 		g_settings = settings
 		for _,gui in ipairs(disableBySetting) do
 			guiSetEnabled(getControl(gui.parent,gui.id),g_settings["gui/"..gui.id])
-		end
-		for index,player in ipairs(getElementsByType("player")) do
-			updateName(player,getPlayerName(player))
 		end
 	end
 end
@@ -182,7 +183,7 @@ wndSkin = {
 			columns={
 				{text='Skin', attr='name'}
 			},
-			rows={xml='skins.xml', attrs={'id', 'name'}},
+			rows={xml='data/skins.xml', attrs={'id', 'name'}},
 			onitemclick=showSkinID,
 			onitemdoubleclick=applySkin,
 			DoubleClickSpamProtected=true,
@@ -241,7 +242,7 @@ wndAnim = {
 			columns={
 				{text='Animation', attr='name'}
 			},
-			rows={xml='animations.xml', attrs={'name'}},
+			rows={xml='data/animations.xml', attrs={'name'}},
 			expandlastlevel=false,
 			onitemdoubleclick=applyAnimation,
 			DoubleClickSpamProtected=true,
@@ -281,7 +282,20 @@ function addWeapon(leaf, amount)
 		errMsg("Invalid amount")
 		return
 	end
+	if isPedReloadingWeapon(localPlayer) then
+		errMsg ("You can't get weapons while reloading a weapon!")
+		return 
+	end
 	server.giveMeWeapon(leaf.id, amount)
+end
+
+function isPlayerAiming(p)
+	if isElement(p) then
+		if getPedTask(p, "secondary", 0) == "TASK_SIMPLE_USE_GUN" then
+			return true
+		end
+	end
+	return false
 end
 
 wndWeapon = {
@@ -297,12 +311,12 @@ wndWeapon = {
 			columns={
 				{text='Weapon', attr='name'}
 			},
-			rows={xml='weapons.xml', attrs={'id', 'name'}},
-			onitemdoubleclick=function(leaf) addWeapon(leaf, 500) end,
+			rows={xml='data/weapons.xml', attrs={'id', 'name'}},
+			onitemdoubleclick=function(leaf) addWeapon(leaf, 1500) end,
 			DoubleClickSpamProtected=true
 		},
 		{'br'},
-		{'txt', id='amount', text='500', width=60},
+		{'txt', id='amount', text='1500', width=60},
 		{'btn', id='add', onclick=addWeapon, ClickSpamProtected=true},
 		{'btn', id='close', closeswindow=true}
 	}
@@ -310,9 +324,11 @@ wndWeapon = {
 
 function giveWeaponCommand(cmd, weapon, amount)
 	weapon = tonumber(weapon) and math.floor(tonumber(weapon)) or weapon and getWeaponIDFromName(weapon) or 0
-	amount = amount and math.floor(tonumber(amount)) or 500
+	amount = amount and math.floor(tonumber(amount)) or 1500
 	if amount < 1 or weapon < 1 or weapon > 46 then return end
 	if internallyBannedWeapons[weapon] then return end
+	if isPlayerAiming(localPlayer) then errMsg ("You can't use this command while aiming a weapon!") return end
+	if isPedReloadingWeapon(localPlayer) then errMsg ("You can't use this command while reloading a weapon!") return end
 	server.giveMeWeapon(weapon, amount)
 end
 addCommandHandler('give', giveWeaponCommand)
@@ -583,7 +599,14 @@ function warpUpdate()
 	end
 	
 	local text = getControlText(wndWarp, 'search')
-	local players = table.map(getPlayersByPartName(text), function(p) return { player = p, name = getPlayerName(p) } end)
+	local players = table.map(getPlayersByPartName(text), 
+		function(p) 
+			local pName = getPlayerName(p)
+			if g_settings["hidecolortext"] then
+				pName = pName:gsub("#%x%x%x%x%x%x", "")
+			end
+			return { player = p, name = pName } 
+		end)
 	table.sort(players, function(a, b) return a.name < b.name end)
 	bindGridListToTable(wndWarp, 'playerlist', players, true)
 end
@@ -671,7 +694,7 @@ wndStats = {
 				{text='Stat', attr='name', width=0.6},
 				{text='Value', attr='value', width=0.3, enablemodify=true}
 			},
-			rows={xml='stats.xml', attrs={'name', 'id'}},
+			rows={xml='data/stats.xml', attrs={'name', 'id'}},
 			onitemclick=selectStat,
 			onitemdoubleclick=maxStat,
 			DoubleClickSpamProtected=true
@@ -977,13 +1000,17 @@ function updatePlayerBlips()
 	local mapControl = getControl(wnd, 'map')
 	for elem,player in pairs(g_PlayerData) do
 		if not player.gui.mapBlip then
-			player.gui.mapBlip = guiCreateStaticImage(0, 0, 9, 9, elem == localPlayer and 'localplayerblip.png' or 'playerblip.png', false, mapControl)
-			player.gui.mapLabelShadow = guiCreateLabel(0, 0, 100, 14, player.name, false, mapControl)
+			local playerName = player.name
+			if g_settings["hidecolortext"] then
+				playerName = playerName:gsub("#%x%x%x%x%x%x", "")
+			end
+			player.gui.mapBlip = guiCreateStaticImage(0, 0, 9, 9, elem == localPlayer and 'img/localplayerblip.png' or 'img/playerblip.png', false, mapControl)
+			player.gui.mapLabelShadow = guiCreateLabel(0, 0, 100, 14, playerName, false, mapControl)
 			local labelWidth = guiLabelGetTextExtent(player.gui.mapLabelShadow)
 			guiSetSize(player.gui.mapLabelShadow, labelWidth, 14, false)
 			guiSetFont(player.gui.mapLabelShadow, 'default-bold-small')
 			guiLabelSetColor(player.gui.mapLabelShadow, 255, 255, 255)
-			player.gui.mapLabel = guiCreateLabel(0, 0, labelWidth, 14, player.name, false, mapControl)
+			player.gui.mapLabel = guiCreateLabel(0, 0, labelWidth, 14, playerName, false, mapControl)
 			guiSetFont(player.gui.mapLabel, 'default-bold-small')
 			guiLabelSetColor(player.gui.mapLabel, 0, 0, 0)
 			for i,name in ipairs({'mapBlip', 'mapLabelShadow'}) do
@@ -1030,7 +1057,7 @@ wndSetPos = {
 	text = 'Set position',
 	width = g_MapSide + 20,
 	controls = {
-		{'img', id='map', src='map.png', width=g_MapSide, height=g_MapSide, onclick=fillInPosition, ondoubleclick=setPosClick, DoubleClickSpamProtected=true},
+		{'img', id='map', src='img/map.png', width=g_MapSide, height=g_MapSide, onclick=fillInPosition, ondoubleclick=setPosClick, DoubleClickSpamProtected=true},
 		{'txt', id='x', text='', width=60},
 		{'txt', id='y', text='', width=60},
 		{'txt', id='z', text='', width=60},
@@ -1071,6 +1098,16 @@ addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
 
 function setPosCommand(cmd, x, y, z, r)
+	local vehicle = getPedOccupiedVehicle(localPlayer)
+	if vehicle then
+		local vehModel = getElementModel(vehicle)
+
+		if table.find(g_settings["vehicles/disallowed_warp"], vehModel) then
+			errMsg("You cannot use /sp while in this vehicle!")
+			return
+		end
+	end
+
 	-- Handle setpos if used like: x, y, z, r or x,y,z,r
 	local x, y, z, r = string.gsub(x or "", ",", " "), string.gsub(y or "", ",", " "), string.gsub(z or "", ",", " "), string.gsub(r or "", ",", " ")
 	-- Extra handling for x,y,z,r
@@ -1134,7 +1171,7 @@ wndSpawnMap = {
 	text = 'Select spawn position',
 	width = g_MapSide + 20,
 	controls = {
-		{'img', id='map', src='map.png', width=g_MapSide, height=g_MapSide, ondoubleclick=spawnMapDoubleClick},
+		{'img', id='map', src='img/map.png', width=g_MapSide, height=g_MapSide, ondoubleclick=spawnMapDoubleClick},
 		{'lbl', text='Welcome to freeroam. Double click a location on the map to spawn.', width=g_MapSide-60, align='center'},
 		{'btn', id='close', closeswindow=true}
 	},
@@ -1193,7 +1230,7 @@ wndSetInterior = {
 			columns={
 				{text='Interior', attr='name'}
 			},
-			rows={xml='interiors.xml', attrs={'name', 'posX', 'posY', 'posZ', 'world'}},
+			rows={xml='data/interiors.xml', attrs={'name', 'posX', 'posY', 'posZ', 'world'}},
 			onitemdoubleclick=setInterior,
 			DoubleClickSpamProtected=true,
 		},
@@ -1227,7 +1264,7 @@ wndCreateVehicle = {
 			columns={
 				{text='Vehicle', attr='name'}
 			},
-			rows={xml='vehicles.xml', attrs={'id', 'name'}},
+			rows={xml='data/vehicles.xml', attrs={'id', 'name'}},
 			onitemdoubleclick=createSelectedVehicle,
 			DoubleClickSpamProtected=true,
 		},
@@ -1434,6 +1471,24 @@ addCommandHandler('cl', setColorCommand)
 function openColorPicker()
 	editingVehicle = getPedOccupiedVehicle(localPlayer)
 	if (editingVehicle) then
+		local r1, g1, b1, r2, g2, b2, r3, g3, b3, r4, g4, b4 = getVehicleColor(editingVehicle, true)
+		local r, g, b = 255, 255, 255
+		if (guiCheckBoxGetSelected(checkColor1)) then
+			r, g, b = r1, g1, b1
+		end
+		if (guiCheckBoxGetSelected(checkColor2)) then
+			r, g, b = r2, g2, b2
+		end
+		if (guiCheckBoxGetSelected(checkColor3)) then
+			r, g, b = r3, g3, b3
+		end
+		if (guiCheckBoxGetSelected(checkColor4)) then
+			r, g, b = r4, g4, b4
+		end
+		if (guiCheckBoxGetSelected(checkColor5)) then
+			r, g, b = getVehicleHeadLightColor(editingVehicle)
+		end
+		colorPicker.setValue({r, g, b})
 		colorPicker.openSelect(colors)
 	end
 end
@@ -1646,7 +1701,7 @@ wndWeather = {
 			columns = {
 				{text='Weather type', attr='name'}
 			},
-			rows={xml='weather.xml', attrs={'id', 'name'}},
+			rows={xml='data/weather.xml', attrs={'id', 'name'}},
 			onitemdoubleclick=applyWeather
 		},
 		{'btn', id='ok', onclick=applyWeather},
@@ -1827,7 +1882,7 @@ function onEnterVehicle(vehicle,seat)
 end
 
 function onExitVehicle(vehicle,seat)
-	if eventName == "onClientPlayerVehicleExit" and source == localPlayer then
+	if (eventName == "onClientPlayerVehicleExit" and source == localPlayer) or (eventName == "onClientElementDestroy" and getElementType(source) == "vehicle" and getPedOccupiedVehicle(localPlayer) == source) then
 		setControlText(wndMain, 'curvehicle', 'On foot')
 		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
 		closeWindow(wndUpgrades)
@@ -1938,7 +1993,7 @@ end
 addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		fadeCamera(true)
-		setTimer(getPlayers, 1000, 1)
+		getPlayers()
 		setJetpackMaxHeight ( 9001 )
 		triggerServerEvent('onLoadedAtClient', resourceRoot)
 		createWindow(wndMain)
@@ -2012,9 +2067,8 @@ function wastedHandler()
 end
 
 local function removeForcedFade()
-
 	removeEventHandler("onClientPreRender",root,forceFade)
-
+	fadeCamera(true)
 end
 
 local function checkCustomSpawn()
@@ -2033,6 +2087,7 @@ addEventHandler('onClientPlayerQuit', root, quitHandler)
 addEventHandler('onClientPlayerWasted', root, wastedHandler)
 addEventHandler('onClientPlayerVehicleEnter', root, onEnterVehicle)
 addEventHandler('onClientPlayerVehicleExit', root, onExitVehicle)
+addEventHandler("onClientElementDestroy", root, onExitVehicle)
 addEventHandler("onClientPlayerSpawn", localPlayer, checkCustomSpawn)
 
 function getPlayerName(player)
@@ -2048,12 +2103,14 @@ addEventHandler('onClientResourceStop', resourceRoot,
 
 function setVehicleGhost(sourceVehicle,value)
 
-	local vehicles = getElementsByType("vehicle")
-	for _,vehicle in ipairs(vehicles) do
+	  local vehicles = getElementsByType("vehicle")
+	  for _,vehicle in ipairs(vehicles) do
 		local vehicleGhost = hasDriverGhost(vehicle)
-		setElementCollidableWith(sourceVehicle,vehicle,not value)
-		setElementCollidableWith(vehicle,sourceVehicle,not value)
-		if value == false and vehicleGhost == true then
+		if isElement(sourceVehicle) and isElement(vehicle) then
+		   setElementCollidableWith(sourceVehicle,vehicle,not value)
+		   setElementCollidableWith(vehicle,sourceVehicle,not value)
+		end
+		if value == false and vehicleGhost == true and isElement(sourceVehicle) and isElement(vehicle) then
 			setElementCollidableWith(sourceVehicle,vehicle,not vehicleGhost)
 			setElementCollidableWith(vehicle,sourceVehicle,not vehicleGhost)
 		end
@@ -2085,8 +2142,8 @@ local function renderKnifingTag()
 	if not g_PlayerData then return end
 	for _,p in ipairs (getElementsByType ("player", root, true)) do
 		if g_PlayerData[p] and g_PlayerData[p].knifing then
-			local px,py,pz = getElementPosition(p)
-			local x,y,d = getScreenFromWorldPosition (px, py, pz+1.3)
+			local px,py,pz = getPedBonePosition(p, 6)
+			local x,y,d = getScreenFromWorldPosition (px, py, pz+0.5)
 			if x and y and d < 20 then
 				dxDrawText ("Disabled Knifing", x+1, y+1, x, y, tocolor (0, 0, 0), 0.5, "bankgothic", "center")
 				dxDrawText ("Disabled Knifing", x, y, x, y, tocolor (220, 220, 0), 0.5, "bankgothic", "center")

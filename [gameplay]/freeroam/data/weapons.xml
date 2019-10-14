@@ -1,0 +1,76 @@
+<catalog type="weapon">
+	<group name="Hand">
+		<weapon id="1" name="Brass knuckles" />
+	</group>
+
+	<group name="Melee">
+		<weapon id="5" name="Baseball bat" />
+		<weapon id="15" name="Cane" />
+		<weapon id="9" name="Chainsaw" />
+		<weapon id="2" name="Golf club" />
+		<weapon id="7" name="Pool cue" />
+		<weapon id="8" name="Katana" />
+		<weapon id="4" name="Knife" />
+		<weapon id="3" name="Nightstick" />
+		<weapon id="6" name="Shovel" />
+	</group>
+
+	<group name="Handguns">
+		<weapon id="24" name="Desert eagle" />
+		<weapon id="22" name="Pistol" />
+		<weapon id="23" name="Silenced" />
+	</group>
+
+	<group name="Shotguns">
+		<weapon id="26" name="Sawn-off shotgun" />
+		<weapon id="25" name="Shotgun" />
+		<weapon id="27" name="SPAZ-12" />
+	</group>
+
+	<group name="Sub-machine guns">
+		<weapon id="29" name="MP5" />
+		<weapon id="32" name="TEC-9" />
+		<weapon id="28" name="Uzi" />
+	</group>
+
+	<group name="Machine guns">
+		<weapon id="30" name="AK47" />
+		<weapon id="31" name="M4" />
+	</group>
+
+	<group name="Rifles">
+		<weapon id="33" name="Country sniper" />
+		<weapon id="34" name="Sniper" />
+	</group>
+
+	<group name="Heavy weapons">
+		<weapon id="37" name="Flame thrower" />
+		<weapon id="36" name="Heat seeking RPG" />
+		<weapon id="38" name="Minigun" />
+		<weapon id="35" name="Rocket launcher" />
+	</group>
+
+	<group name="Projectiles">
+		<weapon id="16" name="Grenade" />
+		<weapon id="18" name="Molotov" />
+		<weapon id="39" name="Satchel" />
+		<weapon id="40" name="Satchel detonator" />
+		<weapon id="17" name="Tear gas" />
+	</group>
+
+	<group name="Special">
+		<weapon id="41" name="Spraycan" />
+		<weapon id="43" name="Camera" />
+		<weapon id="42" name="Fire extinguisher" />
+		<weapon id="45" name="Infrared goggles" />
+		<weapon id="44" name="Night vision goggles" />
+		<weapon id="46" name="Parachute" />
+	</group>
+
+	<group name="Other">
+		<weapon id="14" name="Flowers" />
+		<weapon id="10" name="Long dildo" />
+		<weapon id="11" name="Short dildo" />
+		<weapon id="12" name="Vibrator" />
+	</group>
+</catalog>

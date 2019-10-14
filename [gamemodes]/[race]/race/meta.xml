@@ -1,5 +1,5 @@
 <meta>
-	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="1.0.1" build="r1025 09Jan15" edf:definition="edf/race.edf"/>
+	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="1.0.2" build="r1157 02May17" edf:definition="edf/race.edf"/>
 
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>

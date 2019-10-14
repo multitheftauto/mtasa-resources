@@ -198,6 +198,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab3.SetMapName		= guiCreateButton ( 0.80, 0.20, 0.18, 0.04, "Set Map Name", true, aTab3.Tab, "setmap" )
 		aTab3.SetWelcome		= guiCreateButton ( 0.80, 0.25, 0.18, 0.04, "Welcome Message", true, aTab3.Tab, "setwelcome" )
 		aTab3.Shutdown		= guiCreateButton ( 0.80, 0.3, 0.18, 0.04, "Shutdown", true, aTab3.Tab, "shutdown" )
+		aTab3.ClearChat		= guiCreateButton ( 0.80, 0.35, 0.18, 0.04, "Clear Chat", true, aTab3.Tab, "clearchat" )
 						  guiCreateStaticImage ( 0.05, 0.32, 0.50, 0.0025, "client\\images\\dot.png", true, aTab3.Tab )
 		aTab3.WeatherCurrent	= guiCreateLabel ( 0.05, 0.35, 0.45, 0.05, "Current Weather: "..getWeather().." ("..getWeatherNameFromID ( getWeather() )..")", true, aTab3.Tab )
 		aTab3.WeatherDec		= guiCreateButton ( 0.05, 0.40, 0.035, 0.04, "<", true, aTab3.Tab )
@@ -346,19 +347,16 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		addEventHandler ( "aClientLog", _root, aClientLog )
 		addEventHandler ( "aClientAdminChat", _root, aClientAdminChat )
 		addEventHandler ( "aClientSync", _root, aClientSync )
-		addEventHandler ( "aMessage", _root, aMessage )
 		addEventHandler ( "aClientResourceStart", _root, aClientResourceStart )
 		addEventHandler ( "aClientResourceStop", _root, aClientResourceStop )
 		addEventHandler ( "aClientPlayerJoin", _root, aClientPlayerJoin )
 		addEventHandler ( "onClientPlayerQuit", _root, aClientPlayerQuit )
-		addEventHandler ( "onClientMouseEnter", _root, aClientMouseEnter )
 		addEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
 		addEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		addEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
 		addEventHandler ( "onClientGUIDoubleClick", aTab1.VehicleOptions, aClientDoubleClick )
 		addEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		addEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
-		addEventHandler ( "onClientCursorMove", _root, aClientCursorMove )
 		addEventHandler ( "onClientRender", _root, aClientRender )
 		addEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
 		addEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
@@ -405,19 +403,16 @@ function aAdminMenuClose ( destroy )
 		removeEventHandler ( "aClientLog", _root, aClientLog )
 		removeEventHandler ( "aClientAdminChat", _root, aClientAdminChat )
 		removeEventHandler ( "aClientSync", _root, aClientSync )
-		removeEventHandler ( "aMessage", _root, aMessage )
 		removeEventHandler ( "aClientResourceStart", _root, aClientResourceStart )
 		removeEventHandler ( "aClientResourceStop", _root, aClientResourceStop )
 		removeEventHandler ( "aClientPlayerJoin", _root, aClientPlayerJoin )
 		removeEventHandler ( "onClientPlayerQuit", _root, aClientPlayerQuit )
-		removeEventHandler ( "onClientMouseEnter", _root, aClientMouseEnter )
 		removeEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
 		removeEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		removeEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
 		removeEventHandler ( "onClientGUIDoubleClick", aTab1.VehicleOptions, aClientDoubleClick )
 		removeEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		removeEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
-		removeEventHandler ( "onClientCursorMove", _root, aClientCursorMove )
 		removeEventHandler ( "onClientRender", _root, aClientRender )
 		removeEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
 		removeEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
@@ -712,10 +707,6 @@ function aClientGUITabSwitched( selectedTab )
 	end
 end
 
-function aMessage ( )
-
-end
-
 function aClientResourceStart ( resource )
 	local id = 0
 	while ( id <= guiGridListGetRowCount( aTab2.ResourceList ) ) do
@@ -929,16 +920,6 @@ end
 function aClientScroll ( element )
 	if ( source == aTab6.MouseSense ) then
 		guiSetText ( aTab6.MouseSenseCur, "Cursor sensivity: ("..string.sub ( guiScrollBarGetScrollPosition ( source ) / 50, 0, 4 )..")" )
-	end
-end
-
-function aClientCursorMove ( rx, ry, x, y )
-
-end
-
-function aClientMouseEnter ( element )
-	if ( getElementType ( source ) == "gui-button" ) then
-
 	end
 end
 
@@ -1175,6 +1156,7 @@ function aClientClick ( button )
 			elseif ( source == aTab3.SetWelcome ) then aInputBox ( "Welcome Message", "Enter the server welcome message:", "", "setWelcome" )
 			elseif ( source == aTab3.SetPassword ) then aInputBox ( "Server password", "Enter server password: (32 characters max)", "", "setServerPassword" )
 			elseif ( source == aTab3.Shutdown ) then aInputBox ( "Shutdown the server", "Enter shutdown reason:", "", "serverShutdown" )
+			elseif ( source == aTab3.ClearChat ) then triggerServerEvent ( "aServer", localPlayer, "clearchat", "" )
 			elseif ( source == aTab3.ResetPassword ) then triggerServerEvent ( "aServer", localPlayer, "setpassword", "" )
 			elseif ( ( source == aTab3.WeatherInc ) or ( source == aTab3.WeatherDec ) ) then
 				local id = tonumber ( gettok ( guiGetText ( aTab3.Weather ), 1, 32 ) )
