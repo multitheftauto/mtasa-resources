@@ -69,7 +69,7 @@
   <script src="client/widgets/admin_team.lua" 			 	type="client" />
   <script src="client/widgets/admin_skin.lua" 			  	type="client" />
   <script src="client/widgets/admin_stats.lua" 			  	type="client" />
-  <script src="client/widgets/admin_vehicle.lua" 		  	type="client" />
+  <script src="client/widgets/admin_vehicle_customization.lua" 		  	type="client" />
   <script src="client/widgets/admin_interior.lua" 			type="client" />
   <script src="client/widgets/admin_screenshot.lua" 		type="client" />
   <script src="client/widgets/admin_ban.lua" 			    type="client" />

@@ -309,7 +309,7 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.VehicleDestroy) then
                     triggerServerEvent("aVehicle", getLocalPlayer(), player, "destroyvehicle")
                 elseif (source == aPlayersTab.VehicleCustomize) then
-                    aVehicle.Open(getPedOccupiedVehicle(player))
+                    aVehicleCustomization.Open(getPedOccupiedVehicle(player))
                 elseif (source == aPlayersTab.Admin) then
                     if
                         (aPlayers[player]["admin"] and
