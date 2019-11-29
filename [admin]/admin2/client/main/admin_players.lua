@@ -110,44 +110,13 @@ function aPlayersTab.Create(tab)
     aPlayersTab.VehicleDestroy = guiCreateButton(0.71, 0.90, 0.13, 0.04, "Destroy", true, tab, "destroyvehicle")
     aPlayersTab.VehicleBlow = guiCreateButton(0.85, 0.85, 0.13, 0.04, "Blow", true, tab, "blowvehicle")
     aPlayersTab.VehicleCustomize = guiCreateButton(0.85, 0.90, 0.13, 0.04, "Customize", true, tab, "customize")
-    aPlayersTab.GiveVehicle =
-        guiCreateButton(
-        0.71,
-        0.710,
-        0.27,
-        0.04,
-        "Give: " .. getVehicleNameFromModel(aPlayersTab.CurrentVehicle),
-        true,
-        tab,
-        "givevehicle"
-    )
-    aPlayersTab.VehicleDropDown = guiCreateInnerImage("client\\images\\dropdown.png", aPlayersTab.GiveVehicle, true)
-    local gx, gy = guiGetSize(aPlayersTab.GiveVehicle, false)
-    aPlayersTab.VehicleOptions = guiCreateGridList(0, 0, gx, 200, false)
-    guiGridListAddColumn(aPlayersTab.VehicleOptions, "", 0.83)
-    guiGridListAddColumn(aPlayersTab.VehicleOptions, "", 0.83)
-    guiSetAlpha(aPlayersTab.VehicleOptions, 0.80)
-    guiSetVisible(aPlayersTab.VehicleOptions, false)
-    for i = 0, 211 do
-        if (getVehicleNameFromModel(400 + i) ~= "") then
-            guiGridListSetItemText(
-                aPlayersTab.VehicleOptions,
-                guiGridListAddRow(aPlayersTab.VehicleOptions),
-                2,
-                getVehicleNameFromModel(400 + i),
-                false,
-                false
-            )
-        end
-    end
-    guiGridListRemoveColumn(aPlayersTab.VehicleOptions, 1)
+    aPlayersTab.GiveVehicle = guiCreateButton(0.71, 0.710, 0.27, 0.04, "Give Vehicle", true, tab)
 
     -- EVENTS
 
     addEventHandler("onClientGUIClick", aPlayersTab.Context, aPlayersTab.onContextClick)
     addEventHandler("onClientGUIClick", aPlayersTab.InfoContext, aPlayersTab.onContextClick)
     addEventHandler("onClientGUIClick", aPlayersTab.Tab, aPlayersTab.onClientClick)
-    addEventHandler("onClientGUIClick", aPlayersTab.VehicleOptions, aPlayersTab.onClientClick)
     addEventHandler("onClientGUIChanged", aPlayersTab.PlayerListSearch, aPlayersTab.onPlayerListSearch)
     addEventHandler("onClientPlayerChangeNick", root, aPlayersTab.onClientPlayerChangeNick)
     addEventHandler("aClientPlayerJoin", root, aPlayersTab.onClientPlayerJoin)
@@ -188,25 +157,11 @@ function aPlayersTab.onContextClick(button)
 end
 
 function aPlayersTab.onClientClick(button)
-    if (guiGetVisible(aPlayersTab.VehicleOptions) and (source ~= aPlayersTab.VehicleOptions)) then
-        guiSetVisible(aPlayersTab.VehicleOptions, false)
-    end
     if (guiGetVisible(aPlayersTab.SlapOptions) and (source ~= aPlayersTab.SlapOptions)) then
         guiSetVisible(aPlayersTab.SlapOptions, false)
     end
     if (button == "left") then
-        if (source == aPlayersTab.VehicleOptions) then
-            local item = guiGridListGetSelectedItem(aPlayersTab.VehicleOptions)
-            if (item ~= -1) then
-                aPlayersTab.CurrentVehicle =
-                    getVehicleModelFromName(guiGridListGetItemText(aPlayersTab.VehicleOptions, item, 1))
-                guiSetText(
-                    aPlayersTab.GiveVehicle,
-                    "Give: " .. guiGridListGetItemText(aPlayersTab.VehicleOptions, item, 1) .. " "
-                )
-                guiSetVisible(aPlayersTab.VehicleOptions, false)
-            end
-        elseif (source == aPlayersTab.SlapOptions) then
+        if (source == aPlayersTab.SlapOptions) then
             local item = guiGridListGetSelectedItem(aPlayersTab.SlapOptions)
             if (item ~= -1) then
                 aPlayersTab.CurrentSlap = guiGridListGetItemText(aPlayersTab.SlapOptions, item, 1)
@@ -220,9 +175,7 @@ function aPlayersTab.onClientClick(button)
         if (source == aPlayersTab.Messages) then
             aMessages.Open()
         elseif (getElementType(source) == "gui-button") then
-            if (source == aPlayersTab.GiveVehicle) then
-                guiBringToFront(aPlayersTab.VehicleDropDown)
-            elseif (source == aPlayersTab.Slap) then
+            if (source == aPlayersTab.Slap) then
                 guiBringToFront(aPlayersTab.SlapDropDown)
             end
             if (guiGridListGetSelectedItem(aPlayersTab.PlayerList) == -1) then
@@ -298,10 +251,10 @@ function aPlayersTab.onClientClick(button)
                     if (dimension) then
                         triggerServerEvent("aPlayer", getLocalPlayer(), player, "setdimension", dimension)
                     end
-                elseif (source == aPlayersTab.GiveVehicle) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "givevehicle", aPlayersTab.CurrentVehicle)
                 elseif (source == aPlayersTab.GiveWeapon) then
                     aWeapon.Show(player)
+                elseif (source == aPlayersTab.GiveVehicle) then
+                    aVehicle.Show(player)
                 elseif (source == aPlayersTab.VehicleFix) then
                     triggerServerEvent("aVehicle", getLocalPlayer(), player, "repair")
                 elseif (source == aPlayersTab.VehicleBlow) then
@@ -326,14 +279,6 @@ function aPlayersTab.onClientClick(button)
                     end
                 end
             end
-        elseif (source == aPlayersTab.VehicleDropDown) then
-            local x1, y1 = guiGetPosition(aAdminMain.Form, false)
-            local x2, y2 = guiGetPosition(aAdminMain.Panel, false)
-            local x3, y3 = guiGetPosition(aPlayersTab.Tab, false)
-            local x4, y4 = guiGetPosition(aPlayersTab.GiveVehicle, false)
-            guiSetPosition(aPlayersTab.VehicleOptions, x1 + x2 + x3 + x4, y1 + y2 + y3 + y4 + 23, false)
-            guiSetVisible(aPlayersTab.VehicleOptions, true)
-            guiBringToFront(aPlayersTab.VehicleOptions)
         elseif (source == aPlayersTab.SlapDropDown) then
             guiSetVisible(aPlayersTab.SlapOptions, true)
             guiBringToFront(aPlayersTab.SlapOptions)
