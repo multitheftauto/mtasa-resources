@@ -76,6 +76,7 @@
   <script src="client/widgets/admin_warp.lua" 			  	type="client" />
   <script src="client/widgets/admin_report.lua" 		  	type="client" />
   <script src="client/widgets/admin_acl.lua" 			    type="client" />
+  <script src="client/widgets/admin_weapon.lua"	        	type="client" />
 
   <html src="http/screenshots.htm" />
   <html src="http/screenshot.htm" />
@@ -87,6 +88,7 @@
   <config src="conf/weathers.xml" 					        type="client" />
   <config src="conf/upgrades.xml" 					        type="client" />
   <config src="conf/skins.xml" 						        type="client" />
+  <config src="conf/weapons.xml" 						        type="client" />
   <config src="conf/stats.xml" 						        type="client" />
   <config src="conf/messages.xml"					        type="server" />
   <config src="conf/commands.xml"					        type="server" />

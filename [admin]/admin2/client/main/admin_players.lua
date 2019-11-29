@@ -99,26 +99,7 @@ function aPlayersTab.Create(tab)
     aPlayersTab.SetTeam = guiCreateButton(0.85, 0.440, 0.13, 0.04, "Set Team", true, tab, "setteam")
     aPlayersTab.SetDimension = guiCreateButton(0.71, 0.755, 0.13, 0.04, "Set Dimens.", true, tab, "setdimension")
     aPlayersTab.SetInterior = guiCreateButton(0.85, 0.755, 0.13, 0.04, "Set Interior", true, tab, "setinterior")
-    aPlayersTab.GiveWeapon =
-        guiCreateButton(0.71, 0.485, 0.27, 0.04, "Give: " .. getWeaponNameFromID(aPlayersTab.CurrentWeapon), true, tab)
-    aPlayersTab.WeaponDropDown = guiCreateInnerImage("client\\images\\dropdown.png", aPlayersTab.GiveWeapon, true)
-    aPlayersTab.WeaponOptions = guiCreateGridList(0.71, 0.485, 0.27, 0.48, true, tab)
-    guiGridListAddColumn(aPlayersTab.WeaponOptions, "", 0.83)
-    guiGridListAddColumn(aPlayersTab.WeaponOptions, "", 0.83) -- that's a hack to remove spaces in the first column
-    guiSetVisible(aPlayersTab.WeaponOptions, false)
-    for i = 1, 46 do
-        if (getWeaponNameFromID(i) ~= false) then
-            guiGridListSetItemText(
-                aPlayersTab.WeaponOptions,
-                guiGridListAddRow(aPlayersTab.WeaponOptions),
-                2,
-                getWeaponNameFromID(i),
-                false,
-                false
-            )
-        end
-    end
-    guiGridListRemoveColumn(aPlayersTab.WeaponOptions, 1)
+    aPlayersTab.GiveWeapon = guiCreateButton(0.71, 0.485, 0.27, 0.04, "Give Weapon", true, tab)
     aPlayersTab.SetMoney = guiCreateButton(0.71, 0.530, 0.13, 0.04, "Set Money", true, tab, "setmoney")
     aPlayersTab.SetStats = guiCreateButton(0.85, 0.530, 0.13, 0.04, "Set Stats", true, tab, "setstat")
     aPlayersTab.JetPack = guiCreateButton(0.71, 0.575, 0.27, 0.04, "Give JetPack", true, tab, "jetpack")
@@ -207,9 +188,6 @@ function aPlayersTab.onContextClick(button)
 end
 
 function aPlayersTab.onClientClick(button)
-    if (guiGetVisible(aPlayersTab.WeaponOptions) and (source ~= aPlayersTab.WeaponOptions)) then
-        guiSetVisible(aPlayersTab.WeaponOptions, false)
-    end
     if (guiGetVisible(aPlayersTab.VehicleOptions) and (source ~= aPlayersTab.VehicleOptions)) then
         guiSetVisible(aPlayersTab.VehicleOptions, false)
     end
@@ -217,17 +195,7 @@ function aPlayersTab.onClientClick(button)
         guiSetVisible(aPlayersTab.SlapOptions, false)
     end
     if (button == "left") then
-        if (source == aPlayersTab.WeaponOptions) then
-            local item = guiGridListGetSelectedItem(aPlayersTab.WeaponOptions)
-            if (item ~= -1) then
-                aPlayersTab.CurrentWeapon =
-                    getWeaponIDFromName(guiGridListGetItemText(aPlayersTab.WeaponOptions, item, 1))
-                local wep = guiGridListGetItemText(aPlayersTab.WeaponOptions, item, 1)
-                wep = string.gsub(wep, "Combat Shotgun", "Combat SG")
-                guiSetText(aPlayersTab.GiveWeapon, "Give: " .. wep .. " ")
-                guiSetVisible(aPlayersTab.WeaponOptions, false)
-            end
-        elseif (source == aPlayersTab.VehicleOptions) then
+        if (source == aPlayersTab.VehicleOptions) then
             local item = guiGridListGetSelectedItem(aPlayersTab.VehicleOptions)
             if (item ~= -1) then
                 aPlayersTab.CurrentVehicle =
@@ -254,8 +222,6 @@ function aPlayersTab.onClientClick(button)
         elseif (getElementType(source) == "gui-button") then
             if (source == aPlayersTab.GiveVehicle) then
                 guiBringToFront(aPlayersTab.VehicleDropDown)
-            elseif (source == aPlayersTab.GiveWeapon) then
-                guiBringToFront(aPlayersTab.WeaponDropDown)
             elseif (source == aPlayersTab.Slap) then
                 guiBringToFront(aPlayersTab.SlapDropDown)
             end
@@ -335,14 +301,7 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.GiveVehicle) then
                     triggerServerEvent("aPlayer", getLocalPlayer(), player, "givevehicle", aPlayersTab.CurrentVehicle)
                 elseif (source == aPlayersTab.GiveWeapon) then
-                    triggerServerEvent(
-                        "aPlayer",
-                        getLocalPlayer(),
-                        player,
-                        "giveweapon",
-                        aPlayersTab.CurrentWeapon,
-                        aPlayersTab.CurrentAmmo
-                    )
+                    aWeapon.Show(player)
                 elseif (source == aPlayersTab.VehicleFix) then
                     triggerServerEvent("aVehicle", getLocalPlayer(), player, "repair")
                 elseif (source == aPlayersTab.VehicleBlow) then
@@ -370,9 +329,6 @@ function aPlayersTab.onClientClick(button)
             guiSetPosition(aPlayersTab.VehicleOptions, x1 + x2 + x3 + x4, y1 + y2 + y3 + y4 + 23, false)
             guiSetVisible(aPlayersTab.VehicleOptions, true)
             guiBringToFront(aPlayersTab.VehicleOptions)
-        elseif (source == aPlayersTab.WeaponDropDown) then
-            guiSetVisible(aPlayersTab.WeaponOptions, true)
-            guiBringToFront(aPlayersTab.WeaponOptions)
         elseif (source == aPlayersTab.SlapDropDown) then
             guiSetVisible(aPlayersTab.SlapOptions, true)
             guiBringToFront(aPlayersTab.SlapOptions)
@@ -409,18 +365,6 @@ function aPlayersTab.onClientClick(button)
                 guiSetText(aPlayersTab.Vehicle, "Vehicle: N/A")
                 guiSetText(aPlayersTab.VehicleHealth, "Vehicle Health: 0%")
                 guiSetVisible(aPlayersTab.Flag, false)
-            end
-        end
-    elseif (button == "right") then
-        if (source == aPlayersTab.GiveWeapon) then
-            local ammo = inputBox("Weapon Ammo", "Enter ammo value between 1 and 9999", "100")
-            if (ammo) then
-                ammo = tonumber(ammo)
-                if ((ammo) and (ammo > 0) and (ammo < 10000)) then
-                    aPlayersTab.CurrentAmmo = ammo
-                    return
-                end
-                messageBox("Invalid ammo value", MB_ERROR)
             end
         end
     end
