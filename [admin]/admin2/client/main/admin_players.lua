@@ -7,6 +7,8 @@
 *	Original File by lil_Toady
 *
 **************************************]]
+local SLAP_HP_PENALTY = 30
+
 aPlayersTab = {
     CurrentVehicle = 429,
     CurrentWeapon = 30,
@@ -31,30 +33,15 @@ function aPlayersTab.Create(tab)
 
     aPlayersTab.ColorCodes = guiCreateCheckBox(0.02, 0.95, 0.20, 0.04, "Hide color codes", true, true, tab)
     aPlayersTab.Refresh()
+
     aPlayersTab.Kick = guiCreateButton(0.71, 0.125, 0.13, 0.04, "Kick", true, tab, "kick")
     aPlayersTab.Ban = guiCreateButton(0.85, 0.125, 0.13, 0.04, "Ban", true, tab, "ban")
     aPlayersTab.Mute = guiCreateButton(0.71, 0.170, 0.13, 0.04, "Mute", true, tab, "mute")
     aPlayersTab.Freeze = guiCreateButton(0.85, 0.170, 0.13, 0.04, "Freeze", true, tab, "freeze")
     aPlayersTab.Spectate = guiCreateButton(0.71, 0.215, 0.13, 0.04, "Spectate", true, tab, "spectate")
     aPlayersTab.Slap =
-        guiCreateButton(0.85, 0.215, 0.13, 0.04, "Slap! " .. aPlayersTab.CurrentSlap .. " _", true, tab, "slap")
-    aPlayersTab.SlapDropDown = guiCreateInnerImage("client\\images\\dropdown.png", aPlayersTab.Slap, true)
-    aPlayersTab.SlapOptions = guiCreateGridList(0.85, 0.215, 0.13, 0.42, true, tab)
-    guiGridListSetSortingEnabled(aPlayersTab.SlapOptions, false)
-    guiGridListAddColumn(aPlayersTab.SlapOptions, "", 0.60)
-    guiGridListAddColumn(aPlayersTab.SlapOptions, "", 0.60)
-    guiSetVisible(aPlayersTab.SlapOptions, false)
-    for i = 0, 5 do
-        guiGridListSetItemText(
-            aPlayersTab.SlapOptions,
-            guiGridListAddRow(aPlayersTab.SlapOptions),
-            2,
-            tostring(i * 20),
-            false,
-            false
-        )
-    end
-    guiGridListRemoveColumn(aPlayersTab.SlapOptions, 1)
+        guiCreateButton(0.85, 0.215, 0.13, 0.04, "Slap! (-"..SLAP_HP_PENALTY.."hp)", true, tab, "slap")
+    
     aPlayersTab.SetNick = guiCreateButton(0.71, 0.260, 0.13, 0.04, "Set nick", true, tab, "setnick")
     aPlayersTab.Shout = guiCreateButton(0.85, 0.260, 0.13, 0.04, "Shout!", true, tab, "shout")
     aPlayersTab.Admin = guiCreateButton(0.71, 0.305, 0.27, 0.04, "Give admin rights", true, tab, "setgroup")
@@ -93,6 +80,7 @@ function aPlayersTab.Create(tab)
     guiSetContextMenu(aPlayersTab.PositionZ, aPlayersTab.InfoContext)
     aPlayersTab.Dimension = guiCreateLabel(0.24, 0.755, 0.20, 0.04, "Dimension: 0", true, tab)
     aPlayersTab.Interior = guiCreateLabel(0.45, 0.755, 0.20, 0.04, "Interior: 0", true, tab)
+
     aPlayersTab.SetHealth = guiCreateButton(0.71, 0.395, 0.13, 0.04, "Set Health", true, tab, "sethealth")
     aPlayersTab.SetArmour = guiCreateButton(0.85, 0.395, 0.13, 0.04, "Set Armour", true, tab, "setarmour")
     aPlayersTab.SetSkin = guiCreateButton(0.71, 0.440, 0.13, 0.04, "Set Skin", true, tab, "setskin")
@@ -103,6 +91,7 @@ function aPlayersTab.Create(tab)
     aPlayersTab.SetMoney = guiCreateButton(0.71, 0.530, 0.13, 0.04, "Set Money", true, tab, "setmoney")
     aPlayersTab.SetStats = guiCreateButton(0.85, 0.530, 0.13, 0.04, "Set Stats", true, tab, "setstat")
     aPlayersTab.JetPack = guiCreateButton(0.71, 0.575, 0.27, 0.04, "Give JetPack", true, tab, "jetpack")
+
     guiCreateHeader(0.23, 0.805, 0.20, 0.04, "Vehicle:", true, tab)
     aPlayersTab.Vehicle = guiCreateLabel(0.24, 0.850, 0.35, 0.04, "Vehicle: N/A", true, tab)
     aPlayersTab.VehicleHealth = guiCreateLabel(0.24, 0.895, 0.25, 0.04, "Vehicle Health: 0%", true, tab)
@@ -157,27 +146,10 @@ function aPlayersTab.onContextClick(button)
 end
 
 function aPlayersTab.onClientClick(button)
-    if (guiGetVisible(aPlayersTab.SlapOptions) and (source ~= aPlayersTab.SlapOptions)) then
-        guiSetVisible(aPlayersTab.SlapOptions, false)
-    end
     if (button == "left") then
-        if (source == aPlayersTab.SlapOptions) then
-            local item = guiGridListGetSelectedItem(aPlayersTab.SlapOptions)
-            if (item ~= -1) then
-                aPlayersTab.CurrentSlap = guiGridListGetItemText(aPlayersTab.SlapOptions, item, 1)
-                guiSetText(aPlayersTab.Slap, "Slap! " .. aPlayersTab.CurrentSlap .. " _")
-                if (aSpecSlap) then
-                    guiSetText(aSpecSlap, "Slap! " .. aPlayersTab.CurrentSlap .. "hp")
-                end
-                guiSetVisible(aPlayersTab.SlapOptions, false)
-            end
-        end
         if (source == aPlayersTab.Messages) then
             aMessages.Open()
         elseif (getElementType(source) == "gui-button") then
-            if (source == aPlayersTab.Slap) then
-                guiBringToFront(aPlayersTab.SlapDropDown)
-            end
             if (guiGridListGetSelectedItem(aPlayersTab.PlayerList) == -1) then
                 messageBox("No player selected!", MB_ERROR, MB_OK)
             else
@@ -194,7 +166,7 @@ function aPlayersTab.onClientClick(button)
                         triggerServerEvent("aPlayer", getLocalPlayer(), player, "ban", reason)
                     end
                 elseif (source == aPlayersTab.Slap) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap", aPlayersTab.CurrentSlap)
+                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap", SLAP_PENALTY_HP)
                 elseif (source == aPlayersTab.Mute) then
                     triggerServerEvent(
                         "aPlayer",
@@ -279,9 +251,6 @@ function aPlayersTab.onClientClick(button)
                     end
                 end
             end
-        elseif (source == aPlayersTab.SlapDropDown) then
-            guiSetVisible(aPlayersTab.SlapOptions, true)
-            guiBringToFront(aPlayersTab.SlapOptions)
         elseif (source == aPlayersTab.ColorCodes) then
             aPlayersTab.Refresh()
         elseif (source == aPlayersTab.PlayerList) then
