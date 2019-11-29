@@ -309,7 +309,12 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.VehicleDestroy) then
                     triggerServerEvent("aVehicle", getLocalPlayer(), player, "destroyvehicle")
                 elseif (source == aPlayersTab.VehicleCustomize) then
-                    aVehicle.Open(getPedOccupiedVehicle(player))
+                    local vehicle = getPedOccupiedVehicle(player)
+                    if not isElement(vehicle) then
+                        messageBox("Player is not in a vehicle!", MB_ERROR)
+                    else
+                        aVehicleUpgrades.Open(player, vehicle)
+                    end
                 elseif (source == aPlayersTab.Admin) then
                     if
                         (aPlayers[player]["admin"] and

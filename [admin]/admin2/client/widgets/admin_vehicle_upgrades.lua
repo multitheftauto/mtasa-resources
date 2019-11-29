@@ -2,24 +2,24 @@
 *
 *	Multi Theft Auto - Admin Panel
 *
-*	client\widgets\admin_stats.lua
+*	client\widgets\admin_vehicle_upgrades.lua
 *
 *	Original File by lil_Toady
 *
 **************************************]]
-aVehicle = {
+aVehicleUpgrades = {
     Form = nil,
     Upgrades = {},
     Names = {},
     Last = nil
 }
 
-function aVehicle.Open(vehicle)
-    if (not aVehicle.Form) then
+function aVehicleUpgrades.Open(player, vehicle)
+    if (not aVehicleUpgrades.Form) then
         local x, y = guiGetScreenSize()
-        aVehicle.Form = guiCreateWindow(x / 2 - 300, y / 2 - 150, 600, 450, "Vehicle Customizations", false)
+        aVehicleUpgrades.Form = guiCreateWindow(x / 2 - 300, y / 2 - 150, 600, 450, "Vehicle Customizations", false)
 
-        aVehicle.Names = {}
+        aVehicleUpgrades.Names = {}
         local node = xmlLoadFile("conf\\upgrades.xml")
         if (node) then
             local upgrades = 0
@@ -27,7 +27,7 @@ function aVehicle.Open(vehicle)
                 local upgrade = xmlFindChild(node, "upgrade", upgrades)
                 local id = tonumber(xmlNodeGetAttribute(upgrade, "id"))
                 local name = xmlNodeGetAttribute(upgrade, "name")
-                aVehicle.Names[id] = name
+                aVehicleUpgrades.Names[id] = name
                 upgrades = upgrades + 1
             end
         end
@@ -42,176 +42,164 @@ function aVehicle.Open(vehicle)
                     0.05,
                     getVehicleUpgradeSlotName(i - 1) .. ":",
                     true,
-                    aVehicle.Form
+                    aVehicleUpgrades.Form
                 )
-                aVehicle.Upgrades[c] = {}
-                aVehicle.Upgrades[c].id = i - 1
-                aVehicle.Upgrades[c].combo =
-                    guiCreateComboBox(0.25, 0.05 * (c + 1), 0.27, 0.248, "None", true, aVehicle.Form)
-                aVehicle.Upgrades[c].label =
-                    guiCreateLabel(0.54, 0.05 * (c + 1), 0.05, 0.07, "(0)", true, aVehicle.Form)
+                aVehicleUpgrades.Upgrades[c] = {}
+                aVehicleUpgrades.Upgrades[c].id = i - 1
+                aVehicleUpgrades.Upgrades[c].combo =
+                    guiCreateComboBox(0.25, 0.05 * (c + 1), 0.27, 0.248, "None", true, aVehicleUpgrades.Form)
+                aVehicleUpgrades.Upgrades[c].label =
+                    guiCreateLabel(0.54, 0.05 * (c + 1), 0.05, 0.07, "(0)", true, aVehicleUpgrades.Form)
                 c = c + 1
             end
         end
 
-        aVehicle.UpgradeAll = guiCreateButton(0.04, 0.92, 0.15, 0.05, "Total pimp", true, aVehicle.Form)
-        aVehicle.RemoveAll = guiCreateButton(0.20, 0.92, 0.15, 0.05, "Remove All", true, aVehicle.Form)
-        aVehicle.Upgrade = guiCreateButton(0.375, 0.92, 0.20, 0.05, "Pimp", true, aVehicle.Form)
+        aVehicleUpgrades.UpgradeAll = guiCreateButton(0.04, 0.92, 0.15, 0.05, "Upgrade all", true, aVehicleUpgrades.Form)
+        aVehicleUpgrades.RemoveAll = guiCreateButton(0.20, 0.92, 0.15, 0.05, "Remove All", true, aVehicleUpgrades.Form)
+        aVehicleUpgrades.Upgrade = guiCreateButton(0.375, 0.92, 0.20, 0.05, "Upgrade", true, aVehicleUpgrades.Form)
 
-        guiCreateStaticImage(0.60, 0.10, 0.002, 0.80, "client\\images\\dot.png", true, aVehicle.Form)
+        guiCreateStaticImage(0.60, 0.10, 0.002, 0.80, "client\\images\\dot.png", true, aVehicleUpgrades.Form)
 
-        guiCreateLabel(0.63, 0.10, 0.15, 0.05, "Paint job:", true, aVehicle.Form)
-        aVehicle.Paintjob = guiCreateEdit(0.79, 0.10, 0.09, 0.048, "0", true, aVehicle.Form)
-        aVehicle.PaintjobDrop =
-            guiCreateStaticImage(0.845, 0.10, 0.035, 0.048, "client\\images\\dropdown.png", true, aVehicle.Form)
-        aVehicle.PaintjobList = guiCreateGridList(0.79, 0.10, 0.09, 0.25, true, aVehicle.Form)
-        guiEditSetReadOnly(aVehicle.Paintjob, true)
-        guiGridListAddColumn(aVehicle.PaintjobList, "", 0.65)
-        guiSetVisible(aVehicle.PaintjobList, false)
-
-        for i = 0, 3 do
-            guiGridListSetItemText(
-                aVehicle.PaintjobList,
-                guiGridListAddRow(aVehicle.PaintjobList),
-                1,
-                tostring(i),
-                false,
-                false
-            )
+        guiCreateLabel(0.63, 0.10, 0.15, 0.05, "Paint job:", true, aVehicleUpgrades.Form)
+        aVehicleUpgrades.Paintjob = guiCreateComboBox(0.79, 0.10, 0.09, 0.25, "0", true, aVehicleUpgrades.Form)
+        for i=0,3 do
+            iprint(i, guiComboBoxAddItem(aVehicleUpgrades.Paintjob, tostring(i)))
         end
 
-        aVehicle.PaintjobSet = guiCreateButton(0.90, 0.10, 0.07, 0.048, "Set", true, aVehicle.Form)
-        guiCreateLabel(0.63, 0.15, 0.15, 0.05, "Vehicle Color:", true, aVehicle.Form)
-        guiCreateLabel(0.63, 0.20, 0.15, 0.05, "Color1:", true, aVehicle.Form)
-        guiCreateLabel(0.63, 0.25, 0.15, 0.05, "Color2:", true, aVehicle.Form)
-        guiCreateLabel(0.63, 0.30, 0.15, 0.05, "Color3:", true, aVehicle.Form)
-        guiCreateLabel(0.63, 0.35, 0.15, 0.05, "Color4:", true, aVehicle.Form)
-        aVehicle.Color1 = guiCreateEdit(0.79, 0.20, 0.09, 0.048, "0", true, aVehicle.Form)
-        guiEditSetMaxLength(aVehicle.Color1, 3)
-        aVehicle.Color2 = guiCreateEdit(0.79, 0.25, 0.09, 0.048, "0", true, aVehicle.Form)
-        guiEditSetMaxLength(aVehicle.Color2, 3)
-        aVehicle.Color3 = guiCreateEdit(0.79, 0.30, 0.09, 0.048, "0", true, aVehicle.Form)
-        guiEditSetMaxLength(aVehicle.Color3, 3)
-        aVehicle.Color4 = guiCreateEdit(0.79, 0.35, 0.09, 0.048, "0", true, aVehicle.Form)
-        guiEditSetMaxLength(aVehicle.Color4, 3)
-        guiCreateLabel(0.90, 0.20, 0.08, 0.05, "(0-126)", true, aVehicle.Form)
-        guiCreateLabel(0.90, 0.25, 0.08, 0.05, "(0-126)", true, aVehicle.Form)
-        guiCreateLabel(0.90, 0.30, 0.08, 0.05, "(0-126)", true, aVehicle.Form)
-        guiCreateLabel(0.90, 0.35, 0.08, 0.05, "(0-126)", true, aVehicle.Form)
-        aVehicle.ColorScheme = guiCreateButton(0.63, 0.41, 0.20, 0.05, "View color IDs", true, aVehicle.Form)
-        aVehicle.ColorSet = guiCreateButton(0.84, 0.41, 0.14, 0.05, "Set", true, aVehicle.Form)
-        aVehicle.UpgradeNames =
-            guiCreateCheckBox(0.63, 0.60, 0.30, 0.04, "Show upgrade names", false, true, aVehicle.Form)
-        if (aGetSetting("aVehicleUpgradeNames")) then
-            guiCheckBoxSetSelected(aVehicle.UpgradeNames, true)
+        aVehicleUpgrades.PaintjobSet = guiCreateButton(0.90, 0.10, 0.07, 0.048, "Set", true, aVehicleUpgrades.Form)
+        guiCreateLabel(0.63, 0.15, 0.15, 0.05, "Vehicle Color:", true, aVehicleUpgrades.Form)
+        guiCreateLabel(0.63, 0.20, 0.15, 0.05, "Color1:", true, aVehicleUpgrades.Form)
+        guiCreateLabel(0.63, 0.25, 0.15, 0.05, "Color2:", true, aVehicleUpgrades.Form)
+        guiCreateLabel(0.63, 0.30, 0.15, 0.05, "Color3:", true, aVehicleUpgrades.Form)
+        guiCreateLabel(0.63, 0.35, 0.15, 0.05, "Color4:", true, aVehicleUpgrades.Form)
+        aVehicleUpgrades.Color1 = guiCreateEdit(0.79, 0.20, 0.09, 0.048, "0", true, aVehicleUpgrades.Form)
+        guiEditSetMaxLength(aVehicleUpgrades.Color1, 3)
+        aVehicleUpgrades.Color2 = guiCreateEdit(0.79, 0.25, 0.09, 0.048, "0", true, aVehicleUpgrades.Form)
+        guiEditSetMaxLength(aVehicleUpgrades.Color2, 3)
+        aVehicleUpgrades.Color3 = guiCreateEdit(0.79, 0.30, 0.09, 0.048, "0", true, aVehicleUpgrades.Form)
+        guiEditSetMaxLength(aVehicleUpgrades.Color3, 3)
+        aVehicleUpgrades.Color4 = guiCreateEdit(0.79, 0.35, 0.09, 0.048, "0", true, aVehicleUpgrades.Form)
+        guiEditSetMaxLength(aVehicleUpgrades.Color4, 3)
+        guiCreateLabel(0.90, 0.20, 0.08, 0.05, "(0-126)", true, aVehicleUpgrades.Form)
+        guiCreateLabel(0.90, 0.25, 0.08, 0.05, "(0-126)", true, aVehicleUpgrades.Form)
+        guiCreateLabel(0.90, 0.30, 0.08, 0.05, "(0-126)", true, aVehicleUpgrades.Form)
+        guiCreateLabel(0.90, 0.35, 0.08, 0.05, "(0-126)", true, aVehicleUpgrades.Form)
+        aVehicleUpgrades.ColorScheme = guiCreateButton(0.63, 0.41, 0.20, 0.05, "View color IDs", true, aVehicleUpgrades.Form)
+        aVehicleUpgrades.ColorSet = guiCreateButton(0.84, 0.41, 0.14, 0.05, "Set", true, aVehicleUpgrades.Form)
+        aVehicleUpgrades.UpgradeNames =
+            guiCreateCheckBox(0.63, 0.60, 0.30, 0.04, "Show upgrade names", false, true, aVehicleUpgrades.Form)
+        if (aGetSetting("aVehicleUpgrades.UpgradeNames")) then
+            guiCheckBoxSetSelected(aVehicleUpgrades.UpgradeNames, true)
         end
-        aVehicle.Close = guiCreateButton(0.86, 0.92, 0.19, 0.05, "Close", true, aVehicle.Form)
+        aVehicleUpgrades.Close = guiCreateButton(0.86, 0.92, 0.19, 0.05, "Close", true, aVehicleUpgrades.Form)
 
-        aVehicle.ColorForm = guiCreateWindow(x / 2 - 280, y / 2 - 150, 540, 215, "Vehicle Color Scheme", false)
-        guiCreateStaticImage(0.01, 0.08, 0.98, 0.80, "client\\images\\colorscheme.png", true, aVehicle.ColorForm)
-        aVehicle.ColorClose = guiCreateButton(0.86, 0.86, 0.19, 0.15, "Close", true, aVehicle.ColorForm)
-        guiSetVisible(aVehicle.ColorForm, false)
-        guiSetVisible(aVehicle.Form, false)
+        aVehicleUpgrades.ColorForm = guiCreateWindow(x / 2 - 280, y / 2 - 150, 540, 215, "Vehicle Color Scheme", false)
+        guiCreateStaticImage(0.01, 0.08, 0.98, 0.80, "client\\images\\colorscheme.png", true, aVehicleUpgrades.ColorForm)
+        aVehicleUpgrades.ColorClose = guiCreateButton(0.86, 0.86, 0.19, 0.15, "Close", true, aVehicleUpgrades.ColorForm)
+        guiSetVisible(aVehicleUpgrades.ColorForm, false)
+        guiSetVisible(aVehicleUpgrades.Form, false)
 
-        addEventHandler("onClientGUIClick", aVehicle.Form, aVehicle.onClick)
-        addEventHandler("onClientGUIClick", aVehicle.ColorClose, aVehicle.onClick)
+        addEventHandler("onClientGUIClick", aVehicleUpgrades.Form, aVehicleUpgrades.onClick)
+        addEventHandler("onClientGUIClick", aVehicleUpgrades.ColorClose, aVehicleUpgrades.onClick)
         --Register With Admin Form
-        aRegister("VehicleCustomize", aVehicle.Form, aVehicle.Customize, aVehicle.CustomizeClose)
+        aRegister("VehicleCustomize", aVehicleUpgrades.Form, aVehicleUpgrades.Customize, aVehicleUpgrades.CustomizeClose)
     end
     if (vehicle) then
         local update = true
-        if (isElement(aVehicle.Last)) then
-            if (getElementModel(aVehicle.Last) == getElementModel(vehicle)) then
+        if (isElement(aVehicleUpgrades.Last)) then
+            if (getElementModel(aVehicleUpgrades.Last) == getElementModel(vehicle)) then
                 update = false
             end
         end
-        guiSetText(aVehicle.Form, "Vehicle Customizations (" .. tostring(getVehicleName(vehicle)) .. ")")
-        aVehicle.Last = vehicle
+        guiSetText(aVehicleUpgrades.Form, "Vehicle Customizations (" .. tostring(getVehicleName(vehicle)) .. ")")
+        aVehicleUpgrades.Last = vehicle
         if (update) then
-            aVehicle.CheckUpgrades(vehicle)
+            aVehicleUpgrades.CheckUpgrades(vehicle)
         end
-        aVehicle.CheckCurrentUpgrades(vehicle)
-        guiSetVisible(aVehicle.Form, true)
-        guiBringToFront(aVehicle.Form)
+        aVehicleUpgrades.CheckCurrentUpgrades(vehicle)
+        aVehicleUpgrades.CustomizeVehicle = vehicle
+        aVehicleUpgrades.CustomizePlayer = player
+        guiSetVisible(aVehicleUpgrades.Form, true)
+        guiBringToFront(aVehicleUpgrades.Form)
     end
 end
 
-function aVehicle.CustomizeClose(destroy)
+function aVehicleUpgrades.CustomizeClose(destroy)
     if (destroy) then
-        if (aVehicle.Form) then
-            removeEventHandler("onClientGUIClick", aVehicleForm, aClientVehicleClick)
-            removeEventHandler("onClientGUIDoubleClick", aVehicleForm, aClientVehicleDoubleClick)
-            removeEventHandler("onClientGUIClick", aVehicleColorClose, aClientVehicleClick)
-            destroyElement(aVehicle.Form)
-            destroyElement(aVehicle.ColorForm)
-            aVehicleCustomizePlayer = nil
-            aVehicleCustomizeVehicle = nil
-            aVehicleForm = nil
-            aVehicleUpgrades = {}
+        if (aVehicleUpgrades.Form) then
+            removeEventHandler("onClientGUIClick", aVehicleUpgradesForm, aClientVehicleClick)
+            removeEventHandler("onClientGUIDoubleClick", aVehicleUpgradesForm, aClientVehicleDoubleClick)
+            removeEventHandler("onClientGUIClick", aVehicleUpgrades.ColorClose, aClientVehicleClick)
+            destroyElement(aVehicleUpgrades.Form)
+            destroyElement(aVehicleUpgrades.ColorForm)
+            aVehicleUpgrades.CustomizePlayer = nil
+            aVehicleUpgrades.CustomizeVehicle = nil
+            aVehicleUpgradesForm = nil
+            aVehicleUpgrades.Upgrades = {}
         end
     else
-        guiSetVisible(aVehicle.Form, false)
-        guiSetVisible(aVehicle.ColorForm, false)
+        guiSetVisible(aVehicleUpgrades.Form, false)
+        guiSetVisible(aVehicleUpgrades.ColorForm, false)
     end
 end
 
-function aVehicle.CheckUpgrades(vehicle)
+function aVehicleUpgrades.CheckUpgrades(vehicle)
     if (vehicle) then
-        for slot, v in ipairs(aVehicle.Upgrades) do
-            guiComboBoxClear(aVehicle.Upgrades[slot].combo)
-            local row = guiComboBoxAddItem(aVehicle.Upgrades[slot].combo, "None")
+        for slot, v in ipairs(aVehicleUpgrades.Upgrades) do
+            guiComboBoxClear(aVehicleUpgrades.Upgrades[slot].combo)
+            local row = guiComboBoxAddItem(aVehicleUpgrades.Upgrades[slot].combo, "None")
 
-            local upgrades = getVehicleCompatibleUpgrades(vehicle, aVehicle.Upgrades[slot].id)
-            guiSetText(aVehicle.Upgrades[slot].label, "(" .. #upgrades .. ")")
-            guiSetText(aVehicle.Upgrades[slot].combo, "None")
-            if (getVehicleUpgradeOnSlot(vehicle, aVehicle.Upgrades[slot].id) > 0) then
-                if (guiCheckBoxGetSelected(aVehicle.UpgradeNames)) then
+            local upgrades = getVehicleCompatibleUpgrades(vehicle, aVehicleUpgrades.Upgrades[slot].id)
+            guiSetText(aVehicleUpgrades.Upgrades[slot].label, "(" .. #upgrades .. ")")
+            guiSetText(aVehicleUpgrades.Upgrades[slot].combo, "None")
+            if (getVehicleUpgradeOnSlot(vehicle, aVehicleUpgrades.Upgrades[slot].id) > 0) then
+                if (guiCheckBoxGetSelected(aVehicleUpgrades.UpgradeNames)) then
                     guiSetText(
-                        aVehicle.Upgrades[slot].combo,
-                        tostring(aUpgradeNames[getVehicleUpgradeOnSlot(vehicle, aVehicle.Upgrades[slot].id)])
+                        aVehicleUpgrades.Upgrades[slot].combo,
+                        tostring(aVehicleUpgrades.Names[getVehicleUpgradeOnSlot(vehicle, aVehicleUpgrades.Upgrades[slot].id)])
                     )
                 else
                     guiSetText(
-                        aVehicle.Upgrades[slot].combo,
-                        tostring(getVehicleUpgradeOnSlot(vehicle, aVehicle.Upgrades[slot].id))
+                        aVehicleUpgrades.Upgrades[slot].combo,
+                        tostring(getVehicleUpgradeOnSlot(vehicle, aVehicleUpgrades.Upgrades[slot].id))
                     )
                 end
             end
             for i, upgrade in ipairs(upgrades) do
-                if (guiCheckBoxGetSelected(aVehicle.UpgradeNames)) then
-                    guiComboBoxAddItem(aVehicle.Upgrades[slot].combo, tostring(aVehicle.Names[tonumber(upgrade)]))
+                if (guiCheckBoxGetSelected(aVehicleUpgrades.UpgradeNames)) then
+                    guiComboBoxAddItem(aVehicleUpgrades.Upgrades[slot].combo, tostring(aVehicleUpgrades.Names[tonumber(upgrade)]))
                 else
-                    guiComboBoxAddItem(aVehicle.Upgrades[slot].combo, tostring(upgrade))
+                    guiComboBoxAddItem(aVehicleUpgrades.Upgrades[slot].combo, tostring(upgrade))
                 end
             end
         end
     end
 end
 
-function aVehicle.CheckCurrentUpgrades(vehicle)
+function aVehicleUpgrades.CheckCurrentUpgrades(vehicle)
     if (vehicle) then
-        for slot, v in ipairs(aVehicle.Upgrades) do
-            if (getVehicleUpgradeOnSlot(vehicle, aVehicle.Upgrades[slot].id) > 0) then
-                if (guiCheckBoxGetSelected(aVehicle.UpgradeNames)) then
+        for slot, v in ipairs(aVehicleUpgrades.Upgrades) do
+            if (getVehicleUpgradeOnSlot(vehicle, aVehicleUpgrades.Upgrades[slot].id) > 0) then
+                if (guiCheckBoxGetSelected(aVehicleUpgrades.UpgradeNames)) then
                     guiSetText(
-                        aVehicle.Upgrades[slot].combo,
-                        tostring(aVehicle.Names[getVehicleUpgradeOnSlot(vehicle, aVehicle.Upgrades[slot].id)])
+                        aVehicleUpgrades.Upgrades[slot].combo,
+                        tostring(aVehicleUpgrades.Names[getVehicleUpgradeOnSlot(vehicle, aVehicleUpgrades.Upgrades[slot].id)])
                     )
                 else
                     guiSetText(
-                        aVehicle.Upgrades[slot].combo,
-                        tostring(getVehicleUpgradeOnSlot(vehicle, aVehicle.Upgrades[slot].id))
+                        aVehicleUpgrades.Upgrades[slot].combo,
+                        tostring(getVehicleUpgradeOnSlot(vehicle, aVehicleUpgrades.Upgrades[slot].id))
                     )
                 end
             else
-                guiSetText(aVehicle.Upgrades[slot].combo, "")
+                guiSetText(aVehicleUpgrades.Upgrades[slot].combo, "")
             end
         end
     end
 end
 
 function aGetVehicleUpgradeFromName(uname)
-    for id, name in pairs(aVehicle.Names) do
+    for id, name in pairs(aVehicleUpgrades.Names) do
         if (name == uname) then
             return id
         end
@@ -219,59 +207,51 @@ function aGetVehicleUpgradeFromName(uname)
     return false
 end
 
-function aVehicle.onClick(button, state)
-    if (source ~= aVehiclePaintjobList) then
-        guiSetVisible(aVehiclePaintjobList, false)
-    end
+function aVehicleUpgrades.onClick(button, state)
     if (button == "left") then
-        if (source == aVehiclePaintjob) then
-            guiBringToFront(aVehiclePaintjobDrop)
-        elseif (source == aVehicleClose) then
-            aVehicleCustomizeClose(false)
-        elseif (source == aVehicleColorClose) then
-            guiSetVisible(aVehicleColorForm, false)
-        elseif (source == aVehicleColorSet) then
+        if (source == aVehicleUpgrades.Close) then
+            aVehicleUpgrades.CustomizeClose(false)
+        elseif (source == aVehicleUpgrades.ColorClose) then
+            guiSetVisible(aVehicleUpgrades.ColorForm, false)
+        elseif (source == aVehicleUpgrades.ColorSet) then
             triggerServerEvent(
                 "aVehicle",
                 getLocalPlayer(),
-                aVehicleCustomizePlayer,
+                aVehicleUpgrades.CustomizePlayer,
                 "setcolor",
                 {
-                    guiGetText(aVehicleColor1),
-                    guiGetText(aVehicleColor2),
-                    guiGetText(aVehicleColor3),
-                    guiGetText(aVehicleColor4)
+                    guiGetText(aVehicleUpgrades.Color1),
+                    guiGetText(aVehicleUpgrades.Color2),
+                    guiGetText(aVehicleUpgrades.Color3),
+                    guiGetText(aVehicleUpgrades.Color4)
                 }
             )
-        elseif (source == aVehicleColorScheme) then
-            guiSetVisible(aVehicleColorForm, true)
-            guiBringToFront(aVehicleColorForm)
-        elseif (source == aVehicleUpgradeAll) then
-            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "customize", {"all"})
-            setTimer(aVehicleCheckCurrentUpgrades, 2000, 1, aVehicleCustomizeVehicle)
-        elseif (source == aVehicleRemoveAll) then
-            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "customize", {"remove"})
-            setTimer(aVehicleCheckCurrentUpgrades, 2000, 1, aVehicleCustomizeVehicle)
-        elseif (source == aVehiclePaintjobSet) then
+        elseif (source == aVehicleUpgrades.ColorScheme) then
+            guiSetVisible(aVehicleUpgrades.ColorForm, true)
+            guiBringToFront(aVehicleUpgrades.ColorForm)
+        elseif (source == aVehicleUpgrades.UpgradeAll) then
+            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleUpgrades.CustomizePlayer, "customize", {"all"})
+            setTimer(aVehicleUpgrades.CheckCurrentUpgrades, 2000, 1, aVehicleUpgrades.CustomizeVehicle)
+        elseif (source == aVehicleUpgrades.RemoveAll) then
+            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleUpgrades.CustomizePlayer, "customize", {"remove"})
+            setTimer(aVehicleUpgrades.CheckCurrentUpgrades, 2000, 1, aVehicleUpgrades.CustomizeVehicle)
+        elseif (source == aVehicleUpgrades.PaintjobSet) then
             triggerServerEvent(
                 "aVehicle",
                 getLocalPlayer(),
-                aVehicleCustomizePlayer,
+                aVehicleUpgrades.CustomizePlayer,
                 "setpaintjob",
-                tonumber(guiGetText(aVehiclePaintjob))
+                tonumber(guiComboBoxGetItemText(aVehicleUpgrades.Paintjob, guiComboBoxGetSelected(aVehicleUpgrades.Paintjob)))
             )
-        elseif (source == aVehiclePaintjobDrop) then
-            guiSetVisible(aVehiclePaintjobList, true)
-            guiBringToFront(aVehiclePaintjobList)
-        elseif (source == aVehicleUpgradeNames) then
-            aVehicleCheckUpgrades(aVehicleCustomizeVehicle)
-            aSetSetting("aVehicleUpgradeNames", guiCheckBoxGetSelected(aVehicleUpgradeNames))
-        elseif (source == aVehicleUpgrade) then
+        elseif (source == aVehicleUpgrades.UpgradeNames) then
+            aVehicleUpgrades.CheckUpgrades(aVehicleUpgrades.CustomizeVehicle)
+            aSetSetting("aVehicleUpgrades.UpgradeNames", guiCheckBoxGetSelected(aVehicleUpgrades.UpgradeNames))
+        elseif (source == aVehicleUpgrades.Upgrade) then
             local tableOut = {}
-            for id, element in ipairs(aVehicleUpgrades) do
-                local upgrade = guiGetText(element.edit)
+            for id, element in ipairs(aVehicleUpgrades.Upgrades) do
+                local upgrade = guiComboBoxGetItemText(element.combo, guiComboBoxGetSelected(element.combo))
                 if (upgrade) and (upgrade ~= "") then
-                    if (guiCheckBoxGetSelected(aVehicleUpgradeNames)) then
+                    if (guiCheckBoxGetSelected(aVehicleUpgrades.UpgradeNames)) then
                         local upgrade = aGetVehicleUpgradeFromName(upgrade)
                         if (upgrade) then
                             table.insert(tableOut, upgrade)
@@ -281,8 +261,8 @@ function aVehicle.onClick(button, state)
                     end
                 end
             end
-            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "customize", tableOut)
-            setTimer(aVehicleCheckCurrentUpgrades, 2000, 1, aVehicleCustomizeVehicle)
+            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleUpgrades.CustomizePlayer, "customize", tableOut)
+            setTimer(aVehicleUpgrades.CheckCurrentUpgrades, 2000, 1, aVehicleUpgrades.CustomizeVehicle)
         end
     end
 end
