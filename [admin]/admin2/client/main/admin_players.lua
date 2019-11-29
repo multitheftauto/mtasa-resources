@@ -180,8 +180,15 @@ function aPlayersTab.Create(tab)
         sync(SYNC_MESSAGES)
     end
 
-    bindKey("arrow_d", "down", aPlayersTab.onPlayerListScroll, 1)
-    bindKey("arrow_u", "down", aPlayersTab.onPlayerListScroll, -1)
+    --bindKey("arrow_d", "down", aPlayersTab.onPlayerListScroll, 1)
+    --bindKey("arrow_u", "down", aPlayersTab.onPlayerListScroll, -1)
+    -- bindKey will not work while the searchbar has input focus - here is a hack using onClientKey instead
+    addEventHandler("onClientKey", root, function(key, press)
+        if not (key == "arrow_u" or key == "arrow_d") then return end
+        if not press then return end
+        if not guiGetVisible(aAdminMain.Form) then return end
+        aPlayersTab.onPlayerListScroll(key, press and "down" or "up", key == "arrow_u" and -1 or 1)
+    end)
 end
 
 function aPlayersTab.onContextClick(button)
