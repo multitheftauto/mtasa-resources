@@ -191,9 +191,8 @@ function aServerTab.onClientClick(button)
                 triggerServerEvent("aServer", getLocalPlayer(), "setpassword", "")
             end
         elseif (source == aServerTab.Shutdown) then
-            local reason = inputBox("Shutdown", "Enter shut down reason:")
-            if (reason) then
-                triggerServerEvent("aServer", getLocalPlayer(), "shutdown", reason)
+            if (messageBox("Are you sure you want to shutdown the server?", MB_QUESTION, MB_YESNO )) then
+                triggerServerEvent("aServer", getLocalPlayer(), "shutdown")
             end
         elseif (source == aServerTab.ClearChat) then
             triggerServerEvent("aServer", getLocalPlayer(), "clearchat", "")
