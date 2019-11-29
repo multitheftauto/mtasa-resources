@@ -467,8 +467,8 @@ aFunctions = {
                 return false
             end
         end,
-        ["shutdown"] = function(reason)
-            shutdown(iif(reason, tostring(reason), nil))
+        ["shutdown"] = function()
+            shutdown("triggered by "..getPlayerName(source))
         end,
         ["clearchat"] = function()
             clearChatBox()
