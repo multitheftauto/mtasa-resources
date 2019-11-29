@@ -9,12 +9,7 @@
 **************************************]]
 local SLAP_HP_PENALTY = 30
 
-aPlayersTab = {
-    CurrentVehicle = 429,
-    CurrentWeapon = 30,
-    CurrentAmmo = 90,
-    CurrentSlap = 20
-}
+aPlayersTab = {}
 aPlayers = {}
 
 addEvent("aClientPlayerJoin", true)
@@ -502,10 +497,10 @@ function aPlayersTab.onRefresh()
 end
 
 function aPlayersTab.onClientResourceStop()
-    aSetSetting("currentWeapon", aCurrentWeapon)
+    --[[aSetSetting("currentWeapon", aCurrentWeapon)
     aSetSetting("currentAmmo", aCurrentAmmo)
     aSetSetting("currentVehicle", aCurrentVehicle)
-    aSetSetting("currentSlap", aCurrentSlap)
+    aSetSetting("currentSlap", aCurrentSlap)]]
 end
 
 function aPlayersTab.Refresh()
