@@ -42,10 +42,10 @@ function aAclTab.Create(tab)
 
     -- access matrix tab
     aAclTab.AccessTab = guiCreateTab("Access Matrix", aAclTab.Panel)
-    aAclTab.AccessSearch = guiCreateEdit(0.01, 0.02, 0.3, 0.045, "", true, aAclTab.AccessTab)
+    aAclTab.AccessSearch = guiCreateEdit(0.01, 0.0125, 0.3, 0.05, "", true, aAclTab.AccessTab)
     guiCreateInnerImage("client\\images\\search.png", aAclTab.AccessSearch)
     guiHandleInput(aAclTab.AccessSearch)
-    aAclTab.ViewTypes = guiCreateComboBox(0.69, 0.02, 0.3, 0.3, "Commands", true, aAclTab.AccessTab)
+    aAclTab.ViewTypes = guiCreateComboBox(0.69, 0.0075, 0.3, 0.3, "Commands", true, aAclTab.AccessTab)
     guiComboBoxAddItem(aAclTab.ViewTypes, "Commands")
     guiComboBoxSetSelected(aAclTab.ViewTypes, 1)
     guiComboBoxAddItem(aAclTab.ViewTypes, "Functions")
