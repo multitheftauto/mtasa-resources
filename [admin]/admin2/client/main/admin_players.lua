@@ -87,6 +87,8 @@ function aPlayersTab.Create(tab)
     aPlayersTab.GiveWeapon = guiCreateButton(0.71, 0.575, 0.27, 0.04, "Give Weapon", true, tab)
     aPlayersTab.JetPack = guiCreateButton(0.71, 0.625, 0.27, 0.04, "Give JetPack", true, tab, "jetpack")
     aPlayersTab.GiveVehicle = guiCreateButton(0.71, 0.675, 0.27, 0.04, "Give Vehicle", true, tab)
+    aPlayersTab.WarpTo = guiCreateButton(0.71, 0.725, 0.27, 0.04, "Warp to player", true, tab, "warp")
+    aPlayersTab.WarpPlayer = guiCreateButton(0.71, 0.775, 0.27, 0.04, "Warp player to...", true, tab, "warp")
 
     guiCreateHeader(0.23, 0.805, 0.20, 0.04, "Vehicle:", true, tab)
     aPlayersTab.Vehicle = guiCreateLabel(0.24, 0.850, 0.35, 0.04, "Vehicle: N/A", true, tab)
@@ -235,6 +237,14 @@ function aPlayersTab.onClientClick(button)
                     else
                         aVehicleUpgrades.Open(player, vehicle)
                     end
+                elseif (source == aPlayersTab.WarpTo) then
+                    if player == localPlayer then
+                        messageBox("You can't warp to yourself!", MB_ERROR)
+                    else
+                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "warp")
+                    end
+                elseif (source == aPlayersTab.WarpPlayer) then
+                    aPlayerWarp(player)
                 elseif (source == aPlayersTab.Admin) then
                     if
                         (aPlayers[player]["admin"] and

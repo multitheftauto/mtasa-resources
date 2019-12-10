@@ -259,10 +259,10 @@ aFunctions = {
         ["getscreen"] = function(player, quality)
             getPlayerScreen(player, source, quality)
         end,
-        ["wrap"] = function(player)
+        ["warp"] = function(player)
             warpPlayer(source, player)
         end,
-        ["wrapto"] = function(player, data)
+        ["warpto"] = function(player, data)
             warpPlayer(player, data)
             return true, getPlayerName(data)
         end
