@@ -50,7 +50,7 @@ function aAdminMain.Open()
         aAdminMain.AddTab("Bans", aBansTab, "bans")
         aAdminMain.AddTab("Admin Chat", aChatTab, "adminchat")
         aAdminMain.AddTab("Rights", aAclTab, "acl")
-        aAdminMain.AddTab("Network", aNetworkTab)
+        -- aAdminMain.AddTab("Network", aNetworkTab)
         aAdminMain.AddTab("Options", aOptionsTab)
 
         addEventHandler("onClientGUITabSwitched", aAdminMain.Panel, aAdminMain.Switch)
