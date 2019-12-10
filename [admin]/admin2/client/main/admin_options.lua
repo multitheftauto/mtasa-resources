@@ -18,7 +18,7 @@ function aOptionsTab.Create(tab)
     aOptionsTab.AdminChatSound =
         guiCreateCheckBox(0.05, 0.15, 0.47, 0.04, "Play sound on incoming admin chat message", aGetSetting("adminChatSound"), true, aOptionsTab.Tab)
 
-    guiCreateHeader(0.03, 0.30, 0.47, 0.04, "Appearance:", true, aOptionsTab.Tab)
+    --guiCreateHeader(0.03, 0.30, 0.47, 0.04, "Appearance:", true, aOptionsTab.Tab)
     guiCreateHeader(0.63, 0.05, 0.10, 0.05, "Account:", true, aOptionsTab.Tab)
     aOptionsTab.AutoLogin =
         guiCreateCheckBox(0.65, 0.10, 0.47, 0.04, "Auto-login by serial", false, true, aOptionsTab.Tab)
