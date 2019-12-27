@@ -7,8 +7,6 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-local SLAP_HP_PENALTY = 30
-
 aPlayersTab = {}
 aPlayers = {}
 
