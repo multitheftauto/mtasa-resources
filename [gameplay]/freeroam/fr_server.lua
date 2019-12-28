@@ -417,17 +417,19 @@ addEventHandler('onPlayerChat', root,
 	function(msg, type)
 		if type == 0 then
 			cancelEvent()
-			if chatTime[source] and chatTime[source] + tonumber(get("*chat/mainChatDelay")) > getTickCount() then
-				outputChatBox("Stop spamming main chat!", source, 255, 0, 0)
-				return
-			else
-				chatTime[source] = getTickCount()
-			end
-			if get("*chat/blockRepeatMessages") == "true" and lastChatMessage[source] and lastChatMessage[source] == msg then
-				outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
-				return
-			else
-				lastChatMessage[source] = msg
+			if not hasObjectPermissionTo(source, "command.kick") and not hasObjectPermissionTo(source, "command.mute") then
+				if chatTime[source] and chatTime[source] + tonumber(get("*chat/mainChatDelay")) > getTickCount() then
+					outputChatBox("Stop spamming main chat!", source, 255, 0, 0)
+					return
+				else
+					chatTime[source] = getTickCount()
+				end
+				if get("*chat/blockRepeatMessages") == "true" and lastChatMessage[source] and lastChatMessage[source] == msg then
+					outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
+					return
+				else
+					lastChatMessage[source] = msg
+				end
 			end
 			local r, g, b = getPlayerNametagColor(source)
 			outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
