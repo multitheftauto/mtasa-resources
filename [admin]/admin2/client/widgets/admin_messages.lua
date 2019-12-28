@@ -15,7 +15,7 @@ aMessages = {
 function aMessages.Open()
     if (not aMessages.Form) then
         local x, y = guiGetScreenSize()
-        aMessages.Form = guiCreateWindow(x / 2 - 250, y / 2 - 125, 500, 350, "View Messages", false)
+        aMessages.Form = guiCreateWindow(x / 2 - 250, y / 2 - 200, 500, 400, "View Messages", false)
 
         aMessages.List = guiCreateGridList(0.02, 0.07, 0.30, 0.83, true, aMessages.Form)
         guiGridListSetSortingEnabled(aMessages.List, false)
@@ -29,7 +29,7 @@ function aMessages.Open()
         aMessages.Subject = guiCreateLabel(0.36, 0.15, 0.50, 0.54, "Subject: -", true, aMessages.Form)
         aMessages.Category = guiCreateLabel(0.36, 0.20, 0.50, 0.54, "Category: -", true, aMessages.Form)
         aMessages.Date = guiCreateLabel(0.36, 0.25, 0.50, 0.54, "Date: -", true, aMessages.Form)
-        aMessages.Text = guiCreateMemo(0.36, 0.30, 0.59, 0.64, "", true, aMessages.Form)
+        aMessages.Text = guiCreateMemo(0.36, 0.30, 0.59, 0.60, "", true, aMessages.Form)
 
         --Register With Admin Form
         aRegister("Messages", aMessages.Form, aMessages.Open, aMessages.Close)

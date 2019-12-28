@@ -36,26 +36,22 @@ function aAclTab.Create(tab)
     aAclTab.ResourcesTab = guiCreateTab("Resources", aAclTab.Panel)
     tab = aAclTab.ResourcesTab
 
+    -- rights tab
     aAclTab.RightsTab = guiCreateTab("Rights", aAclTab.Panel)
     tab = aAclTab.RightsTab
 
-    -- rights tab
+    -- access matrix tab
     aAclTab.AccessTab = guiCreateTab("Access Matrix", aAclTab.Panel)
-    tab = aAclTab.AccessTab
-    aAclTab.AccessSearch = guiCreateEdit(0.01, 0.02, 0.3, 0.045, "", true, tab)
+    aAclTab.AccessSearch = guiCreateEdit(0.01, 0.0125, 0.3, 0.05, "", true, aAclTab.AccessTab)
     guiCreateInnerImage("client\\images\\search.png", aAclTab.AccessSearch)
     guiHandleInput(aAclTab.AccessSearch)
-    aAclTab.View = guiCreateButton(0.69, 0.02, 0.3, 0.045, "Commands", true, tab)
-    aAclTab.ViewDropDown = guiCreateInnerImage("client\\images\\dropdown.png", aAclTab.View, true)
-    aAclTab.ViewTypes = guiCreateGridList(0.69, 0.02, 0.3, 0.2, true, tab)
-    guiGridListSetSortingEnabled(aAclTab.ViewTypes, false)
-    guiGridListAddColumn(aAclTab.ViewTypes, "", 0.85)
-    guiGridListSetItemText(aAclTab.ViewTypes, guiGridListAddRow(aAclTab.ViewTypes), 1, "Commands", false, false)
-    guiGridListSetItemText(aAclTab.ViewTypes, guiGridListAddRow(aAclTab.ViewTypes), 1, "Functions", false, false)
-    guiGridListSetItemText(aAclTab.ViewTypes, guiGridListAddRow(aAclTab.ViewTypes), 1, "General", false, false)
-    guiSetVisible(aAclTab.ViewTypes, false)
+    aAclTab.ViewTypes = guiCreateComboBox(0.69, 0.0075, 0.3, 0.3, "Commands", true, aAclTab.AccessTab)
+    guiComboBoxAddItem(aAclTab.ViewTypes, "Commands")
+    guiComboBoxSetSelected(aAclTab.ViewTypes, 1)
+    guiComboBoxAddItem(aAclTab.ViewTypes, "Functions")
+    guiComboBoxAddItem(aAclTab.ViewTypes, "General")
 
-    aAclTab.Access = guiCreateGridList(0.01, 0.07, 0.98, 0.91, true, tab)
+    aAclTab.Access = guiCreateGridList(0.01, 0.07, 0.98, 0.91, true, aAclTab.AccessTab)
 
     triggerServerEvent(EVENT_ACL, getLocalPlayer(), ACL_GROUPS)
 
@@ -91,24 +87,8 @@ function aAclTab.onClick(key, state)
     if (key ~= "left") then
         return
     end
-    if (guiGetVisible(aAclTab.ViewTypes) and source ~= aAclTab.ViewTypes) then
-        guiSetVisible(aAclTab.ViewTypes, false)
-    end
-    if (source == aAclTab.Groups) then
+    if (source == aAclTab.Groups or source == aAclTab.ViewTypes) then
         aAclTab.RefreshAccess()
-    elseif (source == aAclTab.View) then
-        guiBringToFront(aAclTab.ViewDropDown)
-    elseif (source == aAclTab.ViewDropDown) then
-        guiSetVisible(aAclTab.ViewTypes, true)
-        guiBringToFront(aAclTab.ViewTypes)
-    elseif (source == aAclTab.ViewTypes) then
-        local row = guiGridListGetSelectedItem(aAclTab.ViewTypes)
-        if (row ~= -1) then
-            local type = guiGridListGetItemText(aAclTab.ViewTypes, row, 1)
-            guiSetText(aAclTab.View, type)
-            guiSetVisible(aAclTab.ViewTypes, false)
-            aAclTab.RefreshAccess()
-        end
     end
 end
 
@@ -120,7 +100,7 @@ end
 
 function aAclTab.GetViewedRight()
     local temp = {Commands = "command", General = "general", Functions = "function"}
-    return temp[guiGetText(aAclTab.View)]
+    return temp[guiComboBoxGetItemText(aAclTab.ViewTypes, guiComboBoxGetSelected(aAclTab.ViewTypes))]
 end
 
 function aAclTab.RefreshAccess()

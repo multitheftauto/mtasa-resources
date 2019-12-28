@@ -14,8 +14,11 @@ function aOptionsTab.Create(tab)
 
     guiCreateHeader(0.03, 0.05, 0.10, 0.05, "Main:", true, aOptionsTab.Tab)
     aOptionsTab.AdminChatOutput =
-        guiCreateCheckBox(0.05, 0.20, 0.47, 0.04, "Output admin messages to chat box", false, true, aOptionsTab.Tab)
-    guiCreateHeader(0.03, 0.30, 0.47, 0.04, "Appearance:", true, aOptionsTab.Tab)
+        guiCreateCheckBox(0.05, 0.1, 0.47, 0.04, "Output admin messages to chat box", aGetSetting("adminChatOutput"), true, aOptionsTab.Tab)
+    aOptionsTab.AdminChatSound =
+        guiCreateCheckBox(0.05, 0.15, 0.47, 0.04, "Play sound on incoming admin chat message", aGetSetting("adminChatSound"), true, aOptionsTab.Tab)
+
+    --guiCreateHeader(0.03, 0.30, 0.47, 0.04, "Appearance:", true, aOptionsTab.Tab)
     guiCreateHeader(0.63, 0.05, 0.10, 0.05, "Account:", true, aOptionsTab.Tab)
     aOptionsTab.AutoLogin =
         guiCreateCheckBox(0.65, 0.10, 0.47, 0.04, "Auto-login by serial", false, true, aOptionsTab.Tab)
@@ -51,9 +54,6 @@ function aOptionsTab.Create(tab)
     guiCreateLabel(0.70, 0.90, 0.19, 0.055, "Refresh Delay(MS):", true, aOptionsTab.Tab)
     aOptionsTab.RefreshDelay = guiCreateEdit(0.89, 0.90, 0.08, 0.045, "50", true, aOptionsTab.Tab)
 
-    if (aGetSetting("adminChatOutput")) then
-        guiCheckBoxSetSelected(aOptionsTab.AdminChatOutput, true)
-    end
     if (tonumber(aGetSetting("adminChatLines"))) then
         guiSetText(aOptionsTab.AdminChatLines, aGetSetting("adminChatLines"))
     end
@@ -64,6 +64,7 @@ function aOptionsTab.Create(tab)
     addEventHandler("onClientGUIClick", aOptionsTab.Tab, aOptionsTab.onClientClick)
     addEventHandler("aClientResourceStop", getResourceRootElement(), aOptionsTab.onClientResourceStop)
     addEventHandler("onClientGUIScroll", aOptionsTab.Tab, aOptionsTab.onClientScroll)
+    addEventHandler("onClientGUITabSwitched", aOptionsTab.Tab, aOptionsTab.onTabSwitched, false)
 end
 
 function aOptionsTab.onClientClick(button)
@@ -112,12 +113,17 @@ function aOptionsTab.onClientClick(button)
                     passwordConf
                 )
             end
+        elseif (source == aOptionsTab.AdminChatOutput) then
+            aSetSetting("adminChatOutput", guiCheckBoxGetSelected(aOptionsTab.AdminChatOutput))
+        elseif (source == aOptionsTab.AdminChatSound) then
+            aSetSetting("adminChatSound", guiCheckBoxGetSelected(aOptionsTab.AdminChatSound))
         end
     end
 end
 
 function aOptionsTab.onClientResourceStop()
     aSetSetting("adminChatOutput", guiCheckBoxGetSelected(aOptionsTab.AdminChatOutput))
+    aSetSetting("adminChatSound", guiCheckBoxGetSelected(aOptionsTab.AdminChatSound))
     aSetSetting("adminChatLines", guiGetText(aOptionsTab.AdminChatLines))
     aSetSetting("refreshDelay", guiGetText(aOptionsTab.RefreshDelay))
 
@@ -137,4 +143,10 @@ function aOptionsTab.onClientScroll(element)
             "Cursor sensivity: (" .. string.sub(guiScrollBarGetScrollPosition(source) / 50, 0, 4) .. ")"
         )
     end
+end
+
+function aOptionsTab.onTabSwitched()
+    -- Refresh checkbox status (in case settings were changed in the options tab)
+    guiCheckBoxSetSelected(aChatTab.AdminChatSound, aGetSetting("adminChatSound"))
+    guiCheckBoxSetSelected(aChatTab.AdminChatOutput, aGetSetting("adminChatOutput"))
 end

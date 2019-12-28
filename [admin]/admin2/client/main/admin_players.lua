@@ -7,12 +7,7 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-aPlayersTab = {
-    CurrentVehicle = 429,
-    CurrentWeapon = 30,
-    CurrentAmmo = 90,
-    CurrentSlap = 20
-}
+aPlayersTab = {}
 aPlayers = {}
 
 addEvent("aClientPlayerJoin", true)
@@ -20,153 +15,101 @@ addEvent("aClientPlayerJoin", true)
 function aPlayersTab.Create(tab)
     aPlayersTab.Tab = tab
 
-    aPlayersTab.Messages = guiCreateButton(0.75, 0.02, 0.23, 0.04, "0/0 unread messages", true, tab)
-    aPlayersTab.PlayerListSearch = guiCreateEdit(0.01, 0.02, 0.20, 0.04, "", true, tab)
+    -- Player list (left pane)
+    aPlayersTab.PlayerListSearch = guiCreateEdit(0.01, 0.01, 0.25, 0.04, "", true, tab)
     guiCreateInnerImage("client\\images\\search.png", aPlayersTab.PlayerListSearch)
     guiHandleInput(aPlayersTab.PlayerListSearch)
-    aPlayersTab.PlayerList = guiCreateGridList(0.01, 0.07, 0.20, 0.88, true, tab)
+    aPlayersTab.PlayerList = guiCreateGridList(0.01, 0.06, 0.25, 0.88, true, tab)
     guiGridListAddColumn(aPlayersTab.PlayerList, "Player list", 0.85)
     aPlayersTab.Context = guiCreateContextMenu(aPlayersTab.PlayerList)
     aPlayersTab.ContextKick = guiContextMenuAddItem(aPlayersTab.Context, "Kick")
+    aPlayersTab.ColorCodes = guiCreateCheckBox(0.01, 0.95, 0.25, 0.04, "Hide color codes", true, true, tab)
 
-    aPlayersTab.ColorCodes = guiCreateCheckBox(0.02, 0.95, 0.20, 0.04, "Hide color codes", true, true, tab)
-    aPlayersTab.Refresh()
-    aPlayersTab.Kick = guiCreateButton(0.71, 0.125, 0.13, 0.04, "Kick", true, tab, "kick")
-    aPlayersTab.Ban = guiCreateButton(0.85, 0.125, 0.13, 0.04, "Ban", true, tab, "ban")
-    aPlayersTab.Mute = guiCreateButton(0.71, 0.170, 0.13, 0.04, "Mute", true, tab, "mute")
-    aPlayersTab.Freeze = guiCreateButton(0.85, 0.170, 0.13, 0.04, "Freeze", true, tab, "freeze")
-    aPlayersTab.Spectate = guiCreateButton(0.71, 0.215, 0.13, 0.04, "Spectate", true, tab, "spectate")
-    aPlayersTab.Slap =
-        guiCreateButton(0.85, 0.215, 0.13, 0.04, "Slap! " .. aPlayersTab.CurrentSlap .. " _", true, tab, "slap")
-    aPlayersTab.SlapDropDown = guiCreateInnerImage("client\\images\\dropdown.png", aPlayersTab.Slap, true)
-    aPlayersTab.SlapOptions = guiCreateGridList(0.85, 0.215, 0.13, 0.42, true, tab)
-    guiGridListSetSortingEnabled(aPlayersTab.SlapOptions, false)
-    guiGridListAddColumn(aPlayersTab.SlapOptions, "", 0.60)
-    guiGridListAddColumn(aPlayersTab.SlapOptions, "", 0.60)
-    guiSetVisible(aPlayersTab.SlapOptions, false)
-    for i = 0, 5 do
-        guiGridListSetItemText(
-            aPlayersTab.SlapOptions,
-            guiGridListAddRow(aPlayersTab.SlapOptions),
-            2,
-            tostring(i * 20),
-            false,
-            false
-        )
-    end
-    guiGridListRemoveColumn(aPlayersTab.SlapOptions, 1)
-    aPlayersTab.SetNick = guiCreateButton(0.71, 0.260, 0.13, 0.04, "Set nick", true, tab, "setnick")
-    aPlayersTab.Shout = guiCreateButton(0.85, 0.260, 0.13, 0.04, "Shout!", true, tab, "shout")
-    aPlayersTab.Admin = guiCreateButton(0.71, 0.305, 0.27, 0.04, "Give admin rights", true, tab, "setgroup")
-    guiCreateHeader(0.23, 0.035, 0.20, 0.04, "Player:", true, tab)
-
+    -- Player info (middle pane)
+    guiCreateHeader(0.27, 0.04, 0.20, 0.04, "Player:", true, tab)
     aPlayersTab.InfoContext = guiCreateContextMenu()
     aPlayersTab.ContextCopy = guiContextMenuAddItem(aPlayersTab.InfoContext, "copy")
-
-    aPlayersTab.Name = guiCreateLabel(0.24, 0.080, 0.45, 0.035, "Name: N/A", true, tab)
+    aPlayersTab.Name = guiCreateLabel(0.27, 0.080, 0.45, 0.035, "Name: N/A", true, tab)
     guiSetContextMenu(aPlayersTab.Name, aPlayersTab.InfoContext)
-    aPlayersTab.IP = guiCreateLabel(0.24, 0.125, 0.45, 0.035, "IP: N/A", true, tab)
+    aPlayersTab.IP = guiCreateLabel(0.27, 0.125, 0.45, 0.035, "IP: N/A", true, tab)
     guiSetContextMenu(aPlayersTab.IP, aPlayersTab.InfoContext)
-    aPlayersTab.Serial = guiCreateLabel(0.24, 0.170, 0.45, 0.035, "Serial: N/A", true, tab)
+    aPlayersTab.Serial = guiCreateLabel(0.27, 0.170, 0.45, 0.035, "Serial: N/A", true, tab)
     guiSetContextMenu(aPlayersTab.Serial, aPlayersTab.InfoContext)
-    aPlayersTab.Country = guiCreateLabel(0.24, 0.215, 0.45, 0.035, "Country: Unknown", true, tab)
-    aPlayersTab.Account = guiCreateLabel(0.24, 0.260, 0.45, 0.035, "Account: N/A", true, tab)
+    aPlayersTab.Country = guiCreateLabel(0.27, 0.215, 0.45, 0.035, "Country: Unknown", true, tab)
+    aPlayersTab.Account = guiCreateLabel(0.27, 0.260, 0.45, 0.035, "Account: N/A", true, tab)
     guiSetContextMenu(aPlayersTab.Account, aPlayersTab.InfoContext)
-    aPlayersTab.Groups = guiCreateLabel(0.24, 0.305, 0.45, 0.035, "Groups: N/A", true, tab)
+    aPlayersTab.Groups = guiCreateLabel(0.27, 0.305, 0.45, 0.035, "Groups: N/A", true, tab)
     aPlayersTab.Flag = guiCreateStaticImage(0.40, 0.125, 0.025806, 0.021154, "client\\images\\empty.png", true, tab)
     guiSetVisible(aPlayersTab.Flag, false)
-    guiCreateHeader(0.23, 0.350, 0.20, 0.04, "Game:", true, tab)
-    aPlayersTab.Health = guiCreateLabel(0.24, 0.395, 0.20, 0.04, "Health: 0%", true, tab)
+    guiCreateHeader(0.27, 0.350, 0.20, 0.04, "Game:", true, tab)
+    aPlayersTab.Health = guiCreateLabel(0.27, 0.395, 0.20, 0.04, "Health: 0%", true, tab)
     aPlayersTab.Armour = guiCreateLabel(0.45, 0.395, 0.20, 0.04, "Armour: 0%", true, tab)
-    aPlayersTab.Skin = guiCreateLabel(0.24, 0.440, 0.20, 0.04, "Skin: N/A", true, tab)
+    aPlayersTab.Skin = guiCreateLabel(0.27, 0.440, 0.20, 0.04, "Skin: N/A", true, tab)
     aPlayersTab.Team = guiCreateLabel(0.45, 0.440, 0.20, 0.04, "Team: None", true, tab)
-    aPlayersTab.Weapon = guiCreateLabel(0.24, 0.485, 0.35, 0.04, "Weapon: N/A", true, tab)
-    aPlayersTab.Ping = guiCreateLabel(0.24, 0.530, 0.20, 0.04, "Ping: 0", true, tab)
+    aPlayersTab.Weapon = guiCreateLabel(0.27, 0.485, 0.35, 0.04, "Weapon: N/A", true, tab)
+    aPlayersTab.Ping = guiCreateLabel(0.27, 0.530, 0.20, 0.04, "Ping: 0", true, tab)
     aPlayersTab.Money = guiCreateLabel(0.45, 0.530, 0.20, 0.04, "Money: 0", true, tab)
-    aPlayersTab.Area = guiCreateLabel(0.24, 0.575, 0.44, 0.04, "Area: Unknown", true, tab)
+    aPlayersTab.Area = guiCreateLabel(0.27, 0.575, 0.44, 0.04, "Area: Unknown", true, tab)
     guiSetContextMenu(aPlayersTab.Area, aPlayersTab.InfoContext)
-    aPlayersTab.PositionX = guiCreateLabel(0.24, 0.620, 0.30, 0.04, "X: 0", true, tab)
-    aPlayersTab.PositionY = guiCreateLabel(0.24, 0.665, 0.30, 0.04, "Y: 0", true, tab)
-    aPlayersTab.PositionZ = guiCreateLabel(0.24, 0.710, 0.30, 0.04, "Z: 0", true, tab)
+    aPlayersTab.PositionX = guiCreateLabel(0.27, 0.620, 0.30, 0.04, "X: 0", true, tab)
+    aPlayersTab.PositionY = guiCreateLabel(0.27, 0.665, 0.30, 0.04, "Y: 0", true, tab)
+    aPlayersTab.PositionZ = guiCreateLabel(0.27, 0.710, 0.30, 0.04, "Z: 0", true, tab)
     guiSetContextMenu(aPlayersTab.PositionX, aPlayersTab.InfoContext)
     guiSetContextMenu(aPlayersTab.PositionY, aPlayersTab.InfoContext)
     guiSetContextMenu(aPlayersTab.PositionZ, aPlayersTab.InfoContext)
-    aPlayersTab.Dimension = guiCreateLabel(0.24, 0.755, 0.20, 0.04, "Dimension: 0", true, tab)
+    aPlayersTab.Dimension = guiCreateLabel(0.27, 0.755, 0.20, 0.04, "Dimension: 0", true, tab)
     aPlayersTab.Interior = guiCreateLabel(0.45, 0.755, 0.20, 0.04, "Interior: 0", true, tab)
-    aPlayersTab.SetHealth = guiCreateButton(0.71, 0.395, 0.13, 0.04, "Set Health", true, tab, "sethealth")
-    aPlayersTab.SetArmour = guiCreateButton(0.85, 0.395, 0.13, 0.04, "Set Armour", true, tab, "setarmour")
-    aPlayersTab.SetSkin = guiCreateButton(0.71, 0.440, 0.13, 0.04, "Set Skin", true, tab, "setskin")
-    aPlayersTab.SetTeam = guiCreateButton(0.85, 0.440, 0.13, 0.04, "Set Team", true, tab, "setteam")
-    aPlayersTab.SetDimension = guiCreateButton(0.71, 0.755, 0.13, 0.04, "Set Dimens.", true, tab, "setdimension")
-    aPlayersTab.SetInterior = guiCreateButton(0.85, 0.755, 0.13, 0.04, "Set Interior", true, tab, "setinterior")
-    aPlayersTab.GiveWeapon =
-        guiCreateButton(0.71, 0.485, 0.27, 0.04, "Give: " .. getWeaponNameFromID(aPlayersTab.CurrentWeapon), true, tab)
-    aPlayersTab.WeaponDropDown = guiCreateInnerImage("client\\images\\dropdown.png", aPlayersTab.GiveWeapon, true)
-    aPlayersTab.WeaponOptions = guiCreateGridList(0.71, 0.485, 0.27, 0.48, true, tab)
-    guiGridListAddColumn(aPlayersTab.WeaponOptions, "", 0.83)
-    guiGridListAddColumn(aPlayersTab.WeaponOptions, "", 0.83) -- that's a hack to remove spaces in the first column
-    guiSetVisible(aPlayersTab.WeaponOptions, false)
-    for i = 1, 46 do
-        if (getWeaponNameFromID(i) ~= false) then
-            guiGridListSetItemText(
-                aPlayersTab.WeaponOptions,
-                guiGridListAddRow(aPlayersTab.WeaponOptions),
-                2,
-                getWeaponNameFromID(i),
-                false,
-                false
-            )
+    guiCreateHeader(0.27, 0.805, 0.20, 0.04, "Vehicle:", true, tab)
+    aPlayersTab.Vehicle = guiCreateLabel(0.27, 0.850, 0.35, 0.04, "Vehicle: N/A", true, tab)
+    aPlayersTab.VehicleHealth = guiCreateLabel(0.27, 0.895, 0.25, 0.04, "Vehicle Health: 0%", true, tab)
+
+
+    -- Action buttons (right pane)
+    aPlayersTab.Messages = guiCreateButton(0.74, 0.01, 0.25, 0.04, "0/0 unread messages", true, tab)
+    aPlayersTab.Kick = guiCreateButton(0.74, 0.1, 0.12, 0.04, "Kick", true, tab, "kick")
+    aPlayersTab.Ban = guiCreateButton(0.87, 0.1, 0.12, 0.04, "Ban", true, tab, "ban")
+    aPlayersTab.Mute = guiCreateButton(0.74, 0.145, 0.12, 0.04, "Mute", true, tab, "mute")
+    aPlayersTab.Freeze = guiCreateButton(0.87, 0.145, 0.12, 0.04, "Freeze", true, tab, "freeze")
+    aPlayersTab.Shout = guiCreateButton(0.74, 0.19, 0.12, 0.04, "Shout", true, tab, "shout")
+    aPlayersTab.Spectate = guiCreateButton(0.87, 0.19, 0.12, 0.04, "Spectate", true, tab, "spectate")
+    aPlayersTab.SetNick = guiCreateButton(0.74, 0.235, 0.12, 0.04, "Set nick", true, tab, "setnick")
+    aPlayersTab.Admin = guiCreateButton(0.87, 0.235, 0.12, 0.04, "Give admin", true, tab, "setgroup")
+    aPlayersTab.SlapOptions = guiCreateComboBox(0.76, 0.28, 0.1, 0.04, "0", true, tab)
+    local width, height = guiGetSize(aPlayersTab.SlapOptions, false)
+    for i = 0, 200, 20 do
+        local id = guiComboBoxAddItem(aPlayersTab.SlapOptions, i)
+        if i == 20 then
+            guiComboBoxSetSelected(aPlayersTab.SlapOptions, id)
         end
     end
-    guiGridListRemoveColumn(aPlayersTab.WeaponOptions, 1)
-    aPlayersTab.SetMoney = guiCreateButton(0.71, 0.530, 0.13, 0.04, "Set Money", true, tab, "setmoney")
-    aPlayersTab.SetStats = guiCreateButton(0.85, 0.530, 0.13, 0.04, "Set Stats", true, tab, "setstat")
-    aPlayersTab.JetPack = guiCreateButton(0.71, 0.575, 0.27, 0.04, "Give JetPack", true, tab, "jetpack")
-    guiCreateHeader(0.23, 0.805, 0.20, 0.04, "Vehicle:", true, tab)
-    aPlayersTab.Vehicle = guiCreateLabel(0.24, 0.850, 0.35, 0.04, "Vehicle: N/A", true, tab)
-    aPlayersTab.VehicleHealth = guiCreateLabel(0.24, 0.895, 0.25, 0.04, "Vehicle Health: 0%", true, tab)
-    aPlayersTab.VehicleFix = guiCreateButton(0.71, 0.85, 0.13, 0.04, "Fix", true, tab, "repair")
-    aPlayersTab.VehicleDestroy = guiCreateButton(0.71, 0.90, 0.13, 0.04, "Destroy", true, tab, "destroyvehicle")
-    aPlayersTab.VehicleBlow = guiCreateButton(0.85, 0.85, 0.13, 0.04, "Blow", true, tab, "blowvehicle")
-    aPlayersTab.VehicleCustomize = guiCreateButton(0.85, 0.90, 0.13, 0.04, "Customize", true, tab, "customize")
-    aPlayersTab.GiveVehicle =
-        guiCreateButton(
-        0.71,
-        0.710,
-        0.27,
-        0.04,
-        "Give: " .. getVehicleNameFromModel(aPlayersTab.CurrentVehicle),
-        true,
-        tab,
-        "givevehicle"
-    )
-    aPlayersTab.VehicleDropDown = guiCreateInnerImage("client\\images\\dropdown.png", aPlayersTab.GiveVehicle, true)
-    local gx, gy = guiGetSize(aPlayersTab.GiveVehicle, false)
-    aPlayersTab.VehicleOptions = guiCreateGridList(0, 0, gx, 200, false)
-    guiGridListAddColumn(aPlayersTab.VehicleOptions, "", 0.83)
-    guiGridListAddColumn(aPlayersTab.VehicleOptions, "", 0.83)
-    guiSetAlpha(aPlayersTab.VehicleOptions, 0.80)
-    guiSetVisible(aPlayersTab.VehicleOptions, false)
-    for i = 0, 211 do
-        if (getVehicleNameFromModel(400 + i) ~= "") then
-            guiGridListSetItemText(
-                aPlayersTab.VehicleOptions,
-                guiGridListAddRow(aPlayersTab.VehicleOptions),
-                2,
-                getVehicleNameFromModel(400 + i),
-                false,
-                false
-            )
-        end
-    end
-    guiGridListRemoveColumn(aPlayersTab.VehicleOptions, 1)
+    guiSetSize(aPlayersTab.SlapOptions, width, height + (16 * 11), false) -- adjust height to fit items (16px per item)
+    aPlayersTab.Slap = guiCreateButton(0.87, 0.28, 0.12, 0.04, "Slap!", true, tab, "slap")
+
+    aPlayersTab.SetHealth = guiCreateButton(0.74, 0.35, 0.12, 0.04, "Set Health", true, tab, "sethealth")
+    aPlayersTab.SetArmour = guiCreateButton(0.87, 0.35, 0.12, 0.04, "Set Armour", true, tab, "setarmour")
+    aPlayersTab.SetSkin = guiCreateButton(0.74, 0.395, 0.12, 0.04, "Set Skin", true, tab, "setskin")
+    aPlayersTab.SetTeam = guiCreateButton(0.87, 0.395, 0.12, 0.04, "Set Team", true, tab, "setteam")
+    aPlayersTab.SetDimension = guiCreateButton(0.74, 0.44, 0.12, 0.04, "Set Dimens.", true, tab, "setdimension")
+    aPlayersTab.SetInterior = guiCreateButton(0.87, 0.44, 0.12, 0.04, "Set Interior", true, tab, "setinterior")
+    aPlayersTab.SetMoney = guiCreateButton(0.74, 0.485, 0.12, 0.04, "Set Money", true, tab, "setmoney")
+    aPlayersTab.SetStats = guiCreateButton(0.87, 0.485, 0.12, 0.04, "Set Stats", true, tab, "setstat")
+    aPlayersTab.GiveWeapon = guiCreateButton(0.74, 0.53, 0.25, 0.04, "Give Weapon", true, tab)
+    aPlayersTab.JetPack = guiCreateButton(0.74, 0.575, 0.25, 0.04, "Give JetPack", true, tab, "jetpack")
+    aPlayersTab.GiveVehicle = guiCreateButton(0.74, 0.62, 0.25, 0.04, "Give Vehicle", true, tab)
+    aPlayersTab.WarpTo = guiCreateButton(0.74, 0.665, 0.25, 0.04, "Warp to player", true, tab, "warp")
+    aPlayersTab.WarpPlayer = guiCreateButton(0.74, 0.71, 0.25, 0.04, "Warp player to...", true, tab, "warp")
+    aPlayersTab.VehicleFix = guiCreateButton(0.74, 0.805, 0.12, 0.04, "Fix", true, tab, "repair")
+    aPlayersTab.VehicleDestroy = guiCreateButton(0.74, 0.85, 0.12, 0.04, "Destroy", true, tab, "destroyvehicle")
+    aPlayersTab.VehicleBlow = guiCreateButton(0.87, 0.805, 0.12, 0.04, "Blow", true, tab, "blowvehicle")
+    aPlayersTab.VehicleCustomize = guiCreateButton(0.87, 0.85, 0.12, 0.04, "Customize", true, tab, "customize")
+
+    aPlayersTab.Refresh()
 
     -- EVENTS
 
     addEventHandler("onClientGUIClick", aPlayersTab.Context, aPlayersTab.onContextClick)
     addEventHandler("onClientGUIClick", aPlayersTab.InfoContext, aPlayersTab.onContextClick)
     addEventHandler("onClientGUIClick", aPlayersTab.Tab, aPlayersTab.onClientClick)
-    addEventHandler("onClientGUIClick", aPlayersTab.VehicleOptions, aPlayersTab.onClientClick)
     addEventHandler("onClientGUIChanged", aPlayersTab.PlayerListSearch, aPlayersTab.onPlayerListSearch)
     addEventHandler("onClientPlayerChangeNick", root, aPlayersTab.onClientPlayerChangeNick)
     addEventHandler("aClientPlayerJoin", root, aPlayersTab.onClientPlayerJoin)
@@ -180,8 +123,15 @@ function aPlayersTab.Create(tab)
         sync(SYNC_MESSAGES)
     end
 
-    bindKey("arrow_d", "down", aPlayersTab.onPlayerListScroll, 1)
-    bindKey("arrow_u", "down", aPlayersTab.onPlayerListScroll, -1)
+    --bindKey("arrow_d", "down", aPlayersTab.onPlayerListScroll, 1)
+    --bindKey("arrow_u", "down", aPlayersTab.onPlayerListScroll, -1)
+    -- bindKey will not work while the searchbar has input focus - here is a hack using onClientKey instead
+    addEventHandler("onClientKey", root, function(key, press)
+        if not (key == "arrow_u" or key == "arrow_d") then return end
+        if not press then return end
+        if not guiGetVisible(aAdminMain.Form) then return end
+        aPlayersTab.onPlayerListScroll(key, press and "down" or "up", key == "arrow_u" and -1 or 1)
+    end)
 end
 
 function aPlayersTab.onContextClick(button)
@@ -200,58 +150,10 @@ function aPlayersTab.onContextClick(button)
 end
 
 function aPlayersTab.onClientClick(button)
-    if (guiGetVisible(aPlayersTab.WeaponOptions) and (source ~= aPlayersTab.WeaponOptions)) then
-        guiSetVisible(aPlayersTab.WeaponOptions, false)
-    end
-    if (guiGetVisible(aPlayersTab.VehicleOptions) and (source ~= aPlayersTab.VehicleOptions)) then
-        guiSetVisible(aPlayersTab.VehicleOptions, false)
-    end
-    if (guiGetVisible(aPlayersTab.SlapOptions) and (source ~= aPlayersTab.SlapOptions)) then
-        guiSetVisible(aPlayersTab.SlapOptions, false)
-    end
     if (button == "left") then
-        if (source == aPlayersTab.WeaponOptions) then
-            local item = guiGridListGetSelectedItem(aPlayersTab.WeaponOptions)
-            if (item ~= -1) then
-                aPlayersTab.CurrentWeapon =
-                    getWeaponIDFromName(guiGridListGetItemText(aPlayersTab.WeaponOptions, item, 1))
-                local wep = guiGridListGetItemText(aPlayersTab.WeaponOptions, item, 1)
-                wep = string.gsub(wep, "Combat Shotgun", "Combat SG")
-                guiSetText(aPlayersTab.GiveWeapon, "Give: " .. wep .. " ")
-                guiSetVisible(aPlayersTab.WeaponOptions, false)
-            end
-        elseif (source == aPlayersTab.VehicleOptions) then
-            local item = guiGridListGetSelectedItem(aPlayersTab.VehicleOptions)
-            if (item ~= -1) then
-                aPlayersTab.CurrentVehicle =
-                    getVehicleModelFromName(guiGridListGetItemText(aPlayersTab.VehicleOptions, item, 1))
-                guiSetText(
-                    aPlayersTab.GiveVehicle,
-                    "Give: " .. guiGridListGetItemText(aPlayersTab.VehicleOptions, item, 1) .. " "
-                )
-                guiSetVisible(aPlayersTab.VehicleOptions, false)
-            end
-        elseif (source == aPlayersTab.SlapOptions) then
-            local item = guiGridListGetSelectedItem(aPlayersTab.SlapOptions)
-            if (item ~= -1) then
-                aPlayersTab.CurrentSlap = guiGridListGetItemText(aPlayersTab.SlapOptions, item, 1)
-                guiSetText(aPlayersTab.Slap, "Slap! " .. aPlayersTab.CurrentSlap .. " _")
-                if (aSpecSlap) then
-                    guiSetText(aSpecSlap, "Slap! " .. aPlayersTab.CurrentSlap .. "hp")
-                end
-                guiSetVisible(aPlayersTab.SlapOptions, false)
-            end
-        end
         if (source == aPlayersTab.Messages) then
             aMessages.Open()
         elseif (getElementType(source) == "gui-button") then
-            if (source == aPlayersTab.GiveVehicle) then
-                guiBringToFront(aPlayersTab.VehicleDropDown)
-            elseif (source == aPlayersTab.GiveWeapon) then
-                guiBringToFront(aPlayersTab.WeaponDropDown)
-            elseif (source == aPlayersTab.Slap) then
-                guiBringToFront(aPlayersTab.SlapDropDown)
-            end
             if (guiGridListGetSelectedItem(aPlayersTab.PlayerList) == -1) then
                 messageBox("No player selected!", MB_ERROR, MB_OK)
             else
@@ -268,7 +170,9 @@ function aPlayersTab.onClientClick(button)
                         triggerServerEvent("aPlayer", getLocalPlayer(), player, "ban", reason)
                     end
                 elseif (source == aPlayersTab.Slap) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap", aPlayersTab.CurrentSlap)
+                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap", 
+                        guiComboBoxGetItemText(aPlayersTab.SlapOptions, guiComboBoxGetSelected(aPlayersTab.SlapOptions))
+                    )
                 elseif (source == aPlayersTab.Mute) then
                     triggerServerEvent(
                         "aPlayer",
@@ -325,17 +229,10 @@ function aPlayersTab.onClientClick(button)
                     if (dimension) then
                         triggerServerEvent("aPlayer", getLocalPlayer(), player, "setdimension", dimension)
                     end
-                elseif (source == aPlayersTab.GiveVehicle) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "givevehicle", aPlayersTab.CurrentVehicle)
                 elseif (source == aPlayersTab.GiveWeapon) then
-                    triggerServerEvent(
-                        "aPlayer",
-                        getLocalPlayer(),
-                        player,
-                        "giveweapon",
-                        aPlayersTab.CurrentWeapon,
-                        aPlayersTab.CurrentAmmo
-                    )
+                    aWeapon.Show(player)
+                elseif (source == aPlayersTab.GiveVehicle) then
+                    aVehicle.Show(player)
                 elseif (source == aPlayersTab.VehicleFix) then
                     triggerServerEvent("aVehicle", getLocalPlayer(), player, "repair")
                 elseif (source == aPlayersTab.VehicleBlow) then
@@ -343,7 +240,20 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.VehicleDestroy) then
                     triggerServerEvent("aVehicle", getLocalPlayer(), player, "destroyvehicle")
                 elseif (source == aPlayersTab.VehicleCustomize) then
-                    aVehicle.Open(getPedOccupiedVehicle(player))
+                    local vehicle = getPedOccupiedVehicle(player)
+                    if not isElement(vehicle) then
+                        messageBox("Player is not in a vehicle!", MB_ERROR)
+                    else
+                        aVehicleUpgrades.Open(player, vehicle)
+                    end
+                elseif (source == aPlayersTab.WarpTo) then
+                    if player == localPlayer then
+                        messageBox("You can't warp to yourself!", MB_ERROR)
+                    else
+                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "warp")
+                    end
+                elseif (source == aPlayersTab.WarpPlayer) then
+                    aPlayerWarp(player)
                 elseif (source == aPlayersTab.Admin) then
                     if
                         (aPlayers[player]["admin"] and
@@ -355,20 +265,6 @@ function aPlayersTab.onClientClick(button)
                     end
                 end
             end
-        elseif (source == aPlayersTab.VehicleDropDown) then
-            local x1, y1 = guiGetPosition(aAdminMain.Form, false)
-            local x2, y2 = guiGetPosition(aAdminMain.Panel, false)
-            local x3, y3 = guiGetPosition(aPlayersTab.Tab, false)
-            local x4, y4 = guiGetPosition(aPlayersTab.GiveVehicle, false)
-            guiSetPosition(aPlayersTab.VehicleOptions, x1 + x2 + x3 + x4, y1 + y2 + y3 + y4 + 23, false)
-            guiSetVisible(aPlayersTab.VehicleOptions, true)
-            guiBringToFront(aPlayersTab.VehicleOptions)
-        elseif (source == aPlayersTab.WeaponDropDown) then
-            guiSetVisible(aPlayersTab.WeaponOptions, true)
-            guiBringToFront(aPlayersTab.WeaponOptions)
-        elseif (source == aPlayersTab.SlapDropDown) then
-            guiSetVisible(aPlayersTab.SlapOptions, true)
-            guiBringToFront(aPlayersTab.SlapOptions)
         elseif (source == aPlayersTab.ColorCodes) then
             aPlayersTab.Refresh()
         elseif (source == aPlayersTab.PlayerList) then
@@ -384,7 +280,7 @@ function aPlayersTab.onClientClick(button)
                 guiSetText(aPlayersTab.Groups, "Groups: N/A")
                 guiSetText(aPlayersTab.Mute, "Mute")
                 guiSetText(aPlayersTab.Freeze, "Freeze")
-                guiSetText(aPlayersTab.Admin, "Give admin rights")
+                guiSetText(aPlayersTab.Admin, "Give admin")
                 guiSetText(aPlayersTab.Health, "Health: 0%")
                 guiSetText(aPlayersTab.Armour, "Armour: 0%")
                 guiSetText(aPlayersTab.Skin, "Skin: N/A")
@@ -402,18 +298,6 @@ function aPlayersTab.onClientClick(button)
                 guiSetText(aPlayersTab.Vehicle, "Vehicle: N/A")
                 guiSetText(aPlayersTab.VehicleHealth, "Vehicle Health: 0%")
                 guiSetVisible(aPlayersTab.Flag, false)
-            end
-        end
-    elseif (button == "right") then
-        if (source == aPlayersTab.GiveWeapon) then
-            local ammo = inputBox("Weapon Ammo", "Enter ammo value between 1 and 9999", "100")
-            if (ammo) then
-                ammo = tonumber(ammo)
-                if ((ammo) and (ammo > 0) and (ammo < 10000)) then
-                    aPlayersTab.CurrentAmmo = ammo
-                    return
-                end
-                messageBox("Invalid ammo value", MB_ERROR)
             end
         end
     end
@@ -632,10 +516,10 @@ function aPlayersTab.onRefresh()
 end
 
 function aPlayersTab.onClientResourceStop()
-    aSetSetting("currentWeapon", aCurrentWeapon)
+    --[[aSetSetting("currentWeapon", aCurrentWeapon)
     aSetSetting("currentAmmo", aCurrentAmmo)
     aSetSetting("currentVehicle", aCurrentVehicle)
-    aSetSetting("currentSlap", aCurrentSlap)
+    aSetSetting("currentSlap", aCurrentSlap)]]
 end
 
 function aPlayersTab.Refresh()
