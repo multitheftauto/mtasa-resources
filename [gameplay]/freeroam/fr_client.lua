@@ -1824,7 +1824,7 @@ function toggleGhostmode()
 
 end
 
-function updateGUI(updateVehicle)
+function updateGUI()
 	-- update position
 	local x, y, z = getElementPosition(localPlayer)
 	setControlNumbers(wndMain, {xpos=math.ceil(x), ypos=math.ceil(y), zpos=math.ceil(z)})
@@ -1832,14 +1832,12 @@ function updateGUI(updateVehicle)
 	-- update jetpack toggle
 	guiCheckBoxSetSelected( getControl(wndMain, 'jetpack'), doesPedHaveJetPack(localPlayer) )
 
-	if updateVehicle then
-		-- update current vehicle
-		local vehicle = getPedOccupiedVehicle(localPlayer)
-		if vehicle and isElement(vehicle) then
-			setControlText(wndMain, 'curvehicle', getVehicleName(vehicle))
-		else
-			setControlText(wndMain, 'curvehicle', 'On foot')
-		end
+	-- update current vehicle
+	local vehicle = getPedOccupiedVehicle(localPlayer)
+	if vehicle and isElement(vehicle) then
+		setControlText(wndMain, "curvehicle", getVehicleName(vehicle))
+	else
+		setControlText(wndMain, "curvehicle", "On foot")
 	end
 end
 
