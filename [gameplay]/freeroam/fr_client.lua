@@ -1106,7 +1106,7 @@ function setPosCommand(cmd, x, y, z, r)
 	if vehicle then
 		local vehModel = getElementModel(vehicle)
 
-		if table.find(g_settings["vehicles/disallowed_warp"], vehModel) then
+		if table.find(g_settings["vehicles/disallowed_warp"], vehModel) and not isPedDead(localPlayer) then
 			errMsg("You cannot use /sp while in this vehicle!")
 			return
 		end
