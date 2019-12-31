@@ -127,8 +127,8 @@ local function cancelKnifeEvent(target)
 	if g_PlayerData[localPlayer].knifing or g_PlayerData[target].knifing then
 		cancelEvent()
 	end
-
 end
+addEventHandler("onClientPlayerStealthKill",localPlayer,cancelKnifeEvent)
 
 local function resetKnifing()
 
@@ -1119,7 +1119,6 @@ function updateName(oldNick, newNick)
 		guiSetSize(player.gui.mapLabel, labelWidth, 14, false)
 	end
 end
-
 addEventHandler('onClientPlayerChangeNick', root,updateName)
 
 function closePositionWindow()
@@ -1994,6 +1993,7 @@ function onEnterVehicle(vehicle,seat)
 		setVehicleGhost(vehicle,hasDriverGhost(vehicle))
 	end
 end
+addEventHandler('onClientPlayerVehicleEnter', root, onEnterVehicle)
 
 function onExitVehicle(vehicle,seat)
 	if (eventName == "onClientPlayerVehicleExit" and source == localPlayer) or (eventName == "onClientElementDestroy" and getElementType(source) == "vehicle" and getPedOccupiedVehicle(localPlayer) == source) then
@@ -2007,6 +2007,8 @@ function onExitVehicle(vehicle,seat)
 		end
 	end
 end
+addEventHandler('onClientPlayerVehicleExit', root, onExitVehicle)
+addEventHandler("onClientElementDestroy", root, onExitVehicle)
 
 function killLocalPlayer()
 	if g_settings["kill"] then
@@ -2158,6 +2160,7 @@ function joinHandler(player)
 	if (not g_PlayerData) then return end
 	g_PlayerData[player or source] = { name = getPlayerName(player or source), gui = {} }
 end
+addEventHandler('onClientPlayerJoin', root, joinHandler)
 
 function quitHandler()
 	if (not g_PlayerData) then return end
@@ -2169,6 +2172,7 @@ function quitHandler()
 	table.each(g_PlayerData[source].gui, destroyElement)
 	g_PlayerData[source] = nil
 end
+addEventHandler('onClientPlayerQuit', root, quitHandler)
 
 function wastedHandler()
 	if source == localPlayer then
@@ -2184,6 +2188,7 @@ function wastedHandler()
 		end
 	end
 end
+addEventHandler('onClientPlayerWasted', root, wastedHandler)
 
 local function removeForcedFade()
 	removeEventHandler("onClientPreRender",root,forceFade)
@@ -2202,13 +2207,6 @@ local function checkCustomSpawn()
 	end
 
 end
-
-addEventHandler('onClientPlayerJoin', root, joinHandler)
-addEventHandler('onClientPlayerQuit', root, quitHandler)
-addEventHandler('onClientPlayerWasted', root, wastedHandler)
-addEventHandler('onClientPlayerVehicleEnter', root, onEnterVehicle)
-addEventHandler('onClientPlayerVehicleExit', root, onExitVehicle)
-addEventHandler("onClientElementDestroy", root, onExitVehicle)
 addEventHandler("onClientPlayerSpawn", localPlayer, checkCustomSpawn)
 
 function getPlayerName(player)
@@ -2240,11 +2238,10 @@ function setVehicleGhost(sourceVehicle,value)
 end
 
 local function onStreamIn()
-
 	if source.type ~= "vehicle" then return end
 	setVehicleGhost(source,hasDriverGhost(source))
-
 end
+addEventHandler("onClientElementStreamIn",root,onStreamIn)
 
 local function onLocalSettingChange(key,value)
 
@@ -2256,8 +2253,9 @@ local function onLocalSettingChange(key,value)
 			setVehicleGhost(sourceVehicle,hasDriverGhost(sourceVehicle))
 		end
 	end
-
 end
+addEvent("onClientFreeroamLocalSettingChange",true)
+addEventHandler("onClientFreeroamLocalSettingChange",root,onLocalSettingChange)
 
 local function renderKnifingTag()
 	if not g_PlayerData then return end
@@ -2272,10 +2270,4 @@ local function renderKnifingTag()
 		end
     end
 end
-
 addEventHandler ("onClientRender", root, renderKnifingTag)
-
-addEvent("onClientFreeroamLocalSettingChange",true)
-addEventHandler("onClientFreeroamLocalSettingChange",root,onLocalSettingChange)
-addEventHandler("onClientPlayerStealthKill",localPlayer,cancelKnifeEvent)
-addEventHandler("onClientElementStreamIn",root,onStreamIn)
