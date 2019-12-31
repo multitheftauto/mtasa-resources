@@ -2076,8 +2076,10 @@ end
 local function checkCustomSpawn()
 
 	if type(customSpawnTable) == "table" then
-		local x,y,z = unpack(customSpawnTable)
+		local x,y,z,dim,int = unpack(customSpawnTable)
 		setPlayerPosition(x,y,z,true)
+		setElementDimension(localPlayer, dim)
+		setElementInterior(localPlayer, int)
 		customSpawnTable = false
 		setTimer(removeForcedFade,100,1)
 	end
