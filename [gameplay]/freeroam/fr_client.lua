@@ -113,7 +113,7 @@ end
 local function addCommandHandler(cmd,func)
 
 	commands[cmd] = func
-	_addCommandHandler(cmd,executeCommand,false)
+	_addCommandHandler(cmd,executeCommand,false,false)
 
 end
 
