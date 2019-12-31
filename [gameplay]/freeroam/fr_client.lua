@@ -942,7 +942,11 @@ function setPlayerPosition(x, y, z, skipDeadCheck)
 		isVehicle = false
 	end
 	if isPedDead(localPlayer) and not skipDeadCheck then
-		customSpawnTable = {x,y,z}
+
+		dim = getElementDimension(localPlayer)
+		int = getElementInterior(localPlayer)
+
+		customSpawnTable = {x,y,z,dim,int}
 		fadeCamera(false,0)
 		addEventHandler("onClientPreRender",root,forceFade)
 		outputChatBox("You will be respawned to your specified location",0,255,0)
