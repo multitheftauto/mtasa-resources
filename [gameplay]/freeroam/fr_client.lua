@@ -315,7 +315,7 @@ function addWeapon(leaf, amount)
 			return
 		end
 	end
-	if amount < 1 or amount > 999999999 or string.len(amount) > 10 then
+	if amount < 1 or amount > 999999999 then
 		errMsg("Invalid amount!")
 		return
 	end
@@ -386,20 +386,19 @@ addCommandHandler('wp', giveWeaponCommand)
 -- Fighting style
 ---------------------------
 
-addCommandHandler('setstyle',
+addCommandHandler("setstyle",
 	function(cmd, style)
-		style = style and tonumber(style) or 6
+		style = style and tonumber(style) or 5
 
-		if not style then return end
-
-		if string.len(style) > 2 or style < 0 or style > 16 then
-			return errMsg("Invalid style ID!")
+		if getPedFightingStyle(localPlayer) == style then
+			return
 		end
-
-		if getPedFightingStyle(localPlayer) == style then return end
 
 		if allowedStyles[style] then
 			server.setPedFightingStyle(localPlayer, style)
+		else
+			errMsg("Invalid style ID!")
+			return
 		end
 	end
 )
@@ -2126,12 +2125,10 @@ end
 
 function alphaCommand(command, alpha)
 	alpha = alpha and tonumber(alpha) or 255
-	if alpha and string.len(alpha) > 3 then
-		errMsg("Invalid input!")
-		return
-	end
 	if alpha >= 0 and alpha <= 255 then
 		server.setElementAlpha(localPlayer, alpha)
+	else
+		errMsg("Invalid alpha value! (range: 0 - 255)")
 	end
 end
 addCommandHandler('alpha', alphaCommand)
