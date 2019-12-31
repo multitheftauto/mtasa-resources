@@ -215,13 +215,6 @@ end
 addCommandHandler('setskin', setSkinCommand)
 addCommandHandler('ss', setSkinCommand)
 
-function isPlayerMoving(p)
-	if isElement(p) and getElementType(p) == "player" then
-		return Vector3(getElementVelocity(p)).length ~= 0
-	end
-	return false
-end
-
 ---------------------------
 --- Set animation window
 ---------------------------
@@ -1805,8 +1798,9 @@ function setPaintjobCommand(cmd, paint)
 
 	paint = paint and tonumber(paint)
 
-	if not paint then return end
-	if string.len(paint) > 5 then errMsg("Invalid paintjob ID!")
+	if not paint then errMsg("Enter paintjob ID please!") return end
+	if paint > 3 or string.len(paint) > 1 then 
+		errMsg("Invalid paintjob ID!")
 		return 
 	end
 
@@ -1938,7 +1932,7 @@ wndWeather = {
 
 function setWeatherCommand(cmd, weather)
 	weather = weather and tonumber(weather)
-	if weather and string.len(weather) > 266 then 
+	if not weather or weather > 255 or string.len(weather) > 3 then 
 		errMsg("Invalid weather ID!")
 		return
 	end
