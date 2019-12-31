@@ -170,6 +170,10 @@ end
 
 local function sendSettings(player,settingPlayer,settings)
 
+	if not player and isElement(player) then
+		return
+	end
+
 	for setting,value in pairs(settings) do
 		triggerClientEvent(player,"onClientFreeroamLocalSettingChange",settingPlayer,setting,value)
 	end
@@ -252,7 +256,9 @@ addEventHandler('onClothesInit', resourceRoot,
 				result.playerClothes[type] = {texture = texture, model = model}
 			end
 		end
-		triggerClientEvent(client, 'onClientClothesInit', resourceRoot, result)
+		if client and isElement(client) then
+			triggerClientEvent(client, "onClientClothesInit", resourceRoot, result)
+		end
 	end
 )
 
@@ -260,11 +266,14 @@ addEvent('onPlayerGravInit', true)
 addEventHandler('onPlayerGravInit', root,
 	function()
 		if client ~= source then return end
-		triggerClientEvent(client, 'onClientPlayerGravInit', client, getPedGravity(client))
+		if client and isElement(client) then
+			triggerClientEvent(client, "onClientPlayerGravInit", client, getPedGravity(client))
+		end
 	end
 )
 
 function setMySkin(skinid)
+	if not isElement(source) then return end
 	if getElementModel(source) == skinid then return end
 	if isPedDead(source) then
 		local x, y, z = getElementPosition(source)
@@ -355,6 +364,7 @@ function giveMeWeapon(weapon, amount)
 end
 
 function giveMeVehicles(vehID)
+	if not isElement(source) then return end
 	local px, py, pz, prot
 	local element = getPedOccupiedVehicle(source) or source
 	local px,py,pz = getElementPosition(element)
@@ -431,9 +441,11 @@ addEventHandler('onPlayerChat', root,
 					lastChatMessage[source] = msg
 				end
 			end
-			local r, g, b = getPlayerNametagColor(source)
-			outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
-			outputServerLog( "CHAT: " .. getPlayerName(source) .. ": " .. msg )
+			if isElement(source) then
+				local r, g, b = getPlayerNametagColor(source)
+				outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
+				outputServerLog( "CHAT: " .. getPlayerName(source) .. ": " .. msg )
+			end
 		end
 	end
 )

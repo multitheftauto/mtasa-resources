@@ -196,25 +196,51 @@ wndSkin = {
 }
 
 function setSkinCommand(cmd, skin)
+
+	if isPlayerMoving(localPlayer) then
+		errMsg("You can't use /ss while running! Stop moving first!")
+		return
+	end
+
 	skin = skin and tonumber(skin)
 	if skin then
 		server.setMySkin(skin)
 		fadeCamera(true)
 		closeWindow(wndSpawnMap)
 		closeWindow(wndSetPos)
+	else
+		errMsg("Invalid skin ID! Usage: /ss [id]")
 	end
 end
 addCommandHandler('setskin', setSkinCommand)
 addCommandHandler('ss', setSkinCommand)
+
+function isPlayerMoving(p)
+	if isElement(p) and getElementType(p) == "player" then
+		return Vector3(getElementVelocity(p)).length ~= 0
+	end
+	return false
+end
 
 ---------------------------
 --- Set animation window
 ---------------------------
 
 function applyAnimation(leaf)
-	if type(leaf) ~= 'table' then
-		leaf = getSelectedGridListLeaf(wndAnim, 'animlist')
-		if not leaf then
+	if isPlayerAiming(localPlayer) then
+		errMsg("You cannot perform animations while actively aiming a weapon!")
+		return
+	end
+
+	if isPedReloadingWeapon(localPlayer) then
+		errMsg("You cannot perform animations while reloading a weapon!")
+		return
+	end
+
+	if type(leaf) ~= "table" then
+		leaf = getSelectedGridListLeaf(wndAnim, "animlist")
+		if not leaf or not leaf.parent.name or not leaf.name or string.len(leaf.name) > 25 or string.len(leaf.parent.name) > 25
+		 then errMsg("Invalid animation request")
 			return
 		end
 	end
@@ -222,9 +248,11 @@ function applyAnimation(leaf)
 end
 
 function stopAnimation()
-	server.setPedAnimation(localPlayer, false)
+	if getPedAnimation(localPlayer) then
+		server.setPedAnimation(localPlayer, false)
+	end
 end
-addCommandHandler("stopanim", stopAnimation)
+addCommandHandler('stopanim', stopAnimation)
 bindKey("lshift", "down", stopAnimation)
 
 wndAnim = {
@@ -255,6 +283,22 @@ wndAnim = {
 
 addCommandHandler('anim',
 	function(command, lib, name)
+
+		if not lib or not name then
+			return errMsg("Invalid animation! Rule of thumb: Provide both library and anim name!")
+		end
+
+		if not tostring(lib) or not tostring(name) then
+			return errMsg("Invalid animation!")
+		end
+
+		if string.len(lib) > 40 or string.len(name) > 40 then
+			return errMsg("Invalid animation!")
+		end
+
+		if isPlayerAiming(localPlayer) then errMsg ("You cannot perform animations while actively aiming a weapon!") return end
+		if isPedReloadingWeapon(localPlayer) then errMsg ("You cannot perform animations while reloading a weapon!") return end
+
 		if lib and name and (
 			(lib:lower() == "finale" and name:lower() == "fin_jump_on") or
 			(lib:lower() == "finale2" and name:lower() == "fin_cop1_climbout")
@@ -278,20 +322,24 @@ function addWeapon(leaf, amount)
 			return
 		end
 	end
-	if amount < 1 then
-		errMsg("Invalid amount")
+	if amount < 1 or amount > 999999999 or string.len(amount) > 10 then
+		errMsg("Invalid amount!")
 		return
 	end
 	if isPedReloadingWeapon(localPlayer) then
 		errMsg ("You can't get weapons while reloading a weapon!")
-		return 
+		return
+	end
+	if isPlayerAiming(localPlayer) then
+		errMsg ("You can't get weapons while aiming a weapon!")
+		return
 	end
 	server.giveMeWeapon(leaf.id, amount)
 end
 
 function isPlayerAiming(p)
 	if isElement(p) then
-		if getPedTask(p, "secondary", 0) == "TASK_SIMPLE_USE_GUN" then
+		if getPedTask(p, "secondary", 0) == "TASK_SIMPLE_USE_GUN" or isPedDoingGangDriveby(p) then
 			return true
 		end
 	end
@@ -323,12 +371,19 @@ wndWeapon = {
 }
 
 function giveWeaponCommand(cmd, weapon, amount)
+
+	if weapon and string.len(weapon) > 25 then errMsg("Invalid weapon name/ID!") return end
+	if amount and string.len(amount) > 9 then errMsg("Invalid amount!") return end
+
 	weapon = tonumber(weapon) and math.floor(tonumber(weapon)) or weapon and getWeaponIDFromName(weapon) or 0
-	amount = amount and math.floor(tonumber(amount)) or 1500
-	if amount < 1 or weapon < 1 or weapon > 46 then return end
+	amount = tonumber(amount) and math.floor(tonumber(amount)) or 2500
+
+	if not weapon then errMsg("Invalid weapon! Syntax: /wp [weapon id/name]") return end
+	if not amount or amount < 1 or amount > 999999999 or weapon < 1 or weapon > 46 then return end
 	if internallyBannedWeapons[weapon] then return end
-	if isPlayerAiming(localPlayer) then errMsg ("You can't use this command while aiming a weapon!") return end
+	if isPlayerAiming(localPlayer) then errMsg ("You can't get weapons while aiming a weapon or driveby'ing!") return end
 	if isPedReloadingWeapon(localPlayer) then errMsg ("You can't use this command while reloading a weapon!") return end
+	if weapon == 39 or weapon == 40 then errMsg ("You can't get Satchels with /wp command! Use F1 > weapons instead!") return end
 	server.giveMeWeapon(weapon, amount)
 end
 addCommandHandler('give', giveWeaponCommand)
@@ -340,7 +395,16 @@ addCommandHandler('wp', giveWeaponCommand)
 
 addCommandHandler('setstyle',
 	function(cmd, style)
-		style = style and tonumber(style) or 7
+		style = style and tonumber(style) or 6
+
+		if not style then return end
+
+		if string.len(style) > 2 or style < 0 or style > 16 then
+			return errMsg("Invalid style ID!")
+		end
+
+		if getPedFightingStyle(localPlayer) == style then return end
+
 		if allowedStyles[style] then
 			server.setPedFightingStyle(localPlayer, style)
 		end
@@ -440,6 +504,12 @@ wndClothes = {
 
 function addClothesCommand(cmd, type, model, texture)
 	type = type and tonumber(type)
+
+	if string.len(type) > 30 or string.len(model) > 30 or string.len(texture) > 30 then
+		errMsg("Invalid clothes input!")
+		return
+	end
+
 	if type and model and texture then
 		server.addPedClothes(localPlayer, texture, model, type)
 	end
@@ -449,7 +519,7 @@ addCommandHandler('ac', addClothesCommand)
 
 function removeClothesCommand(cmd, type)
 	type = type and tonumber(type)
-	if type then
+	if type and string.len(type) < 30 then
 		server.removePedClothes(localPlayer, type)
 	end
 end
@@ -1102,6 +1172,9 @@ addCommandHandler('getpos', getPosCommand)
 addCommandHandler('gp', getPosCommand)
 
 function setPosCommand(cmd, x, y, z, r)
+	if isPlayerAiming(localPlayer) then return errMsg ("You can't use /sp while aiming a weapon!") end
+	if isPedReloadingWeapon(localPlayer) then return errMsg ("You can't use /sp while reloading a weapon!") end
+
 	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if vehicle then
 		local vehModel = getElementModel(vehicle)
@@ -1278,12 +1351,27 @@ wndCreateVehicle = {
 }
 
 function createVehicleCommand(cmd, ...)
+
 	local args = {...}
-	vehID = getVehicleModelFromName(table.concat(args," ")) or tonumber(args[1]) and math.floor(tonumber(args[1])) or false
+
+	if not ... then
+		return errMsg("Enter vehicle model please! Syntax: /cv [vehicle ID/name]")
+	end
+
+	vehID = getVehicleModelFromName(table.concat(args, " ")) or tonumber(args[1]) and math.floor(tonumber(args[1])) or false
+
+	if not vehID or not tostring(vehID) or not tonumber(vehID) then
+		return errMsg("Invalid vehicle model!")
+	end
+
+	if string.len(table.concat(args, " ")) > 25 or tonumber(vehID) and string.len(vehID) > 3 then
+		return errMsg("Invalid vehicle model!")
+	end
+
 	if vehID and vehID >= 400 and vehID <= 611 then
 		server.giveMeVehicles(vehID)
 	else
-		errMsg("Invalid vehicle model")
+		errMsg("Invalid vehicle model!")
 	end
 end
 addCommandHandler('createvehicle', createVehicleCommand)
@@ -1462,9 +1550,19 @@ function setColorCommand(cmd, ...)
 	if not vehicle then
 		return
 	end
-	local colors = { getVehicleColor(vehicle) }
-	local args = { ... }
-	for i=1,12 do
+	local colors = {getVehicleColor(vehicle)}
+	local args = {...}
+
+	if string.len(...) > 5 or not tonumber(...) then
+		return
+	end
+
+	if not ... then
+		errMsg("Enter colors please!")
+		return
+	end
+
+	for i = 1, 12 do
 		colors[i] = args[i] and tonumber(args[i]) or colors[i]
 	end
 	server.setVehicleColor(vehicle, unpack(colors))
@@ -1498,6 +1596,7 @@ function openColorPicker()
 end
 
 function closedColorPicker()
+	if not editingVehicle then return end
 	local r1, g1, b1, r2, g2, b2, r3, g3, b3, r4, g4, b4 = getVehicleColor(editingVehicle, true)
 	server.setVehicleColor(editingVehicle, r1, g1, b1, r2, g2, b2, r3, g3, b3, r4, g4, b4)
 	local r, g, b = getVehicleHeadLightColor(editingVehicle)
@@ -1548,7 +1647,10 @@ function paintjobInit()
 end
 
 function applyPaintjob(paint)
-	server.setVehiclePaintjob(getPedOccupiedVehicle(localPlayer), paint.id)
+	local vehicle = getPedOccupiedVehicle(localPlayer)
+	if vehicle and tonumber(paint.id) and string.len(paint.id) == 1 then
+		server.setVehiclePaintjob(vehicle, paint.id)
+	end
 end
 
 wndPaintjob = {
@@ -1582,11 +1684,17 @@ wndPaintjob = {
 }
 
 function setPaintjobCommand(cmd, paint)
+
 	local vehicle = getPedOccupiedVehicle(localPlayer)
+	if not vehicle then return end
+
 	paint = paint and tonumber(paint)
-	if not paint or not vehicle then
-		return
+
+	if not paint then return end
+	if string.len(paint) > 5 then errMsg("Invalid paintjob ID!")
+		return 
 	end
+
 	server.setVehiclePaintjob(vehicle, paint)
 end
 addCommandHandler('paintjob', setPaintjobCommand)
@@ -1715,6 +1823,10 @@ wndWeather = {
 
 function setWeatherCommand(cmd, weather)
 	weather = weather and tonumber(weather)
+	if weather and string.len(weather) > 266 then 
+		errMsg("Invalid weather ID!")
+		return
+	end
 	if weather then
 		setWeather(weather)
 	end
@@ -1754,7 +1866,7 @@ end
 
 function applyGameSpeed()
 	speed = getControlNumber(wndGameSpeed, 'speed')
-	if speed then
+	if speed and tonumber(speed) then
 		setMyGameSpeed(speed)
 	end
 	closeWindow(wndGameSpeed)
@@ -1906,6 +2018,10 @@ end
 
 function alphaCommand(command, alpha)
 	alpha = alpha and tonumber(alpha) or 255
+	if alpha and string.len(alpha) > 3 then
+		errMsg("Invalid input!")
+		return
+	end
 	if alpha >= 0 and alpha <= 255 then
 		server.setElementAlpha(localPlayer, alpha)
 	end
@@ -1996,7 +2112,8 @@ addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		fadeCamera(true)
 		getPlayers()
-		setJetpackMaxHeight ( 9001 )
+		setJetpackMaxHeight(9001)
+		setAircraftMaxHeight(1600)
 		triggerServerEvent('onLoadedAtClient', resourceRoot)
 		createWindow(wndMain)
 		hideAllWindows()
