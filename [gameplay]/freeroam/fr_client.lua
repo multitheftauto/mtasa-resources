@@ -1661,10 +1661,6 @@ function setColorCommand(cmd, ...)
 	local colors = {getVehicleColor(vehicle)}
 	local args = {...}
 
-	if string.len(...) > 5 or not tonumber(...) then
-		return
-	end
-
 	if not ... then
 		errMsg("Enter colors please!")
 		return
