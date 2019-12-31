@@ -497,6 +497,7 @@ wndClothes = {
 		},
 		{'br'},
 		{'btn', text='add', id='addremove', width=60, onclick=applyClothes, ClickSpamProtected=true},
+		{'btn', id='outfits', onclick=function() createWindow(wndOutfits) end},
 		{'btn', id='close', closeswindow=true}
 	},
 	oncreate = clothesInit
@@ -526,6 +527,121 @@ end
 addCommandHandler('removeclothes', removeClothesCommand)
 addCommandHandler('rc', removeClothesCommand)
 
+---------------------------
+-- Outfits window
+---------------------------
+
+local outfitList
+local outfits
+
+function initOutfits()
+	outfitList = wndOutfits.controls[1].element
+	if outfits then return end
+	loadOutfits()
+	addEventHandler('onClientGUIDoubleClick', outfitList, loadClothes)
+end
+
+function loadOutfits()
+	outfits = {}
+
+	local xml = xmlLoadFile('outfits.xml')
+	if not xml then
+		xml = xmlCreateFile('outfits.xml', 'catalog')
+	end
+	guiGridListClear(outfitList)
+	for i,child in ipairs (xmlNodeGetChildren(xml) or {}) do
+		local row = guiGridListAddRow(outfitList)
+		guiGridListSetItemText(outfitList, row, 1, tostring(xmlNodeGetAttribute(child, 'name')), false, false)
+		outfits[row+1] = {}
+		for j=0,17 do
+			table.insert(outfits[row+1], j, xmlNodeGetAttribute(child, 'c'..j))
+		end
+	end
+end
+
+function saveOutfits()
+	if fileExists('outfits.xml') then
+		fileDelete('outfits.xml')
+	end
+	local xml = xmlCreateFile('outfits.xml', 'catalog')
+	for row=0,(guiGridListGetRowCount(outfitList)-1) do
+		local child = xmlCreateChild(xml, 'outfit')
+		xmlNodeSetAttribute(child, 'name', guiGridListGetItemText(outfitList, row, 1))
+		for k,v in pairs (outfits[row+1]) do
+			xmlNodeSetAttribute(child, 'c'..k,v)
+		end
+	end
+	xmlSaveFile(xml)
+	xmlUnloadFile(xml)
+end
+
+function saveOutfit()
+	local name = getControlText(wndOutfits,'outfitname')
+	if name ~= "" then
+		local row = guiGridListAddRow(outfitList)
+		outfits[row+1] = {}
+		for i=0,17 do
+			local texture,model = getPedClothes (localPlayer, i)
+			if texture and model then
+				table.insert(outfits[row+1], i, texture ..', '.. model)
+			else
+				table.insert(outfits[row+1], i, 'none')
+			end
+		end
+		guiGridListSetItemText(outfitList, row, 1, name, false, false)
+		setControlText(wndOutfits, 'outfitname', '')
+		saveOutfits()
+	else
+		outputChatBox('Please enter a name for the outfit')
+	end
+end
+
+function deleteOutfit()
+	local row = guiGridListGetSelectedItem(outfitList)
+	if row and row ~= -1 then
+		table.remove(outfits, row+1)
+		guiGridListRemoveRow(outfitList, row)
+		saveOutfits()
+	end
+end
+
+function loadClothes()
+	local row = guiGridListGetSelectedItem(outfitList)
+	if row and row ~= -1 then
+		for k,v in pairs (outfits[row+1]) do
+			if v ~= 'none' then
+				local clothes = split(v, ', ')
+				server.addPedClothes(localPlayer, clothes[1], clothes[2], k)
+			else
+				server.removePedClothes(localPlayer, k)
+			end
+		end
+	end
+end
+
+wndOutfits = {
+	'wnd',
+	text = 'Outfits',
+	width = 170,
+	x = -400,
+	y = 0.3,
+	controls = {
+		{
+			'lst',
+			id='outfits',
+			width=150,
+			height=250,
+			columns={
+				{text='Name', attr='name', width=0.85},
+			}
+		},
+		{'txt', id='outfitname', text='', width=100},
+		{'btn', id='save', onclick=saveOutfit, width=45},
+		{'btn', id='delete selected', onclick=deleteOutfit, width=100},
+		{'btn', id='close', closeswindow=true, width=45}
+	},
+	oncreate = initOutfits
+}
 ---------------------------
 -- Player gravity window
 ---------------------------
