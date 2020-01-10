@@ -84,7 +84,6 @@ function httpRun(commandstring)
 	local objectName = "user." .. getAccountName(user)
 	
 	if(not hasObjectPermissionTo(objectName, "command.srun", false)) then
-		outputDebugString("httpRun: Permission denied")
 		return "Error: Permission denied"
 	end
 	
