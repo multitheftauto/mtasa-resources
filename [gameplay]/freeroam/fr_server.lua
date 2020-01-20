@@ -170,6 +170,10 @@ end
 
 local function sendSettings(player,settingPlayer,settings)
 
+	if not player and isElement(player) then
+		return
+	end
+
 	for setting,value in pairs(settings) do
 		triggerClientEvent(player,"onClientFreeroamLocalSettingChange",settingPlayer,setting,value)
 	end
@@ -252,7 +256,9 @@ addEventHandler('onClothesInit', resourceRoot,
 				result.playerClothes[type] = {texture = texture, model = model}
 			end
 		end
-		triggerClientEvent(client, 'onClientClothesInit', resourceRoot, result)
+		if client and isElement(client) then
+			triggerClientEvent(client, "onClientClothesInit", resourceRoot, result)
+		end
 	end
 )
 
@@ -260,11 +266,14 @@ addEvent('onPlayerGravInit', true)
 addEventHandler('onPlayerGravInit', root,
 	function()
 		if client ~= source then return end
-		triggerClientEvent(client, 'onClientPlayerGravInit', client, getPedGravity(client))
+		if client and isElement(client) then
+			triggerClientEvent(client, "onClientPlayerGravInit", client, getPedGravity(client))
+		end
 	end
 )
 
 function setMySkin(skinid)
+	if not isElement(source) then return end
 	if getElementModel(source) == skinid then return end
 	if isPedDead(source) then
 		local x, y, z = getElementPosition(source)
@@ -355,6 +364,7 @@ function giveMeWeapon(weapon, amount)
 end
 
 function giveMeVehicles(vehID)
+	if not isElement(source) then return end
 	local px, py, pz, prot
 	local element = getPedOccupiedVehicle(source) or source
 	local px,py,pz = getElementPosition(element)
@@ -375,10 +385,12 @@ function giveMeVehicles(vehID)
 			table.insert(vehicleList, vehicle)
 			g_VehicleData[vehicle] = { creator = source, timers = {} }
 			if g_Trailers[vehID] then
-				if getOption('vehicles.idleexplode') then
-					g_VehicleData[vehicle].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, vehicle)
+				if getOption('vehicles.maxidletime') >= 0 then
+					if getOption('vehicles.idleexplode') then
+						g_VehicleData[vehicle].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, vehicle)
+					end
+					g_VehicleData[vehicle].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, vehicle)
 				end
-				g_VehicleData[vehicle].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, vehicle)
 			end
 		end
 	else
@@ -415,21 +427,25 @@ addEventHandler('onPlayerChat', root,
 	function(msg, type)
 		if type == 0 then
 			cancelEvent()
-			if chatTime[source] and chatTime[source] + tonumber(get("*chat/mainChatDelay")) > getTickCount() then
-				outputChatBox("Stop spamming main chat!", source, 255, 0, 0)
-				return
-			else
-				chatTime[source] = getTickCount()
+			if not hasObjectPermissionTo(source, "command.kick") and not hasObjectPermissionTo(source, "command.mute") then
+				if chatTime[source] and chatTime[source] + tonumber(get("*chat/mainChatDelay")) > getTickCount() then
+					outputChatBox("Stop spamming main chat!", source, 255, 0, 0)
+					return
+				else
+					chatTime[source] = getTickCount()
+				end
+				if get("*chat/blockRepeatMessages") == "true" and lastChatMessage[source] and lastChatMessage[source] == msg then
+					outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
+					return
+				else
+					lastChatMessage[source] = msg
+				end
 			end
-			if get("*chat/blockRepeatMessages") == "true" and lastChatMessage[source] and lastChatMessage[source] == msg then
-				outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
-				return
-			else
-				lastChatMessage[source] = msg
+			if isElement(source) then
+				local r, g, b = getPlayerNametagColor(source)
+				outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
+				outputServerLog( "CHAT: " .. getPlayerName(source) .. ": " .. msg )
 			end
-			local r, g, b = getPlayerNametagColor(source)
-			outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. msg:gsub('#%x%x%x%x%x%x', ''), root, r, g, b, true)
-			outputServerLog( "CHAT: " .. getPlayerName(source) .. ": " .. msg )
 		end
 	end
 )
@@ -472,10 +488,12 @@ addEventHandler('onVehicleExit', root,
 					return
 				end
 			end
-			if getOption('vehicles.idleexplode') then
-				g_VehicleData[source].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, source)
+			if getOption('vehicles.maxidletime') >= 0 then
+				if getOption('vehicles.idleexplode') then
+					g_VehicleData[source].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, source)
+				end
+				g_VehicleData[source].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, source)
 			end
-			g_VehicleData[source].timers.destroy = setTimer(unloadVehicle, getOption('vehicles.maxidletime') + (getOption('vehicles.idleexplode') and 10000 or 0), 1, source)
 		end
 		if g_ArmedVehicles[getElementModel(source)] then
 			toggleControl(player, 'vehicle_fire', true)

@@ -24,7 +24,7 @@ function aPerformance ()
 		aPerformanceStats	= guiCreateCheckBox ( 0.05, 0.42, 0.90, 0.08, "Unload Stats Form when not used", false, true, aPerformanceForm )
 		aPerformanceVehicle	= guiCreateCheckBox ( 0.05, 0.50, 0.90, 0.08, "Unload Vehicle Form when not used", false, true, aPerformanceForm )
 		aPerformanceBan	= guiCreateCheckBox ( 0.05, 0.58, 0.90, 0.08, "Unload Ban Form when not used", false, true, aPerformanceForm )
-					   guiCreateStaticImage ( 0.05, 0.68, 0.60, 0.003, "gui\\images\\dot.png", true, aPerformanceForm )
+					   guiCreateStaticImage ( 0.05, 0.68, 0.60, 0.003, "client\\images\\dot.png", true, aPerformanceForm )
 		aPerformanceInput	= guiCreateCheckBox ( 0.05, 0.70, 0.90, 0.08, "Unload Input Box  when not used", false, true, aPerformanceForm )
 		aPerformanceMessage	= guiCreateCheckBox ( 0.05, 0.78, 0.90, 0.08, "Unload Message Box when not used", false, true, aPerformanceForm )
 

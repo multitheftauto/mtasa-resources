@@ -65,7 +65,7 @@ function aAntiCheatTab.Create ( tab )
 	guiLabelSetColor(label1, unpack(colorYellow) )
 	guiSetFont(label1, "default-bold-small" )
 
-	ypos = ypos + 50
+	ypos = ypos + 25
 
 
 	------------------------------------------------------------------------------
@@ -82,6 +82,11 @@ function aAntiCheatTab.Create ( tab )
 				{ id=22, sver="1.3.4-9.05884", cver="1.3.4-9.05884", desc="Disallow resource download errors/corruption (Lua script files)" },
 				{ id=23, sver="1.3.4-9.05884", cver="1.5.2-9.07911", desc="Disallow resource download errors/corruption (Non-Lua files e.g. png,dff)" },
 				{ id=28, sver="1.3.4-9.05884", cver="1.3.4-9.05884", desc="Disallow Linux Wine" },
+				{ id=31, sver="1.5.3",         cver="1.5.3-9.11204", desc="Ignore injected keyboard inputs" },
+				{ id=32, sver="1.5.3",         cver="1.5.3-9.11528", desc="Ignore injected mouse button inputs and movement" },
+				{ id=33, sver="1.5.6",         cver="1.5.6",         desc="Disallow software of the category 'Net limiter'" },
+				{ id=34, sver="1.5.6",         cver="1.5.6",         desc="Disallow internet café users" },
+				{ id=35, sver="1.5.6",         cver="1.5.6",         desc="Disallow certain software with \"FPS locking\" capabilities" },
 			}
 
 	local enableSdDesc = getServerConfigSetting( "enablesd" )

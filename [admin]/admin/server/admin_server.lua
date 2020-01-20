@@ -286,9 +286,9 @@ function iif ( cond, arg1, arg2 )
 	return arg2
 end
 
+local serialExp = "^" .. string.rep ( "[A-F0-9]", 32 ) .. "$"
 function isValidSerial ( serial )
-	-- Did you know gmatch returns an iterator function?
-	return string.gmatch ( serial, "%w%w%w%w-%w%w%w%w-%w%w%w%w-%w%w%w%w" )
+	return serial:match ( serialExp )
 end
 
 function getWeatherNameFromID ( weather )
@@ -1349,6 +1349,8 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 				action = nil
 				outputChatBox ( "Error setting FPS Limit.", source, 255, 0, 0 )
 			end
+		elseif ( action == "clearchat" ) then
+			clearChatBox()
 		else
 			action = nil
 		end
@@ -1449,7 +1451,7 @@ addEventHandler ( "aModdetails", resourceRoot, function ( action, player )
 	if checkClient( false, client, 'aModdetails', action ) then return end
 	if ( hasObjectPermissionTo ( client, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
-			triggerClientEvent ( client, "aModdetails", resourceRoot, "get", getPlayerImgModsList(player), player )
+			triggerClientEvent ( client, "aModdetails", resourceRoot, "get", getPlayerModInfo(player), player )
 		end
 	end
 end )
@@ -1462,7 +1464,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 		local more = ""
 		if ( action == "banip" ) then
 			mdata = data
-			local newban = addBan ( data,nil,nil,source,arg2, arg3 )
+			local newban = addBan ( data, nil, nil, source, arg2, arg3 )
 			if ( not newban ) then
 				action = nil
 			else
@@ -1471,8 +1473,9 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 			end
 		elseif ( action == "banserial" ) then
 			mdata = data
-			if ( isValidSerial ( data ) ) then
-				local newban = addBan ( nil,nil, string.upper ( data ),source,arg2, arg3 )
+			local serial = string.upper ( data )
+			if ( isValidSerial ( serial ) ) then
+				local newban = addBan ( nil, nil, serial, source, arg2, arg3 )
 				if ( not newban ) then
 					action = nil
 				else
