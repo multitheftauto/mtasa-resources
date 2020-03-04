@@ -84,6 +84,7 @@ function httpRun(commandstring)
 	local objectName = "user." .. getAccountName(user)
 	
 	if(not hasObjectPermissionTo(objectName, "command.srun", false)) then
+		outputServerLog(getAccountName(user) .. " from " .. hostname .. " attempted to execute Lua code with missing acl permission (command.srun)")
 		return "Error: Permission denied"
 	end
 	
