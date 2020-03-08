@@ -58,10 +58,30 @@ end
 
 local function watchRender()
 	local sw, y = guiGetScreenSize()
+	local strings = {}
+	local maxWidth = 0
+
+	-- Offset bottom by some more
+	y = y - 20
+
 	for _, key in ipairs(watchKeys) do
+		local results = { pcall(watchFuncs[key], key) }
+		for i, v in ipairs(results) do
+			results[i] = tostring(v)
+		end
+
+		local text = table.concat(results, ", ")
+		table.insert(strings, key .. ": " .. text)
+
+		local textWidth = dxGetTextWidth(text)
+		if textWidth > maxWidth then
+			maxWidth = textWidth
+		end
+	end
+
+	for _, text in ipairs(strings) do
 		y = y - 20
-		local text = tostring(watchFuncs[key](key))
-		dxDrawText(key .. ": " .. text, sw - 200, y)
+		dxDrawText(text, sw - 100 - maxWidth, y)
 	end
 end
 
@@ -74,6 +94,11 @@ local function watch(key, v)
 
 	-- Remove if missing value
 	if not v then
+		-- Don't do anything if key doesn't exist
+		if not watchFuncs[key] then
+			return false
+		end
+
 		watchFuncs[key] = nil
 
 		table.remove(watchKeys, table.find(watchKeys, key))
@@ -84,25 +109,30 @@ local function watch(key, v)
 			removeEventHandler("onClientRender", root, watchRender)
 		end
 
-		return
+		return true
+	end
+
+	-- Only insert key if it doesn't already exist
+	if not watchFuncs[key] then
+		table.insert(watchKeys, key)
+		table.sort(watchKeys)
+
+		-- Add event handler if this is our first key
+		if #watchKeys == 1 then
+			addEventHandler("onClientRender", root, watchRender)
+		end
 	end
 
 	-- Set watchFunc as global watcher, if v is string
 	if type(v) == "string" then
-		watchFunc[key] = watchFunc_G
+		watchFuncs[key] = watchFunc_G
 	elseif type(v) == "function" then
-		watchFunc[key] = v
+		watchFuncs[key] = v
 	else
 		assert(false, "never reached")
 	end
 
-	table.insert(watchKeys, key)
-	table.sort(watchKeys)
-
-	-- Add event handler if this is our first key
-	if #watchKeys == 1 then
-		addEventHandler("onClientRender", root, watchRender)
-	end
+	return true
 end
 
 runcode = {
