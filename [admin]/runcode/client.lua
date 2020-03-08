@@ -1,5 +1,13 @@
 me = localPlayer
 
+local watch
+
+runcode = {
+	me = localPlayer,
+	watch = watch
+}
+
+-- Primary functionality
 local function runString (commandstring)
 	outputChatBoxR("Executing client-side command: "..commandstring)
 	local notReturned
@@ -47,3 +55,59 @@ end
 
 addEvent("doCrun", true)
 addEventHandler("doCrun", root, runString)
+
+-- Variable watching feature
+local watchFuncs = {}
+local watchKeys = {}
+local watchFunc_G = function(k)
+	return _G[k]
+end
+
+local function watchRender()
+	local sw, y = guiGetScreenSize()
+	for _, key in ipairs(watchKeys) do
+		y = y - 20
+		local text = tostring(watchFuncs[key](key))
+		dxDrawText(key .. ": " .. text, sw - 200, y)
+	end
+end
+
+function watch(key, v)
+	-- Error checking
+	if type(v) ~= "string" and type(v) ~= "function" and type(v) ~= "nil" then
+		error("Unexpected watch value of type " .. type(v) .. " for key " .. key)
+		return
+	end
+
+	-- Remove if missing value
+	if not v then
+		watchFuncs[key] = nil
+
+		table.remove(watchKeys, table.find(watchKeys, key))
+		table.sort(watchKeys)
+
+		-- Remove event handler if we have no keys left
+		if #watchKeys == 0 then
+			removeEventHandler("onClientRender", root, watchRender)
+		end
+
+		return
+	end
+
+	-- Set watchFunc as global watcher, if v is string
+	if type(v) == "string" then
+		watchFunc[key] = watchFunc_G
+	elseif type(v) == "function" then
+		watchFunc[key] = v
+	else
+		assert(false, "never reached")
+	end
+
+	table.insert(watchKeys, key)
+	table.sort(watchKeys)
+
+	-- Add event handler if this is our first key
+	if #watchKeys == 1 then
+		addEventHandler("onClientRender", root, watchRender)
+	end
+end
