@@ -1,12 +1,5 @@
 me = localPlayer
 
-local watch
-
-runcode = {
-	me = localPlayer,
-	watch = watch
-}
-
 -- Primary functionality
 local function runString (commandstring)
 	outputChatBoxR("Executing client-side command: "..commandstring)
@@ -72,7 +65,7 @@ local function watchRender()
 	end
 end
 
-function watch(key, v)
+local function watch(key, v)
 	-- Error checking
 	if type(v) ~= "string" and type(v) ~= "function" and type(v) ~= "nil" then
 		error("Unexpected watch value of type " .. type(v) .. " for key " .. key)
@@ -111,3 +104,8 @@ function watch(key, v)
 		addEventHandler("onClientRender", root, watchRender)
 	end
 end
+
+runcode = {
+	me = localPlayer,
+	watch = watch
+}
