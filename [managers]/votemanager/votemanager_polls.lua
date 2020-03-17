@@ -426,6 +426,8 @@ function voteKick(player, reason)
 		local title = "Kick "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
+		else
+			reason = ""
 		end
 		return startPoll{
 			title=title,
@@ -446,6 +448,8 @@ function voteBan(player, reason)
 		local title = "Ban "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
+		else
+			reason = ""
 		end
 		return startPoll{
 			title=title,
@@ -466,6 +470,8 @@ function voteKill(player, reason)
 		local title = "Kill "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
+		else
+			reason = ""
 		end
 		return startPoll{
 			title=title,
