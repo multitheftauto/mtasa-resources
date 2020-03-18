@@ -476,8 +476,6 @@ function voteKill(player, reason)
 		local title = "Kill "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
-		else
-			reason = ""
 		end
 		return startPoll{
 			title=title,
