@@ -17,6 +17,15 @@ function errMsg(msg, player)
 	outputChatBox(msg, player or root, 255, 0, 0)
 end
 
+function stripHex(str)
+    local oldLen
+    repeat
+        oldLen = str:len()
+        str = str:gsub('#%x%x%x%x%x%x', '')
+    until str:len() == oldLen
+    return str
+end
+
 function table.find(t, ...)
 	local args = { ... }
 	if #args == 0 then

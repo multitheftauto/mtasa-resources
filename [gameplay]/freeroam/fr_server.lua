@@ -443,10 +443,7 @@ addEventHandler('onPlayerChat', root,
 			end
 			if isElement(source) then
 				local r, g, b = getPlayerNametagColor(source)
-				while(msg:gsub('#%x%x%x%x%x%x', ''):len() ~= msg:len()) do
-					msg = msg:gsub('#%x%x%x%x%x%x', '')
-				end
-				outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. msg, root, r, g, b, true)
+				outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. stripHex(msg), root, r, g, b, true)
 				outputServerLog( "CHAT: " .. getPlayerName(source) .. ": " .. msg )
 			end
 		end
