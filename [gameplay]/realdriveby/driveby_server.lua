@@ -1,4 +1,4 @@
-local settings = {
+settings = {
 	driver = get"driveby_driver" or { 22,23,24,25,28,29,32 },
 	passenger = get"driveby_passenger" or { 22,23,24,25,26,28,29,32,30,31,33 },
 	shotdelay = get"driveby_shot_delay" or { ['22']=300,['23']=300,['24']=800,['26']=700 },
@@ -7,6 +7,7 @@ local settings = {
 	steerBikes = get"driveby_steer_bikes" == true,
 	autoEquip = get"driveby_auto_equip" or false,
 	blockInstantEject = get"block_instant_eject" == true,
+	enabled = get"driveby_enabled" == true,
 }
 --Remove any BS IDs by checking them
 local validDrivebyWeapons = { [22]=true,[23]=true,[24]=true,[25]=true,
@@ -33,3 +34,13 @@ addEventHandler ( "driveby_clientScriptLoaded", getRootElement(),
 	end
 )
 
+-- Save player specific driveby enabled-states
+syncedPlayerStates = {}
+
+addEvent("driveby_syncDrivebyState", true)
+addEventHandler("driveby_syncDrivebyState", root,
+	function(enabled)
+		if client ~= source then return end
+		syncedPlayerStates[client] = enabled
+	end
+)

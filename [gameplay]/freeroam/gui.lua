@@ -199,6 +199,11 @@ function _buildWindow(wnd, baseWnd, parentWnd)
 		end
 	elseif wndClass == 'img' then
 		elem = guiCreateStaticImage(relX, relY, relWidth, relHeight, wnd.src or '', true, parentWnd.element)
+	elseif wndClass == 'txt' then
+		elem = guiCreateEdit(relX, relY, relWidth, relHeight, wnd.text or '', true, parentWnd.element)
+		if wnd.onchanged then
+			addEventHandler('onClientGUIChanged', elem, wnd.onchanged)
+		end
 	else
 		elem = _G['guiCreate' .. classInfo[wndClass].className](relX, relY, relWidth, relHeight, wnd.text or wnd.id or '', true, parentWnd.element)
 		if wnd.align and wndClass == 'lbl' then

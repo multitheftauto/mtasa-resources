@@ -16,7 +16,7 @@ MB_YESNO = 1
 MB_OK = 2
 
 aMessageBox = {
-    type = {"warning", "error", "question", "info"},
+    type = {"Warning", "Error", "Question", "Info"},
     Thread = nil,
     Result = false
 }

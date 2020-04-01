@@ -259,10 +259,10 @@ aFunctions = {
         ["getscreen"] = function(player, quality)
             getPlayerScreen(player, source, quality)
         end,
-        ["wrap"] = function(player)
+        ["warp"] = function(player)
             warpPlayer(source, player)
         end,
-        ["wrapto"] = function(player, data)
+        ["warpto"] = function(player, data)
             warpPlayer(player, data)
             return true, getPlayerName(data)
         end
@@ -277,8 +277,7 @@ aFunctions = {
                 setElementPosition(vehicle, x, y, z + 2)
             end
         end,
-        ["customize"] = function(player, vehicle, ...)
-            local data = {...}
+        ["customize"] = function(player, vehicle, data)
             if (data[1] == "remove") then
                 for id, upgrade in ipairs(getVehicleUpgrades(vehicle)) do
                     removeVehicleUpgrade(vehicle, upgrade)
@@ -304,8 +303,7 @@ aFunctions = {
             end
             return true, id
         end,
-        ["setcolor"] = function(player, vehicle, ...)
-            local data = {...}
+        ["setcolor"] = function(player, vehicle, data)
             for k, color in ipairs(data) do
                 local c = tonumber(color)
                 if (c) then
@@ -398,9 +396,9 @@ aFunctions = {
             end
             return true, id .. " " .. getWeatherNameFromID(tonumber(id))
         end,
-        ["blendweather"] = function()
+        ["blendweather"] = function(id)
             if (not setWeatherBlended(tonumber(id))) then
-                outputChatBox("Error setting weather.", source, 255, 0, 0)
+                outputChatBox("Error blending weather.", source, 255, 0, 0)
                 return false
             end
             return true, id .. " " .. getWeatherNameFromID(tonumber(id))
@@ -467,8 +465,12 @@ aFunctions = {
                 return false
             end
         end,
-        ["shutdown"] = function(reason)
-            shutdown(iif(reason, tostring(reason), nil))
+        ["shutdown"] = function()
+            shutdown("triggered by "..getPlayerName(source))
+        end,
+        ["clearchat"] = function()
+            clearChatBox()
+            return true
         end
     },
     admin = {},

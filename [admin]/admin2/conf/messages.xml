@@ -237,6 +237,10 @@
       <all>Admin has $data '$data2' glitch</all>
       <log>ADMIN: $admin has $data '$data2' glitch</log>
     </group>
+    <group action="clearchat" r="225" g="170" b="90">
+      <all>Chatbox cleared by Admin</all>
+      <log>ADMIN: $admin has cleared the chatbox</log>
+    </group>
   </server>
   <bans>
     <group action="unbanip" r="225" g="170" b="90">

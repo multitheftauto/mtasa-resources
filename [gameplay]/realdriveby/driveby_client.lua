@@ -31,6 +31,8 @@ addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()
 		bindKey ( "mouse2", "down", "Toggle Driveby", "" )
 		bindKey ( "e", "down", "Next driveby weapon", "1" )
 		bindKey ( "q", "down", "Previous driveby weapon", "-1" )
+		bindKey ( "mouse_wheel_up", "down", "Next driveby weapon", "1" )
+		bindKey ( "mouse_wheel_down", "down", "Previous driveby weapon", "-1" )
 		toggleControl ( "vehicle_next_weapon",false )
 		toggleControl ( "vehicle_previous_weapon",false )
 		triggerServerEvent ( "driveby_clientScriptLoaded", localPlayer )
@@ -77,6 +79,9 @@ addEventHandler("doSendDriveBySettings",localPlayer,
 				end
 			end )
 		end
+		if not settings.enabled then
+			toggleDriveby()
+		end
 	end
 )
 
@@ -89,7 +94,7 @@ function toggleDriveby()
 	if settings.blockedVehicles[vehicleID] then return end
 	--Has he got a weapon equiped?
 	local equipedWeapon = getPedWeaponSlot( localPlayer )
-	if equipedWeapon == 0 then
+	if settings.enabled and equipedWeapon == 0 then
 		if exitingVehicle then return end
 		--Decide whether he is a driver or passenger
 		--We need to get the switchTo weapon by finding any valid IDs
@@ -135,7 +140,7 @@ function toggleDriveby()
 		local prevw,nextw = next(getBoundKeys ( "Previous driveby weapon" )),next(getBoundKeys ( "Next driveby weapon" ))
 		if prevw and nextw then
 			if animation then Animation:remove() end
-			helpText:text( "Press '"..prevw.."' or '"..nextw.."' to change weapon" )
+			helpText:text( "Scroll or press '"..prevw.."' or '"..nextw.."' to change weapon" )
 			fadeInHelp()
 			setTimer ( fadeOutHelp, 10000, 1 )
 		end

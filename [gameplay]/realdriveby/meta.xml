@@ -3,6 +3,7 @@
 	<script src="driveby_client.lua" type="client" />
 	<script src="exports_client.lua" type="client" />
 	<script src="driveby_server.lua" type="server" />
+	<script src="exports_server.lua" type="server" />
 
 	<!--utils-->
 	<script src="utils/textlib.lua" type="client" />
@@ -17,7 +18,7 @@
 		<setting name="driveby_passenger" value="[[ 22,23,24,25,26,28,29,32,30,31,33 ]]"/>
 
 		<!--Defines the shot delay for individual weapons that arent meant for driveby, in the format of 'weapon':time(ms)-->
-		<setting name="driveby_shot_delay" value="[{ '22':300,'23':300,'24':800,'26':700 }]"/>
+		<setting name="driveby_shot_delay" value="[{ '22':300,'23':300,'24':800,'26':700, '27':330 }]"/>
 
 		<!--Vehicles that cannot be drivebyd inside-->
 		<setting name="driveby_blocked_vehicles" value="[[ 432,601,437,431,592,553,577,488,497,548,563,512,476,447,425,519,520,460,417,469,487,513,441,464,501,465,564,538,449,537,539,570472,473,493,595,484,430,453,452,446,454,606,591,607,611,610,590,569,611,435,608,584,450 ]]"/>
@@ -33,6 +34,9 @@
 
 		<!--Block instant eject when using driveby while exiting vehicle -->
 		<setting name="block_instant_eject" value="[true]"/>
+
+		<!--Whether or not is driveby enabled for all players by default -->
+		<setting name="driveby_enabled" value="[true]"/>
 	</settings>
 	<export function="setDriverDrivebyAbility" type="client" />
 	<export function="setPassengerDrivebyAbility" type="client" />
@@ -44,4 +48,6 @@
 	<export function="getDrivebySteeringAbility" type="client" />
 	<export function="setDrivebyAutoEquip" type="client" />
 	<export function="getDrivebyAutoEquip" type="client" />
+	<export function="isDrivebyEnabled" type="shared" />
+	<export function="setDrivebyEnabled" type="shared" />
 </meta>

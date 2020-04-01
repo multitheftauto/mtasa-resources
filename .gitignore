@@ -3,7 +3,11 @@
 #
 # We don't want that!
 
+\[test\]
+
 # admin2
 \[admin\]/admin2/admin.db
 \[admin\]/admin2/conf/reports.xml
 
+# acpanel
+\[admin\]/acpanel/settings.xml

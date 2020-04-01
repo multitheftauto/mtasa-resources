@@ -1,10 +1,10 @@
 --[[**********************************
 *
-*	Multi Theft Auto - Admin Panel
+*   Multi Theft Auto - Admin Panel
 *
-*	server/admin_server.lua
+*   server/admin_server.lua
 *
-*	Original File by lil_Toady
+*   Original File by lil_Toady
 *
 **************************************]]
 _types = {"player", "team", "vehicle", "resource", "bans", "server", "admin"}
@@ -260,6 +260,15 @@ addEventHandler(
         else
             outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
         end
+    end
+)
+
+addEvent("aServerGlitchRefresh", true)
+addEventHandler(
+    "aServerGlitchRefresh",
+    root,
+    function()
+        triggerClientEvent("aClientRefresh", client, isGlitchEnabled("quickreload"), isGlitchEnabled("fastmove"), isGlitchEnabled("fastfire"), isGlitchEnabled("crouchbug"), isGlitchEnabled("highcloserangedamage"), isGlitchEnabled("hitanim"), isGlitchEnabled("fastsprint"), isGlitchEnabled("baddrivebyhitbox"), isGlitchEnabled("quickstand"))
     end
 )
 
