@@ -6,6 +6,7 @@
 	<include resource="votemanager"/>
 	<include resource="helpmanager" />
 
+	<script src="race_errorcodes.lua" type="shared"/>
 
 	<script src="_common.lua" type="server"/>
 	<script src="_joiner.lua" type="server"/>
