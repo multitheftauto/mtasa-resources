@@ -10,11 +10,9 @@
   <!--Main script files, keep them in that order or it may break-->
   <script src="server/admin_serverjoiner.lua" />
   <script src="server/admin_serverprefs.lua" />
-  <script src="server/admin_coroutines.lua" />
   <script src="server/admin_server.lua" />
   <script src="server/admin_sync.lua" />
   <script src="server/admin_commands.lua" />
-  <script src="server/admin_community.lua" />
   <script src="server/admin_ip2c.lua" />
   <script src="server/admin_servermaps.lua" />
   <script src="server/admin_ACL.lua" />
@@ -33,7 +31,6 @@
   <script src="client/gui/admin_message.lua" type="client" />
   <script src="client/gui/admin_moddetails.lua" type="client" />
   <script src="client/gui/admin_spectator.lua" type="client" />
-  <script src="client/gui/admin_editor.lua" type="client" />
   <script src="client/gui/admin_messagebox.lua" type="client" />
   <script src="client/gui/admin_inputbox.lua" type="client" />
   <script src="client/gui/admin_team.lua" type="client" />
@@ -272,6 +269,12 @@
   <file src="client/images/flags/ve.png" />
   <file src="client/images/flags/hr.png" />
   <file src="client/images/flags/xk.png" />
+  
+  <!--Unused-->
+  <!--
+  <script src="server/admin_community.lua" />
+  <script src="server/admin_coroutines.lua" />
+  -->
 
   <!--HTTP Server Stuff-->
   <!--Not finished yet

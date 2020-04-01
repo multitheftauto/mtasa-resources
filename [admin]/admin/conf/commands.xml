@@ -19,7 +19,7 @@
     <command handler="setskin" call="setskin" args="P,i" />
     <command handler="setstat" call="setstat" args="P,i,i" />
     <command handler="setteam" call="setteam" args="P,T" />
-    <command handler="setinterior" call="setinterior" args="P,i" />
+    <command handler="setinterior" call="setinterior" args="P,s" />
     <command handler="setdimension" call="setdimension" args="P,i" />
     <command handler="jetpack" call="jetpack" args="P" />
     <command handler="givevehicle" call="givevehicle" args="P,i" />
@@ -52,6 +52,7 @@
     <command handler="blendweather" call="blendweather" args="i" />
     <command handler="setgamespeed" call="setgamespeed" args="i" />
     <command handler="setgravity" call="setgravity" args="i" />
+    <command handler="clearchat" call="clearchat" args="" />
   </server>
   <bans>
     <command handler="banip" call="banip" args="s" />

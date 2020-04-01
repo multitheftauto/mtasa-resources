@@ -79,6 +79,11 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	if not resource then return false end
 	dimension = dimension or 0
 	extraNodes = extraNodes or {}
+
+	--Add OOP support
+	local oopNode = xmlCreateChild(xml, "oop")
+	xmlNodeSetValue(oopNode, "true")
+
 	--[[ info tag ]]--
 	local infoNode = xmlCreateChild(xml, "info")
 

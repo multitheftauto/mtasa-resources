@@ -168,6 +168,7 @@ end
 
 -- PLAYERS
 function serverKickPlayer (playerName, reason)
+	if not checkCaller( "serverKickPlayer" ) then return end
 	if kickPlayer(getPlayerFromName(playerName), reason) then
 	return true
 	else
@@ -176,6 +177,7 @@ function serverKickPlayer (playerName, reason)
 end
 
 function serverBanPlayer (playerName, reason, duration)
+	if not checkCaller( "serverBanPlayer" ) then return end
 	if duration then
 	duration = duration * 3600
 	else
