@@ -874,7 +874,7 @@ function aClientClick(button)
                     guiBringToFront(aTab1.SlapDropDown)
                 end
                 if (guiGridListGetSelectedItem(aTab1.PlayerList) == -1) then
-                    aMessageBox("error", "No player selected!")
+                    messageBox("No player selected!", MB_ERROR, MB_OK)
                 else
                     local name =
                         guiGridListGetItemText(aTab1.PlayerList, guiGridListGetSelectedItem(aTab1.PlayerList), 1)
@@ -898,12 +898,9 @@ function aClientClick(button)
                     elseif (source == aTab1.Slap) then
                         triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap", aCurrentSlap)
                     elseif (source == aTab1.Mute) then
-                        aMessageBox(
-                            "question",
-                            "Are you sure to " .. iif(aPlayers[player]["mute"], "unmute", "mute") .. " " .. name .. "?",
-                            'triggerServerEvent ( "aPlayer", getLocalPlayer(), getPlayerFromNick ( "' ..
-                                name .. '" ), "mute" )'
-                        )
+                        if (messageBox("Are you sure to " .. iif(aPlayers[player]["mute"], "unmute", "mute") .. " " .. name .. "?", MB_QUESTION, MB_YESNO) == true) then
+                            triggerServerEvent ( "aPlayer", getLocalPlayer(), getPlayerFromNick ( name ), "mute" )
+                        end
                     elseif (source == aTab1.Freeze) then
                         triggerServerEvent("aPlayer", getLocalPlayer(), player, "freeze")
                     elseif (source == aTab1.Spectate) then
@@ -983,19 +980,13 @@ function aClientClick(button)
                         aVehicleCustomize(player)
                     elseif (source == aTab1.Admin) then
                         if (aPlayers[player]["admin"]) then
-                            aMessageBox(
-                                "warning",
-                                "Revoke admin rights from " .. name .. "?",
-                                'triggerServerEvent ( "aPlayer", getLocalPlayer(), getPlayerFromNick ( "' ..
-                                    name .. '" ), "setgroup", false )'
-                            )
+                            if (messageBox("Revoke admin rights from " .. name .. "?", MB_WARNING, MB_YESNO) == true) then
+                                triggerServerEvent ( "aPlayer", getLocalPlayer(), getPlayerFromNick ( name ), "setgroup", false )
+                            end
                         else
-                            aMessageBox(
-                                "warning",
-                                "Give admin rights to " .. name .. "?",
-                                'triggerServerEvent ( "aPlayer", getLocalPlayer(), getPlayerFromNick ( "' ..
-                                    name .. '" ), "setgroup", true )'
-                            )
+                            if (messageBox("Give admin rights to " .. name .. "?", MB_WARNING, MB_YESNO) == true) then
+                                triggerServerEvent ( "aPlayer", getLocalPlayer(), getPlayerFromNick ( name ), "setgroup", true )
+                            end
                         end
                     end
                 end
@@ -1080,7 +1071,7 @@ function aClientClick(button)
             -- TAB 3, WORLD
             if ((source == aTab2.ResourceStart) or (source == aTab2.ResourceRestart) or (source == aTab2.ResourceStop)) then
                 if (guiGridListGetSelectedItem(aTab2.ResourceList) == -1) then
-                    aMessageBox("error", "No resource selected!")
+                    messageBox("No resource selected!", MB_ERROR, MB_OK)
                 else
                     if (source == aTab2.ResourceStart) then
                         triggerServerEvent(
@@ -1230,29 +1221,25 @@ function aClientClick(button)
             -- TAB 5, ADMIN CHAT
             if (source == aTab4.Details) then
                 if (guiGridListGetSelectedItem(aTab4.BansList) == -1) then
-                    aMessageBox("error", "No ban row selected!")
+                    messageBox("No ban row selected!", MB_ERROR, MB_OK)
                 else
                     local ip = guiGridListGetItemText(aTab4.BansList, guiGridListGetSelectedItem(aTab4.BansList), 2)
                     aBanDetails(ip)
                 end
             elseif (source == aTab4.Unban) then
                 if (guiGridListGetSelectedItem(aTab4.BansList) == -1) then
-                    aMessageBox("error", "No ban row selected!")
+                    messageBox("No ban row selected!", MB_ERROR, MB_OK)
                 else
                     local selected =
                         guiGridListGetItemText(aTab4.BansList, guiGridListGetSelectedItem(aTab4.BansList), 2)
                     if (aBans["Serial"][selected]) then
-                        aMessageBox(
-                            "question",
-                            "Unban Serial " .. selected .. "?",
-                            'triggerServerEvent ( "aBans", getLocalPlayer(), "unbanserial", "' .. selected .. '" )'
-                        )
+                        if (messageBox("Unban Serial " .. selected .. "?", MB_QUESTION, MB_YESNO) == true) then
+                            triggerServerEvent ( "aBans", getLocalPlayer(), "unbanserial", selected )
+                        end
                     else
-                        aMessageBox(
-                            "question",
-                            "Unban IP " .. selected .. "?",
-                            'triggerServerEvent ( "aBans", getLocalPlayer(), "unbanip", "' .. selected .. '" )'
-                        )
+                        if (messageBox("Unban IP " .. selected .. "?", MB_QUESTION, MB_YESNO) == true) then
+                            triggerServerEvent ( "aBans", getLocalPlayer(), "unbanip",  selected )
+                        end
                     end
                 end
             elseif (source == aTab4.UnbanIP) then
@@ -1328,13 +1315,13 @@ function aClientClick(button)
             elseif (source == aTab6.PasswordChange) then
                 local passwordNew, passwordConf = guiGetText(aTab6.PasswordNew), guiGetText(aTab6.PasswordConfirm)
                 if (passwordNew == "") then
-                    aMessageBox("error", "Enter the new password")
+                    messageBox("Enter the new password", MB_ERROR, MB_OK)
                 elseif (passwordConf == "") then
-                    aMessageBox("error", "Confirm the new password")
+                    messageBox("Confirm the new password", MB_ERROR, MB_OK)
                 elseif (string.len(passwordNew) < 4) then
-                    aMessageBox("error", "The new password must be at least 4 characters long")
+                    messageBox("The new password must be at least 4 characters long", MB_ERROR, MB_OK)
                 elseif (passwordNew ~= passwordConf) then
-                    aMessageBox("error", "Confirmed password doesn't match")
+                    messageBox("Confirmed password doesn't match", MB_ERROR, MB_OK)
                 else
                     triggerServerEvent(
                         "aAdmin",

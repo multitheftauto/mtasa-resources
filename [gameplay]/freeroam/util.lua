@@ -48,6 +48,13 @@ function isPlayerTerminated(player)
 	return (math.floor(x) == 132 and math.floor(y) == -68) or (math.abs(x) < 2 and math.abs(y) < 2 and z < 1)
 end
 
+function isPlayerMoving(p)
+	if isElement(p) and getElementType(p) == "player" then
+		return Vector3(getElementVelocity(p)).length ~= 0
+	end
+	return false
+end
+
 function table.find(t, ...)
 	local args = { ... }
 	if #args == 0 then

@@ -54,6 +54,15 @@ function clearResourceMeta ( resource, quick ) --removes settings and info nodes
 			break
 		end
 	end
+	--Destroy leftover OOP nodes
+	while true do
+		local oopNode = xmlFindChild(metaNode, 'oop', 0)
+		if oopNode then
+			xmlDestroyNode(oopNode)
+		else
+			break
+		end
+	end
 	--Destroy any other nodes
 	local nodes = xmlNodeGetChildren ( metaNode )
 	for key, node in ipairs(nodes) do

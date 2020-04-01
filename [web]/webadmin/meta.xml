@@ -15,24 +15,24 @@
 	<html src="groups.css" raw="true"/>
 
 	<!-- ACLS -->
-	<export function="getACLs" http="true" />
-	<export function="setACLRight" http="true" />
-	<export function="removeACLRight" http="true" />
-	<export function="createACL" http="true" />
-	<export function="removeACL" http="true" />
+	<export function="getACLs" http="true" protected="true" />
+	<export function="setACLRight" http="true" protected="true" />
+	<export function="removeACLRight" http="true" protected="true" />
+	<export function="createACL" http="true" protected="true" />
+	<export function="removeACL" http="true" protected="true" />
 
 	<!-- GROUPS -->
 	<export function="getGroups" http="true" />
-	<export function="addObjectToGroup" http="true" />
-	<export function="addACLToGroup" http="true" />
-	<export function="removeObjectFromGroup" http="true" />
-	<export function="removeACLFromGroup" http="true" />
-	<export function="removeGroup" http="true" />
-	<export function="addGroup" http="true" />
+	<export function="addObjectToGroup" http="true" protected="true" />
+	<export function="addACLToGroup" http="true" protected="true" />
+	<export function="removeObjectFromGroup" http="true" protected="true" />
+	<export function="removeACLFromGroup" http="true" protected="true" />
+	<export function="removeGroup" http="true" protected="true" />
+	<export function="addGroup" http="true" protected="true" />
 	<export function="isAccountNameValid" http="true" />
 
 	<!-- PLAYERS -->
-	<export function="serverKickPlayer" http="true" />
- 	<export function="serverBanPlayer" http="true" />
+	<export function="serverKickPlayer" http="true" protected="true" />
+ 	<export function="serverBanPlayer" http="true" protected="true" />
 
 </meta>

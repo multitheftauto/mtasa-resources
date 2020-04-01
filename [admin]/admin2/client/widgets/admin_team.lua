@@ -17,7 +17,7 @@ function aTeam.Show()
         aTeam.Form = guiCreateWindow(x / 2 - 150, y / 2 - 125, 300, 250, "Player Team Management", false)
         aTeam.Label =
             guiCreateLabel(0.03, 0.09, 0.94, 0.07, "Select a team from the list or create a new one", true, aTeam.Form)
-        guiLabelSetHorizontalAlign(aTeam.Label, 2)
+        guiLabelSetHorizontalAlign(aTeam.Label, "center")
         guiLabelSetColor(aTeam.Label, 255, 0, 0)
         aTeam.List = guiCreateGridList(0.03, 0.18, 0.50, 0.71, true, aTeam.Form)
         guiGridListAddColumn(aTeam.List, "Teams", 0.85)

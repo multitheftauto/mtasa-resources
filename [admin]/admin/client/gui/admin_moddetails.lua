@@ -8,16 +8,18 @@
 
 aModdetailsForm = nil
 local modDetailsPlayer = nil
+local currentModDetails
 
 function aViewModdetails ( player )
 	modDetailsPlayer = player
 	if ( aModdetailsForm == nil ) then
 		local x, y = guiGetScreenSize()
-		aModdetailsForm	= guiCreateWindow ( x / 2 - 250, y / 2 - 125, 350, 350, "View Moddetails", false )
+		aModdetailsForm	= guiCreateWindow ( x / 2 - 250, y / 2 - 125, 500, 350, "View Mod Details", false )
 		guiWindowSetSizable( aModdetailsForm, false )
 		aModdetailsList		= guiCreateGridList ( 0.02, 0.09, 0.72, 0.85, true, aModdetailsForm )
-					   guiGridListAddColumn( aModdetailsList, "Id", 0.25 )
-					   guiGridListAddColumn( aModdetailsList, "Name", 0.60 )
+					   guiGridListAddColumn( aModdetailsList, "Filename", 0.3 )
+					   guiGridListAddColumn( aModdetailsList, "Modification", 0.60 )
+		aModdetailsCopy		= guiCreateButton ( 0.76, 0.71, 0.32, 0.05, "Copy", true, aModdetailsForm )
 		aModdetailsRefresh	= guiCreateButton ( 0.76, 0.78, 0.32, 0.05, "Refresh", true, aModdetailsForm )
 		aModdetailsClose	= guiCreateButton ( 0.76, 0.85, 0.32, 0.05, "Close", true, aModdetailsForm )
 		addEventHandler ( "aModdetails", resourceRoot, aModdetailsSync )
@@ -43,6 +45,7 @@ function aViewModdetailsClose ( destroy )
 	else
 		guiSetVisible ( aModdetailsForm, false )
 	end
+	currentModDetails = nil
 end
 
 function aModdetailsSync ( action, list, player )
@@ -50,15 +53,20 @@ function aModdetailsSync ( action, list, player )
 		return
 	end
 	if ( action == "get" ) then
-		guiGridListClear ( aModdetailsList )
-		destroyElement ( aModdetailsList )
-		aModdetailsList	= guiCreateGridList ( 0.02, 0.09, 0.72, 0.85, true, aModdetailsForm )
-					   guiGridListAddColumn( aModdetailsList, "Id", 0.25 )
-					   guiGridListAddColumn( aModdetailsList, "Name", 0.60 )
-		for id,mod in ipairs( list ) do
-			local row = guiGridListAddRow ( aModdetailsList )
-			guiGridListSetItemText ( aModdetailsList, row, 1, tostring(mod.id), false, false )
-			guiGridListSetItemText ( aModdetailsList, row, 2, tostring(mod.name), false, false )
+		currentModDetails = list
+		if not aModdetailsList then
+			aModdetailsList	= guiCreateGridList ( 0.02, 0.09, 0.72, 0.85, true, aModdetailsForm )
+			guiGridListAddColumn( aModdetailsList, "Filename", 0.3 )
+			guiGridListAddColumn( aModdetailsList, "Modification", 0.60 )
+		else
+			guiGridListClear ( aModdetailsList )
+		end
+		for filename, mods in pairs( list ) do
+			for _, mod in ipairs(mods) do
+				local row = guiGridListAddRow ( aModdetailsList )
+				guiGridListSetItemText ( aModdetailsList, row, 1, tostring(filename), false, false )
+				guiGridListSetItemText ( aModdetailsList, row, 2, tostring(mod.name), false, false )
+			end
 		end
 	end
 end
@@ -69,6 +77,9 @@ function aClientModdetailsClick ( button )
 			aViewModdetailsClose ( false )
 		elseif ( source == aModdetailsRefresh ) then
 			triggerServerEvent ( "aModdetails", resourceRoot, "get", modDetailsPlayer )
+		elseif ( source == aModdetailsCopy ) then
+			setClipboard ( toJSON ( currentModDetails ) )
+			outputChatBox("* Player mod details copied to clipboard.", 255, 100, 70)
 		end
 	end
 end

@@ -245,6 +245,10 @@
       <all>Blur level set to '$data'$by_admin_4all.</all>
       <log>ADMIN: $admin has set blur level to '$data'</log>
     </group>
+    <group action="clearchat" r="225" g="170" b="90">
+      <all>Chatbox cleared$by_admin_4all.</all>
+      <log>ADMIN: $admin has cleared the chatbox.</log>
+    </group>
   </server>
   <bans>
 
