@@ -16,4 +16,9 @@ errorCode = {
 	noGamemodeRunning = 33,
 	mapIsntCompatible = 34,
 	twoModesNeeded = 35,
+	onlyOneCompatibleMap = 36
 }
+
+function getErrorCodes()
+	return errorCode
+end
