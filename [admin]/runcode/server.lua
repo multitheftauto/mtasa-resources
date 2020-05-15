@@ -79,14 +79,15 @@ addCommandHandler("crun",
 -- http interface run export
 function httpRun(commandstring)
 	if not user then outputDebugString ( "httpRun can only be called via http", 2 ) return end
-	
+
 	-- check acl permission
 	local objectName = "user." .. getAccountName(user)
-	
+
 	if(not hasObjectPermissionTo(objectName, "command.srun", false)) then
+		outputServerLog(getAccountName(user) .. " from " .. hostname .. " attempted to execute Lua code with missing acl permission (command.srun)")
 		return "Error: Permission denied"
 	end
-	
+
 	local notReturned
 	--First we test with return
 	local commandFunction,errorMsg = loadstring("return "..commandstring)
