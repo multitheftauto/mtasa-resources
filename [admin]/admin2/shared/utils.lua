@@ -30,3 +30,13 @@ function RGBToHex(red, green, blue, alpha)
         return string.format("#%.2X%.2X%.2X", red, green, blue)
     end
 end
+
+function isAnonAdmin(player)
+    local player = (player or localPlayer)
+
+    if (not isElement(player)) then
+        return false
+    end
+
+    return (getElementData(player, "AnonAdmin") == true)
+end
