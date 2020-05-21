@@ -7,6 +7,37 @@
 *	Original File by lil_Toady
 *
 **************************************]]
+
+local resourceSettingsCache = {}
+
+
+addEventHandler("onSettingChange", root, function(setting, oldValue, newValue)
+    local allowedAccess = {["*"] = true, ["#"] = true, ["@"] = true}
+    local allowedTypes = {["boolean"] = true, ["number"] = true, ["string"] = true, ["table"] = true}
+
+    local accessScope, resName, settingName = setting:match("([@*#]?)(.-)%.(.+)")
+
+    newValue = (fromJSON(newValue) or tonumber(newValue) or newValue)
+
+    if (newValue == "true" or newValue == "false") then
+        newValue = (newValue == "true")
+    end
+
+    if (not resourceSettingsCache[resName]) then
+        return
+    end
+
+	if (not allowedAccess[accessScope] or not allowedTypes[type(newValue)]) then
+        return
+    end
+
+    local settings = resourceSettingsCache[resName]
+
+    if (settings.settings[settingName]) then
+        settings.settings[settingName].current = newValue
+    end
+end)
+
 function aSetupACL()
     outputDebugString("Verifying ACL...")
 
@@ -117,6 +148,14 @@ function getResourceSettings(resName, bCountOnly)
     local allowedTypes = {["boolean"] = true, ["number"] = true, ["string"] = true, ["table"] = true}
     local count = 0
 
+    if (resourceSettingsCache[resName]) then
+        if (bCountOnly) then
+            return {}, resourceSettingsCache[resName].count
+        end
+        
+        return resourceSettingsCache[resName].settings, resourceSettingsCache[resName].count
+    end
+
     local rawsettings = get(resName .. ".")
     if (not rawsettings) then
         return {}, count
@@ -162,6 +201,9 @@ function getResourceSettings(resName, bCountOnly)
             tableOut[name].desc = get(resName .. "." .. name .. ".desc")
         end
     end
+
+    resourceSettingsCache[resName] = { settings = tableOut, count = count }
+
     return tableOut, count
 end
 
