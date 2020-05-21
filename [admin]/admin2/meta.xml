@@ -78,6 +78,8 @@
   <script src="client/widgets/admin_report.lua" 		  	type="client" />
   <script src="client/widgets/admin_weapon.lua"	        	type="client" />
 
+  <script src="shared/utils.lua"	                        type="shared" />
+
   <html src="http/screenshots.htm" />
   <html src="http/screenshot.htm" />
 
