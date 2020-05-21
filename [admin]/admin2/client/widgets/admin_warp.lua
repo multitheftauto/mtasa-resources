@@ -26,7 +26,9 @@ function aPlayerWarp(player)
     aWarpSelectPointer = player
     guiGridListClear(aWarpList)
     for id, player in ipairs(getElementsByType("player")) do
-        guiGridListSetItemText(aWarpList, guiGridListAddRow(aWarpList), 1, getPlayerName(player), false, false)
+        if (player ~= localPlayer) then
+            guiGridListSetItemText(aWarpList, guiGridListAddRow(aWarpList), 1, getPlayerName(player), false, false)
+        end
     end
     guiSetVisible(aWarpForm, true)
     guiBringToFront(aWarpForm)
