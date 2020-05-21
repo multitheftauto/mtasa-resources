@@ -47,7 +47,7 @@ aFunctions = {
             local textDisplay = textCreateDisplay()
             local textItem =
                 textCreateTextItem(
-                "(ADMIN)" .. getPlayerName(source) .. ":\n\n" .. text,
+                "(ADMIN)" .. stripColorCodes(getPlayerName(source)) .. ":\n\n" .. text,
                 0.5,
                 0.5,
                 2,
