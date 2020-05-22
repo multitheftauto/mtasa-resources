@@ -103,6 +103,8 @@ function aPlayersTab.Create(tab)
     aPlayersTab.VehicleBlow = guiCreateButton(0.87, 0.805, 0.12, 0.04, "Blow", true, tab, "blowvehicle")
     aPlayersTab.VehicleCustomize = guiCreateButton(0.87, 0.85, 0.12, 0.04, "Customize", true, tab, "customize")
 
+    aPlayersTab.AnonAdmin = guiCreateCheckBox(0.745, 0.942, 0.20, 0.04, "Anonymous Admin", isAnonAdmin(), true, tab)
+
     aPlayersTab.Refresh()
 
     -- EVENTS
@@ -265,6 +267,8 @@ function aPlayersTab.onClientClick(button)
                     end
                 end
             end
+        elseif (source == aPlayersTab.AnonAdmin) then
+            setElementData(localPlayer, "AnonAdmin", guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
         elseif (source == aPlayersTab.ColorCodes) then
             aPlayersTab.Refresh()
         elseif (source == aPlayersTab.PlayerList) then

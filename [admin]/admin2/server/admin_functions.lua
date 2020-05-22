@@ -38,16 +38,30 @@ aFunctions = {
             setPlayerMuted(player, false)
         end,
         ["freeze"] = function(player)
+            local vehicle = getPedOccupiedVehicle(player)
+
+            if (vehicle and getVehicleController(vehicle) == player) then
+                setElementFrozen(vehicle, true)
+            end
+
+            toggleAllControls(player, false, true, false)
             setElementFrozen(player, true)
         end,
         ["unfreeze"] = function(player)
+            local vehicle = getPedOccupiedVehicle(player)
+
+            if (vehicle and getVehicleController(vehicle) == player) then
+                setElementFrozen(vehicle, false)
+            end
+
+            toggleAllControls(player, true, true, false)
             setElementFrozen(player, false)
         end,
         ["shout"] = function(player, text)
             local textDisplay = textCreateDisplay()
             local textItem =
                 textCreateTextItem(
-                "(ADMIN)" .. getPlayerName(source) .. ":\n\n" .. text,
+                "(ADMIN)" .. stripColorCodes(getPlayerName(source)) .. ":\n\n" .. text,
                 0.5,
                 0.5,
                 2,

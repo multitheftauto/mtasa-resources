@@ -364,6 +364,33 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 
 	-- if the control type exists,
 	if controlPrototype then
+		local elementType
+
+		if selectedElement then
+			elementType = getElementType(selectedElement)
+			local creatorResource = getResourceName(edf.edfGetCreatorResource(selectedElement))
+			local creatorDef = resourceElementDefinitions[creatorResource] or resourceElementDefinitions.editor_main
+
+			if creatorDef and creatorDef[elementType] then
+				local validModels = creatorDef[elementType].data[controlLabelName].validModels
+
+				if validModels then
+					local elementModel = getElementModel(selectedElement)
+					local validModel = false
+
+					for _, model in pairs(validModels) do
+						if tonumber(model) == elementModel then
+							validModel = true
+							break
+						end
+					end
+
+					if not validModel then
+						return false
+					end
+				end
+			end
+		end
 
 		-- calculate the base Y position for the next control now, in case it overflows
 		local newPropertiesYPos = propertiesYPos + controlPrototype.default.height + layout.margin.bottom --!addedParameters.height
@@ -420,7 +447,6 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 		end
 
 		if selectedElement then
-			local elementType = getElementType(selectedElement)
 			if newControl:getLabel() == "model" and (elementType == "object" or elementType == "vehicle") then
 				local minX, minY, minZ = getElementBoundingBox(selectedElement)
 				g_minZ = minZ

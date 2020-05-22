@@ -8,3 +8,11 @@ _players = setmetatable({}, {
     -- Disable setting of items in _players
     __newindex = function() end,
 })
+
+function table.find(t, needle)
+    for i, val in pairs(t) do
+        if val == needle then
+            return i
+        end
+    end
+end
