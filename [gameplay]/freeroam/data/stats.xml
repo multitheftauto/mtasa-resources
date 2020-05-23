@@ -3,6 +3,7 @@
 		<stat name="Fat" id="21" />
 		<stat name="Muscle" id="23" />
 		<stat name="Max health" id="24" />
+		<stat name="Lung capacity" id="225" />
 	</group>
 	<group name="Weapon skill">
 		<stat name="AK-47" id="77" />
@@ -16,5 +17,9 @@
 		<stat name="Sniper rifle" id="79" />
 		<stat name="SPAZ-12" id="74" />
 		<stat name="Uzi" id="75" />
+	</group>
+	<group name="Other skills">
+		<stat name="Cycling skill" id="230" />
+		<stat name="Biking skill" id="229" />
 	</group>
 </catalog>
