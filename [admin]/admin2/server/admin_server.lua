@@ -103,7 +103,7 @@ function aAction(type, action, admin, player, data, more)
                 hex = ""
             end
             string = tostring(string)
-            string = string.gsub(string, "$admin", getPlayerName(admin) .. hex)
+            string = string.gsub(string, "$admin", isAnonAdmin(admin) and "Admin" or (getPlayerName(admin) .. hex))
             string = string.gsub(string, "$data2", more or "")
             if (player) then
                 string = string.gsub(string, "$player", getPlayerName(player) .. hex)
