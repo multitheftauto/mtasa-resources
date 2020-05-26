@@ -25,9 +25,15 @@ addEventHandler(
             tableOut["version"] = getPlayerVersion(data)
             local account = getPlayerAccount(data)
             tableOut["account"] = getAccountName(account)
+            tableOut["admin"] = false
             if (not isGuestAccount(account)) then
                 local groups = aclGetAccountGroups(account)
                 if (#groups > 0) then
+                    for id, group in ipairs(groups) do
+                        if (string.find(group, "Admin")) then
+                            tableOut["admin"] = true
+                        end
+                    end
                     tableOut["groups"] = table.concat(table.reverse(groups), ", ")
                 end
             end

@@ -257,13 +257,14 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.WarpPlayer) then
                     aPlayerWarp(player)
                 elseif (source == aPlayersTab.Admin) then
-                    if
-                        (aPlayers[player]["admin"] and
-                            messageBox("Revoke admin rights from " .. name .. "?", MB_WARNING))
-                     then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setgroup", false)
-                    elseif (messageBox("Give admin rights to " .. name .. "?", MB_WARNING)) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setgroup", true)
+                    if (aPlayers[player]["admin"]) then
+                        if (messageBox("Revoke admin rights from " .. name .. "?", MB_WARNING, MB_YESNO)) then
+                            triggerServerEvent("aPlayer", getLocalPlayer(), player, "setgroup", false)
+                        end
+                    else
+                        if (messageBox("Give admin rights to " .. name .. "?", MB_WARNING, MB_YESNO)) then
+                            triggerServerEvent("aPlayer", getLocalPlayer(), player, "setgroup", true)
+                        end
                     end
                 end
             end
@@ -465,6 +466,7 @@ function aPlayersTab.onRefresh()
     guiSetText(aPlayersTab.Name, "Name: " .. stripColorCodes(getPlayerName(player)))
     guiSetText(aPlayersTab.Mute, iif(aPlayers[player].mute, "Unmute", "Mute"))
     guiSetText(aPlayersTab.Freeze, iif(aPlayers[player].freeze, "Unfreeze", "Freeze"))
+    guiSetText(aPlayersTab.Admin, iif(aPlayers[player].admin, "Revoke admin", "Give admin"))
 
     if (isPedDead(player)) then
         guiSetText(aPlayersTab.Health, "Health: Dead")

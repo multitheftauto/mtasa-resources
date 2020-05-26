@@ -167,7 +167,7 @@ aFunctions = {
         ["jetpack"] = function(player)
             if (doesPedHaveJetPack(player)) then
                 removePedJetPack(player)
-                return true, "jetpackr"
+                return "jetpackr"
             else
                 if (getPedOccupiedVehicle(player)) then
                     outputChatBox(
@@ -179,7 +179,7 @@ aFunctions = {
                     )
                 else
                     if (givePedJetPack(player)) then
-                        return true, "jetpacka"
+                        return "jetpacka"
                     end
                 end
             end
@@ -188,15 +188,15 @@ aFunctions = {
             -- NEEDS CHECKING
             local account = getPlayerAccount(player)
             if (not isGuestAccount(account)) then
-                local group = aclGetGroup(data)
+                local group = aclGetGroup("Admin")
                 if (group) then
                     if (data == true) then
                         aclGroupAddObject(group, "user." .. getAccountName(account))
-                        return true, "admina"
+                        return "admina"
                     elseif (data == false) then
                         aclGroupRemoveObject(group, "user." .. getAccountName(account))
                         aPlayers[player]["chat"] = false
-                        return true, "adminr"
+                        return "adminr"
                     end
                     for id, p in ipairs(getElementsByType("player")) do
                         if (hasObjectPermissionTo(p, "general.adminpanel")) then
