@@ -30,7 +30,7 @@ addEventHandler(
                 local groups = aclGetAccountGroups(account)
                 if (#groups > 0) then
                     for id, group in ipairs(groups) do
-                        if (string.find(group, "Admin")) then
+                        if (group == "Admin") then
                             tableOut["admin"] = true
                         end
                     end
