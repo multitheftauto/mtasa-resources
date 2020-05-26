@@ -26,14 +26,16 @@ function aPlayerWarp(player)
     aWarpSelectPointer = player
     guiGridListClear(aWarpList)
     for id, player in ipairs(getElementsByType("player")) do
-        guiGridListSetItemText(aWarpList, guiGridListAddRow(aWarpList), 1, getPlayerName(player), false, false)
+        if (player ~= localPlayer) then
+            guiGridListSetItemText(aWarpList, guiGridListAddRow(aWarpList), 1, getPlayerName(player), false, false)
+        end
     end
     guiSetVisible(aWarpForm, true)
     guiBringToFront(aWarpForm)
 end
 
 function aPlayerWarpClose(destroy)
-    if ((destroy) or (guiCheckBoxGetSelected(aPerformanceWarp))) then
+    if ((destroy) --[[or (guiCheckBoxGetSelected(aPerformanceWarp))]]) then
         if (aWarpForm) then
             removeEventHandler("onClientGUIDoubleClick", aWarpForm, aClientWarpDoubleClick)
             removeEventHandler("onClientGUIClick", aWarpForm, aClientWarpClick)

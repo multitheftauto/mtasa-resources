@@ -1132,6 +1132,10 @@ function edfAddElementNodeData(node, resource)
 				-- update the data field description
 				dataFields[dname].description = xmlNodeGetAttribute(subnode,"description")
 												 or dataFields[dname].description
+				-- update the valid models value
+				local validModels = xmlNodeGetAttribute(subnode, "validModels")
+				dataFields[dname].validModels = validModels and split(validModels, ",") or dataFields[dname].validModels
+
 				-- update the required flag (default: true)
 				local requiredAttribute = xmlNodeGetAttribute(subnode,"required")
 				if requiredAttribute then

@@ -1349,6 +1349,8 @@ addEventHandler ( "aServer", _root, function ( action, data, data2 )
 				action = nil
 				outputChatBox ( "Error setting FPS Limit.", source, 255, 0, 0 )
 			end
+		elseif ( action == "clearchat" ) then
+			clearChatBox()
 		else
 			action = nil
 		end
@@ -1449,7 +1451,7 @@ addEventHandler ( "aModdetails", resourceRoot, function ( action, player )
 	if checkClient( false, client, 'aModdetails', action ) then return end
 	if ( hasObjectPermissionTo ( client, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
-			triggerClientEvent ( client, "aModdetails", resourceRoot, "get", getPlayerImgModsList(player), player )
+			triggerClientEvent ( client, "aModdetails", resourceRoot, "get", getPlayerModInfo(player), player )
 		end
 	end
 end )

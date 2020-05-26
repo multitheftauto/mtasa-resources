@@ -84,7 +84,3 @@ function getPlayerFromNick(nick)
     end
     return false
 end
-
-function stripColorCodes(text)
-    return string.gsub(text, "#%x%x%x%x%x%x", "")
-end

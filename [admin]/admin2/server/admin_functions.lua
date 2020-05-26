@@ -38,16 +38,30 @@ aFunctions = {
             setPlayerMuted(player, false)
         end,
         ["freeze"] = function(player)
+            local vehicle = getPedOccupiedVehicle(player)
+
+            if (vehicle and getVehicleController(vehicle) == player) then
+                setElementFrozen(vehicle, true)
+            end
+
+            toggleAllControls(player, false, true, false)
             setElementFrozen(player, true)
         end,
         ["unfreeze"] = function(player)
+            local vehicle = getPedOccupiedVehicle(player)
+
+            if (vehicle and getVehicleController(vehicle) == player) then
+                setElementFrozen(vehicle, false)
+            end
+
+            toggleAllControls(player, true, true, false)
             setElementFrozen(player, false)
         end,
         ["shout"] = function(player, text)
             local textDisplay = textCreateDisplay()
             local textItem =
                 textCreateTextItem(
-                "(ADMIN)" .. getPlayerName(source) .. ":\n\n" .. text,
+                "(ADMIN)" .. stripColorCodes(getPlayerName(source)) .. ":\n\n" .. text,
                 0.5,
                 0.5,
                 2,
@@ -259,10 +273,10 @@ aFunctions = {
         ["getscreen"] = function(player, quality)
             getPlayerScreen(player, source, quality)
         end,
-        ["wrap"] = function(player)
+        ["warp"] = function(player)
             warpPlayer(source, player)
         end,
-        ["wrapto"] = function(player, data)
+        ["warpto"] = function(player, data)
             warpPlayer(player, data)
             return true, getPlayerName(data)
         end
@@ -277,8 +291,7 @@ aFunctions = {
                 setElementPosition(vehicle, x, y, z + 2)
             end
         end,
-        ["customize"] = function(player, vehicle, ...)
-            local data = {...}
+        ["customize"] = function(player, vehicle, data)
             if (data[1] == "remove") then
                 for id, upgrade in ipairs(getVehicleUpgrades(vehicle)) do
                     removeVehicleUpgrade(vehicle, upgrade)
@@ -304,8 +317,7 @@ aFunctions = {
             end
             return true, id
         end,
-        ["setcolor"] = function(player, vehicle, ...)
-            local data = {...}
+        ["setcolor"] = function(player, vehicle, data)
             for k, color in ipairs(data) do
                 local c = tonumber(color)
                 if (c) then
@@ -467,8 +479,12 @@ aFunctions = {
                 return false
             end
         end,
-        ["shutdown"] = function(reason)
-            shutdown(iif(reason, tostring(reason), nil))
+        ["shutdown"] = function()
+            shutdown("triggered by "..getPlayerName(source))
+        end,
+        ["clearchat"] = function()
+            clearChatBox()
+            return true
         end
     },
     admin = {},

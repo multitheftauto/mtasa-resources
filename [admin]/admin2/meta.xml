@@ -69,13 +69,16 @@
   <script src="client/widgets/admin_team.lua" 			 	type="client" />
   <script src="client/widgets/admin_skin.lua" 			  	type="client" />
   <script src="client/widgets/admin_stats.lua" 			  	type="client" />
+  <script src="client/widgets/admin_vehicle_upgrades.lua" 		  	type="client" />
   <script src="client/widgets/admin_vehicle.lua" 		  	type="client" />
   <script src="client/widgets/admin_interior.lua" 			type="client" />
   <script src="client/widgets/admin_screenshot.lua" 		type="client" />
   <script src="client/widgets/admin_ban.lua" 			    type="client" />
   <script src="client/widgets/admin_warp.lua" 			  	type="client" />
   <script src="client/widgets/admin_report.lua" 		  	type="client" />
-  <script src="client/widgets/admin_acl.lua" 			    type="client" />
+  <script src="client/widgets/admin_weapon.lua"	        	type="client" />
+
+  <script src="shared/utils.lua"	                        type="shared" />
 
   <html src="http/screenshots.htm" />
   <html src="http/screenshot.htm" />
@@ -87,11 +90,12 @@
   <config src="conf/weathers.xml" 					        type="client" />
   <config src="conf/upgrades.xml" 					        type="client" />
   <config src="conf/skins.xml" 						        type="client" />
+  <config src="conf/weapons.xml" 						        type="client" />
   <config src="conf/stats.xml" 						        type="client" />
+  <config src="conf/vehicles.xml"						        type="client" />
   <config src="conf/messages.xml"					        type="server" />
   <config src="conf/commands.xml"					        type="server" />
   <config src="conf/ACL.xml"						        type="server" />
-
   <!--Images-->
   <file src="client/images/warning.png" />
   <file src="client/images/error.png" />
@@ -99,7 +103,6 @@
   <file src="client/images/info.png" />
   <file src="client/images/dot.png" />
   <file src="client/images/search.png" />
-  <file src="client/images/dropdown.png" />
   <file src="client/images/colorscheme.png" />
   <file src="client/images/empty.png" />
   <file src="client/images/palette.png" />

@@ -98,26 +98,31 @@ end
 
 function aAction(type, action, admin, player, data, more)
     if (aLogMessages[type]) then
-        function aStripString(string)
+        function aStripString(string, hex)
+            if not hex then
+                hex = ""
+            end
             string = tostring(string)
-            string = string.gsub(string, "$admin", getPlayerName(admin))
+            string = string.gsub(string, "$admin", isAnonAdmin(admin) and "Admin" or (getPlayerName(admin) .. hex))
             string = string.gsub(string, "$data2", more or "")
             if (player) then
-                string = string.gsub(string, "$player", getPlayerName(player))
+                string = string.gsub(string, "$player", getPlayerName(player) .. hex)
             end
-            return tostring(string.gsub(string, "$data", data or ""))
+            return string.gsub(string, "$data", (data and data .. hex or ""))
         end
         local node = aLogMessages[type][action]
         if (node) then
             local r, g, b = node["r"], node["g"], node["b"]
+            local hex = RGBToHex(r, g, b)
+
             if (node["all"]) then
-                outputChatBox(aStripString(node["all"]), root, r, g, b)
+                outputChatBox(aStripString(node["all"], hex), root, r, g, b, true)
             end
             if (node["admin"]) and (admin ~= player) then
-                outputChatBox(aStripString(node["admin"]), admin, r, g, b)
+                outputChatBox(aStripString(node["admin"], hex), admin, r, g, b, true)
             end
             if (node["player"]) then
-                outputChatBox(aStripString(node["player"]), player, r, g, b)
+                outputChatBox(aStripString(node["player"], hex), player, r, g, b, true)
             end
             if (node["log"]) then
                 outputServerLog(aStripString(node["log"]))

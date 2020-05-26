@@ -69,6 +69,7 @@ addCommandHandler("crun",
 	function (player, command, ...)
 		local commandstring = table.concat({...}, " ")
 		if player then
+			outputChatBoxR(getPlayerName(player) .. " executed client-side command: " .. commandstring, false)
 			return triggerClientEvent(player, "doCrun", rootElement, commandstring)
 		else
 			return runString(commandstring, false, false)
@@ -79,6 +80,16 @@ addCommandHandler("crun",
 -- http interface run export
 function httpRun(commandstring)
 	if not user then outputDebugString ( "httpRun can only be called via http", 2 ) return end
+
+	-- check acl permission
+	local accName = getAccountName(user)
+	local objectName = "user." .. accName
+
+	if(not hasObjectPermissionTo(objectName, "command.srun", false)) then
+		outputServerLog(getAccountName(user) .. " from " .. hostname .. " attempted to execute Lua code with missing acl permission (command.srun)")
+		return "Error: Permission denied"
+	end
+
 	local notReturned
 	--First we test with return
 	local commandFunction,errorMsg = loadstring("return "..commandstring)
@@ -97,6 +108,9 @@ function httpRun(commandstring)
 		--It failed.
 		return "Error: "..results[2]
 	end
+
+	outputChatBoxR("[HTTP] " .. accName .. " from " .. hostname .. " executed command: " .. commandstring, false)
+
 	if not notReturned then
 		local resultsString = ""
 		local first = true

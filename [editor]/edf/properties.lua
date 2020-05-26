@@ -26,10 +26,28 @@ propertyGetters = {
 				return "false"
 			end
 		end,
+		collisions = function(element)
+			local collisions = getElementData(element, "collisions")
+			if collisions == "true" or collisions == false then
+				return "true"
+			else
+				return "false"
+			end
+		end
 	},
 	ped = {
 		model = getElementModel,
 		rotZ = getPedRotation,
+		health = getElementHealth,
+		armor = getPedArmor,
+		collisions = function(element)
+			local collisions = getElementData(element, "collisions")
+			if collisions == "true" or collisions == false then
+				return "true"
+			else
+				return "false"
+			end
+		end
 	},
 	vehicle = {
 		model = getElementModel,
@@ -52,9 +70,19 @@ propertyGetters = {
 		upgrades = getVehicleUpgrades,
 		plate = getVehiclePlateText,
 		sirens = function(vehicle)
-				return getVehicleSirensOn(vehicle) and "true" or "false"
-			end,
+			return getVehicleSirensOn(vehicle) and "true" or "false"
+		end,
+		health = getElementHealth,
 		paintjob = function(vehicle) return tostring(getVehiclePaintjob(vehicle)) end,
+		landingGearDown = function(element) return tostring(getVehicleLandingGearDown(element)) end,
+		collisions = function(element)
+			local collisions = getElementData(element, "collisions")
+			if collisions == "true" or collisions == false then
+				return "true"
+			else
+				return "false"
+			end
+		end
 	},
 	marker = {
 		type = getMarkerType,
@@ -141,10 +169,21 @@ propertySetters = {
 		breakable = function(element, breakable)
 			return setElementData(element,"breakable",breakable=="true" and "true" or "false")
 		end,
+		collisions = function(element, state)
+			return setElementData(element, "collisions", state == "false" and "false" or "true")
+		end
 	},
 	ped = {
 		model = setElementModel,
 		rotZ = setPedRotation,
+		frozen = function(element, state)
+			return setElementFrozen(element, state == "true")
+		end,
+		collisions = function(element, state)
+			return setElementData(element, "collisions", state == "false" and "false" or "true")
+		end,
+		health = setElementHealth,
+		armor = setPedArmor
 	},
 	vehicle = {
 		model = setElementModel,
@@ -200,6 +239,19 @@ propertySetters = {
 		plate = setVehiclePlateText,
 		sirens = function(vehicle, bon)
 			return setVehicleSirensOn(vehicle, bon == "true" and true or false)
+		end,
+		health = setElementHealth,
+		frozen = function(element, state)
+			return setElementFrozen(element, state == "true")
+		end,
+		collisions = function(element, state)
+			return setElementData(element, "collisions", state == "false" and "false" or "true")
+		end,
+		locked = function(element, state)
+			return setVehicleLocked(element, state == "true")
+		end,
+		landingGearDown = function(element, state)
+			return setVehicleLandingGearDown(element, state == "true")
 		end
 	},
 	marker = {
