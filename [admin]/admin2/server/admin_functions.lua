@@ -188,29 +188,37 @@ aFunctions = {
             -- NEEDS CHECKING
             local account = getPlayerAccount(player)
             if (not isGuestAccount(account)) then
-                local group = aclGetGroup("Admin")
-                if (group) then
-                    if (data == true) then
+                if (data == true) then
+                    local group = aclGetAdminGroup()
+                    if (group) then
                         aclGroupAddObject(group, "user." .. getAccountName(account))
                         return "admina"
-                    elseif (data == false) then
-                        aclGroupRemoveObject(group, "user." .. getAccountName(account))
+                    else
+                        outputChatBox(
+                            "Error - Admin group not initialized. Please reinstall admin resource.",
+                            source,
+                            255,
+                            0,
+                            0
+                        )
+                    end
+                elseif (data == false) then
+                    local groups = aclGetAccountGroups(account)
+                    if (#groups > 0) then
+                        for id, group in ipairs(groups) do
+                            local group = aclGetGroup(group)
+                            if (hasGroupPermissionTo(group, "general.adminpanel")) then
+                                aclGroupRemoveObject(group, "user." .. getAccountName(account))
+                            end
+                        end
                         aPlayers[player]["chat"] = false
                         return "adminr"
                     end
-                    for id, p in ipairs(getElementsByType("player")) do
-                        if (hasObjectPermissionTo(p, "general.adminpanel")) then
-                            triggerEvent("aSync", p, "admins")
-                        end
+                end
+                for id, p in ipairs(getElementsByType("player")) do
+                    if (hasObjectPermissionTo(p, "general.adminpanel")) then
+                        triggerEvent("aSync", p, "admins")
                     end
-                else
-                    outputChatBox(
-                        "Error - Admin group not initialized. Please reinstall admin resource.",
-                        source,
-                        255,
-                        0,
-                        0
-                    )
                 end
             else
                 outputChatBox("Error - Player is not logged in.", source, 255, 100, 100)
