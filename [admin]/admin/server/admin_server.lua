@@ -1105,7 +1105,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				action = nil
 			end
 		elseif ( action == "warp" ) or ( action == "warpto" ) then
-    			function warpPlayer ( p, to )
+    		function warpPlayer ( p, to )
 				function warp ( p, to )
 					local x, y, z = getElementPosition ( to )
 					local r = getPedRotation ( to )
@@ -1144,6 +1144,15 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				warpPlayer ( player, data )
 				mdata = getPlayerName ( data )
 			end
+		elseif ( action == "warptoposition" ) then
+			local target = getPedOccupiedVehicle ( player ) or player
+			fadeCamera ( player, false, 1, 0, 0, 0 )
+			setElementFrozen ( target, true)
+			setTimer ( function ( )
+				fadeCamera ( player, true, 1 )
+				setElementPosition ( target, unpack ( data ) )
+				setTimer ( setElementFrozen, 500, 1, target, false )
+			end, 1000, 1 )
 		else
 			action = nil
 		end
