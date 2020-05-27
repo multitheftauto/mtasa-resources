@@ -184,40 +184,23 @@ aFunctions = {
                 end
             end
         end,
-        ["setgroup"] = function(player, data)
-            -- NEEDS CHECKING
+        ["setgroup"] = function(player, data, groupName)
             local account = getPlayerAccount(player)
             if (not isGuestAccount(account)) then
-                if (data == true) then
-                    local group = aclGetAdminGroup()
-                    if (group) then
+                local group = aclGetGroup(groupName)
+                if (group) then
+                    if (data == true) then
                         aclGroupAddObject(group, "user." .. getAccountName(account))
-                        return "admina"
-                    else
-                        outputChatBox(
-                            "Error - Admin group not initialized. Please reinstall admin resource.",
-                            source,
-                            255,
-                            0,
-                            0
-                        )
-                    end
-                elseif (data == false) then
-                    local groups = aclGetAccountGroups(account)
-                    if (#groups > 0) then
-                        for id, group in ipairs(groups) do
-                            local group = aclGetGroup(group)
-                            if (hasGroupPermissionTo(group, "general.adminpanel")) then
-                                aclGroupRemoveObject(group, "user." .. getAccountName(account))
-                            end
-                        end
+                        return "admina", groupName
+                    elseif (data == false) then
+                        aclGroupRemoveObject(group, "user." .. getAccountName(account))
                         aPlayers[player]["chat"] = false
-                        return "adminr"
+                        return "adminr", groupName
                     end
-                end
-                for id, p in ipairs(getElementsByType("player")) do
-                    if (hasObjectPermissionTo(p, "general.adminpanel")) then
-                        triggerEvent("aSync", p, "admins")
+                    for id, p in ipairs(getElementsByType("player")) do
+                        if (hasObjectPermissionTo(p, "general.adminpanel")) then
+                            triggerEvent("aSync", p, "admins")
+                        end
                     end
                 end
             else

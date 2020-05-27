@@ -25,7 +25,6 @@ addEventHandler(
             tableOut["version"] = getPlayerVersion(data)
             local account = getPlayerAccount(data)
             tableOut["account"] = getAccountName(account)
-            tableOut["admin"] = hasObjectPermissionTo(data, "general.adminpanel")
             if (not isGuestAccount(account)) then
                 local groups = aclGetAccountGroups(account)
                 if (#groups > 0) then
@@ -70,8 +69,7 @@ addEventHandler(
         elseif (type == SYNC_ADMINS) then
             for id, player in ipairs(aPlayers) do
                 tableOut[player] = {}
-                tableOut[player]["admin"] = hasObjectPermissionTo(player, "general.adminpanel")
-                if (tableOut[player]["admin"]) then
+                if (hasObjectPermissionTo(player, "general.adminpanel")) then
                     tableOut[player]["chat"] = aPlayers[player]["chat"]
                 end
                 tableOut[player]["groups"] = "None"

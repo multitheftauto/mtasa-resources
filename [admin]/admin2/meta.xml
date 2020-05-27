@@ -62,6 +62,7 @@
   <script src="client/widgets/admin_inputbox.lua" 			type="client" />
   <script src="client/widgets/admin_color.lua"				type="client" />
   <script src="client/widgets/admin_performance.lua" 		type="client" />
+  <script src="client/widgets/admin_permissions.lua" 		type="client" />
   <script src="client/widgets/admin_messages.lua" 			type="client" />
   <script src="client/widgets/admin_message.lua" 		  	type="client" />
   <script src="client/widgets/admin_spectator.lua" 			type="client" />

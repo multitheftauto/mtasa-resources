@@ -112,25 +112,6 @@ function aclGetAccountGroups(account, ignoreall)
     return res
 end
 
-function aclGetAdminGroup()
-    for ig, group in ipairs(aclGroupList()) do
-        if (hasGroupPermissionTo(group, "function.shutdown")) then
-            return group
-        end
-    end
-    return false
-end
-
-function hasGroupPermissionTo(group, action)
-    local acls = aclGroupListACL(group)
-    for ia, acl in ipairs(acls) do
-        if (aclGetRight(acl, action)) then
-            return true
-        end
-    end
-    return false
-end
-
 function getResourceSettings(resName, bCountOnly)
     local allowedAccess = {["*"] = true, ["#"] = true, ["@"] = true}
     local allowedTypes = {["boolean"] = true, ["number"] = true, ["string"] = true, ["table"] = true}
