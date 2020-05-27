@@ -59,7 +59,7 @@ function aPlayerWarpToPosition()
         aWarpToPositionMap      = guiCreateStaticImage(10, 25, h - 20, h - 20, "client/images/map.png", false, aWarpToPositionForm)
         aWarpToPositionTeleport = guiCreateButton(10,     h + 10, 80, 25, "Teleport", false, aWarpToPositionForm)
         aWarpToPositionCancel   = guiCreateButton(h - 90, h + 10, 80, 25, "Cancel",   false, aWarpToPositionForm)
-		aWarpToPositionX        = guiCreateEdit(100, h + 10, 80, 25, "0", false, aWarpToPositionForm)
+        aWarpToPositionX        = guiCreateEdit(100, h + 10, 80, 25, "0", false, aWarpToPositionForm)
         aWarpToPositionY        = guiCreateEdit(185, h + 10, 80, 25, "0", false, aWarpToPositionForm)
         aWarpToPositionZ        = guiCreateEdit(270, h + 10, 80, 25, "3", false, aWarpToPositionForm)
 
@@ -123,10 +123,10 @@ local function warpPlayerToPositionTrigger()
             local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
             setCameraTarget(localPlayer)
             setElementFrozen(getPedOccupiedVehicle(localPlayer) or localPlayer, false)
-            fadeCamera(true, 0.3)
+            fadeCamera(true, 0.1)
             if not hit then return end
             warpToPosition(aWarpSelectPointer, x, y, hitZ)
-        end, 250, 1)
+        end, 100, 1)
     else
         warpToPosition(aWarpSelectPointer, x, y, z)
     end

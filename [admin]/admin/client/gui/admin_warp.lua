@@ -115,10 +115,10 @@ local function warpPlayerToPositionTrigger ( )
 			local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
 			setCameraTarget ( localPlayer )
 			setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, false )
-			fadeCamera ( true, 0.3 )
+			fadeCamera ( true, 0.1 )
 			if not hit then return end
 			warpToPosition ( aWarpSelectPointer, x, y, hitZ )
-		end, 250, 1 )
+		end, 100, 1 )
 	else
 		warpToPosition ( aWarpSelectPointer, x, y, z )
 	end
