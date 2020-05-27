@@ -279,6 +279,17 @@ aFunctions = {
         ["warpto"] = function(player, data)
             warpPlayer(player, data)
             return true, getPlayerName(data)
+        end,
+        ["warptoposition"] = function(player, data)
+			local target = getPedOccupiedVehicle(player) or player
+			fadeCamera(player, false, 1)
+			setElementFrozen(target, true)
+			setTimer(function()
+				fadeCamera(player, true, 1)
+				setElementPosition(target, unpack(data))
+				setTimer(setElementFrozen, 500, 1, target, false)
+			end, 1000, 1)
+            return true, table.concat(data, ", ")
         end
     },
     vehicle = {
