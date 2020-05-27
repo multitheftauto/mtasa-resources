@@ -146,7 +146,6 @@ function aClientWarpDoubleClick(button)
                 aPlayerWarpClose(false)
             end
         elseif (source == aWarpToPositionMap) then
-            print("dobule")
             warpPlayerToPositionTrigger()
         end
     end
