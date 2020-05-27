@@ -18,7 +18,7 @@ function aPlayerWarp(player)
         aWarpList = guiCreateGridList(0.03, 0.08, 0.94, 0.64, true, aWarpForm)
         guiGridListAddColumn(aWarpList, "Player", 0.9)
         aWarpSelect     = guiCreateButton(0.03, 0.74, 0.94, 0.07, "Select", true, aWarpForm)
-		aWarpToPosition = guiCreateButton(0.03, 0.82, 0.94, 0.07, "To position", true, aWarpForm)
+        aWarpToPosition = guiCreateButton(0.03, 0.82, 0.94, 0.07, "To position", true, aWarpForm)
         aWarpCancel     = guiCreateButton(0.03, 0.90, 0.94, 0.07, "Cancel", true, aWarpForm)
 
         addEventHandler("onClientGUIDoubleClick", aWarpForm, aClientWarpDoubleClick)
@@ -52,84 +52,84 @@ end
 
 
 function aPlayerWarpToPosition()
-	if (aWarpToPositionForm == nil) then
-		local x, y = guiGetScreenSize()
-		local h	   = y * 0.75
-		aWarpToPositionForm		= guiCreateWindow(x / 2 - h / 2, y / 2 - h / 2, h, h + 40, "Player Warp To Position", false)
-		aWarpToPositionMap		= guiCreateStaticImage(10, 25, h - 20, h - 20, "client/images/map.png", false, aWarpToPositionForm)
-		aWarpToPositionTeleport	= guiCreateButton(10,     h + 10, 80, 25, "Teleport", false, aWarpToPositionForm)
-		aWarpToPositionCancel	= guiCreateButton(h - 90, h + 10, 80, 25, "Cancel",   false, aWarpToPositionForm)
-		aWarpToPositionX		= guiCreateEdit(100, h + 10, 80, 25, "0", false, aWarpToPositionForm)
-		aWarpToPositionY		= guiCreateEdit(185, h + 10, 80, 25, "0", false, aWarpToPositionForm)
-		aWarpToPositionZ		= guiCreateEdit(270, h + 10, 80, 25, "3", false, aWarpToPositionForm)
+    if (aWarpToPositionForm == nil) then
+        local x, y = guiGetScreenSize()
+        local h    = y * 0.75
+        aWarpToPositionForm     = guiCreateWindow(x / 2 - h / 2, y / 2 - h / 2, h, h + 40, "Player Warp To Position", false)
+        aWarpToPositionMap      = guiCreateStaticImage(10, 25, h - 20, h - 20, "client/images/map.png", false, aWarpToPositionForm)
+        aWarpToPositionTeleport = guiCreateButton(10,     h + 10, 80, 25, "Teleport", false, aWarpToPositionForm)
+        aWarpToPositionCancel   = guiCreateButton(h - 90, h + 10, 80, 25, "Cancel",   false, aWarpToPositionForm)
+		aWarpToPositionX        = guiCreateEdit(100, h + 10, 80, 25, "0", false, aWarpToPositionForm)
+        aWarpToPositionY        = guiCreateEdit(185, h + 10, 80, 25, "0", false, aWarpToPositionForm)
+        aWarpToPositionZ        = guiCreateEdit(270, h + 10, 80, 25, "3", false, aWarpToPositionForm)
 
-		addEventHandler("onClientGUIDoubleClick", aWarpToPositionForm, aClientWarpDoubleClick)
-		addEventHandler("onClientGUIClick", aWarpToPositionForm, aClientWarpClick)
-		--Register With Admin Form
-		aRegister("PlayerWarpToPosition", aWarpToPositionForm, aPlayerWarpToPosition, aPlayerWarpToPositionClose)
-	end
-	guiSetVisible(aWarpToPositionForm, true)
-	guiBringToFront(aWarpToPositionForm)
+        addEventHandler("onClientGUIDoubleClick", aWarpToPositionForm, aClientWarpDoubleClick)
+        addEventHandler("onClientGUIClick", aWarpToPositionForm, aClientWarpClick)
+        --Register With Admin Form
+        aRegister("PlayerWarpToPosition", aWarpToPositionForm, aPlayerWarpToPosition, aPlayerWarpToPositionClose)
+    end
+    guiSetVisible(aWarpToPositionForm, true)
+    guiBringToFront(aWarpToPositionForm)
 end
 
 function aPlayerWarpToPositionClose ( destroy )
-	if ((destroy) --[[or (aPerformanceWarp and guiCheckBoxGetSelected(aPerformanceWarp))--]]) then
-		if (aWarpToPositionForm) then
-			removeEventHandler("onClientGUIDoubleClick", aWarpToPositionForm, aClientWarpDoubleClick)
-			removeEventHandler("onClientGUIClick", aWarpToPositionForm, aClientWarpClick)
-			destroyElement(aWarpToPositionForm )
-			aWarpToPositionForm = nil
-		end
-	else
-		guiSetVisible(aWarpToPositionForm, false)
-	end
+    if ((destroy) --[[or (aPerformanceWarp and guiCheckBoxGetSelected(aPerformanceWarp))--]]) then
+        if (aWarpToPositionForm) then
+            removeEventHandler("onClientGUIDoubleClick", aWarpToPositionForm, aClientWarpDoubleClick)
+            removeEventHandler("onClientGUIClick", aWarpToPositionForm, aClientWarpClick)
+            destroyElement(aWarpToPositionForm )
+            aWarpToPositionForm = nil
+        end
+    else
+        guiSetVisible(aWarpToPositionForm, false)
+    end
 end
 
 local function calculatePosition(absX, absY)
-	local x, y  = guiGetPosition(aWarpToPositionForm, false)
+    local x, y  = guiGetPosition(aWarpToPositionForm, false)
           x, y  = x + 10, y + 25
-	local w, h  = guiGetSize(aWarpToPositionMap, false)
-	local tpX, tpY       = (absX - x) / w * 6000 - 3000, - ((absY - y) / h * 6000 - 3000)
-	local hit, _, _, tpZ = processLineOfSight(tpX, tpY, 3000, tpX, tpY, -3000)
+    local w, h  = guiGetSize(aWarpToPositionMap, false)
+    local tpX, tpY       = (absX - x) / w * 6000 - 3000, - ((absY - y) / h * 6000 - 3000)
+    local hit, _, _, tpZ = processLineOfSight(tpX, tpY, 3000, tpX, tpY, -3000)
                      tpZ = hit and tpZ or "auto"
-	guiSetText(aWarpToPositionX, tpX); guiSetText(aWarpToPositionY, tpY); guiSetText(aWarpToPositionZ, tpZ)
-	return tpX, tpY, tpY
+    guiSetText(aWarpToPositionX, tpX); guiSetText(aWarpToPositionY, tpY); guiSetText(aWarpToPositionZ, tpZ)
+    return tpX, tpY, tpY
 end
 
 local function getTeleportPosition ( )
-	return tonumber(guiGetText(aWarpToPositionX)) or 0, tonumber(guiGetText(aWarpToPositionY)) or 0, guiGetText(aWarpToPositionZ)
+    return tonumber(guiGetText(aWarpToPositionX)) or 0, tonumber(guiGetText(aWarpToPositionY)) or 0, guiGetText(aWarpToPositionZ)
 end
 
 local function warpPlayerToPositionTrigger()
-	local function warpToPosition(player, x, y, z)
-		local distance = getElementDistanceFromCentreOfMassToBaseOfModel(player)
-		triggerServerEvent(
+    local function warpToPosition(player, x, y, z)
+        local distance = getElementDistanceFromCentreOfMassToBaseOfModel(player)
+        triggerServerEvent(
             "aPlayer",
             getLocalPlayer(),
             aWarpSelectPointer,
             "warptoposition",
             { x, y, z + distance + 0.25 }
         )
-		aPlayerWarpToPositionClose(false)
-		aPlayerWarpClose(false)
-	end
+        aPlayerWarpToPositionClose(false)
+        aPlayerWarpClose(false)
+    end
 
-	local x, y, z = getTeleportPosition()
-	if z == "auto" then
-		fadeCamera(false, 0)
-		setElementFrozen(getPedOccupiedVehicle(localPlayer) or localPlayer, true)
-		setCameraMatrix(x, y, 0)
-		setTimer(function()
-			local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
-			setCameraTarget(localPlayer)
-			setElementFrozen(getPedOccupiedVehicle(localPlayer) or localPlayer, false)
-			fadeCamera(true, 0.3)
-			if not hit then return end
-			warpToPosition(aWarpSelectPointer, x, y, hitZ)
-		end, 250, 1)
-	else
-		warpToPosition(aWarpSelectPointer, x, y, z)
-	end
+    local x, y, z = getTeleportPosition()
+    if z == "auto" then
+        fadeCamera(false, 0)
+        setElementFrozen(getPedOccupiedVehicle(localPlayer) or localPlayer, true)
+        setCameraMatrix(x, y, 0)
+        setTimer(function()
+            local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
+            setCameraTarget(localPlayer)
+            setElementFrozen(getPedOccupiedVehicle(localPlayer) or localPlayer, false)
+            fadeCamera(true, 0.3)
+            if not hit then return end
+            warpToPosition(aWarpSelectPointer, x, y, hitZ)
+        end, 250, 1)
+    else
+        warpToPosition(aWarpSelectPointer, x, y, z)
+    end
 end
 
 function aClientWarpDoubleClick(button)
@@ -167,9 +167,9 @@ function aClientWarpClick(button, state, absX, absY)
             end
         elseif (source == aWarpCancel) then
             aPlayerWarpClose(false)
-		elseif (source == aWarpToPosition) then
-			aPlayerWarpToPosition()
-		
+        elseif (source == aWarpToPosition) then
+            aPlayerWarpToPosition()
+
         -- Player Warp To Position Map
         elseif (source == aWarpToPositionMap) then
             calculatePosition(absX, absY)
