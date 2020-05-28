@@ -98,29 +98,35 @@ local function getTeleportPosition ( )
 	return tonumber ( guiGetText ( aWarpToPositionX ) ) or 0, tonumber ( guiGetText ( aWarpToPositionY ) ) or 0, guiGetText ( aWarpToPositionZ )
 end
 
+
+local function warpToPosition ( player, x, y, z )
+	local distance = getElementDistanceFromCentreOfMassToBaseOfModel ( player )
+	triggerServerEvent ( "aPlayer", localPlayer, player, "warptoposition", { x, y, z + distance + 0.25 } )
+	aPlayerWarpToPositionClose ( false )
+	aPlayerWarpClose ( false )
+end
+
 local function warpPlayerToPositionTrigger ( )
-	local function warpToPosition ( player, x, y, z )
-		local distance = getElementDistanceFromCentreOfMassToBaseOfModel ( player )
-		triggerServerEvent ( "aPlayer", getLocalPlayer(), aWarpSelectPointer, "warptoposition", { x, y, z + distance + 0.25 } )
+	if isElement(aWarpSelectPointer) then
+		local x, y, z = getTeleportPosition ( )
+		if z == "auto" then
+			fadeCamera ( false, 0 )
+			setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, true )
+			setCameraMatrix ( x, y, 0 )
+			setTimer ( function ( )
+				local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
+				setCameraTarget ( localPlayer )
+				setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, false )
+				fadeCamera ( true, 0.1 )
+				if not hit then return end
+				warpToPosition ( aWarpSelectPointer, x, y, hitZ )
+			end, 100, 1 )
+		else
+			warpToPosition ( aWarpSelectPointer, x, y, z )
+		end
+	else
 		aPlayerWarpToPositionClose ( false )
 		aPlayerWarpClose ( false )
-	end
-
-	local x, y, z = getTeleportPosition ( )
-	if z == "auto" then
-		fadeCamera ( false, 0 )
-		setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, true )
-		setCameraMatrix ( x, y, 0 )
-		setTimer ( function ( )
-			local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
-			setCameraTarget ( localPlayer )
-			setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, false )
-			fadeCamera ( true, 0.1 )
-			if not hit then return end
-			warpToPosition ( aWarpSelectPointer, x, y, hitZ )
-		end, 100, 1 )
-	else
-		warpToPosition ( aWarpSelectPointer, x, y, z )
 	end
 end
 
@@ -128,7 +134,9 @@ function aClientWarpDoubleClick ( button )
 	if ( button == "left" ) then
 		if ( source == aWarpList ) then
 			if ( guiGridListGetSelectedItem ( aWarpList ) ~= -1 ) then
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aWarpSelectPointer, "warpto", getPlayerFromNick ( guiGridListGetItemPlayerName ( aWarpList, guiGridListGetSelectedItem ( aWarpList ), 1 ) ) )
+				if isElement(aWarpSelectPointer) then
+					triggerServerEvent ( "aPlayer", localPlayer, aWarpSelectPointer, "warpto", getPlayerFromNick ( guiGridListGetItemPlayerName ( aWarpList, guiGridListGetSelectedItem ( aWarpList ), 1 ) ) )
+				end
 				aPlayerWarpClose ( false )
 			end
 		elseif ( source == aWarpToPositionMap ) then
@@ -142,7 +150,9 @@ function aClientWarpClick ( button, state, absX, absY )
 		-- Player Warp Management
 		if ( source == aWarpSelect ) then
 			if ( guiGridListGetSelectedItem ( aWarpList ) ~= -1 ) then
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aWarpSelectPointer, "warpto", getPlayerFromNick ( guiGridListGetItemPlayerName ( aWarpList, guiGridListGetSelectedItem ( aWarpList ), 1 ) ) )
+				if isElement(aWarpSelectPointer) then
+					triggerServerEvent ( "aPlayer", localPlayer, aWarpSelectPointer, "warpto", getPlayerFromNick ( guiGridListGetItemPlayerName ( aWarpList, guiGridListGetSelectedItem ( aWarpList ), 1 ) ) )
+				end
 				aPlayerWarpClose ( false )
 			end
 		elseif ( source == aWarpCancel ) then
