@@ -100,33 +100,30 @@ end
 
 
 local function warpToPosition ( player, x, y, z )
-	local distance = getElementDistanceFromCentreOfMassToBaseOfModel ( player )
-	triggerServerEvent ( "aPlayer", localPlayer, player, "warptoposition", { x, y, z + distance + 0.25 } )
-	aPlayerWarpToPositionClose ( false )
-	aPlayerWarpClose ( false )
+	if isElement(player) then
+		local distance = getElementDistanceFromCentreOfMassToBaseOfModel ( player )
+		triggerServerEvent ( "aPlayer", localPlayer, player, "warptoposition", { x, y, z + distance + 0.25 } )
+		aPlayerWarpToPositionClose ( false )
+		aPlayerWarpClose ( false )
+	end
 end
 
 local function warpPlayerToPositionTrigger ( )
-	if isElement(aWarpSelectPointer) then
-		local x, y, z = getTeleportPosition ( )
-		if z == "auto" then
-			fadeCamera ( false, 0 )
-			setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, true )
-			setCameraMatrix ( x, y, 0 )
-			setTimer ( function ( )
-				local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
-				setCameraTarget ( localPlayer )
-				setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, false )
-				fadeCamera ( true, 0.1 )
-				if not hit then return end
-				warpToPosition ( aWarpSelectPointer, x, y, hitZ )
-			end, 100, 1 )
-		else
-			warpToPosition ( aWarpSelectPointer, x, y, z )
-		end
+	local x, y, z = getTeleportPosition ( )
+	if z == "auto" then
+		fadeCamera ( false, 0 )
+		setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, true )
+		setCameraMatrix ( x, y, 0 )
+		setTimer ( function ( )
+			local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
+			setCameraTarget ( localPlayer )
+			setElementFrozen ( getPedOccupiedVehicle ( localPlayer ) or localPlayer, false )
+			fadeCamera ( true, 0.1 )
+			if not hit then return end
+			warpToPosition ( aWarpSelectPointer, x, y, hitZ )
+		end, 100, 1 )
 	else
-		aPlayerWarpToPositionClose ( false )
-		aPlayerWarpClose ( false )
+		warpToPosition ( aWarpSelectPointer, x, y, z )
 	end
 end
 
