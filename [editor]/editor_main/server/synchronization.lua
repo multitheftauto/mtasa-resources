@@ -14,7 +14,7 @@ local function syncElementRotation(element, value)
 end
 
 local function syncElementDimension(element, dim)
-	edf.edfSetElementDimension(element, dim)
+	setElementData(element, "me:dimension", dim)
 end
 
 local function syncElementInterior(element, int)
