@@ -64,7 +64,6 @@ function aOptionsTab.Create(tab)
     addEventHandler("onClientGUIClick", aOptionsTab.Tab, aOptionsTab.onClientClick)
     addEventHandler("aClientResourceStop", getResourceRootElement(), aOptionsTab.onClientResourceStop)
     addEventHandler("onClientGUIScroll", aOptionsTab.Tab, aOptionsTab.onClientScroll)
-    addEventHandler("onClientGUITabSwitched", aOptionsTab.Tab, aOptionsTab.onTabSwitched, false)
 end
 
 function aOptionsTab.onClientClick(button)
@@ -143,10 +142,4 @@ function aOptionsTab.onClientScroll(element)
             "Cursor sensivity: (" .. string.sub(guiScrollBarGetScrollPosition(source) / 50, 0, 4) .. ")"
         )
     end
-end
-
-function aOptionsTab.onTabSwitched()
-    -- Refresh checkbox status (in case settings were changed in the options tab)
-    guiCheckBoxSetSelected(aChatTab.AdminChatSound, aGetSetting("adminChatSound"))
-    guiCheckBoxSetSelected(aChatTab.AdminChatOutput, aGetSetting("adminChatOutput"))
 end

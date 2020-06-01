@@ -18,10 +18,8 @@ function aChatTab.Create(tab)
 
     aChatTab.AdminChat = guiCreateMemo(0.01, 0.02, 0.78, 0.89, "", true, tab)
     guiSetProperty(aChatTab.AdminChat, "ReadOnly", "true")
-    aChatTab.AdminPlayers = guiCreateGridList(0.80, 0.02, 0.19, 0.8, true, tab)
+    aChatTab.AdminPlayers = guiCreateGridList(0.80, 0.02, 0.19, 0.89, true, tab)
     guiGridListAddColumn(aChatTab.AdminPlayers, "Admins", 0.90)
-    aChatTab.AdminChatSound = guiCreateCheckBox(0.81, 0.83, 0.18, 0.04, "Play Sound", aGetSetting("adminChatSound"), true, tab)
-    aChatTab.AdminChatOutput = guiCreateCheckBox(0.81, 0.87, 0.18, 0.04, "Output", aGetSetting("adminChatOutput"), true, tab)
     aChatTab.AdminText = guiCreateEdit(0.01, 0.92, 0.78, 0.06, "", true, tab)
     aChatTab.AdminSay = guiCreateButton(0.80, 0.92, 0.19, 0.06, "Say", true, tab)
 
@@ -32,7 +30,6 @@ function aChatTab.Create(tab)
     addEventHandler("onClientGUIAccepted", aChatTab.AdminText, aChatTab.onClientGUIAccepted)
     addEventHandler(EVENT_SYNC, root, aChatTab.onClientSync)
     addEventHandler("onAdminRefresh", aChatTab.Tab, aChatTab.onRefresh)
-    addEventHandler("onClientGUITabSwitched", aChatTab.Tab, aChatTab.onTabSwitched, false)
 end
 
 function aChatTab.onClientClick(button)
@@ -50,10 +47,6 @@ function aChatTab.onClientClick(button)
             end
         elseif (source == aChatTab.AdminText) then
             guiSetInputEnabled(true)
-        elseif (source == aChatTab.AdminChatOutput) then
-            aSetSetting("adminChatOutput", guiCheckBoxGetSelected(aChatTab.AdminChatOutput))
-        elseif (source == aChatTab.AdminChatSound) then
-            aSetSetting("adminChatSound", guiCheckBoxGetSelected(aChatTab.AdminChatSound))
         end
     end
 end
@@ -138,10 +131,4 @@ function aChatTab.onRefresh()
         sync(SYNC_ADMINS)
         aChatTab.LastSync = getTickCount() + 15000
     end
-end
-
-function aChatTab.onTabSwitched()
-    -- Refresh checkbox status (in case settings were changed in the options tab)
-    guiCheckBoxSetSelected(aChatTab.AdminChatSound, aGetSetting("adminChatSound"))
-    guiCheckBoxSetSelected(aChatTab.AdminChatOutput, aGetSetting("adminChatOutput"))
 end
