@@ -117,7 +117,12 @@ local commonApplier = {
 		return edf.edfSetElementRotation(selectedElement, unpack(control:getValue()))
 	end,
 	dimension = function(control)
-		return edf.edfSetElementDimension(selectedElement, control:getValue())
+		local dimension = control:getValue()
+		if dimension then
+			return setElementData(selectedElement, "me:dimension", dimension)
+		else
+			return false
+		end
 	end,
 	interior = function(control)
 		return edf.edfSetElementInterior(selectedElement, control:getValue())
