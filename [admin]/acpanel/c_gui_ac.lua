@@ -87,6 +87,7 @@ function aAntiCheatTab.Create ( tab )
 				{ id=33, sver="1.5.6",         cver="1.5.6",         desc="Disallow software of the category 'Net limiter'" },
 				{ id=34, sver="1.5.6",         cver="1.5.6",         desc="Disallow internet café users" },
 				{ id=35, sver="1.5.6",         cver="1.5.6",         desc="Disallow certain software with \"FPS locking\" capabilities" },
+				{ id=36, sver="1.5.7",         cver="1.5.7",         desc="Disallow AutoHotKey base application (used to load .ahk files)" },
 			}
 
 	local enableSdDesc = getServerConfigSetting( "enablesd" )
