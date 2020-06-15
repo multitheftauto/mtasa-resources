@@ -1,11 +1,12 @@
 <meta>
-	<info author="Talidan" version="1.0.0" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode" edf:definition="edf/dm.edf" />
+	<info author="Talidan" version="1.0.0" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode." edf:definition="edf/dm.edf" />
 	<include resource="killmessages" />
 	<include resource="playercolors" />
 	<include resource="deathpickups" />
 	<include resource="spawnmanager" />
 	<include resource="missiontimer" />
 	<include resource="scoreboard" />
+	<include resource="defaultstats" />
 
 	<script src="logic.lua" />
 	<script src="spawn.lua" />

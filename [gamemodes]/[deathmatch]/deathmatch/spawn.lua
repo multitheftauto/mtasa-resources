@@ -1,21 +1,3 @@
-local stats = {
-	[69]=900,
-	[70]=999,
-	[71]=999,
-	[72]=999,
-	[73]=900,
-	[74]=999,
-	[75]=900,
-	[76]=999,
-	[77]=999,
-	[78]=999,
-	[79]=999,
-	[160]=999,
-	[225]=999,
-	[229]=999,
-	[230]=999
-}
-
 do
         local random = math.random
 
@@ -64,7 +46,6 @@ end
 function processPlayerSpawn ( player )
 	player = player or source
 	if not isElement(player) then return end
-	setStats ( player )
 	if not getElementData ( player, "Score" ) then
 		setElementData ( player, "Score", 0 )
 	end
@@ -86,9 +67,3 @@ function processPlayerSpawn ( player )
 	end
 end
 addEventHandler ( "onPlayerJoin", g_Root, processPlayerSpawn )
-
-function setStats ( player )
-	for statID,value in pairs(stats) do
-		setPedStat ( player, statID, value )
-	end
-end
