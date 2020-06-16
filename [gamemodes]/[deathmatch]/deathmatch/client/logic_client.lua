@@ -162,14 +162,3 @@ addEventHandler ( "requestCountdown", root,
 		countdownCR(time)
 	end
 )
-
-addEvent ( "onColtPickup", true )
-addEventHandler ( "onColtPickup", root,
-	function()
-		if getPedWeapon ( source, 2 ) == 22 and getPedTotalAmmo ( source, 2 ) ~= 0 then
-			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, true )
-		elseif getPedStat ( source, 69 ) >= 999 then
-			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, false )
-		end
-	end
-)

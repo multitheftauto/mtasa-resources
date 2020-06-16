@@ -238,26 +238,3 @@ function calculateLoadingCameraMatrix()
 	lookX, lookY, lookZ = getElementPosition(lookAt)
 	return {camX, camY, camZ, lookX, lookY, lookZ}
 end
-
---
---	TODO: cleanup code below
---
-addEventHandler ( "onPickupUse", root,
-	function ( player )
-		if getPickupType ( source ) == 2 and getPickupWeapon ( source ) == 22 then
-			if getPedWeapon ( player ) == 22 and getPedTotalAmmo ( player ) ~= 0 then
-				setColtStat ( true, player )
-			else
-				triggerClientEvent ( player, "onColtPickup", player, source )
-			end
-		end
-	end
-)
-
-addEvent ( "doSetColtStat", true )
-function setColtStat ( fullSkill, player )
-	local stat = fullSkill and 999 or 900
-	player = player or source
-	setPedStat ( player, 69, stat )
-end
-addEventHandler ( "doSetColtStat", root, setColtStat )
