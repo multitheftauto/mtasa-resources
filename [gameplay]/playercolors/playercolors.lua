@@ -1,8 +1,6 @@
 local lowerBound,upperBound = unpack(get"color_range")
-g_Root = getRootElement ()
-g_ResourceRoot = getResourceRootElement ( getThisResource () )
 
-addEventHandler ( "onResourceStart", g_ResourceRoot,
+addEventHandler ( "onResourceStart", resourceRoot,
 	function()
 		for i,player in ipairs(getElementsByType"player") do
 			processPlayer ( player )
@@ -15,17 +13,17 @@ function processPlayer ( player )
 	local r, g, b = math.random(lowerBound, upperBound), math.random(lowerBound, upperBound), math.random(lowerBound, upperBound)
 	setPlayerNametagColor(player, r, g, b)
 end
-addEventHandler ( "onPlayerJoin", g_Root, processPlayer )
+addEventHandler ( "onPlayerJoin", root, processPlayer )
 
 
-addEventHandler('onPlayerChat', g_Root,
+addEventHandler('onPlayerChat', root,
 	function(msg, type)
 		if type == 0 then
 			cancelEvent()
 			local r, g, b = getPlayerColor(source)
 			local name = getPlayerName(source)
 			local msg = msg:gsub('#%x%x%x%x%x%x', '')
-			outputChatBox( name.. ': #FFFFFF' .. msg, g_Root, r, g, b, true)
+			outputChatBox( name.. ': #FFFFFF' .. msg, root, r, g, b, true)
 			outputServerLog( "CHAT: " .. name .. ": " .. msg )
 		end
 	end
