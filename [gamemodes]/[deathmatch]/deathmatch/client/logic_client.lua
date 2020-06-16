@@ -1,5 +1,4 @@
 g_ScreenX,g_ScreenY = guiGetScreenSize()
-g_Root = getRootElement()
 g_ResourceRoot = getResourceRootElement(getThisResource())
 g_LocalPlayer = getLocalPlayer()
 g_FragColor = tocolor(255,255,255,255)
@@ -55,13 +54,13 @@ addEventHandler ( "onClientResourceStart", g_ResourceRoot,
 	end
 )
 
-addEventHandler ( "onClientRender", g_Root,
+addEventHandler ( "onClientRender", root,
 	function()
 		dxDrawImage ( fragStartX, fragStartY, fragWidth, fragHeight, "images/frag.png", 0, 0, 0, g_FragColor )
 	end
 )
 
-addEventHandler ( "onClientElementDataChange", g_Root,
+addEventHandler ( "onClientElementDataChange", root,
 	function ( dataName )
 		if dataName == "Score" then
 			updateScores()
@@ -123,8 +122,8 @@ function updateScores()
 		)
 	end
 end
-addEventHandler ( "onClientPlayerQuit", g_Root, updateScores )
-addEventHandler ( "onClientPlayerJoin", g_Root, updateScores )
+addEventHandler ( "onClientPlayerQuit", root, updateScores )
+addEventHandler ( "onClientPlayerJoin", root, updateScores )
 
 local countdownCR
 local function countdown(time)
@@ -150,7 +149,7 @@ local function hideCountdown()
 end
 
 addEvent ( "requestCountdown", true )
-addEventHandler ( "requestCountdown", g_Root,
+addEventHandler ( "requestCountdown", root,
 	function(time)
 		Animation.createAndPlay(
 		  respawnText,
@@ -165,7 +164,7 @@ addEventHandler ( "requestCountdown", g_Root,
 )
 
 addEvent ( "onColtPickup", true )
-addEventHandler ( "onColtPickup", g_Root,
+addEventHandler ( "onColtPickup", root,
 	function()
 		if getPedWeapon ( source, 2 ) == 22 and getPedTotalAmmo ( source, 2 ) ~= 0 then
 			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, true )
