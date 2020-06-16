@@ -1,5 +1,5 @@
 local CAMERA_LOAD_DELAY = 6000 --Time left for the camera to stream in the map.
-local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText,g_ProcessWastedHandler
+local g_FragLimit,g_TimeLimit,g_RespawnTime,g_MissionTimer,g_FragLimitText,g_ProcessWastedHandler
 local announcementText,processWasted
 mapTimers = {}
 
@@ -16,8 +16,6 @@ end
 
 addEventHandler ( "onGamemodeStart", root,
 	function()
-		g_default_deathpickups = get"deathpickups.only_current"
-		set("*deathpickups.only_current",true)
 		exports.scoreboard:addScoreboardColumn ( "Rank", root, 1, 0.05 )
 		exports.scoreboard:addScoreboardColumn ( "Score" )
 		announcementText = dxText:create("",0.5,0.1)
@@ -28,7 +26,6 @@ addEventHandler ( "onGamemodeStart", root,
 
 addEventHandler ( "onGamemodeStop", root,
 	function()
-		set("deathpickups.only_current",g_default_deathpickups)
 		for i,player in ipairs(getElementsByType"player") do
 			removeElementData ( player, "Score" )
 			removeElementData ( player, "Rank" )
