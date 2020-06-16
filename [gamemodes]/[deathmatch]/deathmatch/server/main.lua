@@ -159,8 +159,14 @@ end
 	end
 	-- show the scoreboard
 	exports.scoreboard:scoreboardSetForced(true)
-	-- schedule next round
-	setTimer(beginRound, CAMERA_LOAD_DELAY * 2, 1)
+	-- if mapcycler is running, signal that this round is over by triggering onRoundFinished
+	-- otherwise, schedule the next round
+	local mapcycler = getResourceFromName("mapcycler")
+	if mapcycler and getResourceState(mapcycler) == "running" then
+		triggerEvent("onRoundFinished", resourceRoot)
+	else
+		setTimer(beginRound, CAMERA_LOAD_DELAY * 2, 1)
+	end
 end
 
 --
