@@ -11,8 +11,8 @@
 	<include resource="defaultstats" />
 
 	<!-- Server files -->
-	<script src="server/logic.lua" />
-	<script src="server/spawn.lua" />
+	<script src="server/main.lua" />
+	<script src="server/player.lua" />
 	<script src="server/textlib_s.lua" />
 
 	<!-- Client files -->
