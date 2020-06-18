@@ -46,10 +46,8 @@ end
 
 --
 --	processPlayerJoin: triggered when a player joins the game
---	TODO: handle players joining mid-round more gracefully
 --
 local function processPlayerJoin()
-	iprint("p")
 	-- initialize player score data
 	setElementData(source, "Score", 0)
 	setElementData(source, "Rank", "-")
@@ -58,13 +56,18 @@ local function processPlayerJoin()
 		setCameraMatrix(source, unpack(_loadingCameraMatrix))
 	end
 	calculatePlayerRanks()
-	if _fragLimitDisplay then
-		_fragLimitDisplay:sync(source)
+	if getElementData(resourceRoot, "gameState") == GAME_FINISHED then
+		-- show the game finished screen if the game is already over
+		if _announcementDisplay then
+			_announcementDisplay:sync(source)
+		end
+	elseif getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
+		-- show the frag limit display and spawn the player if the game is in progress
+		if _fragLimitDisplay then
+			_fragLimitDisplay:sync(source)
+		end
+		spawnDeathmatchPlayer(source)
 	end
-	if _announcementDisplay then
-		_announcementDisplay:sync(source)
-	end
-	spawnDeathmatchPlayer(source)
 end
 addEventHandler("onPlayerJoin", root, processPlayerJoin)
 
