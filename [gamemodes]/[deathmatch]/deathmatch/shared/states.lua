@@ -17,3 +17,12 @@ enum({
     "GAME_IN_PROGRESS", -- game is in progress
     "GAME_FINISHED"    -- game has ended
 })
+
+--
+--  PLAYER_STATE enum
+--
+enum({
+    "PLAYER_JOINED",    -- player has joined the game
+    "PLAYER_READY",     -- player is ready to play (post-onClientResourceStart clientside)
+    "PLAYER_IN_GAME",   -- player is in-game (either spawned or waiting to respawn)
+})

@@ -23,6 +23,7 @@
 	<script src="client/client_anim.lua" type="client" />
 	<script src="client/textlib_anim.lua" type="client" />
 	<script src="client/textlib.lua" type="client" />
+	<script src="client/main.lua" type="client" />
 	<file src="client/images/frag.png" />
 
 	<!-- EDF files -->

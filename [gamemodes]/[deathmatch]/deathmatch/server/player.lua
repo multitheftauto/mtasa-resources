@@ -1,3 +1,27 @@
+_playerStates = {}
+
+-- triggered by the client post-onClientResourceStart
+addEvent("onDeathmatchPlayerReady", true)
+addEventHandler("onDeathmatchPlayerReady", root, function()
+	_playerStates[client] = PLAYER_READY
+
+	-- spawn player if a round is already in progress
+	if getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
+		spawnDeathmatchPlayer(source)
+		-- show the frag limit display and spawn the player if the game is in progress
+		if _fragLimitDisplay then
+			_fragLimitDisplay:sync(source)
+		end
+	end
+end)
+
+-- set default player state on gamemode start (clients will report in when ready)
+addEventHandler("onResourceStart", resourceRoot, function()
+	for _, player in ipairs(getElementsByType("player")) do
+		_playerStates[player] = PLAYER_JOINED
+	end
+end)
+
 --
 --	spawnDeathmatchPlayer: spawns a player in deathmatch mode
 --
@@ -16,6 +40,8 @@ function spawnDeathmatchPlayer(player)
 	setCameraTarget(player, player)
 	-- delete the respawn timer
 	_respawnTimers[player] = nil
+	-- update player state
+	_playerStates[player] = PLAYER_IN_GAME
 end
 
 --
@@ -48,6 +74,7 @@ end
 --	processPlayerJoin: triggered when a player joins the game
 --
 local function processPlayerJoin()
+	_playerStates[source] = PLAYER_JOINED
 	-- initialize player score data
 	setElementData(source, "Score", 0)
 	setElementData(source, "Rank", "-")
@@ -63,10 +90,10 @@ local function processPlayerJoin()
 		end
 	elseif getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
 		-- show the frag limit display and spawn the player if the game is in progress
-		if _fragLimitDisplay then
+		--[[if _fragLimitDisplay then
 			_fragLimitDisplay:sync(source)
 		end
-		spawnDeathmatchPlayer(source)
+		spawnDeathmatchPlayer(source)]]
 	end
 end
 addEventHandler("onPlayerJoin", root, processPlayerJoin)
@@ -75,6 +102,8 @@ addEventHandler("onPlayerJoin", root, processPlayerJoin)
 --	processPlayerQuit: cleans up after a player when they quit
 --
 local function processPlayerQuit()
+	-- clear player state
+	_playerStates[source] = nil
 	-- kill player respawn timer, if it exists
 	if _respawnTimers[source] then
 		killTimer(_respawnTimers[source])

@@ -117,7 +117,9 @@ addEventHandler("onGamemodeMapStop", root, stopDeathmatchMap)
 	setElementData(resourceRoot, "gameState", GAME_IN_PROGRESS)
 	-- spawn players
 	for _, player in ipairs(getElementsByType("player")) do
-		spawnDeathmatchPlayer(player)
+		if _playerStates[player] == PLAYER_READY then
+			spawnDeathmatchPlayer(player)
+		end
 	end
 end
 
@@ -162,6 +164,8 @@ end
 			toggleAllControls(player, true, true, false)
 		end
 		fadeCamera(player, false, CAMERA_LOAD_DELAY/1000)
+		-- update player state
+		_playerStates[player] = PLAYER_READY
 	end
 	-- if there was no match result, do not continue to the next match
 	if not (winner or draw) then
@@ -169,6 +173,8 @@ end
 	end
 	-- show the scoreboard
 	exports.scoreboard:scoreboardSetForced(true)
+	-- update game state
+	setElementData(resourceRoot, "gameState", GAME_FINISHED)
 	-- if mapcycler is running, signal that this round is over by triggering onRoundFinished
 	-- otherwise, schedule the next round
 	local mapcycler = getResourceFromName("mapcycler")
