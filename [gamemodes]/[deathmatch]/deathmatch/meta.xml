@@ -16,6 +16,7 @@
 	<!-- Server files -->
 	<script src="server/main.lua" />
 	<script src="server/player.lua" />
+	<script src="server/round.lua" />
 	<script src="server/textlib_s.lua" />
 
 	<!-- Client files -->
