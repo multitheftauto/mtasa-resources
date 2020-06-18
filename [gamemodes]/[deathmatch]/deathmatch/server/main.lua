@@ -13,6 +13,8 @@ local defaults = {
 --	startDeathmatchMode: initializes the deathmatch gamemode
 --
 local function startDeathmatchMode()
+	-- update game state
+	setElementData(resourceRoot, "gameState", GAME_WAITING)
 	-- add scoreboard columns
 	exports.scoreboard:addScoreboardColumn("Score")
 	exports.scoreboard:addScoreboardColumn("Rank", root, 1, 0.05)
@@ -67,6 +69,8 @@ local function startDeathmatchMap(resource)
 		_loadingCameraMatrix = calculateLoadingCameraMatrix()
 		setCameraMatrix(root, unpack(_loadingCameraMatrix))
 	end, 0, 1)
+	-- update game state
+	setElementData(resourceRoot, "gameState", GAME_STARTING)
 	-- schedule round to begin
 	setTimer(beginRound, CAMERA_LOAD_DELAY, 1)
 end
@@ -80,6 +84,8 @@ local function stopDeathmatchMap(resource)
 	_loadingCameraMatrix = nil
 	-- end the round
 	endRound(false, false)
+	-- update game state
+	setElementData(resourceRoot, "gameState", GAME_WAITING)
 end
 addEventHandler("onGamemodeMapStop", root, stopDeathmatchMap)
 
@@ -107,6 +113,8 @@ addEventHandler("onGamemodeMapStop", root, stopDeathmatchMap)
 	_fragLimitDisplay:sync()
 	-- attach player wasted handler
 	addEventHandler("onPlayerWasted", root, processPlayerWasted)
+	-- update game state
+	setElementData(resourceRoot, "gameState", GAME_IN_PROGRESS)
 	-- spawn players
 	for _, player in ipairs(getElementsByType("player")) do
 		spawnDeathmatchPlayer(player)
@@ -128,6 +136,8 @@ end
 	if isElement(_missionTimer) then
 		destroyElement(_missionTimer)
 	end
+	-- update game state
+	setElementData(resourceRoot, "gameState", GAME_FINISHED)
 	-- disable frag limit text
 	_fragLimitDisplay:visible(false)
 	_fragLimitDisplay:sync()
