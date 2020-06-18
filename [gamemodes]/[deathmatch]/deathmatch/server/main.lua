@@ -1,4 +1,4 @@
-local CAMERA_LOAD_DELAY = 6000 -- delay used at beginning and end of round
+local CAMERA_LOAD_DELAY = 5000 -- delay used at beginning and end of round (ms)
 _respawnTimers = {} -- lookup table for player respawn timers
 
 -- default map settings
