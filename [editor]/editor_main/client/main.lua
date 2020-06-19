@@ -638,14 +638,15 @@ end
 function requiresObjectCollisions(element)
 	for k, child in ipairs(getElementChildren(element)) do
 		if getElementData(child, "edf:dummy") == false then
-			if getElementType(child) ~= 'object' then
-				return false
+			if getElementData(child, "edf:rep") == true then
+				if getElementType(child) ~= "object" then
+					return false
+				end
 			end
 		end
 	end
 	return true
 end
-
 
 -- Drag and drop
 function processCursorMove(cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ)
