@@ -7,19 +7,9 @@ function beginRound()
 		setElementData(player, "Score", 0)
 		setElementData(player, "Rank", "-")
 	end
-	-- reset announcement display
-	_announcementDisplay:color(255, 255, 255, 255)
-	_announcementDisplay:visible(false)
-	_announcementDisplay:sync()
-	-- hide scoreboard
-	exports.scoreboard:scoreboardSetForced(false)
 	-- start round timer
 	_missionTimer = exports.missiontimer:createMissionTimer(_timeLimit, true, true, 0.5, 20, true, "default-bold", 1)
 	addEventHandler("onMissionTimerElapsed", _missionTimer, onTimeElapsed)
-	-- show frag limit display
-	_fragLimitDisplay:text(string.format("Frag Limit: %s", _fragLimit))
-	_fragLimitDisplay:visible(true)
-	_fragLimitDisplay:sync()
 	-- attach player wasted handler
 	addEventHandler("onPlayerWasted", root, processPlayerWasted)
 	-- update game state
@@ -27,7 +17,8 @@ function beginRound()
 	-- spawn players
 	for _, player in ipairs(getElementsByType("player")) do
 		if _playerStates[player] == PLAYER_READY then
-			spawnDeathmatchPlayer(player)
+            spawnDeathmatchPlayer(player)
+            triggerClientEvent(player, "onClientDeathmatchRoundStart", resourceRoot)
 		end
 	end
 end
@@ -65,39 +56,24 @@ function endRound(winner, draw)
 	end
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_FINISHED)
-	-- disable frag limit text
-	_fragLimitDisplay:visible(false)
-	_fragLimitDisplay:sync()
-	-- announce winner
-	if winner then
-		_announcementDisplay:text(string.format("%s has won the match!", getPlayerName(winner)))
-		_announcementDisplay:color(getPlayerNametagColor(winner))
-		_announcementDisplay:visible(true)
-		_announcementDisplay:sync()
-	else
-		if draw then
-			_announcementDisplay:text("The match was a draw!")
-			_announcementDisplay:color(255, 255, 255, 255)
-			_announcementDisplay:visible(true)
-			_announcementDisplay:sync()
-		end
-	end
 	-- make all other players focus on the winner and begin to fade out camera
-	for _, player in ipairs(getElementsByType("player")) do
-		if player ~= winner then
-			setCameraTarget(player, winner)
-			toggleAllControls(player, true, true, false)
-		end
-		fadeCamera(player, false, CAMERA_LOAD_DELAY/1000)
-		-- update player state
-		_playerStates[player] = PLAYER_READY
+    for _, player in ipairs(getElementsByType("player")) do
+        if _playerStates[player] == PLAYER_IN_GAME then
+            if player ~= winner then
+                setCameraTarget(player, winner)
+                toggleAllControls(player, true, true, false)
+            end
+            fadeCamera(player, false, CAMERA_LOAD_DELAY/1000)
+            -- update player state
+            _playerStates[player] = PLAYER_READY
+            -- inform client round is over
+            triggerClientEvent(player, "onClientDeathmatchRoundEnded", resourceRoot, winner, draw)
+        end
 	end
 	-- if there was no match result, do not continue to the next match
 	if not (winner or draw) then
 		return
 	end
-	-- show the scoreboard
-	exports.scoreboard:scoreboardSetForced(true)
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_FINISHED)
 	-- if mapcycler is running, signal that this round is over by triggering onRoundFinished

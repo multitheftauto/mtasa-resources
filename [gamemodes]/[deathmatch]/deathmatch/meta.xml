@@ -17,7 +17,6 @@
 	<script src="server/main.lua" />
 	<script src="server/player.lua" />
 	<script src="server/round.lua" />
-	<script src="server/textlib_s.lua" />
 
 	<!-- Client files -->
 	<script src="client/logic_client.lua" type="client"/>
@@ -25,6 +24,7 @@
 	<script src="client/textlib_anim.lua" type="client" />
 	<script src="client/textlib.lua" type="client" />
 	<script src="client/main.lua" type="client" />
+	<script src="client/hud.lua" type="client" />
 	<file src="client/images/frag.png" />
 
 	<!-- EDF files -->

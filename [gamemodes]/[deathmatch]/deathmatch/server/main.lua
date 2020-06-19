@@ -3,7 +3,7 @@ _respawnTimers = {} -- lookup table for player respawn timers
 
 -- default map settings
 local defaults = {
-	fragLimit = 10,
+	fragLimit = 1, -- TODO: this should be 10
 	timeLimit = 600, --10 minutes
 	respawnTime = 10,
 	spawnWeapons = "22:100", -- "weaponID:ammo,weaponID:ammmo"
@@ -15,17 +15,6 @@ local defaults = {
 local function startDeathmatchMode()
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_WAITING)
-	-- add scoreboard columns
-	exports.scoreboard:addScoreboardColumn("Score")
-	exports.scoreboard:addScoreboardColumn("Rank", root, 1, 0.05)
-	-- initialize announcement display
-	_announcementDisplay = dxText:create("1",0.5,0.1)
-	_announcementDisplay:font("bankgothic")
-	_announcementDisplay:type("stroke", 1)
-	-- initialize frag limit display
-	_fragLimitDisplay = dxText:create ("2", 0.5, 35, "default-bold", 1 )
-	_fragLimitDisplay:align("center","top")
-	_fragLimitDisplay:type("stroke",1)
 end
 addEventHandler("onGamemodeStart", resourceRoot, startDeathmatchMode)
 
@@ -35,13 +24,9 @@ addEventHandler("onGamemodeStart", resourceRoot, startDeathmatchMode)
 local function stopDeathmatchMode()
 	-- cleanup player score data, make sure scoreboard isn't forced
 	for _, player in ipairs(getElementsByType("player")) do
-		exports.scoreboard:setPlayerScoreboardForced(player, false)
 		removeElementData(player, "Score")
 		removeElementData(player, "Rank")
 	end
-	-- remove scoreboard columns
-	exports.scoreboard:removeScoreboardColumn("Score")
-	exports.scoreboard:removeScoreboardColumn("Rank")
 end
 addEventHandler("onGamemodeStop", resourceRoot, stopDeathmatchMode)
 
@@ -64,13 +49,21 @@ local function startDeathmatchMap(resource)
 			_spawnWeapons[weapon] = ammo
 		end
 	end
-	-- set timer to calculate and apply loading camera matrix next frame
-	setTimer(function()
-		_loadingCameraMatrix = calculateLoadingCameraMatrix()
-		setCameraMatrix(root, unpack(_loadingCameraMatrix))
-	end, 0, 1)
+	-- if the map title is not defined in the map's meta.xml, use the resource name
+	-- TODO: refactor these globals (?)
+	_mapTitle = getResourceInfo(resource, "name")
+	if not _mapTitle then
+		_mapTitle = resourceName
+	end
+	_mapAuthor = getResourceInfo(resource, "author")
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_STARTING)
+	-- inform all ready players that the game is about to start
+	for player, state in pairs(_playerStates) do
+		if state == PLAYER_READY then
+			triggerClientEvent(player, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
+		end
+	end
 	-- schedule round to begin
 	setTimer(beginRound, CAMERA_LOAD_DELAY, 1)
 end
@@ -80,22 +73,25 @@ addEventHandler("onGamemodeMapStart", root, startDeathmatchMap)
 --	stopDeathmatchMap: cleans up a deathmatch map
 --
 local function stopDeathmatchMap(resource)
-	-- clear the loading camera matrix
-	_loadingCameraMatrix = nil
 	-- end the round
 	endRound(false, false)
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_WAITING)
+	-- inform all clients that the map was stopped
+	for player, state in pairs(_playerStates) do
+		if state ~= PLAYER_JOINED then
+			triggerClientEvent(player, "onClientDeathmatchMapStop", resourceRoot)
+		end
+	end
 end
 addEventHandler("onGamemodeMapStop", root, stopDeathmatchMap)
 
 --
 --	scoreSortingFunction: used to sort a table of players by their score
 --
-local function scoreSortingFunction(a, b)
+function scoreSortingFunction(a, b)
 	return (getElementData(a, "Score") or 0) > (getElementData(b, "Score") or 0)
 end
-
 
 --
 --	calculatePlayerRanks(): calculates player ranks
@@ -119,27 +115,11 @@ function calculatePlayerRanks()
 			setElementData(player, "Rank", 1)
 		end
 	end
-end
 
---
---	calculateCameraMatrix(): calculates the map loading camera matrix
---
-function calculateLoadingCameraMatrix()
-	local spawnpoints = getElementsByType("spawnpoint", getResourceRootElement(_mapResource))
-	if #spawnpoints == 0 then
-		return {0,0,0,0,0,0}
+	-- inform ready players that scores have been updated
+	for _, player in ipairs(players) do
+		if _playerStates[player] ~= PLAYER_JOINED then
+			triggerClientEvent(player, "onDeathmatchScoreUpdate", resourceRoot)
+		end
 	end
-	-- calculate our camera position by calculating an average spawnpoint position
-	local camX, camY, camZ = 0, 0, 0
-	for _, spawnpoint in ipairs(spawnpoints) do
-		local x, y, z = getElementPosition(spawnpoint)
-		camX = camX + x
-		camY = camY + y
-		camZ = camZ + z
-	end
-	camX, camY, camZ = camX/#spawnpoints, camY/#spawnpoints, camZ/#spawnpoints + 30
-	-- use a random spawnpoint as the look-at position
-	local lookAt = spawnpoints[math.random(1, #spawnpoints)]
-	lookX, lookY, lookZ = getElementPosition(lookAt)
-	return {camX, camY, camZ, lookX, lookY, lookZ}
 end

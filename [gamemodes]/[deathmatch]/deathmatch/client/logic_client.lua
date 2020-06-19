@@ -29,60 +29,23 @@ local function dxSetAlpha ( dx, a )
 	local r,g,b = dx:color()
 	dx:color(r,g,b,a)
 end
-----
-
-addEventHandler ( "onClientResourceStart", g_ResourceRoot,
-	function()
-		respawnText = dxText:create( "", 0.5, 0.5, true, "pricedown", 2 )
-		respawnText:type("stroke",1.2)
-		respawnText:color ( 255,0,0, 0 )
-		respawnText:visible(false)
-		--
-		fragText = dxText:create( "0", 0, 0, true, "pricedown", fragTextScale )
-		fragText:type("stroke",fragTextScale)
-		fragText:boundingBox(fragStartX + 65,fragStartY + 15,fragStartX + 131,fragStartY + fragHeight - 10, false)
-		--
-		spreadText = dxText:create( "Spread: 0", 0, 0, true, "Arial", textScale )
-		spreadText:align("right","bottom")
-		spreadText:type("shadow",2,2)
-		spreadText:boundingBox(0,0,fragStartX + fragWidth - 20,fragStartY - 2, false)
-		--
-		rankText = dxText:create( "Rank:  -/-", 0, 0, true, "Arial", textScale )
-		rankText:align("right","bottom")
-		rankText:type("shadow",2,2)
-		rankText:boundingBox(0,0,fragStartX + fragWidth - 20,fragStartY - 2 - dxGetFontHeight ( textScale, "Arial" ), false )
-	end
-)
-
-addEventHandler ( "onClientRender", root,
-	function()
-		dxDrawImage ( fragStartX, fragStartY, fragWidth, fragHeight, "images/frag.png", 0, 0, 0, g_FragColor )
-	end
-)
-
-addEventHandler ( "onClientElementDataChange", root,
-	function ( dataName )
-		if dataName == "Score" then
-			updateScores()
-		end
-	end
-)
 
 function updateScores()
+	--if true then return end -- lol
 	local currentScore = getElementData(g_LocalPlayer,"Score")
 	if source == g_LocalPlayer then
-		fragText:text(tostring(currentScore))
+		_hudElements.fragText:text(tostring(currentScore))
 		if (currentScore < 0) then
-			fragText:color(255,0,0,255)
+			_hudElements.fragText:color(255,0,0,255)
 		else
-			fragText:color(255,255,255,255)
+			_hudElements.fragText:color(255,255,255,255)
 		end
 		--Make the score smaller if the frag limit is 3 digits
 		local length = #tostring(currentScore)
 		if length >= 3 then
-			fragText:scale(fragTextScale - ((length - fragTextScale)^0.7)*0.5)
+			_hudElements.fragText:scale(_hudElements.fragTextScale - ((length - _hudElements.fragTextScale)^0.7)*0.5)
 		else
-			fragText:scale(fragTextScale)
+			_hudElements.fragText:scale(_hudElements.fragTextScale)
 		end
 		Animation.createAndPlay(
 		  true,
@@ -112,12 +75,12 @@ function updateScores()
 				getElementData ( players[2] or players[1], "Score" )
 				or getElementData ( players[1], "Score" ) or 0
 	local spread = currentScore - spreadTargetScore
-	spreadText:text("Spread: "..spread)
+	_hudElements.spreadText:text("Spread: "..spread)
 	if rank ~= currentRank then
 		currentRank = rank
-		rankText:text ( "Rank "..rank.."/"..#players )
+		_hudElements.rankText:text ( "Rank "..rank.."/"..#players )
 		Animation.createAndPlay(
-			rankText,
+			_hudElements.rankText,
 			{{ from = 0, to = 500, time = 600, fn = dxSetYellow }}
 		)
 	end
@@ -128,7 +91,7 @@ addEventHandler ( "onClientPlayerJoin", root, updateScores )
 local countdownCR
 local function countdown(time)
 	for i=time,0,-1 do
-		respawnText:text("You will respawn in "..i.." seconds")
+		_hudElements.respawnText:text("You will respawn in "..i.." seconds")
 		setTimer ( countdownCR, 1000, 1 )
 		coroutine.yield()
 	end
@@ -137,28 +100,25 @@ end
 local function hideCountdown()
 	setTimer (
 		function()
-			respawnText:visible(false)
+			_hudElements.respawnText:visible(false)
 		end,
 		600, 1
 	)
 	Animation.createAndPlay(
-	  respawnText,
+	  _hudElements.respawnText,
 	  {{ from = 255, to = 0, time = 400, fn = dxSetAlpha }}
 	)
 	removeEventHandler ( "onClientPlayerSpawn", g_LocalPlayer, hideCountdown )
 end
 
-addEvent ( "requestCountdown", true )
-addEventHandler ( "requestCountdown", root,
-	function(time)
+function startCountdown(time)
 		Animation.createAndPlay(
-		  respawnText,
+			_hudElements.respawnText,
 		  {{ from = 0, to = 255, time = 600, fn = dxSetAlpha }}
 		)
 		addEventHandler ( "onClientPlayerSpawn", g_LocalPlayer, hideCountdown )
-		respawnText:visible(true)
+		_hudElements.respawnText:visible(true)
 		time = math.floor(time/1000)
 		countdownCR = coroutine.wrap(countdown)
 		countdownCR(time)
 	end
-)

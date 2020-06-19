@@ -3,16 +3,18 @@ _playerStates = {}
 -- triggered by the client post-onClientResourceStart
 addEvent("onDeathmatchPlayerReady", true)
 addEventHandler("onDeathmatchPlayerReady", root, function()
-	_playerStates[client] = PLAYER_READY
-
+	-- TODO: clean this up
 	-- spawn player if a round is already in progress
-	if getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
+	if getElementData(resourceRoot, "gameState") == GAME_STARTING then
+		triggerClientEvent(source, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
+	elseif getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
 		spawnDeathmatchPlayer(source)
-		-- show the frag limit display and spawn the player if the game is in progress
-		if _fragLimitDisplay then
-			_fragLimitDisplay:sync(source)
-		end
+		triggerClientEvent(source, "onClientDeathmatchRoundStart", resourceRoot)
+	elseif getElementData(resourceRoot, "gameState") == GAME_FINISHED then
+		triggerClientEvent(source, "onClientDeathmatchRoundEnded", resourceRoot, false, false)
 	end
+
+	_playerStates[source] = PLAYER_READY
 end)
 
 -- set default player state on gamemode start (clients will report in when ready)
@@ -64,8 +66,6 @@ function processPlayerWasted(totalAmmo, killer, killerWeapon, bodypart)
 	end
 	-- update player ranks
 	calculatePlayerRanks()
-	-- tell client to begin on-screen countdown
-	triggerClientEvent(source, "requestCountdown", source, _respawnTime)
 	-- set timer to respawn player
 	_respawnTimers[source] = setTimer(spawnDeathmatchPlayer, _respawnTime, 1, source)
 end
@@ -78,23 +78,7 @@ local function processPlayerJoin()
 	-- initialize player score data
 	setElementData(source, "Score", 0)
 	setElementData(source, "Rank", "-")
-	-- if a map is loaded, apply the loading camera matrix
-	if _loadingCameraMatrix then
-		setCameraMatrix(source, unpack(_loadingCameraMatrix))
-	end
 	calculatePlayerRanks()
-	if getElementData(resourceRoot, "gameState") == GAME_FINISHED then
-		-- show the game finished screen if the game is already over
-		if _announcementDisplay then
-			_announcementDisplay:sync(source)
-		end
-	elseif getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
-		-- show the frag limit display and spawn the player if the game is in progress
-		--[[if _fragLimitDisplay then
-			_fragLimitDisplay:sync(source)
-		end
-		spawnDeathmatchPlayer(source)]]
-	end
 end
 addEventHandler("onPlayerJoin", root, processPlayerJoin)
 
