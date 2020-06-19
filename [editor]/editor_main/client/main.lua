@@ -637,8 +637,8 @@ end
 
 function requiresObjectCollisions(element)
 	for k, child in ipairs(getElementChildren(element)) do
-		if getElementData(child, "edf:dummy") == false then
-			if getElementData(child, "edf:rep") == true then
+		if not getElementData(child, "edf:dummy") then
+			if getElementData(child, "edf:rep") then
 				if getElementType(child) ~= "object" then
 					return false
 				end
