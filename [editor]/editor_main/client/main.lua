@@ -635,6 +635,19 @@ function setRepresentationCollisionsEnabled(element, state)
 	end
 end
 
+function requiresObjectCollisions(element)
+	for k, child in ipairs(getElementChildren(element)) do
+		if not getElementData(child, "edf:dummy") then
+			if getElementData(child, "edf:rep") then
+				if getElementType(child) ~= "object" then
+					return false
+				end
+			end
+		end
+	end
+	return true
+end
+
 -- Drag and drop
 function processCursorMove(cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ)
 	if g_dragElement then
@@ -758,7 +771,9 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	assert(handle == nil or isElement(handle), "Bad handle ["..tostring(handle).."] for element: "..getElementType(element))
 
 	-- temporarily disable collisions for all parts
-	setRepresentationCollisionsEnabled(element, false)
+	if not requiresObjectCollisions(element) then
+		setRepresentationCollisionsEnabled(element, false)
+	end
 
 	-- if we can position this element, grab it and add the markers
 	if handle then
