@@ -6,7 +6,6 @@
 \[test\]
 
 # admin
-\[admin\]/admin/conf/IpToCountryCompact.csv
 \[admin\]/admin/conf/reports.xml
 
 # admin2
