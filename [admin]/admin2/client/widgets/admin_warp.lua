@@ -97,17 +97,18 @@ local function calculatePosition(absX, absY)
 end
 
 local function getTeleportPosition()
-    return tonumber(guiGetText(aWarpToPositionX)) or 0, tonumber(guiGetText(aWarpToPositionY)) or 0, guiGetText(aWarpToPositionZ)
+    return guiGetText(aWarpToPositionX), guiGetText(aWarpToPositionY), guiGetText(aWarpToPositionZ)
 end
 
 local function warpToPosition(player, x, y, z)
     if isElement(player) then
+        local x, y, z  = tonumber(x) or 0, tonumber(y) or 0, tonumber(z) or 0
         local distance = getElementDistanceFromCentreOfMassToBaseOfModel(player)
         triggerServerEvent(
             "aPlayer",
             localPlayer,
             player,
-            "warptoposition",
+            "warpto",
             { x, y, z + distance + 0.25 }
         )
         aPlayerWarpToPositionClose(false)
@@ -118,13 +119,14 @@ end
 local function warpPlayerToPositionTrigger()
     local x, y, z = getTeleportPosition()
     if z == "auto" then
+        local target = getPedOccupiedVehicle(localPlayer) or localPlayer
         fadeCamera(false, 0)
-        setElementFrozen(getPedOccupiedVehicle(localPlayer) or localPlayer, true)
+        setElementFrozen(target, true)
         setCameraMatrix(x, y, 0)
         setTimer(function()
             local hit, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
             setCameraTarget(localPlayer)
-            setElementFrozen(getPedOccupiedVehicle(localPlayer) or localPlayer, false)
+            setElementFrozen(target, false)
             fadeCamera(true, 0.1)
             if not hit then return end
             warpToPosition(aWarpSelectPointer, x, y, hitZ)
