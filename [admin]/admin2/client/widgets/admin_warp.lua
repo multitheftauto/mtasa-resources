@@ -29,7 +29,7 @@ function aPlayerWarp(player)
     aWarpSelectPointer = player
     guiGridListClear(aWarpList)
     for id, player in ipairs(getElementsByType("player")) do
-        if (player ~= localPlayer) then
+        if (player ~= aWarpSelectPointer) then
             guiGridListSetItemText(aWarpList, guiGridListAddRow(aWarpList), 1, getPlayerName(player), false, false)
         end
     end
