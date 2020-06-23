@@ -149,3 +149,65 @@ function calculateLoadingCameraMatrix()
 	lookX, lookY, lookZ = getElementPosition(lookAt)
 	return {camX, camY, camZ, lookX, lookY, lookZ}
 end
+
+local function sortingFunction (a,b)
+	return (getElementData(a,"Score") or 0) > (getElementData(b,"Score") or 0)
+end
+
+function updateScores()
+	--if true then return end -- lol
+	local currentScore = getElementData(localPlayer,"Score")
+	if source == localPlayer then
+		_hudElements.fragText:text(tostring(currentScore))
+		if (currentScore < 0) then
+			_hudElements.fragText:color(255,0,0,255)
+		else
+			_hudElements.fragText:color(255,255,255,255)
+		end
+		--Make the score smaller if the frag limit is 3 digits
+		local length = #tostring(currentScore)
+		if length >= 3 then
+			_hudElements.fragText:scale(_hudElements.fragTextScale - ((length - _hudElements.fragTextScale)^0.7)*0.5)
+		else
+			_hudElements.fragText:scale(_hudElements.fragTextScale)
+		end
+		Animation.createAndPlay(
+		  true,
+		  {{ from = 510, to = 0, time = 400, fn = dxSetYellowFrag }}
+		)
+	end
+	--Lets calculate local position
+	local rank
+	local players = getElementsByType"player"
+	table.sort ( players, sortingFunction )
+	for i,player in ipairs(players) do
+		if player == localPlayer then
+			rank = i
+			break
+		end
+	end
+	--Quickly account for drawing positions
+	for i=rank,1,-1 do
+		if currentScore == getElementData ( players[i], "Score" ) then
+			rank = i
+		else
+			break
+		end
+	end
+	--Calculate spread
+	local spreadTargetScore = (rank == 1) and
+				getElementData ( players[2] or players[1], "Score" )
+				or getElementData ( players[1], "Score" ) or 0
+	local spread = currentScore - spreadTargetScore
+	_hudElements.spreadText:text("Spread: "..spread)
+	if rank ~= currentRank then
+		currentRank = rank
+		_hudElements.rankText:text ( "Rank "..rank.."/"..#players )
+		Animation.createAndPlay(
+			_hudElements.rankText,
+			{{ from = 0, to = 500, time = 600, fn = dxSetYellow }}
+		)
+	end
+end
+addEventHandler ( "onClientPlayerQuit", root, updateScores )
+addEventHandler ( "onClientPlayerJoin", root, updateScores )

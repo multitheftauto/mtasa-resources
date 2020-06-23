@@ -19,10 +19,9 @@
 	<script src="server/round.lua" />
 
 	<!-- Client files -->
-	<script src="client/logic_client.lua" type="client"/>
-	<script src="client/client_anim.lua" type="client" />
-	<script src="client/textlib_anim.lua" type="client" />
-	<script src="client/textlib.lua" type="client" />
+	<script src="client/lib/client_anim.lua" type="client" />
+	<script src="client/lib/textlib_anim.lua" type="client" />
+	<script src="client/lib/textlib.lua" type="client" />
 	<script src="client/main.lua" type="client" />
 	<script src="client/hud.lua" type="client" />
 	<file src="client/images/frag.png" />

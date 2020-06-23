@@ -2,6 +2,57 @@
 -- TODO: ui element fade out
 local SCREEN_WIDTH, SCREEN_HEIGHT = guiGetScreenSize()
 
+g_FragColor = tocolor(255,255,255,255)
+local function dxSetYellowFrag ( dx, b )
+	b = (b < 255) and (255 - b) or b
+	g_FragColor = tocolor(255,255,b,255)
+end
+local function dxSetYellow ( dx, b )
+	b = (b < 255) and (255 - b) or b
+	dx:color(255,255,b,255)
+end
+local function dxSetAlpha ( dx, a )
+	local r,g,b = dx:color()
+	dx:color(r,g,b,a)
+end
+
+
+
+local countdownCR
+local function countdown(time)
+	for i=time,0,-1 do
+		_hudElements.respawnText:text("You will respawn in "..i.." seconds")
+		setTimer ( countdownCR, 1000, 1 )
+		coroutine.yield()
+	end
+end
+
+local function hideCountdown()
+	setTimer (
+		function()
+			_hudElements.respawnText:visible(false)
+		end,
+		600, 1
+	)
+	Animation.createAndPlay(
+	  _hudElements.respawnText,
+	  {{ from = 255, to = 0, time = 400, fn = dxSetAlpha }}
+	)
+	removeEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
+end
+
+function startCountdown(time)
+		Animation.createAndPlay(
+			_hudElements.respawnText,
+		  {{ from = 0, to = 255, time = 600, fn = dxSetAlpha }}
+		)
+		addEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
+		_hudElements.respawnText:visible(true)
+		time = math.floor(time/1000)
+		countdownCR = coroutine.wrap(countdown)
+		countdownCR(time)
+    end
+
 _hudElements = {}
 
 _hudElements.loadingText = dxText:create("", 0, 0, false, "bankgothic", 1)
