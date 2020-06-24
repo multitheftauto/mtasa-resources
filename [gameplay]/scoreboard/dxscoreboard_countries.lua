@@ -12,20 +12,20 @@ end
 showCountries = toboolean( get( "showCountries" ) ) or false
 
 if showCountries then
-	local isAdminResourceRunning = getResourceFromName( "admin" )
-	isAdminResourceRunning = isAdminResourceRunning and getResourceState( isAdminResourceRunning ) == "running"
+	local isIP2CResourceRunning = getResourceFromName( "ip2c" )
+	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
 
 	local countryData = "Country"
 	local defaultCountryIndicator = "N/A" -- If something somehow fails and setting is enabled in meta.xml
 
 	for i, player in ipairs( getElementsByType( "player" ) ) do
-		local cCode = isAdminResourceRunning and exports.admin:getPlayerCountry( player ) or defaultCountryIndicator
-		setElementData( player, countryData, {":admin/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
+		local cCode = isIP2CResourceRunning and exports.ip2c:getPlayerCountry( player ) or defaultCountryIndicator
+		setElementData( player, countryData, {":ip2c/flags/" .. cCode:lower() .. ".png", cCode} )
 	end
 
 	function setScoreboardData()
-		local cCode = isAdminResourceRunning and exports.admin:getPlayerCountry( source ) or defaultCountryIndicator
-		setElementData( source, countryData, {":admin/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
+		local cCode = isIP2CResourceRunning and exports.admin:getPlayerCountry( source ) or defaultCountryIndicator
+		setElementData( source, countryData, {":ip2c/flags/" .. cCode:lower() .. ".png", cCode} )
 	end
 
 	addEventHandler( "onPlayerJoin", getRootElement(), setScoreboardData )
@@ -51,7 +51,7 @@ addCommandHandler("setcountry",
 			return false
 		end
 		country_code = string.lower(country_code)
-		local img = ":admin/client/images/flags/"..country_code..".png"
+		local img = ":ip2c/flags/"..country_code..".png"
 		if not fileExists(img) then
 			outputChatBox("* Sorry, '"..country_code.."' is not an existing country code.", thePlayer, 255, 100, 100)
 			return false
