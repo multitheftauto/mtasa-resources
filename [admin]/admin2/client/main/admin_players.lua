@@ -448,16 +448,19 @@ function aPlayersTab.onRefresh()
     guiSetText(aPlayersTab.Account, "Account: " .. (aPlayers[player]["account"] or "guest"))
     guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
     if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "zz") then
-        local x, y = guiGetPosition(aPlayersTab.Country, false)
-        local width = guiLabelGetTextExtent(aPlayersTab.Country)
-        guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
-        guiSetVisible(
-            aPlayersTab.Flag,
-            guiStaticImageLoadImage(
+        local flagImgPath = ":ip2c\\flags\\" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
+        if fileExists(flagImgPath) then
+            local x, y = guiGetPosition(aPlayersTab.Country, false)
+            local width = guiLabelGetTextExtent(aPlayersTab.Country)
+            guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
+            guiSetVisible(
                 aPlayersTab.Flag,
-                "client\\images\\flags\\" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
+                guiStaticImageLoadImage(
+                    aPlayersTab.Flag,
+                    flagImgPath
+                )
             )
-        )
+        end
     else
        guiSetVisible(aPlayersTab.Flag, false)
     end
