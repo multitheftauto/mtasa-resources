@@ -1,5 +1,5 @@
 --
---  startDeathmatchClient(): initializes the deathmatch client
+--  startDeathmatchClient: initializes the deathmatch client
 --
 local function startDeathmatchClient()
     -- add scoreboard columns
@@ -19,7 +19,7 @@ end
 addEventHandler("onClientResourceStart", resourceRoot, startDeathmatchClient)
 
 --
---  stopDeathmatchClient(): cleans up the deathmatch client
+--  stopDeathmatchClient: cleans up the deathmatch client
 --
 local function stopDeathmatchClient()
     -- remove scoreboard columns
@@ -66,6 +66,9 @@ end
 addEvent("onClientDeathmatchMapStop", true)
 addEventHandler("onClientDeathmatchMapStop", resourceRoot, stopDeathmatchMap)
 
+--
+--  startDeathmatchRound: triggered when a round begins
+--
 local function startDeathmatchRound()
     -- attach player wasted handler
     addEventHandler("onClientPlayerWasted", localPlayer, _hud.respawnScreen.startCountdown)
@@ -82,6 +85,9 @@ end
 addEvent("onClientDeathmatchRoundStart", true)
 addEventHandler("onClientDeathmatchRoundStart", resourceRoot, startDeathmatchRound)
 
+--
+--  stopDeathmatchRound: triggered when a round ends
+--
 local function stopDeathmatchRound(winner, draw)
     -- remove player wasted handler and hide respawn screen if active
     removeEventHandler("onClientPlayerWasted", localPlayer, _hud.respawnScreen.startCountdown)
@@ -107,17 +113,22 @@ end
 addEvent("onClientDeathmatchRoundEnd", true)
 addEventHandler("onClientDeathmatchRoundEnd", resourceRoot, stopDeathmatchRound)
 
+--
+--  elementDataChange: triggered when element data changes - used to track score changes
+--
 function elementDataChange(key, oldValue, newValue)
+    -- ignore changes if there isn't a round in progress
     if getElementData(resourceRoot, "gameState") ~= GAME_IN_PROGRESS then
         return
     end
-
+    -- only respond to score-related data changes
     if key == "Score" or key == "Rank" then
         _hud.scoreDisplay.update()
     end
 end
+
 --
---	calculateCameraMatrix(): calculates the map loading camera matrix
+--	calculateCameraMatrix: calculates the map loading camera matrix
 --
 function calculateLoadingCameraMatrix()
 	local spawnpoints = getElementsByType("spawnpoint")

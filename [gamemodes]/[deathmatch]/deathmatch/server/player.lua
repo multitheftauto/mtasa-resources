@@ -1,10 +1,35 @@
-_playerStates = {}
+--
+--	processPlayerJoin: triggered when a player joins the game
+--
+local function processPlayerJoin()
+	_playerStates[source] = PLAYER_JOINED
+	-- initialize player score data
+	setElementData(source, "Score", 0)
+	setElementData(source, "Rank", "-")
+	calculatePlayerRanks()
+end
+addEventHandler("onPlayerJoin", root, processPlayerJoin)
 
+--
+--	processPlayerQuit: cleans up after a player when they quit
+--
+local function processPlayerQuit()
+	-- clear player state
+	_playerStates[source] = nil
+	-- kill player respawn timer, if it exists
+	if _respawnTimers[source] then
+		killTimer(_respawnTimers[source])
+		_respawnTimers[source] = nil
+	end
+end
+addEventHandler("onPlayerQuit", root, processPlayerQuit)
+
+--
+--	deathmatchPlayerReady: triggered when a client is ready to play
+--
 -- triggered by the client post-onClientResourceStart
-addEvent("onDeathmatchPlayerReady", true)
-addEventHandler("onDeathmatchPlayerReady", root, function()
-	-- TODO: clean this up
-	-- spawn player if a round is already in progress
+ function deathmatchPlayerReady()
+	-- inform client of current game state by triggering certain events
 	if getElementData(resourceRoot, "gameState") == GAME_STARTING then
 		triggerClientEvent(source, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
 	elseif getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
@@ -14,16 +39,11 @@ addEventHandler("onDeathmatchPlayerReady", root, function()
 	elseif getElementData(resourceRoot, "gameState") == GAME_FINISHED then
 		triggerClientEvent(source, "onClientDeathmatchRoundEnded", resourceRoot, false, false)
 	end
-
+	-- update player state
 	_playerStates[source] = PLAYER_READY
-end)
-
--- set default player state on gamemode start (clients will report in when ready)
-addEventHandler("onResourceStart", resourceRoot, function()
-	for _, player in ipairs(getElementsByType("player")) do
-		_playerStates[player] = PLAYER_JOINED
-	end
-end)
+end
+addEvent("onDeathmatchPlayerReady", true)
+addEventHandler("onDeathmatchPlayerReady", root, deathmatchPlayerReady)
 
 --
 --	spawnDeathmatchPlayer: spawns a player in deathmatch mode
@@ -70,29 +90,3 @@ function processPlayerWasted(totalAmmo, killer, killerWeapon, bodypart)
 	-- set timer to respawn player
 	_respawnTimers[source] = setTimer(spawnDeathmatchPlayer, _respawnTime, 1, source)
 end
-
---
---	processPlayerJoin: triggered when a player joins the game
---
-local function processPlayerJoin()
-	_playerStates[source] = PLAYER_JOINED
-	-- initialize player score data
-	setElementData(source, "Score", 0)
-	setElementData(source, "Rank", "-")
-	calculatePlayerRanks()
-end
-addEventHandler("onPlayerJoin", root, processPlayerJoin)
-
---
---	processPlayerQuit: cleans up after a player when they quit
---
-local function processPlayerQuit()
-	-- clear player state
-	_playerStates[source] = nil
-	-- kill player respawn timer, if it exists
-	if _respawnTimers[source] then
-		killTimer(_respawnTimers[source])
-		_respawnTimers[source] = nil
-	end
-end
-addEventHandler("onPlayerQuit", root, processPlayerQuit)

@@ -1,4 +1,5 @@
--- TODO: long term - implement new UI resembling original game design
+-- TODO:    long term - implement new UI resembling original game design
+--          more code cleanup?
 local SCREEN_WIDTH, SCREEN_HEIGHT = guiGetScreenSize()
 
 --
@@ -161,13 +162,13 @@ local function hideCountdown()
 end
 
 function startCountdown(time)
-		Animation.createAndPlay(
-			_hud.respawnScreen.respawnCounter,
-		  {{ from = 0, to = 255, time = 600, fn = dxSetAlpha }}
-		)
-		addEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
-		_hud.respawnScreen:setVisible(true)
-		time = math.floor(time/1000)
-		countdownCR = coroutine.wrap(countdown)
-		countdownCR(time)
-    end
+    Animation.createAndPlay(
+        _hud.respawnScreen.respawnCounter,
+        {{ from = 0, to = 255, time = 600, fn = dxSetAlpha }}
+    )
+    addEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
+    _hud.respawnScreen:setVisible(true)
+    time = math.floor(time/1000)
+    countdownCR = coroutine.wrap(countdown)
+    countdownCR(time)
+end

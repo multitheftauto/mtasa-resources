@@ -1,4 +1,5 @@
-_respawnTimers = {} -- lookup table for player respawn timers
+_playerStates = {} -- lookup table for player states (see shared/shared.lua)
+_respawnTimers = {} -- lookup table for respawn timers
 
 -- default map settings
 local defaults = {
@@ -14,6 +15,10 @@ local defaults = {
 local function startDeathmatchMode()
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_WAITING)
+	-- set default player state on gamemode start (clients will report in when ready)
+	for _, player in ipairs(getElementsByType("player")) do
+		_playerStates[player] = PLAYER_JOINED
+	end
 end
 addEventHandler("onGamemodeStart", resourceRoot, startDeathmatchMode)
 
@@ -33,7 +38,7 @@ addEventHandler("onGamemodeStop", resourceRoot, stopDeathmatchMode)
 --	startDeathmatchMap: initializes a deathmatch map
 --
 local function startDeathmatchMap(resource)
-	-- initalize map settings
+	-- load map settings
 	_mapResource = resource
 	local resourceName = getResourceName(resource)
 	_fragLimit = tonumber(get(resourceName..".frag_limit")) and math.floor(tonumber(get(resourceName..".frag_limit"))) or defaults.fragLimit
@@ -85,7 +90,7 @@ end
 addEventHandler("onGamemodeMapStop", root, stopDeathmatchMap)
 
 --
---	calculatePlayerRanks(): calculates player ranks
+--	calculatePlayerRanks: calculates player ranks
 --
 function calculatePlayerRanks()
 	local ranks = {}
