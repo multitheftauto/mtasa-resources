@@ -1,34 +1,41 @@
-function toboolean( bool )
-	bool = tostring( bool )
-	if bool == "true" then
-		return true
-	elseif bool == "false" then
-		return false
-	else
-		return nil
-	end
-end
-
-showCountries = toboolean( get( "showCountries" ) ) or false
-
-if showCountries then
-	local isIP2CResourceRunning = getResourceFromName( "ip2c" )
-	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
-
+if get("showCountries") == "true" then
 	local countryData = "Country"
 	local defaultCountryIndicator = "N/A" -- If something somehow fails and setting is enabled in meta.xml
+	
+	local ip2cRunning = false
 
-	for i, player in ipairs( getElementsByType( "player" ) ) do
-		local cCode = isIP2CResourceRunning and exports.ip2c:getPlayerCountry( player ) or defaultCountryIndicator
-		setElementData( player, countryData, {":ip2c/flags/" .. cCode:lower() .. ".png", cCode} )
+	function getPlayerCountry(...)
+		return ip2cRunning and exports.ip2c:getPlayerCountry(...) or false
 	end
 
-	function setScoreboardData()
-		local cCode = isIP2CResourceRunning and exports.admin:getPlayerCountry( source ) or defaultCountryIndicator
-		setElementData( source, countryData, {":ip2c/flags/" .. cCode:lower() .. ".png", cCode} )
+	function getPlayerCountryName(...)
+		return ip2cRunning and exports.ip2c:getPlayerCountryName(...) or false
 	end
+	
+	addEventHandler("onResourceStart", resourceRoot, function()
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c then
+			local state = getResourceState(ip2c)
+			if (state == "running") or (state == "loaded" and startResource(ip2c)) then
+				ip2cRunning = true
+	
+				addEventHandler("onResourceStop", getResourceRootElement(ip2c), function()
+					ip2cRunning = false
+				end)
+			end
+		end
 
-	addEventHandler( "onPlayerJoin", getRootElement(), setScoreboardData )
+		for i, player in ipairs( getElementsByType( "player" ) ) do
+			local cCode = ip2cRunning and getPlayerCountry( player ) or defaultCountryIndicator
+			setElementData( player, countryData, {":ip2c/flags/" .. cCode:lower() .. ".png", cCode} )
+		end
+
+		function setScoreboardData()
+			local cCode = ip2cRunning and getPlayerCountry( source ) or defaultCountryIndicator
+			setElementData( source, countryData, {":ip2c/flags/" .. cCode:lower() .. ".png", cCode} )
+		end
+		addEventHandler( "onPlayerJoin", getRootElement(), setScoreboardData )
+	end)
 end
 
 -- Server staff can use the below command to spoof their country-code in TAB scoreboard to avoid undesired recognition by players.
