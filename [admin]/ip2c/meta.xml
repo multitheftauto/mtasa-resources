@@ -1,0 +1,8 @@
+<meta>
+    <oop>true</oop>
+
+    <script src="server.lua" type="server"/>
+
+    <export function="getPlayerCountry"     type="server"/>
+    <export function="getPlayerCountryName" type="server"/>
+</meta>

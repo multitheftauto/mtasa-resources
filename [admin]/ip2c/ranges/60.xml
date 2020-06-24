@@ -1,0 +1,34 @@
+<group>
+<range start="1006632960" end="1008730111" country="CN" />
+<range start="1008730112" end="1009778687" country="JP" />
+<range start="1009778688" end="1010237439" country="MY" />
+<range start="1010237440" end="1010302975" country="CN" />
+<range start="1010302976" end="1010761727" country="JP" />
+<range start="1010761728" end="1010827263" country="CN" />
+<range start="1010827264" end="1017118719" country="JP" />
+<range start="1017118720" end="1019215871" country="CN" />
+<range start="1019215872" end="1019346943" country="JP" />
+<range start="1019346944" end="1019478015" country="CN" />
+<range start="1019478016" end="1019609087" country="KR" />
+<range start="1019609088" end="1019740159" country="TW" />
+<range start="1019740160" end="1021313023" country="CN" />
+<range start="1021313024" end="1021837311" country="AU" />
+<range start="1021837312" end="1021968383" country="CN" />
+<range start="1021968384" end="1022033919" country="NZ" />
+<range start="1022033920" end="1022099455" country="CN" />
+<range start="1022099456" end="1022361599" country="JP" />
+<range start="1022361600" end="1022558207" country="AU" />
+<range start="1022558208" end="1022623743" country="IN" />
+<range start="1022623744" end="1022722047" country="TW" />
+<range start="1022722048" end="1022754815" country="CN" />
+<range start="1022754816" end="1022820351" country="AU" />
+<range start="1022820352" end="1022885887" country="CN" />
+<range start="1022885888" end="1023148031" country="TW" />
+<range start="1023148032" end="1023213567" country="CN" />
+<range start="1023238144" end="1023246335" country="ID" />
+<range start="1023246336" end="1023279103" country="CN" />
+<range start="1023279104" end="1023311871" country="IN" />
+<range start="1023311872" end="1023328255" country="US" />
+<range start="1023328256" end="1023344639" country="JP" />
+<range start="1023344640" end="1023410175" country="CN" />
+</group>
