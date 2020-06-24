@@ -6,6 +6,7 @@
 		<setting name="blip_color" value="[ [ 0, 255, 0 ] ]"/> 	<!-- Default blip color if se_team_colors is not enabled. Default: [ [ 0, 255, 0 ] ] -->
 		<setting name="blip_size" value="2"/> 					<!-- Size of a player blip. Default: 2 -->
 		<setting name="blip_alpha" value="255"/> 				<!-- Alpha value of a player blip (0 - 255). Default: 255 -->
+		<setting name="blip_range" value="16383"/>				<!-- Minimap visibility range. Default: 16383 -->
 	</settings>
 	<oop>true</oop>
 

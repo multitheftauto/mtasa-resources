@@ -3,6 +3,7 @@ local useNametags = get("use_nametag_colors") == "true" and true or false
 local blipSize = get("blip_size")
 local blipAlpha = get("blip_alpha")
 local color = get("blip_color")
+local blipRange = get("blip_range")
 local colors = {}
 local blips = {}
 
@@ -38,7 +39,7 @@ function createPlayerBlip(player)
 	if (blips[player]) then
 		blips[player]:setColor(r, g, b, blipAlpha)
 	else
-		blips[player] = Blip.createAttachedTo(player, 0, blipSize, r, g, b, blipAlpha)
+		blips[player] = Blip.createAttachedTo(player, 0, blipSize, r, g, b, blipAlpha, 0, blipRange)
 	end
 end
 
