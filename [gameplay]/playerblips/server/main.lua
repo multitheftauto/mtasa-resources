@@ -36,7 +36,7 @@ function createPlayerBlip(player)
 	else
 		r, g, b = color[1], color[2], color[3]
 	end
-	if (blips[player]) then
+	if isElement(blips[player]) then
 		blips[player]:setColor(r, g, b, blipAlpha)
 	else
 		blips[player] = Blip.createAttachedTo(player, 0, blipSize, r, g, b, blipAlpha, 0, blipRange)
@@ -59,7 +59,9 @@ end
 
 function destroyPlayerBlip(player)
 	player = player or source
-	blips[player]:destroy()
+	if isElement(blips[player]) then
+		blips[player]:destroy()
+	end
 	blips[player] = nil
 	colors[player] = nil
 end
