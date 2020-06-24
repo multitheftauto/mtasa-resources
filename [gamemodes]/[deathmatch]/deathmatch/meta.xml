@@ -11,7 +11,7 @@
 	<include resource="defaultstats" />
 
 	<!-- Shared files -->
-	<script src="shared/states.lua" type="shared"/>
+	<script src="shared/shared.lua" type="shared"/>
 
 	<!-- Server files -->
 	<script src="server/main.lua" />
