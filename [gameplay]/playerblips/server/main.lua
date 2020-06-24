@@ -1,72 +1,59 @@
-local useTeams = get("use_team_colors")
+local useTeams = get("use_team_colors") == "true" and true or false
 local blipSize = get("blip_size")
 local blipAlpha = get("blip_alpha")
 local color = get("blip_color")
 local colors = {}
-local blip = {}
+local blips = {}
 
-addEventHandler("onResourceStart", resourceRoot,
-	function ()
-		if (useTeams == "true") then
-			useTeams = true
-		else
-			useTeams = false
-			addCommandHandler("setblipcolor", setBlipColor)
-		end
+local function resourceStart()
+	for i, player in ipairs(Element.getAllByType("player")) do
+		createPlayerBlip(player)
 	end
-)
 
-function createPlayerBlip(plr)
-	if (not plr or not isElement(plr) or plr.type ~= "player") then return false end
+	if not useTeams then
+		addCommandHandler("setblipcolor", setBlipColor)
+	end
+end
+addEventHandler("onResourceStart", resourceRoot, resourceStart)
+
+function createPlayerBlip(player)
+	if (not player or not isElement(player) or player.type ~= "player") then return false end
 	local r, g, b
-	if (useTeams and plr.team) then
-		r, g, b = plr.team:getColor()
-	elseif (colors[plr]) then
-		r, g, b = colors[plr][1], colors[plr][2], colors[plr][3]
+	if (useTeams and player.team) then
+		r, g, b = player.team:getColor()
+	elseif (colors[player]) then
+		r, g, b = colors[player][1], colors[player][2], colors[player][3]
 	else
 		r, g, b = color[1], color[2], color[3]
 	end
-	if (blip[plr]) then
-		blip[plr]:setColor(r, g, b, blipAlpha)
+	if (blips[player]) then
+		blips[player]:setColor(r, g, b, blipAlpha)
 	else
-		blip[plr] = Blip.createAttachedTo(plr, 0, blipSize, r, g, b, blipAlpha)
+		blips[player] = Blip.createAttachedTo(player, 0, blipSize, r, g, b, blipAlpha)
 	end
 end
 
-function setBlipColor(plr, _, r, g, b)
+function setBlipColor(player, _, r, g, b)
 	r, g, b = tonumber(r), tonumber(g), tonumber(b)
 	if (r and g and b) then
 		if (r >= 0 and r <= 255 and g >= 0 and g <= 255 and b >= 0 and b <= 255) then
-			colors[plr] = {r, g, b}
-			createPlayerBlip(plr)
+			colors[player] = {r, g, b}
+			createPlayerBlip(player)
 		else
-			outputChatBox("Couldn't change blip color - numbers must be between 0 and 255", plr, 255, 0, 0)
+			outputChatBox("Couldn't change blip color - numbers must be between 0 and 255", player, 255, 0, 0)
 		end
 	else
-		outputChatBox("Couldn't change blip color - invalid arguments specified", plr, 255, 0, 0)
+		outputChatBox("Couldn't change blip color - invalid arguments specified", player, 255, 0, 0)
 	end
 end
 
-function destroyPlayerBlip(plr)
-	blip[plr]:destroy()
-	blip[plr] = nil
-	colors[plr] = nil
+function destroyPlayerBlip(player)
+	player = player or source
+	blips[player]:destroy()
+	blips[player] = nil
+	colors[player] = nil
 end
 
-function destroyBlipForSource()
-	destroyPlayerBlip(source)
-end
-addEventHandler("onPlayerQuit", root, destroyBlipForSource)
-addEventHandler("onPlayerWasted", root, destroyBlipForSource)
-
-function onPlayerSpawn()
-	createPlayerBlip(source)
-end
-addEventHandler("onPlayerSpawn", root, onPlayerSpawn)
-
-function onResourceStart()
-	for i, plr in ipairs(Element.getAllByType("player")) do
-		createPlayerBlip(plr)
-	end
-end
-addEventHandler("onResourceStart", resourceRoot, onResourceStart)
+addEventHandler("onPlayerQuit", root, createPlayerBlip)
+addEventHandler("onPlayerWasted", root, createPlayerBlip)
+addEventHandler("onPlayerSpawn", root, createPlayerBlip)
