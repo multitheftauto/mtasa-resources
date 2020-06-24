@@ -2,6 +2,7 @@
 	<info name="Player Blips" author="Noki" version="1.0.1" type="script" description="Attaches blips to players."/>
 	<settings>
 		<setting name="use_team_colors" value="false"/> 		<!-- Set to true to enable, anything else will not use teams. Default: false -->
+		<setting name="use_nametag_colors" value="true"/> 		<!-- Set to true to enable. Team colors take priority over nametag colors. Default: true -->
 		<setting name="blip_color" value="[ [ 0, 255, 0 ] ]"/> 	<!-- Default blip color if se_team_colors is not enabled. Default: [ [ 0, 255, 0 ] ] -->
 		<setting name="blip_size" value="2"/> 					<!-- Size of a player blip. Default: 2 -->
 		<setting name="blip_alpha" value="255"/> 				<!-- Alpha value of a player blip (0 - 255). Default: 255 -->

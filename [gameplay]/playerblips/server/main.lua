@@ -1,4 +1,5 @@
 local useTeams = get("use_team_colors") == "true" and true or false
+local useNametags = get("use_nametag_colors") == "true" and true or false
 local blipSize = get("blip_size")
 local blipAlpha = get("blip_alpha")
 local color = get("blip_color")
@@ -10,7 +11,13 @@ local function resourceStart()
 		createPlayerBlip(player)
 	end
 
-	if not useTeams then
+	local playercolorsResource = getResourceFromName("playercolors")
+	if playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
+		outputDebugString("playerblips: playercolors resource not running; using blip_color. Restart this resource after starting playercolors.", 4, 255, 125, 0)
+		useNametags = false
+	end
+
+	if not (useTeams or useNametags) then
 		addCommandHandler("setblipcolor", setBlipColor)
 	end
 end
@@ -21,6 +28,8 @@ function createPlayerBlip(player)
 	local r, g, b
 	if (useTeams and player.team) then
 		r, g, b = player.team:getColor()
+	elseif useNametags then
+		r, g, b = getPlayerNametagColor(player)
 	elseif (colors[player]) then
 		r, g, b = colors[player][1], colors[player][2], colors[player][3]
 	else
