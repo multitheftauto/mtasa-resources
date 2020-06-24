@@ -1,5 +1,6 @@
 <meta>
-    <info author="lil_Toady, !Patrick" type="script" version="1.5.5"/>
+    <info author="!Patrick" type="script" version="1.0"/>
+    <min_mta_version server="1.5.5" client="1.5.5"/>
 
     <script src="server.lua" type="server"/>
 

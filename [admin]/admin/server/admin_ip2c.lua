@@ -13,10 +13,6 @@ function getPlayerCountry(...)
     return ip2cRunning and exports.ip2c:getPlayerCountry(...) or false
 end
 
-function getPlayerCountryName(...)
-    return ip2cRunning and exports.ip2c:getPlayerCountryName(...) or false
-end
-
 if (get("*useip2c") == "true") then
 	addEventHandler("onResourceStart", resourceRoot, function()
 		local ip2c = getResourceFromName("ip2c")

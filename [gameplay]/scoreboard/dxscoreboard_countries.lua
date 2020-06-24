@@ -1,40 +1,33 @@
 if get("showCountries") == "true" then
 	local countryData = "Country"
-	local defaultCountryIndicator = "N/A" -- If something somehow fails and setting is enabled in meta.xml
-	
 	local ip2cRunning = false
 
-	function getPlayerCountry(...)
-		return ip2cRunning and exports.ip2c:getPlayerCountry(...) or false
-	end
-
-	function getPlayerCountryName(...)
-		return ip2cRunning and exports.ip2c:getPlayerCountryName(...) or false
-	end
-	
 	addEventHandler("onResourceStart", resourceRoot, function()
 		local ip2c = getResourceFromName("ip2c")
 		if ip2c then
 			local state = getResourceState(ip2c)
 			if (state == "running") or (state == "loaded" and startResource(ip2c)) then
 				ip2cRunning = true
-	
+
 				addEventHandler("onResourceStop", getResourceRootElement(ip2c), function()
 					ip2cRunning = false
 				end)
 			end
+		else
+			print("ERROR: `showCountries` enabled in "..getResourceName(getThisResource())..", but ip2c resource not running!")
 		end
 
-		for i, player in ipairs( getElementsByType( "player" ) ) do
-			local cCode = ip2cRunning and getPlayerCountry( player ) or defaultCountryIndicator
-			setElementData( player, countryData, {":ip2c/flags/" .. cCode:lower() .. ".png", cCode} )
+		for i, player in ipairs(getElementsByType("player")) do
+			local country = ip2cRunning and exports.ip2c:getPlayerCountry(player) or false
+			if country then
+				setElementData(player, countryData, {":ip2c/flags/"..country.code:lower()..".png", country.code})
+			end
 		end
 
-		function setScoreboardData()
-			local cCode = ip2cRunning and getPlayerCountry( source ) or defaultCountryIndicator
-			setElementData( source, countryData, {":ip2c/flags/" .. cCode:lower() .. ".png", cCode} )
-		end
-		addEventHandler( "onPlayerJoin", getRootElement(), setScoreboardData )
+		addEvent("onPlayerCountryFetched", true)
+		addEventHandler("onPlayerCountryFetched", root, function(country)
+			setElementData(source, countryData, {":ip2c/flags/"..country.code:lower()..".png", country.code})
+		end)
 	end)
 end
 

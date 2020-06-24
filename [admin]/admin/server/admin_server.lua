@@ -387,6 +387,13 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 	setPedGravity ( source, getGravity() )
 end )
 
+addEvent( "onPlayerCountryFetched", true )
+addEventHandler( "onPlayerCountryFetched", root, function ( country )
+	if aPlayers[source] then
+		aPlayers[source].country = country and country.code or false
+	end
+end )
+
 function aPlayerInitialize ( player )
 	local serial = getPlayerSerial ( player )
 	if ( not isValidSerial ( serial ) ) then
@@ -396,8 +403,10 @@ function aPlayerInitialize ( player )
 		bindKey ( player, "p", "down", "admin" )
 		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
 		aPlayers[player] = {}
-		aPlayers[player]["country"] = getPlayerCountry ( player )
 		aPlayers[player]["money"] = getPlayerMoney ( player )
+		
+		local country = getPlayerCountry ( player )
+		aPlayers[player]["country"] = country and country.code or false
 	end
 	chatHistory[player] = {}
 end

@@ -87,10 +87,23 @@ addEventHandler(
     end
 )
 
+addEvent("onPlayerCountryFetched", true)
+addEventHandler(
+    "onPlayerCountryFetched",
+    root,
+    function(country)
+        if aPlayers[source] then
+            aPlayers[source].country = country and country.code or false
+            aPlayers[source].countryname = country and country.name or false
+        end
+    end
+)
+
 function aPlayerInitialize(player)
+    local country = getPlayerCountry(player)
     aPlayers[player] = {}
-    aPlayers[player].country = getPlayerCountry(player)
-    aPlayers[player].countryname = getPlayerCountryName(player)
+    aPlayers[player].country = country and country.code or false
+    aPlayers[player].countryname = country and country.name or false
     aPlayers[player].money = getPlayerMoney(player)
     aPlayers[player].muted = isPlayerMuted(player)
     aPlayers[player].frozen = isElementFrozen(player)
