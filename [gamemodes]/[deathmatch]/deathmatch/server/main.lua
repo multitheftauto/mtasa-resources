@@ -1,9 +1,8 @@
-CAMERA_LOAD_DELAY = 5000 -- delay used at beginning and end of round (ms)
 _respawnTimers = {} -- lookup table for player respawn timers
 
 -- default map settings
 local defaults = {
-	fragLimit = 1, -- TODO: this should be 10
+	fragLimit = 10, -- TODO: this should be 10
 	timeLimit = 600, --10 minutes
 	respawnTime = 10,
 	spawnWeapons = "22:100", -- "weaponID:ammo,weaponID:ammmo"
@@ -50,7 +49,6 @@ local function startDeathmatchMap(resource)
 		end
 	end
 	-- if the map title is not defined in the map's meta.xml, use the resource name
-	-- TODO: refactor these globals (?)
 	_mapTitle = getResourceInfo(resource, "name")
 	if not _mapTitle then
 		_mapTitle = resourceName
@@ -87,13 +85,6 @@ end
 addEventHandler("onGamemodeMapStop", root, stopDeathmatchMap)
 
 --
---	scoreSortingFunction: used to sort a table of players by their score
---
-function scoreSortingFunction(a, b)
-	return (getElementData(a, "Score") or 0) > (getElementData(b, "Score") or 0)
-end
-
---
 --	calculatePlayerRanks(): calculates player ranks
 --
 function calculatePlayerRanks()
@@ -113,13 +104,6 @@ function calculatePlayerRanks()
 			end
 		else
 			setElementData(player, "Rank", 1)
-		end
-	end
-
-	-- inform ready players that scores have been updated
-	for _, player in ipairs(players) do
-		if _playerStates[player] ~= PLAYER_JOINED then
-			triggerClientEvent(player, "onDeathmatchScoreUpdate", resourceRoot)
 		end
 	end
 end

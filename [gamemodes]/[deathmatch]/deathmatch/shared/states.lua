@@ -1,3 +1,5 @@
+CAMERA_LOAD_DELAY = 5000 -- delay used at beginning and end of round (ms)
+
 --
 --  enum: creates a c-style enum
 --
@@ -26,3 +28,10 @@ enum({
     "PLAYER_READY",     -- player is ready to play (post-onClientResourceStart clientside)
     "PLAYER_IN_GAME",   -- player is in-game (either spawned or waiting to respawn)
 })
+
+--
+--	scoreSortingFunction: used to sort a table of players by their score
+--
+function scoreSortingFunction(a, b)
+	return (getElementData(a, "Score") or 0) > (getElementData(b, "Score") or 0)
+end

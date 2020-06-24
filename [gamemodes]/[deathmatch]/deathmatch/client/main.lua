@@ -6,6 +6,7 @@ local function startDeathmatchClient()
     exports.scoreboard:scoreboardAddColumn("Score")
     exports.scoreboard:scoreboardAddColumn("Rank")
     exports.scoreboard:scoreboardSetColumnPriority("Rank", 1)
+    exports.scoreboard:scoreboardSetSortBy("Rank")
     -- fade out camera
     fadeCamera(false, 0)
     -- if a game is in progress, apply the loading camera matrix
@@ -35,18 +36,17 @@ addEventHandler("onClientResourceStop", resourceRoot, stopDeathmatchClient)
 local function startDeathmatchMap(mapTitle, mapAuthor, fragLimit, respawnTime)
     -- apply the loading camera matrix - used to stream-in map elements
     setCameraMatrix(unpack(calculateLoadingCameraMatrix()))
-
-    -- hide announcement text and scoreboard
-    _hudElements.announcementText:visible(false)
+    -- hide end screen and scoreboard
+    _hud.endScreen:setVisible(false)
     exports.scoreboard:setScoreboardForced(false)
-
-    -- store map data
+    -- update map data
+    _mapTitle = mapTitle
+    _mapAuthor = mapAuthor
     _fragLimit = fragLimit
     _respawnTime = respawnTime
-
-    -- show loading text
-    _hudElements.loadingText:text("Now playing:\n"..mapTitle..(mapAuthor and (" by "..mapAuthor) or ""))
-    _hudElements.loadingText:visible(true)
+    -- show loading screen
+    _hud.loadingScreen:update()
+    _hud.loadingScreen:setVisible(true)
 end
 addEvent("onClientDeathmatchMapStart", true)
 addEventHandler("onClientDeathmatchMapStart", resourceRoot, startDeathmatchMap)
@@ -56,77 +56,66 @@ addEventHandler("onClientDeathmatchMapStart", resourceRoot, startDeathmatchMap)
 --
 local function stopDeathmatchMap()
     -- clear stored map data
+    _mapTitle = nil
+    _mapAuthor = nil
     _fragLimit = nil
     _respawnTime = nil
-
     -- hide loading text
-    _hudElements.loadingText:visible(false)
+    _hud.loadingScreen:setVisible(false)
 end
 addEvent("onClientDeathmatchMapStop", true)
 addEventHandler("onClientDeathmatchMapStop", resourceRoot, stopDeathmatchMap)
 
 local function startDeathmatchRound()
-    -- TODO: fade this out rather than dissappearing suddenly?
-    _hudElements.loadingText:visible(false)
-    _hudElements.announcementText:visible(false)
+    -- attach player wasted handler
+    addEventHandler("onClientPlayerWasted", localPlayer, _hud.respawnScreen.startCountdown)
+    -- attach element data change handler
+    addEventHandler("onClientElementDataChange", root, elementDataChange)
+    -- hide end/loading screens and scoreboard
+    _hud.loadingScreen:setVisible(false)
+    _hud.endScreen:setVisible(false)
     exports.scoreboard:setScoreboardForced(false)
-
-    _hudElements.fragLimit:text("Frag Limit: ".._fragLimit)
-    _hudElements.fragLimit:visible(true)
-
-    updateScores()
-    --_hudElements.fragImage:visible(true)
-    _hudElements.fragText:visible(true)
-    _hudElements.spreadText:visible(true)
-    _hudElements.rankText:visible(true)
+    -- show score display
+    _hud.scoreDisplay:update()
+    _hud.scoreDisplay:setVisible(true)
 end
 addEvent("onClientDeathmatchRoundStart", true)
 addEventHandler("onClientDeathmatchRoundStart", resourceRoot, startDeathmatchRound)
 
 local function stopDeathmatchRound(winner, draw)
-    _hudElements.fragLimit:visible(false)
-
-    -- TODO: what happens if the winner leaves after the round ends but before this code is executed?
-    if winner then
-        _hudElements.announcementText:text(getPlayerName(winner).." has won the round!")
-        _hudElements.announcementText:color(getPlayerNametagColor(winner))
-    else
-        if draw then
-            _hudElements.announcementText:text("The round was a draw!")
-        else
-            -- TODO: if the round ends for no reason, should anything be displayed?
-            _hudElements.announcementText:text("Round ended.")
+    -- remove player wasted handler and hide respawn screen if active
+    removeEventHandler("onClientPlayerWasted", localPlayer, _hud.respawnScreen.startCountdown)
+    _hud.respawnScreen.setVisible(false)
+    -- remove element data change handler
+    removeEventHandler("onClientElementDataChange", root, elementDataChange)
+    -- hide score display
+    _hud.scoreDisplay:setVisible(false)
+    -- spectate the winner
+    if winner and player ~= winner then
+        if winner then
+            setCameraTarget(winner)
         end
-        _hudElements.announcementText:color(255, 255, 255, 255)
+        toggleAllControls(true, true, false)
     end
-
-    --_hudElements.fragImage:visible(false)
-    _hudElements.fragText:visible(false)
-    _hudElements.spreadText:visible(false)
-    _hudElements.rankText:visible(false)
-
-    _hudElements.announcementText:visible(true)
+    -- begin fading out the screen
+    fadeCamera(false, CAMERA_LOAD_DELAY/1000)
+    -- show end screen and scoreboard
+    _hud.endScreen:update(winner, draw)
+    _hud.endScreen:setVisible(true)
     exports.scoreboard:setScoreboardForced(true)
-    iprint("onClientDeathmatchRoundEnded", winner, draw)
 end
-addEvent("onClientDeathmatchRoundEnded", true)
-addEventHandler("onClientDeathmatchRoundEnded", resourceRoot, stopDeathmatchRound) -- TODO: use present-tense verb in event name
+addEvent("onClientDeathmatchRoundEnd", true)
+addEventHandler("onClientDeathmatchRoundEnd", resourceRoot, stopDeathmatchRound)
 
-local function playerWasted()
-    if source == localPlayer and getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
-        startCountdown(_respawnTime)
+function elementDataChange(key, oldValue, newValue)
+    if getElementData(resourceRoot, "gameState") ~= GAME_IN_PROGRESS then
+        return
+    end
+
+    if key == "Score" or key == "Rank" then
+        _hud.scoreDisplay.update()
     end
 end
-addEventHandler("onClientPlayerWasted", root, playerWasted)
-
-local function updateDeathmatchScores()
-    -- TODO
-    outputDebugString("updateDeathmatchScores")
-    updateScores() -- TODO: refactor
-end
-addEvent("onDeathmatchScoreUpdate", true)
-addEventHandler("onDeathmatchScoreUpdate", resourceRoot, updateDeathmatchScores)
-
 --
 --	calculateCameraMatrix(): calculates the map loading camera matrix
 --
@@ -149,65 +138,3 @@ function calculateLoadingCameraMatrix()
 	lookX, lookY, lookZ = getElementPosition(lookAt)
 	return {camX, camY, camZ, lookX, lookY, lookZ}
 end
-
-local function sortingFunction (a,b)
-	return (getElementData(a,"Score") or 0) > (getElementData(b,"Score") or 0)
-end
-
-function updateScores()
-	--if true then return end -- lol
-	local currentScore = getElementData(localPlayer,"Score")
-	if source == localPlayer then
-		_hudElements.fragText:text(tostring(currentScore))
-		if (currentScore < 0) then
-			_hudElements.fragText:color(255,0,0,255)
-		else
-			_hudElements.fragText:color(255,255,255,255)
-		end
-		--Make the score smaller if the frag limit is 3 digits
-		local length = #tostring(currentScore)
-		if length >= 3 then
-			_hudElements.fragText:scale(_hudElements.fragTextScale - ((length - _hudElements.fragTextScale)^0.7)*0.5)
-		else
-			_hudElements.fragText:scale(_hudElements.fragTextScale)
-		end
-		Animation.createAndPlay(
-		  true,
-		  {{ from = 510, to = 0, time = 400, fn = dxSetYellowFrag }}
-		)
-	end
-	--Lets calculate local position
-	local rank
-	local players = getElementsByType"player"
-	table.sort ( players, sortingFunction )
-	for i,player in ipairs(players) do
-		if player == localPlayer then
-			rank = i
-			break
-		end
-	end
-	--Quickly account for drawing positions
-	for i=rank,1,-1 do
-		if currentScore == getElementData ( players[i], "Score" ) then
-			rank = i
-		else
-			break
-		end
-	end
-	--Calculate spread
-	local spreadTargetScore = (rank == 1) and
-				getElementData ( players[2] or players[1], "Score" )
-				or getElementData ( players[1], "Score" ) or 0
-	local spread = currentScore - spreadTargetScore
-	_hudElements.spreadText:text("Spread: "..spread)
-	if rank ~= currentRank then
-		currentRank = rank
-		_hudElements.rankText:text ( "Rank "..rank.."/"..#players )
-		Animation.createAndPlay(
-			_hudElements.rankText,
-			{{ from = 0, to = 500, time = 600, fn = dxSetYellow }}
-		)
-	end
-end
-addEventHandler ( "onClientPlayerQuit", root, updateScores )
-addEventHandler ( "onClientPlayerJoin", root, updateScores )

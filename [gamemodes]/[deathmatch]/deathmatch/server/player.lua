@@ -8,8 +8,9 @@ addEventHandler("onDeathmatchPlayerReady", root, function()
 	if getElementData(resourceRoot, "gameState") == GAME_STARTING then
 		triggerClientEvent(source, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
 	elseif getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
-		spawnDeathmatchPlayer(source)
+		triggerClientEvent(source, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
 		triggerClientEvent(source, "onClientDeathmatchRoundStart", resourceRoot)
+		spawnDeathmatchPlayer(source)
 	elseif getElementData(resourceRoot, "gameState") == GAME_FINISHED then
 		triggerClientEvent(source, "onClientDeathmatchRoundEnded", resourceRoot, false, false)
 	end

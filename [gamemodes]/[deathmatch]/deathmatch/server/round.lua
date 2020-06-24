@@ -58,16 +58,11 @@ function endRound(winner, draw)
 	setElementData(resourceRoot, "gameState", GAME_FINISHED)
 	-- make all other players focus on the winner and begin to fade out camera
     for _, player in ipairs(getElementsByType("player")) do
-        if _playerStates[player] == PLAYER_IN_GAME then
-            if player ~= winner then
-                setCameraTarget(player, winner)
-                toggleAllControls(player, true, true, false)
-            end
-            fadeCamera(player, false, CAMERA_LOAD_DELAY/1000)
+		if _playerStates[player] ~= PLAYER_JOINED then
             -- update player state
             _playerStates[player] = PLAYER_READY
-            -- inform client round is over
-            triggerClientEvent(player, "onClientDeathmatchRoundEnded", resourceRoot, winner, draw)
+			-- inform client round is over
+			triggerClientEvent(player, "onClientDeathmatchRoundEnd", resourceRoot, winner, draw)
         end
 	end
 	-- if there was no match result, do not continue to the next match
