@@ -9,6 +9,7 @@ function carfadeSettings.refreshSettings()
 	carfadeSettings.values.canbetoggled = getBool("race_carfade.canbetoggled", true)
 	carfadeSettings.values.enabledbydefault = getBool("race_carfade.enabledbydefault", true)
 	carfadeSettings.values.broadcastatmapstart = getBool("race_carfade.broadcastatmapstart", true)
+	carfadeSettings.values.throttleamount = mathClamp(getNumber("race_carfade.throttleamount", 100), 0, 1000)
 end
 carfadeSettings.refreshSettings()
 

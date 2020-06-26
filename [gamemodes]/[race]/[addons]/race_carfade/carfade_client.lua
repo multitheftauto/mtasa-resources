@@ -1,10 +1,16 @@
 carFade = {
 	isEnabled = false,
 	boundKey = false,
-	hasReceivedSettingsOnce = false
+	hasReceivedSettingsOnce = false,
+	lastRenderTick = getTickCount()
 }
 
 function carFade.render()
+	if getTickCount() - carFade.lastRenderTick < getSetting("throttleamount") then
+		return
+	end
+	carFade.lastRenderTick = getTickCount()
+
 	local targetVehicle = getCameraTarget()
 	if not targetVehicle or getElementType(targetVehicle) ~= "vehicle" then
 		return

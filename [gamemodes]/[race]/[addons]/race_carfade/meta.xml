@@ -68,5 +68,12 @@
 					desc="Broadcast car fade message at map start"
 					/>
 
+		<setting name="*throttleamount" value="100"
+					friendlyname="Throttle amount"
+					group="Setting"
+					accept="0-1000"
+					desc="Amount of milliseconds between car fade executions. Using a higher value can improve performance at the cost of smooth alpha transitions"
+					/>
+
 	</settings>
 </meta>
