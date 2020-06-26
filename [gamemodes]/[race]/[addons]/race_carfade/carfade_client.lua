@@ -15,9 +15,8 @@ function carFade.render()
 		return
 	end
 
-	local targetMaxAlpha = getPlayerMaxAlpha(targetPlayer)
-	setElementAlpha(targetVehicle, targetMaxAlpha)
-	setElementAlpha(targetPlayer, targetMaxAlpha)
+	setElementAlpha(targetVehicle, getVehicleMaxAlpha(targetVehicle))
+	setElementAlpha(targetPlayer, getPlayerMaxAlpha(targetPlayer))
 
 	local players = getElementsByType("player", root, true)
 	local x, y, z = getElementPosition(targetVehicle)
@@ -26,27 +25,26 @@ function carFade.render()
 		local player = players[i]
 		local playerVehicle = getPedOccupiedVehicle(player)
 		if playerVehicle and player ~= targetPlayer then
-			local maxAlpha = getPlayerMaxAlpha(player)
+			local maxVehicleAlpha = getVehicleMaxAlpha(playerVehicle)
+			local maxPlayerAlpha = getPlayerMaxAlpha(player)
 			local collidable = isElementCollidableWith(targetVehicle, playerVehicle)
 			local distance = not collidable and getDistanceBetweenPoints3D(x, y, z, getElementPosition(playerVehicle)) or nil
-			local distanceAlpha = not collidable and mathClamp((distance - getSetting("mindistance")) / getSetting("maxdistance") * 255, getSetting("minalpha"), maxAlpha) or maxAlpha
+			local distanceAlpha = not collidable and mathClamp((distance - getSetting("mindistance")) / getSetting("maxdistance") * 255, getSetting("minalpha"), maxVehicleAlpha) or maxVehicleAlpha
 
-			setElementAlpha(player, distanceAlpha)
+			setElementAlpha(player, maxPlayerAlpha >= distanceAlpha and distanceAlpha or maxPlayerAlpha)
 			setElementAlpha(playerVehicle, distanceAlpha)
 		end
 	end
 end
 
 function carFade.resetAlphas()
-	local players = getElementsByType("player", root, true)
+	local players = getElementsByType("player", root, false)
 	for i = 1, #players do
 		local player = players[i]
+		setElementAlpha(player, getPlayerMaxAlpha(player))
 		local playerVehicle = getPedOccupiedVehicle(player)
-		local maxAlpha = getPlayerMaxAlpha(player)
-
-		setElementAlpha(player, maxAlpha)
 		if playerVehicle then
-			setElementAlpha(playerVehicle, maxAlpha)
+			setElementAlpha(playerVehicle, getVehicleMaxAlpha(playerVehicle))
 		end
 	end
 end
@@ -82,7 +80,6 @@ function carFade.toggleFromPlayer()
 	end
 end
 addCommandHandler("carfade", carFade.toggleFromPlayer)
-
 
 function carFade.handleSettings()
 	if not carFade.hasReceivedSettingsOnce and getSetting("enabledbydefault") then
