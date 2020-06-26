@@ -1,10 +1,11 @@
 <meta>
 	<info name="Car Fade" description="Vehicle alpha based on proximity" addon="race" author="AfuSensi" type="script" version="1.0"/>
 
+	<script src="util_shared.lua" type="shared" />
+
 	<script src="util_server.lua" type="server" />
 	<script src="settings_server.lua" type="server" />
 
-	<script src="util_client.lua" type="client" />
 	<script src="carfade_client.lua" type="client" />
 	<script src="playeralpha_client.lua" type="client" />
 	<script src="settings_client.lua" type="client" />
