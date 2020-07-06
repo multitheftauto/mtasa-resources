@@ -31,10 +31,11 @@ function carFade.render()
 		local player = players[i]
 		local playerVehicle = getPedOccupiedVehicle(player)
 		if playerVehicle and player ~= targetPlayer then
+			local tx, ty, tz = getElementPosition(playerVehicle)
 			local maxVehicleAlpha = getVehicleMaxAlpha(playerVehicle)
 			local maxPlayerAlpha = getPlayerMaxAlpha(player)
 			local collidable = isElementCollidableWith(targetVehicle, playerVehicle)
-			local distance = not collidable and getDistanceBetweenPoints3D(x, y, z, getElementPosition(playerVehicle)) or nil
+			local distance = not collidable and carFade.getDistance(x, y, z, tx, ty, tz) or nil
 			local distanceAlpha = not collidable and mathClamp((distance - getSetting("mindistance")) / getSetting("maxdistance") * 255, getSetting("minalpha"), maxVehicleAlpha) or maxVehicleAlpha
 
 			setElementAlpha(player, maxPlayerAlpha >= distanceAlpha and distanceAlpha or maxPlayerAlpha)
@@ -55,6 +56,13 @@ function carFade.resetAlphas()
 	end
 end
 addEventHandler("onClientResourceStop", resourceRoot, carFade.resetAlphas)
+
+function carFade.getDistance(x1, y1, z1, x2, y2, z2)
+	local a = x2 - x1
+	local b = y2 - y1
+	local c = z2 - z1
+	return math.sqrt(a * a + b * b + c * c)
+end
 
 function carFade.toggle(forceState)
 	local doEnable
