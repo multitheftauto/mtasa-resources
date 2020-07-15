@@ -42,7 +42,7 @@ end
 --
 --	endRound: ends the round
 --
-function endRound(winner, draw)
+function endRound(winner, draw, mapStopped)
 	-- remove player wasted handler
 	removeEventHandler("onPlayerWasted", root, processPlayerWasted)
 	-- kill player respawn timers
@@ -65,12 +65,10 @@ function endRound(winner, draw)
 			triggerClientEvent(player, "onClientDeathmatchRoundEnd", resourceRoot, winner, draw)
         end
 	end
-	-- if there was no match result, do not continue to the next match
-	if not (winner or draw) then
+	-- don't cycle the map if this map was just stopped
+	if mapStopped then
 		return
 	end
-	-- update game state
-	setElementData(resourceRoot, "gameState", GAME_FINISHED)
 	-- if mapcycler is running, signal that this round is over by triggering onRoundFinished
 	-- otherwise, schedule the next round
 	local mapcycler = getResourceFromName("mapcycler")

@@ -77,7 +77,7 @@ addEventHandler("onGamemodeMapStart", root, startDeathmatchMap)
 --
 local function stopDeathmatchMap(resource)
 	-- end the round
-	endRound(false, false)
+	endRound(false, false, true)
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_WAITING)
 	-- inform all clients that the map was stopped
