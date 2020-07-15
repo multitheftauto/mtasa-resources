@@ -31,5 +31,13 @@
 			accept="1-65535"
 			desc="Number of rounds between random map selections. Only effective if cycler mode is set to 'random'."
 		/>
+		<setting
+			name="*hibernate_when_empty"
+			value="true" 
+			friendlyname="Hibernate when server is empty"
+			group="Map Cycler"
+			accept="true,false"
+			desc="If true, the server will wait until a player joins to cycle maps. Only effective if cycler mode is set to 'list' or 'random'."
+		/>
 	</settings>
 </meta>
