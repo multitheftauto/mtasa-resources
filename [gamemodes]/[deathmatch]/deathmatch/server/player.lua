@@ -37,7 +37,7 @@ addEventHandler("onPlayerQuit", root, processPlayerQuit)
 		triggerClientEvent(source, "onClientDeathmatchRoundStart", resourceRoot)
 		spawnDeathmatchPlayer(source)
 	elseif getElementData(resourceRoot, "gameState") == GAME_FINISHED then
-		triggerClientEvent(source, "onClientDeathmatchRoundEnded", resourceRoot, false, false)
+		triggerClientEvent(source, "onClientDeathmatchRoundEnd", resourceRoot, false, false)
 	end
 	-- update player state
 	_playerStates[source] = PLAYER_READY
