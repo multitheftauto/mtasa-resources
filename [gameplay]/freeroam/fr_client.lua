@@ -1871,14 +1871,16 @@ addCommandHandler('st', setTimeCommand)
 function toggleFreezeTime()
 	local state = guiCheckBoxGetSelected(getControl(wndMain, 'freezetime'))
 	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), not state)
-	setTimeFrozen(state)
+	local h, m = getTime()
+	local w = getWeather()
+	setTimeFrozen(state, h, m, w)
 end
 
 function setTimeFrozen(state, h, m, w)
 	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), state)
 	if state then
 		if not g_TimeFreezeTimer then
-			g_TimeFreezeTimer = setTimer(function() setTime(h, m) setWeather(w) end, 5000, 0)
+			g_TimeFreezeTimer = setTimer(function(h, m, w) setTime(h, m) setWeather(w) end, 5000, 0, h, m, w)
 			setMinuteDuration(9001)
 		end
 	else
