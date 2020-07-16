@@ -44,6 +44,12 @@ local function startDeathmatchMap(resource)
 	_fragLimit = tonumber(get(resourceName..".frag_limit")) and math.floor(tonumber(get(resourceName..".frag_limit"))) or defaults.fragLimit
 	_timeLimit  = (tonumber(get(resourceName..".time_limit")) and math.floor(tonumber(get(resourceName..".time_limit"))) or defaults.timeLimit)*1000
 	_respawnTime = (tonumber(get(resourceName..".respawn_time")) and math.floor(tonumber(get(resourceName..".respawn_time"))) or defaults.respawnTime)*1000
+	-- use a default frag and time limit if both are zero (infinite)
+	if _fragLimit == 0 and _timeLimit == 0 then
+		outputDebugString("deathmatch: map frag_limit and time_limit both disabled; using default values", 2)
+		_fragLimit = defaults.fragLimit
+		_timeLimit = defaults.timeLimit
+	end
 	_spawnWeapons = {}
 	local weaponsString = get(resourceName..".spawn_weapons") or defaults.spawnWeapons
 	for _, weaponSub in ipairs(split(weaponsString, 44)) do

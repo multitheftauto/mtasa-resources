@@ -61,9 +61,6 @@ _hud.scoreDisplay.update = function()
     if getElementData(resourceRoot, "gameState") ~= GAME_IN_PROGRESS then
         return
     end
-    -- update frag limit text
-    if not _fragLimit then error("no error limit", 2) end
-    _hud.scoreDisplay.fragLimitText:text("Frag Limit: ".._fragLimit)
     -- update score count
     local score = getElementData(localPlayer, "Score")
     _hud.scoreDisplay.fragCount:text(tostring(score))
@@ -79,6 +76,9 @@ _hud.scoreDisplay.update = function()
     else
         _hud.scoreDisplay.fragCount:scale(_hud.textScale)
     end
+    -- update frag limit text
+    if _fragLimit == 0 then return end
+    _hud.scoreDisplay.fragLimitText:text("Frag Limit: ".._fragLimit)
     -- update rank
     local players = getElementsByType("player")
     local rank = getElementData(localPlayer, "Rank")
@@ -101,7 +101,9 @@ _hud.respawnScreen.setVisible = function(_, visible)
     _hud.respawnScreen.respawnCounter:visible(visible)
 end
 _hud.respawnScreen.startCountdown = function()
-   startCountdown(_respawnTime)
+    if _respawnTime > 0 then
+        startCountdown(_respawnTime)
+    end
 end
 -- end screen
 _hud.endScreen = {}

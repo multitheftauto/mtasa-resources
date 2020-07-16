@@ -8,8 +8,10 @@ function beginRound()
 		setElementData(player, "Rank", "-")
 	end
 	-- start round timer
-	_missionTimer = exports.missiontimer:createMissionTimer(_timeLimit, true, true, 0.5, 20, true, "default-bold", 1)
-	addEventHandler("onMissionTimerElapsed", _missionTimer, onTimeElapsed)
+	if _timeLimit > 0 then
+		_missionTimer = exports.missiontimer:createMissionTimer(_timeLimit, true, true, 0.5, 20, true, "default-bold", 1)
+		addEventHandler("onMissionTimerElapsed", _missionTimer, onTimeElapsed)
+	end
 	-- attach player wasted handler
 	addEventHandler("onPlayerWasted", root, processPlayerWasted)
 	-- update game state

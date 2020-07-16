@@ -81,12 +81,28 @@ function processPlayerWasted(totalAmmo, killer, killerWeapon, bodypart)
 		local killerScore = getElementData(killer, "Score") + 1
 		setElementData(killer, "Score", killerScore)
 		-- end the round if the killer has reached the frag limit
-		if killerScore >= _fragLimit then
+		if _fragLimit > 0 and killerScore >= _fragLimit then
 			return endRound(killer)
+		end
+		-- if respawn is disabled, end the round if this is the last player alive
+		if _respawnTime == 0 then
+			local isLastPlayerAlive = true
+			for _, player in ipairs(getElementsByType("player")) do
+				if not isPedDead(player) and player ~= killer and _playerStates[player] == PLAYER_IN_GAME then
+					iprint(player, " is the last player alive, respawn is disabled, ending round")
+					isLastPlayerAlive = false
+					break
+				end
+			end
+			if isLastPlayerAlive then
+				return endRound(killer)
+			end
 		end
 	end
 	-- update player ranks
 	calculatePlayerRanks()
 	-- set timer to respawn player
-	_respawnTimers[source] = setTimer(spawnDeathmatchPlayer, _respawnTime, 1, source)
+	if _respawnTime > 0 then
+		_respawnTimers[source] = setTimer(spawnDeathmatchPlayer, _respawnTime, 1, source)
+	end
 end
