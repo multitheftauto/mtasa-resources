@@ -88,7 +88,7 @@ addEventHandler("onClientDeathmatchRoundStart", resourceRoot, startDeathmatchRou
 --
 --  stopDeathmatchRound: triggered when a round ends
 --
-local function stopDeathmatchRound(winner, draw)
+local function stopDeathmatchRound(winner, draw, aborted)
     -- remove player wasted handler and hide respawn screen if active
     removeEventHandler("onClientPlayerWasted", localPlayer, _hud.respawnScreen.startCountdown)
     _hud.respawnScreen.setVisible(false)
@@ -106,7 +106,7 @@ local function stopDeathmatchRound(winner, draw)
     -- begin fading out the screen
     fadeCamera(false, CAMERA_LOAD_DELAY/1000)
     -- show end screen and scoreboard
-    _hud.endScreen:update(winner, draw)
+    _hud.endScreen:update(winner, draw, aborted)
     _hud.endScreen:setVisible(true)
     exports.scoreboard:setScoreboardForced(true)
 end
@@ -124,6 +124,10 @@ function elementDataChange(key, oldValue, newValue)
     -- only respond to score-related data changes
     if key == "Score" or key == "Rank" then
         _hud.scoreDisplay.update()
+        -- if its the local player's score being increased, play "subobjective complete ding"
+        if key == "Score" and source == localPlayer and newValue > oldValue then
+            playSoundFrontEnd(12)
+        end
     end
 end
 
