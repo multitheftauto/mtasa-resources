@@ -91,14 +91,14 @@ local edfCreateBasic = {
 		return createRadarArea(cdata.posX, cdata.posY, cdata.sizeX, cdata.sizeY, cdata.colorR, cdata.colorG, cdata.colorB, cdata.colorA)
 	end,
 	colshape = function(cdata)
-		if cdata.type == "sphere" then
+		if cdata.type == "sphere" or cdata.type == "colsphere" then
 			return createColSphere(cdata.position[1], cdata.position[2], cdata.position[3], cdata.radius)
-		elseif cdata.type == "tube" then
+		elseif cdata.type == "tube" or cdata.type == "coltube" then
 			return createColTube(cdata.position[1], cdata.position[2], cdata.position[3], cdata.radius, cdata.height)
-		elseif cdata.type == "rectangle" then
+		elseif cdata.type == "rectangle" or cdata.type == "colrectangle" then
 			return createColRectangle(cdata.position[1], cdata.position[2], cdata.position[3], cdata.width, cdata.depth)
-		elseif cdata.type == "cube" or cdata.type == "cuboid" then
-			return createColCube(cdata.position[1], cdata.position[2], cdata.position[3], cdata.width, cdata.depth, cdata.height)
+		elseif cdata.type == "cube" or cdata.type == "cuboid" or cdata.type == "colcube" then
+			return createColCuboid(cdata.position[1], cdata.position[2], cdata.position[3], cdata.width, cdata.depth, cdata.height)
 		end
 	end,
 	ped = function(cdata)
