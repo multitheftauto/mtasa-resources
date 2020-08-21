@@ -97,7 +97,7 @@ local edfCreateBasic = {
 			return createColTube(cdata.position[1], cdata.position[2], cdata.position[3], cdata.radius, cdata.height)
 		elseif cdata.type == "rectangle" or cdata.type == "colrectangle" then
 			return createColRectangle(cdata.position[1], cdata.position[2], cdata.position[3], cdata.width, cdata.depth)
-		elseif cdata.type == "cube" or cdata.type == "cuboid" or cdata.type == "colcube" then
+		elseif cdata.type == "cube" or cdata.type == "cuboid" or cdata.type == "colcube" or cdata.type == "colcuboid" then
 			return createColCuboid(cdata.position[1], cdata.position[2], cdata.position[3], cdata.width, cdata.depth, cdata.height)
 		end
 	end,
