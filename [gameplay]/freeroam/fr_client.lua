@@ -1260,10 +1260,17 @@ function getPosCommand(cmd, playerName)
 
 	if playerName then
 		player = getPlayerFromName(playerName)
+
 		if not player then
 			errMsg('There is no player named "' .. playerName .. '".')
 			return
 		end
+
+		if g_PlayerData[player].warping then
+			errMsg("You cannot get coordinates of a player that has disabled warping!")
+			return
+		end
+
 		playerName = getPlayerName(player)		-- make sure case is correct
 		sentenceStart = playerName .. ' is '
 	else
