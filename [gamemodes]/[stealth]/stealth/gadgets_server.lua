@@ -81,7 +81,6 @@ end
 addEventHandler ( "onColShapeHit", getRootElement(), landminehit )
 
 
-
 --KILLS THE MINE WHEN SHOT
 
 addEvent ("destroylandmine", true )
@@ -153,7 +152,6 @@ function maketheshield (player)
 end
 
 addEventHandler("shieldup", getRootElement() , maketheshield)
-
 
 
 addEvent ("shielddown", true )

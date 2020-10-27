@@ -319,7 +319,6 @@ function Racewar.roundEnd()
 end
 
 
-
 ---------------------------------------------------------------------------
 --
 -- Status Display
@@ -679,7 +678,6 @@ addEventHandler('newWarVoteResult', getRootElement(),
 )
 
 
-
 ---------------------------------------------------------------------------
 --
 -- Player List
@@ -749,7 +747,6 @@ end
 function isPlayerFinished(player)
 	return getElementData(player, 'race.finished')
 end
-
 
 
 ---------------------------------------------------------------------------

@@ -157,7 +157,6 @@ ByteBuffer = {
 }
 
 
-
 -- Make a stream of absolute numbers relative to each other
 local relPos = 0
 function relPosReset()

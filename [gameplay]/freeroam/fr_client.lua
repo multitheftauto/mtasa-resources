@@ -780,15 +780,15 @@ function warpUpdate()
 			return players
 		end
 	end
-	
+
 	local text = getControlText(wndWarp, 'search')
-	local players = table.map(getPlayersByPartName(text), 
-		function(p) 
+	local players = table.map(getPlayersByPartName(text),
+		function(p)
 			local pName = getPlayerName(p)
 			if g_settings["hidecolortext"] then
 				pName = pName:gsub("#%x%x%x%x%x%x", "")
 			end
-			return { player = p, name = pName } 
+			return { player = p, name = pName }
 		end)
 	table.sort(players, function(a, b) return a.name < b.name end)
 	bindGridListToTable(wndWarp, 'playerlist', players, true)
@@ -1806,9 +1806,9 @@ function setPaintjobCommand(cmd, paint)
 	paint = paint and tonumber(paint)
 
 	if not paint then errMsg("Enter paintjob ID please!") return end
-	if paint > 3 or string.len(paint) > 1 then 
+	if paint > 3 or string.len(paint) > 1 then
 		errMsg("Invalid paintjob ID!")
-		return 
+		return
 	end
 
 	server.setVehiclePaintjob(vehicle, paint)
@@ -1943,7 +1943,7 @@ wndWeather = {
 
 function setWeatherCommand(cmd, weather)
 	weather = weather and tonumber(weather)
-	if not weather or weather > 255 or string.len(weather) > 3 then 
+	if not weather or weather > 255 or string.len(weather) > 3 then
 		errMsg("Invalid weather ID!")
 		return
 	end

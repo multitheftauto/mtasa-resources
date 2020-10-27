@@ -58,7 +58,6 @@ function addCommandHandler(command, fn)
 end
 
 
-
 function table.each(t, callback, ...)
 	for k,v in pairs(t) do
 		callback(v, ...)

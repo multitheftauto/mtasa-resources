@@ -130,7 +130,6 @@ function RankingBoard:destroy()
 end
 
 
-
 --
 -- Label cache
 --

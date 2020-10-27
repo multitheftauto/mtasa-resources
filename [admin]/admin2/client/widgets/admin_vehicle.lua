@@ -150,7 +150,7 @@ function aVehicle.Refresh(groups)
             end
         end
         local i = 0
-        while (i <= 100000) do 
+        while (i <= 100000) do
             if (vehicles[i] ~= nil) then
                 local row = guiGridListAddRow(aVehicle.List)
                 guiGridListSetItemText(aVehicle.List, row, 1, tostring(i), false, true)

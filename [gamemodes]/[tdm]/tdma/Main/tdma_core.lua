@@ -106,7 +106,6 @@ function onMapUnload ( name )
 	versionDisplay = nil
 
 
-
 	textBoost = 0
 
 	xonPlayerWasted_Enabled = true

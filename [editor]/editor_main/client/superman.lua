@@ -168,7 +168,6 @@ function Superman.Stop()
 end
 
 
-
 --
 -- Join/Quit
 --

@@ -113,7 +113,6 @@ function updateBlips()
 			}
 
 
-
 			blipUpdateCount++;
 
 			setTimeout(updateBlips, 5000);
@@ -139,7 +138,6 @@ function updatePlayerInfo()
 					playerlist[playerinfo[i].name].feature.lonlat = latlong;
 
 
-
 					if ( playerToFollow == playerinfo[i].name )
 						map.setCenter(latlong, map.getZoom(), false, false);
 
@@ -163,7 +161,6 @@ function updatePlayerInfo()
 					}
 				}
 			}
-
 
 
 			updateCount++;
@@ -234,7 +231,6 @@ function showplayerinfo(evt) {
 
 		html += "<input type='checkbox' id='followPlayerCheckbox' onclick='followPlayer();' " + checked + " onchange='followPlayer();' /> <label for='followPlayerCheckbox'>Follow</label>"
 		html += "</div>";
-
 
 
 		popup = this.feature.createPopup(true);

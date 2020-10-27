@@ -269,7 +269,7 @@
   <file src="client/images/flags/ve.png" />
   <file src="client/images/flags/hr.png" />
   <file src="client/images/flags/xk.png" />
-  
+
   <!--Unused-->
   <!--
   <script src="server/admin_community.lua" />

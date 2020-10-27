@@ -680,8 +680,6 @@ return false
 end
 
 
-
-
 function aClientGUITabSwitched( selectedTab )
 	if getElementParent( selectedTab ) == aTabPanel then
 		if selectedTab == aTab2.Tab then

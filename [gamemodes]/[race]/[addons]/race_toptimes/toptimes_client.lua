@@ -496,7 +496,6 @@ function CToptimes:doOnClientRender()
 	self.lastSeconds = currentSeconds
 
 
-
 	deltaSeconds = math.clamp( 0, deltaSeconds, 1/25 )
 
 	-- Calc max fade change for this call
@@ -576,7 +575,6 @@ addCommandHandler('doF5',
 		end
 	end
 )
-
 
 
 ---------------------------------------------------------------------------

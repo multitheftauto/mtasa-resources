@@ -205,7 +205,6 @@ function aInputBoxClick ( button )
 end
 
 
-
 --
 -- Ban input box
 --
@@ -280,7 +279,6 @@ function aBanInputBox ( player )
 		aBanInputOk			= guiCreateButton ( 90, y, 55, 17, "Ok", false, aBanInputForm )
 		aBanInputCancel		= guiCreateButton ( 150, y, 55, 17, "Cancel", false, aBanInputForm )
 		y = y + 30
-
 
 
 		guiSetSize ( aBanInputForm, guiGetSize ( aBanInputForm, false ), y, false )
@@ -384,16 +382,12 @@ function aBanInputBoxFinish ()
 	triggerServerEvent ( "aPlayer", localPlayer, aBanInputPlayer, "ban", reason, seconds, bUseSerial )
 
 
-
 	-- Clear input
 	guiSetText ( aBanInputValue, "" )
 	for i,dur in ipairs(aBanDurations) do
 		guiRadioButtonSetSelected( aBanInputRadio2s[i], false )
 	end
 end
-
-
-
 
 
 --

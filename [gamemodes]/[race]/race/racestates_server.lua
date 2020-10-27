@@ -95,7 +95,6 @@ function stateAllowsNextMapVoteResult()
 end
 
 
-
 ----------------------------------------------------------------------------
 -- stateAllowsKillPlayer
 --
@@ -168,8 +167,6 @@ function stateAllowsGridCountdown()
     if currentRaceStateName == 'PreGridCountdown'   then    return true     end
     return false
 end
-
-
 
 
 ----------------------------------------------------------------------------

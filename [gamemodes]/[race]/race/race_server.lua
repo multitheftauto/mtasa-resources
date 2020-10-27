@@ -209,7 +209,6 @@ function cacheMapOptions(map)
 end
 
 
-
 -- Called from:
 --      onGamemodeMapStart
 function loadMap(res)
@@ -365,7 +364,6 @@ g_RaceStartCountdown:addClientHook(3, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(2, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(1, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(0, 'playSoundFrontEnd', 45)
-
 
 
 -- Called from:
@@ -563,7 +561,6 @@ end
 addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
 
 
-
 -- Called from:
 --      joinHandler
 --      unfreezePlayerWhenReady
@@ -581,7 +578,6 @@ function unfreezePlayerWhenReady(player)
         outputDebug( 'MISC', 'unfreezePlayerWhenReady: setElementFrozen false for ' .. tostring(getPlayerName(player)) )
     end
 end
-
 
 
 -- Called from:
