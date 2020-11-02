@@ -91,6 +91,7 @@ function cacheGameOptions()
 	g_GameOptions.defaultduration		= getNumber('race.duration',6000) * 1000
 	g_GameOptions.ghostmode				= getBool('race.ghostmode',false)
 	g_GameOptions.ghostalpha			= getBool('race.ghostalpha',false)
+	g_GameOptions.ghostalphalevel		= getNumber('race.ghostalphalevel',180)
 	g_GameOptions.randommaps			= getBool('race.randommaps',false)
 	g_GameOptions.statskey				= getString('race.statskey','name')
 	g_GameOptions.vehiclecolors			= getString('race.vehiclecolors','file')
@@ -905,7 +906,7 @@ function updateGhostmode()
 		local vehicle = RaceMode.getPlayerVehicle(player)
 		if vehicle then
 			Override.setCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
-			Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
+			Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and g_GameOptions.ghostalphalevel or nil )
 		end
 	end
 end

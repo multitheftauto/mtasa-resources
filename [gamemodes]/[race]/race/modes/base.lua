@@ -489,7 +489,7 @@ function RaceMode.playerFreeze(player, bRespawn, bDontFix)
 
 	-- Setup ghost mode for this vehicle
 	Override.setCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
-	Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
+	Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and g_GameOptions.ghostalphalevel or nil )
 
 	-- Show non-ghost vehicles as semi-transparent while respawning
 	Override.setAlpha( "ForRespawnEffect", {player, vehicle}, bRespawn and not g_MapOptions.ghostmode and 120 or nil )
