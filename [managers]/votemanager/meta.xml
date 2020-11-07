@@ -48,9 +48,9 @@
 		<setting name="*voteban_locktime" value="[120]"/>
 		<setting name="*voteban_percentage" value="[75]"/>
 		<setting name="*voteban_allowchange" value="[true]"/>
-		<setting name="*voteban_banip" value="[true]"/>
+		<setting name="*voteban_banip" value="[false]"/>
 		<setting name="*voteban_banusername" value="[false]"/>
-		<setting name="*voteban_banserial" value="[false]"/>
+		<setting name="*voteban_banserial" value="[true]"/>
 		<setting name="*voteban_duration" value="[3600]"/>
 
 		<setting name="*votekill_enabled" value="[false]"/>
