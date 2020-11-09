@@ -9,7 +9,7 @@ local dumpInterval = get("dumpSaveInterval") and tonumber(get("dumpSaveInterval"
 local fileTypes = { "script","map","file","config","html" }
 local specialFileTypes = { "script","file","config","html" }
 local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
-local mapResourceOrganizationalDirectory = get("mapResourceOrganizationalDirectory");
+local mapResourceOrganizationalDirectory = get("mapResourceOrganizationalDirectory")
 
 ---
 local openResourceCoroutine
