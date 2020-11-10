@@ -159,7 +159,7 @@
 			accept="1-3600"
 			desc="Map backup interval in seconds."
         />
-        <setting name="#mapResourceOrganizationalDirectory"
+        <setting name="*mapResourceOrganizationalDirectory" value="none"
 			friendlyname="Map resource organizational directory"
             accept = "*"
             examples="[newmaps]"
