@@ -1,7 +1,6 @@
 firstime = 1
 
 
-
 function locks()
 	local vehicles = getElementsByType("vehicle")
 	for i,v in ipairs(vehicles) do

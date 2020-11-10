@@ -91,6 +91,7 @@ function cacheGameOptions()
 	g_GameOptions.defaultduration		= getNumber('race.duration',6000) * 1000
 	g_GameOptions.ghostmode				= getBool('race.ghostmode',false)
 	g_GameOptions.ghostalpha			= getBool('race.ghostalpha',false)
+	g_GameOptions.ghostalphalevel		= getNumber('race.ghostalphalevel',180)
 	g_GameOptions.randommaps			= getBool('race.randommaps',false)
 	g_GameOptions.statskey				= getString('race.statskey','name')
 	g_GameOptions.vehiclecolors			= getString('race.vehiclecolors','file')
@@ -207,7 +208,6 @@ function cacheMapOptions(map)
 		g_MapOptions.hunterminigun = g_GameOptions.hunterminigun
 	end
 end
-
 
 
 -- Called from:
@@ -358,14 +358,13 @@ function launchRace()
     gotoState('Running')
 end
 
-g_RaceStartCountdown = Countdown.create(6, launchRace)
+g_RaceStartCountdown = Countdown.create(3, launchRace)
 g_RaceStartCountdown:useImages('img/countdown_%d.png', 474, 204)
 g_RaceStartCountdown:enableFade(true)
 g_RaceStartCountdown:addClientHook(3, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(2, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(1, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(0, 'playSoundFrontEnd', 45)
-
 
 
 -- Called from:
@@ -563,7 +562,6 @@ end
 addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
 
 
-
 -- Called from:
 --      joinHandler
 --      unfreezePlayerWhenReady
@@ -581,7 +579,6 @@ function unfreezePlayerWhenReady(player)
         outputDebug( 'MISC', 'unfreezePlayerWhenReady: setElementFrozen false for ' .. tostring(getPlayerName(player)) )
     end
 end
-
 
 
 -- Called from:
@@ -909,7 +906,7 @@ function updateGhostmode()
 		local vehicle = RaceMode.getPlayerVehicle(player)
 		if vehicle then
 			Override.setCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
-			Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
+			Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and g_GameOptions.ghostalphalevel or nil )
 		end
 	end
 end

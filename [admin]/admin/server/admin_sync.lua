@@ -429,7 +429,7 @@ addEventHandler("onResourceStart", resourceRoot,
 	end
 )
 
-addEventHandler( "onPlayerJoin", root, 
+addEventHandler( "onPlayerJoin", root,
 	function()
 		_playerModInfo[source] = {}
 	end

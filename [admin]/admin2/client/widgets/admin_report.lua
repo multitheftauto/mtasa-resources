@@ -66,13 +66,13 @@ function aClientReportClick(button)
                 tableOut.subject = guiGetText(aReport.Subject)
                 tableOut.message = guiGetText(aReport.Message)
                 triggerServerEvent("aMessage", localPlayer, "new", tableOut)
-                
+
                 -- Hide report window, but don't hide cursor
                 aReport.Close(false)
-                
+
                 -- Show messageBox and pause
                 messageBox("Your message has been submited and will be processed as soon as possible.", MB_INFO)
-                
+
                 -- hide the cursor now that the messageBox window has been done
                 aReport.CloseCursor()
 

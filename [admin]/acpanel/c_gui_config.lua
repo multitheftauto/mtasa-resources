@@ -5,7 +5,6 @@
 --
 
 
-
 function aServerConfigTab.Create ( tab )
 	aServerConfigTab.Tab = tab
 
@@ -42,7 +41,6 @@ function aServerConfigTab.Create ( tab )
 	ypos = ypos + 40
 
 	ypos = ypos + 240
-
 
 
 	---------------------------------------------------------

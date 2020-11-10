@@ -757,9 +757,6 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 
 	assert(handle == nil or isElement(handle), "Bad handle ["..tostring(handle).."] for element: "..getElementType(element))
 
-	-- temporarily disable collisions for all parts
-	setRepresentationCollisionsEnabled(element, false)
-
 	-- if we can position this element, grab it and add the markers
 	if handle then
 		local move_resource
@@ -770,6 +767,8 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 				move_resource = move_cursor
 			end
 			move_resource.setMaxMoveDistance(g_moveDistance)
+			-- if we're dragging the object, disable collisions for all parts so the cursor can point through it
+			setRepresentationCollisionsEnabled(element, false)
 		elseif (submode == KEYBOARD_SUBMODE) then
 			move_resource = move_keyboard
 		else

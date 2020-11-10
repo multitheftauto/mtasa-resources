@@ -46,7 +46,7 @@ end
 
 function db.query(query, ...)
     local cr = coroutine.running()
-    
+
     local handle = dbQuery(db.callback, db.connection, query, ...)
 
     db.threads[handle] = cr

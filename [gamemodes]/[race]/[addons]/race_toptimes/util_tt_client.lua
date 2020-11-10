@@ -60,5 +60,3 @@ function outputWarning( msg )
 end
 
 
-
-

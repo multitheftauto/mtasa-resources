@@ -1,5 +1,7 @@
 <meta>
 	<info author="Talidan" version="1.0.0" description="Utility script to handle mission timers for scripts" />
+	<min_mta_version server="1.3.0-9.04570"/>
+
 	<script src="missiontimer_server.lua" type="server" />
 	<script src="missiontimer_client.lua" type="client" />
 	<script src="missiontimer_rpc.lua" type="client" />

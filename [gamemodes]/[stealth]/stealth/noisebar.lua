@@ -170,10 +170,6 @@ function walksoundstart (source, key, keystate)
 end
 
 
-
-
-
-
 --LIMP TIMING
 
 function limpeffect ( source, key, keystate )
@@ -221,10 +217,6 @@ function startalimp ()
 end
 
 addCommandHandler ( "crippleme", startalimp )
-
-
-
-
 
 
 function movementcheck ( source, key, keystate )

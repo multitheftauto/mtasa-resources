@@ -1,6 +1,0 @@
-NAME          amxFixed
-DESCRIPTION   'Pawn AMX: fixed-point arithmetic'
-
-EXPORTS
-        amx_FixedInit
-        amx_FixedCleanup

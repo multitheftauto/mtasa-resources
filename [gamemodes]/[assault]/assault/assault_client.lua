@@ -116,7 +116,6 @@ function createGui(options)
 	end
 
 
-
 end
 
 function nextObjectivesText( objectives )
@@ -255,7 +254,6 @@ function toggleLogo(bool)
 	guiSetVisible(logo,bool)
 	--outputDebugString("Set logo visible: "..tostring(bool))
 end
-
 
 
 addEventHandler("onClientResourceStart", getRootElement(getThisResource()),

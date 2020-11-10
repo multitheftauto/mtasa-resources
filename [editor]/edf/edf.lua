@@ -27,7 +27,9 @@ end
 -- basic element create functions table (cdata holds creation parameters)
 local edfCreateBasic = {
 	object = function(cdata)
-		return createObject(cdata.model, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3])
+		local object = createObject(cdata.model, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3])
+		setObjectScale(object, cdata.scale)
+		return object
 	end,
 	vehicle = function(cdata)
 		local vehicle = createVehicle(cdata.model, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3], cdata.plate)

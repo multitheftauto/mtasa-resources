@@ -262,7 +262,6 @@ function table.popLast(t,val)
 end
 
 
-
 -----------------------------
 -- String extensions
 
@@ -308,7 +307,6 @@ function outputWarning( msg )
     outputConsole( getTickTimeStr() .. ' cWARNING: ' .. msg )
     outputDebugString( getTickTimeStr() .. ' cWARNING: ' .. msg )
 end
-
 
 
 -------------------------------------------------------

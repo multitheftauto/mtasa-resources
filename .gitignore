@@ -5,6 +5,9 @@
 
 \[test\]
 
+# admin
+\[admin\]/admin/conf/reports.xml
+
 # admin2
 \[admin\]/admin2/admin.db
 \[admin\]/admin2/conf/reports.xml

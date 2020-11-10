@@ -33,7 +33,6 @@ end
 addEventHandler ( "onPlayerQuit", getRootElement(), player_Quit )
 
 
-
 function thisResourceStop ()
 	for k,v in pairs(getElementsByType ( "player" )) do
 		setElementAlpha ( v, 255 )

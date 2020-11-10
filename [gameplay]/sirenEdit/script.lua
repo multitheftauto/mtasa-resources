@@ -5,9 +5,6 @@ local DEF_KeyBind = "0"
 -- End of Defines don't edit below here if you don't know what you are doing.
 
 
-
-
-
 local windowMultiplier = 0
 local myWindow = guiCreateWindow ( 0.35, 0.3, 0.4, 0.4, "Siren Script", true )
 

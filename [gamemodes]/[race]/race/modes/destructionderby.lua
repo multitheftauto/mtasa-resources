@@ -76,7 +76,6 @@ function DestructionDerby:handleFinishActivePlayer(player)
 end
 
 
-
 ------------------------------------------------------------
 -- activePlayerList stuff
 --
