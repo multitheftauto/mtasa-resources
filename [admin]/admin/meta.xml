@@ -61,6 +61,7 @@
   <config src="conf/ACL.xml" />
 
   <!--Images-->
+  <file src="client/images/map.png" />
   <file src="client/images/warning.png" />
   <file src="client/images/error.png" />
   <file src="client/images/question.png" />
