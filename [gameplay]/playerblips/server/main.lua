@@ -58,7 +58,6 @@ function setBlipColor(player, _, r, g, b)
 end
 
 function destroyPlayerBlip(player)
-	player = player or source
 	if isElement(blips[player]) then
 		blips[player]:destroy()
 	end
@@ -66,6 +65,12 @@ function destroyPlayerBlip(player)
 	colors[player] = nil
 end
 
-addEventHandler("onPlayerQuit", root, createPlayerBlip)
-addEventHandler("onPlayerWasted", root, createPlayerBlip)
-addEventHandler("onPlayerSpawn", root, createPlayerBlip)
+addEventHandler("onPlayerQuit", root, function()
+	destroyPlayerBlip(source)
+end)
+addEventHandler("onPlayerWasted", root, function()
+	destroyPlayerBlip(source)
+end)
+addEventHandler("onPlayerSpawn", root, function()
+	createPlayerBlip(source)
+end)
