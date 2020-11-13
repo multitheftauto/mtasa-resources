@@ -1,5 +1,5 @@
-local useTeams = get("*use_team_colors") == "true" and true or false
-local useNametags = get("*use_nametag_colors") == "true" and true or false
+local useTeams = get("*use_team_colors") == "true"
+local useNametags = get("*use_nametag_colors") == "true"
 local blipSize = get("*blip_size")
 local blipAlpha = get("*blip_alpha")
 local color = get("*blip_color")
