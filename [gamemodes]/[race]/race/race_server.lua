@@ -11,7 +11,7 @@ g_VehicleClothes = {
 
 g_CurrentRaceMode = nil
 
-g_Spawnpoints = {}			-- { i = { position={x, y, z}, rotation=rotation, vehicle=vehicleID, paintjob=paintjob, upgrades={...} } }
+g_Spawnpoints = {}			-- { i = { position={x, y, z}, rotation={x, y, z}, vehicle=vehicleID, paintjob=paintjob, upgrades={...} } }
 g_Checkpoints = {}			-- { i = { position={x, y, z}, size=size, color={r, g, b}, type=type, vehicle=vehicleID, paintjob=paintjob, upgrades={...} } }
 g_Objects = {}				-- { i = { position={x, y, z}, rotation={x, y, z}, model=modelID } }
 g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, paintjob=paintjob, upgrades={...} }
@@ -439,6 +439,7 @@ function joinHandlerBoth(player)
         local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint(player)
 
         local x, y, z = unpack(spawnpoint.position)
+        local rx, ry, rz = unpack(spawnpoint.rotation)
         -- Set random seed dependant on map name, so everyone gets the same models
         setRandomSeedForMap('clothes')
 
@@ -481,7 +482,7 @@ function joinHandlerBoth(player)
             setRandomSeedForMap('vehiclecolors')
 			-- Replace groups of unprintable characters with a space, and then remove any leading space
 			local plate = getPlayerName(player):gsub( '[^%a%d]+', ' ' ):gsub( '^ ', '' )
-			vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, plate:sub(1, 8))
+			vehicle = createVehicle(spawnpoint.vehicle, x, y, z, rx, ry, rz, plate:sub(1, 8))
 			if setElementSyncer then
 				setElementSyncer( vehicle, false )
 			end
