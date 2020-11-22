@@ -58,6 +58,7 @@ function setBlipColor(player, _, r, g, b)
 end
 
 function destroyPlayerBlip(player)
+	if (not player or not isElement(player) or player.type ~= "player") then return false end
 	if isElement(blips[player]) then
 		blips[player]:destroy()
 	end
