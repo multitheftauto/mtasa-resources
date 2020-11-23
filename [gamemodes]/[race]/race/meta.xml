@@ -297,6 +297,12 @@
 					accept="false,true"
 					desc="Force players to spawn like after death."
 					/>
+		<setting name="*endmapwhenonlyspectators" value="true"
+					friendlyname="End map when only spectators left"
+					group="Spectating"
+					accept="false,true"
+					desc="Set to true to end the map when only spectators are left"
+					/>
 
 		<setting name="*joinrandomvote" value="true"
 					friendlyname="Random vote on join"

@@ -123,6 +123,7 @@ function cacheGameOptions()
 	g_GameOptions.ghostmode_warning_if_map_override			= getBool('race.ghostmode_warning_if_map_override',true)
 	g_GameOptions.vehicleweapons_warning_if_map_override	= getBool('race.vehicleweapons_warning_if_map_override',true)
 	g_GameOptions.hunterminigun_map_can_override	= getBool('race.hunterminigun_map_can_override',true)
+	g_GameOptions.endmapwhenonlyspectators	= getBool('race.endmapwhenonlyspectators',true)
 	if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
 		outputWarning( "statskey is not set to 'name' or 'serial'" )
 		g_GameOptions.statskey = 'name'
@@ -550,7 +551,9 @@ function joinHandlerBoth(player)
 	else
 		if bPlayerJoined and g_CurrentRaceMode.running then
 			-- Joining after start
-			addActivePlayer(player)
+			if not g_GameOptions.endmapwhenonlyspectators then
+				addActivePlayer(player)
+			end
 			if g_GameOptions.joinspectating then
 				clientCall(player, "Spectate.start", 'manual' )
 				setPlayerStatus( player, nil, "spectating")
@@ -933,6 +936,8 @@ addEventHandler('onClientRequestSpectate', g_Root,
 					end
 				end
 			end
+		else
+			if not stateAllowsManualSpectate() then return false end
 		end
 		if isPlayerSpectating(player) ~= enable then
 			if enable then
@@ -944,6 +949,12 @@ addEventHandler('onClientRequestSpectate', g_Root,
 				g_SavedVelocity[player] = {}
 				g_SavedVelocity[player].velocity = {getElementVelocity(g_Vehicles[player])}
 				g_SavedVelocity[player].turnvelocity = {getVehicleTurnVelocity(g_Vehicles[player])}
+				if g_GameOptions.endmapwhenonlyspectators then
+					removeActivePlayer(player)
+					if getActivePlayerCount() == 0 then
+						RaceMode.endMap()
+					end
+				end
 			else
 				clientCall(player, "Spectate.stop", 'manual' )
 				setPlayerStatus( player, nil, "")
@@ -955,6 +966,9 @@ addEventHandler('onClientRequestSpectate', g_Root,
 					-- Do 'freeze/collision off' stuff when stopping spectate
 					RaceMode.playerFreeze(player, true, true)
 					TimerManager.createTimerFor("map",player):setTimer(afterSpectatePlayerUnfreeze, 2000, 1, player, true)
+				end
+				if g_GameOptions.endmapwhenonlyspectators then
+					addActivePlayer(player)
 				end
 			end
 		end
