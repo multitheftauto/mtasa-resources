@@ -1,5 +1,6 @@
 <meta>
 	<info type="script" name="Ghost racer" description="Record/playback addon for Race" addon="race" author="Awwu" version="1.0.5" build="r1337" />
+	<min_mta_version client="1.5.5-9.14060" />
 
 	<script src="global_server.lua" type="server" />
 	<script src="record_server.lua" type="server" />

@@ -408,13 +408,13 @@ function GhostPlayback:disabledCollisionTick()
 
 	-- Stop crazy spinning
 	local vehicle = self.vehicle
-	local ax, ay, az = getVehicleTurnVelocity ( self.vehicle )
+	local ax, ay, az = getElementAngularVelocity ( self.vehicle )
 	local angvel = getDistanceBetweenPoints3D(0, 0, 0, ax, ay, az )
 	if angvel > 0.1 then
 		ax = ax / 2
 		ay = ay / 2
 		az = az / 2
-		setVehicleTurnVelocity( self.vehicle, ax, ay, az )
+		setElementAngularVelocity( self.vehicle, ax, ay, az )
 	end
 end
 
