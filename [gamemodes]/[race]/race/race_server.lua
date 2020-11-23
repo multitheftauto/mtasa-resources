@@ -943,7 +943,7 @@ addEventHandler('onClientRequestSpectate', g_Root,
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), 0 )
 				g_SavedVelocity[player] = {}
 				g_SavedVelocity[player].velocity = {getElementVelocity(g_Vehicles[player])}
-				g_SavedVelocity[player].turnvelocity = {getVehicleTurnVelocity(g_Vehicles[player])}
+				g_SavedVelocity[player].turnvelocity = {getElementAngularVelocity(g_Vehicles[player])}
 			else
 				clientCall(player, "Spectate.stop", 'manual' )
 				setPlayerStatus( player, nil, "")
@@ -965,7 +965,7 @@ function afterSpectatePlayerUnfreeze(player, bDontFix)
 	RaceMode.playerUnfreeze(player, bDontFix)
 	if g_SavedVelocity[player] then
 		setElementVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].velocity))
-		setVehicleTurnVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].turnvelocity))
+		setElementAngularVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].turnvelocity))
 		g_SavedVelocity[player] = nil
 	end
 end
@@ -1237,7 +1237,7 @@ function MoveAway.update ()
 			local vehicle = g_Vehicles[player]
 			if isElement(vehicle) then
 				setElementVelocity(vehicle,0,0,0)
-				setVehicleTurnVelocity(vehicle,0,0,0)
+				setElementAngularVelocity(vehicle,0,0,0)
 				Override.setCollideOthers( "ForMoveAway", vehicle, 0 )
 				Override.setAlpha( "ForMoveAway", {player, vehicle}, 0 )
 			end
