@@ -233,7 +233,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 	if checkpointNum < RaceMode.getNumberOfCheckpoints() then
 		-- Regular checkpoint
 		local vehicle = RaceMode.getPlayerVehicle(player)
-		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getVehicleTurnVelocity(vehicle) }, geardown = getVehicleLandingGearDown(vehicle) or false }
+		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getElementAngularVelocity(vehicle) }, geardown = getVehicleLandingGearDown(vehicle) or false }
 
 		self.checkpointBackups[player].goingback = true
 		TimerManager.destroyTimersFor("checkpointBackup",player)
@@ -431,7 +431,7 @@ function restorePlayer(id, player, bNoFade, bDontFix)
 	local vehicle = RaceMode.getPlayerVehicle(player)
 	if vehicle then
         setElementVelocity( vehicle, 0,0,0 )
-        setVehicleTurnVelocity( vehicle, 0,0,0 )
+        setElementAngularVelocity( vehicle, 0,0,0 )
 		setElementPosition(vehicle, unpack(bkp.position))
 		local rx, ry, rz = unpack(bkp.rotation)
 		setVehicleRotation(vehicle, rx or 0, ry or 0, rz or 0)
@@ -466,7 +466,7 @@ function restorePlayerUnfreeze(id, player, bDontFix)
     outputDebug( 'MISC', 'restorePlayerUnfreeze: vehicle false for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
 	local bkp = RaceMode.instances[id].checkpointBackups[player][getPlayerCurrentCheckpoint(player)-1]
 	setElementVelocity(vehicle, unpack(bkp.velocity))
-	setVehicleTurnVelocity(g_Vehicles[player], unpack(bkp.turnvelocity))
+	setElementAngularVelocity(g_Vehicles[player], unpack(bkp.turnvelocity))
 end
 
 --------------------------------------
