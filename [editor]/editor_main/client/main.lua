@@ -58,6 +58,8 @@ local DRAG_CAMERA_MINIMAL_DISTANCE = 2
 local g_lastClick = { tick=getTickCount() }
 local DOUBLE_CLICK_MAX_DELAY = 500 -- In ticks
 
+local g_lock = {}
+
 setCloudsEnabled(false) -- We don't need clouds.
 setAmbientSoundEnabled("gunfire", false) -- We don't need random gun shots.
 
@@ -485,6 +487,11 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 			end
 		end
 
+		if g_selectedElement ~= clickedElement and g_lock[clickedElement] then
+			editor_gui.outputMessage("This element is locked, Press '"..cc["lock_selected_element"]:upper().."' to unlock it.", 255,255,255)
+			return false
+		end
+
 		if (key == "select_target_mouse") then
 			selectElement(clickedElement, MOUSE_SUBMODE, false, g_selectedElement, g_selectedElement)
 		elseif (key == "select_target_keyboard") then
@@ -508,6 +515,12 @@ end
 
 function processDoubleClick ( clickedElement, key )
 	if not clickedElement then return end
+
+	if g_selectedElement ~= clickedElement and g_lock[clickedElement] then
+		editor_gui.outputMessage("This element is locked, Press '"..cc["lock_selected_element"]:upper().."' to unlock it.", 255,255,255)
+		return false
+	end
+
 	if triggerEvent ( "onClientElementDoubleClick", clickedElement, key ) then
 		if key == "select_target_keyboard" then
 			if ( selectElement(clickedElement, KEYBOARD_SUBMODE) ) then
@@ -987,6 +1000,26 @@ function cloneSelectedElement()
 	end
 end
 
+function lockSelectedElement()
+	local targetElement = getTargetedElement()
+	if targetElement then
+		if g_lock[targetElement] then
+			g_lock[targetElement] = nil
+			editor_gui.outputMessage("You have unlocked this element.", 0,255,0)
+		else
+			g_lock[targetElement] = true
+			editor_gui.outputMessage("You have locked this element.", 255,0,0)
+		end
+	end
+end
+
+addEventHandler("onClientElementDestroy",resourceRoot,
+function ()
+	if g_lock[source] then
+		g_lock[source] = nil
+	end
+end)
+
 function showCrosshair(status,labelStatus)
 	g_showCrosshair = status
 	-- g_showLabels = labelStatus
@@ -1081,6 +1114,7 @@ function bindInput(commandsOnly)
 	addCommandHandler("create", createElement_cmd)
 	addCommandHandler("destroy", destroySelectedElement)
 	addCommandHandler("delete", destroySelectedElement)
+	addCommandHandler("lock", lockSelectedElement)
 	if ( commandsOnly ) then
 		return true
 	end
@@ -1093,6 +1127,7 @@ function bindInput(commandsOnly)
 	bindControl("undo", "down", keyboardUndo)
 	bindControl("redo", "down", keyboardRedo)
 	bindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
+	bindControl("lock_selected_element", "down", lockSelectedElement)
 end
 
 function unbindInput(commandsOnly)
@@ -1100,6 +1135,7 @@ function unbindInput(commandsOnly)
 	removeCommandHandler("create", createElement_cmd)
 	removeCommandHandler("destroy", destroySelectedElement)
 	removeCommandHandler("delete", destroySelectedElement)
+	removeCommandHandler("lock", lockSelectedElement)
 
 	if ( commandsOnly ) then
 		return true
@@ -1112,6 +1148,7 @@ function unbindInput(commandsOnly)
 	unbindControl("undo", "down", keyboardUndo)
 	unbindControl("redo", "down", keyboardRedo)
 	unbindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
+	unbindControl("lock_selected_element", "down", lockSelectedElement)
 end
 
 -- get the point and element targeted by the camera
