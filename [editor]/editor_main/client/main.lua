@@ -1005,10 +1005,10 @@ function lockSelectedElement()
 	if targetElement then
 		if g_lock[targetElement] then
 			g_lock[targetElement] = nil
-			editor_gui.outputMessage("You have unlocked this element.", 0,255,0)
+			editor_gui.outputMessage("You have unlocked this element.", 50,255,50)
 		else
 			g_lock[targetElement] = true
-			editor_gui.outputMessage("You have locked this element.", 255,0,0)
+			editor_gui.outputMessage("You have locked this element.", 50,255,50)
 		end
 	end
 end
