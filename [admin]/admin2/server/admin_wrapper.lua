@@ -87,19 +87,29 @@ function getWeatherNameFromID(weather)
     return iif(aWeathers[weather], aWeathers[weather], "Unknown")
 end
 
-function warpPlayer(p, to)
-    function warp(p, to)
-        local x, y, z = getElementPosition(to)
-        local r = getPedRotation(to)
-        x = x - math.sin(math.rad(r)) * 2
-        y = y + math.cos(math.rad(r)) * 2
-        setTimer(setElementPosition, 1000, 1, p, x, y, z + 1)
-        fadeCamera(p, false, 1, 0, 0, 0)
-        setElementDimension(p, getElementDimension(to))
-        setElementInterior(p, getElementInterior(to))
-        setTimer(fadeCamera, 1000, 1, p, true, 1)
+function warp(p, to)
+    local x, y, z, r, dim, int
+    if type(to) == "table" then
+        x, y, z = unpack(to)
+        r, dim, int = 0, 0, 0
+    else
+        x, y, z = getElementPosition(to)
+        r = getPedRotation(to)
+        dim = getElementDimension(to)
+        int = getElementInterior(to)
     end
-    if (isPedInVehicle(to)) then
+    local target = getPedOccupiedVehicle(p) or p
+    x = x - math.sin(math.rad(r)) * 2
+    y = y + math.cos(math.rad(r)) * 2
+    setTimer(setElementPosition, 1000, 1, target, x, y, z + 1)
+    fadeCamera(p, false, 1, 0, 0, 0)
+    setElementDimension(target, dim)
+    setElementInterior(target, int)
+    setTimer(fadeCamera, 1000, 1, p, true, 1)
+end
+
+function warpPlayer(p, to)
+    if (isElement(to) and isPedInVehicle(to)) then
         local vehicle = getPedOccupiedVehicle(to)
         local seats = getVehicleMaxPassengers(vehicle) + 1
         local i = 0
