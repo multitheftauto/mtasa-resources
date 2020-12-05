@@ -274,8 +274,7 @@ function aResourcesTab.listResources(type)
         filter = nil
     end
     for id, resource in ipairs(temp) do
-        local resName = resource.name
-        if (filter and resName:lower():find(filter:lower())) or (not filter) then
+        if (filter and resource.name:lower():find(filter:lower())) or (not filter) then
             local row = guiGridListAddRow(resources)
             guiGridListSetItemText(resources, row, 1, resource.name, false, false)
             guiGridListSetItemText(resources, row, 2, resource.state, false, false)
