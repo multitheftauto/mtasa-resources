@@ -39,6 +39,7 @@
   <script src="server/admin_ip2c.lua" 				        type="server" />
   <script src="server/admin_ACL.lua" 				     	type="server" />
   <script src="server/admin_bans.lua"                 		type="server" />
+  <script src="server/admin_automatic-scripts.lua"         type="server" />
   <script src="server/admin_network.lua"                 	type="server" />
   <script src="server/admin_messagebox.lua"                 type="server" />
   <script src="server/admin_screenshot.lua"                 type="server" />
@@ -57,6 +58,7 @@
   <script src="client/main/admin_network.lua"	        	type="client" />
   <script src="client/main/admin_options.lua"	        	type="client" />
   <script src="client/main/admin_acl.lua"	            	type="client" />
+  <script src="client/main/admin_automatic-scripts.lua"    type="client" />
   <script src="client/main/admin_map.lua"	            	type="client" />
   <script src="client/widgets/admin_messagebox.lua" 		type="client" />
   <script src="client/widgets/admin_inputbox.lua" 			type="client" />
@@ -250,23 +252,41 @@
   <file src="client/images/flags/za.png" />
 
   <settings>
-  	<setting name="#pingkicker" value="0"
+  	<setting name="#pingkicker" value="[300]"
 		   group="Automatic scripts"
 		   friendlyname="Ping kicker"
 		   accept="0-1000"
-		   desc="Max ping allowed (0 - off)"
+		   desc="Max ping allowed (0 - 300)"
 	/>
-  	<setting name="#fpskicker" value="0"
+  <setting name="#pingkicker_state" value="[false]"
+		   group="Automatic scripts"
+		   friendlyname="Ping kicker enabled?"
+		   accept="[true], [false]"
+		   desc="The ping kicker current state."
+	/>
+  	<setting name="#fpskicker" value="10"
 		   group="Automatic scripts"
 		   friendlyname="FPS kicker"
 		   accept="0-100"
-		   desc="Lowest fps allowed: 25-75 (0 - off)"
+		   desc="Lowest fps allowed (0 - 100)"
 	/>
-	<setting name="#idlekicker" value="0"
+  <setting name="#fpskicker_state" value="[false]"
+		   group="Automatic scripts"
+		   friendlyname="FPS kicker enabled?"
+		   accept="[true], [false]"
+		   desc="The fps kicker current state."
+	/>
+	<setting name="#idlekicker" value="60"
 		   group="Automatic scripts"
 		   friendlyname="Idle Kicker"
-		   accept="0-100"
-		   desc="Maximum time a player can stay idle (minutes, 0 - off)."
+		   accept="1-1000"
+		   desc="Maximum time a player can stay idle (in minutes)."
+	/>
+  <setting name="#idlekicker_state" value="[false]"
+		   group="Automatic scripts"
+		   friendlyname="Idle kicker enabled?"
+		   accept="[true], [false]"
+		   desc="The idle kicker current state."
 	/>
 	<setting name="#consolecommands" value="[true]"
 		   group="General"

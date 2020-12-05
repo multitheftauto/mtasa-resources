@@ -463,6 +463,36 @@ aFunctions = {
             end
             return true, limit
         end,
+        ['setpingkicker'] = function(limit)
+            if (not changeAutomaticScriptValue('pingkicker', limit)) then
+                outputChatBox("Error setting ping kicker.", source, 255, 0, 0)
+                return false
+            end
+            return true, limit
+        end,
+        ['togglepingkicker'] = function(state)
+            toggleAutomaticScript('pingkicker', state)
+        end,
+        ['setfpskicker'] = function(limit)
+            if (not changeAutomaticScriptValue('fpskicker', limit)) then
+                outputChatBox("Error setting fps kicker.", source, 255, 0, 0)
+                return false
+            end
+            return true, limit
+        end,
+        ['togglefpskicker'] = function(state)
+            toggleAutomaticScript('fpskicker', state)
+        end,
+        ['setidlekicker'] = function(limit)
+            if (not changeAutomaticScriptValue('idlekicker', limit)) then
+                outputChatBox("Error setting idle kicker.", source, 255, 0, 0)
+                return false
+            end
+            return true, limit
+        end,
+        ['toggleidlekicker'] = function(state)
+            toggleAutomaticScript('idlekicker', state)
+        end,
         ["setworldproperty"] = function(property, enabled)
             if (enabled) then
                 local v = enabled == "on" or enabled == "enabled" or enabled == "true"

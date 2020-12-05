@@ -101,25 +101,19 @@ function aServerTab.Create(tab)
 
     guiCreateHeader(0.02, 0.755, 0.30, 0.035, "Automatic scripts:", true, tab)
     aServerTab.PingKickerCheck =
-        guiCreateCheckBox(0.03, 0.800, 0.30, 0.04, "Ping Kicker", false, true, tab, "setpingkicker")
-    aServerTab.PingKicker = guiCreateEdit(0.35, 0.800, 0.135, 0.04, "300", true, tab)
-    aServerTab.PingKickerSet = guiCreateButton(0.50, 0.800, 0.10, 0.04, "Set", true, tab, "setpingkicker")
-    guiSetEnabled(aServerTab.PingKicker, false)
-    guiSetEnabled(aServerTab.PingKickerSet, false)
+        guiCreateCheckBox(0.03, 0.780, 0.30, 0.04, "Ping Kicker (maximum)", getAutomaticScriptInfo('pingkicker', 'state'), true, tab, "setpingkicker")
+    aServerTab.PingKicker = guiCreateEdit(0.35, 0.780, 0.135, 0.04, getAutomaticScriptInfo('pingkicker', 'limit'), true, tab)
+    aServerTab.PingKickerSet = guiCreateButton(0.50, 0.780, 0.10, 0.04, "Set", true, tab, "setpingkicker")
 
     aServerTab.FPSKickerCheck =
-        guiCreateCheckBox(0.03, 0.845, 0.30, 0.04, "FPS Kicker", false, true, tab, "setfpskicker")
-    aServerTab.FPSKicker = guiCreateEdit(0.35, 0.845, 0.135, 0.04, "5", true, tab)
-    aServerTab.FPSKickerSet = guiCreateButton(0.50, 0.845, 0.10, 0.04, "Set", true, tab, "setfpskicker")
-    guiSetEnabled(aServerTab.FPSKicker, false)
-    guiSetEnabled(aServerTab.FPSKickerSet, false)
+        guiCreateCheckBox(0.03, 0.825, 0.30, 0.04, "FPS Kicker (minimum)", getAutomaticScriptInfo('fpskicker', 'state'), true, tab, "setfpskicker")
+    aServerTab.FPSKicker = guiCreateEdit(0.35, 0.825, 0.135, 0.04, getAutomaticScriptInfo('fpskicker', 'limit'), true, tab)
+    aServerTab.FPSKickerSet = guiCreateButton(0.50, 0.825, 0.10, 0.04, "Set", true, tab, "setfpskicker")
 
     aServerTab.IdleKickerCheck =
-        guiCreateCheckBox(0.03, 0.890, 0.30, 0.04, "Idle Kicker", false, true, tab, "setidlekicker")
-    aServerTab.IdleKicker = guiCreateEdit(0.35, 0.890, 0.135, 0.04, "10", true, tab)
-    aServerTab.IdleKickerSet = guiCreateButton(0.50, 0.890, 0.10, 0.04, "Set", true, tab, "setidlekicker")
-    guiSetEnabled(aServerTab.IdleKicker, false)
-    guiSetEnabled(aServerTab.IdleKickerSet, false)
+        guiCreateCheckBox(0.03, 0.870, 0.30, 0.04, "Idle Kicker (minutes)", getAutomaticScriptInfo('idlekicker', 'state'), true, tab, "setidlekicker")
+    aServerTab.IdleKicker = guiCreateEdit(0.35, 0.870, 0.135, 0.04, getAutomaticScriptInfo('idlekicker', 'limit'), true, tab)
+    aServerTab.IdleKickerSet = guiCreateButton(0.50, 0.870, 0.10, 0.04, "Set", true, tab, "setidlekicker")
 
     guiCreateHeader(0.65, 0.015, 0.30, 0.035, "Allowed glitches:", true, tab)
     local i = 1
@@ -266,6 +260,39 @@ function aServerTab.onClientClick(button)
                 triggerServerEvent("aServer", getLocalPlayer(), "setfpslimit", 36) -- 36 is default
                 guiSetText(aServerTab.FPS, 36)
             end
+        elseif (source == aServerTab.PingKickerSet) then
+            local pinglimit = tonumber(guiGetText(aServerTab.PingKicker))
+            if pinglimit then
+                triggerServerEvent("aServer", getLocalPlayer(), "setpingkicker", pinglimit)
+            else
+                triggerServerEvent("aServer", getLocalPlayer(), "setpingkicker", 300) -- 300 is default
+                guiSetText(aServerTab.PingKicker, 300)
+            end
+        elseif (source == aServerTab.PingKickerCheck) then
+            local state = guiCheckBoxGetSelected(aServerTab.PingKickerCheck)
+            triggerServerEvent("aServer", getLocalPlayer(), "togglepingkicker", state)
+        elseif (source == aServerTab.FPSKickerSet) then
+            local fpslimit = tonumber(guiGetText(aServerTab.FPSKicker))
+            if fpslimit then
+                triggerServerEvent("aServer", getLocalPlayer(), "setfpskicker", fpslimit)
+            else
+                triggerServerEvent("aServer", getLocalPlayer(), "setfpskicker", 10) -- 10 is default
+                guiSetText(aServerTab.FPSKicker, 10)
+            end
+        elseif (source == aServerTab.FPSKickerCheck) then
+            local state = guiCheckBoxGetSelected(aServerTab.FPSKickerCheck)
+            triggerServerEvent("aServer", getLocalPlayer(), "togglefpskicker", state)
+        elseif (source == aServerTab.IdleKickerSet) then
+            local idlelimit = tonumber(guiGetText(aServerTab.IdleKicker))
+            if idlelimit then
+                triggerServerEvent("aServer", getLocalPlayer(), "setidlekicker", idlelimit)
+            else
+                triggerServerEvent("aServer", getLocalPlayer(), "setidlekicker", 60) -- 60 is default
+                guiSetText(aServerTab.IdleKicker, 60)
+            end
+        elseif (source == aServerTab.IdleKickerCheck) then
+            local state = guiCheckBoxGetSelected(aServerTab.IdleKickerCheck)
+            triggerServerEvent("aServer", getLocalPlayer(), "toggleidlekicker", state)
         elseif (source == aServerTab.QuickReload) then
             triggerServerEvent(
                 "aServer",
