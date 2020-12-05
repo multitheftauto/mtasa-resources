@@ -54,27 +54,6 @@ aAutoScripts["fpskicker"] = {
     end
 }
 
-aAutoScripts["fpskicker"] = {
-    state = nil,
-    timer = nil,
-    limit = 10,
-    checkInterval = 3000,
-    toggle = function(state)
-        if isElement(aServerTab.FPSKickerCheck) then
-            guiCheckBoxSetSelected(aServerTab.FPSKickerCheck, state)
-        end
-        if isElement(aServerTab.FPSKicker) then
-            guiSetText(aServerTab.FPSKicker, aAutoScripts["fpskicker"].limit)
-        end
-    end,
-    execute = function()
-        local myFPS = getCurrentFPS(localPlayer)
-        if (myFPS < aAutoScripts["fpskicker"].limit) then
-            triggerServerEvent("aAutomaticScriptKick", localPlayer, ("fps below the limit (%i < %i)"):format(myFPS, aAutoScripts["fpskicker"].limit))
-        end
-    end
-}
-
 aAutoScripts["idlekicker"] = {
     state = nil,
     timer = nil,
