@@ -146,7 +146,7 @@ function aClientWarpDoubleClick(button)
                         localPlayer,
                         aWarpSelectPointer,
                         "warpto",
-                        getPlayerFromNick(guiGridListGetItemText(aWarpList, guiGridListGetSelectedItem(aWarpList), 1))
+                        getPlayerFromName(guiGridListGetItemText(aWarpList, guiGridListGetSelectedItem(aWarpList), 1))
                     )
                 end
                 aPlayerWarpClose(false)
@@ -168,7 +168,7 @@ function aClientWarpClick(button, state, absX, absY)
                         localPlayer,
                         aWarpSelectPointer,
                         "warpto",
-                        getPlayerFromNick(guiGridListGetItemText(aWarpList, guiGridListGetSelectedItem(aWarpList), 1))
+                        getPlayerFromName(guiGridListGetItemText(aWarpList, guiGridListGetSelectedItem(aWarpList), 1))
                     )
                 end
                 aPlayerWarpClose(false)
