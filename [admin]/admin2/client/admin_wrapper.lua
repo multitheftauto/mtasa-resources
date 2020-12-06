@@ -75,12 +75,3 @@ function iif(cond, arg1, arg2)
     end
     return arg2
 end
-
-function getPlayerFromNick(nick)
-    for id, player in ipairs(getElementsByType("player")) do
-        if (getPlayerName(player) == nick) then
-            return player
-        end
-    end
-    return false
-end

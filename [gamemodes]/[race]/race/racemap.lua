@@ -289,7 +289,7 @@ function RaceElementMap:getAll(name, type)
 		for _,attr in ipairs(attrs) do
 			local val = getElementData(element, attr)
 			if attr == "rotation" then
-				val = val or getElementData(element, "rotZ")
+				val = { tonumber(getElementData(element, "rotX")) or 0, tonumber(getElementData(element, "rotY")) or 0, tonumber(val or getElementData(element, "rotZ")) or 0 }
 			elseif attr == "position" then
 				val = val or { tonumber(getElementData(element, "posX")), tonumber(getElementData(element, "posY")), tonumber(getElementData(element, "posZ")) }
 			elseif val then
