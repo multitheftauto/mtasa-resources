@@ -1000,9 +1000,10 @@ function cloneSelectedElement()
 	end
 end
 
-function lockSelectedElement()
-	local targetElement = getTargetedElement()
+function lockSelectedElement(element,state)
+	local targetElement = isElement(element) and element or getTargetedElement()
 	if targetElement then
+		if isElementLocked(targetElement) == state then return end
 		if g_lock[targetElement] then
 			g_lock[targetElement] = nil
 			editor_gui.outputMessage("You have unlocked this element.", 50,255,50)
@@ -1010,6 +1011,12 @@ function lockSelectedElement()
 			g_lock[targetElement] = true
 			editor_gui.outputMessage("You have locked this element.", 50,255,50)
 		end
+	end
+end
+
+function isElementLocked(element)
+	if isElement(element) then
+		return g_lock[element] or false
 	end
 end
 

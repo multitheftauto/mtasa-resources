@@ -372,7 +372,7 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 			local creatorDef = resourceElementDefinitions[creatorResource] or resourceElementDefinitions.editor_main
 
 			if creatorDef and creatorDef[elementType] then
-				local validModels = creatorDef[elementType].data[controlLabelName].validModels
+				local validModels = creatorDef[elementType].data[controlLabelName] and creatorDef[elementType].data[controlLabelName].validModels
 
 				if validModels then
 					local elementModel = getElementModel(selectedElement)
@@ -680,20 +680,22 @@ local function applyPropertiesChanges()
 
 	--set properties
 	for i, control in ipairs(addedControls) do
-		local value = control:getValue()
-		local modified = false
+		if control:getDataField() ~= "locked" then -- we don't want to sync it
+			local value = control:getValue()
+			local modified = false
 
-		if type(value) ~= "table" then
-			modified = (value ~= previousValues[control])
-		else
-			modified = not deepTableEqual(value, previousValues[control])
-		end
+			if type(value) ~= "table" then
+				modified = (value ~= previousValues[control])
+			else
+				modified = not deepTableEqual(value, previousValues[control])
+			end
 
-		if modified then
-			local dataField = control:getDataField()
-			oldValues[dataField] = previousValues[control]
-			newValues[dataField] = value
-			previousValues[control] = value
+			if modified then
+				local dataField = control:getDataField()
+				oldValues[dataField] = previousValues[control]
+				newValues[dataField] = value
+				previousValues[control] = value
+			end
 		end
 	end
 
@@ -800,6 +802,7 @@ function openPropertiesBox( element, resourceName, shortcut )
 		addEventHandler("onClientElementDataChange", selectedElement, checkForNewID)
 
 		addEDFPropertyControlsForElement( selectedElement )
+		addPropertyControl("selection", "locked", "Locked", function (control) exports.editor_main:lockSelectedElement(selectedElement, control:getValue() == "true" or false) end, {value = exports.editor_main:isElementLocked(selectedElement) and "true" or "false", validvalues = {"false","true"}, datafield = "locked"})
 
 		creatingNewElment = false
 		syncPropertiesCallback = applyPropertiesChanges
