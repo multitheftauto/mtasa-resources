@@ -15,3 +15,7 @@
 
 # acpanel
 \[admin\]/acpanel/settings.xml
+
+# editor
+editor_dump/
+editor_test/
