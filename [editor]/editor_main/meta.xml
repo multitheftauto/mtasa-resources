@@ -130,6 +130,8 @@
 	<export function="createHighlighterText" type="client" />
 	<export function="setCrosshairState" type="client" />
 	<export function="setCursorCrosshairState" type="client" />
+	<export function="lockSelectedElement" type="client" />
+	<export function="isElementLocked" type="client" />
 
 	<!-- Client-side files -->
 	<file src="client/images/crosshair.png" />
