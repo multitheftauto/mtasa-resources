@@ -1,15 +1,15 @@
 local PLACEMENT_FILENAME = "client/colpatch/placement.list"
 local COL_FILENAME = "client/colpatch/patches.col"
-local COL_LOAD_FRAME = 10		-- Files to load and replace per frame
-local COL_CREATE_FRAME = 100	-- Objects to create per frame
-local COL_RESTORE_FRAME = 20	-- Files to restore and destroy per frame
-local COL_DESTROY_FRAME = 100	-- Objects to destroy per frame
+local COL_LOAD_FRAME = 10 -- Files to load and replace per frame
+local COL_CREATE_FRAME = 100 -- Objects to create per frame
+local COL_RESTORE_FRAME = 20 -- Files to restore and destroy per frame
+local COL_DESTROY_FRAME = 100 -- Objects to destroy per frame
 
-local g_colData			-- Contains collision data from patches.col file
-local g_colElements		-- Contains loaded col
-local g_placementData	-- Contains placement data from placement.list
-local g_placementObjs	-- Contains created objs as [obj] = {} pairs
-local g_placementIDObjs	-- Contains [model] = {obj, ...} pairs
+local g_colData -- Contains collision data from patches.col file
+local g_colElements -- Contains loaded col
+local g_placementData -- Contains placement data from placement.list
+local g_placementObjs -- Contains created objs as [obj] = {} pairs
+local g_placementIDObjs -- Contains [model] = {obj, ...} pairs
 
 local g_threadCoroutine
 local g_threadTimer
