@@ -20,11 +20,13 @@ end
 
 function getResourceInfo ( resource )
 
-    local failreason =  getResourceLoadFailureReason ( resource )
-    local state = getResourceState ( resource )
-    local starttime = os.date("%Y-%m-%d %X", getResourceLastStartTime ( resource ))
-    local loadtime = os.date("%Y-%m-%d %X", getResourceLoadTime ( resource ))
+	local failreason =  getResourceLoadFailureReason ( resource )
+	local state = getResourceState ( resource )
+	local startTimestamp = getResourceLastStartTime(resource)
+	local startTime = type(startTimestamp) == "number" and os.date("%Y-%m-%d %X", startTimestamp) or "Never"
+	local loadTimestamp = getResourceLoadTime(resource)
+	local loadTime = type(loadTimestamp) == "number" and os.date("%Y-%m-%d %X", loadTimestamp) or "Never"
 	local author =  mta_getResourceInfo ( resource, "author" )
 	local version = mta_getResourceInfo ( resource, "version" )
-    return {state=state, failurereason=failreason, starttime=starttime, loadtime=loadtime, author=author, version=version}
+	return {state=state, failurereason=failreason, starttime=startTime, loadtime=loadTime, author=author, version=version}
 end
