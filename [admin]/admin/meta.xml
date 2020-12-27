@@ -271,12 +271,6 @@
   <file src="client/images/flags/hr.png" />
   <file src="client/images/flags/xk.png" />
 
-  <!--Unused-->
-  <!--
-  <script src="server/admin_community.lua" />
-  <script src="server/admin_coroutines.lua" />
-  -->
-
   <!--HTTP Server Stuff-->
   <!--Not finished yet
   <export function="httpLoad" http="true" />
