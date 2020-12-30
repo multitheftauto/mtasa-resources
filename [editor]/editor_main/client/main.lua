@@ -329,6 +329,8 @@ function startEditor()
 			end
 		end
 	end
+	loadColPatchArchive()
+	loadColPatchPlacements()
 end
 
 function stopEditor()
@@ -426,14 +428,14 @@ function processFreecamClick(key, keyState)
 	local drop
 	if (not g_suspended) then
 		local clickedElement, targetX, targetY, targetZ = getTargetedElement()
-
+		
 		local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
 		local distance = math.sqrt((targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2)
 
-		if (distance > g_maxSelectDistance) then
-			clickedElement = nil
+		if clickedElement and (distance > g_maxSelectDistance) then
 			outputDebugString("Cannot select out of range element: " .. getElementType(clickedElement))
 			outputDebugString(" distance: " .. distance)
+			clickedElement = nil
 		end
 		processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 	end
@@ -737,6 +739,8 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	submode = submode or g_submode
 
 	if not isElement(element) then return end
+	
+	if isColPatchObject(element) then return end
 
 	if getElementType(element) == "vehicle" and getVehicleType(element) == "Train" then
 		setTrainDerailed(element, true)
@@ -1167,7 +1171,15 @@ function processCameraLineOfSight()
             nx, ny, nz, material, lighting, piece,
             buildingId, bx, by, bz, brx, bry, brz, buildingLOD
 		= processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
-
+	
+	-- Is this a collision patch object
+	if targetElement and isColPatchObject(targetElement) then
+		local cp = isColPatchObject(targetElement)
+		-- Make it look like we hit a world model
+		buildingId, bx, by, bz, brx, bry, brz = cp.id, cp.x, cp.y, cp.z, cp.rx, cp.ry, cp.rz
+		targetElement = nil
+	end
+	
 	-- if there is none, use the end point of the vector as the collision point
 	if not surfaceFound then
 	    targetX, targetY, targetZ = endX, endY, endZ
@@ -1190,6 +1202,14 @@ function processCursorLineOfSight()
             nx, ny, nz, material, lighting, piece,
             buildingId, bx, by, bz, brx, bry, brz, buildingLOD
         = processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
+
+	-- Is this a collision patch object
+	if targetElement and isColPatchObject(targetElement) then
+		local cp = isColPatchObject(targetElement)
+		-- Make it look like we hit a world model
+		buildingId, bx, by, bz, brx, bry, brz = cp.id, cp.x, cp.y, cp.z, cp.rx, cp.ry, cp.rz
+		targetElement = nil
+	end
 
 	-- if there is none, use the end point of the vector as the collision point
 	if not surfaceFound then
