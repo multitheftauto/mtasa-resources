@@ -151,7 +151,15 @@ addEventHandler ( "onClientGUILoaded", root,
 function passDefaultMapSettings()
 	currentMapSettings = makeSettingsDefault()
 	currentMapSettings.gamemodeSettings = {}
+	currentMapSettings.availGamemodes = {}
 	currentMapSettings.addedGamemodes = {}
+	local gamemodes = mapmanager.getGamemodes()
+	for k,v in ipairs(gamemodes) do
+		local name = getResourceName ( v )
+		if string.lower(name) ~= "freeroam" then
+			table.insert ( currentMapSettings.availGamemodes, name )
+		end
+	end
 	doSaveNewMapSettings(currentMapSettings, true)
 
 	-- Unload definitions
