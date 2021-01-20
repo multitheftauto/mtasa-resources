@@ -111,7 +111,7 @@ end
 
 addEventHandler(
     "onResourceStart",
-    getResourceRootElement(),
+    resourceRoot,
     function()
         db.exec(
             "CREATE TABLE IF NOT EXISTS screenshots ( file TEXT, player TEXT, admin TEXT, description TEXT, time INTEGER, temp BOOL )"
@@ -125,7 +125,7 @@ addEventHandler(
     root,
     function(resource, status, jpeg, time, tag)
         collectTimedOutScreenShots()
-        if (resource ~= getThisResource()) then
+        if (resource ~= resource) then
             return
         end
 

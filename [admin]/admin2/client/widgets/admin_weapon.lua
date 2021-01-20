@@ -76,7 +76,7 @@ function aWeapon.onDoubleClick(button)
             if (guiGridListGetSelectedItem(aWeapon.List) ~= -1) then
                 local id = tonumber(guiGridListGetItemText(aWeapon.List, guiGridListGetSelectedItem(aWeapon.List), 1))
                 local ammo = tonumber(guiGetText(aWeapon.Ammo)) or DEFAULT_AMMO_AMOUNT
-                triggerServerEvent("aPlayer", getLocalPlayer(), aWeapon.Select, "giveweapon", id, ammo)
+                triggerServerEvent("aPlayer", localPlayer, aWeapon.Select, "giveweapon", id, ammo)
                 aWeapon.Close(false)
             end
         end
@@ -88,14 +88,14 @@ function aWeapon.onClick(button)
         if (source == aWeapon.Accept) then
             if (tonumber(guiGetText(aWeapon.ID))) then
                 local ammo = tonumber(guiGetText(aWeapon.Ammo)) or DEFAULT_AMMO_AMOUNT
-                triggerServerEvent("aPlayer", getLocalPlayer(), aWeapon.Select, "giveweapon", tonumber(guiGetText(aWeapon.ID)), ammo)
+                triggerServerEvent("aPlayer", localPlayer, aWeapon.Select, "giveweapon", tonumber(guiGetText(aWeapon.ID)), ammo)
                 aWeapon.Close(false)
             else
                 if (guiGridListGetSelectedItem(aWeapon.List) ~= -1) then
                     local id = tonumber(guiGridListGetItemText(aWeapon.List, guiGridListGetSelectedItem(aWeapon.List), 1))
                     local ammo = tonumber(guiGetText(aWeapon.Ammo)) or DEFAULT_AMMO_AMOUNT
                     guiSetVisible(aWeapon.Form, false)
-                    triggerServerEvent("aPlayer", getLocalPlayer(), aWeapon.Select, "giveweapon", id, ammo)
+                    triggerServerEvent("aPlayer", localPlayer, aWeapon.Select, "giveweapon", id, ammo)
                 else
                     messageBox("No weapon selected!", MB_ERROR, MB_OK)
                 end

@@ -216,7 +216,7 @@ function aVehicleUpgrades.onClick(button, state)
         elseif (source == aVehicleUpgrades.ColorSet) then
             triggerServerEvent(
                 "aVehicle",
-                getLocalPlayer(),
+                localPlayer,
                 aVehicleUpgrades.CustomizePlayer,
                 "setcolor",
                 {
@@ -230,15 +230,15 @@ function aVehicleUpgrades.onClick(button, state)
             guiSetVisible(aVehicleUpgrades.ColorForm, true)
             guiBringToFront(aVehicleUpgrades.ColorForm)
         elseif (source == aVehicleUpgrades.UpgradeAll) then
-            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleUpgrades.CustomizePlayer, "customize", {"all"})
+            triggerServerEvent("aVehicle", localPlayer, aVehicleUpgrades.CustomizePlayer, "customize", {"all"})
             setTimer(aVehicleUpgrades.CheckCurrentUpgrades, 2000, 1, aVehicleUpgrades.CustomizeVehicle)
         elseif (source == aVehicleUpgrades.RemoveAll) then
-            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleUpgrades.CustomizePlayer, "customize", {"remove"})
+            triggerServerEvent("aVehicle", localPlayer, aVehicleUpgrades.CustomizePlayer, "customize", {"remove"})
             setTimer(aVehicleUpgrades.CheckCurrentUpgrades, 2000, 1, aVehicleUpgrades.CustomizeVehicle)
         elseif (source == aVehicleUpgrades.PaintjobSet) then
             triggerServerEvent(
                 "aVehicle",
-                getLocalPlayer(),
+                localPlayer,
                 aVehicleUpgrades.CustomizePlayer,
                 "setpaintjob",
                 tonumber(guiComboBoxGetItemText(aVehicleUpgrades.Paintjob, guiComboBoxGetSelected(aVehicleUpgrades.Paintjob)))
@@ -261,7 +261,7 @@ function aVehicleUpgrades.onClick(button, state)
                     end
                 end
             end
-            triggerServerEvent("aVehicle", getLocalPlayer(), aVehicleUpgrades.CustomizePlayer, "customize", tableOut)
+            triggerServerEvent("aVehicle", localPlayer, aVehicleUpgrades.CustomizePlayer, "customize", tableOut)
             setTimer(aVehicleUpgrades.CheckCurrentUpgrades, 2000, 1, aVehicleUpgrades.CustomizeVehicle)
         end
     end

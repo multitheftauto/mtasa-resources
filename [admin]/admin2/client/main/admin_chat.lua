@@ -44,7 +44,7 @@ function aChatTab.onClientClick(button)
                 if (gettok(message, 1, 32) == "/clear") then
                     guiSetText(aChatTab.AdminChat, "")
                 else
-                    triggerServerEvent("aAdminChat", getLocalPlayer(), message)
+                    triggerServerEvent("aAdminChat", localPlayer, message)
                 end
                 guiSetText(aChatTab.AdminText, "")
             end
@@ -62,7 +62,7 @@ function aChatTab.onClientSync(type, table)
     if (type == SYNC_ADMINS) then
         --if ( guiGridListGetRowCount ( aChatTab.AdminPlayers ) > 0 ) then guiGridListClear ( aChatTab.AdminPlayers ) end
         for id, player in ipairs(getElementsByType("player")) do
-            if (not table[player] or not table[player]["admin"]) and (player == getLocalPlayer()) then
+            if (not table[player] or not table[player]["admin"]) and (player == localPlayer) then
                 -- aAdminDestroy()
                 return
             else
@@ -116,7 +116,7 @@ function aChatTab.onClientGUIAccepted(element)
         if (gettok(message, 1, 32) == "/clear") then
             guiSetText(aChatTab.AdminChat, "")
         else
-            triggerServerEvent("aAdminChat", getLocalPlayer(), message)
+            triggerServerEvent("aAdminChat", localPlayer, message)
         end
         guiSetText(aChatTab.AdminText, "")
     end
@@ -128,7 +128,7 @@ function aChatTab.onClientAdminChat(message)
     if (aGetSetting("adminChatOutput")) then
         outputChatBox("ADMIN> " .. getPlayerName(source) .. ": " .. message, 255, 0, 0)
     end
-    if ((aGetSetting("adminChatSound")) and (source ~= getLocalPlayer())) then
+    if ((aGetSetting("adminChatSound")) and (source ~= localPlayer)) then
         playSoundFrontEnd(13)
     end
 end
