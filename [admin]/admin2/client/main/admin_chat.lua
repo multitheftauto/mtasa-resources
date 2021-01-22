@@ -123,8 +123,9 @@ function aChatTab.onClientGUIAccepted(element)
 end
 
 function aChatTab.onClientAdminChat(message)
-    guiSetText(aChatTab.AdminChat, guiGetText(aChatTab.AdminChat) .. "" .. getPlayerName(source) .. ": " .. message)
-    guiSetProperty(aChatTab.AdminChat, "CaratIndex", tostring(string.len(guiGetText(aChatTab.AdminChat))))
+    local chat = guiGetText(aChatTab.AdminChat)
+    guiSetText(aChatTab.AdminChat, (chat ~= "\n" and chat or "") .. getPlayerName(source) .. ": " .. message)
+    guiSetProperty(aChatTab.AdminChat, "CaratIndex", tostring(string.len(chat)))
     if (aGetSetting("adminChatOutput")) then
         outputChatBox("ADMIN> " .. getPlayerName(source) .. ": " .. message, 255, 0, 0)
     end
