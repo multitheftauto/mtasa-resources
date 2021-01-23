@@ -417,7 +417,7 @@ function restorePlayer(id, player, bNoFade, bDontFix)
 	if not RaceMode.checkpointsExist() or checkpoint==1 then
 		local spawnpoint = self:pickFreeSpawnpoint(player)
 		bkp.position = spawnpoint.position
-		bkp.rotation = {0, 0, spawnpoint.rotation}
+		bkp.rotation = spawnpoint.rotation
 		bkp.geardown = true                 -- Fix landing gear state
 		bkp.vehicle = spawnpoint.vehicle    -- Fix spawn'n'blow
 		--setVehicleID(RaceMode.getPlayerVehicle(player), spawnpoint.vehicle)
