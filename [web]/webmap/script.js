@@ -14,18 +14,18 @@ var bliplist = new Object;
 
 function init()
 {
-	map = new OpenLayers.Map( $('map'), {'maxResolution': 360/512, 'maxExtent':new OpenLayers.Bounds(-90.0,-90.0,90.0,90.0),
-	'numZoomLevels':6,
+	map = new OpenLayers.Map( 'map', {'maxResolution': 1, 'maxExtent':new OpenLayers.Bounds(-90.0,-90.0,90.0,90.0),
+	'numZoomLevels':8,
 	});
 
 	map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
 
-	maplayer = new OpenLayers.Layer.WMS( "San Andreas Map",
-					"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_map', format: 'image/png' } );
-	map.addLayer(maplayer);
+	// maplayer = new OpenLayers.Layer.WMS( "San Andreas Map",
+	// 				"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_map', format: 'image/png' } );
+	// map.addLayer(maplayer);
 
-	aeriallayer = new OpenLayers.Layer.WMS( "San Andreas Aerial Map",
-					"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_aerial_map', format: 'image/png' } );
+	aeriallayer = new OpenLayers.Layer.XYZ( "San Andreas Aerial Map",
+					"https://community.mtasa.blue/tilecache/${z}_${x}_${y}.jpg" );
 	map.addLayer(aeriallayer);
 
 	map.zoomTo(2);
