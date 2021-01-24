@@ -59,148 +59,154 @@
 
 if (!Object.prototype.toJSONString) {
 
-    Array.prototype.toJSONString = function () {
-        var a = [],     // The array holding the member texts.
-            i,          // Loop counter.
-            l = this.length,
-            v;          // The value to be stringified.
+    Object.defineProperty(Array.prototype, 'toJSONString', {
+        enumerable: false,
+        value: function () {
+            let a = [],     // The array holding the member texts.
+                i,          // Loop counter.
+                l = this.length,
+                v;          // The value to be stringified.
 
 
 // For each value in this array...
 
-        for (i = 0; i < l; i += 1) {
-            v = this[i];
-            switch (typeof v) {
-            case 'object':
+            for (i = 0; i < l; i += 1) {
+                v = this[i];
+                switch (typeof v) {
+                case 'object':
 
 // Serialize a JavaScript object value. Ignore objects thats lack the
 // toJSONString method. Due to a specification error in ECMAScript,
 // typeof null is 'object', so watch out for that case.
 
-                if (v) {
-                    if (typeof v.toJSONString === 'function') {
-                        a.push(v.toJSONString());
-                    }
-                } else {
-                    a.push('null');
-                }
-                break;
-
-            case 'string':
-            case 'number':
-            case 'boolean':
-                a.push(v.toJSONString());
-
-// Values without a JSON representation are ignored.
-
-            }
-        }
-
-// Join all of the member texts together and wrap them in brackets.
-
-        return '[' + a.join(',') + ']';
-    };
-
-
-    Boolean.prototype.toJSONString = function () {
-        return String(this);
-    };
-
-
-    Date.prototype.toJSONString = function () {
-
-// Ultimately, this method will be equivalent to the date.toISOString method.
-
-        function f(n) {
-
-// Format integers to have at least two digits.
-
-            return n < 10 ? '0' + n : n;
-        }
-
-        return '"' + this.getFullYear() + '-' +
-                f(this.getMonth() + 1) + '-' +
-                f(this.getDate()) + 'T' +
-                f(this.getHours()) + ':' +
-                f(this.getMinutes()) + ':' +
-                f(this.getSeconds()) + '"';
-    };
-
-
-    Number.prototype.toJSONString = function () {
-
-// JSON numbers must be finite. Encode non-finite numbers as null.
-
-        return isFinite(this) ? String(this) : 'null';
-    };
-
-
-    Object.prototype.toJSONString = function () {
-        var a = [],     // The array holding the member texts.
-            k,          // The current key.
-            v;          // The current value.
-
-// Iterate through all of the keys in the object, ignoring the proto chain.
-
-        for (k in this) {
-            if (this.hasOwnProperty(k)) {
-                v = this[k];
-                switch (typeof v) {
-                case 'object':
-
-// Serialize a JavaScript object value. Ignore objects that lack the
-// toJSONString method. Due to a specification error in ECMAScript,
-// typeof null is 'object', so watch out for that case.
-
                     if (v) {
                         if (typeof v.toJSONString === 'function') {
-                            a.push(k.toJSONString() + ':' + v.toJSONString());
+                            a.push(v.toJSONString());
                         }
                     } else {
-                        a.push(k.toJSONString() + ':null');
+                        a.push('null');
                     }
                     break;
 
                 case 'string':
                 case 'number':
                 case 'boolean':
-                    a.push(k.toJSONString() + ':' + v.toJSONString());
+                    a.push(v.toJSONString());
 
 // Values without a JSON representation are ignored.
 
                 }
             }
-        }
+
+// Join all of the member texts together and wrap them in brackets.
+
+            return '[' + a.join(',') + ']';
+        },
+    });
+
+    Object.defineProperty(Boolean.prototype, 'toJSONString', {
+        enumerable: false,
+        value: function () {
+            return String(this);
+        },
+    });
+
+    Object.defineProperty(Date.prototype, 'toJSONString', {
+        enumerable: false,
+        value: function () {
+
+// Ultimately, this method will be equivalent to the date.toISOString method.
+
+            function f(n) {
+
+// Format integers to have at least two digits.
+
+                return n < 10 ? '0' + n : n;
+            }
+
+            return '"' + this.getFullYear() + '-' +
+                    f(this.getMonth() + 1) + '-' +
+                    f(this.getDate()) + 'T' +
+                    f(this.getHours()) + ':' +
+                    f(this.getMinutes()) + ':' +
+                    f(this.getSeconds()) + '"';
+        },
+    });
+
+    Object.defineProperty(Number.prototype, 'toJSONString', {
+        enumerable: false,
+        value: function () {
+
+// JSON numbers must be finite. Encode non-finite numbers as null.
+
+            return isFinite(this) ? String(this) : 'null';
+        },
+    });
+
+    Object.defineProperty(Object.prototype, 'toJSONString', {
+        enumerable: false,
+        value: function () {
+            let a = [],     // The array holding the member texts.
+                k,          // The current key.
+                v;          // The current value.
+
+// Iterate through all of the keys in the object, ignoring the proto chain.
+
+            for (k in this) {
+                if (this.hasOwnProperty(k)) {
+                    v = this[k];
+                    switch (typeof v) {
+                    case 'object':
+
+// Serialize a JavaScript object value. Ignore objects that lack the
+// toJSONString method. Due to a specification error in ECMAScript,
+// typeof null is 'object', so watch out for that case.
+
+                        if (v) {
+                            if (typeof v.toJSONString === 'function') {
+                                a.push(k.toJSONString() + ':' + v.toJSONString());
+                            }
+                        } else {
+                            a.push(k.toJSONString() + ':null');
+                        }
+                        break;
+
+                    case 'string':
+                    case 'number':
+                    case 'boolean':
+                        a.push(k.toJSONString() + ':' + v.toJSONString());
+
+// Values without a JSON representation are ignored.
+
+                    }
+                }
+            }
 
 // Join all of the member texts together and wrap them in braces.
 
-        return '{' + a.join(',') + '}';
-    };
-
-
-    (function (s) {
-
-// Augment String.prototype. We do this in an immediate anonymous function to
-// avoid defining global variables.
+            return '{' + a.join(',') + '}';
+        }
+    });
 
 // m is a table of character substitutions.
 
-        var m = {
-            '\b': '\\b',
-            '\t': '\\t',
-            '\n': '\\n',
-            '\f': '\\f',
-            '\r': '\\r',
-            '"' : '\\"',
-            '\\': '\\\\'
-        };
+    const m = {
+        '\b': '\\b',
+        '\t': '\\t',
+        '\n': '\\n',
+        '\f': '\\f',
+        '\r': '\\r',
+        '"' : '\\"',
+        '\\': '\\\\'
+    };
 
-
-        s.parseJSON = function (filter) {
-            var j;
+    Object.defineProperty(String.prototype, 'parseJSON', {
+        enumerable: false,
+        value: function (filter) {
+            let j;
 
             function walk(k, v) {
-                var i;
+                let i;
                 if (v && typeof v === 'object') {
                     for (i in v) {
                         if (v.hasOwnProperty(i)) {
@@ -242,11 +248,12 @@ if (!Object.prototype.toJSONString) {
                 j = walk('', j);
             }
             return j;
-        };
+        },
+    });
 
-
-        s.toJSONString = function () {
-
+    Object.defineProperty(String.prototype, 'toJSONString', {
+        enumerable: false,
+        value: function () {
 // If the string contains no control characters, no quote characters, and no
 // backslash characters, then we can simply slap some quotes around it.
 // Otherwise we must also replace the offending characters with safe
@@ -254,7 +261,7 @@ if (!Object.prototype.toJSONString) {
 
             if (/["\\\x00-\x1f]/.test(this)) {
                 return '"' + this.replace(/([\x00-\x1f\\"])/g, function (a, b) {
-                    var c = m[b];
+                    let c = m[b];
                     if (c) {
                         return c;
                     }
@@ -265,6 +272,6 @@ if (!Object.prototype.toJSONString) {
                 }) + '"';
             }
             return '"' + this + '"';
-        };
-    })(String.prototype);
+        },
+    });
 }
