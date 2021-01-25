@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Türkçe",
+        "strings": {
+            "WELCOME_TITLE": "Map Editöre hoşgeldin!",
+            "WELCOME_MAP_EDITOR_TEXT": "MTA:SA Map Editörüne hoş geldiniz! Bu, editörü ilk kullanışınız ise devam et tuşuna tıklayarak eğitim moduna girebilirsiniz.\n Eğer eğitimi geçmek istiyorsanız, aşağıdaki \"Eğitimi geç\" butonuna tıklayın.",
+        
+            "WELCOME_DISCLAIMER": "Uyarı",
+            "WELCOME_DISCLAIMER_TEXT": "Bu editör hâlâ yapım aşamasındadır ve tamamen fonksiyonel değildir.\nEğer devam etmek istiyorsanız OK tuşuna basın ya da ESC'ye basıp bağlantıyı kes butonuna tıklayın.",
+
+            "PROCEED": "Devam et",
+            "SKIP_TUTORIAL": "Eğitimi geç",
+
+            "TUTORIAL_CAMERA": "Şu anda kamera modundasın. %s, %s, %s ve %s tuşlarını kullanarak hareket edebilirsin. Fareni kullanarak kameranı döndürebilirsin. %s tuşunu kullanarak kamerayı hızlandırabilir, %s tuşunu kullanarak kamerayı yavaşlatabilirsin.",
+            "TUTORIAL_CURSOR": "%s tuşuna basarak imleç moduna geçiş yap. Bu modda iken editör menülerine tıklayabilirsin.",
+            "TUTORIAL_HUD": "İmleç modunda iken, Editör'ün düğmeleri tıklanabilir hâle gelir. Burası bütün obje/element/araç yaratma ve konfigürasyon işlemlerini yapabileceğin alandır. Ekranının sol altında bulunan 'element yaratma paneli' ile elementler yaratabilirsin. 'Objeler' düğmesine sol tıklayarak bir obje yaratmayı dene!",
+            "TUTORIAL_BINDS": "Şu anda Model gezginine girdin. Bu menüden objelerin modellerini, araçları ve skinleri görüntüleyebilirsin.",
+            "TUTORIAL_IDS": "Model kategorini değiştirmek için yukardaki menüyü kullanabilirsin. Sonuç listesini daha da çok kısaltmak için model IDleri ve anahtar sözcükleri de kullanabileceğin Arama kutusuna bir şeyler yazabilirsin.",
+            "TUTORIAL_IDS_2": "Sonuç listesinden görüntülemek istediğin modeli bulduğunda ona tıklayabilirsin. Sütunlar, modellerin isimlerini ve IDlerini gösterir. Devam etmek için bir model seç!",
+            "TUTORIAL_CURSOR_2": "Seçtiğin modeli ekranın sağ tarafında döner bir şekilde görebilirsin. Mouse kullanmadan modeller arasında geçiş yapmak için %s ve %s tuşlarını kullanabilirsin. Model menüsünün içinde kamera moduna geçerek modeli daha detaylı inceleyebilirsin! %s tuşuna basarak kamera moduna geçebilirsin!.",
+            "TUTORIAL_CAMERA_2": "Şu anda kamera modundasın. Bu modda modeli daha detaylı inceleyebilirsin. Fareni kullanarak objeyi döndürebilir, %s ve %s tuşları ile modele yaklaşıp uzaklaşabilirsin. Modeller arasında geçiş yapmak için bu modda da %s ve %s tuşlarını kullanabilirsin.",
+            "TUTORIAL_SEARCH": "Toplam arama sonuçlarının sayısını ekranın sağ üstünde görebilirsin. Şu an bakmaktan olduğun modelin ismi ve IDsi de aynı yerde yazmaktadır.",
+            "TUTORIAL_MODEL_CURSOR": "Beğendiğin bir modeli bulduğunda %s tuşuna basarak imleç modunu aktif edebilir ve OK tuşuna basarak devam edebilirsin.",
+
+
+            "OK": "OK"
+        }
+    }
+]
