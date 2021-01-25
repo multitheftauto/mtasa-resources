@@ -64,16 +64,16 @@ function addBlipMarker(blip)
 // Takes a GTA x and y and returns a x and y on the map
 function gtaCoordToMap(x, y)
 {
-	var mapx = x * 0.03;
-	var mapy = y * 0.03;
+	var mapx = x * 0.03185;
+	var mapy = y * -0.015;
 	return {x: mapx, y: mapy};
 }
 
 // Takes a GTA x and y and returns a LonLat
 function gtaCoordToLonLat(x, y)
 {
-	var mapx = x * 0.03;
-	var mapy = y * 0.03;
+	var mapx = x * 0.03185;
+	var mapy = y * -0.015;
 	return new OpenLayers.LonLat(mapx,mapy);
 }
 
