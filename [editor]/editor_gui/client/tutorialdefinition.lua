@@ -37,20 +37,20 @@ local tutorialAction = {
 function createTutorial()
 tutorial = {
 	--1
-	{ message = "You are currently in camera mode.  You can move around using the "..cc.camera_move_forwards..", "..cc.camera_move_backwards..", "..cc.camera_move_left..", and "..cc.camera_move_right.." keys.  Use the mouse to pan the camera around.  You can use the "..cc.mod_fast_speed.." modifier to increase the speed of the camera and the "..cc.mod_slow_speed.." modifier to slow down the speed of the camera.",
+	{ message = exports.editor_lang:_("TUTORIAL_CAMERA"):format(cc.camera_move_forwards, cc.camera_move_backwards, cc.camera_move_left, cc.camera_move_right, cc.mod_fast_speed, cc.mod_slow_speed),
 	initiate = function()
 				tutorialVars.blockQuickTest = true
 				editor_main.toggleEditorKeys (false)
 				setTimer ( tutorialNext, 20000, 1 )
 			end },
 	--2
-	{ message = "Press "..cc.toggle_cursor.." to enter cursor mode.  This will allow you to access the editor's menu.",
+	{ message = exports.editor_lang:_("TUTORIAL_CURSOR"):format(cc.toggle_cursor),
 	initiate = function()
 				editor_main.toggleEditorKeys (true)
 				bindControl ( "toggle_cursor","down", tutorialAction.enabledCursor )
 			end },
 	--3
-	{ message = "In cursor mode, the Editor's HUD buttons are accessible.  This is the main area where all creation and configuration is performed.  The 'element creation panel' located at the bottom is used to create elements.  Try creating an 'Object' from this panel by left clicking on the 'Object' icon.",
+	{ message = exports.editor_lang:_("TUTORIAL_HUD"),
 	initiate = function()
 				unbindControl ( "toggle_cursor","down", tutorialAction.enabledCursor )
 				for icon,iconData in pairs(elementIcons) do
@@ -62,7 +62,7 @@ tutorial = {
 				tutorialVars.browserBind = "objectID"
 			end },
 	--4
-	{ message = "You have now entered the Model Browser.  This menu will allow you to browse through models of objects, vehicles and skins.",
+	{ message = exports.editor_lang:_("TUTORIAL_BINDS"),
 	initiate = function()
 		glowButton ()
 		tutorialVars.browserBind = nil
@@ -72,18 +72,18 @@ tutorial = {
 		guiSetEnabled(browserGUI.cancel,false)
 		setTimer(tutorialNext,7000,1)
 	end },
-	{ message = "To change your model category, use the drop down menu at the top.  It is also possible to filter down results further by entering a search in the Search box, where specific model IDs or general keywords can be entered.",
+	{ message = exports.editor_lang:_("TUTORIAL_IDS"),
 	initiate = function()
 		setTimer(tutorialNext,16000,1)
 	end },
 	--5
-	{ message = "Once you have found a model you would like to view, you can click on it from the Results list.  The columns show the internal name of the model, plus the internal ID assigned to it.  Try this now",
+	{ message = exports.editor_lang:_("TUTORIAL_IDS_2"),
 	initiate = function()
 		tutorialVars.callBack = true
 		--
 	end },
 	--6
-		{ message = "Your model can now be seen as a rotating mesh on the right side of the screen. You can scroll through results without the mouse by using the "..cc.browser_up.." and "..cc.browser_down.." keys.   It is also possible to enter camera mode within the model browser.  Try doing this by pressing the "..cc.toggle_cursor.." button.",
+		{ message = exports.editor_lang:_("TUTORIAL_CURSOR_2"):format(cc.browser_up, cc.browser_down, cc.toggle_cursor),
 	initiate = function()
 		tutorialVars.callBack = nil
 		tutorialVars.browserDisableCursor = nil
@@ -91,18 +91,18 @@ tutorial = {
 		--
 	end },
 	--7
-	{ message = "You are now in camera mode.  You can view the model more clearly in this mode.  You can use the mouse to rotate the camera around the model, and the "..cc.browser_zoom_in.." and "..cc.browser_zoom_out.." keys to zoom in and out.  The "..cc.browser_up.." and "..cc.browser_down.." keys are still activated here to scroll through models.",
+	{ message = exports.editor_lang:_("TUTORIAL_CAMERA_2"):format(cc.browser_zoom_in, cc.browser_zoom_out, cc.browser_up, cc.browser_down),
 	initiate = function()
 		unbindControl ( "toggle_cursor", "down", tutorialAction.browserCursor )
 		setTimer(tutorialNext,25000,1)
 	end },
 	--8
-	{ message = "The total search and the current selected search numbers are displayed in the top right corner of the screen.  The model name and ID are also displayed.",
+	{ message = exports.editor_lang:_("TUTORIAL_SEARCH"),
 	initiate = function()
 		setTimer(tutorialNext,9000,1)
 	end },
 	--9
-	{ message = "When you have found a model of your liking, enable cursor mode using the "..cc.toggle_cursor.." key, and press the OK button.",
+	{ message = exports.editor_lang:_("TUTORIAL_MODEL_CURSOR"):format(cc.toggle_cursor),
 	initiate = function()
 		tutorialVars.browserDisableKeys = nil
 		guiSetEnabled(browserGUI.ok,true)

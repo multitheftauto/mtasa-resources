@@ -1,0 +1,10 @@
+<meta>
+    <download_priority_group>99</download_priority_group>
+	 <info author="cleopatradev" description="Map editor Languages" />
+
+    <script src="server.lua" type="server" />
+    <script src="client.lua" type="client" />
+   
+    <export function="_" type="server" />
+    <export function="_" type="client" />
+</meta>

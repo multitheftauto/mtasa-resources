@@ -1,21 +1,15 @@
 local welcomeWindow
 local proceedToTutorial,skipTutorial
 local editorRes = getResourceFromName"editor_main"
-local welcomeText = [[Welcome to the MTA:SA Map Editor.  This is your first time using the editor, so you are able to enter tutorial mode which will teach you the basics of using the editor.
-
-If you want to skip the tutorial, press the 'Skip Tutorial' button.  Otherwise, press the 'Proceed' button.]]
-local disclaimerText = [[This map editor is still a work in progress and is not fully functional yet.
-
-If you want to try it as a preview, press 'OK'. Otherwise, please press Escape and disconnect now.]]
 
 function disclaimer()
 	editor_main.setMode (2)
 	guiSetInputEnabled(true)
-	disclaimerWindow = guiCreateWindow ( screenX/2 - 300, screenY/2 - 150, 600, 300, "Disclaimer", false )
-	local label = guiCreateLabel ( 13,25,585,200,disclaimerText,false,disclaimerWindow)
+	disclaimerWindow = guiCreateWindow ( screenX/2 - 300, screenY/2 - 150, 600, 300, exports.editor_lang:_("WELCOME_DISCLAIMER"), false )
+	local label = guiCreateLabel ( 13,25,585,200,exports.editorlang:_("WELCOME_DISCLAIMER_TEXT"),false,disclaimerWindow)
 	guiLabelSetVerticalAlign ( label, "center" )
 	guiLabelSetHorizontalAlign ( label, "center", true )
-	local ok = guiCreateButton ( 200,215, 200,46,"OK",false,disclaimerWindow )
+	local ok = guiCreateButton ( 200,215, 200,46,exports.editor_lang:_("OK"),false,disclaimerWindow )
 	addEventHandler ( "onClientGUIClick",ok,removeDisclaimer,false )
 	addEventHandler ( "onClientGUIClick",ok,welcomeUser,false )
 end
@@ -31,13 +25,13 @@ function welcomeUser()
 		call(editorRes,"setMode",2)
 		guiSetInputEnabled(true)
 		tutorialBlock = ""
-		welcomeWindow = guiCreateWindow ( screenX/2 - 300, screenY/2 - 150, 600, 300, "Welcome to the Map Editor!", false )
+		welcomeWindow = guiCreateWindow ( screenX/2 - 300, screenY/2 - 150, 600, 300, exports.editor_lang:_("WELCOME_TITLE"), false )
 		--
-		local label = guiCreateLabel ( 13,25,585,200,welcomeText,false,welcomeWindow)
+		local label = guiCreateLabel ( 13,25,585,200,exports.editor_lang:_("WELCOME_MAP_EDITOR_TEXT"),false,welcomeWindow)
 		guiLabelSetVerticalAlign ( label, "center" )
 		guiLabelSetHorizontalAlign ( label, "center", true )
-		local proceed = guiCreateButton ( 83,215, 180,46,"Proceed",false,welcomeWindow )
-		local skip = guiCreateButton ( 318,215, 180,46,"Skip Tutorial",false,welcomeWindow )
+		local proceed = guiCreateButton ( 83,215, 180,46,exports.editor_lang:_("PROCEED"),false,welcomeWindow )
+		local skip = guiCreateButton ( 318,215, 180,46,exports.editor_lang:_("SKIP_TUTORIAL"),false,welcomeWindow )
 		addEventHandler ( "onClientGUIClick",proceed,proceedToTutorial,false )
 		addEventHandler ( "onClientGUIClick",skip,skipTutorial,false )
 	end
