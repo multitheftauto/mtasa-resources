@@ -14,7 +14,7 @@ var bliplist = new Object;
 
 function init()
 {
-	map = new OpenLayers.Map( 'map', {'maxResolution': 1, 'maxExtent':new OpenLayers.Bounds(-90.0,-90.0,90.0,90.0),
+	map = new OpenLayers.Map( 'map', {'maxResolution': 360/512, 'maxExtent':new OpenLayers.Bounds(-90.0,-90.0,90.0,90.0),
 	'numZoomLevels':8,
 	});
 
