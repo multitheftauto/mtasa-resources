@@ -42,7 +42,7 @@ function init()
 
 function addPlayerMarker(player)
 {
-	var feature = new OpenLayers.Feature(maplayer, gtaCoordToLonLat(player.pos.x, player.pos.y), {icon:playericon.clone()});
+	var feature = new OpenLayers.Feature(aeriallayer, gtaCoordToLonLat(player.pos.x, player.pos.y), {icon:playericon.clone()});
 	var marker = feature.createMarker();
 	marker.playerName = player.name;
 	marker.feature = feature;
@@ -53,7 +53,7 @@ function addPlayerMarker(player)
 
 function addBlipMarker(blip)
 {
-	var feature = new OpenLayers.Feature(maplayer, gtaCoordToLonLat(blip.pos.x, blip.pos.y), {icon:radaricons[blip.icon].clone()});
+	var feature = new OpenLayers.Feature(aeriallayer, gtaCoordToLonLat(blip.pos.x, blip.pos.y), {icon:radaricons[blip.icon].clone()});
 	var marker = feature.createMarker();
 	marker.element = blip.element;
 	marker.feature = feature;
