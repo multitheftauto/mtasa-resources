@@ -1265,7 +1265,6 @@ addEventHandler ( "aResource", _root, function ( name, action )
 			if ( getResourceState ( getResourceFromName ( name ) ) == "running" ) then 
 				if ( restartResource ( getResourceFromName ( name ) ) ) then text = "restarted" end
 			end
-		end
 		elseif ( action == "stop" ) then if ( stopResource ( getResourceFromName ( name ) ) ) then text = "stopped" end
 		elseif ( action == "delete" ) then if ( deleteResource ( getResourceFromName ( name ) ) ) then text = "deleted" end
 		elseif ( action == "stopall" ) then if ( stopAllResources ( ) ) then text = "All Stopped" end
