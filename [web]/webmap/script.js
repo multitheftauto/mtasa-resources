@@ -48,6 +48,8 @@ function addPlayerMarker(player)
 	marker.feature = feature;
 	marker.events.register("mousedown", marker, showplayerinfo);
 	playermarkers.addMarker(marker);
+	feature.map = map;
+	marker.map = map;
 	return feature;
 }
 
@@ -58,6 +60,8 @@ function addBlipMarker(blip)
 	marker.element = blip.element;
 	marker.feature = feature;
 	blipmarkers.addMarker(marker);
+	feature.map = map;
+	marker.map = map;
 	return feature;
 }
 
