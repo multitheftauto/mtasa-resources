@@ -524,11 +524,11 @@ function aAction ( type, action, admin, player, data, more )
 	if ( aLogMessages[type] ) then
 		function aStripString ( string )
 			string = tostring ( string )
-			string = string.gsub ( string, "$admin", getPlayerName ( admin ) )
-			string = string.gsub ( string, "$by_admin_4all", isAnonAdmin4All( admin )    and "" or " by " .. getPlayerName ( admin ) )
-			string = string.gsub ( string, "$by_admin_4plr", isAnonAdmin4Victim( admin ) and "" or " by " .. getPlayerName ( admin ) )
+			string = string.gsub ( string, "$admin", string.gsub( getPlayerName ( admin ), "%%", "" ) )
+			string = string.gsub ( string, "$by_admin_4all", isAnonAdmin4All( admin )    and "" or " by " .. string.gsub( getPlayerName ( admin ), "%%", "" ) )
+			string = string.gsub ( string, "$by_admin_4plr", isAnonAdmin4Victim( admin ) and "" or " by " .. string.gsub( getPlayerName ( admin ), "%%", "" ) )
 			string = string.gsub ( string, "$data2", more or "" )
-			if ( player ) then string = string.gsub ( string, "$player", getPlayerName ( player ) ) end
+			if ( player ) then string = string.gsub ( string, "$player", string.gsub( getPlayerName ( player ), "%%", "" ) ) end
 			return tostring ( string.gsub ( string, "$data", data or "" ) )
 		end
 		local node = aLogMessages[type][action]
