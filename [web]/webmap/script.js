@@ -15,18 +15,22 @@ var bliplist = new Object;
 function init()
 {
 	map = new OpenLayers.Map( 'map', {'maxResolution': 360/512, 'maxExtent':new OpenLayers.Bounds(-90.0,-90.0,90.0,90.0),
-	'numZoomLevels':8,
+	'numZoomLevels':5,
 	});
 
 	map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
 
-	// maplayer = new OpenLayers.Layer.WMS( "San Andreas Map",
-	// 				"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_map', format: 'image/png' } );
-	// map.addLayer(maplayer);
+	maplayer = new OpenLayers.Layer.XYZ( "San Andreas Map",
+					"https://assets.mtasa.com/mtasa-resources/webmap/sa_map/v1/${z}_${x}_${y}.jpg" );
+	map.addLayer(maplayer);
 
-	aeriallayer = new OpenLayers.Layer.XYZ( "San Andreas Aerial Map",
-					"https://community.mtasa.blue/tilecache/${z}_${x}_${y}.jpg" );
-	map.addLayer(aeriallayer);
+	aeriallayerv1 = new OpenLayers.Layer.XYZ( "San Andreas Aerial Map",
+					"https://assets.mtasa.com/mtasa-resources/webmap/sa_aerial_map/v1/${z}_${x}_${y}.jpg" );
+	map.addLayer(aeriallayerv1);
+
+	aeriallayerv2 = new OpenLayers.Layer.XYZ( "San Andreas Aerial Map V2",
+					"https://assets.mtasa.com/mtasa-resources/webmap/sa_aerial_map/v2/${z}_${x}_${y}.jpg" );
+	map.addLayer(aeriallayerv2);
 
 	map.zoomTo(2);
 
@@ -42,7 +46,7 @@ function init()
 
 function addPlayerMarker(player)
 {
-	var feature = new OpenLayers.Feature(aeriallayer, gtaCoordToLonLat(player.pos.x, player.pos.y), {icon:playericon.clone()});
+	var feature = new OpenLayers.Feature(maplayer, gtaCoordToLonLat(player.pos.x, player.pos.y), {icon:playericon.clone()});
 	var marker = feature.createMarker();
 	marker.playerName = player.name;
 	marker.feature = feature;
@@ -55,7 +59,7 @@ function addPlayerMarker(player)
 
 function addBlipMarker(blip)
 {
-	var feature = new OpenLayers.Feature(aeriallayer, gtaCoordToLonLat(blip.pos.x, blip.pos.y), {icon:radaricons[blip.icon].clone()});
+	var feature = new OpenLayers.Feature(maplayer, gtaCoordToLonLat(blip.pos.x, blip.pos.y), {icon:radaricons[blip.icon].clone()});
 	var marker = feature.createMarker();
 	marker.element = blip.element;
 	marker.feature = feature;
