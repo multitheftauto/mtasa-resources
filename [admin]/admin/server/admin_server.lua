@@ -522,12 +522,8 @@ addCommandHandler ( "admin", aAdminMenu )
 
 function aAction ( type, action, admin, player, data, more )
 	if ( aLogMessages[type] ) then
-		function aEscapeNickname( name )
-			if string.find( name, "%%" ) then
-				return string.gsub( name, "%%", "%%%%" )
-			else
-				return name
-			end
+		local function aEscapeNickname( name )
+			return string.gsub( name, "%%", "%%%%" )
 		end
 		function aStripString ( string )
 			string = tostring ( string )
