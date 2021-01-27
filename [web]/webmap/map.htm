@@ -3,13 +3,17 @@
 	<head>
 		<meta charset="utf-8">
 
-		<link rel="dns-prefetch" href="https://openlayers.org">
+		<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
 		<title>Web map</title>
 
 		<*= call(getResourceFromName("ajax"),"start", getResourceName(getThisResource())) *>
 
-		<script src="https://openlayers.org/api/OpenLayers.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" integrity="sha384-Kq/qtF0GiQ2/6OINtNcEzBKp7UVvVXB2xAR2HXOT/D+Qw8+Cx2hfokpqKtPEx0b6" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js" integrity="sha384-54FxFm5+OJnD+IWvK/LQO8Is9GGG3QzyyMPoB69QyvWz1lwLpI9m5y2dWzL8qUMs" crossorigin="anonymous"></script>
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.8.3/dist/ol-layerswitcher.css" integrity="sha384-Vzqe9imyvsl257o2YDNSjmhHFjs8kp3JxhgoSHGdXYy9/J7N1MO8kfTHV/toayP8" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.8.3/dist/ol-layerswitcher.min.js" integrity="sha384-xvbFptSBzi+fC24KsqGVZvnicA60GBn47BV+qxZT81qStPKj1tMjN0SvgB6tOTCH" crossorigin="anonymous"></script>
 
 		<link rel="stylesheet" href="css.css">
 		<script src="script.js"></script>
@@ -21,6 +25,7 @@
 
 		<div id="mainarea">
 			<div id="map"></div>
+			<div id="popup"></div>
 		</div>
 	</body>
 </html>
