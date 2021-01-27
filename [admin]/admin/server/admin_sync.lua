@@ -44,7 +44,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		theSource = data
 	elseif ( type == "players" ) then
 		for id, player in ipairs(getElementsByType("player")) do
-			if aPlayers[player] then
+			if isElement(player) and aPlayers[player] then
 				tableOut[player] = {}
 				tableOut[player]["name"] = getPlayerName ( player )
 				tableOut[player]["IP"] = getPlayerIP ( player )
@@ -97,7 +97,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		end
 	elseif ( type == "admins" ) then
 		for id, player in ipairs(getElementsByType("player")) do
-			if aPlayers[player] then
+			if isElement(player) and aPlayers[player] then
 				tableOut[player] = {}
 				tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
 				if ( tableOut[player]["admin"] ) then
@@ -248,7 +248,7 @@ addEvent ( "onPlayerMoneyChange", false )
 addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource () ), function()
 	setTimer ( function()
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
-			if aPlayers[player] then
+			if isElement(player) and aPlayers[player] then
 				local money = getPlayerMoney ( player )
 				local prev = aPlayers[player]["money"]
 				if ( money ~= prev ) then
@@ -262,7 +262,7 @@ end )
 
 addEventHandler ( "onPlayerMoneyChange", _root, function ( prev, new )
 	for player, sync in pairs ( aPlayers ) do
-		if ( sync["sync"] == source ) then
+		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["money"] = new } )
 		end
 	end
@@ -270,7 +270,7 @@ end )
 
 addEventHandler ( "onPlayerMute", _root, function()
 	for player, sync in pairs ( aPlayers ) do
-		if ( sync["sync"] == source ) then
+		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = true } )
 		end
 	end
@@ -278,7 +278,7 @@ end )
 
 addEventHandler ( "onPlayerUnmute", _root, function()
 	for player, sync in pairs ( aPlayers ) do
-		if ( sync["sync"] == source ) then
+		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = false } )
 		end
 	end
@@ -286,7 +286,7 @@ end )
 
 addEventHandler ( "onPlayerFreeze", _root, function ( state )
 	for player, sync in pairs ( aPlayers ) do
-		if ( sync["sync"] == source ) then
+		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["freeze"] = state } )
 		end
 	end
