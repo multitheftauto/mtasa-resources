@@ -287,8 +287,7 @@ function updatePlayerBlips() {
           syncedPlayers[selectedPlayer].feature.getGeometry().getCoordinates(),
         );
       } else {
-        popupOverlay.setPosition(undefined);
-        selectedPlayer = null;
+        closePopup();
       }
     }
 
