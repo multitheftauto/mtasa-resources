@@ -1,7 +1,0 @@
-{
-  "bracketSpacing": true,
-  "singleQuote": true,
-  "trailingComma": "all",
-  "arrowParens": "always",
-  "jsxBracketSameLine": true
-}
