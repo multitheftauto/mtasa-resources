@@ -164,5 +164,11 @@
 			accept="1-3600"
 			desc="Map backup interval in seconds."
 		/>
+		<setting name="*mapResourceOrganizationalDirectory" value="none"
+			friendlyname="Map base directory"
+			accept = "*"
+			examples="[newmaps]"
+			desc="Organizational directory for newly added map resources. The value must be in [brackets]"
+		/>
 	</settings>
 </meta>
