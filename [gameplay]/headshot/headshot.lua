@@ -2,7 +2,7 @@ local removeHeadOnHeadshot = get("removeHeadOnHeadshot")
 
 addEvent("onPlayerHeadshot", false)
 
-function onPlayerDamage(attacker, weapon, bodypart, loss)
+local function checkForHeadshot(attacker, weapon, bodypart, loss)
 	if bodypart == 9 then
 		local forceDeath = triggerEvent("onPlayerHeadshot", source, attacker, weapon, loss)
 
@@ -15,11 +15,11 @@ function onPlayerDamage(attacker, weapon, bodypart, loss)
 		end
 	end
 end
-addEventHandler("onPlayerDamage", root, onPlayerDamage)
+addEventHandler("onPlayerDamage", root, checkForHeadshot)
 
-function onPlayerSpawn()
+local function restorePlayerHead()
 	if removeHeadOnHeadshot and isPedHeadless(source) then
 		setPedHeadless(source, false) -- Restore head if it got blown off
 	end
 end
-addEventHandler("onPlayerSpawn", root, onPlayerSpawn)
+addEventHandler("onPlayerSpawn", root, restorePlayerHead)
