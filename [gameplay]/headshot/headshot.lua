@@ -1,11 +1,17 @@
 local removeHeadOnHeadshot = get("removeHeadOnHeadshot")
 
+addEvent("onPlayerHeadshot", false)
+
 function onPlayerDamage(attacker, weapon, bodypart, loss)
 	if bodypart == 9 then
-		killPed(source, attacker, weapon, bodypart)
+		local forceDeath = triggerEvent("onPlayerHeadshot", source, attacker, weapon, loss)
 
-		if removeHeadOnHeadshot then
-			setPedHeadless(source, true)
+		if forceDeath then
+			killPed(source, attacker, weapon, bodypart)
+
+			if removeHeadOnHeadshot then
+				setPedHeadless(source, true)
+			end
 		end
 	end
 end
