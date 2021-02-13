@@ -1,50 +1,60 @@
-registeredStats = {}
-stats = {}
-nodepos = 1
-maxstatrecords = 60  -- 1  hours worth
-lastnode = nil
-UPDATE_FREQUENCY = 60 -- seconds
-statsByResource = {}
+local registeredStats = {}
+local stats = {}
+local nodepos = 1
+local maxstatrecords = 60 -- 1 hours worth
+local lastnode
+local UPDATE_FREQUENCY = 5 -- seconds
+local statsByResource = {}
 
-setTimer (
-	function()
-	    local time = getRealTime()
+setTimer(function ()
+	local time = getRealTime()
 
-		stats[nodepos] = {}
-		stats[nodepos].time = time.hour .. ":" .. string.format("%.2d", time.minute)
-		for k,v in pairs(registeredStats) do
-			stats[nodepos][k] = tostring(call(v.resource, v.func))
-		end
+	stats[nodepos] = {}
+	stats[nodepos].time = time.hour .. ":" .. string.format("%.2d", time.minute) .. ":" .. string.format("%.2d", time.second)
 
-		nodepos = nodepos + 1;
-		if ( nodepos > maxstatrecords ) then
-			nodepos = 1
-		end
+	for k, v in pairs(registeredStats) do
+		stats[nodepos][k] = tostring(call(v.resource, v.func))
 	end
-, UPDATE_FREQUENCY * 1000, 0 )
+
+	nodepos = nodepos + 1
+
+	if (nodepos > maxstatrecords) then
+		nodepos = 1
+	end
+end, UPDATE_FREQUENCY * 1000, 0)
 
 function registerStat(resource, func, name, description)
 	local statname = getResourceName(resource) .. "_" .. func
-	registeredStats[statname] = {resource=resource, func=func, name=name, description=description}
-	if ( statsByResource[resource] == nil ) then
+
+	registeredStats[statname] = {
+		resource = resource,
+		func = func,
+		name = name,
+		description = description,
+	}
+
+	if (statsByResource[resource] == nil) then
 		statsByResource[resource] = {}
 	end
+
 	statsByResource[resource][statname] = registeredStats[statname]
 end
 
-function getCurrentStats ()
+function getCurrentStats()
 	local currStats = {}
 	local arrpos = nodepos
 	local stopat = arrpos
-	if stats[arrpos] == nil then
+
+	if (stats[arrpos] == nil) then
 		arrpos = 1
 		stopat = 1
 	end
+
 	local i = 0
 	repeat
-		table.insert(currStats,stats[arrpos])
-		arrpos = arrpos + 1;
-		if stats[arrpos] == nil then
+		table.insert(currStats, stats[arrpos])
+		arrpos = arrpos + 1
+		if (stats[arrpos] == nil) then
 			arrpos = 1
 		end
 		i = i + 1

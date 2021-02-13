@@ -1,121 +1,65 @@
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<* = call(getResourceFromName("ajax"),"start", getResourceName(getThisResource()) ) *>
-</head>
-<body>
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
 
-<html>
-<head>
-	<script language="JavaScript" src="FusionCharts.js"></script>
-	<link rel="stylesheet" type="text/css" href="css.css" id="stylesheet" />
+		<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-	<script>
-		function onLoad ()
-		{
-			updateChart();
-			if (navigator.appName == "Microsoft Internet Explorer")
-			{
-				document.getElementById("stylesheet").href = "ie-70.css"; // Oh Microsoft :|
-			}
-		}
+		<title>Statistics</title>
 
-		function updateChart()
-		{
-			var stats = "";
-			var charttype = document.getElementById("charttype").value;
-			var i = 0;
-			while(true)
-			{
-				var statItem = document.getElementById("stat" + i);
-				if ( !statItem )
-					break;
-				if ( statItem.checked == true )
-				{
-					stats = stats + statItem.value + ",";
-				}
-				i++;
-			}
-			if ( stats != "" )  {
-				stats = stats.substr(0,stats.length-1);
-				var myChart = new FusionCharts(charttype + ".swf", "myChartId", "850", "300");
-				myChart.setDataURL("elements.xml?stats=" + stats + "|" + charttype);
-				myChart.render("chart");
-			}
-			else
-				document.getElementById("chart").innerHTML = "";
+		<*= call(getResourceFromName("ajax"), "start", getResourceName(getThisResource())) *>
 
-		}
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.css" integrity="sha384-q9MZ/PQCC1nIFQdrr9yNOFXeSaXjv/yPOJOdBd32aODh8+EM6udfo91a6mRbEDih" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.bundle.min.js" integrity="sha384-mZ3q69BYmd4GxHp59G3RrsaFdWDxVSoqd7oVYuWRm2qiXrduT63lQtlhdD9lKbm3" crossorigin="anonymous"></script>
 
-		function toggleDatasets()
-		{
-			var datasets = document.getElementById("datasets");
-			var toggleButton = document.getElementById("toggleButton");
-			var chart = document.getElementById("chart");
-			if ( toggleButton.value == "hide datasets" )
-			{
-				datasets.style.display = "none";
-				toggleButton.value = "show datasets";
-				chart.style.width = "97%";
-			}
-			else
-			{
-				datasets.style.display = "block";
-				toggleButton.value = "hide datasets";
-				chart.style.width = "78%";
-			}
-		}
-	</script>
-</head>
+		<link rel="stylesheet" href="css.css">
+		<script src="script.js"></script>
+	</head>
+	<body onLoad="init()">
+		<div id="topbar">
+			<select id="chart-type" onchange="updateChart()" onkeyup="updateChart()">
+				<option value="line" selected>Line chart</option>
+				<option value="bar">Bar chart</option>
+				<option value="bar" data-stacked>Stacked bar chart</option>
+				<option value="pie" data-now>Pie chart (now)</option>
+				<option value="doughnut" data-now>Doughnut chart (now)</option>
+				<option value="polarArea" data-now>Polar area chart (now)</option>
+			</select>
+			<input type="button" value="refresh" onclick="updateChart()">
+			<label>
+				<input type="checkbox" id="auto-refresh" value="1">
+				Auto-refresh
+			</label>
+			<input type="button" value="hide datasets" onclick="toggleDatasets()" id="toggleButton">
+		</div>
 
-<body bgcolor="#ffffff" style="font-family:'Trebuchet MS',Arial,sans-serif;font-size:0.8em;" onLoad="onLoad()">
+		<div id="wrapper">
+			<div id="chart-container">
+				<canvas id="chart">Canvas is not supported on this browser.</canvas>
+			</div>
 
-	<div id="chart" style="position: absolute; left:0px; top: 37px; bottom: 0px; width: 78%; overflow:auto;bacground: red;vertical-align:top; padding: 10px;">
-	Select datasets from the list on the right to begin.
-	</div>
-
-	<div id="topbar">
-		<div style="float:right;"><input type="button" value="hide datasets" onclick="toggleDatasets();" id="toggleButton"/></div>
-		<select id="charttype" onchange="updateChart();" onkeyup="updateChart();">
-			<option value="FCF_Line">Line chart (Single Value)</option>
-			<option value="FCF_MSLine">Line chart</option>
-			<option value="FCF_StackedArea2D">Stacked area chart</option>
-			<option value="FCF_StackedColumn2D">Stacked columns</option>
-			<option value="FCF_StackedColumn3D">Stacked columns 3D</option>
-			<option value="FCF_Pie2D">Pie chart (now)</option>
-			<option value="FCF_Pie3D">Pie chart 3D (now)</option>
-		</select>
-		<input type="button" value="refresh" onclick="updateChart();"/>
-
-	</div>
-
-	<div id="datasets">
-
-			<*
-			resourceStats = call(getThisResource(),"getStatListByResource")
-			for p,q in pairs(resourceStats) do
-				resname = getResourceInfo(p, "name")
-				if ( resname == false ) then
-					resname = getResourceName(p)
-				end
-				*>
-				<div style="background:#444444; font-weight:bold;padding:3px;padding-left:7px;"><*= resname *></div>
-				<div style="padding-left: 10px; padding-right: 10px;background:#777777; ">
+			<div id="datasets">
 				<*
-				local i = 0
-				for k,v in pairs(q) do
+				local resourceStats = call(resource, "getStatListByResource")
+				for p, q in pairs(resourceStats) do
+					local resname = getResourceInfo(p, "name")
+					if (resname == false) then
+						resname = getResourceName(p)
+					end
 					*>
-					<input type="checkbox" id="stat<* = tostring(i) *>" value="<* = k *>" title="<* = v.description *>" onchange="updateChart();"/><label for="stat<* = tostring(i) *>" title="<* = v.description *>"><* = v.name *></label><br/>
-					<*
-					i= i+1
-				end
-				*>
-				</div>
-				<*
-			end
-			*>
-	</div>
-
-
-</body>
-</body>
+					<details<*= p == resource and " open" or "" *>>
+						<summary>
+							<*= resname *>
+						</summary>
+						<* for k, v in pairs(q) do *>
+							<label title="<*= v.description *>">
+								<input type="checkbox" value="<*= k *>" title="<*= v.description *>" onchange="updateChart()">
+								<*= v.name *>
+							</label>
+						<* end *>
+					</details>
+				<* end *>
+			</div>
+		</div>
+	</body>
 </html>
