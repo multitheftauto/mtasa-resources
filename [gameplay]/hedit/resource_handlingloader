@@ -1,0 +1,107 @@
+--[[
+    This script has been created by the "Save to Resource" function of the Handling Editor.
+]]
+
+addEventHandler ( "onResourceStart", resourceRoot, function ( )
+    local handlingXML = xmlLoadFile ( "handling.xml" )
+    
+    for _,node in ipairs ( xmlNodeGetChildren ( handlingXML ) ) do
+        local model = tonumber ( xmlNodeGetName ( node ) )
+        for property,value in pairs ( xmlNodeGetAttributes ( node ) ) do
+            setHandling ( model, property, value )
+        end
+    end
+    
+    return true
+end )
+
+local handlingProperties = { 
+    "identifier", "mass", "turnMass", "dragCoeff", "centerOfMassX", "centerOfMassY",
+    "centerOfMassZ", "percentSubmerged", "tractionMultiplier", "tractionLoss", "tractionBias", "numberOfGears",
+    "maxVelocity", "engineAcceleration", "engineInertia", "driveType", "engineType", "brakeDeceleration",
+    "brakeBias", "ABS", "steeringLock", "suspensionForceLevel", "suspensionDamping", "suspensionHighSpeedDamping",
+    "suspensionUpperLimit", "suspensionLowerLimit", "suspensionFrontRearBias", "suspensionAntiDiveMultiplier", "seatOffsetDistance", "collisionDamageMultiplier",
+    "monetary", "modelFlags", "handlingFlags", "headLight", "tailLight", "animGroup"
+}
+
+local function setHandling ( model, property, value )
+    if not isHandlingPropertySupported ( property ) then
+        return false
+    end
+
+    if isHandlingPropertyCorrectable ( property ) then
+        value = getCorrectedHandlingValue ( value )
+    elseif isHandlingPropertyHexadecimal ( property ) then
+        value = tonumber ( "0x" .. value )
+    else
+        value = tonumber ( value )
+        if isHandlingPropertyCenterOfMass ( property ) then
+            local com = getModelHandling ( model )["centerOfMass"]
+            local axis = property
+            property = "centerOfMass"
+            if axis == "centerOfMassX" then
+                value = { value, com[2], com[3] }
+            elseif axis == "centerOfMassY" then
+                value = { com[1], value, com[3] }
+            elseif axis == "centerOfMassZ" then
+                value = { com[1], com[2], value }
+            end
+        end
+    end
+
+    if not setModelHandling ( model, property, value ) then
+        outputDebugString ( tostring(property) )
+    end
+
+    return true
+end
+
+local function isHandlingPropertySupported ( property )
+    local unsupported = {
+        ["ABS"]=true, ["monetary"]=true, 
+        ["headLight"]=true, ["tailLight"]=true,
+        ["animGroup"]=true
+    }
+    
+    if unsupported[property] then
+        return false
+    end
+    
+    return true
+end
+
+local function isHandlingPropertyCorrectable ( property )
+    local props ={ 
+        ["driveType"]=true, ["engineType"]=true,
+        ["headLight"]=true, ["tailLight"]=true
+    }
+    
+    return props[property] or false
+end
+
+local function isHandlingPropertyCenterOfMass ( property )
+    local props = {
+        ["centerOfMassX"]=true, ["centerOfMassY"]=true,
+        ["centerOfMassZ"]=true
+    }
+    
+    return props[property] or false
+end
+
+local function isHandlingPropertyHexadecimal ( property )
+    if property == "modelFlags" or property == "handlingFlags" then
+        return true 
+    end
+    
+    return false
+end
+
+local correctedValues = {
+    ["f"] = "fwd", ["r"] = "rwd", ["4"] = "awd",
+    ["p"] = "petrol", ["d"] = "diesel", ["e"] = "electric",
+    ["0"] = "long", ["1"] = "small", ["3"] = "big",
+}
+
+local function getCorrectedHandlingValue ( value )
+    return correctedValues[string.lower(value)] or "big" -- as 3 cant be converted to 'tall', we use 'big'
+end
