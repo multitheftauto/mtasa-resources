@@ -522,13 +522,16 @@ addCommandHandler ( "admin", aAdminMenu )
 
 function aAction ( type, action, admin, player, data, more )
 	if ( aLogMessages[type] ) then
+		local function aEscapeNickname( name )
+			return string.gsub( name, "%%", "%%%%" )
+		end
 		function aStripString ( string )
 			string = tostring ( string )
-			string = string.gsub ( string, "$admin", getPlayerName ( admin ) )
-			string = string.gsub ( string, "$by_admin_4all", isAnonAdmin4All( admin )    and "" or " by " .. getPlayerName ( admin ) )
-			string = string.gsub ( string, "$by_admin_4plr", isAnonAdmin4Victim( admin ) and "" or " by " .. getPlayerName ( admin ) )
+			string = string.gsub ( string, "$admin", aEscapeNickname( getPlayerName ( admin ) ) )
+			string = string.gsub ( string, "$by_admin_4all", isAnonAdmin4All( admin )    and "" or " by " .. aEscapeNickname( getPlayerName ( admin ) ) )
+			string = string.gsub ( string, "$by_admin_4plr", isAnonAdmin4Victim( admin ) and "" or " by " .. aEscapeNickname( getPlayerName ( admin ) ) )
 			string = string.gsub ( string, "$data2", more or "" )
-			if ( player ) then string = string.gsub ( string, "$player", getPlayerName ( player ) ) end
+			if ( player ) then string = string.gsub ( string, "$player", aEscapeNickname( getPlayerName ( player ) ) ) end
 			return tostring ( string.gsub ( string, "$data", data or "" ) )
 		end
 		local node = aLogMessages[type][action]
