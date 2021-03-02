@@ -1568,6 +1568,18 @@ addEventHandler ( "aAdminChat", _root, function ( chat )
 	outputServerLog ("(ADMIN CHAT) "..tostring(getPlayerName(source))..": "..chat)
 end )
 
+addCommandHandler(get("adminChatCommandName"), 
+	function(thePlayer, cmd, ...) 
+		if hasObjectPermissionTo (thePlayer, "general.adminpanel", false) then
+			local msg = ""
+			for i, word in ipairs(arg) do
+				msg = msg .. (i > 1 and " " or "") .. word
+			end
+			triggerEvent("aAdminChat", thePlayer, msg)
+		end
+	end
+)
+
 addEventHandler('onElementDataChange', root,
 	function(dataName, oldValue )
 		if getElementType(source)=='player' and checkClient( false, source, 'onElementDataChange', dataName ) then
