@@ -1571,11 +1571,7 @@ end )
 addCommandHandler(get("adminChatCommandName"), 
 	function(thePlayer, cmd, ...) 
 		if hasObjectPermissionTo (thePlayer, "general.adminpanel", false) then
-			local msg = ""
-			for i, word in ipairs(arg) do
-				msg = msg .. (i > 1 and " " or "") .. word
-			end
-			triggerEvent("aAdminChat", thePlayer, msg)
+			triggerEvent("aAdminChat", thePlayer, table.concat(arg, " "))
 		end
 	end
 )
