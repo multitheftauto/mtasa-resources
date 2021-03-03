@@ -1570,7 +1570,7 @@ end )
 
 addCommandHandler(get("adminChatCommandName"), 
 	function(thePlayer, cmd, ...) 
-		if hasObjectPermissionTo (thePlayer, "general.adminpanel", false) then
+		if hasObjectPermissionTo (thePlayer, "general.tab_adminchat", false) then
 			triggerEvent("aAdminChat", thePlayer, table.concat(arg, " "))
 		end
 	end
