@@ -11,6 +11,8 @@ local rotateSpeed = {slow = 1, medium = 8, fast = 40} -- degrees per scroll
 local zoomSpeed = {slow = 0.5, medium = 2, fast = 6}  -- units per scroll
 local ignoreElementWalls = true -- 'false' not supported yet
 
+local isEnabled = false
+
 local root = getRootElement()
 
 local camX, camY, camZ
@@ -297,17 +299,25 @@ function getZoomSpeeds()
 end
 
 function enable()
+	if isEnabled then
+		return false
+	end
 	addEventHandler("onClientRender", root, onClientRender_freecam)
 	bindControl("quick_rotate_increase", "down", rotateWithMouseWheel) --rotate left
 	bindControl("quick_rotate_decrease", "down", rotateWithMouseWheel) --rotate right
 	bindControl("zoom_in", "down", zoomWithMouseWheel) --zoom in
 	bindControl("zoom_out", "down", zoomWithMouseWheel) --zoom out
+	isEnabled = true
 end
 
 function disable()
+	if (not isEnabled) then
+		return false
+	end
 	removeEventHandler("onClientRender", root, onClientRender_freecam)
 	unbindControl("quick_rotate_increase", "down", rotateWithMouseWheel) --rotate left
 	unbindControl("quick_rotate_decrease", "down", rotateWithMouseWheel) --rotate right
 	unbindControl("zoom_in", "down", zoomWithMouseWheel) --zoom in
 	unbindControl("zoom_out", "down", zoomWithMouseWheel) --zoom out
+	isEnabled = false
 end

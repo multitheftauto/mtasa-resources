@@ -5,6 +5,8 @@ local ignoreAllSurfaces = true
 local moveSpeed = {slow = .025, medium = .25, fast = 2} -- meters per frame
 local rotateSpeed = {slow = 1, medium = 8, fast = 40} -- degrees per scroll or frame
 
+local isEnabled = false
+
 local selectedElement
 
 local posX, posY, posZ
@@ -489,15 +491,23 @@ function toggleAxesLock ( bool )
 end
 
 function enable()
+	if isEnabled then
+		return false
+	end
 	bindControl("quick_rotate_increase", "down", rotateWithMouseWheel) --rotate left
 	bindControl("quick_rotate_decrease", "down", rotateWithMouseWheel) --rotate right
 	addEventHandler("onClientRender", root, onClientRender_keyboard)
+	isEnabled = true
 end
 
 function disable()
+	if (not isEnabled) then
+		return false
+	end
 	unbindControl("quick_rotate_increase", "down", rotateWithMouseWheel) --rotate left
 	unbindControl("quick_rotate_decrease", "down", rotateWithMouseWheel) --rotate right
 	removeEventHandler("onClientRender", root, onClientRender_keyboard)
+	isEnabled = false
 end
 
 function setMovementType(movementType)

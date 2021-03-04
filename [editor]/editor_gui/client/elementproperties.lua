@@ -763,6 +763,10 @@ function addOKButtonHandler (button, state)
 end
 
 function openPropertiesBox( element, resourceName, shortcut )
+	if isPropertiesOpen then
+		return false
+	end
+	
 	selectedElement = nil
 	--Tutorial hook
 	if tutorialVars.detectPropertiesBox then

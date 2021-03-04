@@ -1049,6 +1049,10 @@ function setWorkingInterior( interior )
 end
 
 function suspend(leavePlayersAttached)
+	if g_suspended then
+		return false
+	end
+
 	outputConsole("Suspending editor_main.")
 
 	local move_resource
@@ -1082,6 +1086,10 @@ function suspend(leavePlayersAttached)
 end
 
 function resume(dontEnableMove)
+	if (not g_suspended) then
+		return false
+	end
+
 	outputConsole("Resuming editor_main.")
 
 	local move_resource
