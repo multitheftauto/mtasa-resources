@@ -31,27 +31,32 @@ end
 
 
 ---This is for when one of the element icons is clicked
+local clickTick = getTickCount()
 function elementIcons_Clicked ( source, mouseButton )
-	if mouseButton == "left" then
-		local elementType = elementIcons[source]["elementName"]
-		local resourceName = elementIcons[source]["resource"]
-		--triggerServerEvent ( "edfCreateElement", getRootElement(), elementType, resourceName )
-		local shortcut = resourceElementDefinitions[resourceName][elementType].shortcut -- E.g. immediately open model browser
-		call(getResourceFromName("editor_main"),"doCreateElement", elementType, resourceName, false, true, shortcut )
-	elseif mouseButton == "middle" then
-		local elementType = elementIcons[source]["elementName"]
-		local resourceName = elementIcons[source]["resource"]
-		--triggerServerEvent ( "edfCreateElement", getRootElement(), elementType, resourceName )
-		call(getResourceFromName("editor_main"),"doCreateElement", elementType, resourceName )
-	elseif mouseButton == "right" then
-		local showing = isCurrentBrowserShowing()
-		if not showing then
+	if clickTick + 1000 < getTickCount() then
+		if mouseButton == "left" then
 			local elementType = elementIcons[source]["elementName"]
 			local resourceName = elementIcons[source]["resource"]
-			showCurrentBrowser ( false, false, elementType, resourceName )
-		else
-			closeCurrentBrowser()
+			--triggerServerEvent ( "edfCreateElement", getRootElement(), elementType, resourceName )
+			local shortcut = resourceElementDefinitions[resourceName][elementType].shortcut -- E.g. immediately open model browser
+			call(getResourceFromName("editor_main"),"doCreateElement", elementType, resourceName, false, true, shortcut )
+		elseif mouseButton == "middle" then
+			local elementType = elementIcons[source]["elementName"]
+			local resourceName = elementIcons[source]["resource"]
+			--triggerServerEvent ( "edfCreateElement", getRootElement(), elementType, resourceName )
+			call(getResourceFromName("editor_main"),"doCreateElement", elementType, resourceName )
+		elseif mouseButton == "right" then
+			local showing = isCurrentBrowserShowing()
+			if not showing then
+				local elementType = elementIcons[source]["elementName"]
+				local resourceName = elementIcons[source]["resource"]
+				showCurrentBrowser ( false, false, elementType, resourceName )
+			else
+				closeCurrentBrowser()
+			end
 		end
+
+		clickTick = getTickCount()
 	end
 end
 
