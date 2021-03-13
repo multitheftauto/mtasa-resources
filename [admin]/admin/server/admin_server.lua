@@ -1133,7 +1133,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 					end
 					local x, y, z = getElementVelocity ( player )
 					setElementVelocity ( player, x , y, z + 0.2 )
-					mdata = data
+					mdata = slap
 				else
 					action = nil
 				end
