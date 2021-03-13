@@ -1129,7 +1129,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				if ( slap >= 0 ) then
 					if ( slap > 0 ) then
 						if ( slap > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
-						else setElementHealth ( player, getElementHealth ( player ) - data ) end
+						else setElementHealth ( player, getElementHealth ( player ) - slap ) end
 					end
 					local x, y, z = getElementVelocity ( player )
 					setElementVelocity ( player, x , y, z + 0.2 )
