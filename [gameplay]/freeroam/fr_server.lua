@@ -130,7 +130,6 @@ function joinHandler(player)
 	local r, g, b = math.random(50, 255), math.random(50, 255), math.random(50, 255)
 	setPlayerNametagColor(player, r, g, b)
 	g_PlayerData[player] = { vehicles = {}, settings={} }
-	g_PlayerData[player].blip = createBlipAttachedTo(player, 0, 2, r, g, b)
 	addEventHandler("onFreeroamLocalSettingChange",player,onLocalSettingChange)
 	if getOption('welcometextonstart') then
 		outputChatBox('Welcome to Freeroam', player, 0, 255, 0)
@@ -554,9 +553,6 @@ function unloadVehicle(vehicle)
 end
 
 function quitHandler(player)
-	if g_PlayerData[source].blip and isElement(g_PlayerData[source].blip) then
-		destroyElement(g_PlayerData[source].blip)
-	end
 	if sawnoffAntiAbuse[source] and isTimer (sawnoffAntiAbuse[source]) then
 		killTimer (sawnoffAntiAbuse[source])
 		sawnoffAntiAbuse[source] = nil

@@ -1,11 +1,55 @@
 <meta>
-	<info author="Noki" type="script" name="playerblips"/>
-	<script src="playerblips.lua" type="server"/>
-	<settings>
-		<setting name="use_team_colors" value="false"/> 		<!-- Set to true to enable, anything else will not use teams. Default: false -->
-		<setting name="blip_color" value="[ [ 0, 255, 0 ] ]"/> 	<!-- Default blip color if se_team_colors is not enabled. Default: [ [ 0, 255, 0 ] ] -->
-		<setting name="blip_size" value="2"/> 					<!-- Size of a player blip. Default: 2 -->
-		<setting name="blip_alpha" value="255"/> 				<!-- Alpha value of a player blip (0 - 255). Default: 255 -->
-	</settings>
+	<info name="Player Blips" author="Noki, jlillis" version="2.0.0" type="script" description="Attaches blips to players."/>
 	<oop>true</oop>
+	<script src="server/main.lua" type="server"/>
+	<settings>
+		<setting
+			name="*use_team_colors"
+			value="false"
+			friendlyname="Use team colors"
+			group="Color settings"
+			accept="true,false"
+			desc="Use team colors for player blips."
+		/>
+		<setting
+			name="*use_nametag_colors"
+			value="true"
+			friendlyname="Use nametag colors"
+			group="Color settings"
+			accept="true,false"
+			desc="Use nametag colors for player blips. Takes precedence over team colors."
+		/>
+		<setting
+			name="*blip_color"
+			value="[[0, 255, 0]]"
+			friendlyname="Default blip color"
+			group="Color settings"
+			accept=""
+			desc="Default blip color. Used if team and nametag colors are not used."
+		/>
+		<setting
+			name="*blip_size"
+			value="2"
+			friendlyname="Blip size"
+			group="Blip settings"
+			accept="1-25"
+			desc="Player blip size."
+		/>
+		<setting
+			name="*blip_alpha"
+			value="255"
+			friendlyname="Blip transparency"
+			group="Blip settings"
+			accept="0-255"
+			desc="Player blip transparency."
+		/>
+		<setting
+			name="*blip_range"
+			value="16383"
+			friendlyname="Blip visibility range"
+			group="Blip settings"
+			accept="0-65535"
+			desc="Player blip visibility range on the minimap. Blips are always visible on the map."
+		/>
+	</settings>
 </meta>
