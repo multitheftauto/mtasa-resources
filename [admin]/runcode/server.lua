@@ -41,11 +41,11 @@ function runString (commandstring, outputTo, source)
 	end
 
 	if #results > 1 then
-		outputChatBoxR("Command results: " ..resultsString)
+		outputChatBoxR("Command results: " ..resultsString, outputTo)
 		return
 	end
 
-	outputChatBoxR("Command executed!")
+	outputChatBoxR("Command executed!", outputTo)
 end
 
 -- run command
