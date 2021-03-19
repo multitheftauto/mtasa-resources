@@ -568,7 +568,7 @@ end
 addEvent ( "aTeam", true )
 addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
 	if checkClient( "command."..action, source, 'aTeam', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		mdata = tostring ( data )
 		mdata = ""
 		if ( action == "createteam" ) then
@@ -878,7 +878,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 	if not isElement( player ) then
 		return	-- Ignore if player is no longer valid
 	end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local admin = source
 		local mdata = ""
 		local more = ""
@@ -1187,7 +1187,7 @@ end
 addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", _root, function ( player, action, data )
 	if checkClient( "command."..action, source, 'aVehicle', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		if ( not player ) then return end
 		local vehicle = getPedOccupiedVehicle ( player )
 		if ( vehicle ) then
@@ -1271,7 +1271,7 @@ addEvent ( "aResource", true )
 addEventHandler ( "aResource", _root, function ( name, action )
 	if checkClient( "command."..action, source, 'aResource', action ) then return end
 	local pname = getPlayerName ( source )
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local text = ""
 		if ( action == "start" ) then if ( startResource ( getResourceFromName ( name ), true ) ) then text = "started" end
 		elseif ( action == "restart" ) then
@@ -1298,7 +1298,7 @@ end )
 addEvent ( "aServer", true )
 addEventHandler ( "aServer", _root, function ( action, data, data2 )
 	if checkClient( "command."..action, source, 'aServer', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local mdata = tostring ( data )
 		local mdata2 = ""
 		if ( action == "setgame" ) then
@@ -1452,7 +1452,7 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 			table.remove( aReports, 1 )
 		end
 	end
-	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
+	if ( hasObjectPermissionTo ( client or source, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
 			triggerClientEvent ( source, "aMessage", source, "get", aReports )
 		elseif ( action == "read" ) then
@@ -1487,7 +1487,7 @@ end )
 addEvent ( "aBans", true )
 addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 	if checkClient( "command."..action, source, 'aBans', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local mdata = ""
 		local more = ""
 		if ( action == "banip" ) then
@@ -1548,7 +1548,7 @@ end )
 addEvent ( "aExecute", true )
 addEventHandler ( "aExecute", _root, function ( action, echo )
 	if checkClient( "command.execute", source, 'aExecute', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command.execute" ) ) then
 		local result = loadstring("return " .. action)()
 		if ( echo == true ) then
 			local restring = ""
