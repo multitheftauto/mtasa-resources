@@ -40,6 +40,11 @@ if not (g_PlayerData) then
     g_PlayerData = {}
 end
 
+-- Variables for time freeze
+local freezeTimeHour = false
+local freezeTimeMinute = false
+local freezeTimeWeather = false
+
 -- Settings are stored in meta.xml
 function freeroamSettings(settings)
 	if settings then
@@ -775,15 +780,15 @@ function warpUpdate()
 			return players
 		end
 	end
-	
+
 	local text = getControlText(wndWarp, 'search')
-	local players = table.map(getPlayersByPartName(text), 
-		function(p) 
+	local players = table.map(getPlayersByPartName(text),
+		function(p)
 			local pName = getPlayerName(p)
 			if g_settings["hidecolortext"] then
 				pName = pName:gsub("#%x%x%x%x%x%x", "")
 			end
-			return { player = p, name = pName } 
+			return { player = p, name = pName }
 		end)
 	table.sort(players, function(a, b) return a.name < b.name end)
 	bindGridListToTable(wndWarp, 'playerlist', players, true)
@@ -1255,10 +1260,17 @@ function getPosCommand(cmd, playerName)
 
 	if playerName then
 		player = getPlayerFromName(playerName)
+
 		if not player then
 			errMsg('There is no player named "' .. playerName .. '".')
 			return
 		end
+
+		if g_PlayerData[player].warping then
+			errMsg("You cannot get coordinates of a player that has disabled warping!")
+			return
+		end
+
 		playerName = getPlayerName(player)		-- make sure case is correct
 		sentenceStart = playerName .. ' is '
 	else
@@ -1794,9 +1806,9 @@ function setPaintjobCommand(cmd, paint)
 	paint = paint and tonumber(paint)
 
 	if not paint then errMsg("Enter paintjob ID please!") return end
-	if paint > 3 or string.len(paint) > 1 then 
+	if paint > 3 or string.len(paint) > 1 then
 		errMsg("Invalid paintjob ID!")
-		return 
+		return
 	end
 
 	server.setVehiclePaintjob(vehicle, paint)
@@ -1820,6 +1832,7 @@ function applyTime()
 	local hours, minutes = getControlNumbers(wndTime, { 'hours', 'minutes' })
 	setTime(hours, minutes)
 	closeWindow(wndTime)
+	freezeTimeHour, freezeTimeMinute = hours, minutes
 end
 
 wndTime = {
@@ -1871,14 +1884,16 @@ addCommandHandler('st', setTimeCommand)
 function toggleFreezeTime()
 	local state = guiCheckBoxGetSelected(getControl(wndMain, 'freezetime'))
 	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), not state)
+	freezeTimeHour, freezeTimeMinute = getTime()
+	freezeTimeWeather = getWeather()
 	setTimeFrozen(state)
 end
 
-function setTimeFrozen(state, h, m, w)
+function setTimeFrozen(state)
 	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), state)
 	if state then
 		if not g_TimeFreezeTimer then
-			g_TimeFreezeTimer = setTimer(function() setTime(h, m) setWeather(w) end, 5000, 0)
+			g_TimeFreezeTimer = setTimer(function() setTime(freezeTimeHour, freezeTimeMinute) setWeather(freezeTimeWeather) end, 5000, 0)
 			setMinuteDuration(9001)
 		end
 	else
@@ -1902,6 +1917,7 @@ function applyWeather(leaf)
 	end
 	setWeather(leaf.id)
 	closeWindow(wndWeather)
+	freezeTimeWeather = leaf.id
 end
 
 wndWeather = {
@@ -1927,7 +1943,7 @@ wndWeather = {
 
 function setWeatherCommand(cmd, weather)
 	weather = weather and tonumber(weather)
-	if not weather or weather > 255 or string.len(weather) > 3 then 
+	if not weather or weather > 255 or string.len(weather) > 3 then
 		errMsg("Invalid weather ID!")
 		return
 	end

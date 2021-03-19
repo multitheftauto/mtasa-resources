@@ -331,7 +331,6 @@ function CTF_newRound()
 end
 
 
-
 function CTF_onPlayerJoin ( )
 	setElementData( source, "col", nil )
 	textDisplayAddObserver ( CTF_scoDisp, source )

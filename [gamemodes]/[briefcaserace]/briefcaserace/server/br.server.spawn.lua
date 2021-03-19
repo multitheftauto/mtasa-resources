@@ -257,11 +257,6 @@ function toggleTeamMenu(player, key, keyState)
 end
 
 
-
-
-
-
-
 function spawnPlayerAtRandomSpawnpoint ( player )
 	if (spawnTimers[player]) then
 		killTimer(spawnTimers[player])

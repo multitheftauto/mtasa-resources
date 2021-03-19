@@ -164,7 +164,7 @@ function aSpectator.ClientClick(button)
             aSpectator.SwitchPlayer(-1)
         elseif (source == aSpectator.PlayerList) then
             if (guiGridListGetSelectedItem(source) ~= -1) then
-                aSpectate(getPlayerFromNick(guiGridListGetItemText(source, guiGridListGetSelectedItem(source), 1)))
+                aSpectate(getPlayerFromName(guiGridListGetItemText(source, guiGridListGetSelectedItem(source), 1)))
             end
         end
     end

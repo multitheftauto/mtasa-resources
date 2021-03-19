@@ -47,7 +47,6 @@ function endRound( conquered )
 	setTimer(explosions,1000,1)
 
 
-
 end
 
 function explosions()

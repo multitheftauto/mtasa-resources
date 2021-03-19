@@ -230,6 +230,9 @@ function browserList:setRows(rowTable)
 		elseif type(rowColumns) == "string" then --if its a linear table then there's only 1 column to set
 			local pos = guiGridListAddRow ( self.gridlist )
 			guiGridListSetItemText(self.gridlist,pos,1,rowColumns,false,false)
+			if exports.editor_main:isElementLocked(getElementByID(rowColumns)) then
+				guiGridListSetItemColor(self.gridlist,pos,1,255,255,0)
+			end
 		end
 		i = i + 1
 	end

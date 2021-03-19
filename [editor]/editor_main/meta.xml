@@ -24,10 +24,6 @@
 	<script src="client/controlinterface.lua" type="client" />
 	<script src="server/util.lua" type="server" />
 	<script src="server/orderedPairs.lua" type="server" />
-	<!--
-	<script src="run.server.lua" type="server" />
-	<script src="crun.client.lua" type="client" />
-	-->
 	<script src="client/matrix.lua" type="client" />
 	<script src="client/complex.lua" type="client" />
 
@@ -87,6 +83,9 @@
 
 	<!-- World object remover -->
 	<script src="server/removeWorldObject.lua" type="server" />
+	
+	<!-- Collision patches -->
+	<script src="client/colpatch.lua" type="client" />
 
 	<!-- Exported client functions -->
 	<export function="startEditor" type="client" />
@@ -130,6 +129,9 @@
 	<export function="createHighlighterText" type="client" />
 	<export function="setCrosshairState" type="client" />
 	<export function="setCursorCrosshairState" type="client" />
+	<export function="lockSelectedElement" type="client" />
+	<export function="isElementLocked" type="client" />
+	<export function="toggleColPatch" type="client" />
 
 	<!-- Client-side files -->
 	<file src="client/images/crosshair.png" />
@@ -141,6 +143,9 @@
 	<file src="client/images/icons/pickup.png" />
 	<file src="client/images/icons/ped.png" />
 	<file src="client/images/icons/wor.png" />
+	
+	<file src="client/colpatch/patches.col" />
+	<file src="client/colpatch/placement.list" />
 
 	<settings>
 		<setting name="*admingroup" value="Admin,MapEditor"
@@ -158,6 +163,12 @@
 			friendlyname="Map backup interval"
 			accept="1-3600"
 			desc="Map backup interval in seconds."
+		/>
+		<setting name="*mapResourceOrganizationalDirectory" value="none"
+			friendlyname="Map base directory"
+			accept = "*"
+			examples="[newmaps]"
+			desc="Organizational directory for newly added map resources. The value must be in [brackets]"
 		/>
 	</settings>
 </meta>

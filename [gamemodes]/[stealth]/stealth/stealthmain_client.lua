@@ -30,7 +30,6 @@ end
 addEventHandler ( "showSpectateText",getRootElement(),showSpectateText )
 
 
-
 addEvent("cameramode", true)
 
 function movetocam(thisplayer)
@@ -212,19 +211,7 @@ end
 addEventHandler( "onClientGamemodeMapStop", getRootElement(), stealthmapstop )
 
 
-
-
-
-
-
-
 --EVERYTHING AFTER THIS IS IS THE GEARSELECT GUI
-
-
-
-
-
-
 
 
 --[[-------------------------------------------------------------------------

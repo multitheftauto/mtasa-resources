@@ -61,7 +61,6 @@ function stopAssaultMap()
 	outputDebugString("Stopping assault map..")
 
 
-
 	noMapLoaded = true
 
 	clearAllObjectives()
@@ -133,7 +132,6 @@ function startAssault(resource)
 
 	setTeamFriendlyFire( team1, false )
 	setTeamFriendlyFire( team2, false )
-
 
 
 	statusDisplay = textCreateDisplay()
@@ -963,9 +961,6 @@ function onPlayerChat( message, theType )
 end
 
 
-
-
-
 function onPlayerJoin ()
 	createNextObjectiveText(source)
 	triggerClientEvent2( source, "assaultCreateGui", options )
@@ -996,7 +991,6 @@ function destroyBlipsAttachedTo( source )
 		end
 	end
 end
-
 
 
 -- Scores

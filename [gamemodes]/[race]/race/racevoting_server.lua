@@ -112,7 +112,6 @@ addEventHandler('midMapVoteResult', getRootElement(),
 )
 
 
-
 ----------------------------------------------------------------------------
 -- startRandomMap
 --
@@ -177,7 +176,6 @@ function problemChangingMap()
         end,
         math.random(4500,5500), 1 )
 end
-
 
 
 --
@@ -279,7 +277,6 @@ function chooseRandomMap (chosen)
 end
 
 
-
 ----------------------------------------------------------------------------
 -- event nextMapVoteResult
 --
@@ -295,7 +292,6 @@ addEventHandler('nextMapVoteResult', getRootElement(),
 		end
 	end
 )
-
 
 
 ----------------------------------------------------------------------------
@@ -656,7 +652,6 @@ function saveMapInfoItem( map, info )
 
 	executeSQLQuery( 'END TRANSACTION' )
 end
-
 
 
 ---------------------------------------------------------------------------

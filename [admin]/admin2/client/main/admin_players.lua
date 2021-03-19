@@ -172,7 +172,7 @@ function aPlayersTab.onClientClick(button)
                         triggerServerEvent("aPlayer", getLocalPlayer(), player, "ban", reason)
                     end
                 elseif (source == aPlayersTab.Slap) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap", 
+                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap",
                         guiComboBoxGetItemText(aPlayersTab.SlapOptions, guiComboBoxGetSelected(aPlayersTab.SlapOptions))
                     )
                 elseif (source == aPlayersTab.Mute) then
@@ -440,7 +440,7 @@ function aPlayersTab.onRefresh()
     if (not data) then
         return
     end
-    
+
     sync(SYNC_PLAYER, player)
     guiSetText(aPlayersTab.IP, "IP: " .. aPlayers[player].ip)
     guiSetText(aPlayersTab.Serial, "Serial: " .. (aPlayers[player].serial or "Unknown"))

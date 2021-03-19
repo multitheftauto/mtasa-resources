@@ -31,6 +31,19 @@ function optionsActions.precisionRotLevel(value)
 	optionsData.precisionRotLevel = tonumber(value)
 end
 
+function optionsActions.enableColPatch(value)
+	local success, isLoaded = editor_main.toggleColPatch(value)
+	if success then
+		optionsData.enableColPatch = value
+	else
+		-- Set checkbox state to loaded state
+		optionsData.enableColPatch = isLoaded
+		guiCheckBoxSetSelected(dialog.enableColPatch.GUI.checkbox, isLoaded)
+		-- Save settings again
+		dumpSettings()
+	end
+end
+
 function optionsActions.smoothCamMove (value)
 	local loaded = 	freecam.setFreecamOption ( "smoothMovement", value )
 	if ( loaded ) then

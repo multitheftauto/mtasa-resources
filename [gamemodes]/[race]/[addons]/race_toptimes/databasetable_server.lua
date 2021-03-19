@@ -230,8 +230,6 @@ function SDatabaseTable:save()
 end
 
 
-
-
 ---------------------------------------------------------------------------
 --
 -- SDatabaseTable:createTable()
@@ -378,7 +376,6 @@ function SDatabaseTable:deleteColumn( columnName )
 end
 
 
-
 ---------------------------------------------------------------------------
 --
 -- Testing
@@ -419,6 +416,5 @@ addCommandHandler('rencol',
         g_SToptimesManager.mapTimes.dbTable:load()
     end
 )
-
 
 

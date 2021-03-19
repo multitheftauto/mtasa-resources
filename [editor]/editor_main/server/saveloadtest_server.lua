@@ -299,7 +299,7 @@ addEventHandler ( "saveResource", rootElement, saveResource )
 local specialSyncers = {
 	position = function() end,
 	rotation = function() end,
-	dimension = function(element) return 0 end,
+	dimension = function(element) return getElementData(element, "me:dimension") or 0 end,
 	interior = function(element) return edf.edfGetElementInterior(element) end,
 	alpha = function(element) return edf.edfGetElementAlpha(element) end,
 	parent = function(element) return getElementData(element, "me:parent") end,
@@ -325,7 +325,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			saveResourceCoroutine = nil
 			return false
 		end
-        backupMapFiles( resourceName )
+		backupMapFiles( resourceName )
 		for i,fileType in ipairs(fileTypes) do
 			local files, err = getResourceFiles(resource, fileType)
 			if (err and err == "no meta") then
@@ -357,7 +357,17 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 			end
 		end
 	else
-		resource = createResource ( resourceName )
+		local mapResourceOrganizationalDirectory = get("mapResourceOrganizationalDirectory") ~= "none" and get("mapResourceOrganizationalDirectory") or nil
+		if mapResourceOrganizationalDirectory then
+			if string.match(mapResourceOrganizationalDirectory,"%[(%a+)%]") then
+				resource = createResource ( resourceName, mapResourceOrganizationalDirectory )
+			else
+				outputDebugString( "Invalid map base directory. Please enter a name with [brackets].", 2 )
+				resource = createResource ( resourceName )
+			end
+		else
+			resource = createResource ( resourceName )
+		end
 		if not resource then
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
 			"Could not create resource.  The resource directory may exist already or be invalid" )
@@ -494,9 +504,9 @@ end
 
 function doQuickSaveCoroutineFunction(saveAs, dump, client)
 	if ( loadedMap ) then
-        if not dump then
-            backupMapFiles( loadedMap )
-        end
+		if not dump then
+			backupMapFiles( loadedMap )
+		end
 		local tick = getTickCount()
 		local iniTick = getTickCount()
 		local resourceName = tostring(dump and DUMP_RESOURCE or loadedMap)
@@ -899,11 +909,11 @@ addEventHandler("onPlayerLogin", root,
 )
 
 function getBool(var,default)
-    local result = get(var)
-    if not result then
-        return default
-    end
-    return result == 'true'
+	local result = get(var)
+	if not result then
+		return default
+	end
+	return result == 'true'
 end
 
 function round(num, idp)

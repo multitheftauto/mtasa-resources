@@ -183,7 +183,6 @@ local function onClientCursorMove_cursor(_, _, absoluteX, absoluteY )
 end
 
 
-
 local function rotateWithMouseWheel(key, keyState)
 	if (not rotationless) and getCommandState("mod_rotate") then
 		rotX, rotY, rotZ = getElementRotation(selectedElement)

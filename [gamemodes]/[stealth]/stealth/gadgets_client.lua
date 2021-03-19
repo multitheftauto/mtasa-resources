@@ -163,10 +163,6 @@ function makecloakstop (thisplayer)
 end
 
 
-
-
-
-
 --TRIGGER WHEN SOMEONE IS CLOAKED
 addEvent("cloaksomeoneelse", true)
 
@@ -182,7 +178,6 @@ addEventHandler("cloaksomeoneelse", getRootElement(), cloakaperson)
 function setalpha(thisplayer)
 	setElementAlpha ( thisplayer, 10 )
 end
-
 
 
 --TRIGGER WHEN SOMEONE IS UNCLOAKED
@@ -219,8 +214,6 @@ addEventHandler ( "onClientPlayerWeaponFire", getRootElement(), weaponfired )
 function minedelaystop()
 	minedelay = 0
 end
-
-
 
 
 --GOGGLES
@@ -374,7 +367,6 @@ function stopblipburst(theblip)
 end
 
 
-
 --SPYCAMERA
 
 function camerastart()
@@ -511,7 +503,6 @@ function inturuptshield ()
 		end
 	end
 end
-
 
 
 function deactivategadget ()

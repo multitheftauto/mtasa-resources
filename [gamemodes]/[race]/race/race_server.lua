@@ -11,7 +11,7 @@ g_VehicleClothes = {
 
 g_CurrentRaceMode = nil
 
-g_Spawnpoints = {}			-- { i = { position={x, y, z}, rotation=rotation, vehicle=vehicleID, paintjob=paintjob, upgrades={...} } }
+g_Spawnpoints = {}			-- { i = { position={x, y, z}, rotation={x, y, z}, vehicle=vehicleID, paintjob=paintjob, upgrades={...} } }
 g_Checkpoints = {}			-- { i = { position={x, y, z}, size=size, color={r, g, b}, type=type, vehicle=vehicleID, paintjob=paintjob, upgrades={...} } }
 g_Objects = {}				-- { i = { position={x, y, z}, rotation={x, y, z}, model=modelID } }
 g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, paintjob=paintjob, upgrades={...} }
@@ -91,6 +91,7 @@ function cacheGameOptions()
 	g_GameOptions.defaultduration		= getNumber('race.duration',6000) * 1000
 	g_GameOptions.ghostmode				= getBool('race.ghostmode',false)
 	g_GameOptions.ghostalpha			= getBool('race.ghostalpha',false)
+	g_GameOptions.ghostalphalevel		= getNumber('race.ghostalphalevel',180)
 	g_GameOptions.randommaps			= getBool('race.randommaps',false)
 	g_GameOptions.statskey				= getString('race.statskey','name')
 	g_GameOptions.vehiclecolors			= getString('race.vehiclecolors','file')
@@ -122,6 +123,7 @@ function cacheGameOptions()
 	g_GameOptions.ghostmode_warning_if_map_override			= getBool('race.ghostmode_warning_if_map_override',true)
 	g_GameOptions.vehicleweapons_warning_if_map_override	= getBool('race.vehicleweapons_warning_if_map_override',true)
 	g_GameOptions.hunterminigun_map_can_override	= getBool('race.hunterminigun_map_can_override',true)
+	g_GameOptions.endmapwhenonlyspectators	= getBool('race.endmapwhenonlyspectators',true)
 	if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
 		outputWarning( "statskey is not set to 'name' or 'serial'" )
 		g_GameOptions.statskey = 'name'
@@ -207,7 +209,6 @@ function cacheMapOptions(map)
 		g_MapOptions.hunterminigun = g_GameOptions.hunterminigun
 	end
 end
-
 
 
 -- Called from:
@@ -367,7 +368,6 @@ g_RaceStartCountdown:addClientHook(1, 'playSoundFrontEnd', 44)
 g_RaceStartCountdown:addClientHook(0, 'playSoundFrontEnd', 45)
 
 
-
 -- Called from:
 --      event onPlayerJoin
 --      g_SpawnTimer = setTimer(joinHandler, 500, 0) in startRace
@@ -440,6 +440,7 @@ function joinHandlerBoth(player)
         local spawnpoint = g_CurrentRaceMode:pickFreeSpawnpoint(player)
 
         local x, y, z = unpack(spawnpoint.position)
+        local rx, ry, rz = unpack(spawnpoint.rotation)
         -- Set random seed dependant on map name, so everyone gets the same models
         setRandomSeedForMap('clothes')
 
@@ -482,7 +483,7 @@ function joinHandlerBoth(player)
             setRandomSeedForMap('vehiclecolors')
 			-- Replace groups of unprintable characters with a space, and then remove any leading space
 			local plate = getPlayerName(player):gsub( '[^%a%d]+', ' ' ):gsub( '^ ', '' )
-			vehicle = createVehicle(spawnpoint.vehicle, x, y, z, 0, 0, spawnpoint.rotation, plate:sub(1, 8))
+			vehicle = createVehicle(spawnpoint.vehicle, x, y, z, rx, ry, rz, plate:sub(1, 8))
 			if setElementSyncer then
 				setElementSyncer( vehicle, false )
 			end
@@ -551,7 +552,9 @@ function joinHandlerBoth(player)
 	else
 		if bPlayerJoined and g_CurrentRaceMode.running then
 			-- Joining after start
-			addActivePlayer(player)
+			if not g_GameOptions.endmapwhenonlyspectators then
+				addActivePlayer(player)
+			end
 			if g_GameOptions.joinspectating then
 				clientCall(player, "Spectate.start", 'manual' )
 				setPlayerStatus( player, nil, "spectating")
@@ -561,7 +564,6 @@ function joinHandlerBoth(player)
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandlerByEvent)
-
 
 
 -- Called from:
@@ -581,7 +583,6 @@ function unfreezePlayerWhenReady(player)
         outputDebug( 'MISC', 'unfreezePlayerWhenReady: setElementFrozen false for ' .. tostring(getPlayerName(player)) )
     end
 end
-
 
 
 -- Called from:
@@ -909,7 +910,7 @@ function updateGhostmode()
 		local vehicle = RaceMode.getPlayerVehicle(player)
 		if vehicle then
 			Override.setCollideOthers( "ForGhostCollisions", vehicle, g_MapOptions.ghostmode and 0 or nil )
-			Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and 180 or nil )
+			Override.setAlpha( "ForGhostAlpha", {player, vehicle}, g_MapOptions.ghostmode and g_GameOptions.ghostalpha and g_GameOptions.ghostalphalevel or nil )
 		end
 	end
 end
@@ -936,6 +937,8 @@ addEventHandler('onClientRequestSpectate', g_Root,
 					end
 				end
 			end
+		else
+			if not stateAllowsManualSpectate() then return false end
 		end
 		if isPlayerSpectating(player) ~= enable then
 			if enable then
@@ -946,7 +949,13 @@ addEventHandler('onClientRequestSpectate', g_Root,
 				Override.setCollideOthers( "ForSpectating", RaceMode.getPlayerVehicle( player ), 0 )
 				g_SavedVelocity[player] = {}
 				g_SavedVelocity[player].velocity = {getElementVelocity(g_Vehicles[player])}
-				g_SavedVelocity[player].turnvelocity = {getVehicleTurnVelocity(g_Vehicles[player])}
+				g_SavedVelocity[player].turnvelocity = {getElementAngularVelocity(g_Vehicles[player])}
+				if g_GameOptions.endmapwhenonlyspectators then
+					removeActivePlayer(player)
+					if getActivePlayerCount() == 0 then
+						RaceMode.endMap()
+					end
+				end
 			else
 				clientCall(player, "Spectate.stop", 'manual' )
 				setPlayerStatus( player, nil, "")
@@ -959,6 +968,9 @@ addEventHandler('onClientRequestSpectate', g_Root,
 					RaceMode.playerFreeze(player, true, true)
 					TimerManager.createTimerFor("map",player):setTimer(afterSpectatePlayerUnfreeze, 2000, 1, player, true)
 				end
+				if g_GameOptions.endmapwhenonlyspectators then
+					addActivePlayer(player)
+				end
 			end
 		end
 	end
@@ -968,7 +980,7 @@ function afterSpectatePlayerUnfreeze(player, bDontFix)
 	RaceMode.playerUnfreeze(player, bDontFix)
 	if g_SavedVelocity[player] then
 		setElementVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].velocity))
-		setVehicleTurnVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].turnvelocity))
+		setElementAngularVelocity(g_Vehicles[player], unpack(g_SavedVelocity[player].turnvelocity))
 		g_SavedVelocity[player] = nil
 	end
 end
@@ -1240,7 +1252,7 @@ function MoveAway.update ()
 			local vehicle = g_Vehicles[player]
 			if isElement(vehicle) then
 				setElementVelocity(vehicle,0,0,0)
-				setVehicleTurnVelocity(vehicle,0,0,0)
+				setElementAngularVelocity(vehicle,0,0,0)
 				Override.setCollideOthers( "ForMoveAway", vehicle, 0 )
 				Override.setAlpha( "ForMoveAway", {player, vehicle}, 0 )
 			end

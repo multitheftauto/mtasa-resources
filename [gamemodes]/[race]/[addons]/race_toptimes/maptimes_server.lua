@@ -201,7 +201,6 @@ function SMaptimes:checkIsSorted(msg)
 end
 
 
-
 ---------------------------------------------------------------------------
 --
 -- SMaptimes:getToptimes()
@@ -383,7 +382,6 @@ function SMaptimes:setTimeForPlayer( player, time, dateRecorded )
 	end
 
 end
-
 
 
 ---------------------------------------------------------------------------

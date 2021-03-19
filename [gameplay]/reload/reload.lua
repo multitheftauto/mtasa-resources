@@ -1,5 +1,5 @@
-function reloadWeapon()
+local function reloadWeapon()
 	reloadPedWeapon(client)
 end
 addEvent("relWep", true)
-addEventHandler("relWep", resourceRoot, reloadWeapon)
+addEventHandler("relWep", root, reloadWeapon)

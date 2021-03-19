@@ -24,8 +24,11 @@ function aResourcesTab.Create(tab)
     aResourcesTab.Panel = guiCreateTabPanel(0.01, 0.02, 0.98, 0.96, true, tab)
     aResourcesTab.MainTab = guiCreateTab("Main", aResourcesTab.Panel)
 
-    guiCreateLabel(0.02, 0.015, 0.14, 0.04, "Filter type:", true, aResourcesTab.MainTab)
-    aResourcesTab.View = guiCreateComboBox(0.13, 0.01, 0.23, 0.35, "All", true, aResourcesTab.MainTab)
+    aResourcesTab.Filter = guiCreateEdit(0.01, 0.01, 0.22, 0.04, "", true, aResourcesTab.MainTab)
+    guiHandleInput(aResourcesTab.Filter)
+    guiCreateInnerImage("client\\images\\search.png", aResourcesTab.Filter)
+
+    aResourcesTab.View = guiCreateComboBox(0.23, 0.01, 0.13, 0.35, "All", true, aResourcesTab.MainTab)
     aResourcesTab.ResourceList = guiCreateGridList(0.01, 0.07, 0.35, 0.86, true, aResourcesTab.MainTab)
     guiGridListAddColumn(aResourcesTab.ResourceList, "Resource", 0.60)
     guiGridListAddColumn(aResourcesTab.ResourceList, "State", 0.25)
@@ -70,6 +73,7 @@ function aResourcesTab.Create(tab)
     addEventHandler("onClientGUIClick", aResourcesTab.MainTab, aResourcesTab.onClientClick)
     addEventHandler("onClientGUIDoubleClick", aResourcesTab.Settings, aResourcesTab.onClientDoubleClick)
     addEventHandler("onClientGUIComboBoxAccepted", aResourcesTab.View, aResourcesTab.onClientClick)
+    addEventHandler("onClientGUIChanged", aResourcesTab.Filter, aResourcesTab.onEditFilter)
     addEventHandler("aClientResourceStart", root, aResourcesTab.onClientResourceStart)
     addEventHandler("aClientResourceStop", root, aResourcesTab.onClientResourceStop)
 
@@ -88,6 +92,22 @@ function aResourcesTab.onContextClick(button)
         source = translator[source]
         aResourcesTab.onClientClick(button)
     end
+end
+
+local timerSpam
+function aResourcesTab.onEditFilter()
+    if isTimer(timerSpam) then
+        killTimer(timerSpam) 
+    end
+    timerSpam = setTimer(aResourcesTab.ApplyFilter, 200, 1)
+end
+
+function aResourcesTab.ApplyFilter(filter)
+    local type = guiComboBoxGetItemText(aResourcesTab.View, guiComboBoxGetSelected(aResourcesTab.View))
+    if type == "All" then
+        type = nil
+    end
+    aResourcesTab.listResources(type)
 end
 
 function aResourcesTab.onClientClick(button)
@@ -178,7 +198,7 @@ function aResourcesTab.onClientClick(button)
             if type == "All" then
                 type = nil
             end
-            aResourcesTab.listResources(type, aResourcesTab.List)
+            aResourcesTab.listResources(type)
         end
     end
 end
@@ -249,10 +269,16 @@ function aResourcesTab.listResources(type)
             return a.name < b.name
         end
     )
+    local filter = guiGetText(aResourcesTab.Filter)
+    if (filter == '') then
+        filter = nil
+    end
     for id, resource in ipairs(temp) do
-        local row = guiGridListAddRow(resources)
-        guiGridListSetItemText(resources, row, 1, resource.name, false, false)
-        guiGridListSetItemText(resources, row, 2, resource.state, false, false)
+        if (filter and resource.name:lower():find(filter:lower())) or (not filter) then
+            local row = guiGridListAddRow(resources)
+            guiGridListSetItemText(resources, row, 1, resource.name, false, false)
+            guiGridListSetItemText(resources, row, 2, resource.state, false, false)
+        end
     end
 end
 
