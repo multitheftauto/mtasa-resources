@@ -22,7 +22,7 @@ function aAntiCheatTab.Create ( tab )
 	local acInfoList = {
 				{ id=1, desc="Classic health/armour hack detector" },
 				{ id=4, desc="Detects presence of trainer. Capital letters in the message are for tagging particular trainers" },
-				{ id=5, desc="Detects use of trainer. " },
+				{ id=5, desc="Detects use of trainer." },
 				{ id=6, desc="Detects use of trainer incl.: player movement, health/damage, weapons, money, gamespeed, game cheats, aimbot" },
 				{ id=7, desc="Detects use of trainer." },
 				{ id=8, desc="Detects unauthorized mods. Capital letters in the message are for tagging particular items e.g. CLEO - Cleo detected, RENDER - Wall hack detected" },
@@ -60,7 +60,7 @@ function aAntiCheatTab.Create ( tab )
 
 	ypos = ypos + 5
 
-	local msg = "To turn OFF an AC#, add number to <disabledac> setting in mtaserver.conf and restart server"
+	local msg = "To turn OFF an AC#, add number to <disableac> setting in mtaserver.conf and restart server"
 	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
 	guiLabelSetColor(label1, unpack(colorYellow) )
 	guiSetFont(label1, "default-bold-small" )
@@ -122,7 +122,7 @@ function aAntiCheatTab.Create ( tab )
 
 	ypos = ypos + 5
 
-	local msg = "To turn ON a SD#, add number to <enabledsd> setting in mtaserver.conf and restart server"
+	local msg = "To turn ON a SD#, add number to <enablesd> setting in mtaserver.conf and restart server"
 	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
 	guiSetFont(label1, "default-bold-small" )
 	guiLabelSetColor(label1, unpack(colorYellow) )
