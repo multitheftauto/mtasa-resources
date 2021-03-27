@@ -469,7 +469,7 @@ addCommandHandler ( "register", function ( player, command, arg1, arg2 )
 			outputChatBox ( "register: - Password should be at least 4 characters long", player, 255, 100, 70 )
 		elseif ( addAccount ( username, password ) ) then
 			outputChatBox ( "You have successfully registered! Username: '"..username.."', Password: '"..password.."'(Remember it)", player, 255, 100, 70 )
-			outputServerLog ( "ADMIN: "..getPlayerName ( player ).." registered account '"..username.."' (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )
+			outputServerLog ( "ACCOUNTS: "..getPlayerName ( player ).." registered account '"..username.."' (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )
 		elseif ( getAccount ( username ) ) then
 			outputChatBox ( "register: - Account with this name already exists.", player, 255, 100, 70 )
 		else
