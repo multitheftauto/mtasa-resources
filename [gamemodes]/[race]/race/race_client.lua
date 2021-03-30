@@ -219,7 +219,7 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 			g_Pickups[colshape][k] = v
 		end
 		local isLoaded = not pickup.isRespawning
-        g_Pickups[colshape].load = isLoaded
+		g_Pickups[colshape].load = isLoaded
 		if g_Pickups[colshape].type == 'vehiclechange' then
 			g_Pickups[colshape].label = dxText:create(getVehicleNameFromModel(g_Pickups[colshape].vehicle), 0.5, 0.5)
 			g_Pickups[colshape].label:color(255, 255, 255, 0)
