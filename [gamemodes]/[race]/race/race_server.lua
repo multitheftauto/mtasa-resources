@@ -19,7 +19,6 @@ g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, p
 g_Players = {}				-- { i = player }
 g_Vehicles = {}				-- { player = vehicle }
 
-local unloadedPickups = {}
 
 
 addEventHandler('onPlayerJoin', g_Root,
@@ -659,10 +658,10 @@ addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 		local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
 		local vehicle = g_Vehicles[source]
 		if not pickup or not vehicle then return end
-		if respawntime and tonumber(respawntime) >= 50 then
-			table.insert(unloadedPickups, pickupID)
-			clientCall(g_Root, 'unloadPickup', pickupID)
+		if respawntime and tonumber(respawntime) >= 50 and not pickup.isRespawning then
+			pickup.isRespawning = true
 			TimerManager.createTimerFor("map"):setTimer(ServerLoadPickup, tonumber(respawntime), 1, pickupID)
+			clientCall(g_Root, 'unloadPickup', pickupID)
 		end
 		if pickup.type == 'nitro' then
 			addVehicleUpgrade(vehicle, 1010)
@@ -680,7 +679,8 @@ addEventHandler('onPlayerPickUpRacePickupInternal', g_Root,
 )
 
 function ServerLoadPickup(pickupID)
-	table.removevalue(unloadedPickups, pickupID)
+	local pickup = g_Pickups[table.find(g_Pickups, 'id', pickupID)]
+	pickup.isRespawning = nil
 	clientCall(g_Root, 'loadPickup', pickupID)
 end
 
@@ -744,7 +744,6 @@ function unloadAll()
 	g_Checkpoints = {}
 	g_Objects = {}
 	g_Pickups = {}
-	unloadedPickups = {}
 	if g_CurrentRaceMode then
 		g_CurrentRaceMode:destroy()
 	end
@@ -1009,10 +1008,6 @@ addEventHandler('onNotifyPlayerReady', g_Root,
 	function()
 		if checkClient( false, source, 'onNotifyPlayerReady' ) then return end
 		setPlayerReady( source )
-		for i, pickupID in ipairs(unloadedPickups) do
-			-- outputDebugString(getPlayerName(source).." unload "..tostring(pickupID))
-			clientCall(source, "unloadPickup", pickupID )
-		end
 	end
 )
 
