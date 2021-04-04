@@ -1678,7 +1678,8 @@ function setColorCommand(cmd, ...)
 	end
 
 	for i = 1, 12 do
-		colors[i] = args[i] and tonumber(args[i]) or colors[i]
+		local color = tonumber(args[i]) or -1
+		colors[i] = color >= 0 and color or colors[i]
 	end
 	server.setVehicleColor(vehicle, unpack(colors))
 end
