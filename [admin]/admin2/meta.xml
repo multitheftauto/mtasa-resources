@@ -274,5 +274,10 @@
 		   accept="[true],[false]"
 		   desc="Parse console commands."
 	/>
+    <setting name="#adminChatCommandName" value="a"
+        group="General"
+        friendlyname="Admin chat command name"
+        desc="The command name for admin chat."
+  />
   </settings>
 </meta>
