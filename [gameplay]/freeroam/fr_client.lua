@@ -502,15 +502,11 @@ wndClothes = {
 
 function addClothesCommand(cmd, type, model, texture)
 	type = type and tonumber(type)
-
-	if string.len(type) > 30 or string.len(model) > 30 or string.len(texture) > 30 then
-		errMsg("Invalid clothes input!")
+	if (not type or string.len(type) > 30) or (not model or string.len(model) > 30) or (not texture or string.len(texture) > 30) then
+		errMsg("Invalid clothes input! Usage: /"..cmd.." [type] [model] [texture]")
 		return
 	end
-
-	if type and model and texture then
-		server.addPedClothes(localPlayer, texture, model, type)
-	end
+	server.addPedClothes(localPlayer, texture, model, type)
 end
 addCommandHandler('addclothes', addClothesCommand)
 addCommandHandler('ac', addClothesCommand)
