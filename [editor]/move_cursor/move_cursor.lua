@@ -12,6 +12,8 @@ local rotateSpeed = {slow = 1, medium = 8, fast = 40} -- degrees per scroll
 local zoomSpeed = {slow = 0.5, medium = 2, fast = 6}  -- units per scroll
 local ignoreElementWalls = true -- 'false' not supported yet
 
+local isEnabled = false
+
 local root = getRootElement()
 
 local camX, camY, camZ
@@ -348,15 +350,22 @@ function getZoomSpeeds()
 end
 
 function disable()
+	if (not isEnabled) then
+		return false
+	end
 	-- remove events, unbind keys
 	removeEventHandler("onClientCursorMove", root, onClientCursorMove_cursor)
 	unbindControl("quick_rotate_increase", "down", rotateWithMouseWheel)
 	unbindControl("quick_rotate_decrease", "down", rotateWithMouseWheel)
 	unbindControl("zoom_in", "down", zoomWithMouseWheel)
 	unbindControl("zoom_out", "down", zoomWithMouseWheel)
+	isEnabled = false
 end
 
 function enable()
+	if isEnabled then
+		return false
+	end
 	-- add events, bind keys
 	ignoreFirst = true
 	addEventHandler("onClientCursorMove", root, onClientCursorMove_cursor)
@@ -365,4 +374,5 @@ function enable()
 	bindControl("zoom_in", "down", zoomWithMouseWheel) --zoom in
 	bindControl("zoom_out", "down", zoomWithMouseWheel) --zoom out
 	setTimer ( processCursorMove, 50, 1 ) --Lazy but we have to wait for MTA to switch modes
+	isEnabled = true
 end
