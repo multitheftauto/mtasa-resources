@@ -147,7 +147,7 @@ local function zoomWithMouseWheel(key, keyState)
 	       	speed = zoomSpeed.medium
 	    end
 
-	    if getCommandState"zoom_in" then
+	    if getCommandState("zoom_in") then
    	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
 			processCursorMove()
 	    else --if key == "zoom_out"
