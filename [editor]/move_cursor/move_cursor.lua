@@ -347,7 +347,7 @@ function enable()
 		bindControl("quick_rotate_decrease", "down", rotateWithMouseWheel)
 		bindControl("zoom_in", "down", zoomWithMouseWheel)
 		bindControl("zoom_out", "down", zoomWithMouseWheel)
-		setTimer(processCursorMove, 50, 1)
+		setTimer(processCursorMove, 50, 1) --Lazy but we have to wait for MTA to switch modes
 		isEnabled = true
 	end
 	return true
