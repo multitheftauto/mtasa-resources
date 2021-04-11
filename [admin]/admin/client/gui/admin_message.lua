@@ -43,7 +43,7 @@ function aViewMessage ( id )
 		guiSetText ( aViewMessageCategory, _messages[id].category )
 		guiSetText ( aViewMessageForm, _messages[id].subject )
 		guiSetText ( aViewMessageTime, _messages[id].time )
-		guiSetText ( aViewMessageAuthor, _messages[id].author )
+		guiSetText ( aViewMessageAuthor, removeColorCoding( _messages[id].author ) )
 		guiSetText ( aViewMessageText, _messages[id].text )
 		guiSetVisible ( aViewMessageForm, true )
 		local isVisible = _messages[id].suspect ~= nil
@@ -68,9 +68,18 @@ function aViewSuspectInfo ( button )
 						aSuspectInfo = nil
 					end, false)
 
-					local infoMemo = guiCreateMemo(0.04, 0.1, 0.96, 0.75, "Nickname: "..suspectInfo.name.."\nAccount name: "..suspectInfo.username.."\nIP: "
-						..suspectInfo.ip.."\nSerial: "..suspectInfo.serial.."\nMTA version: "..suspectInfo.version.."\n\nChat log:\n"..suspectInfo.chatLog,
-					true, aSuspectInfo)
+					local text = {
+						'Nickname: '.. removeColorCoding(suspectInfo.name),
+						'Account name: '.. getSensitiveText(suspectInfo.username),
+						'IP: '.. getSensitiveText(suspectInfo.ip),
+						'Serial: '.. getSensitiveText(suspectInfo.serial),
+						'MTA version: '.. suspectInfo.version,
+						'Chat log: '.. suspectInfo.chatLog,
+					}
+
+					local text = table.concat(displayInfo, '\n')
+
+					local infoMemo = guiCreateMemo(0.04, 0.1, 0.96, 0.75, text, true, aSuspectInfo)
 					guiMemoSetReadOnly(infoMemo, true)
 				else
 					aMessageBox ( "error", "This report does have any suspect information." )
