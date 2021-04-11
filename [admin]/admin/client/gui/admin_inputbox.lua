@@ -463,7 +463,7 @@ function aMuteInputBox ( player )
 		guiSetText ( aMuteInputRadio2s[i], dur>0 and secondsToTimeDesc(dur) or "Until reconnect" )
 	end
 
-	guiSetText ( aMuteInputForm, "Mute player " .. getPlayerName(player) )
+	guiSetText ( aMuteInputForm, "Mute player " .. removeColorCoding(getPlayerName(player)) )
 	guiSetText ( aMuteInputLabel, "Enter the mute reason" )
 	aHideFloaters()
 	guiSetVisible ( aMuteInputForm, true )
