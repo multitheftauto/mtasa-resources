@@ -120,8 +120,8 @@ addEventHandler("aClientScreenShot",resourceRoot,
 			guiGridListClear ( aScreenShotList )
 			for i,screenshot in ipairs (data) do
 				local row = guiGridListAddRow(aScreenShotList)
-				guiGridListSetItemText(aScreenShotList,row,1,screenshot.player,false,false)
-				guiGridListSetItemText(aScreenShotList,row,2,screenshot.admin,false,false)
+				guiGridListSetItemText(aScreenShotList,row,1,removeColorCoding(screenshot.player),false,false)
+				guiGridListSetItemText(aScreenShotList,row,2,removeColorCoding(screenshot.admin),false,false)
 				guiGridListSetItemText(aScreenShotList,row,3,screenshot.realtime,false,false)
 				guiGridListSetItemData(aScreenShotList,row,1,screenshot.id)
 			end
