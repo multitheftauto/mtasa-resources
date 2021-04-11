@@ -19,6 +19,8 @@ aBans = {}
 aLastSync = 0
 aResources = {}
 
+local serverPassword = 'None'
+
 function guiComboBoxAdjustHeight ( combobox, itemcount )
     if getElementType ( combobox ) ~= "gui-combobox" or type ( itemcount ) ~= "number" then error ( "Invalid arguments @ 'guiComboBoxAdjustHeight'", 2 ) end
     local width = guiGetSize ( combobox, false )
@@ -560,9 +562,10 @@ function aClientSync ( type, table, data )
 			end
 		end
 	elseif ( type == "server" ) then
+		serverPassword = table["password"] or "None"
 		guiSetText ( aTab3.Server, "Server: "..table["name"] )
 		guiSetText ( aTab3.Players, "Players: "..#getElementsByType ( "player" ).."/"..table["players"] )
-		guiSetText ( aTab3.Password, "Password: "..getSensitiveText( table["password"] or "None" ) )
+		guiSetText ( aTab3.Password, "Password: "..getSensitiveText( serverPassword ) )
 		guiSetText ( aTab3.GameType, "Game Type: "..( table["game"] or "None" ) )
 		guiSetText ( aTab3.MapName, "Map Name: "..( table["map"] or "None" ) )
 		guiSetText ( aTab3.FPSCurrent, "FPS Limit: "..( table["fps"] or "N/A" ) )
@@ -1324,6 +1327,7 @@ function aAdminReloadInfos()
 		guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
 		guiSetText ( aTab1.CountryCode, "" )
 	end
+	guiSetText ( aTab3.Password, "Password: "..getSensitiveText( serverPassword ) )
 end
 
 function updateColorCodes()
