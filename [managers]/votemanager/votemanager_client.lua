@@ -320,7 +320,7 @@ function sendVote(voteID)
 
 	--if the player hasnt voted already (or if vote change is allowed anyway), update the vote text
 	if not hasAlreadyVoted or isChangeAllowed then
-		if hasAlreadyVoted then
+		if hasAlreadyVoted and hasAlreadyVoted ~= -1 then
 			guiSetFont(optionLabels[hasAlreadyVoted], layout.option.font)
 			guiSetAlpha(optionLabels[hasAlreadyVoted], layout.option.alpha)
 			guiLabelSetColor(optionLabels[hasAlreadyVoted], layout.option.r, layout.option.g, layout.option.b)
