@@ -1,8 +1,6 @@
 local buildType = localPlayer and "client" or "server"
 
 if buildType == "client" then
-    local subWindows = {}
-
     local localVariables = {
         windowName = "FR GUI",
 
@@ -10,7 +8,7 @@ if buildType == "client" then
 
         -- It doesn't matter much, when all is done the window is resized
         defaultWidth = 280,
-        defaultHeight = 430,
+        defaultHeight = 400,
 
         rowHeight = 25,
       
@@ -18,11 +16,11 @@ if buildType == "client" then
             {"GuiLabel", text = "Local player"},
             {"br"},
 
-            {"GuiButton", text = "Kill", height = 20},
-            {"GuiButton", text = "Skin", height = 20},
-            {"GuiButton", text = "Anim", height = 20},
-            {"GuiButton", text = "Weapons", height = 20},
-            {"GuiButton", text = "Clothes", height = 20},
+            {"GuiButton", text = "Kill", height = 20, click = killYourself},
+            {"GuiButton", text = "Skin", height = 20, click = function() showPopUp("skin") end},
+            {"GuiButton", text = "Anim", height = 20, click = function() showPopUp("anim") end},
+            {"GuiButton", text = "Weapons", height = 20, click = function() showPopUp("weapons") end},
+            {"GuiButton", text = "Clothes", height = 20, click = function() showPopUp("clothes") end},
 
             {"br"},
             
@@ -33,7 +31,7 @@ if buildType == "client" then
 
 
             {"br"},
-            {"GuiCheckBox", text = "Jetpack"},
+            {"GuiCheckBox", text = "Jetpack", click = toggleJetPack},
             {"GuiCheckBox", text = "Fall of bike"},
             {"br"},
             {"GuiCheckBox", text = "Disable warp"},
@@ -42,40 +40,35 @@ if buildType == "client" then
             {"GuiCheckBox", text = "Anti-ramming (vehicle ghostmode)"},
             {"br", height = 30},
 
-            {"GuiLabel", text = "Pos: X Y Z", width = 170},
+            {"GuiLabel", text = "Pos: %s %s %s", width = 170},
             {"GuiButton", text = "Map", height = 20},
             {"GuiButton", text = "Int", height = 20},
 
             {"br", height = 40},
 
-            {"GuiLabel", text = "Vehicle (current name)"},
+            {"GuiLabel", text = "Vehicle (None)", id = "vehicle-text", width = 170},
             {"br"},
             {"GuiButton", text = "Create", height = 20},
-            {"GuiButton", text = "Repair", height = 20},
-            {"GuiButton", text = "Flip", height = 20},
-            {"GuiButton", text = "Upgrades", height = 20},
+            {"GuiButton", text = "Repair", height = 20, parent = "vehicle"},
+            {"GuiButton", text = "Flip", height = 20, parent = "vehicle"},
+            {"GuiButton", text = "Upgrades", height = 20, parent = "vehicle"},
             {"br"},
-            {"GuiButton", text = "Color", height = 20},
-            {"GuiButton", text = "Paintjob", height = 20},
+            {"GuiButton", text = "Color", height = 20, parent = "vehicle"},
+            {"GuiButton", text = "Paintjob", height = 20, parent = "vehicle"},
 
             {"br"},
-            {"GuiCheckBox", text = "Lights"},
+            {"GuiCheckBox", text = "Lights", parent = "vehicle"},
 
-            {"br", height = 70},
+            {"br", height = 50},
             {"GuiLabel", text = "Environment"},
             {"br"},
             {"GuiButton", text = "Time", height = 20},
-            {"GuiCheckBox", text = "Freeze"},
+            {"GuiCheckBox", text = "Freeze", height = 20},
             {"GuiButton", text = "Weather", height = 20},
-            {"GuiButton", text = "Speed", height = 20},
-          
+            {"GuiButton", text = "Speed", height = 20},  
         }
     }
     
-    function addWindow(data)
-        return table.insert(subWindows, data)
-    end
-
     function getSharedData()
         return localVariables
     end

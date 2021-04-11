@@ -10,8 +10,13 @@
 	<config src="data/vehicles.xml" type="client" />
 	<config src="data/weapons.xml" type="client" />
 	<config src="data/weather.xml" type="client" />
-    
+
+    <script src="features/functions.lua" type="client" />
+  
     <script src="shared.lua" type="shared" />
     <script src="server.lua" type="server" />
     <script src="client.lua" type="client" />
+
+    <script src="features/skin.lua" type="client" />
+
 </meta>
