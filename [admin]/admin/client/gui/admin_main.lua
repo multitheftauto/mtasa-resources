@@ -1253,7 +1253,7 @@ function aAdminReloadInfos()
 		local player = aAdminRefresh ()
 		if ( player ) then
 			triggerServerEvent ( "aSync", localPlayer, "player", player )
-			if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then
+			if (not isSensitiveDataHidden()) and guiCheckBoxGetSelected(aTab6.OutputPlayer) then
 				local playerName = aPlayers[player]["name"]
 			
 				if isColorCodeHidden() then
