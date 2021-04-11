@@ -865,7 +865,7 @@ function aClientAdminChat ( message )
 	local chat = guiGetText ( aTab5.AdminChat )
 	guiSetText ( aTab5.AdminChat, (chat ~= "\n" and chat or "")..getPlayerName ( source )..": "..message )
 	guiSetProperty ( aTab5.AdminChat, "CaratIndex", tostring ( string.len ( chat ) ) )
-	if ( guiCheckBoxGetSelected ( aTab6.AdminChatOutput ) ) then outputChatBox ( "ADMIN CHAT> "..getPlayerName ( source )..": "..message, 255, 0, 0 ) end
+	if ( not isSensitiveDataHidden() and ( guiCheckBoxGetSelected ( aTab6.AdminChatOutput ) ) ) then outputChatBox ( "ADMIN CHAT> "..getPlayerName ( source )..": "..message, 255, 0, 0 ) end
 	if ( ( guiCheckBoxGetSelected ( aTab5.AdminChatSound ) ) and ( source ~= localPlayer ) ) then playSoundFrontEnd ( 13 ) end
 end
 
@@ -1419,6 +1419,10 @@ function setAnonAdmin( bOn )
 end
 
 -- sensitive data
+function isSensitiveDataHidden()
+	return guiCheckBoxGetSelected(aTab1.HideSensitiveData)
+end
+
 function setHideSensitiveData( bOn )
 	guiCheckBoxSetSelected ( aTab1.HideSensitiveData, bOn )
 	aSetSetting ( "currentHideSensitiveDataState", bOn )
@@ -1426,7 +1430,7 @@ function setHideSensitiveData( bOn )
 end
 
 function getSensitiveText(text)
-	if guiCheckBoxGetSelected(aTab1.HideSensitiveData) then
+	if isSensitiveDataHidden() then
 		return ('*'):rep(utf8.len(text))
 	end
 	return text
