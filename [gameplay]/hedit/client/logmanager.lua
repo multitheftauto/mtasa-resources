@@ -24,10 +24,6 @@ function addLogEntry ( vehicle, player, textPointer, arguments, oldValue, level 
     return true
 end
 
-
-
-
-
 function clearLog ( )
     local minilog = heditGUI.specials.minilog
     local size = #minilog
@@ -51,10 +47,6 @@ function clearLog ( )
     return true
 end
 
-
-
-
-
 function addToMiniLog ( entry )
     local minilog = heditGUI.specials.minilog
     local size = #minilog
@@ -77,21 +69,16 @@ function addToMiniLog ( entry )
     --if isHandlingPropertHexadecimal ( property ) then
         -- todo
 
-
     if property == "centerOfMass" then
-
         entry.arguments[1] = getHandlingPropertyFriendlyName ( "centerOfMass" )
 
     elseif handlingLimits[property] then
-
         entry.arguments[1] = getHandlingPropertyFriendlyName ( property )
         if handlingLimits[property].options and value then
             entry.arguments[2] = getHandlingPropertyOptionName ( property, value )
         end
 
     end
-
-
 
     for i,v in ipairs ( entry.arguments ) do
         entry.arguments[i] = tostring ( v )
@@ -109,10 +96,6 @@ function addToMiniLog ( entry )
     
     return true
 end
-
-
-
-
 
 function addToFullLog ( entry )
     if logCreated then
@@ -140,10 +123,6 @@ function addToFullLog ( entry )
     return false
 end
 
-
-
-
-
 function addToLogGUI ( entry )
     addToMiniLog ( entry )
     addToFullLog ( entry )
@@ -154,10 +133,6 @@ end
 addEvent ( "addToLogGUI", true )
 addEventHandler ( "addToLogGUI", root, addToLogGUI )
 
-
-
-
-
 function requestMiniLog ( vehicle )
     if not isValidVehicle ( vehicle ) then
         return false
@@ -166,10 +141,6 @@ function requestMiniLog ( vehicle )
     triggerServerEvent ( "requestMiniLog", root, vehicle, #heditGUI.specials.minilog )
     return true
 end
-
-
-
-
 
 function requestFullLog ( vehicle )
     if not isValidVehicle ( vehicle ) then
@@ -180,10 +151,6 @@ function requestFullLog ( vehicle )
     return true
 end
 
-
-
-
-
 function receiveMiniLog ( miniLog )
     for i,entry in ipairs ( miniLog ) do
         addToMiniLog ( entry )
@@ -193,10 +160,6 @@ function receiveMiniLog ( miniLog )
 end
 addEvent ( "receiveMiniLog", true )
 addEventHandler ( "receiveMiniLog", root, receiveMiniLog )
-
-
-
-
 
 function receiveFullLog ( fullLog )
     logCreated = true

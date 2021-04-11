@@ -47,8 +47,7 @@ guiLanguage.arabic = {
     clickToViewFullLog = "انقر لعرض سجل المركبة بالكامل.",
     copiedToClipboard = "لقد تم نسخ اعدادات وزانيتك الى كيبورد",
     
-    special = {
-    },
+    special = {},
     
     --
     -- BUTTON / MENU STRINGS
@@ -225,7 +224,6 @@ guiLanguage.arabic = {
             }
         },
     },
-    
 
     handlingPropertyInformation = { 
         ["identifier"] = {

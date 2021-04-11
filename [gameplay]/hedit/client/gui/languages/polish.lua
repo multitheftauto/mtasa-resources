@@ -47,8 +47,7 @@ guiLanguage.polish = {
     clickToViewFullLog = "Kliknij aby zobaczyc pelny dziennik pojazdu.",
     copiedToClipboard = "Ustawienia obslugi zostaly skopiowane do schowka!",
     
-    special = {
-    },
+    special = {},
     
     --
     -- BUTTON / MENU STRINGS
@@ -222,7 +221,6 @@ guiLanguage.polish = {
             }
         },
     },
-    
 
     handlingPropertyInformation = { 
         ["identifier"] = {

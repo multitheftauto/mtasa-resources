@@ -27,10 +27,6 @@ addEventHandler ( "requestRights", root, function ( )
     end
 end )
 
-
-
-
-
 function handlingMod ( arg )
     if not isValidPlayer ( client ) then
         if DEBUGMODE then
@@ -70,23 +66,12 @@ function handlingMod ( arg )
     return true
 end
 
-
-
-
-
 addEvent ( "resetHandling", true )
 addEvent ( "loadClientHandling", true )
 addEvent ( "importHandling", true )
 addEventHandler ( "resetHandling", root, handlingMod )
 addEventHandler ( "loadClientHandling", root, handlingMod )
 addEventHandler ( "importHandling", root, handlingMod )
-
-
-
---
-
-
-
 
 function setHandlingFromTable ( vehicle, tab, exe )
     if not isValidVehicle ( vehicle ) then

@@ -1167,7 +1167,6 @@ template.viewcontents = {
     },
 }
 
-
 template.specials = {
     menuheader = {
         type = "label",

@@ -129,7 +129,6 @@ function onClick ( button, state )
             local property = guiGetElementProperty ( source )
             
             if property then
-            
                 if (inputType == "config") and (getElementType(source) == "gui-button") then
                     
                     destroyEditBox ( )
@@ -154,12 +153,8 @@ function onClick ( button, state )
                     
                     guiSetStaticInfoText ( propType, propInfo )
                     
-                    
-                    
                 elseif inputType == "infolabel" and isHandlingPropertyHexadecimal ( property ) then
-                    
                     if pVehicle then
-                        
                         guiSetEnabled ( source, false ) -- Spam prevention, stop players to click the button till wierd stuff happens. Need a better spam protection.
                         setTimer ( guiSetEnabled, 500, 1, source, true )
 
@@ -170,9 +165,7 @@ function onClick ( button, state )
                         local str = ""
                         
                         for value in string.gmatch ( reversedHex, "." ) do
-                            
                             if byte == info.byte then
-
                                 local curValue = tonumber ( "0x"..value )
                                 local addValue = tonumber ( info.value )
                                 local calc
@@ -190,39 +183,23 @@ function onClick ( button, state )
                                 local newValue = string.format ( "%X", calc )
 
                                 value = newValue
-
                             end
-                            
                             str = str..value
                             byte = byte + 1
                         end
                         
                         setVehicleHandling ( pVehicle, property, string.reverse ( str ) )
-
-                        
-                        
-                    else
-                        
-                        -- No vehicle
-                        
                     end
-                    
                 end
-                
             end
-            
         end
         
     elseif (button == "right") then
-        
         if pressedKey then -- Check whether CTRL or SHIFT is valid pressed with a right-mouse-click
-            
             local property = guiGetElementProperty ( source )
             local value = guiGetText ( pointedButton )
             prepareHandlingValue ( pVehicle, property, value )
-            
         end
-        
     end
     
     if (parent ~= "menuButton") then
@@ -246,7 +223,6 @@ function onDoubleClick ( )
     return true
 end
 
-
 -- mouse enter, not edit enter!
 function onEnter ( )
     local parent = guiGetElementParent ( source )
@@ -257,19 +233,15 @@ function onEnter ( )
     
     if parent == "menuButton" and currentUtil then
         local util = guiGetElementInfo ( source )
-        
         if util ~= currentUtil then
             guiToggleUtilityDropDown ( util )
         end
         
     elseif parent == "viewButton" or parent == "menuItem" then
-    
         guiSetInfoText ( getViewLongName(elementInfo), "" )
     
     elseif parent == "viewItem" then
-        
         if inputType == "infolabel" then
-        
             local property,name,info = guiGetElementProperty ( source ),nil,nil
             
             if isHandlingPropertyHexadecimal ( property ) then
@@ -282,27 +254,19 @@ function onEnter ( )
             end
             
             guiSetInfoText ( name, info )
-            
         elseif inputType == "config" then
-            
             guiSetInfoText ( getText ( "clickToEdit" ), getText ( "enterToSubmit" ) )
             
         elseif inputType == "special" then
             
-            
         end
         
     elseif parent == "special" then
-        
         if elementInfo == "minilog" and guiGetText ( source ) ~= "" then
-            
             guiSetInfoText ( getText ( "clickToViewFullLog" ), "" )
-            
         end
-        
+
     end
-    
-    
     
     if event and event.onEnter then
         event.onEnter ( source )
@@ -310,10 +274,6 @@ function onEnter ( )
     
     return true
 end
-
-
-
-
 
 function onLeave ( )
     local parent = guiGetElementParent ( source )
@@ -330,15 +290,9 @@ function onLeave ( )
     return true
 end
 
-
-
-
-
 function onFocus ( )
     local parent = guiGetElementParent ( source )
     local event = guiGetElementEvents ( source )
-    
-    
     
     if event and event.onFocus then
         event.onFocus ( source )
@@ -347,15 +301,9 @@ function onFocus ( )
     return true
 end
 
-
-
-
-
 function onBlur ( )
     local parent = guiGetElementParent ( source )
     local event = guiGetElementEvents ( source )
-    
-    
     
     if event and event.onBlur then
         event.onBlur ( source )
@@ -364,34 +312,17 @@ function onBlur ( )
     return true
 end
 
-
-
-
-
 function onEditBoxAccept ( box )
     local parent = guiGetElementParent ( source )
     local event = guiGetElementEvents ( box )
     
-    
-    
     if box == openedEditBox then
-        
         if isElement ( pVehicle ) then
-        
             local content = guiGetText ( box )
-            
             destroyEditBox ( )
-            
             local property = guiGetElementProperty ( hiddenEditBox )
-            
             prepareHandlingValue ( pVehicle, property, content )
-        
-        else
-            
-            -- when not vehicle
-            
         end
-        
     end
 
     if event and event.onEditBoxAccept then
@@ -401,36 +332,24 @@ function onEditBoxAccept ( box )
     return true
 end
 
-
-
-
-
 function onComboBoxAccept ( )
     local parent = guiGetElementParent ( source )
     local event = guiGetElementEvents ( source )
     local property = guiGetElementProperty ( source )
     
-    
     if parent == "viewItem" and property then
-        
         if pVehicle then
-        
             local selected = guiComboBoxGetSelected ( source )
             
             if selected > -1 then
-            
                 local text = guiComboBoxGetItemText ( source, selected )
                 local value = nil
                 if handlingLimits[property] and handlingLimits[property].options then
                     value = handlingLimits[property].options[selected+1]
                 end
-                
                 prepareHandlingValue ( pVehicle, property, value )
-                
             end
-        
         end
-        
     end
     
     if event and event.onComboBoxAccept then

@@ -1,5 +1,4 @@
 addEventHandler ( "onResourceStart", resourceRoot, function ( )
-    
     -- !HIGH PRIORITY!
     -- KEEP THIS IN ORDER TO LET CLIENTS SYNC THEIR SAVED HANDLINGS BETWEEN SERVERS!
     -- BY KEEPING THE DEFAULT RESOURCENAME PLAYERS CAN STORE THEIR HANDLINGS CLIENTSIDE,
@@ -17,8 +16,6 @@ addEventHandler ( "onResourceStart", resourceRoot, function ( )
         print ( "===============================================================================" )
         return cancelEvent ( true, "Rename the handling editor resource to 'hedit' in order to use the resource." )
     end
-    
-    
     
     print ( "===============================================================================" )
     print ( " MTA:SA HANDLING EDITOR [hedit.github.io]" )
@@ -44,24 +41,15 @@ addEventHandler ( "onResourceStart", resourceRoot, function ( )
     return true
 end )
 
-
-
-
-
 addEventHandler ( "onResourceStop", resourceRoot, function ( )
     unloadHandlingLog ( )
     return true
 end )
-
-
-
-
 
 local function account_update()
     local admin = isObjectInACLGroup ( "user."..getAccountName ( getPlayerAccount ( source ) ), aclGetGroup ( "Admin" ) )
     local canAccess = hasObjectPermissionTo(source, "resource.hedit.access", true)
     triggerClientEvent ( source, "updateClientRights", source, not isGuestAccount(getPlayerAccount(source)), admin, canAccess)
 end
-
 addEventHandler("onPlayerLogin", root, account_update)
 addEventHandler("onPlayerLogout", root, account_update)

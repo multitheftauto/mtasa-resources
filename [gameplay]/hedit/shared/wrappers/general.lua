@@ -9,14 +9,12 @@ else
     end
 end
 
-
 _outputDebugString = outputDebugString
 function outputDebugString(...)
     if DEBUGMODE then
        return _outputDebugString(...)
     end
 end
-
 
 _getVehicleNameFromModel = getVehicleNameFromModel
 function getVehicleNameFromModel ( model )
@@ -35,7 +33,6 @@ function getVehicleNameFromModel ( model )
     return name
 end
 
-
 _getVehicleModelFromName = getVehicleModelFromName
 function getVehicleModelFromName ( name )
     local subname = string.gsub ( name, "ID: ", "" )
@@ -47,24 +44,17 @@ function getVehicleModelFromName ( name )
     return _getVehicleModelFromName ( name )
 end
 
-
 -- Fix for trailers
 _getVehicleOccupants = getVehicleOccupants
 function getVehicleOccupants ( vehicle )
-    return isVehicleATrailer ( vehicle )
-        and {[0] = getVehicleController ( vehicle )}
-        or _getVehicleOccupants ( vehicle )
+    return isVehicleATrailer ( vehicle ) and {[0] = getVehicleController ( vehicle )} or _getVehicleOccupants ( vehicle )
 end
-
 
 -- Fix for trailers
 _getVehicleMaxPassengers = getVehicleMaxPassengers
 function getVehicleMaxPassengers ( vehicle )
-    return isVehicleATrailer ( vehicle )
-        and 1
-        or _getVehicleMaxPassengers ( vehicle )
+    return isVehicleATrailer ( vehicle ) and 1 or _getVehicleMaxPassengers ( vehicle )
 end
-
 
 _xmlLoadFile = xmlLoadFile
 function xmlLoadFile ( file )
@@ -96,7 +86,6 @@ function xmlLoadFile ( file )
     return xml
 end
 
-
 _xmlCreateFile = xmlCreateFile
 function xmlCreateFile ( file, rootNode )
     local xml = _xmlCreateFile ( file, rootNode )
@@ -114,7 +103,6 @@ function xmlCreateFile ( file, rootNode )
     return xml
 end
 
-
 _xmlSaveFile = xmlSaveFile
 function xmlSaveFile ( file )
     if type ( file ) == "string" then
@@ -129,7 +117,6 @@ function xmlSaveFile ( file )
 
     return true
 end
-
 
 _xmlUnloadFile = xmlUnloadFile
 function xmlUnloadFile ( file )

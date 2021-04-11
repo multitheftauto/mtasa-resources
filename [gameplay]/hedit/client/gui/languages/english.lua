@@ -47,8 +47,7 @@ guiLanguage.english = {
     clickToViewFullLog = "Click to view the complete vehicle log.",
     copiedToClipboard = "The handling settings have been copied to the clipboard!",
     
-    special = {
-    },
+    special = {},
     
     --
     -- BUTTON / MENU STRINGS
@@ -225,7 +224,6 @@ guiLanguage.english = {
             }
         },
     },
-    
 
     handlingPropertyInformation = { 
         ["identifier"] = {

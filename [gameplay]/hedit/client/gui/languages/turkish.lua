@@ -47,8 +47,7 @@ guiLanguage.turkish = {
     clickToViewFullLog = "Komple araç günlüğünü görüntülemek için tıklayın.",
     copiedToClipboard = "Taşıma ayarlar panoya kopyalanan!",
     
-    special = {
-    },
+    special = {},
     
     --
     -- BUTTON / MENU STRINGS
@@ -224,7 +223,6 @@ guiLanguage.turkish = {
             }
         },
     },
-    
 
     handlingPropertyInformation = { 
         ["identifier"] = {

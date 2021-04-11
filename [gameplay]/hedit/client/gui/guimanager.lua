@@ -54,9 +54,6 @@ function guiSetElementID ( guiElement, id )
     return true
 end
 
-
-
-
 function guiGetElementFromID ( id )
     if not guiID[id] then
         outputDebugString ( "Unexisting guiID '"..tostring(id) )
@@ -67,10 +64,6 @@ function guiGetElementFromID ( id )
     return guiID[id]
 end
 
-
-
-
-
 function guiGetElementParent ( guiElement )
     if guiElements[guiElement] then
         return guiElements[guiElement][1]
@@ -78,10 +71,6 @@ function guiGetElementParent ( guiElement )
     
     return nil
 end
-
-
-
-
 
 function guiGetElementInputType ( guiElement )
     if guiGetElementParent ( guiElement ) ~= "viewItem" then
@@ -94,10 +83,6 @@ function guiGetElementInputType ( guiElement )
     
     return nil
 end
-
-
-
-
 
 function guiGetElementProperty ( guiElement )
     if guiGetElementParent ( guiElement ) ~= "viewItem" then
@@ -112,10 +97,6 @@ function guiGetElementProperty ( guiElement )
     return guiElements[guiElement][3]
 end
 
-
-
-
-
 function guiGetElementInfo ( guiElement )
     if guiElements[guiElement] then
         return guiElements[guiElement][4]
@@ -124,10 +105,6 @@ function guiGetElementInfo ( guiElement )
     return nil
 end
 
-
-
-
-
 function guiGetElementEvents ( guiElement )
     if guiElements[guiElement] then
         return guiElements[guiElement][5]
@@ -135,10 +112,6 @@ function guiGetElementEvents ( guiElement )
     
     return nil
 end
-
-
-
-
 
 function toggleEditor ( )
     local window = heditGUI.window
@@ -161,7 +134,6 @@ function toggleEditor ( )
     end
     
     if pVehicle then
-        
         -- When you abort entering a vehicle, hedit will still think you own a vehicle. Hax for thiz
         -- I need onClientVehicleAbortEnter, NOAW
         if not getPedOccupiedVehicle ( localPlayer ) then
@@ -171,8 +143,6 @@ function toggleEditor ( )
             guiCreateWarningMessage(getText ( "needVehicle" ), 1)
             return false
         end
-        
-        
         
         local vehicleController = getVehicleController ( pVehicle )
         
@@ -204,10 +174,6 @@ function toggleEditor ( )
     
     return false
 end
-
-
-
-
 
 function setVisible ( bool )
     if type ( bool ) ~= "boolean" then
@@ -248,8 +214,6 @@ function setVisible ( bool )
     return true
 end
 
-
-
 function setPointedElement ( element, bool ) -- Consider another name!
     if element == pointedButton and buttonValue then
         guiSetText ( pointedButton, buttonValue )
@@ -271,10 +235,6 @@ function setPointedElement ( element, bool ) -- Consider another name!
     
     return true
 end
-
-
-
-
 
 function showButtonValue ( key, state )
     local ctrl = (key == "lctrl") or (key == "rctrl")
@@ -318,8 +278,6 @@ function showButtonValue ( key, state )
     return true
 end
 
-
-
 function handleKeyState ( state )
     if getKeyState ( "lctrl" ) or getKeyState ( "rctrl" ) then
         showButtonValue ( "lctrl", state )
@@ -327,10 +285,6 @@ function handleKeyState ( state )
         showButtonValue ( "lshift", state )
     end
 end
-
-
-
-
 
 function guiSetInfoText ( header, text )
     local infobox = heditGUI.specials.infobox
@@ -340,10 +294,6 @@ function guiSetInfoText ( header, text )
     
     return true
 end
-
-
-
-
 
 function guiSetStaticInfoText ( header, text )
     local infobox = heditGUI.specials.infobox
@@ -357,10 +307,6 @@ function guiSetStaticInfoText ( header, text )
     return true
 end
 
-
-
-
-
 function guiResetInfoText ( )
     local infobox = heditGUI.specials.infobox
     
@@ -369,10 +315,6 @@ function guiResetInfoText ( )
     
     return true
 end
-
-
-
-
 
 function guiResetStaticInfoText ( )
     local infobox = heditGUI.specials.infobox
@@ -387,9 +329,6 @@ function guiResetStaticInfoText ( )
     
     return true
 end
-
-
-
 
 function toggleViewItemsVisibility ( view, bool )
     local function toggleVisibility ( tab )
@@ -406,14 +345,11 @@ function toggleViewItemsVisibility ( view, bool )
             end
         end
     end
+
     toggleVisibility ( heditGUI.viewItems[view].guiItems )
     
     return true
 end
-
-
-
-
 
 function guiToggleUtilityDropDown ( util )
     if not util then
@@ -450,10 +386,6 @@ function guiToggleUtilityDropDown ( util )
     return true
 end
 
-
-
-
-
 function guiShowView ( view )
     if view == "previous" then
         guiShowView ( previousView )
@@ -485,8 +417,6 @@ function guiShowView ( view )
         return false
     end
     
-    
-    
     guiSetText ( heditGUI.specials.menuheader, getViewLongName ( view ) )
     
     destroyEditBox ( )
@@ -515,10 +445,6 @@ end
 addEvent ( "showView", true )
 addEventHandler ( "showView", root, guiShowView )
 
-
-
-
-
 function guiUpdateView ( View )
     if View then
         local veh = getPedOccupiedVehicle ( localPlayer )
@@ -528,32 +454,24 @@ function guiUpdateView ( View )
             return false
         end
         
-        
-        
         destroyEditBox ( )
         
         local redirect = getViewRedirect ( View )
         
         if redirect == "handlingconfig" then
-            
             local content = heditGUI.viewItems[View].guiItems
             local handling = getVehicleHandling ( pVehicle )
             
             for i,gui in ipairs ( content ) do
                 local input = guiGetElementInputType ( gui )
-                
                 if input == "config" then
-                
                     local property = guiGetElementProperty ( gui )
                     local config = handling[property]
                     
                     if handlingLimits[property] and handlingLimits[property].options then
-                    
                         local id = getHandlingOptionID ( property, string.lower ( config ) )
                         guiComboBoxSetSelected ( gui, id-1 )
-                        
                     else
-                        
                         local str = valueToString ( property, config )
 
                         if property == "centerOfMass" then
@@ -572,27 +490,18 @@ function guiUpdateView ( View )
                         else
                             guiSetText ( gui, str )
                         end
-                        
                     end
-                
                 end
-                
             end
         
-        
-        
         elseif redirect == "handlingflags" then
-        
             local content = heditGUI.viewItems[View].guiItems
             local property = guiGetElementProperty ( content[1]["1"] )
             local config = getVehicleHandling ( pVehicle )[property]
             local reversedHex = string.reverse ( config )..string.rep ( "0", 8 - string.len ( config ) )
             local num = 1
             
-            
-            
             for byte in string.gmatch ( reversedHex, "." ) do
-            
                 local enabled = getEnabledValuesFromByteValue ( byte )
                 local byteEnabled = {}
                 
@@ -605,12 +514,8 @@ function guiUpdateView ( View )
                 end
                 
                 num = num + 1
-                
             end
-            
         end
-        
-        
         
         return false
     end
@@ -619,10 +524,6 @@ function guiUpdateView ( View )
 end
 addEvent ( "updateClientView", true )
 addEventHandler ( "updateClientView", root, guiUpdateView )
-
-
-
-
 
 function vehicleTextUpdater ( )
     local vehicleName = getVehicleName ( source )
@@ -643,39 +544,21 @@ end
 addEvent ( "updateVehicleText", true )
 addEventHandler ( "updateVehicleText", root, vehicleTextUpdater )
 
-
-
 function guiTemplateGetViewButtonText ( view )
     return getText ( "viewbuttons", view )
 end
-
-
-
-
 
 function guiTemplateGetItemText ( view, item )
     return getText ( "viewinfo", view, "itemtext", item )
 end
 
-
-
-
-
 function getViewShortName ( view )
     return getText ( "viewinfo", view, "shortname" )
 end
 
-
-
-
-
 function getViewLongName ( view )
     return getText ( "viewinfo", view, "longname" )
 end
-
-
-
-
 
 function getViewRedirect ( view )
     if heditGUI.viewItems and heditGUI.viewItems[view] and heditGUI.viewItems[view].redirect then
@@ -684,10 +567,6 @@ function getViewRedirect ( view )
     
     return false
 end
-
-
-
-
 
 function destroyEditBox ( )
     if openedEditBox then

@@ -2,7 +2,6 @@
 local warningTypes = {[0] = "error", [1] = "warning", [2] = "question", [3] = "info"}
 local function sendInput ( buttonFunc )
     if guiGetVisible ( warningWnd ) then
-        
         guiDestroyWarningWindow ( )
         
         if type ( buttonFunc ) == "table" and #buttonFunc > 0 then
@@ -15,7 +14,6 @@ local function sendInput ( buttonFunc )
         end
         
         unbindKey ( "enter", "down", sendInput )
-        
     end
 end
 
@@ -27,8 +25,6 @@ function guiCreateWarningMessage ( text, level, buttonAccept, buttonDecline )
     if isElement ( warningWnd ) then
         guiDestroyWarningWindow ( )
     end
-    
-    
     
     local window = heditGUI.window
     
@@ -52,8 +48,6 @@ function guiCreateWarningMessage ( text, level, buttonAccept, buttonDecline )
         accept = guiCreateButton ( 114, 100, 277, 25, "Okay", false, warningWnd )
     end
     
-    
-    
     addEventHandler ( "onClientGUIClick", accept, function ( ) sendInput ( buttonAccept ) end, false )
     if isElement ( decline ) then
         addEventHandler ( "onClientGUIClick", decline, function ( ) sendInput ( buttonDecline ) end, false )
@@ -61,17 +55,11 @@ function guiCreateWarningMessage ( text, level, buttonAccept, buttonDecline )
     
     bindKey ( "enter", "down", sendInput, buttonAccept )
     
-    
-    
     guiBringToFront ( warningWnd )
     showCursor ( true, true )
     
     return warningWnd, accept, decline
 end
-
-
-
-
 
 function guiDestroyWarningWindow ( )
     showCursor ( false, false )

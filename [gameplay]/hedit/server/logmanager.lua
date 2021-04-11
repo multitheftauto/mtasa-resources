@@ -10,19 +10,10 @@ function loadHandlingLog ( )
     return true
 end
 
-
-
-
-
 function unloadHandlingLog ( )
     setElementData ( root, "hedit:vehicleLogs", vehicleLogs, false )
-
     return true
 end
-
-
-
-
 
 function addLogEntry ( vehicle, player, textPointer, arguments, oldValue, level )
     if not isValidVehicle ( vehicle ) then
@@ -45,13 +36,9 @@ function addLogEntry ( vehicle, player, textPointer, arguments, oldValue, level 
         level = 3
     end
     
-    
-    
     if not vehicleLogs[vehicle] then
         vehicleLogs[vehicle] = {}
     end
-    
-    
     
     if #vehicleLogs[vehicle] == 25 then
         table.remove ( vehicleLogs[vehicle], 1 )
@@ -88,10 +75,6 @@ end
 addEvent ( "addToLog", true )
 addEventHandler ( "addToLog", root, addLogEntry )
 
-
-
-
-
 function uploadMiniLog ( vehicle, amountToSend )
     if not isValidVehicle ( vehicle ) then
         return false
@@ -114,10 +97,6 @@ end
 addEvent ( "requestMiniLog", true )
 addEventHandler ( "requestMiniLog", root, uploadMiniLog )
 
-
-
-
-
 function uploadFullLog ( vehicle )
     if not isValidVehicle ( vehicle ) then
         return false
@@ -128,7 +107,6 @@ function uploadFullLog ( vehicle )
 end
 addEvent ( "requestFullLog", true )
 addEventHandler ( "requestFullLog", root, uploadFullLog )
-
 
 -- Destroy log information when vehicle is destroyed
 local function cleanupVehicleLog()

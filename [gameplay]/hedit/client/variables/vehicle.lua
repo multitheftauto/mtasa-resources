@@ -20,7 +20,6 @@ addEventHandler ( "onClientPlayerWasted", localPlayer,
     end
 )
 
-
 -- And exiting normally.
 addEventHandler ( "onClientVehicleStartExit", root,
     function ( player )

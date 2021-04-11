@@ -72,10 +72,6 @@ function checkArguments ( ... ) -- return success, type, value
     return false, nil, nil
 end
 
-
-
-
-
 function validateResourcePointer ( resource )
     if type ( resource ) == "userdata" then
         resource = getResourceName ( resource )
@@ -92,10 +88,6 @@ function validateResourcePointer ( resource )
     return resource
 end
 
-
-
-
-
 function isValidPlayer ( player )
     if not isElement ( player ) or getElementType ( player ) ~= "player" then
         return false
@@ -103,10 +95,6 @@ function isValidPlayer ( player )
     
     return true
 end
-
-
-
-
 
 function isValidVehicle ( vehicle )
     if not isElement ( vehicle ) or getElementType ( vehicle ) ~= "vehicle" then
@@ -116,10 +104,6 @@ function isValidVehicle ( vehicle )
     return true
 end
 
-
-
-
-
 function isValidVehicleModel ( model )
     if type ( model ) ~= "number" then
         error ( "Need a number!", 2 )
@@ -128,7 +112,6 @@ function isValidVehicleModel ( model )
 
     return (model >= 400) and (model <= 611)
 end
-
 
 function isVehicleATrailer ( model )
     if isElement ( model ) then
@@ -143,8 +126,6 @@ function isVehicleATrailer ( model )
 
     return trailers[model] == true
 end
-
-
 
 --This function returns true if a setting is enabled in the meta, false otherwise.
 function isHandlingPropertyEnabled(property)
@@ -163,10 +144,6 @@ function isHandlingPropertyValid ( property )
     return false
 end
 
-
-
-
-
 function isHandlingPropertySupported ( property )
     local unsupported = {
         ["ABS"]=true, ["monetary"]=true, 
@@ -177,10 +154,6 @@ function isHandlingPropertySupported ( property )
     return not unsupported[property]
 end
 
-
-
-
-
 function isHandlingPropertyCorrectable ( property )
     local props ={ 
         ["driveType"]=true, ["engineType"]=true,
@@ -189,10 +162,6 @@ function isHandlingPropertyCorrectable ( property )
     
     return props[property] or false
 end
-
-
-
-
 
 function isHandlingPropertyCenterOfMass ( property )
     local props = {
@@ -203,10 +172,6 @@ function isHandlingPropertyCenterOfMass ( property )
     return props[property] or false
 end
 
-
-
-
-
 function isHandlingPropertyHexadecimal ( property )
     if property == "modelFlags" or property == "handlingFlags" then
         return true 
@@ -214,10 +179,6 @@ function isHandlingPropertyHexadecimal ( property )
     
     return false
 end
-
-
-
-
 
 function getHandlingLimits ( property )
     if not isHandlingPropertyValid ( property ) then
@@ -237,9 +198,6 @@ function getHandlingLimits ( property )
 
     return nil
 end
-
-
-
 
 --Returns true if the given value is within the limits for the handling type (as defined in shared\variables\handlingMTA.lua), false otherwise.
 function isHandlingValueWithinLimits ( property, value )
@@ -263,10 +221,6 @@ function isHandlingValueWithinLimits ( property, value )
     return true
 end
 
-
-
-
-
 function getVehicleIdentifierByModel ( model )
     if isValidVehicleModel ( model ) then
         return vehicleModelIdentifier[model]
@@ -275,17 +229,9 @@ function getVehicleIdentifierByModel ( model )
     return nil
 end
 
-
-
-
-
 function getVehicleModelsByIdentifier ( identifier )
     return vehicleIdentifierModels[identifier]
 end
-
-
-
-
 
 function getHandlingPropertyNameFromID ( id )
     id = tonumber ( id )
@@ -297,10 +243,6 @@ function getHandlingPropertyNameFromID ( id )
     return propertyID[id]
 end
 
-
-
-
-
 function getHandlingPropertyIDFromName ( property )
     if not isHandlingPropertyValid ( property ) then
         return false
@@ -309,10 +251,6 @@ function getHandlingPropertyIDFromName ( property )
     return handlingLimits[property].id 
 end
 
-
-
-
-
 function getHandlingPropertyInputType ( property )
     if not isHandlingPropertyValid ( property ) then
         return false
@@ -320,10 +258,6 @@ function getHandlingPropertyInputType ( property )
     
     return handlingLimits[property].input
 end
-
-
-
-
 
 function getHandlingOptionID ( property, option )
     if not isHandlingPropertyValid ( property ) then
@@ -342,10 +276,6 @@ function getHandlingOptionID ( property, option )
     
     return false
 end
-
-
-
-
 
 function getHandlingByteEnabled ( property, byte, value, byteValue ) -- Seems to be invalid!
     if not isHandlingPropertyValid ( property ) then
@@ -371,10 +301,6 @@ function getHandlingByteEnabled ( property, byte, value, byteValue ) -- Seems to
     return false
 end
 
-
-
-
-
 function getHandlingPreviousValue ( vehicle, property )
     if not isValidVehicle ( vehicle ) then
         return false
@@ -386,10 +312,6 @@ function getHandlingPreviousValue ( vehicle, property )
     
     return getElementData ( vehicle, "hedit:vehiclepreviousvalue."..property )
 end
-
-
-
-
 
 function setVehicleSaved ( vehicle, saved )
     if not isValidVehicle ( vehicle ) then
@@ -421,9 +343,6 @@ if serverside then
     addEventHandler ( "setSaved", root, setVehicleSaved )
 end
 
-
-
-
 function isVehicleSaved ( vehicle )
     if not isValidVehicle ( vehicle ) then
         return false
@@ -436,10 +355,6 @@ function isVehicleSaved ( vehicle )
     return tobool ( getElementData ( vehicle, "hedit:saved" ) )
 end
 
-
-
-
-
 function getEnabledValuesFromByteValue ( byteValue )
     local tbl = { ["1"]={"1"},         ["2"]={"2"},         ["3"]={"1","2"},     ["4"]={"4"},     ["5"]={"1","4"},
                   ["6"]={"2","4"},     ["7"]={"1","2","4"}, ["8"]={"8"},         ["9"]={"1","8"}, ["A"]={"2","8"}, 
@@ -447,17 +362,11 @@ function getEnabledValuesFromByteValue ( byteValue )
     return tbl[byteValue] or {}
 end
 
-
-
-
-
 function valueToString ( property, value )
     if type ( value ) == "number" then
-        
         value = math.round ( value )
         
     elseif type ( value ) == "table" then -- Previously for centerOfMass, but property is disabled.
-        
         local str = ""
         
         for i,v in ipairs ( value ) do
@@ -465,15 +374,10 @@ function valueToString ( property, value )
         end
         
         value = str
-
     end
     
     return tostring ( value )
 end
-
-
-
-
 
 function stringToValue ( property, value )
     if property == "ABS" then
@@ -490,10 +394,6 @@ function stringToValue ( property, value )
     
     return tonumber ( value ) or value
 end
-
-
-
-
 
 function numberToHex ( num )
     if type ( num ) ~= "number" then
@@ -518,10 +418,6 @@ function numberToHex ( num )
     return numberToHex((num-m)/16)..hexnums[m+1]
 end
 
-
-
-
-
 function tobool ( var )
     if type(var) == "nil" then return nil end
     local conform = {
@@ -541,21 +437,14 @@ function tobool ( var )
     return nil
 end
 
-
 --Returns true if the given value is numeric, false otherwise.
 function isNumeric(value)
 	return (tonumber(value) and true) or false
 end
 
-
-
 function RGBtoHEX(...)
     return string.format ( string.rep ( "%.2X", #{...} ), unpack ( {...} ) )
 end
-
-
-
-
 
 function math.round ( number, float )
     if not float then
@@ -569,10 +458,6 @@ function math.round ( number, float )
     outputDebugString ( "Not a number at math.round! ["..tostring(number).."]" )
     return number
 end
-
-
-
-
 
 function table.size ( tab )
     local length = 0

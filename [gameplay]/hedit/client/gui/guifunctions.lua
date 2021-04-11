@@ -7,7 +7,6 @@ function guiCreateElement ( guiType, x, y, w, h, text, alpha, hovercolor )
         line = { guiCreateLabel, true },
         label = { guiCreateLabel, true },
         gridlist = { guiCreateGridList, false },
-        button = { guiCreateButton, true },
         checkbox = { guiCreateCheckBox, true },
         radiobutton = { guiCreateRadioButton, true },
         image = { guiCreateStaticImage, true },
@@ -22,8 +21,6 @@ function guiCreateElement ( guiType, x, y, w, h, text, alpha, hovercolor )
         
         return false
     end
-    
-    
     
     local element = nil
     
@@ -54,7 +51,6 @@ function guiCreateElement ( guiType, x, y, w, h, text, alpha, hovercolor )
         local h = hovercolor
         
         if guiType == "label" then
-        
             addEventHandler ( "onClientMouseEnter", element, function ( )
                 guiLabelSetColor ( element, h[1], h[2], h[3] )
                 guiSetAlpha ( element, h[4] / 255 )
@@ -66,7 +62,6 @@ function guiCreateElement ( guiType, x, y, w, h, text, alpha, hovercolor )
             end, false )
                 
         else
-        
             guiSetProperty ( element, "HoverTextColour", RGBtoHEX ( h[4], h[1], h[2], h[3] ) )
             
         end
@@ -74,9 +69,6 @@ function guiCreateElement ( guiType, x, y, w, h, text, alpha, hovercolor )
     
     return element
 end
-
-
-
 
 function isValidGUI ( tab )
     if type ( tab.type ) ~= "string" then

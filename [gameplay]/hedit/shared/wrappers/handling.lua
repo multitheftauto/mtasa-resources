@@ -4,10 +4,6 @@ if serverside then
     _setVehicleHandling = setVehicleHandling
 end
 
-
-
-
-
 function getVehicleHandling ( vehicle )
     if not isValidVehicle ( vehicle ) then 
         error ( "Invalid vehicle element at 'getVehicleHandling'! [arg:1]", 2 )
@@ -20,10 +16,6 @@ function getVehicleHandling ( vehicle )
     
     return conformHandlingTable ( handling, getElementModel ( vehicle ) )
 end
-
-
-
-
 
 function setVehicleHandling ( vehicle, property, value, withLog )
     if not isValidVehicle ( vehicle ) then
@@ -42,23 +34,16 @@ function setVehicleHandling ( vehicle, property, value, withLog )
         withLog = true
     end
     
-    
-    
     if clientside then
         triggerServerEvent ( "setHandling", root, vehicle, property, value, withLog )
         return true
     end
     
-    
-    
     local setValue = value
-    
-    
     
     if not source then
         withLog = false
     end 
-    
     
     if not isHandlingPropertyEnabled(property) then
 		addLogEntry(vehicle, client, "disabledProperty", {property, value}, nil, 3)
@@ -80,10 +65,7 @@ function setVehicleHandling ( vehicle, property, value, withLog )
             return false
         end
         
-        
-        
     elseif isHandlingPropertyCenterOfMass ( property ) then
-        
         local com = _getVehicleHandling ( vehicle )["centerOfMass"]
         if property == "centerOfMassX" then
             setValue = { value, com[2], com[3] }
@@ -93,16 +75,10 @@ function setVehicleHandling ( vehicle, property, value, withLog )
             setValue = { com[1], com[2], value }
         end
         
-        
-        
     elseif isHandlingPropertyHexadecimal ( property ) and type ( value ) == "string" then
-
         setValue = tonumber ( "0x"..value )
         
-        
-        
     elseif property == "centerOfMass" then
-
         if type ( value ) ~= "table" then
             setValue  = {
                 tonumber ( gettok ( value, 1, 44 ) ),
@@ -111,10 +87,7 @@ function setVehicleHandling ( vehicle, property, value, withLog )
             }
         end
 
-
-
     else
-
         local num = tonumber ( value )
 
         if not num then
@@ -127,10 +100,6 @@ function setVehicleHandling ( vehicle, property, value, withLog )
 
         setValue = num
     end
-    
-
-
-
 
     if not isHandlingPropertySupported ( property ) then
         if withLog then
@@ -147,10 +116,6 @@ function setVehicleHandling ( vehicle, property, value, withLog )
         
         return false
     end
-    
-    
-    
-    
     
     local oldValue = getVehicleHandling(vehicle)[property]
     if property == "centerOfMass" then
@@ -176,9 +141,7 @@ function setVehicleHandling ( vehicle, property, value, withLog )
         return false
     end
     
-    
     if withLog then
-
         local data = getVehicleHandling ( vehicle )[property]
         if property == "centerOfMass" then
             local hnd = getVehicleHandling ( vehicle )
@@ -188,14 +151,9 @@ function setVehicleHandling ( vehicle, property, value, withLog )
         end
 
         addLogEntry ( vehicle, client, "successRegular", { property, data }, oldValue, 1 )
-        
 
         setVehicleSaved ( vehicle, false )
     end
-    
-    
-    
-    
     
     setElementData ( vehicle, "hedit:vehiclepreviousvalue."..property, oldValue )
    
@@ -212,10 +170,6 @@ if serverside then
     addEventHandler ( "setHandling", root, setVehicleHandling )
 end
 
-
-
-
-
 function getOriginalHandling ( model, force )
     if not force and not isValidVehicleModel ( model ) then
         error ( "Invalid model given at 'getOrignalHandling'! [arg:1,"..tostring(model).."]", 2 )
@@ -229,10 +183,6 @@ function getOriginalHandling ( model, force )
     
     return data
 end
-
-
-
-
 
 local correctedValues = {
     ["fwd"] = "f",
@@ -268,8 +218,6 @@ function isValueCorrected ( value )
     end
     return nil
 end
-
-
 
 function conformHandlingTable ( handling, model )
     handling["identifier"] = getVehicleIdentifierByModel ( model )

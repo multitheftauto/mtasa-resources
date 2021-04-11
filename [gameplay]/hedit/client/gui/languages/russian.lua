@@ -47,8 +47,7 @@
     clickToViewFullLog = "Нажмите, для просмотра полного лога авто.",
     copiedToClipboard = "Ваш хэндлинг был скопирован в буфер обмена!",
     
-    special = {
-    },
+    special = {},
     
     --
     -- BUTTON / MENU STRINGS
@@ -225,7 +224,6 @@
             }
         },
     },
-    
 
     handlingPropertyInformation = { 
         ["identifier"] = {

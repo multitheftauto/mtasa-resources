@@ -29,10 +29,6 @@ function getText ( ... )
     return ""
 end
 
-
-
-
-
 function getHandlingPropertyFriendlyName ( property )
     if not isHandlingPropertyValid ( property ) then
         if DEBUGMODE then
@@ -43,9 +39,6 @@ function getHandlingPropertyFriendlyName ( property )
     
     return getText ( "handlingPropertyInformation", property, "friendlyName" ) or "NO_FRIENDLY_NAME"
 end
-
-
-
 
 function getHandlingPropertyInformationText ( property )
     if not isHandlingPropertyValid ( property ) then
@@ -58,10 +51,6 @@ function getHandlingPropertyInformationText ( property )
     return getText ( "handlingPropertyInformation", property, "information" ) or "NO_INFORMATION_TEXT"
 end
 
-
-
-
-
 function getHandlingPropertyValueType ( property )
     if not isHandlingPropertyValid ( property ) then
         if DEBUGMODE then
@@ -72,10 +61,6 @@ function getHandlingPropertyValueType ( property )
     
     return getText ( "handlingPropertyInformation", property, "syntax", 1 ) or "NO_VALUE_TYPE"
 end
-
-
-
-
 
 function getHandlingPropertyValueInformation ( property )
     if not isHandlingPropertyValid ( property ) then
@@ -88,10 +73,6 @@ function getHandlingPropertyValueInformation ( property )
     return getText ( "handlingPropertyInformation", property, "syntax", 2 ) or "NO_VALUE_INFORMATION"
 end
 
-
-
-
-
 function getHandlingPropertyOptionName ( property, option )
     if not isHandlingPropertyValid ( property ) then
         if DEBUGMODE then
@@ -102,10 +83,6 @@ function getHandlingPropertyOptionName ( property, option )
     
     return getText ( "handlingPropertyInformation", property, "options", option ) or "NO_OPTION_NAME"
 end
-
-
-
-
 
 function getHandlingPropertyByteName ( property, byte, value )
     if not isHandlingPropertyValid ( property ) then
@@ -125,10 +102,6 @@ function getHandlingPropertyByteName ( property, byte, value )
     return getText ( "handlingPropertyInformation", property, "items", byte, value, 1 ) or "NO_BYTE_NAME"
 end
 
-
-
-
-
 function getHandlingPropertyByteInformation ( property, byte, value )
     if not isHandlingPropertyValid ( property ) then
         if DEBUGMODE then
@@ -146,10 +119,6 @@ function getHandlingPropertyByteInformation ( property, byte, value )
     
     return getText ( "handlingPropertyInformation", property, "items", byte, value, 2 ) or "NO_BYTE_INFORMATION"
 end
-
-
-
-
 
 function getHandlingHexadecimalChangeDetails ( vehicle, property, value )
     if not isValidVehicle ( vehicle ) then
@@ -175,28 +144,19 @@ function getHandlingHexadecimalChangeDetails ( vehicle, property, value )
         return nil
     end
     
-    
-    
     return hexChanges, hexByte, hexValue, hexBool
 end
-
-
-
-
 
 function cacheClientSaves ( )
     local saves = xmlLoadFile ( client_handling_file )
     xmlCache.clientsaves = {}
 
-
     if not saves then
         saves = xmlCreateFile ( client_handling_file, "saves" )
-
         outputDebugString ( "Added new client handling saves file." )
     end
 
     for i,node in ipairs ( xmlNodeGetChildren ( saves ) ) do
-
         local model = xmlNodeGetAttribute ( node, "model" )
         local name = xmlNodeGetAttribute ( node, "name" )
         local description = xmlNodeGetAttribute ( node, "description" )
@@ -221,17 +181,9 @@ function cacheClientSaves ( )
     return true
 end
 
-
-
-
-
 function getClientSaves ( )
     return xmlCache.clientsaves
 end
-
-
-
-
 
 function isClientHandlingExisting ( name )
     if type ( name ) ~= "string" then
@@ -246,10 +198,6 @@ function isClientHandlingExisting ( name )
 
     return xmlCache.clientsaves[name] and true or false
 end
-
-
-
-
 
 function saveClientHandling ( vehicle, name, description )
     if not isValidVehicle ( vehicle ) then
@@ -275,8 +223,6 @@ function saveClientHandling ( vehicle, name, description )
 
         return false
     end
-
-
 
     local lowername = string.lower ( name )
 
@@ -318,10 +264,6 @@ function saveClientHandling ( vehicle, name, description )
     return true
 end
 
-
-
-
-
 function loadClientHandling ( vehicle, name )
     if not isValidVehicle ( vehicle ) then
         if DEBUGMODE then
@@ -346,9 +288,6 @@ function loadClientHandling ( vehicle, name )
 
     return true
 end
-
-
-
 
 -- Imports a handling line in handling.cfg format, given a proper method.
 -- Valid methods: III, VC, SA, and IV
@@ -478,10 +417,6 @@ function importHandling ( vehicle, handlingLine, method )
 	end
 end
 
-
-
-
-
 function exportHandling ( vehicle )
     if not isValidVehicle ( vehicle ) then
         if DEBUGMODE then
@@ -503,10 +438,6 @@ function exportHandling ( vehicle )
     return table.concat ( str, " " )
 end
 
-
-
-
-
 function resetVehicleHandling ( vehicle, baseID )
     if not isValidVehicle ( vehicle ) then
         if DEBUGMODE then
@@ -523,10 +454,6 @@ function resetVehicleHandling ( vehicle, baseID )
     return true
 end
 
-
-
-
-
 function prepareHandlingValue ( vehicle, property, value )
     outputDebugString ( "VALUE: "..tostring(value).." - strval: "..tostring(stringToValue ( property, value )).. " - Type: "..type ( value ) )
     
@@ -539,10 +466,6 @@ function prepareHandlingValue ( vehicle, property, value )
     return true
 end
 
-
-
-
-
 function getUserConfig ( config )
     if type ( config ) ~= "string" then
         return false
@@ -551,8 +474,6 @@ function getUserConfig ( config )
     if type(pData.userconfig[config]) ~= "nil" then
         return pData.userconfig[config]
     end
-    
-    
     
     local xml = xmlLoadFile ( client_config_file )
     
@@ -569,8 +490,6 @@ function getUserConfig ( config )
         return setting[config]
     end
     
-    
-    
     local value = xmlNodeGetValue ( node )
     pData.userconfig[config] = tostring(value)
     
@@ -580,10 +499,6 @@ function getUserConfig ( config )
     
     return value
 end
-
-
-
-
 
 function setUserConfig ( config, value )
     if value == nil then
@@ -602,8 +517,6 @@ function setUserConfig ( config, value )
         node = xmlCreateChild ( xml, config )
     end
     
-    
-    
     xmlNodeSetValue ( node, tostring ( value ) )
     pData.userconfig[config] = value
 
@@ -614,10 +527,6 @@ function setUserConfig ( config, value )
     
     return true
 end
-
-
-
-
 
 function getUserLanguage ( )
     local config = getUserConfig ( "language" )
@@ -630,15 +539,9 @@ function getUserLanguage ( )
     return guiLanguage.english
 end
 
-
-
 function getPlayerCorrectTime ( hours, minutes, seconds )
     return hours, minutes, seconds
 end
-
-
-
-
 
 function updateXMLCache ( cacheLib, cacheName, cacheEntry )
     if not xmlCache[cacheLib] then
@@ -651,10 +554,6 @@ function updateXMLCache ( cacheLib, cacheName, cacheEntry )
 end
 addEvent ( "updateClientXMLCache", true )
 addEventHandler ( "updateClientXMLCache", root, updateXMLCache )
-
-
-
-
 
 function updateRights ( loggedin, admin, canAccess )
     pData.loggedin = loggedin

@@ -16,8 +16,6 @@ function guiLabelSetColor ( label, ... )
     return _guiLabelSetColor ( label, c[1], c[2], c[3] )
 end
 
-
-
 function guiLabelGetColor ( label )
     if not isElement ( label ) or getElementType ( label ) ~= "gui-label" then
         return false
@@ -29,10 +27,6 @@ function guiLabelGetColor ( label )
     
     return unpack ( labelColor[label] )
 end
-
-
-
-
 
 _guiBringToFront = guiBringToFront
 function guiBringToFront ( gui )

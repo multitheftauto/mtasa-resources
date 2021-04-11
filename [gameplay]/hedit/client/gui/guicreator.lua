@@ -24,7 +24,6 @@ local function toggleEvents ( window, bool )
     return true
 end
 
-
 function startBuilding ( )
     outputDebugString ( "Building the gui.." )
     
@@ -50,8 +49,6 @@ function startBuilding ( )
     return true
 end
 
-
-
 function destroyGUI ( )
     toggleEvents ( heditGUI.window, false )
     
@@ -67,10 +64,6 @@ function destroyGUI ( )
     guiElements = {}
     heditGUI = resetGUI
 end
-
-
-
-
 
 function buildMainWindow()
     local wnd = template.window
@@ -96,10 +89,6 @@ function buildMainWindow()
     return heditGUI.window
 end
 
-
-
-
-
 function buildMenubar()
     local offset = 65
     local size = {60, 19}
@@ -117,7 +106,6 @@ function buildMenubar()
             local longestName = 100
             
             for item,list in ipairs(menu) do
-            
                 local posY = ( pos[2] + 7 ) + ( 20 * item )
                 local menuButton = guiCreateElement ( "button", pos[1], posY, 100, 20, getViewShortName ( list ) )
                 
@@ -134,7 +122,6 @@ function buildMenubar()
                 
                 guiElements[menuButton] = { "menuItem", "button", "none", list, nil }
                 table.insert ( buttons, menuButton )
-                
             end
             
             for i,v in ipairs ( buttons ) do
@@ -146,8 +133,6 @@ function buildMenubar()
     end
 end
 
-
-
 function buildViewButtons()
     local offset = 55
     local size = {50, 50}
@@ -158,7 +143,6 @@ function buildViewButtons()
 
         local subContents = view.contents
         if subContents then
-
             local width = size[1] / #subContents
             for _, title in ipairs(subContents) do
                 local element = guiCreateElement ("button", pos[1]+(width*_)-width, pos[2], width, size[2], guiTemplateGetViewButtonText ( title ), alpha, template.views.hovercolor )
@@ -166,7 +150,6 @@ function buildViewButtons()
                 guiElements[element] = { "viewButton", "button", "none", title }
                 table.insert ( heditGUI.viewButtons, element )
             end
-
         else
             local element = guiCreateElement ("button", pos[1], pos[2], size[1], size[2], guiTemplateGetViewButtonText ( view.title ), alpha, template.views.hovercolor )
             
@@ -176,10 +159,7 @@ function buildViewButtons()
     end
 end
 
-
-
 -- these are for views
-
 function buildViews()
     local function scanSpecialView ( menu, itemName, gui )
         local res = {}
@@ -209,8 +189,6 @@ function buildViews()
         if v.redirect ~= "THIS_IS_ONE" then
             local items = {}
             
-            
-            
             if v.redirect == "handlingconfig" then
                 -------------------------
                 -- HANDLINGCONFIG MENU
@@ -219,9 +197,7 @@ function buildViews()
                 local guiInfo = template.viewcontents.redirect_handlingconfig.content
                 
                 for i,property in ipairs ( v.content ) do
-                    
                     if isHandlingPropertyValid ( property ) then
-                    
                         local propertyName = getHandlingPropertyFriendlyName ( property )
                         local propertyName = getHandlingPropertyFriendlyName ( property )
                         local labelInfo = guiInfo.labels[i]
@@ -268,7 +244,6 @@ function buildViews()
                             guiElements[buttonZ] = { "viewItem", "config", "centerOfMassZ", i, configInfo.events }
                             
                         else
-                        
                             -- If a table, return table. Otherwise, false.
                             local propertyOptions = type ( handlingLimits[property].options ) == "table" and handlingLimits[property].options or false
                             
@@ -302,7 +277,6 @@ function buildViews()
                         outputDebugString ( "Invalid property used for handling menu "..menu..": "..tostring(property) )
                     end
                 end
-                 
                 
             elseif v.redirect == "handlingflags" then
                 -------------------------
@@ -312,7 +286,6 @@ function buildViews()
                 local property = v.content[1]
                 
                 if isHandlingPropertyHexadecimal ( property ) then
-                    
                     local guiInfo = template.viewcontents.redirect_handlingflags.content
                     
                     -- Make sure we have extras as it's optional
@@ -338,12 +311,10 @@ function buildViews()
                     end
                 
                 else
-                
                     outputDebugString ( "Menu "..menu.." does not have a valid handling/model-flag property!" )
                     outputDebugString ( "Please change the first parameter of this menu to \"modelFlags\" or \"handlingFlags\"!" )
                     
                 end
-                
                 
             else
                 -------------------------
@@ -357,8 +328,6 @@ function buildViews()
                 end
                 
             end
-            
-            
             
             heditGUI.viewItems[menu] = {
                 redirect = v.redirect,
@@ -375,10 +344,6 @@ function buildViews()
     end
 end
 
-
-
-
-
 function buildSpecials()
     local function create ( gui, parent )
         local element = guiCreateElement ( gui.type, gui.pos[1], gui.pos[2], gui.size[1], gui.size[2], "", gui.alpha, gui.hovercolor )
@@ -390,45 +355,27 @@ function buildSpecials()
         return element
     end
     
-    
-    
     for parent,v in pairs ( template.specials ) do
-        
         local items = {}
-        
         if not isValidGUI ( v ) then
-            
             for sub,item in pairs ( v ) do
-                
                 if not isValidGUI ( item ) then -- MiniLog only! We won't go deeper!
-                
                     items[sub] = {}
-                
                     for logsub,logitem in pairs ( item ) do
-                        
                         if isValidGUI ( logitem ) then
                             items[sub][logsub] = create ( logitem, parent )
                             guiElements[ items[sub][logsub] ] = { "special", "special", "none", parent, logitem.events }
                         end
-                        
                     end
-                    
                 else
-                
                     items[sub] = create ( item, parent )
                     guiElements[ items[sub] ] = { "special", "special", "none", parent, v.events }
-                    
                 end
-                
             end
-            
         else
-            
             items = create ( v, parent )
             guiElements[items] = { "special", "special", "none", parent, v.events }
-            
         end
-        
         heditGUI.specials[parent] = items
     end
 end

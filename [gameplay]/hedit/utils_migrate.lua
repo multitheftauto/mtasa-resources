@@ -10,7 +10,6 @@ function getResourceHandlingList ( resource )
     return list
 end
 
-
 function saveHandlingToResource ( vehicle, resource, model )
     if not isValidVehicle ( vehicle ) then
         if DEBUGMODE then
@@ -34,8 +33,6 @@ function saveHandlingToResource ( vehicle, resource, model )
         return false
     end
     
-    
-    
     if clientside then
         local function trigger ( )
             return triggerServerEvent ( "saveToResource", localPlayer, vehicle, resource, model )
@@ -50,8 +47,6 @@ function saveHandlingToResource ( vehicle, resource, model )
         return true
     end
     
-    
-    
     if not fileExists ( ":"..resource.."/handling.lua" ) then
         local loader = fileCreate ( ":"..resource.."/handling.lua" )
         local copyfile = fileOpen ( "utils/resource_handlingloader" )
@@ -62,8 +57,6 @@ function saveHandlingToResource ( vehicle, resource, model )
         
         outputDebugString ( "Created new handling loader script for resource '"..resource.."'" )
     end
-    
-    
     
     local resourceMeta = xmlLoadFile ( ":"..resource.."/meta.xml" )
     local entryFound = false
@@ -93,8 +86,6 @@ function saveHandlingToResource ( vehicle, resource, model )
     xmlSaveFile ( resourceMeta )
     xmlUnloadFile ( resourceMeta )
     
-    
-    
     local handlingXML = xmlLoadFile ( ":"..resource.."/handling.xml" )
     
     if not handlingXML then
@@ -120,7 +111,6 @@ if serverside then
     addEvent ( "saveToResource", true )
     addEventHandler ( "saveToResource", root, saveHandlingToResource )
 end
-
 
 function loadHandlingFromResource ( vehicle, resource, model )
     if not isValidVehicle ( vehicle ) then
@@ -257,12 +247,10 @@ function saveHandlingToServer ( player, vehicle, name, description )
     return true
 end
 
-
 if serverside then
     addEvent ( "saveToServer", true )
     addEventHandler ( "saveToServer", root, saveHandlingToServer )
 end
-
 
 function saveHandlingToClient ( vehicle, name, description )
     if not isValidVehicle ( vehicle ) then
@@ -330,18 +318,15 @@ function saveHandlingToClient ( vehicle, name, description )
     return true
 end
 
-
 function loadHandlingFromClient ( vehicle, lowerCaseName )
     loadHandling ( vehicle, lowerCaseName, "clientsaves" )
     return
 end
 
-
 function loadHandlingFromServer ( vehicle, lowerCaseName )
     loadHandling ( vehicle, lowerCaseName, "serversaves" )
     return
 end
-
 
 function loadHandling ( vehicle, lowerCaseName, cacheLib )
     if not isValidVehicle ( vehicle ) then
@@ -367,7 +352,6 @@ function loadHandling ( vehicle, lowerCaseName, cacheLib )
     
     hndload ( )
 end
-
 
 function shareHandlingWithPlayer ( senderPlayer, targetPlayer, vehicle )
     if not isValidPlayer ( senderPlayer ) then
@@ -397,7 +381,6 @@ if serverside then
     addEvent ( "shareHandling", true )
     addEventHandler ( "shareHandling", root, shareHandlingWithPlayer )
 end
-
 
 function receiveSharedHandling ( senderPlayer, vehicle )
     outputDebugString ( "Recieved handling from "..getPlayerName ( senderPlayer ).." :D" )
