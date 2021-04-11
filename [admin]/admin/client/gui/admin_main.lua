@@ -49,13 +49,26 @@ function aAdminMenu ()
 		aTab1.Mute			= guiCreateButton ( 0.71, 0.170, 0.13, 0.04, "Mute", true, aTab1.Tab, "mute" )
 		aTab1.Freeze		= guiCreateButton ( 0.85, 0.170, 0.13, 0.04, "Freeze", true, aTab1.Tab, "freeze" )
 		aTab1.Spectate		= guiCreateButton ( 0.71, 0.215, 0.13, 0.04, "Spectate", true, aTab1.Tab, "spectate" )
-		aTab1.Slap			= guiCreateButton ( 0.85, 0.215, 0.13, 0.04, "Slap! "..aCurrentSlap.." _", true, aTab1.Tab, "slap" )
-		aTab1.SlapDropDown	= guiCreateStaticImage ( 0.95, 0.215, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
-		aTab1.SlapOptions		= guiCreateGridList ( 0.85, 0.215, 0.13, 0.40, true, aTab1.Tab )
-						  guiGridListSetSortingEnabled ( aTab1.SlapOptions, false )
-						  guiGridListAddColumn( aTab1.SlapOptions, "", 0.85 )
-						  guiSetVisible ( aTab1.SlapOptions, false )
-						  for i = 0, 10 do guiGridListSetItemText ( aTab1.SlapOptions, guiGridListAddRow ( aTab1.SlapOptions ), 1, tostring ( i * 10 ), false, false ) end
+		aTab1.Slap		= guiCreateList ( 0.85, 0.215, 0.13, 0.04, 0.40, "Slap! "..aCurrentSlap..'  _', true, aTab1.Tab, "slap" )
+
+		local slaps = {}
+		for i = 0, 10 do
+			table.insert(slaps, {text = tostring(i * 10), data = i * 10})
+		end
+
+		guiListSetColumns(aTab1.Slap, {{text = '', width = 0.8}})
+		guiListSetItems(aTab1.Slap, slaps)
+		guiListSetCallBack(aTab1.Slap, function(selectedData, selectedText)
+			local slap = tonumber(selectedData)
+			if slap then
+				aCurrentSlap = slap
+				guiSetText(aTab1.Slap, "Slap! "..slap..'  _')
+				if (aSpecSlap) then 
+					guiSetText(aSpecSlap, "Slap! "..slap.."hp")
+				end
+			end
+		end)
+
 		aTab1.Nick			= guiCreateButton ( 0.71, 0.260, 0.13, 0.04, "Set Nick", true, aTab1.Tab )
 		aTab1.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aTab1.Tab, "shout" )
 		aTab1.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aTab1.Tab, "setgroup" )
@@ -106,12 +119,28 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab1.SetTeam		= guiCreateButton ( 0.85, 0.440, 0.13, 0.04, "Set Team", true, aTab1.Tab, "setteam" )
 		aTab1.SetDimension	= guiCreateButton ( 0.71, 0.755, 0.13, 0.04, "Set Dimens.", true, aTab1.Tab, "setdimension" )
 		aTab1.SetInterior		= guiCreateButton ( 0.85, 0.755, 0.13, 0.04, "Set Interior", true, aTab1.Tab, "setinterior" )
-		aTab1.GiveWeapon		= guiCreateButton ( 0.71, 0.485, 0.27, 0.04, "Give: "..getWeaponNameFromID ( aCurrentWeapon ), true, aTab1.Tab, "giveweapon" )
-		aTab1.WeaponDropDown	= guiCreateStaticImage ( 0.95, 0.485, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
-		aTab1.WeaponOptions	= guiCreateGridList ( 0.71, 0.485, 0.27, 0.48, true, aTab1.Tab )
-						  guiGridListAddColumn( aTab1.WeaponOptions, "", 0.85 )
-						  guiSetVisible ( aTab1.WeaponOptions, false )
-						  for i = 1, 46 do if ( getWeaponNameFromID ( i ) ~= false ) then guiGridListSetItemText ( aTab1.WeaponOptions, guiGridListAddRow ( aTab1.WeaponOptions ), 1, getWeaponNameFromID ( i ), false, false ) end end
+		aTab1.GiveWeapon		= guiCreateList ( 0.71, 0.485, 0.27, 0.04, 0.48, "Give: "..getWeaponNameFromID ( aCurrentWeapon ), true, aTab1.Tab, "giveweapon" )
+
+		local weapons = {}
+		for i = 1, 46 do
+			if getWeaponNameFromID(i) then
+				table.insert(weapons, {text = getWeaponNameFromID(i), data = i})
+			end
+		end
+
+		guiListSetColumns(aTab1.GiveWeapon, {{text = '', width = 0.8}})
+		guiListSetItems(aTab1.GiveWeapon, weapons)
+		guiListSetCallBack(aTab1.GiveWeapon, function(selectedData, selectedText)
+			local weaponID = tonumber(selectedData)
+			if weaponID then
+				aCurrentWeapon = weaponID
+				selectedText = string.gsub(selectedText, "Combat Shotgun", "Combat SG")
+				selectedText = string.gsub(selectedText, "Rocket Launcher", "R. Laucher")
+				selectedText = string.gsub(selectedText, "Rocket Launcher HS", "R. Laucher HS")
+				guiSetText(aTab1.GiveWeapon, "Give: "..selectedText)
+			end
+		end)
+
 		aTab1.SetMoney		= guiCreateButton ( 0.71, 0.530, 0.13, 0.04, "Set Money", true, aTab1.Tab, "setmoney" )
 		aTab1.SetStats		= guiCreateButton ( 0.85, 0.530, 0.13, 0.04, "Set Stats", true, aTab1.Tab, "setstat" )
 		aTab1.JetPack		= guiCreateButton ( 0.71, 0.575, 0.27, 0.04, "Give JetPack", true, aTab1.Tab, "jetpack" )
@@ -122,25 +151,28 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab1.VehicleBlow		= guiCreateButton ( 0.85, 0.84, 0.13, 0.04, "Blow", true, aTab1.Tab, "blowvehicle" )
 		aTab1.VehicleCustomize 	= guiCreateButton ( 0.85, 0.89, 0.13, 0.04, "Customize", true, aTab1.Tab, "customize" )
 		aTab1.AnonAdmin		  = guiCreateCheckBox (0.745, 0.942, 0.20, 0.04, "Anonymous Admin", isAnonAdmin(), true, aTab1.Tab )
-		aTab1.GiveVehicle		= guiCreateButton ( 0.71, 0.710, 0.27, 0.04, "Give: "..getVehicleNameFromModel ( aCurrentVehicle ), true, aTab1.Tab, "givevehicle" )
-		aTab1.VehicleDropDown 	= guiCreateStaticImage ( 0.95, 0.710, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
-		local gx, gy 		= guiGetSize ( aTab1.GiveVehicle, false )
-		aTab1.VehicleOptions	= guiCreateGridList ( 0, 0, gx, 200, false )
-						  guiGridListAddColumn( aTab1.VehicleOptions, "", 0.85 )
-						  guiSetAlpha ( aTab1.VehicleOptions, 0.80 )
-						  guiSetVisible ( aTab1.VehicleOptions, false )
-							local vehicleNames = {}
-							for i = 400, 611 do
-								if ( getVehicleNameFromModel ( i ) ~= "" ) then
-									table.insert( vehicleNames, { model = i, name = getVehicleNameFromModel ( i ) } )
-								end
-							end
-							table.sort( vehicleNames, function(a, b) return a.name < b.name end )
-							for _,info in ipairs(vehicleNames) do
-								local row = guiGridListAddRow ( aTab1.VehicleOptions )
-								guiGridListSetItemText ( aTab1.VehicleOptions, row, 1, info.name, false, false )
-								guiGridListSetItemData ( aTab1.VehicleOptions, row, 1, tostring ( info.model ) )
-							end
+		
+		aTab1.GiveVehicle = guiCreateList( 0.71, 0.710, 0.27, 0.04, 0.275, "Give: "..getVehicleNameFromModel ( aCurrentVehicle ), true, aTab1.Tab, 'givevehicle')
+		
+		local vehicles = {}
+		for i = 400, 611 do
+			if (getVehicleNameFromModel(i) ~= "") then
+				table.insert(vehicles, {text = getVehicleNameFromModel ( i ), data = i})
+			end
+		end
+
+		table.sort(vehicles, function(a, b) return a.text < b.text end)
+
+		guiListSetColumns(aTab1.GiveVehicle, {{text = '', width = 0.8}})
+		guiListSetItems(aTab1.GiveVehicle, vehicles)
+		guiListSetCallBack(aTab1.GiveVehicle, function(selectedData, selectedText)
+			local modelID = tonumber(selectedData)
+			if modelID then
+				aCurrentVehicle = modelID
+				guiSetText ( aTab1.GiveVehicle, "Give: "..selectedText )
+			end
+		end)
+
 		aTab2 = {}
 		aTab2.Tab			= guiCreateTab ( "Resources", aTabPanel, "resources" )
 		aTab2.ManageACL		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "Manage ACL", true, aTab2.Tab )
@@ -354,7 +386,6 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		addEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
 		addEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		addEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
-		addEventHandler ( "onClientGUIDoubleClick", aTab1.VehicleOptions, aClientDoubleClick )
 		addEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		addEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
 		addEventHandler ( "onClientRender", _root, aClientRender )
@@ -410,7 +441,6 @@ function aAdminMenuClose ( destroy )
 		removeEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
 		removeEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		removeEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
-		removeEventHandler ( "onClientGUIDoubleClick", aTab1.VehicleOptions, aClientDoubleClick )
 		removeEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		removeEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
 		removeEventHandler ( "onClientRender", _root, aClientRender )
@@ -418,11 +448,9 @@ function aAdminMenuClose ( destroy )
 		removeEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
 		unbindKey ( "arrow_d", "down", aPlayerListScroll )
 		unbindKey ( "arrow_u", "down", aPlayerListScroll )
-		destroyElement ( aTab1.VehicleOptions )
 		destroyElement ( aAdminForm )
 		aAdminForm = nil
 	else
-		guiSetVisible ( aTab1.VehicleOptions, false )
 		guiSetVisible ( aAdminForm, false )
 	end
 	showCursor ( false )
@@ -923,31 +951,7 @@ function aClientScroll ( element )
 end
 
 function aClientDoubleClick ( button )
-	if ( source == aTab1.WeaponOptions ) then
-		if ( guiGridListGetSelectedItem ( aTab1.WeaponOptions ) ~= -1 ) then
-			aCurrentWeapon = getWeaponIDFromName ( guiGridListGetItemText ( aTab1.WeaponOptions, guiGridListGetSelectedItem ( aTab1.WeaponOptions ), 1 ) )
-			local wep = guiGridListGetItemText ( aTab1.WeaponOptions, guiGridListGetSelectedItem ( aTab1.WeaponOptions ), 1 )
-			wep = string.gsub ( wep, "Combat Shotgun", "Combat SG" )
-			guiSetText ( aTab1.GiveWeapon, "Give: "..wep.." " )
-		end
-		guiSetVisible ( aTab1.WeaponOptions, false )
-	elseif ( source == aTab1.VehicleOptions ) then
-		local item = guiGridListGetSelectedItem ( aTab1.VehicleOptions )
-		if ( item ~= -1 ) then
-			if ( guiGridListGetItemText ( aTab1.VehicleOptions, item, 1 ) ~= "" ) then
-				aCurrentVehicle = tonumber ( guiGridListGetItemData ( aTab1.VehicleOptions, item, 1 ) )
-				guiSetText ( aTab1.GiveVehicle, "Give: "..guiGridListGetItemText ( aTab1.VehicleOptions, item, 1 ).." " )
-			end
-		end
-		guiSetVisible ( aTab1.VehicleOptions, false )
-	elseif ( source == aTab1.SlapOptions ) then
-		if ( guiGridListGetSelectedItem ( aTab1.SlapOptions ) ~= -1 ) then
-			aCurrentSlap = guiGridListGetItemText ( aTab1.SlapOptions, guiGridListGetSelectedItem ( aTab1.SlapOptions ), 1 )
-			guiSetText ( aTab1.Slap, "Slap! "..aCurrentSlap.." _" )
-			if ( aSpecSlap ) then guiSetText ( aSpecSlap, "Slap! "..aCurrentSlap.."hp" ) end
-		end
-		guiSetVisible ( aTab1.SlapOptions, false )
-	elseif ( source == aTab2.ResourceList ) then
+	if ( source == aTab2.ResourceList ) then
 		if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
 			aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) )
 		end
@@ -960,18 +964,9 @@ function aClientDoubleClick ( button )
 			aBanDetails ( aBans["Serial"][selserial] and selserial or selip )
 		end
 	end
-	if ( guiGetVisible ( aTab1.WeaponOptions ) ) then guiSetVisible ( aTab1.WeaponOptions, false ) end
-	if ( guiGetVisible ( aTab1.VehicleOptions ) ) then guiSetVisible ( aTab1.VehicleOptions, false ) end
-	if ( guiGetVisible ( aTab1.SlapOptions ) ) then guiSetVisible ( aTab1.SlapOptions, false ) end
 end
 
 function aClientClick ( button )
-	if ( ( source == aTab1.WeaponOptions ) or ( source == aTab1.VehicleOptions ) or ( source == aTab1.SlapOptions ) ) then return
-	else
-		if ( guiGetVisible ( aTab1.WeaponOptions ) ) then guiSetVisible ( aTab1.WeaponOptions, false ) end
-		if ( guiGetVisible ( aTab1.VehicleOptions ) ) then guiSetVisible ( aTab1.VehicleOptions, false ) end
-		if ( guiGetVisible ( aTab1.SlapOptions ) ) then guiSetVisible ( aTab1.SlapOptions, false ) end
-	end
 	if ( button == "left" ) then
 		-- TAB 1, PLAYERS
 		if ( getElementParent ( source ) == aTab1.Tab ) then
@@ -986,9 +981,6 @@ function aClientClick ( button )
 			elseif ( source == aTab1.AnonAdmin ) then
 				setAnonAdmin( guiCheckBoxGetSelected ( aTab1.AnonAdmin ) )
 			elseif ( getElementType ( source ) == "gui-button" )  then
-				if ( source == aTab1.GiveVehicle ) then guiBringToFront ( aTab1.VehicleDropDown )
-				elseif ( source == aTab1.GiveWeapon ) then guiBringToFront ( aTab1.WeaponDropDown )
-				elseif ( source == aTab1.Slap ) then guiBringToFront ( aTab1.SlapDropDown ) end
 				if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) == -1 ) then
 					aMessageBox ( "error", "No player selected!" )
 				else
@@ -1026,20 +1018,6 @@ function aClientClick ( button )
 						aViewModdetails(player)
 					end
 				end
-			elseif ( source == aTab1.VehicleDropDown ) then
-				local x1, y1 = guiGetPosition ( aAdminForm, false )
-				local x2, y2 = guiGetPosition ( aTabPanel, false )
-				local x3, y3 = guiGetPosition ( aTab1.Tab, false )
-				local x4, y4 = guiGetPosition ( aTab1.GiveVehicle, false )
-				guiSetPosition ( aTab1.VehicleOptions, x1 + x2 + x3 + x4, y1 + y2 + y3 + y4 + 20, false )
-				guiSetVisible ( aTab1.VehicleOptions, true )
-				guiBringToFront ( aTab1.VehicleOptions )
-			elseif ( source == aTab1.WeaponDropDown ) then
-				guiSetVisible ( aTab1.WeaponOptions, true )
-				guiBringToFront ( aTab1.WeaponOptions )
-			elseif ( source == aTab1.SlapDropDown ) then
-				guiSetVisible ( aTab1.SlapOptions, true )
-				guiBringToFront ( aTab1.SlapOptions )
 			elseif ( source == aTab1.PlayerList ) then
 				if ( guiGridListGetSelectedItem( aTab1.PlayerList ) ~= -1 ) then
 					local player = aAdminRefresh ()
