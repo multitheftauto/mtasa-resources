@@ -1018,10 +1018,10 @@ function aClientClick ( button )
 				else
 					local name = guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 )
 					local player = getPlayerFromName ( name )
-					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..name, "Enter the kick reason", "", "kickPlayer", player )
+					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..removeColorCoding(name), "Enter the kick reason", "", "kickPlayer", player )
 					elseif ( source == aTab1.Ban ) then aBanInputBox ( player )
 					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", localPlayer, player, "slap", aCurrentSlap )
-					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..name.."?", "unmute", player ) end
+					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..removeColorCoding(name).."?", "unmute", player ) end
 					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", localPlayer, player, "freeze" )
 					elseif ( source == aTab1.Spectate ) then aSpectate ( player )
 					elseif ( source == aTab1.Nick ) then aInputBox ( "Set Nick", "Enter the new nick of the player", name, "setNick", player )
