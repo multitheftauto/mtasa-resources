@@ -1427,6 +1427,8 @@ function setHideSensitiveData( bOn )
 	guiCheckBoxSetSelected ( aTab1.HideSensitiveData, bOn )
 	aSetSetting ( "currentHideSensitiveDataState", bOn )
 	aAdminReloadInfos()
+	guiSetEnabled(aTab4.Tab, not bOn) -- toggle Bans tab
+	guiSetEnabled(aTab5.Tab, not bOn) -- toggle Admin Chat tab
 end
 
 function getSensitiveText(text)
