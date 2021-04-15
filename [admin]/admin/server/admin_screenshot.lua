@@ -29,7 +29,8 @@ end
 
 addEvent("aScreenShot",true)
 addEventHandler("aScreenShot",resourceRoot,
-	function (action,admin,player,arg1,arg2)
+	function (action,player,arg1)
+		local admin = client
 		if not isElement(admin) then return end
 		if not hasObjectPermissionTo(admin,"command.takescreenshot") then return end
 		if action == "new" then

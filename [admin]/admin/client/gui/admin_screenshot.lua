@@ -36,7 +36,7 @@ end
 function aScreenShotsRefresh ()
 	if aScreenShotList then
 		guiGridListClear(aScreenShotList)
-		triggerServerEvent("aScreenShot",resourceRoot,"list",localPlayer)
+		triggerServerEvent("aScreenShot",resourceRoot,"list")
 	end
 end
 
@@ -54,7 +54,7 @@ function aScreenShotsDoubleClick (button)
 		if source == aScreenShotList then
 			local row = guiGridListGetSelectedItem(aScreenShotList)
 			if row ~= -1 then
-				triggerServerEvent("aScreenShot",resourceRoot,"view",localPlayer,guiGridListGetItemData(aScreenShotList,row,1),guiGridListGetItemText(aScreenShotList,row,1))
+				triggerServerEvent("aScreenShot",resourceRoot,"view",guiGridListGetItemData(aScreenShotList,row,1),guiGridListGetItemText(aScreenShotList,row,1))
 			end
 		end
 	end
@@ -69,12 +69,12 @@ function aScreenShotsClick (button)
 				aMessageBox("error","No player selected!")
 			else
 				local name = guiGridListGetItemPlayerName(aTab1.PlayerList,guiGridListGetSelectedItem(aTab1.PlayerList),1)
-				triggerServerEvent("aScreenShot",resourceRoot,"new",localPlayer,getPlayerFromNick(name))
+				triggerServerEvent("aScreenShot",resourceRoot,"new",getPlayerFromNick(name))
 			end
 		elseif source == aScreenShotDelete then
 			local row = guiGridListGetSelectedItem ( aScreenShotList )
 			if row ~= -1 then
-				triggerServerEvent("aScreenShot",resourceRoot,"delete",localPlayer,guiGridListGetItemData(aScreenShotList,row,1))
+				triggerServerEvent("aScreenShot",resourceRoot,"delete",guiGridListGetItemData(aScreenShotList,row,1))
 				guiGridListRemoveRow(aScreenShotList,row)
 			end
 		elseif source == aScreenShotRefresh then
@@ -82,7 +82,7 @@ function aScreenShotsClick (button)
 		elseif source == aScreenShotView then
 			local row = guiGridListGetSelectedItem(aScreenShotList)
 			if row ~= -1 then
-				triggerServerEvent("aScreenShot",resourceRoot,"view",localPlayer,guiGridListGetItemData(aScreenShotList,row,1),guiGridListGetItemText(aScreenShotList,row,1))
+				triggerServerEvent("aScreenShot",resourceRoot,"view",guiGridListGetItemData(aScreenShotList,row,1),guiGridListGetItemText(aScreenShotList,row,1))
 			end
 		else
 			for player,gui in pairs (aScreenShotWindows) do
