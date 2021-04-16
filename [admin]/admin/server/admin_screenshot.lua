@@ -32,7 +32,7 @@ addEventHandler("aScreenShot",resourceRoot,
 	function (action,player,arg1)
 		local admin = client
 		if not isElement(admin) then return end
-		if not hasObjectPermissionTo(admin,"command.takescreenshot") then return end
+		if not hasObjectPermissionTo(admin,"general.adminpanel") then return end
 		if action == "new" then
 			if not isElement(player) then return end
 			if screenshots[player] then
