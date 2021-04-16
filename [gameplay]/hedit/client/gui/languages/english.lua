@@ -3,7 +3,7 @@ guiLanguage.english = {
     -- GENERAL STRINGS
     --
     windowHeader = "Handling Editor v"..HVER,
-    
+
     restrictedPassenger = "You are not allowed to use the handling editor as a passenger.",
     needVehicle = "You must be driving a vehicle to use the handling editor!",
     needLogin = "You must be logged in in order to view this menu.",
@@ -11,7 +11,7 @@ guiLanguage.english = {
     accessDenied = "You do not have the required permissions to access this menu.",
     invalidView = "This menu does not exist!",
     disabledView = "This menu has been disabled.",
- 
+
     sameValue = "The %s is already that!",
     exceedLimits = "Value used at %s exceeds the limit. [%s]!",
     cantSameValue = "%s may not the same as %s!",
@@ -21,13 +21,13 @@ guiLanguage.english = {
     successHex = "%s %s.",
     unableToChange = "Unable to set the %s to %s!",
 	disabledProperty = "Editing %s is disabled on this server!",
-    
+
     resetted = "Successfully reset the vehicle's handling settings!",
     loaded = "Successfully loaded your handling settings!",
     imported = "Successfully imported the handling settings!",
     invalidImport = "Import failed. The handling data you provided is invalid!",
     invalidSave = "Please provide a valid name and description to save this vehicle's handling data!",
-    
+
     confirmReplace = "Are you sure you would like to overwrite the existing save?",
     confirmLoad = "Are you sure you would like to load these handling settings? Any unsaved changes will be lost!",
     confirmDelete = "Are you sure you would like to delete these handling settings?",
@@ -38,22 +38,22 @@ guiLanguage.english = {
     successLoad = "Successfully loaded your handling settings!",
 
     wantTheSettings = "Are you sure you would like to apply these settings? The handling editor will restart.",
-    
+
     vehicle = "Vehicle",
     unsaved = "Unsaved",
-    
+
     clickToEdit = "Click to edit or drag to quick-tune.",
     enterToSubmit = "Press enter to confirm.",
     clickToViewFullLog = "Click to view the complete vehicle log.",
     copiedToClipboard = "The handling settings have been copied to the clipboard!",
-    
+
     special = {
     },
-    
+
     --
     -- BUTTON / MENU STRINGS
     --
-    
+
     --Warning level strings
     warningtitles = {
         info = "Information",
@@ -81,7 +81,7 @@ guiLanguage.english = {
         redo = ">",
         save = "Saves"
     },
-    
+
     -- Strings for the various views of the editor. Empty strings are placeholder to avoid debug as the debug is meant to show items which are missing text.
     viewinfo = {
         engine = {
@@ -188,7 +188,7 @@ guiLanguage.english = {
             shortname = "Download",
             longname = "Download a set of handling settings from the server."
         },
-        
+
         resourcesave = {
             shortname = "Resource save",
             longname = "Save your handling to a resource."
@@ -225,9 +225,9 @@ guiLanguage.english = {
             }
         },
     },
-    
 
-    handlingPropertyInformation = { 
+
+    handlingPropertyInformation = {
         ["identifier"] = {
             friendlyName = "Vehicle Identifier",
             information = "This represents the vehicle identifier to be used in handling.cfg.",

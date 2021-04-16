@@ -1,4 +1,4 @@
-handlingLimits = { 
+handlingLimits = {
     ["identifier"] = {
         id = 1,
         input = "string",

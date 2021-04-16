@@ -3,7 +3,7 @@
         requestRights [ source = player | args ( ) ]
         importHandling [ source = player | args ( element vehicle, table toImport ) ]
         resetHandling [ source = player | args ( element vehicle, int baseVehicleID ) ]
-        
+
     |> FUNCTIONS
         setHandlingFromTable ( element vehicle, table tab )
 ]]
@@ -16,7 +16,7 @@ addEventHandler ( "requestRights", root, function ( )
         end
         return false
     end
-    
+
     local pAccount = getPlayerAccount ( client )
     local canAccess = hasObjectPermissionTo(client, "resource.hedit.access", true)
     if isGuestAccount ( pAccount ) then
@@ -28,9 +28,6 @@ addEventHandler ( "requestRights", root, function ( )
 end )
 
 
-
-
-
 function handlingMod ( arg )
     if not isValidPlayer ( client ) then
         if DEBUGMODE then
@@ -38,7 +35,7 @@ function handlingMod ( arg )
         end
         return false
     end
-    
+
     if not isValidVehicle ( source ) then
         if DEBUGMODE then
             error ( "Invalid vehicle at event '"..eventName.."'!", 2 )
@@ -71,9 +68,6 @@ function handlingMod ( arg )
 end
 
 
-
-
-
 addEvent ( "resetHandling", true )
 addEvent ( "loadClientHandling", true )
 addEvent ( "importHandling", true )
@@ -82,10 +76,7 @@ addEventHandler ( "loadClientHandling", root, handlingMod )
 addEventHandler ( "importHandling", root, handlingMod )
 
 
-
 --
-
-
 
 
 function setHandlingFromTable ( vehicle, tab, exe )
@@ -95,14 +86,14 @@ function setHandlingFromTable ( vehicle, tab, exe )
         end
         return false
     end
-    
+
     for property,value in pairs ( tab ) do
         outputDebugString ( "PROPERTY: "..property.." - VALUE: "..tostring(value).." - TYPE: "..type(value) )
-        
+
 	    if property == "maxVelocity" and (tonumber(value) > 13.02 and tonumber(value) < 13.1) then
             value = 13.04
         end
-        
+
         setVehicleHandling ( vehicle, property, value, false )
     end
 

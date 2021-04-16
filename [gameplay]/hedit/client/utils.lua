@@ -1,36 +1,33 @@
 function getText ( ... )
     local entry = getUserLanguage()
-    
+
     if not entry then
         return false
     end
 
     for i,tab in ipairs{...} do
-    
+
         entry = entry[tab]
-        
+
         if not entry then
-            local path = table.concat ( {...}, "." ) 
+            local path = table.concat ( {...}, "." )
             outputDebugString ( "No language entry in " .. getUserConfig ("language") .. ": ".. path, 2)
-            
+
             -- Returning path is more friendly, helps developer find source of issue and can give user an idea of what was supposed to be said
             return path
-            
+
         elseif type ( entry ) == "string" then
             return entry
         end
-        
+
     end
-    
+
     if DEBUGMODE then
         error ( "No valid arguments were passed!", 2 )
     end
-    
+
     return ""
 end
-
-
-
 
 
 function getHandlingPropertyFriendlyName ( property )
@@ -40,11 +37,9 @@ function getHandlingPropertyFriendlyName ( property )
         end
         return nil
     end
-    
+
     return getText ( "handlingPropertyInformation", property, "friendlyName" ) or "NO_FRIENDLY_NAME"
 end
-
-
 
 
 function getHandlingPropertyInformationText ( property )
@@ -54,12 +49,9 @@ function getHandlingPropertyInformationText ( property )
         end
         return nil
     end
-    
+
     return getText ( "handlingPropertyInformation", property, "information" ) or "NO_INFORMATION_TEXT"
 end
-
-
-
 
 
 function getHandlingPropertyValueType ( property )
@@ -69,12 +61,9 @@ function getHandlingPropertyValueType ( property )
         end
         return nil
     end
-    
+
     return getText ( "handlingPropertyInformation", property, "syntax", 1 ) or "NO_VALUE_TYPE"
 end
-
-
-
 
 
 function getHandlingPropertyValueInformation ( property )
@@ -84,12 +73,9 @@ function getHandlingPropertyValueInformation ( property )
         end
         return nil
     end
-    
+
     return getText ( "handlingPropertyInformation", property, "syntax", 2 ) or "NO_VALUE_INFORMATION"
 end
-
-
-
 
 
 function getHandlingPropertyOptionName ( property, option )
@@ -99,12 +85,9 @@ function getHandlingPropertyOptionName ( property, option )
         end
         return nil
     end
-    
+
     return getText ( "handlingPropertyInformation", property, "options", option ) or "NO_OPTION_NAME"
 end
-
-
-
 
 
 function getHandlingPropertyByteName ( property, byte, value )
@@ -114,19 +97,16 @@ function getHandlingPropertyByteName ( property, byte, value )
         end
         return nil
     end
-    
+
     if not isHandlingPropertyHexadecimal ( property ) then
         if DEBUGMODE then
             error ( "Property '"..tostring(property).."' is not hexadecimal at getHandlingPropertyByteName!", 2 )
         end
         return nil
     end
-    
+
     return getText ( "handlingPropertyInformation", property, "items", byte, value, 1 ) or "NO_BYTE_NAME"
 end
-
-
-
 
 
 function getHandlingPropertyByteInformation ( property, byte, value )
@@ -136,19 +116,16 @@ function getHandlingPropertyByteInformation ( property, byte, value )
         end
         return nil
     end
-    
+
     if not isHandlingPropertyHexadecimal ( property ) then
         if DEBUGMODE then
             error ( "Property '"..tostring(property).."' is not hexadecimal at getHandlingPropertyByteInformation!", 2 )
         end
         return nil
     end
-    
+
     return getText ( "handlingPropertyInformation", property, "items", byte, value, 2 ) or "NO_BYTE_INFORMATION"
 end
-
-
-
 
 
 function getHandlingHexadecimalChangeDetails ( vehicle, property, value )
@@ -156,32 +133,28 @@ function getHandlingHexadecimalChangeDetails ( vehicle, property, value )
         if DEBUGMODE then
             error ( "Invalid vehicle '"..tostring(vehicle).."' at getHandlingHexadecimalChangeDetails!", 2 )
         end
-        
+
         return false
     end
-    
+
     if not isHandlingPropertyValid ( property ) then
         if DEBUGMODE then
             error ( "Invalid property '"..tostring(property).."' at getHandlingHexadecimalChangeDetails!", 2 )
         end
-        
+
         return false
     end
-    
+
     if not isHandlingPropertyHexadecimal ( property ) then
         if DEBUGMODE then
             error ( "Property '"..tostring(property).."' is not hexadecimal at getHandlingHexadecimalChangeDetails!", 2 )
         end
         return nil
     end
-    
-    
-    
+
+
     return hexChanges, hexByte, hexValue, hexBool
 end
-
-
-
 
 
 function cacheClientSaves ( )
@@ -222,15 +195,9 @@ function cacheClientSaves ( )
 end
 
 
-
-
-
 function getClientSaves ( )
     return xmlCache.clientsaves
 end
-
-
-
 
 
 function isClientHandlingExisting ( name )
@@ -246,9 +213,6 @@ function isClientHandlingExisting ( name )
 
     return xmlCache.clientsaves[name] and true or false
 end
-
-
-
 
 
 function saveClientHandling ( vehicle, name, description )
@@ -275,7 +239,6 @@ function saveClientHandling ( vehicle, name, description )
 
         return false
     end
-
 
 
     local lowername = string.lower ( name )
@@ -319,9 +282,6 @@ function saveClientHandling ( vehicle, name, description )
 end
 
 
-
-
-
 function loadClientHandling ( vehicle, name )
     if not isValidVehicle ( vehicle ) then
         if DEBUGMODE then
@@ -348,8 +308,6 @@ function loadClientHandling ( vehicle, name )
 end
 
 
-
-
 -- Imports a handling line in handling.cfg format, given a proper method.
 -- Valid methods: III, VC, SA, and IV
 function importHandling ( vehicle, handlingLine, method )
@@ -359,21 +317,21 @@ function importHandling ( vehicle, handlingLine, method )
         end
         return false
     end
-    
+
 	-- Split the line into a table.
 	local handlingValues = {}
 	for handlingValue in string.gmatch(handlingLine, "[^%s]+") do
 		outputDebugString(handlingValue)
 		table.insert(handlingValues, handlingValue)
 	end
-	
+
 	-- Parse GTA:IV-format handling lines.
 	-- TODO: tweak default.lua to include a warning window before importing.
 	if method == "IV" then
 		if #handlingValues ~= 37 then
 			return false
 		end
-		
+
 		for i, handlingValue in ipairs(handlingValues) do
 			if i ~= 1 then
 				if not isNumeric(handlingValue) then
@@ -397,9 +355,9 @@ function importHandling ( vehicle, handlingLine, method )
 				handlingValues[i] = handlingValue
 			end
 		end
-		
+
 		-- TODO: tweak handling values to make them more like IV (less traction, more cushiony suspension)
-		
+
 		local handlingProperties = {}
 		handlingProperties["mass"] = handlingValues[2]
 		handlingProperties["dragCoeff"] = handlingValues[3]
@@ -430,56 +388,52 @@ function importHandling ( vehicle, handlingLine, method )
 		handlingProperties["collisionDamageMultiplier"] = handlingValues[29]
 		handlingProperties["seatOffsetDistance"] = handlingValues[33]
 		handlingProperties["monetaryValue"] = handlingValues[34]
-		
+
 		triggerServerEvent("importHandling", vehicle, handlingProperties)
 		return true
 	end
-    
+
 	--TODO: clean this up a bit
 	if method == "SA" then
 		local handlingTable = {}
-    
+
 		local id = 1
 		local vIdentifierFound = false
-    
+
 		for value in string.gmatch ( handlingLine, "[^%s]+" ) do
 			if not vIdentifierFound and tonumber ( value ) then
 				vIdentifierFound = true
 			end
-        
+
 			if vIdentifierFound then
 				id = id + 1
 				local property = getHandlingPropertyNameFromID ( id )
-            
+
 				if property then
 					handlingTable[property] = stringToValue ( property, value )
 				end
 			end
 		end
-    
+
 		if id ~= 36 then
 			addLogEntry ( vehicle, localPlayer, "invalidImport", nil, nil, 3 )
 			return false
 		end
-    
-    
-    
+
+
 		local function func ( )
 			triggerServerEvent ( "importHandling", vehicle, handlingTable )
 		end
-    
+
 		if not isVehicleSaved ( vehicle ) then
 			guiCreateWarningMessage ( getText ( "confirmImport" ), 2, {func} )
 			return true
 		end
-    
+
 		func ( )
 		return true
 	end
 end
-
-
-
 
 
 function exportHandling ( vehicle )
@@ -489,22 +443,19 @@ function exportHandling ( vehicle )
         end
         return false
     end
-    
+
     local str = {}
     local handling = getVehicleHandling ( vehicle )
-    
+
     for id=1,36 do
         local property = getHandlingPropertyNameFromID ( id )
         local inputType = getHandlingPropertyInputType ( property )
-        
+
         str[id] = tostring ( inputType == "float" and math.round ( handling[property], 3 ) or handling[property] )
     end
-    
+
     return table.concat ( str, " " )
 end
-
-
-
 
 
 function resetVehicleHandling ( vehicle, baseID )
@@ -514,114 +465,99 @@ function resetVehicleHandling ( vehicle, baseID )
         end
         return false
     end
-    
+
     if type ( baseID ) ~= "number" then
         baseID = getElementModel ( vehicle )
     end
-    
+
     triggerServerEvent ( "resetHandling", vehicle, baseID )
     return true
 end
 
 
-
-
-
 function prepareHandlingValue ( vehicle, property, value )
     outputDebugString ( "VALUE: "..tostring(value).." - strval: "..tostring(stringToValue ( property, value )).. " - Type: "..type ( value ) )
-    
+
     if (property == "maxVelocity") and (tonumber(value) > 13.02 and tonumber(value) < 13.1) then
         value = 13.04
     end
-    
+
     setVehicleHandling ( vehicle, property, value )
-    
+
     return true
 end
-
-
-
 
 
 function getUserConfig ( config )
     if type ( config ) ~= "string" then
         return false
     end
-    
+
     if type(pData.userconfig[config]) ~= "nil" then
         return pData.userconfig[config]
     end
-    
-    
-    
+
+
     local xml = xmlLoadFile ( client_config_file )
-    
+
     if not xml then
         error ( "Client config file doesn't exist!", 2 )
     end
-    
+
     local node = xmlFindChild ( xml, config, 0 )
-    
+
     if not node then
         outputDebugString ( "Node '"..config.."' doesn't exist in the userconfig, returning default value." )
 
         xmlUnloadFile ( xml )
         return setting[config]
     end
-    
-    
-    
+
+
     local value = xmlNodeGetValue ( node )
     pData.userconfig[config] = tostring(value)
-    
+
     outputDebugString ( "Added userconfig "..config.." with value '"..tostring(value).."' to pData." )
-    
+
     xmlUnloadFile ( xml )
-    
+
     return value
 end
-
-
-
 
 
 function setUserConfig ( config, value )
     if value == nil then
         return false
     end
-    
+
     local xml = xmlLoadFile ( client_config_file )
-    
+
     if not xml then
         error ( "Client config file doesn't exist!" )
     end
-    
+
     local node = xmlFindChild ( xml, config, 0 )
-    
+
     if not node then
         node = xmlCreateChild ( xml, config )
     end
-    
-    
-    
+
+
     xmlNodeSetValue ( node, tostring ( value ) )
     pData.userconfig[config] = value
 
     outputDebugString ( "Changed config "..config.." to '"..tostring(value).."'" )
-    
+
     xmlSaveFile ( xml )
     xmlUnloadFile ( xml )
-    
+
     return true
 end
 
 
-
-
-
 function getUserLanguage ( )
     local config = getUserConfig ( "language" )
-    
+
     if config and guiLanguage[config] then
         return guiLanguage[config]
     end
@@ -631,13 +567,9 @@ function getUserLanguage ( )
 end
 
 
-
 function getPlayerCorrectTime ( hours, minutes, seconds )
     return hours, minutes, seconds
 end
-
-
-
 
 
 function updateXMLCache ( cacheLib, cacheName, cacheEntry )
@@ -645,15 +577,12 @@ function updateXMLCache ( cacheLib, cacheName, cacheEntry )
         outputDebugString ( "No cacheLib present for "..tostring(cacheLib).."! Can't update cache, aborting.", 2 )
         return false
     end
-    
+
     xmlCache[cacheLib][cacheName] = cacheEntry
     return true
 end
 addEvent ( "updateClientXMLCache", true )
 addEventHandler ( "updateClientXMLCache", root, updateXMLCache )
-
-
-
 
 
 function updateRights ( loggedin, admin, canAccess )

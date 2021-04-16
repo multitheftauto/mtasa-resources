@@ -3,7 +3,7 @@ guiLanguage.turkish = {
     -- GENERAL STRINGS
     --
     windowHeader = "Mta San Turkiye Handling Menüsü "..HVER,
-    
+
     restrictedPassenger = "Bir yolcu olarak ele editörü kullanmak için izin verilmez.",
     needVehicle = "Sen taşıma editörü kullanmak için bir araç sürüş olmalı!",
     needLogin = "Bu menüyü görmek için giriş yapmalısınız.",
@@ -11,7 +11,7 @@ guiLanguage.turkish = {
     accessDenied = "Bu menüye erişmek için gerekli izinlere sahip değilsiniz.",
     invalidView = "Bu menü yok!",
     disabledView = "Bu menü devre dışı bırakıldı.",
- 
+
     sameValue = "% S zaten olduğunu!",
     exceedLimits = "% S kullanılan değer sınırını aşıyor. [%s]!",
     cantSameValue = "%s aynı olmayabilir %s!",
@@ -21,13 +21,13 @@ guiLanguage.turkish = {
     successHex = "%s %s.",
     unableToChange = "Için% s ayarlamak için açılamıyor %s!",
 	disabledProperty = "Düzenleme% s bu sunucuda devre dışı!",
-    
+
     resetted = "Başarıyla aracın kullanımı ayarlarını sıfırlamak!",
     loaded = "Başarıyla işleme ayarlarını yüklenen!",
     imported = "Başarıyla kullanımı ayarlarını ithal!",
     invalidImport = "İthalat başarısız oldu. Eğer verilen taşıma veri geçersiz!",
     invalidSave = "Bu aracın kullanım verilerini kaydetmek için geçerli bir ad ve açıklama veriniz!",
-    
+
     confirmReplace = "Eğer mevcut kurtarmak üzerine yazmak istiyorum emin misiniz?",
     confirmLoad = "Bu işleme ayarları yüklemek istiyorum emin misiniz? Kaydedilmemiş değişiklikler kaybolacak!",
     confirmDelete = "Eğer bu işleme ayarlarını silmek istiyorum emin misiniz? ",
@@ -38,22 +38,22 @@ guiLanguage.turkish = {
     successLoad = "Başarıyla senin kullanımı ayarlarını yüklenen!",
 
     wantTheSettings = "Bu ayarları uygulamak istiyorum emin misiniz? Taşıma editörü yeniden başlar.",
-    
+
     vehicle = "Vehicle",
     unsaved = "Unsaved",
-    
+
     clickToEdit = "Düzenlemek veya hızlı ayarlamak için sürükleyin tıklayın.",
     enterToSubmit = "Onaylamak için tuşuna basın girin.",
     clickToViewFullLog = "Komple araç günlüğünü görüntülemek için tıklayın.",
     copiedToClipboard = "Taşıma ayarlar panoya kopyalanan!",
-    
+
     special = {
     },
-    
+
     --
     -- BUTTON / MENU STRINGS
     --
-    
+
     --Warning level strings
     warningtitles = {
         info = "Information",
@@ -81,7 +81,7 @@ guiLanguage.turkish = {
         redo = ">",
         save = "kaydet"
     },
-    
+
     -- Strings for the various views of the editor. Empty strings are placeholder to avoid debug as the debug is meant to show items which are missing text.
     viewinfo = {
         engine = {
@@ -188,7 +188,7 @@ guiLanguage.turkish = {
             shortname = "indir",
             longname = "Sunucudan ayarları ele bir dizi indirin."
         },
-        
+
         resourcesave = {
             shortname = "kaydetmek Kaynak",
             longname = "Bir kaynak için taşıma kaydedin."
@@ -224,9 +224,9 @@ guiLanguage.turkish = {
             }
         },
     },
-    
 
-    handlingPropertyInformation = { 
+
+    handlingPropertyInformation = {
         ["identifier"] = {
             friendlyName = "araç tanıtıcı",
             information = "Bu handling.cfg kullanılacak araç temsilcidir.",

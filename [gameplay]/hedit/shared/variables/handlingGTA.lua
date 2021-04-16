@@ -219,6 +219,6 @@ for i,v in ipairs ( vehicleModelIdentifier ) do
     if not vehicleIdentifierModels[v] then
         vehicleIdentifierModels[v] = {}
     end
-    
+
     table.insert ( vehicleIdentifierModels[v] , i )
 end

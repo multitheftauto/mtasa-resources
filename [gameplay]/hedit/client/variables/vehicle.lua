@@ -8,7 +8,7 @@ addEventHandler ( "onClientPlayerVehicleEnter", localPlayer,
     function ( vehicle )
         pVehicle = vehicle
         checkVehicleChange ( )
-    end 
+    end
 )
 
 -- For when a player dies whilst inside a vehicle
@@ -79,12 +79,12 @@ end
 
 function forceVehicleChange ( )
     guiDestroyWarningWindow ( )
-    
+
     if pVehicle then
         triggerEvent ( "updateVehicleText", pVehicle )
         requestMiniLog ( pVehicle )
     end
-    
+
     lastVehicle = pVehicle
     guiShowView ( "engine" )
 end
