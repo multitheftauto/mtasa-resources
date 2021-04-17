@@ -69,7 +69,7 @@ function aAdminMenu ()
 		local B = 0.035		-- Small line gap
 
 						     guiCreateHeader ( 0.25, y, 0.20, 0.04, "Player:", true, aTab1.Tab )
-y=y+A   aTab1.Name			= guiCreateLabel ( 0.26, y, 0.30, 0.035, "Name: N/A", true, aTab1.Tab )
+y=y+A   aTab1.Name			= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Name: N/A", true, aTab1.Tab )
 y=y+A   aTab1.IP			= guiCreateLabel ( 0.26, y, 0.30, 0.035, "IP: N/A", true, aTab1.Tab )
 		aTab1.CountryCode	= guiCreateLabel ( 0.45, y, 0.04, 0.035, "", true, aTab1.Tab )
 		aTab1.Flag	  = guiCreateStaticImage ( 0.40, y, 0.025806, 0.021154, "client\\images\\empty.png", true, aTab1.Tab )
