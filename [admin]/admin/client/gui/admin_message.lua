@@ -75,7 +75,8 @@ function aViewSuspectInfo ( button )
 						'IP: '.. getSensitiveText(suspectInfo.ip),
 						'Serial: '.. getSensitiveText(suspectInfo.serial),
 						'MTA version: '.. suspectInfo.version,
-						'Chat log: '.. suspectInfo.chatLog,
+						'\nChat log:\n' .. suspectInfo.chatLog,
+
 					}
 
 					local text = table.concat(displayInfo, '\n')
