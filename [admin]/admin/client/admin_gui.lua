@@ -54,10 +54,6 @@ function guiCreateButton ( x, y, w, h, text, relative, parent, right )
 	return false
 end
 
-function guiSetImageColor(image, color)
-	return guiSetProperty(image, "ImageColours", ("tl:%s tr:%s bl:%s br:%s"):format(color, color, color, color))
-end
-
 function guiCreateList(x, y, w, h, tabHeight, header, relative, parent, right)
 	local list = guiCreateButton(x, y, w, h, header, relative, parent, right)
 	
@@ -73,9 +69,8 @@ function guiCreateList(x, y, w, h, tabHeight, header, relative, parent, right)
 		guiListSetVisible(list, true)
 	end, false)
 
-	local bg = guiCreateStaticImage(x, y, w, tabHeight, 'client\\images\\dot.png', relative, parent)
+	local bg = guiCreateButton(x, y, w, tabHeight, '', relative, parent)
 	guiSetProperty(bg, 'AlwaysOnTop', 'True')
-	guiSetImageColor(bg, 'FF000000')
 	guiSetVisible(bg, false)
 
 	local edit = guiCreateEdit(0, 0, absoluteWidth - 20, 20, '', false, bg)
