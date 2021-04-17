@@ -68,7 +68,8 @@ function aViewSuspectInfo ( button )
 						aSuspectInfo = nil
 					end, false)
 
-					local text = {
+					local displayInfo = {
+
 						'Nickname: '.. removeColorCoding(suspectInfo.name),
 						'Account name: '.. getSensitiveText(suspectInfo.username),
 						'IP: '.. getSensitiveText(suspectInfo.ip),
