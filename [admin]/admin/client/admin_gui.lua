@@ -105,7 +105,8 @@ function guiCreateList(x, y, w, h, tabHeight, header, relative, parent, right)
 				guiListSetVisible(list, false)
 			end
 		end
-	end)
+	end, false)
+
 
 	lists[list] = {
 		bg = bg,
