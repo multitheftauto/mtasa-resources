@@ -63,8 +63,8 @@ function aAdminMenu ()
 			if slap then
 				aCurrentSlap = slap
 				guiSetText(aTab1.Slap, "Slap! "..slap..'  _')
-				if (aSpecSlap) then 
-					guiSetText(aSpecSlap, "Slap! "..slap.."hp")
+				if (aSpectator.Slap) then 
+					guiSetText(aSpectator.Slap, "Slap! "..slap.."hp")
 				end
 			end
 		end)
