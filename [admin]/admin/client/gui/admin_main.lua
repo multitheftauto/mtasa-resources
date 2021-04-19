@@ -129,18 +129,21 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 			end
 		end
 
+		local shortNames = {
+			["Combat Shotgun"] = "Combat SG", 
+			["Rocket Launcher"] = "R. Launcher", 
+			["Rocket Launcher HS"] = "R. Launcher HS"
+		}
 		guiListSetColumns(aTab1.GiveWeapon, {{text = '', width = 0.8}})
 		guiListSetItems(aTab1.GiveWeapon, weapons)
 		guiListSetCallBack(aTab1.GiveWeapon, function(selectedData, selectedText)
 			local weaponID = tonumber(selectedData)
 			if weaponID then
 				aCurrentWeapon = weaponID
-				selectedText = string.gsub(selectedText, "Combat Shotgun", "Combat SG")
-				selectedText = string.gsub(selectedText, "Rocket Launcher", "R. Laucher")
-				selectedText = string.gsub(selectedText, "Rocket Launcher HS", "R. Laucher HS")
-				guiSetText(aTab1.GiveWeapon, "Give: "..selectedText)
+				guiSetText(aTab1.GiveWeapon, "Give: " .. (shortNames[selectedText] or selectedText))
 			end
 		end)
+
 
 		aTab1.SetMoney		= guiCreateButton ( 0.71, 0.530, 0.13, 0.04, "Set Money", true, aTab1.Tab, "setmoney" )
 		aTab1.SetStats		= guiCreateButton ( 0.85, 0.530, 0.13, 0.04, "Set Stats", true, aTab1.Tab, "setstat" )
