@@ -173,3 +173,16 @@ function guiListLoadItems(list)
 	end
 	return false
 end
+
+addEventHandler('onClientGUIClick', guiRoot, function(button)
+	if (button == 'left') then
+		local parent = getElementParent(source)
+		if parent then
+			for list in pairs(lists) do
+				if guiGetVisible(list) and (parent ~= list) and (getElementParent(parent) ~= getElementParent(list)) then
+					guiListSetVisible(list, false)
+				end
+			end
+		end
+	end
+end)
