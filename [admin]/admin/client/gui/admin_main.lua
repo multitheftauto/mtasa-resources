@@ -123,8 +123,9 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 
 		local weapons = {}
 		for i = 1, 46 do
-			if getWeaponNameFromID(i) then
-				table.insert(weapons, {text = getWeaponNameFromID(i), data = i})
+			local weapName = getWeaponNameFromID(i)
+			if weapName then
+				table.insert(weapons, {text = weapName, data = i})
 			end
 		end
 
@@ -156,8 +157,9 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		
 		local vehicles = {}
 		for i = 400, 611 do
-			if (getVehicleNameFromModel(i) ~= "") then
-				table.insert(vehicles, {text = getVehicleNameFromModel ( i ), data = i})
+			local vehName = getVehicleNameFromModel(i)
+			if vehName then
+				table.insert(vehicles, {text = vehName, data = i})
 			end
 		end
 
