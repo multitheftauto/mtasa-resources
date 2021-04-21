@@ -33,7 +33,8 @@ function loadsave_getResources ( dialog, player )
 		mapInfo["friendlyName"] = resourceName
 	end
 	table.sort(maps, function(a, b) return a.name < b.name end)
-	triggerClientEvent ( source, dialog.."ShowDialog", source, maps )
+	local currentDirectory = get('*editor_main.mapResourceOrganizationalDirectory')
+	triggerClientEvent ( source, dialog.."ShowDialog", source, maps, currentDirectory )
 end
 addEventHandler ( "loadsave_getResources", getRootElement(), loadsave_getResources )
 
