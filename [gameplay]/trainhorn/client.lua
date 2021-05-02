@@ -1,57 +1,48 @@
-local spam = {}
+local spam = 0
 
-function initBind(thePlayer)
-	if (thePlayer == localPlayer and getVehicleType(source) == "Train") then
-		bindKey("H", "down", soundHorn)
+function initBind(theVehicle)
+	if (getVehicleType(theVehicle) == "Train") then
+		bindKey("horn", "down", soundHorn)
 	end
 end
-addEventHandler("onClientVehicleEnter", getRootElement(), initBind)
+addEventHandler("onClientPlayerVehicleEnter", localPlayer, initBind)
 
 function soundHorn()
 	local vehicle = getPedOccupiedVehicle(localPlayer)
-
-	if getVehicleType(vehicle) ~= "Train" then return end
-
 	-- Make it so they can't play multiple train horns at the same time (causes lag and distortion)
-    if spam[localPlayer] and getTickCount() - spam[localPlayer] < 5000 then
-        return
-    end
-
-	if (vehicle and getVehicleController(vehicle) == localPlayer) then
-		spam[localPlayer] = getTickCount()
-		x, y, z = getElementPosition(vehicle)
-		triggerServerEvent("onSyncHorn", getRootElement(), localPlayer, vehicle)
-		sound = playSound3D("horn.aac", x, y, z, false)
-		setSoundVolume(sound, 1.0)
+	if (vehicle and getVehicleType(vehicle) == "Train" and getVehicleController(vehicle) == localPlayer and getTickCount() - spam >= 5000) then
+		spam = getTickCount()
+		triggerServerEvent("onSyncHorn", resourceRoot)
+		local x, y, z = getElementPosition(vehicle)
+		local sound = playSound3D("horn.aac", x, y, z, false)
 		attachElements(sound, vehicle)
 		setSoundMaxDistance(sound, 250)
 	end
 end
 
 function syncedHorn(train, x, y, z)
-	if (isElement(train) and getVehicleType(train) == "Train") then
-		sound = playSound3D("horn.aac", x, y, z, false)
-		setSoundVolume(sound, 1.0)
+	if (isElement(train) and getVehicleType(train) == "Train" and source ~= localPlayer) then
+		local sound = playSound3D("horn.aac", x, y, z, false)
 		attachElements(sound, train)
 		setSoundMaxDistance(sound, 250)
 	end
 end
 addEvent("onPlaySyncedHorn", true)
-addEventHandler("onPlaySyncedHorn", localPlayer, syncedHorn)
+addEventHandler("onPlaySyncedHorn", root, syncedHorn)
 
-function cleanUp(thePlayer)
-	if (thePlayer == localPlayer and getVehicleType(source) == "Train") then
-		unbindKey("H", "down", soundHorn)
+function cleanUp(theVehicle)
+	if (getVehicleType(theVehicle) == "Train") then
+		unbindKey("horn", "down", soundHorn)
 	end
 end
-addEventHandler("onClientVehicleExit", getRootElement(), cleanUp)
+addEventHandler("onClientPlayerVehicleExit", localPlayer, cleanUp)
 
--- Dying in train, so not triggering onClientVehicleExit
+-- Dying in train, so not triggering onClientPlayerVehicleExit
 function integrityCheck()
 	local vehicle = getPedOccupiedVehicle(localPlayer)
 
 	if (vehicle and getVehicleType(vehicle) == "Train") then
-		unbindKey("H", "down", soundHorn)
+		unbindKey("horn", "down", soundHorn)
 	end
 end
 addEventHandler("onClientPlayerWasted", localPlayer, integrityCheck)
