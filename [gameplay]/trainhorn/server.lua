@@ -1,11 +1,20 @@
-function syncHorn(trainDriver, train)
+local spam = {}
 
-	local x, y, z = getElementPosition(trainDriver)
-	local nearbyPlayers = getElementsWithinRange(x, y, z, 250, "player")
+function syncHorn()
+	local vehicle = getPedOccupiedVehicle(client)
+	if vehicle and getVehicleType(vehicle) == "Train" and getVehicleController(vehicle) == client then
+		if spam[client] and getTickCount() - spam[client] < 5000 then return end
+		local x, y, z = getElementPosition(client)
+		local nearbyPlayers = getElementsWithinRange(x, y, z, 250, "player")
+		spam[client] = getTickCount()
 
-	for _, p in ipairs(nearbyPlayers) do
-		triggerClientEvent(p, "onPlaySyncedHorn", p, train, x, y, z)
+		triggerClientEvent(nearbyPlayers, "onPlaySyncedHorn", client, vehicle, x, y, z)
 	end
 end
 addEvent("onSyncHorn", true)
 addEventHandler("onSyncHorn", resourceRoot, syncHorn)
+
+function quitHandler()
+	spam[source] = nil
+end
+addEventHandler("onPlayerQuit", root, quitHandler)
