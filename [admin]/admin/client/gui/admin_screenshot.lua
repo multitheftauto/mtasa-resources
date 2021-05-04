@@ -16,10 +16,10 @@ function aPlayerScreenShot (player)
 		local x,y = guiGetScreenSize()
 		aScreenShotForm		= guiCreateWindow	( x / 2 - 300, y / 2 - 125, 600, 250, "Screenshot Management", false )
 		aScreenShotList		= guiCreateGridList	( 0.03, 0.08, 0.70, 0.90, true, aScreenShotForm )
-		aScreenShotNew		= guiCreateButton	( 0.75, 0.08, 0.42, 0.09, "Take New", true, aScreenShotForm )
-		aScreenShotDelete	= guiCreateButton	( 0.75, 0.18, 0.42, 0.09, "Delete", true, aScreenShotForm )
-		aScreenShotView		= guiCreateButton	( 0.75, 0.28, 0.42, 0.09, "View", true, aScreenShotForm )
-		aScreenShotRefresh	= guiCreateButton	( 0.75, 0.38, 0.42, 0.09, "Refresh", true, aScreenShotForm )
+		aScreenShotNew		= guiCreateButton	( 0.75, 0.08, 0.42, 0.09, "Take New", true, aScreenShotForm, "takescreenshot" )
+		aScreenShotDelete	= guiCreateButton	( 0.75, 0.18, 0.42, 0.09, "Delete", true, aScreenShotForm, "deletescreenshot" )
+		aScreenShotView		= guiCreateButton	( 0.75, 0.28, 0.42, 0.09, "View", true, aScreenShotForm, "viewscreenshot" )
+		aScreenShotRefresh	= guiCreateButton	( 0.75, 0.38, 0.42, 0.09, "Refresh", true, aScreenShotForm, "listscreenshots" )
 		aScreenShotClose	= guiCreateButton	( 0.75, 0.88, 0.42, 0.09, "Close", true, aScreenShotForm )
 		guiGridListAddColumn(aScreenShotList,"Player",0.31 )
 		guiGridListAddColumn(aScreenShotList,"Admin",0.31 )
@@ -36,7 +36,9 @@ end
 function aScreenShotsRefresh ()
 	if aScreenShotList then
 		guiGridListClear(aScreenShotList)
-		triggerServerEvent("aScreenShot",resourceRoot,"list")
+		if hasPermissionTo("command.listscreenshots") then
+			triggerServerEvent("aScreenShot",resourceRoot,"list")
+		end
 	end
 end
 
