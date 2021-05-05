@@ -36,7 +36,7 @@ function resourceStartedCallback(qh)
 end
 
 addEvent("aScreenShot",true)
-addEventHandler("aScreenShot",resourceRoot,
+addEventHandler("aScreenShot",root,
 	function (action,player,arg1)
 		local admin = client
 		if not isElement(admin) then return end
