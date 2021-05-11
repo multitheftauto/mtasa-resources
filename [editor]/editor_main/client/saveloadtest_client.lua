@@ -44,8 +44,8 @@ addEventHandler ( "saveloadtest_return", getRootElement(),
 	end
 )
 
-function saveResource ( resourceName )
-	triggerServerEvent ( "saveResource", getLocalPlayer(), resourceName )
+function saveResource ( resourceName, directory )
+	triggerServerEvent ( "saveResource", getLocalPlayer(), resourceName, nil, directory )
 end
 
 function newResource ()

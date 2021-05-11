@@ -276,7 +276,7 @@ addEventHandler ( "openResource", rootElement, openResource )
 
 ---Save
 
-function saveResource(resourceName, test)
+function saveResource(resourceName, test, directory)
 	if ( client and not isPlayerAllowedToDoEditorAction(client, "saveAs") ) then
 		editor_gui.outputMessage ("You don't have permissions to save the map!", client,255,0,0)
 		return false
@@ -291,10 +291,20 @@ function saveResource(resourceName, test)
 		"You cannot save while another save or load is in progress" )
 		return false
 	end
+	saveOrganizationalDirectory ( directory )
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
 	coroutine.resume(saveResourceCoroutine, resourceName, test, client, client)
 end
 addEventHandler ( "saveResource", rootElement, saveResource )
+
+function saveOrganizationalDirectory(directory)
+	if ( utf8.len ( directory ) == 0 ) then
+		directory = 'none'
+	else
+		directory = '[' .. directory .. ']'	
+	end
+	return set('*editor_main.mapResourceOrganizationalDirectory', directory)
+end
 
 local specialSyncers = {
 	position = function() end,
