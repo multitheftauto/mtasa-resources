@@ -31,16 +31,16 @@ addEventHandler("onPlayerQuit", root, processPlayerQuit)
  function deathmatchPlayerReady()
 	-- inform client of current game state by triggering certain events
 	if getElementData(resourceRoot, "gameState") == GAME_STARTING then
-		triggerClientEvent(source, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
+		triggerClientEvent(client, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
 	elseif getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
-		triggerClientEvent(source, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
-		triggerClientEvent(source, "onClientDeathmatchRoundStart", resourceRoot)
-		spawnDeathmatchPlayer(source)
+		triggerClientEvent(client, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
+		triggerClientEvent(client, "onClientDeathmatchRoundStart", resourceRoot)
+		spawnDeathmatchPlayer(client)
 	elseif getElementData(resourceRoot, "gameState") == GAME_FINISHED then
-		triggerClientEvent(source, "onClientDeathmatchRoundEnd", resourceRoot, false, false)
+		triggerClientEvent(client, "onClientDeathmatchRoundEnd", resourceRoot, false, false)
 	end
 	-- update player state
-	_playerStates[source] = PLAYER_READY
+	_playerStates[client] = PLAYER_READY
 end
 addEvent("onDeathmatchPlayerReady", true)
 addEventHandler("onDeathmatchPlayerReady", root, deathmatchPlayerReady)
