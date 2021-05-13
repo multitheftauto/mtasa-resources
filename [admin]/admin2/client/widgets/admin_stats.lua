@@ -100,7 +100,7 @@ function aClientStatsClick(button)
                 if (element["button"] == source) then
                     local value = tonumber(guiGetText(element["value"]))
                     if ((value) and (value >= 0) and (value <= 1000)) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), aStatsSelect, "setstat", id, value)
+                        triggerServerEvent("aPlayer", localPlayer, aStatsSelect, "setstat", id, value)
                     else
                         messageBox("Not numerical value (0-1000)", MB_ERROR, MB_OK)
                     end
@@ -134,7 +134,7 @@ function aClientStatsAccepted()
         if (element["value"] == source) then
             local value = tonumber(guiGetText(element["value"]))
             if ((value) and (value >= 0) and (value <= 1000)) then
-                triggerServerEvent("aPlayer", getLocalPlayer(), aStatsSelect, "setstat", id, value)
+                triggerServerEvent("aPlayer", localPlayer, aStatsSelect, "setstat", id, value)
             else
                 messageBox("Not numerical value (0-1000)", MB_ERROR, MB_OK)
             end

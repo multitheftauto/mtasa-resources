@@ -53,9 +53,9 @@ function aAclTab.Create(tab)
 
     aAclTab.Access = guiCreateGridList(0.01, 0.07, 0.98, 0.91, true, aAclTab.AccessTab)
 
-    triggerServerEvent(EVENT_ACL, getLocalPlayer(), ACL_GROUPS)
+    triggerServerEvent(EVENT_ACL, localPlayer, ACL_GROUPS)
 
-    addEventHandler(EVENT_ACL, getLocalPlayer(), aAclTab.onSync)
+    addEventHandler(EVENT_ACL, localPlayer, aAclTab.onSync)
     addEventHandler("onClientGUIClick", aAclTab.Tab, aAclTab.onClick)
     addEventHandler("onClientGUIChanged", aAclTab.AccessSearch, aAclTab.onChanged)
 end
@@ -167,7 +167,7 @@ function aAclTab.RefreshAccess()
                 end
             end
         else
-            triggerServerEvent(EVENT_ACL, getLocalPlayer(), ACL_ACL, ACL_GET, group)
+            triggerServerEvent(EVENT_ACL, localPlayer, ACL_ACL, ACL_GET, group)
         end
     end
 end

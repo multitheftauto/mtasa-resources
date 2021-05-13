@@ -13,7 +13,7 @@ function addEventHandler(event, element, handler, propagated)
         event,
         element,
         function(...)
-            if (sourceResource ~= getThisResource()) then
+            if (sourceResource ~= resource) then
                 local resource = getResourceName(sourceResource)
                 outputDebugString(
                     "Warning: Resource '" .. resource .. "' tried to access admin event '" .. event .. "'",

@@ -69,7 +69,7 @@ function aTeam.onDoubleClick(button)
         if (source == aTeam.List) then
             if (guiGridListGetSelectedItem(aTeam.List) ~= -1) then
                 local team = guiGridListGetItemText(aTeam.List, guiGridListGetSelectedItem(aTeam.List), 1)
-                triggerServerEvent("aPlayer", getLocalPlayer(), getSelectedPlayer(), "setteam", getTeamFromName(team))
+                triggerServerEvent("aPlayer", localPlayer, getSelectedPlayer(), "setteam", getTeamFromName(team))
                 aPlayerTeamClose(false)
             end
         end
@@ -88,7 +88,7 @@ function aTeam.onClick(button)
             else
                 local team = guiGridListGetItemData(aTeam.List, guiGridListGetSelectedItem(aTeam.List), 1)
                 if (messageBox('Are you sure to delete "' .. getTeamName(team) .. '"?', MB_QUESTION, MB_YESNO)) then
-                    triggerServerEvent("aTeam", getLocalPlayer(), "destroyteam", team)
+                    triggerServerEvent("aTeam", localPlayer, "destroyteam", team)
                 end
             end
             setTimer(aTeam.Refresh, 2000, 1)
@@ -101,7 +101,7 @@ function aTeam.onClick(button)
             else
                 triggerServerEvent(
                     "aTeam",
-                    getLocalPlayer(),
+                    localPlayer,
                     "createteam",
                     team,
                     guiGetText(aTeam.Red),
@@ -120,7 +120,7 @@ function aTeam.onClick(button)
                 messageBox("No team selected!", MB_WARNING)
             else
                 local team = guiGridListGetItemData(aTeam.List, guiGridListGetSelectedItem(aTeam.List), 1)
-                triggerServerEvent("aPlayer", getLocalPlayer(), getSelectedPlayer(), "setteam", team)
+                triggerServerEvent("aPlayer", localPlayer, getSelectedPlayer(), "setteam", team)
                 guiSetVisible(aTeam.Form, false)
             end
         elseif (source == aTeam.Hide) then

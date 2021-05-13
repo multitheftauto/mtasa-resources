@@ -20,7 +20,7 @@ addEventHandler(
     "onResourceStart",
     root,
     function(resource)
-        if (resource ~= getThisResource()) then
+        if (resource ~= resource) then
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
                     triggerClientEvent(player, "aClientResourceStart", root, getResourceName(resource))
@@ -43,7 +43,7 @@ addEventHandler(
     "onResourceStop",
     root,
     function(resource)
-        if (resource ~= getThisResource()) then
+        if (resource ~= resource) then
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
                     triggerClientEvent(player, "aClientResourceStop", root, getResourceName(resource))

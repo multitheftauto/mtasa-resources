@@ -40,7 +40,7 @@ function aMessages.Open()
 
     guiSetVisible(aMessages.Form, true)
     guiBringToFront(aMessages.Form)
-    triggerServerEvent("aMessage", getLocalPlayer(), "get")
+    triggerServerEvent("aMessage", localPlayer, "get")
 end
 
 function aMessages.Close(destroy)
@@ -96,7 +96,7 @@ function aMessages.onClick(button)
         if (source == aMessages.Exit) then
             aMessages.Close()
         elseif (source == aMessages.Refresh) then
-            triggerServerEvent("aMessage", getLocalPlayer(), "get")
+            triggerServerEvent("aMessage", localPlayer, "get")
         elseif (source == aMessages.Read) then
             local row = guiGridListGetSelectedItem(aMessages.List)
             if (row == -1) then
@@ -111,7 +111,7 @@ function aMessages.onClick(button)
                 messageBox("No message selected!", MB_WARNING, MB_OK)
             else
                 local id = guiGridListGetItemText(aMessages.List, row, 1)
-                triggerServerEvent("aMessage", getLocalPlayer(), "delete", tonumber(id))
+                triggerServerEvent("aMessage", localPlayer, "delete", tonumber(id))
             end
         end
     end

@@ -39,7 +39,7 @@ function aViewMessage(id)
         guiSetText(aViewMessageText, _messages[id].text)
         guiSetVisible(aViewMessageForm, true)
         guiBringToFront(aViewMessageForm)
-        triggerServerEvent("aMessage", getLocalPlayer(), "read", id)
+        triggerServerEvent("aMessage", localPlayer, "read", id)
     end
 end
 

@@ -119,7 +119,7 @@ addEvent("onPlayerFrozen", false)
 addEvent("onPlayerMoneyChange", false)
 addEventHandler(
     "onResourceStart",
-    getResourceRootElement(getThisResource()),
+    resourceRoot,
     function()
         setTimer(
             function()

@@ -22,13 +22,6 @@ enum(
     }
 )
 
-addEventHandler(
-    "onResourceStart",
-    getResourceRootElement(),
-    function()
-    end
-)
-
 addCommandHandler(
     "test",
     function()
