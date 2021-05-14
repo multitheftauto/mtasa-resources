@@ -18,17 +18,23 @@ aSkin = {
 function aSkin.Show(player)
     if (aSkin.Form == nil) then
         local x, y = guiGetScreenSize()
-        aSkin.Form = guiCreateWindow(x / 2 - 140, y / 2 - 125, 280, 250, "Player Skin Select", false)
+        aSkin.Form = guiCreateWindow(x / 2 - 140, y / 2 - 140, 280, 280, "Player Skin Select", false)
+        guiSetAlpha(aSkin.Form, 1)
+        guiSetProperty(aSkin.Form, 'AlwaysOnTop', 'True')        
         aSkin.Label =
             guiCreateLabel(0.03, 0.09, 0.94, 0.07, "Select a skin from the list or enter the id", true, aSkin.Form)
         guiLabelSetHorizontalAlign(aSkin.Label, "center")
         guiLabelSetColor(aSkin.Label, 255, 0, 0)
+        
+        aSkin.Edit = guiCreateEdit(0.03, 0.18, 0.70, 0.09, '', true, aSkin.Form)
+        guiCreateInnerImage("client\\images\\search.png", aSkin.Edit)
+
         aSkin.Groups = guiCreateCheckBox(0.03, 0.90, 0.70, 0.09, "Sort by groups", false, true, aSkin.Form)
         if (aGetSetting("skinsGroup")) then
             guiCheckBoxSetSelected(aSkin.Groups, true)
         end
 
-        aSkin.List = guiCreateGridList(0.03, 0.18, 0.70, 0.71, true, aSkin.Form)
+        aSkin.List = guiCreateGridList(0.03, 0.27, 0.70, 0.625, true, aSkin.Form)
         guiGridListAddColumn(aSkin.List, "ID", 0.20)
         guiGridListAddColumn(aSkin.List, "", 0.75)
 
@@ -39,10 +45,12 @@ function aSkin.Show(player)
         aSkin.Cancel = guiCreateButton(0.75, 0.88, 0.27, 0.09, "Cancel", true, aSkin.Form)
 
         aSkin.Load()
-        aSkin.Refresh(guiCheckBoxGetSelected(aSkin.Groups))
+        aSkin.Refresh()
 
         addEventHandler("onClientGUIClick", aSkin.Form, aSkin.onClick)
         addEventHandler("onClientGUIDoubleClick", aSkin.Form, aSkin.onDoubleClick)
+        addEventHandler("onClientGUIChanged", aSkin.Form, aSkin.onGUIChange)
+
         --Register With Admin Form
         aRegister("PlayerSkin", aSkin.Form, aSkin.Show, aSkin.Close)
     end
@@ -78,6 +86,12 @@ function aSkin.onDoubleClick(button)
     end
 end
 
+function aSkin.onGUIChange()
+    if (source == aSkin.Edit) then
+        aSkin.Refresh()
+    end
+end
+
 function aSkin.onClick(button)
     if (button == "left") then
         if (source == aSkin.Accept) then
@@ -101,7 +115,7 @@ function aSkin.onClick(button)
         elseif (source == aSkin.Cancel) then
             aSkin.Close(false)
         elseif (source == aSkin.Groups) then
-            aSkin.Refresh(guiCheckBoxGetSelected(aSkin.Groups))
+            aSkin.Refresh()
         end
     end
 end
@@ -130,14 +144,26 @@ function aSkin.Load()
     aSkin.skins = table
 end
 
-function aSkin.Refresh(groups)
-    aSetSetting("skinsGroup", groups)
+function aSkin.Refresh()
+    aSetSetting("skinsGroup", guiCheckBoxGetSelected(aSkin.Groups))
     guiGridListClear(aSkin.List)
-    if (groups) then
+    local filter = guiGetText(aSkin.Edit):lower()
+    if (guiCheckBoxGetSelected(aSkin.Groups)) then
+        local skins = {}
         for name, group in pairs(aSkin.skins) do
+            for _, skin in ipairs(group) do
+                if skin.model:find(filter) or skin.name:lower():find(filter) then
+                    if (not skins[name]) then
+                        skins[name] = {}
+                    end
+                    table.insert(skins[name], skin)
+                end
+            end
+        end
+        for name, group in pairs(skins) do
             local row = guiGridListAddRow(aSkin.List)
             guiGridListSetItemText(aSkin.List, row, 2, name, true, false)
-            for id, skin in ipairs(aSkin.skins[name]) do
+            for id, skin in ipairs(group) do
                 row = guiGridListAddRow(aSkin.List)
                 guiGridListSetItemText(aSkin.List, row, 1, skin.model, false, true)
                 guiGridListSetItemText(aSkin.List, row, 2, skin.name, false, false)
@@ -148,18 +174,15 @@ function aSkin.Refresh(groups)
         local skins = {}
         for name, group in pairs(aSkin.skins) do
             for id, skin in pairs(group) do
-                local id = tonumber(skin.model)
-                skins[id] = skin.name
+                skins[skin.model] = skin.name
             end
         end
-        local i = 0
-        while (i <= 288) do
-            if (skins[i] ~= nil) then
+        for model, skinName in pairs(skins) do
+            if model:find(filter) or skinName:lower():find(filter) then
                 local row = guiGridListAddRow(aSkin.List)
-                guiGridListSetItemText(aSkin.List, row, 1, tostring(i), false, true)
-                guiGridListSetItemText(aSkin.List, row, 2, skins[i], false, false)
+                guiGridListSetItemText(aSkin.List, row, 1, model, false, true)
+                guiGridListSetItemText(aSkin.List, row, 2, skinName, false, false)
             end
-            i = i + 1
         end
         guiGridListSetSortingEnabled(aSkin.List, true)
     end
