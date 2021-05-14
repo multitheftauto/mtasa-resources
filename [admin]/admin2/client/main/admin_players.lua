@@ -216,7 +216,7 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.SetSkin) then
                     aSkin.Show(player)
                 elseif (source == aPlayersTab.SetInterior) then
-                    aPlayerInterior(player)
+                    aInterior.Show(player)
                 elseif (source == aPlayersTab.JetPack) then
                     triggerServerEvent("aPlayer", getLocalPlayer(), player, "jetpack")
                 elseif (source == aPlayersTab.SetMoney) then
