@@ -23,7 +23,8 @@ function aPlayersTab.Create(tab)
     guiGridListAddColumn(aPlayersTab.PlayerList, "Player list", 0.85)
     aPlayersTab.Context = guiCreateContextMenu(aPlayersTab.PlayerList)
     aPlayersTab.ContextKick = guiContextMenuAddItem(aPlayersTab.Context, "Kick")
-    aPlayersTab.ColorCodes = guiCreateCheckBox(0.01, 0.95, 0.25, 0.04, "Hide color codes", true, true, tab)
+    aPlayersTab.ColorCodes = guiCreateCheckBox(0.01, 0.95, 0.25, 0.04, "Hide color codes", aGetSetting('hideColorCodes') or false, true, tab)
+    aPlayersTab.SensitiveData = guiCreateCheckBox(0.2, 0.95, 0.25, 0.04, "Hide Sensitive Data", aGetSetting('hideSensitiveData') or false, true, tab)
 
     -- Player info (middle pane)
     guiCreateHeader(0.27, 0.04, 0.20, 0.04, "Player:", true, tab)
@@ -271,6 +272,19 @@ function aPlayersTab.onClientClick(button)
             setElementData(localPlayer, "AnonAdmin", guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
         elseif (source == aPlayersTab.ColorCodes) then
             aPlayersTab.Refresh()
+            aSetSetting('hideColorCodes', guiCheckBoxGetSelected(source))
+        elseif (source == aPlayersTab.SensitiveData) then
+            local state = guiCheckBoxGetSelected(source)
+            aSetSetting('hideSensitiveData', state)
+            for k, v in ipairs(aAdminMain.Tabs) do
+                if aAdminMain.BlockedTabsBySensitiveData[v.Acl] then
+                    guiSetEnabled(v.Tab, not state)
+                end
+            end
+            if isElement(aServerTab.Password) then
+                guiSetText(aServerTab.Password, "Password: " .. getSensitiveText(aServerTab['currentPassword'] or "None"))
+            end
+
         elseif (source == aPlayersTab.PlayerList) then
             local player = getSelectedPlayer()
             if (player) then
@@ -442,10 +456,10 @@ function aPlayersTab.onRefresh()
     end
 
     sync(SYNC_PLAYER, player)
-    guiSetText(aPlayersTab.IP, "IP: " .. aPlayers[player].ip)
-    guiSetText(aPlayersTab.Serial, "Serial: " .. (aPlayers[player].serial or "Unknown"))
+    guiSetText(aPlayersTab.IP, "IP: " .. getSensitiveText(aPlayers[player].ip))
+    guiSetText(aPlayersTab.Serial, "Serial: " .. getSensitiveText((aPlayers[player].serial or "Unknown")))
     guiSetText(aPlayersTab.Country, "Country: " .. (aPlayers[player].countryname or "Unknown"))
-    guiSetText(aPlayersTab.Account, "Account: " .. (aPlayers[player]["account"] or "guest"))
+    guiSetText(aPlayersTab.Account, "Account: " .. getSensitiveText((aPlayers[player]["account"] or "guest")))
     guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
     if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "zz") then
         local x, y = guiGetPosition(aPlayersTab.Country, false)
@@ -500,10 +514,10 @@ function aPlayersTab.onRefresh()
     local x, y, z = getElementPosition(player)
     local area = getZoneName(x, y, z, false)
     local zone = getZoneName(x, y, z, true)
-    guiSetText(aPlayersTab.Area, "Area: " .. iif(area == zone, area, area .. " (" .. zone .. ")"))
-    guiSetText(aPlayersTab.PositionX, "X: " .. x)
-    guiSetText(aPlayersTab.PositionY, "Y: " .. y)
-    guiSetText(aPlayersTab.PositionZ, "Z: " .. z)
+    guiSetText(aPlayersTab.Area, "Area: " .. getSensitiveText(iif(area == zone, area, area .. " (" .. zone .. ")")))
+    guiSetText(aPlayersTab.PositionX, "X: " .. getSensitiveText(x))
+    guiSetText(aPlayersTab.PositionY, "Y: " .. getSensitiveText(y))
+    guiSetText(aPlayersTab.PositionZ, "Z: " .. getSensitiveText(z))
 
     local vehicle = getPedOccupiedVehicle(player)
     if (vehicle) then
@@ -552,4 +566,11 @@ function getSelectedPlayer()
         return guiGridListGetItemData(list, item, 1)
     end
     return nil
+end
+
+function getSensitiveText(text)
+    if guiCheckBoxGetSelected(aPlayersTab.SensitiveData) then
+        return ('*'):rep(utf8.len(text))
+    end
+    return text
 end
