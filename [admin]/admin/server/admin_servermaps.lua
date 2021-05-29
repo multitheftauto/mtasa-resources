@@ -10,7 +10,10 @@
 
 function getServerMaps (loadList)
 	if checkClient( true, source, 'getServerMaps' ) then return end
-	local tableOut
+	local tableOut = {}
+
+	-- It will check if the feature is enabled.
+	if not stateResourceName("mapmanager", "running") then return end
 
 	-- Check if 'mapmanager' resource exists
 	if ( not getResourceFromName("mapmanager") ) then
@@ -20,7 +23,6 @@ function getServerMaps (loadList)
 	end
 
 	if loadList then
-		tableOut = {}
 		-- local deletedMaps = {}
 		local gamemodes = {}
 		gamemodes = call(getResourceFromName("mapmanager"), "getGamemodes")
@@ -157,4 +159,16 @@ function sortCompareFunction(s1, s2)
     else
         return false
     end
+end
+
+function stateResourceName(resourceName, state)
+	if resourceName then
+		local resourceFromName = getResourceFromName(resourceName);
+
+		if getResourceState(resourceFromName) == tostring(state) then
+			return true;
+		else
+			return false;
+		end
+	end
 end
