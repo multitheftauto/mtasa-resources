@@ -16,7 +16,7 @@ function getServerMaps (loadList)
 	if not stateResourceName("mapmanager", "running") then return end
 
 	-- Check if 'mapmanager' resource exists
-	if ( not getResourceFromName("mapmanager") ) then
+	if ( not mapmanager ) then
 		-- 'mapmanager' resource doesn't exist, send fake data
 		triggerClientEvent(source ,"getMaps_c", source, { }, nil, nil )
 		return false;
