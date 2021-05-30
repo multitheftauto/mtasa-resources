@@ -160,15 +160,3 @@ function sortCompareFunction(s1, s2)
         return false
     end
 end
-
-function stateResourceName(resourceName, state)
-	if resourceName then
-		local resourceFromName = getResourceFromName(resourceName);
-
-		if getResourceState(resourceFromName) == tostring(state) then
-			return true;
-		else
-			return false;
-		end
-	end
-end
