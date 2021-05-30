@@ -12,8 +12,11 @@ function getServerMaps (loadList)
 	if checkClient( true, source, 'getServerMaps' ) then return end
 	local tableOut = {}
 
-	-- It will check if the feature is enabled.
-	if not stateResourceName("mapmanager", "running") then return end
+	local mapmanager = getResourceFromName("mapmanager")
+	
+	if mapmanager and (getResourceState(mapmanager) ~= "running") then
+	    mapmanager = nil
+	end
 
 	-- Check if 'mapmanager' resource exists
 	if ( not mapmanager ) then
