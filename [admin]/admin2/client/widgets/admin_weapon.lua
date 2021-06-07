@@ -17,17 +17,23 @@ aWeapon = {
 function aWeapon.Show(player)
     if (aWeapon.Form == nil) then
         local x, y = guiGetScreenSize()
-        aWeapon.Form = guiCreateWindow(x / 2 - 140, y / 2 - 125, 280, 250, "Player Weapon Select", false)
+        aWeapon.Form = guiCreateWindow(x / 2 - 140, y / 2 - 140, 280, 280, "Player Weapon Select", false)
+        guiSetAlpha(aWeapon.Form, 1)
+        guiSetProperty(aWeapon.Form, 'AlwaysOnTop', 'True')
         aWeapon.Label =
             guiCreateLabel(0.03, 0.09, 0.94, 0.07, "Select a weapon from the list or enter the id", true, aWeapon.Form)
         guiLabelSetHorizontalAlign(aWeapon.Label, "center")
         guiLabelSetColor(aWeapon.Label, 255, 0, 0)
+        
+        aWeapon.Edit = guiCreateEdit(0.03, 0.18, 0.70, 0.09, '', true, aWeapon.Form)
+        guiCreateInnerImage("client\\images\\search.png", aWeapon.Edit)
+
         aWeapon.Groups = guiCreateCheckBox(0.03, 0.90, 0.70, 0.09, "Sort by groups", false, true, aWeapon.Form)
         if (aGetSetting("weaponsGroup")) then
             guiCheckBoxSetSelected(aWeapon.Groups, true)
         end
 
-        aWeapon.List = guiCreateGridList(0.03, 0.18, 0.70, 0.71, true, aWeapon.Form)
+        aWeapon.List = guiCreateGridList(0.03, 0.27, 0.70, 0.625, true, aWeapon.Form)
         guiGridListAddColumn(aWeapon.List, "ID", 0.20)
         guiGridListAddColumn(aWeapon.List, "", 0.75)
 
@@ -43,10 +49,12 @@ function aWeapon.Show(player)
         aWeapon.Cancel = guiCreateButton(0.75, 0.88, 0.27, 0.09, "Cancel", true, aWeapon.Form)
 
         aWeapon.Load()
-        aWeapon.Refresh(guiCheckBoxGetSelected(aWeapon.Groups))
+        aWeapon.Refresh()
 
         addEventHandler("onClientGUIClick", aWeapon.Form, aWeapon.onClick)
         addEventHandler("onClientGUIDoubleClick", aWeapon.Form, aWeapon.onDoubleClick)
+        addEventHandler("onClientGUIChanged", aWeapon.Form, aWeapon.onGUIChange)
+
         --Register With Admin Form
         aRegister("PlayerWeapon", aWeapon.Form, aWeapon.Show, aWeapon.Close)
     end
@@ -83,6 +91,12 @@ function aWeapon.onDoubleClick(button)
     end
 end
 
+function aWeapon.onGUIChange()
+    if (source == aWeapon.Edit) then
+        aWeapon.Refresh()
+    end
+end
+
 function aWeapon.onClick(button)
     if (button == "left") then
         if (source == aWeapon.Accept) then
@@ -108,7 +122,7 @@ function aWeapon.onClick(button)
         elseif (source == aWeapon.Cancel) then
             aWeapon.Close(false)
         elseif (source == aWeapon.Groups) then
-            aWeapon.Refresh(guiCheckBoxGetSelected(aWeapon.Groups))
+            aWeapon.Refresh()
         end
     end
 end
@@ -137,14 +151,27 @@ function aWeapon.Load()
     aWeapon.weapons = table
 end
 
-function aWeapon.Refresh(groups)
+function aWeapon.Refresh()
+    local groups = guiCheckBoxGetSelected(aWeapon.Groups)
+    local filter = guiGetText(aWeapon.Edit):lower()
     aSetSetting("weaponsGroup", groups)
     guiGridListClear(aWeapon.List)
     if (groups) then
+        local weapons = {}
         for name, group in pairs(aWeapon.weapons) do
+            for _, vehicle in ipairs(group) do
+                if vehicle.id:find(filter) or vehicle.name:lower():find(filter) then
+                    if (not weapons[name]) then
+                        weapons[name] = {}
+                    end
+                    table.insert(weapons[name], vehicle)
+                end
+            end
+        end
+        for name, group in pairs(weapons) do
             local row = guiGridListAddRow(aWeapon.List)
             guiGridListSetItemText(aWeapon.List, row, 2, name, true, false)
-            for id, weapon in ipairs(aWeapon.weapons[name]) do
+            for id, weapon in ipairs(group) do
                 row = guiGridListAddRow(aWeapon.List)
                 guiGridListSetItemText(aWeapon.List, row, 1, weapon.id, false, true)
                 guiGridListSetItemText(aWeapon.List, row, 2, weapon.name, false, false)
@@ -155,18 +182,15 @@ function aWeapon.Refresh(groups)
         local weapons = {}
         for name, group in pairs(aWeapon.weapons) do
             for id, weapon in pairs(group) do
-                local id = tonumber(weapon.id)
-                weapons[id] = weapon.name
+                weapons[weapon.id] = weapon.name
             end
         end
-        local i = 0
-        while (i <= 288) do
-            if (weapons[i] ~= nil) then
+        for id, weaponName in pairs(weapons) do
+            if id:find(filter) or weaponName:lower():find(filter) then
                 local row = guiGridListAddRow(aWeapon.List)
-                guiGridListSetItemText(aWeapon.List, row, 1, tostring(i), false, true)
-                guiGridListSetItemText(aWeapon.List, row, 2, weapons[i], false, false)
+                guiGridListSetItemText(aWeapon.List, row, 1, id, false, true)
+                guiGridListSetItemText(aWeapon.List, row, 2, weaponName, false, false)
             end
-            i = i + 1
         end
         guiGridListSetSortingEnabled(aWeapon.List, true)
     end

@@ -10,26 +10,31 @@
 
 function getServerMaps (loadList)
 	if checkClient( true, source, 'getServerMaps' ) then return end
-	local tableOut
+	local tableOut = {}
+
+	local mapmanager = getResourceFromName("mapmanager")
+	
+	if mapmanager and (getResourceState(mapmanager) ~= "running") then
+	    mapmanager = nil
+	end
 
 	-- Check if 'mapmanager' resource exists
-	if ( not getResourceFromName("mapmanager") ) then
+	if ( not mapmanager ) then
 		-- 'mapmanager' resource doesn't exist, send fake data
 		triggerClientEvent(source ,"getMaps_c", source, { }, nil, nil )
 		return false;
 	end
 
 	if loadList then
-		tableOut = {}
 		-- local deletedMaps = {}
 		local gamemodes = {}
-		gamemodes = call(getResourceFromName("mapmanager"), "getGamemodes")
+		gamemodes = call(mapmanager, "getGamemodes")
 		for id,gamemode in ipairs (gamemodes) do
 			tableOut[id] = {}
 			tableOut[id].name = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
 			tableOut[id].resname = getResourceName(gamemode)
 			tableOut[id].maps = {}
-			local maps = call(getResourceFromName("mapmanager"), "getMapsCompatibleWithGamemode" , gamemode)
+			local maps = call(mapmanager, "getMapsCompatibleWithGamemode" , gamemode)
 			for _,map in ipairs (maps) do
 				table.insert(tableOut[id]["maps"] ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
 			end
@@ -38,7 +43,7 @@ function getServerMaps (loadList)
 		table.sort((tableOut), sortCompareFunction)
 		table.insert(tableOut, {name = "no gamemode", resname = "no gamemode", maps = {}})
 		local countGmodes = #tableOut
-		local maps = call(getResourceFromName("mapmanager"), "getMapsCompatibleWithGamemode")
+		local maps = call(mapmanager, "getMapsCompatibleWithGamemode")
 		for id,map in ipairs (maps) do
 			-- if fileOpen(":"..getResourceName(map).."/deleted") then
 				-- table.insert(deletedMaps ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
@@ -52,8 +57,8 @@ function getServerMaps (loadList)
 		-- local countGmodes = countGmodes + 1
 		-- tableOut[countGmodes]["maps"] = deletedMaps
 	end
-	local map = call(getResourceFromName("mapmanager"), "getRunningGamemodeMap")
-	local gamemode = call(getResourceFromName("mapmanager"), "getRunningGamemode")
+	local map = call(mapmanager, "getRunningGamemodeMap")
+	local gamemode = call(mapmanager, "getRunningGamemode")
 	gamemode = gamemode and getResourceName(gamemode) or "N/A"
 	map = map and getResourceName(map) or "N/A"
 	triggerClientEvent(source ,"getMaps_c", source, tableOut, gamemode, map)
@@ -64,7 +69,13 @@ addEventHandler("getMaps_s", getRootElement(), getServerMaps)
 function startGamemodeMap(gamemode, map)
 	if checkClient( true, source, 'startGamemodeMap' ) then return end
 
-	if ( not getResourceFromName("mapmanager") ) then
+	local mapmanager = getResourceFromName("mapmanager")
+	
+	if mapmanager and (getResourceState(mapmanager) ~= "running") then
+	    mapmanager = nil
+	end
+
+	if ( not mapmanager ) then
 		if ( source ) then
 			outputChatBox ( "Please start the mapmanager resource to use this action.", source, 255, 0, 0 );
 		end
@@ -73,15 +84,15 @@ function startGamemodeMap(gamemode, map)
 	end
 
 	if gamemode == "no gamemode" then
-		call(getResourceFromName("mapmanager"), "changeGamemodeMap", getResourceFromName(map))
+		call(mapmanager, "changeGamemodeMap", getResourceFromName(map))
 	else
 		if gamemode == map then
-			call(getResourceFromName("mapmanager"), "changeGamemode", getResourceFromName(gamemode))
+			call(mapmanager, "changeGamemode", getResourceFromName(gamemode))
 		else
-			if gamemode == getResourceName(call(getResourceFromName("mapmanager"), "getRunningGamemode")) then
-				call(getResourceFromName("mapmanager"), "changeGamemodeMap", getResourceFromName(map))
+			if gamemode == getResourceName(call(mapmanager, "getRunningGamemode")) then
+				call(mapmanager, "changeGamemodeMap", getResourceFromName(map))
 			else
-				call(getResourceFromName("mapmanager"), "changeGamemode", getResourceFromName(gamemode), getResourceFromName(map))
+				call(mapmanager, "changeGamemode", getResourceFromName(gamemode), getResourceFromName(map))
 			end
 		end
 	end

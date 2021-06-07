@@ -22,16 +22,16 @@ _getVehicleNameFromModel = getVehicleNameFromModel
 function getVehicleNameFromModel ( model )
     if not isValidVehicleModel ( model ) then
         outputDebugString ( "Invalid model "..tostring(model).." in 'getVehicleFromModel'!" )
-        
+
         return false
     end
-   
+
     local name = _getVehicleNameFromModel ( model )
-    
+
     if not name or name == "" then
         name = "ID: ".. model
     end
-    
+
     return name
 end
 
@@ -39,11 +39,11 @@ end
 _getVehicleModelFromName = getVehicleModelFromName
 function getVehicleModelFromName ( name )
     local subname = string.gsub ( name, "ID: ", "" )
-    
+
     if subname ~= name then
         return tonumber ( subname )
     end
-    
+
     return _getVehicleModelFromName ( name )
 end
 
@@ -75,7 +75,7 @@ function xmlLoadFile ( file )
     end
 
     if not fileExists ( file ) then
-        outputDebugString ( "XML '"..file.."' does not exist." ) 
+        outputDebugString ( "XML '"..file.."' does not exist." )
 
         return false
     end
@@ -85,7 +85,7 @@ function xmlLoadFile ( file )
     end
 
     local xml = _xmlLoadFile ( file )
-    
+
     if not xml then
         outputDebugString ( "Cannot open XML '"..tostring(file).."' for some reason." )
 
@@ -100,16 +100,16 @@ end
 _xmlCreateFile = xmlCreateFile
 function xmlCreateFile ( file, rootNode )
     local xml = _xmlCreateFile ( file, rootNode )
-    
+
     if not xml then
         return false
     end
 
 	xmlSaveFile(xml)
 	xmlUnloadFile(xml)
-	
+
 	xml = xmlLoadFile(file)
-	
+
     xmlFile[file] = xml
     return xml
 end
@@ -120,7 +120,7 @@ function xmlSaveFile ( file )
     if type ( file ) == "string" then
         file = xmlFile[file]
     end
-    
+
     if type ( file ) ~= "userdata" then
         return false
     end
@@ -134,7 +134,7 @@ end
 _xmlUnloadFile = xmlUnloadFile
 function xmlUnloadFile ( file )
     local strfile
-    
+
     if type ( file ) == "string" then
         strfile = file
         file = xmlFile[file]
@@ -145,17 +145,17 @@ function xmlUnloadFile ( file )
     end
 
     _xmlUnloadFile ( file )
-    
+
     if strfile then
         xmlFile[file] = nil
         return true
     end
-    
+
     for k,v in pairs ( xmlFile ) do
         if v == file then
             xmlFile[k] = nil
         end
     end
-    
+
     return false
 end

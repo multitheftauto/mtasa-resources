@@ -14,7 +14,11 @@ aAdminMain = {
     Tab = nil,
     Widgets = {},
     Refresh = 0,
-    Hidden = false
+    Hidden = false,
+    BlockedTabsBySensitiveData = {
+        ['bans'] = true,
+        ['adminchat'] = true,
+    }
 }
 
 addEvent(EVENT_SYNC, true)
@@ -57,6 +61,14 @@ function aAdminMain.Open()
         addEventHandler("onAdminInitialize", aAdminMain.Form, aAdminMain.Initialize)
 
         triggerEvent("onAdminInitialize", aAdminMain.Form)
+
+        local state = aGetSetting('hideSensitiveData') or false
+
+        for k, v in ipairs(aAdminMain.Tabs) do
+            if aAdminMain.BlockedTabsBySensitiveData[v.Acl] then
+                guiSetEnabled(v.Tab, not state)
+            end
+        end
     end
     guiSetAlpha(aAdminMain.Form, 0)
     guiBlendElement(aAdminMain.Form, 0.8)
@@ -108,7 +120,7 @@ end
 function aAdminMain.AddTab(name, class, acl)
     assert(class)
     local tab = guiCreateTab(name, aAdminMain.Panel, acl)
-    table.insert(aAdminMain.Tabs, {Tab = tab, Class = class, Loaded = false})
+    table.insert(aAdminMain.Tabs, {Tab = tab, Class = class, Loaded = false, Acl = acl})
 end
 
 function aAdminMain.GetTab(tab)

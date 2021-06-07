@@ -66,7 +66,7 @@ function aMessagesSync ( action, data )
 			if ( message.read ) then guiGridListSetItemText ( aMessagesList, row, 2, message.subject, false, false )
 			else guiGridListSetItemText ( aMessagesList, row, 2, "* "..message.subject, false, false ) end
 			guiGridListSetItemText ( aMessagesList, row, 3, message.time, false, false )
-			guiGridListSetItemText ( aMessagesList, row, 4, message.author, false, false )
+			guiGridListSetItemText ( aMessagesList, row, 4, removeColorCoding(message.author), false, false )
 		end
 	end
 end

@@ -1,5 +1,5 @@
 <meta>
-    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.4" description="The first and only ingame handling editor, available for San Andreas, made with MTA!" />
+    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.4" description="The first ingame handling editor for MTA!" />
     <oop>true</oop>
     <min_mta_version server="1.4.0" client="1.4.0" />
 
@@ -20,7 +20,7 @@
     <script src="client/core.lua"                   type="client" />
     <script src="client/variables/general.lua"      type="client" />
     <script src="client/variables/vehicle.lua"      type="client" />
-    
+
     <script src="client/gui/templates/default.lua"  type="client" />
 
     <script src="client/gui/languages/english.lua"  type="client" />
@@ -36,19 +36,19 @@
     <script src="client/gui/guifunctions.lua"       type="client" />
     <script src="client/gui/guiwrapper.lua"         type="client" />
     <script src="client/gui/warningwnd.lua"         type="client" />
-    
+
     <file src="images/warning.png"                  type="client" />
     <file src="images/question.png"                 type="client" />
     <file src="images/error.png"                    type="client" />
     <file src="images/info.png"                     type="client" />
-    
+
 
     <!-- SERVER -->
     <script src="server/logmanager.lua"             type="server" />
     <script src="server/cfgloader.lua"              type="server" />>
     <script src="server/core.lua"                   type="server" />
     <script src="server/utils.lua"                  type="server" />
-	
+
 	<!-- SETTINGS -->
 	<settings>
 		<setting name="*enable_suspensionLowerLimit"         value="true" />

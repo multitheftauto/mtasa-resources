@@ -41,7 +41,7 @@ function aMessageBox ( type, message, action, vOne, vTwo, vThree )
 		guiSetSize ( aMessageLabel, 350, 100, false )
 	else
 		guiSetSize ( aMessageForm, 300, 120, false )
-		guiSetSize ( aMessageLabel, 150, 16, false )
+		guiSetSize ( aMessageLabel, 150, 30, false )
 	end
 	local sx, sy = guiGetSize ( aMessageForm, false )
 	guiSetPosition ( aMessageOk, sx / 2 - 22, 90, false )

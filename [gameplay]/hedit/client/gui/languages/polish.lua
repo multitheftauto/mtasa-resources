@@ -3,7 +3,7 @@ guiLanguage.polish = {
     -- GENERAL STRINGS
     --
     windowHeader = "Handling Editor v"..HVER,
-    
+
     restrictedPassenger = "Nie mozesz uzywac edytora jako pasazer.",
     needVehicle = "Musisz byc w pojezdzie aby uzywac edytor!",
     needLogin = "Musisz byc zalogowany aby zobaczyc to menu.",
@@ -11,7 +11,7 @@ guiLanguage.polish = {
     accessDenied = "Nie masz wystarczajacych uprawnien, aby uzyskac dostep do tego menu.",
     invalidView = "To menu nie istnieje!",
     disabledView = "To menu zostalo wylaczone.",
- 
+
     sameValue = "The %s is already that!",
     exceedLimits = "Value used at %s exceeds the limit. [%s]!",
     cantSameValue = "%s may not the same as %s!",
@@ -21,13 +21,13 @@ guiLanguage.polish = {
     successHex = "%s %s.",
     unableToChange = "Unable to set the %s to %s!",
 	disabledProperty = "Editing %s is disabled on this server!",
-    
+
     resetted = "Pomyslnie zresetowano ustawienia kierowania pojazdu!",
     loaded = "Pomyslnie zaladowano ustawienia obslugi!",
     imported = "Pomyslnie improtowano ustawienia kierowania!",
     invalidImport = "Importowanie nie powiodlo sie. Dane obslugi sa nieprawidlowe!",
     invalidSave = "Prosze podac poprawna nazwe i opis, aby zapisac dane obslugi tego pojazdu!",
-    
+
     confirmReplace = "Czy na pewno chcesz zastapic istniejacy zapis?",
     confirmLoad = "Czy na pewno chcesz, aby zaladowac te ustawienia? Wszystkie niezapisane zmiany zostana utracone!",
     confirmDelete = "Czy na pewno chcesz usunac te ustawienia?",
@@ -38,22 +38,22 @@ guiLanguage.polish = {
     successLoad = "Pomyslnie wczytano twoje ustawienia!",
 
     wantTheSettings = "Czy na pewno chcesz zastosowac te ustawienia? Edytor uruchomi sie ponownie.",
-    
+
     vehicle = "Pojazd",
     unsaved = "Niezapisany",
-    
+
     clickToEdit = "Kliknij, aby edytowac lub przeciagnij do szybkiej edycji.",
     enterToSubmit = "Wcisnij enter, aby potwierdzic.",
     clickToViewFullLog = "Kliknij aby zobaczyc pelny dziennik pojazdu.",
     copiedToClipboard = "Ustawienia obslugi zostaly skopiowane do schowka!",
-    
+
     special = {
     },
-    
+
     --
     -- BUTTON / MENU STRINGS
     --
-    
+
     --Warning level strings
     warningtitles = {
         info = "Informacja",
@@ -81,7 +81,7 @@ guiLanguage.polish = {
         redo = ">",
         save = "Zapisane"
     },
-    
+
     -- Strings for the various views of the editor. Empty strings are placeholder to avoid debug as the debug is meant to show items which are missing text.
     viewinfo = {
         engine = {
@@ -186,7 +186,7 @@ guiLanguage.polish = {
             shortname = "Pobierz",
             longname = "Pobierz handlingi z serwera."
         },
-        
+
         resourcesave = {
             shortname = "Zapis zasobow",
             longname = "Zapisz swoje handlingi do zasobu."
@@ -222,9 +222,9 @@ guiLanguage.polish = {
             }
         },
     },
-    
 
-    handlingPropertyInformation = { 
+
+    handlingPropertyInformation = {
         ["identifier"] = {
             friendlyName = "Identyfikator pojazdu",
             information = "To reprezentuje identyfikator pojazdu, ktory ma byc uzywany w Handling.cfg.",

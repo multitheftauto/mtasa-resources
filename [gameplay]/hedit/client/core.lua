@@ -4,7 +4,7 @@
 local function resourceStart()
 	--Load the clientside configuration file, or create a new one if it does not exist.
 	local rootNode = xmlLoadFile(client_config_file) or xmlCreateFile(client_config_file, "config")
-	
+
 	--Ensure all important setting nodes exist.
 	for settingKey, defaultValue in pairs(setting) do
 		if not xmlFindChild(rootNode, settingKey, 0) then
@@ -12,7 +12,7 @@ local function resourceStart()
 			xmlNodeSetValue(newNode, tostring(defaultValue))
 		end
 	end
-	
+
 	--Remove deprecated/unused setting nodes.
 	for _, subNode in ipairs(xmlNodeGetChildren(rootNode)) do
 		local nodeName = xmlNodeGetName(subNode)
@@ -20,7 +20,7 @@ local function resourceStart()
 			xmlDestroyNode(subNode)
 		end
 	end
-	
+
 	xmlSaveFile(rootNode)
 	xmlUnloadFile(rootNode)
 
@@ -29,7 +29,7 @@ local function resourceStart()
 
 	--Query the server for admin rights.
 	triggerServerEvent("requestRights", root)
-	
+
 	--Build the GUI.
 	startBuilding()
 end

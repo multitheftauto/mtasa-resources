@@ -3,7 +3,7 @@ guiLanguage.arabic = {
     -- GENERAL STRINGS
     --
     windowHeader = "معدل الوزانيات v"..HVER,
-    
+
     restrictedPassenger = "غير مسموح لك باستعمال معدل الوزانية ك راكب.",
     needVehicle = "عليك ان تسوق مركبة ما لكي تستعمل معدل الوزانية",
     needLogin = "يجب عليك تسجيل الدخول لكي تتمكن من مشاهدة هذه القائمة",
@@ -11,7 +11,7 @@ guiLanguage.arabic = {
     accessDenied = "ليس لديك صلاحية اللازمة للوصول الى هذه القائمة",
     invalidView = "هده لائحة غير موجودة",
     disabledView = "هذه لائحة تم تعطيلها",
- 
+
     sameValue = "The %s is already that!",
     exceedLimits = "Value used at %s exceeds the limit. [%s]!",
     cantSameValue = "%s may not the same as %s!",
@@ -21,13 +21,13 @@ guiLanguage.arabic = {
     successHex = "%s %s.",
     unableToChange = "Unable to set the %s to %s!",
 	disabledProperty = "تم تعطيل تعديل ٪  على هذا سيرفر",
-    
+
     resetted = "تم اعادة ضبظ اعدادات وزانية السيارة بنجاح",
     loaded = "تم تحميل اعدادات وزانية خاصة بك بنجاح",
     imported = "تم استيراد اعدادات وزانية بنجاح",
     invalidImport = "فشل استيراد . بيانات وزانية الذي قدمتها غير صالحة",
     invalidSave = "يرجى تقديم اسم و وصف صحيحيين من اجل حفظ بيانات وزانية المركبة",
-    
+
     confirmReplace = "هل انت متاكد من انك تريد اعادة الكتابة فوق الحفظ الحالي ?",
     confirmLoad = "هل انت متاكد من انك تريد تحميل اعدادات هذه وزانية ? سيتم فقد اي تغييرات غير محفوظة ?",
     confirmDelete = "هل انت متاكد من انك تريد حذف حذف اعدادات هذه وزانية ?",
@@ -38,22 +38,22 @@ guiLanguage.arabic = {
     successLoad = "تم تحميل اعدادات وزانيتك بنجاح",
 
     wantTheSettings = "هل انت متاكد من انك تريد تطبيق هذه الاعدادات ? معدل وزانيات سيتم اعادة تشغيله",
-    
+
     vehicle = "مركبة",
     unsaved = "غير محفوظ",
-    
+
     clickToEdit = "انقر للتعديل او السحب إلى ضبظ-سريع.",
     enterToSubmit = "اضغط على Enter للتأكيد.",
     clickToViewFullLog = "انقر لعرض سجل المركبة بالكامل.",
     copiedToClipboard = "لقد تم نسخ اعدادات وزانيتك الى كيبورد",
-    
+
     special = {
     },
-    
+
     --
     -- BUTTON / MENU STRINGS
     --
-    
+
     --Warning level strings
     warningtitles = {
         info = "معلومة",
@@ -81,7 +81,7 @@ guiLanguage.arabic = {
         redo = ">",
         save = "حفظ"
     },
-    
+
     -- Strings for the various views of the editor. Empty strings are placeholder to avoid debug as the debug is meant to show items which are missing text.
     viewinfo = {
         engine = {
@@ -188,7 +188,7 @@ guiLanguage.arabic = {
             shortname = "حمل",
             longname = "حمل اعدادات وزانية من سيرفر"
         },
-        
+
         resourcesave = {
             shortname = "حفظ المورد",
             longname = "احفظ وزانيتك الى المورد"
@@ -225,9 +225,9 @@ guiLanguage.arabic = {
             }
         },
     },
-    
 
-    handlingPropertyInformation = { 
+
+    handlingPropertyInformation = {
         ["identifier"] = {
             friendlyName = "معرف المركبة",
             information = "هذا يمثل معرف السيارة الذي سيتم استخدامه في handling.cfg.",

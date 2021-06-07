@@ -3,7 +3,7 @@
     -- GENERAL STRINGS
     --
     windowHeader = "Editor de Handling v"..HVER,
-    
+
     restrictedPassenger = "No se le permite utilizar el editor de handling como pasajero.",
     needVehicle = "Debes estar conduciendo un vehículo para utilizar el editor de handling!",
     needLogin = "Debes iniciar sesion para poder visualizar este menú.",
@@ -15,7 +15,7 @@
     outdatedUpdate = "This server runs an outdated version of the handling editor. As a result, some features may be missing.\nPlease contact an administrator.",
     outdatedUpgrade = "This server runs an extremely outdated version of the handling editor. As a result, all settings/saved handling settings are incompatible.\nPlease contact an administrator.",
     mtaUpdate = "If you have any saved handlings on MTA 1.1, your handlings are no longer compatible; please visit 'http://hedit.googclecode.com/' for details.",
-    
+
     sameValue = "El valor %s es el mismo!",
     exceedLimits = "El valor usado en %s excede el limite. [%s]!",
     cantSameValue = "%s no puede ser el mismo que %s!",
@@ -25,13 +25,13 @@
     successHex = "%s %s.",
     unableToChange = "No se pudo cambiar %s a %s!",
 	disabledProperty = "Editing %s is disabled on this server!",
-    
+
     resetted = "Reiniciaste con exito los valores de handling originales!",
     loaded = "Cargaste con exito tu configuracion de handling!",
     imported = "Importaste con exito tu configuracion de handling!",
     invalidImport = "Error al importar; los datos de handling son invalidos!",
     invalidSave = "Por favor, proporciona un nombre valido y una descripción para guardar el handling de este vehículo!",
-    
+
     confirmReplace = "Estas seguro de que deseas sobrescribir este handling?",
     confirmLoad = "Estas seguro que quieres cargar este handling? Todas las modificaciones no guardadas se perderan!",
     confirmDelete = "Estas seguro que quieres borrar este handling?",
@@ -40,30 +40,30 @@
 
     successSave = "Se guardo el handling con exito!",
     successLoad = "Se cargo el handling con exito!",
-    
+
 	confirmVersionReset = "Estas seguro de que deseas establecer la version del editor a la de este servidor? Tus handlings guardados pueden llegar a ser incompatibles.",
 	successVersionReset = "La version de editor se ha actualizado.",
     wantTheSettings = "Estas seguro que deseas aplicar esta configuracion? El editor de handling se reiniciara.",
-    
+
     vehicle = "Vehiculo",
     unsaved = "No guardado",
-    
+
     clickToEdit = "Click para editar.",
     enterToSubmit = "Presiona enter para confirmar.",
     clickToViewFullLog = "Click para ver el registro del vehiculo completo.",
     copiedToClipboard = "Los valores de handling se han copiado en el portapapeles!",
-    
+
     special = {
         commode = {
             "Dividir",
             "Unir"
         }
     },
-    
+
     --
     -- BUTTON / MENU STRINGS
     --
-    
+
     --Warning level strings
     warningtitles = {
         info = "Informacion",
@@ -90,7 +90,7 @@
         dynamometer = "Dinamo",
         help = "Ayuda"
     },
-    
+
     --Strings for the various menus of the editor. Empty strings are placeholder to avoid debug as the debug is meant to show items which are missing text.
     menuinfo = {
         engine = {
@@ -197,7 +197,7 @@
             shortname = "Descargar",
             longname = "Descargar un handling del servidor."
         },
-        
+
         resourcesave = {
             shortname = "Guardar en un recurso",
             longname = "Guarda el handling en un recurso."
@@ -252,11 +252,11 @@
             }
         }
     },
-    
+
     --
     --NOTE: 12/17/2011 This section is pending review for typos and grammar.
     --
-    handlingPropertyInformation = { 
+    handlingPropertyInformation = {
         ["identifier"] = {
             friendlyName = "Identificacion de Vehiculo",
             information = "Esto representa la identificacion del vehiculo que se usara en el archivo handling.cfg.",

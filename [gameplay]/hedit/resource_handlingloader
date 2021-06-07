@@ -4,18 +4,18 @@
 
 addEventHandler ( "onResourceStart", resourceRoot, function ( )
     local handlingXML = xmlLoadFile ( "handling.xml" )
-    
+
     for _,node in ipairs ( xmlNodeGetChildren ( handlingXML ) ) do
         local model = tonumber ( xmlNodeGetName ( node ) )
         for property,value in pairs ( xmlNodeGetAttributes ( node ) ) do
             setHandling ( model, property, value )
         end
     end
-    
+
     return true
 end )
 
-local handlingProperties = { 
+local handlingProperties = {
     "identifier", "mass", "turnMass", "dragCoeff", "centerOfMassX", "centerOfMassY",
     "centerOfMassZ", "percentSubmerged", "tractionMultiplier", "tractionLoss", "tractionBias", "numberOfGears",
     "maxVelocity", "engineAcceleration", "engineInertia", "driveType", "engineType", "brakeDeceleration",
@@ -58,24 +58,24 @@ end
 
 local function isHandlingPropertySupported ( property )
     local unsupported = {
-        ["ABS"]=true, ["monetary"]=true, 
+        ["ABS"]=true, ["monetary"]=true,
         ["headLight"]=true, ["tailLight"]=true,
         ["animGroup"]=true
     }
-    
+
     if unsupported[property] then
         return false
     end
-    
+
     return true
 end
 
 local function isHandlingPropertyCorrectable ( property )
-    local props ={ 
+    local props ={
         ["driveType"]=true, ["engineType"]=true,
         ["headLight"]=true, ["tailLight"]=true
     }
-    
+
     return props[property] or false
 end
 
@@ -84,15 +84,15 @@ local function isHandlingPropertyCenterOfMass ( property )
         ["centerOfMassX"]=true, ["centerOfMassY"]=true,
         ["centerOfMassZ"]=true
     }
-    
+
     return props[property] or false
 end
 
 local function isHandlingPropertyHexadecimal ( property )
     if property == "modelFlags" or property == "handlingFlags" then
-        return true 
+        return true
     end
-    
+
     return false
 end
 

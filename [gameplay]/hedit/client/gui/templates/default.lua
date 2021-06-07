@@ -10,7 +10,7 @@ template.window = {
     centered = true,
     sizable = false,
     movable = true,
-    
+
     {
         type = "gridlist",
         pos = { 65, 54 },
@@ -71,7 +71,7 @@ template.views = {
     { contents = {} },
 }
 
-    
+
 template.viewcontents = {
     --// MULTI USAGE
     redirect_handlingconfig = {
@@ -423,7 +423,7 @@ template.viewcontents = {
             }
         }
     },
-    
+
     ------------------------------------------------------------------------------------------------
 
     --// MENU BUTTONS
@@ -559,7 +559,7 @@ template.viewcontents = {
     },
 
     ------------------------------------------------------------------------------------------------
-    
+
     --// UTILITY
     reset = {
         requirelogin = false,
@@ -568,7 +568,7 @@ template.viewcontents = {
             local vehicle = getPedOccupiedVehicle ( localPlayer )
             if vehicle then
                 local name = getVehicleNameFromModel ( getElementModel ( vehicle ) )
-                
+
                 for i=0,212 do
                     local item = guiComboBoxGetItemText ( content.combo, i )
                     if item == name then
@@ -576,7 +576,7 @@ template.viewcontents = {
                         return true
                     end
                 end
-            end 
+            end
         end,
         content = {
             label = {
@@ -592,12 +592,12 @@ template.viewcontents = {
                     local vehNames = {}
                     for v=400,611 do
                         local name = getVehicleNameFromModel ( v )
-                        
+
                         table.insert ( vehNames, name )
                     end
-                    
+
                     table.sort ( vehNames )
-                    
+
                     for i,v in ipairs ( vehNames ) do
                         guiComboBoxAddItem ( this, v )
                     end
@@ -614,11 +614,11 @@ template.viewcontents = {
                             local content = heditGUI.viewItems.reset.guiItems
                             local selected = guiComboBoxGetSelected ( content.combo )
                             local vehID = getVehicleModelFromName ( guiComboBoxGetItemText ( content.combo, selected ) )
-                            
+
                             local function func ( )
                                 resetVehicleHandling ( vehicle, vehID )
                             end
-                            
+
                             guiCreateWarningMessage ( getText ( "confirmReset" ), 2, {func} )
                         end
                     end
@@ -632,7 +632,7 @@ template.viewcontents = {
     save = {
         requirelogin = false,
         requireadmin = false,
-        onOpen = function ( content ) 
+        onOpen = function ( content )
             guiGridListClear ( content.grid )
 
             local saves = getClientSaves ( )
@@ -642,10 +642,10 @@ template.viewcontents = {
                 guiGridListSetItemText ( content.grid, row, 1, info.name, false, false )
                 guiGridListSetItemText ( content.grid, row, 2, model, false, false )
             end
-            
+
             guiSetText ( content.nameEdit, "title" )
             guiSetText ( content.descriptionEdit, "description" )
-            
+
             guiBringToFront ( content.nameLabel )
             guiBringToFront ( content.descriptionLabel )
         end,
@@ -755,7 +755,7 @@ template.viewcontents = {
                 events = {
                     onClick = function ( this )
                         local content = heditGUI.viewItems.save.guiItems
-                        
+
                         guiSetVisible ( this, false )
                         guiBringToFront ( content.nameEdit )
                         guiEditSetCaretIndex ( content.nameEdit, string.len ( guiGetText ( content.nameEdit ) ) )
@@ -773,7 +773,7 @@ template.viewcontents = {
                 events = {
                     onClick = function ( this )
                         local content = heditGUI.viewItems.save.guiItems
-                        
+
                         guiSetVisible ( this, false )
                         guiBringToFront ( content.descriptionEdit )
                         guiEditSetCaretIndex ( content.descriptionEdit, string.len ( guiGetText ( content.descriptionEdit ) ) )
@@ -940,7 +940,7 @@ template.viewcontents = {
                                     method = k
                                 end
                             end
-                            
+
                             importHandling ( vehicle, guiGetText ( items.memo ), method )
                         end
                     end
@@ -1110,7 +1110,7 @@ template.viewcontents = {
 
                                 unbindKey ( getUserConfig ( "usedKey" ), "down", toggleEditor )
                                 removeCommandHandler ( getUserConfig ( "usedCommand", toggleEditor ) )
-                            
+
                                 setUserConfig ( "usedKey", guiComboBoxGetItemText ( item.combo_key, guiComboBoxGetSelected ( item.combo_key ) ) )
                                 setUserConfig ( "usedCommand", guiGetText ( item.edit_cmd ) )
                                 -- setUserConfig ( "template", guiComboBoxGetItemText ( item.combo_template, guiComboBoxGetSelected ( item.combo_template ) ) )
@@ -1122,18 +1122,18 @@ template.viewcontents = {
                                     setUserConfig ( "version", tostring ( HREV ) )
                                     setUserConfig ( "minVersion", tostring ( HMREV ) )
                                 end
-                            
+
                                 startBuilding ( )
-                            
+
                                 toggleEditor ( )
 
                             end
-								
+
                             -- if guiCheckBoxGetSelected ( item.checkbox_versionreset ) then
                             --     guiCreateWarningMessage ( getText ( "confirmVersionReset" ), 2, {apply, true}, {apply,false} )
                             --     return true
                             -- end
-                            
+
                             apply ( false )
 
                             return true

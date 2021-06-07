@@ -19,6 +19,8 @@ aBans = {}
 aLastSync = 0
 aResources = {}
 
+local serverPassword = 'None'
+
 function guiComboBoxAdjustHeight ( combobox, itemcount )
     if getElementType ( combobox ) ~= "gui-combobox" or type ( itemcount ) ~= "number" then error ( "Invalid arguments @ 'guiComboBoxAdjustHeight'", 2 ) end
     local width = guiGetSize ( combobox, false )
@@ -35,11 +37,13 @@ function aAdminMenu ()
 		aTabPanel			= guiCreateTabPanel ( 0.01, 0.05, 0.98, 0.95, true, aAdminForm )
 		aTab1 = {}
 		aTab1.Tab			= guiCreateTab ( "Players", aTabPanel, "players" )
-		aTab1.Messages		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "0/0 unread messages", true, aTab1.Tab )
-		aTab1.ScreenShots		= guiCreateButton ( 0.75, 0.065, 0.23, 0.04, "screenshots", true, aTab1.Tab )
+		aTab1.Messages		= guiCreateButton ( 0.71, 0.02, 0.27, 0.04, "0/0 unread messages", true, aTab1.Tab )
+		aTab1.ScreenShots		= guiCreateButton ( 0.71, 0.065, 0.27, 0.04, "screenshots", true, aTab1.Tab )
 		aTab1.PlayerListSearch 	= guiCreateEdit ( 0.03, 0.05, 0.16, 0.04, "", true, aTab1.Tab )
 						  guiCreateStaticImage ( 0.19, 0.05, 0.035, 0.04, "client\\images\\search.png", true, aTab1.Tab )
-		aTab1.HideColorCodes= guiCreateCheckBox ( 0.037, 0.94, 0.20, 0.04, "Hide color codes", true, true, aTab1.Tab )
+		aTab1.HideColorCodes= guiCreateCheckBox ( 0.037, 0.94, 0.20, 0.04, "Hide color codes", false, true, aTab1.Tab )
+		aTab1.HideSensitiveData= guiCreateCheckBox ( 0.25, 0.94, 0.23, 0.04, "Hide sensitive data", false, true, aTab1.Tab )
+
 		aTab1.PlayerList		= guiCreateGridList ( 0.03, 0.10, 0.20, 0.83, true, aTab1.Tab )
 						  guiGridListAddColumn( aTab1.PlayerList, "Player Name", 0.85 )
 						  guiGridListSetSortingEnabled ( aTab1.PlayerList, false )
@@ -78,7 +82,7 @@ function aAdminMenu ()
 		local B = 0.035		-- Small line gap
 
 						     guiCreateHeader ( 0.25, y, 0.20, 0.04, "Player:", true, aTab1.Tab )
-y=y+A   aTab1.Name			= guiCreateLabel ( 0.26, y, 0.30, 0.035, "Name: N/A", true, aTab1.Tab )
+y=y+A   aTab1.Name			= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Name: N/A", true, aTab1.Tab )
 y=y+A   aTab1.IP			= guiCreateLabel ( 0.26, y, 0.30, 0.035, "IP: N/A", true, aTab1.Tab )
 		aTab1.CountryCode	= guiCreateLabel ( 0.45, y, 0.04, 0.035, "", true, aTab1.Tab )
 		aTab1.Flag	  = guiCreateStaticImage ( 0.40, y, 0.025806, 0.021154, "client\\images\\empty.png", true, aTab1.Tab )
@@ -103,9 +107,7 @@ y=y+B   aTab1.Weapon		= guiCreateLabel ( 0.26, y, 0.35, 0.04, "Weapon: N/A", tru
 y=y+B   aTab1.Ping			= guiCreateLabel ( 0.26, y, 0.20, 0.04, "Ping: 0", true, aTab1.Tab )
 		aTab1.Money			= guiCreateLabel ( 0.45, y, 0.20, 0.04, "Money: 0", true, aTab1.Tab )
 y=y+B   aTab1.Area			= guiCreateLabel ( 0.26, y, 0.44, 0.04, "Area: Unknown", true, aTab1.Tab )
-y=y+B   aTab1.PositionX		= guiCreateLabel ( 0.26, y, 0.30, 0.04, "X: 0", true, aTab1.Tab )
-y=y+B   aTab1.PositionY		= guiCreateLabel ( 0.26, y, 0.30, 0.04, "Y: 0", true, aTab1.Tab )
-y=y+B   aTab1.PositionZ		= guiCreateLabel ( 0.26, y, 0.30, 0.04, "Z: 0", true, aTab1.Tab )
+y=y+B   aTab1.Position		= guiCreateLabel ( 0.26, y, 0.44, 0.04, "Position: 0, 0, 0", true, aTab1.Tab )
 y=y+B   aTab1.Dimension		= guiCreateLabel ( 0.26, y, 0.20, 0.04, "Dimension: 0", true, aTab1.Tab )
 		aTab1.Interior		= guiCreateLabel ( 0.45, y, 0.20, 0.04, "Interior: 0", true, aTab1.Tab )
 
@@ -154,8 +156,8 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab1.VehicleDestroy	= guiCreateButton ( 0.71, 0.89, 0.13, 0.04, "Destroy", true, aTab1.Tab, "destroyvehicle" )
 		aTab1.VehicleBlow		= guiCreateButton ( 0.85, 0.84, 0.13, 0.04, "Blow", true, aTab1.Tab, "blowvehicle" )
 		aTab1.VehicleCustomize 	= guiCreateButton ( 0.85, 0.89, 0.13, 0.04, "Customize", true, aTab1.Tab, "customize" )
-		aTab1.AnonAdmin		  = guiCreateCheckBox (0.745, 0.942, 0.20, 0.04, "Anonymous Admin", isAnonAdmin(), true, aTab1.Tab )
-		
+
+    aTab1.AnonAdmin		  = guiCreateCheckBox (0.745, 0.942, 0.20, 0.04, "Anonymous Admin", isAnonAdmin(), true, aTab1.Tab )
 		aTab1.GiveVehicle = guiCreateList( 0.71, 0.710, 0.27, 0.04, 0.275, "Give: "..getVehicleNameFromModel ( aCurrentVehicle ), true, aTab1.Tab, 'givevehicle')
 		
 		local vehicles = {}
@@ -204,7 +206,6 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 							guiCreateHeader(0.40, 0.3, 0.3, 0.04, "Resource Informations:", true, aTab2.Tab)
 		aTab2.ResourceName			= guiCreateLabel ( 0.41, 0.35, 0.6, 0.03, "Full Name: ", true, aTab2.Tab )
 		aTab2.ResourceAuthor		= guiCreateLabel ( 0.41, 0.4, 0.6, 0.03, "Author: ", true, aTab2.Tab )
-		aTab2.ResourceVersion		= guiCreateLabel ( 0.41, 0.45, 0.6, 0.03, "Version: ", true, aTab2.Tab )
 		aTab2.ResourceVersion		= guiCreateLabel ( 0.41, 0.45, 0.6, 0.03, "Version: ", true, aTab2.Tab )
 						  guiCreateLabel ( 0.40, 0.77, 0.20, 0.03, "Actions log:", true, aTab2.Tab )
 		aTab2.LogLine1		= guiCreateLabel ( 0.41, 0.81, 0.50, 0.03, "", true, aTab2.Tab )
@@ -411,6 +412,10 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 			guiSetText ( aAdminForm, "Warning - Admin Panel not compatible with server version" )
 			guiLabelSetHorizontalAlign ( guiCreateLabel ( 0.30, 0.11, 0.4, 0.04, "Upgrade server or downgrade Admin Panel", true, aAdminForm ), "center" )
 		end
+
+		setAnonAdmin(aGetSetting('currentAnonState'))
+		setHideSensitiveData(aGetSetting('currentHideSensitiveDataState'))
+		setHideColorCodes(aGetSetting('currentHideColorCodesState'))
 	end
 	guiSetVisible ( aAdminForm, true )
 	showCursor ( true )
@@ -481,12 +486,22 @@ function aAdminRefresh ()
 	if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) ~= -1 ) then
 		local player = getPlayerFromName ( guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 ) )
 		if ( player and aPlayers[player] ) then
-			guiSetText ( aTab1.Name, "Name: "..aPlayers[player]["name"] )
+			local playerName = aPlayers[player]["name"]
+			
+			if isColorCodeHidden() then
+				playerName = removeColorCoding(playerName)
+			else
+				if playerName:find('#%x%x%x%x%x%x') then
+					playerName = playerName .. (' (%s)'):format(removeColorCoding(playerName))
+				end
+			end
+
+			guiSetText ( aTab1.Name, "Name: ".. playerName)
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unmute", "Mute" ) )
 			guiSetText ( aTab1.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
 			--guiSetText ( aTab1.Username, "Community Username: "..( aPlayers[player]["username"] or "" ) )
 			guiSetText ( aTab1.Version, "Version: "..( aPlayers[player]["version"] or "" ) )
-			guiSetText ( aTab1.Accountname, "Account Name: "..( aPlayers[player]["accountname"] or "" ) )
+			guiSetText ( aTab1.Accountname, "Account Name: "..getSensitiveText( aPlayers[player]["accountname"] or "" ) )
 			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
 			guiSetText ( aTab1.ACDetected, "AC Detected: "..( aPlayers[player]["acdetected"] or "" ) )
 			guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..( aPlayers[player]["d3d9dll"] or "" ) )
@@ -503,11 +518,19 @@ function aAdminRefresh ()
 			if ( getElementInterior ( player ) ) then guiSetText ( aTab1.Interior, "Interior: "..getElementInterior ( player ) ) end
 			guiSetText ( aTab1.JetPack, iif ( doesPedHaveJetPack ( player ), "Remove JetPack", "Give JetPack" ) )
 			if ( getPedWeapon ( player ) ) then guiSetText ( aTab1.Weapon, "Weapon: "..getWeaponNameFromID ( getPedWeapon ( player ) ).." (ID: "..getPedWeapon ( player )..")" ) end
+			
 			local x, y, z = getElementPosition ( player )
-			guiSetText ( aTab1.Area, "Area: "..iif ( getZoneName ( x, y, z, false ) == getZoneName ( x, y, z, true ), getZoneName ( x, y, z, false ), getZoneName ( x, y, z, false ).." ("..getZoneName ( x, y, z, true )..")" ) )
-			guiSetText ( aTab1.PositionX, "X: "..x )
-			guiSetText ( aTab1.PositionY, "Y: "..y )
-			guiSetText ( aTab1.PositionZ, "Z: "..z )
+			local zoneName = getZoneName ( x, y, z, false )
+			local cityName = getZoneName ( x, y, z, true )
+			
+			guiSetText ( aTab1.Area, "Area: "..getSensitiveText( iif ( zoneName == cityName, zoneName, zoneName.." ("..cityName..")" ) ) )
+
+			x = getSensitiveText('%.3f'):format(x)
+			y = getSensitiveText('%.3f'):format(y)
+			z = getSensitiveText('%.3f'):format(z)
+
+			guiSetText(aTab1.Position, ( "Position: %s, %s, %s" ):format(x, y, z))
+
 			local vehicle = getPedOccupiedVehicle ( player )
 			if ( vehicle ) then
 				guiSetText ( aTab1.Vehicle, "Vehicle: "..getVehicleName ( vehicle ).." (ID: "..getElementModel ( vehicle )..")" )
@@ -571,9 +594,10 @@ function aClientSync ( type, table, data )
 			end
 		end
 	elseif ( type == "server" ) then
+		serverPassword = table["password"] or "None"
 		guiSetText ( aTab3.Server, "Server: "..table["name"] )
 		guiSetText ( aTab3.Players, "Players: "..#getElementsByType ( "player" ).."/"..table["players"] )
-		guiSetText ( aTab3.Password, "Password: "..( table["password"] or "None" ) )
+		guiSetText ( aTab3.Password, "Password: "..getSensitiveText( serverPassword ) )
 		guiSetText ( aTab3.GameType, "Game Type: "..( table["game"] or "None" ) )
 		guiSetText ( aTab3.MapName, "Map Name: "..( table["map"] or "None" ) )
 		guiSetText ( aTab3.FPSCurrent, "FPS Limit: "..( table["fps"] or "N/A" ) )
@@ -876,7 +900,7 @@ function aClientAdminChat ( message )
 	local chat = guiGetText ( aTab5.AdminChat )
 	guiSetText ( aTab5.AdminChat, (chat ~= "\n" and chat or "")..getPlayerName ( source )..": "..message )
 	guiSetProperty ( aTab5.AdminChat, "CaratIndex", tostring ( string.len ( chat ) ) )
-	if ( guiCheckBoxGetSelected ( aTab6.AdminChatOutput ) ) then outputChatBox ( "ADMIN CHAT> "..getPlayerName ( source )..": "..message, 255, 0, 0 ) end
+	if ( not isSensitiveDataHidden() and ( guiCheckBoxGetSelected ( aTab6.AdminChatOutput ) ) ) then outputChatBox ( "ADMIN CHAT> "..getPlayerName ( source )..": "..message, 255, 0, 0 ) end
 	if ( ( guiCheckBoxGetSelected ( aTab5.AdminChatSound ) ) and ( source ~= localPlayer ) ) then playSoundFrontEnd ( 13 ) end
 end
 
@@ -982,19 +1006,21 @@ function aClientClick ( button )
 			elseif ( source == aTab1.PlayerListSearch ) then
 
 			elseif ( source == aTab1.HideColorCodes ) then
-				updateColorCodes()
+				setHideColorCodes ( guiCheckBoxGetSelected ( aTab1.HideColorCodes ) )
 			elseif ( source == aTab1.AnonAdmin ) then
 				setAnonAdmin( guiCheckBoxGetSelected ( aTab1.AnonAdmin ) )
+			elseif ( source == aTab1.HideSensitiveData ) then
+				setHideSensitiveData( guiCheckBoxGetSelected ( aTab1.HideSensitiveData ) )
 			elseif ( getElementType ( source ) == "gui-button" )  then
 				if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) == -1 ) then
 					aMessageBox ( "error", "No player selected!" )
 				else
 					local name = guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 )
 					local player = getPlayerFromName ( name )
-					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..name, "Enter the kick reason", "", "kickPlayer", player )
+					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..removeColorCoding(name), "Enter the kick reason", "", "kickPlayer", player )
 					elseif ( source == aTab1.Ban ) then aBanInputBox ( player )
 					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", localPlayer, player, "slap", aCurrentSlap )
-					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..name.."?", "unmute", player ) end
+					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..removeColorCoding(name).."?", "unmute", player ) end
 					elseif ( source == aTab1.Freeze ) then triggerServerEvent ( "aPlayer", localPlayer, player, "freeze" )
 					elseif ( source == aTab1.Spectate ) then aSpectate ( player )
 					elseif ( source == aTab1.Nick ) then aInputBox ( "Set Nick", "Enter the new nick of the player", name, "setNick", player )
@@ -1007,7 +1033,7 @@ function aClientClick ( button )
 					elseif ( source == aTab1.JetPack ) then triggerServerEvent ( "aPlayer", localPlayer, player, "jetpack" )
 					elseif ( source == aTab1.SetMoney ) then aInputBox ( "Set Money", "Enter the money value", "0", "setMoney", player )
 					elseif ( source == aTab1.SetStats ) then aPlayerStats ( player )
-					elseif ( source == aTab1.SetDimension ) then aInputBox ( "Dimension ID Required", "Enter Dimension ID between 0  and 65535", "0", "setDimension", player)
+					elseif ( source == aTab1.SetDimension ) then aInputBox ( "Dimension ID Required", "Enter Dimension ID between 0 and 65535", "0", "setDimension", player)
 					elseif ( source == aTab1.GiveVehicle ) then triggerServerEvent ( "aPlayer", localPlayer, player, "givevehicle", aCurrentVehicle )
 					elseif ( source == aTab1.GiveWeapon ) then triggerServerEvent ( "aPlayer", localPlayer, player, "giveweapon", aCurrentWeapon, aCurrentAmmo )
 					elseif ( source == aTab1.Warp ) then triggerServerEvent ( "aPlayer", localPlayer, player, "warp" )
@@ -1024,71 +1050,7 @@ function aClientClick ( button )
 					end
 				end
 			elseif ( source == aTab1.PlayerList ) then
-				if ( guiGridListGetSelectedItem( aTab1.PlayerList ) ~= -1 ) then
-					local player = aAdminRefresh ()
-					if ( player ) then
-						triggerServerEvent ( "aSync", localPlayer, "player", player )
-						if ( ( guiCheckBoxGetSelected ( aTab6.OutputPlayer ) ) and ( player ) ) then
-							outputConsole ( "Name: "..aPlayers[player]["name"]
-										..", IP: "..aPlayers[player]["IP"]
-										..", Serial: "..aPlayers[player]["serial"]
-									--	..", Community Username: "..aPlayers[player]["username"]
-										..", Account Name: "..aPlayers[player]["accountname"]
-										..", D3D9.DLL: "..aPlayers[player]["d3d9dll"] )
-						end
-						guiSetText ( aTab1.IP, "IP: "..aPlayers[player]["IP"] )
-						guiSetText ( aTab1.Serial, "Serial: "..aPlayers[player]["serial"] )
-						--guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
-						guiSetText ( aTab1.Accountname, "Account Name: "..aPlayers[player]["accountname"] )
-						guiSetText ( aTab1.ACDetected, "AC Detected: "..aPlayers[player]["acdetected"] )
-						guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..aPlayers[player]["d3d9dll"] )
-						guiSetText ( aTab1.ACModInfo, "Img Mods: "..aPlayers[player]["imgmodsnum"] )
-						local countryCode = aPlayers[player]["country"]
-						loadFlagImage ( aTab1.Flag, countryCode )
-						if not countryCode then
-							guiSetText ( aTab1.CountryCode, "" )
-						else
-							local x, y = guiGetPosition ( aTab1.IP, false )
-							local width = guiLabelGetTextExtent ( aTab1.IP )
-							guiSetPosition ( aTab1.Flag, x + width + 7, y + 4, false )
-							guiSetPosition ( aTab1.CountryCode, x + width + 30, y, false )
-							guiSetText ( aTab1.CountryCode, tostring( countryCode ) )
-						end
-						guiSetText ( aTab1.Version, "Version: " .. ( aPlayers[player]["version"] or "" ) )
-					end
-				else
-					guiSetText ( aTab1.Name, "Name: N/A" )
-					guiSetText ( aTab1.IP, "IP: N/A" )
-					guiSetText ( aTab1.Serial, "Serial: N/A" )
-					--guiSetText ( aTab1.Username, "Community Username: N/A" )
-					guiSetText ( aTab1.Version, "Version: N/A" )
-					guiSetText ( aTab1.Accountname, "Account Name: N/A" )
-					guiSetText ( aTab1.Groups, "Groups: N/A" )
-					guiSetText ( aTab1.ACDetected, "AC Detected: N/A" )
-					guiSetText ( aTab1.ACD3D, "D3D9.DLL: N/A" )
-					guiSetText ( aTab1.ACModInfo, "Img Mods: N/A" )
-					guiSetText ( aTab1.Mute, "Mute" )
-					guiSetText ( aTab1.Freeze, "Freeze" )
-					guiSetText ( aTab1.Admin, "Give admin rights" )
-					guiSetText ( aTab1.Health, "Health: 0%" )
-					guiSetText ( aTab1.Armour, "Armour: 0%" )
-					guiSetText ( aTab1.Skin, "Skin: N/A" )
-					guiSetText ( aTab1.Team, "Team: None" )
-					guiSetText ( aTab1.Ping, "Ping: 0" )
-					guiSetText ( aTab1.Money, "Money: 0" )
-					guiSetText ( aTab1.Dimension, "Dimension: 0" )
-					guiSetText ( aTab1.Interior, "Interior: 0" )
-					guiSetText ( aTab1.JetPack, "Give JetPack" )
-					guiSetText ( aTab1.Weapon, "Weapon: N/A" )
-					guiSetText ( aTab1.Area, "Area: Unknown" )
-					guiSetText ( aTab1.PositionX, "X: 0" )
-					guiSetText ( aTab1.PositionY, "Y: 0" )
-					guiSetText ( aTab1.PositionZ, "Z: 0" )
-					guiSetText ( aTab1.Vehicle, "Vehicle: N/A" )
-					guiSetText ( aTab1.VehicleHealth, "Vehicle Health: 0%" )
-					guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
-					guiSetText ( aTab1.CountryCode, "" )
-				end
+				aAdminReloadInfos()
 			end
 		-- TAB 2, RESOURCES
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
@@ -1271,6 +1233,84 @@ function aClientRender ()
 	end
 end
 
+function aAdminReloadInfos()
+	if ( guiGridListGetSelectedItem( aTab1.PlayerList ) ~= -1 ) then
+		local player = aAdminRefresh ()
+		if ( player ) then
+			triggerServerEvent ( "aSync", localPlayer, "player", player )
+			if (not isSensitiveDataHidden()) and guiCheckBoxGetSelected(aTab6.OutputPlayer) then
+				local playerName = aPlayers[player]["name"]
+			
+				if isColorCodeHidden() then
+					playerName = removeColorCoding(playerName)
+				else
+					if playerName:find('#%x%x%x%x%x%x') then
+						playerName = playerName .. (' (%s)'):format(removeColorCoding(playerName))
+					end
+				end		
+
+				outputConsole(' ')
+				outputConsole(('Name: %s'):format(playerName))
+				outputConsole(('IP: %s'):format(aPlayers[player]["IP"]))
+				outputConsole(('Serial: %s'):format(aPlayers[player]["serial"]))
+				-- outputConsole(('Community Username: %s'):format(aPlayers[player]["username"]))
+				outputConsole(('Account Name: %s'):format(aPlayers[player]["accountname"]))
+				outputConsole(('D3D9.DLL: %s'):format(aPlayers[player]["d3d9dll"]))
+				outputConsole(' ')
+			end
+			guiSetText ( aTab1.IP, "IP: "..getSensitiveText( aPlayers[player]["IP"] ) )
+			guiSetText ( aTab1.Serial, "Serial: "..getSensitiveText( aPlayers[player]["serial"] ) )
+			--guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
+			guiSetText ( aTab1.Accountname, "Account Name: "..getSensitiveText( aPlayers[player]["accountname"] ) )
+			guiSetText ( aTab1.ACDetected, "AC Detected: "..aPlayers[player]["acdetected"] )
+			guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..aPlayers[player]["d3d9dll"] )
+			guiSetText ( aTab1.ACModInfo, "Img Mods: "..aPlayers[player]["imgmodsnum"] )
+			local countryCode = aPlayers[player]["country"]
+			loadFlagImage ( aTab1.Flag, countryCode )
+			if not countryCode then
+				guiSetText ( aTab1.CountryCode, "" )
+			else
+				local x, y = guiGetPosition ( aTab1.IP, false )
+				local width = guiLabelGetTextExtent ( aTab1.IP )
+				guiSetPosition ( aTab1.Flag, x + width + 7, y + 4, false )
+				guiSetPosition ( aTab1.CountryCode, x + width + 30, y, false )
+				guiSetText ( aTab1.CountryCode, tostring( countryCode ) )
+			end
+			guiSetText ( aTab1.Version, "Version: " .. ( aPlayers[player]["version"] or "" ) )
+		end
+	else
+		guiSetText ( aTab1.Name, "Name: N/A" )
+		guiSetText ( aTab1.IP, "IP: N/A" )
+		guiSetText ( aTab1.Serial, "Serial: N/A" )
+		--guiSetText ( aTab1.Username, "Community Username: N/A" )
+		guiSetText ( aTab1.Version, "Version: N/A" )
+		guiSetText ( aTab1.Accountname, "Account Name: N/A" )
+		guiSetText ( aTab1.Groups, "Groups: N/A" )
+		guiSetText ( aTab1.ACDetected, "AC Detected: N/A" )
+		guiSetText ( aTab1.ACD3D, "D3D9.DLL: N/A" )
+		guiSetText ( aTab1.ACModInfo, "Img Mods: N/A" )
+		guiSetText ( aTab1.Mute, "Mute" )
+		guiSetText ( aTab1.Freeze, "Freeze" )
+		guiSetText ( aTab1.Admin, "Give admin rights" )
+		guiSetText ( aTab1.Health, "Health: 0%" )
+		guiSetText ( aTab1.Armour, "Armour: 0%" )
+		guiSetText ( aTab1.Skin, "Skin: N/A" )
+		guiSetText ( aTab1.Team, "Team: None" )
+		guiSetText ( aTab1.Ping, "Ping: 0" )
+		guiSetText ( aTab1.Money, "Money: 0" )
+		guiSetText ( aTab1.Dimension, "Dimension: 0" )
+		guiSetText ( aTab1.Interior, "Interior: 0" )
+		guiSetText ( aTab1.JetPack, "Give JetPack" )
+		guiSetText ( aTab1.Weapon, "Weapon: N/A" )
+		guiSetText ( aTab1.Area, "Area: Unknown" )
+		guiSetText ( aTab1.Position, "Position: 0, 0, 0" )
+		guiSetText ( aTab1.Vehicle, "Vehicle: N/A" )
+		guiSetText ( aTab1.VehicleHealth, "Vehicle Health: 0%" )
+		guiStaticImageLoadImage ( aTab1.Flag, "client\\images\\empty.png" )
+		guiSetText ( aTab1.CountryCode, "" )
+	end
+	guiSetText ( aTab3.Password, "Password: "..getSensitiveText( serverPassword ) )
+end
 
 function updateColorCodes()
 	local lists = { aTab1.PlayerList, aTab5.AdminPlayers, aSpectator.PlayerList }
@@ -1282,8 +1322,7 @@ function updateColorCodes()
 end
 
 function guiGridListSetItemPlayerName( gridlist, row, col, name )
-	local bHideColorCodes = guiCheckBoxGetSelected ( aTab1.HideColorCodes )
-	guiGridListSetItemText( gridlist, row, col, bHideColorCodes and removeColorCoding(name) or name, false, false )
+	guiGridListSetItemText( gridlist, row, col, isColorCodeHidden() and removeColorCoding(name) or name, false, false )
 	guiGridListSetItemData( gridlist, row, col, name )
 end
 
@@ -1356,12 +1395,45 @@ end
 
 -- anon admin
 function isAnonAdmin()
-	return getElementData( localPlayer, "AnonAdmin" ) == true
+	return guiCheckBoxGetSelected ( aTab1.AnonAdmin )
 end
 
 function setAnonAdmin( bOn )
 	guiCheckBoxSetSelected ( aTab1.AnonAdmin, bOn )
 	setElementData( localPlayer, "AnonAdmin", bOn )
+	aSetSetting ( "currentAnonState", bOn )
+end
+
+-- sensitive data
+function isSensitiveDataHidden()
+	return guiCheckBoxGetSelected(aTab1.HideSensitiveData)
+end
+
+function setHideSensitiveData( bOn )
+	guiCheckBoxSetSelected ( aTab1.HideSensitiveData, bOn )
+	aSetSetting ( "currentHideSensitiveDataState", bOn )
+	aAdminReloadInfos()
+	guiSetEnabled(aTab4.Tab, not bOn) -- toggle Bans tab
+	guiSetEnabled(aTab5.Tab, not bOn) -- toggle Admin Chat tab
+end
+
+function getSensitiveText(text)
+	if isSensitiveDataHidden() then
+		return ('*'):rep(utf8.len(text))
+	end
+	return text
+end
+
+-- hide color codes
+function isColorCodeHidden()
+	return guiCheckBoxGetSelected ( aTab1.HideColorCodes )
+end
+
+function setHideColorCodes( bOn )
+	guiCheckBoxSetSelected ( aTab1.HideColorCodes, bOn )
+	aSetSetting ( "currentHideColorCodesState", bOn )
+	updateColorCodes()
+	aAdminReloadInfos()
 end
 
 function loadFlagImage( guiStaticImage, countryCode )
