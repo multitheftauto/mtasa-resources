@@ -418,9 +418,10 @@ function aServerTab.onClientSync(type, table)
     if (type == SYNC_SERVER) then
         guiSetText(aServerTab.Server, "Server: " .. table["name"])
         guiSetText(aServerTab.Players, "Players: " .. #getElementsByType("player") .. "/" .. table["players"])
-        guiSetText(aServerTab.Password, "Password: " .. (table["password"] or "None"))
+        guiSetText(aServerTab.Password, "Password: " .. getSensitiveText(table["password"] or "None"))
         guiSetText(aServerTab.GameType, "Game Type: " .. (table["game"] or "None"))
         guiSetText(aServerTab.MapName, "Map Name: " .. (table["map"] or "None"))
+        aServerTab['currentPassword'] = table['password'] or nil
     end
 end
 
