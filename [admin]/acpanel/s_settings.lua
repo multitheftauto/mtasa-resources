@@ -81,7 +81,6 @@ function setPanelSetting(name, value)
 end
 
 
-
 ---------------------------------------------------------
 -- Enforce min client override
 ---------------------------------------------------------

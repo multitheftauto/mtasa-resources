@@ -401,3 +401,11 @@ addEventHandler(
         end
     end
 )
+
+addCommandHandler(get("adminChatCommandName"), 
+	function(thePlayer, cmd, ...) 
+		if (hasObjectPermissionTo(thePlayer, "general.tab_adminchat", false) and #arg > 0) then
+			triggerEvent("aAdminChat", thePlayer, table.concat(arg, " "))
+		end
+	end
+)

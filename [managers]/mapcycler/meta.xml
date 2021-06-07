@@ -7,8 +7,37 @@
 	<script src="vote_mode.lua" type="server"/>
 	<script src="random_mode.lua" type="server"/>
 	<settings>
-		<setting name="*mode" value="vote" />
-		<setting name="*vote_rounds" value="[1]" />
-		<setting name="*random_rounds" value="[1]" />
+		<setting
+			name="*mode"
+			value="vote"
+			friendlyname="Cycler mode"
+			group="Map Cycler"
+			accept="vote,list,random"
+			desc="Map cycler mode. 'vote' mode will launch a vote at the end of the round. 'list' mode will use the list defined in mapcycle.xml. 'random' mode will choose a map at random."
+		/>
+		<setting
+			name="*vote_rounds"
+			value="[1]" 
+			friendlyname="Rounds between votes"
+			group="Map Cycler"
+			accept="1-65535"
+			desc="Number of rounds between map votes. Only effective if cycler mode is set to 'vote'."
+		/>
+		<setting
+			name="*random_rounds"
+			value="[1]" 
+			friendlyname="Rounds between random selections"
+			group="Map Cycler"
+			accept="1-65535"
+			desc="Number of rounds between random map selections. Only effective if cycler mode is set to 'random'."
+		/>
+		<setting
+			name="*hibernate_when_empty"
+			value="true" 
+			friendlyname="Hibernate when server is empty"
+			group="Map Cycler"
+			accept="true,false"
+			desc="If true, the server will wait until a player joins to cycle maps. Only effective if cycler mode is set to 'list' or 'random'."
+		/>
 	</settings>
 </meta>

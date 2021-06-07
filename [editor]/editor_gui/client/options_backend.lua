@@ -26,6 +26,7 @@ local xmlVariants = {
 ["precisionRotLevel"]="precisionrotlevel",
 ["enablePrecisionSnap"]="enableprecisionsnap",
 ["enablePrecisionRotation"]="enableprecisionrotation",
+["enableColPatch"]="enablecolpatch",
 }
 local nodeTypes = {
 ["enableSounds"]="bool",
@@ -54,6 +55,7 @@ local nodeTypes = {
 ["enablePrecisionSnap"]="bool",
 ["enablePrecisionRotation"]="bool",
 ["enableXYZlines"]="bool",
+["enableColPatch"]="bool",
 }
 local defaults = {
 ["enableSounds"]=true,
@@ -81,6 +83,7 @@ local defaults = {
 ["enablePrecisionSnap"]=true,
 ["enablePrecisionRotation"]=false,
 ["enableXYZlines"]=true,
+["enableColPatch"]=false,
 }
 
 --stuff involving xml and dumping

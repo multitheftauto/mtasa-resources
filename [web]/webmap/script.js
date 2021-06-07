@@ -1,252 +1,358 @@
-var map, maplayer, aeriallayer, playermarkers, blipmarkers;
-var playericon = new OpenLayers.Icon("geticon.htm?id=02", new OpenLayers.Size(15,15));
-var deadicon = new OpenLayers.Icon("geticon.htm?id=23", new OpenLayers.Size(15,15));
-var radaricons = new Array();
-for ( var i =0; i <= 63; i++ )
-{
-	var ai = i;
-	if ( ai <= 9 )
-		ai = "0" + ai;
-	radaricons[i] = new OpenLayers.Icon("geticon.htm?id=" + ai, new OpenLayers.Size(15,15));
-}
-var playerlist = new Object;
-var bliplist = new Object;
+const rad = Math.PI / 180;
+const extent = [-3000, -3000, 3000, 3000];
 
-function init()
-{
-	map = new OpenLayers.Map( $('map'), {'maxResolution': 360/512, 'maxExtent':new OpenLayers.Bounds(-90.0,-90.0,90.0,90.0),
-	'numZoomLevels':6,
-	});
+const syncedPlayers = {};
+const syncedRadarBlips = {};
 
-	map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
+let popupEl;
+let gtasaProjection;
+let tilegrid;
+let playerVectorSource;
+let radarBlipVectorSource;
+let mousePositionControl;
+let layerSwitcherControl;
+let map;
+let selectSingleClick;
+let selectedPlayer;
+let followingPlayer;
 
-	maplayer = new OpenLayers.Layer.WMS( "San Andreas Map",
-					"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_map', format: 'image/png' } );
-	map.addLayer(maplayer);
+function init() {
+  popupEl = document.getElementById('popup');
 
-	aeriallayer = new OpenLayers.Layer.WMS( "San Andreas Aerial Map",
-					"http://code.opencoding.net/tilecache/tilecache.cgi?", {layers: 'sa_aerial_map', format: 'image/png' } );
-	map.addLayer(aeriallayer);
+  gtasaProjection = new ol.proj.Projection({
+    code: 'ZOOMIFY',
+    units: 'pixels',
+    extent,
+  });
 
-	map.zoomTo(2);
+  tilegrid = new ol.tilegrid.TileGrid({
+    extent,
+    resolutions: [8, 4, 2, 1],
+  });
 
-	blipmarkers = new OpenLayers.Layer.Markers("Radar Blips");
-	map.addLayer(blipmarkers);
+  playerVectorSource = new ol.source.Vector({
+    projection: gtasaProjection,
+  });
 
-	playermarkers = new OpenLayers.Layer.Markers("Players");
-	map.addLayer(playermarkers);
+  radarBlipVectorSource = new ol.source.Vector({
+    projection: gtasaProjection,
+  });
 
-	updatePlayerInfo();
-	updateBlips();
-}
+  mousePositionControl = new ol.control.MousePosition({
+    coordinateFormat: ol.coordinate.createStringXY(0),
+  });
 
-function addPlayerMarker(player)
-{
-	var feature = new OpenLayers.Feature(maplayer, gtaCoordToLonLat(player.pos.x, player.pos.y), {icon:playericon.clone()});
-	var marker = feature.createMarker();
-	marker.playerName = player.name;
-	marker.feature = feature;
-	marker.events.register("mousedown", marker, showplayerinfo);
-	playermarkers.addMarker(marker);
-	return feature;
-}
+  layerSwitcherControl = new ol.control.LayerSwitcher({
+    tipLabel: 'Layers',
+  });
 
-function addBlipMarker(blip)
-{
-	var feature = new OpenLayers.Feature(maplayer, gtaCoordToLonLat(blip.pos.x, blip.pos.y), {icon:radaricons[blip.icon].clone()});
-	var marker = feature.createMarker();
-	marker.element = blip.element;
-	marker.feature = feature;
-	blipmarkers.addMarker(marker);
-	return feature;
-}
+  popupOverlay = new ol.Overlay({
+    autoPan: true,
+    autoPanAnimation: {
+      duration: 250,
+    },
+    element: popupEl,
+  });
 
-// Takes a GTA x and y and returns a x and y on the map
-function gtaCoordToMap(x, y)
-{
-	var mapx = x * 0.03;
-	var mapy = y * 0.03;
-	return {x: mapx, y: mapy};
-}
+  map = new ol.Map({
+    controls: [layerSwitcherControl, mousePositionControl],
+    layers: [
+      new ol.layer.Group({
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.TileDebug({
+              tileGrid: tilegrid,
+              projection: gtasaProjection,
+            }),
+            title: 'Grid Debug',
+            visible: false,
+            zIndex: 100,
+          }),
+          new ol.layer.Vector({
+            source: radarBlipVectorSource,
+            title: 'Radar Blips',
+            visible: true,
+            zIndex: 80,
+          }),
+          new ol.layer.Vector({
+            source: playerVectorSource,
+            title: 'Players',
+            visible: true,
+            zIndex: 90,
+          }),
+        ],
+        title: 'Overlays',
+      }),
+      new ol.layer.Group({
+        fold: 'open',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.XYZ({
+              projection: gtasaProjection,
+              tileSize: 500,
+              url:
+                'https://assets.mtasa.com/mtasa-resources/webmap/sa_aerial_map/v2/{z}_{x}_{y}.jpg',
+              wrapX: false,
+            }),
+            title: 'San Andreas Aerial Map V2',
+            type: 'base',
+            visible: true,
+          }),
+          new ol.layer.Tile({
+            source: new ol.source.XYZ({
+              projection: gtasaProjection,
+              tileSize: 500,
+              url:
+                'https://assets.mtasa.com/mtasa-resources/webmap/sa_aerial_map/v1/{z}_{x}_{y}.jpg',
+              wrapX: false,
+            }),
+            title: 'San Andreas Aerial Map',
+            type: 'base',
+            visible: false,
+          }),
+          new ol.layer.Tile({
+            source: new ol.source.XYZ({
+              projection: gtasaProjection,
+              tileSize: 500,
+              url:
+                'https://assets.mtasa.com/mtasa-resources/webmap/sa_map/v1/{z}_{x}_{y}.jpg',
+              wrapX: false,
+            }),
+            title: 'San Andreas Map',
+            type: 'base',
+            visible: false,
+          }),
+        ],
+        title: 'Map style',
+      }),
+    ],
+    overlays: [popupOverlay],
+    target: 'map',
+    view: new ol.View({
+      center: ol.extent.getCenter(extent),
+      extent,
+      projection: gtasaProjection,
+      resolutions: tilegrid.getResolutions(),
+      showFullExtent: true,
+      zoom: 0,
+    }),
+  });
 
-// Takes a GTA x and y and returns a LonLat
-function gtaCoordToLonLat(x, y)
-{
-	var mapx = x * 0.03;
-	var mapy = y * 0.03;
-	return new OpenLayers.LonLat(mapx,mapy);
-}
+  map.on('singleclick', function (e) {
+    const features = map.getFeaturesAtPixel(e.pixel);
 
-var blipUpdateCount = 0;
-function updateBlips()
-{
-	getAllBlips (
-		function ( blips )
-		{
-			for ( var k = 0; k < blips.length; k++ )
-			{
-				if  ( bliplist[blips[k].element.id] == null ) {
-					bliplist[blips[k].element.id] = new Object();
-					bliplist[blips[k].element.id].feature = addBlipMarker(blips[k]);
-				} else {
-					var latlong = gtaCoordToLonLat(blips[k].pos.x, blips[k].pos.y);
-					bliplist[blips[k].element.id].feature.lonlat = latlong;
-					bliplist[blips[k].element.id].feature.marker.moveTo(map.getLayerPxFromLonLat(latlong));
-				}
-				bliplist[blips[k].element.id].data = blips[k];
-				bliplist[blips[k].element.id].lastUpdate = blipUpdateCount;
+    for (let i = 0; i < features.length; i++) {
+      const feature = features[i];
+      const playerEntry = Object.entries(syncedPlayers).find(function (entry) {
+        return entry[1].feature === feature;
+      });
+      if (!playerEntry) continue;
 
-				/*if ( playerinfo[i].isdead )
-					playerlist[playerinfo[i].name].feature.marker.icon = deadicon;
-				else
-					playerlist[playerinfo[i].name].feature.marker.icon = playericon;*/
-			}
-			for ( var j in bliplist )
-			{
-				if ( j != "toJSONString" )
-				{
-					if ( bliplist[j].lastUpdate != blipUpdateCount ) {
-						blipmarkers.removeMarker(bliplist[j].feature.marker);
-						delete bliplist[j];
-					}
-				}
-			}
+      selectedPlayer = playerEntry[0];
 
+      const player = syncedPlayers[selectedPlayer];
 
+      let html =
+        selectedPlayer +
+        "<button type='button' onclick='closePopup();' style='position:absolute;right:0;top:0;'>close</button><br/><div style='font-size: 0.8em;'>";
 
-			blipUpdateCount++;
+      if (player.vehicle) html += 'In vehicle: ' + player.vehicle + '<br/>';
 
-			setTimeout(updateBlips, 5000);
-		}
-	);
-}
+      html +=
+        "Send: <input type='text' id='sendMessageBox' onkeyup='checkSendMessage(event);' />";
+      if (selectedPlayer === followingPlayer) var checked = "checked='checked'";
 
-var updateCount = 0;
-function updatePlayerInfo()
-{
-	players (
-		function ( playerinfo )
-		{
-			for ( var i = 0; i < playerinfo.length; i++ )
-			{
-				if  ( playerlist[playerinfo[i].name] == null ) {
-					playerlist[playerinfo[i].name] = new Object();
-					playerlist[playerinfo[i].name].feature = addPlayerMarker(playerinfo[i]);
+      html +=
+        "<input type='checkbox' id='followPlayerCheckbox' onclick='followPlayer();' " +
+        checked +
+        " onchange='followPlayer();' /> <label for='followPlayerCheckbox'>Follow</label>";
+      html += '</div>';
 
+      popupEl.innerHTML = html;
 
-				} else {
-					var latlong = gtaCoordToLonLat(playerinfo[i].pos.x, playerinfo[i].pos.y);
-					playerlist[playerinfo[i].name].feature.lonlat = latlong;
+      popupOverlay.setPosition(e.coordinate);
 
+      return;
+    }
 
+    closePopup();
+  });
 
-					if ( playerToFollow == playerinfo[i].name )
-						map.setCenter(latlong, map.getZoom(), false, false);
-
-					playerlist[playerinfo[i].name].feature.marker.moveTo(map.getLayerPxFromLonLat(latlong));
-				}
-				playerlist[playerinfo[i].name].data = playerinfo[i];
-				playerlist[playerinfo[i].name].lastUpdate = updateCount;
-
-				/*if ( playerinfo[i].isdead )
-					playerlist[playerinfo[i].name].feature.marker.icon = deadicon;
-				else
-					playerlist[playerinfo[i].name].feature.marker.icon = playericon;*/
-			}
-			for ( var j in playerlist )
-			{
-				if ( j != "toJSONString" )
-				{
-					if ( playerlist[j].lastUpdate != updateCount ) {
-						playermarkers.removeMarker(playerlist[j].feature.marker);
-						delete playerlist[j];
-					}
-				}
-			}
-
-
-
-			updateCount++;
-
-			setTimeout(updatePlayerInfo, 1000);
-		}
-	);
-}
-function checkSendMessage(e)
-{
-
-	var characterCode
-
-	if(e && e.which){ //if which property of event object is supported (NN4)
-		e = e
-		characterCode = e.which //character code is contained in NN4's which property
-		}
-	else{
-		e = event
-		characterCode = e.keyCode //character code is contained in IE's keyCode property
-	}
-
-	if(characterCode == 13){ //if generated character code is equal to ascii 13 (if enter key)
-		var messageBox = document.getElementById('sendMessageBox');
-		sendPlayerMessage ( popupPlayer, messageBox.value, function() { } );
-		messageBox.value = "";
-	return false
-	}
-	else{
-	return true
-	}
+  updatePlayerBlips();
+  updateRadarBlips();
 }
 
-var playerToFollow = null;
+function addPlayerBlip(player) {
+  const feature = new ol.Feature({
+    geometry: new ol.geom.Point([player.pos.x, player.pos.y]),
+  });
 
-function followPlayer()
-{
-	var followPlayerCheckbox = document.getElementById("followPlayerCheckbox");
-	if ( followPlayerCheckbox.checked == true )
-		playerToFollow = popupPlayer;
-	else
-		playerToFollow = null;
+  feature.setStyle(
+    new ol.style.Style({
+      image: new ol.style.Icon({
+        color: player.isdead ? [200, 0, 0, 1] : [255, 255, 255, 1],
+        rotation: -player.rot * rad,
+        src: 'geticon.htm?id=02',
+      }),
+    }),
+  );
+
+  playerVectorSource.addFeature(feature);
+
+  return feature;
 }
 
-var popup;
-var popupPlayer = null;
-function showplayerinfo(evt) {
-	 // check to see if the popup was hidden by the close box
-	 // if so, then destroy it before continuing
-	if (popup != null) {
-		if (!popup.visible()) {
-			playermarkers.map.removePopup(popup);
-			popup.destroy();
-			popup = null;
-		}
-	}
-	if (popup == null) {
-		var playerinfo = playerlist[this.playerName].data;
-		var html = playerinfo.name + "<br/><div style='font-size: 0.8em;'>";
-		if ( playerinfo.vehicle != null )
-			html += "In vehicle: " + playerinfo.vehicle + "<br/>";
+function addRadarBlip(blip) {
+  const feature = new ol.Feature({
+    geometry: new ol.geom.Point([blip.pos.x, blip.pos.y]),
+  });
 
-		popupPlayer= this.playerName;
+  let image;
 
-		html += "Send: <input type='text' id='sendMessageBox' onkeyup='checkSendMessage(event);' />"
-		if ( popupPlayer == playerToFollow )
-			var checked = "checked='checked'";
+  const color = blip.color;
+  color[3] = color[3] / 255; // 0..1 scale
 
-		html += "<input type='checkbox' id='followPlayerCheckbox' onclick='followPlayer();' " + checked + " onchange='followPlayer();' /> <label for='followPlayerCheckbox'>Follow</label>"
-		html += "</div>";
+  if (blip.icon === 0) {
+    image = new ol.style.RegularShape({
+      angle: 45 * rad,
+      fill: new ol.style.Fill({ color }),
+      points: 4,
+      radius: blip.size * 4,
+      stroke: new ol.style.Stroke({ color: [0, 0, 0, 1], width: 1.5 }),
+    });
+  } else {
+    image = new ol.style.Icon({
+      // color, // Works, but disabled because tint is not used in GTA/MTA for radar blip icons
+      src: 'geticon.htm?id=' + String(blip.icon).padStart(2, 0),
+    });
+  }
 
+  feature.setStyle(new ol.style.Style({ image }));
 
-
-		popup = this.feature.createPopup(true);
-		popup.setContentHTML(html);
-		popup.setBackgroundColor("#888888");
-		popup.setOpacity(0.8);
-		playermarkers.map.addPopup(popup);
-	} else {
-		playermarkers.map.removePopup(popup);
-		popup.destroy();
-		popup = null;
-	}
-	OpenLayers.Event.stop(evt);
+  radarBlipVectorSource.addFeature(feature);
+  return feature;
 }
 
+function updateRadarBlips() {
+  getAllRadarBlips(function (blips) {
+    // Delete destroyed blips
+    Object.entries(syncedRadarBlips)
+      .filter(function (entry) {
+        return !blips.find(function (blip) {
+          return blip.element.id === entry[0];
+        });
+      })
+      .forEach(function (entry) {
+        radarBlipVectorSource.removeFeature(entry[1].feature);
+        delete syncedRadarBlips[entry[0]];
+      });
+
+    // Add/refresh existing blips
+    blips.forEach(function (blip) {
+      if (!syncedRadarBlips[blip.element.id]) {
+        syncedRadarBlips[blip.element.id] = {};
+      } else {
+        // We delete the old feature to be able to reset some styles
+        // not possible to edit through existing methods provided by OL
+        radarBlipVectorSource.removeFeature(
+          syncedRadarBlips[blip.element.id].feature,
+        );
+      }
+
+      syncedRadarBlips[blip.element.id].feature = addRadarBlip(blip);
+      syncedRadarBlips[blip.element.id].data = blip;
+    });
+
+    setTimeout(updateRadarBlips, 5000);
+  });
+}
+
+function updatePlayerBlips() {
+  getAllPlayers(function (players) {
+    // Delete disconnected players
+    Object.entries(syncedPlayers)
+      .filter(function (entry) {
+        return !players.find(function (player) {
+          return player.name === entry[0];
+        });
+      })
+      .forEach(function (entry) {
+        playerVectorSource.removeFeature(entry[1].feature);
+        delete syncedPlayers[entry[0]];
+      });
+
+    if (selectedPlayer) {
+      if (syncedPlayers[selectedPlayer]) {
+        popupOverlay.setPosition(
+          syncedPlayers[selectedPlayer].feature.getGeometry().getCoordinates(),
+        );
+      } else {
+        closePopup();
+      }
+    }
+
+    if (followingPlayer) {
+      if (syncedPlayers[followingPlayer]) {
+        map
+          .getView()
+          .setCenter(
+            syncedPlayers[followingPlayer].feature
+              .getGeometry()
+              .getCoordinates(),
+          );
+      } else {
+        followingPlayer = null;
+      }
+    }
+
+    // Add/refresh connected players
+    players.forEach(function (player) {
+      if (!syncedPlayers[player.name]) {
+        syncedPlayers[player.name] = {};
+      } else {
+        // We delete the old feature to be able to reset some styles
+        // not possible to edit through existing methods provided by OL
+        playerVectorSource.removeFeature(syncedPlayers[player.name].feature);
+      }
+
+      syncedPlayers[player.name].feature = addPlayerBlip(player);
+      syncedPlayers[player.name].data = player;
+    });
+
+    setTimeout(updatePlayerBlips, 1000);
+  });
+}
+
+function checkSendMessage(e) {
+  // If not enter key, stop here
+  if (e.keyCode !== 13) return true;
+
+  const messageBox = document.getElementById('sendMessageBox');
+  const message = messageBox.value.trim();
+  messageBox.value = '';
+
+  // If no message entered, stop here
+  if (!message) return true;
+
+  sendPlayerMessage(selectedPlayer, message, function () {});
+
+  return false;
+}
+
+function followPlayer() {
+  if (document.getElementById('followPlayerCheckbox').checked) {
+    followingPlayer = selectedPlayer;
+    map
+      .getView()
+      .setCenter(
+        syncedPlayers[followingPlayer].feature.getGeometry().getCoordinates(),
+      );
+  } else {
+    followingPlayer = null;
+  }
+}
+
+function closePopup() {
+  popupOverlay.setPosition(undefined);
+  selectedPlayer = null;
+}

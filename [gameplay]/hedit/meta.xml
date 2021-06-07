@@ -1,0 +1,91 @@
+<meta>
+    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.4" description="The first ingame handling editor for MTA!" />
+    <oop>true</oop>
+    <min_mta_version server="1.4.0" client="1.4.0" />
+
+    <!-- SHARED -->
+    <script src="shared/variables/general.lua"      type="shared" />
+    <script src="shared/variables/handlingMTA.lua"  type="shared" />
+    <script src="shared/variables/handlingGTA.lua"  type="shared" />
+    <script src="shared/wrappers/handling.lua"      type="shared" />
+    <script src="shared/wrappers/general.lua"       type="shared" />
+    <script src="shared/settings.lua"               type="shared" />
+    <script src="shared/utils.lua"                  type="shared" />
+
+    <!-- CLIENT -->
+    <script src="client/logmanager.lua"             type="client" />
+    <script src="client/settings.lua"               type="client" />
+    <script src="client/utils.lua"                  type="client" />
+    <script src="client/exports.lua"                type="client" />
+    <script src="client/core.lua"                   type="client" />
+    <script src="client/variables/general.lua"      type="client" />
+    <script src="client/variables/vehicle.lua"      type="client" />
+
+    <script src="client/gui/templates/default.lua"  type="client" />
+
+    <script src="client/gui/languages/english.lua"  type="client" />
+    <script src="client/gui/languages/russian.lua"  type="client" />
+    <script src="client/gui/languages/turkish.lua"  type="client" />
+    <script src="client/gui/languages/spanish.lua"  type="client" />
+    <script src="client/gui/languages/polish.lua"   type="client" />
+    <script src="client/gui/languages/arabic.lua"   type="client" />
+
+    <script src="client/gui/guicreator.lua"         type="client" />
+    <script src="client/gui/guimanager.lua"         type="client" />
+    <script src="client/gui/guievents.lua"          type="client" />
+    <script src="client/gui/guifunctions.lua"       type="client" />
+    <script src="client/gui/guiwrapper.lua"         type="client" />
+    <script src="client/gui/warningwnd.lua"         type="client" />
+
+    <file src="images/warning.png"                  type="client" />
+    <file src="images/question.png"                 type="client" />
+    <file src="images/error.png"                    type="client" />
+    <file src="images/info.png"                     type="client" />
+
+
+    <!-- SERVER -->
+    <script src="server/logmanager.lua"             type="server" />
+    <script src="server/cfgloader.lua"              type="server" />>
+    <script src="server/core.lua"                   type="server" />
+    <script src="server/utils.lua"                  type="server" />
+
+	<!-- SETTINGS -->
+	<settings>
+		<setting name="*enable_suspensionLowerLimit"         value="true" />
+		<setting name="*enable_engineInertia"                value="true" />
+		<setting name="*enable_suspensionHighSpeedDamping"   value="true" />
+		<setting name="*enable_centerOfMassY"                value="true" />
+		<setting name="*enable_collisionDamageMultiplier"    value="true" />
+		<setting name="*enable_suspensionDamping"            value="true" />
+		<setting name="*enable_seatOffsetDistance"           value="true" />
+		<setting name="*enable_headLight"                    value="true" />
+		<setting name="*enable_dragCoeff"                    value="true" />
+		<setting name="*enable_engineAcceleration"           value="true" />
+		<setting name="*enable_steeringLock"                 value="true" />
+		<setting name="*enable_suspensionUpperLimit"         value="true" />
+		<setting name="*enable_suspensionForceLevel"         value="true" />
+		<setting name="*enable_turnMass"                     value="true" />
+		<setting name="*enable_brakeBias"                    value="true" />
+		<setting name="*enable_centerOfMassZ"                value="true" />
+		<setting name="*enable_numberOfGears"                value="true" />
+		<setting name="*enable_ABS"                          value="true" />
+		<setting name="*enable_mass"                         value="true" />
+		<setting name="*enable_percentSubmerged"             value="true" />
+		<setting name="*enable_tractionBias"                 value="true" />
+		<setting name="*enable_identifier"                   value="true" />
+		<setting name="*enable_modelFlags"                   value="true" />
+		<setting name="*enable_centerOfMassX"                value="true" />
+		<setting name="*enable_maxVelocity"                  value="true" />
+		<setting name="*enable_animGroup"                    value="true" />
+		<setting name="*enable_monetary"                     value="true" />
+		<setting name="*enable_suspensionAntiDiveMultiplier" value="true" />
+		<setting name="*enable_suspensionFrontRearBias"      value="true" />
+		<setting name="*enable_driveType"                    value="true" />
+		<setting name="*enable_engineType"                   value="true" />
+		<setting name="*enable_brakeDeceleration"            value="true" />
+		<setting name="*enable_handlingFlags"                value="true" />
+		<setting name="*enable_tractionMultiplier"           value="true" />
+		<setting name="*enable_tractionLoss"                 value="true" />
+		<setting name="*enable_tailLight"                    value="true" />
+	</settings>
+</meta>

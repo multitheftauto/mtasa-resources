@@ -135,7 +135,7 @@ function aServerTab.Create(tab)
     for k,v in pairs(aServerTab.worldproperties) do
         aServerTab[k] = guiCreateCheckBox(0.66, headerPosition + (0.045 * i2), 0.40, 0.04, v, false, true, tab, 'setworldproperty')
         guiSetEnabled(aServerTab[k], true)
-        i2 = i2 + 1 
+        i2 = i2 + 1
     end
 
     i,i2 = nil,nil
@@ -418,9 +418,10 @@ function aServerTab.onClientSync(type, table)
     if (type == SYNC_SERVER) then
         guiSetText(aServerTab.Server, "Server: " .. table["name"])
         guiSetText(aServerTab.Players, "Players: " .. #getElementsByType("player") .. "/" .. table["players"])
-        guiSetText(aServerTab.Password, "Password: " .. (table["password"] or "None"))
+        guiSetText(aServerTab.Password, "Password: " .. getSensitiveText(table["password"] or "None"))
         guiSetText(aServerTab.GameType, "Game Type: " .. (table["game"] or "None"))
         guiSetText(aServerTab.MapName, "Map Name: " .. (table["map"] or "None"))
+        aServerTab['currentPassword'] = table['password'] or nil
     end
 end
 

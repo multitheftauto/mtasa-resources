@@ -58,6 +58,8 @@ local DRAG_CAMERA_MINIMAL_DISTANCE = 2
 local g_lastClick = { tick=getTickCount() }
 local DOUBLE_CLICK_MAX_DELAY = 500 -- In ticks
 
+local g_lock = {}
+
 setCloudsEnabled(false) -- We don't need clouds.
 setAmbientSoundEnabled("gunfire", false) -- We don't need random gun shots.
 
@@ -327,6 +329,8 @@ function startEditor()
 			end
 		end
 	end
+	loadColPatchArchive()
+	loadColPatchPlacements()
 end
 
 function stopEditor()
@@ -424,14 +428,14 @@ function processFreecamClick(key, keyState)
 	local drop
 	if (not g_suspended) then
 		local clickedElement, targetX, targetY, targetZ = getTargetedElement()
-
+		
 		local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
 		local distance = math.sqrt((targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2)
 
-		if (distance > g_maxSelectDistance) then
-			clickedElement = nil
+		if clickedElement and (distance > g_maxSelectDistance) then
 			outputDebugString("Cannot select out of range element: " .. getElementType(clickedElement))
 			outputDebugString(" distance: " .. distance)
+			clickedElement = nil
 		end
 		processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 	end
@@ -485,6 +489,11 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 			end
 		end
 
+		if g_selectedElement ~= clickedElement and g_lock[clickedElement] then
+			editor_gui.outputMessage("This element is locked, Press '"..cc["lock_selected_element"]:upper().."' to unlock it.", 255,255,255)
+			return false
+		end
+
 		if (key == "select_target_mouse") then
 			selectElement(clickedElement, MOUSE_SUBMODE, false, g_selectedElement, g_selectedElement)
 		elseif (key == "select_target_keyboard") then
@@ -508,6 +517,12 @@ end
 
 function processDoubleClick ( clickedElement, key )
 	if not clickedElement then return end
+
+	if g_selectedElement ~= clickedElement and g_lock[clickedElement] then
+		editor_gui.outputMessage("This element is locked, Press '"..cc["lock_selected_element"]:upper().."' to unlock it.", 255,255,255)
+		return false
+	end
+
 	if triggerEvent ( "onClientElementDoubleClick", clickedElement, key ) then
 		if key == "select_target_keyboard" then
 			if ( selectElement(clickedElement, KEYBOARD_SUBMODE) ) then
@@ -724,6 +739,8 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	submode = submode or g_submode
 
 	if not isElement(element) then return end
+	
+	if isColPatchObject(element) then return end
 
 	if getElementType(element) == "vehicle" and getVehicleType(element) == "Train" then
 		setTrainDerailed(element, true)
@@ -987,6 +1004,33 @@ function cloneSelectedElement()
 	end
 end
 
+function lockSelectedElement(element,state)
+	local targetElement = isElement(element) and element or getTargetedElement()
+	if targetElement then
+		if isElementLocked(targetElement) == state then return end
+		if g_lock[targetElement] then
+			g_lock[targetElement] = nil
+			editor_gui.outputMessage("You have unlocked this element.", 50,255,50)
+		else
+			g_lock[targetElement] = true
+			editor_gui.outputMessage("You have locked this element.", 50,255,50)
+		end
+	end
+end
+
+function isElementLocked(element)
+	if isElement(element) then
+		return g_lock[element] or false
+	end
+end
+
+addEventHandler("onClientElementDestroy",resourceRoot,
+function ()
+	if g_lock[source] then
+		g_lock[source] = nil
+	end
+end)
+
 function showCrosshair(status,labelStatus)
 	g_showCrosshair = status
 	-- g_showLabels = labelStatus
@@ -1005,6 +1049,10 @@ function setWorkingInterior( interior )
 end
 
 function suspend(leavePlayersAttached)
+	if g_suspended then
+		return false
+	end
+
 	outputConsole("Suspending editor_main.")
 
 	local move_resource
@@ -1038,6 +1086,10 @@ function suspend(leavePlayersAttached)
 end
 
 function resume(dontEnableMove)
+	if (not g_suspended) then
+		return false
+	end
+
 	outputConsole("Resuming editor_main.")
 
 	local move_resource
@@ -1081,6 +1133,7 @@ function bindInput(commandsOnly)
 	addCommandHandler("create", createElement_cmd)
 	addCommandHandler("destroy", destroySelectedElement)
 	addCommandHandler("delete", destroySelectedElement)
+	addCommandHandler("lock", lockSelectedElement)
 	if ( commandsOnly ) then
 		return true
 	end
@@ -1093,6 +1146,7 @@ function bindInput(commandsOnly)
 	bindControl("undo", "down", keyboardUndo)
 	bindControl("redo", "down", keyboardRedo)
 	bindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
+	bindControl("lock_selected_element", "down", lockSelectedElement)
 end
 
 function unbindInput(commandsOnly)
@@ -1100,6 +1154,7 @@ function unbindInput(commandsOnly)
 	removeCommandHandler("create", createElement_cmd)
 	removeCommandHandler("destroy", destroySelectedElement)
 	removeCommandHandler("delete", destroySelectedElement)
+	removeCommandHandler("lock", lockSelectedElement)
 
 	if ( commandsOnly ) then
 		return true
@@ -1112,6 +1167,7 @@ function unbindInput(commandsOnly)
 	unbindControl("undo", "down", keyboardUndo)
 	unbindControl("redo", "down", keyboardRedo)
 	unbindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
+	unbindControl("lock_selected_element", "down", lockSelectedElement)
 end
 
 -- get the point and element targeted by the camera
@@ -1123,7 +1179,15 @@ function processCameraLineOfSight()
             nx, ny, nz, material, lighting, piece,
             buildingId, bx, by, bz, brx, bry, brz, buildingLOD
 		= processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
-
+	
+	-- Is this a collision patch object
+	if targetElement and isColPatchObject(targetElement) then
+		local cp = isColPatchObject(targetElement)
+		-- Make it look like we hit a world model
+		buildingId, bx, by, bz, brx, bry, brz = cp.id, cp.x, cp.y, cp.z, cp.rx, cp.ry, cp.rz
+		targetElement = nil
+	end
+	
 	-- if there is none, use the end point of the vector as the collision point
 	if not surfaceFound then
 	    targetX, targetY, targetZ = endX, endY, endZ
@@ -1146,6 +1210,14 @@ function processCursorLineOfSight()
             nx, ny, nz, material, lighting, piece,
             buildingId, bx, by, bz, brx, bry, brz, buildingLOD
         = processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
+
+	-- Is this a collision patch object
+	if targetElement and isColPatchObject(targetElement) then
+		local cp = isColPatchObject(targetElement)
+		-- Make it look like we hit a world model
+		buildingId, bx, by, bz, brx, bry, brz = cp.id, cp.x, cp.y, cp.z, cp.rx, cp.ry, cp.rz
+		targetElement = nil
+	end
 
 	-- if there is none, use the end point of the vector as the collision point
 	if not surfaceFound then

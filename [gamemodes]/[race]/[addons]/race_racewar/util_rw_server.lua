@@ -36,7 +36,6 @@ addEventHandler('onServerCall_rw', getRootElement(),
 )
 
 
-
 function isPlayerInACLGroup(player, groupName)
 	local account = getPlayerAccount(player)
 	if not account then

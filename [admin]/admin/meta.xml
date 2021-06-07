@@ -61,6 +61,7 @@
   <config src="conf/ACL.xml" />
 
   <!--Images-->
+  <file src="client/images/map.png" />
   <file src="client/images/warning.png" />
   <file src="client/images/error.png" />
   <file src="client/images/question.png" />
@@ -269,12 +270,6 @@
   <file src="client/images/flags/ve.png" />
   <file src="client/images/flags/hr.png" />
   <file src="client/images/flags/xk.png" />
-  
-  <!--Unused-->
-  <!--
-  <script src="server/admin_community.lua" />
-  <script src="server/admin_coroutines.lua" />
-  -->
 
   <!--HTTP Server Stuff-->
   <!--Not finished yet
@@ -377,6 +372,10 @@
 					friendlyname="Player report categories"
 					desc="List of report categories for reporting players."
 					/>
+	     	<setting name="*adminChatCommandName" value="a"
+          				friendlyname="Admin chat command name"
+          				desc="The command name for admin chat."
+          				/>
 
  </settings>
 

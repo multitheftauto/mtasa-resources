@@ -30,7 +30,7 @@
 		<object model="1234" position="0,0,0" editorOnly="true" alpha="0"/>
 		<marker position="0,0,0" type="corona" color="#00000000" editorOnly="true"/>
 	</element>
-	
+
 	<script src="edf/edf.lua" />
 	<script src="edf/edf_client.lua" type="client" />
 	<script src="edf/edf_client_cp_lines.lua" type="client" />

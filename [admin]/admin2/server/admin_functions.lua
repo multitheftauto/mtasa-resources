@@ -278,7 +278,7 @@ aFunctions = {
         end,
         ["warpto"] = function(player, data)
             warpPlayer(player, data)
-            return true, getPlayerName(data)
+            return true, type(data) == "table" and getZoneName(unpack(data)) or getPlayerName(data)
         end
     },
     vehicle = {

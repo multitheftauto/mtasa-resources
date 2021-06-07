@@ -58,6 +58,12 @@ addEventHandler("onResourceStart", thisResourceRoot,
 			info.percentage  = get(settingsGroup.."_percentage") or nil
 			info.timeout     = get(settingsGroup.."_timeout")    or nil
 			info.allowchange = get(settingsGroup.."_allowchange")
+			if name == "ban" then
+				info.banip       = get(settingsGroup.."_banip")
+				info.banusername = get(settingsGroup.."_banusername")
+				info.banserial   = get(settingsGroup.."_banserial")
+				info.duration    = get(settingsGroup.."_duration")
+			end
 			info.blockedPlayers = {}
 			addCommandHandler("vote"..name, vote[name].handler )
 		end
@@ -426,6 +432,8 @@ function voteKick(player, reason)
 		local title = "Kick "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
+		else
+			reason = ""
 		end
 		return startPoll{
 			title=title,
@@ -446,6 +454,8 @@ function voteBan(player, reason)
 		local title = "Ban "..getPlayerName(player).."?"
 		if reason then
 			title = title.." ("..reason..")"
+		else
+			reason = ""
 		end
 		return startPoll{
 			title=title,
@@ -453,7 +463,7 @@ function voteBan(player, reason)
 			visibleTo = rootElement,
 			timeout = vote.ban.timeout,
 			allowchange = vote.ban.allowchange;
-			[1]={"Yes",banPlayer,player,serverConsole,reason},
+			[1]={"Yes",banPlayer,player,vote.ban.banip,vote.ban.banusername,vote.ban.banserial,serverConsole,reason,vote.ban.duration},
 			[2]={"No",outputVoteManager,"voteban: not enough votes to ban "..getPlayerName(player)..".",rootElement,vR,vG,vB;default=true},
 		}
 	end

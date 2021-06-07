@@ -469,7 +469,7 @@ addCommandHandler ( "register", function ( player, command, arg1, arg2 )
 			outputChatBox ( "register: - Password should be at least 4 characters long", player, 255, 100, 70 )
 		elseif ( addAccount ( username, password ) ) then
 			outputChatBox ( "You have successfully registered! Username: '"..username.."', Password: '"..password.."'(Remember it)", player, 255, 100, 70 )
-			outputServerLog ( "ADMIN: "..getPlayerName ( player ).." registered account '"..username.."' (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )
+			outputServerLog ( "ACCOUNTS: "..getPlayerName ( player ).." registered account '"..username.."' (IP: "..getPlayerIP(player).."  Serial: "..getPlayerSerial(player)..")" )
 		elseif ( getAccount ( username ) ) then
 			outputChatBox ( "register: - Account with this name already exists.", player, 255, 100, 70 )
 		else
@@ -521,25 +521,38 @@ end
 addCommandHandler ( "admin", aAdminMenu )
 
 function aAction ( type, action, admin, player, data, more )
-	if ( aLogMessages[type] ) then
-		function aStripString ( string )
-			string = tostring ( string )
-			string = string.gsub ( string, "$admin", getPlayerName ( admin ) )
-			string = string.gsub ( string, "$by_admin_4all", isAnonAdmin4All( admin )    and "" or " by " .. getPlayerName ( admin ) )
-			string = string.gsub ( string, "$by_admin_4plr", isAnonAdmin4Victim( admin ) and "" or " by " .. getPlayerName ( admin ) )
-			string = string.gsub ( string, "$data2", more or "" )
-			if ( player ) then string = string.gsub ( string, "$player", getPlayerName ( player ) ) end
-			return tostring ( string.gsub ( string, "$data", data or "" ) )
-		end
-		local node = aLogMessages[type][action]
-		if ( node ) then
-			local r, g, b = node["r"], node["g"], node["b"]
-			if ( node["all"] ) then outputChatBox ( aStripString ( node["all"] ), _root, r, g, b ) end
-			if ( node["admin"] ) and ( admin ~= player ) then outputChatBox ( aStripString ( node["admin"] ), admin, r, g, b ) end
-			if ( node["player"] ) then outputChatBox ( aStripString ( node["player"] ), player, r, g, b ) end
-			if ( node["log"] ) then outputServerLog ( aStripString ( node["log"] ) ) end
-		end
-	end
+    if ( aLogMessages[type] ) then
+
+        local function aEscapeNickname( name )
+            return string.gsub( name, "%%", "%%%%" )
+        end
+
+        local function aStripString ( string )
+            local adminName = aEscapeNickname( getPlayerName ( admin ) )
+            string = tostring ( string )
+            string = string.gsub ( string, "$admin",  adminName)
+            string = string.gsub ( string, "$by_admin_4all", isAnonAdmin4All( admin )    and "" or " by " .. adminName )
+            string = string.gsub ( string, "$by_admin_4plr", isAnonAdmin4Victim( admin ) and "" or " by " .. adminName )
+            string = string.gsub ( string, "$data2", more or "" )
+
+            if ( player ) then 
+                local playerName = aEscapeNickname( getPlayerName( player ) )
+                string = string.gsub ( string, "$player", playerName) 
+            end
+
+            return tostring ( string.gsub ( string, "$data", data or "" ) )
+        end
+
+        local node = aLogMessages[type][action]
+
+        if ( node ) then
+            local r, g, b = node["r"], node["g"], node["b"]
+            if ( node["all"] ) then outputChatBox ( aStripString ( node["all"] ), _root, r, g, b ) end
+            if ( node["admin"] ) and ( admin ~= player ) then outputChatBox ( aStripString ( node["admin"] ), admin, r, g, b ) end
+            if ( node["player"] ) then outputChatBox ( aStripString ( node["player"] ), player, r, g, b ) end
+            if ( node["log"] ) then outputServerLog ( aStripString ( node["log"] ) ) end
+        end
+    end
 end
 
 -- Should admin name be hidden from public chatbox message?
@@ -555,7 +568,7 @@ end
 addEvent ( "aTeam", true )
 addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
 	if checkClient( "command."..action, source, 'aTeam', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		mdata = tostring ( data )
 		mdata = ""
 		if ( action == "createteam" ) then
@@ -836,13 +849,36 @@ function secondsToTimeDesc( seconds )
 	return ""
 end
 
+
+function warp ( p, to )
+	local x, y, z, r, dim, int
+	if type ( to ) == "table" then
+		x, y, z = unpack ( to )
+		r, dim, int = 0, 0, 0
+	else
+		x, y, z = getElementPosition ( to )
+		r = getPedRotation ( to )
+		dim = getElementDimension ( to )
+		int = getElementInterior ( to )
+	end
+	local target = getPedOccupiedVehicle ( p ) or p
+	x = x - math.sin ( math.rad ( r ) ) * 2
+	y = y + math.cos ( math.rad ( r ) ) * 2
+	setTimer ( setElementPosition, 1000, 1, target, x, y, z + 1 )
+	fadeCamera ( p, false, 1, 0, 0, 0 )
+	setElementDimension ( target, dim )
+	setElementInterior ( target, int )
+	setTimer ( fadeCamera, 1000, 1, p, true, 1 )
+end
+
+
 addEvent ( "aPlayer", true )
 addEventHandler ( "aPlayer", _root, function ( player, action, data, additional, additional2 )
 	if checkClient( "command."..action, source, 'aPlayer', action ) then return end
 	if not isElement( player ) then
 		return	-- Ignore if player is no longer valid
 	end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local admin = source
 		local mdata = ""
 		local more = ""
@@ -1093,11 +1129,11 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				if ( slap >= 0 ) then
 					if ( slap > 0 ) then
 						if ( slap > getElementHealth ( player ) ) then setTimer ( killPed, 50, 1, player )
-						else setElementHealth ( player, getElementHealth ( player ) - data ) end
+						else setElementHealth ( player, getElementHealth ( player ) - slap ) end
 					end
 					local x, y, z = getElementVelocity ( player )
 					setElementVelocity ( player, x , y, z + 0.2 )
-					mdata = data
+					mdata = slap
 				else
 					action = nil
 				end
@@ -1105,25 +1141,14 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				action = nil
 			end
 		elseif ( action == "warp" ) or ( action == "warpto" ) then
-    			function warpPlayer ( p, to )
-				function warp ( p, to )
-					local x, y, z = getElementPosition ( to )
-					local r = getPedRotation ( to )
- 	   				x = x - math.sin ( math.rad ( r ) ) * 2
-					y = y + math.cos ( math.rad ( r ) ) * 2
-   					setTimer ( setElementPosition, 1000, 1, p, x, y, z + 1 )
-					fadeCamera ( p, false, 1, 0, 0, 0 )
-					setElementDimension ( p, getElementDimension ( to ) )
-					setElementInterior ( p, getElementInterior ( to ) )
-					setTimer ( fadeCamera, 1000, 1, p, true, 1 )
-				end
-      		  	if ( isPedInVehicle ( to ) ) then
-      		  		local vehicle = getPedOccupiedVehicle ( to )
+			function warpPlayer ( p, to )
+				if ( isElement ( to ) and isPedInVehicle ( to ) ) then
+					local vehicle = getPedOccupiedVehicle ( to )
 					local seats = getVehicleMaxPassengers ( vehicle ) + 1
 					local i = 0
 					while ( i < seats ) do
 						if ( not getVehicleOccupant ( vehicle, i ) ) then
-   							setTimer ( warpPedIntoVehicle, 1000, 1, p, vehicle, i )
+							setTimer ( warpPedIntoVehicle, 1000, 1, p, vehicle, i )
 							fadeCamera ( p, false, 1, 0, 0, 0 )
 							setTimer ( fadeCamera, 1000, 1, p, true, 1 )
 							break
@@ -1142,7 +1167,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				warpPlayer ( source, player )
 			else
 				warpPlayer ( player, data )
-				mdata = getPlayerName ( data )
+				mdata = type ( data ) == "table" and getZoneName ( unpack ( data ) ) or getPlayerName ( data )
 			end
 		else
 			action = nil
@@ -1162,7 +1187,7 @@ end
 addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", _root, function ( player, action, data )
 	if checkClient( "command."..action, source, 'aVehicle', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		if ( not player ) then return end
 		local vehicle = getPedOccupiedVehicle ( player )
 		if ( vehicle ) then
@@ -1246,10 +1271,13 @@ addEvent ( "aResource", true )
 addEventHandler ( "aResource", _root, function ( name, action )
 	if checkClient( "command."..action, source, 'aResource', action ) then return end
 	local pname = getPlayerName ( source )
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local text = ""
 		if ( action == "start" ) then if ( startResource ( getResourceFromName ( name ), true ) ) then text = "started" end
-		elseif ( action == "restart" ) then if ( restartResource ( getResourceFromName ( name ) ) ) then text = "restarted" end
+		elseif ( action == "restart" ) then
+			if ( getResourceState ( getResourceFromName ( name ) ) == "running" ) then 
+				if ( restartResource ( getResourceFromName ( name ) ) ) then text = "restarted" end
+			end
 		elseif ( action == "stop" ) then if ( stopResource ( getResourceFromName ( name ) ) ) then text = "stopped" end
 		elseif ( action == "delete" ) then if ( deleteResource ( getResourceFromName ( name ) ) ) then text = "deleted" end
 		elseif ( action == "stopall" ) then if ( stopAllResources ( ) ) then text = "All Stopped" end
@@ -1270,7 +1298,7 @@ end )
 addEvent ( "aServer", true )
 addEventHandler ( "aServer", _root, function ( action, data, data2 )
 	if checkClient( "command."..action, source, 'aServer', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local mdata = tostring ( data )
 		local mdata2 = ""
 		if ( action == "setgame" ) then
@@ -1424,7 +1452,7 @@ addEventHandler ( "aMessage", _root, function ( action, data )
 			table.remove( aReports, 1 )
 		end
 	end
-	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
+	if ( hasObjectPermissionTo ( client or source, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
 			triggerClientEvent ( source, "aMessage", source, "get", aReports )
 		elseif ( action == "read" ) then
@@ -1459,7 +1487,7 @@ end )
 addEvent ( "aBans", true )
 addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 	if checkClient( "command."..action, source, 'aBans', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local mdata = ""
 		local more = ""
 		if ( action == "banip" ) then
@@ -1520,7 +1548,7 @@ end )
 addEvent ( "aExecute", true )
 addEventHandler ( "aExecute", _root, function ( action, echo )
 	if checkClient( "command.execute", source, 'aExecute', action ) then return end
-	if ( hasObjectPermissionTo ( source, "command.execute" ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command.execute" ) ) then
 		local result = loadstring("return " .. action)()
 		if ( echo == true ) then
 			local restring = ""
@@ -1549,6 +1577,14 @@ addEventHandler ( "aAdminChat", _root, function ( chat )
 	end
 	outputServerLog ("(ADMIN CHAT) "..tostring(getPlayerName(source))..": "..chat)
 end )
+
+addCommandHandler(get("adminChatCommandName"), 
+	function(thePlayer, cmd, ...) 
+		if hasObjectPermissionTo (thePlayer, "general.tab_adminchat", false) and #arg > 0 then
+			triggerEvent("aAdminChat", thePlayer, table.concat(arg, " "))
+		end
+	end
+)
 
 addEventHandler('onElementDataChange', root,
 	function(dataName, oldValue )

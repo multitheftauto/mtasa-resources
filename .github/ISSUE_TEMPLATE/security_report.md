@@ -4,6 +4,6 @@ about: Submit security vulnerability
 
 ---
 
-Please submit your security vulnerabilities to @ccw on forum.mtasa.com. Please do not submit them here.
+# 🛑 **DO NOT DISCLOSE SECURITY VULNERABILITIES PUBLICLY** 🛑
 
-@ccw can be found here: https://forum.mtasa.com/profile/7264-ccw/
+## Please refer to [SECURITY.md](../SECURITY.md) for instructions on how to report security vulnerabilities responsibly.

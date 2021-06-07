@@ -9,7 +9,12 @@ function createSaveDialog()
 	saveDialog.mapsList = guiCreateGridList ( 0.02, 0.08, 0.98, 0.75, true, saveDialog.window )
 	saveDialog.save = guiCreateButton ( 0.780357142, 0.85388845, 0.22857142, 0.05555555, "Save", true, saveDialog.window )
 	saveDialog.cancel = guiCreateButton ( 0.780357142, 0.919444, 0.22857142, 0.05555555, "Cancel", true, saveDialog.window )
-	saveDialog.mapName = guiCreateEdit ( 0.02, 0.87388845, 0.75, 0.08, "", true, saveDialog.window )
+	saveDialog.mapNameLabel = guiCreateLabel ( 0.3, 0.835, 0.45, 0.05555555, "Map Name:", true, saveDialog.window )
+	guiLabelSetVerticalAlign(saveDialog.mapNameLabel, 'center')
+	saveDialog.mapName = guiCreateEdit ( 0.3, 0.9, 0.45, 0.08, "", true, saveDialog.window )
+	saveDialog.directoryLabel = guiCreateLabel ( 0.02, 0.835, 0.25, 0.05555555, "Output Directory:", true, saveDialog.window )
+	guiLabelSetVerticalAlign(saveDialog.directoryLabel, 'center')
+	saveDialog.directory = guiCreateEdit ( 0.02, 0.9, 0.25, 0.08, "", true, saveDialog.window )
 	--
 	guiGridListAddColumn ( saveDialog.mapsList, "Name", 0.4 )
 	guiGridListAddColumn ( saveDialog.mapsList, "Gamemodes", 0.4 )
@@ -70,7 +75,8 @@ end
 
 function saveButton()
 	local resourceName = guiGetText ( saveDialog.mapName )
-	editor_main.saveResource ( resourceName )
+	local directory = guiGetText ( saveDialog.directory )
+	editor_main.saveResource ( resourceName, directory )
 end
 
 function restoreSaveDialog()
@@ -78,7 +84,7 @@ function restoreSaveDialog()
 end
 
 addEvent ( "saveAsShowDialog", true )
-function saveShowDialog( resources )
+function saveShowDialog( resources, directory )
 	if ( exports.editor_main:getMode() ~= 2 ) then
 		exports.editor_main:setMode(2)
 	end
@@ -86,6 +92,8 @@ function saveShowDialog( resources )
 	guiSetInputEnabled ( true )
 	setWorldClickEnabled ( false )
 	guiSetText ( saveDialog.mapName, "" )
+	directory = ( type( directory ) == 'string' ) and string.match(directory, "%[(%a+)%]")
+	guiSetText ( saveDialog.directory, directory or '' )
 	guiGridListClear ( saveDialog.mapsList )
 	for i,res in ipairs(resources) do
 		if res["type"] == "map" and string.lower(res["friendlyName"]) ~= TEST_RESOURCE and string.lower(res["friendlyName"]) ~= DUMP_RESOURCE then

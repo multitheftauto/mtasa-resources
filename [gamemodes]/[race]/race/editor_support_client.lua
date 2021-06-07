@@ -172,7 +172,7 @@ if isEditor() then
 			setElementPosition( g_Vehicle, curpos[1], curpos[2], curpos[3] + 1 )
 			setElementRotation( g_Vehicle, 0,0,rz )
 			setTimer ( function ()
-						setVehicleTurnVelocity( g_Vehicle, 0, 0, 0 )
+						setElementAngularVelocity( g_Vehicle, 0, 0, 0 )
 						end, 50, 5 )
 			setTimer ( function ()
 						setElementVelocity( g_Vehicle, 0, 0, 0 )

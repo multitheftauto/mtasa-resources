@@ -73,7 +73,6 @@ local nameToID = {
 }
 
 
-
 function getStringFromColor( R, G, B, A )
 	if R and G and B then
 		return ('#%02x%02x%02x'):format(R, G, B, A or 255)

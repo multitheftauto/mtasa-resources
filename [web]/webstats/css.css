@@ -1,20 +1,56 @@
+body {
+  font-family: 'Trebuchet MS', Arial, sans-serif;
+  font-size: 0.8em;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+html,
+body {
+  height: 100%;
+}
+
 #topbar {
-	position: absolute;
-	top:0px;
-	right:0px;
-	left:0px;
-	height:23px;
-	background:#555555;
-	color:#FFFFFF;
-	padding:7px;"
+  background: #555;
+  color: #fff;
+  height: 23px;
+  padding: 7px;
 }
 
 #datasets {
-	position: absolute;
-	right: 0px;
-	top: 37px;
-	width: 20%;
-	bottom: 0px;
-	background:#555555;
-	overflow:auto;
+  background: #555;
+  height: 100%;
+  width: 250px;
+}
+
+#chart-container {
+  height: 80%;
+  width: 100%;
+}
+
+#wrapper {
+  display: flex;
+  height: 100%;
+}
+
+#toggleButton {
+  float: right;
+}
+
+details {
+  background: #777;
+}
+
+summary {
+  background: #444444;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+
+details label {
+  cursor: pointer;
+  display: block;
+  padding: 2px 10px;
 }

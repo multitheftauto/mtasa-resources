@@ -59,6 +59,7 @@ function aAdminMain.Open ()
 	end
 	guiSetAlpha ( aAdminMain.Form, 1 )
 	guiSetVisible ( aAdminMain.Form, true )
+	guiSetInputMode( "no_binds_when_editing" )
 	showCursor ( true )
 	aAdminMain.Hidden = false
 end
@@ -96,9 +97,3 @@ function aAdminMain.GetTab ( tab )
 	end
 	return nil
 end
-
-addEventHandler ( "onClientRender", root,
-	function ()
-		guiSetInputMode ( "no_binds_when_editing" )
-	end
-)

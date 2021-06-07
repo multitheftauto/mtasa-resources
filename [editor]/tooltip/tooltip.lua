@@ -290,7 +290,6 @@ function GetBorderColor(tooltip)
 end
 
 
-
 --
 -- processTooltips
 -- Event called for every frame to draw with directx the tooltips

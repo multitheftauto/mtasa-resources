@@ -33,7 +33,7 @@ function onResourceStartOrStop ( )
 				setElementDimension(lodObj, getElementDimension(object) )
 				setElementParent(lodObj, object)
 				setLowLODElement(object, lodObj)
-				table.insert(usedLODModels, lodModel)
+				usedLODModels[lodModel] = true
 			end
 		end
 	end

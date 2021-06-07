@@ -97,6 +97,7 @@
   <config src="conf/commands.xml"					        type="server" />
   <config src="conf/ACL.xml"						        type="server" />
   <!--Images-->
+  <file src="client/images/map.png" />
   <file src="client/images/warning.png" />
   <file src="client/images/error.png" />
   <file src="client/images/question.png" />
@@ -273,5 +274,10 @@
 		   accept="[true],[false]"
 		   desc="Parse console commands."
 	/>
+    <setting name="#adminChatCommandName" value="a"
+        group="General"
+        friendlyname="Admin chat command name"
+        desc="The command name for admin chat."
+  />
   </settings>
 </meta>

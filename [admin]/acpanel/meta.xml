@@ -10,7 +10,6 @@
 
 	<script src="_common.lua" type="client" />
 	<script src="c_joiner.lua" type="client" />
-	<script src="c_main.lua" type="client" />
 	<script src="c_settings.lua" type="client"/>
 	<script src="c_gui.lua" type="client" />
 	<script src="c_gui_ac.lua" type="client" />

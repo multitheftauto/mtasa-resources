@@ -1,5 +1,6 @@
 <meta>
 	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="1.0.2" build="r1157 02May17" edf:definition="edf/race.edf"/>
+	<min_mta_version server="1.5.5-9.14060" client="1.5.5-9.14060"/>
 
 	<include resource="killmessages"/>
 	<include resource="scoreboard"/>
@@ -143,6 +144,13 @@
 					accept="false,true"
 					group="Graphics"
 					desc="Set to true to make vehicle semi-transparent when collisions are disabled."
+					/>
+
+		<setting name="*ghostalphalevel" value="180"
+					friendlyname="Ghost alpha level"
+					accept="0-255"
+					group="Graphics"
+					desc="Amount of transparency when collisions are disabled. Acceptable values are from 0 (fully transparent) to 255 (fully opaque)."
 					/>
 
         <setting name="*randommaps" value="false"
@@ -289,6 +297,12 @@
 					group="Spectating"
 					accept="false,true"
 					desc="Force players to spawn like after death."
+					/>
+		<setting name="*endmapwhenonlyspectators" value="true"
+					friendlyname="End map when only spectators left"
+					group="Spectating"
+					accept="false,true"
+					desc="Set to true to end the map when only spectators are left"
 					/>
 
 		<setting name="*joinrandomvote" value="true"
