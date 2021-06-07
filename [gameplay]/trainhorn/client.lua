@@ -12,7 +12,7 @@ function soundHorn()
 	-- Make it so they can't play multiple train horns at the same time (causes lag and distortion)
 	if (vehicle and getVehicleType(vehicle) == "Train" and getVehicleController(vehicle) == localPlayer and getTickCount() - spam >= 5000) then
 		spam = getTickCount()
-		triggerServerEvent("onSyncHorn", resourceRoot)
+		triggerServerEvent("onSyncHorn", localPlayer)
 		local x, y, z = getElementPosition(vehicle)
 		local sound = playSound3D("horn.aac", x, y, z, false)
 		attachElements(sound, vehicle)

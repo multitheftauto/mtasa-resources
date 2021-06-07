@@ -12,7 +12,7 @@ function syncHorn()
 	end
 end
 addEvent("onSyncHorn", true)
-addEventHandler("onSyncHorn", resourceRoot, syncHorn)
+addEventHandler("onSyncHorn", root, syncHorn)
 
 function quitHandler()
 	spam[source] = nil
