@@ -51,6 +51,7 @@ function aSpectator.Initialize ()
 			i = i + 1
 		end
 
+		aSpectator.CollideWithWalls			= guiCreateCheckBox ( 0.08, 0.8, 0.84, 0.04, "Collide with walls", true, true, aSpectator.Actions )
 		aSpectator.Skip			= guiCreateCheckBox ( 0.08, 0.85, 0.84, 0.04, "Skip dead players", true, true, aSpectator.Actions )
 					  		  guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
 		aSpectator.Back			= guiCreateButton ( 0.10, 0.93, 0.80, 0.05, "Back", true, aSpectator.Actions )
@@ -250,10 +251,19 @@ function aSpectator.Render ()
 		return
 	end
 
+	local offset = aSpectator.Offset
+
+	if guiCheckBoxGetSelected(aSpectator.CollideWithWalls) then
+		local nearest_hit = aSpectator.CheckCollision(x, y, z)
+		if nearest_hit and (nearest_hit < offset) then
+            offset = nearest_hit
+        end
+	end
+
 	local ox, oy, oz
-	ox = x - math.sin ( math.rad ( aSpectator.AngleX ) ) * aSpectator.Offset
-	oy = y - math.cos ( math.rad ( aSpectator.AngleX ) ) * aSpectator.Offset
-	oz = z + math.tan ( math.rad ( aSpectator.AngleZ ) ) * aSpectator.Offset
+	ox = x - math.sin ( math.rad ( aSpectator.AngleX ) ) * offset
+	oy = y - math.cos ( math.rad ( aSpectator.AngleX ) ) * offset
+	oz = z + math.tan ( math.rad ( aSpectator.AngleZ ) ) * offset
 	setCameraMatrix ( ox, oy, oz, x, y, z )
 
 	local sx, sy = guiGetScreenSize ()
@@ -267,6 +277,30 @@ function aSpectator.Render ()
 			dxDrawText ( "Tip: Use mouse scroll to zoom in/out", 20, sy - 50, 20, sy - 50, tocolor ( 255, 255, 255, 255 ), 1 )
 		end
 	end
+end
+
+local checks = {
+    {-1, -0.5},
+    {-1, 0.5},
+    {1, 0.5},
+    {1, -0.5},
+}
+
+function aSpectator.CheckCollision(x, y, z)
+	local nearest_distance
+
+	for k, v in ipairs(checks) do
+		local xx, yy, zz = getPositionFromOffset(getCamera(), v[1], 0, v[2])
+		local hit, hitx, hity, hitz = processLineOfSight(xx, yy, zz, x, y, z, true, true, false, true, true, false, false, false, (getPedOccupiedVehicle(localPlayer) or nil))
+		if hit then
+			local dist = getDistanceBetweenPoints3D(x, y, z, hitx, hity, hitz)
+			if (dist <= (nearest_distance or math.huge)) then
+				nearest_distance = dist
+			end
+		end
+	end
+	
+	return nearest_distance or false
 end
 
 function aSpectator.MoveOffset ( key, state, inc )
@@ -285,4 +319,12 @@ function aSpectator.GetAlive ()
 		end
 	end
 	return alive
+end
+
+function getPositionFromOffset(element, x, y, z)
+    local matrix = getElementMatrix(element)
+    local offX = x * matrix[1][1] + y * matrix[2][1] + z * matrix[3][1] + matrix[4][1]
+    local offY = x * matrix[1][2] + y * matrix[2][2] + z * matrix[3][2] + matrix[4][2]
+    local offZ = x * matrix[1][3] + y * matrix[2][3] + z * matrix[3][3] + matrix[4][3]
+    return offX, offY, offZ
 end
