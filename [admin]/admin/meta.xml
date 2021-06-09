@@ -26,6 +26,7 @@
   <script src="client/admin_ACL.lua" type="client" />
   <script src="client/gui/admin_main.lua" type="client" />
   <script src="client/gui/admin_performance.lua" type="client" />
+  <script src="client/gui/admin_permissions.lua" type="client" />
   <script src="client/gui/admin_maps.lua" type="client" />
   <script src="client/gui/admin_messages.lua" type="client" />
   <script src="client/gui/admin_message.lua" type="client" />
