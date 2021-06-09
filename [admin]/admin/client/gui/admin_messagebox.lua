@@ -147,6 +147,8 @@ function runMessageAction(action)
 		aSpectator.Close(false)
 	elseif (action == "deleteTeam") then
 		triggerServerEvent("aTeam", localPlayer, "destroyteam", varOne)
+	elseif (action == "updatePlayerACLGroup") then
+		aPermissions.PerformAction(varOne, varTwo, varThree)
 	end
 end
 

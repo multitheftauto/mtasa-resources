@@ -681,6 +681,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			for id, acl in ipairs ( aclList() ) do
 				table.insert ( tableOut["acl"] ,aclGetName ( acl ) )
 			end
+			triggerClientEvent ( source, "aAdminACL", _root, type, tableOut )
 		elseif ( type == "aclobjects" ) then
 			local group = aclGetGroup ( tostring ( arg[2] ) )
 			if ( group ) then
@@ -691,6 +692,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					table.insert ( tableOut["acl"], aclGetName ( acl ) )
 				end
 			end
+			triggerClientEvent ( source, "aAdminACL", _root, type, tableOut )
 		elseif ( type == "aclrights" ) then
 			local acl = aclGet ( tostring ( arg[2] ) )
 			if ( acl ) then
@@ -700,8 +702,23 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					tableOut["rights"][name] = aclGetRight ( acl, name )
 				end
 			end
+			triggerClientEvent ( source, "aAdminACL", _root, type, tableOut )
+		elseif ( type == 'playeraclgroups') then
+			local player = arg[2]
+			if isElement(player) then
+				local ignoredGroups = {
+					['Everyone'] = true,
+					['autoGroup_irc'] = true,
+				}
+				for _, v in ipairs(aclGroupList()) do
+					local groupName = aclGroupGetName(v)
+					if (not ignoredGroups[groupName]) then
+						tableOut[groupName] = isObjectInACLGroup('user.'..getAccountName(getPlayerAccount(player)), v)
+					end
+				end
+			end
+			triggerClientEvent ( source, "aPermissionsSync", _root, player, tableOut )
 		end
-		triggerClientEvent ( source, "aAdminACL", _root, type, tableOut )
 	elseif ( action == "aclcreate" ) then
 		local name = arg[2]
 		if ( ( name ) and ( string.len ( name ) >= 1 ) ) then
@@ -759,6 +776,9 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					mdata2 = "Object '"..arg[3].."'"
 				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..object.." to ACL Group "..arg[2])
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
+					if arg[4] then
+						triggerClientEvent ( source, "aOnPermissionsChange", source )
+					end
 				end
 			elseif ( arg[1] == "acl" ) then
 				local group = aclGetGroup ( arg[2] )
@@ -802,6 +822,9 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					mdata2 = "Object '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
 				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
+					if arg[4] then
+						triggerClientEvent ( source, "aOnPermissionsChange", source )
+					end
 				end
 			elseif ( arg[1] == "acl" ) then
 				local group = aclGetGroup ( arg[2] )
