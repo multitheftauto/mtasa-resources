@@ -2,10 +2,11 @@
 	<info name="Race" description="arc_'s MTA Race implementation" author="arc_" type="gamemode" version="1.0.2" build="r1157 02May17" edf:definition="edf/race.edf"/>
 	<min_mta_version server="1.5.5-9.14060" client="1.5.5-9.14060"/>
 
-	<include resource="killmessages"/>
-	<include resource="scoreboard"/>
+	<include resource="mapmanager"/>
 	<include resource="votemanager"/>
 	<include resource="helpmanager" />
+	<include resource="killmessages"/>
+	<include resource="scoreboard"/>
 
 	<script src="race_errorcodes.lua" type="shared"/>
 
