@@ -52,12 +52,27 @@ end
 addEventHandler("onClientPlayerVehicleExit", localPlayer, exitHandler)
 
 local function destroyHandler()
-    if (getElementType(source) == "vehicle") and (getVehicleController(source) == localPlayer) and isSpeedoShown then
+    if isSpeedoShown and (getElementType(source) == "vehicle") and (getPedOccupiedVehicle(localPlayer) == source) then
         toggleRender(false)
     end
 end
 addEventHandler("onClientVehicleExplode", root, destroyHandler)
 addEventHandler("onClientElementDestroy", root, destroyHandler)
+
+-- If player vehicle changes in abnormal way (e.g drives into a vehicle pick-up)
+local function onVehicleTypeChange(oldModel, newModel)
+    if (getElementType(source) ~= "vehicle") then return end
+
+    local newType = getVehicleType(newModel)
+    local oldType = getVehicleType(oldModel)
+
+    if isSpeedoShown and (newType == "Plane") or (newType == "Helicopter") then
+        toggleRender(false)
+    elseif not isSpeedoShown and (oldType == "Plane") or (oldType == "Helicopter") then
+        toggleRender(true)
+    end
+end
+addEventHandler("onClientElementModelChange", root, onVehicleTypeChange)
 
 -- Dying in vehicle, so not triggering onClientPlayerVehicleExit
 function integrityCheck()
