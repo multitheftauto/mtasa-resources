@@ -33,7 +33,7 @@ addCommandHandler("speedo", toggleSpeedo)
 
 local function enterHandler(theVehicle)
     local vehType = getVehicleType(theVehicle)
-	if (vehType == "Plane") or (vehType == "Helicopter") then return end
+    if (vehType == "Plane") or (vehType == "Helicopter") then return end
 
     if not isSpeedoShown then
         toggleRender(true)
@@ -43,7 +43,7 @@ addEventHandler("onClientPlayerVehicleEnter", localPlayer, enterHandler)
 
 local function exitHandler(theVehicle)
     local vehType = getVehicleType(theVehicle)
-	if (vehType == "Plane") or (vehType == "Helicopter") then return end
+    if (vehType == "Plane") or (vehType == "Helicopter") then return end
 
     if isSpeedoShown then
         toggleRender(false)
