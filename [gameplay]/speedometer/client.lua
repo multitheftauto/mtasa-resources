@@ -64,11 +64,10 @@ local function onVehicleTypeChange(oldModel, newModel)
     if (getElementType(source) ~= "vehicle") then return end
 
     local newType = getVehicleType(newModel)
-    local oldType = getVehicleType(oldModel)
 
     if isSpeedoShown and (newType == "Plane") or (newType == "Helicopter") then
         toggleRender(false)
-    elseif not isSpeedoShown and (oldType == "Plane") or (oldType == "Helicopter") then
+    elseif not isSpeedoShown and (newType ~= "Plane") and (newType ~= "Helicopter") then
         toggleRender(true)
     end
 end
