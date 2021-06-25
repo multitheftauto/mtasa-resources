@@ -35,14 +35,14 @@ function outputKillMessage(player, pR, pG, pB, killer, kR, kG, kB, weapon)
     local message = {
         icon = getMessageIcon(weapon, killer),
         victim = {
-            text = getPlayerName(player),
+            text = removeHex(getPlayerName(player)),
             color = {pR, pG, pB},
         }
     }
     
     if (type(killerName) == 'string') then
         message.killer = {
-            text = killerName,
+            text = removeHex(killerName),
             color = {kR, kG, kB},
         }
     end
