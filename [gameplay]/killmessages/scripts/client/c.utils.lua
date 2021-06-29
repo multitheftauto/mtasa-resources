@@ -160,9 +160,8 @@ function getMessageIcon(weapon, attacker)
     elseif (elemType == 'player') then
         local vehicle = getPedOccupiedVehicle(attacker)
         if vehicle then
-            return getMessageIcon(vehicle)
+            return getMessageIcon(_, vehicle)
         end
-    
     end
     
     local texture = getTexture(path)
