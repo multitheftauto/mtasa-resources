@@ -130,7 +130,7 @@
     <settings>
         <setting name="*displayLines" value="5" friendlyname="Display lines" accept="1-10" group="killmessages" desc="The number of lines displayed"/>
         <setting name="*drawMarginRight" value="0.01" friendlyname="Margin right" accept="0-1" group="killmessages" desc="Margin from right (relative)"/>
-        <setting name="*drawMarginBottom" value="0.35" friendlyname="Margin bottom" accept="0-1" group="killmessages" desc="Margin from bottom (relative)"/>
+        <setting name="*drawMarginBottom" value="0.5" friendlyname="Margin bottom" accept="0-1" group="killmessages" desc="Margin from bottom (relative)"/>
         <setting name="*fadeTime" value="1" friendlyname="Fade time" accept="0-3" group="killmessages" desc="Fade (in/out) time (seconds)"/>
         <setting name="*duration" value="10" friendlyname="Message duration" accept="0-20" group="killmessages" desc="The duration of each message (seconds)"/>
         <setting name="*outputConsole" value="true" friendlyname="Output messages to console" accept="true-false" group="killmessages" desc="Send messages to console?"/>
