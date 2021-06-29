@@ -48,12 +48,36 @@ function createKillMessage(_, killer, weapon, bodypart, stealth)
             end
         end
     else
-        if triggerEvent("onPlayerKillMessage", source, false, weapon, bodypart) then
-            eventTriggered(source, false, weapon, bodypart, usedVehicle)
+        -- Avoid showing deaths caused by explosions, cuz they are client-side
+        if (weapon ~= 63) then
+            if triggerEvent("onPlayerKillMessage", source, false, weapon, bodypart) then
+                eventTriggered(source, false, weapon, bodypart, usedVehicle)
+            end
         end
     end
 end
 addEventHandler('onPlayerWasted', root, createKillMessage)
+
+addEvent('outputKillFromClient', true)
+addEventHandler('outputKillFromClient', root, function(killer, veh)
+    if (source ~= client) then
+        return
+    end
+
+    if (not isElement(killer)) then
+        return
+    end
+
+    local killerVehicle = getPedOccupiedVehicle(killer)
+
+    if (killerVehicle ~= veh) then
+        return
+    end
+
+    if triggerEvent("onPlayerKillMessage", client, killer, 19) then
+        eventTriggered(client, killer, 19, nil, veh)
+    end         
+end)
 
 function eventTriggered(player, killer, weapon, bodypart, vehicle)
     outputConsoleMessage(player, killer, vehicle, weapon)
