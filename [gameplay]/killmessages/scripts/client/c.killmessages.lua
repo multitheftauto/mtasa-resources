@@ -134,6 +134,11 @@ end)
 
 addEventHandler('onClientPlayerWasted', localPlayer, function()
     if (not possibleKiller) then
+        -- If there is no possible killer and the current vehicle is exploded
+        local myVehicle = getPedOccupiedVehicle(localPlayer)
+        if myVehicle and isVehicleBlown(myVehicle) then
+            triggerServerEvent('outputKillFromClient', localPlayer, localPlayer, myVehicle)
+        end
         return
     end
     

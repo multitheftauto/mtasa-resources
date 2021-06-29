@@ -73,10 +73,17 @@ addEventHandler('outputKillFromClient', root, function(killer, veh)
     if (killerVehicle ~= veh) then
         return
     end
-
-    if triggerEvent("onPlayerKillMessage", client, killer, 19) then
-        eventTriggered(client, killer, 19, nil, veh)
-    end         
+    
+    -- If the vehicle exploded without suffering damage from enemies
+    if (killer == source) then
+        if triggerEvent("onPlayerKillMessage", source, false, 63) then
+            eventTriggered(source, false, 63)
+        end
+    else
+        if triggerEvent("onPlayerKillMessage", client, killer, 19) then
+            eventTriggered(client, killer, 19, nil, veh)
+        end 
+    end
 end)
 
 function eventTriggered(player, killer, weapon, bodypart, vehicle)
