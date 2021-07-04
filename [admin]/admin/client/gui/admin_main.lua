@@ -1391,7 +1391,7 @@ end
 
 -- anon admin
 function isAnonAdmin()
-	return (isElement(aTab1.AnonAdmin) and guiCheckBoxGetSelected ( aTab1.AnonAdmin )) or getElementData(localPlayer, 'AnonAdmin')
+	return guiCheckBoxGetSelected ( aTab1.AnonAdmin )
 end
 
 function setAnonAdmin( bOn )
@@ -1402,7 +1402,7 @@ end
 
 -- sensitive data
 function isSensitiveDataHidden()
-	return isElement(aTab1.HideSensitiveData) and guiCheckBoxGetSelected(aTab1.HideSensitiveData)
+	return guiCheckBoxGetSelected(aTab1.HideSensitiveData)
 end
 
 function setHideSensitiveData( bOn )
