@@ -25,11 +25,13 @@ function aPermissions.Show(player)
         aPermissions.PlayerGroups = guiCreateGridList(0.03, 0.18, 0.35, 0.68, true, aPermissions.Form)
         guiGridListAddColumn(aPermissions.PlayerGroups, "Group Name", 0.85)
         aPermissions.RemoveGroup = guiCreateButton(0.39, 0.18, 0.075, 0.68, '>\n>\n>', true, aPermissions.Form)
-        
+        guiSetEnabled(aPermissions.RemoveGroup, false)
+
         aPermissions.LabelAllPerms = guiCreateLabel(0.62, 0.1, 0.35, 0.07, ("Available groups:"):format(getPlayerName(player)), true, aPermissions.Form)
         aPermissions.AllGroups = guiCreateGridList(0.62, 0.18, 0.35, 0.68, true, aPermissions.Form)
         guiGridListAddColumn(aPermissions.AllGroups, "Group Name", 0.85)
         aPermissions.AddGroup = guiCreateButton(0.535, 0.18, 0.075, 0.68, '<\n<\n<', true, aPermissions.Form)
+        guiSetEnabled(aPermissions.AddGroup, false)
 
         aPermissions.Update = guiCreateButton(0.03, 0.88, 0.435, 0.09, "Refresh", true, aPermissions.Form)
         aPermissions.Hide = guiCreateButton(0.535, 0.88, 0.435, 0.09, "Close", true, aPermissions.Form)
@@ -83,6 +85,10 @@ function aPermissions.onClick(button)
             aPermissions.ConfirmChange(false)
         elseif (source == aPermissions.AddGroup) then
             aPermissions.ConfirmChange(true)
+        elseif (source == aPermissions.AllGroups) then
+            guiSetEnabled(aPermissions.AddGroup, guiGridListGetSelectedItem(aPermissions.AllGroups) > -1)
+        elseif (source == aPermissions.PlayerGroups) then
+            guiSetEnabled(aPermissions.RemoveGroup, guiGridListGetSelectedItem(aPermissions.PlayerGroups) > -1)
         end
     end
 end
