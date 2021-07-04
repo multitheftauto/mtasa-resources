@@ -18,23 +18,25 @@ addEvent('aOnPermissionsChange', true)
 function aPermissions.Show(player)
     if (not aPermissions.Form) then
         local x, y = guiGetScreenSize()
-        aPermissions.Form = guiCreateWindow(x / 2 - 130, y / 2 - 125, 260, 250, ("Manage %s's permissions"):format(getPlayerName(player)), false)
+        aPermissions.Form = guiCreateWindow(x / 2 - 200, y / 2 - 125, 400, 250, ("Manage %s's permissions"):format(getPlayerName(player)), false)
         guiSetAlpha(aPermissions.Form, 1)
         
-        aPermissions.Label = guiCreateLabel(0.03, 0.09, 0.94, 0.07, "Use double-click to change the current state", true, aPermissions.Form)
-        guiLabelSetHorizontalAlign(aPermissions.Label, "center")
+        aPermissions.LabelYourPerms = guiCreateLabel(0.03, 0.1, 0.35, 0.07, ("%s's groups:"):format(getPlayerName(player)), true, aPermissions.Form)
+        aPermissions.PlayerGroups = guiCreateGridList(0.03, 0.18, 0.35, 0.68, true, aPermissions.Form)
+        guiGridListAddColumn(aPermissions.PlayerGroups, "Group Name", 0.85)
+        aPermissions.RemoveGroup = guiCreateButton(0.39, 0.18, 0.075, 0.68, '>\n>\n>', true, aPermissions.Form)
+        
+        aPermissions.LabelAllPerms = guiCreateLabel(0.62, 0.1, 0.35, 0.07, ("Avaiable groups:"):format(getPlayerName(player)), true, aPermissions.Form)
+        aPermissions.AllGroups = guiCreateGridList(0.62, 0.18, 0.35, 0.68, true, aPermissions.Form)
+        guiGridListAddColumn(aPermissions.AllGroups, "Group Name", 0.85)
+        aPermissions.AddGroup = guiCreateButton(0.535, 0.18, 0.075, 0.68, '<\n<\n<', true, aPermissions.Form)
 
-        aPermissions.List = guiCreateGridList(0.03, 0.18, 0.94, 0.70, true, aPermissions.Form)
-        guiGridListAddColumn(aPermissions.List, "ACL Group", 0.65)
-        guiGridListAddColumn(aPermissions.List, "Has?", 0.2)
-
-        aPermissions.Update = guiCreateButton(0.03, 0.88, 0.47, 0.09, "Refresh", true, aPermissions.Form)
-        aPermissions.Hide = guiCreateButton(0.5, 0.88, 0.47, 0.09, "Close", true, aPermissions.Form)
+        aPermissions.Update = guiCreateButton(0.03, 0.88, 0.435, 0.09, "Refresh", true, aPermissions.Form)
+        aPermissions.Hide = guiCreateButton(0.535, 0.88, 0.435, 0.09, "Close", true, aPermissions.Form)
         
         addEventHandler('aPermissionsSync', localPlayer, aPermissions.onSync)
         addEventHandler('aOnPermissionsChange', localPlayer, aPermissions.Refresh)
         addEventHandler("onClientGUIClick", aPermissions.Form, aPermissions.onClick)
-        addEventHandler("onClientGUIDoubleClick", aPermissions.Form, aPermissions.onDoubleClick)
         
         --Register With Admin Form
         aRegister("PlayerPermissions", aPermissions.Form, aPermissions.Show, aPermissions.Close)
@@ -47,13 +49,12 @@ end
 
 function aPermissions.onSync(targetPlayer, permissions)
     if (targetPlayer == aPermissions.SelectedPlayer) then
-        guiGridListClear(aPermissions.List)
+        guiGridListClear(aPermissions.PlayerGroups)
+        guiGridListClear(aPermissions.AllGroups)
+
         for group, state in pairs(permissions) do
-            local row = guiGridListAddRow(aPermissions.List)
-            guiGridListSetItemText(aPermissions.List, row, 1, group, false, false)
-            guiGridListSetItemText(aPermissions.List, row, 2, state and 'Yes' or 'No', false, false)
-            guiGridListSetItemData(aPermissions.List, row, 1, group)
-            guiGridListSetItemData(aPermissions.List, row, 2, state)
+            local gridlist = state and aPermissions.PlayerGroups or aPermissions.AllGroups
+            guiGridListAddRow(gridlist, group)
         end
     end
 end
@@ -78,31 +79,37 @@ function aPermissions.onClick(button)
             aPermissions.Close()
         elseif (source == aPermissions.Update) then
             aPermissions.Refresh()
+        elseif (source == aPermissions.RemoveGroup) then
+            aPermissions.ConfirmChange(false)
+        elseif (source == aPermissions.AddGroup) then
+            aPermissions.ConfirmChange(true)
         end
     end
 end
 
-function aPermissions.onDoubleClick(button)
-    if (button == 'left') then
-        local player = aPermissions.SelectedPlayer
-        if isElement(player) then
-            local selectedItem = guiGridListGetSelectedItem(aPermissions.List)
-            if (selectedItem > -1) then
-                local selectedGroup = guiGridListGetItemData(aPermissions.List, selectedItem, 1)
-                local currentState = guiGridListGetItemData(aPermissions.List, selectedItem, 2)
-                local confirmStr
-                if currentState then
-                    confirmStr = ('Are you sure you want to remove "%s" from the "%s" group?'):format(getPlayerName(player), selectedGroup)
-                else
-                    confirmStr = ('Are you sure you want to add "%s" to the "%s" group?'):format(getPlayerName(player), selectedGroup)
-                end
-                aMessageBox ( "question", confirmStr, "updatePlayerACLGroup", player, selectedGroup, not currentState )
-            end
-        else
-            aPermissions.Close(false)
-            messageBox("Player not found!", MB_WARNING)
-        end
+function aPermissions.ConfirmChange(add)
+    local player = aPermissions.SelectedPlayer
+
+    if (not isElement(player)) then
+        aPermissions.Close(false)
+        messageBox("Player not found!", MB_WARNING)
+        return
     end
+
+    local gridlist = add and aPermissions.AllGroups or aPermissions.PlayerGroups
+    
+    local selected = guiGridListGetSelectedItem(gridlist)
+
+    if (selected <= -1) then 
+        return 
+    end
+    
+    local groupName = guiGridListGetItemText(gridlist, selected, 1)
+
+    local str = add and 'Are you sure you want to add "%s" to the "%s" group?' or 'Are you sure you want to remove "%s" from the "%s" group?'
+    str = str:format(getPlayerName(player), groupName)
+
+    return aMessageBox ( "question", str, "updatePlayerACLGroup", player, groupName, add)
 end
 
 function aPermissions.PerformAction(player, groupName, newState)
@@ -114,8 +121,9 @@ end
 
 function aPermissions.Refresh()
     local player = aPermissions.SelectedPlayer
-    if isElement(player) and (aPermissions.List) then
-        guiGridListClear(aPermissions.List)
+    if isElement(player) and aPermissions.PlayerGroups and aPermissions.AllGroups then
+        guiGridListClear(aPermissions.PlayerGroups)
+        guiGridListClear(aPermissions.AllGroups)
         triggerServerEvent('aAdmin', localPlayer, "sync", "playeraclgroups", player)
     end
 end
