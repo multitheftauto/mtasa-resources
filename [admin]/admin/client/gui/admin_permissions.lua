@@ -18,16 +18,16 @@ addEvent('aOnPermissionsChange', true)
 function aPermissions.Show(player)
     if (not aPermissions.Form) then
         local x, y = guiGetScreenSize()
-        aPermissions.Form = guiCreateWindow(x / 2 - 200, y / 2 - 125, 400, 250, ("Manage %s's permissions"):format(getPlayerName(player)), false)
+        aPermissions.Form = guiCreateWindow(x / 2 - 200, y / 2 - 125, 400, 250, '', false)
         guiSetAlpha(aPermissions.Form, 1)
         
-        aPermissions.LabelYourPerms = guiCreateLabel(0.03, 0.1, 0.35, 0.07, ("%s's groups:"):format(getPlayerName(player)), true, aPermissions.Form)
+        aPermissions.LabelYourPerms = guiCreateLabel(0.03, 0.1, 0.35, 0.07, '', true, aPermissions.Form)
         aPermissions.PlayerGroups = guiCreateGridList(0.03, 0.18, 0.35, 0.68, true, aPermissions.Form)
         guiGridListAddColumn(aPermissions.PlayerGroups, "Group Name", 0.85)
         aPermissions.RemoveGroup = guiCreateButton(0.39, 0.18, 0.075, 0.68, '>\n>\n>', true, aPermissions.Form)
         guiSetEnabled(aPermissions.RemoveGroup, false)
 
-        aPermissions.LabelAllPerms = guiCreateLabel(0.62, 0.1, 0.35, 0.07, ("Available groups:"):format(getPlayerName(player)), true, aPermissions.Form)
+        aPermissions.LabelAllPerms = guiCreateLabel(0.62, 0.1, 0.35, 0.07, "Available groups:", true, aPermissions.Form)
         aPermissions.AllGroups = guiCreateGridList(0.62, 0.18, 0.35, 0.68, true, aPermissions.Form)
         guiGridListAddColumn(aPermissions.AllGroups, "Group Name", 0.85)
         aPermissions.AddGroup = guiCreateButton(0.535, 0.18, 0.075, 0.68, '<\n<\n<', true, aPermissions.Form)
@@ -43,6 +43,8 @@ function aPermissions.Show(player)
         --Register With Admin Form
         aRegister("PlayerPermissions", aPermissions.Form, aPermissions.Show, aPermissions.Close)
     end
+    guiSetText(aPermissions.Form, ("Manage %s's permissions"):format(getPlayerName(player)))
+    guiSetText(aPermissions.LabelYourPerms, ("%s's groups:"):format(getPlayerName(player)))
     aPermissions.SelectedPlayer = player
     aPermissions.Refresh()
     guiSetVisible(aPermissions.Form, true)
