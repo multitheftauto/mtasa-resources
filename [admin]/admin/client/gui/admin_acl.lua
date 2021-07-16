@@ -11,6 +11,8 @@
 aAclForm = nil
 aAclData = {}
 
+addEvent ( "aAdminACL", true )
+
 function aManageACL ()
 	if ( aAclForm == nil ) then
 		aAclData["group_objects"] = {}
@@ -47,7 +49,6 @@ function aManageACL ()
 		aACLExit		= guiCreateButton ( 0.75, 0.90, 0.27, 0.04, "Close", true, aAclForm )
 		aclDisplayOptions ( "", "" )
 
-		addEvent ( "aAdminACL", true )
 		addEventHandler ( "aAdminACL", localPlayer, aAdminACL )
 		addEventHandler ( "onClientGUIClick", aAclForm, aClientACLClick )
 		addEventHandler ( "onClientGUIDoubleClick", aAclForm, aClientACLDoubleClick )

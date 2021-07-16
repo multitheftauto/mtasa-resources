@@ -75,7 +75,7 @@ function aAdminMenu ()
 
 		aTab1.Nick			= guiCreateButton ( 0.71, 0.260, 0.13, 0.04, "Set Nick", true, aTab1.Tab )
 		aTab1.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aTab1.Tab, "shout" )
-		aTab1.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aTab1.Tab, "setgroup" )
+		aTab1.ManagePerms   = guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Manage permissions", true, aTab1.Tab, "setgroup" )
 
 		local y = 0.03		-- Start y coord
 		local A = 0.045		-- Large line gap
@@ -537,11 +537,6 @@ function aAdminRefresh ()
 			else
 				guiSetText ( aTab1.Vehicle, "Vehicle: Foot" )
 				guiSetText ( aTab1.VehicleHealth, "Vehicle Health: 0%" )
-			end
-			if ( aPlayers[player]["admin"] ) then
-				guiSetText(aTab1.Admin, "Revoke admin rights")
-			else
-				guiSetText(aTab1.Admin, "Give admin rights")
 			end
 			return player
 		end
@@ -1041,9 +1036,12 @@ function aClientClick ( button )
 					elseif ( source == aTab1.VehicleBlow ) then triggerServerEvent ( "aVehicle", localPlayer, player, "blowvehicle" )
 					elseif ( source == aTab1.VehicleDestroy ) then triggerServerEvent ( "aVehicle", localPlayer, player, "destroyvehicle" )
 					elseif ( source == aTab1.VehicleCustomize ) then aVehicleCustomize ( player )
-					elseif ( source == aTab1.Admin ) then
-						if ( aPlayers[player]["admin"] ) then aMessageBox ( "warning", "Revoke admin rights from "..name.."?", "revokeAdmin", player )
-						else aMessageBox ( "warning", "Give admin rights to "..name.."?", "giveAdmin", player ) end
+					elseif ( source == aTab1.ManagePerms ) then
+						if (aPlayers[player]['accountname'] ~= 'guest') then
+							aPermissions.Show(player)
+						else
+							aMessageBox ( "error", "This player is not logged in!" )	
+						end
 					elseif ( source == aTab1.ACModDetails ) then
 						aViewModdetails(player)
 					end
@@ -1290,7 +1288,6 @@ function aAdminReloadInfos()
 		guiSetText ( aTab1.ACModInfo, "Img Mods: N/A" )
 		guiSetText ( aTab1.Mute, "Mute" )
 		guiSetText ( aTab1.Freeze, "Freeze" )
-		guiSetText ( aTab1.Admin, "Give admin rights" )
 		guiSetText ( aTab1.Health, "Health: 0%" )
 		guiSetText ( aTab1.Armour, "Armour: 0%" )
 		guiSetText ( aTab1.Skin, "Skin: N/A" )
