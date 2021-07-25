@@ -61,7 +61,7 @@ addEventHandler("onClientElementDestroy", root, destroyHandler)
 
 -- If player vehicle changes in abnormal way (e.g drives into a vehicle pick-up)
 local function onVehicleTypeChange(oldModel, newModel)
-    if (getElementType(source) ~= "vehicle") then return end
+    if (getPedOccupiedVehicle(localPlayer) ~= source) then return end
 
     local newType = getVehicleType(newModel)
 

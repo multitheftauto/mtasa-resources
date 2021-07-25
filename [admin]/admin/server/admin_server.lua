@@ -481,7 +481,7 @@ addCommandHandler ( "register", function ( player, command, arg1, arg2 )
 end )
 
 -- This requires "function.removeAccount" permission for both the admin resource and the player
-addCommandHandler ( "unregister", function ( player, command, arg1, arg2 )
+addCommandHandler ( "unregister", function ( player, command, arg1 )
 	local username = arg1 or ""
 	local result = "failed - No permission"
 	if ( hasObjectPermissionTo ( player, "function.removeAccount" ) ) then
