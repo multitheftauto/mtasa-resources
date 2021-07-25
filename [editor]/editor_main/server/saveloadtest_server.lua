@@ -298,7 +298,7 @@ end
 addEventHandler ( "saveResource", rootElement, saveResource )
 
 function saveOrganizationalDirectory(directory)
-	if ( utf8.len ( directory ) == 0 ) then
+	if (type(directory) ~= 'string') or (utf8.len (directory) == 0) then
 		directory = 'none'
 	else
 		directory = '[' .. directory .. ']'	
