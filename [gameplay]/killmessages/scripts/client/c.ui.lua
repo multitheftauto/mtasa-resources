@@ -30,7 +30,7 @@ function outputMessage(new)
     return true
 end
 addEvent('doOutputMessage', true)
-addEventHandler('doOutputMessage', root, outputMessage)
+addEventHandler('doOutputMessage', resourceRoot, outputMessage)
 
 function renderMessages()
     local now = getTickCount()
