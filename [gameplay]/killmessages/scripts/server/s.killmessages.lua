@@ -68,16 +68,9 @@ addEventHandler('outputKillFromClient', root, function(killer, veh)
         return
     end
 
-    local killerVehicle = getPedOccupiedVehicle(killer)
-
-    if (killerVehicle ~= veh) then
-        return
-    end
-
-    -- If the vehicle exploded without suffering damage from enemies
     if (killer == source) then
-        if triggerEvent("onPlayerKillMessage", source, false, 63) then
-            eventTriggered(source, false, 63)
+        if triggerEvent("onPlayerKillMessage", source, false, veh and 63 or 999) then
+            eventTriggered(source, false, veh and 63 or 999)
         end
     else
         if triggerEvent("onPlayerKillMessage", client, killer, 19) then

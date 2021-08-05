@@ -142,6 +142,7 @@ local customIcons = {
     [588] = "icons/588.png",
     [593] = "icons/593.png",
     [599] = "icons/599.png",
+    [999] = "icons/generic.png",
 }
 
 function getMessageIcon(weapon, attacker)
