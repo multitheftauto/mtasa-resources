@@ -112,7 +112,7 @@ function outputMessage(message, visibleTo, r, g, b, font)
         outputDebugString("outputMessage - Bad 'visibleTo' argument", 0, 112, 112, 112)
         return false
     end
-    return triggerClientEvent(visibleTo, "doOutputMessage", visibleTo, message, r, g, b, font)
+    return triggerClientEvent(visibleTo, "doOutputMessage", resourceRoot, message, r, g, b, font)
 end
 
 function outputConsoleMessage(player, killer, vehicle, weapon)
