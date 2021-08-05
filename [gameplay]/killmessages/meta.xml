@@ -1,5 +1,5 @@
 <meta>
-    <info author="Talidan + Iggy" type="script" version="2.0.2"/>
+    <info author="iDannz + Talidan + Iggy" type="script" version="2.0.2"/>
     <min_mta_version client="1.5.7-9.20447"></min_mta_version>
 
     <script type="server" src="scripts/server/s.killmessages.lua"/>
