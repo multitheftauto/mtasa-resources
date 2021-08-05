@@ -108,7 +108,7 @@ function outputMessage(message, visibleTo, r, g, b, font)
         outputDebugString("outputMessage - Bad 'message' argument", 0, 112, 112, 112)
         return false
     end
-    if (not isElement(visibleTo)) then
+    if (not isElement(visibleTo)) and (type(visibleTo) ~= "table") then
         outputDebugString("outputMessage - Bad 'visibleTo' argument", 0, 112, 112, 112)
         return false
     end
