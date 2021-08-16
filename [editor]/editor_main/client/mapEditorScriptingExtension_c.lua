@@ -3,7 +3,7 @@
 -- VERSION:	RemoveWorldObjects (v1) AutoLOD (v1) BreakableObjects (v1)
 
 function requestLODsClient()
-	triggerServerEvent("requestLODsClient", resourceRoot)
+	triggerServerEvent("requestLODsClient", localPlayer)
 end
 addEventHandler("onClientResourceStart", resourceRoot, requestLODsClient)
 
@@ -13,13 +13,17 @@ function setLODsClient(lodTbl)
 	end
 end
 addEvent("setLODsClient", true)
-addEventHandler("setLODsClient", resourceRoot, setLODsClient)
+addEventHandler("setLODsClient", root, setLODsClient)
 
 function applyBreakableState()
-	for k, obj in pairs(getElementsByType("object", resourceRoot)) do
-		local breakable = getElementData(obj, "breakable")
-		if breakable then
-			setObjectBreakable(obj, breakable == "true")
+	local objectsTable = getElementsByType("object", resourceRoot)
+
+	for objectID = 1, #objectsTable do
+		local objectElement = objectsTable[objectID]
+		local objectBreakable = getElementData(objectElement, "breakable")
+
+		if objectBreakable then
+			setObjectBreakable(objectElement, objectBreakable == "true")
 		end
 	end
 end
