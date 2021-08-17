@@ -64,10 +64,10 @@ addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop)
 
 function receiveLODsClientRequest()
-	triggerClientEvent(client, "setLODsClient", client, usedLODModels)
+	triggerClientEvent(client, "setLODsClient", resourceRoot, usedLODModels)
 end
 addEvent("requestLODsClient", true)
-addEventHandler("requestLODsClient", root, receiveLODsClientRequest)
+addEventHandler("requestLODsClient", resourceRoot, receiveLODsClientRequest)
 
 -- MTA LOD Table [object] = [lodmodel]
 

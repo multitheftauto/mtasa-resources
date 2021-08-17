@@ -3,7 +3,7 @@
 -- VERSION:	RemoveWorldObjects (v1) AutoLOD (v1) BreakableObjects (v1)
 
 function requestLODsClient()
-	triggerServerEvent("requestLODsClient", localPlayer)
+	triggerServerEvent("requestLODsClient", resourceRoot)
 end
 addEventHandler("onClientResourceStart", resourceRoot, requestLODsClient)
 
@@ -13,7 +13,7 @@ function setLODsClient(lodTbl)
 	end
 end
 addEvent("setLODsClient", true)
-addEventHandler("setLODsClient", root, setLODsClient)
+addEventHandler("setLODsClient", resourceRoot, setLODsClient)
 
 function applyBreakableState()
 	local objectsTable = getElementsByType("object", resourceRoot)
