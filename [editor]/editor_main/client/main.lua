@@ -1178,7 +1178,7 @@ function processCameraLineOfSight()
 	local surfaceFound, targetX, targetY, targetZ, targetElement,
             nx, ny, nz, material, lighting, piece,
             buildingId, bx, by, bz, brx, bry, brz, buildingLOD
-		= processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
+		= processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, false, false, false, localPlayer, true)
 	
 	-- Is this a collision patch object
 	if targetElement and isColPatchObject(targetElement) then
@@ -1209,7 +1209,7 @@ function processCursorLineOfSight()
 	local surfaceFound, targetX, targetY, targetZ, targetElement,
             nx, ny, nz, material, lighting, piece,
             buildingId, bx, by, bz, brx, bry, brz, buildingLOD
-        = processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)
+        = processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, false, false, false, localPlayer, true)
 
 	-- Is this a collision patch object
 	if targetElement and isColPatchObject(targetElement) then
