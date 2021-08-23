@@ -91,8 +91,6 @@ function aClientBanClick(button)
     if (button == "left") then
         if (source == aBanClose) then
             aBanDetailsClose(false)
-        elseif (source == aBanUnban) then
-            triggerEvent("onClientGUIClick", aTab4.BansUnban, "left")
         end
     end
 end
