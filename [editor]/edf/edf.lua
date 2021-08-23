@@ -625,6 +625,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 				edfSetElementRotation(newElement, dataValue[1], dataValue[2], dataValue[3])
 			elseif dataField == "interior" then
 				setElementInterior(newElement, dataValue)
+				setElementData(newElement, dataField, dataValue)
 			elseif dataField == "dimension" then
 				setElementDimension(newElement, dataValue)
 			elseif dataField == "alpha" then
