@@ -214,14 +214,6 @@ function realTimeToSeconds( time )
 	return seconds
 end
 
-function realTimeToSecondsTest()
-	for i=1,100 do
-		local time1 = getRealTime( math.random(0, 60*60*24*365*50) )	-- Get a random date between 1970 and 2020
-		local time2 = getRealTime( realTimeToSeconds( time1 ) )
-		assert( getRealDateTimeString( time1 ) == getRealDateTimeString( time2 ) )
-	end
-end
-
 -- seconds to description i.e. "10 mins"
 function secondsToTimeDesc( seconds )
 	if seconds then
