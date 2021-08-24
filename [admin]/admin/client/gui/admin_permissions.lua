@@ -100,7 +100,7 @@ function aPermissions.ConfirmChange(add)
 
     if (not isElement(player)) then
         aPermissions.Close(false)
-        messageBox("Player not found!", MB_WARNING)
+        aMessageBox ( "error", "Player not found!")
         return
     end
 
