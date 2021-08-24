@@ -1637,6 +1637,8 @@ function checkClient(checkAccess,player,...)
 				return false	-- Access ok
 			end
 			if hasObjectPermissionTo ( player, "general.adminpanel" ) then
+				local desc = table.concat({...}," ")
+				local ipAddress = getPlayerIP(player)
 				outputDebugString( "Admin security - Client does not have required rights ("..checkAccess.."). " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")" )
 				return true		-- Low risk fail - Can't do specific command, but has access to admin panel
 			end
