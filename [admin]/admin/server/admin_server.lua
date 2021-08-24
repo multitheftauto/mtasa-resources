@@ -1094,7 +1094,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 			else
 				if ( getPedOccupiedVehicle ( player ) ) then outputChatBox ( "Unable to give a jetpack - "..getPlayerName ( player ).." is in a vehicle", source, 255, 0, 0 )
 				else
-					if ( givePedJetPack ( player ) ) then
+					if ( setPedWearingJetpack ( player, true ) ) then
 						action = "jetpacka"
 					end
 				end
