@@ -1216,10 +1216,10 @@ addEventHandler ( "aVehicle", _root, function ( player, action, data )
 			local mdata = ""
 			if ( action == "repair" ) then
 				fixVehicle ( vehicle )
-				local rx, ry, rz = getVehicleRotation ( vehicle )
+				local rx, ry, rz = getElementRotation ( vehicle )
 				if ( rx > 110 ) and ( rx < 250 ) then
 					local x, y, z = getElementPosition ( vehicle )
-					setVehicleRotation ( vehicle, rx + 180, ry, rz )
+					setElementRotation ( vehicle, rx + 180, ry, rz )
 					setElementPosition ( vehicle, x, y, z + 2 )
 				end
 			elseif ( action == "customize" ) then
