@@ -241,9 +241,9 @@ function aClientVehicleClick ( button )
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setlights", { guiGetText ( aLightsColor ) } )
 		elseif ( source == aLicensePlateSet ) then
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setplates", { guiGetText ( aLicensePlate ) } )
-		elseif ( source == aVehicleColorScheme ) then
-			guiSetVisible ( aVehicleColorForm, true )
-			guiBringToFront ( aVehicleColorForm )
+		-- elseif ( source == aVehicleColorScheme ) then
+		-- 	guiSetVisible ( aVehicleColorForm, true )
+		-- 	guiBringToFront ( aVehicleColorForm )
 		elseif ( source == aVehicleUpgradeAll ) then
 			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "customize", { "all" } )
 			setTimer ( aVehicleCheckCurrentUpgrades, 2000, 1, aVehicleCustomizeVehicle )
