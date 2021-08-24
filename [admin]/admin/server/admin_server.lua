@@ -440,7 +440,7 @@ addEventHandler ( "aPlayerVersion", _root, function ( version )
 	end
 
 	-- Format it all prettyful
-	local _,_,ver,type,build = string.find ( playerVersion, "(.*)-([0-9])\.(.*)" )
+	local _,_,ver,type,build = string.find ( playerVersion, "(.*)-([0-9])%.(.*)" )
 	if aPlayers[source] then
 		aPlayers[source]["version"] = ver .. ( type < '9' and " pre  " or "  " ) .. "(" .. type .. "." .. build .. ")"
 	end
