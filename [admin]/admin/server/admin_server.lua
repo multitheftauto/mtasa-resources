@@ -1088,7 +1088,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				action = nil
 			end
 		elseif ( action == "jetpack" ) then
-			if ( doesPedHaveJetPack ( player ) ) then
+			if ( isPedWearingJetpack ( player ) ) then
 				removePedJetPack ( player )
 				action = "jetpackr"
 			else

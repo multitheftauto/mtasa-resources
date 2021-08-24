@@ -515,7 +515,7 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Money, "Money: "..( aPlayers[player]["money"] or 0 ) )
 			if ( getElementDimension ( player ) ) then guiSetText ( aTab1.Dimension, "Dimension: "..getElementDimension ( player ) ) end
 			if ( getElementInterior ( player ) ) then guiSetText ( aTab1.Interior, "Interior: "..getElementInterior ( player ) ) end
-			guiSetText ( aTab1.JetPack, iif ( doesPedHaveJetPack ( player ), "Remove JetPack", "Give JetPack" ) )
+			guiSetText ( aTab1.JetPack, iif ( isPedWearingJetpack ( player ), "Remove JetPack", "Give JetPack" ) )
 			if ( getPedWeapon ( player ) ) then guiSetText ( aTab1.Weapon, "Weapon: "..getWeaponNameFromID ( getPedWeapon ( player ) ).." (ID: "..getPedWeapon ( player )..")" ) end
 			
 			local x, y, z = getElementPosition ( player )
