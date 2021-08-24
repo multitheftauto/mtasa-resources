@@ -42,7 +42,7 @@ function aManageSettings ( resName )
 end
 
 function aSettingsClose ( destroy )
-	if ( ( destroy ) or ( aPerformanceSettings and guiCheckBoxGetSelected ( aPerformanceSettings ) ) ) then
+	if ( destroy ) then
 		if ( aSettingsForm ) then
 			removeEventHandler ( "onClientGUIClick", aSettingsForm, aClientSettingsClick )
 			removeEventHandler ( "onClientGUIDoubleClick", aSettingsForm, aClientSettingsDoubleClick )
