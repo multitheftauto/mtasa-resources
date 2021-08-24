@@ -569,7 +569,6 @@ addEvent ( "aTeam", true )
 addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
 	if checkClient( "command."..action, source, 'aTeam', action ) then return end
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
-		mdata = tostring ( data )
 		mdata = ""
 		if ( action == "createteam" ) then
 			local success = false
@@ -592,7 +591,7 @@ addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
 		else
 			action = nil
 		end
-		if ( action ~= nil ) then aAction ( "server", action, source, false, mdata, mdata2 ) end
+		if ( action ~= nil ) then aAction ( "server", action, source, false, mdata ) end
 		return true
 	end
 	outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
