@@ -879,7 +879,7 @@ function warp ( p, to )
 		r, dim, int = 0, 0, 0
 	else
 		x, y, z = getElementPosition ( to )
-		r = getPedRotation ( to )
+		_, _, r = getElementRotation ( to )
 		dim = getElementDimension ( to )
 		int = getElementInterior ( to )
 	end
@@ -1069,7 +1069,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 						setElementPosition ( vehicle, x, y, z + 0.2 )
 					else
 						setElementPosition ( player, x, y, z + 0.2 )
-						setPedRotation ( player, rot )
+						setElementRotation ( player, 0, 0, rot, 'default', true )
 					end
 					action = "interior"
 					mdata = data
@@ -1129,7 +1129,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				fixVehicle(vehicle)
 			else
 				local x, y, z = getElementPosition ( player )
-				local r = getPedRotation ( player )
+				local _, _, r = getElementRotation ( player )
 				local vx, vy, vz = getElementVelocity ( player )
 				vehicle = createVehicle ( data, x, y, z, 0, 0, r )
 				setElementDimension ( vehicle, getElementDimension ( player ) )
