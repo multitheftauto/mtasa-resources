@@ -498,7 +498,6 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Name, "Name: ".. playerName)
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unmute", "Mute" ) )
 			guiSetText ( aTab1.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
-			--guiSetText ( aTab1.Username, "Community Username: "..( aPlayers[player]["username"] or "" ) )
 			guiSetText ( aTab1.Version, "Version: "..( aPlayers[player]["version"] or "" ) )
 			guiSetText ( aTab1.Accountname, "Account Name: "..getSensitiveText( aPlayers[player]["accountname"] or "" ) )
 			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
@@ -776,7 +775,7 @@ function aClientResourceStop ( resource )
 	end
 end
 
-function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
+function aClientPlayerJoin ( ip, accountname, serial, admin, country )
 	if ip == false and serial == false then
 		-- Update country only
 		if aPlayers[source] then
@@ -787,7 +786,6 @@ function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
 	aPlayers[source] = {}
 	aPlayers[source]["name"] = getPlayerName ( source )
 	aPlayers[source]["IP"] = ip
-	aPlayers[source]["username"] = username or "N/A"
 	aPlayers[source]["accountname"] = accountname or "N/A"
 	aPlayers[source]["serial"] = serial
 	aPlayers[source]["admin"] = admin
@@ -1250,14 +1248,12 @@ function aAdminReloadInfos()
 				outputConsole(('Name: %s'):format(playerName))
 				outputConsole(('IP: %s'):format(aPlayers[player]["IP"]))
 				outputConsole(('Serial: %s'):format(aPlayers[player]["serial"]))
-				-- outputConsole(('Community Username: %s'):format(aPlayers[player]["username"]))
 				outputConsole(('Account Name: %s'):format(aPlayers[player]["accountname"]))
 				outputConsole(('D3D9.DLL: %s'):format(aPlayers[player]["d3d9dll"]))
 				outputConsole(' ')
 			end
 			guiSetText ( aTab1.IP, "IP: "..getSensitiveText( aPlayers[player]["IP"] ) )
 			guiSetText ( aTab1.Serial, "Serial: "..getSensitiveText( aPlayers[player]["serial"] ) )
-			--guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
 			guiSetText ( aTab1.Accountname, "Account Name: "..getSensitiveText( aPlayers[player]["accountname"] ) )
 			guiSetText ( aTab1.ACDetected, "AC Detected: "..aPlayers[player]["acdetected"] )
 			guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..aPlayers[player]["d3d9dll"] )

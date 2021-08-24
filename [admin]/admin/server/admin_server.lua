@@ -381,7 +381,7 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 	aPlayerInitialize ( source )
 	for id, player in ipairs(getElementsByType("player")) do
 		if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-			triggerClientEvent ( player, "aClientPlayerJoin", source, getPlayerIP ( source ), getPlayerUserName ( source ), getPlayerAccountName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
+			triggerClientEvent ( player, "aClientPlayerJoin", source, getPlayerIP ( source ), getPlayerAccountName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
 		end
 	end
 	setPedGravity ( source, getGravity() )
@@ -394,7 +394,7 @@ function aPlayerInitialize ( player )
 		kickPlayer ( player, "Invalid Serial" )
 	else
 		bindKey ( player, "p", "down", "admin" )
-		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
+		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerSerial ( player ) )
 		aPlayers[player] = {}
 		aPlayers[player]["country"] = getPlayerCountry ( player )
 		aPlayers[player]["money"] = getPlayerMoney ( player )
