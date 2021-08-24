@@ -9,7 +9,7 @@
 **************************************]]
 
 aMessageForm = nil
-local varOne, varTwo, varThree = vOne, vTwo, vThree
+local varOne, varTwo, varThree
 
 function aMessageBox ( type, message, action, vOne, vTwo, vThree )
 	local x, y = guiGetScreenSize()
