@@ -122,20 +122,6 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		tableOut["map"] = getMapName()
 		tableOut["password"] = getServerPassword()
 		tableOut["fps"] = getFPSLimit()
-	elseif ( type == "rights" ) then
-		for gi, group in ipairs ( aclListGroups() ) do
-			for oi, object in ipairs ( aclGroupListObjects ( group ) ) do
-				if ( ( object == data ) or ( object == "user.*" ) ) then
-					for ai, acl in ipairs ( aclGroupListACL ( group ) ) do
-						for ri, right in ipairs ( aclListRights ( acl ) ) do
-							local access = aclGetRight ( acl, string )
-							if ( access ) then table.insert ( tableOut, right ) end
-						end
-					end
-					break
-				end
-			end
-		end
 	elseif ( type == "bansdirty" ) then
 		tableOut = nil
 		g_Bans = nil
