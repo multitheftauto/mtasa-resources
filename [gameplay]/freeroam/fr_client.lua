@@ -2130,7 +2130,9 @@ addEventHandler("onClientElementDestroy", root, onExitVehicle)
 
 function killLocalPlayer()
 	if g_settings["kill"] then
-		setElementHealth(localPlayer,0)
+		if (not isPedDead(localPlayer)) then
+			triggerServerEvent("onFreeroamSuicide", localPlayer)
+		end
 	else
 		errMsg("Killing yourself is disallowed!")
 	end
