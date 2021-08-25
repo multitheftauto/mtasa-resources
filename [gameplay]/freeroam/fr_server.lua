@@ -609,7 +609,5 @@ addEvent('onFreeroamSuicide', true)
 addEventHandler('onFreeroamSuicide', root, function ()
 	if isElement(client) and (not isPedDead(client)) then
 		killPed(client, client)
-	else
-		print('flood', getTickCount())
 	end
 end)
