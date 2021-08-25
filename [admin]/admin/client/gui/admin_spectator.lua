@@ -112,7 +112,7 @@ function aSpectator.Close ( destroy )
         toggleControl ( "aim_weapon", true )
         removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
         removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
-        removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
+        removeEventHandler ( "onClientCursorMove", _root, aSpectator.CursorMove )
         removeEventHandler ( "onClientPreRender", _root, aSpectator.Render )
 
         if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceSpectator ) ) ) then
