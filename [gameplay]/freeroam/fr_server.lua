@@ -604,3 +604,10 @@ function getPlayerName(player)
 end
 
 addEvent("onFreeroamLocalSettingChange",true)
+
+addEvent('onFreeroamSuicide', true)
+addEventHandler('onFreeroamSuicide', root, function ()
+	if isElement(client) and (not isPedDead(client)) then
+		killPed(client, client)
+	end
+end)
