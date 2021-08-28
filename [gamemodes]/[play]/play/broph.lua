@@ -26,8 +26,8 @@ addEventHandler("onResourceStart", resourceRoot, function()
 		spawn(players)
 	end
 
-	for k, v in pairs(vehsToSpawn) do
-		createVeh(v)
+	for index, value in ipairs(vehsToSpawn) do
+		createVeh(value)
 	end
 end)
 
