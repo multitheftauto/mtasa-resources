@@ -1347,6 +1347,9 @@ function handleWorldBuildingMode(keyState)
 					creationParameters.radius = radius
 					creationParameters.position = { g_worldBuildingInfo.x, g_worldBuildingInfo.y, g_worldBuildingInfo.z }
 					creationParameters.interior = g_workingInterior
+					if creationParameters.interior == 0 then
+						creationParameters.interior = -1
+					end
 					triggerServerEvent ( "doCreateElement", localPlayer, "removeWorldObject", "editor_main", creationParameters, false )
 				else
 					creationParameters = {}
