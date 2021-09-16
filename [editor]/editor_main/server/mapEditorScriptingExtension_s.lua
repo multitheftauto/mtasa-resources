@@ -5,7 +5,7 @@
 local usedLODModels = {}
 local LOD_MAP = {}
 
-function onResourceStartOrStop()
+function onResourceStartOrStop(startedResource)
 	local startEvent = eventName == "onResourceStart"
 	local removeObjects = getElementsByType("removeWorldObject", source)
 
@@ -29,8 +29,7 @@ function onResourceStartOrStop()
 	end
 
 	if startEvent then
-		local thisResource = getThisResource()
-		local resourceName = getResourceName(thisResource)
+		local resourceName = getResourceName(startedResource)
 		local useLODs = get(resourceName..".useLODs")
 
 		if useLODs then
