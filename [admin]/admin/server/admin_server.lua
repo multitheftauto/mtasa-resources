@@ -381,7 +381,7 @@ addEventHandler ( "onPlayerJoin", _root, function ()
 	aPlayerInitialize ( source )
 	for id, player in ipairs(getElementsByType("player")) do
 		if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-			triggerClientEvent ( player, "aClientPlayerJoin", source, getPlayerIP ( source ), getPlayerUserName ( source ), getPlayerAccountName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
+			triggerClientEvent ( player, "aClientPlayerJoin", source, getPlayerIP ( source ), getPlayerAccountName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
 		end
 	end
 	setPedGravity ( source, getGravity() )
@@ -394,7 +394,7 @@ function aPlayerInitialize ( player )
 		kickPlayer ( player, "Invalid Serial" )
 	else
 		bindKey ( player, "p", "down", "admin" )
-		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerUserName ( player ), getPlayerSerial ( player ) )
+		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerSerial ( player ) )
 		aPlayers[player] = {}
 		aPlayers[player]["country"] = getPlayerCountry ( player )
 		aPlayers[player]["money"] = getPlayerMoney ( player )
@@ -440,7 +440,7 @@ addEventHandler ( "aPlayerVersion", _root, function ( version )
 	end
 
 	-- Format it all prettyful
-	local _,_,ver,type,build = string.find ( playerVersion, "(.*)-([0-9])\.(.*)" )
+	local _,_,ver,type,build = string.find ( playerVersion, "(.*)-([0-9])%.(.*)" )
 	if aPlayers[source] then
 		aPlayers[source]["version"] = ver .. ( type < '9' and " pre  " or "  " ) .. "(" .. type .. "." .. build .. ")"
 	end
@@ -569,7 +569,6 @@ addEvent ( "aTeam", true )
 addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
 	if checkClient( "command."..action, source, 'aTeam', action ) then return end
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
-		mdata = tostring ( data )
 		mdata = ""
 		if ( action == "createteam" ) then
 			local success = false
@@ -592,7 +591,7 @@ addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
 		else
 			action = nil
 		end
-		if ( action ~= nil ) then aAction ( "server", action, source, false, mdata, mdata2 ) end
+		if ( action ~= nil ) then aAction ( "server", action, source, false, mdata ) end
 		return true
 	end
 	outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
@@ -880,7 +879,7 @@ function warp ( p, to )
 		r, dim, int = 0, 0, 0
 	else
 		x, y, z = getElementPosition ( to )
-		r = getPedRotation ( to )
+		_, _, r = getElementRotation ( to )
 		dim = getElementDimension ( to )
 		int = getElementInterior ( to )
 	end
@@ -1070,7 +1069,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 						setElementPosition ( vehicle, x, y, z + 0.2 )
 					else
 						setElementPosition ( player, x, y, z + 0.2 )
-						setPedRotation ( player, rot )
+						setElementRotation ( player, 0, 0, rot, 'default', true )
 					end
 					action = "interior"
 					mdata = data
@@ -1088,13 +1087,13 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				action = nil
 			end
 		elseif ( action == "jetpack" ) then
-			if ( doesPedHaveJetPack ( player ) ) then
-				removePedJetPack ( player )
+			if ( isPedWearingJetpack ( player ) ) then
+				setPedWearingJetpack ( player, false )
 				action = "jetpackr"
 			else
 				if ( getPedOccupiedVehicle ( player ) ) then outputChatBox ( "Unable to give a jetpack - "..getPlayerName ( player ).." is in a vehicle", source, 255, 0, 0 )
 				else
-					if ( givePedJetPack ( player ) ) then
+					if ( setPedWearingJetpack ( player, true ) ) then
 						action = "jetpacka"
 					end
 				end
@@ -1130,7 +1129,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 				fixVehicle(vehicle)
 			else
 				local x, y, z = getElementPosition ( player )
-				local r = getPedRotation ( player )
+				local _, _, r = getElementRotation ( player )
 				local vx, vy, vz = getElementVelocity ( player )
 				vehicle = createVehicle ( data, x, y, z, 0, 0, r )
 				setElementDimension ( vehicle, getElementDimension ( player ) )
@@ -1217,10 +1216,10 @@ addEventHandler ( "aVehicle", _root, function ( player, action, data )
 			local mdata = ""
 			if ( action == "repair" ) then
 				fixVehicle ( vehicle )
-				local rx, ry, rz = getVehicleRotation ( vehicle )
+				local rx, ry, rz = getElementRotation ( vehicle )
 				if ( rx > 110 ) and ( rx < 250 ) then
 					local x, y, z = getElementPosition ( vehicle )
-					setVehicleRotation ( vehicle, rx + 180, ry, rz )
+					setElementRotation ( vehicle, rx + 180, ry, rz )
 					setElementPosition ( vehicle, x, y, z + 2 )
 				end
 			elseif ( action == "customize" ) then
@@ -1637,6 +1636,8 @@ function checkClient(checkAccess,player,...)
 				return false	-- Access ok
 			end
 			if hasObjectPermissionTo ( player, "general.adminpanel" ) then
+				local desc = table.concat({...}," ")
+				local ipAddress = getPlayerIP(player)
 				outputDebugString( "Admin security - Client does not have required rights ("..checkAccess.."). " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")" )
 				return true		-- Low risk fail - Can't do specific command, but has access to admin panel
 			end

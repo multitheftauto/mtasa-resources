@@ -23,7 +23,6 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		tableOut["mute"] = isPlayerMuted ( data )
 		tableOut["freeze"] = isPlayerFrozen ( data )
 		tableOut["money"] = getPlayerMoney ( data )
-		tableOut["username"] = getPlayerUserName ( data ) or "N/A"
 		tableOut["version"] = aPlayers[data]["version"]
 		tableOut["accountname"] = getPlayerAccountName ( data ) or "N/A"
 		tableOut["groups"] = "None"
@@ -48,7 +47,6 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 				tableOut[player] = {}
 				tableOut[player]["name"] = getPlayerName ( player )
 				tableOut[player]["IP"] = getPlayerIP ( player )
-				tableOut[player]["username"] = getPlayerUserName ( player ) or "N/A"
 				tableOut[player]["version"] = aPlayers[player]["version"]
 				tableOut[player]["accountname"] = getPlayerAccountName ( player ) or "N/A"
 				tableOut[player]["serial"] = getPlayerSerial ( player )
@@ -124,20 +122,6 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		tableOut["map"] = getMapName()
 		tableOut["password"] = getServerPassword()
 		tableOut["fps"] = getFPSLimit()
-	elseif ( type == "rights" ) then
-		for gi, group in ipairs ( aclListGroups() ) do
-			for oi, object in ipairs ( aclGroupListObjects ( group ) ) do
-				if ( ( object == data ) or ( object == "user.*" ) ) then
-					for ai, acl in ipairs ( aclGroupListACL ( group ) ) do
-						for ri, right in ipairs ( aclListRights ( acl ) ) do
-							local access = aclGetRight ( acl, string )
-							if ( access ) then table.insert ( tableOut, right ) end
-						end
-					end
-					break
-				end
-			end
-		end
 	elseif ( type == "bansdirty" ) then
 		tableOut = nil
 		g_Bans = nil
