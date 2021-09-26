@@ -94,7 +94,7 @@ function sfxBrowser:playCurrent()
 
 	self.m_Sound = playSFX(self.m_CurrentContainer, self.m_CurrentBank, self.m_CurrentSFX, guiCheckBoxGetSelected(self.m_GUI.loopedCheck))
 	if not self.m_Sound then
-		outputChatBox("Some audio files are missing! Please check your GTASA\Audio\SFX\ folder!", 255, 0, 0)
+		outputChatBox("Some audio files are missing! Please check your GTASA\\Audio\\SFX\\ folder!", 255, 0, 0)
 		return false
 	end
 
