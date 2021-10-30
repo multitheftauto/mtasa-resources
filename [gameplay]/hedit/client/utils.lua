@@ -310,7 +310,7 @@ end
 function deleteClientHandling ( vehicle, name )
     if not isValidVehicle ( vehicle ) then
         if DEBUGMODE then
-            error ( "Invalid vehicle element at 'loadClientHandling'! ["..tostring(vehicle).."]", 2 )
+            error ( "Invalid vehicle element at 'deleteClientHandling'! ["..tostring(vehicle).."]", 2 )
         end
 
         return false
@@ -318,7 +318,7 @@ function deleteClientHandling ( vehicle, name )
 
     if not isClientHandlingExisting ( name ) then
         if DEBUGMODE then
-            error ( "Handling name given at 'loadClientHandling' does not exist! ["..tostring(name).."]", 2 )
+            error ( "Handling name given at 'deleteClientHandling' does not exist! ["..tostring(name).."]", 2 )
         end
 
         return false
