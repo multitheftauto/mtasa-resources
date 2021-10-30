@@ -307,6 +307,33 @@ function loadClientHandling ( vehicle, name )
     return true
 end
 
+function deleteClientHandling ( vehicle, name )
+    if not isValidVehicle ( vehicle ) then
+        if DEBUGMODE then
+            error ( "Invalid vehicle element at 'loadClientHandling'! ["..tostring(vehicle).."]", 2 )
+        end
+
+        return false
+    end
+
+    if not isClientHandlingExisting ( name ) then
+        if DEBUGMODE then
+            error ( "Handling name given at 'loadClientHandling' does not exist! ["..tostring(name).."]", 2 )
+        end
+
+        return false
+    end
+
+    name = string.lower ( name )
+    local handling = xmlCache.clientsaves[name]
+
+    xmlDestroyNode ( handling.saveNode )
+    xmlSaveFile ( xmlFile[client_handling_file] )
+
+    xmlCache.clientsaves[name] = nil
+
+    return true
+end
 
 -- Imports a handling line in handling.cfg format, given a proper method.
 -- Valid methods: III, VC, SA, and IV
