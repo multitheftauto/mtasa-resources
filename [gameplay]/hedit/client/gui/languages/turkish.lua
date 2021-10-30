@@ -36,7 +36,7 @@ guiLanguage.turkish = {
 
     successSave = "Başarıyla işleme ayarlarını kurtardı!",
     successLoad = "Başarıyla senin kullanımı ayarlarını yüklenen!",
-    sucessDelete = "",
+    sucessDelete = "Handling ayarlarınız başarılı bir şekilde silindi!",
 
     wantTheSettings = "Bu ayarları uygulamak istiyorum emin misiniz? Taşıma editörü yeniden başlar.",
 
