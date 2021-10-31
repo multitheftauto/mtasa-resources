@@ -325,9 +325,9 @@ function deleteClientHandling ( vehicle, name )
     end
 
     name = string.lower ( name )
-    local handling = xmlCache.clientsaves[name]
+    local handling = xmlCache.clientsaves[name].saveNode
 
-    xmlDestroyNode ( handling.saveNode )
+    xmlDestroyNode ( handling )
     xmlSaveFile ( xmlFile[client_handling_file] )
 
     xmlCache.clientsaves[name] = nil
