@@ -40,7 +40,7 @@
 
     successSave = "Se guardo el handling con exito!",
     successLoad = "Se cargo el handling con exito!",
-    sucessDelete = "",
+    sucessDelete = "Listo tú handling ha sido borrado!",
 
 	confirmVersionReset = "Estas seguro de que deseas establecer la version del editor a la de este servidor? Tus handlings guardados pueden llegar a ser incompatibles.",
 	successVersionReset = "La version de editor se ha actualizado.",
