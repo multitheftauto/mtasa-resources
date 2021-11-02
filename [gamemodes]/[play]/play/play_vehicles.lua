@@ -164,6 +164,7 @@ function onVehicleElementDestroy()
 
 		if vehicleType then
 			destroyVehicleTimer(source)
+			vehiclesToSpawn[source] = nil
 		end
 	end
 end
