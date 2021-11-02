@@ -1,6 +1,7 @@
 <meta>
 	<info author="BrophY" description="A playtest/freeroam mode" version="1.5" type="gamemode"/>
 	<include resource="freeroam"/>
+	<script src="play_config.lua" type="server"/>
 	<script src="play_players.lua" type="server"/>
 	<script src="play_vehicles.lua" type="server"/>
 	<script src="play.lua" type="server"/>
