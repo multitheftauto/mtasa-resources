@@ -1,5 +1,5 @@
-local resourceName = (Resource.getThis()).name
-local settingPrefix = ("*%s."):format(resourceName)
+local resourceName = getResourceName(getThisResource())
+local settingPrefix = string.format("*%s.", resourceName)
 
 local showColorCodes = get("showColorCodes") == "true" 	-- Shows player"s names colorcoded if set to true, and if set to false it doesn"t
 local defaultColor = get("defaultColor")				-- Hex code for what color to output messages in (only used if showColorCodes is true)
@@ -7,7 +7,7 @@ local fallbackHexCode = "#4E5768"						-- Fallback hex code for incorrectly inpu
 
 function reloadSettings(settingName)
 	-- Setting change affects this resource
-	if (settingName:find(settingPrefix, 1, true)) then
+	if (string.find(settingName, settingPrefix, 1, true)) then
 		showColorCodes = get("showColorCodes") == "true"
 		defaultColor = get("defaultColor")
 	end
@@ -34,14 +34,14 @@ function getDefaultColor()
 end
 
 function getHexFriendlyNick(player, nick)
-	return RGBToHex(player:getNametagColor())..nick
+	return RGBToHex(getPlayerNametagColor(player))..nick
 end
 
 function joinMessage()
 	if (showColorCodes) then
-		outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, source.name)..getDefaultColor().." has joined the game", root, 255, 100, 100, true)
+		outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, getPlayerName(source))..getDefaultColor().." has joined the game", root, 255, 100, 100, true)
 	else
-		outputChatBox("* "..source.name.." has joined the game", root, 255, 100, 100)
+		outputChatBox("* "..getPlayerName(source).." has joined the game", root, 255, 100, 100)
 	end
 end
 addEventHandler("onPlayerJoin", root, joinMessage)
@@ -57,9 +57,9 @@ addEventHandler("onPlayerChangeNick", root, nickChangeMessage)
 
 function leftMessage(reason)
 	if (showColorCodes) then
-		outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, source.name)..getDefaultColor().." has left the game ["..reason.."]", root, 255, 100, 100, true)
+		outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, getPlayerName(source))..getDefaultColor().." has left the game ["..reason.."]", root, 255, 100, 100, true)
 	else
-		outputChatBox("* "..source.name.." has left the game ["..reason.."]", root, 255, 100, 100)
+		outputChatBox("* "..getPlayerName(source).." has left the game ["..reason.."]", root, 255, 100, 100)
 	end
 end
 addEventHandler("onPlayerQuit", root, leftMessage)

@@ -15,5 +15,4 @@
 			desc="If show color codes is set to true, this controls what color to output messages in"
 		/>
 	</settings>
-	<oop>true</oop>
 </meta>
