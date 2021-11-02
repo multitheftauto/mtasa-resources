@@ -7,9 +7,11 @@ function playSpawnPlayer(playerElement)
 	if validPlayer then
 		local randomSpawn = math.random(1, spawnsCount)
 		local spawnData = playerSpawns[randomSpawn]
-		local posX, posY, posZ, rotX = spawnData[1] + math.random(-3, 3), spawnData[2] + math.random(-3, 3), spawnData[3], spawnData[4]
+		local posX, posY, posZ, rotX = spawnData[1], spawnData[2], spawnData[3], spawnData[4]
 		local randomSkin = math.random(1, skinsCount)
 		local skinID = playerSkins[randomSkin]
+
+		posX, posY = posX + math.random(-3, 3), posY + math.random(-3, 3)
 
 		spawnPlayer(playerElement, posX, posY, posZ, rotX, skinID, 0, 0, nil)
 		fadeCamera(playerElement, true)
