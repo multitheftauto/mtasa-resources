@@ -105,7 +105,7 @@ function aServerConfigTab.Refresh()
 	info = aServerConfigTab.getInfoForType("latest")
 	info.text = getPanelSetting( "lastFetchedLatestVersion" )
 
-	local info = aServerConfigTab.getInfoForType(type)
+	info = aServerConfigTab.getInfoForType(type)
 	guiRadioButtonSetSelected( info.button, true )
 	if info.custom then
 		local customText = getPanelSetting( "minclientconfig.customText" )
