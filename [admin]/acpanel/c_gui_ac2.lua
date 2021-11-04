@@ -48,7 +48,7 @@ function aAntiCheatTab2.Create ( tab )
 			 }
 
 	local msg = "Client files which are allowed to be customized:"
-	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
+	guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
 
 	ypos = ypos + 30
 
