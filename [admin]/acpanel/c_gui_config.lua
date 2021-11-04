@@ -11,7 +11,7 @@ function aServerConfigTab.Create ( tab )
 	xpos = 20
 	ypos = 10
 
-	local label1 = guiCreateLabel ( xpos, ypos, 200, 16, "Minimum allow client setting", false, tab )
+	guiCreateLabel ( xpos, ypos, 200, 16, "Minimum allow client setting", false, tab )
 	ypos = ypos + 20
 
 	---------------------------------------------------------
@@ -34,7 +34,7 @@ function aServerConfigTab.Create ( tab )
 	---------------------------------------------------------
 	-- Definition list
 	---------------------------------------------------------
-	local label1 = guiCreateLabel ( xpos, ypos, 200, 16, "Min client version:", false, tab )
+	guiCreateLabel ( xpos, ypos, 200, 16, "Min client version:", false, tab )
 	ypos = ypos + 20
 	--aServerConfigTab.memoDefinition = guiCreateMemo ( xpos, ypos, 250, 40, "", false, tab )
 	aServerConfigTab.memoDefinition = guiCreateEdit ( xpos, ypos, 250, 30, "", false, tab )
@@ -64,7 +64,7 @@ function aServerConfigTab.Create ( tab )
 end
 
 
-function aServerConfigTab.onMemoDefinitionChanged(element)
+function aServerConfigTab.onMemoDefinitionChanged()
 	if bSaveMemoEdits then
 		setPanelSetting( "minclientconfig.customText", guiGetText(aServerConfigTab.memoDefinition) )
 	end
@@ -102,7 +102,7 @@ function aServerConfigTab.Refresh()
 
 	local info = aServerConfigTab.getInfoForType("release")
 	info.text = getPanelSetting( "lastFetchedReleaseVersion" )
-	local info = aServerConfigTab.getInfoForType("latest")
+	info = aServerConfigTab.getInfoForType("latest")
 	info.text = getPanelSetting( "lastFetchedLatestVersion" )
 
 	local info = aServerConfigTab.getInfoForType(type)
