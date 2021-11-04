@@ -45,13 +45,13 @@ addEventHandler ( "onResourceStart", resourceRoot,
 function isImgModBlocked( name )
 	local defText = getBlockDefText()
 
-	local type = getPanelSetting( "blockmods.type" )
+	getPanelSetting( "blockmods.type" )
 	--outputDebug( "Checking " .. name .. " against type " .. tostring(type) )
 	--outputDebug( tostring(defText) )
 
 	local lineList = split(defText,"\n")
 	for _,line in ipairs(lineList) do
-		local line = string.gsub(line, "\r", "")
+		line = string.gsub(line, "\r", "")
 		--outputDebug( "Checking " .. name .. " against line " .. tostring(line) )
 		if line == "*" or string.find(name,line) then
 			return true
