@@ -11,7 +11,7 @@ function aBlockModsTab.Create ( tab )
 	xpos = 20
 	ypos = 10
 
-	local label1 = guiCreateLabel ( xpos, ypos, 100, 16, "Img file blocking", false, tab )
+	guiCreateLabel ( xpos, ypos, 100, 16, "Img file blocking", false, tab )
 	ypos = ypos + 20
 
 	---------------------------------------------------------
@@ -35,7 +35,7 @@ function aBlockModsTab.Create ( tab )
 	---------------------------------------------------------
 	-- Definition list
 	---------------------------------------------------------
-	local label1 = guiCreateLabel ( xpos, ypos, 200, 16, "File name matches (one per line)", false, tab )
+	guiCreateLabel ( xpos, ypos, 200, 16, "File name matches (one per line)", false, tab )
 	ypos = ypos + 20
 	aBlockModsTab.memoDefinition = guiCreateMemo ( xpos, ypos, 250, 300, "", false, tab )
 	ypos = ypos + 300
@@ -75,7 +75,7 @@ function aBlockModsTab.Create ( tab )
 end
 
 
-function aBlockModsTab.onMemoDefinitionChanged(element)
+function aBlockModsTab.onMemoDefinitionChanged()
 	if bSaveMemoEdits then
 		setPanelSetting( "blockmods.customText", guiGetText(aBlockModsTab.memoDefinition) )
 	end
