@@ -45,7 +45,7 @@ function aAntiCheatTab.Create ( tab )
 
 	for _,info in ipairs(acInfoList) do
 		local bEnabled = not table.find(disabledAcList, tostring(info.id))
-		local label1 = guiCreateLabel ( xpos,		ypos, 50, 16,	"AC #" .. info.id,			false, tab )
+		guiCreateLabel ( xpos,		ypos, 50, 16,	"AC #" .. info.id,			false, tab )
 		local label2 = guiCreateLabel ( xpos+70,	ypos, 50, 16,	bEnabled and "ON" or "OFF", false, tab )
 		local label3 = guiCreateLabel ( xpos+110,	ypos, 450, 16,	"( "..info.desc.." )",		false, tab )
 		if bEnabled then
@@ -61,7 +61,7 @@ function aAntiCheatTab.Create ( tab )
 	ypos = ypos + 5
 
 	local msg = "To turn OFF an AC#, add number to <disableac> setting in mtaserver.conf and restart server"
-	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
+	label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
 	guiLabelSetColor(label1, unpack(colorYellow) )
 	guiSetFont(label1, "default-bold-small" )
 
@@ -94,7 +94,7 @@ function aAntiCheatTab.Create ( tab )
 	--outputDebug( "enableSdDesc" .. tostring(enableSdDesc) )
 	enableSdList = split(enableSdDesc, ",")
 
-	local label1 = guiCreateLabel ( xpos, ypos, 100, 16, "SD settings:", false, tab )
+	label1 = guiCreateLabel ( xpos, ypos, 100, 16, "SD settings:", false, tab )
 	guiSetFont(label1, "default-bold-small" )
 
 	ypos = ypos + 17
@@ -102,7 +102,7 @@ function aAntiCheatTab.Create ( tab )
 	for _,info in ipairs(sdInfoList) do
 		local bEnabled = table.find(enableSdList, tostring(info.id))
 		local name = "SD #" .. info.id
-		local label1 = guiCreateLabel ( xpos,		ypos, 50, 16,	name,						false, tab )
+		guiCreateLabel ( xpos,		ypos, 50, 16,	name,						false, tab )
 		local label2 = guiCreateLabel ( xpos+70,	ypos, 50, 16,	bEnabled and "ON" or "OFF", false, tab )
 		local label3 = guiCreateLabel ( xpos+110,	ypos, 450, 16,	"( "..info.desc.." )",		false, tab )
 		if bEnabled then
@@ -122,8 +122,8 @@ function aAntiCheatTab.Create ( tab )
 
 	ypos = ypos + 5
 
-	local msg = "To turn ON a SD#, add number to <enablesd> setting in mtaserver.conf and restart server"
-	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
+	msg = "To turn ON a SD#, add number to <enablesd> setting in mtaserver.conf and restart server"
+	label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
 	guiSetFont(label1, "default-bold-small" )
 	guiLabelSetColor(label1, unpack(colorYellow) )
 
