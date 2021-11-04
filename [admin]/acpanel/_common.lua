@@ -35,7 +35,7 @@ function table.find(t, ...)
 		value = nil
 	end
 	for k,v in pairs(t) do
-		for i,index in ipairs(args) do
+		for _,index in ipairs(args) do
 			if type(index) == 'function' then
 				v = index(v)
 			else
