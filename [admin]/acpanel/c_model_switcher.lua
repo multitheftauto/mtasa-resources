@@ -40,7 +40,7 @@ function checkForModifiedPlayerModel()
 end
 
 function isModelModified(model)
-	for i, m in ipairs(modifiedPlayerModels) do
+	for _, m in ipairs(modifiedPlayerModels) do
 		if (m == model) then
 			return true
 		end
