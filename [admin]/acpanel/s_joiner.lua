@@ -24,7 +24,7 @@ local playerData = {}			-- { player = { loaded = bool, pending = {...} } }
 ---------------------------------------------------------------------------
 addEventHandler('onResourceStart', resourceRoot,
 	function()
-		for i,player in ipairs(getElementsByType('player')) do
+		for _,player in ipairs(getElementsByType('player')) do
 			playerData[player] = { loaded = false, pending = {} }
 		end
 	end
@@ -45,13 +45,13 @@ addEventHandler('onPlayerQuit', root,
 -- New player loaded
 addEvent('onResourceLoadedAtClient_internal', true)
 addEventHandler('onResourceLoadedAtClient_internal', resourceRoot,
-	function(player)
+	function()
 		player = client
 		--if checkClient( false, player, 'onResourceLoadedAtClient_internal' ) then return end
 		if playerData[player] then
 			playerData[player].loaded = true
 			-- Do queued events
-			for i,event in ipairs(playerData[player].pending) do
+			for _,event in ipairs(playerData[player].pending) do
 				_triggerClientEvent(player, event.name, event.source, unpack(event.args))
 			end
 			playerData[player].pending = nil
@@ -112,9 +112,9 @@ end
 ---------------------------------------------------------------------------
 function table.deepcopy(t)
 	local known = {}
-	local function _deepcopy(t)
+	local function _deepcopy(u)
 		local result = {}
-		for k,v in pairs(t) do
+		for k,v in pairs(u) do
 			if type(v) == 'table' then
 				if not known[v] then
 					known[v] = _deepcopy(v)
