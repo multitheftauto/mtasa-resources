@@ -142,7 +142,7 @@ function isPlayerInACLGroup(player, groupName)
 	for _,name in ipairs(split(groupName,',')) do
 		local group = aclGetGroup(name)
 		if group then
-			for i,obj in ipairs(aclGroupListObjects(group)) do
+			for _,obj in ipairs(aclGroupListObjects(group)) do
 				if obj == 'user.' .. accountName or obj == 'user.*' then
 					return true
 				end
