@@ -7,5 +7,4 @@
 		<setting name="blip_size" value="2"/> 					<!-- Size of a player blip. Default: 2 -->
 		<setting name="blip_alpha" value="255"/> 				<!-- Alpha value of a player blip (0 - 255). Default: 255 -->
 	</settings>
-	<oop>true</oop>
 </meta>

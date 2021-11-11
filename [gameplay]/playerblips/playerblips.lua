@@ -17,19 +17,19 @@ addEventHandler("onResourceStart", resourceRoot,
 )
 
 function createPlayerBlip(plr)
-	if (not plr or not isElement(plr) or plr.type ~= "player") then return false end
+	if (not plr or not isElement(plr) or getElementType(plr) ~= "player") then return false end
 	local r, g, b
-	if (useTeams and plr.team) then
-		r, g, b = plr.team:getColor()
+	if (useTeams and getPlayerTeam(plr)) then
+		r, g, b = getTeamColor(getPlayerTeam(plr))
 	elseif (colors[plr]) then
 		r, g, b = colors[plr][1], colors[plr][2], colors[plr][3]
 	else
 		r, g, b = color[1], color[2], color[3]
 	end
 	if (blip[plr]) then
-		blip[plr]:setColor(r, g, b, blipAlpha)
+		setBlipColor(blip[plr], r, g, b, blipAlpha)
 	else
-		blip[plr] = Blip.createAttachedTo(plr, 0, blipSize, r, g, b, blipAlpha)
+		blip[plr] = createBlipAttachedTo(plr, 0, blipSize, r, g, b, blipAlpha)
 	end
 end
 
@@ -48,8 +48,11 @@ function setBlipColor(plr, _, r, g, b)
 end
 
 function destroyPlayerBlip(plr)
-	blip[plr]:destroy()
-	blip[plr] = nil
+	if (blip[plr] ~= nil) then
+		destroyElement(blip[plr])
+		blip[plr] = nil
+	end
+
 	colors[plr] = nil
 end
 
@@ -65,7 +68,7 @@ end
 addEventHandler("onPlayerSpawn", root, onPlayerSpawn)
 
 function onResourceStart()
-	for i, plr in ipairs(Element.getAllByType("player")) do
+	for i, plr in ipairs(getElementsByType("player")) do
 		createPlayerBlip(plr)
 	end
 end

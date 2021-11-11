@@ -17,12 +17,12 @@ local stats = {
 
 local function applyStatsForPlayer(player)
 	for stat, value in pairs(stats) do
-		player:setStat(stat, value)
+		setPedStat(player, stat, value)
 	end
 end
 
 local function applyStatsForEveryone()
-	for _, player in pairs(Element.getAllByType "player") do
+	for _, player in pairs(getElementsByType("player")) do
 		applyStatsForPlayer(player)
 	end
 end
