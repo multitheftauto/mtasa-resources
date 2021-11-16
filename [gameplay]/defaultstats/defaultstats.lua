@@ -31,9 +31,7 @@ local function applyStatsForEveryone()
 	local playersTable = getElementsByType("player")
 
 	for playerID = 1, #playersTable do
-		local playerElement = playersTable[playerID]
-
-		applyStatsForPlayer(playerElement)
+		applyStatsForPlayer(playersTable[playerID])
 	end
 end
 addEventHandler("onResourceStart", resourceRoot, applyStatsForEveryone)
