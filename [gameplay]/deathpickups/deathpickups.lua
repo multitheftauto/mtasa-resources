@@ -4,9 +4,7 @@ local onlyCurrentWeapon = get("only_current")
 local dropRadius = get("radius")
 
 local function destroyDeathPickup(pickupElement)
-	local validPickup = isElement(pickupElement)
-
-	if validPickup then
+	if isElement(pickupElement) then
 		destroyElement(pickupElement)
 	end
 end
@@ -28,11 +26,7 @@ end
 
 function onDeathPickupHit(playerElement)
 	cancelEvent()
-
-	local weaponID = getPickupWeapon(source)
-	local weaponAmmo = getPickupAmmo(source)
-
-	giveWeapon(playerElement, weaponID, weaponAmmo, false)
+	giveWeapon(playerElement, getPickupWeapon(source), getPickupAmmo(source), false)
 	destroyDeathPickup(source)
 end
 addEventHandler("onPickupHit", resourceRoot, onDeathPickupHit)
