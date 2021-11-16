@@ -5,13 +5,11 @@ function onResourceStartPlay()
 	local playersTable = getElementsByType("player")
 
 	for playerID = 1, #playersTable do
-		local playerElement = playersTable[playerID]
-
-		playSpawnPlayer(playerElement)
+		playSpawnPlayer(playersTable[playerID])
 	end
 
-	addEventHandler("onPlayerJoin", root, onPlayerJoinOrWasted)
-	addEventHandler("onPlayerWasted", root, onPlayerJoinOrWasted)
+	addEventHandler("onPlayerJoin", root, onPlayerJoin)
+	addEventHandler("onPlayerWasted", root, onPlayerWasted)
 	addEventHandler("onPlayerQuit", root, onPlayerQuit)
 	addEventHandler("onVehicleEnter", resourceRoot, onVehicleEnter)
 	addEventHandler("onVehicleExit", resourceRoot, onVehicleExit)

@@ -4,9 +4,7 @@ local vehiclesToSpawn = {}
 
 function createVehicles()
 	for vehicleID = 1, #vehicleSpawns do
-		local vehicleData = vehicleSpawns[vehicleID]
-
-		createPlayVehicle(vehicleData)
+		createPlayVehicle(vehicleSpawns[vehicleID])
 	end
 end
 
@@ -20,9 +18,7 @@ function createPlayVehicle(vehicleData)
 end
 
 function destroyVehicle(vehicleElement)
-	local validVehicle = isElement(vehicleElement)
-
-	if validVehicle then
+	if isElement(vehicleElement) then
 		destroyElement(vehicleElement)
 	end
 
@@ -36,9 +32,8 @@ function destroyPlayerVehicles(playerElement)
 
 		for vehicleID = 1, #savedVehicles do
 			local vehicleElement = savedVehicles[vehicleID]
-			local validVehicle = isElement(vehicleElement)
 
-			if validVehicle then
+			if isElement(vehicleElement) then
 				destroyElement(vehicleElement)
 			end
 
@@ -53,9 +48,8 @@ function destroyVehicleTimer(vehicleElement)
 	local vehicleTimer = vehicleTimers[vehicleElement]
 
 	if vehicleTimer then
-		local validTimer = isTimer(vehicleTimer)
 
-		if validTimer then
+		if isTimer(vehicleTimer) then
 			killTimer(vehicleTimer)
 		end
 
@@ -97,14 +91,8 @@ function onVehicleExit()
 end
 
 function onVehicleElementDestroy()
-	local validElement = isElement(source)
-
-	if validElement then
-		local vehicleType = getElementType(source) == "vehicle"
-
-		if vehicleType then
-			destroyVehicleTimer(source)
-			vehiclesToSpawn[source] = nil
-		end
+	if isElement(source) and getElementType(source) == "vehicle" then
+		destroyVehicleTimer(source)
+		vehiclesToSpawn[source] = nil
 	end
 end

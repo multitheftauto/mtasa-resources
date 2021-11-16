@@ -2,9 +2,7 @@ local spawnsCount = #playerSpawns
 local skinsCount = #playerSkins
 
 function playSpawnPlayer(playerElement)
-	local validPlayer = isElement(playerElement)
-
-	if validPlayer then
+	if isElement(playerElement) then
 		local randomSpawn = math.random(1, spawnsCount)
 		local spawnData = playerSpawns[randomSpawn]
 		local posX, posY, posZ, rotX = spawnData[1], spawnData[2], spawnData[3], spawnData[4]
@@ -19,19 +17,17 @@ function playSpawnPlayer(playerElement)
 	end
 end
 
-function onPlayerJoinOrWasted()
-	local joinEvent = eventName == "onPlayerJoin"
+function onPlayerJoin()
+	playSpawnPlayer(source)
+end
 
-	if joinEvent then
-		playSpawnPlayer(source)
-	else
-		local playerRespawnTime = get("playerRespawnTime")
+function onPlayerWasted()
+	local playerRespawnTime = get("playerRespawnTime")
 
-		playerRespawnTime = tonumber(playerRespawnTime) or 5000
-		playerRespawnTime = playerRespawnTime > 50 and playerRespawnTime or 50
+	playerRespawnTime = tonumber(playerRespawnTime) or 5000
+	playerRespawnTime = playerRespawnTime > 50 and playerRespawnTime or 50
 
-		setTimer(playSpawnPlayer, playerRespawnTime, 1, source)
-	end
+	setTimer(playSpawnPlayer, playerRespawnTime, 1, source)
 end
 
 function onPlayerQuit()
