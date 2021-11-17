@@ -1,5 +1,5 @@
 function isResourceRunning(res)
-	return getResourceState(res)=="running"
+	return getResourceState(res) == "running"
 end
 
 function isGamemode(res)
@@ -10,17 +10,25 @@ function isMap(res)
 	return exports.mapmanager:isMap(res)
 end
 
-addEventHandler("onResourceStart", getResourceRootElement(),
-	function()
-		for index,resource in ipairs(getResources()) do
-			if isResourceRunning(resource) and (isGamemode(resource) or isMap(resource)) then
-				if hasObjectPermissionTo(getThisResource(), "function.stopResource") then
-					stopResource(resource)
-				else
-					outputDebugString("Editor: Unable to stop running gamemodes (no access to function.stopResource)")
-					return
-				end
+function onResourceStart(startedResource)
+	if not hasObjectPermissionTo(startedResource, "function.stopResource") then
+		outputDebugString("Editor: Unable to stop running gamemodes (no access to function.stopResource)")
+
+		return false
+	end
+
+	local resourcesTable = getResources()
+
+	for resourceID = 1, #resourcesTable do
+		local resourceElement = resourcesTable[resourceID]
+
+		if isResourceRunning(resourceElement) then
+			local gamemodeOrMap = isGamemode(resourceElement) or isMap(resourceElement)
+
+			if gamemodeOrMap then
+				stopResource(resourceElement)
 			end
 		end
 	end
-)
+end
+addEventHandler("onResourceStart", resourceRoot, onResourceStart)
