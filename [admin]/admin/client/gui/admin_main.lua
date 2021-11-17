@@ -29,8 +29,8 @@ end
 
 function aAdminMenu ()
 	if ( aAdminForm == nil ) then
-		local x, y = guiGetScreenSize()
-		aAdminForm			= guiCreateWindow ( x / 2 - 310, y / 2 - 260, 620, 520, "", false )
+		local sx, sy = guiGetScreenSize()
+		aAdminForm			= guiCreateWindow ( sx / 2 - 310, sy / 2 - 260, 620, 520, "", false )
 							guiWindowSetSizable ( aAdminForm, false )
 						  guiSetText ( aAdminForm, "Admin Panel   -   v".._version )
 						  guiCreateLabel ( 0.75, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )

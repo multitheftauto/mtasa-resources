@@ -61,9 +61,9 @@ function aAntiCheatTab.Create ( tab )
 	ypos = ypos + 5
 
 	local msg = "To turn OFF an AC#, add number to <disableac> setting in mtaserver.conf and restart server"
-	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
-	guiLabelSetColor(label1, unpack(colorYellow) )
-	guiSetFont(label1, "default-bold-small" )
+	local label2 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
+	guiLabelSetColor(label2, unpack(colorYellow) )
+	guiSetFont(label2, "default-bold-small" )
 
 	ypos = ypos + 25
 
@@ -123,9 +123,9 @@ function aAntiCheatTab.Create ( tab )
 	ypos = ypos + 5
 
 	local msg = "To turn ON a SD#, add number to <enablesd> setting in mtaserver.conf and restart server"
-	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
-	guiSetFont(label1, "default-bold-small" )
-	guiLabelSetColor(label1, unpack(colorYellow) )
+	local label3 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
+	guiSetFont(label3, "default-bold-small" )
+	guiLabelSetColor(label3, unpack(colorYellow) )
 
 	ypos = ypos + 25
 

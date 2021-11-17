@@ -205,8 +205,8 @@ function checkForIp2cFileUpdate( cor )
 	end
 
 	-- Fetch remote ip2c file
-	local fetchedCsv,errno = fetchRemoteContent( cor, IP2C_UPDATE_URL );
-	if errno ~= 0 then return end
+	local fetchedCsv,errno2 = fetchRemoteContent( cor, IP2C_UPDATE_URL );
+	if errno2 ~= 0 then return end
 
 	-- Check download was correct
 	local newMd5 = md5( fetchedCsv );
