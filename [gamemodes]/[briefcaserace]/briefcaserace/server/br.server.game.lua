@@ -955,7 +955,7 @@ function resetObjectives()
 	local objectiveCount = #objectives
 	if (objectiveCount > 0) then
 		--outputDebugString(objectiveCount .. " objectives total")---
-	 	-- create objective
+		-- create objective
 		math.randomseed(getTickCount())
 		if (not settings.teams) then
 			local objectiveIndex = math.random(1, objectiveCount)
@@ -978,7 +978,7 @@ function resetObjectives()
 				teamObjectives[v] = Objective:new({x = x, y = y, z = z, team = v})
 			end
 		end
-	 	return true
+		return true
 	else
 		outputChatBox("Error: no objectives")
 		return false
@@ -991,7 +991,7 @@ function addObjectiveForTeam(team)
 	local objectiveCount = #objectives
 	if (objectiveCount > 0) then
 		--outputDebugString(objectiveCount .. " objectives total")---
-	 	-- create objective
+		-- create objective
 		math.randomseed(getTickCount())
 		local objectiveIndex = math.random(1, objectiveCount)
 		--outputDebugString("objective " .. objectiveIndex .. " chosen")---
@@ -1001,7 +1001,7 @@ function addObjectiveForTeam(team)
 		local z = tonumber(getElementData(objectiveElem, "posZ"))
 		--outputDebugString("objective: " .. x .. " " .. y .. " " .. z)---
 		teamObjectives[team] = Objective:new({x = x, y = y, z = z, team = team})
-	 	return true
+		return true
 	else
 		outputChatBox("Error: no objectives")
 		return false

@@ -161,7 +161,7 @@ function forceScoreboardForAllPlayers ( status )
 	local scoreboardResource = getResourceFromName ( "scoreboard" )
 	if ( scoreboardResource and getResourceState ( scoreboardResource ) == "running" ) then
 		for i,v in ipairs ( getElementsByType ( "player" ) ) do
-	    	call ( scoreboardResource, "setPlayerScoreboardForced", v, status )
+			call ( scoreboardResource, "setPlayerScoreboardForced", v, status )
 		end
 		return true
 	else
