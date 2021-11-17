@@ -34,10 +34,6 @@ function createGui(options)
 		justCreated = true
 	end
 
-	if (assaultGui == nil) then
-		--outputDebugString("test")
-	end
-
 	-- TAB: Map Information
 
 	if (justCreated) then

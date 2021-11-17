@@ -473,9 +473,7 @@ function shieldingyet ()
 	if isElementInWater(getLocalPlayer()) == false then
 		if sheildon ~= 1 then
 			currenttask = getPedSimplestTask ( getLocalPlayer() )
-			if notblockingTasks[currenttask] then
-	--			NO SHIELD APPEARS
-			else
+			if not notblockingTasks[currenttask] then
 				killTimer ( blockcheck )
 				blockcheck = nil
 				shieldon = 1

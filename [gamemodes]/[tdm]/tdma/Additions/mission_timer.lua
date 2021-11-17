@@ -154,9 +154,7 @@ function missionTimerTick()
 					triggerEvent ( "missionTimerActivated", misTmrRoot, tostring(theTimer["id"]), theTimer["player"] )
 					theTimer["started"] = false
 				end
-			elseif ( theTimer["direction"] == ">" ) then
-				--Counting up has yet to be coded
-			else
+			elseif ( theTimer["direction"] ~= ">" ) then
 				theTimer["direction"] = "<"
 			end
 		end

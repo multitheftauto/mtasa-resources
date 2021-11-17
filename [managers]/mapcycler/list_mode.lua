@@ -202,10 +202,10 @@ function outputNextMode(sourcePlayer)
 end
 
 function skipMap(sourcePlayer, command)
-	if not hasObjectPermissionTo(sourcePlayer, command, false) then
+	--if not hasObjectPermissionTo(sourcePlayer, command, false) then
 		--! deny access
 		--! return false
-	end
+	--end
 	outputCyclerDebugString("Map skipped by "..getPlayerName(sourcePlayer)) --! change to server log when security is added
 	cycleMap_list()
 end

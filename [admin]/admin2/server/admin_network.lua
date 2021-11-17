@@ -218,8 +218,5 @@ addEventHandler(
     "onPlayerChat",
     getRootElement(),
     function(message, type)
-        if (type == 0) then
-        elseif (type == 1) then
-        end
     end
 )

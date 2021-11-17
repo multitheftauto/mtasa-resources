@@ -619,7 +619,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				outputChatBox ( "Error - Invalid password.", source, 255, 0, 0 )
 			end
 		end
-	elseif ( action == "autologin" ) then
+	--elseif ( action == "autologin" ) then
 
 	elseif ( action == "settings" ) then
 		local cmd = arg[1]

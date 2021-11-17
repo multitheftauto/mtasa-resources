@@ -1107,8 +1107,7 @@ function scoreboardSortFunction( a, b )
 		end
 	end
 	if type( sortBy.dir ) == "number" then
-		if type( firstContent ) == type( secondContent ) then
-		else
+		if type( firstContent ) ~= type( secondContent ) then
 			firstContent = string.lower( tostring( firstContent ) )
 			secondContent = string.lower( tostring( secondContent ) )
 		end

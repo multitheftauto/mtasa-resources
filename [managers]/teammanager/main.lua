@@ -32,9 +32,9 @@ function handlePlayer ( player, teams, gamemodeName )
 end
 
 function autoBalance()
-	if get(autobalance_teams) then
+	--if get(autobalance_teams) then
 		--stuffs
-	end
+	--end
 end
 
 --A little hacky, check every 30 seconds for updated settings

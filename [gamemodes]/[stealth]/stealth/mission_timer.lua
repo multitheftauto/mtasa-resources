@@ -146,10 +146,7 @@ function missionTimerTick()
 					triggerEvent ( "missionTimerActivated", misTmrRoot, tostring(theTimer["id"]), theTimer["player"] )
 					theTimer["started"] = false
 				end
-			elseif ( theTimer["direction"] == ">" ) then
-				--Counting Up
-
-			else
+			elseif ( theTimer["direction"] ~= ">" ) then
 				--Set a default value of Down.
 				theTimer["direction"] = "<"
 			end

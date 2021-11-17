@@ -206,7 +206,7 @@ function endGame(showScores, tellMapCycler)
 		removeReadyPlayer(v)
 	end
 
-	if (showScores) then
+	--if (showScores) then
 		--[[forceScoreboardForAllPlayers(true)
 		setTimer(forceScoreboardForAllPlayers, 10000, 1, false)
 		addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), onStopSetScoreboardNotForced)
@@ -216,7 +216,7 @@ function endGame(showScores, tellMapCycler)
 --			setTimer(outputConsole, 9000, 1, "[Gamemode finished]")
 --			setTimer(call, 10000, 1, mapmanagerResource, "stopGamemode") -- server crashes?
 --		end
-	end
+	--end
 
 	if (tellMapCycler) then
 		local mapCyclerResource = getResourceFromName("mapcycler")

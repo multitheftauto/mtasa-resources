@@ -128,9 +128,7 @@ function GhostPlayback:updateGhostState()
 	setElementHealth( self.ped, 100 ) -- we don't want the ped to die
 	while (self.recording[self.currentIndex] and self.recording[self.currentIndex].t < ticks) do
 		local theType = self.recording[self.currentIndex].ty
-		if theType == "st" then
-			-- Skip
-		elseif theType == "po" then
+		if theType == "po" then
 			local x, y, z = self.recording[self.currentIndex].x, self.recording[self.currentIndex].y, self.recording[self.currentIndex].z
 			local rX, rY, rZ = self.recording[self.currentIndex].rX, self.recording[self.currentIndex].rY, self.recording[self.currentIndex].rZ
 			local vX, vY, vZ = self.recording[self.currentIndex].vX, self.recording[self.currentIndex].vY, self.recording[self.currentIndex].vZ

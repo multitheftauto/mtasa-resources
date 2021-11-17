@@ -199,10 +199,6 @@ function onClick ( button, state )
                         setVehicleHandling ( pVehicle, property, string.reverse ( str ) )
 
 
-                    else
-
-                        -- No vehicle
-
                     end
 
                 end
@@ -285,9 +281,6 @@ function onEnter ( )
 
             guiSetInfoText ( getText ( "clickToEdit" ), getText ( "enterToSubmit" ) )
 
-        elseif inputType == "special" then
-
-
         end
 
     elseif parent == "special" then
@@ -367,10 +360,6 @@ function onEditBoxAccept ( box )
             local property = guiGetElementProperty ( hiddenEditBox )
 
             prepareHandlingValue ( pVehicle, property, content )
-
-        else
-
-            -- when not vehicle
 
         end
 

@@ -356,7 +356,7 @@ function CToptimes:updateShow()
 	if not bShowAny then
 		self.targetFade = 0
 	elseif not self.bManualShow and self.listStatus ~= 'Full' then
-		-- No change
+		return true -- No change
 	else
 		local bShowLoading	= self.listStatus=='Loading'
 		local bShowTimes	= self.listStatus=='Full'

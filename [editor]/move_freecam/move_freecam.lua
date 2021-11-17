@@ -52,9 +52,7 @@ end
 local function getCoordsWithBoundingBox(origX, origY, origZ)
 	if (not collisionless) then
 		local newX, newY, newZ = origX, origY, origZ
-		if (not ignoreElementWalls) then
-			-- hard stuff
-		else
+		if (ignoreElementWalls) then
 			local surfaceFound, surfaceX, surfaceY, surfaceZ, element = processLineOfSight(origX, origY, origZ + SURFACE_ERROR_CORRECTION_OFFSET, origX, origY, origZ + minZ, true, true, true, true, true, true, false, true, selectedElement)
 			if (surfaceFound) then
 				newZ = surfaceZ + centerToBaseDistance

@@ -157,9 +157,9 @@ function aClientReportClick ( button )
 				triggerServerEvent ( "aMessage", getLocalPlayer(), "new", tableOut )
 				aReportClose ()
 			end
-		elseif ( source == aReportSubject ) then
+		--elseif ( source == aReportSubject ) then
 
-		elseif ( source == aReportMessage ) then
+		--elseif ( source == aReportMessage ) then
 
 		elseif ( source == aReportCancel ) then
 			aReportClose ()

@@ -100,7 +100,7 @@ function aClientTeamClick ( button )
 				aNewTeamShow ( false )
 			end
 			setTimer ( aTeamsRefresh, 2000, 1 )
-		elseif ( source == aTeamName ) then
+		--elseif ( source == aTeamName ) then
 
 		elseif ( source == aTeamCancel ) then
 			aNewTeamShow ( false )

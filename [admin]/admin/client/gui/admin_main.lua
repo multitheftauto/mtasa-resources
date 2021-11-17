@@ -995,7 +995,7 @@ function aClientClick ( button )
 				aViewMessages()
 			elseif ( source == aTab1.ScreenShots ) then
 				aPlayerScreenShot()
-			elseif ( source == aTab1.PlayerListSearch ) then
+			--elseif ( source == aTab1.PlayerListSearch ) then
 
 			elseif ( source == aTab1.HideColorCodes ) then
 				setHideColorCodes ( guiCheckBoxGetSelected ( aTab1.HideColorCodes ) )
@@ -1049,9 +1049,7 @@ function aClientClick ( button )
 			end
 		-- TAB 2, RESOURCES
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
-			if ( source == aTab2.ResourceListSearch ) then
-
-			elseif ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
+			if ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
 				else
@@ -1165,7 +1163,7 @@ function aClientClick ( button )
 					else triggerServerEvent ( "aAdminChat", localPlayer, message ) end
 					guiSetText ( aTab5.AdminText, "" )
 				end
-			elseif ( source == aTab5.AdminText ) then
+			--elseif ( source == aTab5.AdminText ) then
 
 			end
 		-- TAB 6, OPTIONS
@@ -1186,11 +1184,11 @@ function aClientClick ( button )
 				aPerformance()
 			elseif ( source == aTab6.AutoLogin ) then
 				triggerServerEvent ( "aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
-			elseif ( source == aTab6.PasswordOld ) then
+			--elseif ( source == aTab6.PasswordOld ) then
 
-			elseif ( source == aTab6.PasswordNew ) then
+			--elseif ( source == aTab6.PasswordNew ) then
 
-			elseif ( source == aTab6.PasswordConfirm ) then
+			--elseif ( source == aTab6.PasswordConfirm ) then
 
 			elseif ( source == aTab6.PasswordChange ) then
 				local passwordNew, passwordConf = guiGetText ( aTab6.PasswordNew ), guiGetText ( aTab6.PasswordConfirm )

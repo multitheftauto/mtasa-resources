@@ -597,7 +597,7 @@ function checkObjective ( obj, players )
 	elseif ( obj.id == "park" ) then
 		scriptEndPark()
 		setTimer ( scriptRemovePark, 1000, 1 )
-	elseif ( obj.id == "casino" ) then
+	--elseif ( obj.id == "casino" ) then
 		--scriptRemoveCasino() -- leaving the entrance open
 	elseif ( obj.id == "key" ) then
 		setTimer ( scriptRemoveKey, 1000, 1 )

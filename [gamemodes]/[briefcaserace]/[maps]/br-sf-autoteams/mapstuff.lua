@@ -15,6 +15,7 @@ function isVehicleIDBlocked ( id )
 	return blocked
 end
 
+--[[
 addEventHandler("onVehicleStartEnter", root,
 function (player, seat, jacked, door)
 	if (isVehicleIDBlocked(getElementModel(source))) then
@@ -22,6 +23,7 @@ function (player, seat, jacked, door)
 	end
 end
 )
+]]--
 
 addCommandHandler("kill",
 function (player, commandName)

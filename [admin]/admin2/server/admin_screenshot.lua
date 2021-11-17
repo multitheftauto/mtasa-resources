@@ -36,9 +36,6 @@ addEventHandler(
     EVENT_SCREEN_SHOT,
     root,
     function(action, id, ...)
-        if (action == SCREENSHOT_SAVE) then
-        elseif (action == SCREENSHOT_DELETE) then
-        end
     end
 )
 
