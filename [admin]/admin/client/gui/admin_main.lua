@@ -67,7 +67,7 @@ function aAdminMenu ()
 			if slap then
 				aCurrentSlap = slap
 				guiSetText(aTab1.Slap, "Slap! "..slap..'  _')
-				if (aSpectator.Slap) then 
+				if (aSpectator.Slap) then
 					guiSetText(aSpectator.Slap, "Slap! "..slap.."hp")
 				end
 			end
@@ -132,8 +132,8 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		end
 
 		local shortNames = {
-			["Combat Shotgun"] = "Combat SG", 
-			["Rocket Launcher"] = "R. Launcher", 
+			["Combat Shotgun"] = "Combat SG",
+			["Rocket Launcher"] = "R. Launcher",
 			["Rocket Launcher HS"] = "R. Launcher HS"
 		}
 		guiListSetColumns(aTab1.GiveWeapon, {{text = '', width = 0.8}})
@@ -1038,7 +1038,7 @@ function aClientClick ( button )
 						if (aPlayers[player]['accountname'] ~= 'guest') then
 							aPermissions.Show(player)
 						else
-							aMessageBox ( "error", "This player is not logged in!" )	
+							aMessageBox ( "error", "This player is not logged in!" )
 						end
 					elseif ( source == aTab1.ACModDetails ) then
 						aViewModdetails(player)
@@ -1233,14 +1233,14 @@ function aAdminReloadInfos()
 			triggerServerEvent ( "aSync", localPlayer, "player", player )
 			if (not isSensitiveDataHidden()) and guiCheckBoxGetSelected(aTab6.OutputPlayer) then
 				local playerName = aPlayers[player]["name"]
-			
+
 				if isColorCodeHidden() then
 					playerName = removeColorCoding(playerName)
 				else
 					if playerName:find('#%x%x%x%x%x%x') then
 						playerName = playerName .. (' (%s)'):format(removeColorCoding(playerName))
 					end
-				end		
+				end
 
 				outputConsole(' ')
 				outputConsole(('Name: %s'):format(playerName))

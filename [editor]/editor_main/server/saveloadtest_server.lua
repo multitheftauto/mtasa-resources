@@ -301,7 +301,7 @@ function saveOrganizationalDirectory(directory)
 	if (type(directory) ~= 'string') or (utf8.len(directory) == 0) then
 		directory = 'none'
 	else
-		directory = '[' .. directory .. ']'	
+		directory = '[' .. directory .. ']'
 	end
 	return set('*editor_main.mapResourceOrganizationalDirectory', directory)
 end

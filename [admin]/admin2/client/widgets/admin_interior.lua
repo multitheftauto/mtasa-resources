@@ -17,21 +17,21 @@ function aInterior.Show(player)
         local x, y = guiGetScreenSize()
         aInterior.Form = guiCreateWindow(x / 2 - 110, y / 2 - 150, 220, 300, "Player Interior Management", false)
         guiSetAlpha(aInterior.Form, 1)
-        guiSetProperty(aInterior.Form, 'AlwaysOnTop', 'True')   
+        guiSetProperty(aInterior.Form, 'AlwaysOnTop', 'True')
         aInterior.List = guiCreateGridList(0.03, 0.17, 0.94, 0.65, true, aInterior.Form)
         guiGridListAddColumn(aInterior.List, "World", 0.2)
         guiGridListAddColumn(aInterior.List, "Description", 0.75)
         aInterior.Edit = guiCreateEdit(0.03, 0.08, 0.94, 0.08, '', true, aInterior.Form)
         aInterior.Select = guiCreateButton(0.03, 0.82, 0.94, 0.075, "Select", true, aInterior.Form)
         aInterior.Cancel = guiCreateButton(0.03, 0.90, 0.94, 0.075, "Cancel", true, aInterior.Form)
-        
+
         aInterior.Load()
         aInterior.Refresh()
-        
+
         addEventHandler("onClientGUIDoubleClick", aInterior.Form, aInterior.onDoubleClick)
         addEventHandler("onClientGUIClick", aInterior.Form, aInterior.onClick)
         addEventHandler("onClientGUIChanged", aInterior.Form, aInterior.onGUIChange)
-        
+
         --Register With Admin Form
         aRegister("PlayerInterior", aInterior.Form, aInterior.Show, aInterior.Close)
     end

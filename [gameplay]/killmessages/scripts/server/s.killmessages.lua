@@ -75,7 +75,7 @@ addEventHandler('outputKillFromClient', root, function(killer, veh)
     else
         if triggerEvent("onPlayerKillMessage", client, killer, 19) then
             eventTriggered(client, killer, 19, nil, veh)
-        end 
+        end
     end
 end)
 

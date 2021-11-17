@@ -97,7 +97,7 @@ end
 local timerSpam
 function aResourcesTab.onEditFilter()
     if isTimer(timerSpam) then
-        killTimer(timerSpam) 
+        killTimer(timerSpam)
     end
     timerSpam = setTimer(aResourcesTab.ApplyFilter, 200, 1)
 end

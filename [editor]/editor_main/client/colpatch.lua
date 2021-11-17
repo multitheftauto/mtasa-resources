@@ -171,7 +171,7 @@ function loadColPatchArchive()
 	
 	fileClose(file)
 	return true
-end	
+end
 
 function loadAndReplaceCollision()
 	g_colElements = {}

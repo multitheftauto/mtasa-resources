@@ -535,9 +535,9 @@ function aAction ( type, action, admin, player, data, more )
             string = string.gsub ( string, "$by_admin_4plr", isAnonAdmin4Victim( admin ) and "" or " by " .. adminName )
             string = string.gsub ( string, "$data2", more or "" )
 
-            if ( player ) then 
+            if ( player ) then
                 local playerName = aEscapeNickname( getPlayerName( player ) )
-                string = string.gsub ( string, "$player", playerName) 
+                string = string.gsub ( string, "$player", playerName)
             end
 
             return tostring ( string.gsub ( string, "$data", data or "" ) )
@@ -1297,7 +1297,7 @@ addEventHandler ( "aResource", _root, function ( name, action )
 		local text = ""
 		if ( action == "start" ) then if ( startResource ( getResourceFromName ( name ), true ) ) then text = "started" end
 		elseif ( action == "restart" ) then
-			if ( getResourceState ( getResourceFromName ( name ) ) == "running" ) then 
+			if ( getResourceState ( getResourceFromName ( name ) ) == "running" ) then
 				if ( restartResource ( getResourceFromName ( name ) ) ) then text = "restarted" end
 			end
 		elseif ( action == "stop" ) then if ( stopResource ( getResourceFromName ( name ) ) ) then text = "stopped" end
@@ -1600,8 +1600,8 @@ addEventHandler ( "aAdminChat", _root, function ( chat )
 	outputServerLog ("(ADMIN CHAT) "..tostring(getPlayerName(source))..": "..chat)
 end )
 
-addCommandHandler(get("adminChatCommandName"), 
-	function(thePlayer, cmd, ...) 
+addCommandHandler(get("adminChatCommandName"),
+	function(thePlayer, cmd, ...)
 		if hasObjectPermissionTo (thePlayer, "general.tab_adminchat", false) and #arg > 0 then
 			triggerEvent("aAdminChat", thePlayer, table.concat(arg, " "))
 		end
