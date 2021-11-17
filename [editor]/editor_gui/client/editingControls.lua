@@ -1360,12 +1360,12 @@ eC.color = {
 		local boxWidth = (self.selectWindow.historyWidth - 15) / 3
 		local boxHeight = (self.selectWindow.historyHeight - 45) / 3
 		for i=1,3 do
-		  for j=1,3 do
-		  	local color = colorHistory[j + ((i - 1) * 3)]
-		  	local x = wx + self.selectWindow.historyX + ((boxWidth + 5) * (j-1))
-			local y = wy + self.selectWindow.historyY + 30 + ((boxHeight + 5) * (i-1))
-			dxDrawRectangle(x, y, boxWidth, boxHeight, tocolor(unpack(color)), true)
-		  end
+			for j=1,3 do
+				local color = colorHistory[j + ((i - 1) * 3)]
+				local x = wx + self.selectWindow.historyX + ((boxWidth + 5) * (j-1))
+				local y = wy + self.selectWindow.historyY + 30 + ((boxHeight + 5) * (i-1))
+				dxDrawRectangle(x, y, boxWidth, boxHeight, tocolor(unpack(color)), true)
+			end
 		end
 	end,
 	isCursorInArea = function( self, cursorX, cursorY, minX, minY, maxX, maxY )

@@ -132,7 +132,7 @@ function Countdown:update()
 	    if self.countitem then
 		    textItemSetText(self.countitem, self.texts[self.value] or tostring(self.value))
             if textItemGetText(self.countitem) == '' then
- 		        textItemSetText(self.textitem, '')
+				textItemSetText(self.textitem, '')
             end
         end
 		if self.singleitem then

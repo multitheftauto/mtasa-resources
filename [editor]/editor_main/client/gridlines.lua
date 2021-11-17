@@ -45,7 +45,7 @@ local function renderGridlines()
 	end
 	--
 	local face1 = matrix{
-		 	{minX,maxY,minZ,1},
+			{minX,maxY,minZ,1},
 			{minX,maxY,maxZ,1},
 			{maxX,maxY,maxZ,1},
 			{maxX,maxY,minZ,1},

@@ -69,13 +69,13 @@ end
 local function rotateWithMouseWheel(key, keyState)
 	if (not rotationless) and getCommandState("mod_rotate") then
 		local speed
-	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = rotateSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = rotateSpeed.fast
-	    else
-	       	speed = rotateSpeed.medium
-	    end
+		if (getCommandState("mod_slow_speed")) then
+			speed = rotateSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = rotateSpeed.fast
+		else
+			speed = rotateSpeed.medium
+		end
 		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
 		end
@@ -102,17 +102,17 @@ local function zoomWithMouseWheel(key, keyState)
 	if not getCommandState("mod_rotate") then
 		local speed
 	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = zoomSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = zoomSpeed.fast
+			speed = zoomSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = zoomSpeed.fast
 	    else
-	       	speed = zoomSpeed.medium
+			speed = zoomSpeed.medium
 	    end
 
 	    if key == "zoom_in" then
-   	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
+			maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
 	    else --if key == "zoom_out"
-	       	maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
+			maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
 	    end
 	end
 end
@@ -240,7 +240,7 @@ function detachElement()
 		local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
 		triggerServerEvent("syncProperty", getLocalPlayer(), "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
 		if hasRotation[getElementType(selectedElement)] then
-       		triggerServerEvent("syncProperty", getLocalPlayer(), "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+			triggerServerEvent("syncProperty", getLocalPlayer(), "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 		end
 		selectedElement = nil
 

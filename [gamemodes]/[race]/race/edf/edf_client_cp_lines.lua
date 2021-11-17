@@ -50,7 +50,7 @@ function drawCheckpointConnections()
 			local dx,dy,dz = exports.edf:edfGetElementPosition(nextID)
 			if dx then
                 local sx,sy,sz = exports.edf:edfGetElementPosition(checkpoint)
-    			if sx then
+				if sx then
 
                     -- Make arrow points
                     local s = Vector3D:new(sx,sy,sz+1)
@@ -70,7 +70,7 @@ function drawCheckpointConnections()
                     local p2 = p:SubV(left)
 
                     lineList[curIdx + 1] = {s=s,d=d,p1=p1,p2=p2,m=mid,length=length}
-    			end
+				end
 			end
 		end
 

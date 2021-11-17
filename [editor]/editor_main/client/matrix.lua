@@ -9,9 +9,9 @@
 	exact calculations, one would probably use a program like Matlab instead.
 	Matrices of size 100x100 can still be handled very well.
 	The error for the determinant and the inverted matrix is around 10^-9
- 	with a 100x100 matrix and an element range from -100 to 100.
+	with a 100x100 matrix and an element range from -100 to 100.
 
- 	Characteristics:
+	Characteristics:
 
 	- functions called via matrix.<function> should be able to handle
 	  any table matrix of structure t[i][j] = value

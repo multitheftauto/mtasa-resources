@@ -81,7 +81,7 @@ function Countdown:update()
 		end
 	end
     if self.value then
-    	self.value = self.value - 1
+		self.value = self.value - 1
     else
         outputDebug( 'MISC', 'Countdown self.value is nil' )
     end

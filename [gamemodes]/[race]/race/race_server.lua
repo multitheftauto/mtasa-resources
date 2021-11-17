@@ -386,7 +386,7 @@ end
 
 function joinHandlerBoth(player)
 	if #g_Spawnpoints == 0 then
- 		-- start vote if no map is loaded
+		-- start vote if no map is loaded
 		if not TimerManager.hasTimerFor("watchdog") then
             TimerManager.createTimerFor("map","watchdog"):setTimer(
                 function()
@@ -417,7 +417,7 @@ function joinHandlerBoth(player)
                     gotoState('GridCountdown')
 			        g_RaceStartCountdown:start()
                 end
-    		end
+			end
 			return
 		end
 	end

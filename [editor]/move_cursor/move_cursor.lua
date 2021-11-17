@@ -139,21 +139,21 @@ end
 local function zoomWithMouseWheel(key, keyState)
 	if not getCommandState("mod_rotate") then
 		local speed
-	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = zoomSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = zoomSpeed.fast
-	    else
-	       	speed = zoomSpeed.medium
-	    end
+		if (getCommandState("mod_slow_speed")) then
+			speed = zoomSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = zoomSpeed.fast
+		else
+			speed = zoomSpeed.medium
+		end
 
-	    if getCommandState("zoom_in") then
-   	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
+		if getCommandState("zoom_in") then
+			maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
 			processCursorMove()
-	    else --if key == "zoom_out"
-	       	maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
+		else --if key == "zoom_out"
+			maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
 			processCursorMove()
-	    end
+		end
 	end
 end
 
@@ -172,11 +172,11 @@ local function rotateWithMouseWheel(key, keyState)
 		rotX, rotY, rotZ = getElementRotation(selectedElement)
 		local speed
 	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = rotateSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = rotateSpeed.fast
+			speed = rotateSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = rotateSpeed.fast
 	    else
-	       	speed = rotateSpeed.medium
+			speed = rotateSpeed.medium
 	    end
 		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
@@ -203,19 +203,19 @@ end
 local function zoomWithMouseWheel(key, keyState)
 	if not getCommandState("mod_rotate") then
 		local speed
-	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = zoomSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = zoomSpeed.fast
-	    else
-	       	speed = zoomSpeed.medium
-	    end
+		if (getCommandState("mod_slow_speed")) then
+			speed = zoomSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = zoomSpeed.fast
+		else
+			speed = zoomSpeed.medium
+		end
 
-	    if key == "zoom_in" then
-   	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
-	    else --if key == "zoom_out"
-	       	maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
-	    end
+		if key == "zoom_in" then
+			maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
+		else --if key == "zoom_out"
+			maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
+		end
 
 		--force an update if an element is selected
 		if selectedElement then

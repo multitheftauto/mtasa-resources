@@ -43,8 +43,8 @@ function aSpectator.Initialize ()
 		aSpectator.SetStats		= guiCreateButton ( 0.10, 0.45, 0.80, 0.05, "Set Stats", true, aSpectator.Actions )
 		aSpectator.Slap			= guiCreateButton ( 0.10, 0.51, 0.80, 0.05, "Slap! "..aCurrentSlap.."hp", true, aSpectator.Actions )
 		aSpectator.Slaps			= guiCreateGridList ( 0.10, 0.51, 0.80, 0.48, true, aSpectator.Actions )
-					  		  guiGridListAddColumn( aSpectator.Slaps, "", 0.85 )
-					  		  guiSetVisible ( aSpectator.Slaps, false )
+								guiGridListAddColumn( aSpectator.Slaps, "", 0.85 )
+								guiSetVisible ( aSpectator.Slaps, false )
 		local i = 0
 		while i <= 10 do
 			guiGridListSetItemText ( aSpectator.Slaps, guiGridListAddRow ( aSpectator.Slaps ), 1, tostring ( i * 10 ), false, false )
@@ -53,13 +53,13 @@ function aSpectator.Initialize ()
 
 		aSpectator.CollideWithWalls			= guiCreateCheckBox ( 0.08, 0.8, 0.84, 0.04, "Collide with walls", true, true, aSpectator.Actions )
 		aSpectator.Skip			= guiCreateCheckBox ( 0.08, 0.85, 0.84, 0.04, "Skip dead players", true, true, aSpectator.Actions )
-					  		  guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
+								guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
 		aSpectator.Back			= guiCreateButton ( 0.10, 0.93, 0.80, 0.05, "Back", true, aSpectator.Actions )
 
 		aSpectator.Players		= guiCreateWindow ( 30, y / 2 - 200, 160, 400, "Players", false )
-			  	  	  		  guiWindowSetSizable ( aSpectator.Players, false )
+								guiWindowSetSizable ( aSpectator.Players, false )
 		aSpectator.PlayerList		= guiCreateGridList ( 0.03, 0.07, 0.94, 0.92, true, aSpectator.Players )
-					  		  guiGridListAddColumn( aSpectator.PlayerList, "Player Name", 0.85 )
+								guiGridListAddColumn( aSpectator.PlayerList, "Player Name", 0.85 )
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
 			local row = guiGridListAddRow ( aSpectator.PlayerList )
 			guiGridListSetItemPlayerName ( aSpectator.PlayerList, row, 1, getPlayerName ( player ), false, false )

@@ -317,7 +317,7 @@ CoroutineSleeper = {
 	new = function(self, myFunc, ...)
 		local obj = setmetatable({}, { __index = CoroutineSleeper })
 		-- Use inner function to call myFunc, so we can auto :detach when finished
-    	obj.handle = coroutine.create( function(obj, ...)
+		obj.handle = coroutine.create( function(obj, ...)
 											myFunc(obj, ...)
 											obj:detach()
 										end )
@@ -339,7 +339,7 @@ CoroutineSleeper = {
 	sleep = function(self, ms)
 		if not self:isAttached() then return end
 		setTimer( function()
-    		if not self:isAttached() then return end
+			if not self:isAttached() then return end
 			local status = coroutine.status(self.handle)
 			if (status == "suspended") then
 				coroutine.resume(self.handle)

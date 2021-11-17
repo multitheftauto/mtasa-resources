@@ -13,7 +13,7 @@ addEventHandler('onClientCall_race', resourceRoot,
         if not fn then
             outputDebugString( 'onClientCall_race fn is nil for ' .. tostring(fnName) )
         else
-    		fn(...)
+			fn(...)
         end
 	end
 )

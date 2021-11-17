@@ -255,7 +255,7 @@ end
 
 function ActionDestroy:performRedo()
 	if (self.element and isElement(self.element)) then
-  		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
+		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
 		triggerEvent("onElementDestroy", self.element)
 		triggerClientEvent(rootElement, "onClientElementDestroyed", self.element)
 

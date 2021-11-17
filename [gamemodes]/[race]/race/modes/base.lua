@@ -293,7 +293,7 @@ function lastCheckpointWasSafe(id, player)
 end
 
 function isValidPlayer(player)
- 	return g_Players and table.find(g_Players, player)
+	return g_Players and table.find(g_Players, player)
 end
 
 function isValidPlayerVehicle(player,vehicle)

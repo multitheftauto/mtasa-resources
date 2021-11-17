@@ -148,17 +148,17 @@ function updateTournamentLeaders ()
 		end
 	end
     if ( top3[1] ) then
-    	textItemSetText ( firstText, "1st: " .. getPlayerName(top3[1].player) .. " " .. top3[1].ratio )
+		textItemSetText ( firstText, "1st: " .. getPlayerName(top3[1].player) .. " " .. top3[1].ratio )
 	else
 	    textItemSetText ( firstText, "1st:" )
 	end
 	if ( top3[2] ) then
-    	textItemSetText ( secondText, "2nd: " .. getPlayerName(top3[2].player) .. " " .. top3[2].ratio )
+		textItemSetText ( secondText, "2nd: " .. getPlayerName(top3[2].player) .. " " .. top3[2].ratio )
 	else
 	    textItemSetText ( secondText, "2nd:" )
 	end
 	if ( top3[3] ) then
-    	textItemSetText ( thirdText, "3rd: "..getPlayerName (top3[3].player).." ".. top3[3].ratio )
+		textItemSetText ( thirdText, "3rd: "..getPlayerName (top3[3].player).." ".. top3[3].ratio )
 	else
 	    textItemSetText ( thirdText, "3rd:" )
 	end
@@ -265,7 +265,7 @@ function PlayerJoin ( )
 	--setCameraMode (source, "player" )
 	--setTimer ( setCameraMode, 500, 1, source, "fixed" ) --camera stuff not working
     --setTimer ( setCameraPosition, 1000, 1, source, 1558.367, -1346.678, 630 )
-  	--setTimer ( setCameraLookAt, 2000, 1, source, 1558.367, -1301.059, 603.105469 )
+	--setTimer ( setCameraLookAt, 2000, 1, source, 1558.367, -1301.059, 603.105469 )
 	setCameraMatrix( source, 1558.367, -1346.678, 630, 1558.367, -1301.059, 603.105469)
 end
 addEventHandler ( "onPlayerJoin", getRootElement(), PlayerJoin )
@@ -328,7 +328,7 @@ function newGameCountdown ()
 		playSoundFrontEnd(root, 45)
 		--Erase countdown for displaying 'get ready' next game prior to countdown
 		if winTie == false then --needed for display consistency
-        	textItemSetText ( countDownText, "Tournament length: "..scoreLimit.. " wins".."\n".."Get ready!".."\n".."" )
+			textItemSetText ( countDownText, "Tournament length: "..scoreLimit.. " wins".."\n".."Get ready!".."\n".."" )
 		else
 		    textItemSetText ( countDownText, "Tournament length: "..scoreLimit.. " wins - Tiebreaker game!!!".."\n".."Get ready!".."\n".."" )
 		end
@@ -344,7 +344,7 @@ function cleanupOldGame ()
 	end
     gameTimers = getTimers ()
     for timerKey, timerNameData in ipairs(gameTimers) do
-    	killTimer ( timerNameData )
+		killTimer ( timerNameData )
     end
 	for k,v in pairs(players) do
 		unbindKey ( v, "space" )

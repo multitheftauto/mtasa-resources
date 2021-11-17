@@ -36,12 +36,12 @@ local hasRotation = {
 local function getCameraRotation ()
 	local px, py, pz, lx, ly, lz = getCameraMatrix()
 	local rotz = 6.2831853071796 - math.atan2 ( ( lx - px ), ( ly - py ) ) % 6.2831853071796
- 	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
+	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
 	--Convert to degrees
 	rotx = math.deg(rotx)
 	rotz = -math.deg(rotz)
 
- 	return rotx, 180, rotz
+	return rotx, 180, rotz
 end
 
 local function roundRotation ( rot )
@@ -441,7 +441,7 @@ function detachElement()
 		triggerServerEvent("syncProperty", getLocalPlayer(), "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
 		if hasRotation[getElementType(selectedElement)] then
 			rotX, rotY, rotZ = getElementRotation(selectedElement)
-	        	triggerServerEvent("syncProperty", getLocalPlayer(), "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+			triggerServerEvent("syncProperty", getLocalPlayer(), "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 		end
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil

@@ -420,8 +420,8 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 
 		newControl = controlPrototype:create( parameters )
 		newControl:addChangeHandler(function ()
-		                            	setPropertiesChanged(true)
-						editor_main.updateArrowMarker()
+										setPropertiesChanged(true)
+										editor_main.updateArrowMarker()
 					    end)
 		if propertyApplier and type(propertyApplier) == "function" then
 			newControl:addChangeHandler(propertyApplier)

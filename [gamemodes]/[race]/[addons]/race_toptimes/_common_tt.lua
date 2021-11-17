@@ -274,7 +274,7 @@ end
 -- Time functions
 ---------------------------------------------------------------------------
 function getSecondCount()
- 	return getTickCount() * 0.001
+	return getTickCount() * 0.001
 end
 
 function msToTimeStr(ms)
@@ -322,8 +322,8 @@ end
 function getCameraRot()
 	local px, py, pz, lx, ly, lz = getCameraMatrix()
 	local rotz = math.atan2 ( ( lx - px ), ( ly - py ) )
- 	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
- 	return math.deg(rotx), 180, -math.deg(rotz)
+	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
+	return math.deg(rotx), 180, -math.deg(rotz)
 end
 ---------------------------------------------------------------------------
 

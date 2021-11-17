@@ -134,13 +134,13 @@ addEventHandler('_onClientResourceStart', g_ResRoot,
 	function()
         callSavedEventHandlers( 'onClientResourceStart', source )
         if _DEBUG_TIMING then
-    		setTimer(
+			setTimer(
                 function()
                     triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
                 end,
                 math.random(1000,15000), 1 )
         else
-    		triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
+			triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
 	    end
 	end
 )

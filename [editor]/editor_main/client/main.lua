@@ -234,20 +234,20 @@ addEventHandler("onClientRender", root,
             local line1 = ( not g_RemoveWorldBuildingMode_main and "[SELECT WORLD OBJECT]" or "[REMOVE WORLD OBJECT]" )
             local line2 = ""
             local line3 = ""
-     		if not targetElement and buildingInfo then
-    			local camX, camY, camZ = getCameraMatrix()
-    			local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
-    			local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
-    			local modelName = tostring( engineGetModelNameFromID( buildingInfo.id ) )
+			if not targetElement and buildingInfo then
+				local camX, camY, camZ = getCameraMatrix()
+				local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
+				local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
+				local modelName = tostring( engineGetModelNameFromID( buildingInfo.id ) )
 				if ( buildingInfo.LODid ~= nil ) then
-    				line1 = buildingInfo.id .. " (" .. modelName .. ")" .. " LOD: " .. buildingInfo.LODid
+					line1 = buildingInfo.id .. " (" .. modelName .. ")" .. " LOD: " .. buildingInfo.LODid
 				else
-    				line1 = buildingInfo.id .. " (" .. modelName .. ")"
+					line1 = buildingInfo.id .. " (" .. modelName .. ")"
 				end
 				line2 = "[world]"
 				line3 = roundedDistance .. " m"
-    			g_worldBuildingInfo = buildingInfo
-    		end
+				g_worldBuildingInfo = buildingInfo
+			end
 			createHighlighterText ( labelCenterX,labelCenterY, line1, line2, line3 )
         end
 
@@ -1358,7 +1358,7 @@ function handleWorldBuildingMode(keyState)
 					creationParameters.rotation = { g_worldBuildingInfo.rx, g_worldBuildingInfo.ry, g_worldBuildingInfo.rz }
 					doCreateElement("object", "editor_main", creationParameters)
 				end
-        	end
+			end
 			g_SelectWorldBuildingMode_main = false
 			g_RemoveWorldBuildingMode_main = false
 			return true

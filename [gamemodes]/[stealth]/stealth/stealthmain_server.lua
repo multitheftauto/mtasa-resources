@@ -55,7 +55,7 @@ function joinTeam( player, team )
 	setPlayerTeam(player, team)
 	if team == team1 then
 		setPlayerNametagColor ( player, 255, 0, 0 )
- 	elseif team == team2 then
+	elseif team == team2 then
 		setPlayerNametagColor ( player, 0, 0, 255 )
 	end
 end
