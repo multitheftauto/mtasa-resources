@@ -765,8 +765,6 @@ function findMaps( query, gamemode )
 		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
 	end
 	local results = {}
-	--escape all meta chars
-	query = string.gsub(query, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
 	-- Loop through and find matching maps
 	local maps = gamemode and exports.mapmanager:getMapsCompatibleWithGamemode(gamemode) or exports.mapmanager:getMaps()
 	for i,resource in ipairs(maps) do
@@ -779,7 +777,7 @@ function findMaps( query, gamemode )
 		end
 
 		-- Find match for query within infoName
-		if string.find( infoName:lower(), query:lower() ) then
+		if string.find( infoName:lower(), query:lower(), 1, true ) then
 			table.insert( results, resource )
 		end
 	end
