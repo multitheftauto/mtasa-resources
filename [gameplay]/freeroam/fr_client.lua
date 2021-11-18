@@ -1027,7 +1027,7 @@ end
 function setPosInit()
 	local x, y, z = getElementPosition(localPlayer)
 	setControlNumbers(wndSetPos, { x = x, y = y, z = z })
-
+	removeEventHandler('onClientRender', root, updatePlayerBlips)
 	addEventHandler('onClientRender', root, updatePlayerBlips)
 end
 
