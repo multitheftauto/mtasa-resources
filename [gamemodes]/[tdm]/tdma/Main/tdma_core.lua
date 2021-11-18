@@ -77,7 +77,7 @@ function onMapLoad ( name )
 	initVehicleSystem()
 
 	----outputDebugString ( "Starting The Game" )
-	if xDebug then outputDebugString ( "[[[[[/*****STARTING GAME*****\]]]]]" ) end
+	if xDebug then outputDebugString ( "[[[[[*****STARTING GAME*****]]]]]" ) end
 	startGame()
 
 end

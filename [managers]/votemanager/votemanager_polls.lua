@@ -719,13 +719,11 @@ function getPlayerByNamepart(namePart)
 		return getPlayerFromName(namePart)
 	end
 	namePart = string.lower(namePart)
-	--escape all metachars
-	namePart = string.gsub(namePart, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
 	local playername
 	local bestaccuracy = 0
 	local foundPlayer, b, e
 	for _,player in ipairs(getElementsByType("player")) do
-		b,e = string.find(string.lower(getPlayerName(player)), namePart)
+		b,e = string.find(string.lower(getPlayerName(player)), namePart, 1, true)
 		if b and e then
 			if e-b > bestaccuracy then
 				bestaccuracy = e-b
