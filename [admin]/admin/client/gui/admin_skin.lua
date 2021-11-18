@@ -131,7 +131,7 @@ function aListSkins ( mode )
 		local skins = {}
 		for name, group in pairs ( aSkins ) do
 			if (name ~= "Special" or name == "Special" and getVersion().number >= 272) then
-				for id, skin in pairs ( group ) do
+				for i, skin in pairs ( group ) do
 					local id = tonumber ( skin["model"] )
 					skins[id] = skin["name"]
 				end

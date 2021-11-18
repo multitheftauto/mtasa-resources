@@ -115,7 +115,7 @@ function aAclTab.RefreshAccess()
             local temp = {}
             local strip = aAclTab.GetViewedRight()
             local names = guiGridListAddColumn(list, strip, 0.35)
-            local strip = strip .. "."
+            local strip2 = strip .. "."
             local search = string.lower(guiGetText(aAclTab.AccessSearch))
             if (search == "") then
                 search = false
@@ -127,7 +127,7 @@ function aAclTab.RefreshAccess()
                 local rights = aAclTab.Cache.ACL[acl]
                 local column = guiGridListAddColumn(list, acl, 0.10)
                 for right, access in pairs(rights) do
-                    local name, found = string.gsub(right, strip, "")
+                    local name, found = string.gsub(right, strip2, "")
                     if ((found ~= 0) and ((not search) or (string.find(string.lower(name), search)))) then
                         local row = temp[name]
                         if (not row) then

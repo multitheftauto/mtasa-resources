@@ -260,7 +260,6 @@ function aSpectator.Render()
     oz = z + math.tan(math.rad(aSpectator.AngleZ)) * offset
     setCameraMatrix(ox, oy, oz, x, y, z)
 
-    local sx, sy = guiGetScreenSize()
     dxDrawText(
         "Spectating: " .. getPlayerName(aSpectator.Spectating),
         sx - 170,

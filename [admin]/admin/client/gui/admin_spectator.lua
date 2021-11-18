@@ -266,7 +266,6 @@ function aSpectator.Render ()
 	oz = z + math.tan ( math.rad ( aSpectator.AngleZ ) ) * offset
 	setCameraMatrix ( ox, oy, oz, x, y, z )
 
-	local sx, sy = guiGetScreenSize ()
 	dxDrawText ( "Spectating: "..getPlayerName ( aSpectator.Spectating ), sx - 170, 200, sx - 170, 200, tocolor ( 255, 255, 255, 255 ), 1 )
 	if ( _DEBUG ) then
 		dxDrawText ( "DEBUG:\nAngleX: "..aSpectator.AngleX.."\nAngleZ: "..aSpectator.AngleZ.."\n\nOffset: "..aSpectator.Offset.."\nX: "..ox.."\nY: "..oy.."\nZ: "..oz.."\nDist: "..getDistanceBetweenPoints3D ( x, y, z, ox, oy, oz ), sx - 170, sy - 180, sx - 170, sy - 180, tocolor ( 255, 255, 255, 255 ), 1 )
