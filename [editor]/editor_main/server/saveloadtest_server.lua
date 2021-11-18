@@ -68,7 +68,7 @@ function startUp()
 			for _,name in ipairs(adminGroups) do
 				local group = aclGetGroup(name)
 				if group then
-					for i,obj in ipairs(aclGroupListObjects(group)) do
+					for i2,obj in ipairs(aclGroupListObjects(group)) do
 						if obj == 'user.' .. accountName or obj == 'user.*' then
 							triggerClientEvent(player, "enableServerSettings", player, enabled, dumpInterval/1000)
 						end

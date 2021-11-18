@@ -69,7 +69,7 @@ addEventHandler ( "onResourceStart", thisResourceRoot,
 			for k,v in ipairs(resources) do
 				if v ~= edf.res and v ~= getThisResource() and edf.edfHasDefinition(v) then
 					local loaded = false
-					for k, loadedResource in pairs(loadedDefs) do
+					for k2, loadedResource in pairs(loadedDefs) do
 						if v == loadedResource then
 							loaded = true
 							break
@@ -103,7 +103,7 @@ function reloadEDFDefinitions(newEDF,noOutput)
 		local resource = getResourceFromName ( resourceName )
 		if resource then
 			local loaded = false
-			for k, loadedResource in ipairs(loadedDefs) do
+			for k2, loadedResource in ipairs(loadedDefs) do
 				if loadedResource == resource then
 					loaded = true
 					break
@@ -129,7 +129,7 @@ function reloadEDFDefinitions(newEDF,noOutput)
 			local resource = getResourceFromName ( resourceName )
 			if resource then
 				local loaded = false
-				for k, loadedResource in ipairs(loadedDefs) do
+				for k2, loadedResource in ipairs(loadedDefs) do
 					if loadedResource == resource then
 						loaded = true
 						break

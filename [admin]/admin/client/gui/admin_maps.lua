@@ -46,10 +46,10 @@ function loadMaps(gamemodeMapTable, gamemode, map)
 				guiGridListSetItemText ( aTabMap.MapList, row, 2, gamemode.resname, false, false )
 				guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
 			else
-				for id,map in ipairs (gamemode.maps) do
+				for id2,map2 in ipairs (gamemode.maps) do
 					local row = guiGridListAddRow ( aTabMap.MapList )
-					guiGridListSetItemText ( aTabMap.MapList, row, 1, map.name, false, false )
-					guiGridListSetItemText ( aTabMap.MapList, row, 2, map.resname, false, false )
+					guiGridListSetItemText ( aTabMap.MapList, row, 1, map2.name, false, false )
+					guiGridListSetItemText ( aTabMap.MapList, row, 2, map2.resname, false, false )
 					guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
 				end
 			end
@@ -126,7 +126,7 @@ function guiChanged()
 				guiGridListSetItemText ( aTabMap.MapList, row, 2, gamemode.resname, false, false )
 				guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
 			else
-				for id,map in ipairs (gamemode.maps) do
+				for id2,map in ipairs (gamemode.maps) do
 					local row = guiGridListAddRow ( aTabMap.MapList )
 					guiGridListSetItemText ( aTabMap.MapList, row, 1, map.name, false, false )
 					guiGridListSetItemText ( aTabMap.MapList, row, 2, map.resname, false, false )
@@ -148,7 +148,7 @@ function guiChanged()
 					noMaps = false
 				end
 			else
-				for id,map in ipairs (gamemode.maps) do
+				for id2,map in ipairs (gamemode.maps) do
 					if string.find(string.lower(map.name.." "..map.resname), text, 1, true) then
 						local row = guiGridListAddRow ( aTabMap.MapList )
 						guiGridListSetItemText ( aTabMap.MapList, row, 1, map.name, false, false )

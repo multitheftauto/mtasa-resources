@@ -141,7 +141,7 @@ addEventHandler("onResourceStart", rootElement,
 				if edf[gamemode] then
 					for k, map in ipairs(startedResourceMaps) do
 						local mapElements = getElementChildren(map)
-						for k, element in ipairs(mapElements) do
+						for k2, element in ipairs(mapElements) do
 							edfRepresentElement(element, gamemode)
 						end
 					end

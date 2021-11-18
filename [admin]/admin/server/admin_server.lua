@@ -328,10 +328,10 @@ function aAddUnmuteTimer( player, length )
 	aUnmuteTimerList[serial] = setTimer(
 								function()
 									aUnmuteTimerList[serial] = nil
-									for _,player in ipairs(getElementsByType('player')) do
-										if getPlayerSerial(player) == serial then
-											if isPlayerMuted(player) then
-												triggerEvent ( "aPlayer", getElementByIndex("console", 0), player, "mute" )
+									for _,plr in ipairs(getElementsByType('player')) do
+										if getPlayerSerial(plr) == serial then
+											if isPlayerMuted(plr) then
+												triggerEvent ( "aPlayer", getElementByIndex("console", 0), plr, "mute" )
 											end
 										end
 									end

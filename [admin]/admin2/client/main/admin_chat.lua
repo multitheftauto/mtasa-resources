@@ -61,7 +61,7 @@ end
 function aChatTab.onClientSync(type, table)
     if (type == SYNC_ADMINS) then
         --if ( guiGridListGetRowCount ( aChatTab.AdminPlayers ) > 0 ) then guiGridListClear ( aChatTab.AdminPlayers ) end
-        for id, player in ipairs(getElementsByType("player")) do
+        for i, player in ipairs(getElementsByType("player")) do
             if (not table[player] or not table[player]["admin"]) and (player == getLocalPlayer()) then
                 -- aAdminDestroy()
                 return

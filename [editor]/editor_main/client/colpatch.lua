@@ -215,14 +215,14 @@ end
 
 -- Called after we finish loading to apply removed world objects in current map
 function applyRemovedColPatches()
-	for k,element in ipairs(getElementsByType("removeWorldObject")) do
+	for i,element in ipairs(getElementsByType("removeWorldObject")) do
 		local model = getElementData(element, "model")
 		if g_placementIDObjs[model] then
 			local posX = getElementData(element, "posX")
 			local posY = getElementData(element, "posY")
 			local posZ = getElementData(element, "posZ")
 			local radius = getElementData(element, "radius")
-			
+
 			for k,v in ipairs(g_placementIDObjs[model]) do
 				-- Is it a created object
 				if type(v) == "userdata" then
@@ -243,7 +243,7 @@ end
 local function onClientElementCreateDestroy()
 	if not g_placementData then return end
 	if (getElementType(source) ~= "removeWorldObject") then return end
-	
+
 	local model = getElementData(source, "model")
 	if not g_placementIDObjs[model] then return end
 	local posX = getElementData(source, "posX")

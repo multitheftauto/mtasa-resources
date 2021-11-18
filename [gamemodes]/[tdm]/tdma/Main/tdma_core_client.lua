@@ -13,7 +13,7 @@ function showPlayerTheirTeam(player, text, r, g, b)
 				local guiLength = guiLabelGetTextExtent ( guiTextLabel )
 				local screenX, screenY = guiGetScreenSize()
 				guiLength = tonumber(guiLength) / screenX
-				local guiTextLabelTeamName = guiCreateLabel( tonumber(guiLength) + 0.01, 0.20, 1, 0.5, text, true )
+				local guiTextLabelTeamName = guiCreateLabel( guiLength + 0.01, 0.20, 1, 0.5, text, true )
 				if ( guiTextLabelTeamName ) then
 					guiLabelSetColor ( guiTextLabelTeamName, tonumber(r), tonumber(g), tonumber(b) )
 				end

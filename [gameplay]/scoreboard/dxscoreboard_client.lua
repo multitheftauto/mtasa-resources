@@ -340,7 +340,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 			for key, player in ipairs( players ) do
 				if not getPlayerTeam( player ) or not (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) or serverInfo.forcehideteams then
 					sortTable[sortTableIndex] = {}
-					for key, column in ipairs( scoreboardColumns ) do
+					for key2, column in ipairs( scoreboardColumns ) do
 						local content
 						if column.name == "name" then
 							local playerName = getPlayerName( player )
@@ -398,7 +398,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 
 					-- Add teams to sorting table first
 					teamSortTable[teamSortTableIndex] = {}
-					for key, column in ipairs( scoreboardColumns ) do
+					for key2, column in ipairs( scoreboardColumns ) do
 						local content
 						if column.name == "name" then
 							local teamName = getTeamName( team )
@@ -444,9 +444,9 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					sortTableIndex = 1
 					sortTable[team] = {}
 					local players = getPlayersInTeam( team )
-					for key, player in ipairs( players ) do
+					for key2, player in ipairs( players ) do
 						sortTable[team][sortTableIndex] = {}
-						for key, column in ipairs( scoreboardColumns ) do
+						for key3, column in ipairs( scoreboardColumns ) do
 							local content
 							if column.name == "name" then
 								local playerName = getPlayerName( player )
@@ -494,7 +494,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					scoreboardContent[index] = content
 					index = index + 1
 
-					for key, value in ipairs( sortTable[team] ) do
+					for key2, value in ipairs( sortTable[team] ) do
 						scoreboardContent[index] = value
 						index = index + 1
 					end

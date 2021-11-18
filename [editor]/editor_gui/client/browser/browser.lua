@@ -368,7 +368,7 @@ function toggleFavourite (gridlist)
 	local results = elementSearch(catNodes[2], model)
 	for i, data in pairs(results) do
 		if data["model"] == model then --has to be exact match
-			for i, node in pairs(xmlNodeGetChildren(xmlFiles["favourite"])) do
+			for i2, node in pairs(xmlNodeGetChildren(xmlFiles["favourite"])) do
 				if xmlNodeGetAttribute(node, "model") == model then
 					xmlDestroyNode(node)
 					break

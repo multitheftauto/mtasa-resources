@@ -567,7 +567,7 @@ function aClientSync ( type, table, data )
 		aAdminDestroy()
 	elseif ( type == "admins" ) then
 		--if ( guiGridListGetRowCount ( aTab5.AdminPlayers ) > 0 ) then guiGridListClear ( aTab5.AdminPlayers ) end
-		for id, player in ipairs(getElementsByType("player")) do
+		for i, player in ipairs(getElementsByType("player")) do
 			if ( table[player]["admin"] == false ) and ( player == localPlayer ) then
 				aAdminDestroy()
 				break
