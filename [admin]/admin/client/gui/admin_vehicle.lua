@@ -236,22 +236,22 @@ function aClientVehicleClick ( button )
 		elseif ( source == aVehicleColorClose ) then
 			guiSetVisible ( aVehicleColorForm, false )
 		elseif ( source == aVehicleColorSet ) then
-			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setcolor", { guiGetText ( aVehicleColor1 ), guiGetText ( aVehicleColor2 ), guiGetText ( aVehicleColor3 ), guiGetText ( aVehicleColor4 ) } )
+			triggerServerEvent ( "aVehicle", localPlayer, aVehicleCustomizePlayer, "setcolor", { guiGetText ( aVehicleColor1 ), guiGetText ( aVehicleColor2 ), guiGetText ( aVehicleColor3 ), guiGetText ( aVehicleColor4 ) } )
 		elseif ( source == aLightsColorSet ) then
-			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setlights", { guiGetText ( aLightsColor ) } )
+			triggerServerEvent ( "aVehicle", localPlayer, aVehicleCustomizePlayer, "setlights", { guiGetText ( aLightsColor ) } )
 		elseif ( source == aLicensePlateSet ) then
-			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setplates", { guiGetText ( aLicensePlate ) } )
+			triggerServerEvent ( "aVehicle", localPlayer, aVehicleCustomizePlayer, "setplates", { guiGetText ( aLicensePlate ) } )
 		-- elseif ( source == aVehicleColorScheme ) then
 		-- 	guiSetVisible ( aVehicleColorForm, true )
 		-- 	guiBringToFront ( aVehicleColorForm )
 		elseif ( source == aVehicleUpgradeAll ) then
-			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "customize", { "all" } )
+			triggerServerEvent ( "aVehicle", localPlayer, aVehicleCustomizePlayer, "customize", { "all" } )
 			setTimer ( aVehicleCheckCurrentUpgrades, 2000, 1, aVehicleCustomizeVehicle )
 		elseif ( source == aVehicleRemoveAll ) then
-			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "customize", { "remove" } )
+			triggerServerEvent ( "aVehicle", localPlayer, aVehicleCustomizePlayer, "customize", { "remove" } )
 			setTimer ( aVehicleCheckCurrentUpgrades, 2000, 1, aVehicleCustomizeVehicle )
 		elseif ( source == aVehiclePaintjobSet ) then
-			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "setpaintjob", tonumber ( guiGetText ( aVehiclePaintjob ) ) )
+			triggerServerEvent ( "aVehicle", localPlayer, aVehicleCustomizePlayer, "setpaintjob", tonumber ( guiGetText ( aVehiclePaintjob ) ) )
 		elseif ( source == aVehiclePaintjobDrop ) then
 			guiSetVisible ( aVehiclePaintjobList, true )
 			guiBringToFront ( aVehiclePaintjobList )
@@ -281,7 +281,7 @@ function aClientVehicleClick ( button )
 					end
 				end
 			end
-			triggerServerEvent ( "aVehicle", getLocalPlayer(), aVehicleCustomizePlayer, "customize", tableOut )
+			triggerServerEvent ( "aVehicle", localPlayer, aVehicleCustomizePlayer, "customize", tableOut )
 			setTimer ( aVehicleCheckCurrentUpgrades, 2000, 1, aVehicleCustomizeVehicle )
 		end
 	end

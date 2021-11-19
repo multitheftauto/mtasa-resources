@@ -1,15 +1,15 @@
 setTimer ( setTime, 60000, 1, 12, 00 )
 
 function cancelSharkDamage  ( attacker, weapon, bodypart )
-	if weapon == 53 and attacker == getLocalPlayer() and getElementModel(getLocalPlayer()) == 124 then
+	if weapon == 53 and attacker == localPlayer and getElementModel(localPlayer) == 124 then
 		cancelEvent()
 	end
 end
-addEventHandler ( "onClientPlayerDamage", getLocalPlayer(), cancelSharkDamage )
+addEventHandler ( "onClientPlayerDamage", localPlayer, cancelSharkDamage )
 
 function setupSpawn  ()
 	--outputChatBox ( "called for "..getPlayerName ( source ) )
-	if ( getElementModel(getLocalPlayer()) == 124 ) then
+	if ( getElementModel(localPlayer) == 124 ) then
 		for k,v in pairs(getTimers()) do
 			if eatTimer == v then
 				killTimer ( v )
@@ -17,7 +17,7 @@ function setupSpawn  ()
 		end
 		setPlayerHudComponentVisible ( "breath", false )
 		setTimer ( toggleControl, 1000, 1, "jump", false )
-		setElementAlpha( getLocalPlayer(), 0 )
+		setElementAlpha( localPlayer, 0 )
 		--lol = toggleControl ( "jump", false )
 		--outputChatBox ( "Jump disabled? "..tostring(lol) )
 		setGameSpeed ( 1.5 )
@@ -29,12 +29,12 @@ function setupSpawn  ()
 		end
 		eatTimer = setTimer ( isBeingEaten, 200, 0 )
 		setPlayerHudComponentVisible ( "breath", true )
-		setElementAlpha( getLocalPlayer(), 255 )
+		setElementAlpha( localPlayer, 255 )
 		toggleControl ( "jump", true )
 		setGameSpeed ( 1 )
 	end
 end
-addEventHandler ( "onClientPlayerSpawn", getLocalPlayer(), setupSpawn )
+addEventHandler ( "onClientPlayerSpawn", localPlayer, setupSpawn )
 
 function getSharkMouthPosition(player)
 	local rot = math.rad ( getPedRotation(player) )
@@ -46,17 +46,17 @@ function getSharkMouthPosition(player)
 end
 
 function isBeingEaten()
-	local x,y,z = getElementPosition ( getLocalPlayer() )
+	local x,y,z = getElementPosition ( localPlayer )
 	for k,player in pairs(getElementsByType("player")) do
 		if getElementModel ( player ) == 124 then
 			local sx,sy,sz = getSharkMouthPosition(player)
 			if getDistanceBetweenPoints3D ( x,y,z,sx,sy,sz ) <= 2 then
-				local health = getElementHealth ( getLocalPlayer() )
+				local health = getElementHealth ( localPlayer )
 				outputDebugString("Health "..tostring(health))
 				if health <= 34 then
-					setElementHealth ( getLocalPlayer(),0 )
+					setElementHealth ( localPlayer,0 )
 				else
-					setElementHealth ( getLocalPlayer(),health - 34 )
+					setElementHealth ( localPlayer,health - 34 )
 				end
 			end
 		end

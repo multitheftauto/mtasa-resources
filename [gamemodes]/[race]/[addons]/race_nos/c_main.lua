@@ -1,5 +1,4 @@
 
-g_Me = getLocalPlayer( );
 g_Root = getRootElement( );
 g_ResRoot = getResourceRootElement( );
 
@@ -31,7 +30,7 @@ addEventHandler( "onClientResourceStart", g_ResRoot,
 addEventHandler( "onClientElementDataChange", g_Root,
 	function( key )
 		if getElementType( source ) == "vehicle" and key == "NOS" then
-			local veh = getPedOccupiedVehicle( g_Me );
+			local veh = getPedOccupiedVehicle( localPlayer );
 			if veh == source then
 				nos = getElementData( source, key );
 			end
@@ -41,7 +40,7 @@ addEventHandler( "onClientElementDataChange", g_Root,
 
 
 function toggleNOS( key, state )
-	local veh = getPedOccupiedVehicle( g_Me );
+	local veh = getPedOccupiedVehicle( localPlayer );
 	if veh and not isEditingPosition then
 		if state == "up" then
 			removeVehicleUpgrade( veh, 1010 );
@@ -82,7 +81,7 @@ local previous_color = 0;
 addEventHandler( "onClientRender", g_Root,
 	function( )
 		if g_bShowGauge then
-			local veh = getPedOccupiedVehicle( g_Me );
+			local veh = getPedOccupiedVehicle( localPlayer );
 			if veh then
 				local am_i_driver = getVehicleOccupant( veh, 0 );
 				if am_i_driver then

@@ -3,7 +3,7 @@ local guiTextLabelTeamName = nil
 local guiTextLabelText = nil
 
 function showPlayerTheirTeam(player, text, r, g, b)
-	if ( player == getLocalPlayer() ) then
+	if ( player == localPlayer ) then
 		if ( guiTextLabel and isElement(guiTextLabel) and guiTextLabelTeamName and isElement(guiTextLabelTeamName) ) then
 			guiSetText ( guiTextLabelTeamName, text )
 			guiLabelSetColor ( guiTextLabelTeamName, r, g, b )
@@ -24,9 +24,9 @@ end
 
 function onClientPlayerSpawn()
 	--outputChatBox ( "Ive Loaded, contacting server!" )
-	triggerServerEvent ( "Event_clientScriptLoaded", getRootElement(), getLocalPlayer() )
+	triggerServerEvent ( "Event_clientScriptLoaded", getRootElement(), localPlayer )
 end
 
 addEvent ( "Event_showPlayerTheirTeam", true )
 addEventHandler ( "Event_showPlayerTheirTeam", getRootElement(), showPlayerTheirTeam )
-addEventHandler ( "onClientPlayerSpawn", getLocalPlayer(), onClientPlayerSpawn )
+addEventHandler ( "onClientPlayerSpawn", localPlayer, onClientPlayerSpawn )

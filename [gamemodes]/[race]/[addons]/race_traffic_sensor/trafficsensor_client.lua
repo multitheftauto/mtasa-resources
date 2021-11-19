@@ -81,10 +81,10 @@ end
 
 function Bigdar.render()
 	-- Ensure map allows it, and player not dead, and in a vehicle and not spectating
-	local vehicle = getPedOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if	 not Bigdar.allowed
-		or isPedDead(g_Me)
-		or isPlayerFinished(g_Me)
+		or isPedDead(localPlayer)
+		or isPlayerFinished(localPlayer)
 		or not vehicle
 		or getCameraTarget() ~= vehicle
 		then
@@ -122,7 +122,7 @@ function Bigdar.render()
 	local halfScreenY = screenY * 0.5
 
 	-- Get my pos and rot
-	local mx, my, mz = getElementPosition(g_Me)
+	local mx, my, mz = getElementPosition(localPlayer)
 	local _, _, mrz	= getCameraRot()
 
 	-- To radians
@@ -134,7 +134,7 @@ function Bigdar.render()
 
 	-- For each 'other player'
 	for i,player in ipairs(Bigdar.allPlayers) do
-		if player ~= g_Me and not isPedDead(player) and not isPlayerFinished(player) then
+		if player ~= localPlayer and not isPedDead(player) and not isPlayerFinished(player) then
 
 			-- Get other pos
 			local ox, oy, oz = getElementPosition(player)

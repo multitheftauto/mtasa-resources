@@ -115,7 +115,7 @@ addEventHandler("resumeGUI", root, resumeGUI)
 
 function stopTest()
 	--[[for k,player in ipairs(getElementsByType("player")) do
-		if player ~= getLocalPlayer() then
+		if player ~= localPlayer then
 			setElementDimension(player, editor_main.getWorkingDimension())
 		end
 	end]]

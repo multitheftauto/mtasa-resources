@@ -38,7 +38,7 @@ function aViewMessages ( player )
 	aHideFloaters()
 	guiSetVisible ( aMessagesForm, true )
 	guiBringToFront ( aMessagesForm )
-	triggerServerEvent ( "aMessage", getLocalPlayer(), "get" )
+	triggerServerEvent ( "aMessage", localPlayer, "get" )
 end
 
 function aViewMessagesClose ( destroy )
@@ -88,7 +88,7 @@ function aClientMessagesClick ( button )
 		if ( source == aMessagesClose ) then
 			aViewMessagesClose ( false )
 		elseif ( source == aMessagesRefresh ) then
-			triggerServerEvent ( "aMessage", getLocalPlayer(), "get" )
+			triggerServerEvent ( "aMessage", localPlayer, "get" )
 		elseif ( source == aMessagesRead ) then
 			local row = guiGridListGetSelectedItem ( aMessagesList )
 			if ( row == -1 ) then aMessageBox ( "Warning", "No message selected!", nil )
@@ -101,7 +101,7 @@ function aClientMessagesClick ( button )
 			if ( row == -1 ) then aMessageBox ( "Warning", "No message selected!" )
 			else
 				local id = guiGridListGetItemText ( aMessagesList, row, 1 )
-				triggerServerEvent ( "aMessage", getLocalPlayer(), "delete", tonumber ( id ) )
+				triggerServerEvent ( "aMessage", localPlayer, "delete", tonumber ( id ) )
 			end
 		elseif ( source == aMessagesBanSerial ) then
 			local data = _messages[tonumber ( guiGridListGetItemText ( aMessagesList, guiGridListGetSelectedItem ( aMessagesList ), 1 ) )]

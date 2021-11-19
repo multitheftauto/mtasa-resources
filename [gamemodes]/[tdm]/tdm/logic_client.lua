@@ -1,7 +1,6 @@
 g_ScreenX,g_ScreenY = guiGetScreenSize()
 g_Root = getRootElement()
 g_ResourceRoot = getResourceRootElement(getThisResource())
-g_LocalPlayer = getLocalPlayer()
 g_FragColor = tocolor(255,255,255,255)
 
 local fragText,spreadText,rankText,respawnText,currentRank
@@ -57,7 +56,7 @@ addEventHandler ( "onClientResourceStart", g_ResourceRoot,
 
 addEventHandler ( "onClientRender", g_Root,
 	function()
-		local team = getPlayerTeam(g_LocalPlayer)
+		local team = getPlayerTeam(localPlayer)
 		if team then
 			local r,g,b = getTeamColor(team)
 			dxDrawImage ( fragStartX, fragStartY, fragWidth, fragHeight, "images/frag.png", 0, 0, 0, tocolor(r,g,b,255) )
@@ -74,11 +73,11 @@ addEventHandler ( "onClientElementDataChange", g_Root,
 )
 
 function updateScores()
-	local localTeam = getPlayerTeam(g_LocalPlayer)
+	local localTeam = getPlayerTeam(localPlayer)
 	if not localTeam or not isElement(localTeam) then return end
 	local currentScore = getElementData(localTeam,"Score")
 	fragText:text(tostring(currentScore))
-	if source == g_LocalPlayer then
+	if source == localPlayer then
 		if (currentScore < 0) then
 			fragText:color(255,0,0,255)
 		else
@@ -154,7 +153,7 @@ local function hideCountdown()
 	  respawnText,
 	  {{ from = 255, to = 0, time = 400, fn = dxSetAlpha }}
 	)
-	removeEventHandler ( "onClientPlayerSpawn", g_LocalPlayer, hideCountdown )
+	removeEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
 end
 
 addEvent ( "requestCountdown", true )
@@ -164,7 +163,7 @@ addEventHandler ( "requestCountdown", g_Root,
 		  respawnText,
 		  {{ from = 0, to = 255, time = 600, fn = dxSetAlpha }}
 		)
-		addEventHandler ( "onClientPlayerSpawn", g_LocalPlayer, hideCountdown )
+		addEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
 		respawnText:visible(true)
 		time = math.floor(time/1000)
 		countdownCR = coroutine.wrap(countdown)
@@ -176,9 +175,9 @@ addEvent ( "onColtPickup", true )
 addEventHandler ( "onColtPickup", g_Root,
 	function()
 		if getPedWeapon ( source, 2 ) == 22 and getPedTotalAmmo ( source, 2 ) ~= 0 then
-			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, true )
+			triggerServerEvent ( "doSetColtStat", localPlayer, true )
 		elseif getPedStat ( source, 69 ) >= 999 then
-			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, false )
+			triggerServerEvent ( "doSetColtStat", localPlayer, false )
 		end
 	end
 )

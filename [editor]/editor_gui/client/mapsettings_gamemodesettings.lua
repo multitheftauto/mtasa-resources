@@ -13,7 +13,7 @@ function(tableEDF, resource)
 	mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
 	currentMapSettings.rowData = rowData
 	currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
-	triggerServerEvent ( "doSaveMapSettings", getLocalPlayer(), currentMapSettings, true )
+	triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings, true )
 end )
 
 addEventHandler ( "doUnloadEDF", getRootElement(),
@@ -25,7 +25,7 @@ function(resource)
 	mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
 	currentMapSettings.rowData = rowData
 	currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
-	triggerServerEvent ( "doSaveMapSettings", getLocalPlayer(), currentMapSettings, true )
+	triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings, true )
 end )
 
 function refreshGamemodeSettings()

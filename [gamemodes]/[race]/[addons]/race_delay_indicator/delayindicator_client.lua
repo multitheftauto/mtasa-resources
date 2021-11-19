@@ -1,6 +1,5 @@
 local g_Root = getRootElement()
 local g_ResRoot = getResourceRootElement(getThisResource())
-local g_Me = getLocalPlayer()
 
 local DISTANCE_FRONT_BEHIND = 0.03
 local SCALE = 2
@@ -17,7 +16,7 @@ addEvent("showDelay", true)
 addEventHandler("showDelay", g_Root,
 	function(delayTime, optional)
 		if tonumber(optional) then
-			local cps = getElementData(g_Me, "race.checkpoint") - optional
+			local cps = getElementData(localPlayer, "race.checkpoint") - optional
 			if cps < 2 then
 				cps = ""
 			else
@@ -41,7 +40,7 @@ addEventHandler("showDelay", g_Root,
 			frontTick = getTickCount()
 			setTimer(hideDelayDisplay, TIME_TO_DISPLAY, 1, true)
 		else
-            local cps = getElementData(source, "race.checkpoint") - getElementData(g_Me, "race.checkpoint")
+            local cps = getElementData(source, "race.checkpoint") - getElementData(localPlayer, "race.checkpoint")
 			if cps < 2 then
 				cps = ""
 			else

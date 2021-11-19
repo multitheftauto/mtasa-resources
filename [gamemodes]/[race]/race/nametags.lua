@@ -36,7 +36,7 @@ addEventHandler ( "onClientRender", g_Root,
 	function()
 		-- Hideous quick fix --
 		for i,player in ipairs(g_Players) do
-			if player ~= g_Me then
+			if player ~= localPlayer then
 				setPlayerNametagShowing ( player, false )
 				if not nametags[player] then
 					nametag.create ( player )
@@ -108,7 +108,7 @@ addEventHandler ( "onClientRender", g_Root,
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
 		for i,player in ipairs(getElementsByType"player") do
-			if player ~= g_Me then
+			if player ~= localPlayer then
 				nametag.create ( player )
 			end
 		end
@@ -117,7 +117,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 
 addEventHandler ( "onClientPlayerJoin", g_Root,
 	function()
-		if source == g_Me then return end
+		if source == localPlayer then return end
 		setPlayerNametagShowing ( source, false )
 		nametag.create ( source )
 	end

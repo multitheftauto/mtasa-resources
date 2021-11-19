@@ -25,7 +25,7 @@ browserElementLookOptions = {
 	up = "mouse_wheel_up",
 	down = "mouse_wheel_down",
 
-	target = getLocalPlayer()
+	target = localPlayer
 }
 
 function elementLookFrame ()
@@ -142,7 +142,7 @@ function enableElementLook (dontChangeFixedMode, target, newRotX, newRotY)
 
 	if target then
 		browserElementLookOptions.target = target
-	else browserElementLookOptions.target = getLocalPlayer()
+	else browserElementLookOptions.target = localPlayer
 	end
 
 	--tx, ty, tz = getElementPosition ( browserElementLookOptions.target )

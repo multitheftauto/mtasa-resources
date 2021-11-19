@@ -1,2 +1,2 @@
 -- tell the server you've loaded
-triggerServerEvent("onClientResourceLoad", getLocalPlayer())
+triggerServerEvent("onClientResourceLoad", localPlayer)

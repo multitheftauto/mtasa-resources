@@ -7,7 +7,7 @@ function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 		destroyElement (gadgeticon)
 		gadgeticon = nil
 	end
-	setElementData ( getLocalPlayer(), "armor", false )
+	setElementData ( localPlayer, "armor", false )
 	if spygadgetSelection == "prox mine" then
 		chosengadget = "mines"
 		gadgetuses = 6
@@ -47,7 +47,7 @@ function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 		chosengadget = "armor"
 		gadgetuses = nil
 		gadgeticon = guiCreateStaticImage (x, y, 40, 40, "armor.png", false)
-		setElementData ( getLocalPlayer(), "armor", true )
+		setElementData ( localPlayer, "armor", true )
 		gadgetlabel = guiCreateLabel ( 0.05, .62, 40, 20, "", true, gadgeticon )
 		guiLabelSetColor ( gadgetlabel, 1, 1, 1 )
 	end
@@ -82,7 +82,7 @@ function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 	lookingthroughcamera = 0
 end
 
-addEventHandler ( "onClientPlayerSpawn", getLocalPlayer(), choosethegadget )
+addEventHandler ( "onClientPlayerSpawn", localPlayer, choosethegadget )
 
 function playerkilled ()
 	if (gadgeticon) then
@@ -91,7 +91,7 @@ function playerkilled ()
 	end
 end
 
-addEventHandler ( "onClientPlayerWasted", getLocalPlayer(), playerkilled )
+addEventHandler ( "onClientPlayerWasted", localPlayer, playerkilled )
 
 addEventHandler ( "onClientPlayerDamage", getRootElement(),
 	function(attacker,weapon,bodypart)
@@ -370,17 +370,16 @@ end
 --SPYCAMERA
 
 function camerastart()
-	player = getLocalPlayer()
 	if cameraplaced == 0 then
-		triggerServerEvent ("placethecam", getLocalPlayer (), player )
+		triggerServerEvent ("placethecam", getLocalPlayer (), localPlayer )
 	else
 		if lookingthroughcamera == 0 then
-			if isElementWithinColShape (player, cameracol) then
+			if isElementWithinColShape (localPlayer, cameracol) then
 				removeSpyCam()
 				playSoundFrontEnd(37)
 				cameraplaced = 0
 				camera = nil
-				triggerServerEvent ("killcameraobject", getLocalPlayer (), player )
+				triggerServerEvent ("killcameraobject", getLocalPlayer (), localPlayer )
 			else
 				lookingthroughcamera = 1
 				toggleControl ("fire", false )
@@ -455,7 +454,7 @@ function shieldup ()
 	toggleControl ("forwards", false )
 	toggleControl ("backwards", false )
 	toggleControl ("enter_exit", false )
-	if (isPedDucked ( getLocalPlayer() ) == false ) then
+	if (isPedDucked ( localPlayer ) == false ) then
 		toggleControl ("fire", false )
 		toggleControl ("aim_weapon", false )
 		toggleControl ("jump", false )
@@ -470,9 +469,9 @@ end
 
 
 function shieldingyet ()
-	if isElementInWater(getLocalPlayer()) == false then
+	if isElementInWater(localPlayer) == false then
 		if sheildon ~= 1 then
-			currenttask = getPedSimplestTask ( getLocalPlayer() )
+			currenttask = getPedSimplestTask ( localPlayer )
 			if not notblockingTasks[currenttask] then
 				killTimer ( blockcheck )
 				blockcheck = nil
@@ -487,13 +486,13 @@ function shieldingyet ()
 end
 
 function inturuptshield ()
-	newcurrenttask = getPedSimplestTask ( getLocalPlayer() )
+	newcurrenttask = getPedSimplestTask ( localPlayer )
 	if notblockingTasks[newcurrenttask] then
 		killTimer ( stopblockcheck )
 		stopblockcheck = nil
 		deactivategadget()
 	end
-	if isElementInWater(getLocalPlayer()) then
+	if isElementInWater(localPlayer) then
 		if (stopblockcheck) then
 			killTimer ( stopblockcheck )
 			stopblockcheck = nil
@@ -603,7 +602,7 @@ function updateNightvisionGUI ()
 			-- outputDebugString ( "Element type: "..getElementType (item) )
 			local itemx, itemy, itemz = getElementPosition( item )
 			if ( getElementData(item,"type") == "alandmine" ) then itemz = itemz - 1 end
-			local playerx,playery,playerz = getElementPosition ( getLocalPlayer() )
+			local playerx,playery,playerz = getElementPosition ( localPlayer )
 			local screenX, screenY = getScreenFromWorldPosition ( itemx, itemy, itemz )
 			if (screenX) then
 				if getDistanceBetweenPoints3D ( playerx, playery, playerz, itemx, itemy, itemz ) < drawDistance then
@@ -642,9 +641,9 @@ end
 function refreshInfraredGoggles ()
 	local itemlist = getElementsByType ( "player" )
 	for index, item in ipairs(itemlist) do
-		if item ~= getLocalPlayer() then
+		if item ~= localPlayer then
 			if not infraredGUI[item] then
-				if getPlayerTeam(item) ~= getPlayerTeam(getLocalPlayer()) then
+				if getPlayerTeam(item) ~= getPlayerTeam(localPlayer) then
 					addInfraredGUI(item, "ENEMY")
 				else
 					addInfraredGUI(item, "TEAM")
@@ -664,7 +663,7 @@ function updateInfraredGUI ()
 		if isElement ( item ) then
 			-- outputDebugString ( "Element type: "..getElementType (item) )
 			local itemx, itemy, itemz = getElementPosition( item )
-			local playerx,playery,playerz = getElementPosition ( getLocalPlayer() )
+			local playerx,playery,playerz = getElementPosition ( localPlayer )
 			local screenX, screenY = getScreenFromWorldPosition ( itemx, itemy, itemz )
 			if (screenX) then
 				if getDistanceBetweenPoints3D ( playerx, playery, playerz, itemx, itemy, itemz ) < drawDistance then

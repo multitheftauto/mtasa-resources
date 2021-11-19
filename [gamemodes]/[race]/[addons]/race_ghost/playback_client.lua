@@ -53,7 +53,7 @@ function GhostPlayback:destroyNametag()
 end
 
 function GhostPlayback:checkForCountdownEnd()
-	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
+	local vehicle = getPedOccupiedVehicle( localPlayer )
 	if vehicle then
 		local frozen = isElementFrozen( vehicle )
 		if not frozen then

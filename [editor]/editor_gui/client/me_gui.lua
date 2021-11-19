@@ -61,7 +61,7 @@ function startGUI(resource)
 	createPropertiesBox()
 	outputConsole("createPropertiesBox() : "..tostring(getTickCount()-TIME)); TIME = getTickCount()
 	isGUICreated = true
-	triggerServerEvent ( "onClientGUILoaded", getLocalPlayer() )
+	triggerServerEvent ( "onClientGUILoaded", localPlayer )
 	welcomeUser()
 	setHUDAlpha(0.2)
 end

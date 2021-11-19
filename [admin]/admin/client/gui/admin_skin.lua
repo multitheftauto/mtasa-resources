@@ -63,7 +63,7 @@ function aClientSkinDoubleClick ( button )
 		if ( source == aSkinList ) then
 			if ( guiGridListGetSelectedItem ( aSkinList ) ~= -1 ) then
 				local id = tonumber ( guiGridListGetItemText ( aSkinList, guiGridListGetSelectedItem ( aSkinList ), 1 ) )
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aSkinSelect, "setskin", id )
+				triggerServerEvent ( "aPlayer", localPlayer, aSkinSelect, "setskin", id )
 				aPlayerSkinClose ( false )
 			end
 		end
@@ -74,13 +74,13 @@ function aClientSkinClick ( button )
 	if ( button == "left" ) then
 		if ( source == aSkinAccept ) then
 			if ( tonumber ( guiGetText ( aSkinID ) ) ) then
-					triggerServerEvent ( "aPlayer", getLocalPlayer(), aSkinSelect, "setskin", tonumber ( guiGetText ( aSkinID ) ) )
+					triggerServerEvent ( "aPlayer", localPlayer, aSkinSelect, "setskin", tonumber ( guiGetText ( aSkinID ) ) )
 					aPlayerSkinClose ( false )
 			else
 				if ( guiGridListGetSelectedItem ( aSkinList ) ~= -1 ) then
 					local id = tonumber ( guiGridListGetItemText ( aSkinList, guiGridListGetSelectedItem ( aSkinList ), 1 ) )
 					guiSetVisible ( aSkinForm, false )
-					triggerServerEvent ( "aPlayer", getLocalPlayer(), aSkinSelect, "setskin", id )
+					triggerServerEvent ( "aPlayer", localPlayer, aSkinSelect, "setskin", id )
 				else
 					aMessageBox ( "warning", "No player selected/Invalid ID!" )
 				end

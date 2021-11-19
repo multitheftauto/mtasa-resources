@@ -4,7 +4,6 @@
 
 g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
-g_Me = getLocalPlayer()
 
 addEvent('onClientCall_tt', true)
 addEventHandler('onClientCall_tt', getRootElement(),
@@ -27,7 +26,7 @@ function createServerCallInterface()
 		{},
 		{
 			__index = function(t, k)
-				t[k] = function(...) triggerServerEvent('onServerCall_tt', g_Me, k, ...) end
+				t[k] = function(...) triggerServerEvent('onServerCall_tt', localPlayer, k, ...) end
 				return t[k]
 			end
 		}

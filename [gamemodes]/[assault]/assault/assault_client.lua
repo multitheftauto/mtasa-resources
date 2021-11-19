@@ -119,7 +119,7 @@ function nextObjectivesText( objectives )
 	currentObjectives = objectives
 
 	--outputConsole(tostring(getElementData("assaultAttackingTeam")))
-	--outputConsole("client next objectives "..tostring(getElementData(getLocalPlayer(),"assaultAttacker")))
+	--outputConsole("client next objectives "..tostring(getElementData(localPlayer,"assaultAttacker")))
 
 	if (nextObjectivesLabel == nil) then
 		--outputConsole("Creating next objectives text label")
@@ -160,13 +160,13 @@ addCommandHandler( "Switch objective text", switchObjectivesText )
 bindKey( "F4", "down", "Switch objective text" )
 
 function setCurrentObjectiveText(number)
-	local team = getPlayerTeam(getLocalPlayer())
+	local team = getPlayerTeam(localPlayer)
 	--outputChatBox("moo?"..tostring(team))
 	if (team == false) then
 		guiSetText(nextObjectivesLabel,"Choose a team..")
 	else
 		local description
-		if (getPlayerTeam(getLocalPlayer()) == attacker) then
+		if (getPlayerTeam(localPlayer) == attacker) then
 			description = currentObjectives[number].attackerText
 		else
 			description = currentObjectives[number].defenderText
@@ -181,7 +181,7 @@ function setCurrentObjectiveText(number)
 	end
 end
 
-addEventHandler("onClientPlayerSpawn", getLocalPlayer(),
+addEventHandler("onClientPlayerSpawn", localPlayer,
 	function()
 		setCurrentObjectiveText(currentObjectiveShowing)
 	end
@@ -254,7 +254,7 @@ end
 
 addEventHandler("onClientResourceStart", getRootElement(getThisResource()),
 	function()
-		triggerServerEvent("assaultClientScriptLoaded", getLocalPlayer())
+		triggerServerEvent("assaultClientScriptLoaded", localPlayer)
 	end
 )
 

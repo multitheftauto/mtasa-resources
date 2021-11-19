@@ -56,8 +56,8 @@ function aAdminResourceStart ()
 		xmlUnloadFile ( node )
 	end
 	aLoadSettings ()
-	triggerServerEvent ( "aPermissions", getLocalPlayer() )
-	setTimer( function() triggerServerEvent ( "aPlayerVersion", getLocalPlayer(), getVersion() ) end, 2000, 1 )
+	triggerServerEvent ( "aPermissions", localPlayer )
+	setTimer( function() triggerServerEvent ( "aPlayerVersion", localPlayer, getVersion() ) end, 2000, 1 )
 	guiSetInputMode ( "no_binds_when_editing" )
 end
 

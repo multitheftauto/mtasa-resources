@@ -14,8 +14,8 @@ _version = '1.5.9'
 
 _root = getRootElement()
 
-if ( getLocalPlayer ) then
-	_local = getLocalPlayer()
+if ( localPlayer ) then
+	_local = localPlayer
 else
 	_local = getResourceRootElement ( getThisResource() )
 end

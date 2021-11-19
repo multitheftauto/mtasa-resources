@@ -154,7 +154,7 @@ function aClientReportClick ( button )
 				tableOut.category = guiGetText ( aReportCategory )
 				tableOut.subject = guiGetText ( aReportSubject )
 				tableOut.message = guiGetText ( aReportMessage )
-				triggerServerEvent ( "aMessage", getLocalPlayer(), "new", tableOut )
+				triggerServerEvent ( "aMessage", localPlayer, "new", tableOut )
 				aReportClose ()
 			end
 		--elseif ( source == aReportSubject ) then

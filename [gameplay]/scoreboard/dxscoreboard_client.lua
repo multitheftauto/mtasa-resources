@@ -664,7 +664,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 					end
 				elseif element and isElement( element ) and getElementType( element ) == "player" then
 					-- Highlight local player's name
-					if element == getLocalPlayer() then
+					if element == localPlayer then
 						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cSelection, drawOverGUI )
 					end
 					-- Highlight the the row on which the cursor lies on

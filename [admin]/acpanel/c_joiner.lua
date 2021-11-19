@@ -16,6 +16,6 @@
 addEventHandler("onClientResourceStart", resourceRoot,
 	function ()
 		-- Tell server we are ready
-		triggerServerEvent( "onResourceLoadedAtClient_internal", resourceRoot, getLocalPlayer() )
+		triggerServerEvent( "onResourceLoadedAtClient_internal", resourceRoot, localPlayer )
 	end
 )

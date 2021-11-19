@@ -19,7 +19,7 @@ end
 addEvent("aPermissions", true)
 addEventHandler(
     "aPermissions",
-    getLocalPlayer(),
+    localPlayer,
     function(table)
         for id, right in ipairs(table) do
             _aclrights[right] = true
@@ -38,7 +38,7 @@ addEventHandler(
     "onClientResourceStart",
     getResourceRootElement(getThisResource()),
     function()
-        triggerServerEvent("aPermissions", getLocalPlayer())
-        triggerServerEvent("aClientInitialized", getLocalPlayer())
+        triggerServerEvent("aPermissions", localPlayer)
+        triggerServerEvent("aClientInitialized", localPlayer)
     end
 )

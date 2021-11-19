@@ -111,13 +111,13 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 			end
 			if not getElementData ( source, "armor" ) then
 				--outputChatBox("You've been hit in the leg.", 255, 69, 0)
-				setPedAnimation ( getLocalPlayer(), "ped", bodyPartAnim[bodypart][1], true, true, false )
-				setTimer ( setPedAnimation, 600, 1, getLocalPlayer() )
+				setPedAnimation ( localPlayer, "ped", bodyPartAnim[bodypart][1], true, true, false )
+				setTimer ( setPedAnimation, 600, 1, localPlayer )
 				setElementData ( getLocalPlayer (), "legdamage", 1 )
 				--Blood stuff
 				local function blood()
-					local boneX,boneY,boneZ = getPedBonePosition(getLocalPlayer(), bodyPartAnim[bodypart][2])
-					local rot = math.rad(getPedRotation ( getLocalPlayer() ))
+					local boneX,boneY,boneZ = getPedBonePosition(localPlayer, bodyPartAnim[bodypart][2])
+					local rot = math.rad(getPedRotation ( localPlayer ))
 					fxAddBlood ( boneX,boneY,boneZ, -math.sin(rot), math.cos(rot), -0.1, 500, 1.0 )
 				end
 				blood()

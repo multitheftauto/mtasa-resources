@@ -136,11 +136,11 @@ addEventHandler('_onClientResourceStart', g_ResRoot,
         if _DEBUG_TIMING then
 			setTimer(
                 function()
-                    triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
+                    triggerServerEvent('onLoadedAtClient', resourceRoot, localPlayer )
                 end,
                 math.random(1000,15000), 1 )
         else
-			triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
+			triggerServerEvent('onLoadedAtClient', resourceRoot, localPlayer )
 	    end
 	end
 )

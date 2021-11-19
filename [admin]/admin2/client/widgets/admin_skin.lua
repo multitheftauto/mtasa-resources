@@ -79,7 +79,7 @@ function aSkin.onDoubleClick(button)
         if (source == aSkin.List) then
             if (guiGridListGetSelectedItem(aSkin.List) ~= -1) then
                 local id = tonumber(guiGridListGetItemText(aSkin.List, guiGridListGetSelectedItem(aSkin.List), 1))
-                triggerServerEvent("aPlayer", getLocalPlayer(), aSkin.Select, "setskin", id)
+                triggerServerEvent("aPlayer", localPlayer, aSkin.Select, "setskin", id)
                 aSkin.Close(false)
             end
         end
@@ -96,13 +96,13 @@ function aSkin.onClick(button)
     if (button == "left") then
         if (source == aSkin.Accept) then
             if (tonumber(guiGetText(aSkin.ID))) then
-                triggerServerEvent("aPlayer", getLocalPlayer(), aSkin.Select, "setskin", tonumber(guiGetText(aSkin.ID)))
+                triggerServerEvent("aPlayer", localPlayer, aSkin.Select, "setskin", tonumber(guiGetText(aSkin.ID)))
                 aSkin.Close(false)
             else
                 if (guiGridListGetSelectedItem(aSkin.List) ~= -1) then
                     local id = tonumber(guiGridListGetItemText(aSkin.List, guiGridListGetSelectedItem(aSkin.List), 1))
                     guiSetVisible(aSkin.Form, false)
-                    triggerServerEvent("aPlayer", getLocalPlayer(), aSkin.Select, "setskin", id)
+                    triggerServerEvent("aPlayer", localPlayer, aSkin.Select, "setskin", id)
                 else
                     messageBox("No skin selected!", MB_ERROR, MB_OK)
                 end

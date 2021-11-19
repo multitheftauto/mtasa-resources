@@ -633,7 +633,7 @@ local function sendInitialParameters()
 	closePropertiesBox()
 
 	if triggerEvent ( "onClientElementPreCreate", root, newElementType, newElementResource, parametersTable, false ) then
-		triggerServerEvent("doCreateElement", getLocalPlayer(),
+		triggerServerEvent("doCreateElement", localPlayer,
 			newElementType,
 			newElementResource,
 			parametersTable,
@@ -699,7 +699,7 @@ local function applyPropertiesChanges()
 		end
 	end
 
-	triggerServerEvent("syncProperties", getLocalPlayer(), oldValues, newValues, selectedElement)
+	triggerServerEvent("syncProperties", localPlayer, oldValues, newValues, selectedElement)
 
 	--allow again editing values
 	guiSetProperty(btnOK,         "Disabled", "False")

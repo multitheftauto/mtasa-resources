@@ -165,28 +165,28 @@ function aPlayersTab.onClientClick(button)
                 if (source == aPlayersTab.Kick) then
                     local reason = inputBox("Kick player " .. name, "Enter the kick reason")
                     if (reason) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "kick", reason)
+                        triggerServerEvent("aPlayer", localPlayer, player, "kick", reason)
                     end
                 elseif (source == aPlayersTab.Ban) then
                     local reason = inputBox("Ban player " .. name, "Enter the ban reason")
                     if (reason) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "ban", reason)
+                        triggerServerEvent("aPlayer", localPlayer, player, "ban", reason)
                     end
                 elseif (source == aPlayersTab.Slap) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap",
+                    triggerServerEvent("aPlayer", localPlayer, player, "slap",
                         guiComboBoxGetItemText(aPlayersTab.SlapOptions, guiComboBoxGetSelected(aPlayersTab.SlapOptions))
                     )
                 elseif (source == aPlayersTab.Mute) then
                     triggerServerEvent(
                         "aPlayer",
-                        getLocalPlayer(),
+                        localPlayer,
                         player,
                         iif(aPlayers[player].mute, "unmute", "mute")
                     )
                 elseif (source == aPlayersTab.Freeze) then
                     triggerServerEvent(
                         "aPlayer",
-                        getLocalPlayer(),
+                        localPlayer,
                         player,
                         iif(aPlayers[player].freeze, "unfreeze", "freeze")
                     )
@@ -195,22 +195,22 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.SetNick) then
                     local nick = inputBox("Set nick", "Enter new nickname for " .. name)
                     if (nick) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setnick", nick)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setnick", nick)
                     end
                 elseif (source == aPlayersTab.Shout) then
                     local shout = inputBox("Shout", "Enter text to be shown on player's screen")
                     if (shout) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "shout", shout)
+                        triggerServerEvent("aPlayer", localPlayer, player, "shout", shout)
                     end
                 elseif (source == aPlayersTab.SetHealth) then
                     local health = inputBox("Set health", "Enter the health value", "100")
                     if (health) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "sethealth", health)
+                        triggerServerEvent("aPlayer", localPlayer, player, "sethealth", health)
                     end
                 elseif (source == aPlayersTab.SetArmour) then
                     local armour = inputBox("Set armour", "Enter the armour value", "100")
                     if (armour) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setarmour", armour)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setarmour", armour)
                     end
                 elseif (source == aPlayersTab.SetTeam) then
                     aTeam.Show()
@@ -219,29 +219,29 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.SetInterior) then
                     aInterior.Show(player)
                 elseif (source == aPlayersTab.JetPack) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "jetpack")
+                    triggerServerEvent("aPlayer", localPlayer, player, "jetpack")
                 elseif (source == aPlayersTab.SetMoney) then
                     local money = inputBox("Set money", "Enter the money value")
                     if (money) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setmoney", money)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setmoney", money)
                     end
                 elseif (source == aPlayersTab.SetStats) then
                     aPlayerStats(player)
                 elseif (source == aPlayersTab.SetDimension) then
                     local dimension = inputBox("Set dimension", "Enter dimension ID between 0 and 65535", "0")
                     if (dimension) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setdimension", dimension)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setdimension", dimension)
                     end
                 elseif (source == aPlayersTab.GiveWeapon) then
                     aWeapon.Show(player)
                 elseif (source == aPlayersTab.GiveVehicle) then
                     aVehicle.Show(player)
                 elseif (source == aPlayersTab.VehicleFix) then
-                    triggerServerEvent("aVehicle", getLocalPlayer(), player, "repair")
+                    triggerServerEvent("aVehicle", localPlayer, player, "repair")
                 elseif (source == aPlayersTab.VehicleBlow) then
-                    triggerServerEvent("aVehicle", getLocalPlayer(), player, "blowvehicle")
+                    triggerServerEvent("aVehicle", localPlayer, player, "blowvehicle")
                 elseif (source == aPlayersTab.VehicleDestroy) then
-                    triggerServerEvent("aVehicle", getLocalPlayer(), player, "destroyvehicle")
+                    triggerServerEvent("aVehicle", localPlayer, player, "destroyvehicle")
                 elseif (source == aPlayersTab.VehicleCustomize) then
                     local vehicle = getPedOccupiedVehicle(player)
                     if not isElement(vehicle) then
@@ -253,7 +253,7 @@ function aPlayersTab.onClientClick(button)
                     if player == localPlayer then
                         messageBox("You can't warp to yourself!", MB_ERROR)
                     else
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "warp")
+                        triggerServerEvent("aPlayer", localPlayer, player, "warp")
                     end
                 elseif (source == aPlayersTab.WarpPlayer) then
                     aPlayerWarp(player)
@@ -262,9 +262,9 @@ function aPlayersTab.onClientClick(button)
                         (aPlayers[player]["admin"] and
                             messageBox("Revoke admin rights from " .. name .. "?", MB_WARNING))
                      then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setgroup", false)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setgroup", false)
                     elseif (messageBox("Give admin rights to " .. name .. "?", MB_WARNING)) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setgroup", true)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setgroup", true)
                     end
                 end
             end

@@ -71,11 +71,11 @@ end
 
 function topMenuClicked.open ()
 	editor_main.dropElement ()
-	triggerServerEvent ( "loadsave_getResources", getLocalPlayer(), "open" )
+	triggerServerEvent ( "loadsave_getResources", localPlayer, "open" )
 end
 
 function topMenuClicked.save ()
-	triggerServerEvent ( "quickSaveResource", getLocalPlayer() )
+	triggerServerEvent ( "quickSaveResource", localPlayer )
 end
 
 function topMenuClicked.options ()
@@ -94,12 +94,12 @@ end
 
 function topMenuClicked.undo ()
 	if ( editor_main.getSelectedElement() ) then playSoundFrontEnd(32) return end
-	triggerServerEvent ( "callServerside", getLocalPlayer(), "editor_main", "undo" )
+	triggerServerEvent ( "callServerside", localPlayer, "editor_main", "undo" )
 end
 
 function topMenuClicked.redo ()
 	if ( editor_main.getSelectedElement() ) then playSoundFrontEnd(32) return end
-	triggerServerEvent ( "callServerside", getLocalPlayer(), "editor_main", "redo" )
+	triggerServerEvent ( "callServerside", localPlayer, "editor_main", "redo" )
 end
 
 
@@ -144,5 +144,5 @@ topMenuClicked.definitions = function ()
 end
 
 topMenuClicked["save as"] = function ()
-	triggerServerEvent ( "loadsave_getResources", getLocalPlayer(), "saveAs" )
+	triggerServerEvent ( "loadsave_getResources", localPlayer, "saveAs" )
 end

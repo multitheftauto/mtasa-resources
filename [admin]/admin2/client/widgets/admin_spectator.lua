@@ -10,7 +10,7 @@
 aSpectator = {Offset = 5, AngleX = 0, AngleZ = 30, Spectating = nil}
 
 function aSpectate(player)
-    --if ( player == getLocalPlayer() ) then
+    --if ( player == localPlayer ) then
     --	messageBox ( "Can not spectate yourself", MB_ERROR, MB_OK )
     --	return
     --end
@@ -130,7 +130,7 @@ function aSpectator.Close(destroy)
             guiSetVisible(aSpectator.Prev, false)
         end
     end
-    setCameraTarget(getLocalPlayer())
+    setCameraTarget(localPlayer)
     aSpectator.Spectating = nil
 end
 

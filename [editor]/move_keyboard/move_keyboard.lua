@@ -438,10 +438,10 @@ function detachElement()
 
 		-- sync position/rotation
 		posX, posY, posZ = getElementPosition(selectedElement)
-		triggerServerEvent("syncProperty", getLocalPlayer(), "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
+		triggerServerEvent("syncProperty", localPlayer, "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
 		if hasRotation[getElementType(selectedElement)] then
 			rotX, rotY, rotZ = getElementRotation(selectedElement)
-			triggerServerEvent("syncProperty", getLocalPlayer(), "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+			triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 		end
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil

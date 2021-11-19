@@ -1,5 +1,4 @@
 -- defines
-local localplayer = getLocalPlayer()
 local onrope = false
 local colshape
 local timer

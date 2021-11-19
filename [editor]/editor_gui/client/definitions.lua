@@ -58,7 +58,7 @@ function confirmDefinitions ()
 	--
 	dumpEDF("addedEDF")
 	--setEDF("addedEDF")
-	triggerServerEvent ( "reloadEDFDefinitions", getLocalPlayer(), allEDF )
+	triggerServerEvent ( "reloadEDFDefinitions", localPlayer, allEDF )
 	setGUIShowing(true)
 	guiSetInputEnabled ( false )
 	setWorldClickEnabled ( true )

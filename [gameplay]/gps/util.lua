@@ -18,7 +18,7 @@ end
 local serverMT = {}
 function serverMT:__index(fnName)
 	return function(...)
-		triggerServerEvent('onServerCallback', getLocalPlayer(), CRs[coroutine.running()], fnName, ...)
+		triggerServerEvent('onServerCallback', localPlayer, CRs[coroutine.running()], fnName, ...)
 		return coroutine.yield()
 	end
 end

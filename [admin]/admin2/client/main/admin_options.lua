@@ -84,7 +84,7 @@ function aOptionsTab.onClientClick(button)
         elseif (source == aOptionsTab.PerformanceAdvanced) then
             aPerformance()
         elseif (source == aOptionsTab.AutoLogin) then
-            triggerServerEvent("aAdmin", getLocalPlayer(), "autologin", guiCheckBoxGetSelected(aOptionsTab.AutoLogin))
+            triggerServerEvent("aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected(aOptionsTab.AutoLogin))
         elseif (source == aOptionsTab.PasswordOld) then
             guiSetInputEnabled(true)
         elseif (source == aOptionsTab.PasswordNew) then
@@ -106,7 +106,7 @@ function aOptionsTab.onClientClick(button)
             else
                 triggerServerEvent(
                     "aAdmin",
-                    getLocalPlayer(),
+                    localPlayer,
                     "password",
                     guiGetText(aOptionsTab.PasswordOld),
                     passwordNew,

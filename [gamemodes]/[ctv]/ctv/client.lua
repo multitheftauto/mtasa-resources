@@ -14,7 +14,7 @@ healthbar.color = { 255, 255, 255, 0 }
 addEventHandler('onClientResourceStart', getResourceRootElement(getThisResource()),
 	function()
 		setPlayerHudComponentVisible('area_name', false)
-		triggerServerEvent('onLoadedAtClient', getLocalPlayer())
+		triggerServerEvent('onLoadedAtClient', localPlayer)
 		setTimer(checkVehicleDrowned, 2000, 0)
 	end
 )

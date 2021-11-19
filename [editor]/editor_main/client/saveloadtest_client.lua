@@ -5,7 +5,7 @@ local resX, resY = guiGetScreenSize()
 
 addEvent ( "saveloadtest_return",true )
 function openResource ( resourceName )
-	triggerServerEvent ( "openResource", getLocalPlayer(), resourceName )
+	triggerServerEvent ( "openResource", localPlayer, resourceName )
 end
 
 addEventHandler ( "saveloadtest_return", getRootElement(),
@@ -45,11 +45,11 @@ addEventHandler ( "saveloadtest_return", getRootElement(),
 )
 
 function saveResource ( resourceName, directory )
-	triggerServerEvent ( "saveResource", getLocalPlayer(), resourceName, nil, directory )
+	triggerServerEvent ( "saveResource", localPlayer, resourceName, nil, directory )
 end
 
 function newResource ()
-	triggerServerEvent("newResource",getLocalPlayer())
+	triggerServerEvent("newResource",localPlayer)
 end
 
 function showProgressBar(elementsDone, elementsTotal)

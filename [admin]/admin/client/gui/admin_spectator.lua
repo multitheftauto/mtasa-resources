@@ -11,20 +11,20 @@
 aSpectator = { Offset = 5, AngleX = 0, AngleZ = 30, Spectating = nil }
 
 function aSpectate ( player )
-	if ( player == getLocalPlayer() ) then
+	if ( player == localPlayer ) then
 		aMessageBox ( "error", "Can not spectate yourself" )
 		return
 	end
 
 	if not aSpectator.Interior and not aSpectator.Dimension then
-		aSpectator.Interior = getElementInterior( getLocalPlayer() )
-		aSpectator.Dimension = getElementDimension( getLocalPlayer() )
+		aSpectator.Interior = getElementInterior( localPlayer )
+		aSpectator.Dimension = getElementDimension( localPlayer )
 	end
 
 	aSpectator.Spectating = player
-    setElementFrozen ( getLocalPlayer(), true )
-    setElementInterior( getLocalPlayer(), getElementInterior( player ) )
-    setElementDimension( getLocalPlayer(), getElementDimension( player ) )
+    setElementFrozen ( localPlayer, true )
+    setElementInterior( localPlayer, getElementInterior( player ) )
+    setElementDimension( localPlayer, getElementDimension( player ) )
 	if ( ( not aSpectator.Actions ) or ( not guiGetVisible ( aSpectator.Actions ) ) ) then
 		aSpectator.Initialize ()
 	end
@@ -131,13 +131,13 @@ function aSpectator.Close ( destroy )
             guiSetVisible ( aSpectator.Next, false )
             guiSetVisible ( aSpectator.Prev, false )
         end
-        setCameraTarget ( getLocalPlayer() )
-        setElementInterior( getLocalPlayer(), aSpectator.Interior )
-        setElementDimension( getLocalPlayer(), aSpectator.Dimension )
-        local x, y, z = getElementPosition(getLocalPlayer())
-        setElementPosition(getLocalPlayer(), x, y, z+1)
-        setElementVelocity (getLocalPlayer(), 0, 0, 0)
-        setElementFrozen ( getLocalPlayer(), false )
+        setCameraTarget ( localPlayer )
+        setElementInterior( localPlayer, aSpectator.Interior )
+        setElementDimension( localPlayer, aSpectator.Dimension )
+        local x, y, z = getElementPosition(localPlayer)
+        setElementPosition(localPlayer, x, y, z+1)
+        setElementVelocity (localPlayer, 0, 0, 0)
+        setElementFrozen ( localPlayer, false )
         aSpectator.Spectating = nil
         showCursor ( true )
         aAdminMenu()
@@ -219,9 +219,9 @@ function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 		return
 	end
 	aSpectator.Spectating = players[next]
-    setElementFrozen ( getLocalPlayer(), true )
-    setElementInterior( getLocalPlayer(), getElementInterior( aSpectator.Spectating ) )
-    setElementDimension( getLocalPlayer(), getElementDimension( aSpectator.Spectating ) )
+    setElementFrozen ( localPlayer, true )
+    setElementInterior( localPlayer, getElementInterior( aSpectator.Spectating ) )
+    setElementDimension( localPlayer, getElementDimension( aSpectator.Spectating ) )
 end
 
 function aSpectator.CursorMove ( rx, ry, x, y )

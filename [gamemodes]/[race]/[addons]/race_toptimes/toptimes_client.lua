@@ -17,7 +17,7 @@ g_Settings = {}
 
 addEventHandler('onClientResourceStart', g_ResRoot,
 	function()
-		triggerServerEvent('onLoadedAtClient_tt', g_Me)
+		triggerServerEvent('onLoadedAtClient_tt', localPlayer)
 	end
 )
 
@@ -69,7 +69,7 @@ function updateSettings(settings, playeradmin)
 			g_CToptimes.startshow = settings.startshow
 		end
 		-- If admin changed this setting manually, then show the table to him
-		if playeradmin == getLocalPlayer() then
+		if playeradmin == localPlayer then
 			g_CToptimes:doToggleToptimes(true)
 		end
 	end
@@ -378,7 +378,7 @@ end
 function CToptimes:enableToptimeUpdatesFromServer( bOn )
 	if bOn ~= self.bGettingUpdates then
 		self.bGettingUpdates = bOn
-		triggerServerEvent('onClientRequestToptimesUpdates', g_Me, bOn, self.clientRevision )
+		triggerServerEvent('onClientRequestToptimesUpdates', localPlayer, bOn, self.clientRevision )
 	end
 	if self.bGettingUpdates and self.listStatus == 'Empty' then
 		self.listStatus = 'Loading'

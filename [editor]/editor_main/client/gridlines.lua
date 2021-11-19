@@ -1,4 +1,3 @@
-local localPlayer  = getLocalPlayer()
 local MAX_THICKNESS = 1.2
 local MAX_THICKNESS_AngleHelper = .8
 --local c

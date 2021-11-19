@@ -113,7 +113,7 @@ function removeSpyCam()
 	spyCamTargetZ = false
 	camFixed = false
 	--toggleCameraFixedMode ( false )
-	setCameraTarget(getLocalPlayer())
+	setCameraTarget(localPlayer)
 	return true
 end
 
@@ -133,7 +133,7 @@ function toggleSpyCam()
 		return addEventHandler ( "onClientRender", getRootElement(), spyCamFrame )
 	else
 		--toggleCameraFixedMode ( false )
-		setCameraTarget(getLocalPlayer())
+		setCameraTarget(localPlayer)
 		camFixed = false
 		--bindCamKeys ( false )
 		fadeSpyCam ( false )
@@ -144,7 +144,7 @@ end
 function ejectSmokeGrenade ( throwPower )
 	if camFixed == false then return false end
 	local x,y,z = spyCamX, spyCamY, spyCamZ
-	local returnValue = createProjectile ( getLocalPlayer(), 17, x, y, z, throwPower )
+	local returnValue = createProjectile ( localPlayer, 17, x, y, z, throwPower )
 	return returnValue
 end
 

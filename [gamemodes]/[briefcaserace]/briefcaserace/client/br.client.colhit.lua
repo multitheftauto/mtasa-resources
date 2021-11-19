@@ -39,10 +39,10 @@ assert(getElementType(hitElement))
 		return
 	end
 	if (getElementType(hitElement) == "player" and hitElement == localPlayer) then
-		triggerServerEvent("onPlayerBriefcaseHit", getLocalPlayer())
+		triggerServerEvent("onPlayerBriefcaseHit", localPlayer)
 		lastSendTick_bri = getTickCount()
 	elseif (getElementType(hitElement) == "vehicle" and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == hitElement) then
-		triggerServerEvent("onPlayerBriefcaseHit", getLocalPlayer())
+		triggerServerEvent("onPlayerBriefcaseHit", localPlayer)
 		lastSendTick_bri = getTickCount()
 	end
 end
@@ -69,10 +69,10 @@ function onObjectiveTubeHit(hitElement, matchingDimension)
 --outputDebugString("objective hit, hitElement: " .. tostring(hitElement))
 	-- see if it's the local player or their vehicle
 	if (getElementType(hitElement) == "player" and hitElement == localPlayer) then
-		triggerServerEvent("onPlayerObjectiveHit", getLocalPlayer())
+		triggerServerEvent("onPlayerObjectiveHit", localPlayer)
 		lastSendTick_obj = getTickCount()
 	elseif (getElementType(hitElement) == "vehicle" and isPedInVehicle(localPlayer) and getPedOccupiedVehicle(localPlayer) == hitElement) then
-		triggerServerEvent("onPlayerObjectiveHit", getLocalPlayer())
+		triggerServerEvent("onPlayerObjectiveHit", localPlayer)
 		lastSendTick_obj = getTickCount()
 	end
 end

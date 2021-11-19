@@ -60,7 +60,7 @@ function openConfigMenu ()
 	guiSetVisible(gui["scrollpane"],false)
 	guiScrollPaneSetScrollBars(gui["scrollpane"],false, true)
 
-	triggerServerEvent('onRequestAddonsInfo', g_Me )
+	triggerServerEvent('onRequestAddonsInfo', localPlayer )
 end
 
 
@@ -245,9 +245,9 @@ addEventHandler ( "onClientGUIClick", g_ResRoot,
 					addonsInfoMap[info.name] = info
 				end
 				-- Send to server
-				triggerServerEvent('onRequestAddonsChange', g_Me, addonsInfoMap )
+				triggerServerEvent('onRequestAddonsChange', localPlayer, addonsInfoMap )
 				-- Update status
-				setTimer( function() triggerServerEvent('onRequestAddonsInfo', g_Me ) end, 150, 1 )
+				setTimer( function() triggerServerEvent('onRequestAddonsInfo', localPlayer ) end, 150, 1 )
 				return
 			end
 		end

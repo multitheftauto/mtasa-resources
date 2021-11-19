@@ -1043,7 +1043,7 @@ end
 
 function setWorkingInterior( interior )
 	setCameraInterior( interior )
-	setElementInterior(getLocalPlayer(), interior)
+	setElementInterior(localPlayer, interior)
 	g_workingInterior = interior
 	return true
 end

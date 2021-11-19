@@ -443,18 +443,18 @@ function TeamSelected ( button, state, absoluteX, absoluteY, worldX, worldY, wor
 	thisplayer = getLocalPlayer ()
 	if source == TeamSelect_Red then
 		showCursor ( false )
-		triggerServerEvent ("dojoinTeam1", getLocalPlayer(), getLocalPlayer() )
+		triggerServerEvent ("dojoinTeam1", localPlayer, localPlayer )
 		guiSetVisible ( TeamSelect_Window[1], false )
 	elseif source == TeamSelect_Blue then
 		showCursor ( false )
-		triggerServerEvent ("dojoinTeam2", getLocalPlayer(), getLocalPlayer() )
+		triggerServerEvent ("dojoinTeam2", localPlayer, localPlayer )
 		guiSetVisible ( TeamSelect_Window[1], false )
 	end
 end
 
 addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
 	function()
-		movetocam(getLocalPlayer())
+		movetocam(localPlayer)
 		local weaponsTable = getElementData(getRootElement(),"lasersight")
 		if type(weaponsTable) == "table" and #weaponsTable > 0 then
 			for k,weaponID in ipairs(weaponsTable) do

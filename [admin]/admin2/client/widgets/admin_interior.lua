@@ -60,7 +60,7 @@ function aInterior.onDoubleClick(button)
             if (guiGridListGetSelectedItem(aInterior.List) ~= -1) then
                 triggerServerEvent(
                     "aPlayer",
-                    getLocalPlayer(),
+                    localPlayer,
                     aInterior.SelectPointer,
                     "setinterior",
                     guiGridListGetItemText(aInterior.List, guiGridListGetSelectedItem(aInterior.List), 2)
@@ -81,7 +81,7 @@ function aInterior.onClick(button)
             if (guiGridListGetSelectedItem(aInterior.List) ~= -1) then
                 triggerServerEvent(
                     "aPlayer",
-                    getLocalPlayer(),
+                    localPlayer,
                     aInterior.SelectPointer,
                     "setinterior",
                     guiGridListGetItemText(aInterior.List, guiGridListGetSelectedItem(aInterior.List), 2)

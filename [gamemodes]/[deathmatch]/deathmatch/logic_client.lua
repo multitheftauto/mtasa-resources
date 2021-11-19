@@ -1,7 +1,6 @@
 g_ScreenX,g_ScreenY = guiGetScreenSize()
 g_Root = getRootElement()
 g_ResourceRoot = getResourceRootElement(getThisResource())
-g_LocalPlayer = getLocalPlayer()
 g_FragColor = tocolor(255,255,255,255)
 
 local fragText,spreadText,rankText,respawnText,currentRank
@@ -70,8 +69,8 @@ addEventHandler ( "onClientElementDataChange", g_Root,
 )
 
 function updateScores()
-	local currentScore = getElementData(g_LocalPlayer,"Score")
-	if source == g_LocalPlayer then
+	local currentScore = getElementData(localPlayer,"Score")
+	if source == localPlayer then
 		fragText:text(tostring(currentScore))
 		if (currentScore < 0) then
 			fragText:color(255,0,0,255)
@@ -95,7 +94,7 @@ function updateScores()
 	local players = getElementsByType"player"
 	table.sort ( players, sortingFunction )
 	for i,player in ipairs(players) do
-		if player == g_LocalPlayer then
+		if player == localPlayer then
 			rank = i
 			break
 		end
@@ -146,7 +145,7 @@ local function hideCountdown()
 	  respawnText,
 	  {{ from = 255, to = 0, time = 400, fn = dxSetAlpha }}
 	)
-	removeEventHandler ( "onClientPlayerSpawn", g_LocalPlayer, hideCountdown )
+	removeEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
 end
 
 addEvent ( "requestCountdown", true )
@@ -156,7 +155,7 @@ addEventHandler ( "requestCountdown", g_Root,
 		  respawnText,
 		  {{ from = 0, to = 255, time = 600, fn = dxSetAlpha }}
 		)
-		addEventHandler ( "onClientPlayerSpawn", g_LocalPlayer, hideCountdown )
+		addEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
 		respawnText:visible(true)
 		time = math.floor(time/1000)
 		countdownCR = coroutine.wrap(countdown)
@@ -168,9 +167,9 @@ addEvent ( "onColtPickup", true )
 addEventHandler ( "onColtPickup", g_Root,
 	function()
 		if getPedWeapon ( source, 2 ) == 22 and getPedTotalAmmo ( source, 2 ) ~= 0 then
-			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, true )
+			triggerServerEvent ( "doSetColtStat", localPlayer, true )
 		elseif getPedStat ( source, 69 ) >= 999 then
-			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, false )
+			triggerServerEvent ( "doSetColtStat", localPlayer, false )
 		end
 	end
 )
