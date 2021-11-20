@@ -330,8 +330,10 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if ( resource ) then
 		--Clear out old files from the resource
 		if (not mapmanager.isMap ( resource )) then
-			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
-			"You cannot overwrite non-map resources." )
+			if (client) then
+				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
+				"You cannot overwrite non-map resources." )
+			end
 			saveResourceCoroutine = nil
 			return false
 		end
@@ -631,7 +633,10 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 			dumpSave()
 		end
 	else
-		editor_gui.loadsave_getResources("saveAs", client)
+		-- No map is loaded, if not caused by auto save, ask the client to save as
+		if (client) then
+			editor_gui.loadsave_getResources("saveAs", client)
+		end
 	end
 	quickSaveCoroutine = nil
 end
