@@ -688,8 +688,8 @@ function createElementAttributesForSaving(xmlNode, element)
 		end
 	end
 	-- Ensure that the element has a position set, else the map file can't load
+	-- This situation occurs when map is saved while someone is placing a new object.
 	if (not posSetX or not posSetY or not posSetZ) then
-		outputDebugString("Using getElementPosition as bad element data for "..tostring(element), 2)
 		local x, y, z = getElementPosition(element)
 		xmlNodeSetAttribute(elementNode, "posX", toAttribute(round(x, 5)))
 		xmlNodeSetAttribute(elementNode, "posY", toAttribute(round(y, 5)))
