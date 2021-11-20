@@ -35,7 +35,6 @@ local CROSSHAIR_WORLD = 2
 local CROSSHAIR_WATER = 3
 local CROSSHAIR_MOUSEOVER = 4
 local CROSSHAIR_SENSITIVE = 5
-local g_crosshairState
 local g_showLabels = true
 local g_showCrosshair = true
 
@@ -605,7 +604,6 @@ function setCrosshairState(state)
 		color = tocolor(255,0,0,255)
 	end
 	dxDrawImage ( g_screenX/2 - 16, g_screenY/2 - 16, 32, 32, "client/images/crosshair.png",0,0,0,color,false)
-	g_crosshairState = state
 end
 
 function setCursorCrosshairState(state)
@@ -621,7 +619,6 @@ function setCursorCrosshairState(state)
 	end
 	local x,y = getCursorPosition()
 	dxDrawImage ( g_screenX*x - 2, g_screenY*y - 1, 15, 15,  "client/images/cursor.png", 0,0,0,color,true )
-	-- g_crosshairState = state
 end
 
 function makeVehicleStatic(vehicle)

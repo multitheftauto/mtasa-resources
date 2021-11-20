@@ -25,8 +25,6 @@ local spawnTimers = {} -- a timer for each player who is set to spawn
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- players see cam view when the game ends
 
-local ffaStarted = false
-
 function init_ffaSpawn()
 	for i,v in ipairs(getElementsByType("player")) do
 		setPlayerReady(v)
@@ -34,7 +32,6 @@ function init_ffaSpawn()
 	end
 	addEventHandler("onPlayerJoin", root, onPlayerJoin_spawnffa)
 	addEventHandler("onPlayerWasted", root, onPlayerWasted_spawnffa)
-	ffaStarted = true
 end
 
 function end_ffaSpawn()
@@ -53,7 +50,6 @@ function end_ffaSpawn()
 			spawnTimers[v] = nil
 		end
 	end
-	ffaStarted = false
 	-- make all ready players not ready
 	-- (essentially it just removes them from the ready table - the briefcases and objectives are already destroyed at this point because endGame() did that)
 	for i,v in ipairs(getReadyPlayers()) do
@@ -87,7 +83,6 @@ end
 
 addEvent("onPlayerTeamSelect", true)
 
-local teamsStarted = false
 local createGuiTimers = {} -- a timer for each player who has pending gui
 
 function init_teamSpawn()
@@ -110,7 +105,6 @@ function init_teamSpawn()
 	addEventHandler("onPlayerTeamSelect", root, onPlayerTeamSelect)
 	addEventHandler("onPlayerJoin", root, onPlayerJoin_spawnteam)
 	addEventHandler("onPlayerWasted", root, onPlayerWasted_spawnteam)
-	teamsStarted = true
 end
 
 -- possible error: not all players have a team menu and have a key bound (like those that just joined or if the game just started)
@@ -142,7 +136,6 @@ function end_teamSpawn()
 			createGuiTimers[v] = nil
 		end
 	end
-	teamsStarted = false
 	-- make all ready players not ready
 	-- (essentially it just removes them from the ready table - the briefcases and objectives are already destroyed at this point because endGame() did that)
 	for i,v in ipairs(getReadyPlayers()) do

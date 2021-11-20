@@ -32,7 +32,7 @@ addEventHandler ( "showSpectateText",root,showSpectateText )
 
 addEvent("cameramode", true)
 
-function movetocam(thisplayer)
+function movetocam()
 	showSpectateText("",false)
 	local cams = getElementsByType ("camera")
 	if #cams > 0 then
@@ -116,13 +116,10 @@ end
 function confirmSelections ( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clicked )
 	--work out the team name judging by what OK button they hit, and the menu they''re using so we know which one to hide.
 	local teamName
-	local menu
 	if source == mercenariesOK then
 		teamName = "mercenaries" --if its the mercernariesOK it must be the mercenaries team
-		menu = mercenariesMenu --which must mean its the mercenaries menu. We know which one to hide.
 	elseif source == spiesOK then
 		teamName = "spies"
-		menu = spiesMenu
 	else --if it wasnt either, for some reason, just stop the function.
 		return
 	end
@@ -183,17 +180,16 @@ function confirmSelections ( button, state, absoluteX, absoluteY, worldX, worldY
 		killTimer (sitthisoneout)
 		sitthisoneout = nil
 	end
-	thisplayer = getLocalPlayer ()
 	if teamName == "mercenaries" then
 		guiSetVisible ( mercenariesMenu, false )
-		triggerServerEvent ("domercspawn", getLocalPlayer (), thisplayer )
+		triggerServerEvent ("domercspawn", localPlayer, localPlayer )
 	end
 
 	if teamName == "spies" then
 		guiSetVisible ( spiesMenu, false )
-		triggerServerEvent ("dospyspawn", getLocalPlayer (), thisplayer )
+		triggerServerEvent ("dospyspawn", localPlayer, localPlayer )
 	end
-	setTimer (triggerServerEvent, 1000, 1, "givetheguns", getLocalPlayer (), thisplayer, primarySelection, secondarySelection, throwableSelection, spygadgetSelection )
+	setTimer (triggerServerEvent, 1000, 1, "givetheguns", localPlayer, localPlayer, primarySelection, secondarySelection, throwableSelection, spygadgetSelection )
 
 end
 
@@ -440,7 +436,6 @@ function drawLasers()
 end
 
 function TeamSelected ( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clicked )
-	thisplayer = getLocalPlayer ()
 	if source == TeamSelect_Red then
 		showCursor ( false )
 		triggerServerEvent ("dojoinTeam1", localPlayer, localPlayer )

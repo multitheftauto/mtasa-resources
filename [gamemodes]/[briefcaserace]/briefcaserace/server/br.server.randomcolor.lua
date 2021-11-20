@@ -1,4 +1,3 @@
-local colors = {}
 local freeColors = {}
 
 -- generates N distinct colors.. the larger the N, the less distinct they will be
@@ -15,7 +14,6 @@ function generateColors(N)
 		table.insert(rgbTable, {r, g, b})
 		i = i + increment
 	end
-	colors = rgbTable
 	freeColors = copyTable(rgbTable)
 	--return rgbTable
 end

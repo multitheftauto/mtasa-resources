@@ -1,7 +1,6 @@
 function setupstuff ()
 	blipshowing = 0
 	soundlevel = 0
-	thisplayer = getLocalPlayer ()
 	local x, y = guiGetScreenSize()
 	x = x * 0.092
 	y = y * 0.71
@@ -10,7 +9,6 @@ function setupstuff ()
 	guiLabelSetColor ( SoundText, 1, 1, 1 )
 	fadesoundout = setTimer ( reducesoundlevel, 1000, 0 )
 	casualcheck = setTimer ( noisecheck, 1000, 0 )
-	thisplayer = getLocalPlayer ()
 	watchedTasks = { TASK_SIMPLE_TIRED=true, TASK_SIMPLE_IN_AIR=true, TASK_SIMPLE_PLAYER_ON_FIRE=true, TASK_SIMPLE_JUMP=true, TASK_SIMPLE_JETPACK=true, TASK_SIMPLE_HIT_FRONT=true, TASK_SIMPLE_HIT_HEAD=true, TASK_SIMPLE_HIT_LEFT=true, TASK_SIMPLE_HIT_RIGHT=true, TASK_SIMPLE_HIT_WALL=true, TASK_SIMPLE_HIT_BACK=true, TASK_SIMPLE_HIT_BEHIND=true, TASK_SIMPLE_HIT_BY_GUN_BACK=true, TASK_SIMPLE_HIT_BY_GUN_FRONT=true, TASK_SIMPLE_HIT_BY_GUN_LEFT=true, TASK_SIMPLE_HIT_BY_GUN_RIGHT=true, TASK_SIMPLE_FALL=true, TASK_SIMPLE_FIGHT=true, TASK_SIMPLE_FIGHT_CTRL=true, TASK_SIMPLE_EVASIVE_DIVE=true, TASK_SIMPLE_EVASIVE_STEP=true, TASK_SIMPLE_DROWN=true, TASK_SIMPLE_DROWN_IN_CAR=true, TASK_SIMPLE_DRIVEBY_SHOOT=true, TASK_SIMPLE_DIE=true, TASK_SIMPLE_DIE_IN_CAR=true, TASK_SIMPLE_DETONATE=true, TASK_SIMPLE_CLIMB=true, TASK_SIMPLE_CHOKING=true, TASK_SIMPLE_CAR_SLOW_BE_DRAGGED_OUT=true, TASK_SIMPLE_CAR_SLOW_DRAG_PED_OUT=true, TASK_SIMPLE_CAR_QUICK_BE_DRAGGED_OUT=true, TASK_SIMPLE_CAR_QUICK_DRAG_PED_OUT=true, TASK_SIMPLE_CAR_GET_IN=true, TASK_SIMPLE_CAR_GET_OUT=true, TASK_SIMPLE_CAR_JUMP_OUT=true, TASK_SIMPLE_CAR_DRIVE=true, TASK_SIMPLE_BIKE_JACKED=true, TASK_SIMPLE_BE_DAMAGED=true, TASK_SIMPLE_BE_HIT=true, TASK_SIMPLE_BE_HIT_WHILE_MOVING=true, TASK_SIMPLE_GOGGLES_OFF=true, TASK_SIMPLE_GOGGLES_ON=true }
 	controls = { "fire", "next_weapon", "previous_weapon", "jump", "forwards","backwards","left","right","sprint","enter_exit","vehicle_fire","vehicle_secondary_fire","steer_forwards","steer_back","accelerate","brake_reverse","horn","handbrake","special_control_left","special_control_right","special_control_down","special_control_up" }
 	for k,v in pairs(controls) do
@@ -41,16 +39,14 @@ end
 
 --THIS CHECKS IF THE PLAYER IS DOING CERTAIN THINGS THAT ARE KNOWN TO MAKE NOISE
 function noisecheck ( source, key, keystate )
-	thisplayer = getLocalPlayer ()
-	thetask = getPedSimplestTask ( thisplayer )
+	thetask = getPedSimplestTask(localPlayer)
 	if watchedTasks[thetask] then
 		soundlevel = soundlevel+1
 	end
 end
 
 --THIS IS THE TIMER TO BRING THE SOUNDLEVEL BACK DOWN AND UPDATE THE PLAYERS NOISELEVEL
-function reducesoundlevel ( thisplayer )
-	thisplayer = getLocalPlayer ()
+function reducesoundlevel ()
 	if soundlevel > 0 then
 		soundlevel = soundlevel-1
 	end

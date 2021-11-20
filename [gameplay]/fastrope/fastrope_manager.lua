@@ -37,7 +37,7 @@ function createFastRope(player,x,y,z,time)
 	return false
 end
 function createFastRopeOnHeli(player, heli, side, time, offset)
-	local dump, x, y, z
+	local x, y, z
 	if ( player and heli and getElementType(player) == "player" and getElementType(heli) == "vehicle" ) then
 		if ( time == nil ) then
 			time = 3000
@@ -53,7 +53,7 @@ function createFastRopeOnHeli(player, heli, side, time, offset)
 			return false
 		end
 		local helix, heliy, heliz = getElementPosition(heli)
-		dump,dump,prot = getElementRotation(heli)
+		_,_,prot = getElementRotation(heli)
 		local offsetRot = math.rad(prot)
 		z = heliz - 0.5
 		if ( side == "left" ) then

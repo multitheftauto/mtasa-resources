@@ -10,19 +10,15 @@ local BANDS = 40
 local use_dx = true
 
 
-local peakData, ticks, maxbpm, startTime, release, peak, peaks
+local maxbpm, release, peaks
 function reset ( )
 	peaks = {}
 	for k=0, BANDS - 1 do
 		peaks[k] = {}
 	end
-	peakData = {}
-	ticks = getTickCount()
 	maxbpm = 1
 	bpmcount = 1
-	startTime = 0
 	release = { }
-	peak = 0
 end
 
 addEvent("playmus", true)
@@ -37,7 +33,6 @@ addEventHandler("playmus", root, function ( url )
 	setSoundMaxDistance(stream, 10000)
 	setTimer(setSoundPanningEnabled, 1000, 1, stream, false)
 	startTicks = getTickCount()
-	ticks = getTickCount()
 	reset ( )
 	-- Deal with shaders
 

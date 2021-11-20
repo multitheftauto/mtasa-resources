@@ -3,7 +3,6 @@
 --
 
 local gui = {}
-local guiData = {}
 local AddonsInfoList = {}
 
 
@@ -209,7 +208,6 @@ function closeConfigMenu ()
 	if gui["form"] then
 		destroyElement( gui["form"] )
 		gui = {}
-		guiData = {}
 	end
     showCursor ( false )
 end

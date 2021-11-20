@@ -17,7 +17,6 @@ local rotFlipped = false
 
 local collisionless
 local lockToAxes = false
-local minX, minY, minZ, maxX, maxY, maxZ
 local centerToBaseDistance
 
 local movementType
@@ -423,8 +422,6 @@ function attachElement(element)
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
 			rotX, rotY, rotZ = 0,0,getPedRotation ( element )
 		end
-
-		minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
 		enable()
 		return true
 	else
@@ -446,7 +443,6 @@ function detachElement()
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil
 		rotX, rotY, rotZ = nil, nil, nil, nil
-		minX, minY, minZ, maxX, maxY, maxZ = nil, nil, nil, nil, nil, nil
 		return true
 	else
 		return false

@@ -8,7 +8,7 @@ local cachedElements = {}
 local path = "client/browser/"
 local xmlFiles = { ["objectID"] = getResourceConfig(path.."objects.xml"), ["skinID"] = getResourceConfig(path.."skins.xml"), ["vehicleID"] = getResourceConfig(path.."vehicles.xml"), ["favourite"] = (xmlLoadFile("client/browser/favourites.xml") or xmlCreateFile("client/browser/favourites.xml", "favourite")) }
 local elementCatalogs = { ["objectID"]="object",["vehicleID"]="vehicle",["skinID"]="skin" }
-local searchModel, searchMax
+local searchMax
 local isScrolling
 local searchTimerDelay,ignoreSearch
 local callbackFunction
@@ -152,7 +152,6 @@ function browser.close()
 end
 
 function browser.gridlistSelect (cellrow)
-	searchModel = false
 	if cellrow == 0 then
 		if ( browser.mainElement ) then
 			if isElement(browser.mainElement) then

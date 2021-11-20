@@ -1,4 +1,3 @@
-local loadedMap = false
 local totalBar = 0
 local loadingBar = 0
 local resX, resY = guiGetScreenSize()
@@ -16,14 +15,12 @@ addEventHandler ( "saveloadtest_return", root,
 				for k,vehicle in ipairs(getElementsByType"vehicle") do
 					makeVehicleStatic(vehicle)
 				end
-				loadedMap = returnValue
 				editor_gui.closeLoadDialog()
 			else
 				editor_gui.guiShowMessageBox ( "Map resource could not be started!", "error", "Error", true )
 			end
 		elseif ( command ) == "save" then
 			if ( returnValue ) then
-				loadedMap = returnValue2
 				editor_gui.closeSaveDialog()
 			else
 				editor_gui.guiShowMessageBox ( "Map resource could not be saved! "..reason, "error", "Error", true )

@@ -314,7 +314,7 @@ colorPicker = {
 	updateSelectedValue = function()
 		if not guiGetVisible(colorPicker.GUI.selectWindow) then return end
 
-		local r, g, b, a
+		local r, g, b
 
 		-- Check for color changes
 		local wx, wy = guiGetPosition(colorPicker.GUI.selectWindow, false)
@@ -338,7 +338,6 @@ colorPicker = {
 
 			colorPicker.h, colorPicker.s  = (cursorX - paletteX) / 255, (255 - cursorY + paletteY) / 255
 			r, g, b = colorPicker.hsl2rgb(colorPicker.h, colorPicker.s, colorPicker.l)
-			a = colorPicker.value[4] / 255
 			colorPicker.avoidRecursion = true
 			colorPicker.setValue({r*255, g*255, b*255, colorPicker.value[4]})
 			colorPicker.avoidRecursion = false
@@ -350,7 +349,6 @@ colorPicker = {
 
 			colorPicker.l = (256 - cursorY + luminanceY) / 256
 			r, g, b = colorPicker.hsl2rgb(colorPicker.h, colorPicker.s, colorPicker.l)
-			a = colorPicker.value[4] / 255
 			colorPicker.avoidRecursion = true
 			colorPicker.setValue({r*255, g*255, b*255, colorPicker.value[4]})
 			colorPicker.avoidRecursion = false
@@ -363,9 +361,9 @@ colorPicker = {
 			colorPicker.avoidRecursion = true
 			colorPicker.setValue({colorPicker.value[1], colorPicker.value[2], colorPicker.value[3], cursorY - alphaY})
 			colorPicker.avoidRecursion = false
-			r, g, b, a = colorPicker.value[1] / 255, colorPicker.value[2] / 255, colorPicker.value[3] / 255, colorPicker.value[4] / 255
+			r, g, b = colorPicker.value[1] / 255, colorPicker.value[2] / 255, colorPicker.value[3] / 255
 		else
-			r, g, b, a = colorPicker.value[1] / 255, colorPicker.value[2] / 255, colorPicker.value[3] / 255, colorPicker.value[4] / 255
+			r, g, b = colorPicker.value[1] / 255, colorPicker.value[2] / 255, colorPicker.value[3] / 255
 		end
 
 		-- Draw the lines pointing to the current selected color
