@@ -64,7 +64,7 @@ function getServerMaps (loadList)
 	triggerClientEvent(source ,"getMaps_c", source, tableOut, gamemode, map)
 end
 addEvent("getMaps_s", true)
-addEventHandler("getMaps_s", getRootElement(), getServerMaps)
+addEventHandler("getMaps_s", root, getServerMaps)
 
 function startGamemodeMap(gamemode, map)
 	if checkClient( true, source, 'startGamemodeMap' ) then return end
@@ -98,7 +98,7 @@ function startGamemodeMap(gamemode, map)
 	end
 end
 addEvent("startGamemodeMap_s", true)
-addEventHandler("startGamemodeMap_s", getRootElement(), startGamemodeMap)
+addEventHandler("startGamemodeMap_s", root, startGamemodeMap)
 
 function deleteRevertMap(delete, mapResName, mapName)
 	if checkClient( true, source, 'deleteRevertMap' ) then return end
@@ -138,7 +138,7 @@ function deleteRevertMap(delete, mapResName, mapName)
 	end
 end
 addEvent("deleteRevertMap_s", true)
-addEventHandler("deleteRevertMap_s", getRootElement(), deleteRevertMap)
+addEventHandler("deleteRevertMap_s", root, deleteRevertMap)
 
 
 function setNextMap(mapName)
@@ -146,7 +146,7 @@ function setNextMap(mapName)
 	executeCommandHandler("nextmap", source, mapName)
 end
 addEvent("setNextMap_s", true)
-addEventHandler("setNextMap_s", getRootElement(),setNextMap)
+addEventHandler("setNextMap_s", root,setNextMap)
 
 function sortCompareFunction(s1, s2)
 	if type(s1) == "table" and type(s2) == "table" then

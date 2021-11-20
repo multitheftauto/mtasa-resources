@@ -1,4 +1,3 @@
-local rootElement = getRootElement()
 currentBrowserGUI = {}
 currentBrowser = {}
 local cSelectedElement,workingDimension,hiddenDimension
@@ -69,7 +68,7 @@ function currentBrowser.resized()
 	guiSetSize ( currentBrowserGUI.close, windowWidth, 40, false )
 	--
 	if not isResizing then
-		addEventHandler ( "onClientClick",rootElement,resizeStop )
+		addEventHandler ( "onClientClick",root,resizeStop )
 	end
 	isResizing = true
 end
@@ -77,7 +76,7 @@ end
 function resizeStop ( button, state )
 	if state == "up" then
 		currentBrowser.prepareSearch()
-		removeEventHandler ( "onClientClick",rootElement,resizeStop )
+		removeEventHandler ( "onClientClick",root,resizeStop )
 		isResizing = false
 	end
 end
@@ -209,7 +208,7 @@ function currentBrowser.dropdownSelect ( element )
 		currentBrowser.prepareSearch()
 	end
 end
-addEventHandler ( "onClientDropDownSelect", rootElement, currentBrowser.dropdownSelect )--------
+addEventHandler ( "onClientDropDownSelect", root, currentBrowser.dropdownSelect )--------
 
 local query
 local searchTimerDelay
@@ -226,7 +225,7 @@ function currentBrowser.searchChanged ( element )
 		searchTimerDelay = setTimer ( currentBrowser.prepareSearch, 250, 1 )
 	end
 end
-addEventHandler ( "onClientGUIChanged", rootElement, currentBrowser.searchChanged )
+addEventHandler ( "onClientGUIChanged", root, currentBrowser.searchChanged )
 
 function currentBrowser.prepareSearch()
 	local query = guiGetText ( currentBrowserGUI.search ) --get the query
@@ -364,7 +363,7 @@ function clearEditorElements ( elemTable )
 	return validElements
 end
 
-addEventHandler ( "onClientGUIClick", rootElement,
+addEventHandler ( "onClientGUIClick", root,
 function()
 	if source == currentBrowserGUI.search then
 		local text = guiGetText ( source )
@@ -419,9 +418,9 @@ function showCurrentBrowser ( elementArray, ignoredElements, elementType, resour
 	currentBrowser.prepareSearch()
 	currentBrowserGUI.gridlist:enable(cc.currentelements_up,cc.currentelements_down)
 	local returnValue = guiSetVisible ( currentBrowserGUI.browser, true )
-	addEventHandler ( "onClientGUIWorldClick", rootElement, currentBrowser.searchClick )
-	addEventHandler ( "onClientElementCreate",rootElement,currentBrowser.prepareSearch )
-	addEventHandler ( "onClientElementDestroyed",rootElement,currentBrowser.prepareSearch )
+	addEventHandler ( "onClientGUIWorldClick", root, currentBrowser.searchClick )
+	addEventHandler ( "onClientElementCreate",root,currentBrowser.prepareSearch )
+	addEventHandler ( "onClientElementDestroyed",root,currentBrowser.prepareSearch )
 	return returnValue
 end
 
@@ -447,16 +446,16 @@ function closeCurrentBrowser()
 	guiSetVisible ( currentBrowserGUI.browser, false )
 	dumpSettings()
 	xmlSaveFile ( settingsXML )
-	removeEventHandler ( "onClientGUIWorldClick", rootElement, currentBrowser.searchClick )
-	removeEventHandler ( "onClientElementCreate",rootElement,currentBrowser.prepareSearch )
-	removeEventHandler ( "onClientElementDestroyed",rootElement,currentBrowser.prepareSearch )
+	removeEventHandler ( "onClientGUIWorldClick", root, currentBrowser.searchClick )
+	removeEventHandler ( "onClientElementCreate",root,currentBrowser.prepareSearch )
+	removeEventHandler ( "onClientElementDestroyed",root,currentBrowser.prepareSearch )
 end
 
 function isCurrentBrowserShowing()
 	return guiGetVisible(currentBrowserGUI.browser)
 end
 
-addEventHandler ( "saveloadtest_return", rootElement,
+addEventHandler ( "saveloadtest_return", root,
 	function ( command )
 		if command == "new" then
 			currentBrowser.prepareSearch()

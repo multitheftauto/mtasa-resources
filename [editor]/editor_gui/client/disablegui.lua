@@ -4,7 +4,7 @@ local toggleHistory = {}
 
 local guiTypes = { "gui-window","gui-staticimage" }
 
-addEventHandler ( "onClientRender",getRootElement(),
+addEventHandler ( "onClientRender",root,
 function()
 	local isNowActive = isMTAWindowActive()
 	if isNowActive ~= active then

@@ -2,7 +2,6 @@ local activePoll
 
 local pollTimer
 local defaultConfig = {}
-local rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 
 addEvent "onPollStart"
@@ -78,7 +77,7 @@ function startPoll(pollData)
 			playerAmount = playerAmount + 1
 		end
 	elseif isElement(pollData.visibleTo) or pollData.visibleTo == nil then
-		for k,player in ipairs(getElementsByType("player",pollData.visibleTo or rootElement)) do
+		for k,player in ipairs(getElementsByType("player",pollData.visibleTo or root)) do
 			allowedPlayers[player] = true
 			playerAmount = playerAmount + 1
 		end
@@ -150,7 +149,7 @@ function stopPoll()
 
 	--send the signal to all viewers
 	for player in pairs(activePoll.allowedPlayers) do
-		triggerClientEvent(player, "doStopPoll", rootElement)
+		triggerClientEvent(player, "doStopPoll", root)
 	end
 
 	--unload the poll
@@ -164,7 +163,7 @@ end
 
 function sendPoll(element)
 	local timeLeft = activePoll.finishesAt - getTickCount()
-	triggerClientEvent(element, "doShowPoll", rootElement, activePoll.clientData, activePoll.clientOptions, timeLeft)
+	triggerClientEvent(element, "doShowPoll", root, activePoll.clientData, activePoll.clientOptions, timeLeft)
 end
 
 function recheckVotes()
@@ -209,7 +208,7 @@ function endPoll(chosenOption)
 
 	--stop client polls
 	for player in pairs(activePoll.allowedPlayers) do
-		triggerClientEvent(player, "doStopPoll", rootElement)
+		triggerClientEvent(player, "doStopPoll", root)
 	end
 
 	--if any option was elected, finish
@@ -306,20 +305,20 @@ function applyPollResults(chosenOption)
 	local result = triggerEvent("onPollEnd", thisResourceRoot, chosenOption)
 
 	if result == true then
-		outputVoteManager("Vote ended! ["..optionTable[1].."]",rootElement)
+		outputVoteManager("Vote ended! ["..optionTable[1].."]",root)
 
 		local optionExecutorType = type(optionTable[2])
 		if optionExecutorType == "function" then --it is a function
 			optionTable[2](unpack(optionTable,3))
 		elseif optionExecutorType == "string" then --it is an event
-			triggerEvent(optionTable[2], optionTable[3] or rootElement, unpack(optionTable,4))
+			triggerEvent(optionTable[2], optionTable[3] or root, unpack(optionTable,4))
 			--assert(loadstring(optionTable[2]))(unpack(optionTable,3))
 		end
 	end
 end
 
 --this handler processes client votes
-addEventHandler("onClientSendVote", rootElement,
+addEventHandler("onClientSendVote", root,
 	function (voteID)
 		--ignore the client request if the event was cancelled
 		if wasEventCancelled() then
@@ -393,10 +392,10 @@ addEventHandler("onClientSendVote", rootElement,
 )
 
 --this handler allows new players to vote if visibleTo is root
-addEventHandler("onPlayerJoin", rootElement,
+addEventHandler("onPlayerJoin", root,
 	function ()
 		--if there is a poll and visibleTo is the root element
-		if activePoll and activePoll.visibleTo == rootElement then
+		if activePoll and activePoll.visibleTo == root then
 			activePoll.maxVoters = activePoll.maxVoters + 1
 			activePoll.allowedPlayers[source] = true
 			sendPoll(source)
@@ -405,7 +404,7 @@ addEventHandler("onPlayerJoin", rootElement,
 )
 
 --this handler removes votes from players who left
-addEventHandler("onPlayerQuit", rootElement,
+addEventHandler("onPlayerQuit", root,
 	function ()
 		--if there is a poll and the player was allowed to vote on it
 		if activePoll and activePoll.allowedPlayers[source] then
@@ -425,13 +424,13 @@ addEventHandler("onPlayerQuit", rootElement,
 )
 
 function outputVoteManager(message, toElement)
-	toElement = toElement or rootElement
+	toElement = toElement or root
 	local r, g, b = getColorFromString(string.upper(get("color")))
 	if getElementType(toElement) == "console" then
 		outputServerLog(message)
 	else
 		outputChatBox(message, toElement, r, g, b)
-		if toElement == rootElement then
+		if toElement == root then
 			outputServerLog(message)
 		end
 	end

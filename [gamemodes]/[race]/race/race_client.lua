@@ -1,4 +1,3 @@
-g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_WaterCraftIDs = table.create({ 539, 460, 417, 447, 472, 473, 493, 595, 484, 430, 453, 452, 446, 454 }, true)
@@ -43,7 +42,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 
 		-- set update handlers
 		g_PickupStartTick = getTickCount()
-		addEventHandler('onClientRender', g_Root, updateBars)
+		addEventHandler('onClientRender', root, updateBars)
 		g_WaterCheckTimer = setTimer(checkWater, 1000, 0)
 
 		-- load pickup models and textures
@@ -99,7 +98,7 @@ function TitleScreen.show()
 	guiMoveToBack(g_GUI['titleImage'])
     TitleScreen.startTime = getTickCount()
     TitleScreen.bringForward = 0
-    addEventHandler('onClientRender', g_Root, TitleScreen.update)
+    addEventHandler('onClientRender', root, TitleScreen.update)
 end
 
 function TitleScreen.update()
@@ -110,7 +109,7 @@ function TitleScreen.update()
     g_dxGUI['titleText2']:color(220,220,220,255*alpha)
     if alpha == 0 then
         hideGUIComponents('titleImage','titleText1','titleText2')
-        removeEventHandler('onClientRender', g_Root, TitleScreen.update)
+        removeEventHandler('onClientRender', root, TitleScreen.update)
 	end
 end
 
@@ -306,7 +305,7 @@ function launchRace(duration)
 		showGUIComponents('timeleftbg', 'timeleft')
 		guiLabelSetColor(g_GUI.timeleft, 255, 255, 255)
 		g_Duration = duration
-		addEventHandler('onClientRender', g_Root, updateTime)
+		addEventHandler('onClientRender', root, updateTime)
 	end
 
 	setVehicleDamageProof(g_Vehicle, false)
@@ -315,7 +314,7 @@ function launchRace(duration)
 end
 
 
-addEventHandler('onClientElementStreamIn', g_Root,
+addEventHandler('onClientElementStreamIn', root,
 	function()
 		local colshape = table.find(g_Pickups, 'object', source)
 		if colshape then
@@ -330,7 +329,7 @@ addEventHandler('onClientElementStreamIn', g_Root,
 	end
 )
 
-addEventHandler('onClientElementStreamOut', g_Root,
+addEventHandler('onClientElementStreamOut', root,
 	function()
 		local colshape = table.find(g_VisiblePickups, source)
 		if colshape then
@@ -421,9 +420,9 @@ function updatePickups()
 		end
 	end
 end
-addEventHandler('onClientRender', g_Root, updatePickups)
+addEventHandler('onClientRender', root, updatePickups)
 
-addEventHandler('onClientColShapeHit', g_Root,
+addEventHandler('onClientColShapeHit', root,
 	function(elem)
 		local pickup = g_Pickups[source]
 		outputDebug( 'CHECKPOINT', 'onClientColShapeHit'
@@ -571,7 +570,7 @@ function setRankDisplay( rank )
 end
 
 
-addEventHandler('onClientElementDataChange', g_Root,
+addEventHandler('onClientElementDataChange', root,
 	function(dataName)
 		if dataName == 'race.finished' then
 			if isPlayerFinished(source) then
@@ -732,7 +731,7 @@ function checkpointReached(elem)
 		g_dxGUI.checkpoint:text(#g_Checkpoints .. ' / ' .. #g_Checkpoints)
 		local rc = getRadioChannel()
 		setRadioChannel(0)
-		addEventHandler("onClientPlayerRadioSwitch", g_Root, onChange)
+		addEventHandler("onClientPlayerRadioSwitch", root, onChange)
 		playSound("audio/mission_accomplished.mp3")
 		setTimer(changeRadioStation, 8000, 1, rc)
 		if g_GUI.hurry then
@@ -750,7 +749,7 @@ function onChange()
 end
 
 function changeRadioStation(rc)
-	removeEventHandler("onClientPlayerRadioSwitch", g_Root, onChange)
+	removeEventHandler("onClientPlayerRadioSwitch", root, onChange)
 	setRadioChannel(tonumber(rc))
 end
 
@@ -1056,7 +1055,7 @@ end
 
 
 addEvent ( "onClientScreenFadedOut", true )
-addEventHandler ( "onClientScreenFadedOut", g_Root,
+addEventHandler ( "onClientScreenFadedOut", root,
 	function()
 		Spectate.fadedout = true
 		Spectate.updateGuiFadedOut()
@@ -1064,7 +1063,7 @@ addEventHandler ( "onClientScreenFadedOut", g_Root,
 )
 
 addEvent ( "onClientScreenFadedIn", true )
-addEventHandler ( "onClientScreenFadedIn", g_Root,
+addEventHandler ( "onClientScreenFadedIn", root,
 	function()
 		Spectate.fadedout = false
 		Spectate.updateGuiFadedOut()
@@ -1072,7 +1071,7 @@ addEventHandler ( "onClientScreenFadedIn", g_Root,
 )
 
 addEvent ( "onClientPreRender", true )
-addEventHandler ( "onClientPreRender", g_Root,
+addEventHandler ( "onClientPreRender", root,
 	function()
 		if isPlayerRaceDead( localPlayer ) then
 			setCameraMatrix( getCameraMatrix() )
@@ -1189,7 +1188,7 @@ end
 -----------------------------------------------------------------------
 
 function raceTimeout()
-	removeEventHandler('onClientRender', g_Root, updateTime)
+	removeEventHandler('onClientRender', root, updateTime)
 	if g_CurrentCheckpoint then
 		destroyCheckpoint(g_CurrentCheckpoint)
 		destroyCheckpoint(g_CurrentCheckpoint + 1)
@@ -1229,7 +1228,7 @@ function unloadAll()
 	setElementData(localPlayer, 'race.checkpoint', nil)
 
 	g_Vehicle = nil
-	removeEventHandler('onClientRender', g_Root, updateTime)
+	removeEventHandler('onClientRender', root, updateTime)
 
 	toggleAllControls(true)
 
@@ -1322,19 +1321,19 @@ function isPlayerSpectating(player)
 	return getElementData(player, 'race.spectating')
 end
 
-addEventHandler('onClientPlayerJoin', g_Root,
+addEventHandler('onClientPlayerJoin', root,
 	function()
 		table.insertUnique(g_Players, source)
 	end
 )
 
-addEventHandler('onClientPlayerSpawn', g_Root,
+addEventHandler('onClientPlayerSpawn', root,
 	function()
 		Spectate.blockAsTarget( source, 2000 )	-- No spectate at this player for 2 seconds
     end
 )
 
-addEventHandler('onClientPlayerWasted', g_Root,
+addEventHandler('onClientPlayerWasted', root,
 	function()
 		if not g_StartTick then
 			return
@@ -1354,7 +1353,7 @@ addEventHandler('onClientPlayerWasted', g_Root,
 	end
 )
 
-addEventHandler('onClientPlayerQuit', g_Root,
+addEventHandler('onClientPlayerQuit', root,
 	function()
 		table.removevalue(g_Players, source)
 		Spectate.blockUntilTimes[source] = nil
@@ -1365,7 +1364,7 @@ addEventHandler('onClientPlayerQuit', g_Root,
 addEventHandler('onClientResourceStop', g_ResRoot,
 	function()
 		unloadAll()
-		removeEventHandler('onClientRender', g_Root, updateBars)
+		removeEventHandler('onClientRender', root, updateBars)
 		killTimer(g_WaterCheckTimer)
 		showHUD(true)
 		setPedCanBeKnockedOffBike(localPlayer, true)

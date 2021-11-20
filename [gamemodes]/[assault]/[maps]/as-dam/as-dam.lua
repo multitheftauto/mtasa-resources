@@ -106,8 +106,8 @@ function destroyBomb ( ID )
 	bombs[ID] = nil
 end
 
-addEventHandler("onAssaultCreateObjective",getRootElement(),create)
-addEventHandler("onAssaultObjectiveReached",getRootElement(),objectiveReached)
-addEventHandler("onAssaultStartRound",getRootElement(),startRound)
-addEventHandler("onAssaultEndRound",getRootElement(),endRound)
+addEventHandler("onAssaultCreateObjective",root,create)
+addEventHandler("onAssaultObjectiveReached",root,objectiveReached)
+addEventHandler("onAssaultStartRound",root,startRound)
+addEventHandler("onAssaultEndRound",root,endRound)
 

@@ -56,7 +56,7 @@ function level(dataName)
 			guiSetText ( scoreLabel, text )
 		end
 end
-addEventHandler ( "onClientElementDataChange",getRootElement(),level )
+addEventHandler ( "onClientElementDataChange",root,level )
 
 addEventHandler ( "onClientResourceStart",getResourceRootElement(getThisResource()),
 	function()

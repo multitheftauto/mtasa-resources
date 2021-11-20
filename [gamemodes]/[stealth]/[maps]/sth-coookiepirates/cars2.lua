@@ -3,4 +3,4 @@ function enterVehicle ( player, seat, jacked )
         cancelEvent()
     end
 end
-addEventHandler ( "onVehicleStartEnter", getRootElement(), enterVehicle )
+addEventHandler ( "onVehicleStartEnter", root, enterVehicle )

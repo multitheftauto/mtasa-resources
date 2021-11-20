@@ -13,8 +13,6 @@ local ignoreElementWalls = true -- 'false' not supported yet
 
 local isEnabled = false
 
-local root = getRootElement()
-
 local camX, camY, camZ
 local camRX, camRY, camRZ
 

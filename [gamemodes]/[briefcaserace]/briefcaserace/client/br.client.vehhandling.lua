@@ -1,5 +1,3 @@
-local root = getRootElement()
-
 MAX_SPEED = 0.65
 
 local element = false

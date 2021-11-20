@@ -50,4 +50,4 @@ function idleRespawn( num )
 end
 
 addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()), onResourceStart )
-addEventHandler ( "onVehicleExplode", getRootElement(), onVehicleExplode )
+addEventHandler ( "onVehicleExplode", root, onVehicleExplode )

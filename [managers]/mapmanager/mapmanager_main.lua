@@ -6,14 +6,12 @@ nextGamemodeMap = nil
 setGameType(false)
 setMapName("None")
 
-rootElement = getRootElement()
-
 addEvent("onGamemodeStart")
 addEvent("onGamemodeStop")
 addEvent("onGamemodeMapStart")
 addEvent("onGamemodeMapStop")
 
-addEventHandler("onResourcePreStart", rootElement,
+addEventHandler("onResourcePreStart", root,
 	function (startingResource)
 		--Is starting resource a gamemode?
 		if isGamemode(startingResource) then
@@ -38,7 +36,7 @@ addEventHandler("onResourcePreStart", rootElement,
 	end
 )
 
-addEventHandler("onPlayerJoin", rootElement,
+addEventHandler("onPlayerJoin", root,
 	function()
 		if get("currentmap") and getRunningGamemode() and getRunningGamemodeMap() then
 			outputMapManager(
@@ -52,7 +50,7 @@ addEventHandler("onPlayerJoin", rootElement,
 	end
 )
 
-addEventHandler("onResourceStart", rootElement,
+addEventHandler("onResourceStart", root,
 	function (startedResource)
 		--Is this resource a gamemode?
 		if isGamemode(startedResource) then
@@ -120,7 +118,7 @@ addEventHandler("onResourceStart", rootElement,
 	end
 )
 
-addEventHandler("onResourceStop", rootElement,
+addEventHandler("onResourceStop", root,
 	function (stoppedResource)
 		-- Incase the resource being stopped has been deleted
 		local stillExists = false
@@ -488,25 +486,25 @@ end
 local serverConsole = getElementByIndex("console", 0)
 
 function outputMapManager(message, toElement)
-	toElement = toElement or rootElement
+	toElement = toElement or root
 	local r, g, b = getColorFromString(string.upper(get("color")))
 	if getElementType(toElement) == "console" then
 		outputServerLog(message)
 	else
 		outputChatBox(message, toElement, r, g, b)
-		if toElement == rootElement then
+		if toElement == root then
 			outputServerLog(message)
 		end
 	end
 end
 
 function outputMapManagerConsole(message, toElement)
-	toElement = toElement or rootElement
+	toElement = toElement or root
 	if getElementType(toElement) == "console" then
 		outputServerLog(message)
 	else
 		outputConsole(message, toElement)
-		if toElement == rootElement then
+		if toElement == root then
 			outputServerLog(message)
 		end
 	end

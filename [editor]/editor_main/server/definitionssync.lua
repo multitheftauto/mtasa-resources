@@ -1,6 +1,6 @@
 allEDF = {}
 
-addEventHandler ( "onClientGUILoaded", rootElement,
+addEventHandler ( "onClientGUILoaded", root,
 	function()
 		triggerClientEvent ( client, "syncEDFDefinitions", client, allEDF )
 	end
@@ -19,7 +19,7 @@ function setClientAddedEDFs(resources)
 	table.subtract(allEDF.availEDF, resources)
 	-- set added list
 	allEDF.addedEDF = resources
-	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+	triggerClientEvent('syncEDFDefinitions', root, allEDF)
 end
 
 function addClientEDFs(edfsToAdd)
@@ -33,7 +33,7 @@ function addClientEDFs(edfsToAdd)
 			end
 		end
 	end
-	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+	triggerClientEvent('syncEDFDefinitions', root, allEDF)
 end
 
 function removeClientEDFs(edfsToRemove)
@@ -47,7 +47,7 @@ function removeClientEDFs(edfsToRemove)
 			end
 		end
 	end
-	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+	triggerClientEvent('syncEDFDefinitions', root, allEDF)
 end
 
 function getClientAvailableEDFs()
@@ -89,12 +89,12 @@ addEventHandler ( "onResourceStart", thisResourceRoot,
 function reloadEDFDefinitions(newEDF,noOutput)
 	if client and not isPlayerAllowedToDoEditorAction(client,"definitions") then
 		editor_gui.outputMessage ("You don't have permissions to change the map definitions!", client,255,0,0)
-		triggerClientEvent(client, 'syncEDFDefinitions', rootElement, allEDF)
+		triggerClientEvent(client, 'syncEDFDefinitions', root, allEDF)
 		return
 	end
 
 	if client and not noOutput then
-		editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
+		editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", root, 255, 255, 0 )
 	end
 	loadedDefs = edf.edfGetLoadedEDFResources()
 	--load new defs
@@ -147,10 +147,10 @@ function reloadEDFDefinitions(newEDF,noOutput)
 		end
 	end
 	allEDF = newEDF
-	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+	triggerClientEvent('syncEDFDefinitions', root, allEDF)
 end
 addEvent ( "reloadEDFDefinitions", true )
-addEventHandler ( "reloadEDFDefinitions", rootElement, reloadEDFDefinitions )
+addEventHandler ( "reloadEDFDefinitions", root, reloadEDFDefinitions )
 
 addEventHandler ( "onResourceStop",thisResourceRoot,
 	function()
@@ -165,7 +165,7 @@ addEventHandler ( "onResourceStop",thisResourceRoot,
 )
 
 local gamemodeToCancel
-addEventHandler ( "onGamemodeStart", rootElement,
+addEventHandler ( "onGamemodeStart", root,
 	function ( resource )
 		if resource == gamemodeToCancel then
 			cancelEvent(true)

@@ -8,7 +8,7 @@ function openResource ( resourceName )
 	triggerServerEvent ( "openResource", localPlayer, resourceName )
 end
 
-addEventHandler ( "saveloadtest_return", getRootElement(),
+addEventHandler ( "saveloadtest_return", root,
 	function ( command, returnValue, returnValue2, reason )
 		reason = reason or ""
 		if ( command ) == "open" then

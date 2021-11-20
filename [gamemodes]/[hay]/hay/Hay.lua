@@ -203,7 +203,7 @@ function onThisResourceStart ( )
 	thePickup = createPickup ( barrier_x, barrier_y, options.z * 3 + 6, 3, 2880, 1 )
 	setTimer ( move, 100, 0 )
 	setTimer ( barrier, 1000, 1)
-	fadeCamera ( getRootElement(), true )
+	fadeCamera ( root, true )
 end
 
 function barrier ()

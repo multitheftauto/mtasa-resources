@@ -1,11 +1,10 @@
-local rootElement = getRootElement()
 local WAIT_LOAD_INTERVAL = 100 --ms
 
 function makeElementStatic(element)
 	if getElementType(element) == "vehicle" then
-		triggerClientEvent(rootElement, "doSetVehicleStatic", element)
+		triggerClientEvent(root, "doSetVehicleStatic", element)
 	elseif getElementType(element) == "ped" then
-		triggerClientEvent(rootElement, "doSetPedStatic", element)
+		triggerClientEvent(root, "doSetPedStatic", element)
 	else
 		for i, child in ipairs(getElementChildren(element)) do
 			makeElementStatic(child)
@@ -26,10 +25,10 @@ function setupNewElement(element, creatorResource, creatorClient, attachLater,sh
 	justCreated[element] = true --mark it so undoredo ignores first placement
 
 	triggerEvent("onElementCreate", element)
-	triggerClientEvent(rootElement, "onClientElementCreate", element)
+	triggerClientEvent(root, "onClientElementCreate", element)
 end
 
-addEventHandler ( "doCreateElement", rootElement,
+addEventHandler ( "doCreateElement", root,
 	function ( elementType, resourceName, parameters, attachLater, shortcut )
 		if client and not isPlayerAllowedToDoEditorAction(client,"createElement") then
 			editor_gui.outputMessage ("You don't have permissions to create a new element!", client,255,0,0)
@@ -56,7 +55,7 @@ addEventHandler ( "doCreateElement", rootElement,
 	end
 )
 
-addEventHandler ( "doCloneElement", rootElement,
+addEventHandler ( "doCloneElement", root,
 	function (attachMode,creator)
 		if client and not isPlayerAllowedToDoEditorAction(client,"createElement") then
 			editor_gui.outputMessage ("You don't have permissions to clone an element!", client,255,0,0)
@@ -78,7 +77,7 @@ addEventHandler ( "doCloneElement", rootElement,
 	end
 )
 
-addEventHandler ( "doDestroyElement", rootElement,
+addEventHandler ( "doDestroyElement", root,
 	function (forced)
 		if client and not isPlayerAllowedToDoEditorAction(client,"deleteElement") then
 			editor_gui.outputMessage ("You don't have permissions to delete an element!", client,255,0,0)
@@ -97,7 +96,7 @@ addEventHandler ( "doDestroyElement", rootElement,
 			end
 
 			triggerEvent("onElementDestroy", source)
-			triggerClientEvent(rootElement, "onClientElementDestroyed", source)
+			triggerClientEvent(root, "onClientElementDestroyed", source)
 
 			triggerEvent ( "onElementDestroy_undoredo", source )
 		end

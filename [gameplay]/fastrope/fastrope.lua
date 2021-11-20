@@ -40,7 +40,7 @@ function create_FastRope ( x, y, z, time )
 	createSWATRope(x,y,z,time)
 end
 addEvent( "frope_createFastRope", true )
-addEventHandler("frope_createFastRope", getRootElement(), create_FastRope)
+addEventHandler("frope_createFastRope", root, create_FastRope)
 local function createLandingSphere( x, y, z, forceWait )
 	-- get the ground position
 	local groundPos = getGroundPosition ( x, y, z )
@@ -85,6 +85,6 @@ function smartanimbreak ( x, y, z )
 	--timer = setTimer(groundhit, 4000, 1, localPlayer)
 end
 addEvent("frope_smartAnimBreak", true)
-addEventHandler("onClientPlayerDamage", getRootElement(), disableFallDamage)
-addEventHandler("onClientPlayerWasted", getRootElement(), setOffRope)
-addEventHandler("frope_smartAnimBreak", getRootElement(), smartanimbreak)
+addEventHandler("onClientPlayerDamage", root, disableFallDamage)
+addEventHandler("onClientPlayerWasted", root, setOffRope)
+addEventHandler("frope_smartAnimBreak", root, smartanimbreak)

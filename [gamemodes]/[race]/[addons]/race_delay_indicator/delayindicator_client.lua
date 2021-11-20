@@ -1,4 +1,3 @@
-local g_Root = getRootElement()
 local g_ResRoot = getResourceRootElement(getThisResource())
 
 local DISTANCE_FRONT_BEHIND = 0.03
@@ -13,7 +12,7 @@ delayDisplayFront:color(255, 0, 0)
 delayDisplayBehind:color(0, 255, 0)
 
 addEvent("showDelay", true)
-addEventHandler("showDelay", g_Root,
+addEventHandler("showDelay", root,
 	function(delayTime, optional)
 		if tonumber(optional) then
 			local cps = getElementData(localPlayer, "race.checkpoint") - optional

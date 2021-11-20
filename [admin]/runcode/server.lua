@@ -1,5 +1,3 @@
-local rootElement = getRootElement()
-
 function runString (commandstring, outputTo, source)
 	me = source
 	local sourceName = source and getPlayerName(source) or "Console"
@@ -52,7 +50,7 @@ end
 addCommandHandler("run",
 	function (player, command, ...)
 		local commandstring = table.concat({...}, " ")
-		return runString(commandstring, rootElement, player)
+		return runString(commandstring, root, player)
 	end
 )
 
@@ -70,7 +68,7 @@ addCommandHandler("crun",
 		local commandstring = table.concat({...}, " ")
 		if player then
 			outputChatBoxR(getPlayerName(player) .. " executed client-side command: " .. commandstring, false)
-			return triggerClientEvent(player, "doCrun", rootElement, commandstring)
+			return triggerClientEvent(player, "doCrun", root, commandstring)
 		else
 			return runString(commandstring, false, false)
 		end

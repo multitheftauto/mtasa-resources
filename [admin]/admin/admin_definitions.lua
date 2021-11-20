@@ -12,8 +12,6 @@ _DEBUG = false
 
 _version = '1.5.9'
 
-_root = getRootElement()
-
 if ( localPlayer ) then
 	_local = localPlayer
 else

@@ -8,7 +8,6 @@
 *
 **************************************]]
 
-_root = getRootElement()
 _types = { "player", "team", "vehicle", "resource", "bans", "server", "admin" }
 _settings = nil
 
@@ -34,11 +33,11 @@ function notifyPlayerLoggedIn(player)
 	end
 end
 
-addEventHandler ( "onResourceStart", _root, function ( resource )
+addEventHandler ( "onResourceStart", root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
-				triggerClientEvent ( player, "aClientResourceStart", _root, getResourceName ( resource ) )
+				triggerClientEvent ( player, "aClientResourceStart", root, getResourceName ( resource ) )
 			end
 		end
 		return
@@ -191,7 +190,7 @@ addEventHandler ( "onResourceStart", _root, function ( resource )
 	end
 end )
 
-addEventHandler ( "onResourceStop", _root, function ( resource )
+addEventHandler ( "onResourceStop", root, function ( resource )
 	-- Incase the resource being stopped has been deleted
 	local stillExists = false
 	for i, res in ipairs(getResources()) do
@@ -205,7 +204,7 @@ addEventHandler ( "onResourceStop", _root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
-				triggerClientEvent ( player, "aClientResourceStop", _root, getResourceName ( resource ) )
+				triggerClientEvent ( player, "aClientResourceStop", root, getResourceName ( resource ) )
 			end
 		end
 	else
@@ -312,7 +311,7 @@ function aSetPlayerMuted ( player, state, length )
 	return false
 end
 
-addEventHandler ( "onPlayerJoin", _root, function ()
+addEventHandler ( "onPlayerJoin", root, function ()
 	local player = source
 	if aHasUnmuteTimer( player ) then
 		if not isPlayerMuted(player) then
@@ -374,7 +373,7 @@ function isPlayerFrozen ( player )
 	return aPlayers[player]["freeze"]
 end
 
-addEventHandler ( "onPlayerJoin", _root, function ()
+addEventHandler ( "onPlayerJoin", root, function ()
 	if ( aGetSetting ( "welcome" ) ) then
 		outputChatBox ( aGetSetting ( "welcome" ), source, 255, 100, 100 )
 	end
@@ -409,7 +408,7 @@ addEventHandler ( "onPlayerQuit", root, function ()
 end )
 
 addEvent ( "aPlayerVersion", true )
-addEventHandler ( "aPlayerVersion", _root, function ( version )
+addEventHandler ( "aPlayerVersion", root, function ( version )
 	if checkClient( false, source, 'aPlayerVersion' ) then return end
 	local bIsPre = false
 	-- If not Release, mark as 'pre'
@@ -450,7 +449,7 @@ function aPlayerSerialCheck ( player, result )
 	if ( result == 0 ) then kickPlayer ( player, "Invalid serial" ) end
 end
 
-addEventHandler ( "onPlayerLogin", _root, function ( previous, account, auto )
+addEventHandler ( "onPlayerLogin", root, function ( previous, account, auto )
 	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
 		triggerEvent ( "aPermissions", source )
 		notifyPlayerLoggedIn( source )
@@ -514,7 +513,7 @@ end
 
 function aAdminMenu ( player, command )
 	if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-		triggerClientEvent ( player, "aClientAdminMenu", _root )
+		triggerClientEvent ( player, "aClientAdminMenu", root )
 		aPlayers[player]["chat"] = true
 	end
 end
@@ -547,7 +546,7 @@ function aAction ( type, action, admin, player, data, more )
 
         if ( node ) then
             local r, g, b = node["r"], node["g"], node["b"]
-            if ( node["all"] ) then outputChatBox ( aStripString ( node["all"] ), _root, r, g, b ) end
+            if ( node["all"] ) then outputChatBox ( aStripString ( node["all"] ), root, r, g, b ) end
             if ( node["admin"] ) and ( admin ~= player ) then outputChatBox ( aStripString ( node["admin"] ), admin, r, g, b ) end
             if ( node["player"] ) then outputChatBox ( aStripString ( node["player"] ), player, r, g, b ) end
             if ( node["log"] ) then outputServerLog ( aStripString ( node["log"] ) ) end
@@ -566,7 +565,7 @@ function isAnonAdmin4Victim ( admin )
 end
 
 addEvent ( "aTeam", true )
-addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
+addEventHandler ( "aTeam", root, function ( action, name, r, g, b )
 	if checkClient( "command."..action, source, 'aTeam', action ) then return end
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		mdata = ""
@@ -599,7 +598,7 @@ addEventHandler ( "aTeam", _root, function ( action, name, r, g, b )
 end )
 
 addEvent ( "aAdmin", true )
-addEventHandler ( "aAdmin", _root, function ( action, ... )
+addEventHandler ( "aAdmin", root, function ( action, ... )
 	if checkClient( true, source, 'aAdmin', action ) then return end
 	local mdata = ""
 	local mdata2 = ""
@@ -664,7 +663,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 				end
 			end
 		end
-		triggerClientEvent ( source, "aAdminSettings", _root, cmd, resName, tableOut )
+		triggerClientEvent ( source, "aAdminSettings", root, cmd, resName, tableOut )
 		if mdata == "" then
 			action = nil
 		end
@@ -680,7 +679,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 			for id, acl in ipairs ( aclList() ) do
 				table.insert ( tableOut["acl"] ,aclGetName ( acl ) )
 			end
-			triggerClientEvent ( source, "aAdminACL", _root, type, tableOut )
+			triggerClientEvent ( source, "aAdminACL", root, type, tableOut )
 		elseif ( type == "aclobjects" ) then
 			local group = aclGetGroup ( tostring ( arg[2] ) )
 			if ( group ) then
@@ -691,7 +690,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					table.insert ( tableOut["acl"], aclGetName ( acl ) )
 				end
 			end
-			triggerClientEvent ( source, "aAdminACL", _root, type, tableOut )
+			triggerClientEvent ( source, "aAdminACL", root, type, tableOut )
 		elseif ( type == "aclrights" ) then
 			local acl = aclGet ( tostring ( arg[2] ) )
 			if ( acl ) then
@@ -701,7 +700,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					tableOut["rights"][name] = aclGetRight ( acl, name )
 				end
 			end
-			triggerClientEvent ( source, "aAdminACL", _root, type, tableOut )
+			triggerClientEvent ( source, "aAdminACL", root, type, tableOut )
 		elseif ( type == 'playeraclgroups') then
 			local player = arg[2]
 			if isElement(player) then
@@ -716,7 +715,7 @@ addEventHandler ( "aAdmin", _root, function ( action, ... )
 					end
 				end
 			end
-			triggerClientEvent ( source, "aPermissionsSync", _root, player, tableOut )
+			triggerClientEvent ( source, "aPermissionsSync", root, player, tableOut )
 		end
 	elseif ( action == "aclcreate" ) then
 		local name = arg[2]
@@ -895,7 +894,7 @@ end
 
 
 addEvent ( "aPlayer", true )
-addEventHandler ( "aPlayer", _root, function ( player, action, data, additional, additional2 )
+addEventHandler ( "aPlayer", root, function ( player, action, data, additional, additional2 )
 	if checkClient( "command."..action, source, 'aPlayer', action ) then return end
 	if not isElement( player ) then
 		return	-- Ignore if player is no longer valid
@@ -958,7 +957,7 @@ addEventHandler ( "aPlayer", _root, function ( player, action, data, additional,
 					end, 100, 1)
 				end
 			end
-			setTimer( triggerEvent, 1000, 1, "aSync", _root, "bansdirty" )
+			setTimer( triggerEvent, 1000, 1, "aSync", root, "bansdirty" )
 		elseif ( action == "mute" )  then
 			if ( isPlayerMuted ( player ) ) then action = "un"..action end
 			local reason = data or ""
@@ -1207,7 +1206,7 @@ function hex2rgb(hex)
 end
 
 addEvent ( "aVehicle", true )
-addEventHandler ( "aVehicle", _root, function ( player, action, data )
+addEventHandler ( "aVehicle", root, function ( player, action, data )
 	if checkClient( "command."..action, source, 'aVehicle', action ) then return end
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		if ( not player ) then return end
@@ -1290,7 +1289,7 @@ end
 end
 
 addEvent ( "aResource", true )
-addEventHandler ( "aResource", _root, function ( name, action )
+addEventHandler ( "aResource", root, function ( name, action )
 	if checkClient( "command."..action, source, 'aResource', action ) then return end
 	local pname = getPlayerName ( source )
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
@@ -1308,7 +1307,7 @@ addEventHandler ( "aResource", _root, function ( name, action )
 		if ( text ~= "" ) then
 			outputServerLog ( "ADMIN: Resource \'" .. name .. "\' " .. text .. " by " .. getAdminNameForLog ( source )  )
 			for id, player in ipairs(getElementsByType("player")) do
-				triggerClientEvent ( player, "aClientLog", _root, text  )
+				triggerClientEvent ( player, "aClientLog", root, text  )
 			end
 		end
 		return true
@@ -1318,7 +1317,7 @@ addEventHandler ( "aResource", _root, function ( name, action )
 end )
 
 addEvent ( "aServer", true )
-addEventHandler ( "aServer", _root, function ( action, data, data2 )
+addEventHandler ( "aServer", root, function ( action, data, data2 )
 	if checkClient( "command."..action, source, 'aServer', action ) then return end
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local mdata = tostring ( data )
@@ -1438,7 +1437,7 @@ function getPlayerChatHistory ( player, chunk )
 end
 
 addEvent ( "aMessage", true )
-addEventHandler ( "aMessage", _root, function ( action, data )
+addEventHandler ( "aMessage", root, function ( action, data )
 	if checkClient( false, source, 'aMessage', action ) then return end
 	if ( action == "new" ) then
 		local time = getRealTime()
@@ -1507,7 +1506,7 @@ addEventHandler ( "aModdetails", resourceRoot, function ( action, player )
 end )
 
 addEvent ( "aBans", true )
-addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
+addEventHandler ( "aBans", root, function ( action, data, arg1, arg2, arg3 )
 	if checkClient( "command."..action, source, 'aBans', action ) then return end
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local mdata = ""
@@ -1568,7 +1567,7 @@ addEventHandler ( "aBans", _root, function ( action, data, arg1, arg2, arg3 )
 end )
 
 addEvent ( "aExecute", true )
-addEventHandler ( "aExecute", _root, function ( action, echo )
+addEventHandler ( "aExecute", root, function ( action, echo )
 	if checkClient( "command.execute", source, 'aExecute', action ) then return end
 	if ( hasObjectPermissionTo ( client or source, "command.execute" ) ) then
 		local result = loadstring("return " .. action)()
@@ -1590,7 +1589,7 @@ addEventHandler ( "aExecute", _root, function ( action, echo )
 end )
 
 addEvent ( "aAdminChat", true )
-addEventHandler ( "aAdminChat", _root, function ( chat )
+addEventHandler ( "aAdminChat", root, function ( chat )
 	if checkClient( true, source, 'aAdminChat' ) then return end
 	for id, player in ipairs(getElementsByType("player")) do
 		if ( aPlayers[player]["chat"] ) then
@@ -1626,7 +1625,7 @@ function checkClient(checkAccess,player,...)
 		cancelEvent()
 		if g_Prefs.clientcheckban then
 			local reason = "admin checkClient (" .. tostring(desc) .. ")"
-			addBan ( ipAddress, nil, nil, getRootElement(), reason )
+			addBan ( ipAddress, nil, nil, root, reason )
 		end
 		return true
 	end

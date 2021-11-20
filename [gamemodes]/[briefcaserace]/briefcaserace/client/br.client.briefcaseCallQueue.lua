@@ -1,4 +1,3 @@
-local root = getRootElement()
 local briefcaseResource
 local callQueue = {}
 

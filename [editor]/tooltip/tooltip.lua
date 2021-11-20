@@ -151,7 +151,7 @@ function FadeIn(tooltip, frames)
 		setElementData(tooltip, "framesFaded", 0)
 
 		if not isEventHandled then
-			addEventHandler("onClientRender", getRootElement(), processTooltips)
+			addEventHandler("onClientRender", root, processTooltips)
 			isEventHandled = true
 		end
 
@@ -174,7 +174,7 @@ function FadeOut(tooltip, frames)
 		setElementData(tooltip, "framesFaded", 0)
 
 		if not isEventHandled then
-			addEventHandler("onClientRender", getRootElement(), processTooltips)
+			addEventHandler("onClientRender", root, processTooltips)
 			isEventHandled = true
 		end
 
@@ -299,7 +299,7 @@ processTooltips = function()
 	local tooltips = getElementsByType("__tooltip")
 
 	if #tooltips == 0 then
-		removeEventHandler("onClientRender", getRootElement(), processTooltips)
+		removeEventHandler("onClientRender", root, processTooltips)
 		isEventHandled = false
 		return
 	end
@@ -380,7 +380,7 @@ processTooltips = function()
 	end
 
 	if not existVisibleTooltips then
-		removeEventHandler("onClientRender", getRootElement(), processTooltips)
+		removeEventHandler("onClientRender", root, processTooltips)
 		isEventHandled = false
 	end
 end

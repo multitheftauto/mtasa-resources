@@ -1,4 +1,3 @@
-local rootElement = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 local pagesXml
 
@@ -66,12 +65,12 @@ addEventHandler("onClientResourceStop", thisResourceRoot,
 function showHelp()
 	return clientToggleHelp(true)
 end
-addEventHandler("doShowHelp", rootElement, showHelp)
+addEventHandler("doShowHelp", root, showHelp)
 
 function hideHelp()
 	return clientToggleHelp(false)
 end
-addEventHandler("doHideHelp", rootElement, hideHelp)
+addEventHandler("doHideHelp", root, hideHelp)
 
 function addHelpTab(resource, showPopup)
 
@@ -122,7 +121,7 @@ function removeHelpTab(resource)
 
 	return true
 end
-addEventHandler("onClientResourceStop", rootElement, removeHelpTab)
+addEventHandler("onClientResourceStop", root, removeHelpTab)
 
 --private
 function addHelpTabFromXML(resource)
@@ -142,7 +141,7 @@ function addHelpTabFromXML(resource)
 		end
 	end
 end
-addEventHandler("onClientResourceStart", rootElement, addHelpTabFromXML)
+addEventHandler("onClientResourceStart", root, addHelpTabFromXML)
 
 function clientToggleHelp(state)
 	if state ~= true and state ~= false then
@@ -168,10 +167,10 @@ local function fadeIn(wnd)
 		if newAlpha <= MAX_ALPHA then
 			guiSetAlpha(wnd, newAlpha)
 		else
-			removeEventHandler("onClientRender", rootElement, raiseAlpha)
+			removeEventHandler("onClientRender", root, raiseAlpha)
 		end
 	end
-	addEventHandler("onClientRender", rootElement, raiseAlpha)
+	addEventHandler("onClientRender", root, raiseAlpha)
 end
 
 local function fadeOut(wnd)
@@ -180,7 +179,7 @@ local function fadeOut(wnd)
 		if newAlpha >= 0 then
 			guiSetAlpha(wnd, newAlpha)
 		else
-			removeEventHandler("onClientRender", rootElement, lowerAlpha)
+			removeEventHandler("onClientRender", root, lowerAlpha)
 			destroyElement(wnd)
 
 			table.remove(popupQueue, 1)
@@ -189,7 +188,7 @@ local function fadeOut(wnd)
 			end
 		end
 	end
-	addEventHandler("onClientRender", rootElement, lowerAlpha)
+	addEventHandler("onClientRender", root, lowerAlpha)
 end
 
 function addHelpPopup(resource)

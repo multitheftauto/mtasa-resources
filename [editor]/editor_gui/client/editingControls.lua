@@ -5,7 +5,6 @@ addEvent "onClientDropDownOpen"
 addEvent "onClientControlBrowserLaunch"
 addEvent "onClientControlBrowserClose"
 
-local rootElement = getRootElement()
 local guiRoot = getResourceGUIElement(getThisResource())
 
 local catalogTypes = {
@@ -577,7 +576,7 @@ eC.dropdown = {
 
 		self.enabled = info.enabled
 		if self.enabled then
-			self:addHandler ( "onClientGUIClick", rootElement, self.dropdownClick, true )
+			self:addHandler ( "onClientGUIClick", root, self.dropdownClick, true )
 		else
 			self.enabled = true
 			self:disable()
@@ -689,7 +688,7 @@ eC.dropdown = {
 				triggerEvent ( "onClientDropDownSelect", self.GUI.gridlist, cellrow )
 			end
 		else
-			if source ~= rootElement then
+			if source ~= root then
 				local height = self.height
 				local width = self.width
 
@@ -701,7 +700,7 @@ eC.dropdown = {
 	end,
 	enable = function ( self )
 		if not self.enabled then
-			self:addHandler ( "onClientGUIClick", rootElement, self.dropdownClick, true )
+			self:addHandler ( "onClientGUIClick", root, self.dropdownClick, true )
 			self.enabled = true
 			guiLabelSetColor(self.GUI.label,255,255,255,255)
 			return true
@@ -1228,8 +1227,8 @@ eC.color = {
 
 		guiSetVisible(self.WGUI.selectWindow, true)
 		guiBringToFront(self.WGUI.selectWindow)
-		self:addHandler("onClientRender", rootElement, self.updateSelectedValue)
-		self:addHandler("onClientClick", rootElement, self.pickColor)
+		self:addHandler("onClientRender", root, self.updateSelectedValue)
+		self:addHandler("onClientClick", root, self.pickColor)
 
 		self.isSelectOpen = true
 		self.pickingColor = false
@@ -1941,7 +1940,7 @@ local control_mt = {
 		if control.changeHandler then
 			removeEventHandler(unpack(control.changeHandler))
 		end
-		fromElement = fromElement or rootElement
+		fromElement = fromElement or root
 		local wrapperFunction = function(...) handlerFunction(control, ...) end
 		control.changeHandler = { mtaEvent, fromElement, wrapperFunction }
 		addEventHandler(mtaEvent, fromElement, wrapperFunction, (getPropagated == true))
@@ -1960,7 +1959,7 @@ local control_mt = {
 
 	addHandler = function ( control, mtaEvent, fromElement, handlerFunction, getPropagated )
 		if not handlerFunction then error("handlerFunction is nil", 2) end
-		fromElement = fromElement or rootElement
+		fromElement = fromElement or root
 		-- generate a function that sends the control, then the parameters, to the real handler
 		local wrapperFunction = function(...) handlerFunction(control, ...) end
 		-- register it in a table so we can remove it on destroy

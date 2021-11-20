@@ -7,5 +7,5 @@
 	giveWeapon ( source, 31, 500 )
 end
 
-addEventHandler ( "onResourceStart", getRootElement(), onResourceStart )
-addEventHandler ( "onPlayerSpawn", getRootElement(), onPlayerSpawn )
+addEventHandler ( "onResourceStart", root, onResourceStart )
+addEventHandler ( "onPlayerSpawn", root, onPlayerSpawn )

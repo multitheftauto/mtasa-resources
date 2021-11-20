@@ -1,6 +1,6 @@
 addEvent( "onGhostDataReceive", true )
 
-addEventHandler( "onGhostDataReceive", g_Root,
+addEventHandler( "onGhostDataReceive", root,
 	function( recording, bestTime, racer, mapName )
 		if not isBesttimeValidForRecording( recording, bestTime ) then
 			outputDebugServer( "Received an invalid ghost recording", mapName, racer, " (Besttime not valid for recording. Error: " .. getRecordingBesttimeError( recording, bestTime ) .. ")" )

@@ -15,7 +15,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 )
 
 addEvent('onClientMapStarting', true)
-addEventHandler('onClientMapStarting', getRootElement(),
+addEventHandler('onClientMapStarting', root,
 	function(mapinfo)
 		outputDebug( 'BIGDAR', 'onClientMapStarting' )
 		if mapinfo.modename == "Destruction derby" or mapinfo.modename == "Freeroam" then
@@ -29,14 +29,14 @@ addEventHandler('onClientMapStarting', getRootElement(),
 )
 
 addEvent('onClientMapStopping', true)
-addEventHandler('onClientMapStopping', getRootElement(),
+addEventHandler('onClientMapStopping', root,
 	function()
 		outputDebug( 'BIGDAR', 'onClientMapStopping' )
 	end
 )
 
 addEvent('onClientPlayerFinish', true)
-addEventHandler('onClientPlayerFinish', getRootElement(),
+addEventHandler('onClientPlayerFinish', root,
 	function()
 		outputDebug( 'BIGDAR', 'onClientPlayerFinish' )
 		Bigdar.finishedPlayers[source] = true
@@ -216,19 +216,19 @@ function Bigdar.render()
 		end
 	end
 end
-addEventHandler('onClientRender', g_Root, Bigdar.render)
+addEventHandler('onClientRender', root, Bigdar.render)
 
 
 ---------------------------------------------------------------------------
 -- Various events
 
-addEventHandler('onClientPlayerJoin', g_Root,
+addEventHandler('onClientPlayerJoin', root,
 	function()
 		table.insertUnique(Bigdar.allPlayers, source)
 	end
 )
 
-addEventHandler('onClientPlayerQuit', g_Root,
+addEventHandler('onClientPlayerQuit', root,
 	function()
 		table.removevalue(Bigdar.finishedPlayers,source)
 		table.removevalue(Bigdar.allPlayers,source)
@@ -238,14 +238,14 @@ addEventHandler('onClientPlayerQuit', g_Root,
 
 
 addEvent ( "onClientScreenFadedOut", true )
-addEventHandler ( "onClientScreenFadedOut", g_Root,
+addEventHandler ( "onClientScreenFadedOut", root,
 	function()
 		Bigdar.hidden = true
 	end
 )
 
 addEvent ( "onClientScreenFadedIn", true )
-addEventHandler ( "onClientScreenFadedIn", g_Root,
+addEventHandler ( "onClientScreenFadedIn", root,
 	function()
 		Bigdar.hidden = false
 	end

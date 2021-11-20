@@ -43,7 +43,6 @@ local ROTATION_Y_SPEED = 3.8
 
 -- Static global variables
 local thisResource = getThisResource()
-local rootElement = getRootElement()
 local serverGravity = getGravity()
 local supermanPlayers = {}
 
@@ -145,10 +144,10 @@ function Superman.Start()
 
   -- Register events
   addEventHandler("onClientResourceStop", getResourceRootElement(thisResource), Superman.Stop, false)
-  addEventHandler("onPlayerQuit", rootElement, Superman.onQuit)
-  addEventHandler("onClientRender", rootElement, Superman.processFlight)
-  addEventHandler("onClientElementStreamIn", rootElement, Superman.onStreamIn)
-  addEventHandler("onClientElementStreamOut", rootElement, Superman.onStreamOut)
+  addEventHandler("onPlayerQuit", root, Superman.onQuit)
+  addEventHandler("onClientRender", root, Superman.processFlight)
+  addEventHandler("onClientElementStreamIn", root, Superman.onStreamIn)
+  addEventHandler("onClientElementStreamOut", root, Superman.onStreamOut)
 
   -- Initializate attributes
   self.rotations = {}

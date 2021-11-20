@@ -1,7 +1,6 @@
 addEvent "onControlPressed"
 addEvent "onEditorSuspended"
 addEvent "onEditorResumed"
-local rootElement = getRootElement()
 local addedCommands = {}
 local commandState = {}
 local keyStateToBool = { down = true, up = false }
@@ -54,7 +53,7 @@ function getCommandState ( command )
 	return commandState[command]
 end
 
-addEventHandler ( "onControlPressed",  rootElement,
+addEventHandler ( "onControlPressed",  root,
 	function ( key, keyState )
 		commandState[key] = keyStateToBool[keyState]
 		if keybinds[key] then
@@ -67,7 +66,7 @@ addEventHandler ( "onControlPressed",  rootElement,
 	end
 )
 
-addEventHandler ( "onEditorSuspended", rootElement,
+addEventHandler ( "onEditorSuspended", root,
 	function ()
 		keybinds_backup = deepcopy(keybinds)
 		for control,keyStateTable in pairs(keybinds) do
@@ -80,7 +79,7 @@ addEventHandler ( "onEditorSuspended", rootElement,
 	end
 )
 
-addEventHandler ( "onEditorResumed", rootElement,
+addEventHandler ( "onEditorResumed", root,
 	function ()
 		for control,keyStateTable in pairs(keybinds_backup) do
 			for keyState,functionTable in pairs(keyStateTable) do

@@ -5,7 +5,6 @@
 local edf = {}
 local edfStarted = {}
 local thisResource = getThisResource()
-local rootElement = getRootElement()
 createResourceCallInterface("mapmanager")
 addEvent"onElementPropertyChanged"
 
@@ -123,7 +122,7 @@ local createdRepresentations = {}
 addEvent("onEDFLoad")
 addEvent("onEDFUnload")
 
-addEventHandler("onResourceStart", rootElement,
+addEventHandler("onResourceStart", root,
 	function (resource)
 		--stop here if the resource disables edf checking
 		if getResourceInfo(resource,"edf:represent") == "false" then
@@ -164,7 +163,7 @@ addEventHandler("onResourceStart", rootElement,
 	end
 )
 
-addEventHandler("onResourceStop", rootElement,
+addEventHandler("onResourceStop", root,
 	function (resource)
 		if edfStarted[resource] then return end
 		edfUnloadDefinition(resource)
@@ -338,7 +337,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 	until false
 	readScripts(serverScripts,clientScripts,fromResource)
 	--if we've reached this point, trigger the load event
-	local triggerFrom = rootElement
+	local triggerFrom = root
 	if getResourceState(fromResource) == "running" then
 		triggerFrom = getResourceRootElement(fromResource)
 	end
@@ -377,7 +376,7 @@ function edfUnloadDefinition(resource)
 	end
 	edf[resource] = nil
 
-	triggerEvent("onEDFUnload",rootElement,resource)
+	triggerEvent("onEDFUnload",root,resource)
 
 	return true
 end

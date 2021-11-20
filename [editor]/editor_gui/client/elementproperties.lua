@@ -82,7 +82,6 @@ local lineImg
 
 --global variables---------------
 local selectedElement
-local rootElement = getRootElement()
 local DEFAULT_PARENT_TEXT = "This element's parent for the map tree structure"
 local edfResource = getResourceFromName "edf"
 local editorResource = getResourceFromName "editor_main"
@@ -719,7 +718,7 @@ function closePropertiesBox()
 	removeEventHandler( "onClientGUIClick", btnApply, syncPropertiesCallback )
 	removeEventHandler( "onClientGUIClick", btnOK, toggleProperties )
 	removeEventHandler( "onClientGUIClick", btnPullout, openPullout )
-	removeEventHandler( "onClientMouseMove", getRootElement(), tooltipsCheckMouseMove )
+	removeEventHandler( "onClientMouseMove", root, tooltipsCheckMouseMove )
 
 	-- Destroy the tooltips
 	for k,tooltip in ipairs(createdTooltips) do
@@ -823,7 +822,7 @@ function openPropertiesBox( element, resourceName, shortcut )
 	addEventHandler( "onClientGUIClick", btnCancel, cancelProperties, false )
 	addEventHandler( "onClientGUIClick", btnApply, syncPropertiesCallback, false )
 	addEventHandler( "onClientGUIClick", btnPullout, openPullout, false )
-	addEventHandler( "onClientMouseMove", getRootElement(), tooltipsCheckMouseMove )
+	addEventHandler( "onClientMouseMove", root, tooltipsCheckMouseMove )
 
 
 	guiSetInputEnabled(true)
@@ -1001,12 +1000,12 @@ local function pulloutClick(button, state)
 	if source ~= gdlAction then
 		guiSetEnabled ( btnPullout, true )
 		guiSetVisible ( gdlAction, false )
-		removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
+		removeEventHandler ( "onClientGUIWorldClick", root,pulloutClick )
 		return
 	end
 	local item = guiGridListGetSelectedItem ( gdlAction )
 	if item == -1 then return end
-	removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
+	removeEventHandler ( "onClientGUIWorldClick", root,pulloutClick )
 	guiSetEnabled ( btnPullout, true )
 	guiSetVisible(gdlAction,false)
 	pulloutAction[guiGridListGetItemText(gdlAction,item,1)]()
@@ -1017,7 +1016,7 @@ function openPullout()
 	if guiGetVisible ( gdlAction ) then return end
 	guiSetEnabled ( btnPullout, false )
 	guiSetVisible ( gdlAction, true )
-	addEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
+	addEventHandler ( "onClientGUIWorldClick", root,pulloutClick )
 	local x,y = guiGetPosition ( wndProperties, false )
 	local sizeX, sizeY = guiGetSize ( wndProperties, false )
 	x = x + sizeX

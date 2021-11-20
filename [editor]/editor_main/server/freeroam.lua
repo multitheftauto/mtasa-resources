@@ -6,7 +6,7 @@ addEventHandler("onResourceStart",getResourceRootElement(getThisResource()),
 		end
 
 		if getResourceState(freeroam) == "running" then
-			outputChatBox ( "INFO: 'FREEROAM' resource is currently running.  The resource has been shut off as a precaution!", getRootElement(), 255, 255, 0 )
+			outputChatBox ( "INFO: 'FREEROAM' resource is currently running.  The resource has been shut off as a precaution!", root, 255, 255, 0 )
 			outputDebugString (  "'FREEROAM' resource is currently running.  The resource has been shut off as a precaution!",4,255,255,0 )
 			stopResource(freeroam)
 		end

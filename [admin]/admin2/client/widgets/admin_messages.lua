@@ -35,7 +35,7 @@ function aMessages.Open()
         aRegister("Messages", aMessages.Form, aMessages.Open, aMessages.Close)
     end
 
-    addEventHandler("aMessage", getRootElement(), aMessages.onSync)
+    addEventHandler("aMessage", root, aMessages.onSync)
     addEventHandler("onClientGUIClick", aMessages.Form, aMessages.onClick)
 
     guiSetVisible(aMessages.Form, true)
@@ -45,7 +45,7 @@ end
 
 function aMessages.Close(destroy)
     if (aMessages.Form) then
-        removeEventHandler("aMessage", getRootElement(), aMessages.onSync)
+        removeEventHandler("aMessage", root, aMessages.onSync)
         removeEventHandler("onClientGUIClick", aMessages.Form, aMessages.onClick)
         if (destroy) then
             destroyElement(aMessages.Form)

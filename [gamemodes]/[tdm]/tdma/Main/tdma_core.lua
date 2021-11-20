@@ -340,7 +340,7 @@ function onChat ( message, theType )
 		local bastidName = getPlayerName ( source )
 		if ( team ) then
 			local r, g, b = getTeamColor ( team )
-			outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
+			outputChatBox ( bastidName..":#FFFFFF "..message, root, r, g, b, true )
 		else
 			outputChatBox ( bastidName..": "..message )
 		end

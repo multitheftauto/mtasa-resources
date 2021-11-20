@@ -15,7 +15,7 @@ local function isElementMoved(element)
 	return oldX ~= newX or oldY ~= newY or oldZ ~= newZ or oldRX ~= newRX or oldRY ~= newRY or oldRZ ~= newRZ
 end
 
-addEventHandler("onElementSelect", getRootElement(),
+addEventHandler("onElementSelect", root,
 	function ()
 		selectedElements[source] = {}
 		selectedElements[source].oldX, selectedElements[source].oldY, selectedElements[source].oldZ =
@@ -25,7 +25,7 @@ addEventHandler("onElementSelect", getRootElement(),
 	end
 )
 
-addEventHandler("onElementDrop", getRootElement(),
+addEventHandler("onElementDrop", root,
 	function ()
 		if (client and not isPlayerAllowedToDoEditorAction(client,"moveElement")) or (client and client~=edf.edfGetCreatorClient(source) and not isPlayerAllowedToDoEditorAction(client,"moveOtherElement")) then
 			-- Reset position if moved

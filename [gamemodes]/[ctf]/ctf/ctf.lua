@@ -5,8 +5,6 @@
 </team>
 ]]
 
-local CTF_root = getRootElement()
-
 function CTF_onResourceStart( resourcename )
 	if ( resourcename == getThisResource () ) then
 		local players = getElementsByType ( "player" )
@@ -146,8 +144,8 @@ function CTF_gamemodeMapStart ( startedMap )
 						setElementData( col, "blip", blip )
 						setElementData( col, "blipTwo", blipTwo )
 						if ( CTF_blips == "team" ) then
-							setElementVisibleTo ( blip, CTF_root, false )
-							setElementVisibleTo ( blipTwo, CTF_root, false )
+							setElementVisibleTo ( blip, root, false )
+							setElementVisibleTo ( blipTwo, root, false )
 						end
 					end
 					setElementData( col, "object", object )
@@ -288,8 +286,8 @@ function CTF_newRound()
 			setElementPosition( colObject, x, y, z )
 			setElementPosition( colMarker, x, y, z )
 			if ( CTF_blips == "team" ) then
-				setElementVisibleTo ( getElementData( v, "blip" ), CTF_root, false )
-				setElementVisibleTo ( getElementData( v, "blipTwo" ), CTF_root, false )
+				setElementVisibleTo ( getElementData( v, "blip" ), root, false )
+				setElementVisibleTo ( getElementData( v, "blipTwo" ), root, false )
 			end
 		end
 	end
@@ -563,7 +561,7 @@ function CTF_spawnPlayer( player )
 				local playerBlip = createBlipAttachedTo ( player, 0, 2, r, g, b, 255 )
 				setElementData( playerBlip, "playerBlip", true )
 				if ( CTF_blips == "team" ) then
-					setElementVisibleTo ( playerBlip, CTF_root, false )
+					setElementVisibleTo ( playerBlip, root, false )
 					for k,v in ipairs(getPlayersInTeam(team)) do
 						setElementVisibleTo ( playerBlip, v, true )
 					end
@@ -609,10 +607,10 @@ function getChildren ( root, type )
 	return result
 end
 
-addEventHandler( "onResourceStart", CTF_root, CTF_onResourceStart )
-addEventHandler( "onPlayerJoin", CTF_root, CTF_onPlayerJoin )
-addEventHandler( "onPlayerQuit", CTF_root, CTF_onPlayerQuit )
-addEventHandler( "onPlayerWasted", CTF_root, CTF_onPlayerWasted )
-addEventHandler( "onColShapeHit", CTF_root, CTF_onColShapeHit )
-addEventHandler( "onGamemodeMapStart", CTF_root, CTF_gamemodeMapStart )
-addEventHandler( "onGamemodeMapStop", CTF_root, CTF_gamemodeMapStop )
+addEventHandler( "onResourceStart", root, CTF_onResourceStart )
+addEventHandler( "onPlayerJoin", root, CTF_onPlayerJoin )
+addEventHandler( "onPlayerQuit", root, CTF_onPlayerQuit )
+addEventHandler( "onPlayerWasted", root, CTF_onPlayerWasted )
+addEventHandler( "onColShapeHit", root, CTF_onColShapeHit )
+addEventHandler( "onGamemodeMapStart", root, CTF_gamemodeMapStart )
+addEventHandler( "onGamemodeMapStop", root, CTF_gamemodeMapStop )

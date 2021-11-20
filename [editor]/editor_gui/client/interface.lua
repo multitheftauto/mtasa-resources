@@ -18,7 +18,7 @@ local interface_mt = {
 	end
 }
 
-addEventHandler("onClientResourceStart", getRootElement(),
+addEventHandler("onClientResourceStart", root,
 	function(resource)
 		local name = getResourceName(resource)
 		if interface[name] then

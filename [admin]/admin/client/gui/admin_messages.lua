@@ -27,7 +27,7 @@ function aViewMessages ( player )
 		aMessagesBanIP		= guiCreateButton ( 0.86, 0.50, 0.12, 0.09, "Ban IP", true, aMessagesForm )
 		aMessagesRefresh	= guiCreateButton ( 0.86, 0.65, 0.12, 0.09, "Refresh", true, aMessagesForm )
 		aMessagesClose		= guiCreateButton ( 0.86, 0.85, 0.12, 0.09, "Close", true, aMessagesForm )
-		addEventHandler ( "aMessage", _root, aMessagesSync )
+		addEventHandler ( "aMessage", root, aMessagesSync )
 		addEventHandler ( "onClientGUIClick", aMessagesForm, aClientMessagesClick )
 		addEventHandler ( "onClientGUIDoubleClick", aMessagesForm, aClientMessagesDoubleClick )
 		guiSetEnabled( aMessagesBanSerial, false )
@@ -44,7 +44,7 @@ end
 function aViewMessagesClose ( destroy )
 	if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceMessage ) ) ) then
 		if ( aMessagesForm ) then
-			removeEventHandler ( "aMessage", _root, aMessagesSync )
+			removeEventHandler ( "aMessage", root, aMessagesSync )
 			removeEventHandler ( "onClientGUIClick", aMessagesForm, aClientMessagesClick )
 			removeEventHandler ( "onClientGUIDoubleClick", aMessagesForm, aClientMessagesDoubleClick )
 			destroyElement ( aMessagesForm )

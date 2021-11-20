@@ -259,7 +259,7 @@ addEventHandler("onClientResourceStart", getRootElement(getThisResource()),
 )
 
 addEvent("assaultNextRound", true)
-addEventHandler("assaultNextRound", getRootElement(),
+addEventHandler("assaultNextRound", root,
 	function( newAttacker )
 		attacker = newAttacker
 		--outputConsole("New round, now attacking: "..getTeamName(attacker))
@@ -267,15 +267,15 @@ addEventHandler("assaultNextRound", getRootElement(),
 )
 
 addEvent("assaultNextObjectivesText", true)
-addEventHandler("assaultNextObjectivesText", getRootElement(), nextObjectivesText)
+addEventHandler("assaultNextObjectivesText", root, nextObjectivesText)
 
 addEvent("assaultToggleLogo", true)
-addEventHandler("assaultToggleLogo", getRootElement(), toggleLogo)
+addEventHandler("assaultToggleLogo", root, toggleLogo)
 
 addEvent( "assaultCreateGui", true )
-addEventHandler("assaultCreateGui", getRootElement(), createGui)
+addEventHandler("assaultCreateGui", root, createGui)
 
 addEvent( "assaultShowProgress", true)
-addEventHandler("assaultShowProgress", getRootElement(), showProgress)
+addEventHandler("assaultShowProgress", root, showProgress)
 
 fadeCamera(true)

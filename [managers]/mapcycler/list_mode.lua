@@ -1,5 +1,3 @@
-local rootElement = getRootElement()
-
 local listMode
 local configPath = "mapcycle.xml"
 local gameList = {}
@@ -30,7 +28,7 @@ function startCycler_list()
 
 	cycleMap_list()
 
-	addEventHandler("onRoundFinished", rootElement, roundCounter)
+	addEventHandler("onRoundFinished", root, roundCounter)
 end
 
 function cycleMap_list()

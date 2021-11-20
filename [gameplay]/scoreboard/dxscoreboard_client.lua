@@ -68,16 +68,16 @@ addEventHandler( "onClientResourceStart", getResourceRootElement( getThisResourc
 		bindKey( triggerKey, "up", "Toggle scoreboard", "0" )
 		bindKey( settingsKey, "down", "Open scoreboard settings", "1" )
 
-		addEventHandler( "onClientRender", getRootElement(), drawScoreboard )
-		triggerServerEvent( "onClientDXScoreboardResourceStart", getRootElement() )
+		addEventHandler( "onClientRender", root, drawScoreboard )
+		triggerServerEvent( "onClientDXScoreboardResourceStart", root )
 		readScoreboardSettings()
-		triggerServerEvent( "requestServerInfo", getRootElement() )
+		triggerServerEvent( "requestServerInfo", root )
 
 		colorPicker.constructor()
 	end
 )
 
-addEventHandler( "onClientPlayerQuit", getRootElement(),
+addEventHandler( "onClientPlayerQuit", root,
 	function()
 		selectedRows[source] = nil
 	end
@@ -214,11 +214,11 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 						bindKey( "mouse2", "both", showTheCursor )
 						bindKey( "mouse_wheel_up", "down", scrollScoreboard, -1 )
 						bindKey( "mouse_wheel_down", "down", scrollScoreboard, 1 )
-						addEventHandler( "onClientClick", getRootElement(), scoreboardClickHandler )
+						addEventHandler( "onClientClick", root, scoreboardClickHandler )
 						if not (windowSettings and isElement( windowSettings )) then
 							showCursor( false )
 						end
-						triggerServerEvent( "requestServerInfo", getRootElement() )
+						triggerServerEvent( "requestServerInfo", root )
 					end
 					scoreboardDrawn = true
 				end
@@ -262,7 +262,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 				unbindKey( "mouse2", "both", showTheCursor )
 				unbindKey( "mouse_wheel_up", "down", scrollScoreboard, -1 )
 				unbindKey( "mouse_wheel_down", "down", scrollScoreboard, 1 )
-				removeEventHandler( "onClientClick", getRootElement(), scoreboardClickHandler )
+				removeEventHandler( "onClientClick", root, scoreboardClickHandler )
 				if not (windowSettings and isElement( windowSettings )) then
 					showCursor( false )
 				end
@@ -1243,7 +1243,7 @@ function removeResourceScoreboardColumns( resource )
 		resourceColumns[resource] = nil
 	end
 end
-addEventHandler( "onClientResourceStop", getRootElement(), removeResourceScoreboardColumns )
+addEventHandler( "onClientResourceStop", root, removeResourceScoreboardColumns )
 
 function scoreboardForceUpdate ()
 	bForceUpdate = true

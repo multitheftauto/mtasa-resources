@@ -15,7 +15,7 @@ local function destroyFastRope ( id )
 		setElementFrozen(heli, false)
 	end
 
-	triggerEvent ( "onFastRopeDestroy", getRootElement(), id, heli )
+	triggerEvent ( "onFastRopeDestroy", root, id, heli )
 	fastropes[id] = nil
 end
 function createFastRope(player,x,y,z,time)
@@ -28,9 +28,9 @@ function createFastRope(player,x,y,z,time)
 		fastropes[count]["expiretime"] = time + getTickCount()
 		fastropes[count]["heli"] = nil
 		setTimer(destroyFastRope, time, 1, count)
-		triggerClientEvent("frope_createFastRope", getRootElement(), x, y, z, time)
+		triggerClientEvent("frope_createFastRope", root, x, y, z, time)
 		setTimer(addPlayerToFastRope, 1000, 1, player, count)
-		triggerEvent ( "onFastRopeCreate", getRootElement(), count, fastropes[count][heli] )
+		triggerEvent ( "onFastRopeCreate", root, count, fastropes[count][heli] )
 		count = count + 1
 		return count - 1
 	end
@@ -72,12 +72,12 @@ function createFastRopeOnHeli(player, heli, side, time, offset)
 		fastropes[count]["expiretime"] = time + getTickCount()
 		fastropes[count]["heli"] = heli
 		setElementFrozen(heli, true)
-		triggerClientEvent("frope_createFastRope", getRootElement(), x, y, z, time)
+		triggerClientEvent("frope_createFastRope", root, x, y, z, time)
 		setTimer(destroyFastRope, time, 1, count)
 		-- testing code
 		--setTimer(addPlayerToFastRope, 1000, 1, player, count)
 		-- end testing code
-		triggerEvent ( "onFastRopeCreate", getRootElement(), count, fastropes[count][heli] )
+		triggerEvent ( "onFastRopeCreate", root, count, fastropes[count][heli] )
 		count = count + 1
 		return count - 1
 	end
@@ -94,7 +94,7 @@ local function frope_playerjoin ( )
 		end
 	end
 end
-addEventHandler("onPlayerJoin", getRootElement(), frope_playerjoin)
+addEventHandler("onPlayerJoin", root, frope_playerjoin)
 
 function addPlayerToFastRope(player, id)
 	if (fastropes[id] == nil) then

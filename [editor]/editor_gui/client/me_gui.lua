@@ -2,7 +2,6 @@ enableSound = true --this enables or disables sound.  For the options menu
 isCurrentButtonElement = false --this checks whether the currently highlighted button is an element icon, so EDF info can appear.
 currentSelectedResource = false --this defines the currently selected resource
 local wasCurrentBrowserShowing = false
-local root = getRootElement()
 local thisResourceRoot = getResourceRootElement(getThisResource())
 local bar = {}
 --These tables define the buttons that go on the top.  the names match their filename.
@@ -83,7 +82,7 @@ function onEDFResourceStart(resource)
 		refreshElementIcons()
 	end
 end
-addEventHandler ( "onClientResourceStart", getRootElement(), onEDFResourceStart )
+addEventHandler ( "onClientResourceStart", root, onEDFResourceStart )
 
 function createElementIcons ( tableEDF, resource )
 	--store all our data neatly under the resource

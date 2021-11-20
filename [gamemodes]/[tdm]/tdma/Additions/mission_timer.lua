@@ -5,7 +5,6 @@
 --The event call will also have its own ID, so you will be able to use the same timer script, on more than 1 mission at one point in time
 --Here goes!
 
-misTmrRoot = getRootElement()
 missionTimers = {}
 local time = 0
 
@@ -151,7 +150,7 @@ function missionTimerTick()
 				theTimer["timeString"] = calcTime ( theTimer["time"] )
 				setTimerText ( theTimer )
 				if ( theTimer["time"] == 0 ) then
-					triggerEvent ( "missionTimerActivated", misTmrRoot, tostring(theTimer["id"]), theTimer["player"] )
+					triggerEvent ( "missionTimerActivated", root, tostring(theTimer["id"]), theTimer["player"] )
 					theTimer["started"] = false
 				end
 			elseif ( theTimer["direction"] ~= ">" ) then

@@ -82,8 +82,8 @@ function Countdown:start(player)
 		self.client.id = #Countdown.clientinstances + 1
 		Countdown.clientinstances[self.client.id] = self
 		self.client.startvalue = self.startvalue
-		self:clientCall(player or g_Root, 'start', self.client)
-		self.client.player = player or g_Root
+		self:clientCall(player or root, 'start', self.client)
+		self.client.player = player or root
 	else
 		self.display = textCreateDisplay()
 		if self.bSingleLine then

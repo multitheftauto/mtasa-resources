@@ -631,13 +631,13 @@ function makeVehicleStatic(vehicle)
 	setElementFrozen(vehicle, true)
 	setElementCollisionsEnabled(vehicle, false)
 end
-addEventHandler("doSetVehicleStatic", getRootElement(), makeVehicleStatic)
+addEventHandler("doSetVehicleStatic", root, makeVehicleStatic)
 
 function makePedStatic(ped)
 	ped = ped or source
 	setElementCollisionsEnabled ( ped, false )
 end
-addEventHandler("doSetPedStatic", getRootElement(), makePedStatic)
+addEventHandler("doSetPedStatic", root, makePedStatic)
 
 function setRepresentationCollisionsEnabled(element, state)
 	for k, child in ipairs(getElementChildren(element)) do

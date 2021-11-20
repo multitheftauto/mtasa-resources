@@ -1,5 +1,3 @@
-local root = getRootElement()
-
 local idleBriefcase = false
 local streamedIn = false
 local spin = false

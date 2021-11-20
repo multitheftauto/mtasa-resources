@@ -37,7 +37,7 @@ function gotoState(stateName)
     end
 
     if currentRaceStateName ~= stateName then
-		triggerEvent('onRaceStateChanging', g_Root, stateName, currentRaceStateName )
+		triggerEvent('onRaceStateChanging', root, stateName, currentRaceStateName )
 		currentRaceStateName = stateName
 	end
 --[[

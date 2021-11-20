@@ -42,7 +42,7 @@ function attachPlayers(enabled)
 			setElementCollisionsEnabled(player,false)
 		end
 		setElementAlpha(localPlayer,0)
-		return addEventHandler ( "onClientRender", getRootElement(), attachRender )
+		return addEventHandler ( "onClientRender", root, attachRender )
 	else
 		for i,player in ipairs(getElementsByType"player") do
 			-- if player ~= localPlayer then
@@ -51,11 +51,11 @@ function attachPlayers(enabled)
 			setElementCollisionsEnabled(player,true)
 		end
 		setElementAlpha(localPlayer,255)
-		return removeEventHandler ( "onClientRender", getRootElement(), attachRender )
+		return removeEventHandler ( "onClientRender", root, attachRender )
 	end
 end
 
-addEventHandler ( "onClientPlayerSpawn", getRootElement(),
+addEventHandler ( "onClientPlayerSpawn", root,
 	function()
 		if attachPlayersEnabled then
 			setElementCollisionsEnabled(source,false)

@@ -247,8 +247,8 @@ colorPicker = {
 
 		guiSetVisible(colorPicker.GUI.selectWindow, true)
 		guiBringToFront(colorPicker.GUI.selectWindow)
-		addEventHandler("onClientRender", getRootElement(), colorPicker.updateSelectedValue)
-		addEventHandler("onClientClick", getRootElement(), colorPicker.pickColor)
+		addEventHandler("onClientRender", root, colorPicker.updateSelectedValue)
+		addEventHandler("onClientClick", root, colorPicker.pickColor)
 
 		colorPicker.isSelectOpen = true
 		colorPicker.pickingColor = false
@@ -261,8 +261,8 @@ colorPicker = {
 		colorPicker.currentColor = nil
 
 		guiSetVisible(colorPicker.GUI.selectWindow, false)
-		removeEventHandler("onClientRender", getRootElement(), colorPicker.updateSelectedValue)
-		removeEventHandler("onClientClick", getRootElement(), colorPicker.pickColor)
+		removeEventHandler("onClientRender", root, colorPicker.updateSelectedValue)
+		removeEventHandler("onClientClick", root, colorPicker.pickColor)
 
 		colorPicker.isSelectOpen = false
 

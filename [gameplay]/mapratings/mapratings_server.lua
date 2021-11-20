@@ -1,9 +1,8 @@
-local g_Root = getRootElement()
 local g_ResRoot = getResourceRootElement(getThisResource())
 
 local g_MapResName
 
-addEventHandler('onGamemodeMapStart', g_Root,
+addEventHandler('onGamemodeMapStart', root,
 	function(mapres)
         g_MapResName = getResourceName(mapres)
 	end
@@ -68,7 +67,7 @@ function updateMapRating(player, mapresname, rating)
 end
 
 addEvent('onPollStarting')
-addEventHandler('onPollStarting', g_Root,
+addEventHandler('onPollStarting', root,
 	function(poll)
 		for index, item in ipairs(poll) do
 			if item[1] == "Yes" then return end

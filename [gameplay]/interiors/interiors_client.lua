@@ -18,7 +18,7 @@ local setInteriorMarkerZ = {
 	end
 }
 
--- addEventHandler("onClientElementStreamIn",getRootElement(),
+-- addEventHandler("onClientElementStreamIn",root,
 	-- function()
 		-- if getElementType ( source ) == "marker" then
 			-- local parent = getElementParent ( source )
@@ -33,7 +33,7 @@ local setInteriorMarkerZ = {
 	-- end
 -- )
 
--- addEventHandler("onClientElementStreamOut",getRootElement(),
+-- addEventHandler("onClientElementStreamOut",root,
 	-- function()
 		-- if getElementType ( source ) == "marker" then
 			-- local parent = getElementParent ( source )
@@ -57,13 +57,13 @@ addEvent ( "doWarpPlayerToInterior", true )
 addEvent ( "onClientInteriorHit" )
 addEvent ( "onClientInteriorWarped" )
 
-addEventHandler ( "onClientResourceStart", getRootElement(),
+addEventHandler ( "onClientResourceStart", root,
 function ( resource )
 	interiorLoadElements ( getResourceRootElement(resource), resource )
 	interiorCreateMarkers ( resource )
 end )
 
-addEventHandler ( "onClientResourceStop", getRootElement(),
+addEventHandler ( "onClientResourceStop", root,
 function ( resource )
 	if not interiors[resource] then return end
 	for id,interiorTable in pairs(interiors[resource]) do
@@ -75,9 +75,9 @@ function ( resource )
 	interiors[resource] = nil
 end )
 
-function interiorLoadElements ( rootElement, resource )
+function interiorLoadElements ( root, resource )
 	---Load the exterior markers
-	local entryInteriors = getElementsByType ( "interiorEntry", rootElement )
+	local entryInteriors = getElementsByType ( "interiorEntry", root )
 	for key, interior in pairs (entryInteriors) do
 		local id = getElementData ( interior, "id" )
 		if not interiors[resource] then interiors[resource] = {} end
@@ -88,7 +88,7 @@ function interiorLoadElements ( rootElement, resource )
 		resourceFromInterior[interior] = resource
 	end
 	--Load the interior markers
-	local returnInteriors = getElementsByType ( "interiorReturn", rootElement )
+	local returnInteriors = getElementsByType ( "interiorReturn", root )
 	for key, interior in pairs (returnInteriors) do
 		local id = getElementData ( interior, "refid" )
 		if not interiors[resource][id] then outputDebugString ( "Interiors: Error, no refid specified to returnInterior.", 1 )

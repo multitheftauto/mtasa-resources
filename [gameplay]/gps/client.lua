@@ -58,7 +58,7 @@ local function getNodeByID(db, nodeID)
 end
 
 --[[
-addEventHandler('onClientRender', getRootElement(),
+addEventHandler('onClientRender', root,
 	function()
 		local db = vehicleNodes
 

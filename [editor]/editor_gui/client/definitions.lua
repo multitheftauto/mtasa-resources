@@ -89,7 +89,7 @@ function setEDF(gui)
 end
 
 addEvent ("syncEDFDefinitions",true)
-addEventHandler ( "syncEDFDefinitions", getRootElement(),
+addEventHandler ( "syncEDFDefinitions", root,
 function ( newEDF )
 	allEDF = newEDF
 	setEDF("availEDF")

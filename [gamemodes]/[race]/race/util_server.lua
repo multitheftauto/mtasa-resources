@@ -1,4 +1,3 @@
-g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 
 function clientCall(player, fnName, ...)
@@ -42,7 +41,7 @@ g_Messages = {}		-- { player =  { display = display, textitem = textitem, timer 
 function showMessage(text, r, g, b, player)
     local ypos = 0.25
 	if not player then
-		player = g_Root
+		player = root
         ypos = 0.35
 	end
 
@@ -60,7 +59,7 @@ function showMessage(text, r, g, b, player)
 	textDisplayAddText(display, textitem)
 	textItemSetText(textitem, text)
 	textItemSetColor(textitem, r or 255, g or 0, b or 0, 255)
-	if player == g_Root then
+	if player == root then
 		for i,player in ipairs(getElementsByType('player')) do
 			textDisplayAddObserver(display, player)
 		end

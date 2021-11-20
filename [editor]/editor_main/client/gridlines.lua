@@ -115,7 +115,7 @@ function doBasicElementRenders()
 	if exports["editor_gui"]:sx_getOptionData("enableXYZlines") then drawXYZLines() end
 
 end
-addEventHandler ( "onClientRender", getRootElement(), doBasicElementRenders )
+addEventHandler ( "onClientRender", root, doBasicElementRenders )
 
 function getPositionFromElementAtOffset(element,x,y,z)
    if not x or not y or not z then

@@ -24,9 +24,9 @@ end
 
 function onClientPlayerSpawn()
 	--outputChatBox ( "Ive Loaded, contacting server!" )
-	triggerServerEvent ( "Event_clientScriptLoaded", getRootElement(), localPlayer )
+	triggerServerEvent ( "Event_clientScriptLoaded", root, localPlayer )
 end
 
 addEvent ( "Event_showPlayerTheirTeam", true )
-addEventHandler ( "Event_showPlayerTheirTeam", getRootElement(), showPlayerTheirTeam )
+addEventHandler ( "Event_showPlayerTheirTeam", root, showPlayerTheirTeam )
 addEventHandler ( "onClientPlayerSpawn", localPlayer, onClientPlayerSpawn )

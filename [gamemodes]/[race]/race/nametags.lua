@@ -32,7 +32,7 @@ function nametag.destroy ( player )
 	nametags[player] = nil
 end
 
-addEventHandler ( "onClientRender", g_Root,
+addEventHandler ( "onClientRender", root,
 	function()
 		-- Hideous quick fix --
 		for i,player in ipairs(g_Players) do
@@ -115,7 +115,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 	end
 )
 
-addEventHandler ( "onClientPlayerJoin", g_Root,
+addEventHandler ( "onClientPlayerJoin", root,
 	function()
 		if source == localPlayer then return end
 		setPlayerNametagShowing ( source, false )
@@ -123,7 +123,7 @@ addEventHandler ( "onClientPlayerJoin", g_Root,
 	end
 )
 
-addEventHandler ( "onClientPlayerQuit", g_Root,
+addEventHandler ( "onClientPlayerQuit", root,
 	function()
 		nametag.destroy ( source )
 	end
@@ -131,14 +131,14 @@ addEventHandler ( "onClientPlayerQuit", g_Root,
 
 
 addEvent ( "onClientScreenFadedOut", true )
-addEventHandler ( "onClientScreenFadedOut", g_Root,
+addEventHandler ( "onClientScreenFadedOut", root,
 	function()
 		bHideNametags = true
 	end
 )
 
 addEvent ( "onClientScreenFadedIn", true )
-addEventHandler ( "onClientScreenFadedIn", g_Root,
+addEventHandler ( "onClientScreenFadedIn", root,
 	function()
 		bHideNametags = false
 	end

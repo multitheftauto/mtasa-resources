@@ -253,9 +253,9 @@ function browserList:enable(up,down)
 	end
 	--
 	if count == 1 then
-		addEventHandler ( "onClientRender",getRootElement(),updateActivatedBrowsers )
-		addEventHandler("onClientGUIMouseDown",getRootElement(),browserListGridlistClick )
-		addEventHandler("onClientGUIDoubleClick",getRootElement(),browserListDoubleClick )
+		addEventHandler ( "onClientRender",root,updateActivatedBrowsers )
+		addEventHandler("onClientGUIMouseDown",root,browserListGridlistClick )
+		addEventHandler("onClientGUIDoubleClick",root,browserListDoubleClick )
 		if not up then up = "arrow_u" end
 		if not down then down = "arrow_d" end
 		keyUp,keyDown = up,down
@@ -275,9 +275,9 @@ function browserList:disable()
 	end
 	--
 	if count == 0 then
-		removeEventHandler ( "onClientRender",getRootElement(),updateActivatedBrowsers )
-		removeEventHandler("onClientGUIMouseDown",getRootElement(),browserListGridlistClick )
-		removeEventHandler("onClientGUIDoubleClick",getRootElement(),browserListDoubleClick )
+		removeEventHandler ( "onClientRender",root,updateActivatedBrowsers )
+		removeEventHandler("onClientGUIMouseDown",root,browserListGridlistClick )
+		removeEventHandler("onClientGUIDoubleClick",root,browserListDoubleClick )
 		unbindKey ( keyUp, "both", browserListScroll )
 		unbindKey ( keyDown, "both", browserListScroll )
 		unbindKey ( "mouse_wheel_up", "both", gridlistScroll )

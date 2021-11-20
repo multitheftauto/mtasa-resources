@@ -9,13 +9,13 @@ addEvent ( "onPlayerInteriorWarped", true )
 addEvent ( "onInteriorHit" )
 addEvent ( "onInteriorWarped", true )
 
-addEventHandler ( "onResourceStart", getRootElement(),
+addEventHandler ( "onResourceStart", root,
 function ( resource )
 	interiorLoadElements ( getResourceRootElement(resource), resource )
 	interiorCreateMarkers ( resource )
 end )
 
-addEventHandler ( "onResourceStop", getRootElement(),
+addEventHandler ( "onResourceStop", root,
 function ( resource )
 	if not interiors[resource] then return end
 	for id,interiorTable in pairs(interiors[resource]) do
@@ -27,9 +27,9 @@ function ( resource )
 	interiors[resource] = nil
 end )
 
-function interiorLoadElements ( rootElement, resource )
+function interiorLoadElements ( root, resource )
 	---Load the exterior markers
-	local entryInteriors = getElementsByType ( "interiorEntry", rootElement )
+	local entryInteriors = getElementsByType ( "interiorEntry", root )
 	for key, interior in pairs (entryInteriors) do
 		local id = getElementData ( interior, "id" )
 		if not interiors[resource] then interiors[resource] = {} end
@@ -40,7 +40,7 @@ function interiorLoadElements ( rootElement, resource )
 		resourceFromInterior[interior] = resource
 	end
 	--Load the interior markers
-	local returnInteriors = getElementsByType ( "interiorReturn", rootElement )
+	local returnInteriors = getElementsByType ( "interiorReturn", root )
 	for key, interior in pairs (returnInteriors) do
 		local id = getElementData ( interior, "refid" )
 		if not interiors[resource][id] then outputDebugString ( "Interiors: Error, no refid specified to returnInterior.", 1 )
@@ -103,7 +103,7 @@ end
 
 local opposite = { ["interiorReturn"] = "entry",["interiorEntry"] = "return" }
 local idLoc = { ["interiorReturn"] = "refid",["interiorEntry"] = "id" }
-addEventHandler ( "doTriggerServerEvents",getRootElement(),
+addEventHandler ( "doTriggerServerEvents",root,
 	function( interior, resource, id )
 		local eventCanceled1,eventCanceled2 = false,false
 		eventCanceled1 = triggerEvent ( "onPlayerInteriorHit", client, interior, resource, id )

@@ -39,7 +39,7 @@ addEventHandler ( "onResourceStart", thisResourceRoot,
 		refreshResources(false)
 		setOcclusionsEnabled ( false )
 		restoreAllWorldModels ( )
-		destroyElement( rootElement )
+		destroyElement( root )
 		mapContainer = createElement("mapContainer")
 		setTimer(startUp, 1000, 1)
 	end
@@ -55,7 +55,7 @@ function startUp()
 			if #getElementsByType("player") > 0 then
 				editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the previously loaded map. Use 'new' to start a new map.", root, 255, 255, 0, 20000)
 			else
-				addEventHandler("onPlayerJoin", rootElement, onJoin)
+				addEventHandler("onPlayerJoin", root, onJoin)
 			end
 		end
 		dumpTimer = setTimer(maybeDumpSave, dumpInterval, 0)
@@ -87,10 +87,10 @@ addCommandHandler("savedump",
 
 function onJoin()
 	editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the previously loaded map. Use 'new' to start a new map.", source, 255, 255, 0, 20000)
-	removeEventHandler("onPlayerJoin", rootElement, onJoin)
+	removeEventHandler("onPlayerJoin", root, onJoin)
 end
 
-addEventHandler("newResource", rootElement,
+addEventHandler("newResource", root,
 	function()
 		if ( client and not isPlayerAllowedToDoEditorAction(client, "newMap") ) then
 			editor_gui.outputMessage ("You don't have permissions to start a new map!", client,255,0,0)
@@ -272,7 +272,7 @@ function openResource( resourceName, onStart )
 		return returnValue
 	end
 end
-addEventHandler ( "openResource", rootElement, openResource )
+addEventHandler ( "openResource", root, openResource )
 
 ---Save
 
@@ -295,7 +295,7 @@ function saveResource(resourceName, test, directory)
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
 	coroutine.resume(saveResourceCoroutine, resourceName, test, client, client)
 end
-addEventHandler ( "saveResource", rootElement, saveResource )
+addEventHandler ( "saveResource", root, saveResource )
 
 function saveOrganizationalDirectory(directory)
 	if (type(directory) ~= 'string') or (utf8.len(directory) == 0) then
@@ -505,7 +505,7 @@ function quickSave(saveAs, dump, fromSaveAs)
 	quickSaveCoroutine = coroutine.create(quickSaveCoroutineFunction)
 	coroutine.resume(quickSaveCoroutine, saveAs, dump, client)
 end
-addEventHandler("quickSaveResource", rootElement, quickSave)
+addEventHandler("quickSaveResource", root, quickSave)
 
 function quickSaveCoroutineFunction(saveAs, dump, client)
 	doQuickSaveCoroutineFunction(saveAs, dump, client)
@@ -859,7 +859,7 @@ function restoreGUIOnMapStop(resource)
 		setTimer(edf.edfStartResource,50,1,g_restoreEDF)
 		g_restoreEDF = nil
 	end
-	setTimer(triggerClientEvent, 50, 1, getRootElement(), "resumeGUI", getRootElement())
+	setTimer(triggerClientEvent, 50, 1, root, "resumeGUI", root)
 	setElementData ( resourceRoot, "g_in_test", nil )
 	removeEventHandler ( "onResourceStop", source, restoreGUIOnMapStop )
 end

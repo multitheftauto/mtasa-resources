@@ -28,7 +28,7 @@ end
 
 --Verifies the clientscript is downloaded before initiating
 addEvent ( "driveby_clientScriptLoaded", true )
-addEventHandler ( "driveby_clientScriptLoaded", getRootElement(),
+addEventHandler ( "driveby_clientScriptLoaded", root,
 	function()
 		triggerClientEvent ( client, "doSendDriveBySettings", client, settings )
 	end

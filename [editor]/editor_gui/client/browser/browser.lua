@@ -95,8 +95,8 @@ function startBrowser ( elementType, callback, initialCat, initialModel, remembe
 	returnInterior = getCameraInterior()
 	callbackFunction = callback
 	setFreelookEvents(true)
-	addEventHandler ( "onClientRender", getRootElement(), rotateMesh )
-	addEventHandler ( "onClientGUIWorldClick", getRootElement(), browser.searchClick )
+	addEventHandler ( "onClientRender", root, rotateMesh )
+	addEventHandler ( "onClientGUIWorldClick", root, browser.searchClick )
 	bindControl ( "toggle_cursor", "down", browser.toggleCursor )
 	bindControl ( "browser_confirm", "down", browser.browserSelected )
 	if tutorialVars.browserBind == elementType then
@@ -131,8 +131,8 @@ function browser.close()
 	unbindControl ( "browser_confirm", "down", browser.browserSelected )
 	browser.outputTable = {}
 	setFreelookEvents(false)
-	removeEventHandler ( "onClientGUIWorldClick", getRootElement(), browser.searchClick )
-	removeEventHandler ( "onClientRender", getRootElement(), rotateMesh )
+	removeEventHandler ( "onClientGUIWorldClick", root, browser.searchClick )
+	removeEventHandler ( "onClientRender", root, rotateMesh )
 	setCameraInterior ( returnInterior )
 	resetSkyGradient()
 	setPlayerHudComponentVisible ( "radar", true )
@@ -172,7 +172,7 @@ function browser.gridlistSelect (cellrow)
 		if isElement(browser.mainElement) then
 			enableElementLook(true,browser.mainElement)
 		end
-		removeEventHandler ( "onClientRender", getRootElement(), rotateMesh )
+		removeEventHandler ( "onClientRender", root, rotateMesh )
 	end
 	if ( tutorialVars.callBack ) then
 		tutorialNext()
@@ -200,7 +200,7 @@ function browser.search ( element )
 		searchTimerDelay = setTimer ( browser.prepareSearch, 250, 1 )
 	end
 end
-addEventHandler ( "onClientGUIChanged", getRootElement(), browser.search )
+addEventHandler ( "onClientGUIChanged", root, browser.search )
 
 function browser.prepareSearch()
 	query = guiGetText ( browserGUI.search ) --get the query
@@ -265,7 +265,7 @@ function browser.dropdownSelect ( element )
 		browser.prepareSearch()
 	end
 end
-addEventHandler ( "onClientDropDownSelect", getRootElement(), browser.dropdownSelect )--------
+addEventHandler ( "onClientDropDownSelect", root, browser.dropdownSelect )--------
 
 
 function browser.toggleCursor()
@@ -282,7 +282,7 @@ function browser.toggleCursor()
 		disableElementLook(true)
 		guiSetVisible ( browserGUI.window,true)
 		originalRotateTick = getTickCount() - previewTickDifference
-		addEventHandler ( "onClientRender", getRootElement(), rotateMesh )
+		addEventHandler ( "onClientRender", root, rotateMesh )
 		local model = tonumber(browserGUI.list:getSelectedText()[2])
 		browserSetElementModel ( initiatedType, model )
 	else
@@ -291,7 +291,7 @@ function browser.toggleCursor()
 		if isElement(browser.mainElement) then
 			enableElementLook(true,browser.mainElement,270,-15)
 		end
-		removeEventHandler ( "onClientRender", getRootElement(), rotateMesh )
+		removeEventHandler ( "onClientRender", root, rotateMesh )
 	end
 end
 

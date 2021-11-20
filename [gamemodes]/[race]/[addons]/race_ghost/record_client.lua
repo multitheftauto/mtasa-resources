@@ -24,15 +24,15 @@ end
 function GhostRecord:init( mapName )
 	self.currentMapName = mapName
 	self.checkForCountdownEnd_HANDLER = function() self:checkForCountdownEnd() end
-	addEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER )
+	addEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER )
 	outputDebug( "Waiting for start..." )
 end
 
 function GhostRecord:destroy()
 	self:stopRecording()
-	if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
-	if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", g_Root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
-	if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
+	if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+	if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
+	if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
 	if self.playerRaceWasted_HANDLER then removeEventHandler( "onClientPlayerRaceWasted", localPlayer, self.playerRaceWasted_HANDLER ) self.playerRaceWasted_HANDLER = nil end
 	if self.playerFinished_HANDLER then removeEventHandler( "onClientPlayerFinished", localPlayer, self.playerFinished_HANDLER ) self.playerFinished_HANDLER = nil end
 	if self.playerPickUpRacePickup_HANDLER then removeEventHandler( "onClientPlayerPickUpRacePickup", localPlayer, self.playerPickUpRacePickup_HANDLER ) self.playerPickUpRacePickup_HANDLER = nil end
@@ -61,7 +61,7 @@ function GhostRecord:checkForCountdownEnd()
 			local x, y, z = getElementPosition( vehicle )
 			local rX, rY, rZ = getElementRotation( vehicle )
 			table.insert( self.recording, { ty = "st", m = self.currentVehicleType, p = pedModel, x = x, y = y, z = z, rX = rX, rY = rY, rZ = rZ, t = 0 } )
-			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
 			self:startRecording()
 		end
 	end
@@ -76,7 +76,7 @@ function GhostRecord:waitForNewVehicle()
 		if vHealth > 99 and pHealth > 99 and not frozen then
 			local ticks = getTickCount() - self.startTick
 			table.insert( self.recording, { ty = "sp", t = ticks } )
-			if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", g_Root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
+			if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
 			self:resumeRecording()
 		end
 	end
@@ -89,7 +89,7 @@ function GhostRecord:startRecording()
 		self:resetKeyStates()
 		self.isRecording = true
 		self.checkStateChanges_HANDLER = function() self:checkStateChanges() end
-		addEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER )
+		addEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER )
 		self.playerRaceWasted_HANDLER = function( ... ) self:playerRaceWasted( ... ) end
 		addEventHandler( "onClientPlayerRaceWasted", localPlayer, self.playerRaceWasted_HANDLER )
 		self.playerFinished_HANDLER = function( ... ) self:playerFinished( ... ) end
@@ -107,14 +107,14 @@ function GhostRecord:pauseRecording()
 	if self.isRecording then
 		outputDebug( "Recording paused." )
 		self.isRecording = false
-		if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
+		if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
 		if isTimer( self.positionTimer ) then
 			killTimer( self.positionTimer )
 			self.positionTimer = nil
 			self.updateExactPosition_HANDLER = nil
 		end
 		self.waitForNewVehicle_HANDLER = function() self:waitForNewVehicle() end
-		addEventHandler( "onClientRender", g_Root, self.waitForNewVehicle_HANDLER )
+		addEventHandler( "onClientRender", root, self.waitForNewVehicle_HANDLER )
 	end
 end
 
@@ -124,7 +124,7 @@ function GhostRecord:resumeRecording()
 		self.isRecording = true
 		self:resetKeyStates()
 		self.checkStateChanges_HANDLER = function() self:checkStateChanges() end
-		addEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER )
+		addEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER )
 		self.updateExactPosition_HANDLER = function() self:updateExactPosition() end
 		self.positionTimer = setTimer( self.updateExactPosition_HANDLER, POSITION_PULSE, 0 )
 	end
@@ -134,9 +134,9 @@ function GhostRecord:stopRecording()
 	if self.isRecording then
 		outputDebug( "Recording finished." )
 		self.isRecording = false
-		if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
-		if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", g_Root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
-		if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
+		if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+		if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
+		if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
 		if self.playerRaceWasted_HANDLER then removeEventHandler( "onClientPlayerRaceWasted", localPlayer, self.playerRaceWasted_HANDLER ) self.playerRaceWasted_HANDLER = nil end
 		if self.playerFinished_HANDLER then removeEventHandler( "onClientPlayerFinished", localPlayer, self.playerFinished_HANDLER ) self.playerFinished_HANDLER = nil end
 		if self.playerPickUpRacePickup_HANDLER then removeEventHandler( "onClientPlayerPickUpRacePickup", localPlayer, self.playerPickUpRacePickup_HANDLER ) self.playerPickUpRacePickup_HANDLER = nil end
@@ -270,7 +270,7 @@ function GhostRecord:resetKeyStates()
 	end
 end
 
-addEventHandler( "onClientMapStarting", g_Root,
+addEventHandler( "onClientMapStarting", root,
 	function ( mapInfo )
 		if recorder then
 			recorder:stopRecording()

@@ -1,4 +1,3 @@
-local g_Root = getRootElement()
 local g_ResRoot = getResourceRootElement(getThisResource())
 local debug = false
 
@@ -28,7 +27,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 	end
 )
 
-addEventHandler('onGamemodeMapStart', g_Root,
+addEventHandler('onGamemodeMapStart', root,
 	function(mapres)
 		if debug then outputDebugString("delay_indicator: sending data: "..tostring(mapInfo.name)) end
 		mapName = getResourceName(mapres)
@@ -47,7 +46,7 @@ addEventHandler('onGamemodeMapStart', g_Root,
 )
 
 addEvent('onPlayerReachCheckpoint')
-addEventHandler('onPlayerReachCheckpoint', g_Root,
+addEventHandler('onPlayerReachCheckpoint', root,
 	function(checkpointNum, timePassed)
 		timePassed = math.floor(timePassed)
         if debug then outputDebugString("race_delay_indicator: ".."info for "..getPlayerName(source)) end
@@ -103,7 +102,7 @@ function getPlayerFromRank(rank)
 end
 
 addEvent("onPlayerToptimeImprovement")
-addEventHandler("onPlayerToptimeImprovement", g_Root,
+addEventHandler("onPlayerToptimeImprovement", root,
 	function(newPos)
 		if debug then outputDebugString(tostring(getPlayerName(source)).." "..tostring(newPos).." "..tostring(topTimeRankPlayer[1])) end
 		if newPos <= topTimeRankPlayer[1] and allCpTimes[source] then

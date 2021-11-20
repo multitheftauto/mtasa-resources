@@ -108,7 +108,7 @@ function saveShowDialog( resources, directory )
 	guiSetVisible ( saveDialog.window, true )
 	guiBringToFront( saveDialog.mapName )
 end
-addEventHandler ( "saveAsShowDialog", getRootElement(), saveShowDialog )
+addEventHandler ( "saveAsShowDialog", root, saveShowDialog )
 
 function setSaveEditBoxMapName()
 	local row = guiGridListGetSelectedItem ( saveDialog.mapsList )

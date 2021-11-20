@@ -49,7 +49,7 @@ function optionsActions.smoothCamMove (value)
 	if ( loaded ) then
 		setFreecamSpeeds()
 	else
-		addEventHandler ( "onClientResourceStart", getRootElement(), waitForFreecam )
+		addEventHandler ( "onClientResourceStart", root, waitForFreecam )
 	end
 end
 
@@ -57,7 +57,7 @@ function waitForFreecam(resource)
 	if resource ~= getResourceFromName("freecam") then return end
 	freecam.setFreecamOption ( "smoothMovement", dialog.smoothCamMove:getValue() )
 	setFreecamSpeeds()
-	removeEventHandler ( "onClientResourceStart", getRootElement(), waitForFreecam )
+	removeEventHandler ( "onClientResourceStart", root, waitForFreecam )
 end
 
 function setFreecamSpeeds()
@@ -132,7 +132,7 @@ function optionsActions.normalElemMove (value)
 	if getResourceFromName("move_keyboard") then
 		setEditorMoveSpeeds()
 	else
-		addEventHandler ( "onClientResourceStart", getRootElement(), waitForResources )
+		addEventHandler ( "onClientResourceStart", root, waitForResources )
 	end
 end
 
@@ -165,5 +165,5 @@ function setEditorMoveSpeeds()
 end
 
 function optionsActions.enableDumpSave(value)
-	triggerServerEvent("dumpSaveSettings", getRootElement(), value, dialog.dumpSaveInterval:getValue())
+	triggerServerEvent("dumpSaveSettings", root, value, dialog.dumpSaveInterval:getValue())
 end

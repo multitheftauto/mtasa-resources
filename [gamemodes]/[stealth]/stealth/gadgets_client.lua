@@ -93,7 +93,7 @@ end
 
 addEventHandler ( "onClientPlayerWasted", localPlayer, playerkilled )
 
-addEventHandler ( "onClientPlayerDamage", getRootElement(),
+addEventHandler ( "onClientPlayerDamage", root,
 	function(attacker,weapon,bodypart)
 		-- local slot = getSlotFromWeapon(weapon)
 		if getElementData ( source, "armor" ) then
@@ -173,7 +173,7 @@ function cloakaperson (thisplayer)
 	end
 end
 
-addEventHandler("cloaksomeoneelse", getRootElement(), cloakaperson)
+addEventHandler("cloaksomeoneelse", root, cloakaperson)
 
 function setalpha(thisplayer)
 	setElementAlpha ( thisplayer, 10 )
@@ -189,7 +189,7 @@ function uncloakaperson (thisplayer)
 	setElementAlpha ( thisplayer, 255 ) --- NECCESARY???
 end
 
-addEventHandler("uncloaksomeoneelse", getRootElement(), uncloakaperson)
+addEventHandler("uncloaksomeoneelse", root, uncloakaperson)
 
 
 --LANDMINES
@@ -209,7 +209,7 @@ function weaponfired (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
 	end
 end
 
-addEventHandler ( "onClientPlayerWeaponFire", getRootElement(), weaponfired )
+addEventHandler ( "onClientPlayerWeaponFire", root, weaponfired )
 
 function minedelaystop()
 	minedelay = 0
@@ -314,7 +314,7 @@ addCommandHandler ( "Use Gadget/Spectate Next",
 	end
 )
 
-addEventHandler ( "onClientResourceStart",getRootElement() , clientsetup)
+addEventHandler ( "onClientResourceStart",root , clientsetup)
 
 addEvent("Clientshieldload",true)
 function shieldload ()
@@ -326,7 +326,7 @@ function shieldload ()
 	engineReplaceModel(dff_shield,1631)
 end
 
-addEventHandler( "Clientshieldload", getRootElement(), shieldload )
+addEventHandler( "Clientshieldload", root, shieldload )
 
 --RADAR BURST
 
@@ -444,7 +444,7 @@ function findthespot (rot)
 	end
 end
 
-addEventHandler("findcamerapos", getRootElement() , findthespot)
+addEventHandler("findcamerapos", root , findthespot)
 
 --SHIELD
 
@@ -534,14 +534,14 @@ end
 
 ---NIGHTVISION CODE
 function showNightvisionGUI()
-	addEventHandler ( "onClientRender", getRootElement(), updateNightvisionGUI )
+	addEventHandler ( "onClientRender", root, updateNightvisionGUI )
 	mineRefreshTimer = setTimer ( refreshNightvisionGoggles, 1000, 0, getLocalPlayer ())
 end
 --addCommandHandler ( "shownightvision", showNightvisionGUI )
 
 function hideGogglesGUI()
-	removeEventHandler ( "onClientRender", getRootElement(), updateNightvisionGUI )
-	removeEventHandler ( "onClientRender", getRootElement(), updateInfraredGUI )
+	removeEventHandler ( "onClientRender", root, updateNightvisionGUI )
+	removeEventHandler ( "onClientRender", root, updateInfraredGUI )
 	killTimer ( mineRefreshTimer )
 	clearAllGogglesGUI()
 end
@@ -620,7 +620,7 @@ end
 
 ---INFRARED CODE
 function showInfraredGUI()
-	addEventHandler ( "onClientRender", getRootElement(), updateInfraredGUI )
+	addEventHandler ( "onClientRender", root, updateInfraredGUI )
 	mineRefreshTimer = setTimer ( refreshInfraredGoggles, 1000, 0, getLocalPlayer ())
 end
 --addCommandHandler ( "showinfrared", showInfraredGUI )

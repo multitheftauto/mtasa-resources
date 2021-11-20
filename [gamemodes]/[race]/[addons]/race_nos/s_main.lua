@@ -1,5 +1,4 @@
 
-g_Root = getRootElement();
 g_ResRoot = getResourceRootElement();
 
 
@@ -13,7 +12,7 @@ end
 
 
 addEvent( "onGamemodeMapStart" )
-addEventHandler( "onGamemodeMapStart", g_Root,
+addEventHandler( "onGamemodeMapStart", root,
 	function( resMap )
 		--g_MapRes = resMap;
 		--outputChatBox( "vehicles: " .. #getElementsByType( "vehicle", getResourceRootElement( resMap ) ) );
@@ -22,7 +21,7 @@ addEventHandler( "onGamemodeMapStart", g_Root,
 
 
 addEvent( "onPlayerPickUpRacePickup" )
-addEventHandler( "onPlayerPickUpRacePickup", g_Root,
+addEventHandler( "onPlayerPickUpRacePickup", root,
 	function( _, type, veh )
 		if type == "nitro" then
 			setVehicleNOS( getPedOccupiedVehicle( source ), 100 );

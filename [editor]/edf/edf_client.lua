@@ -41,7 +41,7 @@ addEventHandler("onClientResourceStart",getResourceRootElement(thisResource),
 	end
 )
 
-addEventHandler ( "hideDummy",getRootElement(),
+addEventHandler ( "hideDummy",root,
 	function()
 		setObjectScale ( source, 0 )
 	end

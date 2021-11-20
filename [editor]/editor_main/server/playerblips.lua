@@ -6,7 +6,7 @@ local playerBlips      = {}
 function prepareBlips()
 	-- Create a container for the blips, so they won't be listed as map objects
 	blipContainer = createElement("blipContainer")
-	setElementParent(blipContainer,rootElement)
+	setElementParent(blipContainer,root)
 
 	-- Now create a blip for everyone on the server
 	createAllPlayerBlips()
@@ -112,10 +112,10 @@ end
 function blipCreate()
 	createPlayerBlip(source)
 end
-addEventHandler("onPlayerSpawn",getRootElement(),blipCreate)
+addEventHandler("onPlayerSpawn",root,blipCreate)
 
 function blipDestroy()
 	destroyPlayerBlip(source)
 end
-addEventHandler("onPlayerQuit",getRootElement(),blipDestroy)
-addEventHandler("onPlayerWasted",getRootElement(),blipDestroy)
+addEventHandler("onPlayerQuit",root,blipDestroy)
+addEventHandler("onPlayerWasted",root,blipDestroy)

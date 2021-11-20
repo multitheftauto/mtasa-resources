@@ -1,5 +1,4 @@
 local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
-local rootElement = getRootElement()
 
 -- ACTION CLASSES
 
@@ -121,7 +120,7 @@ function ActionCreate:performUndo()
 
 		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
 		triggerEvent("onElementDestroy", self.element)
-		triggerClientEvent(rootElement, "onClientElementDestroyed", self.element)
+		triggerClientEvent(root, "onClientElementDestroyed", self.element)
 	else
 		outputDebugString("Cannot perform undo: element does not exist or invalid element")
 		return false
@@ -147,7 +146,7 @@ function ActionCreate:performRedo()
 
 		edf.edfSetElementDimension(self.element, getWorkingDimension())
 		triggerEvent("onElementCreate", self.element)
-		triggerClientEvent(rootElement, "onClientElementCreate", self.element)
+		triggerClientEvent(root, "onClientElementCreate", self.element)
 	else
 		outputDebugString("Cannot perform undo: element does not exist or invalid element")
 		return false
@@ -236,7 +235,7 @@ function ActionDestroy:performUndo()
 	if (self.element and isElement(self.element)) then
 		edf.edfSetElementDimension(self.element, getWorkingDimension())
 		triggerEvent("onElementCreate", self.element)
-		triggerClientEvent(rootElement, "onClientElementCreate", self.element)
+		triggerClientEvent(root, "onClientElementCreate", self.element)
 
 		for k,element in ipairs(self.parentOf) do
 			setElementData(element, "me:parent", self.element)
@@ -257,7 +256,7 @@ function ActionDestroy:performRedo()
 	if (self.element and isElement(self.element)) then
 		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
 		triggerEvent("onElementDestroy", self.element)
-		triggerClientEvent(rootElement, "onClientElementDestroyed", self.element)
+		triggerClientEvent(root, "onClientElementDestroyed", self.element)
 
 		for k,element in ipairs(self.parentOf) do
 			setElementData(element, "me:parent", nil)

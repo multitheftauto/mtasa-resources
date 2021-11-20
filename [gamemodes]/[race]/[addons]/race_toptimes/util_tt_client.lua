@@ -2,11 +2,10 @@
 -- util_tt_client.lua
 --
 
-g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 
 addEvent('onClientCall_tt', true)
-addEventHandler('onClientCall_tt', getRootElement(),
+addEventHandler('onClientCall_tt', root,
 	function(fnName, ...)
 		local fn = _G
 		local path = fnName:split('.')

@@ -1,5 +1,4 @@
 
-g_Root = getRootElement( );
 g_ResRoot = getResourceRootElement( );
 
 g_tScreenSize = { guiGetScreenSize( ) };
@@ -27,7 +26,7 @@ addEventHandler( "onClientResourceStart", g_ResRoot,
 )
 
 
-addEventHandler( "onClientElementDataChange", g_Root,
+addEventHandler( "onClientElementDataChange", root,
 	function( key )
 		if getElementType( source ) == "vehicle" and key == "NOS" then
 			local veh = getPedOccupiedVehicle( localPlayer );
@@ -61,7 +60,7 @@ end
 
 
 addEvent( "onClientScreenFadedIn", true )
-addEventHandler( "onClientScreenFadedIn", g_Root,
+addEventHandler( "onClientScreenFadedIn", root,
 	function ( )
 		g_bShowGauge = true;
 		nos = 0;
@@ -69,7 +68,7 @@ addEventHandler( "onClientScreenFadedIn", g_Root,
 )
 
 addEvent( "onClientScreenFadedOut", true )
-addEventHandler( "onClientScreenFadedOut", g_Root,
+addEventHandler( "onClientScreenFadedOut", root,
 	function ( )
 		g_bShowGauge = false;
 	end
@@ -78,7 +77,7 @@ addEventHandler( "onClientScreenFadedOut", g_Root,
 
 local previous_hourcheck = -1;
 local previous_color = 0;
-addEventHandler( "onClientRender", g_Root,
+addEventHandler( "onClientRender", root,
 	function( )
 		if g_bShowGauge then
 			local veh = getPedOccupiedVehicle( localPlayer );
@@ -125,7 +124,7 @@ addEventHandler( "onClientRender", g_Root,
 
 
 addEvent( "refillNOS", true )
-addEventHandler( "refillNOS", g_Root,
+addEventHandler( "refillNOS", root,
 	function( newvalue )
 		nos = newvalue;
 	end

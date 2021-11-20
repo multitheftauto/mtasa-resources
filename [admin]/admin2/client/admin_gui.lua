@@ -123,7 +123,7 @@ end
 
 addEventHandler(
     "onClientRender",
-    getRootElement(),
+    root,
     function()
         if (isConsoleActive()) then
             return
@@ -198,13 +198,13 @@ function guiSetContextMenu(element, menu)
                     function()
                         addEventHandler(
                             "onClientClick",
-                            getRootElement(),
+                            root,
                             function(button, state, x, y)
                                 local sx, sy = guiGetSize(menu, false)
                                 local px, py = guiGetPosition(menu, false)
                                 if (x < px or x > px + sx) or (y < py or y > py + sy) then
                                     guiSetVisible(menu, false)
-                                    removeEventHandler("onClientClick", getRootElement(), debug.getinfo(1, "f").func)
+                                    removeEventHandler("onClientClick", root, debug.getinfo(1, "f").func)
                                 end
                             end
                         )

@@ -101,7 +101,7 @@ addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResourc
 )
 
 addEvent ( "syncMapSettings",true)
-addEventHandler ( "syncMapSettings", getRootElement(),
+addEventHandler ( "syncMapSettings", root,
 function ( newMapSettings )
 	currentMapSettings = newMapSettings
 	freezeTime ( true, currentMapSettings.timeHour, currentMapSettings.timeMinute )

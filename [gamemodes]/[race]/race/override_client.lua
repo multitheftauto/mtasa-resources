@@ -13,7 +13,7 @@ OverrideClient = {}
 OverrideClient.method = "fast"
 OverrideClient.debug = false
 
-addEventHandler('onClientElementStreamIn', g_Root,
+addEventHandler('onClientElementStreamIn', root,
 	function()
 		if getElementType( source ) == "vehicle" or getElementType( source ) == "player" then
 			OverrideClient.updateVars( source )
@@ -21,7 +21,7 @@ addEventHandler('onClientElementStreamIn', g_Root,
 	end
 )
 
-addEventHandler('onClientElementDataChange', g_Root,
+addEventHandler('onClientElementDataChange', root,
 	function(dataName)
 		if dataName == "race.collideothers" or dataName == "race.collideworld" or dataName == "race.alpha"  then
 			OverrideClient.updateVars( source )
@@ -77,7 +77,7 @@ end
 --
 -- Emergency backup method - Works, but is slower and doesn't look as nice
 --
-addEventHandler('onClientPreRender', g_Root,
+addEventHandler('onClientPreRender', root,
 	function()
 		if OverrideClient.method ~= "slow" then return end
 		if g_Vehicle then
@@ -99,7 +99,7 @@ addEventHandler('onClientPreRender', g_Root,
 -----------------------------------------------
 -- Debug output
 if OverrideClient.debug then
-	addEventHandler('onClientRender', g_Root,
+	addEventHandler('onClientRender', root,
 		function()
 			local sx = { 30, 200, 280, 360, 420, 500 }
 			local sy = 200

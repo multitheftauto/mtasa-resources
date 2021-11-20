@@ -87,7 +87,7 @@ end
 
 function stopAssault()
 	outputDebugString("Stopping assault..")
-	removeEventHandler( "onGamemodeMapStop", getRootElement(), stopAssaultMap )
+	removeEventHandler( "onGamemodeMapStop", root, stopAssaultMap )
 	call(getResourceFromName("scoreboard"), "removeScoreboardColumn", "score")
 end
 
@@ -225,7 +225,7 @@ end
 Actually starts the round and spawns the players
 ]]
 function startRoundNow()
-	triggerEvent("onAssaultStartRound",getRootElement(),attacker)
+	triggerEvent("onAssaultStartRound",root,attacker)
 	if (options.time ~= false) then setTime(gettok(options.time,1,58),gettok(options.time,2,58)) end
 	waiting = false
 	timeLeft = timeLimit
@@ -313,7 +313,7 @@ function endRound(conquered)
 			end
 		end
 	end
-	triggerEvent("onAssaultEndRound",getRootElement(),conquered)
+	triggerEvent("onAssaultEndRound",root,conquered)
 	textItemSetText(waitingText2,text)
 	textItemSetText(waitingText2_2,text)
 	local players = getElementsByType("player")
@@ -499,7 +499,7 @@ function objectiveReached( objectiveId, playerTable )
 	textItemSetColor(objectiveTextItem[key],255,0,0,255)
 
 	local objectiveReached = options.objective[key]
-	triggerEvent("onAssaultObjectiveReached",getRootElement(),objectiveReached, playerTable)
+	triggerEvent("onAssaultObjectiveReached",root,objectiveReached, playerTable)
 
 	progress = progress + 1
 
@@ -591,9 +591,9 @@ function createObjectives()
 		--outputChatBox(objective.name)
 		if (objective.type == "checkpoint") then
 			createObjectiveMarker( objective )
-			triggerEvent("onAssaultCreateObjective",getRootElement(),objective)
+			triggerEvent("onAssaultCreateObjective",root,objective)
 		elseif (objective.type == "custom") then
-			triggerEvent("onAssaultCreateObjective",getRootElement(),objective)
+			triggerEvent("onAssaultCreateObjective",root,objective)
 		end
 		status[objective.id].created = true
 	end
@@ -696,7 +696,7 @@ function triggerClientEvent2( player, eventName, parameter )
 	end
 end
 addEvent("assaultClientScriptLoaded",true)
-addEventHandler('assaultClientScriptLoaded', getRootElement(),
+addEventHandler('assaultClientScriptLoaded', root,
 	function()
 		setElementDataLocal( source, "assaultClientScriptLoaded", true )
 		if (assaultClientScriptQueue[source] == nil) then return end
@@ -707,7 +707,7 @@ addEventHandler('assaultClientScriptLoaded', getRootElement(),
 		assaultClientScriptQueue[source] = {}
 	end
 )
-addEventHandler("onPlayerQuit", getRootElement(),
+addEventHandler("onPlayerQuit", root,
 	function()
 		assaultClientScriptQueue[source] = {}
 	end
@@ -952,7 +952,7 @@ function onPlayerChat( message, theType )
 		local playerName = getPlayerName( source )
 		if (team) then
 			local r,g,b = getTeamColor(team)
-			outputChatBox( playerName..":#FFFFFF "..message,getRootElement(),r,g,b, true )
+			outputChatBox( playerName..":#FFFFFF "..message,root,r,g,b, true )
 		else
 			outputChatBox( playerName..": "..message )
 		end
@@ -1115,7 +1115,7 @@ function countTableElements(table)
 	return count
 end
 
-addEventHandler("onPlayerQuit", getRootElement(),
+addEventHandler("onPlayerQuit", root,
 	function()
 		if (assaultElementData[source] ~= nil) then
 			assaultElementData[source] = nil
@@ -1504,8 +1504,8 @@ end
 
 -- General Gamemode Events
 addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), startAssault )
-addEventHandler( "onGamemodeMapStart", getRootElement(), startAssaultMap )
-addEventHandler( "onGamemodeMapStop", getRootElement(), stopAssaultMap )
+addEventHandler( "onGamemodeMapStart", root, startAssaultMap )
+addEventHandler( "onGamemodeMapStop", root, stopAssaultMap )
 addEventHandler( "onResourceStop", getResourceRootElement(getThisResource()), stopAssault )
 
 -- Custom gamemode Events
@@ -1518,14 +1518,14 @@ addEvent("onAssaultEndRound")
 --addCommandHandler("team1",joinTeam1)
 --addCommandHandler("team2",joinTeam2)
 addCommandHandler("kill",selfkill)
-addEventHandler( "onPlayerSpawn", getRootElement(), onPlayerSpawn )
-addEventHandler( "onPlayerWasted", getRootElement(), onPlayerWasted )
-addEventHandler( "onPlayerJoin", getRootElement(), onPlayerJoin )
-addEventHandler( "onPlayerQuit", getRootElement(), onPlayerQuit )
-addEventHandler( "onPlayerChat", getRootElement(), onPlayerChat )
+addEventHandler( "onPlayerSpawn", root, onPlayerSpawn )
+addEventHandler( "onPlayerWasted", root, onPlayerWasted )
+addEventHandler( "onPlayerJoin", root, onPlayerJoin )
+addEventHandler( "onPlayerQuit", root, onPlayerQuit )
+addEventHandler( "onPlayerChat", root, onPlayerChat )
 
 -- Vehicle Events
-addEventHandler ( "onVehicleEnter", getRootElement(), onVehicleEnter )
-addEventHandler ( "onVehicleExit", getRootElement(), onVehicleExit )
-addEventHandler ( "onVehicleExplode", getRootElement(), onVehicleExplode )
+addEventHandler ( "onVehicleEnter", root, onVehicleEnter )
+addEventHandler ( "onVehicleExit", root, onVehicleExit )
+addEventHandler ( "onVehicleExplode", root, onVehicleExplode )
 

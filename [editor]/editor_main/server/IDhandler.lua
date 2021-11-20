@@ -1,4 +1,3 @@
-local rootElement = getRootElement()
 local getVehicleNameFromModelMTA = getVehicleNameFromModel
 local trailers = {
 	[606]="Baggage Trailer (Covered)", [607]="Baggage Trailer (Uncovered)", [610]="Farm Trailer", [611]="Street Clean - Trailer",

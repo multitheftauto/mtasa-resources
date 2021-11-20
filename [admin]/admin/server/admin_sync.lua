@@ -14,7 +14,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 	if checkClient( false, source, 'aSync', type ) then return end
 	local cor = aSyncCoroutine
 	local tableOut = {}
-	local theSource = _root
+	local theSource = root
 	if client and not hasObjectPermissionTo ( client, "general.adminpanel" ) then
 		type = "loggedout"
 	elseif ( type == "player" ) then
@@ -221,7 +221,7 @@ return false
 end
 
 addEvent("aSync", true)
-addEventHandler("aSync", _root, function(typed, data)
+addEventHandler("aSync", root, function(typed, data)
 	aSyncCoroutine = coroutine.create(aSynchCoroutineFunc)
 	coroutine.resume(aSyncCoroutine, typed, data)
 
@@ -244,7 +244,7 @@ addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource ()
 	end, 1500, 0 )
 end )
 
-addEventHandler ( "onPlayerMoneyChange", _root, function ( prev, new )
+addEventHandler ( "onPlayerMoneyChange", root, function ( prev, new )
 	for player, sync in pairs ( aPlayers ) do
 		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["money"] = new } )
@@ -252,7 +252,7 @@ addEventHandler ( "onPlayerMoneyChange", _root, function ( prev, new )
 	end
 end )
 
-addEventHandler ( "onPlayerMute", _root, function()
+addEventHandler ( "onPlayerMute", root, function()
 	for player, sync in pairs ( aPlayers ) do
 		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = true } )
@@ -260,7 +260,7 @@ addEventHandler ( "onPlayerMute", _root, function()
 	end
 end )
 
-addEventHandler ( "onPlayerUnmute", _root, function()
+addEventHandler ( "onPlayerUnmute", root, function()
 	for player, sync in pairs ( aPlayers ) do
 		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = false } )
@@ -268,7 +268,7 @@ addEventHandler ( "onPlayerUnmute", _root, function()
 	end
 end )
 
-addEventHandler ( "onPlayerFreeze", _root, function ( state )
+addEventHandler ( "onPlayerFreeze", root, function ( state )
 	for player, sync in pairs ( aPlayers ) do
 		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["freeze"] = state } )
@@ -277,7 +277,7 @@ addEventHandler ( "onPlayerFreeze", _root, function ( state )
 end )
 
 addEvent ( "aPermissions", true )
-addEventHandler ( "aPermissions", _root, function()
+addEventHandler ( "aPermissions", root, function()
 	if checkClient( false, source, 'aPermissions' ) then return end
 	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
 		local tableOut = {}
@@ -298,15 +298,15 @@ addEventHandler ( "aPermissions", _root, function()
 	end
 end )
 
-addEventHandler ( "onBan", _root,
+addEventHandler ( "onBan", root,
 	function()
-		setTimer( triggerEvent, 200, 1, "aSync", _root, "bansdirty" )
+		setTimer( triggerEvent, 200, 1, "aSync", root, "bansdirty" )
 	end
 )
 
-addEventHandler ( "onUnban", _root,
+addEventHandler ( "onUnban", root,
 	function()
-		setTimer( triggerEvent, 200, 1, "aSync", _root, "bansdirty" )
+		setTimer( triggerEvent, 200, 1, "aSync", root, "bansdirty" )
 	end
 )
 

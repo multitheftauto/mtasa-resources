@@ -1,4 +1,3 @@
-local root = getRootElement()
 local floor = math.floor
 
 local allowedRPC = {

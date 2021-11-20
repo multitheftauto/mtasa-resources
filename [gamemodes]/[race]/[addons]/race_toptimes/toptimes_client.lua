@@ -22,7 +22,7 @@ addEventHandler('onClientResourceStart', g_ResRoot,
 )
 
 addEvent('onClientMapStarting', true)
-addEventHandler('onClientMapStarting', getRootElement(),
+addEventHandler('onClientMapStarting', root,
 	function(mapinfo)
 		outputDebug( 'TOPTIMES', 'onClientMapStarting' )
 		if g_CToptimes then
@@ -32,7 +32,7 @@ addEventHandler('onClientMapStarting', getRootElement(),
 )
 
 addEvent('onClientMapStopping', true)
-addEventHandler('onClientMapStopping', getRootElement(),
+addEventHandler('onClientMapStopping', root,
 	function()
 		outputDebug( 'TOPTIMES', 'onClientMapStopping' )
 		if g_CToptimes then
@@ -42,7 +42,7 @@ addEventHandler('onClientMapStopping', getRootElement(),
 )
 
 addEvent('onClientPlayerFinish', true)
-addEventHandler('onClientPlayerFinish', getRootElement(),
+addEventHandler('onClientPlayerFinish', root,
 	function()
 		outputDebug( 'TOPTIMES', 'onClientPlayerFinish' )
 		if g_CToptimes then
@@ -52,7 +52,7 @@ addEventHandler('onClientPlayerFinish', getRootElement(),
 )
 
 addEvent('onClientSetMapName', true)
-addEventHandler('onClientSetMapName', getRootElement(),
+addEventHandler('onClientSetMapName', root,
 	function(manName)
 		if g_CToptimes then
 			g_CToptimes:setWindowTitle(manName)
@@ -514,7 +514,7 @@ function CToptimes:doOnClientRender()
 end
 
 
-addEventHandler ( 'onClientRender', getRootElement(),
+addEventHandler ( 'onClientRender', root,
 	function(...)
 		if g_CToptimes then
 			g_CToptimes:doOnClientRender(...)

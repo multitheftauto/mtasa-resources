@@ -24,8 +24,8 @@ end
 
 function GhostPlayback:destroy( finished )
 	self:stopPlayback( finished )
-	if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
-	if self.updateGhostState_HANDLER then removeEventHandler( "onClientRender", g_Root, self.updateGhostState_HANDLER ) self.updateGhostState_HANDLER = nil end
+	if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+	if self.updateGhostState_HANDLER then removeEventHandler( "onClientRender", root, self.updateGhostState_HANDLER ) self.updateGhostState_HANDLER = nil end
 	if isTimer( self.ghostFinishTimer ) then
 		killTimer( self.ghostFinishTimer )
 		self.ghostFinishTimer = nil
@@ -35,7 +35,7 @@ end
 
 function GhostPlayback:preparePlayback()
 	self.checkForCountdownEnd_HANDLER = function() self:checkForCountdownEnd() end
-	addEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER )
+	addEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER )
 	self:createNametag()
 end
 
@@ -45,11 +45,11 @@ function GhostPlayback:createNametag()
 		time = msToTimeStr( globalInfo.bestTime )
 	}
 	self.drawGhostNametag_HANDLER = function() self:drawGhostNametag( self.nametagInfo ) end
-	addEventHandler( "onClientRender", g_Root, self.drawGhostNametag_HANDLER )
+	addEventHandler( "onClientRender", root, self.drawGhostNametag_HANDLER )
 end
 
 function GhostPlayback:destroyNametag()
-	if self.drawGhostNametag_HANDLER then removeEventHandler( "onClientRender", g_Root, self.drawGhostNametag_HANDLER ) self.drawGhostNametag_HANDLER = nil end
+	if self.drawGhostNametag_HANDLER then removeEventHandler( "onClientRender", root, self.drawGhostNametag_HANDLER ) self.drawGhostNametag_HANDLER = nil end
 end
 
 function GhostPlayback:checkForCountdownEnd()
@@ -59,7 +59,7 @@ function GhostPlayback:checkForCountdownEnd()
 		if not frozen then
 			outputDebug( "Playback started." )
 			setElementFrozen( self.vehicle, false )
-			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
 			self:startPlayback()
 			setElementAlpha( self.vehicle, g_GameOptions.alphavalue )
 			setElementAlpha( self.ped, g_GameOptions.alphavalue )
@@ -87,14 +87,14 @@ function GhostPlayback:startPlayback()
 	self.startTick = getTickCount()
 	self.isPlaying = true
 	self.updateGhostState_HANDLER = function() self:updateGhostState() end
-	addEventHandler( "onClientRender", g_Root, self.updateGhostState_HANDLER )
+	addEventHandler( "onClientRender", root, self.updateGhostState_HANDLER )
 end
 
 function GhostPlayback:stopPlayback( finished )
 	self:destroyNametag()
 	self:resetKeyStates()
 	self.isPlaying = false
-	if self.updateGhostState_HANDLER then removeEventHandler( "onClientRender", g_Root, self.updateGhostState_HANDLER ) self.updateGhostState_HANDLER = nil end
+	if self.updateGhostState_HANDLER then removeEventHandler( "onClientRender", root, self.updateGhostState_HANDLER ) self.updateGhostState_HANDLER = nil end
 	if finished then
 		self.ghostFinishTimer = setTimer(
 			function()
@@ -201,7 +201,7 @@ function GhostPlayback:resetKeyStates()
 	end
 end
 
-addEventHandler( "onClientGhostDataReceive", g_Root,
+addEventHandler( "onClientGhostDataReceive", root,
 	function( recording, bestTime, racer, ped, vehicle )
 		if playback then
 			playback:destroy()
@@ -215,7 +215,7 @@ addEventHandler( "onClientGhostDataReceive", g_Root,
 	end
 )
 
-addEventHandler( "clearMapGhost", g_Root,
+addEventHandler( "clearMapGhost", root,
 	function()
 		if playback then
 			playback:destroy()

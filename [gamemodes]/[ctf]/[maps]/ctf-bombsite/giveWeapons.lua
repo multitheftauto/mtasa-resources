@@ -4,7 +4,7 @@ function giveWeaponsOnSpawn ( spawnpoint, team )
 	giveWeapon ( source, 24, 112 ) -- Gives the Desert Eagle weapon with 112 ammo
 	giveWeapon ( source, 25, 56 ) -- Gives the Desert Eagle weapon with 112 ammo
 end
-addEventHandler ( "onPlayerSpawn", getRootElement(), giveWeaponsOnSpawn )
+addEventHandler ( "onPlayerSpawn", root, giveWeaponsOnSpawn )
 
 function mapLoadTimeWeather (  )
 	setTime ( 00, 0 )

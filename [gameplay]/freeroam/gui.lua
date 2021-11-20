@@ -719,7 +719,7 @@ function _updateBindedGridList(gridlist, listdata, expandLastLevel, isContinuati
 			_updateGridListOnFrame = function()
 				_updateBindedGridList(gridlist, listdata, false, true)
 			end
-			addEventHandler('onClientRender', getRootElement(), _updateGridListOnFrame)
+			addEventHandler('onClientRender', root, _updateGridListOnFrame)
 		end
 
 		-- update path label if necessary
@@ -786,7 +786,7 @@ function _putLeafInGridListRow(gridlist, row, leaf, columnAttrs)
 end
 
 function _removeGridListFrameUpdate(listdata)
-	removeEventHandler('onClientRender', getRootElement(), _updateGridListOnFrame)
+	removeEventHandler('onClientRender', root, _updateGridListOnFrame)
 	listdata.nextChunkStartIndex = nil
 	_updateGridListOnFrame = nil
 end

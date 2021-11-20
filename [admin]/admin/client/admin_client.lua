@@ -11,7 +11,6 @@
 _DEBUG = false
 
 _version = '1.5.9'
-_root = getRootElement()
 _flags = {}
 _widgets = {}
 _settings = nil
@@ -41,7 +40,7 @@ addEvent ( "aClientResourceStart", true )
 addEvent ( "aClientResourceStop", true )
 addEvent ( "aClientAdminMenu", true )
 function aAdminResourceStart ()
-	addEventHandler ( "aClientAdminMenu", _root, aClientAdminMenu )
+	addEventHandler ( "aClientAdminMenu", root, aClientAdminMenu )
 	local node = xmlLoadFile ( "conf\\weathers.xml" )
 	if ( node ) then
 		while ( true ) do
@@ -158,7 +157,7 @@ addEventHandler ( "onClientResourceStop", getResourceRootElement ( getThisResour
 -- Upgrade check message for 1.0 to 1.0.2
 --
 addEvent ( "aClientShowUpgradeMessage", true )
-addEventHandler ( "aClientShowUpgradeMessage", _root,
+addEventHandler ( "aClientShowUpgradeMessage", root,
 	function()
 		local xml = xmlLoadFile("upgrade_cookie.xml")
 		if not xml then

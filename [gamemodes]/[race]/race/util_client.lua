@@ -1,4 +1,3 @@
-g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 
 addEvent('onClientCall_race', true)
@@ -319,14 +318,14 @@ function fadeCamera(fadeIn,timeToFade,...)
     local ticksToFade = (not timeToFade or timeToFade < 1) and 0 or timeToFade * 1000
     if not fadeIn then
         fadeInFinTimer:killTimer()
-		triggerEvent( 'onClientScreenFadedOut', g_Root )
+		triggerEvent( 'onClientScreenFadedOut', root )
     else
         fadeInFinTimer:setTimer( onfadeInFin, math.max(50,ticksToFade/8), 1 )
     end
 end
 
 function onfadeInFin()
-	triggerEvent( 'onClientScreenFadedIn', g_Root )
+	triggerEvent( 'onClientScreenFadedIn', root )
 end
 
 -------------------------------------------------------

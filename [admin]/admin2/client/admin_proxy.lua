@@ -10,7 +10,7 @@
 addEvent(EVENT_PROXY, true)
 addEventHandler(
     EVENT_PROXY,
-    getRootElement(),
+    root,
     function(action, data, value)
         if (action == PROXY_ALL) then
             setBlurLevel(data[PROXY_BLUR])

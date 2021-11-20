@@ -35,13 +35,13 @@ function elementIcons_Clicked ( source, mouseButton )
 	if mouseButton == "left" then
 		local elementType = elementIcons[source]["elementName"]
 		local resourceName = elementIcons[source]["resource"]
-		--triggerServerEvent ( "edfCreateElement", getRootElement(), elementType, resourceName )
+		--triggerServerEvent ( "edfCreateElement", root, elementType, resourceName )
 		local shortcut = resourceElementDefinitions[resourceName][elementType].shortcut -- E.g. immediately open model browser
 		call(getResourceFromName("editor_main"),"doCreateElement", elementType, resourceName, false, true, shortcut )
 	elseif mouseButton == "middle" then
 		local elementType = elementIcons[source]["elementName"]
 		local resourceName = elementIcons[source]["resource"]
-		--triggerServerEvent ( "edfCreateElement", getRootElement(), elementType, resourceName )
+		--triggerServerEvent ( "edfCreateElement", root, elementType, resourceName )
 		call(getResourceFromName("editor_main"),"doCreateElement", elementType, resourceName )
 	elseif mouseButton == "right" then
 		local showing = isCurrentBrowserShowing()

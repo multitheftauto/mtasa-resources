@@ -6,7 +6,7 @@ function swaptheteams(thisplayer, teamswap)
 	aretheyswapped = teamswap
 end
 
-addEventHandler("swaptoggle", getRootElement(), swaptheteams)
+addEventHandler("swaptoggle", root, swaptheteams)
 
 addEvent("showSpectateText",true)
 function showSpectateText(text,show)
@@ -27,7 +27,7 @@ function showSpectateText(text,show)
 		guiSetVisible ( spectateButton, show )
 --		showCursor ( true )
 end
-addEventHandler ( "showSpectateText",getRootElement(),showSpectateText )
+addEventHandler ( "showSpectateText",root,showSpectateText )
 
 
 addEvent("cameramode", true)
@@ -56,7 +56,7 @@ function movetocam(thisplayer)
 	end
 end
 
-addEventHandler("cameramode", getRootElement(), movetocam)
+addEventHandler("cameramode", root, movetocam)
 
 
 function updateCam (data)
@@ -103,7 +103,7 @@ function starttheround(player)
 	end
 end
 
-addEventHandler("Startround", getRootElement(), starttheround)
+addEventHandler("Startround", root, starttheround)
 
 function idlethisround (player)
 	sitthisoneout = nil
@@ -208,7 +208,7 @@ function stealthmapstop ()
 	guiSetVisible ( mercenariesMenu, false )
 end
 
-addEventHandler( "onClientGamemodeMapStop", getRootElement(), stealthmapstop )
+addEventHandler( "onClientGamemodeMapStop", root, stealthmapstop )
 
 
 --EVERYTHING AFTER THIS IS IS THE GEARSELECT GUI
@@ -338,7 +338,7 @@ function setupStealthMenus ( name )
 	addEventHandler ( "onClientGUIClick", mercenariesOK, confirmSelections )
 	addEventHandler ( "onClientGUIClick", spiesOK, confirmSelections )
 end
-addEventHandler ( "onClientResourceStart", getRootElement(), setupStealthMenus )
+addEventHandler ( "onClientResourceStart", root, setupStealthMenus )
 
 local retrieveGridList = {}
 retrieveGridList["mercenaries"] = {}
@@ -410,7 +410,7 @@ function cleanup (theresource)
 	end
 end
 
-addEventHandler("onClientResourceStop", getRootElement(), cleanup)
+addEventHandler("onClientResourceStop", root, cleanup)
 
 
 --Code for Laser sight on weapons.  Currently only for sniper and M4 weapons
@@ -455,12 +455,12 @@ end
 addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
 	function()
 		movetocam(localPlayer)
-		local weaponsTable = getElementData(getRootElement(),"lasersight")
+		local weaponsTable = getElementData(root,"lasersight")
 		if type(weaponsTable) == "table" and #weaponsTable > 0 then
 			for k,weaponID in ipairs(weaponsTable) do
 				laserWeapons[weaponID] = true
 			end
-			addEventHandler("onClientRender",getRootElement(),drawLasers)
+			addEventHandler("onClientRender",root,drawLasers)
 		end
 		showCursor ( true )
 		TeamSelect_Window = {}
@@ -483,7 +483,7 @@ function showTeamWindow ()
 	guiSetVisible ( TeamSelect_Window[1], true )
 	showCursor ( true )
 end
-addEventHandler ( "doshowTeamWindow",getRootElement(), showTeamWindow )
+addEventHandler ( "doshowTeamWindow",root, showTeamWindow )
 
 function extendLine ( x,y,z,x2,y2,z2,length )
 	local vx = x2 - x

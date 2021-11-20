@@ -1,5 +1,3 @@
-local root = getRootElement()
-
 addEventHandler("onPlayerWasted", root,
 	function (ammo, killer, weapon, bodypart)
 		local r, g, b = getColorFromString(string.upper(get("color")))
