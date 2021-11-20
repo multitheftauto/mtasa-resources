@@ -1,7 +1,7 @@
 local clientGUILoaded = {} --We dont want to trigger client events if they havent downloaded client scripts yet
 loadedEDF = {}
 
-addEventHandler ( "onResourceStart", thisResourceRoot,
+addEventHandler ( "onResourceStart", resourceRoot,
 	function(resource)
 		if getResourceState( edf.res ) == "running" then
 			local definitionsList = edf.edfGetLoadedEDFResources()

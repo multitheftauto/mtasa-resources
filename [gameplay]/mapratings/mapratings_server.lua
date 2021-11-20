@@ -1,5 +1,3 @@
-local g_ResRoot = getResourceRootElement(getThisResource())
-
 local g_MapResName
 
 addEventHandler('onGamemodeMapStart', root,
@@ -8,7 +6,7 @@ addEventHandler('onGamemodeMapStart', root,
 	end
 )
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		-- outputDebugString("delete mapratings "..tostring(executeSQLQuery("DROP TABLE mapratings")))
 		-- Add table if required

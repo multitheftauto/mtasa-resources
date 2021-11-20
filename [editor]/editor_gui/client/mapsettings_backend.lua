@@ -94,7 +94,7 @@ function undoEnvironment()
 end
 
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler ( "onClientResourceStart", resourceRoot,
 	function()
 		freezeTime ( true, 12, 00 )
 	end

@@ -11,7 +11,7 @@ function prepareBlips()
 	-- Now create a blip for everyone on the server
 	createAllPlayerBlips()
 end
-addEventHandler("onResourceStart",getResourceRootElement(),function() setTimer(prepareBlips,1000,1) end)
+addEventHandler("onResourceStart",resourceRoot,function() setTimer(prepareBlips,1000,1) end)
 
 function createAllPlayerBlips()
 	for index,player in ipairs(getElementsByType("player")) do

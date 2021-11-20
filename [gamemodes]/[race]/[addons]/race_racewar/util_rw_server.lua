@@ -2,8 +2,6 @@
 -- util_rw_server.lua
 --
 
-g_ResRoot = getResourceRootElement(getThisResource())
-
 function clientCall(player, fnName, ...)
 	triggerClientEvent(onlyJoined(player), 'onClientCall_rw', player, fnName, ...)
 end

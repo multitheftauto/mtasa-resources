@@ -11,8 +11,6 @@
 --          g_RootPlayers instead. Or use the function onlyJoined(element) to handle the choice.
 --
 
-g_ResRoot = getResourceRootElement(getThisResource())
-
 addEvent('onPlayerJoining')		-- Pre join
 addEvent('onPlayerJoined')		-- Post join
 
@@ -132,7 +130,7 @@ end
 function onlyJoined(player)
     if player == root then
         if not g_RootPlayers then
-            return getResourceRootElement(getThisResource())    -- return an element which will have no players
+            return resourceRoot    -- return an element which will have no players
         end
         return g_RootPlayers
     end
@@ -152,7 +150,7 @@ end
 
 -- onResourceStart
 --      Setup joining/joined containers and put all current players into g_RootJoining
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
         -- Create a joining player node and a joined player node
         table.each(getElementsByType('plrcontainer'), destroyElement)
@@ -168,7 +166,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 
 -- onResourceStop
 --      Clean up
-addEventHandler('onResourceStop', g_ResRoot,
+addEventHandler('onResourceStop', resourceRoot,
 	function()
         table.each(getElementsByType('plrcontainer'), destroyElement)
 		g_RootJoining = nil

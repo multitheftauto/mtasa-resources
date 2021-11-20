@@ -12,7 +12,7 @@ local randomMessages = {	"Hope you like the new paint.",
 local textLabel
 local clearTimer
 
-addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStart", resourceRoot,
 function (resource)
 	-- set up garages and stuff
 	for i=0,49 do

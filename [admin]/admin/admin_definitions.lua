@@ -12,12 +12,6 @@ _DEBUG = false
 
 _version = '1.5.9'
 
-if ( localPlayer ) then
-	_local = localPlayer
-else
-	_local = getResourceRootElement ( getThisResource() )
-end
-
 function enum ( args, prefix )
 	for i, v in ipairs ( args ) do
 		if ( prefix ) then _G[v] = prefix..i

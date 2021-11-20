@@ -4,7 +4,7 @@ local lastPickup,overlayText,overlayShowing
 local BG_COLOR = tocolor(0,0,0,130)
 local TEXT_COLOR = tocolor(255,255,255,255)
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResource() ),
+addEventHandler ( "onClientResourceStart", resourceRoot,
 	function()
 		bindKey ( "tab", "down", "Replace weapon", "" )
 	end

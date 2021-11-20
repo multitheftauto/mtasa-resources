@@ -248,14 +248,14 @@ function playerLoss ( )
 	end
 end
 addEvent("serverReportLoss", true) --For triggering from server
-addEventHandler("serverReportLoss", getRootElement (), playerLoss)
+addEventHandler("serverReportLoss", root, playerLoss)
 
 function KillCheater ( )
 	outputChatBox ( "weapon cheat detected. "..getPlayerName(source).." killed for cheating." )
 	killPed ( source )
 end
 addEvent("serverKillCheater", true) --For triggering from server
-addEventHandler("serverKillCheater", getRootElement (), KillCheater)
+addEventHandler("serverKillCheater", root, KillCheater)
 
 function PlayerJoin ( )
 	setElementData ( source, "Wins", 0 )

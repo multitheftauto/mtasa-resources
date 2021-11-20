@@ -3,7 +3,7 @@
 
 local round = 0
 
-addEventHandler('onResourceStart', getResourceRootElement(getThisResource()),
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		exports.scoreboard:addScoreboardColumn('Score')
 		table.each(getElementsByType('player'), joinHandler)
@@ -19,7 +19,7 @@ function joinHandler(player)
 end
 addEventHandler('onPlayerJoin', root, joinHandler)
 
-addEventHandler('onResourceStop', getResourceRootElement(getThisResource()),
+addEventHandler('onResourceStop', resourceRoot,
 	function()
 		exports.scoreboard:removeScoreboardColumn('Score')
 	end
@@ -348,7 +348,7 @@ function toggleVehicleLights ( player, key, state )
 	end
 end
 
-addEventHandler( "onGamemodeMapStart", getRootElement (), onCTVMapStart )
+addEventHandler( "onGamemodeMapStart", root, onCTVMapStart )
 addEventHandler ( "onVehicleExplode", root, vehicleExplode )
 addEventHandler ( "onPlayerVehicleEnter", root, playerEnterVehicle )
 addEventHandler ( "onPlayerVehicleExit", root, playerExitVehicle )

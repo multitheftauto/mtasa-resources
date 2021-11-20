@@ -1,6 +1,6 @@
 -- TO DO:
 
---[[addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
+--[[addEventHandler("onResourceStart", resourceRoot,
 function (resource)
 	for i,v in ipairs(getElementsByType("player")) do
 		fadeCamera(v, true)

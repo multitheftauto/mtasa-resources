@@ -2,7 +2,6 @@ local activePoll
 
 local pollTimer
 local defaultConfig = {}
-local thisResourceRoot = getResourceRootElement(getThisResource())
 
 addEvent "onPollStart"
 addEvent "onPollStop"
@@ -10,7 +9,7 @@ addEvent "onPollEnd"
 addEvent("onClientSendVote", true)
 
 --this handler stores the default manager config
-addEventHandler("onResourceStart", thisResourceRoot,
+addEventHandler("onResourceStart", resourceRoot,
 	function ()
 		defaultConfig.timeout = get("default_timeout")
 		defaultConfig.percentage = get("default_percentage")
@@ -91,7 +90,7 @@ function startPoll(pollData)
 	end
 
 	--fire the poll start event, and stop here if it was cancelled
-	local result = triggerEvent("onPollStart", thisResourceRoot)
+	local result = triggerEvent("onPollStart", resourceRoot)
 	if result == false then
 		return false, errorCode.startCancelled
 	end
@@ -142,7 +141,7 @@ function stopPoll()
 	end
 
 	--fire the poll stop event, and stop here if it was cancelled
-	local result = triggerEvent("onPollStop", thisResourceRoot)
+	local result = triggerEvent("onPollStop", resourceRoot)
 	if result == false then
 		return false, errorCode.stopCancelled
 	end
@@ -302,7 +301,7 @@ function applyPollResults(chosenOption)
 	local optionTable = activePoll[chosenOption]
 	activePoll = nil
 
-	local result = triggerEvent("onPollEnd", thisResourceRoot, chosenOption)
+	local result = triggerEvent("onPollEnd", resourceRoot, chosenOption)
 
 	if result == true then
 		outputVoteManager("Vote ended! ["..optionTable[1].."]",root)

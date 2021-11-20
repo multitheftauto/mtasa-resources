@@ -1,6 +1,4 @@
-local thisResourceRoot = getResourceRootElement(getThisResource())
 local pagesXml
-
 local wndHelp, wndBlock, tPanel, btnClose
 local tab = {}
 local memo = {}
@@ -17,7 +15,7 @@ addEvent("doHideHelp", true)
 addEvent("onHelpShown")
 addEvent("onHelpHidden")
 
-addEventHandler("onClientResourceStart", thisResourceRoot,
+addEventHandler("onClientResourceStart", resourceRoot,
 	function ()
 		wndHelp  = guiCreateWindow(.2, .2, .6, .6, "Help", true)
 		wndBlock = guiCreateWindow(0, 0, 1, 1, "", true)
@@ -55,7 +53,7 @@ addEventHandler("onClientResourceStart", thisResourceRoot,
 	end
 )
 
-addEventHandler("onClientResourceStop", thisResourceRoot,
+addEventHandler("onClientResourceStop", resourceRoot,
 	function()
 		showCursor(false)
 	end

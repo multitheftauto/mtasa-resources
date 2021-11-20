@@ -209,8 +209,8 @@ function endGame(showScores, tellMapCycler)
 	--if (showScores) then
 		--[[forceScoreboardForAllPlayers(true)
 		setTimer(forceScoreboardForAllPlayers, 10000, 1, false)
-		addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), onStopSetScoreboardNotForced)
-		setTimer(removeEventHandler, 10000, 1, "onResourceStop", getResourceRootElement(getThisResource()), onStopSetScoreboardNotForced)]]
+		addEventHandler("onResourceStop", resourceRoot, onStopSetScoreboardNotForced)
+		setTimer(removeEventHandler, 10000, 1, "onResourceStop", resourceRoot, onStopSetScoreboardNotForced)]]
 --		local mapmanagerResource = getResourceFromName("mapmanager")
 --		if (mapmanagerResource and getResourceState(mapmanagerResource) == "running") then
 --			setTimer(outputConsole, 9000, 1, "[Gamemode finished]")
@@ -221,7 +221,7 @@ function endGame(showScores, tellMapCycler)
 	if (tellMapCycler) then
 		local mapCyclerResource = getResourceFromName("mapcycler")
 		if (mapCyclerResource and getResourceState(mapCyclerResource) == "running") then
-			triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
+			triggerEvent("onRoundFinished", resourceRoot)
 		end
 	end
 

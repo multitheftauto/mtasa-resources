@@ -1,8 +1,6 @@
 --
 -- util_ts_client.lua
 --
-g_ResRoot = getResourceRootElement(getThisResource())
-
 
 -----------------------------
 -- Debug

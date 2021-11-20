@@ -2,7 +2,7 @@
 players = getElementsByType ( "player" )
 scoreboardRes = getResourceFromName("scoreboard")
 
-addEventHandler("onResourceStop",getResourceRootElement(getThisResource()),
+addEventHandler("onResourceStop",resourceRoot,
 function()
 	call(scoreboardRes,"removeScoreboardColumn","Current level")
 	call(scoreboardRes,"removeScoreboardColumn","Max level")
@@ -233,5 +233,5 @@ end
 --addEventHandler( "onPickupHit", root, function() onPickupHit() end)
 --addEventHandler( "onPlayerJoin", root, function() onPlayerJoin() end)
 
-addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), onThisResourceStart)
+addEventHandler( "onResourceStart", resourceRoot, onThisResourceStart)
 addEventHandler( "onPickupHit", root, onPickupHit)

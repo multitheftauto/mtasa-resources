@@ -11,7 +11,7 @@ healthbar.y = math.floor(0.9*screenHeight)
 healthbar.border = 2
 healthbar.color = { 255, 255, 255, 0 }
 
-addEventHandler('onClientResourceStart', getResourceRootElement(getThisResource()),
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		setPlayerHudComponentVisible('area_name', false)
 		triggerServerEvent('onLoadedAtClient', localPlayer)

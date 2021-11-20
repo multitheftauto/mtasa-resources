@@ -265,7 +265,7 @@ end
 
 
 function CTF_newRound()
-	triggerEvent( "onRoundFinished", getResourceRootElement(getThisResource()) )
+	triggerEvent( "onRoundFinished", resourceRoot )
 	local blips = getElementsByType ( "blip" )
 	for k,v in ipairs(blips) do
 		if ( getElementData( v, "playerBlip" ) ) then

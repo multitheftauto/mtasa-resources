@@ -40,4 +40,4 @@ function thisResourceStop ()
 	end
 	setGameSpeed ( 1 )
 end
-addEventHandler ( "onResourceStop", getResourceRootElement(getThisResource()), thisResourceStop )
+addEventHandler ( "onResourceStop", resourceRoot, thisResourceStop )

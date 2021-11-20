@@ -105,7 +105,7 @@ addEventHandler ( "onClientRender", root,
 
 
 ---------------THE FOLLOWING IS THE MANAGEMENT OF NAMETAGS-----------------
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		for i,player in ipairs(getElementsByType"player") do
 			if player ~= localPlayer then

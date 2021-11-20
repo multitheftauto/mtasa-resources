@@ -1,5 +1,3 @@
-g_ResRoot = getResourceRootElement(getThisResource())
-
 addEvent('onClientCall_race', true)
 addEventHandler('onClientCall_race', resourceRoot,
 	function(fnName, ...)

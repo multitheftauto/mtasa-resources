@@ -1,5 +1,3 @@
-g_ResRoot = getResourceRootElement(getThisResource())
-
 function clientCall(player, fnName, ...)
 	triggerClientEvent(onlyJoined(player), 'onClientCall_race', resourceRoot, fnName, ...)
 end

@@ -118,7 +118,7 @@ function aPlayersTab.Create(tab)
     addEventHandler("aClientPlayerJoin", root, aPlayersTab.onClientPlayerJoin)
     addEventHandler("onClientPlayerQuit", root, aPlayersTab.onClientPlayerQuit)
     addEventHandler(EVENT_SYNC, root, aPlayersTab.onClientSync)
-    addEventHandler("onClientResourceStop", getResourceRootElement(), aPlayersTab.onClientResourceStop)
+    addEventHandler("onClientResourceStop", resourceRoot, aPlayersTab.onClientResourceStop)
     addEventHandler("onAdminRefresh", aPlayersTab.Tab, aPlayersTab.onRefresh)
 
     sync(SYNC_PLAYERS)

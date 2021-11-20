@@ -1,7 +1,6 @@
 local MAX_DIST = 300
 local color = {255, 0, 0}
 local blips = {}
-local resourceRoot = getResourceRootElement(getThisResource())
 
 function onPlayerSpawn_blips(spawnpoint)
 	addBlip(source)

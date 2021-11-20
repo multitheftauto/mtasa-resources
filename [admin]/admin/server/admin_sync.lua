@@ -229,7 +229,7 @@ addEventHandler("aSync", root, function(typed, data)
 end )
 
 addEvent ( "onPlayerMoneyChange", false )
-addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource () ), function()
+addEventHandler ( "onResourceStart", resourceRoot, function()
 	setTimer ( function()
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
 			if isElement(player) and aPlayers[player] then

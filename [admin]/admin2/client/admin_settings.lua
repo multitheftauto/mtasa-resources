@@ -14,7 +14,7 @@ local aSettings = {
 
 addEventHandler(
     "onClientResourceStart",
-    getResourceRootElement(getThisResource()),
+    resourceRoot,
     function()
         aSettings.File = xmlLoadFile("admin.xml")
         if (not aSettings.File) then

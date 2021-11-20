@@ -1,5 +1,3 @@
-local g_ResRoot = getResourceRootElement(getThisResource())
-
 local soundVolume = 0.5
 
 function playAudio(filename)
@@ -11,7 +9,7 @@ end
 addEvent("playClientAudio", true)
 addEventHandler("playClientAudio", root, playAudio)
 
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		playAudio("raceon.mp3")
 	end

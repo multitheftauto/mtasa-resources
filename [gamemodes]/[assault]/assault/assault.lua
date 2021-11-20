@@ -292,7 +292,7 @@ function endRound(conquered)
 			team1Succeded = true
 		end
 	elseif (attacker == team2) then
-		setTimer(triggerEvent, 10000, 1, "onRoundFinished", getResourceRootElement(getThisResource()))
+		setTimer(triggerEvent, 10000, 1, "onRoundFinished", resourceRoot)
 		if not conquered then
 			-- team 1 successfully defended in round 2 and...
 			if team1Succeded then
@@ -1503,10 +1503,10 @@ function waitingCreateDisplay()
 end
 
 -- General Gamemode Events
-addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), startAssault )
+addEventHandler( "onResourceStart", resourceRoot, startAssault )
 addEventHandler( "onGamemodeMapStart", root, startAssaultMap )
 addEventHandler( "onGamemodeMapStop", root, stopAssaultMap )
-addEventHandler( "onResourceStop", getResourceRootElement(getThisResource()), stopAssault )
+addEventHandler( "onResourceStop", resourceRoot, stopAssault )
 
 -- Custom gamemode Events
 addEvent("onAssaultObjectiveReached")

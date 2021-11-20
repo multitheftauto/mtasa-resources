@@ -49,5 +49,5 @@ function idleRespawn( num )
 	--outputConsole( getTickCount() - one )
 end
 
-addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()), onResourceStart )
+addEventHandler ( "onResourceStart", resourceRoot, onResourceStart )
 addEventHandler ( "onVehicleExplode", root, onVehicleExplode )

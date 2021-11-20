@@ -26,7 +26,7 @@ local bRoundJustEnded		= false
 --
 ---------------------------------------------------------------------------
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		Racewar.startup()
 		for _,player in ipairs(getElementsByType('player')) do
@@ -57,7 +57,7 @@ addEventHandler('onPlayerFinish', root,
 	end
 )
 
-addEventHandler('onResourceStop', g_ResRoot,
+addEventHandler('onResourceStop', resourceRoot,
 	function()
 		Racewar.shutdown()
 	end
@@ -764,7 +764,7 @@ function cacheSettings()
 end
 
 -- Initial cache
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		cacheSettings()
 	end
@@ -772,7 +772,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 
 -- React to admin panel changes
 addEvent ( "onSettingChange" )
-addEventHandler('onSettingChange', g_ResRoot,
+addEventHandler('onSettingChange', resourceRoot,
 	function(name, oldvalue, value, playeradmin)
 		cacheSettings()
 		Racewar.updateStatusDisplay()

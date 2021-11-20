@@ -24,7 +24,7 @@ enum(
 
 addEventHandler(
     "onResourceStart",
-    getResourceRootElement(),
+    resourceRoot,
     function()
     end
 )

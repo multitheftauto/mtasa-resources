@@ -62,7 +62,7 @@ function aOptionsTab.Create(tab)
     end
 
     addEventHandler("onClientGUIClick", aOptionsTab.Tab, aOptionsTab.onClientClick)
-    addEventHandler("aClientResourceStop", getResourceRootElement(), aOptionsTab.onClientResourceStop)
+    addEventHandler("aClientResourceStop", resourceRoot, aOptionsTab.onClientResourceStop)
     addEventHandler("onClientGUIScroll", aOptionsTab.Tab, aOptionsTab.onClientScroll)
     addEventHandler("onClientGUITabSwitched", aOptionsTab.Tab, aOptionsTab.onTabSwitched, false)
 end

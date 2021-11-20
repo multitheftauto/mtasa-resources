@@ -53,7 +53,7 @@ selectedRows = {}
 
 addEvent( "onClientPlayerScoreboardClick" )
 
-addEventHandler( "onClientResourceStart", getResourceRootElement( getThisResource() ),
+addEventHandler( "onClientResourceStart", resourceRoot,
 	function ( resource )
 		cScoreboardBackground = tocolor( defaultSettings.bg_color.r, defaultSettings.bg_color.g, defaultSettings.bg_color.b, defaultSettings.bg_color.a )
 		cSelection = tocolor( defaultSettings.selection_color.r, defaultSettings.selection_color.g, defaultSettings.selection_color.b, defaultSettings.selection_color.a )
@@ -87,7 +87,7 @@ function sendServerInfo( output )
 	serverInfo = output
 end
 addEvent( "sendServerInfo", true )
-addEventHandler( "sendServerInfo", getResourceRootElement( getThisResource() ), sendServerInfo )
+addEventHandler( "sendServerInfo", resourceRoot, sendServerInfo )
 
 function toggleScoreboard( _, state )
 	state = iif( state == "1", true, false )
@@ -794,7 +794,7 @@ end
 
 
 addEvent( "doScoreboardAddColumn", true )
-addEventHandler( "doScoreboardAddColumn", getResourceRootElement(),
+addEventHandler( "doScoreboardAddColumn", resourceRoot,
 	function ( name, width, friendlyName, priority, fromResource, isImage, imageW, imageH )
 		scoreboardAddColumn( name, width, friendlyName, priority, nil, fromResource, isImage, imageW, imageH )
 	end
@@ -817,7 +817,7 @@ function scoreboardRemoveColumn( name )
 end
 
 addEvent( "doScoreboardRemoveColumn", true )
-addEventHandler( "doScoreboardRemoveColumn", getResourceRootElement(),
+addEventHandler( "doScoreboardRemoveColumn", resourceRoot,
 	function ( name )
 		scoreboardRemoveColumn( name )
 	end
@@ -833,7 +833,7 @@ function scoreboardClearColumns()
 end
 
 addEvent( "doScoreboardClearColumns", true )
-addEventHandler( "doScoreboardClearColumns", getResourceRootElement(),
+addEventHandler( "doScoreboardClearColumns", resourceRoot,
 	function ()
 		scoreboardClearColumns()
 	end
@@ -853,7 +853,7 @@ function scoreboardResetColumns( fromServer )
 end
 
 addEvent( "doScoreboardResetColumns", true )
-addEventHandler( "doScoreboardResetColumns", getResourceRootElement(),
+addEventHandler( "doScoreboardResetColumns", resourceRoot,
 	function ( fromServer )
 		scoreboardResetColumns( iif( fromServer == nil, true, fromServer ) )
 	end
@@ -865,7 +865,7 @@ function scoreboardSetForced( forced )
 end
 
 addEvent( "doScoreboardSetForced", true )
-addEventHandler( "doScoreboardSetForced", getResourceRootElement(),
+addEventHandler( "doScoreboardSetForced", resourceRoot,
 	function ( forced )
 		scoreboardSetForced( forced )
 	end
@@ -899,7 +899,7 @@ function scoreboardSetSortBy( name, desc )
 end
 
 addEvent( "doScoreboardSetSortBy", true )
-addEventHandler( "doScoreboardSetSortBy", getResourceRootElement(),
+addEventHandler( "doScoreboardSetSortBy", resourceRoot,
 	function ( name, desc )
 		scoreboardSetSortBy( name, desc )
 	end
@@ -940,7 +940,7 @@ function scoreboardSetColumnPriority( name, priority )
 end
 
 addEvent( "doScoreboardSetColumnPriority", true )
-addEventHandler( "doScoreboardSetColumnPriority", getResourceRootElement(),
+addEventHandler( "doScoreboardSetColumnPriority", resourceRoot,
 	function ( name, priority )
 		scoreboardSetColumnPriority( name, priority )
 	end

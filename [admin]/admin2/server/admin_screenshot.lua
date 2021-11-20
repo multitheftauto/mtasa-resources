@@ -108,7 +108,7 @@ end
 
 addEventHandler(
     "onResourceStart",
-    getResourceRootElement(),
+    resourceRoot,
     function()
         db.exec(
             "CREATE TABLE IF NOT EXISTS screenshots ( file TEXT, player TEXT, admin TEXT, description TEXT, time INTEGER, temp BOOL )"

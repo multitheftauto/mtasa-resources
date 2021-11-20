@@ -51,7 +51,7 @@ end
 CLIENT_SCRIPT_LOADED = {}
 
 addEvent( "onRaceGhostResourceStarted", true )
-addEventHandler( "onRaceGhostResourceStarted", getResourceRootElement(),
+addEventHandler( "onRaceGhostResourceStarted", resourceRoot,
 	function()
 		CLIENT_SCRIPT_LOADED[client] = true
 	end

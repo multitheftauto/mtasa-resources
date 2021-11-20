@@ -4,8 +4,6 @@
 -- see joiner.lua for details
 --
 
-g_ResRoot = getResourceRootElement(getThisResource())
-
 addEvent('onClientPlayerJoining')	-- Pre join
 addEvent('onClientPlayerJoined')	-- Post join
 
@@ -129,7 +127,7 @@ addEventHandler('_onClientPlayerJoin', root,
 
 -- Real onClientResourceStart event was fired
 --      Call the deferred onClientResourceStart event handlers, then tell the server we are loaded.
-addEventHandler('_onClientResourceStart', g_ResRoot,
+addEventHandler('_onClientResourceStart', resourceRoot,
 	function()
         callSavedEventHandlers( 'onClientResourceStart', source )
         if _DEBUG_TIMING then

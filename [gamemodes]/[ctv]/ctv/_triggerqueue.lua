@@ -5,7 +5,7 @@ local function joinHandler(player)
 	playerData[player or source] = { loaded = false, pending = {} }
 end
 
-addEventHandler('onResourceStart', getResourceRootElement(getThisResource()),
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		for i,player in ipairs(getElementsByType('player')) do
 			joinHandler(player)

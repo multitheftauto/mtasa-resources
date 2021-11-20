@@ -149,8 +149,8 @@ function getPlayerFromNick ( nick )
 	return false
 end
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResource() ), aAdminResourceStart )
-addEventHandler ( "onClientResourceStop", getResourceRootElement ( getThisResource() ), aAdminResourceStop )
+addEventHandler ( "onClientResourceStart", resourceRoot, aAdminResourceStart )
+addEventHandler ( "onClientResourceStop", resourceRoot, aAdminResourceStop )
 
 
 --

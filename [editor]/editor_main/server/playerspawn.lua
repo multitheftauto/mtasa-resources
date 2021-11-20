@@ -1,7 +1,7 @@
 local disable = function() cancelEvent() end
 local pickupsDisabled = false
 
-addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler ( "onResourceStart", resourceRoot,
 	function()
 		for i,player in ipairs(getElementsByType"player") do
 			spawnPlayer ( player, 2483, -1666, 21, 0, 0, 0, getWorkingDimension() )

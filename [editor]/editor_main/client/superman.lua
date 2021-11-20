@@ -143,7 +143,7 @@ function Superman.Start()
   local self = Superman
 
   -- Register events
-  addEventHandler("onClientResourceStop", getResourceRootElement(thisResource), Superman.Stop, false)
+  addEventHandler("onClientResourceStop", resourceRoot, Superman.Stop, false)
   addEventHandler("onPlayerQuit", root, Superman.onQuit)
   addEventHandler("onClientRender", root, Superman.processFlight)
   addEventHandler("onClientElementStreamIn", root, Superman.onStreamIn)
@@ -153,7 +153,7 @@ function Superman.Start()
   self.rotations = {}
   self.previousVelocity = {}
 end
-addEventHandler("onClientResourceStart", getResourceRootElement(thisResource), Superman.Start, false)
+addEventHandler("onClientResourceStart", resourceRoot, Superman.Start, false)
 
 function Superman.Stop()
   local self = Superman

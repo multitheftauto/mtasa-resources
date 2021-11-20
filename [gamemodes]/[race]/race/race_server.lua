@@ -1,4 +1,3 @@
-g_ResRoot = getResourceRootElement(getThisResource())
 allowRPC('setElementPosition')
 g_MotorBikeIDs = table.create({ 448, 461, 462, 463, 468, 471, 521, 522, 523, 581, 586 }, true)
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
@@ -68,7 +67,7 @@ end
 
 -- Called from the admin panel when a setting is changed there
 addEvent ( "onSettingChange" )
-addEventHandler('onSettingChange', g_ResRoot,
+addEventHandler('onSettingChange', resourceRoot,
 	function(name, oldvalue, value, player)
 		outputDebug( 'MISC', 'Setting changed: ' .. tostring(name) .. '  value:' .. tostring(value) .. '  value:' .. tostring(oldvalue).. '  by:' .. tostring(player and getPlayerName(player) or 'n/a') )
 		cacheGameOptions()
@@ -331,7 +330,7 @@ end
 --      onGamemodeMapStart
 function startRace()
     gotoState('PreGridCountdown')
-	setElementData( g_ResRoot, "info", {mapInfo = g_MapInfo, mapOptions = g_MapOptions, gameOptions = g_GameOptions}, false )
+	setElementData( resourceRoot, "info", {mapInfo = g_MapInfo, mapOptions = g_MapOptions, gameOptions = g_GameOptions}, false )
 	AddonOverride.removeAll()
     triggerEvent('onMapStarting', root, g_MapInfo, g_MapOptions, g_GameOptions )
 	g_Players = {}
@@ -783,14 +782,14 @@ addEventHandler('onResourceStart', root,
 )
 
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		outputDebugString('Race resource starting')
 		startAddons()
 	end
 )
 
-addEventHandler('onGamemodeStart', g_ResRoot,
+addEventHandler('onGamemodeStart', resourceRoot,
 	function()
 		outputDebugString('Race onGamemodeStart')
 		addRaceScoreboardColumns()
@@ -806,7 +805,7 @@ function addRaceScoreboardColumns()
 	exports.scoreboard:addScoreboardColumn('state')
 end
 
-addEventHandler('onResourceStop', g_ResRoot,
+addEventHandler('onResourceStop', resourceRoot,
 	function()
         gotoState( 'Race resource stopping' )
         fadeCamera ( root, false, 0.0, 0,0, 0 )

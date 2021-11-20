@@ -1,5 +1,4 @@
 local thisResource = getThisResource()
-local thisResourceRoot = getResourceRootElement(thisResource)
 local g_suspendedCamera = {}
 local g_screenX, g_screenY = guiGetScreenSize ()
 
@@ -145,7 +144,7 @@ local specialIntersections = {
 
 function startWhenLoaded()
 	engineSetAsynchronousLoading ( false, true )
-	if getElementData(thisResourceRoot,"g_in_test") then
+	if getElementData(resourceRoot,"g_in_test") then
 		setElementData ( localPlayer, "waitingToStart", true, false )
 		return
 	else
@@ -167,7 +166,7 @@ addEventHandler("doSelectElement", root,
 
 addEventHandler("onClientRender", root,
 	function ()
-		if g_suspended or getElementData(thisResourceRoot,"g_in_test") then
+		if g_suspended or getElementData(resourceRoot,"g_in_test") then
 			return
 		end
 		--
@@ -338,7 +337,7 @@ function stopEditor()
 	engineSetAsynchronousLoading ( true, false )
 	resetWorldSounds()
 end
-addEventHandler("onClientResourceStop", thisResourceRoot, stopEditor)
+addEventHandler("onClientResourceStop", resourceRoot, stopEditor)
 
 function toggleMode(key, keyState)
 	if (g_mode == CAMERA_MODE) then

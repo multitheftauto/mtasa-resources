@@ -1,5 +1,3 @@
-local root = getRootElement ()
-local resourceRoot = getResourceRootElement(getThisResource())
 local blockedVehiclesIDs = {592, 577, 511, 548, 512, 593, 425, 417, 487, 553,
 							488, 497, 563, 476, 447, 519, 460, 469, 513, 520,
 							441, 464, 465, 501, 432}

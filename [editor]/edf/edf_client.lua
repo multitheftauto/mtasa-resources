@@ -31,7 +31,7 @@ end
 
 
 --Hide the dummy object
-addEventHandler("onClientResourceStart",getResourceRootElement(thisResource),
+addEventHandler("onClientResourceStart",resourceRoot,
 	function()
 		for key,object in ipairs(getElementsByType"object") do
 			if getElementData ( object, "edf:dummy" ) then

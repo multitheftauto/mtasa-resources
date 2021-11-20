@@ -1,4 +1,3 @@
-local thisResourceRoot = getResourceRootElement(getThisResource())
 local serverConsole = getElementByIndex("console", 0)
 
 local modeOptions = 0
@@ -49,7 +48,7 @@ function setCurrentPollSize ( size )
 end
 
 --initializes built-in polls' settings
-addEventHandler("onResourceStart", thisResourceRoot,
+addEventHandler("onResourceStart", resourceRoot,
 	function()
 		for name, info in pairs(vote) do
 			local settingsGroup = "vote"..name

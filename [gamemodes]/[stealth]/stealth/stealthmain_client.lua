@@ -47,7 +47,7 @@ function movetocam(thisplayer)
 			setCameraMatrix(x, y, z, a, b, c)
 		end
 	else --Most likely a setting
-		local cameraData = getElementData(getResourceRootElement(getThisResource()),"camera")
+		local cameraData = getElementData(resourceRoot,"camera")
 		if cameraData then
 			local x,y,z = unpack(cameraData[1])
 			local a,b,c = unpack(cameraData[2])
@@ -64,7 +64,7 @@ function updateCam (data)
 	if not getElementData(source,data) then return end
 	movetocam()
 end
-addEventHandler ( "onClientElementDataChange", getResourceRootElement(getThisResource()), updateCam )
+addEventHandler ( "onClientElementDataChange", resourceRoot, updateCam )
 
 addEvent("Startround",true)
 
@@ -452,7 +452,7 @@ function TeamSelected ( button, state, absoluteX, absoluteY, worldX, worldY, wor
 	end
 end
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler ( "onClientResourceStart", resourceRoot,
 	function()
 		movetocam(localPlayer)
 		local weaponsTable = getElementData(root,"lasersight")

@@ -16,7 +16,7 @@ local keybinds_backup = {}
 local keyStates = { down = true, up = true, both = true }
 
 --!get controls if editor_main is started after this
-addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStart", resourceRoot,
 	function()
 		if getResourceFromName("editor_main") then
 			cc = exports.editor_main:getControls()

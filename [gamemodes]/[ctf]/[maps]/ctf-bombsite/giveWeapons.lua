@@ -10,4 +10,4 @@ function mapLoadTimeWeather (  )
 	setTime ( 00, 0 )
 	setWeather ( 11 )
 end
-addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()),mapLoadTimeWeather )
+addEventHandler ( "onResourceStart", resourceRoot,mapLoadTimeWeather )

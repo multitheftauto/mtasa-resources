@@ -120,7 +120,7 @@ addEvent('onServerCallback', true)
 addEventHandler('onServerCallback', root,
 	function(crID, fnName, ...)
 		if allowedRPC[fnName] then
-			triggerClientEvent(source, 'onServerCallbackReply', getResourceRootElement(getThisResource()), crID, _G[fnName](...))
+			triggerClientEvent(source, 'onServerCallbackReply', resourceRoot, crID, _G[fnName](...))
 		end
 	end
 )

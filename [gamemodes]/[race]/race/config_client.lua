@@ -8,7 +8,7 @@ local AddonsInfoList = {}
 
 
 addEvent('onClientOpenConfig', true )
-addEventHandler('onClientOpenConfig', g_ResRoot,
+addEventHandler('onClientOpenConfig', resourceRoot,
 	function()
 		openConfigMenu()
 	end
@@ -65,7 +65,7 @@ end
 
 
 addEvent('onClientReceiveAddonsInfo', true )
-addEventHandler('onClientReceiveAddonsInfo', g_ResRoot,
+addEventHandler('onClientReceiveAddonsInfo', resourceRoot,
 	function(addonsInfoMap)
 		-- Map to list
 		AddonsInfoList = {}
@@ -218,7 +218,7 @@ end
 --------------------------------
 -- Config events
 --------------------------------
-addEventHandler ( "onClientGUISize", g_ResRoot,
+addEventHandler ( "onClientGUISize", resourceRoot,
 	function ()
 		if source == gui["form"] then
 			resizeMenu()
@@ -226,7 +226,7 @@ addEventHandler ( "onClientGUISize", g_ResRoot,
 	end
 )
 
-addEventHandler ( "onClientGUIClick", g_ResRoot,
+addEventHandler ( "onClientGUIClick", resourceRoot,
 	function ()
 		if not gui["form"] then
 			return

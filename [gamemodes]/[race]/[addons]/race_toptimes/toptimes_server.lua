@@ -33,7 +33,7 @@ addEventHandler('onPlayerFinish', root,
 	end
 )
 
-addEventHandler('onResourceStop', g_ResRoot,
+addEventHandler('onResourceStop', resourceRoot,
 	function()
 		if g_SToptimesManager then
 			g_SToptimesManager:unloadingMap()
@@ -50,7 +50,7 @@ addEventHandler('onPlayerQuit', root,
 	end
 )
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		local raceInfo = getRaceInfo()
 		if raceInfo and g_SToptimesManager then
@@ -394,7 +394,7 @@ end
 
 -- React to admin panel changes
 addEvent ( "onSettingChange" )
-addEventHandler('onSettingChange', g_ResRoot,
+addEventHandler('onSettingChange', resourceRoot,
 	function(name, oldvalue, value, playeradmin)
 		outputDebug( 'MISC', 'Setting changed: ' .. tostring(name) .. '  value:' .. tostring(value) .. '  value:' .. tostring(oldvalue).. '  by:' .. tostring(player and getPlayerName(player) or 'n/a') )
 		cacheSettings()

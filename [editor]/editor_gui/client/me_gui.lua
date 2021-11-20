@@ -2,7 +2,6 @@ enableSound = true --this enables or disables sound.  For the options menu
 isCurrentButtonElement = false --this checks whether the currently highlighted button is an element icon, so EDF info can appear.
 currentSelectedResource = false --this defines the currently selected resource
 local wasCurrentBrowserShowing = false
-local thisResourceRoot = getResourceRootElement(getThisResource())
 local bar = {}
 --These tables define the buttons that go on the top.  the names match their filename.
 menuButtons = { { ["name"]="new" },{ ["name"]="open" },{ ["name"]="save" },{ ["name"]="save as" },{ ["name"]="options" },{ ["name"]="undo" },{ ["name"]="redo" }, { ["name"]="locations" }--[[,{ ["name"]="clipboard" },{ ["name"]="exit" } ]]}
@@ -64,7 +63,7 @@ function startGUI(resource)
 	welcomeUser()
 	setHUDAlpha(0.2)
 end
-addEventHandler("onClientResourceStart",thisResourceRoot, startGUI )
+addEventHandler("onClientResourceStart",resourceRoot, startGUI )
 
 function scrollEDF(key,keyState)
 	if isCurrentButtonElement == false then return end
@@ -470,7 +469,7 @@ function guiCreateMinimalLabel(x,y,width,height,text,relative,parent)
 end
 
 --Stops gui input being enabled when the resource stops
-addEventHandler ( "onClientResourceStop", thisResourceRoot,
+addEventHandler ( "onClientResourceStop", resourceRoot,
 	function()
 		guiSetInputEnabled(false)
 	end

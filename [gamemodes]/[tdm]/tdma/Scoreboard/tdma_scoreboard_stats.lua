@@ -34,7 +34,7 @@ function onMapLoad ( name )
 
 	setTimer ( gameTick, 1000, 0 )
 end
-addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), onMapLoad)
+addEventHandler( "onResourceStart", resourceRoot, onMapLoad)
 
 function onMapFinish ( name )
 	if getThisResource() ~= name then return end

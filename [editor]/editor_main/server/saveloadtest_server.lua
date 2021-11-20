@@ -34,7 +34,7 @@ addEvent ( "testResource", true )
 addEvent ( "newResource", true )
 addEvent ( "quickSaveResource", true )
 
-addEventHandler ( "onResourceStart", thisResourceRoot,
+addEventHandler ( "onResourceStart", resourceRoot,
 	function()
 		refreshResources(false)
 		setOcclusionsEnabled ( false )
@@ -114,7 +114,7 @@ addEventHandler("newResource", root,
 		restoreAllWorldModels ( )
 		passDefaultMapSettings()
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
-		triggerEvent("onNewMap", thisResourceRoot)
+		triggerEvent("onNewMap", resourceRoot)
 		dumpSave()
 		editor_gui.outputMessage(getPlayerName(client).." started a new map.", root, 255, 0, 0)
 	end

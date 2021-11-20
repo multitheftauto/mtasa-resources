@@ -1,5 +1,3 @@
-local root = getRootElement ()
-local resourceRoot = getResourceRootElement ( getThisResource () )
 local textTable = {}
 
 function displayMessageForPlayer ( player, textID, message, duration, posX, posY, colorR, colorG, colorB, alpha, scale )

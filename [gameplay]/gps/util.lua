@@ -25,7 +25,7 @@ end
 server = setmetatable({}, serverMT)
 
 addEvent('onServerCallbackReply', true)
-addEventHandler('onServerCallbackReply', getResourceRootElement(getThisResource()),
+addEventHandler('onServerCallbackReply', resourceRoot,
 	function(crID, ...)
 		coroutine.resume(CRs[crID], ...)
 	end,

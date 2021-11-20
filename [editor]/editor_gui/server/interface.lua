@@ -21,7 +21,7 @@ addEventHandler("onResourceStart", root,
 	end
 )
 
-addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onResourceStart", resourceRoot,
 	function()
 		for name in pairs(interface) do
 			local resource = getResourceFromName(name)

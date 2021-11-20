@@ -19,15 +19,15 @@ addEvent("onPlayerReady", true)
 addEvent("onPlayerBriefcaseHit", true)
 addEvent("onPlayerObjectiveHit", true)
 
-addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onResourceStart", resourceRoot,
 function (resource)
 
-	local resourceRoot = getResourceRootElement(resource)
+	local resRoot = getResourceRootElement(resource)
 
 	addEventHandler( "onGamemodeMapStart", root,		onGamemodeMapStart_brmain)
 
 	addEventHandler( "onResourceStart", root,			onResourceStart_brmain)
-	addEventHandler( "onResourceStop", resourceRoot,	onResourceStop_brmain)
+	addEventHandler( "onResourceStop", resRoot,	onResourceStop_brmain)
 end
 )
 

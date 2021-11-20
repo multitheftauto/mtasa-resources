@@ -58,7 +58,7 @@ function getClientAddedEDFs()
 	return table.map(table.shallowcopy(allEDF.addedEDF), getResourceFromName)
 end
 
-addEventHandler ( "onResourceStart", thisResourceRoot,
+addEventHandler ( "onResourceStart", resourceRoot,
 	function ()
 		if getResourceState( edf.res ) == "running" then
 			loadedDefs = edf.edfGetLoadedEDFResources()
@@ -152,7 +152,7 @@ end
 addEvent ( "reloadEDFDefinitions", true )
 addEventHandler ( "reloadEDFDefinitions", root, reloadEDFDefinitions )
 
-addEventHandler ( "onResourceStop",thisResourceRoot,
+addEventHandler ( "onResourceStop",resourceRoot,
 	function()
 		if not newEDF then return end --newEDF is cleared when the editor is stopped (prevent a debug error)
 		for i, resourceName in ipairs(newEDF.addedEDF) do

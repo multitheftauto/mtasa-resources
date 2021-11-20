@@ -22,7 +22,7 @@ addEventHandler("onResourceStart", root,
 	end
 )
 
-addEventHandler("onResourceStart", thisResourceRoot,
+addEventHandler("onResourceStart", resourceRoot,
 	function()
 		for name in pairs(interface) do
 			local resource = getResourceFromName(name)

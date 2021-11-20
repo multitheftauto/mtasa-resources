@@ -1,7 +1,7 @@
 local briefcaseResource
 local callQueue = {}
 
-addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStart", resourceRoot,
 function (resource)
 	briefcaseResource = getResourceFromName("briefcase")
 	if (briefcaseResource) then

@@ -1,7 +1,3 @@
-
-g_ResRoot = getResourceRootElement();
-
-
 function table.size( tab )
 	local size = 0;
 	for i,v in pairs( tab ) do

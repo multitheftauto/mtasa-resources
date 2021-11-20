@@ -1,6 +1,5 @@
 local spectators = {}
 local getPlayerSpectatee = {}
-resourceRoot = getResourceRootElement(getThisResource())
 
 function teamstealthgamestart()
 	killmessageRes = getResourceFromName"killmessages"
@@ -193,7 +192,7 @@ function teamstealthmapstart(startedMap)
 			zi = zi/spawns
 			cameraInfo = { {xi, yi, zi}, {xi, yi, zi} }
 		end
-		setElementData ( getResourceRootElement(getThisResource()), "camera", cameraInfo )
+		setElementData ( resourceRoot, "camera", cameraInfo )
 		local camera = createElement("camera")
 		setElementData ( camera, "posX", cameraInfo[1][1] )
 		setElementData ( camera, "posY", cameraInfo[1][2] )
@@ -651,7 +650,7 @@ function roundtick()
 	round_count = round_count+1
 	round_limit = get("stealth.round_countlimit")*2
 	if round_count == round_limit then
-		triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
+		triggerEvent("onRoundFinished", resourceRoot)
 	end
 end
 
@@ -703,7 +702,7 @@ function playerhurt ( attacker, weapon, bodypart, loss )--HEADSHOT INSTAKILL
 	end
 end
 
-addEventHandler ( "onPlayerDamage", getRootElement (), playerhurt )
+addEventHandler ( "onPlayerDamage", root, playerhurt )
 
 function outputHeadshotIcon (killer, weapon, bodypart)
 	if bodypart == 9 then

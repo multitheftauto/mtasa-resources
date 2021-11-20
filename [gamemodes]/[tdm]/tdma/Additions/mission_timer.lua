@@ -13,7 +13,7 @@ function misTmrStart ( name )
 	addEvent ( "missionTimerActivated", false )
 	setTimer ( missionTimerTick, 1000, 0 )
 end
-addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()), misTmrStart )
+addEventHandler ( "onResourceStart", resourceRoot, misTmrStart )
 
 function createMissionTimer ( player, timeSeconds, direction, textSize, textPosX, textPosY, textRed, textGreen, textBlue, showForAll )
 	local missionTimersCount = #missionTimers + 1

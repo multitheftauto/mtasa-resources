@@ -36,7 +36,7 @@ addEventHandler(
 
 addEventHandler(
     "onClientResourceStart",
-    getResourceRootElement(getThisResource()),
+    resourceRoot,
     function()
         triggerServerEvent("aPermissions", localPlayer)
         triggerServerEvent("aClientInitialized", localPlayer)

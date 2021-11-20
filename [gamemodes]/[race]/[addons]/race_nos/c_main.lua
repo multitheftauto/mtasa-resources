@@ -1,6 +1,3 @@
-
-g_ResRoot = getResourceRootElement( );
-
 g_tScreenSize = { guiGetScreenSize( ) };
 
 local nos = 0;
@@ -11,7 +8,7 @@ g_bShowGauge = false;
 
 g_tGaugePosition = { g_tScreenSize[1] * 0.02, g_tScreenSize[2] * 0.6 };
 
-addEventHandler( "onClientResourceStart", g_ResRoot,
+addEventHandler( "onClientResourceStart", resourceRoot,
 	function( )
 		label = guiCreateLabel( 0, 0, 200, 40, "Click anywhere on the screen to\nchange gauge position", false );
 		guiSetFont( label, "default-bold-small" );

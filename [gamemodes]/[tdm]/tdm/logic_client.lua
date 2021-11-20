@@ -1,5 +1,4 @@
 g_ScreenX,g_ScreenY = guiGetScreenSize()
-g_ResourceRoot = getResourceRootElement(getThisResource())
 g_FragColor = tocolor(255,255,255,255)
 
 local fragText,spreadText,rankText,respawnText,currentRank
@@ -30,7 +29,7 @@ local function dxSetAlpha ( dx, a )
 end
 ----
 
-addEventHandler ( "onClientResourceStart", g_ResourceRoot,
+addEventHandler ( "onClientResourceStart", resourceRoot,
 	function()
 		respawnText = dxText:create( "", 0.5, 0.5, true, "pricedown", 2 )
 		respawnText:type("stroke",1.2)

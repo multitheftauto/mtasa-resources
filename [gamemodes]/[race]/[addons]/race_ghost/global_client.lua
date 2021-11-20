@@ -39,7 +39,7 @@ function msToTimeStr(ms)
 end
 
 -- Trying to avoid client/server event errors
-addEventHandler( "onClientResourceStart", getResourceRootElement(),
+addEventHandler( "onClientResourceStart", resourceRoot,
 	function()
 		triggerServerEvent ( "onRaceGhostResourceStarted", root )
 	end

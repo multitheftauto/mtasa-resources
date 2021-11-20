@@ -8,7 +8,7 @@
 --
 ---------------------------------------------------------------------------
 
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		Bigdar.setHotKey( 'F4' )
 	end

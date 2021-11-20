@@ -1,4 +1,3 @@
-g_ResRoot = getResourceRootElement(getThisResource())
 g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
 g_WaterCraftIDs = table.create({ 539, 460, 417, 447, 472, 473, 493, 595, 484, 430, 453, 452, 446, 454 }, true)
 g_ModelForPickupType = { nitro = 2221, repair = 2222, vehiclechange = 2223 }
@@ -9,7 +8,7 @@ g_Pickups = {}
 g_VisiblePickups = {}
 g_Objects = {}
 
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		g_Players = getElementsByType('player')
 
@@ -1361,7 +1360,7 @@ addEventHandler('onClientPlayerQuit', root,
 	end
 )
 
-addEventHandler('onClientResourceStop', g_ResRoot,
+addEventHandler('onClientResourceStop', resourceRoot,
 	function()
 		unloadAll()
 		removeEventHandler('onClientRender', root, updateBars)

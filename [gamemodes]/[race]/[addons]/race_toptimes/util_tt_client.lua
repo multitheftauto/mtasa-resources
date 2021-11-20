@@ -2,8 +2,6 @@
 -- util_tt_client.lua
 --
 
-g_ResRoot = getResourceRootElement(getThisResource())
-
 addEvent('onClientCall_tt', true)
 addEventHandler('onClientCall_tt', root,
 	function(fnName, ...)

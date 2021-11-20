@@ -1,9 +1,7 @@
-local thisResourceRoot = getResourceRootElement(getThisResource())
-
 local cycleMode
 local cyclerFunction
 
-addEventHandler("onResourceStart", thisResourceRoot,
+addEventHandler("onResourceStart", resourceRoot,
 	function()
 		cycleMode = get("mode")
 		local startFunction = _G["startCycler_"..cycleMode]

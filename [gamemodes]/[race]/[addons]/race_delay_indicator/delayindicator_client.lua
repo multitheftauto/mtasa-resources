@@ -1,5 +1,3 @@
-local g_ResRoot = getResourceRootElement(getThisResource())
-
 local DISTANCE_FRONT_BEHIND = 0.03
 local SCALE = 2
 local TIME_TO_DISPLAY = 2000
@@ -79,7 +77,7 @@ function hideDelayDisplay(front)
 	end
 end
 
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		local settingsFile = xmlLoadFile("settings.xml")
 		if settingsFile then

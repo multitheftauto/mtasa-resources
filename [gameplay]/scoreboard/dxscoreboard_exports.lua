@@ -207,7 +207,7 @@ function onClientDXScoreboardResourceStart()
 	end
 end
 addEvent( "onClientDXScoreboardResourceStart", true )
-addEventHandler( "onClientDXScoreboardResourceStart", getResourceRootElement( getThisResource() ), onClientDXScoreboardResourceStart )
+addEventHandler( "onClientDXScoreboardResourceStart", resourceRoot, onClientDXScoreboardResourceStart )
 
 function requestServerInfo()
 	local mapmanager = getResourceFromName( "mapmanager" )
@@ -233,7 +233,7 @@ function requestServerInfo()
 	triggerClientEvent( client, "sendServerInfo", root, output )
 end
 addEvent( "requestServerInfo", true )
-addEventHandler( "requestServerInfo", getResourceRootElement( getThisResource() ), requestServerInfo )
+addEventHandler( "requestServerInfo", resourceRoot, requestServerInfo )
 
 function removeResourceScoreboardColumns( resource )
 	if resourceColumns[resource] then

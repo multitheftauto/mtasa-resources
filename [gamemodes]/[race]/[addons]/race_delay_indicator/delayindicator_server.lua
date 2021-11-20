@@ -1,4 +1,3 @@
-local g_ResRoot = getResourceRootElement(getThisResource())
 local debug = false
 
 local mapName
@@ -8,7 +7,7 @@ local lastPlayer = {} 			--lastPlayer[checkpointNum] = player
 local allCpTimes = {} 			--allCpTimes[player][checkpointNum] = time
 local players = {}
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		-- executeSQLDropTable("mapInterims")
 		-- Add table if required

@@ -140,7 +140,7 @@ function setupMapSettings()
 		end
 	end
 end
-addEventHandler ( "onResourceStart", thisResourceRoot, setupMapSettings )
+addEventHandler ( "onResourceStart", resourceRoot, setupMapSettings )
 
 addEventHandler ( "onClientGUILoaded", root,
 	function()

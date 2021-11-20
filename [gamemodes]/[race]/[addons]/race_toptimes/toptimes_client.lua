@@ -15,7 +15,7 @@ g_Settings = {}
 --
 ---------------------------------------------------------------------------
 
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		triggerServerEvent('onLoadedAtClient_tt', localPlayer)
 	end

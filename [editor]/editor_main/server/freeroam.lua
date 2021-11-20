@@ -1,4 +1,4 @@
-addEventHandler("onResourceStart",getResourceRootElement(getThisResource()),
+addEventHandler("onResourceStart",resourceRoot,
 	function()
 		local freeroam = getResourceFromName("freeroam")
 		if not freeroam then

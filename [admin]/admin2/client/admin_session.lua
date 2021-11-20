@@ -45,7 +45,7 @@ addEventHandler(
 
 addEventHandler(
     "onClientResourceStart",
-    getResourceRootElement(getThisResource()),
+    resourceRoot,
     function()
         triggerServerEvent(EVENT_SESSION, localPlayer, SESSION_START)
     end
@@ -53,7 +53,7 @@ addEventHandler(
 
 addEventHandler(
     "onClientResourceStop",
-    getResourceRootElement(getThisResource()),
+    resourceRoot,
     function()
         guiSetInputEnabled(false)
     end
