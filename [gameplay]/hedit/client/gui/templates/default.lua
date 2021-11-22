@@ -658,7 +658,7 @@ template.viewcontents = {
             grid = {
                 type = "gridlist",
                 pos = { 72, 83 },
-                size = { 285, 246 },
+                size = { 285, 220 },
                 runfunction = function ( this )
                     guiGridListAddColumn ( this, "Name",  0.5 )
                     guiGridListAddColumn ( this, "Model", 0.4 )
@@ -782,7 +782,7 @@ template.viewcontents = {
             },
             saveButton = {
                 type = "button",
-                pos = { 289, 334 },
+                pos = { 289, 309 },
                 size = { 68, 25 },
                 events = {
                     onClick = function ( this )
@@ -813,7 +813,7 @@ template.viewcontents = {
 
             loadButton = {
                 type = "button",
-                pos = { 289, 359 },
+                pos = { 289, 334 },
                 size = { 68, 25 },
                 events = {
                     onClick = function ( this )
@@ -835,6 +835,31 @@ template.viewcontents = {
                             end
 
                             func ( )
+                        end
+                    end
+                }
+            },
+
+            deleteButton = {
+                type = "button",
+                pos = { 289, 359 },
+                size = { 68, 25 },
+                events = {
+                    onClick = function ( this )
+                        local content = heditGUI.viewItems.save.guiItems
+                        local row,col = guiGridListGetSelectedItem ( content.grid )
+
+                        if row ~= -1 and col ~= -1 then
+                            local name = string.lower ( guiGridListGetItemText ( content.grid, row, col ) )
+
+                            local function func ( )
+                                if deleteClientHandling ( pVehicle, name ) then
+                                    guiCreateWarningMessage ( getText ( "sucessDelete" ), 3 )
+                                end
+                            end
+
+                            guiCreateWarningMessage ( getText ( "confirmDelete" ), 2, {func} )
+                            return true
                         end
                     end
                 }

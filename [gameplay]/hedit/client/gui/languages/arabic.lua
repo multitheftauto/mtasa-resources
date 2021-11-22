@@ -36,6 +36,7 @@ guiLanguage.arabic = {
 
     successSave = "تم حفظ اعدادات وزانيتك بنجاح",
     successLoad = "تم تحميل اعدادات وزانيتك بنجاح",
+    successDelete = "",
 
     wantTheSettings = "هل انت متاكد من انك تريد تطبيق هذه الاعدادات ? معدل وزانيات سيتم اعادة تشغيله",
 
