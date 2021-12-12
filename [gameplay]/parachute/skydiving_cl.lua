@@ -184,7 +184,7 @@ function isPlayerSkyDiving(player)
 end
 
 function updateSkyDiving ( data, oldval )
-	if ( getElementType(source) == "player" and source ~= localPlayer and data == "skydiving" ) then
+	if ( data == "skydiving" and source ~= localPlayer ) then
 		if ( getElementData ( source, "skydiving" ) == true ) then
 			g_skydivers[source] = true
 		else
