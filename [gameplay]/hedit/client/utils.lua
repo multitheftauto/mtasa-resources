@@ -509,6 +509,11 @@ function prepareHandlingValue ( vehicle, property, value )
         value = 13.04
     end
 
+    -- Workaround for this bug: https://github.com/multitheftauto/mtasa-blue/issues/494
+    if (property == "steeringLock") and (getVehicleType(vehicle) == "Bike" or getVehicleType(vehicle) == "BMX") and tonumber(value) < 1 then
+        value = 1
+    end
+
     setVehicleHandling ( vehicle, property, value )
 
     return true
