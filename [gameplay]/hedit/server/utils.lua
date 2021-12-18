@@ -90,8 +90,12 @@ function setHandlingFromTable ( vehicle, tab, exe )
     for property,value in pairs ( tab ) do
         outputDebugString ( "PROPERTY: "..property.." - VALUE: "..tostring(value).." - TYPE: "..type(value) )
 
-	    if property == "maxVelocity" and (tonumber(value) > 13.02 and tonumber(value) < 13.1) then
+        if property == "maxVelocity" and (tonumber(value) > 13.02 and tonumber(value) < 13.1) then
             value = 13.04
+        end
+
+        if (property == "steeringLock") and (getVehicleType(vehicle) == "Bike" or getVehicleType(vehicle) == "BMX") and tonumber(value) < 1 then
+            value = 1
         end
 
         setVehicleHandling ( vehicle, property, value, false )
