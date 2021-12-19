@@ -36,7 +36,7 @@ guiLanguage.polish = {
 
     successSave = "Pomyslnie zapisano twoje ustawienia",
     successLoad = "Pomyslnie wczytano twoje ustawienia!",
-    sucessDelete = "",
+    successDelete = "",
     
     wantTheSettings = "Czy na pewno chcesz zastosowac te ustawienia? Edytor uruchomi sie ponownie.",
 

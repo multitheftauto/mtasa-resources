@@ -36,7 +36,7 @@ guiLanguage.english = {
 
     successSave = "Successfully saved your handling settings!",
     successLoad = "Successfully loaded your handling settings!",
-    sucessDelete = "Successfully deleted your handling settings!",
+    successDelete = "Successfully deleted your handling settings!",
 
     wantTheSettings = "Are you sure you would like to apply these settings? The handling editor will restart.",
 

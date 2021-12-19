@@ -854,7 +854,7 @@ template.viewcontents = {
 
                             local function func ( )
                                 if deleteClientHandling ( pVehicle, name ) then
-                                    guiCreateWarningMessage ( getText ( "sucessDelete" ), 3 )
+                                    guiCreateWarningMessage ( getText ( "successDelete" ), 3 )
                                 end
                             end
 
