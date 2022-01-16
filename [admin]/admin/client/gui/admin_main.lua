@@ -288,7 +288,6 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 								guiComboBoxAddItem (aTab4.ComboBox,ComboBoxIndividualItems)
 							end
 						guiComboBoxAdjustHeight (aTab4.ComboBox,#ComboBoxItems)
-						ComboBoxItems = nil
 						guiComboBoxSetSelected (aTab4.ComboBox,0)
 
 
@@ -544,8 +543,8 @@ end
 
 function aClientSync ( type, table, data )
 	if ( type == "player" and aPlayers[source] ) then
-		for type, data in pairs ( table ) do
-			aPlayers[source][type] = data
+		for type2, data2 in pairs ( table ) do
+			aPlayers[source][type2] = data2
 		end
 	elseif ( type == "players" ) then
 		aPlayers = table
@@ -796,12 +795,12 @@ function aClientPlayerJoin ( ip, accountname, serial, admin, country )
 	local row = guiGridListAddRow ( aTab1.PlayerList )
 	guiGridListSetItemPlayerName ( aTab1.PlayerList, row, 1, getPlayerName ( source ), false, false )
 	if ( admin ) then
-		local row = guiGridListAddRow ( aTab5.AdminPlayers )
-		guiGridListSetItemPlayerName ( aTab5.AdminPlayers, row, 1, getPlayerName ( source ), false, false )
+		local row2 = guiGridListAddRow ( aTab5.AdminPlayers )
+		guiGridListSetItemPlayerName ( aTab5.AdminPlayers, row2, 1, getPlayerName ( source ), false, false )
 	end
 	if ( aSpectator.PlayerList ) then
-		local row = guiGridListAddRow ( aSpectator.PlayerList )
-		guiGridListSetItemPlayerName ( aSpectator.PlayerList, row, 1, getPlayerName ( source ), false, false )
+		local row3 = guiGridListAddRow ( aSpectator.PlayerList )
+		guiGridListSetItemPlayerName ( aSpectator.PlayerList, row3, 1, getPlayerName ( source ), false, false )
 	end
 end
 
@@ -814,21 +813,21 @@ function aClientPlayerQuit ()
 		id = id + 1
 	end
 	if ( aPlayers[source] and aPlayers[source]["admin"] ) then
-		local id = 0
-		while ( id <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
-			if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id, 1 ) == getPlayerName ( source ) ) then
+		local id2 = 0
+		while ( id2 <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
+			if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id2, 1 ) == getPlayerName ( source ) ) then
 				guiGridListRemoveRow ( aTab5.AdminPlayers, id )
 			end
-			id = id + 1
+			id2 = id2 + 1
 		end
 	end
 	if ( aSpectator.PlayerList ) then
-		local id = 0
-		while ( id <= guiGridListGetRowCount( aSpectator.PlayerList ) ) do
-			if ( guiGridListGetItemPlayerName ( aSpectator.PlayerList, id, 1 ) == getPlayerName ( source ) ) then
-				guiGridListRemoveRow ( aSpectator.PlayerList, id )
+		local id3 = 0
+		while ( id3 <= guiGridListGetRowCount( aSpectator.PlayerList ) ) do
+			if ( guiGridListGetItemPlayerName ( aSpectator.PlayerList, id3, 1 ) == getPlayerName ( source ) ) then
+				guiGridListRemoveRow ( aSpectator.PlayerList, id3 )
 			end
-			id = id + 1
+			id3 = id3 + 1
 		end
 	end
 	aPlayers[source] = nil

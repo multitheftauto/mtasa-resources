@@ -402,8 +402,8 @@ function aPlayersTab.onClientPlayerJoin(ip, username, serial, country, countryna
     end
     guiGridListSetItemData(list, row, 1, source)
     if (aSpecPlayerList) then
-        local row = guiGridListAddRow(aSpecPlayerList)
-        guiGridListSetItemText(aSpecPlayerList, row, 1, getPlayerName(source), false, false)
+        local row2 = guiGridListAddRow(aSpecPlayerList)
+        guiGridListSetItemText(aSpecPlayerList, row2, 1, getPlayerName(source), false, false)
     end
 end
 
@@ -417,12 +417,12 @@ function aPlayersTab.onClientPlayerQuit()
         id = id + 1
     end
     if (aSpecPlayerList) then
-        local id = 0
-        while (id <= guiGridListGetRowCount(aSpecPlayerList)) do
-            if (guiGridListGetItemText(aSpecPlayerList, id, 1) == getPlayerName(source)) then
-                guiGridListRemoveRow(aSpecPlayerList, id)
+        local id2 = 0
+        while (id2 <= guiGridListGetRowCount(aSpecPlayerList)) do
+            if (guiGridListGetItemText(aSpecPlayerList, id2, 1) == getPlayerName(source)) then
+                guiGridListRemoveRow(aSpecPlayerList, id2)
             end
-            id = id + 1
+            id2 = id2 + 1
         end
     end
     aPlayers[source] = nil
@@ -430,8 +430,8 @@ end
 
 function aPlayersTab.onClientSync(type, table)
     if (type == SYNC_PLAYER) then
-        for type, data in pairs(table) do
-            aPlayers[source][type] = data
+        for type2, data in pairs(table) do
+            aPlayers[source][type2] = data
         end
     elseif (type == SYNC_PLAYERS) then
         aPlayers = table

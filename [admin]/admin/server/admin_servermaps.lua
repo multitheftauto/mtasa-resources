@@ -27,7 +27,7 @@ function getServerMaps (loadList)
 
 	if loadList then
 		-- local deletedMaps = {}
-		local gamemodes = {}
+		local gamemodes
 		gamemodes = call(mapmanager, "getGamemodes")
 		for id,gamemode in ipairs (gamemodes) do
 			tableOut[id] = {}

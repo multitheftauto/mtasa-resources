@@ -200,9 +200,12 @@ end
 function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 	if ( not tonumber ( inc ) ) then inc = inc2 end
 	if ( not tonumber ( inc ) ) then return end
-	local players = {}
-	if ( guiCheckBoxGetSelected ( aSpectator.Skip ) ) then players = aSpectator.GetAlive()
-	else players = getElementsByType ( "player" ) end
+	local players
+	if ( guiCheckBoxGetSelected ( aSpectator.Skip ) ) then
+		players = aSpectator.GetAlive()
+	else
+		players = getElementsByType ( "player" )
+	end
 	if ( #players <= 0 ) then
 		aMessageBox ( "question", "Nobody to spectate, exit spectator?", "spectatorClose" )
 		return

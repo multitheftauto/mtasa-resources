@@ -30,15 +30,12 @@ function aAclTab.Create(tab)
 
     -- users tab
     aAclTab.UsersTab = guiCreateTab("Users", aAclTab.Panel)
-    tab = aAclTab.UsersTab
 
     -- resources tab
     aAclTab.ResourcesTab = guiCreateTab("Resources", aAclTab.Panel)
-    tab = aAclTab.ResourcesTab
 
     -- rights tab
     aAclTab.RightsTab = guiCreateTab("Rights", aAclTab.Panel)
-    tab = aAclTab.RightsTab
 
     -- access matrix tab
     aAclTab.AccessTab = guiCreateTab("Access Matrix", aAclTab.Panel)

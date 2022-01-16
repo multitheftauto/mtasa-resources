@@ -31,7 +31,7 @@ function aColor.Open(x, y, r, g, b, relative, parent)
             if (parent) then
                 local px, py = guiGetSize(parent, false)
                 x = px * x
-                x = py * y
+                y = py * y
             else
                 x = sx * x
                 y = sy * y

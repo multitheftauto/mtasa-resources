@@ -252,9 +252,9 @@ function aVehicleUpgrades.onClick(button, state)
                 local upgrade = guiComboBoxGetItemText(element.combo, guiComboBoxGetSelected(element.combo))
                 if (upgrade) and (upgrade ~= "") then
                     if (guiCheckBoxGetSelected(aVehicleUpgrades.UpgradeNames)) then
-                        local upgrade = aGetVehicleUpgradeFromName(upgrade)
-                        if (upgrade) then
-                            table.insert(tableOut, upgrade)
+                        local upgrade2 = aGetVehicleUpgradeFromName(upgrade)
+                        if (upgrade2) then
+                            table.insert(tableOut, upgrade2)
                         end
                     else
                         table.insert(tableOut, tonumber(upgrade))

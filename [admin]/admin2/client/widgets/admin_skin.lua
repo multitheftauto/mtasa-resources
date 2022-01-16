@@ -20,7 +20,7 @@ function aSkin.Show(player)
         local x, y = guiGetScreenSize()
         aSkin.Form = guiCreateWindow(x / 2 - 140, y / 2 - 140, 280, 280, "Player Skin Select", false)
         guiSetAlpha(aSkin.Form, 1)
-        guiSetProperty(aSkin.Form, 'AlwaysOnTop', 'True')    
+        guiSetProperty(aSkin.Form, 'AlwaysOnTop', 'True')
         aSkin.Label =
             guiCreateLabel(0.03, 0.09, 0.94, 0.07, "Select a skin from the list or enter the id", true, aSkin.Form)
         guiLabelSetHorizontalAlign(aSkin.Label, "center")

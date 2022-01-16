@@ -77,12 +77,12 @@ function aMessages.onSync(action, data)
             guiGridListSetItemText(list, row, 1, tostring(user), true, false)
 
             for i, message in ipairs(messages) do
-                local row = guiGridListAddRow(list)
-                guiGridListSetItemText(list, row, 1, message.subject, false, false)
-                guiGridListSetItemText(list, row, 2, message.time, false, false)
+                local row2 = guiGridListAddRow(list)
+                guiGridListSetItemText(list, row2, 1, message.subject, false, false)
+                guiGridListSetItemText(list, row2, 2, message.time, false, false)
                 if (not message.read) then
-                    guiGridListSetItemColor(list, row, 1, 255, 50, 50)
-                    guiGridListSetItemColor(list, row, 2, 255, 50, 50)
+                    guiGridListSetItemColor(list, row2, 1, 255, 50, 50)
+                    guiGridListSetItemColor(list, row2, 2, 255, 50, 50)
                 end
 
                 id = id + 1

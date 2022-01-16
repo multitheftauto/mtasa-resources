@@ -184,7 +184,7 @@ function aSpectator.SwitchPlayer(inc, arg, inc2)
     if (not tonumber(inc)) then
         return
     end
-    local players = {}
+    local players
     if (guiCheckBoxGetSelected(aSpectator.Skip)) then
         players = aSpectator.GetAlive()
     else

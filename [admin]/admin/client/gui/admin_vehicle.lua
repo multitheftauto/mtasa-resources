@@ -156,11 +156,11 @@ function aVehicleCheckUpgrades ( vehicle )
 				end
 			end
 			for i, upgrade in ipairs ( upgrades ) do
-				local row = guiGridListAddRow ( aVehicleUpgrades[slot].list )
+				local row2 = guiGridListAddRow ( aVehicleUpgrades[slot].list )
 				if ( guiCheckBoxGetSelected ( aVehicleUpgradeNames ) ) then
-					guiGridListSetItemText ( aVehicleUpgrades[slot].list, row, 1, tostring ( aUpgradeNames[tonumber(upgrade)] ), false, false )
+					guiGridListSetItemText ( aVehicleUpgrades[slot].list, row2, 1, tostring ( aUpgradeNames[tonumber(upgrade)] ), false, false )
 				else
-					guiGridListSetItemText ( aVehicleUpgrades[slot].list, row, 1, tostring ( upgrade ), false, false )
+					guiGridListSetItemText ( aVehicleUpgrades[slot].list, row2, 1, tostring ( upgrade ), false, false )
 				end
 			end
 		end
@@ -274,8 +274,10 @@ function aClientVehicleClick ( button )
 				local upgrade = guiGetText ( element.edit )
 				if ( upgrade ) and ( upgrade ~= "" ) then
 					if ( guiCheckBoxGetSelected ( aVehicleUpgradeNames ) ) then
-						local upgrade = aGetVehicleUpgradeFromName ( upgrade )
-						if ( upgrade ) then table.insert ( tableOut, upgrade ) end
+						upgrade = aGetVehicleUpgradeFromName ( upgrade )
+						if ( upgrade ) then
+							table.insert ( tableOut, upgrade )
+						end
 					else
 						table.insert ( tableOut, tonumber ( upgrade ) )
 					end

@@ -224,7 +224,6 @@ aFunctions = {
                 local passengers = getVehicleOccupants(pvehicle)
                 local x, y, z = getElementPosition(pvehicle)
                 local rx, ry, rz = getVehicleRotation(pvehicle)
-                local vx, vy, vz = getElementVelocity(pvehicle)
                 destroyElement(pvehicle)
                 vehicle = createVehicle(id, x, y, z, rx, ry, rz)
                 local seats = getVehicleMaxPassengers(vehicle)

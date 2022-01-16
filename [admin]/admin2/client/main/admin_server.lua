@@ -138,8 +138,6 @@ function aServerTab.Create(tab)
         i2 = i2 + 1
     end
 
-    i,i2 = nil,nil
-
     addEventHandler("onClientGUIClick", aServerTab.Tab, aServerTab.onClientClick)
     addEventHandler('onClientGUIChanged', aServerTab.Tab, aServerTab.onClientChanged)
     addEventHandler(EVENT_SYNC, root, aServerTab.onClientSync)
@@ -160,8 +158,8 @@ function aServerTab.Create(tab)
         end
     end
 
-    for i = 0,19 do
-        guiComboBoxAddItem(aServerTab.Weather, i .. " (" .. getWeatherNameFromID(i) .. ")")
+    for i2 = 0,19 do
+        guiComboBoxAddItem(aServerTab.Weather, i2 .. " (" .. getWeatherNameFromID(i2) .. ")")
     end
 
     sync(SYNC_SERVER)

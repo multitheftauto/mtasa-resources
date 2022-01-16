@@ -153,7 +153,7 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 			end
 		end
 		-- Sort messages by time
-		table.sort(aReports, function(a,b) return(a.time < b.time) end)
+		table.sort(aReports, function(b, c) return(b.time < c.time) end)
 		-- Limit number of messages
 		while #aReports > g_Prefs.maxmsgs do
 			table.remove( aReports, 1 )
@@ -566,11 +566,13 @@ end
 
 addEvent ( "aTeam", true )
 addEventHandler ( "aTeam", root, function ( action, name, r, g, b )
-	if checkClient( "command."..action, source, 'aTeam', action ) then return end
+	if checkClient( "command."..action, source, 'aTeam', action ) then
+		return
+	end
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		mdata = ""
 		if ( action == "createteam" ) then
-			local success = false
+			local success
 			if ( tonumber ( r ) ) and ( tonumber ( g ) ) and ( tonumber ( b ) ) then
 				success = createTeam ( name, tonumber ( r ), tonumber ( g ), tonumber ( b ) )
 			else
@@ -590,7 +592,9 @@ addEventHandler ( "aTeam", root, function ( action, name, r, g, b )
 		else
 			action = nil
 		end
-		if ( action ~= nil ) then aAction ( "server", action, source, false, mdata ) end
+		if ( action ~= nil ) then
+			aAction ( "server", action, source, false, mdata )
+		end
 		return true
 	end
 	outputChatBox ( "Access denied for '"..tostring ( action ).."'", source, 255, 168, 0 )
@@ -599,11 +603,11 @@ end )
 
 addEvent ( "aAdmin", true )
 addEventHandler ( "aAdmin", root, function ( action, ... )
-	if checkClient( true, source, 'aAdmin', action ) then return end
-	local mdata = ""
-	local mdata2 = ""
+	if checkClient( true, source, 'aAdmin', action ) then
+		return
+	end
+	local mdata, mdata2
 	if ( action == "password" ) then
-		action = nil
 		if ( not arg[1] ) then outputChatBox ( "Error - Password missing.", source, 255, 0, 0 )
 		elseif ( not arg[2] ) then outputChatBox ( "Error - New password missing.", source, 255, 0, 0 )
 		elseif ( not arg[3] ) then outputChatBox ( "Error - Confirm password.", source, 255, 0, 0 )
@@ -631,7 +635,7 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 			local settings = aGetResourceSettings( resName )
 			local oldvalue = settings[name].current
 			-- Match type
-			local changed = false
+			local changed
 			if type(oldvalue) == 'boolean' then value = value=='true'   end
 			if type(oldvalue) == 'number'  then value = tonumber(value) end
 			if type(oldvalue) == "table" then
@@ -722,18 +726,13 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 		if ( ( name ) and ( string.len ( name ) >= 1 ) ) then
 			if ( arg[1] == "group" ) then
 				mdata = "Group "..name
-				if ( not aclCreateGroup ( name ) ) then
-					action = nil
-				else
-
-				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
+				if ( aclCreateGroup ( name ) ) then
+					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
 				end
 			elseif ( arg[1] == "acl" ) then
 				mdata = "ACL "..name
-				if ( not aclCreate ( name ) ) then
-					action = nil
-				else
-				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
+				if ( aclCreate ( name ) ) then
+					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] created "..mdata)
 				end
 			end
 			triggerEvent ( "aAdmin", source, "sync", "aclgroups" )
@@ -747,16 +746,12 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 				mdata = "Group "..name
 				aclDestroyGroup ( aclGetGroup ( name ) )
 				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] destroyed "..mdata)
-			else
-				action = nil
 			end
 		elseif ( arg[1] == "acl" ) then
 			if ( aclGet ( name ) ) then
 				mdata = "ACL "..name
 				aclDestroy ( aclGet ( name ) )
 				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] destroyed "..mdata)
-			else
-				action = nil
 			end
 		end
 		triggerEvent ( "aAdmin", source, "sync", "aclgroups" )
@@ -768,11 +763,10 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 				local group = aclGetGroup ( arg[2] )
 				local object = arg[3]
 				if ( not aclGroupAddObject ( group, object ) ) then
-					action = nil
 					outputChatBox ( "Error adding object '"..tostring ( object ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
 					mdata2 = "Object '"..arg[3].."'"
-				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..object.." to ACL Group "..arg[2])
+					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..object.." to ACL Group "..arg[2])
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
 					if arg[4] then
 						triggerClientEvent ( source, "aOnPermissionsChange", source )
@@ -782,31 +776,26 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 				local group = aclGetGroup ( arg[2] )
 				local acl = aclGet ( arg[3] )
 				if ( not aclGroupAddACL ( group, acl ) ) then
-					action = nil
 					outputChatBox ( "Error adding ACL '"..tostring ( arg[3] ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
 					mdata2 = "ACL '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
-				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..mdata2.." to Group "..arg[2])
+					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..mdata2.." to Group "..arg[2])
 				end
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
 				local right = arg[3]
 				local enabled = true
 				if ( not aclSetRight ( acl, right, enabled ) ) then
-					action = nil
 					outputChatBox ( "Error adding right '"..tostring ( arg[3] ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
 					mdata2 = "Right '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )
-				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..mdata2.." to ACL "..arg[2])
+					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..mdata2.." to ACL "..arg[2])
 				end
 			end
-		else
-			action = nil
 		end
 	elseif ( action == "aclremove" ) then
-		--action = nil
 		if ( arg[3] ) then
 			action = action
 			mdata = "Group '"..arg[2].."'"
@@ -814,12 +803,11 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 				local group = aclGetGroup ( arg[2] )
 				local object = arg[3]
 				if ( not aclGroupRemoveObject ( group, object ) ) then
-					action = nil
 					outputChatBox ( "Error - object '"..tostring ( object ).."' does not exist in group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
 					mdata2 = "Object '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
-				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
+					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
 					if arg[4] then
 						triggerClientEvent ( source, "aOnPermissionsChange", source )
 					end
@@ -828,31 +816,26 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 				local group = aclGetGroup ( arg[2] )
 				local acl = aclGet ( arg[3] )
 				if ( not aclGroupRemoveACL ( group, acl ) ) then
-					action = nil
 					outputChatBox ( "Error - ACL '"..tostring ( arg[3] ).."' does not exist in group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
 					mdata2 = "ACL '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
-				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
+					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2)
 				end
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
 				local right = arg[3]
 				if ( not aclRemoveRight ( acl, right ) ) then
-					action = nil
 					outputChatBox ( "Error - right '"..tostring ( arg[3] ).."' does not exist in ACL '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
 					mdata = "ACL '"..arg[2].."'"
 					mdata2 = "Right '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )
-				outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2.." from "..mdata)
+					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] removed "..mdata2.." from "..mdata)
 				end
 			end
-		else
-			action = nil
 		end
 	end
-	--if ( action ~= nil ) then aAction ( "admin", action, source, false, mdata, mdata2 ) end
 end )
 
 
@@ -1294,15 +1277,26 @@ addEventHandler ( "aResource", root, function ( name, action )
 	local pname = getPlayerName ( source )
 	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
 		local text = ""
-		if ( action == "start" ) then if ( startResource ( getResourceFromName ( name ), true ) ) then text = "started" end
+		if ( action == "start" ) then
+			if ( startResource ( getResourceFromName ( name ), true ) ) then
+				text = "started"
+			end
 		elseif ( action == "restart" ) then
 			if ( getResourceState ( getResourceFromName ( name ) ) == "running" ) then
 				if ( restartResource ( getResourceFromName ( name ) ) ) then text = "restarted" end
 			end
-		elseif ( action == "stop" ) then if ( stopResource ( getResourceFromName ( name ) ) ) then text = "stopped" end
-		elseif ( action == "delete" ) then if ( deleteResource ( getResourceFromName ( name ) ) ) then text = "deleted" end
-		elseif ( action == "stopall" ) then if ( stopAllResources ( ) ) then text = "All Stopped" end
-		else action = nil
+		elseif ( action == "stop" ) then
+			if ( stopResource ( getResourceFromName ( name ) ) ) then
+				text = "stopped"
+			end
+		elseif ( action == "delete" ) then
+			if ( deleteResource ( getResourceFromName ( name ) ) ) then
+				text = "deleted"
+			end
+		elseif ( action == "stopall" ) then
+			if ( stopAllResources ( ) ) then
+				text = "All Stopped"
+			end
 		end
 		if ( text ~= "" ) then
 			outputServerLog ( "ADMIN: Resource \'" .. name .. "\' " .. text .. " by " .. getAdminNameForLog ( source )  )
@@ -1437,8 +1431,11 @@ function getPlayerChatHistory ( player, chunk )
 end
 
 addEvent ( "aMessage", true )
-addEventHandler ( "aMessage", root, function ( action, data )
-	if checkClient( false, source, 'aMessage', action ) then return end
+addEventHandler ( "aMessage", root, 
+function ( action, data )
+	if checkClient( false, source, 'aMessage', action ) then
+		return
+	end
 	if ( action == "new" ) then
 		local time = getRealTime()
 		local id = #aReports + 1
@@ -1486,14 +1483,15 @@ addEventHandler ( "aMessage", root, function ( action, data )
 				table.remove ( aReports, data )
 			end
 			triggerClientEvent ( source, "aMessage", source, "get", aReports )
-		else
-			action = nil
 		end
 	end
 	for id, p in ipairs ( getElementsByType ( "player" ) ) do
-		if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( "aSync", p, "messages" ) end
+		if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then
+			triggerEvent ( "aSync", p, "messages" )
+		end
 	end
-end )
+end
+)
 
 addEvent ( "aModdetails", true )
 addEventHandler ( "aModdetails", resourceRoot, function ( action, player )

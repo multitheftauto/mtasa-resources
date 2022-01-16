@@ -14,9 +14,9 @@ function getPlayerWildcard ( string )
 	local player = getPlayerFromName ( string )
 	if ( player ) then return player end
 	local matches = {}
-	for id, player in ipairs ( getElementsByType ( "player" ) ) do
-		if ( string.find ( string.upper ( getPlayerName ( player ) ), string.upper ( string ), 1, true ) ) then
-			table.insert(matches,player)
+	for id, plr in ipairs ( getElementsByType ( "player" ) ) do
+		if ( string.find ( string.upper ( getPlayerName ( plr ) ), string.upper ( string ), 1, true ) ) then
+			table.insert(matches, plr)
 		end
 	end
 	if #matches == 0 then

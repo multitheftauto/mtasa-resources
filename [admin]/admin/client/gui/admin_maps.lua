@@ -33,9 +33,9 @@ function createMapTab()
 	addEventHandler ("onClientGUIChanged", aAdminForm, guiChanged)
 end
 
-function loadMaps(gamemodeMapTable, gamemode, map)
+function loadMaps(gamemodeMapTable, gamemode1, map)
 	guiSetText(aTabMap.CurMap,"Current Map: ".. tostring ( map or "N/A" ) )
-	guiSetText(aTabMap.CurGamemode,"Current Gamemode: ".. tostring ( gamemode or "N/A" ) );
+	guiSetText(aTabMap.CurGamemode,"Current Gamemode: ".. tostring ( gamemode1 or "N/A" ) );
 	if gamemodeMapTable then
 		aGamemodeMapTable = gamemodeMapTable
 		for id,gamemode in pairs (gamemodeMapTable) do

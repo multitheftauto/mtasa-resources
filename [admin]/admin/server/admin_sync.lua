@@ -191,12 +191,11 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 				if getNeededTagType (data[1],ban) and string.match (string.lower(tType),string.lower(data[2])) then
 					if (isElement(source)) then -- In case the source has quit during coroutine loading
 						if cnt <= maxBanCount then
-						cnt = cnt + 1
-						triggerClientEvent ( source, "aClientSync", theSource, type, tableOut,data )
+							cnt = cnt + 1
+							triggerClientEvent ( source, "aClientSync", theSource, type, tableOut,data )
 						else
-						triggerClientEvent ( source, "aClientSync", theSource, "message", false,{"error","Be more specific in your search query! (keyword returns more than 100 matches) search not completed due to server load, it's limited to displaying the first 100 results now."} )
-						cnt = nil
-						return
+							triggerClientEvent ( source, "aClientSync", theSource, "message", false,{"error","Be more specific in your search query! (keyword returns more than 100 matches) search not completed due to server load, it's limited to displaying the first 100 results now."} )
+							return
 						end
 					end
 				end

@@ -102,7 +102,7 @@ end
 
 local function warpToPosition(player, x, y, z)
     if isElement(player) then
-        local x, y, z  = tonumber(x) or 0, tonumber(y) or 0, tonumber(z) or 0
+        x, y, z  = tonumber(x) or 0, tonumber(y) or 0, tonumber(z) or 0
         local distance = getElementDistanceFromCentreOfMassToBaseOfModel(player)
         triggerServerEvent(
             "aPlayer",

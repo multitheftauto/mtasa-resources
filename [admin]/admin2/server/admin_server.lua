@@ -159,11 +159,10 @@ addEventHandler(
     root,
     function(player, action, ...)
         if (hasObjectPermissionTo(source, "command." .. action)) then
-            local mdata1 = ""
-            local mdata2 = ""
+            local mdata1, mdata2
             local func = aFunctions.player[action]
             if (func) then
-                local result = nil
+                local result
                 result, mdata1, mdata2 = func(player, ...)
                 if (result ~= false) then
                     if (type(result) == "string") then
@@ -188,11 +187,10 @@ addEventHandler(
             return
         end
         if (hasObjectPermissionTo(source, "command." .. action)) then
-            local mdata1 = ""
-            local mdata2 = ""
+            local mdata1, mdata2
             local func = aFunctions.vehicle[action]
             if (func) then
-                local result = nil
+                local result
                 result, mdata1, mdata2 = func(player, vehicle, ...)
                 if (result ~= false) then
                     if (type(result) == "string") then
@@ -303,8 +301,6 @@ addEventHandler(
                 table.remove(aReports, data)
             end
             triggerClientEvent(source, "aMessage", source, "get", aReports)
-        else
-            action = nil
         end
         for id, p in ipairs(getElementsByType("player")) do
             if (hasObjectPermissionTo(p, "general.adminpanel")) then

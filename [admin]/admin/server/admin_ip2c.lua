@@ -317,8 +317,8 @@ CoroutineSleeper = {
 	new = function(self, myFunc, ...)
 		local obj = setmetatable({}, { __index = CoroutineSleeper })
 		-- Use inner function to call myFunc, so we can auto :detach when finished
-		obj.handle = coroutine.create( function(obj, ...)
-											myFunc(obj, ...)
+		obj.handle = coroutine.create( function(obj2, ...)
+											myFunc(obj2, ...)
 											obj:detach()
 										end )
 		coroutine.resume(obj.handle,obj, ...)

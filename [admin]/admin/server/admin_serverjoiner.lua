@@ -108,7 +108,7 @@ end
 -- Util
 --
 ---------------------------------------------------------------------------
-function table.deepcopy(t)
+function table.deepcopy(t1)
 	local known = {}
 	local function _deepcopy(t)
 		local result = {}
@@ -124,6 +124,6 @@ function table.deepcopy(t)
 		end
 		return result
 	end
-	return _deepcopy(t)
+	return _deepcopy(t1)
 end
 

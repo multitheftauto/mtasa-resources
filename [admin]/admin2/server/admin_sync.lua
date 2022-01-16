@@ -124,7 +124,7 @@ addEventHandler(
         setTimer(
             function()
                 for player, data in pairs(aPlayers) do
-                    local prev = false
+                    local prev
 
                     local money = getPlayerMoney(player)
                     prev = data.money or 0

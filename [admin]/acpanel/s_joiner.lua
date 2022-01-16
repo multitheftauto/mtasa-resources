@@ -45,7 +45,7 @@ addEventHandler('onPlayerQuit', root,
 -- New player loaded
 addEvent('onResourceLoadedAtClient_internal', true)
 addEventHandler('onResourceLoadedAtClient_internal', resourceRoot,
-	function(player)
+	function()
 		player = client
 		--if checkClient( false, player, 'onResourceLoadedAtClient_internal' ) then return end
 		if playerData[player] then
@@ -110,7 +110,7 @@ end
 -- Util
 --
 ---------------------------------------------------------------------------
-function table.deepcopy(t)
+function table.deepcopy(t1)
 	local known = {}
 	local function _deepcopy(t)
 		local result = {}
@@ -126,6 +126,6 @@ function table.deepcopy(t)
 		end
 		return result
 	end
-	return _deepcopy(t)
+	return _deepcopy(t1)
 end
 
