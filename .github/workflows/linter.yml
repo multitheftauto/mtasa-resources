@@ -10,5 +10,5 @@ jobs:
     - uses: actions/checkout@v1      
     - name: Lint mta resources
       run: |
-        echo 'ignore = {"122","142","111","341","112","113","143","321","631"}' > config.lua
+        echo 'ignore = {"122","142","111","341","112","113","143","321","631","211","212","213","611"}' > config.lua
         luacheck --config config.lua ./
