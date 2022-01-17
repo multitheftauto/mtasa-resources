@@ -164,7 +164,7 @@ function RaceRaceMap:__index(k)
 		return result
 	end
 	if g_MapSettingNames[k] then
-		local result = get(self.resname .. '.' .. k)
+		result = get(self.resname .. '.' .. k)
 		if result then
 			return result
 		end

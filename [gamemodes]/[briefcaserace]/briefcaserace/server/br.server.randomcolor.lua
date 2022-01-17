@@ -45,7 +45,6 @@ function HSLtoRGB(h, s, l)
 	s = s / 100
 	l = l / 100
 	-- find q
-	local q
 	if (l < 0.5) then
 		q = l*(1+s)
 	else

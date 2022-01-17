@@ -30,7 +30,6 @@ function GhostPlayback:destroy( finished )
 		killTimer( self.ghostFinishTimer )
 		self.ghostFinishTimer = nil
 	end
-	self = nil
 end
 
 function GhostPlayback:preparePlayback()
@@ -254,10 +253,8 @@ end
 
 function Interpolator.Update( ticks, vehicle )
 	if not last.from or not last.to then return end
-	local x,y,z,rX,rY,rZ
+	local z,rX,rY,rZ
 	local alpha = math.unlerp( last.from.t, last.to.t, ticks )
-	x = math.lerp( last.from.x, last.to.x, alpha )
-	y = math.lerp( last.from.y, last.to.y, alpha )
 	z = math.lerp( last.from.z, last.to.z, alpha )
 	rX = math.lerprot( last.from.rX, last.to.rX, alpha )
 	rY = math.lerprot( last.from.rY, last.to.rY, alpha )
@@ -271,7 +268,7 @@ end
 -- Error Compensator
 --------------------------------------------------------------------------
 ErrorCompensator = {}
-error = { timeEnd = 0 }
+error2 = { timeEnd = 0 }
 
 function ErrorCompensator.handleNewPosition( vehicle, x, y, z, period )
 	local vx, vy, vz = getElementPosition( vehicle )
@@ -280,50 +277,50 @@ function ErrorCompensator.handleNewPosition( vehicle, x, y, z, period )
 	if dist > 5 or not period then
 		-- Just do move if too far to interpolate or period is not valid
 		setElementPosition( vehicle, x, y, z )
-		error.x = 0
-		error.y = 0
-		error.z = 0
-		error.timeStart = 0
-		error.timeEnd = 0
-		error.fLastAlpha = 0
+		error2.x = 0
+		error2.y = 0
+		error2.z = 0
+		error2.timeStart = 0
+		error2.timeEnd = 0
+		error2.fLastAlpha = 0
 	else
 		-- Set error correction to apply over the next few frames
-		error.x = x - vx
-		error.y = y - vy
-		error.z = z - vz
-		error.timeStart = getTickCount()
-		error.timeEnd = error.timeStart + period * 1.0
-		error.fLastAlpha = 0
+		error2.x = x - vx
+		error2.y = y - vy
+		error2.z = z - vz
+		error2.timeStart = getTickCount()
+		error2.timeEnd = error2.timeStart + period * 1.0
+		error2.fLastAlpha = 0
 	end
 end
 
 
 -- Apply a portion of the error
 function ErrorCompensator.updatePosition( vehicle )
-	if error.timeEnd == 0 then return end
+	if error2.timeEnd == 0 then return end
 
 	-- Grab the current game position
 	local vx, vy, vz = getElementPosition( vehicle )
 
 	-- Get the factor of time spent from the interpolation start to the current time.
-	local fAlpha = math.unlerp ( error.timeStart, error.timeEnd, getTickCount() )
+	local fAlpha = math.unlerp ( error2.timeStart, error2.timeEnd, getTickCount() )
 
 	-- Don't let it overcompensate the error too much
 	fAlpha = math.clamp ( 0.0, fAlpha, 1.5 )
 
 	if fAlpha == 1.5 then
-		error.timeEnd = 0
+		error2.timeEnd = 0
 		return
 	end
 
 	-- Get the current error portion to compensate
-	local fCurrentAlpha = fAlpha - error.fLastAlpha
-	error.fLastAlpha = fAlpha
+	local fCurrentAlpha = fAlpha - error2.fLastAlpha
+	error2.fLastAlpha = fAlpha
 
 	-- Apply
-	local nx = vx + error.x * fCurrentAlpha
-	local ny = vy + error.y * fCurrentAlpha
-	local nz = vz + error.z * fCurrentAlpha
+	local nx = vx + error2.x * fCurrentAlpha
+	local ny = vy + error2.y * fCurrentAlpha
+	local nz = vz + error2.z * fCurrentAlpha
 	setElementPosition( vehicle, nx, ny, nz )
 end
 

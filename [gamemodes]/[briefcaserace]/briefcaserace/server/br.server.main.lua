@@ -186,7 +186,7 @@ function createVarTeam()
 	end
 	-- generate random team skin
 	local usedSkins = {}
-	for teamName,skinArray in pairs(settings.teamskins) do
+	for teamName2,skinArray in pairs(settings.teamskins) do
 		table.insert(usedSkins, skinArray[1])
 	end
 	local randSkin = getRandomSkin(usedSkins)

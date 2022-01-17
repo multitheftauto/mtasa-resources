@@ -34,7 +34,6 @@ function GhostPlayback:destroy()
 		destroyElement( self.blip )
 		outputDebug( "Destroyed blip." )
 	end
-	self = nil
 end
 
 function GhostPlayback:deleteGhost()

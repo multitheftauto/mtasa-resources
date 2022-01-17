@@ -90,9 +90,9 @@ end
 
 function calcTime ( timeLeft )
 	local calcString = ""
-	local timeHours = 0
-	local timeMins = 0
-	local timeSecs = 0
+	local timeHours
+	local timeMins
+	local timeSecs
 
 	timeLeft = tonumber(timeLeft)
 	----outputDebugString ( "timeLeft = " .. timeLeft )
@@ -131,7 +131,6 @@ function formatStr ( formatString )
 end
 
 function missionTimerTick()
-	local k = 0
 	for k,theTimer in ipairs(missionTimers) do
 		if ( theTimer["started"] ) then
 			if ( theTimer["direction"] == "<" ) then

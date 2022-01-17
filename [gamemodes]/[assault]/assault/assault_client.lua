@@ -190,9 +190,9 @@ addEventHandler("onClientPlayerSpawn", localPlayer,
 -- stolen from mission_timer.lua
 function calcTime ( timeLeft )
 	local calcString = ""
-	local timeHours = 0
-	local timeMins = 0
-	local timeSecs = 0
+	local timeHours
+	local timeMins
+	local timeSecs
 
 	timeLeft = tonumber(timeLeft)
 	timeSecs = math.mod(timeLeft, 60)

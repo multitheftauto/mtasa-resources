@@ -1,5 +1,5 @@
 function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
-	player = getLocalPlayer ()
+	player = localPlayer
 	local x, y = guiGetScreenSize()
 	x = x * 0.052
 	y = y * 0.695
@@ -108,15 +108,15 @@ addEventHandler ( "onClientPlayerDamage", root,
 
 
 function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHICH FUNCTION TO TRIGGER
-	local inacar = isPedInVehicle ( getLocalPlayer () )
+	local inacar = isPedInVehicle ( localPlayer )
 	if inacar == false then
-		local isDead = isPedDead(getLocalPlayer ())
+		local isDead = isPedDead(localPlayer)
 		if (isDead == false) then
 			if chosengadget == "mines" then
 				if gadgetuses >0 then
-					player = getLocalPlayer ()
+					player = localPlayer
 					if ( isPedDucked ( player) ) then
-						triggerServerEvent ("poopoutthemine", getLocalPlayer (), player )
+						triggerServerEvent ("poopoutthemine", localPlayer, player )
 						gadgetuses = gadgetuses-1
 						guiSetText ( gadgetlabel, gadgetuses )
 						playSoundFrontEnd(42)
@@ -132,10 +132,10 @@ function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHI
 				camerastart()
 			elseif chosengadget == "cloak" then
 				if gadgetuses >0 then
-					local iscloaked = getElementData ( getLocalPlayer (), "stealthmode" )
+					local iscloaked = getElementData ( localPlayer, "stealthmode" )
 					if (iscloaked ~= "on") then
-						local thisplayer = getLocalPlayer ()
-						triggerServerEvent ("cloaktheplayer", getLocalPlayer (), thisplayer )
+						local thisplayer = localPlayer
+						triggerServerEvent ("cloaktheplayer", localPlayer, thisplayer )
 						cloakoff = setTimer ( makecloakstop, 20000, 1, thisplayer )
 						gadgetuses = gadgetuses-1
 						guiSetText ( gadgetlabel, gadgetuses )
@@ -158,8 +158,8 @@ end
 --CLOAK
 
 function makecloakstop (thisplayer)
-	local thisplayer = getLocalPlayer ()
-	triggerServerEvent ("uncloaktheplayer", getLocalPlayer (), thisplayer )
+	thisplayer = localPlayer
+	triggerServerEvent ("uncloaktheplayer", localPlayer, thisplayer )
 end
 
 
@@ -196,12 +196,12 @@ addEventHandler("uncloaksomeoneelse", root, uncloakaperson)
 
 --TRIGGERS THE SERVER EVENT TO DESTROY A LAND MINE ONCE IT'S SHOT
 function weaponfired (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
-	if source == getLocalPlayer () then
+	if source == localPlayer then
 		if (hitElement) then
 			if ( getElementData ( hitElement, "type" ) == "proximity" ) then
 				if minedelay ~= 1 then
 					minedelay = 1
-					triggerServerEvent ("destroylandmine", getLocalPlayer (), hitElement )
+					triggerServerEvent ("destroylandmine", localPlayer, hitElement )
 					endminedelay = setTimer ( minedelaystop, 400, 1, player )
 				end
 			end
@@ -229,7 +229,7 @@ function triggerpulled(weapon)
 			outputChatBox ( "You are out of Camera Smokes.", 255, 69, 0)
 		end
 	else
-		local weapon = getPedWeapon (getLocalPlayer ())
+		weapon = getPedWeapon (localPlayer)
 		if weapon == 44 then
 			gogglecheckdelay = setTimer ( goggletaskcheck, 200, 1 )
 		end
@@ -241,10 +241,10 @@ end
 
 --CHECKS IF THE PERSON IS PUTTING ON OR TAKING OFF GOGGLES
 function goggletaskcheck ()
-	if ( isPedDoingTask ( getLocalPlayer (), "TASK_SIMPLE_GOGGLES_ON" ) ) then
+	if ( isPedDoingTask ( localPlayer, "TASK_SIMPLE_GOGGLES_ON" ) ) then
 		if goggleson == 0 then
 			goggleson = 1
-			local gogglestype = getPedWeapon (getLocalPlayer ())
+			local gogglestype = getPedWeapon (localPlayer)
 			if gogglestype == 44 then
 				showNightvisionGUI()
 			end
@@ -260,7 +260,7 @@ function goggletaskcheck ()
 			end
 		end
 	end
-	if ( isPedDoingTask ( getLocalPlayer (), "TASK_SIMPLE_GOGGLES_OFF" ) ) then
+	if ( isPedDoingTask ( localPlayer, "TASK_SIMPLE_GOGGLES_OFF" ) ) then
 		if goggleson == 1 then
 			goggleson = 0
 			hideGogglesGUI()
@@ -277,11 +277,11 @@ function goggletaskcheck ()
 end
 
 function goggletoggle()
-	local isDead = isPedDead(getLocalPlayer ())
+	local isDead = isPedDead(localPlayer)
 	if (isDead == false) then
 		if goggleson == 0 then
-			player = getLocalPlayer ()
-			triggerServerEvent ("goggleswap", getLocalPlayer (), player )
+			player = localPlayer
+			triggerServerEvent ("goggleswap", localPlayer, player )
 		else
 			outputChatBox ( "Take off the goggles to toggle their mode.", 255, 69, 0)
 		end
@@ -296,7 +296,7 @@ function clientsetup (resource)
 	bindKey ("fire", "down", triggerpulled )
 	bindKey ("r", "down", "Use Gadget/Spectate Next", "" )
 	bindKey ("r", "up", "Use Gadget/Spectate Next", "0" )
-	setElementData ( getLocalPlayer (), "stealthmode", "off" )
+	setElementData ( localPlayer, "stealthmode", "off" )
 	goggleson = 0
 	burstinprogress = 0
 	cameraplaced = 0
@@ -358,7 +358,7 @@ function radarblipburst()
 			end
 		end
 	else
-		outputChatBox ( "You are out of Bursts.", getLocalPlayer (), 255, 69, 0)
+		outputChatBox ( "You are out of Bursts.", localPlayer, 255, 69, 0)
 	end
 end
 
@@ -371,7 +371,7 @@ end
 
 function camerastart()
 	if cameraplaced == 0 then
-		triggerServerEvent ("placethecam", getLocalPlayer (), localPlayer )
+		triggerServerEvent ("placethecam", localPlayer, localPlayer )
 	else
 		if lookingthroughcamera == 0 then
 			if isElementWithinColShape (localPlayer, cameracol) then
@@ -379,7 +379,7 @@ function camerastart()
 				playSoundFrontEnd(37)
 				cameraplaced = 0
 				camera = nil
-				triggerServerEvent ("killcameraobject", getLocalPlayer (), localPlayer )
+				triggerServerEvent ("killcameraobject", localPlayer, localPlayer )
 			else
 				lookingthroughcamera = 1
 				toggleControl ("fire", false )
@@ -421,14 +421,14 @@ addEvent("findcamerapos", true)
 function findthespot (rot)
 	radRot = math.rad ( rot )
 	local radius = 1
-	local px,py,pz = getElementPosition( getLocalPlayer () )
+	local px,py,pz = getElementPosition( localPlayer )
 	local tx = px + radius * math.sin(radRot)
 	local ty = py + -(radius) * math.cos(radRot)
 	local tz = pz
 	local touching, x, y, z, object = processLineOfSight ( px, py, pz, tx, ty, tz, true, false, false, true, false, true, false, false )
 	if (touching) then
 		cameraplaced = 1
-		player = getLocalPlayer ()
+		player = localPlayer
 		if ( isPedDucked ( player) ) then
 			z = z-0.7
 		end
@@ -477,9 +477,9 @@ function shieldingyet ()
 				blockcheck = nil
 				shieldon = 1
 				stopblockcheck = setTimer ( inturuptshield, 300, 0, player )
-				local player = getLocalPlayer ()
-				triggerServerEvent ("shieldup", getLocalPlayer (), player )
-				currentweapon = getPedWeapon (getLocalPlayer ())
+				local player = localPlayer
+				triggerServerEvent ("shieldup", localPlayer, player )
+				currentweapon = getPedWeapon (localPlayer)
 			end
 		end
 	end
@@ -524,8 +524,8 @@ function deactivategadget ()
 		setPedControlState ( "aim_weapon", false )
 		setPedControlState ( "jump", false )
 		if shieldon == 1 then
-			local player = getLocalPlayer ()
-			triggerServerEvent ("shielddown", getLocalPlayer (), player, currentweapon )
+			local player = localPlayer
+			triggerServerEvent ("shielddown", localPlayer, player, currentweapon )
 			shieldon = 0
 		end
 	end
@@ -535,7 +535,7 @@ end
 ---NIGHTVISION CODE
 function showNightvisionGUI()
 	addEventHandler ( "onClientRender", root, updateNightvisionGUI )
-	mineRefreshTimer = setTimer ( refreshNightvisionGoggles, 1000, 0, getLocalPlayer ())
+	mineRefreshTimer = setTimer ( refreshNightvisionGoggles, 1000, 0, localPlayer)
 end
 --addCommandHandler ( "shownightvision", showNightvisionGUI )
 
@@ -621,7 +621,7 @@ end
 ---INFRARED CODE
 function showInfraredGUI()
 	addEventHandler ( "onClientRender", root, updateInfraredGUI )
-	mineRefreshTimer = setTimer ( refreshInfraredGoggles, 1000, 0, getLocalPlayer ())
+	mineRefreshTimer = setTimer ( refreshInfraredGoggles, 1000, 0, localPlayer)
 end
 --addCommandHandler ( "showinfrared", showInfraredGUI )
 

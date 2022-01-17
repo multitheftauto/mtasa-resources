@@ -18,7 +18,7 @@ function displayHilariarseMessage( player )
 		lastVoteStarterName = ''
 	else
 		local playerName = getPlayerName(player)
-		local msg = ''
+		local msg
 		if playerName == lastVoteStarterName then
 			lastVoteStarterCount = lastVoteStarterCount + 1
 			if lastVoteStarterCount == 5 then

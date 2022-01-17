@@ -193,8 +193,8 @@ function gameTick ()
 				local xplayerDeaths = playerDeaths
 				local xplayerKills = playerKills
 				if xplayerDeaths == 0 then xplayerDeaths = 1 end
-				local xplayerKills = tonumber(xplayerKills)
-				local xplayerDeaths = tonumber(xplayerDeaths)
+				xplayerKills = tonumber(xplayerKills)
+				xplayerDeaths = tonumber(xplayerDeaths)
 				if (not xplayerKills) then
 					xplayerKills = 0
 				end

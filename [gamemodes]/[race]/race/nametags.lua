@@ -82,7 +82,7 @@ addEventHandler ( "onClientRender", root,
 					local health = getElementHealth(vehicle)
 					health = math.max(health - 250, 0)/750
 					local p = -510*(health^2)
-					local r,g = math.max(math.min(p + 255*health + 255, 255), 0), math.max(math.min(p + 765*health, 255), 0)
+					r,g = math.max(math.min(p + 255*health + 255, 255), 0), math.max(math.min(p + 765*health, 255), 0)
 					dxDrawRectangle ( 	drawX + outlineThickness,
 										drawY + outlineThickness,
 										width - outlineThickness*2,

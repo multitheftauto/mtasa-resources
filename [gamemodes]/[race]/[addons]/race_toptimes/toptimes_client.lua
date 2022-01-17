@@ -230,8 +230,7 @@ end
 function CToptimes:setWindowPosition ( gui_x, gui_y )
 	if self.gui['windowbg'] then
 		local screenWidth, screenHeight = guiGetScreenSize()
-		local posX = screenWidth/2 + 63 + ( screenWidth * (gui_x - 0.56) )
-		local posY = 14 + ( screenHeight * (gui_y - 0.02) )
+		local posX, posY
 
 		local posXCurve = { {0, 0}, {0.7, screenWidth/2 + 63}, {1, screenWidth - self.size.x} }
 		local posYCurve = { {0, 0}, {0.02, 14}, {1, screenHeight - self.size.y} }

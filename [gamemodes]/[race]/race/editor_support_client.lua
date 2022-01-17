@@ -179,9 +179,7 @@ if isEditor() then
 						end, 50, 2 )
 
 			-- hmmm, maybe this is nice or not
-			if false then
-				setCameraBehindVehicle( g_Vehicle, pdistance )
-			end
+			--	setCameraBehindVehicle( g_Vehicle, pdistance )
 
 			triggerServerEvent( "onEditorChangeForCheckpoint", resourceRoot, localPlayer, nextIndex )
 		end

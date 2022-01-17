@@ -125,7 +125,7 @@ addEventHandler( "onGamemodeMapStop", root, onMapUnload)
 
 function shuffleTable(inputData)
 	local newTable = {}
-	local i_RndTblPos = 0
+	local i_RndTblPos
 	while #inputData > 0 do
 		i_RndTblPos = math.random(1,#inputData)
 		table.insert ( newTable, inputData[i_RndTblPos] )
@@ -534,7 +534,7 @@ function firstSpawn ( source )
 	local foundTeamID = nil
 	local allDone = false
 	local scanPlayerCount = 128
-	local teamPlayerCount = 0
+	local teamPlayerCount
 	--outputDebugString ( "scanning teams now for auto assignment" )
 	for k,v in ipairs(gameTeams) do
 		teamPlayerCount = countPlayersInTeam( v.team )
@@ -615,7 +615,7 @@ function respawnThePlayer ( source, team )
 	if not ( spawnComplete ) then
 		--Spawn failed, try spawning as CJ?
 		--outputDebugString ( "Respawning Player FAILED - attempting to spawn player " .. getClientName(source) .. " as model CJ[0]")
-		spawnComplete = spawnPlayer ( source, x, y, z, tonumber(rot), 0, tonumber(gameInterior) )
+		spawnPlayer ( source, x, y, z, tonumber(rot), 0, tonumber(gameInterior) )
 	end
 
 	for k,v in ipairs(team.weapons) do
@@ -644,7 +644,7 @@ function Event_clientScriptLoaded ( player )
 		if ( p_Team ) then
 			p_TeamName = getTeamName ( p_Team )
 			p_TeamColorR, p_TeamColorG, p_TeamColorB = getTeamColor ( p_Team )
-		else
+		--else
 			--outputChatBox ( "PTeam is bad" )
 		end
 		--outputChatBox ( "OMG = " .. p_TeamName .. " r=" .. p_TeamColorR .. " g=" .. p_TeamColorG .. " b=" .. p_TeamColorB )

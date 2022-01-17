@@ -623,11 +623,11 @@ function onCarrierVehicleExit(vehicle, seat, jacker)
 	end
 	-- in the case where the carrier falls of a bike (ie. onVehicleStartExit isn't triggered, but the player has in fact exitted the vehicle!),
 	-- the code below will catch the exit and remove the onCarrierVehicleDamageEvent
-	local vehicle = getElementData(source, "carrierVehicle")
-	if (vehicle) then
+	local vehicle2 = getElementData(source, "carrierVehicle")
+	if (vehicle2) then
 		--outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( source ) .. " (caught in onCarrierVehicleExit)" )
-		--removeEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage)
-		removeEventHandler("onVehicleNonWeaponDamage", vehicle, onCarrierVehicleDamage)
+		--removeEventHandler("onVehicleDamage", vehicle2, onCarrierVehicleDamage)
+		removeEventHandler("onVehicleNonWeaponDamage", vehicle2, onCarrierVehicleDamage)
 		setElementData(source, "carrierVehicle", false)
 	end
 end

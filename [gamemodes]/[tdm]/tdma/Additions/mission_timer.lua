@@ -88,7 +88,7 @@ function destroyMissionTimer ( timerID )
 	end
 end
 
-function showMisTextForPlayer ( player, timerID, time, posx, posy, red, green, blue, scale, text, showForAll )
+function showMisTextForPlayer ( player, timerID, time2, posx, posy, red, green, blue, scale, text, showForAll )
 	local textDisplay = textCreateDisplay ()
 	local textItem = textCreateTextItem ( text, posx, posy, 2, red, green, blue, 255, scale )
 	textDisplayAddText ( textDisplay, textItem )
@@ -110,9 +110,9 @@ end
 
 function calcTime ( timeLeft )
 	local calcString = ""
-	local timeHours = 0
-	local timeMins = 0
-	local timeSecs = 0
+	local timeHours
+	local timeMins
+	local timeSecs
 
 	timeLeft = tonumber(timeLeft)
 	timeSecs = math.mod(timeLeft, 60)
@@ -142,7 +142,6 @@ function formatStr ( formatString )
 end
 
 function missionTimerTick()
-	local k = 0
 	for k,theTimer in ipairs(missionTimers) do
 		if ( theTimer["started"] ) then
 			if ( theTimer["direction"] == "<" ) then

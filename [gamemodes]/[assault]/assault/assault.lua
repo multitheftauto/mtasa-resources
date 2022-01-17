@@ -518,7 +518,7 @@ function objectiveReached( objectiveId, playerTable )
 
 	local defender
 	if (attacker == team1) then defender = team2 else defender = team1 end
-	local teamName = nil
+	local teamName
 	if (attacker == team1) then teamName = team1Name else teamName = team2Name end
 
 
@@ -760,7 +760,7 @@ function spawnPlayerTeam( player )
 	textDisplayRemoveObserver( attackerDisplay, player )
 	textDisplayRemoveObserver( defenderDisplay, player )
 	local team = getPlayerTeam(player)
-	local spawnpoint = nil
+	local spawnpoint
 	if (team == attacker) then
 		spawnpoint = getSpawnpoint(options.spawngroup.attacker)
 		showTextForPlayer(player, 10000, 255, 0, 0, 2, 0.7, options.attackMessage)
@@ -1127,9 +1127,9 @@ addEventHandler("onPlayerQuit", root,
 -- stolen from mission_timer.lua
 function calcTime ( timeLeft )
 	local calcString = ""
-	local timeHours = 0
-	local timeMins = 0
-	local timeSecs = 0
+	local timeHours
+	local timeMins
+	local timeSecs
 
 	timeLeft = tonumber(timeLeft)
 	--outputDebugString ( "timeLeft = " .. timeLeft )
@@ -1154,7 +1154,9 @@ function calcTime ( timeLeft )
 end
 
 function showTextForAll ( time, red, green, blue, scale, text, vertical )
-	if (vertical == nil) then local vertical = 0.3 end
+	if (vertical == nil) then 
+		vertical = 0.3
+	end
 	local textDisplay = textCreateDisplay ()
 	local stextItem = textCreateTextItem ( text, 0.501, vertical + 0.001, 2, 0, 0, 0, 255, scale, "center" )
 	local textItem = textCreateTextItem ( text, 0.5, vertical, 2, red, green, blue, 255, scale, "center" )
@@ -1496,8 +1498,8 @@ function waitingCreateDisplay()
 	textDisplayAddText(waitingDisplay2, waitingText2)
 
 	noMapLoadedDisplay = textCreateDisplay()
-	local stext = textCreateTextItem("Assault: No map loaded..",0.501,0.701,"low",0,0,0,255,1.4, "center")
-	local text = textCreateTextItem("Assault: No map loaded..",0.5,0.7,"low",255,255,255,255,1.4, "center")
+	stext = textCreateTextItem("Assault: No map loaded..",0.501,0.701,"low",0,0,0,255,1.4, "center")
+	text = textCreateTextItem("Assault: No map loaded..",0.5,0.7,"low",255,255,255,255,1.4, "center")
 	textDisplayAddText(noMapLoadedDisplay,stext)
 	textDisplayAddText(noMapLoadedDisplay,text)
 end

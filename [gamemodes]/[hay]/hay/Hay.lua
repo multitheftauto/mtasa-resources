@@ -68,7 +68,6 @@ function move ()
 	local object = objects[ rand ]
 	local move = math.random( 0, 5 )
 	--outputDebugString("move: " .. move)
-	local x,y,z
 	local x2,y2,z2 = getElementPosition ( object )
 	--Purge old player positions
 	for x = 1,options.x do
@@ -81,6 +80,7 @@ function move ()
 		end
 	end
 	--Fill in new player positions
+	local x,y,z
 	local players = getElementsByType( "player" )
 	for k,v in ipairs(players) do
 		x,y,z = getElementPosition( v )

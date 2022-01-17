@@ -131,7 +131,6 @@ function CTF_gamemodeMapStart ( startedMap )
 				outputDebugString("* CTF Error: Not enough spawnpoints for team '" .. getTeamName( teamValue ) .. "'. Minimum is 1.", 1 )
 				return
 			else
-				local x,y,z,object,marker,col
 				for flagKey,flagValue in ipairs(flags) do
 					local x,y,z = tonumber( getElementData ( flagValue, "posX" ) ), tonumber( getElementData ( flagValue, "posY" ) ), tonumber( getElementData ( flagValue, "posZ" ) )
 					local object = createObject( 2993, x, y, z )

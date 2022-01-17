@@ -24,7 +24,7 @@ addEventHandler( "onGhostDataReceive", root,
 			xmlUnloadFile( ghost )
 		end
 
-		local ghost = xmlCreateFile( "ghosts/" .. mapName .. ".ghost", "ghost" )
+		ghost = xmlCreateFile( "ghosts/" .. mapName .. ".ghost", "ghost" )
 		if ghost then
 			local info = xmlCreateChild( ghost, "i" )
 			if info then
@@ -32,9 +32,9 @@ addEventHandler( "onGhostDataReceive", root,
 				xmlNodeSetAttribute( info, "t", tostring( bestTime ) )
 			end
 
-			for _, info in ipairs( recording ) do
+			for _, info2 in ipairs( recording ) do
 				local node = xmlCreateChild( ghost, "n" )
-				for k, v in pairs( info ) do
+				for k, v in pairs( info2 ) do
 					if type(v) == "number" then
 						xmlNodeSetAttribute( node, tostring( k ), math.floor(v * 10000 + 0.5) / 10000 )
 					else

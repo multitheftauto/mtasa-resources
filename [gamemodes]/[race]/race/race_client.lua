@@ -226,11 +226,10 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 
 	-- objects
 	g_Objects = {}
-	local pos, rot
-	for i,object in ipairs(objects) do
-		pos = object.position
-		rot = object.rotation
-		g_Objects[i] = createObject(object.model, pos[1], pos[2], pos[3], rot[1], rot[2], rot[3])
+	for i,object2 in ipairs(objects) do
+		local pos = object2.position
+		local rot = object2.rotation
+		g_Objects[i] = createObject(object2.model, pos[1], pos[2], pos[3], rot[1], rot[2], rot[3])
 	end
 
 	if #g_Checkpoints > 0 then
@@ -998,10 +997,10 @@ function Spectate.setTarget( player )
 		end
 		guiSetText(g_GUI.speclabel, 'Currently spectating:\n' .. getPlayerName(Spectate.target))
 	else
-		local x,y,z = getElementPosition(localPlayer)
+		local x,y = getElementPosition(localPlayer)
 		x = x - ( x % 32 )
 		y = y - ( y % 32 )
-		z = getGroundPosition ( x, y, 5000 ) or 40
+		local z = getGroundPosition ( x, y, 5000 ) or 40
 		setCameraTarget( localPlayer )
 		setCameraMatrix( x,y,z+10,x,y+50,z+60)
 		guiSetText(g_GUI.speclabel, 'Currently spectating:\n No one to spectate')

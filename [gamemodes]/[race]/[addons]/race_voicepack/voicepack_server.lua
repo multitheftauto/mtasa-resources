@@ -67,9 +67,9 @@ addEventHandler("onPlayerToptimeImprovement", root,
 local _getAlivePlayers = getAlivePlayers
 function getAlivePlayers(player)
 	local result = {}
-	for _,player in ipairs(_getAlivePlayers()) do
-		if getElementData(player, "state") == "alive" then
-			table.insert(result, player)
+	for _,plr in ipairs(_getAlivePlayers()) do
+		if getElementData(plr, "state") == "alive" then
+			table.insert(result, plr)
 		end
 	end
 	return result
