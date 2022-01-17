@@ -350,8 +350,8 @@ function voteMap(resource1, resource2)
         map = exports.mapmanager:getRunningGamemodeMap()
         if map then
             local currentMap = getResourceName(map)
-            for i,map in ipairs(compatibleMaps) do
-                if getResourceName(map) == currentMap then
+            for i,map2 in ipairs(compatibleMaps) do
+                if getResourceName(map2) == currentMap then
                     table.remove(compatibleMaps, i)
                     break
                 end

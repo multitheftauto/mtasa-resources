@@ -567,16 +567,16 @@ function getMapFromName ( name )
 	if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then -- If this version has refreshResources, refresh resources.
 		refreshResources(false)
 	end
-	local resource = getResourceFromName ( name ) --and try get the resource again.
+	resource = getResourceFromName ( name ) --and try get the resource again.
 	if resource then
 		return resource
 	end
 	name = string.lower(name) --Remove case sensitivity.  May cause minor problems with linux servers.
 	--Loop through and find resources with a matching 'name' param
-	for i,resource in ipairs(getMaps()) do
-		local infoName = getResourceInfo ( resource, "name" )
+	for i,resource2 in ipairs(getMaps()) do
+		local infoName = getResourceInfo ( resource2, "name" )
 		if (infoName and (string.lower(infoName) == name)) then
-			return resource
+			return resource2
 		end
 	end
 	return false

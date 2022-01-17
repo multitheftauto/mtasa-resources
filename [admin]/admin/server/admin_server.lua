@@ -650,7 +650,6 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 							triggerEvent('onSettingChange', resRoot, name, oldvalue, value, source )
 						end
 					end
-					mdata = resName..'.'..name
 				end
 			end
 		elseif ( cmd == "getall" ) then

@@ -316,7 +316,6 @@ local specialSyncers = {
 }
 
 function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, gamemodeName )
-	local tick = getTickCount()
 	local iniTick = getTickCount()
 	if ( loadedMap ) then
 		if ( string.lower(loadedMap) == string.lower(resourceName) ) then
@@ -395,7 +394,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	local elementChildren = {}
 	local rootElements = {}
 	local usedResources = {}
-	tick = getTickCount()
+	local tick = getTickCount()
 	local showSaveWarningOnce = false
 	for i, element in ipairs(getElementChildren(baseElement)) do --Find parents to start with
 		--ignore representations and destroyed elements

@@ -372,12 +372,12 @@ function Viewer:updateCache()
 			end
 		end
 		table.insert(rowdata,{class=rowclass,color=rowcolor})
-		for i, idx in ipairs(rowIndices) do
-			if idx then
+		for i, idx2 in ipairs(rowIndices) do
+			if idx2 then
 				if bClearChange and newColumns[i].name == "change" then
 					table.insert(rowdata,"")
 				else
-					table.insert(rowdata,row[idx])
+					table.insert(rowdata,row[idx2])
 				end
 			else
 				table.insert(rowdata,rowblank)
