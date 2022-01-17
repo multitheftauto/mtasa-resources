@@ -53,14 +53,6 @@ colorPicker = {
 
 		colorPicker.buttonWidth = info.width * colorPicker.default.buttonWidth
 
-		local sizeX, sizeY
-		if info.parent then
-			sizeX, sizeY = guiGetSize(info.parent, false)
-		end
-		if not sizeX then
-			sizeX, sizeY = guiGetScreenSize()
-		end
-
 		colorPicker.GUI = {}
 		colorPicker.children = {}
 
