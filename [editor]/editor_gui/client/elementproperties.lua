@@ -433,10 +433,10 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 			for k,control in ipairs(addedControls) do
 				if control:getLabel() == "model" then
 					local modelControl = control
-					local handlerFunction = function ( control )
+					local handlerFunction = function ( control2 )
 					        local newModel = modelControl:getValue()
 					        if newModel ~= newControl:getCurrentModel() then
-					                newControl:addCompatibleUpgrades( newModel )
+					            newControl:addCompatibleUpgrades( newModel )
 					        end
 					end
 					modelControl:addChangeHandler(handlerFunction)
@@ -450,9 +450,9 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 				local minX, minY, minZ = getElementBoundingBox(selectedElement)
 				g_minZ = minZ
 				local handlerFunction = function ()
-					local minX, minY, minZ = getElementBoundingBox(selectedElement)
-					if minX and minY and minZ then
-						local Zoffset = minZ - g_minZ
+					local minX2, minY2, minZ2 = getElementBoundingBox(selectedElement)
+					if minX2 and minY2 and minZ2 then
+						local Zoffset = minZ2 - g_minZ
 						-- Search the position control
 						for k,control in ipairs(addedControls) do
 							if control:getLabel() == "position" then
@@ -462,7 +462,7 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 								break
 							end
 						end
-						g_minZ = minZ
+						g_minZ = minZ2
 					end
 				end
 				newControl:addChangeHandler(handlerFunction)
@@ -681,7 +681,7 @@ local function applyPropertiesChanges()
 	for i, control in ipairs(addedControls) do
 		if control:getDataField() ~= "locked" then -- we don't want to sync it
 			local value = control:getValue()
-			local modified = false
+			local modified
 
 			if type(value) ~= "table" then
 				modified = (value ~= previousValues[control])
@@ -838,8 +838,8 @@ function openPropertiesBox( element, resourceName, shortcut )
 				control:addChangeHandler(syncPropertiesCallback)
 				--Attach after closing
 				control:addChangeHandler(
-					function(control)
-						if control.cancelled then
+					function(control2)
+						if control2.cancelled then
 							triggerServerEvent ( "doDestroyElement", element, true)
 						else
 							editor_main.selectElement(element,1)
@@ -898,7 +898,7 @@ end
 function undoProperties()
 	for k,control in ipairs(addedControls) do
 		local value = control:getValue()
-		local modified = false
+		local modified
 
 		if type(value) ~= "table" then
 			modified = (value ~= previousValues[control])

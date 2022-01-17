@@ -14,7 +14,6 @@ local ignoreElementWalls = true -- 'false' not supported yet
 local isEnabled = false
 
 local camX, camY, camZ
-local camRX, camRY, camRZ
 
 local selectedElement
 local centerToBaseDistance
@@ -23,8 +22,7 @@ local rotationless
 local rotX, rotY, rotZ
 
 local collisionless
-local minX, minY, minZ, maxX, maxY, maxZ
-local centerToBaseDistance
+local minZ
 
 local hasRotation = {
 	object = true,
@@ -192,7 +190,7 @@ function attachElement(element)
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element)
 				collisionless = false
-				minX, minY, minZ, maxX, maxY, maxZ = exports.edf:edfGetElementBoundingBox(element)
+				_, _, minZ = exports.edf:edfGetElementBoundingBox(element)
 				centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(element)
 			end
 		else
@@ -200,19 +198,19 @@ function attachElement(element)
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element)
 				collisionless = false
-				minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
+				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
 			elseif (getElementType(element) == "object") then
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element)
 				collisionless = false
-				minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
+				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
 			elseif (getElementType(element) == "ped") then
 				rotationless = false
 				rotX, rotY, rotZ = 0, 0, getPedRotation(element)
 				collisionless = false
-				minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
+				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
 			else
 				rotationless = true
@@ -242,13 +240,12 @@ function detachElement()
 
 		-- clear variables
 		camX, camY, camZ = nil, nil, nil
-		camRX, camRY, camRZ = nil, nil, nil
 		if (not rotationless) then
 			rotX, rotY, rotZ = nil, nil, nil
 		end
 		rotationless = nil
 		if (not collisionless) then
-			minX, minY, minZ, maxX, maxY, maxZ = nil, nil, nil, nil, nil, nil
+			minZ = nil
 			centerToBaseDistance = nil
 		end
 		collisionless = nil

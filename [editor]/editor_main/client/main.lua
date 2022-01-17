@@ -193,7 +193,7 @@ addEventHandler("onClientRender", root,
 			return
 		end
 		if g_dragElement and not g_selectedElement then
-			local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
+			local camX2, camY2, camZ2, lookX, lookY, lookZ = getCameraMatrix()
 			local distance = math.sqrt((g_dragPosition.x - lookX)^2 +
 									   (g_dragPosition.y - lookY)^2 +
 				 (g_dragPosition.z and (g_dragPosition.z - lookZ)^2 or 0))
@@ -211,8 +211,8 @@ addEventHandler("onClientRender", root,
 				g_targetedElement = edf.edfGetAncestor(targetElement)
 			end
 
-			local camX, camY, camZ = getCameraMatrix()
-			local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
+			local camX2, camY2, camZ2 = getCameraMatrix()
+			local distance = math.sqrt( (targetX - camX2)^2 + (targetY - camY2)^2 + (targetZ - camZ2)^2 )
 			local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
 			createHighlighterText ( labelCenterX,labelCenterY,
 							getElementID(g_targetedElement) or "",
@@ -233,8 +233,8 @@ addEventHandler("onClientRender", root,
             local line2 = ""
             local line3 = ""
 			if not targetElement and buildingInfo then
-				local camX, camY, camZ = getCameraMatrix()
-				local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
+				local camX2, camY2, camZ2 = getCameraMatrix()
+				local distance = math.sqrt( (targetX - camX2)^2 + (targetY - camY2)^2 + (targetZ - camZ2)^2 )
 				local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
 				local modelName = tostring( engineGetModelNameFromID( buildingInfo.id ) )
 				if ( buildingInfo.LODid ~= nil ) then
@@ -1246,7 +1246,7 @@ end
 function updateArrowMarker( element )
 	if not g_arrowMarker then return end
 
-	local element = element or g_selectedElement
+	element = element or g_selectedElement
 	if not element then return end
 
 	local radius = edf.edfGetElementRadius(element) or 1

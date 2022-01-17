@@ -72,7 +72,7 @@ local function freecamFrame ()
     -- calculate a target based on the current position and an offset based on the angle
     local camTargetX = camPosX + freeModeAngleX * 100
     local camTargetY = camPosY + freeModeAngleY * 100
-    local camTargetZ = camPosZ + freeModeAngleZ * 100
+    local camTargetZ
 
 	-- Calculate what the maximum speed that the camera should be able to move at.
     local mspeed = options.normalMaxSpeed

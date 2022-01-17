@@ -158,8 +158,8 @@ function aServerTab.Create(tab)
         end
     end
 
-    for i2 = 0,19 do
-        guiComboBoxAddItem(aServerTab.Weather, i2 .. " (" .. getWeatherNameFromID(i2) .. ")")
+    for i3 = 0,19 do
+        guiComboBoxAddItem(aServerTab.Weather, i3 .. " (" .. getWeatherNameFromID(i3) .. ")")
     end
 
     sync(SYNC_SERVER)

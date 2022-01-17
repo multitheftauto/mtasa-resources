@@ -64,13 +64,13 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		for id, resource in ipairs(resourceTable) do
 			local name = getResourceName ( resource )
 			local state = getResourceState ( resource )
-			local type = getResourceInfo ( resource, "type" )
+			local type2 = getResourceInfo ( resource, "type" )
 			local _,numsettings = aGetResourceSettings(name,true)
 			tableOut[id] = {}
 			tableOut[id]["name"] = name
 			tableOut[id]["numsettings"] = numsettings
 			tableOut[id]["state"] = state
-			tableOut[id]["type"] = type
+			tableOut[id]["type"] = type2
 			tableOut[id]["fullName"] = getResourceInfo(resource, "name") or "Unknown"
 			tableOut[id]["author"] = getResourceInfo(resource, "author") or "Unknown"
 			tableOut[id]["version"] = getResourceInfo(resource, "version") or "Unknown"

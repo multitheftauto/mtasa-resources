@@ -139,7 +139,7 @@ addEventHandler ( "onEditorResumed", root,
 	end
 )
 
-function deepcopy(object)
+function deepcopy(object1)
     local lookup_table = {}
     local function _copy(object)
         if type(object) ~= "table" then
@@ -154,5 +154,5 @@ function deepcopy(object)
         end
         return setmetatable(new_table, getmetatable(object))
     end
-    return _copy(object)
+    return _copy(object1)
 end

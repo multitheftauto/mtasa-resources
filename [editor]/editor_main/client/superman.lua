@@ -172,7 +172,7 @@ end
 --
 function Superman.onQuit(reason, player)
   local self = Superman
-  local player = player or source
+  player = player or source
 
   if isPlayerFlying(player) then
     self:restorePlayer(player)

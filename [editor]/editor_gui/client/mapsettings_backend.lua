@@ -77,7 +77,7 @@ end
 function undoEnvironment()
 	for k,control in ipairs(mapSettingChangeHandled) do
 		local value = mapsettings[control]:getValue()
-		local modified = false
+		local modified
 
 		if type(value) ~= "table" then
 			modified = (value ~= previousEnvironment[control])

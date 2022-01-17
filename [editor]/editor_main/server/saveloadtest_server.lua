@@ -395,7 +395,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	local elementChildren = {}
 	local rootElements = {}
 	local usedResources = {}
-	local tick = getTickCount()
+	tick = getTickCount()
 	local showSaveWarningOnce = false
 	for i, element in ipairs(getElementChildren(baseElement)) do --Find parents to start with
 		--ignore representations and destroyed elements
@@ -435,14 +435,14 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	end
 	-- Save in the map node the used definitions
 	local usedDefinitions = ""
-	for resource in pairs(usedResources) do
-		usedDefinitions = usedDefinitions .. resource .. ","
+	for resource2 in pairs(usedResources) do
+		usedDefinitions = usedDefinitions .. resource2 .. ","
 	end
 	if usedDefinitions ~= "" then
 		usedDefinitions = string.sub(usedDefinitions, 1, #usedDefinitions - 1)
 		xmlNodeSetAttribute(xmlNode, "edf:definitions", usedDefinitions)
 	end
-	local tick = getTickCount()
+	tick = getTickCount()
 
 	for i, element in ipairs(rootElements) do
 		if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
@@ -589,8 +589,8 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		end
 		-- Save in the map node the used definitions
 		local usedDefinitions = ""
-		for resource in pairs(usedResources) do
-			usedDefinitions = usedDefinitions .. resource .. ","
+		for resource2 in pairs(usedResources) do
+			usedDefinitions = usedDefinitions .. resource2 .. ","
 		end
 		if ( usedDefinitions ~= "" ) then
 			usedDefinitions = string.sub(usedDefinitions, 1, #usedDefinitions - 1)

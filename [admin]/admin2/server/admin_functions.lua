@@ -4,7 +4,7 @@
 aFunctions = {
     team = {
         ["createteam"] = function(name, r, g, b)
-            local success = false
+            local success
             if (tonumber(r)) and (tonumber(g)) and (tonumber(b)) then
                 success = createTeam(name, tonumber(r), tonumber(g), tonumber(b))
             else
@@ -219,7 +219,7 @@ aFunctions = {
         ["givevehicle"] = function(player, id)
             local pvehicle = getPedOccupiedVehicle(player)
             local vx, vy, vz = getElementVelocity(player)
-            local vehicle = nil
+            local vehicle
             if (pvehicle) then
                 local passengers = getVehicleOccupants(pvehicle)
                 local x, y, z = getElementPosition(pvehicle)

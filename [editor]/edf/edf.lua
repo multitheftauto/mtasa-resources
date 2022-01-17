@@ -405,7 +405,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	end
 
 	-- check all defined fields for validity and stores them in a parent data table
-	local parentData = parentData or {}
+	parentData = parentData or {}
 	for dataField, dataDefinition in pairs(elementDefinition.data) do
 		local checkedData = edfCheckElementData(theElement, dataField, dataDefinition)
 		if checkedData == nil then
@@ -531,9 +531,6 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 								string.sub(dataValue, -1) == '!'
 							then
 								inherited[string.sub(dataValue,2,-2)] = true
-								-- get it from the parent data table
-								local parentDataField = string.sub(dataValue,2,-2)
-								dataValue = parentData[parentDataField]
 							end
 							subParentData[dataField] = dataField
 						end
@@ -674,14 +671,11 @@ function edfCloneElement(theElement, editorMode )
 	parametersTable.alpha = edfGetElementAlpha(theElement) or 255
 
 	if isBasic[elementType] then
-		local childData = {}
 		for property, propertyData in pairs(edf[creatorResource]["elements"][elementType].data) do
 			--try to get the given value in target datatype
 			if convert[propertyData.datatype] then
 				parametersTable[property] = convert[propertyData.datatype](parametersTable[property])
 			end
-			--store the value, or its default
-			childData[property] = parametersTable[property] or propertyData.default
 		end
 
 		local oldElement = theElement

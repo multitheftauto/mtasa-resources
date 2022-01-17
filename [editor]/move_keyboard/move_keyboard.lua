@@ -11,7 +11,6 @@ local selectedElement
 
 local posX, posY, posZ
 
-local rotationless
 local rotX, rotY, rotZ
 local rotFlipped = false
 
@@ -373,7 +372,7 @@ local function onClientRender_keyboard()
 end
 
 local function rotateWithMouseWheel(key, keyState)
-	if rotationless or (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then
+	if (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then
 		return
 	end
 	local speed
@@ -442,7 +441,7 @@ function detachElement()
 		end
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil
-		rotX, rotY, rotZ = nil, nil, nil, nil
+		rotX, rotY, rotZ = nil, nil, nil
 		return true
 	else
 		return false
@@ -506,6 +505,6 @@ function disable()
 	isEnabled = false
 end
 
-function setMovementType(movementType)
-	call(getResourceFromName("editor_main"), "setMovementType", movementType)
+function setMovementType(movementType2)
+	call(getResourceFromName("editor_main"), "setMovementType", movementType2)
 end

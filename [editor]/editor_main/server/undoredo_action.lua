@@ -189,8 +189,8 @@ function ActionDestroy:getActionName()
 end
 
 local function getElementsWithParent(element, base, res)
-	local base = base or mapContainer
-	local res = res or {}
+	base = base or mapContainer
+	res = res or {}
 	local children = getElementChildren(base)
 
 	for k,child in ipairs(children) do
@@ -214,8 +214,8 @@ function ActionDestroy:setElement(element)
 		end
 
 		self.parentOf = getElementsWithParent(self.element)
-		for k,element in ipairs(self.parentOf) do
-			setElementData(element, "me:parent", nil)
+		for k,element2 in ipairs(self.parentOf) do
+			setElementData(element2, "me:parent", nil)
 		end
 
 		self.references = getElementData(element,"me:references")

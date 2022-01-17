@@ -35,7 +35,7 @@ function createSaveDialog()
 		function ()
 			local name = guiGetText(source)
 			local correctFormat = string.gsub(name, " ", "-") -- Turn spaces into dashes
-			local correctFormat = string.gsub(correctFormat, "[^%w-_{}]", "") -- Then remove bad charachters
+			correctFormat = string.gsub(correctFormat, "[^%w-_{}]", "") -- Then remove bad charachters
 			if name ~= correctFormat then
 				guiSetText(source, correctFormat)
 			end

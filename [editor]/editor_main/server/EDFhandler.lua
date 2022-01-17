@@ -5,8 +5,8 @@ addEventHandler ( "onResourceStart", resourceRoot,
 	function(resource)
 		if getResourceState( edf.res ) == "running" then
 			local definitionsList = edf.edfGetLoadedEDFResources()
-			for index, resource in ipairs(definitionsList) do
-				registerEDF( resource )
+			for index, resource2 in ipairs(definitionsList) do
+				registerEDF( resource2 )
 			end
 		end
 

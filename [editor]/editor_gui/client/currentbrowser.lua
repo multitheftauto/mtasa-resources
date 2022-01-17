@@ -210,7 +210,6 @@ function currentBrowser.dropdownSelect ( element )
 end
 addEventHandler ( "onClientDropDownSelect", root, currentBrowser.dropdownSelect )--------
 
-local query
 local searchTimerDelay
 function currentBrowser.searchChanged ( element )
 	if element == currentBrowserGUI.search then

@@ -615,15 +615,11 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 		else
 			local account = getAccount ( getPlayerAccountName ( source ), tostring ( arg[1] ) )
 			if ( account ) then
-				action = "password"
 				setAccountPassword ( account, arg[2] )
-				mdata = arg[2]
 			else
 				outputChatBox ( "Error - Invalid password.", source, 255, 0, 0 )
 			end
 		end
-	--elseif ( action == "autologin" ) then
-
 	elseif ( action == "settings" ) then
 		local cmd = arg[1]
 		local resName = arg[2]
@@ -655,7 +651,6 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 						end
 					end
 					mdata = resName..'.'..name
-					mdata2 = type(value) == "table" and string.gsub(toJSON(value),"^(%[ %[ )(.*)( %] %])$", "%2") or tostring(value)
 				end
 			end
 		elseif ( cmd == "getall" ) then
@@ -668,9 +663,6 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 			end
 		end
 		triggerClientEvent ( source, "aAdminSettings", root, cmd, resName, tableOut )
-		if mdata == "" then
-			action = nil
-		end
 	elseif ( action == "sync" ) then
 		local type = arg[1]
 		local tableOut = {}
@@ -757,15 +749,12 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 		triggerEvent ( "aAdmin", source, "sync", "aclgroups" )
 	elseif ( action == "acladd" ) then
 		if ( arg[3] ) then
-			action = action
-			mdata = "Group '"..arg[2].."'"
 			if ( arg[1] == "object" ) then
 				local group = aclGetGroup ( arg[2] )
 				local object = arg[3]
 				if ( not aclGroupAddObject ( group, object ) ) then
 					outputChatBox ( "Error adding object '"..tostring ( object ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
-					mdata2 = "Object '"..arg[3].."'"
 					outputServerLog ("ACL: "..getPlayerName(source).."["..getAccountName (getPlayerAccount(source)).."] ["..getPlayerSerial (source).."] ["..getPlayerIP (source).."] added "..object.." to ACL Group "..arg[2])
 					triggerEvent ( "aAdmin", source, "sync", "aclobjects", arg[2] )
 					if arg[4] then
@@ -797,8 +786,6 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 		end
 	elseif ( action == "aclremove" ) then
 		if ( arg[3] ) then
-			action = action
-			mdata = "Group '"..arg[2].."'"
 			if ( arg[1] == "object" ) then
 				local group = aclGetGroup ( arg[2] )
 				local object = arg[3]
@@ -1431,7 +1418,7 @@ function getPlayerChatHistory ( player, chunk )
 end
 
 addEvent ( "aMessage", true )
-addEventHandler ( "aMessage", root, 
+addEventHandler ( "aMessage", root,
 function ( action, data )
 	if checkClient( false, source, 'aMessage', action ) then
 		return
