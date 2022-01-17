@@ -1154,7 +1154,7 @@ function calcTime ( timeLeft )
 end
 
 function showTextForAll ( time, red, green, blue, scale, text, vertical )
-	if (vertical == nil) then 
+	if (vertical == nil) then
 		vertical = 0.3
 	end
 	local textDisplay = textCreateDisplay ()

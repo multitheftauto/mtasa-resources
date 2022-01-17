@@ -101,8 +101,8 @@ function Countdown:start(player)
 		if player then
 			textDisplayAddObserver(self.display, player)
 		else
-			for i,player in ipairs(getElementsByType('player')) do
-				textDisplayAddObserver(self.display, player)
+			for i,plr in ipairs(getElementsByType('player')) do
+				textDisplayAddObserver(self.display, plr)
 			end
 		end
 	end

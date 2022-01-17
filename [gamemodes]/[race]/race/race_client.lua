@@ -227,9 +227,9 @@ function initRace(vehicle, checkpoints, objects, pickups, mapoptions, ranked, du
 	-- objects
 	g_Objects = {}
 	for i,object2 in ipairs(objects) do
-		local pos = object2.position
+		local pos2 = object2.position
 		local rot = object2.rotation
-		g_Objects[i] = createObject(object2.model, pos[1], pos[2], pos[3], rot[1], rot[2], rot[3])
+		g_Objects[i] = createObject(object2.model, pos2[1], pos2[2], pos2[3], rot[1], rot[2], rot[3])
 	end
 
 	if #g_Checkpoints > 0 then

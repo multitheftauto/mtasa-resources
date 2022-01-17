@@ -65,9 +65,7 @@ addEventHandler('onPlayerReachCheckpoint', root,
             if debug then outputDebugString("race_delay_indicator: ".."frontPlayer = "..tostring(frontPlayer)) end
             if not frontPlayer then
                 if debug then outputDebugString("race_delay_indicator: ".."no frontPlayer use lastPlayer") end
-                if lastPlayer[checkpointNum] then
-                    frontPlayer = lastPlayer[checkpointNum]
-                else
+                if not lastPlayer[checkpointNum] then
                     if debug then outputDebugString("race_delay_indicator: ".."no lastPlayer use nothing") end
                 end
 			else

@@ -244,8 +244,6 @@ function saveHandlingToServer ( player, vehicle, name, description )
 
     xmlSaveFile ( handlingXML )
 
-    cache = addCache
-
     triggerClientEvent ( player, "updateClientCache", player, "serversaves", string.lower ( name ), addCache )
 
     addLogEntry ( --[[ FILL ME ]] )

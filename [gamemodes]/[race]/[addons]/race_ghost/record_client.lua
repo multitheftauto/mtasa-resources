@@ -48,7 +48,6 @@ function GhostRecord:destroy()
 	self.flushTimer = nil
 	self.timeToSend = nil
 	self.currentMapName = self.currentMapName .. "deleted"
-	self = nil
 end
 
 function GhostRecord:checkForCountdownEnd()

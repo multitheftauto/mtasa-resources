@@ -190,8 +190,8 @@ addEventHandler('onLoadedAtClient', resourceRoot,
 		clientCall(client, 'freeroamSettings', settings)
 		for player,data in pairs(g_PlayerData) do
 			if player ~= client then
-				local settings = data.settings
-				setTimer(sendSettings,1500,1,client,player,settings)
+				local settings2 = data.settings
+				setTimer(sendSettings,1500,1,client,player,settings2)
 			end
 		end
 	end,
@@ -365,7 +365,6 @@ end
 
 function giveMeVehicles(vehID)
 	if not isElement(source) then return end
-	local px, py, pz, prot
 	local element = getPedOccupiedVehicle(source) or source
 	local px,py,pz = getElementPosition(element)
 	local _,_,prot = getElementRotation(element)

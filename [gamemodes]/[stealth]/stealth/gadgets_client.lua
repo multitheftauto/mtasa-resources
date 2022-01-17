@@ -157,9 +157,8 @@ end
 
 --CLOAK
 
-function makecloakstop (thisplayer)
-	thisplayer = localPlayer
-	triggerServerEvent ("uncloaktheplayer", localPlayer, thisplayer )
+function makecloakstop ()
+	triggerServerEvent ("uncloaktheplayer", localPlayer, localPlayer )
 end
 
 
@@ -219,7 +218,7 @@ end
 --GOGGLES
 
 --DETECTS IF ITS THE GOGGLES IN THE PERSONS HANDS
-function triggerpulled(weapon)
+function triggerpulled()
 	if lookingthroughcamera == 1 then
 		if gadgetuses >0 then
 			ejectSmokeGrenade(0)
@@ -229,7 +228,7 @@ function triggerpulled(weapon)
 			outputChatBox ( "You are out of Camera Smokes.", 255, 69, 0)
 		end
 	else
-		weapon = getPedWeapon (localPlayer)
+		local weapon = getPedWeapon (localPlayer)
 		if weapon == 44 then
 			gogglecheckdelay = setTimer ( goggletaskcheck, 200, 1 )
 		end

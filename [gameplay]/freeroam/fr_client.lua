@@ -663,7 +663,7 @@ function applyPlayerGrav()
 end
 
 function setGravityCommand(cmd, grav)
-	local grav = grav and tonumber(grav)
+	grav = grav and tonumber(grav)
 	if grav then
 		playerGravity = grav
 		server.setPedGravity(localPlayer, tonumber(grav))
@@ -1039,8 +1039,7 @@ function fillInPosition(relX, relY, btn)
 
 	local x = relX*6000 - 3000
 	local y = 3000 - relY*6000
-	local hit, hitX, hitY, hitZ
-	hit, hitX, hitY, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
+	local _, _, _, hitZ = processLineOfSight(x, y, 3000, x, y, -3000)
 	setControlNumbers(wndSetPos, { x = x, y = y, z = hitZ or 0 })
 end
 
@@ -1084,7 +1083,7 @@ local function calmVehicle(veh)
 
 end
 
-local function retryTeleport(elem,x,y,z,isVehicle,distanceToGround)
+local function retryTeleport(elem,x,y,_,isVehicle,distanceToGround)
 
 	local hit, groundX, groundY, groundZ = processLineOfSight(x, y, 3000, x, y, -3000)
 	if hit then
@@ -1301,7 +1300,7 @@ function setPosCommand(cmd, x, y, z, r)
 	end
 
 	-- Handle setpos if used like: x, y, z, r or x,y,z,r
-	local x, y, z, r = string.gsub(x or "", ",", " "), string.gsub(y or "", ",", " "), string.gsub(z or "", ",", " "), string.gsub(r or "", ",", " ")
+	x, y, z, r = string.gsub(x or "", ",", " "), string.gsub(y or "", ",", " "), string.gsub(z or "", ",", " "), string.gsub(r or "", ",", " ")
 	-- Extra handling for x,y,z,r
 	if (x and y == "" and not tonumber(x)) then
 		x, y, z, r = unpack(split(x, " "))
@@ -1321,9 +1320,9 @@ function setPosCommand(cmd, x, y, z, r)
 
 	setPlayerPosition(tonumber(x) or px, tonumber(y) or py, tonumber(z) or pz)
 	if (isPedInVehicle(localPlayer)) then
-		local vehicle = getPedOccupiedVehicle(localPlayer)
-		if (vehicle and isElement(vehicle) and getVehicleController(vehicle) == localPlayer) then
-			setElementRotation(vehicle, 0, 0, tonumber(r) or pr)
+		local vehicle2 = getPedOccupiedVehicle(localPlayer)
+		if (vehicle2 and isElement(vehicle2) and getVehicleController(vehicle2) == localPlayer) then
+			setElementRotation(vehicle2, 0, 0, tonumber(r) or pr)
 		end
 	else
 		setPedRotation(localPlayer, tonumber(r) or pr)

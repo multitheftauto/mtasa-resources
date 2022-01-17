@@ -125,7 +125,7 @@ addEventHandler('onClientReceiveAddonsInfo', resourceRoot,
 			guiSetPosition( header, colPositions[idx], py, false )
 		end
 
-		for idx,row in ipairs(gui["rows"]) do
+		for idx,row2 in ipairs(gui["rows"]) do
 			row = gui["rows"][idx]
 
 			_,sy = guiGetSize( row.state, false )
@@ -171,7 +171,8 @@ function resizeMenu()
 	guiSetRect( gui["scrollpane"], rectTop, false )
 
 	-- get rect for headerul2
-	local rectHeaderul2, rectCur = rectSplitY( rectBot, 18 )
+	local rectCur
+	local rectHeaderul2 = rectSplitY( rectBot, 18 )
 	guiSetRect( gui["headerul2"], rectHeaderul2, false )
 
 	-- gap
@@ -200,7 +201,7 @@ function resizeMenu()
 
 	-- get rect for close button
 	local rectClose
-	rectCur, rectClose = rectSplitX( rectCur, -95 )
+	_, rectClose = rectSplitX( rectCur, -95 )
 	guiSetPosition ( gui["button_close"], rectClose.x, rectClose.y, false )
 	guiSetSize ( gui["button_close"], 90, 22, false )
 end

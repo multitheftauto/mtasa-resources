@@ -1,6 +1,5 @@
 local interiors = {}
 local interiorMarkers = {}
-local resourceFromInterior = {}
 --format interior = { [resource] = { [id] = { return= { [element],[element] }, entry=[element] } }
 
 addEvent ( "doTriggerServerEvents", true )
@@ -37,7 +36,6 @@ function interiorLoadElements ( root, resource )
 		end
 		interiors[resource][id] = {}
 		interiors[resource][id]["entry"] = interior
-		resourceFromInterior[interior] = resource
 	end
 	--Load the interior markers
 	local returnInteriors = getElementsByType ( "interiorReturn", root )
@@ -46,8 +44,7 @@ function interiorLoadElements ( root, resource )
 		if not interiors[resource][id] then outputDebugString ( "Interiors: Error, no refid specified to returnInterior.", 1 )
 			return
 		else
-				interiors[resource][id]["return"] = interior
-				resourceFromInterior[interior] = resource
+			interiors[resource][id]["return"] = interior
 		end
 	end
 end
@@ -101,11 +98,10 @@ function getInteriorMarker ( elementInterior )
 	return false
 end
 
-local opposite = { ["interiorReturn"] = "entry",["interiorEntry"] = "return" }
 local idLoc = { ["interiorReturn"] = "refid",["interiorEntry"] = "id" }
 addEventHandler ( "doTriggerServerEvents",root,
 	function( interior, resource, id )
-		local eventCanceled1,eventCanceled2 = false,false
+		local eventCanceled1, eventCanceled2
 		eventCanceled1 = triggerEvent ( "onPlayerInteriorHit", client, interior, resource, id )
 		eventCanceled2 = triggerEvent ( "onInteriorHit", interior, client )
 		if ( eventCanceled2 ) and ( eventCanceled1 ) then

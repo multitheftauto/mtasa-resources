@@ -2,8 +2,8 @@ local startx = 112
 local starty = 1026
 local startz = 14
 local screenStartX = guiGetScreenSize()
+screenStartX = screenStartX * 0
 local SPECWIDTH = screenStartX
-local screenStartX = screenStartX * 0
 local SPECHEIGHT = (SPECWIDTH / 16) * 7  -- height (changing requires palette adjustments too)
 local screenStartY = SPECHEIGHT / 2
 local BANDS = 40
@@ -132,7 +132,7 @@ function calc ( fft, stream )
 	end
 
 	local calced = {}
-	local y = 0
+	local y
 	local bC=0
 	local specbuf = 0
 	local w, h = guiGetScreenSize()
@@ -171,15 +171,15 @@ function calc ( fft, stream )
 		bSpawnParticles = false
 	else
 		-- always make this bigger because when you tint it the image will look smaller.
-		local var = 600
+		local var3 = 600
 		local var2 = 400
-		dxDrawImage ( -var2, -var, SPECWIDTH+(var2*2), SPECHEIGHT+(var*2)+100, "bg.png", 0, 0,0, tocolor(r, g, b, 255) )
+		dxDrawImage ( -var2, -var3, SPECWIDTH+(var2*2), SPECHEIGHT+(var3*2)+100, "bg.png", 0, 0,0, tocolor(r, g, b, 255) )
 	end
 	local movespeed = (1 * (bpm / 180)) + 1
 	local dir = bpm <= 100 and "down" or "up"
 	local prevcalced = calced
         -- loop all the bands.
-	for x, peak in ipairs(fft) do
+	for x, peak2 in ipairs(fft) do
 		local posx = x - 1
 		-- fft contains our precalculated data so just grab it.
 		peak = fft [ x ]

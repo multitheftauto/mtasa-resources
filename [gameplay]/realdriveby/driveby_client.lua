@@ -171,7 +171,7 @@ end
 
 
 --This function handles the driveby switch weapon key
-function switchDrivebyWeapon(key,progress)
+function switchDrivebyWeapon(key2, progress)
 	if block then return end
 	progress = tonumber(progress)
 	if not progress then return end

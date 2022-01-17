@@ -21,7 +21,7 @@ addEventHandler('onPlayerChat', root,
 			cancelEvent()
 			local r, g, b = getPlayerColor(source)
 			local name = getPlayerName(source)
-			local msg = msg:gsub('#%x%x%x%x%x%x', '')
+			msg = msg:gsub('#%x%x%x%x%x%x', '')
 			outputChatBox( name.. ': #FFFFFF' .. msg, root, r, g, b, true)
 			outputServerLog( "CHAT: " .. name .. ": " .. msg )
 		end
