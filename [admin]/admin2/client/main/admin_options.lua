@@ -54,9 +54,9 @@ function aOptionsTab.Create(tab)
     guiCreateLabel(0.70, 0.90, 0.19, 0.055, "Refresh Delay(MS):", true, aOptionsTab.Tab)
     aOptionsTab.RefreshDelay = guiCreateEdit(0.89, 0.90, 0.08, 0.045, "50", true, aOptionsTab.Tab)
 
-    if (tonumber(aGetSetting("adminChatLines"))) then
-        guiSetText(aOptionsTab.AdminChatLines, aGetSetting("adminChatLines"))
-    end
+    -- if (tonumber(aGetSetting("adminChatLines"))) then
+    --     guiSetText(aOptionsTab.AdminChatLines, aGetSetting("adminChatLines"))
+    -- end
     if ((tonumber(aGetSetting("refreshDelay"))) and (tonumber(aGetSetting("refreshDelay")) >= 50)) then
         guiSetText(aOptionsTab.RefreshDelay, aGetSetting("refreshDelay"))
     end
@@ -124,7 +124,7 @@ end
 function aOptionsTab.onClientResourceStop()
     aSetSetting("adminChatOutput", guiCheckBoxGetSelected(aOptionsTab.AdminChatOutput))
     aSetSetting("adminChatSound", guiCheckBoxGetSelected(aOptionsTab.AdminChatSound))
-    aSetSetting("adminChatLines", guiGetText(aOptionsTab.AdminChatLines))
+    -- aSetSetting("adminChatLines", guiGetText(aOptionsTab.AdminChatLines))
     aSetSetting("refreshDelay", guiGetText(aOptionsTab.RefreshDelay))
 
     if (guiRadioButtonGetSelected(aOptionsTab.PerformanceRAM)) then
