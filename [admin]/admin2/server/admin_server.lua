@@ -318,7 +318,13 @@ addEventHandler(
         if (hasObjectPermissionTo(source, "command." .. action)) then
             local mdata = ""
             local more = ""
-            if (action == "banip") then
+            if (action == 'ban') then
+                local ban = addBan(data.ip, nil, data.serial, source, data.reason, data.duration)
+                ban = ban and setBanNick(ban, data.name)
+                if (not ban) then
+                    action = nil
+                end
+            elseif (action == "banip") then
                 mdata = data
                 if (not BanIP(data, source)) then
                     action = nil
