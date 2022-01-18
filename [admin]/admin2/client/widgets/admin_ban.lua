@@ -60,13 +60,13 @@ function aHandleBans.Show(title, name, reason, serial, ip)
         aHandleBans.Duration.ScrollPane = guiCreateScrollPane(75, 10, 217, 180, false, aHandleBans.Duration.Background)
 
         do
-            local y = 0
-            aHandleBans.Duration.CustomRadioButton = guiCreateRadioButton(0, y, 65, 20, 'Custom:', false, aHandleBans.Duration.ScrollPane)
+            local y2 = 0
+            aHandleBans.Duration.CustomRadioButton = guiCreateRadioButton(0, y2, 65, 20, 'Custom:', false, aHandleBans.Duration.ScrollPane)
 
-            aHandleBans.Duration.CustomEdit = guiCreateEdit(80, y, 50, 22, '', false, aHandleBans.Duration.ScrollPane)
+            aHandleBans.Duration.CustomEdit = guiCreateEdit(80, y2, 50, 22, '', false, aHandleBans.Duration.ScrollPane)
             guiSetProperty(aHandleBans.Duration.CustomEdit, 'ValidationString', '[0-9]*')
 
-            aHandleBans.Duration.CustomComboBox = guiCreateComboBox(130, y, 70, 80, defaultDurations[1][1], false, aHandleBans.Duration.ScrollPane)
+            aHandleBans.Duration.CustomComboBox = guiCreateComboBox(130, y2, 70, 80, defaultDurations[1][1], false, aHandleBans.Duration.ScrollPane)
 
             for _, v in ipairs(defaultDurations) do
                 guiComboBoxAddItem(aHandleBans.Duration.CustomComboBox, v[1])
@@ -75,8 +75,8 @@ function aHandleBans.Show(title, name, reason, serial, ip)
             aHandleBans.Duration.Predefined = {}
 
             for k, v in pairs(predefinedDurations) do
-                y = y + 20
-                aHandleBans.Duration.Predefined[k] = guiCreateRadioButton(0, y, 100, 20, v[1], false, aHandleBans.Duration.ScrollPane)
+                y2 = y2 + 20
+                aHandleBans.Duration.Predefined[k] = guiCreateRadioButton(0, y2, 100, 20, v[1], false, aHandleBans.Duration.ScrollPane)
             end
         end
 
