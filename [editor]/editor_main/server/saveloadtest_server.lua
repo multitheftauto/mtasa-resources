@@ -751,7 +751,7 @@ function beginTest(client,gamemodeName)
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (1)" )
+			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (1)" )
 			return false
 		end
 		local gamemode = getResourceFromName(gamemodeName)
@@ -763,14 +763,14 @@ function beginTest(client,gamemodeName)
 				g_restoreEDF = nil
 				removeEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
 				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (2)" )
+				"'editor_main' may lack sufficient ACL privileges to start/stop resources! (2)" )
 				return false
 			end
 		else
 			if not mapmanager.changeGamemode(gamemode,testMap) then
 				restoreSettings()
 				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (3)" )
+				"'editor_main' may lack sufficient ACL privileges to start/stop resources! (3)" )
 				return false
 			end
 		end
@@ -779,12 +779,12 @@ function beginTest(client,gamemodeName)
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (4)" )
+			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (4)" )
 			return false
 		end
 		if getResourceState(testMap) ~= "running" and not startResource ( testMap, true ) then
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (5)" )
+			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (5)" )
 			return false
 		end
 		g_in_test = "map"
