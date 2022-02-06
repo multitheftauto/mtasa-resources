@@ -285,11 +285,6 @@ function iif ( cond, arg1, arg2 )
 	return arg2
 end
 
-local serialExp = "^" .. string.rep ( "[A-F0-9]", 32 ) .. "$"
-function isValidSerial ( serial )
-	return serial:match ( serialExp )
-end
-
 function getWeatherNameFromID ( weather )
 	return iif ( aWeathers[weather], aWeathers[weather], "Unknown" )
 end
@@ -387,17 +382,11 @@ addEventHandler ( "onPlayerJoin", root, function ()
 end )
 
 function aPlayerInitialize ( player )
-	local serial = getPlayerSerial ( player )
-	if ( not isValidSerial ( serial ) ) then
-		outputChatBox ( "ERROR: "..getPlayerName ( player ).." - Invalid Serial." )
-		kickPlayer ( player, "Invalid Serial" )
-	else
-		bindKey ( player, "p", "down", "admin" )
-		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerSerial ( player ) )
-		aPlayers[player] = {}
-		aPlayers[player]["country"] = getPlayerCountry ( player )
-		aPlayers[player]["money"] = getPlayerMoney ( player )
-	end
+	bindKey ( player, "p", "down", "admin" )
+	--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerSerial ( player ) )
+	aPlayers[player] = {}
+	aPlayers[player]["country"] = getPlayerCountry ( player )
+	aPlayers[player]["money"] = getPlayerMoney ( player )
 	chatHistory[player] = {}
 end
 
@@ -1507,17 +1496,12 @@ addEventHandler ( "aBans", root, function ( action, data, arg1, arg2, arg3 )
 		elseif ( action == "banserial" ) then
 			mdata = data
 			local serial = string.upper ( data )
-			if ( isValidSerial ( serial ) ) then
-				local newban = addBan ( nil, nil, serial, source, arg2, arg3 )
-				if ( not newban ) then
-					action = nil
-				else
-					setBanAdmin(newban, getAccountName(getPlayerAccount(source)))
-					setBanNick (newban, arg1)
-				end
-			else
-				outputChatBox ( "Error - Invalid serial", source, 255, 0, 0 )
+			local newban = addBan ( nil, nil, serial, source, arg2, arg3 )
+			if ( not newban ) then
 				action = nil
+			else
+				setBanAdmin(newban, getAccountName(getPlayerAccount(source)))
+				setBanNick (newban, arg1)
 			end
 		elseif ( action == "unbanip" ) then
 			mdata = data
