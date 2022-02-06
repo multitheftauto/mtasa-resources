@@ -325,12 +325,7 @@ addEventHandler(
                 end
             elseif (action == "banserial") then
                 mdata = data
-                if (isValidSerial(data)) then
-                    if (not BanSerial(string.upper(data), source)) then
-                        action = nil
-                    end
-                else
-                    outputChatBox("Error - Invalid serial", source, 255, 0, 0)
+                if (not BanSerial(string.upper(data), source)) then
                     action = nil
                 end
             elseif (action == "unbanip") then
