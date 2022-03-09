@@ -392,7 +392,7 @@ function CTF_flag_check ( )
 end
 
 function CTF_onColShapeHit ( player )
-	if ( ( getPlayerName( player ) ~= false ) and ( isPedDead ( player ) == false ) ) then
+	if ( (getElementType(player) == "player") and ( getPlayerName( player ) ~= false ) and ( isPedDead ( player ) == false ) ) then
 		local playerTeam = getPlayerTeam( player )
 		local playerCol = getElementData( player, "col" )
 		local colObject = getElementData( source, "object" )
