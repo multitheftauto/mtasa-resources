@@ -32,11 +32,11 @@ function CTF_gamemodeMapStop( startedMap )
 		end
 		setElementData( v, "col", nil )
 	end
-	local blips = getElementsByType ( "blip" )
+	local blips = getElementsByType ( "blip", resourceRoot )
 	for k,v in ipairs(blips) do
 		destroyElement( v )
 	end
-	local cols = getElementsByType ( "colshape" )
+	local cols = getElementsByType ( "colshape", resourceRoot )
 	for k,v in ipairs(cols) do
 		local colFlag = getElementData( v, "flag" )
 		if ( colFlag ) then
@@ -131,6 +131,7 @@ function CTF_gamemodeMapStart ( startedMap )
 				for flagKey,flagValue in ipairs(flags) do
 					local x,y,z = tonumber( getElementData ( flagValue, "posX" ) ), tonumber( getElementData ( flagValue, "posY" ) ), tonumber( getElementData ( flagValue, "posZ" ) )
 					local object = createObject( 2993, x, y, z )
+					setElementCollisionsEnabled ( object, false )
 					local marker = createMarker( x, y, z, "arrow", 2, r, g, b, 255 )
 					local col = createColSphere( x, y, z, 1 )
 					local sblip = createBlip ( x, y, z, 0, 3, r, g, b, 25 )
@@ -436,7 +437,7 @@ end
 function CTF_announce ( red, green, blue, text, time )
 	textItemSetColor ( CTF_annText, red, green, blue, 255 )
 	textItemSetText ( CTF_annText, text )
-	if ( CTF_annTimer ) then
+	if ( CTF_annTimer and isTimer( CTF_annTimer ) ) then
 		killTimer ( CTF_annTimer )
 	else
 		local players = getElementsByType( "player" )
@@ -590,18 +591,13 @@ function destroyBlipsAttachedTo( source )
 end
 
 function getChildren ( root, type )
-	local elements = getElementChildren (root, type )
-	local result = {}
-	for elementKey,elementValue in ipairs(elements) do
-		result[ table.getn( result ) + 1 ] = elementValue
-	end
-	return result
+	return getElementChildren (root, type )
 end
 
 addEventHandler( "onResourceStart", resourceRoot, CTF_onResourceStart )
 addEventHandler( "onPlayerJoin", root, CTF_onPlayerJoin )
 addEventHandler( "onPlayerQuit", root, CTF_onPlayerQuit )
 addEventHandler( "onPlayerWasted", root, CTF_onPlayerWasted )
-addEventHandler( "onColShapeHit", root, CTF_onColShapeHit )
+addEventHandler( "onColShapeHit", resourceRoot, CTF_onColShapeHit )
 addEventHandler( "onGamemodeMapStart", root, CTF_gamemodeMapStart )
 addEventHandler( "onGamemodeMapStop", root, CTF_gamemodeMapStop )
