@@ -131,7 +131,7 @@ function CTF_gamemodeMapStart ( startedMap )
 				for flagKey,flagValue in ipairs(flags) do
 					local x,y,z = tonumber( getElementData ( flagValue, "posX" ) ), tonumber( getElementData ( flagValue, "posY" ) ), tonumber( getElementData ( flagValue, "posZ" ) )
 					local object = createObject( 2993, x, y, z )
-					setElementCollisionsEnabled ( object, false )
+					setElementCollisionsEnabled ( object, false ) -- Makes sure it doesn't break (explosions etc.)
 					local marker = createMarker( x, y, z, "arrow", 2, r, g, b, 255 )
 					local col = createColSphere( x, y, z, 1 )
 					local sblip = createBlip ( x, y, z, 0, 3, r, g, b, 25 )
