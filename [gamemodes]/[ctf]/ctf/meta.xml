@@ -1,5 +1,5 @@
 <meta>
-	<info author="Aeron (core) and Black Dragon (game)" version="1.0" type="gamemode" name="Capture the Flag" edf:definition="edf/ctf.edf" />
+	<info author="Aeron (core) and Black Dragon (game)" version="1.1.1" type="gamemode" name="Capture the Flag" edf:definition="edf/ctf.edf" />
 	<include resource="missiontimer" />
 
 	<script src="ctf.lua" />
