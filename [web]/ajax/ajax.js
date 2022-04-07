@@ -115,18 +115,16 @@ function getKeyCode ( e )
     return keynum;
 }
 
-var elementManager = new ElementManager();
-
-function ElementManager() {
-	this.elements = new Array();
-	this.get = function (id) {
-		for ( i = 0; i < this.elements.length; i++ )
-		{
+class ElementManager {
+	constructor() {
+		this.elements = new Array();
+	}
+	
+	get(id) {
+		for (let i = 0; i < this.elements.length; i++) {
 			var element = this.elements[i];
-			if ( element.id != null  )
-			{
-				if ( element.id == id )
-				{
+			if (element.id != null) {
+				if (element.id == id) {
 					return element;
 				}
 			}
@@ -137,18 +135,16 @@ function ElementManager() {
 	}
 }
 
-var resourceManager = new ResourceManager();
+class ResourceManager {
+	constructor() {
+		this.resources = new Array();
+	}
 
-function ResourceManager() {
-	this.resources = new Array();
-	this.get = function (name) {
-		for ( i = 0; i < this.resources.length; i++ )
-		{
+	get(name) {
+		for (let i = 0; i < this.resources.length; i++) {
 			var resource = this.resources[i];
-			if ( resource.name != null )
-			{
-				if ( resource.name == name )
-				{
+			if (resource.name != null) {
+				if (resource.name == name) {
 					return resource;
 				}
 			}
@@ -159,19 +155,29 @@ function ResourceManager() {
 	}
 }
 
-function Element(id) {
-	this.id = id;
-	this.toJSONString = function() {
-		return '"^E^' + id + '"';
+class Element {
+	constructor(id) {
+		this.id = id;
+	}
+
+	toString() {
+		return '^E^' + this.id;
 	}
 }
 
-function Resource(name) {
-	this.name = name;
-	this.toJSONString = function() {
-		return '"^R^' + name + '"';
+
+class Resource {
+	constructor(name) {
+		this.name = name;
+	}
+
+	toString() {
+		return '^R^' + this.name;
 	}
 }
+
+var elementManager = new ElementManager();
+var resourceManager = new ResourceManager();
 
 var values;
 var usePOST = true;
@@ -183,7 +189,7 @@ function callFunction ( resourceName, functionName, returnFunction, errorFunctio
 	var method="GET";
 	if ( usePOST == true )
 	{
-		data = args.toJSONString();
+		data = JSON.stringify(args, serverObjectsSerializer);
 		method = "POST";
 	}
 	else
@@ -211,20 +217,8 @@ function callFunction ( resourceName, functionName, returnFunction, errorFunctio
 					globalReturnTemp = returnFunction;
 					//try
 					{
-						values = AJAX.responseText.parseJSON(function (key, value) {
-							if ( typeof(value) == "string" )
-							{
-								if ( value.indexOf('^E^') == 0 )
-								{
-									return elementManager.get(value.substr(3));
-								}
-								else if ( value.indexOf('^R^') == 0 )
-								{
-									return resourceManager.get(value.substr(3));
-								}
-							}
-							return value;
-						});
+						values = JSON.parse(AJAX.responseText, serverObjectsDeserializer);
+
 						var argumentList = "";
 						for ( i = 0; i < values.length ; i++ )
 						{
@@ -264,4 +258,26 @@ function callFunction ( resourceName, functionName, returnFunction, errorFunctio
     }
 
     , true);
+}
+
+function serverObjectsDeserializer(_key, value) {
+	if (typeof(value) == "string") {
+		if (value.startsWith('^E^')) {
+			return elementManager.get(value.substring(3));
+		}
+
+		if (value.startsWith('^R^')) {
+			return resourceManager.get(value.substring(3));
+		}
+	}
+
+	return value;
+}
+
+function serverObjectsSerializer(_key, value) {
+	if (value instanceof Resource || value instanceof Element) {
+		return value.toString();
+	}
+
+	return value;
 }

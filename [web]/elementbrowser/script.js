@@ -26,10 +26,7 @@ function loadElementInfo(element)
 			var dataList = "{";
 			for ( var key in data )
 			{
-				if ( key != "toJSONString" )
-				{
-					dataList += key + " = " + data[key] + ", ";
-				}
+				dataList += key + " = " + (typeof(data[key]) === "object" ? JSON.stringify(data[key]) : data[key]) + ", ";
 			}
 			if ( dataList != "{" )
 			{
