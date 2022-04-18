@@ -62,11 +62,16 @@ end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop)
 
-function receiveLODsClientRequest()
-	triggerClientEvent(client, "setLODsClient", resourceRoot, usedLODModels)
+function onPlayerResourceStart(resourceElement)
+	local mapResource = resourceElement == resource
+
+	if not mapResource then
+		return false
+	end
+	
+	triggerClientEvent(source, "setLODsClient", resourceRoot, usedLODModels)
 end
-addEvent("requestLODsClient", true)
-addEventHandler("requestLODsClient", resourceRoot, receiveLODsClientRequest)
+addEventHandler("onPlayerResourceStart", root, onPlayerResourceStart)
 
 -- MTA LOD Table [object] = [lodmodel]
 
