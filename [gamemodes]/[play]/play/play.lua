@@ -1,4 +1,4 @@
-function onResourceStartPlay()
+local function onResourceStartPlay()
 	resetMapInfo()
 	createVehicles()
 

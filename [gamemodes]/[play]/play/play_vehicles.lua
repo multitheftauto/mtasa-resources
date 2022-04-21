@@ -9,7 +9,7 @@ function createVehicles()
 end
 
 function createPlayVehicle(vehicleData)
-	local modelID, posX, posY, posZ, rotX = vehicleData[1], vehicleData[2], vehicleData[3], vehicleData[4], vehicleData[5]
+	local modelID, posX, posY, posZ, rotX = unpack(vehicleData)
 	local vehicleElement = createVehicle(modelID, posX, posY, posZ, 0, 0, rotX)
 
 	setVehicleDamageProof(vehicleElement, true)
@@ -62,7 +62,7 @@ function onVehicleEnter(playerElement)
 	local vehicleData = vehiclesToSpawn[source]
 
 	vehicleRespawnTime = tonumber(vehicleRespawnTime) or 60000
-	vehicleRespawnTime = vehicleRespawnTime > 50 and vehicleRespawnTime or 50
+	vehicleRespawnTime = vehicleRespawnTime < 0 and 0 or vehicleRespawnTime
 	vehiclesToSpawn[source] = nil
 
 	setVehicleDamageProof(source, false)
@@ -86,7 +86,7 @@ function onVehicleExit()
 	local vehicleExpireTime = get("vehicleExpireTime")
 
 	vehicleExpireTime = tonumber(vehicleExpireTime) or 600000
-	vehicleExpireTime = vehicleExpireTime > 50 and vehicleExpireTime or 50
+	vehicleExpireTime = vehicleExpireTime < 0 and 0 or vehicleExpireTime
 	vehicleTimers[source] = setTimer(destroyVehicle, vehicleExpireTime, 1, source)
 end
 

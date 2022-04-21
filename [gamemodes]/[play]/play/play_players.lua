@@ -3,17 +3,17 @@ local skinsCount = #playerSkins
 
 function playSpawnPlayer(playerElement)
 	if isElement(playerElement) then
-		local randomSpawn = math.random(1, spawnsCount)
+		local randomSpawn = math.random(spawnsCount)
 		local spawnData = playerSpawns[randomSpawn]
 		local posX, posY, posZ, rotX = spawnData[1], spawnData[2], spawnData[3], spawnData[4]
-		local randomSkin = math.random(1, skinsCount)
+		local randomSkin = math.random(skinsCount)
 		local skinID = playerSkins[randomSkin]
 
 		posX, posY = posX + math.random(-3, 3), posY + math.random(-3, 3)
 
 		spawnPlayer(playerElement, posX, posY, posZ, rotX, skinID, 0, 0, nil)
 		fadeCamera(playerElement, true)
-		setCameraTarget(playerElement, playerElement)
+		setCameraTarget(playerElement)
 	end
 end
 
@@ -25,7 +25,7 @@ function onPlayerWasted()
 	local playerRespawnTime = get("playerRespawnTime")
 
 	playerRespawnTime = tonumber(playerRespawnTime) or 5000
-	playerRespawnTime = playerRespawnTime > 50 and playerRespawnTime or 50
+	playerRespawnTime = playerRespawnTime < 0 and 0 or playerRespawnTime
 
 	setTimer(playSpawnPlayer, playerRespawnTime, 1, source)
 end
