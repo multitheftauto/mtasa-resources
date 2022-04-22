@@ -5,7 +5,7 @@ function playSpawnPlayer(playerElement)
 	if isElement(playerElement) then
 		local randomSpawn = math.random(spawnsCount)
 		local spawnData = playerSpawns[randomSpawn]
-		local posX, posY, posZ, rotX = spawnData[1], spawnData[2], spawnData[3], spawnData[4]
+		local posX, posY, posZ, rotX = unpack(spawnData)
 		local randomSkin = math.random(skinsCount)
 		local skinID = playerSkins[randomSkin]
 
