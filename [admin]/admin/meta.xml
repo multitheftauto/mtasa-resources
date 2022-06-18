@@ -1,6 +1,6 @@
 <meta>
   <info author="lil_Toady" type="misc" version="1.5.9" />
-  <min_mta_version server="1.5.5-9.13846" client="1.5.6-9.16361"/>
+  <min_mta_version client="1.5.9-9.20957.0" server="1.5.9-9.20957.0"/>
   <!--
     Admin System Meta File.
 
@@ -19,7 +19,6 @@
   <script src="server/admin_settings.lua" />
   <script src="server/admin_screenshot.lua" />
   <script src="server/http/admin_http.lua" />
-  <script src="client/admin_clientjoiner.lua" type="client" />
   <script src="client/admin_clientprefs.lua" type="client" />
   <script src="client/admin_client.lua" type="client" />
   <script src="client/admin_gui.lua" type="client" />
