@@ -1,0 +1,4 @@
+<meta>
+	<info name="Framerate Fixes" version="1.0.0" author="lopezloo" type="script" description="Fixes framerate related issues." />
+	<script src="client.lua" type="client" />
+</meta>
