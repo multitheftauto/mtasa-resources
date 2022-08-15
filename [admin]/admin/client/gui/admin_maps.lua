@@ -66,7 +66,7 @@ function guiClick(button)
 				guiGridListClear(aTabMap.MapList)
 				triggerServerEvent("getMaps_s", localPlayer, true)
 			end
-			if guiGridListGetSelectedItem ( aTabMap.MapList ) == -1 then
+			if ( source ~= aTabMap.MapListSearch ) and guiGridListGetSelectedItem ( aTabMap.MapList ) == -1 then
 				aMessageBox ( "error", "No map selected!" )
 			end
 			local mapName = guiGridListGetItemText ( aTabMap.MapList, guiGridListGetSelectedItem( aTabMap.MapList ), 1 )
