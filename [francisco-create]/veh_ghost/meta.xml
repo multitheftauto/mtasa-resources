@@ -1,0 +1,4 @@
+<!-- This resource need to add in ACL.xml to group Admin. -->
+<meta>
+    <script src="client.lua" type="client" cache="false" />
+</meta>
