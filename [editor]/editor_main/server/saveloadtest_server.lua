@@ -40,7 +40,7 @@ addEventHandler ( "onResourceStart", resourceRoot,
 		setOcclusionsEnabled ( false )
 		restoreAllWorldModels ( )
 		destroyElement( root )
-		mapContainer = createElement("mapContainer")
+		mapContainer = createElement("mapContainer", "mapContainer")
 		setTimer(startUp, 1000, 1)
 	end
 )
