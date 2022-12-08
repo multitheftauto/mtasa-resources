@@ -209,7 +209,7 @@ local function freecamFrame ()
     camTargetZ = camPosZ + freeModeAngleZ * 100
 
     -- Set the new camera position and target
-    setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ )
+    setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, 0, dxGetStatus()["SettingFOV"] )
 end
 
 local function freecamMouse (cX,cY,aX,aY)
@@ -271,7 +271,7 @@ function setFreecamEnabled (x, y, z)
 	end
 
 	if (x and y and z) then
-	    setCameraMatrix ( x, y, z )
+	    setCameraMatrix ( x, y, z, nil, nil, nil, 0, dxGetStatus()["SettingFOV"] )
 	end
 	addEventHandler("onClientRender", root, freecamFrame)
 	addEventHandler("onClientCursorMove",root, freecamMouse)
