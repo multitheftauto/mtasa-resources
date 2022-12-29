@@ -40,28 +40,26 @@ function AJAXRequest( method, url, data, process, async, dosend) {
         if (_ms_XMLHttpRequest_ActiveX) {
             self.AJAX = new ActiveXObject(_ms_XMLHttpRequest_ActiveX);
         } else {
-	    // loops through the various versions of XMLHTTP to ensure we're using the latest
-	    var versions = ["Msxml2.XMLHTTP.7.0", "Msxml2.XMLHTTP.6.0", "Msxml2.XMLHTTP.5.0", "Msxml2.XMLHTTP.4.0", "MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP",
-                        "Microsoft.XMLHTTP"];
+			// loops through the various versions of XMLHTTP to ensure we're using the latest
+			var versions = ["Msxml2.XMLHTTP.7.0", "Msxml2.XMLHTTP.6.0", "Msxml2.XMLHTTP.5.0", "Msxml2.XMLHTTP.4.0", "MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP",
+                        	"Microsoft.XMLHTTP"];
 
-            for (var i = 0; i < versions.length ; i++) {
+            for (const version of versions) {
                 try {
-		    // try to create the object
-		    // if it doesn't work, we'll try again
-		    // if it does work, we'll save a reference to the proper one to speed up future instantiations
-                    self.AJAX = new ActiveXObject(versions[i]);
+					// try to create the object
+					// if it doesn't work, we'll try again
+					// if it does work, we'll save a reference to the proper one to speed up future instantiations
+                    self.AJAX = new ActiveXObject(version);
 
                     if (self.AJAX) {
-                        _ms_XMLHttpRequest_ActiveX = versions[i];
+                        _ms_XMLHttpRequest_ActiveX = version;
                         break;
                     }
                 }
                 catch (objException) {
-                // trap; try next one
-                } ;
+                	// trap; try next one
+                }
             }
-
-            ;
         }
     }
 
@@ -121,15 +119,12 @@ class ElementManager {
 	}
 	
 	get(id) {
-		for (let i = 0; i < this.elements.length; i++) {
-			var element = this.elements[i];
-			if (element.id != null) {
-				if (element.id == id) {
-					return element;
-				}
+		for (const element of this.elements) {
+			if (element.id != null && element.id == id) {
+				return element;
 			}
 		}
-		var newElement = new Element(id);
+		const newElement = new Element(id);
 		this.elements[this.elements.length] = newElement;
 		return newElement;
 	}
@@ -141,15 +136,12 @@ class ResourceManager {
 	}
 
 	get(name) {
-		for (let i = 0; i < this.resources.length; i++) {
-			var resource = this.resources[i];
-			if (resource.name != null) {
-				if (resource.name == name) {
-					return resource;
-				}
+		for (const resource of this.resources) {
+			if (resource.name != null && resource.name == name) {
+				return resource;
 			}
 		}
-		var newResource = new Resource(name);
+		const newResource = new Resource(name);
 		this.resources[this.resources.length] = newResource;
 		return newResource;
 	}
