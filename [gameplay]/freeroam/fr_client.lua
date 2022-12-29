@@ -994,13 +994,9 @@ wndBookmarks = {
 -- Jetpack toggle
 ---------------------------
 function toggleJetPack()
-	if not doesPedHaveJetPack(localPlayer) then
-		server.givePedJetPack(localPlayer)
-		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), true)
-	else
-		server.removePedJetPack(localPlayer)
-		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), false)
-	end
+	local togJetPack = not isPedWearingJetpack(localPlayer)
+	server.setPedWearingJetpack(localPlayer,togJetPack)
+	guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), togJetPack)
 end
 
 bindKey('j', 'down', toggleJetPack)
@@ -2062,7 +2058,7 @@ function updateGUI()
 	setControlNumbers(wndMain, {xpos=math.ceil(x), ypos=math.ceil(y), zpos=math.ceil(z)})
 
 	-- update jetpack toggle
-	guiCheckBoxSetSelected( getControl(wndMain, 'jetpack'), doesPedHaveJetPack(localPlayer) )
+	guiCheckBoxSetSelected( getControl(wndMain, 'jetpack'), isPedWearingJetpack(localPlayer) )
 
 	-- update current vehicle
 	local vehicle = getPedOccupiedVehicle(localPlayer)
@@ -2237,7 +2233,7 @@ addEventHandler('onClientResourceStart', resourceRoot,
 		createWindow(wndMain)
 		hideAllWindows()
 		bindKey('f1', 'down', toggleFRWindow)
-		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), doesPedHaveJetPack(localPlayer))
+		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), isPedWearingJetpack(localPlayer))
 		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPedBeKnockedOffBike(localPlayer))
 	end
 )
