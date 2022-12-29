@@ -91,7 +91,7 @@ function init() {
               projection: gtasaProjection,
               tileSize: 500,
               url:
-                'https://assets.mtasa.com/mtasa-resources/webmap/sa_aerial_map/v2/{z}_{x}_{y}.jpg',
+                'https://assets.multitheftauto.com/mtasa-resources/webmap/sa_aerial_map/v2/{z}_{x}_{y}.jpg',
               wrapX: false,
             }),
             title: 'San Andreas Aerial Map V2',
@@ -103,7 +103,7 @@ function init() {
               projection: gtasaProjection,
               tileSize: 500,
               url:
-                'https://assets.mtasa.com/mtasa-resources/webmap/sa_aerial_map/v1/{z}_{x}_{y}.jpg',
+                'https://assets.multitheftauto.com/mtasa-resources/webmap/sa_aerial_map/v1/{z}_{x}_{y}.jpg',
               wrapX: false,
             }),
             title: 'San Andreas Aerial Map',
@@ -115,7 +115,7 @@ function init() {
               projection: gtasaProjection,
               tileSize: 500,
               url:
-                'https://assets.mtasa.com/mtasa-resources/webmap/sa_map/v1/{z}_{x}_{y}.jpg',
+                'https://assets.multitheftauto.com/mtasa-resources/webmap/sa_map/v1/{z}_{x}_{y}.jpg',
               wrapX: false,
             }),
             title: 'San Andreas Map',

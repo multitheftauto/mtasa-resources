@@ -81,10 +81,8 @@ end
 --
 -- Interface functions
 --
-function Create(x, y, text, _foreground, _background, _border)
-	if not x or not y or not text
-	   or type(x) ~= "number" or type(y) ~= "number" or type(text) ~= "string"
-	then
+function Create(x, y, text, foreground2, background2, border2)
+	if not x or not y or not text or type(x) ~= "number" or type(y) ~= "number" or type(text) ~= "string" then
 		return false
 	end
 
@@ -102,20 +100,20 @@ function Create(x, y, text, _foreground, _background, _border)
 	local background
 	local border
 
-	if _foreground and type(_foreground) == "number" then
-		foreground = colorToTable(_foreground)
+	if foreground2 and type(foreground2) == "number" then
+		foreground = colorToTable(foreground2)
 	else
 		foreground = DEFAULT_FOREGROUND
 	end
 
-	if _background and type(_background) == "number" then
-		background = colorToTable(_background)
+	if background2 and type(background2) == "number" then
+		background = colorToTable(background2)
 	else
 		background = DEFAULT_BACKGROUND
 	end
 
-	if _border and type(_border) == "number" then
-		border = colorToTable(_border)
+	if border2 and type(border2) == "number" then
+		border = colorToTable(border2)
 	else
 		border = DEFAULT_BORDER
 	end

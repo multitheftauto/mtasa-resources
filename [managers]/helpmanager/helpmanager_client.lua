@@ -131,7 +131,7 @@ function addHelpTabFromXML(resource)
 	local helpnode = getResourceConfig(":"..getResourceName(resource).."/help.xml")
 	if helpnode then
 		local helptext = xmlNodeGetValue(helpnode)
-		local showPopup = not (xmlNodeGetAttribute(helpnode, "popup") == "no")
+		local showPopup = xmlNodeGetAttribute(helpnode, "popup") ~= "no"
 		if helptext then
 			addHelpTab(resource, showPopup)
 			memo[resource] = guiCreateMemo(.05, .05, .9, .9, helptext, true, tab[resource])

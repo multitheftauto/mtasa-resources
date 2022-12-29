@@ -177,7 +177,7 @@ local function onClientRender_keyboard()
 					tempRot = tempRot % 360
 
 					-- check if rotation changed
-					if (not (tempRot == rotZ)) then
+					if (tempRot ~= rotZ) then
 						if (getElementType(selectedElement) == "ped") then
 							setElementRotation(selectedElement, 0,0,-tempRot%360)
 							setPedRotation(selectedElement, tempRot)
@@ -279,7 +279,7 @@ local function onClientRender_keyboard()
 					tempRot = tempRot % 360
 
 					-- check if rotation changed
-					if (not (tempRot == rotZ)) then
+					if (tempRot ~= rotZ) then
 						if (getElementType(selectedElement) == "ped") then
 							setElementRotation(selectedElement, 0,0,-tempRot%360)
 							setPedRotation(selectedElement, tempRot)
