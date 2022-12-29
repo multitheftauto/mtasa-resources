@@ -504,7 +504,7 @@ function aPlayersTab.onRefresh()
     if (getElementInterior(player)) then
         guiSetText(aPlayersTab.Interior, "Interior: " .. getElementInterior(player))
     end
-    guiSetText(aPlayersTab.JetPack, iif(doesPedHaveJetPack(player), "Remove JetPack", "Give JetPack"))
+    guiSetText(aPlayersTab.JetPack, iif(isPedWearingJetpack(player), "Remove JetPack", "Give JetPack"))
 
     local weapon = getPedWeapon(player)
     if (weapon) then

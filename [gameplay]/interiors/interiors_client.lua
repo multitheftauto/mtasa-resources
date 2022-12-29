@@ -160,7 +160,7 @@ function colshapeHit( player, matchingDimension )
 	if not isElement ( player ) or getElementType ( player ) ~= "player" then return end
 	if player ~= localPlayer then return end
 	if ( not matchingDimension ) or ( getPedOccupiedVehicle ( player ) ) or
-	( doesPedHaveJetPack ( player ) ) or ( not isPedOnGround ( player ) ) or
+	( isPedWearingJetpack ( player ) ) or ( not isPedOnGround ( player ) ) or
 	( getPedControlState ( player, "aim_weapon" ) ) or ( blockPlayer ) or
 	( isPedDoingTask ( player, "TASK_COMPLEX_ENTER_CAR_AS_DRIVER") ) or
 	( isPedDoingTask ( player, "TASK_COMPLEX_ENTER_CAR_AS_PASSENGER") )
