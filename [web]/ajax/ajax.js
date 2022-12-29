@@ -26,6 +26,15 @@ function decode( uri ) {
     return uri;
 }
 
+// Check data is JSON
+function isJSON(str) {
+	try {
+		JSON.parse(str);
+	} catch (e) {
+		return false;
+	}
+    return true;
+}
 
 function AJAXRequest( method, url, data, process, async, dosend) {
     var self = this;
@@ -84,7 +93,7 @@ function AJAXRequest( method, url, data, process, async, dosend) {
     }
 
     self.AJAX.open(method, url, async);
-
+	
     if (method == "POST") {
         //self.AJAX.setRequestHeader("Connection", "close"); // seems to cause issues in IE
         self.AJAX.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -96,6 +105,9 @@ function AJAXRequest( method, url, data, process, async, dosend) {
     // you'd do this to set special request headers
     if ( dosend || typeof dosend == 'undefined' ) {
 	    if ( !data ) data="";
+		if (method == "POST" && isJSON(data)) // change content type
+			self.AJAX.setRequestHeader("Content-Type", "application/json");
+			
 	    self.AJAX.send(data);
     }
     return self.AJAX;
