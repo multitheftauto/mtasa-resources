@@ -10,9 +10,7 @@ local isEnabled = false
 local selectedElement
 
 local posX, posY, posZ
-
 local rotX, rotY, rotZ
-local rotFlipped = false
 
 local collisionless
 local lockToAxes = false
@@ -20,7 +18,8 @@ local centerToBaseDistance
 
 local movementType
 local MOVEMENT_MOVE = 1
-local MOVEMENT_ROTATE = 2
+local MOVEMENT_ROTATE_WORLD = 2
+local MOVEMENT_ROTATE_LOCAL = 3
 
 local hasRotation = {
 	object = true,
@@ -54,9 +53,9 @@ local function getElementRotation(element)
 	if elementType == "player" or elementType == "ped" then
 		return 0,0,getPedRotation(element)
 	elseif elementType == "object" then
-		return mta_getElementRotation(element)
+		return mta_getElementRotation(element, "ZYX")
 	elseif elementType == "vehicle" then
-		return mta_getElementRotation(element)
+		return mta_getElementRotation(element, "ZYX")
 	end
 end
 
@@ -85,7 +84,7 @@ local function onClientRender_keyboard()
 		if (getElementType(selectedElement) == "vehicle" and getVehicleType(selectedElement) == "Train") then
 			setTrainDerailed(selectedElement, true)
 		end
-		if not (getCommandState("mod_rotate")) then -- set position
+		if not (getCommandState("mod_rotate")) and not (getCommandState("mod_rotate_local")) then -- set position
 			if movementType ~= MOVEMENT_MOVE then
 				setMovementType("move")
 				movementType = MOVEMENT_MOVE
@@ -157,9 +156,13 @@ local function onClientRender_keyboard()
 			local exactsnap = exports["editor_gui"]:sx_getOptionData("enablePrecisionRotation")
 			local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("precisionRotLevel"))
 			if exactsnap then -- if we want a exact rotation lets fix keyboard...
-				if movementType ~= MOVEMENT_ROTATE then
-					setMovementType("rotate")
-					movementType = MOVEMENT_ROTATE
+				local world_space = not getCommandState("mod_rotate_local")
+				if world_space and movementType ~= MOVEMENT_ROTATE_WORLD then
+					setMovementType("rotate_world")
+					movementType = MOVEMENT_ROTATE_WORLD
+				elseif not world_space and movementType ~= MOVEMENT_ROTATE_LOCAL then
+					setMovementType("rotate_local")
+					movementType = MOVEMENT_ROTATE_LOCAL
 				end
 
 				local speed = snaplevel
@@ -172,7 +175,7 @@ local function onClientRender_keyboard()
 						tempRot = tempRot - speed
 					end
 					if (getCommandTogSTATE("element_move_left")) then
-							tempRot = tempRot + speed
+						tempRot = tempRot + speed
 					end
 					tempRot = tempRot % 360
 
@@ -184,57 +187,46 @@ local function onClientRender_keyboard()
 						end
 					end
 					rotZ = tempRot
-
 				else
 					local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
 					if (not tempRotX) then return false end
-
-					-- conversion to XYZ order
-					tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)
-					tempRotX = math.deg(tempRotX)
-					tempRotY = math.deg(tempRotY)
-					tempRotZ = math.deg(tempRotZ)
-
-					-- roll
-					if (getCommandTogSTATE("element_move_forward")) then
-						if rotFlipped then
-							tempRotY = tempRotY - speed
-						else
-							tempRotY = tempRotY + speed
-						end
-					elseif (getCommandTogSTATE("element_move_backward")) then
-						if rotFlipped then
-							tempRotY = tempRotY + speed
-						else
-							tempRotY = tempRotY - speed
-						end
-					end
-
-					-- not sure why, maybe rotation conversion has singularity
-					if tempRotY > 90 or tempRotY < -90 then
-						rotFlipped = not rotFlipped
+					
+					local yaw, pitch, roll = 0, 0, 0
+					
+					-- yaw
+					if (getCommandTogSTATE("element_move_right")) then
+						yaw = speed
+					elseif (getCommandTogSTATE("element_move_left")) then
+						yaw = -speed
 					end
 
 					-- pitch
 					if (getCommandTogSTATE("element_move_upwards")) then
-						tempRotX = tempRotX + speed
+						pitch = speed
 					elseif (getCommandTogSTATE("element_move_downwards")) then
-						tempRotX = tempRotX - speed
+						pitch = -speed
 					end
-
-					-- spin
-					if (getCommandTogSTATE("element_move_right")) then
-						tempRotZ = tempRotZ + speed
-					elseif (getCommandTogSTATE("element_move_left")) then
-						tempRotZ = tempRotZ - speed
+					
+					-- roll
+					if (getCommandTogSTATE("element_move_forward")) then
+						roll = speed
+					elseif (getCommandTogSTATE("element_move_backward")) then
+						roll = -speed
 					end
-
-					-- conversion back to YXZ order
-					tempRotX, tempRotY, tempRotZ = convertRotationToMTA(math.rad(tempRotX), math.rad(tempRotY), math.rad(tempRotZ))
+					
+					-- Perform rotation about one axis at a time
+					if yaw ~= 0 then
+						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", yaw, world_space)
+					end
+					if pitch ~= 0 then
+						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "pitch", pitch, world_space)
+					end
+					if roll ~= 0 then
+						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "roll", roll, world_space)
+					end
 
 					-- check if rotation changed
 					if (not (tempRotX == rotX and tempRotY == rotY and tempRotZ == rotZ)) then
-						setElementRotation(selectedElement, tempRotX, tempRotY, tempRotZ)
 						--Peds dont have their rotation updated with their attached parents
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
 							if getElementType(element) == "ped" then
@@ -252,9 +244,14 @@ local function onClientRender_keyboard()
 				lastKEYSTATES["element_move_upwards"] = getCommandState("element_move_upwards")
 				lastKEYSTATES["element_move_downwards"] = getCommandState("element_move_downwards")
 			else
-				if movementType ~= MOVEMENT_ROTATE then
-					setMovementType("rotate")
-					movementType = MOVEMENT_ROTATE
+				local bind
+				local world_space = not getCommandState("mod_rotate_local")
+				if world_space and movementType ~= MOVEMENT_ROTATE_WORLD then
+					setMovementType("rotate_world")
+					movementType = MOVEMENT_ROTATE_WORLD
+				elseif not world_space and movementType ~= MOVEMENT_ROTATE_LOCAL then
+					setMovementType("rotate_local")
+					movementType = MOVEMENT_ROTATE_LOCAL
 				end
 
 				local speed
@@ -291,52 +288,42 @@ local function onClientRender_keyboard()
 					local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
 					if (not tempRotX) then return false end
 
-					-- conversion to XYZ order
-					tempRotX, tempRotY, tempRotZ = convertRotationFromMTA(tempRotX, tempRotY, tempRotZ)
-					tempRotX = math.deg(tempRotX)
-					tempRotY = math.deg(tempRotY)
-					tempRotZ = math.deg(tempRotZ)
-
-					-- roll
-					if (getCommandState("element_move_forward")) then
-						if rotFlipped then
-							tempRotY = tempRotY - speed
-						else
-							tempRotY = tempRotY + speed
-						end
-					elseif (getCommandState("element_move_backward")) then
-						if rotFlipped then
-							tempRotY = tempRotY + speed
-						else
-							tempRotY = tempRotY - speed
-						end
-					end
-
-					-- not sure why, maybe rotation conversion has singularity
-					if tempRotY > 90 or tempRotY < -90 then
-						rotFlipped = not rotFlipped
+					local yaw, pitch, roll = 0, 0, 0
+					
+					-- yaw
+					if (getCommandTogSTATE("element_move_right")) then
+						yaw = speed
+					elseif (getCommandTogSTATE("element_move_left")) then
+						yaw = -speed
 					end
 
 					-- pitch
-					if (getCommandState("element_move_upwards")) then
-						tempRotX = tempRotX + speed
-					elseif (getCommandState("element_move_downwards")) then
-						tempRotX = tempRotX - speed
+					if (getCommandTogSTATE("element_move_upwards")) then
+						pitch = speed
+					elseif (getCommandTogSTATE("element_move_downwards")) then
+						pitch = -speed
 					end
-
-					-- spin
-					if (getCommandState("element_move_right")) then
-						tempRotZ = tempRotZ + speed
-					elseif (getCommandState("element_move_left")) then
-						tempRotZ = tempRotZ - speed
+					
+					-- roll
+					if (getCommandTogSTATE("element_move_forward")) then
+						roll = speed
+					elseif (getCommandTogSTATE("element_move_backward")) then
+						roll = -speed
 					end
-
-					-- conversion back to YXZ order
-					tempRotX, tempRotY, tempRotZ = convertRotationToMTA(math.rad(tempRotX), math.rad(tempRotY), math.rad(tempRotZ))
+					
+					-- Perform rotation about one axis at a time
+					if yaw ~= 0 then
+						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", yaw, world_space)
+					end
+					if pitch ~= 0 then
+						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "pitch", pitch, world_space)
+					end
+					if roll ~= 0 then
+						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "roll", roll, world_space)
+					end
 
 					-- check if rotation changed
 					if (not (tempRotX == rotX and tempRotY == rotY and tempRotZ == rotZ)) then
-						setElementRotation(selectedElement, tempRotX, tempRotY, tempRotZ)
 						--Peds dont have their rotation updated with their attached parents
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
 							if getElementType(element) == "ped" then
@@ -352,6 +339,7 @@ local function onClientRender_keyboard()
 			if (rotX and rotY and rotZ) then
 				if getCommandState("mod_rotate") then
 					if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") then
+						exports.editor_main:clearElementQuat(selectedElement)
 						setElementRotation(selectedElement, 0, 0, rotZ)
 						rotX, rotY = 0, 0
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
@@ -377,6 +365,7 @@ local function rotateWithMouseWheel(key, keyState)
 	end
 	local speed
 
+	local world_space = not getCommandState("mod_rotate_local")
 	if (getCommandState("mod_slow_speed")) then
 		speed = rotateSpeed.slow
 	elseif (getCommandState("mod_fast_speed")) then
@@ -389,10 +378,9 @@ local function rotateWithMouseWheel(key, keyState)
 		speed = speed * -1
 	end
 
-	rotX, rotY, rotZ = getElementRotation(selectedElement)
+	rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 	if (getElementType(selectedElement) == "vehicle" or getElementType(selectedElement) == "object") then
-		rotZ = rotZ + speed
-		setElementRotation(selectedElement, rotX, rotY, rotZ)
+		rotX, rotY, rotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", speed, world_space)
 		--Peds dont have their rotation updated with their attached parents
 		for i,element in ipairs(getAttachedElements(selectedElement)) do
 			if getElementType(element) == "ped" then
@@ -417,7 +405,7 @@ function attachElement(element)
 		movementType = MOVEMENT_MOVE
 
 		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then
-			rotX, rotY, rotZ = getElementRotation(element)
+			rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
 			rotX, rotY, rotZ = 0,0,getPedRotation ( element )
 		end
@@ -436,7 +424,7 @@ function detachElement()
 		posX, posY, posZ = getElementPosition(selectedElement)
 		triggerServerEvent("syncProperty", localPlayer, "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
 		if hasRotation[getElementType(selectedElement)] then
-			rotX, rotY, rotZ = getElementRotation(selectedElement)
+			rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 			triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 		end
 		selectedElement = nil

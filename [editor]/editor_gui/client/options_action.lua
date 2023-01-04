@@ -44,6 +44,10 @@ function optionsActions.enableColPatch(value)
 	end
 end
 
+function optionsActions.enableRotPatch(value)
+	optionsData.enableRotPatch = value
+end
+
 function optionsActions.smoothCamMove (value)
 	local loaded = 	freecam.setFreecamOption ( "smoothMovement", value )
 	if ( loaded ) then

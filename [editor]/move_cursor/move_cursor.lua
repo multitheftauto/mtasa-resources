@@ -160,9 +160,10 @@ local function rotateWithMouseWheel(key, keyState)
 		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
 		end
-		if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") then
-			rotZ = rotZ + speed
-			setElementRotation(selectedElement, rotX, rotY, rotZ)
+		
+		local elementType = getElementType(selectedElement)
+		if (elementType == "vehicle") or (elementType == "object") then
+			rotX, rotY, rotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", speed)
 			--Peds dont have their rotation updated with their attached parents
 			for i,element in ipairs(getAttachedElements(selectedElement)) do
 				if getElementType(element) == "ped" then
@@ -170,7 +171,7 @@ local function rotateWithMouseWheel(key, keyState)
 					setPedRotation(element, rotZ)
 				end
 			end
-		elseif (getElementType(selectedElement) == "ped") then
+		elseif (elementType == "ped") then
 			rotZ = rotZ + speed
 			rotZ = rotZ % 360
 			setPedRotation(selectedElement, rotZ)
@@ -255,7 +256,7 @@ function detachElement()
 	local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
 	triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
 	if hasRotation[getElementType(selectedElement)] then
-		rotX, rotY, rotZ = getElementRotation(selectedElement)
+		rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 		triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 	end
 	selectedElement = nil
