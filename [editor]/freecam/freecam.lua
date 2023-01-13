@@ -45,6 +45,9 @@ function getKeyState(key)
 	if isMTAWindowActive() then
 		return false
 	end
+	if not isMTAWindowFocused() then
+		return false
+	end
 	if key == "lshift" or key == "lalt" or key == "arrow_u" or key == "arrow_d" or key == "arrow_l" or key == "arrow_r" then
 		return mta_getKeyState(key)
 	end
@@ -216,7 +219,7 @@ local function freecamMouse (cX,cY,aX,aY)
 	--ignore mouse movement if the cursor or MTA window is on
 	--and do not resume it until at least 5 frames after it is toggled off
 	--(prevents cursor mousemove data from reaching this handler)
-	if isCursorShowing() or isMTAWindowActive() then
+	if isCursorShowing() or isMTAWindowActive() or (not isMTAWindowFocused()) then
 		mouseFrameDelay = 5
 		return
 	elseif mouseFrameDelay > 0 then
