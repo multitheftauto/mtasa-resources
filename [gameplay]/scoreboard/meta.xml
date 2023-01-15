@@ -1,4 +1,5 @@
 <meta>
+	<min_mta_version server="1.5.8-9.20957"/>
 	<info author="Awwu" type="script" name="Scoreboard" description="DirectX scoreboard resource" showInResourceBrowser="true" version="2.7.2"/>
 
 	<script src="dxscoreboard_shared.lua" type="server" />
