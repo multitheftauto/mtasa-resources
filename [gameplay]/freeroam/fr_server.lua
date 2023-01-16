@@ -32,10 +32,8 @@ g_RPCFunctions = {
 	fixVehicle = { option = 'repair', descr = 'Repairing vehicles' },
 	giveMeVehicles = { option = 'createvehicle', descr = 'Creating vehicles' },
 	giveMeWeapon = { option = 'weapons.enabled', descr = 'Getting weapons' },
-	givePedJetPack = { option = 'jetpack', descr = 'Getting a jetpack' },
 	removePedClothes = { option = 'clothes', descr = 'Modifying clothes' },
 	removePedFromVehicle = true,
-	removePedJetPack = { option = 'jetpack', descr = 'Removing a jetpack' },
 	removeVehicleUpgrade = { option = 'upgrades', descr = 'Adding/removing upgrades' },
 	setElementAlpha = { option = 'alpha', descr = 'Changing your alpha' },
 	setElementInterior = true,
@@ -44,6 +42,7 @@ g_RPCFunctions = {
 	setPedFightingStyle = { option = 'setstyle', descr = 'Setting fighting style' },
 	setPedGravity = { option = 'gravity.enabled', descr = 'Setting gravity' },
 	setPedStat = { option = 'stats', descr = 'Changing stats' },
+	setPedWearingJetpack = { option = 'jetpack', descr = 'Adding/removing a jetpack' },
 	setVehicleColor = true,
 	setVehicleHeadLightColor = true,
 	setVehicleOverrideLights = { option = 'lights', descr = 'Forcing lights' },
@@ -189,8 +188,8 @@ addEventHandler('onLoadedAtClient', resourceRoot,
 		clientCall(client, 'freeroamSettings', settings)
 		for player,data in pairs(g_PlayerData) do
 			if player ~= client then
-				local settings = data.settings
-				setTimer(sendSettings,1500,1,client,player,settings)
+				local settings2 = data.settings
+				setTimer(sendSettings,1500,1,client,player,settings2)
 			end
 		end
 	end,
@@ -364,7 +363,6 @@ end
 
 function giveMeVehicles(vehID)
 	if not isElement(source) then return end
-	local px, py, pz, prot
 	local element = getPedOccupiedVehicle(source) or source
 	local px,py,pz = getElementPosition(element)
 	local _,_,prot = getElementRotation(element)
@@ -600,3 +598,10 @@ function getPlayerName(player)
 end
 
 addEvent("onFreeroamLocalSettingChange",true)
+
+addEvent('onFreeroamSuicide', true)
+addEventHandler('onFreeroamSuicide', root, function ()
+	if isElement(client) and (not isPedDead(client)) then
+		killPed(client, client)
+	end
+end)

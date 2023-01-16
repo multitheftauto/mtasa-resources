@@ -1,4 +1,3 @@
-g_Root = getRootElement()
 local g_FragLimit,g_TimeLimit,g_RespawnTime,g_default_deathpickups,g_MissionTimer,g_FragLimitText
 local announcementText,processWasted
 local mapTimers = {}
@@ -14,7 +13,7 @@ local function sortingFunction (a,b)
 	return (getElementData(a,"Score") or 0) > (getElementData(b,"Score") or 0)
 end
 
-addEventHandler ( "onGamemodeStart", g_Root,
+addEventHandler ( "onGamemodeStart", root,
 	function()
 		teams = {
 			createTeam ( "Red", 255, 0, 0 ),
@@ -22,16 +21,16 @@ addEventHandler ( "onGamemodeStart", g_Root,
 		}
 		g_default_deathpickups = get"deathpickups.only_current"
 		set("*deathpickups.only_current",true)
-		exports.scoreboard:addScoreboardColumn ( "Rank", g_Root, 1, 0.05 )
+		exports.scoreboard:addScoreboardColumn ( "Rank", root, 1, 0.05 )
 		exports.scoreboard:addScoreboardColumn ( "Score" )
 		announcementText = dxText:create("",0.5,0.1)
 		announcementText:font("bankgothic")
 		announcementText:type("stroke",1)
-		addEventHandler ( "onPlayerTeamSwitch", g_Root, processPlayerSpawn )
+		addEventHandler ( "onPlayerTeamSwitch", root, processPlayerSpawn )
 	end
 )
 
-addEventHandler ( "onGamemodeStop", g_Root,
+addEventHandler ( "onGamemodeStop", root,
 	function()
 		set("deathpickups.only_current",g_default_deathpickups)
 		for i,player in ipairs(getElementsByType"player") do
@@ -62,7 +61,7 @@ function dmMapStart(resource,mapRoot)
 			g_Weapons[weapon] = ammo
 		end
 	end
-	addEventHandler ( "onPlayerWasted", g_Root, processWasted )
+	addEventHandler ( "onPlayerWasted", root, processWasted )
 	processSpawnStart()
 	--Start our timer
 	g_MissionTimer = exports.missiontimer:createMissionTimer (g_TimeLimit,true,true,0.5,20,true,"default-bold",1)
@@ -76,9 +75,9 @@ function dmMapStart(resource,mapRoot)
 		setElementData ( team, "Rank", "-" )
 	end
 end
-addEventHandler ( "onGamemodeMapStart", g_Root, dmMapStart )
+addEventHandler ( "onGamemodeMapStart", root, dmMapStart )
 
-addEventHandler ( "onPlayerJoin", g_Root,
+addEventHandler ( "onPlayerJoin", root,
 	function()
 		processRanks()
 		if g_FragLimitText then
@@ -152,7 +151,7 @@ end
 
 
 function processEnd(winner,draw)
-	removeEventHandler ( "onPlayerWasted", g_Root, processWasted )
+	removeEventHandler ( "onPlayerWasted", root, processWasted )
 	g_FragLimitText:visible(false)
 	g_FragLimitText:sync()
 	g_FragLimitText = nil
@@ -231,5 +230,5 @@ function setColtStat ( fullSkill, player )
 	player = player or source
 	setPedStat ( player, 69, stat )
 end
-addEventHandler ( "doSetColtStat", g_Root, setColtStat )
+addEventHandler ( "doSetColtStat", root, setColtStat )
 

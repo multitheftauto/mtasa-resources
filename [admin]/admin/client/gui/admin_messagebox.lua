@@ -9,7 +9,7 @@
 **************************************]]
 
 aMessageForm = nil
-local varOne, varTwo, varThree = vOne, vTwo, vThree
+local varOne, varTwo, varThree
 
 function aMessageBox ( type, message, action, vOne, vTwo, vThree )
 	local x, y = guiGetScreenSize()
@@ -41,7 +41,7 @@ function aMessageBox ( type, message, action, vOne, vTwo, vThree )
 		guiSetSize ( aMessageLabel, 350, 100, false )
 	else
 		guiSetSize ( aMessageForm, 300, 120, false )
-		guiSetSize ( aMessageLabel, 150, 16, false )
+		guiSetSize ( aMessageLabel, 150, 30, false )
 	end
 	local sx, sy = guiGetSize ( aMessageForm, false )
 	guiSetPosition ( aMessageOk, sx / 2 - 22, 90, false )
@@ -147,6 +147,8 @@ function runMessageAction(action)
 		aSpectator.Close(false)
 	elseif (action == "deleteTeam") then
 		triggerServerEvent("aTeam", localPlayer, "destroyteam", varOne)
+	elseif (action == "updatePlayerACLGroup") then
+		aPermissions.PerformAction(varOne, varTwo, varThree)
 	end
 end
 

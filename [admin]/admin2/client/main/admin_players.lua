@@ -23,7 +23,8 @@ function aPlayersTab.Create(tab)
     guiGridListAddColumn(aPlayersTab.PlayerList, "Player list", 0.85)
     aPlayersTab.Context = guiCreateContextMenu(aPlayersTab.PlayerList)
     aPlayersTab.ContextKick = guiContextMenuAddItem(aPlayersTab.Context, "Kick")
-    aPlayersTab.ColorCodes = guiCreateCheckBox(0.01, 0.95, 0.25, 0.04, "Hide color codes", true, true, tab)
+    aPlayersTab.ColorCodes = guiCreateCheckBox(0.01, 0.95, 0.25, 0.04, "Hide color codes", aGetSetting('hideColorCodes') or false, true, tab)
+    aPlayersTab.SensitiveData = guiCreateCheckBox(0.2, 0.95, 0.25, 0.04, "Hide Sensitive Data", aGetSetting('hideSensitiveData') or false, true, tab)
 
     -- Player info (middle pane)
     guiCreateHeader(0.27, 0.04, 0.20, 0.04, "Player:", true, tab)
@@ -117,7 +118,7 @@ function aPlayersTab.Create(tab)
     addEventHandler("aClientPlayerJoin", root, aPlayersTab.onClientPlayerJoin)
     addEventHandler("onClientPlayerQuit", root, aPlayersTab.onClientPlayerQuit)
     addEventHandler(EVENT_SYNC, root, aPlayersTab.onClientSync)
-    addEventHandler("onClientResourceStop", getResourceRootElement(), aPlayersTab.onClientResourceStop)
+    addEventHandler("onClientResourceStop", resourceRoot, aPlayersTab.onClientResourceStop)
     addEventHandler("onAdminRefresh", aPlayersTab.Tab, aPlayersTab.onRefresh)
 
     sync(SYNC_PLAYERS)
@@ -164,28 +165,28 @@ function aPlayersTab.onClientClick(button)
                 if (source == aPlayersTab.Kick) then
                     local reason = inputBox("Kick player " .. name, "Enter the kick reason")
                     if (reason) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "kick", reason)
+                        triggerServerEvent("aPlayer", localPlayer, player, "kick", reason)
                     end
                 elseif (source == aPlayersTab.Ban) then
                     local reason = inputBox("Ban player " .. name, "Enter the ban reason")
                     if (reason) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "ban", reason)
+                        triggerServerEvent("aPlayer", localPlayer, player, "ban", reason)
                     end
                 elseif (source == aPlayersTab.Slap) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "slap",
+                    triggerServerEvent("aPlayer", localPlayer, player, "slap",
                         guiComboBoxGetItemText(aPlayersTab.SlapOptions, guiComboBoxGetSelected(aPlayersTab.SlapOptions))
                     )
                 elseif (source == aPlayersTab.Mute) then
                     triggerServerEvent(
                         "aPlayer",
-                        getLocalPlayer(),
+                        localPlayer,
                         player,
                         iif(aPlayers[player].mute, "unmute", "mute")
                     )
                 elseif (source == aPlayersTab.Freeze) then
                     triggerServerEvent(
                         "aPlayer",
-                        getLocalPlayer(),
+                        localPlayer,
                         player,
                         iif(aPlayers[player].freeze, "unfreeze", "freeze")
                     )
@@ -194,53 +195,53 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.SetNick) then
                     local nick = inputBox("Set nick", "Enter new nickname for " .. name)
                     if (nick) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setnick", nick)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setnick", nick)
                     end
                 elseif (source == aPlayersTab.Shout) then
                     local shout = inputBox("Shout", "Enter text to be shown on player's screen")
                     if (shout) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "shout", shout)
+                        triggerServerEvent("aPlayer", localPlayer, player, "shout", shout)
                     end
                 elseif (source == aPlayersTab.SetHealth) then
                     local health = inputBox("Set health", "Enter the health value", "100")
                     if (health) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "sethealth", health)
+                        triggerServerEvent("aPlayer", localPlayer, player, "sethealth", health)
                     end
                 elseif (source == aPlayersTab.SetArmour) then
                     local armour = inputBox("Set armour", "Enter the armour value", "100")
                     if (armour) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setarmour", armour)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setarmour", armour)
                     end
                 elseif (source == aPlayersTab.SetTeam) then
                     aTeam.Show()
                 elseif (source == aPlayersTab.SetSkin) then
                     aSkin.Show(player)
                 elseif (source == aPlayersTab.SetInterior) then
-                    aPlayerInterior(player)
+                    aInterior.Show(player)
                 elseif (source == aPlayersTab.JetPack) then
-                    triggerServerEvent("aPlayer", getLocalPlayer(), player, "jetpack")
+                    triggerServerEvent("aPlayer", localPlayer, player, "jetpack")
                 elseif (source == aPlayersTab.SetMoney) then
                     local money = inputBox("Set money", "Enter the money value")
                     if (money) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setmoney", money)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setmoney", money)
                     end
                 elseif (source == aPlayersTab.SetStats) then
                     aPlayerStats(player)
                 elseif (source == aPlayersTab.SetDimension) then
                     local dimension = inputBox("Set dimension", "Enter dimension ID between 0 and 65535", "0")
                     if (dimension) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setdimension", dimension)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setdimension", dimension)
                     end
                 elseif (source == aPlayersTab.GiveWeapon) then
                     aWeapon.Show(player)
                 elseif (source == aPlayersTab.GiveVehicle) then
                     aVehicle.Show(player)
                 elseif (source == aPlayersTab.VehicleFix) then
-                    triggerServerEvent("aVehicle", getLocalPlayer(), player, "repair")
+                    triggerServerEvent("aVehicle", localPlayer, player, "repair")
                 elseif (source == aPlayersTab.VehicleBlow) then
-                    triggerServerEvent("aVehicle", getLocalPlayer(), player, "blowvehicle")
+                    triggerServerEvent("aVehicle", localPlayer, player, "blowvehicle")
                 elseif (source == aPlayersTab.VehicleDestroy) then
-                    triggerServerEvent("aVehicle", getLocalPlayer(), player, "destroyvehicle")
+                    triggerServerEvent("aVehicle", localPlayer, player, "destroyvehicle")
                 elseif (source == aPlayersTab.VehicleCustomize) then
                     local vehicle = getPedOccupiedVehicle(player)
                     if not isElement(vehicle) then
@@ -252,7 +253,7 @@ function aPlayersTab.onClientClick(button)
                     if player == localPlayer then
                         messageBox("You can't warp to yourself!", MB_ERROR)
                     else
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "warp")
+                        triggerServerEvent("aPlayer", localPlayer, player, "warp")
                     end
                 elseif (source == aPlayersTab.WarpPlayer) then
                     aPlayerWarp(player)
@@ -261,9 +262,9 @@ function aPlayersTab.onClientClick(button)
                         (aPlayers[player]["admin"] and
                             messageBox("Revoke admin rights from " .. name .. "?", MB_WARNING))
                      then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setgroup", false)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setgroup", false)
                     elseif (messageBox("Give admin rights to " .. name .. "?", MB_WARNING)) then
-                        triggerServerEvent("aPlayer", getLocalPlayer(), player, "setgroup", true)
+                        triggerServerEvent("aPlayer", localPlayer, player, "setgroup", true)
                     end
                 end
             end
@@ -271,6 +272,19 @@ function aPlayersTab.onClientClick(button)
             setElementData(localPlayer, "AnonAdmin", guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
         elseif (source == aPlayersTab.ColorCodes) then
             aPlayersTab.Refresh()
+            aSetSetting('hideColorCodes', guiCheckBoxGetSelected(source))
+        elseif (source == aPlayersTab.SensitiveData) then
+            local state = guiCheckBoxGetSelected(source)
+            aSetSetting('hideSensitiveData', state)
+            for k, v in ipairs(aAdminMain.Tabs) do
+                if aAdminMain.BlockedTabsBySensitiveData[v.Acl] then
+                    guiSetEnabled(v.Tab, not state)
+                end
+            end
+            if isElement(aServerTab.Password) then
+                guiSetText(aServerTab.Password, "Password: " .. getSensitiveText(aServerTab['currentPassword'] or "None"))
+            end
+
         elseif (source == aPlayersTab.PlayerList) then
             local player = getSelectedPlayer()
             if (player) then
@@ -388,8 +402,8 @@ function aPlayersTab.onClientPlayerJoin(ip, username, serial, country, countryna
     end
     guiGridListSetItemData(list, row, 1, source)
     if (aSpecPlayerList) then
-        local row = guiGridListAddRow(aSpecPlayerList)
-        guiGridListSetItemText(aSpecPlayerList, row, 1, getPlayerName(source), false, false)
+        local row2 = guiGridListAddRow(aSpecPlayerList)
+        guiGridListSetItemText(aSpecPlayerList, row2, 1, getPlayerName(source), false, false)
     end
 end
 
@@ -403,12 +417,12 @@ function aPlayersTab.onClientPlayerQuit()
         id = id + 1
     end
     if (aSpecPlayerList) then
-        local id = 0
-        while (id <= guiGridListGetRowCount(aSpecPlayerList)) do
-            if (guiGridListGetItemText(aSpecPlayerList, id, 1) == getPlayerName(source)) then
-                guiGridListRemoveRow(aSpecPlayerList, id)
+        local id2 = 0
+        while (id2 <= guiGridListGetRowCount(aSpecPlayerList)) do
+            if (guiGridListGetItemText(aSpecPlayerList, id2, 1) == getPlayerName(source)) then
+                guiGridListRemoveRow(aSpecPlayerList, id2)
             end
-            id = id + 1
+            id2 = id2 + 1
         end
     end
     aPlayers[source] = nil
@@ -416,8 +430,8 @@ end
 
 function aPlayersTab.onClientSync(type, table)
     if (type == SYNC_PLAYER) then
-        for type, data in pairs(table) do
-            aPlayers[source][type] = data
+        for type2, data in pairs(table) do
+            aPlayers[source][type2] = data
         end
     elseif (type == SYNC_PLAYERS) then
         aPlayers = table
@@ -442,10 +456,10 @@ function aPlayersTab.onRefresh()
     end
 
     sync(SYNC_PLAYER, player)
-    guiSetText(aPlayersTab.IP, "IP: " .. aPlayers[player].ip)
-    guiSetText(aPlayersTab.Serial, "Serial: " .. (aPlayers[player].serial or "Unknown"))
+    guiSetText(aPlayersTab.IP, "IP: " .. getSensitiveText(aPlayers[player].ip))
+    guiSetText(aPlayersTab.Serial, "Serial: " .. getSensitiveText((aPlayers[player].serial or "Unknown")))
     guiSetText(aPlayersTab.Country, "Country: " .. (aPlayers[player].countryname or "Unknown"))
-    guiSetText(aPlayersTab.Account, "Account: " .. (aPlayers[player]["account"] or "guest"))
+    guiSetText(aPlayersTab.Account, "Account: " .. getSensitiveText((aPlayers[player]["account"] or "guest")))
     guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
     if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "zz") then
         local x, y = guiGetPosition(aPlayersTab.Country, false)
@@ -490,7 +504,7 @@ function aPlayersTab.onRefresh()
     if (getElementInterior(player)) then
         guiSetText(aPlayersTab.Interior, "Interior: " .. getElementInterior(player))
     end
-    guiSetText(aPlayersTab.JetPack, iif(doesPedHaveJetPack(player), "Remove JetPack", "Give JetPack"))
+    guiSetText(aPlayersTab.JetPack, iif(isPedWearingJetpack(player), "Remove JetPack", "Give JetPack"))
 
     local weapon = getPedWeapon(player)
     if (weapon) then
@@ -500,10 +514,10 @@ function aPlayersTab.onRefresh()
     local x, y, z = getElementPosition(player)
     local area = getZoneName(x, y, z, false)
     local zone = getZoneName(x, y, z, true)
-    guiSetText(aPlayersTab.Area, "Area: " .. iif(area == zone, area, area .. " (" .. zone .. ")"))
-    guiSetText(aPlayersTab.PositionX, "X: " .. x)
-    guiSetText(aPlayersTab.PositionY, "Y: " .. y)
-    guiSetText(aPlayersTab.PositionZ, "Z: " .. z)
+    guiSetText(aPlayersTab.Area, "Area: " .. getSensitiveText(iif(area == zone, area, area .. " (" .. zone .. ")")))
+    guiSetText(aPlayersTab.PositionX, "X: " .. getSensitiveText(x))
+    guiSetText(aPlayersTab.PositionY, "Y: " .. getSensitiveText(y))
+    guiSetText(aPlayersTab.PositionZ, "Z: " .. getSensitiveText(z))
 
     local vehicle = getPedOccupiedVehicle(player)
     if (vehicle) then
@@ -552,4 +566,11 @@ function getSelectedPlayer()
         return guiGridListGetItemData(list, item, 1)
     end
     return nil
+end
+
+function getSensitiveText(text)
+    if guiCheckBoxGetSelected(aPlayersTab.SensitiveData) then
+        return ('*'):rep(utf8.len(text))
+    end
+    return text
 end

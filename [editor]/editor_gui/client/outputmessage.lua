@@ -1,5 +1,4 @@
 local g_screenX,g_screenY = guiGetScreenSize()
-local g_root = getRootElement()
 local message = { timers = {}, animations = {} }
 local TEXT_SCALE = 1
 local TEXT_FONT = "default-bold"
@@ -28,7 +27,7 @@ end
 
 local function removeHandler()
 	message.outputting = nil
-	removeEventHandler ( "onClientRender", g_root, renderMessage )
+	removeEventHandler ( "onClientRender", root, renderMessage )
 end
 
 function outputMessage ( text, r, g, b, time )
@@ -83,10 +82,10 @@ function outputMessage ( text, r, g, b, time )
 	end
 	if not message.outputting then
 		message.outputting = true
-		addEventHandler ( "onClientRender", g_root, renderMessage )
+		addEventHandler ( "onClientRender", root, renderMessage )
 	end
 end
-addEventHandler ( "doOutputMessage", g_root, outputMessage )
+addEventHandler ( "doOutputMessage", root, outputMessage )
 
 function renderMessage()
 	dxDrawRectangle ( 0, message.y, g_screenX, g_screenY, tocolor(message.r,message.g,message.b,message.a), true )

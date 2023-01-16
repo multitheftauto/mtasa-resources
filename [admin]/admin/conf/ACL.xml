@@ -81,6 +81,11 @@
     <right name="command.banserial" access="true" />
     <right name="command.unbanserial" access="true" />
     <right name="command.listbans" access="true" />
+    <!--Screenshot related-->
+    <right name="command.takescreenshot" access="true" />
+    <right name="command.deletescreenshot" access="true" />
+    <right name="command.viewscreenshot" access="true" />
+    <right name="command.listscreenshots" access="true" />
   </acl>
   <acl name="SuperModerator">
     <!--This is the ACL for Admin group-->
@@ -96,7 +101,7 @@
     <right name="command.kick" access="true" />
     <right name="command.freeze" access="true" />
     <right name="command.mute" access="true" />
-	<right name="command.setnick" access="true" />
+    <right name="command.setnick" access="true" />
     <right name="command.shout" access="true" />
     <right name="command.spectate" access="true" />
     <right name="command.slap" access="true" />
@@ -157,6 +162,11 @@
     <right name="command.banserial" access="true" />
     <right name="command.unbanserial" access="true" />
     <right name="command.listbans" access="true" />
+    <!--Screenshot related-->
+    <right name="command.takescreenshot" access="true" />
+    <right name="command.deletescreenshot" access="true" />
+    <right name="command.viewscreenshot" access="true" />
+    <right name="command.listscreenshots" access="true" />
   </acl>
   <acl name="Moderator">
     <!--This is the ACL for Admin group-->
@@ -233,6 +243,11 @@
     <right name="command.banserial" access="false" />
     <right name="command.unbanserial" access="false" />
     <right name="command.listbans" access="false" />
+    <!--Screenshot related-->
+    <right name="command.takescreenshot" access="true" />
+    <right name="command.deletescreenshot" access="true" />
+    <right name="command.viewscreenshot" access="true" />
+    <right name="command.listscreenshots" access="true" />
   </acl>
   <acl name="Default">
     <!--This is the ACL for Admin group-->
@@ -310,5 +325,10 @@
     <right name="command.banserial" access="false" />
     <right name="command.unbanserial" access="false" />
     <right name="command.listbans" access="false" />
+    <!--Screenshot related-->
+    <right name="command.takescreenshot" access="false" />
+    <right name="command.deletescreenshot" access="false" />
+    <right name="command.viewscreenshot" access="false" />
+    <right name="command.listscreenshots" access="false" />
   </acl>
 </ACL>

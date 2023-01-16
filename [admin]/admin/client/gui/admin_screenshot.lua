@@ -16,10 +16,10 @@ function aPlayerScreenShot (player)
 		local x,y = guiGetScreenSize()
 		aScreenShotForm		= guiCreateWindow	( x / 2 - 300, y / 2 - 125, 600, 250, "Screenshot Management", false )
 		aScreenShotList		= guiCreateGridList	( 0.03, 0.08, 0.70, 0.90, true, aScreenShotForm )
-		aScreenShotNew		= guiCreateButton	( 0.75, 0.08, 0.42, 0.09, "Take New", true, aScreenShotForm )
-		aScreenShotDelete	= guiCreateButton	( 0.75, 0.18, 0.42, 0.09, "Delete", true, aScreenShotForm )
-		aScreenShotView		= guiCreateButton	( 0.75, 0.28, 0.42, 0.09, "View", true, aScreenShotForm )
-		aScreenShotRefresh	= guiCreateButton	( 0.75, 0.38, 0.42, 0.09, "Refresh", true, aScreenShotForm )
+		aScreenShotNew		= guiCreateButton	( 0.75, 0.08, 0.42, 0.09, "Take New", true, aScreenShotForm, "takescreenshot" )
+		aScreenShotDelete	= guiCreateButton	( 0.75, 0.18, 0.42, 0.09, "Delete", true, aScreenShotForm, "deletescreenshot" )
+		aScreenShotView		= guiCreateButton	( 0.75, 0.28, 0.42, 0.09, "View", true, aScreenShotForm, "viewscreenshot" )
+		aScreenShotRefresh	= guiCreateButton	( 0.75, 0.38, 0.42, 0.09, "Refresh", true, aScreenShotForm, "listscreenshots" )
 		aScreenShotClose	= guiCreateButton	( 0.75, 0.88, 0.42, 0.09, "Close", true, aScreenShotForm )
 		guiGridListAddColumn(aScreenShotList,"Player",0.31 )
 		guiGridListAddColumn(aScreenShotList,"Admin",0.31 )
@@ -36,7 +36,9 @@ end
 function aScreenShotsRefresh ()
 	if aScreenShotList then
 		guiGridListClear(aScreenShotList)
-		triggerServerEvent("aScreenShot",resourceRoot,"list",localPlayer)
+		if hasPermissionTo("command.listscreenshots") then
+			triggerServerEvent("aScreenShot",localPlayer,"list")
+		end
 	end
 end
 
@@ -54,7 +56,7 @@ function aScreenShotsDoubleClick (button)
 		if source == aScreenShotList then
 			local row = guiGridListGetSelectedItem(aScreenShotList)
 			if row ~= -1 then
-				triggerServerEvent("aScreenShot",resourceRoot,"view",localPlayer,guiGridListGetItemData(aScreenShotList,row,1),guiGridListGetItemText(aScreenShotList,row,1))
+				triggerServerEvent("aScreenShot",localPlayer,"view",guiGridListGetItemData(aScreenShotList,row,1),guiGridListGetItemText(aScreenShotList,row,1))
 			end
 		end
 	end
@@ -69,12 +71,12 @@ function aScreenShotsClick (button)
 				aMessageBox("error","No player selected!")
 			else
 				local name = guiGridListGetItemPlayerName(aTab1.PlayerList,guiGridListGetSelectedItem(aTab1.PlayerList),1)
-				triggerServerEvent("aScreenShot",resourceRoot,"new",localPlayer,getPlayerFromNick(name))
+				triggerServerEvent("aScreenShot",localPlayer,"new",getPlayerFromNick(name))
 			end
 		elseif source == aScreenShotDelete then
 			local row = guiGridListGetSelectedItem ( aScreenShotList )
 			if row ~= -1 then
-				triggerServerEvent("aScreenShot",resourceRoot,"delete",localPlayer,guiGridListGetItemData(aScreenShotList,row,1))
+				triggerServerEvent("aScreenShot",localPlayer,"delete",guiGridListGetItemData(aScreenShotList,row,1))
 				guiGridListRemoveRow(aScreenShotList,row)
 			end
 		elseif source == aScreenShotRefresh then
@@ -82,7 +84,7 @@ function aScreenShotsClick (button)
 		elseif source == aScreenShotView then
 			local row = guiGridListGetSelectedItem(aScreenShotList)
 			if row ~= -1 then
-				triggerServerEvent("aScreenShot",resourceRoot,"view",localPlayer,guiGridListGetItemData(aScreenShotList,row,1),guiGridListGetItemText(aScreenShotList,row,1))
+				triggerServerEvent("aScreenShot",localPlayer,"view",guiGridListGetItemData(aScreenShotList,row,1),guiGridListGetItemText(aScreenShotList,row,1))
 			end
 		else
 			for player,gui in pairs (aScreenShotWindows) do
@@ -120,8 +122,8 @@ addEventHandler("aClientScreenShot",resourceRoot,
 			guiGridListClear ( aScreenShotList )
 			for i,screenshot in ipairs (data) do
 				local row = guiGridListAddRow(aScreenShotList)
-				guiGridListSetItemText(aScreenShotList,row,1,screenshot.player,false,false)
-				guiGridListSetItemText(aScreenShotList,row,2,screenshot.admin,false,false)
+				guiGridListSetItemText(aScreenShotList,row,1,removeColorCoding(screenshot.player),false,false)
+				guiGridListSetItemText(aScreenShotList,row,2,removeColorCoding(screenshot.admin),false,false)
 				guiGridListSetItemText(aScreenShotList,row,3,screenshot.realtime,false,false)
 				guiGridListSetItemData(aScreenShotList,row,1,screenshot.id)
 			end

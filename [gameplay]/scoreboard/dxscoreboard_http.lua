@@ -73,8 +73,7 @@ function refreshServerScoreboard()
 	for key, team in ipairs( teams ) do
 		if isElement( team ) then
 			table.insert( scoreboardNewRows, getRowData( team ) )
-			local players = getPlayersInTeam( team )
-			for i, player in ipairs( players ) do
+			for i, player in ipairs( getPlayersInTeam( team ) ) do
 				if isElement( player ) then
 					table.insert( scoreboardNewRows, getRowData( player ) )
 				end

@@ -1,10 +1,7 @@
-rootElement = getRootElement()
-local thisResourceRoot = getResourceRootElement(getThisResource())
-
 local cycleMode
 local cyclerFunction
 
-addEventHandler("onResourceStart", thisResourceRoot,
+addEventHandler("onResourceStart", resourceRoot,
 	function()
 		cycleMode = get("mode")
 		local startFunction = _G["startCycler_"..cycleMode]
@@ -17,20 +14,31 @@ addEventHandler("onResourceStart", thisResourceRoot,
 	end
 )
 
-addEvent "onRoundFinished"
+addEvent("onRoundFinished")
 
 remainingRounds = 0
 
 function roundCounter()
 	remainingRounds = remainingRounds - 1
 	if remainingRounds == 0 then
-		cyclerFunction()
+		-- if no players are present, wait until a player joins to cycle
+		if #getElementsByType("player") == 0 and (get("*hibernate_when_empty") == "true" or cycleMode == "vote") then
+			addEventHandler("onPlayerJoin", root, cycleOnJoin)
+			outputDebugString("mapcycler: server empty; hibernating until a player joins")
+		else
+			cyclerFunction()
+		end
 	end
+end
+
+function cycleOnJoin()
+	cyclerFunction()
+	removeEventHandler("onPlayerJoin", root, cycleOnJoin)
 end
 
 function outputCycler(message, toElement)
 	local r, g, b = getColorFromString(string.upper(get("color")))
-	outputChatBox(message, toElement or getRootElement(), r, g, b)
+	outputChatBox(message, toElement or root, r, g, b)
 end
 
 function outputCyclerDebugString(debugString, debugLevel)

@@ -13,7 +13,7 @@
 Override = {}
 Override.list = {}
 
-addEventHandler( "onElementDestroy", g_Root,
+addEventHandler( "onElementDestroy", root,
 	function()
 		Override.list [ source ] = nil
 	end
@@ -125,7 +125,7 @@ end
 --------------------------------------------------------
 AddonOverride = {}
 
-addEventHandler('onElementDataChange', g_Root,
+addEventHandler('onElementDataChange', root,
 	function(dataName)
 		if string.find( dataName, "override" ) == 1 then
 			AddonOverride.apply( source, dataName )

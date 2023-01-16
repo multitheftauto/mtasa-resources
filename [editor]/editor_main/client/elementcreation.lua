@@ -1,14 +1,12 @@
-local rootElement = getRootElement()
-
 local elementDefinitions = {}
 
-addEventHandler("doLoadEDF", rootElement,
+addEventHandler("doLoadEDF", root,
 	function(definition, resourceName)
 		elementDefinitions[resourceName] = definition.elements
 	end
 )
 
-addEventHandler("doUnloadEDF", rootElement,
+addEventHandler("doUnloadEDF", root,
 	function(resourceName)
 		elementDefinitions[resourceName] = nil
 	end

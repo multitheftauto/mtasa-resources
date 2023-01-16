@@ -1,24 +1,23 @@
 _DEGUG = false
 SUSPECT_CHEATER_LIMIT = 15000
-g_Root = getRootElement()
 
 addEvent"onPlayerPickUpRacePickup"
 addEvent"onPlayerRaceWasted"
 addEvent"onPlayerFinish"
 
-addEventHandler( "onPlayerPickUpRacePickup", g_Root,
+addEventHandler( "onPlayerPickUpRacePickup", root,
 	function( ... )
 		triggerClientEvent( source, "onClientPlayerPickUpRacePickup", source, ... )
 	end
 )
 
-addEventHandler( "onPlayerRaceWasted", g_Root,
+addEventHandler( "onPlayerRaceWasted", root,
 	function( ... )
 		triggerClientEvent( source, "onClientPlayerRaceWasted", source, ... )
 	end
 )
 
-addEventHandler( "onPlayerFinish", g_Root,
+addEventHandler( "onPlayerFinish", root,
 	function( ... )
 		triggerClientEvent( root, "onClientPlayerFinished", source, ... )
 	end
@@ -52,13 +51,13 @@ end
 CLIENT_SCRIPT_LOADED = {}
 
 addEvent( "onRaceGhostResourceStarted", true )
-addEventHandler( "onRaceGhostResourceStarted", getResourceRootElement(),
+addEventHandler( "onRaceGhostResourceStarted", resourceRoot,
 	function()
 		CLIENT_SCRIPT_LOADED[client] = true
 	end
 )
 
-addEventHandler( "onPlayerQuit", g_Root,
+addEventHandler( "onPlayerQuit", root,
 	function()
 		CLIENT_SCRIPT_LOADED[source] = nil
 	end
@@ -71,10 +70,10 @@ function triggerClientEvent( triggerFor, name, theElement, ... )
 		params = { theElement, ... }
 		theElement = name
 		name = triggerFor
-		triggerFor = g_Root
+		triggerFor = root
 	end
 
-	if triggerFor == g_Root then
+	if triggerFor == root then
 		local players = getElementsByType( "player" )
 		for k, player in ipairs( players ) do
 			if CLIENT_SCRIPT_LOADED[player] then

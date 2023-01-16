@@ -106,9 +106,8 @@ function _planWindow(wnd, baseWnd, parentWnd, x, y, maxHeightInLine)
 	if wnd.controls then
 		local childX, childY = padding[4], padding[1]
 		local childMaxHeightInLine = LINE_HEIGHT
-		local control
 		for id, controlwnd in pairs(wnd.controls) do
-			control, childX, childY, childMaxHeightInLine = _planWindow(controlwnd, baseWnd or wnd, wnd, childX, childY, childMaxHeightInLine)
+			_, childX, childY, childMaxHeightInLine = _planWindow(controlwnd, baseWnd or wnd, wnd, childX, childY, childMaxHeightInLine)
 		end
 		if classInfo[wndClass].isContainer then
 			wnd.height = childY + childMaxHeightInLine + padding[3]
@@ -606,8 +605,8 @@ function bindGridListToTable(...)
 		-- set double click handler
 		addEventHandler('onClientGUIDoubleClick', gridlist,
 			function()
-				local listdata = g_gridListContents[gridListControlData]
-				local previousGroup = followTreePath(listdata.data, listdata.currentPath)
+				local listData = g_gridListContents[gridListControlData]
+				local previousGroup = followTreePath(listData.data, listData.currentPath)
 
 				local selData, selRow = getSelectedGridListData(gridlist)
 				if not selData then
@@ -615,12 +614,12 @@ function bindGridListToTable(...)
 				end
 				if tonumber(selData) == 0 then
 					-- Go to parent group
-					table.remove(listdata.currentPath)
+					table.remove(listData.currentPath)
 				else
 					-- Go into child group or do item double click callback
-					local clickedNode = followTreePath(listdata.data, listdata.currentPath, table.map(string.split(selData, '/'), tonumber))
+					local clickedNode = followTreePath(listData.data, listData.currentPath, table.map(string.split(selData, '/'), tonumber))
 					if clickedNode[1] == 'group' then
-						table.insert(listdata.currentPath, tonumber(selData))
+						table.insert(listData.currentPath, tonumber(selData))
 					else
 						if gridListControlData.onitemdoubleclick then
 							if gridListControlData.DoubleClickSpamProtected then
@@ -634,7 +633,7 @@ function bindGridListToTable(...)
 					end
 				end
 				applyToLeaves(previousGroup, function(item) item.row = nil end)
-				_updateBindedGridList(gridlist, listdata, expandLastLevel)
+				_updateBindedGridList(gridlist, listData, expandLastLevel)
 			end,
 			false
 		)
@@ -719,7 +718,7 @@ function _updateBindedGridList(gridlist, listdata, expandLastLevel, isContinuati
 			_updateGridListOnFrame = function()
 				_updateBindedGridList(gridlist, listdata, false, true)
 			end
-			addEventHandler('onClientRender', getRootElement(), _updateGridListOnFrame)
+			addEventHandler('onClientRender', root, _updateGridListOnFrame)
 		end
 
 		-- update path label if necessary
@@ -786,7 +785,7 @@ function _putLeafInGridListRow(gridlist, row, leaf, columnAttrs)
 end
 
 function _removeGridListFrameUpdate(listdata)
-	removeEventHandler('onClientRender', getRootElement(), _updateGridListOnFrame)
+	removeEventHandler('onClientRender', root, _updateGridListOnFrame)
 	listdata.nextChunkStartIndex = nil
 	_updateGridListOnFrame = nil
 end

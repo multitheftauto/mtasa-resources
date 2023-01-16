@@ -18,7 +18,7 @@ addCommandHandler('config',
 -- Response for client
 --------------------------------
 addEvent('onRequestAddonsInfo', true )
-addEventHandler('onRequestAddonsInfo', g_ResRoot,
+addEventHandler('onRequestAddonsInfo', resourceRoot,
 	function()
 		if checkClient( true, source, 'onRequestAddonsInfo' ) then return end
 		local addonsInfoMap = getAddonsInfo()
@@ -27,7 +27,7 @@ addEventHandler('onRequestAddonsInfo', g_ResRoot,
 )
 
 addEvent('onRequestAddonsChange', true )
-addEventHandler('onRequestAddonsChange', g_ResRoot,
+addEventHandler('onRequestAddonsChange', resourceRoot,
 	function(addonsInfoMap)
 		if checkClient( true, source, 'onRequestAddonsChange' ) then return end
 		setAddonsInfo( addonsInfoMap );

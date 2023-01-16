@@ -1,0 +1,14 @@
+name: MTA Resources Linter
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - run: sudo apt update && sudo apt -y install luarocks lua5.1 && sudo luarocks install luacheck
+    - uses: actions/checkout@v1      
+    - name: Lint mta resources
+      run: |
+        echo 'ignore = {"122","142","111","341","112","113","143","321","631","211","212","213","611","512"}' > config.lua
+        luacheck --config config.lua ./

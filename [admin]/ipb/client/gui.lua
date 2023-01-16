@@ -276,7 +276,7 @@ function GUI:updateStatistics(mode)
         return
     end
 
-    self:fill(mode, getPerformanceStats(self.categoryItem, self.options:getText(), self.options:getText()))
+    self:fill(mode, getPerformanceStats(self.categoryItem, self.options:getText(), self.filter:getText()))
 end
 
 function GUI:fill(mode, columns, rows)

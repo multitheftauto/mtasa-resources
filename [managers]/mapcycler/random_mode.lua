@@ -2,7 +2,7 @@ function startCycler_random()
 	addCommandHandler("skipmap", cycleMap_random, true)
 
 	cycleMap_random()
-	addEventHandler("onRoundFinished", rootElement, roundCounter)
+	addEventHandler("onRoundFinished", root, roundCounter)
 end
 
 function cycleMap_random()

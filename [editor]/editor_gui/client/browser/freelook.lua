@@ -3,7 +3,6 @@
 local rotX, rotY = 0, 0
 local cameraDistance = 0
 local isEnabled = false
-local rootElement = getRootElement()
 --coldnt figure out a "this event is already handled" bug so events are always handed until browser is turned off
 local isHandled1, isHandled2
 -- local tx, ty, tz = 0, 0, 0
@@ -25,7 +24,7 @@ browserElementLookOptions = {
 	up = "mouse_wheel_up",
 	down = "mouse_wheel_down",
 
-	target = getLocalPlayer()
+	target = localPlayer
 }
 
 function elementLookFrame ()
@@ -142,7 +141,7 @@ function enableElementLook (dontChangeFixedMode, target, newRotX, newRotY)
 
 	if target then
 		browserElementLookOptions.target = target
-	else browserElementLookOptions.target = getLocalPlayer()
+	else browserElementLookOptions.target = localPlayer
 	end
 
 	--tx, ty, tz = getElementPosition ( browserElementLookOptions.target )
@@ -171,11 +170,11 @@ end
 
 function setFreelookEvents(bool)
 	if bool then
-		isHandled1 = addEventHandler("onClientRender", rootElement, elementLookFrame)
-		isHandled2 = addEventHandler("onClientCursorMove",rootElement,elementLookMouse)
+		isHandled1 = addEventHandler("onClientRender", root, elementLookFrame)
+		isHandled2 = addEventHandler("onClientCursorMove",root,elementLookMouse)
 	else
-		removeEventHandler("onClientRender", rootElement, elementLookFrame)
-		removeEventHandler("onClientCursorMove",rootElement,elementLookMouse)
+		removeEventHandler("onClientRender", root, elementLookFrame)
+		removeEventHandler("onClientCursorMove",root,elementLookMouse)
 		isHandled1,isHandled2 = false,false
 	end
 end

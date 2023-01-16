@@ -5,7 +5,6 @@
 local edf = {}
 local edfStarted = {}
 local thisResource = getThisResource()
-local rootElement = getRootElement()
 createResourceCallInterface("mapmanager")
 addEvent"onElementPropertyChanged"
 
@@ -91,14 +90,14 @@ local edfCreateBasic = {
 		return createRadarArea(cdata.posX, cdata.posY, cdata.sizeX, cdata.sizeY, cdata.colorR, cdata.colorG, cdata.colorB, cdata.colorA)
 	end,
 	colshape = function(cdata)
-		if cdata.type == "sphere" then
+		if cdata.type == "sphere" or cdata.type == "colsphere" then
 			return createColSphere(cdata.position[1], cdata.position[2], cdata.position[3], cdata.radius)
-		elseif cdata.type == "tube" then
+		elseif cdata.type == "tube" or cdata.type == "coltube" then
 			return createColTube(cdata.position[1], cdata.position[2], cdata.position[3], cdata.radius, cdata.height)
-		elseif cdata.type == "rectangle" then
+		elseif cdata.type == "rectangle" or cdata.type == "colrectangle" then
 			return createColRectangle(cdata.position[1], cdata.position[2], cdata.position[3], cdata.width, cdata.depth)
-		elseif cdata.type == "cube" or cdata.type == "cuboid" then
-			return createColCube(cdata.position[1], cdata.position[2], cdata.position[3], cdata.width, cdata.depth, cdata.height)
+		elseif cdata.type == "cube" or cdata.type == "cuboid" or cdata.type == "colcube" or cdata.type == "colcuboid" then
+			return createColCuboid(cdata.position[1], cdata.position[2], cdata.position[3], cdata.width, cdata.depth, cdata.height)
 		end
 	end,
 	ped = function(cdata)
@@ -123,7 +122,7 @@ local createdRepresentations = {}
 addEvent("onEDFLoad")
 addEvent("onEDFUnload")
 
-addEventHandler("onResourceStart", rootElement,
+addEventHandler("onResourceStart", root,
 	function (resource)
 		--stop here if the resource disables edf checking
 		if getResourceInfo(resource,"edf:represent") == "false" then
@@ -141,7 +140,7 @@ addEventHandler("onResourceStart", rootElement,
 				if edf[gamemode] then
 					for k, map in ipairs(startedResourceMaps) do
 						local mapElements = getElementChildren(map)
-						for k, element in ipairs(mapElements) do
+						for k2, element in ipairs(mapElements) do
 							edfRepresentElement(element, gamemode)
 						end
 					end
@@ -164,7 +163,7 @@ addEventHandler("onResourceStart", rootElement,
 	end
 )
 
-addEventHandler("onResourceStop", rootElement,
+addEventHandler("onResourceStop", root,
 	function (resource)
 		if edfStarted[resource] then return end
 		edfUnloadDefinition(resource)
@@ -338,7 +337,7 @@ function edfLoadDefinition(fromResource, inResource, alreadyLoaded)
 	until false
 	readScripts(serverScripts,clientScripts,fromResource)
 	--if we've reached this point, trigger the load event
-	local triggerFrom = rootElement
+	local triggerFrom = root
 	if getResourceState(fromResource) == "running" then
 		triggerFrom = getResourceRootElement(fromResource)
 	end
@@ -377,7 +376,7 @@ function edfUnloadDefinition(resource)
 	end
 	edf[resource] = nil
 
-	triggerEvent("onEDFUnload",rootElement,resource)
+	triggerEvent("onEDFUnload",root,resource)
 
 	return true
 end
@@ -406,7 +405,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	end
 
 	-- check all defined fields for validity and stores them in a parent data table
-	local parentData = parentData or {}
+	parentData = parentData or {}
 	for dataField, dataDefinition in pairs(elementDefinition.data) do
 		local checkedData = edfCheckElementData(theElement, dataField, dataDefinition)
 		if checkedData == nil then
@@ -532,9 +531,6 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 								string.sub(dataValue, -1) == '!'
 							then
 								inherited[string.sub(dataValue,2,-2)] = true
-								-- get it from the parent data table
-								local parentDataField = string.sub(dataValue,2,-2)
-								dataValue = parentData[parentDataField]
 							end
 							subParentData[dataField] = dataField
 						end
@@ -585,7 +581,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 	parametersTable = parametersTable or {}
 	parametersTable.position = parametersTable.position or {0,0,0}
 	parametersTable.rotation = parametersTable.rotation or {0,0,0}
-	parametersTable.interior = parametersTable.interior or 0
+	parametersTable.interior = math.max(0, (parametersTable.interior or 0))
 	parametersTable.dimension = parametersTable.dimension or 0
 	parametersTable.alpha = parametersTable.alpha or 255
 
@@ -625,6 +621,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 				edfSetElementRotation(newElement, dataValue[1], dataValue[2], dataValue[3])
 			elseif dataField == "interior" then
 				setElementInterior(newElement, dataValue)
+				setElementData(newElement, dataField, dataValue)
 			elseif dataField == "dimension" then
 				setElementDimension(newElement, dataValue)
 			elseif dataField == "alpha" then
@@ -674,14 +671,11 @@ function edfCloneElement(theElement, editorMode )
 	parametersTable.alpha = edfGetElementAlpha(theElement) or 255
 
 	if isBasic[elementType] then
-		local childData = {}
 		for property, propertyData in pairs(edf[creatorResource]["elements"][elementType].data) do
 			--try to get the given value in target datatype
 			if convert[propertyData.datatype] then
 				parametersTable[property] = convert[propertyData.datatype](parametersTable[property])
 			end
-			--store the value, or its default
-			childData[property] = parametersTable[property] or propertyData.default
 		end
 
 		local oldElement = theElement

@@ -11,20 +11,20 @@
 aSpectator = { Offset = 5, AngleX = 0, AngleZ = 30, Spectating = nil }
 
 function aSpectate ( player )
-	if ( player == getLocalPlayer() ) then
+	if ( player == localPlayer ) then
 		aMessageBox ( "error", "Can not spectate yourself" )
 		return
 	end
 
 	if not aSpectator.Interior and not aSpectator.Dimension then
-		aSpectator.Interior = getElementInterior( getLocalPlayer() )
-		aSpectator.Dimension = getElementDimension( getLocalPlayer() )
+		aSpectator.Interior = getElementInterior( localPlayer )
+		aSpectator.Dimension = getElementDimension( localPlayer )
 	end
 
 	aSpectator.Spectating = player
-    setElementFrozen ( getLocalPlayer(), true )
-    setElementInterior( getLocalPlayer(), getElementInterior( player ) )
-    setElementDimension( getLocalPlayer(), getElementDimension( player ) )
+    setElementFrozen ( localPlayer, true )
+    setElementInterior( localPlayer, getElementInterior( player ) )
+    setElementDimension( localPlayer, getElementDimension( player ) )
 	if ( ( not aSpectator.Actions ) or ( not guiGetVisible ( aSpectator.Actions ) ) ) then
 		aSpectator.Initialize ()
 	end
@@ -43,22 +43,23 @@ function aSpectator.Initialize ()
 		aSpectator.SetStats		= guiCreateButton ( 0.10, 0.45, 0.80, 0.05, "Set Stats", true, aSpectator.Actions )
 		aSpectator.Slap			= guiCreateButton ( 0.10, 0.51, 0.80, 0.05, "Slap! "..aCurrentSlap.."hp", true, aSpectator.Actions )
 		aSpectator.Slaps			= guiCreateGridList ( 0.10, 0.51, 0.80, 0.48, true, aSpectator.Actions )
-					  		  guiGridListAddColumn( aSpectator.Slaps, "", 0.85 )
-					  		  guiSetVisible ( aSpectator.Slaps, false )
+								guiGridListAddColumn( aSpectator.Slaps, "", 0.85 )
+								guiSetVisible ( aSpectator.Slaps, false )
 		local i = 0
 		while i <= 10 do
 			guiGridListSetItemText ( aSpectator.Slaps, guiGridListAddRow ( aSpectator.Slaps ), 1, tostring ( i * 10 ), false, false )
 			i = i + 1
 		end
 
+		aSpectator.CollideWithWalls			= guiCreateCheckBox ( 0.08, 0.8, 0.84, 0.04, "Collide with walls", true, true, aSpectator.Actions )
 		aSpectator.Skip			= guiCreateCheckBox ( 0.08, 0.85, 0.84, 0.04, "Skip dead players", true, true, aSpectator.Actions )
-					  		  guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
+								guiCreateLabel ( 0.08, 0.89, 0.84, 0.04, "____________________", true, aSpectator.Actions )
 		aSpectator.Back			= guiCreateButton ( 0.10, 0.93, 0.80, 0.05, "Back", true, aSpectator.Actions )
 
 		aSpectator.Players		= guiCreateWindow ( 30, y / 2 - 200, 160, 400, "Players", false )
-			  	  	  		  guiWindowSetSizable ( aSpectator.Players, false )
+								guiWindowSetSizable ( aSpectator.Players, false )
 		aSpectator.PlayerList		= guiCreateGridList ( 0.03, 0.07, 0.94, 0.92, true, aSpectator.Players )
-					  		  guiGridListAddColumn( aSpectator.PlayerList, "Player Name", 0.85 )
+								guiGridListAddColumn( aSpectator.PlayerList, "Player Name", 0.85 )
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
 			local row = guiGridListAddRow ( aSpectator.PlayerList )
 			guiGridListSetItemPlayerName ( aSpectator.PlayerList, row, 1, getPlayerName ( player ), false, false )
@@ -67,8 +68,8 @@ function aSpectator.Initialize ()
 		aSpectator.Prev			= guiCreateButton ( x / 2 - 100, y - 50, 70, 30, "< Previous", false )
 		aSpectator.Next			= guiCreateButton ( x / 2 + 30,  y - 50, 70, 30, "Next >", false )
 
-		addEventHandler ( "onClientGUIClick", _root, aSpectator.ClientClick )
-		addEventHandler ( "onClientGUIDoubleClick", _root, aSpectator.ClientDoubleClick )
+		addEventHandler ( "onClientGUIClick", root, aSpectator.ClientClick )
+		addEventHandler ( "onClientGUIDoubleClick", root, aSpectator.ClientDoubleClick )
 
 		aRegister ( "Spectator", aSpectator.Actions, aSpectator.ShowGUI, aSpectator.Close )
 	end
@@ -80,10 +81,10 @@ function aSpectator.Initialize ()
 	bindKey ( "mouse2", "both", aSpectator.Cursor )
     toggleControl ( "fire", false )
     toggleControl ( "aim_weapon", false )
-	addEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
-	addEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
-	addEventHandler ( "onClientCursorMove", _root, aSpectator.CursorMove )
-	addEventHandler ( "onClientPreRender", _root, aSpectator.Render )
+	addEventHandler ( "onClientPlayerWasted", root, aSpectator.PlayerCheck )
+	addEventHandler ( "onClientPlayerQuit", root, aSpectator.PlayerCheck )
+	addEventHandler ( "onClientCursorMove", root, aSpectator.CursorMove )
+	addEventHandler ( "onClientPreRender", root, aSpectator.Render )
 
 	guiSetVisible ( aSpectator.Actions, true )
 	guiSetVisible ( aSpectator.Players, true )
@@ -109,15 +110,15 @@ function aSpectator.Close ( destroy )
         unbindKey ( "mouse2", "both", aSpectator.Cursor )
         toggleControl ( "fire", true )
         toggleControl ( "aim_weapon", true )
-        removeEventHandler ( "onClientPlayerWasted", _root, aSpectator.PlayerCheck )
-        removeEventHandler ( "onClientPlayerQuit", _root, aSpectator.PlayerCheck )
-        removeEventHandler ( "onClientMouseMove", _root, aSpectator.CursorMove )
-        removeEventHandler ( "onClientPreRender", _root, aSpectator.Render )
+        removeEventHandler ( "onClientPlayerWasted", root, aSpectator.PlayerCheck )
+        removeEventHandler ( "onClientPlayerQuit", root, aSpectator.PlayerCheck )
+        removeEventHandler ( "onClientCursorMove", root, aSpectator.CursorMove )
+        removeEventHandler ( "onClientPreRender", root, aSpectator.Render )
 
         if ( ( destroy ) or ( guiCheckBoxGetSelected ( aPerformanceSpectator ) ) ) then
             if ( aSpectator.Actions ) then
-                removeEventHandler ( "onClientGUIClick", _root, aSpectator.ClientClick )
-                removeEventHandler ( "onClientGUIDoubleClick", _root, aSpectator.ClientDoubleClick )
+                removeEventHandler ( "onClientGUIClick", root, aSpectator.ClientClick )
+                removeEventHandler ( "onClientGUIDoubleClick", root, aSpectator.ClientDoubleClick )
                 destroyElement ( aSpectator.Actions )
                 destroyElement ( aSpectator.Players )
                 destroyElement ( aSpectator.Next )
@@ -130,13 +131,13 @@ function aSpectator.Close ( destroy )
             guiSetVisible ( aSpectator.Next, false )
             guiSetVisible ( aSpectator.Prev, false )
         end
-        setCameraTarget ( getLocalPlayer() )
-        setElementInterior( getLocalPlayer(), aSpectator.Interior )
-        setElementDimension( getLocalPlayer(), aSpectator.Dimension )
-        local x, y, z = getElementPosition(getLocalPlayer())
-        setElementPosition(getLocalPlayer(), x, y, z+1)
-        setElementVelocity (getLocalPlayer(), 0, 0, 0)
-        setElementFrozen ( getLocalPlayer(), false )
+        setCameraTarget ( localPlayer )
+        setElementInterior( localPlayer, aSpectator.Interior )
+        setElementDimension( localPlayer, aSpectator.Dimension )
+        local x, y, z = getElementPosition(localPlayer)
+        setElementPosition(localPlayer, x, y, z+1)
+        setElementVelocity (localPlayer, 0, 0, 0)
+        setElementFrozen ( localPlayer, false )
         aSpectator.Spectating = nil
         showCursor ( true )
         aAdminMenu()
@@ -199,9 +200,12 @@ end
 function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 	if ( not tonumber ( inc ) ) then inc = inc2 end
 	if ( not tonumber ( inc ) ) then return end
-	local players = {}
-	if ( guiCheckBoxGetSelected ( aSpectator.Skip ) ) then players = aSpectator.GetAlive()
-	else players = getElementsByType ( "player" ) end
+	local players
+	if ( guiCheckBoxGetSelected ( aSpectator.Skip ) ) then
+		players = aSpectator.GetAlive()
+	else
+		players = getElementsByType ( "player" )
+	end
 	if ( #players <= 0 ) then
 		aMessageBox ( "question", "Nobody to spectate, exit spectator?", "spectatorClose" )
 		return
@@ -218,9 +222,9 @@ function aSpectator.SwitchPlayer ( inc, arg, inc2 )
 		return
 	end
 	aSpectator.Spectating = players[next]
-    setElementFrozen ( getLocalPlayer(), true )
-    setElementInterior( getLocalPlayer(), getElementInterior( aSpectator.Spectating ) )
-    setElementDimension( getLocalPlayer(), getElementDimension( aSpectator.Spectating ) )
+    setElementFrozen ( localPlayer, true )
+    setElementInterior( localPlayer, getElementInterior( aSpectator.Spectating ) )
+    setElementDimension( localPlayer, getElementDimension( aSpectator.Spectating ) )
 end
 
 function aSpectator.CursorMove ( rx, ry, x, y )
@@ -250,13 +254,21 @@ function aSpectator.Render ()
 		return
 	end
 
+	local offset = aSpectator.Offset
+
+	if guiCheckBoxGetSelected(aSpectator.CollideWithWalls) then
+		local nearest_hit = aSpectator.CheckCollision(x, y, z)
+		if nearest_hit and (nearest_hit < offset) then
+            offset = nearest_hit
+        end
+	end
+
 	local ox, oy, oz
-	ox = x - math.sin ( math.rad ( aSpectator.AngleX ) ) * aSpectator.Offset
-	oy = y - math.cos ( math.rad ( aSpectator.AngleX ) ) * aSpectator.Offset
-	oz = z + math.tan ( math.rad ( aSpectator.AngleZ ) ) * aSpectator.Offset
+	ox = x - math.sin ( math.rad ( aSpectator.AngleX ) ) * offset
+	oy = y - math.cos ( math.rad ( aSpectator.AngleX ) ) * offset
+	oz = z + math.tan ( math.rad ( aSpectator.AngleZ ) ) * offset
 	setCameraMatrix ( ox, oy, oz, x, y, z )
 
-	local sx, sy = guiGetScreenSize ()
 	dxDrawText ( "Spectating: "..getPlayerName ( aSpectator.Spectating ), sx - 170, 200, sx - 170, 200, tocolor ( 255, 255, 255, 255 ), 1 )
 	if ( _DEBUG ) then
 		dxDrawText ( "DEBUG:\nAngleX: "..aSpectator.AngleX.."\nAngleZ: "..aSpectator.AngleZ.."\n\nOffset: "..aSpectator.Offset.."\nX: "..ox.."\nY: "..oy.."\nZ: "..oz.."\nDist: "..getDistanceBetweenPoints3D ( x, y, z, ox, oy, oz ), sx - 170, sy - 180, sx - 170, sy - 180, tocolor ( 255, 255, 255, 255 ), 1 )
@@ -267,6 +279,30 @@ function aSpectator.Render ()
 			dxDrawText ( "Tip: Use mouse scroll to zoom in/out", 20, sy - 50, 20, sy - 50, tocolor ( 255, 255, 255, 255 ), 1 )
 		end
 	end
+end
+
+local checks = {
+    {-1, -0.5},
+    {-1, 0.5},
+    {1, 0.5},
+    {1, -0.5},
+}
+
+function aSpectator.CheckCollision(x, y, z)
+	local nearest_distance
+
+	for k, v in ipairs(checks) do
+		local xx, yy, zz = getPositionFromOffset(getCamera(), v[1], 0, v[2])
+		local hit, hitx, hity, hitz = processLineOfSight(xx, yy, zz, x, y, z, true, true, false, true, true, false, false, false, (getPedOccupiedVehicle(localPlayer) or nil))
+		if hit then
+			local dist = getDistanceBetweenPoints3D(x, y, z, hitx, hity, hitz)
+			if (dist <= (nearest_distance or math.huge)) then
+				nearest_distance = dist
+			end
+		end
+	end
+	
+	return nearest_distance or false
 end
 
 function aSpectator.MoveOffset ( key, state, inc )
@@ -285,4 +321,12 @@ function aSpectator.GetAlive ()
 		end
 	end
 	return alive
+end
+
+function getPositionFromOffset(element, x, y, z)
+    local matrix = getElementMatrix(element)
+    local offX = x * matrix[1][1] + y * matrix[2][1] + z * matrix[3][1] + matrix[4][1]
+    local offY = x * matrix[1][2] + y * matrix[2][2] + z * matrix[3][2] + matrix[4][2]
+    local offZ = x * matrix[1][3] + y * matrix[2][3] + z * matrix[3][3] + matrix[4][3]
+    return offX, offY, offZ
 end

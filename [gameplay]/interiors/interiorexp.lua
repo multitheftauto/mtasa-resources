@@ -1,6 +1,5 @@
 local interiors = {}
 local interiorMarkers = {}
-local resourceFromInterior = {}
 --format interior = { [resource] = { [id] = { return= { [element],[element] }, entry=[element] } }
 
 addEvent ( "doTriggerServerEvents", true )
@@ -9,13 +8,13 @@ addEvent ( "onPlayerInteriorWarped", true )
 addEvent ( "onInteriorHit" )
 addEvent ( "onInteriorWarped", true )
 
-addEventHandler ( "onResourceStart", getRootElement(),
+addEventHandler ( "onResourceStart", root,
 function ( resource )
 	interiorLoadElements ( getResourceRootElement(resource), resource )
 	interiorCreateMarkers ( resource )
 end )
 
-addEventHandler ( "onResourceStop", getRootElement(),
+addEventHandler ( "onResourceStop", root,
 function ( resource )
 	if not interiors[resource] then return end
 	for id,interiorTable in pairs(interiors[resource]) do
@@ -27,9 +26,9 @@ function ( resource )
 	interiors[resource] = nil
 end )
 
-function interiorLoadElements ( rootElement, resource )
+function interiorLoadElements ( root, resource )
 	---Load the exterior markers
-	local entryInteriors = getElementsByType ( "interiorEntry", rootElement )
+	local entryInteriors = getElementsByType ( "interiorEntry", root )
 	for key, interior in pairs (entryInteriors) do
 		local id = getElementData ( interior, "id" )
 		if not interiors[resource] then interiors[resource] = {} end
@@ -37,17 +36,15 @@ function interiorLoadElements ( rootElement, resource )
 		end
 		interiors[resource][id] = {}
 		interiors[resource][id]["entry"] = interior
-		resourceFromInterior[interior] = resource
 	end
 	--Load the interior markers
-	local returnInteriors = getElementsByType ( "interiorReturn", rootElement )
+	local returnInteriors = getElementsByType ( "interiorReturn", root )
 	for key, interior in pairs (returnInteriors) do
 		local id = getElementData ( interior, "refid" )
 		if not interiors[resource][id] then outputDebugString ( "Interiors: Error, no refid specified to returnInterior.", 1 )
 			return
 		else
-				interiors[resource][id]["return"] = interior
-				resourceFromInterior[interior] = resource
+			interiors[resource][id]["return"] = interior
 		end
 	end
 end
@@ -101,11 +98,10 @@ function getInteriorMarker ( elementInterior )
 	return false
 end
 
-local opposite = { ["interiorReturn"] = "entry",["interiorEntry"] = "return" }
 local idLoc = { ["interiorReturn"] = "refid",["interiorEntry"] = "id" }
-addEventHandler ( "doTriggerServerEvents",getRootElement(),
+addEventHandler ( "doTriggerServerEvents",root,
 	function( interior, resource, id )
-		local eventCanceled1,eventCanceled2 = false,false
+		local eventCanceled1, eventCanceled2
 		eventCanceled1 = triggerEvent ( "onPlayerInteriorHit", client, interior, resource, id )
 		eventCanceled2 = triggerEvent ( "onInteriorHit", interior, client )
 		if ( eventCanceled2 ) and ( eventCanceled1 ) then

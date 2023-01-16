@@ -4,9 +4,6 @@
 -- see joiner.lua for details
 --
 
-g_Root = getRootElement()
-g_ResRoot = getResourceRootElement(getThisResource())
-
 addEvent('onClientPlayerJoining')	-- Pre join
 addEvent('onClientPlayerJoined')	-- Post join
 
@@ -26,7 +23,7 @@ g_EventHandlers = {
 -- Divert 'onEventName' to '_onEventName'
 for eventName,_ in pairs(g_EventHandlers) do
 	addEvent('_'..eventName)
-	addEventHandler(eventName, g_Root, function(...) triggerEvent( '_'..eventName, source, ... ) end)
+	addEventHandler(eventName, root, function(...) triggerEvent( '_'..eventName, source, ... ) end)
 end
 
 -- Catch addEventHandler calls here and save the ones listed in g_EventHandlers
@@ -59,7 +56,7 @@ end
 -- call the saved handlers for 'onEventName'
 function callSavedEventHandlers(eventName, eventSource, ...)
 	for _,handler in ipairs(g_EventHandlers[eventName]) do
-		local triggeredElem = eventSource or g_Root
+		local triggeredElem = eventSource or root
 		if isElement(triggeredElem) then
 			while true do
 				if triggeredElem == handler.elem then
@@ -67,7 +64,7 @@ function callSavedEventHandlers(eventName, eventSource, ...)
 					handler.fn(...)
 					break
 				end
-				if not handler.getpropagated or triggeredElem == g_Root then
+				if not handler.getpropagated or triggeredElem == root then
 					break
 				end
 				triggeredElem = getElementParent(triggeredElem)
@@ -87,7 +84,7 @@ end
 -- getElementsByType patch
 _getElementsByType = getElementsByType
 function getElementsByType( type, startat )
-    startat = startat or getRootElement()
+    startat = startat or root
     if type ~= 'player' then
         return _getElementsByType( type, startat )
     else
@@ -122,7 +119,7 @@ end
 
 -- Real onClientPlayerJoin event was fired
 --      Do nothing
-addEventHandler('_onClientPlayerJoin', g_Root,
+addEventHandler('_onClientPlayerJoin', root,
     function ()
         triggerEvent( 'onClientPlayerJoining', source );
     end
@@ -130,17 +127,17 @@ addEventHandler('_onClientPlayerJoin', g_Root,
 
 -- Real onClientResourceStart event was fired
 --      Call the deferred onClientResourceStart event handlers, then tell the server we are loaded.
-addEventHandler('_onClientResourceStart', g_ResRoot,
+addEventHandler('_onClientResourceStart', resourceRoot,
 	function()
         callSavedEventHandlers( 'onClientResourceStart', source )
         if _DEBUG_TIMING then
-    		setTimer(
+			setTimer(
                 function()
-                    triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
+                    triggerServerEvent('onLoadedAtClient', resourceRoot, localPlayer )
                 end,
                 math.random(1000,15000), 1 )
         else
-    		triggerServerEvent('onLoadedAtClient', resourceRoot, g_Me )
+			triggerServerEvent('onLoadedAtClient', resourceRoot, localPlayer )
 	    end
 	end
 )
@@ -174,7 +171,7 @@ addEventHandler('onOtherJoinCompleteAtServer', resourceRoot,
 
 -- onClientPlayerQuit
 --   Remove player from JoinedPlayers list
-addEventHandler('onClientPlayerQuit', g_Root,
+addEventHandler('onClientPlayerQuit', root,
     function ()
         table.removevalue(g_JoinedPlayers, source)
     end

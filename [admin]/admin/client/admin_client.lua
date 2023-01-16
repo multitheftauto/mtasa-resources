@@ -10,8 +10,7 @@
 
 _DEBUG = false
 
-_version = '1.5.5'
-_root = getRootElement()
+_version = '1.5.9'
 _flags = {}
 _widgets = {}
 _settings = nil
@@ -41,7 +40,7 @@ addEvent ( "aClientResourceStart", true )
 addEvent ( "aClientResourceStop", true )
 addEvent ( "aClientAdminMenu", true )
 function aAdminResourceStart ()
-	addEventHandler ( "aClientAdminMenu", _root, aClientAdminMenu )
+	addEventHandler ( "aClientAdminMenu", root, aClientAdminMenu )
 	local node = xmlLoadFile ( "conf\\weathers.xml" )
 	if ( node ) then
 		while ( true ) do
@@ -56,8 +55,8 @@ function aAdminResourceStart ()
 		xmlUnloadFile ( node )
 	end
 	aLoadSettings ()
-	triggerServerEvent ( "aPermissions", getLocalPlayer() )
-	setTimer( function() triggerServerEvent ( "aPlayerVersion", getLocalPlayer(), getVersion() ) end, 2000, 1 )
+	triggerServerEvent ( "aPermissions", localPlayer )
+	setTimer( function() triggerServerEvent ( "aPlayerVersion", localPlayer, getVersion() ) end, 2000, 1 )
 	guiSetInputMode ( "no_binds_when_editing" )
 end
 
@@ -128,10 +127,14 @@ end
 function aExecute ( action, echo )
 	local result = loadstring("return " .. action)()
 	if ( echo == true ) then
-		local restring = ""
-		if ( type ( result ) == "table" ) then restring = "Table ("..unpack ( result )..")"
-		elseif ( type ( result ) == "userdata" ) then restring = "Element ("..getElementType ( result )..")"
-		else restring = tostring ( result ) end
+		local restring
+		if ( type ( result ) == "table" ) then
+			restring = "Table ("..unpack ( result )..")"
+		elseif ( type ( result ) == "userdata" ) then
+			restring = "Element ("..getElementType ( result )..")"
+		else
+			restring = tostring ( result )
+		end
 		outputChatBox( "Command executed! Result: " ..restring, 0, 0, 255 )
 	end
 end
@@ -150,15 +153,15 @@ function getPlayerFromNick ( nick )
 	return false
 end
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement ( getThisResource() ), aAdminResourceStart )
-addEventHandler ( "onClientResourceStop", getResourceRootElement ( getThisResource() ), aAdminResourceStop )
+addEventHandler ( "onClientResourceStart", resourceRoot, aAdminResourceStart )
+addEventHandler ( "onClientResourceStop", resourceRoot, aAdminResourceStop )
 
 
 --
 -- Upgrade check message for 1.0 to 1.0.2
 --
 addEvent ( "aClientShowUpgradeMessage", true )
-addEventHandler ( "aClientShowUpgradeMessage", _root,
+addEventHandler ( "aClientShowUpgradeMessage", root,
 	function()
 		local xml = xmlLoadFile("upgrade_cookie.xml")
 		if not xml then
@@ -212,14 +215,6 @@ function realTimeToSeconds( time )
 	seconds = seconds + time.second
 	seconds = seconds - time.isdst * 60*60
 	return seconds
-end
-
-function realTimeToSecondsTest()
-	for i=1,100 do
-		local time1 = getRealTime( math.random(0, 60*60*24*365*50) )	-- Get a random date between 1970 and 2020
-		local time2 = getRealTime( realTimeToSeconds( time1 ) )
-		assert( getRealDateTimeString( time1 ) == getRealDateTimeString( time2 ) )
-	end
 end
 
 -- seconds to description i.e. "10 mins"

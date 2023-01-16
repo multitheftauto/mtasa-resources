@@ -3,7 +3,7 @@
 
 local round = 0
 
-addEventHandler('onResourceStart', getResourceRootElement(getThisResource()),
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		exports.scoreboard:addScoreboardColumn('Score')
 		table.each(getElementsByType('player'), joinHandler)
@@ -19,7 +19,7 @@ function joinHandler(player)
 end
 addEventHandler('onPlayerJoin', root, joinHandler)
 
-addEventHandler('onResourceStop', getResourceRootElement(getThisResource()),
+addEventHandler('onResourceStop', resourceRoot,
 	function()
 		exports.scoreboard:removeScoreboardColumn('Score')
 	end
@@ -104,7 +104,7 @@ function onCtvChat ( message, theType )
 		local bastidName = getPlayerName ( source )
 		if ( team ) then
 		local r, g, b = getTeamColor ( team )
-			outputChatBox ( bastidName..":#FFFFFF "..message, getRootElement(), r, g, b, true )
+			outputChatBox ( bastidName..":#FFFFFF "..message, root, r, g, b, true )
 		else
 			outputChatBox ( bastidName..": "..message )
 		end
@@ -161,16 +161,8 @@ function spawnVan ( target )
 	--get other stuff
 	local model = getElementData ( target, "model" ) --id
 	local platetext = getElementData ( target, "plate" ) --plate text
-	local colours = getElementData ( target, "colors" ) --colours of vehicle
 	local pj = getElementData ( target, "paintjob" ) --paintjob
 	local upgrades = getElementData ( target, "upgrades" ) --paintjob
-	---seperate the colours string and get specific colour ids
-	local col1, col2, col3, col4 = colours and colours:match('^(%w+),(%w+),(%w+),(%w+)$')
-	--if any of them are "ran", then make them into a random id
-	if col1 == "ran" or not col1 then col1 = math.random(0,126) end
-	if col2 == "ran" or not col2 then col2 = math.random(0,126) end
-	if col3 == "ran" or not col3 then col3 = math.random(0,126) end
-	if col4 == "ran" or not col4 then col4 = math.random(0,126) end
 	--if any of the rotations are not specified, make them 0
 	rx = rx or 0
 	ry = ry or 0
@@ -348,7 +340,7 @@ function toggleVehicleLights ( player, key, state )
 	end
 end
 
-addEventHandler( "onGamemodeMapStart", getRootElement (), onCTVMapStart )
+addEventHandler( "onGamemodeMapStart", root, onCTVMapStart )
 addEventHandler ( "onVehicleExplode", root, vehicleExplode )
 addEventHandler ( "onPlayerVehicleEnter", root, playerEnterVehicle )
 addEventHandler ( "onPlayerVehicleExit", root, playerExitVehicle )

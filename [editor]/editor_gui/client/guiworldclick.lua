@@ -5,7 +5,7 @@ local lastClicked
 
 -- bindKey ( cc.pickup_targeted_element, "up", worldClickEventTrigger, "pickup" )
 -- bindKey ( cc.select_targeted_element, "up", worldClickEventTrigger, "select" )
-addEventHandler ( "onClientClick",getRootElement(),
+addEventHandler ( "onClientClick",root,
 function (button, state,absoluteX,absoluteY,worldX,worldY,worldZ,clicked )
 	if state == "down" then
 		local guiElement = guiGetMouseOverElement()
@@ -15,7 +15,7 @@ function (button, state,absoluteX,absoluteY,worldX,worldY,worldZ,clicked )
 		triggerEvent ( "onClientGUIMouseDown",lastClicked,button, state,absoluteX, absoluteX)
 		triggerEvent ( "onClientGUIWorldClick",lastClicked,button, state,absoluteX,absoluteY,worldX,worldY,worldZ,clicked)
 	else
-		triggerEvent ( "onClientGUIWorldClick",getRootElement(),button, state,absoluteX,absoluteY,worldX,worldY,worldZ,clicked)
+		triggerEvent ( "onClientGUIWorldClick",root,button, state,absoluteX,absoluteY,worldX,worldY,worldZ,clicked)
 	end
 end )
 

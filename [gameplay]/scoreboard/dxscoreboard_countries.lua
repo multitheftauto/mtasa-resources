@@ -28,7 +28,7 @@ if showCountries then
 		setElementData( source, countryData, {":admin/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
 	end
 
-	addEventHandler( "onPlayerJoin", getRootElement(), setScoreboardData )
+	addEventHandler( "onPlayerJoin", root, setScoreboardData )
 end
 
 -- Server staff can use the below command to spoof their country-code in TAB scoreboard to avoid undesired recognition by players.

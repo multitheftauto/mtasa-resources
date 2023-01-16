@@ -183,7 +183,7 @@ function serverBanPlayer (playerName, reason, duration)
 	else
 	duration = 0
 	end
-	if banPlayer(getPlayerFromName(playerName), false, false, true, getRootElement(), reason, duration) then
+	if banPlayer(getPlayerFromName(playerName), false, false, true, root, reason, duration) then
 	return true
 	else
 	return false

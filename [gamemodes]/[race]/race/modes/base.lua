@@ -79,7 +79,7 @@ function RaceMode:setTimeLeft(timeLeft)
 		g_MapOptions.duration = self:getTimePassed() + timeLeft
 		TimerManager.destroyTimersFor("raceend")
 		TimerManager.createTimerFor("map","raceend"):setTimer(raceTimeout, timeLeft, 1)
-		clientCall(g_Root, 'setTimeLeft', timeLeft)
+		clientCall(root, 'setTimeLeft', timeLeft)
 	end
 end
 
@@ -88,7 +88,7 @@ function RaceMode.endMap()
         gotoState('PostFinish')
         local text = g_GameOptions.randommaps and 'Next map starts in:' or 'Vote for next map starts in:'
         Countdown.create(5, RaceMode.startNextMapSelect, text, 255, 255, 255, 0.6, 2.5 ):start()
-		triggerEvent('onPostFinish', g_Root)
+		triggerEvent('onPostFinish', root)
     end
 end
 
@@ -233,7 +233,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 	if checkpointNum < RaceMode.getNumberOfCheckpoints() then
 		-- Regular checkpoint
 		local vehicle = RaceMode.getPlayerVehicle(player)
-		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getVehicleTurnVelocity(vehicle) }, geardown = getVehicleLandingGearDown(vehicle) or false }
+		self.checkpointBackups[player][checkpointNum] = { vehicle = getElementModel(vehicle), position = { getElementPosition(vehicle) }, rotation = { getVehicleRotation(vehicle) }, velocity = { getElementVelocity(vehicle) }, turnvelocity = { getElementAngularVelocity(vehicle) }, geardown = getVehicleLandingGearDown(vehicle) or false }
 
 		self.checkpointBackups[player].goingback = true
 		TimerManager.destroyTimersFor("checkpointBackup",player)
@@ -263,7 +263,7 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 				{"image",path="img/killmessage.png",resource=getThisResource(),width=24},
 				getPlayerName(player),
 			},
-			g_Root,
+			root,
 			255,0,0
 		)
 		self.rankingBoard:add(player, time)
@@ -293,7 +293,7 @@ function lastCheckpointWasSafe(id, player)
 end
 
 function isValidPlayer(player)
- 	return g_Players and table.find(g_Players, player)
+	return g_Players and table.find(g_Players, player)
 end
 
 function isValidPlayerVehicle(player,vehicle)
@@ -417,7 +417,7 @@ function restorePlayer(id, player, bNoFade, bDontFix)
 	if not RaceMode.checkpointsExist() or checkpoint==1 then
 		local spawnpoint = self:pickFreeSpawnpoint(player)
 		bkp.position = spawnpoint.position
-		bkp.rotation = {0, 0, spawnpoint.rotation}
+		bkp.rotation = spawnpoint.rotation
 		bkp.geardown = true                 -- Fix landing gear state
 		bkp.vehicle = spawnpoint.vehicle    -- Fix spawn'n'blow
 		--setVehicleID(RaceMode.getPlayerVehicle(player), spawnpoint.vehicle)
@@ -431,7 +431,7 @@ function restorePlayer(id, player, bNoFade, bDontFix)
 	local vehicle = RaceMode.getPlayerVehicle(player)
 	if vehicle then
         setElementVelocity( vehicle, 0,0,0 )
-        setVehicleTurnVelocity( vehicle, 0,0,0 )
+        setElementAngularVelocity( vehicle, 0,0,0 )
 		setElementPosition(vehicle, unpack(bkp.position))
 		local rx, ry, rz = unpack(bkp.rotation)
 		setVehicleRotation(vehicle, rx or 0, ry or 0, rz or 0)
@@ -466,7 +466,7 @@ function restorePlayerUnfreeze(id, player, bDontFix)
     outputDebug( 'MISC', 'restorePlayerUnfreeze: vehicle false for ' .. tostring(getPlayerName(player)) .. '  vehicle:' .. tostring(vehicle) )
 	local bkp = RaceMode.instances[id].checkpointBackups[player][getPlayerCurrentCheckpoint(player)-1]
 	setElementVelocity(vehicle, unpack(bkp.velocity))
-	setVehicleTurnVelocity(g_Vehicles[player], unpack(bkp.turnvelocity))
+	setElementAngularVelocity(g_Vehicles[player], unpack(bkp.turnvelocity))
 end
 
 --------------------------------------

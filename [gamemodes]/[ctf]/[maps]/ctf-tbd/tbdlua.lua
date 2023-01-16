@@ -4,4 +4,4 @@ function giveWeaponsOnSpawn ( spawnpoint, team )
 	giveWeapon ( source, 30, 500 ) --
 	giveWeapon ( source, 28, 700 ) --
 end
-addEventHandler ( "onPlayerSpawn", getRootElement(), giveWeaponsOnSpawn )
+addEventHandler ( "onPlayerSpawn", root, giveWeaponsOnSpawn )

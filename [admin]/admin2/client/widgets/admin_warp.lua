@@ -28,9 +28,9 @@ function aPlayerWarp(player)
     end
     aWarpSelectPointer = player
     guiGridListClear(aWarpList)
-    for id, player in ipairs(getElementsByType("player")) do
-        if (player ~= aWarpSelectPointer) then
-            guiGridListSetItemText(aWarpList, guiGridListAddRow(aWarpList), 1, getPlayerName(player), false, false)
+    for id, plr in ipairs(getElementsByType("player")) do
+        if (plr ~= aWarpSelectPointer) then
+            guiGridListSetItemText(aWarpList, guiGridListAddRow(aWarpList), 1, getPlayerName(plr), false, false)
         end
     end
     guiSetVisible(aWarpForm, true)
@@ -102,7 +102,7 @@ end
 
 local function warpToPosition(player, x, y, z)
     if isElement(player) then
-        local x, y, z  = tonumber(x) or 0, tonumber(y) or 0, tonumber(z) or 0
+        x, y, z  = tonumber(x) or 0, tonumber(y) or 0, tonumber(z) or 0
         local distance = getElementDistanceFromCentreOfMassToBaseOfModel(player)
         triggerServerEvent(
             "aPlayer",
@@ -146,7 +146,7 @@ function aClientWarpDoubleClick(button)
                         localPlayer,
                         aWarpSelectPointer,
                         "warpto",
-                        getPlayerFromNick(guiGridListGetItemText(aWarpList, guiGridListGetSelectedItem(aWarpList), 1))
+                        getPlayerFromName(guiGridListGetItemText(aWarpList, guiGridListGetSelectedItem(aWarpList), 1))
                     )
                 end
                 aPlayerWarpClose(false)
@@ -168,7 +168,7 @@ function aClientWarpClick(button, state, absX, absY)
                         localPlayer,
                         aWarpSelectPointer,
                         "warpto",
-                        getPlayerFromNick(guiGridListGetItemText(aWarpList, guiGridListGetSelectedItem(aWarpList), 1))
+                        getPlayerFromName(guiGridListGetItemText(aWarpList, guiGridListGetSelectedItem(aWarpList), 1))
                     )
                 end
                 aPlayerWarpClose(false)

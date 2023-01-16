@@ -1,7 +1,4 @@
 g_ScreenX,g_ScreenY = guiGetScreenSize()
-g_Root = getRootElement()
-g_ResourceRoot = getResourceRootElement(getThisResource())
-g_LocalPlayer = getLocalPlayer()
 g_FragColor = tocolor(255,255,255,255)
 
 local fragText,spreadText,rankText,respawnText,currentRank
@@ -32,7 +29,7 @@ local function dxSetAlpha ( dx, a )
 end
 ----
 
-addEventHandler ( "onClientResourceStart", g_ResourceRoot,
+addEventHandler ( "onClientResourceStart", resourceRoot,
 	function()
 		respawnText = dxText:create( "", 0.5, 0.5, true, "pricedown", 2 )
 		respawnText:type("stroke",1.2)
@@ -55,9 +52,9 @@ addEventHandler ( "onClientResourceStart", g_ResourceRoot,
 	end
 )
 
-addEventHandler ( "onClientRender", g_Root,
+addEventHandler ( "onClientRender", root,
 	function()
-		local team = getPlayerTeam(g_LocalPlayer)
+		local team = getPlayerTeam(localPlayer)
 		if team then
 			local r,g,b = getTeamColor(team)
 			dxDrawImage ( fragStartX, fragStartY, fragWidth, fragHeight, "images/frag.png", 0, 0, 0, tocolor(r,g,b,255) )
@@ -65,7 +62,7 @@ addEventHandler ( "onClientRender", g_Root,
 	end
 )
 
-addEventHandler ( "onClientElementDataChange", g_Root,
+addEventHandler ( "onClientElementDataChange", root,
 	function ( dataName )
 		if dataName == "Score" then
 			updateScores()
@@ -74,11 +71,11 @@ addEventHandler ( "onClientElementDataChange", g_Root,
 )
 
 function updateScores()
-	local localTeam = getPlayerTeam(g_LocalPlayer)
+	local localTeam = getPlayerTeam(localPlayer)
 	if not localTeam or not isElement(localTeam) then return end
 	local currentScore = getElementData(localTeam,"Score")
 	fragText:text(tostring(currentScore))
-	if source == g_LocalPlayer then
+	if source == localPlayer then
 		if (currentScore < 0) then
 			fragText:color(255,0,0,255)
 		else
@@ -131,8 +128,8 @@ function updateScores()
 		-- )
 	end
 end
-addEventHandler ( "onClientPlayerQuit", g_Root, updateScores )
-addEventHandler ( "onClientPlayerJoin", g_Root, updateScores )
+addEventHandler ( "onClientPlayerQuit", root, updateScores )
+addEventHandler ( "onClientPlayerJoin", root, updateScores )
 
 local countdownCR
 local function countdown(time)
@@ -154,17 +151,17 @@ local function hideCountdown()
 	  respawnText,
 	  {{ from = 255, to = 0, time = 400, fn = dxSetAlpha }}
 	)
-	removeEventHandler ( "onClientPlayerSpawn", g_LocalPlayer, hideCountdown )
+	removeEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
 end
 
 addEvent ( "requestCountdown", true )
-addEventHandler ( "requestCountdown", g_Root,
+addEventHandler ( "requestCountdown", root,
 	function(time)
 		Animation.createAndPlay(
 		  respawnText,
 		  {{ from = 0, to = 255, time = 600, fn = dxSetAlpha }}
 		)
-		addEventHandler ( "onClientPlayerSpawn", g_LocalPlayer, hideCountdown )
+		addEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
 		respawnText:visible(true)
 		time = math.floor(time/1000)
 		countdownCR = coroutine.wrap(countdown)
@@ -173,12 +170,12 @@ addEventHandler ( "requestCountdown", g_Root,
 )
 
 addEvent ( "onColtPickup", true )
-addEventHandler ( "onColtPickup", g_Root,
+addEventHandler ( "onColtPickup", root,
 	function()
 		if getPedWeapon ( source, 2 ) == 22 and getPedTotalAmmo ( source, 2 ) ~= 0 then
-			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, true )
+			triggerServerEvent ( "doSetColtStat", localPlayer, true )
 		elseif getPedStat ( source, 69 ) >= 999 then
-			triggerServerEvent ( "doSetColtStat", g_LocalPlayer, false )
+			triggerServerEvent ( "doSetColtStat", localPlayer, false )
 		end
 	end
 )

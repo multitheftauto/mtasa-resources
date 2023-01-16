@@ -1,30 +1,49 @@
-function players()
-	local players = getElementsByType("player")
+function getAllPlayers()
 	local tbl = {}
-	for k,v in ipairs(players) do
-		local x,y = getElementPosition(v)
-		local playerinfo = {name=getPlayerName(v), pos={x=x,y=y}, isdead=isPedDead(v)}
-		if ( isPedInVehicle(v) ) then
-			playerinfo.vehicle = getVehicleName(getPedOccupiedVehicle(v))
+	for _, v in ipairs(getElementsByType("player")) do
+		local x, y, z = getElementPosition(v)
+		local _, _, rot = getElementRotation(v)
+		tbl[#tbl + 1] = {
+			name = getPlayerName(v),
+			pos = {
+				x = x,
+				y = y,
+				z = z,
+			},
+			rot = rot,
+			isdead = isPedDead(v),
+		}
+		if (isPedInVehicle(v)) then
+			tbl[#tbl].vehicle = getVehicleName(getPedOccupiedVehicle(v))
 		end
-		table.insert(tbl, playerinfo)
+	end
+	return tbl
+end
+
+function getAllRadarBlips()
+	local tbl = {}
+	for _, v in ipairs(getElementsByType("blip")) do
+		local x, y, z = getElementPosition(v)
+		tbl[#tbl + 1] = {
+			element = v,
+			icon = getBlipIcon(v),
+			size = getBlipSize(v),
+			color = {
+				getBlipColor(v),
+			},
+			pos = {
+				x = x,
+				y = y,
+				z = z,
+			},
+		}
 	end
 	return tbl
 end
 
 function sendPlayerMessage(playername, message)
 	local player = getPlayerFromName(playername)
-	if ( player ) then
-		outputChatBox("<webmap> " .. message, player)
-	end
-end
-
-function getAllBlips()
-	local tbl = {}
-	local blips = getElementsByType("blip")
-	for k,v in ipairs(blips) do
-		local x,y = getElementPosition(v)
-		table.insert(tbl, {element=v, icon=getBlipIcon(v), pos={x=x,y=y}})
-	end
-	return tbl
+	if (not player) then return end
+	outputServerLog("<webmap> <message sent to " .. playername .. "> " .. message, player)
+	outputChatBox("<webmap> " .. message, player)
 end

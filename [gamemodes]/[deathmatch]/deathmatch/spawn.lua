@@ -44,7 +44,7 @@ end
 function processSpawnStart(delay)
 	currentSpawnKey = 0
 	--Grab our spawnpoints
-	g_Spawnpoints = getElementsByType("spawnpoint", g_MapRoot or g_Root )
+	g_Spawnpoints = getElementsByType("spawnpoint", g_MapRoot or root )
 	--Randomize our spawnpoint order
 	table.shuffle(g_Spawnpoints)
 	--Calculate our camera position, by grabbing an average spawnpoint position
@@ -85,7 +85,7 @@ function processPlayerSpawn ( player )
 		end
 	end
 end
-addEventHandler ( "onPlayerJoin", g_Root, processPlayerSpawn )
+addEventHandler ( "onPlayerJoin", root, processPlayerSpawn )
 
 function setStats ( player )
 	for statID,value in pairs(stats) do

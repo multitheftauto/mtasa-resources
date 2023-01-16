@@ -38,8 +38,8 @@ end
 
 function RaceMap.load(res)
 	--Check if there are any .<map/>'s by using the real element system first
-	local resourceRoot = getResourceRootElement(res)
-	if #getElementsByType("spawnpoint",resourceRoot) > 0 then
+	local resRoot = getResourceRootElement(res)
+	if #getElementsByType("spawnpoint",resRoot) > 0 then
 		--Spawnpoints are contained within the MTA map, therefore lets assume only MTA maps were used (removes general.ModifyOtherObjects dependency)
 		local meta = xmlLoadFile(':' .. getResourceName(res) .. '/' .. 'meta.xml')
 		if not meta then
@@ -164,7 +164,7 @@ function RaceRaceMap:__index(k)
 		return result
 	end
 	if g_MapSettingNames[k] then
-		local result = get(self.resname .. '.' .. k)
+		result = get(self.resname .. '.' .. k)
 		if result then
 			return result
 		end
@@ -281,15 +281,15 @@ function RaceElementMap:getAll(name, type)
 	elseif name == "pickup" then
 		return self:getAll("racepickup",name)
 	end
-	local resourceRoot = getResourceRootElement(self.res)
-	for i,element in ipairs(getElementsByType(name, resourceRoot)) do
+	local resRoot = getResourceRootElement(self.res)
+	for i,element in ipairs(getElementsByType(name, resRoot)) do
 		result[i] = {}
 		result[i].id = getElementID(element) or i
 		attrs =	g_MapObjAttrs[type or name]
 		for _,attr in ipairs(attrs) do
 			local val = getElementData(element, attr)
 			if attr == "rotation" then
-				val = val or getElementData(element, "rotZ")
+				val = { tonumber(getElementData(element, "rotX")) or 0, tonumber(getElementData(element, "rotY")) or 0, tonumber(val or getElementData(element, "rotZ")) or 0 }
 			elseif attr == "position" then
 				val = val or { tonumber(getElementData(element, "posX")), tonumber(getElementData(element, "posY")), tonumber(getElementData(element, "posZ")) }
 			elseif val then

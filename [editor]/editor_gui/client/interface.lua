@@ -18,7 +18,7 @@ local interface_mt = {
 	end
 }
 
-addEventHandler("onClientResourceStart", getRootElement(),
+addEventHandler("onClientResourceStart", root,
 	function(resource)
 		local name = getResourceName(resource)
 		if interface[name] then
@@ -28,7 +28,7 @@ addEventHandler("onClientResourceStart", getRootElement(),
 	end
 )
 
-addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStart", resourceRoot,
 	function()
 		for name in pairs(interface) do
 			local resource = getResourceFromName(name)

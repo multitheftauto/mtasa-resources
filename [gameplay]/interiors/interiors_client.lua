@@ -6,7 +6,7 @@ local setInteriorMarkerZ = {
 		local vy = getElementData ( interiorElement,"posY" )
 		local vz = getElementData ( interiorElement,"posZ" )
 		--
-	 	setElementPosition(marker, vx, vy, vz + z/2 + 2.4)
+		setElementPosition(marker, vx, vy, vz + z/2 + 2.4)
 	end,
 	interiorReturn = function(marker,z)
 		local interiorElement = getElementParent(marker)
@@ -14,11 +14,11 @@ local setInteriorMarkerZ = {
 		local vy = getElementData ( interiorElement,"posY" )
 		local vz = getElementData ( interiorElement,"posZ" )
 		--
-	 	setElementPosition(marker, vx, vy, vz + z/2 + 2.4)
+		setElementPosition(marker, vx, vy, vz + z/2 + 2.4)
 	end
 }
 
--- addEventHandler("onClientElementStreamIn",getRootElement(),
+-- addEventHandler("onClientElementStreamIn",root,
 	-- function()
 		-- if getElementType ( source ) == "marker" then
 			-- local parent = getElementParent ( source )
@@ -26,14 +26,14 @@ local setInteriorMarkerZ = {
 			-- if parentType == "interiorEntry" or parentType == "interiorReturn" then
 				-- interiorAnims[source] = Animation.createAndPlay(
 		-- source,
- 		-- { from = 0, to = 2*math.pi, time = 2000, repeats = 0, transform = math.sin, fn = setInteriorMarkerZ[parentType] }
+		-- { from = 0, to = 2*math.pi, time = 2000, repeats = 0, transform = math.sin, fn = setInteriorMarkerZ[parentType] }
 -- )
 			-- end
 		-- end
 	-- end
 -- )
 
--- addEventHandler("onClientElementStreamOut",getRootElement(),
+-- addEventHandler("onClientElementStreamOut",root,
 	-- function()
 		-- if getElementType ( source ) == "marker" then
 			-- local parent = getElementParent ( source )
@@ -57,13 +57,13 @@ addEvent ( "doWarpPlayerToInterior", true )
 addEvent ( "onClientInteriorHit" )
 addEvent ( "onClientInteriorWarped" )
 
-addEventHandler ( "onClientResourceStart", getRootElement(),
+addEventHandler ( "onClientResourceStart", root,
 function ( resource )
 	interiorLoadElements ( getResourceRootElement(resource), resource )
 	interiorCreateMarkers ( resource )
 end )
 
-addEventHandler ( "onClientResourceStop", getRootElement(),
+addEventHandler ( "onClientResourceStop", root,
 function ( resource )
 	if not interiors[resource] then return end
 	for id,interiorTable in pairs(interiors[resource]) do
@@ -75,9 +75,9 @@ function ( resource )
 	interiors[resource] = nil
 end )
 
-function interiorLoadElements ( rootElement, resource )
+function interiorLoadElements ( root, resource )
 	---Load the exterior markers
-	local entryInteriors = getElementsByType ( "interiorEntry", rootElement )
+	local entryInteriors = getElementsByType ( "interiorEntry", root )
 	for key, interior in pairs (entryInteriors) do
 		local id = getElementData ( interior, "id" )
 		if not interiors[resource] then interiors[resource] = {} end
@@ -88,7 +88,7 @@ function interiorLoadElements ( rootElement, resource )
 		resourceFromInterior[interior] = resource
 	end
 	--Load the interior markers
-	local returnInteriors = getElementsByType ( "interiorReturn", rootElement )
+	local returnInteriors = getElementsByType ( "interiorReturn", root )
 	for key, interior in pairs (returnInteriors) do
 		local id = getElementData ( interior, "refid" )
 		if not interiors[resource][id] then outputDebugString ( "Interiors: Error, no refid specified to returnInterior.", 1 )
@@ -160,7 +160,7 @@ function colshapeHit( player, matchingDimension )
 	if not isElement ( player ) or getElementType ( player ) ~= "player" then return end
 	if player ~= localPlayer then return end
 	if ( not matchingDimension ) or ( getPedOccupiedVehicle ( player ) ) or
-	( doesPedHaveJetPack ( player ) ) or ( not isPedOnGround ( player ) ) or
+	( isPedWearingJetpack ( player ) ) or ( not isPedOnGround ( player ) ) or
 	( getPedControlState ( player, "aim_weapon" ) ) or ( blockPlayer ) or
 	( isPedDoingTask ( player, "TASK_COMPLEX_ENTER_CAR_AS_DRIVER") ) or
 	( isPedDoingTask ( player, "TASK_COMPLEX_ENTER_CAR_AS_PASSENGER") )

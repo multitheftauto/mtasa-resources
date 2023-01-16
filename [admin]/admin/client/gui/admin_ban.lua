@@ -92,8 +92,6 @@ function aClientBanClick ( button )
 	if ( button == "left" ) then
 		if ( source == aBanClose ) then
 			aBanDetailsClose ( false )
-		elseif ( source == aBanUnban ) then
-			triggerEvent ( "onClientGUIClick", aTab4.BansUnban, "left" )
 		elseif ( source == aBanCopy ) then
 			setClipboard( clipContent[2] )
 			outputChatBox( "Successfully copied the " .. clipContent[1] .. " into clipboard.", 255, 100, 70 )

@@ -4,7 +4,7 @@ addEvent ( "callServerside", true )
 function serversideCall ( resourceName, functionName, ... )
 	call ( getResourceFromName ( resourceName ), functionName, ...  )
 end
-addEventHandler ( "callServerside", getRootElement(), serversideCall )
+addEventHandler ( "callServerside", root, serversideCall )
 
 function loadsave_getResources ( dialog, player )
 	if not source then source = player end
@@ -33,12 +33,13 @@ function loadsave_getResources ( dialog, player )
 		mapInfo["friendlyName"] = resourceName
 	end
 	table.sort(maps, function(a, b) return a.name < b.name end)
-	triggerClientEvent ( source, dialog.."ShowDialog", source, maps )
+	local currentDirectory = get('*editor_main.mapResourceOrganizationalDirectory')
+	triggerClientEvent ( source, dialog.."ShowDialog", source, maps, currentDirectory )
 end
-addEventHandler ( "loadsave_getResources", getRootElement(), loadsave_getResources )
+addEventHandler ( "loadsave_getResources", root, loadsave_getResources )
 
 
 function outputMessage ( text, player, r, g, b, time )
-	player = player or getRootElement()
+	player = player or root
 	return triggerClientEvent ( player, "doOutputMessage", player, text, r, g, b, time )
 end

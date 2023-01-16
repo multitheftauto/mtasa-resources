@@ -44,7 +44,7 @@ function aChatTab.onClientClick(button)
                 if (gettok(message, 1, 32) == "/clear") then
                     guiSetText(aChatTab.AdminChat, "")
                 else
-                    triggerServerEvent("aAdminChat", getLocalPlayer(), message)
+                    triggerServerEvent("aAdminChat", localPlayer, message)
                 end
                 guiSetText(aChatTab.AdminText, "")
             end
@@ -61,8 +61,8 @@ end
 function aChatTab.onClientSync(type, table)
     if (type == SYNC_ADMINS) then
         --if ( guiGridListGetRowCount ( aChatTab.AdminPlayers ) > 0 ) then guiGridListClear ( aChatTab.AdminPlayers ) end
-        for id, player in ipairs(getElementsByType("player")) do
-            if (not table[player] or not table[player]["admin"]) and (player == getLocalPlayer()) then
+        for i, player in ipairs(getElementsByType("player")) do
+            if (not table[player] or not table[player]["admin"]) and (player == localPlayer) then
                 -- aAdminDestroy()
                 return
             else
@@ -116,19 +116,20 @@ function aChatTab.onClientGUIAccepted(element)
         if (gettok(message, 1, 32) == "/clear") then
             guiSetText(aChatTab.AdminChat, "")
         else
-            triggerServerEvent("aAdminChat", getLocalPlayer(), message)
+            triggerServerEvent("aAdminChat", localPlayer, message)
         end
         guiSetText(aChatTab.AdminText, "")
     end
 end
 
 function aChatTab.onClientAdminChat(message)
-    guiSetText(aChatTab.AdminChat, guiGetText(aChatTab.AdminChat) .. "" .. getPlayerName(source) .. ": " .. message)
-    guiSetProperty(aChatTab.AdminChat, "CaratIndex", tostring(string.len(guiGetText(aChatTab.AdminChat))))
-    if (aGetSetting("adminChatOutput")) then
+    local chat = guiGetText(aChatTab.AdminChat)
+    guiSetText(aChatTab.AdminChat, (chat ~= "\n" and chat or "") .. getPlayerName(source) .. ": " .. message)
+    guiSetProperty(aChatTab.AdminChat, "CaratIndex", tostring(string.len(chat)))
+    if (aGetSetting("adminChatOutput")) and (not guiCheckBoxGetSelected(aPlayersTab.SensitiveData)) then
         outputChatBox("ADMIN> " .. getPlayerName(source) .. ": " .. message, 255, 0, 0)
     end
-    if ((aGetSetting("adminChatSound")) and (source ~= getLocalPlayer())) then
+    if ((aGetSetting("adminChatSound")) and (source ~= localPlayer)) then
         playSoundFrontEnd(13)
     end
 end

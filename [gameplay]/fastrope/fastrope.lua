@@ -1,8 +1,6 @@
 -- defines
-local localplayer = getLocalPlayer()
 local onrope = false
 local colshape
-local timer
 -- disable falling damage when they land
 local function disableFallDamage(attacker, weapon, bodypart, loss)
 	if ( source == localPlayer and weapon == 54 and onrope == true ) then
@@ -29,9 +27,6 @@ function cleanUp ( )
 	-- no longer on the rope so unset our variables and remove our handlers
 	onrope = false
 	removeEventHandler("onClientColShapeHit", colshape, groundhit)
-	if ( timer ) then
-		killTimer ( timer )
-	end
 end
 
 -- remote calls
@@ -41,7 +36,7 @@ function create_FastRope ( x, y, z, time )
 	createSWATRope(x,y,z,time)
 end
 addEvent( "frope_createFastRope", true )
-addEventHandler("frope_createFastRope", getRootElement(), create_FastRope)
+addEventHandler("frope_createFastRope", root, create_FastRope)
 local function createLandingSphere( x, y, z, forceWait )
 	-- get the ground position
 	local groundPos = getGroundPosition ( x, y, z )
@@ -81,11 +76,8 @@ function smartanimbreak ( x, y, z )
 	createLandingSphere ( x, y, z, forceWait )
 	-- We are on the ropes now!
 	onrope = true
-	-- Disable damage and make sure we cleanup if we die on the rope
-	-- Allow 4 seconds then force them to disable in case we don't hit the landing sphere
-	--timer = setTimer(groundhit, 4000, 1, localPlayer)
 end
 addEvent("frope_smartAnimBreak", true)
-addEventHandler("onClientPlayerDamage", getRootElement(), disableFallDamage)
-addEventHandler("onClientPlayerWasted", getRootElement(), setOffRope)
-addEventHandler("frope_smartAnimBreak", getRootElement(), smartanimbreak)
+addEventHandler("onClientPlayerDamage", root, disableFallDamage)
+addEventHandler("onClientPlayerWasted", root, setOffRope)
+addEventHandler("frope_smartAnimBreak", root, smartanimbreak)

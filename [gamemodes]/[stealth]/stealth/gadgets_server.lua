@@ -8,7 +8,7 @@ function cloakstart(thisplayer)
 	setElementAlpha ( thisplayer, 10 )
 end
 
-addEventHandler("cloaktheplayer",getRootElement(),cloakstart)
+addEventHandler("cloaktheplayer",root,cloakstart)
 
 --TRIGGERS THE UNCLOAKING CLIENT FUNCTIONS
 addEvent ("uncloaktheplayer", true )
@@ -22,7 +22,7 @@ function cloakstop(thisplayer)
 	playSoundFrontEnd ( thisplayer, 35 )
 	setElementAlpha ( thisplayer, 255 )
 end
-addEventHandler("uncloaktheplayer",getRootElement(),cloakstop)
+addEventHandler("uncloaktheplayer",root,cloakstop)
 
 
 --GOGGLES
@@ -40,7 +40,7 @@ function changegoggles(player)
 	end
 end
 
-addEventHandler("goggleswap",getRootElement(),changegoggles)
+addEventHandler("goggleswap",root,changegoggles)
 
 
 --PROXY MINES
@@ -59,7 +59,7 @@ function laymine(player)
 	setElementParent ( landmine, landminecol )
 end
 
-addEventHandler("poopoutthemine",getRootElement(),laymine)
+addEventHandler("poopoutthemine",root,laymine)
 
 --DETECTS THE HIT
 function landminehit ( player, matchingDimension )
@@ -78,7 +78,7 @@ function landminehit ( player, matchingDimension )
 	end
 end
 
-addEventHandler ( "onColShapeHit", getRootElement(), landminehit )
+addEventHandler ( "onColShapeHit", root, landminehit )
 
 
 --KILLS THE MINE WHEN SHOT
@@ -92,7 +92,7 @@ function destroymine(hitElement)
 	end
 end
 
-addEventHandler("destroylandmine",getRootElement(),destroymine)
+addEventHandler("destroylandmine",root,destroymine)
 
 
 --SPYCAMERA
@@ -102,10 +102,10 @@ addEvent ("placethecam", true )
 function dropcamera(player)
 	local playerrot = getPedRotation ( player )
 	local rot = playerrot-180
-	triggerClientEvent(player,"findcamerapos",getRootElement(),rot )
+	triggerClientEvent(player,"findcamerapos",root,rot )
 end
 
-addEventHandler("placethecam",getRootElement(),dropcamera)
+addEventHandler("placethecam",root,dropcamera)
 
 
 addEvent ("cameraobject", true )
@@ -118,7 +118,7 @@ function placecamball(x, y, z, player)
 	setElementParent ( camball, camcol )
 end
 
-addEventHandler("cameraobject",getRootElement(),placecamball)
+addEventHandler("cameraobject",root,placecamball)
 
 addEvent ("killcameraobject", true )
 
@@ -132,7 +132,7 @@ function removecamball(player)
 	end
 end
 
-addEventHandler("killcameraobject",getRootElement(),removecamball)
+addEventHandler("killcameraobject",root,removecamball)
 
 
 --SHIELD
@@ -151,7 +151,7 @@ function maketheshield (player)
 	end
 end
 
-addEventHandler("shieldup", getRootElement() , maketheshield)
+addEventHandler("shieldup", root , maketheshield)
 
 
 addEvent ("shielddown", true )
@@ -167,4 +167,4 @@ function killtheshield (player, currentweapon )
 	giveWeapon ( player, currentweapon, 0, true )
 end
 
-addEventHandler("shielddown", getRootElement() , killtheshield)
+addEventHandler("shielddown", root , killtheshield)

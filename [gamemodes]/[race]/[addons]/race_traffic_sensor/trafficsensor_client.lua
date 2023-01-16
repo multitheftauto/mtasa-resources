@@ -8,14 +8,14 @@
 --
 ---------------------------------------------------------------------------
 
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		Bigdar.setHotKey( 'F4' )
 	end
 )
 
 addEvent('onClientMapStarting', true)
-addEventHandler('onClientMapStarting', getRootElement(),
+addEventHandler('onClientMapStarting', root,
 	function(mapinfo)
 		outputDebug( 'BIGDAR', 'onClientMapStarting' )
 		if mapinfo.modename == "Destruction derby" or mapinfo.modename == "Freeroam" then
@@ -29,14 +29,14 @@ addEventHandler('onClientMapStarting', getRootElement(),
 )
 
 addEvent('onClientMapStopping', true)
-addEventHandler('onClientMapStopping', getRootElement(),
+addEventHandler('onClientMapStopping', root,
 	function()
 		outputDebug( 'BIGDAR', 'onClientMapStopping' )
 	end
 )
 
 addEvent('onClientPlayerFinish', true)
-addEventHandler('onClientPlayerFinish', getRootElement(),
+addEventHandler('onClientPlayerFinish', root,
 	function()
 		outputDebug( 'BIGDAR', 'onClientPlayerFinish' )
 		Bigdar.finishedPlayers[source] = true
@@ -81,10 +81,10 @@ end
 
 function Bigdar.render()
 	-- Ensure map allows it, and player not dead, and in a vehicle and not spectating
-	local vehicle = getPedOccupiedVehicle(g_Me)
+	local vehicle = getPedOccupiedVehicle(localPlayer)
 	if	 not Bigdar.allowed
-		or isPedDead(g_Me)
-		or isPlayerFinished(g_Me)
+		or isPedDead(localPlayer)
+		or isPlayerFinished(localPlayer)
 		or not vehicle
 		or getCameraTarget() ~= vehicle
 		then
@@ -122,7 +122,7 @@ function Bigdar.render()
 	local halfScreenY = screenY * 0.5
 
 	-- Get my pos and rot
-	local mx, my, mz = getElementPosition(g_Me)
+	local mx, my, mz = getElementPosition(localPlayer)
 	local _, _, mrz	= getCameraRot()
 
 	-- To radians
@@ -134,7 +134,7 @@ function Bigdar.render()
 
 	-- For each 'other player'
 	for i,player in ipairs(Bigdar.allPlayers) do
-		if player ~= g_Me and not isPedDead(player) and not isPlayerFinished(player) then
+		if player ~= localPlayer and not isPedDead(player) and not isPlayerFinished(player) then
 
 			-- Get other pos
 			local ox, oy, oz = getElementPosition(player)
@@ -216,19 +216,19 @@ function Bigdar.render()
 		end
 	end
 end
-addEventHandler('onClientRender', g_Root, Bigdar.render)
+addEventHandler('onClientRender', root, Bigdar.render)
 
 
 ---------------------------------------------------------------------------
 -- Various events
 
-addEventHandler('onClientPlayerJoin', g_Root,
+addEventHandler('onClientPlayerJoin', root,
 	function()
 		table.insertUnique(Bigdar.allPlayers, source)
 	end
 )
 
-addEventHandler('onClientPlayerQuit', g_Root,
+addEventHandler('onClientPlayerQuit', root,
 	function()
 		table.removevalue(Bigdar.finishedPlayers,source)
 		table.removevalue(Bigdar.allPlayers,source)
@@ -238,14 +238,14 @@ addEventHandler('onClientPlayerQuit', g_Root,
 
 
 addEvent ( "onClientScreenFadedOut", true )
-addEventHandler ( "onClientScreenFadedOut", g_Root,
+addEventHandler ( "onClientScreenFadedOut", root,
 	function()
 		Bigdar.hidden = true
 	end
 )
 
 addEvent ( "onClientScreenFadedIn", true )
-addEventHandler ( "onClientScreenFadedIn", g_Root,
+addEventHandler ( "onClientScreenFadedIn", root,
 	function()
 		Bigdar.hidden = false
 	end

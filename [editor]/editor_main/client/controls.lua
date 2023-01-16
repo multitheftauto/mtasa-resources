@@ -63,6 +63,7 @@ local defaultControls = {
 {	name="browser_zoom_out",		key ="mouse_wheel_down",friendlyName="Model Browser Zoom Out"			},
 {	name="toggle_test",				key ="F5",				friendlyName="Toggle test mode"					},
 {	name="toggle_basictest",		key ="F6",				friendlyName="Toggle basic test mode"			},
+{	name="lock_selected_element",		key ="l",				friendlyName="Lock/Unlock Selected Element"			},
 -- {	name="clipboard_copy"			key ="c",		},
 -- {	name="clipboard_cut"			key ="x",		},
 -- {	name="clipboard_paste"			key ="v",		},
@@ -99,7 +100,7 @@ function processControls()
 	end
 end
 
-addEventHandler("onClientResourceStart", getRootElement(),
+addEventHandler("onClientResourceStart", root,
 	function (resource)
 		if resource == getResourceFromName("freecam") then
 			freecam.setFreecamOption("key_fastMove", cc.mod_fast_speed)
@@ -108,6 +109,7 @@ addEventHandler("onClientResourceStart", getRootElement(),
 			freecam.setFreecamOption("key_backward", cc.camera_move_backwards)
 			freecam.setFreecamOption("key_left", cc.camera_move_left)
 			freecam.setFreecamOption("key_right", cc.camera_move_right)
+			freecam.setFreecamOption("fov", cc.camera_move_right)
 		elseif resource == thisResource then
 			bindKey ("lctrl","both",blockMTAControls )
 			processControls()

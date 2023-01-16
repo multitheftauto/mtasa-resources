@@ -1,6 +1,6 @@
 addEvent("onPlayerGarageEnter", true)
 
-addEventHandler("onResourceStart", getResourceRootElement(),
+addEventHandler("onResourceStart", resourceRoot,
 function (resource)
 	for i=0,49 do
 		--outputChatBox("opening garage " .. i)

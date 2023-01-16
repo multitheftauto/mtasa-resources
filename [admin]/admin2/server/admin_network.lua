@@ -24,7 +24,7 @@ enum(
 
 addEventHandler(
     "onResourceStart",
-    getResourceRootElement(),
+    resourceRoot,
     function()
     end
 )
@@ -44,7 +44,7 @@ local networkFunctions = {
 addEvent(EVENT_NETWORK, true)
 addEventHandler(
     EVENT_NETWORK,
-    getRootElement(),
+    root,
     function(action, ...)
         if (networkFunctions[action]) then
             local c = coroutine.create(networkFunctions[action])
@@ -195,31 +195,28 @@ end
 
 addEventHandler(
     "onBan",
-    getRootElement(),
+    root,
     function()
     end
 )
 
 addEventHandler(
     "onPlayerBan",
-    getRootElement(),
+    root,
     function()
     end
 )
 
 addEventHandler(
     "onUnban",
-    getRootElement(),
+    root,
     function()
     end
 )
 
 addEventHandler(
     "onPlayerChat",
-    getRootElement(),
+    root,
     function(message, type)
-        if (type == 0) then
-        elseif (type == 1) then
-        end
     end
 )

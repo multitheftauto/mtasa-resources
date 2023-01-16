@@ -9,9 +9,9 @@
 	exact calculations, one would probably use a program like Matlab instead.
 	Matrices of size 100x100 can still be handled very well.
 	The error for the determinant and the inverted matrix is around 10^-9
- 	with a 100x100 matrix and an element range from -100 to 100.
+	with a 100x100 matrix and an element range from -100 to 100.
 
- 	Characteristics:
+	Characteristics:
 
 	- functions called via matrix.<function> should be able to handle
 	  any table matrix of structure t[i][j] = value
@@ -80,7 +80,7 @@ function matrix:new( rows, columns, value )
 	end
 	-- get matrix table
 	local mtx = {}
-	local value = value or 0
+	value = value or 0
 	-- build identity matrix of given rows
 	if columns == "I" then
 		for i = 1,rows do
@@ -537,7 +537,7 @@ end
 -- square root function
 function matrix.sqrt( m1, iters )
 	assert(#m1 == #m1[1], "matrix not square")
-	local iters = iters or math.huge
+	iters = iters or math.huge
 	local y = matrix.copy( m1 )
 	local z = matrix(#y, 'I')
 	local dist = math.huge
@@ -567,7 +567,7 @@ end
 -- returns same values as matrix.sqrt
 function matrix.root( m1, root, iters )
 	assert(#m1 == #m1[1], "matrix not square")
-	local iters = iters or math.huge
+	iters = iters or math.huge
 	local mx = matrix.copy( m1 )
 	local my = matrix.mul(mx:invert(),mx:pow(root-1))
 	local dist = math.huge
@@ -669,7 +669,7 @@ local tfill = function( t,start,stop,idp )
 	return t
 end
 function matrix.random( mtx,start,stop,idp )
-	local start,stop,idp = start or -10,stop or 10,idp or 1
+	start, stop, idp = start or -10, stop or 10, idp or 1
 	local ffill = matrix.type( mtx ) == "number" and numfill or tfill
 	for i = 1,#mtx do
 		for j = 1,#mtx[1] do
@@ -905,7 +905,7 @@ function matrix.latex( mtx, align )
 	-- align : option to align the elements
 	--		c = center; l = left; r = right
 	--		\usepackage{dcolumn}; D{.}{,}{-1}; aligns number by . replaces it with ,
-	local align = align or "c"
+	align = align or "c"
 	local str = "$\\left( \\begin{array}{"..string.rep( align, #mtx[1] ).."}\n"
 	local getstr = matrix.type( mtx ) == "tensor" and get_tstr or get_str
 	for i = 1,#mtx do

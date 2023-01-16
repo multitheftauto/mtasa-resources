@@ -28,9 +28,9 @@ function aPlayerWarp ( player )
 	end
 	aWarpSelectPointer = player
 	guiGridListClear ( aWarpList )
-	for id, player in ipairs ( getElementsByType ( "player" ) ) do
-		if ( player ~= aWarpSelectPointer ) then
-			guiGridListSetItemPlayerName ( aWarpList, guiGridListAddRow ( aWarpList ), 1, getPlayerName ( player ), false, false )
+	for id, plr in ipairs ( getElementsByType ( "player" ) ) do
+		if ( plr ~= aWarpSelectPointer ) then
+			guiGridListSetItemPlayerName ( aWarpList, guiGridListAddRow ( aWarpList ), 1, getPlayerName ( plr ), false, false )
 		end
 	end
 	guiSetVisible ( aWarpForm, true )
@@ -38,7 +38,7 @@ function aPlayerWarp ( player )
 end
 
 function aPlayerWarpClose ( destroy )
-	if ( ( destroy ) or ( aPerformanceWarp and guiCheckBoxGetSelected ( aPerformanceWarp ) ) ) then
+	if ( destroy ) then
 		if ( aWarpForm ) then
 			removeEventHandler ( "onClientGUIDoubleClick", aWarpForm, aClientWarpDoubleClick )
 			removeEventHandler ( "onClientGUIClick", aWarpForm, aClientWarpClick )
@@ -73,7 +73,7 @@ function aPlayerWarpToPosition ( )
 end
 
 function aPlayerWarpToPositionClose ( destroy )
-	if ( ( destroy ) or ( aPerformanceWarp and guiCheckBoxGetSelected ( aPerformanceWarp ) ) ) then
+	if ( destroy ) then
 		if ( aWarpToPositionForm ) then
 			removeEventHandler ( "onClientGUIDoubleClick", aWarpToPositionForm, aClientWarpDoubleClick )
 			removeEventHandler ( "onClientGUIClick", aWarpToPositionForm, aClientWarpClick )
@@ -103,7 +103,7 @@ end
 
 local function warpToPosition ( player, x, y, z )
 	if isElement(player) then
-		local x, y, z  = tonumber(x) or 0, tonumber(y) or 0, tonumber(z) or 0
+		x, y, z  = tonumber(x) or 0, tonumber(y) or 0, tonumber(z) or 0
 		local distance = getElementDistanceFromCentreOfMassToBaseOfModel ( player )
 		triggerServerEvent ( "aPlayer", localPlayer, player, "warpto", { x, y, z + distance + 0.25 } )
 		aPlayerWarpToPositionClose ( false )

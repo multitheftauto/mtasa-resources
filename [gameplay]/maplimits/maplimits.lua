@@ -49,7 +49,7 @@ function buildTables()
 			mapLimits[k][i].x = tonumber(getElementData( j, "x" ))
 			mapLimits[k][i].y = tonumber(getElementData( j, "y" ))
 			--mapLimits[k][i].marker = createMarker( mapLimits[k][i].x, mapLimits[k][i].y, 0 )
-			--setElementVisibleTo ( mapLimits[k][i].marker, maplimitsRoot, false )
+			--setElementVisibleTo ( mapLimits[k][i].marker, root, false )
 		end
 	end
 end
@@ -142,10 +142,9 @@ function showPoints( source )
 	end
 end
 ]]
-maplimitsRoot = getRootElement()
-addEventHandler( "onResourceStart", maplimitsRoot, onResourceStuff )
-addEventHandler( "onResourceStop", maplimitsRoot, onResourceStuff )
-addEventHandler( "onPlayerJoin", maplimitsRoot, onPlayerJoin )
-addEventHandler( "onPlayerWasted", maplimitsRoot, onPlayerWasted )
+addEventHandler( "onResourceStart", root, onResourceStuff )
+addEventHandler( "onResourceStop", root, onResourceStuff )
+addEventHandler( "onPlayerJoin", root, onPlayerJoin )
+addEventHandler( "onPlayerWasted", root, onPlayerWasted )
 
 --addCommandHandler ( "showpoints", showPoints )

@@ -12,7 +12,7 @@ local aSession = {}
 addEvent(EVENT_SESSION, true)
 addEventHandler(
     EVENT_SESSION,
-    getLocalPlayer(),
+    localPlayer,
     function(data)
         local changed = false
         for right, v in pairs(aSession) do
@@ -45,15 +45,15 @@ addEventHandler(
 
 addEventHandler(
     "onClientResourceStart",
-    getResourceRootElement(getThisResource()),
+    resourceRoot,
     function()
-        triggerServerEvent(EVENT_SESSION, getLocalPlayer(), SESSION_START)
+        triggerServerEvent(EVENT_SESSION, localPlayer, SESSION_START)
     end
 )
 
 addEventHandler(
     "onClientResourceStop",
-    getResourceRootElement(getThisResource()),
+    resourceRoot,
     function()
         guiSetInputEnabled(false)
     end
@@ -67,5 +67,5 @@ function hasPermissionTo(object)
 end
 
 function sync(...)
-    triggerServerEvent(EVENT_SYNC, getLocalPlayer(), ...)
+    triggerServerEvent(EVENT_SYNC, localPlayer, ...)
 end

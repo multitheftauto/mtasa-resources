@@ -1,14 +1,13 @@
-local loadedMap = false
 local totalBar = 0
 local loadingBar = 0
 local resX, resY = guiGetScreenSize()
 
 addEvent ( "saveloadtest_return",true )
 function openResource ( resourceName )
-	triggerServerEvent ( "openResource", getLocalPlayer(), resourceName )
+	triggerServerEvent ( "openResource", localPlayer, resourceName )
 end
 
-addEventHandler ( "saveloadtest_return", getRootElement(),
+addEventHandler ( "saveloadtest_return", root,
 	function ( command, returnValue, returnValue2, reason )
 		reason = reason or ""
 		if ( command ) == "open" then
@@ -16,14 +15,12 @@ addEventHandler ( "saveloadtest_return", getRootElement(),
 				for k,vehicle in ipairs(getElementsByType"vehicle") do
 					makeVehicleStatic(vehicle)
 				end
-				loadedMap = returnValue
 				editor_gui.closeLoadDialog()
 			else
 				editor_gui.guiShowMessageBox ( "Map resource could not be started!", "error", "Error", true )
 			end
 		elseif ( command ) == "save" then
 			if ( returnValue ) then
-				loadedMap = returnValue2
 				editor_gui.closeSaveDialog()
 			else
 				editor_gui.guiShowMessageBox ( "Map resource could not be saved! "..reason, "error", "Error", true )
@@ -44,12 +41,12 @@ addEventHandler ( "saveloadtest_return", getRootElement(),
 	end
 )
 
-function saveResource ( resourceName )
-	triggerServerEvent ( "saveResource", getLocalPlayer(), resourceName )
+function saveResource ( resourceName, directory )
+	triggerServerEvent ( "saveResource", localPlayer, resourceName, nil, directory )
 end
 
 function newResource ()
-	triggerServerEvent("newResource",getLocalPlayer())
+	triggerServerEvent("newResource",localPlayer)
 end
 
 function showProgressBar(elementsDone, elementsTotal)

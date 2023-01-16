@@ -63,15 +63,8 @@ colorPicker = {
 
 		colorPicker.buttonWidth = info.width * colorPicker.default.buttonWidth
 
-		local offset = 1 --px
-		local height = 10
-		--local sizeX, sizeY = guiGetSize(info.parent, false)
 		if not sizeX then
 			sizeX, sizeY = guiGetScreenSize()
-		end
-		if info.relative then
-			offset = offset / sizeX
-			height = height / sizeY
 		end
 
 		colorPicker.GUI = {}
@@ -314,7 +307,7 @@ colorPicker = {
 	updateSelectedValue = function()
 		if not guiGetVisible(colorPicker.GUI.selectWindow) then return end
 
-		local r, g, b, a
+		local r, g, b
 
 		-- Check for color changes
 		local wx, wy = guiGetPosition(colorPicker.GUI.selectWindow, false)
@@ -338,7 +331,6 @@ colorPicker = {
 
 			colorPicker.h, colorPicker.s  = (cursorX - paletteX) / 255, (255 - cursorY + paletteY) / 255
 			r, g, b = colorPicker.hsl2rgb(colorPicker.h, colorPicker.s, colorPicker.l)
-			a = colorPicker.value[4] / 255
 			colorPicker.avoidRecursion = true
 			colorPicker.setValue({r*255, g*255, b*255, colorPicker.value[4]})
 			colorPicker.avoidRecursion = false
@@ -350,7 +342,6 @@ colorPicker = {
 
 			colorPicker.l = (256 - cursorY + luminanceY) / 256
 			r, g, b = colorPicker.hsl2rgb(colorPicker.h, colorPicker.s, colorPicker.l)
-			a = colorPicker.value[4] / 255
 			colorPicker.avoidRecursion = true
 			colorPicker.setValue({r*255, g*255, b*255, colorPicker.value[4]})
 			colorPicker.avoidRecursion = false
@@ -363,9 +354,6 @@ colorPicker = {
 			colorPicker.avoidRecursion = true
 			colorPicker.setValue({colorPicker.value[1], colorPicker.value[2], colorPicker.value[3], cursorY - alphaY})
 			colorPicker.avoidRecursion = false
-			r, g, b, a = colorPicker.value[1] / 255, colorPicker.value[2] / 255, colorPicker.value[3] / 255, colorPicker.value[4] / 255
-		else
-			r, g, b, a = colorPicker.value[1] / 255, colorPicker.value[2] / 255, colorPicker.value[3] / 255, colorPicker.value[4] / 255
 		end
 
 		-- Draw the lines pointing to the current selected color
@@ -379,11 +367,10 @@ colorPicker = {
 		dxDrawLine(x, y + 2, x, y + 12, color, 3, true)
 
 		-- Draw the luminance for this color
-		local i
-		for i=0,256 do
-			local _r, _g, _b = colorPicker.hsl2rgb(colorPicker.h, colorPicker.s, (256 - i) / 256)
-			local color = tocolor(_r * 255, _g * 255, _b * 255, 255)
-			dxDrawRectangle(luminanceX, luminanceY + i, colorPicker.selectWindow.luminanceWidth, 1, color, true)
+		for i4=0,256 do
+			local _r, _g, _b = colorPicker.hsl2rgb(colorPicker.h, colorPicker.s, (256 - i4) / 256)
+			local color2 = tocolor(_r * 255, _g * 255, _b * 255, 255)
+			dxDrawRectangle(luminanceX, luminanceY + i4, colorPicker.selectWindow.luminanceWidth, 1, color2, true)
 		end
 
 		-- Draw the luminance position marker
@@ -392,9 +379,9 @@ colorPicker = {
 		dxDrawLine(arrowX, arrowY, arrowX + 8, arrowY, tocolor(255, 255, 255, 255), 2, true)
 
 		-- Draw the alpha for this color
-		for i=0,255 do
-			local color = tocolor(colorPicker.value[1], colorPicker.value[2], colorPicker.value[3], i)
-			dxDrawRectangle(alphaX, alphaY + i, colorPicker.selectWindow.alphaWidth + 1, 1, color, true)
+		for i3=0,255 do
+			local color2 = tocolor(colorPicker.value[1], colorPicker.value[2], colorPicker.value[3], i3)
+			dxDrawRectangle(alphaX, alphaY + i3, colorPicker.selectWindow.alphaWidth + 1, 1, color2, true)
 		end
 
 		-- Draw the alpha position marker
@@ -405,13 +392,13 @@ colorPicker = {
 		-- Draw the recently used colors
 		local boxWidth = (colorPicker.selectWindow.historyWidth - 15) / 3
 		local boxHeight = (colorPicker.selectWindow.historyHeight - 45) / 3
-		for i=1,3 do
-		  for j=1,3 do
-		  	local color = colorHistory[j + ((i - 1) * 3)]
-		  	local x = wx + colorPicker.selectWindow.historyX + ((boxWidth + 5) * (j-1))
-			local y = wy + colorPicker.selectWindow.historyY + 30 + ((boxHeight + 5) * (i-1))
-			dxDrawRectangle(x, y, boxWidth, boxHeight, tocolor(unpack(color)), true)
-		  end
+		for i2=1,3 do
+			for j=1,3 do
+				local color2 = colorHistory[j + ((i2 - 1) * 3)]
+				local x2 = wx + colorPicker.selectWindow.historyX + ((boxWidth + 5) * (j-1))
+				local y2 = wy + colorPicker.selectWindow.historyY + 30 + ((boxHeight + 5) * (i2-1))
+				dxDrawRectangle(x2, y2, boxWidth, boxHeight, tocolor(unpack(color2)), true)
+			end
 		end
 	end,
 	isCursorInArea = function( cursorX, cursorY, minX, minY, maxX, maxY )
@@ -543,18 +530,18 @@ colorPicker = {
 		end
 		local m1 = l * 2 - m2
 
-		local hue2rgb = function(m1, m2, h)
-			if h < 0 then h = h + 1
-			elseif h > 1 then h = h - 1 end
+		local hue2rgb = function(m3, m4, h2)
+			if h2 < 0 then h2 = h2 + 1
+			elseif h2 > 1 then h2 = h2 - 1 end
 
-			if h*6 < 1 then
-				return m1 + (m2 - m1) * h * 6
-			elseif h*2 < 1 then
-				return m2
-			elseif h*3 < 2 then
-				return m1 + (m2 - m1) * (2/3 - h) * 6
+			if h2*6 < 1 then
+				return m3 + (m4 - m3) * h2 * 6
+			elseif h2*2 < 1 then
+				return m4
+			elseif h2*3 < 2 then
+				return m3 + (m4 - m3) * (2/3 - h2) * 6
 			else
-				return m1
+				return m3
 			end
 		end
 

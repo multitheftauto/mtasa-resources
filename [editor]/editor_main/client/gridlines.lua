@@ -1,4 +1,3 @@
-local localPlayer  = getLocalPlayer()
 local MAX_THICKNESS = 1.2
 local MAX_THICKNESS_AngleHelper = .8
 --local c
@@ -45,7 +44,7 @@ local function renderGridlines()
 	end
 	--
 	local face1 = matrix{
-		 	{minX,maxY,minZ,1},
+			{minX,maxY,minZ,1},
 			{minX,maxY,maxZ,1},
 			{maxX,maxY,maxZ,1},
 			{maxX,maxY,minZ,1},
@@ -116,7 +115,7 @@ function doBasicElementRenders()
 	if exports["editor_gui"]:sx_getOptionData("enableXYZlines") then drawXYZLines() end
 
 end
-addEventHandler ( "onClientRender", getRootElement(), doBasicElementRenders )
+addEventHandler ( "onClientRender", root, doBasicElementRenders )
 
 function getPositionFromElementAtOffset(element,x,y,z)
    if not x or not y or not z then

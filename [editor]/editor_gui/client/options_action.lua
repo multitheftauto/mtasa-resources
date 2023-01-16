@@ -31,12 +31,25 @@ function optionsActions.precisionRotLevel(value)
 	optionsData.precisionRotLevel = tonumber(value)
 end
 
+function optionsActions.enableColPatch(value)
+	local success, isLoaded = editor_main.toggleColPatch(value)
+	if success then
+		optionsData.enableColPatch = value
+	else
+		-- Set checkbox state to loaded state
+		optionsData.enableColPatch = isLoaded
+		guiCheckBoxSetSelected(dialog.enableColPatch.GUI.checkbox, isLoaded)
+		-- Save settings again
+		dumpSettings()
+	end
+end
+
 function optionsActions.smoothCamMove (value)
 	local loaded = 	freecam.setFreecamOption ( "smoothMovement", value )
 	if ( loaded ) then
 		setFreecamSpeeds()
 	else
-		addEventHandler ( "onClientResourceStart", getRootElement(), waitForFreecam )
+		addEventHandler ( "onClientResourceStart", root, waitForFreecam )
 	end
 end
 
@@ -44,7 +57,7 @@ function waitForFreecam(resource)
 	if resource ~= getResourceFromName("freecam") then return end
 	freecam.setFreecamOption ( "smoothMovement", dialog.smoothCamMove:getValue() )
 	setFreecamSpeeds()
-	removeEventHandler ( "onClientResourceStart", getRootElement(), waitForFreecam )
+	removeEventHandler ( "onClientResourceStart", root, waitForFreecam )
 end
 
 function setFreecamSpeeds()
@@ -55,6 +68,7 @@ function setFreecamSpeeds()
 	freecam.setFreecamOption ( "fastMaxSpeed", dialog.fastMove:getValue() )
 	freecam.setFreecamOption ( "slowMaxSpeed", dialog.slowMove:getValue() )
 	freecam.setFreecamOption ( "mouseSensitivity", dialog.mouseSensitivity:getValue() )
+	freecam.setFreecamOption ( "fov", dialog.fov:getValue() )
 end
 
 ---This part decides whether gui should be refreshed or not
@@ -119,7 +133,7 @@ function optionsActions.normalElemMove (value)
 	if getResourceFromName("move_keyboard") then
 		setEditorMoveSpeeds()
 	else
-		addEventHandler ( "onClientResourceStart", getRootElement(), waitForResources )
+		addEventHandler ( "onClientResourceStart", root, waitForResources )
 	end
 end
 
@@ -152,5 +166,5 @@ function setEditorMoveSpeeds()
 end
 
 function optionsActions.enableDumpSave(value)
-	triggerServerEvent("dumpSaveSettings", getRootElement(), value, dialog.dumpSaveInterval:getValue())
+	triggerServerEvent("dumpSaveSettings", root, value, dialog.dumpSaveInterval:getValue())
 end

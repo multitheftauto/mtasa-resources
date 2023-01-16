@@ -50,8 +50,8 @@ function isImgModBlocked( name )
 	--outputDebug( tostring(defText) )
 
 	local lineList = split(defText,"\n")
-	for _,line in ipairs(lineList) do
-		local line = string.gsub(line, "\r", "")
+	for _, line1 in ipairs(lineList) do
+		local line = string.gsub(line1, "\r", "")
 		--outputDebug( "Checking " .. name .. " against line " .. tostring(line) )
 		if line == "*" or string.find(name,line) then
 			return true

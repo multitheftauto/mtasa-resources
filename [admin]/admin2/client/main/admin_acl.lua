@@ -30,15 +30,12 @@ function aAclTab.Create(tab)
 
     -- users tab
     aAclTab.UsersTab = guiCreateTab("Users", aAclTab.Panel)
-    tab = aAclTab.UsersTab
 
     -- resources tab
     aAclTab.ResourcesTab = guiCreateTab("Resources", aAclTab.Panel)
-    tab = aAclTab.ResourcesTab
 
     -- rights tab
     aAclTab.RightsTab = guiCreateTab("Rights", aAclTab.Panel)
-    tab = aAclTab.RightsTab
 
     -- access matrix tab
     aAclTab.AccessTab = guiCreateTab("Access Matrix", aAclTab.Panel)
@@ -53,9 +50,9 @@ function aAclTab.Create(tab)
 
     aAclTab.Access = guiCreateGridList(0.01, 0.07, 0.98, 0.91, true, aAclTab.AccessTab)
 
-    triggerServerEvent(EVENT_ACL, getLocalPlayer(), ACL_GROUPS)
+    triggerServerEvent(EVENT_ACL, localPlayer, ACL_GROUPS)
 
-    addEventHandler(EVENT_ACL, getLocalPlayer(), aAclTab.onSync)
+    addEventHandler(EVENT_ACL, localPlayer, aAclTab.onSync)
     addEventHandler("onClientGUIClick", aAclTab.Tab, aAclTab.onClick)
     addEventHandler("onClientGUIChanged", aAclTab.AccessSearch, aAclTab.onChanged)
 end
@@ -115,7 +112,7 @@ function aAclTab.RefreshAccess()
             local temp = {}
             local strip = aAclTab.GetViewedRight()
             local names = guiGridListAddColumn(list, strip, 0.35)
-            local strip = strip .. "."
+            local strip2 = strip .. "."
             local search = string.lower(guiGetText(aAclTab.AccessSearch))
             if (search == "") then
                 search = false
@@ -127,7 +124,7 @@ function aAclTab.RefreshAccess()
                 local rights = aAclTab.Cache.ACL[acl]
                 local column = guiGridListAddColumn(list, acl, 0.10)
                 for right, access in pairs(rights) do
-                    local name, found = string.gsub(right, strip, "")
+                    local name, found = string.gsub(right, strip2, "")
                     if ((found ~= 0) and ((not search) or (string.find(string.lower(name), search)))) then
                         local row = temp[name]
                         if (not row) then
@@ -167,7 +164,7 @@ function aAclTab.RefreshAccess()
                 end
             end
         else
-            triggerServerEvent(EVENT_ACL, getLocalPlayer(), ACL_ACL, ACL_GET, group)
+            triggerServerEvent(EVENT_ACL, localPlayer, ACL_ACL, ACL_GET, group)
         end
     end
 end

@@ -46,8 +46,9 @@ c.boolean = function(var)
 end
 
 c.colour = function(var)
-	local var = string.upper(c.string(var))
-	if getColorFromString(var) then return var
+	var = string.upper(c.string(var))
+	if getColorFromString(var) then
+		return var
 	else
 		var = '#'..var
 		if getColorFromString(var) then return var
@@ -60,7 +61,9 @@ end
 c.color = c.colour
 
 c.element = function(ID, elementType)
-	if isElement(ID) then return ID end
+	if isElement(ID) then
+		return ID
+	end
 	if type(ID) ~= "string" then
 		return nil
 	end
@@ -82,11 +85,11 @@ c.element = function(ID, elementType)
 end
 
 c.plate = function(var)
-   if var ~= nil then
-      var = c.string(var)
-   else
-      return nil
-   end
+	if var ~= nil then
+		var = c.string(var)
+	else
+		return nil
+	end
 	if #var <= 8 then
 		return string.upper(string.gsub( var, "[^%d%a]", "" ))
 	else
@@ -95,7 +98,7 @@ c.plate = function(var)
 end
 
 c.objectID = function(var)
-	local var = c.number(var)
+	var = c.number(var)
 	if var and ((var >= 615 and var <= 18630) or (var >= 321 and var <= 373)) then
 		return var
 	else
@@ -104,7 +107,7 @@ c.objectID = function(var)
 end
 
 c.vehicleID = function(var)
-	local var = c.number(var)
+	var = c.number(var)
 	if var and getVehicleNameFromModel(var) then
 		return var
 	else
@@ -118,7 +121,7 @@ for _, v in ipairs(getValidPedModels()) do
 end
 
 c.skinID = function(var)
-	local var = c.number(var)
+	var = c.number(var)
 	if skinIDs[var] then
 		return var
 	else
@@ -127,7 +130,7 @@ c.skinID = function(var)
 end
 
 c.blipID = function(var)
-	local var = c.number(var)
+	var = c.number(var)
 	if var ~= nil and var >= 0 and var <= 63 then
 		return var
 	else
@@ -136,7 +139,7 @@ c.blipID = function(var)
 end
 
 c.weaponID = function(var)
-	local var = c.number(var)
+	var = c.number(var)
 	if var and getWeaponNameFromID(var) then
 		return var
 	else
@@ -147,7 +150,9 @@ end
 c.pickupType = function(var)
 	if var == "health" or var == "armor" then
 		return var
-	else return c.weaponID(var) end
+	else
+		return c.weaponID(var)
+	end
 end
 
 local markerTypes = {
@@ -238,7 +243,9 @@ c.camera = function(var)
 end
 
 c.selection = function(var,validTypes)
-	if not validTypes then return var end
+	if not validTypes then
+		return var
+	end
 	local vType = type(var)
 	if vType ~= "string" then
 		return false
@@ -258,7 +265,7 @@ c.selection = function(var,validTypes)
 end
 
 c.radius = function(var)
-	local var = c.number(var)
+	var = c.number(var)
 	if var then
 		return var
 	else

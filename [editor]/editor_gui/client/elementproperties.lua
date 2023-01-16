@@ -82,7 +82,6 @@ local lineImg
 
 --global variables---------------
 local selectedElement
-local rootElement = getRootElement()
 local DEFAULT_PARENT_TEXT = "This element's parent for the map tree structure"
 local edfResource = getResourceFromName "edf"
 local editorResource = getResourceFromName "editor_main"
@@ -372,7 +371,7 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 			local creatorDef = resourceElementDefinitions[creatorResource] or resourceElementDefinitions.editor_main
 
 			if creatorDef and creatorDef[elementType] then
-				local validModels = creatorDef[elementType].data[controlLabelName].validModels
+				local validModels = creatorDef[elementType].data[controlLabelName] and creatorDef[elementType].data[controlLabelName].validModels
 
 				if validModels then
 					local elementModel = getElementModel(selectedElement)
@@ -420,8 +419,8 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 
 		newControl = controlPrototype:create( parameters )
 		newControl:addChangeHandler(function ()
-		                            	setPropertiesChanged(true)
-						editor_main.updateArrowMarker()
+										setPropertiesChanged(true)
+										editor_main.updateArrowMarker()
 					    end)
 		if propertyApplier and type(propertyApplier) == "function" then
 			newControl:addChangeHandler(propertyApplier)
@@ -434,10 +433,10 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 			for k,control in ipairs(addedControls) do
 				if control:getLabel() == "model" then
 					local modelControl = control
-					local handlerFunction = function ( control )
+					local handlerFunction = function ( control2 )
 					        local newModel = modelControl:getValue()
 					        if newModel ~= newControl:getCurrentModel() then
-					                newControl:addCompatibleUpgrades( newModel )
+					            newControl:addCompatibleUpgrades( newModel )
 					        end
 					end
 					modelControl:addChangeHandler(handlerFunction)
@@ -451,9 +450,9 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 				local minX, minY, minZ = getElementBoundingBox(selectedElement)
 				g_minZ = minZ
 				local handlerFunction = function ()
-					local minX, minY, minZ = getElementBoundingBox(selectedElement)
-					if minX and minY and minZ then
-						local Zoffset = minZ - g_minZ
+					local minX2, minY2, minZ2 = getElementBoundingBox(selectedElement)
+					if minX2 and minY2 and minZ2 then
+						local Zoffset = minZ2 - g_minZ
 						-- Search the position control
 						for k,control in ipairs(addedControls) do
 							if control:getLabel() == "position" then
@@ -463,7 +462,7 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 								break
 							end
 						end
-						g_minZ = minZ
+						g_minZ = minZ2
 					end
 				end
 				newControl:addChangeHandler(handlerFunction)
@@ -633,7 +632,7 @@ local function sendInitialParameters()
 	closePropertiesBox()
 
 	if triggerEvent ( "onClientElementPreCreate", root, newElementType, newElementResource, parametersTable, false ) then
-		triggerServerEvent("doCreateElement", getLocalPlayer(),
+		triggerServerEvent("doCreateElement", localPlayer,
 			newElementType,
 			newElementResource,
 			parametersTable,
@@ -680,24 +679,26 @@ local function applyPropertiesChanges()
 
 	--set properties
 	for i, control in ipairs(addedControls) do
-		local value = control:getValue()
-		local modified = false
+		if control:getDataField() ~= "locked" then -- we don't want to sync it
+			local value = control:getValue()
+			local modified
 
-		if type(value) ~= "table" then
-			modified = (value ~= previousValues[control])
-		else
-			modified = not deepTableEqual(value, previousValues[control])
-		end
+			if type(value) ~= "table" then
+				modified = (value ~= previousValues[control])
+			else
+				modified = not deepTableEqual(value, previousValues[control])
+			end
 
-		if modified then
-			local dataField = control:getDataField()
-			oldValues[dataField] = previousValues[control]
-			newValues[dataField] = value
-			previousValues[control] = value
+			if modified then
+				local dataField = control:getDataField()
+				oldValues[dataField] = previousValues[control]
+				newValues[dataField] = value
+				previousValues[control] = value
+			end
 		end
 	end
 
-	triggerServerEvent("syncProperties", getLocalPlayer(), oldValues, newValues, selectedElement)
+	triggerServerEvent("syncProperties", localPlayer, oldValues, newValues, selectedElement)
 
 	--allow again editing values
 	guiSetProperty(btnOK,         "Disabled", "False")
@@ -717,7 +718,7 @@ function closePropertiesBox()
 	removeEventHandler( "onClientGUIClick", btnApply, syncPropertiesCallback )
 	removeEventHandler( "onClientGUIClick", btnOK, toggleProperties )
 	removeEventHandler( "onClientGUIClick", btnPullout, openPullout )
-	removeEventHandler( "onClientMouseMove", getRootElement(), tooltipsCheckMouseMove )
+	removeEventHandler( "onClientMouseMove", root, tooltipsCheckMouseMove )
 
 	-- Destroy the tooltips
 	for k,tooltip in ipairs(createdTooltips) do
@@ -761,6 +762,10 @@ function addOKButtonHandler (button, state)
 end
 
 function openPropertiesBox( element, resourceName, shortcut )
+	if isPropertiesOpen then
+		return false
+	end
+	
 	selectedElement = nil
 	--Tutorial hook
 	if tutorialVars.detectPropertiesBox then
@@ -800,6 +805,7 @@ function openPropertiesBox( element, resourceName, shortcut )
 		addEventHandler("onClientElementDataChange", selectedElement, checkForNewID)
 
 		addEDFPropertyControlsForElement( selectedElement )
+		addPropertyControl("selection", "locked", "Locked", function (control) exports.editor_main:lockSelectedElement(selectedElement, control:getValue() == "true" or false) end, {value = exports.editor_main:isElementLocked(selectedElement) and "true" or "false", validvalues = {"false","true"}, datafield = "locked"})
 
 		creatingNewElment = false
 		syncPropertiesCallback = applyPropertiesChanges
@@ -816,7 +822,7 @@ function openPropertiesBox( element, resourceName, shortcut )
 	addEventHandler( "onClientGUIClick", btnCancel, cancelProperties, false )
 	addEventHandler( "onClientGUIClick", btnApply, syncPropertiesCallback, false )
 	addEventHandler( "onClientGUIClick", btnPullout, openPullout, false )
-	addEventHandler( "onClientMouseMove", getRootElement(), tooltipsCheckMouseMove )
+	addEventHandler( "onClientMouseMove", root, tooltipsCheckMouseMove )
 
 
 	guiSetInputEnabled(true)
@@ -832,8 +838,8 @@ function openPropertiesBox( element, resourceName, shortcut )
 				control:addChangeHandler(syncPropertiesCallback)
 				--Attach after closing
 				control:addChangeHandler(
-					function(control)
-						if control.cancelled then
+					function(control2)
+						if control2.cancelled then
 							triggerServerEvent ( "doDestroyElement", element, true)
 						else
 							editor_main.selectElement(element,1)
@@ -892,7 +898,7 @@ end
 function undoProperties()
 	for k,control in ipairs(addedControls) do
 		local value = control:getValue()
-		local modified = false
+		local modified
 
 		if type(value) ~= "table" then
 			modified = (value ~= previousValues[control])
@@ -994,12 +1000,12 @@ local function pulloutClick(button, state)
 	if source ~= gdlAction then
 		guiSetEnabled ( btnPullout, true )
 		guiSetVisible ( gdlAction, false )
-		removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
+		removeEventHandler ( "onClientGUIWorldClick", root,pulloutClick )
 		return
 	end
 	local item = guiGridListGetSelectedItem ( gdlAction )
 	if item == -1 then return end
-	removeEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
+	removeEventHandler ( "onClientGUIWorldClick", root,pulloutClick )
 	guiSetEnabled ( btnPullout, true )
 	guiSetVisible(gdlAction,false)
 	pulloutAction[guiGridListGetItemText(gdlAction,item,1)]()
@@ -1010,7 +1016,7 @@ function openPullout()
 	if guiGetVisible ( gdlAction ) then return end
 	guiSetEnabled ( btnPullout, false )
 	guiSetVisible ( gdlAction, true )
-	addEventHandler ( "onClientGUIWorldClick", getRootElement(),pulloutClick )
+	addEventHandler ( "onClientGUIWorldClick", root,pulloutClick )
 	local x,y = guiGetPosition ( wndProperties, false )
 	local sizeX, sizeY = guiGetSize ( wndProperties, false )
 	x = x + sizeX

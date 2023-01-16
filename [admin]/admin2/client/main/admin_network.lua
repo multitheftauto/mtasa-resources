@@ -17,6 +17,6 @@ function aNetworkTab.Create(tab)
 end
 
 function aNetworkTab.onClientClick(button)
-    if (button == "left") then
-    end
+    --if (button == "left") then
+    --end
 end

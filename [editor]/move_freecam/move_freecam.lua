@@ -11,10 +11,9 @@ local rotateSpeed = {slow = 1, medium = 8, fast = 40} -- degrees per scroll
 local zoomSpeed = {slow = 0.5, medium = 2, fast = 6}  -- units per scroll
 local ignoreElementWalls = true -- 'false' not supported yet
 
-local root = getRootElement()
+local isEnabled = false
 
 local camX, camY, camZ
-local camRX, camRY, camRZ
 
 local selectedElement
 local centerToBaseDistance
@@ -23,8 +22,7 @@ local rotationless
 local rotX, rotY, rotZ
 
 local collisionless
-local minX, minY, minZ, maxX, maxY, maxZ
-local centerToBaseDistance
+local minZ
 
 local hasRotation = {
 	object = true,
@@ -50,9 +48,7 @@ end
 local function getCoordsWithBoundingBox(origX, origY, origZ)
 	if (not collisionless) then
 		local newX, newY, newZ = origX, origY, origZ
-		if (not ignoreElementWalls) then
-			-- hard stuff
-		else
+		if (ignoreElementWalls) then
 			local surfaceFound, surfaceX, surfaceY, surfaceZ, element = processLineOfSight(origX, origY, origZ + SURFACE_ERROR_CORRECTION_OFFSET, origX, origY, origZ + minZ, true, true, true, true, true, true, false, true, selectedElement)
 			if (surfaceFound) then
 				newZ = surfaceZ + centerToBaseDistance
@@ -67,13 +63,13 @@ end
 local function rotateWithMouseWheel(key, keyState)
 	if (not rotationless) and getCommandState("mod_rotate") then
 		local speed
-	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = rotateSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = rotateSpeed.fast
-	    else
-	       	speed = rotateSpeed.medium
-	    end
+		if (getCommandState("mod_slow_speed")) then
+			speed = rotateSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = rotateSpeed.fast
+		else
+			speed = rotateSpeed.medium
+		end
 		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
 		end
@@ -100,17 +96,17 @@ local function zoomWithMouseWheel(key, keyState)
 	if not getCommandState("mod_rotate") then
 		local speed
 	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = zoomSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = zoomSpeed.fast
+			speed = zoomSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = zoomSpeed.fast
 	    else
-	       	speed = zoomSpeed.medium
+			speed = zoomSpeed.medium
 	    end
 
 	    if key == "zoom_in" then
-   	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
+			maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
 	    else --if key == "zoom_out"
-	       	maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
+			maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
 	    end
 	end
 end
@@ -194,7 +190,7 @@ function attachElement(element)
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element)
 				collisionless = false
-				minX, minY, minZ, maxX, maxY, maxZ = exports.edf:edfGetElementBoundingBox(element)
+				_, _, minZ = exports.edf:edfGetElementBoundingBox(element)
 				centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(element)
 			end
 		else
@@ -202,19 +198,19 @@ function attachElement(element)
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element)
 				collisionless = false
-				minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
+				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
 			elseif (getElementType(element) == "object") then
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element)
 				collisionless = false
-				minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
+				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
 			elseif (getElementType(element) == "ped") then
 				rotationless = false
 				rotX, rotY, rotZ = 0, 0, getPedRotation(element)
 				collisionless = false
-				minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
+				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
 			else
 				rotationless = true
@@ -236,21 +232,20 @@ function detachElement()
 
 		-- sync position/rotation
 		local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
-		triggerServerEvent("syncProperty", getLocalPlayer(), "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
+		triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
 		if hasRotation[getElementType(selectedElement)] then
-       		triggerServerEvent("syncProperty", getLocalPlayer(), "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+			triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 		end
 		selectedElement = nil
 
 		-- clear variables
 		camX, camY, camZ = nil, nil, nil
-		camRX, camRY, camRZ = nil, nil, nil
 		if (not rotationless) then
 			rotX, rotY, rotZ = nil, nil, nil
 		end
 		rotationless = nil
 		if (not collisionless) then
-			minX, minY, minZ, maxX, maxY, maxZ = nil, nil, nil, nil, nil, nil
+			minZ = nil
 			centerToBaseDistance = nil
 		end
 		collisionless = nil
@@ -297,17 +292,25 @@ function getZoomSpeeds()
 end
 
 function enable()
+	if isEnabled then
+		return false
+	end
 	addEventHandler("onClientRender", root, onClientRender_freecam)
 	bindControl("quick_rotate_increase", "down", rotateWithMouseWheel) --rotate left
 	bindControl("quick_rotate_decrease", "down", rotateWithMouseWheel) --rotate right
 	bindControl("zoom_in", "down", zoomWithMouseWheel) --zoom in
 	bindControl("zoom_out", "down", zoomWithMouseWheel) --zoom out
+	isEnabled = true
 end
 
 function disable()
+	if (not isEnabled) then
+		return false
+	end
 	removeEventHandler("onClientRender", root, onClientRender_freecam)
 	unbindControl("quick_rotate_increase", "down", rotateWithMouseWheel) --rotate left
 	unbindControl("quick_rotate_decrease", "down", rotateWithMouseWheel) --rotate right
 	unbindControl("zoom_in", "down", zoomWithMouseWheel) --zoom in
 	unbindControl("zoom_out", "down", zoomWithMouseWheel) --zoom out
+	isEnabled = false
 end

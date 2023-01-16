@@ -18,10 +18,10 @@ outputChatBox ( "Fallout V4 by Ransom loaded", root, 255, 127, 0 ) --DEBUG
 --outputChatBox ( "Fallout Server Loaded", root, 255, 127, 0 ) --DEBUG
 
 function resourceStart()
-	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Rank", getRootElement(), 2, .08 )-----|Add scoreboard columns
-	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Wins", getRootElement(), 3, .08 )-----|
-	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Losses", getRootElement(), 4, .08 )---|
-	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "W/L Ratio", getRootElement(), 5, .1)--|
+	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Rank", root, 2, .08 )-----|Add scoreboard columns
+	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Wins", root, 3, .08 )-----|
+	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "Losses", root, 4, .08 )---|
+	call(getResourceFromName("scoreboard"), "addScoreboardColumn", "W/L Ratio", root, 5, .1)--|
 end
 addEventHandler("onResourceStart", resourceRoot, resourceStart)
 
@@ -83,7 +83,7 @@ end
 
 function triggerClientFall ( fallingPiece )
     if gameOver == false then --Stop timer setting when winner is declared, avoid board recretaion problems
-		triggerClientEvent ( "clientShakePieces", getRootElement(), fallingPiece )
+		triggerClientEvent ( "clientShakePieces", root, fallingPiece )
 		local x, y = getElementPosition ( fallingPiece )
 	    local rx, ry, rz = math.random( 0, 360 ), math.random( 0, 360 ), math.random( 0, 360 )
 		if rx < 245 then rx = -(rx + 245) end --Make the falling pieces with big random spins
@@ -148,24 +148,24 @@ function updateTournamentLeaders ()
 		end
 	end
     if ( top3[1] ) then
-    	textItemSetText ( firstText, "1st: " .. getPlayerName(top3[1].player) .. " " .. top3[1].ratio )
+		textItemSetText ( firstText, "1st: " .. getPlayerName(top3[1].player) .. " " .. top3[1].ratio )
 	else
 	    textItemSetText ( firstText, "1st:" )
 	end
 	if ( top3[2] ) then
-    	textItemSetText ( secondText, "2nd: " .. getPlayerName(top3[2].player) .. " " .. top3[2].ratio )
+		textItemSetText ( secondText, "2nd: " .. getPlayerName(top3[2].player) .. " " .. top3[2].ratio )
 	else
 	    textItemSetText ( secondText, "2nd:" )
 	end
 	if ( top3[3] ) then
-    	textItemSetText ( thirdText, "3rd: "..getPlayerName (top3[3].player).." ".. top3[3].ratio )
+		textItemSetText ( thirdText, "3rd: "..getPlayerName (top3[3].player).." ".. top3[3].ratio )
 	else
 	    textItemSetText ( thirdText, "3rd:" )
 	end
 end
 
 function declareWinners ()
-	triggerClientEvent ( "lossDetectionOff", getRootElement() ) --Also stop board shaking
+	triggerClientEvent ( "lossDetectionOff", root ) --Also stop board shaking
 	gameOver = true
 	winners = getPlayersInTeam ( teamAlive )
 	firstEntry = true --This is necessary to save names on seperate lines in a varible for the winners display
@@ -248,14 +248,14 @@ function playerLoss ( )
 	end
 end
 addEvent("serverReportLoss", true) --For triggering from server
-addEventHandler("serverReportLoss", getRootElement (), playerLoss)
+addEventHandler("serverReportLoss", root, playerLoss)
 
 function KillCheater ( )
 	outputChatBox ( "weapon cheat detected. "..getPlayerName(source).." killed for cheating." )
 	killPed ( source )
 end
 addEvent("serverKillCheater", true) --For triggering from server
-addEventHandler("serverKillCheater", getRootElement (), KillCheater)
+addEventHandler("serverKillCheater", root, KillCheater)
 
 function PlayerJoin ( )
 	setElementData ( source, "Wins", 0 )
@@ -265,10 +265,10 @@ function PlayerJoin ( )
 	--setCameraMode (source, "player" )
 	--setTimer ( setCameraMode, 500, 1, source, "fixed" ) --camera stuff not working
     --setTimer ( setCameraPosition, 1000, 1, source, 1558.367, -1346.678, 630 )
-  	--setTimer ( setCameraLookAt, 2000, 1, source, 1558.367, -1301.059, 603.105469 )
+	--setTimer ( setCameraLookAt, 2000, 1, source, 1558.367, -1301.059, 603.105469 )
 	setCameraMatrix( source, 1558.367, -1346.678, 630, 1558.367, -1301.059, 603.105469)
 end
-addEventHandler ( "onPlayerJoin", getRootElement(), PlayerJoin )
+addEventHandler ( "onPlayerJoin", root, PlayerJoin )
 
 function PlayerQuit ( )
 	players = getElementsByType ( "player" )
@@ -323,12 +323,12 @@ function newGameCountdown ()
 	else
 		for k,v in pairs(players) do
 			textDisplayRemoveObserver ( countDownDisplay, v )
-			triggerClientEvent ( "clientCheckStatus", getRootElement() ) --Start loser checks on client
+			triggerClientEvent ( "clientCheckStatus", root ) --Start loser checks on client
 		end
 		playSoundFrontEnd(root, 45)
 		--Erase countdown for displaying 'get ready' next game prior to countdown
 		if winTie == false then --needed for display consistency
-        	textItemSetText ( countDownText, "Tournament length: "..scoreLimit.. " wins".."\n".."Get ready!".."\n".."" )
+			textItemSetText ( countDownText, "Tournament length: "..scoreLimit.. " wins".."\n".."Get ready!".."\n".."" )
 		else
 		    textItemSetText ( countDownText, "Tournament length: "..scoreLimit.. " wins - Tiebreaker game!!!".."\n".."Get ready!".."\n".."" )
 		end
@@ -344,7 +344,7 @@ function cleanupOldGame ()
 	end
     gameTimers = getTimers ()
     for timerKey, timerNameData in ipairs(gameTimers) do
-    	killTimer ( timerNameData )
+		killTimer ( timerNameData )
     end
 	for k,v in pairs(players) do
 		unbindKey ( v, "space" )

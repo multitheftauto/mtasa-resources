@@ -73,7 +73,7 @@ function drawScoreboard()
 		drawOverGUI = false
 
 		-- Draw all text to rt
-    	dxSetBlendMode( "modulate_add" )
+		dxSetBlendMode( "modulate_add" )
 		doDrawScoreboard ( true --[[rtPass]], false --[[onlyAnim]], getRequiredRtSize() )
         dxSetBlendMode( "blend" )
 

@@ -1,5 +1,3 @@
-local rootElement = getRootElement()
-
 local listMode
 local configPath = "mapcycle.xml"
 local gameList = {}
@@ -30,7 +28,7 @@ function startCycler_list()
 
 	cycleMap_list()
 
-	addEventHandler("onRoundFinished", rootElement, roundCounter)
+	addEventHandler("onRoundFinished", root, roundCounter)
 end
 
 function cycleMap_list()
@@ -202,10 +200,10 @@ function outputNextMode(sourcePlayer)
 end
 
 function skipMap(sourcePlayer, command)
-	if not hasObjectPermissionTo(sourcePlayer, command, false) then
+	--if not hasObjectPermissionTo(sourcePlayer, command, false) then
 		--! deny access
 		--! return false
-	end
+	--end
 	outputCyclerDebugString("Map skipped by "..getPlayerName(sourcePlayer)) --! change to server log when security is added
 	cycleMap_list()
 end

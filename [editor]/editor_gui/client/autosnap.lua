@@ -1,4 +1,3 @@
-local g_root = getRootElement()
 local camDistance = 5
 local elementDiameter = 1
 local snapElement
@@ -28,7 +27,7 @@ function autoSnap ( element )
 		--Lets assume the radius is 5 and try again next frame
 		radius = 5
 		if not snapElement then
-			addEventHandler ( "onClientRender", g_root, autoSnapNextFrame )
+			addEventHandler ( "onClientRender", root, autoSnapNextFrame )
 		end
 		snapElement = element
 	else
@@ -56,5 +55,5 @@ end
 
 function autoSnapNextFrame()
 	autoSnap ( snapElement )
-	removeEventHandler ( "onClientRender", g_root, autoSnapNextFrame )
+	removeEventHandler ( "onClientRender", root, autoSnapNextFrame )
 end

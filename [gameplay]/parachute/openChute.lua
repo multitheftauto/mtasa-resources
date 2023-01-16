@@ -55,4 +55,4 @@ function animateParachuteOpen()
 		end
 	end
 end
-addEventHandler ( "onClientRender", getRootElement(), animateParachuteOpen )
+addEventHandler ( "onClientRender", root, animateParachuteOpen )

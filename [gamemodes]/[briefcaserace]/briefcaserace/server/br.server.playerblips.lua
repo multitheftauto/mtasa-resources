@@ -1,8 +1,6 @@
-local root = getRootElement()
 local MAX_DIST = 300
 local color = {255, 0, 0}
 local blips = {}
-local resourceRoot = getResourceRootElement(getThisResource())
 
 function onPlayerSpawn_blips(spawnpoint)
 	addBlip(source)
@@ -28,11 +26,11 @@ function addBlip(player)
 	local r, g, b = color[1], color[2], color[3]
 	local team = getPlayerTeam(player)
 	if (team) then
-		local a, b, c = getTeamColor(team)
+		local r2, g2, b2 = getTeamColor(team)
 		-- sometimes it says team arg is invalid for some reason.. so in that case let's set the default colors
-		r = a or color[1]
-		g = b or color[2]
-		b = c or color[3]
+		r = r2 or color[1]
+		g = g2 or color[2]
+		b = b2 or color[3]
 	end
 	blips[player] = createBlip(0, 0, 0, 0, 2, r, g, b, 255, 0, MAX_DIST)
 	attachElements(blips[player], player)

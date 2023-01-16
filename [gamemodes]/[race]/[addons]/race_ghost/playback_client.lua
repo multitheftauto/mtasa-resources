@@ -24,18 +24,17 @@ end
 
 function GhostPlayback:destroy( finished )
 	self:stopPlayback( finished )
-	if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
-	if self.updateGhostState_HANDLER then removeEventHandler( "onClientRender", g_Root, self.updateGhostState_HANDLER ) self.updateGhostState_HANDLER = nil end
+	if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+	if self.updateGhostState_HANDLER then removeEventHandler( "onClientRender", root, self.updateGhostState_HANDLER ) self.updateGhostState_HANDLER = nil end
 	if isTimer( self.ghostFinishTimer ) then
 		killTimer( self.ghostFinishTimer )
 		self.ghostFinishTimer = nil
 	end
-	self = nil
 end
 
 function GhostPlayback:preparePlayback()
 	self.checkForCountdownEnd_HANDLER = function() self:checkForCountdownEnd() end
-	addEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER )
+	addEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER )
 	self:createNametag()
 end
 
@@ -45,21 +44,21 @@ function GhostPlayback:createNametag()
 		time = msToTimeStr( globalInfo.bestTime )
 	}
 	self.drawGhostNametag_HANDLER = function() self:drawGhostNametag( self.nametagInfo ) end
-	addEventHandler( "onClientRender", g_Root, self.drawGhostNametag_HANDLER )
+	addEventHandler( "onClientRender", root, self.drawGhostNametag_HANDLER )
 end
 
 function GhostPlayback:destroyNametag()
-	if self.drawGhostNametag_HANDLER then removeEventHandler( "onClientRender", g_Root, self.drawGhostNametag_HANDLER ) self.drawGhostNametag_HANDLER = nil end
+	if self.drawGhostNametag_HANDLER then removeEventHandler( "onClientRender", root, self.drawGhostNametag_HANDLER ) self.drawGhostNametag_HANDLER = nil end
 end
 
 function GhostPlayback:checkForCountdownEnd()
-	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
+	local vehicle = getPedOccupiedVehicle( localPlayer )
 	if vehicle then
 		local frozen = isElementFrozen( vehicle )
 		if not frozen then
 			outputDebug( "Playback started." )
 			setElementFrozen( self.vehicle, false )
-			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
 			self:startPlayback()
 			setElementAlpha( self.vehicle, g_GameOptions.alphavalue )
 			setElementAlpha( self.ped, g_GameOptions.alphavalue )
@@ -87,14 +86,14 @@ function GhostPlayback:startPlayback()
 	self.startTick = getTickCount()
 	self.isPlaying = true
 	self.updateGhostState_HANDLER = function() self:updateGhostState() end
-	addEventHandler( "onClientRender", g_Root, self.updateGhostState_HANDLER )
+	addEventHandler( "onClientRender", root, self.updateGhostState_HANDLER )
 end
 
 function GhostPlayback:stopPlayback( finished )
 	self:destroyNametag()
 	self:resetKeyStates()
 	self.isPlaying = false
-	if self.updateGhostState_HANDLER then removeEventHandler( "onClientRender", g_Root, self.updateGhostState_HANDLER ) self.updateGhostState_HANDLER = nil end
+	if self.updateGhostState_HANDLER then removeEventHandler( "onClientRender", root, self.updateGhostState_HANDLER ) self.updateGhostState_HANDLER = nil end
 	if finished then
 		self.ghostFinishTimer = setTimer(
 			function()
@@ -128,9 +127,7 @@ function GhostPlayback:updateGhostState()
 	setElementHealth( self.ped, 100 ) -- we don't want the ped to die
 	while (self.recording[self.currentIndex] and self.recording[self.currentIndex].t < ticks) do
 		local theType = self.recording[self.currentIndex].ty
-		if theType == "st" then
-			-- Skip
-		elseif theType == "po" then
+		if theType == "po" then
 			local x, y, z = self.recording[self.currentIndex].x, self.recording[self.currentIndex].y, self.recording[self.currentIndex].z
 			local rX, rY, rZ = self.recording[self.currentIndex].rX, self.recording[self.currentIndex].rY, self.recording[self.currentIndex].rZ
 			local vX, vY, vZ = self.recording[self.currentIndex].vX, self.recording[self.currentIndex].vY, self.recording[self.currentIndex].vZ
@@ -203,7 +200,7 @@ function GhostPlayback:resetKeyStates()
 	end
 end
 
-addEventHandler( "onClientGhostDataReceive", g_Root,
+addEventHandler( "onClientGhostDataReceive", root,
 	function( recording, bestTime, racer, ped, vehicle )
 		if playback then
 			playback:destroy()
@@ -217,7 +214,7 @@ addEventHandler( "onClientGhostDataReceive", g_Root,
 	end
 )
 
-addEventHandler( "clearMapGhost", g_Root,
+addEventHandler( "clearMapGhost", root,
 	function()
 		if playback then
 			playback:destroy()
@@ -256,10 +253,8 @@ end
 
 function Interpolator.Update( ticks, vehicle )
 	if not last.from or not last.to then return end
-	local x,y,z,rX,rY,rZ
+	local z,rX,rY,rZ
 	local alpha = math.unlerp( last.from.t, last.to.t, ticks )
-	x = math.lerp( last.from.x, last.to.x, alpha )
-	y = math.lerp( last.from.y, last.to.y, alpha )
 	z = math.lerp( last.from.z, last.to.z, alpha )
 	rX = math.lerprot( last.from.rX, last.to.rX, alpha )
 	rY = math.lerprot( last.from.rY, last.to.rY, alpha )
@@ -273,7 +268,7 @@ end
 -- Error Compensator
 --------------------------------------------------------------------------
 ErrorCompensator = {}
-error = { timeEnd = 0 }
+error2 = { timeEnd = 0 }
 
 function ErrorCompensator.handleNewPosition( vehicle, x, y, z, period )
 	local vx, vy, vz = getElementPosition( vehicle )
@@ -282,50 +277,50 @@ function ErrorCompensator.handleNewPosition( vehicle, x, y, z, period )
 	if dist > 5 or not period then
 		-- Just do move if too far to interpolate or period is not valid
 		setElementPosition( vehicle, x, y, z )
-		error.x = 0
-		error.y = 0
-		error.z = 0
-		error.timeStart = 0
-		error.timeEnd = 0
-		error.fLastAlpha = 0
+		error2.x = 0
+		error2.y = 0
+		error2.z = 0
+		error2.timeStart = 0
+		error2.timeEnd = 0
+		error2.fLastAlpha = 0
 	else
 		-- Set error correction to apply over the next few frames
-		error.x = x - vx
-		error.y = y - vy
-		error.z = z - vz
-		error.timeStart = getTickCount()
-		error.timeEnd = error.timeStart + period * 1.0
-		error.fLastAlpha = 0
+		error2.x = x - vx
+		error2.y = y - vy
+		error2.z = z - vz
+		error2.timeStart = getTickCount()
+		error2.timeEnd = error2.timeStart + period * 1.0
+		error2.fLastAlpha = 0
 	end
 end
 
 
 -- Apply a portion of the error
 function ErrorCompensator.updatePosition( vehicle )
-	if error.timeEnd == 0 then return end
+	if error2.timeEnd == 0 then return end
 
 	-- Grab the current game position
 	local vx, vy, vz = getElementPosition( vehicle )
 
 	-- Get the factor of time spent from the interpolation start to the current time.
-	local fAlpha = math.unlerp ( error.timeStart, error.timeEnd, getTickCount() )
+	local fAlpha = math.unlerp ( error2.timeStart, error2.timeEnd, getTickCount() )
 
 	-- Don't let it overcompensate the error too much
 	fAlpha = math.clamp ( 0.0, fAlpha, 1.5 )
 
 	if fAlpha == 1.5 then
-		error.timeEnd = 0
+		error2.timeEnd = 0
 		return
 	end
 
 	-- Get the current error portion to compensate
-	local fCurrentAlpha = fAlpha - error.fLastAlpha
-	error.fLastAlpha = fAlpha
+	local fCurrentAlpha = fAlpha - error2.fLastAlpha
+	error2.fLastAlpha = fAlpha
 
 	-- Apply
-	local nx = vx + error.x * fCurrentAlpha
-	local ny = vy + error.y * fCurrentAlpha
-	local nz = vz + error.z * fCurrentAlpha
+	local nx = vx + error2.x * fCurrentAlpha
+	local ny = vy + error2.y * fCurrentAlpha
+	local nz = vz + error2.z * fCurrentAlpha
 	setElementPosition( vehicle, nx, ny, nz )
 end
 
@@ -408,13 +403,13 @@ function GhostPlayback:disabledCollisionTick()
 
 	-- Stop crazy spinning
 	local vehicle = self.vehicle
-	local ax, ay, az = getVehicleTurnVelocity ( self.vehicle )
+	local ax, ay, az = getElementAngularVelocity ( self.vehicle )
 	local angvel = getDistanceBetweenPoints3D(0, 0, 0, ax, ay, az )
 	if angvel > 0.1 then
 		ax = ax / 2
 		ay = ay / 2
 		az = az / 2
-		setVehicleTurnVelocity( self.vehicle, ax, ay, az )
+		setElementAngularVelocity( self.vehicle, ax, ay, az )
 	end
 end
 

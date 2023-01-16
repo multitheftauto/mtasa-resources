@@ -2,27 +2,23 @@ local startx = 112
 local starty = 1026
 local startz = 14
 local screenStartX = guiGetScreenSize()
+screenStartX = screenStartX * 0
 local SPECWIDTH = screenStartX
-local screenStartX = screenStartX * 0
 local SPECHEIGHT = (SPECWIDTH / 16) * 7  -- height (changing requires palette adjustments too)
 local screenStartY = SPECHEIGHT / 2
 local BANDS = 40
 local use_dx = true
 
 
-local peakData, ticks, maxbpm, startTime, release, peak, peaks
+local maxbpm, release, peaks
 function reset ( )
 	peaks = {}
 	for k=0, BANDS - 1 do
 		peaks[k] = {}
 	end
-	peakData = {}
-	ticks = getTickCount()
 	maxbpm = 1
 	bpmcount = 1
-	startTime = 0
 	release = { }
-	peak = 0
 end
 
 addEvent("playmus", true)
@@ -37,7 +33,6 @@ addEventHandler("playmus", root, function ( url )
 	setSoundMaxDistance(stream, 10000)
 	setTimer(setSoundPanningEnabled, 1000, 1, stream, false)
 	startTicks = getTickCount()
-	ticks = getTickCount()
 	reset ( )
 	-- Deal with shaders
 
@@ -58,7 +53,7 @@ addEventHandler("playmus", root, function ( url )
 	dxSetShaderValue ( shader_cinema, "gAlpha", 1 )
 	-- Set scrolling (san set negative and positive values)
 	dxSetShaderValue ( shader_cinema, "gScrRig",  0)
-       	dxSetShaderValue ( shader_cinema, "gScrDow", 0)
+		dxSetShaderValue ( shader_cinema, "gScrDow", 0)
 	-- Scale and offset (don't need to change that)
         dxSetShaderValue ( shader_cinema, "gHScale", 1 )
 	dxSetShaderValue ( shader_cinema, "gVScale", 1 )
@@ -137,7 +132,7 @@ function calc ( fft, stream )
 	end
 
 	local calced = {}
-	local y = 0
+	local y
 	local bC=0
 	local specbuf = 0
 	local w, h = guiGetScreenSize()
@@ -176,15 +171,15 @@ function calc ( fft, stream )
 		bSpawnParticles = false
 	else
 		-- always make this bigger because when you tint it the image will look smaller.
-		local var = 600
+		local var3 = 600
 		local var2 = 400
-		dxDrawImage ( -var2, -var, SPECWIDTH+(var2*2), SPECHEIGHT+(var*2)+100, "bg.png", 0, 0,0, tocolor(r, g, b, 255) )
+		dxDrawImage ( -var2, -var3, SPECWIDTH+(var2*2), SPECHEIGHT+(var3*2)+100, "bg.png", 0, 0,0, tocolor(r, g, b, 255) )
 	end
 	local movespeed = (1 * (bpm / 180)) + 1
 	local dir = bpm <= 100 and "down" or "up"
 	local prevcalced = calced
         -- loop all the bands.
-	for x, peak in ipairs(fft) do
+	for x, peak2 in ipairs(fft) do
 		local posx = x - 1
 		-- fft contains our precalculated data so just grab it.
 		peak = fft [ x ]

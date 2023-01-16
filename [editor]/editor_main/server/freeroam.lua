@@ -1,4 +1,4 @@
-addEventHandler("onResourceStart",getResourceRootElement(getThisResource()),
+addEventHandler("onResourceStart",resourceRoot,
 	function()
 		local freeroam = getResourceFromName("freeroam")
 		if not freeroam then
@@ -6,8 +6,8 @@ addEventHandler("onResourceStart",getResourceRootElement(getThisResource()),
 		end
 
 		if getResourceState(freeroam) == "running" then
-			outputChatBox ( "WARNING: 'FREEROAM' resource is currently running.  The resource has been shut off as a precaution!", getRootElement(), 255, 0, 0 )
-			outputDebugString (  "WARNING: 'FREEROAM' resource is currently running.  The resource has been shut off as a precaution!" )
+			outputChatBox ( "INFO: 'FREEROAM' resource is currently running.  The resource has been shut off as a precaution!", root, 255, 255, 0 )
+			outputDebugString (  "'FREEROAM' resource is currently running.  The resource has been shut off as a precaution!",4,255,255,0 )
 			stopResource(freeroam)
 		end
 	end

@@ -2,9 +2,9 @@
 
 function giveWeaponsOnSpawn (  )
 	giveWeapon ( source, 25, 120 ) -- Gives the M4 weapon with 120 ammo
-    	giveWeapon ( source, 24, 56 ) -- Gives the Desert Eagle weapon with 56 ammo
+	giveWeapon ( source, 24, 56 ) -- Gives the Desert Eagle weapon with 56 ammo
 end
-addEventHandler ( "onPlayerSpawn", getRootElement(), giveWeaponsOnSpawn )
+addEventHandler ( "onPlayerSpawn", root, giveWeaponsOnSpawn )
 
 function spawnWhenZombieKill(ammo,attacker)
     if attacker then
@@ -13,7 +13,7 @@ function spawnWhenZombieKill(ammo,attacker)
 	    end
 	end
 end
-addEventHandler("onPlayerWasted",getRootElement(),spawnWhenZombieKill)
+addEventHandler("onPlayerWasted",root,spawnWhenZombieKill)
 
 function respawnTheVictim(player)
     local team = getPlayerTeam( player )

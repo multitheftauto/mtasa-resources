@@ -21,5 +21,5 @@ function onPlayerSpawn ()
 	giveWeapon ( source, 18, 2 )
 end
 
-addEventHandler ( "onResourceStart", getRootElement(), onResourceStart )
-addEventHandler ( "onPlayerSpawn", getRootElement(), onPlayerSpawn )
+addEventHandler ( "onResourceStart", root, onResourceStart )
+addEventHandler ( "onPlayerSpawn", root, onPlayerSpawn )

@@ -184,7 +184,7 @@ function dxText:boundingBox(left,top,right,bottom,relative)
 	return true
 end
 
-addEventHandler ( "onClientRender", getRootElement(),
+addEventHandler ( "onClientRender", root,
 	function()
 		for self,_ in pairs(visibleText) do
 			while true do
@@ -268,7 +268,7 @@ addEventHandler ( "onClientRender", getRootElement(),
 )
 
 if addEvent ( "updateDisplays", true ) then
-	addEventHandler ( "updateDisplays", getRootElement(),
+	addEventHandler ( "updateDisplays", root,
 		function(self)
 			setmetatable( self, dxText_mt )
 			--Remove any old ones with the same id

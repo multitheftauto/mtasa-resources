@@ -7,7 +7,6 @@ local MAX_SEND_AMOUNT = 1 -- max number of events that can be packaged into a se
 --local MAX_SEND_AMOUNT = 4 -- max number of events that can be packaged into a send
 local MAX_WAIT_TIME = 100 -- max delay (ms) between two events for them to be part of a single send package (can't be less than 50ms)
 
-local root = getRootElement()
 local checkElement = false
 
 local waitTimer = nil

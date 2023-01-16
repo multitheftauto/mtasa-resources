@@ -113,13 +113,13 @@ tutorial = {
 	initiate = function()
 			tutorialVars.browserOK = nil
 			tutorialBlock = ""
-			addEventHandler ("onClientElementDrop",getRootElement(),tutorialAction.dropped1)
+			addEventHandler ("onClientElementDrop",root,tutorialAction.dropped1)
 			end },
 	--10
 	{ message = "To pick up an element again, you can Right click on it.   Try this now.",
 	initiate = function()
-				removeEventHandler ("onClientElementDrop",getRootElement(),tutorialAction.dropped1)
-				addEventHandler ("onClientElementSelect",getRootElement(),tutorialAction.selected1)
+				removeEventHandler ("onClientElementDrop",root,tutorialAction.dropped1)
+				addEventHandler ("onClientElementSelect",root,tutorialAction.selected1)
 				--Incase they were silly enough to choose a collisionless object
 				tutorialVars.rightClickTimer = setTimer(
 					function()
@@ -138,8 +138,8 @@ tutorial = {
 				killTimer ( tutorialVars.rightClickTimer )
 			end
 		end
-		addEventHandler ("onClientElementDrop",getRootElement(),tutorialAction.dropped2)
-		removeEventHandler ("onClientElementSelect",getRootElement(),tutorialAction.selected1)
+		addEventHandler ("onClientElementDrop",root,tutorialAction.dropped2)
+		removeEventHandler ("onClientElementSelect",root,tutorialAction.selected1)
 	end },
 	{ message = "A tip for selecting objects with poor collisions is to enable 'High sensitivity mode'.  Press "..cc.high_sensitivity_mode.." to toggle this.  It will detect objects with poor collisions at the expense of accuracy.",
 	initiate = function()
@@ -148,13 +148,13 @@ tutorial = {
 	--12
 	{ message = "It is also possible to control your element using the keyboard.  To enable keyboard movement, Left click on it.  Try this with the object.",
 	initiate = function()
-		addEventHandler ("onClientElementSelect",getRootElement(),tutorialAction.selected2)
-		removeEventHandler ("onClientElementDrop",getRootElement(),tutorialAction.dropped2)
+		addEventHandler ("onClientElementSelect",root,tutorialAction.selected2)
+		removeEventHandler ("onClientElementDrop",root,tutorialAction.dropped2)
 				end },
 	--13
 	{ message = "You can now manipulate the object using the keyboard.  Use the "..cc.element_move_forward..", "..cc.element_move_backward..", "..cc.element_move_left..", "..cc.element_move_right.." keys to move elements across the X and Y axes.  Use the "..cc.element_move_upwards.." and "..cc.element_move_downwards.." keys to move elements across the Z axis.",
 	initiate = function()
-		removeEventHandler ("onClientElementSelect",getRootElement(),tutorialAction.selected2)
+		removeEventHandler ("onClientElementSelect",root,tutorialAction.selected2)
 		setTimer(tutorialNext,17000,1)
 		end },
 	--14
@@ -358,12 +358,12 @@ tutorial = {
 		tutorialVars = {}
 		tutorialBlock = nil
 		tutorialID = nil
-		removeEventHandler ( "onClientRender", getRootElement(), drawGlow )
+		removeEventHandler ( "onClientRender", root, drawGlow )
 		stopTutorial()
 		setTimer (
 			function()
-				removeEventHandler ( "onClientRender", getRootElement(), drawRectangle )
-				removeEventHandler ( "onClientRender", getRootElement(), drawText )
+				removeEventHandler ( "onClientRender", root, drawRectangle )
+				removeEventHandler ( "onClientRender", root, drawText )
 			end,
 			25000,
 			1

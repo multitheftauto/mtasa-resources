@@ -197,9 +197,6 @@ local aACLFunctions = {
     [ACL_RESOURCES] = function()
     end,
     [ACL_ACL] = function(action, group)
-        if (action == ACL_ADD) then
-        elseif (action == ACL_REMOVE) then
-        end
         local data = {}
         for id, acl in ipairs(aclGroupListACL(aclGetGroup(group))) do
             local storage = {}
@@ -243,7 +240,6 @@ function moo()
                 outputChatBox("Error - Invalid password.", source, 255, 0, 0)
             end
         end
-    elseif (action == "autologin") then
     elseif (action == "sync") then
         local type = arg[1]
         local tableOut = {}

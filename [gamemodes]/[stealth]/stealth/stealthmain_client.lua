@@ -6,7 +6,7 @@ function swaptheteams(thisplayer, teamswap)
 	aretheyswapped = teamswap
 end
 
-addEventHandler("swaptoggle", getRootElement(), swaptheteams)
+addEventHandler("swaptoggle", root, swaptheteams)
 
 addEvent("showSpectateText",true)
 function showSpectateText(text,show)
@@ -27,12 +27,12 @@ function showSpectateText(text,show)
 		guiSetVisible ( spectateButton, show )
 --		showCursor ( true )
 end
-addEventHandler ( "showSpectateText",getRootElement(),showSpectateText )
+addEventHandler ( "showSpectateText",root,showSpectateText )
 
 
 addEvent("cameramode", true)
 
-function movetocam(thisplayer)
+function movetocam()
 	showSpectateText("",false)
 	local cams = getElementsByType ("camera")
 	if #cams > 0 then
@@ -47,7 +47,7 @@ function movetocam(thisplayer)
 			setCameraMatrix(x, y, z, a, b, c)
 		end
 	else --Most likely a setting
-		local cameraData = getElementData(getResourceRootElement(getThisResource()),"camera")
+		local cameraData = getElementData(resourceRoot,"camera")
 		if cameraData then
 			local x,y,z = unpack(cameraData[1])
 			local a,b,c = unpack(cameraData[2])
@@ -56,7 +56,7 @@ function movetocam(thisplayer)
 	end
 end
 
-addEventHandler("cameramode", getRootElement(), movetocam)
+addEventHandler("cameramode", root, movetocam)
 
 
 function updateCam (data)
@@ -64,7 +64,7 @@ function updateCam (data)
 	if not getElementData(source,data) then return end
 	movetocam()
 end
-addEventHandler ( "onClientElementDataChange", getResourceRootElement(getThisResource()), updateCam )
+addEventHandler ( "onClientElementDataChange", resourceRoot, updateCam )
 
 addEvent("Startround",true)
 
@@ -103,7 +103,7 @@ function starttheround(player)
 	end
 end
 
-addEventHandler("Startround", getRootElement(), starttheround)
+addEventHandler("Startround", root, starttheround)
 
 function idlethisround (player)
 	sitthisoneout = nil
@@ -116,13 +116,10 @@ end
 function confirmSelections ( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clicked )
 	--work out the team name judging by what OK button they hit, and the menu they''re using so we know which one to hide.
 	local teamName
-	local menu
 	if source == mercenariesOK then
 		teamName = "mercenaries" --if its the mercernariesOK it must be the mercenaries team
-		menu = mercenariesMenu --which must mean its the mercenaries menu. We know which one to hide.
 	elseif source == spiesOK then
 		teamName = "spies"
-		menu = spiesMenu
 	else --if it wasnt either, for some reason, just stop the function.
 		return
 	end
@@ -183,17 +180,16 @@ function confirmSelections ( button, state, absoluteX, absoluteY, worldX, worldY
 		killTimer (sitthisoneout)
 		sitthisoneout = nil
 	end
-	thisplayer = getLocalPlayer ()
 	if teamName == "mercenaries" then
 		guiSetVisible ( mercenariesMenu, false )
-		triggerServerEvent ("domercspawn", getLocalPlayer (), thisplayer )
+		triggerServerEvent ("domercspawn", localPlayer, localPlayer )
 	end
 
 	if teamName == "spies" then
 		guiSetVisible ( spiesMenu, false )
-		triggerServerEvent ("dospyspawn", getLocalPlayer (), thisplayer )
+		triggerServerEvent ("dospyspawn", localPlayer, localPlayer )
 	end
-	setTimer (triggerServerEvent, 1000, 1, "givetheguns", getLocalPlayer (), thisplayer, primarySelection, secondarySelection, throwableSelection, spygadgetSelection )
+	setTimer (triggerServerEvent, 1000, 1, "givetheguns", localPlayer, localPlayer, primarySelection, secondarySelection, throwableSelection, spygadgetSelection )
 
 end
 
@@ -208,7 +204,7 @@ function stealthmapstop ()
 	guiSetVisible ( mercenariesMenu, false )
 end
 
-addEventHandler( "onClientGamemodeMapStop", getRootElement(), stealthmapstop )
+addEventHandler( "onClientGamemodeMapStop", root, stealthmapstop )
 
 
 --EVERYTHING AFTER THIS IS IS THE GEARSELECT GUI
@@ -338,7 +334,7 @@ function setupStealthMenus ( name )
 	addEventHandler ( "onClientGUIClick", mercenariesOK, confirmSelections )
 	addEventHandler ( "onClientGUIClick", spiesOK, confirmSelections )
 end
-addEventHandler ( "onClientResourceStart", getRootElement(), setupStealthMenus )
+addEventHandler ( "onClientResourceStart", root, setupStealthMenus )
 
 local retrieveGridList = {}
 retrieveGridList["mercenaries"] = {}
@@ -410,7 +406,7 @@ function cleanup (theresource)
 	end
 end
 
-addEventHandler("onClientResourceStop", getRootElement(), cleanup)
+addEventHandler("onClientResourceStop", root, cleanup)
 
 
 --Code for Laser sight on weapons.  Currently only for sniper and M4 weapons
@@ -440,27 +436,26 @@ function drawLasers()
 end
 
 function TeamSelected ( button, state, absoluteX, absoluteY, worldX, worldY, worldZ, clicked )
-	thisplayer = getLocalPlayer ()
 	if source == TeamSelect_Red then
 		showCursor ( false )
-		triggerServerEvent ("dojoinTeam1", getLocalPlayer(), getLocalPlayer() )
+		triggerServerEvent ("dojoinTeam1", localPlayer, localPlayer )
 		guiSetVisible ( TeamSelect_Window[1], false )
 	elseif source == TeamSelect_Blue then
 		showCursor ( false )
-		triggerServerEvent ("dojoinTeam2", getLocalPlayer(), getLocalPlayer() )
+		triggerServerEvent ("dojoinTeam2", localPlayer, localPlayer )
 		guiSetVisible ( TeamSelect_Window[1], false )
 	end
 end
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler ( "onClientResourceStart", resourceRoot,
 	function()
-		movetocam(getLocalPlayer())
-		local weaponsTable = getElementData(getRootElement(),"lasersight")
+		movetocam(localPlayer)
+		local weaponsTable = getElementData(root,"lasersight")
 		if type(weaponsTable) == "table" and #weaponsTable > 0 then
 			for k,weaponID in ipairs(weaponsTable) do
 				laserWeapons[weaponID] = true
 			end
-			addEventHandler("onClientRender",getRootElement(),drawLasers)
+			addEventHandler("onClientRender",root,drawLasers)
 		end
 		showCursor ( true )
 		TeamSelect_Window = {}
@@ -483,7 +478,7 @@ function showTeamWindow ()
 	guiSetVisible ( TeamSelect_Window[1], true )
 	showCursor ( true )
 end
-addEventHandler ( "doshowTeamWindow",getRootElement(), showTeamWindow )
+addEventHandler ( "doshowTeamWindow",root, showTeamWindow )
 
 function extendLine ( x,y,z,x2,y2,z2,length )
 	local vx = x2 - x

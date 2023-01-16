@@ -1,4 +1,3 @@
-local root = getRootElement()
 local objectives = {}
 local weps = {}
 local cols = {}

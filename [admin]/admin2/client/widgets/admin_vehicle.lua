@@ -15,17 +15,23 @@ aVehicle = {
 function aVehicle.Show(player)
     if (aVehicle.Form == nil) then
         local x, y = guiGetScreenSize()
-        aVehicle.Form = guiCreateWindow(x / 2 - 140, y / 2 - 125, 280, 250, "Player Vehicle Select", false)
+        aVehicle.Form = guiCreateWindow(x / 2 - 140, y / 2 - 140, 280, 280, "Player Vehicle Select", false)
+        guiSetAlpha(aVehicle.Form, 1)
+        guiSetProperty(aVehicle.Form, 'AlwaysOnTop', 'True')
         aVehicle.Label =
             guiCreateLabel(0.03, 0.09, 0.94, 0.07, "Select a vehicle from the list or enter the id", true, aVehicle.Form)
         guiLabelSetHorizontalAlign(aVehicle.Label, "center")
         guiLabelSetColor(aVehicle.Label, 255, 0, 0)
+
+        aVehicle.Edit = guiCreateEdit(0.03, 0.18, 0.70, 0.09, '', true, aVehicle.Form)
+        guiCreateInnerImage("client\\images\\search.png", aVehicle.Edit)
+
         aVehicle.Groups = guiCreateCheckBox(0.03, 0.90, 0.70, 0.09, "Sort by groups", false, true, aVehicle.Form)
         if (aGetSetting("weaponsGroup")) then
             guiCheckBoxSetSelected(aVehicle.Groups, true)
         end
 
-        aVehicle.List = guiCreateGridList(0.03, 0.18, 0.70, 0.71, true, aVehicle.Form)
+        aVehicle.List = guiCreateGridList(0.03, 0.27, 0.70, 0.625, true, aVehicle.Form)
         guiGridListAddColumn(aVehicle.List, "ID", 0.20)
         guiGridListAddColumn(aVehicle.List, "", 0.75)
 
@@ -36,10 +42,11 @@ function aVehicle.Show(player)
         aVehicle.Cancel = guiCreateButton(0.75, 0.88, 0.27, 0.09, "Cancel", true, aVehicle.Form)
 
         aVehicle.Load()
-        aVehicle.Refresh(guiCheckBoxGetSelected(aVehicle.Groups))
+        aVehicle.Refresh()
 
         addEventHandler("onClientGUIClick", aVehicle.Form, aVehicle.onClick)
         addEventHandler("onClientGUIDoubleClick", aVehicle.Form, aVehicle.onDoubleClick)
+        addEventHandler("onClientGUIChanged", aVehicle.Form, aVehicle.onGUIChange)
         --Register With Admin Form
         aRegister("PlayerVehicle", aVehicle.Form, aVehicle.Show, aVehicle.Close)
     end
@@ -68,10 +75,16 @@ function aVehicle.onDoubleClick(button)
         if (source == aVehicle.List) then
             if (guiGridListGetSelectedItem(aVehicle.List) ~= -1) then
                 local id = tonumber(guiGridListGetItemText(aVehicle.List, guiGridListGetSelectedItem(aVehicle.List), 1))
-                triggerServerEvent("aPlayer", getLocalPlayer(), aVehicle.Select, "givevehicle", id)
+                triggerServerEvent("aPlayer", localPlayer, aVehicle.Select, "givevehicle", id)
                 aVehicle.Close(false)
             end
         end
+    end
+end
+
+function aVehicle.onGUIChange()
+    if (source == aVehicle.Edit) then
+        aVehicle.Refresh()
     end
 end
 
@@ -79,13 +92,13 @@ function aVehicle.onClick(button)
     if (button == "left") then
         if (source == aVehicle.Accept) then
             if (tonumber(guiGetText(aVehicle.ID))) then
-                triggerServerEvent("aPlayer", getLocalPlayer(), aVehicle.Select, "givevehicle", tonumber(guiGetText(aVehicle.ID)))
+                triggerServerEvent("aPlayer", localPlayer, aVehicle.Select, "givevehicle", tonumber(guiGetText(aVehicle.ID)))
                 aVehicle.Close(false)
             else
                 if (guiGridListGetSelectedItem(aVehicle.List) ~= -1) then
                     local id = tonumber(guiGridListGetItemText(aVehicle.List, guiGridListGetSelectedItem(aVehicle.List), 1))
                     guiSetVisible(aVehicle.Form, false)
-                    triggerServerEvent("aPlayer", getLocalPlayer(), aVehicle.Select, "givevehicle", id)
+                    triggerServerEvent("aPlayer", localPlayer, aVehicle.Select, "givevehicle", id)
                 else
                     messageBox("No vehicle selected!", MB_ERROR, MB_OK)
                 end
@@ -98,7 +111,7 @@ function aVehicle.onClick(button)
         elseif (source == aVehicle.Cancel) then
             aVehicle.Close(false)
         elseif (source == aVehicle.Groups) then
-            aVehicle.Refresh(guiCheckBoxGetSelected(aVehicle.Groups))
+            aVehicle.Refresh()
         end
     end
 end
@@ -127,14 +140,26 @@ function aVehicle.Load()
     aVehicle.vehicles = table
 end
 
-function aVehicle.Refresh(groups)
-    aSetSetting("weaponsGroup", groups)
+function aVehicle.Refresh()
+    aSetSetting("weaponsGroup", guiCheckBoxGetSelected(aVehicle.Groups))
     guiGridListClear(aVehicle.List)
-    if (groups) then
+    local filter = guiGetText(aVehicle.Edit):lower()
+    if (guiCheckBoxGetSelected(aVehicle.Groups)) then
+        local vehicles = {}
         for name, group in pairs(aVehicle.vehicles) do
+            for _, vehicle in ipairs(group) do
+                if vehicle.id:find(filter) or vehicle.name:lower():find(filter) then
+                    if (not vehicles[name]) then
+                        vehicles[name] = {}
+                    end
+                    table.insert(vehicles[name], vehicle)
+                end
+            end
+        end
+        for name, group in pairs(vehicles) do
             local row = guiGridListAddRow(aVehicle.List)
             guiGridListSetItemText(aVehicle.List, row, 2, name, true, false)
-            for id, vehicle in ipairs(aVehicle.vehicles[name]) do
+            for id, vehicle in ipairs(group) do
                 row = guiGridListAddRow(aVehicle.List)
                 guiGridListSetItemText(aVehicle.List, row, 1, vehicle.id, false, true)
                 guiGridListSetItemText(aVehicle.List, row, 2, vehicle.name, false, false)
@@ -145,18 +170,15 @@ function aVehicle.Refresh(groups)
         local vehicles = {}
         for name, group in pairs(aVehicle.vehicles) do
             for id, vehicle in pairs(group) do
-                local id = tonumber(vehicle.id)
-                vehicles[id] = vehicle.name
+                vehicles[vehicle.id] = vehicle.name
             end
         end
-        local i = 0
-        while (i <= 100000) do
-            if (vehicles[i] ~= nil) then
+        for model, vehicleName in pairs(vehicles) do
+            if model:find(filter) or vehicleName:lower():find(filter:lower()) then
                 local row = guiGridListAddRow(aVehicle.List)
-                guiGridListSetItemText(aVehicle.List, row, 1, tostring(i), false, true)
-                guiGridListSetItemText(aVehicle.List, row, 2, vehicles[i], false, false)
+                guiGridListSetItemText(aVehicle.List, row, 1, model, false, true)
+                guiGridListSetItemText(aVehicle.List, row, 2, vehicleName, false, false)
             end
-            i = i + 1
         end
         guiGridListSetSortingEnabled(aVehicle.List, true)
     end

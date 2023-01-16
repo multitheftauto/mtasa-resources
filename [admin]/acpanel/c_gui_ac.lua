@@ -22,7 +22,7 @@ function aAntiCheatTab.Create ( tab )
 	local acInfoList = {
 				{ id=1, desc="Classic health/armour hack detector" },
 				{ id=4, desc="Detects presence of trainer. Capital letters in the message are for tagging particular trainers" },
-				{ id=5, desc="Detects use of trainer. " },
+				{ id=5, desc="Detects use of trainer." },
 				{ id=6, desc="Detects use of trainer incl.: player movement, health/damage, weapons, money, gamespeed, game cheats, aimbot" },
 				{ id=7, desc="Detects use of trainer." },
 				{ id=8, desc="Detects unauthorized mods. Capital letters in the message are for tagging particular items e.g. CLEO - Cleo detected, RENDER - Wall hack detected" },
@@ -45,7 +45,7 @@ function aAntiCheatTab.Create ( tab )
 
 	for _,info in ipairs(acInfoList) do
 		local bEnabled = not table.find(disabledAcList, tostring(info.id))
-		local label1 = guiCreateLabel ( xpos,		ypos, 50, 16,	"AC #" .. info.id,			false, tab )
+		local label4 = guiCreateLabel ( xpos,		ypos, 50, 16,	"AC #" .. info.id,			false, tab )
 		local label2 = guiCreateLabel ( xpos+70,	ypos, 50, 16,	bEnabled and "ON" or "OFF", false, tab )
 		local label3 = guiCreateLabel ( xpos+110,	ypos, 450, 16,	"( "..info.desc.." )",		false, tab )
 		if bEnabled then
@@ -60,10 +60,10 @@ function aAntiCheatTab.Create ( tab )
 
 	ypos = ypos + 5
 
-	local msg = "To turn OFF an AC#, add number to <disabledac> setting in mtaserver.conf and restart server"
-	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
-	guiLabelSetColor(label1, unpack(colorYellow) )
-	guiSetFont(label1, "default-bold-small" )
+	local msg = "To turn OFF an AC#, add number to <disableac> setting in mtaserver.conf and restart server"
+	local label5 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
+	guiLabelSetColor(label5, unpack(colorYellow) )
+	guiSetFont(label5, "default-bold-small" )
 
 	ypos = ypos + 25
 
@@ -94,24 +94,24 @@ function aAntiCheatTab.Create ( tab )
 	--outputDebug( "enableSdDesc" .. tostring(enableSdDesc) )
 	enableSdList = split(enableSdDesc, ",")
 
-	local label1 = guiCreateLabel ( xpos, ypos, 100, 16, "SD settings:", false, tab )
-	guiSetFont(label1, "default-bold-small" )
+	local label6 = guiCreateLabel ( xpos, ypos, 100, 16, "SD settings:", false, tab )
+	guiSetFont(label6, "default-bold-small" )
 
 	ypos = ypos + 17
 
 	for _,info in ipairs(sdInfoList) do
 		local bEnabled = table.find(enableSdList, tostring(info.id))
 		local name = "SD #" .. info.id
-		local label1 = guiCreateLabel ( xpos,		ypos, 50, 16,	name,						false, tab )
-		local label2 = guiCreateLabel ( xpos+70,	ypos, 50, 16,	bEnabled and "ON" or "OFF", false, tab )
-		local label3 = guiCreateLabel ( xpos+110,	ypos, 450, 16,	"( "..info.desc.." )",		false, tab )
+		local label7 = guiCreateLabel ( xpos,		ypos, 50, 16,	name,						false, tab )
+		local label8 = guiCreateLabel ( xpos+70,	ypos, 50, 16,	bEnabled and "ON" or "OFF", false, tab )
+		local label9 = guiCreateLabel ( xpos+110,	ypos, 450, 16,	"( "..info.desc.." )",		false, tab )
 		if bEnabled then
-			guiLabelSetColor(label2, unpack(colorGreen) )
+			guiLabelSetColor(label8, unpack(colorGreen) )
 		else
-			guiLabelSetColor(label2, unpack(colorRed) )
-			guiSetFont(label2, "default-bold-small" )
+			guiLabelSetColor(label8, unpack(colorRed) )
+			guiSetFont(label8, "default-bold-small" )
 		end
-		guiLabelSetColor(label3, unpack(colorGrey) )
+		guiLabelSetColor(label9, unpack(colorGrey) )
 		ypos = ypos + 14
 		if bEnabled then
 			if getVersion().sortable < info.sver then
@@ -122,10 +122,10 @@ function aAntiCheatTab.Create ( tab )
 
 	ypos = ypos + 5
 
-	local msg = "To turn ON a SD#, add number to <enabledsd> setting in mtaserver.conf and restart server"
-	local label1 = guiCreateLabel ( xpos, ypos, 700, 16, msg, false, tab )
-	guiSetFont(label1, "default-bold-small" )
-	guiLabelSetColor(label1, unpack(colorYellow) )
+	local msg2 = "To turn ON a SD#, add number to <enablesd> setting in mtaserver.conf and restart server"
+	local label10 = guiCreateLabel ( xpos, ypos, 700, 16, msg2, false, tab )
+	guiSetFont(label10, "default-bold-small" )
+	guiLabelSetColor(label10, unpack(colorYellow) )
 
 	ypos = ypos + 25
 

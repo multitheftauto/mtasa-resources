@@ -54,15 +54,15 @@ function aOptionsTab.Create(tab)
     guiCreateLabel(0.70, 0.90, 0.19, 0.055, "Refresh Delay(MS):", true, aOptionsTab.Tab)
     aOptionsTab.RefreshDelay = guiCreateEdit(0.89, 0.90, 0.08, 0.045, "50", true, aOptionsTab.Tab)
 
-    if (tonumber(aGetSetting("adminChatLines"))) then
-        guiSetText(aOptionsTab.AdminChatLines, aGetSetting("adminChatLines"))
-    end
+    -- if (tonumber(aGetSetting("adminChatLines"))) then
+    --     guiSetText(aOptionsTab.AdminChatLines, aGetSetting("adminChatLines"))
+    -- end
     if ((tonumber(aGetSetting("refreshDelay"))) and (tonumber(aGetSetting("refreshDelay")) >= 50)) then
         guiSetText(aOptionsTab.RefreshDelay, aGetSetting("refreshDelay"))
     end
 
     addEventHandler("onClientGUIClick", aOptionsTab.Tab, aOptionsTab.onClientClick)
-    addEventHandler("aClientResourceStop", getResourceRootElement(), aOptionsTab.onClientResourceStop)
+    addEventHandler("aClientResourceStop", resourceRoot, aOptionsTab.onClientResourceStop)
     addEventHandler("onClientGUIScroll", aOptionsTab.Tab, aOptionsTab.onClientScroll)
     addEventHandler("onClientGUITabSwitched", aOptionsTab.Tab, aOptionsTab.onTabSwitched, false)
 end
@@ -84,7 +84,7 @@ function aOptionsTab.onClientClick(button)
         elseif (source == aOptionsTab.PerformanceAdvanced) then
             aPerformance()
         elseif (source == aOptionsTab.AutoLogin) then
-            triggerServerEvent("aAdmin", getLocalPlayer(), "autologin", guiCheckBoxGetSelected(aOptionsTab.AutoLogin))
+            triggerServerEvent("aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected(aOptionsTab.AutoLogin))
         elseif (source == aOptionsTab.PasswordOld) then
             guiSetInputEnabled(true)
         elseif (source == aOptionsTab.PasswordNew) then
@@ -106,7 +106,7 @@ function aOptionsTab.onClientClick(button)
             else
                 triggerServerEvent(
                     "aAdmin",
-                    getLocalPlayer(),
+                    localPlayer,
                     "password",
                     guiGetText(aOptionsTab.PasswordOld),
                     passwordNew,
@@ -124,7 +124,7 @@ end
 function aOptionsTab.onClientResourceStop()
     aSetSetting("adminChatOutput", guiCheckBoxGetSelected(aOptionsTab.AdminChatOutput))
     aSetSetting("adminChatSound", guiCheckBoxGetSelected(aOptionsTab.AdminChatSound))
-    aSetSetting("adminChatLines", guiGetText(aOptionsTab.AdminChatLines))
+    -- aSetSetting("adminChatLines", guiGetText(aOptionsTab.AdminChatLines))
     aSetSetting("refreshDelay", guiGetText(aOptionsTab.RefreshDelay))
 
     if (guiRadioButtonGetSelected(aOptionsTab.PerformanceRAM)) then

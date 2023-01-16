@@ -1,0 +1,80 @@
+<meta>
+	<info name="Car Fade" description="Vehicle alpha based on proximity" addon="race" author="AfuSensi" type="script" version="1.0"/>
+
+	<script src="util_shared.lua" type="shared" />
+
+	<script src="util_server.lua" type="server" />
+	<script src="settings_server.lua" type="server" />
+
+	<script src="carfade_client.lua" type="client" />
+	<script src="playeralpha_client.lua" type="client" />
+	<script src="settings_client.lua" type="client" />
+
+	<settings>
+		<!-- *****************************************************
+			 All these settings are adjustable in the Admin Panel:
+				1. start admin
+				2. press 'p'
+				3. select Resources tab
+				4. double click on 'race_carfade'
+			 ***************************************************** -->
+
+		<setting name="*maxdistance" value="15"
+					friendlyname="Maximum car fade distance"
+					group="Setting"
+					accept="1-100"
+					desc="Maximum car fade distance. At this distance, vehicles will be at maximum alpha."
+					/>
+
+		<setting name="*mindistance" value="5"
+					friendlyname="Minimum car fade distance"
+					group="Setting"
+					accept="1-100"
+					desc="Minimum car fade distance. At this distance, vehicles will be at minimum alpha."
+					/>
+
+		<setting name="*minalpha" value="0"
+					friendlyname="Minimum alpha"
+					group="Setting"
+					accept="0-255"
+					desc="Vehicle alpha at minimum distance."
+					/>
+
+		<setting name="*keybind" value="c"
+					friendlyname="Car fade keybind"
+					group="Setting"
+					accept="keyname, controlname"
+					examples="c,horn"
+					desc="Key or control name that car fade will be bound to. For valid key and action names, please refer to https://wiki.multitheftauto.com/wiki/Key_names and https://wiki.multitheftauto.com/wiki/Control_names"
+					/>
+
+		<setting name="*canbetoggled" value="true"
+					friendlyname="Can car fade be toggled"
+					group="Setting"
+					accept="true,false"
+					desc="Set to true to give players the ability to toggle car fade on/off"
+					/>
+
+		<setting name="*enabledbydefault" value="true"
+					friendlyname="Enabled by default"
+					group="Setting"
+					accept="true,false"
+					desc="Control if car fade should be enabled (true) or disabled (false) by default. If canbetoggled is set to false, it will force this setting."
+					/>
+
+		<setting name="*broadcastatmapstart" value="true"
+					friendlyname="Broadcast message at map start"
+					group="Setting"
+					accept="true,false"
+					desc="Broadcast car fade message at map start"
+					/>
+
+		<setting name="*throttleamount" value="100"
+					friendlyname="Throttle amount"
+					group="Setting"
+					accept="0-1000"
+					desc="Amount of milliseconds between car fade executions. Using a higher value can improve performance at the cost of smooth alpha transitions"
+					/>
+
+	</settings>
+</meta>

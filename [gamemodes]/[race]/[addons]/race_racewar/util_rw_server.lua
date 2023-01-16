@@ -2,9 +2,6 @@
 -- util_rw_server.lua
 --
 
-g_Root = getRootElement()
-g_ResRoot = getResourceRootElement(getThisResource())
-
 function clientCall(player, fnName, ...)
 	triggerClientEvent(onlyJoined(player), 'onClientCall_rw', player, fnName, ...)
 end
@@ -23,7 +20,7 @@ function allowRPC(...)
 end
 
 addEvent('onServerCall_rw', true)
-addEventHandler('onServerCall_rw', getRootElement(),
+addEventHandler('onServerCall_rw', root,
 	function(fnName, ...)
 		if g_AllowedRPCFunctions[fnName] then
 			local fn = _G

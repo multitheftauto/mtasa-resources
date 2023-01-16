@@ -1,7 +1,4 @@
-local rootElement = getRootElement()
-local thisResourceRoot = getResourceRootElement(getThisResource())
 local pagesXml
-
 local wndHelp, wndBlock, tPanel, btnClose
 local tab = {}
 local memo = {}
@@ -18,7 +15,7 @@ addEvent("doHideHelp", true)
 addEvent("onHelpShown")
 addEvent("onHelpHidden")
 
-addEventHandler("onClientResourceStart", thisResourceRoot,
+addEventHandler("onClientResourceStart", resourceRoot,
 	function ()
 		wndHelp  = guiCreateWindow(.2, .2, .6, .6, "Help", true)
 		wndBlock = guiCreateWindow(0, 0, 1, 1, "", true)
@@ -56,7 +53,7 @@ addEventHandler("onClientResourceStart", thisResourceRoot,
 	end
 )
 
-addEventHandler("onClientResourceStop", thisResourceRoot,
+addEventHandler("onClientResourceStop", resourceRoot,
 	function()
 		showCursor(false)
 	end
@@ -66,12 +63,12 @@ addEventHandler("onClientResourceStop", thisResourceRoot,
 function showHelp()
 	return clientToggleHelp(true)
 end
-addEventHandler("doShowHelp", rootElement, showHelp)
+addEventHandler("doShowHelp", root, showHelp)
 
 function hideHelp()
 	return clientToggleHelp(false)
 end
-addEventHandler("doHideHelp", rootElement, hideHelp)
+addEventHandler("doHideHelp", root, hideHelp)
 
 function addHelpTab(resource, showPopup)
 
@@ -122,7 +119,7 @@ function removeHelpTab(resource)
 
 	return true
 end
-addEventHandler("onClientResourceStop", rootElement, removeHelpTab)
+addEventHandler("onClientResourceStop", root, removeHelpTab)
 
 --private
 function addHelpTabFromXML(resource)
@@ -134,7 +131,7 @@ function addHelpTabFromXML(resource)
 	local helpnode = getResourceConfig(":"..getResourceName(resource).."/help.xml")
 	if helpnode then
 		local helptext = xmlNodeGetValue(helpnode)
-		local showPopup = not (xmlNodeGetAttribute(helpnode, "popup") == "no")
+		local showPopup = xmlNodeGetAttribute(helpnode, "popup") ~= "no"
 		if helptext then
 			addHelpTab(resource, showPopup)
 			memo[resource] = guiCreateMemo(.05, .05, .9, .9, helptext, true, tab[resource])
@@ -142,7 +139,7 @@ function addHelpTabFromXML(resource)
 		end
 	end
 end
-addEventHandler("onClientResourceStart", rootElement, addHelpTabFromXML)
+addEventHandler("onClientResourceStart", root, addHelpTabFromXML)
 
 function clientToggleHelp(state)
 	if state ~= true and state ~= false then
@@ -168,10 +165,10 @@ local function fadeIn(wnd)
 		if newAlpha <= MAX_ALPHA then
 			guiSetAlpha(wnd, newAlpha)
 		else
-			removeEventHandler("onClientRender", rootElement, raiseAlpha)
+			removeEventHandler("onClientRender", root, raiseAlpha)
 		end
 	end
-	addEventHandler("onClientRender", rootElement, raiseAlpha)
+	addEventHandler("onClientRender", root, raiseAlpha)
 end
 
 local function fadeOut(wnd)
@@ -180,7 +177,7 @@ local function fadeOut(wnd)
 		if newAlpha >= 0 then
 			guiSetAlpha(wnd, newAlpha)
 		else
-			removeEventHandler("onClientRender", rootElement, lowerAlpha)
+			removeEventHandler("onClientRender", root, lowerAlpha)
 			destroyElement(wnd)
 
 			table.remove(popupQueue, 1)
@@ -189,7 +186,7 @@ local function fadeOut(wnd)
 			end
 		end
 	end
-	addEventHandler("onClientRender", rootElement, lowerAlpha)
+	addEventHandler("onClientRender", root, lowerAlpha)
 end
 
 function addHelpPopup(resource)

@@ -1,6 +1,3 @@
-g_Root = getRootElement()
-g_ResRoot = getResourceRootElement(getThisResource())
-
 function clientCall(player, fnName, ...)
 	triggerClientEvent(onlyJoined(player), 'onClientCall_race', resourceRoot, fnName, ...)
 end
@@ -42,7 +39,7 @@ g_Messages = {}		-- { player =  { display = display, textitem = textitem, timer 
 function showMessage(text, r, g, b, player)
     local ypos = 0.25
 	if not player then
-		player = g_Root
+		player = root
         ypos = 0.35
 	end
 
@@ -60,9 +57,9 @@ function showMessage(text, r, g, b, player)
 	textDisplayAddText(display, textitem)
 	textItemSetText(textitem, text)
 	textItemSetColor(textitem, r or 255, g or 0, b or 0, 255)
-	if player == g_Root then
-		for i,player in ipairs(getElementsByType('player')) do
-			textDisplayAddObserver(display, player)
+	if player == root then
+		for i,plr in ipairs(getElementsByType('player')) do
+			textDisplayAddObserver(display, plr)
 		end
 	else
 		textDisplayAddObserver(display, player)
@@ -213,7 +210,8 @@ function showBlipsAttachedTo(elem, bShow)
 	local elements = getAttachedElements ( elem )
 	for k,v in ipairs( elements ) do
 		if ( getElementType( v ) == "blip" ) then
-			local r,g,b,a = getBlipColor ( v )
+			local r,g,b,a
+			r,g,b = getBlipColor ( v )
 			a = bShow and 255 or 0
 			setBlipColor ( v, r,g,b,a )
 		end
@@ -345,7 +343,7 @@ function table.deletevalue(t, val)
 	return false
 end
 
-function table.deepcopy(t)
+function table.deepcopy(t1)
 	local known = {}
 	local function _deepcopy(t)
 		local result = {}
@@ -361,7 +359,7 @@ function table.deepcopy(t)
 		end
 		return result
 	end
-	return _deepcopy(t)
+	return _deepcopy(t1)
 end
 
 function table.random(t)

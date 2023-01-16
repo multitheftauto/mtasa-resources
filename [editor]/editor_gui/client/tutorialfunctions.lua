@@ -1,4 +1,3 @@
-local g_root = getRootElement()
 local screenX,screenY = guiGetScreenSize()
 local BOX_COLOR,BOX_HEIGHT = -1358954496, 19
 local FADE_TIME = 300

@@ -43,7 +43,7 @@ function aPlayerInterior ( player )
 end
 
 function aPlayerInteriorClose ( destroy )
-	if ( ( destroy ) or ( aPerformanceInterior and guiCheckBoxGetSelected ( aPerformanceInterior ) ) ) then
+	if ( destroy ) then
 		if ( aInteriorForm ) then
 			removeEventHandler ( "onClientGUIDoubleClick", aInteriorForm, aClientInteriorDoubleClick )
 			removeEventHandler ( "onClientGUIClick", aInteriorForm, aClientInteriorClick )
@@ -59,7 +59,7 @@ function aClientInteriorDoubleClick ( button )
 	if ( button == "left" ) then
 		if ( source == aInteriorList ) then
 			if ( guiGridListGetSelectedItem ( aInteriorList ) ~= -1 ) then
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aInteriorSelectPointer, "setinterior", guiGridListGetItemText ( aInteriorList, guiGridListGetSelectedItem ( aInteriorList ), 2 ) )
+				triggerServerEvent ( "aPlayer", localPlayer, aInteriorSelectPointer, "setinterior", guiGridListGetItemText ( aInteriorList, guiGridListGetSelectedItem ( aInteriorList ), 2 ) )
 				aPlayerInteriorClose ( false )
 			end
 		end
@@ -70,7 +70,7 @@ function aClientInteriorClick ( button )
 	if ( button == "left" ) then
 		if ( source == aInteriorSelect ) then
 			if ( guiGridListGetSelectedItem ( aInteriorList ) ~= -1 ) then
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aInteriorSelectPointer, "setinterior", guiGridListGetItemText ( aInteriorList, guiGridListGetSelectedItem ( aInteriorList ), 2 ) )
+				triggerServerEvent ( "aPlayer", localPlayer, aInteriorSelectPointer, "setinterior", guiGridListGetItemText ( aInteriorList, guiGridListGetSelectedItem ( aInteriorList ), 2 ) )
 				guiSetVisible ( aInteriorForm, false )
 			end
 		elseif ( source == aInteriorCancel ) then

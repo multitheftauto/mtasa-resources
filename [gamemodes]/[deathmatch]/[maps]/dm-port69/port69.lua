@@ -1,7 +1,7 @@
 -- Start with console command: gamemode deathmatch dm-port69
 -- Port 69 by Ransom 2006
 
-local vehicles = getElementsByType ( "vehicle", getRootElement () )
+local vehicles = getElementsByType ( "vehicle", root )
 
 for k,v in pairs(vehicles) do
 	toggleVehicleRespawn ( v, true )

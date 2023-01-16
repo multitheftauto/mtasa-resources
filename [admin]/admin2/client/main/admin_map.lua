@@ -56,7 +56,6 @@ addEventHandler(
 
         if (aMap.players or aMap.coords) then
             local minX, minY, maxX, maxY = getPlayerMapBoundingBox()
-            local sx, sy = guiGetScreenSize()
             local msx, msy = -(minX - maxX), -(minY - maxY)
 
             for k, player in ipairs(getElementsByType("player")) do
@@ -95,7 +94,7 @@ addEventHandler(
                 local msx, msy = -(minX - maxX), -(minY - maxY)
                 local px = 6000 * ((x - minX) / msx) - 3000
                 local py = 3000 - 6000 * ((y - minY) / msy)
-                setElementPosition(getLocalPlayer(), px, py, 10)
+                setElementPosition(localPlayer, px, py, 10)
             end
         end
     end

@@ -34,7 +34,7 @@ function onMapLoad ( name )
 
 	setTimer ( gameTick, 1000, 0 )
 end
-addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), onMapLoad)
+addEventHandler( "onResourceStart", resourceRoot, onMapLoad)
 
 function onMapFinish ( name )
 	if getThisResource() ~= name then return end
@@ -193,8 +193,8 @@ function gameTick ()
 				local xplayerDeaths = playerDeaths
 				local xplayerKills = playerKills
 				if xplayerDeaths == 0 then xplayerDeaths = 1 end
-				local xplayerKills = tonumber(xplayerKills)
-				local xplayerDeaths = tonumber(xplayerDeaths)
+				xplayerKills = tonumber(xplayerKills)
+				xplayerDeaths = tonumber(xplayerDeaths)
 				if (not xplayerKills) then
 					xplayerKills = 0
 				end
@@ -258,7 +258,7 @@ function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 	setElementData ( source, "deaths", wastedDeaths )
 
 	if ( attacker ) then
-		if not ( attacker == source ) then
+		if (attacker ~= source) then
 		    if ( getPlayerTeam(attacker) ~= getPlayerTeam(source) ) then
 			    local attackerKills = getElementData ( attacker, "kills" )
 			    attackerKills = attackerKills + 1

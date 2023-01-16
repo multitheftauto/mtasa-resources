@@ -1,6 +1,6 @@
 <meta>
-	<info author="erorr404" type="script" version="1.0.1" />
-	<script src="deathpickups.lua" />
+	<info author="erorr404" type="script" version="1.1"/>
+	<script src="deathpickups.lua" type="server"/>
 	<settings>
 		<setting name="*timeout" value="[30000]"/>
 		<setting name="*only_current" value="[false]"/>

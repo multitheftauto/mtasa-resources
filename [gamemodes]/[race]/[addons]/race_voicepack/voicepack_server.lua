@@ -1,20 +1,18 @@
-local g_Root = getRootElement()
-
 local mapMode = ""
 
 function playAudio(player, filename)
 	-- outputDebugString("play sound "..filename.." for "..getPlayerName(player))
-	triggerClientEvent(player, "playClientAudio", getRootElement(), filename)
+	triggerClientEvent(player, "playClientAudio", root, filename)
 end
 
 addEvent("onMapStarting")
-addEventHandler('onMapStarting', g_Root,
+addEventHandler('onMapStarting', root,
 	function(mapInfo)
 		mapMode = mapInfo.modename
 	end
 )
 
-addEventHandler('onPlayerQuit', g_Root,
+addEventHandler('onPlayerQuit', root,
     function()
         if mapMode == "Destruction derby" and getElementData(source,"state") == "alive" then
 			local alivePlayers = getAlivePlayers()
@@ -30,7 +28,7 @@ addEventHandler('onPlayerQuit', g_Root,
     end
 )
 
-addEventHandler('onPlayerWasted', g_Root,
+addEventHandler('onPlayerWasted', root,
 	function()
 		if mapMode == "Destruction derby" then
 			local alivePlayers = getAlivePlayers()
@@ -51,14 +49,14 @@ addEventHandler('onPlayerWasted', g_Root,
 )
 
 addEvent('onRequestKillPlayer', true)
-addEventHandler('onRequestKillPlayer', g_Root,
+addEventHandler('onRequestKillPlayer', root,
     function()
 		p_Killed = true
     end
 )
 
 addEvent("onPlayerToptimeImprovement")
-addEventHandler("onPlayerToptimeImprovement", g_Root,
+addEventHandler("onPlayerToptimeImprovement", root,
 	function(newPos, newTime, oldPos, oldTime, displayTopCount, validEntryCount)
 		if newPos <= displayTopCount and newPos <= validEntryCount then
 			playAudio(source, "nicework.mp3")
@@ -69,9 +67,9 @@ addEventHandler("onPlayerToptimeImprovement", g_Root,
 local _getAlivePlayers = getAlivePlayers
 function getAlivePlayers(player)
 	local result = {}
-	for _,player in ipairs(_getAlivePlayers()) do
-		if getElementData(player, "state") == "alive" then
-			table.insert(result, player)
+	for _,plr in ipairs(_getAlivePlayers()) do
+		if getElementData(plr, "state") == "alive" then
+			table.insert(result, plr)
 		end
 	end
 	return result

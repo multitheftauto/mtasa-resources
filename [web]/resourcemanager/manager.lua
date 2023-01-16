@@ -20,23 +20,13 @@ end
 
 function getResourceInfo ( resource )
 
-    local failreason =  getResourceLoadFailureReason ( resource )
-    local state = getResourceState ( resource )
-    local starttime = getRealTimes(getResourceLastStartTime ( resource ))
-    local loadtime = getRealTimes(getResourceLoadTime ( resource ))
+	local failreason =  getResourceLoadFailureReason ( resource )
+	local state = getResourceState ( resource )
+	local startTimestamp = getResourceLastStartTime(resource)
+	local startTime = type(startTimestamp) == "number" and os.date("%Y-%m-%d %X", startTimestamp) or "Never"
+	local loadTimestamp = getResourceLoadTime(resource)
+	local loadTime = type(loadTimestamp) == "number" and os.date("%Y-%m-%d %X", loadTimestamp) or "Never"
 	local author =  mta_getResourceInfo ( resource, "author" )
 	local version = mta_getResourceInfo ( resource, "version" )
-    return {state=state, failurereason=failreason, starttime=starttime, loadtime=loadtime, author=author, version=version}
-end
-
-function getRealTimes(sek)
-	if sek == "never" then return "Never" end
-	local time = getRealTime(sek)
-	if time.hour < 10 then time.hour = "0"..time.hour end
-	if time.minute < 10 then time.minute = "0"..time.minute end
-	if time.second < 10 then time.second = "0"..time.second end
-	if time.month+1 < 10 then time.month = "0"..(time.month+1) end
-	if time.monthday < 10 then time.monthday = "0"..time.monthday end
-
-	return (time.year+1900).."-"..time.month.."-"..time.monthday.." "..time.hour..":"..time.minute..":"..time.second
+	return {state=state, failurereason=failreason, starttime=startTime, loadtime=loadTime, author=author, version=version}
 end

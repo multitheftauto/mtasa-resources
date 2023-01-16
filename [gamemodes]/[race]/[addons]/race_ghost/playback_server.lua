@@ -1,4 +1,3 @@
-g_Root = getRootElement()
 
 addEvent"onMapStarting"
 
@@ -21,7 +20,7 @@ end
 
 function GhostPlayback:destroy()
 	if self.hasGhost then
-		triggerClientEvent( "clearMapGhost", g_Root )
+		triggerClientEvent( "clearMapGhost", root )
 	end
 	if isElement( self.ped ) then
 		destroyElement( self.ped )
@@ -35,7 +34,6 @@ function GhostPlayback:destroy()
 		destroyElement( self.blip )
 		outputDebug( "Destroyed blip." )
 	end
-	self = nil
 end
 
 function GhostPlayback:deleteGhost()
@@ -150,11 +148,11 @@ end
 
 function GhostPlayback:sendGhostData( target )
 	if self.hasGhost then
-		triggerClientEvent( target or g_Root, "onClientGhostDataReceive", g_Root, self.recording, self.bestTime, self.racer, self.ped, self.vehicle )
+		triggerClientEvent( target or root, "onClientGhostDataReceive", root, self.recording, self.bestTime, self.racer, self.ped, self.vehicle )
 	end
 end
 
-addEventHandler( "onMapStarting", g_Root,
+addEventHandler( "onMapStarting", root,
 	function()
 		if playback then
 			playback:destroy()
@@ -166,7 +164,7 @@ addEventHandler( "onMapStarting", g_Root,
 	end
 )
 
-addEventHandler( "onPlayerJoin", g_Root,
+addEventHandler( "onPlayerJoin", root,
 	function()
 		if playback then
 			playback:sendGhostData( source )

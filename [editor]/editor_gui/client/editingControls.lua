@@ -5,7 +5,6 @@ addEvent "onClientDropDownOpen"
 addEvent "onClientControlBrowserLaunch"
 addEvent "onClientControlBrowserClose"
 
-local rootElement = getRootElement()
 local guiRoot = getResourceGUIElement(getThisResource())
 
 local catalogTypes = {
@@ -577,7 +576,7 @@ eC.dropdown = {
 
 		self.enabled = info.enabled
 		if self.enabled then
-			self:addHandler ( "onClientGUIClick", rootElement, self.dropdownClick, true )
+			self:addHandler ( "onClientGUIClick", root, self.dropdownClick, true )
 		else
 			self.enabled = true
 			self:disable()
@@ -689,7 +688,7 @@ eC.dropdown = {
 				triggerEvent ( "onClientDropDownSelect", self.GUI.gridlist, cellrow )
 			end
 		else
-			if source ~= rootElement then
+			if source ~= root then
 				local height = self.height
 				local width = self.width
 
@@ -701,7 +700,7 @@ eC.dropdown = {
 	end,
 	enable = function ( self )
 		if not self.enabled then
-			self:addHandler ( "onClientGUIClick", rootElement, self.dropdownClick, true )
+			self:addHandler ( "onClientGUIClick", root, self.dropdownClick, true )
 			self.enabled = true
 			guiLabelSetColor(self.GUI.label,255,255,255,255)
 			return true
@@ -980,14 +979,12 @@ eC.color = {
 		self.testHeight = info.height * self.default.testHeight
 		self.buttonWidth = info.width * self.default.buttonWidth
 
-		local offset = 1 --px
 		local height = 10
 		local sizeX, sizeY = guiGetSize(info.parent, false)
 		if not sizeX then
 			sizeX, sizeY = guiGetScreenSize()
 		end
 		if info.relative then
-			offset = offset / sizeX
 			height = height / sizeY
 		end
 		local fillerString = string.rep('l', math.ceil(sizeX/2))
@@ -995,13 +992,12 @@ eC.color = {
 		self.GUI.test = { }
 		local numlabels = math.ceil(self.testHeight / height) - 1
 
-		local i
-		for i=0,numlabels do
-			if i == numlabels then
-				height = self.testHeight - ((i-1)*height)
+		for i6=0,numlabels do
+			if i6 == numlabels then
+				height = self.testHeight - ((i6-1)*height)
 			end
-			self.GUI.test[(i*2) + 1] = guiCreateLabel(info.x, info.y + 7*i, self.testWidth, height, fillerString, info.relative, info.parent)
-			self.GUI.test[(i*2) + 2] = guiCreateLabel(info.x+1, info.y + 7*i, self.testWidth, height, fillerString, info.relative, info.parent)
+			self.GUI.test[(i6*2) + 1] = guiCreateLabel(info.x, info.y + 7*i6, self.testWidth, height, fillerString, info.relative, info.parent)
+			self.GUI.test[(i6*2) + 2] = guiCreateLabel(info.x+1, info.y + 7*i6, self.testWidth, height, fillerString, info.relative, info.parent)
 		end
 
 		self.GUI.changeButton = guiCreateButton(info.x + self.testWidth + sizeX * 0.02, info.y,
@@ -1145,8 +1141,8 @@ eC.color = {
 		-- Create the color history
 		if not colorHistory then
 			colorHistory = {}
-			for i=1,9 do
-				colorHistory[i] = { 255, 255, 255, 200 }
+			for i5=1,9 do
+				colorHistory[i5] = { 255, 255, 255, 200 }
 			end
 		end
 
@@ -1228,8 +1224,8 @@ eC.color = {
 
 		guiSetVisible(self.WGUI.selectWindow, true)
 		guiBringToFront(self.WGUI.selectWindow)
-		self:addHandler("onClientRender", rootElement, self.updateSelectedValue)
-		self:addHandler("onClientClick", rootElement, self.pickColor)
+		self:addHandler("onClientRender", root, self.updateSelectedValue)
+		self:addHandler("onClientClick", root, self.pickColor)
 
 		self.isSelectOpen = true
 		self.pickingColor = false
@@ -1269,7 +1265,7 @@ eC.color = {
 	updateSelectedValue = function( self )
 		if not guiGetVisible(self.WGUI.selectWindow) then return end
 
-		local r, g, b, a
+		local r, g, b
 
 		-- Check for color changes
 		local wx, wy = guiGetPosition(self.WGUI.selectWindow, false)
@@ -1292,7 +1288,6 @@ eC.color = {
 
 			self.h, self.s  = (cursorX - paletteX) / 255, (255 - cursorY + paletteY) / 255
 			r, g, b = self:hsl2rgb(self.h, self.s, self.l)
-			a = self.value[4] / 255
 			self.avoidRecursion = true
 			self:setValue({r*255, g*255, b*255, self.value[4]})
 			self.avoidRecursion = false
@@ -1304,7 +1299,6 @@ eC.color = {
 
 			self.l = (256 - cursorY + luminanceY) / 256
 			r, g, b = self:hsl2rgb(self.h, self.s, self.l)
-			a = self.value[4] / 255
 			self.avoidRecursion = true
 			self:setValue({r*255, g*255, b*255, self.value[4]})
 			self.avoidRecursion = false
@@ -1317,9 +1311,6 @@ eC.color = {
 			self.avoidRecursion = true
 			self:setValue({self.value[1], self.value[2], self.value[3], cursorY - alphaY})
 			self.avoidRecursion = false
-			r, g, b, a = self.value[1] / 255, self.value[2] / 255, self.value[3] / 255, self.value[4] / 255
-		else
-			r, g, b, a = self.value[1] / 255, self.value[2] / 255, self.value[3] / 255, self.value[4] / 255
 		end
 
 		-- Draw the lines pointing to the current selected color
@@ -1333,11 +1324,10 @@ eC.color = {
 		dxDrawLine(x, y + 2, x, y + 12, color, 3, true)
 
 		-- Draw the luminance for this color
-		local i
-		for i=0,256 do
-			local _r, _g, _b = self:hsl2rgb(self.h, self.s, (256 - i) / 256)
-			local color = tocolor(_r * 255, _g * 255, _b * 255, 255)
-			dxDrawRectangle(luminanceX, luminanceY + i, self.selectWindow.luminanceWidth, 1, color, true)
+		for i3=0,256 do
+			local _r, _g, _b = self:hsl2rgb(self.h, self.s, (256 - i3) / 256)
+			local color2 = tocolor(_r * 255, _g * 255, _b * 255, 255)
+			dxDrawRectangle(luminanceX, luminanceY + i3, self.selectWindow.luminanceWidth, 1, color2, true)
 		end
 
 		-- Draw the luminance position marker
@@ -1346,9 +1336,9 @@ eC.color = {
 		dxDrawLine(arrowX, arrowY, arrowX + 8, arrowY, tocolor(255, 255, 255, 255), 2, true)
 
 		-- Draw the alpha for this color
-		for i=0,255 do
-			local color = tocolor(self.value[1], self.value[2], self.value[3], i)
-			dxDrawRectangle(alphaX, alphaY + i, self.selectWindow.alphaWidth + 1, 1, color, true)
+		for i2=0,255 do
+			local color2 = tocolor(self.value[1], self.value[2], self.value[3], i2)
+			dxDrawRectangle(alphaX, alphaY + i2, self.selectWindow.alphaWidth + 1, 1, color2, true)
 		end
 
 		-- Draw the alpha position marker
@@ -1359,13 +1349,13 @@ eC.color = {
 		-- Draw the recently used colors
 		local boxWidth = (self.selectWindow.historyWidth - 15) / 3
 		local boxHeight = (self.selectWindow.historyHeight - 45) / 3
-		for i=1,3 do
-		  for j=1,3 do
-		  	local color = colorHistory[j + ((i - 1) * 3)]
-		  	local x = wx + self.selectWindow.historyX + ((boxWidth + 5) * (j-1))
-			local y = wy + self.selectWindow.historyY + 30 + ((boxHeight + 5) * (i-1))
-			dxDrawRectangle(x, y, boxWidth, boxHeight, tocolor(unpack(color)), true)
-		  end
+		for i2=1,3 do
+			for j=1,3 do
+				local color2 = colorHistory[j + ((i2 - 1) * 3)]
+				local x2 = wx + self.selectWindow.historyX + ((boxWidth + 5) * (j-1))
+				local y2 = wy + self.selectWindow.historyY + 30 + ((boxHeight + 5) * (i2-1))
+				dxDrawRectangle(x2, y2, boxWidth, boxHeight, tocolor(unpack(color2)), true)
+			end
 		end
 	end,
 	isCursorInArea = function( self, cursorX, cursorY, minX, minY, maxX, maxY )
@@ -1497,18 +1487,21 @@ eC.color = {
 		end
 		local m1 = l * 2 - m2
 
-		local hue2rgb = function(m1, m2, h)
-			if h < 0 then h = h + 1
-			elseif h > 1 then h = h - 1 end
+		local hue2rgb = function(m3, m4, h2)
+			if h2 < 0 then
+				h2 = h2 + 1
+			elseif h2 > 1 then
+				h2 = h2 - 1
+			end
 
-			if h*6 < 1 then
-				return m1 + (m2 - m1) * h * 6
-			elseif h*2 < 1 then
-				return m2
-			elseif h*3 < 2 then
-				return m1 + (m2 - m1) * (2/3 - h) * 6
+			if h2*6 < 1 then
+				return m3 + (m4 - m3) * h2 * 6
+			elseif h2*2 < 1 then
+				return m4
+			elseif h2*3 < 2 then
+				return m3 + (m4 - m3) * (2/3 - h2) * 6
 			else
-				return m1
+				return m3
 			end
 		end
 
@@ -1941,7 +1934,7 @@ local control_mt = {
 		if control.changeHandler then
 			removeEventHandler(unpack(control.changeHandler))
 		end
-		fromElement = fromElement or rootElement
+		fromElement = fromElement or root
 		local wrapperFunction = function(...) handlerFunction(control, ...) end
 		control.changeHandler = { mtaEvent, fromElement, wrapperFunction }
 		addEventHandler(mtaEvent, fromElement, wrapperFunction, (getPropagated == true))
@@ -1960,7 +1953,7 @@ local control_mt = {
 
 	addHandler = function ( control, mtaEvent, fromElement, handlerFunction, getPropagated )
 		if not handlerFunction then error("handlerFunction is nil", 2) end
-		fromElement = fromElement or rootElement
+		fromElement = fromElement or root
 		-- generate a function that sends the control, then the parameters, to the real handler
 		local wrapperFunction = function(...) handlerFunction(control, ...) end
 		-- register it in a table so we can remove it on destroy
@@ -2045,7 +2038,6 @@ setmetatable(shortcutCreator, shortcutCreator)
 function guiElementGetScreenPosition(element)
 	local x,y = guiGetPosition(element,false)
 	local parent = getElementParent(element)
-	local guiRoot = getResourceGUIElement(getThisResource())
 	while getElementType(parent) ~= "guiroot" do
 		local parentX,parentY = guiGetPosition(parent,false)
 		x = x + parentX

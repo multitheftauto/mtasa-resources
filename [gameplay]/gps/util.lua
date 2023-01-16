@@ -18,14 +18,14 @@ end
 local serverMT = {}
 function serverMT:__index(fnName)
 	return function(...)
-		triggerServerEvent('onServerCallback', getLocalPlayer(), CRs[coroutine.running()], fnName, ...)
+		triggerServerEvent('onServerCallback', localPlayer, CRs[coroutine.running()], fnName, ...)
 		return coroutine.yield()
 	end
 end
 server = setmetatable({}, serverMT)
 
 addEvent('onServerCallbackReply', true)
-addEventHandler('onServerCallbackReply', getResourceRootElement(getThisResource()),
+addEventHandler('onServerCallbackReply', resourceRoot,
 	function(crID, ...)
 		coroutine.resume(CRs[crID], ...)
 	end,
@@ -69,7 +69,7 @@ function table.merge ( ... )
 	local ret = { }
 
 	for index, tbl in ipairs ( {...} ) do
-		for index, val in ipairs ( tbl ) do
+		for index2, val in ipairs ( tbl ) do
 			table.insert ( ret, val )
 		end
 	end

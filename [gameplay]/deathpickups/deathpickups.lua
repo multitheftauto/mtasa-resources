@@ -1,60 +1,103 @@
-local timers = {} -- timers for existing pickups
+local pickupTimers = {}
+local expireTime = get("timeout")
+local onlyCurrentWeapon = get("only_current")
+local dropRadius = get("radius")
 
-local function onDeathPickupHit ( player, matchingDimension )
-	if matchingDimension then
-		killTimer ( timers[source] )
-		timers[source] = nil
-		removeEventHandler ( "onPickupHit", source, onDeathPickupHit )
-		local weapid = getPickupWeapon ( source )
-		local weapammo = getPickupAmmo ( source )
-		destroyElement ( source )
-		giveWeapon ( player, weapid, weapammo, false )
+local function destroyDeathPickup(pickupElement)
+	if isElement(pickupElement) then
+		destroyElement(pickupElement)
 	end
 end
 
-local function destroyDeathPickup ( pickup )
-	timers[pickup] = nil
-	removeEventHandler ( "onPickupHit", pickup, onDeathPickupHit )
-	destroyElement ( pickup )
+local function dropAllWeapons(posX, posY, posZ, droppedWeapons)
+	local weaponsCount = #droppedWeapons
+
+	for wID = 1, weaponsCount do
+		local weaponData = droppedWeapons[wID]
+		local weaponID = weaponData[1]
+		local weaponAmmo = weaponData[2]
+		local pickupX = posX + dropRadius * math.cos((wID - 1) * 2 * math.pi/weaponsCount)
+		local pickupY = posY + dropRadius * math.sin((wID - 1) * 2 * math.pi/weaponsCount)
+		local pickupElement = createPickup(pickupX, pickupY, posZ, 2, weaponID, expireTime, weaponAmmo)
+
+		pickupTimers[pickupElement] = setTimer(destroyDeathPickup, expireTime, 1, pickupElement)
+	end
 end
 
-addEventHandler ( "onPlayerWasted", getRootElement (),
-	function ( source_ammo, killer, killer_weapon, bodypart )
-		local pX, pY, pZ = getElementPosition ( source )
-		local timeout = get("timeout")
+function onDeathPickupHit(playerElement)
+	cancelEvent()
+	giveWeapon(playerElement, getPickupWeapon(source), getPickupAmmo(source), false)
+	destroyDeathPickup(source)
+end
+addEventHandler("onPickupHit", resourceRoot, onDeathPickupHit)
 
-		if get("only_current") then
-			local source_weapon = getPedWeapon ( source )
-			if ( source_weapon and source_weapon ~= 0 and source_ammo ) then
-				local pickup = createPickup ( pX, pY, pZ, 2, source_weapon, timeout, source_ammo )
-				addEventHandler ( "onPickupHit", pickup, onDeathPickupHit )
-				timers[pickup] = setTimer ( destroyDeathPickup, timeout, 1, pickup )
+function onPlayerWasted()
+	local posX, posY, posZ = getElementPosition(source)
+
+	if onlyCurrentWeapon then
+		local playerWeapon = getPedWeapon(source)
+		local validWeapon = playerWeapon and playerWeapon ~= 0
+
+		if validWeapon then
+			local totalAmmo = getPedTotalAmmo(source)
+			local pickupElement = createPickup(posX, posY, posZ, 2, playerWeapon, expireTime, totalAmmo)
+
+			pickupTimers[pickupElement] = setTimer(destroyDeathPickup, expireTime, 1, pickupElement)
+		end
+	else
+		local droppedWeapons = {}
+
+		for weaponSlot = 0, 12 do
+			local playerWeapon = getPedWeapon(source, weaponSlot)
+			local validWeapon = playerWeapon ~= 0
+
+			if validWeapon then
+				local ammoInSlot = getPedTotalAmmo(source, weaponSlot)
+
+				droppedWeapons[#droppedWeapons + 1] = {playerWeapon, ammoInSlot}
 			end
-		else
-			local droppedWeapons = {}
-			for slot=0, 12 do
-				local ammo = getPedTotalAmmo(source, slot)
-				if (getPedWeapon(source, slot) ~= 0) then
-					local weapon = getPedWeapon(source, slot)
-					local ammo = getPedTotalAmmo(source, slot)
-					table.insert(droppedWeapons, {weapon, ammo})
-				end
+		end
+
+		dropAllWeapons(posX, posY, posZ, droppedWeapons)
+	end
+end
+addEventHandler("onPlayerWasted", root, onPlayerWasted)
+
+function onElementDestroyPickup()
+	local validElement = isElement(source)
+
+	if validElement then
+		local pickupType = getElementType(source) == "pickup"
+
+		if pickupType then
+			local pickupTimer = pickupTimers[source]
+
+			if pickupTimer then
+				killTimer(pickupTimer)
+				pickupTimers[source] = nil
 			end
-			DropAllWeapons(droppedWeapons)
 		end
 	end
-)
+end
+addEventHandler("onElementDestroy", resourceRoot, onElementDestroyPickup)
 
-function DropAllWeapons ( droppedWeapons )
-	local radius = get("radius")
-	local numberDropped = #droppedWeapons
-	for i, t in ipairs(droppedWeapons) do
-		local pX, pY, pZ = getElementPosition ( source )
-		local x = pX + radius * math.cos((i-1) * 2 * math.pi / numberDropped)
-		local y = pY + radius * math.sin((i-1) * 2 * math.pi / numberDropped)
-		local timeout = get("timeout")
-		local pickup = createPickup(x, y, pZ, 2, t[1], timeout, t[2])
-		addEventHandler ( "onPickupHit", pickup, onDeathPickupHit )
-		timers[pickup] = setTimer ( destroyDeathPickup, timeout, 1, pickup )
+function onSettingChange(settingName, _, newValue)
+	local expireSetting = settingName == "*deathpickups.timeout"
+
+	if expireSetting then
+		expireTime = fromJSON(newValue)
+	end
+
+	local weaponSetting = settingName == "*deathpickups.only_current"
+
+	if weaponSetting then
+		onlyCurrentWeapon = fromJSON(newValue)
+	end
+
+	local radiusSetting = settingName == "*deathpickups.radius"
+
+	if radiusSetting then
+		dropRadius = fromJSON(newValue)
 	end
 end
+addEventHandler("onSettingChange", resourceRoot, onSettingChange)

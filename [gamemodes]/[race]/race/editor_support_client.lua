@@ -15,7 +15,7 @@ end
 if isEditor() then
 
 	-- Copy cp_next into cp_now
-	setElementData(g_Me, 'race.editor.cp_now', getElementData(g_Me, 'race.editor.cp_next'))
+	setElementData(localPlayer, 'race.editor.cp_now', getElementData(localPlayer, 'race.editor.cp_next'))
 
     -- override TitleScreen.show() and don't show things
 	TitleScreen._show = TitleScreen.show
@@ -31,7 +31,7 @@ if isEditor() then
 
 		-- Do fadeup and tell server client is ready
 		setTimer(fadeCamera, 200, 1, true, 1.0)
-		setTimer( function() triggerServerEvent('onNotifyPlayerReady', g_Me) end, 50, 1 )
+		setTimer( function() triggerServerEvent('onNotifyPlayerReady', localPlayer) end, 50, 1 )
 
 		bindKey('1', 'down', editorSelectCheckpoint, -10)
 		bindKey('2', 'down', editorSelectCheckpoint, -1)
@@ -49,7 +49,7 @@ if isEditor() then
 		editorAddHelpLine("3","CP + 1" )
 		editorAddHelpLine("4","CP + 10" )
 		editorAddHelpLine("5" )
-		local startCp = getElementData(g_Me, "race.editor.cp_now")
+		local startCp = getElementData(localPlayer, "race.editor.cp_now")
 		if startCp then
 			editorAddHelpLine( "6","Previous test run CP (" .. tostring(startCp) .. ")" )
 		else
@@ -63,7 +63,7 @@ if isEditor() then
 		editorAddHelpLine( "F1","(Create) Custom vehicle" )
 		editorAddHelpLine( "F2","Hide this help" )
 
-		if getElementData(g_Me, 'race.editor.hidehelp' ) then
+		if getElementData(localPlayer, 'race.editor.hidehelp' ) then
 			editorHideHelp()
 		end
 	end
@@ -84,17 +84,17 @@ if isEditor() then
 		for key,line in pairs(editorHelpLines) do
 			line:visible(not line:visible())
 		end
-		setElementData(g_Me, 'race.editor.hidehelp', not editorHelpLines[1]:visible() )
+		setElementData(localPlayer, 'race.editor.hidehelp', not editorHelpLines[1]:visible() )
 	end
 
 
 	-- Remember last passed cp for next time
 	addEventHandler('onClientElementDataChange', root,
 		function(dataName, oldValue )
-			if source==g_Me and dataName == "race.checkpoint" then
-				local i = getElementData(g_Me, 'race.checkpoint')
+			if source==localPlayer and dataName == "race.checkpoint" then
+				local i = getElementData(localPlayer, 'race.checkpoint')
 				if i then
-					setElementData(g_Me, 'race.editor.cp_next', i-1 )
+					setElementData(localPlayer, 'race.editor.cp_next', i-1 )
 					outputDebug ( "race.editor.cp_next " .. tostring(i-1) )
 				end
 			end
@@ -109,11 +109,11 @@ if isEditor() then
 			-- See if custom vehicle selected in F1 menu
 			if getElementType(source) == "vehicle" then
 				local vehicle = source
-				local x,y,z = getElementPosition(g_Me)
+				local x,y,z = getElementPosition(localPlayer)
 				local distance = getDistanceBetweenPoints3D(x, y, z, getElementPosition(vehicle))
 				-- Is nearby, not mine and has no driver?
 				if distance < 5 and vehicle ~= g_Vehicle and not getVehicleController(vehicle) then
-					triggerServerEvent( "onEditorSelectCustomVehicle", resourceRoot, g_Me, vehicle )
+					triggerServerEvent( "onEditorSelectCustomVehicle", resourceRoot, localPlayer, vehicle )
 				end
 			end
 		end
@@ -122,7 +122,7 @@ if isEditor() then
 
 	-- Handle key presses to change vehicle model
 	function editorSelectVehicle(key, state, dir)
-		triggerServerEvent( "onEditorSelectMapVehicle", resourceRoot, g_Me, dir )
+		triggerServerEvent( "onEditorSelectMapVehicle", resourceRoot, localPlayer, dir )
 	end
 
 	local getKeyState = getKeyState
@@ -142,7 +142,7 @@ if isEditor() then
 		if not g_CurrentCheckpoint then return end
 		local nextIndex
 		if not dir then
-			nextIndex = getElementData(g_Me, 'race.editor.cp_now')
+			nextIndex = getElementData(localPlayer, 'race.editor.cp_now')
 		else
 			if getKeyState("lshift") or getKeyState("rshift") then
 				if math.abs(dir) < 2 then
@@ -154,7 +154,7 @@ if isEditor() then
 		if nextIndex >= 0 and nextIndex < #g_Checkpoints then
 
 			setCurrentCheckpoint( nextIndex + 1 )
-			setElementData(g_Me, 'race.editor.cp_next', nextIndex )
+			setElementData(localPlayer, 'race.editor.cp_next', nextIndex )
 
 			local curpos
 			if nextIndex == 0 then
@@ -172,18 +172,16 @@ if isEditor() then
 			setElementPosition( g_Vehicle, curpos[1], curpos[2], curpos[3] + 1 )
 			setElementRotation( g_Vehicle, 0,0,rz )
 			setTimer ( function ()
-						setVehicleTurnVelocity( g_Vehicle, 0, 0, 0 )
+						setElementAngularVelocity( g_Vehicle, 0, 0, 0 )
 						end, 50, 5 )
 			setTimer ( function ()
 						setElementVelocity( g_Vehicle, 0, 0, 0 )
 						end, 50, 2 )
 
 			-- hmmm, maybe this is nice or not
-			if false then
-				setCameraBehindVehicle( g_Vehicle, pdistance )
-			end
+			--	setCameraBehindVehicle( g_Vehicle, pdistance )
 
-			triggerServerEvent( "onEditorChangeForCheckpoint", resourceRoot, g_Me, nextIndex )
+			triggerServerEvent( "onEditorChangeForCheckpoint", resourceRoot, localPlayer, nextIndex )
 		end
 	end
 

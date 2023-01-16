@@ -1,5 +1,3 @@
-local rootElement = getRootElement()
-
 local voteWindow
 local boundVoteKeys = {}
 local nameFromVoteID = {}
@@ -86,7 +84,7 @@ addEvent("doShowPoll", true)
 addEvent("doSendVote", true)
 addEvent("doStopPoll", true)
 
-addEventHandler("doShowPoll", rootElement,
+addEventHandler("doShowPoll", root,
 	function (pollData, pollOptions, pollTime)
 		--clear the send vote cache
 		cacheVoteNumber = ""
@@ -253,11 +251,11 @@ addEventHandler("doShowPoll", rootElement,
 		isVoteActive = true
 
 		finishTime = getTickCount() + pollTime
-		addEventHandler("onClientRender", rootElement, updateTime)
+		addEventHandler("onClientRender", root, updateTime)
 	end
 )
 
-addEventHandler("doStopPoll", rootElement,
+addEventHandler("doStopPoll", root,
 	function ()
 		isVoteActive = false
 		hasAlreadyVoted = false
@@ -269,7 +267,7 @@ addEventHandler("doStopPoll", rootElement,
 
 		unbindKey("backspace", "down", sendVote_bind)
 
-		removeEventHandler("onClientRender", rootElement, updateTime)
+		removeEventHandler("onClientRender", root, updateTime)
 		destroyElementToCache(voteWindow)
 	end
 )
@@ -320,7 +318,7 @@ function sendVote(voteID)
 
 	--if the player hasnt voted already (or if vote change is allowed anyway), update the vote text
 	if not hasAlreadyVoted or isChangeAllowed then
-		if hasAlreadyVoted then
+		if hasAlreadyVoted and hasAlreadyVoted ~= -1 then
 			guiSetFont(optionLabels[hasAlreadyVoted], layout.option.font)
 			guiSetAlpha(optionLabels[hasAlreadyVoted], layout.option.alpha)
 			guiLabelSetColor(optionLabels[hasAlreadyVoted], layout.option.r, layout.option.g, layout.option.b)
@@ -339,7 +337,7 @@ function sendVote(voteID)
 	--send the vote to the server
 	triggerServerEvent("onClientSendVote", localPlayer, voteID)
 end
-addEventHandler("doSendVote", rootElement, sendVote)
+addEventHandler("doSendVote", root, sendVote)
 
 addCommandHandler("vote",
 	function (command, ...)
@@ -368,7 +366,7 @@ addCommandHandler("cancelvote",
 -- If things change, and this code breaks, it might be easier just to remove it.
 --
 
-addEventHandler('onClientResourceStart', getRootElement(), function() precreateGuiElements() end )
+addEventHandler('onClientResourceStart', root, function() precreateGuiElements() end )
 
 local unusedWindows = {}
 local unusedLabels = {}

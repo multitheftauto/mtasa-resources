@@ -215,7 +215,7 @@ function confirmMapSettings ()
 	currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
 	dumpMapSettings()
 	setMapSettings()
-	triggerServerEvent ( "doSaveMapSettings", getLocalPlayer(), currentMapSettings )
+	triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings )
 	setGUIShowing(true)
 	guiSetInputEnabled ( false )
 	setWorldClickEnabled ( true )

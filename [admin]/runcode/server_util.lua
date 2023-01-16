@@ -1,12 +1,10 @@
-local rootElement = getRootElement()
-
 function outputConsoleR(message, toElement)
 	if toElement == false then
 		outputServerLog(message)
 	else
-		toElement = toElement or rootElement
+		toElement = toElement or root
 		outputConsole(message, toElement)
-		if toElement == rootElement then
+		if toElement == root then
 			outputServerLog(message)
 		end
 	end
@@ -16,9 +14,9 @@ function outputChatBoxR(message, toElement, forceLog)
 	if toElement == false then
 		outputServerLog(message)
 	else
-		toElement = toElement or rootElement
+		toElement = toElement or root
 		outputChatBox(message, toElement, 250, 200, 200)
-		if toElement == rootElement or forceLog then
+		if toElement == root or forceLog then
 			outputServerLog(message)
 		end
 	end
@@ -27,7 +25,7 @@ end
 -- dump the element tree
 function map(element, outputTo, level)
 	level = level or 0
-	element = element or getRootElement()
+	element = element or root
 	local indent = string.rep('  ', level)
 	local eType = getElementType(element)
 	local eID = getElementID(element)
