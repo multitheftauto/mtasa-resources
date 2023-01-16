@@ -469,7 +469,8 @@ function aPlayersTab.onRefresh()
     guiSetText(aPlayersTab.Country, "Country: " .. (aPlayers[player].countryname or "Unknown"))
     guiSetText(aPlayersTab.Account, "Account: " .. getSensitiveText((aPlayers[player]["account"] or "guest")))
     guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
-    if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "n/a") then
+    local flagPath = aPlayers[player].country and ":ip2c/client/images/flags/" .. string.lower(tostring(aPlayers[player].country)) .. ".png" or false
+    if (flagPath) then
         local x, y = guiGetPosition(aPlayersTab.Country, false)
         local width = guiLabelGetTextExtent(aPlayersTab.Country)
         guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
@@ -477,7 +478,7 @@ function aPlayersTab.onRefresh()
             aPlayersTab.Flag,
             guiStaticImageLoadImage(
                 aPlayersTab.Flag,
-                ":ip2c/client/images/flags/" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
+                flagPath
             )
         )
     else

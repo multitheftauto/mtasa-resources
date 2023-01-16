@@ -129,9 +129,8 @@ addEventHandler(
 function updatePlayerCountry(player)
     local isIP2CResourceRunning = getResourceFromName( "ip2c" )
 	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
-	local defaultCountryIndicator = "N/A"
-    aPlayers[player].country = isIP2CResourceRunning and exports.ip2c:getPlayerCountry(player) or defaultCountryIndicator
-    aPlayers[player].countryname = false
+    aPlayers[player].country = isIP2CResourceRunning and exports.ip2c:getPlayerCountry(player) or false
+    aPlayers[player].countryname = isIP2CResourceRunning and exports.ip2c:getCountryName(aPlayers[player].country) or false
 end
 
 function aPlayerInitialize(player)

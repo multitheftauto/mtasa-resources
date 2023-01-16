@@ -1426,7 +1426,7 @@ function setHideColorCodes( bOn )
 end
 
 function loadFlagImage( guiStaticImage, countryCode )
-	if countryCode and countryCode ~= "N/A" then
+	if countryCode then
 		local flagFilename = ":ip2c/client/images/flags/"..tostring ( countryCode )..".png"
 		if fileExists( flagFilename ) then
 			if guiStaticImageLoadImage ( guiStaticImage, flagFilename ) then
