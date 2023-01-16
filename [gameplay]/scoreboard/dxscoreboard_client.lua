@@ -69,9 +69,8 @@ addEventHandler( "onClientResourceStart", resourceRoot,
 		bindKey( settingsKey, "down", "Open scoreboard settings", "1" )
 
 		addEventHandler( "onClientRender", root, drawScoreboard )
-		triggerServerEvent( "onClientDXScoreboardResourceStart", root )
 		readScoreboardSettings()
-		triggerServerEvent( "requestServerInfo", root )
+		triggerServerEvent( "requestServerInfo", localPlayer )
 
 		colorPicker.constructor()
 	end
@@ -87,7 +86,7 @@ function sendServerInfo( output )
 	serverInfo = output
 end
 addEvent( "sendServerInfo", true )
-addEventHandler( "sendServerInfo", resourceRoot, sendServerInfo )
+addEventHandler( "sendServerInfo", root, sendServerInfo )
 
 function toggleScoreboard( _, state )
 	state = iif( state == "1", true, false )
@@ -218,7 +217,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 						if not (windowSettings and isElement( windowSettings )) then
 							showCursor( false )
 						end
-						triggerServerEvent( "requestServerInfo", root )
+						triggerServerEvent( "requestServerInfo", localPlayer )
 					end
 					scoreboardDrawn = true
 				end
@@ -791,7 +790,7 @@ end
 
 
 addEvent( "doScoreboardAddColumn", true )
-addEventHandler( "doScoreboardAddColumn", resourceRoot,
+addEventHandler( "doScoreboardAddColumn", root,
 	function ( name, width, friendlyName, priority, fromResource, isImage, imageW, imageH )
 		scoreboardAddColumn( name, width, friendlyName, priority, nil, fromResource, isImage, imageW, imageH )
 	end
