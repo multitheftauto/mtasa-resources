@@ -215,7 +215,7 @@
                 edit_cmd = "",
                 combo_commode = "",
                 combo_language = "",
-				checkbox_lockwhenediting = "Закрывать транспорт при редактировании?",
+                checkbox_lockwhenediting = "Закрывать транспорт при редактировании?",
                 checkbox_dragmeterEnabled = "Используйте быструю настройку"
             }
         },
