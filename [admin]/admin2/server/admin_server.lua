@@ -16,15 +16,36 @@ aStats = {}
 aReports = {}
 aWeathers = {}
 
+function handleIP2CUpdate()
+	local updateAdminPanel = {}
+	for id, player in ipairs(getElementsByType("player")) do
+		updatePlayerCountry(player)
+		updateAdminPanel[#updateAdminPanel+1] = player
+	end
+	if #updateAdminPanel > 0 then
+		for id, player in ipairs(getElementsByType("player")) do
+			if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
+				for _, playerToUpdate in ipairs(updateAdminPanel) do
+					triggerClientEvent ( player, "aClientPlayerJoin", playerToUpdate, false, false, false, false, aPlayers[playerToUpdate].country, aPlayers[playerToUpdate].countryname )
+				end
+			end
+		end
+	end
+end
+
 addEventHandler(
     "onResourceStart",
     root,
     function(resource)
         if (resource ~= getThisResource()) then
+            local resourceName = getResourceName(resource)
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
-                    triggerClientEvent(player, "aClientResourceStart", root, getResourceName(resource))
+                    triggerClientEvent(player, "aClientResourceStart", root, resourceName)
                 end
+            end
+            if resourceName == "ip2c" then
+                handleIP2CUpdate()
             end
             return
         end
@@ -44,10 +65,14 @@ addEventHandler(
     root,
     function(resource)
         if (resource ~= getThisResource()) then
+            local resourceName = getResourceName(resource)
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
-                    triggerClientEvent(player, "aClientResourceStop", root, getResourceName(resource))
+                    triggerClientEvent(player, "aClientResourceStop", root, resourceName)
                 end
+            end
+            if resourceName == "ip2c" then
+                handleIP2CUpdate()
             end
         else
             aReleaseStorage()
@@ -70,6 +95,7 @@ addEventHandler(
                     getPlayerIP(source),
                     getPlayerUserName(source),
                     getPlayerSerial(source),
+                    false,
                     aPlayers[source]["country"],
                     aPlayers[source]["countryname"]
                 )
@@ -87,16 +113,20 @@ addEventHandler(
     end
 )
 
-function aPlayerInitialize(player)
+function updatePlayerCountry(player)
     local isIP2CResourceRunning = getResourceFromName( "ip2c" )
 	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
 	local defaultCountryIndicator = "N/A"
-    aPlayers[player] = {}
     aPlayers[player].country = isIP2CResourceRunning and exports.ip2c:getPlayerCountry(player) or defaultCountryIndicator
-    aPlayers[player].countryname = "TODO"
+    aPlayers[player].countryname = false
+end
+
+function aPlayerInitialize(player)
+    aPlayers[player] = {}
     aPlayers[player].money = getPlayerMoney(player)
     aPlayers[player].muted = isPlayerMuted(player)
     aPlayers[player].frozen = isElementFrozen(player)
+    updatePlayerCountry(player)
 end
 
 function aAction(type, action, admin, player, data, more)

@@ -1426,20 +1426,12 @@ function setHideColorCodes( bOn )
 end
 
 function loadFlagImage( guiStaticImage, countryCode )
-	if countryCode then
-		local flagFilename = "client\\images\\flags\\"..tostring ( countryCode )..".png"
-		if getVersion().sortable and getVersion().sortable > "1.1.0" then
-			-- 1.1
-			if fileExists( flagFilename ) then
-				if guiStaticImageLoadImage ( guiStaticImage, flagFilename ) then
-					return
-				end
+	if countryCode and countryCode ~= "N/A" then
+		local flagFilename = ":ip2c/client/images/flags/"..tostring ( countryCode )..".png"
+		if fileExists( flagFilename ) then
+			if guiStaticImageLoadImage ( guiStaticImage, flagFilename ) then
+				return
 			end
-		else
-			-- 1.0
-			guiStaticImageLoadImage ( guiStaticImage, "client\\images\\empty.png" )
-			guiStaticImageLoadImage ( guiStaticImage, flagFilename )
-			return
 		end
 	end
 	guiStaticImageLoadImage ( guiStaticImage, "client\\images\\empty.png" )
