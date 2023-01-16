@@ -581,7 +581,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 	parametersTable = parametersTable or {}
 	parametersTable.position = parametersTable.position or {0,0,0}
 	parametersTable.rotation = parametersTable.rotation or {0,0,0}
-	parametersTable.interior = parametersTable.interior or 0
+	parametersTable.interior = math.max(0, (parametersTable.interior or 0))
 	parametersTable.dimension = parametersTable.dimension or 0
 	parametersTable.alpha = parametersTable.alpha or 255
 
