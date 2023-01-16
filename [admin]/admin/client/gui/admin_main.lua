@@ -29,8 +29,8 @@ end
 
 function aAdminMenu ()
 	if ( aAdminForm == nil ) then
-		local x, y = guiGetScreenSize()
-		aAdminForm			= guiCreateWindow ( x / 2 - 310, y / 2 - 260, 620, 520, "", false )
+		local sx, sy = guiGetScreenSize()
+		aAdminForm			= guiCreateWindow ( sx / 2 - 310, sy / 2 - 260, 620, 520, "", false )
 							guiWindowSetSizable ( aAdminForm, false )
 						  guiSetText ( aAdminForm, "Admin Panel   -   v".._version )
 						  guiCreateLabel ( 0.75, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )
@@ -67,7 +67,7 @@ function aAdminMenu ()
 			if slap then
 				aCurrentSlap = slap
 				guiSetText(aTab1.Slap, "Slap! "..slap..'  _')
-				if (aSpectator.Slap) then 
+				if (aSpectator.Slap) then
 					guiSetText(aSpectator.Slap, "Slap! "..slap.."hp")
 				end
 			end
@@ -132,8 +132,8 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		end
 
 		local shortNames = {
-			["Combat Shotgun"] = "Combat SG", 
-			["Rocket Launcher"] = "R. Launcher", 
+			["Combat Shotgun"] = "Combat SG",
+			["Rocket Launcher"] = "R. Launcher",
 			["Rocket Launcher HS"] = "R. Launcher HS"
 		}
 		guiListSetColumns(aTab1.GiveWeapon, {{text = '', width = 0.8}})
@@ -262,17 +262,17 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab3.SpeedCurrent	= guiCreateLabel ( 0.05, 0.55, 0.30, 0.04, "Game Speed: "..getGameSpeed(), true, aTab3.Tab )
 		aTab3.Speed			= guiCreateEdit ( 0.35, 0.55, 0.135, 0.04, "1", true, aTab3.Tab )
 		aTab3.SpeedSet		= guiCreateButton ( 0.50, 0.55, 0.10, 0.04, "Set", true, aTab3.Tab, "setgamespeed" )
-						  guiCreateLabel ( 0.63, 0.55, 0.09, 0.04, "( 0-10 )", true, aTab3.Tab )
+							guiCreateLabel ( 0.63, 0.55, 0.09, 0.04, "( 0-10 )", true, aTab3.Tab )
 
 		aTab3.WavesCurrent	= guiCreateLabel ( 0.05, 0.60, 0.25, 0.04, "Wave Height: "..getWaveHeight(), true, aTab3.Tab )
 		aTab3.Waves			= guiCreateEdit ( 0.35, 0.60, 0.135, 0.04, "0", true, aTab3.Tab )
 		aTab3.WavesSet		= guiCreateButton ( 0.50, 0.60, 0.10, 0.04, "Set", true, aTab3.Tab, "setwaveheight" )
-					 	 guiCreateLabel ( 0.63, 0.60, 0.09, 0.04, "( 0-100 )", true, aTab3.Tab )
+							guiCreateLabel ( 0.63, 0.60, 0.09, 0.04, "( 0-100 )", true, aTab3.Tab )
 
 		aTab3.FPSCurrent	= guiCreateLabel ( 0.05, 0.65, 0.25, 0.04, "FPS Limit: 38", true, aTab3.Tab )
 		aTab3.FPS			= guiCreateEdit ( 0.35, 0.65, 0.135, 0.04, "38", true, aTab3.Tab )
 		aTab3.FPSSet		= guiCreateButton ( 0.50, 0.65, 0.10, 0.04, "Set", true, aTab3.Tab, "setfpslimit" )
-					 	 guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-100 )", true, aTab3.Tab )
+							guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-100 )", true, aTab3.Tab )
 
 
 		aTab4 = {}
@@ -288,7 +288,6 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 								guiComboBoxAddItem (aTab4.ComboBox,ComboBoxIndividualItems)
 							end
 						guiComboBoxAdjustHeight (aTab4.ComboBox,#ComboBoxItems)
-						ComboBoxItems = nil
 						guiComboBoxSetSelected (aTab4.ComboBox,0)
 
 
@@ -372,7 +371,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 						  else guiRadioButtonSetSelected ( aTab6.PerformanceAuto, true ) end
 		aTab6.PerformanceAdvanced = guiCreateButton ( 0.05, 0.91, 0.11, 0.04, "Advanced", true, aTab6.Tab )
 		aPerformance()
-					   	  guiCreateLabel ( 0.70, 0.90, 0.19, 0.055, "Refresh Delay(MS):", true, aTab6.Tab )
+							guiCreateLabel ( 0.70, 0.90, 0.19, 0.055, "Refresh Delay(MS):", true, aTab6.Tab )
 		aTab6.RefreshDelay	= guiCreateEdit ( 0.89, 0.90, 0.08, 0.045, "50", true, aTab6.Tab )
 
 		if ( aGetSetting ( "outputPlayer" ) ) then guiCheckBoxSetSelected ( aTab6.OutputPlayer, true ) end
@@ -381,21 +380,21 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		--if ( tonumber ( aGetSetting ( "adminChatLines" ) ) ) then guiSetText ( aTab6.AdminChatLines, aGetSetting ( "adminChatLines" ) ) end
 		if ( ( tonumber ( aGetSetting ( "refreshDelay" ) ) ) and ( tonumber ( aGetSetting ( "refreshDelay" ) ) >= 50 ) ) then guiSetText ( aTab6.RefreshDelay, aGetSetting ( "refreshDelay" ) ) end
 
-		addEventHandler ( "aClientLog", _root, aClientLog )
-		addEventHandler ( "aClientAdminChat", _root, aClientAdminChat )
-		addEventHandler ( "aClientSync", _root, aClientSync )
-		addEventHandler ( "aClientResourceStart", _root, aClientResourceStart )
-		addEventHandler ( "aClientResourceStop", _root, aClientResourceStop )
-		addEventHandler ( "aClientPlayerJoin", _root, aClientPlayerJoin )
-		addEventHandler ( "onClientPlayerQuit", _root, aClientPlayerQuit )
+		addEventHandler ( "aClientLog", root, aClientLog )
+		addEventHandler ( "aClientAdminChat", root, aClientAdminChat )
+		addEventHandler ( "aClientSync", root, aClientSync )
+		addEventHandler ( "aClientResourceStart", root, aClientResourceStart )
+		addEventHandler ( "aClientResourceStop", root, aClientResourceStop )
+		addEventHandler ( "aClientPlayerJoin", root, aClientPlayerJoin )
+		addEventHandler ( "onClientPlayerQuit", root, aClientPlayerQuit )
 		addEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
 		addEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		addEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
 		addEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		addEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
-		addEventHandler ( "onClientRender", _root, aClientRender )
-		addEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
-		addEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
+		addEventHandler ( "onClientRender", root, aClientRender )
+		addEventHandler ( "onClientPlayerChangeNick", root, aClientPlayerChangeNick )
+		addEventHandler ( "onClientResourceStop", root, aMainSaveSettings )
 		addEventHandler ( "onClientGUITabSwitched", aTabPanel, aClientGUITabSwitched )
 
 		bindKey ( "arrow_d", "down", aPlayerListScroll, 1 )
@@ -440,21 +439,21 @@ function aAdminMenuClose ( destroy )
 		aPlayers = {}
 		aWeathers = {}
 		aBans = {}
-		removeEventHandler ( "aClientLog", _root, aClientLog )
-		removeEventHandler ( "aClientAdminChat", _root, aClientAdminChat )
-		removeEventHandler ( "aClientSync", _root, aClientSync )
-		removeEventHandler ( "aClientResourceStart", _root, aClientResourceStart )
-		removeEventHandler ( "aClientResourceStop", _root, aClientResourceStop )
-		removeEventHandler ( "aClientPlayerJoin", _root, aClientPlayerJoin )
-		removeEventHandler ( "onClientPlayerQuit", _root, aClientPlayerQuit )
+		removeEventHandler ( "aClientLog", root, aClientLog )
+		removeEventHandler ( "aClientAdminChat", root, aClientAdminChat )
+		removeEventHandler ( "aClientSync", root, aClientSync )
+		removeEventHandler ( "aClientResourceStart", root, aClientResourceStart )
+		removeEventHandler ( "aClientResourceStop", root, aClientResourceStop )
+		removeEventHandler ( "aClientPlayerJoin", root, aClientPlayerJoin )
+		removeEventHandler ( "onClientPlayerQuit", root, aClientPlayerQuit )
 		removeEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
 		removeEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		removeEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
 		removeEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		removeEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
-		removeEventHandler ( "onClientRender", _root, aClientRender )
-		removeEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
-		removeEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
+		removeEventHandler ( "onClientRender", root, aClientRender )
+		removeEventHandler ( "onClientPlayerChangeNick", root, aClientPlayerChangeNick )
+		removeEventHandler ( "onClientResourceStop", root, aMainSaveSettings )
 		unbindKey ( "arrow_d", "down", aPlayerListScroll )
 		unbindKey ( "arrow_u", "down", aPlayerListScroll )
 		destroyElement ( aAdminForm )
@@ -544,8 +543,8 @@ end
 
 function aClientSync ( type, table, data )
 	if ( type == "player" and aPlayers[source] ) then
-		for type, data in pairs ( table ) do
-			aPlayers[source][type] = data
+		for type2, data2 in pairs ( table ) do
+			aPlayers[source][type2] = data2
 		end
 	elseif ( type == "players" ) then
 		aPlayers = table
@@ -567,7 +566,7 @@ function aClientSync ( type, table, data )
 		aAdminDestroy()
 	elseif ( type == "admins" ) then
 		--if ( guiGridListGetRowCount ( aTab5.AdminPlayers ) > 0 ) then guiGridListClear ( aTab5.AdminPlayers ) end
-		for id, player in ipairs(getElementsByType("player")) do
+		for i, player in ipairs(getElementsByType("player")) do
 			if ( table[player]["admin"] == false ) and ( player == localPlayer ) then
 				aAdminDestroy()
 				break
@@ -796,12 +795,12 @@ function aClientPlayerJoin ( ip, accountname, serial, admin, country )
 	local row = guiGridListAddRow ( aTab1.PlayerList )
 	guiGridListSetItemPlayerName ( aTab1.PlayerList, row, 1, getPlayerName ( source ), false, false )
 	if ( admin ) then
-		local row = guiGridListAddRow ( aTab5.AdminPlayers )
-		guiGridListSetItemPlayerName ( aTab5.AdminPlayers, row, 1, getPlayerName ( source ), false, false )
+		local row2 = guiGridListAddRow ( aTab5.AdminPlayers )
+		guiGridListSetItemPlayerName ( aTab5.AdminPlayers, row2, 1, getPlayerName ( source ), false, false )
 	end
 	if ( aSpectator.PlayerList ) then
-		local row = guiGridListAddRow ( aSpectator.PlayerList )
-		guiGridListSetItemPlayerName ( aSpectator.PlayerList, row, 1, getPlayerName ( source ), false, false )
+		local row3 = guiGridListAddRow ( aSpectator.PlayerList )
+		guiGridListSetItemPlayerName ( aSpectator.PlayerList, row3, 1, getPlayerName ( source ), false, false )
 	end
 end
 
@@ -814,21 +813,21 @@ function aClientPlayerQuit ()
 		id = id + 1
 	end
 	if ( aPlayers[source] and aPlayers[source]["admin"] ) then
-		local id = 0
-		while ( id <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
-			if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id, 1 ) == getPlayerName ( source ) ) then
+		local id2 = 0
+		while ( id2 <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
+			if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id2, 1 ) == getPlayerName ( source ) ) then
 				guiGridListRemoveRow ( aTab5.AdminPlayers, id )
 			end
-			id = id + 1
+			id2 = id2 + 1
 		end
 	end
 	if ( aSpectator.PlayerList ) then
-		local id = 0
-		while ( id <= guiGridListGetRowCount( aSpectator.PlayerList ) ) do
-			if ( guiGridListGetItemPlayerName ( aSpectator.PlayerList, id, 1 ) == getPlayerName ( source ) ) then
-				guiGridListRemoveRow ( aSpectator.PlayerList, id )
+		local id3 = 0
+		while ( id3 <= guiGridListGetRowCount( aSpectator.PlayerList ) ) do
+			if ( guiGridListGetItemPlayerName ( aSpectator.PlayerList, id3, 1 ) == getPlayerName ( source ) ) then
+				guiGridListRemoveRow ( aSpectator.PlayerList, id3 )
 			end
-			id = id + 1
+			id3 = id3 + 1
 		end
 	end
 	aPlayers[source] = nil
@@ -995,7 +994,7 @@ function aClientClick ( button )
 				aViewMessages()
 			elseif ( source == aTab1.ScreenShots ) then
 				aPlayerScreenShot()
-			elseif ( source == aTab1.PlayerListSearch ) then
+			--elseif ( source == aTab1.PlayerListSearch ) then
 
 			elseif ( source == aTab1.HideColorCodes ) then
 				setHideColorCodes ( guiCheckBoxGetSelected ( aTab1.HideColorCodes ) )
@@ -1038,7 +1037,7 @@ function aClientClick ( button )
 						if (aPlayers[player]['accountname'] ~= 'guest') then
 							aPermissions.Show(player)
 						else
-							aMessageBox ( "error", "This player is not logged in!" )	
+							aMessageBox ( "error", "This player is not logged in!" )
 						end
 					elseif ( source == aTab1.ACModDetails ) then
 						aViewModdetails(player)
@@ -1049,9 +1048,7 @@ function aClientClick ( button )
 			end
 		-- TAB 2, RESOURCES
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
-			if ( source == aTab2.ResourceListSearch ) then
-
-			elseif ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
+			if ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
 				else
@@ -1165,7 +1162,7 @@ function aClientClick ( button )
 					else triggerServerEvent ( "aAdminChat", localPlayer, message ) end
 					guiSetText ( aTab5.AdminText, "" )
 				end
-			elseif ( source == aTab5.AdminText ) then
+			--elseif ( source == aTab5.AdminText ) then
 
 			end
 		-- TAB 6, OPTIONS
@@ -1186,11 +1183,11 @@ function aClientClick ( button )
 				aPerformance()
 			elseif ( source == aTab6.AutoLogin ) then
 				triggerServerEvent ( "aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
-			elseif ( source == aTab6.PasswordOld ) then
+			--elseif ( source == aTab6.PasswordOld ) then
 
-			elseif ( source == aTab6.PasswordNew ) then
+			--elseif ( source == aTab6.PasswordNew ) then
 
-			elseif ( source == aTab6.PasswordConfirm ) then
+			--elseif ( source == aTab6.PasswordConfirm ) then
 
 			elseif ( source == aTab6.PasswordChange ) then
 				local passwordNew, passwordConf = guiGetText ( aTab6.PasswordNew ), guiGetText ( aTab6.PasswordConfirm )
@@ -1235,14 +1232,14 @@ function aAdminReloadInfos()
 			triggerServerEvent ( "aSync", localPlayer, "player", player )
 			if (not isSensitiveDataHidden()) and guiCheckBoxGetSelected(aTab6.OutputPlayer) then
 				local playerName = aPlayers[player]["name"]
-			
+
 				if isColorCodeHidden() then
 					playerName = removeColorCoding(playerName)
 				else
 					if playerName:find('#%x%x%x%x%x%x') then
 						playerName = playerName .. (' (%s)'):format(removeColorCoding(playerName))
 					end
-				end		
+				end
 
 				outputConsole(' ')
 				outputConsole(('Name: %s'):format(playerName))

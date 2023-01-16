@@ -43,8 +43,8 @@ function letMePositionGauge( )
 		isEditingPosition = false;
 		showCursor( false );
 		guiSetVisible( label, false );
-		removeEventHandler( "onClientCursorMove", g_Root, updateTooltipPosition );
-		removeEventHandler( "onClientClick", g_Root, changeNOSGaugePosition );
+		removeEventHandler( "onClientCursorMove", root, updateTooltipPosition );
+		removeEventHandler( "onClientClick", root, changeNOSGaugePosition );
 		saveGaugePositionToFile( );
 		return;
 	end
@@ -55,7 +55,7 @@ function letMePositionGauge( )
 		x, y = x * g_tScreenSize[ 1 ], y * g_tScreenSize[ 2 ];
 		guiSetPosition( label, x, y, false );
 		guiSetVisible( label, true );
-		addEventHandler( "onClientCursorMove", g_Root, updateTooltipPosition );
-		addEventHandler( "onClientClick", g_Root, changeNOSGaugePosition );
+		addEventHandler( "onClientCursorMove", root, updateTooltipPosition );
+		addEventHandler( "onClientClick", root, changeNOSGaugePosition );
 	end
 end

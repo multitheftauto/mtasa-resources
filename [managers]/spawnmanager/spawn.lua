@@ -7,10 +7,10 @@ function createSpawnpoint ( x, y, z, rot, skin, interior, dimension )
 	if not tonumber(x) then outputDebugString("createSpawnpoint: Bad 'x' position specified",0,255,128,0) return false end
 	if not tonumber(y) then outputDebugString("createSpawnpoint: Bad 'y' position specified",0,255,128,0) return false end
 	if not tonumber(z) then outputDebugString("createSpawnpoint: Bad 'z' position specified",0,255,128,0) return false end
-	if not tonumber(rot) then rot = 0 return false end
-	if not tonumber(skin) then skin = 0 return false end
-	if not tonumber(interior) then interior = 0 return false end
-	if not tonumber(skin) then dimension = 0 return false end
+	if not tonumber(rot) then return false end
+	if not tonumber(skin) then return false end
+	if not tonumber(interior) then return false end
+	if not tonumber(skin) then return false end
 	skin = math.ceil(skin)
 	local sp = createElement ( "spawnpoint" )
 	setElementData ( sp, "posX", x )

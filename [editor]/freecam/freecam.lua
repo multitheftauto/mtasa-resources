@@ -24,7 +24,8 @@ local options = {
 	key_forward_veh = "accelerate",
 	key_backward_veh = "brake_reverse",
 	key_left_veh = "vehicle_left",
-	key_right_veh = "vehicle_right"
+	key_right_veh = "vehicle_right",
+	fov = 70
 }
 
 local controlToKey = {
@@ -43,6 +44,9 @@ local mouseFrameDelay = 0
 local mta_getKeyState = getKeyState
 function getKeyState(key)
 	if isMTAWindowActive() then
+		return false
+	end
+	if not isMTAWindowFocused() then
 		return false
 	end
 	if key == "lshift" or key == "lalt" or key == "arrow_u" or key == "arrow_d" or key == "arrow_l" or key == "arrow_r" then
@@ -72,7 +76,7 @@ local function freecamFrame ()
     -- calculate a target based on the current position and an offset based on the angle
     local camTargetX = camPosX + freeModeAngleX * 100
     local camTargetY = camPosY + freeModeAngleY * 100
-    local camTargetZ = camPosZ + freeModeAngleZ * 100
+    local camTargetZ
 
 	-- Calculate what the maximum speed that the camera should be able to move at.
     local mspeed = options.normalMaxSpeed
@@ -209,14 +213,14 @@ local function freecamFrame ()
     camTargetZ = camPosZ + freeModeAngleZ * 100
 
     -- Set the new camera position and target
-    setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ )
+    setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, 0, options.fov )
 end
 
 local function freecamMouse (cX,cY,aX,aY)
 	--ignore mouse movement if the cursor or MTA window is on
 	--and do not resume it until at least 5 frames after it is toggled off
 	--(prevents cursor mousemove data from reaching this handler)
-	if isCursorShowing() or isMTAWindowActive() then
+	if isCursorShowing() or isMTAWindowActive() or (not isMTAWindowFocused()) then
 		mouseFrameDelay = 5
 		return
 	elseif mouseFrameDelay > 0 then
@@ -271,7 +275,7 @@ function setFreecamEnabled (x, y, z)
 	end
 
 	if (x and y and z) then
-	    setCameraMatrix ( x, y, z )
+	    setCameraMatrix ( x, y, z, nil, nil, nil, 0, options.fov )
 	end
 	addEventHandler("onClientRender", root, freecamFrame)
 	addEventHandler("onClientCursorMove",root, freecamMouse)

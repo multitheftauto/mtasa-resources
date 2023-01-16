@@ -7,12 +7,12 @@ function createWorldDetector()
 	guiSetAlpha ( worldDetector, 0 )
 	guiMoveToBack( worldDetector )
 	addEventHandler ( "onClientGUIWorldClick",worldDetector,function()
-	if source == worldDetector or source == getRootElement() then
+	if source == worldDetector or source == root then
 	guiMoveToBack(worldDetector) end end )
 end
 
 local mouseOverElement = false
-addEventHandler ( "onClientMouseMove", getRootElement(),
+addEventHandler ( "onClientMouseMove", root,
 function ( cursorX, cursorY )
 	if not isGUICreated then return end
 	if source == worldDetector then

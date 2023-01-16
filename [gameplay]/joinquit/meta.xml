@@ -1,3 +1,18 @@
 <meta>
-	<script src="joinquit.lua" type="client" />
+	<info name="joinquit" author="Noki" description="Messages in the chat when players join or quit" type="script" />  
+	<script src="joinquit.lua" type="server" />
+	<settings>
+		<setting name="*showColorCodes"
+			friendlyname="Show Color Codes"
+			value="true"
+			accept="true,false"
+			desc="Allow hex color codes in nicknames to be shown in the chat"
+		/>
+		<setting name="*defaultColor"
+			friendlyname="Default Color"
+			value="[[78, 87, 104]]"
+			accept=""
+			desc="If show color codes is set to true, this controls what color to output messages in"
+		/>
+	</settings>
 </meta>

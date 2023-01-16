@@ -53,10 +53,10 @@ function testShowDialog()
 	local row = guiGridListAddRow ( testDialog.gamemodesList )
 	guiGridListSetItemText ( testDialog.gamemodesList, row, 1, "<None>", false, false )
 	for key,gamemodeName in ipairs(currentMapSettings.addedGamemodes) do
-		local row = guiGridListAddRow ( testDialog.gamemodesList )
-		guiGridListSetItemText ( testDialog.gamemodesList, row, 1, gamemodeName, false, false )
+		local row2 = guiGridListAddRow ( testDialog.gamemodesList )
+		guiGridListSetItemText ( testDialog.gamemodesList, row2, 1, gamemodeName, false, false )
 		if gamemodeName == lastTestGamemode then
-			set = row
+			set = row2
 		end
 	end
 	guiGridListSetSelectedItem(testDialog.gamemodesList,set,1)
@@ -115,7 +115,7 @@ addEventHandler("resumeGUI", root, resumeGUI)
 
 function stopTest()
 	--[[for k,player in ipairs(getElementsByType("player")) do
-		if player ~= getLocalPlayer() then
+		if player ~= localPlayer then
 			setElementDimension(player, editor_main.getWorkingDimension())
 		end
 	end]]

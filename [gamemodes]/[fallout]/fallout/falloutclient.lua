@@ -21,9 +21,9 @@ function shakeOnRender()
 	            --since newx/newy increases by 1 every 125ms, we can use this ratio to calculate a more accurate time
 	            local newx = tickDifference/125 * 1
 	            local newy = tickDifference/125 * 1
-	        	if isElement ( object ) then
+				if isElement ( object ) then
 					setElementRotation ( object, math.deg( 0.555 ), 3 * math.cos(newy + 1), 3 * math.sin(newx + 1) )
-	        	end
+				end
 			end
 	    end
 	end
@@ -59,8 +59,8 @@ end
 function checkHax ( )
 	weapon = getPedWeapon ( localPlayer ) --anti cheat protection
 	if weapon ~= 0 then
-	   	setPedWeaponSlot ( localPlayer, 0 )
-	   	triggerServerEvent ( "serverKillCheater", localPlayer )
+		setPedWeaponSlot ( localPlayer, 0 )
+		triggerServerEvent ( "serverKillCheater", localPlayer )
 	end
 end
 setTimer ( checkHax, 1000, 0 )

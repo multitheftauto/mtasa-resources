@@ -4,12 +4,12 @@ local attachPlayersEnabled = false
 function getCameraRotation ()
 	local px, py, pz, lx, ly, lz = getCameraMatrix()
 	local rotz = 6.2831853071796 - math.atan2 ( ( lx - px ), ( ly - py ) ) % 6.2831853071796
- 	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
+	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
 	--Convert to degrees
 	rotx = math.deg(rotx)
 	rotz = math.deg(rotz)
 
- 	return rotx, 180, rotz
+	return rotx, 180, rotz
 end
 
 local function attachRender()
@@ -42,7 +42,7 @@ function attachPlayers(enabled)
 			setElementCollisionsEnabled(player,false)
 		end
 		setElementAlpha(localPlayer,0)
-		return addEventHandler ( "onClientRender", getRootElement(), attachRender )
+		return addEventHandler ( "onClientRender", root, attachRender )
 	else
 		for i,player in ipairs(getElementsByType"player") do
 			-- if player ~= localPlayer then
@@ -51,11 +51,11 @@ function attachPlayers(enabled)
 			setElementCollisionsEnabled(player,true)
 		end
 		setElementAlpha(localPlayer,255)
-		return removeEventHandler ( "onClientRender", getRootElement(), attachRender )
+		return removeEventHandler ( "onClientRender", root, attachRender )
 	end
 end
 
-addEventHandler ( "onClientPlayerSpawn", getRootElement(),
+addEventHandler ( "onClientPlayerSpawn", root,
 	function()
 		if attachPlayersEnabled then
 			setElementCollisionsEnabled(source,false)

@@ -42,21 +42,29 @@ addEventHandler('onPlayerQuit', root,
 )
 
 -- New player loaded
-addEvent('onResourceLoadedAtClient_internal', true)
-addEventHandler('onResourceLoadedAtClient_internal', resourceRoot,
-	function(player)
-		if checkClient( false, player, 'onResourceLoadedAtClient_internal' ) then return end
-		if playerData[player] then
-			playerData[player].loaded = true
-			-- Do queued events
-			for i,event in ipairs(playerData[player].pending) do
-				_triggerClientEvent(player, event.name, event.source, unpack(event.args))
-			end
-			playerData[player].pending = nil
-		end
-	end
-)
 
+local function onPlayerResourceStart(resourceElement)
+	local adminResource = resourceElement == resource
+
+	if not adminResource then
+		return
+	end
+
+	if not playerData[source] then
+		return
+	end
+
+	playerData[source].loaded = true
+
+	-- Do queued events
+
+	for _, eventData in ipairs(playerData[source].pending) do
+		_triggerClientEvent(source, eventData.name, eventData.source, unpack(eventData.args))
+	end
+
+	playerData[source].pending = nil
+end
+addEventHandler("onPlayerResourceStart", root, onPlayerResourceStart)
 
 ---------------------------------------------------------------------------
 --
@@ -108,7 +116,7 @@ end
 -- Util
 --
 ---------------------------------------------------------------------------
-function table.deepcopy(t)
+function table.deepcopy(t1)
 	local known = {}
 	local function _deepcopy(t)
 		local result = {}
@@ -124,6 +132,6 @@ function table.deepcopy(t)
 		end
 		return result
 	end
-	return _deepcopy(t)
+	return _deepcopy(t1)
 end
 

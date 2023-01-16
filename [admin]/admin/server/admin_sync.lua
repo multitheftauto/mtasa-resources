@@ -14,7 +14,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 	if checkClient( false, source, 'aSync', type ) then return end
 	local cor = aSyncCoroutine
 	local tableOut = {}
-	local theSource = _root
+	local theSource = root
 	if client and not hasObjectPermissionTo ( client, "general.adminpanel" ) then
 		type = "loggedout"
 	elseif ( type == "player" ) then
@@ -64,13 +64,13 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		for id, resource in ipairs(resourceTable) do
 			local name = getResourceName ( resource )
 			local state = getResourceState ( resource )
-			local type = getResourceInfo ( resource, "type" )
+			local type2 = getResourceInfo ( resource, "type" )
 			local _,numsettings = aGetResourceSettings(name,true)
 			tableOut[id] = {}
 			tableOut[id]["name"] = name
 			tableOut[id]["numsettings"] = numsettings
 			tableOut[id]["state"] = state
-			tableOut[id]["type"] = type
+			tableOut[id]["type"] = type2
 			tableOut[id]["fullName"] = getResourceInfo(resource, "name") or "Unknown"
 			tableOut[id]["author"] = getResourceInfo(resource, "author") or "Unknown"
 			tableOut[id]["version"] = getResourceInfo(resource, "version") or "Unknown"
@@ -191,12 +191,11 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 				if getNeededTagType (data[1],ban) and string.match (string.lower(tType),string.lower(data[2])) then
 					if (isElement(source)) then -- In case the source has quit during coroutine loading
 						if cnt <= maxBanCount then
-						cnt = cnt + 1
-						triggerClientEvent ( source, "aClientSync", theSource, type, tableOut,data )
+							cnt = cnt + 1
+							triggerClientEvent ( source, "aClientSync", theSource, type, tableOut,data )
 						else
-						triggerClientEvent ( source, "aClientSync", theSource, "message", false,{"error","Be more specific in your search query! (keyword returns more than 100 matches) search not completed due to server load, it's limited to displaying the first 100 results now."} )
-						cnt = nil
-						return
+							triggerClientEvent ( source, "aClientSync", theSource, "message", false,{"error","Be more specific in your search query! (keyword returns more than 100 matches) search not completed due to server load, it's limited to displaying the first 100 results now."} )
+							return
 						end
 					end
 				end
@@ -221,7 +220,7 @@ return false
 end
 
 addEvent("aSync", true)
-addEventHandler("aSync", _root, function(typed, data)
+addEventHandler("aSync", root, function(typed, data)
 	aSyncCoroutine = coroutine.create(aSynchCoroutineFunc)
 	coroutine.resume(aSyncCoroutine, typed, data)
 
@@ -229,7 +228,7 @@ addEventHandler("aSync", _root, function(typed, data)
 end )
 
 addEvent ( "onPlayerMoneyChange", false )
-addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource () ), function()
+addEventHandler ( "onResourceStart", resourceRoot, function()
 	setTimer ( function()
 		for id, player in ipairs ( getElementsByType ( "player" ) ) do
 			if isElement(player) and aPlayers[player] then
@@ -244,7 +243,7 @@ addEventHandler ( "onResourceStart", getResourceRootElement ( getThisResource ()
 	end, 1500, 0 )
 end )
 
-addEventHandler ( "onPlayerMoneyChange", _root, function ( prev, new )
+addEventHandler ( "onPlayerMoneyChange", root, function ( prev, new )
 	for player, sync in pairs ( aPlayers ) do
 		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["money"] = new } )
@@ -252,7 +251,7 @@ addEventHandler ( "onPlayerMoneyChange", _root, function ( prev, new )
 	end
 end )
 
-addEventHandler ( "onPlayerMute", _root, function()
+addEventHandler ( "onPlayerMute", root, function()
 	for player, sync in pairs ( aPlayers ) do
 		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = true } )
@@ -260,7 +259,7 @@ addEventHandler ( "onPlayerMute", _root, function()
 	end
 end )
 
-addEventHandler ( "onPlayerUnmute", _root, function()
+addEventHandler ( "onPlayerUnmute", root, function()
 	for player, sync in pairs ( aPlayers ) do
 		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["mute"] = false } )
@@ -268,7 +267,7 @@ addEventHandler ( "onPlayerUnmute", _root, function()
 	end
 end )
 
-addEventHandler ( "onPlayerFreeze", _root, function ( state )
+addEventHandler ( "onPlayerFreeze", root, function ( state )
 	for player, sync in pairs ( aPlayers ) do
 		if ( isElement(player) and sync["sync"] == source ) then
 			triggerClientEvent ( player, "aClientSync", source, "player", { ["freeze"] = state } )
@@ -277,7 +276,7 @@ addEventHandler ( "onPlayerFreeze", _root, function ( state )
 end )
 
 addEvent ( "aPermissions", true )
-addEventHandler ( "aPermissions", _root, function()
+addEventHandler ( "aPermissions", root, function()
 	if checkClient( false, source, 'aPermissions' ) then return end
 	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
 		local tableOut = {}
@@ -298,15 +297,15 @@ addEventHandler ( "aPermissions", _root, function()
 	end
 end )
 
-addEventHandler ( "onBan", _root,
+addEventHandler ( "onBan", root,
 	function()
-		setTimer( triggerEvent, 200, 1, "aSync", _root, "bansdirty" )
+		setTimer( triggerEvent, 200, 1, "aSync", root, "bansdirty" )
 	end
 )
 
-addEventHandler ( "onUnban", _root,
+addEventHandler ( "onUnban", root,
 	function()
-		setTimer( triggerEvent, 200, 1, "aSync", _root, "bansdirty" )
+		setTimer( triggerEvent, 200, 1, "aSync", root, "bansdirty" )
 	end
 )
 

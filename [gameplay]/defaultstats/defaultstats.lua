@@ -1,4 +1,4 @@
-local stats = {
+local statsTable = {
 	[69] = 500,  -- Pistol
 	[70] = 999,  -- Silenced pistol
 	[71] = 999,  -- Desert eagle
@@ -15,22 +15,24 @@ local stats = {
 	[230] = 999  -- Cycling
 }
 
-local function applyStatsForPlayer(player)
-	for stat, value in pairs(stats) do
-		player:setStat(stat, value)
+local function applyStatsForPlayer(playerElement)
+	for statName, statValue in pairs(statsTable) do
+		setPedStat(playerElement, statName, statValue)
 	end
 end
-
-local function applyStatsForEveryone()
-	for _, player in pairs(Element.getAllByType "player") do
-		applyStatsForPlayer(player)
-	end
-end
-addEventHandler("onResourceStart", resourceRoot, applyStatsForEveryone)
-addEventHandler("onGamemodeMapStart", root, applyStatsForEveryone)
 
 local function applyStatsForSource()
 	applyStatsForPlayer(source)
 end
 addEventHandler("onPlayerJoin", root, applyStatsForSource)
 addEventHandler("onPlayerSpawn", root, applyStatsForSource)
+
+local function applyStatsForEveryone()
+	local playersTable = getElementsByType("player")
+
+	for playerID = 1, #playersTable do
+		applyStatsForPlayer(playersTable[playerID])
+	end
+end
+addEventHandler("onResourceStart", resourceRoot, applyStatsForEveryone)
+addEventHandler("onGamemodeMapStart", root, applyStatsForEveryone)

@@ -1,10 +1,7 @@
-rootElement = getRootElement()
-local thisResourceRoot = getResourceRootElement(getThisResource())
-
 local cycleMode
 local cyclerFunction
 
-addEventHandler("onResourceStart", thisResourceRoot,
+addEventHandler("onResourceStart", resourceRoot,
 	function()
 		cycleMode = get("mode")
 		local startFunction = _G["startCycler_"..cycleMode]
@@ -41,7 +38,7 @@ end
 
 function outputCycler(message, toElement)
 	local r, g, b = getColorFromString(string.upper(get("color")))
-	outputChatBox(message, toElement or getRootElement(), r, g, b)
+	outputChatBox(message, toElement or root, r, g, b)
 end
 
 function outputCyclerDebugString(debugString, debugLevel)

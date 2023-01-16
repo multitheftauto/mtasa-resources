@@ -372,12 +372,12 @@ function Viewer:updateCache()
 			end
 		end
 		table.insert(rowdata,{class=rowclass,color=rowcolor})
-		for i, idx in ipairs(rowIndices) do
-			if idx then
+		for i, idx2 in ipairs(rowIndices) do
+			if idx2 then
 				if bClearChange and newColumns[i].name == "change" then
 					table.insert(rowdata,"")
 				else
-					table.insert(rowdata,row[idx])
+					table.insert(rowdata,row[idx2])
 				end
 			else
 				table.insert(rowdata,rowblank)
@@ -425,8 +425,8 @@ end
 --
 ---------------------------------------------------------------------------
 Color = {
-	new = function(self, _x, _y, _z)
-		local newColor = { x = _x or 0, y = _y or 0, z = _z or 0 }
+	new = function(self, x2, y2, z2)
+		local newColor = { x = x2 or 0, y = y2 or 0, z = z2 or 0 }
 		return setmetatable(newColor, { __index = Color })
 	end,
 

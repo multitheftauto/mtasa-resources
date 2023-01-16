@@ -1,4 +1,3 @@
-local colors = {}
 local freeColors = {}
 
 -- generates N distinct colors.. the larger the N, the less distinct they will be
@@ -15,7 +14,6 @@ function generateColors(N)
 		table.insert(rgbTable, {r, g, b})
 		i = i + increment
 	end
-	colors = rgbTable
 	freeColors = copyTable(rgbTable)
 	--return rgbTable
 end
@@ -47,7 +45,6 @@ function HSLtoRGB(h, s, l)
 	s = s / 100
 	l = l / 100
 	-- find q
-	local q
 	if (l < 0.5) then
 		q = l*(1+s)
 	else

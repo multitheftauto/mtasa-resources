@@ -123,7 +123,7 @@ function guiListSetVisible(list, state)
 	if lists[list] then
 		guiSetVisible(lists[list].bg, state)
 		if state then
-			guiFocus(lists[list].edit)	
+			guiFocus(lists[list].edit)
 		end
 		return true
 	end

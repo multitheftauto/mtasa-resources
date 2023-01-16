@@ -54,11 +54,11 @@ function aBansTab.onClientClick(button)
                     guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
                 if (aBans["Serial"][selected]) then
                     if (messageBox("Unban Serial " .. selected .. "?", MB_QUESTION, MB_YESNO ) == true) then
-                        triggerServerEvent ( "aBans", getLocalPlayer(), "unbanserial", selected )
+                        triggerServerEvent ( "aBans", localPlayer, "unbanserial", selected )
                     end
                 else
                     if (messageBox("Unban IP " .. selected .. "?", MB_QUESTION, MB_YESNO) == true) then
-                        triggerServerEvent ( "aBans", getLocalPlayer(), "unbanip", selected )
+                        triggerServerEvent ( "aBans", localPlayer, "unbanip", selected )
                     end
                 end
             end

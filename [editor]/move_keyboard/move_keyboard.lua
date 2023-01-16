@@ -11,13 +11,11 @@ local selectedElement
 
 local posX, posY, posZ
 
-local rotationless
 local rotX, rotY, rotZ
 local rotFlipped = false
 
 local collisionless
 local lockToAxes = false
-local minX, minY, minZ, maxX, maxY, maxZ
 local centerToBaseDistance
 
 local movementType
@@ -36,12 +34,12 @@ local hasRotation = {
 local function getCameraRotation ()
 	local px, py, pz, lx, ly, lz = getCameraMatrix()
 	local rotz = 6.2831853071796 - math.atan2 ( ( lx - px ), ( ly - py ) ) % 6.2831853071796
- 	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
+	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
 	--Convert to degrees
 	rotx = math.deg(rotx)
 	rotz = -math.deg(rotz)
 
- 	return rotx, 180, rotz
+	return rotx, 180, rotz
 end
 
 local function roundRotation ( rot )
@@ -179,7 +177,7 @@ local function onClientRender_keyboard()
 					tempRot = tempRot % 360
 
 					-- check if rotation changed
-					if (not (tempRot == rotZ)) then
+					if (tempRot ~= rotZ) then
 						if (getElementType(selectedElement) == "ped") then
 							setElementRotation(selectedElement, 0,0,-tempRot%360)
 							setPedRotation(selectedElement, tempRot)
@@ -281,7 +279,7 @@ local function onClientRender_keyboard()
 					tempRot = tempRot % 360
 
 					-- check if rotation changed
-					if (not (tempRot == rotZ)) then
+					if (tempRot ~= rotZ) then
 						if (getElementType(selectedElement) == "ped") then
 							setElementRotation(selectedElement, 0,0,-tempRot%360)
 							setPedRotation(selectedElement, tempRot)
@@ -374,7 +372,7 @@ local function onClientRender_keyboard()
 end
 
 local function rotateWithMouseWheel(key, keyState)
-	if rotationless or (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then
+	if (isCursorShowing() and exports.editor_gui:guiGetMouseOverElement()) then
 		return
 	end
 	local speed
@@ -423,8 +421,6 @@ function attachElement(element)
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
 			rotX, rotY, rotZ = 0,0,getPedRotation ( element )
 		end
-
-		minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
 		enable()
 		return true
 	else
@@ -438,15 +434,14 @@ function detachElement()
 
 		-- sync position/rotation
 		posX, posY, posZ = getElementPosition(selectedElement)
-		triggerServerEvent("syncProperty", getLocalPlayer(), "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
+		triggerServerEvent("syncProperty", localPlayer, "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
 		if hasRotation[getElementType(selectedElement)] then
 			rotX, rotY, rotZ = getElementRotation(selectedElement)
-	        	triggerServerEvent("syncProperty", getLocalPlayer(), "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+			triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 		end
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil
-		rotX, rotY, rotZ = nil, nil, nil, nil
-		minX, minY, minZ, maxX, maxY, maxZ = nil, nil, nil, nil, nil, nil
+		rotX, rotY, rotZ = nil, nil, nil
 		return true
 	else
 		return false
@@ -510,6 +505,6 @@ function disable()
 	isEnabled = false
 end
 
-function setMovementType(movementType)
-	call(getResourceFromName("editor_main"), "setMovementType", movementType)
+function setMovementType(movementType2)
+	call(getResourceFromName("editor_main"), "setMovementType", movementType2)
 end

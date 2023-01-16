@@ -1,4 +1,3 @@
-root = getRootElement()
 runningMap = false
 teams = {} -- used for team game, the participating teams
 createdTeams = {} -- the teams created by this resource, they are destroyed when a map stops
@@ -20,15 +19,15 @@ addEvent("onPlayerReady", true)
 addEvent("onPlayerBriefcaseHit", true)
 addEvent("onPlayerObjectiveHit", true)
 
-addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onResourceStart", resourceRoot,
 function (resource)
 
-	local resourceRoot = getResourceRootElement(resource)
+	local resRoot = getResourceRootElement(resource)
 
 	addEventHandler( "onGamemodeMapStart", root,		onGamemodeMapStart_brmain)
 
 	addEventHandler( "onResourceStart", root,			onResourceStart_brmain)
-	addEventHandler( "onResourceStop", resourceRoot,	onResourceStop_brmain)
+	addEventHandler( "onResourceStop", resRoot,	onResourceStop_brmain)
 end
 )
 
@@ -161,7 +160,7 @@ function forceScoreboardForAllPlayers ( status )
 	local scoreboardResource = getResourceFromName ( "scoreboard" )
 	if ( scoreboardResource and getResourceState ( scoreboardResource ) == "running" ) then
 		for i,v in ipairs ( getElementsByType ( "player" ) ) do
-	    	call ( scoreboardResource, "setPlayerScoreboardForced", v, status )
+			call ( scoreboardResource, "setPlayerScoreboardForced", v, status )
 		end
 		return true
 	else
@@ -187,7 +186,7 @@ function createVarTeam()
 	end
 	-- generate random team skin
 	local usedSkins = {}
-	for teamName,skinArray in pairs(settings.teamskins) do
+	for teamName2,skinArray in pairs(settings.teamskins) do
 		table.insert(usedSkins, skinArray[1])
 	end
 	local randSkin = getRandomSkin(usedSkins)

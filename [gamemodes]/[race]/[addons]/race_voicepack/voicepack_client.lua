@@ -1,6 +1,3 @@
-local g_Root = getRootElement()
-local g_ResRoot = getResourceRootElement(getThisResource())
-
 local soundVolume = 0.5
 
 function playAudio(filename)
@@ -10,16 +7,16 @@ function playAudio(filename)
 end
 
 addEvent("playClientAudio", true)
-addEventHandler("playClientAudio", g_Root, playAudio)
+addEventHandler("playClientAudio", root, playAudio)
 
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		playAudio("raceon.mp3")
 	end
 )
 
 addEvent("onClientPlayerOutOfTime", true)
-addEventHandler('onClientPlayerOutOfTime', g_Root,
+addEventHandler('onClientPlayerOutOfTime', root,
 	function()
 		playAudio("timesup.mp3")
 	end

@@ -27,8 +27,8 @@ function setWorldSpecialPropertyEnabled(property, enabled)
 end
 
 local blurLevel = 36
-function setBlurLevel(level)
-    local level = tonumber(level)
+function setBlurLevel(blevel)
+    local level = tonumber(blevel)
     if (level and level >= 0 and level <= 255) then
         blurLevel = level
         triggerClientEvent(client, EVENT_PROXY, client, PROXY_BLUR, blurLevel)

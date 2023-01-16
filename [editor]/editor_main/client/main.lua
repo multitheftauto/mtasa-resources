@@ -1,5 +1,4 @@
 local thisResource = getThisResource()
-local thisResourceRoot = getResourceRootElement(thisResource)
 local g_suspendedCamera = {}
 local g_screenX, g_screenY = guiGetScreenSize ()
 
@@ -36,7 +35,6 @@ local CROSSHAIR_WORLD = 2
 local CROSSHAIR_WATER = 3
 local CROSSHAIR_MOUSEOVER = 4
 local CROSSHAIR_SENSITIVE = 5
-local g_crosshairState
 local g_showLabels = true
 local g_showCrosshair = true
 
@@ -145,7 +143,7 @@ local specialIntersections = {
 
 function startWhenLoaded()
 	engineSetAsynchronousLoading ( false, true )
-	if getElementData(thisResourceRoot,"g_in_test") then
+	if getElementData(resourceRoot,"g_in_test") then
 		setElementData ( localPlayer, "waitingToStart", true, false )
 		return
 	else
@@ -167,7 +165,7 @@ addEventHandler("doSelectElement", root,
 
 addEventHandler("onClientRender", root,
 	function ()
-		if g_suspended or getElementData(thisResourceRoot,"g_in_test") then
+		if g_suspended or getElementData(resourceRoot,"g_in_test") then
 			return
 		end
 		--
@@ -195,7 +193,7 @@ addEventHandler("onClientRender", root,
 			return
 		end
 		if g_dragElement and not g_selectedElement then
-			local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
+			local camX2, camY2, camZ2, lookX, lookY, lookZ = getCameraMatrix()
 			local distance = math.sqrt((g_dragPosition.x - lookX)^2 +
 									   (g_dragPosition.y - lookY)^2 +
 				 (g_dragPosition.z and (g_dragPosition.z - lookZ)^2 or 0))
@@ -213,14 +211,18 @@ addEventHandler("onClientRender", root,
 				g_targetedElement = edf.edfGetAncestor(targetElement)
 			end
 
-			local camX, camY, camZ = getCameraMatrix()
-			local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
+			local camX2, camY2, camZ2 = getCameraMatrix()
+			local distance = math.sqrt( (targetX - camX2)^2 + (targetY - camY2)^2 + (targetZ - camZ2)^2 )
 			local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
-			createHighlighterText ( labelCenterX,labelCenterY,
-							getElementID(g_targetedElement) or "",
-							"["..getElementType(g_targetedElement).."]",
-							roundedDistance .. " m"
-			)
+			local elementName = getElementID(g_targetedElement) or ""
+			local mapContainer = getElementByID("mapContainer")
+			if mapContainer then
+				if getElementParent(g_targetedElement) ~= mapContainer then
+					elementName = "Non-editable object " .. getElementModel(g_targetedElement)
+				end
+			end
+			
+			createHighlighterText(labelCenterX, labelCenterY, elementName, "["..getElementType(g_targetedElement).."]", roundedDistance .. " m")
 		else
 			if g_targetedElement then
 				g_targetedPart = nil
@@ -234,20 +236,20 @@ addEventHandler("onClientRender", root,
             local line1 = ( not g_RemoveWorldBuildingMode_main and "[SELECT WORLD OBJECT]" or "[REMOVE WORLD OBJECT]" )
             local line2 = ""
             local line3 = ""
-     		if not targetElement and buildingInfo then
-    			local camX, camY, camZ = getCameraMatrix()
-    			local distance = math.sqrt( (targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2 )
-    			local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
-    			local modelName = tostring( engineGetModelNameFromID( buildingInfo.id ) )
+			if not targetElement and buildingInfo then
+				local camX2, camY2, camZ2 = getCameraMatrix()
+				local distance = math.sqrt( (targetX - camX2)^2 + (targetY - camY2)^2 + (targetZ - camZ2)^2 )
+				local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
+				local modelName = tostring( engineGetModelNameFromID( buildingInfo.id ) )
 				if ( buildingInfo.LODid ~= nil ) then
-    				line1 = buildingInfo.id .. " (" .. modelName .. ")" .. " LOD: " .. buildingInfo.LODid
+					line1 = buildingInfo.id .. " (" .. modelName .. ")" .. " LOD: " .. buildingInfo.LODid
 				else
-    				line1 = buildingInfo.id .. " (" .. modelName .. ")"
+					line1 = buildingInfo.id .. " (" .. modelName .. ")"
 				end
 				line2 = "[world]"
 				line3 = roundedDistance .. " m"
-    			g_worldBuildingInfo = buildingInfo
-    		end
+				g_worldBuildingInfo = buildingInfo
+			end
 			createHighlighterText ( labelCenterX,labelCenterY, line1, line2, line3 )
         end
 
@@ -338,7 +340,7 @@ function stopEditor()
 	engineSetAsynchronousLoading ( true, false )
 	resetWorldSounds()
 end
-addEventHandler("onClientResourceStop", thisResourceRoot, stopEditor)
+addEventHandler("onClientResourceStop", resourceRoot, stopEditor)
 
 function toggleMode(key, keyState)
 	if (g_mode == CAMERA_MODE) then
@@ -606,7 +608,6 @@ function setCrosshairState(state)
 		color = tocolor(255,0,0,255)
 	end
 	dxDrawImage ( g_screenX/2 - 16, g_screenY/2 - 16, 32, 32, "client/images/crosshair.png",0,0,0,color,false)
-	g_crosshairState = state
 end
 
 function setCursorCrosshairState(state)
@@ -622,7 +623,6 @@ function setCursorCrosshairState(state)
 	end
 	local x,y = getCursorPosition()
 	dxDrawImage ( g_screenX*x - 2, g_screenY*y - 1, 15, 15,  "client/images/cursor.png", 0,0,0,color,true )
-	-- g_crosshairState = state
 end
 
 function makeVehicleStatic(vehicle)
@@ -631,13 +631,13 @@ function makeVehicleStatic(vehicle)
 	setElementFrozen(vehicle, true)
 	setElementCollisionsEnabled(vehicle, false)
 end
-addEventHandler("doSetVehicleStatic", getRootElement(), makeVehicleStatic)
+addEventHandler("doSetVehicleStatic", root, makeVehicleStatic)
 
 function makePedStatic(ped)
 	ped = ped or source
 	setElementCollisionsEnabled ( ped, false )
 end
-addEventHandler("doSetPedStatic", getRootElement(), makePedStatic)
+addEventHandler("doSetPedStatic", root, makePedStatic)
 
 function setRepresentationCollisionsEnabled(element, state)
 	for k, child in ipairs(getElementChildren(element)) do
@@ -734,13 +734,22 @@ function disableGameHUD()
 end
 
 -- PUBLIC
-function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedrop)
+function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedrop, ignoreProperties)
 	local openProperties
 	submode = submode or g_submode
 
 	if not isElement(element) then return end
 	
 	if isColPatchObject(element) then return end
+
+	-- Fixes error when try to edit static object created by script
+	local mapContainer = getElementByID("mapContainer")
+	if mapContainer then
+		if getElementParent(element) ~= mapContainer then
+			editor_gui.outputMessage("Cannot select element, it is created by a different script", 255,255,255)
+			return
+		end
+	end
 
 	if getElementType(element) == "vehicle" and getVehicleType(element) == "Train" then
 		setTrainDerailed(element, true)
@@ -806,8 +815,10 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 			createArrowMarker(handle)
 		end
 	else
-		editor_gui.openPropertiesBox( element, false, shortcut )
-		openProperties = true
+		if not ignoreProperties then
+			editor_gui.openPropertiesBox( element, false, shortcut )
+			openProperties = true
+		end
 	end
 
 	triggerServerEvent("doLockElement", element)
@@ -958,7 +969,7 @@ end
 
 -- sets the maximum distance at which an element can be selected
 function setMaxSelectDistance(distance)
-	assert((distance >= 0), "Distance must be a positive number")
+	assert((distance >= 0), "Distance must be a positive number.")
 	g_maxSelectDistance = distance
 	return true
 end
@@ -979,7 +990,10 @@ function getMaxSelectDistance()
 	return g_maxSelectDistance
 end
 
-function destroySelectedElement()
+function destroySelectedElement(key)
+	if key then return
+		editor_gui.restoreSelectedElement()
+	 end
 	if g_selectedElement then
 		local element = g_selectedElement
 		dropElement(false)
@@ -1043,7 +1057,7 @@ end
 
 function setWorkingInterior( interior )
 	setCameraInterior( interior )
-	setElementInterior(getLocalPlayer(), interior)
+	setElementInterior(localPlayer, interior)
 	g_workingInterior = interior
 	return true
 end
@@ -1250,7 +1264,7 @@ end
 function updateArrowMarker( element )
 	if not g_arrowMarker then return end
 
-	local element = element or g_selectedElement
+	element = element or g_selectedElement
 	if not element then return end
 
 	local radius = edf.edfGetElementRadius(element) or 1
@@ -1358,7 +1372,7 @@ function handleWorldBuildingMode(keyState)
 					creationParameters.rotation = { g_worldBuildingInfo.rx, g_worldBuildingInfo.ry, g_worldBuildingInfo.rz }
 					doCreateElement("object", "editor_main", creationParameters)
 				end
-        	end
+			end
 			g_SelectWorldBuildingMode_main = false
 			g_RemoveWorldBuildingMode_main = false
 			return true

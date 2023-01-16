@@ -1,6 +1,6 @@
--- FILE: 	mapEditorScriptingExtension_s.lua
--- PURPOSE:	Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
--- VERSION:	RemoveWorldObjects (v1) AutoLOD (v1)
+-- FILE: mapEditorScriptingExtension_s.lua
+-- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
+-- VERSION: RemoveWorldObjects (v1) AutoLOD (v2)
 
 local usedLODModels = {}
 local LOD_MAP = {}
@@ -62,11 +62,16 @@ end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop)
 
-function receiveLODsClientRequest()
-	triggerClientEvent(client, "setLODsClient", resourceRoot, usedLODModels)
+local function onPlayerResourceStart(resourceElement)
+	local mapResource = resourceElement == resource
+
+	if not mapResource then
+		return
+	end
+	
+	triggerClientEvent(source, "setLODsClient", resourceRoot, usedLODModels)
 end
-addEvent("requestLODsClient", true)
-addEventHandler("requestLODsClient", resourceRoot, receiveLODsClientRequest)
+addEventHandler("onPlayerResourceStart", root, onPlayerResourceStart)
 
 -- MTA LOD Table [object] = [lodmodel]
 

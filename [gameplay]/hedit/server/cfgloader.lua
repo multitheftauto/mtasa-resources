@@ -119,9 +119,6 @@ function exportToDefaults ( linetabs )
 
                 local models = getVehicleModelsByIdentifier ( value )
 
-            else
-
-
             end
 
             local property = getHandlingPropertyFromID ( id )

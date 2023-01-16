@@ -61,7 +61,7 @@ function openShowDialog( resources )
 	end
 	guiSetVisible ( loadDialog.window, true )
 end
-addEventHandler ( "openShowDialog", getRootElement(), openShowDialog )
+addEventHandler ( "openShowDialog", root, openShowDialog )
 
 function openSearch()
 	guiGridListClear ( loadDialog.mapsList )

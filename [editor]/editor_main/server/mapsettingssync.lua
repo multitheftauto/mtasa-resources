@@ -140,7 +140,7 @@ function setupMapSettings()
 		end
 	end
 end
-addEventHandler ( "onResourceStart", thisResourceRoot, setupMapSettings )
+addEventHandler ( "onResourceStart", resourceRoot, setupMapSettings )
 
 addEventHandler ( "onClientGUILoaded", root,
 	function()
@@ -169,7 +169,7 @@ function passDefaultMapSettings()
 			local resource = getResourceFromName(resourceName)
 			if ( resource ) then
 				local loaded = false
-				for k, loadedResource in ipairs(loadedDefs) do
+				for k2, loadedResource in ipairs(loadedDefs) do
 					if ( loadedResource == resource ) then
 						loaded = true
 						break

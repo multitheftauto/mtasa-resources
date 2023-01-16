@@ -1,4 +1,3 @@
-local root = getRootElement()
 local locked = {}
 
 function getLockedElement(client)

@@ -24,19 +24,19 @@ end
 function GhostRecord:init( mapName )
 	self.currentMapName = mapName
 	self.checkForCountdownEnd_HANDLER = function() self:checkForCountdownEnd() end
-	addEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER )
+	addEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER )
 	outputDebug( "Waiting for start..." )
 end
 
 function GhostRecord:destroy()
 	self:stopRecording()
-	if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
-	if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", g_Root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
-	if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
-	if self.playerRaceWasted_HANDLER then removeEventHandler( "onClientPlayerRaceWasted", getLocalPlayer(), self.playerRaceWasted_HANDLER ) self.playerRaceWasted_HANDLER = nil end
-	if self.playerFinished_HANDLER then removeEventHandler( "onClientPlayerFinished", getLocalPlayer(), self.playerFinished_HANDLER ) self.playerFinished_HANDLER = nil end
-	if self.playerPickUpRacePickup_HANDLER then removeEventHandler( "onClientPlayerPickUpRacePickup", getLocalPlayer(), self.playerPickUpRacePickup_HANDLER ) self.playerPickUpRacePickup_HANDLER = nil end
-	if self.playerOutOfTime_HANDLER then removeEventHandler( "onClientPlayerOutOfTime", getLocalPlayer(), self.playerOutOfTime_HANDLER ) self.playerOutOfTime_HANDLER = nil end
+	if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+	if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
+	if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
+	if self.playerRaceWasted_HANDLER then removeEventHandler( "onClientPlayerRaceWasted", localPlayer, self.playerRaceWasted_HANDLER ) self.playerRaceWasted_HANDLER = nil end
+	if self.playerFinished_HANDLER then removeEventHandler( "onClientPlayerFinished", localPlayer, self.playerFinished_HANDLER ) self.playerFinished_HANDLER = nil end
+	if self.playerPickUpRacePickup_HANDLER then removeEventHandler( "onClientPlayerPickUpRacePickup", localPlayer, self.playerPickUpRacePickup_HANDLER ) self.playerPickUpRacePickup_HANDLER = nil end
+	if self.playerOutOfTime_HANDLER then removeEventHandler( "onClientPlayerOutOfTime", localPlayer, self.playerOutOfTime_HANDLER ) self.playerOutOfTime_HANDLER = nil end
 	if isTimer( self.positionTimer ) then
 		killTimer( self.positionTimer )
 		self.positionTimer = nil
@@ -48,35 +48,34 @@ function GhostRecord:destroy()
 	self.flushTimer = nil
 	self.timeToSend = nil
 	self.currentMapName = self.currentMapName .. "deleted"
-	self = nil
 end
 
 function GhostRecord:checkForCountdownEnd()
-	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
+	local vehicle = getPedOccupiedVehicle( localPlayer )
 	if vehicle then
 		local frozen = isElementFrozen( vehicle )
 		if not frozen then
 			self.currentVehicleType = getElementModel( vehicle )
-			local pedModel = getElementModel( getLocalPlayer() )
+			local pedModel = getElementModel( localPlayer )
 			local x, y, z = getElementPosition( vehicle )
 			local rX, rY, rZ = getElementRotation( vehicle )
 			table.insert( self.recording, { ty = "st", m = self.currentVehicleType, p = pedModel, x = x, y = y, z = z, rX = rX, rY = rY, rZ = rZ, t = 0 } )
-			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+			if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
 			self:startRecording()
 		end
 	end
 end
 
 function GhostRecord:waitForNewVehicle()
-	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
+	local vehicle = getPedOccupiedVehicle( localPlayer )
 	if vehicle then
 		local vHealth = getElementHealth( vehicle )
-		local pHealth = getElementHealth( getLocalPlayer() )
+		local pHealth = getElementHealth( localPlayer )
 		local frozen = isElementFrozen( vehicle )
 		if vHealth > 99 and pHealth > 99 and not frozen then
 			local ticks = getTickCount() - self.startTick
 			table.insert( self.recording, { ty = "sp", t = ticks } )
-			if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", g_Root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
+			if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
 			self:resumeRecording()
 		end
 	end
@@ -89,15 +88,15 @@ function GhostRecord:startRecording()
 		self:resetKeyStates()
 		self.isRecording = true
 		self.checkStateChanges_HANDLER = function() self:checkStateChanges() end
-		addEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER )
+		addEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER )
 		self.playerRaceWasted_HANDLER = function( ... ) self:playerRaceWasted( ... ) end
-		addEventHandler( "onClientPlayerRaceWasted", getLocalPlayer(), self.playerRaceWasted_HANDLER )
+		addEventHandler( "onClientPlayerRaceWasted", localPlayer, self.playerRaceWasted_HANDLER )
 		self.playerFinished_HANDLER = function( ... ) self:playerFinished( ... ) end
-		addEventHandler( "onClientPlayerFinished", getLocalPlayer(), self.playerFinished_HANDLER )
+		addEventHandler( "onClientPlayerFinished", localPlayer, self.playerFinished_HANDLER )
 		self.playerPickUpRacePickup_HANDLER = function( ... ) self:playerPickUpRacePickup( ... ) end
-		addEventHandler( "onClientPlayerPickUpRacePickup", getLocalPlayer(), self.playerPickUpRacePickup_HANDLER )
+		addEventHandler( "onClientPlayerPickUpRacePickup", localPlayer, self.playerPickUpRacePickup_HANDLER )
 		self.playerOutOfTime_HANDLER = function() self:playerOutOfTime() end
-		addEventHandler( "onClientPlayerOutOfTime", getLocalPlayer(), self.playerOutOfTime_HANDLER )
+		addEventHandler( "onClientPlayerOutOfTime", localPlayer, self.playerOutOfTime_HANDLER )
 		self.updateExactPosition_HANDLER = function() self:updateExactPosition() end
 		self.positionTimer = setTimer( self.updateExactPosition_HANDLER, POSITION_PULSE, 0 )
 	end
@@ -107,14 +106,14 @@ function GhostRecord:pauseRecording()
 	if self.isRecording then
 		outputDebug( "Recording paused." )
 		self.isRecording = false
-		if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
+		if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
 		if isTimer( self.positionTimer ) then
 			killTimer( self.positionTimer )
 			self.positionTimer = nil
 			self.updateExactPosition_HANDLER = nil
 		end
 		self.waitForNewVehicle_HANDLER = function() self:waitForNewVehicle() end
-		addEventHandler( "onClientRender", g_Root, self.waitForNewVehicle_HANDLER )
+		addEventHandler( "onClientRender", root, self.waitForNewVehicle_HANDLER )
 	end
 end
 
@@ -124,7 +123,7 @@ function GhostRecord:resumeRecording()
 		self.isRecording = true
 		self:resetKeyStates()
 		self.checkStateChanges_HANDLER = function() self:checkStateChanges() end
-		addEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER )
+		addEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER )
 		self.updateExactPosition_HANDLER = function() self:updateExactPosition() end
 		self.positionTimer = setTimer( self.updateExactPosition_HANDLER, POSITION_PULSE, 0 )
 	end
@@ -134,13 +133,13 @@ function GhostRecord:stopRecording()
 	if self.isRecording then
 		outputDebug( "Recording finished." )
 		self.isRecording = false
-		if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
-		if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", g_Root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
-		if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", g_Root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
-		if self.playerRaceWasted_HANDLER then removeEventHandler( "onClientPlayerRaceWasted", getLocalPlayer(), self.playerRaceWasted_HANDLER ) self.playerRaceWasted_HANDLER = nil end
-		if self.playerFinished_HANDLER then removeEventHandler( "onClientPlayerFinished", getLocalPlayer(), self.playerFinished_HANDLER ) self.playerFinished_HANDLER = nil end
-		if self.playerPickUpRacePickup_HANDLER then removeEventHandler( "onClientPlayerPickUpRacePickup", getLocalPlayer(), self.playerPickUpRacePickup_HANDLER ) self.playerPickUpRacePickup_HANDLER = nil end
-		if self.playerOutOfTime_HANDLER then removeEventHandler( "onClientPlayerOutOfTime", getLocalPlayer(), self.playerOutOfTime_HANDLER ) self.playerOutOfTime_HANDLER = nil end
+		if self.checkForCountdownEnd_HANDLER then removeEventHandler( "onClientRender", root, self.checkForCountdownEnd_HANDLER ) self.checkForCountdownEnd_HANDLER = nil end
+		if self.waitForNewVehicle_HANDLER then removeEventHandler( "onClientRender", root, self.waitForNewVehicle_HANDLER ) self.waitForNewVehicle_HANDLER = nil end
+		if self.checkStateChanges_HANDLER then removeEventHandler( "onClientRender", root, self.checkStateChanges_HANDLER ) self.checkStateChanges_HANDLER = nil end
+		if self.playerRaceWasted_HANDLER then removeEventHandler( "onClientPlayerRaceWasted", localPlayer, self.playerRaceWasted_HANDLER ) self.playerRaceWasted_HANDLER = nil end
+		if self.playerFinished_HANDLER then removeEventHandler( "onClientPlayerFinished", localPlayer, self.playerFinished_HANDLER ) self.playerFinished_HANDLER = nil end
+		if self.playerPickUpRacePickup_HANDLER then removeEventHandler( "onClientPlayerPickUpRacePickup", localPlayer, self.playerPickUpRacePickup_HANDLER ) self.playerPickUpRacePickup_HANDLER = nil end
+		if self.playerOutOfTime_HANDLER then removeEventHandler( "onClientPlayerOutOfTime", localPlayer, self.playerOutOfTime_HANDLER ) self.playerOutOfTime_HANDLER = nil end
 		if isTimer( self.positionTimer ) then
 			killTimer( self.positionTimer )
 			self.positionTimer = nil
@@ -166,7 +165,7 @@ function GhostRecord:saveGhostFlush()
 	end
 	self.flushTimer = nil
 	if self.timeToSend then
-		triggerServerEvent( "onGhostDataReceive", getLocalPlayer(), self.recording, self.timeToSend, getPlayerName( getLocalPlayer() ), self.currentMapName )
+		triggerServerEvent( "onGhostDataReceive", localPlayer, self.recording, self.timeToSend, getPlayerName( localPlayer ), self.currentMapName )
 		self.timeToSend = nil
 	end
 end
@@ -183,7 +182,7 @@ function GhostRecord:checkStateChanges()
 			local ticks = getTickCount() - self.startTick
 			if (state and ticks - (self.lastPressed[v] or 0) >= KEYSPAM_LIMIT) or not state then
 				-- Don't record shooting for hydra/hunter/seasparrow/rhino
-				local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
+				local vehicle = getPedOccupiedVehicle( localPlayer )
 				local donotrecord = false
 				if isElement( vehicle ) then
 					local model = getElementModel( vehicle )
@@ -205,7 +204,7 @@ function GhostRecord:checkStateChanges()
 	end
 
 	-- Vehicle change
-	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
+	local vehicle = getPedOccupiedVehicle( localPlayer )
 	if vehicle then
 		local vehicleType = getElementModel( vehicle )
 		if self.currentVehicleType ~= vehicleType then
@@ -218,7 +217,7 @@ function GhostRecord:checkStateChanges()
 end
 
 function GhostRecord:updateExactPosition()
-	local vehicle = getPedOccupiedVehicle( getLocalPlayer() )
+	local vehicle = getPedOccupiedVehicle( localPlayer )
 	if isElement( vehicle ) then
 		local x, y, z = getElementPosition( vehicle )
 		if self.last.x then
@@ -270,7 +269,7 @@ function GhostRecord:resetKeyStates()
 	end
 end
 
-addEventHandler( "onClientMapStarting", g_Root,
+addEventHandler( "onClientMapStarting", root,
 	function ( mapInfo )
 		if recorder then
 			recorder:stopRecording()

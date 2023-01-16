@@ -82,8 +82,8 @@ function Countdown:start(player)
 		self.client.id = #Countdown.clientinstances + 1
 		Countdown.clientinstances[self.client.id] = self
 		self.client.startvalue = self.startvalue
-		self:clientCall(player or g_Root, 'start', self.client)
-		self.client.player = player or g_Root
+		self:clientCall(player or root, 'start', self.client)
+		self.client.player = player or root
 	else
 		self.display = textCreateDisplay()
 		if self.bSingleLine then
@@ -101,8 +101,8 @@ function Countdown:start(player)
 		if player then
 			textDisplayAddObserver(self.display, player)
 		else
-			for i,player in ipairs(getElementsByType('player')) do
-				textDisplayAddObserver(self.display, player)
+			for i,plr in ipairs(getElementsByType('player')) do
+				textDisplayAddObserver(self.display, plr)
 			end
 		end
 	end
@@ -132,7 +132,7 @@ function Countdown:update()
 	    if self.countitem then
 		    textItemSetText(self.countitem, self.texts[self.value] or tostring(self.value))
             if textItemGetText(self.countitem) == '' then
- 		        textItemSetText(self.textitem, '')
+				textItemSetText(self.textitem, '')
             end
         end
 		if self.singleitem then

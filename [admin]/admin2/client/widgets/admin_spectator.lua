@@ -10,7 +10,7 @@
 aSpectator = {Offset = 5, AngleX = 0, AngleZ = 30, Spectating = nil}
 
 function aSpectate(player)
-    --if ( player == getLocalPlayer() ) then
+    --if ( player == localPlayer ) then
     --	messageBox ( "Can not spectate yourself", MB_ERROR, MB_OK )
     --	return
     --end
@@ -130,7 +130,7 @@ function aSpectator.Close(destroy)
             guiSetVisible(aSpectator.Prev, false)
         end
     end
-    setCameraTarget(getLocalPlayer())
+    setCameraTarget(localPlayer)
     aSpectator.Spectating = nil
 end
 
@@ -184,7 +184,7 @@ function aSpectator.SwitchPlayer(inc, arg, inc2)
     if (not tonumber(inc)) then
         return
     end
-    local players = {}
+    local players
     if (guiCheckBoxGetSelected(aSpectator.Skip)) then
         players = aSpectator.GetAlive()
     else
@@ -260,7 +260,6 @@ function aSpectator.Render()
     oz = z + math.tan(math.rad(aSpectator.AngleZ)) * offset
     setCameraMatrix(ox, oy, oz, x, y, z)
 
-    local sx, sy = guiGetScreenSize()
     dxDrawText(
         "Spectating: " .. getPlayerName(aSpectator.Spectating),
         sx - 170,

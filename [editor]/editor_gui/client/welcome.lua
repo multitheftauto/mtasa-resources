@@ -48,9 +48,9 @@ function proceedToTutorial()
 	destroyElement ( welcomeWindow )
 	guiSetInputEnabled ( false )
 	startTutorial()
-	addEventHandler ( "onClientRender", getRootElement(), drawRectangle )
-	addEventHandler ( "onClientRender", getRootElement(), drawText )
-	addEventHandler ( "onClientRender", getRootElement(), drawGlow )
+	addEventHandler ( "onClientRender", root, drawRectangle )
+	addEventHandler ( "onClientRender", root, drawText )
+	addEventHandler ( "onClientRender", root, drawGlow )
 end
 
 function skipTutorial()

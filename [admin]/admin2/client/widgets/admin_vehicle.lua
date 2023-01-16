@@ -75,7 +75,7 @@ function aVehicle.onDoubleClick(button)
         if (source == aVehicle.List) then
             if (guiGridListGetSelectedItem(aVehicle.List) ~= -1) then
                 local id = tonumber(guiGridListGetItemText(aVehicle.List, guiGridListGetSelectedItem(aVehicle.List), 1))
-                triggerServerEvent("aPlayer", getLocalPlayer(), aVehicle.Select, "givevehicle", id)
+                triggerServerEvent("aPlayer", localPlayer, aVehicle.Select, "givevehicle", id)
                 aVehicle.Close(false)
             end
         end
@@ -92,13 +92,13 @@ function aVehicle.onClick(button)
     if (button == "left") then
         if (source == aVehicle.Accept) then
             if (tonumber(guiGetText(aVehicle.ID))) then
-                triggerServerEvent("aPlayer", getLocalPlayer(), aVehicle.Select, "givevehicle", tonumber(guiGetText(aVehicle.ID)))
+                triggerServerEvent("aPlayer", localPlayer, aVehicle.Select, "givevehicle", tonumber(guiGetText(aVehicle.ID)))
                 aVehicle.Close(false)
             else
                 if (guiGridListGetSelectedItem(aVehicle.List) ~= -1) then
                     local id = tonumber(guiGridListGetItemText(aVehicle.List, guiGridListGetSelectedItem(aVehicle.List), 1))
                     guiSetVisible(aVehicle.Form, false)
-                    triggerServerEvent("aPlayer", getLocalPlayer(), aVehicle.Select, "givevehicle", id)
+                    triggerServerEvent("aPlayer", localPlayer, aVehicle.Select, "givevehicle", id)
                 else
                     messageBox("No vehicle selected!", MB_ERROR, MB_OK)
                 end

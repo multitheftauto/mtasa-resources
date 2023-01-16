@@ -4,7 +4,7 @@ local playerBlips = {}
 local blipInfo = {}
 
 --Setup our playerblips
-addEventHandler ( "onClientPlayerSpawn", getRootElement(),
+addEventHandler ( "onClientPlayerSpawn", root,
 	function()
 		if isElement ( playerBlips[source] ) then
 			destroyElement ( playerBlips[source] )
@@ -14,14 +14,14 @@ addEventHandler ( "onClientPlayerSpawn", getRootElement(),
 	end
 )
 
-addEventHandler ( "onClientPlayerQuit", getRootElement(),
+addEventHandler ( "onClientPlayerQuit", root,
 	function()
 		destroyElement ( playerBlips[source] )
 		playerBlips[source] = nil
 	end
 )
 
-addEventHandler ( "onClientPlayerWasted", getRootElement(),
+addEventHandler ( "onClientPlayerWasted", root,
 	function()
 		destroyElement ( playerBlips[source] )
 		playerBlips[source] = nil

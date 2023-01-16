@@ -81,8 +81,8 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	extraNodes = extraNodes or {}
 
 	--Add OOP support
-	local oopNode = xmlCreateChild(xml, "oop")
-	xmlNodeSetValue(oopNode, "true")
+	--[[local oopNode = xmlCreateChild(xml, "oop")
+	xmlNodeSetValue(oopNode, "true")]]
 
 	--[[ info tag ]]--
 	local infoNode = xmlCreateChild(xml, "info")
@@ -171,8 +171,8 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	end
 	fileCopy("server/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
 
-	local scriptName = "mapEditorScriptingExtension_c.lua"
-	local foundScriptInMeta = false
+	scriptName = "mapEditorScriptingExtension_c.lua"
+	foundScriptInMeta = false
 	for i, child in ipairs(xmlNodeGetChildren(xml)) do
 		if (xmlNodeGetAttribute(child, "src") == scriptName) then
 			foundScriptInMeta = true

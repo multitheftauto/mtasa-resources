@@ -1,5 +1,3 @@
-local g_Root = getRootElement()
-local g_ResRoot = getResourceRootElement(getThisResource())
 local debug = false
 
 local mapName
@@ -9,7 +7,7 @@ local lastPlayer = {} 			--lastPlayer[checkpointNum] = player
 local allCpTimes = {} 			--allCpTimes[player][checkpointNum] = time
 local players = {}
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		-- executeSQLDropTable("mapInterims")
 		-- Add table if required
@@ -28,7 +26,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 	end
 )
 
-addEventHandler('onGamemodeMapStart', g_Root,
+addEventHandler('onGamemodeMapStart', root,
 	function(mapres)
 		if debug then outputDebugString("delay_indicator: sending data: "..tostring(mapInfo.name)) end
 		mapName = getResourceName(mapres)
@@ -47,7 +45,7 @@ addEventHandler('onGamemodeMapStart', g_Root,
 )
 
 addEvent('onPlayerReachCheckpoint')
-addEventHandler('onPlayerReachCheckpoint', g_Root,
+addEventHandler('onPlayerReachCheckpoint', root,
 	function(checkpointNum, timePassed)
 		timePassed = math.floor(timePassed)
         if debug then outputDebugString("race_delay_indicator: ".."info for "..getPlayerName(source)) end
@@ -67,9 +65,7 @@ addEventHandler('onPlayerReachCheckpoint', g_Root,
             if debug then outputDebugString("race_delay_indicator: ".."frontPlayer = "..tostring(frontPlayer)) end
             if not frontPlayer then
                 if debug then outputDebugString("race_delay_indicator: ".."no frontPlayer use lastPlayer") end
-                if lastPlayer[checkpointNum] then
-                    frontPlayer = lastPlayer[checkpointNum]
-                else
+                if not lastPlayer[checkpointNum] then
                     if debug then outputDebugString("race_delay_indicator: ".."no lastPlayer use nothing") end
                 end
 			else
@@ -103,7 +99,7 @@ function getPlayerFromRank(rank)
 end
 
 addEvent("onPlayerToptimeImprovement")
-addEventHandler("onPlayerToptimeImprovement", g_Root,
+addEventHandler("onPlayerToptimeImprovement", root,
 	function(newPos)
 		if debug then outputDebugString(tostring(getPlayerName(source)).." "..tostring(newPos).." "..tostring(topTimeRankPlayer[1])) end
 		if newPos <= topTimeRankPlayer[1] and allCpTimes[source] then

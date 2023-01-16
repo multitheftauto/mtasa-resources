@@ -10,7 +10,7 @@
 
 local aCountries = {}
 local IP2C_FILENAME = "conf/IpToCountryCompact.csv"
-local IP2C_UPDATE_URL = "http://mirror.multitheftauto.com/mtasa/scripts/IpToCountryCompact.csv"
+local IP2C_UPDATE_URL = "http://mirror-cdn.multitheftauto.com/mtasa/scripts/IpToCountryCompact.csv"
 local IP2C_UPDATE_INTERVAL_SECONDS = 60 * 60 * 24 * 1	-- Update no more than once a day
 
 function getPlayerCountry ( player )
@@ -205,8 +205,8 @@ function checkForIp2cFileUpdate( cor )
 	end
 
 	-- Fetch remote ip2c file
-	local fetchedCsv,errno = fetchRemoteContent( cor, IP2C_UPDATE_URL );
-	if errno ~= 0 then return end
+	local fetchedCsv,errno2 = fetchRemoteContent( cor, IP2C_UPDATE_URL );
+	if errno2 ~= 0 then return end
 
 	-- Check download was correct
 	local newMd5 = md5( fetchedCsv );
@@ -317,8 +317,8 @@ CoroutineSleeper = {
 	new = function(self, myFunc, ...)
 		local obj = setmetatable({}, { __index = CoroutineSleeper })
 		-- Use inner function to call myFunc, so we can auto :detach when finished
-    	obj.handle = coroutine.create( function(obj, ...)
-											myFunc(obj, ...)
+		obj.handle = coroutine.create( function(obj2, ...)
+											myFunc(obj2, ...)
 											obj:detach()
 										end )
 		coroutine.resume(obj.handle,obj, ...)
@@ -339,7 +339,7 @@ CoroutineSleeper = {
 	sleep = function(self, ms)
 		if not self:isAttached() then return end
 		setTimer( function()
-    		if not self:isAttached() then return end
+			if not self:isAttached() then return end
 			local status = coroutine.status(self.handle)
 			if (status == "suspended") then
 				coroutine.resume(self.handle)

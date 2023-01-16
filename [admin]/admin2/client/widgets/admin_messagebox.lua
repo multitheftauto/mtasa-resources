@@ -30,7 +30,7 @@ function messageBox(message, icon, type)
     return false
 end
 
-addEventHandler(EVENT_MESSAGE_BOX, getLocalPlayer(), messageBox)
+addEventHandler(EVENT_MESSAGE_BOX, localPlayer, messageBox)
 
 function aMessageBox.Show(message, icon, type)
     local x, y = guiGetScreenSize()

@@ -90,9 +90,9 @@ function aAdminACL ( type, acltable )
 		guiGridListSetItemText ( aACLList, aAclData["acl_row"], 2, "ACL:", true, false )
 		aAclData["acl"] = acltable["acl"]
 		for id, name in ipairs ( acltable["acl"] ) do
-			local row = guiGridListAddRow ( aACLList )
-			guiGridListSetItemText ( aACLList, row, 1, "+", false, false )
-			guiGridListSetItemText ( aACLList, row, 2, name, false, false )
+			local row2 = guiGridListAddRow ( aACLList )
+			guiGridListSetItemText ( aACLList, row2, 1, "+", false, false )
+			guiGridListSetItemText ( aACLList, row2, 2, name, false, false )
 		end
 		aclDisplayOptions ( "", "" )
 	elseif ( type == "aclobjects" ) then

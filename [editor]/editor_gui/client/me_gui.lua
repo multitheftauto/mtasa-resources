@@ -2,8 +2,6 @@ enableSound = true --this enables or disables sound.  For the options menu
 isCurrentButtonElement = false --this checks whether the currently highlighted button is an element icon, so EDF info can appear.
 currentSelectedResource = false --this defines the currently selected resource
 local wasCurrentBrowserShowing = false
-local root = getRootElement()
-local thisResourceRoot = getResourceRootElement(getThisResource())
 local bar = {}
 --These tables define the buttons that go on the top.  the names match their filename.
 menuButtons = { { ["name"]="new" },{ ["name"]="open" },{ ["name"]="save" },{ ["name"]="save as" },{ ["name"]="options" },{ ["name"]="undo" },{ ["name"]="redo" }, { ["name"]="locations" }--[[,{ ["name"]="clipboard" },{ ["name"]="exit" } ]]}
@@ -61,11 +59,11 @@ function startGUI(resource)
 	createPropertiesBox()
 	outputConsole("createPropertiesBox() : "..tostring(getTickCount()-TIME)); TIME = getTickCount()
 	isGUICreated = true
-	triggerServerEvent ( "onClientGUILoaded", getLocalPlayer() )
+	triggerServerEvent ( "onClientGUILoaded", localPlayer )
 	welcomeUser()
 	setHUDAlpha(0.2)
 end
-addEventHandler("onClientResourceStart",thisResourceRoot, startGUI )
+addEventHandler("onClientResourceStart",resourceRoot, startGUI )
 
 function scrollEDF(key,keyState)
 	if isCurrentButtonElement == false then return end
@@ -83,7 +81,7 @@ function onEDFResourceStart(resource)
 		refreshElementIcons()
 	end
 end
-addEventHandler ( "onClientResourceStart", getRootElement(), onEDFResourceStart )
+addEventHandler ( "onClientResourceStart", root, onEDFResourceStart )
 
 function createElementIcons ( tableEDF, resource )
 	--store all our data neatly under the resource
@@ -471,7 +469,7 @@ function guiCreateMinimalLabel(x,y,width,height,text,relative,parent)
 end
 
 --Stops gui input being enabled when the resource stops
-addEventHandler ( "onClientResourceStop", thisResourceRoot,
+addEventHandler ( "onClientResourceStop", resourceRoot,
 	function()
 		guiSetInputEnabled(false)
 	end

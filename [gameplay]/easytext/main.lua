@@ -1,5 +1,3 @@
-local root = getRootElement ()
-local resourceRoot = getResourceRootElement ( getThisResource () )
 local textTable = {}
 
 function displayMessageForPlayer ( player, textID, message, duration, posX, posY, colorR, colorG, colorB, alpha, scale )
@@ -41,8 +39,8 @@ function clearMessageForPlayer ( player, textID )
 			killTimer ( textTable[player][textID].timer )
 			clearText ( player, textID )
 			return true
-  		else
-	    	return false
+		else
+			return false
 		end
 	else
 	    return false

@@ -37,7 +37,6 @@ ENEMY_OBJECTIVE_BLIP_ID = 0
 BLIP_DISTANCE_LIMIT = 250
 TEAM_BLIP_DISTANCE_LIMIT = 150
 
-local root = getRootElement()
 local indicator = false
 local briefcaseBlip = false
 

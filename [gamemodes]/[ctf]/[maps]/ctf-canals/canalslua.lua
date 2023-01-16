@@ -6,7 +6,7 @@ function giveWeaponsOnSpawn ( spawnpoint, team )
 	giveWeapon ( source, 28, 700 ) --
 
 end
-addEventHandler ( "onPlayerSpawn", getRootElement(), giveWeaponsOnSpawn )
+addEventHandler ( "onPlayerSpawn", root, giveWeaponsOnSpawn )
 
 function mapLoadChatBoxOutput (  )
       outputChatBox ( "CTF-Canals by Iggy", root, 255, 255, 255 )

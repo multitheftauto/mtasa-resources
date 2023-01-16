@@ -5,7 +5,7 @@ local function joinHandler(player)
 	playerData[player or source] = { loaded = false, pending = {} }
 end
 
-addEventHandler('onResourceStart', getResourceRootElement(getThisResource()),
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		for i,player in ipairs(getElementsByType('player')) do
 			joinHandler(player)
@@ -14,10 +14,10 @@ addEventHandler('onResourceStart', getResourceRootElement(getThisResource()),
 	false
 )
 
-addEventHandler('onPlayerJoin', getRootElement(), joinHandler)
+addEventHandler('onPlayerJoin', root, joinHandler)
 
 addEvent('onLoadedAtClient', true)
-addEventHandler('onLoadedAtClient', getRootElement(),
+addEventHandler('onLoadedAtClient', root,
 	function()
 		playerData[source].loaded = true
 		for i,event in ipairs(playerData[source].pending) do
@@ -27,7 +27,7 @@ addEventHandler('onLoadedAtClient', getRootElement(),
 	end
 )
 
-addEventHandler('onPlayerQuit', getRootElement(),
+addEventHandler('onPlayerQuit', root,
 	function()
 		playerData[source] = nil
 	end
@@ -51,12 +51,12 @@ function triggerClientEvent(...)
 	if type(args[1]) == 'userdata' then
 		triggerFor = table.remove(args, 1)
 	else
-		triggerFor = getRootElement()
+		triggerFor = root
 	end
 	name = table.remove(args, 1)
 	source = table.remove(args, 1)
 
-	if triggerFor == getRootElement() then
+	if triggerFor == root then
 		-- trigger for everyone
 		local triggerNow = true
 		for player,data in pairs(playerData) do
@@ -66,7 +66,7 @@ function triggerClientEvent(...)
 			end
 		end
 		if triggerNow then
-			_triggerClientEvent(getRootElement(), name, source, unpack(args))
+			_triggerClientEvent(root, name, source, unpack(args))
 		else
 			for player,data in pairs(playerData) do
 				addToQueue(player, name, source, args)

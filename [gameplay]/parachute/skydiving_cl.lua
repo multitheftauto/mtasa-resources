@@ -19,7 +19,7 @@ local function onRender()
 	local tickDiff =  currentTick - lastTick
 	lastTick = currentTick
 	if tickDiff > 0 then
-		if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not doesPedHaveJetPack(localPlayer) and not isElementAttached(localPlayer) and not isPedDead(localPlayer) then
+		if ( getPedWeapon ( localPlayer, 11 ) == 46 ) and not getElementData(localPlayer, "parachuting") and not isPedWearingJetpack(localPlayer) and not isElementAttached(localPlayer) and not isPedDead(localPlayer) then
 			local velX, velY, velZ = getElementVelocity ( localPlayer )
 			local x,y,z = getElementPosition(localPlayer)
 			if ( not isPedOnGround ( localPlayer ) and not getPedContactElement ( localPlayer ) and velZ ~= 0 )
@@ -126,7 +126,7 @@ local function onRender()
 			local velX,velY,velZ = getElementVelocity ( player )
 			local rotz = 6.2831853071796 - math.atan2 ( ( velX ), ( velY ) ) % 6.2831853071796
 			local animation = getElementData ( player, "animation_state" )
-			local animation = animIDs[animation]
+			animation = animIDs[animation]
 			setPedNewAnimation ( player, nil, "PARACHUTE", animation, -1, false, true, false )
 			local rotX = getElementRotation(player)
 			if ( animation == "FALL_SkyDive_Accel" ) then
@@ -184,7 +184,7 @@ function isPlayerSkyDiving(player)
 end
 
 function updateSkyDiving ( data, oldval )
-	if ( source ~= localPlayer and data == "skydiving" ) then
+	if ( data == "skydiving" and source ~= localPlayer ) then
 		if ( getElementData ( source, "skydiving" ) == true ) then
 			g_skydivers[source] = true
 		else

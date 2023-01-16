@@ -34,13 +34,13 @@ addEvent ( "testResource", true )
 addEvent ( "newResource", true )
 addEvent ( "quickSaveResource", true )
 
-addEventHandler ( "onResourceStart", thisResourceRoot,
+addEventHandler ( "onResourceStart", resourceRoot,
 	function()
 		refreshResources(false)
 		setOcclusionsEnabled ( false )
 		restoreAllWorldModels ( )
-		destroyElement( rootElement )
-		mapContainer = createElement("mapContainer")
+		destroyElement( root )
+		mapContainer = createElement("mapContainer", "mapContainer")
 		setTimer(startUp, 1000, 1)
 	end
 )
@@ -55,7 +55,7 @@ function startUp()
 			if #getElementsByType("player") > 0 then
 				editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the previously loaded map. Use 'new' to start a new map.", root, 255, 255, 0, 20000)
 			else
-				addEventHandler("onPlayerJoin", rootElement, onJoin)
+				addEventHandler("onPlayerJoin", root, onJoin)
 			end
 		end
 		dumpTimer = setTimer(maybeDumpSave, dumpInterval, 0)
@@ -68,7 +68,7 @@ function startUp()
 			for _,name in ipairs(adminGroups) do
 				local group = aclGetGroup(name)
 				if group then
-					for i,obj in ipairs(aclGroupListObjects(group)) do
+					for i2,obj in ipairs(aclGroupListObjects(group)) do
 						if obj == 'user.' .. accountName or obj == 'user.*' then
 							triggerClientEvent(player, "enableServerSettings", player, enabled, dumpInterval/1000)
 						end
@@ -87,10 +87,10 @@ addCommandHandler("savedump",
 
 function onJoin()
 	editor_gui.outputMessage("On-Exit-Save has loaded the most recent backup of the previously loaded map. Use 'new' to start a new map.", source, 255, 255, 0, 20000)
-	removeEventHandler("onPlayerJoin", rootElement, onJoin)
+	removeEventHandler("onPlayerJoin", root, onJoin)
 end
 
-addEventHandler("newResource", rootElement,
+addEventHandler("newResource", root,
 	function()
 		if ( client and not isPlayerAllowedToDoEditorAction(client, "newMap") ) then
 			editor_gui.outputMessage ("You don't have permissions to start a new map!", client,255,0,0)
@@ -114,7 +114,7 @@ addEventHandler("newResource", rootElement,
 		restoreAllWorldModels ( )
 		passDefaultMapSettings()
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
-		triggerEvent("onNewMap", thisResourceRoot)
+		triggerEvent("onNewMap", resourceRoot)
 		dumpSave()
 		editor_gui.outputMessage(getPlayerName(client).." started a new map.", root, 255, 0, 0)
 	end
@@ -272,7 +272,7 @@ function openResource( resourceName, onStart )
 		return returnValue
 	end
 end
-addEventHandler ( "openResource", rootElement, openResource )
+addEventHandler ( "openResource", root, openResource )
 
 ---Save
 
@@ -295,13 +295,13 @@ function saveResource(resourceName, test, directory)
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
 	coroutine.resume(saveResourceCoroutine, resourceName, test, client, client)
 end
-addEventHandler ( "saveResource", rootElement, saveResource )
+addEventHandler ( "saveResource", root, saveResource )
 
 function saveOrganizationalDirectory(directory)
 	if (type(directory) ~= 'string') or (utf8.len(directory) == 0) then
 		directory = 'none'
 	else
-		directory = '[' .. directory .. ']'	
+		directory = '[' .. directory .. ']'
 	end
 	return set('*editor_main.mapResourceOrganizationalDirectory', directory)
 end
@@ -316,7 +316,6 @@ local specialSyncers = {
 }
 
 function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, gamemodeName )
-	local tick = getTickCount()
 	local iniTick = getTickCount()
 	if ( loadedMap ) then
 		if ( string.lower(loadedMap) == string.lower(resourceName) ) then
@@ -330,8 +329,10 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if ( resource ) then
 		--Clear out old files from the resource
 		if (not mapmanager.isMap ( resource )) then
-			triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
-			"You cannot overwrite non-map resources." )
+			if (client) then
+				triggerClientEvent ( client, "saveloadtest_return", client, "save", false, resourceName,
+				"You cannot overwrite non-map resources." )
+			end
 			saveResourceCoroutine = nil
 			return false
 		end
@@ -433,14 +434,14 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	end
 	-- Save in the map node the used definitions
 	local usedDefinitions = ""
-	for resource in pairs(usedResources) do
-		usedDefinitions = usedDefinitions .. resource .. ","
+	for resource2 in pairs(usedResources) do
+		usedDefinitions = usedDefinitions .. resource2 .. ","
 	end
 	if usedDefinitions ~= "" then
 		usedDefinitions = string.sub(usedDefinitions, 1, #usedDefinitions - 1)
 		xmlNodeSetAttribute(xmlNode, "edf:definitions", usedDefinitions)
 	end
-	local tick = getTickCount()
+	tick = getTickCount()
 
 	for i, element in ipairs(rootElements) do
 		if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
@@ -505,7 +506,7 @@ function quickSave(saveAs, dump, fromSaveAs)
 	quickSaveCoroutine = coroutine.create(quickSaveCoroutineFunction)
 	coroutine.resume(quickSaveCoroutine, saveAs, dump, client)
 end
-addEventHandler("quickSaveResource", rootElement, quickSave)
+addEventHandler("quickSaveResource", root, quickSave)
 
 function quickSaveCoroutineFunction(saveAs, dump, client)
 	doQuickSaveCoroutineFunction(saveAs, dump, client)
@@ -587,8 +588,8 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		end
 		-- Save in the map node the used definitions
 		local usedDefinitions = ""
-		for resource in pairs(usedResources) do
-			usedDefinitions = usedDefinitions .. resource .. ","
+		for resource2 in pairs(usedResources) do
+			usedDefinitions = usedDefinitions .. resource2 .. ","
 		end
 		if ( usedDefinitions ~= "" ) then
 			usedDefinitions = string.sub(usedDefinitions, 1, #usedDefinitions - 1)
@@ -631,7 +632,10 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 			dumpSave()
 		end
 	else
-		editor_gui.loadsave_getResources("saveAs", client)
+		-- No map is loaded, if not caused by auto save, ask the client to save as
+		if (client) then
+			editor_gui.loadsave_getResources("saveAs", client)
+		end
 	end
 	quickSaveCoroutine = nil
 end
@@ -683,8 +687,8 @@ function createElementAttributesForSaving(xmlNode, element)
 		end
 	end
 	-- Ensure that the element has a position set, else the map file can't load
+	-- This situation occurs when map is saved while someone is placing a new object.
 	if (not posSetX or not posSetY or not posSetZ) then
-		outputDebugString("Using getElementPosition as bad element data for "..tostring(element), 2)
 		local x, y, z = getElementPosition(element)
 		xmlNodeSetAttribute(elementNode, "posX", toAttribute(round(x, 5)))
 		xmlNodeSetAttribute(elementNode, "posY", toAttribute(round(y, 5)))
@@ -747,7 +751,7 @@ function beginTest(client,gamemodeName)
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (1)" )
+			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (1)" )
 			return false
 		end
 		local gamemode = getResourceFromName(gamemodeName)
@@ -759,14 +763,14 @@ function beginTest(client,gamemodeName)
 				g_restoreEDF = nil
 				removeEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
 				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (2)" )
+				"'editor_main' may lack sufficient ACL privileges to start/stop resources! (2)" )
 				return false
 			end
 		else
 			if not mapmanager.changeGamemode(gamemode,testMap) then
 				restoreSettings()
 				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-				"'editor_main' may lack sufficient ACL previlages to start/stop resources! (3)" )
+				"'editor_main' may lack sufficient ACL privileges to start/stop resources! (3)" )
 				return false
 			end
 		end
@@ -775,12 +779,12 @@ function beginTest(client,gamemodeName)
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (4)" )
+			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (4)" )
 			return false
 		end
 		if getResourceState(testMap) ~= "running" and not startResource ( testMap, true ) then
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL previlages to start/stop resources! (5)" )
+			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (5)" )
 			return false
 		end
 		g_in_test = "map"
@@ -859,7 +863,7 @@ function restoreGUIOnMapStop(resource)
 		setTimer(edf.edfStartResource,50,1,g_restoreEDF)
 		g_restoreEDF = nil
 	end
-	setTimer(triggerClientEvent, 50, 1, getRootElement(), "resumeGUI", getRootElement())
+	setTimer(triggerClientEvent, 50, 1, root, "resumeGUI", root)
 	setElementData ( resourceRoot, "g_in_test", nil )
 	removeEventHandler ( "onResourceStop", source, restoreGUIOnMapStop )
 end

@@ -31,8 +31,8 @@ function RGBToHex(red, green, blue, alpha)
     end
 end
 
-function isAnonAdmin(player)
-    local player = (player or localPlayer)
+function isAnonAdmin(aplayer)
+    local player = (aplayer or localPlayer)
 
     if (not isElement(player)) then
         return false

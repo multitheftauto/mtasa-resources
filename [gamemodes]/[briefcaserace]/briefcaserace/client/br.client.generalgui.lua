@@ -1,6 +1,6 @@
 local carrierLabel
 
-addEventHandler("onClientResourceStart", getResourceRootElement(),
+addEventHandler("onClientResourceStart", resourceRoot,
 function (resource)
 	local x, y = guiGetScreenSize()
 	carrierLabel = guiCreateLabel(math.ceil(.25*x), 35, math.ceil(.5*x), 50, "The briefcase is idle.", false)

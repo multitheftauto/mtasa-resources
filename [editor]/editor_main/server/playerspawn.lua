@@ -1,7 +1,7 @@
 local disable = function() cancelEvent() end
 local pickupsDisabled = false
 
-addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler ( "onResourceStart", resourceRoot,
 	function()
 		for i,player in ipairs(getElementsByType"player") do
 			spawnPlayer ( player, 2483, -1666, 21, 0, 0, 0, getWorkingDimension() )
@@ -10,7 +10,7 @@ addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()),
 	end
 )
 
-addEventHandler ( "onPlayerJoin", getRootElement(),
+addEventHandler ( "onPlayerJoin", root,
 	function()
 		if not g_in_test then
 			spawnPlayer ( source, 2483, -1666, 21, 0, 0, 0, getWorkingDimension() )
@@ -21,9 +21,9 @@ addEventHandler ( "onPlayerJoin", getRootElement(),
 function disablePickups(bool)
 	if bool and not pickupsDisabled then
 		pickupsDisabled = true
-		addEventHandler ( "onPickupHit", getRootElement(), disable )
+		addEventHandler ( "onPickupHit", root, disable )
 	else
 		pickupsDisabled = false
-		removeEventHandler ( "onPickupHit", getRootElement(), disable )
+		removeEventHandler ( "onPickupHit", root, disable )
 	end
 end

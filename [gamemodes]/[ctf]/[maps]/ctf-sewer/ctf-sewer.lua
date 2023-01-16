@@ -7,7 +7,7 @@ function giveWeaponsOnSpawn ( spawnpont, team )
     giveWeapon ( source, 22, 224 ) -- Gives Colt45 with 224 ammo
 	giveWeapon ( source, 29, 450 ) -- Gives MP5 with 450 ammo
 end
-addEventHandler ( "onPlayerSpawn", getRootElement(), giveWeaponsOnSpawn )
+addEventHandler ( "onPlayerSpawn", root, giveWeaponsOnSpawn )
 
 --[[
 ####
@@ -71,6 +71,6 @@ function isVehicleEmpty( vehicle )
 end
 ]]
 
---addEventHandler ( "onVehicleEnter", getRootElement(), onVehicleEnter )
---addEventHandler ( "onVehicleExit", getRootElement(), onVehicleExit )
-addEventHandler ( "onVehicleExplode", getRootElement(), onVehicleExplode )
+--addEventHandler ( "onVehicleEnter", root, onVehicleEnter )
+--addEventHandler ( "onVehicleExit", root, onVehicleExit )
+addEventHandler ( "onVehicleExplode", root, onVehicleExplode )

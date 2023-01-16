@@ -34,10 +34,6 @@ function createGui(options)
 		justCreated = true
 	end
 
-	if (assaultGui == nil) then
-		--outputDebugString("test")
-	end
-
 	-- TAB: Map Information
 
 	if (justCreated) then
@@ -123,7 +119,7 @@ function nextObjectivesText( objectives )
 	currentObjectives = objectives
 
 	--outputConsole(tostring(getElementData("assaultAttackingTeam")))
-	--outputConsole("client next objectives "..tostring(getElementData(getLocalPlayer(),"assaultAttacker")))
+	--outputConsole("client next objectives "..tostring(getElementData(localPlayer,"assaultAttacker")))
 
 	if (nextObjectivesLabel == nil) then
 		--outputConsole("Creating next objectives text label")
@@ -164,13 +160,13 @@ addCommandHandler( "Switch objective text", switchObjectivesText )
 bindKey( "F4", "down", "Switch objective text" )
 
 function setCurrentObjectiveText(number)
-	local team = getPlayerTeam(getLocalPlayer())
+	local team = getPlayerTeam(localPlayer)
 	--outputChatBox("moo?"..tostring(team))
 	if (team == false) then
 		guiSetText(nextObjectivesLabel,"Choose a team..")
 	else
 		local description
-		if (getPlayerTeam(getLocalPlayer()) == attacker) then
+		if (getPlayerTeam(localPlayer) == attacker) then
 			description = currentObjectives[number].attackerText
 		else
 			description = currentObjectives[number].defenderText
@@ -185,7 +181,7 @@ function setCurrentObjectiveText(number)
 	end
 end
 
-addEventHandler("onClientPlayerSpawn", getLocalPlayer(),
+addEventHandler("onClientPlayerSpawn", localPlayer,
 	function()
 		setCurrentObjectiveText(currentObjectiveShowing)
 	end
@@ -194,9 +190,9 @@ addEventHandler("onClientPlayerSpawn", getLocalPlayer(),
 -- stolen from mission_timer.lua
 function calcTime ( timeLeft )
 	local calcString = ""
-	local timeHours = 0
-	local timeMins = 0
-	local timeSecs = 0
+	local timeHours
+	local timeMins
+	local timeSecs
 
 	timeLeft = tonumber(timeLeft)
 	timeSecs = math.mod(timeLeft, 60)
@@ -258,12 +254,12 @@ end
 
 addEventHandler("onClientResourceStart", getRootElement(getThisResource()),
 	function()
-		triggerServerEvent("assaultClientScriptLoaded", getLocalPlayer())
+		triggerServerEvent("assaultClientScriptLoaded", localPlayer)
 	end
 )
 
 addEvent("assaultNextRound", true)
-addEventHandler("assaultNextRound", getRootElement(),
+addEventHandler("assaultNextRound", root,
 	function( newAttacker )
 		attacker = newAttacker
 		--outputConsole("New round, now attacking: "..getTeamName(attacker))
@@ -271,15 +267,15 @@ addEventHandler("assaultNextRound", getRootElement(),
 )
 
 addEvent("assaultNextObjectivesText", true)
-addEventHandler("assaultNextObjectivesText", getRootElement(), nextObjectivesText)
+addEventHandler("assaultNextObjectivesText", root, nextObjectivesText)
 
 addEvent("assaultToggleLogo", true)
-addEventHandler("assaultToggleLogo", getRootElement(), toggleLogo)
+addEventHandler("assaultToggleLogo", root, toggleLogo)
 
 addEvent( "assaultCreateGui", true )
-addEventHandler("assaultCreateGui", getRootElement(), createGui)
+addEventHandler("assaultCreateGui", root, createGui)
 
 addEvent( "assaultShowProgress", true)
-addEventHandler("assaultShowProgress", getRootElement(), showProgress)
+addEventHandler("assaultShowProgress", root, showProgress)
 
 fadeCamera(true)

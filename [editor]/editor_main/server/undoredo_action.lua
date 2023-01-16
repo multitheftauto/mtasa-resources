@@ -1,5 +1,4 @@
 local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
-local rootElement = getRootElement()
 
 -- ACTION CLASSES
 
@@ -54,7 +53,7 @@ function ActionMove:performUndo()
 			edf.edfSetElementRotation(self.element, self.oldRotX, self.oldRotY, self.oldRotZ)
 		end
 	else
-		outputDebugString("Cannot perform undo: element does not exist, position does not exist, or invalid element")
+		outputDebugString("Cannot perform undo: element does not exist, position does not exist, or invalid element (ActionMove:performUndo)")
 		return false
 	end
 end
@@ -121,9 +120,9 @@ function ActionCreate:performUndo()
 
 		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
 		triggerEvent("onElementDestroy", self.element)
-		triggerClientEvent(rootElement, "onClientElementDestroyed", self.element)
+		triggerClientEvent(root, "onClientElementDestroyed", self.element)
 	else
-		outputDebugString("Cannot perform undo: element does not exist or invalid element")
+		outputDebugString("Cannot perform undo: element does not exist or invalid element (ActionCreate:performUndo)")
 		return false
 	end
 end
@@ -147,9 +146,9 @@ function ActionCreate:performRedo()
 
 		edf.edfSetElementDimension(self.element, getWorkingDimension())
 		triggerEvent("onElementCreate", self.element)
-		triggerClientEvent(rootElement, "onClientElementCreate", self.element)
+		triggerClientEvent(root, "onClientElementCreate", self.element)
 	else
-		outputDebugString("Cannot perform undo: element does not exist or invalid element")
+		outputDebugString("Cannot perform undo: element does not exist or invalid element (ActionCreate:performRedo)")
 		return false
 	end
 end
@@ -190,8 +189,8 @@ function ActionDestroy:getActionName()
 end
 
 local function getElementsWithParent(element, base, res)
-	local base = base or mapContainer
-	local res = res or {}
+	base = base or mapContainer
+	res = res or {}
 	local children = getElementChildren(base)
 
 	for k,child in ipairs(children) do
@@ -215,8 +214,8 @@ function ActionDestroy:setElement(element)
 		end
 
 		self.parentOf = getElementsWithParent(self.element)
-		for k,element in ipairs(self.parentOf) do
-			setElementData(element, "me:parent", nil)
+		for k,element2 in ipairs(self.parentOf) do
+			setElementData(element2, "me:parent", nil)
 		end
 
 		self.references = getElementData(element,"me:references")
@@ -236,7 +235,7 @@ function ActionDestroy:performUndo()
 	if (self.element and isElement(self.element)) then
 		edf.edfSetElementDimension(self.element, getWorkingDimension())
 		triggerEvent("onElementCreate", self.element)
-		triggerClientEvent(rootElement, "onClientElementCreate", self.element)
+		triggerClientEvent(root, "onClientElementCreate", self.element)
 
 		for k,element in ipairs(self.parentOf) do
 			setElementData(element, "me:parent", self.element)
@@ -248,16 +247,16 @@ function ActionDestroy:performUndo()
 			end
 		end
 	else
-		outputDebugString("Cannot perform undo: element does not exist or invalid element")
+		outputDebugString("Cannot perform undo: element does not exist or invalid element (ActionDestroy:performUndo)")
 		return false
 	end
 end
 
 function ActionDestroy:performRedo()
 	if (self.element and isElement(self.element)) then
-  		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
+		edf.edfSetElementDimension(self.element, DESTROYED_ELEMENT_DIMENSION)
 		triggerEvent("onElementDestroy", self.element)
-		triggerClientEvent(rootElement, "onClientElementDestroyed", self.element)
+		triggerClientEvent(root, "onClientElementDestroyed", self.element)
 
 		for k,element in ipairs(self.parentOf) do
 			setElementData(element, "me:parent", nil)
@@ -269,7 +268,7 @@ function ActionDestroy:performRedo()
 			end
 		end
 	else
-		outputDebugString("Cannot perform undo: element does not exist or invalid element")
+		outputDebugString("Cannot perform undo: element does not exist or invalid element (ActionDestroy:performRedo)")
 		return false
 	end
 end
@@ -281,7 +280,7 @@ function ActionDestroy:destructor()
 		end
 		return true
 	else
-		outputDebugString("Cannot destroy element: element does not exist or invalid element")
+		outputDebugString("Cannot destroy element: element does not exist or invalid element (ActionDestroy:destructor)")
 		return false
 	end
 end
@@ -322,7 +321,7 @@ function ActionProperties:performUndo()
 	if (self.element and isElement(self.element)) then
 		syncProperties(self.newProperties, self.oldProperties, self.element, true)
 	else
-		outputDebugString("Cannot perform undo: element does not exist or invalid element")
+		outputDebugString("Cannot perform undo: element does not exist or invalid element (ActionProperties:performUndo)")
 		return false
 	end
 end

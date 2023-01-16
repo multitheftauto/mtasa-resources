@@ -1,6 +1,5 @@
 local spectators = {}
 local getPlayerSpectatee = {}
-resourceRoot = getResourceRootElement(getThisResource())
 
 function teamstealthgamestart()
 	killmessageRes = getResourceFromName"killmessages"
@@ -38,7 +37,7 @@ function teamstealthgamestart()
 		killPed(v)
 		fadeCamera(v,true)
 		thisplayer = v
-		triggerClientEvent(v,"swaptoggle",getRootElement(), thisplayer, teamswap)
+		triggerClientEvent(v,"swaptoggle",root, thisplayer, teamswap)
 		setElementData ( v, "kills", 0 )
 		setElementData ( v, "deaths", 0 )
 		setPlayerNametagShowing ( v, false )
@@ -46,7 +45,7 @@ function teamstealthgamestart()
 		bindKey ( v, "F3", "down", selectTeamKey )
 	end
 	--Enable laser sight
-	setElementData(getRootElement(),"lasersight",get("stealth.lasersight"))
+	setElementData(root,"lasersight",get("stealth.lasersight"))
 end
 
 addEventHandler( "onGamemodeStart", resourceRoot, teamstealthgamestart )
@@ -55,7 +54,7 @@ function joinTeam( player, team )
 	setPlayerTeam(player, team)
 	if team == team1 then
 		setPlayerNametagColor ( player, 255, 0, 0 )
- 	elseif team == team2 then
+	elseif team == team2 then
 		setPlayerNametagColor ( player, 0, 0, 255 )
 	end
 end
@@ -69,7 +68,7 @@ function joinTeam1( source )
 		joinTeam(source, team1)
 	end
 end
-addEventHandler ( "dojoinTeam1", getRootElement(), joinTeam1 )
+addEventHandler ( "dojoinTeam1", root, joinTeam1 )
 
 addEvent("dojoinTeam2",true )
 function joinTeam2( source )
@@ -80,13 +79,13 @@ function joinTeam2( source )
 		joinTeam(source, team2)
 	end
 end
-addEventHandler ( "dojoinTeam2", getRootElement(), joinTeam2 )
+addEventHandler ( "dojoinTeam2", root, joinTeam2 )
 
 function selectTeam( player )
 	setPlayerTeam(player, nil)
 	local thisplayer = player
-	triggerClientEvent(player,"doshowTeamWindow",getRootElement())
-	setCameraFixed(player,"cameramode",getRootElement(), thisplayer)
+	triggerClientEvent(player,"doshowTeamWindow",root)
+	setCameraFixed(player,"cameramode",root, thisplayer)
 	balanceamount = get("stealth.teambalance")
 	tonumber(balanceamount)
 end
@@ -120,15 +119,15 @@ function onStealthPlayerJoin ()
 	spectators[source] = true
 	bindKey ( source, "F3", "down", selectTeamKey )
 	thisplayer = source
-	setCameraFixed(source,"cameramode",getRootElement(), thisplayer)
+	setCameraFixed(source,"cameramode",root, thisplayer)
 	destroyshield = setTimer ( function (shield) if isElement ( shield ) then destroyElement ( shield ) end end, 3000, 1, dummyshield )
-	setCameraFixed(source,"cameramode",getRootElement(), thisplayer)
-	triggerClientEvent(source,"swaptoggle",getRootElement(), thisplayer, teamswap)
+	setCameraFixed(source,"cameramode",root, thisplayer)
+	triggerClientEvent(source,"swaptoggle",root, thisplayer, teamswap)
 	textDisplayAddObserver ( waitDisplay, thisplayer )
 	fadeCamera(thisplayer,true)
 end
 
-addEventHandler ( "onPlayerJoin", getRootElement(), onStealthPlayerJoin )
+addEventHandler ( "onPlayerJoin", root, onStealthPlayerJoin )
 
 function teamstealthmapstart(startedMap)
 	mapRoot = source
@@ -142,7 +141,7 @@ function teamstealthmapstart(startedMap)
 		fadeCamera(thisplayer,true)
 		setElementData ( thisplayer, "kills", 0 )
 		setElementData ( thisplayer, "deaths", 0 )
-		setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
+		setCameraFixed(thisplayer,"cameramode",root, thisplayer)
 		selectTeam (thisplayer)
 	end
 	teamprotect = get("stealth.teamprotect")
@@ -193,7 +192,7 @@ function teamstealthmapstart(startedMap)
 			zi = zi/spawns
 			cameraInfo = { {xi, yi, zi}, {xi, yi, zi} }
 		end
-		setElementData ( getResourceRootElement(getThisResource()), "camera", cameraInfo )
+		setElementData ( resourceRoot, "camera", cameraInfo )
 		local camera = createElement("camera")
 		setElementData ( camera, "posX", cameraInfo[1][1] )
 		setElementData ( camera, "posY", cameraInfo[1][2] )
@@ -204,13 +203,13 @@ function teamstealthmapstart(startedMap)
 	end
 end
 
-addEventHandler( "onGamemodeMapStart", getRootElement(), teamstealthmapstart )
+addEventHandler( "onGamemodeMapStart", root, teamstealthmapstart )
 
 function teamstealthmapstop(startedMap)
 	local alltheplayers = getElementsByType("player")
 	playingaround = 0
 	for index, thisplayer in ipairs(alltheplayers) do
-		triggerClientEvent(thisplayer,"onClientGamemodeMapStop",getRootElement())
+		triggerClientEvent(thisplayer,"onClientGamemodeMapStop",root)
 		setElementData ( thisplayer, "waitingtospawn", "nope" )
 		local isplayercloaked =  getElementData ( thisplayer, "stealthmode" )
 		if isplayercloaked == "on" then
@@ -224,7 +223,7 @@ function teamstealthmapstop(startedMap)
 	        killTimer ( timerValue )
 		end
 	end
-	removeEventHandler ( "missionTimerActivated", getRootElement(), stealthroundended )
+	removeEventHandler ( "missionTimerActivated", root, stealthroundended )
 	destroyMissionTimer ( roundfinish )
 	local objectlist = getElementsByType ( "object" )
 	for index, object in ipairs(objectlist) do
@@ -234,12 +233,12 @@ function teamstealthmapstop(startedMap)
 	end
 end
 
-addEventHandler( "onGamemodeMapStop", getRootElement(), teamstealthmapstop )
+addEventHandler( "onGamemodeMapStop", root, teamstealthmapstop )
 
 function startstealthround()
 	local alltheplayers = getElementsByType("player")
 	for index, thisplayer in ipairs(alltheplayers) do
-		triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
+		triggerClientEvent(thisplayer,"swaptoggle",root, thisplayer, teamswap)
 		textDisplayRemoveObserver( redwinsdisplay, thisplayer )
 		textDisplayRemoveObserver( bluewinsdisplay, thisplayer )
 		textDisplayRemoveObserver( tiegamedisplay, thisplayer )
@@ -256,7 +255,7 @@ function startstealthround()
 	for index, player in ipairs(players) do
 		setElementData ( player, "waitingtospawn", "indeed" )
 		setElementData ( player, "cantchangespawns", 1 )
-		triggerClientEvent(player,"Startround",getRootElement(),player)
+		triggerClientEvent(player,"Startround",root,player)
 	end
 	stoptheidlers = setTimer ( idleblockstop, 30000, 1, player )
 	rawroundlength = get("stealth.roundlimit")
@@ -265,7 +264,7 @@ function startstealthround()
 		destroyMissionTimer ( roundfinish )
 	end
 	roundfinish = createMissionTimer ( player, roundlength, "<", 1.5, 0.5, 0.03, 255, 255, 255, true )
-	addEventHandler ( "missionTimerActivated", getRootElement(), stealthroundended )
+	addEventHandler ( "missionTimerActivated", root, stealthroundended )
 	startTimer ( roundfinish )
 	freshround = 1
 	moldyround = setTimer ( agetheround, 30000, 1 )
@@ -294,7 +293,7 @@ function mercspawn(thisplayer)
 	if mercteamspawns then
 		mercpoints = getElementsByType ( "spawnpoint", mercteamspawns )
 	else
-		mercpoints = getElementsByType ( "mercenaryspawn", mapRoot or getRootElement() )
+		mercpoints = getElementsByType ( "mercenaryspawn", mapRoot or root )
 	end
 	local random = math.random ( 1, table.getn ( mercpoints ) )
 	local posX = getElementData(mercpoints[random], "posX")
@@ -312,7 +311,7 @@ function mercspawn(thisplayer)
 	setPedFightingStyle ( thisplayer, 7 )
 end
 
-addEventHandler ( "domercspawn", getRootElement(), mercspawn )
+addEventHandler ( "domercspawn", root, mercspawn )
 
 addEvent ("dospyspawn", true )
 
@@ -327,7 +326,7 @@ function spyspawn(thisplayer)
 	if spyteamspawns then
 		spypoints = getElementsByType ( "spawnpoint", spyteamspawns )
 	else
-		spypoints = getElementsByType ( "spyspawn", mapRoot or getRootElement() )
+		spypoints = getElementsByType ( "spyspawn", mapRoot or root )
 	end
 	local random = math.random ( 1, table.getn ( spypoints ) )
 	local posX = getElementData(spypoints[random], "posX")
@@ -345,7 +344,7 @@ function spyspawn(thisplayer)
 	setPedFightingStyle ( thisplayer, 6 )
 end
 
-addEventHandler ( "dospyspawn", getRootElement(), spyspawn )
+addEventHandler ( "dospyspawn", root, spyspawn )
 
 addEvent ( "givetheguns",true )
 
@@ -364,7 +363,7 @@ function gearup (thisplayer, primarySelection, secondarySelection, throwableSele
 	local sx,sy,sz = getElementPosition( thisplayer )
 	setElementAlpha ( thisplayer, 255 )
 	local dummyshield = createObject ( 1631, sx, sy, -60 )
-	triggerClientEvent(thisplayer,"Clientshieldload",getRootElement(), thisplayer)
+	triggerClientEvent(thisplayer,"Clientshieldload",root, thisplayer)
 	spazammo = get("stealth.spazammo")
 	m4ammo = get("stealth.m4ammo")
 	shotgunammo = get("stealth.shotgunammo")
@@ -433,7 +432,7 @@ function gearup (thisplayer, primarySelection, secondarySelection, throwableSele
 	end
 end
 
-addEventHandler ( "givetheguns", getRootElement(), gearup )
+addEventHandler ( "givetheguns", root, gearup )
 
 function idleblockstop ()
 	local alltheplayers = getElementsByType("player")
@@ -481,13 +480,13 @@ function stealthplayerdied ( totalAmmo, killer, killerWeapon, bodypart )
 				roundnotover = 0
 				roundend = setTimer ( stealthroundended, 4000, 1, roundfinish, thisplayer )
 				destroyMissionTimer ( roundfinish )
-				setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
+				setCameraFixed(thisplayer,"cameramode",root, thisplayer)
 			end
 		end
 	end
 end
 
-addEventHandler( "onPlayerWasted", getRootElement(), stealthplayerdied )
+addEventHandler( "onPlayerWasted", root, stealthplayerdied )
 
 addCommandHandler ( "Use Gadget/Spectate Next",
 	function ( player, command, state )
@@ -582,8 +581,8 @@ function stealthroundended( timerID, player )
 			local firstteam = getPlayersInTeam ( team1 )
 			for index, thisplayer in ipairs(firstteam) do
 				setElementData ( thisplayer, "waitingtospawn", "indeed" )
-				setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
-				triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
+				setCameraFixed(thisplayer,"cameramode",root, thisplayer)
+				triggerClientEvent(thisplayer,"swaptoggle",root, thisplayer, teamswap)
 				local isDead = isPedDead(thisplayer)
 				if (isDead == false) then
 					team1survivers = team1survivers +1
@@ -593,8 +592,8 @@ function stealthroundended( timerID, player )
 			local secondteam = getPlayersInTeam ( team2 )
 			for index, thisplayer in ipairs(secondteam) do
 				setElementData ( thisplayer, "waitingtospawn", "indeed" )
-				setCameraFixed(thisplayer,"cameramode",getRootElement(), thisplayer)
-				triggerClientEvent(thisplayer,"swaptoggle",getRootElement(), thisplayer, teamswap)
+				setCameraFixed(thisplayer,"cameramode",root, thisplayer)
+				triggerClientEvent(thisplayer,"swaptoggle",root, thisplayer, teamswap)
 				local isDead = isPedDead(thisplayer)
 				if (isDead == false) then
 					team2survivers = team2survivers +1
@@ -632,7 +631,7 @@ function stealthroundended( timerID, player )
 			end
 			roundstart = setTimer ( startstealthround, 7000, 1, player )
 			roundcycle = setTimer ( roundtick, 3000, 1, player )
-			removeEventHandler ( "missionTimerActivated", getRootElement(), stealthroundended )
+			removeEventHandler ( "missionTimerActivated", root, stealthroundended )
 		end
 	end
 end
@@ -645,13 +644,13 @@ function checkforemokids (killer, weapon, bodypart)
 	end
 end
 
-addEventHandler( "onPlayerKillMessage", getRootElement(), checkforemokids )
+addEventHandler( "onPlayerKillMessage", root, checkforemokids )
 
 function roundtick()
 	round_count = round_count+1
 	round_limit = get("stealth.round_countlimit")*2
 	if round_count == round_limit then
-		triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
+		triggerEvent("onRoundFinished", resourceRoot)
 	end
 end
 
@@ -659,10 +658,10 @@ function stealthplayerleft (source)
 	countplayers = setTimer ( playerleftcount, 2000, 1 )
 end
 
-addEventHandler( "onPlayerQuit", getRootElement(), stealthplayerleft )
+addEventHandler( "onPlayerQuit", root, stealthplayerleft )
 
 function setCameraFixed ( player )
-	triggerClientEvent(player,"cameramode",getRootElement(), player )
+	triggerClientEvent(player,"cameramode",root, player )
 	--showSpectateText("",false)
 end
 
@@ -703,7 +702,7 @@ function playerhurt ( attacker, weapon, bodypart, loss )--HEADSHOT INSTAKILL
 	end
 end
 
-addEventHandler ( "onPlayerDamage", getRootElement (), playerhurt )
+addEventHandler ( "onPlayerDamage", root, playerhurt )
 
 function outputHeadshotIcon (killer, weapon, bodypart)
 	if bodypart == 9 then
@@ -712,11 +711,11 @@ function outputHeadshotIcon (killer, weapon, bodypart)
 		local r1,g1,b1 = getTeamColor ( getPlayerTeam(source) )
 		exports.killmessages:outputMessage (
 			{getPlayerName(killer),{"padding",width=3},{"icon",id=weapon},{"padding",width=3},{"icon",id=256},{"padding",width=3},{"color",r=r1,g=g1,b=b1},getPlayerName(source) },
-			getRootElement(),r2,g2,b2 )
+			root,r2,g2,b2 )
 	end
 end
 
-addEventHandler( "onPlayerKillMessage", getRootElement(), outputHeadshotIcon )
+addEventHandler( "onPlayerKillMessage", root, outputHeadshotIcon )
 
 function teamstealthgamestop()
 	call(getResourceFromName("scoreboard"), "removeScoreboardColumn", "Score")

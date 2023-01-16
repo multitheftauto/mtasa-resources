@@ -97,7 +97,7 @@ end
 local timerSpam
 function aResourcesTab.onEditFilter()
     if isTimer(timerSpam) then
-        killTimer(timerSpam) 
+        killTimer(timerSpam)
     end
     timerSpam = setTimer(aResourcesTab.ApplyFilter, 200, 1)
 end
@@ -126,11 +126,11 @@ function aResourcesTab.onClientClick(button)
                     1
                 )
                 if (source == aResourcesTab.ResourceStart) then
-                    triggerServerEvent("aResource", getLocalPlayer(), name, "start")
+                    triggerServerEvent("aResource", localPlayer, name, "start")
                 elseif (source == aResourcesTab.ResourceRestart) then
-                    triggerServerEvent("aResource", getLocalPlayer(), name, "restart")
+                    triggerServerEvent("aResource", localPlayer, name, "restart")
                 elseif (source == aResourcesTab.ResourceStop) then
-                    triggerServerEvent("aResource", getLocalPlayer(), name, "stop")
+                    triggerServerEvent("aResource", localPlayer, name, "stop")
                 end
             end
         elseif (source == aResourcesTab.ResourceList) then
@@ -187,7 +187,7 @@ function aResourcesTab.onClientClick(button)
         elseif (source == aResourcesTab.ExecuteServer) then
             local code = guiGetText(aResourcesTab.Command)
             if ((code) and (code ~= "")) then
-                triggerServerEvent("aExecute", getLocalPlayer(), code, true)
+                triggerServerEvent("aExecute", localPlayer, code, true)
             end
         elseif (source == aResourcesTab.Command) then
             guiSetVisible(aResourcesTab.ExecuteAdvanced, false)
@@ -220,10 +220,10 @@ function aResourcesTab.onClientDoubleClick(button)
                     "Change setting",
                     "Enter new value for '" .. friendlyname .. "'",
                     tostring(current),
-                    'triggerServerEvent ( "aResource", getLocalPlayer(), "' ..
+                    'triggerServerEvent ( "aResource", localPlayer, "' ..
                         aResourcesTab.Current .. '", "setsetting", { name = "' .. name .. '", value = $value } )'
                 )
-                triggerServerEvent ( "aResource", getLocalPlayer(), aResourcesTab.Current, "setsetting", name, newValue)
+                triggerServerEvent ( "aResource", localPlayer, aResourcesTab.Current, "setsetting", name, newValue)
             end
         end
     end

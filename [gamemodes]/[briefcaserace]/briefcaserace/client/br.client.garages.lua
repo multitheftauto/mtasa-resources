@@ -12,14 +12,14 @@ local randomMessages = {	"Hope you like the new paint.",
 local textLabel
 local clearTimer
 
-addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStart", resourceRoot,
 function (resource)
 	-- set up garages and stuff
 	for i=0,49 do
 		setGarageOpen(i, true)
 		--local westX, eastX, southY, northY = getGarageBoundingBox(i)
 		local posX, posY, posZ = getGaragePosition(i)
-		local size1, size2, size3 = getGarageSize(i)
+		local size1, size2, size3
 		--outputConsole("Garage " .. i .. ": bounding box = " .. westX .. " " .. eastX .. " " .. southY .. " " .. northY .. ", position = " .. posX .. " " .. posY .. " " .. posZ .. ", size = " .. size1 .. " " .. size2 .. " " .. size3)
 		--outputConsole("Garage " .. i .. ": size = " .. size1 .. " " .. size2 .. " " .. size3)
 		size1, size2, size3 = 10, 10, 5 -- getGarageSize() returns numbers that are way too big.. so let's make it 10

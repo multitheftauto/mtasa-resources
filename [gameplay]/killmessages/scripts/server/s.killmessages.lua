@@ -2,7 +2,7 @@ addEvent("onPlayerKillMessage")
 
 function createKillMessage(_, killer, weapon, bodypart, stealth)
     local usedVehicle, killerType
-    local weapon = weapon or 255
+    weapon = weapon or 255
 
     -- In very rare cases killer isn't nil or false but isn't an element.
     if killer and (not isElement(killer)) then
@@ -75,7 +75,7 @@ addEventHandler('outputKillFromClient', root, function(killer, veh)
     else
         if triggerEvent("onPlayerKillMessage", client, killer, 19) then
             eventTriggered(client, killer, 19, nil, veh)
-        end 
+        end
     end
 end)
 

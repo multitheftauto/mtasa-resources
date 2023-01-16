@@ -108,8 +108,8 @@ function aPermissions.ConfirmChange(add)
     
     local selected = guiGridListGetSelectedItem(gridlist)
 
-    if (selected <= -1) then 
-        return 
+    if (selected <= -1) then
+        return
     end
     
     local groupName = guiGridListGetItemText(gridlist, selected, 1)

@@ -2,7 +2,6 @@ function guiCreateElement ( guiType, x, y, w, h, text, alpha, hovercolor )
     local func = {
         -- { function, has_text }
         window = { guiCreateWindow, true },
-        button = { guiCreateButton, true },
         editbox = { guiCreateEdit, true },
         line = { guiCreateLabel, true },
         label = { guiCreateLabel, true },
@@ -50,7 +49,7 @@ function guiCreateElement ( guiType, x, y, w, h, text, alpha, hovercolor )
     end
 
     if type ( hovercolor ) == "table" then
-        local h = hovercolor
+        h = hovercolor
 
         if guiType == "label" then
 

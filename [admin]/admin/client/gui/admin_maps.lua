@@ -33,9 +33,9 @@ function createMapTab()
 	addEventHandler ("onClientGUIChanged", aAdminForm, guiChanged)
 end
 
-function loadMaps(gamemodeMapTable, gamemode, map)
+function loadMaps(gamemodeMapTable, gamemode1, map)
 	guiSetText(aTabMap.CurMap,"Current Map: ".. tostring ( map or "N/A" ) )
-	guiSetText(aTabMap.CurGamemode,"Current Gamemode: ".. tostring ( gamemode or "N/A" ) );
+	guiSetText(aTabMap.CurGamemode,"Current Gamemode: ".. tostring ( gamemode1 or "N/A" ) );
 	if gamemodeMapTable then
 		aGamemodeMapTable = gamemodeMapTable
 		for id,gamemode in pairs (gamemodeMapTable) do
@@ -46,10 +46,10 @@ function loadMaps(gamemodeMapTable, gamemode, map)
 				guiGridListSetItemText ( aTabMap.MapList, row, 2, gamemode.resname, false, false )
 				guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
 			else
-				for id,map in ipairs (gamemode.maps) do
+				for id2,map2 in ipairs (gamemode.maps) do
 					local row = guiGridListAddRow ( aTabMap.MapList )
-					guiGridListSetItemText ( aTabMap.MapList, row, 1, map.name, false, false )
-					guiGridListSetItemText ( aTabMap.MapList, row, 2, map.resname, false, false )
+					guiGridListSetItemText ( aTabMap.MapList, row, 1, map2.name, false, false )
+					guiGridListSetItemText ( aTabMap.MapList, row, 2, map2.resname, false, false )
 					guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
 				end
 			end
@@ -57,18 +57,16 @@ function loadMaps(gamemodeMapTable, gamemode, map)
 	end
 end
 addEvent("getMaps_c", true)
-addEventHandler("getMaps_c", getLocalPlayer(), loadMaps)
+addEventHandler("getMaps_c", localPlayer, loadMaps)
 
 function guiClick(button)
 	if button == "left" then
 		if ( getElementParent ( source ) == aTabMap.Tab ) then
-			if source == aTabMap.MapListSearch then
-
-			elseif source == aTabMap.RefreshList then
+			if source == aTabMap.RefreshList then
 				guiGridListClear(aTabMap.MapList)
-				triggerServerEvent("getMaps_s", getLocalPlayer(), true)
+				triggerServerEvent("getMaps_s", localPlayer, true)
 			end
-			if not guiGridListGetSelectedItem ( aTabMap.MapList ) == -1 then
+			if ( source ~= aTabMap.MapListSearch ) and guiGridListGetSelectedItem ( aTabMap.MapList ) == -1 then
 				aMessageBox ( "error", "No map selected!" )
 			end
 			local mapName = guiGridListGetItemText ( aTabMap.MapList, guiGridListGetSelectedItem( aTabMap.MapList ), 1 )
@@ -90,15 +88,15 @@ function guiClick(button)
 					-- guiSetEnabled(aTabMap.Revert, false)
 				-- end
 			elseif source == aTabMap.Start then
-				triggerServerEvent("startGamemodeMap_s", getLocalPlayer(), gamemode, mapResName)
+				triggerServerEvent("startGamemodeMap_s", localPlayer, gamemode, mapResName)
 			elseif source == aTabMap.NextMap then
 				if gamemode == "race" then
-					triggerServerEvent("setNextMap_s", getLocalPlayer(), mapName)
+					triggerServerEvent("setNextMap_s", localPlayer, mapName)
 				end
 			elseif source == aTabMap.Delete then
 				aMessageBox ( "question", "Are you sure to delete '"..mapName.."'?", "deleteMap", mapResName, mapName )
 			elseif source == aTabMap.Revert then
-				triggerServerEvent("deleteRevertMap_s", getLocalPlayer(), false, mapResName, mapName)
+				triggerServerEvent("deleteRevertMap_s", localPlayer, false, mapResName, mapName)
 			end
 		end
 	end
@@ -110,7 +108,7 @@ function guiDoubleClick(button)
 			local mapResName = guiGridListGetItemText ( aTabMap.MapList, guiGridListGetSelectedItem( aTabMap.MapList ), 2 )
 			local gamemode = guiGridListGetItemText ( aTabMap.MapList, guiGridListGetSelectedItem( aTabMap.MapList ), 3 )
 			if source == aTabMap.MapList then
-				triggerServerEvent("startGamemodeMap_s", getLocalPlayer(), gamemode, mapResName)
+				triggerServerEvent("startGamemodeMap_s", localPlayer, gamemode, mapResName)
 			end
 		end
 	end
@@ -128,7 +126,7 @@ function guiChanged()
 				guiGridListSetItemText ( aTabMap.MapList, row, 2, gamemode.resname, false, false )
 				guiGridListSetItemText ( aTabMap.MapList, row, 3, gamemode.resname, false, false )
 			else
-				for id,map in ipairs (gamemode.maps) do
+				for id2,map in ipairs (gamemode.maps) do
 					local row = guiGridListAddRow ( aTabMap.MapList )
 					guiGridListSetItemText ( aTabMap.MapList, row, 1, map.name, false, false )
 					guiGridListSetItemText ( aTabMap.MapList, row, 2, map.resname, false, false )
@@ -150,7 +148,7 @@ function guiChanged()
 					noMaps = false
 				end
 			else
-				for id,map in ipairs (gamemode.maps) do
+				for id2,map in ipairs (gamemode.maps) do
 					if string.find(string.lower(map.name.." "..map.resname), text, 1, true) then
 						local row = guiGridListAddRow ( aTabMap.MapList )
 						guiGridListSetItemText ( aTabMap.MapList, row, 1, map.name, false, false )
@@ -168,11 +166,11 @@ function guiChanged()
 end
 
 addEvent("deleteRevertMap_c", true)
-addEventHandler("deleteRevertMap_c", getLocalPlayer(),
+addEventHandler("deleteRevertMap_c", localPlayer,
 	function(success, delete, mapName)
 		if success then
 			guiGridListClear(aTabMap.MapList)
-			triggerServerEvent("getMaps_s", getLocalPlayer(), true)
+			triggerServerEvent("getMaps_s", localPlayer, true)
 			if delete then
 				aMessageBox ( "info", "Map '"..mapName.."' deleted successfully!" )
 			else

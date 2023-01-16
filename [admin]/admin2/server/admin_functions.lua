@@ -4,7 +4,7 @@
 aFunctions = {
     team = {
         ["createteam"] = function(name, r, g, b)
-            local success = false
+            local success
             if (tonumber(r)) and (tonumber(g)) and (tonumber(b)) then
                 success = createTeam(name, tonumber(r), tonumber(g), tonumber(b))
             else
@@ -78,8 +78,8 @@ aFunctions = {
             setTimer(textDestroyTextItem, 5000, 1, textItem)
             setTimer(textDestroyDisplay, 5000, 1, textDisplay)
         end,
-        ["sethealth"] = function(player, health)
-            local health = tonumber(health)
+        ["sethealth"] = function(player, health1)
+            local health = tonumber(health1)
             if (health) then
                 if (health > 200 or health <= 0) then
                     health = 100
@@ -89,8 +89,8 @@ aFunctions = {
                 action = false
             end
         end,
-        ["setarmour"] = function(player, armour)
-            local armour = tonumber(armour)
+        ["setarmour"] = function(player, armour1)
+            local armour = tonumber(armour1)
             if (armour) then
                 if (armour > 200 or armour <= 0) then
                     armour = 100
@@ -100,8 +100,8 @@ aFunctions = {
                 return false
             end
         end,
-        ["setskin"] = function(player, skin)
-            local skin = tonumber(skin)
+        ["setskin"] = function(player, skin1)
+            local skin = tonumber(skin1)
             if (not skin) then
                 return false
             end
@@ -153,8 +153,8 @@ aFunctions = {
             end
             return false
         end,
-        ["setdimension"] = function(player, dimension)
-            local dimension = tonumber(dimension)
+        ["setdimension"] = function(player, dimension1)
+            local dimension = tonumber(dimension1)
             if (dimension) then
                 if (dimension > 65535) or (dimension < 0) then
                     dimension = 0
@@ -165,8 +165,8 @@ aFunctions = {
             end
         end,
         ["jetpack"] = function(player)
-            if (doesPedHaveJetPack(player)) then
-                removePedJetPack(player)
+            if (isPedWearingJetpack(player)) then
+                setPedWearingJetpack(player, false)
                 return true, "jetpackr"
             else
                 if (getPedOccupiedVehicle(player)) then
@@ -178,7 +178,7 @@ aFunctions = {
                         0
                     )
                 else
-                    if (givePedJetPack(player)) then
+                    if (setPedWearingJetpack(player, true)) then
                         return true, "jetpacka"
                     end
                 end
@@ -219,12 +219,11 @@ aFunctions = {
         ["givevehicle"] = function(player, id)
             local pvehicle = getPedOccupiedVehicle(player)
             local vx, vy, vz = getElementVelocity(player)
-            local vehicle = nil
+            local vehicle
             if (pvehicle) then
                 local passengers = getVehicleOccupants(pvehicle)
                 local x, y, z = getElementPosition(pvehicle)
                 local rx, ry, rz = getVehicleRotation(pvehicle)
-                local vx, vy, vz = getElementVelocity(pvehicle)
                 destroyElement(pvehicle)
                 vehicle = createVehicle(id, x, y, z, rx, ry, rz)
                 local seats = getVehicleMaxPassengers(vehicle)

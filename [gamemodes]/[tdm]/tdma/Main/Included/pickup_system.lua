@@ -50,7 +50,7 @@ function generatePickup ( pID )
 			pickups[pID]["pAmount"] = 100
 			pickups[pID]["pWeapon"] = 0
 			pickups[pID]["pAmmo"] = 0
-		else
+		--else
 			--outputDebugString ( "unable to create pickup ID " .. pID )
 		end
 	elseif ( pType == 1 ) then
@@ -62,7 +62,7 @@ function generatePickup ( pID )
 			pickups[pID]["pAmount"] = 100
 			pickups[pID]["pWeapon"] = 0
 			pickups[pID]["pAmmo"] = 0
-		else
+		--else
 			--outputDebugString ( "unable to create pickup ID " .. pID )
 		end
 	elseif ( pType >= 2 ) then
@@ -78,7 +78,7 @@ function generatePickup ( pID )
 				pickups[pID]["pAmount"] = 0
 				pickups[pID]["pWeapon"] = idWeapon
 				pickups[pID]["pAmmo"] = idAmmo
-			else
+			--else
 				--outputDebugString ( "unable to create pickup ID " .. pID )
 			end
 		else
@@ -105,7 +105,7 @@ function generatePickup ( pID )
 				pickups[pID]["pAmount"] = 0
 				pickups[pID]["pWeapon"] = idWeapon
 				pickups[pID]["pAmmo"] = WeaponAmmo
-			else
+			--else
 				--outputDebugString ( "unable to create pickup ID " .. pID )
 			end
 		end

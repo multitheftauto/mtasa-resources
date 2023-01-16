@@ -77,7 +77,7 @@ end
 function undoEnvironment()
 	for k,control in ipairs(mapSettingChangeHandled) do
 		local value = mapsettings[control]:getValue()
-		local modified = false
+		local modified
 
 		if type(value) ~= "table" then
 			modified = (value ~= previousEnvironment[control])
@@ -94,14 +94,14 @@ function undoEnvironment()
 end
 
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler ( "onClientResourceStart", resourceRoot,
 	function()
 		freezeTime ( true, 12, 00 )
 	end
 )
 
 addEvent ( "syncMapSettings",true)
-addEventHandler ( "syncMapSettings", getRootElement(),
+addEventHandler ( "syncMapSettings", root,
 function ( newMapSettings )
 	currentMapSettings = newMapSettings
 	freezeTime ( true, currentMapSettings.timeHour, currentMapSettings.timeMinute )

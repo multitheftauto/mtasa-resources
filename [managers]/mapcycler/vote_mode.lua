@@ -3,7 +3,7 @@ function startCycler_vote()
 	addCommandHandler("skipmap", cycleMap_vote, true)
 
 	cycleMap_vote()
-	addEventHandler("onRoundFinished", rootElement, roundCounter)
+	addEventHandler("onRoundFinished", root, roundCounter)
 end
 
 function cycleMap_vote()

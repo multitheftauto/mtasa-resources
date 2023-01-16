@@ -5,7 +5,6 @@
 --The event call will also have its own ID, so you will be able to use the same timer script, on more than 1 mission at one point in time
 --Here goes!
 
-misTmrRoot = getRootElement()
 missionTimers = {}
 
 function misTmrStart ( name )
@@ -13,7 +12,7 @@ function misTmrStart ( name )
 	addEvent ( "missionTimerActivated", true )
 	keytimer = setTimer ( missionTimerTick, 1000, 0 )
 end
-addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()), misTmrStart )
+addEventHandler ( "onResourceStart", resourceRoot, misTmrStart )
 
 function createMissionTimer ( player, timeSeconds, direction, textSize, textPosX, textPosY, textRed, textGreen, textBlue, showForAll )
 	local missionTimersCount = #missionTimers + 1
@@ -91,9 +90,9 @@ end
 
 function calcTime ( timeLeft )
 	local calcString = ""
-	local timeHours = 0
-	local timeMins = 0
-	local timeSecs = 0
+	local timeHours
+	local timeMins
+	local timeSecs
 
 	timeLeft = tonumber(timeLeft)
 	----outputDebugString ( "timeLeft = " .. timeLeft )
@@ -132,7 +131,6 @@ function formatStr ( formatString )
 end
 
 function missionTimerTick()
-	local k = 0
 	for k,theTimer in ipairs(missionTimers) do
 		if ( theTimer["started"] ) then
 			if ( theTimer["direction"] == "<" ) then
@@ -143,13 +141,10 @@ function missionTimerTick()
 				if ( theTimer["time"] == 0 ) then
 					--Counter has finished, set it to not be started and start the thread
 					--outputDebugString ( "MISSION TIMER HAS GOT TO 0!" )
-					triggerEvent ( "missionTimerActivated", misTmrRoot, tostring(theTimer["id"]), theTimer["player"] )
+					triggerEvent ( "missionTimerActivated", root, tostring(theTimer["id"]), theTimer["player"] )
 					theTimer["started"] = false
 				end
-			elseif ( theTimer["direction"] == ">" ) then
-				--Counting Up
-
-			else
+			elseif ( theTimer["direction"] ~= ">" ) then
 				--Set a default value of Down.
 				theTimer["direction"] = "<"
 			end
@@ -162,4 +157,4 @@ function onNewPlayerJoin ()
 	textDisplayAddObserver ( textDisplay, source )
 end
 
-addEventHandler ( "onPlayerJoin", getRootElement(), onNewPlayerJoin )
+addEventHandler ( "onPlayerJoin", root, onNewPlayerJoin )

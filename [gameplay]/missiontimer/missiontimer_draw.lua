@@ -29,7 +29,7 @@ end
 addEventHandler ( "onClientRender", root,
 	function()
 		for timer,data in pairs(missionTimers) do
-			local msPassed = 0
+			local msPassed
 
 			if not data.frozen then
 				msPassed = getTickCount() - data.originalTick
@@ -77,7 +77,7 @@ addEventHandler ( "onClientRender", root,
 
 
 function toposition(x,y)
-	local finalX,finalY = x,y
+	local finalX,finalY
 	if x > 1 then --Is X bigger than 1?  If so we've got an absolute position
 		finalX = x
 	elseif x < -1 then --We have a reversed absolute position

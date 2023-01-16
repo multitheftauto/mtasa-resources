@@ -1,5 +1,3 @@
-local resourceRoot = getResourceRootElement ( getThisResource() )
-local root = getRootElement()
 local moneybags, keycards, cols = {}, {}, {}
 local attackers, currentObj, isInterior = nil, nil, nil
 local wanted, money = 0, 0
@@ -72,7 +70,7 @@ function spawnVan ( delay, x, y, z, rx, ry, rz )
 
 	if not ( x and y and z ) then
 		x, y, z = getElementPosition ( van )
-		rx, ry, rz = getVehicleRotation ( van )
+		_, _, rz = getVehicleRotation ( van )
 		z = z - 20
 	end
 	if ( currentObj == "none" ) then
@@ -138,7 +136,7 @@ function scriptStartRound ( attacker )
 		-- opening garage doors
 	local gdoor = getElementByID ( "gdoor" )
 	local gdoortwo = getElementByID ( "gdoortwo" )
-	local x, y, z = getElementData ( gdoor, "posX" ), getElementData ( gdoor, "posY" ), getElementData ( gdoor, "posZ" )
+	x, y, z = getElementData ( gdoor, "posX" ), getElementData ( gdoor, "posY" ), getElementData ( gdoor, "posZ" )
 	local x2, y2, z2 = getElementData ( gdoortwo, "posX" ), getElementData ( gdoortwo, "posY" ), getElementData ( gdoortwo, "posZ" )
 	setElementPosition ( gdoor, x, y, z )
 	setElementPosition ( gdoortwo, x2, y2, z2 )
@@ -174,8 +172,8 @@ function scriptEndRound ( conquered )
 		else
 				-- resetting the first door's rotation, position remains the same
 			local door = getElementByID ( "door" )
-			local rx, ry, rz = getElementData ( door, "rotX" ), getElementData ( door, "rotY" ), getElementData ( door, "rotZ" )
-			setObjectRotation ( door, rx, ry, rz )
+			local rx2, ry2, rz2 = getElementData ( door, "rotX" ), getElementData ( door, "rotY" ), getElementData ( door, "rotZ" )
+			setObjectRotation ( door, rx2, ry2, rz2 )
 
 			if ( currentObj ~= "vault" ) then
 					-- putting the vault door in the right place
@@ -187,8 +185,8 @@ function scriptEndRound ( conquered )
 
 					-- placing the pillar back to its original position
 				local pillar = getElementByID ( "pillar" )
-				local x, y, z = getElementData ( pillar, "posX" ), getElementData ( pillar, "posY" ), getElementData ( pillar, "posZ" )
-				local rx, ry, rz = getElementData ( pillar, "rotX" ), getElementData ( pillar, "rotY" ), getElementData ( pillar, "rotZ" )
+				x, y, z = getElementData ( pillar, "posX" ), getElementData ( pillar, "posY" ), getElementData ( pillar, "posZ" )
+				rx, ry, rz = getElementData ( pillar, "rotX" ), getElementData ( pillar, "rotY" ), getElementData ( pillar, "rotZ" )
 				setElementPosition ( pillar, x, y, z )
 				setObjectRotation ( pillar, rx, ry, rz )
 
@@ -597,7 +595,7 @@ function checkObjective ( obj, players )
 	elseif ( obj.id == "park" ) then
 		scriptEndPark()
 		setTimer ( scriptRemovePark, 1000, 1 )
-	elseif ( obj.id == "casino" ) then
+	--elseif ( obj.id == "casino" ) then
 		--scriptRemoveCasino() -- leaving the entrance open
 	elseif ( obj.id == "key" ) then
 		setTimer ( scriptRemoveKey, 1000, 1 )

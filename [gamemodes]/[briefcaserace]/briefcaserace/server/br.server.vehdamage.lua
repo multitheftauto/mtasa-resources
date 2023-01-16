@@ -8,8 +8,6 @@ local JUST_REPAIRED_TIMEOUT = 1000
 local MAX_IGNORE_TIME = 500
 local MAX_IGNORE_LOSS = 305
 
-local root = getRootElement()
-
 local lastWeaponDamageTick = 0
 
 addEvent("onVehicleDamageFromWeapon", true) -- triggered by client, caught here

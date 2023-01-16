@@ -161,13 +161,13 @@ function browserList:create(x,y,width,height,columnTable,relative,parent)
     setmetatable( new, browserList_mt )
     new.gridlist = guiCreateGridList (x,y,width,height,relative,parent)
 	guiGridListSetSortingEnabled ( new.gridlist,false )
-	local x,y = guiGetSize ( new.gridlist, false )
+	x,y = guiGetSize ( new.gridlist, false )
 	new.scrollbar = guiCreateScrollBar(x - 20,0,20,y,false,false,new.gridlist)
 	new.gridlistSizeY = y - 23
 	new.gridlistRowCount = math.ceil((y-25)/ROW_HEIGHT) --The number of rows you can fit into it
 	for key,columnSubTable in pairs(columnTable) do
-		for columnName,width in pairs(columnSubTable) do
-			guiGridListAddColumn ( new.gridlist,tostring(columnName),width )
+		for columnName,width2 in pairs(columnSubTable) do
+			guiGridListAddColumn ( new.gridlist,tostring(columnName),width2 )
 		end
 	end
 	return new
@@ -253,9 +253,9 @@ function browserList:enable(up,down)
 	end
 	--
 	if count == 1 then
-		addEventHandler ( "onClientRender",getRootElement(),updateActivatedBrowsers )
-		addEventHandler("onClientGUIMouseDown",getRootElement(),browserListGridlistClick )
-		addEventHandler("onClientGUIDoubleClick",getRootElement(),browserListDoubleClick )
+		addEventHandler ( "onClientRender",root,updateActivatedBrowsers )
+		addEventHandler("onClientGUIMouseDown",root,browserListGridlistClick )
+		addEventHandler("onClientGUIDoubleClick",root,browserListDoubleClick )
 		if not up then up = "arrow_u" end
 		if not down then down = "arrow_d" end
 		keyUp,keyDown = up,down
@@ -275,9 +275,9 @@ function browserList:disable()
 	end
 	--
 	if count == 0 then
-		removeEventHandler ( "onClientRender",getRootElement(),updateActivatedBrowsers )
-		removeEventHandler("onClientGUIMouseDown",getRootElement(),browserListGridlistClick )
-		removeEventHandler("onClientGUIDoubleClick",getRootElement(),browserListDoubleClick )
+		removeEventHandler ( "onClientRender",root,updateActivatedBrowsers )
+		removeEventHandler("onClientGUIMouseDown",root,browserListGridlistClick )
+		removeEventHandler("onClientGUIDoubleClick",root,browserListDoubleClick )
 		unbindKey ( keyUp, "both", browserListScroll )
 		unbindKey ( keyDown, "both", browserListScroll )
 		unbindKey ( "mouse_wheel_up", "both", gridlistScroll )

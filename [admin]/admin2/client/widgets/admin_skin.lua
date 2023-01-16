@@ -20,12 +20,12 @@ function aSkin.Show(player)
         local x, y = guiGetScreenSize()
         aSkin.Form = guiCreateWindow(x / 2 - 140, y / 2 - 140, 280, 280, "Player Skin Select", false)
         guiSetAlpha(aSkin.Form, 1)
-        guiSetProperty(aSkin.Form, 'AlwaysOnTop', 'True')        
+        guiSetProperty(aSkin.Form, 'AlwaysOnTop', 'True')
         aSkin.Label =
             guiCreateLabel(0.03, 0.09, 0.94, 0.07, "Select a skin from the list or enter the id", true, aSkin.Form)
         guiLabelSetHorizontalAlign(aSkin.Label, "center")
         guiLabelSetColor(aSkin.Label, 255, 0, 0)
-        
+
         aSkin.Edit = guiCreateEdit(0.03, 0.18, 0.70, 0.09, '', true, aSkin.Form)
         guiCreateInnerImage("client\\images\\search.png", aSkin.Edit)
 
@@ -79,7 +79,7 @@ function aSkin.onDoubleClick(button)
         if (source == aSkin.List) then
             if (guiGridListGetSelectedItem(aSkin.List) ~= -1) then
                 local id = tonumber(guiGridListGetItemText(aSkin.List, guiGridListGetSelectedItem(aSkin.List), 1))
-                triggerServerEvent("aPlayer", getLocalPlayer(), aSkin.Select, "setskin", id)
+                triggerServerEvent("aPlayer", localPlayer, aSkin.Select, "setskin", id)
                 aSkin.Close(false)
             end
         end
@@ -96,13 +96,13 @@ function aSkin.onClick(button)
     if (button == "left") then
         if (source == aSkin.Accept) then
             if (tonumber(guiGetText(aSkin.ID))) then
-                triggerServerEvent("aPlayer", getLocalPlayer(), aSkin.Select, "setskin", tonumber(guiGetText(aSkin.ID)))
+                triggerServerEvent("aPlayer", localPlayer, aSkin.Select, "setskin", tonumber(guiGetText(aSkin.ID)))
                 aSkin.Close(false)
             else
                 if (guiGridListGetSelectedItem(aSkin.List) ~= -1) then
                     local id = tonumber(guiGridListGetItemText(aSkin.List, guiGridListGetSelectedItem(aSkin.List), 1))
                     guiSetVisible(aSkin.Form, false)
-                    triggerServerEvent("aPlayer", getLocalPlayer(), aSkin.Select, "setskin", id)
+                    triggerServerEvent("aPlayer", localPlayer, aSkin.Select, "setskin", id)
                 else
                     messageBox("No skin selected!", MB_ERROR, MB_OK)
                 end

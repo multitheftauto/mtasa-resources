@@ -21,7 +21,7 @@ end
 
 function guiCreateInnerImage(image, parent, above)
     local sx, sy = guiGetSize(parent, false)
-    local img = nil
+    local img
     if (above) then
         img = guiCreateStaticImage(0, 0, 0, 0, image, false, getElementParent(parent))
         local px, py = guiGetPosition(parent, false)
@@ -104,10 +104,10 @@ function guiCreateColorPicker(x, y, w, h, r, g, b, relative, parent)
         function(key, state)
             local info = guiColorPickers[source]
             if (key == "left" and state == "up" and info) then
-                local x, y = guiGetAbsolutePosition(mask)
+                local x2, y2 = guiGetAbsolutePosition(mask)
                 local sx, sy = guiGetSize(mask, false)
                 info.picking = true
-                info.r, info.g, info.b = aColor.Open(x + sx, y - 5, info.r, info.g, info.b)
+                info.r, info.g, info.b = aColor.Open(x2 + sx, y2 - 5, info.r, info.g, info.b)
                 info.picking = nil
             end
         end
@@ -123,7 +123,7 @@ end
 
 addEventHandler(
     "onClientRender",
-    getRootElement(),
+    root,
     function()
         if (isConsoleActive()) then
             return
@@ -198,13 +198,13 @@ function guiSetContextMenu(element, menu)
                     function()
                         addEventHandler(
                             "onClientClick",
-                            getRootElement(),
-                            function(button, state, x, y)
-                                local sx, sy = guiGetSize(menu, false)
+                            root,
+                            function(button2, state, x2, y2)
+                                local sx2, sy2 = guiGetSize(menu, false)
                                 local px, py = guiGetPosition(menu, false)
-                                if (x < px or x > px + sx) or (y < py or y > py + sy) then
+                                if (x2 < px or x2 > px + sx2) or (y2 < py or y2 > py + sy2) then
                                     guiSetVisible(menu, false)
-                                    removeEventHandler("onClientClick", getRootElement(), debug.getinfo(1, "f").func)
+                                    removeEventHandler("onClientClick", root, debug.getinfo(1, "f").func)
                                 end
                             end
                         )

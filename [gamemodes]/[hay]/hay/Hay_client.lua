@@ -56,9 +56,9 @@ function level(dataName)
 			guiSetText ( scoreLabel, text )
 		end
 end
-addEventHandler ( "onClientElementDataChange",getRootElement(),level )
+addEventHandler ( "onClientElementDataChange",root,level )
 
-addEventHandler ( "onClientResourceStart",getResourceRootElement(getThisResource()),
+addEventHandler ( "onClientResourceStart",resourceRoot,
 	function()
 		setElementData ( localPlayer, "Current level", "-" )
 		setElementData ( localPlayer, "Max level", leveltop )
@@ -80,7 +80,7 @@ addEventHandler ( "onClientResourceStart",getResourceRootElement(getThisResource
 	end
 )
 
-addEventHandler ( "onClientResourceStop",getResourceRootElement(getThisResource()),
+addEventHandler ( "onClientResourceStop",resourceRoot,
 	function()
 		toggleControl ( "fire", true )
 		toggleControl ( "enter_exit", true )

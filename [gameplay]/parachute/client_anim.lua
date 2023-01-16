@@ -212,7 +212,7 @@ function Animation:play()
 		table.insert(Animation.collection, self)
 	end
 	if not Animation.playingAnimationsExist() then
-		addEventHandler('onClientRender', getRootElement(), updateAnim)
+		addEventHandler('onClientRender', root, updateAnim)
 	end
 	self.playing = true
 end
@@ -220,14 +220,14 @@ end
 function Animation:pause()
 	self.playing = false
 	if not Animation.playingAnimationsExist() then
-		removeEventHandler('onClientRender', getRootElement(), updateAnim)
+		removeEventHandler('onClientRender', root, updateAnim)
 	end
 end
 
 function Animation:remove()
 	table.removevalue(Animation.collection, self)
 	if not Animation.playingAnimationsExist() then
-		removeEventHandler('onClientRender', getRootElement(), updateAnim)
+		removeEventHandler('onClientRender', root, updateAnim)
 	end
 	self.playing = false
 end
