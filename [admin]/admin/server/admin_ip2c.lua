@@ -10,7 +10,7 @@
 
 local aCountries = {}
 local IP2C_FILENAME = "conf/IpToCountryCompact.csv"
-local IP2C_UPDATE_URL = "http://mirror.multitheftauto.com/mtasa/scripts/IpToCountryCompact.csv"
+local IP2C_UPDATE_URL = "http://mirror-cdn.multitheftauto.com/mtasa/scripts/IpToCountryCompact.csv"
 local IP2C_UPDATE_INTERVAL_SECONDS = 60 * 60 * 24 * 1	-- Update no more than once a day
 
 function getPlayerCountry ( player )
