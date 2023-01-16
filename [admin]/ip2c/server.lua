@@ -340,3 +340,45 @@ CoroutineSleeper = {
 		coroutine.yield()
 	end,
 }
+
+-- TESTING BELOW
+addCommandHandler("testcheckcsv", function(thePlayer)
+	local f = fileOpen(IP2C_FILENAME)
+	if not f then
+		outputChatBox("Failed to open file: " .. IP2C_FILENAME, thePlayer, 0, 255, 0)
+	end
+	local data = fileRead(f, fileGetSize(f))
+	fileClose(f)
+	local function getCsvLines(data) 
+		-- Split data into lines
+		local lines = {}
+		local pos = 1
+		while true do
+			local endpos = string.find(data, "\n", pos)
+			if endpos then
+				lines[#lines+1] = string.sub(data, pos, endpos - 1)
+				pos = endpos + 1
+			else
+				break
+			end
+		end
+		return lines
+	end
+
+	local lines = getCsvLines(data)
+	print(#lines)
+	local unknownCodes = ""
+	local c = 0
+	for _, line in ipairs(lines) do
+		local splitted = split(line, ",")
+		local country = splitted[3]
+		if country and not getCountryName(country) then
+			unknownCodes = unknownCodes .. country .. "\n"
+			c = c + 1
+		end
+	end
+	local f2 = fileCreate("unknowncodes.txt")
+	fileWrite(f2, unknownCodes)
+	fileClose(f2)
+	outputChatBox("Unknown country codes: " .. c, thePlayer, 0, 255, 0)
+end)

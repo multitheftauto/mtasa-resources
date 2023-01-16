@@ -8,7 +8,6 @@
     <script src="shared.lua" type="shared"/>
     <export function="getCountryName" type="shared"/>
     
-    <file src="client/images/flags/ac.png" />
     <file src="client/images/flags/ad.png" />
     <file src="client/images/flags/ae.png" />
     <file src="client/images/flags/af.png" />
@@ -16,7 +15,6 @@
     <file src="client/images/flags/ai.png" />
     <file src="client/images/flags/al.png" />
     <file src="client/images/flags/am.png" />
-    <file src="client/images/flags/an.png" />
     <file src="client/images/flags/ao.png" />
     <file src="client/images/flags/aq.png" />
     <file src="client/images/flags/ar.png" />
@@ -58,7 +56,6 @@
     <file src="client/images/flags/cn.png" />
     <file src="client/images/flags/co.png" />
     <file src="client/images/flags/cr.png" />
-    <file src="client/images/flags/cs.png" />
     <file src="client/images/flags/cu.png" />
     <file src="client/images/flags/cv.png" />
     <file src="client/images/flags/cx.png" />
@@ -77,7 +74,6 @@
     <file src="client/images/flags/er.png" />
     <file src="client/images/flags/es.png" />
     <file src="client/images/flags/et.png" />
-    <file src="client/images/flags/eu.png" />
     <file src="client/images/flags/fi.png" />
     <file src="client/images/flags/fo.png" />
     <file src="client/images/flags/fr.png" />
@@ -99,7 +95,6 @@
     <file src="client/images/flags/iq.png" />
     <file src="client/images/flags/is.png" />
     <file src="client/images/flags/it.png" />
-    <file src="client/images/flags/ja.png" />
     <file src="client/images/flags/jm.png" />
     <file src="client/images/flags/jp.png" />
     <file src="client/images/flags/kw.png" />
@@ -146,7 +141,6 @@
     <file src="client/images/flags/tn.png" />
     <file src="client/images/flags/tv.png" />
     <file src="client/images/flags/ua.png" />
-    <file src="client/images/flags/uk.png" />
     <file src="client/images/flags/um.png" />
     <file src="client/images/flags/us.png" />
     <file src="client/images/flags/uy.png" />
@@ -156,7 +150,6 @@
     <file src="client/images/flags/ws.png" />
     <file src="client/images/flags/ye.png" />
     <file src="client/images/flags/yt.png" />
-    <file src="client/images/flags/yu.png" />
     <file src="client/images/flags/za.png" />
     <file src="client/images/flags/ge.png" />
     <file src="client/images/flags/gr.png" />
@@ -200,5 +193,14 @@
     <file src="client/images/flags/tj.png" />
     <file src="client/images/flags/ve.png" />
     <file src="client/images/flags/hr.png" />
-    <file src="client/images/flags/xk.png" />
+
+    <!-- UNKNOWN FLAGS (not ISO 3166) -->
+    <!-- <file src="client/images/flags/ac.png" /> -->
+    <!-- <file src="client/images/flags/an.png" /> -->
+    <!-- <file src="client/images/flags/cs.png" /> -->
+    <!-- <file src="client/images/flags/eu.png" /> -->
+    <!-- <file src="client/images/flags/ja.png" /> -->
+    <!-- <file src="client/images/flags/uk.png" /> -->
+    <!-- <file src="client/images/flags/yu.png" /> -->
+    <!-- <file src="client/images/flags/xk.png" /> -->
 </meta>
