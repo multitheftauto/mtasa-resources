@@ -81,8 +81,8 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	extraNodes = extraNodes or {}
 
 	--Add OOP support
-	local oopNode = xmlCreateChild(xml, "oop")
-	xmlNodeSetValue(oopNode, "true")
+	--[[local oopNode = xmlCreateChild(xml, "oop")
+	xmlNodeSetValue(oopNode, "true")]]
 
 	--[[ info tag ]]--
 	local infoNode = xmlCreateChild(xml, "info")
