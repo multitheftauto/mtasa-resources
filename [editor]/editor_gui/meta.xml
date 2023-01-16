@@ -57,6 +57,7 @@
 	<export function="openPropertiesBox" type="client" />
 	<export function="restoreSaveDialog" type="client" />
 	<export function="stopTest" type="client" />
+	<export function="restoreSelectedElement" type="client" />
 
 	<!-- Browser -->
 	<script src="client/browser/browserList.lua" type="client" />
