@@ -143,6 +143,13 @@
 					accept="true,false"
 					desc="Ban IP's that attempt to send fake admin packets."
 					/>
+      
+      <setting name="*useip2c" value="true"
+					friendlyname="useip2c"
+					group="_Advanced"
+					accept="true,false"
+					desc="Displays country flags next to players, set to false to save about 3MB of server RAM."
+					/>
 
 		<setting name="*nickChangeDelay" value="5000"
 					friendlyname="Nick change delay"

@@ -33,7 +33,7 @@ function notifyPlayerLoggedIn(player)
 	end
 end
 
-function handleIP2CUpdate()
+function aHandleIP2CUpdate()
 	local updateAdminPanel = {}
 	for id, player in ipairs(getElementsByType("player")) do
 		updatePlayerCountry ( player )
@@ -50,6 +50,18 @@ function handleIP2CUpdate()
 	end
 end
 
+-- Starts resource if setting is true
+function aHandleIp2cSetting()
+	local enabled = get("*useip2c")
+	if enabled and enabled == "true" then
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c and getResourceState(ip2c) == "loaded" then
+            -- Persistent
+			startResource(ip2c, true)
+		end
+	end
+end
+
 addEventHandler ( "onResourceStart", root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		local resourceName = getResourceName(resource)
@@ -59,10 +71,11 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 			end
 		end
 		if resourceName == "ip2c" then
-			handleIP2CUpdate()
+			aHandleIP2CUpdate()
 		end
 		return
 	end
+	aHandleIp2cSetting()
 	_settings = xmlLoadFile ( "conf\\settings.xml" )
 	if ( not _settings ) then
 		_settings = xmlCreateFile ( "conf\\settings.xml", "main" )
@@ -230,7 +243,7 @@ addEventHandler ( "onResourceStop", root, function ( resource )
 			end
 		end
 		if resourceName == "ip2c" then
-			handleIP2CUpdate()
+			aHandleIP2CUpdate()
 		end
 	else
 		local node = xmlLoadFile ( "conf\\reports.xml" )
