@@ -33,27 +33,33 @@ function notifyPlayerLoggedIn(player)
 	end
 end
 
+function handleIP2CUpdate()
+	local updateAdminPanel = {}
+	for id, player in ipairs(getElementsByType("player")) do
+		updatePlayerCountry ( player )
+		updateAdminPanel[#updateAdminPanel+1] = player
+	end
+	if #updateAdminPanel > 0 then
+		for id, player in ipairs(getElementsByType("player")) do
+			if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
+				for _, playerToUpdate in ipairs(updateAdminPanel) do
+					triggerClientEvent ( player, "aClientPlayerJoin", playerToUpdate, false, false, false, false, aPlayers[playerToUpdate]["country"] )
+				end
+			end
+		end
+	end
+end
+
 addEventHandler ( "onResourceStart", root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		local resourceName = getResourceName(resource)
-		local updateAdminPanel = {}
 		for id, player in ipairs(getElementsByType("player")) do
-			if resourceName == "ip2c" then
-				updatePlayerCountry ( player )
-				updateAdminPanel[#updateAdminPanel+1] = player
-			end
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
-				triggerClientEvent ( player, "aClientResourceStart", root, getResourceName ( resource ) )
+				triggerClientEvent ( player, "aClientResourceStart", root, resourceName )
 			end
 		end
-		if #updateAdminPanel > 0 then
-			for id, player in ipairs(getElementsByType("player")) do
-				if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-					for _, playerToUpdate in ipairs(updateAdminPanel) do
-						triggerClientEvent ( player, "aClientPlayerJoin", playerToUpdate, false, false, false, false, false, aPlayers[playerToUpdate]["country"] )
-					end
-				end
-			end
+		if resourceName == "ip2c" then
+			handleIP2CUpdate()
 		end
 		return
 	end
@@ -218,24 +224,13 @@ addEventHandler ( "onResourceStop", root, function ( resource )
 
 	if ( resource ~= getThisResource() ) then
 		local resourceName = getResourceName(resource)
-		local updateAdminPanel = {}
 		for id, player in ipairs(getElementsByType("player")) do
-			if resourceName == "ip2c" then
-				updatePlayerCountry ( player )
-				updateAdminPanel[#updateAdminPanel+1] = player
-			end
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
-				triggerClientEvent ( player, "aClientResourceStop", root, getResourceName ( resource ) )
+				triggerClientEvent ( player, "aClientResourceStop", root, resourceName )
 			end
 		end
-		if #updateAdminPanel > 0 then
-			for id, player in ipairs(getElementsByType("player")) do
-				if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-					for _, playerToUpdate in ipairs(updateAdminPanel) do
-						triggerClientEvent ( player, "aClientPlayerJoin", playerToUpdate, false, false, false, false, false, aPlayers[playerToUpdate]["country"] )
-					end
-				end
-			end
+		if resourceName == "ip2c" then
+			handleIP2CUpdate()
 		end
 	else
 		local node = xmlLoadFile ( "conf\\reports.xml" )

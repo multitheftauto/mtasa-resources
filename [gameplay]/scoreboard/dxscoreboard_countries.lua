@@ -28,7 +28,18 @@ if showCountries then
 		setElementData( source, countryData, {":ip2c/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
 	end
 
+	function setPlayersScoreboardData()
+		local isIP2CResourceRunning_ = getResourceFromName( "ip2c" )
+		isIP2CResourceRunning_ = isIP2CResourceRunning_ and getResourceState( isIP2CResourceRunning_ ) == "running"
+		for i, player in ipairs( getElementsByType( "player" ) ) do
+			local cCode = isIP2CResourceRunning_ and exports.ip2c:getPlayerCountry( player ) or defaultCountryIndicator
+			setElementData( player, countryData, {":ip2c/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
+		end
+	end
+
 	addEventHandler( "onPlayerJoin", root, setScoreboardData )
+	addEventHandler("onResourceStart", root, function(resource) if getResourceName(resource)=="ip2c" then setPlayersScoreboardData() end end)
+	addEventHandler("onResourceStop", root, function(resource) if getResourceName(resource)=="ip2c" then setPlayersScoreboardData() end end)
 end
 
 -- Server staff can use the below command to spoof their country-code in TAB scoreboard to avoid undesired recognition by players.

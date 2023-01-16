@@ -20,6 +20,7 @@ local IP2C_UPDATE_INTERVAL_SECONDS = 60 * 60 * 24 * 1	-- Update no more than onc
 
 -- [Exported]
 function getPlayerCountry ( player )
+	-- if true then return "PT" end -- TESTING
 	if not loadIPGroupsIsReady() then return false end
     local ip = getPlayerIP(player)
 	local ip_group = tonumber ( gettok ( ip, 1, 46 ) )
