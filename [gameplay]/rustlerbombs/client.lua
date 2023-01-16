@@ -16,7 +16,7 @@ function drawHud()
 	end
 end
 
-function dropGliderBomb(rustler)
+function dropGliderBomb()
 	if not isElement(rustler) then
 		return
 	end
@@ -68,7 +68,7 @@ function dropGliderBomb(rustler)
 end
 
 function gliderBomb()
-	dropGliderBomb(rustler)
+	dropGliderBomb()
 end
 
 function exitMode()
