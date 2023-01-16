@@ -7,7 +7,7 @@
 
 # admin
 \[admin\]/admin/conf/reports.xml
-\[admin\]/admin/conf/IpToCountryCompact.csv
+\[admin\]/ip2c/conf/IpToCountryCompact.csv
 
 # admin2
 \[admin\]/admin2/admin.db

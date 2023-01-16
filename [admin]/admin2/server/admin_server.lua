@@ -88,9 +88,12 @@ addEventHandler(
 )
 
 function aPlayerInitialize(player)
+    local isIP2CResourceRunning = getResourceFromName( "ip2c" )
+	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
+	local defaultCountryIndicator = "N/A"
     aPlayers[player] = {}
-    aPlayers[player].country = getPlayerCountry(player)
-    aPlayers[player].countryname = getPlayerCountryName(player)
+    aPlayers[player].country = isIP2CResourceRunning and exports.ip2c:getPlayerCountry(player) or defaultCountryIndicator
+    aPlayers[player].countryname = "TODO"
     aPlayers[player].money = getPlayerMoney(player)
     aPlayers[player].muted = isPlayerMuted(player)
     aPlayers[player].frozen = isElementFrozen(player)

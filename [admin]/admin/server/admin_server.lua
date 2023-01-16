@@ -35,9 +35,24 @@ end
 
 addEventHandler ( "onResourceStart", root, function ( resource )
 	if ( resource ~= getThisResource() ) then
+		local resourceName = getResourceName(resource)
+		local updateAdminPanel = {}
 		for id, player in ipairs(getElementsByType("player")) do
+			if resourceName == "ip2c" then
+				updatePlayerCountry ( player )
+				updateAdminPanel[#updateAdminPanel+1] = player
+			end
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
 				triggerClientEvent ( player, "aClientResourceStart", root, getResourceName ( resource ) )
+			end
+		end
+		if #updateAdminPanel > 0 then
+			for id, player in ipairs(getElementsByType("player")) do
+				if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
+					for _, playerToUpdate in ipairs(updateAdminPanel) do
+						triggerClientEvent ( player, "aClientPlayerJoin", playerToUpdate, false, false, false, false, false, aPlayers[playerToUpdate]["country"] )
+					end
+				end
 			end
 		end
 		return
@@ -202,9 +217,24 @@ addEventHandler ( "onResourceStop", root, function ( resource )
 	if not stillExists then return end
 
 	if ( resource ~= getThisResource() ) then
+		local resourceName = getResourceName(resource)
+		local updateAdminPanel = {}
 		for id, player in ipairs(getElementsByType("player")) do
+			if resourceName == "ip2c" then
+				updatePlayerCountry ( player )
+				updateAdminPanel[#updateAdminPanel+1] = player
+			end
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
 				triggerClientEvent ( player, "aClientResourceStop", root, getResourceName ( resource ) )
+			end
+		end
+		if #updateAdminPanel > 0 then
+			for id, player in ipairs(getElementsByType("player")) do
+				if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
+					for _, playerToUpdate in ipairs(updateAdminPanel) do
+						triggerClientEvent ( player, "aClientPlayerJoin", playerToUpdate, false, false, false, false, false, aPlayers[playerToUpdate]["country"] )
+					end
+				end
 			end
 		end
 	else
@@ -386,12 +416,19 @@ addEventHandler ( "onPlayerJoin", root, function ()
 	setPedGravity ( source, getGravity() )
 end )
 
+function updatePlayerCountry ( player )
+	local isIP2CResourceRunning = getResourceFromName( "ip2c" )
+	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
+	local defaultCountryIndicator = "N/A"
+	aPlayers[player]["country"] = isIP2CResourceRunning and exports.ip2c:getPlayerCountry ( player ) or defaultCountryIndicator
+end
+
 function aPlayerInitialize ( player )
 	bindKey ( player, "p", "down", "admin" )
 	--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerSerial ( player ) )
 	aPlayers[player] = {}
-	aPlayers[player]["country"] = getPlayerCountry ( player )
 	aPlayers[player]["money"] = getPlayerMoney ( player )
+	updatePlayerCountry ( player )
 	chatHistory[player] = {}
 end
 

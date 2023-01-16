@@ -36,7 +36,6 @@
   <script src="server/admin_storage.lua" 			        type="server" />
   <script src="server/admin_sync.lua" 				        type="server" />
   <script src="server/admin_commands.lua" 			      	type="server" />
-  <script src="server/admin_ip2c.lua" 				        type="server" />
   <script src="server/admin_ACL.lua" 				     	type="server" />
   <script src="server/admin_bans.lua"                 		type="server" />
   <script src="server/admin_network.lua"                 	type="server" />

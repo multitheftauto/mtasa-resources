@@ -16,7 +16,7 @@ if showCountries then
 	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
 
 	local countryData = "Country"
-	local defaultCountryIndicator = "N/A" -- If something somehow fails and setting is enabled in meta.xml
+	local defaultCountryIndicator = "N/A"
 
 	for i, player in ipairs( getElementsByType( "player" ) ) do
 		local cCode = isIP2CResourceRunning and exports.ip2c:getPlayerCountry( player ) or defaultCountryIndicator
