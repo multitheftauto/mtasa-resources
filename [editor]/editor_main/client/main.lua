@@ -956,7 +956,7 @@ end
 
 -- sets the maximum distance at which an element can be selected
 function setMaxSelectDistance(distance)
-	assert((distance >= 0), "Distance must be a positive number")
+	assert((distance >= 0), "Distance must be a positive number.")
 	g_maxSelectDistance = distance
 	return true
 end
