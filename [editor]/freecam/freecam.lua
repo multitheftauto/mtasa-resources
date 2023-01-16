@@ -24,7 +24,8 @@ local options = {
 	key_forward_veh = "accelerate",
 	key_backward_veh = "brake_reverse",
 	key_left_veh = "vehicle_left",
-	key_right_veh = "vehicle_right"
+	key_right_veh = "vehicle_right",
+	fov = 70
 }
 
 local controlToKey = {
@@ -209,7 +210,7 @@ local function freecamFrame ()
     camTargetZ = camPosZ + freeModeAngleZ * 100
 
     -- Set the new camera position and target
-    setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ )
+    setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, 0, options.fov )
 end
 
 local function freecamMouse (cX,cY,aX,aY)
@@ -271,7 +272,7 @@ function setFreecamEnabled (x, y, z)
 	end
 
 	if (x and y and z) then
-	    setCameraMatrix ( x, y, z )
+	    setCameraMatrix ( x, y, z, nil, nil, nil, 0, options.fov )
 	end
 	addEventHandler("onClientRender", root, freecamFrame)
 	addEventHandler("onClientCursorMove",root, freecamMouse)

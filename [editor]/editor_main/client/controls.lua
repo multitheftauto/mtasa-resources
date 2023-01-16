@@ -109,6 +109,7 @@ addEventHandler("onClientResourceStart", root,
 			freecam.setFreecamOption("key_backward", cc.camera_move_backwards)
 			freecam.setFreecamOption("key_left", cc.camera_move_left)
 			freecam.setFreecamOption("key_right", cc.camera_move_right)
+			freecam.setFreecamOption("fov", cc.camera_move_right)
 		elseif resource == thisResource then
 			bindKey ("lctrl","both",blockMTAControls )
 			processControls()
