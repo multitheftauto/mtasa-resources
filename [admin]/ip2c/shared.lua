@@ -255,5 +255,5 @@ local countryListAlpha2 = {
 
 -- [Exported]
 function getCountryName( country )
-	return countryListAlpha2[country] or "Unknown"
+	return countryListAlpha2[ (string.upper(country)) ] or "Unknown"
 end
