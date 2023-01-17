@@ -299,7 +299,7 @@ function updateSmartPositions(self)
 end
 
 function getSmartPosition(pos,full)
-	local final = pos
+	local final
 	if pos > 1 then --Is X bigger than 1?  If so we've got an absolute position
 		final = pos
 	elseif pos < -1 then --We have a reversed absolute position

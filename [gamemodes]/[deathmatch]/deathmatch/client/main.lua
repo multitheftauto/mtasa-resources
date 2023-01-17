@@ -141,8 +141,8 @@ function calculateLoadingCameraMatrix()
 	end
 	-- calculate our camera position by calculating an average spawnpoint position
 	local camX, camY, camZ = 0, 0, 0
-	for _, spawnpoint in ipairs(spawnpoints) do
-		local x, y, z = getElementPosition(spawnpoint)
+	for i = 1, #spawnpoints do
+		local x, y, z = getElementPosition(spawnpoints[i])
 		camX = camX + x
 		camY = camY + y
 		camZ = camZ + z

@@ -2,11 +2,6 @@
 --	beginRound: begins the round
 --
 function beginRound()
-	-- reset player score data
-	for _, player in ipairs(getElementsByType("player")) do
-		setElementData(player, "Score", 0)
-		setElementData(player, "Rank", "-")
-	end
 	-- start round timer
 	if _timeLimit > 0 then
 		_missionTimer = exports.missiontimer:createMissionTimer(_timeLimit, true, true, 0.5, 20, true, "default-bold", 1)
@@ -17,10 +12,13 @@ function beginRound()
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_IN_PROGRESS)
 	-- spawn players
-	for _, player in ipairs(getElementsByType("player")) do
-		if _playerStates[player] == PLAYER_READY then
-            spawnDeathmatchPlayer(player)
-            triggerClientEvent(player, "onClientDeathmatchRoundStart", resourceRoot)
+	local players = getElementsByType("player")
+	for i = 1, #players do
+		setElementData(players[i], "Score", 0)
+		setElementData(players[i], "Rank", "-")
+		if _playerStates[players[i]] == PLAYER_READY then
+            spawnDeathmatchPlayer(players[i])
+            triggerClientEvent(players[i], "onClientDeathmatchRoundStart", resourceRoot)
 		end
 	end
 end
@@ -59,12 +57,13 @@ function endRound(winner, draw, aborted)
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_FINISHED)
 	-- make all other players focus on the winner and begin to fade out camera
-    for _, player in ipairs(getElementsByType("player")) do
-		if _playerStates[player] ~= PLAYER_JOINED then
+	local players = getElementsByType("player")
+    for i = 1, #players do
+		if _playerStates[players[i]] ~= PLAYER_JOINED then
             -- update player state
-            _playerStates[player] = PLAYER_READY
+            _playerStates[players[i]] = PLAYER_READY
 			-- inform client round is over
-			triggerClientEvent(player, "onClientDeathmatchRoundEnd", resourceRoot, winner, draw, aborted)
+			triggerClientEvent(players[i], "onClientDeathmatchRoundEnd", resourceRoot, winner, draw, aborted)
         end
 	end
 	-- don't cycle the map if the round was aborted (map resource was stopped)

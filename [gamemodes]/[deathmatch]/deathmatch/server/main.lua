@@ -103,18 +103,17 @@ function calculatePlayerRanks()
 	local players = getElementsByType("player")
 	table.sort(players, scoreSortingFunction)
 	--Take into account people with the same score
-	for i, player in ipairs(players) do
-		local previousPlayer = players[i-1]
+	for i = 1, #players do
 		if players[i-1] then
-			local previousScore = getElementData(previousPlayer, "Score")
-			local playerScore = getElementData(player, "Score")
+			local previousScore = getElementData(players[i-1], "Score")
+			local playerScore = getElementData(players[i], "Score")
 			if previousScore == playerScore then
-				setElementData (player, "Rank", getElementData(previousPlayer, "Rank"))
+				setElementData (players[i], "Rank", getElementData(players[i-1], "Rank"))
 			else
-				setElementData (player, "Rank", i)
+				setElementData (players[i], "Rank", i)
 			end
 		else
-			setElementData(player, "Rank", 1)
+			setElementData(players[i], "Rank", 1)
 		end
 	end
 end

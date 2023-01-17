@@ -30,13 +30,14 @@ addEventHandler("onPlayerQuit", root, processPlayerQuit)
 -- triggered by the client post-onClientResourceStart
  function deathmatchPlayerReady()
 	-- inform client of current game state by triggering certain events
-	if getElementData(resourceRoot, "gameState") == GAME_STARTING then
+	local gameState = getElementData(resourceRoot, "gameState")
+	if gameState == GAME_STARTING then
 		triggerClientEvent(client, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
-	elseif getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
+	elseif gameState == GAME_IN_PROGRESS then
 		triggerClientEvent(client, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
 		triggerClientEvent(client, "onClientDeathmatchRoundStart", resourceRoot)
 		spawnDeathmatchPlayer(client)
-	elseif getElementData(resourceRoot, "gameState") == GAME_FINISHED then
+	elseif gameState == GAME_FINISHED then
 		triggerClientEvent(client, "onClientDeathmatchRoundEnd", resourceRoot, false, false)
 	end
 	-- update player state
@@ -87,9 +88,10 @@ function processPlayerWasted(totalAmmo, killer, killerWeapon, bodypart)
 		-- if respawn is disabled, end the round if this is the last player alive
 		if _respawnTime == 0 then
 			local isLastPlayerAlive = true
-			for _, player in ipairs(getElementsByType("player")) do
-				if not isPedDead(player) and player ~= killer and _playerStates[player] == PLAYER_IN_GAME then
-					iprint(player, " is the last player alive, respawn is disabled, ending round")
+			local players = getElementsByType("player")
+			for i = 1, #players do
+				if not isPedDead(players[i]) and players[i] ~= killer and _playerStates[players[i]] == PLAYER_IN_GAME then
+					iprint(players[i], " is the last player alive, respawn is disabled, ending round")
 					isLastPlayerAlive = false
 					break
 				end
