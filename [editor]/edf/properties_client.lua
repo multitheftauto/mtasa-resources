@@ -179,7 +179,7 @@ propertySetters = {
 		end,
 		color1 = function(element, colorsTable)
 			if colorsTable then
-				local colorsTable = {getColorFromString(colorsTable)}
+				colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], otherColors[7], otherColors[8], otherColors[9], otherColors[10], otherColors[11], otherColors[12])
 			else
@@ -188,7 +188,7 @@ propertySetters = {
 		end,
 		color2 = function(element, colorsTable)
 			if colorsTable then
-				local colorsTable = {getColorFromString(colorsTable)}
+				colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, otherColors[1], otherColors[2], otherColors[3], colorsTable[1], colorsTable[2], colorsTable[3], otherColors[7], otherColors[8], otherColors[9], otherColors[10], otherColors[11], otherColors[12])
 			else
@@ -197,7 +197,7 @@ propertySetters = {
 		end,
 		color3 = function(element, colorsTable)
 			if colorsTable then
-				local colorsTable = {getColorFromString(colorsTable)}
+				colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], colorsTable[1], colorsTable[2], colorsTable[3], otherColors[10], otherColors[11], otherColors[12])
 			else
@@ -206,7 +206,7 @@ propertySetters = {
 		end,
 		color4 = function(element, colorsTable)
 			if colorsTable then
-				local colorsTable = {getColorFromString(colorsTable)}
+				colorsTable = {getColorFromString(colorsTable)}
 				local otherColors = {getVehicleColor(element, true)}
 				return setVehicleColor(element, colorsTable[1], colorsTable[2], colorsTable[3], otherColors[4], otherColors[5], otherColors[6], otherColors[7], otherColors[8], otherColors[9], colorsTable[1], colorsTable[2], colorsTable[3])
 			else

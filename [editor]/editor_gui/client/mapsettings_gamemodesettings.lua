@@ -4,7 +4,7 @@ mapsettings.rowValues = {}
 mapsettings.gamemodeSettings = {}
 local valueWidget
 local isHandled
-addEventHandler ( "doLoadEDF", getRootElement(),
+addEventHandler ( "doLoadEDF", root,
 function(tableEDF, resource)
 	--store all our data neatly under the resource
 	edfSettings[resource] = tableEDF["settings"]
@@ -13,10 +13,10 @@ function(tableEDF, resource)
 	mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
 	currentMapSettings.rowData = rowData
 	currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
-	triggerServerEvent ( "doSaveMapSettings", getLocalPlayer(), currentMapSettings, true )
+	triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings, true )
 end )
 
-addEventHandler ( "doUnloadEDF", getRootElement(),
+addEventHandler ( "doUnloadEDF", root,
 function(resource)
 	--store all our data neatly under the resource
 	edfSettings[resource] = nil
@@ -25,7 +25,7 @@ function(resource)
 	mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
 	currentMapSettings.rowData = rowData
 	currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
-	triggerServerEvent ( "doSaveMapSettings", getLocalPlayer(), currentMapSettings, true )
+	triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings, true )
 end )
 
 function refreshGamemodeSettings()
@@ -118,11 +118,11 @@ function toggleSettingsGUI(bool)
 	if bool then
 		if not isHandled then
 			isHandled = true
-			addEventHandler ( "onClientGUIMouseDown",getRootElement(),applyGamemodeSettings )
+			addEventHandler ( "onClientGUIMouseDown",root,applyGamemodeSettings )
 		end
 	else
 		isHandled = false
-		removeEventHandler ( "onClientGUIMouseDown",getRootElement(),applyGamemodeSettings )
+		removeEventHandler ( "onClientGUIMouseDown",root,applyGamemodeSettings )
 		if previousRow ~= -1 then
 			if valueWidget then
 				mapsettings.rowValues[previousRow] = valueWidget:getValue()
@@ -168,7 +168,7 @@ function copyTable ( theTable )
 	return copiedTable
 end
 
-addEventHandler ( "saveloadtest_return", getRootElement(),
+addEventHandler ( "saveloadtest_return", root,
 	function ( command )
 		if command == "new" then
 			mapsettings.rowValues = {}

@@ -97,28 +97,27 @@ local idleBriefcaseTimer = nil
 -- gets settings
 -- creates a briefcase and an objective and sets player points to 0 when map starts
 function startGame()
-
-		displayMessageForPlayers(1, "Briefcase Race")
-   		-- set players' points to 0
-		local players = getElementsByType("player")
-		for k,v in ipairs(players) do
+	displayMessageForPlayers(1, "Briefcase Race")
+	-- set players' points to 0
+	local players = getElementsByType("player")
+	for k,v in ipairs(players) do
+		setElementData(v, "points", 0)
+	end
+	-- store teams and set their points to 0
+	if (settings.teams) then
+		for i,v in ipairs(teams) do
 			setElementData(v, "points", 0)
 		end
-		-- store teams and set their points to 0
-		if (settings.teams) then
-			for i,v in ipairs(teams) do
-				setElementData(v, "points", 0)
-			end
+	end
+	--[[-- set players to ready if there are no teams
+	if (not settings.teams) then
+		for i,v in ipairs(players) do
+			addReadyPlayer(v)
 		end
-		--[[-- set players to ready if there are no teams
-		if (not settings.teams) then
-			for i,v in ipairs(players) do
-				addReadyPlayer(v)
-			end
-		end]] -- this is now done in br.server.spawn
-		-- create briefcase and objective
-	  	resetBriefcase()
-	  	resetObjectives()
+	end]] -- this is now done in br.server.spawn
+	-- create briefcase and objective
+	resetBriefcase()
+	resetObjectives()
 
 	-- add events
 	--addEventHandler( "onPlayerReady", root,				onPlayerReady_brgame);
@@ -207,22 +206,22 @@ function endGame(showScores, tellMapCycler)
 		removeReadyPlayer(v)
 	end
 
-	if (showScores) then
+	--if (showScores) then
 		--[[forceScoreboardForAllPlayers(true)
 		setTimer(forceScoreboardForAllPlayers, 10000, 1, false)
-		addEventHandler("onResourceStop", getResourceRootElement(getThisResource()), onStopSetScoreboardNotForced)
-		setTimer(removeEventHandler, 10000, 1, "onResourceStop", getResourceRootElement(getThisResource()), onStopSetScoreboardNotForced)]]
+		addEventHandler("onResourceStop", resourceRoot, onStopSetScoreboardNotForced)
+		setTimer(removeEventHandler, 10000, 1, "onResourceStop", resourceRoot, onStopSetScoreboardNotForced)]]
 --		local mapmanagerResource = getResourceFromName("mapmanager")
 --		if (mapmanagerResource and getResourceState(mapmanagerResource) == "running") then
 --			setTimer(outputConsole, 9000, 1, "[Gamemode finished]")
 --			setTimer(call, 10000, 1, mapmanagerResource, "stopGamemode") -- server crashes?
 --		end
-	end
+	--end
 
 	if (tellMapCycler) then
 		local mapCyclerResource = getResourceFromName("mapcycler")
 		if (mapCyclerResource and getResourceState(mapCyclerResource) == "running") then
-			triggerEvent("onRoundFinished", getResourceRootElement(getThisResource()))
+			triggerEvent("onRoundFinished", resourceRoot)
 		end
 	end
 
@@ -286,17 +285,17 @@ function increasePoints(player, points)
 		setElementData(player, "points", playerPoints)
 		setElementData(team, "points", teamPoints)
 		if (teamPoints >= settings.limit) then
-            local r, g, b = getTeamColor(team)
+			local r, g, b = getTeamColor(team)
 			displayMessageForPlayers(1, "Point limit reached, team " .. getTeamName ( team ) .. " wins!", 10000, nil, nil, 0, 0, 255, team)
 			displayMessageForPlayers(1, "Point limit reached, team " .. getTeamName ( team ) .. " wins!", 10000, nil, nil, 255, 0, 0, team, true)
-           	pointLimitReached = true
+			pointLimitReached = true
 		end
 	else
 		local playerPoints = getElementData(player, "points") + points
 		setElementData(player, "points", playerPoints)
 		if (playerPoints >= settings.limit) then
 			displayMessageForPlayers(1, "Point limit reached, " .. getPlayerName ( player ) .. " wins!", 10000)
-           	pointLimitReached = true
+			pointLimitReached = true
 		end
 	end
 	return pointLimitReached
@@ -321,7 +320,7 @@ function onPlayerSpawn_brgame(spawnpoint)
 	for k,v in pairs(settings.weapons) do
 		giveWeapon(source, k, v)
 	end
-    setPedFightingStyle(source, 6)
+	setPedFightingStyle(source, 6)
 end
 
 -- creates briefcase and objective for new player (if needed) to bring the current state of the game
@@ -449,45 +448,45 @@ end
 
 -- game event - player delivers the briefcase
 function onPlayerObjectiveHit_brgame()
-		assert(theBriefcase and theBriefcase:getCarrier() == source, "Objective hit - the briefcase does not exist or the carrier isn't the guy who hit the objective")---asserts, but it's ok since client has multiple hits in one short period
-		assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
-		if ( not settings.onfootonly or not isPedInVehicle ( source ) ) then
-			debugMessage("Removing carrier " .. getPlayerName(source) .. " due to objective hit.")
-			removeCarrier(source, 2)
-	        -- increase player health
-	        setElementHealth(source, 100)
-			-- restore ammo if less (or just give more)
-	        -- increase vehicle health
-	        local vehicle = getPedOccupiedVehicle(source)
-	        if (vehicle and getPedOccupiedVehicleSeat(source) == 0) then
-	        	fixVehicle(vehicle)
-	        end
-			-- reset lastCarrier
-			if (lastCarrier) then
-				lastCarrier = false
-			end
-	        -- remove any instructions message the player might have
-			clearMessageForPlayer(source, 2)
-	  		-- announce that player reached the objective
-	  		if (settings.teams) then
-				displayMessageForPlayers(1, getPlayerName(source) .. " reached the destination!", nil, nil, nil, 0, 0, 255, getPlayerTeam(source))
-				displayMessageForPlayers(1, getPlayerName(source) .. " reached the destination!", nil, nil, nil, 255, 0, 0, getPlayerTeam(source), true)
-	  		else
-				displayMessageForPlayers(1, getPlayerName(source) .. " reached the destination!")
-	  		end
-			-- increase score
-			local pointLimitReached = increasePoints(source, DELIVER_PTS)
-			if (pointLimitReached) then
-				endGame(true, true)
-			else
-			    -- reset orb and objective
-	   			resetBriefcaseTimer = setTimer(resetBriefcase, 5000, 1)
-	           	resetObjectivesTimer = setTimer(resetObjectives, 5000, 1)
-			end
-		else
-		    --outputChatBox ( "Get out of your vehicle!", source, 147, 112, 219 )
-			displayMessageForPlayer(source, 2, "Get out of your vehicle first!", 5000, 0.5, 0.535, 170, 0, 0, 1.75)
+	assert(theBriefcase and theBriefcase:getCarrier() == source, "Objective hit - the briefcase does not exist or the carrier isn't the guy who hit the objective")---asserts, but it's ok since client has multiple hits in one short period
+	assert(not settings.teams or isPlayerOnValidTeam(source), "Player not on valid team")
+	if ( not settings.onfootonly or not isPedInVehicle ( source ) ) then
+		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to objective hit.")
+		removeCarrier(source, 2)
+		-- increase player health
+		setElementHealth(source, 100)
+		-- restore ammo if less (or just give more)
+		-- increase vehicle health
+		local vehicle = getPedOccupiedVehicle(source)
+		if (vehicle and getPedOccupiedVehicleSeat(source) == 0) then
+			fixVehicle(vehicle)
 		end
+		-- reset lastCarrier
+		if (lastCarrier) then
+			lastCarrier = false
+		end
+		-- remove any instructions message the player might have
+		clearMessageForPlayer(source, 2)
+		-- announce that player reached the objective
+		if (settings.teams) then
+			displayMessageForPlayers(1, getPlayerName(source) .. " reached the destination!", nil, nil, nil, 0, 0, 255, getPlayerTeam(source))
+			displayMessageForPlayers(1, getPlayerName(source) .. " reached the destination!", nil, nil, nil, 255, 0, 0, getPlayerTeam(source), true)
+		else
+			displayMessageForPlayers(1, getPlayerName(source) .. " reached the destination!")
+		end
+		-- increase score
+		local pointLimitReached = increasePoints(source, DELIVER_PTS)
+		if (pointLimitReached) then
+			endGame(true, true)
+		else
+			-- reset orb and objective
+			resetBriefcaseTimer = setTimer(resetBriefcase, 5000, 1)
+			resetObjectivesTimer = setTimer(resetObjectives, 5000, 1)
+		end
+	else
+		--outputChatBox ( "Get out of your vehicle!", source, 147, 112, 219 )
+		displayMessageForPlayer(source, 2, "Get out of your vehicle first!", 5000, 0.5, 0.535, 170, 0, 0, 1.75)
+	end
 end
 
 -- game event - carrier dies
@@ -543,7 +542,7 @@ function onCarrierDamage(attacker, attackerweapon, bodypart, loss)
 		-- make briefcase not hittable to player for 5 seconds
 		setElementData(source, "justDroppedBriefcase", true)
 		setTimer(setElementData, 5000, 1, source, "justDroppedBriefcase", false)
-        -- tell the player he can't pick the orb up for 5 seconds
+		-- tell the player he can't pick the orb up for 5 seconds
 		displayMessageForPlayer(source, 2, "[Five second pickup penalty]", 5000, 0.5, 0.535, 170, 0, 0, 1.75)
 	end
 end
@@ -588,7 +587,7 @@ function onCarrierVehicleExit(vehicle, seat, jacker)
 	if (jacker) then
 		assert(not settings.teams or isPlayerOnValidTeam(jacker), "Player not on valid team")
 		debugMessage("Removing carrier " .. getPlayerName(source) .. " due to carrier jacked.")
-  		removeCarrier(source, 0)
+		removeCarrier(source, 0)
 		-- remove any instructions message the jacked player might have
 		clearMessageForPlayer(source, 2)
 		-- announce that jacker jacked the orb carrier
@@ -618,17 +617,17 @@ function onCarrierVehicleExit(vehicle, seat, jacker)
 		-- make briefcase not hittable to player for 5 seconds
 		setElementData(source, "justDroppedBriefcase", true)
 		setTimer(setElementData, 5000, 1, source, "justDroppedBriefcase", false)
-        -- tell the player he can't pick the briefcase up for 5 seconds
+		-- tell the player he can't pick the briefcase up for 5 seconds
 		displayMessageForPlayer(source, 2, "[Five second pickup penalty]", 5000, 0.5, 0.535, 170, 0, 0, 1.75)
 		------------------------------------
 	end
 	-- in the case where the carrier falls of a bike (ie. onVehicleStartExit isn't triggered, but the player has in fact exitted the vehicle!),
 	-- the code below will catch the exit and remove the onCarrierVehicleDamageEvent
-	local vehicle = getElementData(source, "carrierVehicle")
-	if (vehicle) then
+	local vehicle2 = getElementData(source, "carrierVehicle")
+	if (vehicle2) then
 		--outputDebugString ( "removing onCarrierVehicleDamage for " .. getPlayerName ( source ) .. " (caught in onCarrierVehicleExit)" )
-		--removeEventHandler("onVehicleDamage", vehicle, onCarrierVehicleDamage)
-		removeEventHandler("onVehicleNonWeaponDamage", vehicle, onCarrierVehicleDamage)
+		--removeEventHandler("onVehicleDamage", vehicle2, onCarrierVehicleDamage)
+		removeEventHandler("onVehicleNonWeaponDamage", vehicle2, onCarrierVehicleDamage)
 		setElementData(source, "carrierVehicle", false)
 	end
 end
@@ -663,7 +662,7 @@ function onCarrierVehicleDamage(loss)
 		-- make briefcase not hittable to player for 5 seconds
 		setElementData(player, "justDroppedBriefcase", true)
 		setTimer(setElementData, 5000, 1, player, "justDroppedBriefcase", false)
-        -- tell the player he can't pick the briefcase up for 5 seconds
+		-- tell the player he can't pick the briefcase up for 5 seconds
 		displayMessageForPlayer(player, 2, "[Five second pickup penalty]", 5000, 0.5, 0.535, 170, 0, 0, 1.75)
 	end
 end
@@ -816,7 +815,7 @@ function removeCarrier(player, action)
 		local team = getPlayerTeam(player)
 		teamObjectives[team]:hitter(false)
 	end
-    -- remove events for carrier
+	-- remove events for carrier
 	removeCarrierEvents(player)
 	if (action == 1) then
 		-- place briefcase at the player's location
@@ -901,11 +900,11 @@ end
 -- destroys and resets orb after inactivity
 function destroyAndResetIdleBriefcase()
 	-- kill timer
-    idleBriefcaseTimer = false
+	idleBriefcaseTimer = false
 	-- destroy briefcase
 	theBriefcase:notIdle()
-    -- reset briefcase
- 	resetBriefcaseTimer = setTimer(resetBriefcase, 5000, 1)
+	-- reset briefcase
+	resetBriefcaseTimer = setTimer(resetBriefcase, 5000, 1)
 	-- reset lastCarrier if exists
 	if (lastCarrier) then
 		lastCarrier = false
@@ -940,8 +939,8 @@ function resetBriefcase()
 		theBriefcase:idle(x, y, z)
 		return true
 	else
-	    outputChatBox("Error: no briefcases")
-	    return false
+		outputChatBox("Error: no briefcases")
+		return false
 	end
 end
 
@@ -956,7 +955,7 @@ function resetObjectives()
 	local objectiveCount = #objectives
 	if (objectiveCount > 0) then
 		--outputDebugString(objectiveCount .. " objectives total")---
-	 	-- create objective
+		-- create objective
 		math.randomseed(getTickCount())
 		if (not settings.teams) then
 			local objectiveIndex = math.random(1, objectiveCount)
@@ -979,10 +978,10 @@ function resetObjectives()
 				teamObjectives[v] = Objective:new({x = x, y = y, z = z, team = v})
 			end
 		end
-	 	return true
+		return true
 	else
-	    outputChatBox("Error: no objectives")
-	    return false
+		outputChatBox("Error: no objectives")
+		return false
 	end
 end
 
@@ -992,7 +991,7 @@ function addObjectiveForTeam(team)
 	local objectiveCount = #objectives
 	if (objectiveCount > 0) then
 		--outputDebugString(objectiveCount .. " objectives total")---
-	 	-- create objective
+		-- create objective
 		math.randomseed(getTickCount())
 		local objectiveIndex = math.random(1, objectiveCount)
 		--outputDebugString("objective " .. objectiveIndex .. " chosen")---
@@ -1002,10 +1001,10 @@ function addObjectiveForTeam(team)
 		local z = tonumber(getElementData(objectiveElem, "posZ"))
 		--outputDebugString("objective: " .. x .. " " .. y .. " " .. z)---
 		teamObjectives[team] = Objective:new({x = x, y = y, z = z, team = team})
-	 	return true
+		return true
 	else
-	    outputChatBox("Error: no objectives")
-	    return false
+		outputChatBox("Error: no objectives")
+		return false
 	end
 end
 

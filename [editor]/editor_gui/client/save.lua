@@ -35,7 +35,7 @@ function createSaveDialog()
 		function ()
 			local name = guiGetText(source)
 			local correctFormat = string.gsub(name, " ", "-") -- Turn spaces into dashes
-			local correctFormat = string.gsub(correctFormat, "[^%w-_{}]", "") -- Then remove bad charachters
+			correctFormat = string.gsub(correctFormat, "[^%w-_{}]", "") -- Then remove bad charachters
 			if name ~= correctFormat then
 				guiSetText(source, correctFormat)
 			end
@@ -108,7 +108,7 @@ function saveShowDialog( resources, directory )
 	guiSetVisible ( saveDialog.window, true )
 	guiBringToFront( saveDialog.mapName )
 end
-addEventHandler ( "saveAsShowDialog", getRootElement(), saveShowDialog )
+addEventHandler ( "saveAsShowDialog", root, saveShowDialog )
 
 function setSaveEditBoxMapName()
 	local row = guiGridListGetSelectedItem ( saveDialog.mapsList )

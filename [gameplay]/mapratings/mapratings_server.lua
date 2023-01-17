@@ -1,15 +1,12 @@
-local g_Root = getRootElement()
-local g_ResRoot = getResourceRootElement(getThisResource())
-
 local g_MapResName
 
-addEventHandler('onGamemodeMapStart', g_Root,
+addEventHandler('onGamemodeMapStart', root,
 	function(mapres)
         g_MapResName = getResourceName(mapres)
 	end
 )
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		-- outputDebugString("delete mapratings "..tostring(executeSQLQuery("DROP TABLE mapratings")))
 		-- Add table if required
@@ -68,7 +65,7 @@ function updateMapRating(player, mapresname, rating)
 end
 
 addEvent('onPollStarting')
-addEventHandler('onPollStarting', g_Root,
+addEventHandler('onPollStarting', root,
 	function(poll)
 		for index, item in ipairs(poll) do
 			if item[1] == "Yes" then return end

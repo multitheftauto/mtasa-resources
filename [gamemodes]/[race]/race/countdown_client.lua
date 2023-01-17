@@ -81,7 +81,7 @@ function Countdown:update()
 		end
 	end
     if self.value then
-    	self.value = self.value - 1
+		self.value = self.value - 1
     else
         outputDebug( 'MISC', 'Countdown self.value is nil' )
     end
@@ -113,7 +113,7 @@ function zoomFades(elems, val, info)
 	local width = info.width
 	local height = info.height
 
-	local val = 1-((1-val) * (1-val))
+	val = 1-((1-val) * (1-val))
 	local slope = val * 0.95
 	local alphas = { valinv, (valinv-0.35) * 0.20, (valinv-0.5) * 0.125 }
 

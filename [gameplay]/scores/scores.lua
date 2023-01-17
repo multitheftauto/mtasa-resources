@@ -1,6 +1,3 @@
-local root = getRootElement()
-local scoresRoot = getResourceRootElement(getThisResource())
-
 local scoreColumns = {"kills", "deaths", "self", "ratio", "status"}
 local isColumnActive = {}
 
@@ -52,7 +49,7 @@ function updateActiveColumns ()
 	end
 end
 
-addEventHandler("onResourceStart", scoresRoot,
+addEventHandler("onResourceStart", resourceRoot,
 	function ()
 		updateActiveColumns()
 		for i, player in ipairs(getElementsByType("player")) do
@@ -61,7 +58,7 @@ addEventHandler("onResourceStart", scoresRoot,
 	end
 )
 
-addEventHandler("onResourceStop", scoresRoot,
+addEventHandler("onResourceStop", resourceRoot,
 	function ()
 		for i, column in ipairs(scoreColumns) do
 			if isColumnActive[column] then

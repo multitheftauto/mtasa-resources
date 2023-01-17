@@ -14,9 +14,9 @@ function getPlayerWildcard(string)
     if (player) then
         return player
     end
-    for id, player in ipairs(getElementsByType("player")) do
-        if (string.find(string.upper(getPlayerName(player)), string.upper(string))) then
-            return player
+    for id, plr in ipairs(getElementsByType("player")) do
+        if (string.find(string.upper(getPlayerName(plr)), string.upper(string))) then
+            return plr
         end
     end
     return false
@@ -56,20 +56,20 @@ function aCommand(admin, command, ...)
     local call = _commands[command]
     if (call) then
         if (hasObjectPermissionTo(admin, "command." .. call.action)) then
-            arg = aCommandToArgs({...}, call.args)
+            arg2 = aCommandToArgs({...}, call.args)
             if (call.type == "player") then
-                triggerEvent("aPlayer", admin, arg[1], call.action, arg[2], arg[3])
+                triggerEvent("aPlayer", admin, arg2[1], call.action, arg2[2], arg2[3])
             elseif (call.type == "vehicle") then
-                triggerEvent("aVehicle", admin, arg[1], call.action, arg[2], arg[3])
+                triggerEvent("aVehicle", admin, arg2[1], call.action, arg2[2], arg2[3])
             else
                 triggerEvent(
                     "a" .. string.upper(string.sub(call.type, 1, 1)) .. string.sub(call.type, 2),
                     admin,
                     call.action,
-                    arg[1],
-                    arg[2],
-                    arg[3],
-                    arg[4]
+                    arg2[1],
+                    arg2[2],
+                    arg2[3],
+                    arg2[4]
                 )
             end
         else

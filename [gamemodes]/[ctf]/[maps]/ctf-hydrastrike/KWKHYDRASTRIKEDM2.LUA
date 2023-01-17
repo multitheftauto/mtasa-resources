@@ -1,4 +1,4 @@
-﻿function onResourceStart( resourcename )
+﻿function onResourceStart( )
 	KWKHYDRASTRIKEDM_vehicles = getElementsByType("vehicle")
 	for k,v in ipairs(KWKHYDRASTRIKEDM_vehicles) do
 		setVehicleFuelTankExplodable ( v, true )
@@ -49,5 +49,5 @@ function idleRespawn( num )
 	--outputConsole( getTickCount() - one )
 end
 
-addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()), onResourceStart )
-addEventHandler ( "onVehicleExplode", getRootElement(), onVehicleExplode )
+addEventHandler ( "onResourceStart", resourceRoot, onResourceStart )
+addEventHandler ( "onVehicleExplode", root, onVehicleExplode )

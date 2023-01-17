@@ -35,17 +35,17 @@ function aMessages.Open()
         aRegister("Messages", aMessages.Form, aMessages.Open, aMessages.Close)
     end
 
-    addEventHandler("aMessage", getRootElement(), aMessages.onSync)
+    addEventHandler("aMessage", root, aMessages.onSync)
     addEventHandler("onClientGUIClick", aMessages.Form, aMessages.onClick)
 
     guiSetVisible(aMessages.Form, true)
     guiBringToFront(aMessages.Form)
-    triggerServerEvent("aMessage", getLocalPlayer(), "get")
+    triggerServerEvent("aMessage", localPlayer, "get")
 end
 
 function aMessages.Close(destroy)
     if (aMessages.Form) then
-        removeEventHandler("aMessage", getRootElement(), aMessages.onSync)
+        removeEventHandler("aMessage", root, aMessages.onSync)
         removeEventHandler("onClientGUIClick", aMessages.Form, aMessages.onClick)
         if (destroy) then
             destroyElement(aMessages.Form)
@@ -77,12 +77,12 @@ function aMessages.onSync(action, data)
             guiGridListSetItemText(list, row, 1, tostring(user), true, false)
 
             for i, message in ipairs(messages) do
-                local row = guiGridListAddRow(list)
-                guiGridListSetItemText(list, row, 1, message.subject, false, false)
-                guiGridListSetItemText(list, row, 2, message.time, false, false)
+                local row2 = guiGridListAddRow(list)
+                guiGridListSetItemText(list, row2, 1, message.subject, false, false)
+                guiGridListSetItemText(list, row2, 2, message.time, false, false)
                 if (not message.read) then
-                    guiGridListSetItemColor(list, row, 1, 255, 50, 50)
-                    guiGridListSetItemColor(list, row, 2, 255, 50, 50)
+                    guiGridListSetItemColor(list, row2, 1, 255, 50, 50)
+                    guiGridListSetItemColor(list, row2, 2, 255, 50, 50)
                 end
 
                 id = id + 1
@@ -96,7 +96,7 @@ function aMessages.onClick(button)
         if (source == aMessages.Exit) then
             aMessages.Close()
         elseif (source == aMessages.Refresh) then
-            triggerServerEvent("aMessage", getLocalPlayer(), "get")
+            triggerServerEvent("aMessage", localPlayer, "get")
         elseif (source == aMessages.Read) then
             local row = guiGridListGetSelectedItem(aMessages.List)
             if (row == -1) then
@@ -111,7 +111,7 @@ function aMessages.onClick(button)
                 messageBox("No message selected!", MB_WARNING, MB_OK)
             else
                 local id = guiGridListGetItemText(aMessages.List, row, 1)
-                triggerServerEvent("aMessage", getLocalPlayer(), "delete", tonumber(id))
+                triggerServerEvent("aMessage", localPlayer, "delete", tonumber(id))
             end
         end
     end

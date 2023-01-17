@@ -18,7 +18,7 @@ function hasPermissionTo ( object )
 end
 
 addEvent ( "aPermissions", true )
-addEventHandler ( "aPermissions", getLocalPlayer(), function ( table )
+addEventHandler ( "aPermissions", localPlayer, function ( table )
 	for id, right in ipairs ( table ) do
 		_aclrights[right] = true
 		if ( aAdminForm ) then
@@ -31,6 +31,6 @@ end )
 
 addEventHandler ( "onAdminInitialize", resourceRoot, function()
 	if ( #_guiprotected == 0 ) then
-		triggerServerEvent ( "aPermissions", getLocalPlayer() )
+		triggerServerEvent ( "aPermissions", localPlayer )
 	end
 end )

@@ -31,7 +31,7 @@ function aColor.Open(x, y, r, g, b, relative, parent)
             if (parent) then
                 local px, py = guiGetSize(parent, false)
                 x = px * x
-                x = py * y
+                y = py * y
             else
                 x = sx * x
                 y = sy * y
@@ -80,7 +80,7 @@ function aColor.Open(x, y, r, g, b, relative, parent)
     aColor.Picking = false
     guiSetVisible(aColor.Form, true)
 
-    addEventHandler("onClientRender", getRootElement(), aColor.onRender)
+    addEventHandler("onClientRender", root, aColor.onRender)
     addEventHandler("onClientGUIChanged", aColor.Form, aColor.onChanged)
     addEventHandler("onClientGUIBlur", aColor.Form, aColor.onBlur)
     setTimer(
@@ -88,7 +88,7 @@ function aColor.Open(x, y, r, g, b, relative, parent)
             -- some hack for window not to get insta closed if opened in click handler
             if (aColor.Form and guiGetVisible(aColor.Form)) then
                 guiBringToFront(aColor.Form)
-                addEventHandler("onClientClick", getRootElement(), aColor.onClick)
+                addEventHandler("onClientClick", root, aColor.onClick)
             end
         end,
         50,
@@ -106,8 +106,8 @@ function aColor.Close(destroy)
     if (aColor.Form) then
         removeEventHandler("onClientGUIBlur", aColor.Form, aColor.onBlur)
         removeEventHandler("onClientGUIChanged", aColor.Form, aColor.onChanged)
-        removeEventHandler("onClientClick", getRootElement(), aColor.onClick)
-        removeEventHandler("onClientRender", getRootElement(), aColor.onRender)
+        removeEventHandler("onClientClick", root, aColor.onClick)
+        removeEventHandler("onClientRender", root, aColor.onRender)
         if (destroy) then
             destroyElement(aColor.Form)
             aColor.Form = nil

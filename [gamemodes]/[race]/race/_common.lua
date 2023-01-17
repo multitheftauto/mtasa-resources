@@ -69,7 +69,7 @@ end
 -- Misc functions
 ---------------------------------------------------------------------------
 function getSecondCount()
- 	return getTickCount() * 0.001
+	return getTickCount() * 0.001
 end
 
 -- remove color coding from string
@@ -91,8 +91,8 @@ end
 function getCameraRot()
 	local px, py, pz, lx, ly, lz = getCameraMatrix()
 	local rotz = math.atan2 ( ( lx - px ), ( ly - py ) )
- 	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
- 	return math.deg(rotx), 180, -math.deg(rotz)
+	local rotx = math.atan2 ( lz - pz, getDistanceBetweenPoints2D ( lx, ly, px, py ) )
+	return math.deg(rotx), 180, -math.deg(rotz)
 end
 ---------------------------------------------------------------------------
 
@@ -329,8 +329,8 @@ end
 -- Vector3D
 ---------------------------------------------------------------------------
 Vector3D = {
-	new = function(self, _x, _y, _z)
-		local newVector = { x = _x or 0.0, y = _y or 0.0, z = _z or 0.0 }
+	new = function(self, x2, y2, z2)
+		local newVector = { x = x2 or 0.0, y = y2 or 0.0, z = z2 or 0.0 }
 		return setmetatable(newVector, { __index = Vector3D })
 	end,
 

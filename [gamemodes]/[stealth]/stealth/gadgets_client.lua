@@ -1,5 +1,5 @@
 function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
-	player = getLocalPlayer ()
+	player = localPlayer
 	local x, y = guiGetScreenSize()
 	x = x * 0.052
 	y = y * 0.695
@@ -7,7 +7,7 @@ function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 		destroyElement (gadgeticon)
 		gadgeticon = nil
 	end
-	setElementData ( getLocalPlayer(), "armor", false )
+	setElementData ( localPlayer, "armor", false )
 	if spygadgetSelection == "prox mine" then
 		chosengadget = "mines"
 		gadgetuses = 6
@@ -47,7 +47,7 @@ function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 		chosengadget = "armor"
 		gadgetuses = nil
 		gadgeticon = guiCreateStaticImage (x, y, 40, 40, "armor.png", false)
-		setElementData ( getLocalPlayer(), "armor", true )
+		setElementData ( localPlayer, "armor", true )
 		gadgetlabel = guiCreateLabel ( 0.05, .62, 40, 20, "", true, gadgeticon )
 		guiLabelSetColor ( gadgetlabel, 1, 1, 1 )
 	end
@@ -82,7 +82,7 @@ function choosethegadget () --GETS THE GADGET TYPE ON SPAWN
 	lookingthroughcamera = 0
 end
 
-addEventHandler ( "onClientPlayerSpawn", getLocalPlayer(), choosethegadget )
+addEventHandler ( "onClientPlayerSpawn", localPlayer, choosethegadget )
 
 function playerkilled ()
 	if (gadgeticon) then
@@ -91,9 +91,9 @@ function playerkilled ()
 	end
 end
 
-addEventHandler ( "onClientPlayerWasted", getLocalPlayer(), playerkilled )
+addEventHandler ( "onClientPlayerWasted", localPlayer, playerkilled )
 
-addEventHandler ( "onClientPlayerDamage", getRootElement(),
+addEventHandler ( "onClientPlayerDamage", root,
 	function(attacker,weapon,bodypart)
 		-- local slot = getSlotFromWeapon(weapon)
 		if getElementData ( source, "armor" ) then
@@ -108,15 +108,15 @@ addEventHandler ( "onClientPlayerDamage", getRootElement(),
 
 
 function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHICH FUNCTION TO TRIGGER
-	local inacar = isPedInVehicle ( getLocalPlayer () )
+	local inacar = isPedInVehicle ( localPlayer )
 	if inacar == false then
-		local isDead = isPedDead(getLocalPlayer ())
+		local isDead = isPedDead(localPlayer)
 		if (isDead == false) then
 			if chosengadget == "mines" then
 				if gadgetuses >0 then
-					player = getLocalPlayer ()
+					player = localPlayer
 					if ( isPedDucked ( player) ) then
-						triggerServerEvent ("poopoutthemine", getLocalPlayer (), player )
+						triggerServerEvent ("poopoutthemine", localPlayer, player )
 						gadgetuses = gadgetuses-1
 						guiSetText ( gadgetlabel, gadgetuses )
 						playSoundFrontEnd(42)
@@ -132,10 +132,10 @@ function activategadget () --TRIGGERS WHEN GADGET BUTTON IS PRESSED, DECIDES WHI
 				camerastart()
 			elseif chosengadget == "cloak" then
 				if gadgetuses >0 then
-					local iscloaked = getElementData ( getLocalPlayer (), "stealthmode" )
+					local iscloaked = getElementData ( localPlayer, "stealthmode" )
 					if (iscloaked ~= "on") then
-						local thisplayer = getLocalPlayer ()
-						triggerServerEvent ("cloaktheplayer", getLocalPlayer (), thisplayer )
+						local thisplayer = localPlayer
+						triggerServerEvent ("cloaktheplayer", localPlayer, thisplayer )
 						cloakoff = setTimer ( makecloakstop, 20000, 1, thisplayer )
 						gadgetuses = gadgetuses-1
 						guiSetText ( gadgetlabel, gadgetuses )
@@ -157,9 +157,8 @@ end
 
 --CLOAK
 
-function makecloakstop (thisplayer)
-	local thisplayer = getLocalPlayer ()
-	triggerServerEvent ("uncloaktheplayer", getLocalPlayer (), thisplayer )
+function makecloakstop ()
+	triggerServerEvent ("uncloaktheplayer", localPlayer, localPlayer )
 end
 
 
@@ -173,7 +172,7 @@ function cloakaperson (thisplayer)
 	end
 end
 
-addEventHandler("cloaksomeoneelse", getRootElement(), cloakaperson)
+addEventHandler("cloaksomeoneelse", root, cloakaperson)
 
 function setalpha(thisplayer)
 	setElementAlpha ( thisplayer, 10 )
@@ -189,19 +188,19 @@ function uncloakaperson (thisplayer)
 	setElementAlpha ( thisplayer, 255 ) --- NECCESARY???
 end
 
-addEventHandler("uncloaksomeoneelse", getRootElement(), uncloakaperson)
+addEventHandler("uncloaksomeoneelse", root, uncloakaperson)
 
 
 --LANDMINES
 
 --TRIGGERS THE SERVER EVENT TO DESTROY A LAND MINE ONCE IT'S SHOT
 function weaponfired (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
-	if source == getLocalPlayer () then
+	if source == localPlayer then
 		if (hitElement) then
 			if ( getElementData ( hitElement, "type" ) == "proximity" ) then
 				if minedelay ~= 1 then
 					minedelay = 1
-					triggerServerEvent ("destroylandmine", getLocalPlayer (), hitElement )
+					triggerServerEvent ("destroylandmine", localPlayer, hitElement )
 					endminedelay = setTimer ( minedelaystop, 400, 1, player )
 				end
 			end
@@ -209,7 +208,7 @@ function weaponfired (weapon, ammo, ammoInClip, hitX, hitY, hitZ, hitElement )
 	end
 end
 
-addEventHandler ( "onClientPlayerWeaponFire", getRootElement(), weaponfired )
+addEventHandler ( "onClientPlayerWeaponFire", root, weaponfired )
 
 function minedelaystop()
 	minedelay = 0
@@ -219,7 +218,7 @@ end
 --GOGGLES
 
 --DETECTS IF ITS THE GOGGLES IN THE PERSONS HANDS
-function triggerpulled(weapon)
+function triggerpulled()
 	if lookingthroughcamera == 1 then
 		if gadgetuses >0 then
 			ejectSmokeGrenade(0)
@@ -229,7 +228,7 @@ function triggerpulled(weapon)
 			outputChatBox ( "You are out of Camera Smokes.", 255, 69, 0)
 		end
 	else
-		local weapon = getPedWeapon (getLocalPlayer ())
+		local weapon = getPedWeapon (localPlayer)
 		if weapon == 44 then
 			gogglecheckdelay = setTimer ( goggletaskcheck, 200, 1 )
 		end
@@ -241,10 +240,10 @@ end
 
 --CHECKS IF THE PERSON IS PUTTING ON OR TAKING OFF GOGGLES
 function goggletaskcheck ()
-	if ( isPedDoingTask ( getLocalPlayer (), "TASK_SIMPLE_GOGGLES_ON" ) ) then
+	if ( isPedDoingTask ( localPlayer, "TASK_SIMPLE_GOGGLES_ON" ) ) then
 		if goggleson == 0 then
 			goggleson = 1
-			local gogglestype = getPedWeapon (getLocalPlayer ())
+			local gogglestype = getPedWeapon (localPlayer)
 			if gogglestype == 44 then
 				showNightvisionGUI()
 			end
@@ -260,7 +259,7 @@ function goggletaskcheck ()
 			end
 		end
 	end
-	if ( isPedDoingTask ( getLocalPlayer (), "TASK_SIMPLE_GOGGLES_OFF" ) ) then
+	if ( isPedDoingTask ( localPlayer, "TASK_SIMPLE_GOGGLES_OFF" ) ) then
 		if goggleson == 1 then
 			goggleson = 0
 			hideGogglesGUI()
@@ -277,11 +276,11 @@ function goggletaskcheck ()
 end
 
 function goggletoggle()
-	local isDead = isPedDead(getLocalPlayer ())
+	local isDead = isPedDead(localPlayer)
 	if (isDead == false) then
 		if goggleson == 0 then
-			player = getLocalPlayer ()
-			triggerServerEvent ("goggleswap", getLocalPlayer (), player )
+			player = localPlayer
+			triggerServerEvent ("goggleswap", localPlayer, player )
 		else
 			outputChatBox ( "Take off the goggles to toggle their mode.", 255, 69, 0)
 		end
@@ -296,7 +295,7 @@ function clientsetup (resource)
 	bindKey ("fire", "down", triggerpulled )
 	bindKey ("r", "down", "Use Gadget/Spectate Next", "" )
 	bindKey ("r", "up", "Use Gadget/Spectate Next", "0" )
-	setElementData ( getLocalPlayer (), "stealthmode", "off" )
+	setElementData ( localPlayer, "stealthmode", "off" )
 	goggleson = 0
 	burstinprogress = 0
 	cameraplaced = 0
@@ -314,7 +313,7 @@ addCommandHandler ( "Use Gadget/Spectate Next",
 	end
 )
 
-addEventHandler ( "onClientResourceStart",getRootElement() , clientsetup)
+addEventHandler ( "onClientResourceStart",root , clientsetup)
 
 addEvent("Clientshieldload",true)
 function shieldload ()
@@ -326,7 +325,7 @@ function shieldload ()
 	engineReplaceModel(dff_shield,1631)
 end
 
-addEventHandler( "Clientshieldload", getRootElement(), shieldload )
+addEventHandler( "Clientshieldload", root, shieldload )
 
 --RADAR BURST
 
@@ -358,7 +357,7 @@ function radarblipburst()
 			end
 		end
 	else
-		outputChatBox ( "You are out of Bursts.", getLocalPlayer (), 255, 69, 0)
+		outputChatBox ( "You are out of Bursts.", localPlayer, 255, 69, 0)
 	end
 end
 
@@ -370,17 +369,16 @@ end
 --SPYCAMERA
 
 function camerastart()
-	player = getLocalPlayer()
 	if cameraplaced == 0 then
-		triggerServerEvent ("placethecam", getLocalPlayer (), player )
+		triggerServerEvent ("placethecam", localPlayer, localPlayer )
 	else
 		if lookingthroughcamera == 0 then
-			if isElementWithinColShape (player, cameracol) then
+			if isElementWithinColShape (localPlayer, cameracol) then
 				removeSpyCam()
 				playSoundFrontEnd(37)
 				cameraplaced = 0
 				camera = nil
-				triggerServerEvent ("killcameraobject", getLocalPlayer (), player )
+				triggerServerEvent ("killcameraobject", localPlayer, localPlayer )
 			else
 				lookingthroughcamera = 1
 				toggleControl ("fire", false )
@@ -422,14 +420,14 @@ addEvent("findcamerapos", true)
 function findthespot (rot)
 	radRot = math.rad ( rot )
 	local radius = 1
-	local px,py,pz = getElementPosition( getLocalPlayer () )
+	local px,py,pz = getElementPosition( localPlayer )
 	local tx = px + radius * math.sin(radRot)
 	local ty = py + -(radius) * math.cos(radRot)
 	local tz = pz
 	local touching, x, y, z, object = processLineOfSight ( px, py, pz, tx, ty, tz, true, false, false, true, false, true, false, false )
 	if (touching) then
 		cameraplaced = 1
-		player = getLocalPlayer ()
+		player = localPlayer
 		if ( isPedDucked ( player) ) then
 			z = z-0.7
 		end
@@ -445,7 +443,7 @@ function findthespot (rot)
 	end
 end
 
-addEventHandler("findcamerapos", getRootElement() , findthespot)
+addEventHandler("findcamerapos", root , findthespot)
 
 --SHIELD
 
@@ -455,7 +453,7 @@ function shieldup ()
 	toggleControl ("forwards", false )
 	toggleControl ("backwards", false )
 	toggleControl ("enter_exit", false )
-	if (isPedDucked ( getLocalPlayer() ) == false ) then
+	if (isPedDucked ( localPlayer ) == false ) then
 		toggleControl ("fire", false )
 		toggleControl ("aim_weapon", false )
 		toggleControl ("jump", false )
@@ -470,32 +468,30 @@ end
 
 
 function shieldingyet ()
-	if isElementInWater(getLocalPlayer()) == false then
+	if isElementInWater(localPlayer) == false then
 		if sheildon ~= 1 then
-			currenttask = getPedSimplestTask ( getLocalPlayer() )
-			if notblockingTasks[currenttask] then
-	--			NO SHIELD APPEARS
-			else
+			currenttask = getPedSimplestTask ( localPlayer )
+			if not notblockingTasks[currenttask] then
 				killTimer ( blockcheck )
 				blockcheck = nil
 				shieldon = 1
 				stopblockcheck = setTimer ( inturuptshield, 300, 0, player )
-				local player = getLocalPlayer ()
-				triggerServerEvent ("shieldup", getLocalPlayer (), player )
-				currentweapon = getPedWeapon (getLocalPlayer ())
+				local player = localPlayer
+				triggerServerEvent ("shieldup", localPlayer, player )
+				currentweapon = getPedWeapon (localPlayer)
 			end
 		end
 	end
 end
 
 function inturuptshield ()
-	newcurrenttask = getPedSimplestTask ( getLocalPlayer() )
+	newcurrenttask = getPedSimplestTask ( localPlayer )
 	if notblockingTasks[newcurrenttask] then
 		killTimer ( stopblockcheck )
 		stopblockcheck = nil
 		deactivategadget()
 	end
-	if isElementInWater(getLocalPlayer()) then
+	if isElementInWater(localPlayer) then
 		if (stopblockcheck) then
 			killTimer ( stopblockcheck )
 			stopblockcheck = nil
@@ -527,8 +523,8 @@ function deactivategadget ()
 		setPedControlState ( "aim_weapon", false )
 		setPedControlState ( "jump", false )
 		if shieldon == 1 then
-			local player = getLocalPlayer ()
-			triggerServerEvent ("shielddown", getLocalPlayer (), player, currentweapon )
+			local player = localPlayer
+			triggerServerEvent ("shielddown", localPlayer, player, currentweapon )
 			shieldon = 0
 		end
 	end
@@ -537,14 +533,14 @@ end
 
 ---NIGHTVISION CODE
 function showNightvisionGUI()
-	addEventHandler ( "onClientRender", getRootElement(), updateNightvisionGUI )
-	mineRefreshTimer = setTimer ( refreshNightvisionGoggles, 1000, 0, getLocalPlayer ())
+	addEventHandler ( "onClientRender", root, updateNightvisionGUI )
+	mineRefreshTimer = setTimer ( refreshNightvisionGoggles, 1000, 0, localPlayer)
 end
 --addCommandHandler ( "shownightvision", showNightvisionGUI )
 
 function hideGogglesGUI()
-	removeEventHandler ( "onClientRender", getRootElement(), updateNightvisionGUI )
-	removeEventHandler ( "onClientRender", getRootElement(), updateInfraredGUI )
+	removeEventHandler ( "onClientRender", root, updateNightvisionGUI )
+	removeEventHandler ( "onClientRender", root, updateInfraredGUI )
 	killTimer ( mineRefreshTimer )
 	clearAllGogglesGUI()
 end
@@ -605,7 +601,7 @@ function updateNightvisionGUI ()
 			-- outputDebugString ( "Element type: "..getElementType (item) )
 			local itemx, itemy, itemz = getElementPosition( item )
 			if ( getElementData(item,"type") == "alandmine" ) then itemz = itemz - 1 end
-			local playerx,playery,playerz = getElementPosition ( getLocalPlayer() )
+			local playerx,playery,playerz = getElementPosition ( localPlayer )
 			local screenX, screenY = getScreenFromWorldPosition ( itemx, itemy, itemz )
 			if (screenX) then
 				if getDistanceBetweenPoints3D ( playerx, playery, playerz, itemx, itemy, itemz ) < drawDistance then
@@ -623,8 +619,8 @@ end
 
 ---INFRARED CODE
 function showInfraredGUI()
-	addEventHandler ( "onClientRender", getRootElement(), updateInfraredGUI )
-	mineRefreshTimer = setTimer ( refreshInfraredGoggles, 1000, 0, getLocalPlayer ())
+	addEventHandler ( "onClientRender", root, updateInfraredGUI )
+	mineRefreshTimer = setTimer ( refreshInfraredGoggles, 1000, 0, localPlayer)
 end
 --addCommandHandler ( "showinfrared", showInfraredGUI )
 
@@ -644,9 +640,9 @@ end
 function refreshInfraredGoggles ()
 	local itemlist = getElementsByType ( "player" )
 	for index, item in ipairs(itemlist) do
-		if item ~= getLocalPlayer() then
+		if item ~= localPlayer then
 			if not infraredGUI[item] then
-				if getPlayerTeam(item) ~= getPlayerTeam(getLocalPlayer()) then
+				if getPlayerTeam(item) ~= getPlayerTeam(localPlayer) then
 					addInfraredGUI(item, "ENEMY")
 				else
 					addInfraredGUI(item, "TEAM")
@@ -666,7 +662,7 @@ function updateInfraredGUI ()
 		if isElement ( item ) then
 			-- outputDebugString ( "Element type: "..getElementType (item) )
 			local itemx, itemy, itemz = getElementPosition( item )
-			local playerx,playery,playerz = getElementPosition ( getLocalPlayer() )
+			local playerx,playery,playerz = getElementPosition ( localPlayer )
 			local screenX, screenY = getScreenFromWorldPosition ( itemx, itemy, itemz )
 			if (screenX) then
 				if getDistanceBetweenPoints3D ( playerx, playery, playerz, itemx, itemy, itemz ) < drawDistance then

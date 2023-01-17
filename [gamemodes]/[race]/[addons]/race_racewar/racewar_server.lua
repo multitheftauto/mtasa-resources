@@ -26,7 +26,7 @@ local bRoundJustEnded		= false
 --
 ---------------------------------------------------------------------------
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		Racewar.startup()
 		for _,player in ipairs(getElementsByType('player')) do
@@ -35,7 +35,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 	end
 )
 
-addEventHandler('onResourceStop', g_Root,
+addEventHandler('onResourceStop', root,
 	function(resource)
 		if 'map' == getResourceInfo(resource,'type') then
 			Racewar.setBigMessage('')
@@ -44,39 +44,39 @@ addEventHandler('onResourceStop', g_Root,
 )
 
 addEvent('onMapStarting')
-addEventHandler('onMapStarting', g_Root,
+addEventHandler('onMapStarting', root,
 	function(mapInfo)
 		Racewar.setModeAndMap( mapInfo.modename, mapInfo.name )
 	end
 )
 
 addEvent('onPlayerFinish')
-addEventHandler('onPlayerFinish', g_Root,
+addEventHandler('onPlayerFinish', root,
 	function(rank, time)
 		Racewar.playerFinished( source, rank )
 	end
 )
 
-addEventHandler('onResourceStop', g_ResRoot,
+addEventHandler('onResourceStop', resourceRoot,
 	function()
 		Racewar.shutdown()
 	end
 )
 
-addEventHandler('onPlayerJoined', g_Root,
+addEventHandler('onPlayerJoined', root,
 	function()
 		Racewar.handlePlayerJoin(source)
 	end
 )
 
-addEventHandler('onPlayerQuit', g_Root,
+addEventHandler('onPlayerQuit', root,
 	function()
 		Racewar.handlePlayerQuit(source)
 	end
 )
 
 addEvent('onPostFinish', true)
-addEventHandler('onPostFinish', g_Root,
+addEventHandler('onPostFinish', root,
 	function()
 		Racewar.roundEnd()
 	end
@@ -613,7 +613,7 @@ end
 -- event teamNameVoteResult -- Called from the votemanager when the poll has completed
 ----------------------------------------------------------------------------
 addEvent('teamNameVoteResult')
-addEventHandler('teamNameVoteResult', getRootElement(),
+addEventHandler('teamNameVoteResult', root,
 	function( votedYes, team, newName )
 		if votedYes and team and newName then
 			Racewar.output( "Team '"..getTeamName(team).."' is now called '"..newName.."'" )
@@ -655,9 +655,9 @@ function Racewar.startNewWarVote(player)
 			timeout=10,
 			allowchange=true,
 			adjustwidth=50,
-			visibleTo=getRootElement(),
-			[1]={'Yes', 'newWarVoteResult', getRootElement(), true},
-			[2]={'No', 'newWarVoteResult', getRootElement(), false;default=true},
+			visibleTo=root,
+			[1]={'Yes', 'newWarVoteResult', root, true},
+			[2]={'No', 'newWarVoteResult', root, false;default=true},
 	}
 
 end
@@ -666,13 +666,13 @@ end
 -- event teamNameVoteResult -- Called from the votemanager when the poll has completed
 ----------------------------------------------------------------------------
 addEvent('newWarVoteResult')
-addEventHandler('newWarVoteResult', getRootElement(),
+addEventHandler('newWarVoteResult', root,
 	function( votedYes )
 		if votedYes then
 			Racewar.initializeNewWar()
 			Racewar.output( 'Starting new ' .. roundsTotal .. ' round war' )
 		else
-			Racewar.outputChat( 'New war vote result was [No].', g_Root )
+			Racewar.outputChat( 'New war vote result was [No].', root )
 		end
 	end
 )
@@ -736,12 +736,12 @@ end
 -- Racewar.output()
 ---------------------------------------------------------------------------
 function Racewar.output(text)
-	--outputChatBox ( "#C0C0C0Racewar: #FFFF00" .. text, getRootElement(), 255, 255, 255, true )
+	--outputChatBox ( "#C0C0C0Racewar: #FFFF00" .. text, root, 255, 255, 255, true )
 	Racewar.ouputNews(text)
 end
 
 function Racewar.outputChat(text,visibleTo)
-	outputChatBox ( "#C0C0C0Racewar: #FFFF00" .. text, visibleTo or getRootElement(), 255, 255, 255, true )
+	outputChatBox ( "#C0C0C0Racewar: #FFFF00" .. text, visibleTo or root, 255, 255, 255, true )
 end
 
 function isPlayerFinished(player)
@@ -764,7 +764,7 @@ function cacheSettings()
 end
 
 -- Initial cache
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		cacheSettings()
 	end
@@ -772,7 +772,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 
 -- React to admin panel changes
 addEvent ( "onSettingChange" )
-addEventHandler('onSettingChange', g_ResRoot,
+addEventHandler('onSettingChange', resourceRoot,
 	function(name, oldvalue, value, playeradmin)
 		cacheSettings()
 		Racewar.updateStatusDisplay()

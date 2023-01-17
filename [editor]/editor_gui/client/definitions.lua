@@ -58,7 +58,7 @@ function confirmDefinitions ()
 	--
 	dumpEDF("addedEDF")
 	--setEDF("addedEDF")
-	triggerServerEvent ( "reloadEDFDefinitions", getLocalPlayer(), allEDF )
+	triggerServerEvent ( "reloadEDFDefinitions", localPlayer, allEDF )
 	setGUIShowing(true)
 	guiSetInputEnabled ( false )
 	setWorldClickEnabled ( true )
@@ -89,7 +89,7 @@ function setEDF(gui)
 end
 
 addEvent ("syncEDFDefinitions",true)
-addEventHandler ( "syncEDFDefinitions", getRootElement(),
+addEventHandler ( "syncEDFDefinitions", root,
 function ( newEDF )
 	allEDF = newEDF
 	setEDF("availEDF")

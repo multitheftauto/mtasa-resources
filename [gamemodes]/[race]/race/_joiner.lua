@@ -7,12 +7,9 @@
 --      getDeadPlayers
 --      getPlayerCount
 --      getRandomPlayer
--- 3. In any call that uses getRootElement() or g_Root to specify all players, use
+-- 3. In any call that uses root to specify all players, use
 --          g_RootPlayers instead. Or use the function onlyJoined(element) to handle the choice.
 --
-
-g_Root = getRootElement()
-g_ResRoot = getResourceRootElement(getThisResource())
 
 addEvent('onPlayerJoining')		-- Pre join
 addEvent('onPlayerJoined')		-- Post join
@@ -29,7 +26,7 @@ g_EventHandlers = {
 -- Divert 'onEventName' to '_onEventName'
 for eventName,_ in pairs(g_EventHandlers) do
 	addEvent('_'..eventName)
-	addEventHandler(eventName, g_Root, function(...) triggerEvent( '_'..eventName, source, ... ) end)
+	addEventHandler(eventName, root, function(...) triggerEvent( '_'..eventName, source, ... ) end)
 end
 
 -- Catch addEventHandler calls here and save the ones listed in g_EventHandlers
@@ -62,7 +59,7 @@ end
 -- call the saved handlers for 'onEventName'
 function callSavedEventHandlers(eventName, eventSource, ...)
 	for _,handler in ipairs(g_EventHandlers[eventName]) do
-		local triggeredElem = eventSource or g_Root
+		local triggeredElem = eventSource or root
 		if isElement(triggeredElem) then
 			while true do
 				if triggeredElem == handler.elem then
@@ -70,7 +67,7 @@ function callSavedEventHandlers(eventName, eventSource, ...)
 					handler.fn(...)
 					break
 				end
-				if not handler.getpropagated or triggeredElem == g_Root then
+				if not handler.getpropagated or triggeredElem == root then
 					break
 				end
 				triggeredElem = getElementParent(triggeredElem)
@@ -90,7 +87,7 @@ end
 -- getElementsByType patch
 _getElementsByType = getElementsByType
 function getElementsByType( type, startat )
-    startat = startat or getRootElement()
+    startat = startat or root
     if type ~= 'player' then
         return _getElementsByType( type, startat )
     else
@@ -129,11 +126,11 @@ end
 --
 ----------------------------------------------------------------------------
 
--- If g_Root, change to g_RootPlayers
+-- If root, change to g_RootPlayers
 function onlyJoined(player)
-    if player == g_Root then
+    if player == root then
         if not g_RootPlayers then
-            return getResourceRootElement(getThisResource())    -- return an element which will have no players
+            return resourceRoot    -- return an element which will have no players
         end
         return g_RootPlayers
     end
@@ -153,7 +150,7 @@ end
 
 -- onResourceStart
 --      Setup joining/joined containers and put all current players into g_RootJoining
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
         -- Create a joining player node and a joined player node
         table.each(getElementsByType('plrcontainer'), destroyElement)
@@ -169,7 +166,7 @@ addEventHandler('onResourceStart', g_ResRoot,
 
 -- onResourceStop
 --      Clean up
-addEventHandler('onResourceStop', g_ResRoot,
+addEventHandler('onResourceStop', resourceRoot,
 	function()
         table.each(getElementsByType('plrcontainer'), destroyElement)
 		g_RootJoining = nil
@@ -179,7 +176,7 @@ addEventHandler('onResourceStop', g_ResRoot,
 
 -- Real onPlayerJoin event was fired
 --      Move player element to g_RootJoining
-addEventHandler('_onPlayerJoin', g_Root,
+addEventHandler('_onPlayerJoin', root,
     function ()
         setElementParent( source, g_RootJoining )
         triggerEvent( 'onPlayerJoining', source );
@@ -188,7 +185,7 @@ addEventHandler('_onPlayerJoin', g_Root,
 
 -- onPlayerQuit
 --      Clean up
-addEventHandler('onPlayerQuit', g_Root,
+addEventHandler('onPlayerQuit', root,
 	function()
 	end
 )

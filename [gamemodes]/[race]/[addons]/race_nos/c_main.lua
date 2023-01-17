@@ -1,8 +1,3 @@
-
-g_Me = getLocalPlayer( );
-g_Root = getRootElement( );
-g_ResRoot = getResourceRootElement( );
-
 g_tScreenSize = { guiGetScreenSize( ) };
 
 local nos = 0;
@@ -13,7 +8,7 @@ g_bShowGauge = false;
 
 g_tGaugePosition = { g_tScreenSize[1] * 0.02, g_tScreenSize[2] * 0.6 };
 
-addEventHandler( "onClientResourceStart", g_ResRoot,
+addEventHandler( "onClientResourceStart", resourceRoot,
 	function( )
 		label = guiCreateLabel( 0, 0, 200, 40, "Click anywhere on the screen to\nchange gauge position", false );
 		guiSetFont( label, "default-bold-small" );
@@ -28,10 +23,10 @@ addEventHandler( "onClientResourceStart", g_ResRoot,
 )
 
 
-addEventHandler( "onClientElementDataChange", g_Root,
+addEventHandler( "onClientElementDataChange", root,
 	function( key )
 		if getElementType( source ) == "vehicle" and key == "NOS" then
-			local veh = getPedOccupiedVehicle( g_Me );
+			local veh = getPedOccupiedVehicle( localPlayer );
 			if veh == source then
 				nos = getElementData( source, key );
 			end
@@ -41,7 +36,7 @@ addEventHandler( "onClientElementDataChange", g_Root,
 
 
 function toggleNOS( key, state )
-	local veh = getPedOccupiedVehicle( g_Me );
+	local veh = getPedOccupiedVehicle( localPlayer );
 	if veh and not isEditingPosition then
 		if state == "up" then
 			removeVehicleUpgrade( veh, 1010 );
@@ -62,7 +57,7 @@ end
 
 
 addEvent( "onClientScreenFadedIn", true )
-addEventHandler( "onClientScreenFadedIn", g_Root,
+addEventHandler( "onClientScreenFadedIn", root,
 	function ( )
 		g_bShowGauge = true;
 		nos = 0;
@@ -70,7 +65,7 @@ addEventHandler( "onClientScreenFadedIn", g_Root,
 )
 
 addEvent( "onClientScreenFadedOut", true )
-addEventHandler( "onClientScreenFadedOut", g_Root,
+addEventHandler( "onClientScreenFadedOut", root,
 	function ( )
 		g_bShowGauge = false;
 	end
@@ -79,10 +74,10 @@ addEventHandler( "onClientScreenFadedOut", g_Root,
 
 local previous_hourcheck = -1;
 local previous_color = 0;
-addEventHandler( "onClientRender", g_Root,
+addEventHandler( "onClientRender", root,
 	function( )
 		if g_bShowGauge then
-			local veh = getPedOccupiedVehicle( g_Me );
+			local veh = getPedOccupiedVehicle( localPlayer );
 			if veh then
 				local am_i_driver = getVehicleOccupant( veh, 0 );
 				if am_i_driver then
@@ -126,7 +121,7 @@ addEventHandler( "onClientRender", g_Root,
 
 
 addEvent( "refillNOS", true )
-addEventHandler( "refillNOS", g_Root,
+addEventHandler( "refillNOS", root,
 	function( newvalue )
 		nos = newvalue;
 	end

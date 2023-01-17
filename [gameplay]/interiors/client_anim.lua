@@ -94,7 +94,7 @@ function Animation:remove()
 	else
 		table.removevalue(Animation.collection, self)
 		if not Animation.playingAnimationsExist() then
-			removeEventHandler('onClientRender', getRootElement(), updateAnim)
+			removeEventHandler('onClientRender', root, updateAnim)
 			Animation.prevTick = nil
 		end
 	end
@@ -118,7 +118,7 @@ function Animation:play()
 	end
 	if not Animation.playingAnimationsExist() then
 		Animation.prevTick = getTickCount()
-		addEventHandler('onClientRender', getRootElement(), updateAnim)
+		addEventHandler('onClientRender', root, updateAnim)
 	end
 	self.playing = true
 end
@@ -126,7 +126,7 @@ end
 function Animation:pause()
 	self.playing = false
 	if not Animation.playingAnimationsExist() then
-		removeEventHandler('onClientRender', getRootElement(), updateAnim)
+		removeEventHandler('onClientRender', root, updateAnim)
 		Animation.prevTick = nil
 	end
 end

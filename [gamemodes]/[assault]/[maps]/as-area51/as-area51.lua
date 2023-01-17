@@ -29,5 +29,5 @@ function closeSilo()
 		setTimer(moveObject,100,1,roof,1000, posX, posY, posZ, 0, 0, 0 )
 end
 
-addEventHandler("onAssaultObjectiveReached",getRootElement(),openSilo)
-addEventHandler("onAssaultStartRound",getRootElement(),closeSilo)
+addEventHandler("onAssaultObjectiveReached",root,openSilo)
+addEventHandler("onAssaultStartRound",root,closeSilo)

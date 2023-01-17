@@ -11,9 +11,9 @@ addCommandHandler('path',
 			outputConsole('No path found')
 			return
 		end
-		server.spawnPlayer(getLocalPlayer(), path[1].x, path[1].y, path[1].z)
+		server.spawnPlayer(localPlayer, path[1].x, path[1].y, path[1].z)
 		fadeCamera(true)
-		setCameraTarget(getLocalPlayer())
+		setCameraTarget(localPlayer)
 
 		removeLinePoints ( )
 		table.each(getElementsByType('marker'), destroyElement)
@@ -29,15 +29,15 @@ addCommandHandler('path2',
 			outputChatBox("Usage: /path2 x y z (z is optional)", 255, 0, 0)
 			return
 		end
-		local x,y,z = getElementPosition(getLocalPlayer())
+		local x,y,z = getElementPosition(localPlayer)
 		local path = server.calculatePathByCoords(x, y, z, tox, toy, toz)
 		if not path then
 			outputConsole('No path found')
 			return
 		end
-		server.spawnPlayer(getLocalPlayer(), path[1].x, path[1].y, path[1].z)
+		server.spawnPlayer(localPlayer, path[1].x, path[1].y, path[1].z)
 		fadeCamera(true)
-		setCameraTarget(getLocalPlayer())
+		setCameraTarget(localPlayer)
 
 		removeLinePoints ( )
 		table.each(getElementsByType('marker'), destroyElement)
@@ -58,12 +58,12 @@ local function getNodeByID(db, nodeID)
 end
 
 --[[
-addEventHandler('onClientRender', getRootElement(),
+addEventHandler('onClientRender', root,
 	function()
 		local db = vehicleNodes
 
 		local camX, camY, camZ = getCameraMatrix()
-		local x, y, z = getElementPosition(getLocalPlayer())
+		local x, y, z = getElementPosition(localPlayer)
 		local areaID = getAreaID(x, y)
 		local drawn = {}
 		for id,node in pairs(db[areaID]) do

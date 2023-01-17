@@ -30,35 +30,35 @@ function aSetupStorage()
         end
         xmlUnloadFile(node)
     end
-    local node = xmlLoadFile("conf\\stats.xml")
-    if (node) then
+    local node2 = xmlLoadFile("conf\\stats.xml")
+    if (node2) then
         local stats = 0
-        while (xmlFindChild(node, "stat", stats)) do
-            local stat = xmlFindChild(node, "stat", stats)
+        while (xmlFindChild(node2, "stat", stats)) do
+            local stat = xmlFindChild(node2, "stat", stats)
             local id = tonumber(xmlNodeGetAttribute(stat, "id"))
             local name = xmlNodeGetAttribute(stat, "name")
             aStats[id] = name
             stats = stats + 1
         end
-        xmlUnloadFile(node)
+        xmlUnloadFile(node2)
     end
-    local node = xmlLoadFile("conf\\weathers.xml")
-    if (node) then
+    local node3 = xmlLoadFile("conf\\weathers.xml")
+    if (node3) then
         local weathers = 0
-        while (xmlFindChild(node, "weather", weathers) ~= false) do
-            local weather = xmlFindChild(node, "weather", weathers)
+        while (xmlFindChild(node3, "weather", weathers) ~= false) do
+            local weather = xmlFindChild(node3, "weather", weathers)
             local id = tonumber(xmlNodeGetAttribute(weather, "id"))
             local name = xmlNodeGetAttribute(weather, "name")
             aWeathers[id] = name
             weathers = weathers + 1
         end
-        xmlUnloadFile(node)
+        xmlUnloadFile(node3)
     end
-    local node = xmlLoadFile("conf\\reports.xml")
-    if (node) then
+    local node4 = xmlLoadFile("conf\\reports.xml")
+    if (node4) then
         local messages = 0
-        while (xmlFindChild(node, "message", messages)) do
-            subnode = xmlFindChild(node, "message", messages)
+        while (xmlFindChild(node4, "message", messages)) do
+            subnode = xmlFindChild(node4, "message", messages)
             local author = xmlFindChild(subnode, "author", 0)
             local subject = xmlFindChild(subnode, "subject", 0)
             local category = xmlFindChild(subnode, "category", 0)
@@ -95,12 +95,12 @@ function aSetupStorage()
             aReports[id].read = read
             messages = messages + 1
         end
-        xmlUnloadFile(node)
+        xmlUnloadFile(node4)
     end
-    local node = xmlLoadFile("conf\\messages.xml")
-    if (node) then
+    local node5 = xmlLoadFile("conf\\messages.xml")
+    if (node5) then
         for id, type in ipairs(_types) do
-            local subnode = xmlFindChild(node, type, 0)
+            local subnode = xmlFindChild(node5, type, 0)
             if (subnode) then
                 aLogMessages[type] = {}
                 local groups = 0
@@ -130,7 +130,7 @@ function aSetupStorage()
                 end
             end
         end
-        xmlUnloadFile(node)
+        xmlUnloadFile(node5)
     end
 end
 

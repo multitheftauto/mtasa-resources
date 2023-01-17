@@ -199,8 +199,8 @@ function hudDisplay ( player, bool )
 	setPlayerHudComponentVisible ( player, "weapon", bool )
 end
 
-addEventHandler( "onGamemodeMapStart", getRootElement (), onCTVSpawnMapStart )
-addEventHandler( "onGamemodeMapStop", getRootElement (), onCTVSpawnMapStop )
+addEventHandler( "onGamemodeMapStart", root, onCTVSpawnMapStart )
+addEventHandler( "onGamemodeMapStop", root, onCTVSpawnMapStop )
 addEventHandler ( "onPlayerQuit", root, playerQuit )
 addEventHandler ( "onPlayerSpawn", root, playerSpawn )
 addEventHandler ( "onPlayerWasted", root, playerWasted )

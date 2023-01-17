@@ -1,4 +1,3 @@
-local root = getRootElement()
 addEvent("onClientResourceLoad", true)
 
 local clientStatuses = {}

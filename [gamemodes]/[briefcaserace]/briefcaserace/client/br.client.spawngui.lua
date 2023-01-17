@@ -5,8 +5,6 @@ local TEXT_Y_INTERVAL = 38
 addEvent("doCreateTeamMenu", true)
 addEvent("doShowPlayerTeamMenu", true)
 
-local root = getRootElement()
-
 local screenX, screenY
 
 local teams = {}

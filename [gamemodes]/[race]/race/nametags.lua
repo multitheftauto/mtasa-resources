@@ -32,11 +32,11 @@ function nametag.destroy ( player )
 	nametags[player] = nil
 end
 
-addEventHandler ( "onClientRender", g_Root,
+addEventHandler ( "onClientRender", root,
 	function()
 		-- Hideous quick fix --
 		for i,player in ipairs(g_Players) do
-			if player ~= g_Me then
+			if player ~= localPlayer then
 				setPlayerNametagShowing ( player, false )
 				if not nametags[player] then
 					nametag.create ( player )
@@ -82,7 +82,7 @@ addEventHandler ( "onClientRender", g_Root,
 					local health = getElementHealth(vehicle)
 					health = math.max(health - 250, 0)/750
 					local p = -510*(health^2)
-					local r,g = math.max(math.min(p + 255*health + 255, 255), 0), math.max(math.min(p + 765*health, 255), 0)
+					r,g = math.max(math.min(p + 255*health + 255, 255), 0), math.max(math.min(p + 765*health, 255), 0)
 					dxDrawRectangle ( 	drawX + outlineThickness,
 										drawY + outlineThickness,
 										width - outlineThickness*2,
@@ -105,25 +105,25 @@ addEventHandler ( "onClientRender", g_Root,
 
 
 ---------------THE FOLLOWING IS THE MANAGEMENT OF NAMETAGS-----------------
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
 		for i,player in ipairs(getElementsByType"player") do
-			if player ~= g_Me then
+			if player ~= localPlayer then
 				nametag.create ( player )
 			end
 		end
 	end
 )
 
-addEventHandler ( "onClientPlayerJoin", g_Root,
+addEventHandler ( "onClientPlayerJoin", root,
 	function()
-		if source == g_Me then return end
+		if source == localPlayer then return end
 		setPlayerNametagShowing ( source, false )
 		nametag.create ( source )
 	end
 )
 
-addEventHandler ( "onClientPlayerQuit", g_Root,
+addEventHandler ( "onClientPlayerQuit", root,
 	function()
 		nametag.destroy ( source )
 	end
@@ -131,14 +131,14 @@ addEventHandler ( "onClientPlayerQuit", g_Root,
 
 
 addEvent ( "onClientScreenFadedOut", true )
-addEventHandler ( "onClientScreenFadedOut", g_Root,
+addEventHandler ( "onClientScreenFadedOut", root,
 	function()
 		bHideNametags = true
 	end
 )
 
 addEvent ( "onClientScreenFadedIn", true )
-addEventHandler ( "onClientScreenFadedIn", g_Root,
+addEventHandler ( "onClientScreenFadedIn", root,
 	function()
 		bHideNametags = false
 	end

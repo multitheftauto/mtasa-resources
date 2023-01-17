@@ -87,7 +87,7 @@ end
 
 function stopAssault()
 	outputDebugString("Stopping assault..")
-	removeEventHandler( "onGamemodeMapStop", getRootElement(), stopAssaultMap )
+	removeEventHandler( "onGamemodeMapStop", root, stopAssaultMap )
 	call(getResourceFromName("scoreboard"), "removeScoreboardColumn", "score")
 end
 
@@ -225,7 +225,7 @@ end
 Actually starts the round and spawns the players
 ]]
 function startRoundNow()
-	triggerEvent("onAssaultStartRound",getRootElement(),attacker)
+	triggerEvent("onAssaultStartRound",root,attacker)
 	if (options.time ~= false) then setTime(gettok(options.time,1,58),gettok(options.time,2,58)) end
 	waiting = false
 	timeLeft = timeLimit
@@ -292,7 +292,7 @@ function endRound(conquered)
 			team1Succeded = true
 		end
 	elseif (attacker == team2) then
-		setTimer(triggerEvent, 10000, 1, "onRoundFinished", getResourceRootElement(getThisResource()))
+		setTimer(triggerEvent, 10000, 1, "onRoundFinished", resourceRoot)
 		if not conquered then
 			-- team 1 successfully defended in round 2 and...
 			if team1Succeded then
@@ -313,7 +313,7 @@ function endRound(conquered)
 			end
 		end
 	end
-	triggerEvent("onAssaultEndRound",getRootElement(),conquered)
+	triggerEvent("onAssaultEndRound",root,conquered)
 	textItemSetText(waitingText2,text)
 	textItemSetText(waitingText2_2,text)
 	local players = getElementsByType("player")
@@ -499,7 +499,7 @@ function objectiveReached( objectiveId, playerTable )
 	textItemSetColor(objectiveTextItem[key],255,0,0,255)
 
 	local objectiveReached = options.objective[key]
-	triggerEvent("onAssaultObjectiveReached",getRootElement(),objectiveReached, playerTable)
+	triggerEvent("onAssaultObjectiveReached",root,objectiveReached, playerTable)
 
 	progress = progress + 1
 
@@ -518,7 +518,7 @@ function objectiveReached( objectiveId, playerTable )
 
 	local defender
 	if (attacker == team1) then defender = team2 else defender = team1 end
-	local teamName = nil
+	local teamName
 	if (attacker == team1) then teamName = team1Name else teamName = team2Name end
 
 
@@ -591,9 +591,9 @@ function createObjectives()
 		--outputChatBox(objective.name)
 		if (objective.type == "checkpoint") then
 			createObjectiveMarker( objective )
-			triggerEvent("onAssaultCreateObjective",getRootElement(),objective)
+			triggerEvent("onAssaultCreateObjective",root,objective)
 		elseif (objective.type == "custom") then
-			triggerEvent("onAssaultCreateObjective",getRootElement(),objective)
+			triggerEvent("onAssaultCreateObjective",root,objective)
 		end
 		status[objective.id].created = true
 	end
@@ -696,7 +696,7 @@ function triggerClientEvent2( player, eventName, parameter )
 	end
 end
 addEvent("assaultClientScriptLoaded",true)
-addEventHandler('assaultClientScriptLoaded', getRootElement(),
+addEventHandler('assaultClientScriptLoaded', root,
 	function()
 		setElementDataLocal( source, "assaultClientScriptLoaded", true )
 		if (assaultClientScriptQueue[source] == nil) then return end
@@ -707,7 +707,7 @@ addEventHandler('assaultClientScriptLoaded', getRootElement(),
 		assaultClientScriptQueue[source] = {}
 	end
 )
-addEventHandler("onPlayerQuit", getRootElement(),
+addEventHandler("onPlayerQuit", root,
 	function()
 		assaultClientScriptQueue[source] = {}
 	end
@@ -760,7 +760,7 @@ function spawnPlayerTeam( player )
 	textDisplayRemoveObserver( attackerDisplay, player )
 	textDisplayRemoveObserver( defenderDisplay, player )
 	local team = getPlayerTeam(player)
-	local spawnpoint = nil
+	local spawnpoint
 	if (team == attacker) then
 		spawnpoint = getSpawnpoint(options.spawngroup.attacker)
 		showTextForPlayer(player, 10000, 255, 0, 0, 2, 0.7, options.attackMessage)
@@ -952,7 +952,7 @@ function onPlayerChat( message, theType )
 		local playerName = getPlayerName( source )
 		if (team) then
 			local r,g,b = getTeamColor(team)
-			outputChatBox( playerName..":#FFFFFF "..message,getRootElement(),r,g,b, true )
+			outputChatBox( playerName..":#FFFFFF "..message,root,r,g,b, true )
 		else
 			outputChatBox( playerName..": "..message )
 		end
@@ -1115,7 +1115,7 @@ function countTableElements(table)
 	return count
 end
 
-addEventHandler("onPlayerQuit", getRootElement(),
+addEventHandler("onPlayerQuit", root,
 	function()
 		if (assaultElementData[source] ~= nil) then
 			assaultElementData[source] = nil
@@ -1127,9 +1127,9 @@ addEventHandler("onPlayerQuit", getRootElement(),
 -- stolen from mission_timer.lua
 function calcTime ( timeLeft )
 	local calcString = ""
-	local timeHours = 0
-	local timeMins = 0
-	local timeSecs = 0
+	local timeHours
+	local timeMins
+	local timeSecs
 
 	timeLeft = tonumber(timeLeft)
 	--outputDebugString ( "timeLeft = " .. timeLeft )
@@ -1154,7 +1154,9 @@ function calcTime ( timeLeft )
 end
 
 function showTextForAll ( time, red, green, blue, scale, text, vertical )
-	if (vertical == nil) then local vertical = 0.3 end
+	if (vertical == nil) then
+		vertical = 0.3
+	end
 	local textDisplay = textCreateDisplay ()
 	local stextItem = textCreateTextItem ( text, 0.501, vertical + 0.001, 2, 0, 0, 0, 255, scale, "center" )
 	local textItem = textCreateTextItem ( text, 0.5, vertical, 2, red, green, blue, 255, scale, "center" )
@@ -1496,17 +1498,17 @@ function waitingCreateDisplay()
 	textDisplayAddText(waitingDisplay2, waitingText2)
 
 	noMapLoadedDisplay = textCreateDisplay()
-	local stext = textCreateTextItem("Assault: No map loaded..",0.501,0.701,"low",0,0,0,255,1.4, "center")
-	local text = textCreateTextItem("Assault: No map loaded..",0.5,0.7,"low",255,255,255,255,1.4, "center")
+	stext = textCreateTextItem("Assault: No map loaded..",0.501,0.701,"low",0,0,0,255,1.4, "center")
+	text = textCreateTextItem("Assault: No map loaded..",0.5,0.7,"low",255,255,255,255,1.4, "center")
 	textDisplayAddText(noMapLoadedDisplay,stext)
 	textDisplayAddText(noMapLoadedDisplay,text)
 end
 
 -- General Gamemode Events
-addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), startAssault )
-addEventHandler( "onGamemodeMapStart", getRootElement(), startAssaultMap )
-addEventHandler( "onGamemodeMapStop", getRootElement(), stopAssaultMap )
-addEventHandler( "onResourceStop", getResourceRootElement(getThisResource()), stopAssault )
+addEventHandler( "onResourceStart", resourceRoot, startAssault )
+addEventHandler( "onGamemodeMapStart", root, startAssaultMap )
+addEventHandler( "onGamemodeMapStop", root, stopAssaultMap )
+addEventHandler( "onResourceStop", resourceRoot, stopAssault )
 
 -- Custom gamemode Events
 addEvent("onAssaultObjectiveReached")
@@ -1518,14 +1520,14 @@ addEvent("onAssaultEndRound")
 --addCommandHandler("team1",joinTeam1)
 --addCommandHandler("team2",joinTeam2)
 addCommandHandler("kill",selfkill)
-addEventHandler( "onPlayerSpawn", getRootElement(), onPlayerSpawn )
-addEventHandler( "onPlayerWasted", getRootElement(), onPlayerWasted )
-addEventHandler( "onPlayerJoin", getRootElement(), onPlayerJoin )
-addEventHandler( "onPlayerQuit", getRootElement(), onPlayerQuit )
-addEventHandler( "onPlayerChat", getRootElement(), onPlayerChat )
+addEventHandler( "onPlayerSpawn", root, onPlayerSpawn )
+addEventHandler( "onPlayerWasted", root, onPlayerWasted )
+addEventHandler( "onPlayerJoin", root, onPlayerJoin )
+addEventHandler( "onPlayerQuit", root, onPlayerQuit )
+addEventHandler( "onPlayerChat", root, onPlayerChat )
 
 -- Vehicle Events
-addEventHandler ( "onVehicleEnter", getRootElement(), onVehicleEnter )
-addEventHandler ( "onVehicleExit", getRootElement(), onVehicleExit )
-addEventHandler ( "onVehicleExplode", getRootElement(), onVehicleExplode )
+addEventHandler ( "onVehicleEnter", root, onVehicleEnter )
+addEventHandler ( "onVehicleExit", root, onVehicleExit )
+addEventHandler ( "onVehicleExplode", root, onVehicleExplode )
 

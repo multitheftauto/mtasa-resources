@@ -68,7 +68,7 @@ function aClientTeamDoubleClick ( button )
 		if ( source == aTeamList ) then
 			if ( guiGridListGetSelectedItem ( aTeamList ) ~= -1 ) then
 				local team = guiGridListGetItemText ( aTeamList, guiGridListGetSelectedItem ( aTeamList ), 1 )
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aTeamSelect, "setteam", getTeamFromName ( team ) )
+				triggerServerEvent ( "aPlayer", localPlayer, aTeamSelect, "setteam", getTeamFromName ( team ) )
 				aPlayerTeamClose ( false )
 			end
 		end
@@ -96,11 +96,11 @@ function aClientTeamClick ( button )
 			elseif ( getTeamFromName ( team ) ) then
 				aMessageBox ( "error", "A team with this name already exists" )
 			else
-				triggerServerEvent ( "aTeam", getLocalPlayer(), "createteam", team, guiGetText ( aTeamRed ), guiGetText ( aTeamGreen ), guiGetText ( aTeamBlue ) )
+				triggerServerEvent ( "aTeam", localPlayer, "createteam", team, guiGetText ( aTeamRed ), guiGetText ( aTeamGreen ), guiGetText ( aTeamBlue ) )
 				aNewTeamShow ( false )
 			end
 			setTimer ( aTeamsRefresh, 2000, 1 )
-		elseif ( source == aTeamName ) then
+		--elseif ( source == aTeamName ) then
 
 		elseif ( source == aTeamCancel ) then
 			aNewTeamShow ( false )
@@ -109,14 +109,14 @@ function aClientTeamClick ( button )
 				aMessageBox ( "warning", "No team selected!" )
 			else
 				local team = guiGridListGetItemText ( aTeamList, guiGridListGetSelectedItem ( aTeamList ), 1 )
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aTeamSelect, "setteam", getTeamFromName ( team ) )
+				triggerServerEvent ( "aPlayer", localPlayer, aTeamSelect, "setteam", getTeamFromName ( team ) )
 				guiSetVisible ( aTeamForm, false )
 			end
 		elseif ( source == aTeamClose ) then
 			aPlayerTeamClose ( false )
 		elseif ( source == aTeamRemove ) then
 			if getPlayerTeam( aTeamSelect ) then
-				triggerServerEvent ( "aPlayer", getLocalPlayer(), aTeamSelect, "removefromteam", nil )
+				triggerServerEvent ( "aPlayer", localPlayer, aTeamSelect, "removefromteam", nil )
 			else
 				aMessageBox( "warning", "This player is not in a team!")
 			end

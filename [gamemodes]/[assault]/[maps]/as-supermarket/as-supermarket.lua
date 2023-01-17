@@ -18,7 +18,7 @@ function player_Spawn (  )
 	end
 end
 -- add the player_Spawn function as a handler for onPlayerSpawn
-addEventHandler ( "onPlayerSpawn", getRootElement(), player_Spawn )
+addEventHandler ( "onPlayerSpawn", root, player_Spawn )
 
 function player_Quit (  )
 	notrolley = getAttachedElements ( source )
@@ -28,4 +28,4 @@ function player_Quit (  )
 		end
 	end
 end
-addEventHandler ( "onPlayerQuit", getRootElement(), player_Quit )
+addEventHandler ( "onPlayerQuit", root, player_Quit )

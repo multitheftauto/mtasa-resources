@@ -6,9 +6,9 @@ RankingBoard.clientInstances = {}
 function RankingBoard:create()
 	local result = { id = #RankingBoard.clientInstances + 1, items = {} }
 	RankingBoard.clientInstances[result.id] = true
-	clientCall(g_Root, 'RankingBoard.create', result.id)
+	clientCall(root, 'RankingBoard.create', result.id)
 	result.joinHandler = function() result:playerJoined(source) end
-	addEventHandler('onPlayerJoin', getRootElement(), result.joinHandler)
+	addEventHandler('onPlayerJoin', root, result.joinHandler)
 	return setmetatable(result, self)
 end
 
@@ -22,7 +22,7 @@ function RankingBoard:setDirection(direction, plrcount)
 	savedplrcount = plrcount
 	if direction == 'up' or direction == 'down' then
 		self.direction = direction
-		self:clientCall(g_Root, 'setDirection', direction, plrcount )
+		self:clientCall(root, 'setDirection', direction, plrcount )
 	end
 end
 
@@ -32,7 +32,7 @@ function RankingBoard:add(player, time)
 		return
 	end
 	table.insert(self.items, { name = playerName, time = time })
-	self:clientCall(g_Root, 'add', playerName, time)
+	self:clientCall(root, 'add', playerName, time)
 end
 
 function RankingBoard:playerJoined(player)
@@ -44,12 +44,12 @@ function RankingBoard:playerJoined(player)
 end
 
 function RankingBoard:clear()
-	self:clientCall(g_Root, 'clear')
+	self:clientCall(root, 'clear')
 	self.items = {}
 end
 
 function RankingBoard:destroy()
-	self:clientCall(g_Root, 'destroy')
-	removeEventHandler('onPlayerJoin', getRootElement(), self.joinHandler)
+	self:clientCall(root, 'destroy')
+	removeEventHandler('onPlayerJoin', root, self.joinHandler)
 	RankingBoard.clientInstances[self.id] = nil
 end

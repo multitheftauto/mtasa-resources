@@ -50,7 +50,7 @@ function aViewMessage ( id )
 		guiSetVisible ( aViewMessageLabelSuspect, isVisible )
 		guiSetVisible ( aViewMessageSuspect, isVisible )
 		guiBringToFront ( aViewMessageForm )
-		triggerServerEvent ( "aMessage", getLocalPlayer(), "read", id )
+		triggerServerEvent ( "aMessage", localPlayer, "read", id )
 	end
 end
 

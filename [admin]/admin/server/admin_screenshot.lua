@@ -10,12 +10,20 @@
 
 local con = dbConnect("sqlite", ":/registry.db")
 dbExec(con, "CREATE TABLE IF NOT EXISTS `admin_screenshots` (`id` INTEGER, `player` TEXT, `serial` TEXT, `admin` TEXT, `realtime` TEXT)")
+
 local screenshots = {}
 local currentid = 0
+local rights = {
+	["new"] = "takescreenshot",
+	["delete"] = "deletescreenshot",
+	["view"] = "viewscreenshot",
+	["list"] = "listscreenshots"
+}
 
-addEventHandler("onResourceStart", resourceRoot, function()
-	dbQuery(resourceStartedCallback, {}, con, "SELECT `id` FROM `admin_screenshots`")
-end
+addEventHandler("onResourceStart", resourceRoot,
+	function()
+		dbQuery(resourceStartedCallback, {}, con, "SELECT `id` FROM `admin_screenshots`")
+	end
 )
 
 function resourceStartedCallback(qh)
@@ -28,10 +36,13 @@ function resourceStartedCallback(qh)
 end
 
 addEvent("aScreenShot",true)
-addEventHandler("aScreenShot",resourceRoot,
-	function (action,admin,player,arg1,arg2)
+addEventHandler("aScreenShot",root,
+	function (action,player,arg1)
+		local admin = client
 		if not isElement(admin) then return end
-		if not hasObjectPermissionTo(admin,"command.takescreenshot") then return end
+		if not action then return end
+		local right = rights[action]
+		if not right or not hasObjectPermissionTo(admin,"command."..right) then return end
 		if action == "new" then
 			if not isElement(player) then return end
 			if screenshots[player] then

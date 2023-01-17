@@ -43,7 +43,6 @@ local ROTATION_Y_SPEED = 3.8
 
 -- Static global variables
 local thisResource = getThisResource()
-local rootElement = getRootElement()
 local serverGravity = getGravity()
 local supermanPlayers = {}
 
@@ -144,17 +143,17 @@ function Superman.Start()
   local self = Superman
 
   -- Register events
-  addEventHandler("onClientResourceStop", getResourceRootElement(thisResource), Superman.Stop, false)
-  addEventHandler("onPlayerQuit", rootElement, Superman.onQuit)
-  addEventHandler("onClientRender", rootElement, Superman.processFlight)
-  addEventHandler("onClientElementStreamIn", rootElement, Superman.onStreamIn)
-  addEventHandler("onClientElementStreamOut", rootElement, Superman.onStreamOut)
+  addEventHandler("onClientResourceStop", resourceRoot, Superman.Stop, false)
+  addEventHandler("onPlayerQuit", root, Superman.onQuit)
+  addEventHandler("onClientRender", root, Superman.processFlight)
+  addEventHandler("onClientElementStreamIn", root, Superman.onStreamIn)
+  addEventHandler("onClientElementStreamOut", root, Superman.onStreamOut)
 
   -- Initializate attributes
   self.rotations = {}
   self.previousVelocity = {}
 end
-addEventHandler("onClientResourceStart", getResourceRootElement(thisResource), Superman.Start, false)
+addEventHandler("onClientResourceStart", resourceRoot, Superman.Start, false)
 
 function Superman.Stop()
   local self = Superman
@@ -173,7 +172,7 @@ end
 --
 function Superman.onQuit(reason, player)
   local self = Superman
-  local player = player or source
+  player = player or source
 
   if isPlayerFlying(player) then
     self:restorePlayer(player)
@@ -303,8 +302,8 @@ end
 -- Vectors
 --
 Vector3D = {
-  new = function(self, _x, _y, _z)
-    local newVector = { x = _x or 0.0, y = _y or 0.0, z = _z or 0.0 }
+  new = function(self, x2, y2, z2)
+    local newVector = { x = x2 or 0.0, y = y2 or 0.0, z = z2 or 0.0 }
     return setmetatable(newVector, { __index = Vector3D })
   end,
 

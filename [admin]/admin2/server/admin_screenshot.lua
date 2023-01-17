@@ -36,9 +36,6 @@ addEventHandler(
     EVENT_SCREEN_SHOT,
     root,
     function(action, id, ...)
-        if (action == SCREENSHOT_SAVE) then
-        elseif (action == SCREENSHOT_DELETE) then
-        end
     end
 )
 
@@ -111,7 +108,7 @@ end
 
 addEventHandler(
     "onResourceStart",
-    getResourceRootElement(),
+    resourceRoot,
     function()
         db.exec(
             "CREATE TABLE IF NOT EXISTS screenshots ( file TEXT, player TEXT, admin TEXT, description TEXT, time INTEGER, temp BOOL )"
@@ -137,16 +134,16 @@ addEventHandler(
         local id = 0
         if (status == "ok") then
             -- save a local copy
-            local time = getRealTime()
+            local time2 = getRealTime()
             local file_time =
                 string.format(
                 "%.2d-%.2d-%.2d_%.2d-%.2d-%.2d",
-                time.year + 1900,
-                time.month + 1,
-                time.monthday,
-                time.hour,
-                time.minute,
-                time.second
+                time2.year + 1900,
+                time2.month + 1,
+                time2.monthday,
+                time2.hour,
+                time2.minute,
+                time2.second
             )
 
             local file_counter = 1
@@ -172,7 +169,7 @@ addEventHandler(
                     data.playername or "Unknown",
                     data.account or "Unknown",
                     "Toady's driving like a boss",
-                    time.timestamp,
+                    time2.timestamp,
                     0
                 )
 

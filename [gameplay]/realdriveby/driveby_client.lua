@@ -26,7 +26,7 @@ end
 addEventHandler( "onClientPlayerVehicleEnter", localPlayer, setupDriveby )
 
 --Tell the server the clientside script was downloaded and started
-addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStart",resourceRoot,
 	function()
 		bindKey ( "mouse2", "down", "Toggle Driveby", "" )
 		bindKey ( "e", "down", "Next driveby weapon", "1" )
@@ -42,7 +42,7 @@ addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()
 	end
 )
 
-addEventHandler("onClientResourceStop",getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStop",resourceRoot,
 	function()
 		toggleControl ( "vehicle_next_weapon",true )
 		toggleControl ( "vehicle_previous_weapon",true )
@@ -171,7 +171,7 @@ end
 
 
 --This function handles the driveby switch weapon key
-function switchDrivebyWeapon(key,progress)
+function switchDrivebyWeapon(key2, progress)
 	if block then return end
 	progress = tonumber(progress)
 	if not progress then return end

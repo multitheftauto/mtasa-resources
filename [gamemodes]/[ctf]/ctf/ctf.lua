@@ -5,16 +5,12 @@
 </team>
 ]]
 
-local CTF_root = getRootElement()
-
 function CTF_onResourceStart( resourcename )
-	if ( resourcename == getThisResource () ) then
-		local players = getElementsByType ( "player" )
-		for k,v in ipairs(players) do
-			setElementData( v, "score", 0 )
-		end
-		setTimer( call, 1000, 1, getResourceFromName("scoreboard"), "addScoreboardColumn", "score" )
+	local players = getElementsByType ( "player" )
+	for k,v in ipairs(players) do
+		setElementData( v, "score", 0 )
 	end
+	setTimer( call, 1000, 1, getResourceFromName("scoreboard"), "addScoreboardColumn", "score" )
 end
 
 function CTF_gamemodeMapStop( startedMap )
@@ -36,18 +32,17 @@ function CTF_gamemodeMapStop( startedMap )
 		end
 		setElementData( v, "col", nil )
 	end
-	local blips = getElementsByType ( "blip" )
+	local blips = getElementsByType ( "blip", resourceRoot )
 	for k,v in ipairs(blips) do
 		destroyElement( v )
 	end
-	local cols = getElementsByType ( "colshape" )
+	local cols = getElementsByType ( "colshape", resourceRoot )
 	for k,v in ipairs(cols) do
 		local colFlag = getElementData( v, "flag" )
 		if ( colFlag ) then
 			destroyElement( getElementData( v, "object" ) )
 			destroyElement( getElementData( v, "marker" ) )
 			destroyElement( v )
-			setElementData( v, "flag", nil )
 		end
 	end
 	local timers = getTimers()
@@ -133,10 +128,10 @@ function CTF_gamemodeMapStart ( startedMap )
 				outputDebugString("* CTF Error: Not enough spawnpoints for team '" .. getTeamName( teamValue ) .. "'. Minimum is 1.", 1 )
 				return
 			else
-				local x,y,z,object,marker,col
 				for flagKey,flagValue in ipairs(flags) do
 					local x,y,z = tonumber( getElementData ( flagValue, "posX" ) ), tonumber( getElementData ( flagValue, "posY" ) ), tonumber( getElementData ( flagValue, "posZ" ) )
 					local object = createObject( 2993, x, y, z )
+					setElementCollisionsEnabled ( object, false ) -- Makes sure it doesn't break (explosions etc.)
 					local marker = createMarker( x, y, z, "arrow", 2, r, g, b, 255 )
 					local col = createColSphere( x, y, z, 1 )
 					local sblip = createBlip ( x, y, z, 0, 3, r, g, b, 25 )
@@ -146,8 +141,8 @@ function CTF_gamemodeMapStart ( startedMap )
 						setElementData( col, "blip", blip )
 						setElementData( col, "blipTwo", blipTwo )
 						if ( CTF_blips == "team" ) then
-							setElementVisibleTo ( blip, CTF_root, false )
-							setElementVisibleTo ( blipTwo, CTF_root, false )
+							setElementVisibleTo ( blip, root, false )
+							setElementVisibleTo ( blipTwo, root, false )
 						end
 					end
 					setElementData( col, "object", object )
@@ -193,9 +188,6 @@ function CTF_gamemodeMapStart ( startedMap )
 			setElementData( playerValue, "col", nil )
 			textDisplayAddObserver ( CTF_scoDisp, playerValue )
 			setElementData( playerValue, "CTF_switched", false )
-			--setCameraMode ( playerValue, "fixed" )
-			--setTimer( setCameraPosition, 3000, 1, playerValue, CTF_camPosX, CTF_camPosY, CTF_camPosZ )
-			--setTimer( setCameraLookAt, 3250, 1, playerValue, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
 			setCameraMatrix( playerValue, CTF_camPosX, CTF_camPosY, CTF_camPosZ, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
 			setTimer( CTF_spawnMenu, 5000, 1, playerValue )
 			fadeCamera ( playerValue, true )
@@ -238,12 +230,7 @@ function CTF_endRound()
 	end
 	local players = getElementsByType ( "player" )
 	for k,v in ipairs(players) do
-		--setCameraMode ( v, "fixed" )
-		--setTimer( setCameraPosition, 1000, 1, v, CTF_camPosX, CTF_camPosY, CTF_camPosZ )
-		--setTimer( setCameraLookAt, 1050, 1, v, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
 		setCameraMatrix(v, CTF_camPosX, CTF_camPosY, CTF_camPosZ, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
-		--setCameraPosition ( v, CTF_camPosX, CTF_camPosY, CTF_camPosZ )
-		--setCameraLookAt ( v, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
 		fadeCamera ( v, false, 15, 000, 000, 000 )
 		toggleAllControls ( v, false, true, false )
 		local playerCol = getElementData( v, "col" )
@@ -267,14 +254,14 @@ end
 
 
 function CTF_newRound()
-	triggerEvent( "onRoundFinished", getResourceRootElement(getThisResource()) )
-	local blips = getElementsByType ( "blip" )
+	triggerEvent( "onRoundFinished", resourceRoot )
+	local blips = getElementsByType ( "blip", resourceRoot )
 	for k,v in ipairs(blips) do
 		if ( getElementData( v, "playerBlip" ) ) then
 			destroyElement( v )
 		end
 	end
-	local cols = getElementsByType ( "colshape" )
+	local cols = getElementsByType ( "colshape", resourceRoot )
 	for k,v in ipairs(cols) do
 		local colFlag = getElementData( v, "flag" )
 		if ( colFlag ) then
@@ -288,8 +275,8 @@ function CTF_newRound()
 			setElementPosition( colObject, x, y, z )
 			setElementPosition( colMarker, x, y, z )
 			if ( CTF_blips == "team" ) then
-				setElementVisibleTo ( getElementData( v, "blip" ), CTF_root, false )
-				setElementVisibleTo ( getElementData( v, "blipTwo" ), CTF_root, false )
+				setElementVisibleTo ( getElementData( v, "blip" ), root, false )
+				setElementVisibleTo ( getElementData( v, "blipTwo" ), root, false )
 			end
 		end
 	end
@@ -334,9 +321,6 @@ end
 function CTF_onPlayerJoin ( )
 	setElementData( source, "col", nil )
 	textDisplayAddObserver ( CTF_scoDisp, source )
-	--setCameraMode ( source, "fixed" )
-	--setTimer( setCameraPosition, 3000, 1, source, CTF_camPosX, CTF_camPosY, CTF_camPosZ )
-	--setTimer( setCameraLookAt, 3250, 1, source, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
 	setCameraMatrix( source, CTF_camPosX, CTF_camPosY, CTF_camPosZ, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
 	fadeCamera ( source, true )
 	setElementData( source, "score", 0 )
@@ -360,7 +344,13 @@ function CTF_onPlayerWasted ( totalammo, killer, killerweapon, bodypart )
 	-- Handle respawn
 	if ( CTF_roundOn ) then
 		fadeCamera ( player, false, CTF_respawnTime/500, 000, 000, 000 )
-		setTimer( fadeCamera, CTF_respawnTime, 1, player, true )
+		
+		setTimer( function ()
+			if isElement(player) then
+				fadeCamera(player, true )
+			end
+		end, CTF_respawnTime, 1)
+
 		setTimer( CTF_spawnPlayer, CTF_respawnTime, 1, player )
 	end
 end
@@ -378,12 +368,12 @@ function CTF_flag_check ( )
 		local playerColTeam = getElementData( playerCol, "team" )
 		local playerColFlag = getElementData( playerCol, "flag" )
 		local r,g,b = getTeamColor ( getPlayerTeam( source ) )
-	    	local x,y,z = getElementPosition( source )
+		local x,y,z = getElementPosition( source )
 		detachElements ( playerColObject, source )
 		detachElements ( playerColMarker, source )
 		setElementPosition( playerCol, x, y, z )
-	        setElementPosition( playerColObject, x, y, z )
-	        setElementPosition( playerColMarker, x, y, z )
+		setElementPosition( playerColObject, x, y, z )
+		setElementPosition( playerColMarker, x, y, z )
 		CTF_announce ( r, g, b, getPlayerName( player ) .. " dropped the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. " flag!", 4000 )
 		setElementData( player, "col", nil )
 	end
@@ -395,59 +385,59 @@ function CTF_flag_check ( )
 end
 
 function CTF_onColShapeHit ( player )
-	if ( ( getPlayerName( player ) ~= false ) and ( isPedDead ( player ) == false ) ) then
-	local playerTeam = getPlayerTeam( player )
-	local playerCol = getElementData( player, "col" )
-	local colObject = getElementData( source, "object" )
-	local colFlag = getElementData( source, "flag" )
-	local colMarker = getElementData( source, "marker" )
-	local colTeam = getElementData( source, "team" )
-	local r,g,b = getTeamColor ( playerTeam )
-	if ( playerTeam == colTeam ) then
-		local x,y,z = tonumber( getElementData ( colFlag, "posX" ) ), tonumber( getElementData ( colFlag, "posY" ) ), tonumber( getElementData ( colFlag, "posZ" ) )
-		local x2,y2,z2 = getElementPosition( colObject )
-		x1,y1,z1 = math.ceil(x),math.ceil(y),math.ceil(z)
-		x2,y2,z2 = math.ceil(x2),math.ceil(y2),math.ceil(z2)
-		if (( x1 ~= x2) or ( y1 ~= y2 ) or ( z1 ~= z2 )) then
-			detachElements ( colObject, player )
-			detachElements ( colMarker, player )
-			setElementPosition( source, x, y, z )
-			setElementPosition( colObject, x, y, z )
-			setElementPosition( colMarker, x, y, z )
-			CTF_announce ( r, g, b, getPlayerName( player ) .. " returned the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. " flag!", 4000 )
-		elseif (playerCol ~= nil) then
-	        	setElementData( player, "col", nil )
-			local playerColObject = getElementData( playerCol, "object" )
-			local playerColFlag = getElementData( playerCol, "flag" )
-			local playerColMarker = getElementData ( playerCol, "marker" )
-			local playerColTeam = getElementData( playerCol, "team" )
-			x,y,z = tonumber( getElementData ( playerColFlag, "posX" ) ), tonumber( getElementData ( playerColFlag, "posY" ) ), tonumber( getElementData ( playerColFlag, "posZ" ) )
-			detachElements ( playerColObject, player )
-			detachElements ( playerColMarker, player )
-			setElementPosition( playerCol, x, y, z )
-			setElementPosition( playerColMarker, x, y, z )
-			setElementPosition( playerColObject, x, y, z )
-			toggleControl ( player, "sprint", true )
-			setElementData( playerTeam, "score", getElementData( playerTeam, "score" ) + 1 )
-			setElementData( player, "score", getElementData( player, "score" ) + 5 )
-			updateScores()
-			CTF_announce ( r, g, b, getPlayerName( player ) .. " scores the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. " flag!", 4000 )
+	if ( ( getElementType(player) == "player" ) and ( getPlayerName( player ) ~= false ) and ( isPedDead ( player ) == false ) ) then
+		local playerTeam = getPlayerTeam( player )
+		local playerCol = getElementData( player, "col" )
+		local colObject = getElementData( source, "object" )
+		local colFlag = getElementData( source, "flag" )
+		local colMarker = getElementData( source, "marker" )
+		local colTeam = getElementData( source, "team" )
+		local r,g,b = getTeamColor ( playerTeam )
+		if ( playerTeam == colTeam ) then
+			local x,y,z = tonumber( getElementData ( colFlag, "posX" ) ), tonumber( getElementData ( colFlag, "posY" ) ), tonumber( getElementData ( colFlag, "posZ" ) )
+			local x2,y2,z2 = getElementPosition( colObject )
+			x1,y1,z1 = math.ceil(x),math.ceil(y),math.ceil(z)
+			x2,y2,z2 = math.ceil(x2),math.ceil(y2),math.ceil(z2)
+			if (( x1 ~= x2) or ( y1 ~= y2 ) or ( z1 ~= z2 )) then
+				detachElements ( colObject, player )
+				detachElements ( colMarker, player )
+				setElementPosition( source, x, y, z )
+				setElementPosition( colObject, x, y, z )
+				setElementPosition( colMarker, x, y, z )
+				CTF_announce ( r, g, b, getPlayerName( player ) .. " returned the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. " flag!", 4000 )
+			elseif (playerCol ~= nil) then
+				setElementData( player, "col", nil )
+				local playerColObject = getElementData( playerCol, "object" )
+				local playerColFlag = getElementData( playerCol, "flag" )
+				local playerColMarker = getElementData ( playerCol, "marker" )
+				local playerColTeam = getElementData( playerCol, "team" )
+				x,y,z = tonumber( getElementData ( playerColFlag, "posX" ) ), tonumber( getElementData ( playerColFlag, "posY" ) ), tonumber( getElementData ( playerColFlag, "posZ" ) )
+				detachElements ( playerColObject, player )
+				detachElements ( playerColMarker, player )
+				setElementPosition( playerCol, x, y, z )
+				setElementPosition( playerColMarker, x, y, z )
+				setElementPosition( playerColObject, x, y, z )
+				toggleControl ( player, "sprint", true )
+				setElementData( playerTeam, "score", getElementData( playerTeam, "score" ) + 1 )
+				setElementData( player, "score", getElementData( player, "score" ) + 5 )
+				updateScores()
+				CTF_announce ( r, g, b, getPlayerName( player ) .. " scores the " .. getTeamName( playerColTeam ) .. " teams' " .. getElementData( playerColFlag, "name" ) .. " flag!", 4000 )
+			end
+		elseif (playerCol == nil) then
+			setElementPosition( source, 0, 0, 0 )
+			setElementData( player, "col", source )
+			attachElements ( colObject, player, 0, 0, 0, 0, 0, -90 )
+			attachElements ( colMarker, player, 0, 0, 0, 0, 0, 0 )
+			toggleControl ( player, "sprint", false )
+			CTF_announce ( r, g, b, getPlayerName( player ) .. " took the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. " flag!", 4000 )
 		end
-	elseif (playerCol == nil) then
-		setElementPosition( source, 0, 0, 0 )
-        	setElementData( player, "col", source )
-		attachElements ( colObject, player, 0, 0, 0, 0, 0, -90 )
-		attachElements ( colMarker, player, 0, 0, 0, 0, 0, 0 )
-		toggleControl ( player, "sprint", false )
-		CTF_announce ( r, g, b, getPlayerName( player ) .. " took the " .. getTeamName( colTeam ) .. " teams' " .. getElementData( colFlag, "name" ) .. " flag!", 4000 )
-	end
 	end
 end
 
 function CTF_announce ( red, green, blue, text, time )
 	textItemSetColor ( CTF_annText, red, green, blue, 255 )
 	textItemSetText ( CTF_annText, text )
-	if ( CTF_annTimer ) then
+	if ( CTF_annTimer and isTimer( CTF_annTimer ) ) then
 		killTimer ( CTF_annTimer )
 	else
 		local players = getElementsByType( "player" )
@@ -460,7 +450,7 @@ end
 
 function updateScores()
 	local teams = getElementsByType( "team", CTF_mapRoot )
-	local str=""
+	local str = ""
 	for k,v in ipairs(teams) do
 		str = str .. getTeamName( v ) .. ": " .. getElementData( v, "score" ) .. "\n"
 	end
@@ -476,11 +466,7 @@ function CTF_annRem()
 end
 
 function CTF_spawnMenu ( player )
-	--setCameraMode ( player, "fixed" )
-	--setTimer( setCameraPosition, 1000, 1, player, CTF_camPosX, CTF_camPosY, CTF_camPosZ )
-	--setTimer( setCameraLookAt, 1050, 1, player, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
-	--setCameraPosition ( player, CTF_camPosX, CTF_camPosY, CTF_camPosZ )
-	--setCameraLookAt ( player, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
+	if not isElement(player) then return end
 	setCameraMatrix( player, CTF_camPosX, CTF_camPosY, CTF_camPosZ, CTF_camLookX, CTF_camLookY, CTF_camLookZ )
 	toggleAllControls ( player, false, true, false )
 	if ( CTF_spawnscreen == true ) then
@@ -494,6 +480,8 @@ function CTF_spawnMenu ( player )
 		bindKey ( player, "enter", "down", CTF_confirmSpawn,  player )
 		bindKey ( player, "arrow_l", "down", CTF_changeSpawn, player )
 		bindKey ( player, "arrow_r", "down", CTF_changeSpawn, player )
+		bindKey ( player, "arrow_u", "down", CTF_changeSpawn, player )
+		bindKey ( player, "arrow_d", "down", CTF_changeSpawn, player )
 	else
 		local teams = getElementsByType( "team", CTF_mapRoot )
 		local team = teams[1]
@@ -515,7 +503,7 @@ function CTF_changeSpawn( player, key )
 	local last = getElementData( player, "CTF_lastSpawn" )
 	textDisplayRemoveObserver ( CTF_spawnDisp[last], player )
 	local teams = getElementsByType( "team", CTF_mapRoot )
-	if ( key == "arrow_l" ) then last = last - 1 else last = last + 1 end
+	if ( key == "arrow_l" or key == "arrow_d" ) then last = last - 1 else last = last + 1 end
 	if ( last < 1 ) then last = table.getn( teams ) end
 	if ( last > table.getn( teams ) ) then last = 1 end
 	textDisplayAddObserver ( CTF_spawnDisp[last], player )
@@ -535,6 +523,8 @@ function CTF_confirmSpawn( player )
 		unbindKey ( player, "enter", "down", CTF_confirmSpawn )
 		unbindKey ( player, "arrow_l", "down", CTF_changeSpawn )
 		unbindKey ( player, "arrow_r", "down", CTF_changeSpawn )
+		unbindKey ( player, "arrow_u", "down", CTF_changeSpawn )
+		unbindKey ( player, "arrow_d", "down", CTF_changeSpawn )
 		textDisplayRemoveObserver ( CTF_spawnHeaderDisp, player )
 		textDisplayRemoveObserver ( CTF_spawnDisp[confTeam], player )
 		textDisplayRemoveObserver ( CTF_spawnWarningDisp, player )
@@ -551,23 +541,24 @@ function CTF_confirmSpawn( player )
 end
 
 function CTF_spawnPlayer( player )
-	if ( player ) then
+	if ( isElement(player) ) then
 		local team = getPlayerTeam( player )
 		if ( team ) then
 			local spawnpoints = getChildren ( team, "spawnpoint" )
 			call(getResourceFromName("spawnmanager"), "spawnPlayerAtSpawnpoint", player, spawnpoints[ math.random( 1, #spawnpoints ) ] )
-			--spawnPlayerAtSpawnpoint ( player, spawnpoints[ math.random( 1, #spawnpoints ) ] )
+
 			local r,g,b = getTeamColor( team )
 			setPlayerNametagColor ( player, r, g, b )
+
 			if ( CTF_blips ) then
 				local playerBlip = createBlipAttachedTo ( player, 0, 2, r, g, b, 255 )
 				setElementData( playerBlip, "playerBlip", true )
 				if ( CTF_blips == "team" ) then
-					setElementVisibleTo ( playerBlip, CTF_root, false )
+					setElementVisibleTo ( playerBlip, root, false )
 					for k,v in ipairs(getPlayersInTeam(team)) do
 						setElementVisibleTo ( playerBlip, v, true )
 					end
-					local cols = getElementsByType ( "colshape" )
+					local cols = getElementsByType ( "colshape", resourceRoot )
 					for k,v in ipairs(cols) do
 						local colFlag = getElementData( v, "flag" )
 						if ( colFlag ) then
@@ -581,9 +572,10 @@ function CTF_spawnPlayer( player )
 					end
 				end
 			end
-			--setCameraMode ( player, "player" )
+
 			setCameraTarget( player, player )
 			toggleAllControls ( player, true, true, false )
+
 			for k,v in ipairs(CTF_weapons) do
 				giveWeapon ( player, CTF_weapons[k].model, CTF_weapons[k].ammo )
 			end
@@ -599,20 +591,13 @@ function destroyBlipsAttachedTo( source )
 end
 
 function getChildren ( root, type )
-	local elements = getElementsByType ( type )
-	local result = {}
-	for elementKey,elementValue in ipairs(elements) do
-		if ( getElementParent( elementValue ) == root ) then
-			result[ table.getn( result ) + 1 ] = elementValue
-		end
-	end
-	return result
+	return getElementChildren (root, type )
 end
 
-addEventHandler( "onResourceStart", CTF_root, CTF_onResourceStart )
-addEventHandler( "onPlayerJoin", CTF_root, CTF_onPlayerJoin )
-addEventHandler( "onPlayerQuit", CTF_root, CTF_onPlayerQuit )
-addEventHandler( "onPlayerWasted", CTF_root, CTF_onPlayerWasted )
-addEventHandler( "onColShapeHit", CTF_root, CTF_onColShapeHit )
-addEventHandler( "onGamemodeMapStart", CTF_root, CTF_gamemodeMapStart )
-addEventHandler( "onGamemodeMapStop", CTF_root, CTF_gamemodeMapStop )
+addEventHandler( "onResourceStart", resourceRoot, CTF_onResourceStart )
+addEventHandler( "onPlayerJoin", root, CTF_onPlayerJoin )
+addEventHandler( "onPlayerQuit", root, CTF_onPlayerQuit )
+addEventHandler( "onPlayerWasted", root, CTF_onPlayerWasted )
+addEventHandler( "onColShapeHit", resourceRoot, CTF_onColShapeHit )
+addEventHandler( "onGamemodeMapStart", root, CTF_gamemodeMapStart )
+addEventHandler( "onGamemodeMapStop", root, CTF_gamemodeMapStop )

@@ -23,7 +23,7 @@ local rotationless
 local rotX, rotY, rotZ
 
 local collisionless
-local minX, minY, minZ, maxX, maxY, maxZ
+local minZ
 
 local ignoreFirst
 
@@ -136,27 +136,6 @@ local function processCursorMove(absoluteX, absoluteY)
 	end
 end
 
-local function zoomWithMouseWheel(key, keyState)
-	if not getCommandState("mod_rotate") then
-		local speed
-	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = zoomSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = zoomSpeed.fast
-	    else
-	       	speed = zoomSpeed.medium
-	    end
-
-	    if getCommandState("zoom_in") then
-   	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
-			processCursorMove()
-	    else --if key == "zoom_out"
-	       	maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
-			processCursorMove()
-	    end
-	end
-end
-
 local function onClientCursorMove_cursor(_, _, absoluteX, absoluteY )
 	if (selectedElement) then
 		if ignoreFirst then
@@ -172,11 +151,11 @@ local function rotateWithMouseWheel(key, keyState)
 		rotX, rotY, rotZ = getElementRotation(selectedElement)
 		local speed
 	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = rotateSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = rotateSpeed.fast
+			speed = rotateSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = rotateSpeed.fast
 	    else
-	       	speed = rotateSpeed.medium
+			speed = rotateSpeed.medium
 	    end
 		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
@@ -203,19 +182,19 @@ end
 local function zoomWithMouseWheel(key, keyState)
 	if not getCommandState("mod_rotate") then
 		local speed
-	    if (getCommandState("mod_slow_speed")) then
-   	 		speed = zoomSpeed.slow
-   		elseif (getCommandState("mod_fast_speed")) then
-   	    	speed = zoomSpeed.fast
-	    else
-	       	speed = zoomSpeed.medium
-	    end
+		if (getCommandState("mod_slow_speed")) then
+			speed = zoomSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = zoomSpeed.fast
+		else
+			speed = zoomSpeed.medium
+		end
 
-	    if key == "zoom_in" then
-   	 		maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
-	    else --if key == "zoom_out"
-	       	maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
-	    end
+		if key == "zoom_in" then
+			maxMoveDistance = math.max(maxMoveDistance - speed, MIN_DISTANCE)
+		else --if key == "zoom_out"
+			maxMoveDistance = math.min(maxMoveDistance + speed, MAX_DISTANCE)
+		end
 
 		--force an update if an element is selected
 		if selectedElement then
@@ -240,19 +219,19 @@ function attachElement(element)
 			rotationless = false
 			rotX, rotY, rotZ = getElementRotation(element)
 			collisionless = false
-			minX, minY, minZ, maxX, maxY, maxZ = exports.edf:edfGetElementBoundingBox(element)
+			_, _, minZ = exports.edf:edfGetElementBoundingBox(element)
 		end
 	else
 		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then
 			rotationless = false
 			rotX, rotY, rotZ = getElementRotation(element)
 			collisionless = false
-			minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
+			_, _, minZ = getElementBoundingBox(element)
 		elseif (getElementType(element) == "ped") then
 			rotationless = false
 			rotX, rotY, rotZ = 0, 0, getPedRotation(element)
 			collisionless = false
-			minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(element)
+			_, _, minZ = getElementBoundingBox(element)
 		else
 			rotationless = true
 			collisionless = true
@@ -285,7 +264,7 @@ function detachElement()
 	camX, camY, camZ = nil, nil, nil
 	rotX, rotY, rotZ = nil, nil, nil
 	rotationless = nil
-	minX, minY, minZ, maxX, maxY, maxZ = nil, nil, nil, nil, nil, nil
+	minZ = nil
 	collisionless = nil
 
 	return true

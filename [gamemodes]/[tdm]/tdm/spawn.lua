@@ -36,7 +36,7 @@ local g_Spawnpoints
 
 function processSpawnStart()
 	--Grab our spawnpoints
-	g_Spawnpoints = getElementsByType("spawnpoint", g_MapRoot or g_Root )
+	g_Spawnpoints = getElementsByType("spawnpoint", g_MapRoot or root )
 	--Randomize our spawnpoint order
 	table.shuffle(g_Spawnpoints)
 	for i,player in ipairs(getElementsByType"player") do

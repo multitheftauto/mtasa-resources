@@ -371,7 +371,7 @@ end
 
 function guiToggleUtilityDropDown ( util )
     if not util then
-        for util,tab in pairs ( heditGUI.menuItems ) do
+        for util2,tab in pairs ( heditGUI.menuItems ) do
             for i,gui in ipairs ( tab ) do
                 guiSetVisible ( gui, false )
             end

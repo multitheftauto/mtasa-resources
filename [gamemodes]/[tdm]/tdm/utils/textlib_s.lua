@@ -161,7 +161,7 @@ function dxText:boundingBox(left,top,right,bottom)
 end
 
 function dxText:sync(element)
-	element = element or getRootElement()
+	element = element or root
 	if not isElement(element) then
 		outputDebugString ( "dxText:sync - Bad argument", 0, 112, 112, 112 )
 		return false

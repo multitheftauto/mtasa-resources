@@ -16,7 +16,7 @@ SToptimesManager.instances = {}
 ---------------------------------------------------------------------------
 
 addEvent('onMapStarting')
-addEventHandler('onMapStarting', g_Root,
+addEventHandler('onMapStarting', root,
 	function(mapInfo, mapOptions, gameOptions)
 		if g_SToptimesManager then
 			g_SToptimesManager:setModeAndMap( mapInfo.modename, mapInfo.name, gameOptions.statsKey )
@@ -25,7 +25,7 @@ addEventHandler('onMapStarting', g_Root,
 )
 
 addEvent('onPlayerFinish')
-addEventHandler('onPlayerFinish', g_Root,
+addEventHandler('onPlayerFinish', root,
 	function(rank, time)
 		if g_SToptimesManager then
 			g_SToptimesManager:playerFinished( source, time)
@@ -33,7 +33,7 @@ addEventHandler('onPlayerFinish', g_Root,
 	end
 )
 
-addEventHandler('onResourceStop', g_ResRoot,
+addEventHandler('onResourceStop', resourceRoot,
 	function()
 		if g_SToptimesManager then
 			g_SToptimesManager:unloadingMap()
@@ -41,7 +41,7 @@ addEventHandler('onResourceStop', g_ResRoot,
 	end
 )
 
-addEventHandler('onPlayerQuit', g_Root,
+addEventHandler('onPlayerQuit', root,
 	function()
 		if g_SToptimesManager then
 			g_SToptimesManager:removePlayerFromUpdateList(source)
@@ -50,7 +50,7 @@ addEventHandler('onPlayerQuit', g_Root,
 	end
 )
 
-addEventHandler('onResourceStart', g_ResRoot,
+addEventHandler('onResourceStart', resourceRoot,
 	function()
 		local raceInfo = getRaceInfo()
 		if raceInfo and g_SToptimesManager then
@@ -339,7 +339,7 @@ end
 
 
 addEvent('onClientRequestToptimesUpdates', true)
-addEventHandler('onClientRequestToptimesUpdates', getRootElement(),
+addEventHandler('onClientRequestToptimesUpdates', root,
 	function( bOn, clientRevision )
 		g_SToptimesManager:doOnClientRequestToptimesUpdates( source, bOn, clientRevision )
 	end
@@ -394,7 +394,7 @@ end
 
 -- React to admin panel changes
 addEvent ( "onSettingChange" )
-addEventHandler('onSettingChange', g_ResRoot,
+addEventHandler('onSettingChange', resourceRoot,
 	function(name, oldvalue, value, playeradmin)
 		outputDebug( 'MISC', 'Setting changed: ' .. tostring(name) .. '  value:' .. tostring(value) .. '  value:' .. tostring(oldvalue).. '  by:' .. tostring(player and getPlayerName(player) or 'n/a') )
 		cacheSettings()
@@ -404,13 +404,13 @@ addEventHandler('onSettingChange', g_ResRoot,
 			g_SToptimesManager:updateTopText()
 		end
 		-- Update clients
-		clientCall(g_Root,'updateSettings', g_Settings, playeradmin)
+		clientCall(root,'updateSettings', g_Settings, playeradmin)
 	end
 )
 
 -- New player joined
 addEvent('onLoadedAtClient_tt', true)
-addEventHandler('onLoadedAtClient_tt', g_Root,
+addEventHandler('onLoadedAtClient_tt', root,
 	function()
 		-- Tell newly joined client current settings
 		clientCall(source,'updateSettings', g_Settings)

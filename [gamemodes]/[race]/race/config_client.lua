@@ -3,12 +3,11 @@
 --
 
 local gui = {}
-local guiData = {}
 local AddonsInfoList = {}
 
 
 addEvent('onClientOpenConfig', true )
-addEventHandler('onClientOpenConfig', g_ResRoot,
+addEventHandler('onClientOpenConfig', resourceRoot,
 	function()
 		openConfigMenu()
 	end
@@ -60,12 +59,12 @@ function openConfigMenu ()
 	guiSetVisible(gui["scrollpane"],false)
 	guiScrollPaneSetScrollBars(gui["scrollpane"],false, true)
 
-	triggerServerEvent('onRequestAddonsInfo', g_Me )
+	triggerServerEvent('onRequestAddonsInfo', localPlayer )
 end
 
 
 addEvent('onClientReceiveAddonsInfo', true )
-addEventHandler('onClientReceiveAddonsInfo', g_ResRoot,
+addEventHandler('onClientReceiveAddonsInfo', resourceRoot,
 	function(addonsInfoMap)
 		-- Map to list
 		AddonsInfoList = {}
@@ -120,32 +119,32 @@ addEventHandler('onClientReceiveAddonsInfo', g_ResRoot,
 		colPositions[4] = colPositions[3] + colLengths[3]
 		colPositions[5] = colPositions[4] + colLengths[4]
 
-		local sx,sy,px,py
+		local sy,py
 		for idx,header in ipairs(gui["headers"]) do
-			px,py = guiGetPosition( header, false )
+			_,py = guiGetPosition( header, false )
 			guiSetPosition( header, colPositions[idx], py, false )
 		end
 
-		for idx,row in ipairs(gui["rows"]) do
-			local row = gui["rows"][idx]
+		for idx,row2 in ipairs(gui["rows"]) do
+			row = gui["rows"][idx]
 
-			sx,sy = guiGetSize( row.state, false )
-			px,py = guiGetPosition( row.state, false )
+			_,sy = guiGetSize( row.state, false )
+			_,py = guiGetPosition( row.state, false )
 			guiSetSize( row.state, colLengths[1], sy, false )
 			guiSetPosition( row.state, colPositions[1], py, false )
 
-			sx,sy = guiGetSize( row.checkbox, false )
-			px,py = guiGetPosition( row.checkbox, false )
+			_,sy = guiGetSize( row.checkbox, false )
+			_,py = guiGetPosition( row.checkbox, false )
 			guiSetSize( row.checkbox, colLengths[2] + colLengths[3], sy, false )
 			guiSetPosition( row.checkbox, colPositions[2], py, false )
 
-			sx,sy = guiGetSize( row.name, false )
-			px,py = guiGetPosition( row.name, false )
+			_,sy = guiGetSize( row.name, false )
+			_,py = guiGetPosition( row.name, false )
 			guiSetSize( row.name, colLengths[3], sy, false )
 			guiSetPosition( row.name, colPositions[3], py, false )
 
-			sx,sy = guiGetSize( row.description, false )
-			px,py = guiGetPosition( row.description, false )
+			_,sy = guiGetSize( row.description, false )
+			_,py = guiGetPosition( row.description, false )
 			guiSetSize( row.description, colLengths[4], sy, false )
 			guiSetPosition( row.description, colPositions[4], py, false )
 		end
@@ -172,32 +171,37 @@ function resizeMenu()
 	guiSetRect( gui["scrollpane"], rectTop, false )
 
 	-- get rect for headerul2
-	local rectHeaderul2, rectCur = rectSplitY( rectBot, 18 )
+	local rectCur
+	local rectHeaderul2 = rectSplitY( rectBot, 18 )
 	guiSetRect( gui["headerul2"], rectHeaderul2, false )
 
 	-- gap
-	local _, rectCur = rectSplitY( rectBot, 25 )
+	_, rectCur = rectSplitY( rectBot, 25 )
 
 	-- get rect for label1
-	local rectLabel1, rectCur = rectSplitY( rectCur, 25 )
+	local rectLabel1
+	rectLabel1, rectCur = rectSplitY( rectCur, 25 )
 	guiSetRect( gui["label1"], rectLabel1, false )
 
 	-- gap
 	rectSplitY( rectCur, 10 )
 
 	-- get rect for label2
-	local rectLabel2, rectCur = rectSplitY( rectCur, 15 )
+	local rectLabel2
+	rectLabel2, rectCur = rectSplitY( rectCur, 15 )
 	guiSetRect( gui["label2"], rectLabel2, false )
 
 	-- get rect for label3
-	local rectLabel3, rectCur = rectSplitY( rectCur, 15 )
+	local rectLabel3
+	rectLabel3, rectCur = rectSplitY( rectCur, 15 )
 	guiSetRect( gui["label3"], rectLabel3, false )
 
 	-- get rect bottom bar
-	local _,rectCur = rectSplitY( rectCur, -30 )
+	_,rectCur = rectSplitY( rectCur, -30 )
 
 	-- get rect for close button
-	local rectCur, rectClose = rectSplitX( rectCur, -95 )
+	local rectClose
+	_, rectClose = rectSplitX( rectCur, -95 )
 	guiSetPosition ( gui["button_close"], rectClose.x, rectClose.y, false )
 	guiSetSize ( gui["button_close"], 90, 22, false )
 end
@@ -209,7 +213,6 @@ function closeConfigMenu ()
 	if gui["form"] then
 		destroyElement( gui["form"] )
 		gui = {}
-		guiData = {}
 	end
     showCursor ( false )
 end
@@ -218,7 +221,7 @@ end
 --------------------------------
 -- Config events
 --------------------------------
-addEventHandler ( "onClientGUISize", g_ResRoot,
+addEventHandler ( "onClientGUISize", resourceRoot,
 	function ()
 		if source == gui["form"] then
 			resizeMenu()
@@ -226,7 +229,7 @@ addEventHandler ( "onClientGUISize", g_ResRoot,
 	end
 )
 
-addEventHandler ( "onClientGUIClick", g_ResRoot,
+addEventHandler ( "onClientGUIClick", resourceRoot,
 	function ()
 		if not gui["form"] then
 			return
@@ -245,9 +248,9 @@ addEventHandler ( "onClientGUIClick", g_ResRoot,
 					addonsInfoMap[info.name] = info
 				end
 				-- Send to server
-				triggerServerEvent('onRequestAddonsChange', g_Me, addonsInfoMap )
+				triggerServerEvent('onRequestAddonsChange', localPlayer, addonsInfoMap )
 				-- Update status
-				setTimer( function() triggerServerEvent('onRequestAddonsInfo', g_Me ) end, 150, 1 )
+				setTimer( function() triggerServerEvent('onRequestAddonsInfo', localPlayer ) end, 150, 1 )
 				return
 			end
 		end

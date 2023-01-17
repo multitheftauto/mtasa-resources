@@ -1,6 +1,6 @@
 allEDF = {}
 
-addEventHandler ( "onClientGUILoaded", rootElement,
+addEventHandler ( "onClientGUILoaded", root,
 	function()
 		triggerClientEvent ( client, "syncEDFDefinitions", client, allEDF )
 	end
@@ -19,7 +19,7 @@ function setClientAddedEDFs(resources)
 	table.subtract(allEDF.availEDF, resources)
 	-- set added list
 	allEDF.addedEDF = resources
-	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+	triggerClientEvent('syncEDFDefinitions', root, allEDF)
 end
 
 function addClientEDFs(edfsToAdd)
@@ -33,7 +33,7 @@ function addClientEDFs(edfsToAdd)
 			end
 		end
 	end
-	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+	triggerClientEvent('syncEDFDefinitions', root, allEDF)
 end
 
 function removeClientEDFs(edfsToRemove)
@@ -47,7 +47,7 @@ function removeClientEDFs(edfsToRemove)
 			end
 		end
 	end
-	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+	triggerClientEvent('syncEDFDefinitions', root, allEDF)
 end
 
 function getClientAvailableEDFs()
@@ -58,7 +58,7 @@ function getClientAddedEDFs()
 	return table.map(table.shallowcopy(allEDF.addedEDF), getResourceFromName)
 end
 
-addEventHandler ( "onResourceStart", thisResourceRoot,
+addEventHandler ( "onResourceStart", resourceRoot,
 	function ()
 		if getResourceState( edf.res ) == "running" then
 			loadedDefs = edf.edfGetLoadedEDFResources()
@@ -69,7 +69,7 @@ addEventHandler ( "onResourceStart", thisResourceRoot,
 			for k,v in ipairs(resources) do
 				if v ~= edf.res and v ~= getThisResource() and edf.edfHasDefinition(v) then
 					local loaded = false
-					for k, loadedResource in pairs(loadedDefs) do
+					for k2, loadedResource in pairs(loadedDefs) do
 						if v == loadedResource then
 							loaded = true
 							break
@@ -89,12 +89,12 @@ addEventHandler ( "onResourceStart", thisResourceRoot,
 function reloadEDFDefinitions(newEDF,noOutput)
 	if client and not isPlayerAllowedToDoEditorAction(client,"definitions") then
 		editor_gui.outputMessage ("You don't have permissions to change the map definitions!", client,255,0,0)
-		triggerClientEvent(client, 'syncEDFDefinitions', rootElement, allEDF)
+		triggerClientEvent(client, 'syncEDFDefinitions', root, allEDF)
 		return
 	end
 
 	if client and not noOutput then
-		editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", rootElement, 255, 255, 0 )
+		editor_gui.outputMessage ( getPlayerName(client).." updated the loaded definitions.", root, 255, 255, 0 )
 	end
 	loadedDefs = edf.edfGetLoadedEDFResources()
 	--load new defs
@@ -103,7 +103,7 @@ function reloadEDFDefinitions(newEDF,noOutput)
 		local resource = getResourceFromName ( resourceName )
 		if resource then
 			local loaded = false
-			for k, loadedResource in ipairs(loadedDefs) do
+			for k2, loadedResource in ipairs(loadedDefs) do
 				if loadedResource == resource then
 					loaded = true
 					break
@@ -129,7 +129,7 @@ function reloadEDFDefinitions(newEDF,noOutput)
 			local resource = getResourceFromName ( resourceName )
 			if resource then
 				local loaded = false
-				for k, loadedResource in ipairs(loadedDefs) do
+				for k2, loadedResource in ipairs(loadedDefs) do
 					if loadedResource == resource then
 						loaded = true
 						break
@@ -147,12 +147,12 @@ function reloadEDFDefinitions(newEDF,noOutput)
 		end
 	end
 	allEDF = newEDF
-	triggerClientEvent('syncEDFDefinitions', rootElement, allEDF)
+	triggerClientEvent('syncEDFDefinitions', root, allEDF)
 end
 addEvent ( "reloadEDFDefinitions", true )
-addEventHandler ( "reloadEDFDefinitions", rootElement, reloadEDFDefinitions )
+addEventHandler ( "reloadEDFDefinitions", root, reloadEDFDefinitions )
 
-addEventHandler ( "onResourceStop",thisResourceRoot,
+addEventHandler ( "onResourceStop",resourceRoot,
 	function()
 		if not newEDF then return end --newEDF is cleared when the editor is stopped (prevent a debug error)
 		for i, resourceName in ipairs(newEDF.addedEDF) do
@@ -165,7 +165,7 @@ addEventHandler ( "onResourceStop",thisResourceRoot,
 )
 
 local gamemodeToCancel
-addEventHandler ( "onGamemodeStart", rootElement,
+addEventHandler ( "onGamemodeStart", root,
 	function ( resource )
 		if resource == gamemodeToCancel then
 			cancelEvent(true)

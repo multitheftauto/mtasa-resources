@@ -5,7 +5,6 @@
 --The event call will also have its own ID, so you will be able to use the same timer script, on more than 1 mission at one point in time
 --Here goes!
 
-misTmrRoot = getRootElement()
 missionTimers = {}
 local time = 0
 
@@ -14,7 +13,7 @@ function misTmrStart ( name )
 	addEvent ( "missionTimerActivated", false )
 	setTimer ( missionTimerTick, 1000, 0 )
 end
-addEventHandler ( "onResourceStart", getResourceRootElement(getThisResource()), misTmrStart )
+addEventHandler ( "onResourceStart", resourceRoot, misTmrStart )
 
 function createMissionTimer ( player, timeSeconds, direction, textSize, textPosX, textPosY, textRed, textGreen, textBlue, showForAll )
 	local missionTimersCount = #missionTimers + 1
@@ -89,7 +88,7 @@ function destroyMissionTimer ( timerID )
 	end
 end
 
-function showMisTextForPlayer ( player, timerID, time, posx, posy, red, green, blue, scale, text, showForAll )
+function showMisTextForPlayer ( player, timerID, time2, posx, posy, red, green, blue, scale, text, showForAll )
 	local textDisplay = textCreateDisplay ()
 	local textItem = textCreateTextItem ( text, posx, posy, 2, red, green, blue, 255, scale )
 	textDisplayAddText ( textDisplay, textItem )
@@ -111,9 +110,9 @@ end
 
 function calcTime ( timeLeft )
 	local calcString = ""
-	local timeHours = 0
-	local timeMins = 0
-	local timeSecs = 0
+	local timeHours
+	local timeMins
+	local timeSecs
 
 	timeLeft = tonumber(timeLeft)
 	timeSecs = math.mod(timeLeft, 60)
@@ -143,7 +142,6 @@ function formatStr ( formatString )
 end
 
 function missionTimerTick()
-	local k = 0
 	for k,theTimer in ipairs(missionTimers) do
 		if ( theTimer["started"] ) then
 			if ( theTimer["direction"] == "<" ) then
@@ -151,12 +149,10 @@ function missionTimerTick()
 				theTimer["timeString"] = calcTime ( theTimer["time"] )
 				setTimerText ( theTimer )
 				if ( theTimer["time"] == 0 ) then
-					triggerEvent ( "missionTimerActivated", misTmrRoot, tostring(theTimer["id"]), theTimer["player"] )
+					triggerEvent ( "missionTimerActivated", root, tostring(theTimer["id"]), theTimer["player"] )
 					theTimer["started"] = false
 				end
-			elseif ( theTimer["direction"] == ">" ) then
-				--Counting up has yet to be coded
-			else
+			elseif ( theTimer["direction"] ~= ">" ) then
 				theTimer["direction"] = "<"
 			end
 		end

@@ -1,6 +1,6 @@
 addEvent( "onGhostDataReceive", true )
 
-addEventHandler( "onGhostDataReceive", g_Root,
+addEventHandler( "onGhostDataReceive", root,
 	function( recording, bestTime, racer, mapName )
 		if not isBesttimeValidForRecording( recording, bestTime ) then
 			outputDebugServer( "Received an invalid ghost recording", mapName, racer, " (Besttime not valid for recording. Error: " .. getRecordingBesttimeError( recording, bestTime ) .. ")" )
@@ -24,7 +24,7 @@ addEventHandler( "onGhostDataReceive", g_Root,
 			xmlUnloadFile( ghost )
 		end
 
-		local ghost = xmlCreateFile( "ghosts/" .. mapName .. ".ghost", "ghost" )
+		ghost = xmlCreateFile( "ghosts/" .. mapName .. ".ghost", "ghost" )
 		if ghost then
 			local info = xmlCreateChild( ghost, "i" )
 			if info then
@@ -32,9 +32,9 @@ addEventHandler( "onGhostDataReceive", g_Root,
 				xmlNodeSetAttribute( info, "t", tostring( bestTime ) )
 			end
 
-			for _, info in ipairs( recording ) do
+			for _, info2 in ipairs( recording ) do
 				local node = xmlCreateChild( ghost, "n" )
-				for k, v in pairs( info ) do
+				for k, v in pairs( info2 ) do
 					if type(v) == "number" then
 						xmlNodeSetAttribute( node, tostring( k ), math.floor(v * 10000 + 0.5) / 10000 )
 					else

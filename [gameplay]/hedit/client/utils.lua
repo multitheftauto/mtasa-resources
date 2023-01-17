@@ -307,6 +307,33 @@ function loadClientHandling ( vehicle, name )
     return true
 end
 
+function deleteClientHandling ( vehicle, name )
+    if not isValidVehicle ( vehicle ) then
+        if DEBUGMODE then
+            error ( "Invalid vehicle element at 'deleteClientHandling'! ["..tostring(vehicle).."]", 2 )
+        end
+
+        return false
+    end
+
+    if not isClientHandlingExisting ( name ) then
+        if DEBUGMODE then
+            error ( "Handling name given at 'deleteClientHandling' does not exist! ["..tostring(name).."]", 2 )
+        end
+
+        return false
+    end
+
+    name = string.lower ( name )
+    local handling = xmlCache.clientsaves[name].saveNode
+
+    xmlDestroyNode ( handling )
+    xmlSaveFile ( xmlFile[client_handling_file] )
+
+    xmlCache.clientsaves[name] = nil
+
+    return true
+end
 
 -- Imports a handling line in handling.cfg format, given a proper method.
 -- Valid methods: III, VC, SA, and IV
@@ -480,6 +507,11 @@ function prepareHandlingValue ( vehicle, property, value )
 
     if (property == "maxVelocity") and (tonumber(value) > 13.02 and tonumber(value) < 13.1) then
         value = 13.04
+    end
+
+    -- Workaround for this bug: https://github.com/multitheftauto/mtasa-blue/issues/494
+    if (property == "steeringLock") and (getVehicleType(vehicle) == "Bike" or getVehicleType(vehicle) == "BMX") and tonumber(value) < 1 then
+        value = 1
     end
 
     setVehicleHandling ( vehicle, property, value )

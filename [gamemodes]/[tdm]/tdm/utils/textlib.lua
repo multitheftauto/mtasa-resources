@@ -184,7 +184,7 @@ function dxText:boundingBox(left,top,right,bottom,relative)
 	return true
 end
 
-addEventHandler ( "onClientRender", getRootElement(),
+addEventHandler ( "onClientRender", root,
 	function()
 		for self,_ in pairs(visibleText) do
 			while true do
@@ -268,7 +268,7 @@ addEventHandler ( "onClientRender", getRootElement(),
 )
 
 if addEvent ( "updateDisplaysDM", true ) then
-	addEventHandler ( "updateDisplaysDM", getRootElement(),
+	addEventHandler ( "updateDisplaysDM", root,
 		function(self)
 			setmetatable( self, dxText_mt )
 			--Use "smart positioning"
@@ -299,7 +299,7 @@ function updateSmartPositions(self)
 end
 
 function getSmartPosition(pos,full)
-	local final = pos
+	local final
 	if pos > 1 then --Is X bigger than 1?  If so we've got an absolute position
 		final = pos
 	elseif pos < -1 then --We have a reversed absolute position

@@ -11,6 +11,8 @@
 aAclForm = nil
 aAclData = {}
 
+addEvent ( "aAdminACL", true )
+
 function aManageACL ()
 	if ( aAclForm == nil ) then
 		aAclData["group_objects"] = {}
@@ -47,7 +49,6 @@ function aManageACL ()
 		aACLExit		= guiCreateButton ( 0.75, 0.90, 0.27, 0.04, "Close", true, aAclForm )
 		aclDisplayOptions ( "", "" )
 
-		addEvent ( "aAdminACL", true )
 		addEventHandler ( "aAdminACL", localPlayer, aAdminACL )
 		addEventHandler ( "onClientGUIClick", aAclForm, aClientACLClick )
 		addEventHandler ( "onClientGUIDoubleClick", aAclForm, aClientACLDoubleClick )
@@ -60,7 +61,7 @@ function aManageACL ()
 end
 
 function aACLClose ( destroy )
-	if ( ( destroy ) or ( aPerformanceACL and guiCheckBoxGetSelected ( aPerformanceACL ) ) ) then
+	if ( destroy ) then
 		if ( aAclForm ) then
 			removeEventHandler ( "onClientGUIClick", aAclForm, aClientACLClick )
 			removeEventHandler ( "onClientGUIDoubleClick", aAclForm, aClientACLDoubleClick )
@@ -89,9 +90,9 @@ function aAdminACL ( type, acltable )
 		guiGridListSetItemText ( aACLList, aAclData["acl_row"], 2, "ACL:", true, false )
 		aAclData["acl"] = acltable["acl"]
 		for id, name in ipairs ( acltable["acl"] ) do
-			local row = guiGridListAddRow ( aACLList )
-			guiGridListSetItemText ( aACLList, row, 1, "+", false, false )
-			guiGridListSetItemText ( aACLList, row, 2, name, false, false )
+			local row2 = guiGridListAddRow ( aACLList )
+			guiGridListSetItemText ( aACLList, row2, 1, "+", false, false )
+			guiGridListSetItemText ( aACLList, row2, 2, name, false, false )
 		end
 		aclDisplayOptions ( "", "" )
 	elseif ( type == "aclobjects" ) then

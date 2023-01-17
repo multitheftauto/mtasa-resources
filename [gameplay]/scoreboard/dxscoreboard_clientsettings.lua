@@ -650,12 +650,12 @@ function createScoreboardSettingsWindow( posX, posY )
 	tempColors.content_color.a = settings.content_color.a or defaultSettings.content_color.a
 
 	addEventHandler( "onClientGUIClick", windowSettings, settingsWindowClickHandler )
-	addEventHandler( "onClientRender", getRootElement(), drawSettingsWindowColors )
+	addEventHandler( "onClientRender", root, drawSettingsWindowColors )
 end
 
 function destroyScoreboardSettingsWindow()
 	removeEventHandler( "onClientGUIClick", windowSettings, settingsWindowClickHandler )
-	removeEventHandler( "onClientRender", getRootElement(), drawSettingsWindowColors )
+	removeEventHandler( "onClientRender", root, drawSettingsWindowColors )
 	destroyElement( windowSettings )
 	if not getKeyState( "mouse2" ) then
 		showCursor( false )

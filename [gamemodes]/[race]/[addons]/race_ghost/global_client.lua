@@ -1,7 +1,6 @@
 POSITION_PULSE = 200
 KEYSPAM_LIMIT = 200
 _DEGUG = false
-g_Root = getRootElement()
 
 keyNames = 	{ 	"vehicle_fire", "vehicle_secondary_fire", "vehicle_left", "vehicle_right", "steer_forward", "steer_back", "accelerate",
 				"brake_reverse", "horn", "sub_mission", "handbrake", "vehicle_look_left", "vehicle_look_right", "special_control_left",
@@ -40,9 +39,9 @@ function msToTimeStr(ms)
 end
 
 -- Trying to avoid client/server event errors
-addEventHandler( "onClientResourceStart", getResourceRootElement(),
+addEventHandler( "onClientResourceStart", resourceRoot,
 	function()
-		triggerServerEvent ( "onRaceGhostResourceStarted", g_Root )
+		triggerServerEvent ( "onRaceGhostResourceStarted", root )
 	end
 )
 

@@ -109,7 +109,7 @@ function unloadTile ( name )
 	return true
 end
 
-addEventHandler ( "onClientHUDRender", getRootElement ( ),
+addEventHandler ( "onClientHUDRender", root,
 	function ( )
 		local visibleTileNames = table.merge ( engineGetVisibleTextureNames ( "radar??" ), engineGetVisibleTextureNames ( "radar???" ) )
 

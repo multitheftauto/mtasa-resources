@@ -29,8 +29,8 @@ end
 
 function aAdminMenu ()
 	if ( aAdminForm == nil ) then
-		local x, y = guiGetScreenSize()
-		aAdminForm			= guiCreateWindow ( x / 2 - 310, y / 2 - 260, 620, 520, "", false )
+		local sx, sy = guiGetScreenSize()
+		aAdminForm			= guiCreateWindow ( sx / 2 - 310, sy / 2 - 260, 620, 520, "", false )
 							guiWindowSetSizable ( aAdminForm, false )
 						  guiSetText ( aAdminForm, "Admin Panel   -   v".._version )
 						  guiCreateLabel ( 0.75, 0.05, 0.45, 0.04, "Admin Panel by lil_Toady", true, aAdminForm )
@@ -53,16 +53,29 @@ function aAdminMenu ()
 		aTab1.Mute			= guiCreateButton ( 0.71, 0.170, 0.13, 0.04, "Mute", true, aTab1.Tab, "mute" )
 		aTab1.Freeze		= guiCreateButton ( 0.85, 0.170, 0.13, 0.04, "Freeze", true, aTab1.Tab, "freeze" )
 		aTab1.Spectate		= guiCreateButton ( 0.71, 0.215, 0.13, 0.04, "Spectate", true, aTab1.Tab, "spectate" )
-		aTab1.Slap			= guiCreateButton ( 0.85, 0.215, 0.13, 0.04, "Slap! "..aCurrentSlap.." _", true, aTab1.Tab, "slap" )
-		aTab1.SlapDropDown	= guiCreateStaticImage ( 0.95, 0.215, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
-		aTab1.SlapOptions		= guiCreateGridList ( 0.85, 0.215, 0.13, 0.40, true, aTab1.Tab )
-						  guiGridListSetSortingEnabled ( aTab1.SlapOptions, false )
-						  guiGridListAddColumn( aTab1.SlapOptions, "", 0.85 )
-						  guiSetVisible ( aTab1.SlapOptions, false )
-						  for i = 0, 10 do guiGridListSetItemText ( aTab1.SlapOptions, guiGridListAddRow ( aTab1.SlapOptions ), 1, tostring ( i * 10 ), false, false ) end
+		aTab1.Slap		= guiCreateList ( 0.85, 0.215, 0.13, 0.04, 0.40, "Slap! "..aCurrentSlap..'  _', true, aTab1.Tab, "slap" )
+
+		local slaps = {}
+		for i = 0, 10 do
+			table.insert(slaps, {text = tostring(i * 10), data = i * 10})
+		end
+
+		guiListSetColumns(aTab1.Slap, {{text = '', width = 0.8}})
+		guiListSetItems(aTab1.Slap, slaps)
+		guiListSetCallBack(aTab1.Slap, function(selectedData, selectedText)
+			local slap = tonumber(selectedData)
+			if slap then
+				aCurrentSlap = slap
+				guiSetText(aTab1.Slap, "Slap! "..slap..'  _')
+				if (aSpectator.Slap) then
+					guiSetText(aSpectator.Slap, "Slap! "..slap.."hp")
+				end
+			end
+		end)
+
 		aTab1.Nick			= guiCreateButton ( 0.71, 0.260, 0.13, 0.04, "Set Nick", true, aTab1.Tab )
 		aTab1.Shout			= guiCreateButton ( 0.85, 0.260, 0.13, 0.04, "Shout!", true, aTab1.Tab, "shout" )
-		aTab1.Admin			= guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Give admin rights", true, aTab1.Tab, "setgroup" )
+		aTab1.ManagePerms   = guiCreateButton ( 0.71, 0.305, 0.27, 0.04, "Manage permissions", true, aTab1.Tab, "setgroup" )
 
 		local y = 0.03		-- Start y coord
 		local A = 0.045		-- Large line gap
@@ -108,12 +121,32 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab1.SetTeam		= guiCreateButton ( 0.85, 0.440, 0.13, 0.04, "Set Team", true, aTab1.Tab, "setteam" )
 		aTab1.SetDimension	= guiCreateButton ( 0.71, 0.755, 0.13, 0.04, "Set Dimens.", true, aTab1.Tab, "setdimension" )
 		aTab1.SetInterior		= guiCreateButton ( 0.85, 0.755, 0.13, 0.04, "Set Interior", true, aTab1.Tab, "setinterior" )
-		aTab1.GiveWeapon		= guiCreateButton ( 0.71, 0.485, 0.27, 0.04, "Give: "..getWeaponNameFromID ( aCurrentWeapon ), true, aTab1.Tab, "giveweapon" )
-		aTab1.WeaponDropDown	= guiCreateStaticImage ( 0.95, 0.485, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
-		aTab1.WeaponOptions	= guiCreateGridList ( 0.71, 0.485, 0.27, 0.48, true, aTab1.Tab )
-						  guiGridListAddColumn( aTab1.WeaponOptions, "", 0.85 )
-						  guiSetVisible ( aTab1.WeaponOptions, false )
-						  for i = 1, 46 do if ( getWeaponNameFromID ( i ) ~= false ) then guiGridListSetItemText ( aTab1.WeaponOptions, guiGridListAddRow ( aTab1.WeaponOptions ), 1, getWeaponNameFromID ( i ), false, false ) end end
+		aTab1.GiveWeapon		= guiCreateList ( 0.71, 0.485, 0.27, 0.04, 0.48, "Give: "..getWeaponNameFromID ( aCurrentWeapon ), true, aTab1.Tab, "giveweapon" )
+
+		local weapons = {}
+		for i = 1, 46 do
+			local weapName = getWeaponNameFromID(i)
+			if weapName then
+				table.insert(weapons, {text = weapName, data = i})
+			end
+		end
+
+		local shortNames = {
+			["Combat Shotgun"] = "Combat SG",
+			["Rocket Launcher"] = "R. Launcher",
+			["Rocket Launcher HS"] = "R. Launcher HS"
+		}
+		guiListSetColumns(aTab1.GiveWeapon, {{text = '', width = 0.8}})
+		guiListSetItems(aTab1.GiveWeapon, weapons)
+		guiListSetCallBack(aTab1.GiveWeapon, function(selectedData, selectedText)
+			local weaponID = tonumber(selectedData)
+			if weaponID then
+				aCurrentWeapon = weaponID
+				guiSetText(aTab1.GiveWeapon, "Give: " .. (shortNames[selectedText] or selectedText))
+			end
+		end)
+
+
 		aTab1.SetMoney		= guiCreateButton ( 0.71, 0.530, 0.13, 0.04, "Set Money", true, aTab1.Tab, "setmoney" )
 		aTab1.SetStats		= guiCreateButton ( 0.85, 0.530, 0.13, 0.04, "Set Stats", true, aTab1.Tab, "setstat" )
 		aTab1.JetPack		= guiCreateButton ( 0.71, 0.575, 0.27, 0.04, "Give JetPack", true, aTab1.Tab, "jetpack" )
@@ -123,26 +156,29 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab1.VehicleDestroy	= guiCreateButton ( 0.71, 0.89, 0.13, 0.04, "Destroy", true, aTab1.Tab, "destroyvehicle" )
 		aTab1.VehicleBlow		= guiCreateButton ( 0.85, 0.84, 0.13, 0.04, "Blow", true, aTab1.Tab, "blowvehicle" )
 		aTab1.VehicleCustomize 	= guiCreateButton ( 0.85, 0.89, 0.13, 0.04, "Customize", true, aTab1.Tab, "customize" )
-		aTab1.AnonAdmin		  = guiCreateCheckBox (0.745, 0.942, 0.20, 0.04, "Anonymous Admin", false, true, aTab1.Tab )
-		aTab1.GiveVehicle		= guiCreateButton ( 0.71, 0.710, 0.27, 0.04, "Give: "..getVehicleNameFromModel ( aCurrentVehicle ), true, aTab1.Tab, "givevehicle" )
-		aTab1.VehicleDropDown 	= guiCreateStaticImage ( 0.95, 0.710, 0.03, 0.04, "client\\images\\dropdown.png", true, aTab1.Tab )
-		local gx, gy 		= guiGetSize ( aTab1.GiveVehicle, false )
-		aTab1.VehicleOptions	= guiCreateGridList ( 0, 0, gx, 200, false )
-						  guiGridListAddColumn( aTab1.VehicleOptions, "", 0.85 )
-						  guiSetAlpha ( aTab1.VehicleOptions, 0.80 )
-						  guiSetVisible ( aTab1.VehicleOptions, false )
-							local vehicleNames = {}
-							for i = 400, 611 do
-								if ( getVehicleNameFromModel ( i ) ~= "" ) then
-									table.insert( vehicleNames, { model = i, name = getVehicleNameFromModel ( i ) } )
-								end
-							end
-							table.sort( vehicleNames, function(a, b) return a.name < b.name end )
-							for _,info in ipairs(vehicleNames) do
-								local row = guiGridListAddRow ( aTab1.VehicleOptions )
-								guiGridListSetItemText ( aTab1.VehicleOptions, row, 1, info.name, false, false )
-								guiGridListSetItemData ( aTab1.VehicleOptions, row, 1, tostring ( info.model ) )
-							end
+		aTab1.AnonAdmin		  = guiCreateCheckBox (0.745, 0.942, 0.20, 0.04, "Anonymous Admin", isAnonAdmin(), true, aTab1.Tab )
+		aTab1.GiveVehicle = guiCreateList( 0.71, 0.710, 0.27, 0.04, 0.275, "Give: "..getVehicleNameFromModel ( aCurrentVehicle ), true, aTab1.Tab, 'givevehicle')
+		
+		local vehicles = {}
+		for i = 400, 611 do
+			local vehName = getVehicleNameFromModel(i)
+			if vehName then
+				table.insert(vehicles, {text = vehName, data = i})
+			end
+		end
+
+		table.sort(vehicles, function(a, b) return a.text < b.text end)
+
+		guiListSetColumns(aTab1.GiveVehicle, {{text = '', width = 0.8}})
+		guiListSetItems(aTab1.GiveVehicle, vehicles)
+		guiListSetCallBack(aTab1.GiveVehicle, function(selectedData, selectedText)
+			local modelID = tonumber(selectedData)
+			if modelID then
+				aCurrentVehicle = modelID
+				guiSetText ( aTab1.GiveVehicle, "Give: "..selectedText )
+			end
+		end)
+
 		aTab2 = {}
 		aTab2.Tab			= guiCreateTab ( "Resources", aTabPanel, "resources" )
 		aTab2.ManageACL		= guiCreateButton ( 0.75, 0.02, 0.23, 0.04, "Manage ACL", true, aTab2.Tab )
@@ -226,17 +262,17 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab3.SpeedCurrent	= guiCreateLabel ( 0.05, 0.55, 0.30, 0.04, "Game Speed: "..getGameSpeed(), true, aTab3.Tab )
 		aTab3.Speed			= guiCreateEdit ( 0.35, 0.55, 0.135, 0.04, "1", true, aTab3.Tab )
 		aTab3.SpeedSet		= guiCreateButton ( 0.50, 0.55, 0.10, 0.04, "Set", true, aTab3.Tab, "setgamespeed" )
-						  guiCreateLabel ( 0.63, 0.55, 0.09, 0.04, "( 0-10 )", true, aTab3.Tab )
+							guiCreateLabel ( 0.63, 0.55, 0.09, 0.04, "( 0-10 )", true, aTab3.Tab )
 
 		aTab3.WavesCurrent	= guiCreateLabel ( 0.05, 0.60, 0.25, 0.04, "Wave Height: "..getWaveHeight(), true, aTab3.Tab )
 		aTab3.Waves			= guiCreateEdit ( 0.35, 0.60, 0.135, 0.04, "0", true, aTab3.Tab )
 		aTab3.WavesSet		= guiCreateButton ( 0.50, 0.60, 0.10, 0.04, "Set", true, aTab3.Tab, "setwaveheight" )
-					 	 guiCreateLabel ( 0.63, 0.60, 0.09, 0.04, "( 0-100 )", true, aTab3.Tab )
+							guiCreateLabel ( 0.63, 0.60, 0.09, 0.04, "( 0-100 )", true, aTab3.Tab )
 
 		aTab3.FPSCurrent	= guiCreateLabel ( 0.05, 0.65, 0.25, 0.04, "FPS Limit: 38", true, aTab3.Tab )
 		aTab3.FPS			= guiCreateEdit ( 0.35, 0.65, 0.135, 0.04, "38", true, aTab3.Tab )
 		aTab3.FPSSet		= guiCreateButton ( 0.50, 0.65, 0.10, 0.04, "Set", true, aTab3.Tab, "setfpslimit" )
-					 	 guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-100 )", true, aTab3.Tab )
+							guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-100 )", true, aTab3.Tab )
 
 
 		aTab4 = {}
@@ -252,7 +288,6 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 								guiComboBoxAddItem (aTab4.ComboBox,ComboBoxIndividualItems)
 							end
 						guiComboBoxAdjustHeight (aTab4.ComboBox,#ComboBoxItems)
-						ComboBoxItems = nil
 						guiComboBoxSetSelected (aTab4.ComboBox,0)
 
 
@@ -336,7 +371,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 						  else guiRadioButtonSetSelected ( aTab6.PerformanceAuto, true ) end
 		aTab6.PerformanceAdvanced = guiCreateButton ( 0.05, 0.91, 0.11, 0.04, "Advanced", true, aTab6.Tab )
 		aPerformance()
-					   	  guiCreateLabel ( 0.70, 0.90, 0.19, 0.055, "Refresh Delay(MS):", true, aTab6.Tab )
+							guiCreateLabel ( 0.70, 0.90, 0.19, 0.055, "Refresh Delay(MS):", true, aTab6.Tab )
 		aTab6.RefreshDelay	= guiCreateEdit ( 0.89, 0.90, 0.08, 0.045, "50", true, aTab6.Tab )
 
 		if ( aGetSetting ( "outputPlayer" ) ) then guiCheckBoxSetSelected ( aTab6.OutputPlayer, true ) end
@@ -345,22 +380,21 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		--if ( tonumber ( aGetSetting ( "adminChatLines" ) ) ) then guiSetText ( aTab6.AdminChatLines, aGetSetting ( "adminChatLines" ) ) end
 		if ( ( tonumber ( aGetSetting ( "refreshDelay" ) ) ) and ( tonumber ( aGetSetting ( "refreshDelay" ) ) >= 50 ) ) then guiSetText ( aTab6.RefreshDelay, aGetSetting ( "refreshDelay" ) ) end
 
-		addEventHandler ( "aClientLog", _root, aClientLog )
-		addEventHandler ( "aClientAdminChat", _root, aClientAdminChat )
-		addEventHandler ( "aClientSync", _root, aClientSync )
-		addEventHandler ( "aClientResourceStart", _root, aClientResourceStart )
-		addEventHandler ( "aClientResourceStop", _root, aClientResourceStop )
-		addEventHandler ( "aClientPlayerJoin", _root, aClientPlayerJoin )
-		addEventHandler ( "onClientPlayerQuit", _root, aClientPlayerQuit )
+		addEventHandler ( "aClientLog", root, aClientLog )
+		addEventHandler ( "aClientAdminChat", root, aClientAdminChat )
+		addEventHandler ( "aClientSync", root, aClientSync )
+		addEventHandler ( "aClientResourceStart", root, aClientResourceStart )
+		addEventHandler ( "aClientResourceStop", root, aClientResourceStop )
+		addEventHandler ( "aClientPlayerJoin", root, aClientPlayerJoin )
+		addEventHandler ( "onClientPlayerQuit", root, aClientPlayerQuit )
 		addEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
 		addEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		addEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
-		addEventHandler ( "onClientGUIDoubleClick", aTab1.VehicleOptions, aClientDoubleClick )
 		addEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		addEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
-		addEventHandler ( "onClientRender", _root, aClientRender )
-		addEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
-		addEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
+		addEventHandler ( "onClientRender", root, aClientRender )
+		addEventHandler ( "onClientPlayerChangeNick", root, aClientPlayerChangeNick )
+		addEventHandler ( "onClientResourceStop", root, aMainSaveSettings )
 		addEventHandler ( "onClientGUITabSwitched", aTabPanel, aClientGUITabSwitched )
 
 		bindKey ( "arrow_d", "down", aPlayerListScroll, 1 )
@@ -405,29 +439,26 @@ function aAdminMenuClose ( destroy )
 		aPlayers = {}
 		aWeathers = {}
 		aBans = {}
-		removeEventHandler ( "aClientLog", _root, aClientLog )
-		removeEventHandler ( "aClientAdminChat", _root, aClientAdminChat )
-		removeEventHandler ( "aClientSync", _root, aClientSync )
-		removeEventHandler ( "aClientResourceStart", _root, aClientResourceStart )
-		removeEventHandler ( "aClientResourceStop", _root, aClientResourceStop )
-		removeEventHandler ( "aClientPlayerJoin", _root, aClientPlayerJoin )
-		removeEventHandler ( "onClientPlayerQuit", _root, aClientPlayerQuit )
+		removeEventHandler ( "aClientLog", root, aClientLog )
+		removeEventHandler ( "aClientAdminChat", root, aClientAdminChat )
+		removeEventHandler ( "aClientSync", root, aClientSync )
+		removeEventHandler ( "aClientResourceStart", root, aClientResourceStart )
+		removeEventHandler ( "aClientResourceStop", root, aClientResourceStop )
+		removeEventHandler ( "aClientPlayerJoin", root, aClientPlayerJoin )
+		removeEventHandler ( "onClientPlayerQuit", root, aClientPlayerQuit )
 		removeEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
 		removeEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		removeEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
-		removeEventHandler ( "onClientGUIDoubleClick", aTab1.VehicleOptions, aClientDoubleClick )
 		removeEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
 		removeEventHandler ( "onClientGUIChanged", aAdminForm, aClientGUIChanged )
-		removeEventHandler ( "onClientRender", _root, aClientRender )
-		removeEventHandler ( "onClientPlayerChangeNick", _root, aClientPlayerChangeNick )
-		removeEventHandler ( "onClientResourceStop", _root, aMainSaveSettings )
+		removeEventHandler ( "onClientRender", root, aClientRender )
+		removeEventHandler ( "onClientPlayerChangeNick", root, aClientPlayerChangeNick )
+		removeEventHandler ( "onClientResourceStop", root, aMainSaveSettings )
 		unbindKey ( "arrow_d", "down", aPlayerListScroll )
 		unbindKey ( "arrow_u", "down", aPlayerListScroll )
-		destroyElement ( aTab1.VehicleOptions )
 		destroyElement ( aAdminForm )
 		aAdminForm = nil
 	else
-		guiSetVisible ( aTab1.VehicleOptions, false )
 		guiSetVisible ( aAdminForm, false )
 	end
 	showCursor ( false )
@@ -466,7 +497,6 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Name, "Name: ".. playerName)
 			guiSetText ( aTab1.Mute, iif ( aPlayers[player]["mute"], "Unmute", "Mute" ) )
 			guiSetText ( aTab1.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
-			--guiSetText ( aTab1.Username, "Community Username: "..( aPlayers[player]["username"] or "" ) )
 			guiSetText ( aTab1.Version, "Version: "..( aPlayers[player]["version"] or "" ) )
 			guiSetText ( aTab1.Accountname, "Account Name: "..getSensitiveText( aPlayers[player]["accountname"] or "" ) )
 			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
@@ -483,7 +513,7 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Money, "Money: "..( aPlayers[player]["money"] or 0 ) )
 			if ( getElementDimension ( player ) ) then guiSetText ( aTab1.Dimension, "Dimension: "..getElementDimension ( player ) ) end
 			if ( getElementInterior ( player ) ) then guiSetText ( aTab1.Interior, "Interior: "..getElementInterior ( player ) ) end
-			guiSetText ( aTab1.JetPack, iif ( doesPedHaveJetPack ( player ), "Remove JetPack", "Give JetPack" ) )
+			guiSetText ( aTab1.JetPack, iif ( isPedWearingJetpack ( player ), "Remove JetPack", "Give JetPack" ) )
 			if ( getPedWeapon ( player ) ) then guiSetText ( aTab1.Weapon, "Weapon: "..getWeaponNameFromID ( getPedWeapon ( player ) ).." (ID: "..getPedWeapon ( player )..")" ) end
 			
 			local x, y, z = getElementPosition ( player )
@@ -506,11 +536,6 @@ function aAdminRefresh ()
 				guiSetText ( aTab1.Vehicle, "Vehicle: Foot" )
 				guiSetText ( aTab1.VehicleHealth, "Vehicle Health: 0%" )
 			end
-			if ( aPlayers[player]["admin"] ) then
-				guiSetText(aTab1.Admin, "Revoke admin rights")
-			else
-				guiSetText(aTab1.Admin, "Give admin rights")
-			end
 			return player
 		end
 	end
@@ -518,8 +543,8 @@ end
 
 function aClientSync ( type, table, data )
 	if ( type == "player" and aPlayers[source] ) then
-		for type, data in pairs ( table ) do
-			aPlayers[source][type] = data
+		for type2, data2 in pairs ( table ) do
+			aPlayers[source][type2] = data2
 		end
 	elseif ( type == "players" ) then
 		aPlayers = table
@@ -541,7 +566,7 @@ function aClientSync ( type, table, data )
 		aAdminDestroy()
 	elseif ( type == "admins" ) then
 		--if ( guiGridListGetRowCount ( aTab5.AdminPlayers ) > 0 ) then guiGridListClear ( aTab5.AdminPlayers ) end
-		for id, player in ipairs(getElementsByType("player")) do
+		for i, player in ipairs(getElementsByType("player")) do
 			if ( table[player]["admin"] == false ) and ( player == localPlayer ) then
 				aAdminDestroy()
 				break
@@ -749,7 +774,7 @@ function aClientResourceStop ( resource )
 	end
 end
 
-function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
+function aClientPlayerJoin ( ip, accountname, serial, admin, country )
 	if ip == false and serial == false then
 		-- Update country only
 		if aPlayers[source] then
@@ -760,7 +785,6 @@ function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
 	aPlayers[source] = {}
 	aPlayers[source]["name"] = getPlayerName ( source )
 	aPlayers[source]["IP"] = ip
-	aPlayers[source]["username"] = username or "N/A"
 	aPlayers[source]["accountname"] = accountname or "N/A"
 	aPlayers[source]["serial"] = serial
 	aPlayers[source]["admin"] = admin
@@ -771,12 +795,12 @@ function aClientPlayerJoin ( ip, username, accountname, serial, admin, country )
 	local row = guiGridListAddRow ( aTab1.PlayerList )
 	guiGridListSetItemPlayerName ( aTab1.PlayerList, row, 1, getPlayerName ( source ), false, false )
 	if ( admin ) then
-		local row = guiGridListAddRow ( aTab5.AdminPlayers )
-		guiGridListSetItemPlayerName ( aTab5.AdminPlayers, row, 1, getPlayerName ( source ), false, false )
+		local row2 = guiGridListAddRow ( aTab5.AdminPlayers )
+		guiGridListSetItemPlayerName ( aTab5.AdminPlayers, row2, 1, getPlayerName ( source ), false, false )
 	end
 	if ( aSpectator.PlayerList ) then
-		local row = guiGridListAddRow ( aSpectator.PlayerList )
-		guiGridListSetItemPlayerName ( aSpectator.PlayerList, row, 1, getPlayerName ( source ), false, false )
+		local row3 = guiGridListAddRow ( aSpectator.PlayerList )
+		guiGridListSetItemPlayerName ( aSpectator.PlayerList, row3, 1, getPlayerName ( source ), false, false )
 	end
 end
 
@@ -789,21 +813,21 @@ function aClientPlayerQuit ()
 		id = id + 1
 	end
 	if ( aPlayers[source] and aPlayers[source]["admin"] ) then
-		local id = 0
-		while ( id <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
-			if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id, 1 ) == getPlayerName ( source ) ) then
+		local id2 = 0
+		while ( id2 <= guiGridListGetRowCount( aTab5.AdminPlayers ) ) do
+			if ( guiGridListGetItemPlayerName ( aTab5.AdminPlayers, id2, 1 ) == getPlayerName ( source ) ) then
 				guiGridListRemoveRow ( aTab5.AdminPlayers, id )
 			end
-			id = id + 1
+			id2 = id2 + 1
 		end
 	end
 	if ( aSpectator.PlayerList ) then
-		local id = 0
-		while ( id <= guiGridListGetRowCount( aSpectator.PlayerList ) ) do
-			if ( guiGridListGetItemPlayerName ( aSpectator.PlayerList, id, 1 ) == getPlayerName ( source ) ) then
-				guiGridListRemoveRow ( aSpectator.PlayerList, id )
+		local id3 = 0
+		while ( id3 <= guiGridListGetRowCount( aSpectator.PlayerList ) ) do
+			if ( guiGridListGetItemPlayerName ( aSpectator.PlayerList, id3, 1 ) == getPlayerName ( source ) ) then
+				guiGridListRemoveRow ( aSpectator.PlayerList, id3 )
 			end
-			id = id + 1
+			id3 = id3 + 1
 		end
 	end
 	aPlayers[source] = nil
@@ -947,31 +971,7 @@ function aClientScroll ( element )
 end
 
 function aClientDoubleClick ( button )
-	if ( source == aTab1.WeaponOptions ) then
-		if ( guiGridListGetSelectedItem ( aTab1.WeaponOptions ) ~= -1 ) then
-			aCurrentWeapon = getWeaponIDFromName ( guiGridListGetItemText ( aTab1.WeaponOptions, guiGridListGetSelectedItem ( aTab1.WeaponOptions ), 1 ) )
-			local wep = guiGridListGetItemText ( aTab1.WeaponOptions, guiGridListGetSelectedItem ( aTab1.WeaponOptions ), 1 )
-			wep = string.gsub ( wep, "Combat Shotgun", "Combat SG" )
-			guiSetText ( aTab1.GiveWeapon, "Give: "..wep.." " )
-		end
-		guiSetVisible ( aTab1.WeaponOptions, false )
-	elseif ( source == aTab1.VehicleOptions ) then
-		local item = guiGridListGetSelectedItem ( aTab1.VehicleOptions )
-		if ( item ~= -1 ) then
-			if ( guiGridListGetItemText ( aTab1.VehicleOptions, item, 1 ) ~= "" ) then
-				aCurrentVehicle = tonumber ( guiGridListGetItemData ( aTab1.VehicleOptions, item, 1 ) )
-				guiSetText ( aTab1.GiveVehicle, "Give: "..guiGridListGetItemText ( aTab1.VehicleOptions, item, 1 ).." " )
-			end
-		end
-		guiSetVisible ( aTab1.VehicleOptions, false )
-	elseif ( source == aTab1.SlapOptions ) then
-		if ( guiGridListGetSelectedItem ( aTab1.SlapOptions ) ~= -1 ) then
-			aCurrentSlap = guiGridListGetItemText ( aTab1.SlapOptions, guiGridListGetSelectedItem ( aTab1.SlapOptions ), 1 )
-			guiSetText ( aTab1.Slap, "Slap! "..aCurrentSlap.." _" )
-			if ( aSpecSlap ) then guiSetText ( aSpecSlap, "Slap! "..aCurrentSlap.."hp" ) end
-		end
-		guiSetVisible ( aTab1.SlapOptions, false )
-	elseif ( source == aTab2.ResourceList ) then
+	if ( source == aTab2.ResourceList ) then
 		if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
 			aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) )
 		end
@@ -984,18 +984,9 @@ function aClientDoubleClick ( button )
 			aBanDetails ( aBans["Serial"][selserial] and selserial or selip )
 		end
 	end
-	if ( guiGetVisible ( aTab1.WeaponOptions ) ) then guiSetVisible ( aTab1.WeaponOptions, false ) end
-	if ( guiGetVisible ( aTab1.VehicleOptions ) ) then guiSetVisible ( aTab1.VehicleOptions, false ) end
-	if ( guiGetVisible ( aTab1.SlapOptions ) ) then guiSetVisible ( aTab1.SlapOptions, false ) end
 end
 
 function aClientClick ( button )
-	if ( ( source == aTab1.WeaponOptions ) or ( source == aTab1.VehicleOptions ) or ( source == aTab1.SlapOptions ) ) then return
-	else
-		if ( guiGetVisible ( aTab1.WeaponOptions ) ) then guiSetVisible ( aTab1.WeaponOptions, false ) end
-		if ( guiGetVisible ( aTab1.VehicleOptions ) ) then guiSetVisible ( aTab1.VehicleOptions, false ) end
-		if ( guiGetVisible ( aTab1.SlapOptions ) ) then guiSetVisible ( aTab1.SlapOptions, false ) end
-	end
 	if ( button == "left" ) then
 		-- TAB 1, PLAYERS
 		if ( getElementParent ( source ) == aTab1.Tab ) then
@@ -1003,7 +994,7 @@ function aClientClick ( button )
 				aViewMessages()
 			elseif ( source == aTab1.ScreenShots ) then
 				aPlayerScreenShot()
-			elseif ( source == aTab1.PlayerListSearch ) then
+			--elseif ( source == aTab1.PlayerListSearch ) then
 
 			elseif ( source == aTab1.HideColorCodes ) then
 				setHideColorCodes ( guiCheckBoxGetSelected ( aTab1.HideColorCodes ) )
@@ -1012,9 +1003,6 @@ function aClientClick ( button )
 			elseif ( source == aTab1.HideSensitiveData ) then
 				setHideSensitiveData( guiCheckBoxGetSelected ( aTab1.HideSensitiveData ) )
 			elseif ( getElementType ( source ) == "gui-button" )  then
-				if ( source == aTab1.GiveVehicle ) then guiBringToFront ( aTab1.VehicleDropDown )
-				elseif ( source == aTab1.GiveWeapon ) then guiBringToFront ( aTab1.WeaponDropDown )
-				elseif ( source == aTab1.Slap ) then guiBringToFront ( aTab1.SlapDropDown ) end
 				if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) == -1 ) then
 					aMessageBox ( "error", "No player selected!" )
 				else
@@ -1045,35 +1033,22 @@ function aClientClick ( button )
 					elseif ( source == aTab1.VehicleBlow ) then triggerServerEvent ( "aVehicle", localPlayer, player, "blowvehicle" )
 					elseif ( source == aTab1.VehicleDestroy ) then triggerServerEvent ( "aVehicle", localPlayer, player, "destroyvehicle" )
 					elseif ( source == aTab1.VehicleCustomize ) then aVehicleCustomize ( player )
-					elseif ( source == aTab1.Admin ) then
-						if ( aPlayers[player]["admin"] ) then aMessageBox ( "warning", "Revoke admin rights from "..name.."?", "revokeAdmin", player )
-						else aMessageBox ( "warning", "Give admin rights to "..name.."?", "giveAdmin", player ) end
+					elseif ( source == aTab1.ManagePerms ) then
+						if (aPlayers[player]['accountname'] ~= 'guest') then
+							aPermissions.Show(player)
+						else
+							aMessageBox ( "error", "This player is not logged in!" )
+						end
 					elseif ( source == aTab1.ACModDetails ) then
 						aViewModdetails(player)
 					end
 				end
-			elseif ( source == aTab1.VehicleDropDown ) then
-				local x1, y1 = guiGetPosition ( aAdminForm, false )
-				local x2, y2 = guiGetPosition ( aTabPanel, false )
-				local x3, y3 = guiGetPosition ( aTab1.Tab, false )
-				local x4, y4 = guiGetPosition ( aTab1.GiveVehicle, false )
-				guiSetPosition ( aTab1.VehicleOptions, x1 + x2 + x3 + x4, y1 + y2 + y3 + y4 + 20, false )
-				guiSetVisible ( aTab1.VehicleOptions, true )
-				guiBringToFront ( aTab1.VehicleOptions )
-			elseif ( source == aTab1.WeaponDropDown ) then
-				guiSetVisible ( aTab1.WeaponOptions, true )
-				guiBringToFront ( aTab1.WeaponOptions )
-			elseif ( source == aTab1.SlapDropDown ) then
-				guiSetVisible ( aTab1.SlapOptions, true )
-				guiBringToFront ( aTab1.SlapOptions )
 			elseif ( source == aTab1.PlayerList ) then
 				aAdminReloadInfos()
 			end
 		-- TAB 2, RESOURCES
 		elseif ( getElementParent ( source ) == aTab2.Tab ) then
-			if ( source == aTab2.ResourceListSearch ) then
-
-			elseif ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
+			if ( ( source == aTab2.ResourceStart ) or ( source == aTab2.ResourceRestart ) or ( source == aTab2.ResourceStop ) or ( source == aTab2.ResourceDelete ) or ( source == aTab2.ResourceSettings ) ) then
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) == -1 ) then
 					aMessageBox ( "error", "No resource selected!" )
 				else
@@ -1187,7 +1162,7 @@ function aClientClick ( button )
 					else triggerServerEvent ( "aAdminChat", localPlayer, message ) end
 					guiSetText ( aTab5.AdminText, "" )
 				end
-			elseif ( source == aTab5.AdminText ) then
+			--elseif ( source == aTab5.AdminText ) then
 
 			end
 		-- TAB 6, OPTIONS
@@ -1208,11 +1183,11 @@ function aClientClick ( button )
 				aPerformance()
 			elseif ( source == aTab6.AutoLogin ) then
 				triggerServerEvent ( "aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
-			elseif ( source == aTab6.PasswordOld ) then
+			--elseif ( source == aTab6.PasswordOld ) then
 
-			elseif ( source == aTab6.PasswordNew ) then
+			--elseif ( source == aTab6.PasswordNew ) then
 
-			elseif ( source == aTab6.PasswordConfirm ) then
+			--elseif ( source == aTab6.PasswordConfirm ) then
 
 			elseif ( source == aTab6.PasswordChange ) then
 				local passwordNew, passwordConf = guiGetText ( aTab6.PasswordNew ), guiGetText ( aTab6.PasswordConfirm )
@@ -1257,27 +1232,25 @@ function aAdminReloadInfos()
 			triggerServerEvent ( "aSync", localPlayer, "player", player )
 			if (not isSensitiveDataHidden()) and guiCheckBoxGetSelected(aTab6.OutputPlayer) then
 				local playerName = aPlayers[player]["name"]
-			
+
 				if isColorCodeHidden() then
 					playerName = removeColorCoding(playerName)
 				else
 					if playerName:find('#%x%x%x%x%x%x') then
 						playerName = playerName .. (' (%s)'):format(removeColorCoding(playerName))
 					end
-				end		
+				end
 
 				outputConsole(' ')
 				outputConsole(('Name: %s'):format(playerName))
 				outputConsole(('IP: %s'):format(aPlayers[player]["IP"]))
 				outputConsole(('Serial: %s'):format(aPlayers[player]["serial"]))
-				-- outputConsole(('Community Username: %s'):format(aPlayers[player]["username"]))
 				outputConsole(('Account Name: %s'):format(aPlayers[player]["accountname"]))
 				outputConsole(('D3D9.DLL: %s'):format(aPlayers[player]["d3d9dll"]))
 				outputConsole(' ')
 			end
 			guiSetText ( aTab1.IP, "IP: "..getSensitiveText( aPlayers[player]["IP"] ) )
 			guiSetText ( aTab1.Serial, "Serial: "..getSensitiveText( aPlayers[player]["serial"] ) )
-			--guiSetText ( aTab1.Username, "Community Username: "..aPlayers[player]["username"] )
 			guiSetText ( aTab1.Accountname, "Account Name: "..getSensitiveText( aPlayers[player]["accountname"] ) )
 			guiSetText ( aTab1.ACDetected, "AC Detected: "..aPlayers[player]["acdetected"] )
 			guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..aPlayers[player]["d3d9dll"] )
@@ -1308,7 +1281,6 @@ function aAdminReloadInfos()
 		guiSetText ( aTab1.ACModInfo, "Img Mods: N/A" )
 		guiSetText ( aTab1.Mute, "Mute" )
 		guiSetText ( aTab1.Freeze, "Freeze" )
-		guiSetText ( aTab1.Admin, "Give admin rights" )
 		guiSetText ( aTab1.Health, "Health: 0%" )
 		guiSetText ( aTab1.Armour, "Armour: 0%" )
 		guiSetText ( aTab1.Skin, "Skin: N/A" )
@@ -1412,7 +1384,7 @@ end
 
 -- anon admin
 function isAnonAdmin()
-	return guiCheckBoxGetSelected ( aTab1.AnonAdmin )
+	return (isElement(aTab1.AnonAdmin) and guiCheckBoxGetSelected ( aTab1.AnonAdmin )) or getElementData(localPlayer, 'AnonAdmin')
 end
 
 function setAnonAdmin( bOn )
@@ -1423,7 +1395,7 @@ end
 
 -- sensitive data
 function isSensitiveDataHidden()
-	return guiCheckBoxGetSelected(aTab1.HideSensitiveData)
+	return isElement(aTab1.HideSensitiveData) and guiCheckBoxGetSelected(aTab1.HideSensitiveData)
 end
 
 function setHideSensitiveData( bOn )

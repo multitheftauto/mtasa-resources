@@ -5,7 +5,7 @@ if isVoiceEnabled() then
 		end
 	)
 
-	addEventHandler ( "onResourceStart", getResourceRootElement(),
+	addEventHandler ( "onResourceStart", resourceRoot,
 		function()
 			refreshPlayers()
 		end

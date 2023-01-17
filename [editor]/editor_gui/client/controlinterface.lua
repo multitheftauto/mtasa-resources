@@ -8,7 +8,6 @@ end
 addEvent "onControlPressed"
 addEvent "onEditorSuspended"
 addEvent "onEditorResumed"
-local rootElement = getRootElement()
 local addedCommands = {}
 local commandState = {}
 local keyStateToBool = { down = true, up = false }
@@ -17,7 +16,7 @@ local keybinds_backup = {}
 local keyStates = { down = true, up = true, both = true }
 
 --!get controls if editor_main is started after this
-addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()),
+addEventHandler("onClientResourceStart", resourceRoot,
 	function()
 		if getResourceFromName("editor_main") then
 			cc = exports.editor_main:getControls()
@@ -73,7 +72,7 @@ function getCommandState ( command )
 	return commandState[command]
 end
 
-addEventHandler ( "onControlPressed",  rootElement,
+addEventHandler ( "onControlPressed",  root,
 	function ( key, keyState )
 		commandState[key] = keyStateToBool[keyState]
 		if keybinds[key] then
@@ -92,7 +91,7 @@ addEventHandler ( "onControlPressed",  rootElement,
 	end
 )
 
-addEventHandler ( "onEditorSuspended", rootElement,
+addEventHandler ( "onEditorSuspended", root,
 	function ()
 		keybinds_backup = deepcopy(keybinds)
 		for control,keyStateTable in pairs(keybinds) do
@@ -105,7 +104,7 @@ addEventHandler ( "onEditorSuspended", rootElement,
 	end
 )
 
-addEventHandler ( "onEditorResumed", rootElement,
+addEventHandler ( "onEditorResumed", root,
 	function ()
 		for control,keyStateTable in pairs(keybinds_backup) do
 			for keyState,functionTable in pairs(keyStateTable) do
@@ -117,7 +116,7 @@ addEventHandler ( "onEditorResumed", rootElement,
 	end
 )
 
-function deepcopy(object)
+function deepcopy(object1)
     local lookup_table = {}
     local function _copy(object)
         if type(object) ~= "table" then
@@ -132,5 +131,5 @@ function deepcopy(object)
         end
         return setmetatable(new_table, getmetatable(object))
     end
-    return _copy(object)
+    return _copy(object1)
 end

@@ -213,7 +213,6 @@ function buildViews()
                     if isHandlingPropertyValid ( property ) then
 
                         local propertyName = getHandlingPropertyFriendlyName ( property )
-                        local propertyName = getHandlingPropertyFriendlyName ( property )
                         local labelInfo = guiInfo.labels[i]
                         local label = guiCreateElement ( labelInfo.type, labelInfo.pos[1], labelInfo.pos[2], labelInfo.size[1], labelInfo.size[2], propertyName, labelInfo.alpha, labelInfo.hovercolor )
 

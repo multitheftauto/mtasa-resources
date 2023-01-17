@@ -8,5 +8,5 @@ function moduleEnd ( )
 end
 
 function start ( resource )
-    return "<script src ='/ajax/ajax.js' type = 'text/javascript'></script><script src='/ajax/json.js' type='text/javascript'></script><script src='/ajax/exportedfunctions.js?resource=" .. resource .. "' type='text/javascript'></script>"
+    return "<script src ='/ajax/ajax.js' type = 'text/javascript'></script><script src='/ajax/exportedfunctions.js?resource=" .. resource .. "' type='text/javascript'></script>"
 end

@@ -15,14 +15,14 @@ g_Settings = {}
 --
 ---------------------------------------------------------------------------
 
-addEventHandler('onClientResourceStart', g_ResRoot,
+addEventHandler('onClientResourceStart', resourceRoot,
 	function()
-		triggerServerEvent('onLoadedAtClient_tt', g_Me)
+		triggerServerEvent('onLoadedAtClient_tt', localPlayer)
 	end
 )
 
 addEvent('onClientMapStarting', true)
-addEventHandler('onClientMapStarting', getRootElement(),
+addEventHandler('onClientMapStarting', root,
 	function(mapinfo)
 		outputDebug( 'TOPTIMES', 'onClientMapStarting' )
 		if g_CToptimes then
@@ -32,7 +32,7 @@ addEventHandler('onClientMapStarting', getRootElement(),
 )
 
 addEvent('onClientMapStopping', true)
-addEventHandler('onClientMapStopping', getRootElement(),
+addEventHandler('onClientMapStopping', root,
 	function()
 		outputDebug( 'TOPTIMES', 'onClientMapStopping' )
 		if g_CToptimes then
@@ -42,7 +42,7 @@ addEventHandler('onClientMapStopping', getRootElement(),
 )
 
 addEvent('onClientPlayerFinish', true)
-addEventHandler('onClientPlayerFinish', getRootElement(),
+addEventHandler('onClientPlayerFinish', root,
 	function()
 		outputDebug( 'TOPTIMES', 'onClientPlayerFinish' )
 		if g_CToptimes then
@@ -52,7 +52,7 @@ addEventHandler('onClientPlayerFinish', getRootElement(),
 )
 
 addEvent('onClientSetMapName', true)
-addEventHandler('onClientSetMapName', getRootElement(),
+addEventHandler('onClientSetMapName', root,
 	function(manName)
 		if g_CToptimes then
 			g_CToptimes:setWindowTitle(manName)
@@ -69,7 +69,7 @@ function updateSettings(settings, playeradmin)
 			g_CToptimes.startshow = settings.startshow
 		end
 		-- If admin changed this setting manually, then show the table to him
-		if playeradmin == getLocalPlayer() then
+		if playeradmin == localPlayer then
 			g_CToptimes:doToggleToptimes(true)
 		end
 	end
@@ -230,8 +230,7 @@ end
 function CToptimes:setWindowPosition ( gui_x, gui_y )
 	if self.gui['windowbg'] then
 		local screenWidth, screenHeight = guiGetScreenSize()
-		local posX = screenWidth/2 + 63 + ( screenWidth * (gui_x - 0.56) )
-		local posY = 14 + ( screenHeight * (gui_y - 0.02) )
+		local posX, posY
 
 		local posXCurve = { {0, 0}, {0.7, screenWidth/2 + 63}, {1, screenWidth - self.size.x} }
 		local posYCurve = { {0, 0}, {0.02, 14}, {1, screenHeight - self.size.y} }
@@ -356,7 +355,7 @@ function CToptimes:updateShow()
 	if not bShowAny then
 		self.targetFade = 0
 	elseif not self.bManualShow and self.listStatus ~= 'Full' then
-		-- No change
+		return true -- No change
 	else
 		local bShowLoading	= self.listStatus=='Loading'
 		local bShowTimes	= self.listStatus=='Full'
@@ -378,7 +377,7 @@ end
 function CToptimes:enableToptimeUpdatesFromServer( bOn )
 	if bOn ~= self.bGettingUpdates then
 		self.bGettingUpdates = bOn
-		triggerServerEvent('onClientRequestToptimesUpdates', g_Me, bOn, self.clientRevision )
+		triggerServerEvent('onClientRequestToptimesUpdates', localPlayer, bOn, self.clientRevision )
 	end
 	if self.bGettingUpdates and self.listStatus == 'Empty' then
 		self.listStatus = 'Loading'
@@ -514,7 +513,7 @@ function CToptimes:doOnClientRender()
 end
 
 
-addEventHandler ( 'onClientRender', getRootElement(),
+addEventHandler ( 'onClientRender', root,
 	function(...)
 		if g_CToptimes then
 			g_CToptimes:doOnClientRender(...)

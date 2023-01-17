@@ -27,7 +27,8 @@ end
 function startSpawnProtection ( source )
 	local player = source
 	local x, y, z = getElementPosition ( player )
-	local r, g, b = 0, 0, 0
+	local r
+	local g, b = 0, 0
 
 	local playerTeam = getPlayerTeam(player)
 	if ( playerTeam ) then

@@ -196,7 +196,7 @@ function dxText:boundingBox(left,top,right,bottom,relative)
 	return true
 end
 
-addEventHandler ( "onClientRender", getRootElement(),
+addEventHandler ( "onClientRender", root,
 	function()
 		for self,_ in pairs(visibleText) do
 			while true do

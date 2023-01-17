@@ -35,7 +35,7 @@ function aBlockModsTab.Create ( tab )
 	---------------------------------------------------------
 	-- Definition list
 	---------------------------------------------------------
-	local label1 = guiCreateLabel ( xpos, ypos, 200, 16, "File name matches (one per line)", false, tab )
+	local label2 = guiCreateLabel ( xpos, ypos, 200, 16, "File name matches (one per line)", false, tab )
 	ypos = ypos + 20
 	aBlockModsTab.memoDefinition = guiCreateMemo ( xpos, ypos, 250, 300, "", false, tab )
 	ypos = ypos + 300

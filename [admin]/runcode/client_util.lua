@@ -5,7 +5,7 @@ end
 -- dump the element tree
 function map(element, level)
 	level = level or 0
-	element = element or getRootElement()
+	element = element or root
 	local indent = string.rep('  ', level)
 	local eType = getElementType(element)
 	local eID = getElementID(element)

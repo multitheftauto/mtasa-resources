@@ -6,14 +6,12 @@ nextGamemodeMap = nil
 setGameType(false)
 setMapName("None")
 
-rootElement = getRootElement()
-
 addEvent("onGamemodeStart")
 addEvent("onGamemodeStop")
 addEvent("onGamemodeMapStart")
 addEvent("onGamemodeMapStop")
 
-addEventHandler("onResourcePreStart", rootElement,
+addEventHandler("onResourcePreStart", root,
 	function (startingResource)
 		--Is starting resource a gamemode?
 		if isGamemode(startingResource) then
@@ -38,7 +36,7 @@ addEventHandler("onResourcePreStart", rootElement,
 	end
 )
 
-addEventHandler("onPlayerJoin", rootElement,
+addEventHandler("onPlayerJoin", root,
 	function()
 		if get("currentmap") and getRunningGamemode() and getRunningGamemodeMap() then
 			outputMapManager(
@@ -52,7 +50,7 @@ addEventHandler("onPlayerJoin", rootElement,
 	end
 )
 
-addEventHandler("onResourceStart", rootElement,
+addEventHandler("onResourceStart", root,
 	function (startedResource)
 		--Is this resource a gamemode?
 		if isGamemode(startedResource) then
@@ -120,7 +118,7 @@ addEventHandler("onResourceStart", rootElement,
 	end
 )
 
-addEventHandler("onResourceStop", rootElement,
+addEventHandler("onResourceStop", root,
 	function (stoppedResource)
 		-- Incase the resource being stopped has been deleted
 		local stillExists = false
@@ -488,25 +486,25 @@ end
 local serverConsole = getElementByIndex("console", 0)
 
 function outputMapManager(message, toElement)
-	toElement = toElement or rootElement
+	toElement = toElement or root
 	local r, g, b = getColorFromString(string.upper(get("color")))
 	if getElementType(toElement) == "console" then
 		outputServerLog(message)
 	else
 		outputChatBox(message, toElement, r, g, b)
-		if toElement == rootElement then
+		if toElement == root then
 			outputServerLog(message)
 		end
 	end
 end
 
 function outputMapManagerConsole(message, toElement)
-	toElement = toElement or rootElement
+	toElement = toElement or root
 	if getElementType(toElement) == "console" then
 		outputServerLog(message)
 	else
 		outputConsole(message, toElement)
-		if toElement == rootElement then
+		if toElement == root then
 			outputServerLog(message)
 		end
 	end
@@ -569,16 +567,16 @@ function getMapFromName ( name )
 	if (refreshResources and hasObjectPermissionTo(getThisResource(), "function.refreshResources", false)) then -- If this version has refreshResources, refresh resources.
 		refreshResources(false)
 	end
-	local resource = getResourceFromName ( name ) --and try get the resource again.
+	resource = getResourceFromName ( name ) --and try get the resource again.
 	if resource then
 		return resource
 	end
 	name = string.lower(name) --Remove case sensitivity.  May cause minor problems with linux servers.
 	--Loop through and find resources with a matching 'name' param
-	for i,resource in ipairs(getMaps()) do
-		local infoName = getResourceInfo ( resource, "name" )
+	for i,resource2 in ipairs(getMaps()) do
+		local infoName = getResourceInfo ( resource2, "name" )
 		if (infoName and (string.lower(infoName) == name)) then
-			return resource
+			return resource2
 		end
 	end
 	return false

@@ -2,7 +2,7 @@
 players = getElementsByType ( "player" )
 scoreboardRes = getResourceFromName("scoreboard")
 
-addEventHandler("onResourceStop",getResourceRootElement(getThisResource()),
+addEventHandler("onResourceStop",resourceRoot,
 function()
 	call(scoreboardRes,"removeScoreboardColumn","Current level")
 	call(scoreboardRes,"removeScoreboardColumn","Max level")
@@ -68,7 +68,6 @@ function move ()
 	local object = objects[ rand ]
 	local move = math.random( 0, 5 )
 	--outputDebugString("move: " .. move)
-	local x,y,z
 	local x2,y2,z2 = getElementPosition ( object )
 	--Purge old player positions
 	for x = 1,options.x do
@@ -81,6 +80,7 @@ function move ()
 		end
 	end
 	--Fill in new player positions
+	local x,y,z
 	local players = getElementsByType( "player" )
 	for k,v in ipairs(players) do
 		x,y,z = getElementPosition( v )
@@ -203,7 +203,7 @@ function onThisResourceStart ( )
 	thePickup = createPickup ( barrier_x, barrier_y, options.z * 3 + 6, 3, 2880, 1 )
 	setTimer ( move, 100, 0 )
 	setTimer ( barrier, 1000, 1)
-	fadeCamera ( getRootElement(), true )
+	fadeCamera ( root, true )
 end
 
 function barrier ()
@@ -233,5 +233,5 @@ end
 --addEventHandler( "onPickupHit", root, function() onPickupHit() end)
 --addEventHandler( "onPlayerJoin", root, function() onPlayerJoin() end)
 
-addEventHandler( "onResourceStart", getResourceRootElement(getThisResource()), onThisResourceStart)
+addEventHandler( "onResourceStart", resourceRoot, onThisResourceStart)
 addEventHandler( "onPickupHit", root, onPickupHit)

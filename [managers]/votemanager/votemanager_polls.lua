@@ -1,5 +1,3 @@
-local rootElement = getRootElement()
-local thisResourceRoot = getResourceRootElement(getThisResource())
 local serverConsole = getElementByIndex("console", 0)
 
 local modeOptions = 0
@@ -33,7 +31,7 @@ local function chooseRandomMap (chosen)
 		math.randomseed(getTickCount())
 		finishPoll(math.random(1, math.min(mapOptions,currentPollSize)))
 	end
-	removeEventHandler("onPollEnd", rootElement, chooseRandomMap)
+	removeEventHandler("onPollEnd", root, chooseRandomMap)
 end
 
 local function chooseRandomMode (chosen)
@@ -42,7 +40,7 @@ local function chooseRandomMode (chosen)
 		math.randomseed(getTickCount())
 		finishPoll(math.random(1, math.min(modeOptions,currentPollSize)))
 	end
-	removeEventHandler("onPollEnd", rootElement, chooseRandomMode)
+	removeEventHandler("onPollEnd", root, chooseRandomMode)
 end
 
 function setCurrentPollSize ( size )
@@ -50,7 +48,7 @@ function setCurrentPollSize ( size )
 end
 
 --initializes built-in polls' settings
-addEventHandler("onResourceStart", thisResourceRoot,
+addEventHandler("onResourceStart", resourceRoot,
 	function()
 		for name, info in pairs(vote) do
 			local settingsGroup = "vote"..name
@@ -125,7 +123,7 @@ function vote.map.handler(source,cmd,...)
 			if source ~= serverConsole then
 				-- send Yes if it's a Yes/No vote (voteMapReturnCode == true)
 				if voteMapReturnCode == true then
-					triggerClientEvent(source,"doSendVote",rootElement,1)
+					triggerClientEvent(source,"doSendVote",root,1)
 				end
                 if vote.map.locktime >= 0.05 then
                     vote.map.blockedPlayers[sourceSerial] = true
@@ -220,7 +218,7 @@ function vote.kick.handler(source,cmd,playername,...)
 			outputVoteManager("Votekick started by "..getPlayerName(source)..".")
 
 			if source ~= serverConsole then
-				triggerClientEvent(source,"doSendVote",rootElement,1)
+				triggerClientEvent(source,"doSendVote",root,1)
                 if vote.kick.locktime >= 0.05 then
                     vote.kick.blockedPlayers[sourceSerial] = true
                     setTimer(removeLock, vote.kick.locktime * 1000, 1, sourceSerial, "kick")
@@ -259,7 +257,7 @@ function vote.ban.handler(source,cmd,playername,...)
 			outputVoteManager("Voteban started by "..getPlayerName(source)..".")
 
 			if source ~= serverConsole then
-				triggerClientEvent(source,"doSendVote",rootElement,1)
+				triggerClientEvent(source,"doSendVote",root,1)
                 if vote.ban.locktime >= 0.05 then
                     vote.ban.blockedPlayers[sourceSerial] = true
                     setTimer(removeLock, vote.ban.locktime * 1000, 1, sourceSerial, "ban")
@@ -296,7 +294,7 @@ function vote.kill.handler(source,cmd,playername,...)
 		local voteKillStarted, voteKillReturnCode = voteKill(getPlayerByNamepart(playername),reason)
 		if voteKillStarted then
 			outputVoteManager("Votekill started by "..getPlayerName(source)..".")
-			triggerClientEvent(source,"doSendVote",rootElement,1)
+			triggerClientEvent(source,"doSendVote",root,1)
             if vote.kill.locktime >= 0.05 then
                 vote.kill.blockedPlayers[sourceSerial] = true
                 setTimer(removeLock, vote.kill.locktime * 1000, 1, sourceSerial, "kill")
@@ -352,8 +350,8 @@ function voteMap(resource1, resource2)
         map = exports.mapmanager:getRunningGamemodeMap()
         if map then
             local currentMap = getResourceName(map)
-            for i,map in ipairs(compatibleMaps) do
-                if getResourceName(map) == currentMap then
+            for i,map2 in ipairs(compatibleMaps) do
+                if getResourceName(map2) == currentMap then
                     table.remove(compatibleMaps, i)
                     break
                 end
@@ -363,11 +361,11 @@ function voteMap(resource1, resource2)
         return (startPoll {
             title='Change to a random map on this gamemode?',
             percentage = vote.map.percentage,
-            visibleTo = rootElement,
+            visibleTo = root,
             timeout = vote.map.timeout,
             allowchange = vote.map.allowchange;
             [1]={'Yes',call,getResourceFromName("mapmanager"),"changeGamemodeMap",compatibleMaps[math.random(1, #compatibleMaps)]},
-            [2]={"No",outputVoteManager,"votemap: not enough votes to change to a random map on this gamemode.",rootElement,vR,vG,vB;default=true},
+            [2]={"No",outputVoteManager,"votemap: not enough votes to change to a random map on this gamemode.",root,vR,vG,vB;default=true},
         }), true
 
 	-- a map, a gamemode: vote for that pair
@@ -378,11 +376,11 @@ function voteMap(resource1, resource2)
 			return (startPoll{
                 title = "Change mode to "..gamemodeName.." on map "..mapName.."?",
 				percentage = vote.map.percentage,
-				visibleTo = rootElement,
+				visibleTo = root,
 				timeout = vote.map.timeout,
 				allowchange = vote.map.allowchange;
 				[1]={"Yes",call,getResourceFromName("mapmanager"),"changeGamemodeMap",map,gamemode},
-				[2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."' on map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
+				[2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."' on map '"..mapName.."'.",root,vR,vG,vB;default=true},
 			}), true
 		else
 			return false, errorCode.mapIsntCompatible
@@ -404,11 +402,11 @@ function voteMap(resource1, resource2)
 			return (startPoll{
 				title="Change map to "..mapName.."?",
 				percentage = vote.map.percentage,
-				visibleTo = rootElement,
+				visibleTo = root,
 				timeout = vote.map.timeout,
 				allowchange = vote.map.allowchange;
 				[1]={"Yes",call,getResourceFromName("mapmanager"),"changeGamemodeMap",map,runningGamemode},
-				[2]={"No",outputVoteManager,"votemap: not enough votes to change to map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
+				[2]={"No",outputVoteManager,"votemap: not enough votes to change to map '"..mapName.."'.",root,vR,vG,vB;default=true},
 			}), true
 		else
 			return false, errorCode.mapIsntCompatible
@@ -438,11 +436,11 @@ function voteKick(player, reason)
 		return startPoll{
 			title=title,
 			percentage = vote.kick.percentage,
-			visibleTo = rootElement,
+			visibleTo = root,
 			timeout = vote.kick.timeout,
 			allowchange = vote.kick.allowchange;
 			[1]={"Yes",kickPlayer,player,serverConsole,reason},
-			[2]={"No",outputVoteManager,"votekick: not enough votes to kick "..getPlayerName(player)..".",rootElement,vR,vG,vB;default=true},
+			[2]={"No",outputVoteManager,"votekick: not enough votes to kick "..getPlayerName(player)..".",root,vR,vG,vB;default=true},
 		}
 	end
 end
@@ -460,11 +458,11 @@ function voteBan(player, reason)
 		return startPoll{
 			title=title,
 			percentage = vote.ban.percentage,
-			visibleTo = rootElement,
+			visibleTo = root,
 			timeout = vote.ban.timeout,
 			allowchange = vote.ban.allowchange;
 			[1]={"Yes",banPlayer,player,vote.ban.banip,vote.ban.banusername,vote.ban.banserial,serverConsole,reason,vote.ban.duration},
-			[2]={"No",outputVoteManager,"voteban: not enough votes to ban "..getPlayerName(player)..".",rootElement,vR,vG,vB;default=true},
+			[2]={"No",outputVoteManager,"voteban: not enough votes to ban "..getPlayerName(player)..".",root,vR,vG,vB;default=true},
 		}
 	end
 end
@@ -480,11 +478,11 @@ function voteKill(player, reason)
 		return startPoll{
 			title=title,
 			percentage = vote.kill.percentage,
-			visibleTo = rootElement,
+			visibleTo = root,
 			timeout = vote.kill.timeout,
 			allowchange = vote.kill.allowchange;
 			[1]={"Yes",killPed,player},
-			[2]={"No",outputVoteManager,"votekill: not enough votes to kill "..getPlayerName(player)..".",rootElement,vR,vG,vB;default=true},
+			[2]={"No",outputVoteManager,"votekill: not enough votes to kill "..getPlayerName(player)..".",root,vR,vG,vB;default=true},
 		}
 	end
 end
@@ -498,7 +496,7 @@ function voteBetweenModes(...)
 
 	local poll = {
 		title="Choose a mode & map:",
-		visibleTo=rootElement,
+		visibleTo=root,
 		percentage=vote.mode.percentage,
 		timeout=vote.mode.timeout,
 		allowchange=vote.mode.allowchange;
@@ -545,7 +543,7 @@ function voteBetweenModes(...)
 	if modeOptions > 2 then
 		local success = startPoll(poll)
 		if success then
-			addEventHandler("onPollEnd", rootElement, chooseRandomMode)
+			addEventHandler("onPollEnd", root, chooseRandomMode)
 		end
 		return success
 	else
@@ -564,7 +562,7 @@ function voteBetweenModesThenMaps(...)
 
 	local poll = {
 		title="Choose a mode:",
-		visibleTo=rootElement,
+		visibleTo=root,
 		percentage=vote.mode.percentage,
 		timeout=vote.mode.timeout,
 		allowchange=vote.mode.allowchange;
@@ -599,7 +597,7 @@ function voteBetweenModesThenMaps(...)
 	if modeOptions > 2 then
 		local success = startPoll(poll)
 		if success then
-			addEventHandler("onPollEnd", rootElement, chooseRandomMode)
+			addEventHandler("onPollEnd", root, chooseRandomMode)
 		end
 		return success
 	else
@@ -618,7 +616,7 @@ function voteBetweenMaps(...)
 
 	local poll = {
 		title="Choose a map:",
-		visibleTo=rootElement,
+		visibleTo=root,
 		percentage=vote.map.percentage,
 		timeout=vote.map.timeout,
 		allowchange=vote.map.allowchange;
@@ -642,7 +640,7 @@ function voteBetweenMaps(...)
 	if mapOptions > 2 then
 		local success = startPoll(poll)
 		if success then
-			addEventHandler("onPollEnd", rootElement, chooseRandomMap)
+			addEventHandler("onPollEnd", root, chooseRandomMap)
 		end
 		return success
 	else
@@ -669,28 +667,28 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
             return (startPoll{
                 title = "Change mode to "..gamemodeName.." on map "..mapName.."?",
                 percentage = vote.map.percentage,
-                visibleTo = rootElement,
+                visibleTo = root,
                 timeout = vote.map.timeout,
                 allowchange = vote.map.allowchange;
                 [1]={"Yes",call,getResourceFromName("mapmanager"),"changeGamemodeMap",compatibleMaps[1],gamemode},
-                [2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."' on map '"..mapName.."'.",rootElement,vR,vG,vB;default=true},
+                [2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."' on map '"..mapName.."'.",root,vR,vG,vB;default=true},
             }), true
         elseif #compatibleMaps < 1 then
             return (startPoll{
                 title = "Change mode to "..gamemodeName.."?",
                 percentage = vote.map.percentage,
-                visibleTo = rootElement,
+                visibleTo = root,
                 timeout = vote.map.timeout,
                 allowchange = vote.map.allowchange;
                 [1]={"Yes",call,getResourceFromName("mapmanager"),"changeGamemode",gamemode},
-                [2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."'.",rootElement,vR,vG,vB;default=true},
+                [2]={"No",outputVoteManager,"votemap: not enough votes to change to '"..gamemodeName.."'.",root,vR,vG,vB;default=true},
             }), true
         end
 	end
 
 	local poll = {
 		title="Choose a map:",
-		visibleTo=rootElement,
+		visibleTo=root,
 		percentage=vote.map.percentage,
 		timeout=vote.map.timeout,
 		allowchange=vote.map.allowchange;
@@ -706,7 +704,7 @@ function voteBetweenGamemodeCompatibleMaps(gamemode)
 	mapOptions = #poll - 1
 	local success = startPoll(poll)
 	if success then
-		addEventHandler("onPollEnd", rootElement, chooseRandomMap)
+		addEventHandler("onPollEnd", root, chooseRandomMap)
 	end
 	return success
 end
@@ -719,13 +717,11 @@ function getPlayerByNamepart(namePart)
 		return getPlayerFromName(namePart)
 	end
 	namePart = string.lower(namePart)
-	--escape all metachars
-	namePart = string.gsub(namePart, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
 	local playername
 	local bestaccuracy = 0
 	local foundPlayer, b, e
 	for _,player in ipairs(getElementsByType("player")) do
-		b,e = string.find(string.lower(getPlayerName(player)), namePart)
+		b,e = string.find(string.lower(getPlayerName(player)), namePart, 1, true)
 		if b and e then
 			if e-b > bestaccuracy then
 				bestaccuracy = e-b
@@ -767,8 +763,6 @@ function findMaps( query, gamemode )
 		return outputDebugString("Votemanager did not function correctly because the \'mapmanager\' resource isn't running.",0)
 	end
 	local results = {}
-	--escape all meta chars
-	query = string.gsub(query, "([%*%+%?%.%(%)%[%]%{%}%\%/%|%^%$%-])","%%%1")
 	-- Loop through and find matching maps
 	local maps = gamemode and exports.mapmanager:getMapsCompatibleWithGamemode(gamemode) or exports.mapmanager:getMaps()
 	for i,resource in ipairs(maps) do
@@ -781,7 +775,7 @@ function findMaps( query, gamemode )
 		end
 
 		-- Find match for query within infoName
-		if string.find( infoName:lower(), query:lower() ) then
+		if string.find( infoName:lower(), query:lower(), 1, true ) then
 			table.insert( results, resource )
 		end
 	end
