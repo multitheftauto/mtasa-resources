@@ -139,5 +139,11 @@
         friendlyname="Admin chat command name"
         desc="The command name for admin chat."
   />
+    <setting name="*useip2c" value="true"
+      friendlyname="useip2c"
+      group="_Advanced"
+      accept="true,false"
+      desc="Displays country flags next to players, set to false to save about 3MB of server RAM."
+      />
   </settings>
 </meta>

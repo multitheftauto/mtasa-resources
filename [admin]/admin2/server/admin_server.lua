@@ -17,23 +17,43 @@ aReports = {}
 aWeathers = {}
 
 function aHandleIP2CUpdate()
-	local updateAdminPanel = {}
-	for id, player in ipairs(getElementsByType("player")) do
-		updatePlayerCountry(player)
-		updateAdminPanel[#updateAdminPanel+1] = player
-	end
-	if #updateAdminPanel > 0 then
-		for id, player in ipairs(getElementsByType("player")) do
-			if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-				for _, playerToUpdate in ipairs(updateAdminPanel) do
-					triggerClientEvent ( player, "aClientPlayerJoin", playerToUpdate, false, false, false, false, aPlayers[playerToUpdate].country, aPlayers[playerToUpdate].countryname )
-				end
-			end
-		end
-	end
+    local playersToUpdate = false
+    local playersTable = getElementsByType("player") -- cache result, save function call
+
+    for playerID = 1, #playersTable do
+        local playerElement = playersTable[playerID]
+
+        if not playersToUpdate then
+            playersToUpdate = {} -- create table only when there are at least one player
+        end
+
+        updatePlayerCountry(playerElement)
+        playersToUpdate[#playersToUpdate + 1] = playerElement
+    end
+
+    if not playersToUpdate then
+        return -- if there are no players, stop further code execution
+    end
+
+    for playerID = 1, #playersTable do
+        local playerElement = playersTable[playerID]
+        local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel")
+
+        if hasAdminPermission then
+            
+            for playerToUpdateID = 1, #playersToUpdate do
+                local playerToUpdate = playersToUpdate[playerToUpdateID]
+
+                triggerClientEvent(playerElement, "aClientPlayerJoin", playerToUpdate,
+                    false, false, false, false,
+                    aPlayers[playerToUpdate].country,
+                    aPlayers[playerToUpdate].countryname
+                )
+            end
+        end
+    end
 end
 
--- Starts resource if setting is true
 function aHandleIp2cSetting()
 	local enabled = get("*useip2c")
 	if enabled and enabled == "true" then
@@ -41,6 +61,11 @@ function aHandleIp2cSetting()
 		if ip2c and getResourceState(ip2c) == "loaded" then
             -- Persistent
 			startResource(ip2c, true)
+		end
+	elseif (not enabled) or (enabled == "false") then
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c and getResourceState(ip2c) == "running" then
+			stopResource(ip2c)
 		end
 	end
 end
@@ -62,14 +87,13 @@ addEventHandler(
             return
         end
 
-        aHandleIp2cSetting()
         aSetupACL()
         aSetupCommands()
         aSetupStorage()
-
         for id, player in ipairs(getElementsByType("player")) do
             aPlayerInitialize(player)
         end
+        aHandleIp2cSetting()
     end
 )
 
