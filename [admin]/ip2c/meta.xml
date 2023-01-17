@@ -208,6 +208,7 @@
     <file src="client/images/flags/gq.png" />
     <file src="client/images/flags/gs.png" />
     <file src="client/images/flags/gu.png" />
+    <file src="client/images/flags/hm.png" />
     <file src="client/images/flags/im.png" />
     <file src="client/images/flags/io.png" />
     <file src="client/images/flags/ke.png" />
@@ -220,9 +221,11 @@
     <file src="client/images/flags/li.png" />
     <file src="client/images/flags/lr.png" />
     <file src="client/images/flags/ls.png" />
+    <file src="client/images/flags/mf.png" />
     <file src="client/images/flags/ml.png" />
     <file src="client/images/flags/mo.png" />
     <file src="client/images/flags/mp.png" />
+    <file src="client/images/flags/mq.png" />
     <file src="client/images/flags/mr.png" />
     <file src="client/images/flags/ms.png" />
     <file src="client/images/flags/mw.png" />
@@ -234,6 +237,7 @@
     <file src="client/images/flags/pn.png" />
     <file src="client/images/flags/pw.png" />
     <file src="client/images/flags/sb.png" />
+    <file src="client/images/flags/sh.png" />
     <file src="client/images/flags/sm.png" />
     <file src="client/images/flags/sn.png" />
     <file src="client/images/flags/sr.png" />
