@@ -143,7 +143,7 @@
       friendlyname="useip2c"
       group="_Advanced"
       accept="true,false"
-      desc="Displays country flags next to players, set to false to save about 3MB of server RAM."
+			desc="When enabled, ip2c resource runs and fetches player countries by IP."
       />
   </settings>
 </meta>
