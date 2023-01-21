@@ -13,6 +13,7 @@
   <script src="server/admin_server.lua" />
   <script src="server/admin_sync.lua" />
   <script src="server/admin_commands.lua" />
+  <script src="server/admin_ip2c.lua" />
   <script src="server/admin_servermaps.lua" />
   <script src="server/admin_ACL.lua" />
   <script src="server/admin_settings.lua" />
@@ -44,6 +45,9 @@
   <script src="client/gui/admin_settings.lua" type="client" />
   <script src="client/gui/admin_screenshot.lua" type="client" />
   <script src="client/colorpicker/colorpicker.lua" type="client" />
+  
+  <!--Exported Functions-->
+  <export function="getPlayerCountry"/>
 
   <!--Required XML configs kept in /conf/ folder-->
   <config src="conf/interiors.xml" type="client" />
