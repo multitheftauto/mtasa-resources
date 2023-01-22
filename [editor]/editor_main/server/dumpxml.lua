@@ -80,6 +80,12 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 	dimension = dimension or 0
 	extraNodes = extraNodes or {}
 
+	-- Fixes onPlayerResourceStart version warning
+
+	local minVersion = xmlCreateChild(xml, "min_mta_version")
+
+	xmlNodeSetAttribute(minVersion, "server", "1.5.8-9.20957")
+
 	--Add OOP support
 	--[[local oopNode = xmlCreateChild(xml, "oop")
 	xmlNodeSetValue(oopNode, "true")]]
