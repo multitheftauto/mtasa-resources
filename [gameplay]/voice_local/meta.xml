@@ -1,0 +1,8 @@
+<meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" name="Local voice chat" description="This resource implements a voice chat where only nearby players can talk to eachother" type="script" />
+
+	<file src="icon.png"/>
+
+	<script src="client.lua" type="client"/>
+	<script src="server.lua" type="server"/>
+</meta>
