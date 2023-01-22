@@ -1,11 +1,11 @@
 local broadcasts = {}
 
 function setPlayerBroadcast(thePlayer, players)
-	broadcasts[thePlayer] = {}
+    broadcasts[thePlayer] = {}
 
-	for player, _ in pairs(players) do
-		table.insert(broadcasts[thePlayer], player)
-	end
+    for player, _ in pairs(players) do
+        table.insert(broadcasts[thePlayer], player)
+    end
 
     setPlayerVoiceBroadcastTo(thePlayer, broadcasts[thePlayer])
 end
@@ -58,15 +58,15 @@ addEvent("voice:removePlayerBroadcast", true)
 addEventHandler("voice:removePlayerBroadcast", resourceRoot, removePlayerBroadcast)
 
 function playerVoiceStart()
-	for _, listener in ipairs(broadcasts[source]) do
-		triggerClientEvent(listener, "voice_cl:onClientPlayerVoiceStart", resourceRoot, source)
-	end
+    for _, listener in ipairs(broadcasts[source]) do
+        triggerClientEvent(listener, "voice_cl:onClientPlayerVoiceStart", resourceRoot, source)
+    end
 end
 addEventHandler("onPlayerVoiceStart", root, playerVoiceStart)
 
 function playerVoiceStop()
-	for _, listener in ipairs(broadcasts[source]) do
-		triggerClientEvent(listener, "voice_cl:onClientPlayerVoiceStop", resourceRoot, source)
-	end
+    for _, listener in ipairs(broadcasts[source]) do
+        triggerClientEvent(listener, "voice_cl:onClientPlayerVoiceStop", resourceRoot, source)
+    end
 end
 addEventHandler("onPlayerVoiceStop", root, playerVoiceStop)
