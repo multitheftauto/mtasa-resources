@@ -45,6 +45,10 @@
   <script src="client/gui/admin_screenshot.lua" type="client" />
   <script src="client/colorpicker/colorpicker.lua" type="client" />
 
+  <!-- Placeholder for backwards compatibility -->
+  <script src="server/admin_ip2c.lua" />
+  <export function="getPlayerCountry"/>
+
   <!--Required XML configs kept in /conf/ folder-->
   <config src="conf/interiors.xml" type="client" />
   <config src="conf/weathers.xml" type="client" />
