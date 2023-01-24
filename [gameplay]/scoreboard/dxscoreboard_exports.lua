@@ -1,5 +1,3 @@
-MAX_PRIRORITY_SLOT = 500
-
 scoreboardColumns = {
 	{ ["name"] = "name", ["width"] = 200, ["friendlyName"] = "Name", ["priority"] = 1 },
 	{ ["name"] = "ping", ["width"] = 40, ["friendlyName"] = "Ping", ["priority"] = MAX_PRIRORITY_SLOT },
