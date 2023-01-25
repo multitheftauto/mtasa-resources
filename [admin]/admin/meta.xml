@@ -152,7 +152,7 @@
 					friendlyname="useip2c"
 					group="_Advanced"
 					accept="true,false"
-					desc="When enabled, ip2c resource runs and fetches player countries by IP."
+					desc="When enabled, admin will use the ip2c resource to determine players' countries by their IP."
 					/>
 
 		<setting name="*nickChangeDelay" value="5000"
