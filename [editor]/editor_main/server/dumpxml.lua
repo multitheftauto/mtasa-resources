@@ -76,15 +76,39 @@ function dumpNodes ( xmlNode, elementTable, elementChildren )
 end
 
 function dumpMeta ( xml, extraNodes, resource, filename, test )
-	if not resource then return false end
+	if not resource then
+		return false
+	end
+
 	dimension = dimension or 0
 	extraNodes = extraNodes or {}
 
-	-- Fixes onPlayerResourceStart version warning
+	-- Fetch min_mta_version from editor_main meta.xml
 
-	local minVersion = xmlCreateChild(xml, "min_mta_version")
+	local metaFile = xmlLoadFile("meta.xml")
 
-	xmlNodeSetAttribute(minVersion, "server", "1.5.8-9.20957")
+	if metaFile then
+		local editorMinVer = xmlFindChild(metaFile, "min_mta_version", 0)
+
+		if editorMinVer then
+			local mapVersionNode = xmlFindChild(xml, "min_mta_version", 0) or xmlCreateChild(xml, "min_mta_version")
+
+			if mapVersionNode then
+				local clientMinVer = xmlNodeGetAttribute(editorMinVer, "client")
+				local serverMinVer = xmlNodeGetAttribute(editorMinVer, "server")
+
+				if clientMinVer then
+					xmlNodeSetAttribute(mapVersionNode, "client", clientMinVer)
+				end
+
+				if serverMinVer then
+					xmlNodeSetAttribute(mapVersionNode, "server", serverMinVer)
+				end
+			end
+		end
+
+		xmlUnloadFile(metaFile)
+	end
 
 	--Add OOP support
 	--[[local oopNode = xmlCreateChild(xml, "oop")
