@@ -75,10 +75,48 @@ function dumpNodes ( xmlNode, elementTable, elementChildren )
 	end
 end
 
+local function syncMapMinVersion(mapXml)
+	local metaFile = xmlLoadFile("meta.xml")
+
+	if not metaFile then
+		return false
+	end
+
+	local editorMinVer = xmlFindChild(metaFile, "min_mta_version", 0)
+
+	if editorMinVer then
+		local mapVersionNode = xmlFindChild(mapXml, "min_mta_version", 0) or xmlCreateChild(mapXml, "min_mta_version")
+
+		if mapVersionNode then
+			local clientMinVer = xmlNodeGetAttribute(editorMinVer, "client")
+			local serverMinVer = xmlNodeGetAttribute(editorMinVer, "server")
+
+			if clientMinVer then
+				xmlNodeSetAttribute(mapVersionNode, "client", clientMinVer)
+			end
+
+			if serverMinVer then
+				xmlNodeSetAttribute(mapVersionNode, "server", serverMinVer)
+			end
+		end
+	end
+
+	xmlUnloadFile(metaFile)
+
+	return true
+end
+
 function dumpMeta ( xml, extraNodes, resource, filename, test )
-	if not resource then return false end
+	if not resource then
+		return false
+	end
+
 	dimension = dimension or 0
 	extraNodes = extraNodes or {}
+
+	-- Fetch min_mta_version from editor_main meta.xml
+
+	syncMapMinVersion(xml)
 
 	--Add OOP support
 	--[[local oopNode = xmlCreateChild(xml, "oop")
