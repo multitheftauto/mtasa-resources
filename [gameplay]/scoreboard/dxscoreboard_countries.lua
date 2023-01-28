@@ -12,23 +12,34 @@ end
 showCountries = toboolean( get( "showCountries" ) ) or false
 
 if showCountries then
-	local isAdminResourceRunning = getResourceFromName( "admin" )
-	isAdminResourceRunning = isAdminResourceRunning and getResourceState( isAdminResourceRunning ) == "running"
+	local isIP2CResourceRunning = getResourceFromName( "ip2c" )
+	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
 
 	local countryData = "Country"
-	local defaultCountryIndicator = "N/A" -- If something somehow fails and setting is enabled in meta.xml
+	local defaultCountryIndicator = "N/A"
 
 	for i, player in ipairs( getElementsByType( "player" ) ) do
-		local cCode = isAdminResourceRunning and exports.admin:getPlayerCountry( player ) or defaultCountryIndicator
-		setElementData( player, countryData, {":admin/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
+		local cCode = isIP2CResourceRunning and exports.ip2c:getPlayerCountry( player ) or defaultCountryIndicator
+		setElementData( player, countryData, {":ip2c/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
 	end
 
 	function setScoreboardData()
-		local cCode = isAdminResourceRunning and exports.admin:getPlayerCountry( source ) or defaultCountryIndicator
-		setElementData( source, countryData, {":admin/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
+		local cCode = isIP2CResourceRunning and exports.ip2c:getPlayerCountry( source ) or defaultCountryIndicator
+		setElementData( source, countryData, {":ip2c/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
+	end
+
+	function setPlayersScoreboardData()
+		local isIP2CResourceRunning_ = getResourceFromName( "ip2c" )
+		isIP2CResourceRunning_ = isIP2CResourceRunning_ and getResourceState( isIP2CResourceRunning_ ) == "running"
+		for i, player in ipairs( getElementsByType( "player" ) ) do
+			local cCode = isIP2CResourceRunning_ and exports.ip2c:getPlayerCountry( player ) or defaultCountryIndicator
+			setElementData( player, countryData, {":ip2c/client/images/flags/" .. cCode:lower() .. ".png", cCode} )
+		end
 	end
 
 	addEventHandler( "onPlayerJoin", root, setScoreboardData )
+	addEventHandler("onResourceStart", root, function(resource) if getResourceName(resource)=="ip2c" then setPlayersScoreboardData() end end)
+	addEventHandler("onResourceStop", root, function(resource) if getResourceName(resource)=="ip2c" then setPlayersScoreboardData() end end)
 end
 
 -- Server staff can use the below command to spoof their country-code in TAB scoreboard to avoid undesired recognition by players.
@@ -51,10 +62,16 @@ addCommandHandler("setcountry",
 			return false
 		end
 		country_code = string.lower(country_code)
-		local img = ":admin/client/images/flags/"..country_code..".png"
+		local img = ":ip2c/client/images/flags/"..country_code..".png"
 		if not fileExists(img) then
 			outputChatBox("* Sorry, '"..country_code.."' is not an existing country code.", thePlayer, 255, 100, 100)
 			return false
+		end
+		local isIP2CResourceRunning = getResourceFromName( "ip2c" )
+		isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
+		if not isIP2CResourceRunning then
+			-- Warn the user that the country flags are not being fetched
+			outputChatBox("* IP2C resource is not running, player country flags are not being fetched!", thePlayer, 255, 255, 100)
 		end
 		country_code = string.upper(country_code)
 		setElementData(thePlayer, "Country", {img, country_code})

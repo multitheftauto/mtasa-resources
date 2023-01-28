@@ -383,7 +383,15 @@ function aPlayersTab.onClientPlayerChangeNick(oldNick, newNick)
     end
 end
 
-function aPlayersTab.onClientPlayerJoin(ip, username, serial, country, countryname)
+function aPlayersTab.onClientPlayerJoin(ip, username, serial, unused, country, countryname)
+    if ip == false and serial == false then
+        -- Update country only
+		if aPlayers[source] then
+			aPlayers[source].country = country
+			aPlayers[source].countryname = countryname
+		end
+		return
+    end
     aPlayers[source] = {}
     aPlayers[source].name = getPlayerName(source)
     aPlayers[source].ip = ip
@@ -461,7 +469,8 @@ function aPlayersTab.onRefresh()
     guiSetText(aPlayersTab.Country, "Country: " .. (aPlayers[player].countryname or "Unknown"))
     guiSetText(aPlayersTab.Account, "Account: " .. getSensitiveText((aPlayers[player]["account"] or "guest")))
     guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
-    if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "zz") then
+    local flagPath = aPlayers[player].country and ":ip2c/client/images/flags/" .. string.lower(tostring(aPlayers[player].country)) .. ".png" or false
+    if (flagPath) then
         local x, y = guiGetPosition(aPlayersTab.Country, false)
         local width = guiLabelGetTextExtent(aPlayersTab.Country)
         guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
@@ -469,7 +478,7 @@ function aPlayersTab.onRefresh()
             aPlayersTab.Flag,
             guiStaticImageLoadImage(
                 aPlayersTab.Flag,
-                "client\\images\\flags\\" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
+                flagPath
             )
         )
     else
