@@ -134,8 +134,11 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 		--
 		-- In/out animation
 		--
-		local currentSeconds = getTickCount() / 1000
+
+		local currentTick = getTickCount()
+		local currentSeconds = currentTick/1000
 		local deltaSeconds = currentSeconds - scoreboardDimensions.lastSeconds
+
 		scoreboardDimensions.lastSeconds = currentSeconds
 		deltaSeconds = math.clamp( 0, deltaSeconds, 1/25 )
 
@@ -330,7 +333,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 		--
 		-- Update the scoreboard content
 		--
-		local currentTick = getTickCount()
+
 		if (currentTick - scoreboardTicks.lastUpdate > scoreboardTicks.updateInterval and (scoreboardToggled or scoreboardForced)) or forceScoreboardUpdate then
 			forceScoreboardUpdate = false
 			scoreboardContent = {}
@@ -869,13 +872,22 @@ function scoreboardAddColumn(name, width, friendlyName, priority, textFunction, 
 	return false
 end
 
-
 addEvent( "doScoreboardAddColumn", true )
 addEventHandler( "doScoreboardAddColumn", root,
 	function ( name, width, friendlyName, priority, fromResource, isImage, imageW, imageH )
 		scoreboardAddColumn( name, width, friendlyName, priority, nil, fromResource, isImage, imageW, imageH )
 	end
 )
+
+function onClientScoreboardCreateColumns(columnsToAdd)
+	for columnID = 1, #columnsToAdd do
+		local columnData = columnsToAdd[columnID]
+
+		scoreboardAddColumn(columnData.name, columnData.width, columnData.friendlyName, columnData.priority, nil, columnData.isImage, columnData.imageW, columnData.imageH)
+	end
+end
+addEvent("onClientScoreboardCreateColumns", true)
+addEventHandler("onClientScoreboardCreateColumns", localPlayer, onClientScoreboardCreateColumns)
 
 -- removeColumn
 function scoreboardRemoveColumn(name)
