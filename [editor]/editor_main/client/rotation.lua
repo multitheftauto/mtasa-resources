@@ -59,7 +59,7 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 	else
 		return false
 	end
-	offset_quat[4] = math.cos(arad / 2) 
+	offset_quat[4] = math.cos(arad / 2)
 	
 	-- Get current rotation
 	local cur_quat
