@@ -65,6 +65,7 @@ addCommandHandler("setcountry",
 		country_code = string.upper(country_code)
 		setElementData(thePlayer, "Country", {img, country_code})
 		outputChatBox("* Your country has been set to "..country_code.."!", thePlayer, 100, 255, 100)
+		outputChatBox("* Don't forget to also use /setping with a value realistic to the chosen country, or else you may be too obvious", thePlayer, 100, 255, 100)
 		return true
 	end
 )
