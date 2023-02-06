@@ -42,23 +42,12 @@ if showCountries then
 	addEventHandler("onResourceStop", root, function(resource) if getResourceName(resource)=="ip2c" then setPlayersScoreboardData() end end)
 end
 
--- Server staff can use the below command to spoof their country-code in TAB scoreboard to avoid undesired recognition by players.
--- Don't be too obvious, it's advised to pick a country close to your own (to simulate a realistic client > server ping for said country)
+-- Privacy-aware players, or those that feel targetted/harrassed, can pretend to be from any country they choose
 addCommandHandler("setcountry",
 	function(thePlayer, command, country_code)
-		local player_account = getPlayerAccount(thePlayer)
-		if not player_account then
-			outputChatBox("* You're not logged in.", thePlayer, 255, 100, 100)
-			return false
-		end
-		local account_name = getAccountName(player_account)
-		if not isObjectInACLGroup("user."..account_name, aclGetGroup("Admin")) and isObjectInACLGroup("user."..account_name, aclGetGroup("Moderator")) then
-			outputChatBox("* You don't have permission to do that.", thePlayer, 255, 100, 100)
-			return false
-		end
 		if not country_code then
 			outputChatBox("* Usage: /setcountry countrycode", thePlayer, 255, 100, 100)
-			outputChatBox("* Example: /setcountry ru", thePlayer, 255, 100, 100)
+			outputChatBox("* Example: /setcountry PL (to show as Poland in TAB player list)", thePlayer, 255, 100, 100)
 			return false
 		end
 		country_code = string.lower(country_code)
