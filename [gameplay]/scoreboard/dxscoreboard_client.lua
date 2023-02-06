@@ -847,12 +847,12 @@ function fakePing(_, value)
 		return outputChatBox("You can only change ping once per minute!", 255, 0, 0)
 	end
 
-	local value = tonumber(value)
-	value = round(value)
+	local increment = tonumber(value)
+	increment = round(increment)
 
-	if value and value <= 9999 and value > 0 then
-		setElementData(localPlayer, "customping", value)
-		outputChatBox("Ping increment set to " .. value)
+	if increment and increment <= 9999 and increment > 0 then
+		setElementData(localPlayer, "customping", increment)
+		outputChatBox("Ping increment set to " .. increment)
 		spam[localPlayer] = getTickCount()
 	else
 		outputChatBox("Syntax: /setping [0 - 9999]. Ex: /setping 50 adds 50 to your real ping", 0, 255, 0)
