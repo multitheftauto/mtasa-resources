@@ -380,6 +380,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 						end
 					elseif column.name == "ping" then
 						content = getPlayerPing( player )
+						if getElementData(player, "customping") then content = getPlayerPing(player) + getElementData(player, "customping") end
 					else
 						content = getElementData( player, column.name )
 					end
@@ -504,6 +505,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 							end
 						elseif column.name == "ping" then
 							content = getPlayerPing( player )
+							if getElementData(player, "customping") then content = getPlayerPing(player) + getElementData(player, "customping") end
 						else
 							content = getElementData( player, column.name )
 						end
@@ -836,6 +838,31 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 			index = index + 1
 		end
 	end
+end
+
+local spam = {}
+
+function fakePing(_, value)
+	if spam[localPlayer] and getTickCount() - spam[localPlayer] < 60000 then
+		return outputChatBox("You can only change ping once per minute!", 255, 0, 0)
+	end
+
+	local value = tonumber(value)
+	value = round(value)
+
+	if value and value <= 9999 and value > 0 then
+		setElementData(localPlayer, "customping", value)
+		outputChatBox("Ping increment set to " .. value)
+		spam[localPlayer] = getTickCount()
+	else
+		outputChatBox("Syntax: /setping [0 - 9999]. Ex: /setping 50 adds 50 to your real ping", 0, 255, 0)
+	end
+end
+addCommandHandler("setping", fakePing)
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
 end
 
 -- FUNCTIONS
