@@ -72,6 +72,7 @@ function setFreecamSpeeds()
 	freecam.setFreecamOption ( "fastMaxSpeed", dialog.fastMove:getValue() )
 	freecam.setFreecamOption ( "slowMaxSpeed", dialog.slowMove:getValue() )
 	freecam.setFreecamOption ( "mouseSensitivity", dialog.mouseSensitivity:getValue() )
+	freecam.setFreecamOption ( "fov", dialog.fov:getValue() )
 end
 
 ---This part decides whether gui should be refreshed or not

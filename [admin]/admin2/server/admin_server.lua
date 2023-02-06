@@ -16,15 +16,73 @@ aStats = {}
 aReports = {}
 aWeathers = {}
 
+function aHandleIP2CUpdate()
+    local playersToUpdate = false
+    local playersTable = getElementsByType("player") -- cache result, save function call
+
+    for playerID = 1, #playersTable do
+        local playerElement = playersTable[playerID]
+
+        if not playersToUpdate then
+            playersToUpdate = {} -- create table only when there are at least one player
+        end
+
+        updatePlayerCountry(playerElement)
+        playersToUpdate[#playersToUpdate + 1] = playerElement
+    end
+
+    if not playersToUpdate then
+        return -- if there are no players, stop further code execution
+    end
+
+    for playerID = 1, #playersTable do
+        local playerElement = playersTable[playerID]
+        local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel")
+
+        if hasAdminPermission then
+            
+            for playerToUpdateID = 1, #playersToUpdate do
+                local playerToUpdate = playersToUpdate[playerToUpdateID]
+
+                triggerClientEvent(playerElement, "aClientPlayerJoin", playerToUpdate,
+                    false, false, false, false,
+                    aPlayers[playerToUpdate].country,
+                    aPlayers[playerToUpdate].countryname
+                )
+            end
+        end
+    end
+end
+
+function aHandleIp2cSetting()
+	local enabled = get("*useip2c")
+	if enabled and enabled == "true" then
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c and getResourceState(ip2c) == "loaded" then
+            -- Persistent
+			startResource(ip2c, true)
+		end
+	elseif (not enabled) or (enabled == "false") then
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c and getResourceState(ip2c) == "running" then
+			stopResource(ip2c)
+		end
+	end
+end
+
 addEventHandler(
     "onResourceStart",
     root,
     function(resource)
         if (resource ~= getThisResource()) then
+            local resourceName = getResourceName(resource)
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
-                    triggerClientEvent(player, "aClientResourceStart", root, getResourceName(resource))
+                    triggerClientEvent(player, "aClientResourceStart", root, resourceName)
                 end
+            end
+            if resourceName == "ip2c" then
+                aHandleIP2CUpdate()
             end
             return
         end
@@ -32,10 +90,10 @@ addEventHandler(
         aSetupACL()
         aSetupCommands()
         aSetupStorage()
-
         for id, player in ipairs(getElementsByType("player")) do
             aPlayerInitialize(player)
         end
+        aHandleIp2cSetting()
     end
 )
 
@@ -44,10 +102,14 @@ addEventHandler(
     root,
     function(resource)
         if (resource ~= getThisResource()) then
+            local resourceName = getResourceName(resource)
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
-                    triggerClientEvent(player, "aClientResourceStop", root, getResourceName(resource))
+                    triggerClientEvent(player, "aClientResourceStop", root, resourceName)
                 end
+            end
+            if resourceName == "ip2c" then
+                aHandleIP2CUpdate()
             end
         else
             aReleaseStorage()
@@ -70,6 +132,7 @@ addEventHandler(
                     getPlayerIP(source),
                     getPlayerUserName(source),
                     getPlayerSerial(source),
+                    false,
                     aPlayers[source]["country"],
                     aPlayers[source]["countryname"]
                 )
@@ -87,13 +150,19 @@ addEventHandler(
     end
 )
 
+function updatePlayerCountry(player)
+    local isIP2CResourceRunning = getResourceFromName( "ip2c" )
+	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
+    aPlayers[player].country = isIP2CResourceRunning and exports.ip2c:getPlayerCountry(player) or false
+    aPlayers[player].countryname = isIP2CResourceRunning and exports.ip2c:getCountryName(aPlayers[player].country) or false
+end
+
 function aPlayerInitialize(player)
     aPlayers[player] = {}
-    aPlayers[player].country = getPlayerCountry(player)
-    aPlayers[player].countryname = getPlayerCountryName(player)
     aPlayers[player].money = getPlayerMoney(player)
     aPlayers[player].muted = isPlayerMuted(player)
     aPlayers[player].frozen = isElementFrozen(player)
+    updatePlayerCountry(player)
 end
 
 function aAction(type, action, admin, player, data, more)

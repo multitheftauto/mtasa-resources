@@ -28,6 +28,7 @@ local xmlVariants = {
 ["enablePrecisionRotation"]="enableprecisionrotation",
 ["enableColPatch"]="enablecolpatch",
 ["enableRotPatch"]="enablerotpatch",
+["fov"]="fov",
 }
 local nodeTypes = {
 ["enableSounds"]="bool",
@@ -58,6 +59,7 @@ local nodeTypes = {
 ["enableXYZlines"]="bool",
 ["enableColPatch"]="bool",
 ["enableRotPatch"]="bool",
+["fov"]="progress",
 }
 local defaults = {
 ["enableSounds"]=true,
@@ -87,6 +89,7 @@ local defaults = {
 ["enableXYZlines"]=true,
 ["enableColPatch"]=false,
 ["enableRotPatch"]=true,
+["fov"]=dxGetStatus()["SettingFOV"],
 }
 
 --stuff involving xml and dumping

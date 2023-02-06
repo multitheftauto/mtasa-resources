@@ -1,0 +1,5 @@
+<meta>
+    <info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" name="Rustler bombs" description="Rustler glider bomb (controlled with left ALT)" type="script" />
+    <min_mta_version client="1.5.6-9.16404"></min_mta_version>
+    <script src="client.lua" type="client" />
+</meta>

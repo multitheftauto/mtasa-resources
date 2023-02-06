@@ -33,9 +33,10 @@ function createCurrentBrowser ()
 	currentBrowserGUI.search = guiCreateEdit ( 12, 50, windowWidth, 30, "Search...", false, currentBrowserGUI.browser )
 	currentBrowserGUI.dropdown = editingControl.dropdown:create{["x"]=12,["y"]=25,["width"]=windowWidth,["height"]=20,["dropWidth"]=windowWidth,["dropHeight"]=200,["relative"]=false,["parent"]=currentBrowserGUI.browser,["rows"]={""}}
 	--linked to options
-	dialog.autosnap = editingControl.boolean:create{["x"]=12,["y"]=windowHeight-48,["width"]=115,["height"]=30,["relative"]=false,["parent"]=currentBrowserGUI.browser,["label"]="Autosnap camera"}
-	currentBrowserGUI.isolate = guiCreateCheckBox ( 12, windowHeight-24, 115, 30, "Isolate element", false, false, currentBrowserGUI.browser )
-	currentBrowserGUI.close = guiCreateButton ( 132, windowHeight-40, windowWidth, 40, "Close", false, currentBrowserGUI.browser )
+	dialog.autosnap = editingControl.boolean:create{["x"]=12,["y"]=windowHeight-48,["width"]=windowWidth/2,["height"]=30,["relative"]=false,["parent"]=currentBrowserGUI.browser,["label"]="Autosnap camera"}
+    currentBrowserGUI.isolate = guiCreateCheckBox ( 12, windowHeight-24, windowWidth/2, 30, "Isolate element", false, false, currentBrowserGUI.browser )
+	currentBrowserGUI.restore = guiCreateButton ( windowWidth/4 * 2-10, windowHeight-40, windowWidth/4, 40, "Restore", false, currentBrowserGUI.browser )
+    currentBrowserGUI.close = guiCreateButton ( windowWidth/4 * 3, windowHeight-40, windowWidth/4, 40, "Close", false, currentBrowserGUI.browser )
 	guiSetProperty(currentBrowserGUI.browser,"RelativeMinSize","w:0.250000 h:0.400000")
 	--
 	guiSetAlpha ( currentBrowserGUI.browser, 50 )
@@ -51,6 +52,7 @@ function createCurrentBrowser ()
 	currentBrowser.update()
 	addEventHandler ( "onClientGUIClick", currentBrowserGUI.close, closeCurrentBrowser, false )
 	addEventHandler ( "onClientGUIClick", currentBrowserGUI.isolate, currentBrowser.isolateClick, false )
+	addEventHandler ( "onClientGUIClick", currentBrowserGUI.restore, restoreSelectedElement, false )
 	addEventHandler ( "onClientGUISize", currentBrowserGUI.browser, currentBrowser.resized, false )
 	currentBrowserGUI.gridlist:addCallback(currentBrowser.gridlistClick)
 	currentBrowserGUI.gridlist:addDoubleClickCallback(currentBrowser.doubleClick)
@@ -64,8 +66,10 @@ function currentBrowser.resized()
 	currentBrowserGUI.dropdown:setSize(windowWidth,20,windowWidth,200,false)
 	dialog.autosnap:setPosition( 12, windowHeight-48,false )
 	guiSetPosition ( currentBrowserGUI.isolate, 12, windowHeight-24,false )
-	guiSetPosition ( currentBrowserGUI.close, 132, windowHeight-40, false )
-	guiSetSize ( currentBrowserGUI.close, windowWidth, 40, false )
+	guiSetPosition ( currentBrowserGUI.close, windowWidth/4 * 3, windowHeight-40, false )
+	guiSetSize ( currentBrowserGUI.close, windowWidth/4, 40, false )
+	guiSetPosition ( currentBrowserGUI.restore, windowWidth/4 * 2-10, windowHeight-40, false )
+	guiSetSize ( currentBrowserGUI.restore, windowWidth/4, 40, false )
 	--
 	if not isResizing then
 		addEventHandler ( "onClientClick",root,resizeStop )
@@ -178,6 +182,7 @@ function currentBrowser.gridlistClick (cellrow)
 	if cellrow ~= 0 then
 		local id = currentBrowserGUI.gridlist:getSelectedText()
 		cSelectedElement = getElementByID ( id )
+		editor_main.selectElement ( cSelectedElement, 2, false, cSelectedElement, cSelectedElement, true)
 		if ( dialog.autosnap:getValue() ) then
 			autoSnap ( cSelectedElement )
 		end
@@ -448,6 +453,17 @@ function closeCurrentBrowser()
 	removeEventHandler ( "onClientGUIWorldClick", root, currentBrowser.searchClick )
 	removeEventHandler ( "onClientElementCreate",root,currentBrowser.prepareSearch )
 	removeEventHandler ( "onClientElementDestroyed",root,currentBrowser.prepareSearch )
+end
+
+function restoreSelectedElement()
+	if cSelectedElement then
+		editor_main.destroySelectedElement()
+		closeCurrentBrowser()
+		
+		setTimer(function()
+			showCurrentBrowser()
+		end, 100, 1)
+	end
 end
 
 function isCurrentBrowserShowing()
