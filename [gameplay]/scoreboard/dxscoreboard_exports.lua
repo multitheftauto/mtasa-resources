@@ -206,11 +206,7 @@ function onPlayerResourceStartScoreboard(startedResource)
 		return false
 	end
 
-	for columnID = 1, #scoreboardColumns do
-		local columnData = scoreboardColumns[columnID]
-
-		triggerClientEvent(source, "doScoreboardAddColumn", source, columnData.name, columnData.width, columnData.friendlyName, columnData.priority, nil, columnData.isImage, columnData.imageW, columnData.imageH)
-	end
+	triggerClientEvent(source, "onClientScoreboardCreateColumns", source, scoreboardColumns)
 end
 addEventHandler("onPlayerResourceStart", root, onPlayerResourceStartScoreboard)
 
