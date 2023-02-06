@@ -27,7 +27,7 @@ defaultSettings = {
 	["showgamemodeinfo"] = false,
 	["showteams"] = true,
 	["usecolors"] = true,
-	["drawspeed"] = 1.5,
+	["drawspeed"] = 5.5,
 	["scale"] = 1.0,
 	["columnfont"] = "default-bold",
 	["contentfont"] = "default-bold",
@@ -133,8 +133,8 @@ tempColors = {
 		["a"] = nil
 	}
 }
-MAX_DRAWSPEED = 4.0
-MIN_DRAWSPEED = 0.5
+MAX_DRAWSPEED = 5.5
+MIN_DRAWSPEED = 1.5
 MAX_SCALE = 2.5
 MIN_SCALE = 0.5
 fontIndexes = {
