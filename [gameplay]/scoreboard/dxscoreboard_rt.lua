@@ -8,28 +8,35 @@ local rt
 local lastUpdateTime = 0
 local savedRowsNext = {}
 local savedRows = {}
+local cursorCache = {}
 
 -- Adjust cursor position if using rt
 
 local function getCursorScoreboardPosition(rtPass)
-	local cX, cY = getCursorPosition()
-	local sX, sY = SCREEN_X, SCREEN_Y
-	
-	cX, cY = cX * sX, cY * sY
-	
-	if rtPass then
-		local x, y = scoreboardGetTopCornerPosition()
+	if #cursorCache == 0 then
+		local cX, cY = getCursorPosition()
+		local sX, sY = SCREEN_X, SCREEN_Y
 
-		cX, cY = cX - x, cY - y
+		cX, cY = cX * sX, cY * sY
+
+		if rtPass then
+			local x, y = scoreboardGetTopCornerPosition()
+
+			cX, cY = cX - x, cY - y
+		end
+
+		cursorCache = {cX, cY}
 	end
 
-	return cX, cY
+	return cursorCache[1], cursorCache[2]
 end
 
 -- drawScoreboard
 -- Do things depending on things
 
 function drawScoreboard()
+	cursorCache = {}
+
 	if #savedRowsNext > 0 then
 		savedRows = savedRowsNext
 		savedRowsNext = {}
