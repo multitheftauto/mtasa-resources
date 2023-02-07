@@ -86,6 +86,9 @@
 	
 	<!-- Collision patches -->
 	<script src="client/colpatch.lua" type="client" />
+	
+	<!-- Incremental rotation with quaternions used by move_freecam, move_cursor, move_keyboard -->
+	<script src="client/rotation.lua" type="client" />
 
 	<!-- Exported client functions -->
 	<export function="startEditor" type="client" />
@@ -132,6 +135,8 @@
 	<export function="lockSelectedElement" type="client" />
 	<export function="isElementLocked" type="client" />
 	<export function="toggleColPatch" type="client" />
+	<export function="applyIncrementalRotation" type="client" />
+	<export function="clearElementQuat" type="client" />
 
 	<!-- Client-side files -->
 	<file src="client/images/crosshair.png" />
@@ -146,6 +151,7 @@
 	
 	<file src="client/colpatch/patches.col" />
 	<file src="client/colpatch/placement.list" />
+	<file src="client/rotation_fix.xml" />
 
 	<settings>
 		<setting name="*admingroup" value="Admin,MapEditor"

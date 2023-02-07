@@ -27,6 +27,7 @@ local xmlVariants = {
 ["enablePrecisionSnap"]="enableprecisionsnap",
 ["enablePrecisionRotation"]="enableprecisionrotation",
 ["enableColPatch"]="enablecolpatch",
+["enableRotPatch"]="enablerotpatch",
 ["fov"]="fov",
 }
 local nodeTypes = {
@@ -57,6 +58,7 @@ local nodeTypes = {
 ["enablePrecisionRotation"]="bool",
 ["enableXYZlines"]="bool",
 ["enableColPatch"]="bool",
+["enableRotPatch"]="bool",
 ["fov"]="progress",
 }
 local defaults = {
@@ -86,6 +88,7 @@ local defaults = {
 ["enablePrecisionRotation"]=false,
 ["enableXYZlines"]=true,
 ["enableColPatch"]=false,
+["enableRotPatch"]=true,
 ["fov"]=dxGetStatus()["SettingFOV"],
 }
 

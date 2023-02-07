@@ -32,16 +32,17 @@ function createOptionsDialog()
 
 	---------------------------------
 	dialog.enableBox = editingControl.boolean:create{["x"]=0.60,["y"]=0.02,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable Bounding Box"}
-	dialog.enableXYZlines = editingControl.boolean:create{["x"]=0.60,["y"]=0.1,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable XYZ Lines"}
+	dialog.enableXYZlines = editingControl.boolean:create{["x"]=0.60,["y"]=0.12,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable XYZ Lines"}
 	---------------------------------
-	dialog.enablePrecisionSnap = editingControl.boolean:create{["x"]=0.60,["y"]=0.2,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Precise Position"}
-	guiCreateLabel ( 0.55, 0.3, 70, 17, "Snap Level:", true, dialog.generalTab )
-	dialog.precisionLevel = editingControl.dropdown:create{["x"]=0.68,["y"]=0.3,["width"]=0.3,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.55,["relative"]=true,["rows"]={"10","5","2","1","0.1","0.01","0.001","0.0001"},["parent"]=dialog.generalTab}
-	guiCreateLabel ( 0.47, 0.4, 70, 17, "Rotation Precision:", true, dialog.generalTab )
-	dialog.precisionRotLevel = editingControl.dropdown:create{["x"]=0.68,["y"]=0.4,["width"]=0.3,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.55,["relative"]=true,["rows"]={"180","90","45","30","20","10","5","1"},["parent"]=dialog.generalTab}
-	dialog.enablePrecisionRotation = editingControl.boolean:create{["x"]=0.60,["y"]=0.5,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Precise Rotation"}
+	dialog.enablePrecisionSnap = editingControl.boolean:create{["x"]=0.60,["y"]=0.22,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable Snap - Precise Position"}
+	guiCreateLabel ( 0.47, 0.34, 70, 17, "Position Snap Level:", true, dialog.generalTab )
+	dialog.precisionLevel = editingControl.dropdown:create{["x"]=0.68,["y"]=0.34,["width"]=0.3,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.55,["relative"]=true,["rows"]={"10","5","2","1","0.1","0.01","0.001","0.0001"},["parent"]=dialog.generalTab}
+	guiCreateLabel ( 0.47, 0.44, 70, 17, "Rotation Snap Level:", true, dialog.generalTab )
+	dialog.precisionRotLevel = editingControl.dropdown:create{["x"]=0.68,["y"]=0.44,["width"]=0.3,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.55,["relative"]=true,["rows"]={"180","90","45","30","20","10","5","1"},["parent"]=dialog.generalTab}
+	dialog.enablePrecisionRotation = editingControl.boolean:create{["x"]=0.60,["y"]=0.52,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable Snap - Precise Rotation"}
 	---------------------------------
-	dialog.enableColPatch = editingControl.boolean:create{["x"]=0.60,["y"]=0.6,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable collision patches"}
+	dialog.enableColPatch = editingControl.boolean:create{["x"]=0.60,["y"]=0.62,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable collision patches"}
+	dialog.enableRotPatch = editingControl.boolean:create{["x"]=0.60,["y"]=0.72,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable rotation patches"}
 	---------------------------------
 	--camera settings
 	guiCreateLabel ( 0.02, 0.02, 1, 0.1, "Normal camera move speed:", true, dialog.cameraTab )

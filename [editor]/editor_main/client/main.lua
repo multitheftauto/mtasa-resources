@@ -151,6 +151,7 @@ function startWhenLoaded()
 	end
 	if isInterfaceLoaded() then
 		removeEventHandler("onClientResourceStart", root, startWhenLoaded)
+		loadRotationFixXML()
 		startEditor()
 	end
 end
@@ -877,6 +878,9 @@ function dropElement(releaseLock,clonedrop)
 
 	-- trigger server selection events
 	triggerServerEvent("onElementDrop", g_selectedElement)
+	
+	-- Clear rotation as it can be rotated by other players
+	clearElementQuat(g_selectedElement)
 
 	local droppedElement = g_selectedElement
 	g_selectedElement = false
@@ -1281,8 +1285,10 @@ function setMovementType( movementType )
 	if g_arrowMarker then
 		if movementType == "move" then
 			setMarkerColor(g_arrowMarker, 255, 255, 0)
-		elseif movementType == "rotate" then
+		elseif movementType == "rotate" or movementType == "rotate_world" then
 			setMarkerColor(g_arrowMarker, 0, 255, 0)
+		elseif movementType == "rotate_local" then
+			setMarkerColor(g_arrowMarker, 0, 255, 255)
 		end
 	end
 end
