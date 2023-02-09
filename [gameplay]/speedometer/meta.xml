@@ -1,5 +1,6 @@
 <meta>
 	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" type="script" description="Basic speedometer" />
+	<min_mta_version client="1.5.6-9.16404"></min_mta_version>
 	<file src="images/disc.png" />
 	<file src="images/needle.png" />
 	<script src="client.lua" type="client" />
