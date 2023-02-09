@@ -232,10 +232,9 @@ end
 
 function handleClothesInit()
 
-	if not client or source ~= resourceRoot then 
+	if not client or source ~= resourceRoot then
 		return
 	end
-
 
 	local result = {}
 	local texture, model
