@@ -1,5 +1,3 @@
-MAX_PRIRORITY_SLOT = 500
-
 scoreboardColumns = {
 	{ ["name"] = "name", ["width"] = 200, ["friendlyName"] = "Name", ["priority"] = 1 },
 	{ ["name"] = "ping", ["width"] = 40, ["friendlyName"] = "Ping", ["priority"] = MAX_PRIRORITY_SLOT },
@@ -208,11 +206,7 @@ function onPlayerResourceStartScoreboard(startedResource)
 		return false
 	end
 
-	for columnID = 1, #scoreboardColumns do
-		local columnData = scoreboardColumns[columnID]
-
-		triggerClientEvent(source, "doScoreboardAddColumn", source, columnData.name, columnData.width, columnData.friendlyName, columnData.priority, nil, columnData.isImage, columnData.imageW, columnData.imageH)
-	end
+	triggerClientEvent(source, "onClientScoreboardCreateColumns", source, scoreboardColumns)
 end
 addEventHandler("onPlayerResourceStart", root, onPlayerResourceStartScoreboard)
 

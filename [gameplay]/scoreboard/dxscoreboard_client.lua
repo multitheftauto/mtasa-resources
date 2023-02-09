@@ -1,14 +1,44 @@
 -- THESE CAN BE CHANGED
-triggerKey = "tab" -- default button to open/close scoreboard
-settingsKey = "F7" -- default button to open the settings window
+
+local triggerKey = "tab" -- default button to open/close scoreboard
+local settingsKey = "F7" -- default button to open the settings window
+local seperationSpace = 80 -- the space between top/bottom screen and scoreboard top/bottom in pixels
+
 drawOverGUI = true -- draw scoreboard over gui?
-seperationSpace = 80 -- the space between top/bottom screen and scoreboard top/bottom in pixels
 
 -- BUT DON'T TOUCH THESE
-scoreboardToggled = false
-scoreboardForced = false
+
+local resourceColumns = {}
+local selectedRows = {}
+local serverInfo = {}
+local scoreboardContent = {}
+local scoreboardDimensions = { ["width"] = 0, ["height"] = 0, ["phase"] = 1, ["lastSeconds"] = 0 }
+local scoreboardTicks = { ["lastUpdate"] = 0, ["updateInterval"] = 500 }
+local sortBy = { ["what"] = "__NONE__", ["dir"] = -1 } -- -1 = dec, 1 = asc
+
+local scoreboardToggled = false
+local scoreboardForced = false
+local forceScoreboardUpdate = false
+local firstVisibleIndex = 1
+local sbOutOffset, sbInOffset = 1, 1
+local sbFont = "clear"
+local sbFontScale = 0.68
+local cSettingsBox = tocolor(255, 255, 255, 150)
+
+scoreboardColumns = {}
+fontScale = { -- To make all fonts be equal in height
+	["default"] = 1.0,
+	["default-bold"] = 1.0,
+	["clear"] = 1.0,
+	["arial"] = 1.0,
+	["sans"] = 1.0,
+	["pricedown"] = 0.5,
+	["bankgothic"] = 0.5,
+	["diploma"] = 0.5,
+	["beckett"] = 0.5
+}
+
 scoreboardDrawn = false
-forceScoreboardUpdate = false
 useAnimation = true
 scoreboardIsToggleable = false
 showServerInfo = false
@@ -22,34 +52,8 @@ contentFont = "default-bold"
 columnFont = "default-bold"
 serverInfoFont = "default"
 rmbFont = "clear"
-cBlack = tocolor( 0, 0, 0 )
-cWhite = tocolor( 255, 255, 255 )
-cSettingsBox = tocolor( 255, 255, 255, 150 )
-MAX_PRIRORITY_SLOT = 500
-
-scoreboardColumns = {}
-resourceColumns = {}
-scoreboardDimensions = { ["width"] = 0, ["height"] = 0, ["phase"] = 1, ["lastSeconds"] = 0 }
-scoreboardTicks = { ["lastUpdate"] = 0, ["updateInterval"] = 500 }
-scoreboardContent = {}
-firstVisibleIndex = 1
-sortBy = { ["what"] = "__NONE__", ["dir"] = -1 } -- -1 = dec, 1 = asc
-sbOutOffset, sbInOffset = 1, 1
-sbFont = "clear"
-sbFontScale = 0.68
-serverInfo = {}
-fontScale = { -- To make all fonts be equal in height
-	["default"] = 1.0,
-	["default-bold"] = 1.0,
-	["clear"] = 1.0,
-	["arial"] = 1.0,
-	["sans"] = 1.0,
-	["pricedown"] = 0.5,
-	["bankgothic"] = 0.5,
-	["diploma"] = 0.5,
-	["beckett"] = 0.5
-}
-selectedRows = {}
+cWhite = tocolor(255, 255, 255)
+SCREEN_X, SCREEN_Y = guiGetScreenSize()
 
 addEvent( "onClientPlayerScoreboardClick" )
 
@@ -100,7 +104,7 @@ addCommandHandler( "Toggle scoreboard", toggleScoreboard )
 
 function openSettingsWindow()
 	if scoreboardDrawn then
-		local sX, sY = guiGetScreenSize()
+		local sX, sY = SCREEN_X, SCREEN_Y
 		if not (windowSettings and isElement( windowSettings ) and guiGetVisible( windowSettings )) then
 			createScoreboardSettingsWindow( sX-323, sY-350 )
 			showCursor( true )
@@ -125,222 +129,360 @@ function iif( cond, arg1, arg2 )
 end
 
 function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
-	if #scoreboardColumns ~= 0 then
+	local columnsCount = #scoreboardColumns
+	local shouldDrawScoreboard = columnsCount > 0
 
-		--
-		-- In/out animation
-		--
-		local currentSeconds = getTickCount() / 1000
-		local deltaSeconds = currentSeconds - scoreboardDimensions.lastSeconds
-		scoreboardDimensions.lastSeconds = currentSeconds
-		deltaSeconds = math.clamp( 0, deltaSeconds, 1/25 )
+	if not shouldDrawScoreboard then
+		return false
+	end
 
-		if scoreboardToggled or scoreboardForced then
-			local phases = {
-				[1] = {
-					["width"] 		= s(10),
-					["height"] 		= s(5),
+	--
+	-- In/out animation
+	--
 
-					["incToWidth"] 	= s(10),
-					["incToHeight"] = s(5),
+	local currentTick = getTickCount()
+	local currentSeconds = currentTick/1000
+	local deltaSeconds = currentSeconds - scoreboardDimensions.lastSeconds
 
-					["decToWidth"] 	= 0,
-					["decToHeight"] = 0
-				},
-				[2] = {
-					["width"] 	= s(40),
-					["height"] 	= s(5),
+	scoreboardDimensions.lastSeconds = currentSeconds
+	deltaSeconds = math.clamp( 0, deltaSeconds, 1/25 )
 
-					["incToWidth"] 	= calculateWidth(),
-					["incToHeight"] = s(5),
+	if scoreboardToggled or scoreboardForced then
+		local phases = {
+			[1] = {
+				["width"] 		= s(10),
+				["height"] 		= s(5),
 
-					["decToWidth"] 	= s(10),
-					["decToHeight"] = s(5)
+				["incToWidth"] 	= s(10),
+				["incToHeight"] = s(5),
 
-				},
-				[3] = {
-					["width"] 		= calculateWidth(),
-					["height"] 		= s(30),
+				["decToWidth"] 	= 0,
+				["decToHeight"] = 0
+			},
+			[2] = {
+				["width"] 	= s(40),
+				["height"] 	= s(5),
 
-					["incToWidth"] 	= calculateWidth(),
-					["incToHeight"] = calculateHeight(),
+				["incToWidth"] 	= calculateWidth(),
+				["incToHeight"] = s(5),
 
-					["decToWidth"] 	= calculateWidth(),
-					["decToHeight"] = s(5)
-				}
+				["decToWidth"] 	= s(10),
+				["decToHeight"] = s(5)
+
+			},
+			[3] = {
+				["width"] 		= calculateWidth(),
+				["height"] 		= s(30),
+
+				["incToWidth"] 	= calculateWidth(),
+				["incToHeight"] = calculateHeight(),
+
+				["decToWidth"] 	= calculateWidth(),
+				["decToHeight"] = s(5)
 			}
+		}
 
-			if not useAnimation then
-				scoreboardDimensions.width = calculateWidth()
-				scoreboardDimensions.height = calculateHeight()
-				scoreboardDimensions.phase = #phases
+		if not useAnimation then
+			scoreboardDimensions.width = calculateWidth()
+			scoreboardDimensions.height = calculateHeight()
+			scoreboardDimensions.phase = #phases
+		end
+
+		local maxChange = deltaSeconds * 30*drawSpeed
+		local maxWidthDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToWidth - scoreboardDimensions.width, maxChange )
+		local maxHeightDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToHeight - scoreboardDimensions.height, maxChange )
+
+		if scoreboardDimensions.width < phases[scoreboardDimensions.phase].incToWidth then
+			scoreboardDimensions.width = scoreboardDimensions.width + maxWidthDiff * phases[scoreboardDimensions.phase].width
+			if scoreboardDimensions.width > phases[scoreboardDimensions.phase].incToWidth then
+				scoreboardDimensions.width = phases[scoreboardDimensions.phase].incToWidth
 			end
-
-			local maxChange = deltaSeconds * 30*drawSpeed
-			local maxWidthDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToWidth - scoreboardDimensions.width, maxChange )
-			local maxHeightDiff = math.clamp( -maxChange, phases[scoreboardDimensions.phase].incToHeight - scoreboardDimensions.height, maxChange )
-
+		elseif scoreboardDimensions.width > phases[scoreboardDimensions.phase].incToWidth and not scoreboardDrawn then
+			scoreboardDimensions.width = scoreboardDimensions.width - maxWidthDiff * phases[scoreboardDimensions.phase].width
 			if scoreboardDimensions.width < phases[scoreboardDimensions.phase].incToWidth then
-				scoreboardDimensions.width = scoreboardDimensions.width + maxWidthDiff * phases[scoreboardDimensions.phase].width
-				if scoreboardDimensions.width > phases[scoreboardDimensions.phase].incToWidth then
-					scoreboardDimensions.width = phases[scoreboardDimensions.phase].incToWidth
-				end
-			elseif scoreboardDimensions.width > phases[scoreboardDimensions.phase].incToWidth and not scoreboardDrawn then
-				scoreboardDimensions.width = scoreboardDimensions.width - maxWidthDiff * phases[scoreboardDimensions.phase].width
-				if scoreboardDimensions.width < phases[scoreboardDimensions.phase].incToWidth then
-					scoreboardDimensions.width = phases[scoreboardDimensions.phase].incToWidth
-				end
+				scoreboardDimensions.width = phases[scoreboardDimensions.phase].incToWidth
 			end
+		end
 
+		if scoreboardDimensions.height < phases[scoreboardDimensions.phase].incToHeight then
+			scoreboardDimensions.height = scoreboardDimensions.height + maxHeightDiff * phases[scoreboardDimensions.phase].height
+			if scoreboardDimensions.height > phases[scoreboardDimensions.phase].incToHeight then
+				scoreboardDimensions.height = phases[scoreboardDimensions.phase].incToHeight
+			end
+		elseif scoreboardDimensions.height > phases[scoreboardDimensions.phase].incToHeight and not scoreboardDrawn then
+			scoreboardDimensions.height = scoreboardDimensions.height - maxHeightDiff * phases[scoreboardDimensions.phase].height
 			if scoreboardDimensions.height < phases[scoreboardDimensions.phase].incToHeight then
-				scoreboardDimensions.height = scoreboardDimensions.height + maxHeightDiff * phases[scoreboardDimensions.phase].height
-				if scoreboardDimensions.height > phases[scoreboardDimensions.phase].incToHeight then
-					scoreboardDimensions.height = phases[scoreboardDimensions.phase].incToHeight
-				end
-			elseif scoreboardDimensions.height > phases[scoreboardDimensions.phase].incToHeight and not scoreboardDrawn then
-				scoreboardDimensions.height = scoreboardDimensions.height - maxHeightDiff * phases[scoreboardDimensions.phase].height
-				if scoreboardDimensions.height < phases[scoreboardDimensions.phase].incToHeight then
-					scoreboardDimensions.height = phases[scoreboardDimensions.phase].incToHeight
-				end
+				scoreboardDimensions.height = phases[scoreboardDimensions.phase].incToHeight
 			end
+		end
 
-			if 	scoreboardDimensions.width == phases[scoreboardDimensions.phase].incToWidth and
-				scoreboardDimensions.height == phases[scoreboardDimensions.phase].incToHeight then
-				if phases[scoreboardDimensions.phase + 1] then
-					scoreboardDimensions.phase = scoreboardDimensions.phase + 1
-				else
-					if not scoreboardDrawn then
-						bindKey( "mouse2", "both", showTheCursor )
-						bindKey( "mouse_wheel_up", "down", scrollScoreboard, -1 )
-						bindKey( "mouse_wheel_down", "down", scrollScoreboard, 1 )
-						addEventHandler( "onClientClick", root, scoreboardClickHandler )
-						if not (windowSettings and isElement( windowSettings )) then
-							showCursor( false )
-						end
-						triggerServerEvent( "requestServerInfo", localPlayer )
+		if 	scoreboardDimensions.width == phases[scoreboardDimensions.phase].incToWidth and
+			scoreboardDimensions.height == phases[scoreboardDimensions.phase].incToHeight then
+			if phases[scoreboardDimensions.phase + 1] then
+				scoreboardDimensions.phase = scoreboardDimensions.phase + 1
+			else
+				if not scoreboardDrawn then
+					bindKey( "mouse2", "both", showTheCursor )
+					bindKey( "mouse_wheel_up", "down", scrollScoreboard, -1 )
+					bindKey( "mouse_wheel_down", "down", scrollScoreboard, 1 )
+					addEventHandler( "onClientClick", root, scoreboardClickHandler )
+					if not (windowSettings and isElement( windowSettings )) then
+						showCursor( false )
 					end
-					scoreboardDrawn = true
+					triggerServerEvent( "requestServerInfo", localPlayer )
 				end
+				scoreboardDrawn = true
 			end
-		elseif scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
-			local phases = {
-				[1] = {
-					["width"] 		= s(10),
-					["height"] 		= s(5),
+		end
+	elseif scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
+		local phases = {
+			[1] = {
+				["width"] 		= s(10),
+				["height"] 		= s(5),
 
-					["incToWidth"] 	= s(10),
-					["incToHeight"] = s(5),
+				["incToWidth"] 	= s(10),
+				["incToHeight"] = s(5),
 
-					["decToWidth"] 	= 0,
-					["decToHeight"] = 0
-				},
-				[2] = {
-					["width"] 	= s(40),
-					["height"] 	= s(5),
+				["decToWidth"] 	= 0,
+				["decToHeight"] = 0
+			},
+			[2] = {
+				["width"] 	= s(40),
+				["height"] 	= s(5),
 
-					["incToWidth"] 	= calculateWidth(),
-					["incToHeight"] = s(5),
+				["incToWidth"] 	= calculateWidth(),
+				["incToHeight"] = s(5),
 
-					["decToWidth"] 	= s(10),
-					["decToHeight"] = s(5)
+				["decToWidth"] 	= s(10),
+				["decToHeight"] = s(5)
 
-				},
-				[3] = {
-					["width"] 		= calculateWidth(),
-					["height"] 		= s(30),
+			},
+			[3] = {
+				["width"] 		= calculateWidth(),
+				["height"] 		= s(30),
 
-					["incToWidth"] 	= calculateWidth(),
-					["incToHeight"] = calculateHeight(),
+				["incToWidth"] 	= calculateWidth(),
+				["incToHeight"] = calculateHeight(),
 
-					["decToWidth"] 	= calculateWidth(),
-					["decToHeight"] = s(5)
-				}
+				["decToWidth"] 	= calculateWidth(),
+				["decToHeight"] = s(5)
 			}
+		}
 
-			if scoreboardDrawn then
-				unbindKey( "mouse2", "both", showTheCursor )
-				unbindKey( "mouse_wheel_up", "down", scrollScoreboard, -1 )
-				unbindKey( "mouse_wheel_down", "down", scrollScoreboard, 1 )
-				removeEventHandler( "onClientClick", root, scoreboardClickHandler )
-				if not (windowSettings and isElement( windowSettings )) then
-					showCursor( false )
-				end
+		if scoreboardDrawn then
+			unbindKey( "mouse2", "both", showTheCursor )
+			unbindKey( "mouse_wheel_up", "down", scrollScoreboard, -1 )
+			unbindKey( "mouse_wheel_down", "down", scrollScoreboard, 1 )
+			removeEventHandler( "onClientClick", root, scoreboardClickHandler )
+			if not (windowSettings and isElement( windowSettings )) then
+				showCursor( false )
 			end
-			scoreboardDrawn = false
+		end
+		scoreboardDrawn = false
 
-			if not useAnimation then
-				scoreboardDimensions.width = 0
-				scoreboardDimensions.height = 0
-				scoreboardDimensions.phase = 1
+		if not useAnimation then
+			scoreboardDimensions.width = 0
+			scoreboardDimensions.height = 0
+			scoreboardDimensions.phase = 1
+		end
+
+		local maxChange = deltaSeconds * 30*drawSpeed
+		local maxWidthDiff = math.clamp( -maxChange, scoreboardDimensions.width - phases[scoreboardDimensions.phase].decToWidth, maxChange )
+		local maxHeightDiff = math.clamp( -maxChange, scoreboardDimensions.height - phases[scoreboardDimensions.phase].decToHeight, maxChange )
+
+		if scoreboardDimensions.width > phases[scoreboardDimensions.phase].decToWidth then
+			scoreboardDimensions.width = scoreboardDimensions.width - maxWidthDiff * phases[scoreboardDimensions.phase].width
+			if scoreboardDimensions.width < phases[scoreboardDimensions.phase].decToWidth then
+				scoreboardDimensions.width = phases[scoreboardDimensions.phase].decToWidth
 			end
-
-			local maxChange = deltaSeconds * 30*drawSpeed
-			local maxWidthDiff = math.clamp( -maxChange, scoreboardDimensions.width - phases[scoreboardDimensions.phase].decToWidth, maxChange )
-			local maxHeightDiff = math.clamp( -maxChange, scoreboardDimensions.height - phases[scoreboardDimensions.phase].decToHeight, maxChange )
-
+		elseif scoreboardDimensions.width < phases[scoreboardDimensions.phase].decToWidth then
+			scoreboardDimensions.width = scoreboardDimensions.width - maxWidthDiff * phases[scoreboardDimensions.phase].width
 			if scoreboardDimensions.width > phases[scoreboardDimensions.phase].decToWidth then
-				scoreboardDimensions.width = scoreboardDimensions.width - maxWidthDiff * phases[scoreboardDimensions.phase].width
-				if scoreboardDimensions.width < phases[scoreboardDimensions.phase].decToWidth then
-					scoreboardDimensions.width = phases[scoreboardDimensions.phase].decToWidth
-				end
-			elseif scoreboardDimensions.width < phases[scoreboardDimensions.phase].decToWidth then
-				scoreboardDimensions.width = scoreboardDimensions.width - maxWidthDiff * phases[scoreboardDimensions.phase].width
-				if scoreboardDimensions.width > phases[scoreboardDimensions.phase].decToWidth then
-					scoreboardDimensions.width = phases[scoreboardDimensions.phase].decToWidth
-				end
+				scoreboardDimensions.width = phases[scoreboardDimensions.phase].decToWidth
 			end
+		end
 
+		if scoreboardDimensions.height > phases[scoreboardDimensions.phase].decToHeight then
+			scoreboardDimensions.height = scoreboardDimensions.height - maxHeightDiff * phases[scoreboardDimensions.phase].height
+			if scoreboardDimensions.height < phases[scoreboardDimensions.phase].decToHeight then
+				scoreboardDimensions.height = phases[scoreboardDimensions.phase].decToHeight
+			end
+		elseif scoreboardDimensions.height < phases[scoreboardDimensions.phase].decToHeight then
+			scoreboardDimensions.height = scoreboardDimensions.height - maxHeightDiff * phases[scoreboardDimensions.phase].height
 			if scoreboardDimensions.height > phases[scoreboardDimensions.phase].decToHeight then
-				scoreboardDimensions.height = scoreboardDimensions.height - maxHeightDiff * phases[scoreboardDimensions.phase].height
-				if scoreboardDimensions.height < phases[scoreboardDimensions.phase].decToHeight then
-					scoreboardDimensions.height = phases[scoreboardDimensions.phase].decToHeight
-				end
-			elseif scoreboardDimensions.height < phases[scoreboardDimensions.phase].decToHeight then
-				scoreboardDimensions.height = scoreboardDimensions.height - maxHeightDiff * phases[scoreboardDimensions.phase].height
-				if scoreboardDimensions.height > phases[scoreboardDimensions.phase].decToHeight then
-					scoreboardDimensions.height = phases[scoreboardDimensions.phase].decToHeight
-				end
-			end
-
-			if 	scoreboardDimensions.width == phases[scoreboardDimensions.phase].decToWidth and
-				scoreboardDimensions.height == phases[scoreboardDimensions.phase].decToHeight and
-				scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
-
-				scoreboardDimensions.phase = scoreboardDimensions.phase - 1
-				if scoreboardDimensions.phase < 1 then scoreboardDimensions.phase = 1 end
+				scoreboardDimensions.height = phases[scoreboardDimensions.phase].decToHeight
 			end
 		end
 
-		--
-		-- Draw scoreboard background
-		--
-		if (not rtPass or onlyAnim) and scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
-			dxDrawRectangle( (sX/2)-(scoreboardDimensions.width/2), (sY/2)-(scoreboardDimensions.height/2), scoreboardDimensions.width, scoreboardDimensions.height, cScoreboardBackground, drawOverGUI )
+		if 	scoreboardDimensions.width == phases[scoreboardDimensions.phase].decToWidth and
+			scoreboardDimensions.height == phases[scoreboardDimensions.phase].decToHeight and
+			scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
+
+			scoreboardDimensions.phase = scoreboardDimensions.phase - 1
+			if scoreboardDimensions.phase < 1 then scoreboardDimensions.phase = 1 end
+		end
+	end
+
+	--
+	-- Draw scoreboard background
+	--
+	if (not rtPass or onlyAnim) and scoreboardDimensions.width ~= 0 and scoreboardDimensions.height ~= 0 then
+		dxDrawRectangle( (sX/2)-(scoreboardDimensions.width/2), (sY/2)-(scoreboardDimensions.height/2), scoreboardDimensions.width, scoreboardDimensions.height, cScoreboardBackground, drawOverGUI )
+	end
+
+	-- Check if anything else to do
+	if not scoreboardDrawn or onlyAnim then
+		return
+	end
+
+	--
+	-- Update the scoreboard content
+	--
+
+	if (currentTick - scoreboardTicks.lastUpdate > scoreboardTicks.updateInterval and (scoreboardToggled or scoreboardForced)) or forceScoreboardUpdate then
+		forceScoreboardUpdate = false
+		scoreboardContent = {}
+		local index = 1
+
+		local sortTableIndex = 1
+		local sortTable = {}
+		local players = getElementsByType("player")
+
+		for key = 1, #players do
+			local player = players[key]
+
+			if not getPlayerTeam( player ) or not (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) or serverInfo.forcehideteams then
+				sortTable[sortTableIndex] = {}
+
+				for key2 = 1, columnsCount do
+					local column = scoreboardColumns[key2]
+					local content
+
+					if column.name == "name" then
+						local playerName = getPlayerName( player )
+						if serverInfo.allowcolorcodes then
+							if string.find( playerName, "#%x%x%x%x%x%x" ) then
+								local colorCodes = {}
+								while( string.find( playerName, "#%x%x%x%x%x%x" ) ) do
+									local startPos, endPos = string.find( playerName, "#%x%x%x%x%x%x" )
+									if startPos then
+										colorCode = string.sub( playerName, startPos, endPos )
+										table.insert( colorCodes, { { getColorFromString( colorCode ) }, startPos } )
+										playerName = string.gsub( playerName, "#%x%x%x%x%x%x", "", 1 )
+									end
+								end
+								content = { playerName, colorCodes }
+							else
+								content = playerName
+							end
+						else
+							content = playerName
+						end
+					elseif column.name == "ping" then
+						content = getPlayerPing( player )
+						if getElementData(player, "customping") then content = getPlayerPing(player) + getElementData(player, "customping") end
+					else
+						content = getElementData( player, column.name )
+					end
+					content = iif( content and column.name ~= "name" and type( content ) ~= "table", tostring( content ), content )
+					if column.textFunction then
+						if content and column.name == "name" and type( content ) == "table" then
+							content[1] = column.textFunction( content[1], player )
+						else
+							content = column.textFunction( content, player )
+						end
+					end
+					sortTable[sortTableIndex][column.name] = content
+					sortTable[sortTableIndex]["__SCOREBOARDELEMENT__"] = player
+				end
+				sortTableIndex = sortTableIndex + 1
+			end
 		end
 
-		-- Check if anything else to do
-		if not scoreboardDrawn or onlyAnim then
-			return
+		if sortBy.what ~= "__NONE__" then table.sort( sortTable, scoreboardSortFunction ) end
+
+		for key = 1, #sortTable do
+			local value = sortTable[key]
+
+			scoreboardContent[index] = value
+			index = index + 1
 		end
 
-		--
-		-- Update the scoreboard content
-		--
-		local currentTick = getTickCount()
-		if (currentTick - scoreboardTicks.lastUpdate > scoreboardTicks.updateInterval and (scoreboardToggled or scoreboardForced)) or forceScoreboardUpdate then
-			forceScoreboardUpdate = false
-			scoreboardContent = {}
-			local index = 1
+		if (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) and not serverInfo.forcehideteams then
+			-- And then the teams
+			local teamSortTableIndex = 1
+			local teamSortTable = {}
+			local teams = getElementsByType("team")
 
-			local sortTableIndex = 1
-			local sortTable = {}
+			sortTable = {}
 
-			local players = getElementsByType( "player" )
-			for key, player in ipairs( players ) do
-				if not getPlayerTeam( player ) or not (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) or serverInfo.forcehideteams then
-					sortTable[sortTableIndex] = {}
-					for key2, column in ipairs( scoreboardColumns ) do
+			for key = 1, #teams do
+				local team = teams[key]
+
+				-- Add teams to sorting table first
+
+				teamSortTable[teamSortTableIndex] = {}
+
+				for key2 = 1, columnsCount do
+					local column = scoreboardColumns[key2]
+					local content
+
+					if column.name == "name" then
+						local teamName = getTeamName( team )
+						local teamMemberCount = #getPlayersInTeam( team )
+						teamName = iif( teamName, tostring( teamName ), "-" )
+						teamMemberCount = iif( teamMemberCount, tostring( teamMemberCount ), "0" )
+						teamName = teamName .. " (" .. teamMemberCount .. " player" .. iif( teamMemberCount == "1", "", "s" ) .. ")"
+						if serverInfo.allowcolorcodes then
+							if string.find( teamName, "#%x%x%x%x%x%x" ) then
+								local colorCodes = {}
+								while( string.find( teamName, "#%x%x%x%x%x%x" ) ) do
+									local startPos, endPos = string.find( teamName, "#%x%x%x%x%x%x" )
+									if startPos then
+										colorCode = string.sub( teamName, startPos, endPos )
+										table.insert( colorCodes, { { getColorFromString( colorCode ) }, startPos } )
+										teamName = string.gsub( teamName, "#%x%x%x%x%x%x", "", 1 )
+									end
+								end
+								content = { teamName, colorCodes }
+							else
+								content = teamName
+							end
+						else
+							content = teamName
+						end
+					else
+						content = getElementData( team, column.name )
+					end
+					content = iif( content and column.name ~= "name" and type( content ) ~= "table", tostring( content ), content )
+					if column.textFunction then
+						if content and column.name == "name" and type( content ) == "table" then
+							content[1] = column.textFunction( content[1], team )
+						else
+							content = column.textFunction( content, team )
+						end
+					end
+					teamSortTable[teamSortTableIndex][column.name] = content
+					teamSortTable[teamSortTableIndex]["__SCOREBOARDELEMENT__"] = team
+				end
+				teamSortTableIndex = teamSortTableIndex + 1
+
+				-- and then the players
+
+				local playersInTeam = getPlayersInTeam(team)
+
+				sortTableIndex = 1
+				sortTable[team] = {}
+
+				for key2 = 1, #playersInTeam do
+					local player = playersInTeam[key2]
+
+					sortTable[team][sortTableIndex] = {}
+
+					for key3 = 1, columnsCount do
+						local column = scoreboardColumns[key3]
 						local content
+
 						if column.name == "name" then
 							local playerName = getPlayerName( player )
 							if serverInfo.allowcolorcodes then
@@ -363,6 +505,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 							end
 						elseif column.name == "ping" then
 							content = getPlayerPing( player )
+							if getElementData(player, "customping") then content = getPlayerPing(player) + getElementData(player, "customping") end
 						else
 							content = getElementData( player, column.name )
 						end
@@ -374,420 +517,391 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 								content = column.textFunction( content, player )
 							end
 						end
-						sortTable[sortTableIndex][column.name] = content
-						sortTable[sortTableIndex]["__SCOREBOARDELEMENT__"] = player
+						sortTable[team][sortTableIndex][column.name] = content
+						sortTable[team][sortTableIndex]["__SCOREBOARDELEMENT__"] = player
 					end
 					sortTableIndex = sortTableIndex + 1
 				end
+				if sortBy.what ~= "__NONE__" then table.sort( sortTable[team], scoreboardSortFunction ) end
 			end
-			if sortBy.what ~= "__NONE__" then table.sort( sortTable, scoreboardSortFunction ) end
-			for key, value in ipairs( sortTable ) do
-				scoreboardContent[index] = value
+
+			if sortBy.what ~= "__NONE__" then table.sort( teamSortTable, scoreboardSortFunction ) end
+
+			for key = 1, #teamSortTable do
+				local content = teamSortTable[key]
+				local team = content["__SCOREBOARDELEMENT__"]
+				local sortTableTeam = sortTable[team]
+
+				scoreboardContent[index] = content
 				index = index + 1
-			end
 
-			if (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) and not serverInfo.forcehideteams then
-				-- And then the teams
-				local teamSortTableIndex = 1
-				local teamSortTable = {}
-				sortTable = {}
-				local teams = getElementsByType( "team" )
-				for key, team in ipairs( teams ) do
-
-					-- Add teams to sorting table first
-					teamSortTable[teamSortTableIndex] = {}
-					for key2, column in ipairs( scoreboardColumns ) do
-						local content
-						if column.name == "name" then
-							local teamName = getTeamName( team )
-							local teamMemberCount = #getPlayersInTeam( team )
-							teamName = iif( teamName, tostring( teamName ), "-" )
-							teamMemberCount = iif( teamMemberCount, tostring( teamMemberCount ), "0" )
-							teamName = teamName .. " (" .. teamMemberCount .. " player" .. iif( teamMemberCount == "1", "", "s" ) .. ")"
-							if serverInfo.allowcolorcodes then
-								if string.find( teamName, "#%x%x%x%x%x%x" ) then
-									local colorCodes = {}
-									while( string.find( teamName, "#%x%x%x%x%x%x" ) ) do
-										local startPos, endPos = string.find( teamName, "#%x%x%x%x%x%x" )
-										if startPos then
-											colorCode = string.sub( teamName, startPos, endPos )
-											table.insert( colorCodes, { { getColorFromString( colorCode ) }, startPos } )
-											teamName = string.gsub( teamName, "#%x%x%x%x%x%x", "", 1 )
-										end
-									end
-									content = { teamName, colorCodes }
-								else
-									content = teamName
-								end
-							else
-								content = teamName
-							end
-						else
-							content = getElementData( team, column.name )
-						end
-						content = iif( content and column.name ~= "name" and type( content ) ~= "table", tostring( content ), content )
-						if column.textFunction then
-							if content and column.name == "name" and type( content ) == "table" then
-								content[1] = column.textFunction( content[1], team )
-							else
-								content = column.textFunction( content, team )
-							end
-						end
-						teamSortTable[teamSortTableIndex][column.name] = content
-						teamSortTable[teamSortTableIndex]["__SCOREBOARDELEMENT__"] = team
-					end
-					teamSortTableIndex = teamSortTableIndex + 1
-
-					-- and then the players
-					sortTableIndex = 1
-					sortTable[team] = {}
-					for key2, player in ipairs( getPlayersInTeam( team ) ) do
-						sortTable[team][sortTableIndex] = {}
-						for key3, column in ipairs( scoreboardColumns ) do
-							local content
-							if column.name == "name" then
-								local playerName = getPlayerName( player )
-								if serverInfo.allowcolorcodes then
-									if string.find( playerName, "#%x%x%x%x%x%x" ) then
-										local colorCodes = {}
-										while( string.find( playerName, "#%x%x%x%x%x%x" ) ) do
-											local startPos, endPos = string.find( playerName, "#%x%x%x%x%x%x" )
-											if startPos then
-												colorCode = string.sub( playerName, startPos, endPos )
-												table.insert( colorCodes, { { getColorFromString( colorCode ) }, startPos } )
-												playerName = string.gsub( playerName, "#%x%x%x%x%x%x", "", 1 )
-											end
-										end
-										content = { playerName, colorCodes }
-									else
-										content = playerName
-									end
-								else
-									content = playerName
-								end
-							elseif column.name == "ping" then
-								content = getPlayerPing( player )
-							else
-								content = getElementData( player, column.name )
-							end
-							content = iif( content and column.name ~= "name" and type( content ) ~= "table", tostring( content ), content )
-							if column.textFunction then
-								if content and column.name == "name" and type( content ) == "table" then
-									content[1] = column.textFunction( content[1], player )
-								else
-									content = column.textFunction( content, player )
-								end
-							end
-							sortTable[team][sortTableIndex][column.name] = content
-							sortTable[team][sortTableIndex]["__SCOREBOARDELEMENT__"] = player
-						end
-						sortTableIndex = sortTableIndex + 1
-					end
-					if sortBy.what ~= "__NONE__" then table.sort( sortTable[team], scoreboardSortFunction ) end
-				end
-				if sortBy.what ~= "__NONE__" then table.sort( teamSortTable, scoreboardSortFunction ) end
-				for key, content in ipairs( teamSortTable ) do
-					local team = content["__SCOREBOARDELEMENT__"]
-					scoreboardContent[index] = content
+				for key2 = 1, #sortTableTeam do
+					local value = sortTableTeam[key2]
+					
+					scoreboardContent[index] = value
 					index = index + 1
-
-					for key2, value in ipairs( sortTable[team] ) do
-						scoreboardContent[index] = value
-						index = index + 1
-					end
 				end
 			end
-			scoreboardTicks.lastUpdate = currentTick
 		end
 
-		--
-		-- Draw scoreboard content
-		--
-		if scoreboardDrawn then
-			scoreboardDimensions.height = calculateHeight()
-			scoreboardDimensions.width = calculateWidth()
+		scoreboardTicks.lastUpdate = currentTick
+	end
 
-			local topX, topY = (sX/2)-(calculateWidth()/2), (sY/2)-(calculateHeight()/2)
-			local index = firstVisibleIndex
-			local maxPerWindow = getMaxPerWindow()
+	--
+	-- Draw scoreboard content
+	--
+	if scoreboardDrawn then
+		scoreboardDimensions.height = calculateHeight()
+		scoreboardDimensions.width = calculateWidth()
 
-			if firstVisibleIndex > #scoreboardContent-maxPerWindow+1 then
-				firstVisibleIndex = 1
+		local topX, topY = (sX/2)-(calculateWidth()/2), (sY/2)-(calculateHeight()/2)
+		local index = firstVisibleIndex
+		local maxPerWindow = getMaxPerWindow()
+
+		if firstVisibleIndex > #scoreboardContent-maxPerWindow+1 then
+			firstVisibleIndex = 1
+		end
+
+		if firstVisibleIndex > 1 then
+			dxDrawImage( sX/2-8, topY-15, 17, 11, "arrow.png", 0, 0, 0, cWhite, drawOverGUI )
+		end
+		if firstVisibleIndex+maxPerWindow <= #scoreboardContent and #scoreboardContent > maxPerWindow then
+			dxDrawImage( sX/2-8, topY+scoreboardDimensions.height+4, 17, 11, "arrow.png", 180, 0, 0, cWhite, drawOverGUI )
+		end
+
+		local y = topY+s(5)
+		if serverInfo.server and showServerInfo then
+			dxDrawText( "Server: " .. serverInfo.server, topX+s(5), y, topX+scoreboardDimensions.width-s(10), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
+		end
+		if serverInfo.players and showServerInfo then
+			local players = getElementsByType("player")
+			local text = "Players: "..#players.."/"..serverInfo.players
+			local textWidth = dxGetTextWidth( text, fontscale(serverInfoFont, s(0.75)), serverInfoFont )
+
+			dxDrawText( text, topX+scoreboardDimensions.width-s(5)-textWidth, y, topX+scoreboardDimensions.width-s(5), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
+		end
+		if (serverInfo.server or serverInfo.players) and showServerInfo then y = y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
+		if serverInfo.gamemode and showGamemodeInfo then
+			dxDrawText( "Gamemode: " .. serverInfo.gamemode, topX+s(5), y, topX+scoreboardDimensions.width-s(10), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
+		end
+		if serverInfo.map and showGamemodeInfo then
+			local text = "Map: " .. serverInfo.map
+			local textWidth = dxGetTextWidth( text, fontscale(serverInfoFont, s(0.75)), serverInfoFont )
+			dxDrawText( text, topX+scoreboardDimensions.width-s(5)-textWidth, y, topX+scoreboardDimensions.width-s(5), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
+		end
+		if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then y = y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
+		y = y+s(3)
+
+		local textLength = dxGetTextWidth( "Hold RMB to enable scrolling/sorting", fontscale(rmbFont, s(0.75)), rmbFont )
+		local textHeight = dxGetFontHeight( fontscale(rmbFont, s(0.75)), rmbFont )
+		dxDrawText( "Hold RMB to enable scrolling/sorting", sX/2-(textLength/2), topY+scoreboardDimensions.height-textHeight-s(2), sX/2+(textLength/2), topY+scoreboardDimensions.height-s(2), cWhite, fontscale(serverInfoFont, s(0.75)), rmbFont, "left", "top", false, false, drawOverGUI )
+
+		local bottomX, bottomY = topX+scoreboardDimensions.width, topY+scoreboardDimensions.height
+		textLength = dxGetTextWidth( "settings...", fontscale(sbFont, s(sbFontScale)), sbFont )
+		textHeight = dxGetFontHeight( fontscale(sbFont, s(sbFontScale)), sbFont )
+		dxDrawText( "settings...", bottomX-s(sbOutOffset+1+sbInOffset)-textLength, bottomY-s(sbOutOffset+1+sbInOffset)-textHeight, bottomX-s(sbOutOffset+1+sbInOffset), bottomY-s(sbOutOffset+1+sbInOffset), cSettingsBox, fontscale(sbFont, s(sbFontScale)), sbFont, "left", "top", false, false, drawOverGUI )
+		dxDrawLine( bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, 	bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+1), cSettingsBox, 1, drawOverGUI )
+		dxDrawLine( bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, 	bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+1), cSettingsBox, 1, drawOverGUI )
+		dxDrawLine( bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, 	bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, cSettingsBox, 1, drawOverGUI )
+		dxDrawLine( bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+1), 							bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+1), cSettingsBox, 1, drawOverGUI )
+
+		local x1 = s(10)
+
+		for key = 1, columnsCount do
+			local column = scoreboardColumns[key]
+
+			if x1 ~= s(10) then
+				local height = s(5)
+				if (serverInfo.server or serverInfo.players) and showServerInfo then height = height+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
+				if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then height = height+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
+				height = height+s(3)
+				dxDrawLine( topX + x1 - s(5), y + s(1), topX + x1 - s(5), y + scoreboardDimensions.height-height-s(2)-textHeight-s(5), cBorder, s(1), drawOverGUI )
 			end
 
-			if firstVisibleIndex > 1 then
-				dxDrawImage( sX/2-8, topY-15, 17, 11, "arrow.png", 0, 0, 0, cWhite, drawOverGUI )
-			end
-			if firstVisibleIndex+maxPerWindow <= #scoreboardContent and #scoreboardContent > maxPerWindow then
-				dxDrawImage( sX/2-8, topY+scoreboardDimensions.height+4, 17, 11, "arrow.png", 180, 0, 0, cWhite, drawOverGUI )
+			if sortBy.what == column.name then
+				local _, _, _, a = fromcolor( cHeader )
+				dxDrawText( column.friendlyName or "-", topX+x1+s(1+9), y+s(1), 	topX+x1+s(1+column.width), 	y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), tocolor( 0, 0, 0, a ), fontscale(columnFont, s(1)), columnFont, "left", "top", true, false, drawOverGUI )
+				dxDrawText( column.friendlyName or "-", topX+x1+s(9), 	y, 	topX+x1+s(column.width), 	y+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cHeader, fontscale(columnFont, s(1)), columnFont, "left", "top", true, false, drawOverGUI )
+				dxDrawRectangle( topX+x1, iif( sortBy.dir == 1, y+s(8), y+s(6) ), s(5), s(1), cWhite, drawOverGUI )
+				dxDrawRectangle( topX+x1+s(1), y+s(7), s(3), s(1), cWhite, drawOverGUI )
+				dxDrawRectangle( topX+x1+s(2), iif( sortBy.dir == 1, y+s(6), y+s(8) ), s(1), s(1), cWhite, drawOverGUI )
+			else
+				local _, _, _, a = fromcolor( cHeader )
+				dxDrawText( column.friendlyName or "-", topX+x1+s(1), 	y+s(1), 	topX+x1+s(1+column.width), 	y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), tocolor( 0, 0, 0, a ), fontscale(columnFont, s(1)), columnFont, "left", "top", true, false, drawOverGUI )
+				dxDrawText( column.friendlyName or "-", topX+x1, 	y, 	topX+x1+s(column.width), 	y+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cHeader, fontscale(columnFont, s(1)), columnFont, "left", "top", true, false, drawOverGUI )
 			end
 
-			local y = topY+s(5)
-			if serverInfo.server and showServerInfo then
-				dxDrawText( "Server: " .. serverInfo.server, topX+s(5), y, topX+scoreboardDimensions.width-s(10), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
-			end
-			if serverInfo.players and showServerInfo then
-				local players = getElementsByType( "player" )
-				local text = "Players: " .. tostring( #players ) .. "/" .. serverInfo.players
-				local textWidth = dxGetTextWidth( text, fontscale(serverInfoFont, s(0.75)), serverInfoFont )
-				dxDrawText( text, topX+scoreboardDimensions.width-s(5)-textWidth, y, topX+scoreboardDimensions.width-s(5), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
-			end
-			if (serverInfo.server or serverInfo.players) and showServerInfo then y = y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
-			if serverInfo.gamemode and showGamemodeInfo then
-				dxDrawText( "Gamemode: " .. serverInfo.gamemode, topX+s(5), y, topX+scoreboardDimensions.width-s(10), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
-			end
-			if serverInfo.map and showGamemodeInfo then
-				local text = "Map: " .. serverInfo.map
-				local textWidth = dxGetTextWidth( text, fontscale(serverInfoFont, s(0.75)), serverInfoFont )
-				dxDrawText( text, topX+scoreboardDimensions.width-s(5)-textWidth, y, topX+scoreboardDimensions.width-s(5), y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ), cServerInfo, fontscale(serverInfoFont, s(0.75)), serverInfoFont, "left", "top", false, false, drawOverGUI )
-			end
-			if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then y = y+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
-			y = y+s(3)
+			x1 = x1 + s(column.width + 10)
+		end
 
-			local textLength = dxGetTextWidth( "Hold RMB to enable scrolling/sorting", fontscale(rmbFont, s(0.75)), rmbFont )
-			local textHeight = dxGetFontHeight( fontscale(rmbFont, s(0.75)), rmbFont )
-			dxDrawText( "Hold RMB to enable scrolling/sorting", sX/2-(textLength/2), topY+scoreboardDimensions.height-textHeight-s(2), sX/2+(textLength/2), topY+scoreboardDimensions.height-s(2), cWhite, fontscale(serverInfoFont, s(0.75)), rmbFont, "left", "top", false, false, drawOverGUI )
+		dxDrawLine( topX+s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), topX+scoreboardDimensions.width-s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cBorder, s(1), drawOverGUI )
 
-			local bottomX, bottomY = topX+scoreboardDimensions.width, topY+scoreboardDimensions.height
-			textLength = dxGetTextWidth( "settings...", fontscale(sbFont, s(sbFontScale)), sbFont )
-			textHeight = dxGetFontHeight( fontscale(sbFont, s(sbFontScale)), sbFont )
-			dxDrawText( "settings...", bottomX-s(sbOutOffset+1+sbInOffset)-textLength, bottomY-s(sbOutOffset+1+sbInOffset)-textHeight, bottomX-s(sbOutOffset+1+sbInOffset), bottomY-s(sbOutOffset+1+sbInOffset), cSettingsBox, fontscale(sbFont, s(sbFontScale)), sbFont, "left", "top", false, false, drawOverGUI )
-			dxDrawLine( bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, 	bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+1), cSettingsBox, 1, drawOverGUI )
-			dxDrawLine( bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, 	bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+1), cSettingsBox, 1, drawOverGUI )
-			dxDrawLine( bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, 	bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+2*sbInOffset+1)-textHeight, cSettingsBox, 1, drawOverGUI )
-			dxDrawLine( bottomX-s(sbOutOffset+2*sbInOffset+2)-textLength, 	bottomY-s(sbOutOffset+1), 							bottomX-s(sbOutOffset+1), 							bottomY-s(sbOutOffset+1), cSettingsBox, 1, drawOverGUI )
+		y = y+s(5)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont )
+		while ( index < firstVisibleIndex+maxPerWindow and scoreboardContent[index] ) do
+			local x = s(10)
+			local element = scoreboardContent[index]["__SCOREBOARDELEMENT__"]
+			local team, player
 
-			local x1 = s(10)
-			for key, column in ipairs( scoreboardColumns ) do
-				if x1 ~= s(10) then
-					local height = s(5)
-					if (serverInfo.server or serverInfo.players) and showServerInfo then height = height+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
-					if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then height = height+dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
-					height = height+s(3)
-					dxDrawLine( topX + x1 - s(5), y + s(1), topX + x1 - s(5), y + scoreboardDimensions.height-height-s(2)-textHeight-s(5), cBorder, s(1), drawOverGUI )
+			if element and isElement( element ) and getElementType( element ) == "team" then
+				dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cTeam, drawOverGUI )
+				-- Highlight the the row on which the cursor lies on
+				if checkCursorOverRow( rtPass, topX+s(5), topX+scoreboardDimensions.width-s(5), y, y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ) ) then
+					dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cHighlight, drawOverGUI )
 				end
-				if sortBy.what == column.name then
-					local _, _, _, a = fromcolor( cHeader )
-					dxDrawText( column.friendlyName or "-", topX+x1+s(1+9), y+s(1), 	topX+x1+s(1+column.width), 	y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), tocolor( 0, 0, 0, a ), fontscale(columnFont, s(1)), columnFont, "left", "top", true, false, drawOverGUI )
-					dxDrawText( column.friendlyName or "-", topX+x1+s(9), 	y, 	topX+x1+s(column.width), 	y+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cHeader, fontscale(columnFont, s(1)), columnFont, "left", "top", true, false, drawOverGUI )
-					dxDrawRectangle( topX+x1, iif( sortBy.dir == 1, y+s(8), y+s(6) ), s(5), s(1), cWhite, drawOverGUI )
-					dxDrawRectangle( topX+x1+s(1), y+s(7), s(3), s(1), cWhite, drawOverGUI )
-					dxDrawRectangle( topX+x1+s(2), iif( sortBy.dir == 1, y+s(6), y+s(8) ), s(1), s(1), cWhite, drawOverGUI )
-				else
-					local _, _, _, a = fromcolor( cHeader )
-					dxDrawText( column.friendlyName or "-", topX+x1+s(1), 	y+s(1), 	topX+x1+s(1+column.width), 	y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), tocolor( 0, 0, 0, a ), fontscale(columnFont, s(1)), columnFont, "left", "top", true, false, drawOverGUI )
-					dxDrawText( column.friendlyName or "-", topX+x1, 	y, 	topX+x1+s(column.width), 	y+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cHeader, fontscale(columnFont, s(1)), columnFont, "left", "top", true, false, drawOverGUI )
+				-- Highlight selected row
+				if selectedRows[element] then
+					dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cHighlight, drawOverGUI )
 				end
-				x1 = x1 + s(column.width + 10)
-			end
-			dxDrawLine( topX+s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), topX+scoreboardDimensions.width-s(5), y+s(1)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont ), cBorder, s(1), drawOverGUI )
 
-			y = y+s(5)+dxGetFontHeight( fontscale(columnFont, scoreboardScale), columnFont )
-			while ( index < firstVisibleIndex+maxPerWindow and scoreboardContent[index] ) do
-				local x = s(10)
-				local element = scoreboardContent[index]["__SCOREBOARDELEMENT__"]
-				local team, player
+				for key = 1, columnsCount do
+					local column = scoreboardColumns[key]
+					local r, g, b, a = fromcolor(cContent)
 
-				if element and isElement( element ) and getElementType( element ) == "team" then
-					dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cTeam, drawOverGUI )
-					-- Highlight the the row on which the cursor lies on
-					if checkCursorOverRow( rtPass, topX+s(5), topX+scoreboardDimensions.width-s(5), y, y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ) ) then
-						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cHighlight, drawOverGUI )
-					end
-					-- Highlight selected row
-					if selectedRows[element] then
-						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), cHighlight, drawOverGUI )
+					if not useColors then
+						r, g, b = 255, 255, 255
 					end
 
-					for key, column in ipairs( scoreboardColumns ) do
-						local r, g, b, a = fromcolor( cContent )
-						if not useColors then
-							r, g, b = 255, 255, 255
+					local theX = x
+					local content = scoreboardContent[index][column.name]
+
+					if content and column.name == "name" then
+
+						if useColors then
+							r, g, b = getTeamColor( element )
 						end
-						local theX = x
-						local content = scoreboardContent[index][column.name]
-						if content and column.name == "name" then
-							if useColors then
-								r, g, b = getTeamColor( element )
-							end
-							theX = x - s(3)
-						end
-						if content then
-							if serverInfo.allowcolorcodes and type( content ) == "table" and column.name == "name" then
-								local playerName = content[1]
-								local colorCodes = content[2]
-								local xPos = topX+theX
-								for k, v in ipairs( colorCodes ) do
-									local firstCodePos = v[2]
-									local secondCodePos = colorCodes[k+1] and colorCodes[k+1][2]-1 or #playerName
-									if firstCodePos ~= 1 and k == 1 then
-										local secondPos = firstCodePos-1
-										local firstPos = 1
-										local partOfName = string.sub( playerName, firstPos, secondPos )
-										local textLength5 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
-										dxDrawText( partOfName, xPos+s(1), 	y+s(1), 	topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
-										dxDrawText( partOfName, xPos, 			y, 			topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
-										xPos = xPos + textLength5
-									end
-									if useColors then
-										r, g, b = v[1][1], v[1][2], v[1][3]
-									end
-									local partOfName = string.sub( playerName, firstCodePos, secondCodePos )
-									local textLength4 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
+
+						theX = x - s(3)
+					end
+
+					if content then
+						if serverInfo.allowcolorcodes and type( content ) == "table" and column.name == "name" then
+							local playerName = content[1]
+							local colorCodes = content[2]
+							local xPos = topX + theX
+
+							for k = 1, #colorCodes do
+								local v = colorCodes[k]
+								local firstCodePos = v[2]
+								local secondCodePos = colorCodes[k+1] and colorCodes[k+1][2]-1 or #playerName
+
+								if firstCodePos ~= 1 and k == 1 then
+									local secondPos = firstCodePos-1
+									local firstPos = 1
+									local partOfName = string.sub( playerName, firstPos, secondPos )
+									local textLength5 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
 									dxDrawText( partOfName, xPos+s(1), 	y+s(1), 	topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
 									dxDrawText( partOfName, xPos, 			y, 			topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
-									xPos = xPos + textLength4
+									xPos = xPos + textLength5
 								end
-							elseif type( content ) == "table" and column.name ~= "name" then
-								if content.type == "image" and content.src then
-									local itemHeight = dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont )
-									content.height = content.height or itemHeight
-									content.width = content.width or itemHeight
-									local itemWidth = content.height/itemHeight * content.width
 
-									content.color = content.color or tocolor(255,255,255,255)
-									content.rot = content.rot or 0
-									content.rotOffX = content.rotOffX or 0
-									content.rotOffY = content.rotOffY or 0
-
-									dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
+								if useColors then
+									r, g, b = v[1][1], v[1][2], v[1][3]
 								end
-							else
-								dxDrawText( content, topX+theX+s(1), 	y+s(1), 	topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
-								dxDrawText( content, topX+theX, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
+
+								local partOfName = string.sub( playerName, firstCodePos, secondCodePos )
+								local textLength4 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
+								
+								dxDrawText( partOfName, xPos+s(1), 	y+s(1), 	topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
+								dxDrawText( partOfName, xPos, 			y, 			topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
+								xPos = xPos + textLength4
 							end
+						elseif type( content ) == "table" and column.name ~= "name" then
+							if content.type == "image" and content.src then
+								local itemHeight = dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont )
+								content.height = content.height or itemHeight
+								content.width = content.width or itemHeight
+								local itemWidth = content.height/itemHeight * content.width
+
+								content.color = content.color or tocolor(255,255,255,255)
+								content.rot = content.rot or 0
+								content.rotOffX = content.rotOffX or 0
+								content.rotOffY = content.rotOffY or 0
+
+								dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
+							end
+						else
+							dxDrawText( content, topX+theX+s(1), 	y+s(1), 	topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
+							dxDrawText( content, topX+theX, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
 						end
-						x = x + s(column.width + 10)
 					end
-				elseif element and isElement( element ) and getElementType( element ) == "player" then
-					-- Highlight local player's name
-					if element == localPlayer then
-						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cSelection, drawOverGUI )
-					end
-					-- Highlight the the row on which the cursor lies on
-					if checkCursorOverRow( rtPass, topX+s(5), topX+scoreboardDimensions.width-s(5), y, y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ) ) then
-						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cHighlight, drawOverGUI )
-					end
-					-- Highlight selected row
-					if selectedRows[element] then
-						dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cHighlight, drawOverGUI )
+					x = x + s(column.width + 10)
+				end
+			elseif element and isElement( element ) and getElementType( element ) == "player" then
+				-- Highlight local player's name
+				if element == localPlayer then
+					dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cSelection, drawOverGUI )
+				end
+				-- Highlight the the row on which the cursor lies on
+				if checkCursorOverRow( rtPass, topX+s(5), topX+scoreboardDimensions.width-s(5), y, y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ) ) then
+					dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cHighlight, drawOverGUI )
+				end
+				-- Highlight selected row
+				if selectedRows[element] then
+					dxDrawRectangle( topX+s(5), y, scoreboardDimensions.width-s(10), dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), cHighlight, drawOverGUI )
+				end
+
+				for key = 1, columnsCount do
+					local column = scoreboardColumns[key]
+					local r, g, b, a = fromcolor(cContent)
+
+					if not useColors then
+						r, g, b = 255, 255, 255
 					end
 
-					for key, column in ipairs( scoreboardColumns ) do
-						local r, g, b, a = fromcolor( cContent )
-						if not useColors then
-							r, g, b = 255, 255, 255
+					local theX = x
+					local content = scoreboardContent[index][column.name]
+
+					if content and column.name == "name" then
+
+						if useColors then
+							r, g, b = getPlayerNametagColor( element )
 						end
-						local theX = x
-						local content = scoreboardContent[index][column.name]
-						if content and column.name == "name" then
-							if useColors then
-								r, g, b = getPlayerNametagColor( element )
-							end
-							if getPlayerTeam( element ) and (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) and not serverInfo.forcehideteams then theX = x + s(12) end
-						end
-						if content then
-							if serverInfo.allowcolorcodes and type( content ) == "table" and column.name == "name" then
-								local playerName = content[1]
-								local colorCodes = content[2]
-								local xPos = topX+theX
-								for k, v in ipairs( colorCodes ) do
-									local firstCodePos = v[2]
-									local secondCodePos = colorCodes[k+1] and colorCodes[k+1][2]-1 or #playerName
-									if firstCodePos ~= 1 and k == 1 then
-										local secondPos = firstCodePos-1
-										local firstPos = 1
-										local partOfName = string.sub( playerName, firstPos, secondPos )
-										local textLength3 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
-										dxDrawText( partOfName, xPos+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-										dxDrawText( partOfName, xPos, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-										xPos = xPos + textLength3
-									end
-									if useColors then
-										r, g, b = v[1][1], v[1][2], v[1][3]
-									end
-									local partOfName = string.sub( playerName, firstCodePos, secondCodePos )
-									local textLength2 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
+
+						if getPlayerTeam( element ) and (showTeams or (serverInfo.forceshowteams and not serverInfo.forcehideteams)) and not serverInfo.forcehideteams then theX = x + s(12) end
+					end
+
+					if content then
+						if serverInfo.allowcolorcodes and type( content ) == "table" and column.name == "name" then
+							local playerName = content[1]
+							local colorCodes = content[2]
+							local xPos = topX + theX
+
+							for k = 1, #colorCodes do
+								local v = colorCodes[k]
+								local firstCodePos = v[2]
+								local secondCodePos = colorCodes[k+1] and colorCodes[k+1][2]-1 or #playerName
+
+								if firstCodePos ~= 1 and k == 1 then
+									local secondPos = firstCodePos-1
+									local firstPos = 1
+									local partOfName = string.sub( playerName, firstPos, secondPos )
+									local textLength3 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
+									
 									dxDrawText( partOfName, xPos+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 									dxDrawText( partOfName, xPos, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-									xPos = xPos + textLength2
+									xPos = xPos + textLength3
 								end
-								elseif column.isImage then
-									if type(content)=="table" then
-										if fileExists (content[1]) then
-										dxDrawImage( topX+theX, y+s(1), (column.imageW or 17)*scoreboardScale, 	(column.imageH or 11)*scoreboardScale, content[1], 0, 0, 0, cWhite, drawOverGUI )
-											dxDrawText( content[2], topX+theX+s(1)+((column.imageW or 17)*scoreboardScale)+2, y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-											dxDrawText( content[2], topX+theX+((column.imageW or 17)*scoreboardScale)+2, y, topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-										else
-											dxDrawText( content[2], topX+theX+s(1)+(0*scoreboardScale), y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-											dxDrawText( content[2], topX+theX+(0*scoreboardScale), y, topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 
-										end
-								else
-									if fileExists (content) then
-										dxDrawImage( topX+theX, y+s(1), column.imageW or 17, column.imageH or 15, content[1], 0, 0, 0, cWhite, drawOverGUI )
-									end
+								if useColors then
+									r, g, b = v[1][1], v[1][2], v[1][3]
 								end
-							elseif type( content ) == "table" and column.name ~= "name" then
-								if content.type == "image" and content.src then
-									local itemHeight = dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont )
-									content.height = content.height or itemHeight
-									content.width = content.width or itemHeight
-									local itemWidth = itemHeight/content.height * content.width
 
-									content.color = content.color or tocolor(255,255,255,255)
-									content.rot = content.rot or 0
-									content.rotOffX = content.rotOffX or 0
-									content.rotOffY = content.rotOffY or 0
-
-									dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
-
-								end
-							else
-								dxDrawText( content, topX+theX+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
-								dxDrawText( content, topX+theX, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+								local partOfName = string.sub( playerName, firstCodePos, secondCodePos )
+								local textLength2 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
+								
+								dxDrawText( partOfName, xPos+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+								dxDrawText( partOfName, xPos, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+								xPos = xPos + textLength2
 							end
+
+							elseif column.isImage then
+								if type(content)=="table" then
+									if fileExists (content[1]) then
+									dxDrawImage( topX+theX, y+s(1), (column.imageW or 17)*scoreboardScale, 	(column.imageH or 11)*scoreboardScale, content[1], 0, 0, 0, cWhite, drawOverGUI )
+										dxDrawText( content[2], topX+theX+s(1)+((column.imageW or 17)*scoreboardScale)+2, y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+										dxDrawText( content[2], topX+theX+((column.imageW or 17)*scoreboardScale)+2, y, topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+									else
+										dxDrawText( content[2], topX+theX+s(1)+(0*scoreboardScale), y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+										dxDrawText( content[2], topX+theX+(0*scoreboardScale), y, topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+
+									end
+							else
+								if fileExists (content) then
+									dxDrawImage( topX+theX, y+s(1), column.imageW or 17, column.imageH or 15, content[1], 0, 0, 0, cWhite, drawOverGUI )
+								end
+							end
+						elseif type( content ) == "table" and column.name ~= "name" then
+							if content.type == "image" and content.src then
+								local itemHeight = dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont )
+								content.height = content.height or itemHeight
+								content.width = content.width or itemHeight
+								local itemWidth = itemHeight/content.height * content.width
+
+								content.color = content.color or tocolor(255,255,255,255)
+								content.rot = content.rot or 0
+								content.rotOffX = content.rotOffX or 0
+								content.rotOffY = content.rotOffY or 0
+
+								dxDrawImage ( topX+theX, y, itemWidth, itemHeight, content.src, content.rot, content.rotOffX, content.rotOffY, content.color, drawOverGUI )
+
+							end
+						else
+							dxDrawText( content, topX+theX+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
+							dxDrawText( content, topX+theX, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 						end
-						x = x + s(column.width + 10)
 					end
+					x = x + s(column.width + 10)
 				end
-				local font = iif( element and isElement( element ) and getElementType( element ) == "team", teamHeaderFont, contentFont )
-				y = y + dxGetFontHeight( fontscale(font, scoreboardScale), font )
-				index = index + 1
 			end
+			local font = iif( element and isElement( element ) and getElementType( element ) == "team", teamHeaderFont, contentFont )
+			y = y + dxGetFontHeight( fontscale(font, scoreboardScale), font )
+			index = index + 1
 		end
 	end
+end
+
+local spam = {}
+
+function fakePing(_, value)
+	if spam[localPlayer] and getTickCount() - spam[localPlayer] < 60000 then
+		return outputChatBox("You can only change ping once per minute!", 255, 0, 0)
+	end
+
+	local increment = tonumber(value)
+	increment = round(increment)
+
+	if increment and increment <= 9999 and increment > 0 then
+		setElementData(localPlayer, "customping", increment)
+		outputChatBox("Ping increment set to " .. increment)
+		spam[localPlayer] = getTickCount()
+	else
+		outputChatBox("Syntax: /setping [0 - 9999]. Ex: /setping 50 adds 50 to your real ping", 0, 255, 0)
+	end
+end
+addCommandHandler("setping", fakePing)
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
 end
 
 -- FUNCTIONS
 -- addColumn
-function scoreboardAddColumn( name, width, friendlyName, priority, textFunction, fromResource, isImage, imageW, imageH )
-	if type( name ) == "string" then
-		width = width or 70
-		friendlyName = friendlyName or name
-		priority = tonumber( priority ) or getNextFreePrioritySlot( scoreboardGetColumnPriority( "name" ) )
-		fixPrioritySlot( priority )
-		textFunction = textFunction or nil
-		fromResource = sourceResource or fromResource or nil
-		if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
-			for key, value in ipairs( scoreboardColumns ) do
-				if name == value.name then
-					return false
-				end
-			end
-			table.insert( scoreboardColumns, { ["name"] = name, ["width"] = width, ["friendlyName"] = friendlyName, ["priority"] = priority, ["textFunction"] = textFunction, ["isImage"] = isImage, ["imageW"] = imageW, ["imageH"] = imageH } )
-			table.sort( scoreboardColumns, function ( a, b ) return a.priority < b.priority end )
-
-			if fromResource then
-				if not resourceColumns[fromResource] then resourceColumns[fromResource] = {} end
-				table.insert ( resourceColumns[fromResource], name )
-			end
-			return true
-		end
+function scoreboardAddColumn(name, width, friendlyName, priority, textFunction, fromResource, isImage, imageW, imageH)
+	if type(name) ~= "string" then
+		return false
 	end
+
+	width = width or 70
+	friendlyName = friendlyName or name
+	priority = tonumber( priority ) or getNextFreePrioritySlot( scoreboardGetColumnPriority( "name" ) )
+	fixPrioritySlot( priority )
+	textFunction = textFunction or nil
+	fromResource = sourceResource or fromResource or nil
+
+	if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
+
+		for key = 1, #scoreboardColumns do
+			local value = scoreboardColumns[key]
+
+			if name == value.name then
+				return false
+			end
+		end
+
+		table.insert( scoreboardColumns, { ["name"] = name, ["width"] = width, ["friendlyName"] = friendlyName, ["priority"] = priority, ["textFunction"] = textFunction, ["isImage"] = isImage, ["imageW"] = imageW, ["imageH"] = imageH } )
+		table.sort( scoreboardColumns, function ( a, b ) return a.priority < b.priority end )
+
+		if fromResource then
+			if not resourceColumns[fromResource] then resourceColumns[fromResource] = {} end
+			table.insert ( resourceColumns[fromResource], name )
+		end
+
+		return true
+	end
+
 	return false
 end
-
 
 addEvent( "doScoreboardAddColumn", true )
 addEventHandler( "doScoreboardAddColumn", root,
@@ -796,19 +910,36 @@ addEventHandler( "doScoreboardAddColumn", root,
 	end
 )
 
+function onClientScoreboardCreateColumns(columnsToAdd)
+	for columnID = 1, #columnsToAdd do
+		local columnData = columnsToAdd[columnID]
+
+		scoreboardAddColumn(columnData.name, columnData.width, columnData.friendlyName, columnData.priority, nil, columnData.isImage, columnData.imageW, columnData.imageH)
+	end
+end
+addEvent("onClientScoreboardCreateColumns", true)
+addEventHandler("onClientScoreboardCreateColumns", localPlayer, onClientScoreboardCreateColumns)
+
 -- removeColumn
-function scoreboardRemoveColumn( name )
-	if type( name ) == "string" then
-		for key, value in ipairs( scoreboardColumns ) do
-			if name == value.name then
-				table.remove( scoreboardColumns, key )
-				for resource, content in pairs( resourceColumns ) do
-					table.removevalue( content, name )
-				end
-				return true
+function scoreboardRemoveColumn(name)
+	if type(name) ~= "string" then
+		return false
+	end
+
+	for key = 1, #scoreboardColumns do
+		local value = scoreboardColumns[key]
+		
+		if name == value.name then
+			table.remove(scoreboardColumns, key)
+			
+			for resource, content in pairs(resourceColumns) do
+				table.removevalue(content, name)
 			end
+
+			return true
 		end
 	end
+
 	return false
 end
 
@@ -867,30 +998,36 @@ addEventHandler( "doScoreboardSetForced", resourceRoot,
 	end
 )
 
---Compability
+--Compatibility
 setScoreboardForced = scoreboardSetForced
 
 --setSortBy
-function scoreboardSetSortBy( name, desc )
-	if name then
-		if type( name ) == "string" then
-			local exists = false
-			for key, value in ipairs( scoreboardColumns ) do
-				if name == value.name then
-					exists = true
-				end
-			end
-			if exists then
-				desc = iif( type( desc ) == "boolean" and not desc, 1, -1 )
-				sortBy.what = name
-				sortBy.dir = desc
-			end
-		end
-		return false
-	else
+function scoreboardSetSortBy(name, desc)
+	if not name then
 		sortBy.what = "__NONE__"
 		sortBy.dir = -1
+
 		return true
+	end
+
+	if type(name) ~= "string" then
+		return false
+	end
+
+	local exists = false
+
+	for key = 1, #scoreboardColumns do
+		local value = scoreboardColumns[key]
+
+		if name == value.name then
+			exists = true
+		end
+	end
+
+	if exists then
+		desc = iif(type(desc) == "boolean" and not desc, 1, -1)
+		sortBy.what = name
+		sortBy.dir = desc
 	end
 end
 
@@ -902,36 +1039,49 @@ addEventHandler( "doScoreboardSetSortBy", resourceRoot,
 )
 
 --getColumnPriority
-function scoreboardGetColumnPriority( name )
-	if type( name ) == "string" then
-		for key, value in ipairs( scoreboardColumns ) do
-			if name == value.name then
-				return value.priority
-			end
+function scoreboardGetColumnPriority(name)
+	if type(name) ~= "string" then
+		return false
+	end
+
+	for key = 1, #scoreboardColumns do
+		local value = scoreboardColumns[key]
+
+		if name == value.name then
+			return value.priority
 		end
 	end
+
 	return false
 end
 
 --setColumnPriority
-function scoreboardSetColumnPriority( name, priority )
-	if type( name ) == "string" and type( priority ) == "number" then
-		if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
-			local columnIndex = false
-			for key, value in ipairs( scoreboardColumns ) do
-				if name == value.name then
-					columnIndex = key
-				end
-			end
-			if columnIndex then
-				scoreboardColumns[columnIndex].priority = -1 -- To empty out the current priority
-				fixPrioritySlot( priority )
-				scoreboardColumns[columnIndex].priority = priority
-				table.sort( scoreboardColumns, function ( a, b ) return a.priority < b.priority end )
-				return true
+function scoreboardSetColumnPriority(name, priority)
+	if type(name) ~= "string" or type(priority) ~= "number" then
+		return false
+	end
+
+	if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
+		local columnIndex = false
+
+		for key = 1, #scoreboardColumns do
+			local value = scoreboardColumns[key]
+
+			if name == value.name then
+				columnIndex = key
 			end
 		end
+
+		if columnIndex then
+			scoreboardColumns[columnIndex].priority = -1 -- To empty out the current priority
+			fixPrioritySlot(priority)
+			scoreboardColumns[columnIndex].priority = priority
+			table.sort(scoreboardColumns, function(a, b) return a.priority < b.priority end)
+
+			return true
+		end
 	end
+
 	return false
 end
 
@@ -948,34 +1098,45 @@ function scoreboardGetColumnCount()
 end
 
 --setColumnTextFunction
-function scoreboardSetColumnTextFunction( name, func )
-	if 	type( name ) == "string" then
-		for key, value in ipairs( scoreboardColumns ) do
-			if name == value.name then
-				scoreboardColumns[key].textFunction = func
-				return true
-			end
+function scoreboardSetColumnTextFunction(name, func)
+	if type(name) ~= "string" then
+		return false
+	end
+
+	for key = 1, #scoreboardColumns do
+		local value = scoreboardColumns[key]
+
+		if name == value.name then
+			scoreboardColumns[key].textFunction = func
+
+			return true
 		end
 	end
+
 	return false
 end
 
 function scoreboardGetTopCornerPosition()
-	if scoreboardDrawn then
-		local sX, sY = guiGetScreenSize()
-		local topX, topY = (sX/2)-(calculateWidth()/2), (sY/2)-(calculateHeight()/2)
-		topY = topY - 15		-- Extra 15 pixels for the scroll up button
-		return math.floor(topX), math.floor(topY+1)
+	if not scoreboardDrawn then
+		return false
 	end
-	return false
+
+	local sX, sY = SCREEN_X, SCREEN_Y
+	local topX, topY = (sX/2) - (calculateWidth()/2), (sY/2) - (calculateHeight()/2)
+
+	topY = topY - 15 -- Extra 15 pixels for the scroll up button
+	
+	return math.floor(topX), math.floor(topY + 1)
 end
 
 function scoreboardGetSize()
-	if scoreboardDrawn then
-		local width, height = calculateWidth(), calculateHeight()
-		return width, height
+	if not scoreboardDrawn then
+		return false
 	end
-	return false
+
+	local width, height = calculateWidth(), calculateHeight()
+	
+	return width, height
 end
 
 function scoreboardGetSelectedRows()
@@ -989,14 +1150,18 @@ end
 -- Other
 function calculateWidth()
 	local width = 0
-	for key, value in ipairs( scoreboardColumns ) do
+
+	for key = 1, #scoreboardColumns do
+		local value = scoreboardColumns[key]
+
 		width = width + s(value.width + 10)
 	end
+
 	return width + s(10)
 end
 
 function calculateHeight()
-	local sX, sY = guiGetScreenSize()
+	local sX, sY = SCREEN_X, SCREEN_Y
 	local maxPerWindow = getMaxPerWindow()
 	local index = firstVisibleIndex
 	local height = s(5)
@@ -1113,7 +1278,7 @@ function scoreboardSortFunction( a, b )
 end
 
 function getMaxPerWindow()
-	local sX, sY = guiGetScreenSize()
+	local sX, sY = SCREEN_X, SCREEN_Y
 	local availableHeight = sY-(seperationSpace*2)-s(5)
 	if (serverInfo.server or serverInfo.players) and showServerInfo then availableHeight = availableHeight-dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
 	if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then availableHeight = availableHeight-dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
@@ -1143,7 +1308,7 @@ end
 
 function scoreboardClickHandler( button, state, cX, cY )
 	if scoreboardDrawn and button == "left" and state == "down" then
-		local sX, sY = guiGetScreenSize()
+		local sX, sY = SCREEN_X, SCREEN_Y
 		local topX, topY = (sX/2)-(calculateWidth()/2), (sY/2)-(calculateHeight()/2)
 		local xMin, xMax, yMin, yMax = topX, topX+calculateWidth(), topY, topY+calculateHeight()
 		local maxPerWindow = getMaxPerWindow()
@@ -1154,13 +1319,17 @@ function scoreboardClickHandler( button, state, cX, cY )
 			local y = s(5)+s(3)
 			if (serverInfo.server or serverInfo.players) and showServerInfo then y = y + dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
 			if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then y = y + dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
-			for key, column in ipairs( scoreboardColumns ) do
+			for key = 1, #scoreboardColumns do
+				local column = scoreboardColumns[key]
+
 				if cX >= topX+x and cX <= topX+x+s(column.width) then
 					clickedColumn = column.name
+
 					if cY >= topY+y and cY <= topY+y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ) then
 						clickedOnColumnHeader = column.name
 					end
 				end
+
 				x = x + s(column.width + 10)
 			end
 			if clickedOnColumnHeader then

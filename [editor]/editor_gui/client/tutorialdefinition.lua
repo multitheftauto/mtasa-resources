@@ -141,7 +141,7 @@ tutorial = {
 		addEventHandler ("onClientElementDrop",root,tutorialAction.dropped2)
 		removeEventHandler ("onClientElementSelect",root,tutorialAction.selected1)
 	end },
-	{ message = "A tip for selecting objects with poor collisions is to enable 'High sensitivity mode'.  Press "..cc.high_sensitivity_mode.." to toggle this.  It will detect objects with poor collisions at the expense of accuracy.",
+	{ message = "A tip for selecting objects with poor collisions is to enable 'High sensitivity mode'.  Press "..cc.high_sensitivity_mode.." to toggle this.  It will detect objects with poor collisions at the expense of accuracy. If you still cannot select the object, try 'Enable collision patches' in options.",
 	initiate = function()
 		setTimer ( tutorialNext, 15000, 1 )
 	end },
@@ -158,7 +158,7 @@ tutorial = {
 		setTimer(tutorialNext,17000,1)
 		end },
 	--14
-	{ message = "You can use the "..cc.mod_rotate.." modifier to switch into rotation mode.  While holding down the "..cc.mod_rotate.." key, press the "..cc.element_move_forward..", "..cc.element_move_backward..", "..cc.element_move_left..", "..cc.element_move_right..", "..cc.element_move_upwards.." and "..cc.element_move_downwards.." keys to rotate the element.",
+	{ message = "You can use the "..cc.mod_rotate.." and "..cc.mod_rotate_local.." modifiers to switch into rotation mode.  While holding down the "..cc.mod_rotate.." or "..cc.mod_rotate_local.." key, press the "..cc.element_move_forward..", "..cc.element_move_backward..", "..cc.element_move_left..", "..cc.element_move_right..", "..cc.element_move_upwards.." and "..cc.element_move_downwards.." keys to rotate the element in world ("..cc.mod_rotate..") or local ("..cc.mod_rotate_local..") space.",
 	initiate = function()
 		setTimer(tutorialNext,16000,1)
 	end },

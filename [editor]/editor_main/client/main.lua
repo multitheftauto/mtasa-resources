@@ -151,6 +151,7 @@ function startWhenLoaded()
 	end
 	if isInterfaceLoaded() then
 		removeEventHandler("onClientResourceStart", root, startWhenLoaded)
+		loadRotationFixXML()
 		startEditor()
 	end
 end
@@ -214,15 +215,11 @@ addEventHandler("onClientRender", root,
 			local camX2, camY2, camZ2 = getCameraMatrix()
 			local distance = math.sqrt( (targetX - camX2)^2 + (targetY - camY2)^2 + (targetZ - camZ2)^2 )
 			local roundedDistance = string.format("%." .. (DISTANCE_DECIMAL_PLACES) .. "f", distance)
-			local elementName = getElementID(g_targetedElement) or ""
-			local mapContainer = getElementByID("mapContainer")
-			if mapContainer then
-				if getElementParent(g_targetedElement) ~= mapContainer then
-					elementName = "Non-editable object " .. getElementModel(g_targetedElement)
-				end
-			end
-			
-			createHighlighterText(labelCenterX, labelCenterY, elementName, "["..getElementType(g_targetedElement).."]", roundedDistance .. " m")
+			createHighlighterText ( labelCenterX,labelCenterY,
+							getElementID(g_targetedElement) or "",
+							"["..getElementType(g_targetedElement).."]",
+							roundedDistance .. " m"
+			)
 		else
 			if g_targetedElement then
 				g_targetedPart = nil
@@ -742,15 +739,6 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	
 	if isColPatchObject(element) then return end
 
-	-- Fixes error when try to edit static object created by script
-	local mapContainer = getElementByID("mapContainer")
-	if mapContainer then
-		if getElementParent(element) ~= mapContainer then
-			editor_gui.outputMessage("Cannot select element, it is created by a different script", 255,255,255)
-			return
-		end
-	end
-
 	if getElementType(element) == "vehicle" and getVehicleType(element) == "Train" then
 		setTrainDerailed(element, true)
 	end
@@ -890,6 +878,9 @@ function dropElement(releaseLock,clonedrop)
 
 	-- trigger server selection events
 	triggerServerEvent("onElementDrop", g_selectedElement)
+	
+	-- Clear rotation as it can be rotated by other players
+	clearElementQuat(g_selectedElement)
 
 	local droppedElement = g_selectedElement
 	g_selectedElement = false
@@ -1294,8 +1285,10 @@ function setMovementType( movementType )
 	if g_arrowMarker then
 		if movementType == "move" then
 			setMarkerColor(g_arrowMarker, 255, 255, 0)
-		elseif movementType == "rotate" then
+		elseif movementType == "rotate" or movementType == "rotate_world" then
 			setMarkerColor(g_arrowMarker, 0, 255, 0)
+		elseif movementType == "rotate_local" then
+			setMarkerColor(g_arrowMarker, 0, 255, 255)
 		end
 	end
 end

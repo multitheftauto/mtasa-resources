@@ -10,7 +10,7 @@ local function syncElementRotation(element, value)
 	else --XYZ rotation
 		rx, ry, rz = unpack(value)
 	end
-	edf.edfSetElementRotation(element, rx, ry, rz)
+	edf.edfSetElementRotation(element, rx, ry, rz, "ZYX")
 end
 
 local function syncElementDimension(element, dim)
