@@ -1,6 +1,6 @@
 <meta>
 	<info author="Talidan" description="Interiors script" edf:definition="interiors.edf" type="script" version="2.0" />
-	<min_mta_version client="1.5.5" />
+	<min_mta_version client="1.5.5-9.13846" />
 
 	<script src="interiorexp.lua" type="server" />
 	<script src="interiors_client.lua" type="client" />
