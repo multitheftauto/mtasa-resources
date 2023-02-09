@@ -6,6 +6,7 @@
 	<include resource="playercolors" />
 	<include resource="deathpickups" />
 	<include resource="spawnmanager" />
+	<include resource="mapmanager" />
 	<include resource="missiontimer" />
 	<include resource="scoreboard" />
 	<include resource="defaultstats" />
