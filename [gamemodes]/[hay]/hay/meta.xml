@@ -1,8 +1,8 @@
 <meta>
-    <info author="Aeron" name="Hay" version="1" type="gamemode"/>
+    <info author="Aeron" name="Hay" version="1.0" type="gamemode"/>
 	<include resource="scoreboard"/>
-    <script src="Hay.lua" />
-    <script src="Hay_client.lua" type="client"/>
+    <script src="hay_server.lua" type="server"/>
+    <script src="hay_client.lua" type="client"/>
 	<settings>
 		<setting name="*levels" value="[50]"/>
 		<setting name="*blocks" value="[245]"/>
