@@ -982,9 +982,9 @@ function getMaxSelectDistance()
 end
 
 function destroySelectedElement(key)
-	if key then return
+	if key then
 		editor_gui.restoreSelectedElement()
-	 end
+	end
 	if g_selectedElement then
 		local element = g_selectedElement
 		dropElement(false)
