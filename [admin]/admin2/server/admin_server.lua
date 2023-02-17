@@ -154,7 +154,9 @@ function updatePlayerCountry(player)
     local isIP2CResourceRunning = getResourceFromName( "ip2c" )
 	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
     aPlayers[player].country = isIP2CResourceRunning and exports.ip2c:getPlayerCountry(player) or false
-    aPlayers[player].countryname = isIP2CResourceRunning and exports.ip2c:getCountryName(aPlayers[player].country) or false
+    if aPlayers[player].country then
+        aPlayers[player].countryname = isIP2CResourceRunning and exports.ip2c:getCountryName(aPlayers[player].country) or false
+    end
 end
 
 function aPlayerInitialize(player)
