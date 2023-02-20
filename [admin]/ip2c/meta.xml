@@ -7,14 +7,6 @@
 
     <script src="shared.lua" type="shared"/>
     <export function="getCountryName" type="shared"/>
-
-	<!--
-		Allow these rights by typing the following into the server or client console:
-		aclrequest allow acpanel all
-	-->
-	<aclrequest>
-        <right name="function.fetchRemote" access="true"></right>
-	</aclrequest>
     
     <file src="client/images/flags/ad.png" />
     <file src="client/images/flags/ae.png" />
