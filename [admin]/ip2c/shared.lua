@@ -255,5 +255,8 @@ local countryListAlpha2 = {
 
 -- [Exported]
 function getCountryName( country )
+    if type(country) ~= "string" then
+        return "Invalid country code"
+    end
 	return countryListAlpha2[ (string.upper(country)) ] or "Unknown"
 end
