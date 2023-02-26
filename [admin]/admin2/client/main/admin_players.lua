@@ -372,11 +372,11 @@ end
 function aPlayersTab.onClientPlayerJoin(ip, username, serial, unused, country, countryname)
     if ip == false and serial == false then
         -- Update country only
-		if aPlayers[source] then
-			aPlayers[source].country = country
-			aPlayers[source].countryname = countryname
-		end
-		return
+        if aPlayers[source] then
+            aPlayers[source].country = country
+            aPlayers[source].countryname = countryname
+        end
+        return
     end
     aPlayers[source] = {}
     aPlayers[source].name = getPlayerName(source)
