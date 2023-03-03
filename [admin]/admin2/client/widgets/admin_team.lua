@@ -70,7 +70,7 @@ function aTeam.onDoubleClick(button)
             if (guiGridListGetSelectedItem(aTeam.List) ~= -1) then
                 local team = guiGridListGetItemText(aTeam.List, guiGridListGetSelectedItem(aTeam.List), 1)
                 triggerServerEvent("aPlayer", localPlayer, getSelectedPlayer(), "setteam", getTeamFromName(team))
-                aPlayerTeamClose(false)
+                aTeam.Close(false)
             end
         end
     end
