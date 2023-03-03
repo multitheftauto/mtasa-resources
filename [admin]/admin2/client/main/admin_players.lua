@@ -84,7 +84,7 @@ function aPlayersTab.Create(tab)
         end
     end
     guiSetSize(aPlayersTab.SlapOptions, width, height + (16 * 11), false) -- adjust height to fit items (16px per item)
-    aPlayersTab.Slap = guiCreateButton(0.87, 0.28, 0.12, 0.04, "Slap!", true, tab, "slap")
+    aPlayersTab.Slap = guiCreateButton(632, 157, 87, 22, "Slap!", true, tab, "slap")
 
     aPlayersTab.SetHealth = guiCreateButton(0.74, 0.35, 0.12, 0.04, "Set Health", true, tab, "sethealth")
     aPlayersTab.SetArmour = guiCreateButton(0.87, 0.35, 0.12, 0.04, "Set Armour", true, tab, "setarmour")
@@ -105,6 +105,7 @@ function aPlayersTab.Create(tab)
     aPlayersTab.VehicleCustomize = guiCreateButton(0.87, 0.85, 0.12, 0.04, "Customize", true, tab, "customize")
 
     aPlayersTab.AnonAdmin = guiCreateCheckBox(0.745, 0.942, 0.20, 0.04, "Anonymous Admin", isAnonAdmin(), true, tab)
+    aPlayersTab.FPSPlayer = guiCreateLabel(0.45, 0.95, 0.28, 0.03, "FPS : 0", true, FPSPlayer.tab)
 
     aPlayersTab.Refresh()
 
