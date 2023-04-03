@@ -1,4 +1,3 @@
-players = getElementsByType("player")
 scoreboardRes = getResourceFromName("scoreboard")
 
 addEventHandler("onResourceStop", resourceRoot,
@@ -22,14 +21,10 @@ function spawnFunct(passedPlayer)
     spawnY = r * math.sin(angle) + centerY --circle trig math
     spawnAngle = 360 - math.deg(math.atan2((centerX - spawnX), (centerY - spawnY)))
     spawnPlayer(passedPlayer, spawnX, spawnY, 3.3, spawnAngle)
-end
-
-for k, v in ipairs(players) do --Game start spawn
-    spawnFunct(v)
+    fadeCamera(passedPlayer, true)
 end
 
 function playerJoin()
-    fadeCamera(source, true)
     spawnFunct(source)
 end
 addEventHandler("onPlayerJoin", root, playerJoin)
@@ -45,9 +40,10 @@ addEventHandler("onPlayerWasted", root, playerWasted)
 local options = {x = 4, y = 4, z = get("levels") - 1, b = get("blocks"), r = 4}
 
 -- Don't touch below!
-local matrix = {}
-local objects = {}
-local moving = {}
+local matrix
+local objects
+local rocks
+local moving
 local xy_speed
 local z_speed
 local barrier_x
@@ -134,10 +130,18 @@ function move()
     end
 end
 
-function onThisResourceStart()
-    call(scoreboardRes, "addScoreboardColumn", "Current level")
-    call(scoreboardRes, "addScoreboardColumn", "Max level")
-    call(scoreboardRes, "addScoreboardColumn", "Health")
+function startRound()
+
+    matrix = {}
+    objects = {}
+    rocks = {}
+    moving = {}
+    
+    for i, v in ipairs(getElementsByType("player")) do --Round start spawn
+        spawnFunct(v)
+        setElementData(v, "Max level", 0)
+    end
+    
     --Calculate speed velocity
     xy_speed = 2000 / (options.z + 1)
     z_speed = 1500 / (options.z + 1)
@@ -173,7 +177,7 @@ function onThisResourceStart()
             z = math.random(1, options.z)
         until (matrix[x][y][z] == 0)
         matrix[x][y][z] = 1
-        createObject(1305, x * -4, y * -4, z * 3, math.random(0, 359), math.random(0, 359), math.random(0, 359))
+        rocks[count] = createObject(1305, x * -4, y * -4, z * 3, math.random(0, 359), math.random(0, 359), math.random(0, 359))
     end
 
     --Calculate tower center and barrier radius
@@ -187,13 +191,38 @@ function onThisResourceStart()
     end
 
     --Place top-haybail + minigun
-    createObject(3374, barrier_x, barrier_y, options.z * 3 + 3)
+    topHay = createObject(3374, barrier_x, barrier_y, options.z * 3 + 3)
     thePickup = createPickup(barrier_x, barrier_y, options.z * 3 + 6, 3, 2880, 1)
-    setTimer(move, 100, 0)
+    addEventHandler("onPickupHit", thePickup, onPickupHit)
+    moveTimer = setTimer(move, 100, 0)
+end
+
+function onThisResourceStart()
+    call(scoreboardRes, "addScoreboardColumn", "Current level")
+    call(scoreboardRes, "addScoreboardColumn", "Max level")
+    call(scoreboardRes, "addScoreboardColumn", "Health")
+    startRound()
     setTimer(barrier, 1000, 1)
-    fadeCamera(root, true)
 end
 addEventHandler("onResourceStart", resourceRoot, onThisResourceStart)
+
+function roundEnd(winner)
+    clearRound(winner)
+    startRound()
+    triggerClientEvent("onHayRoundRestart", resourceRoot)
+end
+
+function clearRound(winner)
+    for count, obj in ipairs(objects) do
+        destroyElement(obj)
+    end
+    for count, rock in ipairs(rocks) do
+        destroyElement(rock)
+    end
+    destroyElement(topHay)
+    killTimer(moveTimer)
+    toggleControl(winner, "fire", false)
+end
 
 function barrier()
     local barrier = createColCircle(barrier_x, barrier_y, barrier_r)
@@ -208,13 +237,11 @@ function barrier()
 end
 
 function onPickupHit(player)
-    if source == thePickup then
-        outputChatBox("* " .. getPlayerName(player) .. " made it to the top!", root, 255, 100, 100, false)
-        toggleControl(player, "fire", true)
-        destroyElement(source)
-    end
+    outputChatBox("* " .. getPlayerName(player) .. " made it to the top! New game starts in 15 seconds.", root, 255, 100, 100, false)
+    toggleControl(player, "fire", true)
+    destroyElement(source)
+    setTimer(roundEnd, 15000, 1, player)
 end
-addEventHandler("onPickupHit", root, onPickupHit)
 
 function done(id, x, y, z)
     moving[id] = 0
