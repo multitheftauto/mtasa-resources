@@ -84,7 +84,7 @@ function aPlayersTab.Create(tab)
         end
     end
     guiSetSize(aPlayersTab.SlapOptions, width, height + (16 * 11), false) -- adjust height to fit items (16px per item)
-    aPlayersTab.Slap = guiCreateButton(632, 157, 87, 22, "Slap!", true, tab, "slap")
+    aPlayersTab.Slap = guiCreateButton(632, 157, 87, 22 "Slap!", true, tab, "slap")
 
     aPlayersTab.SetHealth = guiCreateButton(0.74, 0.35, 0.12, 0.04, "Set Health", true, tab, "sethealth")
     aPlayersTab.SetArmour = guiCreateButton(0.87, 0.35, 0.12, 0.04, "Set Armour", true, tab, "setarmour")
