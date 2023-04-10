@@ -5,7 +5,9 @@ local function onResourceStartPlay()
 	local playersTable = getElementsByType("player")
 
 	for playerID = 1, #playersTable do
-		playSpawnPlayer(playersTable[playerID])
+		local playerElement = playersTable[playerID]
+		
+		playSpawnPlayer(playerElement)
 	end
 
 	addEventHandler("onPlayerJoin", root, onPlayerJoin)
