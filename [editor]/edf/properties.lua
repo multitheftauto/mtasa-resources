@@ -172,7 +172,7 @@ propertySetters = {
 		end,
 		breakable = function(element, breakable)
 			if setObjectBreakable then
-				return setObjectBreakable(element, bon == "true")
+				return setObjectBreakable(element, breakable == "true")
 			else
 				return setElementData(element, "breakable", breakable == "true" and "true" or "false")
 			end
