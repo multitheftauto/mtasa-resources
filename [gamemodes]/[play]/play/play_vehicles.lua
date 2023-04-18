@@ -4,7 +4,9 @@ local vehiclesToSpawn = {}
 
 function createVehicles()
 	for vehicleID = 1, #vehicleSpawns do
-		createPlayVehicle(vehicleSpawns[vehicleID])
+		local vehicleData = vehicleSpawns[vehicleID]
+
+		createPlayVehicle(vehicleData)
 	end
 end
 
@@ -18,57 +20,16 @@ function createPlayVehicle(vehicleData)
 end
 
 function destroyVehicle(vehicleElement)
-	if isElement(vehicleElement) then
+	local validElement = isElement(vehicleElement)
+
+	if validElement then
 		destroyElement(vehicleElement)
 	end
 
 	destroyVehicleTimer(vehicleElement)
 end
 
-function destroyPlayerVehicles(playerElement)
-	local savedVehicles = playerVehicles[playerElement]
-
-	if savedVehicles then
-
-		for vehicleID = 1, #savedVehicles do
-			local vehicleElement = savedVehicles[vehicleID]
-
-			if isElement(vehicleElement) then
-				destroyElement(vehicleElement)
-			end
-
-			destroyVehicleTimer(vehicleElement)
-		end
-
-		playerVehicles[playerElement] = nil
-	end
-end
-
-function destroyVehicleTimer(vehicleElement)
-	local vehicleTimer = vehicleTimers[vehicleElement]
-
-	if vehicleTimer then
-
-		if isTimer(vehicleTimer) then
-			killTimer(vehicleTimer)
-		end
-
-		vehicleTimers[vehicleElement] = nil
-	end
-end
-
-function onVehicleEnter(playerElement)
-	local vehicleRespawnTime = get("vehicleRespawnTime")
-	local vehicleData = vehiclesToSpawn[source]
-
-	vehicleRespawnTime = tonumber(vehicleRespawnTime) or 60000
-	vehicleRespawnTime = vehicleRespawnTime < 0 and 0 or vehicleRespawnTime
-	vehiclesToSpawn[source] = nil
-
-	setVehicleDamageProof(source, false)
-	setElementFrozen(source, false)
-	setTimer(createPlayVehicle, vehicleRespawnTime, 1, vehicleData)
-
+function assignVehicleToPlayer(playerElement, vehicleElement)
 	local savedVehicles = playerVehicles[playerElement]
 
 	if not savedVehicles then
@@ -76,10 +37,65 @@ function onVehicleEnter(playerElement)
 		savedVehicles = playerVehicles[playerElement]
 	end
 
-	local playerVehiclesCount = #savedVehicles + 1
+	savedVehicles[vehicleElement] = true
+end
 
-	savedVehicles[playerVehiclesCount] = source
+function destroyPlayerVehicles(playerElement)
+	local savedVehicles = playerVehicles[playerElement]
+
+	if not savedVehicles then
+		return false
+	end
+
+	for vehicleElement, _ in pairs(savedVehicles) do
+		local validElement = isElement(vehicleElement)
+
+		if validElement then
+			destroyElement(vehicleElement)
+		end
+
+		destroyVehicleTimer(vehicleElement)
+	end
+
+	playerVehicles[playerElement] = nil
+end
+
+function destroyVehicleTimer(vehicleElement)
+	local vehicleTimer = vehicleTimers[vehicleElement]
+
+	if not vehicleTimer then
+		return false
+	end
+
+	local validTimer = isTimer(vehicleTimer)
+
+	if validTimer then
+		killTimer(vehicleTimer)
+	end
+
+	vehicleTimers[vehicleElement] = nil
+end
+
+function onVehicleEnter(playerElement)
+	local vehicleData = vehiclesToSpawn[source]
+
 	destroyVehicleTimer(source)
+
+	if not vehicleData then
+		return false
+	end
+
+	local vehicleRespawnTime = get("vehicleRespawnTime")
+
+	vehicleRespawnTime = tonumber(vehicleRespawnTime) or 10000
+	vehicleRespawnTime = vehicleRespawnTime < 0 and 0 or vehicleRespawnTime
+	vehiclesToSpawn[source] = nil
+
+	setVehicleDamageProof(source, false)
+	setElementFrozen(source, false)
+	setTimer(createPlayVehicle, vehicleRespawnTime, 1, vehicleData)
+
+	assignVehicleToPlayer(playerElement, source)
 end
 
 function onVehicleExit()
@@ -91,8 +107,18 @@ function onVehicleExit()
 end
 
 function onVehicleElementDestroy()
-	if isElement(source) and getElementType(source) == "vehicle" then
-		destroyVehicleTimer(source)
-		vehiclesToSpawn[source] = nil
+	local validElement = isElement(source)
+
+	if not validElement then
+		return false
 	end
+
+	local vehicleType = getElementType(source) == "vehicle"
+
+	if not vehicleType then
+		return false
+	end
+	
+	destroyVehicleTimer(source)
+	vehiclesToSpawn[source] = nil
 end
