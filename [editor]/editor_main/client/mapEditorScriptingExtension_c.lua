@@ -9,17 +9,3 @@ function setLODsClient(lodTbl)
 end
 addEvent("setLODsClient", true)
 addEventHandler("setLODsClient", resourceRoot, setLODsClient)
-
-function applyBreakableState()
-	local objectsTable = getElementsByType("object", resourceRoot)
-
-	for objectID = 1, #objectsTable do
-		local objectElement = objectsTable[objectID]
-		local objectBreakable = getElementData(objectElement, "breakable")
-
-		if objectBreakable then
-			setObjectBreakable(objectElement, objectBreakable == "true")
-		end
-	end
-end
-addEventHandler("onClientResourceStart", resourceRoot, applyBreakableState)
