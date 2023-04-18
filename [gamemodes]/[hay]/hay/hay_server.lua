@@ -237,10 +237,10 @@ function barrier()
 end
 
 function onPickupHit(player)
-    outputChatBox("* " .. getPlayerName(player) .. " made it to the top! New game starts in 15 seconds.", root, 255, 100, 100, false)
+    outputChatBox("* " .. getPlayerName(player) .. " made it to the top! New round starts in 10 seconds.", root, 255, 100, 100, false)
     toggleControl(player, "fire", true)
     destroyElement(source)
-    setTimer(roundEnd, 15000, 1, player)
+    setTimer(roundEnd, 10000, 1, player)
 end
 
 function done(id, x, y, z)
