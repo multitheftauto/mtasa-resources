@@ -70,7 +70,7 @@ function aTeam.onDoubleClick(button)
             if (guiGridListGetSelectedItem(aTeam.List) ~= -1) then
                 local team = guiGridListGetItemText(aTeam.List, guiGridListGetSelectedItem(aTeam.List), 1)
                 triggerServerEvent("aPlayer", localPlayer, getSelectedPlayer(), "setteam", getTeamFromName(team))
-                aPlayerTeamClose(false)
+                aTeam.Close(false)
             end
         end
     end
@@ -147,13 +147,15 @@ end
 
 function aTeam.Refresh()
     if (aTeam.List) then
+        local sortDirection = guiGetProperty(aTeam.List, "SortDirection")
         guiGridListClear(aTeam.List)
+        guiSetProperty(aTeam.List, "SortDirection", "None")
         for id, team in ipairs(getElementsByType("team")) do
-            local row = guiGridListAddRow(aTeam.List)
+            local row = guiGridListAddRow(aTeam.List, getTeamName(team))
             local r, g, b = getTeamColor(team)
-            guiGridListSetItemText(aTeam.List, row, 1, getTeamName(team), false, false)
             guiGridListSetItemColor(aTeam.List, row, 1, r, g, b)
             guiGridListSetItemData(aTeam.List, row, 1, team)
         end
+        guiSetProperty(aTeam.List, "SortDirection", sortDirection)
     end
 end

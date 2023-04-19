@@ -113,7 +113,7 @@ function aPlayersTab.Create(tab)
     addEventHandler("onClientGUIClick", aPlayersTab.Context, aPlayersTab.onContextClick)
     addEventHandler("onClientGUIClick", aPlayersTab.InfoContext, aPlayersTab.onContextClick)
     addEventHandler("onClientGUIClick", aPlayersTab.Tab, aPlayersTab.onClientClick)
-    addEventHandler("onClientGUIChanged", aPlayersTab.PlayerListSearch, aPlayersTab.onPlayerListSearch)
+    addEventHandler("onClientGUIChanged", aPlayersTab.PlayerListSearch, aPlayersTab.onGUIChange)
     addEventHandler("onClientPlayerChangeNick", root, aPlayersTab.onClientPlayerChangeNick)
     addEventHandler("aClientPlayerJoin", root, aPlayersTab.onClientPlayerJoin)
     addEventHandler("onClientPlayerQuit", root, aPlayersTab.onClientPlayerQuit)
@@ -321,23 +321,9 @@ function aPlayersTab.onClientClick(button)
     end
 end
 
-function aPlayersTab.onPlayerListSearch()
-    guiGridListClear(aPlayersTab.PlayerList)
-    local text = guiGetText(source)
-    if (text == "") then
-        for id, player in ipairs(getElementsByType("player")) do
-            local row = guiGridListAddRow(aPlayersTab.PlayerList)
-            guiGridListSetItemText(aPlayersTab.PlayerList, row, 1, getPlayerName(player), false, false)
-            guiGridListSetItemData(aPlayersTab.PlayerList, row, 1, player)
-        end
-    else
-        for id, player in ipairs(getElementsByType("player")) do
-            if (string.find(string.upper(getPlayerName(player)), string.upper(text))) then
-                local row = guiGridListAddRow(aPlayersTab.PlayerList)
-                guiGridListSetItemText(aPlayersTab.PlayerList, row, 1, getPlayerName(player), false, false)
-                guiGridListSetItemData(aPlayersTab.PlayerList, row, 1, player)
-            end
-        end
+function aPlayersTab.onGUIChange()
+    if (source == aPlayersTab.PlayerListSearch) then
+        aPlayersTab.Refresh()
     end
 end
 
@@ -386,11 +372,11 @@ end
 function aPlayersTab.onClientPlayerJoin(ip, username, serial, unused, country, countryname)
     if ip == false and serial == false then
         -- Update country only
-		if aPlayers[source] then
-			aPlayers[source].country = country
-			aPlayers[source].countryname = countryname
-		end
-		return
+        if aPlayers[source] then
+            aPlayers[source].country = country
+            aPlayers[source].countryname = countryname
+        end
+        return
     end
     aPlayers[source] = {}
     aPlayers[source].name = getPlayerName(source)
@@ -551,21 +537,25 @@ end
 
 function aPlayersTab.Refresh()
     local selected = getSelectedPlayer()
-    local list = aPlayersTab.PlayerList
-    guiGridListClear(list)
     local strip = guiCheckBoxGetSelected(aPlayersTab.ColorCodes)
+    local filter = guiGetText(aPlayersTab.PlayerListSearch):lower()
+    local sortDirection = guiGetProperty(aPlayersTab.PlayerList, "SortDirection")
+    guiGridListClear(aPlayersTab.PlayerList)
+    guiSetProperty(aPlayersTab.PlayerList, "SortDirection", "None")
     for id, player in ipairs(getElementsByType("player")) do
-        local row = guiGridListAddRow(list)
         local name = getPlayerName(player)
-        if (strip) then
-            name = stripColorCodes(name)
-        end
-        guiGridListSetItemText(list, row, 1, name, false, false)
-        guiGridListSetItemData(list, row, 1, player)
-        if (player == selected) then
-            guiGridListSetSelectedItem(list, row, 1)
+        if name:find(filter) or name:lower():find(filter) then
+            if (strip) then
+                name = stripColorCodes(name)
+            end
+            local row = guiGridListAddRow(aPlayersTab.PlayerList, name)
+            guiGridListSetItemData(aPlayersTab.PlayerList, row, 1, player)
+            if (player == selected) then
+                guiGridListSetSelectedItem(aPlayersTab.PlayerList, row, 1)
+            end
         end
     end
+    guiSetProperty(aPlayersTab.PlayerList, "SortDirection", sortDirection)
 end
 
 function getSelectedPlayer()
