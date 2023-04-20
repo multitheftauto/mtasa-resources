@@ -57,6 +57,14 @@ aFunctions = {
             toggleAllControls(player, true, true, false)
             setElementFrozen(player, false)
         end,
+        ["setnick"] = function(player, nick)
+            if (#nick > 0) then
+                local oldnick = getPlayerName(player)
+                return setPlayerName(player, nick), oldnick
+            else
+                return false
+            end
+        end,
         ["shout"] = function(player, text)
             local textDisplay = textCreateDisplay()
             local textItem =
