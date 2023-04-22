@@ -84,12 +84,12 @@ function aPermissions.onClick(button)
             aPermissions.Refresh()
         elseif (source == aPermissions.RemoveGroup) then
             local confirm, groupName, newState = aPermissions.ConfirmChange(false)
-            if confirm then
+            if (confirm) then
                 aPermissions.PerformAction(aPermissions.SelectedPlayer, groupName, newState)
             end
         elseif (source == aPermissions.AddGroup) then
             local confirm, groupName, newState = aPermissions.ConfirmChange(true)
-            if confirm then
+            if (confirm) then
                 aPermissions.PerformAction(aPermissions.SelectedPlayer, groupName, newState)
             end
         elseif (source == aPermissions.AllGroups) then
@@ -105,7 +105,7 @@ function aPermissions.ConfirmChange(add)
 
     if (not isElement(player)) then
         aPermissions.Close(false)
-        aMessageBox.Show ( "Player not found!", MB_ERROR, MB_ERROR)
+        aMessageBox.Show("Player not found!", MB_ERROR, MB_ERROR)
         return
     end
 
@@ -122,19 +122,19 @@ function aPermissions.ConfirmChange(add)
     local str = add and 'Are you sure you want to add "%s" to the "%s" group?' or 'Are you sure you want to remove "%s" from the "%s" group?'
     str = str:format(getPlayerName(player), groupName)
 
-    return aMessageBox.Show ( str, MB_QUESTION, MB_YESNO ), groupName, add
+    return aMessageBox.Show(str, MB_QUESTION, MB_YESNO), groupName, add
 end
 
 function aPermissions.PerformAction(player, groupName, newState)
     local playerAccount = player and aPlayers[player] and aPlayers[player]['account']
-    if playerAccount and (playerAccount ~= 'guest') then
+    if (playerAccount and (playerAccount ~= 'guest')) then
         triggerServerEvent('aPlayer', localPlayer, player, "setgroup", newState, groupName)
     end
 end
 
 function aPermissions.Refresh()
     local player = aPermissions.SelectedPlayer
-    if isElement(player) and aPermissions.PlayerGroups and aPermissions.AllGroups then
+    if (isElement(player) and aPermissions.PlayerGroups and aPermissions.AllGroups) then
         guiGridListClear(aPermissions.PlayerGroups)
         guiGridListClear(aPermissions.AllGroups)
         triggerServerEvent(EVENT_SYNC, localPlayer, SYNC_PLAYERACL, player)
