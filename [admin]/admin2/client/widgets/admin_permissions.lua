@@ -122,7 +122,7 @@ function aPermissions.ConfirmChange(add)
     local str = add and 'Are you sure you want to add "%s" to the "%s" group?' or 'Are you sure you want to remove "%s" from the "%s" group?'
     str = str:format(getPlayerName(player), groupName)
 
-    return aMessageBox.Show ( str, MB_QUESTION, MB_YESNO, "updatePlayerACLGroup", player, groupName, add), groupName, add
+    return aMessageBox.Show ( str, MB_QUESTION, MB_YESNO ), groupName, add
 end
 
 function aPermissions.PerformAction(player, groupName, newState)
