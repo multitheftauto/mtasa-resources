@@ -105,7 +105,7 @@ function aPermissions.ConfirmChange(add)
 
     if (not isElement(player)) then
         aPermissions.Close(false)
-        aMessageBox.Show("Player not found!", MB_ERROR, MB_ERROR)
+        messageBox("Player not found!", MB_ERROR, MB_ERROR)
         return
     end
 
@@ -122,7 +122,7 @@ function aPermissions.ConfirmChange(add)
     local str = add and 'Are you sure you want to add "%s" to the "%s" group?' or 'Are you sure you want to remove "%s" from the "%s" group?'
     str = str:format(getPlayerName(player), groupName)
 
-    return aMessageBox.Show(str, MB_QUESTION, MB_YESNO), groupName, add
+    return messageBox(str, MB_QUESTION, MB_YESNO), groupName, add
 end
 
 function aPermissions.PerformAction(player, groupName, newState)

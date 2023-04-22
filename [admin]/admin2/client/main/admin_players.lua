@@ -261,7 +261,7 @@ function aPlayersTab.onClientClick(button)
                     if (aPlayers[player]['account'] ~= 'guest') then
                         aPermissions.Show(player)
                     else
-                        aMessageBox.Show("This player is not logged in!", MB_ERROR, MB_ERROR)
+                        messageBox("This player is not logged in!", MB_ERROR, MB_ERROR)
                     end
                 end
             end
