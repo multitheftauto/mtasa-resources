@@ -359,7 +359,7 @@ addEventHandler(
             aReports[id].category = tostring(data.category)
             aReports[id].subject = tostring(data.subject)
             aReports[id].text = tostring(data.message)
-            aReports[id].time = time.monthday .. "/" .. time.month .. " " .. time.hour .. ":" .. time.minute
+            aReports[id].time = string.format("%02d/%02d %02d:%02d", time.monthday, time.month+1, time.hour, time.minute)
             aReports[id].read = false
         elseif (action == "get") then
             triggerClientEvent(source, "aMessage", source, "get", aReports)
