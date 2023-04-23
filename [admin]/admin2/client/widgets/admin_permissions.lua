@@ -2,7 +2,7 @@
 *
 *   Multi Theft Auto - Admin Panel
 *
-*   client\gui\admin_permissions.lua
+*   client\widgets\admin_permissions.lua
 *
 *   Original File by lil_Toady
 *
