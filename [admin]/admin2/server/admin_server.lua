@@ -379,7 +379,7 @@ addEventHandler(
 
             local message = data[2]
             for key, value in pairs(aReports[id]) do
-                if (not (message[key] == value)) then
+                if (message[key] ~= value) then
                     outputChatBox("Error - Message mismatch, please try again.", source, 255, 0, 0)
                     triggerClientEvent(source, "aMessage", source, "get", aReports)
                     return
