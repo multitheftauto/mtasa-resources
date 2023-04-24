@@ -12,6 +12,8 @@ aMessages = {
     Messages = {}
 }
 
+addEvent("aMessage", true)
+
 function aMessages.Open()
     if (not aMessages.Form) then
         local x, y = guiGetScreenSize()
