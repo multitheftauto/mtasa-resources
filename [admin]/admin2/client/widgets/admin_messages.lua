@@ -137,7 +137,7 @@ function aMessages.onClick(button)
                 local confirm = messageBox("Are you sure you want to delete this message?", MB_QUESTION, MB_YESNO)
                 if (confirm) then
                     aMessages.View(false)
-                    triggerServerEvent("aMessage", localPlayer, "delete", id)
+                    triggerServerEvent("aMessage", localPlayer, "delete", {id, aMessages.Messages[id]})
                 end
             end
         end
