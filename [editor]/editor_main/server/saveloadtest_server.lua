@@ -668,6 +668,9 @@ function createElementAttributesForSaving(xmlNode, element)
 			xmlNodeSetAttribute(elementNode, "posZ", toAttribute(round(dataValue[3], 5)))
 			posSetX, posSetY, posSetZ = true, true, true
 		elseif ( dataName == "rotation" ) then
+			if dataValue[4] == "ZYX" then
+				euler_ZYX_to_ZXY(dataValue)
+			end
 			xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
 			xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
 			xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
