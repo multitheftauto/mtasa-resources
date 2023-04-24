@@ -109,3 +109,10 @@ addEventHandler("onClientPlayerSpawn", localPlayer,
         -- Has to be on a timer and 112ms is the lowest it worked for me.
     end
 )
+
+addEvent("onHayRoundRestart", true)
+addEventHandler("onHayRoundRestart", resourceRoot,
+    function()
+        leveltop = 0
+    end
+)
