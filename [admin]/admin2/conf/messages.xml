@@ -35,6 +35,11 @@
       <player>You have been unfrozen by $admin</player>
       <log>ADMIN: $admin has unfrozen $player</log>
     </group>
+    <group action="setnick" r="255" g="100" b="70">
+      <admin>$data's nick has been changed to $player</admin>
+      <player>$admin has changed your nick to $player</player>
+      <log>ADMIN: $admin has changed $data's nick to $player</log>
+    </group>
     <group action="slap" r="235" g="20" b="200">
       <all>$player has been slapped by $admin. ($data HP)</all>
       <log>ADMIN: $admin has slapped $player ($data HP)</log>
