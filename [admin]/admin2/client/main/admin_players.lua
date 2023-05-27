@@ -193,7 +193,7 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.Spectate) then
                     aSpectate(player)
                 elseif (source == aPlayersTab.SetNick) then
-                    local nick = inputBox("Set nick", "Enter new nickname for " .. name)
+                    local nick = inputBox("Set nick", "Enter new nickname for " .. name, name)
                     if (nick) then
                         triggerServerEvent("aPlayer", localPlayer, player, "setnick", nick)
                     end

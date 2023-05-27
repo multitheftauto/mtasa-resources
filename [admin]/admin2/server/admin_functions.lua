@@ -57,6 +57,14 @@ aFunctions = {
             toggleAllControls(player, true, true, false)
             setElementFrozen(player, false)
         end,
+        ["setnick"] = function(player, nick)
+            if (#nick > 0) then
+                local oldnick = getPlayerName(player)
+                return setPlayerName(player, nick), oldnick
+            else
+                return false
+            end
+        end,
         ["shout"] = function(player, text)
             local textDisplay = textCreateDisplay()
             local textItem =
@@ -81,18 +89,18 @@ aFunctions = {
         ["sethealth"] = function(player, health1)
             local health = tonumber(health1)
             if (health) then
-                if (health > 200 or health <= 0) then
+                if (health > 200 or health < 0) then
                     health = 100
                 end
                 return setElementHealth(player, health), health
             else
-                action = false
+                return false
             end
         end,
         ["setarmour"] = function(player, armour1)
             local armour = tonumber(armour1)
             if (armour) then
-                if (armour > 200 or armour <= 0) then
+                if (armour > 200 or armour < 0) then
                     armour = 100
                 end
                 return setPedArmor(player, armour), armour
