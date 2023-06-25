@@ -25,7 +25,6 @@ local function applyStatsForSource()
 	applyStatsForPlayer(source)
 end
 addEventHandler("onPlayerJoin", root, applyStatsForSource)
-addEventHandler("onPlayerSpawn", root, applyStatsForSource)
 
 local function applyStatsForEveryone()
 	local playersTable = getElementsByType("player")
