@@ -530,7 +530,7 @@ function voteBetweenModes(...)
 				i = i + 1
 			end
 		else
-			if exports.mapmanager:isGamemode(gamemode) and not exports.mapmanager:getRunningGamemode() == gamemode then
+			if exports.mapmanager:isGamemode(gamemode) and exports.mapmanager:getRunningGamemode() ~= gamemode then
 				local gamemodeName = getResourceInfo(gamemode, "name") or getResourceName(gamemode)
 				table.insert(poll,{gamemodeName, call, getResourceFromName("mapmanager"), "changeGamemode", gamemode})
 				i = i + 1
