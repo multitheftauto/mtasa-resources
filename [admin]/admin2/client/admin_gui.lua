@@ -130,7 +130,7 @@ function guiColorPickerGetColor(element)
     return false
 end
 
-function guiColorPickerSetColor(element,r,g,b)
+function guiColorPickerSetColor(element, r, g, b)
     local picker = guiColorPickers[element]
     if (picker) then
         picker.r = r or 255
@@ -285,7 +285,7 @@ end
 function guiGetAbsolutePosition(element)
     local x, y = guiGetPosition(element, false)
     local parent = getElementParent(element)
-    while (parent ~= getResourceGUIElement()) do
+    while (parent ~= guiRoot) do
         local px, py = guiGetPosition(parent, false)
         x = x + px
         y = y + py

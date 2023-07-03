@@ -71,6 +71,8 @@ function aColor.Open(x, y, r, g, b, relative, parent)
         guiSetProperty(aColor.Form, "AlwaysOnTop", "true")
 
         aRegister("Color", aColor.Form, aColor.Open, aColor.Close)
+    else
+        guiSetPosition(aColor.Form, x, y, false)
     end
 
     guiSetText(aColor.R, tostring(aColor.Color.r))
@@ -132,7 +134,7 @@ function aColor.onClick(button, state, x, y)
 
         local sx, sy = guiGetSize(aColor.Form, false)
         if (x < px or x > px + sx) or (y < py or y > py + sy) then
-            aColor.Close(true)
+            aColor.Close()
             return
         end
     end

@@ -54,6 +54,8 @@ function aTeam.Close(destroy)
         end
     else
         guiSetVisible(aTeam.Form, false)
+        guiSetText(aTeam.Name, "")
+        guiColorPickerSetColor(aTeam.Color)
     end
 end
 
