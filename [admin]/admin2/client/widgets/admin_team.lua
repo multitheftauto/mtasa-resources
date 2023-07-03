@@ -94,7 +94,7 @@ function aTeam.onClick(button)
             elseif (getTeamFromName(team)) then
                 messageBox("A team with this name already exists", MB_ERROR)
             else
-                local r,g,b = guiColorPickerGetColor(aTeam.Color)
+                local r, g, b = guiColorPickerGetColor(aTeam.Color)
                 triggerServerEvent(
                     "aTeam",
                     localPlayer,
