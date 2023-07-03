@@ -95,8 +95,9 @@ function aServerTab.Create(tab)
     aServerTab.Waves = guiCreateEdit(0.35, 0.665, 0.135, 0.04, "0", true, tab)
     aServerTab.WavesSet = guiCreateButton(0.50, 0.665, 0.10, 0.04, "Set", true, tab, "setwaveheight")
 
-    aServerTab.FPSCurrent = guiCreateLabel(0.03, 0.710, 0.25, 0.035, "FPS Limit: 36", true, tab)
-    aServerTab.FPS = guiCreateEdit(0.35, 0.710, 0.135, 0.04, "36", true, tab)
+    local fpsLimit = getFPSLimit()
+    aServerTab.FPSCurrent = guiCreateLabel(0.03, 0.710, 0.25, 0.035, "FPS Limit: "..fpsLimit, true, tab)
+    aServerTab.FPS = guiCreateEdit(0.35, 0.710, 0.135, 0.04, fpsLimit, true, tab)
     aServerTab.FPSSet = guiCreateButton(0.50, 0.710, 0.10, 0.04, "Set", true, tab, "setfpslimit")
 
     guiCreateHeader(0.02, 0.755, 0.30, 0.035, "Automatic scripts:", true, tab)
@@ -261,8 +262,8 @@ function aServerTab.onClientClick(button)
             if tonumber(fps) then
                 triggerServerEvent("aServer", localPlayer, "setfpslimit", fps)
             elseif #fps == 0 then
-                triggerServerEvent("aServer", localPlayer, "setfpslimit", 36) -- 36 is default
-                guiSetText(aServerTab.FPS, 36)
+                triggerServerEvent("aServer", localPlayer, "setfpslimit", 74) -- 74 is default
+                guiSetText(aServerTab.FPS, 74)
             end
         elseif (source == aServerTab.QuickReload) then
             triggerServerEvent(
