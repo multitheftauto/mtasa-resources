@@ -38,7 +38,7 @@ function aColor.Open(x, y, r, g, b, relative, parent)
             end
         end
         if (parent) then
-            while (parent ~= nil) do
+            while (parent ~= guiRoot) do
                 local px, py = guiGetPosition(parent, false)
                 x = px + x
                 y = py + y
@@ -80,6 +80,7 @@ function aColor.Open(x, y, r, g, b, relative, parent)
     aColor.Picking = false
     guiSetVisible(aColor.Form, true)
 
+    addEventHandler("onClientGUIClick", aColor.Ok, aColor.Close)
     addEventHandler("onClientRender", root, aColor.onRender)
     addEventHandler("onClientGUIChanged", aColor.Form, aColor.onChanged)
     addEventHandler("onClientGUIBlur", aColor.Form, aColor.onBlur)
@@ -104,6 +105,7 @@ end
 function aColor.Close(destroy)
     guiSetInputEnabled(false)
     if (aColor.Form) then
+        removeEventHandler("onClientGUIClick", aColor.Ok, aColor.Close)
         removeEventHandler("onClientGUIBlur", aColor.Form, aColor.onBlur)
         removeEventHandler("onClientGUIChanged", aColor.Form, aColor.onChanged)
         removeEventHandler("onClientClick", root, aColor.onClick)
@@ -130,7 +132,7 @@ function aColor.onClick(button, state, x, y)
 
         local sx, sy = guiGetSize(aColor.Form, false)
         if (x < px or x > px + sx) or (y < py or y > py + sy) then
-            aColor.Close()
+            aColor.Close(true)
             return
         end
     end
