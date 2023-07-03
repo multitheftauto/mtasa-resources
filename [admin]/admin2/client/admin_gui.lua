@@ -156,6 +156,7 @@ addEventHandler(
                 local x, y = guiGetAbsolutePosition(mask)
                 local sx, sy = guiGetSize(mask, false)
                 dxDrawLine(x, y + sy / 2, x + sx, y + sy / 2, tocolor(info.r, info.g, info.b, 255), sy, true)
+                dxDrawText("Click to pick a color", x, y, x + sx, y + sy, tocolor(0, 0, 0, 255), 1, "default", "center", "center", true, true, true, false, true)
             end
         end
     end
