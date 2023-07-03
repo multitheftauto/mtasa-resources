@@ -98,14 +98,14 @@
       <log>ADMIN: $admin has given a jetpack to $player</log>
     </group>
     <group action="adminr" r="255" g="0" b="0">
-      <admin>$player's admin rights have been revoked</admin>
-      <player>$admin has revoked your admin rights</player>
-      <log>ADMIN: $admin has revoked admin privilegies from $player</log>
+      <admin>$player has been removed from the $data group</admin>
+      <player>$admin has removed you from the $data group</player>
+      <log>ADMIN: $admin has removed $player from the $data group</log>
     </group>
     <group action="admina" r="0" g="255" b="0">
-      <admin>$player has been given admin rights</admin>
-      <player>$admin has given you admin rights</player>
-      <log>ADMIN: $admin has given admin privilegies to $player</log>
+      <admin>$player has been added to the $data group</admin>
+      <player>$admin has added you to the $data group</player>
+      <log>ADMIN: $admin has added $player to the $data group</log>
     </group>
     <group action="givevehicle" r="0" g="255" b="0">
       <admin>$player has been given a '$data'</admin>

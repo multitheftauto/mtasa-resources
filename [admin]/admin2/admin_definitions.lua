@@ -55,6 +55,7 @@ enum(
     {
         "SYNC_PLAYER",
         "SYNC_PLAYERS",
+        "SYNC_PLAYERACL",
         "SYNC_RESOURCES",
         "SYNC_RESOURCE",
         "SYNC_ADMINS",
