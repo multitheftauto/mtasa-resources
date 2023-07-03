@@ -359,23 +359,39 @@ addEventHandler(
             aReports[id].category = tostring(data.category)
             aReports[id].subject = tostring(data.subject)
             aReports[id].text = tostring(data.message)
-            aReports[id].time = time.monthday .. "/" .. time.month .. " " .. time.hour .. ":" .. time.minute
+            aReports[id].time = string.format("%02d/%02d %02d:%02d", time.monthday, time.month+1, time.hour, time.minute)
             aReports[id].read = false
         elseif (action == "get") then
             triggerClientEvent(source, "aMessage", source, "get", aReports)
+            return
         elseif (action == "read") then
             if (aReports[data]) then
                 aReports[data].read = true
             end
+            triggerClientEvent(source, "aMessage", source, "get", aReports)
         elseif (action == "delete") then
-            if (aReports[data]) then
-                table.remove(aReports, data)
+            local id = data[1]
+            if (not aReports[id]) then
+                outputChatBox("Error - Message not found.", source, 255, 0, 0)
+                triggerClientEvent(source, "aMessage", source, "get", aReports)
+                return
             end
+
+            local message = data[2]
+            for key, value in pairs(aReports[id]) do
+                if (message[key] ~= value) then
+                    outputChatBox("Error - Message mismatch, please try again.", source, 255, 0, 0)
+                    triggerClientEvent(source, "aMessage", source, "get", aReports)
+                    return
+                end
+            end
+
+            table.remove(aReports, id)
             triggerClientEvent(source, "aMessage", source, "get", aReports)
         end
         for id, p in ipairs(getElementsByType("player")) do
             if (hasObjectPermissionTo(p, "general.adminpanel")) then
-                triggerEvent("aSync", p, "messages")
+                triggerEvent(EVENT_SYNC, p, SYNC_MESSAGES)
             end
         end
     end

@@ -137,11 +137,10 @@ end
 function aReleaseStorage()
     local node = xmlLoadFile("conf\\reports.xml")
     if (node) then
-        local messages = 0
-        while (xmlFindChild(node, "message", messages) ~= false) do
-            local subnode = xmlFindChild(node, "message", messages)
+        local subnode = xmlFindChild(node, "message", 0)
+        while (subnode) do
             xmlDestroyNode(subnode)
-            messages = messages + 1
+            subnode = xmlFindChild(node, "message", 0)
         end
     else
         node = xmlCreateFile("conf\\reports.xml", "messages")
