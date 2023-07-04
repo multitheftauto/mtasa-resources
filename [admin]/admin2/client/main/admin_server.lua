@@ -259,11 +259,21 @@ function aServerTab.onClientClick(button)
             end
         elseif (source == aServerTab.FPSSet) then
             local fps = guiGetText(aServerTab.FPS)
-            if tonumber(fps) then
+            fps = fps and tonumber(fps) or 0
+            if fps >= 25 and fps <= 32767 then
+                -- Warn user of fps-related physics bugs when fps > 74, per notes at https://wiki.multitheftauto.com/wiki/SetFPSLimit
+                if fps > 74 then
+                    if not messageBox("74 FPS is the breaking point that opens the door to various severe GTA bugs related to physics, and setting a higher limit than this is not recommended. Are you sure you want to proceed?", MB_WARNING, MB_YESNO) then
+                        guiSetText(aServerTab.FPS, getFPSLimit())
+                        return
+                    end
+                end
                 triggerServerEvent("aServer", localPlayer, "setfpslimit", fps)
-            elseif #fps == 0 then
+            elseif fps == 0 then
                 triggerServerEvent("aServer", localPlayer, "setfpslimit", 74) -- 74 is default
                 guiSetText(aServerTab.FPS, 74)
+            else
+                messageBox("Invalid FPS limit: range is 25 - 32767, or 0 for default.", MB_ERROR, MB_OK)
             end
         elseif (source == aServerTab.QuickReload) then
             triggerServerEvent(
