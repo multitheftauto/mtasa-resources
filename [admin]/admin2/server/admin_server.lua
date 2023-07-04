@@ -420,6 +420,15 @@ addEventHandler(
                     outputChatBox("Error - Invalid serial", source, 255, 0, 0)
                     action = nil
                 end
+            elseif (action == "ban") then
+                if isElement(data.player) then
+                    banPlayer(data.player, data.ip ~= "" and true, false, data.serial ~= "" and true, source, data.reason, data.duration)
+                else
+                    local ban = addBan(data.ip ~= "" and data.ip or nil, nil, data.serial ~= "" and data.serial or nil, source, data.reason, data.duration)
+                    if data.playerName then
+                        setBanNick(ban, data.playerName)
+                    end
+                end
             elseif (action == "unbanip") then
                 mdata = data
                 if (not UnbanIP(data, source)) then

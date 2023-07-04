@@ -168,10 +168,7 @@ function aPlayersTab.onClientClick(button)
                         triggerServerEvent("aPlayer", localPlayer, player, "kick", reason)
                     end
                 elseif (source == aPlayersTab.Ban) then
-                    local reason = inputBox("Ban player " .. name, "Enter the ban reason")
-                    if (reason) then
-                        triggerServerEvent("aPlayer", localPlayer, player, "ban", reason)
-                    end
+                    aBan.Show(player)
                 elseif (source == aPlayersTab.Slap) then
                     triggerServerEvent("aPlayer", localPlayer, player, "slap",
                         guiComboBoxGetItemText(aPlayersTab.SlapOptions, guiComboBoxGetSelected(aPlayersTab.SlapOptions))
