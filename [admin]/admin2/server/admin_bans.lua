@@ -11,6 +11,17 @@ local aBans = {
     List = {}
 }
 
+-- TODO: replace this hacky fix with a proper refactor
+local function aSyncData(unk1, unkStr, data, command)
+    local players = getElementsByType("player")
+    iprint(players)
+    for i=1, #players do
+        if hasObjectPermissionTo(players[i], "general.tab_bans") then
+            triggerClientEvent(players[i], EVENT_SYNC, resourceRoot, SYNC_BAN, data)
+        end
+    end
+end
+
 addEventHandler(
     "onResourceStart",
     resourceRoot,
