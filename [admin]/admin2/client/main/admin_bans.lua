@@ -26,7 +26,8 @@ function aBansTab.Create(tab)
     guiGridListAddColumn(aBansTab.BansList, "Banned by", 0.22)
     guiGridListAddColumn(aBansTab.BansList, "Temporary", 0.22)
     aBansTab.Details = guiCreateButton(0.82, 0.07, 0.17, 0.04, "Details", true, aBansTab.Tab)
-    aBansTab.Unban = guiCreateButton(0.82, 0.12, 0.17, 0.04, "Unban", true, aBansTab.Tab, "unban")
+    aBansTab.Ban = guiCreateButton(0.82, 0.12, 0.17, 0.04, "Add ban", true, aBansTab.Tab, "ban")
+    aBansTab.Unban = guiCreateButton(0.82, 0.17, 0.17, 0.04, "Unban", true, aBansTab.Tab, "unban")
     aBansTab.BansRefresh = guiCreateButton(0.82, 0.94, 0.17, 0.04, "Refresh", true, aBansTab.Tab, "listbans")
 
     addEventHandler("onClientGUIChanged", aBansTab.BansListSearch, aBansTab.onBansListSearch)
@@ -46,6 +47,8 @@ function aBansTab.onClientClick(button)
                 local ip = guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
                 aBanDetails(ip)
             end
+        elseif source == aBansTab.Ban then
+            aBan.Show()
         elseif (source == aBansTab.Unban) then
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
                 messageBox("No ban row selected!", MB_ERROR, MB_OK)
