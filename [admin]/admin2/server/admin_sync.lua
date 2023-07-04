@@ -42,6 +42,21 @@ addEventHandler(
                 tableOut[player].country = aPlayers[player]["country"]
                 tableOut[player].countryname = aPlayers[player]["countryname"]
             end
+        elseif (type == SYNC_PLAYERACL) then
+            local player = data
+            if isElement(player) then
+                theSource = player
+                local ignoredGroups = {
+                    ['Everyone'] = true,
+                    ['autoGroup_irc'] = true,
+                }
+                for _, v in ipairs(aclGroupList()) do
+                    local groupName = aclGroupGetName(v)
+                    if (not ignoredGroups[groupName]) then
+                        tableOut[groupName] = isObjectInACLGroup('user.'..getAccountName(getPlayerAccount(player)), v)
+                    end
+                end
+            end
         elseif (type == SYNC_RESOURCES) then
             tableOut = {}
             local resourceTable = getResources()

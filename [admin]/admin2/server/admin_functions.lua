@@ -192,33 +192,21 @@ aFunctions = {
                 end
             end
         end,
-        ["setgroup"] = function(player, data)
-            -- NEEDS CHECKING
+        ["setgroup"] = function(player, data, groupName)
             local account = getPlayerAccount(player)
             if (not isGuestAccount(account)) then
-                local group = aclGetGroup(data)
+                local group = aclGetGroup(groupName)
                 if (group) then
                     if (data == true) then
                         aclGroupAddObject(group, "user." .. getAccountName(account))
-                        return true, "admina"
+                        triggerEvent(EVENT_SYNC, source, SYNC_PLAYERACL, player)
+                        return "admina", groupName
                     elseif (data == false) then
                         aclGroupRemoveObject(group, "user." .. getAccountName(account))
                         aPlayers[player]["chat"] = false
-                        return true, "adminr"
+                        triggerEvent(EVENT_SYNC, source, SYNC_PLAYERACL, player)
+                        return "adminr", groupName
                     end
-                    for id, p in ipairs(getElementsByType("player")) do
-                        if (hasObjectPermissionTo(p, "general.adminpanel")) then
-                            triggerEvent("aSync", p, "admins")
-                        end
-                    end
-                else
-                    outputChatBox(
-                        "Error - Admin group not initialized. Please reinstall admin resource.",
-                        source,
-                        255,
-                        0,
-                        0
-                    )
                 end
             else
                 outputChatBox("Error - Player is not logged in.", source, 255, 100, 100)
