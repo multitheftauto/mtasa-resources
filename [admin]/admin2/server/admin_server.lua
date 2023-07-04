@@ -421,6 +421,7 @@ addEventHandler(
                     action = nil
                 end
             elseif (action == "ban") then
+                mdata = data
                 if isElement(data.player) then
                     banPlayer(data.player, data.ip ~= "" and true, false, data.serial ~= "" and true, source, data.reason, data.duration)
                 else
