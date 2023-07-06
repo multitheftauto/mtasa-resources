@@ -82,6 +82,7 @@ function aBan.Reset()
     guiSetText(aBan.Form, "Add ban")
     guiSetText(aBan.ReasonEditBox, "Enter ban reason...")
     aBan.ReasonEditBoxRecievedInput = false
+    guiComboBoxSetSelected(aBan.DurationComboBox, -1)
     guiCheckBoxSetSelected(aBan.IPCheckBox, true)
     guiSetText(aBan.IPEditBox, "Enter IP address")
     guiSetEnabled(aBan.IPEditBox, true)
