@@ -130,6 +130,7 @@ function aTeam.onClick(button)
 end
 
 function aTeam.ShowNew(bool)
+    guiSetProperty(aTeam.Form, "AlwaysOnTop", iif(bool, "True", "False"))
     guiSetVisible(aTeam.New, not bool)
     guiSetVisible(aTeam.Delete, not bool)
     guiSetVisible(aTeam.NameLabel, bool)
