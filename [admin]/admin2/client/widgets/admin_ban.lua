@@ -207,8 +207,12 @@ function aBan.verifyForm()
     iprint(banDurationSelection, aBan.defaultDurations[banDurationSelection][2])
     if messageBox(confirmationMessage, MB_QUESTION, MB_YESNO) then
         -- Build ban request "packet" and send to server
+        local actualPlayer -- Actual player may be offline
+        if aBan.playerName then
+            actualPlayer = getPlayerFromName(aBan.playerName)
+        end
         local data = {
-            player = getPlayerFromName(aBan.playerName),
+            player = actualPlayer,
             playerName = aBan.playerName,
             ip = banIP,
             serial = banSerial,
