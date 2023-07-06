@@ -60,6 +60,7 @@ enum(
         "SYNC_RESOURCE",
         "SYNC_ADMINS",
         "SYNC_SERVER",
+        "SYNC_BAN",
         "SYNC_BANS",
         "SYNC_MESSAGES"
     },
