@@ -174,6 +174,7 @@ function aBan.verifyForm()
         return
     end
     banDurationSelection = banDurationSelection + 1 -- ComboBox item indices starts at 0 instead of one
+    
     -- Verify ban IP
     local banIP = ""
     if guiCheckBoxGetSelected(aBan.IPCheckBox) then
@@ -181,6 +182,7 @@ function aBan.verifyForm()
         if banIP == "" or (not aBan.IPEditBoxRecievedInput) then
             if not aBan.playerName then
                 messageBox("No IP address provided.", MB_ERROR, MB_OK)
+                return
             end
         end
     end
@@ -192,6 +194,7 @@ function aBan.verifyForm()
         if banSerial== "" or (not aBan.IPEditBoxRecievedInput) or #banSerial ~= 32 then
             if not aBan.playerName then
                 messageBox("Invalid MTA serial provided.", MB_ERROR, MB_OK)
+                return
             end
         end
     end
