@@ -250,7 +250,6 @@ function aBan.verifyForm()
         end
     end
 
-    outputDebugString(banDuration)
     -- Show confirmation dialog
     local confirmationMessage
     if aBan.playerName then
