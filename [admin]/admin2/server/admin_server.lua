@@ -477,7 +477,7 @@ addEventHandler(
     "aAdminChat",
     root,
     function(chat)
-        if #chat >= ADMIN_CHAT_MAXLENGTH then
+        if #chat > ADMIN_CHAT_MAXLENGTH then
             return
         end
         for id, player in ipairs(getElementsByType("player")) do
