@@ -55,25 +55,25 @@ end
 
 function aBan.Create()
     local sx, sy = guiGetScreenSize()
-    aBan.Form = guiCreateWindow(sx / 2 - 200, sy / 2 - 170, 400, 340, "Add ban", false)
-    aBan.ReasonLabel = guiCreateLabel(50, 40, 300, 20, "Ban reason (required):", false, aBan.Form)
-    aBan.ReasonEditBox = guiCreateEdit(50, 70, 300, 30, "Enter ban reason...", false, aBan.Form)
+    aBan.Form = guiCreateWindow(sx / 2 - 175, sy / 2 - 170, 350, 340, "Add ban", false)
+    aBan.ReasonLabel = guiCreateLabel(25, 40, 300, 20, "Ban reason (required):", false, aBan.Form)
+    aBan.ReasonEditBox = guiCreateEdit(25, 70, 300, 30, "Enter ban reason...", false, aBan.Form)
     aBan.ReasonEditBoxRecievedInput = false
-    aBan.DurationLabel = guiCreateLabel(50, 110, 300, 20, "Ban duration (required):", false, aBan.Form)
-    aBan.DurationComboBox = guiCreateComboBox(50, 140, 300, 100, "Select ban duration...", false, aBan.Form)
+    aBan.DurationLabel = guiCreateLabel(25, 110, 300, 20, "Ban duration (required):", false, aBan.Form)
+    aBan.DurationComboBox = guiCreateComboBox(25, 140, 300, 100, "Select ban duration...", false, aBan.Form)
     for i=1, #aBan.defaultDurations do
         guiComboBoxAddItem(aBan.DurationComboBox, aBan.defaultDurations[i][1])
     end
-    aBan.IdentifiersLabel = guiCreateLabel(50, 180, 300, 20, "Select identifiers to use (select at least 1):", false, aBan.Form)
-    aBan.IPCheckBox = guiCreateCheckBox(70, 210, 125, 30, "Use IP address", true, false, aBan.Form)
-    aBan.IPEditBox = guiCreateEdit(200, 210, 150, 30, "Enter IP address...", false, aBan.Form)
+    aBan.IdentifiersLabel = guiCreateLabel(25, 180, 300, 20, "Select identifiers to use (select at least 1):", false, aBan.Form)
+    aBan.IPCheckBox = guiCreateCheckBox(45, 210, 125, 30, "Use IP address", true, false, aBan.Form)
+    aBan.IPEditBox = guiCreateEdit(175, 210, 150, 30, "Enter IP address...", false, aBan.Form)
     aBan.IPEditBoxRecievedInput = false
-    aBan.SerialCheckBox = guiCreateCheckBox(70, 250, 125, 30, "Use MTA serial", true, false, aBan.Form)
-    aBan.SerialEditBox = guiCreateEdit(200, 250, 150, 30, "Enter MTA serial...", false, aBan.Form)
+    aBan.SerialCheckBox = guiCreateCheckBox(45, 250, 125, 30, "Use MTA serial", true, false, aBan.Form)
+    aBan.SerialEditBox = guiCreateEdit(175, 250, 150, 30, "Enter MTA serial...", false, aBan.Form)
     guiEditSetMaxLength(aBan.SerialEditBox, 32)
     aBan.SerialEditBoxRecievedInput = false
-    aBan.SubmitButton = guiCreateButton(130, 290, 60, 40, "Submit", false, aBan.Form)
-    aBan.CancelButton = guiCreateButton(210, 290, 60, 40, "Cancel", false, aBan.Form)
+    aBan.SubmitButton = guiCreateButton(105, 290, 60, 40, "Submit", false, aBan.Form)
+    aBan.CancelButton = guiCreateButton(185, 290, 60, 40, "Cancel", false, aBan.Form)
     aRegister("Ban", aBan.Form, aBan.Show, aBan.Close)
     guiSetVisible(aBan.Form, false)
 end
