@@ -23,6 +23,7 @@ function aChatTab.Create(tab)
     aChatTab.AdminChatSound = guiCreateCheckBox(0.81, 0.83, 0.18, 0.04, "Play Sound", aGetSetting("adminChatSound"), true, tab)
     aChatTab.AdminChatOutput = guiCreateCheckBox(0.81, 0.87, 0.18, 0.04, "Output", aGetSetting("adminChatOutput"), true, tab)
     aChatTab.AdminText = guiCreateEdit(0.01, 0.92, 0.78, 0.06, "", true, tab)
+    guiEditSetMaxLength(aChatTab.AdminText, ADMIN_CHAT_MAXLENGTH)
     aChatTab.AdminSay = guiCreateButton(0.80, 0.92, 0.19, 0.06, "Say", true, tab)
 
     addEventHandler("aClientAdminChat", root, aChatTab.onClientAdminChat)

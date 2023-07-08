@@ -19,6 +19,9 @@ function enum ( args, prefix )
 	end
 end
 
+-- MISC DEFINITIONS
+ADMIN_CHAT_MAXLENGTH = 225
+
 -- EVENT CALLS
 
 enum
