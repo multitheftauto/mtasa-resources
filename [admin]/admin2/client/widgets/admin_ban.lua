@@ -192,7 +192,8 @@ function aBan.verifyForm()
     local banSerial = ""
     if guiCheckBoxGetSelected(aBan.SerialCheckBox) then
         banSerial = guiGetText(aBan.SerialEditBox)
-        if banSerial== "" or (not aBan.IPEditBoxRecievedInput) or #banSerial ~= 32 then
+        if banSerial == "" or (not aBan.SerialEditBoxRecievedInput) or #banSerial ~= 32 then
+            outputDebugString("len = "..#banSerial)
             if not aBan.playerName then
                 messageBox("Invalid MTA serial provided.", MB_ERROR, MB_OK)
                 return
