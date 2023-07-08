@@ -29,9 +29,9 @@ function aBan.Show(player)
     if player then
         aBan.playerName = getPlayerName(player)
         guiSetText(aBan.Form, "Ban player "..aBan.playerName)
-        guiSetText(aBan.SerialEditBox, aPlayers[player].serial)
+        guiSetText(aBan.SerialEditBox, getSensitiveText(aPlayers[player].serial))
         guiSetEnabled(aBan.SerialEditBox, false)
-        guiSetText(aBan.IPEditBox, aPlayers[player].ip)
+        guiSetText(aBan.IPEditBox, getSensitiveText(aPlayers[player].ip))
         guiSetEnabled(aBan.IPEditBox, false)
     end
 
