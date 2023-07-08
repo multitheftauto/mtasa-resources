@@ -14,7 +14,8 @@ aBan = {
         {"1 hour", 60 * 60},
         {"1 day", 60 * 60 * 24},
         {"1 week", 60 * 60 * 24 * 7},
-        {"Permanent", 0}
+        {"Permanent", 0},   -- HARDCODED AS SECOND LAST IN THIS TABLE, DO NOT MOVE
+        {"Custom", 0}       -- HARDCODED AS LAST IN THIS TABLE, DO NOT MOVE
     },
     playerName = nil
 }
@@ -60,10 +61,13 @@ function aBan.Create()
     aBan.ReasonEditBox = guiCreateEdit(25, 70, 300, 30, "Enter ban reason...", false, aBan.Form)
     aBan.ReasonEditBoxRecievedInput = false
     aBan.DurationLabel = guiCreateLabel(25, 110, 300, 20, "Ban duration (required):", false, aBan.Form)
-    aBan.DurationComboBox = guiCreateComboBox(25, 140, 300, 100, "Select ban duration...", false, aBan.Form)
+    aBan.DurationComboBox = guiCreateComboBox(25, 145, 150, 100, "Select ban duration...", false, aBan.Form)
     for i=1, #aBan.defaultDurations do
         guiComboBoxAddItem(aBan.DurationComboBox, aBan.defaultDurations[i][1])
     end
+    aBan.DurationEditBox = guiCreateEdit(175, 140, 150, 30, "Duration (seconds)...", false, aBan.Form)
+    guiSetEnabled(aBan.DurationEditBox, false)
+    aBan.DurationEditBoxRecievedInput = false
     aBan.IdentifiersLabel = guiCreateLabel(25, 180, 300, 20, "Select identifiers to use (select at least 1):", false, aBan.Form)
     aBan.IPCheckBox = guiCreateCheckBox(45, 210, 125, 30, "Use IP address", true, false, aBan.Form)
     aBan.IPEditBox = guiCreateEdit(175, 210, 150, 30, "Enter IP address...", false, aBan.Form)
@@ -83,6 +87,9 @@ function aBan.Reset()
     guiSetText(aBan.ReasonEditBox, "Enter ban reason...")
     aBan.ReasonEditBoxRecievedInput = false
     guiComboBoxSetSelected(aBan.DurationComboBox, -1)
+    guiSetText(aBan.DurationEditBox, "Duration (seconds)...")
+    guiSetEnabled(aBan.DurationEditBox, false)
+    aBan.DurationEditBoxRecievedInput = false
     guiCheckBoxSetSelected(aBan.IPCheckBox, true)
     guiSetText(aBan.IPEditBox, "Enter IP address")
     guiSetEnabled(aBan.IPEditBox, true)
@@ -104,6 +111,27 @@ function aBan.onClick(button, state)
         return
     end
 
+    -- Autofill and enable/disable duration editbox based on choice
+    if source == aBan.DurationComboBox then
+        local selected = guiComboBoxGetSelected(aBan.DurationComboBox)
+        if selected == -1 then
+            return
+        elseif selected == #aBan.defaultDurations - 2 then
+            -- Second-last option is permanent duration - clear and disable edit box
+            guiSetText(aBan.DurationEditBox, "")
+            guiSetEnabled(aBan.DurationEditBox, false)
+        elseif selected == #aBan.defaultDurations - 1 then
+            -- Last option (should) be custom duration - enable duration edit box
+            guiSetText(aBan.DurationEditBox, "Duration (seconds)...")
+            guiSetEnabled(aBan.DurationEditBox, true)
+            aBan.DurationEditBoxRecievedInput = false
+        else
+            guiSetText(aBan.DurationEditBox, aBan.defaultDurations[selected + 1][2])
+            guiSetEnabled(aBan.DurationEditBox, false)
+        end
+        return
+    end
+
     -- Toggle IP/serial fields based on corresponding checkboxes
     if source == aBan.IPCheckBox and (not aBan.playerName) then
         guiSetEnabled(aBan.IPEditBox, guiCheckBoxGetSelected(source))
@@ -121,11 +149,16 @@ function aBan.onClick(button, state)
 end
 
 function aBan.onFocus()
-    -- Clear reason/IP/serial edit boxes on first click
+    -- Clear reason/duration/IP/serial edit boxes on first click
     if source == aBan.ReasonEditBox then
         if not aBan.ReasonEditBoxRecievedInput then
             guiSetText(aBan.ReasonEditBox, "")
             aBan.ReasonEditBoxRecievedInput = true
+        end
+    elseif source == aBan.DurationEditBox then
+        if not aBan.DurationEditBoxRecievedInput then
+            guiSetText(aBan.DurationEditBox, "")
+            aBan.DurationEditBoxRecievedInput = true
         end
     elseif source == aBan.IPEditBox then
         if not aBan.IPEditBoxRecievedInput then
@@ -141,11 +174,16 @@ function aBan.onFocus()
 end
 
 function aBan.onBlur()
-    -- Reset default text of reason/IP/serial edit boxes if they lose focus with no input
+    -- Reset default text of reason/duration/IP/serial edit boxes if they lose focus with no input
     if source == aBan.ReasonEditBox then
         if guiGetText(source) == "" then
             guiSetText(aBan.ReasonEditBox, "Enter ban reason...")
             aBan.ReasonEditBoxRecievedInput = false
+        end
+    elseif source == aBan.DurationEditBox then
+        if guiGetText(source) == "" and (guiComboBoxGetSelected(aBan.DurationComboBox) == #aBan.defaultDurations - 1) then
+            guiSetText(aBan.DurationEditBox, "Duration (seconds)...")
+            aBan.DurationEditBoxRecievedInput = false
         end
     elseif source == aBan.IPEditBox then
         if guiGetText(source) == "" then
@@ -163,18 +201,29 @@ end
 function aBan.verifyForm()
     -- Verify ban reason
     local banReason = guiGetText(aBan.ReasonEditBox)
-    if guiGetText == "" or (not aBan.ReasonEditBoxRecievedInput) then
+    if banReason == "" or (not aBan.ReasonEditBoxRecievedInput) then
         messageBox("No ban reason provided.", MB_ERROR, MB_OK)
         return
     end
 
     -- Verify ban duration
-    local banDurationSelection = guiComboBoxGetSelected(aBan.DurationComboBox)
-    if banDurationSelection == -1 then
+    local banDuration
+    local durationSelection = guiComboBoxGetSelected(aBan.DurationComboBox)
+    if durationSelection == -1 then
         messageBox("No ban duration provided.", MB_ERROR, MB_OK)
         return
     end
-    banDurationSelection = banDurationSelection + 1 -- ComboBox item indices starts at 0 instead of one
+    durationSelection = durationSelection + 1 -- ComboBox item indices starts at 0 instead of one
+    if durationSelection == #aBan.defaultDurations then
+        banDuration = guiGetText(aBan.DurationEditBox)
+        banDuration = tonumber(banDuration)
+        if not banDuration or banDuration <= 0 then
+            messageBox("Invalid ban duration provided.", MB_ERROR, MB_OK)
+            return
+        end
+    else
+        banDuration = aBan.defaultDurations[durationSelection][2]
+    end
     
     -- Verify ban IP
     local banIP = ""
@@ -201,6 +250,7 @@ function aBan.verifyForm()
         end
     end
 
+    outputDebugString(banDuration)
     -- Show confirmation dialog
     local confirmationMessage
     if aBan.playerName then
@@ -208,8 +258,7 @@ function aBan.verifyForm()
     else
         confirmationMessage = "Are you sure you want to add this ban?\nIP = "..(banIP ~= "" and banIP or "None").."\nSerial = "..(banSerial ~= "" and banSerial or "None")
     end
-    iprint(banDurationSelection)
-    iprint(banDurationSelection, aBan.defaultDurations[banDurationSelection][2])
+
     if messageBox(confirmationMessage, MB_QUESTION, MB_YESNO) then
         -- Build ban request "packet" and send to server
         local actualPlayer -- Actual player may be offline
@@ -222,7 +271,7 @@ function aBan.verifyForm()
             ip = banIP,
             serial = banSerial,
             reason = banReason,
-            duration = aBan.defaultDurations[banDurationSelection][2]
+            duration = banDuration
         }
         triggerServerEvent('aBans', localPlayer, "ban", data)
     end
