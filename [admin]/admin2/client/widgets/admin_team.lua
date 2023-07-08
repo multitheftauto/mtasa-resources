@@ -113,8 +113,6 @@ function aTeam.onClick(button)
                 guiColorPickerSetColor(aTeam.Color)
             end
             setTimer(aTeam.Refresh, 2000, 1)
-        elseif (source == aTeam.Name) then
-            guiSetInputEnabled(true)
         elseif (source == aTeam.Cancel) then
             aTeam.ShowNew(false)
             guiSetText(aTeam.Name, "")
