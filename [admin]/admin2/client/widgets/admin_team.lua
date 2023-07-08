@@ -8,7 +8,8 @@
 *
 **************************************]]
 aTeam = {
-    Form = nil
+    Form = nil,
+    NewVisible = false
 }
 
 function aTeam.Show()
@@ -34,6 +35,7 @@ function aTeam.Show()
 
         addEventHandler("onClientGUIClick", aTeam.Form, aTeam.onClick)
         addEventHandler("onClientGUIDoubleClick", aTeam.Form, aTeam.onDoubleClick)
+        addEventHandler("onClientGUIFocus", guiRoot, aTeam.onGUIFocus)
         --Register With Admin Form
         aRegister("PlayerTeam", aTeam.Form, aTeam.Show, aTeam.Close)
     end
@@ -49,6 +51,7 @@ function aTeam.Close(destroy)
         if (aTeam.Form) then
             removeEventHandler("onClientGUIClick", aTeam.Form, aTeam.onClick)
             removeEventHandler("onClientGUIDoubleClick", aTeam.Form, aTeam.onDoubleClick)
+            removeEventHandler("onClientGUIFocus", guiRoot, aTeam.onGUIFocus)
             destroyElement(aTeam.Form)
             aTeam.Form = nil
         end
@@ -130,7 +133,7 @@ function aTeam.onClick(button)
 end
 
 function aTeam.ShowNew(bool)
-    guiSetProperty(aTeam.Form, "AlwaysOnTop", iif(bool, "True", "False"))
+    aTeam.NewVisible = bool
     guiSetVisible(aTeam.New, not bool)
     guiSetVisible(aTeam.Delete, not bool)
     guiSetVisible(aTeam.NameLabel, bool)
@@ -138,6 +141,16 @@ function aTeam.ShowNew(bool)
     guiSetVisible(aTeam.Color, bool)
     guiSetVisible(aTeam.Create, bool)
     guiSetVisible(aTeam.Cancel, bool)
+end
+
+function aTeam.onGUIFocus()
+    if (aTeam.NewVisible) then
+        if (source == aTeam.Form or getElementParent(source) == aTeam.Form or source == aColor.Form or getElementParent(source) == aColor.Form) then
+            guiSetVisible(aTeam.Color, true)
+            return
+        end
+    end
+    guiSetVisible(aTeam.Color, false)
 end
 
 function aTeam.Refresh()
