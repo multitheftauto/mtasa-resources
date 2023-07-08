@@ -27,6 +27,7 @@ function aTeam.Show()
         aTeam.Delete = guiCreateButton(0.55, 0.28, 0.42, 0.09, "Delete Team", true, aTeam.Form, "destroyteam")
         aTeam.NameLabel = guiCreateLabel(0.55, 0.19, 0.42, 0.07, "New Team Name:", true, aTeam.Form)
         aTeam.Name = guiCreateEdit(0.55, 0.26, 0.42, 0.10, "", true, aTeam.Form)
+        guiHandleInput(aTeam.Name)
         aTeam.Color = guiCreateColorPicker(0.553, 0.37, 0.41, 0.11, 255, 0, 0, true, aTeam.Form)
         aTeam.Create = guiCreateButton(0.55, 0.50, 0.20, 0.09, "Create", true, aTeam.Form, "createteam")
         aTeam.Cancel = guiCreateButton(0.77, 0.50, 0.20, 0.09, "Cancel", true, aTeam.Form)
@@ -124,7 +125,7 @@ function aTeam.onClick(button)
             else
                 local team = guiGridListGetItemData(aTeam.List, guiGridListGetSelectedItem(aTeam.List), 1)
                 triggerServerEvent("aPlayer", localPlayer, getSelectedPlayer(), "setteam", team)
-                guiSetVisible(aTeam.Form, false)
+                aTeam.Close(false)
             end
         elseif (source == aTeam.Hide) then
             aTeam.Close(false)
