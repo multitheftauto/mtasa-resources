@@ -124,21 +124,6 @@ function getWeatherNameFromID ( weather )
 	return iif ( aWeathers[weather], aWeathers[weather], "Unknown" )
 end
 
-function aExecute ( action, echo )
-	local result = loadstring("return " .. action)()
-	if ( echo == true ) then
-		local restring
-		if ( type ( result ) == "table" ) then
-			restring = "Table ("..unpack ( result )..")"
-		elseif ( type ( result ) == "userdata" ) then
-			restring = "Element ("..getElementType ( result )..")"
-		else
-			restring = tostring ( result )
-		end
-		outputChatBox( "Command executed! Result: " ..restring, 0, 0, 255 )
-	end
-end
-
 function iif ( cond, arg1, arg2 )
 	if ( cond ) then
 		return arg1

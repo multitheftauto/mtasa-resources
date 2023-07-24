@@ -212,12 +212,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab2.LogLine3		= guiCreateLabel ( 0.41, 0.87, 0.50, 0.03, "", true, aTab2.Tab )
 		aTab2.LogLine4		= guiCreateLabel ( 0.41, 0.90, 0.50, 0.03, "", true, aTab2.Tab )
 		aTab2.LogLine5		= guiCreateLabel ( 0.41, 0.93, 0.50, 0.03, "", true, aTab2.Tab )
-						  guiCreateLabel ( 0.41, 0.65, 0.50, 0.04, "Execute Command:", true, aTab2.Tab )
-		aTab2.Command		= guiCreateEdit ( 0.41, 0.70, 0.40, 0.055, "", true, aTab2.Tab )
-		aTab2.ExecuteClient	= guiCreateButton ( 0.82, 0.70, 0.16, 0.035, "Client", true, aTab2.Tab, "execute" )
-		aTab2.ExecuteServer	= guiCreateButton ( 0.82, 0.736, 0.16, 0.035, "Server", true, aTab2.Tab, "execute" )
-		aTab2.ExecuteAdvanced	= guiCreateLabel ( 0.45, 0.71, 0.50, 0.04, "For advanced users only.", true, aTab2.Tab )
-						  guiLabelSetColor ( aTab2.ExecuteAdvanced, 255, 0, 0 )
+
 		aLogLines = 1
 
 		createMapTab()
@@ -1075,16 +1070,8 @@ function aClientClick ( button )
 			elseif ( source == aTab2.ResourceRefresh or source == aTab2.ResourceInclMaps ) then
 				guiGridListClear ( aTab2.ResourceList )
 				triggerServerEvent ( "aSync", localPlayer, "resources" )
-			elseif ( source == aTab2.ExecuteClient ) then
-				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then aExecute ( guiGetText ( aTab2.Command ), true ) end
-			elseif ( source == aTab2.ExecuteServer ) then
-				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then triggerServerEvent ( "aExecute", localPlayer, guiGetText ( aTab2.Command ), true ) end
-			elseif ( source == aTab2.Command ) then
-
-				guiSetVisible ( aTab2.ExecuteAdvanced, false )
-			elseif ( source == aTab2.ExecuteAdvanced ) then
-				guiSetVisible ( aTab2.ExecuteAdvanced, false )
 			end
+			
 		-- TAB 3, WORLD
 		elseif ( getElementParent ( source ) == aTab3.Tab ) then
 			if ( source == aTab3.SetGameType ) then aInputBox ( "Game Type", "Enter game type:", "", "setGameType" )
