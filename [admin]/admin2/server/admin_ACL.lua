@@ -192,7 +192,29 @@ local aACLFunctions = {
         end
         triggerClientEvent(client, EVENT_ACL, client, ACL_GROUPS, data)
     end,
-    [ACL_USERS] = function()
+    [ACL_USERS] = function(action,group,object)
+        if (action == ACL_GET) then
+            local data = {}
+            for k,object in ipairs(aclGroupListObjects(aclGetGroup(group))) do
+                if (object:sub(1,5) == 'user.') then
+                    table.insert(data, object)
+                end
+            end
+
+            triggerClientEvent(client, EVENT_ACL, client, ACL_USERS, group, data)
+        elseif (action == ACL_REMOVE) then
+            if (aclGroupRemoveObject(aclGetGroup(group), object)) then
+                messageBox(client, "Successfully removed user '"..object.."'", MB_INFO)
+            else
+                messageBox(client, "Failed to removed user '"..object.."'", MB_INFO)
+            end
+        elseif (action == ACL_ADD) then
+            if (aclGroupAddObject(aclGetGroup(group), 'user.'..object)) then
+                messageBox(client, "Successfully added user '"..object.."'", MB_INFO)
+            else
+                messageBox(client, "Failed to added user '"..object.."'", MB_INFO)
+            end
+        end
     end,
     [ACL_RESOURCES] = function()
     end,
