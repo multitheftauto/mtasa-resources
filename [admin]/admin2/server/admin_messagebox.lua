@@ -13,5 +13,5 @@ MB_QUESTION = 3
 MB_INFO = 4
 
 function messageBox(player, message, icon)
-    triggerClientEvent(client, EVENT_MESSAGE_BOX, client, text, type)
+    triggerClientEvent(player, EVENT_MESSAGE_BOX, player, message, icon)
 end
