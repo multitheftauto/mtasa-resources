@@ -45,6 +45,7 @@ function aInputBox.Show(title, message, default)
         guiSetVisible(aMessageBox.Form, false)
     end
     guiBringToFront(aInputBox.Form)
+    guiFocus(aInputBox.Form)
 
     aInputBox.Result = nil
     aInputBox.Thread = sourceCoroutine

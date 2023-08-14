@@ -119,6 +119,26 @@ function guiCreateColorPicker(x, y, w, h, r, g, b, relative, parent)
             guiColorPickers[source] = nil
         end
     )
+    return mask
+end
+
+function guiColorPickerGetColor(element)
+    local picker = guiColorPickers[element]
+    if (picker) then
+        return picker.r, picker.g, picker.b
+    end
+    return false
+end
+
+function guiColorPickerSetColor(element, r, g, b)
+    local picker = guiColorPickers[element]
+    if (picker) then
+        picker.r = r or 255
+        picker.g = g or 0
+        picker.b = b or 0
+        return true
+    end
+    return false
 end
 
 addEventHandler(
@@ -136,6 +156,7 @@ addEventHandler(
                 local x, y = guiGetAbsolutePosition(mask)
                 local sx, sy = guiGetSize(mask, false)
                 dxDrawLine(x, y + sy / 2, x + sx, y + sy / 2, tocolor(info.r, info.g, info.b, 255), sy, true)
+                dxDrawText("Click to pick a color", x, y, x + sx, y + sy, tocolor(0, 0, 0, 255), 1, "default", "center", "center", true, true, true, false, true)
             end
         end
     end
@@ -265,7 +286,7 @@ end
 function guiGetAbsolutePosition(element)
     local x, y = guiGetPosition(element, false)
     local parent = getElementParent(element)
-    while (parent ~= getResourceGUIElement()) do
+    while (parent ~= guiRoot) do
         local px, py = guiGetPosition(parent, false)
         x = x + px
         y = y + py
