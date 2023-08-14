@@ -90,8 +90,8 @@ aAclTab.SyncFunctions = {
         aAclTab.Cache.Users[group] = {}
 
         for id,object in ipairs(data) do
-            local object = object:gsub('user.','')
-            table.insert(aAclTab.Cache.Users[group], object)
+            local obj = object:gsub('user.','')
+            table.insert(aAclTab.Cache.Users[group], obj)
         end
 
         aAclTab.RefreshUsersList()
@@ -120,13 +120,17 @@ function aAclTab.onClick(key, state)
             local selectedGroup = guiGridListGetSelectedItem(aAclTab.Groups)
             local group = guiGridListGetItemText(aAclTab.Groups, selectedGroup, 1)
 
-            triggerServerEvent(EVENT_ACL, localPlayer, ACL_USERS, ACL_REMOVE, group, 'user.'..object)
+            local result = messageBox("Are you sure you want to remove the user '"..object.."' from the '"..group.."' ACL group?", MB_QUESTION, MB_YESNO)
             
-            aAclTab.Cache.Users[group] = nil
-            aAclTab.RefreshUsersList()
+            if (result) then
+                triggerServerEvent(EVENT_ACL, localPlayer, ACL_USERS, ACL_REMOVE, group, 'user.'..object)
+                
+                aAclTab.Cache.Users[group] = nil
+                aAclTab.RefreshUsersList()
+            end
         else
             messageBox("No user selected!", MB_ERROR, MB_OK)
-        end      
+        end
     elseif (source == aAclTab.UsersButton_AddUser) then
         local selected = guiGridListGetSelectedItem(aAclTab.Groups)
 
@@ -142,7 +146,7 @@ function aAclTab.onClick(key, state)
             end
         else
             messageBox("No group selected!", MB_ERROR, MB_OK)
-        end  
+        end
     end
 end
 
