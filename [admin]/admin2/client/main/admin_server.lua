@@ -19,7 +19,8 @@ aServerTab = {
         HitAnim = 'Hit Anim',
         FastSprint = 'Fast Sprint',
         BadDrivebyHitBox = 'Bad Driveby Hit Box',
-        QuickStand = 'Quick Stand'
+        QuickStand = 'Quick Stand',
+        KickoutOfVehicle_OnModelReplace = 'Kickout Of Vehicle On Model Replace'
     },
     worldproperties = {
         HoverCars = 'Hover Cars',
@@ -29,7 +30,10 @@ aServerTab = {
         RandomFoliage = 'Random Foliage',
         SniperMoon = 'Sniper Moon',
         ExtraAirResistance = 'Extra Air Resistance',
-        UnderWorldWarp = 'Under World Warp'
+        UnderWorldWarp = 'Under World Warp',
+        VehiclesSunGlare = "Vehicles Sun Glare",
+        CoronaZTest = "Corona Z Test",
+        WaterCreatures = "Water Creatures"
     }
 }
 
@@ -130,11 +134,11 @@ function aServerTab.Create(tab)
         i = i + 1
     end
 
-    local headerPosition = 0.060 + (0.045 * i)
+    local headerPosition = 0.025 + (0.045 * i)
     guiCreateHeader(0.65, headerPosition, 0.30, 0.035, "Special world properties:", true, tab)
     local i2 = 1
     for k,v in pairs(aServerTab.worldproperties) do
-        aServerTab[k] = guiCreateCheckBox(0.66, headerPosition + (0.045 * i2), 0.40, 0.04, v, false, true, tab, 'setworldproperty')
+        aServerTab[k] = guiCreateCheckBox(0.66, headerPosition + (0.0375 * i2), 0.40, 0.04, v, false, true, tab, 'setworldproperty')
         guiSetEnabled(aServerTab[k], true)
         i2 = i2 + 1
     end
@@ -347,6 +351,14 @@ function aServerTab.onClientClick(button)
                 "quickstand",
                 iif(guiCheckBoxGetSelected(aServerTab.QuickStand), "on", "off")
             )
+        elseif (source == aServerTab.KickoutOfVehicle_OnModelReplace) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setglitch",
+                "kickoutofvehicle_onmodelreplace",
+                iif(guiCheckBoxGetSelected(aServerTab.KickoutOfVehicle_OnModelReplace), "on", "off")
+            )
         elseif (source == aServerTab.HoverCars) then
             triggerServerEvent(
                 "aServer",
@@ -411,6 +423,30 @@ function aServerTab.onClientClick(button)
                 "underworldwarp",
                 iif(guiCheckBoxGetSelected(aServerTab.UnderWorldWarp), "on", "off")
             )
+        elseif (source == aServerTab.VehiclesSunGlare) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "vehiclesunglare",
+                iif(guiCheckBoxGetSelected(aServerTab.VehiclesSunGlare), "on", "off")
+            )
+        elseif (source == aServerTab.CoronaZTest) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "coronaztest",
+                iif(guiCheckBoxGetSelected(aServerTab.CoronaZTest), "on", "off")
+            )
+        elseif (source == aServerTab.WaterCreatures) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "watercreatures",
+                iif(guiCheckBoxGetSelected(aServerTab.WaterCreatures), "on", "off")
+            )
         end
     end
 end
@@ -459,12 +495,15 @@ function aServerTab.onRefresh()
     guiCheckBoxSetSelected(aServerTab.SniperMoon, isWorldSpecialPropertyEnabled("snipermoon"))
     guiCheckBoxSetSelected(aServerTab.ExtraAirResistance, isWorldSpecialPropertyEnabled("extraairresistance"))
     guiCheckBoxSetSelected(aServerTab.UnderWorldWarp, isWorldSpecialPropertyEnabled("underworldwarp"))
+    guiCheckBoxSetSelected(aServerTab.VehiclesSunGlare, isWorldSpecialPropertyEnabled("vehiclesunglare"))
+    guiCheckBoxSetSelected(aServerTab.CoronaZTest, isWorldSpecialPropertyEnabled("coronaztest"))
+    guiCheckBoxSetSelected(aServerTab.WaterCreatures, isWorldSpecialPropertyEnabled("watercreatures"))
 
     triggerServerEvent("aServerGlitchRefresh", localPlayer)
 end
 
 addEvent("aClientRefresh", true)
-addEventHandler("aClientRefresh", localPlayer, function(quickreload, fastmove, fastfire, crouchbug, highcloserangedamage, hitanim, fastsprint, baddrivebyhitbox, quickstand)
+addEventHandler("aClientRefresh", localPlayer, function(quickreload, fastmove, fastfire, crouchbug, highcloserangedamage, hitanim, fastsprint, baddrivebyhitbox, quickstand, kickout)
     guiCheckBoxSetSelected(aServerTab.QuickReload, quickreload)
     guiCheckBoxSetSelected(aServerTab.FastMove, fastmove)
     guiCheckBoxSetSelected(aServerTab.FastFire, fastfire)
@@ -474,6 +513,7 @@ addEventHandler("aClientRefresh", localPlayer, function(quickreload, fastmove, f
     guiCheckBoxSetSelected(aServerTab.FastSprint, fastsprint)
     guiCheckBoxSetSelected(aServerTab.BadDrivebyHitBox, baddrivebyhitbox)
     guiCheckBoxSetSelected(aServerTab.QuickStand, quickstand)
+    guiCheckBoxSetSelected(aServerTab.KickoutOfVehicle_OnModelReplace, kickout)
 end)
 
 function getWeatherNameFromID(weather)
