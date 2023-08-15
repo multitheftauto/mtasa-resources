@@ -2,6 +2,14 @@
 	<group name="Special">
 		<skin id="1" name="Truth" keywords="truth,male,white,hippie"/>
 		<skin id="2" name="Maccer" keywords="maccer,male,white,wanker"/>
+                <skin id="3" name="NAME" keywords="officer,cdeput,male,cop"/>   <! -- NEW SPECIAL SKIN -->
+                <skin id="4" name="NAME" keywords="officer,sfpdm1,male,cop"/>   <! -- NEW SPECIAL SKIN -->
+                <skin id="5" name="Big Ben" keywords="male,bb"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="6" name="NAME" keywords="female,wfycrp"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="8" name="NAME" keywords="male,wmycd2"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="42" name="Suzie" keywords="male,suzie"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="65" name="NAME" keywords="male,vwmyap"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="86" name="NAME" keywords="female,vhfyst"/>  <! -- NEW SPECIAL SKIN -->
 		<skin id="265" name="Tenpenny" keywords="officer,tenpenny,male,black,cop"/>
 		<skin id="266" name="Pulaski" keywords="officer,pulaski,male,white,cop"/>
 		<skin id="267" name="Hern" keywords="officer,hern,male,latin"/>
@@ -10,6 +18,8 @@
 		<skin id="270" name="Sweet" keywords="male,sweet,johnson,black,grove,street"/>
 		<skin id="271" name="Ryder" keywords="male,grove,street,black,ryder"/>
 		<skin id="272" name="Forelli Guy" keywords="forelli,white,itallian"/>
+		<skin id="273" name="NAME" keywords="male,mediatr"/>  <! -- NEW SPECIAL SKIN -->
+		<skin id="289" name="NAME" keywords="male,somyap"/>  <! -- NEW SPECIAL SKIN -->
 		<skin id="290" name="Rose" keywords="rose,white,vice,city,lawyer"/>
 		<skin id="291" name="Kent Paul" keywords="kent,paul,white,vice,city"/>
 		<skin id="292" name="Cesar" keywords="cesar,lastin,male"/>
