@@ -2,14 +2,12 @@
 	<group name="Special">
 		<skin id="1" name="Truth" keywords="truth,male,white,hippie"/>
 		<skin id="2" name="Maccer" keywords="maccer,male,white,wanker"/>
-                <skin id="3" name="NAME" keywords="officer,cdeput,male,cop"/>   <! -- NEW SPECIAL SKIN -->
-                <skin id="4" name="NAME" keywords="officer,sfpdm1,male,cop"/>   <! -- NEW SPECIAL SKIN -->
                 <skin id="5" name="Big Bear(Large)" keywords="male,bb"/>  <! -- NEW SPECIAL SKIN -->
-                <skin id="6" name="NAME" keywords="female,wfycrp"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="6" name="White Croupier" keywords="female,wfycrp"/>  <! -- NEW SPECIAL SKIN -->
                 <skin id="8" name="NAME" keywords="male,wmycd2"/>  <! -- NEW SPECIAL SKIN -->
                 <skin id="42" name="Suzie" keywords="male,suzie"/>  <! -- NEW SPECIAL SKIN -->
                 <skin id="65" name="NAME" keywords="male,vwmyap"/>  <! -- NEW SPECIAL SKIN -->
-                <skin id="86" name="NAME" keywords="female,vhfyst"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="86" name="Tracksuit Girl (Pink)" keywords="female,vhfyst"/>  <! -- NEW SPECIAL SKIN -->
 		<skin id="265" name="Tenpenny" keywords="officer,tenpenny,male,black,cop"/>
 		<skin id="266" name="Pulaski" keywords="officer,pulaski,male,white,cop"/>
 		<skin id="267" name="Hern" keywords="officer,hern,male,latin"/>
@@ -173,6 +171,8 @@
 			<skin id="287" name="Army" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,troop,soldier,bandoleer,camo,hat,baseball,mustache,backpack,gloves,infantry,private"/>
 		</group>
 		<group name="Police">
+                        <skin id="3" name="Deputy Officer" keywords="officer,police,cdeput,male,cop"/>   <! -- NEW SPECIAL SKIN -->
+                        <skin id="4" name="NAME" keywords="officer,police,sfpdm1,male,cop"/>   <! -- NEW SPECIAL SKIN -->
 			<skin id="190" name="Barbara Schternvart" keywords="girlfriend,date,cop,police,officer,girl,woman,black"/>
 			<skin id="246" name="Cop Stripper" keywords="police,authority,officer,dance,strip,thong,corset,hat,badge,gloves,baton,stick,cuffs,walkie,collar,earrings,leather,heels,white,girl,woman"/>
 			<skin id="280" name="Cop 1" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,white,guy,male,patrol"/>
