@@ -472,31 +472,31 @@ guiLanguage.portuguese = {
                     ["8"] = {"WHEEL_F_WIDE2","Faz com que as rodas dianteiras sejam muito largas."}
                 },
                 {
-                    ["1"] = {"WHEEL_R_NARROW2","Causes very narrow rear wheels."},
-                    ["2"] = {"WHEEL_R_NARROW","Causes narrow rear wheels."},
-                    ["4"] = {"WHEEL_R_WIDE","Causes wide rear wheels."},
-                    ["8"] = {"WHEEL_R_WIDE2","Causes very wide rear wheels."}
+                    ["1"] = {"WHEEL_R_NARROW2","Faz com que as rodas dianteiras sejam muito estreitas."},
+                    ["2"] = {"WHEEL_R_NARROW","Faz com que as rodas dianteiras sejam estreitas."},
+                    ["4"] = {"WHEEL_R_WIDE","Faz com que as rodas dianteiras sejam largas."},
+                    ["8"] = {"WHEEL_R_WIDE2","Faz com que as rodas dianteiras sejam muito largas."}
                 },
                 {
-                    ["1"] = {"HYDRAULIC_GEOM","The effect this flag causes has not been tested."}, -- HERE {untested}
-                    ["2"] = {"HYDRAULIC_INST","Causes the vehicle to spawn with hydraulics installed."},
-                    ["4"] = {"HYDRAULIC_NONE","Disables the installation of hydraulics."},
-                    ["8"] = {"NOS_INST","Causes the vehicle the vehicle to spawn with nitrous installed."}
+                    ["1"] = {"HYDRAULIC_GEOM","O efeito que esta modificação causa não foi testado."}, -- AQUI {não foi testado}
+                    ["2"] = {"HYDRAULIC_INST","Faz com que o veículo apareça com o sistema hidráulico instalado."},
+                    ["4"] = {"HYDRAULIC_NONE","Desativa a instalação de hidráulica."},
+                    ["8"] = {"NOS_INST","Faz com que o veículo apareça com o nitro instalado."}
                 },
                 {
-                    ["1"] = {"OFFROAD_ABILITY","Causes the vehicle to perform better on loose surfaces (like dirt)."},
-                    ["2"] = {"OFFROAD_ABILITY2","Causes the vehicle to perform better on soft surfaces (like sand)."},
-                    ["4"] = {"HALOGEN_LIGHTS","Makes headlights appear brighter and 'bluer'."},
-                    ["8"] = {"PROC_REARWHEEL_1ST","The effect this flag causes has not been tested."} -- HERE {untested}
+                    ["1"] = {"OFFROAD_ABILITY","Faz com que o veículo tenha um melhor desempenho em superfícies soltas (como atritos)."},
+                    ["2"] = {"OFFROAD_ABILITY2","Faz com que o veículo tenha um melhor desempenho em superfícies macias (como areia)."},
+                    ["4"] = {"HALOGEN_LIGHTS","Faz os faróis parecerem mais brilhantes e "mais azuis"'."},
+                    ["8"] = {"PROC_REARWHEEL_1ST","O efeito que modificação causa não foi testado."} -- AQUI {não foi testado}
                 },
                 {
-                    ["1"] = {"USE_MAXSP_LIMIT","Prevents the vehicle from going faster than the maximum speed."},
-                    ["2"] = {"LOW_RIDER","Allows the vehicle to be modified at the Loco Low Co shops."},
-                    ["4"] = {"STREET_RACER","Causes vehicle to only be modifiable at the Wheel Arch Angels."},
+                    ["1"] = {"USE_MAXSP_LIMIT","Evita que o veículo ultrapasse a velocidade máxima."},
+                    ["2"] = {"LOW_RIDER","Permite que o veículo seja modificado nas lojas Loco Low Co."},
+                    ["4"] = {"STREET_RACER","Faz com que o veículo seja modificável apenas nos Anjos do Arco da Roda."},
                     ["8"] = {"",""}
                 },
                 {
-                    ["1"] = {"SWINGING_CHASSIS","Lets the car body move from side to side on the suspension."},
+                    ["1"] = {"SWINGING_CHASSIS","Permite que a carroceria do carro se movimente de um lado para o outro na suspensão."},
                     ["2"] = {"",""},
                     ["4"] = {"",""},
                     ["8"] = {"",""}
