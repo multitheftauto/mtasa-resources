@@ -486,7 +486,7 @@ guiLanguage.portuguese = {
                 {
                     ["1"] = {"OFFROAD_ABILITY","Faz com que o veículo tenha um melhor desempenho em superfícies soltas (como atritos)."},
                     ["2"] = {"OFFROAD_ABILITY2","Faz com que o veículo tenha um melhor desempenho em superfícies macias (como areia)."},
-                    ["4"] = {"HALOGEN_LIGHTS","Faz os faróis parecerem mais brilhantes e "mais azuis"'."},
+                    ["4"] = {"HALOGEN_LIGHTS","Faz os faróis parecerem mais brilhantes e \"mais azuis\"."},
                     ["8"] = {"PROC_REARWHEEL_1ST","O efeito que modificação causa não foi testado."} -- AQUI {não foi testado}
                 },
                 {
