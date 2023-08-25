@@ -328,6 +328,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 						  guiGridListAddColumn ( aTab5.AdminPlayers, "Admins", 0.90 )
 		aTab5.AdminChatSound	= guiCreateCheckBox ( 0.79, 0.86, 0.18, 0.04, "Play Sound", true, true, aTab5.Tab )
 		aTab5.AdminText		= guiCreateEdit ( 0.03, 0.92, 0.80, 0.06, "", true, aTab5.Tab )
+		guiEditSetMaxLength(aTab5.AdminText, ADMIN_CHAT_MAXLENGTH)
 		aTab5.AdminSay		= guiCreateButton ( 0.85, 0.92, 0.08, 0.06, "Say", true, aTab5.Tab )
 		aTab5.AdminChatHelp	= guiCreateButton ( 0.94, 0.92, 0.03, 0.06, "?", true, aTab5.Tab )
 
