@@ -311,7 +311,6 @@ function applyPollResults(chosenOption)
 			optionTable[2](unpack(optionTable,3))
 		elseif optionExecutorType == "string" then --it is an event
 			triggerEvent(optionTable[2], optionTable[3] or root, unpack(optionTable,4))
-			--assert(loadstring(optionTable[2]))(unpack(optionTable,3))
 		end
 	end
 end
