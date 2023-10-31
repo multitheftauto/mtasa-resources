@@ -42,7 +42,7 @@ function aBansTab.onClientClick(button)
     if (button == "left") then
         if (source == aBansTab.Details) then
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
-                messageBox("No ban row selected!", MB_ERROR, MB_OK)
+                messageBox("No ban selected!", MB_ERROR, MB_OK)
             else
                 local ip = guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
                 aBanDetails(ip)
@@ -51,18 +51,13 @@ function aBansTab.onClientClick(button)
             aBan.Show()
         elseif (source == aBansTab.Unban) then
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
-                messageBox("No ban row selected!", MB_ERROR, MB_OK)
+                messageBox("No ban selected!", MB_ERROR, MB_OK)
             else
-                local selected =
-                    guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
-                if (aBans["Serial"][selected]) then
-                    if (messageBox("Unban Serial " .. selected .. "?", MB_QUESTION, MB_YESNO ) == true) then
-                        triggerServerEvent ( "aBans", localPlayer, "unbanserial", selected )
-                    end
-                else
-                    if (messageBox("Unban IP " .. selected .. "?", MB_QUESTION, MB_YESNO) == true) then
-                        triggerServerEvent ( "aBans", localPlayer, "unbanip", selected )
-                    end
+                local banID =
+                    guiGridListGetItemData(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 1)
+                -- TODO: use aBanDetails widget (also TODO) to display more information
+                if (messageBox("Are you sure you want to remove this ban?", MB_QUESTION, MB_YESNO ) == true) then
+                    triggerServerEvent(EVENT_BAN, localPlayer, "unban", banID)
                 end
             end
         elseif (source == aBansTab.BansRefresh) then
@@ -142,7 +137,8 @@ end
 
 function aBansTab.DeleteRow(id)
     local list = aBansTab.BansList
-    for i = 1, guiGridListGetRowCount(list) do
+    -- GridList row ids start at zero, not one
+    for i = 0, guiGridListGetRowCount(list) do
         local data = guiGridListGetItemData(list, i, 1)
         if (data == id) then
             guiGridListRemoveRow(list, i)

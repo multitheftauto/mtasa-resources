@@ -272,6 +272,6 @@ function aBan.verifyForm()
             reason = banReason,
             duration = banDuration
         }
-        triggerServerEvent('aBans', localPlayer, "ban", data)
+        triggerServerEvent(EVENT_BAN, localPlayer, "ban", data)
     end
 end

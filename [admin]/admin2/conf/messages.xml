@@ -11,9 +11,6 @@
             $data2 - Additional information, not all the nodes use it.
     -->
   <player>
-    <group action="ban" r="255" g="0" b="0">
-      <log>ADMIN: $admin has banned $player ($data)</log>
-    </group>
     <group action="kick" r="255" g="0" b="0">
       <log>ADMIN: $admin has kicked $player ($data)</log>
     </group>
@@ -248,21 +245,15 @@
     </group>
   </server>
   <bans>
-    <group action="unbanip" r="225" g="170" b="90">
-      <admin>IP: $data successfully removed from bans list</admin>
-      <log>ADMIN: $admin has unbanned IP $data</log>
+    <group action="banplayer" r="255" g="0" b="0">
+      <admin>ADMIN: $admin has banned $player ($data)</admin>
+      <log>ADMIN: $admin has banned $player ($data)</log>
     </group>
-    <group action="unbanserial" r="225" g="170" b="90">
-      <admin>SERIAL: $data successfully removed from bans list</admin>
-      <log>ADMIN: $admin has unbanned Serial $data</log>
+    <group action="addban" r="255" g="0" b="0">
+      <admin>ADMIN: $admin has added a manual ban (IP = $data, Serial = $data2)</admin>
     </group>
-    <group action="banip" r="225" g="170" b="90">
-      <admin>IP: $data successfully added to bans list</admin>
-      <log>ADMIN: $admin has banned IP $data</log>
-    </group>
-    <group action="banserial" r="225" g="170" b="90">
-      <admin>SERIAL: $data successfully added to bans list</admin>
-      <log>ADMIN: $admin has banned Serial $data</log>
+    <group action="unban" r="225" g="170" b="90">
+      <admin>ADMIN: $admin has removed a ban (IP = $data, Serial = $data2)</admin>
     </group>
   </bans>
   <admin>

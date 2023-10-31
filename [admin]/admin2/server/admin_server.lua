@@ -397,64 +397,6 @@ addEventHandler(
     end
 )
 
-addEvent("aBans", true)
-addEventHandler(
-    "aBans",
-    root,
-    function(action, data)
-        if (hasObjectPermissionTo(source, "command." .. action)) then
-            local mdata = ""
-            local more = ""
-            if (action == "banip") then
-                mdata = data
-                if (not BanIP(data, source)) then
-                    action = nil
-                end
-            elseif (action == "banserial") then
-                mdata = data
-                if (isValidSerial(data)) then
-                    if (not BanSerial(string.upper(data), source)) then
-                        action = nil
-                    end
-                else
-                    outputChatBox("Error - Invalid serial", source, 255, 0, 0)
-                    action = nil
-                end
-            elseif (action == "ban") then
-                mdata = data
-                if isElement(data.player) then
-                    banPlayer(data.player, data.ip ~= "" and true, false, data.serial ~= "" and true, source, data.reason, data.duration)
-                else
-                    local ban = addBan(data.ip ~= "" and data.ip or nil, nil, data.serial ~= "" and data.serial or nil, source, data.reason, data.duration)
-                    if data.playerName then
-                        setBanNick(ban, data.playerName)
-                    end
-                end
-            elseif (action == "unbanip") then
-                mdata = data
-                if (not UnbanIP(data, source)) then
-                    action = nil
-                end
-            elseif (action == "unbanserial") then
-                mdata = data
-                if (not UnbanSerial(data, source)) then
-                    action = nil
-                end
-            else
-                action = nil
-            end
-
-            if (action ~= nil) then
-                aAction("bans", action, source, false, mdata, more)
-                triggerEvent("aSync", source, "sync", "bans")
-            end
-            return true
-        end
-        outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
-        return false
-    end
-)
-
 addEvent("aExecute", true)
 addEventHandler(
     "aExecute",

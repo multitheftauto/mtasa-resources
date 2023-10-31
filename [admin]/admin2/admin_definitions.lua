@@ -34,7 +34,7 @@ enum(
         "EVENT_RESOURCE",
         "EVENT_SERVER",
         "EVENT_MESSAGE",
-        "EVENT_BANS",
+        "EVENT_BAN",
         "EVENT_NETWORK",
         "EVENT_EXECUTE",
         "EVENT_PROXY",
