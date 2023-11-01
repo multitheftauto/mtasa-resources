@@ -39,7 +39,6 @@ enum(
         "EVENT_MESSAGE",
         "EVENT_BANS",
         "EVENT_NETWORK",
-        "EVENT_EXECUTE",
         "EVENT_PROXY",
         "EVENT_ADMIN_CHAT",
         "EVENT_ADMIN_OPEN",
