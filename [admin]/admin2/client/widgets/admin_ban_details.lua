@@ -75,7 +75,6 @@ function aBanDetails.Create()
 end
 
 function aBanDetails.Reset()
-    outputDebugString("reset")
     guiSetText(aBanDetails.Form, "Ban Details")
     guiSetText(aBanDetails.ConfirmationText, "Ban details:")
     guiSetText(aBanDetails.NickText, "Player name: Unknown")
