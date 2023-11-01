@@ -44,8 +44,9 @@ function aBansTab.onClientClick(button)
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
                 messageBox("No ban selected!", MB_ERROR, MB_OK)
             else
-                local ip = guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
-                aBanDetails(ip)
+                local banID =
+                    guiGridListGetItemData(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 1)
+                aBanDetails.Show(banID, false)
             end
         elseif source == aBansTab.Ban then
             aBan.Show()
@@ -55,10 +56,7 @@ function aBansTab.onClientClick(button)
             else
                 local banID =
                     guiGridListGetItemData(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 1)
-                -- TODO: use aBanDetails widget (also TODO) to display more information
-                if (messageBox("Are you sure you want to remove this ban?", MB_QUESTION, MB_YESNO ) == true) then
-                    triggerServerEvent(EVENT_BAN, localPlayer, "unban", banID)
-                end
+                aBanDetails.Show(banID, true)
             end
         elseif (source == aBansTab.BansRefresh) then
             guiGridListClear(aBansTab.BansList)

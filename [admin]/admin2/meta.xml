@@ -66,6 +66,7 @@
     <script src="client/widgets/admin_interior.lua" type="client" />
     <script src="client/widgets/admin_screenshot.lua" type="client" />
     <script src="client/widgets/admin_ban.lua" type="client" />
+    <script src="client/widgets/admin_ban_details.lua" type="client" />
     <script src="client/widgets/admin_warp.lua" type="client" />
     <script src="client/widgets/admin_report.lua" type="client" />
     <script src="client/widgets/admin_weapon.lua" type="client" />
