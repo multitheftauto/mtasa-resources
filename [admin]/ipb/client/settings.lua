@@ -1,12 +1,6 @@
 
 g_Settings = {}
 
-addEventHandler("onClientResourceStart", resourceRoot,
-    function ()
-        triggerServerEvent("onClientResourceStart", localPlayer)
-    end,
-false)
-
 addEvent("ipb.syncSettings", true)
 addEventHandler("ipb.syncSettings", localPlayer,
     function (settings)
