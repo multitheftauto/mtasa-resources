@@ -40,6 +40,6 @@ addEventHandler("onPlayerResourceStart", root,
 			return false
 		end
 
-		triggerClientEvent(source, "ipb.syncSettings", client, g_Settings)
+		triggerClientEvent(source, "ipb.syncSettings", source, g_Settings)
 	end
 )
