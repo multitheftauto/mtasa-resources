@@ -18,32 +18,32 @@
   <script src="server/admin_settings.lua" />
   <script src="server/admin_screenshot.lua" />
   <script src="server/http/admin_http.lua" />
-  <script src="client/admin_clientprefs.lua" type="client" />
-  <script src="client/admin_client.lua" type="client" />
-  <script src="client/admin_gui.lua" type="client" />
-  <script src="client/admin_ACL.lua" type="client" />
-  <script src="client/gui/admin_main.lua" type="client" />
-  <script src="client/gui/admin_performance.lua" type="client" />
-  <script src="client/gui/admin_permissions.lua" type="client" />
-  <script src="client/gui/admin_maps.lua" type="client" />
-  <script src="client/gui/admin_messages.lua" type="client" />
-  <script src="client/gui/admin_message.lua" type="client" />
-  <script src="client/gui/admin_moddetails.lua" type="client" />
-  <script src="client/gui/admin_spectator.lua" type="client" />
-  <script src="client/gui/admin_messagebox.lua" type="client" />
-  <script src="client/gui/admin_inputbox.lua" type="client" />
-  <script src="client/gui/admin_team.lua" type="client" />
-  <script src="client/gui/admin_skin.lua" type="client" />
-  <script src="client/gui/admin_stats.lua" type="client" />
-  <script src="client/gui/admin_vehicle.lua" type="client" />
-  <script src="client/gui/admin_interior.lua" type="client" />
-  <script src="client/gui/admin_ban.lua" type="client" />
-  <script src="client/gui/admin_warp.lua" type="client" />
-  <script src="client/gui/admin_report.lua" type="client" />
-  <script src="client/gui/admin_acl.lua" type="client" />
-  <script src="client/gui/admin_settings.lua" type="client" />
-  <script src="client/gui/admin_screenshot.lua" type="client" />
-  <script src="client/colorpicker/colorpicker.lua" type="client" />
+  <script src="client/admin_clientprefs.lua" type="client" cache="false" />
+  <script src="client/admin_client.lua" type="client" cache="false" />
+  <script src="client/admin_gui.lua" type="client" cache="false" />
+  <script src="client/admin_ACL.lua" type="client" cache="false" />
+  <script src="client/gui/admin_main.lua" type="client" cache="false" />
+  <script src="client/gui/admin_performance.lua" type="client" cache="false" />
+  <script src="client/gui/admin_permissions.lua" type="client" cache="false" />
+  <script src="client/gui/admin_maps.lua" type="client" cache="false" />
+  <script src="client/gui/admin_messages.lua" type="client" cache="false" />
+  <script src="client/gui/admin_message.lua" type="client" cache="false" />
+  <script src="client/gui/admin_moddetails.lua" type="client" cache="false" />
+  <script src="client/gui/admin_spectator.lua" type="client" cache="false" />
+  <script src="client/gui/admin_messagebox.lua" type="client" cache="false" />
+  <script src="client/gui/admin_inputbox.lua" type="client" cache="false" />
+  <script src="client/gui/admin_team.lua" type="client" cache="false" />
+  <script src="client/gui/admin_skin.lua" type="client" cache="false" />
+  <script src="client/gui/admin_stats.lua" type="client" cache="false" />
+  <script src="client/gui/admin_vehicle.lua" type="client" cache="false" />
+  <script src="client/gui/admin_interior.lua" type="client" cache="false" />
+  <script src="client/gui/admin_ban.lua" type="client" cache="false" />
+  <script src="client/gui/admin_warp.lua" type="client" cache="false" />
+  <script src="client/gui/admin_report.lua" type="client" cache="false" />
+  <script src="client/gui/admin_acl.lua" type="client" cache="false" />
+  <script src="client/gui/admin_settings.lua" type="client" cache="false" />
+  <script src="client/gui/admin_screenshot.lua" type="client" cache="false" />
+  <script src="client/colorpicker/colorpicker.lua" type="client" cache="false" />
 
   <!-- Placeholder for backwards compatibility -->
   <script src="server/admin_ip2c.lua" />
