@@ -91,7 +91,7 @@ guiLanguage.turkish = {
         },
         body = {
             shortname = "Gövde",
-            longname = "Gövde Ayarları""
+            longname = "Gövde Ayarları"
         },
         wheels = {
             shortname = "Tekerlekler",
