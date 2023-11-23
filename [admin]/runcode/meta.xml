@@ -24,7 +24,6 @@
 	<export function="httpRun" http="true" protected="true"/>
 
 	<aclrequest>
-		<right name="function.loadstring"
-               access="true" />
+		<right name="function.loadstring" access="true" />
 	</aclrequest>
 </meta>
