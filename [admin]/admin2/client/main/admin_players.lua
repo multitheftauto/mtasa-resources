@@ -23,8 +23,8 @@ function aPlayersTab.Create(tab)
     guiGridListAddColumn(aPlayersTab.PlayerList, "Player list", 0.85)
     aPlayersTab.Context = guiCreateContextMenu(aPlayersTab.PlayerList)
     aPlayersTab.ContextKick = guiContextMenuAddItem(aPlayersTab.Context, "Kick")
-    aPlayersTab.ColorCodes = guiCreateCheckBox(0.01, 0.95, 0.25, 0.04, "Hide color codes", aGetSetting('hideColorCodes') or false, true, tab)
-    aPlayersTab.SensitiveData = guiCreateCheckBox(0.2, 0.95, 0.25, 0.04, "Hide Sensitive Data", aGetSetting('hideSensitiveData') or false, true, tab)
+    aPlayersTab.ColorCodes = guiCreateCheckBox(0.01, 0.95, 0.15, 0.04, "Hide color codes", aGetSetting('hideColorCodes') or false, true, tab)
+    aPlayersTab.SensitiveData = guiCreateCheckBox(0.2, 0.95, 0.17, 0.04, "Hide Sensitive Data", aGetSetting('hideSensitiveData') or false, true, tab)
 
     -- Player info (middle pane)
     guiCreateHeader(0.27, 0.04, 0.20, 0.04, "Player:", true, tab)
@@ -74,7 +74,7 @@ function aPlayersTab.Create(tab)
     aPlayersTab.Shout = guiCreateButton(0.74, 0.19, 0.12, 0.04, "Shout", true, tab, "shout")
     aPlayersTab.Spectate = guiCreateButton(0.87, 0.19, 0.12, 0.04, "Spectate", true, tab, "spectate")
     aPlayersTab.SetNick = guiCreateButton(0.74, 0.235, 0.12, 0.04, "Set nick", true, tab, "setnick")
-    aPlayersTab.Admin = guiCreateButton(0.87, 0.235, 0.12, 0.04, "Give admin", true, tab, "setgroup")
+    aPlayersTab.Permissions = guiCreateButton(0.87, 0.235, 0.12, 0.04, "Permissions", true, tab, "setgroup")
     aPlayersTab.SlapOptions = guiCreateComboBox(0.76, 0.28, 0.1, 0.04, "0", true, tab)
     local width, height = guiGetSize(aPlayersTab.SlapOptions, false)
     for i = 0, 200, 20 do
@@ -113,7 +113,7 @@ function aPlayersTab.Create(tab)
     addEventHandler("onClientGUIClick", aPlayersTab.Context, aPlayersTab.onContextClick)
     addEventHandler("onClientGUIClick", aPlayersTab.InfoContext, aPlayersTab.onContextClick)
     addEventHandler("onClientGUIClick", aPlayersTab.Tab, aPlayersTab.onClientClick)
-    addEventHandler("onClientGUIChanged", aPlayersTab.PlayerListSearch, aPlayersTab.onPlayerListSearch)
+    addEventHandler("onClientGUIChanged", aPlayersTab.PlayerListSearch, aPlayersTab.onGUIChange)
     addEventHandler("onClientPlayerChangeNick", root, aPlayersTab.onClientPlayerChangeNick)
     addEventHandler("aClientPlayerJoin", root, aPlayersTab.onClientPlayerJoin)
     addEventHandler("onClientPlayerQuit", root, aPlayersTab.onClientPlayerQuit)
@@ -193,7 +193,7 @@ function aPlayersTab.onClientClick(button)
                 elseif (source == aPlayersTab.Spectate) then
                     aSpectate(player)
                 elseif (source == aPlayersTab.SetNick) then
-                    local nick = inputBox("Set nick", "Enter new nickname for " .. name)
+                    local nick = inputBox("Set nick", "Enter new nickname for " .. name, name)
                     if (nick) then
                         triggerServerEvent("aPlayer", localPlayer, player, "setnick", nick)
                     end
@@ -257,14 +257,11 @@ function aPlayersTab.onClientClick(button)
                     end
                 elseif (source == aPlayersTab.WarpPlayer) then
                     aPlayerWarp(player)
-                elseif (source == aPlayersTab.Admin) then
-                    if
-                        (aPlayers[player]["admin"] and
-                            messageBox("Revoke admin rights from " .. name .. "?", MB_WARNING))
-                     then
-                        triggerServerEvent("aPlayer", localPlayer, player, "setgroup", false)
-                    elseif (messageBox("Give admin rights to " .. name .. "?", MB_WARNING)) then
-                        triggerServerEvent("aPlayer", localPlayer, player, "setgroup", true)
+                elseif (source == aPlayersTab.Permissions) then
+                    if (aPlayers[player]['account'] ~= 'guest') then
+                        aPermissions.Show(player)
+                    else
+                        messageBox("This player is not logged in!", MB_ERROR, MB_ERROR)
                     end
                 end
             end
@@ -298,7 +295,6 @@ function aPlayersTab.onClientClick(button)
                 guiSetText(aPlayersTab.Groups, "Groups: N/A")
                 guiSetText(aPlayersTab.Mute, "Mute")
                 guiSetText(aPlayersTab.Freeze, "Freeze")
-                guiSetText(aPlayersTab.Admin, "Give admin")
                 guiSetText(aPlayersTab.Health, "Health: 0%")
                 guiSetText(aPlayersTab.Armour, "Armour: 0%")
                 guiSetText(aPlayersTab.Skin, "Skin: N/A")
@@ -321,23 +317,9 @@ function aPlayersTab.onClientClick(button)
     end
 end
 
-function aPlayersTab.onPlayerListSearch()
-    guiGridListClear(aPlayersTab.PlayerList)
-    local text = guiGetText(source)
-    if (text == "") then
-        for id, player in ipairs(getElementsByType("player")) do
-            local row = guiGridListAddRow(aPlayersTab.PlayerList)
-            guiGridListSetItemText(aPlayersTab.PlayerList, row, 1, getPlayerName(player), false, false)
-            guiGridListSetItemData(aPlayersTab.PlayerList, row, 1, player)
-        end
-    else
-        for id, player in ipairs(getElementsByType("player")) do
-            if (string.find(string.upper(getPlayerName(player)), string.upper(text))) then
-                local row = guiGridListAddRow(aPlayersTab.PlayerList)
-                guiGridListSetItemText(aPlayersTab.PlayerList, row, 1, getPlayerName(player), false, false)
-                guiGridListSetItemData(aPlayersTab.PlayerList, row, 1, player)
-            end
-        end
+function aPlayersTab.onGUIChange()
+    if (source == aPlayersTab.PlayerListSearch) then
+        aPlayersTab.Refresh()
     end
 end
 
@@ -383,7 +365,15 @@ function aPlayersTab.onClientPlayerChangeNick(oldNick, newNick)
     end
 end
 
-function aPlayersTab.onClientPlayerJoin(ip, username, serial, country, countryname)
+function aPlayersTab.onClientPlayerJoin(ip, username, serial, unused, country, countryname)
+    if ip == false and serial == false then
+        -- Update country only
+        if aPlayers[source] then
+            aPlayers[source].country = country
+            aPlayers[source].countryname = countryname
+        end
+        return
+    end
     aPlayers[source] = {}
     aPlayers[source].name = getPlayerName(source)
     aPlayers[source].ip = ip
@@ -461,7 +451,8 @@ function aPlayersTab.onRefresh()
     guiSetText(aPlayersTab.Country, "Country: " .. (aPlayers[player].countryname or "Unknown"))
     guiSetText(aPlayersTab.Account, "Account: " .. getSensitiveText((aPlayers[player]["account"] or "guest")))
     guiSetText(aPlayersTab.Groups, "Groups: " .. (aPlayers[player]["groups"] or "None"))
-    if (aPlayers[player].country and string.lower(tostring(aPlayers[player].country)) ~= "zz") then
+    local flagPath = aPlayers[player].country and ":ip2c/client/images/flags/" .. string.lower(tostring(aPlayers[player].country)) .. ".png" or false
+    if (flagPath) then
         local x, y = guiGetPosition(aPlayersTab.Country, false)
         local width = guiLabelGetTextExtent(aPlayersTab.Country)
         guiSetPosition(aPlayersTab.Flag, x + width + 3, y + 4, false)
@@ -469,7 +460,7 @@ function aPlayersTab.onRefresh()
             aPlayersTab.Flag,
             guiStaticImageLoadImage(
                 aPlayersTab.Flag,
-                "client\\images\\flags\\" .. string.lower(tostring(aPlayers[player].country)) .. ".png"
+                flagPath
             )
         )
     else
@@ -504,7 +495,7 @@ function aPlayersTab.onRefresh()
     if (getElementInterior(player)) then
         guiSetText(aPlayersTab.Interior, "Interior: " .. getElementInterior(player))
     end
-    guiSetText(aPlayersTab.JetPack, iif(doesPedHaveJetPack(player), "Remove JetPack", "Give JetPack"))
+    guiSetText(aPlayersTab.JetPack, iif(isPedWearingJetpack(player), "Remove JetPack", "Give JetPack"))
 
     local weapon = getPedWeapon(player)
     if (weapon) then
@@ -542,21 +533,25 @@ end
 
 function aPlayersTab.Refresh()
     local selected = getSelectedPlayer()
-    local list = aPlayersTab.PlayerList
-    guiGridListClear(list)
     local strip = guiCheckBoxGetSelected(aPlayersTab.ColorCodes)
+    local filter = guiGetText(aPlayersTab.PlayerListSearch):lower()
+    local sortDirection = guiGetProperty(aPlayersTab.PlayerList, "SortDirection")
+    guiGridListClear(aPlayersTab.PlayerList)
+    guiSetProperty(aPlayersTab.PlayerList, "SortDirection", "None")
     for id, player in ipairs(getElementsByType("player")) do
-        local row = guiGridListAddRow(list)
         local name = getPlayerName(player)
-        if (strip) then
-            name = stripColorCodes(name)
-        end
-        guiGridListSetItemText(list, row, 1, name, false, false)
-        guiGridListSetItemData(list, row, 1, player)
-        if (player == selected) then
-            guiGridListSetSelectedItem(list, row, 1)
+        if name:find(filter) or name:lower():find(filter) then
+            if (strip) then
+                name = stripColorCodes(name)
+            end
+            local row = guiGridListAddRow(aPlayersTab.PlayerList, name)
+            guiGridListSetItemData(aPlayersTab.PlayerList, row, 1, player)
+            if (player == selected) then
+                guiGridListSetSelectedItem(aPlayersTab.PlayerList, row, 1)
+            end
         end
     end
+    guiSetProperty(aPlayersTab.PlayerList, "SortDirection", sortDirection)
 end
 
 function getSelectedPlayer()

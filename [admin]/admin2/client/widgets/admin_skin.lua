@@ -145,10 +145,13 @@ function aSkin.Load()
 end
 
 function aSkin.Refresh()
-    aSetSetting("skinsGroup", guiCheckBoxGetSelected(aSkin.Groups))
-    guiGridListClear(aSkin.List)
+    local groups = guiCheckBoxGetSelected(aSkin.Groups)
     local filter = guiGetText(aSkin.Edit):lower()
-    if (guiCheckBoxGetSelected(aSkin.Groups)) then
+    local sortDirection = guiGetProperty(aSkin.List, "SortDirection")
+    aSetSetting("skinsGroup", groups)
+    guiGridListClear(aSkin.List)
+    guiSetProperty(aSkin.List, "SortDirection", "None")
+    if (groups) then
         local skins = {}
         for name, group in pairs(aSkin.skins) do
             for _, skin in ipairs(group) do
@@ -164,9 +167,7 @@ function aSkin.Refresh()
             local row = guiGridListAddRow(aSkin.List)
             guiGridListSetItemText(aSkin.List, row, 2, name, true, false)
             for id, skin in ipairs(group) do
-                row = guiGridListAddRow(aSkin.List)
-                guiGridListSetItemText(aSkin.List, row, 1, skin.model, false, true)
-                guiGridListSetItemText(aSkin.List, row, 2, skin.name, false, false)
+                guiGridListAddRow(aSkin.List, skin.model, skin.name)
             end
         end
         guiGridListSetSortingEnabled(aSkin.List, false)
@@ -185,5 +186,6 @@ function aSkin.Refresh()
             end
         end
         guiGridListSetSortingEnabled(aSkin.List, true)
+        guiSetProperty(aSkin.List, "SortDirection", sortDirection)
     end
 end

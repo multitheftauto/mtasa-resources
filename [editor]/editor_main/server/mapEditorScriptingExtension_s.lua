@@ -1,6 +1,6 @@
--- FILE: 	mapEditorScriptingExtension_s.lua
--- PURPOSE:	Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
--- VERSION:	RemoveWorldObjects (v1) AutoLOD (v1)
+-- FILE: mapEditorScriptingExtension_s.lua
+-- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
+-- VERSION: RemoveWorldObjects (v1) AutoLOD (v2)
 
 local usedLODModels = {}
 local LOD_MAP = {}
@@ -62,16 +62,21 @@ end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop)
 
-function receiveLODsClientRequest()
-	triggerClientEvent(client, "setLODsClient", resourceRoot, usedLODModels)
+local function onPlayerResourceStart(resourceElement)
+	local mapResource = resourceElement == resource
+
+	if not mapResource then
+		return
+	end
+	
+	triggerClientEvent(source, "setLODsClient", resourceRoot, usedLODModels)
 end
-addEvent("requestLODsClient", true)
-addEventHandler("requestLODsClient", resourceRoot, receiveLODsClientRequest)
+addEventHandler("onPlayerResourceStart", root, onPlayerResourceStart)
 
 -- MTA LOD Table [object] = [lodmodel]
 
-LOD_MAP = { [17697] = 17768,
-[8476] = 8905, [9476] = 9263, [4339] = 4472, [8654] = 8751, [7465] = 7795, [8465] = 8744, [11114] = 11052, [13872] = 13884, [6999] = 7120,
+LOD_MAP = {
+[17697] = 17768, [8476] = 8905, [9476] = 9263, [4339] = 4472, [8654] = 8751, [7465] = 7795, [8465] = 8744, [11114] = 11052, [13872] = 13884, [6999] = 7120,
 [7999] = 8098, [6959] = 7343, [9733] = 9644, [10927] = 11356, [10759] = 10804, [8445] = 8478, [7445] = 7761, [10928] = 11065, [9266] = 9475, [13676] = 13870,
 [8554] = 8804, [5745] = 5827, [10855] = 11187, [4813] = 4903, [8439] = 8910, [7439] = 7757, [7043] = 7059, [8043] = 8111, [9043] = 9134, [10384] = 10548,
 [9745] = 9873, [4833] = 4943, [6979] = 7006, [13692] = 13766, [7454] = 7784, [8454] = 8599, [11132] = 11208, [10843] = 10892, [8513] = 8820, [13732] = 13770,
@@ -211,4 +216,5 @@ LOD_MAP = { [17697] = 17768,
 [3816] = 3817, [5009] = 4955, [10868] = 11182, [13688] = 13854, [9529] = 9531, [8529] = 8774, [5797] = 5925, [10404] = 10577, [10791] = 10801, [10790] = 11209,
 [4290] = 4424, [4251] = 4386, [5167] = 5159, [13809] = 13811, [10750] = 10799, [4270] = 4404, [10453] = 10733, [4372] = 4502, [9707] = 9804, [5753] = 5834,
 [10387] = 10329, [6229] = 6246, [5707] = 5905, [13685] = 13858, [5297] = 5320, [4163] = 4164, [10968] = 11199, [13734] = 13768, [3707] = 3708, [6189] = 6191,
-[9718] = 9778, [4865] = 4936, [9608] = 9657, [6944] = 7111 }
+[9718] = 9778, [4865] = 4936, [9608] = 9657, [6944] = 7111, [4587] = 4761, [3781] = 3782, [4605] = 4762, [1267] = 1261
+}

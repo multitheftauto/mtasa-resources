@@ -23,20 +23,21 @@ local defaultControls = {
 {	name="toggle_cursor",			key ="f",				friendlyName="Toggle Cursor"					},
 {	name="select_target_keyboard",	key ="mouse1",			friendlyName="Select (Keyboard Mode)"			},
 {	name="select_target_mouse",		key ="mouse2",			friendlyName="Select (Mouse Mode)"				},
-{	name="quick_rotate_increase",	key ="mouse_wheel_up",	friendlyName="+Z Rotate (Rotate Modifier)"		},
-{	name="quick_rotate_decrease",	key ="mouse_wheel_down",friendlyName="-Z Rotate (Rotate Modifier)"		},
+{	name="quick_rotate_increase",	key ="mouse_wheel_up",	friendlyName="+Z / Yaw (Rotate Modifier)"		},
+{	name="quick_rotate_decrease",	key ="mouse_wheel_down",friendlyName="-Z / Yaw (Rotate Modifier)"		},
 {	name="zoom_in",					key ="mouse_wheel_down",friendlyName="Increase Select Distance"			},
 {	name="zoom_out",				key ="mouse_wheel_up",	friendlyName="Decrease Select Distance"			},
 {	name="mod_fast_speed",			key ="lshift",			friendlyName="Fast speed Modifier"				},
 {	name="mod_slow_speed",			key ="lalt",			friendlyName="Slow speed Modifier"				},
-{	name="mod_rotate",				key ="lctrl",			friendlyName="Rotate Modifier"					},
+{	name="mod_rotate",				key ="lctrl",			friendlyName="Rotate Modifier World Space"		},
+{	name="mod_rotate_local",		key ="rctrl",			friendlyName="Rotate Modifier Local Space"		},
 {	name="high_sensitivity_mode",	key ="e",				friendlyName="High Sensivity Mode"				},
-{	name="element_move_right",		key ="arrow_r",			friendlyName="Move Element Right"				},
-{	name="element_move_left",		key ="arrow_l",			friendlyName="Move Element Left"				},
-{	name="element_move_forward",	key ="arrow_u",			friendlyName="Move Element Forward"				},
-{	name="element_move_backward",	key ="arrow_d",			friendlyName="Move Element Backward"			},
-{	name="element_move_upwards",	key ="pgup",			friendlyName="Move Element Upwards"				},
-{	name="element_move_downwards",	key ="pgdn",			friendlyName="Move Element Downwards"			},
+{	name="element_move_right",		key ="arrow_r",			friendlyName="Move Element Right / Yaw"			},
+{	name="element_move_left",		key ="arrow_l",			friendlyName="Move Element Left / Yaw"			},
+{	name="element_move_forward",	key ="arrow_u",			friendlyName="Move Element Forward / Pitch"		},
+{	name="element_move_backward",	key ="arrow_d",			friendlyName="Move Element Backward / Pitch"	},
+{	name="element_move_upwards",	key ="pgup",			friendlyName="Move Element Upwards / Roll"		},
+{	name="element_move_downwards",	key ="pgdn",			friendlyName="Move Element Downwards / Roll"	},
 {	name="camera_move_forwards",	key ="w",				friendlyName="Camera forwards"					},
 {	name="camera_move_backwards",	key ="s",				friendlyName="Camera backwards"					},
 {	name="camera_move_left",		key ="a",				friendlyName="Camera strafe left"				},
@@ -109,6 +110,7 @@ addEventHandler("onClientResourceStart", root,
 			freecam.setFreecamOption("key_backward", cc.camera_move_backwards)
 			freecam.setFreecamOption("key_left", cc.camera_move_left)
 			freecam.setFreecamOption("key_right", cc.camera_move_right)
+			freecam.setFreecamOption("fov", cc.camera_move_right)
 		elseif resource == thisResource then
 			bindKey ("lctrl","both",blockMTAControls )
 			processControls()

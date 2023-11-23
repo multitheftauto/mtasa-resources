@@ -212,12 +212,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab2.LogLine3		= guiCreateLabel ( 0.41, 0.87, 0.50, 0.03, "", true, aTab2.Tab )
 		aTab2.LogLine4		= guiCreateLabel ( 0.41, 0.90, 0.50, 0.03, "", true, aTab2.Tab )
 		aTab2.LogLine5		= guiCreateLabel ( 0.41, 0.93, 0.50, 0.03, "", true, aTab2.Tab )
-						  guiCreateLabel ( 0.41, 0.65, 0.50, 0.04, "Execute Command:", true, aTab2.Tab )
-		aTab2.Command		= guiCreateEdit ( 0.41, 0.70, 0.40, 0.055, "", true, aTab2.Tab )
-		aTab2.ExecuteClient	= guiCreateButton ( 0.82, 0.70, 0.16, 0.035, "Client", true, aTab2.Tab, "execute" )
-		aTab2.ExecuteServer	= guiCreateButton ( 0.82, 0.736, 0.16, 0.035, "Server", true, aTab2.Tab, "execute" )
-		aTab2.ExecuteAdvanced	= guiCreateLabel ( 0.45, 0.71, 0.50, 0.04, "For advanced users only.", true, aTab2.Tab )
-						  guiLabelSetColor ( aTab2.ExecuteAdvanced, 255, 0, 0 )
+
 		aLogLines = 1
 
 		createMapTab()
@@ -272,7 +267,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab3.FPSCurrent	= guiCreateLabel ( 0.05, 0.65, 0.25, 0.04, "FPS Limit: 38", true, aTab3.Tab )
 		aTab3.FPS			= guiCreateEdit ( 0.35, 0.65, 0.135, 0.04, "38", true, aTab3.Tab )
 		aTab3.FPSSet		= guiCreateButton ( 0.50, 0.65, 0.10, 0.04, "Set", true, aTab3.Tab, "setfpslimit" )
-							guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-100 )", true, aTab3.Tab )
+							guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-32767 )", true, aTab3.Tab )
 
 
 		aTab4 = {}
@@ -333,6 +328,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 						  guiGridListAddColumn ( aTab5.AdminPlayers, "Admins", 0.90 )
 		aTab5.AdminChatSound	= guiCreateCheckBox ( 0.79, 0.86, 0.18, 0.04, "Play Sound", true, true, aTab5.Tab )
 		aTab5.AdminText		= guiCreateEdit ( 0.03, 0.92, 0.80, 0.06, "", true, aTab5.Tab )
+		guiEditSetMaxLength(aTab5.AdminText, ADMIN_CHAT_MAXLENGTH)
 		aTab5.AdminSay		= guiCreateButton ( 0.85, 0.92, 0.08, 0.06, "Say", true, aTab5.Tab )
 		aTab5.AdminChatHelp	= guiCreateButton ( 0.94, 0.92, 0.03, 0.06, "?", true, aTab5.Tab )
 
@@ -1075,16 +1071,8 @@ function aClientClick ( button )
 			elseif ( source == aTab2.ResourceRefresh or source == aTab2.ResourceInclMaps ) then
 				guiGridListClear ( aTab2.ResourceList )
 				triggerServerEvent ( "aSync", localPlayer, "resources" )
-			elseif ( source == aTab2.ExecuteClient ) then
-				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then aExecute ( guiGetText ( aTab2.Command ), true ) end
-			elseif ( source == aTab2.ExecuteServer ) then
-				if ( ( guiGetText ( aTab2.Command ) ) and ( guiGetText ( aTab2.Command ) ~= "" ) ) then triggerServerEvent ( "aExecute", localPlayer, guiGetText ( aTab2.Command ), true ) end
-			elseif ( source == aTab2.Command ) then
-
-				guiSetVisible ( aTab2.ExecuteAdvanced, false )
-			elseif ( source == aTab2.ExecuteAdvanced ) then
-				guiSetVisible ( aTab2.ExecuteAdvanced, false )
 			end
+			
 		-- TAB 3, WORLD
 		elseif ( getElementParent ( source ) == aTab3.Tab ) then
 			if ( source == aTab3.SetGameType ) then aInputBox ( "Game Type", "Enter game type:", "", "setGameType" )
@@ -1427,19 +1415,11 @@ end
 
 function loadFlagImage( guiStaticImage, countryCode )
 	if countryCode then
-		local flagFilename = "client\\images\\flags\\"..tostring ( countryCode )..".png"
-		if getVersion().sortable and getVersion().sortable > "1.1.0" then
-			-- 1.1
-			if fileExists( flagFilename ) then
-				if guiStaticImageLoadImage ( guiStaticImage, flagFilename ) then
-					return
-				end
+		local flagFilename = ":ip2c/client/images/flags/"..tostring ( countryCode )..".png"
+		if fileExists( flagFilename ) then
+			if guiStaticImageLoadImage ( guiStaticImage, flagFilename ) then
+				return
 			end
-		else
-			-- 1.0
-			guiStaticImageLoadImage ( guiStaticImage, "client\\images\\empty.png" )
-			guiStaticImageLoadImage ( guiStaticImage, flagFilename )
-			return
 		end
 	end
 	guiStaticImageLoadImage ( guiStaticImage, "client\\images\\empty.png" )

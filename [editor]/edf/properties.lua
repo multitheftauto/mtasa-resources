@@ -19,11 +19,15 @@ propertyGetters = {
 		end,
 		scale = getObjectScale,
 		breakable = function(element)
-			local breakable = getElementData(element,"breakable")
-			if breakable =="true" or breakable == false then
-				return "true"
+			if isObjectBreakable then
+				return isObjectBreakable(element) and "true" or "false"
 			else
-				return "false"
+				local breakable = getElementData(element, "breakable")
+				if breakable == "true" or breakable == false then
+					return "true"
+				else
+					return "false"
+				end
 			end
 		end,
 		collisions = function(element)
@@ -167,7 +171,11 @@ propertySetters = {
 			return false
 		end,
 		breakable = function(element, breakable)
-			return setElementData(element,"breakable",breakable=="true" and "true" or "false")
+			if setObjectBreakable then
+				return setObjectBreakable(element, breakable == "true")
+			else
+				return setElementData(element, "breakable", breakable == "true" and "true" or "false")
+			end
 		end,
 		collisions = function(element, state)
 			return setElementData(element, "collisions", state == "false" and "false" or "true")

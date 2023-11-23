@@ -16,15 +16,73 @@ aStats = {}
 aReports = {}
 aWeathers = {}
 
+function aHandleIP2CUpdate()
+    local playersToUpdate = false
+    local playersTable = getElementsByType("player") -- cache result, save function call
+
+    for playerID = 1, #playersTable do
+        local playerElement = playersTable[playerID]
+
+        if not playersToUpdate then
+            playersToUpdate = {} -- create table only when there are at least one player
+        end
+
+        updatePlayerCountry(playerElement)
+        playersToUpdate[#playersToUpdate + 1] = playerElement
+    end
+
+    if not playersToUpdate then
+        return -- if there are no players, stop further code execution
+    end
+
+    for playerID = 1, #playersTable do
+        local playerElement = playersTable[playerID]
+        local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel")
+
+        if hasAdminPermission then
+            
+            for playerToUpdateID = 1, #playersToUpdate do
+                local playerToUpdate = playersToUpdate[playerToUpdateID]
+
+                triggerClientEvent(playerElement, "aClientPlayerJoin", playerToUpdate,
+                    false, false, false, false,
+                    aPlayers[playerToUpdate].country,
+                    aPlayers[playerToUpdate].countryname
+                )
+            end
+        end
+    end
+end
+
+function aHandleIp2cSetting()
+	local enabled = get("*useip2c")
+	if enabled and enabled == "true" then
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c and getResourceState(ip2c) == "loaded" then
+            -- Persistent
+			startResource(ip2c, true)
+		end
+	elseif (not enabled) or (enabled == "false") then
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c and getResourceState(ip2c) == "running" then
+			stopResource(ip2c)
+		end
+	end
+end
+
 addEventHandler(
     "onResourceStart",
     root,
     function(resource)
         if (resource ~= getThisResource()) then
+            local resourceName = getResourceName(resource)
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
-                    triggerClientEvent(player, "aClientResourceStart", root, getResourceName(resource))
+                    triggerClientEvent(player, "aClientResourceStart", root, resourceName)
                 end
+            end
+            if resourceName == "ip2c" then
+                aHandleIP2CUpdate()
             end
             return
         end
@@ -32,10 +90,10 @@ addEventHandler(
         aSetupACL()
         aSetupCommands()
         aSetupStorage()
-
         for id, player in ipairs(getElementsByType("player")) do
             aPlayerInitialize(player)
         end
+        aHandleIp2cSetting()
     end
 )
 
@@ -44,10 +102,14 @@ addEventHandler(
     root,
     function(resource)
         if (resource ~= getThisResource()) then
+            local resourceName = getResourceName(resource)
             for id, player in ipairs(getElementsByType("player")) do
                 if (hasObjectPermissionTo(player, "general.tab_resources")) then
-                    triggerClientEvent(player, "aClientResourceStop", root, getResourceName(resource))
+                    triggerClientEvent(player, "aClientResourceStop", root, resourceName)
                 end
+            end
+            if resourceName == "ip2c" then
+                aHandleIP2CUpdate()
             end
         else
             aReleaseStorage()
@@ -70,6 +132,7 @@ addEventHandler(
                     getPlayerIP(source),
                     getPlayerUserName(source),
                     getPlayerSerial(source),
+                    false,
                     aPlayers[source]["country"],
                     aPlayers[source]["countryname"]
                 )
@@ -87,13 +150,21 @@ addEventHandler(
     end
 )
 
+function updatePlayerCountry(player)
+    local isIP2CResourceRunning = getResourceFromName( "ip2c" )
+	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
+    aPlayers[player].country = isIP2CResourceRunning and exports.ip2c:getPlayerCountry(player) or false
+    if aPlayers[player].country then
+        aPlayers[player].countryname = isIP2CResourceRunning and exports.ip2c:getCountryName(aPlayers[player].country) or false
+    end
+end
+
 function aPlayerInitialize(player)
     aPlayers[player] = {}
-    aPlayers[player].country = getPlayerCountry(player)
-    aPlayers[player].countryname = getPlayerCountryName(player)
     aPlayers[player].money = getPlayerMoney(player)
     aPlayers[player].muted = isPlayerMuted(player)
     aPlayers[player].frozen = isElementFrozen(player)
+    updatePlayerCountry(player)
 end
 
 function aAction(type, action, admin, player, data, more)
@@ -271,7 +342,7 @@ addEventHandler(
     "aServerGlitchRefresh",
     root,
     function()
-        triggerClientEvent("aClientRefresh", client, isGlitchEnabled("quickreload"), isGlitchEnabled("fastmove"), isGlitchEnabled("fastfire"), isGlitchEnabled("crouchbug"), isGlitchEnabled("highcloserangedamage"), isGlitchEnabled("hitanim"), isGlitchEnabled("fastsprint"), isGlitchEnabled("baddrivebyhitbox"), isGlitchEnabled("quickstand"))
+        triggerClientEvent("aClientRefresh", client, isGlitchEnabled("quickreload"), isGlitchEnabled("fastmove"), isGlitchEnabled("fastfire"), isGlitchEnabled("crouchbug"), isGlitchEnabled("highcloserangedamage"), isGlitchEnabled("hitanim"), isGlitchEnabled("fastsprint"), isGlitchEnabled("baddrivebyhitbox"), isGlitchEnabled("quickstand"), isGlitchEnabled("kickoutofvehicle_onmodelreplace"))
     end
 )
 
@@ -288,23 +359,39 @@ addEventHandler(
             aReports[id].category = tostring(data.category)
             aReports[id].subject = tostring(data.subject)
             aReports[id].text = tostring(data.message)
-            aReports[id].time = time.monthday .. "/" .. time.month .. " " .. time.hour .. ":" .. time.minute
+            aReports[id].time = string.format("%02d/%02d %02d:%02d", time.monthday, time.month+1, time.hour, time.minute)
             aReports[id].read = false
         elseif (action == "get") then
             triggerClientEvent(source, "aMessage", source, "get", aReports)
+            return
         elseif (action == "read") then
             if (aReports[data]) then
                 aReports[data].read = true
             end
+            triggerClientEvent(source, "aMessage", source, "get", aReports)
         elseif (action == "delete") then
-            if (aReports[data]) then
-                table.remove(aReports, data)
+            local id = data[1]
+            if (not aReports[id]) then
+                outputChatBox("Error - Message not found.", source, 255, 0, 0)
+                triggerClientEvent(source, "aMessage", source, "get", aReports)
+                return
             end
+
+            local message = data[2]
+            for key, value in pairs(aReports[id]) do
+                if (message[key] ~= value) then
+                    outputChatBox("Error - Message mismatch, please try again.", source, 255, 0, 0)
+                    triggerClientEvent(source, "aMessage", source, "get", aReports)
+                    return
+                end
+            end
+
+            table.remove(aReports, id)
             triggerClientEvent(source, "aMessage", source, "get", aReports)
         end
         for id, p in ipairs(getElementsByType("player")) do
             if (hasObjectPermissionTo(p, "general.adminpanel")) then
-                triggerEvent("aSync", p, "messages")
+                triggerEvent(EVENT_SYNC, p, SYNC_MESSAGES)
             end
         end
     end
@@ -358,38 +445,14 @@ addEventHandler(
     end
 )
 
-addEvent("aExecute", true)
-addEventHandler(
-    "aExecute",
-    root,
-    function(action, echo)
-        if (hasObjectPermissionTo(source, "command.execute")) then
-            local result = loadstring("return " .. action)()
-            if (echo == true) then
-                local restring = ""
-                if (type(result) == "table") then
-                    for k, v in pairs(result) do
-                        restring = restring .. tostring(v) .. ", "
-                    end
-                    restring = string.sub(restring, 1, -3)
-                    restring = "Table (" .. restring .. ")"
-                elseif (type(result) == "userdata") then
-                    restring = "Element (" .. getElementType(result) .. ")"
-                else
-                    restring = tostring(result)
-                end
-                outputChatBox("Command executed! Result: " .. restring, source, 0, 0, 255)
-            end
-            outputServerLog("ADMIN: " .. getPlayerName(source) .. " executed command: " .. action)
-        end
-    end
-)
-
 addEvent("aAdminChat", true)
 addEventHandler(
     "aAdminChat",
     root,
     function(chat)
+        if #chat > ADMIN_CHAT_MAXLENGTH then
+            return
+        end
         for id, player in ipairs(getElementsByType("player")) do
             if (aPlayers[player]["chat"]) then
                 triggerClientEvent(player, "aClientAdminChat", source, chat)

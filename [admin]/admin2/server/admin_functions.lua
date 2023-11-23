@@ -57,6 +57,14 @@ aFunctions = {
             toggleAllControls(player, true, true, false)
             setElementFrozen(player, false)
         end,
+        ["setnick"] = function(player, nick)
+            if (#nick > 0) then
+                local oldnick = getPlayerName(player)
+                return setPlayerName(player, nick), oldnick
+            else
+                return false
+            end
+        end,
         ["shout"] = function(player, text)
             local textDisplay = textCreateDisplay()
             local textItem =
@@ -81,18 +89,18 @@ aFunctions = {
         ["sethealth"] = function(player, health1)
             local health = tonumber(health1)
             if (health) then
-                if (health > 200 or health <= 0) then
+                if (health > 200 or health < 0) then
                     health = 100
                 end
                 return setElementHealth(player, health), health
             else
-                action = false
+                return false
             end
         end,
         ["setarmour"] = function(player, armour1)
             local armour = tonumber(armour1)
             if (armour) then
-                if (armour > 200 or armour <= 0) then
+                if (armour > 200 or armour < 0) then
                     armour = 100
                 end
                 return setPedArmor(player, armour), armour
@@ -165,8 +173,8 @@ aFunctions = {
             end
         end,
         ["jetpack"] = function(player)
-            if (doesPedHaveJetPack(player)) then
-                removePedJetPack(player)
+            if (isPedWearingJetpack(player)) then
+                setPedWearingJetpack(player, false)
                 return true, "jetpackr"
             else
                 if (getPedOccupiedVehicle(player)) then
@@ -178,39 +186,27 @@ aFunctions = {
                         0
                     )
                 else
-                    if (givePedJetPack(player)) then
+                    if (setPedWearingJetpack(player, true)) then
                         return true, "jetpacka"
                     end
                 end
             end
         end,
-        ["setgroup"] = function(player, data)
-            -- NEEDS CHECKING
+        ["setgroup"] = function(player, data, groupName)
             local account = getPlayerAccount(player)
             if (not isGuestAccount(account)) then
-                local group = aclGetGroup(data)
+                local group = aclGetGroup(groupName)
                 if (group) then
                     if (data == true) then
                         aclGroupAddObject(group, "user." .. getAccountName(account))
-                        return true, "admina"
+                        triggerEvent(EVENT_SYNC, source, SYNC_PLAYERACL, player)
+                        return "admina", groupName
                     elseif (data == false) then
                         aclGroupRemoveObject(group, "user." .. getAccountName(account))
                         aPlayers[player]["chat"] = false
-                        return true, "adminr"
+                        triggerEvent(EVENT_SYNC, source, SYNC_PLAYERACL, player)
+                        return "adminr", groupName
                     end
-                    for id, p in ipairs(getElementsByType("player")) do
-                        if (hasObjectPermissionTo(p, "general.adminpanel")) then
-                            triggerEvent("aSync", p, "admins")
-                        end
-                    end
-                else
-                    outputChatBox(
-                        "Error - Admin group not initialized. Please reinstall admin resource.",
-                        source,
-                        255,
-                        0,
-                        0
-                    )
                 end
             else
                 outputChatBox("Error - Player is not logged in.", source, 255, 100, 100)

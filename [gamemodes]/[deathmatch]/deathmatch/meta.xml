@@ -1,22 +1,32 @@
 <meta>
-	<info author="Talidan" version="1.0.0" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode" edf:definition="edf/dm.edf" />
+	<info name="Deathmatch" author="Talidan, jlillis" version="2.0.0" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode." edf:definition="edf/dm.edf" />
+
+	<!-- Required resources -->
 	<include resource="killmessages" />
 	<include resource="playercolors" />
 	<include resource="deathpickups" />
 	<include resource="spawnmanager" />
+	<include resource="mapmanager" />
 	<include resource="missiontimer" />
 	<include resource="scoreboard" />
+	<include resource="defaultstats" />
 
-	<script src="logic.lua" />
-	<script src="spawn.lua" />
+	<!-- Shared files -->
+	<script src="shared/shared.lua" type="shared"/>
 
-	<script src="logic_client.lua" type="client"/>
-	<file src="images/frag.png" />
+	<!-- Server files -->
+	<script src="server/main.lua" />
+	<script src="server/player.lua" />
+	<script src="server/round.lua" />
+
+	<!-- Client files -->
+	<script src="client/lib/client_anim.lua" type="client" />
+	<script src="client/lib/textlib_anim.lua" type="client" />
+	<script src="client/lib/textlib.lua" type="client" />
+	<script src="client/main.lua" type="client" />
+	<script src="client/hud.lua" type="client" />
+	<file src="client/audio/mission_accomplished.mp3" />
+
+	<!-- EDF files -->
 	<file src="edf/spawnpoint.png" />
-
-	<!--Utils-->
-	<script src="utils/client_anim.lua" type="client" />
-	<script src="utils/textlib_anim.lua" type="client" />
-	<script src="utils/textlib_s.lua" type="server" />
-	<script src="utils/textlib.lua" type="client" />
 </meta>

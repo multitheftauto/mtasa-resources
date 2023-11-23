@@ -151,6 +151,7 @@ function startWhenLoaded()
 	end
 	if isInterfaceLoaded() then
 		removeEventHandler("onClientResourceStart", root, startWhenLoaded)
+		loadRotationFixXML()
 		startEditor()
 	end
 end
@@ -730,7 +731,7 @@ function disableGameHUD()
 end
 
 -- PUBLIC
-function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedrop)
+function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedrop, ignoreProperties)
 	local openProperties
 	submode = submode or g_submode
 
@@ -802,8 +803,10 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 			createArrowMarker(handle)
 		end
 	else
-		editor_gui.openPropertiesBox( element, false, shortcut )
-		openProperties = true
+		if not ignoreProperties then
+			editor_gui.openPropertiesBox( element, false, shortcut )
+			openProperties = true
+		end
 	end
 
 	triggerServerEvent("doLockElement", element)
@@ -875,6 +878,9 @@ function dropElement(releaseLock,clonedrop)
 
 	-- trigger server selection events
 	triggerServerEvent("onElementDrop", g_selectedElement)
+	
+	-- Clear rotation as it can be rotated by other players
+	clearElementQuat(g_selectedElement)
 
 	local droppedElement = g_selectedElement
 	g_selectedElement = false
@@ -954,7 +960,7 @@ end
 
 -- sets the maximum distance at which an element can be selected
 function setMaxSelectDistance(distance)
-	assert((distance >= 0), "Distance must be a positive number")
+	assert((distance >= 0), "Distance must be a positive number.")
 	g_maxSelectDistance = distance
 	return true
 end
@@ -975,7 +981,10 @@ function getMaxSelectDistance()
 	return g_maxSelectDistance
 end
 
-function destroySelectedElement()
+function destroySelectedElement(key)
+	if key then
+		editor_gui.restoreSelectedElement()
+	end
 	if g_selectedElement then
 		local element = g_selectedElement
 		dropElement(false)
@@ -1276,8 +1285,10 @@ function setMovementType( movementType )
 	if g_arrowMarker then
 		if movementType == "move" then
 			setMarkerColor(g_arrowMarker, 255, 255, 0)
-		elseif movementType == "rotate" then
+		elseif movementType == "rotate" or movementType == "rotate_world" then
 			setMarkerColor(g_arrowMarker, 0, 255, 0)
+		elseif movementType == "rotate_local" then
+			setMarkerColor(g_arrowMarker, 0, 255, 255)
 		end
 	end
 end

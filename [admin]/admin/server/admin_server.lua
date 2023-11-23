@@ -33,12 +33,69 @@ function notifyPlayerLoggedIn(player)
 	end
 end
 
+function aHandleIP2CUpdate()
+    local playersToUpdate = false
+    local playersTable = getElementsByType("player") -- cache result, save function call
+
+    for playerID = 1, #playersTable do
+        local playerElement = playersTable[playerID]
+
+        if not playersToUpdate then
+            playersToUpdate = {} -- create table only when there are at least one player
+        end
+
+        updatePlayerCountry(playerElement)
+        playersToUpdate[#playersToUpdate + 1] = playerElement
+    end
+
+    if not playersToUpdate then
+        return -- if there are no players, stop further code execution
+    end
+
+    for playerID = 1, #playersTable do
+        local playerElement = playersTable[playerID]
+        local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel")
+
+        if hasAdminPermission then
+            
+            for playerToUpdateID = 1, #playersToUpdate do
+                local playerToUpdate = playersToUpdate[playerToUpdateID]
+
+                triggerClientEvent(playerElement, "aClientPlayerJoin", playerToUpdate,
+					false, false, false, false,
+					aPlayers[playerToUpdate]["country"]
+				)
+            end
+        end
+    end
+end
+
+function aHandleIp2cSetting()
+	local enabled = get("*useip2c")
+	if enabled and enabled == "true" then
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c and getResourceState(ip2c) == "loaded" then
+            -- Persistent
+			startResource(ip2c, true)
+		end
+	elseif (not enabled) or (enabled == "false") then
+		local ip2c = getResourceFromName("ip2c")
+		if ip2c and getResourceState(ip2c) == "running" then
+			stopResource(ip2c)
+		end
+	end
+end
+
 addEventHandler ( "onResourceStart", root, function ( resource )
 	if ( resource ~= getThisResource() ) then
+		local resourceName = getResourceName(resource)
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
-				triggerClientEvent ( player, "aClientResourceStart", root, getResourceName ( resource ) )
+				triggerClientEvent ( player, "aClientResourceStart", root, resourceName )
 			end
+		end
+		if resourceName == "ip2c" then
+			aHandleIP2CUpdate()
 		end
 		return
 	end
@@ -55,6 +112,7 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 			notifyPlayerLoggedIn(player)
 		end
 	end
+	aHandleIp2cSetting()
 	local node = xmlLoadFile ( "conf\\interiors.xml" )
 	if ( node ) then
 		local interiors = 0
@@ -202,10 +260,14 @@ addEventHandler ( "onResourceStop", root, function ( resource )
 	if not stillExists then return end
 
 	if ( resource ~= getThisResource() ) then
+		local resourceName = getResourceName(resource)
 		for id, player in ipairs(getElementsByType("player")) do
 			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
-				triggerClientEvent ( player, "aClientResourceStop", root, getResourceName ( resource ) )
+				triggerClientEvent ( player, "aClientResourceStop", root, resourceName )
 			end
+		end
+		if resourceName == "ip2c" then
+			aHandleIP2CUpdate()
 		end
 	else
 		local node = xmlLoadFile ( "conf\\reports.xml" )
@@ -386,18 +448,18 @@ addEventHandler ( "onPlayerJoin", root, function ()
 	setPedGravity ( source, getGravity() )
 end )
 
+function updatePlayerCountry ( player )
+	local isIP2CResourceRunning = getResourceFromName( "ip2c" )
+	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
+	aPlayers[player]["country"] = isIP2CResourceRunning and exports.ip2c:getPlayerCountry ( player ) or false
+end
+
 function aPlayerInitialize ( player )
-	local serial = getPlayerSerial ( player )
-	if ( not isValidSerial ( serial ) ) then
-		outputChatBox ( "ERROR: "..getPlayerName ( player ).." - Invalid Serial." )
-		kickPlayer ( player, "Invalid Serial" )
-	else
-		bindKey ( player, "p", "down", "admin" )
-		--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerSerial ( player ) )
-		aPlayers[player] = {}
-		aPlayers[player]["country"] = getPlayerCountry ( player )
-		aPlayers[player]["money"] = getPlayerMoney ( player )
-	end
+	bindKey ( player, "p", "down", "admin" )
+	--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerSerial ( player ) )
+	aPlayers[player] = {}
+	aPlayers[player]["money"] = getPlayerMoney ( player )
+	updatePlayerCountry ( player )
 	chatHistory[player] = {}
 end
 
@@ -1507,17 +1569,12 @@ addEventHandler ( "aBans", root, function ( action, data, arg1, arg2, arg3 )
 		elseif ( action == "banserial" ) then
 			mdata = data
 			local serial = string.upper ( data )
-			if ( isValidSerial ( serial ) ) then
-				local newban = addBan ( nil, nil, serial, source, arg2, arg3 )
-				if ( not newban ) then
-					action = nil
-				else
-					setBanAdmin(newban, getAccountName(getPlayerAccount(source)))
-					setBanNick (newban, arg1)
-				end
-			else
-				outputChatBox ( "Error - Invalid serial", source, 255, 0, 0 )
+			local newban = addBan ( nil, nil, serial, source, arg2, arg3 )
+			if ( not newban ) then
 				action = nil
+			else
+				setBanAdmin(newban, getAccountName(getPlayerAccount(source)))
+				setBanNick (newban, arg1)
 			end
 		elseif ( action == "unbanip" ) then
 			mdata = data
@@ -1550,30 +1607,11 @@ addEventHandler ( "aBans", root, function ( action, data, arg1, arg2, arg3 )
 	return false
 end )
 
-addEvent ( "aExecute", true )
-addEventHandler ( "aExecute", root, function ( action, echo )
-	if checkClient( "command.execute", source, 'aExecute', action ) then return end
-	if ( hasObjectPermissionTo ( client or source, "command.execute" ) ) then
-		local result = loadstring("return " .. action)()
-		if ( echo == true ) then
-			local restring = ""
-			if ( type ( result ) == "table" ) then
-				for k,v in pairs ( result ) do restring = restring..tostring ( v )..", " end
-				restring = string.sub(restring,1,-3)
-				restring = "Table ("..restring..")"
-			elseif ( type ( result ) == "userdata" ) then
-				restring = "Element ("..getElementType ( result )..")"
-			else
-				restring = tostring ( result )
-			end
-			outputChatBox( "Command executed! Result: " ..restring, source, 0, 0, 255 )
-		end
-		outputServerLog ( "ADMIN: "..getAdminNameForLog ( source ).." executed command: "..action )
-	end
-end )
-
 addEvent ( "aAdminChat", true )
 addEventHandler ( "aAdminChat", root, function ( chat )
+	if #chat > ADMIN_CHAT_MAXLENGTH then
+		return
+	end
 	if checkClient( true, source, 'aAdminChat' ) then return end
 	for id, player in ipairs(getElementsByType("player")) do
 		if ( aPlayers[player]["chat"] ) then

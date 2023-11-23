@@ -1,6 +1,6 @@
 <meta>
   <info author="lil_Toady" type="misc" version="1.5.9" />
-  <min_mta_version server="1.5.5-9.13846" client="1.5.6-9.16361"/>
+  <min_mta_version client="1.5.9-9.20957.0" server="1.5.9-9.20957.0"/>
   <!--
     Admin System Meta File.
 
@@ -13,41 +13,40 @@
   <script src="server/admin_server.lua" />
   <script src="server/admin_sync.lua" />
   <script src="server/admin_commands.lua" />
-  <script src="server/admin_ip2c.lua" />
   <script src="server/admin_servermaps.lua" />
   <script src="server/admin_ACL.lua" />
   <script src="server/admin_settings.lua" />
   <script src="server/admin_screenshot.lua" />
   <script src="server/http/admin_http.lua" />
-  <script src="client/admin_clientjoiner.lua" type="client" />
-  <script src="client/admin_clientprefs.lua" type="client" />
-  <script src="client/admin_client.lua" type="client" />
-  <script src="client/admin_gui.lua" type="client" />
-  <script src="client/admin_ACL.lua" type="client" />
-  <script src="client/gui/admin_main.lua" type="client" />
-  <script src="client/gui/admin_performance.lua" type="client" />
-  <script src="client/gui/admin_permissions.lua" type="client" />
-  <script src="client/gui/admin_maps.lua" type="client" />
-  <script src="client/gui/admin_messages.lua" type="client" />
-  <script src="client/gui/admin_message.lua" type="client" />
-  <script src="client/gui/admin_moddetails.lua" type="client" />
-  <script src="client/gui/admin_spectator.lua" type="client" />
-  <script src="client/gui/admin_messagebox.lua" type="client" />
-  <script src="client/gui/admin_inputbox.lua" type="client" />
-  <script src="client/gui/admin_team.lua" type="client" />
-  <script src="client/gui/admin_skin.lua" type="client" />
-  <script src="client/gui/admin_stats.lua" type="client" />
-  <script src="client/gui/admin_vehicle.lua" type="client" />
-  <script src="client/gui/admin_interior.lua" type="client" />
-  <script src="client/gui/admin_ban.lua" type="client" />
-  <script src="client/gui/admin_warp.lua" type="client" />
-  <script src="client/gui/admin_report.lua" type="client" />
-  <script src="client/gui/admin_acl.lua" type="client" />
-  <script src="client/gui/admin_settings.lua" type="client" />
-  <script src="client/gui/admin_screenshot.lua" type="client" />
-  <script src="client/colorpicker/colorpicker.lua" type="client" />
+  <script src="client/admin_clientprefs.lua" type="client" cache="false" />
+  <script src="client/admin_client.lua" type="client" cache="false" />
+  <script src="client/admin_gui.lua" type="client" cache="false" />
+  <script src="client/admin_ACL.lua" type="client" cache="false" />
+  <script src="client/gui/admin_main.lua" type="client" cache="false" />
+  <script src="client/gui/admin_performance.lua" type="client" cache="false" />
+  <script src="client/gui/admin_permissions.lua" type="client" cache="false" />
+  <script src="client/gui/admin_maps.lua" type="client" cache="false" />
+  <script src="client/gui/admin_messages.lua" type="client" cache="false" />
+  <script src="client/gui/admin_message.lua" type="client" cache="false" />
+  <script src="client/gui/admin_moddetails.lua" type="client" cache="false" />
+  <script src="client/gui/admin_spectator.lua" type="client" cache="false" />
+  <script src="client/gui/admin_messagebox.lua" type="client" cache="false" />
+  <script src="client/gui/admin_inputbox.lua" type="client" cache="false" />
+  <script src="client/gui/admin_team.lua" type="client" cache="false" />
+  <script src="client/gui/admin_skin.lua" type="client" cache="false" />
+  <script src="client/gui/admin_stats.lua" type="client" cache="false" />
+  <script src="client/gui/admin_vehicle.lua" type="client" cache="false" />
+  <script src="client/gui/admin_interior.lua" type="client" cache="false" />
+  <script src="client/gui/admin_ban.lua" type="client" cache="false" />
+  <script src="client/gui/admin_warp.lua" type="client" cache="false" />
+  <script src="client/gui/admin_report.lua" type="client" cache="false" />
+  <script src="client/gui/admin_acl.lua" type="client" cache="false" />
+  <script src="client/gui/admin_settings.lua" type="client" cache="false" />
+  <script src="client/gui/admin_screenshot.lua" type="client" cache="false" />
+  <script src="client/colorpicker/colorpicker.lua" type="client" cache="false" />
 
-  <!--Exported Functions-->
+  <!-- Placeholder for backwards compatibility -->
+  <script src="server/admin_ip2c.lua" />
   <export function="getPlayerCountry"/>
 
   <!--Required XML configs kept in /conf/ folder-->
@@ -76,201 +75,6 @@
   <file src="client/colorpicker/cursor.png" />
   <file src="client/colorpicker/blank.png" />
   <file src="client/colorpicker/h.png" />
-
-  <!--Country flags for IP2C-->
-  <file src="client/images/flags/ac.png" />
-  <file src="client/images/flags/ad.png" />
-  <file src="client/images/flags/ae.png" />
-  <file src="client/images/flags/af.png" />
-  <file src="client/images/flags/ag.png" />
-  <file src="client/images/flags/ai.png" />
-  <file src="client/images/flags/al.png" />
-  <file src="client/images/flags/am.png" />
-  <file src="client/images/flags/an.png" />
-  <file src="client/images/flags/ao.png" />
-  <file src="client/images/flags/aq.png" />
-  <file src="client/images/flags/ar.png" />
-  <file src="client/images/flags/as.png" />
-  <file src="client/images/flags/at.png" />
-  <file src="client/images/flags/au.png" />
-  <file src="client/images/flags/aw.png" />
-  <file src="client/images/flags/ax.png" />
-  <file src="client/images/flags/az.png" />
-  <file src="client/images/flags/ba.png" />
-  <file src="client/images/flags/bb.png" />
-  <file src="client/images/flags/bd.png" />
-  <file src="client/images/flags/be.png" />
-  <file src="client/images/flags/bf.png" />
-  <file src="client/images/flags/bg.png" />
-  <file src="client/images/flags/bh.png" />
-  <file src="client/images/flags/bi.png" />
-  <file src="client/images/flags/bj.png" />
-  <file src="client/images/flags/bm.png" />
-  <file src="client/images/flags/bn.png" />
-  <file src="client/images/flags/bo.png" />
-  <file src="client/images/flags/br.png" />
-  <file src="client/images/flags/bs.png" />
-  <file src="client/images/flags/bt.png" />
-  <file src="client/images/flags/bv.png" />
-  <file src="client/images/flags/bw.png" />
-  <file src="client/images/flags/by.png" />
-  <file src="client/images/flags/bz.png" />
-  <file src="client/images/flags/ca.png" />
-  <file src="client/images/flags/cc.png" />
-  <file src="client/images/flags/cd.png" />
-  <file src="client/images/flags/cf.png" />
-  <file src="client/images/flags/cg.png" />
-  <file src="client/images/flags/ch.png" />
-  <file src="client/images/flags/ci.png" />
-  <file src="client/images/flags/ck.png" />
-  <file src="client/images/flags/cl.png" />
-  <file src="client/images/flags/cm.png" />
-  <file src="client/images/flags/cn.png" />
-  <file src="client/images/flags/co.png" />
-  <file src="client/images/flags/cr.png" />
-  <file src="client/images/flags/cs.png" />
-  <file src="client/images/flags/cu.png" />
-  <file src="client/images/flags/cv.png" />
-  <file src="client/images/flags/cx.png" />
-  <file src="client/images/flags/cy.png" />
-  <file src="client/images/flags/cz.png" />
-  <file src="client/images/flags/de.png" />
-  <file src="client/images/flags/dj.png" />
-  <file src="client/images/flags/dk.png" />
-  <file src="client/images/flags/dm.png" />
-  <file src="client/images/flags/do.png" />
-  <file src="client/images/flags/dz.png" />
-  <file src="client/images/flags/ec.png" />
-  <file src="client/images/flags/ee.png" />
-  <file src="client/images/flags/eg.png" />
-  <file src="client/images/flags/eh.png" />
-  <file src="client/images/flags/er.png" />
-  <file src="client/images/flags/es.png" />
-  <file src="client/images/flags/et.png" />
-  <file src="client/images/flags/eu.png" />
-  <file src="client/images/flags/fi.png" />
-  <file src="client/images/flags/fo.png" />
-  <file src="client/images/flags/fr.png" />
-  <file src="client/images/flags/fj.png" />
-  <file src="client/images/flags/ga.png" />
-  <file src="client/images/flags/gb.png" />
-  <file src="client/images/flags/gd.png" />
-  <file src="client/images/flags/gl.png" />
-  <file src="client/images/flags/gm.png" />
-  <file src="client/images/flags/gw.png" />
-  <file src="client/images/flags/gp.png" />
-  <file src="client/images/flags/gt.png" />
-  <file src="client/images/flags/gy.png" />
-  <file src="client/images/flags/hu.png" />
-  <file src="client/images/flags/id.png" />
-  <file src="client/images/flags/ie.png" />
-  <file src="client/images/flags/il.png" />
-  <file src="client/images/flags/in.png" />
-  <file src="client/images/flags/iq.png" />
-  <file src="client/images/flags/is.png" />
-  <file src="client/images/flags/it.png" />
-  <file src="client/images/flags/ja.png" />
-  <file src="client/images/flags/jm.png" />
-  <file src="client/images/flags/jp.png" />
-  <file src="client/images/flags/kw.png" />
-  <file src="client/images/flags/kp.png" />
-  <file src="client/images/flags/lt.png" />
-  <file src="client/images/flags/lu.png" />
-  <file src="client/images/flags/lv.png" />
-  <file src="client/images/flags/lk.png" />
-  <file src="client/images/flags/ly.png" />
-  <file src="client/images/flags/ma.png" />
-  <file src="client/images/flags/mc.png" />
-  <file src="client/images/flags/mg.png" />
-  <file src="client/images/flags/mh.png" />
-  <file src="client/images/flags/mt.png" />
-  <file src="client/images/flags/mu.png" />
-  <file src="client/images/flags/ng.png" />
-  <file src="client/images/flags/nl.png" />
-  <file src="client/images/flags/no.png" />
-  <file src="client/images/flags/nr.png" />
-  <file src="client/images/flags/ni.png" />
-  <file src="client/images/flags/pa.png" />
-  <file src="client/images/flags/pe.png" />
-  <file src="client/images/flags/ph.png" />
-  <file src="client/images/flags/pk.png" />
-  <file src="client/images/flags/pl.png" />
-  <file src="client/images/flags/pr.png" />
-  <file src="client/images/flags/ps.png" />
-  <file src="client/images/flags/pt.png" />
-  <file src="client/images/flags/pm.png" />
-  <file src="client/images/flags/py.png" />
-  <file src="client/images/flags/qa.png" />
-  <file src="client/images/flags/re.png" />
-  <file src="client/images/flags/ro.png" />
-  <file src="client/images/flags/ru.png" />
-  <file src="client/images/flags/rw.png" />
-  <file src="client/images/flags/sd.png" />
-  <file src="client/images/flags/se.png" />
-  <file src="client/images/flags/sj.png" />
-  <file src="client/images/flags/sl.png" />
-  <file src="client/images/flags/so.png" />
-  <file src="client/images/flags/sy.png" />
-  <file src="client/images/flags/td.png" />
-  <file src="client/images/flags/to.png" />
-  <file src="client/images/flags/tn.png" />
-  <file src="client/images/flags/tv.png" />
-  <file src="client/images/flags/ua.png" />
-  <file src="client/images/flags/uk.png" />
-  <file src="client/images/flags/um.png" />
-  <file src="client/images/flags/us.png" />
-  <file src="client/images/flags/uy.png" />
-  <file src="client/images/flags/uz.png" />
-  <file src="client/images/flags/vn.png" />
-  <file src="client/images/flags/wf.png" />
-  <file src="client/images/flags/ws.png" />
-  <file src="client/images/flags/ye.png" />
-  <file src="client/images/flags/yt.png" />
-  <file src="client/images/flags/yu.png" />
-  <file src="client/images/flags/za.png" />
-  <file src="client/images/flags/ge.png" />
-  <file src="client/images/flags/gr.png" />
-  <file src="client/images/flags/hk.png" />
-  <file src="client/images/flags/hn.png" />
-  <file src="client/images/flags/ht.png" />
-  <file src="client/images/flags/ir.png" />
-  <file src="client/images/flags/jo.png" />
-  <file src="client/images/flags/je.png" />
-  <file src="client/images/flags/kg.png" />
-  <file src="client/images/flags/kr.png" />
-  <file src="client/images/flags/kn.png" />
-  <file src="client/images/flags/kz.png" />
-  <file src="client/images/flags/lb.png" />
-  <file src="client/images/flags/md.png" />
-  <file src="client/images/flags/mv.png" />
-  <file src="client/images/flags/mz.png" />
-  <file src="client/images/flags/me.png" />
-  <file src="client/images/flags/mk.png" />
-  <file src="client/images/flags/my.png" />
-  <file src="client/images/flags/mm.png" />
-  <file src="client/images/flags/mn.png" />
-  <file src="client/images/flags/mx.png" />
-  <file src="client/images/flags/np.png" />
-  <file src="client/images/flags/nc.png" />
-  <file src="client/images/flags/nz.png" />
-  <file src="client/images/flags/om.png" />
-  <file src="client/images/flags/pg.png" />
-  <file src="client/images/flags/rs.png" />
-  <file src="client/images/flags/sa.png" />
-  <file src="client/images/flags/sc.png" />
-  <file src="client/images/flags/sg.png" />
-  <file src="client/images/flags/si.png" />
-  <file src="client/images/flags/sk.png" />
-  <file src="client/images/flags/sv.png" />
-  <file src="client/images/flags/th.png" />
-  <file src="client/images/flags/tk.png" />
-  <file src="client/images/flags/tr.png" />
-  <file src="client/images/flags/tw.png" />
-  <file src="client/images/flags/tt.png" />
-  <file src="client/images/flags/tj.png" />
-  <file src="client/images/flags/ve.png" />
-  <file src="client/images/flags/hr.png" />
-  <file src="client/images/flags/xk.png" />
 
   <!--HTTP Server Stuff-->
   <!--Not finished yet
@@ -343,12 +147,12 @@
 					accept="true,false"
 					desc="Ban IP's that attempt to send fake admin packets."
 					/>
-
-		<setting name="*useip2c" value="true"
+      
+      <setting name="*useip2c" value="true"
 					friendlyname="useip2c"
 					group="_Advanced"
 					accept="true,false"
-					desc="Displays country flags next to players, set to false to save about 3MB of server RAM."
+					desc="When enabled, admin will use the ip2c resource to determine players' countries by their IP."
 					/>
 
 		<setting name="*nickChangeDelay" value="5000"

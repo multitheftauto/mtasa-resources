@@ -425,8 +425,8 @@ end
 --
 ---------------------------------------------------------------------------
 Color = {
-	new = function(self, _x, _y, _z)
-		local newColor = { x = _x or 0, y = _y or 0, z = _z or 0 }
+	new = function(self, x2, y2, z2)
+		local newColor = { x = x2 or 0, y = y2 or 0, z = z2 or 0 }
 		return setmetatable(newColor, { __index = Color })
 	end,
 

@@ -618,7 +618,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 			if dataField == "position" then
 				edfSetElementPosition(newElement, dataValue[1], dataValue[2], dataValue[3])
 			elseif dataField == "rotation" then
-				edfSetElementRotation(newElement, dataValue[1], dataValue[2], dataValue[3])
+				edfSetElementRotation(newElement, dataValue[1], dataValue[2], dataValue[3], dataValue[4])
 			elseif dataField == "interior" then
 				setElementInterior(newElement, dataValue)
 				setElementData(newElement, dataField, dataValue)
@@ -899,25 +899,24 @@ function edfSetElementPosition(element, px, py, pz)
 end
 
 --Sets an element's rotation, or its rotX/Y/Z element data
-function edfSetElementRotation(element, rx, ry, rz)
+function edfSetElementRotation(element, rx, ry, rz, rotOrder)
 	local ancestor = edfGetAncestor(element) or element
-	setElementData(ancestor, "rotation", {rx, ry, rz})
-
+	setElementData(ancestor, "rotation", {rx, ry, rz, rotOrder})
 	local etype = getElementType(element)
 	if etype == "object" or etype == "vehicle" then
-		if rx and ry and rz and setElementRotation(element, rx, ry, rz) then
+		if rx and ry and rz and setElementRotation(element, rx, ry, rz, rotOrder) then
 			triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
 			return true
 		end
 	elseif etype == "player" or etype == "ped" then
-		if setElementRotation(element, 0, 0, rz) then
+		if setElementRotation(element, 0, 0, rz, rotOrder) then
 			triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
 			return true
 		end
 	else
 		local handle = edfGetHandle(element)
 		if handle then
-			if setElementRotation(handle, rx, ry, rz) then
+			if setElementRotation(handle, rx, ry, rz, rotOrder) then
 				triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
 				return true
 			end

@@ -6,7 +6,9 @@ function onMove ( _, _, cX, cY )
     if not (pressedButton and scrollbar and tobool(getUserConfig("dragmeterEnabled"))) then return end
 
     if not scrollbar.thresholdReached then
-        if not( abs(scrollbar.clickX - cX) > SCROLLBAR_THRESHOLD )then return end
+        if abs(scrollbar.clickX - cX) <= SCROLLBAR_THRESHOLD then
+			return
+		end
         -- execute belowif outside threshold...
         scrollbar.thresholdReached = true
         showScrollbar = true

@@ -41,8 +41,8 @@ function orderedNext(t, state)
     return
 end
 
-function orderedPairs(t, _sortingFunction)
-    sortingFunction = _sortingFunction
+function orderedPairs(t, sortingFunction2)
+    sortingFunction = sortingFunction2
     -- Equivalent of the pairs() function on tables. Allows to iterate
     -- in order
     return orderedNext, t, nil

@@ -1,5 +1,3 @@
-MAX_PRIRORITY_SLOT = 500
-
 scoreboardColumns = {
 	{ ["name"] = "name", ["width"] = 200, ["friendlyName"] = "Name", ["priority"] = 1 },
 	{ ["name"] = "ping", ["width"] = 40, ["friendlyName"] = "Ping", ["priority"] = MAX_PRIRORITY_SLOT },
@@ -201,13 +199,16 @@ function scoreboardGetColumnCount()
 	return #scoreboardColumns
 end
 
-function onClientDXScoreboardResourceStart()
-	for key, column in ipairs( scoreboardColumns ) do
-		triggerClientEvent( client, "doScoreboardAddColumn", root, column.name, column.width, column.friendlyName, column.priority, nil, column.isImage, column.imageW, column.imageH )
+function onPlayerResourceStartScoreboard(startedResource)
+	local validResource = startedResource == resource
+
+	if not validResource then
+		return false
 	end
+
+	triggerClientEvent(source, "onClientScoreboardCreateColumns", source, scoreboardColumns)
 end
-addEvent( "onClientDXScoreboardResourceStart", true )
-addEventHandler( "onClientDXScoreboardResourceStart", resourceRoot, onClientDXScoreboardResourceStart )
+addEventHandler("onPlayerResourceStart", root, onPlayerResourceStartScoreboard)
 
 function requestServerInfo()
 	local mapmanager = getResourceFromName( "mapmanager" )
@@ -230,10 +231,10 @@ function requestServerInfo()
 			output.map = getResourceInfo( map, "name" ) or getResourceName( map )
 		end
 	end
-	triggerClientEvent( client, "sendServerInfo", root, output )
+	triggerClientEvent( client, "sendServerInfo", client, output )
 end
 addEvent( "requestServerInfo", true )
-addEventHandler( "requestServerInfo", resourceRoot, requestServerInfo )
+addEventHandler( "requestServerInfo", root, requestServerInfo )
 
 function removeResourceScoreboardColumns( resource )
 	if resourceColumns[resource] then

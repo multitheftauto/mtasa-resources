@@ -27,7 +27,7 @@ function aVehicle.Show(player)
         guiCreateInnerImage("client\\images\\search.png", aVehicle.Edit)
 
         aVehicle.Groups = guiCreateCheckBox(0.03, 0.90, 0.70, 0.09, "Sort by groups", false, true, aVehicle.Form)
-        if (aGetSetting("weaponsGroup")) then
+        if (aGetSetting("vehiclesGroup")) then
             guiCheckBoxSetSelected(aVehicle.Groups, true)
         end
 
@@ -141,10 +141,13 @@ function aVehicle.Load()
 end
 
 function aVehicle.Refresh()
-    aSetSetting("weaponsGroup", guiCheckBoxGetSelected(aVehicle.Groups))
-    guiGridListClear(aVehicle.List)
+    local groups = guiCheckBoxGetSelected(aVehicle.Groups)
     local filter = guiGetText(aVehicle.Edit):lower()
-    if (guiCheckBoxGetSelected(aVehicle.Groups)) then
+    local sortDirection = guiGetProperty(aVehicle.List, "SortDirection")
+    aSetSetting("vehiclesGroup", groups)
+    guiGridListClear(aVehicle.List)
+    guiSetProperty(aVehicle.List, "SortDirection", "None")
+    if (groups) then
         local vehicles = {}
         for name, group in pairs(aVehicle.vehicles) do
             for _, vehicle in ipairs(group) do
@@ -160,9 +163,7 @@ function aVehicle.Refresh()
             local row = guiGridListAddRow(aVehicle.List)
             guiGridListSetItemText(aVehicle.List, row, 2, name, true, false)
             for id, vehicle in ipairs(group) do
-                row = guiGridListAddRow(aVehicle.List)
-                guiGridListSetItemText(aVehicle.List, row, 1, vehicle.id, false, true)
-                guiGridListSetItemText(aVehicle.List, row, 2, vehicle.name, false, false)
+                guiGridListAddRow(aVehicle.List, vehicle.id, vehicle.name)
             end
         end
         guiGridListSetSortingEnabled(aVehicle.List, false)
@@ -181,5 +182,6 @@ function aVehicle.Refresh()
             end
         end
         guiGridListSetSortingEnabled(aVehicle.List, true)
+        guiSetProperty(aVehicle.List, "SortDirection", sortDirection)
     end
 end

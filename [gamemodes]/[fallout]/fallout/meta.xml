@@ -1,12 +1,11 @@
 <meta>
-    <info author="Ransom" version="5" type="gamemode" name="Fallout"/>
+    <info author="Ransom" version="6" type="gamemode" name="Fallout"/>
 
     <config src="help.xml" type="client"/>
 
 	<include resource="freecam"/>
     <include resource="scoreboard"/>
 
-    <script src="fallout.lua" />
-
-    <script src="falloutclient.lua" type="client" />
+    <script src="fallout_c.lua" type="client" />
+    <script src="fallout_s.lua" type="server" />
 </meta>

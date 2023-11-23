@@ -1,5 +1,5 @@
 local pagesXml
-local wndHelp, wndBlock, tPanel, btnClose
+local wndHelp, tPanel, btnClose
 local tab = {}
 local memo = {}
 local popupQueue = {}
@@ -18,15 +18,12 @@ addEvent("onHelpHidden")
 addEventHandler("onClientResourceStart", resourceRoot,
 	function ()
 		wndHelp  = guiCreateWindow(.2, .2, .6, .6, "Help", true)
-		wndBlock = guiCreateWindow(0, 0, 1, 1, "", true)
 		tPanel   = guiCreateTabPanel(0, .05, 1, .85, true, wndHelp)
 		btnClose = guiCreateButton(.4, .92, .2, .08, "Close", true, wndHelp)
 
 		guiSetVisible(wndHelp, false)
-		guiSetVisible(wndBlock, false)
 
 		guiWindowSetSizable(wndHelp, false)
-		guiSetAlpha(wndBlock, 0)
 
 		addEventHandler("onClientGUIClick", btnClose,
 			function()
@@ -131,7 +128,7 @@ function addHelpTabFromXML(resource)
 	local helpnode = getResourceConfig(":"..getResourceName(resource).."/help.xml")
 	if helpnode then
 		local helptext = xmlNodeGetValue(helpnode)
-		local showPopup = not (xmlNodeGetAttribute(helpnode, "popup") == "no")
+		local showPopup = xmlNodeGetAttribute(helpnode, "popup") ~= "no"
 		if helptext then
 			addHelpTab(resource, showPopup)
 			memo[resource] = guiCreateMemo(.05, .05, .9, .9, helptext, true, tab[resource])
@@ -146,10 +143,8 @@ function clientToggleHelp(state)
 		state = not guiGetVisible(wndHelp)
 	end
 	guiSetVisible(wndHelp, state)
-	guiSetVisible(wndBlock, state)
 	if state == true then
 		triggerEvent("onHelpShown", localPlayer)
-		guiBringToFront(wndBlock)
 		guiBringToFront(wndHelp)
 		showCursor(true)
 	else

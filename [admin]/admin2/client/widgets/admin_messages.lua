@@ -12,24 +12,27 @@ aMessages = {
     Messages = {}
 }
 
+addEvent("aMessage", true)
+
 function aMessages.Open()
     if (not aMessages.Form) then
         local x, y = guiGetScreenSize()
-        aMessages.Form = guiCreateWindow(x / 2 - 250, y / 2 - 200, 500, 400, "View Messages", false)
+        aMessages.Form = guiCreateWindow(x / 2 - 350, y / 2 - 300, 700, 600, "View Messages", false)
 
-        aMessages.List = guiCreateGridList(0.02, 0.07, 0.30, 0.83, true, aMessages.Form)
+        aMessages.List = guiCreateGridList(0.02, 0.07, 0.35, 0.83, true, aMessages.Form)
         guiGridListSetSortingEnabled(aMessages.List, false)
         guiGridListAddColumn(aMessages.List, "Subject", 0.60)
         guiGridListAddColumn(aMessages.List, "Date", 0.28)
         aMessages.Delete = guiCreateButton(0.84, 0.07, 0.15, 0.055, "Delete", true, aMessages.Form)
-        aMessages.Refresh = guiCreateButton(0.02, 0.92, 0.30, 0.055, "Refresh", true, aMessages.Form)
+        aMessages.Refresh = guiCreateButton(0.02, 0.92, 0.35, 0.055, "Refresh", true, aMessages.Form)
         aMessages.Exit = guiCreateButton(0.84, 0.92, 0.15, 0.055, "Close", true, aMessages.Form)
 
-        aMessages.Author = guiCreateLabel(0.36, 0.10, 0.50, 0.54, "Author: -", true, aMessages.Form)
-        aMessages.Subject = guiCreateLabel(0.36, 0.15, 0.50, 0.54, "Subject: -", true, aMessages.Form)
-        aMessages.Category = guiCreateLabel(0.36, 0.20, 0.50, 0.54, "Category: -", true, aMessages.Form)
-        aMessages.Date = guiCreateLabel(0.36, 0.25, 0.50, 0.54, "Date: -", true, aMessages.Form)
-        aMessages.Text = guiCreateMemo(0.36, 0.30, 0.59, 0.60, "", true, aMessages.Form)
+        aMessages.Author = guiCreateLabel(0.41, 0.10, 0.55, 0.54, "Author: -", true, aMessages.Form)
+        aMessages.Subject = guiCreateLabel(0.41, 0.15, 0.55, 0.54, "Subject: -", true, aMessages.Form)
+        aMessages.Category = guiCreateLabel(0.41, 0.20, 0.55, 0.54, "Category: -", true, aMessages.Form)
+        aMessages.Date = guiCreateLabel(0.41, 0.25, 0.55, 0.54, "Date: -", true, aMessages.Form)
+        aMessages.Text = guiCreateMemo(0.41, 0.30, 0.64, 0.60, "", true, aMessages.Form)
+        guiMemoSetReadOnly(aMessages.Text, true)
 
         --Register With Admin Form
         aRegister("Messages", aMessages.Form, aMessages.Open, aMessages.Close)
@@ -67,27 +70,49 @@ function aMessages.onSync(action, data)
             message.id = id
             table.insert(storage[message.author], message)
         end
-        aMessages.Messages = storage
+        aMessages.Messages = data
 
         local list = aMessages.List
-        local id = 1
-        guiGridListClear(aMessages.List)
+        local selected = guiGridListGetSelectedItem(list)
+        guiGridListClear(list)
         for user, messages in pairs(storage) do
             local row = guiGridListAddRow(list)
             guiGridListSetItemText(list, row, 1, tostring(user), true, false)
 
             for i, message in ipairs(messages) do
-                local row2 = guiGridListAddRow(list)
-                guiGridListSetItemText(list, row2, 1, message.subject, false, false)
-                guiGridListSetItemText(list, row2, 2, message.time, false, false)
+                row = guiGridListAddRow(list)
+                guiGridListSetItemText(list, row, 1, message.subject, false, false)
+                guiGridListSetItemData(list, row, 1, message.id)
+                guiGridListSetItemText(list, row, 2, message.time, false, false)
                 if (not message.read) then
-                    guiGridListSetItemColor(list, row2, 1, 255, 50, 50)
-                    guiGridListSetItemColor(list, row2, 2, 255, 50, 50)
+                    guiGridListSetItemColor(list, row, 1, 255, 50, 50)
+                    guiGridListSetItemColor(list, row, 2, 255, 50, 50)
                 end
-
-                id = id + 1
             end
         end
+        guiGridListSetSelectedItem(list, selected, 1)
+    end
+end
+
+function aMessages.View(id)
+    if (id) then
+        local message = aMessages.Messages[id]
+        
+        guiSetText(aMessages.Author, "Author: "..message.author)
+        guiSetText(aMessages.Subject, "Subject: "..message.subject)
+        guiSetText(aMessages.Category, "Category: "..message.category)
+        guiSetText(aMessages.Date, "Date: "..message.time)
+        guiSetText(aMessages.Text, message.text)
+        
+        if (not message.read) then
+            triggerServerEvent("aMessage", localPlayer, "read", id)
+        end
+    else
+        guiSetText(aMessages.Author, "Author: -")
+        guiSetText(aMessages.Subject, "Subject: -")
+        guiSetText(aMessages.Category, "Category: -")
+        guiSetText(aMessages.Date, "Date: -")
+        guiSetText(aMessages.Text, "")
     end
 end
 
@@ -97,21 +122,25 @@ function aMessages.onClick(button)
             aMessages.Close()
         elseif (source == aMessages.Refresh) then
             triggerServerEvent("aMessage", localPlayer, "get")
-        elseif (source == aMessages.Read) then
+        elseif (source == aMessages.List) then
             local row = guiGridListGetSelectedItem(aMessages.List)
             if (row == -1) then
-                messageBox("No message selected!", MB_WARNING, MB_OK)
+                aMessages.View(false)
             else
-                local id = guiGridListGetItemText(aMessages.List, row, 1)
-                aViewMessage(tonumber(id))
+                local id = guiGridListGetItemData(aMessages.List, row, 1)
+                aMessages.View(id)
             end
         elseif (source == aMessages.Delete) then
             local row = guiGridListGetSelectedItem(aMessages.List)
             if (row == -1) then
                 messageBox("No message selected!", MB_WARNING, MB_OK)
             else
-                local id = guiGridListGetItemText(aMessages.List, row, 1)
-                triggerServerEvent("aMessage", localPlayer, "delete", tonumber(id))
+                local id = guiGridListGetItemData(aMessages.List, row, 1)
+                local confirm = messageBox("Are you sure you want to delete this message?", MB_QUESTION, MB_YESNO)
+                if (confirm) then
+                    aMessages.View(false)
+                    triggerServerEvent("aMessage", localPlayer, "delete", {id, aMessages.Messages[id]})
+                end
             end
         end
     end

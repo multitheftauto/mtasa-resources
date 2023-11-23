@@ -39,9 +39,9 @@ local function getElementRotation(element)
 	if elementType == "player" or elementType == "ped" then
 		return 0,0,getPedRotation(element)
 	elseif elementType == "object" then
-		return mta_getElementRotation(element)
+		return mta_getElementRotation(element, "ZYX")
 	elseif elementType == "vehicle" then
-		return mta_getElementRotation(element)
+		return mta_getElementRotation(element, "ZYX")
 	end
 end
 
@@ -74,8 +74,7 @@ local function rotateWithMouseWheel(key, keyState)
 			speed = speed * -1
 		end
 		if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") then
-			rotZ = rotZ + speed
-			setElementRotation(selectedElement, rotX, rotY, rotZ)
+			rotX, rotY, rotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", speed)
 			--Peds dont have their rotation updated with their attached parents
 			for i,element in ipairs(getAttachedElements(selectedElement)) do
 				if getElementType(element) == "ped" then
@@ -175,7 +174,7 @@ local function onClientRender_freecam()
 			setElementPosition(selectedElement, targetX, targetY, targetZ)
 		end
 
-		rotX, rotY, rotZ = getElementRotation(selectedElement)
+		rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 	end
 end
 
@@ -188,7 +187,7 @@ function attachElement(element)
 		if getResourceFromName"edf" and exports.edf:edfGetParent(element) ~= element then
 			if (getElementType(element) == "object") then
 				rotationless = false
-				rotX, rotY, rotZ = getElementRotation(element)
+				rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 				collisionless = false
 				_, _, minZ = exports.edf:edfGetElementBoundingBox(element)
 				centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(element)
@@ -196,13 +195,13 @@ function attachElement(element)
 		else
 			if (getElementType(element) == "vehicle") then
 				rotationless = false
-				rotX, rotY, rotZ = getElementRotation(element)
+				rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 				collisionless = false
 				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
 			elseif (getElementType(element) == "object") then
 				rotationless = false
-				rotX, rotY, rotZ = getElementRotation(element)
+				rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 				collisionless = false
 				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)

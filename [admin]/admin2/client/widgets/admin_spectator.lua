@@ -144,21 +144,21 @@ function aSpectator.ClientClick(button)
             aSpectator.Close(false)
             aAdminMain.Open()
         elseif (source == aSpectator.Ban) then
-            triggerEvent("onClientGUIClick", aTab1.Ban, "left")
+            triggerEvent("onClientGUIClick", aPlayersTab.Ban, "left")
         elseif (source == aSpectator.Kick) then
-            triggerEvent("onClientGUIClick", aTab1.Kick, "left")
+            triggerEvent("onClientGUIClick", aPlayersTab.Kick, "left")
         elseif (source == aSpectator.Freeze) then
-            triggerEvent("onClientGUIClick", aTab1.Freeze, "left")
+            triggerEvent("onClientGUIClick", aPlayersTab.Freeze, "left")
         elseif (source == aSpectator.SetSkin) then
-            triggerEvent("onClientGUIClick", aTab1.SetSkin, "left")
+            triggerEvent("onClientGUIClick", aPlayersTab.SetSkin, "left")
         elseif (source == aSpectator.SetHealth) then
-            triggerEvent("onClientGUIClick", aTab1.SetHealth, "left")
+            triggerEvent("onClientGUIClick", aPlayersTab.SetHealth, "left")
         elseif (source == aSpectator.SetArmour) then
-            triggerEvent("onClientGUIClick", aTab1.SetArmour, "left")
+            triggerEvent("onClientGUIClick", aPlayersTab.SetArmour, "left")
         elseif (source == aSpectator.SetStats) then
-            triggerEvent("onClientGUIClick", aTab1.SetStats, "left")
+            triggerEvent("onClientGUIClick", aPlayersTab.SetStats, "left")
         elseif (source == aSpectator.Slap) then
-            triggerEvent("onClientGUIClick", aTab1.Slap, "left")
+            triggerEvent("onClientGUIClick", aPlayersTab.Slap, "left")
         elseif (source == aSpectator.Next) then
             aSpectator.SwitchPlayer(1)
         elseif (source == aSpectator.Prev) then

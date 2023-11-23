@@ -26,10 +26,7 @@ function loadElementInfo(element)
 			var dataList = "{";
 			for ( var key in data )
 			{
-				if ( key != "toJSONString" )
-				{
-					dataList += key + " = " + data[key] + ", ";
-				}
+				dataList += key + " = " + (typeof(data[key]) === "object" ? JSON.stringify(data[key]) : data[key]) + ", ";
 			}
 			if ( dataList != "{" )
 			{
@@ -137,8 +134,8 @@ function expand(elementid)
 					container.id = "C" + elementid;
 					parent.appendChild(container);
 					// create elements for all the children inside the container
-					for ( var i = 0; i  < children.length ; i++ )
-						generateNode ( children[i], elementid );
+					for ( const child of children )
+						generateNode ( child, elementid );
 					document.getElementById("T" + parentElement.id).innerHTML = "";
 				}
 				else

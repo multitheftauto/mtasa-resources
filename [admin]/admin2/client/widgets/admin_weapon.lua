@@ -154,8 +154,10 @@ end
 function aWeapon.Refresh()
     local groups = guiCheckBoxGetSelected(aWeapon.Groups)
     local filter = guiGetText(aWeapon.Edit):lower()
+    local sortDirection = guiGetProperty(aWeapon.List, "SortDirection")
     aSetSetting("weaponsGroup", groups)
     guiGridListClear(aWeapon.List)
+    guiSetProperty(aWeapon.List, "SortDirection", "None")
     if (groups) then
         local weapons = {}
         for name, group in pairs(aWeapon.weapons) do
@@ -172,9 +174,7 @@ function aWeapon.Refresh()
             local row = guiGridListAddRow(aWeapon.List)
             guiGridListSetItemText(aWeapon.List, row, 2, name, true, false)
             for id, weapon in ipairs(group) do
-                row = guiGridListAddRow(aWeapon.List)
-                guiGridListSetItemText(aWeapon.List, row, 1, weapon.id, false, true)
-                guiGridListSetItemText(aWeapon.List, row, 2, weapon.name, false, false)
+                guiGridListAddRow(aWeapon.List, weapon.id, weapon.name)
             end
         end
         guiGridListSetSortingEnabled(aWeapon.List, false)
@@ -193,5 +193,6 @@ function aWeapon.Refresh()
             end
         end
         guiGridListSetSortingEnabled(aWeapon.List, true)
+        guiSetProperty(aWeapon.List, "SortDirection", sortDirection)
     end
 end

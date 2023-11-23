@@ -258,7 +258,7 @@ function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 	setElementData ( source, "deaths", wastedDeaths )
 
 	if ( attacker ) then
-		if not ( attacker == source ) then
+		if (attacker ~= source) then
 		    if ( getPlayerTeam(attacker) ~= getPlayerTeam(source) ) then
 			    local attackerKills = getElementData ( attacker, "kills" )
 			    attackerKills = attackerKills + 1
