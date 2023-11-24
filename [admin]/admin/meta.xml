@@ -8,6 +8,7 @@
              versions of the admin system.
   -->
   <!--Main script files, keep them in that order or it may break-->
+  <script src="admin_definitions.lua" type="shared" cache="false" />
   <script src="server/admin_serverjoiner.lua" />
   <script src="server/admin_serverprefs.lua" />
   <script src="server/admin_server.lua" />
