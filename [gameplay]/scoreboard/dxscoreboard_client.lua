@@ -24,6 +24,7 @@ local sbOutOffset, sbInOffset = 1, 1
 local sbFont = "clear"
 local sbFontScale = 0.68
 local cSettingsBox = tocolor(255, 255, 255, 150)
+local arrowTexture = dxCreateTexture("arrow.png", "argb", true, "wrap")
 
 scoreboardColumns = {}
 fontScale = { -- To make all fonts be equal in height
@@ -563,10 +564,10 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 		end
 
 		if firstVisibleIndex > 1 then
-			dxDrawImage( sX/2-8, topY-15, 17, 11, "arrow.png", 0, 0, 0, cWhite, drawOverGUI )
+			dxDrawImage( sX/2-8, topY-15, 17, 11, arrowTexture, 0, 0, 0, cWhite, drawOverGUI )
 		end
 		if firstVisibleIndex+maxPerWindow <= #scoreboardContent and #scoreboardContent > maxPerWindow then
-			dxDrawImage( sX/2-8, topY+scoreboardDimensions.height+4, 17, 11, "arrow.png", 180, 0, 0, cWhite, drawOverGUI )
+			dxDrawImage( sX/2-8, topY+scoreboardDimensions.height+4, 17, 11, arrowTexture, 180, 0, 0, cWhite, drawOverGUI )
 		end
 
 		local y = topY+s(5)
