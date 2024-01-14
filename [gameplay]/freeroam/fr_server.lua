@@ -283,9 +283,8 @@ addEventHandler('onPlayerGravInit', root,
 
 function setMySkin(skinid)
 	if not isElement(source) then return end
-	if getElementModel(source) == skinid then return end
 	if isPedDead(source) then
-	local x, y, z = getElementPosition(source)
+		local x, y, z = getElementPosition(source)
 
 		if isPedTerminated(source) then
 			x = 0
@@ -295,12 +294,11 @@ function setMySkin(skinid)
 
 		local r = getPedRotation(source)
 		local interior = getElementInterior(source)
-		spawnPlayer(source, x, y, z, r, skinid)
+		spawnPlayer(source, x, y, z, r, 0)
 		setElementInterior(source, interior)
 		setCameraInterior(source, interior)
-	else
-		setElementModel(source, skinid)
 	end
+	exports["newmodels-engine"]:setElementModel(source, skinid)
 	setCameraTarget(source, source)
 	setCameraInterior(source, getElementInterior(source))
 end
@@ -390,14 +388,14 @@ function giveMeVehicles(vehID)
 	if not table.find(getOption('vehicles.disallowed'), vehID) then
 		if #vehicleList >= getOption('vehicles.maxperplayer') then unloadVehicle(vehicleList[1]) end
 		local vehPos = posVector+vehMatrix.right*3
-		local vehicle = Vehicle(vehID, vehPos, rotVector) or false
+		local vehicle = exports["newmodels-engine"]:createVehicle(vehID, vehPos, rotVector) or false
 		if vehicle then
 			vehicle.interior = source.interior
 			vehicle.dimension = source.dimension
 			if vehicle.vehicleType == "Bike" then vehicle.velocity = Vector3(0,0,-0.01) end
 			table.insert(vehicleList, vehicle)
 			g_VehicleData[vehicle] = { creator = source, timers = {} }
-			if g_Trailers[vehID] then
+			if g_Trailers[getElementModel(vehicle)] then
 				if getOption('vehicles.maxidletime') >= 0 then
 					if getOption('vehicles.idleexplode') then
 						g_VehicleData[vehicle].timers.fire = setTimer(commitArsonOnVehicle, getOption('vehicles.maxidletime'), 1, vehicle)

@@ -1,0 +1,27 @@
+<meta>
+    <!-- This resource is available in the repository below.
+    Its version matches the main newmodels version!
+
+    https://github.com/Fernando-A-Rocha/mta-add-models -->
+
+    <info author="Fernando" name="New-Models Freeroam"
+    description="Tool for using new models in Freeroam"
+    version="3.3.0"
+    type="script"/>
+
+    <!-- Required resources -->
+    <include resource="newmodels"/>
+    <include resource="newmodels-engine"/>
+
+    <!-- Main script -->
+    <script type="server" src="core_s.lua"/>
+
+    <!-- ACL permissions that this resource requires -->
+    <aclrequest>
+        <right name="general.ModifyOtherObjects" access="true" />
+        <right name="function.restartResource" access="true" />
+        <right name="function.fetchRemote" access="true" />
+        <right name="function.startResource" access="true" />
+        <right name="function.stopResource" access="true" />
+    </aclrequest>
+</meta>

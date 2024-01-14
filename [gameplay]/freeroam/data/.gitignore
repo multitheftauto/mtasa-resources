@@ -1,0 +1,7 @@
+# Newmodels specific
+# 
+# These files will be modified by the newmodels freeroam tool (new models added)
+# and we don't want these changes to be tracked by git.
+# 
+skins.xml
+vehicles.xml

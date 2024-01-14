@@ -1487,15 +1487,13 @@ function createVehicleCommand(cmd, ...)
 		return errMsg("Invalid vehicle model!")
 	end
 
+	--[[ -- We won't be using these verifications anymore, since we can now spawn vehicles with custom new models
 	if string.len(table.concat(args, " ")) > 25 or tonumber(vehID) and string.len(vehID) > 3 then
 		return errMsg("Invalid vehicle model!")
 	end
+	--]]
 
-	if vehID and vehID >= 400 and vehID <= 611 then
-		server.giveMeVehicles(vehID)
-	else
-		errMsg("Invalid vehicle model!")
-	end
+	server.giveMeVehicles(vehID)
 end
 addCommandHandler('createvehicle', createVehicleCommand)
 addCommandHandler('cv', createVehicleCommand)
