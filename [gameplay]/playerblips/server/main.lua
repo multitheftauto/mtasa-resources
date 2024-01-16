@@ -13,8 +13,10 @@ local function resourceStart()
 	end
 
 	local playercolorsResource = getResourceFromName("playercolors")
-	if playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
-		outputDebugString("playerblips: playercolors resource not running; using blip_color. Restart this resource after starting playercolors.", 4, 255, 125, 0)
+	local freeroamResource = getResourceFromName("freeroam")
+
+	if (playercolorsResource and getResourceState(playercolorsResource) ~= "running") and (freeroamResource and getResourceState(freeroamResource) ~= "running") then
+		outputDebugString("playerblips: playercolors or freeroam resource not running; using *blip_color. Restart this resource after starting playercolors or freeroam.", 4, 255, 125, 0)
 		useNametags = false
 	end
 
