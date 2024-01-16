@@ -944,23 +944,6 @@ function createHelpText()
 	return helpTable
 end
 
-function onPlayerChat( message, theType )
-	if theType == 0 then
-		cancelEvent()
-		message = string.gsub(message, "#%x%x%x%x%x%x", "")
-		local team = getPlayerTeam( source )
-		local playerName = getPlayerName( source )
-		if (team) then
-			local r,g,b = getTeamColor(team)
-			outputChatBox( playerName..":#FFFFFF "..message,root,r,g,b, true )
-		else
-			outputChatBox( playerName..": "..message )
-		end
-		outputServerLog( "CHAT: " .. playerName .. ": " .. message )
-	end
-end
-
-
 function onPlayerJoin ()
 	createNextObjectiveText(source)
 	triggerClientEvent2( source, "assaultCreateGui", options )
@@ -1524,7 +1507,6 @@ addEventHandler( "onPlayerSpawn", root, onPlayerSpawn )
 addEventHandler( "onPlayerWasted", root, onPlayerWasted )
 addEventHandler( "onPlayerJoin", root, onPlayerJoin )
 addEventHandler( "onPlayerQuit", root, onPlayerQuit )
-addEventHandler( "onPlayerChat", root, onPlayerChat )
 
 -- Vehicle Events
 addEventHandler ( "onVehicleEnter", root, onVehicleEnter )
