@@ -18,11 +18,14 @@ addEventHandler("onGamemodeMapStart", root, randomizeAllPlayerColors) -- mapmana
 addEventHandler('onPlayerChat', root,
 	function(msg, type)
 		if type == 0 then
-			local r, g, b = getPlayerColor(source)
-			local name = getPlayerName(source)
-			msg = msg:gsub('#%x%x%x%x%x%x', '')
-			outputChatBox( name.. ': #FFFFFF' .. msg, root, r, g, b, true)
-			outputServerLog( "CHAT: " .. name .. ": " .. msg )
+			if getResourceState(getResourceFromName("freeroam")) ~= "running" then
+				cancelEvent()
+				local r, g, b = getPlayerColor(source)
+				local name = getPlayerName(source)
+				msg = msg:gsub('#%x%x%x%x%x%x', '')
+				outputChatBox( name.. ': #FFFFFF' .. msg, root, r, g, b, true)
+				outputServerLog( "CHAT: " .. name .. ": " .. msg )
+			end
 		end
 	end
 )
