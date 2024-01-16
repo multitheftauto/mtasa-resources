@@ -96,22 +96,6 @@ function onCTVMapStart (startedMap)
 	startRound ()
 end
 
-function onCtvChat ( message, theType )
-	if ( theType == 0 ) then
-		cancelEvent()
-		message = string.gsub(message, "#%x%x%x%x%x%x", "")
-		local team = getPlayerTeam ( source )
-		local bastidName = getPlayerName ( source )
-		if ( team ) then
-		local r, g, b = getTeamColor ( team )
-			outputChatBox ( bastidName..":#FFFFFF "..message, root, r, g, b, true )
-		else
-			outputChatBox ( bastidName..": "..message )
-		end
-		outputServerLog( "CHAT: " .. bastidName .. ": " .. message )
-	end
-end
-
 function startRound ()
 	for k,v in ipairs(getElementsByType"vehicle") do --do it for all vehicles besides the target
 		toggleVehicleRespawn(v,true)
@@ -345,7 +329,6 @@ addEventHandler ( "onVehicleExplode", root, vehicleExplode )
 addEventHandler ( "onPlayerVehicleEnter", root, playerEnterVehicle )
 addEventHandler ( "onPlayerVehicleExit", root, playerExitVehicle )
 addEventHandler ( "onMarkerHit", root, markerHit )
-addEventHandler ( "onPlayerChat", root, onCtvChat )
 
 addCommandHandler ( "kill", killplayer )
 addCommandHandler ( "Toggle vehicle lights", toggleVehicleLights )
