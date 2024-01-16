@@ -18,7 +18,7 @@ addEventHandler(
             if (not isElement(data)) then
                 return
             end
-            aPlayers[source]["sync"] = data
+            aPlayers[client]["sync"] = data
             tableOut["mute"] = isPlayerMuted(data)
             tableOut["freeze"] = isElementFrozen(data)
             tableOut["money"] = getPlayerMoney(data)
@@ -122,7 +122,7 @@ addEventHandler(
             tableOut["unread"] = unread
             tableOut["total"] = total
         end
-        triggerClientEvent(source, EVENT_SYNC, theSource, type, tableOut)
+        triggerClientEvent(client, EVENT_SYNC, theSource, type, tableOut)
     end
 )
 
