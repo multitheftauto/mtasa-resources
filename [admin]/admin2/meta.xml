@@ -29,6 +29,7 @@
     <script src="server/admin_storage.lua" type="server" />
     <script src="server/admin_sync.lua" type="server" />
     <script src="server/admin_commands.lua" type="server" />
+    <script src="server/admin_chat.lua" type="server" />
     <script src="server/admin_ACL.lua" type="server" />
     <script src="server/admin_bans.lua" type="server" />
     <script src="server/admin_network.lua" type="server" />
@@ -87,6 +88,7 @@
     <config src="conf/vehicles.xml" type="client" />
     <config src="conf/messages.xml" type="server" />
     <config src="conf/commands.xml" type="server" />
+    <config src="conf/chat.xml" type="server" />
     <config src="conf/ACL.xml" type="server" />
     <!--Images-->
     <file src="client/images/map.png" />
