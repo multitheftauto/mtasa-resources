@@ -38,7 +38,7 @@ addEventHandler("onPlayerJoin", root,
 
 addEventHandler("onPlayerQuit", root,
     function()
-        chatMessages[source] = {}
+        chatMessages[source] = nil
         chatTimeouts[source] = nil
     end
 )
@@ -69,41 +69,43 @@ addEventHandler("onPlayerChat", root,
             end
 
             local lastMessage = getMessageLast(source)
-            local lastMessageTime = false
-            local lastMessageContent = false
 
             if chatConfig.antiSpamRepeat then
                 if lastMessage and type(lastMessage) == "table" then
-                    lastMessageContent = lastMessage[1]
+                    local lastMessageContent = lastMessage[1]
 
-                    local contentStart, contentStartIndex = string.find(lastMessageContent, "#ffffff")
-                    local contentTrim = string.sub(lastMessageContent, contentStartIndex + 1)
+                    if lastMessageContent then
+                        local contentStart, contentStartIndex = string.find(lastMessageContent, "#ffffff")
+                        local contentTrim = string.sub(lastMessageContent, contentStartIndex + 1)
 
-                    if contentTrim == messageContent then
-                        outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
-                        return
+                        if contentTrim == messageContent then
+                            outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
+                            return
+                        end
                     end
                 end
             end
 
             if lastMessage and type(lastMessage) == "table" then
-                lastMessageTime = lastMessage[2]
+                local lastMessageTime = lastMessage[2]
 
-                if math.abs(getRealTime().timestamp - lastMessageTime) < chatConfig.antiSpamDelay then
-                    if chatConfig.antiSpamTimeout > 0 then
-                        outputChatBox("Your message has been marked as spam. You need to wait " .. chatConfig.antiSpamTimeout .. " seconds before sending an another message.", source, 255, 0, 0)
-                        chatTimeouts[source] = getRealTime().timestamp + chatConfig.antiSpamTimeout
-                    else
-                        outputChatBox("Your message has been marked as spam.", source, 255, 0, 0)
+                if lastMessageTime then
+                    if math.abs(getRealTime().timestamp - lastMessageTime) < chatConfig.antiSpamDelay then
+                        if chatConfig.antiSpamTimeout > 0 then
+                            outputChatBox("Your message has been marked as spam. You need to wait " .. chatConfig.antiSpamTimeout .. " seconds before sending an another message.", source, 255, 0, 0)
+                            chatTimeouts[source] = getRealTime().timestamp + chatConfig.antiSpamTimeout
+                        else
+                            outputChatBox("Your message has been marked as spam.", source, 255, 0, 0)
+                        end
+
+                        return
                     end
-
-                    return
                 end
             end
         end
 
         local playerName = getPlayerName(source)
-        local playerNameColor = {}
+        local playerNameColor = {197, 232, 242}
 
         if not chatConfig.isCustomcolorsEnabled then
             messageContent = messageContent:gsub("#%x%x%x%x%x%x", "")
@@ -112,12 +114,11 @@ addEventHandler("onPlayerChat", root,
         if chatConfig.isPlayercolorsEnabled then
             playerNameColor = {getPlayerNametagColor(source)}
             playerNameColor = string.format("#%02X%02X%02X", playerNameColor[1], playerNameColor[2], playerNameColor[3])
-
-            messageContent = string.format("%s%s: #ffffff%s", playerNameColor, playerName, messageContent)
         else
-            messageContent = string.format("#f0e2b8%s: #ffffff%s", playerName, messageContent)
+            playerNameColor = string.format("#%02X%02X%02X", playerNameColor[1], playerNameColor[2], playerNameColor[3])
         end
 
+        messageContent = string.format("%s%s: #ffffff%s", playerNameColor, playerName, messageContent)
         messageContent = messageContent:gsub("%s+", " ")
 
         table.insert(chatMessages[source], {messageContent, getRealTime().timestamp})
