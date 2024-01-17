@@ -1,0 +1,9 @@
+<chat>
+    <chatconfig name="antiSpamEnabled" value="true" /> <!-- Is Anti-Spam protection enabled? (true or false) (default: true) -->
+    <chatconfig name="antiSpamTimeout" value="3" /> <!-- In case of spam, how long do you want to mute the player? (sec) (default: 3) (disable: 0) -->
+    <chatconfig name="antiSpamDelay" value="1" /> <!-- How much time should elapse between two messages to not be considered spam? (ms) (default: 1) -->
+    <chatconfig name="antiSpamRepeat" value="true" /> <!-- Do you want to mute the player even if he repeats himself several times in a row? (true or false) (default: true) -->
+
+    <chatconfig name="isPlayercolorsEnabled" value="true" /> <!-- Do you want to use the playercolors resource for coloring the player's name in the chat? (true or false) (default: true) -->
+    <chatconfig name="isCustomcolorsEnabled" value="false" /> <!-- Do you want to enable custom hex color codes in the chat? (true or false) (default: false) -->
+</chat>

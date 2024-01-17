@@ -20,7 +20,6 @@ aWeathers = {}
 aNickChangeTime = {}
 
 local aUnmuteTimerList = {}
-local chatHistory = {}
 
 function notifyPlayerLoggedIn(player)
 	outputChatBox ( "Press 'p' to open your admin panel", player )
@@ -460,13 +459,11 @@ function aPlayerInitialize ( player )
 	aPlayers[player] = {}
 	aPlayers[player]["money"] = getPlayerMoney ( player )
 	updatePlayerCountry ( player )
-	chatHistory[player] = {}
 end
 
 addEventHandler ( "onPlayerQuit", root, function ()
 	aPlayers[source] = nil
 	aNickChangeTime[source] = nil
-	chatHistory[source] = nil
 end )
 
 addEvent ( "aPlayerVersion", true )
@@ -1452,30 +1449,36 @@ addEventHandler ( "aServer", root, function ( action, data, data2 )
 	return false
 end )
 
-addEventHandler ( "onPlayerChat", root, function ( message )
-	local size = #chatHistory[source]
-	if ( size == g_Prefs.maxchatmsgs ) then
-		table.remove( chatHistory[source], 1 )
-		size = size - 1
-	end
-	chatHistory[source][size + 1] = message
-end )
+function getPlayerChatHistory(playerElement, historyCount)
+	if playerElement and isElement(playerElement) then
+		local chatLog = getMessageLog(playerElement)
+		local chatLogText = {}
 
-function getPlayerChatHistory ( player, chunk )
-	if ( player and isElement ( player ) ) then
-		local size = #chatHistory[player]
-		chunk = tonumber(chunk)
-		if ( chunk and chunk < size ) then
-			size = chunk
+		if chatLog and type(chatLog) == "table" then
+			if not historyCount then
+				historyCount = #chatLog
+			end
+
+			if #chatLog < historyCount then
+				historyCount = #chatLog
+			end
+
+			for i = 1, historyCount do
+				local contentStart, contentStartIndex = string.find(chatLog[i][1], "#ffffff")
+				local contentTrim = string.sub(chatLog[i][1], contentStartIndex + 1)
+
+				chatLogText[i] = contentTrim
+			end
 		end
-		local text = ""
-		for i=1, size do
-			text = text .. chatHistory[player][i] .. "\n"
+
+		if chatLogText and #chatLogText >= 1 then
+			chatLogText = table.concat(chatLogText, "\n")
 		end
-		return text
-	else
-		return false
+
+		return chatLogText
 	end
+
+	return false
 end
 
 addEvent ( "aMessage", true )

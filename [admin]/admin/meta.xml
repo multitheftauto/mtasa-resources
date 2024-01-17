@@ -13,6 +13,7 @@
   <script src="server/admin_server.lua" />
   <script src="server/admin_sync.lua" />
   <script src="server/admin_commands.lua" />
+  <script src="server/admin_chat.lua" />
   <script src="server/admin_servermaps.lua" />
   <script src="server/admin_ACL.lua" />
   <script src="server/admin_settings.lua" />
@@ -57,6 +58,7 @@
   <config src="conf/stats.xml" type="client" />
   <config src="conf/messages.xml" />
   <config src="conf/commands.xml" />
+  <config src="conf/chat.xml" />
   <config src="conf/web.xml" />
   <config src="conf/ACL.xml" />
 
