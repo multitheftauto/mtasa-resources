@@ -11,7 +11,7 @@ aFunctions = {
                 success = createTeam(name)
             end
             if (not success) then
-                outputChatBox('Team "' .. name .. '" could not be created.', source, 255, 0, 0)
+                outputChatBox('Team "' .. name .. '" could not be created.', client, 255, 0, 0)
             end
             return success, name
         end,
@@ -26,10 +26,10 @@ aFunctions = {
     },
     player = {
         ["kick"] = function(player, data)
-            setTimer(kickPlayer, 100, 1, player, source, data)
+            setTimer(kickPlayer, 100, 1, player, client, data)
         end,
         ["ban"] = function(player, data)
-            setTimer(banPlayer, 100, 1, player, true, true, true, source, data)
+            setTimer(banPlayer, 100, 1, player, true, true, true, client, data)
         end,
         ["mute"] = function(player)
             setPlayerMuted(player, true)
@@ -69,7 +69,7 @@ aFunctions = {
             local textDisplay = textCreateDisplay()
             local textItem =
                 textCreateTextItem(
-                "(ADMIN)" .. stripColorCodes(getPlayerName(source)) .. ":\n\n" .. text,
+                "(ADMIN)" .. stripColorCodes(getPlayerName(client)) .. ":\n\n" .. text,
                 0.5,
                 0.5,
                 2,
@@ -121,7 +121,7 @@ aFunctions = {
                 return false
             end
             if (not setPlayerMoney(player, money)) then
-                outputChatBox("Invalid money value", source, 255, 0, 0)
+                outputChatBox("Invalid money value", client, 255, 0, 0)
                 return false
             end
             return true, money
@@ -180,7 +180,7 @@ aFunctions = {
                 if (getPedOccupiedVehicle(player)) then
                     outputChatBox(
                         "Unable to give a jetpack - " .. getPlayerName(player) .. " is in a vehicle",
-                        source,
+                        client,
                         255,
                         0,
                         0
@@ -199,17 +199,17 @@ aFunctions = {
                 if (group) then
                     if (data == true) then
                         aclGroupAddObject(group, "user." .. getAccountName(account))
-                        triggerEvent(EVENT_SYNC, source, SYNC_PLAYERACL, player)
+                        triggerEvent(EVENT_SYNC, client, SYNC_PLAYERACL, player)
                         return "admina", groupName
                     elseif (data == false) then
                         aclGroupRemoveObject(group, "user." .. getAccountName(account))
                         aPlayers[player]["chat"] = false
-                        triggerEvent(EVENT_SYNC, source, SYNC_PLAYERACL, player)
+                        triggerEvent(EVENT_SYNC, client, SYNC_PLAYERACL, player)
                         return "adminr", groupName
                     end
                 end
             else
-                outputChatBox("Error - Player is not logged in.", source, 255, 100, 100)
+                outputChatBox("Error - Player is not logged in.", client, 255, 100, 100)
             end
         end,
         ["givevehicle"] = function(player, id)
@@ -266,10 +266,10 @@ aFunctions = {
             end
         end,
         ["getscreen"] = function(player, quality)
-            getPlayerScreen(player, source, quality)
+            getPlayerScreen(player, client, quality)
         end,
         ["warp"] = function(player)
-            warpPlayer(source, player)
+            warpPlayer(client, player)
         end,
         ["warpto"] = function(player, data)
             warpPlayer(player, data)
@@ -307,7 +307,7 @@ aFunctions = {
         end,
         ["setpaintjob"] = function(player, vehicle, id)
             if (not setVehiclePaintjob(vehicle, id)) then
-                outputChatBox("Invalid Paint job ID", source, 255, 0, 0)
+                outputChatBox("Invalid Paint job ID", client, 255, 0, 0)
                 return false
             end
             return true, id
@@ -355,30 +355,30 @@ aFunctions = {
         ["setsetting"] = function(resource, setting, value)
             if (setting and value) then
                 set("*" .. getResourceName(resource) .. "." .. setting, value)
-                requestSync(source, SYNC_RESOURCE, getResourceName(resource))
+                requestSync(client, SYNC_RESOURCE, getResourceName(resource))
             end
         end
     },
     server = {
         ["setgame"] = function(game)
             if (not setGameType(tostring(game))) then
-                outputChatBox("Error setting game type.", source, 255, 0, 0)
+                outputChatBox("Error setting game type.", client, 255, 0, 0)
                 return false
             end
-            requestSync(source, SYNC_SERVER)
+            requestSync(client, SYNC_SERVER)
             return true, tostring(game)
         end,
         ["setmap"] = function(map)
             if (not setMapName(tostring(map))) then
-                outputChatBox("Error setting map name.", source, 255, 0, 0)
+                outputChatBox("Error setting map name.", client, 255, 0, 0)
                 return false
             end
-            requestSync(source, SYNC_SERVER)
+            requestSync(client, SYNC_SERVER)
             return true, tostring(map)
         end,
         ["settime"] = function(minutes, seconds)
             if (not setTime(tonumber(minutes), tonumber(seconds))) then
-                outputChatBox("Error setting time.", source, 255, 0, 0)
+                outputChatBox("Error setting time.", client, 255, 0, 0)
                 return false
             end
             return true, tostring(minutes) .. ":" .. tostring(seconds)
@@ -386,35 +386,35 @@ aFunctions = {
         ["setpassword"] = function(password)
             if (not password or password == "") then
                 setServerPassword(nil)
-                requestSync(source, SYNC_SERVER)
+                requestSync(client, SYNC_SERVER)
                 return "resetpassword"
             elseif (string.len(password) > 32) then
-                outputChatBox("Set password: 32 characters max", source, 255, 0, 0)
+                outputChatBox("Set password: 32 characters max", client, 255, 0, 0)
                 return false
             elseif (not setServerPassword(password)) then
-                outputChatBox("Error setting password", source, 255, 0, 0)
+                outputChatBox("Error setting password", client, 255, 0, 0)
                 return false
             end
-            requestSync(source, SYNC_SERVER)
+            requestSync(client, SYNC_SERVER)
             return true, password
         end,
         ["setweather"] = function(id)
             if (not setWeather(tonumber(id))) then
-                outputChatBox("Error setting weather.", source, 255, 0, 0)
+                outputChatBox("Error setting weather.", client, 255, 0, 0)
                 return false
             end
             return true, id .. " " .. getWeatherNameFromID(tonumber(id))
         end,
         ["blendweather"] = function(id)
             if (not setWeatherBlended(tonumber(id))) then
-                outputChatBox("Error blending weather.", source, 255, 0, 0)
+                outputChatBox("Error blending weather.", client, 255, 0, 0)
                 return false
             end
             return true, id .. " " .. getWeatherNameFromID(tonumber(id))
         end,
         ["setgamespeed"] = function(speed)
             if (not setGameSpeed(tonumber(speed))) then
-                outputChatBox("Error setting game speed.", source, 255, 0, 0)
+                outputChatBox("Error setting game speed.", client, 255, 0, 0)
                 return false
             end
             return true, speed
@@ -425,35 +425,35 @@ aFunctions = {
                     setPedGravity(player, getGravity())
                 end
             else
-                outputChatBox("Error setting gravity.", source, 255, 0, 0)
+                outputChatBox("Error setting gravity.", client, 255, 0, 0)
                 return false
             end
             return true, gravity
         end,
         ["setblurlevel"] = function(level)
             if (not setBlurLevel(level)) then
-                outputChatBox("Error setting blur level.", source, 255, 0, 0)
+                outputChatBox("Error setting blur level.", client, 255, 0, 0)
                 return false
             end
             return true, level
         end,
         ["setheathazelevel"] = function(level)
             if (not setHeatHaze(level)) then
-                outputChatBox("Error setting heat haze level.", source, 255, 0, 0)
+                outputChatBox("Error setting heat haze level.", client, 255, 0, 0)
                 return false
             end
             return true, level
         end,
         ["setwaveheight"] = function(height)
             if (not setWaveHeight(height)) then
-                outputChatBox("Error setting wave height.", source, 255, 0, 0)
+                outputChatBox("Error setting wave height.", client, 255, 0, 0)
                 return false
             end
             return true, height
         end,
         ["setfpslimit"] = function(limit)
             if (not setFPSLimit(limit)) then
-                outputChatBox("Error setting fps limit.", source, 255, 0, 0)
+                outputChatBox("Error setting fps limit.", client, 255, 0, 0)
                 return false
             end
             return true, limit
@@ -475,7 +475,7 @@ aFunctions = {
             end
         end,
         ["shutdown"] = function()
-            shutdown("triggered by "..getPlayerName(source))
+            shutdown("triggered by "..getPlayerName(client))
         end,
         ["clearchat"] = function()
             clearChatBox()
