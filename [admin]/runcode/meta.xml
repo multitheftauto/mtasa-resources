@@ -22,4 +22,8 @@
 	<html src="codemirror\lua.js" raw="true"/>
 
 	<export function="httpRun" http="true" protected="true"/>
+
+	<aclrequest>
+		<right name="function.loadstring" access="true" />
+	</aclrequest>
 </meta>

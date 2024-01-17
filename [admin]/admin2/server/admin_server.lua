@@ -18,13 +18,13 @@ aWeathers = {}
 
 function aHandleIP2CUpdate()
     local playersToUpdate = false
-    local playersTable = getElementsByType("player") -- cache result, save function call
+    local playersTable = getElementsByType("player")
 
     for playerID = 1, #playersTable do
         local playerElement = playersTable[playerID]
 
         if not playersToUpdate then
-            playersToUpdate = {} -- create table only when there are at least one player
+            playersToUpdate = {}
         end
 
         updatePlayerCountry(playerElement)
@@ -32,7 +32,7 @@ function aHandleIP2CUpdate()
     end
 
     if not playersToUpdate then
-        return -- if there are no players, stop further code execution
+        return
     end
 
     for playerID = 1, #playersTable do
@@ -207,7 +207,7 @@ addEventHandler(
     "aTeam",
     root,
     function(action, name, ...)
-        if (hasObjectPermissionTo(source, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action)) then
             local func = aFunctions.team[action]
             if (func) then
                 local result, mdata1, mdata2 = func(name, ...)
@@ -215,11 +215,11 @@ addEventHandler(
                     if (type(result) == "string") then
                         action = result
                     end
-                    aAction("team", action, source, false, mdata1, mdata2)
+                    aAction("team", action, client, false, mdata1, mdata2)
                 end
             end
         else
-            outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
+            outputChatBox("Access denied for '" .. tostring(action) .. "'", client, 255, 168, 0)
         end
     end
 )
@@ -229,7 +229,7 @@ addEventHandler(
     "aPlayer",
     root,
     function(player, action, ...)
-        if (hasObjectPermissionTo(source, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action)) then
             local mdata1, mdata2
             local func = aFunctions.player[action]
             if (func) then
@@ -239,11 +239,11 @@ addEventHandler(
                     if (type(result) == "string") then
                         action = result
                     end
-                    aAction("player", action, source, player, mdata1, mdata2)
+                    aAction("player", action, client, player, mdata1, mdata2)
                 end
             end
         else
-            outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
+            outputChatBox("Access denied for '" .. tostring(action) .. "'", client, 255, 168, 0)
         end
     end
 )
@@ -257,7 +257,7 @@ addEventHandler(
         if (not vehicle) then
             return
         end
-        if (hasObjectPermissionTo(source, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action)) then
             local mdata1, mdata2
             local func = aFunctions.vehicle[action]
             if (func) then
@@ -271,8 +271,8 @@ addEventHandler(
                     for i = 0, seats do
                         local passenger = getVehicleOccupant(vehicle, i)
                         if (passenger) then
-                            if ((passenger == player) and (getPedOccupiedVehicle(source) ~= vehicle)) then
-                                aAction("vehicle", action, source, passenger, mdata)
+                            if ((passenger == player) and (getPedOccupiedVehicle(client) ~= vehicle)) then
+                                aAction("vehicle", action, client, passenger, mdata)
                             else
                                 aAction("vehicle", action, passenger, passenger, mdata1, mdata2)
                             end
@@ -281,7 +281,7 @@ addEventHandler(
                 end
             end
         else
-            outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
+            outputChatBox("Access denied for '" .. tostring(action) .. "'", client, 255, 168, 0)
         end
     end
 )
@@ -298,7 +298,7 @@ addEventHandler(
         if (not resource) then
             return
         end
-        if (hasObjectPermissionTo(source, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action)) then
             local func = aFunctions.resource[action]
             if (func) then
                 local result, mdata1, mdata2 = func(resource, ...)
@@ -306,11 +306,11 @@ addEventHandler(
                     if (type(result) == "string") then
                         action = result
                     end
-                    aAction("resource", action, source, player, mdata1, mdata2)
+                    aAction("resource", action, client, player, mdata1, mdata2)
                 end
             end
         else
-            outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
+            outputChatBox("Access denied for '" .. tostring(action) .. "'", client, 255, 168, 0)
         end
     end
 )
@@ -320,7 +320,7 @@ addEventHandler(
     "aServer",
     root,
     function(action, ...)
-        if (hasObjectPermissionTo(source, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action)) then
             local func = aFunctions.server[action]
             if (func) then
                 local result, mdata1, mdata2 = func(...)
@@ -328,11 +328,11 @@ addEventHandler(
                     if (type(result) == "string") then
                         action = result
                     end
-                    aAction("server", action, source, player, mdata1, mdata2)
+                    aAction("server", action, client, player, mdata1, mdata2)
                 end
             end
         else
-            outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
+            outputChatBox("Access denied for '" .. tostring(action) .. "'", client, 255, 168, 0)
         end
     end
 )
@@ -342,7 +342,7 @@ addEventHandler(
     "aServerGlitchRefresh",
     root,
     function()
-        triggerClientEvent("aClientRefresh", client, isGlitchEnabled("quickreload"), isGlitchEnabled("fastmove"), isGlitchEnabled("fastfire"), isGlitchEnabled("crouchbug"), isGlitchEnabled("highcloserangedamage"), isGlitchEnabled("hitanim"), isGlitchEnabled("fastsprint"), isGlitchEnabled("baddrivebyhitbox"), isGlitchEnabled("quickstand"), isGlitchEnabled("kickoutofvehicle_onmodelreplace"))
+        triggerClientEvent(client, "aClientRefresh", client, isGlitchEnabled("quickreload"), isGlitchEnabled("fastmove"), isGlitchEnabled("fastfire"), isGlitchEnabled("crouchbug"), isGlitchEnabled("highcloserangedamage"), isGlitchEnabled("hitanim"), isGlitchEnabled("fastsprint"), isGlitchEnabled("baddrivebyhitbox"), isGlitchEnabled("quickstand"), isGlitchEnabled("kickoutofvehicle_onmodelreplace"))
     end
 )
 
@@ -355,39 +355,39 @@ addEventHandler(
             local time = getRealTime()
             local id = #aReports + 1
             aReports[id] = {}
-            aReports[id].author = getPlayerName(source)
+            aReports[id].author = getPlayerName(client)
             aReports[id].category = tostring(data.category)
             aReports[id].subject = tostring(data.subject)
             aReports[id].text = tostring(data.message)
             aReports[id].time = string.format("%02d/%02d %02d:%02d", time.monthday, time.month+1, time.hour, time.minute)
             aReports[id].read = false
         elseif (action == "get") then
-            triggerClientEvent(source, "aMessage", source, "get", aReports)
+            triggerClientEvent(client, "aMessage", client, "get", aReports)
             return
         elseif (action == "read") then
             if (aReports[data]) then
                 aReports[data].read = true
             end
-            triggerClientEvent(source, "aMessage", source, "get", aReports)
+            triggerClientEvent(client, "aMessage", client, "get", aReports)
         elseif (action == "delete") then
             local id = data[1]
             if (not aReports[id]) then
-                outputChatBox("Error - Message not found.", source, 255, 0, 0)
-                triggerClientEvent(source, "aMessage", source, "get", aReports)
+                outputChatBox("Error - Message not found.", client, 255, 0, 0)
+                triggerClientEvent(client, "aMessage", client, "get", aReports)
                 return
             end
 
             local message = data[2]
             for key, value in pairs(aReports[id]) do
                 if (message[key] ~= value) then
-                    outputChatBox("Error - Message mismatch, please try again.", source, 255, 0, 0)
-                    triggerClientEvent(source, "aMessage", source, "get", aReports)
+                    outputChatBox("Error - Message mismatch, please try again.", client, 255, 0, 0)
+                    triggerClientEvent(client, "aMessage", client, "get", aReports)
                     return
                 end
             end
 
             table.remove(aReports, id)
-            triggerClientEvent(source, "aMessage", source, "get", aReports)
+            triggerClientEvent(client, "aMessage", client, "get", aReports)
         end
         for id, p in ipairs(getElementsByType("player")) do
             if (hasObjectPermissionTo(p, "general.adminpanel")) then
@@ -402,32 +402,32 @@ addEventHandler(
     "aBans",
     root,
     function(action, data)
-        if (hasObjectPermissionTo(source, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action)) then
             local mdata = ""
             local more = ""
             if (action == "banip") then
                 mdata = data
-                if (not BanIP(data, source)) then
+                if (not BanIP(data, client)) then
                     action = nil
                 end
             elseif (action == "banserial") then
                 mdata = data
                 if (isValidSerial(data)) then
-                    if (not BanSerial(string.upper(data), source)) then
+                    if (not BanSerial(string.upper(data), client)) then
                         action = nil
                     end
                 else
-                    outputChatBox("Error - Invalid serial", source, 255, 0, 0)
+                    outputChatBox("Error - Invalid serial", client, 255, 0, 0)
                     action = nil
                 end
             elseif (action == "unbanip") then
                 mdata = data
-                if (not UnbanIP(data, source)) then
+                if (not UnbanIP(data, client)) then
                     action = nil
                 end
             elseif (action == "unbanserial") then
                 mdata = data
-                if (not UnbanSerial(data, source)) then
+                if (not UnbanSerial(data, client)) then
                     action = nil
                 end
             else
@@ -435,12 +435,12 @@ addEventHandler(
             end
 
             if (action ~= nil) then
-                aAction("bans", action, source, false, mdata, more)
-                triggerEvent("aSync", source, "sync", "bans")
+                aAction("bans", action, client, false, mdata, more)
+                triggerEvent("aSync", client, "sync", "bans")
             end
             return true
         end
-        outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
+        outputChatBox("Access denied for '" .. tostring(action) .. "'", client, 255, 168, 0)
         return false
     end
 )
@@ -455,7 +455,7 @@ addEventHandler(
         end
         for id, player in ipairs(getElementsByType("player")) do
             if (aPlayers[player]["chat"]) then
-                triggerClientEvent(player, "aClientAdminChat", source, chat)
+                triggerClientEvent(player, "aClientAdminChat", client, chat)
             end
         end
     end
