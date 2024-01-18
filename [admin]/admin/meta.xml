@@ -59,7 +59,6 @@
   <config src="conf/stats.xml" type="client" />
   <config src="conf/messages.xml" />
   <config src="conf/commands.xml" />
-  <config src="conf/chat.xml" />
   <config src="conf/web.xml" />
   <config src="conf/ACL.xml" />
 
@@ -184,7 +183,12 @@
           				friendlyname="Admin chat command name"
           				desc="The command name for admin chat."
           				/>
-
+    <setting name="#antiSpamEnabled" value="true" group="Chat" friendlyname="Anti-Spam Protection" desc="Is Anti-Spam protection enabled?"/>
+		<setting name="#antiSpamTimeout" value="3" group="Chat" friendlyname="Anti-Spam Protection timeout" desc="In case of spam, how long do you want to mute the player? [sec] (0 - disable)"/>
+		<setting name="#antiSpamDelay" value="1" group="Chat" friendlyname="Anti-Spam Protection delay" desc="How much time should elapse between two messages to not be considered spam? [sec]"/>
+		<setting name="#antiSpamRepeat" value="true" group="Chat" friendlyname="Anti-Spam Protection repeat" desc="Do you want to mute the player even if he repeats himself several times in a row? [true or false]"/>
+		<setting name="#isPlayercolorsEnabled" value="true" group="Chat" friendlyname="Playercolors for chat" desc="Do you want to use the playercolors resource for coloring the player's name in the chat? [true or false]"/>
+		<setting name="#isCustomcolorsEnabled" value="false" group="Chat" friendlyname="Custom colors for chat" desc="Do you want to enable custom hex color codes in the chat? [true or false]"/>
  </settings>
 
 </meta>

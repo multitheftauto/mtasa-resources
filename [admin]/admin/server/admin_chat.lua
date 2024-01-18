@@ -8,22 +8,11 @@
 *
 **************************************]]
 
-local chatConfig = {}
 local chatMessages = {}
 local chatTimeouts = {}
 
 addEventHandler("onResourceStart", resourceRoot,
     function()
-        local configFile = getResourceConfig("conf/chat.xml")
-        local configData = xmlNodeGetChildren(configFile)
-
-        for k, v in pairs(configData) do
-            local configName = xmlNodeGetAttribute(v, "name")
-            local configValue = xmlNodeGetAttribute(v, "value")
-
-            chatConfig[configName] = autoType(configValue) or false
-        end
-
         for k, v in pairs(getElementsByType("player")) do
             chatMessages[v] = {}
         end
@@ -56,8 +45,8 @@ addEventHandler("onPlayerChat", root,
             return
         end
 
-        if chatConfig.antiSpamEnabled then
-            if chatConfig.antiSpamTimeout > 0 then
+        if getConfig("antiSpamEnabled") then
+            if getConfig("antiSpamTimeout") > 0 then
                 if chatTimeouts[source] then
                     if chatTimeouts[source] - getRealTime().timestamp <= 0 then
                         chatTimeouts[source] = nil
@@ -70,7 +59,7 @@ addEventHandler("onPlayerChat", root,
 
             local lastMessage = getMessageLast(source)
 
-            if chatConfig.antiSpamRepeat then
+            if getConfig("antiSpamRepeat") then
                 if lastMessage and type(lastMessage) == "table" then
                     local lastMessageContent = lastMessage[1]
 
@@ -90,10 +79,10 @@ addEventHandler("onPlayerChat", root,
                 local lastMessageTime = lastMessage[2]
 
                 if lastMessageTime then
-                    if math.abs(getRealTime().timestamp - lastMessageTime) < chatConfig.antiSpamDelay then
-                        if chatConfig.antiSpamTimeout > 0 then
-                            outputChatBox("Your message has been marked as spam. You need to wait " .. chatConfig.antiSpamTimeout .. " seconds before sending an another message.", source, 255, 0, 0)
-                            chatTimeouts[source] = getRealTime().timestamp + chatConfig.antiSpamTimeout
+                    if math.abs(getRealTime().timestamp - lastMessageTime) < getConfig("antiSpamDelay") then
+                        if getConfig("antiSpamTimeout") > 0 then
+                            outputChatBox("Your message has been marked as spam. You need to wait " .. getConfig("antiSpamTimeout") .. " seconds before sending an another message.", source, 255, 0, 0)
+                            chatTimeouts[source] = getRealTime().timestamp + getConfig("antiSpamTimeout")
                         else
                             outputChatBox("Your message has been marked as spam.", source, 255, 0, 0)
                         end
@@ -107,11 +96,11 @@ addEventHandler("onPlayerChat", root,
         local playerName = getPlayerName(source)
         local playerNameColor = {197, 232, 242}
 
-        if not chatConfig.isCustomcolorsEnabled then
+        if not getConfig("isCustomColorsEnabled") then
             messageContent = messageContent:gsub("#%x%x%x%x%x%x", "")
         end
 
-        if chatConfig.isPlayercolorsEnabled then
+        if getConfig("isPlayercolorsEnabled") then
             playerNameColor = {getPlayerNametagColor(source)}
             playerNameColor = string.format("#%02X%02X%02X", playerNameColor[1], playerNameColor[2], playerNameColor[3])
         else
@@ -127,23 +116,33 @@ addEventHandler("onPlayerChat", root,
     end
 )
 
-function autoType(inputString)
-    if tonumber(inputString) then
-        return tonumber(inputString)
-    elseif inputString == "true" then
-        return true
-    else
-        return false
+function getConfig(configName)
+    local configData = get(configName)
+
+    if configData then
+        return getConfigType(configData)
     end
+
+    return false
+end
+
+function getConfigType(configData)
+    if tonumber(configData) then
+        return tonumber(configData)
+    elseif configData == "true" then
+        return true
+    end
+
+    return false
 end
 
 function getMessageLog(playerElement)
     if playerElement and isElement(playerElement) then
         if chatMessages[playerElement] then
             return chatMessages[playerElement]
-        else
-            return false
         end
+
+        return false
     end
 end
 
@@ -151,8 +150,8 @@ function getMessageLast(playerElement)
     if playerElement and isElement(playerElement) then
         if chatMessages[playerElement] then
             return chatMessages[playerElement][#chatMessages[playerElement]]
-        else
-            return false
         end
+
+        return false
     end
 end
