@@ -107,6 +107,8 @@ addEventHandler(
             tableOut["game"] = getGameType()
             tableOut["map"] = getMapName()
             tableOut["password"] = getServerPassword()
+        elseif (type == SYNC_BAN) then
+            tableOut = data
         elseif (type == SYNC_BANS) then
             for id, ban in pairs(getBansList()) do
                 tableOut[id] = getBanData(ban)

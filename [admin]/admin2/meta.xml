@@ -1,9 +1,9 @@
 <meta>
 	<info name="Admin" author="lil_Toady" type="misc" version="2.0" description="Administration panel" showInResourceBrowser="true" pages="http/screenshots.htm|Screenshots" noDefaultPage="true"/>
 	<min_mta_version server="1.5.5-9.13846" client="1.5.5-9.13846"/>
-
 	<!--
 	Admin System Meta File.
+  =======
 	WARNING: We give no support for edited
 			 versions of the admin system.
 	-->
@@ -64,6 +64,7 @@
 	<script src="client/widgets/admin_interior.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_screenshot.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_ban.lua" type="client" cache="false"/>
+	<script src="client/widgets/admin_ban_details.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_warp.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_report.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_weapon.lua" type="client" cache="false"/>

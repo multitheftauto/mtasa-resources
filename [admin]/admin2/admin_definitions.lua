@@ -37,7 +37,7 @@ enum(
         "EVENT_RESOURCE",
         "EVENT_SERVER",
         "EVENT_MESSAGE",
-        "EVENT_BANS",
+        "EVENT_BAN",
         "EVENT_NETWORK",
         "EVENT_PROXY",
         "EVENT_ADMIN_CHAT",
@@ -62,6 +62,7 @@ enum(
         "SYNC_RESOURCE",
         "SYNC_ADMINS",
         "SYNC_SERVER",
+        "SYNC_BAN",
         "SYNC_BANS",
         "SYNC_MESSAGES"
     },

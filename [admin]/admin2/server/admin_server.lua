@@ -397,54 +397,6 @@ addEventHandler(
     end
 )
 
-addEvent("aBans", true)
-addEventHandler(
-    "aBans",
-    root,
-    function(action, data)
-        if (hasObjectPermissionTo(client, "command." .. action)) then
-            local mdata = ""
-            local more = ""
-            if (action == "banip") then
-                mdata = data
-                if (not BanIP(data, client)) then
-                    action = nil
-                end
-            elseif (action == "banserial") then
-                mdata = data
-                if (isValidSerial(data)) then
-                    if (not BanSerial(string.upper(data), client)) then
-                        action = nil
-                    end
-                else
-                    outputChatBox("Error - Invalid serial", client, 255, 0, 0)
-                    action = nil
-                end
-            elseif (action == "unbanip") then
-                mdata = data
-                if (not UnbanIP(data, client)) then
-                    action = nil
-                end
-            elseif (action == "unbanserial") then
-                mdata = data
-                if (not UnbanSerial(data, client)) then
-                    action = nil
-                end
-            else
-                action = nil
-            end
-
-            if (action ~= nil) then
-                aAction("bans", action, client, false, mdata, more)
-                triggerEvent("aSync", client, "sync", "bans")
-            end
-            return true
-        end
-        outputChatBox("Access denied for '" .. tostring(action) .. "'", client, 255, 168, 0)
-        return false
-    end
-)
-
 addEvent("aAdminChat", true)
 addEventHandler(
     "aAdminChat",
