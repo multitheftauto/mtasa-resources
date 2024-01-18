@@ -40,11 +40,6 @@ addEventHandler("onPlayerChat", root,
 
         cancelEvent()
 
-        if utf8.len(messageContent) < 1 then
-            outputChatBox("You can't send an empty message.", source, 255, 0, 0)
-            return
-        end
-
         if getConfig("antiSpamEnabled") then
             if getConfig("antiSpamTimeout") > 0 then
                 if chatTimeouts[source] then
