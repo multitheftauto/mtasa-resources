@@ -189,6 +189,6 @@
 		<setting name="#antiSpamRepeat" value="true" group="Chat" friendlyname="Anti-Spam Protection repeat" desc="Do you want to mute the player even if he repeats himself several times in a row? [true or false]"/>
 		<setting name="#isPlayercolorsEnabled" value="true" group="Chat" friendlyname="Playercolors for chat" desc="Do you want to use the playercolors resource for coloring the player's name in the chat? [true or false]"/>
 		<setting name="#isCustomcolorsEnabled" value="false" group="Chat" friendlyname="Custom colors for chat" desc="Do you want to enable custom hex color codes in the chat? [true or false]"/>
+    <setting name="#isChatEnabled" value="true" group="Chat" friendlyname="Chat" desc="Do you want to enable our chat implementation? (ONLY DISABLE THIS, IF YOU IMPLEMENTED A CUSTOM CHAT HANDLER IN YOUR GAMEMODE) [true or false]"/>
  </settings>
-
 </meta>

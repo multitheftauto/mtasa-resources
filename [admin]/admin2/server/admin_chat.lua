@@ -16,6 +16,10 @@ addEventHandler("onResourceStart", resourceRoot,
         for k, v in pairs(getElementsByType("player")) do
             chatMessages[v] = {}
         end
+
+        if getConfig("isChatEnabled") then
+            addEventHandler("onPlayerChat", root, onChatHandler)
+        end
     end
 )
 
@@ -108,8 +112,6 @@ function onChatHandler(messageContent, messageType)
     outputChatBox(messageContent, root, 255, 255, 255, true)
     outputServerLog(messageContent:gsub("#%x%x%x%x%x%x", ""))
 end
-
-addEventHandler("onPlayerChat", root, onChatHandler)
 
 function getConfig(configName)
     local configData = get(configName)
