@@ -75,13 +75,6 @@
 
 	<export function="dataExchange" http="true"/>
 	
-	<script src="shared/utils.lua" type="shared" cache="false"/>
-	
-	<html src="http/screenshots.htm"/>
-	<html src="http/screenshot.htm"/>
-	
-	<export function="dataExchange" http="true"/>
-	
 	<!-- Required XML configs kept in /conf/ folder -->
 
 	<config src="conf/interiors.xml" type="client"/>
