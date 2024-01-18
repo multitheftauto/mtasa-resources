@@ -51,21 +51,11 @@ function aResourcesTab.Create(tab)
     aResourcesTab.Description = guiCreateLabel(0.39, 0.23, 0.60, 0.10, "Description: -", true, aResourcesTab.MainTab)
     guiLabelSetHorizontalAlign(aResourcesTab.Description, "left", true)
     guiCreateHeader(0.38, 0.32, 0.20, 0.04, "Resource settings:", true, aResourcesTab.MainTab)
-    aResourcesTab.Settings = guiCreateGridList(0.38, 0.36, 0.61, 0.38, true, aResourcesTab.MainTab)
+    aResourcesTab.Settings = guiCreateGridList(0.38, 0.36, 0.61, 0.62, true, aResourcesTab.MainTab)
     guiGridListAddColumn(aResourcesTab.Settings, "Name", 0.44)
     guiGridListAddColumn(aResourcesTab.Settings, "Current", 0.24)
     guiGridListAddColumn(aResourcesTab.Settings, "Default", 0.24)
     guiGridListSetSortingEnabled(aResourcesTab.Settings, false)
-    guiCreateHeader(0.38, 0.75, 0.20, 0.04, "Execute code:", true, aResourcesTab.MainTab)
-    aResourcesTab.Command = guiCreateMemo(0.38, 0.80, 0.50, 0.18, "", true, aResourcesTab.MainTab)
-    guiHandleInput(aResourcesTab.Command)
-    aResourcesTab.ExecuteClient =
-        guiCreateButton(0.89, 0.80, 0.10, 0.04, "Client", true, aResourcesTab.MainTab, "execute")
-    aResourcesTab.ExecuteServer =
-        guiCreateButton(0.89, 0.85, 0.10, 0.04, "Server", true, aResourcesTab.MainTab, "execute")
-    aResourcesTab.ExecuteAdvanced =
-        guiCreateLabel(0.2, 0.4, 1.0, 0.50, "For advanced users only.", true, aResourcesTab.Command)
-    guiLabelSetColor(aResourcesTab.ExecuteAdvanced, 255, 0, 0)
 
     -- EVENTS
     addEventHandler(EVENT_SYNC, root, aResourcesTab.onClientSync)
@@ -167,32 +157,6 @@ function aResourcesTab.onClientClick(button)
         elseif (source == aResourcesTab.ResourceRefresh) then
             guiGridListClear(aResourcesTab.ResourceList)
             sync(SYNC_RESOURCES)
-        elseif (source == aResourcesTab.ExecuteClient) then
-            local code = guiGetText(aResourcesTab.Command)
-            if ((code) and (code ~= "")) then
-                local results = {pcall(assert(loadstring("return " .. code)))}
-                if (results[1]) then
-                    for i = 2, #results do
-                        local value = results[i]
-                        local type = type(value)
-                        if (isElement(type)) then
-                            type = getElementType(value)
-                        end
-                        outputChatBox((i - 1) .. ": " .. tostring(value) .. "[" .. type .. "]", 10, 220, 10)
-                    end
-                else
-                    outputChatBox("Error: " .. tostring(results[2]), 220, 10, 10)
-                end
-            end
-        elseif (source == aResourcesTab.ExecuteServer) then
-            local code = guiGetText(aResourcesTab.Command)
-            if ((code) and (code ~= "")) then
-                triggerServerEvent("aExecute", localPlayer, code, true)
-            end
-        elseif (source == aResourcesTab.Command) then
-            guiSetVisible(aResourcesTab.ExecuteAdvanced, false)
-        elseif (source == aResourcesTab.ExecuteAdvanced) then
-            guiSetVisible(aResourcesTab.ExecuteAdvanced, false)
         elseif source == aResourcesTab.View then
             local type = guiComboBoxGetItemText(source, source.selected)
             if type == "All" then

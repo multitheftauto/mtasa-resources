@@ -120,15 +120,9 @@ function aInputBoxClose ( destroy )
 	end
 end
 
--- Escape character '%' will be lost when using gsub, so turn % into %%
-function keepEscapeCharacter ( text )
-	return string.gsub( text, "%%", "%%%%" )
-end
-
 function aInputBoxClick ( button )
 	if ( button == "left" ) then
 		if ( source == aInputOk ) then
-			--loadstring ( string.gsub ( aInputAction, "$value", "\""..keepEscapeCharacter( guiGetText ( aInputValue ) ).."\"" ) )()
 
 			if (aInputAction == "kickPlayer") then
 				triggerServerEvent("aPlayer", localPlayer, varOne, "kick", guiGetText(aInputValue))

@@ -8,7 +8,8 @@
 *
 **************************************]]
 aTeam = {
-    Form = nil
+    Form = nil,
+    NewVisible = false
 }
 
 function aTeam.Show()
@@ -24,23 +25,18 @@ function aTeam.Show()
         aTeam.Update = guiCreateButton(0.03, 0.90, 0.50, 0.08, "Refresh", true, aTeam.Form)
         aTeam.New = guiCreateButton(0.55, 0.18, 0.42, 0.09, "New Team", true, aTeam.Form, "createteam")
         aTeam.Delete = guiCreateButton(0.55, 0.28, 0.42, 0.09, "Delete Team", true, aTeam.Form, "destroyteam")
-        aTeam.NameLabel = guiCreateLabel(0.55, 0.19, 0.42, 0.07, "Team Name:", true, aTeam.Form)
-        aTeam.Color = guiCreateLabel(0.55, 0.37, 0.42, 0.11, "Color:", true, aTeam.Form)
-        guiCreateColorPicker(0.70, 0.37, 0.27, 0.11, 255, 0, 0, true, aTeam.Form)
-        aTeam.R = guiCreateLabel(0.70, 0.37, 0.42, 0.11, "R:", true, aTeam.Form)
-        aTeam.G = guiCreateLabel(0.70, 0.48, 0.42, 0.11, "G:", true, aTeam.Form)
-        aTeam.B = guiCreateLabel(0.70, 0.59, 0.42, 0.11, "B:", true, aTeam.Form)
+        aTeam.NameLabel = guiCreateLabel(0.55, 0.19, 0.42, 0.07, "New Team Name:", true, aTeam.Form)
         aTeam.Name = guiCreateEdit(0.55, 0.26, 0.42, 0.10, "", true, aTeam.Form)
-        aTeam.Red = guiCreateEdit(0.80, 0.36, 0.15, 0.10, "0", true, aTeam.Form)
-        aTeam.Green = guiCreateEdit(0.80, 0.47, 0.15, 0.10, "0", true, aTeam.Form)
-        aTeam.Blue = guiCreateEdit(0.80, 0.58, 0.15, 0.10, "0", true, aTeam.Form)
-        aTeam.Create = guiCreateButton(0.55, 0.73, 0.20, 0.09, "Create", true, aTeam.Form, "createteam")
-        aTeam.Cancel = guiCreateButton(0.77, 0.73, 0.20, 0.09, "Cancel", true, aTeam.Form)
+        guiHandleInput(aTeam.Name)
+        aTeam.Color = guiCreateColorPicker(0.553, 0.37, 0.41, 0.11, 255, 0, 0, true, aTeam.Form)
+        aTeam.Create = guiCreateButton(0.55, 0.50, 0.20, 0.09, "Create", true, aTeam.Form, "createteam")
+        aTeam.Cancel = guiCreateButton(0.77, 0.50, 0.20, 0.09, "Cancel", true, aTeam.Form)
         aTeam.Accept = guiCreateButton(0.55, 0.88, 0.20, 0.09, "Select", true, aTeam.Form)
         aTeam.Hide = guiCreateButton(0.77, 0.88, 0.20, 0.09, "Close", true, aTeam.Form)
 
         addEventHandler("onClientGUIClick", aTeam.Form, aTeam.onClick)
         addEventHandler("onClientGUIDoubleClick", aTeam.Form, aTeam.onDoubleClick)
+        addEventHandler("onClientGUIFocus", guiRoot, aTeam.onGUIFocus)
         --Register With Admin Form
         aRegister("PlayerTeam", aTeam.Form, aTeam.Show, aTeam.Close)
     end
@@ -56,11 +52,14 @@ function aTeam.Close(destroy)
         if (aTeam.Form) then
             removeEventHandler("onClientGUIClick", aTeam.Form, aTeam.onClick)
             removeEventHandler("onClientGUIDoubleClick", aTeam.Form, aTeam.onDoubleClick)
+            removeEventHandler("onClientGUIFocus", guiRoot, aTeam.onGUIFocus)
             destroyElement(aTeam.Form)
             aTeam.Form = nil
         end
     else
         guiSetVisible(aTeam.Form, false)
+        guiSetText(aTeam.Name, "")
+        guiColorPickerSetColor(aTeam.Color)
     end
 end
 
@@ -99,29 +98,32 @@ function aTeam.onClick(button)
             elseif (getTeamFromName(team)) then
                 messageBox("A team with this name already exists", MB_ERROR)
             else
+                local r, g, b = guiColorPickerGetColor(aTeam.Color)
                 triggerServerEvent(
                     "aTeam",
                     localPlayer,
                     "createteam",
                     team,
-                    guiGetText(aTeam.Red),
-                    guiGetText(aTeam.Green),
-                    guiGetText(aTeam.Blue)
+                    r,
+                    g,
+                    b
                 )
                 aTeam.ShowNew(false)
+                guiSetText(aTeam.Name, "")
+                guiColorPickerSetColor(aTeam.Color)
             end
             setTimer(aTeam.Refresh, 2000, 1)
-        elseif (source == aTeam.Name) then
-            guiSetInputEnabled(true)
         elseif (source == aTeam.Cancel) then
             aTeam.ShowNew(false)
+            guiSetText(aTeam.Name, "")
+            guiColorPickerSetColor(aTeam.Color)
         elseif (source == aTeam.Accept) then
             if (guiGridListGetSelectedItem(aTeam.List) == -1) then
                 messageBox("No team selected!", MB_WARNING)
             else
                 local team = guiGridListGetItemData(aTeam.List, guiGridListGetSelectedItem(aTeam.List), 1)
                 triggerServerEvent("aPlayer", localPlayer, getSelectedPlayer(), "setteam", team)
-                guiSetVisible(aTeam.Form, false)
+                aTeam.Close(false)
             end
         elseif (source == aTeam.Hide) then
             aTeam.Close(false)
@@ -130,19 +132,24 @@ function aTeam.onClick(button)
 end
 
 function aTeam.ShowNew(bool)
+    aTeam.NewVisible = bool
     guiSetVisible(aTeam.New, not bool)
     guiSetVisible(aTeam.Delete, not bool)
     guiSetVisible(aTeam.NameLabel, bool)
     guiSetVisible(aTeam.Name, bool)
     guiSetVisible(aTeam.Color, bool)
-    guiSetVisible(aTeam.R, bool)
-    guiSetVisible(aTeam.G, bool)
-    guiSetVisible(aTeam.B, bool)
-    guiSetVisible(aTeam.Red, bool)
-    guiSetVisible(aTeam.Green, bool)
-    guiSetVisible(aTeam.Blue, bool)
     guiSetVisible(aTeam.Create, bool)
     guiSetVisible(aTeam.Cancel, bool)
+end
+
+function aTeam.onGUIFocus()
+    if (aTeam.NewVisible) then
+        if (source == aTeam.Form or getElementParent(source) == aTeam.Form or source == aColor.Form or getElementParent(source) == aColor.Form) then
+            guiSetVisible(aTeam.Color, true)
+            return
+        end
+    end
+    guiSetVisible(aTeam.Color, false)
 end
 
 function aTeam.Refresh()

@@ -70,6 +70,7 @@ function aMessageBox.Show(message, icon, type)
     guiSetPosition(aMessageBox.Form, x / 2 - mbX / 2, y / 2 - mbY / 2, false)
     guiSetVisible(aMessageBox.Form, true)
     guiBringToFront(aMessageBox.Form)
+    guiFocus(aMessageBox.Form)
 
     guiSetVisible(aMessageBox.Warning, icon == MB_WARNING)
     guiSetVisible(aMessageBox.Question, icon == MB_QUESTION)

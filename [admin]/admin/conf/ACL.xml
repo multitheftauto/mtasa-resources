@@ -56,7 +56,6 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="true" />
     <right name="command.restart" access="true" />
-    <right name="command.execute" access="true" />
     <!--Server related-->
     <right name="command.setpassword" access="true" />
     <right name="command.setwelcome" access="true" />
@@ -138,7 +137,6 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="false" />
     <right name="command.restart" access="true" />
-    <right name="command.execute" access="false" />
     <!--Server related-->
     <right name="command.setpassword" access="true" />
     <right name="command.setwelcome" access="true" />
@@ -219,7 +217,6 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="false" />
     <right name="command.restart" access="false" />
-    <right name="command.execute" access="false" />
     <!--Server related-->
     <right name="command.setpassword" access="false" />
     <right name="command.setwelcome" access="false" />
@@ -300,7 +297,6 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="false" />
     <right name="command.restart" access="false" />
-    <right name="command.execute" access="false" />
     <!--Server related-->
     <right name="command.setpassword" access="false" />
     <right name="command.setwelcome" access="false" />
