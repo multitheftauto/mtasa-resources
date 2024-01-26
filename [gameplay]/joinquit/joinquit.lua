@@ -4,7 +4,6 @@ local settingPrefix = string.format("*%s.", resourceName)
 local showColorCodes = get("showColorCodes") == "true" 	-- Shows player"s names colorcoded if set to true, and if set to false it doesn"t
 local defaultColor = get("defaultColor")				-- Hex code for what color to output messages in (only used if showColorCodes is true)
 local fallbackHexCode = "#4E5768"						-- Fallback hex code for incorrectly input settings values
-local defaultColor = get("defaultColor")
 local nickChangeDelay = get("nickChangeDelay")
 
 nickChangeTime = {}
