@@ -47,21 +47,21 @@ end
 addEventHandler("onPlayerJoin", root, joinMessage)
 
 function nickChangeMessage(oldNick, newNick)
-    if wasEventCancelled() then
-        return
-    end
+	if wasEventCancelled() then
+		return
+	end
 
-    if isPlayerMuted(source) then
-        cancelEvent()
-        outputChatBox("You cannot change your nickname whilst muted!", source, 255, 0, 0)
-        return
-    end
+	if isPlayerMuted(source) then
+	cancelEvent()
+	outputChatBox("You cannot change your nickname whilst muted!", source, 255, 0, 0)
+	return
+end
 
-    if (showColorCodes) then
-        outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, oldNick)..getDefaultColor().." is now known as "..getHexFriendlyNick(source, newNick), root, 255, 100, 100, true)
-    else
-        outputChatBox("* "..oldNick.." is now known as "..newNick, root, 255, 100, 100)
-    end
+	if (showColorCodes) then
+		outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, oldNick)..getDefaultColor().." is now known as "..getHexFriendlyNick(source, newNick), root, 255, 100, 100, true)
+	else
+		outputChatBox("* "..oldNick.." is now known as "..newNick, root, 255, 100, 100)
+	end
 end
 addEventHandler("onPlayerChangeNick", root, nickChangeMessage)
 
