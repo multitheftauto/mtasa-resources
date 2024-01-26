@@ -14,5 +14,12 @@
 			accept=""
 			desc="If show color codes is set to true, this controls what color to output messages in"
 		/>
+		<setting name="*nickChangeDelay"
+			friendlyname="Nick change delay"
+			value="5000"
+			accept="500-60000"
+			group="Durations"
+			desc="Time in miliseconds between a player being able to change their name to prevent nick change spam"
+		/>
 	</settings>
 </meta>
