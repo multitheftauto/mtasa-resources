@@ -17,7 +17,6 @@ aInteriors = {}
 aStats = {}
 aReports = {}
 aWeathers = {}
-aNickChangeTime = {}
 
 local aUnmuteTimerList = {}
 
@@ -1675,17 +1674,6 @@ function checkClient(checkAccess,player,...)
 	end
 	return false
 end
-
-function checkNickOnChange(old, new)
-	if aNickChangeTime[source] and aNickChangeTime[source] + tonumber(get("*nickChangeDelay")) > getTickCount() then
-		cancelEvent()
-		outputChatBox("You can only change your name once every "..(tonumber(get("*nickChangeDelay"))/1000).." seconds", source, 255, 0, 0)
-		return false
-	else
-		aNickChangeTime[source] = getTickCount()
-	end
-end
-addEventHandler("onPlayerChangeNick", root, checkNickOnChange)
 
 addEventHandler ("onUnban",root,function(theBan,responsibleElement)
 	if isElement(responsibleElement) and getElementType (responsibleElement)=="player" then
