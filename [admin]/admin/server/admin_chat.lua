@@ -65,8 +65,10 @@ function onChatHandler(messageContent, messageType)
 
                 if lastMessageContent then
                     if lastMessageContent == messageContent then
-                        outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
-                        return
+                        if #chatMessages[source] > 1 then
+                            outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
+                            return
+                        end
                     end
                 end
             end
@@ -76,15 +78,17 @@ function onChatHandler(messageContent, messageType)
             local lastMessageTime = lastMessage[2]
 
             if lastMessageTime then
-                if math.abs(getRealTime().timestamp - lastMessageTime) < getConfig("antiSpamDelay") then
-                    if getConfig("antiSpamTimeout") > 0 then
-                        outputChatBox("Your message has been marked as spam. You need to wait " .. getConfig("antiSpamTimeout") .. " seconds before sending an another message.", source, 255, 0, 0)
-                        chatTimeouts[source] = getRealTime().timestamp + getConfig("antiSpamTimeout")
-                    else
-                        outputChatBox("Your message has been marked as spam.", source, 255, 0, 0)
-                    end
+                if #chatMessages[source] > 1 then
+                    if math.abs(getRealTime().timestamp - lastMessageTime) < getConfig("antiSpamDelay") then
+                        if getConfig("antiSpamTimeout") > 0 then
+                            outputChatBox("Your message has been marked as spam. You need to wait " .. getConfig("antiSpamTimeout") .. " seconds before sending an another message.", source, 255, 0, 0)
+                            chatTimeouts[source] = getRealTime().timestamp + getConfig("antiSpamTimeout")
+                        else
+                            outputChatBox("Your message has been marked as spam.", source, 255, 0, 0)
+                        end
 
-                    return
+                        return
+                    end
                 end
             end
         end
@@ -146,7 +150,11 @@ end
 function getMessageLast(playerElement)
     if playerElement and isElement(playerElement) then
         if chatMessages[playerElement] then
-            return chatMessages[playerElement][#chatMessages[playerElement]]
+            if #chatMessages[playerElement] > 1 then
+                return chatMessages[playerElement][#chatMessages[playerElement] - 1]
+            else
+                return chatMessages[playerElement][#chatMessages[playerElement]]
+            end
         end
 
         return false
