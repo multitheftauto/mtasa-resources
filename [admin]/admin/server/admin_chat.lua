@@ -108,6 +108,7 @@ function onChatHandler(messageContent, messageType)
 
     messageContent = string.format("%s%s: #ffffff%s", playerNameColor, playerName, messageContent)
     messageContent = messageContent:gsub("%s+", " ")
+    messageContent = filterMessage(messageContent)
 
     table.insert(chatMessages[source], {messageContent, getRealTime().timestamp})
     outputChatBox(messageContent, root, 255, 255, 255, true)
@@ -158,4 +159,15 @@ function getMessageLast(playerElement)
 
         return false
     end
+end
+
+function filterMessage(msg)
+	local newMsg = ""
+	for i = 1, utfLen(msg) do
+		local char = utfCode(utfSub(msg,i,i))
+		if(not (char >= 768 and char <= 879)) then
+			newMsg = newMsg .. utfSub(msg,i,i)
+		end
+	end
+	return newMsg
 end
