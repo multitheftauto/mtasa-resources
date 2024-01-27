@@ -16,10 +16,6 @@ addEventHandler("onResourceStart", resourceRoot,
         for k, v in pairs(getElementsByType("player")) do
             chatMessages[v] = {}
         end
-
-        if getConfig("isChatEnabled") then
-            addEventHandler("onPlayerChat", root, onChatHandler)
-        end
     end
 )
 
@@ -38,6 +34,12 @@ addEventHandler("onPlayerQuit", root,
 
 function onChatHandler(messageContent, messageType)
     if messageType ~= 0 then
+        return
+    end
+
+    table.insert(chatMessages[source], {messageContent, getRealTime().timestamp})
+
+    if not getConfig("isChatEnabled") then
         return
     end
 
@@ -108,7 +110,6 @@ function onChatHandler(messageContent, messageType)
     messageContent = string.format("%s%s: #ffffff%s", playerNameColor, playerName, messageContent)
     messageContent = messageContent:gsub("%s+", " ")
 
-    table.insert(chatMessages[source], {messageContent, getRealTime().timestamp})
     outputChatBox(messageContent, root, 255, 255, 255, true)
     outputServerLog(messageContent:gsub("#%x%x%x%x%x%x", ""))
 end
