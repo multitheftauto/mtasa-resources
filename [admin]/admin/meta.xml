@@ -151,13 +151,6 @@
 					desc="When enabled, admin will use the ip2c resource to determine players' countries by their IP."
 					/>
 
-		<setting name="*nickChangeDelay" value="5000"
-					friendlyname="Nick change delay"
-					group="Durations"
-					accept="500-60000"
-					desc="Time in miliseconds between a player being able to change their name to prevent nick change spam"
-					/>
-
 		<setting name="*maxchatmsgs" value="10"
 					friendlyname="Max chat log messages"
 					accept="1-1000"
