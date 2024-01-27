@@ -37,9 +37,8 @@ function onChatHandler(messageContent, messageType)
         return
     end
 
-    table.insert(chatMessages[source], {messageContent, getRealTime().timestamp})
-
     if not getConfig("isChatEnabled") then
+        table.insert(chatMessages[source], {messageContent, getRealTime().timestamp})
         return
     end
 
@@ -64,11 +63,12 @@ function onChatHandler(messageContent, messageType)
                 local lastMessageContent = lastMessage[1]
 
                 if lastMessageContent then
-                    if lastMessageContent == messageContent then
-                        if #chatMessages[source] > 1 then
-                            outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
-                            return
-                        end
+                    local contentStart, contentStartIndex = string.find(lastMessageContent, "#ffffff")
+                    local contentTrim = string.sub(lastMessageContent, contentStartIndex + 1)
+
+                    if contentTrim == messageContent then
+                        outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
+                        return
                     end
                 end
             end
@@ -78,17 +78,15 @@ function onChatHandler(messageContent, messageType)
             local lastMessageTime = lastMessage[2]
 
             if lastMessageTime then
-                if #chatMessages[source] > 1 then
-                    if math.abs(getRealTime().timestamp - lastMessageTime) < getConfig("antiSpamDelay") then
-                        if getConfig("antiSpamTimeout") > 0 then
-                            outputChatBox("Your message has been marked as spam. You need to wait " .. getConfig("antiSpamTimeout") .. " seconds before sending an another message.", source, 255, 0, 0)
-                            chatTimeouts[source] = getRealTime().timestamp + getConfig("antiSpamTimeout")
-                        else
-                            outputChatBox("Your message has been marked as spam.", source, 255, 0, 0)
-                        end
-
-                        return
+                if math.abs(getRealTime().timestamp - lastMessageTime) < getConfig("antiSpamDelay") then
+                    if getConfig("antiSpamTimeout") > 0 then
+                        outputChatBox("Your message has been marked as spam. You need to wait " .. getConfig("antiSpamTimeout") .. " seconds before sending an another message.", source, 255, 0, 0)
+                        chatTimeouts[source] = getRealTime().timestamp + getConfig("antiSpamTimeout")
+                    else
+                        outputChatBox("Your message has been marked as spam.", source, 255, 0, 0)
                     end
+
+                    return
                 end
             end
         end
@@ -111,6 +109,7 @@ function onChatHandler(messageContent, messageType)
     messageContent = string.format("%s%s: #ffffff%s", playerNameColor, playerName, messageContent)
     messageContent = messageContent:gsub("%s+", " ")
 
+    table.insert(chatMessages[source], {messageContent, getRealTime().timestamp})
     outputChatBox(messageContent, root, 255, 255, 255, true)
     outputServerLog(messageContent:gsub("#%x%x%x%x%x%x", ""))
 end
