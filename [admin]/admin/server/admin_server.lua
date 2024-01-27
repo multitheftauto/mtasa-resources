@@ -19,7 +19,6 @@ aReports = {}
 aWeathers = {}
 
 local aUnmuteTimerList = {}
-local chatHistory = {}
 
 function notifyPlayerLoggedIn(player)
 	outputChatBox ( "Press 'p' to open your admin panel", player )
@@ -459,12 +458,10 @@ function aPlayerInitialize ( player )
 	aPlayers[player] = {}
 	aPlayers[player]["money"] = getPlayerMoney ( player )
 	updatePlayerCountry ( player )
-	chatHistory[player] = {}
 end
 
 addEventHandler ( "onPlayerQuit", root, function ()
 	aPlayers[source] = nil
-	chatHistory[source] = nil
 end )
 
 addEvent ( "aPlayerVersion", true )
@@ -1450,32 +1447,6 @@ addEventHandler ( "aServer", root, function ( action, data, data2 )
 	return false
 end )
 
-addEventHandler ( "onPlayerChat", root, function ( message )
-	local size = #chatHistory[source]
-	if ( size == g_Prefs.maxchatmsgs ) then
-		table.remove( chatHistory[source], 1 )
-		size = size - 1
-	end
-	chatHistory[source][size + 1] = message
-end )
-
-function getPlayerChatHistory ( player, chunk )
-	if ( player and isElement ( player ) ) then
-		local size = #chatHistory[player]
-		chunk = tonumber(chunk)
-		if ( chunk and chunk < size ) then
-			size = chunk
-		end
-		local text = ""
-		for i=1, size do
-			text = text .. chatHistory[player][i] .. "\n"
-		end
-		return text
-	else
-		return false
-	end
-end
-
 addEvent ( "aMessage", true )
 addEventHandler ( "aMessage", root,
 function ( action, data )
@@ -1500,7 +1471,7 @@ function ( action, data )
 					ip = getPlayerIP ( suspectedPlayer ),
 					serial = getPlayerSerial ( suspectedPlayer ),
 					version = getPlayerVersion ( suspectedPlayer ),
-					chatLog = getPlayerChatHistory ( suspectedPlayer )
+					-- chatLog = getPlayerChatHistory ( suspectedPlayer )
 				}
 			end
 		end
