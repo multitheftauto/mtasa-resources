@@ -42,7 +42,7 @@ function onChatHandler(messageContent, messageType)
     if not getConfig("isChatEnabled") then
         return
     end
-    
+
     cancelEvent()
 
     if getConfig("antiSpamEnabled") then
@@ -64,10 +64,7 @@ function onChatHandler(messageContent, messageType)
                 local lastMessageContent = lastMessage[1]
 
                 if lastMessageContent then
-                    local contentStart, contentStartIndex = string.find(lastMessageContent, "#ffffff")
-                    local contentTrim = string.sub(lastMessageContent, contentStartIndex + 1)
-
-                    if contentTrim == messageContent then
+                    if lastMessageContent == messageContent then
                         outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
                         return
                     end

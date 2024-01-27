@@ -116,6 +116,12 @@
 				4. double click on the resource name
 			 ***************************************************** -->
 
+		<setting name="*maxmsgs" value="99"
+					friendlyname="Max messages"
+					accept="1-1000"
+					desc="Maximum admin messages to keep."
+					/>
+
 		<setting name="*bandurations" value="60,3600,43200,0"
 					friendlyname="Ban durations"
 					group="Durations"
@@ -149,6 +155,13 @@
 					group="_Advanced"
 					accept="true,false"
 					desc="When enabled, admin will use the ip2c resource to determine players' countries by their IP."
+					/>
+
+		<setting name="*nickChangeDelay" value="5000"
+					friendlyname="Nick change delay"
+					group="Durations"
+					accept="500-60000"
+					desc="Time in miliseconds between a player being able to change their name to prevent nick change spam"
 					/>
 
 		<setting name="*maxchatmsgs" value="10"

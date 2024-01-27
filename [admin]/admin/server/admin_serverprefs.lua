@@ -13,6 +13,7 @@
 ---------------------------------------------------------------------------
 function cachePrefs()
 	g_Prefs = {}
+	g_Prefs.maxmsgs		= getNumber('maxmsgs',99)
 	g_Prefs.bandurations	= getString('bandurations','60,3600,43200,0')
 	g_Prefs.mutedurations	= getString('mutedurations','60,120,300,600,0')
 	g_Prefs.reportCategories = getString('reportCategories','Question,Suggestion,Other')
