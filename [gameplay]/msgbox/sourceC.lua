@@ -97,7 +97,7 @@ function createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
     guiSetFont(boxCaption, "default-bold-small")
 
     local boxLabelWidth = boxWidth - (boxImagePosX + boxImageWidth)
-    local boxLabelHeight = 16
+    local boxLabelHeight = 50
 
     local boxLabelPosX = 7.5 + (boxImagePosX + boxImageWidth)
     local boxLabelPosY = 4 + boxCaptionPosX
