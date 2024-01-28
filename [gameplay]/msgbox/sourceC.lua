@@ -86,21 +86,24 @@ function createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
 
     local boxImagePosX = 30
     local boxImagePosY = 65
+
+    local boxImageCenterX = boxImagePosX + boxImageWidth / 2
+    local boxImageCenterY = boxImagePosY + boxImageHeight / 2
     local boxImage = guiCreateStaticImage(boxImagePosX, boxImagePosY, boxImageWidth, boxImageHeight, "files/" .. messageBoxTypes[boxType].boxIcon, false, boxElement)
 
     local boxCaptionWidth = boxWidth - (boxImagePosX + boxImageWidth)
     local boxCaptionHeight = 16
 
-    local boxCaptionPosX = 7.5 + (boxImagePosX + boxImageWidth)
-    local boxCaptionPosY = 6 + boxImagePosY
+    local boxCaptionPosX = 10 + (boxImagePosX + boxImageWidth)
+    local boxCaptionPosY = boxImageCenterY - dxGetFontHeight(1, "default-bold-small")
     local boxCaption = guiCreateLabel(boxCaptionPosX, boxCaptionPosY, boxCaptionWidth, boxCaptionHeight, messageBoxTypes[boxType].boxCaption, false, boxElement)
     guiSetFont(boxCaption, "default-bold-small")
 
     local boxLabelWidth = boxWidth - (boxImagePosX + boxImageWidth)
-    local boxLabelHeight = 50
+    local boxLabelHeight = 48
 
-    local boxLabelPosX = 7.5 + (boxImagePosX + boxImageWidth)
-    local boxLabelPosY = 4 + boxCaptionPosX
+    local boxLabelPosX = 10 + (boxImagePosX + boxImageWidth)
+    local boxLabelPosY = boxImageCenterY - 2.5
     local boxLabel = guiCreateLabel(boxLabelPosX, boxLabelPosY, boxLabelWidth, boxLabelHeight, boxMessage, false, boxElement)
     guiSetFont(boxCaption, "default")
 
@@ -117,10 +120,6 @@ function createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
 
         messageBoxElements[boxButtonsElements[i]] = boxElement
         addEventHandler("onClientGUIClick", boxButtonsElements[i], onButtonClick)
-    end
-
-    if not isCursorShowing() then
-        showCursor(true)
     end
 
     return boxButtonsElements[1], boxButtonsElements[2], boxButtonsElements[3]
