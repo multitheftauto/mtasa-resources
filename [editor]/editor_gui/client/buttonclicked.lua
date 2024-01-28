@@ -59,7 +59,7 @@ end
 function topMenuClicked.new ()
 	editor_main.dropElement ()
 	guiSetInputEnabled(true)
-	local yes,no = guiShowMessageBox ( "Are you sure you want to create a new map?\nAny unsaved data will be lost.", "info", "New", true, "Yes", "No" )
+	local yes,no = guiShowMessageBox ( "New", "Are you sure you want to create a new map?\nAny unsaved data will be lost.", "question", "yesno" )
 	addEventHandler ( "onClientGUIClick",yes,function()
 		editor_main.newResource()
 		guiSetInputEnabled(false)

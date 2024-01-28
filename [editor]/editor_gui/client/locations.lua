@@ -102,11 +102,11 @@ function addBookmark ()
 	local z = locations.z:getValue()
 	local world = locations.world:getValue()
 	if name == "" then
-		guiShowMessageBox ( 'No location name was specified!', "error", "Bad value", true )
+		guiShowMessageBox("Bad value", "No location name was specified!", "error", "ok")
 		return
 	end
 	if bookmarksTable[name] then
-		guiShowMessageBox ( 'A location of name "'..name..'" already exists!', "error", "Conflict", true )
+		guiShowMessageBox("Conflict", 'A location of name "'..name..'" already exists!', "error", "ok")
 		return
 	end
 	bookmarksTable[name] = {}
@@ -192,15 +192,15 @@ end
 
 function setLocation ( x,y,z,world )
 	if not x then
-		local button = guiShowMessageBox ( "Invalid \"x position\" specified", "error", "Bad Value", true )
+		local button = guiShowMessageBox("Bad Value", "Invalid \"x position\" specified", "error", "ok")
 		return
 	end
 	if not y then
-		local button = guiShowMessageBox ( "Invalid \"y position\" specified", "error", "Bad Value", true )
+		local button = guiShowMessageBox("Bad Value", "Invalid \"y position\" specified", "error", "ok")
 		return
 	end
 	if not z then
-		local button = guiShowMessageBox ( "Invalid \"z position\" specified", "error", "Bad Value", true )
+		local button = guiShowMessageBox("Bad Value", "Invalid \"z position\" specified", "error", "ok")
 		return
 	end
 	if not world then

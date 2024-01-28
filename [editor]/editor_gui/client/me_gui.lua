@@ -370,9 +370,9 @@ function playSoundFrontEnd ( sound )
 	return returnValue
 end
 
-function guiShowMessageBox ( message, boxType, title, forced, button1, button2, button3 )
+function guiShowMessageBox ( title, msg, type, buttons )
 	playSoundFrontEnd ( 5 )
-	local a1,a2,a3 = msgbox.guiShowMessageBox ( message, boxType, title, forced, button1, button2, button3 )
+	local a1,a2,a3 = msgbox.createMessageBox( title, msg, type, buttons )
 	return a1,a2,a3
 end
 

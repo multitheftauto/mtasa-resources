@@ -54,19 +54,14 @@ function saveMap()
 	mapName = guiGetText ( saveDialog.mapName )
 	if mapName == "" then return end
 	if mapsInfo[string.lower(mapName)] then
-		local save,cancel = guiShowMessageBox ( "Are you sure you want to overwrite map \""..mapName.."\"?\n" ..
-		                                        "This will cause original map data to be lost.",
-						        "info", "Are you sure?", true, "Save", "Cancel" )
+		local save,cancel = guiShowMessageBox ( "Are you sure?", "Are you sure you want to overwrite map \""..mapName.."\"?\n" .. "This will cause original map data to be lost.", "question", "yesno" )
 		addEventHandler ( "onClientGUIClick", save,   saveButton,   false )
 		addEventHandler ( "onClientGUIClick", cancel, restoreSaveDialog, false )
 		guiSetProperty(saveDialog.window, "Disabled", "True")
 	elseif resourcesInfo[string.lower(mapName)] then
-		guiShowMessageBox ( "Unable to save to \""..mapName.."\".  \n" ..
-		                    "You cannot overwrite non-map resources.",
-				    "error", "Cannot save", true )
+		guiShowMessageBox ( "Cannot save", "Unable to save to \""..mapName.."\".  \n" .. "You cannot overwrite non-map resources.", "error", "ok" )
 	else
-		local save,cancel = guiShowMessageBox ( "Are you sure you want to save to \""..mapName.."\"?",
-		                                        "info", "Are you sure?", true, "Save", "Cancel" )
+		local save,cancel = guiShowMessageBox ( "Are you sure?", "Are you sure you want to save to \""..mapName.."\"?", "question", "yesno")
 		addEventHandler ( "onClientGUIClick", save,   saveButton,   false )
 		addEventHandler ( "onClientGUIClick", cancel, restoreSaveDialog, false )
 		guiSetProperty(saveDialog.window, "Disabled", "True")

@@ -17,22 +17,22 @@ addEventHandler ( "saveloadtest_return", root,
 				end
 				editor_gui.closeLoadDialog()
 			else
-				editor_gui.guiShowMessageBox ( "Map resource could not be started!", "error", "Error", true )
+				editor_gui.guiShowMessageBox ( "Error", "Map resource could not be started!", "error", "ok" )
 			end
 		elseif ( command ) == "save" then
 			if ( returnValue ) then
 				editor_gui.closeSaveDialog()
 			else
-				editor_gui.guiShowMessageBox ( "Map resource could not be saved! "..reason, "error", "Error", true )
+				editor_gui.guiShowMessageBox ( "Error", "Map resource could not be saved! "..reason, "error", "ok" )
 				editor_gui.restoreSaveDialog()
 			end
 		elseif ( command ) == "quickSave" then
 			reason = reason or "The target resource may be in .zip format or corrupted."
-			editor_gui.guiShowMessageBox ( "Map resource could not be saved! "..reason, "error", "Error", true )
+			editor_gui.guiShowMessageBox ( "Error", "Map resource could not be saved! "..reason, "error", "ok" )
 			editor_gui.restoreSaveDialog()
 		elseif ( command ) == "test" then
 			reason = reason or ""
-			editor_gui.guiShowMessageBox ( "Test could not be started! "..reason, "error", "Error", true )
+			editor_gui.guiShowMessageBox ( "Error", "Test could not be started! "..reason, "error", "ok" )
 			editor_gui.stopTest()
 		elseif ( command == "close" ) then
 			editor_gui.closeSaveDialog()

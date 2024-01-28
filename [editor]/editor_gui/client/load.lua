@@ -34,7 +34,7 @@ function openMap()
 	local row = guiGridListGetSelectedItem ( loadDialog.mapsList )
 	if row == -1 then return end
 	mapName = guiGridListGetItemText ( loadDialog.mapsList, row, 1 )
-	open = guiShowMessageBox ( "Are you sure you want to load map \""..mapName.."\"?\nAny unsaved changes will be lost.", "info", "Are you sure?", true, "Open", "Cancel" )
+	open = guiShowMessageBox("Are you sure?", "Are you sure you want to load map \""..mapName.."\"?\nAny unsaved changes will be lost.", "question", "yesno")
 	addEventHandler ( "onClientGUIClick", open, openButton, false )
 end
 
