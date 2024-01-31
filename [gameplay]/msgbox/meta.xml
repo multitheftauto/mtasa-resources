@@ -4,6 +4,7 @@
 
     <script src="sourceC.lua" type="client" />
     <export function="createMessageBox" type="client" />
+    <export function="guiShowMessageBox" type="client" />
 
     <file src="files/info.png" />
     <file src="files/question.png" />

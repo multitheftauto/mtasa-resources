@@ -133,6 +133,11 @@ function createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
     return boxButtonsElements[1], boxButtonsElements[2], boxButtonsElements[3]
 end
 
+function guiShowMessageBox(boxMessage, boxType, boxTitle, _, boxButtons)
+    outputDebugString("Note that guiShowMessageBox is a deprecated function of msgbox. Please use the createMessageBox function in the future.", 2)
+    createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
+end
+
 function onButtonClick()
     if source ~= this then
         return
