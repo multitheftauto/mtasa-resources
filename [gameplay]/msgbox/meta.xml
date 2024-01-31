@@ -2,7 +2,7 @@
     <info author="Nico834" version="1.0" name="MsgBox" description="Create and manage message boxes." type="script" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
-    <script src="sourceC.lua" type="client" cache="false" />
+    <script src="sourceC.lua" type="client" />
     <export function="createMessageBox" type="client" />
 
     <file src="files/info.png" />
