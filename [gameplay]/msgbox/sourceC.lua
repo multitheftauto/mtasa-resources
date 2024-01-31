@@ -1,21 +1,31 @@
 local screenX, screenY = guiGetScreenSize()
 
+local boxWidth = 350
+local boxHeight = 175
+
+local boxButtonsWidth = 75
+local boxButtonsHeight = 30
+
 local messageBoxElements = {}
 local messageBoxTypes = {
     ["info"] = {
         boxCaption = "Information",
+        boxSound = 11,
         boxIcon = "info.png"
     },
     ["question"] = {
         boxCaption = "Question",
+        boxSound = 10,
         boxIcon = "question.png"
     },
     ["warning"] = {
         boxCaption = "Warning",
+        boxSound = 40,
         boxIcon = "warning.png"
     },
     ["error"] = {
         boxCaption = "Error",
+        boxSound = 101,
         boxIcon = "error.png"
     }
 }
@@ -73,8 +83,9 @@ function createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
         return
     end
 
-    local boxWidth = 350
-    local boxHeight = 175
+    if messageBoxTypes[boxType].boxSound then
+        playSoundFrontEnd(messageBoxTypes[boxType].boxSound)
+    end
 
     local boxPosX = (screenX - boxWidth) / 2
     local boxPosY = (screenY - boxHeight) / 2
@@ -106,9 +117,6 @@ function createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
     local boxLabelPosY = boxImageCenterY - 2.5
     local boxLabel = guiCreateLabel(boxLabelPosX, boxLabelPosY, boxLabelWidth, boxLabelHeight, boxMessage, false, boxElement)
     guiSetFont(boxCaption, "default")
-
-    local boxButtonsWidth = 75
-    local boxButtonsHeight = 30
 
     local boxButtonsPosX = boxWidth - (boxButtonsWidth + 5) * #messageBoxButtons[boxButtons]
     local boxButtonsPosY = boxHeight - boxButtonsHeight - 5

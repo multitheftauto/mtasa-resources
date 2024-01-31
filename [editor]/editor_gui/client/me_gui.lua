@@ -371,7 +371,6 @@ function playSoundFrontEnd ( sound )
 end
 
 function guiShowMessageBox ( title, msg, type, buttons )
-	playSoundFrontEnd ( 5 )
 	local a1,a2,a3 = msgbox.createMessageBox( title, msg, type, buttons )
 	return a1,a2,a3
 end
