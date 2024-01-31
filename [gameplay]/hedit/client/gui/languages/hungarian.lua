@@ -2,7 +2,7 @@ guiLanguage.hungarian = {
     --
     -- GENERAL STRINGS
     --
-    windowHeader = "Handling Szerkesztő (Verzió: " .. HVER .. ")",
+    windowHeader = "Handling Szerkesztő v" .. HVER,
 
     restrictedPassenger = "A handling szerkesztőt nem használhatod utasként.",
     needVehicle = "A handling szerkesztőt csak vezetés közben használhatod!",
@@ -29,10 +29,10 @@ guiLanguage.hungarian = {
     invalidSave = "Adj meg egy érvényes nevet és leírást a handling mentéséhez.",
 
     confirmReplace = "Biztosan felülírod az előző mentést?",
-    confirmLoad = "Biztosan betöltöd ezeket a handling beállításokat? Minden mentetlen tevékenység elveszik!",
+    confirmLoad = "Biztosan betöltöd ezeket a handling beállításokat? Minden el nem mentett tevékenység elveszik!",
     confirmDelete = "Bizton kitörlöd ezeket a handling beállításokat?",
-    confirmReset = "Biztosan vissza szeretnéd állítani a handling beállításokat? Minden mentetlen tevékenység elveszik!",
-    confirmImport = "Biztosan importálni szeretnéd ezt a handling beállítást? Minden mentetlen tevékenység elveszik!",
+    confirmReset = "Biztosan vissza szeretnéd állítani a handling beállításokat? Minden el nem mentett tevékenység elveszik!",
+    confirmImport = "Biztosan importálni szeretnéd ezt a handling beállítást? Minden el nem mentett tevékenység elveszik!",
 
     successSave = "Sikeresen elmentetted a handling beállításaidat!",
     successLoad = "Sikeresen betöltötted a handling beállításaidat!",
@@ -41,12 +41,12 @@ guiLanguage.hungarian = {
     wantTheSettings = "Biztosan szeretnéd ezt a beállítást módosítani? A handling szerkesztő újra fog indulni.",
 
     vehicle = "Jármű",
-    unsaved = "Mentetlen",
+    unsaved = "El nem mentett",
 
-    clickToEdit = "Kattints a szerkesztéshez vagy húzd a gyorshoz.",
+    clickToEdit = "Kattints vagy húzd a szerkesztéshez.",
     enterToSubmit = "Nyomd meg az 'enter' billentyűt az elfogadáshoz.",
     clickToViewFullLog = "Nyomd meg a teljes napló megtekintéséhez.",
-    copiedToClipboard = "A handling beállítás sikeresen másolva a vágólapra! (Beillesztéshez CTRL + V)",
+    copiedToClipboard = "A handling beállítások sikeresen vágólapra másolva!",
 
     special = {
     },
@@ -75,8 +75,8 @@ guiLanguage.hungarian = {
         body = "Karossz.",
         wheels = "Kerekek",
         appearance = "Megjelenés",
-        modelflags = "Modell\nBeáll.",
-        handlingflags = "Handling\nBeáll.",
+        modelflags = "Modell\nTulajd.",
+        handlingflags = "Handling\nTulajd.",
         dynamometer = "Dyno",
         undo = "<",
         redo = ">",
@@ -102,12 +102,12 @@ guiLanguage.hungarian = {
             longname = "Megjelenés Beállítások"
         },
         modelflags = {
-            shortname = "Modell Beállítások",
-            longname = "Jármű Modell Beállítások"
+            shortname = "Modell Tulajdonságok",
+            longname = "Jármű Modell Tulajdonságok"
         },
         handlingflags = {
-            shortname = "Handling Beállítások",
-            longname = "Speciális Handling Beállítások"
+            shortname = "Handling Tulajdonságok",
+            longname = "Speciális Handling Tulajdonságok"
         },
         dynamometer = {
             shortname = "Dyno",
@@ -117,7 +117,7 @@ guiLanguage.hungarian = {
             shortname = "Rólunk",
             longname = "Az eredeti handling szerkesztőről",
             itemtext = {
-                textlabel = "Üdvözlünk az eredeti MTA handling szerkesztőben! Ez az erőforrás lehetőséget ad a járművek irányításának szerkesztésére valós időben.\n\n"..
+                textlabel = "Üdvözlünk az eredeti MTA handling szerkesztőben! Ez a resource lehetőséget ad a járművek irányításának szerkesztésére valós időben.\n\n"..
                             "Elmentheted és betöltheted a saját handling beállításaidat az ablak bal felső sarkában.\n\n"..
                             "További információkért a handling szerkesztőről - lásd:",
                 websitebox = "http://github.com/hedit/hedit",
@@ -128,14 +128,14 @@ guiLanguage.hungarian = {
             shortname = "Visszavonás",
             longname = "Visszavonás",
             itemtext = {
-                textlabel = "Valami nem sikerült."
+                textlabel = "Valami hiba történt."
             }
         },
         redo = {
             shortname = "Újra",
             longname = "Újra",
             itemtext = {
-                textlabel = "Valami nem sikerült."
+                textlabel = "Valami hiba történt."
             }
         },
         reset = {
@@ -144,7 +144,7 @@ guiLanguage.hungarian = {
             itemtext = {
                 label = "Alap Jármű:",
                 combo = "-----",
-                button = "Reset"
+                button = "Visszaállítás"
             }
         },
         save = {
@@ -153,8 +153,8 @@ guiLanguage.hungarian = {
             itemtext = {
                 nameLabel = "Név",
                 descriptionLabel = "Leírás",
-                saveButton = "Mentés",
-                loadButton = "Betöltés",
+                saveButton = "Exportálás",
+                loadButton = "Importálás",
                 deleteButton = "Törlés",
                 grid = "",
                 nameEdit = "",
@@ -163,10 +163,10 @@ guiLanguage.hungarian = {
         },
         import = {
             shortname = "handling.cfg",
-            longname = "Tölts be vagy ments handling.cfg formátumban.",
+            longname = "Importálj vagy exportálj handling.cfg formátumban.",
             itemtext = {
-                importButton = "Betöltés",
-                exportButton = "Mentés és másolás a vágólapra",
+                importButton = "Importálás",
+                exportButton = "Exportálás és másolás a vágólapra",
                 III = "III",
                 VC = "VC",
                 SA = "SA",
@@ -243,7 +243,7 @@ guiLanguage.hungarian = {
         ["turnMass"] = {
             friendlyName = "Fordulási tömeg",
             information = "Mozgási hatások kiszámítására szolgál.",
-            syntax = { "Float", "Nagy értékek esetén a jármű furcsán viselkedhet." }
+            syntax = { "Float", "Nagy értékek esetén a jármű 'lebegőnek' tűnhet." }
         },
         ["dragCoeff"] = {
             friendlyName = "Ellenállás szorzó",
@@ -283,15 +283,15 @@ guiLanguage.hungarian = {
         ["tractionLoss"] = {
             friendlyName = "Tapadás elvesztése",
             information = "Megváltoztatja a jármű tapadását gyorsítás és lassítás közben.",
-            syntax = { "Float", "A nagyobb értékek jobb kanyarokat tesznek lehetővé járművében." }
+            syntax = { "Float", "A nagyobb értékek jobb kanyarokat tesznek lehetővé járművedben." }
         },
         ["tractionBias"] = {
-            friendlyName = "Tapadási elfogultság",
-            information = "Megváltoztatja, hogy a kerekek összes tapadása hozzá lesz rendelve.",
-            syntax = { "Float", "A nagyobb értékek az előfeszítést a jármű eleje felé tolják." }
+            friendlyName = "Tapadási középpont",
+            information = "Megváltoztatja, hogy a tapadás melyik kerekekre hat jobban.",
+            syntax = { "Float", "A nagyobb értékek az autó eleje felé tolják a tapadást." }
         },
         ["numberOfGears"] = {
-            friendlyName = "Sebesség",
+            friendlyName = "Sebességek száma",
             information = "Megváltoztatja a jármű maximum sebességeinek számát.",
             syntax = { "Integer", "Nem befolyásolja a jármű végsebességét vagy gyorsulását." }
         },
@@ -317,25 +317,25 @@ guiLanguage.hungarian = {
             options = { ["f"]="Első kerekek",["r"]="Hátsó kerekek",["4"]="Összes kerék" }
         },
         ["engineType"] = {
-            friendlyName = "Motor",
+            friendlyName = "Motor típus",
             information = "Megváltoztatja a jármű motorjának típusát.",
             syntax = { "String", "Ennek a tulajdonságnak a hatása ismeretlen." },
             options = { ["p"]="Benzin",["d"]="Dízel",["e"]="Elektromos" }
         },
         ["brakeDeceleration"] = {
-            friendlyName = "Fék",
+            friendlyName = "Fék hatékonysága",
             information = "Módosítja a jármű lassítását. (MS^2)",
             syntax = { "Float", "Nagyobb értékek esetén a jármű erősebben fékez, de megcsúszhat, ha a tapadása túl alacsony." }
         },
         ["brakeBias"] = {
-            friendlyName = "Fékelőfeszítés",
-            information = "Módosítja a fékek fő helyzetét.",
-            syntax = { "Float", "A nagyobb értékek az előfeszítést a jármű eleje felé tolják." }
+            friendlyName = "Fékközéppont",
+            information = "Módosítja a fékek hatásának az elhelyezését.",
+            syntax = { "Float", "A nagyobb értékek a fékek hatását a jármű eleje felé tolják." }
         },
         ["ABS"] = {
             friendlyName = "ABS",
-            information = "Enable or disable ABS on your vehicle.",
-            syntax = { "Bool", "Ez a tulajdonság nincs hatással a járműre, amennyiben nem készítesz hozzá saját script-et." },
+            information = "Be vagy kikapcsolja az ABS-t a járművön.",
+            syntax = { "Bool", "Ez a tulajdonság nincs hatással a járműre." },
             options = { ["true"]="Bekapcsolva",["false"]="Kikapcsolva" }
         },
         ["steeringLock"] = {
@@ -355,7 +355,7 @@ guiLanguage.hungarian = {
         },
         ["suspensionHighSpeedDamping"] = {
             friendlyName = "Felfüggesztés nagy sebességű csillapítása",
-            information = "Megváltoztatja a felfüggesztés merevségét, ezáltal gyorsabban vezet.",
+            information = "Megváltoztatja a felfüggesztés merevségét, ezáltal gyorsabban tudsz vezetni.",
             syntax = { "Float", "Ennek a tulajdonságnak a hatása nem teszelt." } -- HERE {UNTESTED}
         },
         ["suspensionUpperLimit"] = {
@@ -366,12 +366,12 @@ guiLanguage.hungarian = {
         ["suspensionLowerLimit"] = {
             friendlyName = "Felfüggesztés alsó határa",
             information = "A felfüggesztés magassága.",
-            syntax = { "Float", "Az alacsonyabb értékek magasabbá teszik járművét." }
+            syntax = { "Float", "Az alacsonyabb értékek magasabbá teszik a járműved." }
         },
         ["suspensionFrontRearBias"] = {
-            friendlyName = "Felfüggesztési torzítás",
-            information = "Ahová a felfüggesztési teljesítmény nagy része kerül.",
-            syntax = { "Float", "A nagyobb értékek az előfeszítést a jármű eleje felé tolják." }
+            friendlyName = "Felfüggesztés középpontja",
+            information = "Megváltoztatja, hogy a felfüggesztés ereje a jármű melyik részére megy",
+            syntax = { "Float", "A nagyobb értékek a felfüggesztés erejét a jármű eleje felé tolják." }
         },
         ["suspensionAntiDiveMultiplier"] = {
             friendlyName = "Felfüggesztés 'Anti Dive' szorzó",
@@ -385,7 +385,7 @@ guiLanguage.hungarian = {
         },
         ["collisionDamageMultiplier"] = {
             friendlyName = "Ütközéskár-szorzó",
-            information = "Megváltoztatja az ütközésekből adódó károkat.",
+            information = "Megváltoztatja az ütközésekből adódó károk mennyiségét.",
             syntax = { "Float", "" }
         },
         ["monetary"] = {
@@ -394,7 +394,7 @@ guiLanguage.hungarian = {
             syntax = { "Integer", "Ez a beállítás a Multi Theft Auto-ban nem használható." }
         },
         ["modelFlags"] = {
-            friendlyName = "Modell beállítások",
+            friendlyName = "Modell tulajdonságok",
             information = "Változtatható speciális animációk.", -- HERE "where is this shown?"
             syntax = { "Hexadecimal", "" },
             items = {
@@ -449,15 +449,15 @@ guiLanguage.hungarian = {
             }
         },
         ["handlingFlags"] = {
-            friendlyName = "Handling beállítások",
-            information = "Speciális paraméterek és beállítások.",
+            friendlyName = "Handling tulajdonságok",
+            information = "Speciális teljesítmény tulajdonságok.",
             syntax = { "Hexadecimal", "" },
             items = {
                 {
                     ["1"] = {"1G_BOOST","Nagyobb teljesítményt ad a motornak az állóindításokhoz (a jobb hegymászás érdekében)."},
                     ["2"] = {"2G_BOOST","Valamivel nagyobb fordulatszámon nagyobb teljesítményt ad a motornak."},
-                    ["4"] = {"NPC_ANTI_ROLL","Letiltja a felborulást, ha mesterséges intelligencia vezeti a járművet."},
-                    ["8"] = {"NPC_NEUTRAL_HANDL","Csökkenti annak valószínűségét, hogy a jármű kereke kipördüljön, amikor mesterséges intelligencia vezeti azt."}
+                    ["4"] = {"NPC_ANTI_ROLL","Letiltja a felborulást, ha AI vezeti a járművet."},
+                    ["8"] = {"NPC_NEUTRAL_HANDL","Csökkenti annak valószínűségét, hogy a jármű kereke kipördüljön, amikor AI vezeti azt."}
                 },
                 {
                     ["1"] = {"NO_HANDBRAKE","Letiltja a kéziféket."},
@@ -505,13 +505,13 @@ guiLanguage.hungarian = {
         },
         ["headLight"] = {
             friendlyName = "Fényszórók",
-            information = "Változtassa meg a jármű első lámpáinak típusát.",
+            information = "Megváltoztatja a jármű fényszórójának típusát.",
             syntax = { "Integer", "" },
             options = { ["0"]="Hosszú",["1"]="Kicsi",["2"]="Nagy",["3"]="Magas" }
         },
         ["tailLight"] = {
             friendlyName = "Hátsó lámpák",
-            information = "Changes the type of rear lights your vehicle will have.",
+            information = "Megváltoztatja a jármű hátsó lámpáinak típusát.",
             syntax = { "Integer", "" },
             options = { ["0"]="Hosszú",["1"]="Kicsi",["2"]="Nagy",["3"]="Magas" }
         },
