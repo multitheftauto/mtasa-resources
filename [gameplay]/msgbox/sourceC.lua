@@ -45,17 +45,17 @@ local messageBoxButtons = {
 
 function createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
     if not boxTitle or type(boxTitle) ~= "string" then
-        outputDebugString("Bad argument @ 'createMessageBox' [Expected string at argument 1, got " .. type(boxTitle) .. "]", 2)
+        error("Bad argument @ 'createMessageBox' [Expected string at argument 1, got " .. type(boxTitle) .. "]", 2)
         return
     end
 
     if not boxMessage or type(boxMessage) ~= "string" then
-        outputDebugString("Bad argument @ 'createMessageBox' [Expected string at argument 2, got " .. type(boxMessage) .. "]", 2)
+        error("Bad argument @ 'createMessageBox' [Expected string at argument 2, got " .. type(boxMessage) .. "]", 2)
         return
     end
 
     if not boxType or type(boxType) ~= "string" then
-        outputDebugString("Bad argument @ 'createMessageBox' [Expected string at argument 3, got " .. type(boxType) .. "]", 2)
+        error("Bad argument @ 'createMessageBox' [Expected string at argument 3, got " .. type(boxType) .. "]", 2)
         return
     end
 
@@ -64,12 +64,12 @@ function createMessageBox(boxTitle, boxMessage, boxType, boxButtons)
     end
 
     if not messageBoxTypes[boxType] then
-        outputDebugString("Bad argument @ 'createMessageBox' [Unknown messageBoxType at argument 3", 2)
+        error("Bad argument @ 'createMessageBox' [Unknown messageBoxType at argument 3", 2)
         return
     end
 
     if not messageBoxButtons[boxButtons] then
-        outputDebugString("Bad argument @ 'createMessageBox' [Unknown messageBoxButtons at argument 4", 2)
+        error("Bad argument @ 'createMessageBox' [Unknown messageBoxButtons at argument 4", 2)
         return
     end
 
