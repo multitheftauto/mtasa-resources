@@ -1,7 +1,5 @@
 local g_PlayerData = {}
 local g_VehicleData = {}
-local chatTime = {}
-local lastChatMessage = {}
 
 g_ArmedVehicles = {
 	[425] = true,
