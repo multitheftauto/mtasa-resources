@@ -35,13 +35,16 @@ function messageClick()
         local elementBox = messageBoxWindows[elementParent]
         
         if elementBox then
-            local elementCallback = messageBoxCallbacks[elementParent]
+            local elementCallback = messageBoxCallbacks[elementParent][1]
+            local elementCallbackSource = messageBoxCallbacks[elementParent][2]
             local elementCallbackResult = guiGetText(source)
 
             elementCallbackResult = utf8.upper(elementCallbackResult)
 
-            if elementCallback and type(elementCallback) == "function" then
-                elementCallback(elementCallbackResult)
+            if elementCallback and type(elementCallback) == "string" then
+                if elementCallbackSource and getResourceState(elementCallbackSource) == "running" then
+                    call(elementCallbackSource, elementCallback, elementCallbackResult)
+                end
             end
 
             destroyElement(elementParent)
@@ -70,12 +73,6 @@ function messageBox(messageTitle, messageContent, messageCallback, messageIcon, 
 
     if not messageContent or type(messageContent) ~= "string" then
         error("Bad argument @ 'messageBox' [Expected string at argument 2, got " .. type(messageContent) .. "]")
-    end
-
-    if not messageCallback or type(messageCallback) ~= "function" then
-        messageCallback = function()
-            outputDebugString("Since you did not assign a callback function to this message, we replaced it with an empty function.", 2)
-        end
     end
 
     if not messageIcon or type(messageIcon) ~= "string" then
@@ -183,7 +180,7 @@ function messageBox(messageTitle, messageContent, messageCallback, messageIcon, 
     end
 
     messageBoxWindows[messageWindowElement] = {messageTitle, messageContent, messageIcon, messageButton}
-    messageBoxCallbacks[messageWindowElement] = messageCallback
+    messageBoxCallbacks[messageWindowElement] = {messageCallback, sourceResource}
 end
 
 function messageBoxEx(messageTitle, messageContent, messageIcon, messageButton, messageButtonDefault, messageSound, messageSoundVolume)

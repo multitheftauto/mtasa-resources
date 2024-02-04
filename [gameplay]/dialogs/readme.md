@@ -47,72 +47,80 @@ This function creates a dialog box with a callback function.
 
 **Syntax**
 ```lua
-messageBox( string messageTitle, string messageContent, function messageCallback, [ string messageIcon, string messageButton, int messageButtonDefault, string messageSound, int messageSoundVolume] )
+messageBox( string messageTitle, string messageContent, string messageCallback, [ string messageIcon, string messageButton, int messageButtonDefault, string messageSound, int messageSoundVolume] )
 ```
 
 **Example**
 > This example creates a dialog containing an information.
 ```lua
-messageBox("Welcome", "Multi Theft Auto provides the best online Grand Theft Auto experience there is.",
-    function(callbackResult)
-        if callbackResult == "OK" then
-            print("Read")
-        end
-    end,
-"INFO", "OK")
+messageBox("Welcome", "Multi Theft Auto provides the best online Grand Theft Auto experience there is.", "callbackFunction", "INFO", "OK")
+```
+
+```lua
+function callbackFunction(callbackResult)
+    if callbackResult == "OK" then
+        print("Read")
+    end
+end
 ```
 
 <br>
 
 > This example creates a dialog containing a question.
 ```lua
-messageBox("Save", "Are you sure you want to save your changes? This action will overwrite your previous saves.",
-    function(callbackResult)
-        if callbackResult == "YES" then
-            print("Save")
-        elseif callbackResult == "NO" then
-            print("Undo")
-        else
-            print("Cancel")
-        end
-    end,
-"QUESTION", "YESNOCANCEL")
+messageBox("Save", "Are you sure you want to save your changes? This action will overwrite your previous saves.", "callbackFunction", "QUESTION", "YESNOCANCEL")
+```
+
+```lua
+function callbackFunction(callbackResult)
+    if callbackResult == "YES" then
+        print("Save")
+    elseif callbackResult == "NO" then
+        print("Undo")
+    else
+        print("Cancel")
+    end
+end
 ```
 
 <br>
 
 > This example creates a dialog containing a warning.
 ```lua
-messageBox("Mismatch", "The selected file does not exist. Would you like to try the download again?",
-    function(callbackResult)
-        if callbackResult == "ABORT" then
-            print("Abort")
-        elseif callbackResult == "RETRY" then
-            print("Retry")
-        else
-            print("Ignore")
-        end
-    end,
-"WARNING", "ABORTRETRYIGNORE")
+messageBox("Mismatch", "The selected file does not exist. Would you like to try the download again?", "callbackFunction", "WARNING", "ABORTRETRYIGNORE")
+```
+
+```lua
+function callbackFunction(callbackResult)
+    if callbackResult == "ABORT" then
+        print("Abort")
+    elseif callbackResult == "RETRY" then
+        print("Retry")
+    else
+        print("Ignore")
+    end
+end
 ```
 
 <br>
 
 > This example creates a dialog containing an error.
 ```lua
-messageBox("Your wallet is empty", "You do not have enough money to purchase the selected vehicle.",
-    function(callbackResult)
-        if callbackResult == "Ok" then
-            print("Read")
-        end
-    end,
-"ERROR", "OK")
+messageBox("Your wallet is empty", "You do not have enough money to purchase the selected vehicle.", "callbackFunction", "ERROR", "OK")
+```
+
+```lua
+function callbackFunction(callbackResult)
+    if callbackResult == "OK" then
+        print("Read")
+    end
+end
 ```
 
 **Arguments**
 > - messageTitle: A string specifing the title of the message (note that it will be always uppercase)
 > - messageContent: A string specifing the content of the message
-> - messageCallback: A function that is called when the user presses a button. Use the callbackResult parameter to register the result.
+> - messageCallback: A string specifying the name of the function that will be exported when a button is pressed. (Note that you must specify the function name as a string and specify the function as exportable in the meta.xml of the source.)
 > - messageIcon: A string specifing the icon of the message, which is in the **messageIcons** table.
 > - messageButton: A string specifing the button(s) of the message, which is in the **messageButtons** table.
 > - messageButtonDefault: An integer specifing the default button (note that it will receive a bolder font)
