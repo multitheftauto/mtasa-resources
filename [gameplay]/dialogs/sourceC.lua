@@ -48,6 +48,9 @@ function messageClick()
             end
 
             destroyElement(elementParent)
+
+            messageBoxWindows[elementParent] = nil
+            messageBoxCallbacks[elementParent] = nil
         end
     end
 end
@@ -57,9 +60,10 @@ function messageClickEx()
 
     if elementParent then
         local elementBox = messageBoxWindows[elementParent]
-        
+
         if elementBox then
             destroyElement(elementParent)
+            messageBoxWindows[elementParent] = nil
         end
     end
 end
