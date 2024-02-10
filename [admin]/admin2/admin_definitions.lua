@@ -21,6 +21,9 @@ function enum(args, prefix)
     end
 end
 
+-- MISC DEFINITIONS
+ADMIN_CHAT_MAXLENGTH = 225
+
 -- EVENT CALLS
 
 enum(
@@ -34,9 +37,8 @@ enum(
         "EVENT_RESOURCE",
         "EVENT_SERVER",
         "EVENT_MESSAGE",
-        "EVENT_BANS",
+        "EVENT_BAN",
         "EVENT_NETWORK",
-        "EVENT_EXECUTE",
         "EVENT_PROXY",
         "EVENT_ADMIN_CHAT",
         "EVENT_ADMIN_OPEN",
@@ -60,6 +62,7 @@ enum(
         "SYNC_RESOURCE",
         "SYNC_ADMINS",
         "SYNC_SERVER",
+        "SYNC_BAN",
         "SYNC_BANS",
         "SYNC_MESSAGES"
     },

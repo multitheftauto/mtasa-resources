@@ -6,7 +6,7 @@
 	<script src="viewerManager.lua" type="server"/>
 	<script src="target.lua" type="server"/>
 	<script src="targetManager.lua" type="server"/>
-	<script src="performancebrowser_client.lua" type="client"/>
+	<script src="performancebrowser_client.lua" type="client" cache="false"/>
 
     <html src="pad.gif" raw="true" />
     <html src="loading.gif" raw="true" />

@@ -8,15 +8,15 @@
 	<script src="s_settings.lua"/>
 	<script src="s_img_mod.lua"/>
 
-	<script src="_common.lua" type="client" />
-	<script src="c_joiner.lua" type="client" />
-	<script src="c_settings.lua" type="client"/>
-	<script src="c_gui.lua" type="client" />
-	<script src="c_gui_ac.lua" type="client" />
-	<script src="c_gui_ac2.lua" type="client" />
-	<script src="c_gui_block_mods.lua" type="client" />
-	<script src="c_gui_config.lua" type="client" />
-	<script src="c_model_switcher.lua" type="client" />
+	<script src="_common.lua" type="client" cache="false" />
+	<script src="c_joiner.lua" type="client" cache="false" />
+	<script src="c_settings.lua" type="client" cache="false"/>
+	<script src="c_gui.lua" type="client" cache="false" />
+	<script src="c_gui_ac.lua" type="client" cache="false" />
+	<script src="c_gui_ac2.lua" type="client" cache="false" />
+	<script src="c_gui_block_mods.lua" type="client" cache="false" />
+	<script src="c_gui_config.lua" type="client" cache="false" />
+	<script src="c_model_switcher.lua" type="client" cache="false" />
 
 
 	<settings>

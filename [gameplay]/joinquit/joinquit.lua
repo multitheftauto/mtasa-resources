@@ -4,12 +4,16 @@ local settingPrefix = string.format("*%s.", resourceName)
 local showColorCodes = get("showColorCodes") == "true" 	-- Shows player"s names colorcoded if set to true, and if set to false it doesn"t
 local defaultColor = get("defaultColor")				-- Hex code for what color to output messages in (only used if showColorCodes is true)
 local fallbackHexCode = "#4E5768"						-- Fallback hex code for incorrectly input settings values
+local nickChangeDelay = get("nickChangeDelay")
+
+nickChangeTime = {}
 
 function reloadSettings(settingName)
 	-- Setting change affects this resource
 	if (string.find(settingName, settingPrefix, 1, true)) then
 		showColorCodes = get("showColorCodes") == "true"
 		defaultColor = get("defaultColor")
+		nickChangeDelay = get("nickChangeDelay")
 	end
 end
 addEventHandler("onSettingChange", root, reloadSettings)
@@ -47,6 +51,25 @@ end
 addEventHandler("onPlayerJoin", root, joinMessage)
 
 function nickChangeMessage(oldNick, newNick)
+
+	if wasEventCancelled() then return end
+
+	if isPlayerMuted(source) then
+		cancelEvent()
+		outputChatBox("You cannot change your nickname whilst muted!", source, 255, 0, 0)
+		return
+	end
+
+	if nickChangeTime[source] and nickChangeTime[source] + tonumber(nickChangeDelay) > getTickCount() then
+		cancelEvent()
+		outputChatBox("You can only change your name once every "..(tonumber(nickChangeDelay)/1000).." seconds", source, 255, 0, 0)
+		return false
+	else
+		nickChangeTime[source] = getTickCount()
+	end
+
+	if wasEventCancelled() then return end
+
 	if (showColorCodes) then
 		outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, oldNick)..getDefaultColor().." is now known as "..getHexFriendlyNick(source, newNick), root, 255, 100, 100, true)
 	else
@@ -55,11 +78,16 @@ function nickChangeMessage(oldNick, newNick)
 end
 addEventHandler("onPlayerChangeNick", root, nickChangeMessage)
 
-function leftMessage(reason)
+function leftMessage(quitType, reason)
+
+    if nickChangeTime[source] then
+        nickChangeTime[source] = nil
+    end
+
 	if (showColorCodes) then
-		outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, getPlayerName(source))..getDefaultColor().." has left the game ["..reason.."]", root, 255, 100, 100, true)
+		outputChatBox(getDefaultColor().."* "..getHexFriendlyNick(source, getPlayerName(source))..getDefaultColor().." has left the game ["..quitType.."]", root, 255, 100, 100, true)
 	else
-		outputChatBox("* "..getPlayerName(source).." has left the game ["..reason.."]", root, 255, 100, 100)
+		outputChatBox("* "..getPlayerName(source).." has left the game ["..quitType.."]", root, 255, 100, 100)
 	end
 end
 addEventHandler("onPlayerQuit", root, leftMessage)

@@ -2,6 +2,11 @@
 	<group name="Special">
 		<skin id="1" name="Truth" keywords="truth,male,white,hippie"/>
 		<skin id="2" name="Maccer" keywords="maccer,male,white,wanker"/>
+                <skin id="5" name="Big Bear(Large)" keywords="male,bb"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="6" name="White Croupier" keywords="female,wfycrp"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="8" name="Cab Driver" keywords="male,wmycd2"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="42" name="Suzie" keywords="male,suzie"/>  <! -- NEW SPECIAL SKIN -->
+                <skin id="86" name="Tracksuit Girl (Pink)" keywords="female,vhfyst"/>  <! -- NEW SPECIAL SKIN -->
 		<skin id="265" name="Tenpenny" keywords="officer,tenpenny,male,black,cop"/>
 		<skin id="266" name="Pulaski" keywords="officer,pulaski,male,white,cop"/>
 		<skin id="267" name="Hern" keywords="officer,hern,male,latin"/>
@@ -163,6 +168,8 @@
 			<skin id="287" name="Army" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,troop,soldier,bandoleer,camo,hat,baseball,mustache,backpack,gloves,infantry,private"/>
 		</group>
 		<group name="Police">
+                        <skin id="3" name="Deputy Officer" keywords="officer,police,cdeput,male,cop"/>   <! -- NEW SPECIAL SKIN -->
+                        <skin id="4" name="Sheriff" keywords="officer,police,sfpdm1,male,cop"/>   <! -- NEW SPECIAL SKIN -->
 			<skin id="190" name="Barbara Schternvart" keywords="girlfriend,date,cop,police,officer,girl,woman,black"/>
 			<skin id="246" name="Cop Stripper" keywords="police,authority,officer,dance,strip,thong,corset,hat,badge,gloves,baton,stick,cuffs,walkie,collar,earrings,leather,heels,white,girl,woman"/>
 			<skin id="280" name="Cop 1" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,white,guy,male,patrol"/>
@@ -205,6 +212,7 @@
 		<skin id="17" name="Black suit" keywords="business,tie,guy,male"/>
 		<skin id="57" name="Chinese Businessman" keywords="suit,glasses,old,china,oriental,business,guy,male"/>
 		<skin id="61" name="Pilot" keywords="airplane,plane,hat,suit,white,guy,male"/>
+                <skin id="65" name="Air Traffic Controller (1)" keywords="male,vwmyap"/>  <! -- NEW SPECIAL SKIN -->
 		<skin id="76" name="Businesswoman 1" keywords="hanky,bandana,suit,business,girl,woman,realestate,heels,formal"/>
 		<skin id="141" name="Cute Librarian" keywords="business,suit,glasses,asian,chinese,oriental,girl,woman,heels,formal"/>
 		<skin id="147" name="Sigmund Freud" keywords="therapist,shrink,psycho,analyst,suit,business,formal,beard,mustache,white,guy,male"/>
@@ -219,6 +227,9 @@
 		<skin id="228" name="Japanese Businessman 3" keywords="suit,formal,asian,oriental,business,guy,male"/>
 		<skin id="255" name="Limo Driver" keywords="chauffeur,hat,suit,formal,mustache,uniform,white,guy,male,pilot"/>
 		<skin id="263" name="Asian Hostess" keywords="oriental,japanese,flowers,floral,kimono,heels,girl,woman"/>
+		<skin id="273" name="Reporter" keywords="male,mediatr"/>  <! -- NEW SPECIAL SKIN -->
+		<skin id="289" name="Air Traffic Controller (2)" keywords="male,somyap"/>  <! -- NEW SPECIAL SKIN -->
+
 	</group>
 	<group name="Fighters">
 		<skin id="49" name="Ninja Sensei" keywords="Japanese,japan,oriental,bald,old,kimono,dragon"/>

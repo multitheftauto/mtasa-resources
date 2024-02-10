@@ -29,6 +29,8 @@
     <script src="client/gui/languages/spanish.lua"  type="client" />
     <script src="client/gui/languages/polish.lua"   type="client" />
     <script src="client/gui/languages/arabic.lua"   type="client" />
+    <script src="client/gui/languages/portuguese.lua" type="client" />
+    <script src="client/gui/languages/hungarian.lua" type="client" />
 
     <script src="client/gui/guicreator.lua"         type="client" />
     <script src="client/gui/guimanager.lua"         type="client" />

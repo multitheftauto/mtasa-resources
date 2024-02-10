@@ -5,8 +5,8 @@
 	<include resource="ajax" />
 
 	<script src="shared_util.lua" type="shared"/>
-	<script src="client.lua" type="client"/>
-	<script src="client_util.lua" type="client"/>
+	<script src="client.lua" type="client" cache="false"/>
+	<script src="client_util.lua" type="client" cache="false"/>
 	<script src="server.lua" type="server"/>
 	<script src="server_util.lua" type="server"/>
 
@@ -22,4 +22,8 @@
 	<html src="codemirror\lua.js" raw="true"/>
 
 	<export function="httpRun" http="true" protected="true"/>
+
+	<aclrequest>
+		<right name="function.loadstring" access="true" />
+	</aclrequest>
 </meta>

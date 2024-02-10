@@ -1112,7 +1112,7 @@ function matrix.solve( m1 )
 	for i = 1,#m1 do
 		mtx[i] = {}
 		for j = 1,#m1[1] do
-			mtx[i][j] = tonumber( loadstring( "return "..m1[i][j][1] )() )
+			mtx[i][j] = tonumber(m1[i][j][1]())
 		end
 	end
 	return setmetatable( mtx, matrix_meta )
