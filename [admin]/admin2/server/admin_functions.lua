@@ -483,7 +483,7 @@ aFunctions = {
         end,
         ["setconfig"] = function(configData)
             for k,v in pairs(configData) do
-                setServerConfigSetting(k,v)
+                setServerConfigSetting(k,v, true)
             end
             return true
         end
