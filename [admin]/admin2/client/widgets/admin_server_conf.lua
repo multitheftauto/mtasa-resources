@@ -22,7 +22,7 @@ function aServerConfig.Open()
 	if (not isElement(aServerConfig.Form)) then
 		local x,y = guiGetScreenSize()
 
-		aServerConfig.Form = guiCreateWindow(x/2 - 210, y/2 - 200, 480, 430, "Server Configuration", false)
+		aServerConfig.Form = guiCreateWindow(x/2 - 240, y/2 - 215, 480, 430, "Server Configuration", false)
 
 		guiCreateHeader(0.05, 0.052, 0.3, 0.04, "Connection:", true, aServerConfig.Form)
 		
