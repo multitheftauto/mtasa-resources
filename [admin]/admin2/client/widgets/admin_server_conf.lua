@@ -166,8 +166,8 @@ function aServerConfig.onClientClick(button)
 				triggerServerEvent("aServer", localPlayer, "setconfig", {
 					minclientversion = guiGetText(aServerConfig.minVersionField),
 					recommendedclientversion = guiGetText(aServerConfig.recVersionField),
-					bandwidth_reduction = guiComboBoxGetItemText(aServerConfig.bandwidthCombo, guiComboBoxGetSelected(aServerConfig.bandwidthCombo)) or "medium",
-					bullet_sync = guiComboBoxGetItemText(aServerConfig.bulletSyncCombo, guiComboBoxGetSelected(aServerConfig.bulletSyncCombo)) or "1",
+					bandwidth_reduction = guiComboBoxGetItemText(aServerConfig.bandwidthCombo, guiComboBoxGetSelected(aServerConfig.bandwidthCombo)):lower() or "medium",
+					bullet_sync = guiComboBoxGetItemText(aServerConfig.bulletSyncCombo, guiComboBoxGetSelected(aServerConfig.bulletSyncCombo)) == "True" and "1" or "0",
 					max_player_triggered_events_per_interval = triggersPerInterval,
 					camera_sync_interval = cameraSyncInterval,
 					player_sync_interval = playerSyncInterval,
