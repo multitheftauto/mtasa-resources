@@ -348,7 +348,7 @@ addEventHandler(
 
 addEvent("aServerConfigRefresh", true)
 addEventHandler("aServerConfigRefresh", root, function()
-    triggerClientEvent("aClientConfigRefresh", client, getServerConfigSetting("minclientversion"), getServerConfigSetting("recommendedclientversion"), getServerConfigSetting("bandwidth_reduction"), getServerConfigSetting("bullet_sync"), getServerConfigSetting("max_player_triggered_events_per_interval"), getServerConfigSetting("camera_sync_interval"), getServerConfigSetting("player_sync_interval"), getServerConfigSetting("player_triggered_event_interval"), getServerConfigSetting("keysync_analog_sync_interval"), getServerConfigSetting("keysync_mouse_sync_interval"), getServerConfigSetting("ped_sync_interval"), getServerConfigSetting("unoccupied_vehicle_sync_interval"), getServerConfigSetting("lightweight_sync_interval"))
+    triggerClientEvent(client, "aClientConfigRefresh", client, getServerConfigSetting("minclientversion"), getServerConfigSetting("recommendedclientversion"), getServerConfigSetting("bandwidth_reduction"), getServerConfigSetting("bullet_sync"), getServerConfigSetting("max_player_triggered_events_per_interval"), getServerConfigSetting("camera_sync_interval"), getServerConfigSetting("player_sync_interval"), getServerConfigSetting("player_triggered_event_interval"), getServerConfigSetting("keysync_analog_sync_interval"), getServerConfigSetting("keysync_mouse_sync_interval"), getServerConfigSetting("ped_sync_interval"), getServerConfigSetting("unoccupied_vehicle_sync_interval"), getServerConfigSetting("lightweight_sync_interval"))
 end)
 
 addEvent("aMessage", true)
