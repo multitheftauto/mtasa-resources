@@ -480,6 +480,12 @@ aFunctions = {
         ["clearchat"] = function()
             clearChatBox()
             return true
+        end,
+        ["setconfig"] = function(configData)
+            for k,v in pairs(configData) do
+                setServerConfigSetting(k,v)
+            end
+            return true
         end
     },
     admin = {},
