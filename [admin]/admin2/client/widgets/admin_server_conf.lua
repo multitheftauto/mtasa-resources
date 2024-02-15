@@ -74,15 +74,15 @@ function aServerConfig.Open()
 		guiSetVisible(aServerConfig.Form, false)
 
 		aRegister("ServerConfig", aServerConfig.Form, aServerConfig.Open, aServerConfig.Close)
-
-		addEventHandler("onClientGUIClick", aServerConfig.Form, aServerConfig.onClientClick)
-		addEventHandler('onClientGUIChanged', aServerConfig.Form, aServerConfig.onClientChanged)
-		addEventHandler("onAdminRefresh", aServerConfig.Form, aServerConfig.Refresh)
 	else
 		guiSetVisible(aServerConfig.Form, true)
 		guiBringToFront(aServerConfig.Form)
 	end
 
+	addEventHandler("onClientGUIClick", aServerConfig.Form, aServerConfig.onClientClick)
+	addEventHandler('onClientGUIChanged', aServerConfig.Form, aServerConfig.onClientChanged)
+	addEventHandler("onAdminRefresh", aServerConfig.Form, aServerConfig.Refresh)
+	
 	aServerConfig.Refresh()
 end
 
@@ -90,6 +90,10 @@ function aServerConfig.Close(destroy)
 	if (destroy) then
 		destroyElement(aServerConfig.Form)
 	else
+		removeEventHandler('onClientGUIClick', aServerConfig.Form, aServerConfig.onClientClick)
+		removeEventHandler('onClientGUIChanged', aServerConfig.Form, aServerConfig.onClientChanged)
+		removeEventHandler('onAdminRefresh', aServerConfig.Form, aServerConfig.Refresh)
+
 		guiSetVisible(aServerConfig.Form, false)
 	end
 end
@@ -167,7 +171,7 @@ function aServerConfig.onClientClick(button)
 					minclientversion = guiGetText(aServerConfig.minVersionField),
 					recommendedclientversion = guiGetText(aServerConfig.recVersionField),
 					bandwidth_reduction = guiComboBoxGetItemText(aServerConfig.bandwidthCombo, guiComboBoxGetSelected(aServerConfig.bandwidthCombo)):lower() or "medium",
-					bullet_sync = guiComboBoxGetItemText(aServerConfig.bulletSyncCombo, guiComboBoxGetSelected(aServerConfig.bulletSyncCombo)) == "True" and "1" or "0",
+					bullet_sync = tostring(guiComboBoxGetSelected(aServerConfig.bulletSyncCombo)),
 					max_player_triggered_events_per_interval = triggersPerInterval,
 					camera_sync_interval = cameraSyncInterval,
 					player_sync_interval = playerSyncInterval,
@@ -195,7 +199,7 @@ addEventHandler("aClientConfigRefresh", localPlayer, function(minclientversion, 
 	guiSetText(aServerConfig.recVersionField, recommendedclientversion)
 
 	guiComboBoxSetSelected(aServerConfig.bandwidthCombo, (bandwidthreduction == "none" and 0 or (bandwidthreduction == "medium" and 1 or 2)) or 0)
-	guiComboBoxSetSelected(aServerConfig.bulletSyncCombo, bulletsync)
+	guiComboBoxSetSelected(aServerConfig.bulletSyncCombo, tonumber(bulletsync))
 
 	guiSetText(aServerConfig.maxTriggersField, maxplayertriggers)
 	guiSetText(aServerConfig.camera_sync_interval, camerasync_interval)
