@@ -698,18 +698,18 @@ end
 addEvent("assaultClientScriptLoaded",true)
 addEventHandler('assaultClientScriptLoaded', root,
 	function()
-		setElementDataLocal( source, "assaultClientScriptLoaded", true )
-		if (assaultClientScriptQueue[source] == nil) then return end
-		for k,v in ipairs(assaultClientScriptQueue[source]) do
-			--outputConsole("Triggering queued event '"..v.eventName.."'",source)
-			triggerClientEvent( source, v.eventName, source, v.parameter )
+		setElementDataLocal( client, "assaultClientScriptLoaded", true )
+		if (assaultClientScriptQueue[client] == nil) then return end
+		for k,v in ipairs(assaultClientScriptQueue[client]) do
+			--outputConsole("Triggering queued event '"..v.eventName.."'",client)
+			triggerClientEvent( client, v.eventName, client, v.parameter )
 		end
-		assaultClientScriptQueue[source] = {}
+		assaultClientScriptQueue[client] = {}
 	end
 )
 addEventHandler("onPlayerQuit", root,
 	function()
-		assaultClientScriptQueue[source] = {}
+		assaultClientScriptQueue[source] = nil
 	end
 )
 
