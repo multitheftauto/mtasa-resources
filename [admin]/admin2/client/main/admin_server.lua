@@ -104,25 +104,29 @@ function aServerTab.Create(tab)
     aServerTab.FPS = guiCreateEdit(0.35, 0.710, 0.135, 0.04, fpsLimit, true, tab)
     aServerTab.FPSSet = guiCreateButton(0.50, 0.710, 0.10, 0.04, "Set", true, tab, "setfpslimit")
 
-    guiCreateHeader(0.02, 0.755, 0.30, 0.035, "Automatic scripts:", true, tab)
+    aServerTab.ServerConf = guiCreateLabel(0.03, 0.755, 0.25, 0.035, "Server configuration", true, tab)
+    aServerTab.ServerConfSet = guiCreateButton(0.35, 0.755, 0.25, 0.04, "Change", true, tab, "setserverconf")
+    aServerConfig.Open()
+
+    guiCreateHeader(0.02, 0.8, 0.30, 0.035, "Automatic scripts:", true, tab)
     aServerTab.PingKickerCheck =
-        guiCreateCheckBox(0.03, 0.800, 0.30, 0.04, "Ping Kicker", false, true, tab, "setpingkicker")
-    aServerTab.PingKicker = guiCreateEdit(0.35, 0.800, 0.135, 0.04, "300", true, tab)
-    aServerTab.PingKickerSet = guiCreateButton(0.50, 0.800, 0.10, 0.04, "Set", true, tab, "setpingkicker")
+        guiCreateCheckBox(0.03, 0.845, 0.30, 0.04, "Ping Kicker", false, true, tab, "setpingkicker")
+    aServerTab.PingKicker = guiCreateEdit(0.35, 0.845, 0.135, 0.04, "300", true, tab)
+    aServerTab.PingKickerSet = guiCreateButton(0.50, 0.845, 0.10, 0.04, "Set", true, tab, "setpingkicker")
     guiSetEnabled(aServerTab.PingKicker, false)
     guiSetEnabled(aServerTab.PingKickerSet, false)
 
     aServerTab.FPSKickerCheck =
-        guiCreateCheckBox(0.03, 0.845, 0.30, 0.04, "FPS Kicker", false, true, tab, "setfpskicker")
-    aServerTab.FPSKicker = guiCreateEdit(0.35, 0.845, 0.135, 0.04, "5", true, tab)
-    aServerTab.FPSKickerSet = guiCreateButton(0.50, 0.845, 0.10, 0.04, "Set", true, tab, "setfpskicker")
+        guiCreateCheckBox(0.03, 0.89, 0.30, 0.04, "FPS Kicker", false, true, tab, "setfpskicker")
+    aServerTab.FPSKicker = guiCreateEdit(0.35, 0.89, 0.135, 0.04, "5", true, tab)
+    aServerTab.FPSKickerSet = guiCreateButton(0.50, 0.89, 0.10, 0.04, "Set", true, tab, "setfpskicker")
     guiSetEnabled(aServerTab.FPSKicker, false)
     guiSetEnabled(aServerTab.FPSKickerSet, false)
 
     aServerTab.IdleKickerCheck =
-        guiCreateCheckBox(0.03, 0.890, 0.30, 0.04, "Idle Kicker", false, true, tab, "setidlekicker")
-    aServerTab.IdleKicker = guiCreateEdit(0.35, 0.890, 0.135, 0.04, "10", true, tab)
-    aServerTab.IdleKickerSet = guiCreateButton(0.50, 0.890, 0.10, 0.04, "Set", true, tab, "setidlekicker")
+        guiCreateCheckBox(0.03, 0.935, 0.30, 0.04, "Idle Kicker", false, true, tab, "setidlekicker")
+    aServerTab.IdleKicker = guiCreateEdit(0.35, 0.935, 0.135, 0.04, "10", true, tab)
+    aServerTab.IdleKickerSet = guiCreateButton(0.50, 0.935, 0.10, 0.04, "Set", true, tab, "setidlekicker")
     guiSetEnabled(aServerTab.IdleKicker, false)
     guiSetEnabled(aServerTab.IdleKickerSet, false)
 
@@ -279,6 +283,8 @@ function aServerTab.onClientClick(button)
             else
                 messageBox("Invalid FPS limit: range is 25 - 32767, or 0 for default.", MB_ERROR, MB_OK)
             end
+        elseif (source == aServerTab.ServerConfSet) then
+            aServerConfig.Open()
         elseif (source == aServerTab.QuickReload) then
             triggerServerEvent(
                 "aServer",

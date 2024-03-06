@@ -55,19 +55,19 @@ function aHandleIP2CUpdate()
 end
 
 function aHandleIp2cSetting()
-	local enabled = get("*useip2c")
-	if enabled and enabled == "true" then
-		local ip2c = getResourceFromName("ip2c")
-		if ip2c and getResourceState(ip2c) == "loaded" then
+    local enabled = get("*useip2c")
+    if enabled and enabled == "true" then
+        local ip2c = getResourceFromName("ip2c")
+        if ip2c and getResourceState(ip2c) == "loaded" then
             -- Persistent
-			startResource(ip2c, true)
-		end
-	elseif (not enabled) or (enabled == "false") then
-		local ip2c = getResourceFromName("ip2c")
-		if ip2c and getResourceState(ip2c) == "running" then
-			stopResource(ip2c)
-		end
-	end
+            startResource(ip2c, true)
+        end
+    elseif (not enabled) or (enabled == "false") then
+        local ip2c = getResourceFromName("ip2c")
+        if ip2c and getResourceState(ip2c) == "running" then
+            stopResource(ip2c)
+        end
+    end
 end
 
 addEventHandler(
@@ -152,7 +152,7 @@ addEventHandler(
 
 function updatePlayerCountry(player)
     local isIP2CResourceRunning = getResourceFromName( "ip2c" )
-	isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
+    isIP2CResourceRunning = isIP2CResourceRunning and getResourceState( isIP2CResourceRunning ) == "running"
     aPlayers[player].country = isIP2CResourceRunning and exports.ip2c:getPlayerCountry(player) or false
     if aPlayers[player].country then
         aPlayers[player].countryname = isIP2CResourceRunning and exports.ip2c:getCountryName(aPlayers[player].country) or false
@@ -346,6 +346,11 @@ addEventHandler(
     end
 )
 
+addEvent("aServerConfigRefresh", true)
+addEventHandler("aServerConfigRefresh", root, function()
+    triggerClientEvent(client, "aClientConfigRefresh", client, getServerConfigSetting("minclientversion"), getServerConfigSetting("recommendedclientversion"), getServerConfigSetting("bandwidth_reduction"), getServerConfigSetting("bullet_sync"), getServerConfigSetting("max_player_triggered_events_per_interval"), getServerConfigSetting("camera_sync_interval"), getServerConfigSetting("player_sync_interval"), getServerConfigSetting("player_triggered_event_interval"), getServerConfigSetting("keysync_analog_sync_interval"), getServerConfigSetting("keysync_mouse_sync_interval"), getServerConfigSetting("ped_sync_interval"), getServerConfigSetting("unoccupied_vehicle_sync_interval"), getServerConfigSetting("lightweight_sync_interval"))
+end)
+
 addEvent("aMessage", true)
 addEventHandler(
     "aMessage",
@@ -414,9 +419,9 @@ addEventHandler(
 )
 
 addCommandHandler(get("adminChatCommandName"),
-	function(thePlayer, cmd, ...)
-		if (hasObjectPermissionTo(thePlayer, "general.tab_adminchat", false) and #arg > 0) then
-			triggerEvent("aAdminChat", thePlayer, table.concat(arg, " "))
-		end
-	end
+    function(thePlayer, cmd, ...)
+        if (hasObjectPermissionTo(thePlayer, "general.tab_adminchat", false) and #arg > 0) then
+            triggerEvent("aAdminChat", thePlayer, table.concat(arg, " "))
+        end
+    end
 )
