@@ -26,12 +26,18 @@ local function applyStatsForSource()
 end
 addEventHandler("onPlayerJoin", root, applyStatsForSource)
 
-local function applyStatsForEveryone()
+local function applyStatsForEveryone(loadedResource)
+	local resourceType = getResourceInfo(loadedResource, "type")
+	local isGamemodeResource = resourceType == "gamemode"
+	local isMapResource = resourceType == "map"
+	
+	if not (loadedResource == resource or isGamemodeResource or isMapResource) then return end
+
 	local playersTable = getElementsByType("player")
 
 	for playerID = 1, #playersTable do
 		applyStatsForPlayer(playersTable[playerID])
 	end
 end
-addEventHandler("onResourceStart", resourceRoot, applyStatsForEveryone)
+addEventHandler("onResourceStart", root, applyStatsForEveryone)
 addEventHandler("onGamemodeMapStart", root, applyStatsForEveryone)
