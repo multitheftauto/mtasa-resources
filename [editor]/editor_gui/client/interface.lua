@@ -7,7 +7,7 @@ local interface = {
 	move_cursor = NOT_REQUIRED,
 	move_freecam = NOT_REQUIRED,
 	move_keyboard = NOT_REQUIRED,
-	msgbox = NOT_REQUIRED,
+	dialogs = NOT_REQUIRED,
 	tooltip = NOT_REQUIRED,
 	freeroam = NOT_REQUIRED,
 }

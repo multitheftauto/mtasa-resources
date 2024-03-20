@@ -55,18 +55,19 @@ function elementIcons_Clicked ( source, mouseButton )
 	end
 end
 
+function newCallback(callbackResult)
+	if callbackResult == "YES" then
+		editor_main.newResource()
+	end
+
+	guiSetInputEnabled(false)
+end
+
 --These are individual functions for each topmenu button
 function topMenuClicked.new ()
 	editor_main.dropElement ()
 	guiSetInputEnabled(true)
-	local yes,no = guiShowMessageBox ( "Are you sure you want to create a new map?\nAny unsaved data will be lost.", "info", "New", true, "Yes", "No" )
-	addEventHandler ( "onClientGUIClick",yes,function()
-		editor_main.newResource()
-		guiSetInputEnabled(false)
-	end,false )
-	addEventHandler ( "onClientGUIClick",no,function()
-		guiSetInputEnabled(false)
-	end,false )
+	exports.dialogs:messageBox("New", "Are you sure you want to create a new map? Any unsaved data will be lost.", "newCallback", "QUESTION", "YESNO")
 end
 
 function topMenuClicked.open ()

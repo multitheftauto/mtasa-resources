@@ -107,7 +107,7 @@ end
 function WebBrowserGUI:DevButton_Click(button, state)
 	if button == "left" and state == "up" then
 		if not getDevelopmentMode() then
-			exports.msgbox:guiShowMessageBox("You have to enable the development using setDevelopmentMode", "error", "Development mode required", false)
+			exports.dialogs:messageBox("Development mode required", "You have to enable the development mode using setDevelopmentMode()", false, "ERROR", "OK")
 			return
 		end
 

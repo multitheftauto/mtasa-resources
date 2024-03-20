@@ -170,29 +170,29 @@ end
 function confirmMapSettings ()
 	local versionText = mapsettings.metaVersion:getValue()
 	if not versionText or not (( string.match (versionText, "^%d+$") ) or ( string.match (versionText, "^%d+%.%d+$") ) or ( string.match (versionText, "^%d+%.%d+%.%d+$") )) then
-		guiShowMessageBox ( "Invalid META \"Version\" specified", "error", "Bad Value", true )
+		exports.dialogs:messageBox("Bad value", "Invalid META \"Version\" specified", false, "ERROR", "OK")
 		return
 	end
 	if not mapsettings.timeHour:getValue() or not mapsettings.timeMinute:getValue()
 		or mapsettings.timeHour:getValue() > 23 or mapsettings.timeMinute:getValue() > 59 then
-		guiShowMessageBox ( "Invalid Time specified", "error", "Bad Value", true )
+		exports.dialogs:messageBox("Bad value", "Invalid time specified", false, "ERROR", "OK")
 		return
 	end
 
 	-- if mapsettings.metaAuthor:getValue() == "" then
-		-- guiShowMessageBox ( "Invalid META \"Author\" specified", "error", "Bad Value", true )
+		-- exports.dialogs:messageBox("Bad value", "Invalid META \"Author\" specified", false, "ERROR", "OK")
 		-- return
 	-- end
 	if not tonumber(mapsettings.maxplayers:getValue()) then
-		guiShowMessageBox ( 'Invalid "Maximum Players" specified', "error", "Bad Value", true )
+		exports.dialogs:messageBox("Bad value", "Invalid \"Maximum Players\" specified", false, "ERROR", "OK")
 		return
 	end
 	if not tonumber(mapsettings.minplayers:getValue()) then
-		guiShowMessageBox ( 'Invalid "Minimum Players" specified', "error", "Bad Value", true )
+		exports.dialogs:messageBox("Bad value", "Invalid \"Maximum Players\" specified", false, "ERROR", "OK")
 		return
 	end
 	if mapsettings.minplayers:getValue() >=  mapsettings.maxplayers:getValue() then
-		guiShowMessageBox ( 'Invalid "Minimum Players" specified', "error", "Bad Value", true )
+		exports.dialogs:messageBox("Bad value", "Invalid \"Maximum Players\" specified", false, "ERROR", "OK")
 		return
 	end
 	if not tonumber(mapsettings.gamespeed:getValue()) then

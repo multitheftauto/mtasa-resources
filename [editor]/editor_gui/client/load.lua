@@ -34,12 +34,13 @@ function openMap()
 	local row = guiGridListGetSelectedItem ( loadDialog.mapsList )
 	if row == -1 then return end
 	mapName = guiGridListGetItemText ( loadDialog.mapsList, row, 1 )
-	open = guiShowMessageBox ( "Are you sure you want to load map \""..mapName.."\"?\nAny unsaved changes will be lost.", "info", "Are you sure?", true, "Open", "Cancel" )
-	addEventHandler ( "onClientGUIClick", open, openButton, false )
+	exports.dialogs:messageBox("Are you sure?", "Are you sure you want to load map \""..mapName.."\"?\nAny unsaved changes will be lost.", "openCallback", "QUESTION", "YESNO")
 end
 
-function openButton ()
-	editor_main.openResource ( mapName )
+function openCallback(callbackResult)
+	if callbackResult == "YES" then
+		editor_main.openResource ( mapName )
+	end
 end
 
 addEvent ( "openShowDialog",true )

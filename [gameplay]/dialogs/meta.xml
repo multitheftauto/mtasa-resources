@@ -1,0 +1,16 @@
+<meta>
+    <info author="Nico834" type="script" name="Dialogs" description="Create and manage dialogs with callbacks." version="1.0.0" />
+    <min_mta_version client="1.6.0" />
+
+    <script src="sourceG.lua" type="shared" />
+    <script src="sourceC.lua" type="client" />
+
+    <export function="messageBeep" type="client" />
+    <export function="messageBox" type="client" />
+    <export function="messageBoxEx" type="client" />
+
+    <file src="files/info.png" />
+    <file src="files/question.png" />
+    <file src="files/warning.png" />
+    <file src="files/error.png" />
+</meta>
