@@ -18,6 +18,7 @@
   <script src="server/admin_ACL.lua" />
   <script src="server/admin_settings.lua" />
   <script src="server/admin_screenshot.lua" />
+  <script src="server/admin_report.lua" />
   <script src="server/http/admin_http.lua" />
   <script src="client/admin_clientprefs.lua" type="client" cache="false" />
   <script src="client/admin_client.lua" type="client" cache="false" />
@@ -175,6 +176,11 @@
           				friendlyname="Admin chat command name"
           				desc="The command name for admin chat."
           				/>
+
+		<setting name="*reportsEnabled" value="false"
+					friendlyname="Whatever reports are enabled"
+					desc="Set to true to enable default reporting system"
+					/>
 
  </settings>
 </meta>

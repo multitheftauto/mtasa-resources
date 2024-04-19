@@ -1483,6 +1483,12 @@ function ( action, data )
 		return
 	end
 	if ( action == "new" ) then
+
+		-- Do not let players create new reports only, allow to read already existing ones.
+		if ( get("reportsEnabled") ~= "true" ) then
+			return
+		end
+
 		local time = getRealTime()
 		local id = #aReports + 1
 		aReports[id] = {}

@@ -4,7 +4,7 @@
 *
 *	gui\admin_report.lua
 *
-*	Original File by lil_Toady
+*	Original File by lil_Toady|CArg22
 *
 **************************************]]
 
@@ -58,8 +58,6 @@ function aReport ( )
 	guiBringToFront ( aReportForm )
 	showCursor ( true )
 end
-addCommandHandler ( "report", aReport )
-
 
 function aReportClose ( )
 	if ( aReportForm ) then
@@ -171,3 +169,10 @@ function aClientReportClick ( button )
 		end
 	end
 end
+
+addEvent("aClientReports",true)
+addEventHandler("aClientReports",resourceRoot,
+	function( )
+		aReport ( )
+	end
+)
