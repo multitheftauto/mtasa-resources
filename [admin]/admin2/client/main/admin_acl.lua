@@ -203,7 +203,7 @@ function aAclTab.onClick(key, state)
                 aAclTab.RefreshResourcesList()
             end
         else
-            messageBox("No user selected!", MB_ERROR, MB_OK)
+            messageBox("No resource selected!", MB_ERROR, MB_OK)
         end
     end
 end
