@@ -10,11 +10,11 @@
     needAdmin = "Debes iniciar sesion como administrador para acceder a este menú.",
     invalidMenu = "Este menu no existe!",
     disabledMenu = "Este menu ha sido desactivado.",
-    notifyUpdate = "The handling editor has been updated since the last time you've used it. Would you like to see a list of changes now? \nYou can always see the list of changes at 'Extra > Updates'",
-    notifyUpgrade = "The handling editor has been UPGRADED. This means some of your files, such as saved handlings have been changed to another format. As a result, servers with an outdated version of hedit are not fully supported.\nWould you like to see a list of changes now? \nYou can always see the list of changes at 'Extra > Updates'",
+    notifyUpdate = "El editor de handling ha sido actualizado despues de la última vez que lo utilizaste. ¿Quieres ver ahora la lista de cambios? \Siempre puedes ver la lista de cambios en 'Extra > Actualizaciones'.",
+    notifyUpgrade = "El editor de handling ha sido ACTUALIZADO. Esto significa que algunos de sus archivos, como los handlings guardados han sido cambiados a otro formato. Como resultado, los servidores con una versión obsoleta de hedit no son totalmente compatibles.\n¿Quieres ver una lista de cambios ahora? \nSiempre puede ver la lista de cambios en 'Extra > Actualizaciones'",
     outdatedUpdate = "This server runs an outdated version of the handling editor. As a result, some features may be missing.\nPlease contact an administrator.",
-    outdatedUpgrade = "This server runs an extremely outdated version of the handling editor. As a result, all settings/saved handling settings are incompatible.\nPlease contact an administrator.",
-    mtaUpdate = "If you have any saved handlings on MTA 1.1, your handlings are no longer compatible; please visit 'http://hedit.googclecode.com/' for details.",
+    outdatedUpgrade = "Este servidor ejecuta una versión extremadamente obsoleta del editor de handling. Como resultado, todos los ajustes/configuraciones de handling guardadas son incompatibles.\nPóngase en contacto con un administrador.",
+    mtaUpdate = "Si tienes algun handling guardado en MTA 1.1, tus manipulaciones ya no son compatibles; visita 'http://hedit.googclecode.com/' para obtener más detalles..",
 
     sameValue = "El valor %s es el mismo!",
     exceedLimits = "El valor usado en %s excede el limite. [%s]!",
@@ -24,7 +24,7 @@
     successRegular = "%s cambio a %s.",
     successHex = "%s %s.",
     unableToChange = "No se pudo cambiar %s a %s!",
-	disabledProperty = "Editing %s is disabled on this server!",
+	disabledProperty = "Editar %s esta deshabilitado en este servidor!",
 
     resetted = "Reiniciaste con exito los valores de handling originales!",
     loaded = "Cargaste con exito tu configuracion de handling!",
@@ -127,11 +127,11 @@
             shortname = "Ayuda e Informacion",
             longname = "Ayuda",
             itemtext = {
-                textlabel = "Welcome to the official MTA handling editor! This resource allows you to edit the handling of any vehicle in-game in real time.\n"..
-                            "You can save and load custom handlings you make, via the 'Handling' menu at the top right.\n"..
-                            "For more information about this handling editor, such as the official changelog, visit:\n",
+                textlabel = "¡Bienvenido al editor oficial de manejo de MTA! Este recurso te permite editar el manejo de cualquier vehículo del juego en tiempo real..\n"..
+                            "Puedes guardar y cargar los Handlings personalizados que realices a través del menú 'Handling' situado en la parte superior derecha..\n"..
+                            "Para más información sobre este editor de handling, visite nuestro changelog:\n",
                 websitebox = "http://hedit.googlecode.com/",
-                morelabel = "Thank you for choosing hedit!"
+                morelabel = "Gracias por preferir hedit!"
             }
         },
         reset = {
@@ -348,7 +348,7 @@
         ["engineType"] = {
             friendlyName = "Tipo de Motor",
             information = "Establece el tipo de motor que tiene tu vehiculo.",
-            syntax = { "String", "[UNKNOWN]" },
+            syntax = { "String", "[DESCONOCIDO]" },
             options = { ["p"]="Bencinero",["d"]="Diesel",["e"]="Electrico" }
         },
         ["brakeDeceleration"] = {
@@ -365,7 +365,7 @@
             friendlyName = "ABS",
             information = "Enciende o apaga el ABS de tu vehiculo.",
             syntax = { "Bool", "Sin efectos." },
-            options = { ["true"]="Enabled",["false"]="Disabled" }
+            options = { ["true"]="Activado",["false"]="Desactivado" }
         },
         ["steeringLock"] = {
             friendlyName = "Angulo de giro",
@@ -413,7 +413,7 @@
             syntax = { "Valores", "Usa 1 para vehiculos con volante a la derecha" }
         },
         ["collisionDamageMultiplier"] = {
-            friendlyName = "Multiplicador de colicion",
+            friendlyName = "Multiplicador de colision",
             information = "Establece el dano recibido al colicionar.",
             syntax = { "Valores", "" }
         },
@@ -428,52 +428,52 @@
             syntax = { "Hexadecimal", "" },
             items = {
                 {
-                    ["1"] = {"IS_VAN","Allows double doors for the rear animation."},
-                    ["2"] = {"IS_BUS","Vehicle uses bus stops and will try to take on passengers."},
-                    ["4"] = {"IS_LOW","Drivers and passengers sit lower and lean back."},
-                    ["8"] = {"IS_BIG","Changes the way that the AI drives around corners."}
+                    ["1"] = {"IS_VAN","Permite puertas dobles para la animación trasera."},
+                    ["2"] = {"IS_BUS","El vehículo utilizara las paradas de autobús e intentará subir pasajeros."},
+                    ["4"] = {"IS_LOW","El conductor y los pasajeros se sientan más bajos y reclinados."},
+                    ["8"] = {"IS_BIG","Cambia la forma en que la IA conduce en las curvas."}
                 },
                 {
-                    ["1"] = {"REVERSE_BONNET","Bonnet and boot open in opposite direction from normal."},
-                    ["2"] = {"HANGING_BOOT","Boot opens from top edge."},
-                    ["4"] = {"TAILGATE_BOOT","Boot opens from bottom edge."},
-                    ["8"] = {"NOSWING_BOOT","Boot does not open."}
+                    ["1"] = {"REVERSE_BONNET","El capó y el maletero se abren en sentido contrario al normal."},
+                    ["2"] = {"HANGING_BOOT","El maletero se abre por el borde superior."},
+                    ["4"] = {"TAILGATE_BOOT","El maletero se abre por el borde inferior."},
+                    ["8"] = {"NOSWING_BOOT","El maletero no abre."}
                 },
                 {
-                    ["1"] = {"NO_DOORS","Door open and close animations are skipped."},
-                    ["2"] = {"TANDEM_SEATS","Two people will use the front passenger seat."},
-                    ["4"] = {"SIT_IN_BOAT","Uses seated boat animation instead of standing."},
-                    ["8"] = {"CONVERTIBLE","Changes how hookers operate and other small effects."}
+                    ["1"] = {"NO_DOORS","Se omiten las animaciones de abrir y cerrar puertas."},
+                    ["2"] = {"TANDEM_SEATS","Dos personas utilizarán el asiento del pasajero delantero."},
+                    ["4"] = {"SIT_IN_BOAT","Utiliza la animación del barco sentado en lugar de pie."},
+                    ["8"] = {"CONVERTIBLE","Cambia el funcionamiento de las prostitutas y otros pequeños efectos."}
                 },
                 {
-                    ["1"] = {"NO_EXHAUST","Removes all exhaust particles."},
-                    ["2"] = {"DBL_EXHAUST","Adds a second exhaust particle on opposite side to first."},
-                    ["4"] = {"NO1FPS_LOOK_BEHIND","Prevents player using rear view when in first-person mode."},
-                    ["8"] = {"FORCE_DOOR_CHECK","Needs testing."}
+                    ["1"] = {"NO_EXHAUST","Elimina todas las partículas de escape."},
+                    ["2"] = {"DBL_EXHAUST","Añade una segunda partícula de escape en el lado opuesto a la primera."},
+                    ["4"] = {"NO1FPS_LOOK_BEHIND","Evita que el jugador utilice la vista trasera en modo primera persona."},
+                    ["8"] = {"FORCE_DOOR_CHECK","Necesita un test."}
                 },
                 {
-                    ["1"] = {"AXLE_F_NOTILT","Front wheels stay vertical to the car like GTA 3."},
-                    ["2"] = {"AXLE_F_SOLID","Front wheels stay parallel to each other."},
-                    ["4"] = {"AXLE_F_MCPHERSON","Front wheels tilt like GTA Vice City."},
-                    ["8"] = {"AXLE_F_REVERSE","Reverses the tilting of wheels when using AXLE_F_MCPHERSON suspension."}
+                    ["1"] = {"AXLE_F_NOTILT","Las ruedas delanteras permanecen verticales al coche como en GTA 3."},
+                    ["2"] = {"AXLE_F_SOLID","Las ruedas delanteras permanecen paralelas entre sí."},
+                    ["4"] = {"AXLE_F_MCPHERSON","Las ruedas delanteras se inclinan como en GTA Vice City."},
+                    ["8"] = {"AXLE_F_REVERSE","Invierte la inclinación de las ruedas cuando se utiliza la suspensión AXLE_F_MCPHERSON."}
                 },
                 {
-                    ["1"] = {"AXLE_R_NOTILT","Rear wheels stay vertical to the car like GTA 3."},
-                    ["2"] = {"AXLE_R_SOLID","Rear wheels stay parallel to each other."},
-                    ["4"] = {"AXLE_R_MCPHERSON","Rear wheels tilt like GTA Vice City."},
-                    ["8"] = {"AXLE_R_REVERSE","Reverses the tilting of wheels when using AXLE_R_MCPHERSON suspension."}
+                    ["1"] = {"AXLE_R_NOTILT","Las ruedas traseras permanecen verticales al coche como en GTA 3."},
+                    ["2"] = {"AXLE_R_SOLID","Las ruedas traseras permanecen paralelas entre sí."},
+                    ["4"] = {"AXLE_R_MCPHERSON","Las ruedas traseras se inclinan como en GTA Vice City."},
+                    ["8"] = {"AXLE_R_REVERSE","Invierte la inclinación de las ruedas cuando se utiliza la suspensión AXLE_R_MCPHERSON."}
                 },
                 {
-                    ["1"] = {"IS_BIKE","Use extra handling settings in the bikes section."},
-                    ["2"] = {"IS_HELI","Use extra handling settings in the flying section."},
-                    ["4"] = {"IS_PLANE","Use extra handling settings in the flying section."},
-                    ["8"] = {"IS_BOAT","Use extra handling settings in the flying section."}
+                    ["1"] = {"IS_BIKE","Utilizar ajustes de handlings adicionales en la sección de motos."},
+                    ["2"] = {"IS_HELI","Utilizar ajustes de manejo adicionales en la sección de vuelo."},
+                    ["4"] = {"IS_PLANE","Utilizar ajustes de manejo adicionales en la sección de vuelo."},
+                    ["8"] = {"IS_BOAT","Utilizar ajustes de manejo adicionales en la sección de vuelo."}
                 },
                 {
-                    ["1"] = {"BOUNCE_PANELS","Needs testing."},
-                    ["2"] = {"DOUBLE_RWHEELS","Places a second instance of each rear wheel next to the normal one."},
-                    ["4"] = {"FORCE_GROUND_CLEARANCE","Needs testing."},
-                    ["8"] = {"IS_HATCHBACK","Needs testing."}
+                    ["1"] = {"BOUNCE_PANELS","Necesita un test."},
+                    ["2"] = {"DOUBLE_RWHEELS","Coloca una segunda instancia de cada rueda trasera junto a la normal."},
+                    ["4"] = {"FORCE_GROUND_CLEARANCE","Necesita un test."},
+                    ["8"] = {"IS_HATCHBACK","Necesita un test."}
                 }
             }
         },
@@ -483,70 +483,70 @@
             syntax = { "Hexadecimal", "" },
             items = {
                 {
-                    ["1"] = {"1G_BOOST","Gives more engine power for standing starts; better hill climbing."},
-                    ["2"] = {"2G_BOOST","Gives more engine power at slightly higher speeds."},
-                    ["4"] = {"NPC_ANTI_ROLL","No body roll when driven by AI characters."},
-                    ["8"] = {"NPC_NEUTRAL_HANDL","Less likely to spin out when driven by AI characters."}
+                    ["1"] = {"1G_BOOST","Aumenta la potencia del motor en los arranques y mejora la subida de montañas."},
+                    ["2"] = {"2G_BOOST","Da más potencia al motor a regímenes ligeramente superiores."},
+                    ["4"] = {"NPC_ANTI_ROLL","No hay balanceo de la carrocería cuando la conducen personajes de la IA."},
+                    ["8"] = {"NPC_NEUTRAL_HANDL","Menos probabilidades de girarse cuando lo conducen personajes de IA."}
                 },
                 {
-                    ["1"] = {"NO_HANDBRAKE","Disables the handbrake effect."},
-                    ["2"] = {"STEER_REARWHEELS","Rear wheels steer instead of front, like a forklift truck."},
-                    ["4"] = {"HB_REARWHEEL_STEER","Handbrake makes the rear wheels steer as well as front, like the monster truck"},
-                    ["8"] = {"ALT_STEER_OPT","Needs testing."}
+                    ["1"] = {"NO_HANDBRAKE","Desactiva el efecto de freno de mano."},
+                    ["2"] = {"STEER_REARWHEELS","Las ruedas traseras dirigen en lugar de las delanteras."},
+                    ["4"] = {"HB_REARWHEEL_STEER","El freno de mano hace que las ruedas traseras giren igual que las delanteras, como el monster truck"},
+                    ["8"] = {"ALT_STEER_OPT","Necesita un test."}
                 },
                 {
-                    ["1"] = {"WHEEL_F_NARROW2","Very narrow front wheels."},
-                    ["2"] = {"WHEEL_F_NARROW","Narrow front wheels."},
-                    ["4"] = {"WHEEL_F_WIDE","Wide front wheels."},
-                    ["8"] = {"WHEEL_F_WIDE2","Very wide front wheels."}
+                    ["1"] = {"WHEEL_F_NARROW2","Ruedas delanteras mas estrechas."},
+                    ["2"] = {"WHEEL_F_NARROW","Ruedas delanteras estrechas."},
+                    ["4"] = {"WHEEL_F_WIDE","Ruedas delanteras anchas."},
+                    ["8"] = {"WHEEL_F_WIDE2","Ruedas delanteras mas anchas."}
                 },
                 {
-                    ["1"] = {"WHEEL_R_NARROW2","Very narrow rear wheels."},
-                    ["2"] = {"WHEEL_R_NARROW","Narrow rear wheels."},
-                    ["4"] = {"WHEEL_R_WIDE","Wide rear wheels."},
-                    ["8"] = {"WHEEL_R_WIDE2","Very wide rear wheels."}
+                    ["1"] = {"WHEEL_R_NARROW2","Ruedas traseras mas estrechas."},
+                    ["2"] = {"WHEEL_R_NARROW","Ruedas traseras estrechas."},
+                    ["4"] = {"WHEEL_R_WIDE","Ruedas traseras anchas."},
+                    ["8"] = {"WHEEL_R_WIDE2","Ruedas traseras mas anchas."}
                 },
                 {
-                    ["1"] = {"HYDRAULIC_GEOM","Needs testing."},
-                    ["2"] = {"HYDRAULIC_INST","Will spawn with hydraulics installed."},
-                    ["4"] = {"HYDRAULIC_NONE","Hydraulics cannot be installed."},
-                    ["8"] = {"NOS_INST","Vehicle automatically gets NOS installed when it spawns."}
+                    ["1"] = {"HYDRAULIC_GEOM","Necesita un test."},
+                    ["2"] = {"HYDRAULIC_INST","El vehiculo obtendra un hidraulico cuando spawnea."},
+                    ["4"] = {"HYDRAULIC_NONE","El sistema hidraulico no puede ser instalado."},
+                    ["8"] = {"NOS_INST","El vehiculo obtendra nitro cuando spawne."}
                 },
                 {
-                    ["1"] = {"OFFROAD_ABILITY","Vehicle will perform better on loose surfaces like dirt."},
-                    ["2"] = {"OFFROAD_ABILITY2","Vehicle will perform better on soft surfaces like sand."},
-                    ["4"] = {"HALOGEN_LIGHTS","Makes headlights brighter and more blue."},
-                    ["8"] = {"PROC_REARWHEEL_1ST","Needs testing."}
+                    ["1"] = {"OFFROAD_ABILITY","El vehículo funcionará mejor en superficies sueltas como la tierra."},
+                    ["2"] = {"OFFROAD_ABILITY2","El vehículo funcionará mejor en superficies blandas como la arena."},
+                    ["4"] = {"HALOGEN_LIGHTS","Hace que los faros sean más brillantes y azules."},
+                    ["8"] = {"PROC_REARWHEEL_1ST","Necesita un test."}
                 },
                 {
-                    ["1"] = {"USE_MAXSP_LIMIT","Prevents vehicle going faster than the maximum speed."},
-                    ["2"] = {"LOW_RIDER","Allows vehicle to be modified at Loco Low Co shops."},
-                    ["4"] = {"STREET_RACER","When set, vehicle can only be modified at Wheel Arch Angels."},
-                    ["8"] = {"UNDEFINED","No effect."}
+                    ["1"] = {"USE_MAXSP_LIMIT","Impide que el vehículo supere la velocidad máxima."},
+                    ["2"] = {"LOW_RIDER","Permite modificar el vehículo en los talleres de Loco Low Co."},
+                    ["4"] = {"STREET_RACER","Cuando está establecido, el vehículo sólo puede modificarse en los ángulos del paso de rueda."},
+                    ["8"] = {"UNDEFINED","Ningun efecto."}
                 },
                 {
-                    ["1"] = {"SWINGING_CHASSIS","Lets the car body move from side to side on the suspension."},
-                    ["2"] = {"UNDEFINED","No effect."},
-                    ["4"] = {"UNDEFINED","No effect."},
-                    ["8"] = {"UNDEFINED","No effect."}
+                    ["1"] = {"SWINGING_CHASSIS","Permite que la carrocería se mueva de lado a lado sobre la suspensión."},
+                    ["2"] = {"UNDEFINED","Ningun efecto."},
+                    ["4"] = {"UNDEFINED","Ningun efecto."},
+                    ["8"] = {"UNDEFINED","Ningun efecto."}
                 }
             }
         },
         ["headLight"] = {
             friendlyName = "Luces",
-            information = "Sets the type of front lights your vehicle will have.",
+            information = "Establece el tipo de luces delanteras que tendrá su vehículo.",
             syntax = { "Integer", "" },
-            options = { ["0"]="Long",["1"]="Small",["2"]="Big",["3"]="Tall" }
+            options = { ["0"]="Largas",["1"]="Pequeñas",["2"]="Grandes",["3"]="Altas" }
         },
         ["tailLight"] = {
             friendlyName = "Luces Traseras",
-            information = "Sets the type of rear lights your vehicle will have.",
+            information = "Establece el tipo de luces traseras que tendrá su vehículo.",
             syntax = { "Integer", "" },
-            options = { ["0"]="Long",["1"]="Small",["2"]="Big",["3"]="Tall" }
+            options = { ["0"]="Largas",["1"]="Pequeñas",["2"]="Grandes",["3"]="Altas" }
         },
         ["animGroup"] = {
             friendlyName = "Grupo de Animacion",
-            information = "Sets the group of animation your ped will use for it's vehicle.",
+            information = "Establece el grupo de animación que tu ped utilizará para su vehículo.",
             syntax = { "Integer", "" }
         }
     }
