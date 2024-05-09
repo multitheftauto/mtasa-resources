@@ -1,4 +1,4 @@
-guiLanguage.Spanish = {
+guiLanguage.spanish = {
     --
     -- GENERAL STRINGS
     --
@@ -355,12 +355,12 @@ guiLanguage.Spanish = {
         ["suspensionHighSpeedDamping"] = {
             friendlyName = "Amortiguación de suspensión a alta velocidad",
             information = "Cambia la rigidez de tu suspensión, haciéndote conducir más rápido.",
-            syntax = { "Float", "No se ha comprobado el efecto de esta propiedad." } 
+            syntax = { "Float", "No se ha comprobado el efecto de esta propiedad." }
         },
         ["suspensionUpperLimit"] = {
             friendlyName = "Límite superior de suspensión",
             information = "Máximo desplazamiento de la rueda (metros)",
-            syntax = { "Float", "No se ha comprobado el efecto de esta propiedad." } 
+            syntax = { "Float", "No se ha comprobado el efecto de esta propiedad." }
         },
         ["suspensionLowerLimit"] = {
             friendlyName = "Límite inferior de la suspensión",
@@ -419,7 +419,7 @@ guiLanguage.Spanish = {
                     ["1"] = {"NO_EXHAUST","Elimina todas las partículas de escape."},
                     ["2"] = {"DBL_EXHAUST","Añade una segunda partícula de escape en el lado opuesto al primer tubo de escape."},
                     ["4"] = {"NO1FPS_LOOK_BEHIND","Impide que el jugador utilice la vista trasera en primera persona."},
-                    ["8"] = {"FORCE_DOOR_CHECK","No se ha comprobado el efecto de esta casilla."} 
+                    ["8"] = {"FORCE_DOOR_CHECK","No se ha comprobado el efecto de esta casilla."}
                 },
                 {
                     ["1"] = {"AXLE_F_NOTILT","Hace que las ruedas delanteras permanezcan verticales al coche (como en GTA 3)."},
@@ -440,10 +440,10 @@ guiLanguage.Spanish = {
                     ["8"] = {"IS_BOAT","Utiliza los ajustes adicionales de la sección del barco."}
                 },
                 {
-                    ["1"] = {"BOUNCE_PANELS","No se ha comprobado el efecto de esta casilla."}, 
+                    ["1"] = {"BOUNCE_PANELS","No se ha comprobado el efecto de esta casilla."},
                     ["2"] = {"DOUBLE_RWHEELS","Esto coloca una segunda rueda trasera junto a la rueda normal."},
-                    ["4"] = {"FORCE_GROUND_CLEARANCE","No se ha comprobado el efecto de esta casilla."}, 
-                    ["8"] = {"IS_HATCHBACK","No se ha comprobado el efecto de esta casilla."} 
+                    ["4"] = {"FORCE_GROUND_CLEARANCE","No se ha comprobado el efecto de esta casilla."},
+                    ["8"] = {"IS_HATCHBACK","No se ha comprobado el efecto de esta casilla."}
                 }
             }
         },
