@@ -34,7 +34,7 @@ addEventHandler(
             aAdminMain.Close(false)
         else
             aAdminMain.Open()
-		    guiFocus (aAdminMain.Form)
+            guiFocus (aAdminMain.Form)
         end
     end
 )
