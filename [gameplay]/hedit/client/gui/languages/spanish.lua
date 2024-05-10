@@ -1,65 +1,54 @@
-﻿guiLanguage.spanish = {
+guiLanguage.spanish = {
     --
     -- GENERAL STRINGS
     --
     windowHeader = "Editor de Handling v"..HVER,
 
-    restrictedPassenger = "No se le permite utilizar el editor de handling como pasajero.",
-    needVehicle = "Debes estar conduciendo un vehículo para utilizar el editor de handling!",
-    needLogin = "Debes iniciar sesion para poder visualizar este menú.",
-    needAdmin = "Debes iniciar sesion como administrador para acceder a este menú.",
-    invalidMenu = "Este menu no existe!",
-    disabledMenu = "Este menu ha sido desactivado.",
-    notifyUpdate = "The handling editor has been updated since the last time you've used it. Would you like to see a list of changes now? \nYou can always see the list of changes at 'Extra > Updates'",
-    notifyUpgrade = "The handling editor has been UPGRADED. This means some of your files, such as saved handlings have been changed to another format. As a result, servers with an outdated version of hedit are not fully supported.\nWould you like to see a list of changes now? \nYou can always see the list of changes at 'Extra > Updates'",
-    outdatedUpdate = "This server runs an outdated version of the handling editor. As a result, some features may be missing.\nPlease contact an administrator.",
-    outdatedUpgrade = "This server runs an extremely outdated version of the handling editor. As a result, all settings/saved handling settings are incompatible.\nPlease contact an administrator.",
-    mtaUpdate = "If you have any saved handlings on MTA 1.1, your handlings are no longer compatible; please visit 'http://hedit.googclecode.com/' for details.",
+    restrictedPassenger = "No puedes usar el editor de handling como pasajero.",
+    needVehicle = "Necesitas estar de conductor para usar el menu de handling!",
+    needLogin = "Necesitas estar logeado para usar este menu.",
+    needAdmin = "Necesitas estar logeado como administrador para usar este menu.",
+    accessDenied = "No tienes permisos necesarios para acceder a este menu.",
+    invalidView = "Este menu no existe!",
+    disabledView = "Este menu fue desactivado.",
 
-    sameValue = "El valor %s es el mismo!",
+    sameValue = "%s ya esta definido igual!",
     exceedLimits = "El valor usado en %s excede el limite. [%s]!",
-    cantSameValue = "%s no puede ser el mismo que %s!",
-    needNumber = "Debes utilizar un numero!",
+    cantSameValue = "%s no puede ser igual a %s!",
+    needNumber = "Necesitas usar un numero!",
     unsupportedProperty = "%s no es una propiedad soportada.",
-    successRegular = "%s cambio a %s.",
+    successRegular = "%s definido como %s.",
     successHex = "%s %s.",
-    unableToChange = "No se pudo cambiar %s a %s!",
-	disabledProperty = "Editing %s is disabled on this server!",
+    unableToChange = "No es posible definir %s como %s!",
+    disabledProperty = "Editar %s esta desactivado en este servidor!",
 
-    resetted = "Reiniciaste con exito los valores de handling originales!",
-    loaded = "Cargaste con exito tu configuracion de handling!",
-    imported = "Importaste con exito tu configuracion de handling!",
-    invalidImport = "Error al importar; los datos de handling son invalidos!",
-    invalidSave = "Por favor, proporciona un nombre valido y una descripción para guardar el handling de este vehículo!",
+    resetted = "Las configuracion de handling fueron redefinidas correctamente!",
+    loaded = "Sus configuracion de handling fueron cargadas correctamente!",
+    imported = "Las configuracion de handling fueron importadas correctamente!",
+    invalidImport = "Fallo de importacion. los datos establecidos son incorrectos!",
+    invalidSave = "Por favor, inserte un nombre y descripcion validos para guardar los datos de handling del vehiculo!",
 
-    confirmReplace = "Estas seguro de que deseas sobrescribir este handling?",
-    confirmLoad = "Estas seguro que quieres cargar este handling? Todas las modificaciones no guardadas se perderan!",
-    confirmDelete = "Estas seguro que quieres borrar este handling?",
-    confirmReset = "Estas seguro que quieres reiniciar este handling? Todas las modificaciones no guardadas se perderan!",
-    confirmImport = "Estas seguro que quieres importar este handling? Todas las modificaciones no guardadas se perderan!",
+    confirmReplace = "¿Estás seguro de que quieres sustituir el handling existente?",
+    confirmLoad = "¿Está seguro de que desea cargar estos ajustes de handling? Los cambios no guardados se perderán.",
+    confirmDelete = "¿Estás seguro de que quieres borrar estos ajustes de handling??",
+    confirmReset = "¿Estás seguro de que quieres restablecer el handling? Cualquier cambio no guardado se perderá.",
+    confirmImport = "¿Estás seguro de que quieres importar este handling? Los cambios no guardados se perderán.",
 
-    successSave = "Se guardo el handling con exito!",
-    successLoad = "Se cargo el handling con exito!",
-    successDelete = "Listo tú handling ha sido borrado!",
+    successSave = "Sus configuraciones de handling fueron guardadas correctamente!",
+    successLoad = "Sus configuraciones de handling fueron cargadas correctamente!",
+    successDelete = "Sus configuraciones de handling fueron borradas correctamente!",
 
-
-	confirmVersionReset = "Estas seguro de que deseas establecer la version del editor a la de este servidor? Tus handlings guardados pueden llegar a ser incompatibles.",
-	successVersionReset = "La version de editor se ha actualizado.",
-    wantTheSettings = "Estas seguro que deseas aplicar esta configuracion? El editor de handling se reiniciara.",
+    wantTheSettings = "¿Está seguro de que desea aplicar estos ajustes? El editor se reiniciará.",
 
     vehicle = "Vehiculo",
-    unsaved = "No guardado",
+    unsaved = "No Guardado",
 
-    clickToEdit = "Click para editar.",
-    enterToSubmit = "Presiona enter para confirmar.",
-    clickToViewFullLog = "Click para ver el registro del vehiculo completo.",
-    copiedToClipboard = "Los valores de handling se han copiado en el portapapeles!",
+    clickToEdit = "Haga clic para editar o arrastre para un ajuste rápido.",
+    enterToSubmit = "Presione Enter para confirmar.",
+    clickToViewFullLog = "Haga clic para ver el registro completo del vehículo.",
+    copiedToClipboard = "Las configuraciones de handling se han copiado en el portapapeles!",
 
     special = {
-        commode = {
-            "Dividir",
-            "Unir"
-        }
     },
 
     --
@@ -70,104 +59,114 @@
     warningtitles = {
         info = "Informacion",
         question = "Pregunta",
-        warning = "Advertencia!",
-        ["error"] = "Error!"
+        warning = "Aviso!",
+        error = "Error!"
     },
     --Strings for the buttons at the top
-    utilbuttons = {
+    menubar = {
         handling = "Handling",
         tools = "Herramientas",
-        extra = "Extras",
-        close = "X"
+        extra = "Extra",
     },
 
-    --Strings for the buttons at the right
-    menubuttons = {
+    --Strings for the buttons at the left
+    viewbuttons = {
         engine = "Motor",
         body = "Chasis",
-        wheels = "Traccion",
-        appearance = "Vista",
-        modelflags = "Extras Modelo",
-        handlingflags = "Extras Handling",
-        dynamometer = "Dinamo",
-        help = "Ayuda"
+        wheels = "Ruedas",
+        appearance = "Apariencia",
+        modelflags = "Flags\nModelo",
+        handlingflags = "Flags\nHandling",
+        dynamometer = "Dinamómetro",
+        undo = "<",
+        redo = ">",
+        save = "Saves"
     },
 
-    --Strings for the various menus of the editor. Empty strings are placeholder to avoid debug as the debug is meant to show items which are missing text.
-    menuinfo = {
+    -- Strings for the various menus of the editor. Empty strings are placeholder to avoid debug as the debug is meant to show items which are missing text.
+    viewinfo = {
         engine = {
             shortname = "Motor",
-            longname = "Configuracion potencia"
+            longname = "Configuraciones del Motor"
         },
         body = {
             shortname = "Carroceria",
-            longname = "Configuracion de peso, centro de gravedad y suspencion"
+            longname = "Configuraciones de Carroceria"
         },
         wheels = {
             shortname = "Ruedas",
-            longname = "Configuracion de traccion y frenos"
+            longname = "Configuraciones de Ruedas"
         },
         appearance = {
             shortname = "Apariencia",
-            longname = "Configuracion de apariencia"
+            longname = "Configuracion de Apariencia"
         },
         modelflags = {
-            shortname = "Variacion Modelo",
-            longname = "Configuraciones extra de vehiculo"
+            shortname = "Flags del Modelo",
+            longname = "Ajustes del modelo de vehículo"
         },
         handlingflags = {
             shortname = "Handling Flags",
-            longname = "Configuraciones especiales de handling"
+            longname = "Configuraciones especiales de Handling"
         },
         dynamometer = {
-            shortname = "Dinamo",
-            longname = "Empezar prueba dinamometrica"
+            shortname = "Dinamómetro",
+            longname = "Iniciar Dinamómetro"
         },
-        help = {
-            shortname = "Ayuda e Informacion",
-            longname = "Ayuda",
+        about = {
+            shortname = "Info",
+            longname = "Info sobre el editor oficial de Handlings",
             itemtext = {
-                textlabel = "Welcome to the official MTA handling editor! This resource allows you to edit the handling of any vehicle in-game in real time.\n"..
-                            "You can save and load custom handlings you make, via the 'Handling' menu at the top right.\n"..
-                            "For more information about this handling editor, such as the official changelog, visit:\n",
-                websitebox = "http://hedit.googlecode.com/",
-                morelabel = "Thank you for choosing hedit!"
+                textlabel = "Bienvenido al editor de Handling oficial de MTA! Este recurso te permite modificar el handling de cualquier vehículo en tiempo real en el juego..\n\n"..
+                            "Puede guardar y cargar handlings personalizados a través del menú 'Handling' en la esquina superior izquierda.\n\n"..
+                            "Para obtener mas informacion sobre el Editor de Handling - como registro oficial de cambios - visite:",
+                websitebox = "http://github.com/hedit/hedit",
+                morelabel = "\nGracias por escoger hedit!"
+            }
+        },
+        undo = {
+            shortname = "Deshacer",
+            longname = "Deshacer",
+            itemtext = {
+                textlabel = "Algo ha salido mal."
+            }
+        },
+        redo = {
+            shortname = "Rehacer",
+            longname = "Rehacer",
+            itemtext = {
+                textlabel = "Algo ha salido mal."
             }
         },
         reset = {
-            shortname = "Reiniciar",
-            longname = "Reiniciar a la configuracion original de handling.",
+            shortname = "Redefinir",
+            longname = "Redefinir las configuraciones de handling del vehiculo.",
             itemtext = {
-                label = "Vehiculo base:",
+                label = "Vehiculo Base:",
                 combo = "-----",
-                button = "Reiniciar"
+                button = "Redefinir"
             }
         },
         save = {
-            shortname = "Guardar",
-            longname = "Guardar el handling de este vehiculo.",
+            shortname = "Saves",
+            longname = "Cargar, guardar o eliminar handlings.",
             itemtext = {
                 nameLabel = "Nombre",
                 descriptionLabel = "Descripcion",
-                button = "Guardar",
+                saveButton = "Guardar",
+                loadButton = "Cargar",
+                deleteButton = "Borrar",
                 grid = "",
                 nameEdit = "",
                 descriptionEdit = ""
             }
         },
-        load = {
-            shortname = "Cargar",
-            longname = "Cargar un handling ya guardado.",
-            itemtext = {
-                button = "Cargar",
-                grid = ""
-            }
-        },
         import = {
-            shortname = "Importar",
-            longname = "Importar una linea de handling en el formato usado en el archivo handling.cfg",
+            shortname = "handling.cfg",
+            longname = "Importar o Exportar en/formato handling.cfg.",
             itemtext = {
-                button = "Importar",
+                importButton = "Importar",
+                exportButton = "Exportar y copiar en el portapapeles",
                 III = "III",
                 VC = "VC",
                 SA = "SA",
@@ -175,378 +174,349 @@
                 memo = ""
             }
         },
-        export = {
-            shortname = "Exportar",
-            longname = "Exportar la configuracion de handling al formato del archivo handling.cfg",
-            itemtext = {
-                button = "Copiar al portapapeles",
-                memo = ""
-            }
-        },
         get = {
             shortname = "Obtener",
-            longname = "Obtener el handling de otro jugador."
+            longname = "Obtener configuraciones de handling de otro jugador."
         },
         share = {
             shortname = "Compartir",
-            longname = "Compartir tu configuracion de handling con otros jugadores."
+            longname = "Compartir sus configuraciones de handling con otro jugador."
         },
         upload = {
-            shortname = "Subir",
-            longname = "Subir tu handling al servidor."
+            shortname = "Enviar",
+            longname = "Enviar sus configuraciones de handling para el servidor."
         },
         download = {
             shortname = "Descargar",
-            longname = "Descargar un handling del servidor."
+            longname = "Descargar un conjunto de configuraciones de handling del servidor."
         },
-
         resourcesave = {
-            shortname = "Guardar en un recurso",
-            longname = "Guarda el handling en un recurso."
+            shortname = "Guardar recurso",
+            longname = "Guardar las configuraciones de handling en un recurso."
         },
         resourceload = {
-            shortname = "Cargar de un recurso",
-            longname = "Carga el handling de un recurso."
+            shortname = "Cargar recurso",
+            longname = "Cargar una configuracion de handling de un recurso."
         },
         options = {
             shortname = "Opciones",
             longname = "Opciones",
             itemtext = {
-                label_key = "Tecla de acceso",
-                label_cmd = "Comando de ejecucion:",
-                label_template = "Plantilla GUI:",
-                label_language = "Languaje:",
-                label_commode = "Modo de edicion de centro de gravedad:",
-                checkbox_versionreset = "Cambiar mi numero de version de %s a %s?",
+                label_key = "Tecla de Alternancia",
+                label_cmd = "Comando de Alternancia:",
+                label_template = "Modelo de GUI:",
+                label_language = "Idioma:",
+                label_commode = "Modo de edición del centro de masa:",
+                checkbox_versionreset = "Bajar mi número de versión de %s a %s?",
                 button_save = "Aplicar",
                 combo_key = "",
                 combo_template = "",
                 edit_cmd = "",
                 combo_commode = "",
                 combo_language = "",
-				checkbox_lockwhenediting = "Bloquear el vehiculo al editarlo?"
+                checkbox_lockwhenediting = "Bloquear vehiculo durante edita su handling?",
+                checkbox_dragmeterEnabled = "Usar ajuste rapido"
             }
         },
-        administration = {
-            shortname = "Administracion",
-            longname = "Herramientas de administrador."
-        },
         handlinglog = {
-            shortname = "Historial de Handling",
-            longname = "Historial de cambios recientes en la configuracion de handling.",
+            shortname = "Registro de Handling",
+            longname = "Registro de cambios recientes en los ajustes de handling.",
             itemtext = {
                 logpane = ""
             }
         },
-        updatelist = {
-            shortname = "Actualizaciones",
-            longname = "Lista de actualizaciones recientes.",
-            itemtext = {
-                scrollpane = ""
-            }
-        },
-        mtaversionupdate = {
-            shortname = "Actualizacion de MTA",
-            longname = "Multi Theft Auto se actualizo!",
-            itemtext = {
-                infotext = "Multi Theft Auto se actualizo. Debido a esto, los handlings creados en versiones anteriores no seran compatibles. Visita el siguiente link para ayuda y tener tus handlings de vuelta.",
-                websitebox = "http://hedit.googlecode.com/"
-            }
-        }
     },
 
-    --
-    --NOTE: 12/17/2011 This section is pending review for typos and grammar.
-    --
+
     handlingPropertyInformation = {
         ["identifier"] = {
-            friendlyName = "Identificacion de Vehiculo",
-            information = "Esto representa la identificacion del vehiculo que se usara en el archivo handling.cfg.",
-            syntax = { "String", "Solo usa identificadores validos, o al exportar no funcionara." }
+            friendlyName = "Identificador del vehiculo",
+            information = "Representa el identificador del vehículo que se utilizará en handling.cfg.",
+            syntax = { "String", "Utilice sólo identificadores válidos, de lo contrario la exportación no funcionará." }
         },
         ["mass"] = {
-            friendlyName = "Peso",
-            information = "Establece el peso de tu vehiculo en Kilos.",
-            syntax = { "Valores", "Recuerda cambiar 'turnMass' primero para evitar que el vehiculo rebote!" }
+            friendlyName = "Masa",
+            information = "Altera el peso del vehiculo. (kg)",
+            syntax = { "Float", "Recuerda cambiar primero 'turnMass' para evitar saltos!" }
         },
         ["turnMass"] = {
-            friendlyName = "Peso al girar",
-            information = "Se utiliza para calcular los efectos de movimiento.",
-            syntax = { "Valores", "Valores altos hace sentir que tu vehiculo 'flota'." }
+            friendlyName = "Masa de giro",
+            information = "Se utiliza para calcular los efectos del movimiento.",
+            syntax = { "Float", "Los valores grandes harán que el vehículo parezca 'flotar'." }
         },
         ["dragCoeff"] = {
-            friendlyName = "Resistencia al Movimiento",
-            information = "Cambia la resistencia al movimiento.",
-            syntax = { "Valores", "Cuanto mas alto sea el valor, menor sera la velocidad maxima." }
+            friendlyName = "Coeficiente de resistencia",
+            information = "Modifica la resistencia al movimiento."
         },
         ["centerOfMass"] = {
-            friendlyName = "Centro de gravedad",
-            information = "Establece el punto de gravedad del vehiculo, en metros.",
-            syntax = { "Valores", "X Desplaza el peso izq/der, Y desplaza el peso adelante/atras, y Z desplaza el peso arriba/abajo." }
+            friendlyName = "Centro de masa",
+            information = "Modifica el punto de gravedad de tu vehículo. (metros)",
+            syntax = { "Float", "Pase el ratón sobre cada una de las coordenadas para obtener información." }
         },
         ["centerOfMassX"] = {
-            friendlyName = "Centro de gravedad X",
-            information = "Desplaza en metros el peso del vehiculo hacia la derecha o hacia la izquierda.",
-            syntax = { "Valores", "Valores altos desplazan el peso a la derecha, valores bajos a la izquierda." }
+            friendlyName = "Centro de Masa X",
+            information = "Asigna la distancia delantera-trasera del centro de masa. (metros)",
+            syntax = { "Float", "Los valores altos están delante y los bajos detrás." }
         },
         ["centerOfMassY"] = {
-            friendlyName = "Centro de gravedad Y",
-            information = "Desplaza en metros el peso del vehiculo hacia adelante o atras.",
-            syntax = { "Valores", "Valores altos desplazan el peso hacia adelante, valores bajos hacia atras." }
+            friendlyName = "Centro de Masa Y",
+            information = "Asigna la distancia izquierda-derecha del centro de masa. (metros)",
+            syntax = { "Float", "Los valores altos están a la derecha y los bajos a la izquierda." }
         },
         ["centerOfMassZ"] = {
-            friendlyName = "Centro de gravedad Z",
-            information = "Desplaza en metros el peso del vehiculo hacia arriba o hacia abajo.",
-            syntax = { "Valores", "Valores altos suben tu centro de gravedad haciendo mas facil volcar, valores bajos hacen bajar tu centro de gravedad y obtienes mejor estabilidad." }
+            friendlyName = "Centro de Masa Z",
+            information = "Asignar la altura del centro de masa. (metros)",
+            syntax = { "Float", "Cuanto mayor sea el valor, mayor será la posición del punto." }
         },
         ["percentSubmerged"] = {
             friendlyName = "Porcentaje sumergido",
-            information = "Ajusta el valor de flote cuanto tu vehiculo cae al agua.",
-            syntax = { "Nuemro Entero", "Valores altos hacen que tu vehiculo se hunda mas rapido." }
+            information = "Cambia la profundidad a la que debe sumergirse el vehículo para que empiece a flotar. (porcentaje)",
+            syntax = { "Inteiro", "Los valores más altos harán que su vehículo comience a flotar a un nivel más profundo." }
         },
         ["tractionMultiplier"] = {
-            friendlyName = "Traccion",
-            information = "Establece la cantidad de agarre que tendra tu vehículo.",
-            syntax = { "Valores", "Valores altos hacen que tu vehiculo tenga mas agarre." }
+            friendlyName = "Multiplicador de tracción",
+            information = "Modifica la adherencia del vehículo al suelo en las curvas..",
+            syntax = { "Float", "Los valores más altos aumentarán el agarre entre las ruedas y la superficie." }
         },
         ["tractionLoss"] = {
-            friendlyName = "Traccion con fuerzas G",
-            information = "Establece la cantidad de agarre que tendra tu vehículo al ser sometido a fuerzas centrifugas.",
-            syntax = { "Valores", "Valores altos hacen que tu vehiculo tenga mas agarre y tome mejor las curvas." }
+            friendlyName = "Pérdida de tracción",
+            information = "Modifica la adherencia del vehículo al acelerar y desacelerar..",
+            syntax = { "Float", "Los valores más altos harán que su vehículo tome las curvas con más eficencia." }
         },
         ["tractionBias"] = {
-            friendlyName = "Diferencia de traccion",
-            information = "Modifica el agarre entre los neumaticos delanteros y traseros.",
-            syntax = { "Valores", "Valores altos desplazan el agarre hacia las ruedas delanteras, valores bajos hacia las traseras y 0,5 ambos trenes tienen el mismo agarre." }
+            friendlyName = "Inclinacion de Traccion",
+            information = "Cambios en la asignación de la adherencia de las ruedas.",
+            syntax = { "Float", "Los valores más altos moverán la inclinacion a la parte delantera de su vehículo." }
         },
         ["numberOfGears"] = {
-            friendlyName = "Numero de marchas",
-            information = "Establece cuantos cambios tendra tu vehiculo.",
-            syntax = { "Numero Entero", "No tiene efectos en la aceleracion o en la velocidad final. Solo es una animacion." }
+            friendlyName = "Número de Marchas",
+            information = "Cambia el número máximo de marchas que puede tener tu vehículo.",
+            syntax = { "Entero", "No afecta a la velocidad máxima ni a la aceleración del vehículo.." }
         },
         ["maxVelocity"] = {
-            friendlyName = "Velocidad Maxima",
-            information = "Establece la velocidad maxima en KM/H.",
-            syntax = { "Valores", "Puede ser afectada por otros valores." }
+            friendlyName = "Velocidad Máxima",
+            information = "Cambia la velocidad máxima de tu vehículo. (km/h)",
+            syntax = { "Float", "Este valor se ve afectado por otras propiedades." }
         },
+
         ["engineAcceleration"] = {
             friendlyName = "Aceleracion",
-            information = "Establece la aceleracion en MS^2 de tu vehiculo.",
-            syntax = { "Valores", "Valores altos hacen que el vehiculo acelere mas rapido." }
+            information = "Cambia la aceleración de tu vehículo",
+            syntax = { "Float", "Los valores más altos aumentarán la velocidad de aceleración del vehículo." }
         },
         ["engineInertia"] = {
             friendlyName = "Inercia",
-            information = "Suaviza o agudiza la aceleracion.",
-            syntax = { "Valores", "Valores altos hacen que la aceleracion no sea tan brusca." }
+            information = "Hace que la curva de aceleración sea más suave o más pronunciada.",
+            syntax = { "Float", "Los valores más altos hacen que la curva de aceleración sea más suave." }
         },
         ["driveType"] = {
-            friendlyName = "Tipo de Traccion",
-            information = "Establece que ruedas llevan la fuerza de motriz.",
-            syntax = { "String", "Escojiendo '4x4' resultara en un vehiculo mas facil de conducir." },
-            options = { ["f"]="Traccion Delantera",["r"]="Traccion Trasera",["4"]="Traccion Integral" }
+            friendlyName = "Tracción en las ruedas",
+            information = "Cambia qué ruedas se utilizan al conducir.",
+            syntax = { "String", "Escoger 'Todas las ruedas' facilitará el control del vehículo." },
+            options = { ["f"]="Ruedas Delanteras",["r"]="Ruedas Traseras",["4"]="Todas las ruedas" }
         },
         ["engineType"] = {
             friendlyName = "Tipo de Motor",
-            information = "Establece el tipo de motor que tiene tu vehiculo.",
-            syntax = { "String", "[UNKNOWN]" },
-            options = { ["p"]="Bencinero",["d"]="Diesel",["e"]="Electrico" }
+            information = "Cambia el tipo de motor de tu vehículo.",
+            syntax = { "String", "Se desconoce el efecto que causa esta propiedad." },
+            options = { ["p"]="Gasolina",["d"]="Diesel",["e"]="Electrico" }
         },
         ["brakeDeceleration"] = {
-            friendlyName = "Fuerza de Frenado",
-            information = "Establece la fuerza de frenado en MS^2.",
-            syntax = { "Valores", "Valores altos hacen que la frenada sea mas fuerte, pero puedes bloquear las ruedas." }
+            friendlyName = "Intensidad del freno",
+            information = "Cambia la intensidad de frenado",
+            syntax = { "Float", "Los valores más altos harán que el vehículo frene con más fuerza, pero puede derrapar si la tracción es demasiado baja." }
         },
         ["brakeBias"] = {
-            friendlyName = "Diferencia de Frenado",
-            information = "Define a que ruedas se le da mayor fuerza.",
-            syntax = { "Valores", "Valores altos hacen que la fuerza de frenado se aplique en las ruedas delanteras, valores bajos en las traseras y 0,5 es balanceado." }
+            friendlyName = "Inclinación de frenos",
+            information = "Modifica la posición del freno principal.",
+            syntax = { "Float", "Los valores más altos desplazarán la inclinación hacia la parte delantera del vehículo." }
         },
         ["ABS"] = {
             friendlyName = "ABS",
-            information = "Enciende o apaga el ABS de tu vehiculo.",
-            syntax = { "Bool", "Sin efectos." },
-            options = { ["true"]="Enabled",["false"]="Disabled" }
+            information = "Activa o desactiva el ABS.",
+            syntax = { "Booleano", "Esta propiedad no afecta a su vehículo." },
+            options = { ["true"]="Activado",["false"]="Desactivado" }
         },
         ["steeringLock"] = {
-            friendlyName = "Angulo de giro",
-            information = "Establece el angulo de giro maximo que pueden tener las ruedas delanteras.",
-            syntax = { "Valores", "El angulo de giro disminuye a medida que vas mas rapido." }
+            friendlyName = "Límite de dirección",
+            information = "Cambia el ángulo máximo de giro del vehículo.",
+            syntax = { "Float", "Cuanto menor sea el ángulo de giro, más rápido irá el vehículo." }
         },
         ["suspensionForceLevel"] = {
-            friendlyName = "Fuerza de Suspencion",
-            information = "Hace la suspencion mas dura o blanda.",
-            syntax = { "Float", "Hace la suspencion mas fuerte." }
+            friendlyName = "Fuerza de suspensión",
+            information = "Se desconoce el efecto que causa esta propiedad.",
+            syntax = { "Float", "Se desconoce la sintaxis de esta propiedad." }
         },
         ["suspensionDamping"] = {
-            friendlyName = "Rebote de amortiguacion",
-            information = "Define el rebote de la amortiguacion.",
-            syntax = { "Valores", "Valores del orden de 0.01 hacen que la suspencion rebote mas." }
+            friendlyName = "Amortiguación de Supension",
+            information = "Se desconoce el efecto que causa esta propiedad.",
+            syntax = { "Float", "Se desconoce la sintaxis de esta propiedad." }
         },
         ["suspensionHighSpeedDamping"] = {
-            friendlyName = "Rebote de amortiguacion a alta velocidad",
-            information = "Define el rebote de la amortiguacion a altas velocidades.",
-            syntax = { "Valores", "Casi imperceptible" } -- HERE
+            friendlyName = "Amortiguación de suspensión a alta velocidad",
+            information = "Cambia la rigidez de tu suspensión, haciéndote conducir más rápido.",
+            syntax = { "Float", "No se ha comprobado el efecto de esta propiedad." }
         },
         ["suspensionUpperLimit"] = {
-            friendlyName = "Limite superior suspencion",
-            information = "Establece el recorrido superior de la suspencion al amortiguar.",
-            syntax = { "Valores", "Establece que tan alto puede llegar la suspencion al amortiguar" } -- HERE
+            friendlyName = "Límite superior de suspensión",
+            information = "Máximo desplazamiento de la rueda (metros)",
+            syntax = { "Float", "No se ha comprobado el efecto de esta propiedad." }
         },
         ["suspensionLowerLimit"] = {
-            friendlyName = "Altura de suspencion",
-            information = "Establece la altura de la suspencion.",
-            syntax = { "Valores", "Valores altos hacen que tu vehiculo este mas pegado al piso." }
+            friendlyName = "Límite inferior de la suspensión",
+            information = "La altura de su suspensión.",
+            syntax = { "Float", "Los valores más bajos harán que su vehículo sea más alto." }
         },
         ["suspensionFrontRearBias"] = {
-            friendlyName = "Diferencia de amortiguacion",
-            information = "Define a que eje se le da mayor fuerza de amortiguacion.",
-            syntax = { "Valores", "Valores altos, ruedas delanteras - valores bajos, traseras - 0,5 Balance." }
+            friendlyName = "Inclinacion de suspension",
+            information = "Cambia dónde se aplicará la mayor parte de la potencia de la suspensión..",
+            syntax = { "Float", "Los valores más altos desplazarán la inclinacion hacia la parte delantera del vehículo." }
         },
         ["suspensionAntiDiveMultiplier"] = {
-            friendlyName = "Cabeceo de Suspencion",
-            information = "Cambia la cantidad de carga en la suspencion al acelerar o desacelerar.",
-            syntax = { "Valores", "" }
+            friendlyName = "Multiplicador anticaída de la suspensión",
+            information = "Modifica la inclinación del cuerpo al frenar y acelerar.",
+            syntax = { "Float", "" }
         },
         ["seatOffsetDistance"] = {
-            friendlyName = "Separador de distancia de asiento",
-            information = "Define la distancia entre el asiento y la puerta de tu vehículo.",
-            syntax = { "Valores", "Usa 1 para vehiculos con volante a la derecha" }
+            friendlyName = "Distancia de desplazamiento del asiento",
+            information = "Modifica la distancia entre el asiento y la puerta de tu vehículo.",
+            syntax = { "Float", "" }
         },
         ["collisionDamageMultiplier"] = {
-            friendlyName = "Multiplicador de colicion",
-            information = "Establece el dano recibido al colicionar.",
-            syntax = { "Valores", "" }
+            friendlyName = "Multiplicador del daño por colisión",
+            information = "Cambia el daño que recibirá tu vehículo en cuando colisione.",
+            syntax = { "Float", "" }
         },
         ["monetary"] = {
-            friendlyName = "Valor Monetario",
-            information = "Establece el valor de tu vehiculo.",
-            syntax = { "Numero Entero", "" }
+            friendlyName = "Valor monetario",
+            information = "Cambia el precio exacto del vehículo.",
+            syntax = { "Inteiro", "Esta propiedad no se utiliza en Multi Theft Auto." }
         },
         ["modelFlags"] = {
-            friendlyName = "Extras de Modelo",
-            information = "Animaciones especiales que pueden ser activadas o desactivadas.",
+            friendlyName = "Flags del vehiculo",
+            information = "Animaciones especiales activables de vehículos.",
             syntax = { "Hexadecimal", "" },
             items = {
                 {
-                    ["1"] = {"IS_VAN","Allows double doors for the rear animation."},
-                    ["2"] = {"IS_BUS","Vehicle uses bus stops and will try to take on passengers."},
-                    ["4"] = {"IS_LOW","Drivers and passengers sit lower and lean back."},
-                    ["8"] = {"IS_BIG","Changes the way that the AI drives around corners."}
+                    ["1"] = {"IS_VAN","Animar las puertas traseras dobles."},
+                    ["2"] = {"IS_BUS","Hace que el vehículo se detenga en las paradas de autobús y recoja pasajeros."},
+                    ["4"] = {"IS_LOW","Hace que conductores y pasajeros se sienten más bajos y se inclinen hacia atrás."},
+                    ["8"] = {"IS_BIG","Cambia la forma de la IA al tomar curvas."}
                 },
                 {
-                    ["1"] = {"REVERSE_BONNET","Bonnet and boot open in opposite direction from normal."},
-                    ["2"] = {"HANGING_BOOT","Boot opens from top edge."},
-                    ["4"] = {"TAILGATE_BOOT","Boot opens from bottom edge."},
-                    ["8"] = {"NOSWING_BOOT","Boot does not open."}
+                    ["1"] = {"REVERSE_BONNET","Hace que el capó y el maletero se abran en sentido contrario.."},
+                    ["2"] = {"HANGING_BOOT","Hace que el maletero se abra por el borde superior."},
+                    ["4"] = {"TAILGATE_BOOT","Hace que el maletero se abra desde el borde inferior."},
+                    ["8"] = {"NOSWING_BOOT","Mantiene el maletero cerrado."}
                 },
                 {
-                    ["1"] = {"NO_DOORS","Door open and close animations are skipped."},
-                    ["2"] = {"TANDEM_SEATS","Two people will use the front passenger seat."},
-                    ["4"] = {"SIT_IN_BOAT","Uses seated boat animation instead of standing."},
-                    ["8"] = {"CONVERTIBLE","Changes how hookers operate and other small effects."}
+                    ["1"] = {"NO_DOORS","Se ignoran las animaciones de apertura y cierre de puertas."},
+                    ["2"] = {"TANDEM_SEATS","Permite que dos personas utilicen el asiento del pasajero delantero."},
+                    ["4"] = {"SIT_IN_BOAT","Hace que los peatones utilicen la animación sentados en los barcos en lugar de de pie."},
+                    ["8"] = {"CONVERTIBLE","Cambia el comportamiento de las prostitutas y otros pequeños efectos."}
                 },
                 {
-                    ["1"] = {"NO_EXHAUST","Removes all exhaust particles."},
-                    ["2"] = {"DBL_EXHAUST","Adds a second exhaust particle on opposite side to first."},
-                    ["4"] = {"NO1FPS_LOOK_BEHIND","Prevents player using rear view when in first-person mode."},
-                    ["8"] = {"FORCE_DOOR_CHECK","Needs testing."}
+                    ["1"] = {"NO_EXHAUST","Elimina todas las partículas de escape."},
+                    ["2"] = {"DBL_EXHAUST","Añade una segunda partícula de escape en el lado opuesto al primer tubo de escape."},
+                    ["4"] = {"NO1FPS_LOOK_BEHIND","Impide que el jugador utilice la vista trasera en primera persona."},
+                    ["8"] = {"FORCE_DOOR_CHECK","No se ha comprobado el efecto de esta casilla."}
                 },
                 {
-                    ["1"] = {"AXLE_F_NOTILT","Front wheels stay vertical to the car like GTA 3."},
-                    ["2"] = {"AXLE_F_SOLID","Front wheels stay parallel to each other."},
-                    ["4"] = {"AXLE_F_MCPHERSON","Front wheels tilt like GTA Vice City."},
-                    ["8"] = {"AXLE_F_REVERSE","Reverses the tilting of wheels when using AXLE_F_MCPHERSON suspension."}
+                    ["1"] = {"AXLE_F_NOTILT","Hace que las ruedas delanteras permanezcan verticales al coche (como en GTA 3)."},
+                    ["2"] = {"AXLE_F_SOLID","Hace que las ruedas delanteras permanezcan paralelas entre sí."},
+                    ["4"] = {"AXLE_F_MCPHERSON","Hace que las ruedas delanteras se inclinen (como en GTA Vice City)."},
+                    ["8"] = {"AXLE_F_REVERSE","Hace que las ruedas delanteras se inclinen en sentido contrario."}
                 },
                 {
-                    ["1"] = {"AXLE_R_NOTILT","Rear wheels stay vertical to the car like GTA 3."},
-                    ["2"] = {"AXLE_R_SOLID","Rear wheels stay parallel to each other."},
-                    ["4"] = {"AXLE_R_MCPHERSON","Rear wheels tilt like GTA Vice City."},
-                    ["8"] = {"AXLE_R_REVERSE","Reverses the tilting of wheels when using AXLE_R_MCPHERSON suspension."}
+                    ["1"] = {"AXLE_R_NOTILT","Hace que las ruedas traseras permanezcan verticales al coche (como en GTA 3)."},
+                    ["2"] = {"AXLE_R_SOLID","Hace que las ruedas traseras permanezcan paralelas entre sí."},
+                    ["4"] = {"AXLE_R_MCPHERSON","Hace que las ruedas traseras se inclinen (como en GTA Vice City)."},
+                    ["8"] = {"AXLE_R_REVERSE","Hace que las ruedas traseras se inclinen en sentido contrario."}
                 },
                 {
-                    ["1"] = {"IS_BIKE","Use extra handling settings in the bikes section."},
-                    ["2"] = {"IS_HELI","Use extra handling settings in the flying section."},
-                    ["4"] = {"IS_PLANE","Use extra handling settings in the flying section."},
-                    ["8"] = {"IS_BOAT","Use extra handling settings in the flying section."}
+                    ["1"] = {"IS_BIKE","Utiliza los ajustes adicionales de la sección de motos."},
+                    ["2"] = {"IS_HELI","Utiliza los ajustes adicionales de la sección de vuelo."},
+                    ["4"] = {"IS_PLANE","Utiliza los ajustes adicionales de la sección de vuelo."},
+                    ["8"] = {"IS_BOAT","Utiliza los ajustes adicionales de la sección del barco."}
                 },
                 {
-                    ["1"] = {"BOUNCE_PANELS","Needs testing."},
-                    ["2"] = {"DOUBLE_RWHEELS","Places a second instance of each rear wheel next to the normal one."},
-                    ["4"] = {"FORCE_GROUND_CLEARANCE","Needs testing."},
-                    ["8"] = {"IS_HATCHBACK","Needs testing."}
+                    ["1"] = {"BOUNCE_PANELS","No se ha comprobado el efecto de esta casilla."},
+                    ["2"] = {"DOUBLE_RWHEELS","Esto coloca una segunda rueda trasera junto a la rueda normal."},
+                    ["4"] = {"FORCE_GROUND_CLEARANCE","No se ha comprobado el efecto de esta casilla."},
+                    ["8"] = {"IS_HATCHBACK","No se ha comprobado el efecto de esta casilla."}
                 }
             }
         },
         ["handlingFlags"] = {
-            friendlyName = "Extras de handling",
-            information = "Caracteristicas especiales de prestaciones.",
+            friendlyName = "Casillas de Handling",
+            information = "Recursos especiales de desempeño.",
             syntax = { "Hexadecimal", "" },
             items = {
                 {
-                    ["1"] = {"1G_BOOST","Gives more engine power for standing starts; better hill climbing."},
-                    ["2"] = {"2G_BOOST","Gives more engine power at slightly higher speeds."},
-                    ["4"] = {"NPC_ANTI_ROLL","No body roll when driven by AI characters."},
-                    ["8"] = {"NPC_NEUTRAL_HANDL","Less likely to spin out when driven by AI characters."}
+                    ["1"] = {"1G_BOOST","Proporciona más potencia al motor para arranques (mejor para subidas pronunciadas).."},
+                    ["2"] = {"2G_BOOST","Proporciona más potencia al motor a velocidades ligeramente superiores."},
+                    ["4"] = {"NPC_ANTI_ROLL","Desactiva la inclinación del cuerpo al ser conducido por personajes de la IA.."},
+                    ["8"] = {"NPC_NEUTRAL_HANDL","Reduce la probabilidad de que el vehículo derrape cuando lo conducen personajes de la IA.."}
                 },
                 {
-                    ["1"] = {"NO_HANDBRAKE","Disables the handbrake effect."},
-                    ["2"] = {"STEER_REARWHEELS","Rear wheels steer instead of front, like a forklift truck."},
-                    ["4"] = {"HB_REARWHEEL_STEER","Handbrake makes the rear wheels steer as well as front, like the monster truck"},
-                    ["8"] = {"ALT_STEER_OPT","Needs testing."}
+                    ["1"] = {"NO_HANDBRAKE","Desactiva el efecto freno de mano."},
+                    ["2"] = {"STEER_REARWHEELS","Las ruedas traseras giran en lugar de las delanteras (como una carretilla)."},
+                    ["4"] = {"HB_REARWHEEL_STEER","El freno de mano hace que las ruedas traseras giren más que las delanteras (como un monster truck).."},
+                    ["8"] = {"ALT_STEER_OPT","No se ha comprobado el efecto de esta casilla."}
                 },
                 {
-                    ["1"] = {"WHEEL_F_NARROW2","Very narrow front wheels."},
-                    ["2"] = {"WHEEL_F_NARROW","Narrow front wheels."},
-                    ["4"] = {"WHEEL_F_WIDE","Wide front wheels."},
-                    ["8"] = {"WHEEL_F_WIDE2","Very wide front wheels."}
+                    ["1"] = {"WHEEL_R_NARROW2","Hace que las ruedas delanteras sean demasiado estrechas."},
+                    ["2"] = {"WHEEL_R_NARROW","Hace estrechas las ruedas delanteras."},
+                    ["4"] = {"WHEEL_R_WIDE","Hace que las ruedas delanteras sean anchas."},
+                    ["8"] = {"WHEEL_R_WIDE2","Hace que las ruedas delanteras sean demasiado anchas."}
                 },
                 {
-                    ["1"] = {"WHEEL_R_NARROW2","Very narrow rear wheels."},
-                    ["2"] = {"WHEEL_R_NARROW","Narrow rear wheels."},
-                    ["4"] = {"WHEEL_R_WIDE","Wide rear wheels."},
-                    ["8"] = {"WHEEL_R_WIDE2","Very wide rear wheels."}
+                    ["1"] = {"WHEEL_R_NARROW2","Hace que las ruedas delanteras sean demasiado estrechas."},
+                    ["2"] = {"WHEEL_R_NARROW","Hace estrechas las ruedas delanteras."},
+                    ["4"] = {"WHEEL_R_WIDE","Hace que las ruedas delanteras sean anchas."},
+                    ["8"] = {"WHEEL_R_WIDE2","Hace que las ruedas delanteras sean demasiado anchas."}
                 },
                 {
-                    ["1"] = {"HYDRAULIC_GEOM","Needs testing."},
-                    ["2"] = {"HYDRAULIC_INST","Will spawn with hydraulics installed."},
-                    ["4"] = {"HYDRAULIC_NONE","Hydraulics cannot be installed."},
-                    ["8"] = {"NOS_INST","Vehicle automatically gets NOS installed when it spawns."}
+                    ["1"] = {"HYDRAULIC_GEOM","El efecto de esta modificación no se ha probado."},
+                    ["2"] = {"HYDRAULIC_INST","Hace aparecer el vehículo con el sistema hidráulico instalado."},
+                    ["4"] = {"HYDRAULIC_NONE","Desactiva el sistema hidráulico."},
+                    ["8"] = {"NOS_INST","Hace que el vehículo aparezca con nitro instalado."}
                 },
                 {
-                    ["1"] = {"OFFROAD_ABILITY","Vehicle will perform better on loose surfaces like dirt."},
-                    ["2"] = {"OFFROAD_ABILITY2","Vehicle will perform better on soft surfaces like sand."},
-                    ["4"] = {"HALOGEN_LIGHTS","Makes headlights brighter and more blue."},
-                    ["8"] = {"PROC_REARWHEEL_1ST","Needs testing."}
+                    ["1"] = {"OFFROAD_ABILITY","Mejora el rendimiento del vehículo en superficies sueltas (como la tierra)."},
+                    ["2"] = {"OFFROAD_ABILITY2","Mejora el rendimiento del vehículo en superficies blandas (como la arena)."},
+                    ["4"] = {"HALOGEN_LIGHTS","Hace que los faros parezcan más brillantes y \"mas azules\"."},
+                    ["8"] = {"PROC_REARWHEEL_1ST","No se ha comprobado el efecto que causa la modificación."}
                 },
                 {
-                    ["1"] = {"USE_MAXSP_LIMIT","Prevents vehicle going faster than the maximum speed."},
-                    ["2"] = {"LOW_RIDER","Allows vehicle to be modified at Loco Low Co shops."},
-                    ["4"] = {"STREET_RACER","When set, vehicle can only be modified at Wheel Arch Angels."},
-                    ["8"] = {"UNDEFINED","No effect."}
+                    ["1"] = {"USE_MAXSP_LIMIT","Evita que el vehículo supere la velocidad máxima."},
+                    ["2"] = {"LOW_RIDER","Permite modificar el vehículo en los talleres Loco Low Co.."},
+                    ["4"] = {"STREET_RACER","Hace que el vehículosea modificable en los angulos del arco de la Rueda."},
+                    ["8"] = {"",""}
                 },
                 {
-                    ["1"] = {"SWINGING_CHASSIS","Lets the car body move from side to side on the suspension."},
-                    ["2"] = {"UNDEFINED","No effect."},
-                    ["4"] = {"UNDEFINED","No effect."},
-                    ["8"] = {"UNDEFINED","No effect."}
+                    ["1"] = {"SWINGING_CHASSIS","Permite que la carrocería se mueva de lado a lado sobre la suspensión."},
+                    ["2"] = {"",""},
+                    ["4"] = {"",""},
+                    ["8"] = {"",""}
                 }
             }
         },
         ["headLight"] = {
-            friendlyName = "Luces",
-            information = "Sets the type of front lights your vehicle will have.",
+            friendlyName = "Luces delanteras",
+            information = "Cambia el tipo de luces delanteras que tendrá el vehículo.",
             syntax = { "Integer", "" },
-            options = { ["0"]="Long",["1"]="Small",["2"]="Big",["3"]="Tall" }
+            options = { ["0"]="Largas",["1"]="Pequeñas",["2"]="Grandes",["3"]="Altas" }
         },
         ["tailLight"] = {
-            friendlyName = "Luces Traseras",
-            information = "Sets the type of rear lights your vehicle will have.",
+            friendlyName = "Luces traseras",
+            information = "Cambia el tipo de luces traseras que tendrá el vehículo.",
             syntax = { "Integer", "" },
-            options = { ["0"]="Long",["1"]="Small",["2"]="Big",["3"]="Tall" }
+            options = { ["0"]="Largas",["1"]="Pequeñas",["2"]="Grandes",["3"]="Altas" }
         },
         ["animGroup"] = {
             friendlyName = "Grupo de Animacion",
-            information = "Sets the group of animation your ped will use for it's vehicle.",
+            information = "Altera el grupo de animacion que utilizarán los peatones cuando estén dentro del vehículo.",
             syntax = { "Integer", "" }
         }
     }
