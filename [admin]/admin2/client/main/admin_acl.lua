@@ -11,7 +11,8 @@ aAclTab = {
     Cache = {
         Groups = {},
         ACL = {},
-        Users = {}
+        Users = {},
+        Resources = {},
     }
 }
 
@@ -44,6 +45,15 @@ function aAclTab.Create(tab)
     -- resources tab
     aAclTab.ResourcesTab = guiCreateTab("Resources", aAclTab.Panel)
 
+    aAclTab.Resources = guiCreateGridList(0.01, 0.07, 0.98, 0.91, true, aAclTab.ResourcesTab)
+    guiGridListAddColumn(aAclTab.Resources, "Name", 1)
+    aAclTab.ResourcesSearch = guiCreateEdit(0.01, 0.0125, 0.3, 0.05, "", true, aAclTab.ResourcesTab)
+    guiCreateInnerImage("client\\images\\search.png", aAclTab.ResourcesSearch)
+    guiHandleInput(aAclTab.ResourcesSearch)
+
+    aAclTab.ResourcesButton_AddResource = guiCreateButton(0.55, 0.0125, 0.2, 0.05, "Add Resource", true, aAclTab.ResourcesTab)
+    aAclTab.ResourcesButton_RemoveResource = guiCreateButton(0.775, 0.0125, 0.2, 0.05, "Remove Resource", true, aAclTab.ResourcesTab)
+
     -- rights tab
     aAclTab.RightsTab = guiCreateTab("Rights", aAclTab.Panel)
 
@@ -66,6 +76,7 @@ function aAclTab.Create(tab)
     addEventHandler("onClientGUIClick", aAclTab.Tab, aAclTab.onClick)
     addEventHandler("onClientGUIChanged", aAclTab.AccessSearch, aAclTab.onChanged)
     addEventHandler("onClientGUIChanged", aAclTab.UsersSearch, aAclTab.onChanged)
+    addEventHandler('onClientGUIChanged', aAclTab.ResourcesSearch, aAclTab.onChanged)
 end
 
 aAclTab.SyncFunctions = {
@@ -95,6 +106,17 @@ aAclTab.SyncFunctions = {
         end
 
         aAclTab.RefreshUsersList()
+    end,
+    [ACL_RESOURCES] = function(group, data)
+        guiGridListClear(aAclTab.Resources)
+        aAclTab.Cache.Resources[group] = {}
+
+        for id,object in ipairs(data) do
+            local obj = object:gsub('resource.','')
+            table.insert(aAclTab.Cache.Resources[group], obj)
+        end
+
+        aAclTab.RefreshResourcesList()
     end
 }
 
@@ -110,6 +132,7 @@ function aAclTab.onClick(key, state)
     if (source == aAclTab.Groups) then
         aAclTab.RefreshAccess()
         aAclTab.RefreshUsersList()
+        aAclTab.RefreshResourcesList()
     elseif (source == aAclTab.ViewTypes) then
         aAclTab.RefreshAccess()
     elseif (source == aAclTab.UsersButton_RemoveUser) then
@@ -147,6 +170,41 @@ function aAclTab.onClick(key, state)
         else
             messageBox("No group selected!", MB_ERROR, MB_OK)
         end
+    elseif (source == aAclTab.ResourcesButton_AddResource) then
+        local selected = guiGridListGetSelectedItem(aAclTab.Groups)
+
+        if (selected ~= -1) then
+            local name = inputBox("Add resource", "Enter resource name")
+
+            if (name) then
+                local group = guiGridListGetItemText(aAclTab.Groups, selected, 1)
+                triggerServerEvent(EVENT_ACL, localPlayer, ACL_RESOURCES, ACL_ADD, group, name)
+                
+                aAclTab.Cache.Resources[group] = nil
+                aAclTab.RefreshResourcesList()
+            end
+        else
+            messageBox("No group selected!", MB_ERROR, MB_OK)
+        end
+    elseif (source == aAclTab.ResourcesButton_RemoveResource) then
+        local selected = guiGridListGetSelectedItem(aAclTab.Resources)
+
+        if (selected ~= -1) then
+            local object = guiGridListGetItemText(aAclTab.Resources, selected, 1)
+            local selectedGroup = guiGridListGetSelectedItem(aAclTab.Groups)
+            local group = guiGridListGetItemText(aAclTab.Groups, selectedGroup, 1)
+
+            local result = messageBox("Are you sure you want to remove the resource '"..object.."' from the '"..group.."' ACL group?", MB_QUESTION, MB_YESNO)
+            
+            if (result) then
+                triggerServerEvent(EVENT_ACL, localPlayer, ACL_RESOURCES, ACL_REMOVE, group, 'resource.'..object)
+                
+                aAclTab.Cache.Resources[group] = nil
+                aAclTab.RefreshResourcesList()
+            end
+        else
+            messageBox("No resource selected!", MB_ERROR, MB_OK)
+        end
     end
 end
 
@@ -155,6 +213,8 @@ function aAclTab.onChanged()
         aAclTab.RefreshAccess()
     elseif (source == aAclTab.UsersSearch) then
         aAclTab.RefreshUsersList()
+    elseif (source == aAclTab.ResourcesSearch) then
+        aAclTab.RefreshResourcesList()
     end
 end
 
@@ -260,6 +320,31 @@ function aAclTab.RefreshUsersList()
             end
         else
             triggerServerEvent(EVENT_ACL, localPlayer, ACL_USERS,ACL_GET, group)
+        end
+    end
+end
+
+function aAclTab.RefreshResourcesList()
+    local selected = guiGridListGetSelectedItem(aAclTab.Groups)
+
+    if (selected ~= -1) then
+        guiGridListClear(aAclTab.Resources)
+
+        local group = guiGridListGetItemText(aAclTab.Groups, selected, 1)
+        local cache = aAclTab.Cache.Resources[group]
+        if (cache and #cache > 0) then
+            local searchText = guiGetText(aAclTab.ResourcesSearch):lower()
+            local search = searchText:gsub(' ','') ~= ''
+
+            for i,resource in ipairs(cache) do
+                local row = guiGridListAddRow(aAclTab.Resources)
+
+                if ((search and (resource:gsub('resource.',''):lower():find(searchText))) or not search) then
+                    guiGridListSetItemText(aAclTab.Resources, row, 1, resource, false, false)
+                end
+            end
+        else
+            triggerServerEvent(EVENT_ACL, localPlayer, ACL_RESOURCES, ACL_GET, group)
         end
     end
 end
