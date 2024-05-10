@@ -25,7 +25,7 @@ local function resourceStart()
 	end
 	
 	if not useTeams and not useNametags then
-		giveOutputDebugStringOut("Start", outputDebugStringTypeUseTeamsAndNametagIsFalse)
+		giveOutputDebugStringOut(_, outputDebugStringTypeUseTeamsAndNametagIsFalse)
 	end
 	if not (useTeams or useNametags) then
 		addCommandHandler("setblipcolor", setBlipColor)
@@ -34,16 +34,14 @@ end
 addEventHandler("onResourceStart", resourceRoot, resourceStart)
 
 function giveOutputDebugStringOut(instruction, outputDebugStringType)
-	if instruction and outputDebugStringType then
-		local localInstruction = instruction
-		if localInstruction then
-			if outputDebugStringType == outputDebugStringTypePlayerColors then
-				localInstruction = localInstruction .. " the playercolors resource if you want random nametag and blip colors."
-			elseif outputDebugStringType == outputDebugStringTypeUseTeamsAndNametagIsFalse then
-				localInstruction = "use_team_colors and use_nametag_colors is false therefore the default blip_color is used. You can change it manually in the admin panel playerblips settings or in the meta.xml file."
-			end
-			outputDebugString("playerblips: " .. localInstruction, 4, 255, 125, 0)
+	if outputDebugStringType then
+		local outputDebugStringText
+		if instruction and outputDebugStringType == outputDebugStringTypePlayerColors then
+			outputDebugStringText = instruction .. " the playercolors resource if you want random nametag and blip colors."
+		elseif outputDebugStringType == outputDebugStringTypeUseTeamsAndNametagIsFalse then
+			outputDebugStringText = "use_team_colors and use_nametag_colors is false therefore the default blip_color is used. You can change it manually in the admin panel playerblips settings or in the meta.xml file."
 		end
+		outputDebugString("playerblips: " .. outputDebugStringText, 4, 255, 125, 0)
 	end
 end
 
