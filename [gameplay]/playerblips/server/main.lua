@@ -26,7 +26,8 @@ local function resourceStart()
 	
 	if not useTeams and not useNametags then
 		giveOutputDebugStringOut("Start", outputDebugStringTypeUseTeamsAndNametagIsFalse)
-	elseif not (useTeams or useNametags) then
+	end
+	if not (useTeams or useNametags) then
 		addCommandHandler("setblipcolor", setBlipColor)
 	end
 end
