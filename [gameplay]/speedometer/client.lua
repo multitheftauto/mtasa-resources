@@ -80,3 +80,11 @@ function integrityCheck()
     end
 end
 addEventHandler("onClientPlayerWasted", localPlayer, integrityCheck)
+
+addEventHandler("onClientResourceStart", resourceRoot,
+    function()
+        if isPedInVehicle(localPlayer) then
+            enterHandler(getPedOccupiedVehicle(localPlayer))
+        end
+    end
+)
