@@ -29,7 +29,7 @@ end
 addEventHandler("onResourceStart", resourceRoot, resourceStart)
 
 function givePlayerColorsOutputDebugStringOut(instruction)
-	outputDebugString("playerblips: " .. instruction .. " the playercolors resource if you want random nametag colors, otherwise the default blip color is used, which you can change manually in the playerblips settings or meta.xml.", 4, 255, 125, 0)
+	outputDebugString("playerblips: " .. instruction .. " the playercolors resource if you want random nametag colors.", 4, 255, 125, 0)
 	useNametags = false
 end
 
