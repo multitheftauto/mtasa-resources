@@ -13,7 +13,7 @@ local function resourceStart()
 	end
 
 	local playercolorsResource = getResourceFromName("playercolors")
-	if playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
+	if playercolorsResource and getResourceState(playercolorsResource) ~= "running" and not useTeams then
 		outputDebugString("playerblips: playercolors resource not running; using blip_color. Restart this resource after starting playercolors.", 4, 255, 125, 0)
 		useNametags = false
 	end
