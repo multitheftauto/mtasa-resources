@@ -3,6 +3,36 @@ local screenX, screenY = guiGetScreenSize()
 local messageBoxWindows = {}
 local messageBoxCallbacks = {}
 
+local messageWindowWidth = 400
+local messageWindowHeight = 200
+
+local messageWindowPosX = (screenX - messageWindowWidth) / 2
+local messageWindowPosY = (screenY - messageWindowHeight) / 2
+
+local messageIconWidth = 42
+local messageIconHeight = 42
+
+local messageIconPosX = (messageWindowWidth - messageIconWidth) / 8
+local messageIconPosY = (messageWindowHeight - messageIconHeight) / 2
+
+local messageCaptionWidth = messageWindowWidth - (messageIconPosX + messageIconWidth + 10 + 5)
+local messageCaptionHeight = 16
+
+local messageContentWidth = messageWindowWidth - (messageIconPosX + messageIconWidth + 10 + 5)
+local messageContentHeight = 18
+
+local messageCaptionPosX = messageIconPosX + messageIconWidth + 10
+local messageCaptionPosY = messageIconPosY + (messageIconHeight - messageCaptionHeight - messageContentHeight) / 2
+
+local messageContentPosX = messageIconPosX + messageIconWidth + 10
+local messageContentPosY = messageIconPosY + (messageIconHeight - messageContentHeight) - 5
+
+local messageButtonWidth = 50
+local messageButtonHeight = 30
+
+local messageButtonPosX = (messageWindowWidth - 5) - (messageButtonWidth + 5) * #messageButtons[messageButton]
+local messageButtonPosY = (messageWindowHeight - 10) - messageButtonHeight
+
 function messageBeep(soundType, soundVolume)
     if not soundType or type(soundType) ~= "string" then
         error("Bad argument @ 'messageBeep' [Expected string at argument 1, got " .. type(soundType) .. "]")
@@ -131,46 +161,14 @@ function messageBox(messageTitle, messageContent, messageCallback, messageIcon, 
 
     messageBeep(messageSound, messageSoundVolume)
 
-    local messageWindowWidth = 400
-    local messageWindowHeight = 200
-
-    local messageWindowPosX = (screenX - messageWindowWidth) / 2
-    local messageWindowPosY = (screenY - messageWindowHeight) / 2
     local messageWindowElement = guiCreateWindow(messageWindowPosX, messageWindowPosY, messageWindowWidth, messageWindowHeight, messageTitle)
-
-    guiWindowSetSizable(messageWindowElement, false)
-
-    local messageIconWidth = 42
-    local messageIconHeight = 42
-    
-    local messageIconPosX = (messageWindowWidth - messageIconWidth) / 8
-    local messageIconPosY = (messageWindowHeight - messageIconHeight) / 2
-
-    guiCreateStaticImage(messageIconPosX, messageIconPosY, messageIconWidth, messageIconHeight, messageIcons[messageIcon].iconPath, false, messageWindowElement)
-
-    local messageCaptionWidth = messageWindowWidth - (messageIconPosX + messageIconWidth + 10 + 5)
-    local messageCaptionHeight = 16
-
-    local messageContentWidth = messageWindowWidth - (messageIconPosX + messageIconWidth + 10 + 5)
-    local messageContentHeight = 18
-
-    local messageCaptionPosX = messageIconPosX + messageIconWidth + 10
-    local messageCaptionPosY = messageIconPosY + (messageIconHeight - messageCaptionHeight - messageContentHeight) / 2
     local messageCaptionElement = guiCreateLabel(messageCaptionPosX, messageCaptionPosY, messageCaptionWidth, messageCaptionHeight, messageIcons[messageIcon].iconCaption, false, messageWindowElement)
-
-    guiSetFont(messageCaptionElement, "default-bold-small")
-
-    local messageContentPosX = messageIconPosX + messageIconWidth + 10
-    local messageContentPosY = messageIconPosY + (messageIconHeight - messageContentHeight) - 5
     local messageContentElement = guiCreateLabel(messageContentPosX, messageContentPosY, messageContentWidth, messageContentHeight * 4  , messageContent, false, messageWindowElement)
 
+    guiWindowSetSizable(messageWindowElement, false)
+    guiCreateStaticImage(messageIconPosX, messageIconPosY, messageIconWidth, messageIconHeight, messageIcons[messageIcon].iconPath, false, messageWindowElement)
+    guiSetFont(messageCaptionElement, "default-bold-small")
     guiLabelSetHorizontalAlign(messageContentElement, "left", true)
-
-    local messageButtonWidth = 50
-    local messageButtonHeight = 30
-
-    local messageButtonPosX = (messageWindowWidth - 5) - (messageButtonWidth + 5) * #messageButtons[messageButton]
-    local messageButtonPosY = (messageWindowHeight - 10) - messageButtonHeight
 
     for i, v in ipairs(messageButtons[messageButton]) do
         local messageButtonElement = guiCreateButton(messageButtonPosX, messageButtonPosY, messageButtonWidth, messageButtonHeight, v, false, messageWindowElement)
