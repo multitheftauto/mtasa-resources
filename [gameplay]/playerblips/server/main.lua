@@ -7,6 +7,8 @@ local blipRange = get("*blip_range")
 local colors = {}
 local blips = {}
 local playerHasDefaultNametagColor
+local outputDebugStringTypePlayerColors = "playerColors"
+local outputDebugStringTypeUseTeamsAndNametagIsFalse = "useTeamsAndNametagsIsFalse"
 
 local function resourceStart()
 	for i, player in ipairs(Element.getAllByType("player")) do
@@ -16,21 +18,32 @@ local function resourceStart()
 	local playercolorsResource = getResourceFromName("playercolors")
 	if playerHasDefaultNametagColor and not useTeams then
 		if not playercolorsResource then
-			givePlayerColorsOutputDebugStringOut("Install")
+			giveOutputDebugStringOut("Install", outputDebugStringTypePlayerColors)
 		elseif playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
-			givePlayerColorsOutputDebugStringOut("Start")
+			giveOutputDebugStringOut("Start", outputDebugStringTypePlayerColors)
 		end
 	end
-
-	if not (useTeams or useNametags) then
+	
+	if not useTeams and not useNametags then
+		giveOutputDebugStringOut("Start", outputDebugStringTypeUseTeamsAndNametagIsFalse)
+	elseif not (useTeams or useNametags) then
 		addCommandHandler("setblipcolor", setBlipColor)
 	end
 end
 addEventHandler("onResourceStart", resourceRoot, resourceStart)
 
-function givePlayerColorsOutputDebugStringOut(instruction)
-	outputDebugString("playerblips: " .. instruction .. " the playercolors resource if you want random nametag and blip colors.", 4, 255, 125, 0)
-	useNametags = false
+function giveOutputDebugStringOut(instruction, outputDebugStringType)
+	if instruction and outputDebugStringType then
+		local localInstruction = instruction
+		if localInstruction then
+			if outputDebugStringType == outputDebugStringTypePlayerColors then
+				localInstruction = localInstruction .. " the playercolors resource if you want random nametag and blip colors."
+			elseif outputDebugStringType == outputDebugStringTypeUseTeamsAndNametagIsFalse then
+				localInstruction = "use_team_colors and use_nametag_colors is false therefore the default blip_color is used. You can change it manually in the admin panel playerblips settings or in the meta.xml file."
+			end
+			outputDebugString("playerblips: " .. localInstruction, 4, 255, 125, 0)
+		end
+	end
 end
 
 function createPlayerBlip(player)
@@ -49,7 +62,6 @@ function createPlayerBlip(player)
 		r, g, b = colors[player][1], colors[player][2], colors[player][3]
 	else
 		r, g, b = color[1], color[2], color[3]
-		outputDebugString("playerblips: use_team_colors and use_nametag_colors is false therefore the default blip_color is used. You can change it manually in the admin panel playerblips settings or in the meta.xml file.", 4, 255, 125, 0)
 	end
 	if isElement(blips[player]) then
 		blips[player]:setColor(r, g, b, blipAlpha)
