@@ -49,6 +49,7 @@ function createPlayerBlip(player)
 		r, g, b = colors[player][1], colors[player][2], colors[player][3]
 	else
 		r, g, b = color[1], color[2], color[3]
+		outputDebugString("playerblips: use_team_colors and use_nametag_colors is false therefore the default blip_color is used, which you can change manually in the playerblips setting or meta.xml or set one of them to true.", 4, 255, 125, 0)
 	end
 	if isElement(blips[player]) then
 		blips[player]:setColor(r, g, b, blipAlpha)
