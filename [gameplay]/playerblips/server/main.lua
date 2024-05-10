@@ -6,6 +6,7 @@ local color = get("*blip_color")
 local blipRange = get("*blip_range")
 local colors = {}
 local blips = {}
+local playerHasDefaultNametagColor
 
 local function resourceStart()
 	for i, player in ipairs(Element.getAllByType("player")) do
@@ -13,9 +14,12 @@ local function resourceStart()
 	end
 
 	local playercolorsResource = getResourceFromName("playercolors")
-	if playercolorsResource and getResourceState(playercolorsResource) ~= "running" and not useTeams then
-		outputDebugString("playerblips: playercolors resource not running; using blip_color. Restart this resource after starting playercolors.", 4, 255, 125, 0)
-		useNametags = false
+	if playerHasDefaultNametagColor and not useTeams then
+		if not playercolorsResource then
+			givePlayerColorsOutputDebugStringOut("Install")
+		elseif playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
+			givePlayerColorsOutputDebugStringOut("Start")
+		end
 	end
 
 	if not (useTeams or useNametags) then
@@ -24,6 +28,11 @@ local function resourceStart()
 end
 addEventHandler("onResourceStart", resourceRoot, resourceStart)
 
+function givePlayerColorsOutputDebugStringOut(instruction)
+	outputDebugString("playerblips: " .. instruction .. " the playercolors resource if you want random nametag colors, otherwise the default blip color is used, which you can change manually in the playerblips settings or meta.xml.", 4, 255, 125, 0)
+	useNametags = false
+end
+
 function createPlayerBlip(player)
 	if (not player or not isElement(player) or player.type ~= "player") then return false end
 	local r, g, b
@@ -31,6 +40,11 @@ function createPlayerBlip(player)
 		r, g, b = player.team:getColor()
 	elseif useNametags then
 		r, g, b = getPlayerNametagColor(player)
+		if not playerHasDefaultNametagColor then
+			if r == 255 and g == 255 and b == 255 then
+				playerHasDefaultNametagColor = true
+			end
+		end
 	elseif (colors[player]) then
 		r, g, b = colors[player][1], colors[player][2], colors[player][3]
 	else
