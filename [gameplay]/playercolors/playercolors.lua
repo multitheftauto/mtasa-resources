@@ -11,7 +11,7 @@ local function setAllPlayerColors()
 	for _, player in ipairs(getElementsByType("player")) do
 		if eventName == "onResourceStop" then
 			setPlayerNametagColor(player, false)
-		else 
+		else
 			randomizePlayerColor(player)
 		end
 	end
