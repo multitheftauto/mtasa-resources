@@ -194,6 +194,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab2.ResourceInclMaps	= guiCreateCheckBox ( 0.03, 0.91, 0.15, 0.04, "Include Maps", false, true, aTab2.Tab )
 		aTab2.ResourceRefresh	= guiCreateButton ( 0.20, 0.915, 0.18, 0.04, "Refresh list", true, aTab2.Tab, "listresources" )
 		aTab2.ResourceSettings	= guiCreateButton ( 0.40, 0.05, 0.20, 0.04, "Settings", true, aTab2.Tab )
+		guiSetVisible ( aTab2.ResourceSettings, false)
 		aTab2.ResourceStart	= guiCreateButton ( 0.40, 0.10, 0.20, 0.04, "Start", true, aTab2.Tab, "start" )
 		aTab2.ResourceRestart	= guiCreateButton ( 0.40, 0.15, 0.20, 0.04, "Restart", true, aTab2.Tab, "restart" )
 		aTab2.ResourceStop	= guiCreateButton ( 0.40, 0.20, 0.20, 0.04, "Stop", true, aTab2.Tab, "stop" )
@@ -1066,6 +1067,10 @@ function aClientClick ( button )
 						guiSetVisible ( aTab2.ResourceFailture, true )
 					end
 				end
+				local resName = guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1) 
+				if resName then 
+					triggerServerEvent("aAdmin", localPlayer, "settings", "getallcount", resName)
+				end
 			elseif ( source == aTab2.ManageACL ) then
 				aManageACL()
 			elseif ( source == aTab2.ResourceRefresh or source == aTab2.ResourceInclMaps ) then
@@ -1212,6 +1217,16 @@ function aClientRender ()
 		end
 	end
 end
+
+addEvent ("setVisibilityOfSettingsButton", true)  
+function setVisibilityOfSettingsButton (hasResourceSettings)
+	if not hasResourceSettings then
+		guiSetVisible ( aTab2.ResourceSettings, false)
+	elseif hasResourceSettings then
+		guiSetVisible ( aTab2.ResourceSettings, true )
+	end
+end
+addEventHandler ( "setVisibilityOfSettingsButton", root, setVisibilityOfSettingsButton)
 
 function aAdminReloadInfos()
 	if ( guiGridListGetSelectedItem( aTab1.PlayerList ) ~= -1 ) then
