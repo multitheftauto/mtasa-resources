@@ -1069,7 +1069,7 @@ function aClientClick ( button )
 				end
 				local resName = guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1)
 				if resName then
-					triggerServerEvent("aAdmin", localPlayer, "settings", "getallcount", resName)
+					triggerServerEvent("aAdmin", localPlayer, "resourcelist", resName)
 				end
 			elseif ( source == aTab2.ManageACL ) then
 				aManageACL()
