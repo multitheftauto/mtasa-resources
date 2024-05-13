@@ -723,10 +723,10 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 		elseif (cmd == "getallcount") then
 			local count = aGetResourceSettings(resName, count)
 			if next(count) == nil then
-				triggerClientEvent ( source, "setVisibilityOfSettingsButton", root)
+				triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot)
 			else
 				local hasResourceSetting = true
-				triggerClientEvent ( source, "setVisibilityOfSettingsButton", root, hasResourceSetting)
+				triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot, hasResourceSetting)
 			end
 		end
 		triggerClientEvent ( source, "aAdminSettings", root, cmd, resName, tableOut )
