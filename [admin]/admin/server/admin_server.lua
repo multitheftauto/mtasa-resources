@@ -720,16 +720,16 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 					tableOut[name].current = string.gsub(toJSON(value.current),"^(%[ %[ )(.*)( %] %])$", "%2")
 				end
 			end
-		triggerClientEvent ( source, "aAdminSettings", root, cmd, resName, tableOut )
 		end
+		triggerClientEvent ( source, "aAdminSettings", root, cmd, resName, tableOut )
 	elseif (action == "resourcelist") then
 		local resName = arg[1]
 		local count = true
-		local emptyTable, count = aGetResourceSettings(resName, count)
+		_, count = aGetResourceSettings(resName, count)
 		if count == 0 then
 			triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot)
 		else
-		local hasResourceSetting = true
+			local hasResourceSetting = true
 			triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot, hasResourceSetting)
 		end
 	elseif ( action == "sync" ) then
