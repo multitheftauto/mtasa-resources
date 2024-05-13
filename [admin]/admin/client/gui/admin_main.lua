@@ -1067,8 +1067,8 @@ function aClientClick ( button )
 						guiSetVisible ( aTab2.ResourceFailture, true )
 					end
 				end
-				local resName = guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1) 
-				if resName then 
+				local resName = guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1)
+				if resName then
 					triggerServerEvent("aAdmin", localPlayer, "settings", "getallcount", resName)
 				end
 			elseif ( source == aTab2.ManageACL ) then
@@ -1197,7 +1197,7 @@ function aClientClick ( button )
 	end
 end
 
-addEvent ("setVisibilityOfSettingsButton", true)  
+addEvent ("setVisibilityOfSettingsButton", true)
 function setVisibilityOfSettingsButton (hasResourceSetting)
 	if not hasResourceSetting then
 		guiSetVisible ( aTab2.ResourceSetting, false)
