@@ -723,13 +723,13 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 		triggerClientEvent ( source, "aAdminSettings", root, cmd, resName, tableOut )
 		end
 	elseif (action == "resourcelist") then
-		local resName = arg[2]
+		local resName = arg[1]
 		local count = true
 		local emptyTable, count = aGetResourceSettings(resName, count)
 		if count == 0 then
 			triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot)
 		else
-			local hasResourceSetting = true
+		local hasResourceSetting = true
 			triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot, hasResourceSetting)
 		end
 	elseif ( action == "sync" ) then
