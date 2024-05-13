@@ -1197,6 +1197,16 @@ function aClientClick ( button )
 	end
 end
 
+addEvent ("setVisibilityOfSettingsButton", true)  
+function setVisibilityOfSettingsButton (hasResourceSetting)
+	if not hasResourceSetting then
+		guiSetVisible ( aTab2.ResourceSetting, false)
+	elseif hasResourceSetting then
+		guiSetVisible ( aTab2.ResourceSetting, true )
+	end
+end
+addEventHandler ( "setVisibilityOfSettingsButton", root, setVisibilityOfSettingsButton)
+
 function aClientRender ()
 	if ( guiGetVisible ( aAdminForm ) ) then
 		if ( getTickCount() >= aLastCheck ) then
@@ -1217,16 +1227,6 @@ function aClientRender ()
 		end
 	end
 end
-
-addEvent ("setVisibilityOfSettingsButton", true)  
-function setVisibilityOfSettingsButton (hasResourceSettings)
-	if not hasResourceSettings then
-		guiSetVisible ( aTab2.ResourceSettings, false)
-	elseif hasResourceSettings then
-		guiSetVisible ( aTab2.ResourceSettings, true )
-	end
-end
-addEventHandler ( "setVisibilityOfSettingsButton", root, setVisibilityOfSettingsButton)
 
 function aAdminReloadInfos()
 	if ( guiGridListGetSelectedItem( aTab1.PlayerList ) ~= -1 ) then
