@@ -1205,7 +1205,7 @@ function setVisibilityOfSettingsButton (hasResourceSetting)
 		guiSetVisible ( aTab2.ResourceSetting, true )
 	end
 end
-addEventHandler ( "setVisibilityOfSettingsButton", root, setVisibilityOfSettingsButton)
+addEventHandler ( "setVisibilityOfSettingsButton", resourceRoot, setVisibilityOfSettingsButton)
 
 function aClientRender ()
 	if ( guiGetVisible ( aAdminForm ) ) then
