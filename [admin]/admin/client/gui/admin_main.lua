@@ -1060,16 +1060,16 @@ function aClientClick ( button )
 			elseif ( source == aTab2.ResourceList ) then
 				guiSetVisible ( aTab2.ResourceFailture, false )
 				if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
+					local resName = guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1)
+					if resName then
+						triggerServerEvent("aAdmin", localPlayer, "resourcelist", resName)
+					end
 					guiSetText(aTab2.ResourceName, "Full Name: " .. guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem ( aTab2.ResourceList ), 4))
 					guiSetText(aTab2.ResourceAuthor, "Author: " .. guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem ( aTab2.ResourceList ), 5))
 					guiSetText(aTab2.ResourceVersion, "Version: " .. guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem ( aTab2.ResourceList ), 6))
 					if ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 3 ) == "Failed to load" ) then
 						guiSetVisible ( aTab2.ResourceFailture, true )
 					end
-				end
-				local resName = guiGridListGetItemText(aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1)
-				if resName then
-					triggerServerEvent("aAdmin", localPlayer, "resourcelist", resName)
 				end
 			elseif ( source == aTab2.ManageACL ) then
 				aManageACL()
