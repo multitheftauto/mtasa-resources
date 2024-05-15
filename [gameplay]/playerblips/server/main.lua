@@ -15,8 +15,8 @@ local function resourceStart()
 		createPlayerBlip(player)
 	end
 
-	local playercolorsResource = getResourceFromName("playercolors")
 	if playerHasDefaultNametagColor and not useTeams then
+		local playercolorsResource = getResourceFromName("playercolors")
 		if not playercolorsResource then
 			giveOutputDebugStringOut("Install", outputDebugStringTypePlayerColors)
 		elseif playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
