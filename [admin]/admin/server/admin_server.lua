@@ -726,10 +726,11 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 		local resName = arg[1]
 		local count = true
 		_, count = aGetResourceSettings(resName, count)
-		if count == 0 then
-			triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot)
-		else
-			local hasResourceSetting = true
+		if count then
+			local hasResourceSetting
+			if count ~= 0 then
+				hasResourceSetting = true
+			end
 			triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot, hasResourceSetting)
 		end
 	elseif ( action == "sync" ) then
