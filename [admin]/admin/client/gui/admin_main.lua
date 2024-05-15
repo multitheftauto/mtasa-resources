@@ -1199,10 +1199,10 @@ end
 
 addEvent ("setVisibilityOfSettingsButton", true)
 function setVisibilityOfSettingsButton (hasResourceSetting)
-	if not hasResourceSetting then
-		guiSetVisible ( aTab2.ResourceSettings, false)
-	elseif hasResourceSetting then
-		guiSetVisible ( aTab2.ResourceSettings, true )
+	if hasResourceSetting then
+		guiSetVisible(aTab2.ResourceSettings, true)
+	else
+		guiSetVisible(aTab2.ResourceSettings, false)
 	end
 end
 addEventHandler ( "setVisibilityOfSettingsButton", resourceRoot, setVisibilityOfSettingsButton)
