@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-16"?>
 <meta>
   <info type="map" gamemodes="race" name="Sea Dragon" author="Blue Zircon" description="Boat race that starts and ends at the dam" version="0" />
   <map src="Sea Dragon.map" />
