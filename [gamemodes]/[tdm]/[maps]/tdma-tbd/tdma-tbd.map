@@ -1,4 +1,4 @@
-<map mod="deathmatch" version="1.0" time="12:00" weather="1">
+<map version="1.0" time="12:00" weather="1">
    <gamesettings interior="0" respawntime="3000" maxkills="50" ff="true"/>
    <time h="12" m="0" locked="true"/>
    <base team="Red" red="255" green="0" blue="0">

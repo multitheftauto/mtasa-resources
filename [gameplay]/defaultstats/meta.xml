@@ -1,3 +1,4 @@
 <meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" type="script" version="1.0.0"/>
 	<script src="defaultstats.lua" type="server"/>
 </meta>

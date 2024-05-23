@@ -1,5 +1,5 @@
 <meta>
-	<info author="Talidan, jbeta" description="Map editor GUI" />
+	<info author="Talidan, jbeta" description="Map editor GUI" version="1.0.0" />
 
 	<!-- Required resources -->
 	<include resource="dialogs" />

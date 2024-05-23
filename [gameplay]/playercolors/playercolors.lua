@@ -7,13 +7,18 @@ function randomizePlayerColor(player)
 end
 addEventHandler("onPlayerJoin", root, randomizePlayerColor)
 
-local function randomizeAllPlayerColors()
+local function setAllPlayerColors()
 	for _, player in ipairs(getElementsByType("player")) do
-		randomizePlayerColor(player)
+		if eventName == "onResourceStop" then
+			setPlayerNametagColor(player, false)
+		else
+			randomizePlayerColor(player)
+		end
 	end
 end
-addEventHandler("onResourceStart", resourceRoot, randomizeAllPlayerColors)
-addEventHandler("onGamemodeMapStart", root, randomizeAllPlayerColors) -- mapmanager resets player colors to white when the map ends
+addEventHandler("onResourceStart", resourceRoot, setAllPlayerColors)
+addEventHandler("onGamemodeMapStart", root, setAllPlayerColors) -- mapmanager resets player colors to white when the map ends
+addEventHandler("onResourceStop", resourceRoot, setAllPlayerColors)
 
 addEventHandler('onPlayerChat', root,
 	function(msg, type)

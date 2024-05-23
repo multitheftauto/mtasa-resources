@@ -1,4 +1,4 @@
-<map mod="deathmatch" auto_balance="on" friendly_fire="on">
+<map auto_balance="on" friendly_fire="on">
    <settings respawnTime="4500" spawnScreen="on" blips="team"/>
 
    <maplimit>

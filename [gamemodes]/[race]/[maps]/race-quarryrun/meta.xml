@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-16"?>
 <meta>
   <info type="map" gamemodes="race" name="Quarry Run" author="Slothman" description="A race around the Quarry on dirtbikes" version="0" />
   <map src="Quarry Run.map" />
