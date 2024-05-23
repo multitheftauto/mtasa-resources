@@ -101,3 +101,21 @@ end)
 addEventHandler("onPlayerSpawn", root, function()
 	createPlayerBlip(source)
 end)
+
+addEventHandler("onSettingChange", root,
+	function(settingName, settingValueEx, settingValue)
+		if settingName == "*use_team_colors" then
+			useTeams = settingValue == "true"
+		elseif settingName == "*use_nametag_colors" then
+			useNametags = settingValue == "true"
+		elseif settingName == "*blip_size" then
+			blipSize = settingValue
+		elseif settingName == "*blip_alpha" then
+			blipAlpha = settingValue
+		elseif settingName == "*blip_color" then
+			color = settingValue
+		elseif settingName == "*blip_range" then
+			blipRange = settingValue
+		end
+	end
+)
