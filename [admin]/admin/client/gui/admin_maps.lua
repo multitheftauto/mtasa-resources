@@ -78,15 +78,6 @@ function guiClick(button)
 				else
 					guiSetEnabled(aTabMap.NextMap, false)
 				end
-				-- if gamemode == "deleted maps" then
-					-- guiSetEnabled(aTabMap.Start, false)
-					-- guiSetEnabled(aTabMap.Delete, false)
-					-- guiSetEnabled(aTabMap.Revert, true)
-				-- else
-					-- guiSetEnabled(aTabMap.Start, true)
-					-- guiSetEnabled(aTabMap.Delete, true)
-					-- guiSetEnabled(aTabMap.Revert, false)
-				-- end
 			elseif source == aTabMap.Start then
 				triggerServerEvent("startGamemodeMap_s", localPlayer, gamemode, mapResName)
 			elseif source == aTabMap.NextMap then

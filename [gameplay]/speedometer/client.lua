@@ -12,7 +12,7 @@ function drawSpeedo()
     local speed = (velx ^ 2 + vely ^ 2 + velz ^ 2) ^ (0.5)
 
     dxDrawRelativeImage(0.66, 0.61, 0.33, 0.49, "images/disc.png")
-    dxDrawRelativeImage(0.7825, 0.61, 0.2, 0.46, "images/needle.png", -146 + (speed * 180))
+    dxDrawRelativeImage(0.7825, 0.61, 0.2, 0.46, "images/needle.png", -146 + (speed >= 1.47 and 265 or speed * 180))
 end
 
 local isSpeedoShown = false
