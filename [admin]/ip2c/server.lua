@@ -15,6 +15,7 @@
 
 local aCountries = {}
 local IP2C_FILENAME = "conf/IpToCountryCompact.csv"
+local IP2C_FILENAME_BACKUP = "conf/IpToCountryCompact.csv.backup" -- If no file exists, it will be copied from here (failsafe in case update URL is unreachable)
 local IP2C_UPDATE_URL = "http://mirror-cdn.multitheftauto.com/mtasa/scripts/IpToCountryCompact.csv"
 local IP2C_UPDATE_INTERVAL_SECONDS = 60 * 60 * 24 * 1	-- Update no more than once a day
 
@@ -53,8 +54,19 @@ end
 setTimer( loadIPGroupsIsReady, 1000, 1 )
 
 
--- Load all IP groups from "conf/IpToCountryCompact.csv"
+-- Load all IP groups from IpToCountry file
 function loadIPGroupsWorker ( cor )
+
+	-- Check if file exists; if not, copy from backup
+	if not fileExists( IP2C_FILENAME ) then
+		if (not fileExists( IP2C_FILENAME_BACKUP )) or (not fileCopy( IP2C_FILENAME_BACKUP, IP2C_FILENAME )) then
+			-- Create empty file if backup is not available or copy fails
+			outputDebugString( "IpToCountry file not found, creating empty file", 2 )
+			fileSaveContent( IP2C_FILENAME, "" )
+		else
+			outputDebugString( "IpToCountry file not found, successfully copied from backup" )
+		end
+	end
 
 	-- Maybe update file using the 'internet'
 	checkForIp2cFileUpdate( cor )
