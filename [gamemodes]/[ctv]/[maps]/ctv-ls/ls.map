@@ -1,4 +1,4 @@
-<map mod="deathmatch" author="BrophY" version="1.0">
+<map author="BrophY" version="1.0">
 
 	<base team="team1" teamName="Grove" teamColor="0,255,30" posX="2493" posY="-1669" posZ="13.34" rot="0" markerX="2491.511" markerY="-1668.122" markerZ="13.3973" markercolor="0,255,30" blip="62" skins="105,107" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
 

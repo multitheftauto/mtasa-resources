@@ -26,6 +26,7 @@ function aClientAdminMenu ()
 		aAdminMenuClose ( false )
 	else
 		aAdminMenu ()
+		guiFocus (aAdminForm)
 	end
 end
 

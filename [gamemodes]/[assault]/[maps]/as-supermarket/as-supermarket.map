@@ -1,4 +1,4 @@
-<map mod="deathmatch" version="1.0">
+<map version="1.0">
    <assaultSettings timelimit="600" finishType="all" time="12:00" weather="0" author="Ratt" description="Supermarket" defenderText="Prevent the shoppers from reaching their goods" attackMessage="Supermarket Sweep - Find the goods!" defendMessage="Supermarket Sweep - Protect the goods!" />
    <camera type="finish" posX="486.67401123047" posY="-2445.6352539063" posZ="15.895426750183" targetX="468.22882080078" targetY="-2408.9799804688" targetZ="12.784233093262"/>
    <camera type="spawn" posX="486.67401123047" posY="-2445.6352539063" posZ="15.895426750183" targetX="468.22882080078" targetY="-2408.9799804688" targetZ="12.784233093262"/>
