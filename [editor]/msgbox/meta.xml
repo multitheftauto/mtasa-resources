@@ -1,4 +1,5 @@
 <meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0.0" />
 	<script src="script.lua" type="client"/>
 	<file src="images\error.png" />
 	<file src="images\info.png" />

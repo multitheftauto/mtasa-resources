@@ -1,4 +1,4 @@
-<map mod="deathmatch" auto_balance="on" friendly_fire="on" respawn_time="5000">
+<map auto_balance="on" friendly_fire="on" respawn_time="5000">
    <settings respawnTime="5000" spawnScreen="off" blips="team"/>
    <camera posX="595.154296875" posY="-2580.802734375" posZ="118.21472167969" lookX="594.27673339844" lookY="-2579.3435058594" lookZ="118.21472167969"/>
    <object name="object" posX="587.439453" posY="-2520.452148" posZ="120.982231" rotX="0" rotY="0" rotZ="-4.2971834634812" model="11088"/>
