@@ -26,7 +26,6 @@ function getServerMaps (loadList)
 	end
 
 	if loadList then
-		-- local deletedMaps = {}
 		local gamemodes
 		gamemodes = call(mapmanager, "getGamemodes")
 		for id,gamemode in ipairs (gamemodes) do
@@ -45,17 +44,9 @@ function getServerMaps (loadList)
 		local countGmodes = #tableOut
 		local maps = call(mapmanager, "getMapsCompatibleWithGamemode")
 		for id,map in ipairs (maps) do
-			-- if fileOpen(":"..getResourceName(map).."/deleted") then
-				-- table.insert(deletedMaps ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
-			-- else
-				table.insert(tableOut[countGmodes]["maps"] ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
-			-- end
+			table.insert(tableOut[countGmodes]["maps"] ,{name = getResourceInfo(map, "name") or getResourceName(map), resname = getResourceName(map)})
 		end
-		-- table.sort(deletedMaps, sortCompareFunction)
 		table.sort(tableOut[countGmodes]["maps"], sortCompareFunction)
-		-- table.insert(tableOut, {name = "deleted maps", resname = "deleted maps", maps = {}})
-		-- local countGmodes = countGmodes + 1
-		-- tableOut[countGmodes]["maps"] = deletedMaps
 	end
 	local map = call(mapmanager, "getRunningGamemodeMap")
 	local gamemode = call(mapmanager, "getRunningGamemode")
