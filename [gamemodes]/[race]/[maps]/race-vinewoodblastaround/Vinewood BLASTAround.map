@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-16"?>
-<map mod="deathmatch">
+<map>
   <spawnpoint posX="1636.370972" posY="-1076.938477" posZ="23.590368" rotation="175" vehicle="565" id="spawnpoint0" />
   <spawnpoint posX="1638.945313" posY="-1078.135742" posZ="23.590368" rotation="175" vehicle="565" id="spawnpoint1" />
   <spawnpoint posX="1641.546875" posY="-1079.074951" posZ="23.598162" rotation="175" vehicle="565" id="spawnpoint2" />

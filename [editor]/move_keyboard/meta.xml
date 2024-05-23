@@ -1,4 +1,5 @@
 <meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0.0" />
 	<script src="controlinterface.lua" type="client" />
 	<script src="move_keyboard.lua" type="client" validate="false"/>
 

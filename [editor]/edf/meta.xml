@@ -1,5 +1,5 @@
 <meta>
-	<info author="jbeta" description="Element Definition Format" edf:definition="edf.edf" />
+	<info author="jbeta" description="Element Definition Format" edf:definition="edf.edf" version="1.0.0" />
 
 	<min_mta_version client="1.5.7-9.19626" server="1.3.5" />
 

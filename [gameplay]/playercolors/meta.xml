@@ -1,4 +1,5 @@
 <meta>
+	<info name="playercolors" author="MTA contributors (github.com/multitheftauto/mtasa-resources)" type="script" version="1.0.0" />  
 	<script src="playercolors.lua" type="server" />
 	<settings>
 		<setting name="color_range" value="[ [ 50, 255 ] ]" />
