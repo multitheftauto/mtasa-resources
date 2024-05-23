@@ -33,7 +33,7 @@ function notifyPlayerLoggedIn(player)
 end
 
 function aHandleIP2CUpdate()
-    local playersToUpdate = false
+    local playersToUpdate = nil
     local playersTable = getElementsByType("player") -- cache result, save function call
 
     for playerID = 1, #playersTable do
@@ -135,7 +135,7 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 			local stat = xmlFindChild ( node2, "stat", stats )
 			local id = tonumber ( xmlNodeGetAttribute ( stat, "id" ) )
 			local name = xmlNodeGetAttribute ( stat, "name" )
-			aStats[id] = name
+			if (id) then aStats[id] = name end
 			stats = stats + 1
 		end
 		xmlUnloadFile ( node2 )
@@ -147,7 +147,7 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 		local weather = xmlFindChild ( node3, "weather", weathers )
 			local id = tonumber ( xmlNodeGetAttribute ( weather, "id" ) )
 			local name = xmlNodeGetAttribute ( weather, "name" )
-			aWeathers[id] = name
+			if (id) then aWeathers[id] = name end
 			weathers = weathers + 1
 		end
 		xmlUnloadFile ( node3 )
@@ -226,15 +226,11 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 				aLogMessages[type] = {}
 				local groups = 0
 				while ( xmlFindChild ( subnode, "group", groups ) ) do
+					aLogMessages[type][action] = {}
 					local group = xmlFindChild ( subnode, "group", groups )
 					local action = xmlNodeGetAttribute ( group, "action" )
-					local r = tonumber ( xmlNodeGetAttribute ( group, "r" ) )
-					local g = tonumber ( xmlNodeGetAttribute ( group, "g" ) )
-					local b = tonumber ( xmlNodeGetAttribute ( group, "b" ) )
-					aLogMessages[type][action] = {}
-					aLogMessages[type][action]["r"] = r or 0
-					aLogMessages[type][action]["g"] = g or 255
-					aLogMessages[type][action]["b"] = b or 0
+					local r, g, b = tonumber ( xmlNodeGetAttribute ( group, "r" ) ), tonumber ( xmlNodeGetAttribute ( group, "g" ) ), tonumber ( xmlNodeGetAttribute ( group, "b" ) )
+					aLogMessages[type][action]["r"], aLogMessages[type][action]["g"], aLogMessages[type][action]["b"] = r or 0, g or 255, b or 255
 					if ( xmlFindChild ( group, "all", 0 ) ) then aLogMessages[type][action]["all"] = xmlNodeGetValue ( xmlFindChild ( group, "all", 0 ) ) end
 					if ( xmlFindChild ( group, "admin", 0 ) ) then aLogMessages[type][action]["admin"] = xmlNodeGetValue ( xmlFindChild ( group, "admin", 0 ) ) end
 					if ( xmlFindChild ( group, "player", 0 ) ) then aLogMessages[type][action]["player"] = xmlNodeGetValue ( xmlFindChild ( group, "player", 0 ) ) end
@@ -386,17 +382,17 @@ function aAddUnmuteTimer( player, length )
 	aRemoveUnmuteTimer( player )
 	local serial = getPlayerSerial( player )
 	aUnmuteTimerList[serial] = setTimer(
-								function()
-									aUnmuteTimerList[serial] = nil
-									for _,plr in ipairs(getElementsByType('player')) do
-										if getPlayerSerial(plr) == serial then
-											if isPlayerMuted(plr) then
-												triggerEvent ( "aPlayer", getElementByIndex("console", 0), plr, "mute" )
-											end
-										end
-									end
-								end,
-								length*1000, 1 )
+		function()
+			aUnmuteTimerList[serial] = nil
+			for _,plr in ipairs(getElementsByType('player')) do
+				if getPlayerSerial(plr) == serial then
+					if isPlayerMuted(plr) then
+						triggerEvent ( "aPlayer", getElementByIndex("console", 0), plr, "mute" )
+					end
+				end
+			end
+		end,
+	length*1000, 1 )
 end
 
 function aRemoveUnmuteTimer( player )
@@ -455,7 +451,6 @@ end
 
 function aPlayerInitialize ( player )
 	bindKey ( player, "p", "down", "admin" )
-	--callRemote ( "http://community.mtasa.com/mta/verify.php", aPlayerSerialCheck, player, getPlayerSerial ( player ) )
 	aPlayers[player] = {}
 	aPlayers[player]["money"] = getPlayerMoney ( player )
 	updatePlayerCountry ( player )
@@ -722,6 +717,17 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 			end
 		end
 		triggerClientEvent ( source, "aAdminSettings", root, cmd, resName, tableOut )
+	elseif (action == "resourcelist") then
+		local resName = arg[1]
+		local count = true
+		_, count = aGetResourceSettings(resName, count)
+		if count then
+			local hasResourceSetting
+			if count ~= 0 then
+				hasResourceSetting = true
+			end
+			triggerClientEvent ( source, "setVisibilityOfSettingsButton", resourceRoot, hasResourceSetting)
+		end
 	elseif ( action == "sync" ) then
 		local type = arg[1]
 		local tableOut = {}
@@ -1025,7 +1031,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 				if ( not setElementHealth ( player, health ) ) then
 					action = nil
 				end
-				mdata = health
+				mdata = tostring( health )
 			else
 				action = nil
 			end
@@ -1036,14 +1042,14 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 				if ( not setPedArmor ( player, armour ) ) then
 					action = nil
 				end
-				mdata = armour
+				mdata = tostring( armour )
 			else
 				action = nil
 			end
 		elseif ( action == "setskin" ) then
 			data = tonumber ( data )
 			if ( setElementModel( player, data) ) then
-				mdata = data
+				mdata = tostring( data )
 			else
 				action = nil
 				outputChatBox( "Invalid skin ID", source, 255, 0, 0 )
@@ -1110,7 +1116,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 				if ( not setElementDimension ( player, dimension ) ) then
 					action = nil
 				end
-				mdata = dimension
+				mdata = tostring( dimension )
 			else
 				action = nil
 			end
@@ -1183,7 +1189,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 					end
 					local x, y, z = getElementVelocity ( player )
 					setElementVelocity ( player, x , y, z + 0.2 )
-					mdata = slap
+					mdata = tostring( slap )
 				else
 					action = nil
 				end
@@ -1638,7 +1644,7 @@ addEventHandler('onElementDataChange', root,
 
 -- returns true if there is trouble
 function checkClient(checkAccess,player,...)
-	if client and client ~= player and g_Prefs.securitylevel >= 2 then
+	if client and client ~= player then
 		local desc = table.concat({...}," ")
 		local ipAddress = getPlayerIP(client)
 		outputDebugString( "Admin security - Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 1 )

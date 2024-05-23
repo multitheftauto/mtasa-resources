@@ -1,5 +1,5 @@
 <meta>
-	<info author="erorr404,jbeta,Talidan" description="Map editor's main component" edf:definition="editor_main.edf" />
+	<info author="erorr404,jbeta,Talidan" description="Map editor's main component" edf:definition="editor_main.edf" version="1.0.0" />
 
 	<min_mta_version server="1.5.8-9.20957" />
 

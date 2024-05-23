@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-16"?>
 <meta>
   <info type="map" gamemodes="race" name="Sewers" author="Ransom" description="Race through Los Santos drainage system" version="0" />
   <map src="Sewers.map" />

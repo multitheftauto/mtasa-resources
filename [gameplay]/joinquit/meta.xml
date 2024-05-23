@@ -1,5 +1,5 @@
 <meta>
-	<info name="joinquit" author="Noki" description="Messages in the chat when players join or quit" type="script" />  
+	<info name="joinquit" author="Noki" description="Messages in the chat when players join or quit" type="script" version="1.0.0" />  
 	<script src="joinquit.lua" type="server" />
 	<settings>
 		<setting name="*showColorCodes"
