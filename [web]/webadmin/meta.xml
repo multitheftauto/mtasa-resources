@@ -1,6 +1,6 @@
 <meta>
-<include resource="ajax"/>
-	<info author="eAi" showInResourceBrowser="true" name="Admin" description="Various useful pages of administration tools" pages="acls.htm|ACLs,groups.htm|Groups,players.htm|Players" noDefaultPage="true" />
+	<include resource="ajax"/>
+	<info author="eAi" showInResourceBrowser="true" name="Admin" description="Various useful pages of administration tools" pages="acls.htm|ACLs,groups.htm|Groups,players.htm|Players" noDefaultPage="true" version="1.0.0" />
 	<script src="admin.lua" type="server" />
 	<html src="acls.htm" />
 	<html src="groups.htm" />

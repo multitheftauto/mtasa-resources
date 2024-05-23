@@ -4,7 +4,7 @@
 	<html src="manager.htm" default="true"/>
     <html src="css.css" raw="true" />
     <html src="script.js" raw="true" />
-	<info author="eAi" showInResourceBrowser="true" name="Resource manager" description="Start, stop and restart resources running on the server" />
+	<info author="eAi" showInResourceBrowser="true" name="Resource manager" description="Start, stop and restart resources running on the server" version="1.0.0" />
     <export function="getResourceList" http="true" />
     <export function="getResourcesByState" http="true" />
     <export function="getResourceInfo" http="true" />
