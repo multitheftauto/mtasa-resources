@@ -54,33 +54,24 @@ function saveMap()
 	mapName = guiGetText ( saveDialog.mapName )
 	if mapName == "" then return end
 	if mapsInfo[string.lower(mapName)] then
-		local save,cancel = guiShowMessageBox ( "Are you sure you want to overwrite map \""..mapName.."\"?\n" ..
-		                                        "This will cause original map data to be lost.",
-						        "info", "Are you sure?", true, "Save", "Cancel" )
-		addEventHandler ( "onClientGUIClick", save,   saveButton,   false )
-		addEventHandler ( "onClientGUIClick", cancel, restoreSaveDialog, false )
+		exports.dialogs:messageBox("Are you sure?", "Are you sure you want to overwrite map \""..mapName.."\"? This will cause original map data to be lost.", "saveCallback", "QUESTION", "YESNO")
 		guiSetProperty(saveDialog.window, "Disabled", "True")
 	elseif resourcesInfo[string.lower(mapName)] then
-		guiShowMessageBox ( "Unable to save to \""..mapName.."\".  \n" ..
-		                    "You cannot overwrite non-map resources.",
-				    "error", "Cannot save", true )
+		exports.dialogs:messageBox("Cannot save", "Unable to save to \""..mapName.."\" You cannot overwrite non-map resources.", false, "ERROR", "OK")
 	else
-		local save,cancel = guiShowMessageBox ( "Are you sure you want to save to \""..mapName.."\"?",
-		                                        "info", "Are you sure?", true, "Save", "Cancel" )
-		addEventHandler ( "onClientGUIClick", save,   saveButton,   false )
-		addEventHandler ( "onClientGUIClick", cancel, restoreSaveDialog, false )
+		exports.dialogs:messageBox("Are you sure?", "Are you sure you want to save to \""..mapName.."\"?", "saveCallback", "QUESTION", "YESNO")
 		guiSetProperty(saveDialog.window, "Disabled", "True")
 	end
 end
 
-function saveButton()
-	local resourceName = guiGetText ( saveDialog.mapName )
-	local directory = guiGetText ( saveDialog.directory )
-	editor_main.saveResource ( resourceName, directory )
-end
-
-function restoreSaveDialog()
-  guiSetProperty(saveDialog.window, "Disabled", "False")
+function saveCallback(callbackResult)
+	if callbackResult == "YES" then
+		local resourceName = guiGetText ( saveDialog.mapName )
+		local directory = guiGetText ( saveDialog.directory )
+		editor_main.saveResource ( resourceName, directory )
+	else
+		guiSetProperty(saveDialog.window, "Disabled", "False")
+	end
 end
 
 addEvent ( "saveAsShowDialog", true )
