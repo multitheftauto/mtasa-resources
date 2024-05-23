@@ -82,7 +82,6 @@ function colorPicker.create(id, start, title)
 end
 
 function colorPicker:render()
-  -- if not self.gui.focus then return end
   local x,y = guiGetPosition(self.gui.window, false)
   dxDrawRectangle(x+16, y+32, 256, 256, self.color.huecurrent, self.gui.focus)
   dxDrawImage(x+16, y+32, 256, 256, "client/colorpicker/sv.png", 0, 0, 0, self.color.white, self.gui.focus)

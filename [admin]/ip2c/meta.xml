@@ -7,6 +7,10 @@
 
     <script src="shared.lua" type="shared"/>
     <export function="getCountryName" type="shared"/>
+
+    <aclrequest>
+        <right name="function.fetchRemote" access="true"></right>
+    </aclrequest>
     
     <file src="client/images/flags/ad.png" />
     <file src="client/images/flags/ae.png" />

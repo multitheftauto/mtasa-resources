@@ -1,4 +1,4 @@
-<map mod="deathmatch" auto_balance="on" friendly_fire="on">
+<map auto_balance="on" friendly_fire="on">
    <meta>
       <author>Dragon</author>
       <description>Capture the Flag</description>

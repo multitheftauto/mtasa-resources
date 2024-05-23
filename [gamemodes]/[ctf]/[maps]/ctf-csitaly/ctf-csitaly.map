@@ -1,5 +1,5 @@
 <!-- CS Italy map by Ratt -->
-<map mod="deathmatch" auto_balance="on" friendly_fire="on">
+<map auto_balance="on" friendly_fire="on">
    <settings respawnTime="5000" spawnScreen="off" blips="team"/>
    <camera posX="703.15216064453" posY="-2389.2648925781" posZ="113.69602966309" lookX="699.22888183594" lookY="-2392.9235839844" lookZ="112.09602966309"/>
    <object name="object (7)" posX="672.577881" posY="-2381.349731" posZ="108.353989" rotX="0" rotY="0" rotZ="0" model="17859"/>
