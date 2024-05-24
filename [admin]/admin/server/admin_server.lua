@@ -1457,6 +1457,7 @@ addEventHandler ( "aServer", root, function ( action, data, data2 )
 end )
 
 addEventHandler ( "onPlayerChat", root, function ( message )
+	if not isElement(source) then return end
 	local size = #chatHistory[source]
 	if ( size == g_Prefs.maxchatmsgs ) then
 		table.remove( chatHistory[source], 1 )
@@ -1547,6 +1548,7 @@ end
 
 addEvent ( "aModdetails", true )
 addEventHandler ( "aModdetails", resourceRoot, function ( action, player )
+	if source ~= resourceRoot then return end
 	if checkClient( false, client, 'aModdetails', action ) then return end
 	if ( hasObjectPermissionTo ( client, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
@@ -1635,6 +1637,7 @@ addCommandHandler(get("adminChatCommandName"),
 
 addEventHandler('onElementDataChange', root,
 	function(dataName, oldValue )
+		if dataName == "superman:flying" or dataName == "hedit:saved" then return end
 		if getElementType(source)=='player' and checkClient( false, source, 'onElementDataChange', dataName ) then
 			setElementData( source, dataName, oldValue )
 			return
