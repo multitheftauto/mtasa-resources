@@ -342,11 +342,6 @@ function iif ( cond, arg1, arg2 )
 	return arg2
 end
 
-local serialExp = "^" .. string.rep ( "[A-F0-9]", 32 ) .. "$"
-function isValidSerial ( serial )
-	return serial:match ( serialExp )
-end
-
 function getWeatherNameFromID ( weather )
 	return iif ( aWeathers[weather], aWeathers[weather], "Unknown" )
 end
@@ -449,12 +444,24 @@ function updatePlayerCountry ( player )
 	aPlayers[player]["country"] = isIP2CResourceRunning and exports.ip2c:getPlayerCountry ( player ) or false
 end
 
-function aPlayerInitialize ( player )
-	bindKey ( player, "p", "down", "admin" )
-	aPlayers[player] = {}
-	aPlayers[player]["money"] = getPlayerMoney ( player )
-	updatePlayerCountry ( player )
-	chatHistory[player] = {}
+local serialExp = "^" .. string.rep("[A-F0-9]", 32) .. "$"
+function isValidSerial(serial)
+    return serial:match(serialExp)
+end
+
+function aPlayerInitialize(player)
+    local serial = getPlayerSerial(player)
+
+    if (not isValidSerial(serial)) then
+        outputChatBox("LOG: " .. getPlayerName(player) .. " - Possibly tampered serial. Denied entry.")
+        kickPlayer(player, "5B Client verification mismatch.")
+    end
+
+    bindKey(player, "p", "down", "admin")
+    aPlayers[player] = {}
+    aPlayers[player]["money"] = getPlayerMoney(player)
+    updatePlayerCountry(player)
+    chatHistory[player] = {}
 end
 
 addEventHandler ( "onPlayerQuit", root, function ()
