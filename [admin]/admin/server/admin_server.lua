@@ -226,10 +226,10 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 				aLogMessages[type] = {}
 				local groups = 0
 				while ( xmlFindChild ( subnode, "group", groups ) ) do
-					aLogMessages[type][action] = {}
 					local group = xmlFindChild ( subnode, "group", groups )
 					local action = xmlNodeGetAttribute ( group, "action" )
 					local r, g, b = tonumber ( xmlNodeGetAttribute ( group, "r" ) ), tonumber ( xmlNodeGetAttribute ( group, "g" ) ), tonumber ( xmlNodeGetAttribute ( group, "b" ) )
+					aLogMessages[type][action] = {}
 					aLogMessages[type][action]["r"], aLogMessages[type][action]["g"], aLogMessages[type][action]["b"] = r or 0, g or 255, b or 255
 					if ( xmlFindChild ( group, "all", 0 ) ) then aLogMessages[type][action]["all"] = xmlNodeGetValue ( xmlFindChild ( group, "all", 0 ) ) end
 					if ( xmlFindChild ( group, "admin", 0 ) ) then aLogMessages[type][action]["admin"] = xmlNodeGetValue ( xmlFindChild ( group, "admin", 0 ) ) end
@@ -446,22 +446,22 @@ end
 
 local serialExp = "^" .. string.rep("[A-F0-9]", 32) .. "$"
 function isValidSerial(serial)
-    return serial:match(serialExp)
+    return serial:match(serialExp)
 end
 
 function aPlayerInitialize(player)
-    local serial = getPlayerSerial(player)
+    local serial = getPlayerSerial(player)
 
-    if (not isValidSerial(serial)) then
-        outputChatBox("LOG: " .. getPlayerName(player) .. " - Possibly tampered serial. Denied entry.")
-        kickPlayer(player, "5B Client verification mismatch.")
-    end
+    if (not isValidSerial(serial)) then
+        outputChatBox("LOG: " .. getPlayerName(player) .. " - Possibly tampered serial. Denied entry.")
+        kickPlayer(player, "5B Client verification mismatch.")
+    end
 
-    bindKey(player, "p", "down", "admin")
-    aPlayers[player] = {}
-    aPlayers[player]["money"] = getPlayerMoney(player)
-    updatePlayerCountry(player)
-    chatHistory[player] = {}
+    bindKey(player, "p", "down", "admin")
+    aPlayers[player] = {}
+    aPlayers[player]["money"] = getPlayerMoney(player)
+    updatePlayerCountry(player)
+    chatHistory[player] = {}
 end
 
 addEventHandler ( "onPlayerQuit", root, function ()
