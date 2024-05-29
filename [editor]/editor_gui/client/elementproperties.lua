@@ -698,7 +698,12 @@ local function applyPropertiesChanges()
 		end
 	end
 
-	triggerServerEvent("syncProperties", localPlayer, oldValues, newValues, selectedElement)
+	-- fix for local elements
+	if not isElementLocal(selectedElement) then
+		triggerServerEvent("syncProperties", localPlayer, oldValues, newValues, selectedElement)
+	else
+		outputDebugString("Cannot sync properties for local element.")
+	end
 
 	--allow again editing values
 	guiSetProperty(btnOK,         "Disabled", "False")

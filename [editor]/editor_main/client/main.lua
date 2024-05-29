@@ -809,10 +809,13 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 		end
 	end
 
-	triggerServerEvent("doLockElement", element)
-
-	-- trigger server selection events
-	triggerServerEvent("onElementSelect", element)
+	-- fix for local elements
+	if not isElementLocal(element) then
+		triggerServerEvent("doLockElement", element)
+	
+		-- trigger server selection events
+		triggerServerEvent("onElementSelect", element)
+	end
 
 	--Emulate a fake mouse  move to get the element to position properly
 	-- if not openProperties then
@@ -873,11 +876,17 @@ function dropElement(releaseLock,clonedrop)
 	end
 
 	if releaseLock then
-		triggerServerEvent("doUnlockElement", g_selectedElement)
+		-- fix for local elements
+		if not isElementLocal(g_selectedElement) then
+			triggerServerEvent("doUnlockElement", g_selectedElement)
+		end
 	end
 
-	-- trigger server selection events
-	triggerServerEvent("onElementDrop", g_selectedElement)
+	-- fix for local elements
+	if not isElementLocal(g_selectedElement) then
+		-- trigger server selection events
+		triggerServerEvent("onElementDrop", g_selectedElement)
+	end
 	
 	-- Clear rotation as it can be rotated by other players
 	clearElementQuat(g_selectedElement)
@@ -899,6 +908,10 @@ end
 function setMode(newMode)
 	if g_suspended then
 		return
+	end
+	
+	if not isElement(g_selectedElement) then
+		g_selectedElement = nil
 	end
 
 	if newMode == CAMERA_MODE then
@@ -988,6 +1001,13 @@ function destroySelectedElement(key)
 	if g_selectedElement then
 		local element = g_selectedElement
 		dropElement(false)
+		
+		-- fix for local elements
+		if isElementLocal(element) then
+			outputDebugString("Cannot destroy local element.")
+			return false
+		end
+		
 		return triggerServerEvent("doDestroyElement", element)
 	end
 end
