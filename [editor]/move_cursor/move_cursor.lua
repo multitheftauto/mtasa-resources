@@ -139,12 +139,15 @@ local function processCursorMove(absoluteX, absoluteY)
 end
 
 local function onClientCursorMove_cursor(_, _, absoluteX, absoluteY )
-	if (selectedElement) then
+	if (selectedElement and isElement(selectedElement)) then
 		if ignoreFirst then
 			ignoreFirst = false
 			return
 		end
 		processCursorMove ( absoluteX, absoluteY )
+	else
+		selectedElement = nil
+		return
 	end
 end
 
