@@ -54,6 +54,8 @@ end
 local function processCursorMove(absoluteX, absoluteY)
 	if not absoluteX or not absoluteY then
 		local relX, relY = getCursorPosition()
+		-- brief cursor fix
+		if not (relX and relY) then return end
 		absoluteX, absoluteY = relX*g_screenX, relY*g_screenY
 	end
 	-- process line, checking for water and surfaces
