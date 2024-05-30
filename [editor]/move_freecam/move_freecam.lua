@@ -111,7 +111,7 @@ local function zoomWithMouseWheel(key, keyState)
 end
 
 local function onClientRender_freecam()
-	if (selectedElement) then
+	if (selectedElement and isElement(selectedElement)) then
 		setElementVelocity(selectedElement,0,0,0) --!w
 
 	    camX, camY, camZ, targetX, targetY, targetZ = getCameraMatrix()
@@ -175,6 +175,8 @@ local function onClientRender_freecam()
 		end
 
 		rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
+	else
+		selectedElement = nil
 	end
 end
 
@@ -236,6 +238,7 @@ function detachElement()
 		
 		-- fix for local elements
 		if not isElementLocal(selectedElement) then
+		
 			-- sync position/rotation
 			local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
 			
@@ -243,6 +246,7 @@ function detachElement()
 			if hasRotation[getElementType(selectedElement)] then
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 			end
+			
 		else
 			-- outputDebugString("Denied syncing for local element.")
 		end
