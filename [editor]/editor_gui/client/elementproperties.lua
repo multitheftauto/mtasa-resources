@@ -799,9 +799,13 @@ function openPropertiesBox( element, resourceName, shortcut )
 		setPropertiesChanged(true)
 	else
 		selectedElement = element
-		guiSetText( wndProperties, "PROPERTIES: " .. getElementID(selectedElement) )
+		
+		local elementID = getElementID(selectedElement)
+		elementID = (type(elementID) == "string" and elementID) or "false" -- rollback
+		
+		guiSetText( wndProperties, "PROPERTIES: " .. elementID)
 
-		guiSetText( edtID, getElementID ( selectedElement ) )
+		guiSetText( edtID, elementID )
 		guiSetText( lblType, getElementType( selectedElement ) )
 
 		guiSetVisible( edtID, true )
