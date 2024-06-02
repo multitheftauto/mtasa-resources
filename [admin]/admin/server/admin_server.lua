@@ -675,9 +675,9 @@ local aAdminRights = {
 }
 addEvent ( "aAdmin", true )
 addEventHandler ( "aAdmin", root, function ( action, ... )
-	if not action then 
+	if not action then
 		return
-	end 
+	end
 	if checkClient( aAdminRights[action] or true, source, 'aAdmin', action ) then
 		return
 	end

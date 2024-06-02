@@ -58,9 +58,9 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 			end
 		end
 	elseif ( type == "resources" ) then
-		if not hasObjectPermissionTo( source, "general.tab_resources" ) then 
+		if not hasObjectPermissionTo( source, "general.tab_resources" ) then
 			return
-		end 	
+		end
 		local resourceTable = getResources()
 		local tick = getTickCount()
 		local antiCorMessageSpam = 0
