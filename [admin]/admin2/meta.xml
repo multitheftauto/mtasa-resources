@@ -1,6 +1,6 @@
 <meta>
 	<info name="Admin" author="lil_Toady" type="misc" version="2.0" description="Administration panel" showInResourceBrowser="true" pages="http/screenshots.htm|Screenshots" noDefaultPage="true"/>
-	<min_mta_version server="1.5.5-9.13846" client="1.5.5-9.13846"/>
+	<min_mta_version server="1.6.0-9.22195" />
 	<!--
 	WARNING: We give no support for edited
 			 versions of the admin system.
