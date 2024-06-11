@@ -246,9 +246,6 @@ function detachElement()
 			if hasRotation[getElementType(selectedElement)] then
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 			end
-			
-		else
-			-- outputDebugString("Denied syncing for local element.")
 		end
 		selectedElement = nil
 

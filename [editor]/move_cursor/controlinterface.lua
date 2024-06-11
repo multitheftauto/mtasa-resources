@@ -25,7 +25,7 @@ function sticknumbertoMult(number,mult,mode)
 end
 
 _setElementPosition = setElementPosition
-function setElementPosition(element,x,y,z,warp)	
+function setElementPosition(element,x,y,z,warp)
 	if not (element and isElement(element)) then return false end
 	local exactsnap = exports["editor_gui"]:sx_getOptionData("enablePrecisionSnap")
 	local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("precisionLevel"))
