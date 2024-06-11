@@ -164,24 +164,6 @@ function clickEvent()
 			return outputChatBox("SPEAKER: Invalid URL, please check your input!", 255, 0, 0)
 		end
 
-		if getElementData(localPlayer, "knifeArena") then
-			return outputChatBox("You cannot place a speaker in the Knife Arena", 255, 0, 0)
-		end
-		if (getElementData(localPlayer, "pvparena") or getElementData(localPlayer, "pvp2")) then
-			return outputChatBox("You cannot place a speaker in the PvP Arena!", 255, 0, 0)
-		end
-		if getElementData(localPlayer, "shooter") then
-			return outputChatBox("You cannot place a speaker in the Shooter Arena!", 255, 0, 0)
-		end
-
-		if getElementData(localPlayer, "cinema") then
-			return outputChatBox("You cannot place a speaker in the Cinema!", 255, 0, 0)
-		end
-
-		if getElementData(localPlayer, "war") then
-			return outputChatBox("You cannot place a speaker in war!", 255, 0, 0)
-		end
-
 		triggerServerEvent("speaker.startStream", localPlayer, url, vol)
 
 	elseif (source == close) then
@@ -295,7 +277,7 @@ function drawData()
 	for key, radio in pairs(tbl) do
 		if (radio[2] and isElement(radio[2] and radio[1])) then
 			local eX, eY, eZ = getElementPosition(radio[2])
-			local eZ = eZ + 1
+			eZ = (eZ + 1)
 			local sx, sy = getScreenFromWorldPosition(eX, eY, eZ)
 			local cameraX, cameraY, cameraZ = getCameraMatrix()
 
