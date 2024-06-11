@@ -663,9 +663,22 @@ addEventHandler ( "aTeam", root, function ( action, name, r, g, b )
 	return false
 end )
 
+local aAdminRights = {
+	["settings"] = "general.tab_resources",
+	["resourcelist"] = "general.tab_resources",
+
+	["sync"] = "command.aclmanager",
+	["aclcreate"] = "command.aclcreate",
+	["acldestroy"] = "command.acldetroy",
+	["acladd"] = "command.acladd",
+	["aclremove"] = "command.aclremove",
+}
 addEvent ( "aAdmin", true )
 addEventHandler ( "aAdmin", root, function ( action, ... )
-	if checkClient( true, source, 'aAdmin', action ) then
+	if not action then
+		return
+	end
+	if checkClient( aAdminRights[action] or true, source, 'aAdmin', action ) then
 		return
 	end
 	local mdata, mdata2
