@@ -698,7 +698,12 @@ local function applyPropertiesChanges()
 		end
 	end
 
-	triggerServerEvent("syncProperties", localPlayer, oldValues, newValues, selectedElement)
+	-- fix for local elements
+	if not isElementLocal(selectedElement) then
+		triggerServerEvent("syncProperties", localPlayer, oldValues, newValues, selectedElement)
+	else
+		outputDebugString("Cannot sync properties for local element.")
+	end
 
 	--allow again editing values
 	guiSetProperty(btnOK,         "Disabled", "False")
@@ -794,9 +799,13 @@ function openPropertiesBox( element, resourceName, shortcut )
 		setPropertiesChanged(true)
 	else
 		selectedElement = element
-		guiSetText( wndProperties, "PROPERTIES: " .. getElementID(selectedElement) )
+		
+		local elementID = getElementID(selectedElement)
+		elementID = (type(elementID) == "string" and elementID) or "false" -- rollback
+		
+		guiSetText( wndProperties, "PROPERTIES: " .. elementID)
 
-		guiSetText( edtID, getElementID ( selectedElement ) )
+		guiSetText( edtID, elementID )
 		guiSetText( lblType, getElementType( selectedElement ) )
 
 		guiSetVisible( edtID, true )

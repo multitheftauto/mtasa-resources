@@ -21,7 +21,7 @@
 		/>
 		<setting
 			name="*blip_color"
-			value="[[0, 255, 0]]"
+			value="[[255, 255, 255]]"
 			friendlyname="Default blip color"
 			group="Color settings"
 			accept=""

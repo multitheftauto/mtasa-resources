@@ -27,6 +27,7 @@ end
 
 _setElementPosition = setElementPosition
 function setElementPosition(element,x,y,z,warp)
+	if not (element and isElement(element)) then return false end
 	local exactsnap = exports["editor_gui"]:sx_getOptionData("enablePrecisionSnap")
 	local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("precisionLevel"))
 	--outputDebugString("snaplevel:"..tostring(snaplevel).."snapmode:"..tostring(exactsnap))

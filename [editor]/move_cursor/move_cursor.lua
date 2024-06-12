@@ -54,6 +54,8 @@ end
 local function processCursorMove(absoluteX, absoluteY)
 	if not absoluteX or not absoluteY then
 		local relX, relY = getCursorPosition()
+		-- brief cursor fix
+		if not (relX and relY) then return end
 		absoluteX, absoluteY = relX*g_screenX, relY*g_screenY
 	end
 	-- process line, checking for water and surfaces
@@ -137,12 +139,15 @@ local function processCursorMove(absoluteX, absoluteY)
 end
 
 local function onClientCursorMove_cursor(_, _, absoluteX, absoluteY )
-	if (selectedElement) then
+	if (selectedElement and isElement(selectedElement)) then
 		if ignoreFirst then
 			ignoreFirst = false
 			return
 		end
 		processCursorMove ( absoluteX, absoluteY )
+	else
+		selectedElement = nil
+		return
 	end
 end
 
@@ -214,6 +219,13 @@ function attachElement(element)
 	camX, camY, camZ = getCameraMatrix()
 	-- get element info
 	selectedElement = element
+	
+	-- do not attach if it's not really an element
+	if not (selectedElement and isElement(selectedElement)) then
+		selectedElement = nil
+		return false
+	end
+	
 	--EDF implementation
 	if getResourceFromName"edf" and exports.edf:edfGetParent(element) ~= element then
 		if (getElementType(element) == "object") then
@@ -251,13 +263,17 @@ function detachElement()
 
 	-- remove events, unbind keys
 	disable()
-
-	 -- sync position/rotation
-	local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
-	triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
-	if hasRotation[getElementType(selectedElement)] then
-		rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
-		triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+	
+	-- fix for local elements
+	if not isElementLocal(selectedElement) then
+		-- sync position/rotation
+		local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
+		
+		triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
+		if hasRotation[getElementType(selectedElement)] then
+			rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
+			triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+		end
 	end
 	selectedElement = nil
 
