@@ -1,6 +1,6 @@
-local resX, resY = guiGetScreenSize()
-local tbl = {}
-
+local radioSpeakers = {}
+local blackColor = tocolor(0, 0, 0, 255)
+local textColor = tocolor(150, 50, 150, 255)
 local radioTable = {
 	{"[Top 40 Mix] BAYERN Radio - Top40", "http://stream.antenne.de:80/top-40"},
 	{"[Top 40 Mix] 1.FM - Absolute Top 40", "http://185.33.21.111:80/top40_32a"},
@@ -89,12 +89,13 @@ local radioTable = {
 }
 
 function speakersysGUI()
-
 	if (speakersys) then
 		return true
 	end
 
-	speakersys = guiCreateWindow((resX - 325) / 1.1, (resY - 380) / 1.4, 325, 380, "SPEAKER MUSIC (RADIO/MP3)", false)
+	local screenX, screenY = guiGetScreenSize()
+
+	speakersys = guiCreateWindow((screenX - 325) / 1.1, (screenY - 380) / 1.4, 325, 380, "SPEAKER MUSIC (RADIO/MP3)", false)
 	guiSetAlpha(speakersys, 1)
 	guiWindowSetSizable(speakersys, false)
 	urlGrid = guiCreateGridList(10, 54, 304, 139, false, speakersys)
@@ -192,36 +193,36 @@ end
 addEventHandler("onClientGUIClick", resourceRoot, clickEvent)
 
 function setData(value, theType, serial)
-	if (not tbl[serial]) then
+	if (not radioSpeakers[serial]) then
 		return
 	end
 
-	if (not isElement(tbl[serial][1])) then
+	if (not isElement(radioSpeakers[serial][1])) then
 		return
 	end
 
 	if (theType == "vol") then
-		setSoundVolume(tbl[serial][1], value)
+		setSoundVolume(radioSpeakers[serial][1], value)
 	elseif (theType == "dist") then
-		setSoundMaxDistance(tbl[serial][1], 65)
+		setSoundMaxDistance(radioSpeakers[serial][1], 65)
 	elseif (theType == "destroy") then
-		stopSound(tbl[serial][1])
-		destroyElement(tbl[serial][2])
-		tbl[serial] = nil
+		stopSound(radioSpeakers[serial][1])
+		destroyElement(radioSpeakers[serial][2])
+		radioSpeakers[serial] = nil
 	end
 end
 addEvent("speaker.setData", true)
 addEventHandler("speaker.setData", root, setData)
 
 function setPaused(serial)
-	if (not tbl[serial]) then
+	if (not radioSpeakers[serial]) then
 		return
 	end
 
-	if (not isElement(tbl[serial][1])) then
+	if (not isElement(radioSpeakers[serial][1])) then
 		return
 	end
-	setSoundPaused(tbl[serial][1], not isSoundPaused(tbl[serial][1]))
+	setSoundPaused(radioSpeakers[serial][1], not isSoundPaused(radioSpeakers[serial][1]))
 end
 addEvent("speaker.ps", true)
 addEventHandler("speaker.ps", root, setPaused)
@@ -233,9 +234,9 @@ function setBox(str)
 
 	for serial, ent in pairs(str) do
 
-		if (tbl[serial] and isElement(tbl[serial][1])) then
-			destroyElement(tbl[serial][1])
-			destroyElement(tbl[serial][2])
+		if (radioSpeakers[serial] and isElement(radioSpeakers[serial][1])) then
+			destroyElement(radioSpeakers[serial][1])
+			destroyElement(radioSpeakers[serial][2])
 		end
 
 		if (isElement(ent[1])) then
@@ -246,7 +247,7 @@ function setBox(str)
 				setElementAlpha(dumm, 0)
 				setElementCollisionsEnabled(dumm, false)
 				attachElements(dumm, ent[1], -0.32, -0.22, 0.8)
-				tbl[serial] = {radio, dumm}
+				radioSpeakers[serial] = {radio, dumm}
 
 				if (ent[6] and isElement(ent[6])) then
 					attachElements(radio, ent[6])
@@ -265,16 +266,16 @@ addEvent("speaker.setBox", true)
 addEventHandler("speaker.setBox", root, setBox)
 
 function getRadioInfo()
-	for key, radio in pairs(tbl) do
+	for key, radio in pairs(radioSpeakers) do
 		if (radio[1] and isElement(radio[1])) then
-			tbl[key][3] = nil
-			table.insert(tbl[key], getSoundMetaTags(radio[1]).stream_title or getSoundMetaTags(radio[1]).title)
+			radioSpeakers[key][3] = nil
+			table.insert(radioSpeakers[key], getSoundMetaTags(radio[1]).stream_title or getSoundMetaTags(radio[1]).title)
 		end
 	end
 end
 
 function drawData()
-	for key, radio in pairs(tbl) do
+	for key, radio in pairs(radioSpeakers) do
 		if (radio[2] and isElement(radio[2] and radio[1])) then
 			local eX, eY, eZ = getElementPosition(radio[2])
 			eZ = (eZ + 1)
@@ -285,7 +286,7 @@ function drawData()
 				if (not enable and getElementData(radio[1], "ob") ~= getPlayerName(localPlayer)) then
 					stopSound(radio[1])
 					destroyElement(radio[2])
-					tbl[key] = nil
+					radioSpeakers[key] = nil
 					return false
 				end
 
@@ -302,8 +303,8 @@ function drawData()
 
 					local width = dxGetTextWidth(text, 1, "default-bold")
 
-					dxDrawRectangle(sx - width / 2 - 5, sy, width + 8, height, tocolor(0, 0, 0, 255), false)
-					dxDrawText(text, sx - width / 2, sy, sx - width / 2, sy, tocolor(150, 50, 150, 255), 1, "default-bold")
+					dxDrawRectangle(sx - width / 2 - 5, sy, width + 8, height, blackColor, false)
+					dxDrawText(text, sx - width / 2, sy, sx - width / 2, sy, textColor, 1, "default-bold")
 				end
 			end
 		end

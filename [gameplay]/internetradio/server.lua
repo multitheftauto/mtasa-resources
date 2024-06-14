@@ -45,7 +45,7 @@ function startStream(url, vol)
 	end
 
 	outputServerLog("[SPEAKER] "..getPlayerName(client):gsub("#%x%x%x%x%x%x", "").." created speaker with URL: "..url)
-	triggerClientEvent(root, "speaker.setBox", root, sounds[client])
+	triggerClientEvent(root, "speaker.setBox", client, sounds[client])
 end
 addEvent("speaker.startStream", true)
 addEventHandler("speaker.startStream", root, startStream)
@@ -55,12 +55,12 @@ function setting(vol, dist)
 
 	if (sounds[client]) then
 		if (vol) then
-			triggerClientEvent(root, "speaker.setData", root, vol, "vol", serial)
+			triggerClientEvent(root, "speaker.setData", client, vol, "vol", serial)
 			return true
 		end
 
 		if (dist) then
-			triggerClientEvent(root, "speaker.setData", root, dist, "dist", serial)
+			triggerClientEvent(root, "speaker.setData", client, dist, "dist", serial)
 			return true
 		end
 	end
@@ -85,7 +85,7 @@ function delAdmin(player, cmd, ID)
 		if (ID and s2 and sounds[s2]) then
 			local serial = getPlayerSerial(s2)
 			destroyElement(sounds[s2][serial][1])
-			triggerClientEvent(root, "speaker.setData", root, false, "destroy", serial)
+			triggerClientEvent(root, "speaker.setData", player, false, "destroy", serial)
 			outputChatBox("Speaker removed!", player, 0, 255, 0)
 			sounds[s2] = nil
 		else
@@ -99,7 +99,7 @@ function destroySpeaker()
 	local serial = getPlayerSerial(client)
 	if (sounds[client]) then
 		destroyElement(sounds[client][serial][1])
-		triggerClientEvent(root, "speaker.setData", root, false, "destroy", serial)
+		triggerClientEvent(root, "speaker.setData", client, false, "destroy", serial)
 		sounds[client] = nil
 	end
 end
@@ -109,7 +109,7 @@ addEventHandler("speaker.destroy", root, destroySpeaker)
 function pauseSpeaker()
 	if (sounds[client]) then
 		local serial = getPlayerSerial(client)
-		triggerClientEvent(root, "speaker.ps", root, serial)
+		triggerClientEvent(root, "speaker.ps", client, serial)
 	end
 end
 addEvent("speaker.pause", true)
@@ -126,8 +126,8 @@ function getSpeakers()
 		end
 	end
 
-	if (speakers >= 1) then
-		triggerClientEvent(source, "speaker.setBox", source, ltable)
+	if (speakers > 0) then
+		triggerClientEvent(client, "speaker.setBox", client, ltable)
 	end
 end
 addEvent("getSpeakers", true)
@@ -138,7 +138,7 @@ function onPlayerQuit()
 
 	if (sounds[source]) then
 		destroyElement(sounds[source][serial][1])
-		triggerClientEvent(root, "speaker.setData", root, false, "destroy", serial)
+		triggerClientEvent(root, "speaker.setData", source, false, "destroy", serial)
 		sounds[source] = nil
 	end
 end
