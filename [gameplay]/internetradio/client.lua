@@ -154,7 +154,7 @@ function openGUI()
 end
 addEvent("Speaker.openInterface", true)
 addEventHandler("Speaker.openInterface", root, openGUI)
-bindKey("F9", "down", openGUI)
+bindKey("F3", "down", openGUI)
 
 function clickEvent()
 	if (source == setBtn) then
