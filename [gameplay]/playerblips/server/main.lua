@@ -101,6 +101,9 @@ end)
 addEventHandler("onPlayerSpawn", root, function()
 	createPlayerBlip(source)
 end)
+addEventHandler("onPlayerTeamChange", root, function()
+	createPlayerBlip(source)
+end)
 
 addEventHandler("onSettingChange", root,
 	function(settingName, settingValueEx, settingValue)
