@@ -1510,6 +1510,8 @@ function ( action, data )
 		return
 	end
 	if ( action == "new" ) then
+		--dont allow creating reports when reports are disabled
+		if ( get("reportsEnabled") ~= "true" ) then return end
 		local time = getRealTime()
 		local id = #aReports + 1
 		aReports[id] = {}
@@ -1545,7 +1547,7 @@ function ( action, data )
 	end
 	if ( hasObjectPermissionTo ( client or source, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
-			triggerClientEvent ( source, "aMessage", source, "get", aReports )
+			triggerClientEvent ( source, "aMessage", source, "get", aReports, get("reportsEnabled") )
 		elseif ( action == "read" ) then
 			if ( aReports[data] ) then
 				aReports[data].read = true

@@ -55,7 +55,7 @@ function aViewMessagesClose ( destroy )
 	end
 end
 
-function aMessagesSync ( action, data )
+function aMessagesSync ( action, data, isReportDisabled )
 	if ( action == "get" ) then
 		_messages = data
 		guiGridListClear ( aMessagesList )
@@ -67,6 +67,7 @@ function aMessagesSync ( action, data )
 			else guiGridListSetItemText ( aMessagesList, row, 2, "* "..message.subject, false, false ) end
 			guiGridListSetItemText ( aMessagesList, row, 3, message.time, false, false )
 			guiGridListSetItemText ( aMessagesList, row, 4, removeColorCoding(message.author), false, false )
+			guiSetText(aMessagesForm, (isReportDisabled ~= "true" and "View Messages (reports are disabled)" or "View Messages"))
 		end
 	end
 end
