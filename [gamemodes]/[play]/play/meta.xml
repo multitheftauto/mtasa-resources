@@ -1,14 +1,15 @@
 <meta>
-	<info author="BrophY" description="A playtest/freeroam mode" version="2.0" type="gamemode"/>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" description="Launches a basic freeroam mode, together with basic map and extra handling" version="2.0" type="gamemode"/>
 	<include resource="freeroam"/>
+	<include resource="internetradio"/>
 	<script src="play_config.lua" type="server"/>
 	<script src="play_players.lua" type="server"/>
 	<script src="play_vehicles.lua" type="server"/>
 	<script src="play.lua" type="server"/>
 
 	<settings>
-		<setting name="*playerRespawnTime" value="[4000]" friendlyname="Player respawn time" desc="Player respawn time after dying in milliseconds. Anything below 0 is auto-set to 0"/>
-		<setting name="*vehicleRespawnTime" value="[60000]" friendlyname="Vehicle respawn time" group="Spawnpoint vehicles" desc="Vehicle respawn time after it is taken. Anything below 0 is auto-set to 0"/>
+		<setting name="*playerRespawnTime" value="[3000]" friendlyname="Player respawn time" desc="Player respawn time after dying in milliseconds. Anything below 0 is auto-set to 0"/>
+		<setting name="*vehicleRespawnTime" value="[35000]" friendlyname="Vehicle respawn time" group="Spawnpoint vehicles" desc="Vehicle respawn time after it is taken. Anything below 0 is auto-set to 0"/>
 		<setting name="*vehicleExpireTime" value="[600000]" friendlyname="Vehicle expire time" group="Spawnpoint vehicles" desc="Vehicle disappear time after abandoned, timer resets if any player re-enters the vehicle. Anything below 0 is auto-set to 0"/>
 	</settings>
 </meta>

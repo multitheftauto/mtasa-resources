@@ -37,14 +37,14 @@ addEventHandler(
     root,
     function(type)
         if (type == SESSION_START) then
-            if (aPlayers[source]) then
-                aPlayers[source]["aLoaded"] = true
+            if (aPlayers[client]) then
+                aPlayers[client]["aLoaded"] = true
             end
         end
         if (type == SESSION_UPDATE or type == SESSION_START) then
-            if (hasObjectPermissionTo(source, "general.adminpanel")) then
+            if (hasObjectPermissionTo(client, "general.adminpanel")) then
                 local tableOut = {}
-                local account = "user." .. getAccountName(getPlayerAccount(source))
+                local account = "user." .. getAccountName(getPlayerAccount(client))
                 for gi, group in ipairs(aclGroupList()) do
                     for oi, object in ipairs(aclGroupListObjects(group)) do
                         if ((object == account) or (object == "user.*")) then
@@ -61,7 +61,7 @@ addEventHandler(
                         end
                     end
                 end
-                triggerClientEvent(source, EVENT_SESSION, source, tableOut)
+                triggerClientEvent(client, EVENT_SESSION, client, tableOut)
             end
         end
     end

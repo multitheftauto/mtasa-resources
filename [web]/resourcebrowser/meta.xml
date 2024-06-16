@@ -5,7 +5,7 @@
     <html src="css.css" raw="true" />
     <html src="script.js" raw="true" />
 	<html src="banner_b_gd.png" raw="true" />
-	<info author="eAi" name="Resource Browser" />
+	<info author="eAi" name="Resource Browser" version="1.0.0" />
     <export function="getResourcesByState" http="true" />
 	<export function="getThisResource" http="true" />
     <config src="config.xml" />

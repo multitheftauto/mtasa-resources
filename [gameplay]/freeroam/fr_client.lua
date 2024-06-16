@@ -2280,6 +2280,17 @@ function showMap()
 	showCursor(true)
 end
 
+function toggleMap()
+	local wnd = isWindowOpen(wndSetPos)
+	if wnd then closeWindow(wndSetPos)
+		showCursor(false)
+	else
+		createWindow(wndSetPos)
+		showCursor(true)
+	end
+end
+bindKey("f2", "down", toggleMap)
+
 function toggleFRWindow()
 	if isWindowOpen(wndMain) then
 		showCursor(false)

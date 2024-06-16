@@ -1,0 +1,6 @@
+<meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" name="Speaker system" description="Internet radio player in /speaker" type="script" />
+	<min_mta_version server="1.3.4-0.00000" client="1.3.4-0.00000"/>
+	<script src="client.lua" type="client" cache="false"/>
+	<script src="server.lua" type="server" />
+</meta>

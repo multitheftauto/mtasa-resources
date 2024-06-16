@@ -18,7 +18,7 @@ addEventHandler(
             if (not isElement(data)) then
                 return
             end
-            aPlayers[source]["sync"] = data
+            aPlayers[client]["sync"] = data
             tableOut["mute"] = isPlayerMuted(data)
             tableOut["freeze"] = isElementFrozen(data)
             tableOut["money"] = getPlayerMoney(data)
@@ -107,6 +107,8 @@ addEventHandler(
             tableOut["game"] = getGameType()
             tableOut["map"] = getMapName()
             tableOut["password"] = getServerPassword()
+        elseif (type == SYNC_BAN) then
+            tableOut = data
         elseif (type == SYNC_BANS) then
             for id, ban in pairs(getBansList()) do
                 tableOut[id] = getBanData(ban)
@@ -122,7 +124,7 @@ addEventHandler(
             tableOut["unread"] = unread
             tableOut["total"] = total
         end
-        triggerClientEvent(source, EVENT_SYNC, theSource, type, tableOut)
+        triggerClientEvent(client, EVENT_SYNC, theSource, type, tableOut)
     end
 )
 

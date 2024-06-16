@@ -21,12 +21,11 @@ function aBansTab.Create(tab)
     guiGridListAddColumn(aBansTab.BansList, "Name", 0.22)
     guiGridListAddColumn(aBansTab.BansList, "IP", 0.25)
     guiGridListAddColumn(aBansTab.BansList, "Serial", 0.25)
-    guiGridListAddColumn(aBansTab.BansList, "Username", 0.25)
-    guiGridListAddColumn(aBansTab.BansList, "Date", 0.17)
+    guiGridListAddColumn(aBansTab.BansList, "Expires", 0.17)
     guiGridListAddColumn(aBansTab.BansList, "Banned by", 0.22)
-    guiGridListAddColumn(aBansTab.BansList, "Temporary", 0.22)
     aBansTab.Details = guiCreateButton(0.82, 0.07, 0.17, 0.04, "Details", true, aBansTab.Tab)
-    aBansTab.Unban = guiCreateButton(0.82, 0.12, 0.17, 0.04, "Unban", true, aBansTab.Tab, "unban")
+    aBansTab.Ban = guiCreateButton(0.82, 0.12, 0.17, 0.04, "Add ban", true, aBansTab.Tab, "ban")
+    aBansTab.Unban = guiCreateButton(0.82, 0.17, 0.17, 0.04, "Unban", true, aBansTab.Tab, "unban")
     aBansTab.BansRefresh = guiCreateButton(0.82, 0.94, 0.17, 0.04, "Refresh", true, aBansTab.Tab, "listbans")
 
     addEventHandler("onClientGUIChanged", aBansTab.BansListSearch, aBansTab.onBansListSearch)
@@ -41,26 +40,21 @@ function aBansTab.onClientClick(button)
     if (button == "left") then
         if (source == aBansTab.Details) then
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
-                messageBox("No ban row selected!", MB_ERROR, MB_OK)
+                messageBox("No ban selected!", MB_ERROR, MB_OK)
             else
-                local ip = guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
-                aBanDetails(ip)
+                local banID =
+                    guiGridListGetItemData(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 1)
+                aBanDetails.Show(banID, false)
             end
+        elseif source == aBansTab.Ban then
+            aBan.Show()
         elseif (source == aBansTab.Unban) then
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
-                messageBox("No ban row selected!", MB_ERROR, MB_OK)
+                messageBox("No ban selected!", MB_ERROR, MB_OK)
             else
-                local selected =
-                    guiGridListGetItemText(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 2)
-                if (aBans["Serial"][selected]) then
-                    if (messageBox("Unban Serial " .. selected .. "?", MB_QUESTION, MB_YESNO ) == true) then
-                        triggerServerEvent ( "aBans", localPlayer, "unbanserial", selected )
-                    end
-                else
-                    if (messageBox("Unban IP " .. selected .. "?", MB_QUESTION, MB_YESNO) == true) then
-                        triggerServerEvent ( "aBans", localPlayer, "unbanip", selected )
-                    end
-                end
+                local banID =
+                    guiGridListGetItemData(aBansTab.BansList, guiGridListGetSelectedItem(aBansTab.BansList), 1)
+                aBanDetails.Show(banID, true)
             end
         elseif (source == aBansTab.BansRefresh) then
             guiGridListClear(aBansTab.BansList)
@@ -80,7 +74,6 @@ function aBansTab.onBansListSearch()
                 ((ban.nick and string.find(string.upper(ban.nick), text)) or
                     (ban.ip and string.find(string.upper(ban.ip), text)) or
                     (ban.serial and string.find(string.upper(ban.serial), text)) or
-                    (ban.username and string.find(string.upper(ban.username), text)) or
                     (ban.banner and string.find(string.upper(ban.banner), text)))
              then
                 aBansTab.AddRow(id, ban)
@@ -117,29 +110,20 @@ function aBansTab.AddRow(id, data)
     guiGridListSetItemText(list, row, 1, data.nick or "Unknown", false, false)
     guiGridListSetItemText(list, row, 2, data.ip or "", false, false)
     guiGridListSetItemText(list, row, 3, data.serial or "", false, false)
-    guiGridListSetItemText(list, row, 4, data.username or "", false, false)
-    if (data.time) then
-        local time = getRealTime(data.time)
-        guiGridListSetItemText(
-            list,
-            row,
-            5,
-            time.monthday .. " " .. getMonthName(time.month) .. " " .. (1900 + time.year),
-            false,
-            false
-        )
+    if (data.unban) then
+        guiGridListSetItemText(list, row, 4, formatDate("m/d/y h:m", nil, data.unban), false, false)
     else
-        guiGridListSetItemText(list, row, 5, "", false, false)
+        guiGridListSetItemText(list, row, 4, "Never", false, false)
     end
-    guiGridListSetItemText(list, row, 6, data.banner or "", false, false)
-    guiGridListSetItemText(list, row, 7, iif(data.unban, "Yes", "No"), false, false)
+    guiGridListSetItemText(list, row, 5, data.banner or "", false, false)
 
     guiGridListSetItemData(list, row, 1, id)
 end
 
 function aBansTab.DeleteRow(id)
     local list = aBansTab.BansList
-    for i = 1, guiGridListGetRowCount(list) do
+    -- GridList row ids start at zero, not one
+    for i = 0, guiGridListGetRowCount(list) do
         local data = guiGridListGetItemData(list, i, 1)
         if (data == id) then
             guiGridListRemoveRow(list, i)

@@ -195,7 +195,7 @@ local aACLFunctions = {
     [ACL_USERS] = function(action,group,object)
         if (action == ACL_GET) then
             local data = {}
-            for k,obj in ipairs(aclGroupListObjects(aclGetGroup(group))) do
+            for _,obj in ipairs(aclGroupListObjects(aclGetGroup(group))) do
                 if (obj:sub(1,5) == 'user.') then
                     table.insert(data, obj)
                 end
@@ -216,7 +216,29 @@ local aACLFunctions = {
             end
         end
     end,
-    [ACL_RESOURCES] = function()
+    [ACL_RESOURCES] = function(action,group,object)
+        if (action == ACL_GET) then
+            local data = {}
+            for _,obj in ipairs(aclGroupListObjects(aclGetGroup(group))) do
+                if (obj:sub(1,9) == 'resource.') then
+                    table.insert(data, obj)
+                end
+            end
+
+            triggerClientEvent(client, EVENT_ACL, client, ACL_RESOURCES, group, data)
+        elseif (action == ACL_REMOVE) then
+            if (aclGroupRemoveObject(aclGetGroup(group), object)) then
+                messageBox(client, "Successfully removed resource '"..object:gsub('resource.','').."' from the '"..group.."' ACL group", MB_INFO)
+            else
+                messageBox(client, "Failed to removed resource '"..object:gsub('resource.','').."' from the '"..group.."' ACL group", MB_INFO)
+            end
+        elseif (action == ACL_ADD) then
+            if (aclGroupAddObject(aclGetGroup(group), 'resource.'..object)) then
+                messageBox(client, "Successfully added resource '"..object:gsub('resource.','').."' to the '"..group.."' ACL group", MB_INFO)
+            else
+                messageBox(client, "Failed to added resource '"..object:gsub('resource.','').."' to the '"..group.."' ACL group", MB_INFO)
+            end
+        end
     end,
     [ACL_ACL] = function(action, group)
         local data = {}
@@ -245,21 +267,21 @@ function moo()
     if (action == "password") then
         action = nil
         if (not arg[1]) then
-            outputChatBox("Error - Password missing.", source, 255, 0, 0)
+            outputChatBox("Error - Password missing.", client, 255, 0, 0)
         elseif (not arg[2]) then
-            outputChatBox("Error - New password missing.", source, 255, 0, 0)
+            outputChatBox("Error - New password missing.", client, 255, 0, 0)
         elseif (not arg[3]) then
-            outputChatBox("Error - Confirm password.", source, 255, 0, 0)
+            outputChatBox("Error - Confirm password.", client, 255, 0, 0)
         elseif (tostring(arg[2]) ~= tostring(arg[3])) then
-            outputChatBox("Error - Passwords do not match.", source, 255, 0, 0)
+            outputChatBox("Error - Passwords do not match.", client, 255, 0, 0)
         else
-            local account = getAccount(getPlayerUserName(source), tostring(arg[1]))
+            local account = getAccount(getPlayerUserName(client), tostring(arg[1]))
             if (account) then
                 action = "password"
                 setAccountPassword(account, arg[2])
                 mdata = arg[2]
             else
-                outputChatBox("Error - Invalid password.", source, 255, 0, 0)
+                outputChatBox("Error - Invalid password.", client, 255, 0, 0)
             end
         end
     elseif (action == "sync") then
@@ -294,7 +316,7 @@ function moo()
                 end
             end
         end
-        triggerClientEvent(source, "aAdminACL", root, type, tableOut)
+        triggerClientEvent(client, "aAdminACL", root, type, tableOut)
     elseif (action == "aclcreate") then
         local name = arg[2]
         if ((name) and (string.len(name) >= 1)) then
@@ -309,9 +331,9 @@ function moo()
                     action = nil
                 end
             end
-            triggerEvent("aAdmin", source, "sync", "aclgroups")
+            triggerEvent("aAdmin", client, "sync", "aclgroups")
         else
-            outputChatBox("Error - Invalid " .. arg[1] .. " name", source, 255, 0, 0)
+            outputChatBox("Error - Invalid " .. arg[1] .. " name", client, 255, 0, 0)
         end
     elseif (action == "acldestroy") then
         local name = arg[2]
@@ -330,7 +352,7 @@ function moo()
                 action = nil
             end
         end
-        triggerEvent("aAdmin", source, "sync", "aclgroups")
+        triggerEvent("aAdmin", client, "sync", "aclgroups")
     elseif (action == "acladd") then
         if (arg[3]) then
             action = action
@@ -342,14 +364,14 @@ function moo()
                     action = nil
                     outputChatBox(
                         "Error adding object '" .. tostring(object) .. "' to group '" .. tostring(arg[2]) .. "'",
-                        source,
+                        client,
                         255,
                         0,
                         0
                     )
                 else
                     mdata2 = "Object '" .. arg[3] .. "'"
-                    triggerEvent("aAdmin", source, "sync", "aclobjects", arg[2])
+                    triggerEvent("aAdmin", client, "sync", "aclobjects", arg[2])
                 end
             elseif (arg[1] == "acl") then
                 local group = aclGetGroup(arg[2])
@@ -358,14 +380,14 @@ function moo()
                     action = nil
                     outputChatBox(
                         "Error adding ACL '" .. tostring(arg[3]) .. "' to group '" .. tostring(arg[2]) .. "'",
-                        source,
+                        client,
                         255,
                         0,
                         0
                     )
                 else
                     mdata2 = "ACL '" .. arg[3] .. "'"
-                    triggerEvent("aAdmin", source, "sync", "aclobjects", arg[2])
+                    triggerEvent("aAdmin", client, "sync", "aclobjects", arg[2])
                 end
             elseif (arg[1] == "right") then
                 local acl = aclGet(arg[2])
@@ -387,14 +409,14 @@ function moo()
                     outputChatBox(
                         "Error - object '" ..
                             tostring(object) .. "' does not exist in group '" .. tostring(arg[2]) .. "'",
-                        source,
+                        client,
                         255,
                         0,
                         0
                     )
                 else
                     mdata2 = "Object '" .. arg[3] .. "'"
-                    triggerEvent("aAdmin", source, "sync", "aclobjects", arg[2])
+                    triggerEvent("aAdmin", client, "sync", "aclobjects", arg[2])
                 end
             elseif (arg[1] == "acl") then
                 local group = aclGetGroup(arg[2])
@@ -403,14 +425,14 @@ function moo()
                     action = nil
                     outputChatBox(
                         "Error - ACL '" .. tostring(arg[3]) .. "' does not exist in group '" .. tostring(arg[2]) .. "'",
-                        source,
+                        client,
                         255,
                         0,
                         0
                     )
                 else
                     mdata2 = "ACL '" .. arg[3] .. "'"
-                    triggerEvent("aAdmin", source, "sync", "aclobjects", arg[2])
+                    triggerEvent("aAdmin", client, "sync", "aclobjects", arg[2])
                 end
             elseif (arg[1] == "right") then
                 local acl = aclGet(arg[2])
@@ -419,7 +441,7 @@ function moo()
                     action = nil
                     outputChatBox(
                         "Error - right '" .. tostring(arg[3]) .. "' does not exist in ACL '" .. tostring(arg[2]) .. "'",
-                        source,
+                        client,
                         255,
                         0,
                         0
@@ -427,7 +449,7 @@ function moo()
                 else
                     mdata = "ACL '" .. arg[2] .. "'"
                     mdata2 = "Right '" .. arg[3] .. "'"
-                    triggerEvent("aAdmin", source, "sync", "aclrights", arg[2])
+                    triggerEvent("aAdmin", client, "sync", "aclrights", arg[2])
                 end
             end
         else
@@ -435,6 +457,6 @@ function moo()
         end
     end
     if (action ~= nil) then
-        aAction("admin", action, source, false, mdata, mdata2)
+        aAction("admin", action, client, false, mdata, mdata2)
     end
 end

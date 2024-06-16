@@ -111,7 +111,7 @@ local function zoomWithMouseWheel(key, keyState)
 end
 
 local function onClientRender_freecam()
-	if (selectedElement) then
+	if (selectedElement and isElement(selectedElement)) then
 		setElementVelocity(selectedElement,0,0,0) --!w
 
 	    camX, camY, camZ, targetX, targetY, targetZ = getCameraMatrix()
@@ -175,6 +175,8 @@ local function onClientRender_freecam()
 		end
 
 		rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
+	else
+		selectedElement = nil
 	end
 end
 
@@ -183,6 +185,11 @@ function attachElement(element)
 	if (not selectedElement and not isCursorShowing()) then
 		-- get element info
 	    selectedElement = element
+		-- do not attach if it's not really an element
+		if not isElement(selectedElement) then
+			selectedElement = nil
+			return false
+		end
 		--EDF implementation
 		if getResourceFromName"edf" and exports.edf:edfGetParent(element) ~= element then
 			if (getElementType(element) == "object") then
@@ -228,12 +235,17 @@ function detachElement()
 	if (selectedElement) then
 		-- remove events, unbind keys
 		disable()
-
-		-- sync position/rotation
-		local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
-		triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
-		if hasRotation[getElementType(selectedElement)] then
-			triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+		
+		-- fix for local elements
+		if not isElementLocal(selectedElement) then
+		
+			-- sync position/rotation
+			local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
+			
+			triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
+			if hasRotation[getElementType(selectedElement)] then
+				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+			end
 		end
 		selectedElement = nil
 
