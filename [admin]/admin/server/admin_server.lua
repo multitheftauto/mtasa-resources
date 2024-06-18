@@ -1670,11 +1670,12 @@ function checkClient(checkAccess,player,...)
 	if client and client ~= player then
 		local desc = table.concat({...}," ")
 		local ipAddress = getPlayerIP(client)
+		local playerSerial = getPlayerSerial(client)
 		outputDebugString( "Admin security - Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 1 )
 		cancelEvent()
 		if g_Prefs.clientcheckban then
 			local reason = "admin checkClient (" .. tostring(desc) .. ")"
-			addBan ( ipAddress, nil, nil, root, reason )
+			addBan ( nil, nil, playerSerial, root, reason )
 		end
 		return true
 	end

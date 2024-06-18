@@ -146,7 +146,7 @@
 					friendlyname="clientcheckban"
 					group="_Advanced"
 					accept="true,false"
-					desc="Ban IP's that attempt to send fake admin packets."
+					desc="Ban serial's that attempt to send fake admin packets."
 					/>
       
 		<setting name="*useip2c" value="true"
