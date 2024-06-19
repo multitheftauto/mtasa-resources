@@ -357,8 +357,8 @@ function cleanupOldGame()
 	resetActiveBoards()
 	destroyBoards()
 
-	for timerKey, timerNameData in ipairs(getTimers()) do
-		killTimer(timerNameData)
+	for timerKey, timer in ipairs(getTimers()) do
+		killTimer(timer)
 	end
 
 	local players = getElementsByType("player")
