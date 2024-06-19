@@ -12,12 +12,12 @@ function createBoards()
 end
 
 --- Returns active board elements
-function getActiveBoardElements() 
+function getActiveBoardElements()
 	return activeBoards
 end
 
 --- Returns active board element count
-function getActiveBoardElementCount() 
+function getActiveBoardElementCount()
 	return #activeBoards
 end
 
