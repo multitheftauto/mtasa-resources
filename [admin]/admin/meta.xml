@@ -135,25 +135,44 @@
 					desc="Duration options for the mute window. Comma seperated list in seconds. 0 means no duration limit."
 					/>
 
-		<setting name="*securitylevel" value="2"
-					friendlyname="Security level"
-					group="_Advanced"
-					accept="0-2"
-					desc="Detect fake admin packets. 0-No checks  1-Some checks  2-All checks."
-					/>
-
-		<setting name="*clientcheckban" value="false"
-					friendlyname="clientcheckban"
-					group="_Advanced"
-					accept="true,false"
-					desc="Ban IP's that attempt to send fake admin packets."
-					/>
-      
 		<setting name="*useip2c" value="true"
 					friendlyname="useip2c"
 					group="_Advanced"
 					accept="true,false"
 					desc="When enabled, admin will use the ip2c resource to determine players' countries by their IP."
+					/>
+
+		<setting name="*fakePacketsIPban" value="false"
+					friendlyname="IPBan"
+					group="_fake packets"
+					accept="true,false"
+					desc="Ban IPs that attempt to send fake admin packets."
+					/>     
+ 
+		<setting name="*fakePacketsSerialban" value="false"
+					friendlyname="Serialban"
+					group="_fake packets"
+					accept="true,false"
+					desc="Ban serials that attempt to send fake admin packets."
+					/>   
+
+		<setting name="*fakePacketsIPbanLength" value="86400"
+					friendlyname="IPBan length"
+					group="_fake packets"
+					desc="Set ban length for IPBan in seconds. Set to 0 for a permanent ban."
+					/>
+
+		<setting name="*fakePacketsSerialbanLength" value="86400"
+					friendlyname="Serialban length"
+					group="_fake packets"
+					desc="Set ban length for Serialban in seconds. Set to 0 for a permanent ban."
+					/>
+
+		<setting name="*securitylevel" value="2"
+					friendlyname="Security level"
+					group="_fake packets"
+					accept="0-2"
+					desc="Detect fake admin packets. 0-No checks  1-Some checks  2-All checks."
 					/>
 
 		<setting name="*maxchatmsgs" value="10"
@@ -171,10 +190,11 @@
 					friendlyname="Player report categories"
 					desc="List of report categories for reporting players."
 					/>
-	     	<setting name="*adminChatCommandName" value="a"
-          				friendlyname="Admin chat command name"
-          				desc="The command name for admin chat."
-          				/>
+
+		<setting name="*adminChatCommandName" value="a"
+					friendlyname="Admin chat command name"
+					desc="The command name for admin chat."
+					/>
 
  </settings>
 </meta>
