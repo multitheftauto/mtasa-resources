@@ -1,13 +1,13 @@
 --Fallout By Ransom
 --Special Thanks arc_, lil_toady, eAi, IJs, jbeta, Talidan
 
-outputChatBox("Fallout V4 by Ransom loaded", root, 255, 127, 0)
+outputChatBox("Fallout V" .. (getResourceInfo ( resource, "version" ) or "?")  .. " by Ransom loaded", root, 255, 127, 0)
 
 function resourceStart()
 	local scoreboardResource = getResourceFromName("scoreboard")
-	call(scoreboardResource, "addScoreboardColumn", "Rank", root, 2, .08)
-	call(scoreboardResource, "addScoreboardColumn", "Wins", root, 3, .08)
-	call(scoreboardResource, "addScoreboardColumn", "Losses", root, 4, .08)
+	call(scoreboardResource, "addScoreboardColumn", "Wins", root, 2, .08)
+	call(scoreboardResource, "addScoreboardColumn", "Losses", root, 3, .08)
+	call(scoreboardResource, "addScoreboardColumn", "W/L Ratio", root, 4, .08)
 end
 addEventHandler("onResourceStart", resourceRoot, resourceStart)
 
@@ -17,6 +17,7 @@ local newTournament = true --Setup scoreboard and podium scores
 local gameOver = false -- Boolean used to manage the gameOver state
 local winTie = false -- Boolean used when the game round ended with a tie
 local countdown = 0 -- Countdown used for the round start 3,2,1...
+local checkPlayersHeightTimer -- Timer used to check the height of the player
 
 
 for k, player in pairs(getElementsByType("player")) do
@@ -156,7 +157,13 @@ function declareWinners()
 	if gameOver then return end
 
 	declareWinnersTimer = nil
-	triggerClientEvent(getLoadedPlayers(), "onFalloutRoundEnd", resourceRoot) --Also stop board shaking
+	if checkPlayersHeightTimer then
+		if isTimer(checkPlayersHeightTimer) then
+			killTimer(checkPlayersHeightTimer)
+		end
+		checkPlayersHeightTimer = nil
+	end
+
 	gameOver = true
 	
 	local winners = getPlayersInTeam(teamAlive)
@@ -227,25 +234,22 @@ function ()
 	activateSpectate(source)
 end)
 
-addEvent("onPlayerReportLoss", true)
-addEventHandler("onPlayerReportLoss", root, 
-function ()
-	if source ~= client then
-		return
-	end
-
-	setPlayerTeam(client, nil)
-	textDisplayAddObserver(textDisplays.suicideDisplay, client)
-	bindKey(client, "space", "down", quickKill)
-	setElementData(client, "Losses", (getElementData(client, "Losses")) + 1)
+function reportPlayerLoss (player)
+	
+	playSoundFrontEnd(player, 4)
+	textDisplayAddObserver(textDisplays.suicideDisplay, player)
+	bindKey(player, "space", "down", quickKill)
+	setElementData(player, "Losses", (getElementData(player, "Losses")) + 1)
+	
+	if gameOver == true then return end
 
 	local remainingPlayers = countPlayersInTeam(teamAlive)
-	if (remainingPlayers == 1) and (gameOver == false) then --Detect early victories
+	if (remainingPlayers == 1) then --Detect early victories
 		startDeclareWinnersTimer()
-	elseif (remainingPlayers == 0) and (gameOver == false) then
+	elseif (remainingPlayers == 0) then
 		startDeclareWinnersTimer()
 	end
-end)
+end
 
 addEventHandler("onPlayerJoin", root,
 function ()
@@ -319,7 +323,10 @@ function newGameCountdown()
 		for k, player in pairs(players) do
 			textDisplayRemoveObserver(textDisplays.countDownDisplay, player)
 		end
-		triggerClientEvent(getLoadedPlayers(), "onFalloutRoundStart", resourceRoot) --Start loser checks on client
+
+		if not checkPlayersHeightTimer and not isTimer(checkPlayersHeightTimer) then
+			checkPlayersHeightTimer = setTimer(checkPlayersHeight, 300, 0)
+		end
 
 		playSoundFrontEnd(root, 45) -- Race countdown nr. 45
 		--Erase countdown for displaying 'get ready' next game prior to countdown
@@ -330,6 +337,19 @@ function newGameCountdown()
 		end
 		gameOver = false
 		breakAwayPieces() --Game starts, boards fall
+	end
+end
+
+-- Check player height and report a loss if the player has fall off
+function checkPlayersHeight ()
+	local alivePlayers = getPlayersInTeam(teamAlive)
+	for i=1, #alivePlayers do
+		local player = alivePlayers[i]
+		local x, y, z = getElementPosition(player)
+		if z < 595 then
+			setPlayerTeam(player, nil)
+			reportPlayerLoss(player)
+		end
 	end
 end
 
