@@ -1,7 +1,7 @@
 local activeBoards = {}
 
 function createBoards()
-    local rows, columns = config.boardRows, config.boardColumns
+	local rows, columns = config.boardRows, config.boardColumns
 	--Create boards. Platform #1 is at SW Corner
 	for i = 1, rows do --Nested to create rows and columns
 		for j = 1, columns do

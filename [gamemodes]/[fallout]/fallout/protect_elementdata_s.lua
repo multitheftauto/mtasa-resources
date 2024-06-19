@@ -6,7 +6,7 @@ local protectedElementDataKeys = {
 }
 
 --[[
-    Disallow remote modification of element data to prevent unauthorized changes.
+	Disallow remote modification of element data to prevent unauthorized changes.
 ]]
 function protectPlayerElementData(theKey, oldValue, newValue) 
 	if protectedElementDataKeys[theKey] and client then

@@ -147,7 +147,7 @@ end
 local declareWinnersTimer
 --- Start the declare winners timer. If called again, it will delay declaring the winner
 function startDeclareWinnersTimer ()
-	if isTimer(declareWinnersTimer) then 
+	if isTimer(declareWinnersTimer) then
 		killTimer(declareWinnersTimer)
 	end
 	declareWinnersTimer = setTimer(declareWinners, 4000, 1)
@@ -165,7 +165,7 @@ function declareWinners()
 	end
 
 	gameOver = true
-	
+
 	local winners = getPlayersInTeam(teamAlive)
 	local winnersList = ""
 	for k, v in ipairs(winners) do
@@ -235,12 +235,12 @@ function ()
 end)
 
 function reportPlayerLoss (player)
-	
+
 	playSoundFrontEnd(player, 4)
 	textDisplayAddObserver(textDisplays.suicideDisplay, player)
 	bindKey(player, "space", "down", quickKill)
 	setElementData(player, "Losses", (getElementData(player, "Losses")) + 1)
-	
+
 	if gameOver == true then return end
 
 	local remainingPlayers = countPlayersInTeam(teamAlive)
