@@ -1,11 +1,33 @@
 <meta>
-    <info author="Ransom" version="6" type="gamemode" name="Fallout"/>
+	<info author="Ransom" version="7" type="gamemode" name="Fallout"/>
 
-    <config src="help.xml" type="client"/>
+	<config src="help.xml" type="client"/>
 
 	<include resource="freecam"/>
-    <include resource="scoreboard"/>
+	<include resource="scoreboard"/>
 
-    <script src="fallout_c.lua" type="client" />
-    <script src="fallout_s.lua" type="server" />
+	<script src="config_s.lua" type="server" />
+	<script src="protect_elementdata_s.lua" type="server" />
+	<script src="player_init_s.lua" type="server" />
+	<script src="displays_s.lua" type="server" />
+	<script src="board_s.lua" type="server" />
+	<script src="fallout_c.lua" type="client" />
+	<script src="fallout_s.lua" type="server" />
+
+	<min_mta_version server="1.5.8-9.20957" client="1.5.2-9.07903" />
+
+	<settings>
+		<setting friendlyname="Rows on the board" name="*boardRows" value="[10]"/>
+		<setting friendlyname="Columns on the board" name="*boardColumns" value="[8]"/>
+		<setting friendlyname="Remaing/winning boards" desc="Remaing boards at the end of the round" name="*winningBoards" value="[3]"/>
+		<setting friendlyname="Score limit" desc="Amount of score needed to win" name="*scoreLimit" value="[10]"/>
+		<setting friendlyname="Falling boards interval nr.1" desc="The first interval between the falling boards, used when 30 or more remain boards" name="*callSpeedA" value="[250]"/>
+		<setting friendlyname="Falling boards interval nr.2" desc="The second interval between the falling boards, used when 15 to 29 remaing boards" name="*callSpeedB" value="[500]"/>
+		<setting friendlyname="Falling boards interval nr.3" desc="The last interval between the falling boards, used when 14 or less remaing boards" name="*callSpeedC" value="[750]"/>
+		<setting name="*peacefulMode" value="true"
+					friendlyname="PeacefulMode"
+					accept="true,false"
+					desc="Disable melee attack"
+					/>
+	</settings>
 </meta>
