@@ -137,7 +137,7 @@
 
 		<setting name="*securitylevel" value="2"
 					friendlyname="Security level"
-					group="_Advanced"
+					group="_fake packets"
 					accept="0-2"
 					desc="Detect fake admin packets. 0-No checks  1-Some checks  2-All checks."
 					/>
