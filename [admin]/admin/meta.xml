@@ -135,13 +135,6 @@
 					desc="Duration options for the mute window. Comma seperated list in seconds. 0 means no duration limit."
 					/>
 
-		<setting name="*securitylevel" value="2"
-					friendlyname="Security level"
-					group="_fake packets"
-					accept="0-2"
-					desc="Detect fake admin packets. 0-No checks  1-Some checks  2-All checks."
-					/>
-
 		<setting name="*useip2c" value="true"
 					friendlyname="useip2c"
 					group="_Advanced"
@@ -173,6 +166,13 @@
 					friendlyname="Serialban length"
 					group="_fake packets"
 					desc="Set ban length for Serialban in seconds. Set to 0 for a permanent ban."
+					/>
+
+		<setting name="*securitylevel" value="2"
+					friendlyname="Security level"
+					group="_fake packets"
+					accept="0-2"
+					desc="Detect fake admin packets. 0-No checks  1-Some checks  2-All checks."
 					/>
 
 		<setting name="*maxchatmsgs" value="10"
