@@ -1510,6 +1510,8 @@ function ( action, data )
 		return
 	end
 	if ( action == "new" ) then
+		--dont allow creating reports when reports are disabled
+		if ( get("reportsEnabled") ~= "true" ) then return end
 		local time = getRealTime()
 		local id = #aReports + 1
 		aReports[id] = {}
@@ -1545,7 +1547,7 @@ function ( action, data )
 	end
 	if ( hasObjectPermissionTo ( client or source, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
-			triggerClientEvent ( source, "aMessage", source, "get", aReports )
+			triggerClientEvent ( source, "aMessage", source, "get", aReports, get("reportsEnabled") )
 		elseif ( action == "read" ) then
 			if ( aReports[data] ) then
 				aReports[data].read = true
@@ -1670,11 +1672,15 @@ function checkClient(checkAccess,player,...)
 	if client and client ~= player then
 		local desc = table.concat({...}," ")
 		local ipAddress = getPlayerIP(client)
+		local playerSerial = getPlayerSerial(client)
+		local banReason = "admin checkClient (" .. tostring(desc) .. ")"
 		outputDebugString( "Admin security - Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 1 )
 		cancelEvent()
-		if g_Prefs.clientcheckban then
-			local reason = "admin checkClient (" .. tostring(desc) .. ")"
-			addBan ( ipAddress, nil, nil, root, reason )
+		if g_Prefs.fakePacketsIPban then
+			addBan ( ipAddress, nil, nil, root, banReason, g_Prefs.fakePacketsIPbanLength )
+		end
+		if g_Prefs.fakePacketsSerialban then
+			addBan ( nil, nil, playerSerial, root, banReason, g_Prefs.fakePacketsSerialbanLength )
 		end
 		return true
 	end
