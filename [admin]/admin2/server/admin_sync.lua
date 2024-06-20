@@ -22,7 +22,7 @@ addEventHandler(
     root,
     function(type, data)
 
-        if not hasClientPermissionTo("general.adminpanel") then 
+        if not hasClientPermissionTo("general.adminpanel") then
             return
         end
 
