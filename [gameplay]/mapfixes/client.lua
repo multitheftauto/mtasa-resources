@@ -1,5 +1,3 @@
--- MTA:SA Map Fixes
-
 addEvent("mapfixes:client:loadAllComponents", true)
 addEvent("mapfixes:client:togOneComponent", true)
 

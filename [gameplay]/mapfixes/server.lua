@@ -1,5 +1,3 @@
--- MTA:SA Map Fixes
-
 for name, data in pairs(mapFixComponents) do
     data.enabled = get(name) == "true"
 end

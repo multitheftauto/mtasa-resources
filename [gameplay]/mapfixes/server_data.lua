@@ -1,5 +1,3 @@
--- MTA:SA Map Fixes
-
 mapFixComponents = {
     ["crack_palace_interior"] = {
         -- Fill the hole of Big Smoke's Crack Palace with objects from carter.ipl
