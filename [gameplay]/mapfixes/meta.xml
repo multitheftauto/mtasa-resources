@@ -3,6 +3,7 @@
 	<min_mta_version client="1.6.0-9.22505.0" server="1.6.0-9.22505.0"></min_mta_version>
 
 	<script src="client.lua" type="client"/>
+	<script src="server_data.lua" type="server"/>
 	<script src="server.lua" type="server"/>
 
 	<settings>
