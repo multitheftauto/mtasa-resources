@@ -1,18 +1,65 @@
 -- MTA:SA Map Fixes
 
-local function loadObjects()
+addEvent("mapfixes:client:loadAllComponents", true)
+addEvent("mapfixes:client:togOneComponent", true)
 
-    local PLACE_BUILDINGS = {
-        -- Fill the hole of Big Smoke's Crack Palace with vanilla open-world interior
-        {17933, 2532.992188, -1289.789062, 39.281250, 0, 0, 0},
-        {17946, 2533.820312, -1290.554688, 36.945312, 0, 0, 0},
-    }
+local mapFixComponents = {}
 
-    for _, v in pairs(PLACE_BUILDINGS) do
-        createBuilding(unpack(v))
+local function loadOneMapFixComponent(name, data)
+    -- Clear the previous elements if any
+    local createdElements = data.createdElements
+    if createdElements then
+        for _, element in pairs(createdElements) do
+            if isElement(element) then
+                destroyElement(element)
+            end
+        end
+        data.createdElements = {}
+    end
+    -- Don't proceed if the component is disabled
+    if not data.enabled then
+        return
+    end
+    -- Create the new elements
+    local spawnBuildings = data.spawnBuildings
+    if spawnBuildings then
+        data.createdElements = {}
+        for _, v in ipairs(spawnBuildings) do
+            local building = createBuilding(unpack(v))
+            if building then
+                data.createdElements[#data.createdElements + 1] = building
+            end
+        end
     end
 end
 
-addEventHandler("onClientResourceStart", resourceRoot, function()
-    loadObjects()
-end, false)
+local function loadMapFixComponents(mapFixComponentsFromServer)
+    assert(type(mapFixComponentsFromServer) == "table")
+    mapFixComponents = mapFixComponentsFromServer
+    for name, data in pairs(mapFixComponents) do
+        loadOneMapFixComponent(name, data)
+    end
+end
+addEventHandler("mapfixes:client:loadAllComponents", localPlayer, loadMapFixComponents, false)
+
+local function toggleOneMapFixComponent(name, enable)
+    assert(type(name) == "string")
+    assert(type(enable) == "boolean")
+    local data = mapFixComponents[name]
+    if not data then
+        return
+    end
+    data.enabled = (enable == true)
+    loadOneMapFixComponent(name, data)
+    if eventName ~= "onClientResourceStop" then
+        outputDebugString("Map fix component '"..name.."' is now "..(data.enabled and "enabled" or "disabled")..".")
+    end
+end
+addEventHandler("mapfixes:client:togOneComponent", localPlayer, toggleOneMapFixComponent, false)
+
+local function unloadAllMapFixComponents()
+    for name, _ in pairs(mapFixComponents) do
+        toggleOneMapFixComponent(name, false)
+    end
+end
+addEventHandler("onClientResourceStop", resourceRoot, unloadAllMapFixComponents, false)
