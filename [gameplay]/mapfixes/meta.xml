@@ -1,0 +1,5 @@
+<meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" name="SA Map Fixes" description="This resource patches a few flaws in the default MTA world" type="script" />
+    <min_mta_version client="1.6.0-9.22505.0" server="1.6.0-9.22505.0"></min_mta_version>
+	<script src="client.lua" type="client"/>
+</meta>
