@@ -21,8 +21,7 @@ local function handleSettingChange(settingName)
     local newValue = get(settingName)
     data.enabled = newValue == "true"
     
-    for _, player in pairs(getElementsByType("player")) do
-        triggerClientEvent(player, "mapfixes:client:togOneComponent", player, settingName, data.enabled)
-    end
+    -- Trigger for all players
+    triggerClientEvent("mapfixes:client:togOneComponent", resourceRoot, settingName, data.enabled)
 end
 addEventHandler("onSettingChange", root, handleSettingChange, false)

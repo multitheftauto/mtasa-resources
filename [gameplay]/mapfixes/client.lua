@@ -81,7 +81,7 @@ local function toggleOneMapFixComponent(name, enable)
         outputDebugString("Map fix component '"..name.."' is now "..(data.enabled and "enabled" or "disabled")..".")
     end
 end
-addEventHandler("mapfixes:client:togOneComponent", localPlayer, toggleOneMapFixComponent, false)
+addEventHandler("mapfixes:client:togOneComponent", resourceRoot, toggleOneMapFixComponent, false)
 
 local function unloadAllMapFixComponents()
     for name, _ in pairs(mapFixComponents) do
