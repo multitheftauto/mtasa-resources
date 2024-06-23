@@ -55,7 +55,7 @@ mapFixComponents = {
             {11393, -2043.51563, 161.34375, 29.33594, 0.00000, 0.00000, 0.00000}, -- hubprops1_SFS
             {11392, -2047.75781, 168.14063, 27.88281, 0.00000, 0.00000, 0.00000}, -- hubfloorstains_SFSe
         },
-        makeGaragesOpen = {
+        garageIDsForInteriors = {
             22, -- Mission Garage (Doherty)
         },
     },

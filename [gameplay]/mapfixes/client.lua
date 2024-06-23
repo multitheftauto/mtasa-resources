@@ -22,10 +22,10 @@ local function loadOneMapFixComponent(name, data)
         end
     end
     -- Close previously opened garages if any
-    local makeGaragesOpen = data.makeGaragesOpen
-    if makeGaragesOpen then
-        for _, v in pairs(makeGaragesOpen) do
-            setGarageOpen(v, false)
+    local garageIDsForInteriors = data.garageIDsForInteriors
+    if garageIDsForInteriors then
+        for _, garageID in pairs(garageIDsForInteriors) do
+            setGarageOpen(garageID, false)
         end
     end
 
@@ -52,9 +52,9 @@ local function loadOneMapFixComponent(name, data)
         end
     end
     -- Open garages if any
-    if makeGaragesOpen then
-        for _, v in pairs(makeGaragesOpen) do
-            setGarageOpen(v, true)
+    if garageIDsForInteriors then
+        for _, garageID in pairs(garageIDsForInteriors) do
+            setGarageOpen(garageID, true)
         end
     end
 end
