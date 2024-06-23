@@ -14,19 +14,35 @@ local function loadOneMapFixComponent(name, data)
         end
         data.createdElements = {}
     end
+    -- Restore the previous removed models if any
+    local removeWorldModels = data.removeWorldModels
+    if removeWorldModels then
+        for _, v in pairs(removeWorldModels) do
+            restoreWorldModel(unpack(v))
+        end
+    end
+
     -- Don't proceed if the component is disabled
     if not data.enabled then
         return
     end
-    -- Create the new elements
+
+    -- Create the new elements if any
     local spawnBuildings = data.spawnBuildings
     if spawnBuildings then
         data.createdElements = {}
-        for _, v in ipairs(spawnBuildings) do
+        for _, v in pairs(spawnBuildings) do
             local building = createBuilding(unpack(v))
             if building then
                 data.createdElements[#data.createdElements + 1] = building
             end
+        end
+    end
+    -- Remove world models if any
+    if removeWorldModels then
+        for _, v in pairs(removeWorldModels) do
+            iprint(name, v)
+            removeWorldModel(unpack(v))
         end
     end
 end
