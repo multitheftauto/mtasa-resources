@@ -1,6 +1,6 @@
 mapFixComponents = {
     ["crack_palace_interior"] = {
-        -- Fill the hole of Big Smoke's Crack Palace with objects from carter.ipl
+        -- Adds the original interior of Big Smoke's Crack Palace, objects taken from carter.ipl
         spawnBuildings = {
             {17933, 2532.992188, -1289.789062, 39.281250, 0, 0, 0}, -- carter-light15b
             {17946, 2533.820312, -1290.554688, 36.945312, 0, 0, 0}, -- carter_ground
@@ -20,7 +20,7 @@ mapFixComponents = {
         },
     },
     ["garage_doherty_interior"] = {
-        -- Removes the Doherty Safehouse Garage door and places the original interior inside, objects taken from sfse_stream5.ipl
+        -- Adds the original Doherty Safehouse Garage interior, objects taken from sfse_stream5.ipl
         spawnBuildings = {
             {11389, -2048.11719, 166.71875, 30.97656, 0.00000, 0.00000, 0.00000}, -- hubinterior_SFS
             {11388, -2048.17969, 166.71875, 34.51563, 0.00000, 0.00000, 0.00000}, -- hubintroof_SFSe
@@ -35,7 +35,7 @@ mapFixComponents = {
         },
     },
     ["nodamage_crackfactory_interior"] = {
-        -- Removes the destroyed building and places inside the original interior, objects taken from crack.ipl
+        -- Removes the destroyed SF factory building, and adds the original interior, objects taken from crack.ipl
         spawnBuildings = {
             {11007, -2164.45313, -248.00000, 40.78125, 0.00000, 0.00000, 0.00000}, -- crack_wins_SFS
             {11085, -2164.45313, -237.61719, 41.40625, 0.00000, 0.00000, 0.00000}, -- crack_int1
