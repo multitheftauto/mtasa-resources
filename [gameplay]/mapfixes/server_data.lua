@@ -43,6 +43,9 @@ mapFixComponents = {
             {1537, 5, 1700.1, -1669.4, 19.2}, -- Gen_doorEXT16
             {1533, 5, 1700.1, -1669.4, 19.2}, -- Gen_doorEXT12
         },
+        makeGaragesOpen = {
+            22, -- Mission Garage (Doherty)
+        }
     },
     ["garage_doherty_interior"] = {
         -- Removes the Doherty Safehouse Garage door and places the original interior inside, objects taken from sfse_stream5.ipl
@@ -54,9 +57,6 @@ mapFixComponents = {
             {11391, -2056.20313, 158.54688, 29.09375, 0.00000, 0.00000, 0.00000}, -- hubprops6_SFSe
             {11393, -2043.51563, 161.34375, 29.33594, 0.00000, 0.00000, 0.00000}, -- hubprops1_SFS
             {11392, -2047.75781, 168.14063, 27.88281, 0.00000, 0.00000, 0.00000}, -- hubfloorstains_SFSe
-        },
-        removeWorldModels = {
-            {11416, 6, -2038.9, 178.8, 29.9}, -- hbgdSFS
         },
     },
 }

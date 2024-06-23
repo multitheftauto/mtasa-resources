@@ -21,6 +21,13 @@ local function loadOneMapFixComponent(name, data)
             restoreWorldModel(unpack(v))
         end
     end
+    -- Close previously opened garages if any
+    local makeGaragesOpen = data.makeGaragesOpen
+    if makeGaragesOpen then
+        for _, v in pairs(makeGaragesOpen) do
+            setGarageOpen(v, false)
+        end
+    end
 
     -- Don't proceed if the component is disabled
     if not data.enabled then
@@ -41,8 +48,13 @@ local function loadOneMapFixComponent(name, data)
     -- Remove world models if any
     if removeWorldModels then
         for _, v in pairs(removeWorldModels) do
-            iprint(name, v)
             removeWorldModel(unpack(v))
+        end
+    end
+    -- Open garages if any
+    if makeGaragesOpen then
+        for _, v in pairs(makeGaragesOpen) do
+            setGarageOpen(v, true)
         end
     end
 end
