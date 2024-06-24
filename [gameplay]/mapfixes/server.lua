@@ -1,3 +1,4 @@
+-- Fetch the settings on script load
 for name, data in pairs(mapFixComponents) do
     data.enabled = get(name) == "true"
 end
@@ -18,6 +19,7 @@ local function handleSettingChange(settingName)
     local data = mapFixComponents[settingName]
     if not data then return end
     
+    -- Fetch the new setting value
     local newValue = get(settingName)
     data.enabled = newValue == "true"
     
