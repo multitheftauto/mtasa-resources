@@ -14,6 +14,14 @@ local function loadOneMapFixComponent(name, data)
         end
         data.createdElements = {}
     end
+    -- Clear the previous requested model IDs if any
+    local allocatedIDs = data.allocatedIDs
+    if allocatedIDs then
+        for _, modelID in pairs(allocatedIDs) do
+            engineFreeModel(modelID)
+        end
+        data.allocatedIDs = {}
+    end
     -- Restore the previous removed models if any
     local removeWorldModels = data.removeWorldModels
     if removeWorldModels then
@@ -37,11 +45,27 @@ local function loadOneMapFixComponent(name, data)
     -- Create the new elements if any
     local spawnBuildings = data.spawnBuildings
     if spawnBuildings then
-        data.createdElements = {}
         for _, v in pairs(spawnBuildings) do
             local building = createBuilding(unpack(v))
             if building then
+                if not data.createdElements then data.createdElements = {} end
                 data.createdElements[#data.createdElements + 1] = building
+            end
+        end
+    end
+    local spawnObjectsWithCustomPropertiesGroup = data.spawnObjectsWithCustomPropertiesGroup
+    if spawnObjectsWithCustomPropertiesGroup then
+        for _, v in pairs(spawnObjectsWithCustomPropertiesGroup) do
+            if not data.allocatedIDs then data.allocatedIDs = {} end
+            local allocatedID = engineRequestModel("object", v.modelID)
+            if allocatedID then
+                data.allocatedIDs[#data.allocatedIDs + 1] = allocatedID
+                local object = createObject(allocatedID, v.x, v.y, v.z, v.rx, v.ry, v.rz)
+                if object then
+                    engineSetModelPhysicalPropertiesGroup(allocatedID, v.physicalPropertiesGroup)
+                    if not data.createdElements then data.createdElements = {} end
+                    data.createdElements[#data.createdElements + 1] = object
+                end
             end
         end
     end

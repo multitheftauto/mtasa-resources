@@ -18,6 +18,12 @@ mapFixComponents = {
             {1537, 5, 1700.1, -1669.4, 19.2}, -- Gen_doorEXT16
             {1533, 5, 1700.1, -1669.4, 19.2}, -- Gen_doorEXT12
         },
+        spawnObjectsWithCustomPropertiesGroup = {
+            {modelID=1533, physicalPropertiesGroup=147, x=1700.132812, y=-1666.40625, z=19.210938, rx=0, ry=-0, rz=-90},
+            {modelID=1537, physicalPropertiesGroup=147, x=1700.132812, y=-1669.421875, z=19.210938, rx=0, ry=0, rz=-90},
+            {modelID=1537, physicalPropertiesGroup=147, x=1725.429688, y=-1637.4375, z=19.210938, rx=0, ry=0, rz=-180},
+            {modelID=1533, physicalPropertiesGroup=147, x=1728.445312, y=-1637.4375, z=19.210938, rx=0, ry=0, rz=-180},
+        },
     },
     ["garage_doherty_interior"] = {
         -- Adds the original Doherty Safehouse Garage interior, objects taken from sfse_stream5.ipl
