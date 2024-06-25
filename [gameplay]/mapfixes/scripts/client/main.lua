@@ -123,8 +123,7 @@ local function toggleOneMapFixComponent(name, enable)
     data.enabled = (enable == true)
     loadOneMapFixComponent(name, data)
     if eventName ~= "onClientResourceStop" then
-        outputDebugString("Map fix component '" .. name .. "' is now " .. (data.enabled and "enabled" or "disabled") ..
-        ".")
+        outputDebugString("Map fix component '" .. name .. "' is now " .. (data.enabled and "enabled" or "disabled"))
     end
 end
 addEventHandler("mapfixes:client:togOneComponent", resourceRoot, toggleOneMapFixComponent, false)
