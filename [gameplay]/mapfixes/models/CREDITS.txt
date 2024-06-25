@@ -1,3 +1,8 @@
 Credits of the modified game models contained in this folder:
 
 - laeIdleProj02.col: Optimized and fixed collision created by THEGizmo
+
+List of repair details for laeIdleProj02.col:
+-- Isolated vertexes removed
+-- Polygons slightly optimized
+-- Holes patched
