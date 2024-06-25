@@ -1,8 +1,11 @@
 Credits of the modified game models contained in this folder:
 
-- laeIdleProj02.col: Optimized and fixed collision created by THEGizmo
+Optimized and fixed collision created by THEGizmo:
+- laeIdleProj02.col
+- mall_01_SFS.col
+- aircarpark_09_SFSe.col
 
-List of repair details for laeIdleProj02.col:
+List of repair details for laeIdleProj02.col, mall_01_SFS.col, aircarpark_09_SFSe.col:
 -- Isolated vertexes removed
 -- Polygons slightly optimized
 -- Holes patched

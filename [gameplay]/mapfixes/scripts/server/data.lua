@@ -83,5 +83,17 @@ mapFixComponents = {
         modelsToReplace = {
             { modelID = 5475, colPath = "laeIdleProj02.col" }
         },
-    }
+    },
+    ["mall_01_SFS"] = {
+        -- Fixes the collision of shopping mall building in San Fierro
+        modelsToReplace = {
+            { modelID = 10974, colPath = "mall_01_SFS.col" }
+        },
+    },
+    ["aircarpark_09_SFSe"] = {
+        -- Fixed a bollard collision in the San Fierro Airport Tunnel
+        modelsToReplace = {
+            { modelID = 10786, colPath = "aircarpark_09_SFSe.col" }
+        },
+    },
 }

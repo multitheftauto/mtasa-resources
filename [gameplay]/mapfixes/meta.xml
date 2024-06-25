@@ -12,7 +12,11 @@
 		<setting name="*garage_doherty_interior" value="true" desc="Enable Doherty Safehouse Garage open-world interior map" accept="true,false"/>
 		<setting name="*nodamage_crackfactory_interior" value="true" desc="Enable Undamaged SF Crack Factory open-world interior map" accept="true,false"/>
 		<setting name="*laeIdleProj02" value="true" desc="Enable laeIdleProj02 (Idlewood) Buildings collision fix" accept="true,false"/>
+		<setting name="*mall_01_SFS" value="true" desc="Enable mall_01_SFS Buildings collision fix" accept="true,false"/>
+		<setting name="*aircarpark_09_SFSe" value="true" desc="Enable aircarpark_09_SFSe Tunnel collision fix" accept="true,false"/>
 	</settings>
 
 	<file src="models/laeIdleProj02.col"/>
+	<file src="models/mall_01_SFS.col"/>
+	<file src="models/aircarpark_09_SFSe.col"/>
 </meta>
