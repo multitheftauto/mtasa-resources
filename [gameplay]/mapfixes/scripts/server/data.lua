@@ -1,22 +1,26 @@
 mapFixComponents = {
     ["crack_palace_interior"] = {
-        -- Adds the original interior of Big Smoke's Crack Palace, objects taken from carter.ipl
+        -- Adds the original interior of Big Smoke's Crack Palace
         buildingsToSpawn = {
+            -- Object positions taken from carter.ipl
             { 17933, 2532.992188, -1289.789062, 39.281250, 0, 0, 0 }, -- carter-light15b
             { 17946, 2533.820312, -1290.554688, 36.945312, 0, 0, 0 }, -- carter_ground
         },
     },
     ["atrium_lobby_interior"] = {
-        -- Removes the doors of the atrium and places the original interior inside, objects taken from gen_int1.ipl
+        -- Removes the doors of the atrium and places the original interior inside
         buildingsToSpawn = {
+            -- Object positions taken from gen_int1.ipl
             { 14675, 1719.75,     -1655.765625, 30.1953125, 0, 0, 0 }, -- Hotelatrium_LAn
             { 14674, 1721.632813, -1655.1875,   24.3125,    0, 0, 0 }, -- hotelferns1_LAn
         },
         worldModelsToRemove = {
-            { 1537, 5, 1725.4, -1637.4, 19.2 }, -- Gen_doorEXT16
-            { 1533, 5, 1728.4, -1637.4, 19.2 }, -- Gen_doorEXT12
-            { 1537, 5, 1700.1, -1669.4, 19.2 }, -- Gen_doorEXT16
-            { 1533, 5, 1700.1, -1669.4, 19.2 }, -- Gen_doorEXT12
+            -- Interior -1 needs to be used because these objects are spawned in Interior 13 (in lan_stream3.ipl)  
+            -- which causes them to appear in all interiors (GTA:SA behavior)
+            { 1537, 5, 1725.4, -1637.4, 19.2, -1 }, -- Gen_doorEXT16
+            { 1533, 5, 1728.4, -1637.4, 19.2, -1 }, -- Gen_doorEXT12
+            { 1537, 5, 1700.1, -1669.4, 19.2, -1 }, -- Gen_doorEXT16
+            { 1533, 5, 1700.1, -1669.4, 19.2, -1 }, -- Gen_doorEXT12
         },
         objectsWithCustomPropertiesGroupToSpawn = {
             { modelID = 1533, physicalPropertiesGroup = 147, x = 1700.132812, y = -1666.40625, z = 19.210938, rx = 0, ry = -0, rz = -90 },
@@ -26,8 +30,9 @@ mapFixComponents = {
         },
     },
     ["garage_doherty_interior"] = {
-        -- Adds the original Doherty Safehouse Garage interior, objects taken from sfse_stream5.ipl
+        -- Adds the original Doherty Safehouse Garage interior
         buildingsToSpawn = {
+            -- Object positions taken from sfse_stream5.ipl
             { 11389, -2048.11719, 166.71875, 30.97656, 0.00000, 0.00000, 0.00000 }, -- hubinterior_SFS
             { 11388, -2048.17969, 166.71875, 34.51563, 0.00000, 0.00000, 0.00000 }, -- hubintroof_SFSe
             { 11390, -2048.17969, 166.71875, 32.22656, 0.00000, 0.00000, 0.00000 }, -- hubgirders_SFSE
@@ -41,8 +46,9 @@ mapFixComponents = {
         },
     },
     ["nodamage_crackfactory_interior"] = {
-        -- Removes the destroyed SF factory building, and adds the original interior, objects taken from crack.ipl
+        -- Removes the destroyed SF factory building, and adds the original interior
         buildingsToSpawn = {
+            -- Object positions taken from crack.ipl
             { 11007, -2164.45313, -248.00000, 40.78125, 0.00000, 0.00000, 0.00000 }, -- crack_wins_SFS
             { 11085, -2164.45313, -237.61719, 41.40625, 0.00000, 0.00000, 0.00000 }, -- crack_int1
             { 11086, -2164.45313, -237.39063, 43.42188, 0.00000, 0.00000, 0.00000 }, -- crack_int2
@@ -72,10 +78,10 @@ mapFixComponents = {
             { 944,   -2180.39063, -247.46094, 36.39844, 0.00000, 0.00000, -90 },   -- Packing_carates04
         },
         worldModelsToRemove = {
-            { 11088, 60, -2166.875,  -236.51562, 40.85938 }, -- CF_ext_dem_SFS
-            { 11282, 60, -2166.875,  -236.51562, 40.85938 }, -- (LOD) CF_ext_dem_SFS
-            { 11235, 15, -2180.4531, -261.28906, 37.99219 }, -- crackfactwalkd
-            { 11236, 25, -2164.4531, -255.39062, 38.125 }, -- crackfactwalke
+            { 11088, 60, -2166.875,  -236.51562, 40.85938, 0 }, -- CF_ext_dem_SFS
+            { 11282, 60, -2166.875,  -236.51562, 40.85938, 0 }, -- (LOD) CF_ext_dem_SFS
+            { 11235, 15, -2180.4531, -261.28906, 37.99219, 0 }, -- crackfactwalkd
+            { 11236, 25, -2164.4531, -255.39062, 38.125, 0 }, -- crackfactwalke
         },
     },
     ["laeIdleProj02"] = {
@@ -91,7 +97,7 @@ mapFixComponents = {
         },
     },
     ["aircarpark_09_SFSe"] = {
-        -- Fixed a bollard collision in the San Fierro Airport Tunnel
+        -- Fixes a bollard collision in the San Fierro Airport Tunnel
         modelsToReplace = {
             { modelID = 10786, colPath = "aircarpark_09_SFSe.col" }
         },
