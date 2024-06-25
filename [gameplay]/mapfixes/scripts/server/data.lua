@@ -15,7 +15,7 @@ mapFixComponents = {
             { 14674, 1721.632813, -1655.1875,   24.3125,    0, 0, 0 }, -- hotelferns1_LAn
         },
         worldModelsToRemove = {
-            -- Interior -1 needs to be used because these objects are spawned in Interior 13 (in lan_stream3.ipl)  
+            -- Interior -1 needs to be used because these objects are spawned in Interior 13 (in lan_stream3.ipl)
             -- which causes them to appear in all interiors (GTA:SA behavior)
             { 1537, 5, 1725.4, -1637.4, 19.2, -1 }, -- Gen_doorEXT16
             { 1533, 5, 1728.4, -1637.4, 19.2, -1 }, -- Gen_doorEXT12
