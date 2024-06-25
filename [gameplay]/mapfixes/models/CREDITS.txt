@@ -1,0 +1,3 @@
+Credits of the modified game models contained in this folder:
+
+- laeIdleProj02.col: Optimized and fixed collision created by THEGizmo

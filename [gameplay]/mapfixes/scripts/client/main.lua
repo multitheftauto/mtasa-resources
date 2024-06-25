@@ -4,6 +4,14 @@ addEvent("mapfixes:client:togOneComponent", true)
 local mapFixComponents = {}
 
 local function loadOneMapFixComponent(name, data)
+    -- Restore previously replaced models if any
+    local replaceModels = data.replaceModels
+    if replaceModels then
+        for _, v in pairs(replaceModels) do
+            engineRestoreCOL(v.modelID)
+            engineRestoreModel(v.modelID)
+        end
+    end
     -- Clear the previous elements if any
     local createdElements = data.createdElements
     if createdElements then
@@ -42,6 +50,19 @@ local function loadOneMapFixComponent(name, data)
         return
     end
 
+    -- Replace models if any
+    if replaceModels then
+        for _, v in pairs(replaceModels) do
+            if v.colPath then
+                local colElement = engineLoadCOL("models/" .. v.colPath)
+                if colElement then
+                    engineReplaceCOL(colElement, v.modelID)
+                    if not data.createdElements then data.createdElements = {} end
+                    data.createdElements[#data.createdElements + 1] = colElement
+                end
+            end
+        end
+    end
     -- Create the new elements if any
     local spawnBuildings = data.spawnBuildings
     if spawnBuildings then

@@ -78,4 +78,10 @@ mapFixComponents = {
             {11236, 25, -2164.4531, -255.39062, 38.125}, -- crackfactwalke
         },
     },
+    ["laeIdleProj02"] = {
+        -- Fixes the collision of these apartment complex buildings in Idlewood
+        replaceModels = {
+            {modelID=5475, colPath="laeIdleProj02.col"}
+        },
+    }
 }
