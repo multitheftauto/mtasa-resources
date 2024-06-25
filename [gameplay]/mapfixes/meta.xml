@@ -11,7 +11,7 @@
 		<setting name="*atrium_lobby_interior" value="true" friendlyname="Enable Atrium lobby entrance open-world interior map" accept="true,false"/>
 		<setting name="*garage_doherty_interior" value="true" friendlyname="Enable Doherty Safehouse Garage open-world interior map" accept="true,false"/>
 		<setting name="*nodamage_crackfactory_interior" value="true" friendlyname="Enable Undamaged SF Crack Factory open-world interior map" accept="true,false"/>
-		<setting name="*laeIdleProj02" value="true" friendlyname="Enable laeIdleProj02.dff (Idlewood) Buildings collision fix" accept="true,false"/>
+		<setting name="*laeIdleProj02" value="true" friendlyname="Enable laeIdleProj02 (Idlewood) Buildings collision fix" accept="true,false"/>
 	</settings>
 
 	<file src="models/laeIdleProj02.col"/>
