@@ -5,9 +5,9 @@ local mapFixComponents = {}
 
 local function loadOneMapFixComponent(name, data)
     -- Restore previously replaced models if any
-    local replaceModels = data.replaceModels
-    if replaceModels then
-        for _, v in pairs(replaceModels) do
+    local modelsToReplace = data.modelsToReplace
+    if modelsToReplace then
+        for _, v in pairs(modelsToReplace) do
             engineRestoreCOL(v.modelID)
             engineRestoreModel(v.modelID)
         end
@@ -31,16 +31,16 @@ local function loadOneMapFixComponent(name, data)
         data.allocatedIDs = {}
     end
     -- Restore the previous removed models if any
-    local removeWorldModels = data.removeWorldModels
-    if removeWorldModels then
-        for _, v in pairs(removeWorldModels) do
+    local worldModelsToRemove = data.worldModelsToRemove
+    if worldModelsToRemove then
+        for _, v in pairs(worldModelsToRemove) do
             restoreWorldModel(unpack(v))
         end
     end
     -- Close previously opened garages if any
-    local garageIDsForInteriors = data.garageIDsForInteriors
-    if garageIDsForInteriors then
-        for _, garageID in pairs(garageIDsForInteriors) do
+    local garageIDsForInteriorsToOpen = data.garageIDsForInteriorsToOpen
+    if garageIDsForInteriorsToOpen then
+        for _, garageID in pairs(garageIDsForInteriorsToOpen) do
             setGarageOpen(garageID, false)
         end
     end
@@ -51,8 +51,8 @@ local function loadOneMapFixComponent(name, data)
     end
 
     -- Replace models if any
-    if replaceModels then
-        for _, v in pairs(replaceModels) do
+    if modelsToReplace then
+        for _, v in pairs(modelsToReplace) do
             if v.colPath then
                 local colElement = engineLoadCOL("models/" .. v.colPath)
                 if colElement then
@@ -64,9 +64,9 @@ local function loadOneMapFixComponent(name, data)
         end
     end
     -- Create the new elements if any
-    local spawnBuildings = data.spawnBuildings
-    if spawnBuildings then
-        for _, v in pairs(spawnBuildings) do
+    local buildingsToSpawn = data.buildingsToSpawn
+    if buildingsToSpawn then
+        for _, v in pairs(buildingsToSpawn) do
             local building = createBuilding(unpack(v))
             if building then
                 if not data.createdElements then data.createdElements = {} end
@@ -74,9 +74,9 @@ local function loadOneMapFixComponent(name, data)
             end
         end
     end
-    local spawnObjectsWithCustomPropertiesGroup = data.spawnObjectsWithCustomPropertiesGroup
-    if spawnObjectsWithCustomPropertiesGroup then
-        for _, v in pairs(spawnObjectsWithCustomPropertiesGroup) do
+    local objectsWithCustomPropertiesGroupToSpawn = data.objectsWithCustomPropertiesGroupToSpawn
+    if objectsWithCustomPropertiesGroupToSpawn then
+        for _, v in pairs(objectsWithCustomPropertiesGroupToSpawn) do
             if not data.allocatedIDs then data.allocatedIDs = {} end
             local allocatedID = engineRequestModel("object", v.modelID)
             if allocatedID then
@@ -91,14 +91,14 @@ local function loadOneMapFixComponent(name, data)
         end
     end
     -- Remove world models if any
-    if removeWorldModels then
-        for _, v in pairs(removeWorldModels) do
+    if worldModelsToRemove then
+        for _, v in pairs(worldModelsToRemove) do
             removeWorldModel(unpack(v))
         end
     end
     -- Open garages if any
-    if garageIDsForInteriors then
-        for _, garageID in pairs(garageIDsForInteriors) do
+    if garageIDsForInteriorsToOpen then
+        for _, garageID in pairs(garageIDsForInteriorsToOpen) do
             setGarageOpen(garageID, true)
         end
     end

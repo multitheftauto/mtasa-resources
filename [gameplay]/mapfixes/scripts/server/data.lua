@@ -1,24 +1,24 @@
 mapFixComponents = {
     ["crack_palace_interior"] = {
         -- Adds the original interior of Big Smoke's Crack Palace, objects taken from carter.ipl
-        spawnBuildings = {
+        buildingsToSpawn = {
             {17933, 2532.992188, -1289.789062, 39.281250, 0, 0, 0}, -- carter-light15b
             {17946, 2533.820312, -1290.554688, 36.945312, 0, 0, 0}, -- carter_ground
         },
     },
     ["atrium_lobby_interior"] = {
         -- Removes the doors of the atrium and places the original interior inside, objects taken from gen_int1.ipl
-        spawnBuildings = {
+        buildingsToSpawn = {
             {14675, 1719.75, -1655.765625, 30.1953125, 0, 0, 0}, -- Hotelatrium_LAn
             {14674, 1721.632813, -1655.1875, 24.3125, 0, 0, 0}, -- hotelferns1_LAn
         },
-        removeWorldModels = {
+        worldModelsToRemove = {
             {1537, 5, 1725.4, -1637.4, 19.2}, -- Gen_doorEXT16
             {1533, 5, 1728.4, -1637.4, 19.2}, -- Gen_doorEXT12
             {1537, 5, 1700.1, -1669.4, 19.2}, -- Gen_doorEXT16
             {1533, 5, 1700.1, -1669.4, 19.2}, -- Gen_doorEXT12
         },
-        spawnObjectsWithCustomPropertiesGroup = {
+        objectsWithCustomPropertiesGroupToSpawn = {
             {modelID=1533, physicalPropertiesGroup=147, x=1700.132812, y=-1666.40625, z=19.210938, rx=0, ry=-0, rz=-90},
             {modelID=1537, physicalPropertiesGroup=147, x=1700.132812, y=-1669.421875, z=19.210938, rx=0, ry=0, rz=-90},
             {modelID=1537, physicalPropertiesGroup=147, x=1725.429688, y=-1637.4375, z=19.210938, rx=0, ry=0, rz=-180},
@@ -27,7 +27,7 @@ mapFixComponents = {
     },
     ["garage_doherty_interior"] = {
         -- Adds the original Doherty Safehouse Garage interior, objects taken from sfse_stream5.ipl
-        spawnBuildings = {
+        buildingsToSpawn = {
             {11389, -2048.11719, 166.71875, 30.97656, 0.00000, 0.00000, 0.00000}, -- hubinterior_SFS
             {11388, -2048.17969, 166.71875, 34.51563, 0.00000, 0.00000, 0.00000}, -- hubintroof_SFSe
             {11390, -2048.17969, 166.71875, 32.22656, 0.00000, 0.00000, 0.00000}, -- hubgirders_SFSE
@@ -36,13 +36,13 @@ mapFixComponents = {
             {11393, -2043.51563, 161.34375, 29.33594, 0.00000, 0.00000, 0.00000}, -- hubprops1_SFS
             {11392, -2047.75781, 168.14063, 27.88281, 0.00000, 0.00000, 0.00000}, -- hubfloorstains_SFSe
         },
-        garageIDsForInteriors = {
+        garageIDsForInteriorsToOpen = {
             22, -- Mission Garage (Doherty)
         },
     },
     ["nodamage_crackfactory_interior"] = {
         -- Removes the destroyed SF factory building, and adds the original interior, objects taken from crack.ipl
-        spawnBuildings = {
+        buildingsToSpawn = {
             {11007, -2164.45313, -248.00000, 40.78125, 0.00000, 0.00000, 0.00000}, -- crack_wins_SFS
             {11085, -2164.45313, -237.61719, 41.40625, 0.00000, 0.00000, 0.00000}, -- crack_int1
             {11086, -2164.45313, -237.39063, 43.42188, 0.00000, 0.00000, 0.00000}, -- crack_int2
@@ -71,7 +71,7 @@ mapFixComponents = {
             {944, -2146.06250, -251.00781, 36.39844, 0.00000, 0.00000, -90}, -- Packing_carates04
             {944, -2180.39063, -247.46094, 36.39844, 0.00000, 0.00000, -90}, -- Packing_carates04
         },
-        removeWorldModels = {
+        worldModelsToRemove = {
             {11088, 60, -2166.875, -236.51562, 40.85938}, -- CF_ext_dem_SFS
             {11282, 60, -2166.875, -236.51562, 40.85938}, -- (LOD) CF_ext_dem_SFS
             {11235, 15, -2180.4531, -261.28906, 37.99219}, -- crackfactwalkd
@@ -80,7 +80,7 @@ mapFixComponents = {
     },
     ["laeIdleProj02"] = {
         -- Fixes the collision of these apartment complex buildings in Idlewood
-        replaceModels = {
+        modelsToReplace = {
             {modelID=5475, colPath="laeIdleProj02.col"}
         },
     }
