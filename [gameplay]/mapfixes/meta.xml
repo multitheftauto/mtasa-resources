@@ -16,9 +16,4 @@
 		<setting name="*aircarpark_09_SFSe" value="[true]" desc="Enable aircarpark_09_SFSe Tunnel collision fix" accept="true,false"/>
 		<setting name="*CE_groundPALO03" value="[true]" desc="Enable CE_groundPALO03 Bridge collision fix" accept="true,false"/>
 	</settings>
-
-	<file src="models/laeIdleProj02.col"/>
-	<file src="models/mall_01_SFS.col"/>
-	<file src="models/aircarpark_09_SFSe.col"/>
-	<file src="models/CE_groundPALO03.col"/>
 </meta>
