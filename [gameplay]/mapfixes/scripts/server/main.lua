@@ -1,6 +1,7 @@
 -- Fetch the settings on script load
-for name, data in pairs(mapFixComponents) do
-    data.enabled = get(name) == "true"
+for settingName, data in pairs(mapFixComponents) do
+    local value = get(settingName)
+    data.enabled = value == true
 end
 
 local function handlePlayerResourceStart(res)
@@ -21,7 +22,7 @@ local function handleSettingChange(settingName)
 
     -- Fetch the new setting value
     local newValue = get(settingName)
-    data.enabled = newValue == "true"
+    data.enabled = newValue == true
 
     -- Trigger for all players
     triggerClientEvent("mapfixes:client:togOneComponent", resourceRoot, settingName, data.enabled)
