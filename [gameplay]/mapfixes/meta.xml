@@ -8,7 +8,7 @@
 
 	<settings>
 		<setting name="*crack_palace_interior" value="[true]" desc="Enable Big Smoke Crack Palace open-world interior map" accept="true,false"/>
-		<setting name="*atrium_lobby_interior" value="[true]" desc="Enable Atrium lobby entrance open-world interior map" accept="true,false"/>
+		<setting name="*atrium_lobby_interior" value="[true]" desc="Enable Commerce Atrium lobby open-world interior map" accept="true,false"/>
 		<setting name="*garage_doherty_interior" value="[true]" desc="Enable Doherty Safehouse Garage open-world interior map" accept="true,false"/>
 		<setting name="*nodamage_crackfactory_interior" value="[true]" desc="Enable restored Undamaged SF Crack Factory with open-world interior map" accept="true,false"/>
 	</settings>
