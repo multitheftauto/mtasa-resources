@@ -195,7 +195,7 @@ local aACLFunctions = {
     [ACL_USERS] = function(action,group,object)
         if (action == ACL_GET) then
             local data = {}
-            for k,obj in ipairs(aclGroupListObjects(aclGetGroup(group))) do
+            for _,obj in ipairs(aclGroupListObjects(aclGetGroup(group))) do
                 if (obj:sub(1,5) == 'user.') then
                     table.insert(data, obj)
                 end
@@ -216,7 +216,29 @@ local aACLFunctions = {
             end
         end
     end,
-    [ACL_RESOURCES] = function()
+    [ACL_RESOURCES] = function(action,group,object)
+        if (action == ACL_GET) then
+            local data = {}
+            for _,obj in ipairs(aclGroupListObjects(aclGetGroup(group))) do
+                if (obj:sub(1,9) == 'resource.') then
+                    table.insert(data, obj)
+                end
+            end
+
+            triggerClientEvent(client, EVENT_ACL, client, ACL_RESOURCES, group, data)
+        elseif (action == ACL_REMOVE) then
+            if (aclGroupRemoveObject(aclGetGroup(group), object)) then
+                messageBox(client, "Successfully removed resource '"..object:gsub('resource.','').."' from the '"..group.."' ACL group", MB_INFO)
+            else
+                messageBox(client, "Failed to removed resource '"..object:gsub('resource.','').."' from the '"..group.."' ACL group", MB_INFO)
+            end
+        elseif (action == ACL_ADD) then
+            if (aclGroupAddObject(aclGetGroup(group), 'resource.'..object)) then
+                messageBox(client, "Successfully added resource '"..object:gsub('resource.','').."' to the '"..group.."' ACL group", MB_INFO)
+            else
+                messageBox(client, "Failed to added resource '"..object:gsub('resource.','').."' to the '"..group.."' ACL group", MB_INFO)
+            end
+        end
     end,
     [ACL_ACL] = function(action, group)
         local data = {}
@@ -230,12 +252,17 @@ local aACLFunctions = {
         triggerClientEvent(client, EVENT_ACL, client, ACL_ACL, group, data)
     end
 }
+
 addEvent(EVENT_ACL, true)
-addEventHandler(
-    EVENT_ACL,
-    root,
+addEventHandler(EVENT_ACL, root,
     function(action, ...)
-        aACLFunctions[action](...)
+        if not hasObjectPermissionTo( client, "general.tab_acl" ) then
+            outputServerLog( ( "[ADMIN SECURITY]: Player %s [%s %s] attempted to tamper with server ACL without proper rights" ):format( client.name, client.ip, client.serial ) )
+            return
+        end
+        if action then
+            aACLFunctions[action](...)
+        end
     end
 )
 

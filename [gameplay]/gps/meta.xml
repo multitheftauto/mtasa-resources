@@ -1,5 +1,5 @@
 <meta>
-	<info author="arc_"/>
+	<info author="arc_" type="script" version="1.0.0"/>
 
 	<script src="util.lua" type="client"/>
 	<script src="client.lua" type="client"/>

@@ -77,7 +77,7 @@
     <right name="command.setfpskicker" access="true" />
     <right name="command.setidlekicker" access="true" />
     <right name="command.clearchat" access="true" />
-    <right name="command.setserverconf" access="true" />
+    <right name="command.setconfig" access="true" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
     <right name="command.unban" access="true" />
@@ -160,7 +160,7 @@
     <right name="command.setfpskicker" access="false" />
     <right name="command.setidlekicker" access="false" />
     <right name="command.clearchat" access="true" />
-    <right name="command.setserverconf" access="false" />
+    <right name="command.setconfig" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
     <right name="command.unban" access="true" />
@@ -243,7 +243,7 @@
     <right name="command.setfpskicker" access="false" />
     <right name="command.setidlekicker" access="false" />
     <right name="command.clearchat" access="true" />
-    <right name="command.setserverconf" access="false" />
+    <right name="command.setconfig" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="false" />
     <right name="command.unban" access="false" />
@@ -323,7 +323,7 @@
     <right name="command.setfpskicker" access="false" />
     <right name="command.setidlekicker" access="false" />
     <right name="command.clearchat" access="false" />
-    <right name="command.setserverconf" access="false" />
+    <right name="command.setconfig" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="false" />
     <right name="command.unban" access="false" />

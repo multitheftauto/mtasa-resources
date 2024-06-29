@@ -1,4 +1,4 @@
-<map mod="deathmatch" author="KWKSND" version="1.0">
+<map author="KWKSND" version="1.0">
 
     <base team="team1" teamName="Blue" teamColor="0,0,255" posX="162.69358825684" posY="91.074653625488" posZ="5.221531867981" rot="270" markerX="162.69358825684" markerY="91.074653625488" markerZ="2" markercolor="0,0,255" blip="58" skins="114,116,115" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />
     <base team="team2" teamName="Red" teamColor="255,0,0" posX="308.81741333008" posY="100.28813934326" posZ="6.3144116401672" rot="270" markerX="308.81741333008" markerY="100.28813934326" markerZ="3" markercolor="255,0,0" blip="59" skins="18,19" weapon1="5,1" weapon2="24,200" weapon3="25,50" weapon4="29,350" weapon5="33,150" weapon6="45,1" />

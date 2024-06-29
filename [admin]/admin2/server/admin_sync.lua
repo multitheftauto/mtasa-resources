@@ -7,17 +7,38 @@
 *	Original File by lil_Toady
 *
 **************************************]]
+
+local function hasClientPermissionTo(strRight)
+    if client and not hasObjectPermissionTo(client, strRight) then
+        outputServerLog( ( "[ADMIN SECURITY]: Player %s [%s %s] attempted to perform admin data sync without proper rights (%s)" ):format( client.name, client.ip, client.serial, strRight ) )
+        return false
+    end
+    return true
+end
+
 addEvent(EVENT_SYNC, true)
 addEventHandler(
     EVENT_SYNC,
     root,
     function(type, data)
+
+        if not hasClientPermissionTo("general.adminpanel") then
+            return
+        end
+
         local tableOut = {}
         local theSource = root
+
         if (type == SYNC_PLAYER) then
+
             if (not isElement(data)) then
                 return
             end
+
+            if not hasClientPermissionTo( "general.tab_players" ) then
+                return
+            end
+
             aPlayers[client]["sync"] = data
             tableOut["mute"] = isPlayerMuted(data)
             tableOut["freeze"] = isElementFrozen(data)
@@ -33,6 +54,7 @@ addEventHandler(
             end
             tableOut["account"] = getAccountName(account)
             theSource = data
+
         elseif (type == SYNC_PLAYERS) then
             for id, player in ipairs(getElementsByType("player")) do
                 tableOut[player] = {}
@@ -42,7 +64,13 @@ addEventHandler(
                 tableOut[player].country = aPlayers[player]["country"]
                 tableOut[player].countryname = aPlayers[player]["countryname"]
             end
+
         elseif (type == SYNC_PLAYERACL) then
+            -- Not called by client-side
+            if client then
+                return
+            end
+
             local player = data
             if isElement(player) then
                 theSource = player
@@ -57,7 +85,12 @@ addEventHandler(
                     end
                 end
             end
+
         elseif (type == SYNC_RESOURCES) then
+            if not hasClientPermissionTo("command.listresources") then
+                return
+            end
+
             tableOut = {}
             local resourceTable = getResources()
             for id, resource in ipairs(resourceTable) do
@@ -69,7 +102,12 @@ addEventHandler(
                 end
                 table.insert(tableOut[group], {name = name, state = state})
             end
+
         elseif (type == SYNC_RESOURCE) then
+            if not hasClientPermissionTo("command.listresources") then
+                return
+            end
+
             local resource = getResourceFromName(data)
             tableOut.name = data
             tableOut.info = {}
@@ -81,7 +119,12 @@ addEventHandler(
                 tableOut.info.description = getResourceInfo(resource, "description") or nil
                 tableOut.info.settings = getResourceSettings(data, false)
             end
+
         elseif (type == SYNC_ADMINS) then
+            if not hasClientPermissionTo("general.tab_adminchat") then
+                return
+            end
+
             for id, player in ipairs(aPlayers) do
                 tableOut[player] = {}
                 tableOut[player]["admin"] = hasObjectPermissionTo(player, "general.adminpanel")
@@ -101,19 +144,38 @@ addEventHandler(
                     end
                 end
             end
+
         elseif (type == SYNC_SERVER) then
+            if not hasClientPermissionTo("general.tab_server") then
+                return
+            end
+
             tableOut["name"] = getServerName()
             tableOut["players"] = getMaxPlayers()
             tableOut["game"] = getGameType()
             tableOut["map"] = getMapName()
             tableOut["password"] = getServerPassword()
+
         elseif (type == SYNC_BAN) then
+            if client then
+                return
+            end
             tableOut = data
+
         elseif (type == SYNC_BANS) then
+            if not hasClientPermissionTo("general.tab_bans") then
+                return
+            end
+
             for id, ban in pairs(getBansList()) do
                 tableOut[id] = getBanData(ban)
             end
+
         elseif (type == SYNC_MESSAGES) then
+            if not hasClientPermissionTo( "command.listmessages" ) then
+                return
+            end
+
             local unread, total = 0, 0
             for id, msg in ipairs(aReports) do
                 if (not msg.read) then
@@ -124,7 +186,7 @@ addEventHandler(
             tableOut["unread"] = unread
             tableOut["total"] = total
         end
-        triggerClientEvent(client, EVENT_SYNC, theSource, type, tableOut)
+        triggerClientEvent(client or source, EVENT_SYNC, theSource, type, tableOut)
     end
 )
 

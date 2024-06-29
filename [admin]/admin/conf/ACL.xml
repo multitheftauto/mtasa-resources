@@ -56,6 +56,12 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="true" />
     <right name="command.restart" access="true" />
+    <!--ACL Manager related-->
+    <right name="command.aclmanager" access="true" />
+    <right name="command.aclcreate" access="true" />
+    <right name="command.acldestroy" access="true" />
+    <right name="command.acladd" access="true" />
+    <right name="command.aclremove" access="true" />
     <!--Server related-->
     <right name="command.setpassword" access="true" />
     <right name="command.setwelcome" access="true" />
@@ -137,6 +143,12 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="false" />
     <right name="command.restart" access="true" />
+    <!--ACL Manager related-->
+    <right name="command.aclmanager" access="false" />
+    <right name="command.aclcreate" access="false" />
+    <right name="command.acldestroy" access="false" />
+    <right name="command.acladd" access="false" />
+    <right name="command.aclremove" access="false" />
     <!--Server related-->
     <right name="command.setpassword" access="true" />
     <right name="command.setwelcome" access="true" />
@@ -217,6 +229,12 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="false" />
     <right name="command.restart" access="false" />
+    <!--ACL Manager related-->
+    <right name="command.aclmanager" access="false" />
+    <right name="command.aclcreate" access="false" />
+    <right name="command.acldestroy" access="false" />
+    <right name="command.acladd" access="false" />
+    <right name="command.aclremove" access="false" />
     <!--Server related-->
     <right name="command.setpassword" access="false" />
     <right name="command.setwelcome" access="false" />
@@ -297,6 +315,12 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="false" />
     <right name="command.restart" access="false" />
+    <!--ACL Manager related-->
+    <right name="command.aclmanager" access="false" />
+    <right name="command.aclcreate" access="false" />
+    <right name="command.acldestroy" access="false" />
+    <right name="command.acladd" access="false" />
+    <right name="command.aclremove" access="false" />
     <!--Server related-->
     <right name="command.setpassword" access="false" />
     <right name="command.setwelcome" access="false" />

@@ -1,4 +1,7 @@
 --[[-----------DOCUMENTATION---------------
+WARNING:
+This resource is deprecated as the new 'dialogs' resource replaces it.
+
 SYNTAX:
 guibutton,guibutton,guibutton = guiShowMessageBox ( string message, string boxType, string title [, string button1, string button2, stringbutton3] )
 REQUIRED ARGUMENTS
@@ -111,6 +114,9 @@ function guiShowMessageBox ( message, boxType, title, forceShowing, button1, but
 	if ( forceShowing ) then
 		guiAttached[cover] = aMessage.Form
 	end
+
+	outputDebugString("This resource is deprecated as the new 'dialogs' resource replaces it.", 2)
+
 	return guiButton1, guiButton2, guiButton3
 end
 

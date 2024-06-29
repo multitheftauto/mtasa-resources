@@ -42,9 +42,9 @@ addEventHandler(
             end
         end
         if (type == SESSION_UPDATE or type == SESSION_START) then
-            if (hasObjectPermissionTo(client, "general.adminpanel")) then
+            if (hasObjectPermissionTo(client or source, "general.adminpanel")) then
                 local tableOut = {}
-                local account = "user." .. getAccountName(getPlayerAccount(client))
+                local account = "user." .. getAccountName(getPlayerAccount(client or source))
                 for gi, group in ipairs(aclGroupList()) do
                     for oi, object in ipairs(aclGroupListObjects(group)) do
                         if ((object == account) or (object == "user.*")) then
@@ -61,7 +61,7 @@ addEventHandler(
                         end
                     end
                 end
-                triggerClientEvent(client, EVENT_SESSION, client, tableOut)
+                triggerClientEvent(client or source, EVENT_SESSION, client, tableOut)
             end
         end
     end
