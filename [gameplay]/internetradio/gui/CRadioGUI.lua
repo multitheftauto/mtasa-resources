@@ -14,6 +14,7 @@ local function initializeRadioGUI()
 	local screenX, screenY = guiGetScreenSize()
 	local radioWindowSizeX, radioWindowSizeY = 325, 380
 	local radioWindowPosX, radioWindowPosY = (screenX - 325)/1.1, (screenY - 380)/1.4
+	local allowRemoteSpeakers = getRadioSetting("allowRemoteSpeakers")
 
 	RADIO_GUI = {}
 	RADIO_GUI["Radio window"] = guiCreateWindow(radioWindowPosX, radioWindowPosY, radioWindowSizeX, radioWindowSizeY, "SPEAKER MUSIC (RADIO/MP3)", false)
@@ -24,7 +25,7 @@ local function initializeRadioGUI()
 	RADIO_GUI["Play/pause button"] = guiCreateButton(10, 235, 150, 30, "Play - Pause", false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Close button"] = guiCreateButton(162, 235, 150, 30, "Close", false, RADIO_GUI["Radio window"])
 
-	RADIO_GUI["Toggle remote speakers checkbox"] = guiCreateCheckBox(15, 345, 160, 17, "Toggle other speakers", false, false, RADIO_GUI["Radio window"])
+	RADIO_GUI["Toggle remote speakers checkbox"] = guiCreateCheckBox(15, 345, 160, 17, "Toggle other speakers", allowRemoteSpeakers, false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Toggle remote speakers label"] = guiCreateLabel(167, 345, 150, 17, "", false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Radio station URL column"] = guiGridListAddColumn(RADIO_GUI["Stream URLs gridlist"], "Radio station", 0.8)
 
@@ -40,8 +41,15 @@ local function initializeRadioGUI()
 	addEventHandler("onClientGUIClick", RADIO_GUI["Play/pause button"], onClientGUIClickToggleSpeaker, false)
 	addEventHandler("onClientGUIClick", RADIO_GUI["Destroy speaker button"], onClientGUIClickDestroySpeaker, false)
 	addEventHandler("onClientGUIClick", RADIO_GUI["Close button"], onClientGUIClickCloseRadioGUI, false)
+	addEventHandler("onClientGUIClick", RADIO_GUI["Toggle remote speakers checkbox"], onClientGUIClickToggleRemoteSpeakers, false)
 
 	return true
+end
+
+function onClientGUIClickToggleRemoteSpeakers()
+	local allowRemoteSpeakers = guiCheckBoxGetSelected(source)
+
+	setRadioSetting("allowRemoteSpeakers", allowRemoteSpeakers)
 end
 
 function toggleRadioGUI()
