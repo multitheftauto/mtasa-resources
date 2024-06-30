@@ -226,10 +226,10 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 				aLogMessages[type] = {}
 				local groups = 0
 				while ( xmlFindChild ( subnode, "group", groups ) ) do
-					aLogMessages[type][action] = {}
 					local group = xmlFindChild ( subnode, "group", groups )
 					local action = xmlNodeGetAttribute ( group, "action" )
 					local r, g, b = tonumber ( xmlNodeGetAttribute ( group, "r" ) ), tonumber ( xmlNodeGetAttribute ( group, "g" ) ), tonumber ( xmlNodeGetAttribute ( group, "b" ) )
+					aLogMessages[type][action] = {}
 					aLogMessages[type][action]["r"], aLogMessages[type][action]["g"], aLogMessages[type][action]["b"] = r or 0, g or 255, b or 255
 					if ( xmlFindChild ( group, "all", 0 ) ) then aLogMessages[type][action]["all"] = xmlNodeGetValue ( xmlFindChild ( group, "all", 0 ) ) end
 					if ( xmlFindChild ( group, "admin", 0 ) ) then aLogMessages[type][action]["admin"] = xmlNodeGetValue ( xmlFindChild ( group, "admin", 0 ) ) end
@@ -342,11 +342,6 @@ function iif ( cond, arg1, arg2 )
 	return arg2
 end
 
-local serialExp = "^" .. string.rep ( "[A-F0-9]", 32 ) .. "$"
-function isValidSerial ( serial )
-	return serial:match ( serialExp )
-end
-
 function getWeatherNameFromID ( weather )
 	return iif ( aWeathers[weather], aWeathers[weather], "Unknown" )
 end
@@ -449,12 +444,24 @@ function updatePlayerCountry ( player )
 	aPlayers[player]["country"] = isIP2CResourceRunning and exports.ip2c:getPlayerCountry ( player ) or false
 end
 
-function aPlayerInitialize ( player )
-	bindKey ( player, "p", "down", "admin" )
-	aPlayers[player] = {}
-	aPlayers[player]["money"] = getPlayerMoney ( player )
-	updatePlayerCountry ( player )
-	chatHistory[player] = {}
+local serialExp = "^" .. string.rep("[A-F0-9]", 32) .. "$"
+function isValidSerial(serial)
+    return serial:match(serialExp)
+end
+
+function aPlayerInitialize(player)
+    local serial = getPlayerSerial(player)
+
+    if (not isValidSerial(serial)) then
+        outputChatBox("LOG: " .. getPlayerName(player) .. " - Possibly tampered serial. Denied entry.")
+        kickPlayer(player, "5B Client verification mismatch.")
+    end
+
+    bindKey(player, "p", "down", "admin")
+    aPlayers[player] = {}
+    aPlayers[player]["money"] = getPlayerMoney(player)
+    updatePlayerCountry(player)
+    chatHistory[player] = {}
 end
 
 addEventHandler ( "onPlayerQuit", root, function ()
@@ -656,9 +663,22 @@ addEventHandler ( "aTeam", root, function ( action, name, r, g, b )
 	return false
 end )
 
+local aAdminRights = {
+	["settings"] = "general.tab_resources",
+	["resourcelist"] = "general.tab_resources",
+
+	["sync"] = "command.aclmanager",
+	["aclcreate"] = "command.aclcreate",
+	["acldestroy"] = "command.acldetroy",
+	["acladd"] = "command.acladd",
+	["aclremove"] = "command.aclremove",
+}
 addEvent ( "aAdmin", true )
 addEventHandler ( "aAdmin", root, function ( action, ... )
-	if checkClient( true, source, 'aAdmin', action ) then
+	if not action then
+		return
+	end
+	if checkClient( aAdminRights[action] or true, source, 'aAdmin', action ) then
 		return
 	end
 	local mdata, mdata2
@@ -1457,6 +1477,7 @@ addEventHandler ( "aServer", root, function ( action, data, data2 )
 end )
 
 addEventHandler ( "onPlayerChat", root, function ( message )
+	if not isElement(source) then return end
 	local size = #chatHistory[source]
 	if ( size == g_Prefs.maxchatmsgs ) then
 		table.remove( chatHistory[source], 1 )
@@ -1489,6 +1510,8 @@ function ( action, data )
 		return
 	end
 	if ( action == "new" ) then
+		--dont allow creating reports when reports are disabled
+		if ( get("reportsEnabled") ~= "true" ) then return end
 		local time = getRealTime()
 		local id = #aReports + 1
 		aReports[id] = {}
@@ -1524,7 +1547,7 @@ function ( action, data )
 	end
 	if ( hasObjectPermissionTo ( client or source, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
-			triggerClientEvent ( source, "aMessage", source, "get", aReports )
+			triggerClientEvent ( source, "aMessage", source, "get", aReports, get("reportsEnabled") )
 		elseif ( action == "read" ) then
 			if ( aReports[data] ) then
 				aReports[data].read = true
@@ -1547,6 +1570,7 @@ end
 
 addEvent ( "aModdetails", true )
 addEventHandler ( "aModdetails", resourceRoot, function ( action, player )
+	if source ~= resourceRoot then return end
 	if checkClient( false, client, 'aModdetails', action ) then return end
 	if ( hasObjectPermissionTo ( client, "general.adminpanel" ) ) then
 		if ( action == "get" ) then
@@ -1635,6 +1659,7 @@ addCommandHandler(get("adminChatCommandName"),
 
 addEventHandler('onElementDataChange', root,
 	function(dataName, oldValue )
+		if dataName == "superman:flying" or dataName == "hedit:saved" then return end
 		if getElementType(source)=='player' and checkClient( false, source, 'onElementDataChange', dataName ) then
 			setElementData( source, dataName, oldValue )
 			return
@@ -1647,11 +1672,15 @@ function checkClient(checkAccess,player,...)
 	if client and client ~= player then
 		local desc = table.concat({...}," ")
 		local ipAddress = getPlayerIP(client)
+		local playerSerial = getPlayerSerial(client)
+		local banReason = "admin checkClient (" .. tostring(desc) .. ")"
 		outputDebugString( "Admin security - Client/player mismatch from " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 1 )
 		cancelEvent()
-		if g_Prefs.clientcheckban then
-			local reason = "admin checkClient (" .. tostring(desc) .. ")"
-			addBan ( ipAddress, nil, nil, root, reason )
+		if g_Prefs.fakePacketsIPban then
+			addBan ( ipAddress, nil, nil, root, banReason, g_Prefs.fakePacketsIPbanLength )
+		end
+		if g_Prefs.fakePacketsSerialban then
+			addBan ( nil, nil, playerSerial, root, banReason, g_Prefs.fakePacketsSerialbanLength )
 		end
 		return true
 	end

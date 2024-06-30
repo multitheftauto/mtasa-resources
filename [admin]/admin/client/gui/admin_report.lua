@@ -13,6 +13,7 @@ local reportCategories
 local aSelectPlayer = nil
 
 function aReport ( )
+
 	if ( aReportForm == nil ) then
 		reportCategories = {}
 		for i,cat in ipairs( split( g_Prefs.reportCategories, string.byte(',') ) ) do
@@ -58,8 +59,7 @@ function aReport ( )
 	guiBringToFront ( aReportForm )
 	showCursor ( true )
 end
-addCommandHandler ( "report", aReport )
-
+addEventHandler( "aClientReports", root, aReport )
 
 function aReportClose ( )
 	if ( aReportForm ) then
