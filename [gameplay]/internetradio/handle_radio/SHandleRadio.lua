@@ -1,0 +1,152 @@
+-- #######################################
+-- ## Project: Internet radio			##
+-- ## Authors: MTA contributors			##
+-- ## Version: 1.0						##
+-- #######################################
+
+local playerSpeakers = {}
+
+function setPlayerSpeakerData(playerElement, speakerData)
+	local validElement = isElement(playerElement)
+
+	if (not validElement) then
+		return false
+	end
+
+	playerSpeakers[playerElement] = speakerData
+	triggerClientEvent(root, "onClientCreateSpeaker", playerElement, speakerData)
+
+	return true
+end
+
+function getPlayerSpeakerData(playerElement)
+	local validElement = isElement(playerElement)
+
+	if (not validElement) then
+		return false
+	end
+
+	local playerSpeakerData = playerSpeakers[playerElement]
+
+	return playerSpeakerData
+end
+
+function clearPlayerSpeaker(playerOrSpeaker)
+	for playerElement, speakerData in pairs(playerSpeakers) do
+		local speakerBox = speakerData.speakerBox
+		local matchingElement = (playerElement == playerOrSpeaker) or (speakerBox == playerOrSpeaker)
+
+		if (matchingElement) then
+			playerSpeakers[playerElement] = nil
+
+			return true
+		end
+	end
+
+	return false
+end
+
+function onServerCreateSpeaker(streamURL)
+	if (not client) then
+		return false
+	end
+
+	local validStreamURL = verifyRadioStreamURL(streamURL)
+
+	if (not validStreamURL) then
+		return false
+	end
+
+	local playerSpeakerData = getPlayerSpeakerData(client)
+
+	if (playerSpeakerData) then
+		local speakerBox = playerSpeakerData.speakerBox
+		local speakerElement = isElement(speakerBox)
+
+		if (speakerElement) then
+			destroyElement(speakerBox)
+		end
+	end
+
+	local playerPosX, playerPosY, playerPosZ = getElementPosition(client)
+	local playerInterior = getElementInterior(client)
+	local playerDimension = getElementDimension(client)
+
+	local boxPosX, boxPosY, boxPosZ = (playerPosX - 0.5), (playerPosY + 0.5), (playerPosZ - 1)
+	local boxRotX, boxRotY, boxRotZ = 0, 0, 0
+	local boxLowLOD = false
+	local boxElement = createObject(RADIO_BOX_MODEL, boxPosX, boxPosY, boxPosZ, boxRotX, boxRotY, boxRotZ, boxLowLOD)
+
+	setElementInterior(boxElement, playerInterior)
+	setElementDimension(boxElement, playerDimension)
+	setElementCollisionsEnabled(boxElement, false)
+
+	local speakerData = {
+		speakerBox = boxElement,
+		speakerStreamURL = streamURL,
+		speakerSoundMaxDistance = RADIO_MAX_SOUND_DISTANCE,
+		speakerPaused = false,
+	}
+
+	setPlayerSpeakerData(client, speakerData)
+end
+addEvent("onServerCreateSpeaker", true)
+addEventHandler("onServerCreateSpeaker", root, onServerCreateSpeaker)
+
+function onServerDestroySpeaker()
+	if (not client) then
+		return false
+	end
+
+	local playerSpeakerData = getPlayerSpeakerData(client)
+
+	if (not playerSpeakerData) then
+		return false
+	end
+
+	local speakerBox = playerSpeakerData.speakerBox
+	local speakerElement = isElement(speakerBox)
+
+	if (speakerElement) then
+		destroyElement(speakerBox)
+	end
+end
+addEvent("onServerDestroySpeaker", true)
+addEventHandler("onServerDestroySpeaker", root, onServerDestroySpeaker)
+
+function onServerToggleSpeaker()
+	if (not client) then
+		return false
+	end
+
+	local playerSpeakerData = getPlayerSpeakerData(client)
+
+	if (not playerSpeakerData) then
+		return false
+	end
+
+	local speakerPaused = playerSpeakerData.speakerPaused
+	local pauseNewState = (not speakerPaused)
+
+	playerSpeakerData.speakerPaused = pauseNewState
+	triggerClientEvent(root, "onClientToggleSpeaker", client, pauseNewState)
+end
+addEvent("onServerToggleSpeaker", true)
+addEventHandler("onServerToggleSpeaker", root, onServerToggleSpeaker)
+
+function syncSpeakers(startedResource)
+	local matchingResource = (startedResource == resource)
+
+	if (not matchingResource) then
+		return false
+	end
+
+	triggerClientEvent(source, "onClientSyncSpeakers", source, playerSpeakers)
+end
+addEventHandler("onPlayerResourceStart", root, syncSpeakers)
+
+function clearSpeakersOnDestroyQuit()
+	clearPlayerSpeaker(source)
+end
+addEventHandler("onPlayerQuit", root, clearSpeakersOnDestroyQuit)
+addEventHandler("onElementDestroy", resourceRoot, clearSpeakersOnDestroyQuit)
