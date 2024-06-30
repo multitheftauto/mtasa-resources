@@ -4,6 +4,9 @@
 -- ## Version: 1.0						##
 -- #######################################
 
+local isServer = (not triggerServerEvent)
+local playerDelays = {}
+
 function verifyRadioStreamURL(streamURL)
 	local urlType = type(streamURL)
 	local urlString = (urlType == "string")
@@ -27,3 +30,47 @@ function verifyRadioStreamURL(streamURL)
 
 	return true
 end
+
+function getOrSetPlayerDelay(playerElement, delayID, delayTime)
+	local validElement = isElement(playerElement)
+
+	if (not validElement) then
+		return false
+	end
+
+	local elementType = getElementType(playerElement)
+	local playerType = (elementType == "player")
+
+	if (not playerType) then
+		return false
+	end
+
+	local playerDelayData = playerDelays[playerElement]
+
+	if (not playerDelayData) then
+		playerDelays[playerElement] = {}
+		playerDelayData = playerDelays[playerElement]
+	end
+
+	local activeDelay = playerDelayData[delayID]
+	local timeNow = getTickCount()
+
+	if (activeDelay) then
+		local delayPassed = (timeNow > activeDelay)
+
+		if (not delayPassed) then
+			return false
+		end
+	end
+
+	local delayEndTime = (timeNow + delayTime)
+
+	playerDelayData[delayID] = delayEndTime
+
+	return true
+end
+
+function clearPlayersDelay()
+	playerDelays[source] = nil
+end
+addEventHandler(isServer and "onPlayerQuit" or "onClientPlayerQuit", root, clearPlayersDelay)

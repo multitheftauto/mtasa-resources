@@ -51,6 +51,12 @@ function onServerCreateSpeaker(streamURL)
 		return false
 	end
 
+	local createDelayPassed = getOrSetPlayerDelay(client, "create_speaker", RADIO_CREATE_SPEAKER_DELAY)
+
+	if (not createDelayPassed) then
+		return false
+	end
+
 	local validStreamURL = verifyRadioStreamURL(streamURL)
 
 	if (not validStreamURL) then
@@ -93,8 +99,40 @@ end
 addEvent("onServerCreateSpeaker", true)
 addEventHandler("onServerCreateSpeaker", root, onServerCreateSpeaker)
 
+function onServerToggleSpeaker()
+	if (not client) then
+		return false
+	end
+
+	local toggleDelayPassed = getOrSetPlayerDelay(client, "toggle_speaker", RADIO_TOGGLE_SPEAKER_DELAY)
+
+	if (not toggleDelayPassed) then
+		return false
+	end
+
+	local playerSpeakerData = getPlayerSpeakerData(client)
+
+	if (not playerSpeakerData) then
+		return false
+	end
+
+	local speakerPaused = playerSpeakerData.speakerPaused
+	local pauseNewState = (not speakerPaused)
+
+	playerSpeakerData.speakerPaused = pauseNewState
+	triggerClientEvent(root, "onClientToggleSpeaker", client, pauseNewState)
+end
+addEvent("onServerToggleSpeaker", true)
+addEventHandler("onServerToggleSpeaker", root, onServerToggleSpeaker)
+
 function onServerDestroySpeaker()
 	if (not client) then
+		return false
+	end
+
+	local destroyDelayPassed = getOrSetPlayerDelay(client, "destroy_speaker", RADIO_DESTROY_SPEAKER_DELAY)
+
+	if (not destroyDelayPassed) then
 		return false
 	end
 
@@ -113,26 +151,6 @@ function onServerDestroySpeaker()
 end
 addEvent("onServerDestroySpeaker", true)
 addEventHandler("onServerDestroySpeaker", root, onServerDestroySpeaker)
-
-function onServerToggleSpeaker()
-	if (not client) then
-		return false
-	end
-
-	local playerSpeakerData = getPlayerSpeakerData(client)
-
-	if (not playerSpeakerData) then
-		return false
-	end
-
-	local speakerPaused = playerSpeakerData.speakerPaused
-	local pauseNewState = (not speakerPaused)
-
-	playerSpeakerData.speakerPaused = pauseNewState
-	triggerClientEvent(root, "onClientToggleSpeaker", client, pauseNewState)
-end
-addEvent("onServerToggleSpeaker", true)
-addEventHandler("onServerToggleSpeaker", root, onServerToggleSpeaker)
 
 function syncSpeakers(startedResource)
 	local matchingResource = (startedResource == resource)

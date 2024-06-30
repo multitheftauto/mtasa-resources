@@ -96,7 +96,7 @@ function toggleSpeakerSounds(playerElement, toggleOn)
 
 		setSoundPaused(speakerNewSound, speakerPaused)
 		setSoundMaxDistance(speakerNewSound, speakerSoundMaxDistance)
-		setSoundVolume(speakerNewSound, 0.02)
+		setSoundVolume(speakerNewSound, 0.30)
 		attachElements(speakerNewSound, speakerBox)
 	end
 
@@ -127,6 +127,12 @@ function onClientGUIClickCreateSpeaker()
 		return false
 	end
 
+	local createDelayPassed = getOrSetPlayerDelay(localPlayer, "create_speaker", RADIO_CREATE_SPEAKER_DELAY)
+
+	if (not createDelayPassed) then
+		return false
+	end
+
 	triggerServerEvent("onServerCreateSpeaker", localPlayer, streamURL)
 end
 
@@ -137,6 +143,12 @@ function onClientGUIClickToggleSpeaker()
 		return false
 	end
 
+	local toggleDelayPassed = getOrSetPlayerDelay(localPlayer, "toggle_speaker", RADIO_TOGGLE_SPEAKER_DELAY)
+
+	if (not toggleDelayPassed) then
+		return false
+	end
+
 	triggerServerEvent("onServerToggleSpeaker", localPlayer)
 end
 
@@ -144,6 +156,12 @@ function onClientGUIClickDestroySpeaker()
 	local playerSpeaker = getPlayerSpeakerData(localPlayer)
 
 	if (not playerSpeaker) then
+		return false
+	end
+
+	local destroyDelayPassed = getOrSetPlayerDelay(localPlayer, "destroy_speaker", RADIO_DESTROY_SPEAKER_DELAY)
+
+	if (not destroyDelayPassed) then
 		return false
 	end
 
