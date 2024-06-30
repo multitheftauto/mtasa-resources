@@ -9,10 +9,10 @@ local playerSpeakers = {}
 
 local function getStreamURLFromEdit()
 	local streamURL = guiGetText(RADIO_GUI["Stream URL edit"])
-	local validStreamURL = verifyRadioStreamURL(streamURL)
+	local validStreamURL, errorCode = verifyRadioStreamURL(streamURL)
 
 	if (not validStreamURL) then
-		return false
+		return false, errorCode
 	end
 
 	return streamURL
@@ -119,10 +119,12 @@ function onClientGUIClickLoadStationStreamURL()
 end
 
 function onClientGUIClickCreateSpeaker()
-	local streamURL = getStreamURLFromEdit()
+	local streamURL, errorCode = getStreamURLFromEdit()
 
 	if (not streamURL) then
-		outputChatBox("SPEAKER: Invalid URL, please check your input!", 255, 0, 0)
+		local textToDisplay = errorCode or "SPEAKER: Invalid URL, please check your input!"
+
+		outputChatBox(textToDisplay, 255, 0, 0)
 
 		return false
 	end

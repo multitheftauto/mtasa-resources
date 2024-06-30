@@ -28,6 +28,25 @@ function verifyRadioStreamURL(streamURL)
 		return false
 	end
 
+	if (not RADIO_ALLOW_CUSTOM_URLS) then
+		local allowedStreamURL = false
+
+		for stationID = 1, #RADIO_STATIONS do
+			local stationData = RADIO_STATIONS[stationID]
+			local stationStreamURL = stationData[2]
+			local matchingStreamURL = (stationStreamURL == streamURL)
+
+			if (matchingStreamURL) then
+				allowedStreamURL = true
+				break
+			end
+		end
+
+		if (not allowedStreamURL) then
+			return false, "SPEAKER: Custom URLs are not allowed."
+		end
+	end
+
 	return true
 end
 
