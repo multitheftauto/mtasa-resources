@@ -68,6 +68,16 @@ function toggleSpeakerSounds(playerElement, toggleOn)
 		destroyElement(speakerSound)
 	end
 
+	local allowRemoteSpeakers = getRadioSetting("allowRemoteSpeakers")
+
+	if (not allowRemoteSpeakers) then
+		local remoteSpeaker = (playerElement ~= localPlayer)
+
+		if (remoteSpeaker) then
+			toggleOn = false
+		end
+	end
+
 	if (toggleOn) then
 		local speakerData = getPlayerSpeakerData(playerElement)
 
@@ -272,9 +282,7 @@ function isObjectSpeaker(objectElement)
 	return false
 end
 
-function onClientSyncSpeakers(activeSpeakers)
-	playerSpeakers = activeSpeakers
-
+function handleAllSpeakers()
 	for playerElement, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
 		local speakerBoxStreamedIn = isElementStreamedIn(speakerBox)
@@ -283,6 +291,13 @@ function onClientSyncSpeakers(activeSpeakers)
 			toggleSpeakerSounds(playerElement, true)
 		end
 	end
+
+	return true
+end
+
+function onClientSyncSpeakers(activeSpeakers)
+	playerSpeakers = activeSpeakers
+	handleAllSpeakers()
 end
 addEvent("onClientSyncSpeakers", true)
 addEventHandler("onClientSyncSpeakers", root, onClientSyncSpeakers)
