@@ -20,6 +20,7 @@ aLastSync = 0
 aResources = {}
 
 local serverPassword = 'None'
+local hasResourceSetting
 
 function guiComboBoxAdjustHeight ( combobox, itemcount )
     if getElementType ( combobox ) ~= "gui-combobox" or type ( itemcount ) ~= "number" then error ( "Invalid arguments @ 'guiComboBoxAdjustHeight'", 2 ) end
@@ -970,7 +971,9 @@ end
 function aClientDoubleClick ( button )
 	if ( source == aTab2.ResourceList ) then
 		if ( guiGridListGetSelectedItem ( aTab2.ResourceList ) ~= -1 ) then
-			aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) )
+			if hasResourceSetting then
+				aManageSettings ( guiGridListGetItemText ( aTab2.ResourceList, guiGridListGetSelectedItem( aTab2.ResourceList ), 1 ) )
+			end
 		end
 	elseif ( source == aTab4.BansList ) then
 		if ( guiGridListGetSelectedItem ( aTab4.BansList ) == -1 ) then
@@ -1198,7 +1201,8 @@ function aClientClick ( button )
 end
 
 addEvent ("setVisibilityOfSettingsButton", true)
-function setVisibilityOfSettingsButton (hasResourceSetting)
+function setVisibilityOfSettingsButton (showResourceSetting)
+	hasResourceSetting = showResourceSetting
 	if hasResourceSetting then
 		guiSetVisible(aTab2.ResourceSettings, true)
 	else
