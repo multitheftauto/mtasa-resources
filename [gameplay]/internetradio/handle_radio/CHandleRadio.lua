@@ -106,7 +106,7 @@ function toggleSpeakerSounds(playerElement, toggleOn)
 
 		setSoundPaused(speakerNewSound, speakerPaused)
 		setSoundMaxDistance(speakerNewSound, speakerSoundMaxDistance)
-		setSoundVolume(speakerNewSound, 0.30)
+		setSoundVolume(speakerNewSound, 1)
 		attachElements(speakerNewSound, speakerBox)
 	end
 
@@ -329,8 +329,3 @@ function clearSpeakersOnDestroyQuit()
 end
 addEventHandler("onClientPlayerQuit", root, clearSpeakersOnDestroyQuit)
 addEventHandler("onClientElementDestroy", resourceRoot, clearSpeakersOnDestroyQuit)
-
-function onClientRenderDebugRadio()
-	dxDrawText(inspect(playerSpeakers).."\n"..inspect(speakerSounds), 100, 100)
-end
-addEventHandler("onClientRender", root, onClientRenderDebugRadio)

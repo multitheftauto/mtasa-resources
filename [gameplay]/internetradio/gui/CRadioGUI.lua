@@ -25,7 +25,7 @@ local function initializeRadioGUI()
 	RADIO_GUI["Play/pause button"] = guiCreateButton(10, 235, 150, 30, "Play - Pause", false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Close button"] = guiCreateButton(162, 235, 150, 30, "Close", false, RADIO_GUI["Radio window"])
 
-	RADIO_GUI["Toggle remote speakers checkbox"] = guiCreateCheckBox(15, 345, 160, 17, "Allow other players speakers", allowRemoteSpeakers, false, RADIO_GUI["Radio window"])
+	RADIO_GUI["Toggle remote speakers checkbox"] = guiCreateCheckBox(15, 345, 180, 17, "Allow other players speakers", allowRemoteSpeakers, false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Toggle remote speakers label"] = guiCreateLabel(167, 345, 150, 17, "", false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Radio station URL column"] = guiGridListAddColumn(RADIO_GUI["Stream URLs gridlist"], "Radio station", 0.8)
 
