@@ -89,9 +89,10 @@ end
 setTimer(checkForNearbySpeakers, 1000, 0)
 
 function onClientRenderRadioTrackName()
+	local cameraX, cameraY, cameraZ = getCameraMatrix()
+
 	for nearbySpeaker, trackName in pairs(NEARBY_SPEAKERS) do
 		local speakerX, speakerY, speakerZ = getElementPosition(nearbySpeaker)
-		local cameraX, cameraY, cameraZ = getCameraMatrix()
 		local distanceToSpeaker = getDistanceBetweenPoints3D(speakerX, speakerY, speakerZ, cameraX, cameraY, cameraZ)
 		local closeToSpeaker = (distanceToSpeaker <= RADIO_MAX_SOUND_DISTANCE)
 
