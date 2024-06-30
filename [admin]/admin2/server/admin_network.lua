@@ -213,10 +213,3 @@ addEventHandler(
     function()
     end
 )
-
-addEventHandler(
-    "onPlayerChat",
-    root,
-    function(message, type)
-    end
-)
