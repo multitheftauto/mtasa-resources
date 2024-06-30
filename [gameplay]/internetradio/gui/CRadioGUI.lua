@@ -43,6 +43,12 @@ local function initializeRadioGUI()
 	addEventHandler("onClientGUIClick", RADIO_GUI["Close button"], onClientGUIClickCloseRadioGUI, false)
 	addEventHandler("onClientGUIClick", RADIO_GUI["Toggle remote speakers checkbox"], onClientGUIClickToggleRemoteSpeakers, false)
 
+	for commandID = 1, #RADIO_COMMANDS do
+		local commandName = RADIO_COMMANDS[commandID]
+
+		addCommandHandler(commandName, toggleRadioGUI)
+	end
+
 	return true
 end
 
@@ -63,4 +69,12 @@ function toggleRadioGUI()
 	showCursor(guiNewState)
 end
 bindKey(RADIO_TOGGLE_KEY, "down", toggleRadioGUI)
-addEventHandler("onClientResourceStart", resourceRoot, toggleRadioGUI)
+
+function onClientResourceStartRadioGUI()
+	if (not RADIO_SHOW_ON_START) then
+		return false
+	end
+
+	toggleRadioGUI()
+end
+addEventHandler("onClientResourceStart", resourceRoot, onClientResourceStartRadioGUI)
