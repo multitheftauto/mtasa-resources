@@ -72,9 +72,9 @@ end
 function onClientResourceStartLoadSettings()
 	local settingsFileExists = fileExists(RADIO_SETTINGS_PATH)
 
-	if (not settingsFileExists) then
-		loadDefaultRadioSettings()
+	loadDefaultRadioSettings()
 
+	if (not settingsFileExists) then
 		return false
 	end
 
