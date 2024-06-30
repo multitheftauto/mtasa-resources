@@ -220,7 +220,7 @@ function clearPlayerSpeaker(playerOrSpeaker)
 			local speakerDummy = speakerData.speakerDummy
 			local speakerDummyElement = isElement(speakerDummy)
 
-			NEARBY_SPEAKERS[speakerDummyElement] = nil
+			NEARBY_SPEAKERS[speakerDummy] = nil
 
 			if (speakerDummyElement) then
 				destroyElement(speakerDummy)

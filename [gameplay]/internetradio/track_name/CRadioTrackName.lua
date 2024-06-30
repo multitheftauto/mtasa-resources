@@ -80,7 +80,6 @@ function checkForNearbySpeakers()
 		local trackName = getSpeakerTrackName(speakerSound)
 
 		if (speakerDummy and trackName) then
-
 			NEARBY_SPEAKERS[speakerDummy] = trackName
 		end
 	end
