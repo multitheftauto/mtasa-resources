@@ -1,13 +1,15 @@
+local mapFixComponentStatuses = {}
+
 -- Fetch the settings on script load
 for settingName, data in pairs(mapFixComponents) do
     local value = get(settingName)
-    data.enabled = value == true
+    mapFixComponentStatuses[settingName] = (value == true)
 end
 
 local function handlePlayerResourceStart(res)
     if res ~= resource then return end
 
-    triggerClientEvent(source, "mapfixes:client:loadAllComponents", source, mapFixComponents)
+    triggerClientEvent(source, "mapfixes:client:loadAllComponents", source, mapFixComponentStatuses)
 end
 addEventHandler("onPlayerResourceStart", root, handlePlayerResourceStart)
 
@@ -17,14 +19,14 @@ local function handleSettingChange(settingName)
     if modifier == "*" or modifier == "#" or modifier == "@" then
         settingName = settingName:sub(2)
     end
-    local data = mapFixComponents[settingName]
-    if not data then return end
+    if not mapFixComponents[settingName] then return end
 
     -- Fetch the new setting value
     local newValue = get(settingName)
-    data.enabled = newValue == true
+    local isEnabled = (newValue == true)
+    mapFixComponentStatuses[settingName] = isEnabled
 
     -- Trigger for all players
-    triggerClientEvent("mapfixes:client:togOneComponent", resourceRoot, settingName, data.enabled)
+    triggerClientEvent("mapfixes:client:togOneComponent", resourceRoot, settingName, isEnabled)
 end
 addEventHandler("onSettingChange", root, handleSettingChange, false)

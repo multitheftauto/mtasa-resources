@@ -1,8 +1,6 @@
 addEvent("mapfixes:client:loadAllComponents", true)
 addEvent("mapfixes:client:togOneComponent", true)
 
-local mapFixComponents = {}
-
 local function loadOneMapFixComponent(name, data)
     -- Clear the previous elements if any
     local createdElements = data.createdElements
@@ -53,9 +51,9 @@ local function loadOneMapFixComponent(name, data)
             end
         end
     end
-    local objectsWithCustomPropertiesGroupToSpawn = data.objectsWithCustomPropertiesGroupToSpawn
-    if objectsWithCustomPropertiesGroupToSpawn then
-        for _, v in pairs(objectsWithCustomPropertiesGroupToSpawn) do
+    local customObjectsToSpawn = data.customObjectsToSpawn
+    if customObjectsToSpawn then
+        for _, v in pairs(customObjectsToSpawn) do
             if not data.allocatedIDs then data.allocatedIDs = {} end
             local allocatedID = engineRequestModel("object", v.modelID)
             if allocatedID then
@@ -83,11 +81,14 @@ local function loadOneMapFixComponent(name, data)
     end
 end
 
-local function loadMapFixComponents(mapFixComponentsFromServer)
-    assert(type(mapFixComponentsFromServer) == "table")
-    mapFixComponents = mapFixComponentsFromServer
-    for name, data in pairs(mapFixComponents) do
-        loadOneMapFixComponent(name, data)
+local function loadMapFixComponents(mapFixComponentStatuses)
+    assert(type(mapFixComponentStatuses) == "table")
+    for name, enabled in pairs(mapFixComponentStatuses) do
+        local data = mapFixComponents[name]
+        if data then
+            data.enabled = enabled
+            loadOneMapFixComponent(name, data)
+        end
     end
 end
 addEventHandler("mapfixes:client:loadAllComponents", localPlayer, loadMapFixComponents, false)
