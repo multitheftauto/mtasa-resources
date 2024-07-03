@@ -51,19 +51,34 @@ local function loadOneMapFixComponent(name, data)
             end
         end
     end
-    local customObjectsToSpawn = data.customObjectsToSpawn
-    if customObjectsToSpawn then
-        for _, v in pairs(customObjectsToSpawn) do
-            if not data.allocatedIDs then data.allocatedIDs = {} end
-            local allocatedID = engineRequestModel("object", v.modelID)
-            if allocatedID then
-                data.allocatedIDs[#data.allocatedIDs + 1] = allocatedID
-                local object = createObject(allocatedID, v.x, v.y, v.z, v.rx, v.ry, v.rz)
-                if object then
-                    engineSetModelPhysicalPropertiesGroup(allocatedID, v.physicalPropertiesGroup)
-                    if not data.createdElements then data.createdElements = {} end
-                    data.createdElements[#data.createdElements + 1] = object
+    local objectsToSpawn = data.objectsToSpawn
+    if objectsToSpawn then
+        for _, v in pairs(objectsToSpawn) do
+            local object
+            if v.physicalPropertiesGroup then
+                local allocatedID = engineRequestModel("object", v.modelID)
+                if allocatedID then
+                    if not data.allocatedIDs then data.allocatedIDs = {} end
+                    data.allocatedIDs[#data.allocatedIDs + 1] = allocatedID
+                    
+                    object = createObject(allocatedID, v.x, v.y, v.z, v.rx, v.ry, v.rz)
+                    if object then
+                        engineSetModelPhysicalPropertiesGroup(allocatedID, v.physicalPropertiesGroup)
+                    end
                 end
+            else
+                object = createObject(v.modelID, v.x, v.y, v.z, v.rx, v.ry, v.rz)
+            end
+            if object then
+                if v.unbreakable then
+                    setObjectBreakable(object, false)
+                end
+                if v.frozen then
+                    setElementFrozen(object, true)
+                end
+
+                if not data.createdElements then data.createdElements = {} end
+                data.createdElements[#data.createdElements + 1] = object
             end
         end
     end

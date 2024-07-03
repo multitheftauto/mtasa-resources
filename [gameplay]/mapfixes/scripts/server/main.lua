@@ -1,7 +1,7 @@
 local mapFixComponentStatuses = {}
 
 -- Fetch the settings on script load
-for settingName, data in pairs(mapFixComponents) do
+for settingName, _ in pairs(mapFixComponents) do
     local value = get(settingName)
     mapFixComponentStatuses[settingName] = (value == true)
 end

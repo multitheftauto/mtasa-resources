@@ -1,10 +1,16 @@
 mapFixComponents = {
-    ["crack_palace_interior"] = {
+    ["bs_crack_palace_interior"] = {
         -- Adds the original interior of Big Smoke's Crack Palace
         buildingsToSpawn = {
             -- Object positions taken from carter.ipl
             { 17933, 2532.992188, -1289.789062, 39.281250, 0, 0, 0 }, -- carter-light15b
             { 17946, 2533.820312, -1290.554688, 36.945312, 0, 0, 0 }, -- carter_ground
+        },
+    },
+    ["bs_crack_palace_wall"] = {
+        -- Adds the original wall covering the hole at Big Smoke's Crack Palace
+        objectsToSpawn = {
+            { modelID = 3059, unbreakable = true, frozen = true, x = 2522, y = -1272.9301, z = 35.61, rx = 0, ry = 0, rz = 0 }, -- imy_shash_wall
         },
     },
     ["atrium_lobby_interior"] = {
@@ -22,14 +28,14 @@ mapFixComponents = {
             { 1537, 5, 1700.1, -1669.4, 19.2, -1 }, -- Gen_doorEXT16
             { 1533, 5, 1700.1, -1669.4, 19.2, -1 }, -- Gen_doorEXT12
         },
-        customObjectsToSpawn = {
+        objectsToSpawn = {
             { modelID = 1533, physicalPropertiesGroup = 147, x = 1700.132812, y = -1666.40625,  z = 19.210938, rx = 0, ry = -0, rz = -90 },
             { modelID = 1537, physicalPropertiesGroup = 147, x = 1700.132812, y = -1669.421875, z = 19.210938, rx = 0, ry = 0,  rz = -90 },
             { modelID = 1537, physicalPropertiesGroup = 147, x = 1725.429688, y = -1637.4375,   z = 19.210938, rx = 0, ry = 0,  rz = -180 },
             { modelID = 1533, physicalPropertiesGroup = 147, x = 1728.445312, y = -1637.4375,   z = 19.210938, rx = 0, ry = 0,  rz = -180 },
         },
     },
-    ["garage_doherty_interior"] = {
+    ["doherty_garage_interior"] = {
         -- Adds the original Doherty Safehouse Garage interior
         buildingsToSpawn = {
             -- Object positions taken from sfse_stream5.ipl
@@ -45,7 +51,7 @@ mapFixComponents = {
             22, -- Mission Garage (Doherty)
         },
     },
-    ["nodamage_crackfactory_interior"] = {
+    ["undamaged_crackfactory_with_interior"] = {
         -- Removes the destroyed SF factory building, and adds the original interior
         buildingsToSpawn = {
             -- Object positions taken from crack.ipl
