@@ -1253,8 +1253,13 @@ function createCheckpoint(i)
 	local pos = checkpoint.position
 	local color = checkpoint.color or { 0, 0, 255 }
 	checkpoint.marker = createMarker(pos[1], pos[2], pos[3], checkpoint.type or 'checkpoint', checkpoint.size, color[1], color[2], color[3])
-	if (not checkpoint.type or checkpoint.type == 'checkpoint') and i == #g_Checkpoints then
-		setMarkerIcon(checkpoint.marker, 'finish')
+	
+	if (not checkpoint.type or checkpoint.type == 'checkpoint') then
+		setElementAlpha(checkpoint.marker, 128) -- default checkpoint max alpha
+	
+		if (i == #g_Checkpoints) then
+			setMarkerIcon(checkpoint.marker, 'finish')
+		end
 	end
 	if checkpoint.type == 'ring' and i < #g_Checkpoints then
 		setMarkerTarget(checkpoint.marker, unpack(g_Checkpoints[i+1].position))

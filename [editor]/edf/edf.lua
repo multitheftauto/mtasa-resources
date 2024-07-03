@@ -952,7 +952,7 @@ function edfGetElementDimension(element)
 end
 
 function edfGetElementAlpha(element)
-	return getElementAlpha(element) or tonumber(getElementData(element, "alpha")) or 255
+	return getElementAlpha(element) or tonumber(getElementData(element, "alpha")) or (getElementType(element) == 'checkpoint' and 128 or 255) -- 128 is checkpoint default max alpha
 end
 
 function edfSetElementDimension(element, dimension)
