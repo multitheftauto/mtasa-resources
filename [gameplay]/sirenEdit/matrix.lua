@@ -648,7 +648,7 @@ local tround = function( t,mult )
 end
 function matrix.round( mtx, idp )
 	local mult = 10^( idp or 0 )
-	local fround = matrix.type( mtx ) == "number" and numound or tround
+	local fround = matrix.type( mtx ) == "number" and numround or tround
 	for i = 1,#mtx do
 		for j = 1,#mtx[1] do
 			mtx[i][j] = fround(mtx[i][j],mult)
