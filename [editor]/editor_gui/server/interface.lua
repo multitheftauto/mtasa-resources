@@ -7,6 +7,7 @@ local interface = {
 
 local interface_mt = {
 	__index = function(t, k)
+		if getUserdataType(t.res) ~= "resource-data" or getResourceState(t.res) ~= "running" then return end
 		return function(...) return call(t.res, k, ...) end
 	end
 }

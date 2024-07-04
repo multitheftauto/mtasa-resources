@@ -94,7 +94,7 @@ end
 
 function setPlayerBlipSize(player,size)
 	if isElement(player) and getElementType(player)=="player" and playerBlips[player] and size and type(size)=="number" and size > 0 then
-		return setBlipSize(playerBlips[player])
+		return setBlipSize(playerBlips[player], size)
 	end
 
 	return false
