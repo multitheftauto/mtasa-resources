@@ -154,7 +154,7 @@ addEventHandler ( "reloadEDFDefinitions", root, reloadEDFDefinitions )
 
 addEventHandler ( "onResourceStop",resourceRoot,
 	function()
-		if not allEDF then return end --newEDF is cleared when the editor is stopped (prevent a debug error)
+		if not allEDF then return end --allEDF is cleared when the editor is stopped (prevent a debug error)
 		for i, resourceName in ipairs(allEDF.addedEDF) do
 			local resource = getResourceFromName(resourceName)
 			if resource and getResourceState ( resource ) == "running" then
