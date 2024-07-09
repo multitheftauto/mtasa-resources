@@ -43,7 +43,7 @@
 	<script src="client/main/admin_chat.lua" type="client" cache="false"/>
 	<script src="client/main/admin_network.lua" type="client" cache="false"/>
 	<script src="client/main/admin_options.lua" type="client" cache="false"/>
-	<script src="client/main/admin_acl.lua" type="client" cache="false"/>
+	<script src="client/main/admin_ACL.lua" type="client" cache="false"/>
 	<script src="client/main/admin_map.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_messagebox.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_inputbox.lua" type="client" cache="false"/>
