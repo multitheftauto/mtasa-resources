@@ -61,7 +61,7 @@ addEventHandler(
                         end
                     end
                 end
-                triggerClientEvent(client or source, EVENT_SESSION, client, tableOut)
+                triggerClientEvent(client or source, EVENT_SESSION, client or source, tableOut)
             end
         end
     end
