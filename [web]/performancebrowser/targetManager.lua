@@ -28,8 +28,8 @@ addEventHandler('onNotifyTargetEnabled', resourceRoot,
 
 addEventHandler('onPlayerChangeNick', root,
 	function(old, new, user)
-		if targetList[getPlayerKey(source)] then
-			targetList[getPlayerKey(source)].name = "client: "..new
+		if targetList[source] then
+			targetList[source].name = "client: "..new
 		end
 	end
 )
