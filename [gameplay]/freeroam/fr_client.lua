@@ -290,7 +290,7 @@ function animCmd(command, lib, name)
 		errMsg('This animation may not be set by command')
 		return
 	end
-	server.setPedAnimation(localPlayer, lib, name, true, true)
+	server.setPedAnimation(localPlayer, lib, name, -1, true, true)
 end
 addCommandHandler('anim', animCmd)
 
