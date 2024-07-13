@@ -198,9 +198,9 @@ function setSkinCommand(cmd, skin)
 		return
 	end
 
-	skin = skin and math.floor(tonumber(skin))
+	skin = tonumber(skin)
 
-	if skin then
+	if skin and skin == math.floor(skin) then
 		server.setMySkin(skin)
 		fadeCamera(true)
 		closeWindow(wndSpawnMap)

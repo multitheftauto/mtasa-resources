@@ -417,7 +417,7 @@ end
 -- [END] Remote Player Call Functions --
 ----------------------------------------
 
-_setPlayerGravity = setPedGravity
+local _setPlayerGravity = setPedGravity
 function setPedGravity(player, grav)
 	if grav < getOption('gravity.min') then
 		errMsg(('Minimum allowed gravity is %.5f'):format(getOption('gravity.min')), player)
