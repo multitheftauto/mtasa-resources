@@ -6,8 +6,8 @@
 
 local savedRadioSettings = {}
 
-local function verifyRadioSettings(pRadioSettings)
-	local settingsType = type(pRadioSettings)
+local function verifyRadioSettings(radioSettings)
+	local settingsType = type(radioSettings)
 	local settingsTable = (settingsType == "table")
 
 	if (not settingsTable) then
@@ -16,7 +16,7 @@ local function verifyRadioSettings(pRadioSettings)
 
 	local settingsToLoad = {}
 
-	for settingKey, settingValue in pairs(pRadioSettings) do
+	for settingKey, settingValue in pairs(radioSettings) do
 		local settingKeyType = type(settingKey)
 		local settingKeyString = (settingKeyType == "string")
 
