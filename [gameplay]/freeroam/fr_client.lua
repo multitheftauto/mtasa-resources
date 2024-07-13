@@ -234,7 +234,7 @@ function applyAnimation(leaf)
 			return
 		end
 	end
-	server.setPedAnimation(localPlayer, leaf.parent.name, leaf.name, true, true)
+	server.setPedAnimation(localPlayer, leaf.parent.name, leaf.name, -1, true, true)
 end
 
 function stopAnimation()
