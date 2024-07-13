@@ -368,10 +368,10 @@ function giveMeWeapon(weapon, amount)
 				setControlState(player, "fire", false)
 				toggleControl(player, "fire", false)
 				reloadPedWeapon(player)
-				sawnoffAntiAbuse[player] = setTimer(function(player)
-					if not player then return end
-					toggleControl(player, "fire", true)
-					sawnoffAntiAbuse[player] = nil
+				sawnoffAntiAbuse[player] = setTimer(function(thePlayer)
+					if not isElement(thePlayer) then return end
+					toggleControl(thePlayer, "fire", true)
+					sawnoffAntiAbuse[thePlayer] = nil
 				end, 3000, 1, player)
 			end
 		end
