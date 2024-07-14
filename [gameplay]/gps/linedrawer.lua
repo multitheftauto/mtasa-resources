@@ -17,6 +17,11 @@ function removeLinePoints ( )
 end
 
 function addLinePoint ( posX, posY )
+	if not tonumber(posX) and not tonumber(poxY) then
+		return false
+	end
+	local posX = tonumber(posX)
+	local posY = tonumber(posY)
 	-- Calculate the row and column of the radar tile we will be targeting
 	local row = 11 - math.floor  ( ( posY + 3000 ) / 500 )
 	local col =      math.floor ( ( posX + 3000 ) / 500 )
