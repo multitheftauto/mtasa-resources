@@ -37,6 +37,12 @@ function clearPlayerSpeaker(playerOrSpeaker)
 		local matchingElement = (playerElement == playerOrSpeaker) or (speakerBox == playerOrSpeaker)
 
 		if (matchingElement) then
+			local boxElement = isElement(speakerBox)
+
+			if (boxElement) then
+				destroyElement(speakerBox)
+			end
+
 			playerSpeakers[playerElement] = nil
 
 			return true
@@ -197,17 +203,7 @@ function destroyAttachedRadioOnVehicleExplodeOrDestroy()
 		local attachedElementObject = (attachedElementType == "object")
 
 		if (attachedElementObject) then
-			local boxFound = clearPlayerSpeaker(attachedElement)
-
-			if (boxFound) then
-				local boxElement = isElement(attachedElement)
-
-				if (boxElement) then
-					destroyElement(attachedElement)
-				end
-
-				break
-			end
+			clearPlayerSpeaker(attachedElement)
 		end
 	end
 end
