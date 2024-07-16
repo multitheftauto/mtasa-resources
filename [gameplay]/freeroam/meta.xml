@@ -13,6 +13,7 @@
 	<include resource="playerblips" />
 
 	<script src="util_server.lua" type="server" />
+	<script src="remote_player_call_validation_server.lua" type="server" />
 	<script src="fr_server.lua" type="server" />
 
 	<script src="util.lua" type="client" />
