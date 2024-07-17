@@ -10,9 +10,9 @@ local defaults = {
 }
 
 --
---	startDeathmatchMode: initializes the deathmatch gamemode
+--	startGamemodeMode: initializes the Gamemode gamemode
 --
-local function startDeathmatchMode()
+local function startGamemodeMode()
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_WAITING)
 	-- set default player state on gamemode start (clients will report in when ready)
@@ -20,24 +20,24 @@ local function startDeathmatchMode()
 		_playerStates[player] = PLAYER_JOINED
 	end
 end
-addEventHandler("onGamemodeStart", resourceRoot, startDeathmatchMode)
+addEventHandler("onGamemodeStart", resourceRoot, startGamemodeMode)
 
 --
---	stopDeathmatchMode: cleans up the deathmatch gamemode
+--	stopGamemodeMode: cleans up the Gamemode gamemode
 --
-local function stopDeathmatchMode()
+local function stopGamemodeMode()
 	-- cleanup player score data, make sure scoreboard isn't forced
 	for _, player in ipairs(getElementsByType("player")) do
 		removeElementData(player, "Score")
 		removeElementData(player, "Rank")
 	end
 end
-addEventHandler("onGamemodeStop", resourceRoot, stopDeathmatchMode)
+addEventHandler("onGamemodeStop", resourceRoot, stopGamemodeMode)
 
 --
---	startDeathmatchMap: initializes a deathmatch map
+--	startGamemodeMap: initializes a Gamemode map
 --
-local function startDeathmatchMap(resource)
+local function startGamemodeMap(resource)
 	-- load map settings
 	_mapResource = resource
 	local resourceName = getResourceName(resource)
@@ -46,7 +46,7 @@ local function startDeathmatchMap(resource)
 	_respawnTime = (tonumber(get(resourceName..".respawn_time")) and math.floor(tonumber(get(resourceName..".respawn_time"))) or defaults.respawnTime)*1000
 	-- use a default frag and time limit if both are zero (infinite)
 	if _fragLimit == 0 and _timeLimit == 0 then
-		outputDebugString("deathmatch: map frag_limit and time_limit both disabled; using default values", 2)
+		outputDebugString("Gamemode: map frag_limit and time_limit both disabled; using default values", 2)
 		_fragLimit = defaults.fragLimit
 		_timeLimit = defaults.timeLimit
 	end
@@ -70,18 +70,18 @@ local function startDeathmatchMap(resource)
 	-- inform all ready players that the game is about to start
 	for player, state in pairs(_playerStates) do
 		if state == PLAYER_READY then
-			triggerClientEvent(player, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
+			triggerClientEvent(player, "onClientGamemodeMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
 		end
 	end
 	-- schedule round to begin
 	setTimer(beginRound, CAMERA_LOAD_DELAY, 1)
 end
-addEventHandler("onGamemodeMapStart", root, startDeathmatchMap)
+addEventHandler("onGamemodeMapStart", root, startGamemodeMap)
 
 --
---	stopDeathmatchMap: cleans up a deathmatch map
+--	stopGamemodeMap: cleans up a Gamemode map
 --
-local function stopDeathmatchMap(resource)
+local function stopGamemodeMap(resource)
 	-- end the round
 	endRound(false, false, true)
 	-- update game state
@@ -89,11 +89,11 @@ local function stopDeathmatchMap(resource)
 	-- inform all clients that the map was stopped
 	for player, state in pairs(_playerStates) do
 		if state ~= PLAYER_JOINED then
-			triggerClientEvent(player, "onClientDeathmatchMapStop", resourceRoot)
+			triggerClientEvent(player, "onClientGamemodeMapStop", resourceRoot)
 		end
 	end
 end
-addEventHandler("onGamemodeMapStop", root, stopDeathmatchMap)
+addEventHandler("onGamemodeMapStop", root, stopGamemodeMap)
 
 --
 --	calculatePlayerRanks: calculates player ranks
