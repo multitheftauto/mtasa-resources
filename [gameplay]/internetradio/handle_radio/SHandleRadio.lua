@@ -203,7 +203,11 @@ function destroyAttachedRadioOnVehicleExplodeOrDestroy()
 		local attachedElementObject = (attachedElementType == "object")
 
 		if (attachedElementObject) then
-			clearPlayerSpeaker(attachedElement)
+			local boxFound = clearPlayerSpeaker(attachedElement)
+
+			if (boxFound) then
+				break
+			end
 		end
 	end
 end
