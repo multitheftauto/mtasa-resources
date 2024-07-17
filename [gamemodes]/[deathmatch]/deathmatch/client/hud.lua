@@ -1,5 +1,3 @@
--- TODO:    long term - implement new UI resembling original game design
---          more code cleanup?
 local SCREEN_WIDTH, SCREEN_HEIGHT = guiGetScreenSize()
 
 --
@@ -25,6 +23,7 @@ end
 _hud.loadingScreen.update = function()
     _hud.loadingScreen.mapInfoText:text(_mapTitle..(_mapAuthor and ("\n by ".._mapAuthor) or ""))
 end
+
 -- score display
 _hud.scoreDisplay = {}
 _hud.scoreDisplay.roundInfoText = dxText:create("", 0, 0, false, "bankgothic", 1)
@@ -48,6 +47,7 @@ _hud.scoreDisplay.update = function()
         .."\nRank: "..getElementData(localPlayer, "Rank").."/"..#getElementsByType("player")
     )
 end
+
 -- respawn screen
 _hud.respawnScreen = {}
 -- respawn counter (You will respawn in x seconds)
@@ -65,6 +65,7 @@ _hud.respawnScreen.startCountdown = function()
         _hud.respawnScreen.respawnCounter:text("Wasted")
     end
 end
+
 -- end screen
 _hud.endScreen = {}
 -- announcement text (x has won the round!)

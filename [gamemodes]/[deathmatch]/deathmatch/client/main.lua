@@ -1,7 +1,7 @@
 --
---  startDeathmatchClient: initializes the deathmatch client
+--  startGamemodeClient: initializes the gamemode client
 --
-local function startDeathmatchClient()
+local function startGamemodeClient()
     -- add scoreboard columns
     exports.scoreboard:scoreboardAddColumn("Score")
     exports.scoreboard:scoreboardAddColumn("Rank")
@@ -13,27 +13,25 @@ local function startDeathmatchClient()
     if getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
         setCameraMatrix(unpack(calculateLoadingCameraMatrix()))
     end
-    -- inform server we are ready to play
-    triggerServerEvent("onDeathmatchPlayerReady", localPlayer)
 end
-addEventHandler("onClientResourceStart", resourceRoot, startDeathmatchClient)
+addEventHandler("onClientResourceStart", resourceRoot, startGamemodeClient)
 
 --
---  stopDeathmatchClient: cleans up the deathmatch client
+--  stopGamemodeClient: cleans up the gamemode client
 --
-local function stopDeathmatchClient()
+local function stopGamemodeClient()
     -- remove scoreboard columns
     exports.scoreboard:scoreboardRemoveColumn("Score")
     exports.scoreboard:scoreboardRemoveColumn("Rank")
     -- hide scoreboard
     exports.scoreboard:setScoreboardForced(false)
 end
-addEventHandler("onClientResourceStop", resourceRoot, stopDeathmatchClient)
+addEventHandler("onClientResourceStop", resourceRoot, stopGamemodeClient)
 
 --
---  startDeathmatchMap: triggered when a deathmatch map starts
+--  startGamemodeMap: triggered when a gamemode map starts
 --
-local function startDeathmatchMap(mapTitle, mapAuthor, fragLimit, respawnTime)
+local function startGamemodeMap(mapTitle, mapAuthor, fragLimit, respawnTime)
     -- apply the loading camera matrix - used to stream-in map elements
     setCameraMatrix(unpack(calculateLoadingCameraMatrix()))
     -- hide end screen and scoreboard
@@ -48,13 +46,13 @@ local function startDeathmatchMap(mapTitle, mapAuthor, fragLimit, respawnTime)
     _hud.loadingScreen:update()
     _hud.loadingScreen:setVisible(true)
 end
-addEvent("onClientDeathmatchMapStart", true)
-addEventHandler("onClientDeathmatchMapStart", resourceRoot, startDeathmatchMap)
+addEvent("onClientGamemodeMapStart", true)
+addEventHandler("onClientGamemodeMapStart", resourceRoot, startGamemodeMap)
 
 --
--- stopDeathmatchMap: triggered when a deathmatch map stops
+-- stopGamemodeMap: triggered when a gamemode map stops
 --
-local function stopDeathmatchMap()
+local function stopGamemodeMap()
     -- clear stored map data
     _mapTitle = nil
     _mapAuthor = nil
@@ -63,13 +61,13 @@ local function stopDeathmatchMap()
     -- hide loading text
     _hud.loadingScreen:setVisible(false)
 end
-addEvent("onClientDeathmatchMapStop", true)
-addEventHandler("onClientDeathmatchMapStop", resourceRoot, stopDeathmatchMap)
+addEvent("onClientGamemodeMapStop", true)
+addEventHandler("onClientGamemodeMapStop", resourceRoot, stopGamemodeMap)
 
 --
---  startDeathmatchRound: triggered when a round begins
+--  startGamemodeRound: triggered when a round begins
 --
-local function startDeathmatchRound()
+local function startGamemodeRound()
     -- attach player wasted handler
     addEventHandler("onClientPlayerWasted", localPlayer, _hud.respawnScreen.startCountdown)
     -- attach element data change handler
@@ -82,13 +80,13 @@ local function startDeathmatchRound()
     _hud.scoreDisplay:update()
     _hud.scoreDisplay:setVisible(true)
 end
-addEvent("onClientDeathmatchRoundStart", true)
-addEventHandler("onClientDeathmatchRoundStart", resourceRoot, startDeathmatchRound)
+addEvent("onClientGamemodeRoundStart", true)
+addEventHandler("onClientGamemodeRoundStart", resourceRoot, startGamemodeRound)
 
 --
---  stopDeathmatchRound: triggered when a round ends
+--  stopGamemodeRound: triggered when a round ends
 --
-local function stopDeathmatchRound(winner, draw, aborted)
+local function stopGamemodeRound(winner, draw, aborted)
     -- remove player wasted handler and hide respawn screen if active
     removeEventHandler("onClientPlayerWasted", localPlayer, _hud.respawnScreen.startCountdown)
     _hud.respawnScreen.setVisible(false)
@@ -110,8 +108,8 @@ local function stopDeathmatchRound(winner, draw, aborted)
     _hud.endScreen:setVisible(true)
     exports.scoreboard:setScoreboardForced(true)
 end
-addEvent("onClientDeathmatchRoundEnd", true)
-addEventHandler("onClientDeathmatchRoundEnd", resourceRoot, stopDeathmatchRound)
+addEvent("onClientGamemodeRoundEnd", true)
+addEventHandler("onClientGamemodeRoundEnd", resourceRoot, stopGamemodeRound)
 
 --
 --  elementDataChange: triggered when element data changes - used to track score changes

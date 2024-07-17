@@ -198,9 +198,9 @@ function setSkinCommand(cmd, skin)
 		return
 	end
 
-	skin = skin and math.floor(tonumber(skin))
+	skin = tonumber(skin)
 
-	if skin then
+	if skin and skin == math.floor(skin) then
 		server.setMySkin(skin)
 		fadeCamera(true)
 		closeWindow(wndSpawnMap)
@@ -234,7 +234,7 @@ function applyAnimation(leaf)
 			return
 		end
 	end
-	server.setPedAnimation(localPlayer, leaf.parent.name, leaf.name, true, true)
+	server.setPedAnimation(localPlayer, leaf.parent.name, leaf.name, -1, true, true)
 end
 
 function stopAnimation()
@@ -290,7 +290,7 @@ function animCmd(command, lib, name)
 		errMsg('This animation may not be set by command')
 		return
 	end
-	server.setPedAnimation(localPlayer, lib, name, true, true)
+	server.setPedAnimation(localPlayer, lib, name, -1, true, true)
 end
 addCommandHandler('anim', animCmd)
 
