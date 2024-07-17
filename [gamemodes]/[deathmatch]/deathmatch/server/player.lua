@@ -25,31 +25,30 @@ end
 addEventHandler("onPlayerQuit", root, processPlayerQuit)
 
 --
---	deathmatchPlayerReady: triggered when a client is ready to play
+--	gamemodePlayerReady: triggered when a client is ready to play
 --
 -- triggered by the client post-onClientResourceStart
- function deathmatchPlayerReady()
+ function gamemodePlayerReady()
 	-- inform client of current game state by triggering certain events
 	local gameState = getElementData(resourceRoot, "gameState")
 	if gameState == GAME_STARTING then
-		triggerClientEvent(client, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
+		triggerClientEvent(source, "onClientGamemodeMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
 	elseif gameState == GAME_IN_PROGRESS then
-		triggerClientEvent(client, "onClientDeathmatchMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
-		triggerClientEvent(client, "onClientDeathmatchRoundStart", resourceRoot)
-		spawnDeathmatchPlayer(client)
+		triggerClientEvent(source, "onClientGamemodeMapStart", resourceRoot, _mapTitle, _mapAuthor, _fragLimit, _respawnTime)
+		triggerClientEvent(source, "onClientGamemodeRoundStart", resourceRoot)
+		spawnGamemodePlayer(source)
 	elseif gameState == GAME_FINISHED then
-		triggerClientEvent(client, "onClientDeathmatchRoundEnd", resourceRoot, false, false)
+		triggerClientEvent(source, "onClientGamemodeRoundEnd", resourceRoot, false, false)
 	end
 	-- update player state
-	_playerStates[client] = PLAYER_READY
+	_playerStates[source] = PLAYER_READY
 end
-addEvent("onDeathmatchPlayerReady", true)
-addEventHandler("onDeathmatchPlayerReady", root, deathmatchPlayerReady)
+addEventHandler("onPlayerResourceStart", root, gamemodePlayerReady)
 
 --
---	spawnDeathmatchPlayer: spawns a player in deathmatch mode
+--	spawnGamemodePlayer: spawns a player in Gamemode mode
 --
-function spawnDeathmatchPlayer(player)
+function spawnGamemodePlayer(player)
 	if not isElement(player) then
 		return
 	end
@@ -105,6 +104,6 @@ function processPlayerWasted(totalAmmo, killer, killerWeapon, bodypart)
 	calculatePlayerRanks()
 	-- set timer to respawn player
 	if _respawnTime > 0 then
-		_respawnTimers[source] = setTimer(spawnDeathmatchPlayer, _respawnTime, 1, source)
+		_respawnTimers[source] = setTimer(spawnGamemodePlayer, _respawnTime, 1, source)
 	end
 end

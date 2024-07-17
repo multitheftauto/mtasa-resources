@@ -17,8 +17,8 @@ function beginRound()
 		setElementData(players[i], "Score", 0)
 		setElementData(players[i], "Rank", "-")
 		if _playerStates[players[i]] == PLAYER_READY then
-            spawnDeathmatchPlayer(players[i])
-            triggerClientEvent(players[i], "onClientDeathmatchRoundStart", resourceRoot)
+            spawnGamemodePlayer(players[i])
+            triggerClientEvent(players[i], "onClientGamemodeRoundStart", resourceRoot)
 		end
 	end
 end
@@ -63,7 +63,7 @@ function endRound(winner, draw, aborted)
             -- update player state
             _playerStates[players[i]] = PLAYER_READY
 			-- inform client round is over
-			triggerClientEvent(players[i], "onClientDeathmatchRoundEnd", resourceRoot, winner, draw, aborted)
+			triggerClientEvent(players[i], "onClientGamemodeRoundEnd", resourceRoot, winner, draw, aborted)
         end
 	end
 	-- don't cycle the map if the round was aborted (map resource was stopped)
