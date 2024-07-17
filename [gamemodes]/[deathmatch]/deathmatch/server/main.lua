@@ -10,9 +10,9 @@ local defaults = {
 }
 
 --
---	startGamemodeMode: initializes the Gamemode gamemode
+--	startGamemodeMode: initializes the gamemode
 --
-local function startGamemodeMode()
+local function startGamemode()
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_WAITING)
 	-- set default player state on gamemode start (clients will report in when ready)
@@ -20,22 +20,22 @@ local function startGamemodeMode()
 		_playerStates[player] = PLAYER_JOINED
 	end
 end
-addEventHandler("onGamemodeStart", resourceRoot, startGamemodeMode)
+addEventHandler("onGamemodeStart", resourceRoot, startGamemode)
 
 --
---	stopGamemodeMode: cleans up the Gamemode gamemode
+--	stopGamemodeMode: cleans up the gamemode
 --
-local function stopGamemodeMode()
+local function stopGamemode()
 	-- cleanup player score data, make sure scoreboard isn't forced
 	for _, player in ipairs(getElementsByType("player")) do
 		removeElementData(player, "Score")
 		removeElementData(player, "Rank")
 	end
 end
-addEventHandler("onGamemodeStop", resourceRoot, stopGamemodeMode)
+addEventHandler("onGamemodeStop", resourceRoot, stopGamemode)
 
 --
---	startGamemodeMap: initializes a Gamemode map
+--	startGamemodeMap: initializes a gamemode map
 --
 local function startGamemodeMap(resource)
 	-- load map settings
@@ -79,7 +79,7 @@ end
 addEventHandler("onGamemodeMapStart", root, startGamemodeMap)
 
 --
---	stopGamemodeMap: cleans up a Gamemode map
+--	stopGamemodeMap: cleans up a gamemode map
 --
 local function stopGamemodeMap(resource)
 	-- end the round
