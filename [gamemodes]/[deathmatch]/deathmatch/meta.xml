@@ -1,5 +1,5 @@
 <meta>
-	<info name="Deathmatch" author="Talidan, jlillis" version="2.0.1" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode." edf:definition="edf/dm.edf" />
+	<info name="Deathmatch" author="Talidan, jlillis" version="2.0.2" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode." edf:definition="edf/dm.edf" />
 
 	<!-- Required resources -->
 	<include resource="killmessages" />
