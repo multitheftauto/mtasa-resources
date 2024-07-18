@@ -198,7 +198,7 @@ end
 -- Get version data from remote server
 ---------------------------------------------------------
 function GetVersInfoFromRemoteServer()
-	fetchRemote( "https://nightly.mtasa.com/ver/", onGotVersInfo )
+	fetchRemote( "https://nightly.multitheftauto.com/ver/", onGotVersInfo )
 end
 
 function onGotVersInfo( responseData, errno )
