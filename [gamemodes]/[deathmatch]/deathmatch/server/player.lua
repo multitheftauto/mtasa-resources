@@ -28,7 +28,7 @@ addEventHandler("onPlayerQuit", root, processPlayerQuit)
 --	gamemodePlayerReady: triggered when a client is ready to play
 --
 -- triggered by the client post-onClientResourceStart
- function gamemodePlayerReady(loadedResource)
+ local function gamemodePlayerReady(loadedResource)
 	if loadedResource ~= resource then
 		return
 	end

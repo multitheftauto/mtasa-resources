@@ -3,9 +3,9 @@ _respawnTimers = {} -- lookup table for respawn timers
 
 -- default map settings
 local defaults = {
-	fragLimit = 10, -- TODO: this should be 10
+	fragLimit = 10,
 	timeLimit = 600, --10 minutes
-	respawnTime = 10,
+	respawnTime = 10, -- 10 seconds
 	spawnWeapons = "22:100", -- "weaponID:ammo,weaponID:ammmo"
 }
 
