@@ -9,6 +9,8 @@ local function startGamemodeClient()
     exports.scoreboard:scoreboardSetSortBy("Rank")
     -- fade out camera
     fadeCamera(false, 0)
+    -- disable zone name HUD element
+    setPlayerHudComponentVisible("area_name", false)
     -- if a game is in progress, apply the loading camera matrix
     if getElementData(resourceRoot, "gameState") == GAME_IN_PROGRESS then
         setCameraMatrix(unpack(calculateLoadingCameraMatrix()))
@@ -25,6 +27,8 @@ local function stopGamemodeClient()
     exports.scoreboard:scoreboardRemoveColumn("Rank")
     -- hide scoreboard
     exports.scoreboard:setScoreboardForced(false)
+    -- re-enable zone name HUD element
+    setPlayerHudComponentVisible("area_name", true)
 end
 addEventHandler("onClientResourceStop", resourceRoot, stopGamemodeClient)
 
