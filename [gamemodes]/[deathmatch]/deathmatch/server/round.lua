@@ -2,9 +2,11 @@
 --	beginRound: begins the round
 --
 function beginRound()
+	-- destroy start timer
+	destroyElement(_startTimer)
 	-- start round timer
 	if _timeLimit > 0 then
-		_missionTimer = exports.missiontimer:createMissionTimer(_timeLimit, true, true, 0.5, 20, true, "default-bold", 1)
+		_missionTimer = exports.missiontimer:createMissionTimer(_timeLimit, true, "%m:%s", 0.5, 20, true, "default-bold", 1)
 		addEventHandler("onMissionTimerElapsed", _missionTimer, onTimeElapsed)
 	end
 	-- attach player wasted handler

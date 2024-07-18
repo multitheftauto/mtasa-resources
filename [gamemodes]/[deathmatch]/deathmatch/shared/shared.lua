@@ -1,4 +1,4 @@
-CAMERA_LOAD_DELAY = 5000 -- delay used at beginning and end of round (ms)
+ROUND_START_DELAY = 5000 -- delay used at beginning and end of round (ms)
 
 --
 --  enum: creates a c-style enum

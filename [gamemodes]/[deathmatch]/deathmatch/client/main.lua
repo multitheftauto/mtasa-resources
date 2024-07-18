@@ -102,7 +102,7 @@ local function stopGamemodeRound(winner, draw, aborted)
         toggleAllControls(true, true, false)
     end
     -- begin fading out the screen
-    fadeCamera(false, CAMERA_LOAD_DELAY/1000)
+    fadeCamera(false, ROUND_START_DELAY/1000)
     -- show end screen and scoreboard
     _hud.endScreen:update(winner, draw, aborted)
     _hud.endScreen:setVisible(true)

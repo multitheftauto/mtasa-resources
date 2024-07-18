@@ -74,7 +74,8 @@ local function startGamemodeMap(mapResource)
 		end
 	end
 	-- schedule round to begin
-	setTimer(beginRound, CAMERA_LOAD_DELAY, 1)
+	_startTimer =  exports.missiontimer:createMissionTimer(ROUND_START_DELAY, true, "Next round begins in %s seconds", 0.5, 20, true, "default-bold", 1)
+	addEventHandler("onMissionTimerElapsed", _startTimer, beginRound)
 end
 addEventHandler("onGamemodeMapStart", root, startGamemodeMap)
 
@@ -82,6 +83,10 @@ addEventHandler("onGamemodeMapStart", root, startGamemodeMap)
 --	stopGamemodeMap: cleans up a gamemode map
 --
 local function stopGamemodeMap(mapResource)
+	-- kill start timer, if it exists
+	if isElement(_startTimer) then
+		destroyElement(_startTimer)
+	end
 	-- end the round
 	endRound(false, false, true)
 	-- update game state
