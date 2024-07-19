@@ -620,7 +620,11 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 			elseif dataField == "rotation" then
 				edfSetElementRotation(newElement, dataValue[1], dataValue[2], dataValue[3], dataValue[4])
 			elseif dataField == "interior" then
-				setElementInterior(newElement, dataValue)
+				if dataValue == -1 then
+					setElementInterior(newElement, 0) -- Interior -1 only works on removeWorldModel (But element data must be set to -1)
+				else
+					setElementInterior(newElement, dataValue)
+				end
 				setElementData(newElement, dataField, dataValue)
 			elseif dataField == "dimension" then
 				setElementDimension(newElement, dataValue)
