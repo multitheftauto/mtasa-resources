@@ -14,7 +14,6 @@ local function toggleSpeakerTrackRender()
 	local toggleOn = next(NEARBY_SPEAKERS)
 
 	if (toggleOn) then
-
 		if (speakerTrackRender) then
 			return false
 		end
@@ -26,7 +25,6 @@ local function toggleSpeakerTrackRender()
 	end
 
 	if (not toggleOn) then
-
 		if (not speakerTrackRender) then
 			return false
 		end
@@ -102,7 +100,7 @@ function onClientRenderRadioTrackName()
 
 			if (screenX and screenY) then
 				local textWidth = dxGetTextWidth(trackName, RADIO_TRACK_SCALE, RADIO_TRACK_FONT, trackNameColorCoded)
-				local textPosX = (screenX - textWidth/2)
+				local textPosX = (screenX - textWidth / 2)
 				local textBackgroundPosX = (textPosX - 5)
 				local textBackgroundPosY = (textWidth + 8)
 

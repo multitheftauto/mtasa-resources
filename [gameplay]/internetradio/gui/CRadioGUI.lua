@@ -13,7 +13,7 @@ local function initializeRadioGUI()
 
 	local screenX, screenY = guiGetScreenSize()
 	local radioWindowSizeX, radioWindowSizeY = 325, 380
-	local radioWindowPosX, radioWindowPosY = (screenX - 325)/1.1, (screenY - 380)/1.4
+	local radioWindowPosX, radioWindowPosY = (screenX - 325) / 1.1, (screenY - 380) / 1.4
 	local allowRemoteSpeakers = getRadioSetting("allowRemoteSpeakers")
 
 	RADIO_GUI = {}

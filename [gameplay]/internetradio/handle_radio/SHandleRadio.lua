@@ -37,6 +37,12 @@ function clearPlayerSpeaker(playerOrSpeaker)
 		local matchingElement = (playerElement == playerOrSpeaker) or (speakerBox == playerOrSpeaker)
 
 		if (matchingElement) then
+			local boxElement = isElement(speakerBox)
+
+			if (boxElement) then
+				destroyElement(speakerBox)
+			end
+
 			playerSpeakers[playerElement] = nil
 
 			return true
@@ -86,6 +92,12 @@ function onServerCreateSpeaker(streamURL)
 	setElementInterior(boxElement, playerInterior)
 	setElementDimension(boxElement, playerDimension)
 	setElementCollisionsEnabled(boxElement, false)
+
+	local playerVehicle = isPedInVehicle(client) and getPedOccupiedVehicle(client)
+
+	if (playerVehicle) then
+		attachElements(boxElement, playerVehicle, -0.7, -1.5, -0.1, 0, 90, 0)
+	end
 
 	local speakerData = {
 		speakerBox = boxElement,
@@ -168,3 +180,42 @@ function clearSpeakersOnDestroyQuit()
 end
 addEventHandler("onPlayerQuit", root, clearSpeakersOnDestroyQuit)
 addEventHandler("onElementDestroy", resourceRoot, clearSpeakersOnDestroyQuit)
+
+function destroyAttachedRadioOnVehicleExplodeOrDestroy()
+	local validElement = isElement(source)
+
+	if (not validElement) then
+		return false
+	end
+
+	local elementType = getElementType(source)
+	local vehicleType = (elementType == "vehicle")
+
+	if (not vehicleType) then
+		return false
+	end
+
+	local attachedElements = getAttachedElements(source)
+
+	for attachedID = 1, #attachedElements do
+		local attachedElement = attachedElements[attachedID]
+		local attachedElementType = getElementType(attachedElement)
+		local attachedElementObject = (attachedElementType == "object")
+
+		if (attachedElementObject) then
+			local boxFound = clearPlayerSpeaker(attachedElement)
+
+			if (boxFound) then
+				break
+			end
+		end
+	end
+end
+
+if (RADIO_DESTROY_ON_VEHICLE_EXPLODE) then
+	addEventHandler("onVehicleExplode", root, destroyAttachedRadioOnVehicleExplodeOrDestroy)
+end
+
+if (RADIO_DESTROY_ON_VEHICLE_DESTROY) then
+	addEventHandler("onElementDestroy", root, destroyAttachedRadioOnVehicleExplodeOrDestroy)
+end

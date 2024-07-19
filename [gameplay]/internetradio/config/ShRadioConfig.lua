@@ -4,11 +4,11 @@
 -- ## Version: 1.0						##
 -- #######################################
 
-RADIO_CREATE_SPEAKER_DELAY = 3000
+RADIO_CREATE_SPEAKER_DELAY = 1000
 RADIO_TOGGLE_SPEAKER_DELAY = 1500
 RADIO_DESTROY_SPEAKER_DELAY = 1500
 RADIO_ALLOW_CUSTOM_URLS = true
-RADIO_STREAM_URL_MAX_LENGTH = 512
+RADIO_STREAM_URL_MAX_LENGTH = 1024 -- Accomodate long .mp3 CDN URLs from certain YT converter sites
 RADIO_MAX_SOUND_DISTANCE = 65
 RADIO_STATIONS = {
 	{"[Top 40 Mix] BAYERN Radio - Top40", "http://stream.antenne.de:80/top-40"},
