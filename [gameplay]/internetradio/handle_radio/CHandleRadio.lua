@@ -267,6 +267,12 @@ function clearPlayerSpeaker(playerOrSpeaker)
 end
 
 function isObjectSpeaker(objectElement)
+	local validElement = isElement(objectElement)
+
+	if (not validElement) then
+		return false
+	end
+
 	for playerElement, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
 		local matchingElement = (speakerBox == objectElement)
