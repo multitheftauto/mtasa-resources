@@ -94,12 +94,19 @@ local function calculatePath(db, nodeFrom, nodeTo)
 end
 
 function calculatePathByCoords(x1, y1, z1, x2, y2, z2)
-	return calculatePath(vehicleNodes, findNodeClosestToPoint(vehicleNodes, x1, y1, z1), findNodeClosestToPoint(vehicleNodes, x2, y2, z2))
+	if not tonumber(x1) or not tonumber(y1) or not tonumber(x2) or not tonumber(y2) then
+		return false
+	end
+	return calculatePath(vehicleNodes, findNodeClosestToPoint(vehicleNodes, tonumber(x1), tonumber(y1), tonumber(z1)),
+	findNodeClosestToPoint(vehicleNodes, tonumber(x2), tonumber(y2), tonumber(z2)))
 end
 
 function calculatePathByNodeIDs(node1, node2)
-	node1 = getNodeByID(vehicleNodes, node1)
-	node2 = getNodeByID(vehicleNodes, node2)
+	if not tonumber(node1) or not tonumber(node2) then
+		return false
+	end
+	node1 = getNodeByID(vehicleNodes, tonumber(node1))
+	node2 = getNodeByID(vehicleNodes, tonumber(node2))
 	if node1 and node2 then
 		return calculatePath(vehicleNodes, node1, node2)
 	else
