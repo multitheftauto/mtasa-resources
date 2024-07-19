@@ -177,11 +177,15 @@ function syncSpeakers(startedResource)
 end
 addEventHandler("onPlayerResourceStart", root, syncSpeakers)
 
-function clearSpeakersOnDestroyQuit()
+function clearSpeakerOnPlayerQuit()
+	clearPlayerSpeaker(source, true)
+end
+addEventHandler("onPlayerQuit", root, clearSpeakerOnPlayerQuit)
+
+function clearSpeakerOnElementDestroy()
 	clearPlayerSpeaker(source, false)
 end
-addEventHandler("onPlayerQuit", root, clearSpeakersOnDestroyQuit)
-addEventHandler("onElementDestroy", resourceRoot, clearSpeakersOnDestroyQuit)
+addEventHandler("onElementDestroy", resourceRoot, clearSpeakerOnElementDestroy)
 
 function destroySpeakerAdminCommand(playerElement, _, targetPlayer)
 	local hasPlayerRightToDestroySpeaker = hasObjectPermissionTo(playerElement, RADIO_DESTROY_SPEAKER_ACCESS_RIGHT, false)
