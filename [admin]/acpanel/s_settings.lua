@@ -247,7 +247,7 @@ function onGotAcPanelVersInfo( responseData, errno )
 			setPanelSetting( "acpanelVersion", acpanelVersion )
 			setPanelSetting( "acpanelUrl", acpanelUrl )
 			if acpanelVersion > _version then
-				outputChatBox("New version of Anti-Cheat panel is available!")
+				outputServerLog("New version of Anti-Cheat panel is available!")
 			end
 		end
 	end

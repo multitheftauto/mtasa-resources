@@ -47,7 +47,7 @@ function updatePlayer(player)
 
 	if newAllowed and not oldAllowed then
 		bindKey( player, "o", "down", "Show_AC_Panel" )
-		outputChatBox ( "Press 'o' to open your AC panel", player )
+		outputChatBox ( "Press 'o' to open AC panel", player )
 		if not bAllowGui then return end
 		sendAllSettingsToClient()
 		triggerClientEvent(player, 'onAcpClientInitialSettings', resourceRoot, getServerConfigSettingsToTransfer() )
@@ -113,10 +113,10 @@ function doesResourceHasPermissions()
 	end
 
 	if not bResourceHasPermissions then
-		outputChatBox( "AC Panel can not start until this command is run:" )
-		outputChatBox( "aclrequest allow acpanel all" )
+		outputServerLog( "AC Panel can not start until this command is run:" )
+		outputServerLog( "aclrequest allow acpanel all" )
 	else
-		outputChatBox( "Please restart AC Panel" )
+		outputServerLog( "Please restart AC Panel" )
 	end
 	return false
 end
