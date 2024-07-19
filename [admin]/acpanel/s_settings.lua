@@ -198,16 +198,16 @@ end
 -- Get version data from remote server
 ---------------------------------------------------------
 function GetVersInfoFromRemoteServer()
-	fetchRemote( "http://nightly.mtasa.com/ver/", onGotVersInfo )
+	fetchRemote( "https://nightly.multitheftauto.com/ver/", onGotVersInfo )
 end
 
 function onGotVersInfo( responseData, errno )
 	if errno == 0 then
 
-		local ver = string.sub( getVersion().sortable, 0, 3 )
+		local ver = string.sub( getVersion().sortable, 1, 3 )
 
-		releaseMinVersion = string.match( responseData, "default: " ..ver .. ".(.-)[^0-9.-]" )
-		latestMinVersion = string.match( responseData, "minclientversion: " .. ver .. ".(.-)[^0-9.-]" )
+		releaseMinVersion = string.match( responseData, "Auto-update default:%s*" .. ver .. "%.([%d%-%.]+)" )
+		latestMinVersion = string.match( responseData, "Max recommended/minclientversion:%s*" .. ver .. "%.([%d%-%.]+)" )
 
 		if releaseMinVersion and latestMinVersion then
 			releaseMinVersion = ver .. "." .. releaseMinVersion
