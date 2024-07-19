@@ -10,9 +10,12 @@ local linePoints  = { }
 local renderStuff = { }
 
 function removeLinePoints ( )
+	if not next(linePoints) then
+		return false
+	end
 	linePoints = { }
 	for name, data in pairs ( renderStuff ) do
-		unloadTile ( name )
+		return unloadTile ( name )
 	end
 end
 
