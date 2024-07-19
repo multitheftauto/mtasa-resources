@@ -202,7 +202,7 @@ function destroySpeakerAdminCommand(playerElement, _, targetPlayer)
 		return false
 	end
 
-	local playerFromName = getPlayerFromName(targetPlayer)
+	local playerFromName = getPlayerFromPartialName(targetPlayer)
 
 	if (not playerFromName) then
 		outputChatBox("#ff8800[Speakers]: #ffffffPlayer #ff8800"..targetPlayer.." #ffffffnot found.", playerElement, 255, 255, 255, true)
