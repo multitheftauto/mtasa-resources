@@ -15,8 +15,9 @@ function removeLinePoints ( )
 	end
 	linePoints = { }
 	for name, data in pairs ( renderStuff ) do
-		return unloadTile ( name )
+		unloadTile ( name )
 	end
+	return true
 end
 
 function addLinePoint ( posX, posY )
