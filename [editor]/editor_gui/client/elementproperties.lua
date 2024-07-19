@@ -814,7 +814,8 @@ function openPropertiesBox( element, resourceName, shortcut )
 		addEventHandler("onClientElementDataChange", selectedElement, checkForNewID)
 
 		addEDFPropertyControlsForElement( selectedElement )
-		addPropertyControl("selection", "locked", "Locked", function (control) exports.editor_main:lockSelectedElement(selectedElement, control:getValue() == "true" or false) end, {value = exports.editor_main:isElementLocked(selectedElement) and "true" or "false", validvalues = {"false","true"}, datafield = "locked"})
+		-- `locked` is reserved for vehicles
+		addPropertyControl("selection", "locked-s", "Locked selection", function (control) exports.editor_main:lockSelectedElement(selectedElement, control:getValue() == "true" or false) end, {value = exports.editor_main:isElementLocked(selectedElement) and "true" or "false", validvalues = {"false","true"}, datafield = "locked"})
 
 		creatingNewElment = false
 		syncPropertiesCallback = applyPropertiesChanges
