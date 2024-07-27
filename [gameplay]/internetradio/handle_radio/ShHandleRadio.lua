@@ -79,6 +79,12 @@ function getPlayerFromPartialName(partialName)
 	return false
 end
 
+function removeHex(stringToRemoveHexFrom)
+	local removedHex = string.gsub(stringToRemoveHexFrom, "#%x%x%x%x%x%x", "")
+
+	return removedHex
+end
+
 function getOrSetPlayerDelay(playerElement, delayID, delayTime)
 	local validElement = isElement(playerElement)
 
