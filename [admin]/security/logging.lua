@@ -16,7 +16,6 @@ function logViolation(uPlayer, strMessage)
 	outputDebugString(strViolationMessage, 4, 255, 255, 255);
 	outputServerLog(strViolationMessage);
 	fileWrite(uFileHandle, strViolationMessage.."\n");
-	fileFlush(uFileHandle);
 	fileClose(uFileHandle);
 end
 
@@ -39,7 +38,6 @@ function logAction(strMessage)
 	outputDebugString(strActionMessage, 4, 255, 255, 255);
 	outputServerLog(strActionMessage);
 	fileWrite(uFileHandle, strActionMessage.."\n");
-	fileFlush(uFileHandle);
 	fileClose(uFileHandle);
 end
 
