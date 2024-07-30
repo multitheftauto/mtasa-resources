@@ -283,7 +283,7 @@ function isObjectSpeaker(objectElement)
 				local speakerSound = speakerSounds[playerElement]
 				local speakerDummy = speakerData.speakerDummy
 
-				return true, speakerSound, speakerDummy
+				return true, speakerSound, speakerDummy, playerElement
 			end
 		end
 	end

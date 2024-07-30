@@ -74,11 +74,11 @@ function checkForNearbySpeakers()
 
 	for objectID = 1, #nearbyObjects do
 		local nearbyObject = nearbyObjects[objectID]
-		local _, speakerSound, speakerDummy = isObjectSpeaker(nearbyObject)
+		local _, speakerSound, speakerDummy, speakerOwner = isObjectSpeaker(nearbyObject)
 		local trackName = getSpeakerTrackName(speakerSound)
 
 		if (speakerDummy and trackName) then
-			NEARBY_SPEAKERS[speakerDummy] = trackName
+			NEARBY_SPEAKERS[speakerDummy] = {trackName, speakerOwner}
 		end
 	end
 
@@ -89,7 +89,7 @@ setTimer(checkForNearbySpeakers, 1000, 0)
 function onClientRenderRadioTrackName()
 	local cameraX, cameraY, cameraZ = getCameraMatrix()
 
-	for nearbySpeaker, trackName in pairs(NEARBY_SPEAKERS) do
+	for nearbySpeaker, speakerData in pairs(NEARBY_SPEAKERS) do
 		local speakerX, speakerY, speakerZ = getElementPosition(nearbySpeaker)
 		local distanceToSpeaker = getDistanceBetweenPoints3D(speakerX, speakerY, speakerZ, cameraX, cameraY, cameraZ)
 		local closeToSpeaker = (distanceToSpeaker <= RADIO_MAX_SOUND_DISTANCE)
@@ -99,6 +99,17 @@ function onClientRenderRadioTrackName()
 			local screenX, screenY = getScreenFromWorldPosition(speakerX, speakerY, speakerOffsetZ, 0, false)
 
 			if (screenX and screenY) then
+				local trackName = speakerData[1]
+				local displaySpeakerOwner = getKeyState(RADIO_SHOW_SPEAKER_OWNER_KEY)
+
+				if (displaySpeakerOwner) then
+					local speakerOwner = speakerData[2]
+					local speakerName = getPlayerName(speakerOwner)
+					local speakerPlayerName = removeHex(speakerName)
+
+					trackName = "(Owner: "..speakerPlayerName..") "..trackName
+				end
+
 				local textWidth = dxGetTextWidth(trackName, RADIO_TRACK_SCALE, RADIO_TRACK_FONT, trackNameColorCoded)
 				local textPosX = (screenX - textWidth / 2)
 				local textBackgroundPosX = (textPosX - 5)
