@@ -40,11 +40,6 @@ if not (g_PlayerData) then
     g_PlayerData = {}
 end
 
--- Variables for time freeze
-local freezeTimeHour = false
-local freezeTimeMinute = false
-local freezeTimeWeather = false
-
 -- Settings are stored in meta.xml
 function freeroamSettings(settings)
 	if settings then
@@ -1853,7 +1848,6 @@ function applyTime()
 	local hours, minutes = getControlNumbers(wndTime, { 'hours', 'minutes' })
 	setTime(hours, minutes)
 	closeWindow(wndTime)
-	freezeTimeHour, freezeTimeMinute = hours, minutes
 end
 
 wndTime = {
@@ -1906,24 +1900,10 @@ addCommandHandler('st', setTimeCommand)
 function toggleFreezeTime()
 	local state = guiCheckBoxGetSelected(getControl(wndMain, 'freezetime'))
 	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), not state)
-	freezeTimeHour, freezeTimeMinute = getTime()
-	freezeTimeWeather = getWeather()
-	setTimeFrozen(state)
-end
-
-function setTimeFrozen(state)
-	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), state)
 
 	if state then
-		if not g_TimeFreezeTimer then
-			g_TimeFreezeTimer = setTimer(function() setTime(freezeTimeHour, freezeTimeMinute) setWeather(freezeTimeWeather) end, 5000, 0)
-			setMinuteDuration(9001)
-		end
+		setMinuteDuration(2147483647)
 	else
-		if g_TimeFreezeTimer then
-			killTimer(g_TimeFreezeTimer)
-			g_TimeFreezeTimer = nil
-		end
 		setMinuteDuration(1000)
 	end
 end
@@ -1940,7 +1920,6 @@ function applyWeather(leaf)
 	end
 	setWeather(leaf.id)
 	closeWindow(wndWeather)
-	freezeTimeWeather = leaf.id
 end
 
 wndWeather = {
