@@ -37,6 +37,7 @@ g_RPCFunctions = {
 	removeVehicleUpgrade = { option = 'upgrades', descr = 'Adding/removing upgrades' },
 	setElementAlpha = { option = 'alpha', descr = 'Changing your alpha' },
 	setElementInterior = true,
+	setCameraInterior = true,
 	setMySkin = { option = 'setskin', descr = 'Setting skin' },
 	setPedAnimation = { option = 'anim', descr = 'Setting an animation' },
 	setPedFightingStyle = { option = 'setstyle', descr = 'Setting fighting style' },
@@ -123,10 +124,6 @@ function onLocalSettingChange(setting,value)
 end
 
 function joinHandler(player)
-	if not player then
-		player = source
-	end
-
 	local r, g, b = math.random(50, 255), math.random(50, 255), math.random(50, 255)
 	setPlayerNametagColor(player, r, g, b)
 	g_PlayerData[player] = { vehicles = {}, settings={} }
@@ -137,7 +134,8 @@ function joinHandler(player)
 		outputChatBox('Press F1 to show/hide controls', player, 0, 255, 0)
 	end
 end
-addEventHandler('onPlayerJoin', root, joinHandler)
+
+addEventHandler('onPlayerJoin', root, function() joinHandler(source) end)
 
 local settingsToSend = {
 	"command_spam_protection",
@@ -269,7 +267,7 @@ function handleClothesInit()
 	end
 end
 addEvent('onClothesInit', true)
-addEventHandler('onClothesInit', resourceRoot, handleClothesInit)
+addEventHandler('onClothesInit', resourceRoot, handleClothesInit, false)
 
 addEvent('onPlayerGravInit', true)
 addEventHandler('onPlayerGravInit', root,
@@ -281,55 +279,58 @@ addEventHandler('onPlayerGravInit', root,
 	end
 )
 
-function setMySkin(skinid)
-	if not isElement(source) then return end
-	if getElementModel(source) == skinid then return end
-	if isPedDead(source) then
-	local x, y, z = getElementPosition(source)
+------------------------------------------
+-- [START] Remote Player Call Functions --
 
-		if isPedTerminated(source) then
+
+function setMySkin(skinid)
+	if not isElement(client) then return end
+	if getElementModel(client) == skinid then return end
+	if isPedDead(client) then
+		local x, y, z = getElementPosition(client)
+
+		if isPedTerminated(client) then
 			x = 0
 			y = 0
 			z = 3
 		end
 
-		local r = getPedRotation(source)
-		local interior = getElementInterior(source)
-		spawnPlayer(source, x, y, z, r, skinid)
-		setElementInterior(source, interior)
-		setCameraInterior(source, interior)
+		local r = getPedRotation(client)
+		local interior = getElementInterior(client)
+		spawnPlayer(client, x, y, z, r, skinid)
+		setElementInterior(client, interior)
+		setCameraInterior(client, interior)
 	else
-		setElementModel(source, skinid)
+		setElementModel(client, skinid)
 	end
-	setCameraTarget(source, source)
-	setCameraInterior(source, getElementInterior(source))
+	setCameraTarget(client, client)
+	setCameraInterior(client, getElementInterior(client))
 end
 
 function spawnMe(x, y, z)
 	if not x then
-		x, y, z = getElementPosition(source)
+		x, y, z = getElementPosition(client)
 	end
 
-	if isPedTerminated(source) then
-		repeat until spawnPlayer(source, x, y, z, 0, math.random(9, 288))
+	if isPedTerminated(client) then
+		repeat until spawnPlayer(client, x, y, z, 0, math.random(9, 288))
 	else
-		spawnPlayer(source, x, y, z, 0, getPedSkin(source))
+		spawnPlayer(client, x, y, z, 0, getPedSkin(client))
 	end
 
-	setCameraTarget(source, source)
-	setCameraInterior(source, getElementInterior(source))
+	setCameraTarget(client, client)
+	setCameraInterior(client, getElementInterior(client))
 end
 
 function warpMeIntoVehicle(vehicle)
-
 	if not isElement(vehicle) then return end
 
-	if isPedDead(source) then
+	if isPedDead(client) then
 		spawnMe()
 	end
 
-	if getPedOccupiedVehicle(source) then
-		outputChatBox('Get out of your vehicle first.', source, 255,0,0)
+	if getPedOccupiedVehicle(client) then
+		outputChatBox('Get out of your vehicle first.', client, 255, 0, 0)
 		return
 	end
 	local interior = getElementInterior(vehicle)
@@ -337,66 +338,68 @@ function warpMeIntoVehicle(vehicle)
 	local driver = getVehicleController(vehicle)
 	for i=0,numseats do
 		if not getVehicleOccupant(vehicle, i) then
-
-			if isPedDead(source) then
+			if isPedDead(client) then
 				local x, y, z = getElementPosition(vehicle)
 				spawnMe(x + 4, y, z + 1)
 			end
 
-			setElementInterior(source, interior)
-			setCameraInterior(source, interior)
-			warpPedIntoVehicle(source, vehicle, i)
+			setElementInterior(client, interior)
+			setCameraInterior(client, interior)
+			warpPedIntoVehicle(client, vehicle, i)
 			return
 		end
 	end
 	if isElement(driver) then
-		outputChatBox('No free seats left in ' .. getPlayerName(driver) .. '\'s vehicle.', source, 255, 0, 0)
+		outputChatBox('No free seats left in ' .. getPlayerName(driver) .. '\'s vehicle.', client, 255, 0, 0)
 	end
-
 end
 
 local sawnoffAntiAbuse = {}
+
 function giveMeWeapon(weapon, amount)
+	local player = client
 	if table.find(getOption('weapons.disallowed'), weapon) then
-		errMsg((getWeaponNameFromID(weapon) or tostring(weapon)) .. 's are not allowed', source)
+		errMsg((getWeaponNameFromID(weapon) or tostring(weapon)) .. 's are not allowed', player)
 	else
-		giveWeapon(source, weapon, amount, true)
+		giveWeapon(player, weapon, amount, true)
 		if weapon == 26 then
-			if not sawnoffAntiAbuse[source] then
-				setControlState (source, "aim_weapon", false)
-				setControlState (source, "fire", false)
-				toggleControl (source, "fire", false)
-				reloadPedWeapon (source)
-				sawnoffAntiAbuse[source] = setTimer (function(source)
-					if not source then return end
-					toggleControl (source, "fire", true)
-					sawnoffAntiAbuse[source] = nil
-				end, 3000, 1, source)
+			if not sawnoffAntiAbuse[player] then
+				setControlState(player, "aim_weapon", false)
+				setControlState(player, "fire", false)
+				toggleControl(player, "fire", false)
+				reloadPedWeapon(player)
+				sawnoffAntiAbuse[player] = setTimer(function(thePlayer)
+					if not isElement(thePlayer) then return end
+					toggleControl(thePlayer, "fire", true)
+					sawnoffAntiAbuse[thePlayer] = nil
+				end, 3000, 1, player)
 			end
-        end
+		end
 	end
 end
 
+
 function giveMeVehicles(vehID)
-	if not isElement(source) then return end
-	local element = getPedOccupiedVehicle(source) or source
+	local player = client
+	if not isElement(player) then return end
+	local element = getPedOccupiedVehicle(player) or player
 	local px,py,pz = getElementPosition(element)
 	local _,_,prot = getElementRotation(element)
 	local posVector = Vector3(px,py,pz+2)
 	local rotVector = Vector3(0,0,prot)
 	local vehMatrix = Matrix(posVector,rotVector)
-	local vehicleList = g_PlayerData[source].vehicles
+	local vehicleList = g_PlayerData[player].vehicles
 	if not vehID then return end
 	if not table.find(getOption('vehicles.disallowed'), vehID) then
 		if #vehicleList >= getOption('vehicles.maxperplayer') then unloadVehicle(vehicleList[1]) end
 		local vehPos = posVector+vehMatrix.right*3
 		local vehicle = Vehicle(vehID, vehPos, rotVector) or false
 		if vehicle then
-			vehicle.interior = source.interior
-			vehicle.dimension = source.dimension
+			vehicle.interior = player.interior
+			vehicle.dimension = player.dimension
 			if vehicle.vehicleType == "Bike" then vehicle.velocity = Vector3(0,0,-0.01) end
 			table.insert(vehicleList, vehicle)
-			g_VehicleData[vehicle] = { creator = source, timers = {} }
+			g_VehicleData[vehicle] = { creator = player, timers = {} }
 			if g_Trailers[vehID] then
 				if getOption('vehicles.maxidletime') >= 0 then
 					if getOption('vehicles.idleexplode') then
@@ -407,11 +410,14 @@ function giveMeVehicles(vehID)
 			end
 		end
 	else
-		errMsg(getVehicleNameFromModel(vehID):gsub('y$', 'ie') .. 's are not allowed', source)
+		errMsg(getVehicleNameFromModel(vehID):gsub('y$', 'ie') .. 's are not allowed', player)
 	end
 end
 
-_setPlayerGravity = setPedGravity
+-- [END] Remote Player Call Functions --
+----------------------------------------
+
+local _setPlayerGravity = setPedGravity
 function setPedGravity(player, grav)
 	if grav < getOption('gravity.min') then
 		errMsg(('Minimum allowed gravity is %.5f'):format(getOption('gravity.min')), player)
@@ -602,8 +608,8 @@ addEventHandler('onServerCall', resourceRoot,
 
 		-- Custom check made to intercept the jetpack on custom gravity
 		if fnInfo and type(fnInfo) ~= "boolean" and tostring(fnInfo.option) == "jetpack" then
-			if tonumber(("%.3f"):format(getPedGravity(source))) ~= 0.008 then
-				errMsg("* You may use jetpack only if the gravity is set to 0.008", source)
+			if tonumber(("%.3f"):format(getPedGravity(client))) ~= 0.008 then
+				errMsg("* You may use jetpack only if the gravity is set to 0.008", client)
 				return
 			end
 		end
@@ -613,11 +619,24 @@ addEventHandler('onServerCall', resourceRoot,
 			for i,pathpart in ipairs(fnName:split('.')) do
 				fn = fn[pathpart]
 			end
+			if not g_RPCFunctionsValidation[fnName] then
+				outputDebugString('Function ' ..
+					tostring(fnName) ..
+					' is missing from the validation list. Please add this one to g_RPCFunctionsValidation.', 1)
+				return
+			end
+			if not g_RPCFunctionsValidation[fnName](...) then
+				errMsg('Something went wrong.', client)
+				-- outputDebugString(
+				-- 	'Invalid parameters has been provided for function `' ..
+				-- 	tostring(fnName) .. '` by user: ' .. getPlayerSerial(client) .. ' It can be a bug.', 1)
+				return
+			end
 			fn(...)
 		elseif type(fnInfo) == 'table' then
-			errMsg(fnInfo.descr .. ' is not allowed', source)
+			errMsg(fnInfo.descr .. ' is not allowed', client)
 		end
-	end
+	end, false
 )
 
 function clientCall(player, fnName, ...)

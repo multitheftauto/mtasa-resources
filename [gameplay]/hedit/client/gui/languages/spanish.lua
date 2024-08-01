@@ -120,7 +120,7 @@ guiLanguage.spanish = {
                 textlabel = "Bienvenido al editor de Handling oficial de MTA! Este recurso te permite modificar el handling de cualquier vehículo en tiempo real en el juego..\n\n"..
                             "Puede guardar y cargar handlings personalizados a través del menú 'Handling' en la esquina superior izquierda.\n\n"..
                             "Para obtener mas informacion sobre el Editor de Handling - como registro oficial de cambios - visite:",
-                websitebox = "http://github.com/hedit/hedit",
+                websitebox = "https://github.com/multitheftauto/mtasa-resources/tree/master/%5Bgameplay%5D/hedit",
                 morelabel = "\nGracias por escoger hedit!"
             }
         },
