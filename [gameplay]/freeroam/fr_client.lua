@@ -1899,7 +1899,6 @@ addCommandHandler('st', setTimeCommand)
 
 function toggleFreezeTime()
 	local state = guiCheckBoxGetSelected(getControl(wndMain, 'freezetime'))
-	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), not state)
 
 	if state then
 		setMinuteDuration(2147483647)
