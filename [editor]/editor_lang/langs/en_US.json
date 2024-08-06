@@ -1,0 +1,29 @@
+[
+    {
+        "name": "English",
+        "strings": {
+            "WELCOME_TITLE": "Welcome to the Map Editor!",
+            "WELCOME_MAP_EDITOR_TEXT": "Welcome to the MTA:SA Map Editor.  This is your first time using the editor, so you are able to enter tutorial mode which will teach you the basics of using the editor.\nIf you want to skip the tutorial, press the 'Skip Tutorial' button.  Otherwise, press the 'Proceed' button.",
+        
+            "WELCOME_DISCLAIMER": "Disclaimer",
+            "WELCOME_DISCLAIMER_TEXT": "This map editor is still a work in progress and is not fully functional yet.\nIf you want to try it as a preview, press 'OK'. Otherwise, please press Escape and disconnect now.",
+
+            "PROCEED": "Proceed",
+            "SKIP_TUTORIAL": "Skip Tutorial",
+
+            "TUTORIAL_CAMERA": "You are currently in camera mode.  You can move around using the %s, %s, %s and %s keys.  Use the mouse to pan the camera around.  You can use the %s modifier to increase the speed of the camera and the %s modifier to slow down the speed of the camera.",
+            "TUTORIAL_CURSOR": "Press %s to enter cursor mode.  This will allow you to access the editor's menu.",
+            "TUTORIAL_HUD": "In cursor mode, the Editor's HUD buttons are accessible.  This is the main area where all creation and configuration is performed.  The 'element creation panel' located at the bottom is used to create elements.  Try creating an 'Object' from this panel by left clicking on the 'Object' icon.",
+            "TUTORIAL_BINDS": "You have now entered the Model Browser.  This menu will allow you to browse through models of objects, vehicles and skins.",
+            "TUTORIAL_IDS": "To change your model category, use the drop down menu at the top.  It is also possible to filter down results further by entering a search in the Search box, where specific model IDs or general keywords can be entered.",
+            "TUTORIAL_IDS_2": "Once you have found a model you would like to view, you can click on it from the Results list.  The columns show the internal name of the model, plus the internal ID assigned to it.  Try this now",
+            "TUTORIAL_CURSOR_2": "Your model can now be seen as a rotating mesh on the right side of the screen. You can scroll through results without the mouse by using the %s and %s keys.   It is also possible to enter camera mode within the model browser.  Try doing this by pressing the %s button.",
+            "TUTORIAL_CAMERA_2": "You are now in camera mode.  You can view the model more clearly in this mode.  You can use the mouse to rotate the camera around the model, and the %s and %s keys to zoom in and out.  The %s and %s keys are still activated here to scroll through models.",
+            "TUTORIAL_SEARCH": "The total search and the current selected search numbers are displayed in the top right corner of the screen.  The model name and ID are also displayed.",
+            "TUTORIAL_MODEL_CURSOR": "When you have found a model of your liking, enable cursor mode using the %s key, and press the OK button.",
+
+
+            "OK": "OK"
+        }
+    }
+]
