@@ -1,0 +1,16 @@
+<meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" name="SA Map Fixes" description="This resource patches a few flaws in the default MTA world" type="script" />
+	<min_mta_version client="1.6.0-9.22505.0" server="1.6.0-9.22505.0"></min_mta_version>
+
+	<script src="scripts/shared/data.lua" type="shared"/>
+	<script src="scripts/client/main.lua" type="client"/>
+	<script src="scripts/server/main.lua" type="server"/>
+
+	<settings>
+		<setting name="*bs_crack_palace_wall" value="[true]" friendlyname="Crack Palace Wall" desc="Enable Big Smoke Crack Palace wall covering hole" accept="true,false"/>
+		<setting name="*bs_crack_palace_interior" value="[false]" friendlyname="Crack Palace Interior" desc="Enable Big Smoke Crack Palace open-world interior (DISABLED by default)" accept="true,false"/>
+		<setting name="*atrium_lobby_interior" value="[true]" friendlyname="Atrium Lobby Interior" desc="Enable Commerce Atrium lobby open-world interior" accept="true,false"/>
+		<setting name="*doherty_garage_interior" value="[true]" friendlyname="Doherty Garage Interior" desc="Enable Doherty Safehouse Garage open-world interior" accept="true,false"/>
+		<setting name="*undamaged_crackfactory_with_interior" friendlyname="Undamaged SF Crack Factory" value="[true]" desc="Enable restored Undamaged SF Crack Factory with open-world interior" accept="true,false"/>
+	</settings>
+</meta>
