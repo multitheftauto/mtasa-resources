@@ -122,3 +122,6 @@ function calculatePlayerRanks()
 		end
 	end
 end
+
+-- TODO: remove this debug command
+addCommandHandler("kill", function(p) killPed(p) end)
