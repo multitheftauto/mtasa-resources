@@ -78,6 +78,6 @@ function endRound(winner, draw, aborted)
 	if mapcycler and getResourceState(mapcycler) == "running" then
 		triggerEvent("onRoundFinished", resourceRoot)
 	else
-		setTimer(beginRound, CAMERA_LOAD_DELAY * 2, 1)
+		setTimer(beginRound, ROUND_START_DELAY * 2, 1)
 	end
 end
