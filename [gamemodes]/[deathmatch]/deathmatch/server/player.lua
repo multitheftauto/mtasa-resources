@@ -107,6 +107,6 @@ function processPlayerWasted(totalAmmo, killer, killerWeapon, bodypart)
 	calculatePlayerRanks()
 	-- set timer to respawn player
 	if _respawnTime > 0 then
-		_respawnTimers[source] = setTimer(spawnGamemodePlayer, _respawnTime, 1, source)
+		_respawnTimers[source] = setTimer(spawnGamemodePlayer, _respawnTime + WASTED_CAMERA_DURATION, 1, source)
 	end
 end

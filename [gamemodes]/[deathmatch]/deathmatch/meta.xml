@@ -25,6 +25,7 @@
 	<script src="client/lib/textlib.lua" type="client" />
 	<script src="client/main.lua" type="client" />
 	<script src="client/hud.lua" type="client" />
+	<script src="client/spectate.lua" type="client" />
 	<file src="client/audio/mission_accomplished.mp3" />
 
 	<!-- EDF files -->
