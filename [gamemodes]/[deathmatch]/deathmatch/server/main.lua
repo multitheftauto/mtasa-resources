@@ -3,9 +3,9 @@ _respawnTimers = {} -- lookup table for respawn timers
 
 -- default map settings
 local defaults = {
-	fragLimit = 10, -- TODO: this should be 10
+	fragLimit = 10,
 	timeLimit = 600, --10 minutes
-	respawnTime = 10,
+	respawnTime = 10, -- 10 seconds
 	spawnWeapons = "22:100", -- "weaponID:ammo,weaponID:ammmo"
 }
 
@@ -37,10 +37,10 @@ addEventHandler("onGamemodeStop", resourceRoot, stopGamemode)
 --
 --	startGamemodeMap: initializes a gamemode map
 --
-local function startGamemodeMap(resource)
+local function startGamemodeMap(mapResource)
 	-- load map settings
-	_mapResource = resource
-	local resourceName = getResourceName(resource)
+	_mapResource = mapResource
+	local resourceName = getResourceName(mapResource)
 	_fragLimit = tonumber(get(resourceName..".frag_limit")) and math.floor(tonumber(get(resourceName..".frag_limit"))) or defaults.fragLimit
 	_timeLimit  = (tonumber(get(resourceName..".time_limit")) and math.floor(tonumber(get(resourceName..".time_limit"))) or defaults.timeLimit)*1000
 	_respawnTime = (tonumber(get(resourceName..".respawn_time")) and math.floor(tonumber(get(resourceName..".respawn_time"))) or defaults.respawnTime)*1000
@@ -60,11 +60,11 @@ local function startGamemodeMap(resource)
 		end
 	end
 	-- if the map title is not defined in the map's meta.xml, use the resource name
-	_mapTitle = getResourceInfo(resource, "name")
+	_mapTitle = getResourceInfo(mapResource, "name")
 	if not _mapTitle then
 		_mapTitle = resourceName
 	end
-	_mapAuthor = getResourceInfo(resource, "author")
+	_mapAuthor = getResourceInfo(mapResource, "author")
 	-- update game state
 	setElementData(resourceRoot, "gameState", GAME_STARTING)
 	-- inform all ready players that the game is about to start
@@ -74,14 +74,19 @@ local function startGamemodeMap(resource)
 		end
 	end
 	-- schedule round to begin
-	setTimer(beginRound, CAMERA_LOAD_DELAY, 1)
+	_startTimer =  exports.missiontimer:createMissionTimer(ROUND_START_DELAY, true, "Next round begins in %s seconds", 0.5, 20, true, "default-bold", 1)
+	addEventHandler("onMissionTimerElapsed", _startTimer, beginRound)
 end
 addEventHandler("onGamemodeMapStart", root, startGamemodeMap)
 
 --
 --	stopGamemodeMap: cleans up a gamemode map
 --
-local function stopGamemodeMap(resource)
+local function stopGamemodeMap(mapResource)
+	-- kill start timer, if it exists
+	if isElement(_startTimer) then
+		destroyElement(_startTimer)
+	end
 	-- end the round
 	endRound(false, false, true)
 	-- update game state
@@ -117,3 +122,6 @@ function calculatePlayerRanks()
 		end
 	end
 end
+
+-- TODO: remove this debug command
+addCommandHandler("kill", function(p) killPed(p) end)
