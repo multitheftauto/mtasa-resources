@@ -117,6 +117,9 @@ addEventHandler("newResource", root,
 		triggerEvent("onNewMap", resourceRoot)
 		dumpSave()
 		editor_gui.outputMessage(getPlayerName(client).." started a new map.", root, 255, 0, 0)
+
+		actionList = {} 
+		currentActionIndex = 0 
 	end
 )
 
@@ -147,6 +150,9 @@ function handleOpenResource()
 		for i, obj in pairs(getElementsByType("object")) do
 			setElementCollisionsEnabled(obj, true)
 		end
+
+		actionList = {} 
+		currentActionIndex = 0 
 
 		triggerEvent("onMapOpened", mapContainer, openingResource)
 		flattenTreeRuns = 0
