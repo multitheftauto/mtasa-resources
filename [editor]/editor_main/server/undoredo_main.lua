@@ -1,28 +1,17 @@
 -- make sure events dont get called more than once in a row!
 
 -- action list
-local actionList = {}
-local index = 0
-
--- action states
-local justUndid = false
-local justRedid = false
-local justAdded = false
+actionList = {}
+currentActionIndex = 0
 
 -- ADD
 function insertAction(action) -- messes shit up
 	-- insert action into list, removing any actions that might come after it
-	if (not justUndid) then
-		removeActionsAfterIndex(index)
-		index = index + 1
-	else
-		removeActionsAfterIndex(index-1)
-	end
-	table.insert(actionList, index, action)
-	-- update action state flags
-	justUndid = false
-	justRedid = false
-	justAdded = true
+    while #actionList > currentActionIndex do
+        table.remove(actionList, #actionList)
+    end
+	currentActionIndex = currentActionIndex + 1
+    table.insert(actionList, currentActionIndex, action)
 end
 
 -- create
@@ -67,56 +56,20 @@ function addActionElementPropertiesChange(oldProperties, newProperties)
 end
 addEventHandler("onElementPropertiesChange_undoredo", root, addActionElementPropertiesChange)
 
--- removes lowIndex??
-function removeActionsAfterIndex(lowIndex)
-	local curIndex = #actionList
-	while (curIndex > lowIndex) do
-		actionList[curIndex]:destructor()
-		table.remove(actionList, curIndex)
-		curIndex = curIndex - 1
-	end
-end
-
 function undo()
-	if (justUndid) then
-		if (index > 1) then
-			index = index - 1
-			actionList[index]:performUndo()
-			-- update action state flags
-			justUndid = true
-			justRedid = false
-			justAdded = false
-		end
-	elseif (justRedid or justAdded) then
-		actionList[index]:performUndo()
-		-- update action state flags
-		justUndid = true
-		justRedid = false
-		justAdded = false
-	end
+    if currentActionIndex > 0 then
+        actionList[currentActionIndex]:performUndo()
+        currentActionIndex = currentActionIndex - 1
+    end
 end
 addCommandHandler("undo", undo)
 addEventHandler("doUndo", root, undo)
 
 function redo()
-	if (not justAdded) then
-		if (justRedid) then
-			if (actionList[index+1]) then
-				index = index + 1
-				actionList[index]:performRedo()
-				-- update action state flags
-				justUndid = false
-				justRedid = true
-				justAdded = false
-			end
-		elseif (justUndid) then
-			actionList[index]:performRedo()
-			-- update action state flags
-			justUndid = false
-			justRedid = true
-			justAdded = false
-		end
-	end
+    if currentActionIndex < #actionList then
+        currentActionIndex = currentActionIndex + 1
+        actionList[currentActionIndex]:performRedo()
+    end
 end
 addCommandHandler("redo", redo)
 addEventHandler("doRedo", root, redo)
