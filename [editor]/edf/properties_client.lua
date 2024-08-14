@@ -23,7 +23,7 @@ propertyGetters = {
 		model = getElementModel,
 		rotZ = getPedRotation,
 		health = getElementHealth,
-		armor = setPedArmor,
+		armor = getPedArmor,
 		collisions = function(element)
 			local collisions = getElementData(element, "collisions")
 			if collisions == "true" or collisions == false then

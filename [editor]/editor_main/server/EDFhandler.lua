@@ -41,6 +41,7 @@ addEventHandler ( "onEDFLoad", root, registerEDF)
 
 addEventHandler ( "onEDFUnload", root,
 	function ( resource )
+		if not loadedEDF[resource] then return end -- Only unload if the EDF has been loaded
 		loadedEDF[resource] = nil
 		for i, player in ipairs(getElementsByType"player") do
 			if clientGUILoaded[player] then

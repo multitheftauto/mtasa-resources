@@ -488,7 +488,7 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 			end
 		end
 
-		if g_selectedElement ~= clickedElement and g_lock[clickedElement] then
+		if g_selectedElement ~= clickedElement and g_lock[edf.edfGetAncestor(clickedElement)] then
 			editor_gui.outputMessage("This element is locked, Press '"..cc["lock_selected_element"]:upper().."' to unlock it.", 255,255,255)
 			return false
 		end
@@ -517,7 +517,7 @@ end
 function processDoubleClick ( clickedElement, key )
 	if not clickedElement then return end
 
-	if g_selectedElement ~= clickedElement and g_lock[clickedElement] then
+	if g_selectedElement ~= clickedElement and g_lock[edf.edfGetAncestor(clickedElement)] then
 		editor_gui.outputMessage("This element is locked, Press '"..cc["lock_selected_element"]:upper().."' to unlock it.", 255,255,255)
 		return false
 	end

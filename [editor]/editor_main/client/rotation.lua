@@ -127,13 +127,18 @@ function getQuatFromEuler(euler)
 end
 
 function getEulerFromQuat(quat)
-	local result = {}
-	local q0 = quat[1]
-	local q1 = quat[2]
-	local q2 = quat[3]
-	local q3 = quat[4]
-	result[1] = math.deg(math.atan2(2*(q0*q1 + q2*q3), 1-2*(q1^2 + q2^2)))
-	result[2] = math.deg(math.asin(2*(q0*q2 - q3*q1)))
-	result[3] = math.deg(math.atan2(2*(q0*q3 + q1*q2), 1-2*(q2^2 + q3^2)))
-	return result
+    local q0, q1, q2, q3 = quat[1], quat[2], quat[3], quat[4]
+    local treshold = q0 * q2 - q3 * q1
+	
+    if treshold > 0.499 then
+        return {math.deg(2 * math.atan2(q1, q0)), 90, 0}
+    elseif treshold < -0.499 then
+        return {math.deg(-2 * math.atan2(q1, q0)), -90, 0}
+    else
+        return {
+            math.deg(math.atan2(2 * (q0 * q1 + q2 * q3), 1 - 2 * (q1^2 + q2^2))),
+            math.deg(math.asin(2 * treshold)),
+            math.deg(math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (q2^2 + q3^2)))
+        }
+    end
 end
