@@ -142,7 +142,7 @@ function disableColPatchInTesting()
 	
 	-- Disable
 	guiCheckBoxSetSelected(dialog.enableColPatch.GUI.checkbox, false)
-	confirmSettings()
+	doActions()
 end
 
 function enableColPatchAfterTesting()
