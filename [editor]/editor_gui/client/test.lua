@@ -251,3 +251,11 @@ end
 function noDamageInBasicTest()
 	cancelEvent()
 end
+
+addEventHandler ( "saveloadtest_return", root,
+	function ( command )
+		if command == "new" or command == "open" then
+			lastTestGamemode = nil
+		end
+	end
+)
