@@ -32,7 +32,7 @@ function quickTest()
 	if tutorialVars.blockQuickTest then return end
 	if lastTestGamemode == "<None>" then lastTestGamemode = false end
 	editor_main.dropElement()
-	triggerServerEvent ( "testResource",localPlayer, text )
+	triggerServerEvent ( "testResource",localPlayer, lastTestGamemode )
 	unbindControl ( "toggle_test", "down", quickTest )
 	if tutorialVars.test then tutorialNext() end
 end

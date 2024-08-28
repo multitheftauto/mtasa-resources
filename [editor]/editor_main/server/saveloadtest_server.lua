@@ -753,7 +753,11 @@ function beginTest(client,gamemodeName)
 	resetMapInfo()
 	setupMapSettings()
 	disablePickups(false)
-	gamemodeName = gamemodeName or lastTestGamemodeName
+
+	if gamemodeName == nil then
+		gamemodeName = lastTestGamemodeName
+	end
+
 	if ( gamemodeName ) then
 		lastTestGamemodeName = gamemodeName
 		set ( "*freeroam.spawnmapondeath", "false" )
@@ -785,6 +789,9 @@ function beginTest(client,gamemodeName)
 		end
 		g_in_test = "gamemode"
 	else
+		if gamemodeName == false then
+			lastTestGamemodeName = gamemodeName
+		end
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
