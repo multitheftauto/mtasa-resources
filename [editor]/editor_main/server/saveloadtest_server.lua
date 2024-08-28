@@ -120,6 +120,8 @@ addEventHandler("newResource", root,
 
 		actionList = {}
 		currentActionIndex = 0
+
+		lastTestGamemodeName = nil
 	end
 )
 
@@ -153,6 +155,8 @@ function handleOpenResource()
 
 		actionList = {}
 		currentActionIndex = 0
+
+		lastTestGamemodeName = nil
 
 		triggerEvent("onMapOpened", mapContainer, openingResource)
 		flattenTreeRuns = 0
