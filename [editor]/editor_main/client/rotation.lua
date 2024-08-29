@@ -61,6 +61,9 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 	end
 	offset_quat[4] = math.cos(arad / 2)
 	
+	-- Get rotation patch userdata
+	local enableRotPatch = exports["editor_gui"]:sx_getOptionData("enableRotPatch")
+	
 	-- Get current rotation
 	local cur_quat
 	if elementQuat[element] then
@@ -71,7 +74,7 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 		if euler_rot[1] == 0 and euler_rot[2] == 0 and euler_rot[3] == 0 then
 			-- Is there a fix and are rotation patches enabled
 			local id = getElementModel(element)
-			if rotationFixes[id] and exports["editor_gui"]:sx_getOptionData("enableRotPatch") then
+			if rotationFixes[id] and enableRotPatch then
 				-- Rotate from the fix
 				cur_quat = {unpack(rotationFixes[id])}
 			else
@@ -84,13 +87,20 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 		end
 	end
 	
-	-- Rotate by the offset quaternion
-	-- Right or left multiplication for world or local space
-	if world_space then
-		cur_quat = quatMul(cur_quat, offset_quat)
+	-- Check if rotation patch is enabled
+	if enableRotPatch then
+		-- Rotate by the offset quaternion
+		-- Right or left multiplication for world or local space
+		cur_quat = world_space == true and quatMul(cur_quat, offset_quat) or quatMul(offset_quat, cur_quat)
 	else
-		cur_quat = quatMul(offset_quat, cur_quat)
+		-- Do the old rotation behaviour
+		if world_space then
+			cur_quat = axis == "yaw" and quatMul(cur_quat, offset_quat) or quatMul(offset_quat, cur_quat)
+		else
+			cur_quat = quatMul(offset_quat, cur_quat)
+		end
 	end
+	
 	elementQuat[element] = cur_quat
 	
 	-- Convert to euler and apply
@@ -130,10 +140,10 @@ function getEulerFromQuat(quat)
     local q0, q1, q2, q3 = quat[1], quat[2], quat[3], quat[4]
     local treshold = q0 * q2 - q3 * q1
 	
-    if treshold > 0.499 then
+    if treshold > 0.499999999 then
         return {math.deg(2 * math.atan2(q1, q0)), 90, 0}
-    elseif treshold < -0.499 then
-        return {math.deg(-2 * math.atan2(q1, q0)), -90, 0}
+    elseif treshold < -0.499999999 then
+        return {math.deg(2 * math.atan2(q1, q0)), -90, 0}
     else
         return {
             math.deg(math.atan2(2 * (q0 * q1 + q2 * q3), 1 - 2 * (q1^2 + q2^2))),
