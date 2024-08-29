@@ -101,8 +101,10 @@ function getResourceFiles ( resource, fileType )
 		local file = xmlNodeGetAttribute ( node, "src" )
 		local otherAttributes = xmlNodeGetAttributes ( node )
 		otherAttributes.src = nil
-		fileAttributes[file] = otherAttributes
-		table.insert ( files, file )
+		if not fileAttributes[file] then
+			fileAttributes[file] = otherAttributes
+			table.insert ( files, file )
+		end
 		i = i + 1
 	end
 	xmlUnloadFile ( meta )
@@ -118,10 +120,13 @@ function copyResourceFiles ( fromResource, targetResource )
 		local paths, attr = getResourceFiles(fromResource, fileType)
 		if paths then
 			for j,filePath in ipairs(paths) do
-				fileCopy ( ":" .. getResourceName(fromResource) .. "/" .. filePath, ":" .. getResourceName(targetResource) .. "/" .. filePath, false )
-				local data = attr[filePath]
-				data.src = filePath
-				table.insert ( targetPaths[fileType], data )
+				local copyPath, copyTarget = ":" .. getResourceName(fromResource) .. "/" .. filePath, ":" .. getResourceName(targetResource) .. "/" .. filePath
+				if not fileExists(copyTarget) then
+					fileCopy ( copyPath, copyTarget, false )
+					local data = attr[filePath]
+					data.src = filePath
+					table.insert ( targetPaths[fileType], data )
+				end
 			end
 		else
 			outputDebugString("copyResourceFiles: getResourceFiles returned "..tostring(paths).." and "..tostring(attr).." for "..tostring(fromResource).." and "..tostring(fileType))
