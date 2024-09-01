@@ -3,6 +3,8 @@
 --
 local function processPlayerJoin()
 	_playerStates[source] = PLAYER_JOINED
+	-- begin protecting player element data
+	addEventHandler("onElementDataChange", source, checkElementData)
 	-- initialize player score data
 	setElementData(source, "Score", 0)
 	setElementData(source, "Rank", "-")

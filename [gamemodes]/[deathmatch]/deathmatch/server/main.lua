@@ -123,5 +123,41 @@ function calculatePlayerRanks()
 	end
 end
 
--- TODO: remove this debug command
-addCommandHandler("kill", function(p) killPed(p) end)
+--
+--	checkElementData(): secures element data against unauthorized changes
+--
+function checkElementData(key, oldValue, newValue)
+	-- if the change was server-side, ignore it
+	if not client then
+		return
+	end
+
+	local revert = true
+
+	-- if the change by the client was on resourceRoot, revert it
+	if source == resourceRoot then
+		revert = true
+	end
+
+	-- if the change by the client was a player's rank or score, revert it
+	if getElementType(source) == "player" and (key == "Rank" or key == "Score") then
+		revert = true
+	end
+
+	if not revert then
+		return
+	end
+
+	-- revert the change and output a warning
+	setElementData(source, key, oldValue)
+	local warning = string.format(
+		"Unauthorized element data change detected: client = %s, element = %s, key = %s, oldValue = %s, newValue = %s",
+		getPlayerName(client),
+		getElementType(source) == "player" and getPlayerName(source) or tostring(source),
+		tostring(key),
+		tostring(oldValue),
+		tostring(newValue)
+	)
+	outputDebugString(warning, 2)
+end
+addEventHandler("onElementDataChange", resourceRoot, checkElementData)
