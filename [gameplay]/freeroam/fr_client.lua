@@ -1901,9 +1901,9 @@ function toggleFreezeTime()
 	local state = guiCheckBoxGetSelected(getControl(wndMain, 'freezetime'))
 
 	if state then
-		setMinuteDuration(2147483647)
+		setTimeFrozen(true)
 	else
-		setMinuteDuration(1000)
+		setTimeFrozen(false)
 	end
 end
 
