@@ -101,7 +101,9 @@ function getResourceFiles ( resource, fileType )
 		local file = xmlNodeGetAttribute ( node, "src" )
 		local otherAttributes = xmlNodeGetAttributes ( node )
 		otherAttributes.src = nil
-		if not fileAttributes[file] then
+		if fileAttributes[file] then
+			outputDebugString("getResourceFiles: Found duplicate meta entry in '".. resource .."' (".. fileType .. " - ".. file .. ")")
+		else
 			fileAttributes[file] = otherAttributes
 			table.insert ( files, file )
 		end
@@ -121,7 +123,9 @@ function copyResourceFiles ( fromResource, targetResource )
 		if paths then
 			for j,filePath in ipairs(paths) do
 				local copyPath, copyTarget = ":" .. getResourceName(fromResource) .. "/" .. filePath, ":" .. getResourceName(targetResource) .. "/" .. filePath
-				if not fileExists(copyTarget) then
+				if fileExists(copyTarget) then
+					outputDebugString("copyResourceFiles: File '".. copyTarget .."' has duplicate meta entries, cannot overwrite.")
+				else
 					fileCopy ( copyPath, copyTarget, false )
 					local data = attr[filePath]
 					data.src = filePath
