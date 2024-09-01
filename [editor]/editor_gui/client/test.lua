@@ -32,7 +32,7 @@ function quickTest()
 	if tutorialVars.blockQuickTest then return end
 	if lastTestGamemode == "<None>" then lastTestGamemode = false end
 	editor_main.dropElement()
-	triggerServerEvent ( "testResource",localPlayer, text )
+	triggerServerEvent ( "testResource",localPlayer, lastTestGamemode )
 	unbindControl ( "toggle_test", "down", quickTest )
 	if tutorialVars.test then tutorialNext() end
 end
@@ -142,7 +142,7 @@ function disableColPatchInTesting()
 	
 	-- Disable
 	guiCheckBoxSetSelected(dialog.enableColPatch.GUI.checkbox, false)
-	confirmSettings()
+	doActions()
 end
 
 function enableColPatchAfterTesting()
@@ -251,3 +251,11 @@ end
 function noDamageInBasicTest()
 	cancelEvent()
 end
+
+addEventHandler ( "saveloadtest_return", root,
+	function ( command )
+		if command == "new" or command == "open" then
+			lastTestGamemode = nil
+		end
+	end
+)
