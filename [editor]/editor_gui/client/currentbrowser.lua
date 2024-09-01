@@ -431,6 +431,7 @@ end
 function closeCurrentBrowser()
 	if ( not currentBrowser.showing ) then return end
 	currentBrowser.showing = false
+	cSelectedElement = false
 	if ( callbackFunction ) then
 		local id = currentBrowserGUI.gridlist:getSelectedText()
 		if ( not id ) then
