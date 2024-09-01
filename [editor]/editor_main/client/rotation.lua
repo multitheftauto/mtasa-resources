@@ -1,5 +1,6 @@
 local rotationFixes = {}
 local elementQuat = {}
+local fromQuatThreshold = 0.499999999
 
 function loadRotationFixXML()
 	local xmlRoot = xmlLoadFile("client/rotation_fix.xml")
@@ -7,9 +8,9 @@ function loadRotationFixXML()
 		outputDebugString("Cannot load rotation_fix.xml")
 		return false
 	end
-	
+
 	rotationFixes = {}
-	
+
 	local models = xmlNodeGetChildren(xmlRoot)
 	for k,model in ipairs(models) do
 		local id = tonumber(xmlNodeGetAttribute(model, "id"))
@@ -24,9 +25,9 @@ function loadRotationFixXML()
 			outputDebugString("Incorrect entry in rotation_fix.xml")
 		end
 	end
-	
+
 	xmlUnloadFile(xmlRoot)
-	
+
 	return true
 end
 
@@ -43,7 +44,7 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 	local offset_quat -- Normalized
 	local arad = math.rad(angle)
 	local sina = math.sin(arad / 2)
-	
+
 	if axis == "yaw" then
 		offset_quat = {
 			sina, 0, 0
@@ -60,10 +61,10 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 		return false
 	end
 	offset_quat[4] = math.cos(arad / 2)
-	
+
 	-- Get rotation patch userdata
 	local enableRotPatch = exports["editor_gui"]:sx_getOptionData("enableRotPatch")
-	
+
 	-- Get current rotation
 	local cur_quat
 	if elementQuat[element] then
@@ -86,7 +87,7 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 			cur_quat = getQuatFromEuler(euler_rot)
 		end
 	end
-	
+
 	-- Check if rotation patch is enabled
 	if enableRotPatch then
 		-- Rotate by the offset quaternion
@@ -100,13 +101,13 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 			cur_quat = quatMul(offset_quat, cur_quat)
 		end
 	end
-	
+
 	elementQuat[element] = cur_quat
-	
+
 	-- Convert to euler and apply
 	local cur_euler = getEulerFromQuat(cur_quat)
 	setElementRotation(element, cur_euler[1], cur_euler[2], cur_euler[3], "ZYX")
-	
+
 	return unpack(cur_euler)
 end
 
@@ -138,16 +139,16 @@ end
 
 function getEulerFromQuat(quat)
     local q0, q1, q2, q3 = quat[1], quat[2], quat[3], quat[4]
-    local treshold = q0 * q2 - q3 * q1
-	
-    if treshold > 0.499999999 then
+    local threshold = q0 * q2 - q3 * q1
+
+    if threshold > fromQuatThreshold then
         return {math.deg(2 * math.atan2(q1, q0)), 90, 0}
-    elseif treshold < -0.499999999 then
+    elseif threshold < -fromQuatThreshold then
         return {math.deg(2 * math.atan2(q1, q0)), -90, 0}
     else
         return {
             math.deg(math.atan2(2 * (q0 * q1 + q2 * q3), 1 - 2 * (q1^2 + q2^2))),
-            math.deg(math.asin(2 * treshold)),
+            math.deg(math.asin(2 * threshold)),
             math.deg(math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (q2^2 + q3^2)))
         }
     end
