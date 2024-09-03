@@ -190,9 +190,9 @@ local function onClientRender_keyboard()
 				else
 					local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
 					if (not tempRotX) then return false end
-					
+
 					local yaw, pitch, roll = 0, 0, 0
-					
+
 					-- yaw
 					if (getCommandTogSTATE("element_move_right")) then
 						yaw = speed
@@ -206,14 +206,14 @@ local function onClientRender_keyboard()
 					elseif (getCommandTogSTATE("element_move_downwards")) then
 						pitch = -speed
 					end
-					
+
 					-- roll
 					if (getCommandTogSTATE("element_move_forward")) then
 						roll = speed
 					elseif (getCommandTogSTATE("element_move_backward")) then
 						roll = -speed
 					end
-					
+
 					-- Perform rotation about one axis at a time
 					if yaw ~= 0 then
 						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", yaw, world_space)
@@ -289,7 +289,7 @@ local function onClientRender_keyboard()
 					if (not tempRotX) then return false end
 
 					local yaw, pitch, roll = 0, 0, 0
-					
+
 					-- yaw
 					if (getCommandTogSTATE("element_move_right")) then
 						yaw = speed
@@ -303,14 +303,14 @@ local function onClientRender_keyboard()
 					elseif (getCommandTogSTATE("element_move_downwards")) then
 						pitch = -speed
 					end
-					
+
 					-- roll
 					if (getCommandTogSTATE("element_move_forward")) then
 						roll = speed
 					elseif (getCommandTogSTATE("element_move_backward")) then
 						roll = -speed
 					end
-					
+
 					-- Perform rotation about one axis at a time
 					if yaw ~= 0 then
 						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", yaw, world_space)
@@ -404,6 +404,9 @@ function attachElement(element)
 		posX, posY, posZ = getElementPosition(element)
 		movementType = MOVEMENT_MOVE
 
+		-- Clear the quat rotation when attaching to element
+		exports.editor_main:clearElementQuat(selectedElement)
+
 		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then
 			rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
@@ -419,6 +422,9 @@ end
 function detachElement()
 	if (selectedElement) then
 		disable()
+
+		-- Clear the quat rotation when detaching from element
+		exports.editor_main:clearElementQuat(selectedElement)
 
 		-- fix for local elements
 		if not isElementLocal(selectedElement) then
