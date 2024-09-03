@@ -1,0 +1,21 @@
+<meta>
+	<info author="Markland (Chemical Creations) Poyser" version="2.0.0" type="script" name="Chemical Ladders v2.0" description="Add ability to climb ladders."/>
+    <min_mta_version client="1.5.9" server="1.5.6" />
+
+	<script src="data.lua" type="shared" cache="false"/>
+	<script src="server.lua" type="server"/>
+	<script src="client.lua" type="client" cache="false"/>
+	
+	<export function="setPedClimbingLadder" type="server"/>
+	<export function="isPedClimbingLadder" type="shared"/>
+	<export function="getPedsOnLadder" type="shared"/>
+	<export function="setPedLadderClimbingEnabled" type="server"/>
+	<export function="isPedLadderClimbingEnabled" type="shared"/>
+	<export function="getLadderClosestToPosition" type="shared"/>
+	<export function="getLadders" type="shared"/>
+	<export function="setLadderEnabled" type="server"/>
+	<export function="setLadderProperties" type="server"/>
+	<export function="getLadderProperties" type="shared"/>
+	<export function="addLadder" type="server"/>
+	<export function="removeLadder" type="server"/>
+</meta>
