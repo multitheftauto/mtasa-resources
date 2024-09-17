@@ -10,16 +10,23 @@ local linePoints  = { }
 local renderStuff = { }
 
 function removeLinePoints ( )
+	if not next(linePoints) then
+		return false
+	end
 	linePoints = { }
 	for name, data in pairs ( renderStuff ) do
 		unloadTile ( name )
 	end
+	return true
 end
 
 function addLinePoint ( posX, posY )
+	if not tonumber(posX) and not tonumber(poxY) then
+		return false
+	end
 	-- Calculate the row and column of the radar tile we will be targeting
-	local row = 11 - math.floor  ( ( posY + 3000 ) / 500 )
-	local col =      math.floor ( ( posX + 3000 ) / 500 )
+	local row = 11 - math.floor  ( ( tonumber(posY) + 3000 ) / 500 )
+	local col =      math.floor ( ( tonumber(posX) + 3000 ) / 500 )
 
 	-- If it's off the map, don't bother
 	if row < 0 or row > 11 or col < 0 or col > 11 then
@@ -31,8 +38,8 @@ function addLinePoint ( posX, posY )
 	local startY = 3000 - row * 500
 
 	-- Now get the tile position (We don't want to calculate this for every point on render)
-	local tileX = ( posX - startX ) / 500 * OVERLAY_WIDTH
-	local tileY = ( startY - posY ) / 500 * OVERLAY_HEIGHT
+	local tileX = ( tonumber(posX) - startX ) / 500 * OVERLAY_WIDTH
+	local tileY = ( startY - tonumber(posY) ) / 500 * OVERLAY_HEIGHT
 
 	-- Now calulcate the ID and get the name of the tile
 	local id   = col + row * 12

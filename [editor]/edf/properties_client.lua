@@ -23,7 +23,7 @@ propertyGetters = {
 		model = getElementModel,
 		rotZ = getPedRotation,
 		health = getElementHealth,
-		armor = setPedArmor,
+		armor = getPedArmor,
 		collisions = function(element)
 			local collisions = getElementData(element, "collisions")
 			if collisions == "true" or collisions == false then
@@ -152,9 +152,6 @@ propertySetters = {
 		end,
 		breakable = function(element, breakable)
 			return setObjectBreakable(element, breakable == "true")
-		end,
-		collisions = function(element, state)
-			return setElementCollisionsEnabled(element, state == "true")
 		end
 	},
 	ped = {

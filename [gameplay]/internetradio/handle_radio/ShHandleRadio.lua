@@ -50,6 +50,41 @@ function verifyRadioStreamURL(streamURL)
 	return true
 end
 
+function getPlayerFromPartialName(partialName)
+	if (not partialName) then
+		return false
+	end
+
+	local playerFromName = getPlayerFromName(partialName)
+
+	if (playerFromName) then
+		return playerFromName
+	end
+
+	local playersTable = getElementsByType("player")
+	local partialNameLower = string.lower(partialName)
+
+	for playerID = 1, #playersTable do
+		local playerElement = playersTable[playerID]
+		local playerName = getPlayerName(playerElement)
+		local playerNameLower = string.lower(playerName)
+		local playerNameWithoutColor = string.gsub(playerNameLower, "#%x%x%x%x%x%x", "")
+		local playerFound = string.find(playerNameWithoutColor, partialNameLower, 1, true)
+
+		if (playerFound) then
+			return playerElement
+		end
+	end
+
+	return false
+end
+
+function removeHex(stringToRemoveHexFrom)
+	local removedHex = string.gsub(stringToRemoveHexFrom, "#%x%x%x%x%x%x", "")
+
+	return removedHex
+end
+
 function getOrSetPlayerDelay(playerElement, delayID, delayTime)
 	local validElement = isElement(playerElement)
 

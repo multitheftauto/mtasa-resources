@@ -404,6 +404,9 @@ function attachElement(element)
 		posX, posY, posZ = getElementPosition(element)
 		movementType = MOVEMENT_MOVE
 
+		-- Clear the quat rotation when attaching to element
+		exports.editor_main:clearElementQuat(selectedElement)
+
 		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then
 			rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
@@ -419,6 +422,9 @@ end
 function detachElement()
 	if (selectedElement) then
 		disable()
+
+		-- Clear the quat rotation when detaching from element
+		exports.editor_main:clearElementQuat(selectedElement)
 
 		-- fix for local elements
 		if not isElementLocal(selectedElement) then

@@ -3,6 +3,8 @@
 --
 local function processPlayerJoin()
 	_playerStates[source] = PLAYER_JOINED
+	-- begin protecting player element data
+	addEventHandler("onElementDataChange", source, checkElementData)
 	-- initialize player score data
 	setElementData(source, "Score", 0)
 	setElementData(source, "Rank", "-")
@@ -28,7 +30,10 @@ addEventHandler("onPlayerQuit", root, processPlayerQuit)
 --	gamemodePlayerReady: triggered when a client is ready to play
 --
 -- triggered by the client post-onClientResourceStart
- function gamemodePlayerReady()
+ local function gamemodePlayerReady(loadedResource)
+	if loadedResource ~= resource then
+		return
+	end
 	-- inform client of current game state by triggering certain events
 	local gameState = getElementData(resourceRoot, "gameState")
 	if gameState == GAME_STARTING then
@@ -104,6 +109,6 @@ function processPlayerWasted(totalAmmo, killer, killerWeapon, bodypart)
 	calculatePlayerRanks()
 	-- set timer to respawn player
 	if _respawnTime > 0 then
-		_respawnTimers[source] = setTimer(spawnGamemodePlayer, _respawnTime, 1, source)
+		_respawnTimers[source] = setTimer(spawnGamemodePlayer, _respawnTime + WASTED_CAMERA_DURATION, 1, source)
 	end
 end

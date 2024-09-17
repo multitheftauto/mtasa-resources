@@ -1,5 +1,5 @@
 <meta>
-	<info author="arc_" type="script" version="1.0.0"/>
+	<info author="arc_" type="script" version="1.1.1" description="Calculates and displays the quickest road path between two points/nodes on the map. Commands: /path node1 node2 /path2 x y [z]. Resource contains export functions for custom logic."/>
 
 	<script src="util.lua" type="client"/>
 	<script src="client.lua" type="client"/>
@@ -10,4 +10,21 @@
 	<script src="vehiclenodes.lua" type="server"/>
 	<script src="MinHeap.lua" type="server"/>
 	<script src="gps.lua" type="server"/>
+
+	<export function="calculatePathByCoords" type="server"/> <!--calculatePathByCoords(float x1, float y1, float [z1], float x2,
+	float y2, float [z2]) 
+	Function returns a table with the ID (int), neighbours (table), x (float), y (float), z (float) otherwise false. So the 
+	original GTA vehicle node points in ascending order from point A to point B.-->
+	<export function="calculatePathByNodeIDs" type="server"/> <!--calculatePathByNodeIDs(int node1, int node2) 
+	Function returns a table with the ID (int), neighbours (table), x (float), y (float), z (float) otherwise false. So the 
+	original GTA vehicle node points in ascending order from node A to node B.-->
+	<export function="addLinePoint" type="client"/> <!--addLinePoint(float posX, float posY) 
+	Function returns true if successful otherwise false.
+	Draws the path on the client HUD mini map in ascending order. For example, if you use the table returned by the calculatePathByCoords
+	or calculatePathByNodeIDs function. 
+	If you add your own line points they must be very close to each other, otherwise the path will not be drawn properly.-->
+	<export function="removeLinePoints" type="client"/> <!--removeLinePoints()
+	Function returns true if the drawn lines of the client HUD mini map were removed otherwise false if there was nothing to remove.
+	Removes the line points of the addLinePoint function respectively the drawn lines of the client HUD mini map. 
+	This can be used, for example, when the target node point has been reached or a player gets out of the vehicle.-->
 </meta>
