@@ -192,9 +192,16 @@ end
 
 function passNewMapSettings()
 
-	if type(loadedMap) ~= "string" then return false end
+	if type(loadedMap) ~= "string" then 
+		return false
+	end
 	
 	local mapResource = getResourceFromName(loadedMap)
+	
+	if not mapResource then 
+		loadedMap = false 
+		return false 
+	end
 
 	--General settings
 	local settings = getSettings(mapResource)
