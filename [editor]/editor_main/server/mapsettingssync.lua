@@ -191,6 +191,9 @@ function passDefaultMapSettings()
 end
 
 function passNewMapSettings()
+
+	if type(loadedMap) ~= "string" then return false end
+	
 	local mapResource = getResourceFromName(loadedMap)
 
 	--General settings
