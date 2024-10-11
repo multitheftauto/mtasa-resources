@@ -25,10 +25,11 @@ end
 
 -- basic element create functions table (cdata holds creation parameters)
 local edfCreateBasic = {
-	object = function(cdata)
+	object = function(cdata, editorMode)
 		local object = createObject(cdata.model, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3])
 		setObjectScale(object, cdata.scale)
-		if exports.editor_main:getMapSettingValue("useLODs") == true then
+		-- Create object's LOD if editing a map in Map Editor & LODs are enabled in the map's settings
+		if editorMode and exports.editor_main:getMapSettingValue("useLODs") then
 			local lodModel = exports.editor_main:getLODModelFromObjectModel(cdata.model)
 			if lodModel then
 				local lodObject = createObject(lodModel, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3], true)
@@ -507,7 +508,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 					end
 
 					-- create our basic element
-					component = edfCreateBasic[definedChild.type](childData)
+					component = edfCreateBasic[definedChild.type](childData, editorMode)
 
 					componentHandle = component
 
@@ -605,7 +606,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 			childData[property] = parametersTable[property] or propertyData.default
 		end
 
-		theElement = edfCreateBasic[elementType](childData)
+		theElement = edfCreateBasic[elementType](childData, editorMode)
 
 		setElementInterior(theElement, parametersTable.interior)
 		setElementDimension(theElement, parametersTable.dimension)
