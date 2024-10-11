@@ -1,4 +1,4 @@
-local SCRIPTING_EXTENSIONS
+local SCRIPTING_EXTENSION_CODE
 
 local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 function toAttribute(value)
@@ -197,7 +197,7 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 
 	--Add the map editor scripting extension scripts to meta
 	local scriptName = "newMapEditorScriptingExtension_s.lua"
-	local scriptContent = SCRIPTING_EXTENSIONS["server"]
+	local scriptContent = SCRIPTING_EXTENSION_CODE
 	local foundScriptInMeta = false
 	for i, child in ipairs(xmlNodeGetChildren(xml)) do
 		if (xmlNodeGetAttribute(child, "src") == scriptName) then
@@ -220,31 +220,6 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		xmlNodeSetAttribute(scriptNode, "type", "server")
 	end
 
-	scriptName = "newMapEditorScriptingExtension_c.lua"
-	scriptContent = SCRIPTING_EXTENSIONS["client"]
-	foundScriptInMeta = false
-	for i, child in ipairs(xmlNodeGetChildren(xml)) do
-		if (xmlNodeGetAttribute(child, "src") == scriptName) then
-			foundScriptInMeta = true
-			break
-		end
-	end
-	-- If for some reason the file fails to create, we won't add it to meta.xml
-	scriptExtFile = fileCreate(":"..getResourceName(resource).."/"..scriptName)
-	scriptExtFileSuccess = false
-	if scriptExtFile then
-		if fileWrite(scriptExtFile, scriptContent) then
-			scriptExtFileSuccess = true
-		end
-		fileClose(scriptExtFile)
-	end
-	if scriptExtFileSuccess and (not foundScriptInMeta) then
-		local scriptNode = xmlCreateChild(xml, "script")
-		xmlNodeSetAttribute(scriptNode, "src", scriptName)
-		xmlNodeSetAttribute(scriptNode, "type", "client")
-		xmlNodeSetAttribute(scriptNode, "validate", "false")
-	end
-
 	return xmlSaveFile(xml)
 end
 
@@ -260,32 +235,7 @@ function getMapElementData ( element )
 	return elementData
 end
 
-SCRIPTING_EXTENSIONS = {
-	["client"] = [[-- FILE: newMapEditorScriptingExtension_c.lua
--- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
--- VERSION: 11/October/2024
--- IMPORTANT: Check the resource 'editor_main' at https://github.com/mtasa-resources/ for updates
-
-local resourceName = getResourceName(resource)
-local updatedLodDistances = {}
-
-local function setLODsClient(lodTbl)
-	for model in pairs(lodTbl) do
-		updatedLodDistances[model] = true
-		engineSetModelLODDistance(model, 300)
-	end
-end
-addEvent(resourceName..":setLODsClient", true)
-addEventHandler(resourceName..":setLODsClient", resourceRoot, setLODsClient)
-
-local function handleClientResourceStop()
-	for model in pairs(updatedLodDistances) do
-		engineResetModelLODDistance(model)
-	end
-end
-addEventHandler("onClientResourceStop", resourceRoot, handleClientResourceStop, false)]],
-
-	["server"] = [[-- FILE: newMapEditorScriptingExtension_s.lua
+SCRIPTING_EXTENSION_CODE = [[-- FILE: newMapEditorScriptingExtension_s.lua
 -- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
 -- VERSION: 11/October/2024
 -- IMPORTANT: Check the resource 'editor_main' at https://github.com/mtasa-resources/ for updates
@@ -294,6 +244,7 @@ local resourceName = getResourceName(resource)
 local usedLODModels = {}
 local LOD_MAP_NEW = {}
 
+-- Makes removeWorldObject map entries and LODs work
 local function onResourceStartOrStop(startedResource)
 	local startEvent = eventName == "onResourceStart"
 	local removeObjects = getElementsByType("removeWorldObject", source)
@@ -350,13 +301,6 @@ end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop, false)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop, false)
 
-local function onPlayerResourceStart(res)
-	if res ~= resource then return end
-	triggerClientEvent(source, resourceName..":setLODsClient", resourceRoot, usedLODModels)
-end
-addEventHandler("onPlayerResourceStart", root, onPlayerResourceStart)
-
 -- MTA LOD Table [object] = [lodmodel]]
-}
 
-SCRIPTING_EXTENSIONS["server"] = SCRIPTING_EXTENSIONS["server"] .. "\n" .. getLodsLuaTableString()
+SCRIPTING_EXTENSION_CODE = SCRIPTING_EXTENSION_CODE .. "\n" .. getLodsLuaTableString()
