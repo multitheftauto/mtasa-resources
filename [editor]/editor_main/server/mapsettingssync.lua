@@ -265,3 +265,8 @@ function getSettings(resource)
 	xmlUnloadFile ( meta )
 	return settings
 end
+
+function getMapSettingValue(setting)
+	if type(setting) ~= "string" then return end
+	return currentMapSettings[setting]
+end

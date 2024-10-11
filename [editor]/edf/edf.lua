@@ -28,6 +28,15 @@ local edfCreateBasic = {
 	object = function(cdata)
 		local object = createObject(cdata.model, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3])
 		setObjectScale(object, cdata.scale)
+		if exports.editor_main:getMapSettingValue("useLODs") == true then
+			local lodModel = exports.editor_main:getLODModelFromObjectModel(cdata.model)
+			if lodModel then
+				local lodObject = createObject(lodModel, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3], true)
+				setObjectScale(lodObject, cdata.scale)
+				setLowLODElement(object, lodObject)
+				setElementParent(lodObject, object)
+			end
+		end
 		return object
 	end,
 	vehicle = function(cdata)
