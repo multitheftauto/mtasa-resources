@@ -29,15 +29,17 @@ addEventHandler ( "onMapOpened", root,
 addEventHandler ( "onElementCreate", root,
 	function()
 		if getElementType(source) == "checkpoint" then
-			--Find the first element without a nextid
+			--Find the first non-destroyed element without a nextid
 			for i,checkpoint in ipairs(getElementsByType"checkpoint") do
-				if checkpoint ~= source and not exports.edf:edfGetElementProperty ( checkpoint, "nextid" ) then
+				if checkpoint ~= source and not exports.edf:edfGetElementProperty ( checkpoint, "nextid" ) and getElementDimension(getRepresentation(checkpoint,"marker")) == exports.editor_main:getWorkingDimension() then
 					exports.edf:edfSetElementProperty ( checkpoint, "nextid", source )
 					break
 				end
 			end
 			local marker = getRepresentation(source,"marker")
 			setMarkerIcon ( marker, "finish" )
+			-- Clear new clone checkpoint's nextid as a checkpoint is to be pointed to by only one other
+			exports.edf:edfSetElementProperty( source, "nextid", nil)
 		end
 	end
 )
