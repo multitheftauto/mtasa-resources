@@ -18,9 +18,9 @@ function getVehicleNameFromModel(id)
         [609] = "Black Boxville",
         [604] = "Damaged Glendale",
         [544] = "Fire Truck (Ladder)",
-        [494] = "Hotring racer",
-        [502] = "Hotring racer 2",
-        [503] = "Hotring racer 3",
+        [494] = "Hotring Racer",
+        [502] = "Hotring Racer 2",
+        [503] = "Hotring Racer 3",
         [505] = 'Rancher (From "Lure")',
         [605] = "Damaged Sadler"
     }
@@ -41,9 +41,9 @@ function getVehicleModelFromName(name)
         ["Black Boxville"] = 609,
         ["Damaged Glendale"] = 604,
         ["Fire Truck (Ladder)"] = 544,
-        ["Hotring racer"] = 494,
-        ["Hotring racer 2"] = 502,
-        ["Hotring racer 3"] = 503,
+        ["Hotring Racer"] = 494,
+        ["Hotring Racer 2"] = 502,
+        ["Hotring Racer 3"] = 503,
         ['Rancher (From "Lure")'] = 505,
         ["Damaged Sadler"] = 605
     }
