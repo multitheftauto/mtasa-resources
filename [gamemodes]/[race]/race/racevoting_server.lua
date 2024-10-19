@@ -47,7 +47,7 @@ end
 ----------------------------------------------------------------------------
 function displayKillerPunchLine( player )
 	if lastVoteStarterName ~= '' then
-		outputRace( 'Offical news: Everybody hates ' .. lastVoteStarterName )
+		outputRace( 'Official news: Everybody hates ' .. lastVoteStarterName )
 	end
 end
 
