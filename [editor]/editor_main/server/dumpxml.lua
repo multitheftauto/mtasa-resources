@@ -1,3 +1,5 @@
+local SCRIPTING_EXTENSION_CODE
+
 local DESTROYED_ELEMENT_DIMENSION = getWorkingDimension() + 1
 function toAttribute(value)
 	if type(value) == "table" then
@@ -193,8 +195,9 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		end
 	end
 
-	--Add the mapEditorScriptingExtension scripts to meta
-	local scriptName = "mapEditorScriptingExtension_s.lua"
+	--Add the map editor scripting extension scripts to meta
+	local scriptName = "newMapEditorScriptingExtension_s.lua"
+	local scriptContent = SCRIPTING_EXTENSION_CODE
 	local foundScriptInMeta = false
 	for i, child in ipairs(xmlNodeGetChildren(xml)) do
 		if (xmlNodeGetAttribute(child, "src") == scriptName) then
@@ -202,28 +205,20 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 			break
 		end
 	end
-	if (not foundScriptInMeta) then
+	-- If for some reason the file fails to create, we won't add it to meta.xml
+	local scriptExtFile = fileCreate(":"..getResourceName(resource).."/"..scriptName)
+	local scriptExtFileSuccess = false
+	if scriptExtFile then
+		if fileWrite(scriptExtFile, scriptContent) then
+			scriptExtFileSuccess = true
+		end
+		fileClose(scriptExtFile)
+	end
+	if scriptExtFileSuccess and (not foundScriptInMeta) then
 		local scriptNode = xmlCreateChild(xml, "script")
 		xmlNodeSetAttribute(scriptNode, "src", scriptName)
 		xmlNodeSetAttribute(scriptNode, "type", "server")
 	end
-	fileCopy("server/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
-
-	scriptName = "mapEditorScriptingExtension_c.lua"
-	foundScriptInMeta = false
-	for i, child in ipairs(xmlNodeGetChildren(xml)) do
-		if (xmlNodeGetAttribute(child, "src") == scriptName) then
-			foundScriptInMeta = true
-			break
-		end
-	end
-	if (not foundScriptInMeta) then
-		local scriptNode = xmlCreateChild(xml, "script")
-		xmlNodeSetAttribute(scriptNode, "src", scriptName)
-		xmlNodeSetAttribute(scriptNode, "type", "client")
-		xmlNodeSetAttribute(scriptNode, "validate", "false")
-	end
-	fileCopy("client/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
 
 	return xmlSaveFile(xml)
 end
@@ -239,3 +234,73 @@ function getMapElementData ( element )
 	end
 	return elementData
 end
+
+SCRIPTING_EXTENSION_CODE = [[-- FILE: newMapEditorScriptingExtension_s.lua
+-- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
+-- VERSION: 11/October/2024
+-- IMPORTANT: Check the resource 'editor_main' at https://github.com/mtasa-resources/ for updates
+
+local resourceName = getResourceName(resource)
+local usedLODModels = {}
+local LOD_MAP_NEW = {}
+
+-- Makes removeWorldObject map entries and LODs work
+local function onResourceStartOrStop(startedResource)
+	local startEvent = eventName == "onResourceStart"
+	local removeObjects = getElementsByType("removeWorldObject", source)
+
+	for removeID = 1, #removeObjects do
+		local objectElement = removeObjects[removeID]
+		local objectModel = getElementData(objectElement, "model")
+		local objectLODModel = getElementData(objectElement, "lodModel")
+		local posX = getElementData(objectElement, "posX")
+		local posY = getElementData(objectElement, "posY")
+		local posZ = getElementData(objectElement, "posZ")
+		local objectInterior = getElementData(objectElement, "interior") or 0
+		local objectRadius = getElementData(objectElement, "radius")
+
+		if startEvent then
+			removeWorldModel(objectModel, objectRadius, posX, posY, posZ, objectInterior)
+			removeWorldModel(objectLODModel, objectRadius, posX, posY, posZ, objectInterior)
+		else
+			restoreWorldModel(objectModel, objectRadius, posX, posY, posZ, objectInterior)
+			restoreWorldModel(objectLODModel, objectRadius, posX, posY, posZ, objectInterior)
+		end
+	end
+
+	if startEvent then
+		local useLODs = get(resourceName..".useLODs")
+
+		if useLODs then
+			local objectsTable = getElementsByType("object", source)
+
+			for objectID = 1, #objectsTable do
+				local objectElement = objectsTable[objectID]
+				local objectModel = getElementModel(objectElement)
+				local lodModel = LOD_MAP_NEW[objectModel]
+
+				if lodModel then
+					local objectX, objectY, objectZ = getElementPosition(objectElement)
+					local objectRX, objectRY, objectRZ = getElementRotation(objectElement)
+					local objectInterior = getElementInterior(objectElement)
+					local objectDimension = getElementDimension(objectElement)
+					local lodObject = createObject(lodModel, objectX, objectY, objectZ, objectRX, objectRY, objectRZ, true)
+
+					setElementInterior(lodObject, objectInterior)
+					setElementDimension(lodObject, objectDimension)
+
+					setElementParent(lodObject, objectElement)
+					setLowLODElement(objectElement, lodObject)
+
+					usedLODModels[lodModel] = true
+				end
+			end
+		end
+	end
+end
+addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop, false)
+addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop, false)
+
+-- MTA LOD Table [object] = [lodmodel]]
+
+SCRIPTING_EXTENSION_CODE = SCRIPTING_EXTENSION_CODE .. "\n" .. getLodsLuaTableString()

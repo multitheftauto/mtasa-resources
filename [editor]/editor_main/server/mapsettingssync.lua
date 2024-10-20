@@ -3,7 +3,7 @@ local defaults = {
 	gamespeed = 1,
 	gravity = "0.008",
 	locked_time = false,
-	useLODs = false,
+	useLODs = true,
 	timeHour = 12,
 	timeMinute = 00,
 	waveheight = 0,
@@ -22,7 +22,7 @@ function makeSettingsDefault()
 		gamespeed = 1,
 		gravity = "0.008",
 		locked_time = false,
-		useLODs = false,
+		useLODs = true,
 		timeHour = 12,
 		timeMinute = 00,
 		waveheight = 0,
@@ -264,4 +264,9 @@ function getSettings(resource)
 	end
 	xmlUnloadFile ( meta )
 	return settings
+end
+
+function getMapSettingValue(setting)
+	if type(setting) ~= "string" then return end
+	return currentMapSettings[setting]
 end
