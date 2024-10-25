@@ -20,7 +20,7 @@ guiLanguage.german = {
     successRegular = "%s auf %s gesetzt.",
     successHex = "%s %s.",
     unableToChange = "Es ist nicht möglich, %s auf %s zu setzen!",
-	disabledProperty = "Das Bearbeiten von %s ist auf diesem Server deaktiviert!",
+    disabledProperty = "Das Bearbeiten von %s ist auf diesem Server deaktiviert!",
 
     resetted = "Die Fahreinstellungen des Fahrzeugs wurden erfolgreich zurückgesetzt!",
     loaded = "Ihre Fahreinstellungen wurden erfolgreich geladen!",
@@ -52,24 +52,24 @@ guiLanguage.german = {
     },
 
     --
-    -- BUTTON- / MENÜ-ZEICHENFOLGEN
+    -- BUTTON / MENU STRINGS
     --
 
-    -- Warnstufen-Zeichenfolgen
+    --Warning level strings
     warningtitles = {
         info = "Information",
         question = "Frage",
         warning = "Warnung!",
         error = "Fehler!"
     },
-    -- Zeichenfolgen für die Schaltflächen oben
+    --Strings for the buttons at the top
     menubar = {
         handling = "Handling",
         tools = "Werkzeuge",
         extra = "Extra",
     },
 
-    -- Zeichenfolgen für die Schaltflächen links
+    --Strings for the buttons at the left
     viewbuttons = {
         engine = "Motor",
         body = "Karosserie",
@@ -83,7 +83,7 @@ guiLanguage.german = {
         save = "Speichern"
     },
 
-    -- Zeichenfolgen für die verschiedenen Ansichten des Editors
+    -- Strings for the various views of the editor. Empty strings are placeholder to avoid debug as the debug is meant to show items which are missing text.
     viewinfo = {
         engine = {
             shortname = "Motor",
