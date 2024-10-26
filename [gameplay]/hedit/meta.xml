@@ -48,7 +48,7 @@
 
     <!-- SERVER -->
     <script src="server/logmanager.lua"             type="server" />
-    <script src="server/cfgloader.lua"              type="server" />>
+    <script src="server/cfgloader.lua"              type="server" />
     <script src="server/core.lua"                   type="server" />
     <script src="server/utils.lua"                  type="server" />
 
