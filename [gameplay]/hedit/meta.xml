@@ -1,5 +1,5 @@
 <meta>
-    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.4" description="The first ingame handling editor for MTA!" />
+    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.5" description="The first ingame handling editor for MTA!" />
     <oop>true</oop>
     <min_mta_version server="1.4.0" client="1.4.0" />
 
