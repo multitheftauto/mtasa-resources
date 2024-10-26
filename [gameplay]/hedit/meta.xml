@@ -26,6 +26,7 @@
     <script src="client/gui/languages/english.lua"  type="client" />
     <script src="client/gui/languages/russian.lua"  type="client" />
     <script src="client/gui/languages/turkish.lua"  type="client" />
+    <script src="client/gui/languages/german.lua"  type="client" />
     <script src="client/gui/languages/spanish.lua"  type="client" />
     <script src="client/gui/languages/polish.lua"   type="client" />
     <script src="client/gui/languages/arabic.lua"   type="client" />
