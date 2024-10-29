@@ -2267,7 +2267,13 @@ function toggleMap()
 		showCursor(true)
 	end
 end
-bindKey("f2", "down", toggleMap)
+
+if getResourceState(getResourceFromName("race")) ~= "running" then
+		bindKey("F2", "down", toggleMap)
+	elseif (getKeyBoundToFunction(toggleMap) == "F2") then
+		unbindKey("F2", "down", toggleMap)
+	end
+end
 
 function toggleFRWindow()
 	if isWindowOpen(wndMain) then
