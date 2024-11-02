@@ -271,7 +271,7 @@ function Superman.startFlight()
 		return
 	end
 
-	triggerServerEvent("superman:start", root)
+	triggerServerEvent("superman:start", localPlayer)
 	setPlayerFlying(localPlayer, true)
 	setElementVelocity(localPlayer, 0, 0, 0)
 	self.currentSpeed = 0
@@ -285,7 +285,7 @@ function Superman.processControls()
 	local self = Superman
 
 	if not isPlayerFlying(localPlayer) then
-		jump, oldJump = getPedControlState("jump"), jump
+		jump, oldJump = getPedControlState(localPlayer, "jump"), jump
 		if not oldJump and jump then
 			Superman.onJump()
 		end
@@ -295,15 +295,15 @@ function Superman.processControls()
 	-- Calculate the requested movement direction
 	local Direction = Vector3D:new(0, 0, 0)
 
-	if getPedControlState("forwards") then
+	if getPedControlState(localPlayer, "forwards") then
 		Direction.y = 1
-	elseif getPedControlState("backwards") then
+	elseif getPedControlState(localPlayer, "backwards") then
 		Direction.y = -1
 	end
 
-	if getPedControlState("left") then
+	if getPedControlState(localPlayer, "left") then
 		Direction.x = 1
-	elseif getPedControlState("right") then
+	elseif getPedControlState(localPlayer, "right") then
 		Direction.x = -1
 	end
 
@@ -314,7 +314,7 @@ function Superman.processControls()
 	local SightDirection = Vector3D:new((lookX - cameraX), (lookY - cameraY), (lookZ - cameraZ))
 	SightDirection:Normalize()
 
-	if getPedControlState("look_behind") then
+	if getPedControlState(localPlayer, "look_behind") then
 		SightDirection = SightDirection:Mul(-1)
 	end
 
@@ -322,10 +322,10 @@ function Superman.processControls()
 	local maxSpeed = MAX_SPEED
 	local acceleration = ACCELERATION
 
-	if getPedControlState("sprint") then
+	if getPedControlState(localPlayer, "sprint") then
 		maxSpeed = MAX_SPEED * EXTRA_SPEED_FACTOR
 		acceleration = acceleration * EXTRA_ACCELERATION_FACTOR
-	elseif getPedControlState("walk") then
+	elseif getPedControlState(localPlayer, "walk") then
 		maxSpeed = MAX_SPEED * LOW_SPEED_FACTOR
 		acceleration = acceleration * LOW_ACCELERATION_FACTOR
 	end
@@ -449,7 +449,7 @@ function Superman.processFlight()
 			self:restorePlayer(player)
 			if player == localPlayer then
 				setGravity(serverGravity)
-				triggerServerEvent("superman:stop", root)
+				triggerServerEvent("superman:stop", localPlayer)
 			end
 		elseif distanceToGround and distanceToGround < LANDING_DISTANCE then
 			self:processLanding(player, Velocity, distanceToGround)
@@ -476,7 +476,7 @@ function Superman:processIdleFlight(player)
 		local Sight = Vector3D:new(lookX - cameraX, lookY - cameraY, lookZ - cameraZ)
 		Sight:Normalize()
 
-		if getPedControlState("look_behind") then
+		if getPedControlState(localPlayer, "look_behind") then
 			Sight = Sight:Mul(-1)
 		end
 
