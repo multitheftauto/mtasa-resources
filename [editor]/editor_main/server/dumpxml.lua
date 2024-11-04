@@ -242,7 +242,7 @@ SCRIPTING_EXTENSION_CODE = [[-- FILE: newMapEditorScriptingExtension_s.lua
 
 local resourceName = getResourceName(resource)
 local usedLODModels = {}
-local LOD_MAP_NEW = {}
+local OBJ_LOD_MODELS = {}
 
 -- Makes removeWorldObject map entries and LODs work
 local function onResourceStartOrStop(startedResource)
@@ -277,7 +277,7 @@ local function onResourceStartOrStop(startedResource)
 			for objectID = 1, #objectsTable do
 				local objectElement = objectsTable[objectID]
 				local objectModel = getElementModel(objectElement)
-				local lodModel = LOD_MAP_NEW[objectModel]
+				local lodModel = OBJ_LOD_MODELS[objectModel]
 
 				if lodModel then
 					local objectX, objectY, objectZ = getElementPosition(objectElement)
@@ -301,6 +301,6 @@ end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop, false)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop, false)
 
--- MTA LOD Table [object] = [lodmodel]]
-
+-- MTA LOD Table [object] = [lodmodel]
+]]
 SCRIPTING_EXTENSION_CODE = SCRIPTING_EXTENSION_CODE .. "\n" .. getLodsLuaTableString()
