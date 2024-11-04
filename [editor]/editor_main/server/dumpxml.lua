@@ -237,7 +237,7 @@ end
 
 SCRIPTING_EXTENSION_CODE = [[-- FILE: newMapEditorScriptingExtension_s.lua
 -- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
--- VERSION: 11/October/2024
+-- VERSION: 04/November/2024
 -- IMPORTANT: Check the resource 'editor_main' at https://github.com/mtasa-resources/ for updates
 
 local resourceName = getResourceName(resource)
@@ -301,6 +301,4 @@ end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop, false)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop, false)
 
--- MTA LOD Table [object] = [lodmodel]
-]]
-SCRIPTING_EXTENSION_CODE = SCRIPTING_EXTENSION_CODE .. "\n" .. getLodsLuaTableString()
+]] .. getLodsLuaTableString()
