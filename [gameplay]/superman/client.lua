@@ -170,17 +170,17 @@ end
 
 function Superman.onJoin(player)
 	local self = Superman
-	local player = player or source
+	local playerElement = player or source
 
-	setPlayerFlying(player, false)
+	setPlayerFlying(playerElement, false)
 end
 
 function Superman.onQuit(reason, player)
 	local self = Superman
-	local player = player or source
+	local playerElement = player or source
 
-	if isPlayerFlying(player) then
-		self:restorePlayer(player)
+	if isPlayerFlying(playerElement) then
+		self:restorePlayer(playerElement)
 	end
 end
 
@@ -622,8 +622,8 @@ end
 -- Vectors
 --
 Vector3D = {
-new = function(self, _x, _y, _z)
-		local newVector = {x = _x or 0.0, y = _y or 0.0, z = _z or 0.0}
+new = function(self, posX, posY, posZ)
+		local newVector = {x = posX or 0.0, y = posY or 0.0, z = posZ or 0.0}
 		return setmetatable(newVector, {__index = Vector3D})
 	end,
 
