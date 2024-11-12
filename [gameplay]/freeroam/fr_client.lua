@@ -2123,7 +2123,9 @@ function onExitVehicle(vehicle,seat)
 		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
 		closeWindow(wndUpgrades)
 		closeWindow(wndColor)
-	elseif vehicle and seat == 0 then
+	end
+		
+	if vehicle and seat == 0 then
 		if source and g_PlayerData[source] then
 			setVehicleGhost(vehicle,hasDriverGhost(vehicle))
 		end
