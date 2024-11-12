@@ -2245,8 +2245,18 @@ addEventHandler('onClientResourceStart', resourceRoot,
 		createWindow(wndMain)
 		hideAllWindows()
 		bindKey('f1', 'down', toggleFRWindow)
+		bindKey('f2', 'down', toggleMap)
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), isPedWearingJetpack(localPlayer))
 		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPedBeKnockedOffBike(localPlayer))
+	end
+)
+
+addEventHandler('onClientResourceStart', root,
+	function(startedResource)
+		local editorResource, raceResource = getResourceFromName('editor'), getResourceFromName('race')
+		if (editorResource and raceResource and startedResource == raceResource) then
+			unbindKey('f2', 'down', toggleMap)
+		end
 	end
 )
 
@@ -2269,7 +2279,6 @@ function toggleMap()
 		showCursor(true)
 	end
 end
-bindKey("f2", "down", toggleMap)
 
 function toggleFRWindow()
 	if isWindowOpen(wndMain) then
@@ -2354,6 +2363,15 @@ addEventHandler('onClientResourceStop', resourceRoot,
 	function()
 		showCursor(false)
 		setPedAnimation(localPlayer, false)
+	end
+)
+
+addEventHandler('onClientResourceStop', root,
+	function(stoppingResource)
+		local editorResource, raceResource = getResourceFromName('editor'), getResourceFromName('race')
+		if (editorResource and raceResource and stoppingResource == raceResource) then
+			bindKey('f2', 'down', toggleMap)
+		end
 	end
 )
 

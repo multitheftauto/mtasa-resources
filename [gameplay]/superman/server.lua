@@ -1,24 +1,20 @@
 local Superman = {}
 
--- Static global values
-local thisResource = getThisResource()
-
--- Resource events
-addEvent("superman:start", true)
-addEvent("superman:stop", true)
-
 --
 -- Start/stop functions
 --
 function Superman.Start()
 	local self = Superman
 
+	addEvent("superman:start", true)
+	addEvent("superman:stop", true)
+
 	addEventHandler("superman:start", root, self.clientStart)
 	addEventHandler("superman:stop", root, self.clientStop)
-	addEventHandler("onPlayerJoin", root, Superman.setStateOff) --
+	addEventHandler("onPlayerJoin", root, Superman.setStateOff)
 	addEventHandler("onPlayerVehicleEnter", root, self.enterVehicle)
 end
-addEventHandler("onResourceStart", getResourceRootElement(thisResource), Superman.Start, false)
+addEventHandler("onResourceStart", resourceRoot, Superman.Start, false)
 
 function Superman.clientStart()
 	setElementData(client, "superman:flying", true)
