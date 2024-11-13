@@ -39,7 +39,7 @@ addEventHandler('onPlayerChat', root,
 	function(msg, type)
 		if type == 0 then
 			if freeroamRunning then
-				return -- No effect, let freeroam handle chat
+				return -- Let freeroam handle chat
 			end
 			cancelEvent()
 			local r, g, b = getPlayerColor(source)
