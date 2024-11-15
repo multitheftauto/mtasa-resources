@@ -27,13 +27,29 @@ addEventHandler("onPlayerQuit", root, function()
     broadcasts[source] = nil
 end)
 
+-- Anti-cheat
+-- Prevents clients from wanting to broadcast their voice to players that are really too far away
+local function canPlayerBeWithinOtherPlayerStreamDistance(player, otherPlayer)
+    local maxDist = getServerConfigSetting("ped_syncer_distance") or 100
+    if not isElement(player) or not isElement(otherPlayer) then
+        return false
+    end
+    if getElementType(player) ~= "player" or getElementType(otherPlayer) ~= "player" then
+        return false
+    end
+    if getElementInterior(player) ~= getElementInterior(otherPlayer) or getElementDimension(player) ~= getElementDimension(otherPlayer) then
+        return false
+    end
+    return getDistanceBetweenPoints3D(getElementPosition(player), getElementPosition(otherPlayer)) <= maxDist
+end
+
 addEventHandler("voice:setPlayerBroadcast", resourceRoot, function(players)
     if not client then return end
     if type(players) ~= "table" then return end
     broadcasts[client] = {client}
 
     for player, _ in pairs(players) do
-        if player ~= client and isElement(player) and getElementType(player) == "player" then
+        if player ~= client and canPlayerBeWithinOtherPlayerStreamDistance(client, player) then
             table.insert(broadcasts[client], player)
         end
     end
@@ -48,8 +64,12 @@ addEventHandler("voice:addToPlayerBroadcast", resourceRoot, function(player)
         broadcasts[client] = {client}
     end
 
+    if not canPlayerBeWithinOtherPlayerStreamDistance(client, player) then
+        return
+    end
+
     -- Prevent duplicates
-    for _, broadcast in ipairs(broadcasts[client]) do
+    for _, broadcast in pairs(broadcasts[client]) do
         if player == broadcast then
             return
         end
@@ -67,7 +87,7 @@ addEventHandler("voice:removePlayerBroadcast", resourceRoot, function(player)
         return
     end
 
-    for i, broadcast in ipairs(broadcasts[client]) do
+    for i, broadcast in pairs(broadcasts[client]) do
         if player~=client and player == broadcast then
             table.remove(broadcasts[client], i)
             break

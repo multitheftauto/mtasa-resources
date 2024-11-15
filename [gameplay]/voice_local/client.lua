@@ -3,8 +3,6 @@ addEvent("voice_cl:onClientPlayerVoiceStart", true)
 addEvent("voice_cl:onClientPlayerVoiceStop", true)
 addEvent("voice_local:updateSettings", true)
 
-local MAX_VOICE_DISTANCE = 25
-
 local streamedPlayers = {}
 
 local sx, sy = guiGetScreenSize()
@@ -23,21 +21,21 @@ addEventHandler("onClientPreRender", root, function()
     for player, talking in pairs(streamedPlayers) do
         local px, py, pz = getElementPosition(player)
         local distanceToPlayer = getDistanceBetweenPoints3D(cx, cy, cz, px, py, pz)
-
+        local maxDistance = settings.maxVoiceDistance.value
         local playerVolume
         if (distanceToPlayer <= 0) then
             playerVolume = 1.0
-        elseif (distanceToPlayer >= MAX_VOICE_DISTANCE) then
+        elseif (distanceToPlayer >= maxDistance) then
             playerVolume = 0.0
         else
-            playerVolume = (1.0 - (distanceToPlayer / MAX_VOICE_DISTANCE)^2)
+            playerVolume = (1.0 - (distanceToPlayer / maxDistance)^2)
         end
         setSoundVolume(player, playerVolume)
 
         if talking and settings.playersTalkingIcon.value and isLineOfSightClear(cx, cy, cz, px, py, pz, false, false, false, false, true, true, true, localPlayer) then
             local boneX, boneY, boneZ = getPedBonePosition(player, 8)
             local screenX, screenY = getScreenFromWorldPosition(boneX, boneY, boneZ + 0.5)
-            if screenX and screenY and fDistance < MAX_VOICE_DISTANCE then
+            if screenX and screenY and fDistance < maxDistance then
                 fDistance = 1 / fDistance
                 dxDrawImage(screenX - halfWidth * fDistance, screenY - halfHeight * fDistance, width * fDistance, height * fDistance, icon, 0, 0, 0, -1, false)
             end
