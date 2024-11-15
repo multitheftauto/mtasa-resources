@@ -29,19 +29,30 @@ end)
 
 addEventHandler("voice:setPlayerBroadcast", resourceRoot, function(players)
     if not client then return end
-    broadcasts[client] = {}
+    if type(players) ~= "table" then return end
+    broadcasts[client] = {client}
 
     for player, _ in pairs(players) do
-        table.insert(broadcasts[client], player)
+        if player ~= client and isElement(player) and getElementType(player) == "player" then
+            table.insert(broadcasts[client], player)
+        end
     end
-
     setPlayerVoiceBroadcastTo(client, broadcasts[client])
 end, false)
 
 addEventHandler("voice:addToPlayerBroadcast", resourceRoot, function(player)
     if not client then return end
+    if not isElement(player) or getElementType(player) ~= "player" then return end
+
     if not broadcasts[client] then
-        broadcasts[client] = {}
+        broadcasts[client] = {client}
+    end
+
+    -- Prevent duplicates
+    for _, broadcast in ipairs(broadcasts[client]) do
+        if player == broadcast then
+            return
+        end
     end
 
     table.insert(broadcasts[client], player)
@@ -50,13 +61,16 @@ end, false)
 
 addEventHandler("voice:removePlayerBroadcast", resourceRoot, function(player)
     if not client then return end
+    if not isElement(player) or getElementType(player) ~= "player" then return end
+
     if not broadcasts[client] then
         return
     end
 
     for i, broadcast in ipairs(broadcasts[client]) do
-        if player == broadcast then
+        if player~=client and player == broadcast then
             table.remove(broadcasts[client], i)
+            break
         end
     end
 
