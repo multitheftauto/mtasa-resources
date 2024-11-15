@@ -19,7 +19,6 @@ end)
 
 -- Don't let the player talk to anyone as soon as they join
 addEventHandler("onPlayerJoin", root, function()
-    print("not letting", getPlayerName(source), "talk to anyone")
     setPlayerVoiceBroadcastTo(source, {})
 end)
 
