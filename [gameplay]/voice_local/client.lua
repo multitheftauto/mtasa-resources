@@ -18,7 +18,7 @@ local icon = dxCreateTexture("icon.png", "dxt5", true, "clamp")
 
 local localPlayerTalking = false
 
-local function preRender()
+addEventHandler("onClientPreRender", root, function()
     local cx, cy, cz = getCameraMatrix()
     for player, talking in pairs(streamedPlayers) do
         local px, py, pz = getElementPosition(player)
@@ -50,91 +50,78 @@ local function preRender()
             dxDrawText("Voice: OFF", 5, sy - 20, sx, sy, 0x44ffffff, 1, "default-bold", "left", "center")
         end
     end
-end
-addEventHandler("onClientPreRender", root, preRender)
+end)
 
-local function onStart()
-    local x, y, z = getElementPosition(localPlayer)
-    for _, player in ipairs(getElementsWithinRange(x, y, z, 250, "player")) do
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    for _, player in pairs(getElementsByType("player", root, true)) do
         if player ~= localPlayer and streamedPlayers[player] == nil then
             setSoundVolume(source, 0)
             streamedPlayers[player] = false
         end
     end
     triggerServerEvent("voice:setPlayerBroadcast", resourceRoot, streamedPlayers)
-end
-addEventHandler("onClientResourceStart", resourceRoot, onStart, false)
+end, false)
 
 -- Handle remote/other player join
-local function playerJoin()
-    if getElementType(source) == "player" then
-        if streamedPlayers[source] == nil then
-            setSoundVolume(source, 0)
-            streamedPlayers[source] = false
-            triggerServerEvent("voice:addToPlayerBroadcast", resourceRoot, source)
-        end
+addEventHandler("onClientPlayerJoin", root, function()
+    if streamedPlayers[source] == nil then
+        setSoundVolume(source, 0)
+        streamedPlayers[source] = false
+        triggerServerEvent("voice:addToPlayerBroadcast", resourceRoot, source)
     end
-end
-addEventHandler("onClientPlayerJoin", root, playerJoin)
+end)
 
 -- Handle remote/other player quit
-local function playerQuit()
+addEventHandler("onClientPlayerQuit", root, function()
     if streamedPlayers[source] ~= nil then
         streamedPlayers[source] = nil
         triggerServerEvent("voice:removePlayerBroadcast", resourceRoot, source)
     end
-end
-addEventHandler("onClientPlayerQuit", root, playerQuit)
+end)
 
 -- Code considers this event's problem @ "Note" box: https://wiki.multitheftauto.com/wiki/OnClientElementStreamIn
 -- It should be modified if said behavior ever changes
--- Stream in event
-local function streamIn()
-    if (isElement(source) and getElementType(source) == "player" and isPedDead(source) == false) then
-        if streamedPlayers[source] == nil then
-            setSoundVolume(source, 0)
-            streamedPlayers[source] = false
-            triggerServerEvent("voice:addToPlayerBroadcast", resourceRoot, source)
-            print("streaming in", getPlayerName(source))
-        end
-    end
-end
-addEventHandler("onClientElementStreamIn", root, streamIn)
+addEventHandler("onClientElementStreamIn", root, function()
+    if source == localPlayer then return end
+    if not (isElement(source) and getElementType(source) == "player") then return end
+    if isPedDead(source) then return end
 
--- Stream out event
-local function streamOut()
-    if (source ~= localPlayer and isElement(source) and getElementType(source) == "player") then
-        if streamedPlayers[source] ~= nil then
-            setSoundVolume(source, 0)
-            streamedPlayers[source] = nil
-            triggerServerEvent("voice:removePlayerBroadcast", resourceRoot, source)
-            print("streaming out", getPlayerName(source))
-        end
+    if streamedPlayers[source] == nil then
+        setSoundVolume(source, 0)
+        streamedPlayers[source] = false
+        triggerServerEvent("voice:addToPlayerBroadcast", resourceRoot, source)
     end
-end
-addEventHandler("onClientElementStreamOut", root, streamOut)
+end)
+addEventHandler("onClientElementStreamOut", root, function()
+    if source == localPlayer then return end
+    if not (isElement(source) and getElementType(source) == "player") then return end
 
-local function voiceStart(source)
-    if (isElement(source) and getElementType(source) == "player") then
-        if source == localPlayer then
-            localPlayerTalking = true
-        elseif streamedPlayers[source] ~= nil then
-            streamedPlayers[source] = true
-        end
+    if streamedPlayers[source] ~= nil then
+        setSoundVolume(source, 0)
+        streamedPlayers[source] = nil
+        triggerServerEvent("voice:removePlayerBroadcast", resourceRoot, source)
     end
-end
-addEventHandler("voice_cl:onClientPlayerVoiceStart", resourceRoot, voiceStart)
+end)
 
-local function voiceStop(source)
-    if (isElement(source) and getElementType(source) == "player") then
-        if source == localPlayer then
-            localPlayerTalking = false
-        elseif streamedPlayers[source] ~= nil then
-            streamedPlayers[source] = false
-        end
+-- Update player talking status (for displaying)
+addEventHandler("voice_cl:onClientPlayerVoiceStart", resourceRoot, function(player)
+    if not (isElement(player) and getElementType(player) == "player") then return end
+
+    if player == localPlayer then
+        localPlayerTalking = true
+    elseif streamedPlayers[player] ~= nil then
+        streamedPlayers[player] = true
     end
-end
-addEventHandler("voice_cl:onClientPlayerVoiceStop", resourceRoot, voiceStop)
+end)
+addEventHandler("voice_cl:onClientPlayerVoiceStop", resourceRoot, function(player)
+    if not (isElement(player) and getElementType(player) == "player") then return end
+
+    if source == localPlayer then
+        localPlayerTalking = false
+    elseif streamedPlayers[source] ~= nil then
+        streamedPlayers[source] = false
+    end
+end)
 
 addEventHandler("voice_local:updateSettings", resourceRoot, function(settingsFromServer)
     settings = settingsFromServer
