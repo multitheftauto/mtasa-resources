@@ -1,72 +1,87 @@
+-- Remote events:
+addEvent("voice:setPlayerBroadcast", true)
+addEvent("voice:addToPlayerBroadcast", true)
+addEvent("voice:removePlayerBroadcast", true)
+
 local broadcasts = {}
 
-function setPlayerBroadcast(thePlayer, players)
-    broadcasts[thePlayer] = {}
+for settingName, settingData in pairs(settings) do
+    if settingData then
+        settings[settingName].value = get("*"..settingData.key)
+    end
+end
+
+addEventHandler("onPlayerResourceStart", root, function(res)
+    if res == resource then
+        triggerClientEvent(source, "voice_local:updateSettings", resourceRoot, settings)
+    end
+end)
+
+-- Don't let the player talk to anyone as soon as they join
+addEventHandler("onPlayerJoin", root, function()
+    print("not letting", getPlayerName(source), "talk to anyone")
+    setPlayerVoiceBroadcastTo(source, {})
+end)
+
+addEventHandler("onPlayerQuit", root, function()
+    broadcasts[source] = nil
+end)
+
+addEventHandler("voice:setPlayerBroadcast", resourceRoot, function(players)
+    if not client then return end
+    broadcasts[client] = {}
 
     for player, _ in pairs(players) do
-        table.insert(broadcasts[thePlayer], player)
+        table.insert(broadcasts[client], player)
     end
 
-    setPlayerVoiceBroadcastTo(thePlayer, broadcasts[thePlayer])
-end
-addEvent("voice:setPlayerBroadcast", true)
-addEventHandler("voice:setPlayerBroadcast", resourceRoot, setPlayerBroadcast)
+    setPlayerVoiceBroadcastTo(client, broadcasts[client])
+end, false)
 
-function addToPlayerBroadcast(thePlayer, player)
-    if not broadcasts[thePlayer] then
-        broadcasts[thePlayer] = {}
+addEventHandler("voice:addToPlayerBroadcast", resourceRoot, function(player)
+    if not client then return end
+    if not broadcasts[client] then
+        broadcasts[client] = {}
     end
 
-    table.insert(broadcasts[thePlayer], player)
-    setPlayerVoiceBroadcastTo(thePlayer, broadcasts[thePlayer])
-end
-addEvent("voice:addToPlayerBroadcast", true)
-addEventHandler("voice:addToPlayerBroadcast", resourceRoot, addToPlayerBroadcast)
+    table.insert(broadcasts[client], player)
+    setPlayerVoiceBroadcastTo(client, broadcasts[client])
+end, false)
 
-function removePlayerBroadcasts(thePlayer, players)
-    if not broadcasts[thePlayer] then
+addEventHandler("voice:removePlayerBroadcast", resourceRoot, function(player)
+    if not client then return end
+    if not broadcasts[client] then
         return
     end
 
-    for _, player in ipairs(players) do
-        for i, broadcast in ipairs(broadcasts[thePlayer]) do
-            if player == broadcast then
-                table.remove(broadcasts[thePlayer], i)
-            end
-        end
-    end
-
-    setPlayerVoiceBroadcastTo(thePlayer, broadcasts[thePlayer])
-end
-addEvent("voice:removePlayerBroadcasts", true)
-addEventHandler("voice:removePlayerBroadcasts", resourceRoot, removePlayerBroadcasts)
-
-function removePlayerBroadcast(thePlayer, player)
-    if not broadcasts[thePlayer] then
-        return
-    end
-
-    for i, broadcast in ipairs(broadcasts[thePlayer]) do
+    for i, broadcast in ipairs(broadcasts[client]) do
         if player == broadcast then
-            table.remove(broadcasts[thePlayer], i)
+            table.remove(broadcasts[client], i)
         end
     end
 
-    setPlayerVoiceBroadcastTo(thePlayer, broadcasts[thePlayer])
-end
-addEvent("voice:removePlayerBroadcast", true)
-addEventHandler("voice:removePlayerBroadcast", resourceRoot, removePlayerBroadcast)
+    setPlayerVoiceBroadcastTo(client, broadcasts[client])
+end, false)
 
-function playerVoiceStart()
-    for _, listener in ipairs(broadcasts[source]) do
-        triggerClientEvent(listener, "voice_cl:onClientPlayerVoiceStart", resourceRoot, source)
+addEventHandler("onPlayerVoiceStart", root, function()
+    if not broadcasts[source] then
+        -- Somehow if the system still hasn't loaded the player, prevent them from talking
+        cancelEvent()
+        return
     end
-end
-addEventHandler("onPlayerVoiceStart", root, playerVoiceStart)
+    triggerClientEvent(broadcasts[source], "voice_cl:onClientPlayerVoiceStart", resourceRoot, source)
+end)
 
-function playerVoiceStop()
-    for _, listener in ipairs(broadcasts[source]) do
-        triggerClientEvent(listener, "voice_cl:onClientPlayerVoiceStop", resourceRoot, source)
+addEventHandler("onPlayerVoiceStop", root, function()
+    if not broadcasts[source] then
+        return
     end
-end
-addEventHandler("onPlayerVoiceStop", root, playerVoiceStop)
+    triggerClientEvent(broadcasts[source], "voice_cl:onClientPlayerVoiceStop", resourceRoot, source)
+end)
+
+-- Cancel resource start if voice is not enabled on the server
+addEventHandler("onResourceStart", resourceRoot, function()
+    if not isVoiceEnabled() then
+        cancelEvent(true, "<voice> setting is not enabled on this server")
+    end
+end, false)
