@@ -4,9 +4,8 @@
 	<min_mta_version server="1.3.0-0.04570"/>
 
 	<settings>
+		<setting name="*show_talking_icon" value="[true]"/>
 		<setting name="*max_voice_distance" value="[25]"/>
-		<setting name="*display_own_talking_text" value="[true]"/>
-		<setting name="*display_players_talking_icon" value="[false]"/>
 	</settings>
 
 	<file src="icon.png"/>

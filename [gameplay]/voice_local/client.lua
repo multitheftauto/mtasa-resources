@@ -4,49 +4,54 @@ addEvent("voice_cl:onClientPlayerVoiceStop", true)
 addEvent("voice_local:updateSettings", true)
 
 local streamedPlayers = {}
+local localPlayerTalking = false
 
 local sx, sy = guiGetScreenSize()
 
-local nx, ny = sx / 1920, sy / 1080
-local width = 108 * nx
-local height = 180 * ny
-local halfWidth = width / 2
-local halfHeight = height / 2
-local icon = dxCreateTexture("icon.png", "dxt5", true, "clamp")
+local devSX, devSY = sx / 1920, sy / 1080
+local iconWidth = 108 * devSX
+local iconHalfWidth = iconWidth / 2
+local iconHeight = 180 * devSY
+local iconHalfHeight = iconHeight / 2
+local iconTexture = dxCreateTexture("icon.png", "dxt5", true, "clamp")
 
-local localPlayerTalking = false
+local function drawTalkingIcon(player, camDistToPlayer)
+    local boneX, boneY, boneZ = getPedBonePosition(player, 8)
+    local screenX, screenY = getScreenFromWorldPosition(boneX, boneY, boneZ + 0.4)
+    if screenX and screenY then
+        local factor = 1 / camDistToPlayer
+        dxDrawImage(
+            screenX - iconHalfWidth * factor,
+            screenY - iconHalfHeight * factor,
+            iconWidth * factor,
+            iconHeight * factor,
+            iconTexture, 0, 0, 0, -1, false
+        )
+    end
+end
 
 addEventHandler("onClientPreRender", root, function()
+    local maxDistance = settings.maxVoiceDistance.value
     local cx, cy, cz = getCameraMatrix()
     for player, talking in pairs(streamedPlayers) do
         local px, py, pz = getElementPosition(player)
-        local distanceToPlayer = getDistanceBetweenPoints3D(cx, cy, cz, px, py, pz)
-        local maxDistance = settings.maxVoiceDistance.value
+        local camDistToPlayer = getDistanceBetweenPoints3D(cx, cy, cz, px, py, pz)
         local playerVolume
-        if (distanceToPlayer <= 0) then
-            playerVolume = 1.0
-        elseif (distanceToPlayer >= maxDistance) then
+        if (camDistToPlayer >= maxDistance) then
             playerVolume = 0.0
         else
-            playerVolume = (1.0 - (distanceToPlayer / maxDistance)^2)
+            playerVolume = (1.0 - (camDistToPlayer / maxDistance)^2)
         end
         setSoundVolume(player, playerVolume)
 
-        if talking and settings.playersTalkingIcon.value and isLineOfSightClear(cx, cy, cz, px, py, pz, false, false, false, false, true, true, true, localPlayer) then
-            local boneX, boneY, boneZ = getPedBonePosition(player, 8)
-            local screenX, screenY = getScreenFromWorldPosition(boneX, boneY, boneZ + 0.5)
-            if screenX and screenY and fDistance < maxDistance then
-                fDistance = 1 / fDistance
-                dxDrawImage(screenX - halfWidth * fDistance, screenY - halfHeight * fDistance, width * fDistance, height * fDistance, icon, 0, 0, 0, -1, false)
-            end
+        if talking and (settings.showTalkingIcon.value == true)
+        and camDistToPlayer < maxDistance
+        and isLineOfSightClear(cx, cy, cz, px, py, pz, false, false, false, false, true, true, true, localPlayer) then
+            drawTalkingIcon(player, camDistToPlayer)
         end
     end
-    if settings.ownTalkingTextEnabled.value then
-        if localPlayerTalking then
-            dxDrawText("Voice: ON", 5, sy - 20, sx, sy, 0xff00ff00, 1, "default-bold", "left", "center")
-        else
-            dxDrawText("Voice: OFF", 5, sy - 20, sx, sy, 0x44ffffff, 1, "default-bold", "left", "center")
-        end
+    if localPlayerTalking and (settings.showTalkingIcon.value == true) then
+        drawTalkingIcon(localPlayer, getDistanceBetweenPoints3D(cx, cy, cz, getElementPosition(localPlayer)))
     end
 end)
 
@@ -114,10 +119,10 @@ end)
 addEventHandler("voice_cl:onClientPlayerVoiceStop", resourceRoot, function(player)
     if not (isElement(player) and getElementType(player) == "player") then return end
 
-    if source == localPlayer then
+    if player == localPlayer then
         localPlayerTalking = false
-    elseif streamedPlayers[source] ~= nil then
-        streamedPlayers[source] = false
+    elseif streamedPlayers[player] ~= nil then
+        streamedPlayers[player] = false
     end
 end)
 
