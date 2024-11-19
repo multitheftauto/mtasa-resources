@@ -470,7 +470,7 @@ function Superman:processMovingFlight(player, Velocity)
 	local Rotation = Vector3D:new(0, 0, 0)
 
 	if Velocity.x == 0 and Velocity.y == 0 then
-		Rotation.z = getPedRotation(player)
+		Rotation.z = getElementRotation(player)
 	else
 		Rotation.z = math.deg(math.atan(Velocity.x / Velocity.y))
 
@@ -555,7 +555,7 @@ function Superman:processLanding(player, Velocity, distanceToGround)
 	local Rotation = Vector3D:new(0, 0, 0)
 
 	if Velocity.x == 0 and Velocity.y == 0 then
-		Rotation.z = getPedRotation(player)
+		Rotation.z = getElementRotation(player)
 	else
 		Rotation.z = math.deg(math.atan(Velocity.x / Velocity.y))
 		if Velocity.y > 0 then
