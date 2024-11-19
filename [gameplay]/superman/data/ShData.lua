@@ -1,6 +1,11 @@
 local isServer = (not triggerServerEvent)
 local supermansData = {}
 
+SUPERMAN_ALLOWED_DATA_KEYS = {
+	[SUPERMAN_FLY_DATA_KEY] = true,
+	[SUPERMAN_TAKE_OFF_DATA_KEY] = true,
+}
+
 function getSupermanData(playerElement, dataKey)
 	local validElement = isElement(playerElement)
 
