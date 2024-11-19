@@ -110,7 +110,6 @@ function Superman.Start()
 	addEventHandler("onClientRender", root, Superman.processFlight)
 	addEventHandler("onClientPlayerDamage", localPlayer, Superman.onDamage, false)
 	addEventHandler("onClientPlayerVehicleEnter", localPlayer, Superman.onEnter)
-	addEventHandler("onClientElementStreamIn", root, Superman.onStreamIn)
 	addEventHandler("onClientElementStreamOut", root, Superman.onStreamOut)
 
 	bindKey("jump", "down", Superman.onJump)
@@ -158,16 +157,9 @@ function Superman.onEnter()
 end
 
 function Superman.onDamage()
-	local self = Superman
-
 	if isPlayerFlying(localPlayer) then
 		cancelEvent()
 	end
-end
-
--- onStreamIn: Reset rotation attribute for player
-function Superman.onStreamIn()
-	local self = Superman
 end
 
 function Superman.onStreamOut()
