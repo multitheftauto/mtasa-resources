@@ -123,4 +123,4 @@ end
 function onClientServerPlayerQuitClearSupermanData()
 	supermansData[source] = nil
 end
-addEventHandler(isServer and "onClientPlayerQuit" or "onPlayerQuit", root, onClientServerPlayerQuitClearSupermanData)
+addEventHandler(isServer and "onPlayerQuit" or "onClientPlayerQuit", root, onClientServerPlayerQuitClearSupermanData)
