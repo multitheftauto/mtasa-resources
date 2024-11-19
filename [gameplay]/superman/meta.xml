@@ -1,6 +1,0 @@
-<meta>
-	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="3.0" name="Superman" description="Allows players to fly around the map by pressing the jump button twice" type="script"/>
-
-	<script src="client.lua" type="client" cache="false"/>
-	<script src="server.lua" type="server"/>
-</meta>
