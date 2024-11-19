@@ -233,7 +233,6 @@ function Superman.startFlight()
 		return
 	end
 
-	triggerServerEvent("onServerSupermanStart", localPlayer)
 	setSupermanData(localPlayer, SUPERMAN_FLY_DATA_KEY, true)
 	setElementVelocity(localPlayer, 0, 0, 0)
 	self.currentSpeed = 0
@@ -411,7 +410,7 @@ function Superman.processFlight()
 			self:restorePlayer(player)
 			if player == localPlayer then
 				setGravity(serverGravity)
-				triggerServerEvent("onServerSupermanStop", localPlayer)
+				setSupermanData(localPlayer, SUPERMAN_FLY_DATA_KEY, false)
 			end
 		elseif distanceToGround and distanceToGround < LANDING_DISTANCE then
 			self:processLanding(player, Velocity, distanceToGround)
