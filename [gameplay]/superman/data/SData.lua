@@ -1,9 +1,3 @@
--- #######################################
--- ## Project: Superman					##
--- ## Authors: MTA contributors			##
--- ## Version: 3.0						##
--- #######################################
-
 local supermanReceivers = {}
 
 local function tableToElementsArray(tableWithElements)

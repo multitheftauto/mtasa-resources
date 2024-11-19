@@ -1,9 +1,3 @@
--- #######################################
--- ## Project: Superman					##
--- ## Authors: MTA contributors			##
--- ## Version: 3.0						##
--- #######################################
-
 function supermanCancelAirKill()
 	local supermanFlying = getSupermanData(source, SUPERMAN_FLY_DATA_KEY)
 	local supermanTakingOff = getSupermanData(source, SUPERMAN_TAKE_OFF_DATA_KEY)
