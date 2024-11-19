@@ -443,11 +443,10 @@ function Superman:processIdleFlight(player)
 
 		Sight.z = math.deg(Sight.z) + 180
 
-		setPedRotation(localPlayer, Sight.z)
 		setElementRotation(localPlayer, 0, 0, Sight.z)
 	else
 		local Zangle = getPedCameraRotation(player)
-		setPedRotation(player, Zangle)
+
 		setElementRotation(player, 0, 0, Zangle)
 	end
 end
@@ -529,7 +528,7 @@ function Superman:processMovingFlight(player, Velocity)
 	Rotation.y = self.rotations[player]
 
 	-- Apply the calculated rotation
-	setPedRotation(player, Rotation.z)
+
 	setElementRotation(player, Rotation.x, Rotation.y, Rotation.z)
 
 	-- Save the current velocity
@@ -569,7 +568,7 @@ function Superman:processLanding(player, Velocity, distanceToGround)
 	Rotation.x = Rotation.x - 40
 
 	-- Apply the calculated rotation
-	setPedRotation(player, Rotation.z)
+
 	setElementRotation(player, Rotation.x, Rotation.y, Rotation.z)
 end
 
