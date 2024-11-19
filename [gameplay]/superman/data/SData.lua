@@ -18,13 +18,7 @@ local function tableToElementsArray(tableWithElements)
 	return arrayTable
 end
 
-function getSupermanReceivers()
-	local supermanListeners = tableToElementsArray(supermanReceivers)
-
-	return supermanListeners
-end
-
-function onServerSupermanSetData(dataKey, dataValue)
+local function onServerSupermanSetData(dataKey, dataValue)
 	if (not client) then
 		return false
 	end
@@ -34,7 +28,7 @@ end
 addEvent("onServerSupermanSetData", true)
 addEventHandler("onServerSupermanSetData", root, onServerSupermanSetData)
 
-function onPlayerResourceStartSyncSuperman(startedResource)
+local function onPlayerResourceStartSyncSuperman(startedResource)
 	local matchingResource = (startedResource == resource)
 
 	if (not matchingResource) then
@@ -48,7 +42,13 @@ function onPlayerResourceStartSyncSuperman(startedResource)
 end
 addEventHandler("onPlayerResourceStart", root, onPlayerResourceStartSyncSuperman)
 
-function onPlayerQuitClearSupermanReceiver()
+local function onPlayerQuitClearSupermanReceiver()
 	supermanReceivers[source] = nil
 end
 addEventHandler("onPlayerQuit", root, onPlayerQuitClearSupermanReceiver)
+
+function getSupermanReceivers()
+	local supermanListeners = tableToElementsArray(supermanReceivers)
+
+	return supermanListeners
+end

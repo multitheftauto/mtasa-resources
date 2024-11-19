@@ -1,4 +1,4 @@
-function supermanCancelAirKill()
+local function supermanCancelAirKill()
 	local supermanFlying = getSupermanData(source, SUPERMAN_FLY_DATA_KEY)
 	local supermanTakingOff = getSupermanData(source, SUPERMAN_TAKE_OFF_DATA_KEY)
 
@@ -12,7 +12,7 @@ addEventHandler("onPlayerStealthKill", root, supermanCancelAirKill)
 
 -- Fix for players glitching other players' vehicles by warping into them while superman is active, causing them to flinch into air and get stuck.
 
-function supermanEnterVehicle()
+local function supermanEnterVehicle()
 	local supermanFlying = getSupermanData(source, SUPERMAN_FLY_DATA_KEY)
 	local supermanTakingOff = getSupermanData(source, SUPERMAN_TAKE_OFF_DATA_KEY)
 

@@ -119,7 +119,7 @@ function syncSupermansData(supermansServerData)
 	supermansData = supermansServerData
 end
 
-function onClientServerPlayerQuitClearSupermanData()
+local function onClientServerPlayerQuitClearSupermanData()
 	supermansData[source] = nil
 end
 addEventHandler(isServer and "onPlayerQuit" or "onClientPlayerQuit", root, onClientServerPlayerQuitClearSupermanData)
