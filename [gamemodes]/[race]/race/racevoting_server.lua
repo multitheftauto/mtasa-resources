@@ -22,7 +22,7 @@ function displayHilariarseMessage( player )
 		if playerName == lastVoteStarterName then
 			lastVoteStarterCount = lastVoteStarterCount + 1
 			if lastVoteStarterCount == 5 then
-				msg = playerName .. ' started a vote. Hardly a suprise.'
+				msg = playerName .. ' started a vote. Hardly a surprise.'
 			elseif lastVoteStarterCount == 10 then
 				msg = 'Guess what! '..playerName .. ' started ANOTHER vote!'
 			elseif lastVoteStarterCount < 5 then
