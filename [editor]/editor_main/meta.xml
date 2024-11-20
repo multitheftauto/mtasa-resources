@@ -1,6 +1,7 @@
 <meta>
 	<info author="erorr404,jbeta,Talidan" description="Map editor's main component" edf:definition="editor_main.edf" version="1.0.0" />
 
+	<!-- TODO: bump min server version due to getObjectLowLODModel -->
 	<min_mta_version server="1.5.8-9.20957" />
 
 	<!-- Script to shutdown the running gamemode and maps, because otherwise you get trouble -->
@@ -23,8 +24,6 @@
 	<!-- Utils -->
 	<script src="client/controlinterface.lua" type="client" />
 	<script src="server/util.lua" type="server" />
-	<script src="server/lods.lua" type="server" />
-	<export function="getLODModelFromObjectModel" type="server" />
 	<script src="server/orderedPairs.lua" type="server" />
 	<script src="client/matrix.lua" type="client" />
 	<script src="client/complex.lua" type="client" />

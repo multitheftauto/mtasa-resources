@@ -30,7 +30,7 @@ local edfCreateBasic = {
 		setObjectScale(object, cdata.scale)
 		-- Create object's LOD if editing a map in Map Editor & LODs are enabled in the map's settings
 		if editorMode and exports.editor_main:getMapSettingValue("useLODs") then
-			local lodModel = exports.editor_main:getLODModelFromObjectModel(cdata.model)
+			local lodModel = getObjectLowLODModel(cdata.model)
 			if lodModel then
 				local lodObject = createObject(lodModel, cdata.position[1], cdata.position[2], cdata.position[3], cdata.rotation[1], cdata.rotation[2], cdata.rotation[3], true)
 				setObjectScale(lodObject, cdata.scale)

@@ -237,20 +237,18 @@ end
 
 SCRIPTING_EXTENSION_CODE = [[-- FILE: newMapEditorScriptingExtension_s.lua
 -- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
--- VERSION: 04/November/2024
+-- VERSION: November 20, 2024
 -- IMPORTANT: Check the resource 'editor_main' at https://github.com/mtasa-resources/ for updates
 
-local resourceName = getResourceName(resource)
-local usedLODModels = {}
-local OBJ_LOD_MODELS = {}
-
--- Makes removeWorldObject map entries and LODs work
+-- Makes removeWorldObject map entries and Object LOD work
 local function onResourceStartOrStop(startedResource)
 	local startEvent = eventName == "onResourceStart"
-	local removeObjects = getElementsByType("removeWorldObject", source)
 
-	for removeID = 1, #removeObjects do
-		local objectElement = removeObjects[removeID]
+	-- On start: remove world objects
+	-- On stop: restore the removed world objects
+	local removeObjectsTable = getElementsByType("removeWorldObject", source)
+	for i = 1, #removeObjectsTable do
+		local objectElement = removeObjectsTable[i]
 		local objectModel = getElementData(objectElement, "model")
 		local objectLODModel = getElementData(objectElement, "lodModel")
 		local posX = getElementData(objectElement, "posX")
@@ -258,7 +256,6 @@ local function onResourceStartOrStop(startedResource)
 		local posZ = getElementData(objectElement, "posZ")
 		local objectInterior = getElementData(objectElement, "interior") or 0
 		local objectRadius = getElementData(objectElement, "radius")
-
 		if startEvent then
 			removeWorldModel(objectModel, objectRadius, posX, posY, posZ, objectInterior)
 			removeWorldModel(objectLODModel, objectRadius, posX, posY, posZ, objectInterior)
@@ -268,37 +265,34 @@ local function onResourceStartOrStop(startedResource)
 		end
 	end
 
-	if startEvent then
-		local useLODs = get(resourceName..".useLODs")
-
-		if useLODs then
-			local objectsTable = getElementsByType("object", source)
-
-			for objectID = 1, #objectsTable do
-				local objectElement = objectsTable[objectID]
-				local objectModel = getElementModel(objectElement)
-				local lodModel = OBJ_LOD_MODELS[objectModel]
-
-				if lodModel then
-					local objectX, objectY, objectZ = getElementPosition(objectElement)
-					local objectRX, objectRY, objectRZ = getElementRotation(objectElement)
-					local objectInterior = getElementInterior(objectElement)
-					local objectDimension = getElementDimension(objectElement)
-					local lodObject = createObject(lodModel, objectX, objectY, objectZ, objectRX, objectRY, objectRZ, true)
-
-					setElementInterior(lodObject, objectInterior)
-					setElementDimension(lodObject, objectDimension)
-
-					setElementParent(lodObject, objectElement)
-					setLowLODElement(objectElement, lodObject)
-
-					usedLODModels[lodModel] = true
-				end
+	-- On start only: create Low Level of Detail objects if enabled
+	if not startEvent then
+		return
+	end
+	local useLODs = get(getResourceName(resource)..".useLODs")
+	if not useLODs then
+		return
+	end
+	local objectsTable = getElementsByType("object", source)
+	for i = 1, #objectsTable do
+		local objectElement = objectsTable[i]
+		local objectModel = getElementModel(objectElement)
+		local lodModel = getObjectLowLODModel(objectModel)
+		if lodModel then
+			local objectX, objectY, objectZ = getElementPosition(objectElement)
+			local objectRX, objectRY, objectRZ = getElementRotation(objectElement)
+			local objectInterior = getElementInterior(objectElement)
+			local objectDimension = getElementDimension(objectElement)
+			local lodObject = createObject(lodModel, objectX, objectY, objectZ, objectRX, objectRY, objectRZ, true)
+			if lodObject then
+				setElementInterior(lodObject, objectInterior)
+				setElementDimension(lodObject, objectDimension)
+				setElementParent(lodObject, objectElement)
+				setLowLODElement(objectElement, lodObject)
 			end
 		end
 	end
 end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop, false)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop, false)
-
-]] .. getLodsLuaTableString()
+]]
