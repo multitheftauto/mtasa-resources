@@ -2,11 +2,11 @@
 	<min_mta_version server="1.3.0-9.04570"/>
 	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="3.0" name="Superman" description="Allows players to fly around the map by pressing the jump button twice" type="script"/>
 
-	<script src="config/ShSupermanConfig.lua" type="shared" cache="false"/>
-	<script src="data/ShData.lua" type="shared" cache="false"/>
-	<script src="data/CData.lua" type="client" cache="false"/>
+	<script src="config/ShSupermanConfig.lua" type="shared"/>
+	<script src="data/ShData.lua" type="shared"/>
+	<script src="data/CData.lua" type="client"/>
 	<script src="data/SData.lua" type="server"/>
 
-	<script src="CHandleSuperman.lua" type="client" cache="false"/>
+	<script src="CHandleSuperman.lua" type="client"/>
 	<script src="SHandleSuperman.lua" type="server"/>
 </meta>
