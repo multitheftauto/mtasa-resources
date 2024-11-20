@@ -281,10 +281,12 @@ local function onResourceStartOrStop(startedResource)
 		if lodModel then
 			local objectX, objectY, objectZ = getElementPosition(objectElement)
 			local objectRX, objectRY, objectRZ = getElementRotation(objectElement)
+			local objectScaleX, objectScaleY, objectScaleZ = getObjectScale(objectElement)
 			local objectInterior = getElementInterior(objectElement)
 			local objectDimension = getElementDimension(objectElement)
 			local lodObject = createObject(lodModel, objectX, objectY, objectZ, objectRX, objectRY, objectRZ, true)
 			if lodObject then
+				setObjectScale(lodObject, objectScaleX, objectScaleY, objectScaleZ)
 				setElementInterior(lodObject, objectInterior)
 				setElementDimension(lodObject, objectDimension)
 				setElementParent(lodObject, objectElement)
