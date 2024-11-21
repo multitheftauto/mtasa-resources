@@ -13,7 +13,7 @@ end
 
 addEventHandler("onPlayerResourceStart", root, function(res)
     if res == resource then
-        triggerClientEvent(source, "voice_local:updateSettings", resourceRoot, settings)
+        triggerClientEvent(source, "voice_local:updateSettings", source, settings)
     end
 end)
 
@@ -45,7 +45,7 @@ local function canPlayerBeWithinOtherPlayerStreamDistance(player, otherPlayer)
     return getDistanceBetweenPoints3D(px, py, pz, opx, opy, opz) <= maxDist
 end
 
-addEventHandler("voice_local:setPlayerBroadcast", resourceRoot, function(players)
+addEventHandler("voice_local:setPlayerBroadcast", root, function(players)
     if not client then return end
     if type(players) ~= "table" then return end
     broadcasts[client] = {client}
@@ -60,9 +60,9 @@ addEventHandler("voice_local:setPlayerBroadcast", resourceRoot, function(players
         end
     end
     setPlayerVoiceBroadcastTo(client, broadcasts[client])
-end, false)
+end)
 
-addEventHandler("voice_local:addToPlayerBroadcast", resourceRoot, function(player)
+addEventHandler("voice_local:addToPlayerBroadcast", root, function(player)
     if not client then return end
     if not (isElement(player) and getElementType(player) == "player") then return end
 
@@ -84,9 +84,9 @@ addEventHandler("voice_local:addToPlayerBroadcast", resourceRoot, function(playe
 
     table.insert(broadcasts[client], player)
     setPlayerVoiceBroadcastTo(client, broadcasts[client])
-end, false)
+end)
 
-addEventHandler("voice_local:removeFromPlayerBroadcast", resourceRoot, function(player)
+addEventHandler("voice_local:removeFromPlayerBroadcast", root, function(player)
     if not client then return end
     if not (isElement(player) and getElementType(player) == "player") then return end
 
@@ -102,7 +102,7 @@ addEventHandler("voice_local:removeFromPlayerBroadcast", resourceRoot, function(
     end
 
     setPlayerVoiceBroadcastTo(client, broadcasts[client])
-end, false)
+end)
 
 addEventHandler("onPlayerVoiceStart", root, function()
     if not broadcasts[source] then
@@ -110,14 +110,14 @@ addEventHandler("onPlayerVoiceStart", root, function()
         cancelEvent()
         return
     end
-    triggerClientEvent(broadcasts[source], "voice_local:onClientPlayerVoiceStart", resourceRoot, source)
+    triggerClientEvent(broadcasts[source], "voice_local:onClientPlayerVoiceStart", source, source)
 end)
 
 addEventHandler("onPlayerVoiceStop", root, function()
     if not broadcasts[source] then
         return
     end
-    triggerClientEvent(broadcasts[source], "voice_local:onClientPlayerVoiceStop", resourceRoot, source)
+    triggerClientEvent(broadcasts[source], "voice_local:onClientPlayerVoiceStop", source, source)
 end)
 
 -- Cancel resource start if voice is not enabled on the server

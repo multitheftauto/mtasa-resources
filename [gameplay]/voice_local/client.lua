@@ -3,6 +3,7 @@ addEvent("voice_local:onClientPlayerVoiceStart", true)
 addEvent("voice_local:onClientPlayerVoiceStop", true)
 addEvent("voice_local:updateSettings", true)
 
+-- Only starts handling player voices after receiving the settings from the server
 local initialWaiting = true
 
 local streamedPlayers = {}
@@ -78,14 +79,14 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
             streamedPlayers[player] = false
         end
     end
-    triggerServerEvent("voice_local:setPlayerBroadcast", resourceRoot, streamedPlayers)
+    triggerServerEvent("voice_local:setPlayerBroadcast", localPlayer, streamedPlayers)
 end, false)
 
 -- Handle remote/other player quit
 addEventHandler("onClientPlayerQuit", root, function()
     if streamedPlayers[source] ~= nil then
         streamedPlayers[source] = nil
-        triggerServerEvent("voice_local:removeFromPlayerBroadcast", resourceRoot, source)
+        triggerServerEvent("voice_local:removeFromPlayerBroadcast", localPlayer, source)
     end
 end)
 
@@ -100,7 +101,7 @@ addEventHandler("onClientElementStreamIn", root, function()
     if streamedPlayers[source] == nil then
         setSoundVolume(source, 0)
         streamedPlayers[source] = false
-        triggerServerEvent("voice_local:addToPlayerBroadcast", resourceRoot, source)
+        triggerServerEvent("voice_local:addToPlayerBroadcast", localPlayer, source)
     end
 end)
 addEventHandler("onClientElementStreamOut", root, function()
@@ -110,12 +111,12 @@ addEventHandler("onClientElementStreamOut", root, function()
     if streamedPlayers[source] ~= nil then
         setSoundVolume(source, 0)
         streamedPlayers[source] = nil
-        triggerServerEvent("voice_local:removeFromPlayerBroadcast", resourceRoot, source)
+        triggerServerEvent("voice_local:removeFromPlayerBroadcast", localPlayer, source)
     end
 end)
 
 -- Update player talking status (for displaying)
-addEventHandler("voice_local:onClientPlayerVoiceStart", resourceRoot, function(player)
+addEventHandler("voice_local:onClientPlayerVoiceStart", root, function(player)
     if not (isElement(player) and getElementType(player) == "player") then return end
 
     if player == localPlayer then
@@ -124,7 +125,7 @@ addEventHandler("voice_local:onClientPlayerVoiceStart", resourceRoot, function(p
         streamedPlayers[player] = true
     end
 end)
-addEventHandler("voice_local:onClientPlayerVoiceStop", resourceRoot, function(player)
+addEventHandler("voice_local:onClientPlayerVoiceStop", root, function(player)
     if not (isElement(player) and getElementType(player) == "player") then return end
 
     if player == localPlayer then
@@ -134,7 +135,8 @@ addEventHandler("voice_local:onClientPlayerVoiceStop", resourceRoot, function(pl
     end
 end)
 
-addEventHandler("voice_local:updateSettings", resourceRoot, function(settingsFromServer)
+-- Load the settings received from the server
+addEventHandler("voice_local:updateSettings", localPlayer, function(settingsFromServer)
     settings = settingsFromServer
 
     if initialWaiting then
