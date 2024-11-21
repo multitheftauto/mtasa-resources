@@ -445,27 +445,36 @@ function fadeVehiclePassengersCamera(toggle)
 end
 
 addEventHandler('onPlayerChat', root,
-	function(msg, type)
-		if type == 0 then
-			cancelEvent()
+    function(msg, type)
+        if type == 0 then
+            cancelEvent()
 
-			local blockRepeats = get("*chat/blockRepeatMessages") == "true"
+            local mainChatDelay = tonumber(get("*chat/mainChatDelay")) or 1000
+            local blockRepeatMessages = get("*chat/blockRepeatMessages") == "true"
 
-			if blockRepeats then
-				if lastChatMessage[source] and lastChatMessage[source] == msg then
-					outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
-					return
-				end
-				lastChatMessage[source] = msg
-			end
+            local currentTick = getTickCount()
+            local playerName = getPlayerName(source)
 
-			if isElement(source) then
-				local r, g, b = getPlayerNametagColor(source)
-				outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. stripHex(msg), root, r, g, b, true)
-				outputServerLog("CHAT: " .. getPlayerName(source) .. ": " .. msg)
-			end
-		end
-	end
+            if chatTime[source] and (currentTick - chatTime[source] < mainChatDelay) then
+                outputChatBox("Stop spamming the chat! Wait a moment.", source, 255, 0, 0)
+                return
+            end
+
+            if blockRepeatMessages and lastChatMessage[source] and lastChatMessage[source] == msg then
+                outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
+                return
+            end
+
+            chatTime[source] = currentTick
+            lastChatMessage[source] = msg
+			
+            if isElement(source) then
+                local r, g, b = getPlayerNametagColor(source)
+                outputChatBox(playerName .. ': #FFFFFF' .. stripHex(msg), root, r, g, b, true)
+                outputServerLog("CHAT: " .. playerName .. ": " .. msg)
+            end
+        end
+    end
 )
 
 addEventHandler('onVehicleEnter', root,
