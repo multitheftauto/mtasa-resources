@@ -29,7 +29,7 @@
 	<config src="data/animations.xml" type="client" />
 	<config src="data/interiors.xml" type="client" />
 	<config src="data/skins.xml" type="client" />
-    <config src="data/walk.xml" type="client" />
+        <config src="data/walk.xml" type="client" />
 	<config src="data/stats.xml" type="client" />
 	<config src="data/vehicles.xml" type="client" />
 	<config src="data/weapons.xml" type="client" />
