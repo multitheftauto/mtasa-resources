@@ -9,4 +9,21 @@
 
 	<script src="CHandleSuperman.lua" type="client"/>
 	<script src="SHandleSuperman.lua" type="server"/>
+
+	<export function="getSupermanData" type="shared"/> <!-- do not use in render events or fast triggering logic, otherwise your CPU will suffer heavily, for data get you can use custom event "onClientSupermanDataChange" or "onSupermanDataChange", for example:
+
+	function onClientSupermanDataChange(dataKey, oldValue, newValue)
+		
+	end
+	addEvent("onClientSupermanDataChange", false)
+	addEventHandler("onClientSupermanDataChange", root, onClientSupermanDataChange)
+
+	function onSupermanDataChange(dataKey, oldValue, newValue)
+		
+	end
+	addEvent("onSupermanDataChange", false)
+	addEventHandler("onSupermanDataChange", root, onSupermanDataChange)
+
+	-->
+	<export function="setSupermanData" type="shared"/> <!-- do not use in render events or fast triggering logic, otherwise your CPU will suffer heavily -->
 </meta>

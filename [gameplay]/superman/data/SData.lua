@@ -18,6 +18,29 @@ local function tableToElementsArray(tableWithElements)
 	return arrayTable
 end
 
+local function canElementDataBeChanged(clientElement, sourceElement, dataKey, newValue)
+	local matchingPlayer = (clientElement == sourceElement)
+
+	if (not matchingPlayer) then
+		return false
+	end
+
+	local supermanDataKey = SUPERMAN_ALLOWED_DATA_KEYS[dataKey]
+
+	if (not supermanDataKey) then
+		return true
+	end
+
+	local newValueDataType = type(newValue)
+	local newValueBool = (newValueDataType == "boolean")
+
+	if (not newValueBool) then
+		return false
+	end
+
+	return true
+end
+
 local function onServerSupermanSetData(dataKey, dataValue)
 	if (not client) then
 		return false
@@ -25,8 +48,23 @@ local function onServerSupermanSetData(dataKey, dataValue)
 
 	setSupermanData(client, dataKey, dataValue)
 end
-addEvent("onServerSupermanSetData", true)
-addEventHandler("onServerSupermanSetData", root, onServerSupermanSetData)
+if (not SUPERMAN_USE_ELEMENT_DATA) then
+	addEvent("onServerSupermanSetData", true)
+	addEventHandler("onServerSupermanSetData", root, onServerSupermanSetData)
+end
+
+local function onElementDataChangeSuperman(dataKey, oldValue, newValue)
+	if (not client) then
+		return false
+	end
+
+	local allowElementDataChange = canElementDataBeChanged(client, source, dataKey, newValue)
+
+	if (not allowElementDataChange) then
+		setElementData(source, dataKey, oldValue)
+	end
+end
+if (SUPERMAN_USE_ELEMENT_DATA) then addEventHandler("onElementDataChange", root, onElementDataChangeSuperman) end
 
 local function onPlayerResourceStartSyncSuperman(startedResource)
 	local matchingResource = (startedResource == resource)
@@ -40,12 +78,25 @@ local function onPlayerResourceStartSyncSuperman(startedResource)
 	triggerClientEvent(source, "onClientSupermanSync", source, supermansData)
 	supermanReceivers[source] = true
 end
-addEventHandler("onPlayerResourceStart", root, onPlayerResourceStartSyncSuperman)
+if (not SUPERMAN_USE_ELEMENT_DATA) then addEventHandler("onPlayerResourceStart", root, onPlayerResourceStartSyncSuperman) end
+
+local function onResourceStopClearSupermanElementData()
+	local playersTable = getElementsByType("player")
+
+	for playerID = 1, #playersTable do
+		local playerElement = playersTable[playerID]
+
+		for dataKey, _ in pairs(SUPERMAN_ALLOWED_DATA_KEYS) do
+			removeElementData(playerElement, dataKey)
+		end
+	end
+end
+if (SUPERMAN_USE_ELEMENT_DATA) then addEventHandler("onResourceStop", resourceRoot, onResourceStopClearSupermanElementData) end
 
 local function onPlayerQuitClearSupermanReceiver()
 	supermanReceivers[source] = nil
 end
-addEventHandler("onPlayerQuit", root, onPlayerQuitClearSupermanReceiver)
+if (not SUPERMAN_USE_ELEMENT_DATA) then addEventHandler("onPlayerQuit", root, onPlayerQuitClearSupermanReceiver) end
 
 function getSupermanReceivers()
 	local supermanListeners = tableToElementsArray(supermanReceivers)

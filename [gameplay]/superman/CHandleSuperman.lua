@@ -22,6 +22,7 @@ local IDLE_ANIMATION = "Coplook_loop"
 local IDLE_ANIM_LOOP = true
 local MAX_Y_ROTATION = 70
 local ROTATION_Y_SPEED = 3.8
+local warningTextColor = tocolor(255, 0, 0, 255)
 
 -- Static variables
 
@@ -141,7 +142,7 @@ function showWarning()
 	local sx, sy, dist = getScreenFromWorldPosition(x, y, z + 0.3)
 
 	if sx and sy and dist and dist < 100 then
-		dxDrawText("You can not warp into a vehicle when superman is activated.", sx, sy, sx, sy, tocolor(255, 0, 0, 255), 1.1, "default-bold", "center")
+		dxDrawText("You can not warp into a vehicle when superman is activated.", sx, sy, sx, sy, warningTextColor, 1.1, "default-bold", "center")
 	end
 end
 
@@ -165,7 +166,7 @@ end
 function Superman.onStreamOut()
 	local self = Superman
 
-	if source and isElement(source) and getElementType(source) == "player" and isPlayerFlying(source) then
+	if isPlayerFlying(source) then
 		self.rotations[source] = nil
 		self.previousVelocity[source] = nil
 	end
@@ -182,12 +183,12 @@ function onClientSupermanDataChange(dataKey, _, newValue)
 		Superman:restorePlayer(source)
 	end
 end
-addEvent("onClientSupermanDataChange", false)
-addEventHandler("onClientSupermanDataChange", root, onClientSupermanDataChange)
+if (not SUPERMAN_USE_ELEMENT_DATA) then addEvent("onClientSupermanDataChange", false) end
+addEventHandler(SUPERMAN_USE_ELEMENT_DATA and "onClientElementDataChange" or "onClientSupermanDataChange", root, onClientSupermanDataChange)
 
 -- onJump: Combo to start flight without any command
-function Superman.onJump(key, keyState)
-	local self = Superman
+
+function Superman.onJump()
 	local task = getPedSimplestTask(localPlayer)
 
 	if not isPlayerFlying(localPlayer) then
@@ -199,8 +200,6 @@ function Superman.onJump(key, keyState)
 end
 
 function Superman.cmdSuperman()
-	local self = Superman
-
 	if isPedInVehicle(localPlayer) or isPlayerFlying(localPlayer) then
 		return
 	end
@@ -226,6 +225,7 @@ function Superman.startFlight()
 end
 
 -- Controls processing
+
 local jump, oldJump = false, false
 
 function Superman.processControls()

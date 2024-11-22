@@ -1,6 +1,10 @@
 local isServer = (not triggerServerEvent)
 local supermansData = {}
 
+SUPERMAN_USE_ELEMENT_DATA = true -- decides whether script will use built-in MTA data system (setElementData) or custom one, shipped with superman resource
+
+-- in general element data is bad, and shouldn't be used, hence it should be set to false, unless you want to have backwards compatibility
+
 SUPERMAN_ALLOWED_DATA_KEYS = {
 	[SUPERMAN_FLY_DATA_KEY] = true,
 	[SUPERMAN_TAKE_OFF_DATA_KEY] = true,
@@ -20,12 +24,6 @@ function getSupermanData(playerElement, dataKey)
 		return false
 	end
 
-	local supermanData = supermansData[playerElement]
-
-	if (not supermanData) then
-		return false
-	end
-
 	local dataKeyType = type(dataKey)
 	local dataKeyString = (dataKeyType == "string")
 
@@ -36,6 +34,16 @@ function getSupermanData(playerElement, dataKey)
 	local allowedDataKey = SUPERMAN_ALLOWED_DATA_KEYS[dataKey]
 
 	if (not allowedDataKey) then
+		return false
+	end
+
+	if (SUPERMAN_USE_ELEMENT_DATA) then
+		return getElementData(playerElement, dataKey)
+	end
+
+	local supermanData = supermansData[playerElement]
+
+	if (not supermanData) then
 		return false
 	end
 
@@ -78,6 +86,19 @@ function setSupermanData(playerElement, dataKey, dataValue)
 		return false
 	end
 
+	if (SUPERMAN_USE_ELEMENT_DATA) then
+		local oldElementData = getElementData(playerElement, dataKey)
+		local updateElementData = (oldElementData ~= dataValue)
+
+		if (updateElementData) then
+			local syncElementData = (isServer or not isServer and localPlayer == playerElement)
+
+			return setElementData(playerElement, dataKey, dataValue, syncElementData)
+		end
+
+		return false
+	end
+
 	local supermanData = supermansData[playerElement]
 
 	if (not supermanData) then
@@ -101,7 +122,7 @@ function setSupermanData(playerElement, dataKey, dataValue)
 	else
 		local syncToServer = (playerElement == localPlayer)
 
-		triggerEvent("onClientSupermanDataChange", playerElement, dataKey, oldDataValue, dataValue)
+		triggerEvent(isServer and "onSupermanDataChange" or "onClientSupermanDataChange", playerElement, dataKey, oldDataValue, dataValue)
 
 		if (syncToServer) then
 			triggerServerEvent("onServerSupermanSetData", localPlayer, dataKey, dataValue)
@@ -122,4 +143,4 @@ end
 local function onClientServerPlayerQuitClearSupermanData()
 	supermansData[source] = nil
 end
-addEventHandler(isServer and "onPlayerQuit" or "onClientPlayerQuit", root, onClientServerPlayerQuitClearSupermanData)
+if (not SUPERMAN_USE_ELEMENT_DATA) then addEventHandler(isServer and "onPlayerQuit" or "onClientPlayerQuit", root, onClientServerPlayerQuitClearSupermanData) end

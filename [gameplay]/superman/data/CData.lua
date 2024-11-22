@@ -1,11 +1,15 @@
 local function onClientSupermanSync(supermanServerData)
 	syncSupermansData(supermanServerData)
 end
-addEvent("onClientSupermanSync", true)
-addEventHandler("onClientSupermanSync", localPlayer, onClientSupermanSync)
+if (not SUPERMAN_USE_ELEMENT_DATA) then
+	addEvent("onClientSupermanSync", true)
+	addEventHandler("onClientSupermanSync", localPlayer, onClientSupermanSync)
+end
 
 local function onClientSupermanSetData(dataKey, dataValue)
 	setSupermanData(source, dataKey, dataValue)
 end
-addEvent("onClientSupermanSetData", true)
-addEventHandler("onClientSupermanSetData", root, onClientSupermanSetData)
+if (not SUPERMAN_USE_ELEMENT_DATA) then
+	addEvent("onClientSupermanSetData", true)
+	addEventHandler("onClientSupermanSetData", root, onClientSupermanSetData)
+end
