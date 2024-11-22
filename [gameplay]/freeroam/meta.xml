@@ -29,6 +29,7 @@
 	<config src="data/animations.xml" type="client" />
 	<config src="data/interiors.xml" type="client" />
 	<config src="data/skins.xml" type="client" />
+    <config src="data/walk.xml" type="client" />
 	<config src="data/stats.xml" type="client" />
 	<config src="data/vehicles.xml" type="client" />
 	<config src="data/weapons.xml" type="client" />
@@ -79,6 +80,7 @@
 		<setting name="*setskin" value="true" />
 		<setting name="*setstyle" value="true" />
 		<setting name="*stats" value="true" />
+		<setting name="*walks" value="true" />
 		<setting name="*upgrades" value="true" />
 		<setting name="*warp" value="true" />
 		<setting name="*weapons/enabled" value="true" />          <!-- Can players give themselves weapons? -->
