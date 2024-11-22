@@ -34,11 +34,7 @@ local function canElementDataBeChanged(clientElement, sourceElement, dataKey, ne
 	local newValueDataType = type(newValue)
 	local newValueBool = (newValueDataType == "boolean")
 
-	if (not newValueBool) then
-		return false
-	end
-
-	return true
+	return newValueBool
 end
 
 local function onServerSupermanSetData(dataKey, dataValue)
@@ -61,7 +57,13 @@ local function onElementDataChangeSuperman(dataKey, oldValue, newValue)
 	local allowElementDataChange = canElementDataBeChanged(client, source, dataKey, newValue)
 
 	if (not allowElementDataChange) then
-		setElementData(source, dataKey, oldValue)
+		local removeChangedData = (oldValue == nil)
+
+		if (removeChangedData) then
+			removeElementData(source, dataKey)
+		else
+			setElementData(source, dataKey, oldValue)
+		end
 	end
 end
 if (SUPERMAN_USE_ELEMENT_DATA) then addEventHandler("onElementDataChange", root, onElementDataChangeSuperman) end
