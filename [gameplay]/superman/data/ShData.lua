@@ -1,7 +1,7 @@
 local isServer = (not triggerServerEvent)
 local supermansData = {}
 
-SUPERMAN_USE_ELEMENT_DATA = true -- decides whether script will use built-in MTA data system (setElementData) or custom one, shipped with superman resource
+SUPERMAN_USE_ELEMENT_DATA = false -- decides whether script will use built-in MTA data system (setElementData) or custom one, shipped with superman resource
 
 -- in general element data is bad, and shouldn't be used, hence it should be set to false, unless you want to have backwards compatibility
 
