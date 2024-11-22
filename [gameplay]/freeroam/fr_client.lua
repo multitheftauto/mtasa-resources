@@ -877,7 +877,7 @@ wndStats = {
 }
 ---------------------------
 -- Walk Style
---------------------------- 
+---------------------------
 function applyWalkStyle( leaf )
     if type( leaf ) ~= 'table' then
         leaf = getSelectedGridListLeaf( wndWalking, 'walkStyle' )
