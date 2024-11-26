@@ -1,6 +1,7 @@
 <meta>
 	<info author="jbeta" description="Element Definition Format" edf:definition="edf.edf" version="1.0.0" />
 
+	<!-- TODO: bump min server version due to getObjectLowLODModel -->
 	<min_mta_version server="1.6.0-9.21765" />
 
 	<script src="sharedutil.lua" type="shared" />
