@@ -875,6 +875,45 @@ wndStats = {
 	},
 	oncreate = initStats
 }
+---------------------------
+-- Walk Style
+---------------------------
+function applyWalkStyle( leaf )
+    if type( leaf ) ~= 'table' then
+        leaf = getSelectedGridListLeaf( wndWalking, 'walkStyle' )
+        if not leaf then
+            return
+        end
+    end
+    server.setPedWalkingStyle(localPlayer, leaf.id)
+end
+ 
+function stopWalkStyle()
+    server.setPedWalkingStyle(localPlayer, 0)
+end
+ 
+wndWalking = {
+    'wnd',
+    text = 'Walk Styles',
+    width = 250,
+    controls = {
+        {
+            'lst',
+            id = 'walkStyle',
+            width = 230,
+            height = 290,
+            columns = {
+                { text = 'Styles', attr = 'name' }
+            },
+            rows = { xml = 'data/walk.xml', attrs = { 'id', 'name' } },
+            onitemdoubleclick = applyWalkStyle
+        },
+        { 'btn', id = 'Apply', onclick = applyWalkStyle, width = 70 },
+        { 'btn', id = 'Remove', onclick = stopWalkStyle, width = 70 },
+        { 'btn', id = 'Close', closeswindow = true, width = 70 }
+    }
+}
+
 
 ---------------------------
 -- Bookmarks window
@@ -2175,6 +2214,7 @@ wndMain = {
 		{'btn', id='playergrav', text='grav', window=wndGravity},
 		{'btn', id='warp', window=wndWarp},
 		{'btn', id='stats', window=wndStats},
+		{'btn', id='walks', window=wndWalking},
 		{'btn', id='bookmarks', window=wndBookmarks},
 		{'br'},
 
