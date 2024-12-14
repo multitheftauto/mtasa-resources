@@ -607,13 +607,3 @@ function onClientRenderSupermanProcessFlight()
 		end
 	end
 end
-
-local function renderDebug()
-	local debugText =
-	"playerRotation = "..inspect(playerRotation).."\n"..
-	"playerVelocity = "..inspect(playerVelocity).."\n"..
-	"streamedPlayers = "..inspect(streamedPlayers)
-
-	dxDrawText(debugText, 100, 100)
-end
-addEventHandler("onClientRender", root, renderDebug)
