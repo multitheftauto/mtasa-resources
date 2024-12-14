@@ -178,6 +178,7 @@ function onClientElementStreamOutSuperman()
 end
 
 function onClientPlayerQuitClearSupermanData()
+	streamedPlayers[source] = nil
 	playerRotation[source] = nil
 	playerVelocity[source] = nil
 end
@@ -263,7 +264,7 @@ function onClientRenderSupermanProcessControls()
 
 	-- calculate the requested movement direction
 
-	local Direction = Vector3D:new(0, 0, 0)
+	local Direction = newVector3D(0, 0, 0)
 
 	if getPedControlState(localPlayer, "forwards") then
 		Direction.y = 1
@@ -277,16 +278,17 @@ function onClientRenderSupermanProcessControls()
 		Direction.x = -1
 	end
 
-	Direction:Normalize()
+	Direction = normalizeVector3D(Direction)
 
 	-- calculate the sight direction
 
 	local cameraX, cameraY, cameraZ, lookX, lookY, lookZ = getCameraMatrix()
-	local SightDirection = Vector3D:new((lookX - cameraX), (lookY - cameraY), (lookZ - cameraZ))
-	SightDirection:Normalize()
+	local SightDirection = newVector3D((lookX - cameraX), (lookY - cameraY), (lookZ - cameraZ))
+
+	SightDirection = normalizeVector3D(SightDirection)
 
 	if getPedControlState(localPlayer, "look_behind") then
-		SightDirection = SightDirection:Mul(-1)
+		SightDirection = mulVector3D(SightDirection, -1)
 	end
 
 	-- calculate the current max speed and acceleration values
@@ -302,7 +304,7 @@ function onClientRenderSupermanProcessControls()
 		acceleration = acceleration * LOW_ACCELERATION_FACTOR
 	end
 
-	local DirectionModule = Direction:Module()
+	local DirectionModule = moduleVector3D(Direction)
 
 	-- check if we must change the gravity
 
@@ -329,7 +331,7 @@ function onClientRenderSupermanProcessControls()
 	-- calculate the movement requested direction
 
 	if DirectionModule ~= 0 then
-		Direction = Vector3D:new(SightDirection.x * Direction.y - SightDirection.y * Direction.x, SightDirection.x * Direction.x + SightDirection.y * Direction.y, SightDirection.z * Direction.y)
+		Direction = newVector3D(SightDirection.x * Direction.y - SightDirection.y * Direction.x, SightDirection.x * Direction.x + SightDirection.y * Direction.y, SightDirection.z * Direction.y)
 
 		lastDirection = Direction -- save the last movement direction for when player releases all direction keys
 	else
@@ -340,15 +342,17 @@ function onClientRenderSupermanProcessControls()
 				lastDirection = nil
 			end
 		else
-			Direction = Vector3D:new(getElementVelocity(localPlayer))
+			Direction = newVector3D(getElementVelocity(localPlayer))
 		end
 	end
-	Direction:Normalize()
-	Direction = Direction:Mul(currentSpeed)
+
+	Direction = normalizeVector3D(Direction)
+	Direction = mulVector3D(Direction, currentSpeed)
 
 	if currentSpeed > 0 then -- applicate a smooth direction change, if moving
-		local VelocityDirection = Vector3D:new(getElementVelocity(localPlayer))
-		VelocityDirection:Normalize()
+		local VelocityDirection = newVector3D(getElementVelocity(localPlayer))
+
+		VelocityDirection = normalizeVector3D(VelocityDirection)
 
 		if math.sqrt(VelocityDirection.x ^ 2 + VelocityDirection.y ^ 2) > 0 then
 			local DirectionAngle = getVector2DAngle(Direction)
@@ -378,7 +382,7 @@ function onClientRenderSupermanProcessControls()
 		end
 	end
 
-	if Direction:Module() == 0 then
+	if moduleVector3D(Direction) == 0 then
 		extraVelocity = {x = 0, y = 0, z = 0}
 	end
 
@@ -415,11 +419,12 @@ local function processIdleFlight(player)
 
 	if player == localPlayer then
 		local cameraX, cameraY, cameraZ, lookX, lookY, lookZ = getCameraMatrix()
-		local Sight = Vector3D:new(lookX - cameraX, lookY - cameraY, lookZ - cameraZ)
-		Sight:Normalize()
+		local Sight = newVector3D(lookX - cameraX, lookY - cameraY, lookZ - cameraZ)
+
+		Sight = normalizeVector3D(Sight)
 
 		if getPedControlState(localPlayer, "look_behind") then
-			Sight = Sight:Mul(-1)
+			Sight = mulVector3D(Sight, -1)
 		end
 
 		Sight.z = math.atan(Sight.x / Sight.y)
@@ -453,7 +458,7 @@ local function processMovingFlight(player, Velocity)
 
 	-- calculate the player rotation depending on their velocity
 
-	local Rotation = Vector3D:new(0, 0, 0)
+	local Rotation = newVector3D(0, 0, 0)
 
 	if Velocity.x == 0 and Velocity.y == 0 then
 		Rotation.z = getElementRotation(player)
@@ -466,7 +471,7 @@ local function processMovingFlight(player, Velocity)
 
 		Rotation.z = (Rotation.z + 180) % 360
 	end
-	Rotation.x = -math.deg(Velocity.z / Velocity:Module() * 1.2)
+	Rotation.x = -math.deg(Velocity.z / moduleVector3D(Velocity) * 1.2)
 
 	-- rotation compensation for the self animation rotation
 
@@ -479,7 +484,7 @@ local function processMovingFlight(player, Velocity)
 	end
 
 	if not playerVelocity[player] then
-		playerVelocity[player] = Vector3D:new(0, 0, 0)
+		playerVelocity[player] = newVector3D(0, 0, 0)
 	end
 
 	local previousAngle = getVector2DAngle(playerVelocity[player])
@@ -540,7 +545,7 @@ local function processLanding(player, Velocity, distanceToGround)
 
 	-- calculate the player rotation depending on their velocity and distance to ground
 
-	local Rotation = Vector3D:new(0, 0, 0)
+	local Rotation = newVector3D(0, 0, 0)
 
 	if Velocity.x == 0 and Velocity.y == 0 then
 		Rotation.z = getElementRotation(player)
@@ -568,9 +573,9 @@ function onClientRenderSupermanProcessFlight()
 	for playerID = 1, #supermansFlying do
 		local playerElement = supermansFlying[playerID]
 
-		local Velocity = Vector3D:new(getElementVelocity(playerElement))
+		local Velocity = newVector3D(getElementVelocity(playerElement))
 		local distanceToBase = getElementDistanceFromCentreOfMassToBaseOfModel(playerElement)
-		local playerPos = Vector3D:new(getElementPosition(playerElement))
+		local playerPos = newVector3D(getElementPosition(playerElement))
 
 		playerPos.z = playerPos.z - distanceToBase
 
@@ -595,7 +600,7 @@ function onClientRenderSupermanProcessFlight()
 			end
 		elseif distanceToGround and distanceToGround < LANDING_DISTANCE then
 			processLanding(playerElement, Velocity, distanceToGround)
-		elseif Velocity:Module() < ZERO_TOLERANCE then
+		elseif moduleVector3D(Velocity) < ZERO_TOLERANCE then
 			processIdleFlight(playerElement)
 		else
 			processMovingFlight(playerElement, Velocity)
