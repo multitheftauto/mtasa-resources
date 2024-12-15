@@ -1,5 +1,5 @@
 <meta>
-	<info name="Deathmatch" author="Talidan, jlillis" version="2.0.0" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode." edf:definition="edf/dm.edf" />
+	<info name="Deathmatch" author="Talidan, jlillis" version="2.0.2" type="gamemode" compatible-with="tdm" description="A raw deathmatch gamemode." edf:definition="edf/dm.edf" />
 
 	<!-- Required resources -->
 	<include resource="killmessages" />
@@ -25,6 +25,7 @@
 	<script src="client/lib/textlib.lua" type="client" />
 	<script src="client/main.lua" type="client" />
 	<script src="client/hud.lua" type="client" />
+	<script src="client/spectate.lua" type="client" />
 	<file src="client/audio/mission_accomplished.mp3" />
 
 	<!-- EDF files -->

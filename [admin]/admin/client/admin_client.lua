@@ -10,7 +10,7 @@
 
 _DEBUG = false
 
-_version = '1.5.9'
+_version = '1.6'
 _flags = {}
 _widgets = {}
 _settings = nil
@@ -26,6 +26,7 @@ function aClientAdminMenu ()
 		aAdminMenuClose ( false )
 	else
 		aAdminMenu ()
+		guiFocus (aAdminForm)
 	end
 end
 
@@ -39,6 +40,7 @@ addEvent ( "aClientAdminChat", true )
 addEvent ( "aClientResourceStart", true )
 addEvent ( "aClientResourceStop", true )
 addEvent ( "aClientAdminMenu", true )
+addEvent ( "aClientReports", true )
 function aAdminResourceStart ()
 	addEventHandler ( "aClientAdminMenu", root, aClientAdminMenu )
 	local node = xmlLoadFile ( "conf\\weathers.xml" )

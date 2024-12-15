@@ -146,8 +146,6 @@ function startWhenLoaded()
 	if getElementData(resourceRoot,"g_in_test") then
 		setElementData ( localPlayer, "waitingToStart", true, false )
 		return
-	else
-		setElementData ( localPlayer, "waitingToStart", nil, false )
 	end
 	if isInterfaceLoaded() then
 		removeEventHandler("onClientResourceStart", root, startWhenLoaded)
@@ -432,8 +430,8 @@ function processFreecamClick(key, keyState)
 		local distance = math.sqrt((targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2)
 
 		if clickedElement and (distance > g_maxSelectDistance) then
-			outputDebugString("Cannot select out of range element: " .. getElementType(clickedElement))
-			outputDebugString(" distance: " .. distance)
+			local elementType = (isElement(clickedElement) == true and ": " .. getElementType(clickedElement)) or ""
+			outputDebugString("Cannot select out of range element" .. elementType .. " at distance: " .. distance)
 			clickedElement = nil
 		end
 		processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
@@ -488,7 +486,7 @@ function processClick ( clickedElement, key, keyState, lookX, lookY, lookZ )
 			end
 		end
 
-		if g_selectedElement ~= clickedElement and g_lock[clickedElement] then
+		if g_selectedElement ~= clickedElement and g_lock[edf.edfGetAncestor(clickedElement)] then
 			editor_gui.outputMessage("This element is locked, Press '"..cc["lock_selected_element"]:upper().."' to unlock it.", 255,255,255)
 			return false
 		end
@@ -517,7 +515,7 @@ end
 function processDoubleClick ( clickedElement, key )
 	if not clickedElement then return end
 
-	if g_selectedElement ~= clickedElement and g_lock[clickedElement] then
+	if g_selectedElement ~= clickedElement and g_lock[edf.edfGetAncestor(clickedElement)] then
 		editor_gui.outputMessage("This element is locked, Press '"..cc["lock_selected_element"]:upper().."' to unlock it.", 255,255,255)
 		return false
 	end
@@ -683,7 +681,8 @@ function processCursorClick(button, keyState,cursorX, cursorY, worldX, worldY, w
 		local hitX, hitY, hitZ = targetX, targetY, targetZ--worldX, worldY, worldZ
 		local distance = math.sqrt((hitX - camX)^2 + (hitY - camY)^2 + (hitZ - camZ)^2)
 		if (distance > g_maxSelectDistance) then
-			outputDebugString("Cannot select out of range element: " .. getElementType(clickedElement) .. " at distance: " .. distance)
+			local elementType = (isElement(clickedElement) == true and ": " .. getElementType(clickedElement)) or ""
+			outputDebugString("Cannot select out of range element" .. elementType .. " at distance: " .. distance)
 			clickedElement = nil
 		end
 	end
@@ -809,10 +808,13 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 		end
 	end
 
-	triggerServerEvent("doLockElement", element)
-
-	-- trigger server selection events
-	triggerServerEvent("onElementSelect", element)
+	-- fix for local elements
+	if not isElementLocal(element) then
+		triggerServerEvent("doLockElement", element)
+	
+		-- trigger server selection events
+		triggerServerEvent("onElementSelect", element)
+	end
 
 	--Emulate a fake mouse  move to get the element to position properly
 	-- if not openProperties then
@@ -873,11 +875,17 @@ function dropElement(releaseLock,clonedrop)
 	end
 
 	if releaseLock then
-		triggerServerEvent("doUnlockElement", g_selectedElement)
+		-- fix for local elements
+		if not isElementLocal(g_selectedElement) then
+			triggerServerEvent("doUnlockElement", g_selectedElement)
+		end
 	end
 
-	-- trigger server selection events
-	triggerServerEvent("onElementDrop", g_selectedElement)
+	-- fix for local elements
+	if not isElementLocal(g_selectedElement) then
+		-- trigger server selection events
+		triggerServerEvent("onElementDrop", g_selectedElement)
+	end
 	
 	-- Clear rotation as it can be rotated by other players
 	clearElementQuat(g_selectedElement)
@@ -899,6 +907,10 @@ end
 function setMode(newMode)
 	if g_suspended then
 		return
+	end
+	
+	if not isElement(g_selectedElement) then
+		g_selectedElement = nil
 	end
 
 	if newMode == CAMERA_MODE then
@@ -988,6 +1000,13 @@ function destroySelectedElement(key)
 	if g_selectedElement then
 		local element = g_selectedElement
 		dropElement(false)
+		
+		-- fix for local elements
+		if isElementLocal(element) then
+			outputDebugString("Cannot destroy local element.")
+			return false
+		end
+		
 		return triggerServerEvent("doDestroyElement", element)
 	end
 end

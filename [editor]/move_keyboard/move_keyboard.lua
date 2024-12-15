@@ -404,6 +404,9 @@ function attachElement(element)
 		posX, posY, posZ = getElementPosition(element)
 		movementType = MOVEMENT_MOVE
 
+		-- Clear the quat rotation when attaching to element
+		exports.editor_main:clearElementQuat(selectedElement)
+
 		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then
 			rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
@@ -420,12 +423,18 @@ function detachElement()
 	if (selectedElement) then
 		disable()
 
-		-- sync position/rotation
-		posX, posY, posZ = getElementPosition(selectedElement)
-		triggerServerEvent("syncProperty", localPlayer, "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
-		if hasRotation[getElementType(selectedElement)] then
-			rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
-			triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+		-- Clear the quat rotation when detaching from element
+		exports.editor_main:clearElementQuat(selectedElement)
+
+		-- fix for local elements
+		if not isElementLocal(selectedElement) then
+			-- sync position/rotation
+			posX, posY, posZ = getElementPosition(selectedElement)
+			triggerServerEvent("syncProperty", localPlayer, "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
+			if hasRotation[getElementType(selectedElement)] then
+				rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
+				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+			end
 		end
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil

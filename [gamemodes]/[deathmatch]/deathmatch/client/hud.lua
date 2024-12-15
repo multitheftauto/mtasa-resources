@@ -1,5 +1,3 @@
--- TODO:    long term - implement new UI resembling original game design
---          more code cleanup?
 local SCREEN_WIDTH, SCREEN_HEIGHT = guiGetScreenSize()
 
 --
@@ -25,6 +23,7 @@ end
 _hud.loadingScreen.update = function()
     _hud.loadingScreen.mapInfoText:text(_mapTitle..(_mapAuthor and ("\n by ".._mapAuthor) or ""))
 end
+
 -- score display
 _hud.scoreDisplay = {}
 _hud.scoreDisplay.roundInfoText = dxText:create("", 0, 0, false, "bankgothic", 1)
@@ -48,23 +47,16 @@ _hud.scoreDisplay.update = function()
         .."\nRank: "..getElementData(localPlayer, "Rank").."/"..#getElementsByType("player")
     )
 end
--- respawn screen
-_hud.respawnScreen = {}
--- respawn counter (You will respawn in x seconds)
-_hud.respawnScreen.respawnCounter = dxText:create("", 0.5, 0.5, true, "beckett", 4)
-_hud.respawnScreen.respawnCounter:type("stroke", 6)
-_hud.respawnScreen.respawnCounter:color(255, 225, 225)
-_hud.respawnScreen.respawnCounter:visible(false)
-_hud.respawnScreen.setVisible = function(_, visible)
-    _hud.respawnScreen.respawnCounter:visible(visible)
+
+-- wasted screen
+_hud.wastedScreen = {}
+_hud.wastedScreen.text = dxText:create("Wasted", 0.5, 0.5, true, "beckett", 4)
+_hud.wastedScreen.text:type("border", 2)
+_hud.wastedScreen.text:color(255, 0, 0)
+_hud.wastedScreen.setVisible = function(_, visible)
+    _hud.wastedScreen.text:visible(visible)
 end
-_hud.respawnScreen.startCountdown = function()
-    if _respawnTime > 0 then
-        startCountdown(_respawnTime)
-    else
-        _hud.respawnScreen.respawnCounter:text("Wasted")
-    end
-end
+
 -- end screen
 _hud.endScreen = {}
 -- announcement text (x has won the round!)
@@ -92,49 +84,22 @@ _hud.endScreen.update = function(_, winner, draw, aborted)
         playSound("client/audio/mission_accomplished.mp3")
     end
 end
+
+-- spectate screen
+_hud.spectateScreen = {}
+-- spectating info label
+_hud.spectateScreen.infoLabel = dxText:create("You are currently spectating.\nUse left and right arrow to switch players.", 0, 0, false, "default-bold", 2)
+_hud.spectateScreen.infoLabel:color(225, 225, 225, 225)
+_hud.spectateScreen.infoLabel:boundingBox(0, 0.8, 1, 1, true)
+_hud.spectateScreen.infoLabel:align("bottom", "center")
+_hud.spectateScreen.infoLabel:type("border", 2)
+_hud.spectateScreen.setVisible = function(_, visible)
+    _hud.spectateScreen.infoLabel:visible(visible)
+end
+
 -- hide all HUD elements by default
 _hud.loadingScreen:setVisible(false)
 _hud.scoreDisplay:setVisible(false)
-_hud.respawnScreen:setVisible(false)
+_hud.wastedScreen:setVisible(false)
 _hud.endScreen:setVisible(false)
-
--- TODO: clean this junk up
-local function dxSetAlpha ( dx, a )
-	local r,g,b = dx:color()
-	dx:color(r,g,b,a)
-end
-
-local countdownCR
-local function countdown(time)
-	for i=time,0,-1 do
-		_hud.respawnScreen.respawnCounter:text("Wasted\n"..i)
-		setTimer ( countdownCR, 1000, 1 )
-		coroutine.yield()
-	end
-end
-
-local function hideCountdown()
-	setTimer (
-		function()
-			_hud.respawnScreen:setVisible(false)
-		end,
-		600, 1
-	)
-	Animation.createAndPlay(
-	  _hud.respawnScreen.respawnCounter,
-	  {{ from = 225, to = 0, time = 400, fn = dxSetAlpha }}
-	)
-	removeEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
-end
-
-function startCountdown(time)
-    Animation.createAndPlay(
-        _hud.respawnScreen.respawnCounter,
-        {{ from = 0, to = 225, time = 600, fn = dxSetAlpha }}
-    )
-    addEventHandler ( "onClientPlayerSpawn", localPlayer, hideCountdown )
-    _hud.respawnScreen:setVisible(true)
-    time = math.floor(time/1000)
-    countdownCR = coroutine.wrap(countdown)
-    countdownCR(time)
-end
+_hud.spectateScreen:setVisible(false)

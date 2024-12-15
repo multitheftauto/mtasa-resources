@@ -1,5 +1,6 @@
 <meta>
-	<info name="Player Blips" author="Noki, jlillis" version="2.0.0" type="script" description="Attaches blips to players."/>
+	<info name="Player Blips" author="Noki, jlillis" version="2.1.0" type="script" description="Attaches blips to players."/>
+	<min_mta_version server="1.6.0-9.22447"/>
 	<oop>true</oop>
 	<script src="server/main.lua" type="server"/>
 	<settings>
@@ -21,7 +22,7 @@
 		/>
 		<setting
 			name="*blip_color"
-			value="[[0, 255, 0]]"
+			value="[[255, 255, 255]]"
 			friendlyname="Default blip color"
 			group="Color settings"
 			accept=""

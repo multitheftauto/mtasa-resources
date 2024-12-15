@@ -55,10 +55,10 @@
     <command handler="setgravity" call="setgravity" args="i" />
     <command handler="clearchat" call="clearchat" args="" />
   </server>
-  <bans>
+  <!-- bans>
     <command handler="banip" call="banip" args="s" />
     <command handler="banserial" call="banserial" args="s" />
     <command handler="unbanip" call="unbanip" args="s" />
     <command handler="unbanserial" call="unbanserial" args="s" />
-  </bans>
+  </bans -->
 </commands>

@@ -370,12 +370,6 @@ function playSoundFrontEnd ( sound )
 	return returnValue
 end
 
-function guiShowMessageBox ( message, boxType, title, forced, button1, button2, button3 )
-	playSoundFrontEnd ( 5 )
-	local a1,a2,a3 = msgbox.guiShowMessageBox ( message, boxType, title, forced, button1, button2, button3 )
-	return a1,a2,a3
-end
-
 function clearNonCreatableElements(elementTable)
 	for elementName,data in pairs(elementTable) do
 		if not data.createable then

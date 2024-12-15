@@ -1,4 +1,4 @@
 DEBUGMODE = false
 
-MTAVER = 1.4
-HVER = "2.1.2"
+MTAVER = 1.6
+HVER = "2.1.5"

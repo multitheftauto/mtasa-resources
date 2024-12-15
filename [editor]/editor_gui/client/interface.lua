@@ -7,14 +7,17 @@ local interface = {
 	move_cursor = NOT_REQUIRED,
 	move_freecam = NOT_REQUIRED,
 	move_keyboard = NOT_REQUIRED,
-	msgbox = NOT_REQUIRED,
+	dialogs = NOT_REQUIRED,
 	tooltip = NOT_REQUIRED,
 	freeroam = NOT_REQUIRED,
 }
 
 local interface_mt = {
 	__index = function(t, k)
-		return function(...) return call(t.res, k, ...) end
+		return function(...)
+			if getUserdataType(t.res) ~= "resource-data" or getResourceState(t.res) ~= "running" then return end
+			return call(t.res, k, ...)
+		end
 	end
 }
 

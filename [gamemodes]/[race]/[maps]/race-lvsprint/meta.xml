@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-16"?>
 <meta>
   <info type="map" gamemodes="race" name="LV Sprint" author="erorr404" description="A short race through Las Venturas featuring vehicle selection." version="0" />
   <map src="LV Sprint.map" />

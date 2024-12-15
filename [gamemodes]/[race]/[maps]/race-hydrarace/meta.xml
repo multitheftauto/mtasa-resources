@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-16"?>
 <meta>
   <info type="map" gamemodes="race" name="Hydra Race" author="Ransom" description="1st ever hydra race" version="0" />
   <map src="Hydra Race.map" />

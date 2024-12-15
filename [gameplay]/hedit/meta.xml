@@ -1,5 +1,5 @@
 <meta>
-    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.4" description="The first ingame handling editor for MTA!" />
+    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.5" description="The first ingame handling editor for MTA!" />
     <oop>true</oop>
     <min_mta_version server="1.4.0" client="1.4.0" />
 
@@ -26,10 +26,12 @@
     <script src="client/gui/languages/english.lua"  type="client" />
     <script src="client/gui/languages/russian.lua"  type="client" />
     <script src="client/gui/languages/turkish.lua"  type="client" />
+    <script src="client/gui/languages/german.lua"  type="client" />
     <script src="client/gui/languages/spanish.lua"  type="client" />
     <script src="client/gui/languages/polish.lua"   type="client" />
     <script src="client/gui/languages/arabic.lua"   type="client" />
     <script src="client/gui/languages/portuguese.lua" type="client" />
+    <script src="client/gui/languages/hungarian.lua" type="client" />
 
     <script src="client/gui/guicreator.lua"         type="client" />
     <script src="client/gui/guimanager.lua"         type="client" />
@@ -46,7 +48,7 @@
 
     <!-- SERVER -->
     <script src="server/logmanager.lua"             type="server" />
-    <script src="server/cfgloader.lua"              type="server" />>
+    <script src="server/cfgloader.lua"              type="server" />
     <script src="server/core.lua"                   type="server" />
     <script src="server/utils.lua"                  type="server" />
 

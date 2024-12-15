@@ -1,6 +1,6 @@
 <meta>
-	<info description="Anti-Cheat Control Panel" author="ccw" version="0.1.8" type="script" />
-	<min_mta_version server="1.3.1" client="1.3.1"></min_mta_version>
+	<info description="Anti-Cheat Control Panel" author="ccw" version="0.2.0" type="script" />
+	<min_mta_version server="1.6.0" client="1.6.0"></min_mta_version>
 
 	<script src="_common.lua"/>
 	<script src="s_joiner.lua"/>
@@ -20,7 +20,7 @@
 
 
 	<settings>
-		<setting name="*admingroup" value="Admin,AdminPlus"
+		<setting name="*admingroup" value="Admin"
 					friendlyname="Admin group list"
 					group="_Advanced"
 					accept="*"

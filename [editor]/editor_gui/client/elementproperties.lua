@@ -698,7 +698,12 @@ local function applyPropertiesChanges()
 		end
 	end
 
-	triggerServerEvent("syncProperties", localPlayer, oldValues, newValues, selectedElement)
+	-- fix for local elements
+	if not isElementLocal(selectedElement) then
+		triggerServerEvent("syncProperties", localPlayer, oldValues, newValues, selectedElement)
+	else
+		outputDebugString("Cannot sync properties for local element.")
+	end
 
 	--allow again editing values
 	guiSetProperty(btnOK,         "Disabled", "False")
@@ -794,9 +799,13 @@ function openPropertiesBox( element, resourceName, shortcut )
 		setPropertiesChanged(true)
 	else
 		selectedElement = element
-		guiSetText( wndProperties, "PROPERTIES: " .. getElementID(selectedElement) )
+		
+		local elementID = getElementID(selectedElement)
+		elementID = (type(elementID) == "string" and elementID) or "false" -- rollback
+		
+		guiSetText( wndProperties, "PROPERTIES: " .. elementID)
 
-		guiSetText( edtID, getElementID ( selectedElement ) )
+		guiSetText( edtID, elementID )
 		guiSetText( lblType, getElementType( selectedElement ) )
 
 		guiSetVisible( edtID, true )
@@ -805,7 +814,8 @@ function openPropertiesBox( element, resourceName, shortcut )
 		addEventHandler("onClientElementDataChange", selectedElement, checkForNewID)
 
 		addEDFPropertyControlsForElement( selectedElement )
-		addPropertyControl("selection", "locked", "Locked", function (control) exports.editor_main:lockSelectedElement(selectedElement, control:getValue() == "true" or false) end, {value = exports.editor_main:isElementLocked(selectedElement) and "true" or "false", validvalues = {"false","true"}, datafield = "locked"})
+		-- `locked` is reserved for vehicles
+		addPropertyControl("selection", "locked-s", "Locked selection", function (control) exports.editor_main:lockSelectedElement(selectedElement, control:getValue() == "true" or false) end, {value = exports.editor_main:isElementLocked(selectedElement) and "true" or "false", validvalues = {"false","true"}, datafield = "locked"})
 
 		creatingNewElment = false
 		syncPropertiesCallback = applyPropertiesChanges
