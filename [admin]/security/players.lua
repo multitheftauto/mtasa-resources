@@ -35,6 +35,7 @@ addEventHandler("onElementDataChange", root, clientChangesElementData);
 function clientChnagesProtectedData(uElement, strKey, unValue)
 	logViolation(source, "Tried to change protected elementdata for key "..tostring(strKey).." to value "..tostring(unValue).." for element "..tostring(uElement).." ("..getElementType(uElement)..")");
 end
+addEventHandler("onPlayerChangesProtectedData", root, clientChnagesProtectedData);
 
 
 
