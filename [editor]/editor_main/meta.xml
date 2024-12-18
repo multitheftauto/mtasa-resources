@@ -1,6 +1,7 @@
 <meta>
 	<info author="erorr404,jbeta,Talidan" description="Map editor's main component" edf:definition="editor_main.edf" version="1.0.0" />
 
+	<!-- TODO: bump min server version due to getObjectLowLODModel -->
 	<min_mta_version server="1.5.8-9.20957" />
 
 	<!-- Script to shutdown the running gamemode and maps, because otherwise you get trouble -->
@@ -50,6 +51,7 @@
 	<script src="server/synchronization.lua" type="server" />
 	<script src="server/locking.lua" type="server" />
 	<script src="server/mapsettingssync.lua" type="server" />
+	<export function="getMapSettingValue" type="server" />
 	<script src="server/definitionssync.lua" type="server" />
 
 	<!-- ID assignment handling code -->
