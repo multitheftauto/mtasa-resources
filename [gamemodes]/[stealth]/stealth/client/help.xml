@@ -1,0 +1,21 @@
+<help popup="no">
+STEALTH
+The object of this game is to eliminate all the members of the opposite team each round. Performing actions that make noise will cause you to be revealed on other players radar.
+At the beginning of each round you choose your weapons and a special gadget.
+
+GADGETS
+CLOAK: Press R to make yourself nearly invisible.
+PROX MINE: Press R while crouching to place a mine that explodes when an enemy moves close to it.
+RADAR BURST: R reveals all players current positions.
+ARMOR: Protects from headshots and limping untill it is used up.
+SHIELD: R to hold up a bullet proof protective shield.
+CAMERA: Press R to place, pick up, or view through your camera, press fire while in camera mode to drop a smoke grenade.
+GOGGLES: R toggle between heatvision and infrared, reveals locations of players while in infrared, mines and cameras while in night vision.
+
+You can change the 'Use Gadget' key from "R" by accessing the "Binds" tab in your MTA Settings menu.
+
+CREDITS
+Concept/Design:Slothman Scripting:Slothman and Talidan
+Shield:Johnline Icons:Slothman Timer:AlienX
+Thanks To all the QA and MTA team members who helped.
+</help>
