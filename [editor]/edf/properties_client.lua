@@ -152,9 +152,6 @@ propertySetters = {
 		end,
 		breakable = function(element, breakable)
 			return setObjectBreakable(element, breakable == "true")
-		end,
-		collisions = function(element, state)
-			return setElementCollisionsEnabled(element, state == "true")
 		end
 	},
 	ped = {

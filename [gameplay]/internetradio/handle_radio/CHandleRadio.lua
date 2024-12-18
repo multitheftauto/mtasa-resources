@@ -91,7 +91,7 @@ function toggleSpeakerSounds(playerElement, toggleOn)
 		local speakerDimension = getElementDimension(speakerBox)
 		local speakerSoundMaxDistance = speakerData.speakerSoundMaxDistance
 		local speakerStreamURL = speakerData.speakerStreamURL
-		local speakerNewSound = playSound3D(speakerStreamURL, speakerBoxPosX, speakerBoxPosY, speakerBoxPosZ, false, false)
+		local speakerNewSound = playSound3D(speakerStreamURL, speakerBoxPosX, speakerBoxPosY, speakerBoxPosZ, true, false)
 
 		if (not speakerNewSound) then
 			return false
@@ -102,7 +102,7 @@ function toggleSpeakerSounds(playerElement, toggleOn)
 		speakerSounds[playerElement] = speakerNewSound
 
 		setElementInterior(speakerNewSound, speakerInterior)
-		setElementInterior(speakerNewSound, speakerDimension)
+		setElementDimension(speakerNewSound, speakerDimension)
 
 		setSoundPaused(speakerNewSound, speakerPaused)
 		setSoundMaxDistance(speakerNewSound, speakerSoundMaxDistance)
@@ -193,6 +193,8 @@ function setPlayerSpeakerData(playerElement, speakerData)
 
 	local speakerBox = speakerData.speakerBox
 	local speakerDummy = createObject(1337, 0, 0, 3)
+	local speakerBoxDimension = getElementDimension(speakerBox)
+	setElementDimension(speakerDummy, speakerBoxDimension)
 
 	speakerData.speakerDummy = speakerDummy
 	playerSpeakers[playerElement] = speakerData

@@ -42,6 +42,7 @@ g_RPCFunctions = {
 	setPedAnimation = { option = 'anim', descr = 'Setting an animation' },
 	setPedFightingStyle = { option = 'setstyle', descr = 'Setting fighting style' },
 	setPedGravity = { option = 'gravity.enabled', descr = 'Setting gravity' },
+	setPedWalkingStyle = { option = 'walkstyle', descr = 'Setting walking style' },
 	setPedStat = { option = 'stats', descr = 'Changing stats' },
 	setPedWearingJetpack = { option = 'jetpack', descr = 'Adding/removing a jetpack' },
 	setVehicleColor = true,
@@ -74,6 +75,7 @@ g_OptionDefaults = {
 	setstyle = true,
 	spawnmaponstart = true,
 	spawnmapondeath = true,
+	walkstyle= true,
 	stats = true,
 	upgrades = true,
 	warp = true,
@@ -470,6 +472,7 @@ addEventHandler('onPlayerChat', root,
 		end
 	end
 )
+
 
 addEventHandler('onVehicleEnter', root,
 	function(player, seat)

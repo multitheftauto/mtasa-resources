@@ -40,11 +40,6 @@ if not (g_PlayerData) then
     g_PlayerData = {}
 end
 
--- Variables for time freeze
-local freezeTimeHour = false
-local freezeTimeMinute = false
-local freezeTimeWeather = false
-
 -- Settings are stored in meta.xml
 function freeroamSettings(settings)
 	if settings then
@@ -880,6 +875,45 @@ wndStats = {
 	},
 	oncreate = initStats
 }
+---------------------------
+-- Walk Style
+---------------------------
+function applyWalkStyle( leaf )
+    if type( leaf ) ~= 'table' then
+        leaf = getSelectedGridListLeaf( wndWalking, 'walkStyle' )
+        if not leaf then
+            return
+        end
+    end
+    server.setPedWalkingStyle(localPlayer, leaf.id)
+end
+ 
+function stopWalkStyle()
+    server.setPedWalkingStyle(localPlayer, 0)
+end
+ 
+wndWalking = {
+    'wnd',
+    text = 'Walk Styles',
+    width = 250,
+    controls = {
+        {
+            'lst',
+            id = 'walkStyle',
+            width = 230,
+            height = 290,
+            columns = {
+                { text = 'Styles', attr = 'name' }
+            },
+            rows = { xml = 'data/walk.xml', attrs = { 'id', 'name' } },
+            onitemdoubleclick = applyWalkStyle
+        },
+        { 'btn', id = 'Apply', onclick = applyWalkStyle, width = 70 },
+        { 'btn', id = 'Remove', onclick = stopWalkStyle, width = 70 },
+        { 'btn', id = 'Close', closeswindow = true, width = 70 }
+    }
+}
+
 
 ---------------------------
 -- Bookmarks window
@@ -1853,7 +1887,6 @@ function applyTime()
 	local hours, minutes = getControlNumbers(wndTime, { 'hours', 'minutes' })
 	setTime(hours, minutes)
 	closeWindow(wndTime)
-	freezeTimeHour, freezeTimeMinute = hours, minutes
 end
 
 wndTime = {
@@ -1905,26 +1938,11 @@ addCommandHandler('st', setTimeCommand)
 
 function toggleFreezeTime()
 	local state = guiCheckBoxGetSelected(getControl(wndMain, 'freezetime'))
-	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), not state)
-	freezeTimeHour, freezeTimeMinute = getTime()
-	freezeTimeWeather = getWeather()
-	setTimeFrozen(state)
-end
-
-function setTimeFrozen(state)
-	guiCheckBoxSetSelected(getControl(wndMain, 'freezetime'), state)
 
 	if state then
-		if not g_TimeFreezeTimer then
-			g_TimeFreezeTimer = setTimer(function() setTime(freezeTimeHour, freezeTimeMinute) setWeather(freezeTimeWeather) end, 5000, 0)
-			setMinuteDuration(9001)
-		end
+		setTimeFrozen(true)
 	else
-		if g_TimeFreezeTimer then
-			killTimer(g_TimeFreezeTimer)
-			g_TimeFreezeTimer = nil
-		end
-		setMinuteDuration(1000)
+		setTimeFrozen(false)
 	end
 end
 
@@ -1940,7 +1958,6 @@ function applyWeather(leaf)
 	end
 	setWeather(leaf.id)
 	closeWindow(wndWeather)
-	freezeTimeWeather = leaf.id
 end
 
 wndWeather = {
@@ -2145,7 +2162,9 @@ function onExitVehicle(vehicle,seat)
 		hideControls(wndMain, 'repair', 'flip', 'upgrades', 'color', 'paintjob', 'lightson', 'lightsoff')
 		closeWindow(wndUpgrades)
 		closeWindow(wndColor)
-	elseif vehicle and seat == 0 then
+	end
+		
+	if vehicle and seat == 0 then
 		if source and g_PlayerData[source] then
 			setVehicleGhost(vehicle,hasDriverGhost(vehicle))
 		end
@@ -2195,6 +2214,7 @@ wndMain = {
 		{'btn', id='playergrav', text='grav', window=wndGravity},
 		{'btn', id='warp', window=wndWarp},
 		{'btn', id='stats', window=wndStats},
+		{'btn', id='walks', window=wndWalking},
 		{'btn', id='bookmarks', window=wndBookmarks},
 		{'br'},
 
@@ -2265,8 +2285,18 @@ addEventHandler('onClientResourceStart', resourceRoot,
 		createWindow(wndMain)
 		hideAllWindows()
 		bindKey('f1', 'down', toggleFRWindow)
+		bindKey('f2', 'down', toggleMap)
 		guiCheckBoxSetSelected(getControl(wndMain, 'jetpack'), isPedWearingJetpack(localPlayer))
 		guiCheckBoxSetSelected(getControl(wndMain, 'falloff'), canPedBeKnockedOffBike(localPlayer))
+	end
+)
+
+addEventHandler('onClientResourceStart', root,
+	function(startedResource)
+		local editorResource, raceResource = getResourceFromName('editor'), getResourceFromName('race')
+		if (editorResource and raceResource and startedResource == raceResource) then
+			unbindKey('f2', 'down', toggleMap)
+		end
 	end
 )
 
@@ -2289,7 +2319,6 @@ function toggleMap()
 		showCursor(true)
 	end
 end
-bindKey("f2", "down", toggleMap)
 
 function toggleFRWindow()
 	if isWindowOpen(wndMain) then
@@ -2374,6 +2403,15 @@ addEventHandler('onClientResourceStop', resourceRoot,
 	function()
 		showCursor(false)
 		setPedAnimation(localPlayer, false)
+	end
+)
+
+addEventHandler('onClientResourceStop', root,
+	function(stoppingResource)
+		local editorResource, raceResource = getResourceFromName('editor'), getResourceFromName('race')
+		if (editorResource and raceResource and stoppingResource == raceResource) then
+			bindKey('f2', 'down', toggleMap)
+		end
 	end
 )
 
