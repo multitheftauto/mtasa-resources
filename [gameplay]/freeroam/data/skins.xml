@@ -45,6 +45,7 @@
 		<skin id="92" name="Rollergirl" keywords="blades,rollerblades,skates,bikini,thong,bandana,glasses,sunglasses,white,girl,woman"/>
 		<skin id="96" name="Soccer Player" keywords="tall,white,guy,male,stripes,stripe,striped,shorts"/>
 		<skin id="97" name="Baywatch Dude" keywords="shorts,topless,shirtless,beach,lifeguard,shoeless,barefoot,guy,male,white"/>
+		<skin id="98" name="Worker Male" keywords="guy,male,white"/>
 		<skin id="138" name="Bikini Tattoo" keywords="shades,glasses,swimsuit,white,girl,woman,beach"/>
 		<skin id="139" name="Yellow Bikini" keywords="swimsuit,black,girl,woman,beach"/>
 		<skin id="140" name="Buxom Bikini" keywords="tits,breasts,glasses,black,girl,woman,bikini"/>
@@ -307,6 +308,7 @@
 		<skin id="29" name="White Dealer" keywords="drug,drugs,hood,hooded,rockstar,hat,baseball"/>
 		<skin id="30" name="Religious Essey" keywords="hispanic,mexican,cross,necklace,jewelry,tattoo,beard,mustache,sunglasses,crucifix,glasses,hat,guy,male"/>
 		<skin id="47" name="Top Button Essey" keywords="religious, cross,necklace,plaid,mustache,glasses,sunglasses,hispanic,mexican,crucifix,guy,male"/>
+		<skin id="48" name="Hippy Maley" keywords="religious, cross,necklace,plaid,mustache,glasses,sunglasses,hispanic,mexican,crucifix,guy,male"/>
 		<skin id="67" name="Red Bandana" keywords="black,guy,male,sweater"/>
 		<skin id="143" name="Sam Jackson" keywords="black,guy,male,hat,glasses,shades,button,Samuel"/>
 		<skin id="241" name="Afro Brother" keywords="fat,heavy,shades,glasses,tattoo,shorts,mustache,topless,shirtless,white,guy,male"/>
@@ -333,6 +335,7 @@
 		<skin id="212" name="Tin Foil Hat" keywords="paranoid,conspiracy,brainwaves,torn,shorts,ripped,dirty,sign,gambler,poor,bet,food,cardboard,mustache,beard,flowers,floral,homeless,bum,tramp,hobo,white,guy,male"/>
 		<skin id="213" name="Hobo Elvis" keywords="king,rock,impersonator,dirty,old,fat,homeless,ripped,torn,hairy,white,guy,male"/>
 		<skin id="230" name="Hooded Hobo" keywords="weel,pot,drug,addict,sign,cardboard,beard,mustache,shorts,shoeless,barefoot,bandages,homeless,bum"/>
+		<skin id="239" name="Homeless Bob" keywords="hat,homeless,bum,torn,dirty,fat,heavy,ripped,guy,white"/>
 	</group>
 	<group name="Nightclubbers">
 		<skin id="43" name="Porn Producer" keywords="Greasy,watch,necklace,jewelry,sunglasses,glasses,silk,manager,mustache,beard,white,guy,male"/>
