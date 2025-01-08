@@ -3,7 +3,7 @@
     <min_mta_version server="1.6.0" />
 
     <settings>
-        <setting name="*decap" desc="determines whether the player becomes headless after a headshot" value="true" accept="false, true" />
+        <setting name="*decap" desc="determines whether the player becomes headless after a headshot" value="[true]" accept="false, true" />
     </settings>
 
     <script type="server" src="src/headshotSettings.lua" />
