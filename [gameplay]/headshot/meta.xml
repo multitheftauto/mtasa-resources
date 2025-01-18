@@ -1,5 +1,5 @@
 <meta>
-    <info name="Headshot" description="Headshot feature for enhanced combat realism and damage effect" author="Multi Theft Developers" version="1.0.0" type="script" />
+    <info name="Headshot" description="Headshot feature for enhanced combat realism and damage effect" author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0.0" type="script" />
     <min_mta_version server="1.6.0" />
 
     <settings>
