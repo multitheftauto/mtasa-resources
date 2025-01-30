@@ -38,6 +38,7 @@ g_RPCFunctions = {
 	setElementAlpha = { option = 'alpha', descr = 'Changing your alpha' },
 	setElementInterior = true,
 	setCameraInterior = true,
+	setElementPosition = true,
 	setMySkin = { option = 'setskin', descr = 'Setting skin' },
 	setPedAnimation = { option = 'anim', descr = 'Setting an animation' },
 	setPedFightingStyle = { option = 'setstyle', descr = 'Setting fighting style' },

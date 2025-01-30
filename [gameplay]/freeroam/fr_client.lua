@@ -34,7 +34,6 @@ local knifeRestrictionsOn = false
 -- Local settings received from server
 local g_settings = {}
 local _addCommandHandler = addCommandHandler
-local _setElementPosition = setElementPosition
 
 if not (g_PlayerData) then
     g_PlayerData = {}
@@ -135,7 +134,7 @@ local function setElementPosition(element,x,y,z)
 		setTimer(resetKnifing,5000,1)
 	end
 
-	_setElementPosition(element,x,y,z)
+	server.setElementPosition(element, x, y, z)
 end
 
 ---------------------------
