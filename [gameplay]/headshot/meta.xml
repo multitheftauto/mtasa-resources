@@ -1,11 +1,12 @@
 <meta>
-	<info author="jbeta" type="script" version="1.1.0" />
-	<script src="headshot.lua" type="server" />
-	<settings>
-		<setting name="*removeHeadOnHeadshot" value="true"
-			friendlyname="Blows off player's head on headshot"
-			group="General"
-			accept="false,true"
-			desc="Should player lose his head when he gets headshot?" />
-	</settings>
+    <info name="Headshot" description="Headshot feature for enhanced combat realism and damage effect" author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0.0" type="script" />
+    <min_mta_version server="1.6.0" />
+
+    <settings>
+        <setting name="*decap" desc="determines whether the player becomes headless after a headshot" value="[true]" accept="false, true" />
+    </settings>
+
+    <script type="server" src="src/headshotSettings.lua" />
+    <script type="server" src="src/headshotDamage.lua" />
+    <script type="server" src="src/headshotSpawn.lua" />
 </meta>
