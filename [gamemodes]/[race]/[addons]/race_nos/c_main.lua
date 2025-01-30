@@ -94,7 +94,7 @@ addEventHandler( "onClientRender", root,
 					dxDrawImage( g_tGaugePosition[ 1 ] + 45, g_tGaugePosition[ 2 ] + 41, 10, 40, "gauge/nos_arrow.png", nosangle, 0, -11, tocolor( 255, 0, 0 ) );
 
 					local nitro = getVehicleUpgradeOnSlot( veh, 8 );
-					if ( getPedControlState( "vehicle_fire" ) and type( nitro ) == "number" and nitro ~= 0 ) then
+					if ( getPedControlState( localPlayer, "vehicle_fire" ) and type( nitro ) == "number" and nitro ~= 0 ) then
 						if nos > 0 then
 							nos = nos - .2;
 							if getTickCount() - clicktick > 20000 then

@@ -217,10 +217,10 @@ addCommandHandler ( "crippleme", startalimp )
 
 function movementcheck ( source, key, keystate )
 	if ( isPedDucked ( getLocalPlayer () ) ) == false then
-		if ( getPedControlState ( "sprint" ) ) then
+		if ( getPedControlState ( localPlayer, "sprint" ) ) then
 			soundlevel = soundlevel +1
 		end
-		if ( getPedControlState ( "walk" ) ) == false then
+		if ( getPedControlState ( localPlayer, "walk" ) ) == false then
 			soundlevel = soundlevel +1
 		end
 	end
@@ -228,7 +228,7 @@ end
 
 function walksoundstop ( source, key, keystate )
 	if isplayermoving == 1 then
-		if ( getPedControlState ( "forwards" ) ) == false and ( getPedControlState ( "backwards" ) ) == false and ( getPedControlState ( "left" ) ) == false and ( getPedControlState ( "right" ) ) == false then
+		if ( getPedControlState ( localPlayer, "forwards" ) ) == false and ( getPedControlState ( localPlayer, "backwards" ) ) == false and ( getPedControlState ( localPlayer, "left" ) ) == false and ( getPedControlState ( localPlayer, "right" ) ) == false then
 			killTimer ( movementsound )
 			isplayermoving = 0
 		end
