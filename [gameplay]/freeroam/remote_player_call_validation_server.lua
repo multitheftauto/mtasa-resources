@@ -63,6 +63,13 @@ g_RPCFunctionsValidation = {
         if (#{ ... } > 0) then return false end
         return true
     end,
+    setElementPosition = function(element, x, y, z)
+        if client ~= element and element ~= getPedOccupiedVehicle(client) then return false end
+        if type(x) ~= "number" then return false end
+        if type(y) ~= "number" then return false end
+        if type(z) ~= "number" then return false end
+        return true
+    end,
     setCameraInterior = function (thePlayer, interior, ...)
         if client ~= thePlayer then return false end
         if type(tonumber(interior)) ~= "number" then return false end
