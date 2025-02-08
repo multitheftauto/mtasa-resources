@@ -173,7 +173,7 @@ end
 function GhostRecord:checkStateChanges()
 	-- Keys
 	for _, v in ipairs( keyNames ) do
-		local state = getPedControlState( v )
+		local state = getPedControlState( localPlayer, v )
 		if not state and analogNames[v] then
 			-- Not a really good implementation, but didn't think if anything else
 			state = getAnalogControlState( v ) >= 0.5
