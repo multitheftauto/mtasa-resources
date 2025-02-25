@@ -64,6 +64,20 @@ function setElementRotation(element,x,y,z,warp)
 	_setElementRotation(element,x,y,z)
 end
 
+_setObjectScale = setObjectScale
+function setObjectScale(element,scale)
+	local exactsnap =  exports["editor_gui"]:sx_getOptionData("enablePrecisionSnap")
+	local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("precisionLevel"))
+	if exactsnap then
+		if snaplevel <= 1 then
+			scale = roundToLevel(scale,snaplevel,"round")
+		else
+			scale = sticknumbertoMult(scale,snaplevel,"round")
+		end
+	end
+	_setObjectScale(element,scale)
+end
+
 
 --!get controls if editor_main is started after this
 addEventHandler("onClientResourceStart", root,

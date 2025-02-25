@@ -81,6 +81,7 @@ function createOptionsDialog()
 	guiCreateLabel ( 0.5, 0.12, 1, 0.1, "Normal element rotation speed:", true, dialog.movementTab )
 	guiCreateLabel ( 0.5, 0.32, 1, 0.1, "Fast element rotation speed:", true, dialog.movementTab )
 	guiCreateLabel ( 0.5, 0.52, 1, 0.1, "Slow element rotation speed:", true, dialog.movementTab )
+	guiCreateLabel ( 0.5, 0.72, 1, 0.1, "Element scaling:", true, dialog.movementTab )
 
 
 	dialog.normalElemMove = editingControl.slider:create{["x"]=0.02,["y"]=0.18,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.movementTab,
@@ -107,7 +108,11 @@ function createOptionsDialog()
 		["min"]=0.01,
 		["max"]=0.5,
 	}
-	dialog.lockToAxes = editingControl.boolean:create{["x"]=0.02,["y"]=0.78,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.movementTab,["label"]="Lock movement to axes"}
+	dialog.elemScaling = editingControl.slider:create{["x"]=0.5,["y"]=0.78,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.movementTab,
+		["min"]=0.01,
+		["max"]=1,
+	}
+	dialog.lockToAxes = editingControl.boolean:create{["x"]=0.02,["y"]=0.78,["width"]=0.4,["height"]=0.1,["relative"]=true,["parent"]=dialog.movementTab,["label"]="Lock movement to axes"}
 	--
 	loadXMLSettings()
 	addEventHandler ( "onClientGUIClick", dialog.ok, confirmSettings,false )

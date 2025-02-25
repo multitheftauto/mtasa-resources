@@ -166,6 +166,8 @@ function setEditorMoveSpeeds()
 	move_cursor.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
 	move_freecam.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
 
+	move_keyboard.setScaleIncrement ( dialog.elemScaling:getValue() )
+
 	move_keyboard.toggleAxesLock ( dialog.lockToAxes:getValue() )
 end
 

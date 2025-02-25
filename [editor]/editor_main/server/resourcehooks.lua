@@ -180,6 +180,7 @@ function flattenTree ( baseElement, newParent, newEditorParent, resourceTable )
 			end
 			creationParameters.position = {edf.edfGetElementPosition(element)}
 			creationParameters.rotation = {edf.edfGetElementRotation(element)}
+			creationParameters.scale = edf.edfGetElementScale(element)
 			creationParameters.interior = edf.edfGetElementInterior(element) or nil
 			creationParameters.alpha = edf.edfGetElementAlpha(element) or 255
 
