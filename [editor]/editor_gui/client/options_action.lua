@@ -31,6 +31,10 @@ function optionsActions.precisionRotLevel(value)
 	optionsData.precisionRotLevel = tonumber(value)
 end
 
+function optionsActions.elemScalingSnap(value)
+	optionsData.elemScalingSnap = tonumber(value)
+end
+
 function optionsActions.enableColPatch(value)
 	local success, isLoaded = editor_main.toggleColPatch(value)
 	if success then
