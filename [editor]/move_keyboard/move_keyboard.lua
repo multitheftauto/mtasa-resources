@@ -448,8 +448,10 @@ function detachElement()
 				rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 			end
-			scale = getObjectScale(selectedElement)
-			triggerServerEvent("syncProperty", localPlayer, "scale", scale, exports.edf:edfGetAncestor(selectedElement))
+			if getElementType(selectedElement) == "object" then
+				scale = getObjectScale(selectedElement)
+				triggerServerEvent("syncProperty", localPlayer, "scale", scale, exports.edf:edfGetAncestor(selectedElement))
+			end
 		end
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil
