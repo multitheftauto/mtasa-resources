@@ -25,9 +25,9 @@ end
 addEventHandler("onElementCreate_undoredo", root, addActionElementCreate)
 
 -- move
-function addActionElementMove(oldPosX, oldPosY, oldPosZ, oldRotX, oldRotY, oldRotZ)
+function addActionElementMove(oldPosX, oldPosY, oldPosZ, oldRotX, oldRotY, oldRotZ, oldScale)
 	local tempAction = ActionMove:new{ element = source, oldPosX = oldPosX, oldPosY = oldPosY, oldPosZ = oldPosZ,
-										oldRotX = oldRotX, oldRotY = oldRotY, oldRotZ = oldRotZ}
+										oldRotX = oldRotX, oldRotY = oldRotY, oldRotZ = oldRotZ, oldScale = oldScale}
 	-- give an error if the action wasn't added successfully
 	assert(tempAction, "failed to add element Move action")
 	-- insert the action into the list
