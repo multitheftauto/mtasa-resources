@@ -1259,8 +1259,21 @@ function createCheckpoint(i)
 	if checkpoint.type == 'ring' and i < #g_Checkpoints then
 		setMarkerTarget(checkpoint.marker, unpack(g_Checkpoints[i+1].position))
 	end
-	checkpoint.blip = createBlip(pos[1], pos[2], pos[3], 0, isCurrent and 2 or 1, color[1], color[2], color[3])
+	checkpoint.blip = createBlip(pos[1], pos[2], pos[3], 0, isCurrent and 2 or 1, color[1], color[2], color[3], 255)
 	setBlipOrdering(checkpoint.blip, 1)
+	return checkpoint.marker
+end
+
+function createRadarBlips(i)
+	local checkpoint = g_Checkpoints[i]
+	if checkpoint.marker then
+		return
+	end
+	local pos = checkpoint.position
+	local color = checkpoint.color or { 0, 0, 80 }
+
+	checkpoint.blip2 = createBlip(pos[1], pos[2], pos[3], 0, isCurrent and 2 or 1, color[1], color[2], color[3], 100)
+	
 	return checkpoint.marker
 end
 
@@ -1287,10 +1300,22 @@ end
 
 function destroyCheckpoint(i)
 	local checkpoint = g_Checkpoints[i]
+	local blip2 = g_Checkpoints[i+1]
+	local blip3 = g_Checkpoints[i+2]
 	if checkpoint and checkpoint.marker then
 		destroyElement(checkpoint.marker)
 		checkpoint.marker = nil
 		destroyElement(checkpoint.blip)
+
+		if (#g_Checkpoints - i) >= 3 then
+			--destroyElement(blip2.blip2)
+			if isElement(blip3.blip2) then
+				if blip3.blip2 then
+					destroyElement(blip3.blip2)
+				end
+			end
+		end
+		
 		checkpoint.blip = nil
 		if checkpoint.colshape then
 			destroyElement(checkpoint.colshape)
