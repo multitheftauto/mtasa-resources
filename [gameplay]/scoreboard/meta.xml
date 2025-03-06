@@ -58,7 +58,7 @@
 	<export function="getNextFreePrioritySlot" type="client" />
 	<export function="scoreboardGetSelectedRows" type="client" />
 
-	<!-- Compability -->
+	<!-- Compatibility -->
 	<export function="addScoreboardColumn" type="server"/>
 	<export function="removeScoreboardColumn" type="server"/>
 	<export function="resetScoreboardColumns" type="server"/>

@@ -1,6 +1,6 @@
 scoreboardColumns = {
 	{ ["name"] = "name", ["width"] = 200, ["friendlyName"] = "Name", ["priority"] = 1 },
-	{ ["name"] = "ping", ["width"] = 40, ["friendlyName"] = "Ping", ["priority"] = MAX_PRIRORITY_SLOT },
+	{ ["name"] = "ping", ["width"] = 40, ["friendlyName"] = "Ping", ["priority"] = MAX_PRIORITY_SLOT },
 }
 
 resourceColumns = {}
@@ -23,7 +23,7 @@ showCountries = toboolean( get( "showCountries" ) ) or false
 scrollStep = tonumber( get( "scrollStep" ) ) or 1
 
 if showCountries then
-	table.insert (scoreboardColumns, { ["name"] = "Country", ["width"] = 50, ["friendlyName"] = "Country", ["priority"] = MAX_PRIRORITY_SLOT-1, ["isImage"] = true, ["imageW"] = 18, ["imageH"] = 12 })
+	table.insert (scoreboardColumns, { ["name"] = "Country", ["width"] = 50, ["friendlyName"] = "Country", ["priority"] = MAX_PRIORITY_SLOT-1, ["isImage"] = true, ["imageW"] = 18, ["imageH"] = 12 })
 end
 
 local function iif( cond, arg1, arg2 )
@@ -43,7 +43,7 @@ function scoreboardAddColumn( name, forElement, width, friendlyName, priority, i
 		forElement = iif( type( forElement ) == "userdata" and isElement( forElement ), forElement, root )
 
 		if forElement == root then
-			if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
+			if not (priority > MAX_PRIORITY_SLOT or priority < 1) then
 				for key, value in ipairs( scoreboardColumns ) do
 					if name == value.name then
 						return false
@@ -155,7 +155,7 @@ end
 
 function scoreboardSetColumnPriority( name, priority, forElement )
 	if type( name ) == "string" and type( priority ) == "number" then
-		if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
+		if not (priority > MAX_PRIORITY_SLOT or priority < 1) then
 			forElement = iif( type( forElement ) == "userdata" and isElement( forElement ), forElement, root )
 			if forElement == root then
 				local columnIndex = false
@@ -247,7 +247,7 @@ function removeResourceScoreboardColumns( resource )
 end
 addEventHandler( "onResourceStop", root, removeResourceScoreboardColumns )
 
--- Compability
+-- Compatibility
 addScoreboardColumn = 	function( name, forElement, position, size )
 							if type( size ) == "number" and size >= 0 and size <= 1.0 then
 								size = size*700
