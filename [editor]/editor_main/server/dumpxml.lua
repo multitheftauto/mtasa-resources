@@ -16,7 +16,7 @@ end
 local specialSyncers = {
 	position = function() end,
 	rotation = function() end,
-	scale = function() end,
+	scale = function(element) return edf.edfGetElementScale(element) end,
 	dimension = function(element) return getElementData(element, "me:dimension") or 0 end,
 	interior = function(element) return edf.edfGetElementInterior(element) end,
 	alpha = function(element) return edf.edfGetElementAlpha(element) end,

@@ -674,7 +674,7 @@ function edfCloneElement(theElement, editorMode )
 	parametersTable = {}
 	parametersTable.position = {edfGetElementPosition(theElement)} or {0,0,0}
 	parametersTable.rotation = {edfGetElementRotation(theElement)} or {0,0,0}
-	parametersTable.scale = edfGetElementScale(theElement) or 2
+	parametersTable.scale = edfGetElementScale(theElement) or 1
 	parametersTable.interior = edfGetElementInterior(theElement) or 0
 	parametersTable.dimension = edfGetElementDimension(theElement) or 0
 	parametersTable.alpha = edfGetElementAlpha(theElement) or 255
