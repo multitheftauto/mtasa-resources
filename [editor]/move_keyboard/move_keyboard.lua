@@ -361,13 +361,13 @@ local function onClientRender_keyboard()
 
 		-- Scale up/down for objects
         if getElementType(selectedElement) == "object" then
-			local scale = getObjectScale(selectedElement)
+			local currentScale = getObjectScale(selectedElement)
             if getCommandState("element_scale_up") then
-                scale = scale + scaleIncrement
+                currentScale = currentScale + scaleIncrement
 			elseif getCommandState("element_scale_down") then
-                scale = scale - scaleIncrement
+                currentScale = currentScale - scaleIncrement
             end
-            setObjectScale(selectedElement, scale)
+            setObjectScale(selectedElement, currentScale)
         end
 	end
 end

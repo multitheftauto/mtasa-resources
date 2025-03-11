@@ -312,7 +312,7 @@ function setTableElementIDs(elemTable)
         local elementID = getElementID(v)
 		local numericID = ""
 		if getElementType(v) == "object" or getElementType(v) == "vehicle" or getElementType(v) == "ped" then
-        	numericID = "[" .. (getElementData(v, "model") or getElementModel(v) or "Unknown") .. "]"
+			numericID = "[" .. (getElementData(v, "model") or getElementModel(v) or "Unknown") .. "]"
 		end
         elementsWithIDs[k] = tostring(elementID) .. " " .. tostring(numericID)
     end
