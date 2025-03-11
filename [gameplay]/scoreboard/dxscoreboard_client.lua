@@ -2,7 +2,7 @@
 
 local triggerKey = "tab" -- default button to open/close scoreboard
 local settingsKey = "F7" -- default button to open the settings window
-local seperationSpace = 80 -- the space between top/bottom screen and scoreboard top/bottom in pixels
+local separationSpace = 80 -- the space between top/bottom screen and scoreboard top/bottom in pixels
 
 drawOverGUI = true -- draw scoreboard over gui?
 
@@ -538,7 +538,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 
 				for key2 = 1, #sortTableTeam do
 					local value = sortTableTeam[key2]
-					
+
 					scoreboardContent[index] = value
 					index = index + 1
 				end
@@ -701,7 +701,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 
 								local partOfName = string.sub( playerName, firstCodePos, secondCodePos )
 								local textLength4 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
-								
+
 								dxDrawText( partOfName, xPos+s(1), 	y+s(1), 	topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
 								dxDrawText( partOfName, xPos, 			y, 			topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(teamHeaderFont, scoreboardScale), teamHeaderFont ), 	tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(teamHeaderFont, s(1)), teamHeaderFont, "left", "top", true, false, drawOverGUI )
 								xPos = xPos + textLength4
@@ -777,7 +777,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 									local firstPos = 1
 									local partOfName = string.sub( playerName, firstPos, secondPos )
 									local textLength3 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
-									
+
 									dxDrawText( partOfName, xPos+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 									dxDrawText( partOfName, xPos, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 									xPos = xPos + textLength3
@@ -789,7 +789,7 @@ function doDrawScoreboard( rtPass, onlyAnim, sX, sY )
 
 								local partOfName = string.sub( playerName, firstCodePos, secondCodePos )
 								local textLength2 = dxGetTextWidth( partOfName, fontscale(contentFont, s(1)), contentFont )
-								
+
 								dxDrawText( partOfName, xPos+s(1), 	y+s(1), topX+x+s(1+column.width), 	y+s(11)+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 	tocolor( 0, 0, 0, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 								dxDrawText( partOfName, xPos, 		y, 		topX+x+s(column.width), 	y+dxGetFontHeight( fontscale(contentFont, scoreboardScale), contentFont ), 			tocolor( r or 255, g or 255, b or 255, a or 255 ), fontscale(contentFont, s(1)), contentFont, "left", "top", true, false, drawOverGUI )
 								xPos = xPos + textLength2
@@ -880,7 +880,7 @@ function scoreboardAddColumn(name, width, friendlyName, priority, textFunction, 
 	textFunction = textFunction or nil
 	fromResource = sourceResource or fromResource or nil
 
-	if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
+	if not (priority > MAX_PRIORITY_SLOT or priority < 1) then
 
 		for key = 1, #scoreboardColumns do
 			local value = scoreboardColumns[key]
@@ -929,10 +929,10 @@ function scoreboardRemoveColumn(name)
 
 	for key = 1, #scoreboardColumns do
 		local value = scoreboardColumns[key]
-		
+
 		if name == value.name then
 			table.remove(scoreboardColumns, key)
-			
+
 			for resource, content in pairs(resourceColumns) do
 				table.removevalue(content, name)
 			end
@@ -1062,7 +1062,7 @@ function scoreboardSetColumnPriority(name, priority)
 		return false
 	end
 
-	if not (priority > MAX_PRIRORITY_SLOT or priority < 1) then
+	if not (priority > MAX_PRIORITY_SLOT or priority < 1) then
 		local columnIndex = false
 
 		for key = 1, #scoreboardColumns do
@@ -1126,7 +1126,7 @@ function scoreboardGetTopCornerPosition()
 	local topX, topY = (sX/2) - (calculateWidth()/2), (sY/2) - (calculateHeight()/2)
 
 	topY = topY - 15 -- Extra 15 pixels for the scroll up button
-	
+
 	return math.floor(topX), math.floor(topY + 1)
 end
 
@@ -1136,7 +1136,7 @@ function scoreboardGetSize()
 	end
 
 	local width, height = calculateWidth(), calculateHeight()
-	
+
 	return width, height
 end
 
@@ -1214,7 +1214,7 @@ function math.clamp( low, value, high )
 end
 
 function fromcolor( color )
-	-- Propably not the most efficient way, but only way it works
+	-- Probably not the most efficient way, but only way it works
 	local colorCode = string.format( "%x", color )
 	local a = string.sub( colorCode, 1, 2 ) or "FF"
 	local r = string.sub( colorCode, 3, 4 ) or "FF"
@@ -1280,7 +1280,7 @@ end
 
 function getMaxPerWindow()
 	local sX, sY = SCREEN_X, SCREEN_Y
-	local availableHeight = sY-(seperationSpace*2)-s(5)
+	local availableHeight = sY-(separationSpace*2)-s(5)
 	if (serverInfo.server or serverInfo.players) and showServerInfo then availableHeight = availableHeight-dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
 	if (serverInfo.gamemode or serverInfo.map) and showGamemodeInfo then availableHeight = availableHeight-dxGetFontHeight( fontscale(serverInfoFont, scoreboardScale), serverInfoFont ) end
 	availableHeight = availableHeight-s(3)
