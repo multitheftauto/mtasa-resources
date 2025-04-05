@@ -65,6 +65,12 @@ g_RPCFunctionsValidation = {
     end,
     setElementPosition = function(element, x, y, z)
         if client ~= element and element ~= getPedOccupiedVehicle(client) then return false end
+        -- outputDebugString("DEBUG setElementPosition: type(x)=" .. type(x) .. "; value=" .. tostring(x), 3)
+        -- outputDebugString("DEBUG setElementPosition: type(y)=" .. type(y) .. "; value=" .. tostring(y), 3)
+        -- outputDebugString("DEBUG setElementPosition: type(z)=" .. type(z) .. "; value=" .. tostring(z), 3)
+        x = tonumber(x)
+        y = tonumber(y)
+        z = tonumber(z)
         if type(x) ~= "number" then return false end
         if type(y) ~= "number" then return false end
         if type(z) ~= "number" then return false end
