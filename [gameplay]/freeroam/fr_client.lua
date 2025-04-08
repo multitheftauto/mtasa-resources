@@ -133,9 +133,11 @@ local function setElementPosition(element,x,y,z)
 		knifeRestrictionsOn = true
 		setTimer(resetKnifing,5000,1)
 	end
+
 	x = tonumber(x)
-    y = tonumber(y)
-    z = tonumber(z)
+	y = tonumber(y)
+	z = tonumber(z)
+	
 	server.setElementPosition(element, x, y, z)
 end
 
