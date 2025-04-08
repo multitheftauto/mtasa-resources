@@ -48,7 +48,7 @@ function WebBrowserGUI:Browser_Created()
 	addEventHandler("onClientGUIClick", self.m_ButtonClose, function(...) self:CloseButton_Click(...) end, false)
 	addEventHandler("onClientGUIClick", self.m_DevButton, function(...) self:DevButton_Click(...) end, false)
 
-	self:loadURL("https://mtasa.com/")
+	self:loadURL("https://multitheftauto.com/")
 end
 
 function WebBrowserGUI:Browser_Navigate(targetURL, isBlocked)
