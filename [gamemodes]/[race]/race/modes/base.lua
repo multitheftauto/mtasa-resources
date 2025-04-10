@@ -271,8 +271,8 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 				end
 			end
 
-			message = string.format("You finished %s %s.", rank, suffix)
-			killmessage = string.format("%s finished %s %s.", rank, suffix)
+			message = string.format("You finished %s%s.", rank, suffix)
+			killmessage = string.format("%s finished %s%s.", name, rank, suffix)
 		end
 
 		if rank == 1 then

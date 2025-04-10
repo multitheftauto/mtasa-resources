@@ -16,7 +16,7 @@
 local aCountries = {}
 local IP2C_FILENAME = "conf/IpToCountryCompact.csv"
 local IP2C_FILENAME_BACKUP = "conf/IpToCountryCompact.csv.backup" -- If no file exists, it will be copied from here (failsafe in case update URL is unreachable)
-local IP2C_UPDATE_URL = "http://mirror-cdn.multitheftauto.com/mtasa/scripts/IpToCountryCompact.csv"
+local IP2C_UPDATE_URL = "https://mirror-cdn.multitheftauto.com/mtasa/scripts/IpToCountryCompact.csv"
 local IP2C_UPDATE_INTERVAL_SECONDS = 60 * 60 * 24 * 1	-- Update no more than once a day
 
 -- [Exported]

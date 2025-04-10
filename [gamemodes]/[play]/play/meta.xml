@@ -2,6 +2,7 @@
 	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" description="Launches a basic freeroam mode, together with basic map and extra handling" version="2.0" type="gamemode"/>
 	<include resource="freeroam"/>
 	<include resource="internetradio"/>
+	<include resource="superman"/>
 	<include resource="mapfixes"/>
 	<script src="play_config.lua" type="server"/>
 	<script src="play_players.lua" type="server"/>
