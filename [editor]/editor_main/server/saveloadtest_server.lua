@@ -943,6 +943,10 @@ addEventHandler("onPlayerLogin", root,
 	end
 )
 
+function getCurrentMapName()
+	return loadedMap
+end
+
 function getBool(var,default)
 	local result = get(var)
 	if not result then
