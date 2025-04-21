@@ -1,14 +1,64 @@
 <meta>
-	<info author="50p" version="0.4" name="Need for Speed NOS" description="NFS-like NOS addon for Race" type="script" addon="race" build="r40 2Sep09" />
+	<info author="50p., AcidbRain" version="1.0.1" name="Need for Speed NOS Extra" description="NFS-like NOS script" type="script" />
 
+	<script src="s_util.lua" />
 	<script src="s_main.lua" />
+	<script src="c_util.lua" type="client" />
 	<script src="c_main.lua" type="client" />
-	<script src="c_positioning.lua" type="client" />
+	<script src="c_settings.lua" type="client" />
 
+	<config src="help.xml" type="client" />
+	
 	<file src="gauge/nos_arrow.png" />
 	<file src="gauge/nos_gauge.png" />
+	
+	<export function="GetCurrentFps" type="client"/>
+	<export function="GetAverageFps" type="client"/>
+	
+	<export function="RefillNos" type="client"/>
+	<export function="NosStart" type="client"/>
+	<export function="NosStop" type="client"/>
 
+	<settings>
+		<setting
+			name="*nos_duration"
+			friendlyname="NOS duration"
+			value="20"
+			accept="number"
+			desc="Sets the duration of each NOS charge in seconds."
+			/>
+			
+		<setting
+			name="*nos_recharge_delay"
+			friendlyname="NOS recharge delay"
+			value="40"
+			accept="number"
+			desc="Sets the delay in seconds before the next NOS recharge can be used."
+			/>
+			
+		<setting
+			name="*nos_recharge_duration"
+			friendlyname="NOS recharge duration"
+			value="0"
+			accept="number"
+			desc="Sets the duration for the gradual NOS recharge in seconds. A value of zero means instant recharge."
+			/>
+			
+		<setting
+			name="*nos_state_on_vehicle_spawn"
+			friendlyname="Keep NOS on player wasted"
+			value="false"
+			accept="false,true"
+			desc="Sets whether NOS should be kept when the player dies."
+			/>
+			
+		<setting
+			name="*nos_state_on_vehicle_change"
+			friendlyname="Keep NOS on vehicle change"
+			value="false"
+			accept="false,true"
+			desc="Sets whether NOS should be kept when the player changes vehicle."
+			/>
+	</settings>
 
-	<export function="setVehicleNOS" type="server" />
-	<!-- <export function="setVehicleNOS" type="client" /> -->
 </meta>
