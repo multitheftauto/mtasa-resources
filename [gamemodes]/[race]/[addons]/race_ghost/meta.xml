@@ -6,6 +6,7 @@
 	<script src="record_server.lua" type="server" />
 	<script src="playback_server.lua" type="server" />
 	<script src="xtra_stuff_server.lua" type="server" />
+	<script src="ghost_hider.lua" type="client" />
 
 	<script src="global_client.lua" type="client" />
 	<script src="record_client.lua" type="client" />
