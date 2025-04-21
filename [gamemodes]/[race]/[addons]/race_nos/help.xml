@@ -1,0 +1,28 @@
+<help>
+/nosgauge [on|off]                 - Sets the NOS gauge visibility (default 'on')
+
+/nos [normal|nfs]
+/noscontrol [hybrid|nfs|normal]    - Sets the NOS firing control style (default 'hybrid'):
+   - normal : The default sucky behavior; Once NOS is fired there's no way to stop it.
+   - nfs    : NFS-style NOS; hold fire to start NOS, release to stop.
+   - hybrid : hybrid-style NOS; press fire once to start NOS, press fire again to stop.
+
+/nossustain [on|off]               - Sets whether to keep NOS turned on after the following events (default 'on'):
+   * Picking up a vehicle change pickup while having NOS turned on
+   * Picking up a nitro pickup while having NOS turned on
+   * Changing vehicle on a checkpoint while having NOS turned on
+   
+/move_nosgauge                     - Enables nos gauge repositioning.
+
+Admins
+------
+/nosduration &lt;duration in seconds&gt; - Sets the total duration of a NOS charge.
+
+/nosrechargedelay &lt;delay in seconds&gt; - Sets the delay before the player can use the next NOS recharge. A negative value means no recharge.
+
+/nosrechargeduration &lt;duration in seconds&gt; - Sets the duration for the gradual NOS recharge. A value of zero means instant recharge.
+
+/nosonrespawn [on|off]                     - Sets whether to keep a NOS charge when the player dies. Default is off.
+
+/nosonchange [on|off]                    - Sets whether to keep a NOS charge when the player changes vehicle. Default is off.
+</help>
