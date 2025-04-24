@@ -6,7 +6,7 @@ local visibleText = {}
 ------
 defaults = {
 	fX							= 0.5,
-	fY							= 0.5,
+	fY							= 0.9,
 	bRelativePosition			= true,
 	strText						= "",
 	bVerticalAlign 				= "center",
@@ -20,6 +20,7 @@ defaults = {
 	bClip 						= false,
 	bWordWrap	 				= true,
 	bVisible 					= false,
+	bColorCode					= true,
 	tBoundingBox				= false, --If a bounding box is not set, it will not be used.
 	bRelativeBoundingBox		= true,
 }
@@ -150,6 +151,12 @@ function dxText:wordWrap(bool)
 	return true
 end
 
+function dxText:colorCode(bool)
+	if type(bool) ~= "boolean" then return self.bColorCode end
+	self.bColorCode = bool
+	return true
+end
+
 function dxText:type(type,...)
 	if not validTypes[type] then return self.strType, unpack(self.tAttributes) end
 	self.strType = type
@@ -184,7 +191,7 @@ function dxText:boundingBox(left,top,right,bottom,relative)
 	return true
 end
 
-addEventHandler ( "onClientRender", root,
+addEventHandler ( "onClientRender", getRootElement(),
 	function()
 		for self,_ in pairs(visibleText) do
 			while true do
@@ -247,7 +254,7 @@ addEventHandler ( "onClientRender", root,
 						for offsetX=-outlinesize,outlinesize,outlinesize do
 							for offsetY=-outlinesize,outlinesize,outlinesize do
 								if not (offsetX == 0 and offsetY == 0) then
-									dxDrawText(self.strText, l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI )
+									dxDrawText(string.gsub(self.strText, "#%x%x%x%x%x%x", ""), l + offsetX, t + offsetY, r + offsetX, b + offsetY, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI )
 								end
 							end
 						end
@@ -258,9 +265,9 @@ addEventHandler ( "onClientRender", root,
 					att3 = att3 or 0
 					att4 = att4 or 0
 					att5 = att5 or self.tColor[4]
-					dxDrawText(self.strText, l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI )
+					dxDrawText(string.gsub(self.strText, "#%x%x%x%x%x%x", ""), l + shadowDist, t + shadowDist, r + shadowDist, b + shadowDist, tocolor(att2, att3, att4, att5), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI )
 				end
-				dxDrawText ( self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI )
+				dxDrawText ( self.strText, l, t, r, b, tocolor(unpack(self.tColor)), self.fScale, self.strFont, self.bHorizontalAlign, self.bVerticalAlign, self.bClip, self.bWordWrap, self.bPostGUI, self.bColorCode )
 				break
 			end
 		end
@@ -268,7 +275,7 @@ addEventHandler ( "onClientRender", root,
 )
 
 if addEvent ( "updateDisplays", true ) then
-	addEventHandler ( "updateDisplays", root,
+	addEventHandler ( "updateDisplays", getRootElement(),
 		function(self)
 			setmetatable( self, dxText_mt )
 			--Remove any old ones with the same id
