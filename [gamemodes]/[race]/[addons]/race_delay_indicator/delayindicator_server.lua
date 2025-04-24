@@ -1,13 +1,15 @@
+local g_Root = getRootElement()
+local g_ResRoot = getResourceRootElement(getThisResource())
 local debug = false
 
 local mapName
+local allCpTimes = {} 			--allCpTimes[player][checkpointNum] = time
 local topTimeInterims			--topTimeInterims[checkpointNum] = time
 local topTimeRankPlayer = {10} 	--topTimeRankPlayer[1] = rank, topTimeRankPlayer[2] = playername
 local lastPlayer = {} 			--lastPlayer[checkpointNum] = player
-local allCpTimes = {} 			--allCpTimes[player][checkpointNum] = time
-local players = {}
+local showClientDelays = {}
 
-addEventHandler('onResourceStart', resourceRoot,
+addEventHandler('onResourceStart', g_ResRoot,
 	function()
 		-- executeSQLDropTable("mapInterims")
 		-- Add table if required
@@ -26,11 +28,10 @@ addEventHandler('onResourceStart', resourceRoot,
 	end
 )
 
-addEventHandler('onGamemodeMapStart', root,
+addEventHandler('onGamemodeMapStart', g_Root,
 	function(mapres)
 		if debug then outputDebugString("delay_indicator: sending data: "..tostring(mapInfo.name)) end
 		mapName = getResourceName(mapres)
-		cpTimes = {}
 		allCpTimes = {}
 		topTimeInterims = nil
 		local sql = executeSQLQuery("SELECT playername, interims FROM mapinterims WHERE mapname = ?", mapName )
@@ -45,7 +46,7 @@ addEventHandler('onGamemodeMapStart', root,
 )
 
 addEvent('onPlayerReachCheckpoint')
-addEventHandler('onPlayerReachCheckpoint', root,
+addEventHandler('onPlayerReachCheckpoint', g_Root,
 	function(checkpointNum, timePassed)
 		timePassed = math.floor(timePassed)
         if debug then outputDebugString("race_delay_indicator: ".."info for "..getPlayerName(source)) end
@@ -56,7 +57,7 @@ addEventHandler('onPlayerReachCheckpoint', root,
 			if topTimeInterims and topTimeRankPlayer then
 				local diff = topTimeInterims[checkpointNum] - timePassed
 				if debug then outputDebugString("race_delay_indicator: "..getPlayerName(source).." "..diff.." record  #"..topTimeRankPlayer[1]) end
-				if not players[source] then
+				if showClientDelays[source] then
 					triggerClientEvent(source, "showDelay", source, diff, topTimeRankPlayer)
 				end
 			end
@@ -65,7 +66,9 @@ addEventHandler('onPlayerReachCheckpoint', root,
             if debug then outputDebugString("race_delay_indicator: ".."frontPlayer = "..tostring(frontPlayer)) end
             if not frontPlayer then
                 if debug then outputDebugString("race_delay_indicator: ".."no frontPlayer use lastPlayer") end
-                if not lastPlayer[checkpointNum] then
+                if lastPlayer[checkpointNum] then
+                    frontPlayer = lastPlayer[checkpointNum]
+                else
                     if debug then outputDebugString("race_delay_indicator: ".."no lastPlayer use nothing") end
                 end
 			else
@@ -76,10 +79,10 @@ addEventHandler('onPlayerReachCheckpoint', root,
 					if debug then outputDebugString("race_delay_indicator: ".."lua is too slow no difference") end
 					diff = 0
 				end
-				if not players[source] then
+				if showClientDelays[source] then
 					triggerClientEvent(source, "showDelay", frontPlayer, diff)
 				end
-				if not players[frontPlayer] then
+				if showClientDelays[frontPlayer] then
 					triggerClientEvent(frontPlayer, "showDelay", source, diff, checkpointNum)
 				end
             end
@@ -99,7 +102,7 @@ function getPlayerFromRank(rank)
 end
 
 addEvent("onPlayerToptimeImprovement")
-addEventHandler("onPlayerToptimeImprovement", root,
+addEventHandler("onPlayerToptimeImprovement", g_Root,
 	function(newPos)
 		if debug then outputDebugString(tostring(getPlayerName(source)).." "..tostring(newPos).." "..tostring(topTimeRankPlayer[1])) end
 		if newPos <= topTimeRankPlayer[1] and allCpTimes[source] then
@@ -118,9 +121,9 @@ addEventHandler("onPlayerToptimeImprovement", root,
 )
 
 function updatetopTimeInterims()
-	sql = executeSQLQuery("SELECT * FROM mapinterims")
+	local sql = executeSQLQuery("SELECT * FROM mapinterims")
 	local needUpdate
-	if sql and #sql > 0 then
+	if sql and #sql > 0 then 
 		for i=1,math.min(5,#sql) do
 			if not string.find(sql[math.random(1,#sql)].playername," ") then
 				needUpdate = true
@@ -144,7 +147,7 @@ end
 function updateMapNames()
 	local sql = executeSQLQuery("SELECT * FROM mapinterims")
 	local needUpdate
-	if sql and #sql > 0 then
+	if sql and #sql > 0 then 
 		for i=1,math.min(5,#sql) do
 			if not getResourceFromName(sql[math.random(1,#sql)].mapname) then
 				needUpdate = true
@@ -172,6 +175,25 @@ end
 
 addCommandHandler("cpdelays",
 	function(player)
-		players[player] = not players[player]
+		if showClientDelays[player] then
+			showClientDelays[player] = nil
+		else
+			showClientDelays[player] = true
+		end
 	end
 )
+
+-- Exported function for settings menu, KaliBwoy
+
+addEvent("onClientShowCPDelays", true)
+function s_showCPDelays()
+	showClientDelays[client] = true
+end
+addEventHandler("onClientShowCPDelays", resourceRoot, s_showCPDelays)
+
+
+addEvent("onClientHideCPDelays", true)
+function s_hideCPDelays()
+	showClientDelays[client] = false
+end
+addEventHandler("onClientHideCPDelays", resourceRoot, s_hideCPDelays)
