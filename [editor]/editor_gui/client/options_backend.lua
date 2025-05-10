@@ -17,7 +17,9 @@ local xmlVariants = {
 ["normalElemRotate"]="rotate_normal_speed",
 ["fastElemRotate"]="rotate_fast_speed",
 ["slowElemRotate"]="rotate_slow_speed",
-["elemScaling"]="scaling_increment",
+["normalElemScale"]="scaling_normal_speed",
+["fastElemScale"]="scaling_fast_speed",
+["slowElemScale"]="scaling_slow_speed",
 ["lockToAxes"]="movement_lock_to_axes",
 ["autosnap"]="currentbrowser_autosnap",
 ["tutorialOnStart"]="tutorial_on_start",
@@ -25,11 +27,13 @@ local xmlVariants = {
 ["enableXYZlines"]="enablexyzlines",
 ["precisionLevel"]="precisionlevel",
 ["precisionRotLevel"]="precisionrotlevel",
-["elemScalingSnap"]="scalingSnap",
+["elemScalingSnap"]="elemscalingsnap",
 ["enablePrecisionSnap"]="enableprecisionsnap",
 ["enablePrecisionRotation"]="enableprecisionrotation",
 ["enableColPatch"]="enablecolpatch",
 ["enableRotPatch"]="enablerotpatch",
+["randomizeRotation"]="enablerandomrot",
+["randomizeRotationAxis"]="randomizerotaxis",
 ["fov"]="fov",
 }
 local nodeTypes = {
@@ -49,7 +53,9 @@ local nodeTypes = {
 ["normalElemRotate"]="progress",
 ["fastElemRotate"]="progress",
 ["slowElemRotate"]="progress",
-["elemScaling"]="progress",
+["normalElemScale"]="progress",
+["fastElemScale"]="progress",
+["slowElemScale"]="progress",
 ["lockToAxes"]="bool",
 ["autosnap"]="bool",
 ["tutorialOnStart"]="bool",
@@ -63,6 +69,8 @@ local nodeTypes = {
 ["enableXYZlines"]="bool",
 ["enableColPatch"]="bool",
 ["enableRotPatch"]="bool",
+["randomizeRotation"]="bool",
+["randomizeRotationAxis"]={"X","Y","Z","XY","XZ","YZ","XYZ"},
 ["fov"]="progress",
 }
 local defaults = {
@@ -81,20 +89,24 @@ local defaults = {
 ["slowElemMove"]=.025,
 ["normalElemRotate"]=2,
 ["fastElemRotate"]=10,
-["slowElemRotate"]=.25,
-["elemScaling"]=.1,
+["slowElemRotate"]=0.25,
+["normalElemScale"]=0.1,
+["fastElemScale"]=1,
+["slowElemScale"]=0.01,
 ["lockToAxes"]=false,
 ["autosnap"]=true,
 ["tutorialOnStart"]=true,
 ["enableBox"]=true,
 ["precisionLevel"]="0.1",
 ["precisionRotLevel"]="30",
-["elemScalingSnap"]="0.1",
+["elemScalingSnap"]="0.0001",
 ["enablePrecisionSnap"]=true,
 ["enablePrecisionRotation"]=false,
 ["enableXYZlines"]=true,
 ["enableColPatch"]=false,
 ["enableRotPatch"]=true,
+["randomizeRotation"]=false,
+["randomizeRotationAxis"]="XYZ",
 ["fov"]=dxGetStatus()["SettingFOV"],
 }
 
@@ -130,24 +142,53 @@ function loadXMLSettings()
 	end
 
 	local settingsTable = {}
-	for gui,node in pairs(settingsNodes) do
-		local value
-		if nodeTypes[gui] == "bool" then
-			nodeValue = getNodeValue ( node, defaults[gui] )
-			value = bools[xmlNodeGetValue ( node )]
-		elseif nodeTypes[gui] == "progress" then
-			value = tonumber(getNodeValue ( node, defaults[gui] ))
-		elseif type(nodeTypes[gui]) == "table" then
-			value = tostring(getNodeValue ( node, defaults[gui] ))
-			local valid = false
-			for key,valuePossibility in pairs(nodeTypes[gui]) do
-				if value == valuePossibility then
-					valid = true
+	for gui, nodeName in pairs(xmlVariants) do
+		local node = xmlFindChild(settingsXML, nodeName, 0)
+		-- Node should exist after validation, but check anyway
+		if node then
+			local value
+			if nodeTypes[gui] == "bool" then
+				local nodeValue = xmlNodeGetValue(node)
+				value = bools[nodeValue]
+				-- If value is nil (invalid boolean), use default
+				if value == nil then
+					value = defaults[gui]
+					xmlNodeSetValue(node, tostring(value))
+					outputDebugString("Fixed invalid boolean value for " .. nodeName)
+				end
+			elseif nodeTypes[gui] == "progress" then
+				local nodeValue = xmlNodeGetValue(node)
+				value = tonumber(nodeValue)
+				-- If value is nil or out of range, use default
+				if value == nil then
+					value = defaults[gui]
+					xmlNodeSetValue(node, tostring(value))
+					outputDebugString("Fixed invalid numeric value for " .. nodeName)
+				end
+			elseif type(nodeTypes[gui]) == "table" then
+				local nodeValue = xmlNodeGetValue(node)
+				value = tostring(nodeValue)
+				-- Validate enum values
+				local valid = false
+				for _, valuePossibility in pairs(nodeTypes[gui]) do
+					if value == valuePossibility then
+						valid = true
+						break
+					end
+				end
+				-- If invalid value, use default
+				if not valid then 
+					value = defaults[gui]
+					xmlNodeSetValue(node, tostring(value))
+					outputDebugString("Fixed invalid enum value for " .. nodeName)
 				end
 			end
-			if not valid then value = defaults[gui] end
+			settingsTable[gui] = value
+		else
+			-- This should never happen after validation, but as a fallback
+			settingsTable[gui] = defaults[gui]
+			outputDebugString("Missing node for " .. nodeName .. " after validation!", 1)
 		end
-		settingsTable[gui] = value
 	end
 	inputSettings ( settingsTable )
 	doActions()
@@ -179,7 +220,14 @@ end
 
 function inputSettings ( settingsTable )
 	for gui,value in pairs(settingsTable) do
-		dialog[gui]:setValue(value)
+		if dialog[gui] then
+			dialog[gui]:setValue(value)
+			if nodeTypes[gui] == "progress" then
+				if optionsActions[gui] then
+					optionsActions[gui](value)
+				end
+			end
+		end
 	end
 	optionsSettings = settingsTable
 end
