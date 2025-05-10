@@ -17,6 +17,7 @@ propertyGetters = {
 				return getElementData(element,"doublesided")=="true" and "true" or "false"
 			end
 		end,
+		scale = getObjectScale,
 		breakable = function(element)
 			if isObjectBreakable then
 				return isObjectBreakable(element) and "true" or "false"
@@ -162,6 +163,12 @@ propertySetters = {
 			else
 				return setElementData(element,"doublesided",bon=="true" and "true" or "false")
 			end
+		end,
+		scale = function(element, scale)
+			if ( scale ) then
+				return setObjectScale(element, scale)
+			end
+			return false
 		end,
 		breakable = function(element, breakable)
 			if setObjectBreakable then
