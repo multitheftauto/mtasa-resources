@@ -4,7 +4,7 @@ local lastKEYSTATES = {}
 local ignoreAllSurfaces = true
 local moveSpeed = {slow = .025, medium = .25, fast = 2} -- meters per frame
 local rotateSpeed = {slow = 1, medium = 8, fast = 40} -- degrees per scroll or frame
-local scaleIncrement = 0.1
+local scalingSpeed = {slow = .01, medium = .1, fast = 1}
 
 local isEnabled = false
 
@@ -53,7 +53,7 @@ local mta_getElementRotation = getElementRotation
 local function getElementRotation(element)
 	local elementType = getElementType(element)
 	if elementType == "player" or elementType == "ped" then
-		return 0,0,getPedRotation(element)
+		return mta_getElementRotation(element, "default", true)
 	elseif elementType == "object" then
 		return mta_getElementRotation(element, "ZYX")
 	elseif elementType == "vehicle" then
@@ -184,8 +184,7 @@ local function onClientRender_keyboard()
 					-- check if rotation changed
 					if (tempRot ~= rotZ) then
 						if (getElementType(selectedElement) == "ped") then
-							setElementRotation(selectedElement, 0,0,-tempRot%360)
-							setPedRotation(selectedElement, tempRot)
+							setElementRotation(selectedElement, 0,0,-tempRot%360, "default", true)
 						end
 					end
 					rotZ = tempRot
@@ -232,8 +231,7 @@ local function onClientRender_keyboard()
 						--Peds dont have their rotation updated with their attached parents
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
 							if getElementType(element) == "ped" then
-								setElementRotation(element, 0,0,-tempRotZ%360)
-								setPedRotation(element, tempRotZ%360)
+								setElementRotation(element, 0,0,-tempRotZ%360, "default", true)
 							end
 						end
 						rotX, rotY, rotZ = tempRotX, tempRotY, tempRotZ
@@ -280,8 +278,7 @@ local function onClientRender_keyboard()
 					-- check if rotation changed
 					if (tempRot ~= rotZ) then
 						if (getElementType(selectedElement) == "ped") then
-							setElementRotation(selectedElement, 0,0,-tempRot%360)
-							setPedRotation(selectedElement, tempRot)
+							setElementRotation(selectedElement, 0,0,-tempRot%360, "default", true)
 						end
 					end
 					rotZ = tempRot
@@ -329,8 +326,7 @@ local function onClientRender_keyboard()
 						--Peds dont have their rotation updated with their attached parents
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
 							if getElementType(element) == "ped" then
-								setElementRotation(element, 0,0,-tempRotZ%360)
-								setPedRotation(element, tempRotZ%360)
+								setElementRotation(element, 0,0,-tempRotZ%360, "default", true)
 							end
 						end
 						rotX, rotY, rotZ = tempRotX, tempRotY, tempRotZ
@@ -346,28 +342,43 @@ local function onClientRender_keyboard()
 						rotX, rotY = 0, 0
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
 							if getElementType(element) == "ped" then
-								setElementRotation(element, 0,0,-rotZ%360)
-								setPedRotation(element, rotZ%360)
+								setElementRotation(element, 0,0,-rotZ%360, "default", true)
 							end
 						end
 					elseif (getElementType(selectedElement) == "ped") then
 						rotZ = 0
-						setPedRotation ( selectedElement, 0, 0, 0 )
-						setElementRotation ( selectedElement, 0, 0, 0 )
+						setElementRotation ( selectedElement, 0, 0, 0 , "default", true)
 					end
 				end
 			end
 		end
 
 		-- Scale up/down for objects
-        if getElementType(selectedElement) == "object" then
-			local currentScale = getObjectScale(selectedElement)
-            if getCommandState("element_scale_up") then
-                currentScale = currentScale + scaleIncrement
+		if getElementType(selectedElement) == "object" then
+
+			local speed
+			if (getCommandState("mod_slow_speed")) then
+				speed = scalingSpeed.slow
+			elseif (getCommandState("mod_fast_speed")) then
+				speed = scalingSpeed.fast
+			else
+				speed = scalingSpeed.medium
+			end
+
+			scale = getObjectScale(selectedElement)
+			local tempScale = scale
+			local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("elemScalingSnap"))
+			if getCommandState("element_scale_up") then
+				tempScale = scale + speed
+				tempScale = roundToLevel(tempScale,snaplevel,"round")
 			elseif getCommandState("element_scale_down") then
-                currentScale = currentScale - scaleIncrement
-            end
-            setObjectScale(selectedElement, currentScale)
+				tempScale = scale - speed
+				tempScale = roundToLevel(tempScale,snaplevel,"round")
+			end
+			if tempScale ~= scale then
+				setObjectScale(selectedElement, tempScale)
+				scale = tempScale
+			end
         end
 	end
 end
@@ -397,15 +408,13 @@ local function rotateWithMouseWheel(key, keyState)
 		--Peds dont have their rotation updated with their attached parents
 		for i,element in ipairs(getAttachedElements(selectedElement)) do
 			if getElementType(element) == "ped" then
-				setElementRotation(element, 0,0,-rotZ)
-				setPedRotation(element, rotZ)
+				setElementRotation(element, 0,0,-rotZ, "default", true)
 			end
 		end
 	elseif (getElementType(selectedElement) == "ped") then
 		rotZ = rotZ + speed
 		rotZ = rotZ % 360
-		setElementRotation(selectedElement, 0,0,-rotZ)
-		setPedRotation(selectedElement, rotZ)
+		setElementRotation(selectedElement, 0,0,-rotZ, "default", true)
 	end
 end
 
@@ -423,7 +432,7 @@ function attachElement(element)
 		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then
 			rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
-			rotX, rotY, rotZ = 0,0,getPedRotation ( element )
+			rotX, rotY, rotZ = getElementRotation(element)
 		end
 		enable()
 		return true
@@ -479,8 +488,10 @@ function setRotateSpeeds(slow, medium, fast)
 	rotateSpeed.fast = fast
 end
 
-function setScaleIncrement(increment)
-	scaleIncrement = increment
+function setScalingSpeeds(slow, medium, fast)
+	scalingSpeed.slow = slow
+	scalingSpeed.medium = medium
+	scalingSpeed.fast = fast
 end
 
 function getAttachedElement()
@@ -499,8 +510,8 @@ function getRotateSpeeds()
 	return rotateSpeed.slow, rotateSpeed.medium, rotateSpeed.fast
 end
 
-function getScaleIncrement()
-	return scaleIncrement
+function getScalingSpeeds()
+	return scalingSpeed.slow, scalingSpeed.medium, scalingSpeed.fast
 end
 
 function toggleAxesLock ( bool )
