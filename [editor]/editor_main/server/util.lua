@@ -7,6 +7,10 @@ function isPlayerAllowedToDoEditorAction(player,action)
 	return false
 end
 
+function stripHexCode(text)
+	return text:gsub("#%x%x%x%x%x%x","")
+end
+
 function table.subtract(t1, t2)
 	local find, remove = table.find, table.remove
 	for i=#t1,1,-1 do
