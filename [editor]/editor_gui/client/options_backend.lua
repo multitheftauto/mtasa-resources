@@ -131,16 +131,6 @@ function loadXMLSettings()
 		return
 	end
 	--
-	local settingsNodes = {}
-	for gui,nodeName in pairs(xmlVariants) do
-		local node = xmlFindChild ( settingsXML, nodeName, 0 )
-		if node then
-			settingsNodes[gui] = node
-		else
-			settingsNodes[gui] = xmlCreateChild ( settingsXML, nodeName )
-		end
-	end
-
 	local settingsTable = {}
 	for gui, nodeName in pairs(xmlVariants) do
 		local node = xmlFindChild(settingsXML, nodeName, 0)
@@ -177,7 +167,7 @@ function loadXMLSettings()
 					end
 				end
 				-- If invalid value, use default
-				if not valid then 
+				if not valid then
 					value = defaults[gui]
 					xmlNodeSetValue(node, tostring(value))
 					outputDebugString("Fixed invalid enum value for " .. nodeName)
