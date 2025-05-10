@@ -884,23 +884,29 @@ end
 
 --Returns an element's scale, or its scale element data, or false
 function edfGetElementScale(element)
-    local etype = getElementType(element)
-    if etype == "object" then
-        scale = getObjectScale(element)
-    else
-        local handle = edfGetHandle(element)
-        if handle then
-            scale = getObjectScale(handle)
-        else
-            scale = tonumber(getElementData(element,"scale"))
-        end
-    end
+	local etype = getElementType(element)
+	if etype == "object" then
+		scale = getObjectScale(element)
+		if type(scale) ~= "table" then
+			scale = select(1, scale) or 1
+		end
+	else
+		local handle = edfGetHandle(element)
+		if handle then
+			scale = getObjectScale(handle)
+			if type(scale) == "table" then
+				scale = select(1, scale) or 1
+			end
+		else
+			scale = tonumber(getElementData(element,"scale"))
+		end
+	end
 
-    if scale then
-        return scale
-    else
-        return false
-    end
+	if scale then
+		return scale
+	else
+		return false
+	end
 end
 
 --Sets an element's position, or its posX/Y/Z element data
@@ -965,28 +971,31 @@ end
 
 --Sets an element's scale, or its scale element data
 function edfSetElementScale(element, scale)
-    local ancestor = edfGetAncestor(element) or element
-    setElementData(ancestor, "scale", scale)
-    local etype = getElementType(element)
-    if etype == "object" then
-        if setObjectScale(element, scale) then
-            triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
-            return true
-        end
-    else
-        local handle = edfGetHandle(element)
-        if handle then
-            if setObjectScale(handle, scale) then
-                triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
-                return true
-            end
-        else
-            setElementData(element, "scale", scale or 1)
-            triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
-            return true
-        end
-    end
-    return false
+	local ancestor = edfGetAncestor(element) or element
+	setElementData(ancestor, "scale", scale)
+	local etype = getElementType(element)
+	if type(scale) == "table" then
+		scale = scale[1]
+	end
+	if etype == "object" then
+		if setObjectScale(element, scale) then
+			triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
+			return true
+		end
+	else
+		local handle = edfGetHandle(element)
+		if handle then
+			if setObjectScale(handle, scale) then
+				triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
+				return true
+			end
+		else
+			setElementData(element, "scale", scale or 1)
+			triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
+			return true
+		end
+	end
+	return false
 end
 
 function edfGetElementInterior(element)
