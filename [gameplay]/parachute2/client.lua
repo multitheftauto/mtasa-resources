@@ -229,7 +229,7 @@ local function handleParachuteLogic()
 			--]]
 
 			-- player opening parachute
-			if (getControlState(localPlayer, "fire") and strParachuteState == "READY") then
+			if (getPedControlState(localPlayer, "fire") and strParachuteState == "READY") then
 				strPlayerState = "ACTION";
 				setPedAnimation(localPlayer, "parachute", "para_open", -2, false, false, false, true);
 				setPedAnimationSpeed(localPlayer, "para_open", 8);
