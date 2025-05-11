@@ -60,7 +60,8 @@ local function handleParachuteLogic()
 
 		-- can we go to freefall/skydive
 		if (strPlayerState == "GROUND" and bHasParachute) then
-			fRotationX, fRotationY, fRotationZ = getElementRotation(localPlayer);
+			local _, _, fRotationZ_ = getElementRotation(localPlayer);
+			fRotationZ = fRotationZ_
 
 			if (not isPedOnGround(localPlayer) and not getPedContactElement(localPlayer)) then
 				if (fVZ < -0.1) then
@@ -340,9 +341,8 @@ local function handleParachuteLogic()
 		end
 
 		-- player landed
-		if (strPlayerState == "LANDED") then
-
-		end
+		-- if (strPlayerState == "LANDED") then
+		-- end
 	end
 end
 addEventHandler("onClientRender", root, handleParachuteLogic);
@@ -361,8 +361,8 @@ function cleanupParachute(bLandedGood)
 	toggleControl("next_weapon", true);
 	toggleControl("previous_weapon", true);
 
-	if (not bLandedGood) then
+	-- if (not bLandedGood) then
 		-- todo: remove weapon from player via server
 		-- takeWeapon(client, 46);
-	end
+	-- end
 end
