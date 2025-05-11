@@ -16,7 +16,7 @@
 	</element>
 	<element name="checkpoint" friendlyname="Checkpoint" icon="edf/checkpoint.png">
 		<data name="position" type="coord3d" default="0,0,0" />
-		<data name="type" type="selection:checkpoint,ring,corona" default="checkpoint" />
+		<data name="type" type="selection:checkpoint,ring,corona,cylinder,arrow" default="checkpoint" />
 		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
 		<data name="size" type="number" description="marker size" default="2.25" />
 		<data name="nextid" type="element:checkpoint" description="The next checkpoint after this one" required="false" default="" />
