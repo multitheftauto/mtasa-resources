@@ -130,6 +130,21 @@ function loadXMLSettings()
 		outputMessage ( "Map editor settings could not be created!.", 255,0,0 )
 		return
 	end
+	-- check if the entries in the XML are valid, and remove invalid ones
+	local validNodes = {}
+	for _, nodeName in pairs(xmlVariants) do
+		validNodes[nodeName] = true
+	end
+
+	local children = xmlNodeGetChildren(settingsXML)
+	for i = #children, 1, -1 do
+		local node = children[i]
+		local nodeName = xmlNodeGetName(node)
+		if not validNodes[nodeName] then
+			xmlDestroyNode(node)
+		end
+	end
+	xmlSaveFile(settingsXML)
 	--
 	local settingsTable = {}
 	for gui, nodeName in pairs(xmlVariants) do
@@ -177,7 +192,11 @@ function loadXMLSettings()
 		else
 			-- This should never happen after validation, but as a fallback
 			settingsTable[gui] = defaults[gui]
-			outputDebugString("Missing node for " .. nodeName .. " after validation!", 1)
+			node = xmlCreateChild(settingsXML, nodeName)
+			xmlNodeSetValue(node, tostring(settingsTable[gui]))
+			if node then
+				xmlSaveFile(settingsXML)
+			end
 		end
 	end
 	inputSettings ( settingsTable )
@@ -198,7 +217,10 @@ function createSettingsXML()
 	local xml = xmlCreateFile ( "settings.xml", "settings" )
 	for gui,nodeName in pairs(xmlVariants) do
 		local node = xmlCreateChild ( xml, nodeName )
-		xmlNodeSetValue ( node, tostring(defaults[gui]) )
+		if not node then
+			node = xmlCreateChild ( xml, nodeName )
+			xmlNodeSetValue ( node, tostring(defaults[gui]) )
+		end
 	end
 	xmlSaveFile ( xml )
 	xmlUnloadFile ( xml )
