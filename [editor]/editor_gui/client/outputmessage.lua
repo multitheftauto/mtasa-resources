@@ -32,6 +32,11 @@ end
 
 function outputMessage ( text, r, g, b, time )
 	cleanup()
+
+	if message.outputting then
+		removeHandler()
+	end
+
 	if type(text) ~= "string" then
 		return false
 	end
@@ -48,7 +53,7 @@ function outputMessage ( text, r, g, b, time )
 	message.y = g_screenY - message.height
 	if message.width > g_screenX then
 		message.x = 5
-		local movedistance = message.width - screenX*0.75
+		local movedistance = message.width - g_screenX*0.75
 		local movetime = movedistance/MOVE_SPEED
 		time = math.max(time,movetime)
 		--Create our animations
@@ -67,7 +72,7 @@ function outputMessage ( text, r, g, b, time )
 		table.insert(message.timers, setTimer ( removeHandler, MOVE_DELAY + time, 1 ))
 
 	else
-		message.x = screenX/2 - message.width/2
+		message.x = g_screenX/2 - message.width/2
 		doAnimation (setAlpha,
 			{{ from = 1, to = 140, time = FADE_TIME, fn = setAlpha }})
 		table.insert(message.timers, setTimer ( function()  doAnimation (setAlpha,

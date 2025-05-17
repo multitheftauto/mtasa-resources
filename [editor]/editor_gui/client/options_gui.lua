@@ -13,6 +13,7 @@ function createOptionsDialog()
 	dialog.generalTab = guiCreateTab("General",tabpanel)
 	dialog.cameraTab = guiCreateTab("Camera",tabpanel)
 	dialog.movementTab = guiCreateTab("Movement",tabpanel)
+	dialog.advancedTab = guiCreateTab("Advanced",tabpanel)
 
 	dialog.ok = guiCreateButton ( 0.5, 0.919444, 0.22857142, 0.05555555, "OK", true, dialog.window )
 	dialog.cancel = guiCreateButton ( 0.780357142, 0.919444, 0.22857142, 0.05555555, "Cancel", true, dialog.window )
@@ -83,8 +84,6 @@ function createOptionsDialog()
 	guiCreateLabel ( 0.5, 0.12, 1, 0.1, "Normal element rotation speed:", true, dialog.movementTab )
 	guiCreateLabel ( 0.5, 0.32, 1, 0.1, "Fast element rotation speed:", true, dialog.movementTab )
 	guiCreateLabel ( 0.5, 0.52, 1, 0.1, "Slow element rotation speed:", true, dialog.movementTab )
-	guiCreateLabel ( 0.5, 0.72, 1, 0.1, "Element scaling:", true, dialog.movementTab )
-
 
 	dialog.normalElemMove = editingControl.slider:create{["x"]=0.02,["y"]=0.18,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.movementTab,
 		["min"]=0.075,
@@ -110,11 +109,27 @@ function createOptionsDialog()
 		["min"]=0.01,
 		["max"]=0.5,
 	}
-	dialog.elemScaling = editingControl.slider:create{["x"]=0.5,["y"]=0.78,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.movementTab,
-		["min"]=0.01,
-		["max"]=1,
-	}
 	dialog.lockToAxes = editingControl.boolean:create{["x"]=0.02,["y"]=0.78,["width"]=0.4,["height"]=0.1,["relative"]=true,["parent"]=dialog.movementTab,["label"]="Lock movement to axes"}
+	--create advanced settings
+	guiCreateLabel ( 0.5, 0.04, 1, 0.1, "Normal element scaling speed:", true, dialog.advancedTab )
+	guiCreateLabel ( 0.5, 0.24, 1, 0.1, "Fast element scaling speed:", true, dialog.advancedTab )
+	guiCreateLabel ( 0.5, 0.44, 1, 0.1, "Slow element scaling speed:", true, dialog.advancedTab )
+
+	dialog.normalElemScale = editingControl.slider:create{["x"]=0.5,["y"]=0.10,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.advancedTab,
+	["min"]=0.01,
+	["max"]=0.5,
+	}
+	dialog.fastElemScale = editingControl.slider:create{["x"]=0.5,["y"]=0.30,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.advancedTab,
+	["min"]=0.5,
+	["max"]=2,
+	}
+	dialog.slowElemScale = editingControl.slider:create{["x"]=0.5,["y"]=0.50,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.advancedTab,
+	["min"]=0.001,
+	["max"]=0.05,
+	}
+
+	dialog.randomizeRotation = editingControl.boolean:create{["x"]=0.02,["y"]=0.02,["width"]=0.4,["height"]=0.1,["relative"]=true,["parent"]=dialog.advancedTab,["label"]="Randomize rotation on element creation"}
+	dialog.randomizeRotationAxis = editingControl.dropdown:create{["x"]=0.02,["y"]=0.12,["width"]=0.4,["height"]=0.07,["dropWidth"]=0.4,["dropHeight"]=0.5,["relative"]=true,["parent"]=dialog.advancedTab,["rows"]={"X","Y","Z","XY","XZ","YZ","XYZ"}}
 	--
 	loadXMLSettings()
 	addEventHandler ( "onClientGUIClick", dialog.ok, confirmSettings,false )
