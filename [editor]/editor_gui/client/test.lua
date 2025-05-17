@@ -30,6 +30,10 @@ end
 
 function quickTest()
 	if tutorialVars.blockQuickTest then return end
+	-- get the last gamemode that was addded to the map
+	if currentMapSettings and currentMapSettings.addedGamemodes and #currentMapSettings.addedGamemodes > 0 then
+		lastTestGamemode = currentMapSettings.addedGamemodes[#currentMapSettings.addedGamemodes]
+	end
 	if lastTestGamemode == "<None>" then lastTestGamemode = false end
 	editor_main.dropElement()
 	triggerServerEvent ( "testResource",localPlayer, lastTestGamemode )
