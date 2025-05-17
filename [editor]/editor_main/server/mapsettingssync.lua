@@ -40,6 +40,7 @@ end
 mapSettingDefaults = defaults
 currentMapSettings = defaults
 currentMapSettings.gamemodeSettings = {}
+currentMapSettings.addedGamemodes = {}
 
 local mapSettingAction = {
 	timeHour = function ( value )
@@ -127,7 +128,7 @@ function setupMapSettings()
 	--get the gamemodes
 	local gamemodes = mapmanager.getGamemodes()
 	currentMapSettings.availGamemodes = {}
-	currentMapSettings.addedGamemodes = {}
+
 	for k,v in ipairs(gamemodes) do
 		local name = getResourceName ( v )
 		if string.lower(name) ~= "freeroam" then
