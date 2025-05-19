@@ -13,6 +13,7 @@ local selectedElement
 local posX, posY, posZ
 local rotX, rotY, rotZ
 local scale
+local size
 
 local collisionless
 local lockToAxes = false
@@ -379,7 +380,31 @@ local function onClientRender_keyboard()
 				setObjectScale(selectedElement, tempScale)
 				scale = tempScale
 			end
-        end
+        elseif getElementType(selectedElement) == "marker" then
+			local speed
+			if (getCommandState("mod_slow_speed")) then
+				speed = scalingSpeed.slow
+			elseif (getCommandState("mod_fast_speed")) then
+				speed = scalingSpeed.fast
+			else
+				speed = scalingSpeed.medium
+			end
+
+			size = getMarkerSize(selectedElement)
+			local tempSize = size
+			local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("elemScalingSnap"))
+			if getCommandState("element_scale_up") then
+				tempSize = size + speed
+				tempSize = roundToLevel(tempSize,snaplevel,"round")
+			elseif getCommandState("element_scale_down") then
+				tempSize = size - speed
+				tempSize = roundToLevel(tempSize,snaplevel,"round")
+			end
+			if tempSize ~= size then
+				setMarkerSize(selectedElement, tempSize)
+				size = tempSize
+			end
+		end
 	end
 end
 
@@ -460,6 +485,10 @@ function detachElement()
 			if getElementType(selectedElement) == "object" then
 				scale = getObjectScale(selectedElement)
 				triggerServerEvent("syncProperty", localPlayer, "scale", scale, exports.edf:edfGetAncestor(selectedElement))
+			end
+			if getElementType(selectedElement) == "marker" then
+				size = getMarkerSize(selectedElement)
+				triggerServerEvent("syncProperty", localPlayer, "size", size, exports.edf:edfGetAncestor(selectedElement))
 			end
 		end
 		selectedElement = nil
