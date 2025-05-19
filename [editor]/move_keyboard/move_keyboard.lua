@@ -354,18 +354,17 @@ local function onClientRender_keyboard()
 			end
 		end
 
-		-- Scale up/down for objects
+		-- Scale up/down for objects, markers
+		local speed
+		if (getCommandState("mod_slow_speed")) then
+			speed = scalingSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = scalingSpeed.fast
+		else
+			speed = scalingSpeed.medium
+		end
+
 		if getElementType(selectedElement) == "object" then
-
-			local speed
-			if (getCommandState("mod_slow_speed")) then
-				speed = scalingSpeed.slow
-			elseif (getCommandState("mod_fast_speed")) then
-				speed = scalingSpeed.fast
-			else
-				speed = scalingSpeed.medium
-			end
-
 			scale = getObjectScale(selectedElement)
 			local tempScale = scale
 			local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("elemScalingSnap"))
@@ -381,15 +380,6 @@ local function onClientRender_keyboard()
 				scale = tempScale
 			end
         elseif getElementType(selectedElement) == "marker" then
-			local speed
-			if (getCommandState("mod_slow_speed")) then
-				speed = scalingSpeed.slow
-			elseif (getCommandState("mod_fast_speed")) then
-				speed = scalingSpeed.fast
-			else
-				speed = scalingSpeed.medium
-			end
-
 			size = getMarkerSize(selectedElement)
 			local tempSize = size
 			local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("elemScalingSnap"))
