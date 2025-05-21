@@ -34,6 +34,22 @@ local function renderGridlines()
 	local camX,camY,camZ = getCameraMatrix()
 	--Work out our line thickness
 	local thickness = (100/getDistanceBetweenPoints3D(camX,camY,camZ,x,y,z)) * MAX_THICKNESS
+	
+	--Apply the adjustment for non-centered bounding box according to c++ implementaion
+	--https://github.com/multitheftauto/mtasa-blue/blob/88d303c0bbcc0ed4fee958df2d16ace562ce0108/Client/mods/deathmatch/logic/CClientStreamElement.cpp#L224
+	
+	local halfCenterX = (minX + maxX) * 0.25
+	local halfCenterY = (minY + maxY) * 0.25
+	local halfCenterZ = (minZ + maxZ) * 0.25
+	
+	--subtracting half center
+	minX = minX - halfCenterX
+	minY = minY - halfCenterY
+	minZ = minZ - halfCenterZ
+	maxX = maxX - halfCenterX
+	maxY = maxY - halfCenterY
+	maxZ = maxZ - halfCenterZ
+	
 	--
 	local elementMatrix = (getElementMatrix(attachedToElement) and not ignoreMatrix[getElementType(attachedToElement)])
 							and matrix(getElementMatrix(attachedToElement))
