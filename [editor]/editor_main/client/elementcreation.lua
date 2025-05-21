@@ -75,6 +75,9 @@ function doCloneElement ( element, attachMode )
 	if getSelectedElement() then
 		dropElement(true)
 	end
-	local rotationData = getRandomRotation()
+	local rotationData
+	if exports["editor_gui"]:sx_getOptionData("randomizeRotation") == true then
+		rotationData = getRandomRotation()
+	end
 	triggerServerEvent( "doCloneElement", element, attachMode, rotationData )
 end
