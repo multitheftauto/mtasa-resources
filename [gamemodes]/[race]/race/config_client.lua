@@ -42,7 +42,7 @@ function openConfigMenu ()
 
 	gui["scrollpane"]		= guiCreateScrollPane( 0, 0, 1, 1, true, gui["form"] )
 	gui["button_close"]		= guiCreateButton( 0, 0, 1, 1, 'Close',		false, gui["form"] )
-	gui["label1"]			= guiCreateLabel( 0, 0, 1, 1, 'Get more race addons from http://community.mtasa.com/',	false, gui["form"] )
+	gui["label1"]			= guiCreateLabel( 0, 0, 1, 1, 'Get more race addons from https://community.multitheftauto.com/',	false, gui["form"] )
 	gui["label2"]			= guiCreateLabel( 0, 0, 1, 1, "Note: Some addons may not take effect",	false, gui["form"] )
 	gui["label3"]			= guiCreateLabel( 0, 0, 1, 1, "until the start of the next map.",	false, gui["form"] )
 	gui["rows"] = {}
