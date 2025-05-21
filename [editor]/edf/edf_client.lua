@@ -189,6 +189,9 @@ end
 --Sets an element's scale, or its scale element data
 function edfSetElementScale(element, scale)
 	if scale then
+		if type(scale) == "table" then
+			scale = scale[1]
+		end
 		if isBasic[getElementType(element)] then
 			return setElementData(element, "scale", scale)
 		else
