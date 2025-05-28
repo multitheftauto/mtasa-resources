@@ -448,7 +448,7 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 		if selectedElement then
 			if newControl:getLabel() == "model" and (elementType == "object" or elementType == "vehicle") then
 				local minX, minY, minZ = getElementBoundingBox(selectedElement)
-				g_minZ = minZ
+				g_minZ = minZ or 0
 				local handlerFunction = function ()
 					local minX2, minY2, minZ2 = getElementBoundingBox(selectedElement)
 					if minX2 and minY2 and minZ2 then

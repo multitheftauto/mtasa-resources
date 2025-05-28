@@ -45,7 +45,10 @@ function refreshGamemodeSettings()
 			mapsettings.rowValues[subRow] = dataInfo.default
 			if currentMapSettings.newSettings and currentMapSettings.newSettings[dataName] then
 				mapsettings.rowValues[subRow] = currentMapSettings.newSettings[dataName]
-				mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
+			end
+
+			if currentMapSettings.gamemodeSettings and currentMapSettings.gamemodeSettings[subRow] then
+				mapsettings.rowValues[subRow] = currentMapSettings.gamemodeSettings[subRow]
 			end
 		end
 		if count == 0 then
@@ -58,7 +61,7 @@ function refreshGamemodeSettings()
 		local row = guiGridListAddRow ( mapsettings.settingsList )
 		guiGridListSetItemText ( mapsettings.settingsList, row, 1, "No Settings definitions", true, false )
 	end
-	currentMapSettings.newSettings = nil
+	mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
 end
 
 local requiredText = { [true]="REQUIRED" }

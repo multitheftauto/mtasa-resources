@@ -608,9 +608,9 @@ function aAction ( type, action, admin, player, data, more )
 
         if ( node ) then
             local r, g, b = node["r"], node["g"], node["b"]
-            if ( node["all"] ) then outputChatBox ( aStripString ( node["all"] ), root, r, g, b ) end
-            if ( node["admin"] ) and ( admin ~= player ) then outputChatBox ( aStripString ( node["admin"] ), admin, r, g, b ) end
-            if ( node["player"] ) then outputChatBox ( aStripString ( node["player"] ), player, r, g, b ) end
+            if ( node["all"] ) then outputChatBox ( aStripString ( node["all"] ), root, r, g, b, true ) end
+            if ( node["admin"] ) and ( admin ~= player ) then outputChatBox ( aStripString ( node["admin"] ), admin, r, g, b, true ) end
+            if ( node["player"] ) then outputChatBox ( aStripString ( node["player"] ), player, r, g, b, true ) end
             if ( node["log"] ) then outputServerLog ( aStripString ( node["log"] ) ) end
         end
     end
