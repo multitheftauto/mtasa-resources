@@ -31,6 +31,10 @@ function optionsActions.precisionRotLevel(value)
 	optionsData.precisionRotLevel = tonumber(value)
 end
 
+function optionsActions.elemScalingSnap(value)
+	optionsData.elemScalingSnap = tonumber(value)
+end
+
 function optionsActions.enableColPatch(value)
 	local success, isLoaded = editor_main.toggleColPatch(value)
 	if success then
@@ -165,6 +169,8 @@ function setEditorMoveSpeeds()
 	move_keyboard.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
 	move_cursor.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
 	move_freecam.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
+
+	move_keyboard.setScaleIncrement ( dialog.elemScaling:getValue() )
 
 	move_keyboard.toggleAxesLock ( dialog.lockToAxes:getValue() )
 end

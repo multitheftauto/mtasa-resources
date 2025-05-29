@@ -244,6 +244,37 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 		RaceMode.setPlayerIsFinished(player)
 		finishActivePlayer( player )
 		setPlayerStatus( player, nil, "finished" )
+
+		local name = getPlayerName(player)
+		local message
+		local killmessage
+
+		if rank == 1 then
+			message = "You have won the race!"
+			killmessage = string.format("%s won the race!", name)
+		else
+			local suffix
+			local last = rank % 10
+			local exception = rank % 100 >= 11 and rank % 100 <= 13
+
+			if exception then
+				suffix = "th"
+			else
+				if last == 1 then
+					suffix = "st"
+				elseif last == 2 then
+					suffix = "nd"
+				elseif last == 3 then
+					suffix = "rd"
+				else
+					suffix = "th"
+				end
+			end
+
+			message = string.format("You finished %s%s.", rank, suffix)
+			killmessage = string.format("%s finished %s%s.", name, rank, suffix)
+		end
+
 		if rank == 1 then
             gotoState('SomeoneWon')
 			showMessage('You have won the race!', 0, 255, 0, player)
@@ -255,17 +286,23 @@ function RaceMode:onPlayerReachCheckpoint(player, checkpointNum)
 				self:setTimeLeft( g_GameOptions.timeafterfirstfinish )
 			end
 		else
-			showMessage('You finished ' .. rank .. ( (rank < 10 or rank > 20) and ({ [1] = 'st', [2] = 'nd', [3] = 'rd' })[rank % 10] or 'th' ) .. '!', 0, 255, 0, player)
+			showMessage(message, 0, 255, 0, player)
 		end
-		--Output a killmessage
+
 		exports.killmessages:outputMessage(
 			{
-				{"image",path="img/killmessage.png",resource=getThisResource(),width=24},
-				getPlayerName(player),
+				victim = {
+					text = killmessage,
+					color = {255, 255, 255}
+				},
+				icon = {
+					path = ":race/img/killmessage.png",
+					width = 24
+				},
 			},
-			root,
-			255,0,0
+			root
 		)
+
 		self.rankingBoard:add(player, time)
 		if getActivePlayerCount() > 0 then
 			TimerManager.createTimerFor("map",player):setTimer(clientCall, 5000, 1, player, 'Spectate.start', 'auto')

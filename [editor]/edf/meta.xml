@@ -44,6 +44,8 @@
 	<export function="edfSetElementPosition" /> <!-- bool -->
 	<export function="edfGetElementRotation" /> <!-- number, number, number -->
 	<export function="edfSetElementRotation" /> <!-- bool -->
+	<export function="edfGetElementScale" /> <!-- number -->
+	<export function="edfSetElementScale" /> <!-- number -->
 	<export function="edfGetElementInterior" /> <!-- number -->
 	<export function="edfSetElementInterior" /> <!-- bool -->
 	<export function="edfGetElementDimension" /> <!-- number -->
@@ -62,6 +64,8 @@
 	<export function="edfSetElementPosition" type="client" /> <!-- bool -->
 	<export function="edfGetElementRotation" type="client" /> <!-- number, number, number -->
 	<export function="edfSetElementRotation" type="client" /> <!-- bool -->
+	<export function="edfGetElementScale" type="client" /> <!-- number -->
+	<export function="edfSetElementScale" type="client" /> <!-- number -->
 	<export function="edfGetElementInterior" type="client" /> <!-- number -->
 	<export function="edfSetElementInterior" type="client" /> <!-- bool -->
 	<export function="edfGetElementDimension" type="client" /> <!-- number -->

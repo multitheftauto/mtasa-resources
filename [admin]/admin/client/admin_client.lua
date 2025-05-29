@@ -170,7 +170,7 @@ addEventHandler ( "aClientShowUpgradeMessage", root,
 			if age > 60*60 then
 				xmlNodeSetAttribute(node, "lastConsoleTextTime", tostring( timeNow ))
 				xmlSaveFile(xml)
-				outputConsole( "A new version of MTA:SA is available! - Please download from www.mtasa.com" )
+				outputConsole( "A new version of MTA:SA is available! - Please download from www.multitheftauto.com" )
 			end
 		end
 
@@ -180,7 +180,7 @@ addEventHandler ( "aClientShowUpgradeMessage", root,
 			if age > 60*60*24 then
 				xmlNodeSetAttribute(node, "lastMessageBoxTime", tostring( timeNow ))
 				xmlSaveFile(xml)
-				aMessageBox( "A new version of MTA:SA is available!",  "Please download from www.mtasa.com" )
+				aMessageBox( "A new version of MTA:SA is available!",  "Please download from www.multitheftauto.com" )
 				setTimer ( aMessageBoxClose, 15000, 1, true )
 			end
 		end

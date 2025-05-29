@@ -4,6 +4,7 @@ local lastKEYSTATES = {}
 local ignoreAllSurfaces = true
 local moveSpeed = {slow = .025, medium = .25, fast = 2} -- meters per frame
 local rotateSpeed = {slow = 1, medium = 8, fast = 40} -- degrees per scroll or frame
+local scaleIncrement = 0.1
 
 local isEnabled = false
 
@@ -11,6 +12,7 @@ local selectedElement
 
 local posX, posY, posZ
 local rotX, rotY, rotZ
+local scale
 
 local collisionless
 local lockToAxes = false
@@ -356,6 +358,17 @@ local function onClientRender_keyboard()
 				end
 			end
 		end
+
+		-- Scale up/down for objects
+        if getElementType(selectedElement) == "object" then
+			local currentScale = getObjectScale(selectedElement)
+            if getCommandState("element_scale_up") then
+                currentScale = currentScale + scaleIncrement
+			elseif getCommandState("element_scale_down") then
+                currentScale = currentScale - scaleIncrement
+            end
+            setObjectScale(selectedElement, currentScale)
+        end
 	end
 end
 
@@ -435,10 +448,15 @@ function detachElement()
 				rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 			end
+			if getElementType(selectedElement) == "object" then
+				scale = getObjectScale(selectedElement)
+				triggerServerEvent("syncProperty", localPlayer, "scale", scale, exports.edf:edfGetAncestor(selectedElement))
+			end
 		end
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil
 		rotX, rotY, rotZ = nil, nil, nil
+		scale = nil
 		return true
 	else
 		return false
@@ -461,6 +479,10 @@ function setRotateSpeeds(slow, medium, fast)
 	rotateSpeed.fast = fast
 end
 
+function setScaleIncrement(increment)
+	scaleIncrement = increment
+end
+
 function getAttachedElement()
 	if (selectedElement) then
 		return selectedElement
@@ -475,6 +497,10 @@ end
 
 function getRotateSpeeds()
 	return rotateSpeed.slow, rotateSpeed.medium, rotateSpeed.fast
+end
+
+function getScaleIncrement()
+	return scaleIncrement
 end
 
 function toggleAxesLock ( bool )
