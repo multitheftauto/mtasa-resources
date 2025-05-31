@@ -66,6 +66,13 @@ function createPlayerBlip(player)
 		blips[player]:setColor(r, g, b, blipAlpha)
 	else
 		blips[player] = Blip.createAttachedTo(player, 0, blipSize, r, g, b, blipAlpha, 0, blipRange)
+		clearElementVisibleTo(blips[player])
+
+		for _, v in pairs(getElementsByType("player")) do
+			if v ~= player then
+				setElementVisibleTo(blips[player], v, true)
+			end
+		end
 	end
 end
 
@@ -92,6 +99,13 @@ function destroyPlayerBlip(player)
 	colors[player] = nil
 end
 
+addEventHandler("onPlayerJoin", root, function()
+	for k, v in pairs(blips) do
+		if k ~= source then
+			setElementVisibleTo(v, source, true)
+		end
+	end
+end)
 addEventHandler("onPlayerQuit", root, function()
 	destroyPlayerBlip(source)
 end)
