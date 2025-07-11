@@ -1,0 +1,79 @@
+<meta>
+	<info author="jbeta" description="Element Definition Format" edf:definition="edf.edf" version="1.0.0" />
+
+	<min_mta_version server="1.6.0-9.21765" />
+
+	<script src="sharedutil.lua" type="shared" />
+	<script src="interface.lua" />
+	<script src="properties.lua" />
+	<script src="properties_client.lua" type="client" />
+	<script src="datatypes.lua" />
+	<script src="edf.lua" />
+	<script src="edf_client.lua" type="client" />
+	<script src="scriptreadereventhandlers.lua" type="shared" />
+	<script src="scriptreadercommandhandlers.lua" type="shared" />
+	<script src="scriptreaderkeybinds.lua" type="shared" />
+	<script src="scriptreader.lua" />
+	<script src="scriptreader_client.lua" type="client" />
+
+	<oop>true</oop>
+
+	<export function="edfStartResource" /> <!-- bool -->
+	<export function="edfStopResource" /> <!-- bool -->
+
+	<export function="edfLoadDefinition" /> <!-- bool -->
+	<export function="edfUnloadDefinition" /> <!-- bool -->
+	<export function="edfCreateElement" /> <!-- element -->
+	<export function="edfCloneElement" /> <!-- element -->
+	<export function="edfRepresentElement" /> <!-- element -->
+	<export function="edfUpdateRepresentation" /> <!-- element -->
+	<export function="edfGetLoadedEDFResources" /> <!-- table -->
+	<export function="edfGetDefinition" /> <!-- table -->
+	<export function="edfHasDefinition" /> <!-- bool -->
+
+	<export function="edfGetHandle" /> <!-- element -->
+	<export function="edfGetParent" /> <!-- element -->
+	<export function="edfIsRepresentation" /> <!-- element -->
+	<export function="edfGetAncestor" /> <!-- element -->
+	<export function="edfGetCreatorResource" /> <!-- resource -->
+	<export function="edfSetCreatorResource" /> <!-- bool -->
+	<export function="edfGetCreatorClient" /> <!-- resource -->
+	<export function="edfSetCreatorClient" /> <!-- bool -->
+	<export function="edfGetElementPosition" /> <!-- number, number, number -->
+	<export function="edfSetElementPosition" /> <!-- bool -->
+	<export function="edfGetElementRotation" /> <!-- number, number, number -->
+	<export function="edfSetElementRotation" /> <!-- bool -->
+	<export function="edfGetElementScale" /> <!-- number -->
+	<export function="edfSetElementScale" /> <!-- number -->
+	<export function="edfGetElementInterior" /> <!-- number -->
+	<export function="edfSetElementInterior" /> <!-- bool -->
+	<export function="edfGetElementDimension" /> <!-- number -->
+	<export function="edfSetElementDimension" /> <!-- bool -->
+	<export function="edfGetElementAlpha" /> <!-- number -->
+	<export function="edfSetElementAlpha" /> <!-- bool -->
+	<export function="edfGetElementProperty" /> <!-- var -->
+	<export function="edfSetElementProperty" /> <!-- bool -->
+	<export function="edfGetResourceForElementType" /> <!-- string -->
+
+	<export function="edfGetHandle" type="client" /> <!-- element -->
+	<export function="edfGetParent" type="client" /> <!-- element -->
+	<export function="edfGetAncestor" type="client" /> <!-- element -->
+	<export function="edfGetCreatorResource" type="client" /> <!-- resource -->
+	<export function="edfGetElementPosition" type="client" /> <!-- number, number, number -->
+	<export function="edfSetElementPosition" type="client" /> <!-- bool -->
+	<export function="edfGetElementRotation" type="client" /> <!-- number, number, number -->
+	<export function="edfSetElementRotation" type="client" /> <!-- bool -->
+	<export function="edfGetElementScale" type="client" /> <!-- number -->
+	<export function="edfSetElementScale" type="client" /> <!-- number -->
+	<export function="edfGetElementInterior" type="client" /> <!-- number -->
+	<export function="edfSetElementInterior" type="client" /> <!-- bool -->
+	<export function="edfGetElementDimension" type="client" /> <!-- number -->
+	<export function="edfSetElementDimension" type="client" /> <!-- bool -->
+	<export function="edfGetElementAlpha" type="client" /> <!-- number -->
+	<export function="edfSetElementAlpha" type="client" /> <!-- bool -->
+	<export function="edfGetElementProperty" type="client" /> <!-- var -->
+	<export function="edfSetElementProperty" type="client" /> <!-- bool -->
+	<export function="edfGetElementDistanceToBase" type="client" /> <!-- number -->
+	<export function="edfGetElementBoundingBox" type="client" /> <!-- number, number, number, number, number, number -->
+	<export function="edfGetElementRadius" type="client" /> <!-- number -->
+</meta>

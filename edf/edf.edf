@@ -1,0 +1,95 @@
+<def name="Basic element types definition">
+	<element name="object" friendlyname="Object">
+		<data name="model" type="objectID" description="Object model" default="1337" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="alpha" type="integer" description="Alpha level" default="255" />
+		<data name="doublesided" type="selection:false,true" description="MTA double sidedness" required="false" />
+		<data name="scale" type="number" description="Object scale" default="1" required="false" />
+		<data name="collisions" type="selection:true,false" description="Object collisions" required="false" default="true" />
+		<data name="breakable" type="selection:true,false" description="Object breakablity" required="false" default="true" />
+		<data name="frozen" type="selection:false,true" description="Frozen" required="false" default="false" />
+	</element>
+	<element name="marker" friendlyname="Marker">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="type" type="markerType" description="Marker type" default="cylinder" />
+		<data name="size" type="number" description="Marker size" default="1" />
+		<data name="color" type="color" description="Color (#RRGGBBAA hex string)" default="#00F9" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="pickup" friendlyname="Pickup">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="type" type="pickupType" description="Pickup type" default="health" />
+		<data name="amount" type="number" description="Health points, armor points or weapon ammo" default="100" />
+		<data name="respawn" type="integer" description="Respawn time in miliseconds" default="30000" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="vehicle" friendlyname="Vehicle">
+		<data name="model" type="vehicleID" description="Vehicle model" default="405" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotation" type="coord3d" description="XYZ rotation" default="0,0,0" />
+		<data name="color1" type="color" description="RGB vehicle color 1" required="false" />
+		<data name="color2" type="color" description="RGB vehicle color 2" required="false" />
+		<data name="color3" type="color" description="RGB vehicle color 3" required="false" />
+		<data name="color4" type="color" description="RGB vehicle color 4" required="false" />
+		<data name="paintjob" type="selection:0,1,2,3" description="Vehicle paintjob" required="false" />
+		<data name="upgrades" type="vehicleupgrades" description="Installed vehicle upgrades" required="false" />
+		<data name="plate" type="plate" description="Number plate" required="false" />
+		<data name="sirens" type="selection:false,true" description="Vehicle sirens" required="false" default="false" />
+		<data name="health" type="integer" description="Vehicle health (0-1000)" default="1000" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="alpha" type="integer" description="Alpha level" default="255" />
+		<data name="frozen" type="selection:false,true" description="Frozen" required="false" default="false" />
+		<data name="collisions" type="selection:true,false" description="Vehicle collisions" required="false" default="true" />
+		<data name="locked" type="selection:false,true" description="Locked" required="false" default="false" />
+		<data name="landingGearDown" type="selection:false,true" description="Set landing gear down" required="false" default="true" />
+	</element>
+	<element name="blip" friendlyname="Radar blip">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="icon" type="blipID" description="Blip icon" default="0" />
+		<data name="size" type="integer" description="Blip size" default="2" />
+		<data name="color" type="color" description="Color (#RRGGBBAA hex string)" default="#00F9" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="radararea" friendlyname="Radar area">
+		<data name="posX" type="number" description="X axis west corner position" default="0" />
+		<data name="posY" type="number" description="Y axis south corner position" default="0" />
+		<data name="sizeX" type="number" description="X axis size" default="20" />
+		<data name="sizeY" type="number" description="Y axis size" default="20" />
+		<data name="color" type="color" description="Color (#RRGGBBAA hex string)" default="#00F9" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="colshape" friendlyname="Collision shape">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="type" type="colshapeType" description="Colshape type" default="sphere" />
+		<data name="radius" type="number" description="Colshape radius" default="1" />
+		<data name="width" type="number" description="Colshape width" default="1" />
+		<data name="depth" type="number" description="Colshape height" default="1" />
+		<data name="height" type="number" description="Colshape depth" default="1" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+	<element name="ped" friendlyname="Ped">
+		<data name="model" type="skinID" description="Ped skin model" default="0" />
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="rotZ" type="number" description="Z rotation" default="0" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+		<data name="frozen" type="selection:false,true" description="Frozen" required="false" default="false" />
+		<data name="collisions" type="selection:true,false" description="Ped collisions" required="false" default="true" />
+		<data name="health" type="integer" description="Ped health" default="100" />
+		<data name="armor" type="integer" description="Ped armor" default="0" />
+		<data name="alpha" type="integer" description="Alpha level" default="255" />
+	</element>
+	<element name="water" friendlyname="Water" icon="client/images/icons/water.png">
+		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
+		<data name="sizeX" type="natural" description="The width of the water" default="20" />
+		<data name="sizeY" type="natural" description="The breadth of the water" default="20" />
+		<data name="interior" type="integer" description="GTA interior world" default="0" />
+		<data name="dimension" type="integer" description="MTA dimension" default="0" />
+	</element>
+</def>

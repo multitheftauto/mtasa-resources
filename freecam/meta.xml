@@ -1,0 +1,18 @@
+<meta>
+	<info author="eAi, QA Team" description="This resource provides a 'free' controllable camera to 'fly' around the map with" version="1.1" />
+	<min_mta_version client="1.5.9-9.21313.0"/>
+	<script src="freecam.lua" type="client" />
+	<script src="freecam_server.lua" type="server" />
+	<!-- server functions -->
+	<export function="setPlayerFreecamEnabled" />
+	<export function="setPlayerFreecamDisabled" />
+	<export function="isPlayerFreecamEnabled" />
+	<export function="setPlayerFreecamOption" />
+	<!-- client functions -->
+	<export function="setFreecamEnabled" type="client" />
+	<export function="setFreecamDisabled" type="client" />
+	<export function="isFreecamEnabled" type="client" />
+	<export function="setFreecamOption" type="client" />
+	<export function="getFreecamOption" type="client" />
+	<export function="getFreecamVelocity" type="client" />
+</meta>

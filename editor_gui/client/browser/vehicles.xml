@@ -1,0 +1,260 @@
+<catalog type="vehicle">
+	<group name="Aircraft">
+		<group name="Helicopters">
+			<vehicle model="417" keywords="" />
+			<vehicle model="425" keywords="" />
+			<vehicle model="447" keywords="" />
+			<vehicle model="469" keywords="" />
+			<vehicle model="487" keywords="" />
+			<vehicle model="488" keywords="" />
+			<vehicle model="497" keywords="" />
+			<vehicle model="548" keywords="" />
+			<vehicle model="563" keywords="" />
+		</group>
+		<group name="Planes, Jets and Airlines">
+			<vehicle model="460" keywords="" />
+			<vehicle model="476" keywords="" />
+			<vehicle model="511" keywords="" />
+			<vehicle model="512" keywords="" />
+			<vehicle model="513" keywords="" />
+			<vehicle model="519" keywords="" />
+			<vehicle model="520" keywords="" />
+			<vehicle model="553" keywords="" />
+			<vehicle model="577" keywords="" />
+			<vehicle model="592" keywords="" />
+			<vehicle model="593" keywords="" />
+		</group>
+	</group>
+	<group name="Bikes">
+		<group name="Motorbikes">
+			<vehicle model="448" keywords="" />
+			<vehicle model="461" keywords="" />
+			<vehicle model="462" keywords="" />
+			<vehicle model="463" keywords="" />
+			<vehicle model="468" keywords="" />
+			<vehicle model="471" keywords="" />
+			<vehicle model="521" keywords="" />
+			<vehicle model="522" keywords="" />
+			<vehicle model="523" keywords="" />
+			<vehicle model="581" keywords="" />
+			<vehicle model="586" keywords="" />
+		</group>
+		<group name="Bicycles">
+			<vehicle model="509" keywords="" />
+			<vehicle model="481" keywords="" />
+			<vehicle model="510" keywords="" />
+		</group>
+	</group>
+	<group name="Boats">
+		<vehicle model="430" keywords="" />
+		<vehicle model="446" keywords="" />
+		<vehicle model="452" keywords="" />
+		<vehicle model="453" keywords="" />
+		<vehicle model="454" keywords="" />
+		<vehicle model="472" keywords="" />
+		<vehicle model="473" keywords="" />
+		<vehicle model="484" keywords="" />
+		<vehicle model="493" keywords="" />
+		<vehicle model="595" keywords="" />
+	</group>
+	<group name="Cars">
+		<group name="2-Door">
+			<vehicle model="401" keywords="" />
+			<vehicle model="410" keywords="" />
+			<vehicle model="436" keywords="" />
+			<vehicle model="474" keywords="" />
+			<vehicle model="491" keywords="" />
+			<vehicle model="496" keywords="" />
+			<vehicle model="517" keywords="" />
+			<vehicle model="526" keywords="" />
+			<vehicle model="527" keywords="" />
+			<vehicle model="533" keywords="" />
+			<vehicle model="545" keywords="" />
+			<vehicle model="549" keywords="" />
+			<vehicle model="439" keywords="" />
+			<vehicle model="475" keywords="" />
+			<vehicle model="542" keywords="" />
+		</group>
+		<group name="4-Door">
+			<vehicle model="405" keywords="" />
+			<vehicle model="409" keywords="" />
+			<vehicle model="420" keywords="" />
+			<vehicle model="421" keywords="" />
+			<vehicle model="426" keywords="" />
+			<vehicle model="438" keywords="" />
+			<vehicle model="445" keywords="" />
+			<vehicle model="466" keywords="" />
+			<vehicle model="604" keywords="" />
+			<vehicle model="467" keywords="" />
+			<vehicle model="492" keywords="" />
+			<vehicle model="507" keywords="" />
+			<vehicle model="516" keywords="" />
+			<vehicle model="529" keywords="" />
+			<vehicle model="540" keywords="" />
+			<vehicle model="546" keywords="" />
+			<vehicle model="547" keywords="" />
+			<vehicle model="550" keywords="" />
+			<vehicle model="551" keywords="" />
+			<vehicle model="566" keywords="" />
+			<vehicle model="580" keywords="" />
+			<vehicle model="585" keywords="" />
+		</group>
+		<group name="Lowriders">
+			<vehicle model="412" keywords="" />
+			<vehicle model="419" keywords="" />
+			<vehicle model="518" keywords="" />
+			<vehicle model="534" keywords="" />
+			<vehicle model="535" keywords="" />
+			<vehicle model="536" keywords="" />
+			<vehicle model="567" keywords="" />
+			<vehicle model="575" keywords="" />
+			<vehicle model="576" keywords="" />
+		</group>
+		<group name="Sports Cars">
+			<vehicle model="402" keywords="" />
+			<vehicle model="411" keywords="" />
+			<vehicle model="415" keywords="" />
+			<vehicle model="429" keywords="" />
+			<vehicle model="451" keywords="" />
+			<vehicle model="477" keywords="" />
+			<vehicle model="480" keywords="" />
+			<vehicle model="506" keywords="" />
+			<vehicle model="541" keywords="" />
+			<vehicle model="555" keywords="" />
+			<vehicle model="558" keywords="" />
+			<vehicle model="559" keywords="" />
+			<vehicle model="560" keywords="" />
+			<vehicle model="562" keywords="" />
+			<vehicle model="565" keywords="" />
+			<vehicle model="587" keywords="" />
+			<vehicle model="602" keywords="" />
+			<vehicle model="603" keywords="" />
+		</group>
+	</group>
+	<group name="Emergency">
+		<vehicle model="407" keywords="" />
+		<vehicle model="416" keywords="" />
+		<vehicle model="427" keywords="" />
+		<vehicle model="432" keywords="" />
+		<vehicle model="433" keywords="" />
+		<vehicle model="490" keywords="" />
+		<vehicle model="528" keywords="" />
+		<vehicle model="544" keywords="" />
+		<vehicle model="596" keywords="" />
+		<vehicle model="597" keywords="" />
+		<vehicle model="598" keywords="" />
+		<vehicle model="599" keywords="" />
+		<vehicle model="601" keywords="" />
+	</group>
+	<group name="Heavy Vehicles">
+		<group name="Industrial">
+			<vehicle model="403" keywords="" />
+			<vehicle model="406" keywords="" />
+			<vehicle model="408" keywords="" />
+			<vehicle model="443" keywords="" />
+			<vehicle model="455" keywords="" />
+			<vehicle model="486" keywords="" />
+			<vehicle model="514" keywords="" />
+			<vehicle model="515" keywords="" />
+			<vehicle model="524" keywords="" />
+			<vehicle model="525" keywords="" />
+			<vehicle model="530" keywords="" />
+			<vehicle model="552" keywords="" />
+			<vehicle model="573" keywords="" />
+			<vehicle model="574" keywords="" />
+			<vehicle model="578" keywords="" />
+		</group>
+		<group name="Trailers">
+			<vehicle model="606" keywords=""	name="Baggage Trailer (Covered)" />
+			<vehicle model="607" keywords=""	name="Baggage Trailer (Uncovered)" />
+			<vehicle model="610" keywords=""	name="Farm Trailer" />
+			<vehicle model="611" keywords=""	name="Street Clean - Trailer" />
+			<vehicle model="584" keywords=""	name="Petrol Trailer" />
+			<vehicle model="608" keywords=""	name="Stairs" />
+			<vehicle model="435" keywords=""	name="Cargo Trailer 1" />
+			<vehicle model="450" keywords=""	name="Cargo Trailer 2" />
+			<vehicle model="591" keywords=""	name="Cargo Trailer 3" />
+		</group>
+		<group name="Trucks">
+			<vehicle model="414" keywords="" />
+			<vehicle model="422" keywords="" />
+			<vehicle model="428" keywords="" />
+			<vehicle model="456" keywords="" />
+			<vehicle model="478" keywords="" />
+			<vehicle model="498" keywords="" />
+			<vehicle model="499" keywords="" />
+			<vehicle model="543" keywords="" />
+			<vehicle model="605" keywords="" />
+			<vehicle model="554" keywords="" />
+			<vehicle model="600" keywords="" />
+			<vehicle model="609" keywords="" />
+		</group>
+		<group name="Vans">
+			<vehicle model="413" keywords="" />
+			<vehicle model="418" keywords="" />
+			<vehicle model="440" keywords="" />
+			<vehicle model="459" keywords="" />
+			<vehicle model="482" keywords="" />
+			<vehicle model="483" keywords="" />
+			<vehicle model="508" keywords="" />
+			<vehicle model="582" keywords="" />
+		</group>
+		<group name="Trains">
+			<vehicle model="537" keywords=""	name="Freight" />
+			<vehicle model="538" keywords=""	name="Brown Streak" />
+			<vehicle model="570" keywords="" name="Brown Streak Carriage" />
+			<vehicle model="449" keywords=""	name="Tram" />
+			<vehicle model="569" keywords=""	name="Flat Freight" />
+			<vehicle model="590" keywords=""	name="Box Freight" />
+		</group>
+	</group>
+	<group name="Misc">
+		<group name="Other">
+			<vehicle model="423" keywords="" />
+			<vehicle model="424" keywords="" />
+			<vehicle model="431" keywords="" />
+			<vehicle model="434" keywords="" />
+			<vehicle model="437" keywords="" />
+			<vehicle model="444" keywords="" />
+			<vehicle model="457" keywords="" />
+			<vehicle model="485" keywords="" />
+			<vehicle model="494" keywords="" />
+			<vehicle model="502" keywords="" />
+			<vehicle model="503" keywords="" />
+			<vehicle model="504" keywords="" />
+			<vehicle model="531" keywords="" />
+			<vehicle model="532" keywords="" />
+			<vehicle model="539" keywords="" />
+			<vehicle model="556" keywords="" />
+			<vehicle model="557" keywords="" />
+			<vehicle model="568" keywords="" />
+			<vehicle model="571" keywords="" />
+			<vehicle model="572" keywords="" />
+			<vehicle model="583" keywords="" />
+			<vehicle model="588" keywords="" />
+		</group>
+		<group name="RC Vehicles">
+			<vehicle model="441" keywords="" />
+			<vehicle model="464" keywords="" />
+			<vehicle model="594" keywords="" />
+			<vehicle model="501" keywords="" />
+			<vehicle model="465" keywords="" />
+			<vehicle model="564" keywords="" />
+		</group>
+	</group>
+	<group name="SUVs and Wagons">
+		<vehicle model="400" keywords="" />
+		<vehicle model="404" keywords="" />
+		<vehicle model="442" keywords="" />
+		<vehicle model="458" keywords="" />
+		<vehicle model="470" keywords="" />
+		<vehicle model="479" keywords="" />
+		<vehicle model="489" keywords="" />
+		<vehicle model="505" keywords="" />
+		<vehicle model="495" keywords="" />
+		<vehicle model="500" keywords="" />
+		<vehicle model="561" keywords="" />
+		<vehicle model="579" keywords="" />
+		<vehicle model="589" keywords="" />
+	</group>
+</catalog>

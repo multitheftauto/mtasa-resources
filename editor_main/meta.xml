@@ -1,0 +1,180 @@
+<meta>
+	<info author="erorr404,jbeta,Talidan" description="Map editor's main component" edf:definition="editor_main.edf" version="1.0.0" />
+
+	<min_mta_version server="1.5.8-9.20957" />
+
+	<!-- Script to shutdown the running gamemode and maps, because otherwise you get trouble -->
+	<script src="gamemodestopper.lua" type="server" />
+
+	<!-- Required resources -->
+	<include resource="freecam" />
+	<include resource="move_freecam" />
+	<include resource="move_cursor" />
+	<include resource="move_keyboard" />
+
+	<!-- Added events -->
+	<script src="client/clientevents.lua" type="client" />
+	<script src="server/serverevents.lua" type="server" />
+
+	<!-- Global vars -->
+	<script src="server/globals.lua" type="server" />
+	<script src="client/globals.lua" type="client" />
+
+	<!-- Utils -->
+	<script src="client/controlinterface.lua" type="client" />
+	<script src="server/util.lua" type="server" />
+	<script src="server/orderedPairs.lua" type="server" />
+	<script src="client/matrix.lua" type="client" />
+	<script src="client/complex.lua" type="client" />
+
+	<!-- Working dimension -->
+	<script src="workingdimension.lua" type="client" />
+	<export function="getWorkingDimension" type="client" />
+	<script src="workingdimension.lua" type="server" />
+	<export function="getWorkingDimension" type="server" />
+
+	<!-- Call interfaces -->
+	<script src="server/interface.lua" type="server" />
+	<script src="client/interface.lua" type="client" />
+
+	<!-- Freeroam dependency check -->
+	<script src="server/freeroam.lua" type="server" />
+
+	<!-- Client-side element manipulation code -->
+	<script src="client/collisions.lua" type="client" />
+	<script src="client/gridlines.lua" type="client" />
+	<script src="client/main.lua" type="client" />
+	<script src="client/editorelements.lua" type="client" />
+	<script src="server/createdestroy.lua" type="server" />
+	<script src="server/import.lua" type="server" />
+	<script src="server/synchronization.lua" type="server" />
+	<script src="server/locking.lua" type="server" />
+	<script src="server/mapsettingssync.lua" type="server" />
+	<script src="server/definitionssync.lua" type="server" />
+
+	<!-- ID assignment handling code -->
+	<script src="server/IDhandler.lua" type="server" />
+	<script src="server/getObjectNameFromModel.lua" type="server" />
+
+	<!-- EDF interface code -->
+	<script src="client/elementcreation.lua" type="client" />
+	<script src="server/EDFhandler.lua" type="server" />
+
+	<!-- Controls loading -->
+	<script src="client/controls.lua" type="client" />
+
+	<!-- Player attachment and spawning -->
+	<script src="client/superman.lua" type="client" validate="false" />
+	<script src="client/attachplayer.lua" type="client" validate="false" />
+	<script src="server/playerspawn.lua" type="server" />
+	<script src="server/playerblips.lua" type="server" />
+
+	<!-- Saving/loading/testing -->
+	<script src="client/saveloadtest_client.lua" type="client" />
+	<script src="server/resourcehooks.lua" type="server" />
+	<script src="server/dumpxml.lua" type="server" />
+	<script src="server/saveloadtest_server.lua" type="server" />
+	<script src="server/save_backup.lua" type="server" />
+
+	<!-- Undo/redo -->
+	<script src="server/undoredo_action.lua" type="server" />
+	<script src="server/undoredo_main.lua" type="server" />
+	<script src="server/undoredo_move.lua" type="server" />
+
+	<!-- World object remover -->
+	<script src="server/removeWorldObject.lua" type="server" />
+	
+	<!-- Collision patches -->
+	<script src="client/colpatch.lua" type="client" />
+	
+	<!-- Incremental rotation with quaternions used by move_freecam, move_cursor, move_keyboard -->
+	<script src="client/rotation.lua" type="client" />
+
+	<!-- Exported client functions -->
+	<export function="startEditor" type="client" />
+	<export function="selectElement" type="client" />
+	<export function="dropElement" type="client" />
+	<export function="cloneSelectedElement" type="client" />
+	<export function="destroySelectedElement" type="client" />
+	<export function="setMode" type="client" />
+	<export function="setMaxSelectDistance" type="client" />
+	<export function="getSelectedElement" type="client" />
+	<export function="getMode" type="client" />
+	<export function="getSubmode" type="client" />
+	<export function="getMaxSelectDistance" type="client" />
+	<export function="showClipboardWindow" type="client" />
+	<export function="showCrosshair" type="client" />
+	<export function="getWorkingDimension" type="client" />
+	<export function="setWorkingDimension" type="client" />
+	<export function="getWorkingInterior" type="client" />
+	<export function="setWorkingInterior" type="client" />
+	<export function="suspend" type="client" />
+	<export function="resume" type="client" />
+	<export function="undo" type="server" />
+	<export function="redo" type="server" />
+	<export function="getControls" type="client" />
+	<export function="doCreateElement" type="client" />
+	<export function="doCloneElement" type="client" />
+	<export function="setWorldClickEnabled" type="client" />
+	<export function="toggleEditorKeys" type="client" />
+	<export function="showCursor" type="client" />
+	<export function="processCameraLineOfSight" type="client" />
+	<export function="processCursorLineOfSight" type="client" />
+	<export function="openResource" type="client" />
+	<export function="saveResource" type="client" />
+	<export function="newResource" type="client" />
+	<export function="isEditorElement" type="client" />
+	<export function="registerEditorElements" type="client" />
+	<export function="updateArrowMarker" type="client" />
+	<export function="setMovementType" type="client" />
+	<export function="enableMouseOver" type="client" />
+	<export function="import" type="server" />
+	<export function="createHighlighterText" type="client" />
+	<export function="setCrosshairState" type="client" />
+	<export function="setCursorCrosshairState" type="client" />
+	<export function="lockSelectedElement" type="client" />
+	<export function="isElementLocked" type="client" />
+	<export function="toggleColPatch" type="client" />
+	<export function="applyIncrementalRotation" type="client" />
+	<export function="clearElementQuat" type="client" />
+
+	<!-- Client-side files -->
+	<file src="client/images/crosshair.png" />
+	<file src="client/images/cursor.png" />
+
+	<file src="client/images/icons/marker.png" />
+	<file src="client/images/icons/object.png" />
+	<file src="client/images/icons/vehicle.png" />
+	<file src="client/images/icons/pickup.png" />
+	<file src="client/images/icons/ped.png" />
+	<file src="client/images/icons/wor.png" />
+	
+	<file src="client/colpatch/patches.col" />
+	<file src="client/colpatch/placement.list" />
+	<file src="client/rotation_fix.xml" />
+
+	<settings>
+		<setting name="*admingroup" value="Admin,MapEditor"
+			friendlyname="Admin group list"
+			accept="*"
+			examples="Admin,Moderator,SuperModerator"
+			desc="To change server settings, the player must belong to one of the groups listed."
+		/>
+		<setting name="#enableDumpSave" value="true"
+			friendlyname="Enable map backup"
+			accept="true,false"
+			desc="Set to false to disable map backup."
+		/>
+		<setting name="#dumpSaveInterval" value="60"
+			friendlyname="Map backup interval"
+			accept="1-3600"
+			desc="Map backup interval in seconds."
+		/>
+		<setting name="*mapResourceOrganizationalDirectory" value="none"
+			friendlyname="Map base directory"
+			accept = "*"
+			examples="[newmaps]"
+			desc="Organizational directory for newly added map resources. The value must be in [brackets]"
+		/>
+	</settings>
+</meta>
