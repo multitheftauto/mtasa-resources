@@ -39,7 +39,7 @@ function doCreateElement ( elementType, resourceName, creationParameters, attach
 	creationParameters = creationParameters or {}
 	if not creationParameters.position then
 		local targetX, targetY, targetZ = processCameraLineOfSight()
-		if not elementType == "object" or not elementType == "vehicle" then
+		if elementType ~= "object" and elementType ~= "vehicle" then
 			creationParameters.position = nil
 		else
 			creationParameters.position = {targetX, targetY, targetZ + .5}
