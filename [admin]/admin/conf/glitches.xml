@@ -1,0 +1,14 @@
+
+<glitches>
+  <glitch name="quickreload" enabled="false" displayname="Quick Reload" />
+  <glitch name="fastmove" enabled="false" displayname="Fast Move" />
+  <glitch name="fastfire" enabled="false" displayname="Fast Fire" />
+  <glitch name="crouchbug" enabled="false" displayname="Crouch Bug" />
+  <glitch name="highcloserangedamage" enabled="false" displayname="High Close Range Damage" />
+  <glitch name="hitanim" enabled="false" displayname="Hit Animation" />
+  <glitch name="fastsprint" enabled="false" displayname="Fast Sprint" />
+  <glitch name="baddrivebyhitbox" enabled="false" displayname="Bad Driveby Hitbox" />
+  <glitch name="quickstand" enabled="false" displayname="Quick Stand" />
+  <glitch name="kickoutofvehicle_onmodelreplace" enabled="false" displayname="Kick Out Vehicle" />
+  <glitch name="vehicle_rapid_stop" enabled="true" displayname="Vehicle Rapid Stop" />
+</glitches>

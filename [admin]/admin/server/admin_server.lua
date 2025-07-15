@@ -17,6 +17,8 @@ aInteriors = {}
 aStats = {}
 aReports = {}
 aWeathers = {}
+aGlitches = {}
+aWorldSpecialProperties = {}
 
 local aUnmuteTimerList = {}
 local chatHistory = {}
@@ -105,6 +107,38 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 	end
 	aSetupACL()
 	aSetupCommands()
+	local glitchNode = xmlLoadFile("conf\\glitches.xml")
+	if glitchNode then
+		local glitches = xmlNodeGetChildren(glitchNode)
+		for _, glitchNode in ipairs(glitches) do
+			local name = xmlNodeGetAttribute(glitchNode, "name")
+			local enabled = xmlNodeGetAttribute(glitchNode, "enabled") == "true"
+			if name then
+				aGlitches[name] = enabled
+				local currentValue = isGlitchEnabled(name)
+				if currentValue ~= enabled then
+					setGlitchEnabled(name, enabled)
+				end
+			end
+		end
+		xmlUnloadFile(glitchNode)
+	end
+	local worldspecNode = xmlLoadFile("conf\\worldspecialproperties.xml")
+	if worldspecNode then
+		local properties = xmlNodeGetChildren(worldspecNode)
+		for _, propNode in ipairs(properties) do
+			local name = xmlNodeGetAttribute(propNode, "name")
+			local enabled = xmlNodeGetAttribute(propNode, "enabled") == "true"
+			if name then
+				aWorldSpecialProperties[name] = enabled
+				local currentValue = isWorldSpecialPropertyEnabled(name)
+				if currentValue ~= enabled then
+					setWorldSpecialPropertyEnabled(name, enabled)
+				end
+			end
+		end
+		xmlUnloadFile(worldspecNode)
+	end
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
 		aPlayerInitialize ( player )
 		if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
@@ -1466,6 +1500,24 @@ addEventHandler ( "aServer", root, function ( action, data, data2 )
 			end
 		elseif ( action == "clearchat" ) then
 			clearChatBox()
+		elseif ( action == "setglitchenabled" ) then
+			local glitchName = data
+			local enabled = ( data2 == true or data2 == "true" or data2 == 1 )
+			if not setGlitchEnabled(glitchName, enabled) then
+				action = nil
+			else
+				mdata = data
+				mdata2 = enabled and "enabled" or "disabled"
+			end
+		elseif ( action == "setworldspecprop" ) then
+			local propName = data
+			local enabled = ( data2 == true or data2 == "true" or data2 == 1 )
+			if not setWorldSpecialPropertyEnabled(propName, enabled) then
+				action = nil
+			else
+				mdata = propName
+				mdata2 = enabled and "enabled" or "disabled"
+			end
 		else
 			action = nil
 		end

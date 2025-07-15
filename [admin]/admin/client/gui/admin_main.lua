@@ -18,6 +18,8 @@ aPlayers = {}
 aBans = {}
 aLastSync = 0
 aResources = {}
+glitchesData = {}
+worldPropsData = {}
 
 local serverPassword = 'None'
 local hasResourceSetting
@@ -270,6 +272,76 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab3.FPS			= guiCreateEdit ( 0.35, 0.65, 0.135, 0.04, "38", true, aTab3.Tab )
 		aTab3.FPSSet		= guiCreateButton ( 0.50, 0.65, 0.10, 0.04, "Set", true, aTab3.Tab, "setfpslimit" )
 							guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-32767 )", true, aTab3.Tab )
+	
+		aTab3.ServerSettingsGridList = guiCreateGridList ( 0.04, 0.70, 0.55, 0.28, true, aTab3.Tab )
+		guiGridListAddColumn( aTab3.ServerSettingsGridList, "Setting Type", 0.25 )
+		guiGridListAddColumn( aTab3.ServerSettingsGridList, "Name", 0.45 )
+		guiGridListAddColumn( aTab3.ServerSettingsGridList, "Status/Value", 0.2 )
+		guiGridListSetSortingEnabled( aTab3.ServerSettingsGridList, false )
+
+		local glitchData = {
+			{name = "Quick Reload", id = "quickreload"},
+			{name = "Fast Move", id = "fastmove"},
+			{name = "Fast Fire", id = "fastfire"},
+			{name = "Crouch Bug", id = "crouchbug"},
+			{name = "High Close Range Damage", id = "highcloserangedamage"},
+			{name = "Hit Animation", id = "hitanim"},
+			{name = "Fast Sprint", id = "fastsprint"},
+			{name = "Bad Driveby Hitbox", id = "baddrivebyhitbox"},
+			{name = "Quick Stand", id = "quickstand"},
+			{name = "Kick Out Vehicle", id = "kickoutofvehicle_onmodelreplace"},
+			{name = "Vehicle Rapid Stop", id = "vehicle_rapid_stop"}
+		}
+
+		local worldPropData = {
+			{name = "Hover Cars", id = "hovercars"},
+			{name = "Air Cars", id = "aircars"},
+			{name = "Extra Bunny", id = "extrabunny"},
+			{name = "Extra Jump", id = "extrajump"},
+			{name = "Random Foliage", id = "randomfoliage"},
+			{name = "Sniper Moon", id = "snipermoon"},
+			{name = "Extra Air Resistance", id = "extraairresistance"},
+			{name = "Underworld Warp", id = "underworldwarp"},
+			{name = "Vehicle Sun Glare", id = "vehiclesunglare"},
+			{name = "Corona Z Test", id = "coronaztest"},
+			{name = "Water Creatures", id = "watercreatures"},
+			{name = "Burn Flipped Cars", id = "burnflippedcars"},
+			{name = "Fireball Destruct", id = "fireballdestruct"},
+			{name = "Road Signs Text", id = "roadsignstext"},
+			{name = "Extended Water Cannons", id = "extendedwatercannons"},
+			{name = "Tunnel Weather Blend", id = "tunnelweatherblend"},
+			{name = "Ignore Fire State", id = "ignorefirestate"},
+			{name = "Flying Components", id = "flyingcomponents"},
+			{name = "Vehicle Burn Explosions", id = "vehicleburnexplosions"},
+			{name = "Vehicle Engine Autostart", id = "vehicle_engine_autostart"}
+		}
+
+		aTab3.ServerSettings = {}
+
+		for i, glitch in ipairs(glitchData) do
+			local row = guiGridListAddRow(aTab3.ServerSettingsGridList)
+			guiGridListSetItemText(aTab3.ServerSettingsGridList, row, 1, "Glitch", false, false)
+			guiGridListSetItemText(aTab3.ServerSettingsGridList, row, 2, glitch.name, false, false)
+			guiGridListSetItemText(aTab3.ServerSettingsGridList, row, 3, "Disabled", false, false)
+			guiGridListSetItemData(aTab3.ServerSettingsGridList, row, 1, "glitch")
+			guiGridListSetItemData(aTab3.ServerSettingsGridList, row, 2, glitch.id)
+			guiGridListSetItemColor(aTab3.ServerSettingsGridList, row, 3, 255, 0, 0)
+			aTab3.ServerSettings[glitch.id] = {row = row, type = "glitch", enabled = false}
+		end
+
+		for i, prop in ipairs(worldPropData) do
+			local row = guiGridListAddRow(aTab3.ServerSettingsGridList)
+			guiGridListSetItemText(aTab3.ServerSettingsGridList, row, 1, "World Prop", false, false)
+			guiGridListSetItemText(aTab3.ServerSettingsGridList, row, 2, prop.name, false, false)
+			guiGridListSetItemText(aTab3.ServerSettingsGridList, row, 3, "Disabled", false, false)
+			guiGridListSetItemData(aTab3.ServerSettingsGridList, row, 1, "worldprop")
+			guiGridListSetItemData(aTab3.ServerSettingsGridList, row, 2, prop.id)
+			guiGridListSetItemColor(aTab3.ServerSettingsGridList, row, 3, 255, 0, 0)
+			aTab3.ServerSettings[prop.id] = {row = row, type = "worldprop", enabled = false}
+		end
+		aTab3.SettingsReset = guiCreateButton(0.61, 0.70, 0.15, 0.04, "Reset All", true, aTab3.Tab)
+		aTab3.SettingsEnableAll = guiCreateButton(0.61, 0.75, 0.15, 0.04, "Enable All", true, aTab3.Tab)
+		aTab3.SettingsDisableAll = guiCreateButton(0.61, 0.80, 0.15, 0.04, "Disable All", true, aTab3.Tab)
 
 
 		aTab4 = {}
@@ -983,6 +1055,28 @@ function aClientDoubleClick ( button )
 			local selserial = guiGridListGetItemText ( aTab4.BansList, guiGridListGetSelectedItem( aTab4.BansList ), 3 )
 			aBanDetails ( aBans["Serial"][selserial] and selserial or selip )
 		end
+	elseif ( source == aTab3.ServerSettingsGridList ) then
+		local selectedRow = guiGridListGetSelectedItem(aTab3.ServerSettingsGridList)
+		if selectedRow ~= -1 then
+			local settingType = guiGridListGetItemData(aTab3.ServerSettingsGridList, selectedRow, 1)
+			local settingId = guiGridListGetItemData(aTab3.ServerSettingsGridList, selectedRow, 2)
+			local settingName = guiGridListGetItemText(aTab3.ServerSettingsGridList, selectedRow, 2)
+			if settingType == "glitch" then
+				local currentStatus = aTab3.ServerSettings[settingId].enabled
+				local newStatus = not currentStatus
+				aTab3.ServerSettings[settingId].enabled = newStatus
+				guiGridListSetItemText(aTab3.ServerSettingsGridList, selectedRow, 3, newStatus and "Enabled" or "Disabled", false, false)
+				guiGridListSetItemColor(aTab3.ServerSettingsGridList, selectedRow, 3, newStatus and 0 or 255, newStatus and 255 or 0, 0)
+				triggerServerEvent("aServer", localPlayer, "setglitchenabled", settingId, newStatus)
+			elseif settingType == "worldprop" then
+				local currentStatus = aTab3.ServerSettings[settingId].enabled
+				local newStatus = not currentStatus
+				aTab3.ServerSettings[settingId].enabled = newStatus
+				guiGridListSetItemText(aTab3.ServerSettingsGridList, selectedRow, 3, newStatus and "Enabled" or "Disabled", false, false)
+				guiGridListSetItemColor(aTab3.ServerSettingsGridList, selectedRow, 3, newStatus and 0 or 255, newStatus and 255 or 0, 0)
+				triggerServerEvent("aServer", localPlayer, "setworldspecprop", settingId, newStatus)
+			end
+		end
 	end
 end
 
@@ -1115,6 +1209,46 @@ function aClientClick ( button )
 			elseif ( source == aTab3.FPSSet ) then
 			triggerServerEvent ( "aServer", localPlayer, "setfpslimit", guiGetText ( aTab3.FPS ) )
 			triggerServerEvent ( "aSync", localPlayer, "server" )
+			elseif ( source == aTab3.SettingsReset ) then
+				for settingId, data in pairs(aTab3.ServerSettings) do
+					if data.type == "glitch" then
+						local defaultValue = false
+						data.enabled = defaultValue
+						guiGridListSetItemText(aTab3.ServerSettingsGridList, data.row, 3, defaultValue and "Enabled" or "Disabled", false, false)
+						guiGridListSetItemColor(aTab3.ServerSettingsGridList, data.row, 3, defaultValue and 0 or 255, defaultValue and 255 or 0, 0)
+						triggerServerEvent("aServer", localPlayer, "setglitchenabled", settingId, defaultValue)
+					elseif data.type == "worldprop" then
+						local defaultValue = false
+						data.enabled = defaultValue
+						guiGridListSetItemText(aTab3.ServerSettingsGridList, data.row, 3, defaultValue and "Enabled" or "Disabled", false, false)
+						guiGridListSetItemColor(aTab3.ServerSettingsGridList, data.row, 3, defaultValue and 0 or 255, defaultValue and 255 or 0, 0)
+						triggerServerEvent("aServer", localPlayer, "setworldspecprop", settingId, defaultValue)
+					end
+				end
+			elseif ( source == aTab3.SettingsEnableAll ) then
+				for settingId, data in pairs(aTab3.ServerSettings) do
+					data.enabled = true
+					guiGridListSetItemText(aTab3.ServerSettingsGridList, data.row, 3, "Enabled", false, false)
+					guiGridListSetItemColor(aTab3.ServerSettingsGridList, data.row, 3, 0, 255, 0)
+					
+					if data.type == "glitch" then
+						triggerServerEvent("aServer", localPlayer, "setglitchenabled", settingId, true)
+					elseif data.type == "worldprop" then
+						triggerServerEvent("aServer", localPlayer, "setworldspecprop", settingId, true)
+					end
+				end
+			elseif ( source == aTab3.SettingsDisableAll ) then
+				for settingId, data in pairs(aTab3.ServerSettings) do
+					data.enabled = false
+					guiGridListSetItemText(aTab3.ServerSettingsGridList, data.row, 3, "Disabled", false, false)
+					guiGridListSetItemColor(aTab3.ServerSettingsGridList, data.row, 3, 255, 0, 0)
+					
+					if data.type == "glitch" then
+						triggerServerEvent("aServer", localPlayer, "setglitchenabled", settingId, false)
+					elseif data.type == "worldprop" then
+						triggerServerEvent("aServer", localPlayer, "setworldspecprop", settingId, false)
+					end
+				end
 			end
 		-- TAB 4, BANS
 		elseif ( getElementParent ( source ) == aTab4.Tab ) then

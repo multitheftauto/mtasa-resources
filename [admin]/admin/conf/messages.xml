@@ -253,6 +253,14 @@
       <all>FPS limit set to '$data'$by_admin_4all.</all>
       <log>ADMIN: $admin has set FPS limit to '$data'</log>
     </group>
+    <group action="setglitchenabled" r="225" g="170" b="90">
+      <all>$data set to $data2$by_admin_4all.</all>
+      <log>ADMIN: $admin has set $data to $data2</log>
+    </group>
+    <group action="setworldspecprop" r="225" g="170" b="90">
+      <all>$data set to $data2$by_admin_4all.</all>
+      <log>ADMIN: $admin has set world special property $data to $data2</log>
+    </group>
   </server>
   <bans>
 

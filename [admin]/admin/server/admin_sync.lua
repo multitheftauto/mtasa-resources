@@ -125,6 +125,14 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		tableOut["map"] = getMapName()
 		tableOut["password"] = getServerPassword()
 		tableOut["fps"] = getFPSLimit()
+		tableOut["glitches"] = {}
+		for glitchName, defaultValue in pairs(aGlitches) do
+			tableOut["glitches"][glitchName] = isGlitchEnabled(glitchName)
+		end
+		tableOut["worldprops"] = {}
+		for propName, defaultValue in pairs(aWorldSpecialProperties) do
+			tableOut["worldprops"][propName] = isWorldSpecialPropertyEnabled(propName)
+		end
 	elseif ( type == "bansdirty" ) then
 		tableOut = nil
 		g_Bans = nil
