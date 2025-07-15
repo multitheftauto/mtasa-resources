@@ -110,9 +110,9 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 	local glitchNode = xmlLoadFile("conf\\glitches.xml")
 	if glitchNode then
 		local glitches = xmlNodeGetChildren(glitchNode)
-		for _, glitchNode in ipairs(glitches) do
-			local name = xmlNodeGetAttribute(glitchNode, "name")
-			local enabled = xmlNodeGetAttribute(glitchNode, "enabled") == "true"
+		for _, childNode in ipairs(glitches) do
+			local name = xmlNodeGetAttribute(childNode, "name")
+			local enabled = xmlNodeGetAttribute(childNode, "enabled") == "true"
 			if name then
 				aGlitches[name] = enabled
 				local currentValue = isGlitchEnabled(name)
