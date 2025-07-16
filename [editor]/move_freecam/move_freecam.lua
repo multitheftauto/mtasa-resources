@@ -111,7 +111,6 @@ end
 
 local function onClientRender_freecam()
 	if (selectedElement and isElement(selectedElement)) then
-		setElementVelocity(selectedElement,0,0,0) --!w
 
 	    camX, camY, camZ, targetX, targetY, targetZ = getCameraMatrix()
 
