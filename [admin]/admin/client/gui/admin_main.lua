@@ -279,6 +279,10 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		guiGridListAddColumn( aTab3.ServerSettingsGridList, "Status/Value", 0.2 )
 		guiGridListSetSortingEnabled( aTab3.ServerSettingsGridList, false )
 
+		if not hasPermissionTo("command.setglitchenabled") or not hasPermissionTo("command.setworldspecprop") then
+			guiSetEnabled(aTab3.ServerSettingsGridList, false)
+		end
+
 		local glitchData = {
 			{name = "Quick Reload", id = "quickreload"},
 			{name = "Fast Move", id = "fastmove"},
@@ -339,9 +343,9 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 			guiGridListSetItemColor(aTab3.ServerSettingsGridList, row, 3, 255, 0, 0)
 			aTab3.ServerSettings[prop.id] = {row = row, type = "worldprop", enabled = false}
 		end
-		aTab3.SettingsReset = guiCreateButton(0.61, 0.70, 0.15, 0.04, "Reset All", true, aTab3.Tab)
-		aTab3.SettingsEnableAll = guiCreateButton(0.61, 0.75, 0.15, 0.04, "Enable All", true, aTab3.Tab)
-		aTab3.SettingsDisableAll = guiCreateButton(0.61, 0.80, 0.15, 0.04, "Disable All", true, aTab3.Tab)
+		aTab3.SettingsReset = guiCreateButton(0.61, 0.70, 0.15, 0.04, "Reset All", true, aTab3.Tab, "setglitchenabled")
+		aTab3.SettingsEnableAll = guiCreateButton(0.61, 0.75, 0.15, 0.04, "Enable All", true, aTab3.Tab, "setglitchenabled")
+		aTab3.SettingsDisableAll = guiCreateButton(0.61, 0.80, 0.15, 0.04, "Disable All", true, aTab3.Tab, "setglitchenabled")
 
 
 		aTab4 = {}
@@ -1069,19 +1073,18 @@ function aClientDoubleClick ( button )
 			aBanDetails ( aBans["Serial"][selserial] and selserial or selip )
 		end
 	elseif ( source == aTab3.ServerSettingsGridList ) then
-		local selectedRow = guiGridListGetSelectedItem(aTab3.ServerSettingsGridList)
+    local selectedRow = guiGridListGetSelectedItem(aTab3.ServerSettingsGridList)
 		if selectedRow ~= -1 then
 			local settingType = guiGridListGetItemData(aTab3.ServerSettingsGridList, selectedRow, 1)
 			local settingId = guiGridListGetItemData(aTab3.ServerSettingsGridList, selectedRow, 2)
-			local settingName = guiGridListGetItemText(aTab3.ServerSettingsGridList, selectedRow, 2)
-			if settingType == "glitch" then
+			if settingType == "glitch" and hasPermissionTo("command.setglitchenabled") then
 				local currentStatus = aTab3.ServerSettings[settingId].enabled
 				local newStatus = not currentStatus
 				aTab3.ServerSettings[settingId].enabled = newStatus
 				guiGridListSetItemText(aTab3.ServerSettingsGridList, selectedRow, 3, newStatus and "Enabled" or "Disabled", false, false)
 				guiGridListSetItemColor(aTab3.ServerSettingsGridList, selectedRow, 3, newStatus and 0 or 255, newStatus and 255 or 0, 0)
 				triggerServerEvent("aServer", localPlayer, "setglitchenabled", settingId, newStatus)
-			elseif settingType == "worldprop" then
+			elseif settingType == "worldprop" and hasPermissionTo("command.setworldspecprop") then
 				local currentStatus = aTab3.ServerSettings[settingId].enabled
 				local newStatus = not currentStatus
 				aTab3.ServerSettings[settingId].enabled = newStatus
