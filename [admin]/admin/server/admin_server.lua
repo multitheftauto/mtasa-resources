@@ -1506,6 +1506,24 @@ addEventHandler ( "aServer", root, function ( action, data, data2 )
 			if not setGlitchEnabled(glitchName, enabled) then
 				action = nil
 			else
+				local glitchNode = xmlLoadFile("conf\\glitches.xml")
+				if glitchNode then
+					local glitches = xmlNodeGetChildren(glitchNode)
+					for _, childNode in ipairs(glitches) do
+						local name = xmlNodeGetAttribute(childNode, "name")
+						if name == glitchName then
+							xmlNodeSetAttribute(childNode, "enabled", tostring(enabled))
+							break
+						end
+					end
+					xmlSaveFile(glitchNode)
+					xmlUnloadFile(glitchNode)
+				end
+				for id, player in ipairs(getElementsByType("player")) do
+					if hasObjectPermissionTo(player, "general.adminpanel") then
+						triggerEvent("aSync", player, "server")
+					end
+				end
 				mdata = data
 				mdata2 = enabled and "enabled" or "disabled"
 			end
@@ -1515,6 +1533,24 @@ addEventHandler ( "aServer", root, function ( action, data, data2 )
 			if not setWorldSpecialPropertyEnabled(propName, enabled) then
 				action = nil
 			else
+				local worldspecNode = xmlLoadFile("conf\\worldspecialproperties.xml")
+				if worldspecNode then
+					local properties = xmlNodeGetChildren(worldspecNode)
+					for _, propNode in ipairs(properties) do
+						local name = xmlNodeGetAttribute(propNode, "name")
+						if name == propName then
+							xmlNodeSetAttribute(propNode, "enabled", tostring(enabled))
+							break
+						end
+					end
+					xmlSaveFile(worldspecNode)
+					xmlUnloadFile(worldspecNode)
+				end
+				for id, player in ipairs(getElementsByType("player")) do
+					if hasObjectPermissionTo(player, "general.adminpanel") then
+						triggerEvent("aSync", player, "server")
+					end
+				end
 				mdata = propName
 				mdata2 = enabled and "enabled" or "disabled"
 			end

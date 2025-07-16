@@ -664,6 +664,19 @@ function aClientSync ( type, table, data )
 		guiSetText ( aTab3.MapName, "Map Name: "..( table["map"] or "None" ) )
 		guiSetText ( aTab3.FPSCurrent, "FPS Limit: "..( table["fps"] or "N/A" ) )
 		guiSetText ( aTab3.FPS, table["fps"] or "38" )
+		if table["glitches"] and table["worldprops"] then
+			for settingId, data in pairs(aTab3.ServerSettings) do
+				local enabled = false
+				if data.type == "glitch" and table["glitches"][settingId] ~= nil then
+					enabled = table["glitches"][settingId]
+				elseif data.type == "worldprop" and table["worldprops"][settingId] ~= nil then
+					enabled = table["worldprops"][settingId]
+				end
+				data.enabled = enabled
+				guiGridListSetItemText(aTab3.ServerSettingsGridList, data.row, 3, enabled and "Enabled" or "Disabled", false, false)
+				guiGridListSetItemColor(aTab3.ServerSettingsGridList, data.row, 3, enabled and 0 or 255, enabled and 255 or 0, 0)
+			end
+		end
 	elseif ( type == "bansdirty" ) then
 		g_GotLatestBansList = false
 		if aAdminForm and guiGetVisible ( aAdminForm ) and guiGetSelectedTab( aTabPanel ) == aTab4.Tab then
