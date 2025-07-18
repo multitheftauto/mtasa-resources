@@ -223,6 +223,8 @@ function basicTest()
 		editor_main.resume(true)
 		inBasicTest = false
 		removeEventHandler("onClientPlayerDamage", localPlayer, noDamageInBasicTest)
+		removeEventHandler("onClientVehicleDamage", root, noDamageInBasicTest)
+		triggerServerEvent("onBasicTestEnd", localPlayer)
 		toggleControl("fire", true)
 		toggleControl("enter_exit", true)
 		toggleControl("enter_passenger", true)
@@ -247,6 +249,8 @@ function basicTest()
 		toggleControl("enter_passenger", false)
 		inBasicTest = true
 		addEventHandler("onClientPlayerDamage", localPlayer, noDamageInBasicTest)
+		addEventHandler("onClientVehicleDamage", root, noDamageInBasicTest)
+		triggerServerEvent("onBasicTestStart", localPlayer)
 		outputChatBox("Press F6 to leave basic test", 0, 255, 0)
 		bindControl ( "toggle_basictest", "down", basicTest )
 

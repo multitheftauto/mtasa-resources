@@ -76,6 +76,7 @@
 	<!-- Server-side logic -->
 	<script src="server/guiserverlink.lua" type="server" />
 	<script src="server/interface.lua" type="server" />
+	<script src="server/override.lua" type="server" />
 
 	<!-- GUI icons -->
 	<!-- Most icons courtesy of the Evaraldo Crystal icon gallery -->
