@@ -43,7 +43,7 @@ local function createLODObject(originalObject, lodModel)
 	usedLODModels[lodModel] = true
 end
 
-local function processAutoLOD(resource)
+local function processAutoLOD(resourceElement, resource)
 	local resourceName = getResourceName(resource)
 	local useLODs = get(resourceName .. ".useLODs")
 
@@ -51,7 +51,7 @@ local function processAutoLOD(resource)
 		return
 	end
 
-	local objectsTable = getElementsByType("object", resource)
+	local objectsTable = getElementsByType("object", resourceElement)
 
 	for i = 1, #objectsTable do
 		local objectElement = objectsTable[i]
@@ -64,12 +64,12 @@ local function processAutoLOD(resource)
 	end
 end
 
-local function onResourceStartOrStop(startedResource)
+local function onResourceStartOrStop(resource)
 	local isStarting = eventName == "onResourceStart"
 	processRemoveWorldObjects(source, isStarting)
 
 	if isStarting then
-		processAutoLOD(startedResource)
+		processAutoLOD(source, resource)
 	end
 end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop)
