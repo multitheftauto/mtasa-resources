@@ -20,12 +20,13 @@ addEventHandler("onPlayerQuit", root, function()
 	playersInBasicTest[source] = nil
 end)
 
-addDebugHook("preFunction", function(sourceResource, functionName, isAllowedByACL, luaFilename, luaLineNumber, ...)
-	if functionName == "blowVehicle" then
-		for player, _ in pairs(playersInBasicTest) do
-			if isElement(player) then
-				return "skip"
+addEventHandler("onVehicleExplode", root, function()
+	for player in pairs(playersInBasicTest) do
+		if isElement(player) then
+			local vehicle = getPedOccupiedVehicle(player)
+			if vehicle == source then
+				cancelEvent()
 			end
 		end
 	end
-end, {"blowVehicle"})
+end)
