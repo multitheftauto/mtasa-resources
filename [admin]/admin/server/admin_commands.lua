@@ -83,6 +83,15 @@ function aCommandToArgs ( argv, args )
 		elseif ( argt == "t" ) then argv[id] = { argv[id] }
 		elseif ( argt == "s" ) then argv[id] = tostring ( argv[id] )
 		elseif ( argt == "i" ) then argv[id] = tonumber ( argv[id] )
+		elseif ( argt == "b" ) then
+			if type(argv[id]) == "string" then
+				argv[id] = string.lower(argv[id])
+			end
+			if argv[id] == "true" or argv[id] == "1" or argv[id] == "on" or argv[id] == "enable" then
+				argv[id] = true
+			elseif argv[id] == "false" or argv[id] == "0" or argv[id] == "off" or argv[id] == "disable" then
+				argv[id] = false
+			end
 		elseif ( argt == "t-" ) then
 			local atable = {}
 			for i = id, #argv do table.insert ( atable, argv[id] ) table.remove ( argv, id ) end

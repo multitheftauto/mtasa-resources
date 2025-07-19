@@ -78,6 +78,8 @@
     <right name="command.setfpslimit" access="true" />
     <right name="function.shutdown" access="true" />
     <right name="command.clearchat" access="true" />
+    <right name="command.setglitchenabled" access="true" />
+    <right name="command.setworldspecprop" access="true" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
     <right name="command.unban" access="true" />
@@ -164,6 +166,8 @@
     <right name="command.settime" access="true" />
     <right name="command.setfpslimit" access="false" />
     <right name="command.clearchat" access="true" />
+    <right name="command.setglitchenabled" access="false" />
+    <right name="command.setworldspecprop" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
     <right name="command.unban" access="true" />
@@ -250,6 +254,8 @@
     <right name="command.settime" access="true" />
     <right name="command.setfpslimit" access="false" />
     <right name="command.clearchat" access="true" />
+    <right name="command.setglitchenabled" access="false" />
+    <right name="command.setworldspecprop" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="false" />
     <right name="command.unban" access="false" />
@@ -315,6 +321,8 @@
     <right name="command.stopall" access="false" />
     <right name="command.delete" access="false" />
     <right name="command.restart" access="false" />
+    <right name="command.setglitchenabled" access="false" />
+    <right name="command.setworldspecprop" access="false" />
     <!--ACL Manager related-->
     <right name="command.aclmanager" access="false" />
     <right name="command.aclcreate" access="false" />

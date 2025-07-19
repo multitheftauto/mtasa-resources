@@ -1,0 +1,22 @@
+<worldproperties>
+  <property name="hovercars" enabled="false" displayname="Hover Cars" />
+  <property name="aircars" enabled="false" displayname="Air Cars" />
+  <property name="extrabunny" enabled="false" displayname="Extra Bunny" />
+  <property name="extrajump" enabled="false" displayname="Extra Jump" />
+  <property name="randomfoliage" enabled="true" displayname="Random Foliage" />
+  <property name="snipermoon" enabled="false" displayname="Sniper Moon" />
+  <property name="extraairresistance" enabled="true" displayname="Extra Air Resistance" />
+  <property name="underworldwarp" enabled="true" displayname="Underworld Warp" />
+  <property name="vehiclesunglare" enabled="false" displayname="Vehicle Sun Glare" />
+  <property name="coronaztest" enabled="true" displayname="Corona Z Test" />
+  <property name="watercreatures" enabled="true" displayname="Water Creatures" />
+  <property name="burnflippedcars" enabled="true" displayname="Burn Flipped Cars" />
+  <property name="fireballdestruct" enabled="true" displayname="Fireball Destruct" />
+  <property name="roadsignstext" enabled="true" displayname="Road Signs Text" />
+  <property name="extendedwatercannons" enabled="true" displayname="Extended Water Cannons" />
+  <property name="tunnelweatherblend" enabled="true" displayname="Tunnel Weather Blend" />
+  <property name="ignorefirestate" enabled="false" displayname="Ignore Fire State" />
+  <property name="flyingcomponents" enabled="true" displayname="Flying Components" />
+  <property name="vehicleburnexplosions" enabled="true" displayname="Vehicle Burn Explosions" />
+  <property name="vehicle_engine_autostart" enabled="true" displayname="Vehicle Engine Autostart" />
+</worldproperties>

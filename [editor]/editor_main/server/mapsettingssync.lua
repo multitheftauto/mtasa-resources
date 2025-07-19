@@ -16,6 +16,29 @@ local defaults = {
 	maxplayers = 128,
 }
 
+local worldSpecialProperties = {
+	"hovercars",
+	"aircars",
+	"extrabunny",
+	"extrajump",
+	"randomfoliage",
+	"snipermoon",
+	"extraairresistance",
+	"underworldwarp",
+	"vehiclesunglare",
+	"coronaztest",
+	"watercreatures",
+	"burnflippedcars",
+	"fireballdestruct",
+	"roadsignstext",
+	"extendedwatercannons",
+	"tunnelweatherblend",
+	"ignorefirestate",
+	"flyingcomponents",
+	"vehicleburnexplosions",
+	"vehicle_engine_autostart",
+}
+
 -- This function is required because defaults get overwritten. #7405
 function makeSettingsDefault()
 	defaults = {
@@ -138,6 +161,11 @@ function setupMapSettings()
 	for setting, value in pairs(currentMapSettings) do
 		if mapSettingAction[setting] then
 			mapSettingAction[setting](value)
+		end
+	end
+	for _, worldprop in ipairs(worldSpecialProperties) do
+		if isWorldSpecialPropertyEnabled(worldprop) then
+			triggerClientEvent("syncWorldProperties", root, worldprop)
 		end
 	end
 end

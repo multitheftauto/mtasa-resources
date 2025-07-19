@@ -57,6 +57,8 @@
   <config src="conf/upgrades.xml" type="client" />
   <config src="conf/skins.xml" type="client" />
   <config src="conf/stats.xml" type="client" />
+  <config src="conf/worldspecialproperties.xml" />
+  <config src="conf/glitches.xml" />
   <config src="conf/messages.xml" />
   <config src="conf/commands.xml" />
   <config src="conf/web.xml" />
