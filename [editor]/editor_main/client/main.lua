@@ -1405,3 +1405,9 @@ function disableCharacterSounds()
 	-- CJ stealth breathing, fall screaming etc.
 	setWorldSoundEnabled ( 25, false )
 end
+
+-- Sync server set world properties with client
+addEvent("syncWorldProperties", true)
+addEventHandler("syncWorldProperties", localPlayer, function(worldprop)
+	setWorldSpecialPropertyEnabled(worldprop, true)
+end)
