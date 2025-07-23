@@ -269,7 +269,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab3.FPSCurrent	= guiCreateLabel ( 0.05, 0.65, 0.25, 0.04, "FPS Limit: 38", true, aTab3.Tab )
 		aTab3.FPS			= guiCreateEdit ( 0.35, 0.65, 0.135, 0.04, "38", true, aTab3.Tab )
 		aTab3.FPSSet		= guiCreateButton ( 0.50, 0.65, 0.10, 0.04, "Set", true, aTab3.Tab, "setfpslimit" )
-							guiCreateLabel ( 0.63, 0.65, 0.1, 0.04, "( 25-32767 )", true, aTab3.Tab )
+							guiCreateLabel ( 0.63, 0.65, 0.12, 0.04, "( 25-32767 )", true, aTab3.Tab )
 
 
 		aTab4 = {}
