@@ -8,7 +8,7 @@ local thisResource = getThisResource()
 createResourceCallInterface("mapmanager")
 addEvent"onElementPropertyChanged"
 
-local DUMMY_ID = 3003
+local DUMMY_ID = 3045
 local DUMMY_DIMENSION = -99
 local DUMMY_INTERIOR = 14
 
