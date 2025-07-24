@@ -40,6 +40,7 @@ layout.pullout = {
 	items = {
 		"Clone",
 		"Delete",
+		"CopyPOS",
 	}
 }
 layout.line = {
@@ -1046,3 +1047,9 @@ function pulloutAction.Delete()
 	move_keyboard.disable()
 end
 
+function pulloutAction.CopyPOS()
+	local x, y, z = getElementPosition(selectedElement)
+	local rx, ry, rz = getElementRotation(selectedElement)
+	setClipboard(x..","..y..","..z..","..rx..","..ry..","..rz)
+	outputChatBox("Position "..x..","..y..","..z..","..rx..","..ry..","..rz.." copied to clipboard")
+end
