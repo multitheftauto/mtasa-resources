@@ -7,7 +7,7 @@ g_MapObjAttrs = {
 g_MapSettingNames = table.create(
 	{'time', 'weather', 'respawn', 'respawntime', 'duration', 'skins', 'bikehats', 'bikehatchance', 'carhats', 'carhatchance',
 	 'hairstyles', 'glasses', 'glasseschance', 'shirts', 'trousers', 'shoes',
-	 'ghostmode', 'vehicleweapons', 'autopimp', 'firewater', 'classicchangez', 'hunterminigun'},
+	 'ghostmode', 'vehicleweapons', 'autopimp', 'firewater', 'classicchangez', 'hunterminigun', 'vehicle_physics_mode', 'vehicle_physics_fps'},
 	true
 )
 
