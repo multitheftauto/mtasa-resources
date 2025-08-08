@@ -124,7 +124,7 @@ function cacheGameOptions()
 	g_GameOptions.vehicleweapons_warning_if_map_override	= getBool('race.vehicleweapons_warning_if_map_override',true)
 	g_GameOptions.hunterminigun_map_can_override	= getBool('race.hunterminigun_map_can_override',true)
 	g_GameOptions.endmapwhenonlyspectators	= getBool('race.endmapwhenonlyspectators',true)
-	g_GameOptions.vehicle_physics_mode = getString('race.vehicle_physics_mode','fixed')
+	g_GameOptions.vehicle_physics_mode = getString('race.vehicle_physics_mode','legacy')
 	g_GameOptions.vehicle_physics_fps = getNumber('race.vehicle_physics_fps',-1)
 	g_GameOptions.vehicle_physics_mode_map_can_override = getBool('race.vehicle_physics_mode_map_can_override',true)
 	g_GameOptions.vehicle_physics_fps_map_can_override = getBool('race.vehicle_physics_fps_map_can_override',true)
@@ -225,13 +225,24 @@ function cacheMapOptions(map)
 		g_MapOptions.vehicle_physics_fps = g_GameOptions.vehicle_physics_fps
 	end
 
-	if g_MapOptions.vehicle_physics_mode == "legacy" then
+	if g_MapOptions.vehicle_physics_mode == "fixed" then
+		if g_OriginalVehiclePhysicsGlitchState == nil then
+			g_OriginalVehiclePhysicsGlitchState = isGlitchEnabled("vehicle_rapid_stop")
+		end
+
+		setGlitchEnabled("vehicle_rapid_stop", false)
+
+		if g_OriginalFPSLimit ~= nil then
+			setFPSLimit(g_OriginalFPSLimit)
+			g_OriginalFPSLimit = nil
+		end
+	else
 		if g_OriginalVehiclePhysicsGlitchState == nil then
 			g_OriginalVehiclePhysicsGlitchState = isGlitchEnabled("vehicle_rapid_stop")
 		end
 
 		setGlitchEnabled("vehicle_rapid_stop", true)
-		
+
 		if g_MapOptions.vehicle_physics_fps >= 0 then
 			if g_OriginalFPSLimit == nil then
 				g_OriginalFPSLimit = getFPSLimit()
@@ -242,17 +253,6 @@ function cacheMapOptions(map)
 				setFPSLimit(g_OriginalFPSLimit)
 				g_OriginalFPSLimit = nil
 			end
-		end
-	else
-		if g_OriginalVehiclePhysicsGlitchState == nil then
-			g_OriginalVehiclePhysicsGlitchState = isGlitchEnabled("vehicle_rapid_stop")
-		end
-		
-		setGlitchEnabled("vehicle_rapid_stop", false)
-		
-		if g_OriginalFPSLimit ~= nil then
-			setFPSLimit(g_OriginalFPSLimit)
-			g_OriginalFPSLimit = nil
 		end
 	end
 end

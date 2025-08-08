@@ -319,7 +319,7 @@
 					desc="Set to true to show the map author name on the travelling screen."
 					/>
 
-		<setting name="*vehicle_physics_mode" value="fixed"
+		<setting name="*vehicle_physics_mode" value="legacy"
 					friendlyname="Vehicle physics mode"
 					group="Gameplay"
 					accept="fixed,legacy"
