@@ -18,7 +18,7 @@ local function performAttachDetachTasksForPlayer(playerElement, attachTo)
 end
 
 local function processAttachData(attachData)
-	local attachDataTable = type(attachData, "table")
+	local attachDataTable = typeCheck(attachData, "table")
 
 	if (not attachDataTable) then
 		return false
@@ -33,7 +33,7 @@ local function processAttachData(attachData)
 
 	for attachDataID = 1, attachDataSize do
 		local attachDataValue = attachData[attachDataID]
-		local attachDataNumber = type(attachDataValue, "number")
+		local attachDataNumber = typeCheck(attachDataValue, "number")
 
 		if (not attachDataNumber) then
 			return false
@@ -50,7 +50,7 @@ local function adjustPlayerWeaponSlot(clientElement, attachElement, playerWeapon
 		return false
 	end
 
-	local playerWeaponSlotNumber = type(playerWeaponSlot, "number")
+	local playerWeaponSlotNumber = typeCheck(playerWeaponSlot, "number")
 
 	if (not playerWeaponSlotNumber) then
 		return false

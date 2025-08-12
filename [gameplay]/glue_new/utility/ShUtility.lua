@@ -4,10 +4,8 @@
 -- ## Version: 1.3.1					##
 -- #######################################
 
-local _type = type
-
-function type(pData, ...)
-	local dataType = _type(pData)
+function typeCheck(pData, ...)
+	local dataType = type(pData)
 
 	if (not ...) then
 		return dataType
@@ -35,7 +33,7 @@ function isElementType(pElement, ...)
 	end
 
 	local elementType = getElementType(pElement)
-	local elementsType = type(...)
+	local elementsType = typeCheck(...)
 	local elementTable = (elementsType == "table")
 	local elementTypes = (elementTable and ... or {...})
 
