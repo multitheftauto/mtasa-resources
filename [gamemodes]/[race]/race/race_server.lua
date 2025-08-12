@@ -9,6 +9,9 @@ g_VehicleClothes = {
 
 g_CurrentRaceMode = nil
 
+g_OriginalFPSLimit = nil
+g_OriginalVehiclePhysicsGlitchState = nil
+
 g_Spawnpoints = {}			-- { i = { position={x, y, z}, rotation={x, y, z}, vehicle=vehicleID, paintjob=paintjob, upgrades={...} } }
 g_Checkpoints = {}			-- { i = { position={x, y, z}, size=size, color={r, g, b}, type=type, vehicle=vehicleID, paintjob=paintjob, upgrades={...} } }
 g_Objects = {}				-- { i = { position={x, y, z}, rotation={x, y, z}, model=modelID } }
@@ -121,6 +124,10 @@ function cacheGameOptions()
 	g_GameOptions.vehicleweapons_warning_if_map_override	= getBool('race.vehicleweapons_warning_if_map_override',true)
 	g_GameOptions.hunterminigun_map_can_override	= getBool('race.hunterminigun_map_can_override',true)
 	g_GameOptions.endmapwhenonlyspectators	= getBool('race.endmapwhenonlyspectators',true)
+	g_GameOptions.vehicle_physics_mode = getString('race.vehicle_physics_mode','legacy')
+	g_GameOptions.vehicle_physics_fps = getNumber('race.vehicle_physics_fps',-1)
+	g_GameOptions.vehicle_physics_mode_map_can_override = getBool('race.vehicle_physics_mode_map_can_override',true)
+	g_GameOptions.vehicle_physics_fps_map_can_override = getBool('race.vehicle_physics_fps_map_can_override',true)
 	if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
 		outputWarning( "statskey is not set to 'name' or 'serial'" )
 		g_GameOptions.statskey = 'name'
@@ -149,6 +156,8 @@ function cacheMapOptions(map)
 	g_MapOptions.firewater		= map.firewater == 'true'
 	g_MapOptions.classicchangez	= map.classicchangez == 'true'
 	g_MapOptions.hunterminigun	= map.hunterminigun == 'true'
+	g_MapOptions.vehicle_physics_mode = map.vehicle_physics_mode or g_GameOptions.vehicle_physics_mode
+	g_MapOptions.vehicle_physics_fps = tonumber(map.vehicle_physics_fps) or g_GameOptions.vehicle_physics_fps
 
 	outputDebug("MISC", "duration = "..g_MapOptions.duration.."  respawn = "..g_MapOptions.respawn.."  respawntime = "..tostring(g_MapOptions.respawntime).."  time = "..g_MapOptions.time.."  weather = "..g_MapOptions.weather)
 
@@ -205,6 +214,47 @@ function cacheMapOptions(map)
 	if not map.hunterminigun or not g_GameOptions.hunterminigun_map_can_override then
 		g_MapOptions.hunterminigun = g_GameOptions.hunterminigun
 	end
+
+	-- Set vehicle_physics_mode from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.vehicle_physics_mode or not g_GameOptions.vehicle_physics_mode_map_can_override then
+		g_MapOptions.vehicle_physics_mode = g_GameOptions.vehicle_physics_mode
+	end
+
+	-- Set vehicle_physics_fps from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.vehicle_physics_fps or not g_GameOptions.vehicle_physics_fps_map_can_override then
+		g_MapOptions.vehicle_physics_fps = g_GameOptions.vehicle_physics_fps
+	end
+
+	if g_MapOptions.vehicle_physics_mode == "fixed" then
+		if g_OriginalVehiclePhysicsGlitchState == nil then
+			g_OriginalVehiclePhysicsGlitchState = isGlitchEnabled("vehicle_rapid_stop")
+		end
+
+		setGlitchEnabled("vehicle_rapid_stop", false)
+
+		if g_OriginalFPSLimit ~= nil then
+			setFPSLimit(g_OriginalFPSLimit)
+			g_OriginalFPSLimit = nil
+		end
+	else
+		if g_OriginalVehiclePhysicsGlitchState == nil then
+			g_OriginalVehiclePhysicsGlitchState = isGlitchEnabled("vehicle_rapid_stop")
+		end
+
+		setGlitchEnabled("vehicle_rapid_stop", true)
+
+		if g_MapOptions.vehicle_physics_fps >= 0 then
+			if g_OriginalFPSLimit == nil then
+				g_OriginalFPSLimit = getFPSLimit()
+			end
+			setFPSLimit(g_MapOptions.vehicle_physics_fps)
+		else
+			if g_OriginalFPSLimit ~= nil then
+				setFPSLimit(g_OriginalFPSLimit)
+				g_OriginalFPSLimit = nil
+			end
+		end
+	end
 end
 
 
@@ -238,6 +288,8 @@ function loadMap(res)
 	g_SavedMapSettings.classicchangez	= map.classicchangez
 	g_SavedMapSettings.firewater		= map.firewater
 	g_SavedMapSettings.hunterminigun	= map.hunterminigun
+	g_SavedMapSettings.vehicle_physics_mode		= map.vehicle_physics_mode
+	g_SavedMapSettings.vehicle_physics_fps		= map.vehicle_physics_fps
 
 	cacheMapOptions(g_SavedMapSettings)
 
@@ -727,6 +779,16 @@ function unloadAll()
 		clientCall(root, 'unloadAll')
 	end
 	TimerManager.destroyTimersFor("map")
+
+	if g_OriginalFPSLimit ~= nil then
+		setFPSLimit(g_OriginalFPSLimit)
+		g_OriginalFPSLimit = nil
+	end
+
+	if g_OriginalVehiclePhysicsGlitchState ~= nil then
+		setGlitchEnabled("vehicle_rapid_stop", g_OriginalVehiclePhysicsGlitchState)
+		g_OriginalVehiclePhysicsGlitchState = nil
+	end
 
 	Countdown.destroyAll()
 
