@@ -13,7 +13,7 @@ local function correctAttachedPlayersPosition()
 
 	for attachedPlayer, attachedToVehicle in pairs(attachSyncCorrection) do
 		local playerAttachedVehicleElement = isElement(attachedToVehicle)
-		local playerAttachedVehicleValid = true
+		local playerAttachedVehicleValid = false
 
 		if (playerAttachedVehicleElement) then
 			local playerAttachedToVehicle = getElementAttachedTo(attachedPlayer)
