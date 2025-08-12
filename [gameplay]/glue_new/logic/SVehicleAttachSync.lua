@@ -8,7 +8,6 @@ local attachSyncTimer = false
 local attachSyncCorrection = {}
 
 local function correctAttachedPlayersPosition()
-	local attachPositionWarp = false -- warp will reset player animations, we don't want that
 	local attachVehiclesPosition = {}
 
 	for attachedPlayer, attachedToVehicle in pairs(attachSyncCorrection) do
@@ -37,6 +36,7 @@ local function correctAttachedPlayersPosition()
 				attachVehiclePosition = attachVehiclesPosition[attachedToVehicle]
 			end
 
+			local attachPositionWarp = false -- warp will reset player animations, we don't want that
 			local attachPosX, attachPosY, attachPosZ = attachVehiclePosition[1], attachVehiclePosition[2], attachVehiclePosition[3]
 
 			setElementPosition(attachedPlayer, attachPosX, attachPosY, attachPosZ, attachPositionWarp)
