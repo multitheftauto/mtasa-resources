@@ -37,7 +37,7 @@ GLUE_VEHICLE_WHITELIST = { -- only relevant if GLUE_ALLOWED_ELEMENTS contains "v
 GLUE_ATTACH_OVER_VEHICLE = false -- if true, vehicles will attach over the top of target vehicle. if false, vehicles will attach but will maintain original position (seamless, precise glue'ing)
 GLUE_DETACH_ON_VEHICLE_EXPLOSION = true -- specifies whether attached elements would be automatically detached, when attachedTo vehicle explodes
 GLUE_ATTACH_ON_TOP_OFFSETS = {0, 0, 1.5} -- only relevant if GLUE_ATTACH_OVER_VEHICLE is set to true, specifies static position for attaching vehicle over vehicle
-GLUE_ATTACH_VEHICLE_MAX_DISTANCE = 5 -- specifies maximum distance for nearby vehicle to be glued (also serves anti-cheat purpose, so only nearby vehicle could be attached) 
+GLUE_ATTACH_VEHICLE_MAX_DISTANCE = 5 -- specifies maximum distance for nearby vehicle to be glued (also serves anti-cheat purpose, so only nearby vehicle could be attached)
 GLUE_ATTACH_PLAYER_MAX_DISTANCE = 10 -- ditto
 
 GLUE_PREVENT_CONTROLS = false -- prevent players from shooting their guns while attached to vehicle
