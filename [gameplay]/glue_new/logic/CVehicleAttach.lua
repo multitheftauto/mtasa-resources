@@ -186,12 +186,12 @@ local function displayGlueHintsOnVehicleEnter()
 		return false
 	end
 
-	local glueHintAttachVehicles = glueHintCanAttachVehicle and GLUE_MESSAGE_HIGHLIGHT_COLOR.."nearby vehicle#ffffff" or ""
+	local glueHintAttachVehicles = glueHintCanAttachVehicle and GLUE_MESSAGE_HIGHLIGHT_COLOR.."current/nearby vehicle#ffffff" or ""
 	local glueHintAttachYourself = glueHintCanAttachPlayer and GLUE_MESSAGE_HIGHLIGHT_COLOR.."yourself#ffffff"..(glueHintCanAttachVehicle and " or " or "") or ""
 	local glueHintAttachLock = (GLUE_ALLOW_ATTACH_TOGGLING and "#ffffff'"..GLUE_MESSAGE_HIGHLIGHT_COLOR..GLUE_ATTACH_TOGGLE_KEY.."#ffffff' is used to disable/enable attaching to your vehicle. " or "")
 	local glueHintDetachElements = (GLUE_ALLOW_DETACHING_ELEMENTS and "#ffffff'"..GLUE_MESSAGE_HIGHLIGHT_COLOR..GLUE_DETACH_ELEMENTS_KEY.."#ffffff' to detach all currently attached elements." or "")
 
-	local glueHintA = "Press '"..GLUE_MESSAGE_HIGHLIGHT_COLOR..GLUE_ATTACH_DETACH_KEY.."#ffffff' to attach "..glueHintAttachYourself..glueHintAttachVehicles.." to current vehicle."
+	local glueHintA = "Press '"..GLUE_MESSAGE_HIGHLIGHT_COLOR..GLUE_ATTACH_DETACH_KEY.."#ffffff' to attach "..glueHintAttachYourself..glueHintAttachVehicles.." to (nearby/current) vehicle."
 	local glueHintB = glueHintAttachLock
 	local glueHintC = glueHintDetachElements
 
