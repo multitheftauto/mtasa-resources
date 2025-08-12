@@ -26,19 +26,20 @@ local function correctAttachedPlayersPosition()
 			local attachVehiclePosition = attachVehiclesPosition[attachedToVehicle]
 
 			if (not attachVehiclePosition) then
-				local attachVehicleX, attachVehicleY, attachVehicleZ = getElementPosition(attachedToVehicle)
+				local attachVehiclePosX, attachVehiclePosY, attachVehiclePosZ = getElementPosition(attachedToVehicle)
 				local attachVehiclePositionData = {
-					attachVehicleX,
-					attachVehicleY,
-					attachVehicleZ,
+					attachVehiclePosX,
+					attachVehiclePosY,
+					attachVehiclePosZ,
 				}
 
 				attachVehiclesPosition[attachedToVehicle] = attachVehiclePositionData
-			else
-				local attachPosX, attachPosY, attachPosZ = attachVehiclePosition[1], attachVehiclePosition[2], attachVehiclePosition[3]
-
-				setElementPosition(attachedPlayer, attachPosX, attachPosY, attachPosZ, attachPositionWarp)
+				attachVehiclePosition = attachVehiclesPosition[attachedToVehicle]
 			end
+
+			local attachPosX, attachPosY, attachPosZ = attachVehiclePosition[1], attachVehiclePosition[2], attachVehiclePosition[3]
+
+			setElementPosition(attachedPlayer, attachPosX, attachPosY, attachPosZ, attachPositionWarp)
 		else
 			attachSyncCorrection[attachedPlayer] = nil
 		end
