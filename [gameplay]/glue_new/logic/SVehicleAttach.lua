@@ -162,6 +162,13 @@ local function detachElementsOnVehicleDestroy()
 end
 addEventHandler("onElementDestroy", root, detachElementsOnVehicleDestroy)
 
+local function detachElementsOnVehicleExplode()
+	detachAttachedVehicleElements(source)
+end
+if (GLUE_DETACH_ON_VEHICLE_EXPLOSION) then
+	addEventHandler("onVehicleExplode", root, detachElementsOnVehicleExplode)
+end
+
 local function detachElementsOnResourceStop()
 	local vehiclesTable = getElementsByType("vehicle")
 
