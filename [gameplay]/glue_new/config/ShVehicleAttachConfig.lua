@@ -56,7 +56,7 @@ GLUE_ALLOW_DETACHING_ELEMENTS = true -- should players be able to detach already
 
 GLUE_ATTACH_DETACH_KEY = "X" -- used to attach/detach yourself/vehicle
 GLUE_ATTACH_TOGGLE_KEY = "C" -- only relevant if GLUE_ALLOW_ATTACH_TOGGLING is set to true; specifies whether players can disable attaching to vehicle which are driver of
-GLUE_DETACH_ELEMENTS_KEY = "B" -- only relevant if GLUE_ALLOW_DETACHING_ELEMENTS is set to true; controls vehicle drivers are able to detach elements currently attached to their vehicle
+GLUE_DETACH_ELEMENTS_KEY = "B" -- only relevant if GLUE_ALLOW_DETACHING_ELEMENTS is set to true; controls whether vehicle driver is able to detach elements currently attached to vehicle
 
 GLUE_ATTACH_DETACH_DELAY = 300 -- how often player can attach/detach yourself/vehicle
 GLUE_ATTACH_TOGGLE_DELAY = 300 -- only relevant if GLUE_ALLOW_ATTACH_TOGGLING is set to true; how often player can toggle vehicle attach lock
