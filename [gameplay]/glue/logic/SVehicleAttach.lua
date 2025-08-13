@@ -125,9 +125,8 @@ function onServerVehicleAttachElement(attachElement, attachToElement, attachData
 
 	if (attachedElement) then
 		adjustPlayerWeaponSlot(client, attachElement, playerWeaponSlot)
+		performAttachDetachTasksForPlayer(attachElement, attachToElement)
 	end
-
-	performAttachDetachTasksForPlayer(attachElement, attachToElement)
 end
 addEvent("onServerVehicleAttachElement", true)
 addEventHandler("onServerVehicleAttachElement", root, onServerVehicleAttachElement)
@@ -139,8 +138,11 @@ function onServerVehicleDetachElement(detachElement)
 		return false
 	end
 
-	detachElements(detachElement, detachFromElement)
-	performAttachDetachTasksForPlayer(detachElement, false)
+	local detachedElement = detachElements(detachElement, detachFromElement)
+
+	if (detachedElement) then
+		performAttachDetachTasksForPlayer(detachElement, false)
+	end
 end
 addEvent("onServerVehicleDetachElement", true)
 addEventHandler("onServerVehicleDetachElement", root, onServerVehicleDetachElement)
