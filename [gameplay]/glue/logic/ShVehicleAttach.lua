@@ -37,16 +37,17 @@ function canPlayerAttachElementToVehicle(playerElement, attachElement, attachToE
 
 	local attachElementPlayer = (allowedElementType == "player")
 	local attachElementVehicle = (allowedElementType == "vehicle")
-	local playerVehicle = getPedOccupiedVehicle(playerElement)
 
 	if (attachElementPlayer) then
-		local elementPlayerSelfAttach = (playerElement == attachElement)
+		local attachPlayerSelf = (playerElement == attachElement)
 
-		if (not elementPlayerSelfAttach) then
+		if (not attachPlayerSelf) then
 			return false
 		end
 
-		if (playerVehicle) then
+		local attachPlayerVehicle = getPedOccupiedVehicle(attachElement)
+
+		if (attachPlayerVehicle) then
 			return false
 		end
 
@@ -192,9 +193,9 @@ function canPlayerDetachElementFromVehicle(playerElement, detachElement)
 	local detachElementVehicleType = (allowedElementType == "vehicle")
 
 	if (detachElementPlayerType) then
-		local elementPlayerSelfDetach = (playerElement == detachElement)
+		local detachPlayerSelf = (playerElement == detachElement)
 
-		if (not elementPlayerSelfDetach) then
+		if (not detachPlayerSelf) then
 			return false
 		end
 	end
