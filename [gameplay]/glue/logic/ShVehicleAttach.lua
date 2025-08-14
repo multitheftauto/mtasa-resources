@@ -23,6 +23,12 @@ function canPlayerAttachElementToVehicle(playerElement, attachElement, attachToE
 		return false
 	end
 
+	local attachElementAlreadyAttached = isElementAttached(attachElement)
+
+	if (attachElementAlreadyAttached) then
+		return false
+	end
+
 	local attachToElementVehicleType = isElementType(attachToElement, "vehicle")
 
 	if (not attachToElementVehicleType) then
@@ -207,15 +213,17 @@ function canPlayerDetachElementFromVehicle(playerElement, detachElement)
 			return false
 		end
 
-		local vehicleAttachToType = getVehicleType(attachToElement)
-		local vehicleAttachToHelicopter = (vehicleAttachToType == "Helicopter")
+		if (not GLUE_ALLOW_DETACHING_VEHICLES_AS_A_DRIVER) then
+			local vehicleAttachToType = getVehicleType(attachToElement)
+			local vehicleAttachToHelicopter = (vehicleAttachToType == "Helicopter")
 
-		if (not vehicleAttachToHelicopter) then
-			local vehicleController = getVehicleController(detachElement)
-			local vehicleDetachToDriver = (playerElement == vehicleController)
+			if (not vehicleAttachToHelicopter) then
+				local vehicleController = getVehicleController(detachElement)
+				local vehicleDetachToDriver = (playerElement == vehicleController)
 
-			if (not vehicleDetachToDriver) then
-				return false
+				if (not vehicleDetachToDriver) then
+					return false
+				end
 			end
 		end
 	end

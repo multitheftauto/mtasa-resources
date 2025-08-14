@@ -13,13 +13,10 @@ local function handleGlueAttachAndDetach()
 		local playerVehicleToDetach = playerVehicle
 		local playerVehicleType = getVehicleType(playerVehicle)
 		local playerVehicleHelicopter = (playerVehicleType == "Helicopter")
+		local playerHelicopterAttachedVehicle = getAttachedVehicle(playerVehicle)
 
-		if (playerVehicleHelicopter) then
-			local playerHelicopterAttachedVehicle = getAttachedVehicle(playerVehicle)
-
-			if (playerHelicopterAttachedVehicle) then
-				playerVehicleToDetach = playerHelicopterAttachedVehicle
-			end
+		if (playerHelicopterAttachedVehicle) then
+			playerVehicleToDetach = playerHelicopterAttachedVehicle
 		end
 
 		if (playerVehicleToDetach) then

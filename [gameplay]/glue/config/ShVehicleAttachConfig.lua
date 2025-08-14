@@ -53,10 +53,11 @@ GLUE_SHOW_ONE_TIME_HINT = true -- whether player should receive one-time (till r
 
 GLUE_ALLOW_ATTACH_TOGGLING = true -- should players be able to control attach lock on their vehicle (as a driver)
 GLUE_ALLOW_DETACHING_ELEMENTS = true -- should players be able to detach already attached elements (as a driver)
+GLUE_ALLOW_DETACHING_VEHICLES_AS_A_DRIVER = true -- should vehicle driver be able to detach vehicle which is attached to his own (this is default behavior for helicopters)
 
-GLUE_ATTACH_DETACH_KEY = "X" -- used to attach/detach yourself/vehicle
-GLUE_ATTACH_TOGGLE_KEY = "C" -- only relevant if GLUE_ALLOW_ATTACH_TOGGLING is set to true; specifies whether players can disable attaching to vehicle which are driver of
-GLUE_DETACH_ELEMENTS_KEY = "B" -- only relevant if GLUE_ALLOW_DETACHING_ELEMENTS is set to true; controls whether vehicle driver is able to detach elements currently attached to vehicle
+GLUE_ATTACH_DETACH_KEY = "X" -- used to attach/detach yourself/vehicle/nearby vehicle (for helicopters)
+GLUE_ATTACH_TOGGLE_KEY = "C" -- only relevant if GLUE_ALLOW_ATTACH_TOGGLING is set to true; key used for toggling attach lock
+GLUE_DETACH_ELEMENTS_KEY = "B" -- only relevant if GLUE_ALLOW_DETACHING_ELEMENTS is set to true; key used for detaching all elements attached to vehicle
 
 GLUE_ATTACH_DETACH_DELAY = 300 -- how often player can attach/detach yourself/vehicle
 GLUE_ATTACH_TOGGLE_DELAY = 300 -- only relevant if GLUE_ALLOW_ATTACH_TOGGLING is set to true; how often player can toggle vehicle attach lock
