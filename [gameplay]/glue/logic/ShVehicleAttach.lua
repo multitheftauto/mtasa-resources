@@ -110,8 +110,7 @@ function canPlayerAttachElementToVehicle(playerElement, attachElement, attachToE
 			return false
 		end
 
-		local vehicleAttachToType = getVehicleType(attachToElement)
-		local vehicleAttachToHelicopter = (vehicleAttachToType == "Helicopter")
+		local vehicleAttachToHelicopter = isVehicleHelicopter(attachToElement)
 
 		if (not vehicleAttachToHelicopter) then
 			local vehicleAttachElementController = getVehicleController(attachElement)
@@ -214,8 +213,7 @@ function canPlayerDetachElementFromVehicle(playerElement, detachElement)
 		end
 
 		if (not GLUE_ALLOW_DETACHING_VEHICLES_AS_A_DRIVER) then
-			local vehicleAttachToType = getVehicleType(attachToElement)
-			local vehicleAttachToHelicopter = (vehicleAttachToType == "Helicopter")
+			local vehicleAttachToHelicopter = isVehicleHelicopter(attachToElement)
 
 			if (not vehicleAttachToHelicopter) then
 				local vehicleController = getVehicleController(detachElement)
@@ -325,6 +323,19 @@ function canPlayerToggleVehicleAttachLock(playerElement)
 	return playerVehicle
 end
 
+function isVehicleHelicopter(vehicleElement)
+	local vehicleType = isElementType(vehicleElement, "vehicle")
+
+	if (not vehicleType) then
+		return false
+	end
+
+	local vehicleElementType = getVehicleType(vehicleElement)
+	local vehicleHelicopter = (vehicleElementType == "Helicopter")
+
+	return vehicleHelicopter
+end
+
 function getAttachedVehicle(vehicleElement)
 	local vehicleType = isElementType(vehicleElement, "vehicle")
 
@@ -374,7 +385,7 @@ function getNearestVehicleFromVehicle(vehicleElement)
 	return false
 end
 
-function getVehicleAttachData(attachVehicle, attachToVehicle)
+function getVehicleAttachRotation(attachVehicle, attachToVehicle)
 	local attachVehicleType = isElementType(attachVehicle, "vehicle")
 	local attachToVehicleType = isElementType(attachToVehicle, "vehicle")
 
@@ -384,16 +395,32 @@ function getVehicleAttachData(attachVehicle, attachToVehicle)
 
 	local vehicleStartRX, vehicleStartRY, vehicleStartRZ = getElementRotation(attachVehicle)
 	local vehicleTargetRX, vehicleTargetRY, vehicleTargetRZ = getElementRotation(attachToVehicle)
-	local vehicleRX = (vehicleStartRX - vehicleTargetRX)
-	local vehicleRY = (vehicleStartRY - vehicleTargetRY)
-	local vehicleRZ = (vehicleStartRZ - vehicleTargetRZ)
+	local vehicleAttachRX = (vehicleStartRX - vehicleTargetRX)
+	local vehicleAttachRY = (vehicleStartRY - vehicleTargetRY)
+	local vehicleAttachRZ = (vehicleStartRZ - vehicleTargetRZ)
+
+	return vehicleAttachRX, vehicleAttachRY, vehicleAttachRZ
+end
+
+function getVehicleAttachData(attachVehicle, attachToVehicle)
+	local attachVehicleType = isElementType(attachVehicle, "vehicle")
+	local attachToVehicleType = isElementType(attachToVehicle, "vehicle")
+
+	if (not attachVehicleType or not attachToVehicleType) then
+		return false
+	end
+
+	local vehicleAttachRX, vehicleAttachRY, vehicleAttachRZ = getVehicleAttachRotation(attachVehicle, attachToVehicle)
 
 	if (GLUE_ATTACH_OVER_VEHICLE) then
 		local vehicleOffsetTopX = GLUE_ATTACH_ON_TOP_OFFSETS[1]
 		local vehicleOffsetTopY = GLUE_ATTACH_ON_TOP_OFFSETS[2]
 		local vehicleOffsetTopZ = GLUE_ATTACH_ON_TOP_OFFSETS[3]
+		local vehicleOffsetTopRX = GLUE_ATTACH_ON_TOP_OFFSETS[4]
+		local vehicleOffsetTopRY = GLUE_ATTACH_ON_TOP_OFFSETS[5]
+		local vehicleOffsetTopRZ = GLUE_ATTACH_ON_TOP_OFFSETS[6]
 
-		return vehicleOffsetTopX, vehicleOffsetTopY, vehicleOffsetTopZ, vehicleRX, vehicleRY, vehicleRZ
+		return vehicleOffsetTopX, vehicleOffsetTopY, vehicleOffsetTopZ, vehicleOffsetTopRX, vehicleOffsetTopRY, vehicleOffsetTopRZ
 	end
 
 	local vehicleMatrix = getElementMatrix(attachToVehicle)
@@ -401,5 +428,5 @@ function getVehicleAttachData(attachVehicle, attachToVehicle)
 	local vehiclePosition = {vehicleStartX, vehicleStartY, vehicleStartZ}
 	local vehicleAttachX, vehicleAttachY, vehicleAttachZ = getOffsetFromXYZ(vehicleMatrix, vehiclePosition)
 
-	return vehicleAttachX, vehicleAttachY, vehicleAttachZ, vehicleRX, vehicleRY, vehicleRZ
+	return vehicleAttachX, vehicleAttachY, vehicleAttachZ, vehicleAttachRX, vehicleAttachRY, vehicleAttachRZ
 end

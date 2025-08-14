@@ -11,8 +11,7 @@ local function handleGlueAttachAndDetach()
 
 	if (playerVehicle) then
 		local playerVehicleToDetach = playerVehicle
-		local playerVehicleType = getVehicleType(playerVehicle)
-		local playerVehicleHelicopter = (playerVehicleType == "Helicopter")
+		local playerVehicleHelicopter = isVehicleHelicopter(playerVehicle)
 		local playerVehicleAttachedVehicle = getAttachedVehicle(playerVehicle)
 
 		if (playerVehicleAttachedVehicle) then
@@ -46,8 +45,12 @@ local function handleGlueAttachAndDetach()
 		local vehicleAttachX, vehicleAttachY, vehicleAttachZ, vehicleAttachRX, vehicleAttachRY, vehicleAttachRZ = getVehicleAttachData(playerVehicleAttach, playerVehicleAttachTo)
 
 		if (playerVehicleHelicopter) then
-			local helicopterAttachX, helicopterAttachY, helicopterAttachZ = 0, 0, -1.5
-			local helicopterAttachRX, helicopterAttachRY, helicopterAttachRZ = 0, 0, 0
+			local helicopterAttachX = GLUE_ATTACH_HELICOPTER_OFFSETS[1]
+			local helicopterAttachY = GLUE_ATTACH_HELICOPTER_OFFSETS[2]
+			local helicopterAttachZ = GLUE_ATTACH_HELICOPTER_OFFSETS[3]
+			local helicopterAttachRX = GLUE_ATTACH_HELICOPTER_OFFSETS[4]
+			local helicopterAttachRY = GLUE_ATTACH_HELICOPTER_OFFSETS[5]
+			local helicopterAttachRZ = GLUE_ATTACH_HELICOPTER_OFFSETS[6]
 
 			vehicleAttachX, vehicleAttachY, vehicleAttachZ = helicopterAttachX, helicopterAttachY, helicopterAttachZ
 			vehicleAttachRX, vehicleAttachRY, vehicleAttachRZ = helicopterAttachRX, helicopterAttachRY, helicopterAttachRZ
