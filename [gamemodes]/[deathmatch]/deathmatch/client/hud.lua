@@ -81,7 +81,7 @@ _hud.endScreen.update = function(_, winner, draw, aborted)
         _hud.endScreen.announcementText:color(225, 225, 225, 225)
     end
     if not aborted then
-        playSound("client/audio/mission_accomplished.mp3")
+        playSFX("radio", "Beats", 9) -- mission accomplished sound
     end
 end
 
