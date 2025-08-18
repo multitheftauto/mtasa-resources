@@ -35,21 +35,4 @@ end
 addEventHandler("onResourceStart", root, handleResourceStartStop)
 addEventHandler("onResourceStop", root, handleResourceStartStop)
 
-addEventHandler('onPlayerChat', root,
-	function(msg, type)
-		if type == 0 then
-			if freeroamRunning then
-				return -- Let freeroam handle chat
-			end
-			cancelEvent()
-			local r, g, b = getPlayerColor(source)
-			local name = getPlayerName(source)
-			msg = msg:gsub('#%x%x%x%x%x%x', '')
-			outputChatBox( name.. ': #FFFFFF' .. msg, root, r, g, b, true)
-			outputServerLog( "CHAT: " .. name .. ": " .. msg )
-		end
-	end
-)
 
-getPlayerColor = getPlayerNametagColor
-getPlayerColour = getPlayerNametagColor
