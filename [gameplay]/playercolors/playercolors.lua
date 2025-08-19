@@ -1,7 +1,5 @@
 local lowerBound, upperBound = unpack(get("color_range"))
 
-local freeroamRunning = false
-
 local function randomizePlayerColor(player)
 	player = player or source
 	local r, g, b = math.random(lowerBound, upperBound), math.random(lowerBound, upperBound), math.random(lowerBound, upperBound)
