@@ -17,7 +17,9 @@
     <!--Player Related-->
     <right name="command.kick" access="true" />
     <right name="command.freeze" access="true" />
+    <right name="command.unfreeze" access="true" />
     <right name="command.mute" access="true" />
+    <right name="command.unmute" access="true" />
     <right name="command.shout" access="true" />
     <right name="command.spectate" access="true" />
     <right name="command.slap" access="true" />
@@ -32,6 +34,7 @@
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.warpto" access="true" />
     <right name="command.getscreen" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
@@ -78,6 +81,7 @@
     <right name="command.setidlekicker" access="true" />
     <right name="command.clearchat" access="true" />
     <right name="command.setconfig" access="true" />
+    <right name="command.shutdown" access="true" />
     <!--Bans related-->
     <right name="command.ban" access="true" />
     <right name="command.unban" access="true" />
@@ -100,7 +104,9 @@
     <!--Player Related-->
     <right name="command.kick" access="true" />
     <right name="command.freeze" access="true" />
+    <right name="command.unfreeze" access="true" />
     <right name="command.mute" access="true" />
+    <right name="command.unmute" access="true" />
     <right name="command.shout" access="true" />
     <right name="command.spectate" access="true" />
     <right name="command.slap" access="true" />
@@ -115,6 +121,7 @@
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.warpto" access="true" />
     <right name="command.getscreen" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
@@ -183,7 +190,9 @@
     <!--Player Related-->
     <right name="command.kick" access="false" />
     <right name="command.freeze" access="true" />
+    <right name="command.unfreeze" access="true" />
     <right name="command.mute" access="true" />
+    <right name="command.unmute" access="true" />
     <right name="command.shout" access="true" />
     <right name="command.spectate" access="true" />
     <right name="command.slap" access="true" />
@@ -198,6 +207,7 @@
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.warpto" access="true" />
     <right name="command.getscreen" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
@@ -266,7 +276,9 @@
     <!--Player Related-->
     <right name="command.kick" access="false" />
     <right name="command.freeze" access="false" />
+    <right name="command.unfreeze" access="false" />
     <right name="command.mute" access="false" />
+    <right name="command.unmute" access="false" />
     <right name="command.shout" access="false" />
     <right name="command.spectate" access="false" />
     <right name="command.slap" access="false" />
@@ -281,14 +293,18 @@
     <right name="command.setstat" access="false" />
     <right name="command.jetpack" access="false" />
     <right name="command.warp" access="false" />
+    <right name="command.warpto" access="false" />
     <right name="command.getscreen" access="false" />
     <right name="command.setdimension" access="false" />
     <right name="command.setinterior" access="false" />
+    <!--Teams related-->
+    <right name="command.createteam" access="false" />
+    <right name="command.destroyteam" access="false" />
     <!--Vehicle related-->
     <right name="command.givevehicle" access="false" />
     <right name="command.repair" access="false" />
-    <right name="command.blow" access="false" />
-    <right name="command.destroy" access="false" />
+    <right name="command.blowvehicle" access="false" />
+    <right name="command.destroyvehicle" access="false" />
     <right name="command.customize" access="false" />
     <right name="command.setcolor" access="false" />
     <right name="command.setpaintjob" access="false" />
@@ -324,6 +340,7 @@
     <right name="command.setidlekicker" access="false" />
     <right name="command.clearchat" access="false" />
     <right name="command.setconfig" access="false" />
+    <right name="command.shutdown" access="false" />
     <!--Bans related-->
     <right name="command.ban" access="false" />
     <right name="command.unban" access="false" />
