@@ -115,7 +115,7 @@ local function handleBanRequest(action, data)
     end
     
     -- Permissions check
-    if not hasObjectPermissionTo(source, "command."..action) then
+    if not hasObjectPermissionTo(source, "command."..action, false) then
         outputChatBox("Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0)
         return
     end
