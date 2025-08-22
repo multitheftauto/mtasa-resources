@@ -444,6 +444,8 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if usedResources['race'] then
 		usedResources['editor_main'] = true
 	end
+	-- Add EDF namespace
+	xmlNodeSetAttribute(xmlNode, "xmlns:edf", "https://wiki.multitheftauto.com/wiki/Resource:Editor/EDF")
 	-- Save in the map node the used definitions
 	local usedDefinitions = ""
 	for resource2 in pairs(usedResources) do
@@ -598,6 +600,8 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		if usedResources['race'] then
 			usedResources['editor_main'] = true
 		end
+		-- Add EDF namespace
+		xmlNodeSetAttribute(xmlNode, "xmlns:edf", "https://wiki.multitheftauto.com/wiki/Resource:Editor/EDF")
 		-- Save in the map node the used definitions
 		local usedDefinitions = ""
 		for resource2 in pairs(usedResources) do
