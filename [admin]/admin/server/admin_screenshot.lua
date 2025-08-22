@@ -42,7 +42,7 @@ addEventHandler("aScreenShot",root,
 		if not isElement(admin) then return end
 		if not action then return end
 		local right = rights[action]
-		if not right or not hasObjectPermissionTo(admin,"command."..right) then return end
+		if not right or not hasObjectPermissionTo(admin,"command."..right, false) then return end
 		if action == "new" then
 			if not isElement(player) then return end
 			if screenshots[player] then
