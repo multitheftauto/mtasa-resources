@@ -256,7 +256,7 @@ local aACLFunctions = {
 addEvent(EVENT_ACL, true)
 addEventHandler(EVENT_ACL, root,
     function(action, ...)
-        if not hasObjectPermissionTo( client, "general.tab_acl" ) then
+        if not hasObjectPermissionTo( client, "general.tab_acl", false ) then
             outputServerLog( ( "[ADMIN SECURITY]: Player %s [%s %s] attempted to tamper with server ACL without proper rights" ):format( client.name, client.ip, client.serial ) )
             return
         end
