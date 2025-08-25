@@ -1,7 +1,5 @@
 local g_PlayerData = {}
 local g_VehicleData = {}
-local chatTime = {}
-local lastChatMessage = {}
 
 g_ArmedVehicles = {
 	[425] = true,
@@ -447,34 +445,6 @@ function fadeVehiclePassengersCamera(toggle)
 	end
 end
 
-addEventHandler('onPlayerChat', root,
-	function(msg, type)
-		if type == 0 then
-			cancelEvent()
-			if not hasObjectPermissionTo(source, "command.kick") and not hasObjectPermissionTo(source, "command.mute") then
-				if chatTime[source] and chatTime[source] + tonumber(get("*chat/mainChatDelay")) > getTickCount() then
-					outputChatBox("Stop spamming main chat!", source, 255, 0, 0)
-					return
-				else
-					chatTime[source] = getTickCount()
-				end
-				if get("*chat/blockRepeatMessages") == "true" and lastChatMessage[source] and lastChatMessage[source] == msg then
-					outputChatBox("Stop repeating yourself!", source, 255, 0, 0)
-					return
-				else
-					lastChatMessage[source] = msg
-				end
-			end
-			if isElement(source) then
-				local r, g, b = getPlayerNametagColor(source)
-				outputChatBox(getPlayerName(source) .. ': #FFFFFF' .. stripHex(msg), root, r, g, b, true)
-				outputServerLog( "CHAT: " .. getPlayerName(source) .. ": " .. msg )
-			end
-		end
-	end
-)
-
-
 addEventHandler('onVehicleEnter', root,
 	function(player, seat)
 		if not g_VehicleData[source] then
@@ -599,8 +569,6 @@ function quitHandler(player)
 	table.each(g_PlayerData[source].vehicles, unloadVehicle)
 	removeEventHandler("onFreeroamLocalSettingChange",source,onLocalSettingChange)
 	g_PlayerData[source] = nil
-	chatTime[source] = nil
-	lastChatMessage[source] = nil
 end
 addEventHandler('onPlayerQuit', root, quitHandler)
 
