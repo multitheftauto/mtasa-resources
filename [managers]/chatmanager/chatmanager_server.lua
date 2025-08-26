@@ -21,7 +21,7 @@ function chatHandler(msg, type)
 		end
 		if isElement(source) then
 			local r, g, b = 255, 255, 255
-			if get("*nameColorMode") == "nametag" then 
+			if get("*nameColorMode") == "nametag" then
 				r, g, b = getPlayerNametagColor(source)
 			elseif get("*nameColorMode") == "team" then
 				local team = getPlayerTeam(source)
