@@ -1,4 +1,4 @@
-<map>
+﻿<map edf:definitions="briefcaserace">
 
   <team name="Hippies" color="#ff7f50" />
   <team name="Suits" color="#6495ed" />
