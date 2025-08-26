@@ -9,7 +9,7 @@
 **************************************]]
 
 local function hasClientPermissionTo(strRight)
-    if client and not hasObjectPermissionTo(client, strRight) then
+    if client and not hasObjectPermissionTo(client, strRight, false) then
         outputServerLog( ( "[ADMIN SECURITY]: Player %s [%s %s] attempted to perform admin data sync without proper rights (%s)" ):format( client.name, client.ip, client.serial, strRight ) )
         return false
     end
@@ -127,7 +127,7 @@ addEventHandler(
 
             for id, player in ipairs(aPlayers) do
                 tableOut[player] = {}
-                tableOut[player]["admin"] = hasObjectPermissionTo(player, "general.adminpanel")
+                tableOut[player]["admin"] = hasObjectPermissionTo(player, "general.adminpanel", false)
                 if (tableOut[player]["admin"]) then
                     tableOut[player]["chat"] = aPlayers[player]["chat"]
                 end

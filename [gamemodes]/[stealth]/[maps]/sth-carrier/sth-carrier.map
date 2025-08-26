@@ -1,4 +1,4 @@
-<map edf:definitions="stealth,editor_main">
+﻿<map edf:definitions="stealth">
     <mercenaryspawn id="mercenaryspawn (1)" interior="0" posX="-1253.73828125" posY="498.69299316406" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
     <mercenaryspawn id="mercenaryspawn (2)" interior="0" posX="-1255.0395507813" posY="498.6923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />
     <mercenaryspawn id="mercenaryspawn (3)" interior="0" posX="-1256.3393554688" posY="498.6923828125" posZ="18.234375" rotX="0" rotY="0" rotZ="0" />

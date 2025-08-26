@@ -7,6 +7,8 @@
 	<setting name="respawntime" friendlyname="Respawn delay" type="natural" description="Time from death to respawn in seconds. Default is 5." default="5" required="true"/>
 	<setting name="autopimp" friendlyname="Auto pimp" type="selection:true,false" default="true" description="Whether to apply a selection of visual upgrades to vehicles." required="false"/>
 	<setting name="firewater" friendlyname="Fire water" type="selection:true,false" default="false" description="Whether to explode the player when entering the water." required="false"/>
+	<setting name="vehicle_physics_mode" friendlyname="Vehicle physics mode" type="selection:fixed,legacy" description="Sets the vehicle physics mode. Use fixed (recommended) for FPS-independent physics, or legacy to use FPS-dependent physics." required="false"/>
+	<setting name="vehicle_physics_fps" friendlyname="Vehicle physics FPS" type="string" description="FPS limit to use when vehicle physics mode is set to legacy. This setting changes the limit: -1 = leave unchanged, 0 = unlimited, 25+ = specific limit." required="false"/>
 
 	<element name="spawnpoint" friendlyname="Spawnpoint" icon="edf/spawnpoint.png">
 		<data name="position" type="coord3d" default="0,0,0" />
