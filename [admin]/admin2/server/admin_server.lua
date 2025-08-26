@@ -37,7 +37,7 @@ function aHandleIP2CUpdate()
 
     for playerID = 1, #playersTable do
         local playerElement = playersTable[playerID]
-        local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel")
+        local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel", false)
 
         if hasAdminPermission then
             
@@ -77,7 +77,7 @@ addEventHandler(
         if (resource ~= getThisResource()) then
             local resourceName = getResourceName(resource)
             for id, player in ipairs(getElementsByType("player")) do
-                if (hasObjectPermissionTo(player, "general.tab_resources")) then
+                if (hasObjectPermissionTo(player, "general.tab_resources", false)) then
                     triggerClientEvent(player, "aClientResourceStart", root, resourceName)
                 end
             end
@@ -104,7 +104,7 @@ addEventHandler(
         if (resource ~= getThisResource()) then
             local resourceName = getResourceName(resource)
             for id, player in ipairs(getElementsByType("player")) do
-                if (hasObjectPermissionTo(player, "general.tab_resources")) then
+                if (hasObjectPermissionTo(player, "general.tab_resources", false)) then
                     triggerClientEvent(player, "aClientResourceStop", root, resourceName)
                 end
             end
@@ -124,7 +124,7 @@ addEventHandler(
     function()
         aPlayerInitialize(source)
         for id, player in ipairs(getElementsByType("player")) do
-            if (hasObjectPermissionTo(player, "general.adminpanel")) then
+            if (hasObjectPermissionTo(player, "general.adminpanel", false)) then
                 triggerClientEvent(
                     player,
                     "aClientPlayerJoin",
@@ -207,7 +207,7 @@ addEventHandler(
     "aTeam",
     root,
     function(action, name, ...)
-        if (hasObjectPermissionTo(client, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action, false)) then
             local func = aFunctions.team[action]
             if (func) then
                 local result, mdata1, mdata2 = func(name, ...)
@@ -229,7 +229,7 @@ addEventHandler(
     "aPlayer",
     root,
     function(player, action, ...)
-        if (hasObjectPermissionTo(client, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action, false)) then
             local mdata1, mdata2
             local func = aFunctions.player[action]
             if (func) then
@@ -257,7 +257,7 @@ addEventHandler(
         if (not vehicle) then
             return
         end
-        if (hasObjectPermissionTo(client, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action, false)) then
             local mdata1, mdata2
             local func = aFunctions.vehicle[action]
             if (func) then
@@ -298,7 +298,7 @@ addEventHandler(
         if (not resource) then
             return
         end
-        if (hasObjectPermissionTo(client, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action, false)) then
             local func = aFunctions.resource[action]
             if (func) then
                 local result, mdata1, mdata2 = func(resource, ...)
@@ -320,7 +320,7 @@ addEventHandler(
     "aServer",
     root,
     function(action, ...)
-        if (hasObjectPermissionTo(client, "command." .. action)) then
+        if (hasObjectPermissionTo(client, "command." .. action, false)) then
             local func = aFunctions.server[action]
             if (func) then
                 local result, mdata1, mdata2 = func(...)
@@ -395,7 +395,7 @@ addEventHandler(
             triggerClientEvent(client, "aMessage", client, "get", aReports)
         end
         for id, p in ipairs(getElementsByType("player")) do
-            if (hasObjectPermissionTo(p, "general.adminpanel")) then
+            if (hasObjectPermissionTo(p, "general.adminpanel", false)) then
                 triggerEvent(EVENT_SYNC, p, SYNC_MESSAGES)
             end
         end

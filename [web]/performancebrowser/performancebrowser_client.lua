@@ -4,7 +4,7 @@
 --
 --
 
-me = getLocalPlayer ()
+me = localPlayer
 local bSupportsStats = getPerformanceStats ~= nil
 
 addEventHandler("onClientResourceStart", resourceRoot,
