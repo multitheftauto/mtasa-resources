@@ -730,7 +730,7 @@ function checkpointReached(elem)
 		local rc = getRadioChannel()
 		setRadioChannel(0)
 		addEventHandler("onClientPlayerRadioSwitch", root, onChange)
-		playSound("audio/mission_accomplished.mp3")
+		playSFX("radio", "Beats", 9) -- mission accomplished sound
 		setTimer(changeRadioStation, 8000, 1, rc)
 		if g_GUI.hurry then
 			Animation.createAndPlay(g_GUI.hurry, Animation.presets.guiFadeOut(500), destroyElement)

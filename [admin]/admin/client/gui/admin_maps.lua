@@ -65,14 +65,15 @@ function guiClick(button)
 			if source == aTabMap.RefreshList then
 				guiGridListClear(aTabMap.MapList)
 				triggerServerEvent("getMaps_s", localPlayer, true)
+				return
 			end
-			if ( source ~= aTabMap.MapListSearch ) and guiGridListGetSelectedItem ( aTabMap.MapList ) == -1 then
+			local selectedRow = guiGridListGetSelectedItem( aTabMap.MapList )
+			local mapName = guiGridListGetItemText ( aTabMap.MapList, selectedRow, 1 )
+			local mapResName = guiGridListGetItemText ( aTabMap.MapList, selectedRow, 2 )
+			local gamemode = guiGridListGetItemText ( aTabMap.MapList, selectedRow, 3 )
+			if ( source == aTabMap.Start or source == aTabMap.NextMap ) and selectedRow == -1 then
 				aMessageBox ( "error", "No map selected!" )
-			end
-			local mapName = guiGridListGetItemText ( aTabMap.MapList, guiGridListGetSelectedItem( aTabMap.MapList ), 1 )
-			local mapResName = guiGridListGetItemText ( aTabMap.MapList, guiGridListGetSelectedItem( aTabMap.MapList ), 2 )
-			local gamemode = guiGridListGetItemText ( aTabMap.MapList, guiGridListGetSelectedItem( aTabMap.MapList ), 3 )
-			if source == aTabMap.MapList then
+			elseif source == aTabMap.MapList then
 				if gamemode == "race" then
 					guiSetEnabled(aTabMap.NextMap, true)
 				else
