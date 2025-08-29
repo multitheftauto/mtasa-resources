@@ -2328,6 +2328,7 @@ function toggleFRWindow()
 		showCursor(false)
 		hideAllWindows()
 		colorPicker.closeSelect()
+		closePositionWindow()
 	else
 		if guiGetInputMode() ~= "no_binds_when_editing" then
 			guiSetInputMode("no_binds_when_editing")
