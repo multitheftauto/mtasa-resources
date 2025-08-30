@@ -342,8 +342,8 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab6.AdminChatOutput 	= guiCreateCheckBox ( 0.05, 0.20, 0.47, 0.04, "Output admin messages to chat box", false, true, aTab6.Tab )
 						  guiCreateHeader (  0.03, 0.30, 0.47, 0.04, "Appearance:", true, aTab6.Tab )
 						  guiCreateHeader ( 0.63, 0.05, 0.10, 0.05, "Account:", true, aTab6.Tab )
-		aTab6.AutoLogin		= guiCreateCheckBox ( 0.65, 0.10, 0.47, 0.04, "Auto-login by serial", false, true, aTab6.Tab )
-						  guiSetVisible ( aTab6.AutoLogin, false )	-- Not used
+		-- aTab6.AutoLogin		= guiCreateCheckBox ( 0.65, 0.10, 0.47, 0.04, "Auto-login by serial", false, true, aTab6.Tab )
+		-- 				  guiSetVisible ( aTab6.AutoLogin, false )	-- Not used
 						  guiCreateHeader ( 0.63, 0.15, 0.25, 0.05, "Change Password:", true, aTab6.Tab )
 						  guiCreateLabel ( 0.65, 0.20, 0.15, 0.05, "Old password:", true, aTab6.Tab )
 						  guiCreateLabel ( 0.65, 0.25, 0.15, 0.05, "New password:", true, aTab6.Tab )
@@ -1177,8 +1177,8 @@ function aClientClick ( button )
 				end
 			elseif ( source == aTab6.PerformanceAdvanced ) then
 				aPerformance()
-			elseif ( source == aTab6.AutoLogin ) then
-				triggerServerEvent ( "aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
+			-- elseif ( source == aTab6.AutoLogin ) then
+			-- 	triggerServerEvent ( "aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected ( aTab6.AutoLogin ) )
 			--elseif ( source == aTab6.PasswordOld ) then
 
 			--elseif ( source == aTab6.PasswordNew ) then
