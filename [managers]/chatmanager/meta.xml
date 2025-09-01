@@ -1,5 +1,5 @@
 <meta>
-    <info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" name="Chat Manager" description="Chat manager with player/team colors and spam protection." type="script" />
+    <info author="omar-o22" version="1.0" name="Chat Manager" description="Chat manager with player/team colors and spam protection." type="script" />
 	<script src="chatmanager_server.lua" type="server"/>
 
 	<settings>
