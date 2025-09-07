@@ -8,12 +8,12 @@ addEventHandler ( "onResourceStart", resourceRoot, function ( )
     local resName = getResourceName ( resource )
 
     if resName ~= "hedit" and not DEBUGMODE then
-        print ( "[HEDIT] Please rename resource '"..resName.."' to 'hedit' to use the handling editor.")
+        outputDebugString ( "[HEDIT] Please rename resource '"..resName.."' to 'hedit' to use the handling editor.", 1)
         return cancelEvent ( true, "Rename the handling editor resource to 'hedit' in order to use the resource." )
     end
 
     if fileExists ( "handling.cfg" ) then
-        print ( "[HEDIT] Handling.cfg found; type 'loadcfg' to load handling.cfg into the memory.")
+        outputDebugString ( "[HEDIT] Handling.cfg found; type 'loadcfg' to load handling.cfg into the memory.")
     end
 
 	--Parse meta settings
