@@ -7,8 +7,6 @@ addEventHandler ( "onResourceStart", resourceRoot, function ( )
 
     local resName = getResourceName ( resource )
 
-	setElementData(resourceRoot, "resourceVersion", getResourceInfo(resource, "version"))
-
     if resName ~= "hedit" and not DEBUGMODE then
         print ( "[HEDIT] Please rename resource '"..resName.."' to 'hedit' to use the handling editor.")
         return cancelEvent ( true, "Rename the handling editor resource to 'hedit' in order to use the resource." )
@@ -23,7 +21,7 @@ addEventHandler ( "onResourceStart", resourceRoot, function ( )
 	addEventHandler("onSettingChange", root, parseMetaSettings)
 
 	for model=400,611 do
-        setElementData ( root, "originalHandling."..tostring ( model ), getOriginalHandling ( model, true ) )
+        setElementData ( resourceRoot, "hedit:originalHandling."..tostring ( model ), getOriginalHandling ( model, true ), true, "deny" )
     end
 
     --initiateCFGLoader ( )

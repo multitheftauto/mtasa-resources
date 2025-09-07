@@ -127,5 +127,5 @@ function parseMetaSettings()
 			outputDebugString("Missing setting for "..handlingProperty..", defaulting to false.", 2)
 		end
 	end
-	setElementData(resourceRoot, "propertySettings", propertySettings)
+	setElementData(resourceRoot, "hedit:propertySettings", propertySettings, true, "deny")
 end

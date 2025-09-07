@@ -1,7 +1,7 @@
 <meta>
-    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.5" description="The first ingame handling editor for MTA!" />
+    <info type="script" name="Ingame Handling Editor" author="Remi-X, MTA contributors (github.com/multitheftauto/mtasa-resources)" version="2.1.6" description="The first ingame handling editor for MTA!" />
     <oop>true</oop>
-    <min_mta_version server="1.4.0" client="1.4.0" />
+    <min_mta_version server="1.6.0-9.22815" client="1.6.0-9.22815" />
 
     <!-- SHARED -->
     <script src="shared/variables/general.lua"      type="shared" />
