@@ -10,23 +10,12 @@ addEventHandler ( "onResourceStart", resourceRoot, function ( )
 	setElementData(resourceRoot, "resourceVersion", getResourceInfo(resource, "version"))
 
     if resName ~= "hedit" and not DEBUGMODE then
-        outputChatBox ( "Handling Editor failed to start, see the logs for more information." )
-        print ( "===============================================================================" )
-        print ( "[HEDIT] Please rename resource '"..resName.."' to 'hedit' to use the handling editor." )
-        print ( "[HEDIT] The handling editor will not work unless you rename the resource to 'hedit'." )
-        print ( "===============================================================================" )
+        print ( "[HEDIT] Please rename resource '"..resName.."' to 'hedit' to use the handling editor.")
         return cancelEvent ( true, "Rename the handling editor resource to 'hedit' in order to use the resource." )
     end
 
-
-    print ( "===============================================================================" )
-    print ( " MTA:SA HANDLING EDITOR [hedit.github.io]" )
-    print ( "===============================================================================" )
     if fileExists ( "handling.cfg" ) then
-        print ( " Handling.cfg found." )
-        print ( " Type 'loadcfg' to load handling.cfg into the memory." )
-        print ( " After this, you can import the handling into defaults.xml." )
-        print ( "===============================================================================" )
+        print ( "[HEDIT] Handling.cfg found; type 'loadcfg' to load handling.cfg into the memory.")
     end
 
 	--Parse meta settings
