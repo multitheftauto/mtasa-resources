@@ -98,8 +98,6 @@
 		-->
 		<setting name="*vehicles/disallowed_warp" value="[[425, 520, 476, 447, 464, 432]]" />
 
-		<setting name="*chat/mainChatDelay" value="1000" />   <!-- Miliseconds between each message a player can send through main chat -->
-		<setting name="*chat/blockRepeatMessages" value="true" />   <!-- Prevent a player from saying the same thing twice in a row to spam -->
 		<setting name="*gui/antiram" value="true" /> <!-- Allow player to use vehicle ghostmode (anti-ram) from F1? -->
 		<setting name="*gui/disablewarp" value="true" /> <!-- Allow player to prevent others warping to them from F1? -->
 		<setting name="*gui/disableknife" value="true" /> <!-- Allow player to prevent themselves from getting knifekilled and vice versa (instakilled from behind) from F1? -->

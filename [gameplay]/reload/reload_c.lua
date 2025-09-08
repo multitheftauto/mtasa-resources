@@ -1,5 +1,8 @@
-local reloadKey = "r"
-local reloadCmd = "reload"
+local reloadCmd = "Reload weapon"
+local reloadKey = getKeyBoundToCommand("Reload weapon")
+if not reloadKey then
+    reloadKey = "r"
+end
 
 local blockedTasks = {
     ["TASK_SIMPLE_JUMP"] = true,
