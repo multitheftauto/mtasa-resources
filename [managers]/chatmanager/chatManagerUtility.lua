@@ -15,7 +15,7 @@ function getPlayerNickname(playerElement)
 end
 
 function removeStringHEX(stringToRemoveHEX)
-	local stringSavedLength = false
+	local stringSavedLength = nil
 	local stringLengthMatching = false
 
 	while (not stringLengthMatching) do
