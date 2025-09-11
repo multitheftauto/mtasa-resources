@@ -11,9 +11,9 @@
 		<setting name="*blockRepeatMessages" value="true"/> <!-- prevent a player from saying the same thing twice in a row to spam -->
 		<setting name="*playerDefaultColor" value="0,255,255"/> <!-- default color for player if nameColorMode = "team" and not in team -->
 		<setting name="*removeHex" value="false"
-			friendlyname="Remove HEX Codes"
+			friendlyname="Remove player name HEX color"
 			accept="true,false"
-			desc="Setting this to true will remove all HEX codes from players in chat."
+			desc="Setting this to true will remove all HEX codes from player names in chat."
 		/>
 		<setting name="*nameColorMode" value="nametag"
 			friendlyname="Name Color Mode"
