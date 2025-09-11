@@ -14,20 +14,15 @@ function getPlayerNickname(playerElement)
 	return playerName
 end
 
-function removeStringHEX(stringToRemoveHEX)
-	local stringSavedLength = nil
-	local stringLengthMatching = false
+function removeStringHEX(stringText)
+	local stringSavedLength
 
-	while (not stringLengthMatching) do
-		stringSavedLength = utf8.len(stringToRemoveHEX)
-		stringToRemoveHEX = string.gsub(stringToRemoveHEX, "#%x%x%x%x%x%x", "")
+	repeat
+		stringSavedLength = utf8.len(stringText)
+		stringText = string.gsub(stringText, "#%x%x%x%x%x%x", "")
+	until utf8.len(stringText) == stringSavedLength
 
-		local stringLengthNow = utf8.len(stringToRemoveHEX)
-
-		stringLengthMatching = (stringLengthNow == stringSavedLength)
-	end
-
-	return stringToRemoveHEX
+	return stringText
 end
 
 function getOrSetPlayerDelay(playerElement, delayID, delayTime)
