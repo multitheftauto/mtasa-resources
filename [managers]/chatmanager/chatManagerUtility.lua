@@ -60,4 +60,4 @@ end
 local function clearPlayersDelay()
 	playerDelays[source] = nil
 end
-addEventHandler(IS_SERVER and "onPlayerQuit" or "onClientPlayerQuit", root, clearPlayersDelay)
+addEventHandler("onPlayerQuit", root, clearPlayersDelay)
