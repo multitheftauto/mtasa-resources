@@ -72,7 +72,6 @@ local function updateChatManagerSetting(chatManagerSettingKey)
 	end
 
 	local chatManagerValue = get(chatManagerSettingKey)
-	local chatManagerVariable = chatManagerSetting[1]
 
 	if (not chatManagerValue) then
 		local chatManagerLog = "[chatManager]: Failed to retrieve setting key '"..chatManagerSettingKey.."'."
@@ -84,6 +83,7 @@ local function updateChatManagerSetting(chatManagerSettingKey)
 		return false
 	end
 
+	local chatManagerVariable = chatManagerSetting[1]
 	local chatManagerFunction = chatManagerSetting[2]
 
 	if (chatManagerFunction) then
