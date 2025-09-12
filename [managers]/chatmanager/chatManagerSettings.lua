@@ -9,11 +9,16 @@ local chatManagerSettingsTemplate = {
 		end,
 	},
 
-	["*omitChatDelayRight"] = {
+	["*omitChatDelayRights"] = {
 		"CHAT_MANAGER_OMIT_CHAT_DELAY_RIGHTS",
 
 		function(chatManagerSettingValue)
 			local chatManagerOmitRight = { chatManagerSettingValue }
+			local chatManagerOmitRights = split(chatManagerSettingValue, ",")
+
+			if (chatManagerOmitRights) then
+				return chatManagerOmitRights
+			end
 
 			return chatManagerOmitRight
 		end,
