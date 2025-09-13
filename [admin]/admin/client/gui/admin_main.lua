@@ -144,6 +144,12 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 			if weaponID then
 				aCurrentWeapon = weaponID
 				guiSetText(aTab1.GiveWeapon, "Give: " .. (shortNames[selectedText] or selectedText))
+			else
+				local weaponID = getWeaponIDFromName(selectedText)
+				if weaponID then
+					aCurrentWeapon = weaponID
+					guiSetText(aTab1.GiveWeapon, "Give: " .. (shortNames[selectedText] or selectedText))
+				end
 			end
 		end)
 
@@ -177,6 +183,12 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 			if modelID then
 				aCurrentVehicle = modelID
 				guiSetText ( aTab1.GiveVehicle, "Give: "..selectedText )
+			else
+				local modelID = getVehicleModelFromName(selectedText)
+				if modelID then
+					aCurrentVehicle = modelID
+					guiSetText ( aTab1.GiveVehicle, "Give: "..selectedText )
+				end
 			end
 		end)
 
