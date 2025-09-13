@@ -13,12 +13,13 @@ local chatManagerSettingsTemplate = {
 		"CHAT_MANAGER_OMIT_CHAT_DELAY_RIGHTS",
 
 		function(chatManagerSettingValue)
-			local chatManagerOmitRight = { chatManagerSettingValue }
 			local chatManagerOmitRights = split(chatManagerSettingValue, ",")
 
 			if (chatManagerOmitRights) then
 				return chatManagerOmitRights
 			end
+
+			local chatManagerOmitRight = { chatManagerSettingValue }
 
 			return chatManagerOmitRight
 		end,
