@@ -145,9 +145,9 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 				aCurrentWeapon = weaponID
 				guiSetText(aTab1.GiveWeapon, "Give: " .. (shortNames[selectedText] or selectedText))
 			else
-				local weaponID = getWeaponIDFromName(selectedText)
-				if weaponID then
-					aCurrentWeapon = weaponID
+				local fallbackWeaponID = getWeaponIDFromName(selectedText)
+				if fallbackWeaponID then
+					aCurrentWeapon = fallbackWeaponID
 					guiSetText(aTab1.GiveWeapon, "Give: " .. (shortNames[selectedText] or selectedText))
 				end
 			end
@@ -184,9 +184,9 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 				aCurrentVehicle = modelID
 				guiSetText ( aTab1.GiveVehicle, "Give: "..selectedText )
 			else
-				local modelID = getVehicleModelFromName(selectedText)
-				if modelID then
-					aCurrentVehicle = modelID
+				local fallbackModelID = getVehicleModelFromName(selectedText)
+				if fallbackModelID then
+					aCurrentVehicle = fallbackModelID
 					guiSetText ( aTab1.GiveVehicle, "Give: "..selectedText )
 				end
 			end
