@@ -5,27 +5,33 @@ mapsettings.gamemodeSettings = {}
 local valueWidget
 local isHandled
 addEventHandler ( "doLoadEDF", root,
-function(tableEDF, resource)
+function(tableEDF, resource, isMapLoading)
 	--store all our data neatly under the resource
 	edfSettings[resource] = tableEDF["settings"]
 	refreshGamemodeSettings()
 	--send back the intepreted gui table so the server knows the settings !!Lazy, server could interpret this info or only one client could send it
-	mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
-	currentMapSettings.rowData = rowData
-	currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
-	triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings, true )
+	-- prevent edf from overwriting map settings while the map is being loaded
+	if not isMapLoading then
+		mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
+		currentMapSettings.rowData = rowData
+		currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
+		triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings, true )
+	end
 end )
 
 addEventHandler ( "doUnloadEDF", root,
-function(resource)
+function(resource, isMapLoading)
 	--store all our data neatly under the resource
 	edfSettings[resource] = nil
 	refreshGamemodeSettings()
 	--send back the intepreted gui table so the server knows the settings !!Lazy, server could interpret this info or only one client could send it
-	mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
-	currentMapSettings.rowData = rowData
-	currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
-	triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings, true )
+	-- prevent edf from overwriting map settings while the map is being loaded
+	if not isMapLoading then
+		mapsettings.gamemodeSettings = copyTable ( mapsettings.rowValues )
+		currentMapSettings.rowData = rowData
+		currentMapSettings.gamemodeSettings = mapsettings.gamemodeSettings
+		triggerServerEvent ( "doSaveMapSettings", localPlayer, currentMapSettings, true )
+	end
 end )
 
 function refreshGamemodeSettings()
