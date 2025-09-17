@@ -13,6 +13,10 @@ local function syncElementRotation(element, value)
 	edf.edfSetElementRotation(element, rx, ry, rz, "ZYX")
 end
 
+local function syncElementScale(element, scale)
+	edf.edfSetElementScale(element, scale)
+end
+
 local function syncElementDimension(element, dim)
 	setElementData(element, "me:dimension", dim)
 end
@@ -45,6 +49,7 @@ end
 local specialSyncers = {
 	position = syncElementPosition,
 	rotation = syncElementRotation,
+	scale = syncElementScale,
 	dimension = syncElementDimension,
 	interior = syncElementInterior,
 	alpha = syncElementAlpha,

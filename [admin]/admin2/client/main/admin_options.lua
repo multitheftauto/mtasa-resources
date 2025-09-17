@@ -19,20 +19,20 @@ function aOptionsTab.Create(tab)
         guiCreateCheckBox(0.05, 0.15, 0.47, 0.04, "Play sound on incoming admin chat message", aGetSetting("adminChatSound"), true, aOptionsTab.Tab)
 
     --guiCreateHeader(0.03, 0.30, 0.47, 0.04, "Appearance:", true, aOptionsTab.Tab)
-    guiCreateHeader(0.63, 0.05, 0.10, 0.05, "Account:", true, aOptionsTab.Tab)
-    aOptionsTab.AutoLogin =
-        guiCreateCheckBox(0.65, 0.10, 0.47, 0.04, "Auto-login by serial", false, true, aOptionsTab.Tab)
-    guiCreateHeader(0.63, 0.15, 0.25, 0.05, "Change Password:", true, aOptionsTab.Tab)
-    guiCreateLabel(0.65, 0.20, 0.15, 0.05, "Old password:", true, aOptionsTab.Tab)
-    guiCreateLabel(0.65, 0.25, 0.15, 0.05, "New password:", true, aOptionsTab.Tab)
-    guiCreateLabel(0.65, 0.30, 0.15, 0.05, "Confirm:", true, aOptionsTab.Tab)
-    aOptionsTab.PasswordOld = guiCreateEdit(0.80, 0.20, 0.15, 0.045, "", true, aOptionsTab.Tab)
-    aOptionsTab.PasswordNew = guiCreateEdit(0.80, 0.25, 0.15, 0.045, "", true, aOptionsTab.Tab)
-    aOptionsTab.PasswordConfirm = guiCreateEdit(0.80, 0.30, 0.15, 0.045, "", true, aOptionsTab.Tab)
+    -- guiCreateHeader(0.63, 0.05, 0.10, 0.05, "Account:", true, aOptionsTab.Tab)
+    -- aOptionsTab.AutoLogin =
+    --     guiCreateCheckBox(0.65, 0.10, 0.47, 0.04, "Auto-login by serial", false, true, aOptionsTab.Tab)
+    guiCreateHeader(0.63, 0.05, 0.25, 0.05, "Change Password:", true, aOptionsTab.Tab)
+    guiCreateLabel(0.65, 0.10, 0.15, 0.05, "Old password:", true, aOptionsTab.Tab)
+    guiCreateLabel(0.65, 0.15, 0.15, 0.05, "New password:", true, aOptionsTab.Tab)
+    guiCreateLabel(0.65, 0.20, 0.15, 0.05, "Confirm:", true, aOptionsTab.Tab)
+    aOptionsTab.PasswordOld = guiCreateEdit(0.80, 0.10, 0.15, 0.045, "", true, aOptionsTab.Tab)
+    aOptionsTab.PasswordNew = guiCreateEdit(0.80, 0.15, 0.15, 0.045, "", true, aOptionsTab.Tab)
+    aOptionsTab.PasswordConfirm = guiCreateEdit(0.80, 0.20, 0.15, 0.045, "", true, aOptionsTab.Tab)
     guiEditSetMasked(aOptionsTab.PasswordOld, true)
     guiEditSetMasked(aOptionsTab.PasswordNew, true)
     guiEditSetMasked(aOptionsTab.PasswordConfirm, true)
-    aOptionsTab.PasswordChange = guiCreateButton(0.85, 0.35, 0.10, 0.04, "Accept", true, aOptionsTab.Tab)
+    aOptionsTab.PasswordChange = guiCreateButton(0.85, 0.25, 0.10, 0.04, "Accept", true, aOptionsTab.Tab)
     guiCreateHeader(0.03, 0.65, 0.20, 0.055, "Performance:", true, aOptionsTab.Tab)
     guiCreateStaticImage(0.03, 0.69, 0.94, 0.0025, "client\\images\\dot.png", true, aOptionsTab.Tab)
     guiCreateLabel(0.05, 0.71, 0.20, 0.055, "Performance priority:", true, aOptionsTab.Tab)
@@ -83,8 +83,8 @@ function aOptionsTab.onClientClick(button)
             end
         elseif (source == aOptionsTab.PerformanceAdvanced) then
             aPerformance()
-        elseif (source == aOptionsTab.AutoLogin) then
-            triggerServerEvent("aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected(aOptionsTab.AutoLogin))
+        -- elseif (source == aOptionsTab.AutoLogin) then
+        --     triggerServerEvent("aAdmin", localPlayer, "autologin", guiCheckBoxGetSelected(aOptionsTab.AutoLogin))
         elseif (source == aOptionsTab.PasswordOld) then
             guiSetInputEnabled(true)
         elseif (source == aOptionsTab.PasswordNew) then

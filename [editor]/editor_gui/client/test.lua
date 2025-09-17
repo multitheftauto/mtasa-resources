@@ -4,6 +4,7 @@ local hideDialog
 local g_suspended
 local inBasicTest = false
 local lastTestGamemode
+local lastGridListGamemode
 local g_colPatchSetting
 
 function createTestDialog()
@@ -30,6 +31,19 @@ end
 
 function quickTest()
 	if tutorialVars.blockQuickTest then return end
+	-- get the last gamemode that was addded to the map
+	local rowCount = guiGridListGetRowCount(mapsettings.addedGamemodes)
+	local currentLastGamemode = false
+	if rowCount > 0 then
+		currentLastGamemode = guiGridListGetItemText(mapsettings.addedGamemodes, rowCount - 1, 1)
+		if currentLastGamemode == "<None>" then
+			currentLastGamemode = false
+		end
+	end
+	if lastGridListGamemode ~= currentLastGamemode then
+		lastTestGamemode = currentLastGamemode
+		lastGridListGamemode = currentLastGamemode
+	end
 	if lastTestGamemode == "<None>" then lastTestGamemode = false end
 	editor_main.dropElement()
 	triggerServerEvent ( "testResource",localPlayer, lastTestGamemode )

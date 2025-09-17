@@ -3,5 +3,6 @@
   <map src="5Lap 8track.map" />
   <settings>
     <setting name="#respawn" value="timelimit" />
+    <setting name="#vehicle_physics_mode" value="fixed" />
   </settings>
 </meta>

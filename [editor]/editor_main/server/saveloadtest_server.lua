@@ -116,7 +116,7 @@ addEventHandler("newResource", root,
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
 		triggerEvent("onNewMap", resourceRoot)
 		dumpSave()
-		editor_gui.outputMessage(getPlayerName(client).." started a new map.", root, 255, 0, 0)
+		editor_gui.outputMessage(stripHexCode(getPlayerName(client)).." started a new map.", root, 255, 0, 0)
 
 		actionList = {}
 		currentActionIndex = 0
@@ -138,6 +138,7 @@ function handleOpenResource()
 			if (isElement(openingSource)) then
 				triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
 				playerName = getPlayerName ( openingSource )
+				playerName = stripHexCode( playerName )
 			end
 			local outputStr = playerName.." opened map "..tostring(openingResourceName)..". (opening took "..math.floor(getTickCount() - openingStartTick).." ms)"
 			editor_gui.outputMessage ( outputStr, root, 255, 0, 0 )
@@ -319,6 +320,7 @@ end
 local specialSyncers = {
 	position = function() end,
 	rotation = function() end,
+	scale = function(element) return edf.edfGetElementScale(element) end,
 	dimension = function(element) return getElementData(element, "me:dimension") or 0 end,
 	interior = function(element) return edf.edfGetElementInterior(element) end,
 	alpha = function(element) return edf.edfGetElementAlpha(element) end,
@@ -442,6 +444,8 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if usedResources['race'] then
 		usedResources['editor_main'] = true
 	end
+	-- Add EDF namespace
+	xmlNodeSetAttribute(xmlNode, "xmlns:edf", "https://wiki.multitheftauto.com/wiki/Resource:Editor/EDF")
 	-- Save in the map node the used definitions
 	local usedDefinitions = ""
 	for resource2 in pairs(usedResources) do
@@ -482,7 +486,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if ( returnValue ) then
 		loadedMap = resourceName
 		if (theSaver) then
-			editor_gui.outputMessage ( getPlayerName(theSaver).." saved to map resource \""..resourceName.."\".", root, 255, 0, 0 )
+			editor_gui.outputMessage ( stripHexCode(getPlayerName(theSaver)).." saved to map resource \""..resourceName.."\".", root, 255, 0, 0 )
 		end
 	end
 	if ( theSaver ) then
@@ -596,6 +600,8 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		if usedResources['race'] then
 			usedResources['editor_main'] = true
 		end
+		-- Add EDF namespace
+		xmlNodeSetAttribute(xmlNode, "xmlns:edf", "https://wiki.multitheftauto.com/wiki/Resource:Editor/EDF")
 		-- Save in the map node the used definitions
 		local usedDefinitions = ""
 		for resource2 in pairs(usedResources) do
@@ -638,7 +644,7 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", true )
 		end
 		if ( not dump ) then
-			editor_gui.outputMessage (getPlayerName(client).." saved the map.", root,255,0,0)
+			editor_gui.outputMessage (stripHexCode(getPlayerName(client)).." saved the map.", root,255,0,0)
 			dumpSave()
 		end
 	else
@@ -684,6 +690,8 @@ function createElementAttributesForSaving(xmlNode, element)
 			xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
 			xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
 			xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
+		elseif ( dataName == "scale" ) then
+			xmlNodeSetAttribute(elementNode, "scale", toAttribute(round(dataValue, 3)))
 		elseif ( dataName == "posX" or dataName == "posY" or dataName == "posZ") then
 			xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 5)))
 			if (dataName == "posX") then
@@ -941,6 +949,10 @@ addEventHandler("onPlayerLogin", root,
 		end
 	end
 )
+
+function getCurrentMapName()
+	return loadedMap
+end
 
 function getBool(var,default)
 	local result = get(var)

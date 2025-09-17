@@ -1,4 +1,4 @@
-<map>
+<map edf:definitions="stealth"> 
    <camera posX="215.447983" posY="-2163.096436" posZ="7.493396" targetX="230.330231" targetY="-2172.462646" targetZ="3.027212"/>
    <team1 id="mercspawns">
       <spawnpoint id="team1" posX="230.779465" posY="-2180.549561" posZ="5.153359" rot="90" skin="285"/>

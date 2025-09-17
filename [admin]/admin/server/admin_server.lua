@@ -53,7 +53,7 @@ function aHandleIP2CUpdate()
 
     for playerID = 1, #playersTable do
         local playerElement = playersTable[playerID]
-        local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel")
+        local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel", false)
 
         if hasAdminPermission then
             
@@ -89,7 +89,7 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		local resourceName = getResourceName(resource)
 		for id, player in ipairs(getElementsByType("player")) do
-			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
+			if ( hasObjectPermissionTo ( player, "general.tab_resources", false ) ) then
 				triggerClientEvent ( player, "aClientResourceStart", root, resourceName )
 			end
 		end
@@ -107,7 +107,7 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 	aSetupCommands()
 	for id, player in ipairs ( getElementsByType ( "player" ) ) do
 		aPlayerInitialize ( player )
-		if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
+		if ( hasObjectPermissionTo ( player, "general.adminpanel", false ) ) then
 			notifyPlayerLoggedIn(player)
 		end
 	end
@@ -257,7 +257,7 @@ addEventHandler ( "onResourceStop", root, function ( resource )
 	if ( resource ~= getThisResource() ) then
 		local resourceName = getResourceName(resource)
 		for id, player in ipairs(getElementsByType("player")) do
-			if ( hasObjectPermissionTo ( player, "general.tab_resources" ) ) then
+			if ( hasObjectPermissionTo ( player, "general.tab_resources", false ) ) then
 				triggerClientEvent ( player, "aClientResourceStop", root, resourceName )
 			end
 		end
@@ -431,8 +431,8 @@ addEventHandler ( "onPlayerJoin", root, function ()
 	end
 	aPlayerInitialize ( source )
 	for id, player in ipairs(getElementsByType("player")) do
-		if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
-			triggerClientEvent ( player, "aClientPlayerJoin", source, getPlayerIP ( source ), getPlayerAccountName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel" ), aPlayers[source]["country"] )
+		if ( hasObjectPermissionTo ( player, "general.adminpanel", false ) ) then
+			triggerClientEvent ( player, "aClientPlayerJoin", source, getPlayerIP ( source ), getPlayerAccountName ( source ), getPlayerSerial ( source ), hasObjectPermissionTo ( source, "general.adminpanel", false ), aPlayers[source]["country"] )
 		end
 	end
 	setPedGravity ( source, getGravity() )
@@ -512,7 +512,7 @@ function aPlayerSerialCheck ( player, result )
 end
 
 addEventHandler ( "onPlayerLogin", root, function ( previous, account, auto )
-	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
+	if ( hasObjectPermissionTo ( source, "general.adminpanel", false ) ) then
 		triggerEvent ( "aPermissions", source )
 		notifyPlayerLoggedIn( source )
 	end
@@ -545,7 +545,7 @@ end )
 addCommandHandler ( "unregister", function ( player, command, arg1 )
 	local username = arg1 or ""
 	local result = "failed - No permission"
-	if ( hasObjectPermissionTo ( player, "function.removeAccount" ) ) then
+	if ( hasObjectPermissionTo ( player, "function.removeAccount", false ) ) then
 		local account = getAccount ( username )
 		if not account then
 			result = "failed - Does not exist"
@@ -574,7 +574,7 @@ function getAdminNameForLog(player)
 end
 
 function aAdminMenu ( player, command )
-	if ( hasObjectPermissionTo ( player, "general.adminpanel" ) ) then
+	if ( hasObjectPermissionTo ( player, "general.adminpanel", false ) ) then
 		triggerClientEvent ( player, "aClientAdminMenu", root )
 		aPlayers[player]["chat"] = true
 	end
@@ -608,9 +608,9 @@ function aAction ( type, action, admin, player, data, more )
 
         if ( node ) then
             local r, g, b = node["r"], node["g"], node["b"]
-            if ( node["all"] ) then outputChatBox ( aStripString ( node["all"] ), root, r, g, b ) end
-            if ( node["admin"] ) and ( admin ~= player ) then outputChatBox ( aStripString ( node["admin"] ), admin, r, g, b ) end
-            if ( node["player"] ) then outputChatBox ( aStripString ( node["player"] ), player, r, g, b ) end
+            if ( node["all"] ) then outputChatBox ( aStripString ( node["all"] ), root, r, g, b, true ) end
+            if ( node["admin"] ) and ( admin ~= player ) then outputChatBox ( aStripString ( node["admin"] ), admin, r, g, b, true ) end
+            if ( node["player"] ) then outputChatBox ( aStripString ( node["player"] ), player, r, g, b, true ) end
             if ( node["log"] ) then outputServerLog ( aStripString ( node["log"] ) ) end
         end
     end
@@ -631,7 +631,7 @@ addEventHandler ( "aTeam", root, function ( action, name, r, g, b )
 	if checkClient( "command."..action, source, 'aTeam', action ) then
 		return
 	end
-	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action, false ) ) then
 		mdata = ""
 		if ( action == "createteam" ) then
 			local success
@@ -954,7 +954,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 	if not isElement( player ) then
 		return	-- Ignore if player is no longer valid
 	end
-	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action, false ) ) then
 		local admin = source
 		local mdata = ""
 		local more = ""
@@ -1168,7 +1168,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 						action = "adminr"
 					end
 					for id, p in ipairs ( getElementsByType ( "player" ) ) do
-						if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then triggerEvent ( "aSync", p, "admins" ) end
+						if ( hasObjectPermissionTo ( p, "general.adminpanel", false ) ) then triggerEvent ( "aSync", p, "admins" ) end
 					end
 				else
 					outputChatBox ( "Error - Admin group not initialized. Please reinstall admin resource.", source, 255, 0 ,0 )
@@ -1263,7 +1263,7 @@ end
 addEvent ( "aVehicle", true )
 addEventHandler ( "aVehicle", root, function ( player, action, data )
 	if checkClient( "command."..action, source, 'aVehicle', action ) then return end
-	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action, false ) ) then
 		if ( not player ) then return end
 		local vehicle = getPedOccupiedVehicle ( player )
 		if ( vehicle ) then
@@ -1347,7 +1347,7 @@ addEvent ( "aResource", true )
 addEventHandler ( "aResource", root, function ( name, action )
 	if checkClient( "command."..action, source, 'aResource', action ) then return end
 	local pname = getPlayerName ( source )
-	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action, false ) ) then
 		local text = ""
 		if ( action == "start" ) then
 			if ( startResource ( getResourceFromName ( name ), true ) ) then
@@ -1385,7 +1385,7 @@ end )
 addEvent ( "aServer", true )
 addEventHandler ( "aServer", root, function ( action, data, data2 )
 	if checkClient( "command."..action, source, 'aServer', action ) then return end
-	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action, false ) ) then
 		local mdata = tostring ( data )
 		local mdata2 = ""
 		if ( action == "setgame" ) then
@@ -1536,7 +1536,7 @@ function ( action, data )
 		aReports[id].read = false
 		-- PM all admins to say a new message has arrived
 		for _, p in ipairs ( getElementsByType ( "player" ) ) do
-			if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then
+			if ( hasObjectPermissionTo ( p, "general.adminpanel", false ) ) then
 				outputChatBox( "New Admin message from " .. aReports[id].author .. " (" .. aReports[id].subject .. ")", p, 255, 0, 0 )
 			end
 		end
@@ -1545,7 +1545,7 @@ function ( action, data )
 			table.remove( aReports, 1 )
 		end
 	end
-	if ( hasObjectPermissionTo ( client or source, "general.adminpanel" ) ) then
+	if ( hasObjectPermissionTo ( client or source, "general.adminpanel", false ) ) then
 		if ( action == "get" ) then
 			triggerClientEvent ( source, "aMessage", source, "get", aReports, get("reportsEnabled") )
 		elseif ( action == "read" ) then
@@ -1561,7 +1561,7 @@ function ( action, data )
 		end
 	end
 	for id, p in ipairs ( getElementsByType ( "player" ) ) do
-		if ( hasObjectPermissionTo ( p, "general.adminpanel" ) ) then
+		if ( hasObjectPermissionTo ( p, "general.adminpanel", false ) ) then
 			triggerEvent ( "aSync", p, "messages" )
 		end
 	end
@@ -1572,7 +1572,7 @@ addEvent ( "aModdetails", true )
 addEventHandler ( "aModdetails", resourceRoot, function ( action, player )
 	if source ~= resourceRoot then return end
 	if checkClient( false, client, 'aModdetails', action ) then return end
-	if ( hasObjectPermissionTo ( client, "general.adminpanel" ) ) then
+	if ( hasObjectPermissionTo ( client, "general.adminpanel", false ) ) then
 		if ( action == "get" ) then
 			triggerClientEvent ( client, "aModdetails", resourceRoot, "get", getPlayerModInfo(player), player )
 		end
@@ -1582,7 +1582,7 @@ end )
 addEvent ( "aBans", true )
 addEventHandler ( "aBans", root, function ( action, data, arg1, arg2, arg3 )
 	if checkClient( "command."..action, source, 'aBans', action ) then return end
-	if ( hasObjectPermissionTo ( client or source, "command."..action ) ) then
+	if ( hasObjectPermissionTo ( client or source, "command."..action, false ) ) then
 		local mdata = ""
 		local more = ""
 		if ( action == "banip" ) then
@@ -1686,17 +1686,17 @@ function checkClient(checkAccess,player,...)
 	end
 	if checkAccess and g_Prefs.securitylevel >= 1 then
 		if type(checkAccess) == 'string' then
-			if hasObjectPermissionTo ( player, checkAccess ) then
+			if hasObjectPermissionTo ( player, checkAccess, false ) then
 				return false	-- Access ok
 			end
-			if hasObjectPermissionTo ( player, "general.adminpanel" ) then
+			if hasObjectPermissionTo ( player, "general.adminpanel", false ) then
 				local desc = table.concat({...}," ")
 				local ipAddress = getPlayerIP(player)
 				outputDebugString( "Admin security - Client does not have required rights ("..checkAccess.."). " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")" )
 				return true		-- Low risk fail - Can't do specific command, but has access to admin panel
 			end
 		end
-		if not hasObjectPermissionTo ( player, "general.adminpanel" ) then
+		if not hasObjectPermissionTo ( player, "general.adminpanel", false ) then
 			local desc = table.concat({...}," ")
 			local ipAddress = getPlayerIP(client or player)
 			outputDebugString( "Admin security - Client without admin panel rights trigged an admin panel event. " .. tostring(ipAddress) .. " (" .. tostring(desc) .. ")", 2 )

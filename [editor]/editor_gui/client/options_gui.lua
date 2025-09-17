@@ -13,6 +13,7 @@ function createOptionsDialog()
 	dialog.generalTab = guiCreateTab("General",tabpanel)
 	dialog.cameraTab = guiCreateTab("Camera",tabpanel)
 	dialog.movementTab = guiCreateTab("Movement",tabpanel)
+	dialog.advancedTab = guiCreateTab("Advanced",tabpanel)
 
 	dialog.ok = guiCreateButton ( 0.5, 0.919444, 0.22857142, 0.05555555, "OK", true, dialog.window )
 	dialog.cancel = guiCreateButton ( 0.780357142, 0.919444, 0.22857142, 0.05555555, "Cancel", true, dialog.window )
@@ -40,9 +41,11 @@ function createOptionsDialog()
 	guiCreateLabel ( 0.47, 0.44, 70, 17, "Rotation Snap Level:", true, dialog.generalTab )
 	dialog.precisionRotLevel = editingControl.dropdown:create{["x"]=0.68,["y"]=0.44,["width"]=0.3,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.55,["relative"]=true,["rows"]={"180","90","45","30","20","10","5","1"},["parent"]=dialog.generalTab}
 	dialog.enablePrecisionRotation = editingControl.boolean:create{["x"]=0.60,["y"]=0.52,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable Snap - Precise Rotation"}
+	guiCreateLabel ( 0.47, 0.64, 70, 17, "Scaling Snap Level:", true, dialog.generalTab )
+	dialog.elemScalingSnap = editingControl.dropdown:create{["x"]=0.68,["y"]=0.64,["width"]=0.3,["height"]=0.07,["dropWidth"]=0.30,["dropHeight"]=0.55,["relative"]=true,["rows"]={"1","0.1","0.01","0.001","0.0001"},["parent"]=dialog.generalTab}
 	---------------------------------
-	dialog.enableColPatch = editingControl.boolean:create{["x"]=0.60,["y"]=0.62,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable collision patches"}
-	dialog.enableRotPatch = editingControl.boolean:create{["x"]=0.60,["y"]=0.72,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable rotation patches"}
+	dialog.enableColPatch = editingControl.boolean:create{["x"]=0.60,["y"]=0.72,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable collision patches"}
+	dialog.enableRotPatch = editingControl.boolean:create{["x"]=0.60,["y"]=0.82,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable rotation patches"}
 	---------------------------------
 	--camera settings
 	guiCreateLabel ( 0.02, 0.02, 1, 0.1, "Normal camera move speed:", true, dialog.cameraTab )
@@ -82,7 +85,6 @@ function createOptionsDialog()
 	guiCreateLabel ( 0.5, 0.32, 1, 0.1, "Fast element rotation speed:", true, dialog.movementTab )
 	guiCreateLabel ( 0.5, 0.52, 1, 0.1, "Slow element rotation speed:", true, dialog.movementTab )
 
-
 	dialog.normalElemMove = editingControl.slider:create{["x"]=0.02,["y"]=0.18,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.movementTab,
 		["min"]=0.075,
 		["max"]=0.5,
@@ -107,7 +109,27 @@ function createOptionsDialog()
 		["min"]=0.01,
 		["max"]=0.5,
 	}
-	dialog.lockToAxes = editingControl.boolean:create{["x"]=0.02,["y"]=0.78,["width"]=1,["height"]=0.1,["relative"]=true,["parent"]=dialog.movementTab,["label"]="Lock movement to axes"}
+	dialog.lockToAxes = editingControl.boolean:create{["x"]=0.02,["y"]=0.78,["width"]=0.4,["height"]=0.1,["relative"]=true,["parent"]=dialog.movementTab,["label"]="Lock movement to axes"}
+	--create advanced settings
+	guiCreateLabel ( 0.5, 0.04, 1, 0.1, "Normal element scaling speed:", true, dialog.advancedTab )
+	guiCreateLabel ( 0.5, 0.24, 1, 0.1, "Fast element scaling speed:", true, dialog.advancedTab )
+	guiCreateLabel ( 0.5, 0.44, 1, 0.1, "Slow element scaling speed:", true, dialog.advancedTab )
+
+	dialog.normalElemScale = editingControl.slider:create{["x"]=0.5,["y"]=0.10,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.advancedTab,
+	["min"]=0.01,
+	["max"]=0.5,
+	}
+	dialog.fastElemScale = editingControl.slider:create{["x"]=0.5,["y"]=0.30,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.advancedTab,
+	["min"]=0.5,
+	["max"]=2,
+	}
+	dialog.slowElemScale = editingControl.slider:create{["x"]=0.5,["y"]=0.50,["width"]=0.4,["height"]=0.11,["relative"]=true,["parent"]=dialog.advancedTab,
+	["min"]=0.001,
+	["max"]=0.05,
+	}
+
+	dialog.randomizeRotation = editingControl.boolean:create{["x"]=0.02,["y"]=0.02,["width"]=0.4,["height"]=0.1,["relative"]=true,["parent"]=dialog.advancedTab,["label"]="Randomize rotation on element creation"}
+	dialog.randomizeRotationAxis = editingControl.dropdown:create{["x"]=0.02,["y"]=0.12,["width"]=0.4,["height"]=0.07,["dropWidth"]=0.4,["dropHeight"]=0.5,["relative"]=true,["parent"]=dialog.advancedTab,["rows"]={"X","Y","Z","XY","XZ","YZ","XYZ"}}
 	--
 	loadXMLSettings()
 	addEventHandler ( "onClientGUIClick", dialog.ok, confirmSettings,false )

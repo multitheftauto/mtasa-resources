@@ -1,3 +1,9 @@
+local reloadCmd = "Reload weapon"
+local reloadKey = getKeyBoundToCommand("Reload weapon")
+if not reloadKey then
+    reloadKey = "r"
+end
+
 local blockedTasks = {
     ["TASK_SIMPLE_JUMP"] = true,
     ["TASK_SIMPLE_LAND"] = true,
@@ -14,19 +20,16 @@ local blockedTasks = {
 }
 
 local function reloadTimer()
-    if blockedTasks[getPedSimplestTask(localPlayer)] then
-        return
-    end
-
+    local task = getPedSimplestTask(localPlayer)
+    if blockedTasks[task] then return end
+    if isPedInVehicle(localPlayer) then return end
+    if getPedAmmoInClip(localPlayer) == getPedTotalAmmo(localPlayer) then return end
     triggerServerEvent("relWep", localPlayer)
 end
 
--- The jump task is not instantly detectable and bindKey works quicker than getControlState
--- If you try to reload and jump at the same time, you will be able to instant reload.
--- We work around this by adding an unnoticable delay to foil this exploit.
-
 local function reloadWeapon()
-	setTimer(reloadTimer, 50, 1)
+    setTimer(reloadTimer, math.random(50, 120), 1)
 end
-addCommandHandler("Reload weapon", reloadWeapon)
-bindKey("r", "down", "Reload weapon")
+
+bindKey(reloadKey, "down", reloadCmd)
+addCommandHandler(reloadCmd, reloadWeapon)

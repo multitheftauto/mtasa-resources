@@ -8,6 +8,7 @@
 		<skin model="92" name="Rollergirl" />
 		<skin model="96" name="Soccer Player" />
 		<skin model="97" name="Baywatch Dude" />
+		<skin model="98" name="Worker Male" />
 		<skin model="138" name="Bikini Tattoo" />
 		<skin model="139" name="Yellow Bikini" />
 		<skin model="140" name="Buxom Bikini" />
@@ -240,6 +241,7 @@
 		<skin model="29" name="White Dealer" />
 		<skin model="30" name="Religious Essey" />
 		<skin model="47" name="Top Button Essey" />
+		<skin model="48" name="Hippy Maley" />
 		<skin model="67" name="Red Bandana" />
 		<skin model="143" name="Sam Jackson" />
 		<skin model="241" name="Afro Brother" />
@@ -266,6 +268,7 @@
 		<skin model="212" name="Tin Foil Hat" />
 		<skin model="213" name="Hobo Elvis" />
 		<skin model="230" name="Hooded Hobo" />
+		<skin model="239" name="Homeless Bob" />
 	</group>
 	<group name="Nightclubbers">
 		<skin model="43" name="Porn Producer" />

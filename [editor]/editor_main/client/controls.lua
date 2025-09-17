@@ -38,6 +38,8 @@ local defaultControls = {
 {	name="element_move_backward",	key ="arrow_d",			friendlyName="Move Element Backward / Pitch"	},
 {	name="element_move_upwards",	key ="pgup",			friendlyName="Move Element Upwards / Roll"		},
 {	name="element_move_downwards",	key ="pgdn",			friendlyName="Move Element Downwards / Roll"	},
+{	name="element_scale_up", 		key ="num_add",			friendlyName="Scale Element Up"					},
+{	name="element_scale_down", 		key ="num_sub", 		friendlyName="Scale Element Down"				},
 {	name="camera_move_forwards",	key ="w",				friendlyName="Camera forwards"					},
 {	name="camera_move_backwards",	key ="s",				friendlyName="Camera backwards"					},
 {	name="camera_move_left",		key ="a",				friendlyName="Camera strafe left"				},

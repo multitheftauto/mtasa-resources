@@ -18,6 +18,16 @@ addEventHandler ( "onPlayerJoin", root,
 	end
 )
 
+addEventHandler ( "onPlayerWasted", root,
+	function()
+		if not g_in_test then
+			local x,y,z = getElementPosition(source)
+			local rx,ry,rz = getElementRotation(source)
+			spawnPlayer ( source, x, y, z, rz, 0, 0, getWorkingDimension() )
+		end
+	end
+)
+
 function disablePickups(bool)
 	if bool and not pickupsDisabled then
 		pickupsDisabled = true

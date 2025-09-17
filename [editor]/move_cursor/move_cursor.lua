@@ -21,6 +21,7 @@ local centerToBaseDistance
 
 local rotationless
 local rotX, rotY, rotZ
+local scale
 
 local collisionless
 local minZ
@@ -172,15 +173,13 @@ local function rotateWithMouseWheel(key, keyState)
 			--Peds dont have their rotation updated with their attached parents
 			for i,element in ipairs(getAttachedElements(selectedElement)) do
 				if getElementType(element) == "ped" then
-					setElementRotation(element, 0,0,-rotZ)
-					setPedRotation(element, rotZ)
+					setElementRotation(element, 0,0,-rotZ, "default", true)
 				end
 			end
 		elseif (elementType == "ped") then
 			rotZ = rotZ + speed
 			rotZ = rotZ % 360
-			setPedRotation(selectedElement, rotZ)
-			setElementRotation(selectedElement, 0,0,-rotZ%360)
+			setElementRotation(selectedElement, 0,0,-rotZ%360, "default", true)
 		end
 	end
 end
@@ -231,6 +230,7 @@ function attachElement(element)
 		if (getElementType(element) == "object") then
 			rotationless = false
 			rotX, rotY, rotZ = getElementRotation(element)
+			scale = getObjectScale(element)
 			collisionless = false
 			_, _, minZ = exports.edf:edfGetElementBoundingBox(element)
 		end
@@ -240,9 +240,12 @@ function attachElement(element)
 			rotX, rotY, rotZ = getElementRotation(element)
 			collisionless = false
 			_, _, minZ = getElementBoundingBox(element)
+			if (getElementType(element) == "object") then
+				scale = getObjectScale(element)
+			end
 		elseif (getElementType(element) == "ped") then
 			rotationless = false
-			rotX, rotY, rotZ = 0, 0, getPedRotation(element)
+			_, _, rotZ = getElementRotation(element)
 			collisionless = false
 			_, _, minZ = getElementBoundingBox(element)
 		else
@@ -274,12 +277,17 @@ function detachElement()
 			rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 			triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 		end
+		if (getElementType(selectedElement) == "object") then
+			scale = getObjectScale(selectedElement)
+			triggerServerEvent("syncProperty", localPlayer, "scale", {scale}, exports.edf:edfGetAncestor(selectedElement))
+		end
 	end
 	selectedElement = nil
 
 	-- clear variables
 	camX, camY, camZ = nil, nil, nil
 	rotX, rotY, rotZ = nil, nil, nil
+	scale = nil
 	rotationless = nil
 	minZ = nil
 	collisionless = nil

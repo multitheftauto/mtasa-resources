@@ -34,7 +34,6 @@ local knifeRestrictionsOn = false
 -- Local settings received from server
 local g_settings = {}
 local _addCommandHandler = addCommandHandler
-local _setElementPosition = setElementPosition
 
 if not (g_PlayerData) then
     g_PlayerData = {}
@@ -135,7 +134,11 @@ local function setElementPosition(element,x,y,z)
 		setTimer(resetKnifing,5000,1)
 	end
 
-	_setElementPosition(element,x,y,z)
+	x = tonumber(x)
+	y = tonumber(y)
+	z = tonumber(z)
+	
+	server.setElementPosition(element, x, y, z)
 end
 
 ---------------------------
@@ -2325,6 +2328,7 @@ function toggleFRWindow()
 		showCursor(false)
 		hideAllWindows()
 		colorPicker.closeSelect()
+		closePositionWindow()
 	else
 		if guiGetInputMode() ~= "no_binds_when_editing" then
 			guiSetInputMode("no_binds_when_editing")

@@ -168,11 +168,16 @@ tutorial = {
 		setTimer(tutorialNext,14000,1)
 	end },
 	--16
+	{ message = "The " ..cc.element_scale_up.." and "..cc.element_scale_down.." keys can be used to scale the object up and down.",
+	initiate = function()
+		setTimer(tutorialNext,15000,1)
+	end },
+	--17
 	{ message = "It is important that you are able to change the attributes of your object.  This can be done via the properties box.  To open the properties box, press the "..cc.properties_toggle.." key while an element is selected.  Alternatively you can double click the element.",
 	initiate = function()
 		tutorialVars.detectPropertiesBox = true
 	end },
-	--17
+	--18
 	{ message = "This menu is the Properties box.  From here, all properties of an element can be accessed and modified.  Here you can manually change useful attributes such as position and rotation, or model.  You can mouse over an attribute to get information about that property.",
 	initiate = function()
 		tutorialVars.detectPropertiesBox = false
@@ -183,7 +188,7 @@ tutorial = {
 		guiSetEnabled(properties_btnPullout,false)
 		setTimer(tutorialNext,26000,1)
 	end },
-	--18
+	--19
 	{ message = "When you are done, choose 'OK' to close and apply all changes, alternatively press 'Cancel' to close and ignore all changes.",
 	initiate = function()
 		guiSetEnabled(properties_btnApply,true)
@@ -194,7 +199,7 @@ tutorial = {
 		addEventHandler ( "onClientGUIClick",properties_btnOK,tutorialAction.applyClicked,false )
 		--
 	end },
-	--19
+	--20
 	{ message = "The same can be done for elements of any other type.  From the cursor mode menu, create a 'Vehicle'.",
 	initiate = function()
 		for icon,iconData in pairs(elementIcons) do
@@ -209,7 +214,7 @@ tutorial = {
 		tutorialVars = {}
 		tutorialVars.browserBind = "vehicleID"
 	end },
-	--20
+	--21
 	{ message = "This is the model browser again, only for vehicles.  Choose a desired vehicle and press 'OK' to exit.",
 	initiate = function()
 		glowButton ()
@@ -222,7 +227,7 @@ tutorial = {
 		tutorialVars.browserBind = nil
 		tutorialVars.detectPropertiesBox = true
 	end },
-	--21
+	--22
 	{ message = "Notice that the properties for this element are different to that of an object.  Set your desired properties, click 'OK' to apply these changes, or alternatively press 'Cancel' to ignore them.",
 	initiate = function()
 		tutorialVars.detectPropertiesBox = nil
@@ -230,7 +235,7 @@ tutorial = {
 		addEventHandler ( "onClientGUIClick",properties_btnApply,tutorialAction.closeClicked2, false )
 		addEventHandler ( "onClientGUIClick",properties_btnOK,tutorialAction.closeClicked2, false )
 	end },
-	--22
+	--23
 	{ message = "This mostly covers what is involved in creating and manipulating elements.  For more details, please refer to the manual.",
 	initiate = function()
 		tutorialBlock = ""
@@ -239,7 +244,7 @@ tutorial = {
 		removeEventHandler ( "onClientGUIClick",properties_btnOK,tutorialAction.closeClicked2 )
 		setTimer(tutorialNext,9000,1)
 	end },
-	--23
+	--24
 	{ message = "We will briefly look at some of the buttons at the Control panel.  This is placed at the top of your screen.  The 'new','open','save' and 'save as' buttons allow for creating new maps, opening them and saving them.",
 	initiate = function()
 		setTimer(tutorialNext,19000,1)
@@ -251,7 +256,7 @@ tutorial = {
 		end
 		glowButton ( icons )
 	end },
-	--24
+	--25
 	{ message = "The 'options' dialog allows for configuration of move speeds, camera speeds, and general settings.  The 'undo' and 'redo' buttons allow reversal and affirmation of performed actions.  The 'locations' dialog allows for changing the location of editing, and for storing your favourite locations to be used.",
 	initiate = function()
 		glowButton ()
@@ -264,7 +269,7 @@ tutorial = {
 		end
 		glowButton ( icons )
 	end },
-	--25
+	--26
 	{ message = "The 'definitions' dialog allows importing of custom elements into the editor, so that maps for specific gamemodes can be produced quickly and easily. ",
 	initiate = function()
 		glowButton ()
@@ -275,7 +280,7 @@ tutorial = {
 			end
 		end
 	end },
-	--26
+	--27
 	{ message = "The 'current elements' button allows browsing of your current elements, and is an easy way to locate specific elements when you have lots created.  Try opening the Current Elements dialog.",
 	initiate = function()
 		glowButton ()
@@ -286,7 +291,7 @@ tutorial = {
 			end
 		end
 	end },
-	--27
+	--28
 	{ message = "This is the Current Elements browser.  Similar to the Model Browser, you can also enter searches to find your already placed elements.",
 	initiate = function()
 		tutorialBlock = ""
@@ -294,23 +299,23 @@ tutorial = {
 		guiSetEnabled ( currentBrowserGUI.close,false )
 		setTimer(tutorialNext,13000,1)
 	end },
-	--28
+	--29
 	{ message = "The dropdown at the top allows you filter to specific element types.   The 'Autosnap camera' checkbox allows toggling of whether the camera should immediately snap to the position of an element when it is selected.  The 'Isolate element' hides all other elements and allows clarity as to which element is selected.",
 	initiate = function()
 		setTimer(tutorialNext,26000,1)
 	end },
-	--29
+	--30
 	{ message = "Similar to the Model Browser, you can use the "..cc.currentelements_up.." and "..cc.currentelements_down.." keys to scroll through results in the list.",
 	initiate = function()
 		setTimer(tutorialNext,7000,1)
 	end },
-	--30
+	--31
 	{ message = "It is possible to select an element in keyboard mode by double clicking the item in the search.  Once this is done, you can move the element using the keyboard mode keys.  You can close the Current Elements browser anytime by hitting the 'Close' button.  Try this when you're done.",
 	initiate = function()
 		guiSetEnabled ( currentBrowserGUI.close,true)
 		addEventHandler ( "onClientGUIClick",currentBrowserGUI.close,tutorialAction.cbClose , false )
 	end },
-	--31
+	--32
 	{ message = "The map settings dialog allows general configuration of your map.  Click the 'map settings' button to open up this dialog.",
 	initiate = function()
 		removeEventHandler ( "onClientGUIClick",currentBrowserGUI.close,tutorialAction.cbClose )
@@ -321,14 +326,14 @@ tutorial = {
 			end
 		end
 	end },
-	--32
+	--33
 	{ message = "The 'Environment' tab contains settings for time,weather, and other settings that affect the style of play within a map.  The 'Gamemode Settings' tab allows setting of specific settings related to a gamemode, according to Definitions that are loaded.",
 	initiate = function()
 		glowButton ()
 		setTimer ( tutorialNext, 17000, 1 )
 		tutorialVars.onMSClose = true
 	end },
-	--33
+	--34
 	{ message = "The Meta tab allows setting of general information for your map - the name, author, version and description.  Lastly, the 'Gamemodes' tab allows selecting of gamemodes that are compatible with your map.  Once you are done press the 'OK' button to apply the settings.",
 	initiate = function()
 	end },
@@ -348,7 +353,7 @@ tutorial = {
 	initiate = function()
 		glowButton ()
 	end },
-	--34
+	--35
 	{ message = "You have reached the end of the Editor tutorial.  This tutorial has only covered some aspects that are available within the editor.  For all the details, please refer to the manual.",
 	initiate = function()
 		guiSetEnabled(properties_btnPullout,true)

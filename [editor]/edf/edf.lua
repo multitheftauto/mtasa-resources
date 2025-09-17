@@ -8,7 +8,7 @@ local thisResource = getThisResource()
 createResourceCallInterface("mapmanager")
 addEvent"onElementPropertyChanged"
 
-local DUMMY_ID = 3003
+local DUMMY_ID = 3045
 local DUMMY_DIMENSION = -99
 local DUMMY_INTERIOR = 14
 
@@ -419,6 +419,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	-- get basic element properties
 	parentData.position = { edfGetElementPosition(theElement) }
 	parentData.rotation = { edfGetElementRotation(theElement) }
+	parentData.scale = edfGetElementScale(theElement)
 	parentData.dimension = edfGetElementDimension(theElement)
 	parentData.interior = edfGetElementInterior(theElement)
 	parentData.alpha = edfGetElementAlpha(theElement)
@@ -581,6 +582,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 	parametersTable = parametersTable or {}
 	parametersTable.position = parametersTable.position or {0,0,0}
 	parametersTable.rotation = parametersTable.rotation or {0,0,0}
+	parametersTable.scale = parametersTable.scale or 1
 	parametersTable.interior = parametersTable.interior or 0
 	parametersTable.dimension = parametersTable.dimension or 0
 	parametersTable.alpha = parametersTable.alpha or 255
@@ -619,6 +621,8 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 				edfSetElementPosition(newElement, dataValue[1], dataValue[2], dataValue[3])
 			elseif dataField == "rotation" then
 				edfSetElementRotation(newElement, dataValue[1], dataValue[2], dataValue[3], dataValue[4])
+			elseif dataField == "scale" then
+				edfSetElementScale(newElement, dataValue)
 			elseif dataField == "interior" then
 				if dataValue == -1 then
 					setElementInterior(newElement, 0) -- Interior -1 only works on removeWorldModel (But element data must be set to -1)
@@ -670,6 +674,7 @@ function edfCloneElement(theElement, editorMode )
 	parametersTable = {}
 	parametersTable.position = {edfGetElementPosition(theElement)} or {0,0,0}
 	parametersTable.rotation = {edfGetElementRotation(theElement)} or {0,0,0}
+	parametersTable.scale = edfGetElementScale(theElement) or 1
 	parametersTable.interior = edfGetElementInterior(theElement) or 0
 	parametersTable.dimension = edfGetElementDimension(theElement) or 0
 	parametersTable.alpha = edfGetElementAlpha(theElement) or 255
@@ -713,6 +718,8 @@ function edfCloneElement(theElement, editorMode )
 				edfSetElementPosition(newElement, dataValue[1], dataValue[2], dataValue[3])
 			elseif dataField == "rotation" then
 				edfSetElementRotation(newElement, dataValue[1], dataValue[2], dataValue[3])
+			elseif dataField == "scale" then
+				edfSetElementScale(newElement, dataValue)
 			else
 				setElementData(newElement, dataField, dataValue)
 			end
@@ -875,6 +882,33 @@ function edfGetElementRotation(element)
 	end
 end
 
+--Returns an element's scale, or its scale element data, or false
+function edfGetElementScale(element)
+	local etype = getElementType(element)
+	if etype == "object" then
+		scale = getObjectScale(element)
+		if type(scale) ~= "table" then
+			scale = select(1, scale) or 1
+		end
+	else
+		local handle = edfGetHandle(element)
+		if handle then
+			scale = getObjectScale(handle)
+			if type(scale) == "table" then
+				scale = select(1, scale) or 1
+			end
+		else
+			scale = tonumber(getElementData(element,"scale"))
+		end
+	end
+
+	if scale then
+		return scale
+	else
+		return false
+	end
+end
+
 --Sets an element's position, or its posX/Y/Z element data
 function edfSetElementPosition(element, px, py, pz)
 	local ancestor = edfGetAncestor(element) or element
@@ -929,6 +963,35 @@ function edfSetElementRotation(element, rx, ry, rz, rotOrder)
 			setElementData(element, "rotY", ry or 0)
 			setElementData(element, "rotZ", rz or 0)
 			triggerEvent ( "onElementPropertyChanged", ancestor, "rotation" )
+			return true
+		end
+	end
+	return false
+end
+
+--Sets an element's scale, or its scale element data
+function edfSetElementScale(element, scale)
+	local ancestor = edfGetAncestor(element) or element
+	setElementData(ancestor, "scale", scale)
+	local etype = getElementType(element)
+	if type(scale) == "table" then
+		scale = scale[1]
+	end
+	if etype == "object" then
+		if setObjectScale(element, scale) then
+			triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
+			return true
+		end
+	else
+		local handle = edfGetHandle(element)
+		if handle then
+			if setObjectScale(handle, scale) then
+				triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
+				return true
+			end
+		else
+			setElementData(element, "scale", scale or 1)
+			triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
 			return true
 		end
 	end
@@ -1324,6 +1387,8 @@ function edfGetChildData(node, dataFields)
 			value[1] = xmlNodeGetAttribute(node, "rotX") or 0
 			value[2] = xmlNodeGetAttribute(node, "rotY") or 0
 			value[3] = xmlNodeGetAttribute(node, "rotZ") or 0
+		elseif dataField == "scale" then
+			value = xmlNodeGetAttribute(node, "scale") or 1
 		else
 			value = xmlNodeGetAttribute(node, dataField) or nil
 			if value then

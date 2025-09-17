@@ -1,4 +1,4 @@
---This code is an exact, unmodified copy of that from the official Lua docs: http://lua-users.org/wiki/SortedIteration
+--This code is an exact, unmodified copy of that from the official Lua docs: https://lua-users.org/wiki/SortedIteration
 
 local sortingFunction = nil
 
