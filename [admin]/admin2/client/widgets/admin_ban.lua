@@ -56,7 +56,7 @@ end
 
 function aBan.Create()
     local sx, sy = guiGetScreenSize()
-    aBan.Form = guiCreateWindow(sx / 2 - 175, sy / 2 - 190, 350, 380, "Add ban", false)
+    aBan.Form = guiCreateWindow(sx / 2 - 175, sy / 2 - 185, 350, 370, "Add ban", false)
     aBan.ReasonLabel = guiCreateLabel(25, 40, 300, 20, "Ban reason (required):", false, aBan.Form)
     aBan.ReasonEditBox = guiCreateEdit(25, 65, 300, 30, "Enter ban reason...", false, aBan.Form)
     aBan.ReasonEditBoxRecievedInput = false
@@ -76,8 +76,8 @@ function aBan.Create()
     aBan.SerialEditBox = guiCreateEdit(50, 280, 275, 30, "Enter MTA serial...", false, aBan.Form)
     guiEditSetMaxLength(aBan.SerialEditBox, 32)
     aBan.SerialEditBoxRecievedInput = false
-    aBan.SubmitButton = guiCreateButton(70, 330, 100, 30, "Submit", false, aBan.Form)
-    aBan.CancelButton = guiCreateButton(180, 330, 100, 30, "Cancel", false, aBan.Form)
+    aBan.SubmitButton = guiCreateButton(70, 324, 100, 30, "Submit", false, aBan.Form)
+    aBan.CancelButton = guiCreateButton(180, 324, 100, 30, "Cancel", false, aBan.Form)
     aRegister("Ban", aBan.Form, aBan.Show, aBan.Close)
     guiSetVisible(aBan.Form, false)
 end
