@@ -76,7 +76,7 @@ function openSearch()
 		end
 	else
 		for i,res in ipairs(openResources) do
-			if utf8.find(string.lower(res["friendlyName"]), string.lower(text), 1, true) then
+			if utf8.find(utf8.lower(res["friendlyName"]), utf8.lower(text), 1, true) then
 				local row = guiGridListAddRow ( loadDialog.mapsList )
 				guiGridListSetItemText ( loadDialog.mapsList, row, 1, res["friendlyName"], false, false )
 				guiGridListSetItemText ( loadDialog.mapsList, row, 2, res["gamemodes"], false, false )
