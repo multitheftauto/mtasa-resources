@@ -75,9 +75,8 @@ function openSearch()
 			guiGridListSetItemText ( loadDialog.mapsList, row, 3, res["version"], false, false )
 		end
 	else
-		local escapedText = string.gsub(string.lower(text), "([%-%.%+%*%?%[%]%^%$%(%)%%])", "%%%1")
 		for i,res in ipairs(openResources) do
-			if string.find(res["friendlyName"], escapedText) then
+			if utf8.find(string.lower(res["friendlyName"]), string.lower(text), 1, true) then
 				local row = guiGridListAddRow ( loadDialog.mapsList )
 				guiGridListSetItemText ( loadDialog.mapsList, row, 1, res["friendlyName"], false, false )
 				guiGridListSetItemText ( loadDialog.mapsList, row, 2, res["gamemodes"], false, false )
