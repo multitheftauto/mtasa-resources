@@ -112,8 +112,21 @@ function InitUI ( )
 	if ( not veh ) then
 		return
 	end
-	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
 	local sirensTable = getVehicleSirens(veh)
+	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
+	-- If sirensTable[selectedItem] doesn't exist lets lets some defaults
+	if ( not sirensTable[selectedItem] ) then
+		sirensTable[selectedItem] = {}
+		sirensTable[selectedItem].x = 0
+		sirensTable[selectedItem].y = 0
+		sirensTable[selectedItem].z = 0
+		sirensTable[selectedItem].Red = 255
+		sirensTable[selectedItem].Green = 0
+		sirensTable[selectedItem].Blue = 0
+		sirensTable[selectedItem].Alpha = 255
+		sirensTable[selectedItem].Min_Alpha = 100
+		setVehicleSirens(veh, selectedItem, 0, 0, 0, 255, 0, 0, 255, 100)
+	end
 	guiScrollBarSetScrollPosition ( sirensX, 50 + ( sirensTable[selectedItem].x * 10 ) )
 	guiScrollBarSetScrollPosition ( sirensY, 50 + ( sirensTable[selectedItem].y * 10 ) )
 	guiScrollBarSetScrollPosition ( sirensZ, 50 + ( sirensTable[selectedItem].z * 10 ) )
@@ -142,40 +155,30 @@ function scrollFunc(scrolled)
 	local veh = getPedOccupiedVehicle ( localPlayer )
 	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
 	if ( selectedItem ~= nil and selectedItem ~= false and selectedItem > 0 and veh ~= false ) then
+		local sirensTable = getVehicleSirens(veh)
+		if ( not sirensTable[selectedItem] ) then
+			return
+		end
 		if ( scrolled == sirensX ) then
-			local sirensTable = getVehicleSirens(veh)
 			sirensTable[selectedItem].x = ( guiScrollBarGetScrollPosition ( scrolled ) / 10 ) - 5
 			guiSetText( posLabelX, "Position X: " .. string.format( "%.3f", sirensTable[selectedItem].x ) )
 			applySirenTable ( veh, sirensTable, false )
-			return
-		end
-		if ( scrolled == sirensY ) then
-			local sirensTable = getVehicleSirens(veh)
+		elseif ( scrolled == sirensY ) then
 			sirensTable[selectedItem].y = ( guiScrollBarGetScrollPosition ( scrolled ) / 10 ) - 5
 			guiSetText( posLabelY, "Position Y: " .. string.format( "%.3f", sirensTable[selectedItem].y ) )
 			applySirenTable ( veh, sirensTable, false )
-			return
-		end
-		if ( scrolled == sirensZ ) then
-			local sirensTable = getVehicleSirens(veh)
+		elseif ( scrolled == sirensZ ) then
 			sirensTable[selectedItem].z = ( guiScrollBarGetScrollPosition ( scrolled ) / 10 ) - 5
 			guiSetText( posLabelZ, "Position Z: " .. string.format( "%.3f", sirensTable[selectedItem].z ) )
 			applySirenTable ( veh, sirensTable, false )
-			return
-		end
-		if ( scrolled == sirensAlpha ) then
-			local sirensTable = getVehicleSirens(veh)
+		elseif ( scrolled == sirensAlpha ) then
 			sirensTable[selectedItem].Alpha = math.ceil ( (guiScrollBarGetScrollPosition ( scrolled ) * 2.55 ) - 0.05 )
 			guiSetText( alphaLabel, "Alpha: " .. sirensTable[selectedItem].Alpha )
 			applySirenTable ( veh, sirensTable, false )
-			return
-		end
-		if ( scrolled == sirensMinAlpha ) then
-			local sirensTable = getVehicleSirens(veh)
+		elseif ( scrolled == sirensMinAlpha ) then
 			sirensTable[selectedItem].Min_Alpha = math.ceil ( ( guiScrollBarGetScrollPosition ( scrolled ) * 2.55 )  - 0.05 )
 			guiSetText( minAlphaLabel, "Minimum Alpha: " .. sirensTable[selectedItem].Min_Alpha )
 			applySirenTable ( veh, sirensTable, false )
-			return
 		end
 	end
 end
@@ -189,6 +192,14 @@ function btnFunc ( button, state )
 	end
 	if ( source == sirensBtnRGB ) then
 		if ( state == "up" ) then
+			if ( not getResourceFromName("cpicker") ) then
+				outputChatBox("cpicker isn't installed, get it from: https://community.multitheftauto.com/index.php?p=resources&s=details&id=3247", 255, 0, 0)
+				return
+			end
+			if ( getResourceState( getResourceFromName("cpicker") ) ~= "running" ) then
+				outputChatBox("cpicker isn't running. If you're an admin, do: /start cpicker", 255, 0, 0)
+				return
+			end
 			exports.cpicker:openPicker(source, "#FFAA00", "Pick a Beacon Colour")
 		end
 	end
