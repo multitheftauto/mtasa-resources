@@ -208,7 +208,6 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		xmlNodeSetAttribute(scriptNode, "src", scriptName)
 		xmlNodeSetAttribute(scriptNode, "type", "server")
 	end
-	fileCopy("server/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
 
 	scriptName = "mapEditorScriptingExtension_c.lua"
 	foundScriptInMeta = false

@@ -31,11 +31,18 @@ aServerTab = {
         SniperMoon = 'Sniper Moon',
         ExtraAirResistance = 'Extra Air Resistance',
         UnderWorldWarp = 'Under World Warp',
-        VehiclesSunGlare = "Vehicles Sun Glare",
+        VehicleSunGlare = "Vehicles Sun Glare",
         CoronaZTest = "Corona Z Test",
         WaterCreatures = "Water Creatures",
         BurnFlippedCars = "Burn Flipped Cars",
-        FireBallDestruct = "Fire Ball Destruct"
+        FireBallDestruct = "Fire Ball Destruct",
+        RoadSignsText = "Road Signs Text",
+        ExtendedWaterCannons = "Extended Water Cannons",
+        TunnelWeatherBlend = "Tunnel Weather Blend",
+        IgnoreFireState = "Ignore Fire State",
+        FlyingComponents = "Flying Components",
+        VehicleBurnExplosions = "Vehicle Burn Explosions",
+        Vehicle_Engine_AutoStart = "Vehicle Engine Auto Start"
     }
 }
 
@@ -437,13 +444,13 @@ function aServerTab.onClientClick(button)
                 "underworldwarp",
                 iif(guiCheckBoxGetSelected(aServerTab.UnderWorldWarp), "on", "off")
             )
-        elseif (source == aServerTab.VehiclesSunGlare) then
+        elseif (source == aServerTab.VehicleSunGlare) then
             triggerServerEvent(
                 "aServer",
                 localPlayer,
                 "setworldproperty",
                 "vehiclesunglare",
-                iif(guiCheckBoxGetSelected(aServerTab.VehiclesSunGlare), "on", "off")
+                iif(guiCheckBoxGetSelected(aServerTab.VehicleSunGlare), "on", "off")
             )
         elseif (source == aServerTab.CoronaZTest) then
             triggerServerEvent(
@@ -460,6 +467,54 @@ function aServerTab.onClientClick(button)
                 "setworldproperty",
                 "watercreatures",
                 iif(guiCheckBoxGetSelected(aServerTab.WaterCreatures), "on", "off")
+            )
+        elseif (source == aServerTab.RoadSignsText) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "roadsignstext",
+                iif(guiCheckBoxGetSelected(aServerTab.RoadSignsText), "on", "off")
+            )
+        elseif (source == aServerTab.ExtendedWaterCannons) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "extendedwatercannons",
+                iif(guiCheckBoxGetSelected(aServerTab.ExtendedWaterCannons), "on", "off")
+            )
+        elseif (source == aServerTab.TunnelWeatherBlend) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "tunnelweatherblend",
+                iif(guiCheckBoxGetSelected(aServerTab.TunnelWeatherBlend), "on", "off")
+            )
+        elseif (source == aServerTab.FlyingComponents) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "flyingcomponents",
+                iif(guiCheckBoxGetSelected(aServerTab.FlyingComponents), "on", "off")
+            )
+        elseif (source == aServerTab.VehicleBurnExplosions) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "vehicleburnexplosions",
+                iif(guiCheckBoxGetSelected(aServerTab.VehicleBurnExplosions), "on", "off")
+            )
+        elseif (source == aServerTab.Vehicle_Engine_AutoStart) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "vehicle_engine_autostart",
+                iif(guiCheckBoxGetSelected(aServerTab.Vehicle_Engine_AutoStart), "on", "off")
             )
         end
     end
@@ -523,11 +578,18 @@ function aServerTab.onRefresh()
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.SniperMoon, 2, isWorldSpecialPropertyEnabled("snipermoon") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.ExtraAirResistance, 2, isWorldSpecialPropertyEnabled("extraairresistance") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.UnderWorldWarp, 2, isWorldSpecialPropertyEnabled("underworldwarp") and "√" or "", false, false)
-    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.VehiclesSunGlare, 2, isWorldSpecialPropertyEnabled("vehiclesunglare") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.VehicleSunGlare, 2, isWorldSpecialPropertyEnabled("vehiclesunglare") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.CoronaZTest, 2, isWorldSpecialPropertyEnabled("coronaztest") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.WaterCreatures, 2, isWorldSpecialPropertyEnabled("watercreatures") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.BurnFlippedCars, 2, isWorldSpecialPropertyEnabled("burnflippedcars") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.FireBallDestruct, 2, isWorldSpecialPropertyEnabled("fireballdestruct") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.RoadSignsText, 2, isWorldSpecialPropertyEnabled("roadsignstext") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.ExtendedWaterCannons, 2, isWorldSpecialPropertyEnabled("extendedwatercannons") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.TunnelWeatherBlend, 2, isWorldSpecialPropertyEnabled("tunnelweatherblend") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.IgnoreFireState, 2, isWorldSpecialPropertyEnabled("ignorefirestate") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.FlyingComponents, 2, isWorldSpecialPropertyEnabled("flyingcomponents") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.VehicleBurnExplosions, 2, isWorldSpecialPropertyEnabled("vehicleburnexplosions") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.Vehicle_Engine_AutoStart, 2, isWorldSpecialPropertyEnabled("vehicle_engine_autostart") and "√" or "", false, false)
 
     triggerServerEvent("aServerGlitchRefresh", localPlayer)
 end
