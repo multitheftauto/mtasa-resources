@@ -31,7 +31,7 @@ addEventHandler("onPlayerChangeNick", root, function(old, name)
 			return true
 		end
 	end
-	local acc = getPlayerAccount(plr)
+	local acc = getPlayerAccount(source)
 	if isGuestAccount(acc) then
 		acc = nil
 	else
@@ -49,7 +49,7 @@ function cmdWhoWas(plr, cmd, name)
 	outputChatBox("Players who had "..name.." in their name/serial/account/IP:", plr, 0, 255, 0)
 	for i, data in pairs(info) do
 		if string.find(data[1], name, 1, true) or string.find(data[2], name, 1, true) or string.find(data[3], name, 1, true) or string.find(data[4], name, 1, true) then
-			outputChatBox(data[1].." #F7FF00"..data[2].." #FDC11C"..data[3].." #FD581C"..data[4], plr, 0, 255, 0, true)
+			outputChatBox(data[1].." #F7FF00"..data[2].." #FDC11C"..(data[3] or "guest").." #FD581C"..data[4], plr, 0, 255, 0, true)
 			found = found + 1
 			if (found > 100) then
 				outputChatBox("Reached limit of 100 returns, refine your search.", plr, 0, 255, 0, true)
@@ -80,7 +80,6 @@ for i, plr in pairs(getElementsByType("player")) do
 	end
 end
 
-local function onStop()
+addEventHandler("onResourceStop", resourceRoot, function()
 	setElementData(root, "WhoWas", info, false) -- This preserves whowas data from resource restarts.
-end
-addEventHandler("onResourceStop", resourceRoot, onStop)
+end)
