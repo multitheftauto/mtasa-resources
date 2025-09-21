@@ -6,7 +6,6 @@ function playSpawnPlayer(playerElement)
 		return false
 	end
 	
-	math.randomseed(getTickCount()) -- Fix getting exact same skins over and over
 	local randomSpawn = math.random(spawnsCount)
 	local spawnData = playerSpawns[randomSpawn]
 	local posX, posY, posZ, rotX = unpack(spawnData)
