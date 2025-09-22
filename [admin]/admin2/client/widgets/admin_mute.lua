@@ -9,17 +9,20 @@
 **************************************]]
 aMute = {
     defaultDurations = {
-        {"1 minute", 60},
-        {"1 hour", 60 * 60},
-        {"1 day", 60 * 60 * 24},
-        {"1 week", 60 * 60 * 24 * 7},
+        {"1 minute", 1},
+        {"1 hour", 60},
+        {"1 day", 60 * 24},
+        {"1 week", 60 * 24 * 7},
         {"Permanent", 0},   -- HARDCODED AS SECOND LAST IN THIS TABLE, DO NOT MOVE
         {"Custom", 0}       -- HARDCODED AS LAST LAST IN THIS TABLE, DO NOT MOVE
     },
+    durationType = "minutes",
+    Form = nil,
+    playerName = nil
 }
 
 function aMute.Show(player)
-    if (not aMuteForm) then
+    if (not aMute.Form) then
         aMute.Create()
     end
 
@@ -31,6 +34,8 @@ function aMute.Show(player)
     addEventHandler("onClientGUIClick", aMute.Form, aMute.onClick)
     addEventHandler("onClientGUIFocus", aMute.Form, aMute.onFocus)
     addEventHandler("onClientGUIBlur", aMute.Form, aMute.onBlur)
+    guiSetVisible(aMute.Form, true)
+    guiBringToFront(aMute.Form)
 end
 
 function aMute.Close(destroy)
@@ -48,7 +53,7 @@ end
 function aMute.Create()
     local sx, sy = guiGetScreenSize()
 
-    aMute.Form = guiCreateWindow((sx - 350) / 2, (sy - 270) / 2, 350, 270, "Mute player", false)
+    aMute.Form = guiCreateWindow((sx - 350) / 2, (sy - 290) / 2, 350, 290, "Mute player", false)
     aMute.ReasonLabel = guiCreateLabel(25, 40, 300, 20, "Mute reason (required):", false, aMute.Form)
     aMute.ReasonEditBox = guiCreateEdit(25, 65, 300, 30, "Enter mute reason...", false, aMute.Form)
     aMute.ReasonEditBoxRecievedInput = false
@@ -57,12 +62,21 @@ function aMute.Create()
     for i=1, #aMute.defaultDurations do
         guiComboBoxAddItem(aMute.DurationComboBox, aMute.defaultDurations[i][1])
     end
-    aMute.DurationEditBox = guiCreateEdit(25, 175, 300, 30, "Duration (seconds)...", false, aMute.Form)
+    aMute.DurationEditBox = guiCreateEdit(25, 175, 300, 30, "Duration...", false, aMute.Form)
     aMute.DurationEditBoxRecievedInput = false
     guiSetEnabled(aMute.DurationEditBox, false)
 
-    aMute.SubmitButton = guiCreateButton(70, 222, 100, 30, "Submit", false, aMute.Form)
-    aMute.CancelButton = guiCreateButton(180, 222, 100, 30, "Cancel", false, aMute.Form)
+    aMute.RadioSeconds = guiCreateRadioButton(35, 216, 70, 20, "Seconds", false, aMute.Form)
+    guiSetEnabled(aMute.RadioSeconds, false)
+    aMute.RadioMinutes = guiCreateRadioButton(112, 216, 70, 20, "Minutes", false, aMute.Form)
+    guiSetEnabled(aMute.RadioMinutes, false)
+    aMute.RadioHours = guiCreateRadioButton(189, 216, 70, 20, "Hours", false, aMute.Form)
+    guiSetEnabled(aMute.RadioHours, false)
+    aMute.RadioDays = guiCreateRadioButton(256, 216, 70, 20, "Days", false, aMute.Form)
+    guiSetEnabled(aMute.RadioDays, false)
+
+    aMute.SubmitButton = guiCreateButton(70, 246, 100, 30, "Submit", false, aMute.Form)
+    aMute.CancelButton = guiCreateButton(180, 246, 100, 30, "Cancel", false, aMute.Form)
     aRegister("mute", aMute.Form, aMute.Show, aMute.Close)
 end
 
@@ -71,9 +85,14 @@ function aMute.Reset()
     guiSetText(aMute.ReasonEditBox, "Enter mute reason...")
     aMute.ReasonEditBoxRecievedInput = false
     guiComboBoxSetSelected(aMute.DurationComboBox, -1)
-    guiSetText(aMute.DurationEditBox, "Duration (seconds)...")
+    guiSetText(aMute.DurationEditBox, "Duration...")
     guiSetEnabled(aMute.DurationEditBox, false)
     aMute.DurationEditBoxRecievedInput = false
+    guiSetEnabled(aMute.RadioSeconds, false)
+    guiSetEnabled(aMute.RadioMinutes, false)
+    guiSetEnabled(aMute.RadioHours, false)
+    guiSetEnabled(aMute.RadioDays, false)
+    aMute.durationType = "minutes"
 end
 
 function aMute.onClick(button, state)
@@ -96,16 +115,44 @@ function aMute.onClick(button, state)
             -- Second-last option is permanent duration - clear and disable edit box
             guiSetText(aMute.DurationEditBox, "0")
             guiSetEnabled(aMute.DurationEditBox, false)
+            aMute.durationType = "minutes"
         elseif selected == #aMute.defaultDurations - 1 then
             -- Last option (should) be custom duration - enable duration edit box
-            guiSetText(aMute.DurationEditBox, "Duration (seconds)...")
+            guiSetText(aMute.DurationEditBox, "Duration...")
             guiSetEnabled(aMute.DurationEditBox, true)
+            guiSetEnabled(aMute.RadioSeconds, true)
+            guiSetEnabled(aMute.RadioMinutes, true)
+            guiSetEnabled(aMute.RadioHours, true)
+            guiSetEnabled(aMute.RadioDays, true)
+            guiRadioButtonSetSelected(aMute.RadioMinutes, true)
+            aMute.durationType = "minutes"
             aMute.DurationEditBoxRecievedInput = false
         else
             guiSetText(aMute.DurationEditBox, aMute.defaultDurations[selected + 1][2])
             guiSetEnabled(aMute.DurationEditBox, false)
+            guiSetEnabled(aMute.RadioSeconds, false)
+            guiSetEnabled(aMute.RadioMinutes, false)
+            guiSetEnabled(aMute.RadioHours, false)
+            guiSetEnabled(aMute.RadioDays, false)
+            aMute.durationType = "minutes"
         end
         return
+    end
+
+    if source == aMute.RadioSeconds or source == aMute.RadioMinutes or source == aMute.RadioHours or source == aMute.RadioDays then
+        if guiRadioButtonGetSelected(aMute.RadioSeconds) then
+            aMute.durationType = "seconds"
+            return
+        elseif guiRadioButtonGetSelected(aMute.RadioMinutes) then
+            aMute.durationType = "minutes"
+            return
+        elseif guiRadioButtonGetSelected(aMute.RadioHours) then
+            aMute.durationType = "hours"
+            return
+        elseif guiRadioButtonGetSelected(aMute.RadioDays) then
+            aMute.durationType = "days"
+            return
+        end
     end
 
     -- Handle submit button
@@ -177,16 +224,28 @@ function aMute.verifyForm()
     if aMute.playerName then
         actualPlayer = getPlayerFromName(aMute.playerName)
     end
+
+    local time
+    if aMute.durationType == "seconds" then 
+        time = muteDuration * 1000
+    elseif aMute.durationType == "minutes" then
+        time = muteDuration * 60 * 1000
+    elseif aMute.durationType == "hours" then
+        time = muteDuration * 60 * 60 * 1000
+    elseif aMute.durationType == "days" then
+        time = muteDuration * 60 * 60 * 24 * 1000
+    end
+
     local data = {
         playerName = aMute.playerName,
         reason = muteReason,
-        duration = muteDuration
+        duration = time,
+        player = actualPlayer
     }
 
     triggerServerEvent(
-        "aPlayer",
+        EVENT_MUTE,
         localPlayer,
-        actualPlayer,
         "mute",
         data
     )

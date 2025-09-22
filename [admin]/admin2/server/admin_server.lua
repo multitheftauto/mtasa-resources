@@ -15,7 +15,6 @@ aInteriors = {}
 aStats = {}
 aReports = {}
 aWeathers = {}
-aUnmuteTimerList = {}
 
 function aHandleIP2CUpdate()
     local playersToUpdate = false
@@ -178,7 +177,7 @@ function aAction(type, action, admin, player, data, more)
             string = string.gsub(string, "$admin", isAnonAdmin(admin) and "Admin" or (getPlayerName(admin) .. hex))
             string = string.gsub(string, "$data2", more or "")
             if (player) then
-                string = string.gsub(string, "$player", getPlayerName(player) .. hex)
+                string = string.gsub(string, "$player", (isElement(player) and getPlayerName(player) or player) .. hex)
             end
             return string.gsub(string, "$data", (data and data .. hex or ""))
         end
@@ -429,120 +428,3 @@ addCommandHandler(get("adminChatCommandName"),
         end
     end
 )
-
-addEventHandler ( "onPlayerJoin", root,
-    function ()
-        if ( not aHasUnmuteTimer( source ) or isPlayerMuted( source ) ) then
-            return
-        end
-
-        local duration = aGetRemainingUnmuteTime(source)
-        if (not duration or duration < 0) then
-            return
-        end
-
-        triggerEvent ( "aPlayer", getElementByIndex("console", 0), source, "mute", { duration = duration } )
-    end
-)
-
-addEventHandler ( "onPlayerQuit", root,
-    function ()
-        if ( not aHasUnmuteTimer( source ) or not isPlayerMuted( source ) ) then
-            return
-        end
-
-        local serial = getPlayerSerial(source)
-
-        if ( not isTimer(aUnmuteTimerList[serial].timer) ) then
-            return
-        end
-
-        local time = getTimerDetails( aUnmuteTimerList[serial].timer )
-        if ( not time ) then
-            return
-        end
-
-        aSetRemainingUnmuteTime( source, time / 1000 )
-        killTimer(aUnmuteTimerList[serial].timer)
-    end
-)
-
-function aSetPlayerMuted ( player, state, time )
-	if ( setPlayerMuted ( player, state ) ) then
-		if not state then
-			aRemoveUnmuteTimer( player )
-		elseif state then
-			aAddUnmuteTimer( player, time )
-		end
-		return true
-	end
-	return false
-end
-
-function aAddUnmuteTimer( player, time )
-	local serial = getPlayerSerial( player )
-    aUnmuteTimerList[serial] = {}
-
-    if ( time and time > 0 ) then
-        aUnmuteTimerList[serial].timer = setTimer(
-            function( )
-                aUnmuteTimerList[serial] = nil
-                for _, plr in ipairs(getElementsByType("player")) do
-                    if getPlayerSerial(plr) == serial and isPlayerMuted(plr) then
-                        triggerEvent ( "aPlayer", getElementByIndex("console", 0), plr, "unmute" )
-                    end
-                end
-            end,
-        time * 1000, 1 )
-    elseif ( time == 0 ) then
-        aSetRemainingUnmuteTime( player, 0 )
-    end
-end
-
-function aRemoveUnmuteTimer( player )
-	local serial = getPlayerSerial( player )
-	if ( not aUnmuteTimerList[serial] or not aUnmuteTimerList[serial].timer )  then
-        return false
-    end
-
-    killTimer( aUnmuteTimerList[serial].timer )
-    aUnmuteTimerList[serial] = nil
-    return true
-end
-
-function aSetRemainingUnmuteTime( player, time )
-    local serial = getPlayerSerial( player )
-    if ( not aUnmuteTimerList[serial] ) then
-        return false
-    end
-
-    aUnmuteTimerList[serial].remainingTime = time
-    return true
-end
-
-function aGetRemainingUnmuteTime( player )
-    local serial = getPlayerSerial( player )
-    if ( not aUnmuteTimerList[serial] or not aUnmuteTimerList[serial].remainingTime ) then
-        return false
-    end
-
-    return aUnmuteTimerList[serial].remainingTime
-end
-
-function aHasUnmuteTimer( player )
-	local serial = getPlayerSerial( player )
-    return aUnmuteTimerList[serial]
-end
-
-function secondsToTimeDesc( seconds )
-	if seconds then
-		local tab = { {"day",60*60*24},  {"hour",60*60},  {"min",60},  {"sec",1} }
-		for i,item in ipairs(tab) do
-			local t = math.floor(seconds/item[2])
-			if t > 0 or i == #tab then
-				return tostring(t) .. " " .. item[1] .. (t~=1 and "s" or "")
-			end
-		end
-	end
-	return ""
-end

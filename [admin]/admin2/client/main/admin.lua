@@ -18,6 +18,7 @@ aAdminMain = {
     BlockedTabsBySensitiveData = {
         ['bans'] = true,
         ['adminchat'] = true,
+        ['mutes'] = true
     }
 }
 
@@ -53,6 +54,7 @@ function aAdminMain.Open()
         aAdminMain.AddTab("Resources", aResourcesTab, "resources")
         aAdminMain.AddTab("Server", aServerTab, "server")
         aAdminMain.AddTab("Bans", aBansTab, "bans")
+        aAdminMain.AddTab("Mutes", aMuteTab, "mutes")
         aAdminMain.AddTab("Admin Chat", aChatTab, "adminchat")
         aAdminMain.AddTab("Rights", aAclTab, "acl")
         -- aAdminMain.AddTab("Network", aNetworkTab)

@@ -175,7 +175,7 @@ function aPlayersTab.onClientClick(button)
                     )
                 elseif (source == aPlayersTab.Mute) then
                     if aPlayers[player].mute then
-                        triggerServerEvent("aPlayer", localPlayer, player, "unmute")
+                        triggerServerEvent(EVENT_MUTE, localPlayer, "unmute", {serial = getPlayerSerial(player)})
                     else
                         aMute.Show(player)
                     end
