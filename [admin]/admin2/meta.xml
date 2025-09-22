@@ -29,6 +29,7 @@
 	<script src="server/admin_network.lua" type="server"/>
 	<script src="server/admin_messagebox.lua" type="server"/>
 	<script src="server/admin_screenshot.lua" type="server"/>
+	<script src="server/admin_whowas.lua" />
 	<script src="server/admin_mute.lua" type="server"/>
 
 	<script src="client/admin_wrapper.lua" type="client" cache="false"/>
