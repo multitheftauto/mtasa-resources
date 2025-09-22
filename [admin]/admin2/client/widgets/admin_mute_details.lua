@@ -101,7 +101,7 @@ function aMuteDetails.onClick(button, state)
         return
     end
 
-    if source == aMuteDetails.SubmitButton then        
+    if source == aMuteDetails.SubmitButton then
         triggerServerEvent(EVENT_MUTE, localPlayer, "unmute", {serial = aMuteDetails.Serial})
         aMuteDetails.Close()
         sync(SYNC_MUTES)

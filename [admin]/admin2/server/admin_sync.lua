@@ -190,9 +190,9 @@ addEventHandler(
                 return
             end
 
-            for serial, data in pairs(aGetMutesList()) do
-                data.time = aGetRemainingUnmuteTime(serial) -- Update time
-                tableOut[serial] = data
+            for serial, muteData in pairs(aGetMutesList()) do
+                muteData.time = aGetRemainingUnmuteTime(serial) -- Update time
+                tableOut[serial] = muteData
             end
         end
         triggerClientEvent(client or source, EVENT_SYNC, theSource, type, tableOut)

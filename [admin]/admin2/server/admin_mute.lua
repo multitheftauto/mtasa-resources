@@ -53,7 +53,7 @@ addEventHandler ( "onPlayerQuit", root,
     end
 )
 
-addEventHandler ( "onResourceStop", resourceRoot, 
+addEventHandler ( "onResourceStop", resourceRoot,
     function ()
         for serial, data in pairs( aMutedList ) do
             local remainingTime
@@ -73,7 +73,7 @@ addEventHandler ( "onResourceStop", resourceRoot,
     end
 )
 
-addEventHandler ( "onResourceStart", resourceRoot, 
+addEventHandler ( "onResourceStart", resourceRoot,
     function ()
         local result = db.query( "SELECT * FROM mutes" )
         for index, value in ipairs(result) do
@@ -134,8 +134,6 @@ function aAddUnmuteTimer( player, admin, reason, time )
 end
 
 function aRemoveUnmuteTimer( serial )
-    local serial = serial
-    
 	if ( not aMutedList[serial] or not aMutedList[serial].timer )  then
         return false
     end
@@ -203,7 +201,6 @@ function aAddOrUpdateMute(serial, player, admin, reason, time, isRestarted)
     else
         return db.exec( "INSERT INTO mutes (serial, name, admin, reason, time) VALUES (?, ?, ?, ?, ?)", serial, player, admin, reason, time )
     end
-    return false
 end
 
 function aGetMutesList()

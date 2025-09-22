@@ -226,7 +226,7 @@ function aMute.verifyForm()
     end
 
     local time
-    if aMute.durationType == "seconds" then 
+    if aMute.durationType == "seconds" then
         time = muteDuration * 1000
     elseif aMute.durationType == "minutes" then
         time = muteDuration * 60 * 1000
