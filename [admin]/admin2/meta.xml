@@ -30,7 +30,8 @@
 	<script src="server/admin_messagebox.lua" type="server"/>
 	<script src="server/admin_screenshot.lua" type="server"/>
 	<script src="server/admin_whowas.lua" />
-	
+	<script src="server/admin_mute.lua" type="server"/>
+
 	<script src="client/admin_wrapper.lua" type="client" cache="false"/>
 	<script src="client/admin_gui.lua" type="client" cache="false"/>
 	<script src="client/admin_settings.lua" type="client" cache="false"/>
@@ -46,6 +47,7 @@
 	<script src="client/main/admin_options.lua" type="client" cache="false"/>
 	<script src="client/main/admin_acl.lua" type="client" cache="false"/>
 	<script src="client/main/admin_map.lua" type="client" cache="false"/>
+	<script src="client/main/admin_mute.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_messagebox.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_inputbox.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_color.lua" type="client" cache="false"/>
@@ -67,6 +69,8 @@
 	<script src="client/widgets/admin_warp.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_report.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_weapon.lua" type="client" cache="false"/>
+	<script src="client/widgets/admin_mute.lua" type="client" cache="false"/>
+	<script src="client/widgets/admin_mute_details.lua" type="client" cache="false"/>
 	
 	<script src="shared/utils.lua" type="shared" cache="false"/>
 	
