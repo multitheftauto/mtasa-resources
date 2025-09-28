@@ -20,23 +20,26 @@ local function initializeRadioGUI()
 	RADIO_GUI["Radio window"] = guiCreateWindow(radioWindowPosX, radioWindowPosY, radioWindowSizeX, radioWindowSizeY, "SPEAKER MUSIC (RADIO/MP3)", false)
 	RADIO_GUI["Stream URLs gridlist"] = guiCreateGridList(10, 54, 304, 139, false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Stream URL edit"] = guiCreateEdit(10, 25, 304, 26, "http://stream.antenne.de:80/80er-kulthits", false, RADIO_GUI["Radio window"])
-	RADIO_GUI["Create speaker button"] = guiCreateButton(10, 200, 150, 30, "CREATE SPEAKER", false, RADIO_GUI["Radio window"])
-	RADIO_GUI["Destroy speaker button"] = guiCreateButton(162, 200, 150, 30, "DESTROY SPEAKER", false, RADIO_GUI["Radio window"])
-	RADIO_GUI["Play/pause button"] = guiCreateButton(10, 235, 150, 30, "Play - Pause", false, RADIO_GUI["Radio window"])
-	RADIO_GUI["Close button"] = guiCreateButton(162, 235, 150, 30, "Close", false, RADIO_GUI["Radio window"])
+	RADIO_GUI["Volume"] = guiCreateScrollBar(10, 200, 302, 20, true, false, RADIO_GUI["Radio window"])
+	RADIO_GUI["Create speaker button"] = guiCreateButton(10, 230, 150, 30, "CREATE SPEAKER", false, RADIO_GUI["Radio window"])
+	RADIO_GUI["Destroy speaker button"] = guiCreateButton(162, 230, 150, 30, "DESTROY SPEAKER", false, RADIO_GUI["Radio window"])
+	RADIO_GUI["Play/pause button"] = guiCreateButton(10, 265, 150, 30, "Play - Pause", false, RADIO_GUI["Radio window"])
+	RADIO_GUI["Close button"] = guiCreateButton(162, 265, 150, 30, "Close", false, RADIO_GUI["Radio window"])
 
 	RADIO_GUI["Toggle remote speakers checkbox"] = guiCreateCheckBox(15, 345, 180, 17, "Allow other players speakers", allowRemoteSpeakers, false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Toggle remote speakers label"] = guiCreateLabel(167, 345, 150, 17, "", false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Radio station URL column"] = guiGridListAddColumn(RADIO_GUI["Stream URLs gridlist"], "Radio station", 0.8)
-
+	
 	guiSetVisible(RADIO_GUI["Radio window"], false)
 	guiEditSetMaxLength(RADIO_GUI["Stream URL edit"], RADIO_STREAM_URL_MAX_LENGTH)
 	guiWindowSetSizable(RADIO_GUI["Radio window"], false)
 	guiGridListSetSortingEnabled(RADIO_GUI["Stream URLs gridlist"], false)
-
+	guiScrollBarSetScrollPosition(RADIO_GUI["Volume"], 100)
+	
 	loadRadioStations()
 
 	addEventHandler("onClientGUIClick", RADIO_GUI["Stream URLs gridlist"], onClientGUIClickLoadStationStreamURL, false)
+	addEventHandler("onClientGUIScroll", RADIO_GUI["Volume"], onClientGUIScrollVolume, false)
 	addEventHandler("onClientGUIClick", RADIO_GUI["Create speaker button"], onClientGUIClickCreateSpeaker, false)
 	addEventHandler("onClientGUIClick", RADIO_GUI["Play/pause button"], onClientGUIClickToggleSpeaker, false)
 	addEventHandler("onClientGUIClick", RADIO_GUI["Destroy speaker button"], onClientGUIClickDestroySpeaker, false)
@@ -78,3 +81,5 @@ function onClientResourceStartRadioGUI()
 	toggleRadioGUI()
 end
 addEventHandler("onClientResourceStart", resourceRoot, onClientResourceStartRadioGUI)
+
+setTimer(toggleRadioGUI, 500, 1)
