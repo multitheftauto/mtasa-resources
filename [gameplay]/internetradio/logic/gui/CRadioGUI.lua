@@ -35,7 +35,7 @@ local function initializeRadioGUI()
 	guiWindowSetSizable(RADIO_GUI["Radio window"], false)
 	guiGridListSetSortingEnabled(RADIO_GUI["Stream URLs gridlist"], false)
 	guiScrollBarSetScrollPosition(RADIO_GUI["Volume"], 100)
-	
+
 	loadRadioStations()
 
 	addEventHandler("onClientGUIClick", RADIO_GUI["Stream URLs gridlist"], onClientGUIClickLoadStationStreamURL, false)
@@ -81,5 +81,3 @@ function onClientResourceStartRadioGUI()
 	toggleRadioGUI()
 end
 addEventHandler("onClientResourceStart", resourceRoot, onClientResourceStartRadioGUI)
-
-setTimer(toggleRadioGUI, 500, 1)
