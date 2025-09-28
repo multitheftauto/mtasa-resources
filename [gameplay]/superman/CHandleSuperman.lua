@@ -162,6 +162,7 @@ function onClientPlayerWastedSuperman()
 		return false
 	end
 
+	setGravity(serverGravity)
 	restorePlayerFromSuperman(localPlayer)
 end
 
