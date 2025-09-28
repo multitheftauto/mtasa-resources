@@ -85,6 +85,7 @@ function onClientResourceStartSuperman()
 	addEventHandler("onClientRender", root, onClientRenderSupermanProcessControls)
 	addEventHandler("onClientRender", root, onClientRenderSupermanProcessFlight)
 	addEventHandler("onClientPlayerDamage", localPlayer, onClientPlayerDamageSuperman)
+	addEventHandler("onClientPlayerWasted", localPlayer, onClientPlayerWastedSuperman)
 	addEventHandler("onClientPlayerVehicleEnter", localPlayer, onClientPlayerVehicleEnterSuperman)
 	addEventHandler("onClientElementStreamIn", root, onClientElementStreamInSuperman)
 	addEventHandler("onClientElementStreamOut", root, onClientElementStreamOutSuperman)
@@ -152,6 +153,16 @@ function onClientPlayerDamageSuperman()
 	end
 
 	cancelEvent()
+end
+
+function onClientPlayerWastedSuperman()
+	local playerFlying = isPlayerFlying(localPlayer)
+
+	if (not playerFlying) then
+		return false
+	end
+
+	restorePlayerFromSuperman(localPlayer)
 end
 
 function onClientElementStreamInSuperman()
