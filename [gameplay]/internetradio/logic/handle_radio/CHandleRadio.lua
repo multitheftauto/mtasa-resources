@@ -230,6 +230,7 @@ function setPlayerSpeakerVolume(playerElement, volume)
 	end
 
 	setSoundVolume(speakerSound, volume)
+
 	return true
 end
 
