@@ -128,3 +128,18 @@ function clearPlayersDelay()
 	playerDelays[source] = nil
 end
 addEventHandler(isServer and "onPlayerQuit" or "onClientPlayerQuit", root, clearPlayersDelay)
+
+function verifyRadioVolume(radioVolume)
+	local radioVolumeType = type(radioVolume)
+	local radioVolumeNumber = (radioVolumeType == "number")
+
+	if (not radioVolumeNumber) then
+		return false
+	end
+
+	local radioVolumeMin = 0
+	local radioVolumeMax = 1
+	local radioVolumeInRange = (radioVolume >= radioVolumeMin) and (radioVolume <= radioVolumeMax)
+
+	return radioVolumeInRange
+end

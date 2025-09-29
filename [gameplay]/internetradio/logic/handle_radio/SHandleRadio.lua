@@ -102,6 +102,12 @@ function onServerCreateSpeaker(streamURL, volume)
 		return false
 	end
 
+	local validVolume = verifyRadioVolume(volume)
+
+	if (not validVolume) then
+		return false
+	end
+
 	clearPlayerSpeaker(client, true)
 
 	local playerPosX, playerPosY, playerPosZ = getElementPosition(client)
@@ -147,9 +153,15 @@ function onServerEditVolume(volume)
 		return false
 	end
 
+	local validVolume = verifyRadioVolume(volume)
+
+	if (not validVolume) then
+		return false
+	end
+	
 	local speakerData = playerSpeakers[client]
 
-	if (not speakerData or not speakerData.speakerBox) then
+	if (not speakerData) then
 		return false
 	end
 
