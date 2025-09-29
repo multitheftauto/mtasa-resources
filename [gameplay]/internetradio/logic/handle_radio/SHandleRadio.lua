@@ -162,9 +162,6 @@ function onServerEditVolume(volume)
 	local speakerData = playerSpeakers[client]
 
 	if (not speakerData) then
-	local speakerData = playerSpeakers[client]
-
-	if (not speakerData or not speakerData.speakerBox) then
 		return false
 	end
 
