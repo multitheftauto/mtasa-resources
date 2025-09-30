@@ -6,6 +6,7 @@
 
 local speakerSounds = {}
 local playerSpeakers = {}
+local speakerVolumeSyncTimer = false
 
 local function getStreamURLFromEdit()
 	local streamURL = guiGetText(RADIO_GUI["Stream URL edit"])
@@ -44,6 +45,34 @@ local function handleSpeakerOnStreamInOut(speakerElement, toggleOn)
 	end
 
 	return false
+end
+
+local function getLocalSpeakerVolume()
+	local speakerVolume = guiScrollBarGetScrollPosition(RADIO_GUI["Volume"])
+	local speakerVolumeValue = (speakerVolume/100)
+
+	return speakerVolumeValue
+end
+
+local function syncSpeakerVolume()
+	local speakerVolume = getLocalSpeakerVolume()
+
+	triggerServerEvent("onServerEditVolume", localPlayer, speakerVolume)
+	speakerVolumeSyncTimer = false
+
+	return true
+end
+
+local function requestSpeakerVolumeSync()
+	if (speakerVolumeSyncTimer) then
+		resetTimer(speakerVolumeSyncTimer)
+	else
+		local speakerTimerInterval = (RADIO_VOLUME_DELAY + 50) -- extra time to let server catch up
+
+		speakerVolumeSyncTimer = setTimer(syncSpeakerVolume, speakerTimerInterval, 1)
+	end
+
+	return true
 end
 
 function loadRadioStations()
@@ -151,14 +180,7 @@ function onClientGUIClickCreateSpeaker()
 end
 
 function onClientGUIScrollVolume()
-	local volume = guiScrollBarGetScrollPosition(RADIO_GUI["Volume"]) / 100
-	local createDelayPassed = getOrSetPlayerDelay(localPlayer, "volume", RADIO_VOLUME_DELAY)
-
-	if (not createDelayPassed) then
-		return false
-	end
-
-	triggerServerEvent("onServerEditVolume", localPlayer, volume)
+	requestSpeakerVolumeSync()
 end
 
 function onClientGUIClickToggleSpeaker()
@@ -207,7 +229,7 @@ function setPlayerSpeakerData(playerElement, speakerData)
 	local speakerBox = speakerData.speakerBox
 	local speakerDummy = createObject(1337, 0, 0, 3)
 	local speakerBoxDimension = getElementDimension(speakerBox)
-	setElementDimension(speakerDummy, speakerBoxDimension)
+
 
 	speakerData.speakerDummy = speakerDummy
 	playerSpeakers[playerElement] = speakerData
@@ -216,6 +238,7 @@ function setPlayerSpeakerData(playerElement, speakerData)
 
 	setElementAlpha(speakerDummy, 0)
 	setElementCollisionsEnabled(speakerDummy, false)
+	setElementDimension(speakerDummy, speakerBoxDimension)
 	attachElements(speakerDummy, speakerBox, -0.32, -0.22, 0.8)
 
 	return true
