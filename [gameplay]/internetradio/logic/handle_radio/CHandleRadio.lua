@@ -57,7 +57,7 @@ end
 local function syncSpeakerVolume()
 	local speakerVolume = getLocalSpeakerVolume()
 
-	triggerServerEvent("onServerEditVolume", localPlayer, speakerVolume)
+	triggerServerEvent("onServerSetSpeakerVolume", localPlayer, speakerVolume)
 	speakerVolumeSyncTimer = false
 
 	return true
@@ -71,6 +71,10 @@ local function requestSpeakerVolumeSync()
 
 		speakerVolumeSyncTimer = setTimer(syncSpeakerVolume, speakerTimerInterval, 1)
 	end
+
+	local speakerVolume = getLocalSpeakerVolume()
+
+	setPlayerSpeakerVolume(localPlayer, speakerVolume) -- set volume locally so localPlayer could adjust it without any delay (this will be sanity corrected by server later on)
 
 	return true
 end
@@ -160,7 +164,7 @@ end
 
 function onClientGUIClickCreateSpeaker()
 	local streamURL, errorCode = getStreamURLFromEdit()
-	local volume = guiScrollBarGetScrollPosition(RADIO_GUI["Volume"]) / 100
+	local speakerVolume = getLocalSpeakerVolume()
 
 	if (not streamURL) then
 		local textToDisplay = errorCode or "SPEAKER: Invalid URL, please check your input!"
@@ -176,7 +180,7 @@ function onClientGUIClickCreateSpeaker()
 		return false
 	end
 
-	triggerServerEvent("onServerCreateSpeaker", localPlayer, streamURL, volume)
+	triggerServerEvent("onServerCreateSpeaker", localPlayer, streamURL, speakerVolume)
 end
 
 function onClientGUIScrollVolume()
@@ -244,7 +248,7 @@ function setPlayerSpeakerData(playerElement, speakerData)
 	return true
 end
 
-function setPlayerSpeakerVolume(playerElement, volume)
+function setPlayerSpeakerVolume(playerElement, speakerVolume)
 	local validElement = isElement(playerElement)
 	local speakerSound = speakerSounds[playerElement]
 
@@ -252,7 +256,7 @@ function setPlayerSpeakerVolume(playerElement, volume)
 		return false
 	end
 
-	setSoundVolume(speakerSound, volume)
+	setSoundVolume(speakerSound, speakerVolume)
 
 	return true
 end
@@ -368,11 +372,11 @@ end
 addEvent("onClientCreateSpeaker", true)
 addEventHandler("onClientCreateSpeaker", root, onClientCreateSpeaker)
 
-function onClientUpdateVolume(speakerVolume)
+function onClientSetSpeakerVolume(speakerVolume)
 	setPlayerSpeakerVolume(source, speakerVolume)
 end
-addEvent("onClientUpdateVolume", true)
-addEventHandler("onClientUpdateVolume", root, onClientUpdateVolume)
+addEvent("onClientSetSpeakerVolume", true)
+addEventHandler("onClientSetSpeakerVolume", root, onClientSetSpeakerVolume)
 
 function onClientToggleSpeaker(pauseState)
 	setPlayerSpeakerPaused(source, pauseState)

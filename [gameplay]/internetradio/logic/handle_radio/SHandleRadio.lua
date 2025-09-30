@@ -27,7 +27,7 @@ function updateSpeakerVolume(playerElement, speakerVolume)
 	end
 
 	playerSpeakerData.speakerVolume = speakerVolume
-	triggerClientEvent(root, "onClientUpdateVolume", playerElement, speakerVolume)
+	triggerClientEvent(root, "onClientSetSpeakerVolume", playerElement, speakerVolume)
 
 	return true
 end
@@ -144,7 +144,7 @@ end
 addEvent("onServerCreateSpeaker", true)
 addEventHandler("onServerCreateSpeaker", root, onServerCreateSpeaker)
 
-function onServerEditVolume(speakerVolume)
+function onServerSetSpeakerVolume(speakerVolume)
 	if (not client or client ~= source) then
 		return false
 	end
@@ -169,8 +169,8 @@ function onServerEditVolume(speakerVolume)
 
 	updateSpeakerVolume(client, speakerVolume)
 end
-addEvent("onServerEditVolume", true)
-addEventHandler("onServerEditVolume", root, onServerEditVolume)
+addEvent("onServerSetSpeakerVolume", true)
+addEventHandler("onServerSetSpeakerVolume", root, onServerSetSpeakerVolume)
 
 function onServerToggleSpeaker()
 	if (not client) then
