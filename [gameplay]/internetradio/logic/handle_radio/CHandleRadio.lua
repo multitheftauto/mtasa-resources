@@ -91,6 +91,7 @@ function toggleSpeakerSounds(playerElement, toggleOn)
 		local speakerDimension = getElementDimension(speakerBox)
 		local speakerSoundMaxDistance = speakerData.speakerSoundMaxDistance
 		local speakerStreamURL = speakerData.speakerStreamURL
+		local speakerVolume = speakerData.speakerVolume
 		local speakerNewSound = playSound3D(speakerStreamURL, speakerBoxPosX, speakerBoxPosY, speakerBoxPosZ, true, false)
 
 		if (not speakerNewSound) then
@@ -106,7 +107,7 @@ function toggleSpeakerSounds(playerElement, toggleOn)
 
 		setSoundPaused(speakerNewSound, speakerPaused)
 		setSoundMaxDistance(speakerNewSound, speakerSoundMaxDistance)
-		setSoundVolume(speakerNewSound, 1)
+		setSoundVolume(speakerNewSound, speakerVolume)
 		attachElements(speakerNewSound, speakerBox)
 	end
 
@@ -130,6 +131,7 @@ end
 
 function onClientGUIClickCreateSpeaker()
 	local streamURL, errorCode = getStreamURLFromEdit()
+	local volume = guiScrollBarGetScrollPosition(RADIO_GUI["Volume"]) / 100
 
 	if (not streamURL) then
 		local textToDisplay = errorCode or "SPEAKER: Invalid URL, please check your input!"
@@ -145,7 +147,18 @@ function onClientGUIClickCreateSpeaker()
 		return false
 	end
 
-	triggerServerEvent("onServerCreateSpeaker", localPlayer, streamURL)
+	triggerServerEvent("onServerCreateSpeaker", localPlayer, streamURL, volume)
+end
+
+function onClientGUIScrollVolume()
+	local volume = guiScrollBarGetScrollPosition(RADIO_GUI["Volume"]) / 100
+	local createDelayPassed = getOrSetPlayerDelay(localPlayer, "volume", RADIO_VOLUME_DELAY)
+
+	if (not createDelayPassed) then
+		return false
+	end
+
+	triggerServerEvent("onServerEditVolume", localPlayer, volume)
 end
 
 function onClientGUIClickToggleSpeaker()
@@ -204,6 +217,19 @@ function setPlayerSpeakerData(playerElement, speakerData)
 	setElementAlpha(speakerDummy, 0)
 	setElementCollisionsEnabled(speakerDummy, false)
 	attachElements(speakerDummy, speakerBox, -0.32, -0.22, 0.8)
+
+	return true
+end
+
+function setPlayerSpeakerVolume(playerElement, volume)
+	local validElement = isElement(playerElement)
+	local speakerSound = speakerSounds[playerElement]
+
+	if (not validElement or not speakerSound) then
+		return false
+	end
+
+	setSoundVolume(speakerSound, volume)
 
 	return true
 end
@@ -318,6 +344,12 @@ function onClientCreateSpeaker(speakerData)
 end
 addEvent("onClientCreateSpeaker", true)
 addEventHandler("onClientCreateSpeaker", root, onClientCreateSpeaker)
+
+function onClientUpdateVolume(volume)
+	setPlayerSpeakerVolume(source, volume)
+end
+addEvent("onClientUpdateVolume", true)
+addEventHandler("onClientUpdateVolume", root, onClientUpdateVolume)
 
 function onClientToggleSpeaker(pauseState)
 	setPlayerSpeakerPaused(source, pauseState)
