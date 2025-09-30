@@ -368,8 +368,8 @@ end
 addEvent("onClientCreateSpeaker", true)
 addEventHandler("onClientCreateSpeaker", root, onClientCreateSpeaker)
 
-function onClientUpdateVolume(volume)
-	setPlayerSpeakerVolume(source, volume)
+function onClientUpdateVolume(speakerVolume)
+	setPlayerSpeakerVolume(source, speakerVolume)
 end
 addEvent("onClientUpdateVolume", true)
 addEventHandler("onClientUpdateVolume", root, onClientUpdateVolume)

@@ -29,7 +29,7 @@ local function initializeRadioGUI()
 	RADIO_GUI["Toggle remote speakers checkbox"] = guiCreateCheckBox(15, 345, 180, 17, "Allow other players speakers", allowRemoteSpeakers, false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Toggle remote speakers label"] = guiCreateLabel(167, 345, 150, 17, "", false, RADIO_GUI["Radio window"])
 	RADIO_GUI["Radio station URL column"] = guiGridListAddColumn(RADIO_GUI["Stream URLs gridlist"], "Radio station", 0.8)
-	
+
 	guiSetVisible(RADIO_GUI["Radio window"], false)
 	guiEditSetMaxLength(RADIO_GUI["Stream URL edit"], RADIO_STREAM_URL_MAX_LENGTH)
 	guiWindowSetSizable(RADIO_GUI["Radio window"], false)

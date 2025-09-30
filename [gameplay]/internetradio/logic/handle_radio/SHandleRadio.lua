@@ -19,15 +19,17 @@ function setPlayerSpeakerData(playerElement, speakerData)
 	return true
 end
 
-function updateSpeakerVolume(playerElement, volume)
+function updateSpeakerVolume(playerElement, speakerVolume)
 	local playerSpeakerData = getPlayerSpeakerData(playerElement)
 
 	if (not playerSpeakerData) then
 		return false
 	end
 
-	playerSpeakerData.speakerVolume = volume
-	triggerClientEvent(root, "onClientUpdateVolume", playerElement, volume)
+	playerSpeakerData.speakerVolume = speakerVolume
+	triggerClientEvent(root, "onClientUpdateVolume", playerElement, speakerVolume)
+
+	return true
 end
 
 function getPlayerSpeakerData(playerElement)
@@ -73,7 +75,7 @@ function isObjectSpeaker(objectElement)
 		return false
 	end
 
-	for playerElement, speakerData in pairs(playerSpeakers) do
+	for _, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
 		local matchingElement = (speakerBox == objectElement)
 
@@ -85,7 +87,7 @@ function isObjectSpeaker(objectElement)
 	return false
 end
 
-function onServerCreateSpeaker(streamURL, volume)
+function onServerCreateSpeaker(streamURL, speakerVolume)
 	if (not client) then
 		return false
 	end
@@ -102,7 +104,7 @@ function onServerCreateSpeaker(streamURL, volume)
 		return false
 	end
 
-	local validVolume = verifyRadioVolume(volume)
+	local validVolume = verifyRadioVolume(speakerVolume)
 
 	if (not validVolume) then
 		return false
@@ -134,7 +136,7 @@ function onServerCreateSpeaker(streamURL, volume)
 		speakerStreamURL = streamURL,
 		speakerSoundMaxDistance = RADIO_MAX_SOUND_DISTANCE,
 		speakerPaused = false,
-		speakerVolume = volume
+		speakerVolume = speakerVolume,
 	}
 
 	setPlayerSpeakerData(client, speakerData)
@@ -142,7 +144,7 @@ end
 addEvent("onServerCreateSpeaker", true)
 addEventHandler("onServerCreateSpeaker", root, onServerCreateSpeaker)
 
-function onServerEditVolume(volume)
+function onServerEditVolume(speakerVolume)
 	if (not client or client ~= source) then
 		return false
 	end
@@ -153,19 +155,19 @@ function onServerEditVolume(volume)
 		return false
 	end
 
-	local validVolume = verifyRadioVolume(volume)
+	local validVolume = verifyRadioVolume(speakerVolume)
 
 	if (not validVolume) then
 		return false
 	end
-	
+
 	local speakerData = playerSpeakers[client]
 
 	if (not speakerData) then
 		return false
 	end
 
-	updateSpeakerVolume(client, volume)
+	updateSpeakerVolume(client, speakerVolume)
 end
 addEvent("onServerEditVolume", true)
 addEventHandler("onServerEditVolume", root, onServerEditVolume)
