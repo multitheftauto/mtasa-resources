@@ -64,6 +64,10 @@ local function syncSpeakerVolume()
 end
 
 local function requestSpeakerVolumeSync()
+	local speakerVolume = getLocalSpeakerVolume()
+
+	setPlayerSpeakerVolume(localPlayer, speakerVolume) -- set volume locally so localPlayer could adjust it without any delay (this will be sanity corrected by server later on)
+
 	if (speakerVolumeSyncTimer) then
 		resetTimer(speakerVolumeSyncTimer)
 	else
@@ -71,10 +75,6 @@ local function requestSpeakerVolumeSync()
 
 		speakerVolumeSyncTimer = setTimer(syncSpeakerVolume, speakerTimerInterval, 1)
 	end
-
-	local speakerVolume = getLocalSpeakerVolume()
-
-	setPlayerSpeakerVolume(localPlayer, speakerVolume) -- set volume locally so localPlayer could adjust it without any delay (this will be sanity corrected by server later on)
 
 	return true
 end
