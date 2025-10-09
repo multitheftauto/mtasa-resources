@@ -20,12 +20,13 @@ function createBrowser()
 	browserGUI.window = guiCreateWindow 	( 0, 0, 0.25, 1, "Browse...", true )
 	guiSetVisible ( browserGUI.window, false )
 	browserGUI.dropdown = editingControl.dropdown:create{["x"]=12,["y"]=25,["width"]=screenX*0.25,["height"]=20,["dropWidth"]=screenX*0.25,["dropHeight"]=200,["relative"]=false,["parent"]=browserGUI.window,["rows"]={"All categories", "Favourites"}}
-	browserGUI.list = browserList:create( 12, 85, screenX*0.25, screenY*1-112, { {["Element"]=0.95-(60/(screenX*0.25))},{["[ID]"]=40/(screenX*0.25)}},false, browserGUI.window )
+	browserGUI.list = browserList:create( 12, 85, screenX*0.25, screenY*1-140, { {["Element"]=0.95-(60/(screenX*0.25))},{["[ID]"]=40/(screenX*0.25)}},false, browserGUI.window )
 	browserGUI.search = guiCreateEdit ( 12, 50, screenX*0.25, 30, "Search...", false, browserGUI.window )
 	browserGUI.ok = guiCreateButton ( 12, screenY-24, screenX*0.125 - 2, 40, "OK", false, browserGUI.window )
 	browserGUI.cancel = guiCreateButton ( screenX*0.125 + 12 + 2, screenY-24, screenX*0.125 - 2, 40, "Cancel", false, browserGUI.window )
 	browserGUI.searchProgress = guiCreateLabel ( 0, 0, 1, 0.1, "", true )
 	browserGUI.searchModel = guiCreateLabel ( 0, 0, 1, 0.1, "", true )
+	browserGUI.doubleside = guiCreateCheckBox ( 12, screenY-50, 110, 20, "Set doublesided", false, false, browserGUI.window )
 	guiSetVisible ( browserGUI.searchProgress, false )
 	guiSetVisible ( browserGUI.searchModel, false )
 	guiLabelSetColor ( browserGUI.searchProgress,0,0,0 )
@@ -37,6 +38,7 @@ function createBrowser()
 
 	addEventHandler ("onClientGUIClick",browserGUI.ok,browser.browserSelected,false)
 	addEventHandler ("onClientGUIClick",browserGUI.cancel,browser.browserCancelled,false)
+	addEventHandler ("onClientGUIClick",browserGUI.doubleside,browser.setDoublesided,false)
 end
 
 function browser.initiate ( theType, initialCat, initialModel )
@@ -332,6 +334,11 @@ function browser.browserCancelled(button)
 		callbackFunction(initialValues.initialType, initialValues.initialCat, initialValues.initialModel,true)
 	end
 	browser.close()
+end
+
+function browser.setDoublesided(button)
+	if button ~= "left" then return end
+	setElementDoubleSided(browser.mainElement, guiCheckBoxGetSelected(browserGUI.doubleside))
 end
 
 function setProgressText ( text )

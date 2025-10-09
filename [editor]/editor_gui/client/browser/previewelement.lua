@@ -23,6 +23,7 @@ function browserSetElementModel ( elemID, model )
 		setModel[elemID](model)
 	end
 end
+
 function setModel.vehicleID ( model )
 	local randomOffset = ((getTickCount() % 20) / 100) + 0.001
 
@@ -60,12 +61,13 @@ function setModel.vehicleID ( model )
 	setCameraMatrix ( tx - realDistance, ty, tz + elevation + randomOffset,
 	                  tx, ty + moveLeft, tz + randomOffset)
 end
+
 function setModel.objectID ( model )
 	local randomOffset = ((getTickCount() % 20) / 100) + 0.001
 
 	if not browser.mainElement then
 		browser.mainElement = createObject(model, tx, ty, tz, 0, 0, rz, true)
-		setElementDoubleSided(browser.mainElement, true)
+		setElementDoubleSided(browser.mainElement, guiCheckBoxGetSelected(browserGUI.doubleside))
 		setElementDimension ( browser.mainElement, BROWSER_DIMENSION )
 		setElementInterior(browser.mainElement, 14)
 	else
@@ -75,11 +77,15 @@ function setModel.objectID ( model )
 	setElementPosition(browser.mainElement, tx, ty, tz)
 	setElementAlpha(browser.mainElement, 255)
 
+	local a,b,c,d,e,f = getElementBoundingBox(browser.mainElement)
 	local radius = math.max(7, getElementRadius(browser.mainElement)*2.1)
+	radius = math.max(radius, math.sqrt((c*c)+(f*f))*2)
 	browserElementLookOptions.distance = radius
-	setCameraMatrix ( tx - radius - 1, ty + 1, tz + radius/4,
-			  tx - 1, ty + 1, tz)
+	local offset = radius * 0.2
+	setCameraMatrix ( tx - radius - offset, ty + offset, tz + radius * 0.25,
+			  tx - offset, ty + offset, tz)
 end
+
 function setModel.skinID ( model )
 	local randomOffset = (getTickCount() % 20) / 100
 
@@ -113,7 +119,6 @@ function rotateMesh ()
 		setPedRotation ( browser.mainElement,newRotation)
 	end
 end
-
 
 function _previewRotate(object, rotation)
 	-- https://github.com/multitheftauto/mtasa-resources/commit/117759a6df540c21515d2666794e05dcf9c76254
