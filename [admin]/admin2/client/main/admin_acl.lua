@@ -314,7 +314,7 @@ function aAclTab.RefreshUsersList()
             for i,user in ipairs(cache) do
                 local row = guiGridListAddRow(aAclTab.Users)
 
-                if ((search and (user:gsub('user.',''):lower():find(searchText))) or not search) then
+                if ((search and (user:gsub('user.',''):lower():find(searchText, 1, true))) or not search) then
                     guiGridListSetItemText(aAclTab.Users, row, 1, user, false, false)
                 end
             end
@@ -339,7 +339,7 @@ function aAclTab.RefreshResourcesList()
             for i,resource in ipairs(cache) do
                 local row = guiGridListAddRow(aAclTab.Resources)
 
-                if ((search and (resource:gsub('resource.',''):lower():find(searchText))) or not search) then
+                if ((search and (resource:gsub('resource.',''):lower():find(searchText, 1, true))) or not search) then
                     guiGridListSetItemText(aAclTab.Resources, row, 1, resource, false, false)
                 end
             end
