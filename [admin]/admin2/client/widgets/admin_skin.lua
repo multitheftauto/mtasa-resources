@@ -155,7 +155,7 @@ function aSkin.Refresh()
         local skins = {}
         for name, group in pairs(aSkin.skins) do
             for _, skin in ipairs(group) do
-                if skin.model:find(filter) or skin.name:lower():find(filter) then
+                if skin.model:find(filter, 1, true) or skin.name:lower():find(filter, 1, true) then
                     if (not skins[name]) then
                         skins[name] = {}
                     end
@@ -179,7 +179,7 @@ function aSkin.Refresh()
             end
         end
         for model, skinName in pairs(skins) do
-            if model:find(filter) or skinName:lower():find(filter) then
+            if model:find(filter, 1, True) or skinName:lower():find(filter, 1, true) then
                 local row = guiGridListAddRow(aSkin.List)
                 guiGridListSetItemText(aSkin.List, row, 1, model, false, true)
                 guiGridListSetItemText(aSkin.List, row, 2, skinName, false, false)
