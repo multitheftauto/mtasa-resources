@@ -177,7 +177,7 @@ function aAction(type, action, admin, player, data, more)
             string = string.gsub(string, "$admin", isAnonAdmin(admin) and "Admin" or (getPlayerName(admin) .. hex))
             string = string.gsub(string, "$data2", more or "")
             if (player) then
-                string = string.gsub(string, "$player", getPlayerName(player) .. hex)
+                string = string.gsub(string, "$player", (isElement(player) and getPlayerName(player) or player) .. hex)
             end
             return string.gsub(string, "$data", (data and data .. hex or ""))
         end
@@ -229,6 +229,9 @@ addEventHandler(
     "aPlayer",
     root,
     function(player, action, ...)
+        if not client then
+            client = source
+        end
         if (hasObjectPermissionTo(client, "command." .. action, false)) then
             local mdata1, mdata2
             local func = aFunctions.player[action]
