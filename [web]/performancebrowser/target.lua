@@ -179,8 +179,7 @@ function Target:getLuaTimingRecordings( queryFilterText )
 			local recordedTime = recording[3]
 			
 			-- Apply filter if specified
-			if not queryFilterText or queryFilterText == "" or 
-			   string.find(string.lower(resourceName), string.lower(queryFilterText), 1, true) then
+			if not queryFilterText or queryFilterText == "" or string.find(string.lower(resourceName), string.lower(queryFilterText), 1, true) then
 				table.insert(rows, {resourceName, cpuUsage, recordedTime})
 			end
 		end
