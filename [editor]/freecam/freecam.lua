@@ -329,7 +329,7 @@ function setFreecamEnabled (x, y, z)
 	if (x and y and z) then
 	    setCameraMatrix ( x, y, z, nil, nil, nil, 0, options.fov )
 	end
-	addEventHandler("onClientPreRender", root, freecamFrame)
+	addEventHandler("onClientRender", root, freecamFrame)
 	addEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", true)
 
@@ -345,7 +345,7 @@ function setFreecamDisabled()
 	velocityX,velocityY,velocityZ = 0,0,0
 	speed = 0
 	strafespeed = 0
-	removeEventHandler("onClientPreRender", root, freecamFrame)
+	removeEventHandler("onClientRender", root, freecamFrame)
 	removeEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", false)
 
