@@ -40,6 +40,8 @@ local controlToKey = {
 	["vehicle_right"] = "d",
 }
 
+local mouseFrameDelay = 0
+
 local mta_getKeyState = getKeyState
 function getKeyState(key)
 	if isMTAWindowActive() then
@@ -219,6 +221,7 @@ end
 -- Internal state (module-level)
 local mouseFrameDelay   = 0           -- frames to ignore after cursor/window toggles
 local accumDX, accumDY  = 0, 0        -- accumulated raw mouse deltas (pixels)
+local lastEventTick     = 0
 local PI, RAD           = math.pi, math.pi / 180
 
 -- Tunables (adjust to taste)
@@ -278,6 +281,7 @@ function freecamMouse(cX, cY, aX, aY)
     -- Accumulate; application to rot happens in freecamMouseApply() every frame
     accumDX = accumDX + dx
     accumDY = accumDY + dy
+    lastEventTick = getTickCount()
 end
 
 function freecamMouseApply(deltaTime)
