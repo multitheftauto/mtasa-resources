@@ -16,6 +16,7 @@ local currentid = 0
 local rights = {
 	["new"] = "takescreenshot",
 	["delete"] = "deletescreenshot",
+	["deleteall"] = "deletesallcreenshot",
 	["view"] = "viewscreenshot",
 	["list"] = "listscreenshots"
 }
@@ -60,6 +61,14 @@ addEventHandler("aScreenShot",root,
 				fileDelete("screenshots/"..player..".jpg")
 			end
 			dbExec(con, "DELETE FROM `admin_screenshots` WHERE `id`=?", player)
+		elseif action == "deleteall" then
+			for i=0, currentid do
+				if fileExists("screenshots/"..i..".jpg") then
+					fileDelete("screenshots/"..i..".jpg")
+				end
+			end
+			currentid = 0
+			dbExec(con, "DELETE FROM `admin_screenshots`")
 		elseif action == "view" then
 			if fileExists("screenshots/"..player..".jpg") then
 				local file = fileOpen("screenshots/"..player..".jpg")

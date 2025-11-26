@@ -93,6 +93,7 @@
     <!--Screenshot related-->
     <right name="command.takescreenshot" access="true" />
     <right name="command.deletescreenshot" access="true" />
+    <right name="command.deletesallcreenshot" access="true" />
     <right name="command.viewscreenshot" access="true" />
     <right name="command.listscreenshots" access="true" />
   </acl>
@@ -183,6 +184,7 @@
     <!--Screenshot related-->
     <right name="command.takescreenshot" access="true" />
     <right name="command.deletescreenshot" access="true" />
+    <right name="command.deletesallcreenshot" access="false" />
     <right name="command.viewscreenshot" access="true" />
     <right name="command.listscreenshots" access="true" />
   </acl>
@@ -273,6 +275,7 @@
     <!--Screenshot related-->
     <right name="command.takescreenshot" access="true" />
     <right name="command.deletescreenshot" access="true" />
+    <right name="command.deletesallcreenshot" access="false" />
     <right name="command.viewscreenshot" access="true" />
     <right name="command.listscreenshots" access="true" />
   </acl>
@@ -364,6 +367,7 @@
     <!--Screenshot related-->
     <right name="command.takescreenshot" access="false" />
     <right name="command.deletescreenshot" access="false" />
+    <right name="command.deletesallcreenshot" access="false" />
     <right name="command.viewscreenshot" access="false" />
     <right name="command.listscreenshots" access="false" />
   </acl>
