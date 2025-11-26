@@ -16,7 +16,7 @@ local currentid = 0
 local rights = {
 	["new"] = "takescreenshot",
 	["delete"] = "deletescreenshot",
-	["deleteall"] = "deletesallcreenshot",
+	["deleteall"] = "deleteallscreenshot",
 	["view"] = "viewscreenshot",
 	["list"] = "listscreenshots"
 }
