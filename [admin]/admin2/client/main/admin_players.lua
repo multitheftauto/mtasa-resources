@@ -263,7 +263,7 @@ function aPlayersTab.onClientClick(button)
                 end
             end
         elseif (source == aPlayersTab.AnonAdmin) then
-            setElementData(localPlayer, "AnonAdmin", guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
+            triggerServerEvent(EVENT_ANONYMOUS_UPDATE, localPlayer, guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
         elseif (source == aPlayersTab.ColorCodes) then
             aPlayersTab.Refresh()
             aSetSetting('hideColorCodes', guiCheckBoxGetSelected(source))
