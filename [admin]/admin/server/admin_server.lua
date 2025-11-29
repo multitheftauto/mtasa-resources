@@ -618,7 +618,7 @@ end
 
 -- Should admin name be hidden from public chatbox message?
 function isAnonAdmin4All ( admin )
-	return getElementData( admin, "AnonAdmin" ) == true
+	return aPlayers[admin] and aPlayers[admin]["AnonymousAdmin"] or false
 end
 
 -- Should admin name be hidden from private chatbox message?
@@ -666,6 +666,7 @@ end )
 local aAdminRights = {
 	["settings"] = "general.tab_resources",
 	["resourcelist"] = "general.tab_resources",
+	["adminpanel"] = "general.adminpanel",
 
 	["sync"] = "command.aclmanager",
 	["aclcreate"] = "command.aclcreate",
@@ -907,6 +908,13 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 				end
 			end
 		end
+	elseif ( action == "adminpanel" ) then
+		local cmd = arg[1]
+
+		if cmd == "updateAnonymous" then
+			local state = arg[2]
+			aPlayers[client]["AnonymousAdmin"] = state
+		end
 	end
 end )
 
@@ -961,7 +969,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 		if ( action == "kick" ) then
 			local reason = data or ""
 			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
-			local isAnonAdmin = getElementData(source, "AnonAdmin")
+			local isAnonAdmin = isAnonAdmin4All(source)
 			if isAnonAdmin then
 				setTimer ( kickPlayer, 100, 1, player, "Anonymous admin", reason )
 			else
@@ -971,7 +979,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 			local reason = data or ""
 			local seconds = tonumber(additional) and tonumber(additional) > 0 and tonumber(additional)
 			local bUseSerial = additional2
-			local isAnonAdmin = getElementData(source, "AnonAdmin")
+			local isAnonAdmin = isAnonAdmin4All(source)
 			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
 			more = seconds and ( "(" .. secondsToTimeDesc(seconds) .. ")" ) or ""
 			if bUseSerial and getPlayerName ( player ) and not isAnonAdmin then
@@ -1034,7 +1042,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 		elseif ( action == "shout" ) then
 			local textDisplay = textCreateDisplay ()
 			local textItem
-			local anon = getElementData( admin, "AnonAdmin" )
+			local anon = isAnonAdmin4All( admin )
 			if (anon) then
 				textItem = textCreateTextItem ( "ADMIN:\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
 			else

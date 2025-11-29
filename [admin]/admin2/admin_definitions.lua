@@ -46,7 +46,8 @@ enum(
         "EVENT_SCREEN_SHOT",
         "EVENT_RESOURCE_START",
         "EVENT_RESOURCE_STOP",
-        "EVENT_PLAYER_JOIN"
+        "EVENT_PLAYER_JOIN",
+        "EVENT_ANONYMOUS_UPDATE"
     },
     "ae"
 )
