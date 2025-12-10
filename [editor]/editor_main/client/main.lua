@@ -1405,3 +1405,125 @@ function disableCharacterSounds()
 	-- CJ stealth breathing, fall screaming etc.
 	setWorldSoundEnabled ( 25, false )
 end
+
+-----------------------------------------------------------
+-- Extra: Highlight on hover (Transparency + Animated Color Box)
+-----------------------------------------------------------
+
+local screenW, screenH = guiGetScreenSize()
+local highlightedObject = nil
+
+-- HSV to RGB conversion
+local function hsvToRgb(h, s, v)
+    local r, g, b
+
+    local i = math.floor(h * 6)
+    local f = h * 6 - i
+    local p = v * (1 - s)
+    local q = v * (1 - f * s)
+    local t = v * (1 - (1 - f * s))
+
+    i = i % 6
+
+    if i == 0 then r, g, b = v, t, p
+    elseif i == 1 then r, g, b = q, v, p
+    elseif i == 2 then r, g, b = p, v, t
+    elseif i == 3 then r, g, b = p, q, v
+    elseif i == 4 then r, g, b = t, p, v
+    elseif i == 5 then r, g, b = v, p, q
+    end
+
+    return r*255, g*255, b*255
+end
+
+-- Get the object under the cursor
+local function getObjectFromCursor()
+    local cx, cy = getCursorPosition()
+    if not cx or not cy then return false end
+
+    local camX, camY, camZ = getCameraMatrix()
+    local worldX, worldY, worldZ = getWorldFromScreenPosition(cx*screenW, cy*screenH, 1000)
+
+    local hit, _, _, _, hitElement = processLineOfSight(
+        camX, camY, camZ,
+        worldX, worldY, worldZ,
+        true,true,true,true,true,true,true,true
+    )
+
+    if hit and hitElement and getElementType(hitElement) == "object" then
+        return hitElement
+    end
+    return false
+end
+
+-- Get object bounding box corners
+local function getObjectBoundingBox(obj)
+    if not isElement(obj) then return false end
+    local minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(obj)
+    if not minX then return false end
+
+    local x, y, z = getElementPosition(obj)
+
+    return {
+        {x+minX, y+minY, z+minZ},
+        {x+maxX, y+minY, z+minZ},
+        {x+maxX, y+maxY, z+minZ},
+        {x+minX, y+maxY, z+minZ},
+        {x+minX, y+minY, z+maxZ},
+        {x+maxX, y+minY, z+maxZ},
+        {x+maxX, y+maxY, z+maxZ},
+        {x+minX, y+maxY, z+maxZ}
+    }
+end
+
+-- Draw 3D bounding box lines
+local function drawBoundingBox(corners, r,g,b,a)
+    if not corners then return end
+    -- base
+    dxDrawLine3D(corners[1][1],corners[1][2],corners[1][3], corners[2][1],corners[2][2],corners[2][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[2][1],corners[2][2],corners[2][3], corners[3][1],corners[3][2],corners[3][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[3][1],corners[3][2],corners[3][3], corners[4][1],corners[4][2],corners[4][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[4][1],corners[4][2],corners[4][3], corners[1][1],corners[1][2],corners[1][3], tocolor(r,g,b,a), 2)
+    -- top
+    dxDrawLine3D(corners[5][1],corners[5][2],corners[5][3], corners[6][1],corners[6][2],corners[6][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[6][1],corners[6][2],corners[6][3], corners[7][1],corners[7][2],corners[7][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[7][1],corners[7][2],corners[7][3], corners[8][1],corners[8][2],corners[8][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[8][1],corners[8][2],corners[8][3], corners[5][1],corners[5][2],corners[5][3], tocolor(r,g,b,a), 2)
+    -- vertical
+    dxDrawLine3D(corners[1][1],corners[1][2],corners[1][3], corners[5][1],corners[5][2],corners[5][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[2][1],corners[2][2],corners[2][3], corners[6][1],corners[6][2],corners[6][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[3][1],corners[3][2],corners[3][3], corners[7][1],corners[7][2],corners[7][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[4][1],corners[4][2],corners[4][3], corners[8][1],corners[8][2],corners[8][3], tocolor(r,g,b,a), 2)
+end
+
+-- Main render event
+local function onRenderHighlight()
+    local obj = getObjectFromCursor()
+
+    if obj and obj ~= highlightedObject then
+        -- Reset previous object
+        if highlightedObject and isElement(highlightedObject) then
+            setElementAlpha(highlightedObject, 255)
+        end
+
+        highlightedObject = obj
+        setElementAlpha(highlightedObject, 150) -- semi-transparent
+
+    elseif not obj and highlightedObject then
+        if isElement(highlightedObject) then
+            setElementAlpha(highlightedObject, 255)
+        end
+        highlightedObject = nil
+    end
+
+    -- Draw animated bounding box
+    if highlightedObject and isElement(highlightedObject) then
+        local box = getObjectBoundingBox(highlightedObject)
+        if box then
+            local tick = getTickCount() / 2000 -- animation speed
+            local r,g,b = hsvToRgb(tick % 1, 1, 1) -- rainbow color cycle
+            drawBoundingBox(box, r, g, b, 255)
+        end
+    end
+end
+addEventHandler("onClientRender", root, onRenderHighlight)
