@@ -418,6 +418,17 @@ addEventHandler(
     end
 )
 
+addEvent(EVENT_ANONYMOUS_UPDATE, true)
+addEventHandler(
+    EVENT_ANONYMOUS_UPDATE,
+    root,
+    function(state)
+        if (hasObjectPermissionTo(client, "general.adminpanel", false)) then
+            aPlayers[client]["AnonymousAdmin"] = state
+        end
+    end
+)
+
 addCommandHandler(get("adminChatCommandName"),
     function(thePlayer, cmd, ...)
         if (hasObjectPermissionTo(thePlayer, "general.tab_adminchat", false) and #arg > 0) then
