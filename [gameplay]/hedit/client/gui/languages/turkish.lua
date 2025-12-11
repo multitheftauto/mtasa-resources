@@ -155,6 +155,7 @@ guiLanguage.turkish = {
                 descriptionLabel = "Açıklama",
                 saveButton = "Kaydet",
                 loadButton = "Yükle",
+				deleteButton = "Sil",
                 grid = "",
                 nameEdit = "",
                 descriptionEdit = ""

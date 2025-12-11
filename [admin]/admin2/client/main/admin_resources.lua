@@ -238,7 +238,7 @@ function aResourcesTab.listResources(type)
         filter = nil
     end
     for id, resource in ipairs(temp) do
-        if (filter and resource.name:lower():find(filter:lower())) or (not filter) then
+        if (filter and resource.name:lower():find(filter:lower(), 1, true)) or (not filter) then
             guiGridListAddRow(resources, resource.name, resource.state)
         end
     end
