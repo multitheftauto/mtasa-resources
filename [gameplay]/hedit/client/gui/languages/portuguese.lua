@@ -57,12 +57,20 @@ guiLanguage.portuguese = {
     --
 
     --Warning level strings
-    -- warningtitles = {
-    --     info = "Informação",
-    --     question = "Pergunta",
-    --     warning = "Aviso!",
-    --     error = "Erro!"
-    -- },
+    warningtitles = {
+        info = "Informação",
+        question = "Pergunta",
+        warning = "Aviso!",
+        error = "Erro!"
+    },
+
+    --Warning button strings
+    warningButtons = {
+        yes = "Sim",
+        no = "Não",
+        ok = "OK",
+    },
+
     --Strings for the buttons at the top
     menubar = {
         handling = "Handling",
@@ -152,14 +160,14 @@ guiLanguage.portuguese = {
             shortname = "Saves",
             longname = "Carregar ou salvar configurações de handling.",
             itemtext = {
-                nameLabel = "Nome",
-                descriptionLabel = "Descrição",
                 saveButton = "Salvar",
                 loadButton = "Carregar",
                 deleteButton = "Excluir",
                 grid = "",
-                nameEdit = "",
-                descriptionEdit = ""
+                nameColumn = "Nome",
+                modelColumn = "Modelo",
+                nameEdit = "Nome",
+                descriptionEdit = "Descrição"
             }
         },
         import = {

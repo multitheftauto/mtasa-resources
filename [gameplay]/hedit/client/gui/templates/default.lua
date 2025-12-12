@@ -541,7 +541,7 @@ template.viewcontents = {
             websitebox = {
                 type = "editbox",
                 pos = { 73, 220 },
-                size = { 290, 30 },
+                size = { 284, 30 },
                 runfunction = function ( this )
                     this.enabled = false
                     this.readOnly = true
@@ -633,21 +633,9 @@ template.viewcontents = {
         requirelogin = false,
         requireadmin = false,
         onOpen = function ( content )
-            guiGridListClear ( content.grid )
-
-            local saves = getClientSaves ( )
-            for name,info in pairs ( saves ) do
-                local row = guiGridListAddRow ( content.grid )
-                local model = getVehicleNameFromModel ( tonumber ( info.model ) )
-                guiGridListSetItemText ( content.grid, row, 1, info.name, false, false )
-                guiGridListSetItemText ( content.grid, row, 2, model, false, false )
-            end
-
-            guiSetText ( content.nameEdit, "title" )
-            guiSetText ( content.descriptionEdit, "description" )
-
-            guiBringToFront ( content.nameLabel )
-            guiBringToFront ( content.descriptionLabel )
+            refreshSavesGridlist()
+            guiSetText ( content.nameEdit, getText("viewinfo", "save", "itemtext", "nameEdit") )
+            guiSetText ( content.descriptionEdit, getText("viewinfo", "save", "itemtext", "descriptionEdit") )
         end,
 
         onClose = function ( content )
@@ -660,8 +648,8 @@ template.viewcontents = {
                 pos = { 72, 83 },
                 size = { 285, 220 },
                 runfunction = function ( this )
-                    guiGridListAddColumn ( this, "Name",  0.5 )
-                    guiGridListAddColumn ( this, "Model", 0.4 )
+                    guiGridListAddColumn ( this, getText("viewinfo", "save", "itemtext", "nameColumn"),  0.5 )
+                    guiGridListAddColumn ( this, getText("viewinfo", "save", "itemtext", "modelColumn"), 0.4 )
                 end,
                 events = {
                     onClick = function ( this )
@@ -671,19 +659,13 @@ template.viewcontents = {
                             local name = string.lower ( guiGridListGetItemText ( this, row, col ) )
                             local save = getClientSaves()[name]
                             guiSetStaticInfoText ( save.name, save.description )
-                            guiSetVisible ( content.nameLabel, false )
-                            guiSetVisible ( content.descriptionLabel, false )
                             guiSetText ( content.nameEdit, save.name )
                             guiSetText ( content.descriptionEdit, save.description )
                             return true
                         end
                         guiResetStaticInfoText()
-                        guiSetVisible ( content.nameLabel, true )
-                        guiSetVisible ( content.descriptionLabel, true )
-                        guiBringToFront ( content.nameLabel )
-                        guiBringToFront ( content.descriptionLabel )
-                        guiSetText ( content.nameEdit, "" )
-                        guiSetText ( content.descriptionEdit, "" )
+                        guiSetText ( content.nameEdit, getText("viewinfo", "save", "itemtext", "nameEdit") )
+                        guiSetText ( content.descriptionEdit, getText("viewinfo", "save", "itemtext", "descriptionEdit") )
                     end,
 
                     onDoubleClick = function ( this )
@@ -714,14 +696,14 @@ template.viewcontents = {
                 size = { 212, 25 },
                 events = {
                     onFocus = function ( this )
-                        local content = heditGUI.viewItems.save.guiItems
-                        guiSetVisible ( content.nameLabel, false )
+                        local placeholderText = getText("viewinfo", "save", "itemtext", "nameEdit")
+                        if guiGetText(this) == placeholderText then
+                            guiSetText(this, "")
+                        end
                     end,
                     onBlur = function ( this )
                         if guiGetText ( this ) == "" then
-                            local content = heditGUI.viewItems.save.guiItems
-                            guiBringToFront ( content.nameLabel )
-                            guiSetVisible ( content.nameLabel, true )
+                            guiSetText ( this, getText("viewinfo", "save", "itemtext", "nameEdit") )
                         end
                     end
                 }
@@ -732,51 +714,15 @@ template.viewcontents = {
                 size = { 212, 25 },
                 events = {
                     onFocus = function ( this )
-                        local content = heditGUI.viewItems.save.guiItems
-                        guiSetVisible ( content.descriptionLabel, false )
+                        local placeholderText = getText("viewinfo", "save", "itemtext", "descriptionEdit")
+                        if guiGetText(this) == placeholderText then
+                            guiSetText(this, "")
+                        end
                     end,
                     onBlur = function ( this )
                         if guiGetText ( this ) == "" then
-                            local content = heditGUI.viewItems.save.guiItems
-                            guiBringToFront ( content.descriptionLabel )
-                            guiSetVisible ( content.descriptionLabel, true )
+                            guiSetText ( this, getText("viewinfo", "save", "itemtext", "descriptionEdit") )
                         end
-                    end
-                }
-            },
-            nameLabel = {
-                type = "label",
-                pos = { 80, 334 },
-                size = { 50, 12 },
-                runfunction = function ( this )
-                    guiLabelSetColor ( this, 0, 0, 0 )
-                    guiSetFont ( this, "default-small" )
-                end,
-                events = {
-                    onClick = function ( this )
-                        local content = heditGUI.viewItems.save.guiItems
-
-                        guiSetVisible ( this, false )
-                        guiBringToFront ( content.nameEdit )
-                        guiEditSetCaretIndex ( content.nameEdit, string.len ( guiGetText ( content.nameEdit ) ) )
-                    end
-                }
-            },
-            descriptionLabel = {
-                type = "label",
-                pos = { 80, 359 },
-                size = { 50, 12 },
-                runfunction = function ( this )
-                    guiLabelSetColor ( this, 0, 0, 0 )
-                    guiSetFont ( this, "default-small" )
-                end,
-                events = {
-                    onClick = function ( this )
-                        local content = heditGUI.viewItems.save.guiItems
-
-                        guiSetVisible ( this, false )
-                        guiBringToFront ( content.descriptionEdit )
-                        guiEditSetCaretIndex ( content.descriptionEdit, string.len ( guiGetText ( content.descriptionEdit ) ) )
                     end
                 }
             },
@@ -797,8 +743,7 @@ template.viewcontents = {
 
                         local function func ( )
                             saveClientHandling ( pVehicle, name, description )
-                            guiShowView ( previousMenu )
-                            guiCreateWarningMessage ( getText ( "successSave" ), 3 )
+                            guiCreateWarningMessage ( getText ( "successSave" ), 3, {refreshSavesGridlist} )
                         end
 
                         if isClientHandlingExisting ( name ) then
@@ -854,7 +799,7 @@ template.viewcontents = {
 
                             local function func ( )
                                 if deleteClientHandling ( pVehicle, name ) then
-                                    guiCreateWarningMessage ( getText ( "successDelete" ), 3 )
+                                    guiCreateWarningMessage ( getText ( "successDelete" ), 3, {refreshSavesGridlist} )
                                 end
                             end
 

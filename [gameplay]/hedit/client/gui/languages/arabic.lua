@@ -62,6 +62,14 @@ guiLanguage.arabic = {
         warning = "تحذير!",
         error = "خلل!"
     },
+
+    --Warning button strings
+    warningButtons = {
+        yes = "نعم",
+        no = "لا",
+        ok = "حسناً",
+    },
+
     --Strings for the buttons at the top
     menubar = {
         handling = "وزانية",
@@ -151,13 +159,14 @@ guiLanguage.arabic = {
             shortname = "محفوظات",
             longname = "حمل او احفظ اعدادات وزانية",
             itemtext = {
-                nameLabel = "اسم",
-                descriptionLabel = "وصف",
                 saveButton = "حفظ",
                 loadButton = "حمل",
+                deleteButton = "حذف",
                 grid = "",
-                nameEdit = "",
-                descriptionEdit = ""
+                nameColumn  ="اسم",
+                modelColumn = "نموذج",
+                nameEdit = "اسم",
+                descriptionEdit = "وصف"
             }
         },
         import = {

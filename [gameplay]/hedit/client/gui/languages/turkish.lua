@@ -33,15 +33,15 @@ guiLanguage.turkish = {
     confirmDelete = "Handling ayarlarını silmek istediğinizden emin misiniz?",
     confirmReset = "Handling ayarlarını sıfırlamak istediğinizden emin misiniz? Kaydedilmemiş tüm değişiklikler kaybolacak!",
     confirmImport = "Handling ayarlarını içe aktarmak istediğinizden emin misiniz? Kaydedilmemiş tüm değişiklikler kaybolacak!",
-
+    
     successSave = "Handling ayarları başarılı bir şekilde kaydedildi!",
     successLoad = "Handling ayarları başarılı bir şekilde yüklendi!",
     successDelete = "Handling ayarlarınız başarılı bir şekilde silindi!",
 
-   wantTheSettings = "Bu ayarları uygulamak istediğinizden emin misiniz? Handling düzenleyici yeniden başlayacaktır.",
+    wantTheSettings = "Bu ayarları uygulamak istediğinizden emin misiniz? Handling düzenleyici yeniden başlayacaktır.",
 
-    vehicle = "Vehicle",
-    unsaved = "Unsaved",
+    vehicle = "Araç",
+    unsaved = "Kaydedilmedi",
 
     clickToEdit = "Düzenlemek için tıkla veya kaydır.",
     enterToSubmit = "Onaylamak için enter tuşuna basın.",
@@ -62,6 +62,14 @@ guiLanguage.turkish = {
         warning = "Dikkat!",
         error = "Hata!"
     },
+
+    --Warning button strings
+    warningButtons = {
+        yes = "Evet",
+        no = "Hayır",
+        ok = "Tamam",
+    },
+
     --Strings for the buttons at the top
     menubar = {
         handling = "Handling",
@@ -73,10 +81,10 @@ guiLanguage.turkish = {
     viewbuttons = {
         engine = "Motor",
         body = "Gövde",
-        wheels = "Tekerlekler",
+        wheels = "Tekerlek",
         appearance = "Görünüm",
-        modelflags = "Model\nSeçenekleri",
-        handlingflags = "Handling\nSeçenekleri",
+        modelflags = "Model\nSeç.",
+        handlingflags = "Handling\nSeç.",
         dynamometer = "Dyno",
         undo = "<",
         redo = ">",
@@ -94,7 +102,7 @@ guiLanguage.turkish = {
             longname = "Gövde Ayarları"
         },
         wheels = {
-            shortname = "Tekerlekler",
+            shortname = "Tekerlek",
             longname = "Tekerlek Ayarları"
         },
         appearance = {
@@ -114,14 +122,15 @@ guiLanguage.turkish = {
             longname = "Dinamometreyi Başlat"
         },
         about = {
-            shortname = "About",
-            longname = "About the official handling editor",
+            shortname = "Hakkında",
+            longname = "Resmi handling düzenleyici hakkında",
             itemtext = {
-                textlabel = "Welcome to the official MTA handling editor! This resource allows you to edit the handling of any vehicle in-game in real time.\n\n"..
-                            "You can save and load custom handlings you make through the 'Handling' menu in the top left corner.\n\n"..
-                            "For more information about the handling editor - such as the official changelog - visit:",
+                textlabel = "Resmi MTA handling düzenleyicisine hoş geldiniz!\n\n"..
+                    "Bu araç, oyundaki tüm araçların handling değerlerini gerçek zamanlı düzenlemenizi sağlar.\n\n"..
+                    "Sol üstteki 'Araçlar' -> 'handling.cfg' menüsünden kendi ayarlarınızı kaydedebilir veya yükleyebilirsiniz.\n\n"..
+                    "Daha fazla bilgi ve değişiklik kaydı için:",
                 websitebox = "https://github.com/multitheftauto/mtasa-resources/tree/master/%5Bgameplay%5D/hedit",
-                morelabel = "\nThank you for choosing hedit!"
+                morelabel = "\nHedit'i seçtiğiniz için teşekkürler!"
             }
         },
         undo = {
@@ -139,7 +148,7 @@ guiLanguage.turkish = {
             }
         },
         reset = {
-             shortname = "Sıfırla",
+            shortname = "Sıfırla",
             longname = "Bu aracın handling ayarlarını sıfırla.",
             itemtext = {
                 label = "Sıfırlanacak Araç:",
@@ -151,14 +160,14 @@ guiLanguage.turkish = {
             shortname = "Kayıtlar",
             longname = "Handling ayarlarını yükle veya kaydet.",
             itemtext = {
-                nameLabel = "İsim",
-                descriptionLabel = "Açıklama",
                 saveButton = "Kaydet",
                 loadButton = "Yükle",
-				deleteButton = "Sil",
+                deleteButton = "Sil",
                 grid = "",
-                nameEdit = "",
-                descriptionEdit = ""
+                nameColumn = "İsim",
+                modelColumn = "Model",
+                nameEdit = "İsim",
+                descriptionEdit = "Açıklama"
             }
         },
         import = {
@@ -215,7 +224,7 @@ guiLanguage.turkish = {
                 edit_cmd = "",
                 combo_commode = "",
                 combo_language = "",
-		checkbox_lockwhenediting = "Handling esnasında aracı kilitle?",
+		        checkbox_lockwhenediting = "Handling esnasında aracı kilitle?",
                 checkbox_dragmeterEnabled = "Hızlı ayar kullan"
             }
         },
@@ -354,7 +363,7 @@ guiLanguage.turkish = {
             syntax = { "Float", "Bu özelliğin neyi etkilediği bilinmemektedir." }
         },
         ["suspensionHighSpeedDamping"] = {
-            friendlyName = "Süspansiyon Yüksek Hızlı Sönümleme",
+            friendlyName = "Süspansiyon Yüksek Hız Sönüm.",
             information = "Süspansiyonunuzun sertliğini değiştirerek daha hızlı sürmenize neden olur.",
             syntax = { "Float", "Bu özelliğin etkisi test edilmemiştir." } -- HERE {UNTESTED}
         },
@@ -432,7 +441,7 @@ guiLanguage.turkish = {
                     ["1"] = {"AXLE_R_NOTILT","Arka tekerleklerin araca dikey kalmasını sağlar (GTA 3 gibi)."},
                     ["2"] = {"AXLE_R_SOLID","Arka tekerleklerin birbirine paralel kalmasını sağlar."},
                     ["4"] = {"AXLE_R_MCPHERSON","Arka tekerleklerin devrilmesini sağlar (GTA Vice City gibi)."},
-                    ["8"] = {"AXLE_R_REVERSE","rka tekerleklerin ters yönde eğilmesini sağlar."}
+                    ["8"] = {"AXLE_R_REVERSE","Arka tekerleklerin ters yönde eğilmesini sağlar."}
                 },
                 {
                     ["1"] = {"IS_BIKE","Bisikletler bölümündeki ekstra ayarları kullanın."},
