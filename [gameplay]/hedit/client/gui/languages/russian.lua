@@ -62,6 +62,14 @@
         warning = "Предупреждение!",
         error = "Ошибка!"
     },
+
+    --Warning button strings
+    warningButtons = {
+        yes = "Да",
+        no = "Нет",
+        ok = "ОК",
+    },
+
     --Strings for the buttons at the top
     menubar = {
         handling = "Хэндлинг",
@@ -152,13 +160,14 @@
             shortname = "Сохранение",
             longname = "Сохранить или загрузить настройки хэндлинга.",
             itemtext = {
-                nameLabel = "Название",
-                descriptionLabel = "Описание",
                 saveButton = "Сохранить",
                 loadButton = "Загрузить",
+                deleteButton = "Удалить",
                 grid = "",
-                nameEdit = "",
-                descriptionEdit = ""
+                nameColumn = "Название",
+                modelColumn = "модель",
+                nameEdit = "Название",
+                descriptionEdit = "Описание"
             }
         },
         import = {
