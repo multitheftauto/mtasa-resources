@@ -697,7 +697,7 @@ template.viewcontents = {
                 events = {
                     onFocus = function ( this )
                         local placeholderText = getText("viewinfo", "save", "itemtext", "nameEdit")
-                        if guiGetText(this) == placeholderText then 
+                        if guiGetText(this) == placeholderText then
                             guiSetText(this, "")
                         end
                     end,
@@ -715,7 +715,7 @@ template.viewcontents = {
                 events = {
                     onFocus = function ( this )
                         local placeholderText = getText("viewinfo", "save", "itemtext", "descriptionEdit")
-                        if guiGetText(this) == placeholderText then 
+                        if guiGetText(this) == placeholderText then
                             guiSetText(this, "")
                         end
                     end,
