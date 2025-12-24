@@ -155,6 +155,9 @@ function Viewer:getCategoriesRaw ()
 	local categories = {}
 	for _,row in ipairs(rowList) do
 		table.insert( categories, row[1] )
+		if ( row[1] == "Lua timing" and target.bIsServer ) then -- Add our custom Lua time recordings category
+			table.insert( categories, "Lua time recordings" )
+		end
 	end
 	return categories
 end

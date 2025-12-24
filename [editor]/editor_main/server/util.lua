@@ -1,10 +1,14 @@
 function isPlayerAllowedToDoEditorAction(player,action)
 	if isElement(player) and getElementType(player)=="player" and action and type(action)=="string" then
 --		return hasObjectPermissionTo(player,"resource.editor."..action,false)
-		return hasObjectPermissionTo(player,"resource.editor."..action)
+		return hasObjectPermissionTo(player,"resource.editor."..action, true)
 	end
 
 	return false
+end
+
+function stripHexCode(text)
+	return text:gsub("#%x%x%x%x%x%x","")
 end
 
 function table.subtract(t1, t2)

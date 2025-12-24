@@ -4,6 +4,7 @@ local lastKEYSTATES = {}
 local ignoreAllSurfaces = true
 local moveSpeed = {slow = .025, medium = .25, fast = 2} -- meters per frame
 local rotateSpeed = {slow = 1, medium = 8, fast = 40} -- degrees per scroll or frame
+local scalingSpeed = {slow = .01, medium = .1, fast = 1}
 
 local isEnabled = false
 
@@ -11,6 +12,8 @@ local selectedElement
 
 local posX, posY, posZ
 local rotX, rotY, rotZ
+local scale
+local size
 
 local collisionless
 local lockToAxes = false
@@ -51,7 +54,7 @@ local mta_getElementRotation = getElementRotation
 local function getElementRotation(element)
 	local elementType = getElementType(element)
 	if elementType == "player" or elementType == "ped" then
-		return 0,0,getPedRotation(element)
+		return mta_getElementRotation(element, "default", true)
 	elseif elementType == "object" then
 		return mta_getElementRotation(element, "ZYX")
 	elseif elementType == "vehicle" then
@@ -182,8 +185,7 @@ local function onClientRender_keyboard()
 					-- check if rotation changed
 					if (tempRot ~= rotZ) then
 						if (getElementType(selectedElement) == "ped") then
-							setElementRotation(selectedElement, 0,0,-tempRot%360)
-							setPedRotation(selectedElement, tempRot)
+							setElementRotation(selectedElement, 0,0,-tempRot%360, "default", true)
 						end
 					end
 					rotZ = tempRot
@@ -230,8 +232,7 @@ local function onClientRender_keyboard()
 						--Peds dont have their rotation updated with their attached parents
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
 							if getElementType(element) == "ped" then
-								setElementRotation(element, 0,0,-tempRotZ%360)
-								setPedRotation(element, tempRotZ%360)
+								setElementRotation(element, 0,0,-tempRotZ%360, "default", true)
 							end
 						end
 						rotX, rotY, rotZ = tempRotX, tempRotY, tempRotZ
@@ -278,8 +279,7 @@ local function onClientRender_keyboard()
 					-- check if rotation changed
 					if (tempRot ~= rotZ) then
 						if (getElementType(selectedElement) == "ped") then
-							setElementRotation(selectedElement, 0,0,-tempRot%360)
-							setPedRotation(selectedElement, tempRot)
+							setElementRotation(selectedElement, 0,0,-tempRot%360, "default", true)
 						end
 					end
 					rotZ = tempRot
@@ -327,8 +327,7 @@ local function onClientRender_keyboard()
 						--Peds dont have their rotation updated with their attached parents
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
 							if getElementType(element) == "ped" then
-								setElementRotation(element, 0,0,-tempRotZ%360)
-								setPedRotation(element, tempRotZ%360)
+								setElementRotation(element, 0,0,-tempRotZ%360, "default", true)
 							end
 						end
 						rotX, rotY, rotZ = tempRotX, tempRotY, tempRotZ
@@ -344,16 +343,56 @@ local function onClientRender_keyboard()
 						rotX, rotY = 0, 0
 						for i,element in ipairs(getAttachedElements(selectedElement)) do
 							if getElementType(element) == "ped" then
-								setElementRotation(element, 0,0,-rotZ%360)
-								setPedRotation(element, rotZ%360)
+								setElementRotation(element, 0,0,-rotZ%360, "default", true)
 							end
 						end
 					elseif (getElementType(selectedElement) == "ped") then
 						rotZ = 0
-						setPedRotation ( selectedElement, 0, 0, 0 )
-						setElementRotation ( selectedElement, 0, 0, 0 )
+						setElementRotation ( selectedElement, 0, 0, 0 , "default", true)
 					end
 				end
+			end
+		end
+
+		-- Scale up/down for objects, markers
+		local speed
+		if (getCommandState("mod_slow_speed")) then
+			speed = scalingSpeed.slow
+		elseif (getCommandState("mod_fast_speed")) then
+			speed = scalingSpeed.fast
+		else
+			speed = scalingSpeed.medium
+		end
+
+		if getElementType(selectedElement) == "object" then
+			scale = getObjectScale(selectedElement)
+			local tempScale = scale
+			local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("elemScalingSnap"))
+			if getCommandState("element_scale_up") then
+				tempScale = scale + speed
+				tempScale = roundToLevel(tempScale,snaplevel,"round")
+			elseif getCommandState("element_scale_down") then
+				tempScale = scale - speed
+				tempScale = roundToLevel(tempScale,snaplevel,"round")
+			end
+			if tempScale ~= scale then
+				setObjectScale(selectedElement, tempScale)
+				scale = tempScale
+			end
+        elseif getElementType(selectedElement) == "marker" then
+			size = getMarkerSize(selectedElement)
+			local tempSize = size
+			local snaplevel = tonumber(exports["editor_gui"]:sx_getOptionData("elemScalingSnap"))
+			if getCommandState("element_scale_up") then
+				tempSize = size + speed
+				tempSize = roundToLevel(tempSize,snaplevel,"round")
+			elseif getCommandState("element_scale_down") then
+				tempSize = size - speed
+				tempSize = roundToLevel(tempSize,snaplevel,"round")
+			end
+			if tempSize ~= size then
+				setMarkerSize(selectedElement, tempSize)
+				size = tempSize
 			end
 		end
 	end
@@ -384,15 +423,13 @@ local function rotateWithMouseWheel(key, keyState)
 		--Peds dont have their rotation updated with their attached parents
 		for i,element in ipairs(getAttachedElements(selectedElement)) do
 			if getElementType(element) == "ped" then
-				setElementRotation(element, 0,0,-rotZ)
-				setPedRotation(element, rotZ)
+				setElementRotation(element, 0,0,-rotZ, "default", true)
 			end
 		end
 	elseif (getElementType(selectedElement) == "ped") then
 		rotZ = rotZ + speed
 		rotZ = rotZ % 360
-		setElementRotation(selectedElement, 0,0,-rotZ)
-		setPedRotation(selectedElement, rotZ)
+		setElementRotation(selectedElement, 0,0,-rotZ, "default", true)
 	end
 end
 
@@ -404,10 +441,13 @@ function attachElement(element)
 		posX, posY, posZ = getElementPosition(element)
 		movementType = MOVEMENT_MOVE
 
+		-- Clear the quat rotation when attaching to element
+		exports.editor_main:clearElementQuat(selectedElement)
+
 		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then
 			rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
-			rotX, rotY, rotZ = 0,0,getPedRotation ( element )
+			rotX, rotY, rotZ = getElementRotation(element)
 		end
 		enable()
 		return true
@@ -420,6 +460,9 @@ function detachElement()
 	if (selectedElement) then
 		disable()
 
+		-- Clear the quat rotation when detaching from element
+		exports.editor_main:clearElementQuat(selectedElement)
+
 		-- fix for local elements
 		if not isElementLocal(selectedElement) then
 			-- sync position/rotation
@@ -429,10 +472,19 @@ function detachElement()
 				rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 			end
+			if getElementType(selectedElement) == "object" then
+				scale = getObjectScale(selectedElement)
+				triggerServerEvent("syncProperty", localPlayer, "scale", scale, exports.edf:edfGetAncestor(selectedElement))
+			end
+			if getElementType(selectedElement) == "marker" then
+				size = getMarkerSize(selectedElement)
+				triggerServerEvent("syncProperty", localPlayer, "size", size, exports.edf:edfGetAncestor(selectedElement))
+			end
 		end
 		selectedElement = nil
 		posX, posY, posZ = nil, nil, nil
 		rotX, rotY, rotZ = nil, nil, nil
+		scale = nil
 		return true
 	else
 		return false
@@ -455,6 +507,12 @@ function setRotateSpeeds(slow, medium, fast)
 	rotateSpeed.fast = fast
 end
 
+function setScalingSpeeds(slow, medium, fast)
+	scalingSpeed.slow = slow
+	scalingSpeed.medium = medium
+	scalingSpeed.fast = fast
+end
+
 function getAttachedElement()
 	if (selectedElement) then
 		return selectedElement
@@ -469,6 +527,10 @@ end
 
 function getRotateSpeeds()
 	return rotateSpeed.slow, rotateSpeed.medium, rotateSpeed.fast
+end
+
+function getScalingSpeeds()
+	return scalingSpeed.slow, scalingSpeed.medium, scalingSpeed.fast
 end
 
 function toggleAxesLock ( bool )

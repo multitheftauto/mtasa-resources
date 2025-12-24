@@ -151,7 +151,7 @@ function aVehicle.Refresh()
         local vehicles = {}
         for name, group in pairs(aVehicle.vehicles) do
             for _, vehicle in ipairs(group) do
-                if vehicle.id:find(filter) or vehicle.name:lower():find(filter) then
+                if vehicle.id:find(filter, 1, true) or vehicle.name:lower():find(filter, 1, true) then
                     if (not vehicles[name]) then
                         vehicles[name] = {}
                     end
@@ -175,7 +175,7 @@ function aVehicle.Refresh()
             end
         end
         for model, vehicleName in pairs(vehicles) do
-            if model:find(filter) or vehicleName:lower():find(filter:lower()) then
+            if model:find(filter, 1, true) or vehicleName:lower():find(filter:lower(), 1, true) then
                 local row = guiGridListAddRow(aVehicle.List)
                 guiGridListSetItemText(aVehicle.List, row, 1, model, false, true)
                 guiGridListSetItemText(aVehicle.List, row, 2, vehicleName, false, false)

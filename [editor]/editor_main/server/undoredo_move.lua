@@ -8,11 +8,14 @@ local function isElementMoved(element)
 
 	local oldX,  oldY,  oldZ  = selectedElements[element].oldX,  selectedElements[element].oldY,  selectedElements[element].oldZ
 	local oldRX, oldRY, oldRZ = selectedElements[element].oldRX, selectedElements[element].oldRY, selectedElements[element].oldRZ
+	local oldScale = selectedElements[element].oldScale
 
 	local newX,  newY,  newZ  = edf.edfGetElementPosition(element)
 	local newRX, newRY, newRZ = edf.edfGetElementRotation(element)
+	local newScale = edf.edfGetElementScale(element)
 
-	return oldX ~= newX or oldY ~= newY or oldZ ~= newZ or oldRX ~= newRX or oldRY ~= newRY or oldRZ ~= newRZ
+
+	return oldX ~= newX or oldY ~= newY or oldZ ~= newZ or oldRX ~= newRX or oldRY ~= newRY or oldRZ ~= newRZ or oldScale ~= newScale
 end
 
 addEventHandler("onElementSelect", root,
@@ -22,6 +25,7 @@ addEventHandler("onElementSelect", root,
 			edf.edfGetElementPosition(source)
 		selectedElements[source].oldRX, selectedElements[source].oldRY, selectedElements[source].oldRZ =
 			edf.edfGetElementRotation(source)
+		selectedElements[source].oldScale = edf.edfGetElementScale(source)
 	end
 )
 
@@ -33,6 +37,7 @@ addEventHandler("onElementDrop", root,
 				editor_gui.outputMessage ("You don't have permissions to move that element!", client,255,0,0)
 				edf.edfSetElementPosition(source,selectedElements[source].oldX,selectedElements[source].oldY,selectedElements[source].oldZ)
 				edf.edfSetElementRotation(source,selectedElements[source].oldRX,selectedElements[source].oldRY,selectedElements[source].oldRZ)
+				edf.edfSetElementScale(source,selectedElements[source].oldScale)
 			end
 			-- Set as no longer selected
 			selectedElements[source] = nil
@@ -47,7 +52,8 @@ addEventHandler("onElementDrop", root,
 			triggerEvent(
 				"onElementMove_undoredo", source,
 				selectedElements[source].oldX, selectedElements[source].oldY, selectedElements[source].oldZ,
-				selectedElements[source].oldRX, selectedElements[source].oldRY, selectedElements[source].oldRZ
+				selectedElements[source].oldRX, selectedElements[source].oldRY, selectedElements[source].oldRZ,
+				selectedElements[source].oldScale
 			)
 		end
 		selectedElements[source] = nil

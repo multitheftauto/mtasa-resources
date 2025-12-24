@@ -57,10 +57,10 @@ function reducesoundlevel ()
 	guiProgressBarSetProgress ( thesoundbar, barlevel )
 --	guiSetVisible ( thesoundbar, true )
 	smoothfade = setTimer ( smoothreduce, 100, 9 )
-	setElementData ( getLocalPlayer (), "noiselevel", soundlevel )
+	setElementData ( localPlayer, "noiselevel", soundlevel )
 	if soundlevel > 0 then
 		if blipshowing == 0 then
-			local isDead = isPedDead(getLocalPlayer ())
+			local isDead = isPedDead(localPlayer)
 			if (isDead == false) then
 				blipshowing = 1
 			end
@@ -94,11 +94,11 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 	if ( bodypart ~= 7 ) and ( bodypart ~= 8 ) then
 		return
 	end
-	local isplayerlimping = getElementData ( getLocalPlayer (), "legdamage" )
+	local isplayerlimping = getElementData ( localPlayer, "legdamage" )
 	if isplayerlimping ~= 1 then
 		if (attacker) then
 			local attackerteam = getPlayerTeam (attacker)
-			local yourteam = getPlayerTeam (getLocalPlayer ())
+			local yourteam = getPlayerTeam (localPlayer)
 			if attackerteam == yourteam then
 				if getTeamFriendlyFire ( yourteam ) == false then
 					--do nothing
@@ -109,7 +109,7 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 				--outputChatBox("You've been hit in the leg.", 255, 69, 0)
 				setPedAnimation ( localPlayer, "ped", bodyPartAnim[bodypart][1], true, true, false )
 				setTimer ( setPedAnimation, 600, 1, localPlayer )
-				setElementData ( getLocalPlayer (), "legdamage", 1 )
+				setElementData ( localPlayer, "legdamage", 1 )
 				--Blood stuff
 				local function blood()
 					local boneX,boneY,boneZ = getPedBonePosition(localPlayer, bodyPartAnim[bodypart][2])
@@ -126,7 +126,7 @@ function damagenoise ( attacker, weapon, bodypart, loss )
 end
 
 function readddamage ()
-	-- addEventHandler ( "onClientPedDamage", getLocalPlayer (), damagenoise )
+	-- addEventHandler ( "onClientPedDamage", localPlayer, damagenoise )
 end
 
 
@@ -169,10 +169,10 @@ end
 --LIMP TIMING
 
 function limpeffect ( source, key, keystate )
-	if isPedInVehicle (getLocalPlayer ()) then
+	if isPedInVehicle (localPlayer) then
 		return
 	else
-		islimping = getElementData ( getLocalPlayer (), "legdamage" )
+		islimping = getElementData ( localPlayer, "legdamage" )
 		if islimping == 1 then
 			local makeplayerlimp = setTimer ( limpeffectparttwo , 200, 1, source, key, state )
 			if 	lookingthroughcamera ~= 1 then
@@ -186,10 +186,10 @@ function limpeffect ( source, key, keystate )
 end
 
 function limpeffectparttwo ( source, key, keystate )
-	if isPedInVehicle (getLocalPlayer ()) then
+	if isPedInVehicle (localPlayer) then
 		return
 	else
-		islimping = getElementData ( getLocalPlayer (), "legdamage" )
+		islimping = getElementData ( localPlayer, "legdamage" )
 		if islimping == 1 then
 			local makeplayerlimp = setTimer ( limpeffect, 500, 1, source, key, state )
 			if 	lookingthroughcamera ~= 1 then
@@ -205,9 +205,9 @@ function limpeffectparttwo ( source, key, keystate )
 end
 
 function startalimp ()
-	local theplayer = getLocalPlayer ()
+	local theplayer = localPlayer
 	if (getPedArmor ( theplayer )) == 0 then
-		setElementData ( getLocalPlayer (), "legdamage", 1 )
+		setElementData ( localPlayer, "legdamage", 1 )
 		local makeplayerlimp = setTimer ( limpeffect, 300, 1, source, key, state )
 	end
 end
@@ -216,7 +216,7 @@ addCommandHandler ( "crippleme", startalimp )
 
 
 function movementcheck ( source, key, keystate )
-	if ( isPedDucked ( getLocalPlayer () ) ) == false then
+	if ( isPedDucked ( localPlayer ) ) == false then
 		if ( getPedControlState ( "sprint" ) ) then
 			soundlevel = soundlevel +1
 		end
@@ -245,8 +245,8 @@ function hidesoundbar ( theresource )
 	guiSetVisible ( thesoundbar, false )
 end
 
-addEventHandler ( "onClientPlayerWasted", getLocalPlayer (), hidesoundbar )
-addEventHandler ( "onClientPlayerDamage", getLocalPlayer (), damagenoise )
-addEventHandler ( "onClientPlayerWeaponFire", getLocalPlayer (), shootingnoise )
-addEventHandler ( "onClientPlayerSpawn", getLocalPlayer (), setupsoundstuff )
+addEventHandler ( "onClientPlayerWasted", localPlayer, hidesoundbar )
+addEventHandler ( "onClientPlayerDamage", localPlayer, damagenoise )
+addEventHandler ( "onClientPlayerWeaponFire", localPlayer, shootingnoise )
+addEventHandler ( "onClientPlayerSpawn", localPlayer, setupsoundstuff )
 addEventHandler ( "onClientResourceStart", resourceRoot, setuptrigger)

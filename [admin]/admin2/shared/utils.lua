@@ -38,7 +38,7 @@ function isAnonAdmin(aplayer)
         return false
     end
 
-    return (getElementData(player, "AnonAdmin") == true)
+    return aPlayers[aplayer] and aPlayers[aplayer]["AnonymousAdmin"] or false
 end
 
 -- Source: https://wiki.multitheftauto.com/wiki/FormatDate

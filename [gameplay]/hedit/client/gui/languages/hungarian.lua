@@ -120,7 +120,7 @@ guiLanguage.hungarian = {
                 textlabel = "Üdvözlünk az eredeti MTA handling szerkesztőben! Ez a resource lehetőséget ad a járművek irányításának szerkesztésére valós időben.\n\n"..
                             "Elmentheted és betöltheted a saját handling beállításaidat az ablak bal felső sarkában.\n\n"..
                             "További információkért a handling szerkesztőről - lásd:",
-                websitebox = "http://github.com/hedit/hedit",
+                websitebox = "https://github.com/multitheftauto/mtasa-resources/tree/master/%5Bgameplay%5D/hedit",
                 morelabel = "\nKöszönjük, hogy a hedit-et választottad!"
             }
         },

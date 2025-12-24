@@ -48,7 +48,7 @@ function WebBrowserGUI:Browser_Created()
 	addEventHandler("onClientGUIClick", self.m_ButtonClose, function(...) self:CloseButton_Click(...) end, false)
 	addEventHandler("onClientGUIClick", self.m_DevButton, function(...) self:DevButton_Click(...) end, false)
 
-	self:loadURL("https://mtasa.com/")
+	self:loadURL("https://multitheftauto.com/")
 end
 
 function WebBrowserGUI:Browser_Navigate(targetURL, isBlocked)
@@ -125,8 +125,8 @@ function WebBrowserGUI:loadURL(url)
 		self.m_EditAddress:setText(url)
 		self.m_Browser:getBrowser():loadURL(url)
 		return
-	elseif url:sub(0, 7)  ~= "http://" and url:sub(0, 8) ~= "https://" then
-		url = "http://"..url
+	elseif url:sub(0, 7)  ~= "https://" and url:sub(0, 8) ~= "https://" then
+		url = "https://"..url
 	end
 
 	if Browser.isDomainBlocked(url, true) then

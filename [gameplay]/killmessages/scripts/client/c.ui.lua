@@ -13,6 +13,10 @@ function outputMessage(new)
 
     new.initTick = getTickCount()
 
+    if new.icon.path and fileExists(new.icon.path) then
+        new.icon.texture = dxCreateTexture(new.icon.path)
+    end
+
     table.insert(messages, new)
 
     local displayLines = tonumber(getSetting('displayLines')) or 5
@@ -103,6 +107,10 @@ function renderMessages()
 
                 y = y - lineHeight - padding
             else
+                if v.icon.path and v.icon.texture and isElement(v.icon.texture) then
+                    destroyElement(v.icon.texture)
+                end
+
                 table.remove(messages, k)
 
                 if (#messages == 0) then
