@@ -1198,8 +1198,8 @@ function edfAddElementNodeData(node, resource)
 				local validModels = xmlNodeGetAttribute(subnode, "validModels")
 				dataFields[dname].validModels = validModels and split(validModels, ",") or dataFields[dname].validModels
 
-				--[[ Set to false to only save the value if it is not the default value, 
-					useful to prevent map files from growing too much, 
+				--[[ Set to false to only save the value if it is not the default value,
+					useful to prevent map files from growing too much,
 					especially for properties that are not always required (default: true)
 				]]
 				local persistDefault = xmlNodeGetAttribute(subnode, "persistDefault")

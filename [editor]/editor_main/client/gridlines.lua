@@ -130,7 +130,7 @@ end
 ]]
 function drawObjectMoveLines()
 	if not isElement(attachedToElement) then return end
-	if not getElementType(attachedToElement) == "object" then return end
+	if getElementType(attachedToElement) ~= "object" then return end
 	if getElementDimension(attachedToElement) ~= getElementDimension(localPlayer) then return end
 	local x,y,z = edf.edfGetElementPosition(attachedToElement)
 	if not x then return end
