@@ -116,7 +116,12 @@ addEventHandler("newResource", root,
 		triggerClientEvent ( source, "saveloadtest_return", source, "new", true )
 		triggerEvent("onNewMap", resourceRoot)
 		dumpSave()
-		editor_gui.outputMessage(getPlayerName(client).." started a new map.", root, 255, 0, 0)
+		editor_gui.outputMessage(stripHexCode(getPlayerName(client)).." started a new map.", root, 255, 0, 0)
+
+		actionList = {}
+		currentActionIndex = 0
+
+		lastTestGamemodeName = nil
 	end
 )
 
@@ -133,6 +138,7 @@ function handleOpenResource()
 			if (isElement(openingSource)) then
 				triggerClientEvent ( openingSource, "saveloadtest_return", openingSource, "open", true )
 				playerName = getPlayerName ( openingSource )
+				playerName = stripHexCode( playerName )
 			end
 			local outputStr = playerName.." opened map "..tostring(openingResourceName)..". (opening took "..math.floor(getTickCount() - openingStartTick).." ms)"
 			editor_gui.outputMessage ( outputStr, root, 255, 0, 0 )
@@ -147,6 +153,11 @@ function handleOpenResource()
 		for i, obj in pairs(getElementsByType("object")) do
 			setElementCollisionsEnabled(obj, true)
 		end
+
+		actionList = {}
+		currentActionIndex = 0
+
+		lastTestGamemodeName = nil
 
 		triggerEvent("onMapOpened", mapContainer, openingResource)
 		flattenTreeRuns = 0
@@ -309,6 +320,7 @@ end
 local specialSyncers = {
 	position = function() end,
 	rotation = function() end,
+	scale = function(element) return edf.edfGetElementScale(element) end,
 	dimension = function(element) return getElementData(element, "me:dimension") or 0 end,
 	interior = function(element) return edf.edfGetElementInterior(element) end,
 	alpha = function(element) return edf.edfGetElementAlpha(element) end,
@@ -432,6 +444,8 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if usedResources['race'] then
 		usedResources['editor_main'] = true
 	end
+	-- Add EDF namespace
+	xmlNodeSetAttribute(xmlNode, "xmlns:edf", "https://wiki.multitheftauto.com/wiki/Resource:Editor/EDF")
 	-- Save in the map node the used definitions
 	local usedDefinitions = ""
 	for resource2 in pairs(usedResources) do
@@ -460,6 +474,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	end
 
 	local returnValue = xmlSaveFile(xmlNode)
+	writeCustomScriptingExtension(resource, collectUsedObjectModels())
 	clearResourceMeta ( resource, true )
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
 	dumpMeta ( metaNode, metaNodes, resource, resourceName..".map", test )
@@ -472,7 +487,7 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	if ( returnValue ) then
 		loadedMap = resourceName
 		if (theSaver) then
-			editor_gui.outputMessage ( getPlayerName(theSaver).." saved to map resource \""..resourceName.."\".", root, 255, 0, 0 )
+			editor_gui.outputMessage ( stripHexCode(getPlayerName(theSaver)).." saved to map resource \""..resourceName.."\".", root, 255, 0, 0 )
 		end
 	end
 	if ( theSaver ) then
@@ -586,6 +601,8 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		if usedResources['race'] then
 			usedResources['editor_main'] = true
 		end
+		-- Add EDF namespace
+		xmlNodeSetAttribute(xmlNode, "xmlns:edf", "https://wiki.multitheftauto.com/wiki/Resource:Editor/EDF")
 		-- Save in the map node the used definitions
 		local usedDefinitions = ""
 		for resource2 in pairs(usedResources) do
@@ -617,6 +634,7 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		xmlSaveFile(xmlNode)
 		xmlUnloadFile(xmlNode)
 		local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
+		writeCustomScriptingExtension(resource, collectUsedObjectModels())
 		dumpMeta ( metaNode, {}, resource, loadedMap..".map" )
 		xmlUnloadFile ( metaNode )
 		if ( not dump and loadedMap == DUMP_RESOURCE ) then
@@ -628,7 +646,7 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 			triggerClientEvent ( client, "saveloadtest_return", client, "save", true )
 		end
 		if ( not dump ) then
-			editor_gui.outputMessage (getPlayerName(client).." saved the map.", root,255,0,0)
+			editor_gui.outputMessage (stripHexCode(getPlayerName(client)).." saved the map.", root,255,0,0)
 			dumpSave()
 		end
 	else
@@ -677,6 +695,8 @@ function createElementAttributesForSaving(xmlNode, element)
 			xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
 			xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
 			xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
+		elseif ( dataName == "scale" ) then
+			xmlNodeSetAttribute(elementNode, "scale", toAttribute(round(dataValue, 3)))
 		elseif ( dataName == "posX" or dataName == "posY" or dataName == "posZ") then
 			xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 5)))
 			if (dataName == "posX") then
@@ -753,7 +773,11 @@ function beginTest(client,gamemodeName)
 	resetMapInfo()
 	setupMapSettings()
 	disablePickups(false)
-	gamemodeName = gamemodeName or lastTestGamemodeName
+
+	if gamemodeName == nil then
+		gamemodeName = lastTestGamemodeName
+	end
+
 	if ( gamemodeName ) then
 		lastTestGamemodeName = gamemodeName
 		set ( "*freeroam.spawnmapondeath", "false" )
@@ -785,6 +809,9 @@ function beginTest(client,gamemodeName)
 		end
 		g_in_test = "gamemode"
 	else
+		if gamemodeName == false then
+			lastTestGamemodeName = gamemodeName
+		end
 		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
 			restoreSettings()
 			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
@@ -931,6 +958,10 @@ addEventHandler("onPlayerLogin", root,
 	end
 )
 
+function getCurrentMapName()
+	return loadedMap
+end
+
 function getBool(var,default)
 	local result = get(var)
 	if not result then
@@ -946,4 +977,129 @@ function round(num, idp)
 	end
 	local mult = 10^(idp or 0)
 	return math.floor(num * mult + 0.5) / mult
+end
+
+function collectUsedObjectModels()
+    local used = {}
+    for _, obj in ipairs(getElementsByType("object", mapContainer)) do
+        used[getElementModel(obj)] = true
+    end
+    return used
+end
+
+-- Write a per-map server script with a LOD_MAP only using used objects
+function writeCustomScriptingExtension(resource, usedModels)
+    local pairsOut = {}
+    for model in pairs(usedModels) do
+        local lod = masterLODMap[model]
+        if lod then
+            table.insert(pairsOut, string.format("[%d] = %d", model, lod))
+        end
+    end
+    table.sort(pairsOut)
+
+    local header = [[
+-- FILE: mapEditorScriptingExtension_s.lua
+-- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
+-- VERSION: RemoveWorldObjects (v1) AutoLOD (v3)
+
+local usedLODModels = {}
+local LOD_MAP = {}
+
+function onResourceStartOrStop(startedResource)
+	local startEvent = eventName == "onResourceStart"
+	local removeObjects = getElementsByType("removeWorldObject", source)
+
+	for removeID = 1, #removeObjects do
+		local objectElement = removeObjects[removeID]
+		local objectModel = getElementData(objectElement, "model")
+		local objectLODModel = getElementData(objectElement, "lodModel")
+		local posX = getElementData(objectElement, "posX")
+		local posY = getElementData(objectElement, "posY")
+		local posZ = getElementData(objectElement, "posZ")
+		local objectInterior = getElementData(objectElement, "interior") or 0
+		local objectRadius = getElementData(objectElement, "radius")
+
+		if startEvent then
+			removeWorldModel(objectModel, objectRadius, posX, posY, posZ, objectInterior)
+			removeWorldModel(objectLODModel, objectRadius, posX, posY, posZ, objectInterior)
+		else
+			restoreWorldModel(objectModel, objectRadius, posX, posY, posZ, objectInterior)
+			restoreWorldModel(objectLODModel, objectRadius, posX, posY, posZ, objectInterior)
+		end
+	end
+
+	if startEvent then
+		local resourceName = getResourceName(startedResource)
+		local useLODs = get(resourceName..".useLODs")
+
+		if useLODs then
+			local objectsTable = getElementsByType("object", source)
+
+			for objectID = 1, #objectsTable do
+				local objectElement = objectsTable[objectID]
+				local objectModel = getElementModel(objectElement)
+				local lodModel = LOD_MAP[objectModel]
+
+				if lodModel then
+					local objectX, objectY, objectZ = getElementPosition(objectElement)
+					local objectRX, objectRY, objectRZ = getElementRotation(objectElement)
+					local objectInterior = getElementInterior(objectElement)
+					local objectDimension = getElementDimension(objectElement)
+					local lodObject = createObject(lodModel, objectX, objectY, objectZ, objectRX, objectRY, objectRZ, true)
+
+					setElementInterior(lodObject, objectInterior)
+					setElementDimension(lodObject, objectDimension)
+
+					setElementParent(lodObject, objectElement)
+					setLowLODElement(objectElement, lodObject)
+
+					usedLODModels[lodModel] = true
+				end
+			end
+		end
+	end
+end
+addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop)
+addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop)
+
+local function onPlayerResourceStart(resourceElement)
+	local mapResource = resourceElement == resource
+
+	if not mapResource then
+		return
+	end
+	
+	triggerClientEvent(source, "setLODsClient", resourceRoot, usedLODModels)
+end
+addEventHandler("onPlayerResourceStart", root, onPlayerResourceStart)
+
+-- MTA LOD Table [object] = [lodmodel] trimmed to only include objects used in map
+
+LOD_MAP = {
+]]
+
+    local footer = "\n}\n"
+
+    local body
+    if #pairsOut > 0 then
+        body = "    " .. table.concat(pairsOut, ", ") .. "\n"
+    else
+        -- No LOD-able models used – keep table empty but valid
+        body = ""
+    end
+
+    local out = header .. body .. footer
+
+    local outPath = ":" .. getResourceName(resource) .. "/mapEditorScriptingExtension_s.lua"
+    if fileExists(outPath) then
+		fileDelete(outPath)
+	end
+    local fh = fileCreate(outPath)
+    if not fh then
+		return false
+	end
+    fileWrite(fh, out)
+    fileClose(fh)
+    return true
 end

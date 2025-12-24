@@ -6,5 +6,6 @@
     <setting name="#weather" value="5" />
     <setting name="#respawn" value="timelimit" />
     <setting name="#duration" value="480" />
+    <setting name="#vehicle_physics_mode" value="fixed" />
   </settings>
 </meta>

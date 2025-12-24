@@ -64,24 +64,26 @@ function createColPatchObjects()
 	g_placementObjs = {}
 	g_placementIDObjs = {}
 	
-	for k,v in ipairs(g_placementData) do
-		if k % COL_CREATE_FRAME == 0 then
-			coroutine.yield()
-		end
-		
-		local obj = createObject(v.id, v.x, v.y, v.z, v.rx, v.ry, v.rz)
-		if obj then
-			setElementDimension(obj, getWorkingDimension())
-			setElementAlpha(obj, 0)
-			if v.int > 0 and v.int < 256 then
-				setElementInterior(obj, v.int)
+	if g_placementData then
+		for k,v in ipairs(g_placementData) do
+			if k % COL_CREATE_FRAME == 0 then
+				coroutine.yield()
 			end
-			g_placementObjs[obj] = v
 			
-			if not g_placementIDObjs[v.id] then
-				g_placementIDObjs[v.id] = {}
+			local obj = createObject(v.id, v.x, v.y, v.z, v.rx, v.ry, v.rz)
+			if obj then
+				setElementDimension(obj, getWorkingDimension())
+				setElementAlpha(obj, 0)
+				if v.int > 0 and v.int < 256 then
+					setElementInterior(obj, v.int)
+				end
+				g_placementObjs[obj] = v
+				
+				if not g_placementIDObjs[v.id] then
+					g_placementIDObjs[v.id] = {}
+				end
+				table.insert(g_placementIDObjs[v.id], obj)
 			end
-			table.insert(g_placementIDObjs[v.id], obj)
 		end
 	end
 	
@@ -95,12 +97,14 @@ end
 
 function destroyColPatchObjects()
 	local i = 0
-	for obj in pairs(g_placementObjs) do
-		if i % COL_DESTROY_FRAME == 0 then
-			coroutine.yield()
+	if g_placementObjs then
+		for obj in pairs(g_placementObjs) do
+			if i % COL_DESTROY_FRAME == 0 then
+				coroutine.yield()
+			end
+			destroyElement(obj)
+			i = i + 1
 		end
-		destroyElement(obj)
-		i = i + 1
 	end
 	
 	g_placementObjs = nil
@@ -175,17 +179,19 @@ end
 
 function loadAndReplaceCollision()
 	g_colElements = {}
-	for k,colData in ipairs(g_colData) do
-		if k % COL_LOAD_FRAME == 0 then
-			coroutine.yield()
-		end
-		
-		local col = engineLoadCOL(colData.colFile)
-		if col then
-			if engineReplaceCOL(col, colData.colID) then
-				table.insert(g_colElements, col)
-			else
-				destroyElement(col)
+	if g_colData then
+		for k,colData in ipairs(g_colData) do
+			if k % COL_LOAD_FRAME == 0 then
+				coroutine.yield()
+			end
+			
+			local col = engineLoadCOL(colData.colFile)
+			if col then
+				if engineReplaceCOL(col, colData.colID) then
+					table.insert(g_colElements, col)
+				else
+					destroyElement(col)
+				end
 			end
 		end
 	end
@@ -194,27 +200,33 @@ function loadAndReplaceCollision()
 end
 
 function restoreAndDestroyCollision()
-	for k,colData in ipairs(g_colData) do
-		if k % COL_RESTORE_FRAME == 0 then
-			coroutine.yield()
-		end
-		engineRestoreCOL(colData.colID)
-	end
-	for k,col in ipairs(g_colElements) do
-		if isElement(col) then
+	if g_colData then
+		for k,colData in ipairs(g_colData) do
 			if k % COL_RESTORE_FRAME == 0 then
 				coroutine.yield()
 			end
-			destroyElement(col)
+			engineRestoreCOL(colData.colID)
 		end
 	end
-	
-	g_colElements = nil
+	if g_colElements then
+		for k,col in ipairs(g_colElements) do
+			if isElement(col) then
+				if k % COL_RESTORE_FRAME == 0 then
+					coroutine.yield()
+				end
+				destroyElement(col)
+			end
+		end
+		g_colElements = nil
+	end
+
 	destroyColPatchObjects()
 end
 
 -- Called after we finish loading to apply removed world objects in current map
 function applyRemovedColPatches()
+	if not g_placementIDObjs then return end
+	if not g_placementObjs then return end
 	for i,element in ipairs(getElementsByType("removeWorldObject")) do
 		local model = getElementData(element, "model")
 		if g_placementIDObjs[model] then
@@ -242,6 +254,8 @@ end
 
 local function onClientElementCreateDestroy()
 	if not g_placementData then return end
+	if not g_placementIDObjs then return end
+	if not g_placementObjs then return end
 	if (getElementType(source) ~= "removeWorldObject") then return end
 
 	local model = getElementData(source, "model")

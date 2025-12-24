@@ -11,10 +11,10 @@ end
 
 
 _outputDebugString = outputDebugString
-function outputDebugString(...)
-    if DEBUGMODE then
-       return _outputDebugString(...)
-    end
+function outputDebugString(string, level, r, g, b)
+    if not level then level = 3 end
+    if (not DEBUGMODE) and level >= 3 then return end
+    return _outputDebugString(string, level, r, g, b)
 end
 
 

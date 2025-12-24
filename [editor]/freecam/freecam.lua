@@ -3,6 +3,7 @@ local speed = 0
 local strafespeed = 0
 local rotX, rotY = 0,0
 local velocityX, velocityY, velocityZ
+local width, height = guiGetScreenSize()
 
 -- configurable parameters
 local options = {
@@ -229,7 +230,6 @@ local function freecamMouse (cX,cY,aX,aY)
 	end
 
 	-- how far have we moved the mouse from the screen center?
-    local width, height = guiGetScreenSize()
     aX = aX - width / 2
     aY = aY - height / 2
 

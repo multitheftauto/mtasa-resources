@@ -15,8 +15,8 @@
 -- the access is faster than in a hash table
 -- the metatable is just a add on, when it comes to speed, one is faster using a direct function call
 
--- http://luaforge.net/projects/LuaMatrix
--- http://lua-users.org/wiki/ComplexNumbers
+-- https://luaforge.net/projects/LuaMatrix
+-- https://lua-users.org/wiki/ComplexNumbers
 
 -- Licensed under the same terms as Lua itself.
 

@@ -2,9 +2,11 @@
 --	beginRound: begins the round
 --
 function beginRound()
+	-- destroy start timer
+	destroyElement(_startTimer)
 	-- start round timer
 	if _timeLimit > 0 then
-		_missionTimer = exports.missiontimer:createMissionTimer(_timeLimit, true, true, 0.5, 20, true, "default-bold", 1)
+		_missionTimer = exports.missiontimer:createMissionTimer(_timeLimit, true, "%m:%s", 0.5, 20, true, "default-bold", 1)
 		addEventHandler("onMissionTimerElapsed", _missionTimer, onTimeElapsed)
 	end
 	-- attach player wasted handler
@@ -17,8 +19,8 @@ function beginRound()
 		setElementData(players[i], "Score", 0)
 		setElementData(players[i], "Rank", "-")
 		if _playerStates[players[i]] == PLAYER_READY then
-            spawnDeathmatchPlayer(players[i])
-            triggerClientEvent(players[i], "onClientDeathmatchRoundStart", resourceRoot)
+            spawnGamemodePlayer(players[i])
+            triggerClientEvent(players[i], "onClientGamemodeRoundStart", resourceRoot)
 		end
 	end
 end
@@ -63,7 +65,7 @@ function endRound(winner, draw, aborted)
             -- update player state
             _playerStates[players[i]] = PLAYER_READY
 			-- inform client round is over
-			triggerClientEvent(players[i], "onClientDeathmatchRoundEnd", resourceRoot, winner, draw, aborted)
+			triggerClientEvent(players[i], "onClientGamemodeRoundEnd", resourceRoot, winner, draw, aborted)
         end
 	end
 	-- don't cycle the map if the round was aborted (map resource was stopped)
@@ -76,6 +78,6 @@ function endRound(winner, draw, aborted)
 	if mapcycler and getResourceState(mapcycler) == "running" then
 		triggerEvent("onRoundFinished", resourceRoot)
 	else
-		setTimer(beginRound, CAMERA_LOAD_DELAY * 2, 1)
+		setTimer(beginRound, ROUND_START_DELAY * 2, 1)
 	end
 end

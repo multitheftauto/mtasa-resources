@@ -29,10 +29,12 @@
     <right name="command.setmoney" access="true" />
     <right name="command.setskin" access="true" />
     <right name="command.setteam" access="true" />
+    <right name="command.removefromteam" access="true" />
     <right name="command.giveweapon" access="true" />
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.warpto" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
     <!--Teams related-->
@@ -45,7 +47,9 @@
     <right name="command.destroyvehicle" access="true" />
     <right name="command.customize" access="true" />
     <right name="command.setcolor" access="true" />
+    <right name="command.setlights" access="true" />
     <right name="command.setpaintjob" access="true" />
+    <right name="command.setplates" access="true" />
     <!--Messages related-->
     <right name="command.listmessages" access="true" />
     <right name="command.readmessage" access="true" />
@@ -89,6 +93,7 @@
     <!--Screenshot related-->
     <right name="command.takescreenshot" access="true" />
     <right name="command.deletescreenshot" access="true" />
+    <right name="command.deleteallscreenshot" access="true" />
     <right name="command.viewscreenshot" access="true" />
     <right name="command.listscreenshots" access="true" />
   </acl>
@@ -116,10 +121,12 @@
     <right name="command.setmoney" access="true" />
     <right name="command.setskin" access="true" />
     <right name="command.setteam" access="true" />
+    <right name="command.removefromteam" access="true" />
     <right name="command.giveweapon" access="true" />
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.warpto" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
     <!--Teams related-->
@@ -132,7 +139,9 @@
     <right name="command.destroyvehicle" access="true" />
     <right name="command.customize" access="true" />
     <right name="command.setcolor" access="true" />
+    <right name="command.setlights" access="true" />
     <right name="command.setpaintjob" access="true" />
+    <right name="command.setplates" access="true" />
     <!--Messages related-->
     <right name="command.listmessages" access="true" />
     <right name="command.readmessage" access="true" />
@@ -175,6 +184,7 @@
     <!--Screenshot related-->
     <right name="command.takescreenshot" access="true" />
     <right name="command.deletescreenshot" access="true" />
+    <right name="command.deleteallscreenshot" access="false" />
     <right name="command.viewscreenshot" access="true" />
     <right name="command.listscreenshots" access="true" />
   </acl>
@@ -202,10 +212,12 @@
     <right name="command.setmoney" access="false" />
     <right name="command.setskin" access="true" />
     <right name="command.setteam" access="true" />
+    <right name="command.removefromteam" access="true" />
     <right name="command.giveweapon" access="true" />
     <right name="command.setstat" access="true" />
     <right name="command.jetpack" access="true" />
     <right name="command.warp" access="true" />
+    <right name="command.warpto" access="true" />
     <right name="command.setdimension" access="true" />
     <right name="command.setinterior" access="true" />
     <!--Teams related-->
@@ -218,7 +230,9 @@
     <right name="command.destroyvehicle" access="true" />
     <right name="command.customize" access="true" />
     <right name="command.setcolor" access="true" />
+    <right name="command.setlights" access="true" />
     <right name="command.setpaintjob" access="true" />
+    <right name="command.setplates" access="true" />
     <!--Messages related-->
     <right name="command.listmessages" access="true" />
     <right name="command.readmessage" access="true" />
@@ -261,6 +275,7 @@
     <!--Screenshot related-->
     <right name="command.takescreenshot" access="true" />
     <right name="command.deletescreenshot" access="true" />
+    <right name="command.deleteallscreenshot" access="false" />
     <right name="command.viewscreenshot" access="true" />
     <right name="command.listscreenshots" access="true" />
   </acl>
@@ -288,10 +303,12 @@
     <right name="command.setmoney" access="false" />
     <right name="command.setskin" access="false" />
     <right name="command.setteam" access="false" />
+    <right name="command.removefromteam" access="false" />
     <right name="command.giveweapon" access="false" />
     <right name="command.setstat" access="false" />
     <right name="command.jetpack" access="false" />
     <right name="command.warp" access="false" />
+    <right name="command.warpto" access="false" />
     <right name="command.setdimension" access="false" />
     <right name="command.setinterior" access="false" />
     <!--Teams related-->
@@ -304,7 +321,9 @@
     <right name="command.destroyvehicle" access="false" />
     <right name="command.customize" access="false" />
     <right name="command.setcolor" access="false" />
+    <right name="command.setlights" access="false" />
     <right name="command.setpaintjob" access="false" />
+    <right name="command.setplates" access="false" />
     <!--Messages related-->
     <right name="command.listmessages" access="false" />
     <right name="command.readmessage" access="false" />
@@ -348,6 +367,7 @@
     <!--Screenshot related-->
     <right name="command.takescreenshot" access="false" />
     <right name="command.deletescreenshot" access="false" />
+    <right name="command.deleteallscreenshot" access="false" />
     <right name="command.viewscreenshot" access="false" />
     <right name="command.listscreenshots" access="false" />
   </acl>

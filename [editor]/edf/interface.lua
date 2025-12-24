@@ -1,6 +1,9 @@
 local interface_mt = {
 	__index = function(t, k)
-		t[k] = function(...) return call(t.res, k, ...) end
+		t[k] = function(...)
+			if getUserdataType(t.res) ~= "resource-data" or getResourceState(t.res) ~= "running" then return end
+			return call(t.res, k, ...)
+		end
 		return t[k]
 	end
 }

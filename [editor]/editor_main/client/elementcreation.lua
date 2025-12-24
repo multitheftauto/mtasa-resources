@@ -14,12 +14,37 @@ addEventHandler("doUnloadEDF", root,
 
 triggerServerEvent("onClientRequestEDF", localPlayer)
 
+function getRandomRotation()
+	if exports["editor_gui"]:sx_getOptionData("randomizeRotation") ~= true then
+		return {0, 0, 0}
+	end
+
+	local getAxis = exports["editor_gui"]:sx_getOptionData("randomizeRotationAxis")
+	local rotationMap = {
+		["X"] = function() return {math.random(0, 360), 0, 0} end,
+		["Y"] = function() return {0, math.random(0, 360), 0} end,
+		["Z"] = function() return {0, 0, math.random(0, 360)} end,
+		["XY"] = function() return {math.random(0, 360), math.random(0, 360), 0} end,
+		["XZ"] = function() return {math.random(0, 360), 0, math.random(0, 360)} end,
+		["YZ"] = function() return {0, math.random(0, 360), math.random(0, 360)} end,
+		["XYZ"] = function() return {math.random(0, 360), math.random(0, 360), math.random(0, 360)} end,
+	}
+
+	local rotationFunc = rotationMap[getAxis] or function() return {0, 0, 0} end
+	return rotationFunc()
+end
+
 -- sends the element creation request
 function doCreateElement ( elementType, resourceName, creationParameters, attachLater, shortcut )
 	creationParameters = creationParameters or {}
 	if not creationParameters.position then
 		local targetX, targetY, targetZ = processCameraLineOfSight()
-		creationParameters.position = {targetX, targetY, targetZ + .5}
+		if elementType ~= "object" and elementType ~= "vehicle" then
+			creationParameters.position = nil
+		else
+			creationParameters.position = {targetX, targetY, targetZ + .5}
+		end
+		creationParameters.rotation = getRandomRotation()
 	end
 
 	local requiresCreationBox = false
@@ -50,5 +75,9 @@ function doCloneElement ( element, attachMode )
 	if getSelectedElement() then
 		dropElement(true)
 	end
-	triggerServerEvent( "doCloneElement", element, attachMode )
+	local rotationData
+	if exports["editor_gui"]:sx_getOptionData("randomizeRotation") == true then
+		rotationData = getRandomRotation()
+	end
+	triggerServerEvent( "doCloneElement", element, attachMode, false, rotationData )
 end

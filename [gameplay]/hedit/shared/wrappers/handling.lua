@@ -175,7 +175,7 @@ function setVehicleHandling ( vehicle, property, value, withLog )
     end
 
 
-    setElementData ( vehicle, "hedit:vehiclepreviousvalue."..property, oldValue )
+    setElementData ( vehicle, "hedit:vehiclepreviousvalue."..property, oldValue, true, "deny" )
 
     triggerEvent ( "onVehicleHandlingChange", client, vehicle, property, oldValue, value )
 
@@ -197,7 +197,7 @@ function getOriginalHandling ( model, force )
         return nil
     end
 
-    local data = getElementData ( root, "originalHandling."..tostring(model) )
+    local data = getElementData ( resourceRoot, "hedit:originalHandling."..tostring(model), false )
     if not data or force then
         data = conformHandlingTable ( _getOriginalHandling ( model ), model )
     end

@@ -16,6 +16,7 @@ end
 local specialSyncers = {
 	position = function() end,
 	rotation = function() end,
+	scale = function(element) return edf.edfGetElementScale(element) end,
 	dimension = function(element) return getElementData(element, "me:dimension") or 0 end,
 	interior = function(element) return edf.edfGetElementInterior(element) end,
 	alpha = function(element) return edf.edfGetElementAlpha(element) end,
@@ -207,7 +208,6 @@ function dumpMeta ( xml, extraNodes, resource, filename, test )
 		xmlNodeSetAttribute(scriptNode, "src", scriptName)
 		xmlNodeSetAttribute(scriptNode, "type", "server")
 	end
-	fileCopy("server/"..scriptName, ":"..getResourceName(resource).."/"..scriptName, true)
 
 	scriptName = "mapEditorScriptingExtension_c.lua"
 	foundScriptInMeta = false

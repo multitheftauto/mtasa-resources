@@ -1,0 +1,11 @@
+<meta>
+	<info name="Security" author="-ffs-PLASMA" type="misc" version="1.0" description="Basic security functionality" />
+	
+	<min_mta_version server="1.6.0-9.22790" />
+	
+	<script src="utils.lua" type="server"/>
+	<script src="logging.lua" type="server"/>
+	<script src="events.lua" type="server"/>
+	<script src="misc.lua" type="server"/>
+	<script src="players.lua" type="server"/>
+</meta>

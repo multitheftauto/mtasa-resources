@@ -7,26 +7,13 @@ addEventHandler ( "onResourceStart", resourceRoot, function ( )
 
     local resName = getResourceName ( resource )
 
-	setElementData(resourceRoot, "resourceVersion", getResourceInfo(resource, "version"))
-
     if resName ~= "hedit" and not DEBUGMODE then
-        outputChatBox ( "Handling Editor failed to start, see the logs for more information." )
-        print ( "===============================================================================" )
-        print ( "[HEDIT] Please rename resource '"..resName.."' to 'hedit' to use the handling editor." )
-        print ( "[HEDIT] The handling editor will not work unless you rename the resource to 'hedit'." )
-        print ( "===============================================================================" )
+        outputDebugString ( "[HEDIT] Please rename resource '"..resName.."' to 'hedit' to use the handling editor.", 1)
         return cancelEvent ( true, "Rename the handling editor resource to 'hedit' in order to use the resource." )
     end
 
-
-    print ( "===============================================================================" )
-    print ( " MTA:SA HANDLING EDITOR [hedit.github.io]" )
-    print ( "===============================================================================" )
     if fileExists ( "handling.cfg" ) then
-        print ( " Handling.cfg found." )
-        print ( " Type 'loadcfg' to load handling.cfg into the memory." )
-        print ( " After this, you can import the handling into defaults.xml." )
-        print ( "===============================================================================" )
+        outputDebugString ( "[HEDIT] Handling.cfg found; type 'loadcfg' to load handling.cfg into the memory.")
     end
 
 	--Parse meta settings
@@ -34,7 +21,7 @@ addEventHandler ( "onResourceStart", resourceRoot, function ( )
 	addEventHandler("onSettingChange", root, parseMetaSettings)
 
 	for model=400,611 do
-        setElementData ( root, "originalHandling."..tostring ( model ), getOriginalHandling ( model, true ) )
+        setElementData ( resourceRoot, "hedit:originalHandling."..tostring ( model ), getOriginalHandling ( model, true ), true, "deny" )
     end
 
     --initiateCFGLoader ( )

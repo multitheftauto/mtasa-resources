@@ -1,4 +1,4 @@
---This code is an exact, unmodified copy of that from the official Lua docs: http://lua-users.org/wiki/SortedIteration
+--This code is an exact, unmodified copy of that from the official Lua docs: https://lua-users.org/wiki/SortedIteration
 
 function __genOrderedIndex( t )
     local orderedIndex = {}
@@ -15,6 +15,7 @@ function orderedNext(t, state)
     -- table being iterated.
 
     --print("orderedNext: state = "..tostring(state) )
+    local key
     if state == nil then
         -- the first time, generate the index
         t.__orderedIndex = __genOrderedIndex( t )
@@ -22,7 +23,6 @@ function orderedNext(t, state)
         return key, t[key]
     end
     -- fetch the next value
-    key = nil
     for i = 1,table.getn(t.__orderedIndex) do
         if t.__orderedIndex[i] == state then
             key = t.__orderedIndex[i+1]

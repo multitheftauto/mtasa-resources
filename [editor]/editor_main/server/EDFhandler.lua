@@ -33,7 +33,8 @@ function registerEDF( resource )
 	loadedEDF[resource] = edf.edfGetDefinition(resource)
 	for i, player in ipairs(getElementsByType"player") do
 		if clientGUILoaded[player] then
-			triggerClientEvent ( player, "doLoadEDF", root, loadedEDF[resource], getResourceName ( resource ) )
+			local isMapLoading = isEditorOpeningResource()
+			triggerClientEvent ( player, "doLoadEDF", root, loadedEDF[resource], getResourceName ( resource ), isMapLoading )
 		end
 	end
 end
@@ -41,10 +42,12 @@ addEventHandler ( "onEDFLoad", root, registerEDF)
 
 addEventHandler ( "onEDFUnload", root,
 	function ( resource )
+		if not loadedEDF[resource] then return end -- Only unload if the EDF has been loaded
 		loadedEDF[resource] = nil
 		for i, player in ipairs(getElementsByType"player") do
 			if clientGUILoaded[player] then
-				triggerClientEvent ( player, "doUnloadEDF", root, getResourceName ( resource ) )
+				local isMapLoading = isEditorOpeningResource()
+				triggerClientEvent ( player, "doUnloadEDF", root, getResourceName ( resource ), isMapLoading )
 			end
 		end
 	end
@@ -53,7 +56,8 @@ addEventHandler ( "onEDFUnload", root,
 local function sendEDF()
 	clientGUILoaded[source] = true
 	for resource, resourceDefinition in pairs(loadedEDF) do
-		triggerClientEvent ( source, "doLoadEDF", root, resourceDefinition, getResourceName ( resource ) )
+		local isMapLoading = isEditorOpeningResource()
+		triggerClientEvent ( source, "doLoadEDF", root, resourceDefinition, getResourceName ( resource ), isMapLoading )
 	end
 end
 addEventHandler ( "onClientGUILoaded", root, sendEDF)

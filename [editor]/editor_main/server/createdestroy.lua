@@ -19,7 +19,7 @@ function setupNewElement(element, creatorResource, creatorClient, attachLater,sh
 	makeElementStatic( element )
 	assignID ( element )
 	triggerEvent ( "onElementCreate_undoredo", element )
-	if attachLater then
+	if attachLater and creatorClient then
 		setTimer(triggerClientEvent, WAIT_LOAD_INTERVAL, 1, creatorClient, "doSelectElement", element, selectionSubmode, shortcut )
 	end
 	justCreated[element] = true --mark it so undoredo ignores first placement
@@ -56,7 +56,7 @@ addEventHandler ( "doCreateElement", root,
 )
 
 addEventHandler ( "doCloneElement", root,
-	function (attachMode,creator)
+	function (attachMode, creator, rotationData)
 		if client and not isPlayerAllowedToDoEditorAction(client,"createElement") then
 			editor_gui.outputMessage ("You don't have permissions to clone an element!", client,255,0,0)
 			return
@@ -69,6 +69,11 @@ addEventHandler ( "doCloneElement", root,
 
 		if clone then
 			outputConsole ( "Cloned '"..getElementType(source).."'." )
+
+			if rotationData then
+				edf.edfSetElementRotation(clone, rotationData[1], rotationData[2], rotationData[3])
+			end
+
 			setupNewElement(clone, creator or edf.edfGetCreatorResource(source), client, true, false, attachMode)
 			setLockedElement(source, nil)
 		else
