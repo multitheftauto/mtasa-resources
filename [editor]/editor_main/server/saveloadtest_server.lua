@@ -1032,9 +1032,8 @@ function onResourceStartOrStop(startedResource)
 	if startEvent then
 		local resourceName = getResourceName(startedResource)
 		local useLODs = get(resourceName..".useLODs")
-
+		local objectsTable = getElementsByType("object", source)
 		if useLODs then
-			local objectsTable = getElementsByType("object", source)
 
 			for objectID = 1, #objectsTable do
 				local objectElement = objectsTable[objectID]
@@ -1058,10 +1057,72 @@ function onResourceStartOrStop(startedResource)
 				end
 			end
 		end
+
+		for i = 1, #objectsTable do
+			local objectElement = objectsTable[i]
+			local x, y, z = getElementPosition(objectElement)
+			local offsetX = tonumber(getElementData(objectElement, "moveX"))
+			local offsetY = tonumber(getElementData(objectElement, "moveY"))
+			local offsetZ = tonumber(getElementData(objectElement, "moveZ"))
+			if (offsetX and math.abs(offsetX) > 0) or (offsetY and math.abs(offsetY) > 0) or (offsetZ and math.abs(offsetZ) > 0) then
+				if not offsetX then offsetX = 0 end
+				if not offsetY then offsetY = 0 end
+				if not offsetZ then offsetZ = 0 end
+
+				local speed = tonumber(getElementData(objectElement, "moveSpeed")) or 1
+				local delay = tonumber(getElementData(objectElement, "moveDelay")) or 0
+				local time = getDistanceBetweenPoints3D(x,y,z,x + offsetX,y + offsetY,z + offsetZ) / speed * 1000
+
+				local currentPosX, currentPosY, currentPosZ = getElementPosition(objectElement)
+				local endPosX = currentPosX + offsetX
+				local endPosY = currentPosY + offsetY
+				local endPosZ = currentPosZ + offsetZ
+				local properties = {
+					moveTime = time,
+					delay = delay,
+					initialPosX = currentPosX,
+					initialPosY = currentPosY,
+					initialPosZ = currentPosZ,
+					endPosX = endPosX,
+					endPosY = endPosY,
+					endPosZ = endPosZ,
+				}
+				if delay > 0 then
+					setTimer(onObjectReachedInitialPosition, delay, 1, objectElement, properties)
+				else
+					onObjectReachedInitialPosition(objectElement, properties)
+				end
+			end
+		end
 	end
 end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop)
+
+function onObjectReachedEndPosition(objectElement, properties)
+	if not isElement(objectElement) then return end
+	stopObject(objectElement)
+	local time = properties.moveTime
+	local delay = properties.delay
+	local initialPosX = properties.initialPosX
+	local initialPosY = properties.initialPosY
+	local initialPosZ = properties.initialPosZ
+	moveObject(objectElement, time, initialPosX, initialPosY, initialPosZ)
+	setTimer(onObjectReachedInitialPosition, time + delay, 1, objectElement, properties)
+end
+
+function onObjectReachedInitialPosition(objectElement, properties)
+	if not isElement(objectElement) then return end
+	stopObject(objectElement)
+	local time = properties.moveTime
+	if not time then return end
+	local delay = properties.delay
+	local endPosX = properties.endPosX
+	local endPosY = properties.endPosY
+	local endPosZ = properties.endPosZ
+	moveObject(objectElement, time, endPosX, endPosY, endPosZ)
+	setTimer(onObjectReachedEndPosition, time + delay, 1, objectElement, properties)
+end
 
 local function onPlayerResourceStart(resourceElement)
 	local mapResource = resourceElement == resource
