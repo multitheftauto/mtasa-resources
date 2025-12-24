@@ -109,11 +109,135 @@ function drawXYZLines()
 	drawLine({x,y,z},{zx,zy,zz},tocolor(0,0,200,200),thickness)
 end
 
+--[[
+	Draws the where the object will be moved to.
+]]
+function drawObjectMoveLines()
+	if not isElement(attachedToElement) then return end
+	if not getElementType(attachedToElement) == "object" then return end
+	if getElementDimension(attachedToElement) ~= getElementDimension(localPlayer) then return end
+	local x,y,z = edf.edfGetElementPosition(attachedToElement)
+	if not x then return end
+
+	local offsetX = edf.edfGetElementProperty(attachedToElement, "moveX")
+	local offsetY = edf.edfGetElementProperty(attachedToElement, "moveY")
+	local offsetZ = edf.edfGetElementProperty(attachedToElement, "moveZ")
+
+	if offsetX and math.abs(offsetX) > 0 or offsetY and math.abs(offsetY) > 0 or offsetZ and math.abs(offsetZ) > 0 then
+		if not offsetX then offsetX = 0 end
+		if not offsetY then offsetY = 0 end
+		if not offsetZ then offsetZ = 0 end
+
+		local speed = tonumber(edf.edfGetElementProperty(attachedToElement, "moveSpeed"))
+		if not speed then speed = 1 end
+		local delay = tonumber(edf.edfGetElementProperty(attachedToElement, "moveDelay"))
+		if not delay then delay = 0 end
+		local time = getDistanceBetweenPoints3D(x,y,z,x + offsetX,y + offsetY,z + offsetZ) / speed * 1000
+		local lineStartPos = {x,y,z}
+		local lineEndPos = {x + offsetX,y + offsetY,z + offsetZ}
+		local timeNow = getTickCount()
+
+		local progress = timeNow % (time + delay) / time
+		if progress > 1 then
+			progress = 1
+		end
+
+		local movementAnimationOffset = {
+			(lineEndPos[1] - lineStartPos[1]) * progress,
+			(lineEndPos[2] - lineStartPos[2]) * progress,
+			(lineEndPos[3] - lineStartPos[3]) * progress
+		}
+
+
+		local minX,minY,minZ,maxX,maxY,maxZ = edf.edfGetElementBoundingBox ( attachedToElement )
+		if not minX then
+			local radius = edf.edfGetElementRadius ( attachedToElement )
+			if radius then
+				minX,minY,minZ,maxX,maxY,maxZ = -radius,-radius,-radius,radius,radius,radius
+			end
+		end
+
+		if minX and minY and minZ and maxX and maxY and maxZ then
+			-- Define the 8 corners in relative coordinates
+			local relativeCorners = {
+				{minX, minY, minZ}, -- 1: min corner
+				{maxX, minY, minZ}, -- 2
+				{maxX, maxY, minZ}, -- 3
+				{minX, maxY, minZ}, -- 4
+				{minX, minY, maxZ}, -- 5
+				{maxX, minY, maxZ}, -- 6
+				{maxX, maxY, maxZ}, -- 7
+				{minX, maxY, maxZ}  -- 8: max corner
+			}
+
+			-- Draw the bounding box moving to the destination position
+			do
+				local corners = {}
+				for i, relCorner in ipairs(relativeCorners) do
+					local worldX, worldY, worldZ = getPositionFromElementAtOffset(attachedToElement, relCorner[1], relCorner[2], relCorner[3])
+					corners[i] = {worldX + movementAnimationOffset[1], worldY + movementAnimationOffset[2], worldZ + movementAnimationOffset[3]}
+				end
+				
+				local boxColor = tocolor(255, 255, 255, 100)
+				local lineWidth = 2
+				
+				-- Bottom face (z = minZ)
+				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[2][1], corners[2][2], corners[2][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[3][1], corners[3][2], corners[3][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[4][1], corners[4][2], corners[4][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[1][1], corners[1][2], corners[1][3], boxColor, lineWidth)
+				
+				-- Top face (z = maxZ)
+				dxDrawLine3D(corners[5][1], corners[5][2], corners[5][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[6][1], corners[6][2], corners[6][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[7][1], corners[7][2], corners[7][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[8][1], corners[8][2], corners[8][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
+				
+				-- Vertical edges connecting bottom to top
+				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
+			end
+			
+			-- Draw the bounding box at the destination position
+			do
+				local corners = {}
+				for i, relCorner in ipairs(relativeCorners) do
+					local worldX, worldY, worldZ = getPositionFromElementAtOffset(attachedToElement, relCorner[1], relCorner[2], relCorner[3])
+					corners[i] = {worldX + offsetX, worldY + offsetY, worldZ + offsetZ}
+				end
+				
+				local boxColor = tocolor(255, 255, 0, 200)
+				local lineWidth = 2
+				
+				-- Bottom face (z = minZ)
+				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[2][1], corners[2][2], corners[2][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[3][1], corners[3][2], corners[3][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[4][1], corners[4][2], corners[4][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[1][1], corners[1][2], corners[1][3], boxColor, lineWidth)
+				
+				-- Top face (z = maxZ)
+				dxDrawLine3D(corners[5][1], corners[5][2], corners[5][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[6][1], corners[6][2], corners[6][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[7][1], corners[7][2], corners[7][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[8][1], corners[8][2], corners[8][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
+				
+				-- Vertical edges connecting bottom to top
+				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
+			end
+		end
+	end
+end
+
 function doBasicElementRenders()
 	if not isElement(attachedToElement) then return end
 	if exports["editor_gui"]:sx_getOptionData("enableBox") then renderGridlines() end
 	if exports["editor_gui"]:sx_getOptionData("enableXYZlines") then drawXYZLines() end
-
+	drawObjectMoveLines()
 end
 addEventHandler ( "onClientRender", root, doBasicElementRenders )
 

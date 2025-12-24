@@ -646,7 +646,8 @@ function createElementAttributesForSaving(xmlNode, element)
 	-- Add an ID attribute first off
 	xmlNodeSetAttribute(elementNode, "id", getElementID(element))
 	-- Dump raw properties from the getters
-	for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
+	local dataFields = loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data
+	for dataField, dataDefinition in pairs(dataFields) do
 		if (dataField ~= "color1" and dataField ~= "color2" and dataField ~= "color3" and dataField ~= "color4") then
 			local value
 			if ( specialSyncers[dataField] ) then
@@ -655,7 +656,9 @@ function createElementAttributesForSaving(xmlNode, element)
 				value = edf.edfGetElementProperty(element, dataField)
 			end
 			if type(value) == "number" or type(value) == "string" then
-				xmlNodeSetAttribute(elementNode, dataField, value )
+				if dataDefinition.persistDefault == true or dataDefinition.default ~= value then
+					xmlNodeSetAttribute(elementNode, dataField, value )
+				end
 			end
 		end
 	end
@@ -686,7 +689,10 @@ function createElementAttributesForSaving(xmlNode, element)
 		elseif ( dataName == "rotX" or dataName == "rotY" or dataName == "rotZ") then
 			xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 3)))
 		elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
-			xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
+			local dataDefinition = dataFields[dataName]
+			if not dataDefinition or dataDefinition.persistDefault == true or dataDefinition.default ~= dataValue then
+				xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
+			end
 		end
 	end
 	-- Ensure that the element has a position set, else the map file can't load
