@@ -91,7 +91,7 @@ addEventHandler(
         if (not aMap.permission) then
             return
         end 
-        if (isPlayerMapVisible() and button == "left") then
+        if (isPlayerMapVisible() and button == "left" and state == "down") then
             local minX, minY, maxX, maxY = getPlayerMapBoundingBox()
             if ((x >= minX and x <= maxX) and (y >= minY and y <= maxY)) then
                 local msx, msy = -(minX - maxX), -(minY - maxY)
@@ -145,4 +145,5 @@ bindKey(
 
 function UpdateMapPermissions()
     aMap.permission = hasPermissionTo("general.adminMapWarp")
+
 end
