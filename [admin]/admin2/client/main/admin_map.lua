@@ -9,7 +9,7 @@
 **************************************]]
 local aMap = {
     check = 0,
-    permission = true,
+    permission = false,
     players = false,
     coords = false,
     cursor = false,
@@ -88,13 +88,19 @@ addEventHandler(
     "onClientClick",
     root,
     function(button, state, x, y)
+        if (not aMap.permission) then
+            return
+        end 
         if (isPlayerMapVisible() and button == "left") then
             local minX, minY, maxX, maxY = getPlayerMapBoundingBox()
             if ((x >= minX and x <= maxX) and (y >= minY and y <= maxY)) then
                 local msx, msy = -(minX - maxX), -(minY - maxY)
                 local px = 6000 * ((x - minX) / msx) - 3000
                 local py = 3000 - 6000 * ((y - minY) / msy)
-                setElementPosition(localPlayer, px, py, 10)
+                enginePreloadWorldArea(px, py, 10, "collisions")
+
+                local pz = getGroundPosition(px, py, 100) or 10
+                triggerServerEvent("aMapWarp", resourceRoot, px, py, pz + 1)
             end
         end
     end
@@ -104,6 +110,9 @@ bindKey(
     "mouse2",
     "both",
     function(key, state)
+        if (not aMap.permission) then
+            return
+        end 
         if (isPlayerMapVisible()) then
             showCursor(state == "down")
             aMap.cursor = state == "down"
@@ -115,6 +124,9 @@ bindKey(
     "num_7",
     "down",
     function(key, state)
+        if (not aMap.permission) then
+            return
+        end 
         if (isPlayerMapVisible()) then
             aMap.players = not aMap.players
         end
@@ -130,3 +142,7 @@ bindKey(
         end
     end
 )
+
+function UpdateMapPermissions()
+    aMap.permission = hasPermissionTo("general.adminMapWarp")
+end

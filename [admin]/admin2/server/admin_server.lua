@@ -436,3 +436,22 @@ addCommandHandler(get("adminChatCommandName"),
         end
     end
 )
+
+addEvent("aMapWarp", true)
+addEventHandler(
+    "aMapWarp",
+    resourceRoot,
+    function(x, y, z)
+        local x, y, z = tonumber(x), tonumber(y), tonumber(z)
+        if not x or not y or not z then
+            return
+        end
+        
+        if (not hasObjectPermissionTo(client, "general.adminMapWarp", false)) then
+            return
+        end
+
+        setElementPosition(client, x, y, z)
+        outputServerLog("ADMIN: ".. getPlayerName(client) .. " warped to map coordinates: " .. tostring(x) .. ", " .. tostring(y) .. ", " .. tostring(z))
+    end
+)
