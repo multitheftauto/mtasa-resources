@@ -97,7 +97,7 @@ addEventHandler(
                 local msx, msy = -(minX - maxX), -(minY - maxY)
                 local px = 6000 * ((x - minX) / msx) - 3000
                 local py = 3000 - 6000 * ((y - minY) / msy)
-                enginePreloadWorldArea(px, py, 10, "collisions")
+                enginePreloadWorldArea(px, py, 527, "collisions")
 
                 local pz = getGroundPosition(px, py, 100) or 10
                 triggerServerEvent("aMapWarp", resourceRoot, px, py, pz + 1)
@@ -147,3 +147,4 @@ function UpdateMapPermissions()
     aMap.permission = hasPermissionTo("general.adminMapWarp")
 
 end
+
