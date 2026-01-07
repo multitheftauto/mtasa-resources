@@ -58,7 +58,6 @@ function aAdminResourceStart ()
 	end
 	aLoadSettings ()
 	triggerServerEvent ( "aPermissions", localPlayer )
-	setTimer( function() triggerServerEvent ( "aPlayerVersion", localPlayer, getVersion() ) end, 2000, 1 )
 	guiSetInputMode ( "no_binds_when_editing" )
 end
 
@@ -142,52 +141,6 @@ end
 
 addEventHandler ( "onClientResourceStart", resourceRoot, aAdminResourceStart )
 addEventHandler ( "onClientResourceStop", resourceRoot, aAdminResourceStop )
-
-
---
--- Upgrade check message for 1.0 to 1.0.2
---
-addEvent ( "aClientShowUpgradeMessage", true )
-addEventHandler ( "aClientShowUpgradeMessage", root,
-	function()
-		local xml = xmlLoadFile("upgrade_cookie.xml")
-		if not xml then
-			xml = xmlCreateFile("upgrade_cookie.xml", "settings")
-		end
-		if not xml then return end
-
-		local node = xmlFindChild(xml, "upgradeMessage", 0)
-		if not node then
-			node = xmlCreateChild(xml, "upgradeMessage")
-		end
-		local timeNow = getRealTimeSeconds()
-		local bShowConsoleText = true
-		local bShowMessageBox = true
-
-		if bShowConsoleText then
-			local lastTime = xmlNodeGetAttribute(node, "lastConsoleTextTime")
-			local age = timeNow - ( tonumber(lastTime) or 0 )
-			if age > 60*60 then
-				xmlNodeSetAttribute(node, "lastConsoleTextTime", tostring( timeNow ))
-				xmlSaveFile(xml)
-				outputConsole( "A new version of MTA:SA is available! - Please download from www.multitheftauto.com" )
-			end
-		end
-
-		if bShowMessageBox then
-			local lastTime = xmlNodeGetAttribute(node, "lastMessageBoxTime")
-			local age = timeNow - ( tonumber(lastTime) or 0 )
-			if age > 60*60*24 then
-				xmlNodeSetAttribute(node, "lastMessageBoxTime", tostring( timeNow ))
-				xmlSaveFile(xml)
-				aMessageBox( "A new version of MTA:SA is available!",  "Please download from www.multitheftauto.com" )
-				setTimer ( aMessageBoxClose, 15000, 1, true )
-			end
-		end
-		xmlUnloadFile (xml)
-	end
-)
-
 
 function getRealTimeSeconds()
 	return realTimeToSeconds( getRealTime() )
