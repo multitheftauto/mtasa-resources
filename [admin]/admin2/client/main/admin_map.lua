@@ -99,7 +99,7 @@ addEventHandler(
                 local py = 3000 - 6000 * ((y - minY) / msy)
                 enginePreloadWorldArea(px, py, 527, "collisions")
 
-                local pz = getGroundPosition(px, py, 100) or 10
+                local pz = getGroundPosition(px, py, 527) or 10
                 triggerServerEvent("aMapWarp", resourceRoot, px, py, pz + 1)
             end
         end
