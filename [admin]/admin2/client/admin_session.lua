@@ -22,7 +22,7 @@ addEventHandler(
         end
 
         aSession = data
-        UpdateMapPermissions()
+        aMap.UpdatePermissions()
         
         if (hasPermissionTo("general.adminpanel")) then
             outputChatBox("Press 'p' to open your admin panel", player)

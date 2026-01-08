@@ -7,7 +7,7 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-local aMap = {
+aMap = {
     check = 0,
     permission = false,
     players = false,
@@ -143,8 +143,6 @@ bindKey(
     end
 )
 
-function UpdateMapPermissions()
+function aMap.UpdatePermissions()
     aMap.permission = hasPermissionTo("general.adminMapWarp")
-
 end
-
