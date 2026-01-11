@@ -62,6 +62,14 @@ guiLanguage.german = {
         warning = "Warnung!",
         error = "Fehler!"
     },
+
+    --Warning button strings
+    warningButtons = {
+        yes = "Ja",
+        no = "Nein",
+        ok = "OK",
+    },
+
     --Strings for the buttons at the top
     menubar = {
         handling = "Handling",
@@ -151,14 +159,14 @@ guiLanguage.german = {
             shortname = "Speichern",
             longname = "Fahreinstellungen laden oder speichern.",
             itemtext = {
-                nameLabel = "Name",
-                descriptionLabel = "Beschreibung",
                 saveButton = "Speichern",
                 loadButton = "Laden",
                 deleteButton = "Löschen",
                 grid = "",
-                nameEdit = "",
-                descriptionEdit = ""
+                nameColumn = "Name",
+                modelColumn = "Modell",
+                nameEdit = "Name",
+                descriptionEdit = "Beschreibung"
             }
         },
         import = {

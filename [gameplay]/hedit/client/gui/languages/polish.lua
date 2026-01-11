@@ -62,6 +62,14 @@ guiLanguage.polish = {
         warning = "Uwaga!",
         error = "Blad!"
     },
+
+    --Warning button strings
+    warningButtons = {
+        yes = "Tak",
+        no = "Nie",
+        ok = "OK",
+    },
+
     --Strings for the buttons at the top
     menubar = {
         handling = "Handling",
@@ -115,11 +123,13 @@ guiLanguage.polish = {
         },
         about = {
             shortname = "Informacje",
-            longname = "O edytorze handlingow",
+            longname = "O oficjalnym edytorze handlingu",
             itemtext = {
-                textlabel = "",
-                websitebox = "",
-                morelabel = ""
+                textlabel = "Witamy w oficjalnym edytorze handlingu MTA! Ten edytor pozwala zmieniać handling pojazdów w czasie rzeczywistym.\n\n" ..
+                            "Możesz zapisywać i wczytywać ustawienia przez menu 'Handling' w lewym górnym rogu.\n\n" ..
+                            "Więcej informacji – w tym changelog – znajdziesz tutaj:",
+                websitebox = "https://github.com/multitheftauto/mtasa-resources/tree/master/%5Bgameplay%5D/hedit",
+                morelabel = "\nDziękujemy za korzystanie z hedit!"
             }
         },
         undo = {
@@ -149,13 +159,14 @@ guiLanguage.polish = {
             shortname = "Zapisane",
             longname = "Wczytaj lub zapisz swoje ustawienia.",
             itemtext = {
-                nameLabel = "Nazwa",
-                descriptionLabel = "Opis",
                 saveButton = "Zapisz",
                 loadButton = "Wczytaj",
+                deleteButton = "Usuń",
                 grid = "",
-                nameEdit = "",
-                descriptionEdit = ""
+                nameColumn = "Nazwa",
+                modelColumn = "Model",
+                nameEdit = "Nazwa",
+                descriptionEdit = "Opis"
             }
         },
         import = {
@@ -212,7 +223,8 @@ guiLanguage.polish = {
                 edit_cmd = "",
                 combo_commode = "",
                 combo_language = "",
-				checkbox_lockwhenediting = "Zablokuj pojazd, kiedy edytujesz?"
+				checkbox_lockwhenediting = "Zablokuj pojazd, kiedy edytujesz?",
+                checkbox_dragmeterEnabled = "Użyj szybkiego strojenia",
             }
         },
         handlinglog = {
