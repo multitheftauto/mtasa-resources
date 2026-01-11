@@ -442,8 +442,8 @@ addEventHandler(
     "aMapWarp",
     resourceRoot,
     function(x, y, z)
-        local x, y, z = tonumber(x), tonumber(y), tonumber(z)
-        if not x or not y or not z then
+        local pX, pY, pZ = tonumber(x), tonumber(y), tonumber(z)
+        if not pX or not pY or not pZ then
             return
         end
         
@@ -451,7 +451,7 @@ addEventHandler(
             return
         end
 
-        setElementPosition(client, x, y, z)
-        outputServerLog("ADMIN: ".. getPlayerName(client) .. " warped to map coordinates: " .. tostring(x) .. ", " .. tostring(y) .. ", " .. tostring(z))
+        setElementPosition(client, pX, pY, pZ)
+        outputServerLog("ADMIN: ".. getPlayerName(client) .. " warped to map coordinates: " .. tostring(pX) .. ", " .. tostring(pY) .. ", " .. tostring(pZ))
     end
 )
