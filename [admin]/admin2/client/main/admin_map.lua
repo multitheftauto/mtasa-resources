@@ -90,7 +90,7 @@ addEventHandler(
     function(button, state, x, y)
         if (not aMap.permission) then
             return
-        end 
+        end
         if (isPlayerMapVisible() and button == "left" and state == "down") then
             local minX, minY, maxX, maxY = getPlayerMapBoundingBox()
             if ((x >= minX and x <= maxX) and (y >= minY and y <= maxY)) then
@@ -112,7 +112,7 @@ bindKey(
     function(key, state)
         if (not aMap.permission) then
             return
-        end 
+        end
         if (isPlayerMapVisible()) then
             showCursor(state == "down")
             aMap.cursor = state == "down"
@@ -126,7 +126,7 @@ bindKey(
     function(key, state)
         if (not aMap.permission) then
             return
-        end 
+        end
         if (isPlayerMapVisible()) then
             aMap.players = not aMap.players
         end
