@@ -155,7 +155,7 @@ function drawObjectMoveLines()
 
 		local fullCycle = 2 * time + 2 * delay
 		local cyclePos = timeNow % fullCycle
-		local progress = 0
+		local progress
 		if cyclePos < delay then
 			-- Delay at 0
 			progress = 0
