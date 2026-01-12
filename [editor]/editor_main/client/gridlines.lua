@@ -153,9 +153,21 @@ function drawObjectMoveLines()
 		local lineEndPos = {x + offsetX,y + offsetY,z + offsetZ}
 		local timeNow = getTickCount()
 
-		local progress = timeNow % (time + delay) / time
-		if progress > 1 then
+		local fullCycle = 2 * time + 2 * delay
+		local cyclePos = timeNow % fullCycle
+		local progress = 0
+		if cyclePos < delay then
+			-- Delay at 0
+			progress = 0
+		elseif cyclePos < delay + time then
+			-- Forward: 0 to 1 over 'time' milliseconds
+			progress = (cyclePos - delay) / time
+		elseif cyclePos < delay + time + delay then
+			-- Delay at 1
 			progress = 1
+		else
+			-- Backward: 1 to 0 over 'time' milliseconds
+			progress = 1 - (cyclePos - delay - time - delay) / time
 		end
 
 		local movementAnimationOffset = {
