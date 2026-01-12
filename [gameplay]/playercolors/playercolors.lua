@@ -1,26 +1,59 @@
 local lowerBound, upperBound = unpack(get("color_range"))
+local usedColors = {}
+
+local function generateColor()
+	local r, g, b
+	repeat
+		r = math.random(lowerBound, upperBound)
+		g = math.random(lowerBound, upperBound)
+		b = math.random(lowerBound, upperBound)
+	until (r + g + b) > 200
+	return r, g, b
+end
+
+local function colorToKey(r, g, b)
+	return r .. "," .. g .. "," .. b
+end
 
 local function randomizePlayerColor(player)
 	player = player or source
-	local r, g, b = math.random(lowerBound, upperBound), math.random(lowerBound, upperBound), math.random(lowerBound, upperBound)
+	if not isElement(player) then return end
+
+	local r, g, b, key
+	for i = 1, 10 do
+		r, g, b = generateColor()
+		key = colorToKey(r, g, b)
+		if not usedColors[key] then
+			break
+		end
+	end
+
+	local oldR, oldG, oldB = getPlayerNametagColor(player)
+	if oldR then
+		usedColors[colorToKey(oldR, oldG, oldB)] = nil
+	end
+
 	setPlayerNametagColor(player, r, g, b)
+	usedColors[key] = true
 end
+
 addEventHandler("onPlayerJoin", root, randomizePlayerColor)
 
 local function setAllPlayerColors()
+	usedColors = {}
 	for _, player in ipairs(getElementsByType("player")) do
 		randomizePlayerColor(player)
 	end
 end
--- mapmanager resets player colors to white when the map ends
+
 addEventHandler("onGamemodeMapStart", root, setAllPlayerColors)
+addEventHandler("onResourceStart", resourceRoot, setAllPlayerColors)
 
-local function handleResourceStartStop(res)
-	if res == resource then
-		setAllPlayerColors()
+addEventHandler("onPlayerQuit", root,
+	function()
+		local r, g, b = getPlayerNametagColor(source)
+		if r then
+			usedColors[colorToKey(r, g, b)] = nil
+		end
 	end
-end
-addEventHandler("onResourceStart", root, handleResourceStartStop)
-addEventHandler("onResourceStop", root, handleResourceStartStop)
-
-
+)
