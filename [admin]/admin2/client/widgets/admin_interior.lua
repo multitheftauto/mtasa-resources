@@ -117,7 +117,7 @@ function aInterior.Refresh()
     guiGridListClear(aInterior.List)
     guiSetProperty(aInterior.List, "SortDirection", "None")
     for k, v in ipairs(aInterior.interiors) do
-        if v.world:find(filter) or v.id:lower():find(filter) then
+        if v.world:find(filter, 1, true) or v.id:lower():find(filter, 1, true) then
             local row = guiGridListAddRow(aInterior.List)
             guiGridListSetItemText(aInterior.List, row, 1, v.world, false, true)
             guiGridListSetItemText(aInterior.List, row, 2, v.id, false, false)

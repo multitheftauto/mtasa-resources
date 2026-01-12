@@ -460,6 +460,13 @@ function aPlayerInitialize(player)
     bindKey(player, "p", "down", "admin")
     aPlayers[player] = {}
     aPlayers[player]["money"] = getPlayerMoney(player)
+
+	local strVersion = getPlayerVersion(player)
+	-- Format it all prettyful
+	local _,_,ver,type,build = string.find ( strVersion, "(.*)-([0-9])%.(.*)" )
+
+	aPlayers[player]["version"] = ver .. ( type < '9' and " pre  " or "  " ) .. "(" .. type .. "." .. build .. ")"
+
     updatePlayerCountry(player)
     chatHistory[player] = {}
 end
@@ -469,43 +476,6 @@ addEventHandler ( "onPlayerQuit", root, function ()
 	chatHistory[source] = nil
 end )
 
-addEvent ( "aPlayerVersion", true )
-addEventHandler ( "aPlayerVersion", root, function ( version )
-	if checkClient( false, source, 'aPlayerVersion' ) then return end
-	local bIsPre = false
-	-- If not Release, mark as 'pre'
-	if version.type:lower() ~= "release" then
-		bIsPre = true
-	else
-		-- Extract rc version if there
-		local _,_,rc = string.find( version.tag or "", "(%d)$" )
-		rc = tonumber(rc) or 0
-		-- If release, but before final rc, mark as 'pre'
-		if version.mta == "1.0.2" and rc > 0 and rc < 13 then
-			bIsPre = true
-		elseif version.mta == "1.0.3" and rc < 9 then
-			bIsPre = true
-		end
-		-- If version does not have a built in version check, maybe show a message box advising an upgrade
-		if version.number < 259 or ( version.mta == "1.0.3" and rc < 3 ) then
-			triggerClientEvent ( source, "aClientShowUpgradeMessage", source )
-		end
-	end
-
-	-- Try to get new player version
-	local playerVersion
-	if getPlayerVersion then
-		playerVersion = getPlayerVersion(client)
-	else
-		playerVersion = version.mta .. "-" .. ( bIsPre and "7" or "9" ) .. ".00000.0"
-	end
-
-	-- Format it all prettyful
-	local _,_,ver,type,build = string.find ( playerVersion, "(.*)-([0-9])%.(.*)" )
-	if aPlayers[source] then
-		aPlayers[source]["version"] = ver .. ( type < '9' and " pre  " or "  " ) .. "(" .. type .. "." .. build .. ")"
-	end
-end )
 
 function aPlayerSerialCheck ( player, result )
 	if ( result == 0 ) then kickPlayer ( player, "Invalid serial" ) end
@@ -618,7 +588,7 @@ end
 
 -- Should admin name be hidden from public chatbox message?
 function isAnonAdmin4All ( admin )
-	return getElementData( admin, "AnonAdmin" ) == true
+	return aPlayers[admin] and aPlayers[admin]["AnonymousAdmin"] or false
 end
 
 -- Should admin name be hidden from private chatbox message?
@@ -666,10 +636,11 @@ end )
 local aAdminRights = {
 	["settings"] = "general.tab_resources",
 	["resourcelist"] = "general.tab_resources",
+	["adminpanel"] = "general.adminpanel",
 
 	["sync"] = "command.aclmanager",
 	["aclcreate"] = "command.aclcreate",
-	["acldestroy"] = "command.acldetroy",
+	["acldestroy"] = "command.acldestroy",
 	["acladd"] = "command.acladd",
 	["aclremove"] = "command.aclremove",
 }
@@ -907,6 +878,13 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 				end
 			end
 		end
+	elseif ( action == "adminpanel" ) then
+		local cmd = arg[1]
+
+		if cmd == "updateAnonymous" then
+			local state = arg[2]
+			aPlayers[client]["AnonymousAdmin"] = state
+		end
 	end
 end )
 
@@ -961,7 +939,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 		if ( action == "kick" ) then
 			local reason = data or ""
 			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
-			local isAnonAdmin = getElementData(source, "AnonAdmin")
+			local isAnonAdmin = isAnonAdmin4All(source)
 			if isAnonAdmin then
 				setTimer ( kickPlayer, 100, 1, player, "Anonymous admin", reason )
 			else
@@ -971,7 +949,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 			local reason = data or ""
 			local seconds = tonumber(additional) and tonumber(additional) > 0 and tonumber(additional)
 			local bUseSerial = additional2
-			local isAnonAdmin = getElementData(source, "AnonAdmin")
+			local isAnonAdmin = isAnonAdmin4All(source)
 			mdata = reason~="" and ( "(" .. reason .. ")" ) or ""
 			more = seconds and ( "(" .. secondsToTimeDesc(seconds) .. ")" ) or ""
 			if bUseSerial and getPlayerName ( player ) and not isAnonAdmin then
@@ -1034,7 +1012,7 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 		elseif ( action == "shout" ) then
 			local textDisplay = textCreateDisplay ()
 			local textItem
-			local anon = getElementData( admin, "AnonAdmin" )
+			local anon = isAnonAdmin4All( admin )
 			if (anon) then
 				textItem = textCreateTextItem ( "ADMIN:\n\n"..data, 0.5, 0.5, 2, 255, 100, 50, 255, 4, "center", "center" )
 			else

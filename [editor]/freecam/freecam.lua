@@ -40,6 +40,8 @@ local controlToKey = {
 	["vehicle_right"] = "d",
 }
 
+local mouseFrameDelay = 0
+
 local mta_getKeyState = getKeyState
 function getKeyState(key)
 	if isMTAWindowActive() then
@@ -62,8 +64,7 @@ end
 
 -- PRIVATE
 
-local function freecamFrame (deltaTime)
-    freecamMouseApply(deltaTime)
+local function freecamFrame ()
     -- work out an angle in radians based on the number of pixels the cursor has moved (ever)
     local cameraAngleX = rotX
     local cameraAngleY = rotY
@@ -216,101 +217,48 @@ local function freecamFrame (deltaTime)
     setCameraMatrix ( camPosX, camPosY, camPosZ, camTargetX, camTargetY, camTargetZ, 0, options.fov )
 end
 
--- Internal state (module-level)
-local mouseFrameDelay   = 0           -- frames to ignore after cursor/window toggles
-local accumDX, accumDY  = 0, 0        -- accumulated raw mouse deltas (pixels)
-local PI, RAD           = math.pi, math.pi / 180
-
--- Tunables (adjust to taste)
-local RESUME_FRAMES     = 5           -- frames to wait after cursor/window active
-local DEADZONE_PX       = 0.15        -- ignore tiny jitters
-local MAX_EVENT_DELTA   = 200         -- clamp a single event spike (px)
-local APPLY_K_60FPS     = 0.42        -- how quickly to drain accumulator at 60fps (0..1)
-
--- Normalize angle to [-PI, PI]
-local function normPI(a)
-    a = a % (2 * PI)
-    if a > PI then
-		a = a - 2 * PI
-	end
-    return a
-end
-
-function freecamMouse(cX, cY, aX, aY)
-    -- Gate input when the UI is up / focus lost
-    if isCursorShowing() or isMTAWindowActive() or (not isMTAWindowFocused()) then
-        mouseFrameDelay = RESUME_FRAMES
-        accumDX, accumDY = 0, 0
-        return
-    elseif mouseFrameDelay > 0 then
-        mouseFrameDelay = mouseFrameDelay - 1
-        accumDX, accumDY = 0, 0
-        return
-    end
-
-    -- How far from screen center?
-    local dx = (aX - width  * 0.5)
-    local dy = (aY - height * 0.5)
-
-    -- Optional invert
-    if options.invertMouseLook then
-        dy = -dy
-    end
-
-    -- Deadzone + spike clamp
-    if math.abs(dx) < DEADZONE_PX then
-		dx = 0
-	end
-    if math.abs(dy) < DEADZONE_PX then
-		dy = 0
-	end
-    if dx > MAX_EVENT_DELTA then
-		dx = MAX_EVENT_DELTA
-	elseif dx < -MAX_EVENT_DELTA then
-		dx = -MAX_EVENT_DELTA
-	end
-    if dy > MAX_EVENT_DELTA then
-		dy = MAX_EVENT_DELTA
-	elseif dy < -MAX_EVENT_DELTA then
-		dy = -MAX_EVENT_DELTA
+local function freecamMouse (cX,cY,aX,aY)
+	--ignore mouse movement if the cursor or MTA window is on
+	--and do not resume it until at least 5 frames after it is toggled off
+	--(prevents cursor mousemove data from reaching this handler)
+	if isCursorShowing() or isMTAWindowActive() or (not isMTAWindowFocused()) then
+		mouseFrameDelay = 5
+		return
+	elseif mouseFrameDelay > 0 then
+		mouseFrameDelay = mouseFrameDelay - 1
+		return
 	end
 
-    -- Accumulate; application to rot happens in freecamMouseApply() every frame
-    accumDX = accumDX + dx
-    accumDY = accumDY + dy
-end
+	-- how far have we moved the mouse from the screen center?
+    aX = aX - width / 2
+    aY = aY - height / 2
 
-function freecamMouseApply(deltaTime)
-    -- If UI pops up mid-frame, bail early
-    if isCursorShowing() or isMTAWindowActive() or (not isMTAWindowFocused()) then
-        mouseFrameDelay = RESUME_FRAMES
-        accumDX, accumDY = 0, 0
-        return
-    end
+	--invert the mouse look if specified
+	if options.invertMouseLook then
+		aY = -aY
+	end
 
-    -- Frame-rate–independent smoothing: convert APPLY_K_60FPS to current deltaTime
-    -- factor = 1 - (1 - k)^(deltaTime * 60ms^-1)
-    local factor = 1 - ((1 - APPLY_K_60FPS) ^ math.max(deltaTime / 16.666, 0.001))
+    rotX = rotX + aX * options.mouseSensitivity * 0.01745
+    rotY = rotY - aY * options.mouseSensitivity * 0.01745
 
-    -- Take a smooth chunk out of the accumulator
-    local useDX = accumDX * factor
-    local useDY = accumDY * factor
-    accumDX = accumDX - useDX
-    accumDY = accumDY - useDY
+	local PI = math.pi
+	if rotX > PI then
+		rotX = rotX - 2 * PI
+	elseif rotX < -PI then
+		rotX = rotX + 2 * PI
+	end
 
-    -- Convert pixels -> radians (sensitivity is in degrees/pixel)
-    local rpp = (options.mouseSensitivity or 1) * RAD
-
-    -- Apply to camera (note Y is typically "pitch" and inverted vs screen Y)
-    rotX = normPI(rotX + useDX * rpp)
-    rotY = rotY - useDY * rpp
-
-    -- Clamp pitch to avoid gimbal lock / upside-down strafing
-    local limit = PI / 2.05
-    if rotY < -limit then
-		rotY = -limit
-    elseif rotY >  limit then
-		rotY =  limit
+	if rotY > PI then
+		rotY = rotY - 2 * PI
+	elseif rotY < -PI then
+		rotY = rotY + 2 * PI
+	end
+    -- limit the camera to stop it going too far up or down - PI/2 is the limit, but we can't let it quite reach that or it will lock up
+	-- and strafeing will break entirely as the camera loses any concept of what is 'up'
+    if rotY < -PI / 2.05 then
+       rotY = -PI / 2.05
+    elseif rotY > PI / 2.05 then
+        rotY = PI / 2.05
     end
 end
 
@@ -329,7 +277,7 @@ function setFreecamEnabled (x, y, z)
 	if (x and y and z) then
 	    setCameraMatrix ( x, y, z, nil, nil, nil, 0, options.fov )
 	end
-	addEventHandler("onClientPreRender", root, freecamFrame)
+	addEventHandler("onClientRender", root, freecamFrame)
 	addEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", true)
 
@@ -345,7 +293,7 @@ function setFreecamDisabled()
 	velocityX,velocityY,velocityZ = 0,0,0
 	speed = 0
 	strafespeed = 0
-	removeEventHandler("onClientPreRender", root, freecamFrame)
+	removeEventHandler("onClientRender", root, freecamFrame)
 	removeEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", false)
 

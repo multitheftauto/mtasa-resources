@@ -262,7 +262,7 @@ function aPlayersTab.onClientClick(button)
                 end
             end
         elseif (source == aPlayersTab.AnonAdmin) then
-            setElementData(localPlayer, "AnonAdmin", guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
+            triggerServerEvent(EVENT_ANONYMOUS_UPDATE, localPlayer, guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
         elseif (source == aPlayersTab.ColorCodes) then
             aPlayersTab.Refresh()
             aSetSetting('hideColorCodes', guiCheckBoxGetSelected(source))
@@ -536,7 +536,7 @@ function aPlayersTab.Refresh()
     guiSetProperty(aPlayersTab.PlayerList, "SortDirection", "None")
     for id, player in ipairs(getElementsByType("player")) do
         local name = getPlayerName(player)
-        if name:find(filter) or name:lower():find(filter) then
+        if name:find(filter, 1, true) or name:lower():find(filter, 1, true) then
             if (strip) then
                 name = stripColorCodes(name)
             end

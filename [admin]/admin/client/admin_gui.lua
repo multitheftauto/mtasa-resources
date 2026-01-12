@@ -163,7 +163,7 @@ function guiListLoadItems(list)
 		local filter = guiGetText(listData.edit)
 		guiGridListClear(listData.gridlist)
 		for k, v in ipairs(listData.items) do
-			if (v.text:lower():find(filter:lower())) then
+			if (v.text:lower():find(filter:lower(), 1, true)) then
 				local row = guiGridListAddRow(listData.gridlist)
 				guiGridListSetItemText(listData.gridlist, row, 1, tostring ( v.text ), false, false )
 				guiGridListSetItemData(listData.gridlist, row, 1, tostring ( v.data ) )
