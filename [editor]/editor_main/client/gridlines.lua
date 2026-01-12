@@ -186,6 +186,18 @@ function drawObjectMoveLines()
 		end
 
 		if minX and minY and minZ and maxX and maxY and maxZ then
+			local halfCenterX = (minX + maxX) * 0.25
+			local halfCenterY = (minY + maxY) * 0.25
+			local halfCenterZ = (minZ + maxZ) * 0.25
+
+			--subtracting half center
+			minX = minX - halfCenterX
+			minY = minY - halfCenterY
+			minZ = minZ - halfCenterZ
+			maxX = maxX - halfCenterX
+			maxY = maxY - halfCenterY
+			maxZ = maxZ - halfCenterZ
+
 			-- Define the 8 corners in relative coordinates
 			local relativeCorners = {
 				{minX, minY, minZ}, -- 1: min corner
