@@ -13,7 +13,8 @@ aMap = {
     players = false,
     coords = false,
     cursor = false,
-    last = false
+    last = false,
+    teleportHeight = 527
 }
 
 addEventHandler(
@@ -97,9 +98,9 @@ addEventHandler(
                 local msx, msy = -(minX - maxX), -(minY - maxY)
                 local px = 6000 * ((x - minX) / msx) - 3000
                 local py = 3000 - 6000 * ((y - minY) / msy)
-                enginePreloadWorldArea(px, py, 527, "collisions")
+                enginePreloadWorldArea(px, py, aMap.teleportHeight, "collisions")
 
-                local pz = getGroundPosition(px, py, 527) or 10
+                local pz = getGroundPosition(px, py, aMap.teleportHeight) or 10
                 triggerServerEvent("aMapWarp", resourceRoot, px, py, pz + 1)
             end
         end
