@@ -14,6 +14,8 @@
     <right name="general.tab_bans" access="true" />
     <right name="general.tab_adminchat" access="true" />
     <right name="general.tab_acl" access="true" />
+    <!-- Utils -->
+    <right name="general.adminMapWarp" access="true" />
     <!--Player Related-->
     <right name="command.kick" access="true" />
     <right name="command.freeze" access="true" />
@@ -101,6 +103,8 @@
     <right name="general.tab_bans" access="true" />
     <right name="general.tab_adminchat" access="true" />
     <right name="general.tab_acl" access="false" />
+    <!-- Utils -->
+    <right name="general.adminMapWarp" access="true" />
     <!--Player Related-->
     <right name="command.kick" access="true" />
     <right name="command.freeze" access="true" />
