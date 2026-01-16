@@ -174,12 +174,11 @@ function aPlayersTab.onClientClick(button)
                         guiComboBoxGetItemText(aPlayersTab.SlapOptions, guiComboBoxGetSelected(aPlayersTab.SlapOptions))
                     )
                 elseif (source == aPlayersTab.Mute) then
-                    triggerServerEvent(
-                        "aPlayer",
-                        localPlayer,
-                        player,
-                        iif(aPlayers[player].mute, "unmute", "mute")
-                    )
+                    if aPlayers[player].mute then
+                        triggerServerEvent(EVENT_MUTE, localPlayer, "unmute", {serial = getPlayerSerial(player)})
+                    else
+                        aMute.Show(player)
+                    end
                 elseif (source == aPlayersTab.Freeze) then
                     triggerServerEvent(
                         "aPlayer",

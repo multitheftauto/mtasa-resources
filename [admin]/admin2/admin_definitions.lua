@@ -47,7 +47,7 @@ enum(
         "EVENT_RESOURCE_START",
         "EVENT_RESOURCE_STOP",
         "EVENT_PLAYER_JOIN",
-        "EVENT_ANONYMOUS_UPDATE"
+        "EVENT_MUTE"
     },
     "ae"
 )
@@ -65,7 +65,8 @@ enum(
         "SYNC_SERVER",
         "SYNC_BAN",
         "SYNC_BANS",
-        "SYNC_MESSAGES"
+        "SYNC_MESSAGES",
+        "SYNC_MUTES"
     },
     "as"
 )
