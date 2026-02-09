@@ -1,8 +1,13 @@
 local screenW, screenH = guiGetScreenSize()
 local base_color = tocolor(255, 255, 255, 235)
+local baseW, baseH = 1920, 1080
 
 local function dxDrawRelativeImage(startX, startY, width, height, image, rot, rotX, rotY, color, postGUI)
-    dxDrawImage(screenW*startX, screenH*startY, width, height, image, rot or 0, rotX or 0, rotY or 0, color or base_color, postGUI or false)
+    local scale = math.min(screenW / baseW, screenH / baseH)
+    local scaledW = width * scale
+    local scaledH = height * scale
+
+    dxDrawImage(screenW * startX, screenH * startY, scaledW, scaledH, image, rot or 0, rotX or 0, rotY or 0, color or base_color, postGUI or false)
 end
 
 function drawSpeedo()
