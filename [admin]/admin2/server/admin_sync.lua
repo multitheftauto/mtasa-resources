@@ -185,6 +185,15 @@ addEventHandler(
             end
             tableOut["unread"] = unread
             tableOut["total"] = total
+        elseif (type == SYNC_MUTES) then
+            if not hasClientPermissionTo( "general.tab_mutes" ) then
+                return
+            end
+
+            for serial, muteData in pairs(aGetMutesList()) do
+                muteData.time = aGetRemainingUnmuteTime(serial) -- Update time
+                tableOut[serial] = muteData
+            end
         end
         triggerClientEvent(client or source, EVENT_SYNC, theSource, type, tableOut)
     end
