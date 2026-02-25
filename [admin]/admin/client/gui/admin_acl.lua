@@ -45,7 +45,11 @@ function aManageACL ()
 		aACLOk		= guiCreateButton ( 0.55, 0.40, 0.19, 0.04, "Ok", true, aAclForm )
 		aACLCancel		= guiCreateButton ( 0.76, 0.40, 0.19, 0.04, "Cancel", true, aAclForm )
 
-		aACLAddRight		= guiCreateButton ( 0.55, 0.30, 0.40, 0.04, "Add Right", true, aAclForm )
+		aACLAddRight	= guiCreateButton ( 0.55, 0.35, 0.40, 0.04, "Add Right", true, aAclForm )
+		aACLSetRight	= guiCreateButton ( 0.55, 0.40, 0.40, 0.04, "Set Right", true, aAclForm )
+		aACLRemoveRight	= guiCreateButton ( 0.55, 0.45, 0.40, 0.04, "Remove Right", true, aAclForm )
+		aACLDeleteRight	= guiCreateButton ( 0.55, 0.55, 0.40, 0.04, "Delete Right", true, aAclForm )
+		
 		aACLExit		= guiCreateButton ( 0.75, 0.90, 0.27, 0.04, "Close", true, aAclForm )
 		aclDisplayOptions ( "", "" )
 
@@ -205,6 +209,15 @@ function aClientACLDoubleClick ( button )
 	end
 end
 
+local function getSelectedRight()
+	local row = guiGridListGetSelectedItem ( aACLList )
+	if ( row ~= -1 ) then
+		local state = guiGridListGetItemText ( aACLList, row, 2 )
+		return state:gsub("^%s*(.-)%s*$", "%1")
+	end
+	return false
+end
+
 function aClientACLClick ( button )
 	if ( source ~= aACLDropList ) then guiSetVisible ( aACLDropList, false ) end
 	if ( button == "left" ) then
@@ -218,6 +231,15 @@ function aClientACLClick ( button )
 			aInputBox ( "Create ACL Group", "Enter object name:", "", "aclAddObject", aAclData["current"] )
 		elseif ( source == aACLAddRight ) then
 			aInputBox ( "Create ACL", "Enter right name:", "", "aclAddRight", aAclData["current"] )
+		elseif ( source == aACLSetRight ) then
+			local right = getSelectedRight()
+			triggerServerEvent ( "aAdmin", localPlayer, "acladd", "right", aAclData["current"], right )
+		elseif ( source == aACLRemoveRight ) then
+			local right = getSelectedRight()
+			triggerServerEvent ( "aAdmin", localPlayer, "acladd", "right", aAclData["current"], right, false )
+		elseif ( source == aACLDeleteRight ) then
+			local right = getSelectedRight()
+			triggerServerEvent ( "aAdmin", localPlayer, "aclremove", "right", aAclData["current"], right )
 		elseif ( source == aACLDestroyGroup ) then
 			aMessageBox ( "warning", "Are you sure to destroy "..aAclData["current"].." group?", "aclDestroyGroup", aAclData["current"])
 		elseif ( source == aACLDestroyACL ) then
@@ -278,6 +300,9 @@ function aclDisplayOptions ( state, name )
 	guiSetVisible ( aACLAddACL, false )
 	guiSetVisible ( aACLRemoveACL, false )
 	guiSetVisible ( aACLAddRight, false )
+	guiSetVisible ( aACLSetRight, false )
+	guiSetVisible ( aACLRemoveRight, false )
+	guiSetVisible ( aACLDeleteRight, false )
 	guiSetVisible ( aACLDropCurrent, false )
 	guiSetVisible ( aACLDropList, false )
 	guiSetVisible ( aACLDropDown, false )
@@ -287,6 +312,9 @@ function aclDisplayOptions ( state, name )
 	if ( state == "ACL" ) then
 		guiSetVisible ( aACLDestroyACL, true )
 		guiSetVisible ( aACLAddRight, true )
+		guiSetVisible ( aACLSetRight, true )
+		guiSetVisible ( aACLRemoveRight, true )
+		guiSetVisible ( aACLDeleteRight, true )
 	elseif ( state == "Group" ) then
 		guiSetVisible ( aACLDestroyGroup, true )
 		guiSetVisible ( aACLAddObject, true )
