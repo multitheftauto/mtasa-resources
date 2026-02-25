@@ -830,7 +830,10 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
 				local right = arg[3]
-				local enabled = true
+				local enabled = arg[4]
+				if enabled == nil then
+					enabled = true
+				end
 				if ( not aclSetRight ( acl, right, enabled ) ) then
 					outputChatBox ( "Error adding right '"..tostring ( arg[3] ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
 				else
