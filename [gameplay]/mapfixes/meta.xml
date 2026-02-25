@@ -12,5 +12,6 @@
 		<setting name="*atrium_lobby_interior" value="[true]" friendlyname="Atrium Lobby Interior" desc="Enable Commerce Atrium lobby open-world interior" accept="true,false"/>
 		<setting name="*doherty_garage_interior" value="[true]" friendlyname="Doherty Garage Interior" desc="Enable Doherty Safehouse Garage open-world interior" accept="true,false"/>
 		<setting name="*undamaged_crackfactory_with_interior" friendlyname="Undamaged SF Crack Factory" value="[true]" desc="Enable restored Undamaged SF Crack Factory with open-world interior" accept="true,false"/>
+		<setting name="*model_transparency_fixes" friendlyname="Model Transparency Fixes" value="[true]" desc="Apply some fixes to certain models which have bugged transparency in GTA" accept="true,false"/>
 	</settings>
 </meta>
