@@ -1,6 +1,7 @@
 <meta>
     <include resource="ajax" />
 	<info author="" type="script" name="Performance stats" showInResourceBrowser="true" version="0.0.4" />
+	<script src="config.lua" type="shared" cache="false"/>
 	<script src="performancebrowser.lua" type="server"/>
 	<script src="viewer.lua" type="server"/>
 	<script src="viewerManager.lua" type="server"/>

@@ -4,14 +4,6 @@
 --
 --
 
--- Lua time recordings config
-g_LuaTimingRecordings = {
-	Enabled = true,
-	Frequency = 2000, -- in milliseconds
-	HistoryLength = 300, -- number of records to keep
-	HighCPUResourcesAmount = 10, -- percentage threshold
-}
-
 -- Global variable to store high usage resources similar to IPB
 g_HighUsageResources = {}
 
