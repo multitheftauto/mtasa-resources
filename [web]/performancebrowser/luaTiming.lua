@@ -17,6 +17,27 @@ local function getDateTimeString()
     return ("%s, %02d.%02d.%d, %02d:%02d:%02d"):format(weekday, time.monthday, time.month + 1, time.year + 1900, time.hour, time.minute, time.second)
 end
 
+function getLuaTimingRecordings( queryFilterText )
+	local columns = {"Resource", "CPU Usage", "Recorded Time"}
+	local rows = {}
+	
+	-- Get the global high usage resources if it exists
+	if g_HighUsageResources then
+		for i, recording in ipairs(g_HighUsageResources) do
+			local resourceName = recording[1]
+			local cpuUsage = recording[2]
+			local recordedTime = recording[3]
+			
+			-- Apply filter if specified
+			if not queryFilterText or queryFilterText == "" or string.find(string.lower(resourceName), string.lower(queryFilterText), 1, true) then
+				table.insert(rows, {resourceName, cpuUsage, recordedTime})
+			end
+		end
+	end
+	
+	return columns, rows, true
+end
+
 -- Save high CPU resources function (based on IPB alarm.lua)
 function saveHighCPUResources()
     local columns, rows = getPerformanceStats("Lua timing")

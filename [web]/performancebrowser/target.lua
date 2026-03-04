@@ -71,7 +71,7 @@ end
 function Target:getPerformanceStats( username, queryCategoryName, queryOptionsText, queryFilterText )
 	if self.bIsServer then
 		if queryCategoryName == "Lua time recordings" then
-			return self:getLuaTimingRecordings( queryFilterText )
+			return getLuaTimingRecordings( queryFilterText )
 		end
 
 		local a, b = getPerformanceStats ( queryCategoryName, queryOptionsText, queryFilterText )
@@ -158,32 +158,3 @@ addEventHandler('onNotifyStats', resourceRoot,
 		store.timeAdded = getTickCount()
 	end
 )
-
----------------------------------------------------------------------------
---
--- Target:getLuaTimingRecordings()
---
--- Get recorded high usage Lua timing data
---
----------------------------------------------------------------------------
-function Target:getLuaTimingRecordings( queryFilterText )
-	local columns = {"Resource", "CPU Usage", "Recorded Time"}
-	local rows = {}
-	
-	-- Get the global high usage resources if it exists
-	if g_HighUsageResources then
-		for i, recording in ipairs(g_HighUsageResources) do
-			local resourceName = recording[1]
-			local cpuUsage = recording[2]
-			local recordedTime = recording[3]
-			
-			-- Apply filter if specified
-			if not queryFilterText or queryFilterText == "" or string.find(string.lower(resourceName), string.lower(queryFilterText), 1, true) then
-				table.insert(rows, {resourceName, cpuUsage, recordedTime})
-			end
-		end
-	end
-	
-	return columns, rows, true
-end
-

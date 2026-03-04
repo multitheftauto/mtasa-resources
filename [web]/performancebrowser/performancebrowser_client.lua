@@ -32,11 +32,7 @@ addEventHandler('onClientRequestStats', me,
 	function( username, queryCategoryName, queryOptionsText, queryFilterText )
 
 		if queryCategoryName == "Lua time recordings" then
-			
-			local columns, rows = getPerformanceStats( queryCategoryName, queryOptionsText, queryFilterText )
-			local a = {"Resource", "CPU Usage", "Recorded Time"}
-			local b = g_HighUsageResources
-
+			local a, b = getLuaTimingRecordings( queryFilterText )
 			return triggerServerEvent( "onNotifyStats", resourceRoot, a, b, username, queryCategoryName, queryOptionsText, queryFilterText )
 		end
 		
