@@ -1,6 +1,7 @@
 -- Lua time recordings config
 g_LuaTimingRecordings = {
-	Enabled = true,
+	EnabledOnServer = true,
+    EnabledOnClient = false,
 	Frequency = 5000, -- in milliseconds
 	HistoryLength = 100, -- number of records to keep
 	HighCPUResourcesAmount = 10, -- percentage threshold
@@ -60,9 +61,4 @@ function saveHighCPUResources()
             end
         end
     end
-end
-
--- Start monitoring timer
-if (g_LuaTimingRecordings.Enabled) then
-	setTimer(saveHighCPUResources, g_LuaTimingRecordings.Frequency, 0)
 end

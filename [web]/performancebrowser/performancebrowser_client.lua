@@ -40,3 +40,8 @@ addEventHandler('onClientRequestStats', me,
 		triggerServerEvent( "onNotifyStats", resourceRoot, a, b, username, queryCategoryName, queryOptionsText, queryFilterText )
 	end
 )
+
+-- Start monitoring timer
+if (g_LuaTimingRecordings.EnabledOnClient) then
+	setTimer(saveHighCPUResources, g_LuaTimingRecordings.Frequency, 0)
+end
