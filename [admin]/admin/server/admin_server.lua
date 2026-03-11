@@ -830,9 +830,14 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
 				local right = arg[3]
-				local enabled = true
+				local enabled = arg[4]
+				if enabled == nil then
+					enabled = true
+				end
+				local verb = enabled and "adding" or "removing"
+				local prep = enabled and "to" or "from"
 				if ( not aclSetRight ( acl, right, enabled ) ) then
-					outputChatBox ( "Error adding right '"..tostring ( arg[3] ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
+					outputChatBox ( "Error "..verb.." right '"..tostring(arg[3]).."' "..prep.." group '"..tostring(arg[2]).."'", source, 255, 0, 0)
 				else
 					mdata2 = "Right '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )
