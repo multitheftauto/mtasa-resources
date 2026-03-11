@@ -1,7 +1,7 @@
 -- Lua time recordings config
 g_LuaTimingRecordings = {
 	EnabledOnServer = true,
-    EnabledOnClient = false,
+    EnabledOnClient = false, -- Enabling this will have a slight performance impact on clients
 	Frequency = 5000, -- in milliseconds
 	HistoryLength = 100, -- number of records to keep
 	HighCPUResourcesAmount = 10, -- percentage threshold
