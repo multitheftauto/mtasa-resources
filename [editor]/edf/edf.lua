@@ -972,11 +972,11 @@ end
 --Sets an element's scale, or its scale element data
 function edfSetElementScale(element, scale)
 	local ancestor = edfGetAncestor(element) or element
-	setElementData(ancestor, "scale", scale)
-	local etype = getElementType(element)
 	if type(scale) == "table" then
 		scale = scale[1]
 	end
+	setElementData(ancestor, "scale", scale)
+	local etype = getElementType(element)
 	if etype == "object" then
 		if setObjectScale(element, scale) then
 			triggerEvent ( "onElementPropertyChanged", ancestor, "scale" )
