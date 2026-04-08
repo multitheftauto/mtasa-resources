@@ -14,7 +14,7 @@ function aSetupACL()
     local node = xmlLoadFile("conf\\ACL.xml")
 
     if (not node) then
-        outputDebugString("Vanila ACL not found! Please reinstall the admin resource")
+        outputDebugString("Vanilla ACL not found! Please reinstall the admin resource")
         return false
     end
 
@@ -170,7 +170,7 @@ local aACLFunctions = {
         if (action == ACL_ADD) then
             if (name and type(name) == "string") then
                 if (aclCreateGroup(name)) then
-                    messageBox(client, "Successfully create group '" .. name .. "'", MB_INFO)
+                    messageBox(client, "Successfully created group '" .. name .. "'", MB_INFO)
                 else
                     messageBox(client, "Failed to create group '" .. name .. "'", MB_INFO)
                 end
@@ -181,7 +181,7 @@ local aACLFunctions = {
                 if (aclDestroyGroup(name)) then
                     messageBox(client, "Successfully removed group '" .. name .. "'", MB_INFO)
                 else
-                    messageBox(client, "Failed to removed group '" .. name .. "'", MB_INFO)
+                    messageBox(client, "Failed to remove group '" .. name .. "'", MB_INFO)
                 end
             end
             messageBox(client, "Invalid group name", MB_INFO)
@@ -206,13 +206,13 @@ local aACLFunctions = {
             if (aclGroupRemoveObject(aclGetGroup(group), object)) then
                 messageBox(client, "Successfully removed user '"..object:gsub('user.','').."' from the '"..group.."' ACL group", MB_INFO)
             else
-                messageBox(client, "Failed to removed user '"..object:gsub('user.','').."' from the '"..group.."' ACL group", MB_INFO)
+                messageBox(client, "Failed to remove user '"..object:gsub('user.','').."' from the '"..group.."' ACL group", MB_INFO)
             end
         elseif (action == ACL_ADD) then
             if (aclGroupAddObject(aclGetGroup(group), 'user.'..object)) then
                 messageBox(client, "Successfully added user '"..object:gsub('user.','').."' to the '"..group.."' ACL group", MB_INFO)
             else
-                messageBox(client, "Failed to added user '"..object:gsub('user.','').."' to the '"..group.."' ACL group", MB_INFO)
+                messageBox(client, "Failed to add user '"..object:gsub('user.','').."' to the '"..group.."' ACL group", MB_INFO)
             end
         end
     end,
@@ -230,13 +230,13 @@ local aACLFunctions = {
             if (aclGroupRemoveObject(aclGetGroup(group), object)) then
                 messageBox(client, "Successfully removed resource '"..object:gsub('resource.','').."' from the '"..group.."' ACL group", MB_INFO)
             else
-                messageBox(client, "Failed to removed resource '"..object:gsub('resource.','').."' from the '"..group.."' ACL group", MB_INFO)
+                messageBox(client, "Failed to remove resource '"..object:gsub('resource.','').."' from the '"..group.."' ACL group", MB_INFO)
             end
         elseif (action == ACL_ADD) then
             if (aclGroupAddObject(aclGetGroup(group), 'resource.'..object)) then
                 messageBox(client, "Successfully added resource '"..object:gsub('resource.','').."' to the '"..group.."' ACL group", MB_INFO)
             else
-                messageBox(client, "Failed to added resource '"..object:gsub('resource.','').."' to the '"..group.."' ACL group", MB_INFO)
+                messageBox(client, "Failed to add resource '"..object:gsub('resource.','').."' to the '"..group.."' ACL group", MB_INFO)
             end
         end
     end,

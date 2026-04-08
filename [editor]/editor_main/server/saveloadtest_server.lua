@@ -246,7 +246,7 @@ function openResource( resourceName, onStart )
 				newEDF.addedEDF = split(usedDefinitions, 44)
 				--  Remove the added EDFs from the available
 				table.subtract(newEDF.availEDF, newEDF.addedEDF)
-				-- Un/Load the neccessary definitions
+				-- Un/Load the necessary definitions
 				reloadEDFDefinitions(newEDF,true)
 			end
 			local mapElement = loadMapData ( mapNode, mapContainer, false )
