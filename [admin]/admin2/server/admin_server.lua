@@ -407,12 +407,13 @@ addEventHandler(
     "aAdminChat",
     root,
     function(chat)
-        if #chat > ADMIN_CHAT_MAXLENGTH then
+        local sender = client or source
+        if not chat or #chat > (ADMIN_CHAT_MAXLENGTH or 255) then
             return
         end
-        for id, player in ipairs(getElementsByType("player")) do
-            if (aPlayers[player]["chat"]) then
-                triggerClientEvent(player, "aClientAdminChat", client, chat)
+        for _, player in ipairs(getElementsByType("player")) do
+            if aPlayers[player] and aPlayers[player]["chat"] then
+                triggerClientEvent(player, "aClientAdminChat", sender, chat)
             end
         end
     end
