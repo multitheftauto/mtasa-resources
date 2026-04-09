@@ -158,7 +158,7 @@ function aClientWarpDoubleClick(button)
 end
 
 function aClientWarpClick(button, state, absX, absY)
-    if (button == "left") then
+    if (button == "left" and state == "up") then
         -- Player Warp Management
         if (source == aWarpSelect) then
             if (guiGridListGetSelectedItem(aWarpList) ~= -1) then

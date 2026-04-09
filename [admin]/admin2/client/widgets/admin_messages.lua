@@ -116,8 +116,8 @@ function aMessages.View(id)
     end
 end
 
-function aMessages.onClick(button)
-    if (button == "left") then
+function aMessages.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aMessages.Exit) then
             aMessages.Close()
         elseif (source == aMessages.Refresh) then

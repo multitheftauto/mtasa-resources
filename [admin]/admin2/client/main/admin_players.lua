@@ -137,13 +137,13 @@ function aPlayersTab.Create(tab)
     end)
 end
 
-function aPlayersTab.onContextClick(button)
+function aPlayersTab.onContextClick(button, state)
     local translator = {
         [aPlayersTab.ContextKick] = aPlayersTab.Kick
     }
     if (translator[source]) then
         source = translator[source]
-        aPlayersTab.onClientClick(button)
+        aPlayersTab.onClientClick(button, state)
     elseif (source == aPlayersTab.ContextCopy) then
         if (contextSource) then
             local copy = string.sub(guiGetText(contextSource), guiGetText(contextSource):match("%w+:"):len() + 2)
@@ -152,8 +152,8 @@ function aPlayersTab.onContextClick(button)
     end
 end
 
-function aPlayersTab.onClientClick(button)
-    if (button == "left") then
+function aPlayersTab.onClientClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aPlayersTab.Messages) then
             aMessages.Open()
         elseif (getElementType(source) == "gui-button") then

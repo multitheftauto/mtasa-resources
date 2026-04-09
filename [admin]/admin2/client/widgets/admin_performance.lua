@@ -76,8 +76,8 @@ function aPerformanceClose(destroy)
     end
 end
 
-function aClientPerformanceClick(button)
-    if (button == "left") then
+function aClientPerformanceClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aPerformanceOk) then
             aPerformanceClose()
         end

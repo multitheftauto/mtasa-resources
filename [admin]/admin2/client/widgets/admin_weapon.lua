@@ -97,8 +97,8 @@ function aWeapon.onGUIChange()
     end
 end
 
-function aWeapon.onClick(button)
-    if (button == "left") then
+function aWeapon.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aWeapon.Accept) then
             if (tonumber(guiGetText(aWeapon.ID))) then
                 local ammo = tonumber(guiGetText(aWeapon.Ammo)) or DEFAULT_AMMO_AMOUNT

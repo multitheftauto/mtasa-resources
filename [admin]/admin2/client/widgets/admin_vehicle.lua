@@ -88,8 +88,8 @@ function aVehicle.onGUIChange()
     end
 end
 
-function aVehicle.onClick(button)
-    if (button == "left") then
+function aVehicle.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aVehicle.Accept) then
             if (tonumber(guiGetText(aVehicle.ID))) then
                 triggerServerEvent("aPlayer", localPlayer, aVehicle.Select, "givevehicle", tonumber(guiGetText(aVehicle.ID)))

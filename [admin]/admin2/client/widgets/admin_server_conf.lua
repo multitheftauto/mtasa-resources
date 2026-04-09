@@ -106,8 +106,8 @@ function aServerConfig.onClientChanged()
     end
 end
 
-function aServerConfig.onClientClick(button)
-	if (button == "left") then
+function aServerConfig.onClientClick(button, state)
+	if (button == "left" and state == "up") then
 		if (source == aServerConfig.closeButton) then
 			aServerConfig.Close()
 		elseif (source == aServerConfig.saveButton) then

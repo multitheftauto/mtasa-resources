@@ -93,8 +93,8 @@ function aPlayerStatsClose(destroy)
     end
 end
 
-function aClientStatsClick(button)
-    if (button == "left") then
+function aClientStatsClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aStatsClose) then
             aPlayerStatsClose(false)
         else

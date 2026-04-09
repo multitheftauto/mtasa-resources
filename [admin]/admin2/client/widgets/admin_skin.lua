@@ -92,8 +92,8 @@ function aSkin.onGUIChange()
     end
 end
 
-function aSkin.onClick(button)
-    if (button == "left") then
+function aSkin.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aSkin.Accept) then
             if (tonumber(guiGetText(aSkin.ID))) then
                 triggerServerEvent("aPlayer", localPlayer, aSkin.Select, "setskin", tonumber(guiGetText(aSkin.ID)))
