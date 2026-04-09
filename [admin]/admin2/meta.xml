@@ -104,9 +104,9 @@
 	<file src="client/images/blue.png"/>
 	
 	<settings>
-		<setting name="#pingkicker" value="0" group="Automatic scripts" friendlyname="Ping kicker" accept="0-1000" desc="Max ping allowed (0 - off)"/>
-		<setting name="#fpskicker" value="0" group="Automatic scripts" friendlyname="FPS kicker" accept="0-100" desc="Lowest fps allowed: 25-75 (0 - off)"/>
-		<setting name="#idlekicker" value="0" group="Automatic scripts" friendlyname="Idle Kicker" accept="0-100" desc="Maximum time a player can stay idle (minutes, 0 - off)."/>
+		<setting name="#pingkicker" value="0" group="Automatic scripts" friendlyname="Ping kicker" accept="0-10000" desc="Max ping allowed (0 - off)"/>
+		<setting name="#fpskicker" value="0" group="Automatic scripts" friendlyname="FPS kicker" accept="0-100" desc="Lowest fps allowed: 1-100 (0 - off)"/>
+		<setting name="#idlekicker" value="0" group="Automatic scripts" friendlyname="Idle Kicker" accept="0-6000" desc="Maximum time a player can stay idle (minutes, 0 - off)."/>
 		<setting name="#consolecommands" value="[true]" group="General" friendlyname="Enable console commands" accept="[true],[false]" desc="Parse console commands."/>
 		<setting name="#adminChatCommandName" value="a" group="General" friendlyname="Admin chat command name" desc="The command name for admin chat."/>
 		<setting name="*useip2c" value="true" friendlyname="useip2c" group="_Advanced" accept="true,false" desc="When enabled, ip2c resource runs and fetches player countries by IP."/>

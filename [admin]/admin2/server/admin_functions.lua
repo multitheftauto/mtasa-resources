@@ -491,3 +491,41 @@ aFunctions = {
     admin = {},
     bans = {}
 }
+
+local automaticScriptRanges = {
+    pingkicker = {min = 0, max = 1000, default = 300},
+    fpskicker = {min = 0, max = 100, default = 5},
+    idlekicker = {min = 0, max = 100, default = 10}
+}
+
+local function setAutomaticScriptSetting(name, value)
+    local number = tonumber(value)
+    local range = automaticScriptRanges[name]
+
+    if (not number) or (number % 1 ~= 0) then
+        outputChatBox("Error setting " .. name .. ".", client, 255, 0, 0)
+        return false
+    end
+
+    if (number < range.min) or (number > range.max) then
+        outputChatBox(string.format("Error setting %s. Allowed range is %d-%d.", name, range.min, range.max), client, 255, 0, 0)
+        return false
+    end
+
+    set("#" .. name, tostring(number))
+    requestSync(client, SYNC_SERVER)
+
+    return true, number > 0 and tostring(number) or "off"
+end
+
+aFunctions.server["setpingkicker"] = function(value)
+    return setAutomaticScriptSetting("pingkicker", value or automaticScriptRanges.pingkicker.default)
+end
+
+aFunctions.server["setfpskicker"] = function(value)
+    return setAutomaticScriptSetting("fpskicker", value or automaticScriptRanges.fpskicker.default)
+end
+
+aFunctions.server["setidlekicker"] = function(value)
+    return setAutomaticScriptSetting("idlekicker", value or automaticScriptRanges.idlekicker.default)
+end

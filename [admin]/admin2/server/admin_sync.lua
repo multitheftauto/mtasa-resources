@@ -155,6 +155,9 @@ addEventHandler(
             tableOut["game"] = getGameType()
             tableOut["map"] = getMapName()
             tableOut["password"] = getServerPassword()
+            tableOut["pingkicker"] = tonumber(get("#pingkicker")) or 0
+            tableOut["fpskicker"] = tonumber(get("#fpskicker")) or 0
+            tableOut["idlekicker"] = tonumber(get("#idlekicker")) or 0
 
         elseif (type == SYNC_BAN) then
             if client then

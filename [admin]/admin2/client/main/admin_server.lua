@@ -10,6 +10,35 @@
 aServerTab = {
     Weathers = {},
     WeatherMax = 255,
+    automaticScripts = {
+        setpingkicker = {
+            check = "PingKickerCheck",
+            edit = "PingKicker",
+            button = "PingKickerSet",
+            default = 1000,
+            min = 0,
+            max = 10000,
+            label = "Ping kicker"
+        },
+        setfpskicker = {
+            check = "FPSKickerCheck",
+            edit = "FPSKicker",
+            button = "FPSKickerSet",
+            default = 5,
+            min = 0,
+            max = 100,
+            label = "FPS kicker"
+        },
+        setidlekicker = {
+            check = "IdleKickerCheck",
+            edit = "IdleKicker",
+            button = "IdleKickerSet",
+            default = 600,
+            min = 0,
+            max = 6000,
+            label = "Idle kicker"
+        }
+    },
     glitches = {
         QuickReload = 'Quick Reload',
         FastMove = 'Fast Move',
@@ -45,6 +74,72 @@ aServerTab = {
         Vehicle_Engine_AutoStart = "Vehicle Engine Auto Start"
     }
 }
+
+function aServerTab.setAutomaticScriptEnabled(action, enabled)
+    local script = aServerTab.automaticScripts[action]
+
+    guiCheckBoxSetSelected(aServerTab[script.check], enabled)
+    guiSetEnabled(aServerTab[script.edit], enabled)
+    guiSetEnabled(aServerTab[script.button], enabled)
+end
+
+function aServerTab.syncAutomaticScript(action, value)
+    local script = aServerTab.automaticScripts[action]
+    local number = tonumber(value) or 0
+    local enabled = number > 0
+
+    guiSetText(aServerTab[script.edit], tostring(enabled and number or script.default))
+    aServerTab.setAutomaticScriptEnabled(action, enabled)
+end
+
+function aServerTab.saveAutomaticScript(action)
+    local script = aServerTab.automaticScripts[action]
+    local text = guiGetText(aServerTab[script.edit])
+    local value = tonumber(text)
+
+    if (#text == 0) then
+        value = script.default
+        guiSetText(aServerTab[script.edit], tostring(value))
+    end
+
+    if (not value) or (value % 1 ~= 0) then
+        messageBox(script.label .. " must be a whole number.", MB_ERROR, MB_OK)
+        return false
+    end
+
+    if (value < script.min) or (value > script.max) then
+        messageBox(
+            string.format("%s range is %d-%d.", script.label, script.min, script.max),
+            MB_ERROR,
+            MB_OK
+        )
+        return false
+    end
+
+    triggerServerEvent("aServer", localPlayer, action, value)
+    aServerTab.setAutomaticScriptEnabled(action, value > 0)
+
+    return true
+end
+
+function aServerTab.toggleAutomaticScript(action)
+    local script = aServerTab.automaticScripts[action]
+
+    setTimer(
+        function()
+            local enabled = guiCheckBoxGetSelected(aServerTab[script.check])
+            aServerTab.setAutomaticScriptEnabled(action, enabled)
+
+            if enabled then
+                aServerTab.saveAutomaticScript(action)
+            else
+                triggerServerEvent("aServer", localPlayer, action, 0)
+            end
+        end,
+        50,
+        1
+    )
+end
 
 function aServerTab.Create(tab)
     aServerTab.Tab = tab
@@ -191,8 +286,8 @@ function aServerTab.Create(tab)
     aServerTab.onRefresh()
 end
 
-function aServerTab.onClientClick(button)
-    if (button == "left") then
+function aServerTab.onClientClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aServerTab.SetGameType) then
             local gametype = inputBox("Game Type", "Enter game type:")
             if (gametype) then
@@ -300,6 +395,18 @@ function aServerTab.onClientClick(button)
             end
         elseif (source == aServerTab.ServerConfSet) then
             aServerConfig.Open()
+        elseif (source == aServerTab.PingKickerCheck) then
+            aServerTab.toggleAutomaticScript("setpingkicker")
+        elseif (source == aServerTab.PingKickerSet) then
+            aServerTab.saveAutomaticScript("setpingkicker")
+        elseif (source == aServerTab.FPSKickerCheck) then
+            aServerTab.toggleAutomaticScript("setfpskicker")
+        elseif (source == aServerTab.FPSKickerSet) then
+            aServerTab.saveAutomaticScript("setfpskicker")
+        elseif (source == aServerTab.IdleKickerCheck) then
+            aServerTab.toggleAutomaticScript("setidlekicker")
+        elseif (source == aServerTab.IdleKickerSet) then
+            aServerTab.saveAutomaticScript("setidlekicker")
         elseif (source == aServerTab.QuickReload) then
             triggerServerEvent(
                 "aServer",
@@ -549,6 +656,9 @@ function aServerTab.onClientSync(type, table)
         guiSetText(aServerTab.GameType, "Game Type: " .. (table["game"] or "None"))
         guiSetText(aServerTab.MapName, "Map Name: " .. (table["map"] or "None"))
         aServerTab['currentPassword'] = table['password'] or nil
+        aServerTab.syncAutomaticScript("setpingkicker", table["pingkicker"])
+        aServerTab.syncAutomaticScript("setfpskicker", table["fpskicker"])
+        aServerTab.syncAutomaticScript("setidlekicker", table["idlekicker"])
     end
 end
 
@@ -611,3 +721,31 @@ end)
 function getWeatherNameFromID(weather)
     return iif(aServerTab.Weathers[weather], aServerTab.Weathers[weather], "Unknown")
 end
+
+local aFPSReporter = {
+    sampleCount = 0,
+    totalFPS = 0
+}
+
+function aFPSReporter.onClientPreRender(deltaTime)
+    aFPSReporter.sampleCount = aFPSReporter.sampleCount + 1
+    aFPSReporter.totalFPS = aFPSReporter.totalFPS + (1000 / deltaTime)
+end
+
+function aFPSReporter.flush()
+    if aFPSReporter.sampleCount <= 0 then
+        return
+    end
+
+    triggerServerEvent("aClientPerformanceUpdate", localPlayer, math.floor((aFPSReporter.totalFPS / aFPSReporter.sampleCount) + 0.5))
+
+    aFPSReporter.sampleCount = 0
+    aFPSReporter.totalFPS = 0
+end
+
+addEventHandler("onClientResourceStart", resourceRoot,
+    function()
+        addEventHandler("onClientPreRender", root, aFPSReporter.onClientPreRender)
+        setTimer(aFPSReporter.flush, 3000, 0)
+    end
+)
