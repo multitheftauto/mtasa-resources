@@ -68,7 +68,9 @@ addEventHandler ( "onResourceStop", resourceRoot,
                 remainingTime = data.time
             end
 
-            aAddOrUpdateMute( serial, data.name, data.admin, data.reason, remainingTime, true )
+            if ( remainingTime ~= nil ) then
+                aAddOrUpdateMute( serial, data.name, data.admin, data.reason, remainingTime )
+            end
         end
     end
 )
@@ -110,7 +112,7 @@ function aSetPlayerMuted ( player, state, time, admin, reason )
 end
 
 function aAddUnmuteTimer( player, admin, reason, time )
-	local serial = getPlayerSerial( player )
+    local serial = getPlayerSerial( player )
     if ( not aMutedList[serial] ) then
         aMutedList[serial] = {}
         aMutedList[serial].admin = getPlayerName(admin)
@@ -131,14 +133,19 @@ function aAddUnmuteTimer( player, admin, reason, time )
     elseif ( time == 0 ) then
         aSetRemainingUnmuteTime( player, 0 )
     end
+
+    local remainingTime = aGetRemainingUnmuteTime( serial )
+    if ( remainingTime ~= nil ) then
+        aAddOrUpdateMute( serial, aMutedList[serial].name, aMutedList[serial].admin, aMutedList[serial].reason, remainingTime )
+    end
 end
 
 function aRemoveUnmuteTimer( serial )
-	if ( not aMutedList[serial] or not aMutedList[serial].timer )  then
+    if ( not aMutedList[serial] ) then
         return false
     end
 
-    if ( isTimer( aMutedList[serial].timer ) ) then
+    if ( aMutedList[serial].timer and isTimer( aMutedList[serial].timer ) ) then
         killTimer( aMutedList[serial].timer )
     end
     aMutedList[serial] = nil
@@ -182,25 +189,16 @@ function aGetRemainingUnmuteReason( serial )
 end
 
 function aHasUnmuteTimer( player )
-	local serial = getPlayerSerial( player )
+    local serial = getPlayerSerial( player )
     return aMutedList[serial]
 end
 
-function aAddOrUpdateMute(serial, player, admin, reason, time, isRestarted)
-    local result
-    local query_text = "SELECT serial FROM mutes WHERE serial = ?"
-    if ( isRestarted ) then
-        local query = dbQuery( db.connection, query_text, serial )
-        result = dbPoll( query, -1 )
-    else
-        result = db.query( query_text, serial )
-    end
-
-    if #result > 0 then
-        return db.exec( "UPDATE mutes SET name = ?, admin = ?, reason = ?, time = ? WHERE serial = ?", player, admin, reason, time, serial )
-    else
-        return db.exec( "INSERT INTO mutes (serial, name, admin, reason, time) VALUES (?, ?, ?, ?, ?)", serial, player, admin, reason, time )
-    end
+function aAddOrUpdateMute(serial, playerName, adminName, muteReason, muteTime)
+    db.exec("UPDATE mutes SET name = ?, admin = ?, reason = ?, time = ? WHERE serial = ?", playerName, adminName, muteReason, muteTime, serial)
+    db.exec(
+        "INSERT INTO mutes (serial, name, admin, reason, time) SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM mutes WHERE serial = ?)",
+        serial, playerName, adminName, muteReason, muteTime, serial
+    )
 end
 
 function aGetMutesList()

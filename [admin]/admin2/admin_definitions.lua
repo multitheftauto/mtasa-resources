@@ -47,7 +47,8 @@ enum(
         "EVENT_RESOURCE_START",
         "EVENT_RESOURCE_STOP",
         "EVENT_PLAYER_JOIN",
-        "EVENT_MUTE"
+        "EVENT_MUTE",
+		"EVENT_ANONYMOUS_UPDATE",
     },
     "ae"
 )

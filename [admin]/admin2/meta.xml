@@ -51,7 +51,6 @@
 	<script src="client/widgets/admin_messagebox.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_inputbox.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_color.lua" type="client" cache="false"/>
-	<script src="client/widgets/admin_performance.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_permissions.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_messages.lua" type="client" cache="false"/>
 	<script src="client/widgets/admin_spectator.lua" type="client" cache="false"/>
