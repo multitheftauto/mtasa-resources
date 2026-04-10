@@ -78,7 +78,7 @@ function aPlayerStats(player)
 end
 
 function aPlayerStatsClose(destroy)
-    if ((destroy) or (isElement(aPerformanceStats) and guiCheckBoxGetSelected(aPerformanceStats))) then
+    if (destroy) then
         if (aStatsForm) then
             removeEventHandler("onClientGUIClick", aStatsForm, aClientStatsClick)
             removeEventHandler("onClientGUIChanged", aStatsForm, aClientStatsChanged)
