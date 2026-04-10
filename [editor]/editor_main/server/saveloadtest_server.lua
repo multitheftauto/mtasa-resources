@@ -246,7 +246,7 @@ function openResource( resourceName, onStart )
 				newEDF.addedEDF = split(usedDefinitions, 44)
 				--  Remove the added EDFs from the available
 				table.subtract(newEDF.availEDF, newEDF.addedEDF)
-				-- Un/Load the neccessary definitions
+				-- Un/Load the necessary definitions
 				reloadEDFDefinitions(newEDF,true)
 			end
 			local mapElement = loadMapData ( mapNode, mapContainer, false )
@@ -690,7 +690,22 @@ function createElementAttributesForSaving(xmlNode, element)
 			posSetX, posSetY, posSetZ = true, true, true
 		elseif ( dataName == "rotation" ) then
 			if dataValue[4] == "ZYX" then
-				euler_ZYX_to_ZXY(dataValue)
+				local skipConversion = getElementType(element) == "vehicle"
+				if not skipConversion then
+					local creatorResource = edf.edfGetCreatorResource(element)
+					local children = creatorResource and loadedEDF[creatorResource] and loadedEDF[creatorResource].elements[getElementType(element)].children
+					if children then
+						for _, child in ipairs(children) do
+							if child.type == "vehicle" then
+								skipConversion = true
+								break
+							end
+						end
+					end
+				end
+				if not skipConversion then
+					euler_ZYX_to_ZXY(dataValue)
+				end
 			end
 			xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
 			xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))

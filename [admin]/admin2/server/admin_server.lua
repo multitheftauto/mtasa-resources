@@ -16,6 +16,109 @@ aStats = {}
 aReports = {}
 aWeathers = {}
 
+local AUTOMATIC_SCRIPT_CHECK_INTERVAL = 5000
+local AUTOMATIC_SCRIPT_JOIN_GRACE = 60000
+local AUTOMATIC_SCRIPT_FPS_STALE_TIME = 10000
+local AUTOMATIC_SCRIPT_CONSECUTIVE_VIOLATIONS = 3
+
+function getAutomaticScriptSetting(name)
+    return tonumber(get("#" .. name)) or 0
+end
+
+function resetAutomaticScriptViolation(player, name)
+    local automaticScripts = aPlayers[player] and aPlayers[player].automaticScripts
+    if automaticScripts then
+        automaticScripts[name] = 0
+    end
+end
+
+function addAutomaticScriptViolation(player, name)
+    local automaticScripts = aPlayers[player] and aPlayers[player].automaticScripts
+    if not automaticScripts then
+        return 0
+    end
+
+    automaticScripts[name] = (automaticScripts[name] or 0) + 1
+    return automaticScripts[name]
+end
+
+function kickPlayerByAutomaticScript(player, reason)
+    outputServerLog("ADMIN: Automatic script kicked " .. getPlayerName(player) .. " (" .. reason .. ")")
+    kickPlayer(player, reason)
+end
+
+function checkAutomaticScriptsForPlayer(player)
+    local playerData = aPlayers[player]
+    if not playerData then
+        return
+    end
+
+    if (getTickCount() - (playerData.joinTick or 0)) < AUTOMATIC_SCRIPT_JOIN_GRACE then
+        resetAutomaticScriptViolation(player, "pingkicker")
+        resetAutomaticScriptViolation(player, "fpskicker")
+        return
+    end
+
+    local pingLimit = getAutomaticScriptSetting("pingkicker")
+    if pingLimit > 0 then
+        local ping = getPlayerPing(player)
+        if ping > pingLimit then
+            if addAutomaticScriptViolation(player, "pingkicker") >= AUTOMATIC_SCRIPT_CONSECUTIVE_VIOLATIONS then
+                kickPlayerByAutomaticScript(player, string.format("Ping too high (%d > %d)", ping, pingLimit))
+                return
+            end
+        else
+            resetAutomaticScriptViolation(player, "pingkicker")
+        end
+    else
+        resetAutomaticScriptViolation(player, "pingkicker")
+    end
+
+    local idleLimit = getAutomaticScriptSetting("idlekicker")
+    if idleLimit > 0 then
+        local idleTime = getPlayerIdleTime(player) or 0
+        if idleTime >= idleLimit * 60000 then
+            kickPlayerByAutomaticScript(
+                player,
+                string.format("Idle for too long (%d min >= %d min)", math.floor(idleTime / 60000), idleLimit)
+            )
+            return
+        end
+    end
+
+    local fpsLimit = getAutomaticScriptSetting("fpskicker")
+    if fpsLimit > 0 then
+        local currentFPS = playerData.currentFPS
+        local lastFPSReport = playerData.lastFPSReport or 0
+        local fpsReportAge = getTickCount() - lastFPSReport
+
+        if currentFPS and fpsReportAge <= AUTOMATIC_SCRIPT_FPS_STALE_TIME then
+            if currentFPS < fpsLimit then
+                if addAutomaticScriptViolation(player, "fpskicker") >= AUTOMATIC_SCRIPT_CONSECUTIVE_VIOLATIONS then
+                    kickPlayerByAutomaticScript(
+                        player,
+                        string.format("FPS too low (%d < %d)", math.floor(currentFPS + 0.5), fpsLimit)
+                    )
+                end
+            else
+                resetAutomaticScriptViolation(player, "fpskicker")
+            end
+        else
+            resetAutomaticScriptViolation(player, "fpskicker")
+        end
+    else
+        resetAutomaticScriptViolation(player, "fpskicker")
+    end
+end
+
+function checkAutomaticScripts()
+    for _, player in ipairs(getElementsByType("player")) do
+        if isElement(player) then
+            checkAutomaticScriptsForPlayer(player)
+        end
+    end
+end
+
 function aHandleIP2CUpdate()
     local playersToUpdate = false
     local playersTable = getElementsByType("player")
@@ -94,6 +197,7 @@ addEventHandler(
             aPlayerInitialize(player)
         end
         aHandleIp2cSetting()
+        setTimer(checkAutomaticScripts, AUTOMATIC_SCRIPT_CHECK_INTERVAL, 0)
     end
 )
 
@@ -164,8 +268,33 @@ function aPlayerInitialize(player)
     aPlayers[player].money = getPlayerMoney(player)
     aPlayers[player].muted = isPlayerMuted(player)
     aPlayers[player].frozen = isElementFrozen(player)
+    aPlayers[player].joinTick = getTickCount()
+    aPlayers[player].currentFPS = false
+    aPlayers[player].lastFPSReport = 0
+    aPlayers[player].automaticScripts = {
+        pingkicker = 0,
+        fpskicker = 0
+    }
     updatePlayerCountry(player)
 end
+
+addEvent("aClientPerformanceUpdate", true)
+addEventHandler("aClientPerformanceUpdate", root,
+    function(fps)
+        local playerData = aPlayers[client]
+        if not playerData then
+            return
+        end
+
+        local numericFPS = tonumber(fps)
+        if (not numericFPS) or numericFPS < 0 or numericFPS > 500 then
+            return
+        end
+
+        playerData.currentFPS = numericFPS
+        playerData.lastFPSReport = getTickCount()
+    end
+)
 
 function aAction(type, action, admin, player, data, more)
     if (aLogMessages[type]) then
@@ -410,12 +539,13 @@ addEventHandler(
     "aAdminChat",
     root,
     function(chat)
-        if #chat > ADMIN_CHAT_MAXLENGTH then
+        local sender = client or source
+        if not chat or #chat > (ADMIN_CHAT_MAXLENGTH or 255) then
             return
         end
-        for id, player in ipairs(getElementsByType("player")) do
-            if (aPlayers[player]["chat"]) then
-                triggerClientEvent(player, "aClientAdminChat", client, chat)
+        for _, player in ipairs(getElementsByType("player")) do
+            if aPlayers[player] and aPlayers[player]["chat"] then
+                triggerClientEvent(player, "aClientAdminChat", sender, chat)
             end
         end
     end

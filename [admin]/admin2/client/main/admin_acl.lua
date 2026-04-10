@@ -125,7 +125,7 @@ function aAclTab.onSync(action, ...)
 end
 
 function aAclTab.onClick(key, state)
-    if (key ~= "left") then
+    if (key ~= "left") or (state ~= "up") then
         return
     end
 

@@ -78,7 +78,7 @@ function aPlayerStats(player)
 end
 
 function aPlayerStatsClose(destroy)
-    if ((destroy) or (guiCheckBoxGetSelected(aPerformanceStats))) then
+    if ((destroy) or (isElement(aPerformanceStats) and guiCheckBoxGetSelected(aPerformanceStats))) then
         if (aStatsForm) then
             removeEventHandler("onClientGUIClick", aStatsForm, aClientStatsClick)
             removeEventHandler("onClientGUIChanged", aStatsForm, aClientStatsChanged)
@@ -87,12 +87,14 @@ function aPlayerStatsClose(destroy)
             aStatsForm = nil
         end
     else
-        guiSetVisible(aStatsForm, false)
+        if (aStatsForm) then
+           guiSetVisible(aStatsForm, false)
+        end
     end
 end
 
-function aClientStatsClick(button)
-    if (button == "left") then
+function aClientStatsClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aStatsClose) then
             aPlayerStatsClose(false)
         else

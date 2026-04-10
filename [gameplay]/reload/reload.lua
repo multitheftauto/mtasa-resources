@@ -1,5 +1,7 @@
 local function reloadWeapon()
-	reloadPedWeapon(client)
+	if not isPedReloadingWeapon(client) then
+		reloadPedWeapon(client)
+	end
 end
 addEvent("relWep", true)
 addEventHandler("relWep", root, reloadWeapon)

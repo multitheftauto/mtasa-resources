@@ -208,7 +208,7 @@ function aGetVehicleUpgradeFromName(uname)
 end
 
 function aVehicleUpgrades.onClick(button, state)
-    if (button == "left") then
+    if (button == "left" and state == "up") then
         if (source == aVehicleUpgrades.Close) then
             aVehicleUpgrades.CustomizeClose(false)
         elseif (source == aVehicleUpgrades.ColorClose) then

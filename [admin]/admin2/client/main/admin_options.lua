@@ -67,8 +67,8 @@ function aOptionsTab.Create(tab)
     addEventHandler("onClientGUITabSwitched", aOptionsTab.Tab, aOptionsTab.onTabSwitched, false)
 end
 
-function aOptionsTab.onClientClick(button)
-    if (button == "left") then
+function aOptionsTab.onClientClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aOptionsTab.PerformanceCPU) then
             for id, element in ipairs(getElementChildren(aPerformanceForm)) do
                 if (getElementType(element) == "gui-checkbox") then
