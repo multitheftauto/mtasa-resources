@@ -12,6 +12,7 @@ function aSetupStorage()
 
     db.exec("CREATE TABLE IF NOT EXISTS alias ( ip TEXT, serial TEXT, name TEXT, time INTEGER )")
     db.exec("CREATE TABLE IF NOT EXISTS warnings ( ip TEXT, serial TEXT, name TEXT, time INTEGER )")
+    db.exec("CREATE TABLE IF NOT EXISTS mutes ( serial TEXT, name TEXT, admin TEXT, reason TEXT, time INTEGER )")
 
     local node = xmlLoadFile("conf\\interiors.xml")
     if (node) then

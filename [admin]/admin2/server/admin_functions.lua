@@ -31,12 +31,6 @@ aFunctions = {
         ["ban"] = function(player, data)
             setTimer(banPlayer, 100, 1, player, true, true, true, client, data)
         end,
-        ["mute"] = function(player)
-            setPlayerMuted(player, true)
-        end,
-        ["unmute"] = function(player)
-            setPlayerMuted(player, false)
-        end,
         ["freeze"] = function(player)
             local vehicle = getPedOccupiedVehicle(player)
 
