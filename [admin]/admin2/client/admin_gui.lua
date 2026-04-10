@@ -214,10 +214,10 @@ function guiSetContextMenu(element, menu)
                 return
             end
             if (button == "right" and state == "up") then
-                local sx, sy = guiGetScreenSize()
-                local x, y = getCursorPosition()
-                x, y = sx * x, sy * y
-                guiSetPosition(menu, x, y, false)
+                local screenX, screenY = guiGetScreenSize()
+                local cursorX, cursorY = getCursorPosition()
+                cursorX, cursorY = screenX * cursorX, screenY * cursorY
+                guiSetPosition(menu, cursorX, cursorY, false)
                 guiSetVisible(menu, true)
                 guiBringToFront(menu)
 
@@ -226,7 +226,7 @@ function guiSetContextMenu(element, menu)
                         addEventHandler(
                             "onClientClick",
                             root,
-                            function(button2, state, x2, y2)
+                            function(button2, clickState, x2, y2)
                                 local sx2, sy2 = guiGetSize(menu, false)
                                 local px, py = guiGetPosition(menu, false)
                                 if (x2 < px or x2 > px + sx2) or (y2 < py or y2 > py + sy2) then

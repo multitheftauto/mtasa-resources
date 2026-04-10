@@ -268,11 +268,11 @@ function aPlayersTab.onClientClick(button, state)
             aPlayersTab.Refresh()
             aSetSetting('hideColorCodes', guiCheckBoxGetSelected(source))
         elseif (source == aPlayersTab.SensitiveData) then
-            local state = guiCheckBoxGetSelected(source)
-            aSetSetting('hideSensitiveData', state)
+            local hideSensitiveData = guiCheckBoxGetSelected(source)
+            aSetSetting('hideSensitiveData', hideSensitiveData)
             for k, v in ipairs(aAdminMain.Tabs) do
                 if aAdminMain.BlockedTabsBySensitiveData[v.Acl] then
-                    guiSetEnabled(v.Tab, not state)
+                    guiSetEnabled(v.Tab, not hideSensitiveData)
                 end
             end
             if isElement(aServerTab.Password) then
