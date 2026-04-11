@@ -32,7 +32,8 @@ function createOptionsDialog()
 	dialog.tutorialOnStart = editingControl.boolean:create{["x"]=0.02,["y"]=0.8,["width"]=0.35,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Query for tutorial on start"}
 
 	---------------------------------
-	dialog.enableBox = editingControl.boolean:create{["x"]=0.60,["y"]=0.02,["width"]=0.35,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable Bounding Box"}
+	dialog.enableBox = editingControl.boolean:create{["x"]=0.43,["y"]=0.02,["width"]=0.25,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable Bounding Box"}
+	dialog.enableHoverBoundingBox = editingControl.boolean:create{["x"]=0.68,["y"]=0.02,["width"]=0.31,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Bounding box on hover over"}
 	dialog.enableXYZlines = editingControl.boolean:create{["x"]=0.60,["y"]=0.12,["width"]=0.35,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable XYZ Lines"}
 	---------------------------------
 	dialog.enablePrecisionSnap = editingControl.boolean:create{["x"]=0.60,["y"]=0.22,["width"]=0.35,["height"]=0.1,["relative"]=true,["parent"]=dialog.generalTab,["label"]="Enable Snap - Precise Position"}
