@@ -25,6 +25,33 @@ local saveResourceCoroutine
 ---
 local lastTestGamemodeName
 
+local function clearOpeningResourceState()
+	openResourceCoroutine = nil
+	openingResource       = nil
+	openingResourceName   = nil
+	openingOnStart        = nil
+	openingSource         = nil
+	openingStartTick      = nil
+	openingMapElement     = nil
+	openingMapName        = nil
+end
+
+local function clearSaveResourceState()
+	saveResourceCoroutine = nil
+end
+
+local function clearQuickSaveState()
+	quickSaveCoroutine = nil
+end
+
+local function resumeEditorCoroutine(editorCoroutine, clearState, ...)
+	local success, result = coroutine.resume(editorCoroutine, ...)
+	if ( not success ) then
+		clearState()
+	end
+	return success, result
+end
+
 loadedMap = false
 addEvent ( "onNewMap" )
 addEvent ( "onMapOpened" )
@@ -126,9 +153,15 @@ addEventHandler("newResource", root,
 )
 
 function handleOpenResource()
+	if ( not openResourceCoroutine ) then
+		return
+	end
 	local status = coroutine.status(openResourceCoroutine)
 	if ( status == "suspended" ) then
-		coroutine.resume(openResourceCoroutine)
+		local success = resumeEditorCoroutine(openResourceCoroutine, clearOpeningResourceState)
+		if ( not success ) then
+			return
+		end
 	elseif ( status == "dead" ) then
 		destroyElement ( openingMapElement )
 		loadedMap = openingResourceName
@@ -163,13 +196,7 @@ function handleOpenResource()
 		flattenTreeRuns = 0
 		triggerClientEvent(root, "saveLoadProgressBar", root, true)
 
-		openResourceCoroutine = nil
-		openingResource       = nil
-		openingResourceName   = nil
-		openingOnStart        = nil
-		openingSource         = nil
-		openingMapElement     = nil
-		openingMapName        = nil
+		clearOpeningResourceState()
 		return
 	end
 	setTimer(handleOpenResource,50,1)
@@ -268,7 +295,10 @@ function openResource( resourceName, onStart )
 			end
 			openResourceCoroutine = coroutine.create(flattenTree)
 			setTimer(handleOpenResource,50,1)
-			coroutine.resume(openResourceCoroutine,mapElement,mapContainer)
+			if ( not resumeEditorCoroutine(openResourceCoroutine, clearOpeningResourceState, mapElement,mapContainer) ) then
+				xmlUnloadFile(mapNode)
+				return false
+			end
 			xmlUnloadFile(mapNode)
 		end
 
@@ -304,7 +334,7 @@ function saveResource(resourceName, test, directory)
 	end
 	saveOrganizationalDirectory ( directory )
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
-	coroutine.resume(saveResourceCoroutine, resourceName, test, client, client)
+	resumeEditorCoroutine(saveResourceCoroutine, clearSaveResourceState, resourceName, test, client, client)
 end
 addEventHandler ( "saveResource", root, saveResource )
 
@@ -426,9 +456,10 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 		end
 		if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 			setTimer(function()
-				if (coroutine.status(saveResourceCoroutine) == "suspended") then
-					coroutine.resume(saveResourceCoroutine)
-				elseif (coroutine.status(saveResourceCoroutine) == "dead") then
+				local status = saveResourceCoroutine and coroutine.status(saveResourceCoroutine)
+				if ( status == "suspended" ) then
+					resumeEditorCoroutine(saveResourceCoroutine, clearSaveResourceState)
+				elseif ( status == "dead" ) then
 					saveResourceCoroutine = nil
 				end
 			end, 200, 1)
@@ -460,9 +491,10 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	for i, element in ipairs(rootElements) do
 		if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 			setTimer(function()
-				if (coroutine.status(saveResourceCoroutine) == "suspended") then
-					coroutine.resume(saveResourceCoroutine)
-				elseif (coroutine.status(saveResourceCoroutine) == "dead") then
+				local status = saveResourceCoroutine and coroutine.status(saveResourceCoroutine)
+				if ( status == "suspended" ) then
+					resumeEditorCoroutine(saveResourceCoroutine, clearSaveResourceState)
+				elseif ( status == "dead" ) then
 					saveResourceCoroutine = nil
 				end
 			end, 200, 1)
@@ -519,7 +551,7 @@ function quickSave(saveAs, dump, fromSaveAs)
 		return
 	end
 	quickSaveCoroutine = coroutine.create(quickSaveCoroutineFunction)
-	coroutine.resume(quickSaveCoroutine, saveAs, dump, client)
+	resumeEditorCoroutine(quickSaveCoroutine, clearQuickSaveState, saveAs, dump, client)
 end
 addEventHandler("quickSaveResource", root, quickSave)
 
@@ -568,9 +600,10 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		for i, element in ipairs(getElementChildren(baseElement)) do  --Find parents to start with
 			if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 				setTimer(function()
-					if (coroutine.status(quickSaveCoroutine) == "suspended") then
-						coroutine.resume(quickSaveCoroutine)
-					elseif (coroutine.status(quickSaveCoroutine) == "dead") then
+					local status = quickSaveCoroutine and coroutine.status(quickSaveCoroutine)
+					if ( status == "suspended" ) then
+						resumeEditorCoroutine(quickSaveCoroutine, clearQuickSaveState)
+					elseif ( status == "dead" ) then
 						quickSaveCoroutine = nil
 					end
 				end, 200, 1)
@@ -615,9 +648,10 @@ function doQuickSaveCoroutineFunction(saveAs, dump, client)
 		for i, element in ipairs(rootElements) do
 			if (getTickCount() > tick + 200) or ( DEBUG_LOADSAVE and i < 40 ) then
 				setTimer(function()
-					if (coroutine.status(quickSaveCoroutine) == "suspended") then
-						coroutine.resume(quickSaveCoroutine)
-					elseif (coroutine.status(quickSaveCoroutine) == "dead") then
+					local status = quickSaveCoroutine and coroutine.status(quickSaveCoroutine)
+					if ( status == "suspended" ) then
+						resumeEditorCoroutine(quickSaveCoroutine, clearQuickSaveState)
+					elseif ( status == "dead" ) then
 						quickSaveCoroutine = nil
 					end
 				end, 200, 1)
@@ -762,7 +796,7 @@ function (gamemodeName)
 	g_restoreEDF = nil
 	triggerClientEvent ( root, "suspendGUI", client )
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
-	local success = coroutine.resume(saveResourceCoroutine, TEST_RESOURCE, true, nil, client, gamemodeName)
+	local success = resumeEditorCoroutine(saveResourceCoroutine, clearSaveResourceState, TEST_RESOURCE, true, nil, client, gamemodeName)
 	if ( not success ) then
 		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
 		"Dummy 'editor_test' resource may be corrupted!" )
