@@ -1,33 +1,50 @@
 function getText ( ... )
-    local entry = getUserLanguage()
+    local language = getUserLanguage()
+    local entry = getLanguageEntry(language)
+    local path = {...}
 
     if not entry then
         return false
     end
 
-    for i,tab in ipairs{...} do
+    for i, tab in ipairs(path) do
+        if entry and entry[tab] ~= nil then
+            entry = entry[tab]
+        else
+            -- check the default language (English) if the key doesn't exist in the user's language
+            local defaultEntry = getLanguageEntry("english")
+            for _, p in ipairs(path) do
+                defaultEntry = defaultEntry and defaultEntry[p]
+            end
 
-        entry = entry[tab]
+            -- debug missing language entry to help developers
+            local missingPath = table.concat(path, ".")
+            outputDebugString("No language entry in " .. language .. ": " .. missingPath, 2)
 
-        if not entry then
-            local path = table.concat ( {...}, "." )
-            outputDebugString ( "No language entry in " .. getUserConfig ("language") .. ": ".. path, 2)
+            if not defaultEntry then
+                -- If missing in both, return the path. can give user an idea of what was supposed to be said
+                return missingPath
+            end
 
-            -- Returning path is more friendly, helps developer find source of issue and can give user an idea of what was supposed to be said
-            return path
-
-        elseif type ( entry ) == "string" then
-            return entry
+            if type(defaultEntry) == "string" then
+                -- return with [en]
+                return defaultEntry .. " [en]"
+            end
         end
+    end
 
+    if type(entry) == "string" then
+        return entry
     end
 
     if DEBUGMODE then
-        error ( "No valid arguments were passed!", 2 )
+        error("No valid arguments were passed!", 2)
     end
 
     return ""
 end
+
+
 
 
 function getHandlingPropertyFriendlyName ( property )
@@ -590,12 +607,20 @@ end
 function getUserLanguage ( )
     local config = getUserConfig ( "language" )
 
-    if config and guiLanguage[config] then
-        return guiLanguage[config]
+    if config then
+        return config
     end
 
     setUserConfig("language", "english")
-    return guiLanguage.english
+    return "english"
+end
+
+function getLanguageEntry(language)
+    if not language or not guiLanguage[language] then
+        return guiLanguage.english
+    end
+
+    return guiLanguage[language]
 end
 
 
@@ -632,4 +657,20 @@ addEventHandler ( "updateClientRights", root, updateRights )
 _setVehicleLocked = setVehicleLocked
 function setVehicleLocked(vehicle, state)
 	return triggerServerEvent("vehicleLockRequest", localPlayer, vehicle, state)
+end
+
+
+function refreshSavesGridlist()
+    local content = heditGUI.viewItems.save.guiItems
+    
+    guiGridListClear ( content.grid )
+    guiResetStaticInfoText()
+
+    local saves = getClientSaves ( )
+    for name,info in pairs ( saves ) do
+        local row = guiGridListAddRow ( content.grid )
+        local model = getVehicleNameFromModel ( tonumber ( info.model ) )
+        guiGridListSetItemText ( content.grid, row, 1, info.name, false, false )
+        guiGridListSetItemText ( content.grid, row, 2, model, false, false )
+    end
 end

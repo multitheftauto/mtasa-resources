@@ -55,8 +55,8 @@ function aReport.Close(closeCursor)
     end
 end
 
-function aClientReportClick(button)
-    if (button == "left") then
+function aClientReportClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aReport.Accept) then
             if ((string.len(guiGetText(aReport.Subject)) < 1) or (string.len(guiGetText(aReport.Message)) < 5)) then
                 messageBox("Subject/Message missing or too short.", MB_ERROR)

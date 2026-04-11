@@ -97,8 +97,8 @@ function aWeapon.onGUIChange()
     end
 end
 
-function aWeapon.onClick(button)
-    if (button == "left") then
+function aWeapon.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aWeapon.Accept) then
             if (tonumber(guiGetText(aWeapon.ID))) then
                 local ammo = tonumber(guiGetText(aWeapon.Ammo)) or DEFAULT_AMMO_AMOUNT
@@ -162,7 +162,7 @@ function aWeapon.Refresh()
         local weapons = {}
         for name, group in pairs(aWeapon.weapons) do
             for _, vehicle in ipairs(group) do
-                if vehicle.id:find(filter) or vehicle.name:lower():find(filter) then
+                if vehicle.id:find(filter, 1, true) or vehicle.name:lower():find(filter, 1, true) then
                     if (not weapons[name]) then
                         weapons[name] = {}
                     end
@@ -186,7 +186,7 @@ function aWeapon.Refresh()
             end
         end
         for id, weaponName in pairs(weapons) do
-            if id:find(filter) or weaponName:lower():find(filter) then
+            if id:find(filter, 1, true) or weaponName:lower():find(filter, 1, true) then
                 local row = guiGridListAddRow(aWeapon.List)
                 guiGridListSetItemText(aWeapon.List, row, 1, id, false, true)
                 guiGridListSetItemText(aWeapon.List, row, 2, weaponName, false, false)

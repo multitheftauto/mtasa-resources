@@ -19,6 +19,19 @@ function setPlayerSpeakerData(playerElement, speakerData)
 	return true
 end
 
+function updateSpeakerVolume(playerElement, speakerVolume)
+	local playerSpeakerData = getPlayerSpeakerData(playerElement)
+
+	if (not playerSpeakerData) then
+		return false
+	end
+
+	playerSpeakerData.speakerVolume = speakerVolume
+	triggerClientEvent(root, "onClientSetSpeakerVolume", playerElement, speakerVolume)
+
+	return true
+end
+
 function getPlayerSpeakerData(playerElement)
 	local validElement = isElement(playerElement)
 
@@ -62,7 +75,7 @@ function isObjectSpeaker(objectElement)
 		return false
 	end
 
-	for playerElement, speakerData in pairs(playerSpeakers) do
+	for _, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
 		local matchingElement = (speakerBox == objectElement)
 
@@ -74,7 +87,7 @@ function isObjectSpeaker(objectElement)
 	return false
 end
 
-function onServerCreateSpeaker(streamURL)
+function onServerCreateSpeaker(streamURL, speakerVolume)
 	if (not client) then
 		return false
 	end
@@ -88,6 +101,12 @@ function onServerCreateSpeaker(streamURL)
 	local validStreamURL = verifyRadioStreamURL(streamURL)
 
 	if (not validStreamURL) then
+		return false
+	end
+
+	local validVolume = verifyRadioVolume(speakerVolume)
+
+	if (not validVolume) then
 		return false
 	end
 
@@ -117,12 +136,41 @@ function onServerCreateSpeaker(streamURL)
 		speakerStreamURL = streamURL,
 		speakerSoundMaxDistance = RADIO_MAX_SOUND_DISTANCE,
 		speakerPaused = false,
+		speakerVolume = speakerVolume,
 	}
 
 	setPlayerSpeakerData(client, speakerData)
 end
 addEvent("onServerCreateSpeaker", true)
 addEventHandler("onServerCreateSpeaker", root, onServerCreateSpeaker)
+
+function onServerSetSpeakerVolume(speakerVolume)
+	if (not client or client ~= source) then
+		return false
+	end
+
+	local createDelayPassed = getOrSetPlayerDelay(client, "volume", RADIO_VOLUME_DELAY)
+
+	if (not createDelayPassed) then
+		return false
+	end
+
+	local validVolume = verifyRadioVolume(speakerVolume)
+
+	if (not validVolume) then
+		return false
+	end
+
+	local speakerData = playerSpeakers[client]
+
+	if (not speakerData) then
+		return false
+	end
+
+	updateSpeakerVolume(client, speakerVolume)
+end
+addEvent("onServerSetSpeakerVolume", true)
+addEventHandler("onServerSetSpeakerVolume", root, onServerSetSpeakerVolume)
 
 function onServerToggleSpeaker()
 	if (not client) then

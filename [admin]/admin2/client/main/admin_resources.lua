@@ -72,7 +72,7 @@ function aResourcesTab.Create(tab)
     end
 end
 
-function aResourcesTab.onContextClick(button)
+function aResourcesTab.onContextClick(button, state)
     local translator = {
         [aResourcesTab.ContextStart] = aResourcesTab.ResourceStart,
         [aResourcesTab.ContextRestart] = aResourcesTab.ResourceRestart,
@@ -80,7 +80,7 @@ function aResourcesTab.onContextClick(button)
     }
     if (translator[source]) then
         source = translator[source]
-        aResourcesTab.onClientClick(button)
+        aResourcesTab.onClientClick(button, state)
     end
 end
 
@@ -100,8 +100,8 @@ function aResourcesTab.ApplyFilter(filter)
     aResourcesTab.listResources(type)
 end
 
-function aResourcesTab.onClientClick(button)
-    if (button == "left") then
+function aResourcesTab.onClientClick(button, state)
+    if (button == "left" and state == "up") then
         if
             ((source == aResourcesTab.ResourceStart) or (source == aResourcesTab.ResourceRestart) or
                 (source == aResourcesTab.ResourceStop))
@@ -238,7 +238,7 @@ function aResourcesTab.listResources(type)
         filter = nil
     end
     for id, resource in ipairs(temp) do
-        if (filter and resource.name:lower():find(filter:lower())) or (not filter) then
+        if (filter and resource.name:lower():find(filter:lower(), 1, true)) or (not filter) then
             guiGridListAddRow(resources, resource.name, resource.state)
         end
     end

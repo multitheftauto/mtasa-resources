@@ -38,7 +38,7 @@ function aPlayerWarp(player)
 end
 
 function aPlayerWarpClose(destroy)
-    if ((destroy) --[[or (guiCheckBoxGetSelected(aPerformanceWarp))]]) then
+    if (destroy) then
         if (aWarpForm) then
             removeEventHandler("onClientGUIDoubleClick", aWarpForm, aClientWarpDoubleClick)
             removeEventHandler("onClientGUIClick", aWarpForm, aClientWarpClick)
@@ -73,7 +73,7 @@ function aPlayerWarpToPosition()
 end
 
 function aPlayerWarpToPositionClose(destroy)
-    if ((destroy) --[[or (aPerformanceWarp and guiCheckBoxGetSelected(aPerformanceWarp))--]]) then
+    if (destroy) then
         if (aWarpToPositionForm) then
             removeEventHandler("onClientGUIDoubleClick", aWarpToPositionForm, aClientWarpDoubleClick)
             removeEventHandler("onClientGUIClick", aWarpToPositionForm, aClientWarpClick)
@@ -158,7 +158,7 @@ function aClientWarpDoubleClick(button)
 end
 
 function aClientWarpClick(button, state, absX, absY)
-    if (button == "left") then
+    if (button == "left" and state == "up") then
         -- Player Warp Management
         if (source == aWarpSelect) then
             if (guiGridListGetSelectedItem(aWarpList) ~= -1) then

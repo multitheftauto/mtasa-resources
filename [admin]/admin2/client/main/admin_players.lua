@@ -137,13 +137,13 @@ function aPlayersTab.Create(tab)
     end)
 end
 
-function aPlayersTab.onContextClick(button)
+function aPlayersTab.onContextClick(button, state)
     local translator = {
         [aPlayersTab.ContextKick] = aPlayersTab.Kick
     }
     if (translator[source]) then
         source = translator[source]
-        aPlayersTab.onClientClick(button)
+        aPlayersTab.onClientClick(button, state)
     elseif (source == aPlayersTab.ContextCopy) then
         if (contextSource) then
             local copy = string.sub(guiGetText(contextSource), guiGetText(contextSource):match("%w+:"):len() + 2)
@@ -152,8 +152,8 @@ function aPlayersTab.onContextClick(button)
     end
 end
 
-function aPlayersTab.onClientClick(button)
-    if (button == "left") then
+function aPlayersTab.onClientClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aPlayersTab.Messages) then
             aMessages.Open()
         elseif (getElementType(source) == "gui-button") then
@@ -174,12 +174,11 @@ function aPlayersTab.onClientClick(button)
                         guiComboBoxGetItemText(aPlayersTab.SlapOptions, guiComboBoxGetSelected(aPlayersTab.SlapOptions))
                     )
                 elseif (source == aPlayersTab.Mute) then
-                    triggerServerEvent(
-                        "aPlayer",
-                        localPlayer,
-                        player,
-                        iif(aPlayers[player].mute, "unmute", "mute")
-                    )
+                    if aPlayers[player].mute then
+                        triggerServerEvent(EVENT_MUTE, localPlayer, "unmute", {serial = getPlayerSerial(player)})
+                    else
+                        aMute.Show(player)
+                    end
                 elseif (source == aPlayersTab.Freeze) then
                     triggerServerEvent(
                         "aPlayer",
@@ -263,16 +262,16 @@ function aPlayersTab.onClientClick(button)
                 end
             end
         elseif (source == aPlayersTab.AnonAdmin) then
-            setElementData(localPlayer, "AnonAdmin", guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
+            triggerServerEvent(EVENT_ANONYMOUS_UPDATE, localPlayer, guiCheckBoxGetSelected(aPlayersTab.AnonAdmin))
         elseif (source == aPlayersTab.ColorCodes) then
             aPlayersTab.Refresh()
             aSetSetting('hideColorCodes', guiCheckBoxGetSelected(source))
         elseif (source == aPlayersTab.SensitiveData) then
-            local state = guiCheckBoxGetSelected(source)
-            aSetSetting('hideSensitiveData', state)
+            local hideSensitiveData = guiCheckBoxGetSelected(source)
+            aSetSetting('hideSensitiveData', hideSensitiveData)
             for k, v in ipairs(aAdminMain.Tabs) do
                 if aAdminMain.BlockedTabsBySensitiveData[v.Acl] then
-                    guiSetEnabled(v.Tab, not state)
+                    guiSetEnabled(v.Tab, not hideSensitiveData)
                 end
             end
             if isElement(aServerTab.Password) then
@@ -537,7 +536,7 @@ function aPlayersTab.Refresh()
     guiSetProperty(aPlayersTab.PlayerList, "SortDirection", "None")
     for id, player in ipairs(getElementsByType("player")) do
         local name = getPlayerName(player)
-        if name:find(filter) or name:lower():find(filter) then
+        if name:find(filter, 1, true) or name:lower():find(filter, 1, true) then
             if (strip) then
                 name = stripColorCodes(name)
             end

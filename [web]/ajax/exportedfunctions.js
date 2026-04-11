@@ -18,7 +18,7 @@ if querystring["resource"] ~= "" then
 
 				function ( error ) /* called if an error occurs, 'error' contains a text message of the error */
 				{
-					alert("An error occured while calling '<* = v *>':\n\n" + error);
+					alert("An error occurred while calling '<* = v *>':\n\n" + error);
 				},
 				args);
 			}

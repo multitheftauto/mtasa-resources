@@ -1408,7 +1408,7 @@ end
 
 function setAnonAdmin( bOn )
 	guiCheckBoxSetSelected ( aTab1.AnonAdmin, bOn )
-	setElementData( localPlayer, "AnonAdmin", bOn )
+	triggerServerEvent("aAdmin", localPlayer, "adminpanel", "updateAnonymous", bOn)
 	aSetSetting ( "currentAnonState", bOn )
 end
 

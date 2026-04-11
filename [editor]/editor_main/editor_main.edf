@@ -11,6 +11,11 @@
 		<data name="collisions" type="selection:true,false" description="Object collisions" required="false" default="true" />
 		<data name="breakable" type="selection:true,false" description="Object breakablity" required="false" default="true" />
 		<data name="frozen" type="selection:false,true" description="Frozen" required="false" default="false" />
+		<data name="moveX" persistDefault="false" type="number" description="Move offset along the X axis" required="false" default="0" />
+		<data name="moveY" persistDefault="false" type="number" description="Move offset along the Y axis" required="false" default="0" />
+		<data name="moveZ" persistDefault="false" type="number" description="Move offset along the Z axis" required="false" default="0" />
+		<data name="moveSpeed" persistDefault="false" type="integer" description="Movement speed" required="false" default="1" />
+		<data name="moveDelay" persistDefault="false" type="integer" description="Delay before moving again in miliseconds" required="false" default="0" />
 	</element>
 	<element name="removeWorldObject" friendlyname="World object remover" icon="client/images/icons/wor.png" shortcut="removeworld" minver="1.3.0">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />

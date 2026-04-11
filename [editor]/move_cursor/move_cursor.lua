@@ -279,7 +279,7 @@ function detachElement()
 		end
 		if (getElementType(selectedElement) == "object") then
 			scale = getObjectScale(selectedElement)
-			triggerServerEvent("syncProperty", localPlayer, "scale", {scale}, exports.edf:edfGetAncestor(selectedElement))
+			triggerServerEvent("syncProperty", localPlayer, "scale", scale, exports.edf:edfGetAncestor(selectedElement))
 		end
 	end
 	selectedElement = nil

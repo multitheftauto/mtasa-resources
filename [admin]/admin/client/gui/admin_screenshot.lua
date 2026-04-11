@@ -18,8 +18,9 @@ function aPlayerScreenShot (player)
 		aScreenShotList		= guiCreateGridList	( 0.03, 0.08, 0.70, 0.90, true, aScreenShotForm )
 		aScreenShotNew		= guiCreateButton	( 0.75, 0.08, 0.42, 0.09, "Take New", true, aScreenShotForm, "takescreenshot" )
 		aScreenShotDelete	= guiCreateButton	( 0.75, 0.18, 0.42, 0.09, "Delete", true, aScreenShotForm, "deletescreenshot" )
-		aScreenShotView		= guiCreateButton	( 0.75, 0.28, 0.42, 0.09, "View", true, aScreenShotForm, "viewscreenshot" )
-		aScreenShotRefresh	= guiCreateButton	( 0.75, 0.38, 0.42, 0.09, "Refresh", true, aScreenShotForm, "listscreenshots" )
+		aScreenShotDeleteAll= guiCreateButton	( 0.75, 0.28, 0.42, 0.09, "Delete All", true, aScreenShotForm, "deleteallscreenshot" )
+		aScreenShotView		= guiCreateButton	( 0.75, 0.38, 0.42, 0.09, "View", true, aScreenShotForm, "viewscreenshot" )
+		aScreenShotRefresh	= guiCreateButton	( 0.75, 0.48, 0.42, 0.09, "Refresh", true, aScreenShotForm, "listscreenshots" )
 		aScreenShotClose	= guiCreateButton	( 0.75, 0.88, 0.42, 0.09, "Close", true, aScreenShotForm )
 		guiGridListAddColumn(aScreenShotList,"Player",0.31 )
 		guiGridListAddColumn(aScreenShotList,"Admin",0.31 )
@@ -47,7 +48,7 @@ function aPlayerScreenShotClose ()
 		removeEventHandler ( "onClientGUIClick", aScreenShotForm, aScreenShotsClick )
 		removeEventHandler ( "onClientGUIDoubleClick", aScreenShotForm, aScreenShotsDoubleClick )
 		destroyElement ( aScreenShotForm )
-		aScreenShotForm,aScreenShotList,aScreenShotNew,aScreenShotDelete,aScreenShotView,aScreenShotRefresh,aScreenShotClose,aScreenShotForm = nil,nil,nil,nil,nil,nil,nil,nil
+		aScreenShotForm,aScreenShotList,aScreenShotNew,aScreenShotDelete,aScreenShotDeleteAll,aScreenShotView,aScreenShotRefresh,aScreenShotClose,aScreenShotForm = nil,nil,nil,nil,nil,nil,nil,nil,nil
 	end
 end
 
@@ -79,6 +80,9 @@ function aScreenShotsClick (button)
 				triggerServerEvent("aScreenShot",localPlayer,"delete",guiGridListGetItemData(aScreenShotList,row,1))
 				guiGridListRemoveRow(aScreenShotList,row)
 			end
+		elseif source == aScreenShotDeleteAll then
+			triggerServerEvent("aScreenShot",localPlayer,"deleteall")
+			guiGridListClear(aScreenShotList)
 		elseif source == aScreenShotRefresh then
 			aScreenShotsRefresh()
 		elseif source == aScreenShotView then

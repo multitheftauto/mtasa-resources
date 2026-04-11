@@ -246,7 +246,7 @@ function openResource( resourceName, onStart )
 				newEDF.addedEDF = split(usedDefinitions, 44)
 				--  Remove the added EDFs from the available
 				table.subtract(newEDF.availEDF, newEDF.addedEDF)
-				-- Un/Load the neccessary definitions
+				-- Un/Load the necessary definitions
 				reloadEDFDefinitions(newEDF,true)
 			end
 			local mapElement = loadMapData ( mapNode, mapContainer, false )
@@ -664,7 +664,8 @@ function createElementAttributesForSaving(xmlNode, element)
 	-- Add an ID attribute first off
 	xmlNodeSetAttribute(elementNode, "id", getElementID(element))
 	-- Dump raw properties from the getters
-	for dataField in pairs(loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data) do
+	local dataFields = loadedEDF[edf.edfGetCreatorResource(element)].elements[getElementType(element)].data
+	for dataField, dataDefinition in pairs(dataFields) do
 		if (dataField ~= "color1" and dataField ~= "color2" and dataField ~= "color3" and dataField ~= "color4") then
 			local value
 			if ( specialSyncers[dataField] ) then
@@ -673,7 +674,9 @@ function createElementAttributesForSaving(xmlNode, element)
 				value = edf.edfGetElementProperty(element, dataField)
 			end
 			if type(value) == "number" or type(value) == "string" then
-				xmlNodeSetAttribute(elementNode, dataField, value )
+				if dataDefinition.persistDefault == true or dataDefinition.default ~= value then
+					xmlNodeSetAttribute(elementNode, dataField, value )
+				end
 			end
 		end
 	end
@@ -687,7 +690,22 @@ function createElementAttributesForSaving(xmlNode, element)
 			posSetX, posSetY, posSetZ = true, true, true
 		elseif ( dataName == "rotation" ) then
 			if dataValue[4] == "ZYX" then
-				euler_ZYX_to_ZXY(dataValue)
+				local skipConversion = getElementType(element) == "vehicle"
+				if not skipConversion then
+					local creatorResource = edf.edfGetCreatorResource(element)
+					local children = creatorResource and loadedEDF[creatorResource] and loadedEDF[creatorResource].elements[getElementType(element)].children
+					if children then
+						for _, child in ipairs(children) do
+							if child.type == "vehicle" then
+								skipConversion = true
+								break
+							end
+						end
+					end
+				end
+				if not skipConversion then
+					euler_ZYX_to_ZXY(dataValue)
+				end
 			end
 			xmlNodeSetAttribute(elementNode, "rotX", toAttribute(round(dataValue[1], 3)))
 			xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
@@ -706,7 +724,10 @@ function createElementAttributesForSaving(xmlNode, element)
 		elseif ( dataName == "rotX" or dataName == "rotY" or dataName == "rotZ") then
 			xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 3)))
 		elseif ( dataName ~= "color1" and dataName ~= "color2" and dataName ~= "color3" and dataName ~= "color4" and ( not specialSyncers[dataName] or dataValue ~= getWorkingDimension() ) ) then
-			xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
+			local dataDefinition = dataFields[dataName]
+			if not dataDefinition or dataDefinition.persistDefault == true or dataDefinition.default ~= dataValue then
+				xmlNodeSetAttribute(elementNode, dataName, toAttribute(dataValue))
+			end
 		end
 	end
 	-- Ensure that the element has a position set, else the map file can't load
@@ -1026,9 +1047,8 @@ function onResourceStartOrStop(startedResource)
 	if startEvent then
 		local resourceName = getResourceName(startedResource)
 		local useLODs = get(resourceName..".useLODs")
-
+		local objectsTable = getElementsByType("object", source)
 		if useLODs then
-			local objectsTable = getElementsByType("object", source)
 
 			for objectID = 1, #objectsTable do
 				local objectElement = objectsTable[objectID]
@@ -1052,10 +1072,72 @@ function onResourceStartOrStop(startedResource)
 				end
 			end
 		end
+
+		for i = 1, #objectsTable do
+			local objectElement = objectsTable[i]
+			local x, y, z = getElementPosition(objectElement)
+			local offsetX = tonumber(getElementData(objectElement, "moveX"))
+			local offsetY = tonumber(getElementData(objectElement, "moveY"))
+			local offsetZ = tonumber(getElementData(objectElement, "moveZ"))
+			if (offsetX and math.abs(offsetX) > 0) or (offsetY and math.abs(offsetY) > 0) or (offsetZ and math.abs(offsetZ) > 0) then
+				if not offsetX then offsetX = 0 end
+				if not offsetY then offsetY = 0 end
+				if not offsetZ then offsetZ = 0 end
+
+				local speed = tonumber(getElementData(objectElement, "moveSpeed")) or 1
+				local delay = tonumber(getElementData(objectElement, "moveDelay")) or 0
+				local time = getDistanceBetweenPoints3D(x,y,z,x + offsetX,y + offsetY,z + offsetZ) / speed * 1000
+
+				local currentPosX, currentPosY, currentPosZ = getElementPosition(objectElement)
+				local endPosX = currentPosX + offsetX
+				local endPosY = currentPosY + offsetY
+				local endPosZ = currentPosZ + offsetZ
+				local properties = {
+					moveTime = time,
+					delay = delay,
+					initialPosX = currentPosX,
+					initialPosY = currentPosY,
+					initialPosZ = currentPosZ,
+					endPosX = endPosX,
+					endPosY = endPosY,
+					endPosZ = endPosZ,
+				}
+				if delay > 0 then
+					setTimer(onObjectReachedInitialPosition, delay, 1, objectElement, properties)
+				else
+					onObjectReachedInitialPosition(objectElement, properties)
+				end
+			end
+		end
 	end
 end
 addEventHandler("onResourceStart", resourceRoot, onResourceStartOrStop)
 addEventHandler("onResourceStop", resourceRoot, onResourceStartOrStop)
+
+function onObjectReachedEndPosition(objectElement, properties)
+	if not isElement(objectElement) then return end
+	stopObject(objectElement)
+	local time = properties.moveTime
+	local delay = properties.delay
+	local initialPosX = properties.initialPosX
+	local initialPosY = properties.initialPosY
+	local initialPosZ = properties.initialPosZ
+	moveObject(objectElement, time, initialPosX, initialPosY, initialPosZ)
+	setTimer(onObjectReachedInitialPosition, time + delay, 1, objectElement, properties)
+end
+
+function onObjectReachedInitialPosition(objectElement, properties)
+	if not isElement(objectElement) then return end
+	stopObject(objectElement)
+	local time = properties.moveTime
+	if not time then return end
+	local delay = properties.delay
+	local endPosX = properties.endPosX
+	local endPosY = properties.endPosY
+	local endPosZ = properties.endPosZ
+	moveObject(objectElement, time, endPosX, endPosY, endPosZ)
+	setTimer(onObjectReachedEndPosition, time + delay, 1, objectElement, properties)
+end
 
 local function onPlayerResourceStart(resourceElement)
 	local mapResource = resourceElement == resource

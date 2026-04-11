@@ -16,7 +16,7 @@
 -- add FF option in settings (done)
 -- add briefcases to places inaccessible by cars.. rooftops, interiors.. so people get out of their cars sometimes. maybe create a different map for that? (done)
 -- make waiting screens pretty, so players see it whenever they are not ready (kind of done, but doesn't always work)
--- add spectator mode? add click to spawn?? (no, forget it... well maybe as a seperate option selectable frmo the team menu)
+-- add spectator mode? add click to spawn?? (no, forget it... well maybe as a separate option selectable from the team menu)
 -- add time-limit? as it approaches, increase game speed? play sound from gta3?
 -- play objective complete sound on delivery
 -- IN TEAM MODE, CAN'T SEE OBJECTIVE MARKER AFTER FIRST DELIVERY (fixed)

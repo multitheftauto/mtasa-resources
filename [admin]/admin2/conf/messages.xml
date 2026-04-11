@@ -15,7 +15,7 @@
       <log>ADMIN: $admin has kicked $player ($data)</log>
     </group>
     <group action="mute" r="255" g="0" b="0">
-      <all>$player has been muted by $admin.</all>
+      <all>$player has been muted by $admin ($data).</all>
       <log>ADMIN: $admin has muted $player</log>
     </group>
     <group action="unmute" r="0" g="255" b="100">
@@ -222,6 +222,18 @@
     <group action="setfpslimit" r="225" g="170" b="90">
       <all>FPS limit set to '$data' by $admin</all>
       <log>ADMIN: $admin has set fps limit to '$data'</log>
+    </group>
+    <group action="setpingkicker" r="225" g="170" b="90">
+      <admin>Ping kicker set to '$data'</admin>
+      <log>ADMIN: $admin has set ping kicker to '$data'</log>
+    </group>
+    <group action="setfpskicker" r="225" g="170" b="90">
+      <admin>FPS kicker set to '$data'</admin>
+      <log>ADMIN: $admin has set fps kicker to '$data'</log>
+    </group>
+    <group action="setidlekicker" r="225" g="170" b="90">
+      <admin>Idle kicker set to '$data'</admin>
+      <log>ADMIN: $admin has set idle kicker to '$data'</log>
     </group>
     <group action="setblurlevel" r="225" g="170" b="90">
       <all>Blur level set to '$data' by $admin</all>

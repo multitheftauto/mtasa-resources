@@ -1,4 +1,4 @@
-tx,ty,tz = 91,100,502 --The position of 	the element
+tx,ty,tz = 100,100,15000 --The position of 	the element
 local hideX,hideY,hideZ = 0,0,0 --where to hide the local player
 local rz = 0 -- The current rotation
 local maxRadius = 5
@@ -23,6 +23,7 @@ function browserSetElementModel ( elemID, model )
 		setModel[elemID](model)
 	end
 end
+
 function setModel.vehicleID ( model )
 	local randomOffset = ((getTickCount() % 20) / 100) + 0.001
 
@@ -60,26 +61,31 @@ function setModel.vehicleID ( model )
 	setCameraMatrix ( tx - realDistance, ty, tz + elevation + randomOffset,
 	                  tx, ty + moveLeft, tz + randomOffset)
 end
+
 function setModel.objectID ( model )
 	local randomOffset = ((getTickCount() % 20) / 100) + 0.001
 
 	if not browser.mainElement then
-		browser.mainElement = createObject(model, tx, ty, tz, 0, 0, rz)
+		browser.mainElement = createObject(model, tx, ty, tz, 0, 0, rz, true)
+		setElementDoubleSided(browser.mainElement, guiCheckBoxGetSelected(browserGUI.doubleside))
 		setElementDimension ( browser.mainElement, BROWSER_DIMENSION )
 		setElementInterior(browser.mainElement, 14)
 	else
 		setElementModel(browser.mainElement, model)
 	end
 
-	setElementPosition(browser.mainElement, tx, ty, tz + randomOffset)
+	setElementPosition(browser.mainElement, tx, ty, tz)
 	setElementAlpha(browser.mainElement, 255)
 
-	local radius = getElementRadius(browser.mainElement)
-	browserElementLookOptions.distance = 14
-	setObjectScale ( browser.mainElement, maxRadius / radius )
-	setCameraMatrix ( tx - 17, ty, tz + 3 + randomOffset,
-			  tx, ty + 2, tz + randomOffset)
+	local a,b,c,d,e,f = getElementBoundingBox(browser.mainElement)
+	local radius = math.max(7, getElementRadius(browser.mainElement)*2.1)
+	radius = math.max(radius, math.sqrt((c*c)+(f*f))*2)
+	browserElementLookOptions.distance = radius
+	local offset = radius * 0.2
+	setCameraMatrix ( tx - radius - offset, ty + offset, tz + radius * 0.25,
+			  tx - offset, ty + offset, tz)
 end
+
 function setModel.skinID ( model )
 	local randomOffset = (getTickCount() % 20) / 100
 
@@ -108,9 +114,27 @@ function rotateMesh ()
 	if ( initiatedType ) == "vehicleID" then
 		setElementRotation ( browser.mainElement,0,0,newRotation)
 	elseif ( initiatedType ) == "objectID" then
-		setElementRotation ( browser.mainElement,0,0,newRotation)
+		_previewRotate ( browser.mainElement,newRotation)
 	elseif ( initiatedType ) == "skinID" then
-		setPedRotation ( browser.mainElement,newRotation )
+		setPedRotation ( browser.mainElement,newRotation)
 	end
 end
 
+function _previewRotate(object, rotation)
+	-- https://github.com/multitheftauto/mtasa-resources/commit/117759a6df540c21515d2666794e05dcf9c76254
+	local a,b,c,d,e,f = getElementBoundingBox(object)
+
+	local halfCenterX = (a + d) * 0.25
+	local halfCenterY = (b + e) * 0.25
+	local halfCenterZ = (c + f) * 0.25
+
+	local rad = math.rad(rotation)
+	local cZ, sZ = math.cos(rad), math.sin(rad)
+
+	local oX = halfCenterX*cZ - halfCenterY*sZ
+	local oY = halfCenterX*sZ + halfCenterY*cZ
+	local oZ = halfCenterZ
+
+	setElementPosition(object, tx - oX, ty - oY, tz - oZ)
+	setElementRotation(object, 0, 0, rotation)
+end
