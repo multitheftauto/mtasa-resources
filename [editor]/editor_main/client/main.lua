@@ -1501,18 +1501,8 @@ local function onRenderHighlight()
     local obj = getObjectFromCursor()
 
     if obj and obj ~= highlightedObject then
-        -- Reset previous object
-        if highlightedObject and isElement(highlightedObject) then
-            setElementAlpha(highlightedObject, 255)
-        end
-
         highlightedObject = obj
-        setElementAlpha(highlightedObject, 150) -- semi-transparent
-
     elseif not obj and highlightedObject then
-        if isElement(highlightedObject) then
-            setElementAlpha(highlightedObject, 255)
-        end
         highlightedObject = nil
     end
 
