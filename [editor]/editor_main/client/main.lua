@@ -1410,7 +1410,6 @@ end
 -- Extra: Highlight on hover (Transparency + Animated Color Box)
 -----------------------------------------------------------
 
-local screenW, screenH = guiGetScreenSize()
 local highlightedObject = nil
 
 -- HSV to RGB conversion
@@ -1436,26 +1435,6 @@ local function hsvToRgb(h, s, v)
     return r*255, g*255, b*255
 end
 
--- Get the object under the cursor
-local function getObjectFromCursor()
-    local cx, cy = getCursorPosition()
-    if not cx or not cy then return false end
-
-    local camX, camY, camZ = getCameraMatrix()
-    local worldX, worldY, worldZ = getWorldFromScreenPosition(cx*screenW, cy*screenH, 1000)
-
-    local hit, _, _, _, hitElement = processLineOfSight(
-        camX, camY, camZ,
-        worldX, worldY, worldZ,
-        true,true,true,true,true,true,true,true
-    )
-
-    if hit and hitElement and getElementType(hitElement) == "object" then
-        return hitElement
-    end
-    return false
-end
-
 -- Get object bounding box corners
 local function getObjectBoundingBox(obj)
     if not isElement(obj) then return false end
@@ -1477,7 +1456,7 @@ local function getObjectBoundingBox(obj)
 end
 
 -- Draw 3D bounding box lines
-local function drawBoundingBox(corners, r,g,b,a)
+local function drawBoundingBox(corners, r, g, b, a)
     if not corners then return end
     -- base
     dxDrawLine3D(corners[1][1],corners[1][2],corners[1][3], corners[2][1],corners[2][2],corners[2][3], tocolor(r,g,b,a), 2)
@@ -1498,7 +1477,10 @@ end
 
 -- Main render event
 local function onRenderHighlight()
-    local obj = getObjectFromCursor()
+    local obj = getTargetedElement()
+    if obj and getElementType(obj) ~= "object" then
+        obj = false
+    end
 
     if obj and obj ~= highlightedObject then
         highlightedObject = obj
