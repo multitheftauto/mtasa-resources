@@ -1410,7 +1410,10 @@ end
 -- Extra: Highlight on hover (Transparency + Animated Color Box)
 -----------------------------------------------------------
 
-local highlightedObject = nil
+local highlightedElement = nil
+local hoverBoundingBoxIgnoreMatrix = {
+    pickup = true
+}
 
 -- HSV to RGB conversion
 local function hsvToRgb(h, s, v)
@@ -1435,24 +1438,61 @@ local function hsvToRgb(h, s, v)
     return r*255, g*255, b*255
 end
 
--- Get object bounding box corners
-local function getObjectBoundingBox(obj)
-    if not isElement(obj) then return false end
-    local minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(obj)
-    if not minX then return false end
+local function getElementBoundingBoxCorners(element)
+    if not isElement(element) then return false end
+    if getElementDimension(element) ~= getElementDimension(localPlayer) then return false end
 
-    local x, y, z = getElementPosition(obj)
+    local x, y, z = edf.edfGetElementPosition(element)
+    if not x then return false end
 
-    return {
-        {x+minX, y+minY, z+minZ},
-        {x+maxX, y+minY, z+minZ},
-        {x+maxX, y+maxY, z+minZ},
-        {x+minX, y+maxY, z+minZ},
-        {x+minX, y+minY, z+maxZ},
-        {x+maxX, y+minY, z+maxZ},
-        {x+maxX, y+maxY, z+maxZ},
-        {x+minX, y+maxY, z+maxZ}
+    local minX, minY, minZ, maxX, maxY, maxZ = edf.edfGetElementBoundingBox(element)
+    if not minX then
+        local radius = edf.edfGetElementRadius(element)
+        if radius then
+            minX, minY, minZ, maxX, maxY, maxZ = -radius, -radius, -radius, radius, radius, radius
+        else
+            return false
+        end
+    end
+
+    local halfCenterX = (minX + maxX) * 0.25
+    local halfCenterY = (minY + maxY) * 0.25
+    local halfCenterZ = (minZ + maxZ) * 0.25
+
+    minX = minX - halfCenterX
+    minY = minY - halfCenterY
+    minZ = minZ - halfCenterZ
+    maxX = maxX - halfCenterX
+    maxY = maxY - halfCenterY
+    maxZ = maxZ - halfCenterZ
+
+    local relativeCorners = {
+        {minX, minY, minZ},
+        {maxX, minY, minZ},
+        {maxX, maxY, minZ},
+        {minX, maxY, minZ},
+        {minX, minY, maxZ},
+        {maxX, minY, maxZ},
+        {maxX, maxY, maxZ},
+        {minX, maxY, maxZ}
     }
+
+    local elementMatrix = getElementMatrix(element)
+    if elementMatrix and not hoverBoundingBoxIgnoreMatrix[getElementType(element)] then
+        for i, corner in ipairs(relativeCorners) do
+            relativeCorners[i] = {
+                corner[1] * elementMatrix[1][1] + corner[2] * elementMatrix[2][1] + corner[3] * elementMatrix[3][1] + elementMatrix[4][1],
+                corner[1] * elementMatrix[1][2] + corner[2] * elementMatrix[2][2] + corner[3] * elementMatrix[3][2] + elementMatrix[4][2],
+                corner[1] * elementMatrix[1][3] + corner[2] * elementMatrix[2][3] + corner[3] * elementMatrix[3][3] + elementMatrix[4][3]
+            }
+        end
+    else
+        for i, corner in ipairs(relativeCorners) do
+            relativeCorners[i] = {x + corner[1], y + corner[2], z + corner[3]}
+        end
+    end
+
+    return relativeCorners
 end
 
 -- Draw 3D bounding box lines
@@ -1478,24 +1518,20 @@ end
 -- Main render event
 local function onRenderHighlight()
     if not exports["editor_gui"]:sx_getOptionData("enableHoverBoundingBox") then
-        highlightedObject = nil
+        highlightedElement = nil
         return
     end
 
-    local obj = getTargetedElement()
-    if obj and getElementType(obj) ~= "object" then
-        obj = false
-    end
-
-    if obj and obj ~= highlightedObject then
-        highlightedObject = obj
-    elseif not obj and highlightedObject then
-        highlightedObject = nil
+    local element = getTargetedElement()
+    if element and element ~= highlightedElement then
+        highlightedElement = element
+    elseif not element and highlightedElement then
+        highlightedElement = nil
     end
 
     -- Draw animated bounding box
-    if highlightedObject and isElement(highlightedObject) then
-        local box = getObjectBoundingBox(highlightedObject)
+    if highlightedElement and isElement(highlightedElement) then
+        local box = getElementBoundingBoxCorners(highlightedElement)
         if box then
             local tick = getTickCount() / 2000 -- animation speed
             local r,g,b = hsvToRgb(tick % 1, 1, 1) -- rainbow color cycle
