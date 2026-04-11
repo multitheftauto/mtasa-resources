@@ -1477,6 +1477,11 @@ end
 
 -- Main render event
 local function onRenderHighlight()
+    if not exports["editor_gui"]:sx_getOptionData("enableHoverBoundingBox") then
+        highlightedObject = nil
+        return
+    end
+
     local obj = getTargetedElement()
     if obj and getElementType(obj) ~= "object" then
         obj = false
