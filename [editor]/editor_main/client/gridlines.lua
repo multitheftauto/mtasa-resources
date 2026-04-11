@@ -440,6 +440,8 @@ function renderHoverOverGridLines()
 
     -- Draw animated bounding box
     if highlightedElement and isElement(highlightedElement) then
+			return
+		end
         local box = getElementBoundingBoxCorners(highlightedElement)
         if box then
             local tick = getTickCount() / 2000 -- animation speed
