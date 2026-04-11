@@ -4,6 +4,9 @@ local strafespeed = 0
 local rotX, rotY = 0,0
 local velocityX, velocityY, velocityZ
 local width, height = guiGetScreenSize()
+local lastFrameTick = false
+local baseFrameTime = 1000 / 60
+local maxFrameFactor = 4
 
 -- configurable parameters
 local options = {
@@ -42,6 +45,19 @@ local controlToKey = {
 
 local mouseFrameDelay = 0
 
+local function getFrameFactor()
+    local currentTick = getTickCount()
+    if not lastFrameTick then
+        lastFrameTick = currentTick
+        return 1
+    end
+
+    local frameFactor = math.max((currentTick - lastFrameTick) / baseFrameTime, 0)
+    lastFrameTick = currentTick
+
+    return math.min(frameFactor, maxFrameFactor)
+end
+
 local mta_getKeyState = getKeyState
 function getKeyState(key)
 	if isMTAWindowActive() then
@@ -65,6 +81,8 @@ end
 -- PRIVATE
 
 local function freecamFrame ()
+    local frameFactor = getFrameFactor()
+
     -- work out an angle in radians based on the number of pixels the cursor has moved (ever)
     local cameraAngleX = rotX
     local cameraAngleY = rotY
@@ -88,8 +106,8 @@ local function freecamFrame ()
     end
 
 	if options.smoothMovement then
-		local acceleration = options.acceleration
-		local decceleration = options.decceleration
+		local acceleration = options.acceleration * frameFactor
+		local decceleration = options.decceleration * frameFactor
 
 	    -- Check to see if the forwards/backwards keys are pressed
 	    local speedKeyPressed = false
@@ -194,19 +212,19 @@ local function freecamFrame ()
     local normalZ = (camNormalizedAngleX * normalAngleY - camNormalizedAngleY * normalAngleX)
 
     -- Update the camera position based on the forwards/backwards speed
-    camPosX = camPosX + freeModeAngleX * speed
-    camPosY = camPosY + freeModeAngleY * speed
-    camPosZ = camPosZ + freeModeAngleZ * speed
+    camPosX = camPosX + freeModeAngleX * speed * frameFactor
+    camPosY = camPosY + freeModeAngleY * speed * frameFactor
+    camPosZ = camPosZ + freeModeAngleZ * speed * frameFactor
 
     -- Update the camera position based on the strafe speed
-    camPosX = camPosX + normalX * strafespeed
-    camPosY = camPosY + normalY * strafespeed
-    camPosZ = camPosZ + normalZ * strafespeed
+    camPosX = camPosX + normalX * strafespeed * frameFactor
+    camPosY = camPosY + normalY * strafespeed * frameFactor
+    camPosZ = camPosZ + normalZ * strafespeed * frameFactor
 
 	--Store the velocity
-	velocityX = (freeModeAngleX * speed) + (normalX * strafespeed)
-	velocityY = (freeModeAngleY * speed) + (normalY * strafespeed)
-	velocityZ = (freeModeAngleZ * speed) + (normalZ * strafespeed)
+	velocityX = (freeModeAngleX * speed * frameFactor) + (normalX * strafespeed * frameFactor)
+	velocityY = (freeModeAngleY * speed * frameFactor) + (normalY * strafespeed * frameFactor)
+	velocityZ = (freeModeAngleZ * speed * frameFactor) + (normalZ * strafespeed * frameFactor)
 
     -- Update the target based on the new camera position (again, otherwise the camera kind of sways as the target is out by a frame)
     camTargetX = camPosX + freeModeAngleX * 100
@@ -277,6 +295,7 @@ function setFreecamEnabled (x, y, z)
 	if (x and y and z) then
 	    setCameraMatrix ( x, y, z, nil, nil, nil, 0, options.fov )
 	end
+	lastFrameTick = false
 	addEventHandler("onClientRender", root, freecamFrame)
 	addEventHandler("onClientCursorMove",root, freecamMouse)
 	setElementData(localPlayer, "freecam:state", true)
