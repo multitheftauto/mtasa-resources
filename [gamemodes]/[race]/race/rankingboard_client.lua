@@ -27,16 +27,18 @@ function RankingBoard:setDirection(direction,plrcount)
 	end
 end
 
-function RankingBoard:add(name, time)
+function RankingBoard:add(name, time, instant)
 	local position
 	local y
 	local doBoardScroll = false
 	if self.direction == 'down' then
 		self.position = self.position + 1
+		local labelPosition = self.position
 		if self.position > maxPositions then
-			return
+			labelPosition = maxPositions + 1
+			doBoardScroll = true
 		end
-		y = topDistance + (self.position-1)*labelHeight
+		y = topDistance + (labelPosition-1)*labelHeight
 	elseif self.direction == 'up' then
 		self.position = self.position - 1
 		local labelPosition = self.position
@@ -73,10 +75,16 @@ function RankingBoard:add(name, time)
 		guiSetAlpha(posLabelShadow, 0)
 		guiSetAlpha(playerLabel, 0)
 		guiSetAlpha(playerLabelShadow, 0)
-		local anim = Animation.createNamed('race.boardscroll', self)
-		anim:addPhase({ from = 0, to = 1, time = 700, fn = RankingBoard.scroll, firstLabel = posLabel })
-		anim:addPhase({ fn = RankingBoard.destroyLastLabel, firstLabel = posLabel })
-		anim:play()
+		local phase = { firstLabel = posLabel, direction = self.direction }
+		if instant then
+			self:scroll(1, phase)
+			self:destroyLastLabel(phase)
+		else
+			local anim = Animation.createNamed('race.boardscroll', self)
+			anim:addPhase({ from = 0, to = 1, time = 700, fn = RankingBoard.scroll, firstLabel = posLabel, direction = self.direction })
+			anim:addPhase({ fn = RankingBoard.destroyLastLabel, firstLabel = posLabel })
+			anim:play()
+		end
 	end
 end
 
@@ -89,7 +97,11 @@ function RankingBoard:scroll(param, phase)
 	for i=0,#self.labels/4-1 do
 		for j=1,4 do
 			x = (j <= 2 and posLeftDistance or nameLeftDistance)
-			y = topDistance + ((maxPositions - i - 1) + param)*labelHeight
+			if phase.direction == 'down' then
+				y = topDistance + (i - param)*labelHeight
+			else
+				y = topDistance + ((maxPositions - i - 1) + param)*labelHeight
+			end
 			if j % 2 == 0 then
 				x = x + 1
 				y = y + 1
@@ -115,7 +127,7 @@ end
 
 function RankingBoard:addMultiple(items)
 	for i,item in ipairs(items) do
-		self:add(item.name, item.time)
+		self:add(item.name, item.time, true)
 	end
 end
 
