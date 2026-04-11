@@ -144,7 +144,8 @@ function loadXMLSettings()
 		local node = children[i]
 		local nodeName = xmlNodeGetName(node)
 		if not validNodes[nodeName] then
-			xmlDestroyNode(node)
+			--xmlDestroyNode(node) -- Disabled this and replaced it with a debug output because all this check does is delete new valid nodes when someone goes on an outdated version.
+			outputDebugString("Found an invalid settings node: "..tostring(nodeName))
 		end
 	end
 	xmlSaveFile(settingsXML)
