@@ -440,6 +440,8 @@ function renderHoverOverGridLines()
 
     -- Draw animated bounding box
     if highlightedElement and isElement(highlightedElement) then
+		-- Don't draw it if we are also showing the selected bounding box
+		if attachedToElement == highlightedElement and exports["editor_gui"]:sx_getOptionData("enableBox") then
 			return
 		end
         local box = getElementBoundingBoxCorners(highlightedElement)
