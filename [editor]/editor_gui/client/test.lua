@@ -273,3 +273,16 @@ addEventHandler ( "saveloadtest_return", root,
 		end
 	end
 )
+
+function isTesting()
+	local editor = getResourceFromName("editor_main")
+    if not editor or getResourceState(editor) ~= "running" then
+        return false
+    end
+	-- Full test?
+    if getElementData(getResourceRootElement(editor), "g_in_test") then
+        return true
+    end
+	-- Baisc test?
+	return inBasicTest
+end
