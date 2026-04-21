@@ -127,8 +127,9 @@ function getResourceSettings(resName, bCountOnly)
         if (allowedTypes[type(value)]) then
             if allowedAccess[string.sub(rawname, 1, 1)] then
                 count = count + 1
-                local temp = string.gsub(rawname, "[%*%#%@](.*)", "%1")
-                local name = string.gsub(temp, resName .. "%.(.*)", "%1")
+                local temp = string.gsub(rawname, '^[%*%#%@](.*)', '%1')
+                local safeResName = string.gsub(resName, '([^%w])', '%%%1')
+                local name = string.gsub(temp, '^' .. safeResName .. '%.(.*)$', '%1')
                 local bIsDefault = (temp == name)
                 if (not settings[name]) then
                     settings[name] = {}
