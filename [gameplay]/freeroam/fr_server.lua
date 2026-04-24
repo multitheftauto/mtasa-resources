@@ -1,13 +1,5 @@
 local g_PlayerData = {}
 local g_VehicleData = {}
-
-local function normalizeSkinId(skinid)
-	if tonumber(skinid) == 271 then
-		return 300
-	end
-
-	return skinid
-end
 local chatTime = {}
 local lastChatMessage = {}
 
@@ -296,7 +288,6 @@ addEventHandler('onPlayerGravInit', root,
 
 function setMySkin(skinid)
 	if not isElement(client) then return end
-	skinid = normalizeSkinId(skinid)
 	if getElementModel(client) == skinid then return end
 	if isPedDead(client) then
 		local x, y, z = getElementPosition(client)
@@ -325,12 +316,9 @@ function spawnMe(x, y, z)
 	end
 
 	if isPedTerminated(client) then
-		local skinid
-		repeat
-			skinid = normalizeSkinId(math.random(9, 288))
-		until spawnPlayer(client, x, y, z, 0, skinid)
+		repeat until spawnPlayer(client, x, y, z, 0, math.random(9, 288))
 	else
-		spawnPlayer(client, x, y, z, 0, normalizeSkinId(getPedSkin(client)))
+		spawnPlayer(client, x, y, z, 0, getPedSkin(client))
 	end
 
 	setCameraTarget(client, client)

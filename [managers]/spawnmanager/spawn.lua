@@ -3,14 +3,6 @@ local spawnWaveTimer = false
 local quedSpawns = {}
 addEvent ( "onSpawnpointUse" )
 
-local function normalizeSkinId(skin)
-	if tonumber(skin) == 271 then
-		return 300
-	end
-
-	return skin
-end
-
 function createSpawnpoint ( x, y, z, rot, skin, interior, dimension )
 	if not tonumber(x) then outputDebugString("createSpawnpoint: Bad 'x' position specified",0,255,128,0) return false end
 	if not tonumber(y) then outputDebugString("createSpawnpoint: Bad 'y' position specified",0,255,128,0) return false end
@@ -19,7 +11,7 @@ function createSpawnpoint ( x, y, z, rot, skin, interior, dimension )
 	if not tonumber(skin) then return false end
 	if not tonumber(interior) then return false end
 	if not tonumber(skin) then return false end
-	skin = normalizeSkinId(math.ceil(skin))
+	skin = math.ceil(skin)
 	local sp = createElement ( "spawnpoint" )
 	setElementData ( sp, "posX", x )
 	setElementData ( sp, "posY", y )
@@ -43,7 +35,7 @@ function setSpawnpointSkin ( spawnpoint, skin )
 	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointSkin: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
 	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointSkin: Bad element specified",0,255,128,0) return false end
 	if not tonumber(skin) then outputDebugString("setSpawnpointSkin: Bad skin id specified.",0,255,128,0) return false end
-	skin = normalizeSkinId(math.ceil(skin))
+	skin = math.ceil(skin)
 	setElementData ( spawnpoint, "skin", skin )
 	return true
 end
@@ -67,7 +59,7 @@ end
 function getSpawnpointSkin ( spawnpoint )
 	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointSkin: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
 	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointSkin: Bad element specified",0,255,128,0) return false end
-	return normalizeSkinId(getElementData ( spawnpoint, "skin" ) or 0)
+	return getElementData ( spawnpoint, "skin" ) or 0
 end
 
 function getSpawnpointTeam ( spawnpoint )
@@ -119,7 +111,6 @@ function spawnPlayerAtSpawnpoint ( player, spawnpoint, useWave )
 	local dimension = getElementData ( spawnpoint, "dimension" )
 	local team = getElementData ( spawnpoint, "team" )
 	if not ( skin ) then skin = 0 end
-	skin = normalizeSkinId(skin)
 	if not ( rot ) then rot = 0 end
 	if not ( interior ) then interior = 0 end
 	if not ( dimension ) then dimension = 0 end
@@ -147,7 +138,7 @@ end
 
 function waveSpawnPlayers ( )
 	for player, info in pairs(quedSpawns) do
-		spawnPlayer ( player, quedSpawns[player].x, quedSpawns[player].y, quedSpawns[player].z, quedSpawns[player].rot, normalizeSkinId(quedSpawns[player].skin), quedSpawns[player].interior, quedSpawns[player].dimension, quedSpawns[player].team )
+		spawnPlayer ( player, quedSpawns[player].x, quedSpawns[player].y, quedSpawns[player].z, quedSpawns[player].rot, quedSpawns[player].skin, quedSpawns[player].interior, quedSpawns[player].dimension, quedSpawns[player].team )
 	end
 	quedSpawns = {}
 end
