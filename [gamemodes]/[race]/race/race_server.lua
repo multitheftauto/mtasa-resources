@@ -20,6 +20,14 @@ g_Pickups = {}				-- { i = { position={x, y, z}, type=type, vehicle=vehicleID, p
 g_Players = {}				-- { i = player }
 g_Vehicles = {}				-- { player = vehicle }
 
+local function normalizeSkinId(skinid)
+    if tonumber(skinid) == 271 then
+        return 300
+    end
+
+    return skinid
+end
+
 
 
 addEventHandler('onPlayerJoin', root,
@@ -510,11 +518,14 @@ function joinHandlerBoth(player)
                 addPedClothes(player, texture, model, type)
             end
         elseif g_MapOptions.skins == 'random' then
-            repeat until spawnPlayer(player, x + 4, y, z, 0, math.random(9, 288))
+            local skinid
+            repeat
+                skinid = normalizeSkinId(math.random(9, 288))
+            until spawnPlayer(player, x + 4, y, z, 0, skinid)
         else
             local ok
             for i=1,20 do
-                ok = spawnPlayer(player, x + 4, y, z, 0, getRandomFromRangeList(g_MapOptions.skins))
+                ok = spawnPlayer(player, x + 4, y, z, 0, normalizeSkinId(getRandomFromRangeList(g_MapOptions.skins)))
                 if ok then break end
             end
             if not ok then
