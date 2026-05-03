@@ -32,6 +32,7 @@ local defaultControls = {
 {	name="mod_rotate",				key ="lctrl",			friendlyName="Rotate Modifier World Space"		},
 {	name="mod_rotate_local",		key ="rctrl",			friendlyName="Rotate Modifier Local Space"		},
 {	name="high_sensitivity_mode",	key ="e",				friendlyName="High Sensivity Mode"				},
+{	name="local_move_space_mode",	key ="v",				friendlyName="Local Move Space Mode"			},
 {	name="element_move_right",		key ="arrow_r",			friendlyName="Move Element Right / Yaw"			},
 {	name="element_move_left",		key ="arrow_l",			friendlyName="Move Element Left / Yaw"			},
 {	name="element_move_forward",	key ="arrow_u",			friendlyName="Move Element Forward / Pitch"		},
