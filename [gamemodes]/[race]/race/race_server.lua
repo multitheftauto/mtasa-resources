@@ -1,6 +1,6 @@
 allowRPC('setElementPosition')
 g_MotorBikeIDs = table.create({ 448, 461, 462, 463, 468, 471, 521, 522, 523, 581, 586 }, true)
-g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432 }, true)
+g_ArmedVehicleIDs = table.create({ 425, 447, 520, 430, 464, 432, 476 }, true)
 g_AircraftIDs = table.create({ 592, 577, 511, 548, 512, 593, 425, 520, 417, 487, 553, 488, 497, 563, 476, 447, 519, 460, 469, 513 }, true)
 g_RCVehicleIDs = table.create({ 441, 464, 465, 501, 564, 594 }, true)
 g_VehicleClothes = {
