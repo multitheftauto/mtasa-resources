@@ -27,15 +27,18 @@ function aGetResourceSettings( resName, bCountOnly )
 		return {}, count
 	end
 	local settings = {}
+	-- Escape special characters inside resName
+	local safeResName = string.gsub(resName, '([^%w])', '%%%1')
+	local namePattern = '^' .. safeResName .. '%.(.*)$'
 	-- Parse raw settings
 	for rawname,value in pairs(rawsettings) do
 		if allowedTypes[type(value)] then
 			if allowedAccess[string.sub(rawname,1,1)] then
 				count = count + 1
 				-- Remove leading '*','#' or '@'
-				local temp = string.gsub(rawname,'[%*%#%@](.*)','%1')
+				local temp = string.gsub(rawname, '^[%*%#%@](.*)', '%1')
 				-- Remove leading 'resName.'
-				local name = string.gsub(temp,resName..'%.(.*)','%1')
+				local name = string.gsub(temp, namePattern, '%1')
 				-- If name didn't have a leading 'resName.', then it must be the default setting
 				local bIsDefault = ( temp == name )
 				if settings[name] == nil then
