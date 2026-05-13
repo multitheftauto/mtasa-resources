@@ -1171,6 +1171,7 @@ function bindInput(commandsOnly)
 	bindControl("redo", "down", keyboardRedo)
 	bindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
 	bindControl("lock_selected_element", "down", lockSelectedElement)
+	bindControl("local_move_space_mode", "down", toggleLocalMoveSpaceMode)
 end
 
 function unbindInput(commandsOnly)
@@ -1192,6 +1193,7 @@ function unbindInput(commandsOnly)
 	unbindControl("redo", "down", keyboardRedo)
 	unbindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
 	unbindControl("lock_selected_element", "down", lockSelectedElement)
+	unbindControl("local_move_space_mode", "down", toggleLocalMoveSpaceMode)
 end
 
 -- get the point and element targeted by the camera
@@ -1327,6 +1329,10 @@ function toggleSensitivityMode ()
 		removeEventHandler ( "onClientElementStreamIn", root, streamInCollessObjects )
 		removeEventHandler ( "onClientElementStreamOut", root, streamOutCollessObjects )
 	end
+end
+
+function toggleLocalMoveSpaceMode()
+	exports.move_keyboard:toggleLocalMoveSpace()
 end
 
 function streamInCollessObjects()
