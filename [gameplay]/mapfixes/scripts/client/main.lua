@@ -1,7 +1,7 @@
 addEvent("mapfixes:client:loadAllComponents", true)
 addEvent("mapfixes:client:togOneComponent", true)
 
-local function loadOneMapFixComponent(name, data)
+local function loadOneMapFixComponent(name, data, wasToggled)
     -- Clear the previous elements if any
     local createdElements = data.createdElements
     if createdElements then
@@ -34,9 +34,22 @@ local function loadOneMapFixComponent(name, data)
             setGarageOpen(garageID, false)
         end
     end
+    -- Revert previously set model flags
+    local modelFlagsToSet = data.modelFlagsToSet
+    if modelFlagsToSet then
+        for _, v in pairs(modelFlagsToSet) do
+            engineSetModelFlag(v[1], v[2], not v[3])
+        end
+    end
 
     -- Don't proceed if the component is disabled
     if not data.enabled then
+
+        -- Force restream world after unloading this component
+        -- only if it was the only one toggled
+        if wasToggled then
+            engineRestreamWorld()
+        end
         return
     end
 
@@ -60,7 +73,6 @@ local function loadOneMapFixComponent(name, data)
                 if allocatedID then
                     if not data.allocatedIDs then data.allocatedIDs = {} end
                     data.allocatedIDs[#data.allocatedIDs + 1] = allocatedID
-                    
                     object = createObject(allocatedID, v.x, v.y, v.z, v.rx, v.ry, v.rz)
                     if object then
                         engineSetModelPhysicalPropertiesGroup(allocatedID, v.physicalPropertiesGroup)
@@ -94,6 +106,18 @@ local function loadOneMapFixComponent(name, data)
             setGarageOpen(garageID, true)
         end
     end
+    -- Set model flags if any
+    if modelFlagsToSet then
+        for _, v in pairs(modelFlagsToSet) do
+            engineSetModelFlag(v[1], v[2], v[3])
+        end
+    end
+
+    -- Force restream world after loading this component
+    -- only if it was the only one toggled
+    if wasToggled then
+        engineRestreamWorld()
+    end
 end
 
 local function loadMapFixComponents(mapFixComponentStatuses)
@@ -105,6 +129,7 @@ local function loadMapFixComponents(mapFixComponentStatuses)
             loadOneMapFixComponent(name, data)
         end
     end
+    engineRestreamWorld()
 end
 addEventHandler("mapfixes:client:loadAllComponents", localPlayer, loadMapFixComponents, false)
 
@@ -116,7 +141,7 @@ local function toggleOneMapFixComponent(name, enable)
         return
     end
     data.enabled = (enable == true)
-    loadOneMapFixComponent(name, data)
+    loadOneMapFixComponent(name, data, true)
     if eventName ~= "onClientResourceStop" then
         outputDebugString("Map fix component '" .. name .. "' is now " .. (data.enabled and "enabled" or "disabled"))
     end
@@ -127,5 +152,6 @@ local function unloadAllMapFixComponents()
     for name, _ in pairs(mapFixComponents) do
         toggleOneMapFixComponent(name, false)
     end
+    engineRestreamWorld()
 end
 addEventHandler("onClientResourceStop", resourceRoot, unloadAllMapFixComponents, false)
