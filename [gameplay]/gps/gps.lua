@@ -2,20 +2,10 @@ local floor = math.floor
 
 local file = fileOpen("vehiclenodes.json", true)
 local size = fileGetSize(file)
-local rawData = fromJSON(fileRead(file, size))
+vehicleNodes = fromJSON(fileRead(file, size))
 fileClose(file)
 
--- Since the JSON structure is wrapped inside an array [{...}], extract the first element!
-vehicleNodes = {}
-if rawData then
-	if rawData[1] then
-		vehicleNodes = rawData[1]
-	else
-		vehicleNodes = rawData
-	end
-end
-
-outputDebugString("GPS: " .. (localPlayer and "Client" or "Server") .. " database initialized successfully!")
+outputDebugString("GPS: " .. (localPlayer and "Client" or "Server") .. " database loaded successfully!")
 
 local function getAreaID(x, y)
 	return floor((y + 3000)/750)*8 + floor((x + 3000)/750)
@@ -23,21 +13,14 @@ end
 
 local function getNodeByID(db, nodeID)
 	local areaID = floor(nodeID / 65536)
-	local area = db[areaID] or db[tostring(areaID)]
-	if not area then return false end
-	return area[nodeID] or area[tostring(nodeID)]
+	return db[areaID][nodeID]
 end
 
 local function findNodeClosestToPoint(db, x, y, z)
 	local areaID = getAreaID(x, y)
-	
-	-- Fallback lookup for string-indexed areas from client-side JSON decoding
-	local nodesToSearch = db[areaID] or db[tostring(areaID)]
-	if not nodesToSearch then return false end
-	
 	local minDist, minNode
 	local nodeX, nodeY, dist
-	for id,node in pairs(nodesToSearch) do
+	for id,node in pairs(db[areaID]) do
 		nodeX, nodeY = node.x, node.y
 		dist = (x - nodeX)*(x - nodeX) + (y - nodeY)*(y - nodeY)
 		if not minDist or dist < minDist then
@@ -49,7 +32,6 @@ local function findNodeClosestToPoint(db, x, y, z)
 end
 
 local function calculatePath(db, nodeFrom, nodeTo)
-	if not nodeFrom or not nodeTo then return false end
 	local next = next
 
 	local g = { [nodeFrom] = 0 }		-- { node = g }
@@ -88,15 +70,13 @@ local function calculatePath(db, nodeFrom, nodeTo)
 
 		for id,distance in pairs(current.neighbours) do
 			local successor = getNodeByID(db, id)
-			if successor then
-				local successor_g = g[current] + distance*distance
-				if not g[successor] or g[successor] > successor_g then
-					setmetatable(successor, nodeMT)
+			local successor_g = g[current] + distance*distance
+			if not g[successor] or g[successor] > successor_g then
+				setmetatable(successor, nodeMT)
 
-					g[successor] = successor_g
-					openheap:insertvalue(successor)
-					parent[successor] = current
-				end
+				g[successor] = successor_g
+				openheap:insertvalue(successor)
+				parent[successor] = current
 			end
 		end
 	end
