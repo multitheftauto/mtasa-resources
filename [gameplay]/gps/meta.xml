@@ -8,6 +8,8 @@
 	<script src="client.lua" type="client"/>
 	<script src="linedrawer.lua" type="client"/>
 
+	<script src="server.lua" type="server"/>
+
 	<file src="overlay.fx"/>
 	<file src="vehiclenodes.json"
 
