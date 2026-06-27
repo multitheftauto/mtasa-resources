@@ -9,7 +9,7 @@
 **************************************]]
 
 local function hasClientPermissionTo(strRight)
-    if client and not hasObjectPermissionTo(client, strRight) then
+    if client and not hasObjectPermissionTo(client, strRight, false) then
         outputServerLog( ( "[ADMIN SECURITY]: Player %s [%s %s] attempted to perform admin data sync without proper rights (%s)" ):format( client.name, client.ip, client.serial, strRight ) )
         return false
     end
@@ -127,7 +127,7 @@ addEventHandler(
 
             for id, player in ipairs(aPlayers) do
                 tableOut[player] = {}
-                tableOut[player]["admin"] = hasObjectPermissionTo(player, "general.adminpanel")
+                tableOut[player]["admin"] = hasObjectPermissionTo(player, "general.adminpanel", false)
                 if (tableOut[player]["admin"]) then
                     tableOut[player]["chat"] = aPlayers[player]["chat"]
                 end
@@ -155,6 +155,9 @@ addEventHandler(
             tableOut["game"] = getGameType()
             tableOut["map"] = getMapName()
             tableOut["password"] = getServerPassword()
+            tableOut["pingkicker"] = tonumber(get("#pingkicker")) or 0
+            tableOut["fpskicker"] = tonumber(get("#fpskicker")) or 0
+            tableOut["idlekicker"] = tonumber(get("#idlekicker")) or 0
 
         elseif (type == SYNC_BAN) then
             if client then
@@ -185,6 +188,15 @@ addEventHandler(
             end
             tableOut["unread"] = unread
             tableOut["total"] = total
+        elseif (type == SYNC_MUTES) then
+            if not hasClientPermissionTo( "general.tab_mutes" ) then
+                return
+            end
+
+            for serial, muteData in pairs(aGetMutesList()) do
+                muteData.time = aGetRemainingUnmuteTime(serial) -- Update time
+                tableOut[serial] = muteData
+            end
         end
         triggerClientEvent(client or source, EVENT_SYNC, theSource, type, tableOut)
     end

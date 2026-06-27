@@ -38,7 +38,7 @@ function isAnonAdmin(aplayer)
         return false
     end
 
-    return (getElementData(player, "AnonAdmin") == true)
+    return aPlayers[aplayer] and aPlayers[aplayer]["AnonymousAdmin"] or false
 end
 
 -- Source: https://wiki.multitheftauto.com/wiki/FormatDate
@@ -63,4 +63,17 @@ function formatDate(format, escaper, timestamp)
 	end
 	
 	return formattedDate
+end
+
+function secondsToTimeDesc( seconds )
+    if seconds then
+        local tab = { {"day",60*60*24}, {"hour",60*60}, {"min",60}, {"sec",1} }
+        for i,item in ipairs(tab) do
+            local t = math.floor(seconds/item[2])
+            if t > 0 or i == #tab then
+                return tostring(t) .. " " .. item[1] .. (t~=1 and "s" or "")
+            end
+        end
+    end
+    return ""
 end

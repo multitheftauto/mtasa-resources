@@ -123,6 +123,27 @@ function edfGetElementRotation(element)
 	end
 end
 
+--Returns an element's scale, or its scale element data, or 1
+function edfGetElementScale(element)
+	local scale
+	if isBasic[getElementType(element)] then
+		scale = getElementData(element, "scale")
+	else
+		local handle = edfGetHandle(element)
+		if handle then
+			return getElementData(handle, "scale")
+		else
+			scale = getElementData(element, "scale")
+		end
+	end
+
+	if scale then
+		return scale
+	else
+		return 1
+	end
+end
+
 --Setsan element's position, or its posX/Y/Z element data
 function edfSetElementPosition(element, px, py, pz)
 	if px and py and pz then
@@ -159,6 +180,26 @@ function edfSetElementRotation(element, rx, ry, rz)
 				setElementData(element, "rotX", rx or 0)
 				setElementData(element, "rotY", ry or 0)
 				setElementData(element, "rotZ", rz or 0)
+				return true
+			end
+		end
+	end
+end
+
+--Sets an element's scale, or its scale element data
+function edfSetElementScale(element, scale)
+	if scale then
+		if type(scale) == "table" then
+			scale = scale[1]
+		end
+		if isBasic[getElementType(element)] then
+			return setElementData(element, "scale", scale)
+		else
+			local handle = edfGetHandle(element)
+			if handle then
+				return setElementData(handle, "scale", scale)
+			else
+				setElementData(element, "scale", scale)
 				return true
 			end
 		end

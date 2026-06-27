@@ -1,0 +1,24 @@
+<meta>
+    <info author="omar-o22, MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0.1" name="Chat manager" description="Chat manager with player/team colors and spam protection." type="script"/>
+	
+	<script src="chatManagerSettings.lua" type="server"/>
+	<script src="chatManagerUtility.lua" type="server"/>
+	<script src="chatManager.lua" type="server"/>
+
+	<settings>
+		<setting name="*mainChatDelay" value="1000"/> <!-- miliseconds between each message a player can send through main chat -->
+		<setting name="*omitChatDelayRights" value="command.mute,command.kick"/> <!-- required perms to not be affected by delay, if empty delay is disabled; comma separated, you can use multi or a single right(s) -->
+		<setting name="*blockRepeatMessages" value="true"/> <!-- prevent a player from saying the same thing twice in a row to spam -->
+		<setting name="*playerDefaultColor" value="0,255,255"/> <!-- default color for player if nameColorMode = "team" and not in team -->
+		<setting name="*removeHex" value="false"
+			friendlyname="Remove player name HEX color"
+			accept="true,false"
+			desc="Setting this to true will remove all HEX codes from player names in chat."
+		/>
+		<setting name="*nameColorMode" value="nametag"
+			friendlyname="Name Color Mode"
+			accept="nametag,team"
+			desc="Sets the color source for player names in chat."
+		/>
+	</settings>
+</meta>

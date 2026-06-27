@@ -1,0 +1,11 @@
+*** DISCLAIMER ***
+
+This resource is very barebone and should be used as a learning foundation for security on your server.
+It only covers the most basic server events for detecting abusive behaviour and logs them without taking any action.
+There are many more ways to combat bad players with server and client scripting adapted to your server/gamemode.
+
+As a general rule of thumb, following points should be considered:
+- never trust the client, if you accept data from client, validate it on server if they make any sense
+- use the variable "client" instead of "source" for custom server events, source can be faked, client not
+- try to avoid elementdatas, if you need elementdata to be synced to client and they should remain read only on client,
+	add them to tblProtectedElementDatas in players.lua to prevent clients from updating them

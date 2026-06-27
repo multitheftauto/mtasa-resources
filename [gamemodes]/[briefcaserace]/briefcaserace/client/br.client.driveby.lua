@@ -24,14 +24,14 @@ function toggleDriveBy()
 		-- Stolen from wiki --
 		----------------------
         -- we check if local player isn't currently doing a gang driveby
-        if not isPedDoingGangDriveby ( getLocalPlayer () ) then
+        if not isPedDoingGangDriveby ( localPlayer ) then
                 -- if he got driveby mode off, turn it on
-                setPedWeaponSlot ( getLocalPlayer (), 4 )
-                setPedDoingGangDriveby ( getLocalPlayer (), true )
+                setPedWeaponSlot ( localPlayer, 4 )
+                setPedDoingGangDriveby ( localPlayer, true )
         else
                 -- otherwise, turn it off
-                setPedWeaponSlot ( getLocalPlayer (), 0 )
-                setPedDoingGangDriveby ( getLocalPlayer (), false )
+                setPedWeaponSlot ( localPlayer, 0 )
+                setPedDoingGangDriveby ( localPlayer, false )
         end
 		----------------------
 end

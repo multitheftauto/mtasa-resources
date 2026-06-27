@@ -1,4 +1,4 @@
-<map edf:definitions="editor_main">
+<map edf:definitions="deathmatch,editor_main">
     <spawnpoint id="spawnpoint (1)" interior="0" skin="0" dimension="0" posX="-1517.5894775391" posY="108.93153381348" posZ="17.328125" rotX="0" rotY="0" rotZ="117.11505126953" />
     <spawnpoint id="spawnpoint (2)" interior="0" skin="7" dimension="0" posX="-1697.6484375" posY="76.0380859375" posZ="4.0494818687439" rotX="0" rotY="0" rotZ="270.67498779297" />
     <spawnpoint id="spawnpoint (3)" interior="0" skin="27" dimension="0" posX="-1682.0185546875" posY="-112.748046875" posZ="4.0546860694885" rotX="0" rotY="0" rotZ="0" />

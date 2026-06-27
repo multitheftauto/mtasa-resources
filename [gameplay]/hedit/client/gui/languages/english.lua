@@ -62,6 +62,14 @@ guiLanguage.english = {
         warning = "Warning!",
         error = "Error!"
     },
+
+    --Warning button strings
+    warningButtons = {
+        yes = "Yes",
+        no = "No",
+        ok = "Ok",
+    },
+
     --Strings for the buttons at the top
     menubar = {
         handling = "Handling",
@@ -151,14 +159,14 @@ guiLanguage.english = {
             shortname = "Saves",
             longname = "Load or save handling settings.",
             itemtext = {
-                nameLabel = "Name",
-                descriptionLabel = "Description",
                 saveButton = "Save",
                 loadButton = "Load",
                 deleteButton = "Delete",
                 grid = "",
-                nameEdit = "",
-                descriptionEdit = ""
+                nameColumn = "Name",
+                modelColumn = "Model",
+                nameEdit = "Name",
+                descriptionEdit = "Description"
             }
         },
         import = {

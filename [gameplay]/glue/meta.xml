@@ -1,0 +1,9 @@
+<meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.3.1" name="Glue" description="Allows player/vehicle to attach to vehicles" type="script"/>
+
+	<script src="config/ShVehicleAttachConfig.lua" type="shared" cache="false"/>
+
+	<script src="[!config]**/Sh*.lua" type="shared" cache="false"/>
+	<script src="**/C*.lua" type="client" cache="false"/>
+	<script src="**/S[!h]*.lua" type="server"/>
+</meta>

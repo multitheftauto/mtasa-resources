@@ -122,8 +122,8 @@ function aMessageBox.Accept(key, state, result)
     end
 end
 
-function aMessageBox.onClick(button)
-    if (button == "left") then
+function aMessageBox.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aMessageBox.No) then
             aMessageBox.Result = false
             aMessageBox.Close(false)

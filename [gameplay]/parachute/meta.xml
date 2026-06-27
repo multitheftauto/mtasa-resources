@@ -9,7 +9,6 @@
 	<script src="skydiving_cl.lua" type="client"/>
 	<script src="openChute.lua" type="client"/>
 	<script src="client_anim.lua" type="client"/>
-	<file src="parachuteopen.mp3" />
 
 	<export function="removeParachute" type="client"/>
 	<export function="stopSkyDiving" type="client"/>

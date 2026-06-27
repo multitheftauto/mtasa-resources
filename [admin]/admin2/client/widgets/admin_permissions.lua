@@ -76,8 +76,8 @@ function aPermissions.Close(destroy)
     aPermissions.SelectedPlayer = nil
 end
 
-function aPermissions.onClick(button)
-    if (button == 'left') then
+function aPermissions.onClick(button, state)
+    if (button == 'left' and state == "up") then
         if (source == aPermissions.Hide) then
             aPermissions.Close()
         elseif (source == aPermissions.Update) then

@@ -1,7 +1,7 @@
 local vehicleLogs = {}
 
 function loadHandlingLog ( )
-    local data = getElementData ( root, "hedit:vehicleLogs" )
+    local data = getElementData ( root, "hedit:vehicleLogs" ) -- retrieve stashed vehicleLogs from root element data (if it exists)
 
     if data then
         vehicleLogs = data
@@ -12,7 +12,7 @@ end
 
 
 function unloadHandlingLog ( )
-    setElementData ( root, "hedit:vehicleLogs", vehicleLogs, false )
+    setElementData ( root, "hedit:vehicleLogs", vehicleLogs, false, "deny") -- stash vehicleLogs as root element data so it can be recovered on next start
 
     return true
 end
@@ -109,7 +109,7 @@ function uploadFullLog ( vehicle )
         return false
     end
 
-    triggerClientEvent ( client, "receiveFullLog", client, getElementData(root,"hedit:vehicleLogs")[vehicle] )
+    triggerClientEvent ( client, "receiveFullLog", client, vehicleLogs[vehicle] )
     return true
 end
 addEvent ( "requestFullLog", true )

@@ -79,8 +79,8 @@ function aInputBox.onAccepted()
     aInputBox.Close(false)
 end
 
-function aInputBox.onClick(button)
-    if (button == "left") then
+function aInputBox.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aInputBox.Ok) then
             aInputBox.Result = true
             aInputBox.Close(false)

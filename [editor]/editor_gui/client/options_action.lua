@@ -11,6 +11,10 @@ function optionsActions.enableBox(value)
 	optionsData.enableBox = value
 end
 
+function optionsActions.enableHoverBoundingBox(value)
+	optionsData.enableHoverBoundingBox = value
+end
+
 function optionsActions.enableXYZlines(value)
 	optionsData.enableXYZlines = value
 end
@@ -29,6 +33,18 @@ end
 
 function optionsActions.precisionRotLevel(value)
 	optionsData.precisionRotLevel = tonumber(value)
+end
+
+function optionsActions.elemScalingSnap(value)
+	optionsData.elemScalingSnap = tonumber(value)
+end
+
+function optionsActions.randomizeRotation(value)
+	optionsData.randomizeRotation = value
+end
+
+function optionsActions.randomizeRotationAxis(value)
+	optionsData.randomizeRotationAxis = value
 end
 
 function optionsActions.enableColPatch(value)
@@ -165,6 +181,8 @@ function setEditorMoveSpeeds()
 	move_keyboard.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
 	move_cursor.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
 	move_freecam.setRotateSpeeds ( dialog.slowElemRotate:getValue(), dialog.normalElemRotate:getValue(), dialog.fastElemRotate:getValue() )
+
+	move_keyboard.setScalingSpeeds ( dialog.slowElemScale:getValue(), dialog.normalElemScale:getValue(), dialog.fastElemScale:getValue() )
 
 	move_keyboard.toggleAxesLock ( dialog.lockToAxes:getValue() )
 end

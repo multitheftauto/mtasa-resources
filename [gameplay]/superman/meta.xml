@@ -1,0 +1,31 @@
+<meta>
+	<min_mta_version server="1.3.0-9.04570"/>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="3.0" name="Superman" description="Allows players to fly around the map by pressing the jump button twice" type="script"/>
+
+	<script src="config/ShSupermanConfig.lua" type="shared"/>
+	<script src="config/CSupermanConfig.lua" type="client"/>
+	<script src="data/ShData.lua" type="shared"/>
+	<script src="data/CData.lua" type="client"/>
+	<script src="data/SData.lua" type="server"/>
+
+	<script src="vectors/CVectors.lua" type="client"/>
+	<script src="CHandleSuperman.lua" type="client"/>
+	<script src="SHandleSuperman.lua" type="server"/>
+
+	<export function="getSupermanData" type="shared"/> <!-- do not use in render events or fast triggering logic, otherwise your CPU will suffer heavily, for data get you can use custom event "onClientSupermanDataChange" or "onSupermanDataChange", for example:
+
+	function onClientSupermanDataChange(dataKey, oldValue, newValue)
+		
+	end
+	addEvent("onClientSupermanDataChange", false)
+	addEventHandler("onClientSupermanDataChange", root, onClientSupermanDataChange)
+
+	function onSupermanDataChange(dataKey, oldValue, newValue)
+		
+	end
+	addEvent("onSupermanDataChange", false)
+	addEventHandler("onSupermanDataChange", root, onSupermanDataChange)
+
+	-->
+	<export function="setSupermanData" type="shared"/> <!-- do not use in render events or fast triggering logic, otherwise your CPU will suffer heavily -->
+</meta>

@@ -1,4 +1,5 @@
 local function onResourceStartPlay()
+	math.randomseed(os.time()) -- Fix getting exact same skins over and over
 	resetMapInfo()
 	createVehicles()
 

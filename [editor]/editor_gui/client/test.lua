@@ -4,6 +4,7 @@ local hideDialog
 local g_suspended
 local inBasicTest = false
 local lastTestGamemode
+local lastGridListGamemode
 local g_colPatchSetting
 
 function createTestDialog()
@@ -30,9 +31,22 @@ end
 
 function quickTest()
 	if tutorialVars.blockQuickTest then return end
+	-- get the last gamemode that was addded to the map
+	local rowCount = guiGridListGetRowCount(mapsettings.addedGamemodes)
+	local currentLastGamemode = false
+	if rowCount > 0 then
+		currentLastGamemode = guiGridListGetItemText(mapsettings.addedGamemodes, rowCount - 1, 1)
+		if currentLastGamemode == "<None>" then
+			currentLastGamemode = false
+		end
+	end
+	if lastGridListGamemode ~= currentLastGamemode then
+		lastTestGamemode = currentLastGamemode
+		lastGridListGamemode = currentLastGamemode
+	end
 	if lastTestGamemode == "<None>" then lastTestGamemode = false end
 	editor_main.dropElement()
-	triggerServerEvent ( "testResource",localPlayer, text )
+	triggerServerEvent ( "testResource",localPlayer, lastTestGamemode )
 	unbindControl ( "toggle_test", "down", quickTest )
 	if tutorialVars.test then tutorialNext() end
 end
@@ -142,7 +156,7 @@ function disableColPatchInTesting()
 	
 	-- Disable
 	guiCheckBoxSetSelected(dialog.enableColPatch.GUI.checkbox, false)
-	confirmSettings()
+	doActions()
 end
 
 function enableColPatchAfterTesting()
@@ -250,4 +264,25 @@ end
 
 function noDamageInBasicTest()
 	cancelEvent()
+end
+
+addEventHandler ( "saveloadtest_return", root,
+	function ( command )
+		if command == "new" or command == "open" then
+			lastTestGamemode = nil
+		end
+	end
+)
+
+function isTesting()
+	local editor = getResourceFromName("editor_main")
+    if not editor or getResourceState(editor) ~= "running" then
+        return false
+    end
+	-- Full test?
+    if getElementData(getResourceRootElement(editor), "g_in_test") then
+        return true
+    end
+	-- Baisc test?
+	return inBasicTest
 end

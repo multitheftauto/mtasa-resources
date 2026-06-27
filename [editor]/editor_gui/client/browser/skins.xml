@@ -40,6 +40,7 @@
 		<skin model="92" name="Rollergirl" keywords="blades,rollerblades,skates,bikini,thong,bandana,glasses,sunglasses,white,girl,woman" />
 		<skin model="96" name="Soccer Player" keywords="tall,white,guy,male,stripes,stripe,striped,shorts" />
 		<skin model="97" name="Baywatch Dude" keywords="shorts,topless,shirtless,beach,lifeguard,shoeless,barefoot,guy,male,white" />
+		<skin model="98" name="Worker Male" keywords="guy,male,white" />
 		<skin model="138" name="Bikini Tattoo" keywords="shades,glasses,swimsuit,white,girl,woman,beach" />
 		<skin model="139" name="Yellow Bikini" keywords="swimsuit,black,girl,woman,beach" />
 		<skin model="140" name="Buxom Bikini" keywords="tits,breasts,glasses,black,girl,woman,bikini" />
@@ -59,14 +60,14 @@
 		<skin model="53" name="Golf Lady" keywords="visor,golfer,shorts,girl,woman,old,heavy,fat" />
 		<skin model="54" name="Hispanic Woman" keywords="dress,mexican,girl,woman,old,heavy,fat" />
 		<skin model="56" name="Legwarmers 1" keywords="white,socks,girl,woman,arm,bracelet,legwarmer,jewelry" />
-		<skin model="58" name="Chinese Plaid" keywords="old,china,oriental,guy,male," />
+		<skin model="58" name="Chinese Plaid" keywords="old,china,oriental,guy,male" />
 		<skin model="60" name="Chinese Casual" keywords="china,chinese,oriental,guy,male" />
 		<skin model="62" name="Pajama Man 1" keywords="guy,male,pajamas,PJs,sleep,old,bald,white" />
 		<skin model="69" name="Denim Girl" keywords="jeans,black,girl,woman" />
 		<skin model="72" name="Bearded Hippie" keywords="white,guy,male,beard,mustache,necklace,plaid,hippy,jewelry" />
 		<skin model="88" name="Casual Old Lady" keywords="shorts,white,girl,woman,fat,heavy,golf,golfer" />
 		<skin model="93" name="Hoop Earrings 1" keywords="jewelry,white,girl,woman,bracelet" />
-		<skin model="101" name="Jacket Hippie" keywords="hippy,stoner,white,guy,male,casual," />
+		<skin model="101" name="Jacket Hippie" keywords="hippy,stoner,white,guy,male,casual" />
 		<skin model="136" name="Old Rasta" keywords="rastafarian,jamaica,beard,mustache,black,guy,male" />
 		<skin model="142" name="African 1" keywords="black,guy,male,africa,beard,mustache,hat" />
 		<skin model="143" name="Sam Jackson" keywords="black,guy,male,hat,glasses,shades,button,Samuel" />
@@ -131,7 +132,7 @@
 		<skin model="261" name="Southerner" keywords="redneck,goatee,spinach,hat,racist,baseball,beard,white,guy,male,plaid" />
 	</group>
 	<group name="Duplicates">
-		<skin model="25" name="Varsity jacket" keywords="sports,black,guy,male," />
+		<skin model="25" name="Varsity jacket" keywords="sports,black,guy,male" />
 		<skin model="66" name="Varsity Bandits" keywords="sports,black,guy,male,bandit" />
 		<skin model="56" name="Legwarmers 1" keywords="white,socks,girl,woman,arm,bracelet,legwarmer,jewelry" />
 		<skin model="226" name="Legwarmers 2" keywords="white,socks,girl,woman,arm,bracelet,legwarmer,jewelry" />
@@ -170,7 +171,7 @@
 			<skin model="281" name="Cop 2" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,white,guy,male,mustache,star,sheriff,patrol" />
 			<skin model="282" name="Cop 3" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,white,guy,male,mustache,trooper,patrol" />
 			<skin model="283" name="Cop 4" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,white,guy,male,star,sheriff,hat,cowboy,trooper,patrol" />
-			<skin model="284" name="Cop 5" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,black,guy,male,star,sheriff,patrol,motorcycle,bike,glasses,shades,helmet,gloves," />
+			<skin model="284" name="Cop 5" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,black,guy,male,star,sheriff,patrol,motorcycle,bike,glasses,shades,helmet,gloves" />
 			<skin model="285" name="SWAT" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,mask,helmet,goggles,gloves,tactic,special,ops,bulletproof,vest,riot" />
 			<skin model="286" name="FBI" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,agent,nametag,jacket,suit" />
 			<skin model="288" name="Cop 6" keywords="police,officer,pig,popo,authorit,gun,holster,badge,law,justice,uniform,walkie,white,guy,male,star,sheriff,hat,cowboy,trooper,patrol" />
@@ -217,7 +218,7 @@
 		<skin model="219" name="Lady In Red" keywords="jacket,heels,black,girl,woman,realestate" />
 		<skin model="227" name="Japanese Businessman 2" keywords="suit,formal,asian,oriental,bald,business,guy,male" />
 		<skin model="228" name="Japanese Businessman 3" keywords="suit,formal,asian,oriental,business,guy,male" />
-		<skin model="255" name="Limo Driver" keywords="chauffeur,hat,suit,formal,mustache,uniform,white,guy,male,pilot," />
+		<skin model="255" name="Limo Driver" keywords="chauffeur,hat,suit,formal,mustache,uniform,white,guy,male,pilot" />
 		<skin model="263" name="Asian Hostess" keywords="oriental,japanese,flowers,floral,kimono,heels,girl,woman" />
 	</group>
 	<group name="Fighters">
@@ -238,7 +239,7 @@
 			<skin model="13" name="Homegirl" keywords="31,sport,hat,purple,girl,woman" />
 			<skin model="102" name="Balla Shirt" keywords="baller,gang,member,bandana,black,guy,male,shorts,purple,beard,mustache" />
 			<skin model="103" name="Balla Jacket" keywords="baller,gang,member,bandana,black,guy,male,purple" />
-			<skin model="104" name="Balla Sweater" keywords="baller,gang,member,glasses,sunglasses,black,guy,male,purple,hat,beanie,touque," />
+			<skin model="104" name="Balla Sweater" keywords="baller,gang,member,glasses,sunglasses,black,guy,male,purple,hat,beanie,touque" />
 		</group>
 		<group name="Bikers">
 			<skin model="100" name="Biker Blackshirt" keywords="glasses,gloves,necklace,jewelry,bike,tattoo,leather,vest,beard,mustache,snake,cobra" />
@@ -269,7 +270,7 @@
 			<skin model="175" name="Rifa Suspenders" keywords="fierro,gang,member,mendez,mexican,hispanic,blue,turquoise,bandana,headband,guy,male,mustache,tatoo" />
 		</group>
 		<group name="Russians">
-			<skin model="111" name="Russian Muscle" keywords="mob,mafia,enforcer,suit,business,white,guy,male,gang,member," />
+			<skin model="111" name="Russian Muscle" keywords="mob,mafia,enforcer,suit,business,white,guy,male,gang,member" />
 			<skin model="112" name="Russian Hitman" keywords="mob,mafia,leather,jacket,white,guy,male,bald,gang,member,mustache,assassin" />
 			<skin model="113" name="Russian Boss" keywords="mob,suit,mafia,business,white,guy,male,mustache,beard,formal,gang,member" />
 		</group>
@@ -293,13 +294,14 @@
 		<skin model="21" name="Striped Gangsta" keywords="stripes,necklace,watch,shorts,black,guy,male" />
 		<skin model="22" name="Orange Sportsman" keywords="12,sports,gilligan,black,guy,male,mustache,hat,tracksuit" />
 		<skin model="28" name="Black Dealer" keywords="drug,drugs,necklace,chain,jewelry,bracelet,guy,male,beard,mustache,hat" />
-		<skin model="29" name="White Dealer" keywords="drug,drugs,hood,hooded,rockstar,hat,baseball," />
-		<skin model="30" name="Religious Essey" keywords="hispanic,mexican,cross,necklace,jewelry,tattoo,beard,mustache,sunglasses,crucifix,glasses,hat,guy,male," />
-		<skin model="47" name="Top Button Essey" keywords="religious, cross,necklace,plaid,mustache,glasses,sunglasses,hispanic,mexican,crucifix,guy,male" />
-		<skin model="67" name="Red Bandana" keywords="black,guy,male,sweater," />
+		<skin model="29" name="White Dealer" keywords="drug,drugs,hood,hooded,rockstar,hat,baseball" />
+		<skin model="30" name="Religious Essey" keywords="hispanic,mexican,cross,necklace,jewelry,tattoo,beard,mustache,sunglasses,crucifix,glasses,hat,guy,male" />
+		<skin model="47" name="Top Button Essey" keywords="religious,cross,necklace,plaid,mustache,glasses,sunglasses,hispanic,mexican,crucifix,guy,male" />
+		<skin model="48" name="Hippy Maley" keywords="religious,cross,necklace,plaid,mustache,glasses,sunglasses,hispanic,mexican,crucifix,guy,male" />
+		<skin model="67" name="Red Bandana" keywords="black,guy,male,sweater" />
 		<skin model="143" name="Sam Jackson" keywords="black,guy,male,hat,glasses,shades,button,Samuel" />
 		<skin model="241" name="Afro Brother" keywords="fat,heavy,shades,glasses,tattoo,shorts,mustache,topless,shirtless,white,guy,male" />
-		<skin model="242" name="Dreadlock Brother" keywords="fat,heavy,shades,glasses,tattoo,shorts,mustache,beard,wpc,hat," />
+		<skin model="242" name="Dreadlock Brother" keywords="fat,heavy,shades,glasses,tattoo,shorts,mustache,beard,wpc,hat" />
 		<skin model="243" name="Ghetto Booty" keywords="black,girl,woman,heavy,fat,heels,trashy" />
 	</group>
 	<group name="Girlfriends">
@@ -322,6 +324,7 @@
 		<skin model="212" name="Tin Foil Hat" keywords="paranoid,conspiracy,brainwaves,torn,shorts,ripped,dirty,sign,gambler,poor,bet,food,cardboard,mustache,beard,flowers,floral,homeless,bum,tramp,hobo,white,guy,male" />
 		<skin model="213" name="Hobo Elvis" keywords="king,rock,impersonator,dirty,old,fat,homeless,ripped,torn,hairy,white,guy,male" />
 		<skin model="230" name="Hooded Hobo" keywords="weel,pot,drug,addict,sign,cardboard,beard,mustache,shorts,shoeless,barefoot,bandages,homeless,bum" />
+		<skin model="239" name="Homeless Bob" keywords="hat,homeless,bum,torn,dirty,fat,heavy,ripped,guy,white" />
 	</group>
 	<group name="Nightclubbers">
 		<skin model="43" name="Porn Producer" keywords="Greasy,watch,necklace,jewelry,sunglasses,glasses,silk,manager,mustache,beard,white,guy,male" />
@@ -357,7 +360,7 @@
 		<skin model="22" name="Orange Sportsman" keywords="12,sports,gilligan,black,guy,male,mustache,hat,tracksuit" />
 		<skin model="23" name="Skater Kid" keywords="dog,base,5,shorts,hat,baseball,goatee,base5,white,guy,male" />
 		<skin model="24" name="LS Coach" keywords="sport,hat,baseball,black,guy,male,mustache" />
-		<skin model="25" name="Varsity jacket" keywords="sports,black,guy,male," />
+		<skin model="25" name="Varsity jacket" keywords="sports,black,guy,male" />
 		<skin model="36" name="Mailman" keywords="baseball,hat,shorts,watch,mustache,white,guy,male" />
 		<skin model="51" name="Black Bicyclist" keywords="Helmet,hat,spandex,shorts,bike,bicycle,guy,male" />
 		<skin model="52" name="White Bicyclist" keywords="Helmet,hat,spandex,shorts,bike,bicycle,guy,male,nustache,beard" />
@@ -376,7 +379,7 @@
 		<skin model="0" name="CJ" keywords="Carl,Johnson,black,jeans,guy,male" />
 		<skin model="18" name="Black Beachguy" keywords="shorts,guy,male,barefoot,necklace,jewelry,glasses,sunglasses,earrings,topless,shirtless" />
 		<skin model="28" name="Black Dealer" keywords="drug,drugs,necklace,chain,jewelry,bracelet,guy,male,beard,mustache,hat" />
-		<skin model="30" name="Religious Essey" keywords="hispanic,mexican,cross,necklace,jewelry,tattoo,beard,mustache,sunglasses,crucifix,glasses,hat,guy,male," />
+		<skin model="30" name="Religious Essey" keywords="hispanic,mexican,cross,necklace,jewelry,tattoo,beard,mustache,sunglasses,crucifix,glasses,hat,guy,male" />
 		<skin model="33" name="Bounty Hunter" keywords="trench,long,black,cowboy,hat,flag,patriot,hanky,handkercheif,hanky,trenchcoat,white,guy,male" />
 		<skin model="183" name="Klingon" keywords="dreadlocks,braids,plaid,angry,badass,beard,mustache,black,guy,male" />
 	</group>
@@ -408,7 +411,7 @@
 		<skin model="213" name="Hobo Elvis" keywords="king,rock,impersonator,dirty,old,fat,homeless,ripped,torn,hairy,white,guy,male" />
 		<skin model="230" name="Hooded Hobo" keywords="weel,pot,drug,addict,sign,cardboard,beard,mustache,shorts,shoeless,barefoot,bandages,homeless,bum,tramp" />
 		<skin model="241" name="Afro Brother" keywords="fat,heavy,shades,glasses,tattoo,shorts,mustache,topless,shirtless,white,guy,male" />
-		<skin model="242" name="Dreadlock Brother" keywords="fat,heavy,shades,glasses,tattoo,shorts,mustache,beard,wpc,hat," />
+		<skin model="242" name="Dreadlock Brother" keywords="fat,heavy,shades,glasses,tattoo,shorts,mustache,beard,wpc,hat" />
 		<skin model="252" name="Naked Freak" keywords="underwear,topless,shirtless,pantsless,shoeless,barefoot,hearts,boxers,skinny,weird,mutant,deform,mustache,beard,white,guy,male" />
 		<skin model="264" name="Whoopee the Clown" keywords="scary,whoopie,icecream,cream,afro,nose,suspenders,tatoo,torn,ripped,sloppy,dirty,bowtie,stripe,beard,makeup" />
 	</group>
@@ -446,7 +449,7 @@
 		</group>
 		<group name="Drug Workers">
 			<skin model="28" name="Black Dealer" keywords="drug,drugs,necklace,chain,jewelry,bracelet,guy,male,beard,mustache,hat" />
-			<skin model="29" name="White Dealer" keywords="drug,drugs,hood,hooded,rockstar,hat,baseball," />
+			<skin model="29" name="White Dealer" keywords="drug,drugs,hood,hooded,rockstar,hat,baseball" />
 			<skin model="144" name="Drug Worker 1" keywords="sars,mask,doctor,gas,breathe,cocaine,factory,black,guy,male" />
 			<skin model="145" name="Drug Worker 2" keywords="topless,bandaid,bikini,shirtless,sars,doctor,mask,gas,breath,cocaine,factory,white,girl,woman" />
 			<skin model="146" name="Drug Worker 3" keywords="topless,shorts,necklace,jewelry,sars,gas,doctor,mask,breathe,cocaine,factory,white,guy,male" />
@@ -468,7 +471,7 @@
 			<skin model="217" name="Staff Guy" keywords="store,clothing,cashier,clothes,white,guy,male,bartender,beard,mustache,bouncer" />
 			<skin model="251" name="Lifeguard" keywords="baywatch,pamela,anderson,swimsuit,bikini,swim,beach,white,girl,woman" />
 			<skin model="253" name="Bus Driver" keywords="train,conductor,pilot,tram,trolly,chauffeur,uniform,hat,mustache,black,guy,male,suit,formal" />
-			<skin model="255" name="Limo Driver" keywords="chauffeur,hat,suit,formal,mustache,uniform,white,guy,male,pilot," />
+			<skin model="255" name="Limo Driver" keywords="chauffeur,hat,suit,formal,mustache,uniform,white,guy,male,pilot" />
 		</group>
 		<group name="Truckers">
 			<skin model="128" name="Native Rancher" keywords="eagle,ranch,indian,necklace,guy,male" />

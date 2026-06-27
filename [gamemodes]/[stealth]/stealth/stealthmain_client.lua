@@ -388,7 +388,7 @@ end
 function cleanup (theresource)
 	thisone = getThisResource()
 	if theresource == thisone then
-		setElementAlpha ( getLocalPlayer (), 255 )
+		setElementAlpha ( localPlayer, 255 )
 		timers = getTimers()
 		for timerKey, timerValue in ipairs(timers) do
 	        killTimer ( timerValue )

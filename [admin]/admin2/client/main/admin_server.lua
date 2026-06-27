@@ -10,6 +10,35 @@
 aServerTab = {
     Weathers = {},
     WeatherMax = 255,
+    automaticScripts = {
+        setpingkicker = {
+            check = "PingKickerCheck",
+            edit = "PingKicker",
+            button = "PingKickerSet",
+            default = 1000,
+            min = 0,
+            max = 10000,
+            label = "Ping kicker"
+        },
+        setfpskicker = {
+            check = "FPSKickerCheck",
+            edit = "FPSKicker",
+            button = "FPSKickerSet",
+            default = 5,
+            min = 0,
+            max = 100,
+            label = "FPS kicker"
+        },
+        setidlekicker = {
+            check = "IdleKickerCheck",
+            edit = "IdleKicker",
+            button = "IdleKickerSet",
+            default = 600,
+            min = 0,
+            max = 6000,
+            label = "Idle kicker"
+        }
+    },
     glitches = {
         QuickReload = 'Quick Reload',
         FastMove = 'Fast Move',
@@ -31,13 +60,86 @@ aServerTab = {
         SniperMoon = 'Sniper Moon',
         ExtraAirResistance = 'Extra Air Resistance',
         UnderWorldWarp = 'Under World Warp',
-        VehiclesSunGlare = "Vehicles Sun Glare",
+        VehicleSunGlare = "Vehicles Sun Glare",
         CoronaZTest = "Corona Z Test",
         WaterCreatures = "Water Creatures",
         BurnFlippedCars = "Burn Flipped Cars",
-        FireBallDestruct = "Fire Ball Destruct"
+        FireBallDestruct = "Fire Ball Destruct",
+        RoadSignsText = "Road Signs Text",
+        ExtendedWaterCannons = "Extended Water Cannons",
+        TunnelWeatherBlend = "Tunnel Weather Blend",
+        IgnoreFireState = "Ignore Fire State",
+        FlyingComponents = "Flying Components",
+        VehicleBurnExplosions = "Vehicle Burn Explosions",
+        Vehicle_Engine_AutoStart = "Vehicle Engine Auto Start"
     }
 }
+
+function aServerTab.setAutomaticScriptEnabled(action, enabled)
+    local script = aServerTab.automaticScripts[action]
+
+    guiCheckBoxSetSelected(aServerTab[script.check], enabled)
+    guiSetEnabled(aServerTab[script.edit], enabled)
+    guiSetEnabled(aServerTab[script.button], enabled)
+end
+
+function aServerTab.syncAutomaticScript(action, value)
+    local script = aServerTab.automaticScripts[action]
+    local number = tonumber(value) or 0
+    local enabled = number > 0
+
+    guiSetText(aServerTab[script.edit], tostring(enabled and number or script.default))
+    aServerTab.setAutomaticScriptEnabled(action, enabled)
+end
+
+function aServerTab.saveAutomaticScript(action)
+    local script = aServerTab.automaticScripts[action]
+    local text = guiGetText(aServerTab[script.edit])
+    local value = tonumber(text)
+
+    if (#text == 0) then
+        value = script.default
+        guiSetText(aServerTab[script.edit], tostring(value))
+    end
+
+    if (not value) or (value % 1 ~= 0) then
+        messageBox(script.label .. " must be a whole number.", MB_ERROR, MB_OK)
+        return false
+    end
+
+    if (value < script.min) or (value > script.max) then
+        messageBox(
+            string.format("%s range is %d-%d.", script.label, script.min, script.max),
+            MB_ERROR,
+            MB_OK
+        )
+        return false
+    end
+
+    triggerServerEvent("aServer", localPlayer, action, value)
+    aServerTab.setAutomaticScriptEnabled(action, value > 0)
+
+    return true
+end
+
+function aServerTab.toggleAutomaticScript(action)
+    local script = aServerTab.automaticScripts[action]
+
+    setTimer(
+        function()
+            local enabled = guiCheckBoxGetSelected(aServerTab[script.check])
+            aServerTab.setAutomaticScriptEnabled(action, enabled)
+
+            if enabled then
+                aServerTab.saveAutomaticScript(action)
+            else
+                triggerServerEvent("aServer", localPlayer, action, 0)
+            end
+        end,
+        50,
+        1
+    )
+end
 
 function aServerTab.Create(tab)
     aServerTab.Tab = tab
@@ -184,8 +286,8 @@ function aServerTab.Create(tab)
     aServerTab.onRefresh()
 end
 
-function aServerTab.onClientClick(button)
-    if (button == "left") then
+function aServerTab.onClientClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aServerTab.SetGameType) then
             local gametype = inputBox("Game Type", "Enter game type:")
             if (gametype) then
@@ -293,6 +395,18 @@ function aServerTab.onClientClick(button)
             end
         elseif (source == aServerTab.ServerConfSet) then
             aServerConfig.Open()
+        elseif (source == aServerTab.PingKickerCheck) then
+            aServerTab.toggleAutomaticScript("setpingkicker")
+        elseif (source == aServerTab.PingKickerSet) then
+            aServerTab.saveAutomaticScript("setpingkicker")
+        elseif (source == aServerTab.FPSKickerCheck) then
+            aServerTab.toggleAutomaticScript("setfpskicker")
+        elseif (source == aServerTab.FPSKickerSet) then
+            aServerTab.saveAutomaticScript("setfpskicker")
+        elseif (source == aServerTab.IdleKickerCheck) then
+            aServerTab.toggleAutomaticScript("setidlekicker")
+        elseif (source == aServerTab.IdleKickerSet) then
+            aServerTab.saveAutomaticScript("setidlekicker")
         elseif (source == aServerTab.QuickReload) then
             triggerServerEvent(
                 "aServer",
@@ -437,13 +551,13 @@ function aServerTab.onClientClick(button)
                 "underworldwarp",
                 iif(guiCheckBoxGetSelected(aServerTab.UnderWorldWarp), "on", "off")
             )
-        elseif (source == aServerTab.VehiclesSunGlare) then
+        elseif (source == aServerTab.VehicleSunGlare) then
             triggerServerEvent(
                 "aServer",
                 localPlayer,
                 "setworldproperty",
                 "vehiclesunglare",
-                iif(guiCheckBoxGetSelected(aServerTab.VehiclesSunGlare), "on", "off")
+                iif(guiCheckBoxGetSelected(aServerTab.VehicleSunGlare), "on", "off")
             )
         elseif (source == aServerTab.CoronaZTest) then
             triggerServerEvent(
@@ -460,6 +574,54 @@ function aServerTab.onClientClick(button)
                 "setworldproperty",
                 "watercreatures",
                 iif(guiCheckBoxGetSelected(aServerTab.WaterCreatures), "on", "off")
+            )
+        elseif (source == aServerTab.RoadSignsText) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "roadsignstext",
+                iif(guiCheckBoxGetSelected(aServerTab.RoadSignsText), "on", "off")
+            )
+        elseif (source == aServerTab.ExtendedWaterCannons) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "extendedwatercannons",
+                iif(guiCheckBoxGetSelected(aServerTab.ExtendedWaterCannons), "on", "off")
+            )
+        elseif (source == aServerTab.TunnelWeatherBlend) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "tunnelweatherblend",
+                iif(guiCheckBoxGetSelected(aServerTab.TunnelWeatherBlend), "on", "off")
+            )
+        elseif (source == aServerTab.FlyingComponents) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "flyingcomponents",
+                iif(guiCheckBoxGetSelected(aServerTab.FlyingComponents), "on", "off")
+            )
+        elseif (source == aServerTab.VehicleBurnExplosions) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "vehicleburnexplosions",
+                iif(guiCheckBoxGetSelected(aServerTab.VehicleBurnExplosions), "on", "off")
+            )
+        elseif (source == aServerTab.Vehicle_Engine_AutoStart) then
+            triggerServerEvent(
+                "aServer",
+                localPlayer,
+                "setworldproperty",
+                "vehicle_engine_autostart",
+                iif(guiCheckBoxGetSelected(aServerTab.Vehicle_Engine_AutoStart), "on", "off")
             )
         end
     end
@@ -494,6 +656,9 @@ function aServerTab.onClientSync(type, table)
         guiSetText(aServerTab.GameType, "Game Type: " .. (table["game"] or "None"))
         guiSetText(aServerTab.MapName, "Map Name: " .. (table["map"] or "None"))
         aServerTab['currentPassword'] = table['password'] or nil
+        aServerTab.syncAutomaticScript("setpingkicker", table["pingkicker"])
+        aServerTab.syncAutomaticScript("setfpskicker", table["fpskicker"])
+        aServerTab.syncAutomaticScript("setidlekicker", table["idlekicker"])
     end
 end
 
@@ -523,11 +688,18 @@ function aServerTab.onRefresh()
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.SniperMoon, 2, isWorldSpecialPropertyEnabled("snipermoon") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.ExtraAirResistance, 2, isWorldSpecialPropertyEnabled("extraairresistance") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.UnderWorldWarp, 2, isWorldSpecialPropertyEnabled("underworldwarp") and "√" or "", false, false)
-    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.VehiclesSunGlare, 2, isWorldSpecialPropertyEnabled("vehiclesunglare") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.VehicleSunGlare, 2, isWorldSpecialPropertyEnabled("vehiclesunglare") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.CoronaZTest, 2, isWorldSpecialPropertyEnabled("coronaztest") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.WaterCreatures, 2, isWorldSpecialPropertyEnabled("watercreatures") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.BurnFlippedCars, 2, isWorldSpecialPropertyEnabled("burnflippedcars") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.FireBallDestruct, 2, isWorldSpecialPropertyEnabled("fireballdestruct") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.RoadSignsText, 2, isWorldSpecialPropertyEnabled("roadsignstext") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.ExtendedWaterCannons, 2, isWorldSpecialPropertyEnabled("extendedwatercannons") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.TunnelWeatherBlend, 2, isWorldSpecialPropertyEnabled("tunnelweatherblend") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.IgnoreFireState, 2, isWorldSpecialPropertyEnabled("ignorefirestate") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.FlyingComponents, 2, isWorldSpecialPropertyEnabled("flyingcomponents") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.VehicleBurnExplosions, 2, isWorldSpecialPropertyEnabled("vehicleburnexplosions") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.Vehicle_Engine_AutoStart, 2, isWorldSpecialPropertyEnabled("vehicle_engine_autostart") and "√" or "", false, false)
 
     triggerServerEvent("aServerGlitchRefresh", localPlayer)
 end
@@ -549,3 +721,31 @@ end)
 function getWeatherNameFromID(weather)
     return iif(aServerTab.Weathers[weather], aServerTab.Weathers[weather], "Unknown")
 end
+
+local aFPSReporter = {
+    sampleCount = 0,
+    totalFPS = 0
+}
+
+function aFPSReporter.onClientPreRender(deltaTime)
+    aFPSReporter.sampleCount = aFPSReporter.sampleCount + 1
+    aFPSReporter.totalFPS = aFPSReporter.totalFPS + (1000 / deltaTime)
+end
+
+function aFPSReporter.flush()
+    if aFPSReporter.sampleCount <= 0 then
+        return
+    end
+
+    triggerServerEvent("aClientPerformanceUpdate", localPlayer, math.floor((aFPSReporter.totalFPS / aFPSReporter.sampleCount) + 0.5))
+
+    aFPSReporter.sampleCount = 0
+    aFPSReporter.totalFPS = 0
+end
+
+addEventHandler("onClientResourceStart", resourceRoot,
+    function()
+        addEventHandler("onClientPreRender", root, aFPSReporter.onClientPreRender)
+        setTimer(aFPSReporter.flush, 3000, 0)
+    end
+)

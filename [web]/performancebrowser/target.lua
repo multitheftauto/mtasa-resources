@@ -70,6 +70,10 @@ end
 ---------------------------------------------------------------------------
 function Target:getPerformanceStats( username, queryCategoryName, queryOptionsText, queryFilterText )
 	if self.bIsServer then
+		if queryCategoryName == "Lua time recordings" then
+			return getLuaTimingRecordings( queryFilterText )
+		end
+
 		local a, b = getPerformanceStats ( queryCategoryName, queryOptionsText, queryFilterText )
 		return a, b, true
 	else
@@ -154,4 +158,3 @@ addEventHandler('onNotifyStats', resourceRoot,
 		store.timeAdded = getTickCount()
 	end
 )
-

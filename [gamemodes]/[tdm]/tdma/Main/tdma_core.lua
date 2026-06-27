@@ -332,23 +332,6 @@ function xonPlayerWasted ( ammo, attacker, weapon, bodypart )
 end
 addEventHandler ( "onPlayerWasted", root, xonPlayerWasted )
 
-function onChat ( message, theType )
-	if theType == 0 then
-		cancelEvent()
-		message = string.gsub(message, "#%x%x%x%x%x%x", "")
-		local team = getPlayerTeam ( source )
-		local bastidName = getPlayerName ( source )
-		if ( team ) then
-			local r, g, b = getTeamColor ( team )
-			outputChatBox ( bastidName..":#FFFFFF "..message, root, r, g, b, true )
-		else
-			outputChatBox ( bastidName..": "..message )
-		end
-		outputServerLog( "CHAT: " .. bastidName .. ": " .. message )
-	end
-end
-addEventHandler ( "onPlayerChat", root, onChat )
-
 function updateKills( idPlayer, idTeam )
 	if ( tonumber(gameMaxKills) > 0 ) then
 		if xDebug then outputDebugString ( "Kills for team before are: " .. idTeam.kills  ) end

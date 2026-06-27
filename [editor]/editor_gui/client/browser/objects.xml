@@ -306,6 +306,13 @@
       <object model="10186" name="lombard3_sfe" keywords="" />
       <object model="1772" name="CJ_HOT_DOG1" keywords="" />
       <object model="14442" name="SHADOW-Carter" keywords="" />
+      <object model="14841" name="Lee_gymers" keywords="" />
+      <object model="14818" name="mc_straps" keywords="" />
+      <object model="16333" name="quarry_crhookcble" keywords="" />
+      <object model="18010" name="int_3rest_lights" keywords="" />
+      <object model="6411" name="venice01bT_LAw2" keywords="" />
+      <object model="6062" name="Miami_atm" keywords="" />
+      <object model="5998" name="sunset18Tr_LAwN" keywords="" />
    </group>
    <group name="Nighttime Objects">
       <object model="9934" name="nitelites_sfe04" keywords="" />
@@ -412,6 +419,12 @@
       <object model="10146" name="nitelites_sfe14" keywords="" />
       <object model="10058" name="nitelites_sfe11" keywords="" />
       <object model="10057" name="nitelites_sfe10" keywords="" />
+      <object model="6518" name="LTS01_LAw2" keywords="" />
+      <object model="6519" name="LTS02_LAw2" keywords="" />
+      <object model="6520" name="LTS04_LAw2" keywords="" />
+      <object model="6521" name="LTS03_LAw2" keywords="" />
+      <object model="6412" name="sunitwin01_LAw2" keywords="" />
+      <object model="6001" name="LTSsunset18_LAwN" keywords="" />
    </group>
    <group name="Beach and Sea">
       <group name="Ships, Docks, and Piers">
@@ -760,6 +773,7 @@
          <object model="5787" name="MelBlok01_LAwN" keywords="" />
          <object model="5792" name="fredricks01_LAwN" keywords="" />
          <object model="5810" name="lawnmalstrip" keywords="" />
+         <object model="5993" name="lawnmalstripTR" keywords="" />
          <object model="5813" name="lawnshop1" keywords="" />
          <object model="5819" name="lawnbuildg" keywords="" />
          <object model="5848" name="mainblk_LAwN" keywords="" />
@@ -2380,6 +2394,7 @@
       <object model="1038" name="rf_a_l" keywords="" />
       <object model="1037" name="exh_c_l" keywords="" />
       <object model="1036" name="wg_l_a_l" keywords="" />
+      <object model="1035" name="rf_c_l" keywords="" />
       <object model="1034" name="exh_a_l" keywords="" />
       <object model="1033" name="rf_c_s" keywords="" />
       <object model="1032" name="rf_a_s" keywords="" />
@@ -4163,6 +4178,7 @@
          <object model="18095" name="BARBER_BLINDS02" keywords="" />
          <object model="18098" name="BARBER_BLINDS03" keywords="" />
          <object model="18553" name="count_ammundoor" keywords="" />
+         <object model="14799" name="otb_glass" keywords="" />
       </group>
       <group name="Clothes">
          <object model="2052" name="CJ_TOMMY_HAT" keywords="" />
@@ -6189,6 +6205,7 @@
          <object model="16778" name="des_ufosign" keywords="" />
          <object model="16779" name="ufo_light02" keywords="" />
          <object model="16782" name="a51_radar_scan" keywords="" />
+         <object model="1593" name="plc_stinger" keywords="" />
       </group>
       <group name="Military">
          <object model="7294" name="vgsN_polNB01" keywords="" />
@@ -6487,6 +6504,7 @@
          <object model="17904" name="blokz_fireescape" keywords="" />
          <object model="18366" name="cw2_mountwalk1" keywords="" />
          <object model="18368" name="cs_mountplat" keywords="" />
+         <object model="6516" name="tvstudioTr_LAw2" keywords="" />
       </group>
       <group name="Trash">
          <object model="961" name="CJ_ARM_CRATE_top" keywords="" />
@@ -8046,6 +8064,15 @@
          <object model="18444" name="mtbfence39" keywords="" />
          <object model="18445" name="mtbfence40" keywords="" />
          <object model="18446" name="mtbfence43" keywords="" />
+         <object model="6517" name="santagard_LAw2" keywords="" />
+         <object model="6489" name="countclubTr_LAw2" keywords="" />
+         <object model="6451" name="Pier01Tr_LAw2" keywords="" />
+         <object model="6457" name="Pier02Tr_LAw2" keywords="" />
+         <object model="6458" name="Pier03Tr_LAw2" keywords="" />
+         <object model="6461" name="ferris01Tr_LAw2" keywords="" />
+         <object model="6466" name="pier04Tr_LAw2" keywords="" />
+         <object model="6413" name="sunset07Tr_LAw2" keywords="" />
+         <object model="6043" name="wilshire1w_law" keywords="" />
       </group>
       <group name="Garages and Petrol Stations">
          <object model="3187" name="nt_gasstation" keywords="" />
@@ -9893,6 +9920,9 @@
          <object model="18449" name="cs_roadbridge01" keywords="" />
          <object model="18450" name="cs_roadbridge04" keywords="" />
          <object model="18561" name="cS_newbridge" keywords="" />
+         <object model="17232" name="cuntwroad44" keywords="" />
+         <object model="6513" name="tunblock_LAw2" keywords="" />
+         <object model="6514" name="tunent01_LAw2" keywords="" />
       </group>
    </group>
    <group name="Wires and Cables">
@@ -10117,5 +10147,9 @@
       <object model="10267" name="cables16" keywords="" />
       <object model="10040" name="cables3" keywords="" />
       <object model="10012" name="cables4" keywords="" />
+      <object model="16335" name="des_transtower" keywords="" />
+      <object model="16334" name="des_cranelines01" keywords="" />
+      <object model="6405" name="venice03Tr_laW2" keywords="" />
+      <object model="6407" name="venice04Tr_LAw2" keywords="" />
    </group>
 </catalog>

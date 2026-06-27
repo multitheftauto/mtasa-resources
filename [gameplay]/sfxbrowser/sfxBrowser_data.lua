@@ -1,6 +1,6 @@
 sfxBrowser = sfxBrowser or {}
 
--- The following data has been extracted from http://pdescobar.home.comcast.net/~pdescobar/gta/saat/sfx_dir.html
+-- The following data has been extracted from https://pdescobar.home.comcast.net/~pdescobar/gta/saat/sfx_dir.html
 -- Regex: <tr><td>(.*?)</td><td>(.*?)</td><td>(.*?)</td><td>(.*?)</td><td>(.*?)</td></tr> ; Replace: {num = \3, desc = "\5"};
 sfxBrowser.ms_Data = {
 	feet = {

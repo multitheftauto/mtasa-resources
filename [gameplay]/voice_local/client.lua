@@ -1,155 +1,146 @@
-local fMinDistance = 0
-local fMaxDistance = 25
-local mathexp = math.exp
+-- Remote events:
+addEvent("voice_local:onClientPlayerVoiceStart", true)
+addEvent("voice_local:onClientPlayerVoiceStop", true)
+addEvent("voice_local:updateSettings", true)
+
+-- Only starts handling player voices after receiving the settings from the server
+local initialWaiting = true
+
 local streamedPlayers = {}
-local fDistDiff = fMinDistance - fMaxDistance
+local localPlayerTalking = false
 
 local sx, sy = guiGetScreenSize()
-local nx, ny = sx / 1920, sy / 1080
 
-local width = 108 * nx
-local height = 180 * ny
-local xOffset = 75 * nx
-local yOffset = 50 * ny
-local halfWidth = width / 2
-local halfHeight = height / 2
+local devSX, devSY = sx / 1920, sy / 1080
+local iconWidth = 108 * devSX
+local iconHalfWidth = iconWidth / 2
+local iconHeight = 180 * devSY
+local iconHalfHeight = iconHeight / 2
+local iconTexture = dxCreateTexture("icon.png", "dxt5", true, "clamp")
 
-local icon = dxCreateTexture("icon.png", "dxt5", true, "clamp")
-
-function preRender()
-    local x, y, z, lx, ly, lz = getCameraMatrix()
-
-    for player, talking in pairs(streamedPlayers) do
-        if player and isElement(player) and getElementType(player) == "player" then
-            local x1, y1, z1 = getElementPosition(player)
-            local fDistance = getDistanceBetweenPoints3D(x, y, z, x1, y1, z1)
-
-            local fVolume
-            if (fDistance <= fMinDistance) then
-                fVolume = 100
-            elseif (fDistance >= fMaxDistance) then
-                fVolume = 0.0
-            else
-                fVolume = mathexp(-(fDistance - fMinDistance) * (5.0 / fDistDiff)) * 100
-            end
-
-            if isLineOfSightClear(x, y, z, x1, y1, z1, false, false, false, false, true, true, true, localPlayer) then
-                setSoundVolume(player, fVolume)
-                setSoundEffectEnabled(player, "compressor", false)
-            else
-                setSoundVolume(player, fVolume * 2)
-                setSoundEffectEnabled(player, "compressor", true)
-            end
-
-            if talking and isLineOfSightClear(x, y, z, x1, y1, z1, false, false, false, false, true, true, true, localPlayer) then
-                local boneX, boneY, boneZ = getPedBonePosition(player, 8)
-                local screenX, screenY = getScreenFromWorldPosition(boneX, boneY, boneZ + 0.5)
-                if screenX and screenY and fDistance < fMaxDistance then
-                    fDistance = 1 / fDistance
-                    dxDrawImage(screenX - halfWidth * fDistance, screenY - halfHeight * fDistance, width * fDistance, height * fDistance, icon, 0, 0, 0, -1, false)
-                end
-            end
-        end
+local function drawTalkingIcon(player, camDistToPlayer)
+    local boneX, boneY, boneZ = getPedBonePosition(player, 8)
+    local screenX, screenY = getScreenFromWorldPosition(boneX, boneY, boneZ + 0.4)
+    if screenX and screenY then
+        local factor = 1 / camDistToPlayer
+        dxDrawImage(
+            screenX - iconHalfWidth * factor,
+            screenY - iconHalfHeight * factor,
+            iconWidth * factor,
+            iconHeight * factor,
+            iconTexture, 0, 0, 0, -1, false
+        )
     end
 end
-addEventHandler("onClientPreRender", root, preRender)
 
-function onStart()
-    local x, y, z = getElementPosition(localPlayer)
-    for _, player in ipairs(getElementsWithinRange(x, y, z, 250, "player")) do
-        if streamedPlayers[player] == nil then
+local function handlePreRender()
+    local debugY = 50
+    local maxDistance = settings.maxVoiceDistance.value
+    local cameraX, cameraY, cameraZ = getCameraMatrix()
+    local localPlayerX, localPlayerY, localPlayerZ = getElementPosition(localPlayer)
+    for player, talking in pairs(streamedPlayers) do
+        local otherPlayerX, otherPlayerY, otherPlayerZ = getElementPosition(player)
+        local realDistanceToPlayer = getDistanceBetweenPoints3D(localPlayerX, localPlayerY, localPlayerZ, otherPlayerX, otherPlayerY, otherPlayerZ)
+        local playerVolume
+        if (realDistanceToPlayer >= maxDistance) then
+            playerVolume = 0.0
+        else
+            playerVolume = (1.0 - (realDistanceToPlayer / maxDistance)^2)
+        end
+
+        -- Voice voume is usually unfortunately very low, resulting in players
+        -- barely hearing others if we set the player voice volume to 1.0
+        -- So we need to increase it to like 6.0 to make it audible
+        playerVolume = playerVolume * settings.voiceSoundBoost.value
+
+        setSoundVolume(player, playerVolume)
+
+        if DEBUG_MODE then
+            dxDrawRectangle(20, debugY - 5, 300, 25, tocolor(0, 0, 0, 200))
+            dxDrawText(("%s | Distance: %.2f | Voice Volume: %.2f"):format(getPlayerName(player), realDistanceToPlayer, playerVolume), 30, debugY)
+            debugY = debugY + 15
+        end
+
+        if talking and (settings.showTalkingIcon.value == true)
+        and realDistanceToPlayer < maxDistance
+        and isLineOfSightClear(cameraX, cameraY, cameraZ, otherPlayerX, otherPlayerY, otherPlayerZ, false, false, false, false, true, true, true, localPlayer) then
+            drawTalkingIcon(player, getDistanceBetweenPoints3D(cameraX, cameraY, cameraZ, otherPlayerX, otherPlayerY, otherPlayerZ))
+        end
+    end
+    if localPlayerTalking and (settings.showTalkingIcon.value == true) then
+        drawTalkingIcon(localPlayer, getDistanceBetweenPoints3D(cameraX, cameraY, cameraZ, localPlayerX, localPlayerY, localPlayerZ))
+    end
+end
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    for _, player in pairs(getElementsByType("player", root, true)) do
+        if player ~= localPlayer and streamedPlayers[player] == nil then
+            setSoundVolume(player, 0)
             streamedPlayers[player] = false
         end
     end
-    triggerServerEvent("voice:setPlayerBroadcast", resourceRoot, localPlayer, streamedPlayers)
-end
-addEventHandler("onClientResourceStart", resourceRoot, onStart, false)
+    triggerServerEvent("voice_local:setPlayerBroadcast", localPlayer, streamedPlayers)
+end, false)
 
-function playerJoin()
-    if getElementType(source) == "player" then
-        if streamedPlayers[source] == nil then
-            streamedPlayers[source] = false
-            triggerServerEvent("voice:addToPlayerBroadcast", resourceRoot, localPlayer, source)
-        end
-    end
-end
-addEventHandler("onClientPlayerJoin", root, playerJoin)
-
-function playerQuit()
+-- Handle remote/other player quit
+addEventHandler("onClientPlayerQuit", root, function()
     if streamedPlayers[source] ~= nil then
         streamedPlayers[source] = nil
-        setSoundVolume(source, 0)
-        triggerServerEvent("voice:removePlayerBroadcast", resourceRoot, localPlayer, source)
+        triggerServerEvent("voice_local:removeFromPlayerBroadcast", localPlayer, source)
     end
-end
-addEventHandler("onClientPlayerQuit", root, playerQuit)
+end)
 
 -- Code considers this event's problem @ "Note" box: https://wiki.multitheftauto.com/wiki/OnClientElementStreamIn
 -- It should be modified if said behavior ever changes
-function streamIn()
-    if (isElement(source) and getElementType(source) == "player" and isPedDead(source) == false) then
-        if streamedPlayers[source] == nil then
-            streamedPlayers[source] = false
-            triggerServerEvent("voice:addToPlayerBroadcast", resourceRoot, localPlayer, source)
-        end
+addEventHandler("onClientElementStreamIn", root, function()
+    if source == localPlayer then return end
+    if not (isElement(source) and getElementType(source) == "player") then return end
+
+    if isPedDead(source) then return end
+
+    if streamedPlayers[source] == nil then
+        setSoundVolume(source, 0)
+        streamedPlayers[source] = false
+        triggerServerEvent("voice_local:addToPlayerBroadcast", localPlayer, source)
     end
-end
-addEventHandler("onClientElementStreamIn", root, streamIn)
+end)
+addEventHandler("onClientElementStreamOut", root, function()
+    if source == localPlayer then return end
+    if not (isElement(source) and getElementType(source) == "player") then return end
 
--- To ensure table integrity, stream out & local player death into 2 separate, safer events
--- See the "Note" box at https://wiki.multitheftauto.com/wiki/OnClientElementStreamIn for reason why
--- Stream out event
-function streamOut()
-    if (source ~= localPlayer and isElement(source) and getElementType(source) == "player") then
-        if streamedPlayers[source] ~= nil then
-            streamedPlayers[source] = nil
-            setSoundVolume(source, 0)
-            triggerServerEvent("voice:removePlayerBroadcast", resourceRoot, localPlayer, source)
-        end
+    if streamedPlayers[source] ~= nil then
+        setSoundVolume(source, 0)
+        streamedPlayers[source] = nil
+        triggerServerEvent("voice_local:removeFromPlayerBroadcast", localPlayer, source)
     end
-end
-addEventHandler("onClientElementStreamOut", root, streamOut)
+end)
 
--- Local player death event
-function onWasted()
-    if streamedPlayers[localPlayer] ~= nil then
-        streamedPlayers[localPlayer] = nil
-        setSoundVolume(localPlayer, 0)
-        triggerServerEvent("voice:removePlayerBroadcast", resourceRoot, localPlayer, localPlayer)
+-- Update player talking status (for displaying)
+addEventHandler("voice_local:onClientPlayerVoiceStart", root, function(player)
+    if not (isElement(player) and getElementType(player) == "player") then return end
+
+    if player == localPlayer then
+        localPlayerTalking = true
+    elseif streamedPlayers[player] ~= nil then
+        streamedPlayers[player] = true
     end
-end
-addEventHandler("onClientPlayerWasted", localPlayer, onWasted)
+end)
+addEventHandler("voice_local:onClientPlayerVoiceStop", root, function(player)
+    if not (isElement(player) and getElementType(player) == "player") then return end
 
-function resourceStop()
-    triggerServerEvent("voice:removePlayerBroadcasts", resourceRoot, localPlayer, streamedPlayers)
-    streamedPlayers = {}
-end
-addEventHandler("onClientResourceStop", resourceRoot, resourceStop, false)
-
-function voiceStart(source)
-    if (isElement(source) and getElementType(source) == "player") then
-        if streamedPlayers[source] ~= nil then
-            streamedPlayers[source] = true
-        end
+    if player == localPlayer then
+        localPlayerTalking = false
+    elseif streamedPlayers[player] ~= nil then
+        streamedPlayers[player] = false
     end
-end
-addEvent("voice_cl:onClientPlayerVoiceStart", true)
-addEventHandler("voice_cl:onClientPlayerVoiceStart", resourceRoot, voiceStart)
+end)
 
-function voiceStop(source)
-    if (isElement(source) and getElementType(source) == "player") then
-        if streamedPlayers[source] ~= nil then
-            streamedPlayers[source] = false
-        end
+-- Load the settings received from the server
+addEventHandler("voice_local:updateSettings", localPlayer, function(settingsFromServer)
+    settings = settingsFromServer
+
+    if initialWaiting then
+        addEventHandler("onClientPreRender", root, handlePreRender, false)
+        initialWaiting = false
     end
-end
-addEvent("voice_cl:onClientPlayerVoiceStop", true)
-addEventHandler("voice_cl:onClientPlayerVoiceStop", resourceRoot, voiceStop)
-
-function table.empty(a)
-    if type(a) ~= "table" then
-        return false
-    end
-
-    return next(a) == nil
-end
+end, false)

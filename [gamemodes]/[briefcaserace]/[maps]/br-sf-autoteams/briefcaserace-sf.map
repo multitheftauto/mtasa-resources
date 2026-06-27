@@ -1,4 +1,4 @@
-<map>
+﻿<map edf:definitions="briefcaserace">
 
    <vehicle id="Sentinel" model="405" posX="-1988.01171875" posY="128.8193359375" posZ="27.413967132568" rotX="0" rotY="359.99450683594" rotZ="1.7303466796875" />
    <vehicle id="Blista Compact" model="496" posX="-1987.8955078125" posY="119.84765625" posZ="27.255165100098" rotX="0.0439453125" rotY="359.99450683594" rotZ="0.1702880859375" />

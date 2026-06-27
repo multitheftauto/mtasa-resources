@@ -20,12 +20,13 @@ function createBrowser()
 	browserGUI.window = guiCreateWindow 	( 0, 0, 0.25, 1, "Browse...", true )
 	guiSetVisible ( browserGUI.window, false )
 	browserGUI.dropdown = editingControl.dropdown:create{["x"]=12,["y"]=25,["width"]=screenX*0.25,["height"]=20,["dropWidth"]=screenX*0.25,["dropHeight"]=200,["relative"]=false,["parent"]=browserGUI.window,["rows"]={"All categories", "Favourites"}}
-	browserGUI.list = browserList:create( 12, 85, screenX*0.25, screenY*1-112, { {["Element"]=0.95-(60/(screenX*0.25))},{["[ID]"]=40/(screenX*0.25)}},false, browserGUI.window )
+	browserGUI.list = browserList:create( 12, 85, screenX*0.25, screenY*1-140, { {["Element"]=0.95-(60/(screenX*0.25))},{["[ID]"]=40/(screenX*0.25)}},false, browserGUI.window )
 	browserGUI.search = guiCreateEdit ( 12, 50, screenX*0.25, 30, "Search...", false, browserGUI.window )
 	browserGUI.ok = guiCreateButton ( 12, screenY-24, screenX*0.125 - 2, 40, "OK", false, browserGUI.window )
 	browserGUI.cancel = guiCreateButton ( screenX*0.125 + 12 + 2, screenY-24, screenX*0.125 - 2, 40, "Cancel", false, browserGUI.window )
 	browserGUI.searchProgress = guiCreateLabel ( 0, 0, 1, 0.1, "", true )
 	browserGUI.searchModel = guiCreateLabel ( 0, 0, 1, 0.1, "", true )
+	browserGUI.doubleside = guiCreateCheckBox ( 12, screenY-50, 110, 20, "Set doublesided", false, false, browserGUI.window )
 	guiSetVisible ( browserGUI.searchProgress, false )
 	guiSetVisible ( browserGUI.searchModel, false )
 	guiLabelSetColor ( browserGUI.searchProgress,0,0,0 )
@@ -37,6 +38,7 @@ function createBrowser()
 
 	addEventHandler ("onClientGUIClick",browserGUI.ok,browser.browserSelected,false)
 	addEventHandler ("onClientGUIClick",browserGUI.cancel,browser.browserCancelled,false)
+	addEventHandler ("onClientGUIClick",browserGUI.doubleside,browser.setDoublesided,false)
 end
 
 function browser.initiate ( theType, initialCat, initialModel )
@@ -67,6 +69,8 @@ function browser.initiate ( theType, initialCat, initialModel )
 	setPlayerHudComponentVisible ( "radar", false )
 	setSkyGradient(112,112,112,112,112,112)
 	setCameraInterior ( 14 )
+	setFarClipDistance(700)
+	setFogDistance(700)
 	guiSetVisible ( browserGUI.window, true )
 	--Output a default search
 	local results = elementSearch ( catNodes[initialCat],"" )
@@ -89,7 +93,11 @@ function startBrowser ( elementType, callback, initialCat, initialModel, remembe
 	if not cachedElements[elementType] then
 		cachedElements[elementType] = cacheElements(xmlFiles[elementType], elementCatalogs[elementType])
 	end
-	cachedElements["favourite"] = cacheElements(xmlFiles["favourite"], elementCatalogs[elementType])
+	if xmlFiles["favourite"] then
+		cachedElements["favourite"] = cacheElements(xmlFiles["favourite"], elementCatalogs[elementType])
+	else
+		cachedElements["favourite"] = {}
+	end
 	browser.enabled = true
 	returnX,returnY,returnZ,returnRX,returnRY,returnRZ = getCameraMatrix()
 	returnInterior = getCameraInterior()
@@ -135,6 +143,8 @@ function browser.close()
 	removeEventHandler ( "onClientRender", root, rotateMesh )
 	setCameraInterior ( returnInterior )
 	resetSkyGradient()
+	resetFarClipDistance()
+	resetFogDistance()
 	setPlayerHudComponentVisible ( "radar", true )
 	if isElement ( browser.mainElement ) then
 		setElementAlpha(browser.mainElement, 255)
@@ -330,6 +340,11 @@ function browser.browserCancelled(button)
 	browser.close()
 end
 
+function browser.setDoublesided(button)
+	if button ~= "left" then return end
+	setElementDoubleSided(browser.mainElement, guiCheckBoxGetSelected(browserGUI.doubleside))
+end
+
 function setProgressText ( text )
 	guiSetText ( browserGUI.searchProgress, text )
 	local length = guiLabelGetTextExtent ( browserGUI.searchProgress )
@@ -350,8 +365,13 @@ end
 
 addEventHandler("onClientResourceStop", resourceRoot,
 	function ()
-		xmlSaveFile(xmlFiles["favourite"])
-		xmlUnloadFile(xmlFiles["favourite"])
+		if xmlFiles["favourite"] then
+			local success = xmlSaveFile(xmlFiles["favourite"])
+			if not success then
+				outputDebugString("[editor_gui] ERROR: Failed to save favourites.xml on resource stop", 1)
+			end
+			xmlUnloadFile(xmlFiles["favourite"])
+		end
 	end)
 
 local lastCallTick = 0
@@ -360,6 +380,9 @@ function toggleFavourite (gridlist)
 	if getTickCount() - lastCallTick < 500 then return end --Since it always gets called at least twice per click
 	lastCallTick = getTickCount()
 	if not gridlist then return end
+	if not xmlFiles["favourite"] then return end
+	if not catNodes or not catNodes[2] then return end
+	if not initiatedType or not elementCatalogs[initiatedType] then return end
 	local item = guiGridListGetSelectedItem(gridlist)
 	local name = guiGridListGetItemText(gridlist, item, 1)
 	local model = guiGridListGetItemText(gridlist, item, 2)
@@ -372,6 +395,10 @@ function toggleFavourite (gridlist)
 					xmlDestroyNode(node)
 					break
 				end
+			end
+			local success = xmlSaveFile(xmlFiles["favourite"])
+			if not success then
+				outputDebugString("[editor_gui] ERROR: Failed to save favourites.xml after removing item", 1)
 			end
 			cachedElements["favourite"] = cacheElements(xmlFiles["favourite"], elementCatalogs[initiatedType])
 			catNodes[2] = cachedElements["favourite"]
@@ -386,6 +413,10 @@ function toggleFavourite (gridlist)
 	xmlNodeSetAttribute(node, "model", model)
 	xmlNodeSetAttribute(node, "name", name)
 	xmlNodeSetAttribute(node, "keywords", "")
+	local success = xmlSaveFile(xmlFiles["favourite"])
+	if not success then
+		outputDebugString("[editor_gui] ERROR: Failed to save favourites.xml after adding item", 1)
+	end
 	cachedElements["favourite"] = cacheElements(xmlFiles["favourite"], elementCatalogs[initiatedType])
 	catNodes[2] = cachedElements["favourite"]
 	outputMessage(elementCatalogs[initiatedType]:gsub("^%l", string.upper) .. " '" .. name .. "' added to favourites.", 50, 255, 50)

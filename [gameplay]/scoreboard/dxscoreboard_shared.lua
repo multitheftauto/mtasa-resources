@@ -1,4 +1,4 @@
-MAX_PRIRORITY_SLOT = 500
+MAX_PRIORITY_SLOT = 500
 
 function getNextFreePrioritySlot( startAt )
 	startAt = tonumber( startAt ) or 1
@@ -15,7 +15,7 @@ end
 
 function isPrioritySlotFree( slot )
 	if type( slot ) == "number" then
-		if not (slot > MAX_PRIRORITY_SLOT or slot < 1) then
+		if not (slot > MAX_PRIORITY_SLOT or slot < 1) then
 			local priorities = {}
 			for key, value in ipairs( scoreboardColumns ) do
 				priorities[tonumber(value.priority)] = true

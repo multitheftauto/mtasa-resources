@@ -31,14 +31,14 @@
 		or use num = vec1:scalar( vec2 ), where num is a number
 
 	Sites:
-		http://luaforge.net/projects/LuaMatrix
-		http://lua-users.org/wiki/SimpleMatrix
+		https://luaforge.net/projects/LuaMatrix
+		https://lua-users.org/wiki/SimpleMatrix
 
 	Licensed under the same terms as Lua itself.
 
 	Developers:
 		Michael Lutz (chillcode)
-		David Manura http://lua-users.org/wiki/DavidManura
+		David Manura https://lua-users.org/wiki/DavidManura
 
 	MODIFIED TO SUIT THE MTA SCRIPTING SYSTEM
 ]]--
@@ -561,7 +561,7 @@ end
 
 --// matrix.root ( m1, root [,iters] )
 -- calculate any root of a matrix
--- source: http://www.dm.unipi.it/~cortona04/slides/bruno.pdf
+-- source: https://www.dm.unipi.it/~cortona04/slides/bruno.pdf
 -- m1 and root have to be given;(m1 = matrix, root = number)
 -- conditions same as matrix.sqrt
 -- returns same values as matrix.sqrt
@@ -599,7 +599,7 @@ end
 --// matrix.normf ( mtx )
 -- calculates the Frobenius norm of the matrix.
 --   ||mtx||_F = sqrt(SUM_{i,j} |a_{i,j}|^2)
--- http://en.wikipedia.org/wiki/Frobenius_norm#Frobenius_norm
+-- https://en.wikipedia.org/wiki/Frobenius_norm#Frobenius_norm
 function matrix.normf(mtx)
 	local mtype = matrix.type(mtx)
 	local result = 0
@@ -618,7 +618,7 @@ end
 -- calculates the max norm of the matrix.
 --   ||mtx||_{max} = max{|a_{i,j}|}
 -- Does not work with symbolic matrices
--- http://en.wikipedia.org/wiki/Frobenius_norm#Max_norm
+-- https://en.wikipedia.org/wiki/Frobenius_norm#Max_norm
 function matrix.normmax(mtx)
 	local abs = (matrix.type(mtx) == "number") and math.abs or mtx[1][1].abs
 	local result = 0

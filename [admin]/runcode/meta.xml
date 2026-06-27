@@ -14,7 +14,7 @@
 	<html src="runcode.css" raw="true"/>
 	<html src="runcode.js" raw="true"/>
 
-	<!-- codemirror files http://codemirror.net/ -->
+	<!-- codemirror files https://codemirror.net/ -->
 	<html src="codemirror\codemirror.js" raw="true"/>
 	<html src="codemirror\codemirror.css" raw="true"/>
 	<html src="codemirror\docs.css" raw="true"/>

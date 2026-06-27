@@ -1,0 +1,13 @@
+<meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="2.0" name="Parachutes script v2" description="Experimental parachute resource, still in development and rough around the edges. Aims to replicate GTA SA's parachuting experience more closely, and eventually entirely" type="script"/>
+
+	<!-- This resource is not finished. Make sure to read the below notes, as well as always use the latest code version from https://github.com/multitheftauto/mtasa-resources/tree/master/%5Bgameplay%5D/parachute2  -->
+	<!-- If you are willing to collaborate finishing this resource, or with testing/feedback  -->
+	<!-- Then please visit the #parachute channel in MTA Development Discord ( invite link: https://discord.gg/GNN6PRtTnu )  -->
+	<!-- Specifically, the posts around this point are relevant,as they are regarding this resource: https://discord.com/channels/801330706252038164/801411291024457778/1361397061123051832  -->
+	<!-- Use on production servers is still discouraged, unless you're satisfied with what you see and think it's already better than MTA's parachuting up until now  -->
+
+	<!-- Special thanks to -ffs-Plasma (initial version, written from scratch, and his research on original SA behavior/Parachute SCM) -->
+
+	<script src="client.lua" type="client" />
+</meta>

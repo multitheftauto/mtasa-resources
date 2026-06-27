@@ -3,5 +3,6 @@
   <map src="Apache Assault.map" />
   <settings>
     <setting name="#respawn" value="none" />
+    <setting name="#vehicle_physics_mode" value="fixed" />
   </settings>
 </meta>

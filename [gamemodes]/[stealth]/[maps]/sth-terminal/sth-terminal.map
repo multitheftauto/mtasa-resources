@@ -1,4 +1,4 @@
-<map edf:definitions="stealth,editor_main">
+<map edf:definitions="stealth"> 
     <object id="object (vgsEbuild01_lvs) (1)" model="8643" interior="0" dimension="0" posX="1520.4943847656" posY="-2306.9106445313" posZ="2.5529699325562" rotX="0" rotY="0" rotZ="180.63488769531" />
     <object id="object (vgsEbuild01_lvs) (2)" model="8643" interior="0" dimension="0" posX="1421.3387451172" posY="-2306.0256347656" posZ="2.6818208694458" rotX="0" rotY="0" rotZ="178.65002441406" />
     <object id="object (airportgate) (1)" model="980" interior="0" dimension="0" posX="1785.9881591797" posY="-2204.5114746094" posZ="15.320266723633" rotX="0" rotY="0" rotZ="179.65002441406" />

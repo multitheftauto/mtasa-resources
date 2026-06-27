@@ -161,7 +161,7 @@ function onClick ( button, state )
 
                     if pVehicle then
 
-                        guiSetEnabled ( source, false ) -- Spam prevention, stop players to click the button till wierd stuff happens. Need a better spam protection.
+                        guiSetEnabled ( source, false ) -- Spam prevention, stop players clicking the button until weird stuff happens. Need better spam protection.
                         setTimer ( guiSetEnabled, 500, 1, source, true )
 
                         local enabled = guiCheckBoxGetSelected ( source )

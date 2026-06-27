@@ -1,4 +1,4 @@
-<map edf:definitions="stealth,editor_main">
+﻿<map edf:definitions="stealth">
     <object id="object (vgsbldng01_lvs) (5)" dimension="0" interior="0" model="8419" posX="-2297.6857910156" posY="1879.9576416016" posZ="-0.074999995529652" rotX="0" rotY="0" rotZ="0" />
     <object id="object (vgsbldng01_lvs) (6)" dimension="0" interior="0" model="8419" posX="-2252.1916503906" posY="1879.9381103516" posZ="0.024999044835567" rotX="0" rotY="0" rotZ="0" />
     <object id="object (vgsbldng01_lvs) (7)" dimension="0" interior="0" model="8419" posX="-2327.19921875" posY="1863.2353515625" posZ="12.675000190735" rotX="0" rotY="90" rotZ="0" />

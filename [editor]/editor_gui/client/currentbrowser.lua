@@ -29,7 +29,7 @@ function createCurrentBrowser ()
 	local windowWidth = screenX*width
 	local windowHeight = screenY*height
 	currentBrowserGUI.browser = guiCreateWindow 	( 1 - width, 0, width, height, "Current Elements...", true )
-	currentBrowserGUI.gridlist = browserList:create(12, 85, windowWidth, windowHeight-128,{{["Name"]=0.85}},false, currentBrowserGUI.browser )
+	currentBrowserGUI.gridlist = browserList:create(12, 85, windowWidth, windowHeight-128,{{["Name [ID]"]=0.85}},false, currentBrowserGUI.browser )
 	currentBrowserGUI.search = guiCreateEdit ( 12, 50, windowWidth, 30, "Search...", false, currentBrowserGUI.browser )
 	currentBrowserGUI.dropdown = editingControl.dropdown:create{["x"]=12,["y"]=25,["width"]=windowWidth,["height"]=20,["dropWidth"]=windowWidth,["dropHeight"]=200,["relative"]=false,["parent"]=currentBrowserGUI.browser,["rows"]={""}}
 	--linked to options
@@ -178,25 +178,29 @@ function currentBrowser.isolateElement (element,bool)
 end
 
 
-function currentBrowser.gridlistClick (cellrow)
-	if cellrow ~= 0 then
-		local id = currentBrowserGUI.gridlist:getSelectedText()
-		cSelectedElement = getElementByID ( id )
-		editor_main.selectElement ( cSelectedElement, 2, false, cSelectedElement, cSelectedElement, true)
-		if ( dialog.autosnap:getValue() ) then
-			autoSnap ( cSelectedElement )
-		end
-		if ( dimensionElement ) then
-			setElementDimension ( dimensionElement, workingDimension )
-			setElementDimension ( cSelectedElement, hiddenDimension )
-			dimensionElement = cSelectedElement
-		end
-	elseif ( dimensionElement ) then
-		setElementDimension ( dimensionElement, workingDimension )
-		setElementDimension ( localPlayer, workingDimension )
-		guiCheckBoxSetSelected ( currentBrowserGUI.isolate, false )
-		dimensionElement = false
-	end
+function currentBrowser.gridlistClick(cellrow)
+    if cellrow ~= 0 then
+        local fullText = currentBrowserGUI.gridlist:getSelectedText()
+        -- Extract just the element name portion (before the bracket)
+        local elementName = string.match(fullText, "^([^%[]+)")
+        -- Trim any spaces at the end
+        elementName = string.gsub(elementName, "%s+$", "")
+        cSelectedElement = getElementByID(elementName)
+        editor_main.selectElement(cSelectedElement, 2, false, cSelectedElement, cSelectedElement, true)
+        if (dialog.autosnap:getValue()) then
+            autoSnap(cSelectedElement)
+        end
+        if (dimensionElement) then
+            setElementDimension(dimensionElement, workingDimension)
+            setElementDimension(cSelectedElement, hiddenDimension)
+            dimensionElement = cSelectedElement
+        end
+    elseif (dimensionElement) then
+        setElementDimension(dimensionElement, workingDimension)
+        setElementDimension(localPlayer, workingDimension)
+        guiCheckBoxSetSelected(currentBrowserGUI.isolate, false)
+        dimensionElement = false
+    end
 end
 
 function currentBrowser.doubleClick()
@@ -303,10 +307,16 @@ function applySearch ( array, query )
 end
 
 function setTableElementIDs(elemTable)
-	for k,v in pairs (elemTable) do
-		elemTable[k] = tostring(getElementID(v))
-	end
-	return elemTable
+    local elementsWithIDs = {}
+    for k, v in pairs(elemTable) do
+        local elementID = getElementID(v)
+		local numericID = ""
+		if getElementType(v) == "object" or getElementType(v) == "vehicle" or getElementType(v) == "ped" then
+			numericID = "[" .. (getElementData(v, "model") or getElementModel(v) or "Unknown") .. "]"
+		end
+        elementsWithIDs[k] = tostring(elementID) .. " " .. tostring(numericID)
+    end
+    return elementsWithIDs
 end
 
 function clearReps ( elemTable )
@@ -429,30 +439,35 @@ function showCurrentBrowser ( elementArray, ignoredElements, elementType, resour
 end
 
 function closeCurrentBrowser()
-	if ( not currentBrowser.showing ) then return end
-	currentBrowser.showing = false
-	if ( callbackFunction ) then
-		local id = currentBrowserGUI.gridlist:getSelectedText()
-		if ( not id ) then
-			callbackFunction(false)
-		else
-			callbackFunction(id)
-		end
-		callbackFunction = nil
-	end
-	currentBrowserGUI.gridlist:disable()
-	guiCheckBoxSetSelected ( currentBrowserGUI.isolate, false )
-	if ( dimensionElement ) then
-		setElementDimension ( dimensionElement, workingDimension )
-		setElementDimension ( localPlayer, workingDimension )
-		dimensionElement = false
-	end
-	guiSetVisible ( currentBrowserGUI.browser, false )
-	dumpSettings()
-	xmlSaveFile ( settingsXML )
-	removeEventHandler ( "onClientGUIWorldClick", root, currentBrowser.searchClick )
-	removeEventHandler ( "onClientElementCreate",root,currentBrowser.prepareSearch )
-	removeEventHandler ( "onClientElementDestroyed",root,currentBrowser.prepareSearch )
+    if (not currentBrowser.showing) then return end
+    currentBrowser.showing = false
+    cSelectedElement = false
+    if (callbackFunction) then
+        local fullText = currentBrowserGUI.gridlist:getSelectedText()
+        if (not fullText) then
+            callbackFunction(false)
+        else
+            -- Extract just the element name portion (before the bracket)
+            local elementName = string.match(fullText, "^([^%[]+)")
+            -- Trim any spaces at the end
+            elementName = string.gsub(elementName, "%s+$", "")
+            callbackFunction(elementName)
+        end
+        callbackFunction = nil
+    end
+    currentBrowserGUI.gridlist:disable()
+    guiCheckBoxSetSelected(currentBrowserGUI.isolate, false)
+    if (dimensionElement) then
+        setElementDimension(dimensionElement, workingDimension)
+        setElementDimension(localPlayer, workingDimension)
+        dimensionElement = false
+    end
+    guiSetVisible(currentBrowserGUI.browser, false)
+    dumpSettings()
+    xmlSaveFile(settingsXML)
+    removeEventHandler("onClientGUIWorldClick", root, currentBrowser.searchClick)
+    removeEventHandler("onClientElementCreate", root, currentBrowser.prepareSearch)
+    removeEventHandler("onClientElementDestroyed", root, currentBrowser.prepareSearch)
 end
 
 function restoreSelectedElement()

@@ -5,6 +5,10 @@
 	<setting name="ghostmode" friendlyname="Ghost mode" type="selection:true,false" description="Whether Ghost Mode is enabled.  This mode allows vehicles to drive through each other during the race." default="false" required="true"/>
 	<setting name="skins" friendlyname="Driver skins" type="selection:cj,random" description="What kind of skins players will spawn as.  CJ means that players will spawn as CJ, with varying motor clothes on.  Random means that random ped skins will be used." default="cj" required="true"/>
 	<setting name="respawntime" friendlyname="Respawn delay" type="natural" description="Time from death to respawn in seconds. Default is 5." default="5" required="true"/>
+	<setting name="autopimp" friendlyname="Auto pimp" type="selection:true,false" default="true" description="Whether to apply a selection of visual upgrades to vehicles." required="false"/>
+	<setting name="firewater" friendlyname="Fire water" type="selection:true,false" default="false" description="Whether to explode the player when entering the water." required="false"/>
+	<setting name="vehicle_physics_mode" friendlyname="Vehicle physics mode" type="selection:fixed,legacy" description="Sets the vehicle physics mode. Use fixed (recommended) for FPS-independent physics, or legacy to use FPS-dependent physics." required="false"/>
+	<setting name="vehicle_physics_fps" friendlyname="Vehicle physics FPS" type="string" description="FPS limit to use when vehicle physics mode is set to legacy. This setting changes the limit: -1 = leave unchanged, 0 = unlimited, 25+ = specific limit." required="false"/>
 
 	<element name="spawnpoint" friendlyname="Spawnpoint" icon="edf/spawnpoint.png">
 		<data name="position" type="coord3d" default="0,0,0" />
@@ -14,7 +18,7 @@
 	</element>
 	<element name="checkpoint" friendlyname="Checkpoint" icon="edf/checkpoint.png">
 		<data name="position" type="coord3d" default="0,0,0" />
-		<data name="type" type="selection:checkpoint,ring,corona" default="checkpoint" />
+		<data name="type" type="selection:checkpoint,ring,corona,cylinder,arrow" default="checkpoint" />
 		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
 		<data name="size" type="number" description="marker size" default="2.25" />
 		<data name="nextid" type="element:checkpoint" description="The next checkpoint after this one" required="false" default="" />

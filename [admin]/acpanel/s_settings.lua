@@ -232,7 +232,7 @@ end
 -- Get version info about this resource
 ---------------------------------------------------------
 function GetAcPanelVersInfoFromRemoteServer()
-	fetchRemote( "http://nightly.mtasa.com/ver/acpanel/", onGotAcPanelVersInfo )
+	fetchRemote( "https://nightly.multitheftauto.com/ver/acpanel/", onGotAcPanelVersInfo )
 end
 
 

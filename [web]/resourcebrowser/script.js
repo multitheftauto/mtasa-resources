@@ -15,7 +15,7 @@ function resourceListUpdate () {
 
     getResourcesByState ( "running",
 
-        function ( resourceTable ) /* called when the results arrive, each result in a seperate variable */
+        function ( resourceTable ) /* called when the results arrive, each result in a separate variable */
         {
 			var htmlOut = "";
 

@@ -19,7 +19,7 @@ browserElementLookOptions = {
 	distance = 4,
 	minDistance = 2,
 	maxDistance = 40,
-	scrollUnits = 2,
+	scrollUnits = 5,
 	scrollSpeed = 0.1,
 	up = "mouse_wheel_up",
 	down = "mouse_wheel_down",
@@ -40,8 +40,8 @@ function elementLookFrame ()
 	local camAngleY = browserElementLookOptions.invertedY * rotY / 120
 
 	-- get the position of the target
-	local camTargetX, camTargetY, camTargetZ = getElementPosition ( browserElementLookOptions.target )  -- tx, ty, tz
-	camTargetZ = camTargetZ + browserElementLookOptions.camZOffset
+	local camTargetX, camTargetY, camTargetZ = tx, ty, tz
+
 	-- calculate a new positions for the camera
 	local distX = math.cos ( camAngleY ) * cameraDistance
 	local camPosX = camTargetX + ( ( math.cos ( camAngleX ) ) * distX )
@@ -86,11 +86,9 @@ function resetCamDist()
 	if cameraDistance < browserElementLookOptions.distance then
 		if cameraDistance + newDistance < browserElementLookOptions.distance then
 			cameraDistance = cameraDistance + newDistance
-		else cameraDistance = browserElementLookOptions.distance
 		end
 	elseif cameraDistance - newDistance > browserElementLookOptions.distance then
-			cameraDistance = cameraDistance - newDistance
-		else cameraDistance = browserElementLookOptions.distance
+		cameraDistance = cameraDistance - newDistance
 	end
 end
 
@@ -120,10 +118,7 @@ function math.round ( value )
 end
 
 function scrollDown()
-	if browserElementLookOptions.distance + browserElementLookOptions.scrollUnits < browserElementLookOptions.maxDistance
-		then browserElementLookOptions.distance = browserElementLookOptions.distance + browserElementLookOptions.scrollUnits
-		else browserElementLookOptions.distance = browserElementLookOptions.maxDistance
-	end
+	browserElementLookOptions.distance = browserElementLookOptions.distance + browserElementLookOptions.scrollUnits
 end
 
 function scrollUp()

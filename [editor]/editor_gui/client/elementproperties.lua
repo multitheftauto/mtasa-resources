@@ -40,6 +40,7 @@ layout.pullout = {
 	items = {
 		"Clone",
 		"Delete",
+		"CopyPOS",
 	}
 }
 layout.line = {
@@ -448,7 +449,7 @@ local function addPropertyControl( controlType, controlLabelName, controlDescrip
 		if selectedElement then
 			if newControl:getLabel() == "model" and (elementType == "object" or elementType == "vehicle") then
 				local minX, minY, minZ = getElementBoundingBox(selectedElement)
-				g_minZ = minZ
+				g_minZ = minZ or 0
 				local handlerFunction = function ()
 					local minX2, minY2, minZ2 = getElementBoundingBox(selectedElement)
 					if minX2 and minY2 and minZ2 then
@@ -1046,3 +1047,9 @@ function pulloutAction.Delete()
 	move_keyboard.disable()
 end
 
+function pulloutAction.CopyPOS()
+	local x, y, z = getElementPosition(selectedElement)
+	local rx, ry, rz = getElementRotation(selectedElement)
+	setClipboard(x..","..y..","..z..","..rx..","..ry..","..rz)
+	outputChatBox("Position "..x..","..y..","..z..","..rx..","..ry..","..rz.." copied to clipboard")
+end

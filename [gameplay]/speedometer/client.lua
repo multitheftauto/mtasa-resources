@@ -1,7 +1,13 @@
 local screenW, screenH = guiGetScreenSize()
+local base_color = tocolor(255, 255, 255, 235)
+local baseW, baseH = 1920, 1080
 
 local function dxDrawRelativeImage(startX, startY, width, height, image, rot, rotX, rotY, color, postGUI)
-    dxDrawImage(startX * screenW, startY * screenH, width * screenW, height * screenH, image, rot or 0, rotX or 0, rotY or 0, color, postGUI or false)
+    local scale = math.min(screenW / baseW, screenH / baseH)
+    local scaledW = width * scale
+    local scaledH = height * scale
+
+    dxDrawImage(screenW * startX, screenH * startY, scaledW, scaledH, image, rot or 0, rotX or 0, rotY or 0, color or base_color, postGUI or false)
 end
 
 function drawSpeedo()
@@ -11,8 +17,8 @@ function drawSpeedo()
     local velx, vely, velz = getElementVelocity(veh)
     local speed = (velx ^ 2 + vely ^ 2 + velz ^ 2) ^ (0.5)
 
-    dxDrawRelativeImage(0.66, 0.61, 0.33, 0.49, "images/disc.png")
-    dxDrawRelativeImage(0.7825, 0.61, 0.2, 0.46, "images/needle.png", -146 + (speed >= 1.47 and 265 or speed * 180))
+    dxDrawRelativeImage(0.82, 0.65, 300, 300, "images/disc.png")
+    dxDrawRelativeImage(0.82, 0.65, 300, 300, "images/needle.png", -145-(1.5-(speed/1.5) * 305))
 end
 
 local isSpeedoShown = false

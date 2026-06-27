@@ -15,7 +15,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 	local cor = aSyncCoroutine
 	local tableOut = {}
 	local theSource = root
-	if client and not hasObjectPermissionTo ( client, "general.adminpanel" ) then
+	if client and not hasObjectPermissionTo ( client, "general.adminpanel", false ) then
 		type = "loggedout"
 	elseif ( type == "player" ) then
 		if not isElement( data ) then return end
@@ -51,14 +51,14 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 				tableOut[player]["accountname"] = getPlayerAccountName ( player ) or "N/A"
 				tableOut[player]["serial"] = getPlayerSerial ( player )
 				tableOut[player]["country"] = aPlayers[player]["country"]
-				tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
+				tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel", false )
 				tableOut[player]["acdetected"] = getPlayerACDetectedList( player )
 				tableOut[player]["d3d9dll"] = getPlayerD3D9DLLHash( player )
 				tableOut[player]["imgmodsnum"] = getPlayerModCount( player )
 			end
 		end
 	elseif ( type == "resources" ) then
-		if not hasObjectPermissionTo( source, "general.tab_resources" ) then
+		if not hasObjectPermissionTo( source, "general.tab_resources", false ) then
 			return
 		end
 		local resourceTable = getResources()
@@ -100,7 +100,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		for id, player in ipairs(getElementsByType("player")) do
 			if isElement(player) and aPlayers[player] then
 				tableOut[player] = {}
-				tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel" )
+				tableOut[player]["admin"] = hasObjectPermissionTo ( player, "general.adminpanel", false )
 				if ( tableOut[player]["admin"] ) then
 					tableOut[player]["chat"] = aPlayers[player]["chat"]
 				end
@@ -281,7 +281,7 @@ end )
 addEvent ( "aPermissions", true )
 addEventHandler ( "aPermissions", root, function()
 	if checkClient( false, source, 'aPermissions' ) then return end
-	if ( hasObjectPermissionTo ( source, "general.adminpanel" ) ) then
+	if ( hasObjectPermissionTo ( source, "general.adminpanel", false ) ) then
 		local tableOut = {}
 		for gi, group in ipairs ( aclGroupList() ) do
 			for oi, object in ipairs ( aclGroupListObjects ( group ) ) do

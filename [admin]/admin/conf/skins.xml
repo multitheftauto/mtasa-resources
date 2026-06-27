@@ -5,11 +5,11 @@
 	<group name="Special">
 		<skin model="1" name="Truth" />
 		<skin model="2" name="Maccer" />
-                <skin model="5" name="Big Bear(Large)"/>
-                <skin model="6" name="White Croupier"/>
-                <skin model="8" name="Cab Driver"/>
-                <skin model="42" name="Suzie"/>
-                <skin model="86" name="Tracksuit Girl (Pink)" />
+		<skin model="5" name="Big Bear(Large)" />
+		<skin model="6" name="White Croupier" />
+		<skin model="8" name="Cab Driver" />
+		<skin model="42" name="Suzie" />
+		<skin model="86" name="Tracksuit Girl (Pink)" />
 		<skin model="265" name="Tenpenny" />
 		<skin model="266" name="Pulaski" />
 		<skin model="267" name="Hern" />
@@ -48,6 +48,7 @@
 		<skin model="92" name="Rollergirl" />
 		<skin model="96" name="Soccer Player" />
 		<skin model="97" name="Baywatch Dude" />
+		<skin model="98" name="Worker Male" />
 		<skin model="138" name="Bikini Tattoo" />
 		<skin model="139" name="Yellow Bikini" />
 		<skin model="140" name="Buxom Bikini" />
@@ -170,8 +171,8 @@
 		<skin model="287" name="Army" />
 	</group>
 	<group name="Police">
-                <skin model="3" name="Deputy Officer"/>
-                <skin model="4" name="Sheriff"/>
+		<skin model="3" name="Deputy Officer" />
+		<skin model="4" name="Sheriff" />
 		<skin model="190" name="Barbara Schternvart" />
 		<skin model="246" name="Cop Stripper" />
 		<skin model="280" name="Cop 1" />
@@ -193,7 +194,6 @@
 		<skin model="88" name="Casual Old Lady" />
 		<skin model="89" name="Cleaning Lady" />
 		<skin model="103" name="Baller Jacket" />
-		<skin model="103" name="Baller Jacket" />
 		<skin model="105" name="Grove Sweater" />
 		<skin model="130" name="Native Ugly" />
 		<skin model="151" name="Melanie" />
@@ -213,7 +213,7 @@
 		<skin model="17" name="Black suit" />
 		<skin model="57" name="Chinese Businessman" />
 		<skin model="61" name="Pilot" />
-                <skin model="65" name="Air Traffic Controller (1)"/>
+		<skin model="65" name="Air Traffic Controller (1)" />
 		<skin model="76" name="Businesswoman 1" />
 		<skin model="141" name="Cute Librarian" />
 		<skin model="147" name="Sigmund Freud" />
@@ -228,8 +228,8 @@
 		<skin model="228" name="Japanese Businessman 3" />
 		<skin model="255" name="Limo Driver" />
 		<skin model="263" name="Asian Hostess" />
-		<skin model="273" name="Reporter"/>
-		<skin model="289" name="Air Traffic Controller (2)"/>
+		<skin model="273" name="Reporter" />
+		<skin model="289" name="Air Traffic Controller (2)" />
 	</group>
 	<group name="Fighters">
 		<skin model="49" name="Ninja Sensei" />
@@ -285,6 +285,7 @@
 		<skin model="29" name="White Dealer" />
 		<skin model="30" name="Religious Essey" />
 		<skin model="47" name="Top Button Essey" />
+		<skin model="48" name="Hippy Maley" />
 		<skin model="67" name="Red Bandana" />
 		<skin model="143" name="Sam Jackson" />
 		<skin model="241" name="Afro Brother" />
@@ -311,6 +312,7 @@
 		<skin model="212" name="Tin Foil Hat" />
 		<skin model="213" name="Hobo Elvis" />
 		<skin model="230" name="Hooded Hobo" />
+		<skin model="239" name="Homeless Bob" />
 	</group>
 	<group name="Nightclubbers">
 		<skin model="43" name="Porn Producer" />

@@ -7,5 +7,6 @@
     <setting name="#respawn" value="timelimit" />
     <setting name="#respawntime" value="10" />
     <setting name="#duration" value="300" />
+    <setting name="#vehicle_physics_mode" value="fixed" />
   </settings>
 </meta>

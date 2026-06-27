@@ -62,8 +62,6 @@
 	<file src="img/travelling.png"/>
 	<file src="img/killmessage.png"/>
 
-	<file src="audio/mission_accomplished.mp3"/>
-
 	<file src="model/nitro.dff"/>
 	<file src="model/nitro.txd"/>
 	<file src="model/repair.dff"/>
@@ -319,6 +317,20 @@
 					desc="Set to true to show the map author name on the travelling screen."
 					/>
 
+		<setting name="*vehicle_physics_mode" value="legacy"
+					friendlyname="Vehicle physics mode"
+					group="Gameplay"
+					accept="fixed,legacy"
+					desc="Sets the vehicle physics mode. Use fixed (recommended) for FPS-independent physics, or legacy to use FPS-dependent physics."
+					/>
+
+		<setting name="*vehicle_physics_fps" value="-1"
+					friendlyname="Vehicle physics FPS"
+					group="Gameplay"
+					accept="-1,0,25-32767"
+					desc="FPS limit to use when vehicle physics mode is set to legacy. This setting changes the limit: -1 = leave unchanged, 0 = unlimited, 25+ = specific limit."
+					/>
+
         <setting name="*ghostmode_map_can_override" friendlyname="Ghost mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
 		<setting name="*skins_map_can_override"  friendlyname="Driver skin map override" group="Graphics" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
 		<setting name="*vehicleweapons_map_can_override"  friendlyname="Vehicle weapons map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
@@ -329,6 +341,9 @@
 
 		<setting name="*ghostmode_warning_if_map_override"  friendlyname="Ghost mode override warning" group="Gameplay" value="true" accept="false,true" desc="Set to true to issue a warning to players in the chatbox, if the map overrides this setting"/>
 		<setting name="*vehicleweapons_warning_if_map_override"  friendlyname="Vehicle weapons override warning" group="Gameplay" value="true" accept="false,true" desc="Set to true to issue a warning to players in the chatbox, if the map overrides this setting"/>
+
+		<setting name="*vehicle_physics_mode_map_can_override"  friendlyname="Vehicle physics mode map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
+		<setting name="*vehicle_physics_fps_map_can_override"  friendlyname="Vehicle physics FPS map override" group="Gameplay" value="true" accept="false,true" desc="Set to true to allow the map to override this setting"/>
     </settings>
 
 

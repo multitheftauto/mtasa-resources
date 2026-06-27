@@ -26,7 +26,7 @@ function loadCFGIntoMemory ( cfgstr )
             waitForLine = false
 
             if addingEntry then
-                print ( "[HEDIT] Error while adding line #"..tostring(#lines)..", invalid character found: "..token )
+                outputDebugString ( "[HEDIT] Error while adding line #"..tostring(#lines)..", invalid character found: "..token, 1)
                 table.remove ( lines, #lines )
                 addingEntry = false
             end
@@ -63,9 +63,9 @@ function loadCFGIntoMemory ( cfgstr )
 
 
     if #lines > 0 then
-        print ( "[HEDIT] Loaded "..tostring(#lines).." handling entries from "..tostring(string.len(cfgstr)).." bytes into the memory." )
-        print ( "[HEDIT] Type 'exportcfg' to import the handling entries into defaults.xml." )
-        print ( "[HEDIT] This may take some time." )
+        outputDebugString ( "[HEDIT] Loaded "..tostring(#lines).." handling entries from "..tostring(string.len(cfgstr)).." bytes into the memory." )
+        outputDebugString ( "[HEDIT] Type 'exportcfg' to import the handling entries into defaults.xml." )
+        outputDebugString ( "[HEDIT] This may take some time." )
 
         addCommandHandler ( "exportcfg", function ( player )
 
@@ -73,8 +73,8 @@ function loadCFGIntoMemory ( cfgstr )
                 return false
             end
 
-            print ( "[HEDIT] Importing "..line.." handling entries into defaults.xml." )
-            print ( "[HEDIT] This may take a while. Please wait." )
+            outputDebugString ( "[HEDIT] Importing "..line.." handling entries into defaults.xml." )
+            outputDebugString ( "[HEDIT] This may take a while. Please wait." )
 
             setTimer ( function ( )
                 exportToDefaults ( lines )
@@ -85,8 +85,8 @@ function loadCFGIntoMemory ( cfgstr )
         return true
     end
 
-    print ( "[HEDIT] No handling entries found in "..tostring(string.len(cfgstr)).." bytes!")
-    print ( "[HEDIT] Make sure handling.cfg is correct and try again." )
+    outputDebugString ( "[HEDIT] No handling entries found in "..tostring(string.len(cfgstr)).." bytes!", 2)
+    outputDebugString ( "[HEDIT] Make sure handling.cfg is correct and try again.", 2 )
 
     return true
 end
@@ -113,7 +113,7 @@ function exportToDefaults ( linetabs )
 
             if id == 1 then
                 if not tonumber ( value ) then
-                    print ( "[HEDIT] Handling line #"..tostring(num).." is invalid, can't import!" )
+                    outputDebugString ( "[HEDIT] Handling line #"..tostring(num).." is invalid, can't import!", 1 )
                     break
                 end
 
@@ -156,8 +156,8 @@ addCommandHandler ( "loadcfg", function ( player )
 
         fileClose ( cfgFile )
 
-        print ( "[HEDIT] handling.cfg has been read." )
-        print ( "[HEDIT] Please wait while loading the lines into the memory." )
+        outputDebugString ( "[HEDIT] handling.cfg has been read." )
+        outputDebugString ( "[HEDIT] Please wait while loading the lines into the memory." )
 
         setTimer ( function ( )
             loadCFGIntoMemory ( str )
@@ -166,6 +166,6 @@ addCommandHandler ( "loadcfg", function ( player )
         return true
     end
 
-    print ( "[HEDIT] No handling.cfg found. Make sure it's in the root of this resource." )
+    outputDebugString ( "[HEDIT] No handling.cfg found. Make sure it's in the root of this resource.", 2 )
     return false
 end )

@@ -36,8 +36,8 @@ function aBansTab.Create(tab)
     sync(SYNC_BANS)
 end
 
-function aBansTab.onClientClick(button)
-    if (button == "left") then
+function aBansTab.onClientClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aBansTab.Details) then
             if (guiGridListGetSelectedItem(aBansTab.BansList) == -1) then
                 messageBox("No ban selected!", MB_ERROR, MB_OK)

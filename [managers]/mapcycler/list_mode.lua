@@ -57,7 +57,7 @@ function cycleMap_list()
 		gameIndex = nextGameIndex
 		-- increment next game index
 		nextGameIndex = nextGameIndex + 1
-		-- go back to the beggining if there's no more games
+		-- go back to the beginning if there's no more games
 		if not gameList[nextGameIndex] then
 			nextGameIndex = 1
 		end

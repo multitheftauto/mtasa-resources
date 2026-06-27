@@ -1,7 +1,7 @@
 browserList = {}
 browserList_mt = { __index = browserList }
 local activatedBrowsers = {}
-local ROW_HEIGHT = 14
+local ROW_HEIGHT = 14.1
 local keyUp,keyDown,ignore
 --NOTE: All functions lack necessary checks to verify valid args, its intended for internal use only
 -------
@@ -59,7 +59,7 @@ local function updateActivatedBrowsers()
 			local targetKey = startKey + self.gridlistRowCount - 1
 			--set the text
 			local i = startKey
-			while i ~= targetKey do
+			while i <= targetKey do
 				rowColumns = self.rowList[i]
 				if type(rowColumns) == "table" then
 					local pos = guiGridListAddRow ( self.gridlist )
@@ -192,7 +192,7 @@ function browserList:setRows(rowTable)
 	self.currentStartKey = 1
 	self.rowCount = #rowTable --total number of rows
 	self.rowList = rowTable
-	self.scrollDistance = self.rowCount - self.gridlistRowCount
+	self.scrollDistance = self.rowCount - self.gridlistRowCount + 1
 	if self.scrollDistance == 0 then
 		self.scrollDistance = 1
 	end
@@ -220,7 +220,7 @@ function browserList:setRows(rowTable)
 	end
 	local i = 1
 	local target = self.gridlistRowCount + 2
-	while i ~= target do
+	while i <= target do
 		local rowColumns = rowTable[i]
 		if type(rowColumns) == "table" then
 			local pos = guiGridListAddRow ( self.gridlist )

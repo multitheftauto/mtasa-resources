@@ -84,6 +84,7 @@
 			<vehicle model="438" keywords="" />
 			<vehicle model="445" keywords="" />
 			<vehicle model="466" keywords="" />
+			<vehicle model="604" keywords="" />
 			<vehicle model="467" keywords="" />
 			<vehicle model="492" keywords="" />
 			<vehicle model="507" keywords="" />
@@ -183,6 +184,7 @@
 			<vehicle model="498" keywords="" />
 			<vehicle model="499" keywords="" />
 			<vehicle model="543" keywords="" />
+			<vehicle model="605" keywords="" />
 			<vehicle model="554" keywords="" />
 			<vehicle model="600" keywords="" />
 			<vehicle model="609" keywords="" />
@@ -234,8 +236,9 @@
 		<group name="RC Vehicles">
 			<vehicle model="441" keywords="" />
 			<vehicle model="464" keywords="" />
-			<vehicle model="465" keywords="" />
+			<vehicle model="594" keywords="" />
 			<vehicle model="501" keywords="" />
+			<vehicle model="465" keywords="" />
 			<vehicle model="564" keywords="" />
 		</group>
 	</group>
@@ -247,6 +250,7 @@
 		<vehicle model="470" keywords="" />
 		<vehicle model="479" keywords="" />
 		<vehicle model="489" keywords="" />
+		<vehicle model="505" keywords="" />
 		<vehicle model="495" keywords="" />
 		<vehicle model="500" keywords="" />
 		<vehicle model="561" keywords="" />

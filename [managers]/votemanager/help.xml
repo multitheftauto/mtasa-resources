@@ -17,10 +17,10 @@ Starts a vote to launch a map compatible with "some_gamemode".
 Starts a vote to launch a gamemode and a map compatible with it.
 
 /votekick playername [reason]
-Starts a vote to kill the player by the specified name.
+Starts a vote to kick the player by the specified name.
 
 /voteban playername [reason]
-Starts a vote to kill the player by the specified name.
+Starts a vote to ban the player by the specified name.
 
 /votekill playername [reason]
 Starts a vote to kill the player by the specified name.

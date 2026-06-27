@@ -20,6 +20,7 @@ local centerToBaseDistance
 
 local rotationless
 local rotX, rotY, rotZ
+local scale
 
 local collisionless
 local minZ
@@ -37,7 +38,7 @@ local mta_getElementRotation = getElementRotation
 local function getElementRotation(element)
 	local elementType = getElementType(element)
 	if elementType == "player" or elementType == "ped" then
-		return 0,0,getPedRotation(element)
+		return mta_getElementRotation(element)
 	elseif elementType == "object" then
 		return mta_getElementRotation(element, "ZYX")
 	elseif elementType == "vehicle" then
@@ -78,15 +79,13 @@ local function rotateWithMouseWheel(key, keyState)
 			--Peds dont have their rotation updated with their attached parents
 			for i,element in ipairs(getAttachedElements(selectedElement)) do
 				if getElementType(element) == "ped" then
-					setElementRotation(element, 0,0,-rotZ)
-					setPedRotation(element, rotZ)
+					setElementRotation(element, 0,0,-rotZ, "default", true)
 				end
 			end
 		elseif (getElementType(selectedElement) == "ped") then
 			rotZ = rotZ + speed
 			rotZ = rotZ % 360
-			setPedRotation(selectedElement, rotZ)
-			setElementRotation(selectedElement, 0,0,-rotZ%360)
+			setElementRotation(selectedElement, 0,0,-rotZ%360, "default", true)
 		end
 	end
 end
@@ -112,7 +111,6 @@ end
 
 local function onClientRender_freecam()
 	if (selectedElement and isElement(selectedElement)) then
-		setElementVelocity(selectedElement,0,0,0) --!w
 
 	    camX, camY, camZ, targetX, targetY, targetZ = getCameraMatrix()
 
@@ -195,6 +193,7 @@ function attachElement(element)
 			if (getElementType(element) == "object") then
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element, "ZYX")
+				scale = exports.edf:edfGetElementScale(element)
 				collisionless = false
 				_, _, minZ = exports.edf:edfGetElementBoundingBox(element)
 				centerToBaseDistance = exports.edf:edfGetElementDistanceToBase(element)
@@ -209,12 +208,13 @@ function attachElement(element)
 			elseif (getElementType(element) == "object") then
 				rotationless = false
 				rotX, rotY, rotZ = getElementRotation(element, "ZYX")
+				scale = exports.edf:edfGetElementScale(element)
 				collisionless = false
 				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
 			elseif (getElementType(element) == "ped") then
 				rotationless = false
-				rotX, rotY, rotZ = 0, 0, getPedRotation(element)
+				_, _, rotZ = getElementRotation(element)
 				collisionless = false
 				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
@@ -245,6 +245,9 @@ function detachElement()
 			triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
 			if hasRotation[getElementType(selectedElement)] then
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
+			end
+			if (getElementType(selectedElement) == "object") then
+				triggerServerEvent("syncProperty", localPlayer, "scale", scale, exports.edf:edfGetAncestor(selectedElement))
 			end
 		end
 		selectedElement = nil

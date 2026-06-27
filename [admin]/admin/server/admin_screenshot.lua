@@ -16,6 +16,7 @@ local currentid = 0
 local rights = {
 	["new"] = "takescreenshot",
 	["delete"] = "deletescreenshot",
+	["deleteall"] = "deleteallscreenshot",
 	["view"] = "viewscreenshot",
 	["list"] = "listscreenshots"
 }
@@ -42,7 +43,7 @@ addEventHandler("aScreenShot",root,
 		if not isElement(admin) then return end
 		if not action then return end
 		local right = rights[action]
-		if not right or not hasObjectPermissionTo(admin,"command."..right) then return end
+		if not right or not hasObjectPermissionTo(admin,"command."..right, false) then return end
 		if action == "new" then
 			if not isElement(player) then return end
 			if screenshots[player] then
@@ -60,6 +61,14 @@ addEventHandler("aScreenShot",root,
 				fileDelete("screenshots/"..player..".jpg")
 			end
 			dbExec(con, "DELETE FROM `admin_screenshots` WHERE `id`=?", player)
+		elseif action == "deleteall" then
+			for i=0, currentid do
+				if fileExists("screenshots/"..i..".jpg") then
+					fileDelete("screenshots/"..i..".jpg")
+				end
+			end
+			currentid = 0
+			dbExec(con, "DELETE FROM `admin_screenshots`")
 		elseif action == "view" then
 			if fileExists("screenshots/"..player..".jpg") then
 				local file = fileOpen("screenshots/"..player..".jpg")

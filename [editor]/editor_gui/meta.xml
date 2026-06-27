@@ -57,6 +57,7 @@
 	<export function="restoreSaveDialog" type="client" />
 	<export function="stopTest" type="client" />
 	<export function="restoreSelectedElement" type="client" />
+	<export function="isTesting" type="client" />
 
 	<!-- MessageBox exports -->
 	<export function="newCallback" type="client" />

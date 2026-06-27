@@ -1,4 +1,4 @@
-<map>
+﻿<map edf:definitions="stealth">
 
 <camera posX="-2599.462158" posY="948.766052" posZ="111.269463" targetX="-2653.292480" targetY="896.747070" targetZ="77.588188" />
 

@@ -1,7 +1,7 @@
 <meta>
-    <info type="script" name="Ingame Handling Editor" author="Remi-X" version="2.1.4" description="The first ingame handling editor for MTA!" />
+    <info type="script" name="Ingame Handling Editor" author="Remi-X, MTA contributors (github.com/multitheftauto/mtasa-resources)" version="2.1.6" description="The first ingame handling editor for MTA!" />
     <oop>true</oop>
-    <min_mta_version server="1.4.0" client="1.4.0" />
+    <min_mta_version server="1.6.0-9.22815" client="1.6.0-9.22815" />
 
     <!-- SHARED -->
     <script src="shared/variables/general.lua"      type="shared" />
@@ -26,6 +26,7 @@
     <script src="client/gui/languages/english.lua"  type="client" />
     <script src="client/gui/languages/russian.lua"  type="client" />
     <script src="client/gui/languages/turkish.lua"  type="client" />
+    <script src="client/gui/languages/german.lua"  type="client" />
     <script src="client/gui/languages/spanish.lua"  type="client" />
     <script src="client/gui/languages/polish.lua"   type="client" />
     <script src="client/gui/languages/arabic.lua"   type="client" />
@@ -47,7 +48,7 @@
 
     <!-- SERVER -->
     <script src="server/logmanager.lua"             type="server" />
-    <script src="server/cfgloader.lua"              type="server" />>
+    <script src="server/cfgloader.lua"              type="server" />
     <script src="server/core.lua"                   type="server" />
     <script src="server/utils.lua"                  type="server" />
 

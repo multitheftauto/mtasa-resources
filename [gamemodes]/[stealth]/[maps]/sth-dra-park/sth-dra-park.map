@@ -1,4 +1,4 @@
-<map edf:definitions="editor_main">
+﻿<map edf:definitions="stealth">
 
    <team1 id="mercspawns">
 	<spawnpoint id="team1" posX="-2034.263184" posY="830.503662" posZ="69.213318" rot="0" skin="166"/>

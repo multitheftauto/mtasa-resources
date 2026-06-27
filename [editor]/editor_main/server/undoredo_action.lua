@@ -14,20 +14,22 @@ ActionMove.oldPosZ, ActionMove.curPosZ = 0, 0
 ActionMove.oldRotX, ActionMove.curRotX = 0, 0
 ActionMove.oldRotY, ActionMove.curRotY = 0, 0
 ActionMove.oldRotZ, ActionMove.curRotZ = 0, 0
+ActionMove.oldScale, ActionMove.curScale = 1, 1
 
 function ActionMove:new(object)
-	object = object or {}
-	setmetatable(object, self)
-	self.__index = self
-	if (object.element and isElement(object.element)) then
-		object:setElementCurrentPositionAndRotation()
-	end
-	return object
+    object = object or {}
+    setmetatable(object, self)
+    self.__index = self
+    if (object.element and isElement(object.element)) then
+        object:setElementCurrentPositionAndRotation()
+    end
+    return object
 end
 
 function ActionMove:setElementCurrentPositionAndRotation()
 	self.curPosX, self.curPosY, self.curPosZ = edf.edfGetElementPosition(self.element)
 	self.curRotX, self.curRotY, self.curRotZ = edf.edfGetElementRotation(self.element)
+	self.curScale = edf.edfGetElementScale(self.element)
 end
 
 -- public
@@ -52,6 +54,9 @@ function ActionMove:performUndo()
 		if (self.oldRotX and self.oldRotY and self.oldRotZ) then
 			edf.edfSetElementRotation(self.element, self.oldRotX, self.oldRotY, self.oldRotZ)
 		end
+		if (self.oldScale) then
+			edf.edfSetElementScale(self.element, self.oldScale)
+		end
 	else
 		outputDebugString("Cannot perform undo: element does not exist, position does not exist, or invalid element (ActionMove:performUndo)")
 		return false
@@ -63,6 +68,9 @@ function ActionMove:performRedo()
 		edf.edfSetElementPosition(self.element, self.curPosX, self.curPosY, self.curPosZ)
 		if (self.curRotX and self.curRotY and self.curRotZ) then
 			edf.edfSetElementRotation(self.element, self.curRotX, self.curRotY, self.curRotZ)
+		end
+		if (self.curScale) then
+			edf.edfSetElementScale(self.element, self.curScale)
 		end
 	else
 		outputDebugString("Cannot perform redo: element does not exist, position does not exist, or invalid element")
@@ -112,6 +120,7 @@ function ActionCreate:performUndo()
 			local posX = getElementData ( self.element, "posX" )
 			local posY = getElementData ( self.element, "posY" )
 			local posZ = getElementData ( self.element, "posZ" )
+			local scale = getElementData ( self.element, "scale" )
 			local interior = getElementData ( self.element, "interior" )
 			local radius = getElementData ( self.element, "radius" )
 			restoreWorldModel ( model, radius, posX, posY, posZ, interior )
@@ -135,6 +144,7 @@ function ActionCreate:performRedo()
 			local posX = getElementData ( self.element, "posX" )
 			local posY = getElementData ( self.element, "posY" )
 			local posZ = getElementData ( self.element, "posZ" )
+			local scale = getElementData ( self.element, "scale" )
 			local interior = getElementData ( self.element, "interior" )
 			local radius = getElementData ( self.element, "radius" )
 			removeWorldModel ( model, radius, posX, posY, posZ, interior )

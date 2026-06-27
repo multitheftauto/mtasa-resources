@@ -34,6 +34,22 @@ local function renderGridlines()
 	local camX,camY,camZ = getCameraMatrix()
 	--Work out our line thickness
 	local thickness = (100/getDistanceBetweenPoints3D(camX,camY,camZ,x,y,z)) * MAX_THICKNESS
+
+	--Apply the adjustment for non-centered bounding box according to c++ implementaion
+	--https://github.com/multitheftauto/mtasa-blue/blob/88d303c0bbcc0ed4fee958df2d16ace562ce0108/Client/mods/deathmatch/logic/CClientStreamElement.cpp#L224
+
+	local halfCenterX = (minX + maxX) * 0.25
+	local halfCenterY = (minY + maxY) * 0.25
+	local halfCenterZ = (minZ + maxZ) * 0.25
+
+	--subtracting half center
+	minX = minX - halfCenterX
+	minY = minY - halfCenterY
+	minZ = minZ - halfCenterZ
+	maxX = maxX - halfCenterX
+	maxY = maxY - halfCenterY
+	maxZ = maxZ - halfCenterZ
+
 	--
 	local elementMatrix = (getElementMatrix(attachedToElement) and not ignoreMatrix[getElementType(attachedToElement)])
 							and matrix(getElementMatrix(attachedToElement))
@@ -109,11 +125,160 @@ function drawXYZLines()
 	drawLine({x,y,z},{zx,zy,zz},tocolor(0,0,200,200),thickness)
 end
 
+--[[
+	Draws the where the object will be moved to.
+]]
+function drawObjectMoveLines()
+	if not isElement(attachedToElement) then return end
+	if getElementType(attachedToElement) ~= "object" then return end
+	if getElementDimension(attachedToElement) ~= getElementDimension(localPlayer) then return end
+	local x,y,z = edf.edfGetElementPosition(attachedToElement)
+	if not x then return end
+
+	local offsetX = edf.edfGetElementProperty(attachedToElement, "moveX")
+	local offsetY = edf.edfGetElementProperty(attachedToElement, "moveY")
+	local offsetZ = edf.edfGetElementProperty(attachedToElement, "moveZ")
+
+	if offsetX and math.abs(offsetX) > 0 or offsetY and math.abs(offsetY) > 0 or offsetZ and math.abs(offsetZ) > 0 then
+		if not offsetX then offsetX = 0 end
+		if not offsetY then offsetY = 0 end
+		if not offsetZ then offsetZ = 0 end
+
+		local speed = tonumber(edf.edfGetElementProperty(attachedToElement, "moveSpeed"))
+		if not speed then speed = 1 end
+		local delay = tonumber(edf.edfGetElementProperty(attachedToElement, "moveDelay"))
+		if not delay then delay = 0 end
+		local time = getDistanceBetweenPoints3D(x,y,z,x + offsetX,y + offsetY,z + offsetZ) / speed * 1000
+		local lineStartPos = {x,y,z}
+		local lineEndPos = {x + offsetX,y + offsetY,z + offsetZ}
+		local timeNow = getTickCount()
+
+		local fullCycle = 2 * time + 2 * delay
+		local cyclePos = timeNow % fullCycle
+		local progress
+		if cyclePos < delay then
+			-- Delay at 0
+			progress = 0
+		elseif cyclePos < delay + time then
+			-- Forward: 0 to 1 over 'time' milliseconds
+			progress = (cyclePos - delay) / time
+		elseif cyclePos < delay + time + delay then
+			-- Delay at 1
+			progress = 1
+		else
+			-- Backward: 1 to 0 over 'time' milliseconds
+			progress = 1 - (cyclePos - delay - time - delay) / time
+		end
+
+		local movementAnimationOffset = {
+			(lineEndPos[1] - lineStartPos[1]) * progress,
+			(lineEndPos[2] - lineStartPos[2]) * progress,
+			(lineEndPos[3] - lineStartPos[3]) * progress
+		}
+
+
+		local minX,minY,minZ,maxX,maxY,maxZ = edf.edfGetElementBoundingBox ( attachedToElement )
+		if not minX then
+			local radius = edf.edfGetElementRadius ( attachedToElement )
+			if radius then
+				minX,minY,minZ,maxX,maxY,maxZ = -radius,-radius,-radius,radius,radius,radius
+			end
+		end
+
+		if minX and minY and minZ and maxX and maxY and maxZ then
+			local halfCenterX = (minX + maxX) * 0.25
+			local halfCenterY = (minY + maxY) * 0.25
+			local halfCenterZ = (minZ + maxZ) * 0.25
+
+			--subtracting half center
+			minX = minX - halfCenterX
+			minY = minY - halfCenterY
+			minZ = minZ - halfCenterZ
+			maxX = maxX - halfCenterX
+			maxY = maxY - halfCenterY
+			maxZ = maxZ - halfCenterZ
+
+			-- Define the 8 corners in relative coordinates
+			local relativeCorners = {
+				{minX, minY, minZ}, -- 1: min corner
+				{maxX, minY, minZ}, -- 2
+				{maxX, maxY, minZ}, -- 3
+				{minX, maxY, minZ}, -- 4
+				{minX, minY, maxZ}, -- 5
+				{maxX, minY, maxZ}, -- 6
+				{maxX, maxY, maxZ}, -- 7
+				{minX, maxY, maxZ}  -- 8: max corner
+			}
+
+			-- Draw the bounding box moving to the destination position
+			do
+				local corners = {}
+				for i, relCorner in ipairs(relativeCorners) do
+					local worldX, worldY, worldZ = getPositionFromElementAtOffset(attachedToElement, relCorner[1], relCorner[2], relCorner[3])
+					corners[i] = {worldX + movementAnimationOffset[1], worldY + movementAnimationOffset[2], worldZ + movementAnimationOffset[3]}
+				end
+				
+				local boxColor = tocolor(255, 255, 255, 100)
+				local lineWidth = 2
+				
+				-- Bottom face (z = minZ)
+				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[2][1], corners[2][2], corners[2][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[3][1], corners[3][2], corners[3][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[4][1], corners[4][2], corners[4][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[1][1], corners[1][2], corners[1][3], boxColor, lineWidth)
+				
+				-- Top face (z = maxZ)
+				dxDrawLine3D(corners[5][1], corners[5][2], corners[5][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[6][1], corners[6][2], corners[6][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[7][1], corners[7][2], corners[7][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[8][1], corners[8][2], corners[8][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
+				
+				-- Vertical edges connecting bottom to top
+				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
+			end
+			
+			-- Draw the bounding box at the destination position
+			do
+				local corners = {}
+				for i, relCorner in ipairs(relativeCorners) do
+					local worldX, worldY, worldZ = getPositionFromElementAtOffset(attachedToElement, relCorner[1], relCorner[2], relCorner[3])
+					corners[i] = {worldX + offsetX, worldY + offsetY, worldZ + offsetZ}
+				end
+				
+				local boxColor = tocolor(255, 255, 0, 200)
+				local lineWidth = 2
+				
+				-- Bottom face (z = minZ)
+				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[2][1], corners[2][2], corners[2][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[3][1], corners[3][2], corners[3][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[4][1], corners[4][2], corners[4][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[1][1], corners[1][2], corners[1][3], boxColor, lineWidth)
+				
+				-- Top face (z = maxZ)
+				dxDrawLine3D(corners[5][1], corners[5][2], corners[5][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[6][1], corners[6][2], corners[6][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[7][1], corners[7][2], corners[7][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[8][1], corners[8][2], corners[8][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
+				
+				-- Vertical edges connecting bottom to top
+				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
+				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
+			end
+		end
+	end
+end
+
 function doBasicElementRenders()
+	renderHoverOverGridLines()
 	if not isElement(attachedToElement) then return end
 	if exports["editor_gui"]:sx_getOptionData("enableBox") then renderGridlines() end
 	if exports["editor_gui"]:sx_getOptionData("enableXYZlines") then drawXYZLines() end
-
+	drawObjectMoveLines()
 end
 addEventHandler ( "onClientRender", root, doBasicElementRenders )
 
@@ -149,4 +314,141 @@ function getOffsetRelativeToElement ( element, x, y, z )
 	local elementMatrix = matrix{getElementMatrix(element)}
 	elementMatrix = matrix{x,y,z} * elementMatrix
 	return elementMatrix
+end
+
+-----------------------------------------------------------
+-- Extra: Highlight on hover (Transparency + Animated Color Box)
+-----------------------------------------------------------
+
+local highlightedElement = nil
+local hoverBoundingBoxIgnoreMatrix = {
+    pickup = true
+}
+
+-- HSV to RGB conversion
+local function hsvToRgb(h, s, v)
+    local r, g, b
+
+    local i = math.floor(h * 6)
+    local f = h * 6 - i
+    local p = v * (1 - s)
+    local q = v * (1 - f * s)
+    local t = v * (1 - (1 - f * s))
+
+    i = i % 6
+
+    if i == 0 then r, g, b = v, t, p
+    elseif i == 1 then r, g, b = q, v, p
+    elseif i == 2 then r, g, b = p, v, t
+    elseif i == 3 then r, g, b = p, q, v
+    elseif i == 4 then r, g, b = t, p, v
+    elseif i == 5 then r, g, b = v, p, q
+    end
+
+    return r*255, g*255, b*255
+end
+
+local function getElementBoundingBoxCorners(element)
+    if not isElement(element) then return false end
+    if getElementDimension(element) ~= getElementDimension(localPlayer) then return false end
+
+    local x, y, z = edf.edfGetElementPosition(element)
+    if not x then return false end
+
+    local minX, minY, minZ, maxX, maxY, maxZ = edf.edfGetElementBoundingBox(element)
+    if not minX then
+        local radius = edf.edfGetElementRadius(element)
+        if radius then
+            minX, minY, minZ, maxX, maxY, maxZ = -radius, -radius, -radius, radius, radius, radius
+        else
+            return false
+        end
+    end
+
+    local halfCenterX = (minX + maxX) * 0.25
+    local halfCenterY = (minY + maxY) * 0.25
+    local halfCenterZ = (minZ + maxZ) * 0.25
+
+    minX = minX - halfCenterX
+    minY = minY - halfCenterY
+    minZ = minZ - halfCenterZ
+    maxX = maxX - halfCenterX
+    maxY = maxY - halfCenterY
+    maxZ = maxZ - halfCenterZ
+
+    local relativeCorners = {
+        {minX, minY, minZ},
+        {maxX, minY, minZ},
+        {maxX, maxY, minZ},
+        {minX, maxY, minZ},
+        {minX, minY, maxZ},
+        {maxX, minY, maxZ},
+        {maxX, maxY, maxZ},
+        {minX, maxY, maxZ}
+    }
+
+    local elementMatrix = getElementMatrix(element)
+    if elementMatrix and not hoverBoundingBoxIgnoreMatrix[getElementType(element)] then
+        for i, corner in ipairs(relativeCorners) do
+            relativeCorners[i] = {
+                corner[1] * elementMatrix[1][1] + corner[2] * elementMatrix[2][1] + corner[3] * elementMatrix[3][1] + elementMatrix[4][1],
+                corner[1] * elementMatrix[1][2] + corner[2] * elementMatrix[2][2] + corner[3] * elementMatrix[3][2] + elementMatrix[4][2],
+                corner[1] * elementMatrix[1][3] + corner[2] * elementMatrix[2][3] + corner[3] * elementMatrix[3][3] + elementMatrix[4][3]
+            }
+        end
+    else
+        for i, corner in ipairs(relativeCorners) do
+            relativeCorners[i] = {x + corner[1], y + corner[2], z + corner[3]}
+        end
+    end
+
+    return relativeCorners
+end
+
+-- Draw 3D bounding box lines
+local function drawBoundingBox(corners, r, g, b, a)
+    if not corners then return end
+    -- base
+    dxDrawLine3D(corners[1][1],corners[1][2],corners[1][3], corners[2][1],corners[2][2],corners[2][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[2][1],corners[2][2],corners[2][3], corners[3][1],corners[3][2],corners[3][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[3][1],corners[3][2],corners[3][3], corners[4][1],corners[4][2],corners[4][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[4][1],corners[4][2],corners[4][3], corners[1][1],corners[1][2],corners[1][3], tocolor(r,g,b,a), 2)
+    -- top
+    dxDrawLine3D(corners[5][1],corners[5][2],corners[5][3], corners[6][1],corners[6][2],corners[6][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[6][1],corners[6][2],corners[6][3], corners[7][1],corners[7][2],corners[7][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[7][1],corners[7][2],corners[7][3], corners[8][1],corners[8][2],corners[8][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[8][1],corners[8][2],corners[8][3], corners[5][1],corners[5][2],corners[5][3], tocolor(r,g,b,a), 2)
+    -- vertical
+    dxDrawLine3D(corners[1][1],corners[1][2],corners[1][3], corners[5][1],corners[5][2],corners[5][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[2][1],corners[2][2],corners[2][3], corners[6][1],corners[6][2],corners[6][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[3][1],corners[3][2],corners[3][3], corners[7][1],corners[7][2],corners[7][3], tocolor(r,g,b,a), 2)
+    dxDrawLine3D(corners[4][1],corners[4][2],corners[4][3], corners[8][1],corners[8][2],corners[8][3], tocolor(r,g,b,a), 2)
+end
+
+function renderHoverOverGridLines()
+    if not exports["editor_gui"]:sx_getOptionData("enableHoverBoundingBox") or exports.editor_gui:isTesting() then
+        highlightedElement = nil
+        return
+    end
+
+    local element = getTargetedElement()
+    if element and element ~= highlightedElement then
+        highlightedElement = element
+    elseif not element and highlightedElement then
+        highlightedElement = nil
+    end
+
+    -- Draw animated bounding box
+    if highlightedElement and isElement(highlightedElement) then
+		-- Don't draw it if we are also showing the selected bounding box
+		if attachedToElement == highlightedElement and exports["editor_gui"]:sx_getOptionData("enableBox") then
+			return
+		end
+        local box = getElementBoundingBoxCorners(highlightedElement)
+        if box then
+            local tick = getTickCount() / 2000 -- animation speed
+            local r,g,b = hsvToRgb(tick % 1, 1, 1) -- rainbow color cycle
+            drawBoundingBox(box, r, g, b, 255)
+        end
+    end
 end

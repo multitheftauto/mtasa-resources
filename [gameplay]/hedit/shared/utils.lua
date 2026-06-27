@@ -136,7 +136,7 @@ end
 --This function returns true if a setting is enabled in the meta, false otherwise.
 function isHandlingPropertyEnabled(property)
 	if getLocalPlayer then
-		return (getElementData(resourceRoot, "propertySettings", false)[property]) or true
+		return (getElementData(resourceRoot, "hedit:propertySettings", false)[property]) or true
 	else
 		return tobool(get("*enable_"..property))
 	end
@@ -330,7 +330,7 @@ function getHandlingPreviousValue ( vehicle, property )
         return false
     end
 
-    return getElementData ( vehicle, "hedit:vehiclepreviousvalue."..property )
+    return getElementData ( vehicle, "hedit:vehiclepreviousvalue."..property, false )
 end
 
 
@@ -344,7 +344,7 @@ function setVehicleSaved ( vehicle, saved )
         return true
     end
 
-    setElementData ( vehicle, "hedit:saved", tostring ( saved ) )
+    setElementData ( vehicle, "hedit:saved", tostring ( saved ), true, "deny" )
 
     local occupants = getVehicleOccupants ( vehicle )
     local seats = getVehicleMaxPassengers ( vehicle )
@@ -370,8 +370,8 @@ function isVehicleSaved ( vehicle )
         return false
     end
 
-    if not getElementData ( vehicle, "hedit:saved" ) then
-        setElementData ( vehicle, "hedit:saved", "true" )
+    if not getElementData ( vehicle, "hedit:saved", false ) then
+        setElementData ( vehicle, "hedit:saved", "true", true, "deny" )
     end
 
     return tobool ( getElementData ( vehicle, "hedit:saved" ) )

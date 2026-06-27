@@ -199,19 +199,25 @@ function guiCreateContextMenu(element)
 end
 
 function guiSetContextMenu(element, menu)
-    addEventHandler(
-        "onClientGUIClick",
-        element,
-        function(button)
             contextSource = source
-            if (getElementType(source) == "gui-gridlist" and guiGridListGetSelectedItem(source) == -1) then
                 return
             end
             if (button == "right") then
                 local sx, sy = guiGetScreenSize()
                 local x, y = getCursorPosition()
-                x, y = sx * x, sy * y
-                guiSetPosition(menu, x, y, false)
+    addEventHandler(
+        "onClientGUIClick",
+        element,
+        function(button, state)
+            contextSource = source
+            if (getElementType(source) == "gui-gridlist" and guiGridListGetSelectedItem(source) == -1) then
+                return
+            end
+            if (button == "right" and state == "up") then
+                local screenX, screenY = guiGetScreenSize()
+                local cursorX, cursorY = getCursorPosition()
+                cursorX, cursorY = screenX * cursorX, screenY * cursorY
+                guiSetPosition(menu, cursorX, cursorY, false)
                 guiSetVisible(menu, true)
                 guiBringToFront(menu)
 
@@ -220,7 +226,7 @@ function guiSetContextMenu(element, menu)
                         addEventHandler(
                             "onClientClick",
                             root,
-                            function(button2, state, x2, y2)
+                            function(button2, clickState, x2, y2)
                                 local sx2, sy2 = guiGetSize(menu, false)
                                 local px, py = guiGetPosition(menu, false)
                                 if (x2 < px or x2 > px + sx2) or (y2 < py or y2 > py + sy2) then
@@ -240,7 +246,11 @@ function guiSetContextMenu(element, menu)
     addEventHandler(
         "onClientGUIClick",
         menu,
-        function(button)
+        function(button, state)
+            if (state ~= "up") then
+                return
+            end
+
             guiSetVisible(menu, false)
         end
     )

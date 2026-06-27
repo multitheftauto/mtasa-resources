@@ -65,19 +65,20 @@ guiComboBoxAddItem ( sirenType, "Single" )
 guiComboBoxAddItem ( sirenType, "Dual" )
 guiComboBoxSetSelected ( sirens, 0 )
 guiComboBoxSetSelected ( numberOfSirens, 0 )
+
 function sirenCmd()
 	local veh = getPedOccupiedVehicle ( localPlayer )
 	if ( guiGetVisible ( myWindow ) == false ) then
-	if ( veh ~= false ) then
-		guiSetVisible ( myWindow, true )
-		showCursor( true )
-		InitUI ( )
-		vParamsTable = getVehicleSirenParams( veh )
-		if ( vParamsTable == false ) then
-			vParamsTable = { SirenCount = 1, SirenType = 4, Flags = { Silent = true, DoLOSCheck = true, UseRandomiser = true, ["360"]=true } }
-			triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+		if ( veh ~= false ) then
+			guiSetVisible ( myWindow, true )
+			showCursor( true )
+			InitUI ( )
+			vParamsTable = getVehicleSirenParams( veh )
+			if ( vParamsTable == false ) then
+				vParamsTable = { SirenCount = 1, SirenType = 4, Flags = { Silent = true, DoLOSCheck = true, UseRandomiser = true, ["360"]=true } }
+				triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+			end
 		end
-	end
 	else
 		guiSetVisible ( myWindow, false )
 		showCursor ( false )
@@ -105,33 +106,48 @@ function applySirenTable ( veh, sirenTable, bSync )
 		end
 	end
 end
+
 function InitUI ( )
 	local veh = getPedOccupiedVehicle ( localPlayer )
-	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
-	if ( veh ) then
-		local sirensTable = getVehicleSirens(veh)
-		guiScrollBarSetScrollPosition ( sirensX, 50 + ( sirensTable[selectedItem].x * 10 ) )
-		guiScrollBarSetScrollPosition ( sirensY, 50 + ( sirensTable[selectedItem].y * 10 ) )
-		guiScrollBarSetScrollPosition ( sirensZ, 50 + ( sirensTable[selectedItem].z * 10 ) )
-		guiScrollBarSetScrollPosition ( sirensAlpha, 255 )
-		guiScrollBarSetScrollPosition ( sirensMinAlpha, 255 )
-		guiSetText ( posLabelX, "Position X: " .. string.format( "%.3f", sirensTable[selectedItem].x ) )
-		guiSetText ( posLabelY, "Position Y: " .. string.format( "%.3f", sirensTable[selectedItem].y ) )
-		guiSetText ( posLabelZ, "Position Z: " .. string.format( "%.3f", sirensTable[selectedItem].z ) )
-		guiSetText ( alphaLabel, "Alpha: " .. sirensTable[selectedItem].Alpha )
-		guiSetText ( minAlphaLabel, "Minimum Alpha: " .. sirensTable[selectedItem].Min_Alpha )
-		guiSetText ( sirensBtnRGB, string.format ( "Colour: #%02X%02X%02X", sirensTable[selectedItem].Red, sirensTable[selectedItem].Green, sirensTable[selectedItem].Blue ) )
-		guiCheckBoxSetSelected ( sirensChk360, vParamsTable.Flags["360"] )
-		guiCheckBoxSetSelected ( sirensChkLOS, vParamsTable.Flags.DoLOSCheck )
-		guiCheckBoxSetSelected ( sirensChkRand, vParamsTable.Flags.UseRandomiser )
-		guiCheckBoxSetSelected ( sirensChkSilent, vParamsTable.Flags.Silent )
-		guiComboBoxSetSelected ( numberOfSirens, vParamsTable.SirenCount - 1 )
-		guiComboBoxSetSelected ( sirenType, vParamsTable.SirenType - 1 )
-		triggerServerEvent( "sirens_sync2", veh, vParamsTable )
-		sirensTable[selectedItem].Alpha = 255
-		sirensTable[selectedItem].Min_Alpha = 255
-		applySirenTable(veh, sirensTable, false)
+	if ( not veh ) then
+		return
 	end
+	local sirensTable = getVehicleSirens(veh)
+	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
+	-- If sirensTable[selectedItem] doesn't exist lets lets some defaults
+	if ( not sirensTable[selectedItem] ) then
+		sirensTable[selectedItem] = {}
+		sirensTable[selectedItem].x = 0
+		sirensTable[selectedItem].y = 0
+		sirensTable[selectedItem].z = 0
+		sirensTable[selectedItem].Red = 255
+		sirensTable[selectedItem].Green = 0
+		sirensTable[selectedItem].Blue = 0
+		sirensTable[selectedItem].Alpha = 255
+		sirensTable[selectedItem].Min_Alpha = 100
+		setVehicleSirens(veh, selectedItem, 0, 0, 0, 255, 0, 0, 255, 100)
+	end
+	guiScrollBarSetScrollPosition ( sirensX, 50 + ( sirensTable[selectedItem].x * 10 ) )
+	guiScrollBarSetScrollPosition ( sirensY, 50 + ( sirensTable[selectedItem].y * 10 ) )
+	guiScrollBarSetScrollPosition ( sirensZ, 50 + ( sirensTable[selectedItem].z * 10 ) )
+	guiScrollBarSetScrollPosition ( sirensAlpha, 255 )
+	guiScrollBarSetScrollPosition ( sirensMinAlpha, 255 )
+	guiSetText ( posLabelX, "Position X: " .. string.format( "%.3f", sirensTable[selectedItem].x ) )
+	guiSetText ( posLabelY, "Position Y: " .. string.format( "%.3f", sirensTable[selectedItem].y ) )
+	guiSetText ( posLabelZ, "Position Z: " .. string.format( "%.3f", sirensTable[selectedItem].z ) )
+	guiSetText ( alphaLabel, "Alpha: " .. sirensTable[selectedItem].Alpha )
+	guiSetText ( minAlphaLabel, "Minimum Alpha: " .. sirensTable[selectedItem].Min_Alpha )
+	guiSetText ( sirensBtnRGB, string.format ( "Colour: #%02X%02X%02X", sirensTable[selectedItem].Red, sirensTable[selectedItem].Green, sirensTable[selectedItem].Blue ) )
+	guiCheckBoxSetSelected ( sirensChk360, vParamsTable.Flags["360"] )
+	guiCheckBoxSetSelected ( sirensChkLOS, vParamsTable.Flags.DoLOSCheck )
+	guiCheckBoxSetSelected ( sirensChkRand, vParamsTable.Flags.UseRandomiser )
+	guiCheckBoxSetSelected ( sirensChkSilent, vParamsTable.Flags.Silent )
+	guiComboBoxSetSelected ( numberOfSirens, vParamsTable.SirenCount - 1 )
+	guiComboBoxSetSelected ( sirenType, vParamsTable.SirenType - 1 )
+	triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+	sirensTable[selectedItem].Alpha = 255
+	sirensTable[selectedItem].Min_Alpha = 255
+	applySirenTable(veh, sirensTable, false)
 end
 InitUI ( )
 
@@ -139,95 +155,95 @@ function scrollFunc(scrolled)
 	local veh = getPedOccupiedVehicle ( localPlayer )
 	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
 	if ( selectedItem ~= nil and selectedItem ~= false and selectedItem > 0 and veh ~= false ) then
+		local sirensTable = getVehicleSirens(veh)
+		if ( not sirensTable[selectedItem] ) then
+			return
+		end
 		if ( scrolled == sirensX ) then
-			local sirensTable = getVehicleSirens(veh)
 			sirensTable[selectedItem].x = ( guiScrollBarGetScrollPosition ( scrolled ) / 10 ) - 5
 			guiSetText( posLabelX, "Position X: " .. string.format( "%.3f", sirensTable[selectedItem].x ) )
 			applySirenTable ( veh, sirensTable, false )
-			return
-		end
-		if ( scrolled == sirensY ) then
-			local sirensTable = getVehicleSirens(veh)
+		elseif ( scrolled == sirensY ) then
 			sirensTable[selectedItem].y = ( guiScrollBarGetScrollPosition ( scrolled ) / 10 ) - 5
 			guiSetText( posLabelY, "Position Y: " .. string.format( "%.3f", sirensTable[selectedItem].y ) )
 			applySirenTable ( veh, sirensTable, false )
-			return
-		end
-		if ( scrolled == sirensZ ) then
-			local sirensTable = getVehicleSirens(veh)
+		elseif ( scrolled == sirensZ ) then
 			sirensTable[selectedItem].z = ( guiScrollBarGetScrollPosition ( scrolled ) / 10 ) - 5
 			guiSetText( posLabelZ, "Position Z: " .. string.format( "%.3f", sirensTable[selectedItem].z ) )
 			applySirenTable ( veh, sirensTable, false )
-			return
-		end
-		if ( scrolled == sirensAlpha ) then
-			local sirensTable = getVehicleSirens(veh)
+		elseif ( scrolled == sirensAlpha ) then
 			sirensTable[selectedItem].Alpha = math.ceil ( (guiScrollBarGetScrollPosition ( scrolled ) * 2.55 ) - 0.05 )
 			guiSetText( alphaLabel, "Alpha: " .. sirensTable[selectedItem].Alpha )
 			applySirenTable ( veh, sirensTable, false )
-			return
-		end
-		if ( scrolled == sirensMinAlpha ) then
-			local sirensTable = getVehicleSirens(veh)
+		elseif ( scrolled == sirensMinAlpha ) then
 			sirensTable[selectedItem].Min_Alpha = math.ceil ( ( guiScrollBarGetScrollPosition ( scrolled ) * 2.55 )  - 0.05 )
 			guiSetText( minAlphaLabel, "Minimum Alpha: " .. sirensTable[selectedItem].Min_Alpha )
 			applySirenTable ( veh, sirensTable, false )
-			return
 		end
 	end
 end
 addEventHandler("onClientGUIScroll", root, scrollFunc)
+
 local bSelecting = false
 function btnFunc ( button, state )
 	local veh = getPedOccupiedVehicle ( localPlayer )
-	if ( veh ~= false ) then
-		if ( source == sirensBtnRGB ) then
-			if ( state == "up" ) then
-				exports.cpicker:openPicker(source, "#FFAA00", "Pick a Beacon Colour")
+	if ( not veh ) then
+		return
+	end
+	if ( source == sirensBtnRGB ) then
+		if ( state == "up" ) then
+			if ( not getResourceFromName("cpicker") ) then
+				outputChatBox("cpicker isn't installed, get it from: https://community.multitheftauto.com/index.php?p=resources&s=details&id=3247", 255, 0, 0)
+				return
 			end
-		end
-		if ( source == sirensBtnGet ) then
-			local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
-			local v = getVehicleSirens(veh)[selectedItem]
-			outputChatBox("setVehicleSirens ( veh, " ..selectedItem .. ", " .. string.format( "%.3f", v.x ) .. ", " .. string.format( "%.3f", v.y ) .. ", " .. string.format( "%.3f", v.z ) .. ", " .. v.Red .. ", " .. v.Green .. ", " .. v.Blue .. ", " .. v.Alpha .. ", " .. v.Min_Alpha .. " )" )
-			outputChatBox("addVehicleSirens ( veh, " .. vParamsTable.SirenCount .. ", " .. vParamsTable.SirenType .. ", " .. tostring ( vParamsTable.Flags["360"] ) .. ", " .. tostring ( vParamsTable.Flags.DoLOSCheck ) .. ", " .. tostring ( vParamsTable.Flags.UseRandomiser ) .. ", " .. tostring ( vParamsTable.Flags.Silent ) .. " ) "  )
-		end
-		if ( source == sirensBtn ) then
-			local sirensTable = getVehicleSirens(veh)
-			applySirenTable ( veh, sirensTable, true )
-		end
-		if ( source == sirensBtnClose ) then
-			guiSetVisible ( myWindow, false )
-			showCursor( false )
-		end
-		if ( source == sirensBtnSelect ) then
-			guiSetVisible ( myWindow, false )
-			showCursor( true )
-			bSelecting = true
-		end
-		if ( source == sirensChk360 ) then
-			local bValue = guiCheckBoxGetSelected ( source )
-			vParamsTable.Flags["360"] = bValue
-			triggerServerEvent( "sirens_sync2", veh, vParamsTable )
-		end
-		if ( source == sirensChkLOS ) then
-			local bValue = guiCheckBoxGetSelected ( source )
-			vParamsTable.Flags.DoLOSCheck = bValue
-			triggerServerEvent( "sirens_sync2", veh, vParamsTable )
-		end
-		if ( source == sirensChkRand ) then
-			local bValue = guiCheckBoxGetSelected ( source )
-			vParamsTable.Flags.UseRandomiser = bValue
-			triggerServerEvent( "sirens_sync2", veh, vParamsTable )
-		end
-		if ( source == sirensChkSilent ) then
-			local bValue = guiCheckBoxGetSelected ( source )
-			vParamsTable.Flags.Silent = bValue
-			triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+			if ( getResourceState( getResourceFromName("cpicker") ) ~= "running" ) then
+				outputChatBox("cpicker isn't running. If you're an admin, do: /start cpicker", 255, 0, 0)
+				return
+			end
+			exports.cpicker:openPicker(source, "#FFAA00", "Pick a Beacon Colour")
 		end
 	end
+	if ( source == sirensBtnGet ) then
+		local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
+		local v = getVehicleSirens(veh)[selectedItem]
+		outputChatBox("setVehicleSirens ( veh, " ..selectedItem .. ", " .. string.format( "%.3f", v.x ) .. ", " .. string.format( "%.3f", v.y ) .. ", " .. string.format( "%.3f", v.z ) .. ", " .. v.Red .. ", " .. v.Green .. ", " .. v.Blue .. ", " .. v.Alpha .. ", " .. v.Min_Alpha .. " )" )
+		outputChatBox("addVehicleSirens ( veh, " .. vParamsTable.SirenCount .. ", " .. vParamsTable.SirenType .. ", " .. tostring ( vParamsTable.Flags["360"] ) .. ", " .. tostring ( vParamsTable.Flags.DoLOSCheck ) .. ", " .. tostring ( vParamsTable.Flags.UseRandomiser ) .. ", " .. tostring ( vParamsTable.Flags.Silent ) .. " ) "  )
+	end
+	if ( source == sirensBtn ) then
+		local sirensTable = getVehicleSirens(veh)
+		applySirenTable ( veh, sirensTable, true )
+	end
+	if ( source == sirensBtnClose ) then
+		guiSetVisible ( myWindow, false )
+		showCursor( false )
+	end
+	if ( source == sirensBtnSelect ) then
+		guiSetVisible ( myWindow, false )
+		showCursor( true )
+		bSelecting = true
+	end
+	if ( source == sirensChk360 ) then
+		local bValue = guiCheckBoxGetSelected ( source )
+		vParamsTable.Flags["360"] = bValue
+		triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+	end
+	if ( source == sirensChkLOS ) then
+		local bValue = guiCheckBoxGetSelected ( source )
+		vParamsTable.Flags.DoLOSCheck = bValue
+		triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+	end
+	if ( source == sirensChkRand ) then
+		local bValue = guiCheckBoxGetSelected ( source )
+		vParamsTable.Flags.UseRandomiser = bValue
+		triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+	end
+	if ( source == sirensChkSilent ) then
+		local bValue = guiCheckBoxGetSelected ( source )
+		vParamsTable.Flags.Silent = bValue
+		triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+	end
 end
-addEventHandler("onClientGUIClick", root, btnFunc)
+addEventHandler("onClientGUIClick", resourceRoot, btnFunc)
 
 function PickedBeaconStuff ( element, hex, red, green, blue )
 	local veh = getPedOccupiedVehicle ( localPlayer )
@@ -241,24 +257,25 @@ function PickedBeaconStuff ( element, hex, red, green, blue )
 		guiSetText ( sirensBtnRGB, string.format ( "Colour: #%02X%02X%02X", sirensTable[selectedItem].Red, sirensTable[selectedItem].Green, sirensTable[selectedItem].Blue ) )
 	end
 end
-
 addEventHandler("onColorPickerOK", root, PickedBeaconStuff)
+
 function SelectedSiren ( )
 	local veh = getPedOccupiedVehicle ( localPlayer )
-	if ( veh ~= false ) then
-		if ( source == sirens ) then
-			InitUI()
-		end
-		if ( source == sirenType ) then
-			local Value = guiComboBoxGetSelected ( source ) + 1
-			vParamsTable.SirenType = Value
-			triggerServerEvent( "sirens_sync2", veh, vParamsTable )
-		end
-		if ( source == numberOfSirens ) then
-			local Value = guiComboBoxGetSelected ( source ) + 1
-			vParamsTable.SirenCount = Value
-			triggerServerEvent( "sirens_sync2", veh, vParamsTable )
-		end
+	if ( not veh ) then
+		return
+	end
+	if ( source == sirens ) then
+		InitUI()
+	end
+	if ( source == sirenType ) then
+		local Value = guiComboBoxGetSelected ( source ) + 1
+		vParamsTable.SirenType = Value
+		triggerServerEvent( "sirens_sync2", veh, vParamsTable )
+	end
+	if ( source == numberOfSirens ) then
+		local Value = guiComboBoxGetSelected ( source ) + 1
+		vParamsTable.SirenCount = Value
+		triggerServerEvent( "sirens_sync2", veh, vParamsTable )
 	end
 end
 addEventHandler("onClientGUIComboBoxAccepted", root, SelectedSiren)
@@ -269,6 +286,7 @@ function matTransformVector( mat, vec )
 	local offZ = vec[1] * mat[1][3] + vec[2] * mat[2][3] + vec[3] * mat[3][3] + mat[4][3]
 	return {offX, offY, offZ}
 end
+
 function fixOutput ( out )
 	if ( out < 0 ) then
 		return out - 0.003
@@ -278,38 +296,41 @@ function fixOutput ( out )
 end
 
 function test ( button, state, l, f, x, y, z, element )
-	local veh = getPedOccupiedVehicle ( localPlayer )
-	if ( element == veh and veh ~= false and bSelecting == true ) then
-		local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
-		local sirensTable = getVehicleSirens(veh)
-
-		local x2,y2,z2 = getElementPosition( veh )
-		local rx, ry, rz = getElementRotation ( veh )
-
-		local vehmat = matrix(getElementMatrix ( veh ))
-		vehmat[1][4] = 0
-		vehmat[2][4] = 0
-		vehmat[3][4] = 0
-		vehmat[4][4] = 1
-		local vehmatInv = matrix.invert( vehmat )
-		local result = matTransformVector( vehmatInv, {x, y, z} )
-
-
-		sirensTable[selectedItem].x = fixOutput ( result[1] )
-		guiSetText( posLabelX, "Position X: " .. string.format( "%.3f", sirensTable[selectedItem].x ) )
-
-		sirensTable[selectedItem].y = fixOutput ( result[2] )
-		guiSetText( posLabelY, "Position Y: " .. string.format( "%.3f", sirensTable[selectedItem].y ) )
-
-		sirensTable[selectedItem].z = fixOutput ( result[3] )
-		guiSetText( posLabelY, "Position Y: " .. string.format( "%.3f", sirensTable[selectedItem].y ) )
-
-		applySirenTable ( veh, sirensTable, false )
-
-		bSelecting = false
-		guiSetVisible ( myWindow, true )
-		showCursor( true )
+	if ( not element or not bSelecting ) then
+		return
 	end
-end
+	local veh = getPedOccupiedVehicle ( localPlayer )
+	if ( not veh or veh ~= element ) then
+		return
+	end
+	local selectedItem = guiComboBoxGetSelected ( sirens ) + 1
+	local sirensTable = getVehicleSirens(veh)
 
+	local x2,y2,z2 = getElementPosition( veh )
+	local rx, ry, rz = getElementRotation ( veh )
+
+	local vehmat = matrix(getElementMatrix ( veh ))
+	vehmat[1][4] = 0
+	vehmat[2][4] = 0
+	vehmat[3][4] = 0
+	vehmat[4][4] = 1
+	local vehmatInv = matrix.invert( vehmat )
+	local result = matTransformVector( vehmatInv, {x, y, z} )
+
+
+	sirensTable[selectedItem].x = fixOutput ( result[1] )
+	guiSetText( posLabelX, "Position X: " .. string.format( "%.3f", sirensTable[selectedItem].x ) )
+
+	sirensTable[selectedItem].y = fixOutput ( result[2] )
+	guiSetText( posLabelY, "Position Y: " .. string.format( "%.3f", sirensTable[selectedItem].y ) )
+
+	sirensTable[selectedItem].z = fixOutput ( result[3] )
+	guiSetText( posLabelY, "Position Y: " .. string.format( "%.3f", sirensTable[selectedItem].y ) )
+
+	applySirenTable ( veh, sirensTable, false )
+
+	bSelecting = false
+	guiSetVisible ( myWindow, true )
+	showCursor( true )
+end
 addEventHandler("onClientClick", root, test)
