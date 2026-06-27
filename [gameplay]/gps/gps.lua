@@ -1,11 +1,5 @@
 local floor = math.floor
 
-local allowedRPC = {
-	calculatePathByCoords = true,
-	calculatePathByNodeIDs = true,
-	spawnPlayer = true
-}
-
 local function getAreaID(x, y)
 	return floor((y + 3000)/750)*8 + floor((x + 3000)/750)
 end
@@ -113,21 +107,3 @@ function calculatePathByNodeIDs(node1, node2)
 		return false
 	end
 end
-
-addEvent('onServerCall', true)
-addEventHandler('onServerCall', root,
-	function(fnName, ...)
-		if allowedRPC[fnName] then
-			_G[fnName](...)
-		end
-	end
-)
-
-addEvent('onServerCallback', true)
-addEventHandler('onServerCallback', root,
-	function(crID, fnName, ...)
-		if allowedRPC[fnName] then
-			triggerClientEvent(source, 'onServerCallbackReply', resourceRoot, crID, _G[fnName](...))
-		end
-	end
-)
