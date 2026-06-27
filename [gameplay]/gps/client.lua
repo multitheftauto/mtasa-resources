@@ -9,9 +9,9 @@ addCommandHandler('path',
 		end
 		local path
 		if currentRouteMode == "client" then
-			local path = calculatePathByNodeIDs(tonumber(node1), tonumber(node2))
+			path = calculatePathByNodeIDs(tonumber(node1), tonumber(node2))
 		elseif currentRouteMode == "server" then
-			local path = server.calculatePathByNodeIDs(tonumber(node1), tonumber(node2))
+			path = server.calculatePathByNodeIDs(tonumber(node1), tonumber(node2))
 		end
 		if not path then
 			outputConsole('No path found')
