@@ -1,15 +1,21 @@
 <meta>
 	<info author="arc_" type="script" version="1.1.1" description="Calculates and displays the quickest road path between two points/nodes on the map. Commands: /path node1 node2 /path2 x y [z]. Resource contains export functions for custom logic."/>
 
+	<script src="MinHeap.lua" type="shared"/>
+	<script src="gps.lua" type="shared"/>
+	
 	<script src="util.lua" type="client"/>
 	<script src="client.lua" type="client"/>
 	<script src="linedrawer.lua" type="client"/>
 
-	<file src="overlay.fx"/>
-
 	<script src="vehiclenodes.lua" type="server"/>
-	<script src="MinHeap.lua" type="server"/>
-	<script src="gps.lua" type="server"/>
+
+	<file src="overlay.fx"/>
+	<file src="vehiclenodes.json"
+
+  	<settings>
+        <setting name="*routeMode" value="client" accept="client,server" desc="Where should the route be calculated - on the client or the server?" />
+ 	</settings>
 
 	<export function="calculatePathByCoords" type="server"/> <!--calculatePathByCoords(float x1, float y1, float [z1], float x2,
 	float y2, float [z2]) 
