@@ -11,7 +11,7 @@
 	<script src="server.lua" type="server"/>
 
 	<file src="overlay.fx"/>
-	<file src="vehiclenodes.json"
+	<file src="vehiclenodes.json"/>
 
   	<settings>
         <setting name="*routeMode" value="client" accept="client,server" desc="Where should the route be calculated - on the client or the server?" />
