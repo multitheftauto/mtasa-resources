@@ -12,7 +12,7 @@ float gVScale = 1.0;
 float gHOffset = 0.0;
 float gVOffset = 0.0;
 float gBrighten = 0;
-float gRotAngle = 0;  
+float gRotAngle = 0;
 float gGrayScale = 0;
 float gRedColor = 0;
 float gGrnColor = 0;
@@ -45,11 +45,11 @@ struct PixelShaderInput
 PixelShaderInput VertexShaderFunction ( VertexShaderInput input )
 {
 	PixelShaderInput output;
-	
+
 	float4 worldPosition = mul ( input.Position, gWorld );
 	float4 viewPosition  = mul ( worldPosition, gView );
 	output.Position      = mul ( viewPosition, gProjection );
-	
+
 	output.TextureCoordinate = input.TextureCoordinate;
 	return output;
 }
@@ -63,29 +63,29 @@ float4 PixelShaderFunction ( PixelShaderInput output ) : COLOR0
 
 	textureCoordinate[0] += -0.2;
 	textureCoordinate[1] += 0.4;
-	
+
 	textureCoordinate[0] *= gHScale;
 	textureCoordinate[1] *= gVScale;
-	
+
 	textureCoordinate[0] += gHOffset;
 	textureCoordinate[1] += gVOffset;
-	if(gScrRig!=0) 
-	{ 
-		float posU = fmod( gTime*gScrRig ,1 );   
+	if(gScrRig!=0)
+	{
+		float posU = fmod( gTime*gScrRig ,1 );
 		textureCoordinate[0] -= posU;
 	}
-	if(gScrDow!=0) 
-	{ 			   
-    		float posV = fmod( gTime*gScrDow ,1 );     
+	if(gScrDow!=0)
+	{
+    		float posV = fmod( gTime*gScrDow ,1 );
 		textureCoordinate[1] -= posV;
 	}
-	
+
 	float4 textureColor = tex2D ( gTextureSampler, textureCoordinate );
-	
+
     	if(gRotAngle!=0)
 	{
 		float x = (textureCoordinate[0] * cos(gRotAngle)) + (textureCoordinate[1] * -sin(gRotAngle));
-    		float y = (textureCoordinate[0] * sin(gRotAngle)) + (textureCoordinate[1] * cos(gRotAngle));				
+    		float y = (textureCoordinate[0] * sin(gRotAngle)) + (textureCoordinate[1] * cos(gRotAngle));
 		textureColor = tex2D ( gTextureSampler, float2(x,y));
 	}
 
@@ -98,11 +98,11 @@ float4 PixelShaderFunction ( PixelShaderInput output ) : COLOR0
     	textureColor.r=textureColor.r+gRedColor;
 	textureColor.g=textureColor.g+gGrnColor;
 	textureColor.b=textureColor.b+gBluColor;
-	
+
 	textureColor = textureColor+gBrighten;
 	textureColor.a = gAlpha;
 	return textureColor;
-      
+
 }
 
 technique Replace

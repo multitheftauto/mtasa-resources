@@ -49,7 +49,7 @@ function aManageACL ()
 		aACLSetRight	= guiCreateButton ( 0.55, 0.40, 0.40, 0.04, "Enable Selected Right", true, aAclForm )
 		aACLRemoveRight	= guiCreateButton ( 0.55, 0.45, 0.40, 0.04, "Disable Selected Right", true, aAclForm )
 		aACLDeleteRight	= guiCreateButton ( 0.55, 0.55, 0.40, 0.04, "Delete Right", true, aAclForm )
-		
+
 		aACLExit		= guiCreateButton ( 0.75, 0.90, 0.27, 0.04, "Close", true, aAclForm )
 		aclDisplayOptions ( "", "" )
 

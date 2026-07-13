@@ -60,7 +60,7 @@ local function loadOneMapFixComponent(name, data)
                 if allocatedID then
                     if not data.allocatedIDs then data.allocatedIDs = {} end
                     data.allocatedIDs[#data.allocatedIDs + 1] = allocatedID
-                    
+
                     object = createObject(allocatedID, v.x, v.y, v.z, v.rx, v.ry, v.rz)
                     if object then
                         engineSetModelPhysicalPropertiesGroup(allocatedID, v.physicalPropertiesGroup)

@@ -662,7 +662,7 @@ end
 
 function refreshSavesGridlist()
     local content = heditGUI.viewItems.save.guiItems
-    
+
     guiGridListClear ( content.grid )
     guiResetStaticInfoText()
 

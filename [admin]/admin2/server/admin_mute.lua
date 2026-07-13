@@ -84,7 +84,7 @@ addEventHandler ( "onResourceStart", resourceRoot,
             aMutedList[value.serial].admin = value.admin
             aMutedList[value.serial].reason = value.reason
             aMutedList[value.serial].time = value.time
-           
+
             for _, player in ipairs( getElementsByType( "player" ) ) do
                 if ( getPlayerSerial(player) == value.serial ) then
                     -- Silent mute
@@ -99,7 +99,7 @@ function aSetPlayerMuted ( player, state, time, admin, reason )
     if isElement(player) and getElementType(player) == "player" then
         setPlayerMuted ( player, state )
     end
-    
+
     if not state then
         local serial = getPlayerSerial( player )
         aRemoveUnmuteTimer( serial )
@@ -210,7 +210,7 @@ function handleMuteRequest(action, data)
     if ( client and source ~= client ) then
         return
     end
-    
+
     -- Permissions check
     if ( not hasObjectPermissionTo(source, "command."..action, false) ) then
         outputChatBox( "Access denied for '" .. tostring(action) .. "'", source, 255, 168, 0 )
@@ -233,7 +233,7 @@ function handleMuteRequest(action, data)
         else
             time = secondsToTimeDesc( data.duration / 1000 )
         end
-        
+
         aSetPlayerMuted( data.player, true, data.duration, source, data.reason )
         aAction( "player", "mute", source, data.player, time )
     -- Remove mute

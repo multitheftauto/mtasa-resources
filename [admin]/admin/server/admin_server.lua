@@ -56,7 +56,7 @@ function aHandleIP2CUpdate()
         local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel", false)
 
         if hasAdminPermission then
-            
+
             for playerToUpdateID = 1, #playersToUpdate do
                 local playerToUpdate = playersToUpdate[playerToUpdateID]
 

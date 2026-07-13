@@ -23,7 +23,7 @@ local function resourceStart()
 			giveOutputDebugStringOut("Start", outputDebugStringTypePlayerColors)
 		end
 	end
-	
+
 	if not useTeams and not useNametags then
 		giveOutputDebugStringOut(_, outputDebugStringTypeUseTeamsAndNametagIsFalse)
 	end

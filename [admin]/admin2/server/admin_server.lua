@@ -143,7 +143,7 @@ function aHandleIP2CUpdate()
         local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel", false)
 
         if hasAdminPermission then
-            
+
             for playerToUpdateID = 1, #playersToUpdate do
                 local playerToUpdate = playersToUpdate[playerToUpdateID]
 
@@ -579,7 +579,7 @@ addEventHandler(
         if not pX or not pY or not pZ then
             return
         end
-        
+
         if (not hasObjectPermissionTo(client, "general.adminMapWarp", false)) then
             return
         end

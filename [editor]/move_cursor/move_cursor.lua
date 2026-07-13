@@ -166,7 +166,7 @@ local function rotateWithMouseWheel(key, keyState)
 		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
 		end
-		
+
 		local elementType = getElementType(selectedElement)
 		if (elementType == "vehicle") or (elementType == "object") then
 			rotX, rotY, rotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", speed)
@@ -218,13 +218,13 @@ function attachElement(element)
 	camX, camY, camZ = getCameraMatrix()
 	-- get element info
 	selectedElement = element
-	
+
 	-- do not attach if it's not really an element
 	if not (selectedElement and isElement(selectedElement)) then
 		selectedElement = nil
 		return false
 	end
-	
+
 	--EDF implementation
 	if getResourceFromName"edf" and exports.edf:edfGetParent(element) ~= element then
 		if (getElementType(element) == "object") then
@@ -266,12 +266,12 @@ function detachElement()
 
 	-- remove events, unbind keys
 	disable()
-	
+
 	-- fix for local elements
 	if not isElementLocal(selectedElement) then
 		-- sync position/rotation
 		local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
-		
+
 		triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
 		if hasRotation[getElementType(selectedElement)] then
 			rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")

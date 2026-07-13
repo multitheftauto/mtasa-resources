@@ -160,7 +160,7 @@ function aClientWarpClick ( button, state, absX, absY )
 			aPlayerWarpClose ( false )
 		elseif ( source == aWarpToPosition ) then
 			aPlayerWarpToPosition ( )
-		
+
 		-- Player Warp To Position Map
 		elseif ( source == aWarpToPositionMap ) then
 			calculatePosition ( absX, absY )

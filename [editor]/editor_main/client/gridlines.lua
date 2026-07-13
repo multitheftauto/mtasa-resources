@@ -217,29 +217,29 @@ function drawObjectMoveLines()
 					local worldX, worldY, worldZ = getPositionFromElementAtOffset(attachedToElement, relCorner[1], relCorner[2], relCorner[3])
 					corners[i] = {worldX + movementAnimationOffset[1], worldY + movementAnimationOffset[2], worldZ + movementAnimationOffset[3]}
 				end
-				
+
 				local boxColor = tocolor(255, 255, 255, 100)
 				local lineWidth = 2
-				
+
 				-- Bottom face (z = minZ)
 				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[2][1], corners[2][2], corners[2][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[3][1], corners[3][2], corners[3][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[4][1], corners[4][2], corners[4][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[1][1], corners[1][2], corners[1][3], boxColor, lineWidth)
-				
+
 				-- Top face (z = maxZ)
 				dxDrawLine3D(corners[5][1], corners[5][2], corners[5][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[6][1], corners[6][2], corners[6][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[7][1], corners[7][2], corners[7][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[8][1], corners[8][2], corners[8][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
-				
+
 				-- Vertical edges connecting bottom to top
 				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
 			end
-			
+
 			-- Draw the bounding box at the destination position
 			do
 				local corners = {}
@@ -247,22 +247,22 @@ function drawObjectMoveLines()
 					local worldX, worldY, worldZ = getPositionFromElementAtOffset(attachedToElement, relCorner[1], relCorner[2], relCorner[3])
 					corners[i] = {worldX + offsetX, worldY + offsetY, worldZ + offsetZ}
 				end
-				
+
 				local boxColor = tocolor(255, 255, 0, 200)
 				local lineWidth = 2
-				
+
 				-- Bottom face (z = minZ)
 				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[2][1], corners[2][2], corners[2][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[3][1], corners[3][2], corners[3][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[3][1], corners[3][2], corners[3][3], corners[4][1], corners[4][2], corners[4][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[4][1], corners[4][2], corners[4][3], corners[1][1], corners[1][2], corners[1][3], boxColor, lineWidth)
-				
+
 				-- Top face (z = maxZ)
 				dxDrawLine3D(corners[5][1], corners[5][2], corners[5][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[6][1], corners[6][2], corners[6][3], corners[7][1], corners[7][2], corners[7][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[7][1], corners[7][2], corners[7][3], corners[8][1], corners[8][2], corners[8][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[8][1], corners[8][2], corners[8][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
-				
+
 				-- Vertical edges connecting bottom to top
 				dxDrawLine3D(corners[1][1], corners[1][2], corners[1][3], corners[5][1], corners[5][2], corners[5][3], boxColor, lineWidth)
 				dxDrawLine3D(corners[2][1], corners[2][2], corners[2][3], corners[6][1], corners[6][2], corners[6][3], boxColor, lineWidth)

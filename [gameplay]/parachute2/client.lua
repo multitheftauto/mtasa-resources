@@ -207,19 +207,19 @@ local function handleParachuteLogic()
 			fParachuteX = fParachuteX / 20;
 			--fParachuteX = fParachuteX * para_time_step;
 			fParachuteRoll = fParachuteRoll + fParachuteX;
-			
+
 			fParachuteX = fParachuteRoll / 5;
 			--fParachuteX = fParachuteX * para_time_step;
 			fParachuteYaw = fParachuteX;
-			
+
 			if(fParachuteYaw > 180) then
 				fParachuteYaw = fParachuteYaw - 360;
 			end
-			
+
 			if(fParachuteYaw < -180) then
 				fParachuteYaw = fParachuteYaw + 360;
 			end
-			
+
 			-- Y
 			fParachuteX = fParachuteX / 4.267;
 			fParachuteX = fParachuteX - fParachutePitch;

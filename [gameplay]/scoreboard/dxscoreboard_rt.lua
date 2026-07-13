@@ -170,7 +170,7 @@ function getCursorOverRow(rtPass)
 	end
 
 	local cX, cY = getCursorScoreboardPosition(rtPass)
-	
+
 	for idx = 1, #savedRows do
 		local row = savedRows[idx]
 
