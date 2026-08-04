@@ -1,0 +1,7 @@
+<meta>
+	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" type="script" description="Basic license plate" />
+
+	<script src="client.lua" type="client" />
+
+	<script src="server.lua" type="server" />
+</meta>
