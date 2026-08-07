@@ -10,7 +10,7 @@
 
 _DEBUG = false
 
-_version = '1.6'
+_version = '1.7'
 _flags = {}
 _widgets = {}
 _settings = nil
