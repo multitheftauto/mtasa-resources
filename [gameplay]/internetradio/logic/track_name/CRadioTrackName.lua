@@ -13,7 +13,6 @@ NEARBY_SPEAKERS = {}
 local lastKeyCheck = 0
 local KEY_CHECK_MS = 200
 local cachedShowOwner = false
-local nearbySpeakersTimer = nil
 
 local function toggleSpeakerTrackRender()
 	local toggleOn = next(NEARBY_SPEAKERS)
@@ -102,7 +101,7 @@ function checkForNearbySpeakers()
 	NEARBY_SPEAKERS = newNearby
 	toggleSpeakerTrackRender()
 end
-nearbySpeakersTimer = setTimer(checkForNearbySpeakers, 1000, 0)
+local nearbySpeakersTimer = setTimer(checkForNearbySpeakers, 1000, 0)
 
 function onClientRenderRadioTrackName()
 	local now = getTickCount()
