@@ -5,6 +5,7 @@
 -- #######################################
 
 local playerSpeakers = {}
+local speakerBoxReverseMap = {}
 
 function setPlayerSpeakerData(playerElement, speakerData)
 	local validElement = isElement(playerElement)
@@ -14,6 +15,11 @@ function setPlayerSpeakerData(playerElement, speakerData)
 	end
 
 	playerSpeakers[playerElement] = speakerData
+
+	if (speakerData.speakerBox and isElement(speakerData.speakerBox)) then
+		speakerBoxReverseMap[speakerData.speakerBox] = playerElement
+	end
+
 	triggerClientEvent(root, "onClientCreateSpeaker", playerElement, speakerData)
 
 	return true
@@ -45,11 +51,43 @@ function getPlayerSpeakerData(playerElement)
 end
 
 function clearPlayerSpeaker(playerOrSpeaker, forceDestroy)
+	-- look up the owning player from the reverse map.
+	local playerElement = speakerBoxReverseMap[playerOrSpeaker]
+
+	if (playerElement) then
+		speakerBoxReverseMap[playerOrSpeaker] = nil
+
+		local speakerData = playerSpeakers[playerElement]
+
+		if (speakerData) then
+			local speakerBox = speakerData.speakerBox
+
+			if (speakerBox) then
+				speakerBoxReverseMap[speakerBox] = nil
+			end
+
+			if (forceDestroy) then
+				local boxElement = isElement(speakerBox)
+
+				if (boxElement) then
+					destroyElement(speakerBox)
+				end
+			end
+
+			playerSpeakers[playerElement] = nil
+
+			return true
+		end
+	end
+
 	for playerElement, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
 		local matchingElement = (playerElement == playerOrSpeaker) or (speakerBox == playerOrSpeaker)
 
 		if (matchingElement) then
+			if (speakerBox) then
+				speakerBoxReverseMap[speakerBox] = nil
+			end
 
 			if (forceDestroy) then
 				local boxElement = isElement(speakerBox)
@@ -231,7 +269,9 @@ end
 addEventHandler("onPlayerQuit", root, clearSpeakerOnPlayerQuit)
 
 function clearSpeakerOnElementDestroy()
-	clearPlayerSpeaker(source, false)
+	if (getElementType(source) == "object") then
+		clearPlayerSpeaker(source, false)
+	end
 end
 addEventHandler("onElementDestroy", resourceRoot, clearSpeakerOnElementDestroy)
 
@@ -292,9 +332,8 @@ function destroySpeakersInRangeAdminCommand(playerElement, _, searchRange)
 
 	for objectID = 1, #objectsTable do
 		local objectElement = objectsTable[objectID]
-		local objectSpeaker = isObjectSpeaker(objectElement)
 
-		if (objectSpeaker) then
+		if (speakerBoxReverseMap[objectElement]) then
 			local speakerInterior = getElementInterior(objectElement)
 			local speakerDimension = getElementDimension(objectElement)
 			local matchingInterior = (speakerInterior == playerInterior)

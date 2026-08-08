@@ -6,6 +6,8 @@
 
 local speakerSounds = {}
 local playerSpeakers = {}
+-- Maps box/dummy elements to their owning player for cleanup lookups.
+local speakerReverseMap = {}
 local speakerVolumeSyncTimer = false
 
 local function getStreamURLFromEdit()
@@ -33,15 +35,12 @@ local function handleSpeakerOnStreamInOut(speakerElement, toggleOn)
 		return false
 	end
 
-	for playerElement, speakerData in pairs(playerSpeakers) do
-		local speakerBox = speakerData.speakerBox
-		local matchingElement = (speakerBox == speakerElement)
+	local playerElement = speakerReverseMap[speakerElement]
 
-		if (matchingElement) then
-			toggleSpeakerSounds(playerElement, toggleOn)
+	if (playerElement) then
+		toggleSpeakerSounds(playerElement, toggleOn)
 
-			return true
-		end
+		return true
 	end
 
 	return false
@@ -99,6 +98,7 @@ function toggleSpeakerSounds(playerElement, toggleOn)
 
 	if (speakerSoundElement) then
 		destroyElement(speakerSound)
+		speakerSounds[playerElement] = nil
 	end
 
 	local allowRemoteSpeakers = getRadioSetting("allowRemoteSpeakers")
@@ -231,19 +231,54 @@ function setPlayerSpeakerData(playerElement, speakerData)
 	end
 
 	local speakerBox = speakerData.speakerBox
-	local speakerDummy = createObject(1337, 0, 0, 3)
-	local speakerBoxDimension = getElementDimension(speakerBox)
+	local speakerDummy = createObject(RADIO_DUMMY_MODEL, 0, 0, 3)
 
+	if (not isElement(speakerDummy)) then
+		return false
+	end
+
+	local existingData = playerSpeakers[playerElement]
+
+	-- Clean up reverse map entries from the previous speaker before
+	-- replacing them, so a later destruction of the old elements does
+	-- not accidentally target the new speaker.
+	if (existingData) then
+		local oldBox = existingData.speakerBox
+		local oldDummy = existingData.speakerDummy
+
+		if (oldBox) then
+			speakerReverseMap[oldBox] = nil
+		end
+
+		if (oldDummy) then
+			speakerReverseMap[oldDummy] = nil
+			removeNearbySpeaker(oldDummy)
+			existingData.speakerDummy = nil
+
+			if (isElement(oldDummy)) then
+				destroyElement(oldDummy)
+			end
+		end
+	end
 
 	speakerData.speakerDummy = speakerDummy
 	playerSpeakers[playerElement] = speakerData
+	speakerReverseMap[speakerDummy] = playerElement
+
+	if (speakerBox and isElement(speakerBox)) then
+		speakerReverseMap[speakerBox] = playerElement
+	end
 
 	toggleSpeakerSounds(playerElement, true)
 
 	setElementAlpha(speakerDummy, 0)
 	setElementCollisionsEnabled(speakerDummy, false)
-	setElementDimension(speakerDummy, speakerBoxDimension)
-	attachElements(speakerDummy, speakerBox, -0.32, -0.22, 0.8)
+
+	if (speakerBox and isElement(speakerBox)) then
+		local speakerBoxDimension = getElementDimension(speakerBox)
+		setElementDimension(speakerDummy, speakerBoxDimension)
+		attachElements(speakerDummy, speakerBox, -0.32, -0.22, 0.8)
+	end
 
 	return true
 end
@@ -297,18 +332,60 @@ function getPlayerSpeakerData(playerElement)
 end
 
 function clearPlayerSpeaker(playerOrSpeaker)
+	local playerElement = speakerReverseMap[playerOrSpeaker]
+
+	-- look up the owning player from the reverse map instead of
+	-- scanning the entire playerSpeakers table.
+	if (playerElement) then
+		speakerReverseMap[playerOrSpeaker] = nil
+
+		local speakerData = playerSpeakers[playerElement]
+
+		if (speakerData) then
+			local speakerBox = speakerData.speakerBox
+			local speakerDummy = speakerData.speakerDummy
+
+			if (speakerBox) then
+				speakerReverseMap[speakerBox] = nil
+			end
+
+			if (speakerDummy) then
+				speakerReverseMap[speakerDummy] = nil
+				local speakerDummyElement = isElement(speakerDummy)
+
+				removeNearbySpeaker(speakerDummy)
+
+				if (speakerDummyElement) then
+					destroyElement(speakerDummy)
+				end
+			end
+
+			toggleSpeakerSounds(playerElement, false)
+			playerSpeakers[playerElement] = nil
+
+			return true
+		end
+	end
+
 	for playerElement, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
-		local matchingElement = (playerElement == playerOrSpeaker) or (speakerBox == playerOrSpeaker)
+		local speakerDummy = speakerData.speakerDummy
+		local matchingElement = (playerElement == playerOrSpeaker) or (speakerBox == playerOrSpeaker) or (speakerDummy == playerOrSpeaker)
 
 		if (matchingElement) then
-			local speakerDummy = speakerData.speakerDummy
-			local speakerDummyElement = isElement(speakerDummy)
+			if (speakerBox) then
+				speakerReverseMap[speakerBox] = nil
+			end
 
-			NEARBY_SPEAKERS[speakerDummy] = nil
+			if (speakerDummy) then
+				speakerReverseMap[speakerDummy] = nil
+				local speakerDummyElement = isElement(speakerDummy)
 
-			if (speakerDummyElement) then
-				destroyElement(speakerDummy)
+				removeNearbySpeaker(speakerDummy)
+
+				if (speakerDummyElement) then
+					destroyElement(speakerDummy)
+				end
 			end
 
 			toggleSpeakerSounds(playerElement, false)
@@ -346,12 +423,12 @@ function isObjectSpeaker(objectElement)
 	return false
 end
 
-function handleAllSpeakers()
+function handleAllSpeakers(forceRecreate)
 	for playerElement, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
 		local speakerBoxStreamedIn = isElementStreamedIn(speakerBox)
 
-		if (speakerBoxStreamedIn) then
+		if (speakerBoxStreamedIn and (forceRecreate or not (isElement(speakerSounds[playerElement])))) then
 			toggleSpeakerSounds(playerElement, true)
 		end
 	end
@@ -360,14 +437,81 @@ function handleAllSpeakers()
 end
 
 function onClientSyncSpeakers(activeSpeakers)
+	-- Preserve speakerDummy references from entries the client already knows about,
+	-- and create dummies for synced entries that lack them (server data has no dummies).
+	-- Discard reverse map entries from the old playerSpeakers table,
+	-- which is about to be replaced. Prevents stale entries from
+	-- misdirecting future cleanup to entries that no longer exist.
+	for playerElement, speakerData in pairs(playerSpeakers) do
+		if (speakerData.speakerBox) then
+			speakerReverseMap[speakerData.speakerBox] = nil
+		end
+
+		if (speakerData.speakerDummy) then
+			speakerReverseMap[speakerData.speakerDummy] = nil
+		end
+	end
+
+	for playerElement, speakerData in pairs(activeSpeakers) do
+		local existingData = playerSpeakers[playerElement]
+		local speakerBox = speakerData.speakerBox
+
+		if (existingData and existingData.speakerDummy) then
+			speakerData.speakerDummy = existingData.speakerDummy
+		elseif (not speakerData.speakerDummy) then
+			if (speakerBox and isElement(speakerBox)) then
+				local speakerDummy = createObject(RADIO_DUMMY_MODEL, 0, 0, 3)
+
+				if (isElement(speakerDummy)) then
+					local speakerBoxDimension = getElementDimension(speakerBox)
+
+					setElementAlpha(speakerDummy, 0)
+					setElementCollisionsEnabled(speakerDummy, false)
+					setElementDimension(speakerDummy, speakerBoxDimension)
+					attachElements(speakerDummy, speakerBox, -0.32, -0.22, 0.8)
+					speakerData.speakerDummy = speakerDummy
+				end
+			end
+		end
+
+		if (speakerData.speakerDummy) then
+			speakerReverseMap[speakerData.speakerDummy] = playerElement
+		end
+
+		if (speakerBox and isElement(speakerBox)) then
+			speakerReverseMap[speakerBox] = playerElement
+		end
+	end
+
+	-- Stop sounds for speakers that are no longer in the sync data,
+	-- so removed entries do not leave orphaned audio playing indefinitely.
+	-- Also clean up dummies and track-name entries for orphaned speakers.
+	for playerElement, speakerData in pairs(playerSpeakers) do
+		if (not activeSpeakers[playerElement]) then
+			toggleSpeakerSounds(playerElement, false)
+
+			if (speakerData.speakerDummy) then
+				removeNearbySpeaker(speakerData.speakerDummy)
+
+				if (isElement(speakerData.speakerDummy)) then
+					destroyElement(speakerData.speakerDummy)
+				end
+			end
+		end
+	end
+
 	playerSpeakers = activeSpeakers
-	handleAllSpeakers()
+	handleAllSpeakers(true)
 end
 addEvent("onClientSyncSpeakers", true)
 addEventHandler("onClientSyncSpeakers", root, onClientSyncSpeakers)
 
 function onClientCreateSpeaker(speakerData)
-	setPlayerSpeakerData(source, speakerData)
+	if (not speakerData) then
+		return false
+	end
+
+	return setPlayerSpeakerData(source, speakerData)
 end
 addEvent("onClientCreateSpeaker", true)
 addEventHandler("onClientCreateSpeaker", root, onClientCreateSpeaker)
@@ -395,7 +539,32 @@ end
 addEventHandler("onClientElementStreamOut", resourceRoot, toggleSpeakerOnStreamOut)
 
 function clearSpeakersOnDestroyQuit()
+	if (speakerReverseMap[source]) then
+		clearPlayerSpeaker(source)
+	end
+end
+addEventHandler("onClientElementDestroy", resourceRoot, clearSpeakersOnDestroyQuit)
+
+function clearSpeakersOnPlayerQuit()
 	clearPlayerSpeaker(source)
 end
-addEventHandler("onClientPlayerQuit", root, clearSpeakersOnDestroyQuit)
-addEventHandler("onClientElementDestroy", resourceRoot, clearSpeakersOnDestroyQuit)
+addEventHandler("onClientPlayerQuit", root, clearSpeakersOnPlayerQuit)
+
+addEventHandler("onClientResourceStop", resourceRoot, function()
+	if (speakerVolumeSyncTimer and isTimer(speakerVolumeSyncTimer)) then
+		killTimer(speakerVolumeSyncTimer)
+		speakerVolumeSyncTimer = false
+	end
+
+	local toClean = {}
+	for playerElement, _ in pairs(playerSpeakers) do
+		toClean[#toClean + 1] = playerElement
+	end
+
+	for _, playerElement in ipairs(toClean) do
+		clearPlayerSpeaker(playerElement)
+	end
+
+	speakerSounds = {}
+	speakerReverseMap = {}
+end, false)

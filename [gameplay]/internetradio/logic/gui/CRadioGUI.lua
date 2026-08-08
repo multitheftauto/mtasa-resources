@@ -59,7 +59,7 @@ function onClientGUIClickToggleRemoteSpeakers()
 	local allowRemoteSpeakers = guiCheckBoxGetSelected(source)
 
 	setRadioSetting("allowRemoteSpeakers", allowRemoteSpeakers)
-	handleAllSpeakers()
+	handleAllSpeakers(true)
 end
 
 function toggleRadioGUI()
