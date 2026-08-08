@@ -6,7 +6,7 @@
 -- Use on production servers is still discouraged, unless you're satisfied with what you see and think it's already better than MTA's parachuting up until now
 -- Special thanks to -ffs-Plasma (initial version, written from scratch, and his research on original SA behavior/Parachute SCM)
 --
--- === Changes made in this revision ===
+-- === Changes made in this revision ==
 -- 1) All velocity handling (which was entirely commented-out) has been implemented for FREEFALL, the
 --    opening transition (ACTION) and GLIDING, so the parachute actually affects movement instead of
 --    only playing animations while gravity does its normal thing.
