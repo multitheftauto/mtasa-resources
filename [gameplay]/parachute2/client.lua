@@ -138,7 +138,7 @@ local fOpenStartVX, fOpenStartVY, fOpenStartVZ = 0, 0, 0;
 local lastTick                           = nil;
 local g_lastBroadcastState               = nil;
 	function onParachute (prevSlot, curSlot)
-		if getPedWeapon(localPlayer, curSlot) == 46 then --if the switched weapon is the minigun
+		if getPedWeapon(localPlayer, curSlot) == 46 then --if the switched weapon is parachute
 			local function handleParachuteLogic()
 			local currentTick = getTickCount();
 			lastTick = lastTick or currentTick;
