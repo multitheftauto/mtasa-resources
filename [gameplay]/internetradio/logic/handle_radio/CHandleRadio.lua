@@ -367,10 +367,10 @@ function clearPlayerSpeaker(playerOrSpeaker)
 		end
 	end
 
-	for playerElement, speakerData in pairs(playerSpeakers) do
+	for scanPlayer, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
 		local speakerDummy = speakerData.speakerDummy
-		local matchingElement = (playerElement == playerOrSpeaker) or (speakerBox == playerOrSpeaker) or (speakerDummy == playerOrSpeaker)
+		local matchingElement = (scanPlayer == playerOrSpeaker) or (speakerBox == playerOrSpeaker) or (speakerDummy == playerOrSpeaker)
 
 		if (matchingElement) then
 			if (speakerBox) then
@@ -388,8 +388,8 @@ function clearPlayerSpeaker(playerOrSpeaker)
 				end
 			end
 
-			toggleSpeakerSounds(playerElement, false)
-			playerSpeakers[playerElement] = nil
+			toggleSpeakerSounds(scanPlayer, false)
+			playerSpeakers[scanPlayer] = nil
 
 			return true
 		end

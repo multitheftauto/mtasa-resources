@@ -80,9 +80,9 @@ function clearPlayerSpeaker(playerOrSpeaker, forceDestroy)
 		end
 	end
 
-	for playerElement, speakerData in pairs(playerSpeakers) do
+	for scanPlayer, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
-		local matchingElement = (playerElement == playerOrSpeaker) or (speakerBox == playerOrSpeaker)
+		local matchingElement = (scanPlayer == playerOrSpeaker) or (speakerBox == playerOrSpeaker)
 
 		if (matchingElement) then
 			if (speakerBox) then
@@ -97,7 +97,7 @@ function clearPlayerSpeaker(playerOrSpeaker, forceDestroy)
 				end
 			end
 
-			playerSpeakers[playerElement] = nil
+			playerSpeakers[scanPlayer] = nil
 
 			return true
 		end
