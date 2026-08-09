@@ -10,7 +10,7 @@ function startSpectating(target)
     fadeCamera(false, 0)
     setPlayerHudComponentVisible("radar", false)
     _hud.scoreDisplay:setVisible(false)
-    
+
     -- hide wasted screen and destroy wasted timer
     _hud.wastedScreen:setVisible(false)
     if isElement(_wastedTimer) then
@@ -27,7 +27,7 @@ function startSpectating(target)
         -- TODO: handle this more gracefully
         error("no valid spectate target", 2)
     end
-    
+
     -- set camera target and disable controls
     iprint(target)
     setCameraTarget(target)
@@ -90,7 +90,7 @@ function setSpectateTarget(target)
     if not _spectating then
         error("local player is not spectating", 2)
     end
- 
+
     if target == _currentTarget then
         return
     end

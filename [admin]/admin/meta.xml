@@ -154,14 +154,14 @@
 					group="_fake packets"
 					accept="true,false"
 					desc="Ban IPs that attempt to send fake admin packets."
-					/>     
- 
+					/>
+
 		<setting name="*fakePacketsSerialban" value="false"
 					friendlyname="Serialban"
 					group="_fake packets"
 					accept="true,false"
 					desc="Ban serials that attempt to send fake admin packets."
-					/>   
+					/>
 
 		<setting name="*fakePacketsIPbanLength" value="86400"
 					friendlyname="IPBan length"

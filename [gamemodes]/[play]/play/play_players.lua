@@ -5,7 +5,7 @@ function playSpawnPlayer(playerElement)
 	if not isElement(playerElement) then
 		return false
 	end
-	
+
 	local randomSpawn = math.random(spawnsCount)
 	local spawnData = playerSpawns[randomSpawn]
 	local posX, posY, posZ, rotX = unpack(spawnData)

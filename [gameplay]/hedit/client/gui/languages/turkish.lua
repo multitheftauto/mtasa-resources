@@ -33,7 +33,7 @@ guiLanguage.turkish = {
     confirmDelete = "Handling ayarlarını silmek istediğinizden emin misiniz?",
     confirmReset = "Handling ayarlarını sıfırlamak istediğinizden emin misiniz? Kaydedilmemiş tüm değişiklikler kaybolacak!",
     confirmImport = "Handling ayarlarını içe aktarmak istediğinizden emin misiniz? Kaydedilmemiş tüm değişiklikler kaybolacak!",
-    
+
     successSave = "Handling ayarları başarılı bir şekilde kaydedildi!",
     successLoad = "Handling ayarları başarılı bir şekilde yüklendi!",
     successDelete = "Handling ayarlarınız başarılı bir şekilde silindi!",
@@ -199,7 +199,7 @@ guiLanguage.turkish = {
             shortname = "İndir",
             longname = "Handling ayarlarını sunucudan indir."
         },
-        
+
         resourcesave = {
             shortname = "Scripte kaydet",
             longname = "Handling ayarlarını scripte kaydet."

@@ -24,7 +24,7 @@ function aWeapon.Show(player)
             guiCreateLabel(0.03, 0.09, 0.94, 0.07, "Select a weapon from the list or enter the id", true, aWeapon.Form)
         guiLabelSetHorizontalAlign(aWeapon.Label, "center")
         guiLabelSetColor(aWeapon.Label, 255, 0, 0)
-        
+
         aWeapon.Edit = guiCreateEdit(0.03, 0.18, 0.70, 0.09, '', true, aWeapon.Form)
         guiCreateInnerImage("client\\images\\search.png", aWeapon.Edit)
 

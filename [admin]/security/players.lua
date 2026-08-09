@@ -137,21 +137,21 @@ setTimer(function()
 			logViolation(uPlayer, "Exceeded projectile threshold "..tostring(iPlayerProjectileThreshold).." - Count: "..tostring(iCounter));
 		end
 	end
-	
+
 	for uPlayer, iCounter in pairs(tblRegularExplosions) do
 		if(iCounter >= iRegularExplosionThreshold) then
 			logViolation(uPlayer, "Exceeded regular explosions threshold "..tostring(iRegularExplosionThreshold).." - Count: "..tostring(iCounter));
 		end
 	end
-	
+
 	for uPlayer, iCounter in pairs(tblVehicleExplosions) do
 		if(iCounter >= iVehicleExplosionThreshold) then
 			logViolation(uPlayer, "Exceeded vehicle explosions threshold "..tostring(iVehicleExplosionThreshold).." - Count: "..tostring(iCounter));
 		end
 	end
-	
+
 	tblPlayerProjectiles = {};
 	tblRegularExplosions = {};
 	tblVehicleExplosions = {};
-	
+
 end, iExplosionCheckInterval, 0);

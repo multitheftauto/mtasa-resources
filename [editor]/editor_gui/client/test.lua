@@ -153,7 +153,7 @@ function disableColPatchInTesting()
 	g_colPatchSetting = sx_getOptionData("enableColPatch")
 	-- Already disabled?
 	if not g_colPatchSetting then return end
-	
+
 	-- Disable
 	guiCheckBoxSetSelected(dialog.enableColPatch.GUI.checkbox, false)
 	doActions()
@@ -162,7 +162,7 @@ end
 function enableColPatchAfterTesting()
 	-- Wasnt enabled?
 	if not g_colPatchSetting then return end
-	
+
 	-- Enable
 	guiCheckBoxSetSelected(dialog.enableColPatch.GUI.checkbox, true)
 	confirmSettings()
@@ -202,7 +202,7 @@ addEventHandler("onClientResourceStart", root, freeroamStarting)
 
 function freeroamStopping(resource)
 	if resource ~= getResourceFromName("freeroam") then return end
-	
+
 	enableColPatchAfterTesting()
 end
 addEventHandler("onClientResourceStop", root, freeroamStopping)
@@ -231,7 +231,7 @@ function basicTest()
 		for i, obj in pairs(getElementsByType("object")) do
 			setElementCollisionsEnabled(obj, true)
 		end
-		
+
 		enableColPatchAfterTesting()
 	else
 		editor_main.dropElement()
@@ -257,7 +257,7 @@ function basicTest()
 				setElementCollisionsEnabled(obj, false)
 			end
 		end
-		
+
 		disableColPatchInTesting()
 	end
 end

@@ -4,11 +4,11 @@ function isPlayerNameValid(strPlayerName)
 	if(not tostring(strPlayerName)) then return false end;
 	if(#strPlayerName == 0) then return false end;
 	if(#strPlayerName > 22) then return false end;
-	
+
 	for i = 1, #strPlayerName do
 		local strChar = strPlayerName:sub(i, i);
 		local iCharByte = strChar:byte();
-		
+
 		if(iCharByte < 33 or iCharByte > 126) then return false end;
 	end
 

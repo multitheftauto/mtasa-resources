@@ -33,7 +33,7 @@ function messageClick()
 
     if elementParent then
         local elementBox = messageBoxWindows[elementParent]
-        
+
         if elementBox then
             local elementCallback = messageBoxCallbacks[elementParent][1]
             local elementCallbackSource = messageBoxCallbacks[elementParent][2]
@@ -142,7 +142,7 @@ function messageBox(messageTitle, messageContent, messageCallback, messageIcon, 
 
     local messageIconWidth = 42
     local messageIconHeight = 42
-    
+
     local messageIconPosX = (messageWindowWidth - messageIconWidth) / 8
     local messageIconPosY = (messageWindowHeight - messageIconHeight) / 2
 
@@ -261,7 +261,7 @@ function messageBoxEx(messageTitle, messageContent, messageIcon, messageButton, 
 
     local messageIconWidth = 42
     local messageIconHeight = 42
-    
+
     local messageIconPosX = (messageWindowWidth - messageIconWidth) / 8
     local messageIconPosY = (messageWindowHeight - messageIconHeight) / 2
 

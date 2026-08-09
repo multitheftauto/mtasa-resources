@@ -1179,7 +1179,7 @@ local function onPlayerResourceStart(resourceElement)
 	if not mapResource then
 		return
 	end
-	
+
 	triggerClientEvent(source, "setLODsClient", resourceRoot, usedLODModels)
 end
 addEventHandler("onPlayerResourceStart", root, onPlayerResourceStart)

@@ -1,7 +1,7 @@
 <meta>
     <info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" name="IP2C" description="IP to Country Compact utility" type="script" />
     <min_mta_version client="1.5.9-9.20957.0" server="1.5.9-9.20957.0"/>
-    
+
     <script src="server.lua" type="server"/>
     <export function="getPlayerCountry" type="server"/>
 
@@ -11,7 +11,7 @@
     <aclrequest>
         <right name="function.fetchRemote" access="true"></right>
     </aclrequest>
-    
+
     <file src="client/images/flags/ad.png" />
     <file src="client/images/flags/ae.png" />
     <file src="client/images/flags/af.png" />

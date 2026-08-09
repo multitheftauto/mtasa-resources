@@ -35,7 +35,7 @@ addEventHandler('onClientRequestStats', me,
 			local a, b = getLuaTimingRecordings( queryFilterText )
 			return triggerServerEvent( "onNotifyStats", resourceRoot, a, b, username, queryCategoryName, queryOptionsText, queryFilterText )
 		end
-		
+
 		local a,b = getPerformanceStats( queryCategoryName, queryOptionsText, queryFilterText )
 		triggerServerEvent( "onNotifyStats", resourceRoot, a, b, username, queryCategoryName, queryOptionsText, queryFilterText )
 	end

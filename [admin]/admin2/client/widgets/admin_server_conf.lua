@@ -25,7 +25,7 @@ function aServerConfig.Open()
 		aServerConfig.Form = guiCreateWindow(x/2 - 240, y/2 - 215, 480, 430, "Server Configuration", false)
 
 		guiCreateHeader(0.05, 0.052, 0.3, 0.04, "Connection:", true, aServerConfig.Form)
-		
+
 		aServerConfig.minVersion = guiCreateLabel(0.1, 0.089, 0.5, 0.04, "Minimum Client Version:", true, aServerConfig.Form)
 		aServerConfig.minVersionField = guiCreateEdit(0.725, 0.089, 0.25, 0.04, "", true, aServerConfig.Form)
 
@@ -82,7 +82,7 @@ function aServerConfig.Open()
 	addEventHandler("onClientGUIClick", aServerConfig.Form, aServerConfig.onClientClick)
 	addEventHandler('onClientGUIChanged', aServerConfig.Form, aServerConfig.onClientChanged)
 	addEventHandler("onAdminRefresh", aServerConfig.Form, aServerConfig.Refresh)
-	
+
 	aServerConfig.Refresh()
 end
 

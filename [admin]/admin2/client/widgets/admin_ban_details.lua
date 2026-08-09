@@ -14,7 +14,7 @@ function aBanDetails.Show(banID, showUnban)
     if not aBanDetails.Form then
         aBanDetails.Create()
     end
-    
+
     aBanDetails.banID = banID
     local data = aBansTab.List[banID]
     guiSetText(aBanDetails.NickText, "Player name: "..(data.nick or "Unknown"))

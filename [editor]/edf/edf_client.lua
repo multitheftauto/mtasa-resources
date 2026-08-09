@@ -170,7 +170,7 @@ function edfSetElementRotation(element, rx, ry, rz)
 		if etype == "object" or etype == "vehicle" or etype == "player" or etype == "ped" then
 			-- Clear the quat rotation when set manually
 			exports.editor_main:clearElementQuat(element)
-			
+
 			return setElementRotation(element, rx, ry, rz)
 		else
 			local handle = edfGetHandle(element)

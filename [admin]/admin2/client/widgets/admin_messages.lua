@@ -97,13 +97,13 @@ end
 function aMessages.View(id)
     if (id) then
         local message = aMessages.Messages[id]
-        
+
         guiSetText(aMessages.Author, "Author: "..message.author)
         guiSetText(aMessages.Subject, "Subject: "..message.subject)
         guiSetText(aMessages.Category, "Category: "..message.category)
         guiSetText(aMessages.Date, "Date: "..message.time)
         guiSetText(aMessages.Text, message.text)
-        
+
         if (not message.read) then
             triggerServerEvent("aMessage", localPlayer, "read", id)
         end

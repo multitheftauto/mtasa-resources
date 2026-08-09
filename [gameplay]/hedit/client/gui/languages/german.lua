@@ -401,7 +401,7 @@ guiLanguage.german = {
             information = "Ändert den genauen Preis des Fahrzeugs.",
             syntax = { "Integer", "Diese Eigenschaft wird in Multi Theft Auto nicht verwendet." }
         },
-        
+
         ["modelFlags"] = {
             friendlyName = "Modell-Flags",
             information = "Umlegbare spezielle Animationen des Fahrzeugs.", -- HIER "nerede gösteriliyor?"

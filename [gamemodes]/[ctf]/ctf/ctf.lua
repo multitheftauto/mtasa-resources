@@ -344,7 +344,7 @@ function CTF_onPlayerWasted ( totalammo, killer, killerweapon, bodypart )
 	-- Handle respawn
 	if ( CTF_roundOn ) then
 		fadeCamera ( player, false, CTF_respawnTime/500, 000, 000, 000 )
-		
+
 		setTimer( function ()
 			if isElement(player) then
 				fadeCamera(player, true )

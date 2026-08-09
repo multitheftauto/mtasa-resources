@@ -24,7 +24,7 @@ function aBan.Show(player)
     if not aBan.Form then
         aBan.Create()
     end
-    
+
     -- If a player was selected, auto-fill the form with the player's info
     if player then
         aBan.playerName = getPlayerName(player)
@@ -224,7 +224,7 @@ function aBan.verifyForm()
     else
         banDuration = aBan.defaultDurations[durationSelection][2]
     end
-    
+
     -- Verify ban IP
     local banIP = ""
     if guiCheckBoxGetSelected(aBan.IPCheckBox) then

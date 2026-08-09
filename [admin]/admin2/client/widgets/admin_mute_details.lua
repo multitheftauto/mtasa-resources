@@ -16,7 +16,7 @@ function aMuteDetails.Show(Serial, showUnmtue)
     if not aMuteDetails.Form then
         aMuteDetails.Create()
     end
-    
+
     aMuteDetails.Serial = Serial
     local data = aMuteTab.List[Serial]
 

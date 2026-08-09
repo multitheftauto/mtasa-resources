@@ -144,10 +144,10 @@ function aAclTab.onClick(key, state)
             local group = guiGridListGetItemText(aAclTab.Groups, selectedGroup, 1)
 
             local result = messageBox("Are you sure you want to remove the user '"..object.."' from the '"..group.."' ACL group?", MB_QUESTION, MB_YESNO)
-            
+
             if (result) then
                 triggerServerEvent(EVENT_ACL, localPlayer, ACL_USERS, ACL_REMOVE, group, 'user.'..object)
-                
+
                 aAclTab.Cache.Users[group] = nil
                 aAclTab.RefreshUsersList()
             end
@@ -163,7 +163,7 @@ function aAclTab.onClick(key, state)
             if (nick) then
                 local group = guiGridListGetItemText(aAclTab.Groups, selected, 1)
                 triggerServerEvent(EVENT_ACL, localPlayer, ACL_USERS, ACL_ADD, group, nick)
-                
+
                 aAclTab.Cache.Users[group] = nil
                 aAclTab.RefreshUsersList()
             end
@@ -179,7 +179,7 @@ function aAclTab.onClick(key, state)
             if (name) then
                 local group = guiGridListGetItemText(aAclTab.Groups, selected, 1)
                 triggerServerEvent(EVENT_ACL, localPlayer, ACL_RESOURCES, ACL_ADD, group, name)
-                
+
                 aAclTab.Cache.Resources[group] = nil
                 aAclTab.RefreshResourcesList()
             end
@@ -195,10 +195,10 @@ function aAclTab.onClick(key, state)
             local group = guiGridListGetItemText(aAclTab.Groups, selectedGroup, 1)
 
             local result = messageBox("Are you sure you want to remove the resource '"..object.."' from the '"..group.."' ACL group?", MB_QUESTION, MB_YESNO)
-            
+
             if (result) then
                 triggerServerEvent(EVENT_ACL, localPlayer, ACL_RESOURCES, ACL_REMOVE, group, 'resource.'..object)
-                
+
                 aAclTab.Cache.Resources[group] = nil
                 aAclTab.RefreshResourcesList()
             end
