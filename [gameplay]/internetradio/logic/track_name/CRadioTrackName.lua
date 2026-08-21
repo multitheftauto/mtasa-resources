@@ -8,6 +8,13 @@ local trackNameColorCoded = false
 local speakerTrackRender = false
 local fontHeight = dxGetFontHeight(RADIO_TRACK_SCALE, RADIO_TRACK_FONT)
 
+local RADIO_TRACK_COLOR = RADIO_TRACK_COLOR
+local RADIO_TRACK_BACKGROUND_COLOR = RADIO_TRACK_BACKGROUND_COLOR
+local RADIO_TRACK_SCALE = RADIO_TRACK_SCALE
+local RADIO_TRACK_FONT = RADIO_TRACK_FONT
+local RADIO_MAX_SOUND_DISTANCE = RADIO_MAX_SOUND_DISTANCE
+local RADIO_SHOW_SPEAKER_OWNER_KEY = RADIO_SHOW_SPEAKER_OWNER_KEY
+
 local getElementPosition = getElementPosition
 local getElementInterior = getElementInterior
 local getElementDimension = getElementDimension
@@ -27,6 +34,7 @@ local dxDrawText = dxDrawText
 local setTimer = setTimer
 local killTimer = killTimer
 local isTimer = isTimer
+local pairs = pairs
 
 local NEARBY_SPEAKERS = {}
 
@@ -108,30 +116,50 @@ function checkForNearbySpeakers()
 	local playerDimension = getElementDimension(localPlayer)
 	local nearbyObjects = getElementsWithinRange(playerX, playerY, playerZ, RADIO_MAX_SOUND_DISTANCE, "object", playerInterior, playerDimension)
 
+	local oldNearby = NEARBY_SPEAKERS
 	local newNearby = {}
 
 	for objectID = 1, #nearbyObjects do
 		local nearbyObject = nearbyObjects[objectID]
 		local _, speakerSound, speakerDummy, speakerOwner = isObjectSpeaker(nearbyObject)
-		local trackName = getSpeakerTrackName(speakerSound)
 
-		if (speakerDummy and isElement(speakerDummy) and trackName) then
-			local ownerName = getPlayerName(speakerOwner)
-			local cleanOwnerName = (type(ownerName) == "string") and removeHex(ownerName) or "unknown"
-			local ownerTrackName = "(Owner: " .. cleanOwnerName .. ") " .. trackName
-			local textWidth = dxGetTextWidth(trackName, RADIO_TRACK_SCALE, RADIO_TRACK_FONT, trackNameColorCoded)
-			local ownerTextWidth = dxGetTextWidth(ownerTrackName, RADIO_TRACK_SCALE, RADIO_TRACK_FONT, trackNameColorCoded)
-			local speakerDummyX, speakerDummyY, speakerDummyZ = getElementPosition(speakerDummy)
+		-- The reverse map keys both the box and the dummy, so a speaker
+		-- can be matched twice per scan; build the entry once and skip it.
+		if (speakerDummy and not newNearby[speakerDummy]) then
+			local trackName = getSpeakerTrackName(speakerSound)
 
-			newNearby[speakerDummy] = {
-				trackName = trackName,
-				ownerTrackName = ownerTrackName,
-				textWidth = textWidth,
-				ownerTextWidth = ownerTextWidth,
-				wx = speakerDummyX,
-				wy = speakerDummyY,
-				wz = speakerDummyZ,
-			}
+			if (isElement(speakerDummy) and trackName) then
+				local ownerName = getPlayerName(speakerOwner)
+				local previousEntry = oldNearby[speakerDummy]
+				local ownerTrackName, textWidth, ownerTextWidth
+
+				-- Text measurement and hex stripping only run when the title
+				-- or the owner name actually changed since the last scan.
+				if (previousEntry and trackName == previousEntry.trackName and ownerName == previousEntry.ownerName) then
+					ownerTrackName = previousEntry.ownerTrackName
+					textWidth = previousEntry.textWidth
+					ownerTextWidth = previousEntry.ownerTextWidth
+				else
+					local cleanOwnerName = (type(ownerName) == "string") and removeHex(ownerName) or "unknown"
+
+					ownerTrackName = "(Owner: " .. cleanOwnerName .. ") " .. trackName
+					textWidth = dxGetTextWidth(trackName, RADIO_TRACK_SCALE, RADIO_TRACK_FONT, trackNameColorCoded)
+					ownerTextWidth = dxGetTextWidth(ownerTrackName, RADIO_TRACK_SCALE, RADIO_TRACK_FONT, trackNameColorCoded)
+				end
+
+				local speakerDummyX, speakerDummyY, speakerDummyZ = getElementPosition(speakerDummy)
+
+				newNearby[speakerDummy] = {
+					trackName = trackName,
+					ownerName = ownerName,
+					ownerTrackName = ownerTrackName,
+					textWidth = textWidth,
+					ownerTextWidth = ownerTextWidth,
+					wx = speakerDummyX,
+					wy = speakerDummyY,
+					wz = speakerDummyZ,
+				}
+			end
 		end
 	end
 
