@@ -66,6 +66,11 @@ function clearPlayerSpeaker(playerOrSpeaker, forceDestroy)
 				speakerBoxReverseMap[speakerBox] = nil
 			end
 
+			-- Remove the entry before destroying the box, so the
+			-- onElementDestroy mirror finds nothing to remove and the
+			-- broadcast below fires only once.
+			playerSpeakers[playerElement] = nil
+
 			if (forceDestroy) then
 				local boxElement = isElement(speakerBox)
 
@@ -74,7 +79,11 @@ function clearPlayerSpeaker(playerOrSpeaker, forceDestroy)
 				end
 			end
 
-			playerSpeakers[playerElement] = nil
+			-- Clients that had this speaker's box streamed out never see
+			-- its destruction, so tell them to drop the stale entry.
+			if (forceDestroy) then
+				triggerClientEvent(root, "onClientSpeakerDestroyed", playerElement)
+			end
 
 			return true
 		end
@@ -89,6 +98,11 @@ function clearPlayerSpeaker(playerOrSpeaker, forceDestroy)
 				speakerBoxReverseMap[speakerBox] = nil
 			end
 
+			-- Remove the entry before destroying the box, so the
+			-- onElementDestroy mirror finds nothing to remove and the
+			-- broadcast below fires only once.
+			playerSpeakers[scanPlayer] = nil
+
 			if (forceDestroy) then
 				local boxElement = isElement(speakerBox)
 
@@ -97,27 +111,10 @@ function clearPlayerSpeaker(playerOrSpeaker, forceDestroy)
 				end
 			end
 
-			playerSpeakers[scanPlayer] = nil
+			if (forceDestroy) then
+				triggerClientEvent(root, "onClientSpeakerDestroyed", scanPlayer)
+			end
 
-			return true
-		end
-	end
-
-	return false
-end
-
-function isObjectSpeaker(objectElement)
-	local validElement = isElement(objectElement)
-
-	if (not validElement) then
-		return false
-	end
-
-	for _, speakerData in pairs(playerSpeakers) do
-		local speakerBox = speakerData.speakerBox
-		local matchingElement = (speakerBox == objectElement)
-
-		if (matchingElement) then
 			return true
 		end
 	end
@@ -270,7 +267,15 @@ addEventHandler("onPlayerQuit", root, clearSpeakerOnPlayerQuit)
 
 function clearSpeakerOnElementDestroy()
 	if (getElementType(source) == "object") then
-		clearPlayerSpeaker(source, false)
+		-- Boxes destroyed outside this resource's own removal paths skip
+		-- the forceDestroy broadcast, so tell clients when the mirrored
+		-- cleanup actually removed an entry.
+		local speakerOwner = speakerBoxReverseMap[source]
+		local speakerRemoved = clearPlayerSpeaker(source, false)
+
+		if (speakerRemoved and isElement(speakerOwner)) then
+			triggerClientEvent(root, "onClientSpeakerDestroyed", speakerOwner)
+		end
 	end
 end
 addEventHandler("onElementDestroy", resourceRoot, clearSpeakerOnElementDestroy)

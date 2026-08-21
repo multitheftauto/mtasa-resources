@@ -38,7 +38,51 @@ local function handleSpeakerOnStreamInOut(speakerElement, toggleOn)
 	local playerElement = speakerReverseMap[speakerElement]
 
 	if (playerElement) then
+		if (toggleOn) then
+			-- The box may have been out of stream range when its speaker
+			-- data arrived, so its dummy was never created or attached.
+			-- Finish that setup now that the box is streamed in.
+			local speakerData = getPlayerSpeakerData(playerElement)
+			local speakerBox = speakerData and speakerData.speakerBox
+
+			if (speakerBox and isElement(speakerBox)) then
+				local speakerDummy = speakerData.speakerDummy
+
+				if (not isElement(speakerDummy)) then
+					speakerDummy = createObject(RADIO_DUMMY_MODEL, 0, 0, 3)
+
+					if (isElement(speakerDummy)) then
+						setElementAlpha(speakerDummy, 0)
+						setElementCollisionsEnabled(speakerDummy, false)
+						speakerData.speakerDummy = speakerDummy
+						speakerReverseMap[speakerDummy] = playerElement
+					end
+				end
+
+				if (isElement(speakerDummy) and not getElementAttachedTo(speakerDummy)) then
+					setElementDimension(speakerDummy, getElementDimension(speakerBox))
+					attachElements(speakerDummy, speakerBox, -0.32, -0.22, 0.8)
+				end
+			end
+		end
+
+		-- The dummy element outlives the streamed-out box, so clear its
+		-- track-name label now instead of waiting for the next scan.
+		if (not toggleOn) then
+			local speakerData = getPlayerSpeakerData(playerElement)
+
+			if (speakerData and speakerData.speakerDummy) then
+				removeNearbySpeaker(speakerData.speakerDummy)
+			end
+		end
+
 		toggleSpeakerSounds(playerElement, toggleOn)
+
+		-- Scan after the sound is created, so a streamed-in speaker gets
+		-- its track name on this scan instead of the next timed one.
+		if (toggleOn) then
+			requestNearbySpeakersScan()
+		end
 
 		return true
 	end
@@ -265,7 +309,9 @@ function setPlayerSpeakerData(playerElement, speakerData)
 	playerSpeakers[playerElement] = speakerData
 	speakerReverseMap[speakerDummy] = playerElement
 
-	if (speakerBox and isElement(speakerBox)) then
+	-- Element handles compare by element ID, so the box can be keyed
+	-- before it streams in; the key stays valid once it does.
+	if (speakerBox) then
 		speakerReverseMap[speakerBox] = playerElement
 	end
 
@@ -280,18 +326,33 @@ function setPlayerSpeakerData(playerElement, speakerData)
 		attachElements(speakerDummy, speakerBox, -0.32, -0.22, 0.8)
 	end
 
+	requestNearbySpeakersScan()
+
 	return true
 end
 
+-- Keep the stored volume in sync so a sound recreated later (stream-in
+-- or sync) starts at the volume the player last set.
 function setPlayerSpeakerVolume(playerElement, speakerVolume)
 	local validElement = isElement(playerElement)
-	local speakerSound = speakerSounds[playerElement]
 
-	if (not validElement or not speakerSound) then
+	if (not validElement) then
 		return false
 	end
 
-	setSoundVolume(speakerSound, speakerVolume)
+	local playerSpeakerData = getPlayerSpeakerData(playerElement)
+
+	if (not playerSpeakerData) then
+		return false
+	end
+
+	playerSpeakerData.speakerVolume = speakerVolume
+
+	local speakerSound = speakerSounds[playerElement]
+
+	if (speakerSound) then
+		setSoundVolume(speakerSound, speakerVolume)
+	end
 
 	return true
 end
@@ -398,6 +459,8 @@ function clearPlayerSpeaker(playerOrSpeaker)
 	return false
 end
 
+-- The reverse map holds both speaker boxes and their dummy elements,
+-- so either object resolves to the same entry in the nearby scan.
 function isObjectSpeaker(objectElement)
 	local validElement = isElement(objectElement)
 
@@ -405,30 +468,39 @@ function isObjectSpeaker(objectElement)
 		return false
 	end
 
-	for playerElement, speakerData in pairs(playerSpeakers) do
+	local playerElement = speakerReverseMap[objectElement]
 
-		if (speakerData) then
-			local speakerBox = speakerData.speakerBox
-			local matchingElement = (speakerBox == objectElement)
-
-			if (matchingElement) then
-				local speakerSound = speakerSounds[playerElement]
-				local speakerDummy = speakerData.speakerDummy
-
-				return true, speakerSound, speakerDummy, playerElement
-			end
-		end
+	if (not playerElement) then
+		return false
 	end
 
-	return false
+	local speakerData = playerSpeakers[playerElement]
+
+	if (not speakerData) then
+		return false
+	end
+
+	local speakerSound = speakerSounds[playerElement]
+	local speakerDummy = speakerData.speakerDummy
+
+	return true, speakerSound, speakerDummy, playerElement
 end
 
+function hasAnySpeakers()
+	return next(playerSpeakers) ~= nil
+end
+
+-- Forced recreation only applies to remote speakers, so the local
+-- player's own stream does not restart when the setting changes.
 function handleAllSpeakers(forceRecreate)
 	for playerElement, speakerData in pairs(playerSpeakers) do
 		local speakerBox = speakerData.speakerBox
 		local speakerBoxStreamedIn = isElementStreamedIn(speakerBox)
+		local speakerSoundActive = isElement(speakerSounds[playerElement])
+		local localSpeaker = (playerElement == localPlayer)
+		local recreateSound = (not speakerSoundActive) or (forceRecreate and not localSpeaker)
 
-		if (speakerBoxStreamedIn and (forceRecreate or not (isElement(speakerSounds[playerElement])))) then
+		if (speakerBoxStreamedIn and recreateSound) then
 			toggleSpeakerSounds(playerElement, true)
 		end
 	end
@@ -478,7 +550,9 @@ function onClientSyncSpeakers(activeSpeakers)
 			speakerReverseMap[speakerData.speakerDummy] = playerElement
 		end
 
-		if (speakerBox and isElement(speakerBox)) then
+		-- Element handles compare by element ID, so the box can be keyed
+		-- before it streams in; the key stays valid once it does.
+		if (speakerBox) then
 			speakerReverseMap[speakerBox] = playerElement
 		end
 	end
@@ -502,6 +576,7 @@ function onClientSyncSpeakers(activeSpeakers)
 
 	playerSpeakers = activeSpeakers
 	handleAllSpeakers(true)
+	requestNearbySpeakersScan()
 end
 addEvent("onClientSyncSpeakers", true)
 addEventHandler("onClientSyncSpeakers", root, onClientSyncSpeakers)
@@ -527,6 +602,12 @@ function onClientToggleSpeaker(pauseState)
 end
 addEvent("onClientToggleSpeaker", true)
 addEventHandler("onClientToggleSpeaker", root, onClientToggleSpeaker)
+
+function onClientSpeakerDestroyed()
+	clearPlayerSpeaker(source)
+end
+addEvent("onClientSpeakerDestroyed", true)
+addEventHandler("onClientSpeakerDestroyed", root, onClientSpeakerDestroyed)
 
 function toggleSpeakerOnStreamIn()
 	handleSpeakerOnStreamInOut(source, true)
