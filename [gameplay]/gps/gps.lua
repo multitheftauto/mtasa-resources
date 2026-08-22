@@ -1,10 +1,11 @@
 local floor = math.floor
 
-local allowedRPC = {
-	calculatePathByCoords = true,
-	calculatePathByNodeIDs = true,
-	spawnPlayer = true
-}
+local file = fileOpen("vehiclenodes.json", true)
+local size = fileGetSize(file)
+vehicleNodes = fromJSON(fileRead(file, size))
+fileClose(file)
+
+outputDebugString("GPS: " .. (localPlayer and "Client" or "Server") .. " database loaded successfully!")
 
 local function getAreaID(x, y)
 	return floor((y + 3000)/750)*8 + floor((x + 3000)/750)
@@ -67,7 +68,6 @@ local function calculatePath(db, nodeFrom, nodeTo)
 			break
 		end
 
-		local successors = {}
 		for id,distance in pairs(current.neighbours) do
 			local successor = getNodeByID(db, id)
 			local successor_g = g[current] + distance*distance
@@ -113,21 +113,3 @@ function calculatePathByNodeIDs(node1, node2)
 		return false
 	end
 end
-
-addEvent('onServerCall', true)
-addEventHandler('onServerCall', root,
-	function(fnName, ...)
-		if allowedRPC[fnName] then
-			_G[fnName](...)
-		end
-	end
-)
-
-addEvent('onServerCallback', true)
-addEventHandler('onServerCallback', root,
-	function(crID, fnName, ...)
-		if allowedRPC[fnName] then
-			triggerClientEvent(source, 'onServerCallbackReply', resourceRoot, crID, _G[fnName](...))
-		end
-	end
-)

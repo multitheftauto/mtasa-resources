@@ -1,4 +1,5 @@
 local floor = math.floor
+local currentRouteMode = "client"
 
 addCommandHandler('path',
 	function(command, node1, node2)
@@ -6,7 +7,12 @@ addCommandHandler('path',
 			outputChatBox("Usage: /path node1 node2", 255, 0, 0)
 			return
 		end
-		local path = server.calculatePathByNodeIDs(tonumber(node1), tonumber(node2))
+		local path
+		if currentRouteMode == "client" then
+			path = calculatePathByNodeIDs(tonumber(node1), tonumber(node2))
+		elseif currentRouteMode == "server" then
+			path = server.calculatePathByNodeIDs(tonumber(node1), tonumber(node2))
+		end
 		if not path then
 			outputConsole('No path found')
 			return
@@ -30,7 +36,12 @@ addCommandHandler('path2',
 			return
 		end
 		local x,y,z = getElementPosition(localPlayer)
-		local path = server.calculatePathByCoords(x, y, z, tox, toy, toz)
+		local path
+		if currentRouteMode == "client" then
+			path = calculatePathByCoords(x, y, z, tox, toy, toz)
+		elseif currentRouteMode == "server" then
+			path = server.calculatePathByCoords(x, y, z, tox, toy, toz)
+		end
 		if not path then
 			outputConsole('No path found')
 			return
