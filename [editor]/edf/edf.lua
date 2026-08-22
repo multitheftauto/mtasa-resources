@@ -858,7 +858,7 @@ function edfGetElementPosition(element)
 	end
 end
 
---Returns an element's rotation, or its rotX/Y/Z element data, or false
+--Returns an element's rotation, or its rotX/Y/Z element data, or 0,0,0
 function edfGetElementRotation(element)
 	local etype = getElementType(element)
 	local rx, ry, rz
@@ -871,15 +871,12 @@ function edfGetElementRotation(element)
 		else
 			rx = tonumber(getElementData(element,"rotX"))
 			ry = tonumber(getElementData(element,"rotY"))
-			rz = tonumber(getElementData(element,"rotZ"))
+			-- old race maps use rotation="360" instead of rotX/Y/Z
+			rz = tonumber(getElementData(element,"rotZ")) or tonumber(getElementData(element,"rotation"))
 		end
 	end
 
-	if rx and ry and rz then
-		return rx, ry, rz
-	else
-		return false
-	end
+	return rx or 0, ry or 0, rz or 0
 end
 
 --Returns an element's scale, or its scale element data, or false
