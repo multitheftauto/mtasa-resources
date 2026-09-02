@@ -53,6 +53,7 @@ local customIcons = {
     [255] = "icons/suicide.png",
     [256] = "icons/headshot.png",
 
+    -----------vehicle specific icons, according to their vehicle id---------
     [431] = "icons/bus.png",
     [437] = "icons/bus.png",
     [414] = "icons/boxtruck.png",
