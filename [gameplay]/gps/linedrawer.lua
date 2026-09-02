@@ -21,7 +21,7 @@ function removeLinePoints ( )
 end
 
 function addLinePoint ( posX, posY )
-	if not tonumber(posX) and not tonumber(poxY) then
+	if not tonumber(posX) or not tonumber(posY) then
 		return false
 	end
 	-- Calculate the row and column of the radar tile we will be targeting
@@ -58,6 +58,10 @@ function addLinePoint ( posX, posY )
 end
 
 function loadTile ( name )
+	if not linePoints[name] or not linePoints[name][1] then
+		return false
+	end
+
 	-- Create our fabulous shader. Abort on failure
 	local shader = dxCreateShader ( "overlay.fx" )
 	if not shader then
@@ -75,7 +79,7 @@ function loadTile ( name )
 	dxSetShaderValue ( shader, "gOverlay", rt )
 
 	-- Start drawing
-	dxSetRenderTarget ( rt )
+	dxSetRenderTarget ( rt, true )
 
 	-- Get the points involved, and get the starting position
 	local points = linePoints [ name ]
@@ -99,6 +103,9 @@ function loadTile ( name )
 		prevY = newY
 	end
 
+	-- Reset render target back to default screen
+	dxSetRenderTarget ( )
+
 	-- Now let's show our fabulous work to the commoners!
 	engineApplyShaderToWorldTexture ( shader, name )
 
@@ -110,9 +117,16 @@ function loadTile ( name )
 end
 
 function unloadTile ( name )
-	destroyElement ( renderStuff[name].shader )
-	destroyElement ( renderStuff[name].rt )
-	renderStuff[name] = nil
+	if renderStuff[name] then
+		if isElement(renderStuff[name].shader) then
+			engineRemoveShaderFromWorldTexture(renderStuff[name].shader, name)
+			destroyElement ( renderStuff[name].shader )
+		end
+		if isElement(renderStuff[name].rt) then
+			destroyElement ( renderStuff[name].rt )
+		end
+		renderStuff[name] = nil
+	end
 	return true
 end
 
