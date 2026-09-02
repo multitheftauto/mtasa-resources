@@ -53,7 +53,6 @@ local customIcons = {
     [255] = "icons/suicide.png",
     [256] = "icons/headshot.png",
 
-    -----------vehicle specific icons, according to their vehicle id---------
     [431] = "icons/bus.png",
     [437] = "icons/bus.png",
     [414] = "icons/boxtruck.png",
@@ -145,12 +144,27 @@ local customIcons = {
     [999] = "icons/generic.png",
 }
 
+local textures = {}
+
+function getTexture(path)
+    if (type(path) ~= 'string') then
+        return false
+    end
+
+    if isElement(textures[path]) then
+        return textures[path]
+    end
+
+    if fileExists(path) then
+        textures[path] = dxCreateTexture(path)
+        return textures[path]
+    end
+
+    return false
+end
+
 function getMessageIcon(weapon, attacker)
     local path
-
-    if weapon then
-        path = customIcons[weapon] or 'icons/generic.png'
-    end
 
     local elemType = isElement(attacker) and getElementType(attacker)
 
@@ -161,36 +175,27 @@ function getMessageIcon(weapon, attacker)
     elseif (elemType == 'player') then
         local vehicle = getPedOccupiedVehicle(attacker)
         if vehicle then
-            return getMessageIcon(_, vehicle)
+            return getMessageIcon(nil, vehicle)
         end
     end
+
+    if not path and weapon then
+        path = customIcons[weapon] or 'icons/generic.png'
+    end
+
+    path = path or 'icons/generic.png'
 
     local texture = getTexture(path)
 
     if texture then
+        local w, h = dxGetMaterialSize(texture)
         return {
             texture = texture,
-            width = dxGetMaterialSize(texture)
+            width = w or 32
         }
     end
 
     return false
-end
-
-local textures = {}
-
-function getTexture(path)
-    if (type(path) ~= 'string') then
-        return false
-    end
-
-    if (textures[path] ~= nil) then
-        return textures[path]
-    end
-
-    textures[path] = dxCreateTexture(path)
-
-    return textures[path]
 end
 
 function removeHex(s)
