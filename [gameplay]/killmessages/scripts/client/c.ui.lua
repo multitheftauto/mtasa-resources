@@ -48,7 +48,7 @@ function renderMessages()
     duration = duration * 1000
 
     local y = sH - (sH * marginBottom)
-    local padding = 5
+    local padding = 5  -- distance between texts and icon
 
     for k = #messages, 1, -1 do
         local v = messages[k]
