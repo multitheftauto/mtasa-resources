@@ -133,19 +133,19 @@ addEventHandler("onVehicleExplode", root, clientCreateVehicleExplosion);
 -- thresholds need to be adjusted for your need and actions taken!
 setTimer(function()
 	for uPlayer, iCounter in pairs(tblPlayerProjectiles) do
-		if(iCounter >= iPlayerProjectileThreshold) then
+		if(isElement(uPlayer) and iCounter >= iPlayerProjectileThreshold) then
 			logViolation(uPlayer, "Exceeded projectile threshold "..tostring(iPlayerProjectileThreshold).." - Count: "..tostring(iCounter));
 		end
 	end
 
 	for uPlayer, iCounter in pairs(tblRegularExplosions) do
-		if(iCounter >= iRegularExplosionThreshold) then
+		if(isElement(uPlayer) and iCounter >= iRegularExplosionThreshold) then
 			logViolation(uPlayer, "Exceeded regular explosions threshold "..tostring(iRegularExplosionThreshold).." - Count: "..tostring(iCounter));
 		end
 	end
 
 	for uPlayer, iCounter in pairs(tblVehicleExplosions) do
-		if(iCounter >= iVehicleExplosionThreshold) then
+		if(isElement(uPlayer) and iCounter >= iVehicleExplosionThreshold) then
 			logViolation(uPlayer, "Exceeded vehicle explosions threshold "..tostring(iVehicleExplosionThreshold).." - Count: "..tostring(iCounter));
 		end
 	end
@@ -155,3 +155,17 @@ setTimer(function()
 	tblVehicleExplosions = {};
 
 end, iExplosionCheckInterval, 0);
+
+addEventHandler("onPlayerQuit", root, function()
+	if(tblPlayerProjectiles[source]) then
+		tblPlayerProjectiles[source] = nil;
+	end
+
+	if(tblRegularExplosions[source]) then
+		tblRegularExplosions[source] = nil;
+	end
+
+	if(tblVehicleExplosions[source]) then
+		tblVehicleExplosions[source] = nil;
+	end
+end);
