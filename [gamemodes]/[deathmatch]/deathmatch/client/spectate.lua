@@ -6,6 +6,11 @@ local _validTargets = {}
 --  startSpectating([target]): starts spectating the targted player, or a random one if target == nil
 --
 function startSpectating(target)
+	-- Abort if playing alone
+	if #_validTargets == 0 then
+		return
+	end
+	
     -- fade camera out, hide radar hud and score screen
     fadeCamera(false, 0)
     setPlayerHudComponentVisible("radar", false)
