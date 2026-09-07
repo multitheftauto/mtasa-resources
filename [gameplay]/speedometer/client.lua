@@ -52,18 +52,8 @@ function drawSpeedo()
     local kmh = math.floor( getElementSpeed(veh, 'km/h') ) --mph
     dxDrawRelText(kmh, 0.65, 0.71, 0.5, 0.1, tocolor(255, 255, 255), 1.5, "default-bold", "center", "center")
 
-    if getVehicleOverrideLights( veh ) == 2 then
-        dxDrawRelativeImage(0.88, 0.85, 40, 40, "images/lights_1.png", 0, 0, 0, tocolor(255, 255, 255, 255))
-	elseif getVehicleOverrideLights( veh ) == 1 then
-        dxDrawRelativeImage(0.88, 0.85, 40, 40, "images/lights_0.png", 0, 0, 0, tocolor(255, 255, 255, 255))
-	else
-		local h,m = getTime()
-		if h >= 6 and h <= 21 then
-            dxDrawRelativeImage(0.88, 0.85, 40, 40, "images/lights_0.png", 0, 0, 0, tocolor(255, 255, 255, 255))
-		else
-            dxDrawRelativeImage(0.88, 0.85, 40, 40, "images/lights_1.png", 0, 0, 0, tocolor(255, 255, 255, 255))
-		end
-	end
+	local image = areVehicleLightsOn(veh) and "images/lights_1.png" or "images/lights_0.png"
+	dxDrawRelativeImage(0.88, 0.85, 40, 40, image)
 
     dxDrawRelativeImage(0.82, 0.65, 300, 300, "images/needle.png", -145-(1.5-(speed/1.5) * 305))
 end
