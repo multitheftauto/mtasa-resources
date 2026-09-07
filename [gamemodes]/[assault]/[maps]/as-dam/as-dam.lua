@@ -83,7 +83,7 @@ function placeBomb ( obj, players )
 	local bomb = getElementByID ( obj.id )
 	local ID = obj.id
 	local x, y, z = getElementData ( bomb, "bombPosX" ), getElementData ( bomb, "bombPosY" ), getElementData ( bomb, "bombPosZ" )
-	local rx, ry, rz = getElementData ( bomb, "bombRotX" ), getElementData ( bomb, "bombRotY" ), getElementData ( bomb, "bombRotZ" )
+	local rx, ry, rz = getElementData ( bomb, "bombRotX" ) or 0, getElementData ( bomb, "bombRotY" ) or 0, getElementData ( bomb, "bombRotZ" ) or 0
 	local bombglow = createMarker ( x, y, z, "corona", 1, 255, 255, 200, 80 )
 	bombs[ID] = createObject ( 1654, x, y, z, rx, ry, rz )
 

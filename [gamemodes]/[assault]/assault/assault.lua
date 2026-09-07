@@ -875,10 +875,10 @@ function onPlayerSpawn()
 	local spawnarea = getElementDataLocal( source, "lastSpawnarea" )
 	if (team == attacker) then
 		giveWeapons(source, spawnarea.weapons)
-		showTextForPlayer(source,10,255,0,0,1,"You are attacking")
+		showTextForPlayer(source,10,255,0,0,1,0.5,"You are attacking")
 	else
 		giveWeapons(source, spawnarea.weapons)
-		showTextForPlayer(source,10,0,0,255,1,"You are defending")
+		showTextForPlayer(source,10,0,0,255,1,0.5,"You are defending")
 	end
 	if (team == team1) then
 		local blip = createBlipAttachedTo(source, 0, 1, 255, 0, 0)
@@ -1021,12 +1021,13 @@ end
 function respawnVehicle(vehicle)
 	if (isElement(vehicle) == false) then return end
 	if (getElementData(vehicle,"noRespawn") == true or getElementData(vehicle,"noRespawn") == "1") then return end
-	posX = getElementData(vehicle,"posX")
-	posY = getElementData(vehicle,"posY")
-	posZ = getElementData(vehicle,"posZ")
-	rotX = getElementData(vehicle,"rotX")
-	rotY = getElementData(vehicle,"rotY")
-	rotZ = getElementData(vehicle,"rotZ")
+	posX = tonumber(getElementData(vehicle,"posX")) or 0
+	posY = tonumber(getElementData(vehicle,"posY")) or 0
+	posZ = tonumber(getElementData(vehicle,"posZ")) or 0
+	rotX = tonumber(getElementData(vehicle,"rotX")) or 0
+	rotY = tonumber(getElementData(vehicle,"rotY")) or 0
+	rotZ = tonumber(getElementData(vehicle,"rotZ")) or 0
+	
 	spawnVehicle ( vehicle, posX, posY, posZ, rotX, rotY, rotZ )
 
 end
@@ -1155,6 +1156,7 @@ function showTextForAll ( time, red, green, blue, scale, text, vertical )
 	setTimer(textDestroyDisplay, time, 1, textDisplay)
 end
 function showTextForPlayer ( source, time, red, green, blue, scale, pos, text )
+	pos = tonumber(pos) or 0.5
 	local textDisplay = textCreateDisplay ()
 	local textItem = textCreateTextItem ( text, 0.5, pos, 2, red, green, blue, 255, scale, "center" )
 	textDisplayAddText ( textDisplay, textItem )
