@@ -2,45 +2,6 @@ local screenW, screenH = guiGetScreenSize()
 local base_color = tocolor(255, 255, 255, 235)
 local baseW, baseH = 1920, 1080
 
-local function dxDrawRelativeImage(startX, startY, width, height, image, rot, rotX, rotY, color, postGUI)
-    local scale = math.min(screenW / baseW, screenH / baseH)
-    local scaledW = width * scale
-    local scaledH = height * scale
-
-    dxDrawImage(screenW * startX, screenH * startY, scaledW, scaledH, image, rot or 0, rotX or 0, rotY or 0, color or base_color, postGUI or false)
-end
-
-function dxDrawRelText(text, relX, relY, relWidth, relHeight, color, scaleXY, font, alignX, alignY, clip, wordBreak, postGUI, colorCoded, subPixelPositioning, fRotation, fRotationCenterX, fRotationCenterY, fLineSpacing)
-    local scale = math.min(screenW / baseW, screenH / baseH)
-    local absX = screenW * relX
-    local absY = screenH * relY
-    local absRight = screenW * (relX + relWidth)
-    local absBottom = screenH * (relY + relHeight)
-    
-    
-    local scaledScale = scaleXY * scale
-
-    dxDrawText(
-        text,
-        absX, absY,
-        absRight, absBottom,
-        color or tocolor(255, 255, 255, 255),
-        scaledScale, scaledScale,  -- scaleX, scaleY
-        font or "default",
-        alignX or "left",
-        alignY or "top",
-        clip or false,
-        wordBreak or false,
-        postGUI or false,
-        colorCoded or false,
-        subPixelPositioning or false,
-        fRotation or 0,
-        fRotationCenterX or 0,
-        fRotationCenterY or 0,
-        fLineSpacing or 0
-    )
-end
-
 function drawSpeedo()
     local veh = getPedOccupiedVehicle(localPlayer)
     if not veh then return end
@@ -48,14 +9,19 @@ function drawSpeedo()
     local velx, vely, velz = getElementVelocity(veh)
     local speed = (velx ^ 2 + vely ^ 2 + velz ^ 2) ^ (0.5)
 
-    dxDrawRelativeImage(0.82, 0.65, 300, 300, "images/disc.png")
-    local kmh = math.floor( getElementSpeed(veh, 'km/h') ) --mph
-    dxDrawRelText(kmh, 0.65, 0.71, 0.5, 0.1, tocolor(255, 255, 255), 1.5, "default-bold", "center", "center")
+    local scale = math.min(screenW / baseW, screenH / baseH)
+    local dialX, dialY = screenW * 0.82, screenH * 0.65
+    local dialSize = 300 * scale
 
-	local image = areVehicleLightsOn(veh) and "images/lights_1.png" or "images/lights_0.png"
-	dxDrawRelativeImage(0.88, 0.85, 40, 40, image)
+    dxDrawImage(dialX, dialY, dialSize, dialSize, "images/disc.png", 0, 0, 0, base_color)
+    local kmh = math.floor(getElementSpeed(veh, "km/h"))
+    dxDrawText(kmh, dialX, dialY + 65 * scale, dialX + dialSize, dialY + 173 * scale,
+        tocolor(255, 255, 255), 1.5 * scale, "default-bold", "center", "center")
 
-    dxDrawRelativeImage(0.82, 0.65, 300, 300, "images/needle.png", -145-(1.5-(speed/1.5) * 305))
+    local image = areVehicleLightsOn(veh) and "images/lights_1.png" or "images/lights_0.png"
+    dxDrawImage(dialX + 130 * scale, dialY + 216 * scale, 40 * scale, 40 * scale, image, 0, 0, 0, base_color)
+
+    dxDrawImage(dialX, dialY, dialSize, dialSize, "images/needle.png", -145-(1.5-(speed/1.5) * 305), 0, 0, base_color)
 end
 
 function getElementSpeed(theElement, unit)
