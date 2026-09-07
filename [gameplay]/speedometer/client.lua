@@ -2,14 +2,6 @@ local screenW, screenH = guiGetScreenSize()
 local base_color = tocolor(255, 255, 255, 235)
 local baseW, baseH = 1920, 1080
 
-local function dxDrawRelativeImage(startX, startY, width, height, image, rot, rotX, rotY, color, postGUI)
-    local scale = math.min(screenW / baseW, screenH / baseH)
-    local scaledW = width * scale
-    local scaledH = height * scale
-
-    dxDrawImage(screenW * startX, screenH * startY, scaledW, scaledH, image, rot or 0, rotX or 0, rotY or 0, color or base_color, postGUI or false)
-end
-
 function drawSpeedo()
     local veh = getPedOccupiedVehicle(localPlayer)
     if not veh then return end
@@ -17,8 +9,29 @@ function drawSpeedo()
     local velx, vely, velz = getElementVelocity(veh)
     local speed = (velx ^ 2 + vely ^ 2 + velz ^ 2) ^ (0.5)
 
-    dxDrawRelativeImage(0.82, 0.65, 300, 300, "images/disc.png")
-    dxDrawRelativeImage(0.82, 0.65, 300, 300, "images/needle.png", -145-(1.5-(speed/1.5) * 305))
+    local scale = math.min(screenW / baseW, screenH / baseH)
+    local dialX, dialY = screenW * 0.82, screenH * 0.65
+    local dialSize = 300 * scale
+
+    dxDrawImage(dialX, dialY, dialSize, dialSize, "images/disc.png", 0, 0, 0, base_color)
+    local kmh = math.floor(getElementSpeed(veh, "km/h"))
+    dxDrawText(kmh, dialX, dialY + 65 * scale, dialX + dialSize, dialY + 173 * scale,
+        tocolor(255, 255, 255), 1.5 * scale, "default-bold", "center", "center")
+
+    local image = areVehicleLightsOn(veh) and "images/lights_1.png" or "images/lights_0.png"
+    dxDrawImage(dialX + 130 * scale, dialY + 216 * scale, 40 * scale, 40 * scale, image, 0, 0, 0, base_color)
+
+    dxDrawImage(dialX, dialY, dialSize, dialSize, "images/needle.png", -145-(1.5-(speed/1.5) * 305), 0, 0, base_color)
+end
+
+function getElementSpeed(theElement, unit)
+    assert(isElement(theElement), "Bad argument 1 @ getElementSpeed (element expected, got " .. type(theElement) .. ")")
+    local elementType = getElementType(theElement)
+    assert(elementType == "player" or elementType == "ped" or elementType == "object" or elementType == "vehicle" or elementType == "projectile", "Invalid element type @ getElementSpeed (player/ped/object/vehicle/projectile expected, got " .. elementType .. ")")
+    assert((unit == nil or type(unit) == "string" or type(unit) == "number") and (unit == nil or (tonumber(unit) and (tonumber(unit) == 0 or tonumber(unit) == 1 or tonumber(unit) == 2)) or unit == "m/s" or unit == "km/h" or unit == "mph"), "Bad argument 2 @ getElementSpeed (invalid speed unit)")
+    unit = unit == nil and 0 or ((not tonumber(unit)) and unit or tonumber(unit))
+    local mult = (unit == 0 or unit == "m/s") and 50 or ((unit == 1 or unit == "km/h") and 180 or 111.84681456)
+    return (Vector3(getElementVelocity(theElement)) * mult).length
 end
 
 local isSpeedoShown = false
