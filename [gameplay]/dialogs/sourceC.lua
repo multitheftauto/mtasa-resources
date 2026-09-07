@@ -14,7 +14,7 @@ function messageBeep(soundType, soundVolume)
         error("Bad argument @ 'messageBeep' [Invalid type at argument 1, got '" .. tostring(soundType) .. "']")
     end
 
-    if not soundVolume or soundVolume > 1 or type(soundVolume) ~= "number" then
+    if not soundVolume or soundVolume < 0 or soundVolume > 1 or type(soundVolume) ~= "number" then
         soundVolume = 1
     end
 
@@ -103,7 +103,7 @@ function messageBox(messageTitle, messageContent, messageCallback, messageIcon, 
         if type(messageButtonDefault) ~= "number" then
             error("Bad argument @ 'messageBox' [Expected number at argument 6, got " .. type(messageButtonDefault) .. "]")
         elseif #messageButtons[messageButton] < messageButtonDefault then
-            error("Bad argument @ 'messageBox' [Invalid default at argument 6, " .. messageButton .. " only have " .. tostring(#messageButtons[messageButon]) .. " buttons.]")
+            error("Bad argument @ 'messageBox' [Invalid default at argument 6, " .. messageButton .. " only have " .. tostring(#messageButtons[messageButton]) .. " buttons.]")
         end
     else
         messageButtonDefault = 1
@@ -122,7 +122,7 @@ function messageBox(messageTitle, messageContent, messageCallback, messageIcon, 
     if messageSoundVolume then
         if type(messageSoundVolume) ~= "number" then
             error("Bad argument @ 'messageBox' [Expected number at argument 8, got " .. type(messageSoundVolume) .. "]")
-        elseif messageSoundVolume > 1 or messageSoundVolume < 1 then
+        elseif messageSoundVolume > 1 or messageSoundVolume < 0 then
             error("Bad argument @ 'messageBox' [Invalid volume at argument 8, got '" .. tostring(messageSoundVolume) .. "']")
         end
     else
@@ -222,7 +222,7 @@ function messageBoxEx(messageTitle, messageContent, messageIcon, messageButton, 
         if type(messageButtonDefault) ~= "number" then
             error("Bad argument @ 'messageBoxEx' [Expected number at argument 5, got " .. type(messageButtonDefault) .. "]")
         elseif #messageButtons[messageButton] < messageButtonDefault then
-            error("Bad argument @ 'messageBoxEx' [Invalid default at argument 5, " .. messageButton .. " only have " .. tostring(#messageButtons[messageButon]) .. " buttons.]")
+            error("Bad argument @ 'messageBoxEx' [Invalid default at argument 5, " .. messageButton .. " only have " .. tostring(#messageButtons[messageButton]) .. " buttons.]")
         end
     else
         messageButtonDefault = 1
