@@ -9,7 +9,7 @@ addEventHandler("onPlayerWasted", root,
 					message = getPlayerName(killer).." killed "..getPlayerName(source).."."
 				elseif killerType == "vehicle" then
 					local controller = getVehicleController(killer)
-					if controller then
+					if controller and getElementType(controller) == "player" then
 						message = getPlayerName(controller).." killed "..getPlayerName(source).."."
 					else
 						message = "A vehicle killed "..getPlayerName(source).."."
