@@ -1,0 +1,16 @@
+# top-most EditorConfig file
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.lua]
+indent_style = space
+indent_size = 4
+
+[*.{js,css}]
+indent_style = space
+indent_size = 2
