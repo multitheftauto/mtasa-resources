@@ -27,10 +27,10 @@ addEventHandler("onClientResourceStart", resourceRoot,
 
 		addEventHandler("onClientGUIClick", btnClose,
 			function()
-				if source == this then
+				if source == btnClose then
 					clientToggleHelp(false)
 				end
-			end
+			end, false
 		)
 
 		pagesXml = xmlLoadFile("seen.xml")
@@ -38,8 +38,8 @@ addEventHandler("onClientResourceStart", resourceRoot,
 			pagesXml = xmlCreateFile("seen.xml", "seen")
 		end
 
-		for i, resourceRoot in ipairs(getElementsByType("resource")) do --!w
-			local resource = getResourceFromName(getElementID(resourceRoot))
+		for i, resRoot in ipairs(getElementsByType("resource")) do
+			local resource = getResourceFromName(getElementID(resRoot))
 			if resource then
 				addHelpTabFromXML(resource)
 			end
@@ -102,7 +102,11 @@ function addHelpTab(resource, showPopup)
 end
 
 function removeHelpTab(resource)
-	if not tab[resource] then
+	if type(resource) ~= "userdata" then
+		resource = getResourceFromName(getElementID(source))
+	end
+
+	if not resource or not tab[resource] then
 		return false
 	end
 
@@ -120,6 +124,12 @@ addEventHandler("onClientResourceStop", root, removeHelpTab)
 
 --private
 function addHelpTabFromXML(resource)
+	if type(resource) ~= "userdata" then
+		resource = getResourceFromName(getElementID(source))
+	end
+
+	if not resource then return false end
+
 	-- block duplicates
 	if tab[resource] then
 		return false
@@ -156,6 +166,10 @@ end
 
 local function fadeIn(wnd)
 	local function raiseAlpha()
+		if not isElement(wnd) then
+			removeEventHandler("onClientRender", root, raiseAlpha)
+			return
+		end
 		local newAlpha = guiGetAlpha(wnd) + FADE_DELTA
 		if newAlpha <= MAX_ALPHA then
 			guiSetAlpha(wnd, newAlpha)
@@ -168,6 +182,10 @@ end
 
 local function fadeOut(wnd)
 	local function lowerAlpha()
+		if not isElement(wnd) then
+			removeEventHandler("onClientRender", root, lowerAlpha)
+			return
+		end
 		local newAlpha = guiGetAlpha(wnd) - FADE_DELTA
 		if newAlpha >= 0 then
 			guiSetAlpha(wnd, newAlpha)
@@ -204,7 +222,7 @@ end
 
 function showHelpPopup(resource)
 	local screenX, screenY = guiGetScreenSize()
-	local wndPopup = guiCreateWindow(0, screenY - 20, screenX, 0, '', false) --350
+	local wndPopup = guiCreateWindow(0, screenY - 20, screenX, 0, '', false)
 
 	local restitle = getResourceName(resource)
 	local helpnode = getResourceConfig(":" .. getResourceName(resource) .. "/help.xml")
