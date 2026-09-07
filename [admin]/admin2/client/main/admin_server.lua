@@ -681,7 +681,7 @@ function aServerTab.onRefresh()
     guiSetText(aServerTab.FPSCurrent, "FPS Limit: " .. getFPSLimit())
 
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.HoverCars, 2, isWorldSpecialPropertyEnabled("hovercars") and "√" or "", false, false)
-    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.AirCars, 2, isWorldSpecialPropertyEnabled("AirCars") and "√" or "", false, false)
+    guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.AirCars, 2, isWorldSpecialPropertyEnabled("aircars") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.ExtraBunny, 2, isWorldSpecialPropertyEnabled("extrabunny") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.ExtraJump, 2, isWorldSpecialPropertyEnabled("extrajump") and "√" or "", false, false)
     guiGridListSetItemText(aServerTab.Glitches_Properties, aServerTab.RandomFoliage, 2, isWorldSpecialPropertyEnabled("randomfoliage") and "√" or "", false, false)

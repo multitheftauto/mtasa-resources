@@ -7,38 +7,18 @@
 *	Original File by lil_Toady
 *
 **************************************]]
-local worldSpecialProperties = {hovercars = false, aircars = false, extrabunny = false, extrajump = false}
-
-function isWorldSpecialPropertyEnabled(property)
-    if (worldSpecialProperties[property]) then
-        return true
-    end
-    return false
-end
-
-function setWorldSpecialPropertyEnabled(property, enabled)
-    local v = worldSpecialProperties[property]
-    if (type(enabled) == "boolean") then
-        worldSpecialProperties[property] = iif(enabled, true, false)
-        triggerClientEvent(client, EVENT_PROXY, client, PROXY_SPECIAL, property, worldSpecialProperties[property])
-        return true
-    end
-    return false
-end
-
 local blurLevel = 36
+
 function setBlurLevel(blevel)
     local level = tonumber(blevel)
     if (level and level >= 0 and level <= 255) then
         blurLevel = level
-        triggerClientEvent(client, EVENT_PROXY, client, PROXY_BLUR, blurLevel)
+        for _, player in ipairs(getElementsByType("player")) do
+            setPlayerBlurLevel(player, blurLevel)
+        end
         return true
     end
     return false
-end
-
-function getBlurLevel()
-    return blurLevel
 end
 
 addEventHandler(
@@ -46,16 +26,7 @@ addEventHandler(
     root,
     function(type)
         if (type == SESSION_START) then
-            triggerClientEvent(
-                client,
-                EVENT_PROXY,
-                client,
-                PROXY_ALL,
-                {
-                    [PROXY_BLUR] = blurLevel,
-                    [PROXY_SPECIAL] = worldSpecialProperties
-                }
-            )
+            setPlayerBlurLevel(client, blurLevel)
         end
     end
 )

@@ -39,7 +39,6 @@ enum(
         "EVENT_MESSAGE",
         "EVENT_BAN",
         "EVENT_NETWORK",
-        "EVENT_PROXY",
         "EVENT_ADMIN_CHAT",
         "EVENT_ADMIN_OPEN",
         "EVENT_MESSAGE_BOX",
@@ -101,16 +100,6 @@ enum(
         "SESSION_UPDATE"
     },
     "ase"
-)
-
--- PROXY DEFINITIONS
-enum(
-    {
-        "PROXY_ALL",
-        "PROXY_BLUR",
-        "PROXY_SPECIAL"
-    },
-    "ap"
 )
 
 -- SCREENSHOT DEFINITIONS

@@ -1,6 +1,6 @@
 <meta>
 	<info name="Admin" author="lil_Toady" type="misc" version="2.0" description="Administration panel" showInResourceBrowser="true" pages="http/screenshots.htm|Screenshots" noDefaultPage="true"/>
-	<min_mta_version server="1.6.0-9.22195" />
+	<min_mta_version server="1.6.0-9.22195" client="1.6.0-9.22195" />
 	<!--
 	WARNING: We give no support for edited
 			 versions of the admin system.
@@ -36,7 +36,6 @@
 	<script src="client/admin_gui.lua" type="client" cache="false"/>
 	<script src="client/admin_settings.lua" type="client" cache="false"/>
 	<script src="client/admin_session.lua" type="client" cache="false"/>
-	<script src="client/admin_proxy.lua" type="client" cache="false"/>
 	<script src="client/main/admin.lua" type="client" cache="false"/>
 	<script src="client/main/admin_players.lua" type="client" cache="false"/>
 	<script src="client/main/admin_resources.lua" type="client" cache="false"/>
