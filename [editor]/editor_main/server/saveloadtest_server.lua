@@ -723,6 +723,10 @@ function createElementAttributesForSaving(xmlNode, element)
 			xmlNodeSetAttribute(elementNode, "posZ", toAttribute(round(dataValue[3], 5)))
 			posSetX, posSetY, posSetZ = true, true, true
 		elseif ( dataName == "rotation" ) then
+			-- old race maps rotation isn't a table, so we need to convert it to a table
+			if type(dataValue) ~= "table" then
+				dataValue = { 0, 0, tonumber(dataValue) or 0 }
+			end
 			if dataValue[4] == "ZYX" then
 				local skipConversion = getElementType(element) == "vehicle"
 				if not skipConversion then
