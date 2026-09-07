@@ -20,7 +20,7 @@ local function resourceStart()
 		if not playercolorsResource then
 			giveOutputDebugStringOut("Install", outputDebugStringTypePlayerColors)
 		elseif playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
-			giveOutputDebugStringOut("Start", outputDebugStringTypePlayerColors)
+			--giveOutputDebugStringOut("Start", outputDebugStringTypePlayerColors) -- Disabled this debug because every time you run a test in map editor you get this.
 		end
 	end
 
