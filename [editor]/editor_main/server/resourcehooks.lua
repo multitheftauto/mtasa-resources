@@ -13,11 +13,20 @@ function addResourceMap ( resource, filename, dimension )
 end
 
 function insertResourceFile ( resource, path, filetype )
-	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
-    local node = xmlCreateChild ( metaNode, filetype )
-    xmlNodeSetAttribute ( node, "src", path )
-	xmlSaveFile ( metaNode )
+	local metaPath = ':' .. getResourceName(resource) .. '/meta.xml'
+	local metaNode = xmlLoadFile ( metaPath )
+	if not metaNode then
+		outputDebugString ( "insertResourceFile: Could not load " .. metaPath, 1 )
+		return false
+	end
+	local node = xmlCreateChild ( metaNode, filetype )
+	if not node then
+		xmlUnloadFile ( metaNode )
+		return false
+	end
+	local success = xmlNodeSetAttribute ( node, "src", path ) and xmlSaveFile ( metaNode )
 	xmlUnloadFile ( metaNode )
+	return success
 end
 
 function removeResourceFile ( resource, path, filetype )
