@@ -39,18 +39,8 @@ local function loadOneMapFixComponent(name, data, wasToggled)
     if modelFlagsToSet then
         for _, v in pairs(modelFlagsToSet) do
             engineSetModelFlag(v[1], v[2], not v[3])
+			engineRestreamModel(v[1])
         end
-    end
-
-    -- Don't proceed if the component is disabled
-    if not data.enabled then
-
-        -- Force restream world after unloading this component
-        -- only if it was the only one toggled
-        if wasToggled then
-            engineRestreamWorld()
-        end
-        return
     end
 
     -- Create the new elements if any
@@ -110,13 +100,8 @@ local function loadOneMapFixComponent(name, data, wasToggled)
     if modelFlagsToSet then
         for _, v in pairs(modelFlagsToSet) do
             engineSetModelFlag(v[1], v[2], v[3])
+			engineRestreamModel(v[1])
         end
-    end
-
-    -- Force restream world after loading this component
-    -- only if it was the only one toggled
-    if wasToggled then
-        engineRestreamWorld()
     end
 end
 
@@ -129,7 +114,6 @@ local function loadMapFixComponents(mapFixComponentStatuses)
             loadOneMapFixComponent(name, data)
         end
     end
-    engineRestreamWorld()
 end
 addEventHandler("mapfixes:client:loadAllComponents", localPlayer, loadMapFixComponents, false)
 
@@ -152,6 +136,5 @@ local function unloadAllMapFixComponents()
     for name, _ in pairs(mapFixComponents) do
         toggleOneMapFixComponent(name, false)
     end
-    engineRestreamWorld()
 end
 addEventHandler("onClientResourceStop", resourceRoot, unloadAllMapFixComponents, false)
