@@ -112,15 +112,12 @@ function edfGetElementRotation(element)
 		else
 			rx = tonumber(getElementData(element,"rotX"))
 			ry = tonumber(getElementData(element,"rotY"))
-			rz = tonumber(getElementData(element,"rotZ"))
+			-- old race maps use rotation="360" instead of rotX/Y/Z
+			rz = tonumber(getElementData(element,"rotZ")) or tonumber(getElementData(element,"rotation"))
 		end
 	end
 
-	if rx and ry and rz then
-		return rx, ry, rz
-	else
-		return false
-	end
+	return rx or 0, ry or 0, rz or 0
 end
 
 --Returns an element's scale, or its scale element data, or 1
@@ -170,7 +167,7 @@ function edfSetElementRotation(element, rx, ry, rz)
 		if etype == "object" or etype == "vehicle" or etype == "player" or etype == "ped" then
 			-- Clear the quat rotation when set manually
 			exports.editor_main:clearElementQuat(element)
-			
+
 			return setElementRotation(element, rx, ry, rz)
 		else
 			local handle = edfGetHandle(element)

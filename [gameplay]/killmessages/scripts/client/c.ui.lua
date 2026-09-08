@@ -13,22 +13,19 @@ function outputMessage(new)
 
     new.initTick = getTickCount()
 
-    if new.icon.path and fileExists(new.icon.path) then
-        new.icon.texture = dxCreateTexture(new.icon.path)
+    if new.icon and new.icon.path and fileExists(new.icon.path) then
+        new.icon.texture = getTexture(new.icon.path)
     end
 
     table.insert(messages, new)
 
     local displayLines = tonumber(getSetting('displayLines')) or 5
-
     local quantity = #messages
 
     if (quantity == 1) then
         addEventHandler('onClientRender', root, renderMessages)
-
     elseif (quantity > displayLines) then
         table.remove(messages, 1)
-
     end
 
     return true
@@ -51,7 +48,6 @@ function renderMessages()
     duration = duration * 1000
 
     local y = sH - (sH * marginBottom)
-
     local padding = 5 -- distance between texts and icon
 
     for k = #messages, 1, -1 do
@@ -63,10 +59,8 @@ function renderMessages()
 
                 if (passed <= fadeTime) then
                     alpha = 255 * passed / math.max(1, fadeTime)
-
                 elseif (passed >= (duration - fadeTime)) then
                     alpha = 255 - 255 * ((now - duration + fadeTime) - v.initTick) / math.max(1, fadeTime)
-
                 end
 
                 local victim = v.victim
@@ -75,48 +69,39 @@ function renderMessages()
                 victimColor = tocolor(victimColor[1], victimColor[2], victimColor[3], alpha)
 
                 local victimWidth = dxGetTextSize(victimText, 0, 1, 1, font, false, true)
-
                 local x = sW - (sW * marginRight) - victimWidth
 
-                dxDrawText(victimText, x + 2, y + 2, x + victimWidth, y + lineHeight, tocolor(0, 0, 0, alpha), 1, font, 'center', 'center')
-                dxDrawText(victimText, x, y, x + victimWidth, y + lineHeight, victimColor, 1, font, 'center', 'center')
+                dxDrawText(victimText, x + 1, y + 1, x + victimWidth + 1, y + lineHeight + 1, tocolor(0, 0, 0, alpha), 1, font, 'left', 'center')
+                dxDrawText(victimText, x, y, x + victimWidth, y + lineHeight, victimColor, 1, font, 'left', 'center')
 
                 local icon = v.icon
-
-                if icon then
+                if icon and icon.texture then
                     local texture = icon.texture
-                    local iconWidth = icon.width
+                    local iconWidth = icon.width or 20
                     x = x - padding - iconWidth
                     dxDrawImage(x, y, iconWidth, lineHeight, texture, 0, 0, 0, tocolor(255, 255, 255, alpha))
                 end
 
                 local killer = v.killer
-
                 if killer then
                     local killerText = killer.text
                     local killerColor = killer.color
                     killerColor = tocolor(killerColor[1], killerColor[2], killerColor[3], alpha)
 
                     local killerWidth = dxGetTextSize(killerText, 0, 1, 1, font, false, true)
-
                     x = x - padding - killerWidth
 
-                    dxDrawText(killerText, x + 2, y + 2, x + killerWidth, y + lineHeight, tocolor(0, 0, 0, alpha), 1, font, 'center', 'center')
-                    dxDrawText(killerText, x, y, x + killerWidth, y + lineHeight, killerColor, 1, font, 'center', 'center')
+                    dxDrawText(killerText, x + 1, y + 1, x + killerWidth + 1, y + lineHeight + 1, tocolor(0, 0, 0, alpha), 1, font, 'left', 'center')
+                    dxDrawText(killerText, x, y, x + killerWidth, y + lineHeight, killerColor, 1, font, 'left', 'center')
                 end
 
                 y = y - lineHeight - padding
             else
-                if v.icon.path and v.icon.texture and isElement(v.icon.texture) then
-                    destroyElement(v.icon.texture)
-                end
-
                 table.remove(messages, k)
 
                 if (#messages == 0) then
                     removeEventHandler('onClientRender', root, renderMessages)
                 end
-
             end
         end
     end

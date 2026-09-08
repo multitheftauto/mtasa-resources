@@ -1,9 +1,40 @@
 local pagesXml
-local wndHelp, tPanel, btnClose
-local tab = {}
-local memo = {}
+local wndHelp, btnClose, pageList, pageColumn
+local pages = {}
+local selectedResource
 local popupQueue = {}
 
+function selectHelpPage(resource)
+	selectedResource = resource
+	for pageResource, page in pairs(pages) do
+		guiSetVisible(page.memo, pageResource == resource)
+	end
+end
+
+function refreshPageList()
+	guiGridListClear(pageList)
+	local pageResources = {}
+	for resource in pairs(pages) do
+		table.insert(pageResources, resource)
+	end
+	if not pages[selectedResource] then
+		selectedResource = pageResources[1]
+	end
+	for _, resource in ipairs(pageResources) do
+		local row = guiGridListAddRow(pageList)
+		guiGridListSetItemText(pageList, row, pageColumn, pages[resource].title, false, false)
+		guiGridListSetItemData(pageList, row, pageColumn, getResourceName(resource))
+		if resource == selectedResource then
+			guiGridListSetSelectedItem(pageList, row, pageColumn)
+		end
+	end
+	selectHelpPage(selectedResource)
+	-- Auto size the column, with a minimum of 1.
+	guiGridListAutoSizeColumn(pageList, pageColumn)
+	if guiGridListGetColumnWidth(pageList, pageColumn, true) < 1 then
+		guiGridListSetColumnWidth(pageList, pageColumn, 1, true)
+	end
+end
 local HELP_KEY = "F9"
 local HELP_COMMAND = "gamehelp"
 local POPUP_TIMEOUT = 15000 --ms
@@ -18,19 +49,31 @@ addEvent("onHelpHidden")
 addEventHandler("onClientResourceStart", resourceRoot,
 	function ()
 		wndHelp  = guiCreateWindow(.2, .2, .6, .6, "Help", true)
-		tPanel   = guiCreateTabPanel(0, .05, 1, .85, true, wndHelp)
 		btnClose = guiCreateButton(.4, .92, .2, .08, "Close", true, wndHelp)
+		pageList = guiCreateGridList(.02, .08, .14, .82, true, wndHelp)
+		pageColumn = guiGridListAddColumn(pageList, "Help page", 1)
 
+		addEventHandler("onClientGUIClick", pageList,
+			function()
+				local row = guiGridListGetSelectedItem(pageList)
+				if row == -1 then return end
+				local resourceName = guiGridListGetItemData(pageList, row, pageColumn)
+				local resource = resourceName and getResourceFromName(resourceName)
+				if resource and pages[resource] then
+					selectHelpPage(resource)
+				end
+			end, false
+		)
 		guiSetVisible(wndHelp, false)
 
 		guiWindowSetSizable(wndHelp, false)
 
 		addEventHandler("onClientGUIClick", btnClose,
 			function()
-				if source == this then
+				if source == btnClose then
 					clientToggleHelp(false)
 				end
-			end
+			end, false
 		)
 
 		pagesXml = xmlLoadFile("seen.xml")
@@ -38,8 +81,8 @@ addEventHandler("onClientResourceStart", resourceRoot,
 			pagesXml = xmlCreateFile("seen.xml", "seen")
 		end
 
-		for i, resourceRoot in ipairs(getElementsByType("resource")) do --!w
-			local resource = getResourceFromName(getElementID(resourceRoot))
+		for i, resRoot in ipairs(getElementsByType("resource")) do
+			local resource = getResourceFromName(getElementID(resRoot))
 			if resource then
 				addHelpTabFromXML(resource)
 			end
@@ -67,77 +110,59 @@ function hideHelp()
 end
 addEventHandler("doHideHelp", root, hideHelp)
 
+-- Retain the export name; the returned content element is now a memo, not a tab.
 function addHelpTab(resource, showPopup)
-
-	if showPopup == nil then
-		showPopup = true
-	end
-
-	-- block duplicates
-	if tab[resource] then
+	if pages[resource] then
 		return false
 	end
 
-	local tabtext = getResourceName(resource)
-
-	local helpnode = getResourceConfig(":" .. getResourceName(resource) .. "/help.xml")
-
+	local title = getResourceName(resource)
+	local text = ""
+	local helpnode = getResourceConfig(":" .. title .. "/help.xml")
 	if helpnode then
-
-		local nameattribute = xmlNodeGetAttribute(helpnode, "title");
-
-		if nameattribute then
-			tabtext = nameattribute;
-		end
-
+		title = xmlNodeGetAttribute(helpnode, "title") or title
+		text = xmlNodeGetValue(helpnode) or ""
 	end
 
-	tab[resource] = guiCreateTab( tabtext , tPanel)
+	local memo = guiCreateMemo(.18, .08, .80, .82, text, true, wndHelp)
+	guiMemoSetReadOnly(memo, true)
+	pages[resource] = { title = title, memo = memo }
+	refreshPageList()
 
-	if showPopup then
+	if showPopup ~= false then
 		addHelpPopup(resource)
 	end
-
-	return tab[resource]
+	return memo
 end
 
 function removeHelpTab(resource)
-	if not tab[resource] then
+	if type(resource) ~= "userdata" then
+		resource = getResourceFromName(getElementID(source))
+	end
+	if not resource or not pages[resource] then
 		return false
 	end
 
-	if memo[resource] then
-		destroyElement(memo[resource])
-		memo[resource] = nil
-	end
-
-	guiDeleteTab(tab[resource], tPanel)
-	tab[resource] = nil
-
+	destroyElement(pages[resource].memo)
+	pages[resource] = nil
+	refreshPageList()
 	return true
 end
 addEventHandler("onClientResourceStop", root, removeHelpTab)
 
 --private
 function addHelpTabFromXML(resource)
-	-- block duplicates
-	if tab[resource] then
-		return false
+	if type(resource) ~= "userdata" then
+		resource = getResourceFromName(getElementID(source))
 	end
+	if not resource or pages[resource] then return false end
 
-	local helpnode = getResourceConfig(":"..getResourceName(resource).."/help.xml")
+	local helpnode = getResourceConfig(":" .. getResourceName(resource) .. "/help.xml")
 	if helpnode then
-		local helptext = xmlNodeGetValue(helpnode)
-		local showPopup = xmlNodeGetAttribute(helpnode, "popup") ~= "no"
-		if helptext then
-			addHelpTab(resource, showPopup)
-			memo[resource] = guiCreateMemo(.05, .05, .9, .9, helptext, true, tab[resource])
-			guiMemoSetReadOnly(memo[resource], true)
-		end
+		addHelpTab(resource, xmlNodeGetAttribute(helpnode, "popup") ~= "no")
 	end
 end
 addEventHandler("onClientResourceStart", root, addHelpTabFromXML)
-
 function clientToggleHelp(state)
 	if state ~= true and state ~= false then
 		state = not guiGetVisible(wndHelp)
@@ -156,6 +181,10 @@ end
 
 local function fadeIn(wnd)
 	local function raiseAlpha()
+		if not isElement(wnd) then
+			removeEventHandler("onClientRender", root, raiseAlpha)
+			return
+		end
 		local newAlpha = guiGetAlpha(wnd) + FADE_DELTA
 		if newAlpha <= MAX_ALPHA then
 			guiSetAlpha(wnd, newAlpha)
@@ -168,6 +197,10 @@ end
 
 local function fadeOut(wnd)
 	local function lowerAlpha()
+		if not isElement(wnd) then
+			removeEventHandler("onClientRender", root, lowerAlpha)
+			return
+		end
 		local newAlpha = guiGetAlpha(wnd) - FADE_DELTA
 		if newAlpha >= 0 then
 			guiSetAlpha(wnd, newAlpha)
@@ -204,7 +237,7 @@ end
 
 function showHelpPopup(resource)
 	local screenX, screenY = guiGetScreenSize()
-	local wndPopup = guiCreateWindow(0, screenY - 20, screenX, 0, '', false) --350
+	local wndPopup = guiCreateWindow(0, screenY - 20, screenX, 0, '', false)
 
 	local restitle = getResourceName(resource)
 	local helpnode = getResourceConfig(":" .. getResourceName(resource) .. "/help.xml")

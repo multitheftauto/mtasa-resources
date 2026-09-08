@@ -36,9 +36,9 @@ function aChatTab.Create(tab)
     addEventHandler("onClientGUITabSwitched", aChatTab.Tab, aChatTab.onTabSwitched, false)
 end
 
-function aChatTab.onClientClick(button)
+function aChatTab.onClientClick(button, state)
     guiSetInputEnabled(false)
-    if (button == "left") then
+    if (button == "left" and state == "up") then
         if (source == aChatTab.AdminSay) then
             local message = guiGetText(aChatTab.AdminText)
             if ((message) and (message ~= "")) then

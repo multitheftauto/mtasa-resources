@@ -75,8 +75,8 @@ function aInterior.onGUIChange()
     aInterior.Refresh()
 end
 
-function aInterior.onClick(button)
-    if (button == "left") then
+function aInterior.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aInterior.Select) then
             if (guiGridListGetSelectedItem(aInterior.List) ~= -1) then
                 triggerServerEvent(

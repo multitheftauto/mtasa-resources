@@ -66,7 +66,7 @@ function aMessageBox.Show(message, icon, type)
     guiSetText(aMessageBox.Label, tostring(message))
 
     local mbX, mbY = guiGetSize(aMessageBox.Form, false)
-    
+
     guiSetPosition(aMessageBox.Form, x / 2 - mbX / 2, y / 2 - mbY / 2, false)
     guiSetVisible(aMessageBox.Form, true)
     guiBringToFront(aMessageBox.Form)
@@ -122,8 +122,8 @@ function aMessageBox.Accept(key, state, result)
     end
 end
 
-function aMessageBox.onClick(button)
-    if (button == "left") then
+function aMessageBox.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aMessageBox.No) then
             aMessageBox.Result = false
             aMessageBox.Close(false)

@@ -13,7 +13,7 @@ function getServerMaps (loadList)
 	local tableOut = {}
 
 	local mapmanager = getResourceFromName("mapmanager")
-	
+
 	if mapmanager and (getResourceState(mapmanager) ~= "running") then
 	    mapmanager = nil
 	end
@@ -61,7 +61,7 @@ function startGamemodeMap(gamemode, map)
 	if checkClient( true, source, 'startGamemodeMap' ) then return end
 
 	local mapmanager = getResourceFromName("mapmanager")
-	
+
 	if mapmanager and (getResourceState(mapmanager) ~= "running") then
 	    mapmanager = nil
 	end

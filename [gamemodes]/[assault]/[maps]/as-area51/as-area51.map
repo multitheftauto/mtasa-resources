@@ -58,7 +58,7 @@
 
 	<!-- Objective: Missile Silo -->
 	<objective name="Missile Silo" description="Retract the roof and send the research data to your base"
-		successText="~team~ successfully transfered the information"
+		successText="~team~ successfully transferred the information"
 		id="silo" req="lab,control" posX="261.3470" posY="1876.7758" posZ="8.4375" stay="2" stayText="Transmitting data.." />
 
 

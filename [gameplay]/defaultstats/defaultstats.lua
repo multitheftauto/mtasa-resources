@@ -30,7 +30,7 @@ local function applyStatsForEveryone(loadedResource)
 	local resourceType = getResourceInfo(loadedResource, "type")
 	local isGamemodeResource = resourceType == "gamemode"
 	local isMapResource = resourceType == "map"
-	
+
 	if not (loadedResource == resource or isGamemodeResource or isMapResource) then return end
 
 	local playersTable = getElementsByType("player")

@@ -82,7 +82,7 @@ function aColor.Open(x, y, r, g, b, relative, parent)
     aColor.Picking = false
     guiSetVisible(aColor.Form, true)
 
-    addEventHandler("onClientGUIClick", aColor.Ok, aColor.Close)
+    addEventHandler("onClientGUIClick", aColor.Ok, aColor.onGuiClickClose)
     addEventHandler("onClientRender", root, aColor.onRender)
     addEventHandler("onClientGUIChanged", aColor.Form, aColor.onChanged)
     addEventHandler("onClientGUIBlur", aColor.Form, aColor.onBlur)
@@ -107,7 +107,7 @@ end
 function aColor.Close(destroy)
     guiSetInputEnabled(false)
     if (aColor.Form) then
-        removeEventHandler("onClientGUIClick", aColor.Ok, aColor.Close)
+        removeEventHandler("onClientGUIClick", aColor.Ok, aColor.onGuiClickClose)
         removeEventHandler("onClientGUIBlur", aColor.Form, aColor.onBlur)
         removeEventHandler("onClientGUIChanged", aColor.Form, aColor.onChanged)
         removeEventHandler("onClientClick", root, aColor.onClick)
@@ -121,6 +121,12 @@ function aColor.Close(destroy)
         if (aColor.Thread) then
             coroutine.resume(aColor.Thread)
         end
+    end
+end
+
+function aColor.onGuiClickClose(button, state)
+    if (button == "left" and state == "up") then
+        aColor.Close()
     end
 end
 

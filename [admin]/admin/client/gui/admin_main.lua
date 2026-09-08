@@ -165,7 +165,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab1.VehicleCustomize 	= guiCreateButton ( 0.85, 0.89, 0.13, 0.04, "Customize", true, aTab1.Tab, "customize" )
 		aTab1.AnonAdmin		  = guiCreateCheckBox (0.745, 0.942, 0.20, 0.04, "Anonymous Admin", isAnonAdmin(), true, aTab1.Tab )
 		aTab1.GiveVehicle = guiCreateList( 0.71, 0.710, 0.27, 0.04, 0.275, "Give: "..getVehicleNameFromModel ( aCurrentVehicle ), true, aTab1.Tab, 'givevehicle')
-		
+
 		local vehicles = {}
 		for i = 400, 611 do
 			local vehName = getVehicleNameFromModel(i)
@@ -495,7 +495,7 @@ function aAdminRefresh ()
 		local player = getPlayerFromName ( guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 ) )
 		if ( player and aPlayers[player] ) then
 			local playerName = aPlayers[player]["name"]
-			
+
 			if isColorCodeHidden() then
 				playerName = removeColorCoding(playerName)
 			else
@@ -525,11 +525,11 @@ function aAdminRefresh ()
 			if ( getElementInterior ( player ) ) then guiSetText ( aTab1.Interior, "Interior: "..getElementInterior ( player ) ) end
 			guiSetText ( aTab1.JetPack, iif ( isPedWearingJetpack ( player ), "Remove JetPack", "Give JetPack" ) )
 			if ( getPedWeapon ( player ) ) then guiSetText ( aTab1.Weapon, "Weapon: "..getWeaponNameFromID ( getPedWeapon ( player ) ).." (ID: "..getPedWeapon ( player )..")" ) end
-			
+
 			local x, y, z = getElementPosition ( player )
 			local zoneName = getZoneName ( x, y, z, false )
 			local cityName = getZoneName ( x, y, z, true )
-			
+
 			guiSetText ( aTab1.Area, "Area: "..getSensitiveText( iif ( zoneName == cityName, zoneName, zoneName.." ("..cityName..")" ) ) )
 
 			x = getSensitiveText('%.3f'):format(x)
@@ -1092,7 +1092,7 @@ function aClientClick ( button )
 				guiGridListClear ( aTab2.ResourceList )
 				triggerServerEvent ( "aSync", localPlayer, "resources" )
 			end
-			
+
 		-- TAB 3, WORLD
 		elseif ( getElementParent ( source ) == aTab3.Tab ) then
 			if ( source == aTab3.SetGameType ) then aInputBox ( "Game Type", "Enter game type:", "", "setGameType" )

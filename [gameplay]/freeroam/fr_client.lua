@@ -137,7 +137,7 @@ local function setElementPosition(element,x,y,z)
 	x = tonumber(x)
 	y = tonumber(y)
 	z = tonumber(z)
-	
+
 	server.setElementPosition(element, x, y, z)
 end
 
@@ -890,11 +890,11 @@ function applyWalkStyle( leaf )
     end
     server.setPedWalkingStyle(localPlayer, leaf.id)
 end
- 
+
 function stopWalkStyle()
     server.setPedWalkingStyle(localPlayer, 0)
 end
- 
+
 wndWalking = {
     'wnd',
     text = 'Walk Styles',
@@ -1391,7 +1391,9 @@ function spawnMapDoubleClick(relX, relY)
 end
 
 function closeSpawnMap()
-	showCursor(false)
+	if not isWindowOpen(wndMain) then
+		showCursor(false)
+	end
 	removeEventHandler('onClientRender', root, updatePlayerBlips)
 	for elem,data in pairs(g_PlayerData) do
 		for i,name in ipairs({'mapBlip', 'mapLabelShadow', 'mapLabel'}) do
@@ -2166,7 +2168,7 @@ function onExitVehicle(vehicle,seat)
 		closeWindow(wndUpgrades)
 		closeWindow(wndColor)
 	end
-		
+
 	if vehicle and seat == 0 then
 		if source and g_PlayerData[source] then
 			setVehicleGhost(vehicle,hasDriverGhost(vehicle))
@@ -2316,7 +2318,9 @@ end
 function toggleMap()
 	local wnd = isWindowOpen(wndSetPos)
 	if wnd then closeWindow(wndSetPos)
-		showCursor(false)
+		if not isWindowOpen(wndMain) then
+			showCursor(false)
+		end
 	else
 		createWindow(wndSetPos)
 		showCursor(true)

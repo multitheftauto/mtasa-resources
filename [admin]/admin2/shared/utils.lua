@@ -46,7 +46,7 @@ end
 local weekDays = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" }
 function formatDate(format, escaper, timestamp)
 	--check("formatDate", "string", format, "format", {"nil","string"}, escaper, "escaper", {"nil","string"}, timestamp, "timestamp")
-	
+
 	escaper = (escaper or "'"):sub(1, 1)
 	local time = getRealTime(timestamp)
 	local formattedDate = ""
@@ -54,13 +54,26 @@ function formatDate(format, escaper, timestamp)
 
 	time.year = time.year + 1900
 	time.month = time.month + 1
-	
+
 	local datetime = { d = ("%02d"):format(time.monthday), h = ("%02d"):format(time.hour), i = ("%02d"):format(time.minute), m = ("%02d"):format(time.month), s = ("%02d"):format(time.second), w = weekDays[time.weekday+1]:sub(1, 2), W = weekDays[time.weekday+1], y = tostring(time.year):sub(-2), Y = time.year }
-	
+
 	for char in format:gmatch(".") do
 		if (char == escaper) then escaped = not escaped
 		else formattedDate = formattedDate..(not escaped and datetime[char] or char) end
 	end
-	
+
 	return formattedDate
+end
+
+function secondsToTimeDesc( seconds )
+    if seconds then
+        local tab = { {"day",60*60*24}, {"hour",60*60}, {"min",60}, {"sec",1} }
+        for i,item in ipairs(tab) do
+            local t = math.floor(seconds/item[2])
+            if t > 0 or i == #tab then
+                return tostring(t) .. " " .. item[1] .. (t~=1 and "s" or "")
+            end
+        end
+    end
+    return ""
 end

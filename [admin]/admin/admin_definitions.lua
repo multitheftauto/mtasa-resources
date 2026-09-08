@@ -10,7 +10,7 @@
 
 _DEBUG = false
 
-_version = '1.6'
+_version = '1.7'
 
 -- MISC DEFINITIONS
 ADMIN_CHAT_MAXLENGTH = 225

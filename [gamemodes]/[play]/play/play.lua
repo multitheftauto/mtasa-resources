@@ -7,7 +7,7 @@ local function onResourceStartPlay()
 
 	for playerID = 1, #playersTable do
 		local playerElement = playersTable[playerID]
-		
+
 		playSpawnPlayer(playerElement)
 	end
 

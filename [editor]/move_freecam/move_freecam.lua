@@ -235,13 +235,13 @@ function detachElement()
 	if (selectedElement) then
 		-- remove events, unbind keys
 		disable()
-		
+
 		-- fix for local elements
 		if not isElementLocal(selectedElement) then
-		
+
 			-- sync position/rotation
 			local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
-			
+
 			triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
 			if hasRotation[getElementType(selectedElement)] then
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))

@@ -56,7 +56,7 @@ end
 
 function guiCreateList(x, y, w, h, tabHeight, header, relative, parent, right)
 	local list = guiCreateButton(x, y, w, h, header, relative, parent, right)
-	
+
 	local parentWidth, parentHeight = guiGetSize(parent, false)
 
 	local absoluteWidth = parentWidth * w
@@ -64,7 +64,7 @@ function guiCreateList(x, y, w, h, tabHeight, header, relative, parent, right)
 
 	local dropDown = guiCreateStaticImage(absoluteWidth - 20, 0, 20, 20, "client\\images\\dropdown.png", false, list)
 	guiSetProperty(dropDown, 'AlwaysOnTop', 'True')
-	
+
 	addEventHandler('onClientGUIClick', dropDown, function()
 		guiListSetVisible(list, true)
 	end, false)
@@ -75,7 +75,7 @@ function guiCreateList(x, y, w, h, tabHeight, header, relative, parent, right)
 
 	local edit = guiCreateEdit(0, 0, absoluteWidth - 20, 20, '', false, bg)
 	guiSetProperty(edit, 'AlwaysOnTop', 'True')
-	
+
 	addEventHandler('onClientGUIChanged', edit, function()
 		guiListLoadItems(list)
 	end)
@@ -87,7 +87,7 @@ function guiCreateList(x, y, w, h, tabHeight, header, relative, parent, right)
 	local close = guiCreateButton(absoluteWidth-20, 0, 20, 20, 'X', false, bg)
 	guiSetProperty(close, 'AlwaysOnTop', 'True')
 	guiSetAlpha(close, 1)
-	
+
 	addEventHandler('onClientGUIClick', close, function()
 		guiListSetVisible(list, false)
 	end, false)

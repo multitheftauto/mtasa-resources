@@ -4,11 +4,14 @@ local _resume = coroutine.resume
 function coroutine.resume(cr, ...)
 	local ret = { _resume(cr, ...) }
 	if coroutine.status(cr) == 'dead' then
-		CRs[CRs[cr]] = nil
+		local id = CRs[cr]
+		if id then
+			CRs[id] = nil
+		end
 		CRs[cr] = nil
 	end
 	if not ret[1] then
-		outputDebugString(ret[2], 1)
+		outputDebugString(tostring(ret[2]), 1)
 		return false
 	end
 	table.remove(ret, 1)
@@ -18,7 +21,8 @@ end
 local serverMT = {}
 function serverMT:__index(fnName)
 	return function(...)
-		triggerServerEvent('onServerCallback', localPlayer, CRs[coroutine.running()], fnName, ...)
+		local cr = coroutine.running()
+		triggerServerEvent('onServerCallback', localPlayer, CRs[cr], fnName, ...)
 		return coroutine.yield()
 	end
 end
@@ -27,7 +31,9 @@ server = setmetatable({}, serverMT)
 addEvent('onServerCallbackReply', true)
 addEventHandler('onServerCallbackReply', resourceRoot,
 	function(crID, ...)
-		coroutine.resume(CRs[crID], ...)
+		if CRs[crID] then
+			coroutine.resume(CRs[crID], ...)
+		end
 	end,
 	false
 )
@@ -69,8 +75,10 @@ function table.merge ( ... )
 	local ret = { }
 
 	for index, tbl in ipairs ( {...} ) do
-		for index2, val in ipairs ( tbl ) do
-			table.insert ( ret, val )
+		if type(tbl) == "table" then
+			for index2, val in ipairs ( tbl ) do
+				table.insert ( ret, val )
+			end
 		end
 	end
 

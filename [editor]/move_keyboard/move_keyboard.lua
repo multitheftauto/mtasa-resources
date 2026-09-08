@@ -24,6 +24,8 @@ local MOVEMENT_MOVE = 1
 local MOVEMENT_ROTATE_WORLD = 2
 local MOVEMENT_ROTATE_LOCAL = 3
 
+local localMoveSpace = false
+
 local hasRotation = {
 	object = true,
 	player = true,
@@ -32,6 +34,14 @@ local hasRotation = {
 }
 
 -- PRIVATE
+
+local function getPositionFromElementOffset(element,offX,offY,offZ)
+    local m = getElementMatrix ( element )
+    local x = offX * m[1][1] + offY * m[2][1] + offZ * m[3][1] + m[4][1]
+    local y = offX * m[1][2] + offY * m[2][2] + offZ * m[3][2] + m[4][2]
+    local z = offX * m[1][3] + offY * m[2][3] + offZ * m[3][3] + m[4][3]
+    return x, y, z
+end
 
 local function getCameraRotation ()
 	local px, py, pz, lx, ly, lz = getCameraMatrix()
@@ -110,38 +120,53 @@ local function onClientRender_keyboard()
 				speed = moveSpeed.medium
 			end
 
-			-- convert getCameraRotation output to radians
-			camRotZ = math.rad(camRotZ)
-			local distanceX = speed * math.cos(camRotZ)
-			local distanceY = speed * math.sin(camRotZ)
+			if not localMoveSpace then
+				-- convert getCameraRotation output to radians
+				camRotZ = math.rad(camRotZ)
+				local distanceX = speed * math.cos(camRotZ)
+				local distanceY = speed * math.sin(camRotZ)
 
-			-- right/left
-			if (getCommandState("element_move_right")) then
-				tempX = tempX + distanceX
-				tempY = tempY - distanceY
-			end
-			if (getCommandState("element_move_left")) then
-				tempX = tempX - distanceX
-				tempY = tempY + distanceY
-			end
+				-- right/left
+				if (getCommandState("element_move_right")) then
+					tempX = tempX + distanceX
+					tempY = tempY - distanceY
+				end
+				if (getCommandState("element_move_left")) then
+					tempX = tempX - distanceX
+					tempY = tempY + distanceY
+				end
 
-			-- forward/back
-			if (getCommandState("element_move_forward")) then
-				tempX = tempX + distanceY
-				tempY = tempY + distanceX
-			end
+				-- forward/back
+				if (getCommandState("element_move_forward")) then
+					tempX = tempX + distanceY
+					tempY = tempY + distanceX
+				end
 
-			if (getCommandState("element_move_backward")) then
-				tempX = tempX - distanceY
-				tempY = tempY - distanceX
-			end
+				if (getCommandState("element_move_backward")) then
+					tempX = tempX - distanceY
+					tempY = tempY - distanceX
+				end
 
-			-- up/down
-			if (getCommandState("element_move_upwards")) then
-				tempZ = tempZ + speed
-			end
-			if (getCommandState("element_move_downwards")) then
-				tempZ = tempZ - speed
+				-- up/down
+				if (getCommandState("element_move_upwards")) then
+					tempZ = tempZ + speed
+				end
+				if (getCommandState("element_move_downwards")) then
+					tempZ = tempZ - speed
+				end
+			else
+				-- local space
+				local x, y, z = 0, 0, 0
+				if getCommandState("element_move_right")     then x = x + speed end
+				if getCommandState("element_move_left")      then x = x - speed end
+				if getCommandState("element_move_forward")   then y = y + speed end
+				if getCommandState("element_move_backward")  then y = y - speed end
+				if getCommandState("element_move_upwards")   then z = z + speed end
+				if getCommandState("element_move_downwards") then z = z - speed end
+
+				if x ~= 0 or y ~= 0 or z ~= 0 then
+					tempX, tempY, tempZ = getPositionFromElementOffset(selectedElement, x, y, z)
+				end
 			end
 
 			-- check if position changed
@@ -192,9 +217,9 @@ local function onClientRender_keyboard()
 				else
 					local tempRotX, tempRotY, tempRotZ = rotX, rotY, rotZ
 					if (not tempRotX) then return false end
-					
+
 					local yaw, pitch, roll = 0, 0, 0
-					
+
 					-- yaw
 					if (getCommandTogSTATE("element_move_right")) then
 						yaw = speed
@@ -208,14 +233,14 @@ local function onClientRender_keyboard()
 					elseif (getCommandTogSTATE("element_move_downwards")) then
 						pitch = -speed
 					end
-					
+
 					-- roll
 					if (getCommandTogSTATE("element_move_forward")) then
 						roll = speed
 					elseif (getCommandTogSTATE("element_move_backward")) then
 						roll = -speed
 					end
-					
+
 					-- Perform rotation about one axis at a time
 					if yaw ~= 0 then
 						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", yaw, world_space)
@@ -289,7 +314,7 @@ local function onClientRender_keyboard()
 					if (not tempRotX) then return false end
 
 					local yaw, pitch, roll = 0, 0, 0
-					
+
 					-- yaw
 					if (getCommandTogSTATE("element_move_right")) then
 						yaw = speed
@@ -303,14 +328,14 @@ local function onClientRender_keyboard()
 					elseif (getCommandTogSTATE("element_move_downwards")) then
 						pitch = -speed
 					end
-					
+
 					-- roll
 					if (getCommandTogSTATE("element_move_forward")) then
 						roll = speed
 					elseif (getCommandTogSTATE("element_move_backward")) then
 						roll = -speed
 					end
-					
+
 					-- Perform rotation about one axis at a time
 					if yaw ~= 0 then
 						tempRotX, tempRotY, tempRotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", yaw, world_space)
@@ -536,6 +561,15 @@ end
 function toggleAxesLock ( bool )
 	lockToAxes = bool
 	return true
+end
+
+function toggleLocalMoveSpace()
+	localMoveSpace = not localMoveSpace
+	exports.editor_gui:outputMessage("Local Move Space Mode "..(localMoveSpace and "Enabled" or "Disabled"), 50, 255, 50)
+end
+
+function isLocalMoveSpace()
+	return localMoveSpace
 end
 
 function enable()

@@ -75,8 +75,8 @@ function aTeam.onDoubleClick(button)
     end
 end
 
-function aTeam.onClick(button)
-    if (button == "left") then
+function aTeam.onClick(button, state)
+    if (button == "left" and state == "up") then
         if (source == aTeam.New) then
             aTeam.ShowNew(true)
         elseif (source == aTeam.Update) then

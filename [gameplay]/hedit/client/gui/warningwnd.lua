@@ -45,10 +45,10 @@ function guiCreateWarningMessage ( text, level, buttonAccept, buttonDecline )
 
     local accept, decline
     if buttonDecline or level == 2 then
-        accept = guiCreateButton ( 114, 100, 136, 25, "Yes", false, warningWnd )
-        decline = guiCreateButton ( 255, 100, 136, 25, "No", false, warningWnd )
+        accept = guiCreateButton ( 114, 100, 136, 25, getText("warningButtons", "yes"), false, warningWnd )
+        decline = guiCreateButton ( 255, 100, 136, 25, getText("warningButtons", "no"), false, warningWnd )
     else
-        accept = guiCreateButton ( 114, 100, 277, 25, "Okay", false, warningWnd )
+        accept = guiCreateButton ( 114, 100, 277, 25, getText("warningButtons", "ok"), false, warningWnd )
     end
 
 

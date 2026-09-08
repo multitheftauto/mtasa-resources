@@ -6,11 +6,16 @@ local _validTargets = {}
 --  startSpectating([target]): starts spectating the targted player, or a random one if target == nil
 --
 function startSpectating(target)
+	-- Abort if playing alone
+	if #_validTargets == 0 then
+		return
+	end
+	
     -- fade camera out, hide radar hud and score screen
     fadeCamera(false, 0)
     setPlayerHudComponentVisible("radar", false)
     _hud.scoreDisplay:setVisible(false)
-    
+
     -- hide wasted screen and destroy wasted timer
     _hud.wastedScreen:setVisible(false)
     if isElement(_wastedTimer) then
@@ -27,7 +32,7 @@ function startSpectating(target)
         -- TODO: handle this more gracefully
         error("no valid spectate target", 2)
     end
-    
+
     -- set camera target and disable controls
     iprint(target)
     setCameraTarget(target)
@@ -90,7 +95,7 @@ function setSpectateTarget(target)
     if not _spectating then
         error("local player is not spectating", 2)
     end
- 
+
     if target == _currentTarget then
         return
     end

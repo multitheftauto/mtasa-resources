@@ -11,6 +11,9 @@ RADIO_DESTROY_SPEAKER_DELAY = 1500
 RADIO_ALLOW_CUSTOM_URLS = true
 RADIO_STREAM_URL_MAX_LENGTH = 1024 -- Accomodate long .mp3 CDN URLs from certain YT converter sites
 RADIO_MAX_SOUND_DISTANCE = 65
+RADIO_BOX_MODEL = 2229
+-- Model 1337 is an invisible, collisionless object used for speaker dummy elements
+RADIO_DUMMY_MODEL = 1337
 RADIO_STATIONS = {
 	{"[Top 40 Mix] BAYERN Radio - Top40", "http://stream.antenne.de:80/top-40"},
 	{"[Top 40 Mix] 1.FM - Absolute Top 40", "http://185.33.21.111:80/top40_32a"},

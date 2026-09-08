@@ -10,7 +10,7 @@ function createSpawnpoint ( x, y, z, rot, skin, interior, dimension )
 	if not tonumber(rot) then return false end
 	if not tonumber(skin) then return false end
 	if not tonumber(interior) then return false end
-	if not tonumber(skin) then return false end
+	if not tonumber(dimension) then return false end
 	skin = math.ceil(skin)
 	local sp = createElement ( "spawnpoint" )
 	setElementData ( sp, "posX", x )
@@ -45,26 +45,25 @@ function setSpawnpointTeam ( spawnpoint, team )
 	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointTeam: Bad spawnpoint element specified",0,255,128,0) return false end
 	if not isElement ( team ) then outputDebugString("setSpawnpointTeam: Invalid variable specified as team.  Element expected, got "..type(team)..".",0,255,128,0) return false end
 	if getElementType ( team ) ~= "team" then outputDebugString("setSpawnpointTeam: Bad team element specified",0,255,128,0) return false end
-	skin = math.ceil(skin)
-	setElementData ( spawnpoint, "team", skin )
+	setElementData ( spawnpoint, "team", team )
 	return true
 end
 
 function getSpawnpointRotation ( spawnpoint )
-	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointRotation: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
-	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointRotation: Bad element specified",0,255,128,0) return false end
+	if not isElement ( spawnpoint ) then outputDebugString("getSpawnpointRotation: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
+	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("getSpawnpointRotation: Bad element specified",0,255,128,0) return false end
 	return getElementData ( spawnpoint, "rot" ) or 0
 end
 
 function getSpawnpointSkin ( spawnpoint )
-	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointSkin: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
-	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointSkin: Bad element specified",0,255,128,0) return false end
+	if not isElement ( spawnpoint ) then outputDebugString("getSpawnpointSkin: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
+	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("getSpawnpointSkin: Bad element specified",0,255,128,0) return false end
 	return getElementData ( spawnpoint, "skin" ) or 0
 end
 
 function getSpawnpointTeam ( spawnpoint )
-	if not isElement ( spawnpoint ) then outputDebugString("setSpawnpointTeam: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
-	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("setSpawnpointTeam: Bad spawnpoint element specified",0,255,128,0) return false end
+	if not isElement ( spawnpoint ) then outputDebugString("getSpawnpointTeam: Invalid variable specified as spawnpoint.  Element expected, got "..type(spawnpoint)..".",0,255,128,0) return false end
+	if getElementType ( spawnpoint ) ~= "spawnpoint" then outputDebugString("getSpawnpointTeam: Bad spawnpoint element specified",0,255,128,0) return false end
 	return getElementData ( spawnpoint, "team" )
 end
 
@@ -138,13 +137,16 @@ end
 
 function waveSpawnPlayers ( )
 	for player, info in pairs(quedSpawns) do
-		spawnPlayer ( player, quedSpawns[player].x, quedSpawns[player].y, quedSpawns[player].z, quedSpawns[player].rot, quedSpawns[player].skin, quedSpawns[player].interior, quedSpawns[player].dimension, quedSpawns[player].team )
+		if isElement(player) then
+			spawnPlayer ( player, quedSpawns[player].x, quedSpawns[player].y, quedSpawns[player].z, quedSpawns[player].rot, quedSpawns[player].skin, quedSpawns[player].interior, quedSpawns[player].dimension, quedSpawns[player].team )
+		end
 	end
 	quedSpawns = {}
 end
 
 function getRandomSpawnpoint()
 	local spawnpoints = getElementsByType("spawnpoint")
+	if #spawnpoints == 0 then return false end
 	local randNumber = math.random ( 1, #spawnpoints )
 	return spawnpoints[randNumber]
 end

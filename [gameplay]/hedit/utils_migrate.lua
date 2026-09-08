@@ -394,7 +394,7 @@ end
 
 
 function receiveSharedHandling ( senderPlayer, vehicle )
-    outputDebugString ( "Recieved handling from "..getPlayerName ( senderPlayer ).." :D" )
+    outputDebugString ( "Received handling from "..getPlayerName ( senderPlayer ).." :D" )
     return true
 end
 addEvent ( "receiveHandling", true )

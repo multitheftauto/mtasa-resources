@@ -288,7 +288,7 @@ function getInfo ( resource )
     document.getElementById ( "resourceinfocontent" ).style.display = "none";
 
 	getResourceInfo( resource,
-        function ( result ) /* called when the results arrive, each result in a seperate variable */
+        function ( result ) /* called when the results arrive, each result in a separate variable */
         {
             var contentarea = document.getElementById ( "resourceinfocontent" );
             document.getElementById ( "resourceInfoLoading" ).style.display = "none";

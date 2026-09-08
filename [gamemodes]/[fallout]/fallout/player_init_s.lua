@@ -3,7 +3,7 @@ local loadedPlayers = {}
 addEventHandler("onPlayerResourceStart", root, function (startedResource)
 	if startedResource ~= resource then return end
 	if loadedPlayers[source] then return end
-	
+
 	loadedPlayers[source] = true
 	if not getPlayerTeam(source) then --Check if its not playing
 		exports.freecam:setPlayerFreecamEnabled(source) -- Start spectating

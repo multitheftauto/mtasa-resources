@@ -24,6 +24,7 @@ local xmlVariants = {
 ["autosnap"]="currentbrowser_autosnap",
 ["tutorialOnStart"]="tutorial_on_start",
 ["enableBox"]="enablebox",
+["enableHoverBoundingBox"]="enablehoverboundingbox",
 ["enableXYZlines"]="enablexyzlines",
 ["precisionLevel"]="precisionlevel",
 ["precisionRotLevel"]="precisionrotlevel",
@@ -61,6 +62,7 @@ local nodeTypes = {
 ["tutorialOnStart"]="bool",
 ["enableDumpSave"]="bool",
 ["enableBox"]="bool",
+["enableHoverBoundingBox"]="bool",
 ["precisionLevel"]={"10","5","2","1","0.1","0.01","0.001","0.0001"},
 ["precisionRotLevel"]={"180","90","45","30","20","10","5","1"},
 ["elemScalingSnap"]={"1","0.1","0.01","0.001","0.0001"},
@@ -97,6 +99,7 @@ local defaults = {
 ["autosnap"]=true,
 ["tutorialOnStart"]=true,
 ["enableBox"]=true,
+["enableHoverBoundingBox"]=false,
 ["precisionLevel"]="0.1",
 ["precisionRotLevel"]="30",
 ["elemScalingSnap"]="0.0001",
@@ -141,7 +144,8 @@ function loadXMLSettings()
 		local node = children[i]
 		local nodeName = xmlNodeGetName(node)
 		if not validNodes[nodeName] then
-			xmlDestroyNode(node)
+			--xmlDestroyNode(node) -- Disabled this and replaced it with a debug output because all this check does is delete new valid nodes when someone goes on an outdated version.
+			outputDebugString("Found an invalid settings node: "..tostring(nodeName))
 		end
 	end
 	xmlSaveFile(settingsXML)

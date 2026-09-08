@@ -425,7 +425,7 @@ function processFreecamClick(key, keyState)
 	local drop
 	if (not g_suspended) then
 		local clickedElement, targetX, targetY, targetZ = getTargetedElement()
-		
+
 		local camX, camY, camZ, lookX, lookY, lookZ = getCameraMatrix()
 		local distance = math.sqrt((targetX - camX)^2 + (targetY - camY)^2 + (targetZ - camZ)^2)
 
@@ -735,7 +735,7 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	submode = submode or g_submode
 
 	if not isElement(element) then return end
-	
+
 	if isColPatchObject(element) then return end
 
 	if getElementType(element) == "vehicle" and getVehicleType(element) == "Train" then
@@ -811,7 +811,7 @@ function selectElement(element, submode, shortcut, dropreleaseLock, dropclonedro
 	-- fix for local elements
 	if not isElementLocal(element) then
 		triggerServerEvent("doLockElement", element)
-	
+
 		-- trigger server selection events
 		triggerServerEvent("onElementSelect", element)
 	end
@@ -886,7 +886,7 @@ function dropElement(releaseLock,clonedrop)
 		-- trigger server selection events
 		triggerServerEvent("onElementDrop", g_selectedElement)
 	end
-	
+
 	-- Clear rotation as it can be rotated by other players
 	clearElementQuat(g_selectedElement)
 
@@ -908,7 +908,7 @@ function setMode(newMode)
 	if g_suspended then
 		return
 	end
-	
+
 	if not isElement(g_selectedElement) then
 		g_selectedElement = nil
 	end
@@ -1000,13 +1000,13 @@ function destroySelectedElement(key)
 	if g_selectedElement then
 		local element = g_selectedElement
 		dropElement(false)
-		
+
 		-- fix for local elements
 		if isElementLocal(element) then
 			outputDebugString("Cannot destroy local element.")
 			return false
 		end
-		
+
 		return triggerServerEvent("doDestroyElement", element)
 	end
 end
@@ -1171,6 +1171,7 @@ function bindInput(commandsOnly)
 	bindControl("redo", "down", keyboardRedo)
 	bindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
 	bindControl("lock_selected_element", "down", lockSelectedElement)
+	bindControl("local_move_space_mode", "down", toggleLocalMoveSpaceMode)
 end
 
 function unbindInput(commandsOnly)
@@ -1192,6 +1193,7 @@ function unbindInput(commandsOnly)
 	unbindControl("redo", "down", keyboardRedo)
 	unbindControl("high_sensitivity_mode", "down", toggleSensitivityMode)
 	unbindControl("lock_selected_element", "down", lockSelectedElement)
+	unbindControl("local_move_space_mode", "down", toggleLocalMoveSpaceMode)
 end
 
 -- get the point and element targeted by the camera
@@ -1203,7 +1205,7 @@ function processCameraLineOfSight()
             nx, ny, nz, material, lighting, piece,
             buildingId, bx, by, bz, brx, bry, brz, buildingLOD
 		= processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, false, false, false, localPlayer, true)
-	
+
 	-- Is this a collision patch object
 	if targetElement and isColPatchObject(targetElement) then
 		local cp = isColPatchObject(targetElement)
@@ -1211,7 +1213,7 @@ function processCameraLineOfSight()
 		buildingId, bx, by, bz, brx, bry, brz = cp.id, cp.x, cp.y, cp.z, cp.rx, cp.ry, cp.rz
 		targetElement = nil
 	end
-	
+
 	-- if there is none, use the end point of the vector as the collision point
 	if not surfaceFound then
 	    targetX, targetY, targetZ = endX, endY, endZ
@@ -1327,6 +1329,10 @@ function toggleSensitivityMode ()
 		removeEventHandler ( "onClientElementStreamIn", root, streamInCollessObjects )
 		removeEventHandler ( "onClientElementStreamOut", root, streamOutCollessObjects )
 	end
+end
+
+function toggleLocalMoveSpaceMode()
+	exports.move_keyboard:toggleLocalMoveSpace()
 end
 
 function streamInCollessObjects()

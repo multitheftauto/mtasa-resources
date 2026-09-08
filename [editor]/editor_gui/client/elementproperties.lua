@@ -771,7 +771,7 @@ function openPropertiesBox( element, resourceName, shortcut )
 	if isPropertiesOpen then
 		return false
 	end
-	
+
 	selectedElement = nil
 	--Tutorial hook
 	if tutorialVars.detectPropertiesBox then
@@ -800,10 +800,10 @@ function openPropertiesBox( element, resourceName, shortcut )
 		setPropertiesChanged(true)
 	else
 		selectedElement = element
-		
+
 		local elementID = getElementID(selectedElement)
 		elementID = (type(elementID) == "string" and elementID) or "false" -- rollback
-		
+
 		guiSetText( wndProperties, "PROPERTIES: " .. elementID)
 
 		guiSetText( edtID, elementID )

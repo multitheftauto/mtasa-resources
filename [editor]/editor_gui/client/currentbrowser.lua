@@ -474,7 +474,7 @@ function restoreSelectedElement()
 	if cSelectedElement then
 		editor_main.destroySelectedElement()
 		closeCurrentBrowser()
-		
+
 		setTimer(function()
 			showCurrentBrowser()
 		end, 100, 1)

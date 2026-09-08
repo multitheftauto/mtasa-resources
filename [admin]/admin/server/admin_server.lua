@@ -56,7 +56,7 @@ function aHandleIP2CUpdate()
         local hasAdminPermission = hasObjectPermissionTo(playerElement, "general.adminpanel", false)
 
         if hasAdminPermission then
-            
+
             for playerToUpdateID = 1, #playersToUpdate do
                 local playerToUpdate = playersToUpdate[playerToUpdateID]
 
@@ -460,6 +460,13 @@ function aPlayerInitialize(player)
     bindKey(player, "p", "down", "admin")
     aPlayers[player] = {}
     aPlayers[player]["money"] = getPlayerMoney(player)
+
+	local strVersion = getPlayerVersion(player)
+	-- Format it all prettyful
+	local _,_,ver,type,build = string.find ( strVersion, "(.*)-([0-9])%.(.*)" )
+
+	aPlayers[player]["version"] = ver .. ( type < '9' and " pre  " or "  " ) .. "(" .. type .. "." .. build .. ")"
+
     updatePlayerCountry(player)
     chatHistory[player] = {}
 end
@@ -469,43 +476,6 @@ addEventHandler ( "onPlayerQuit", root, function ()
 	chatHistory[source] = nil
 end )
 
-addEvent ( "aPlayerVersion", true )
-addEventHandler ( "aPlayerVersion", root, function ( version )
-	if checkClient( false, source, 'aPlayerVersion' ) then return end
-	local bIsPre = false
-	-- If not Release, mark as 'pre'
-	if version.type:lower() ~= "release" then
-		bIsPre = true
-	else
-		-- Extract rc version if there
-		local _,_,rc = string.find( version.tag or "", "(%d)$" )
-		rc = tonumber(rc) or 0
-		-- If release, but before final rc, mark as 'pre'
-		if version.mta == "1.0.2" and rc > 0 and rc < 13 then
-			bIsPre = true
-		elseif version.mta == "1.0.3" and rc < 9 then
-			bIsPre = true
-		end
-		-- If version does not have a built in version check, maybe show a message box advising an upgrade
-		if version.number < 259 or ( version.mta == "1.0.3" and rc < 3 ) then
-			triggerClientEvent ( source, "aClientShowUpgradeMessage", source )
-		end
-	end
-
-	-- Try to get new player version
-	local playerVersion
-	if getPlayerVersion then
-		playerVersion = getPlayerVersion(client)
-	else
-		playerVersion = version.mta .. "-" .. ( bIsPre and "7" or "9" ) .. ".00000.0"
-	end
-
-	-- Format it all prettyful
-	local _,_,ver,type,build = string.find ( playerVersion, "(.*)-([0-9])%.(.*)" )
-	if aPlayers[source] then
-		aPlayers[source]["version"] = ver .. ( type < '9' and " pre  " or "  " ) .. "(" .. type .. "." .. build .. ")"
-	end
-end )
 
 function aPlayerSerialCheck ( player, result )
 	if ( result == 0 ) then kickPlayer ( player, "Invalid serial" ) end
@@ -670,7 +640,7 @@ local aAdminRights = {
 
 	["sync"] = "command.aclmanager",
 	["aclcreate"] = "command.aclcreate",
-	["acldestroy"] = "command.acldetroy",
+	["acldestroy"] = "command.acldestroy",
 	["acladd"] = "command.acladd",
 	["aclremove"] = "command.aclremove",
 }
@@ -860,9 +830,14 @@ addEventHandler ( "aAdmin", root, function ( action, ... )
 			elseif ( arg[1] == "right" ) then
 				local acl = aclGet ( arg[2] )
 				local right = arg[3]
-				local enabled = true
+				local enabled = arg[4]
+				if enabled == nil then
+					enabled = true
+				end
+				local verb = enabled and "adding" or "removing"
+				local prep = enabled and "to" or "from"
 				if ( not aclSetRight ( acl, right, enabled ) ) then
-					outputChatBox ( "Error adding right '"..tostring ( arg[3] ).."' to group '"..tostring ( arg[2] ).."'", source, 255, 0, 0 )
+					outputChatBox ( "Error "..verb.." right '"..tostring(arg[3]).."' "..prep.." group '"..tostring(arg[2]).."'", source, 255, 0, 0)
 				else
 					mdata2 = "Right '"..arg[3].."'"
 					triggerEvent ( "aAdmin", source, "sync", "aclrights", arg[2] )

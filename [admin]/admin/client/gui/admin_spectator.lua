@@ -301,7 +301,7 @@ function aSpectator.CheckCollision(x, y, z)
 			end
 		end
 	end
-	
+
 	return nearest_distance or false
 end
 

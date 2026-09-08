@@ -12,25 +12,34 @@ end
 
 local function getNodeByID(db, nodeID)
 	local areaID = floor(nodeID / 65536)
-	return db[areaID][nodeID]
+	if db and db[areaID] then
+		return db[areaID][nodeID]
+	end
+	return nil
 end
 
 local function findNodeClosestToPoint(db, x, y, z)
 	local areaID = getAreaID(x, y)
 	local minDist, minNode
 	local nodeX, nodeY, dist
-	for id,node in pairs(db[areaID]) do
-		nodeX, nodeY = node.x, node.y
-		dist = (x - nodeX)*(x - nodeX) + (y - nodeY)*(y - nodeY)
-		if not minDist or dist < minDist then
-			minDist = dist
-			minNode = node
+	if db and db[areaID] then
+		for id,node in pairs(db[areaID]) do
+			nodeX, nodeY = node.x, node.y
+			dist = (x - nodeX)*(x - nodeX) + (y - nodeY)*(y - nodeY)
+			if not minDist or dist < minDist then
+				minDist = dist
+				minNode = node
+			end
 		end
 	end
 	return minNode
 end
 
 local function calculatePath(db, nodeFrom, nodeTo)
+	if not nodeFrom or not nodeTo then
+		return false
+	end
+
 	local next = next
 
 	local g = { [nodeFrom] = 0 }		-- { node = g }
@@ -67,16 +76,19 @@ local function calculatePath(db, nodeFrom, nodeTo)
 			break
 		end
 
-		local successors = {}
-		for id,distance in pairs(current.neighbours) do
-			local successor = getNodeByID(db, id)
-			local successor_g = g[current] + distance*distance
-			if not g[successor] or g[successor] > successor_g then
-				setmetatable(successor, nodeMT)
+		if current and current.neighbours then
+			for id,distance in pairs(current.neighbours) do
+				local successor = getNodeByID(db, id)
+				if successor then
+					local successor_g = g[current] + distance*distance
+					if not g[successor] or g[successor] > successor_g then
+						setmetatable(successor, nodeMT)
 
-				g[successor] = successor_g
-				openheap:insertvalue(successor)
-				parent[successor] = current
+						g[successor] = successor_g
+						openheap:insertvalue(successor)
+						parent[successor] = current
+					end
+				end
 			end
 		end
 	end
@@ -97,8 +109,12 @@ function calculatePathByCoords(x1, y1, z1, x2, y2, z2)
 	if not tonumber(x1) or not tonumber(y1) or not tonumber(x2) or not tonumber(y2) then
 		return false
 	end
-	return calculatePath(vehicleNodes, findNodeClosestToPoint(vehicleNodes, tonumber(x1), tonumber(y1), tonumber(z1)),
-	findNodeClosestToPoint(vehicleNodes, tonumber(x2), tonumber(y2), tonumber(z2)))
+	local fromNode = findNodeClosestToPoint(vehicleNodes, tonumber(x1), tonumber(y1), tonumber(z1))
+	local toNode = findNodeClosestToPoint(vehicleNodes, tonumber(x2), tonumber(y2), tonumber(z2))
+	if fromNode and toNode then
+		return calculatePath(vehicleNodes, fromNode, toNode)
+	end
+	return false
 end
 
 function calculatePathByNodeIDs(node1, node2)
@@ -117,7 +133,7 @@ end
 addEvent('onServerCall', true)
 addEventHandler('onServerCall', root,
 	function(fnName, ...)
-		if allowedRPC[fnName] then
+		if allowedRPC[fnName] and _G[fnName] then
 			_G[fnName](...)
 		end
 	end
@@ -126,7 +142,7 @@ addEventHandler('onServerCall', root,
 addEvent('onServerCallback', true)
 addEventHandler('onServerCallback', root,
 	function(crID, fnName, ...)
-		if allowedRPC[fnName] then
+		if allowedRPC[fnName] and _G[fnName] then
 			triggerClientEvent(source, 'onServerCallbackReply', resourceRoot, crID, _G[fnName](...))
 		end
 	end

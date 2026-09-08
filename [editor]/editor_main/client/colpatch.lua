@@ -18,7 +18,7 @@ local function threadHandler()
 	if coroutine.status(g_threadCoroutine) == "suspended" then
 		return coroutine.resume(g_threadCoroutine)
 	end
-	
+
 	killTimer(g_threadTimer)
 	g_threadCoroutine = nil
 	g_threadTimer = nil
@@ -47,14 +47,14 @@ function toggleColPatch(value)
 
 	-- Are we busy
 	if g_threadCoroutine then return false, isLoaded end
-	
+
 	if value then
 		-- Already loaded?
 		if g_colElements then return false, isLoaded end
-		
+
 		return initThread(loadAndReplaceCollision)
 	end
-	
+
 	-- Not loaded?
 	if not g_colElements then return false, isLoaded end
 	return initThread(restoreAndDestroyCollision)
@@ -63,13 +63,13 @@ end
 function createColPatchObjects()
 	g_placementObjs = {}
 	g_placementIDObjs = {}
-	
+
 	if g_placementData then
 		for k,v in ipairs(g_placementData) do
 			if k % COL_CREATE_FRAME == 0 then
 				coroutine.yield()
 			end
-			
+
 			local obj = createObject(v.id, v.x, v.y, v.z, v.rx, v.ry, v.rz)
 			if obj then
 				setElementDimension(obj, getWorkingDimension())
@@ -78,7 +78,7 @@ function createColPatchObjects()
 					setElementInterior(obj, v.int)
 				end
 				g_placementObjs[obj] = v
-				
+
 				if not g_placementIDObjs[v.id] then
 					g_placementIDObjs[v.id] = {}
 				end
@@ -86,7 +86,7 @@ function createColPatchObjects()
 			end
 		end
 	end
-	
+
 	applyRemovedColPatches()
 	return true
 end
@@ -106,7 +106,7 @@ function destroyColPatchObjects()
 			i = i + 1
 		end
 	end
-	
+
 	g_placementObjs = nil
 	g_placementIDObjs = nil
 	return true
@@ -115,11 +115,11 @@ end
 function loadColPatchPlacements()
 	local file = fileOpen(PLACEMENT_FILENAME, true)
 	if not file then return false end
-	
+
 	g_placementData = {}
 	local fileStr = fileRead(file, fileGetSize(file))
 	fileClose(file)
-	
+
 	local fileLines = split(fileStr, "\n")
 	for k,v in ipairs(fileLines) do
 		v = split(v, ",")
@@ -137,17 +137,17 @@ function loadColPatchPlacements()
 			table.insert(g_placementData, pl)
 		end
 	end
-	
+
 	return true
 end
 
 function loadColPatchArchive()
 	local file = fileOpen(COL_FILENAME, true)
 	if not file then return false end
-	
+
 	g_colData = {}
 	local fileSize = fileGetSize(file)
-	
+
 	local filePos = 0
 	while true do
 		-- Are we at EOF
@@ -168,11 +168,11 @@ function loadColPatchArchive()
 		fileSetPos(file, filePos)
 		local colFile = fileRead(file, colSize + 8)
 		filePos = fileGetPos(file)
-		
+
 		local id = engineGetModelIDFromName(colName)
 		table.insert(g_colData, {["colName"] = colName, ["colID"] = id, ["colFile"] = colFile})
 	end
-	
+
 	fileClose(file)
 	return true
 end
@@ -184,7 +184,7 @@ function loadAndReplaceCollision()
 			if k % COL_LOAD_FRAME == 0 then
 				coroutine.yield()
 			end
-			
+
 			local col = engineLoadCOL(colData.colFile)
 			if col then
 				if engineReplaceCOL(col, colData.colID) then

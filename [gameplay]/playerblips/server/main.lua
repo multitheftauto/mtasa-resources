@@ -19,11 +19,11 @@ local function resourceStart()
 		local playercolorsResource = getResourceFromName("playercolors")
 		if not playercolorsResource then
 			giveOutputDebugStringOut("Install", outputDebugStringTypePlayerColors)
-		elseif playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
-			giveOutputDebugStringOut("Start", outputDebugStringTypePlayerColors)
+		--elseif playercolorsResource and getResourceState(playercolorsResource) ~= "running" then
+			--giveOutputDebugStringOut("Start", outputDebugStringTypePlayerColors) -- Disabled this debug because every time you run a test in map editor you get this.
 		end
 	end
-	
+
 	if not useTeams and not useNametags then
 		giveOutputDebugStringOut(_, outputDebugStringTypeUseTeamsAndNametagIsFalse)
 	end

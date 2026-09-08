@@ -112,6 +112,7 @@
 			<vehicle id="507" name="Elegant" />
 			<vehicle id="585" name="Emperor" />
 			<vehicle id="466" name="Glendale" />
+			<vehicle id="604" name="Glendale Damaged" />
 			<vehicle id="492" name="Greenwood" />
 			<vehicle id="546" name="Intruder" />
 			<vehicle id="551" name="Merit" />
@@ -185,6 +186,7 @@
 			<vehicle id="414" name="Mule" />
 			<vehicle id="600" name="Picador" />
 			<vehicle id="543" name="Sadler" />
+			<vehicle id="605" name="Sadler Damaged" />
 			<vehicle id="428" name="Securicar" />
 			<vehicle id="478" name="Walton" />
 			<vehicle id="456" name="Yankee" />
@@ -232,7 +234,7 @@
 		<group name="RC Vehicles">
 			<vehicle id="441" name="RC Bandit" />
 			<vehicle id="464" name="RC Baron" />
-			<vehicle id="594" name="RC Flower Pot" />
+			<vehicle id="594" name="RC Cam" />
 			<vehicle id="501" name="RC Goblin" />
 			<vehicle id="465" name="RC Raider" />
 			<vehicle id="564" name="RC Tiger" />
@@ -246,6 +248,7 @@
 		<vehicle id="470" name="Patriot" />
 		<vehicle id="404" name="Perennial" />
 		<vehicle id="489" name="Rancher" />
+		<vehicle id="505" name="Rancher Lure" />
 		<vehicle id="479" name="Regina" />
 		<vehicle id="442" name="Romero" />
 		<vehicle id="495" name="Sandking" />

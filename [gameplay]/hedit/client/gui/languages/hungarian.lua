@@ -62,6 +62,14 @@ guiLanguage.hungarian = {
         warning = "Figyelmeztetés!",
         error = "Hiba!"
     },
+
+    --Warning button strings
+    warningButtons = {
+        yes = "Igen",
+        no = "Nem",
+        ok = "OK",
+    },
+
     --Strings for the buttons at the top
     menubar = {
         handling = "Handling",
@@ -151,14 +159,14 @@ guiLanguage.hungarian = {
             shortname = "Mentések",
             longname = "Töltsd be vagy mentsd el a handling beállításaidat.",
             itemtext = {
-                nameLabel = "Név",
-                descriptionLabel = "Leírás",
                 saveButton = "Exportálás",
                 loadButton = "Importálás",
                 deleteButton = "Törlés",
                 grid = "",
-                nameEdit = "",
-                descriptionEdit = ""
+                nameColumn = "Név",
+                modelColumn = "Modell",
+                nameEdit = "Név",
+                descriptionEdit = "Leírás"
             }
         },
         import = {

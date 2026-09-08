@@ -11,6 +11,10 @@ function optionsActions.enableBox(value)
 	optionsData.enableBox = value
 end
 
+function optionsActions.enableHoverBoundingBox(value)
+	optionsData.enableHoverBoundingBox = value
+end
+
 function optionsActions.enableXYZlines(value)
 	optionsData.enableXYZlines = value
 end

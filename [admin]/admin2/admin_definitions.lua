@@ -39,7 +39,6 @@ enum(
         "EVENT_MESSAGE",
         "EVENT_BAN",
         "EVENT_NETWORK",
-        "EVENT_PROXY",
         "EVENT_ADMIN_CHAT",
         "EVENT_ADMIN_OPEN",
         "EVENT_MESSAGE_BOX",
@@ -47,7 +46,8 @@ enum(
         "EVENT_RESOURCE_START",
         "EVENT_RESOURCE_STOP",
         "EVENT_PLAYER_JOIN",
-        "EVENT_ANONYMOUS_UPDATE"
+        "EVENT_MUTE",
+		"EVENT_ANONYMOUS_UPDATE",
     },
     "ae"
 )
@@ -65,7 +65,8 @@ enum(
         "SYNC_SERVER",
         "SYNC_BAN",
         "SYNC_BANS",
-        "SYNC_MESSAGES"
+        "SYNC_MESSAGES",
+        "SYNC_MUTES"
     },
     "as"
 )
@@ -99,16 +100,6 @@ enum(
         "SESSION_UPDATE"
     },
     "ase"
-)
-
--- PROXY DEFINITIONS
-enum(
-    {
-        "PROXY_ALL",
-        "PROXY_BLUR",
-        "PROXY_SPECIAL"
-    },
-    "ap"
 )
 
 -- SCREENSHOT DEFINITIONS

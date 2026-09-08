@@ -136,12 +136,12 @@ function startRound()
     objects = {}
     rocks = {}
     moving = {}
-    
+
     for i, v in ipairs(getElementsByType("player")) do --Round start spawn
         spawnFunct(v)
         setElementData(v, "Max level", 0)
     end
-    
+
     --Calculate speed velocity
     xy_speed = 2000 / (options.z + 1)
     z_speed = 1500 / (options.z + 1)

@@ -84,10 +84,10 @@
 
 	<!-- World object remover -->
 	<script src="server/removeWorldObject.lua" type="server" />
-	
+
 	<!-- Collision patches -->
 	<script src="client/colpatch.lua" type="client" />
-	
+
 	<!-- Incremental rotation with quaternions used by move_freecam, move_cursor, move_keyboard -->
 	<script src="client/rotation.lua" type="client" />
 
@@ -152,7 +152,7 @@
 	<file src="client/images/icons/pickup.png" />
 	<file src="client/images/icons/ped.png" />
 	<file src="client/images/icons/wor.png" />
-	
+
 	<file src="client/colpatch/patches.col" />
 	<file src="client/colpatch/placement.list" />
 	<file src="client/rotation_fix.xml" />

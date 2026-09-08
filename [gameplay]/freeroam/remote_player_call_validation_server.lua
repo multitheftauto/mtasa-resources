@@ -117,7 +117,7 @@ g_RPCFunctionsValidation = {
         if (#{ ... } > 0) then return false end
         return true
     end,
-    
+
     setPedWearingJetpack = function(thePlayer, toggle, ...)
         if client ~= thePlayer then return false end
         if type(toggle) ~= "boolean" then return false end
