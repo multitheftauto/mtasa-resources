@@ -29,6 +29,11 @@ function refreshPageList()
 		end
 	end
 	selectHelpPage(selectedResource)
+	-- Auto size the column, with a minimum of 1.
+	guiGridListAutoSizeColumn(pageList, pageColumn)
+	if guiGridListGetColumnWidth(pageList, pageColumn, true) < 1 then
+		guiGridListSetColumnWidth(pageList, pageColumn, 1, true)
+	end
 end
 local HELP_KEY = "F9"
 local HELP_COMMAND = "gamehelp"
