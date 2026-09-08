@@ -90,4 +90,9 @@ mapFixComponents = {
             { 11236, 25, -2164.4531, -255.39062, 38.125,   0 }, -- crackfactwalke
         },
     },
+    ["model_transparency_fixes"] = {
+        modelFlagsToSet = {
+            { 3089, 'draw_last', true }, -- ab_casdorLok (brown door with glass window)
+        }
+    },
 }
