@@ -1,6 +1,6 @@
 <meta>
 	<info author="MTA contributors (github.com/multitheftauto/mtasa-resources)" version="1.0" name="SA Map Fixes" description="This resource patches a few flaws in the default MTA world" type="script" />
-	<min_mta_version client="1.7.0-9.25613.0" server="1.6.0-9.22505.0"></min_mta_version>
+	<min_mta_version client="1.6.0-9.22505.0" server="1.6.0-9.22505.0"></min_mta_version>
 
 	<script src="scripts/shared/data.lua" type="shared"/>
 	<script src="scripts/client/main.lua" type="client"/>
@@ -12,6 +12,5 @@
 		<setting name="*atrium_lobby_interior" value="[true]" friendlyname="Atrium Lobby Interior" desc="Enable Commerce Atrium lobby open-world interior" accept="true,false"/>
 		<setting name="*doherty_garage_interior" value="[true]" friendlyname="Doherty Garage Interior" desc="Enable Doherty Safehouse Garage open-world interior" accept="true,false"/>
 		<setting name="*undamaged_crackfactory_with_interior" friendlyname="Undamaged SF Crack Factory" value="[true]" desc="Enable restored Undamaged SF Crack Factory with open-world interior" accept="true,false"/>
-		<setting name="*model_transparency_fixes" friendlyname="Model Transparency Fixes" value="[true]" desc="Apply some fixes to certain models which have bugged transparency in GTA" accept="true,false"/>
 	</settings>
 </meta>
