@@ -31,7 +31,7 @@
   </player>
   <team>
     <command handler="createteam" call="createteam" args="s,i,i,i" />
-    <command handler="destroyteam" call="destroyteam" args="s,i,i,i" />
+    <command handler="destroyteam" call="destroyteam" args="T" />
   </team>
   <vehicle>
     <command handler="repair" call="repair" args="P" />"
