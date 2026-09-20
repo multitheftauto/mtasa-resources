@@ -539,10 +539,16 @@ addEventHandler(
     "aAdminChat",
     root,
     function(chat)
-        local sender = client or source
-        if not chat or #chat > (ADMIN_CHAT_MAXLENGTH or 255) then
+        if not client or not hasObjectPermissionTo(client, "general.tab_adminchat", false) then
             return
         end
+
+        if type(chat) ~= "string" or #chat > (ADMIN_CHAT_MAXLENGTH or 255) then
+            return
+        end
+
+        local sender = client
+
         for _, player in ipairs(getElementsByType("player")) do
             if aPlayers[player] and aPlayers[player]["chat"] then
                 triggerClientEvent(player, "aClientAdminChat", sender, chat)
