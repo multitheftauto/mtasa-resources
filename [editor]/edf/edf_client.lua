@@ -103,6 +103,9 @@ end
 function edfGetElementRotation(element)
 	local etype = getElementType(element)
 	local rx, ry, rz
+	if isRotatableMarker(element) then
+		return edfGetMarkerRotation(element)
+	end
 	if etype == "object" or etype == "vehicle" or etype == "player" or etype == "ped" then
 		rx, ry, rz = getElementRotation(element)
 	else
@@ -144,7 +147,9 @@ end
 --Setsan element's position, or its posX/Y/Z element data
 function edfSetElementPosition(element, px, py, pz)
 	if px and py and pz then
-		if isBasic[getElementType(element)] then
+		if isRotatableMarker(element) then
+			return edfMoveMarker(element, px, py, pz)
+		elseif isBasic[getElementType(element)] then
 			return setElementPosition(element, px, py, pz)
 		else
 			local handle = edfGetHandle(element)
@@ -164,6 +169,9 @@ end
 function edfSetElementRotation(element, rx, ry, rz)
 	if rx and ry and rz then
 		local etype = getElementType(element)
+		if isRotatableMarker(element) then
+			return edfSetMarkerRotation(element, rx, ry, rz)
+		end
 		if etype == "object" or etype == "vehicle" or etype == "player" or etype == "ped" then
 			-- Clear the quat rotation when set manually
 			exports.editor_main:clearElementQuat(element)

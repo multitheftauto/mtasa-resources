@@ -15,6 +15,7 @@
 	<element name="marker" friendlyname="Marker">
 		<data name="position" type="coord3d" description="XYZ position" default="0,0,0" />
 		<data name="type" type="markerType" description="Marker type" default="cylinder" />
+		<data name="target" type="string" description="Point to face: X,Y,Z (ring rotation or checkpoint arrow). Leave empty for no target." default="" required="false" persistDefault="false" />
 		<data name="size" type="number" description="Marker size" default="1" />
 		<data name="color" type="color" description="Color (#RRGGBBAA hex string)" default="#00F9" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />

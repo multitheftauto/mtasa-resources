@@ -74,7 +74,7 @@ local function rotateWithMouseWheel(key, keyState)
 		if (key == "quick_rotate_decrease") then
 			speed = speed * -1
 		end
-		if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") then
+		if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") or exports.edf:isRotatableMarker(selectedElement) then
 			rotX, rotY, rotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", speed)
 			--Peds dont have their rotation updated with their attached parents
 			for i,element in ipairs(getAttachedElements(selectedElement)) do
@@ -180,6 +180,9 @@ end
 
 -- EXPORTED
 function attachElement(element)
+	if exports.edf:isRotatableMarker(element) then
+		exports.editor_main:clearElementQuat(element)
+	end
 	if (not selectedElement and not isCursorShowing()) then
 		-- get element info
 	    selectedElement = element
@@ -212,6 +215,10 @@ function attachElement(element)
 				collisionless = false
 				_, _, minZ = getElementBoundingBox(element)
 				centerToBaseDistance = getElementDistanceFromCentreOfMassToBaseOfModel(element)
+			elseif exports.edf:isRotatableMarker(element) then
+				rotationless = false
+				collisionless = true
+				rotX, rotY, rotZ = getElementRotation(element)
 			elseif (getElementType(element) == "ped") then
 				rotationless = false
 				_, _, rotZ = getElementRotation(element)
@@ -243,7 +250,10 @@ function detachElement()
 			local tempPosX, tempPosY, tempPosZ = getElementPosition(selectedElement)
 
 			triggerServerEvent("syncProperty", localPlayer, "position", {tempPosX, tempPosY, tempPosZ}, exports.edf:edfGetAncestor(selectedElement))
-			if hasRotation[getElementType(selectedElement)] then
+			if hasRotation[getElementType(selectedElement)] or exports.edf:isRotatableMarker(selectedElement) then
+				if getElementType(selectedElement) == "marker" then
+					rotX, rotY, rotZ = getElementRotation(selectedElement)
+				end
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 			end
 			if (getElementType(selectedElement) == "object") then

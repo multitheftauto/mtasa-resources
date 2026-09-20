@@ -1054,7 +1054,7 @@ function writeCustomScriptingExtension(resource, usedModels)
     local header = [[
 -- FILE: mapEditorScriptingExtension_s.lua
 -- PURPOSE: Prevent the map editor feature set being limited by what MTA can load from a map file by adding a script file to maps
--- VERSION: RemoveWorldObjects (v1) AutoLOD (v3)
+-- VERSION: RemoveWorldObjects (v1) AutoLOD (v3) MarkerTarget (v1)
 
 local usedLODModels = {}
 local LOD_MAP = {}
@@ -1083,6 +1083,24 @@ function onResourceStartOrStop(startedResource)
 	end
 
 	if startEvent then
+		for i, marker in ipairs(getElementsByType("marker", source)) do
+			local target = getElementData(marker, "target")
+			if target then
+				local markerType = getMarkerType(marker)
+				if markerType == "ring" or markerType == "checkpoint" then
+					if type(target) == "string" then
+						target = split(target, 44)
+					end
+					if type(target) == "table" then
+						local x, y, z = tonumber(target[1]), tonumber(target[2]), tonumber(target[3])
+						if x and y and z then
+							setMarkerTarget(marker, x, y, z)
+						end
+					end
+				end
+			end
+		end
+
 		local resourceName = getResourceName(startedResource)
 		local useLODs = get(resourceName..".useLODs")
 		local objectsTable = getElementsByType("object", source)
