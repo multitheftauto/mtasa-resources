@@ -34,7 +34,7 @@
     <command handler="destroyteam" call="destroyteam" args="T" />
   </team>
   <vehicle>
-    <command handler="repair" call="repair" args="P" />"
+    <command handler="repair" call="repair" args="P" />
     <command handler="addupgrade" call="customize" args="P,t-" />
     <command handler="addupgrades" call="customize" args="P,t-" />
     <command handler="setpaintjob" call="setpaintjob" args="P,i" />
