@@ -279,8 +279,14 @@ addEventHandler("onClientRender", root,
 
 addEventHandler("onClientElementStreamIn", root,
 	function ()
-		if isColless[getElementType(source)] then
+		local elementType = getElementType(source)
+		if isColless[elementType] then
 			g_colless[source] = true
+		end
+		-- This fixes peds being dark, even though setElementLighting is meant
+		-- to be called every frame to work, calling it once seems to fix the problem.
+		if elementType == "ped" then
+			setElementLighting(source, 0.5)
 		end
 	end
 )

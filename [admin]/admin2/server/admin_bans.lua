@@ -15,6 +15,10 @@ addEventHandler(
     "onResourceStart",
     resourceRoot,
     function()
+		if not hasObjectPermissionTo(getThisResource(), "function.getBans", false) then
+			outputDebugString("WARNING: admin2 needs adding to the Admin group (lacks access to function.getBans) in your ACL, then run '/reloadacl', then restart admin2")
+			return
+		end
         for i, ban in ipairs(getBans()) do
             aBans.List[aBans.GenerateID(ban)] = ban
         end

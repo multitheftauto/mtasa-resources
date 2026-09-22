@@ -487,9 +487,9 @@ aFunctions = {
 }
 
 local automaticScriptRanges = {
-    pingkicker = {min = 0, max = 1000, default = 300},
+    pingkicker = {min = 0, max = 10000, default = 300},
     fpskicker = {min = 0, max = 100, default = 5},
-    idlekicker = {min = 0, max = 100, default = 10}
+    idlekicker = {min = 0, max = 6000, default = 10}
 }
 
 local function setAutomaticScriptSetting(name, value)

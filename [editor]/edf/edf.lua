@@ -50,7 +50,12 @@ local edfCreateBasic = {
 	marker = function(cdata)
 		local r,g,b,a = getColorFromString(cdata.color)
 		if r then cdata.colorR = r; cdata.colorG = g; cdata.colorB = b; cdata.colorA = a end
-		return createMarker(cdata.position[1], cdata.position[2], cdata.position[3], cdata.type, cdata.size, cdata.colorR, cdata.colorG, cdata.colorB, cdata.colorA)
+		local marker = createMarker(cdata.position[1], cdata.position[2], cdata.position[3], cdata.type, cdata.size, cdata.colorR, cdata.colorG, cdata.colorB, cdata.colorA)
+		if marker and cdata.target and cdata.target ~= "" then
+			setElementData(marker, "target", cdata.target)
+			edfSetMarkerTarget(marker, cdata.target)
+		end
+		return marker
 	end,
 	pickup = function(cdata)
 		local pType, pAmount, pAmmo
@@ -416,6 +421,10 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 		parentData[dataField] = checkedData
 	end
 
+	if elementType == "marker" then
+		edfSetMarkerTarget(theElement, parentData.target)
+	end
+
 	-- get basic element properties
 	parentData.position = { edfGetElementPosition(theElement) }
 	parentData.rotation = { edfGetElementRotation(theElement) }
@@ -691,6 +700,9 @@ function edfCloneElement(theElement, editorMode )
 		theElement = cloneElement(theElement)
 
 		-- For things that cloneElement doesn't actually clone
+		if elementType == "marker" then
+			edfSetMarkerTarget(theElement, getElementData(oldElement, "target"))
+		end
 		if (getElementType(theElement) == "vehicle" and getVehicleType(theElement) == "Train") then
 			setTrainDerailed(theElement, true)
 		end
@@ -862,6 +874,9 @@ end
 function edfGetElementRotation(element)
 	local etype = getElementType(element)
 	local rx, ry, rz
+	if isRotatableMarker(element) then
+		return edfGetMarkerRotation(element)
+	end
 	if etype == "object" or etype == "vehicle" or etype == "player" or etype == "ped" then
 		rx, ry, rz = getElementRotation(element)
 	else
@@ -910,6 +925,11 @@ end
 function edfSetElementPosition(element, px, py, pz)
 	local ancestor = edfGetAncestor(element) or element
 	setElementData(ancestor, "position", {px, py, pz})
+	if isRotatableMarker(element) then
+		if not edfMoveMarker(element, px, py, pz) then return false end
+		triggerEvent("onElementPropertyChanged", ancestor, "position")
+		return true
+	end
 	if isBasic[getElementType(element)] then
 		if setElementPosition(element, px, py, pz) then
 			triggerEvent ( "onElementPropertyChanged", ancestor, "position" )
@@ -936,6 +956,11 @@ end
 --Sets an element's rotation, or its rotX/Y/Z element data
 function edfSetElementRotation(element, rx, ry, rz, rotOrder)
 	local ancestor = edfGetAncestor(element) or element
+	if isRotatableMarker(element) then
+		if not edfSetMarkerRotation(element, rx, ry, rz) then return false end
+		triggerEvent("onElementPropertyChanged", ancestor, "rotation")
+		return true
+	end
 	setElementData(ancestor, "rotation", {rx, ry, rz, rotOrder})
 	local etype = getElementType(element)
 	if etype == "object" or etype == "vehicle" then

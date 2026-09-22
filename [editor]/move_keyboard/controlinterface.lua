@@ -42,6 +42,9 @@ function setElementPosition(element,x,y,z,warp)
 			z = sticknumbertoMult(z,snaplevel,"round")
 		end
 	end
+	if exports.edf:isRotatableMarker(element) then
+		return exports.edf:edfSetElementPosition(element, x, y, z)
+	end
 	_setElementPosition(element,x,y,z,warp)
 end
 
@@ -60,6 +63,10 @@ function setElementRotation(element,x,y,z,warp)
 			y = sticknumbertoMult(y,snaplevel,"round")
 			z = sticknumbertoMult(z,snaplevel,"round")
 		end
+	end
+	if exports.edf:isRotatableMarker(element) then
+		exports.editor_main:clearElementQuat(element)
+		return exports.edf:edfSetElementRotation(element, x, y, z)
 	end
 	_setElementRotation(element,x,y,z)
 end

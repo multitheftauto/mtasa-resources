@@ -25,6 +25,14 @@ function sticknumbertoMult(number,mult,mode)
 	return number
 end
 
+local mta_getElementRotation = getElementRotation
+function getElementRotation(element, ...)
+	if exports.edf:isRotatableMarker(element) then
+		return exports.edf:edfGetElementRotation(element)
+	end
+	return mta_getElementRotation(element, ...)
+end
+
 _setElementPosition = setElementPosition
 function setElementPosition(element,x,y,z,warp)
 	if not (element and isElement(element)) then return false end
@@ -41,6 +49,9 @@ function setElementPosition(element,x,y,z,warp)
 			y = sticknumbertoMult(y,snaplevel,"round")
 			z = sticknumbertoMult(z,snaplevel,"round")
 		end
+	end
+	if exports.edf:isRotatableMarker(element) then
+		return exports.edf:edfSetElementPosition(element, x, y, z)
 	end
 	_setElementPosition(element,x,y,z,warp)
 end

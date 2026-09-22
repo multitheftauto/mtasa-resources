@@ -63,7 +63,9 @@ end
 local mta_getElementRotation = getElementRotation
 local function getElementRotation(element)
 	local elementType = getElementType(element)
-	if elementType == "player" or elementType == "ped" then
+	if exports.edf:isRotatableMarker(element) then
+		return exports.edf:edfGetElementRotation(element)
+	elseif elementType == "player" or elementType == "ped" then
 		return mta_getElementRotation(element, "default", true)
 	elseif elementType == "object" then
 		return mta_getElementRotation(element, "ZYX")
@@ -362,7 +364,7 @@ local function onClientRender_keyboard()
 		else -- reset rotation
 			if (rotX and rotY and rotZ) then
 				if getCommandState("mod_rotate") then
-					if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") then
+					if (getElementType(selectedElement) == "vehicle") or (getElementType(selectedElement) == "object") or exports.edf:isRotatableMarker(selectedElement) then
 						exports.editor_main:clearElementQuat(selectedElement)
 						setElementRotation(selectedElement, 0, 0, rotZ)
 						rotX, rotY = 0, 0
@@ -443,7 +445,7 @@ local function rotateWithMouseWheel(key, keyState)
 	end
 
 	rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
-	if (getElementType(selectedElement) == "vehicle" or getElementType(selectedElement) == "object") then
+	if (getElementType(selectedElement) == "vehicle" or getElementType(selectedElement) == "object") or exports.edf:isRotatableMarker(selectedElement) then
 		rotX, rotY, rotZ = exports.editor_main:applyIncrementalRotation(selectedElement, "yaw", speed, world_space)
 		--Peds dont have their rotation updated with their attached parents
 		for i,element in ipairs(getAttachedElements(selectedElement)) do
@@ -469,7 +471,7 @@ function attachElement(element)
 		-- Clear the quat rotation when attaching to element
 		exports.editor_main:clearElementQuat(selectedElement)
 
-		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") then
+		if (getElementType(element) == "vehicle") or (getElementType(element) == "object") or exports.edf:isRotatableMarker(element) then
 			rotX, rotY, rotZ = getElementRotation(element, "ZYX")
 		elseif (getElementType(element) == "player") or (getElementType(element) == "ped") then
 			rotX, rotY, rotZ = getElementRotation(element)
@@ -493,7 +495,7 @@ function detachElement()
 			-- sync position/rotation
 			posX, posY, posZ = getElementPosition(selectedElement)
 			triggerServerEvent("syncProperty", localPlayer, "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
-			if hasRotation[getElementType(selectedElement)] then
+			if hasRotation[getElementType(selectedElement)] or exports.edf:isRotatableMarker(selectedElement) then
 				rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 			end
