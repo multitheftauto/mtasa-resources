@@ -385,6 +385,12 @@ addEventHandler(
     "aVehicle",
     root,
     function(player, action, ...)
+		if not client then
+            client = source
+        end
+		if not player then
+			return
+		end
         local vehicle = getPedOccupiedVehicle(player)
         if (not vehicle) then
             return
