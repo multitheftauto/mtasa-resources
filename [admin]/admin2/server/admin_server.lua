@@ -551,10 +551,15 @@ addEventHandler(
     "aAdminChat",
     root,
     function(chat)
-        local sender = client or source
-        if not chat or #chat > (ADMIN_CHAT_MAXLENGTH or 255) then
+		local sender = client or source -- This is not a security flaw, see the adminChatCommandName 2 functions below
+        if not sender or not hasObjectPermissionTo(sender, "general.tab_adminchat", false) then
             return
         end
+
+        if type(chat) ~= "string" or #chat > (ADMIN_CHAT_MAXLENGTH or 255) then
+            return
+        end
+
         for _, player in ipairs(getElementsByType("player")) do
             if aPlayers[player] and aPlayers[player]["chat"] then
                 triggerClientEvent(player, "aClientAdminChat", sender, chat)
