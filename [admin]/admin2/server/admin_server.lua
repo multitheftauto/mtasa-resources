@@ -413,7 +413,7 @@ addEventHandler(
                         local passenger = getVehicleOccupant(vehicle, i)
                         if (passenger) then
                             if ((passenger == player) and (getPedOccupiedVehicle(client) ~= vehicle)) then
-                                aAction("vehicle", action, client, passenger, mdata)
+                                aAction("vehicle", action, client, passenger, mdata1, mdata2)
                             else
                                 aAction("vehicle", action, passenger, passenger, mdata1, mdata2)
                             end
