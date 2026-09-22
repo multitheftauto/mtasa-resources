@@ -39,7 +39,7 @@
     <command handler="addupgrades" call="customize" args="P,t-" />
     <command handler="setpaintjob" call="setpaintjob" args="P,i" />
     <command handler="setcolor" call="setcolor" args="P,t-" />
-    <command handler="blowvehicle" call="blow" args="P" />
+    <command handler="blowvehicle" call="blowvehicle" args="P" />
     <command handler="destroyvehicle" call="destroyvehicle" args="P" />
   </vehicle>
   <server>
