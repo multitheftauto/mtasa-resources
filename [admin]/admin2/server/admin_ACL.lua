@@ -247,7 +247,44 @@ local aACLFunctions = {
             end
         end
     end,
-    [ACL_ACL] = function(action, group)
+    [ACL_ACL] = function(action, group, aclName, right, access)
+        local aclGroup = type(group) == "string" and aclGetGroup(group)
+        if (not aclGroup) then
+            return
+        end
+        if (action == ACL_ADD or action == ACL_REMOVE) then
+            if (type(aclName) ~= "string" or type(right) ~= "string" or
+                not right:match("^%a+%..+$") or
+                (action == ACL_ADD and type(access) ~= "boolean")) then
+                messageBox(client, "Invalid ACL right", MB_ERROR)
+                return
+            end
+            local acl = aclGet(aclName)
+            local attached = false
+            for _, groupACL in ipairs(aclGroupListACL(aclGroup)) do
+                if (groupACL == acl) then
+                    attached = true
+                    break
+                end
+            end
+            if (not attached) then
+                messageBox(client, "ACL does not belong to the selected group", MB_ERROR)
+                return
+            end
+            local success
+            if (action == ACL_REMOVE) then
+                success = aclRemoveRight(acl, right)
+            else
+                success = aclSetRight(acl, right, access)
+            end
+            if (not success) then
+                messageBox(client, "Failed to update right '" .. right .. "'", MB_ERROR)
+            elseif (not aclSave()) then
+                messageBox(client, "Right updated, but failed to save ACL changes", MB_ERROR)
+            end
+        elseif (action ~= ACL_GET) then
+            return
+        end
         local data = {}
         for id, acl in ipairs(aclGroupListACL(aclGetGroup(group))) do
             local storage = {}

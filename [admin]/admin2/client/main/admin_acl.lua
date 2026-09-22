@@ -56,6 +56,17 @@ function aAclTab.Create(tab)
 
     -- rights tab
     aAclTab.RightsTab = guiCreateTab("Rights", aAclTab.Panel)
+    aAclTab.RightsACL = guiCreateComboBox(0.01, 0.0125, 0.35, 0.3, "Select ACL", true, aAclTab.RightsTab)
+    aAclTab.RightsSearch = guiCreateEdit(0.38, 0.0125, 0.60, 0.05, "", true, aAclTab.RightsTab)
+    guiCreateInnerImage("client\\images\\search.png", aAclTab.RightsSearch)
+    guiHandleInput(aAclTab.RightsSearch)
+    aAclTab.Rights = guiCreateGridList(0.01, 0.08, 0.98, 0.78, true, aAclTab.RightsTab)
+    guiGridListAddColumn(aAclTab.Rights, "Right", 0.75)
+    guiGridListAddColumn(aAclTab.Rights, "Access", 0.18)
+    aAclTab.AddRight = guiCreateButton(0.01, 0.89, 0.23, 0.07, "Add Right", true, aAclTab.RightsTab)
+    aAclTab.AllowRight = guiCreateButton(0.26, 0.89, 0.23, 0.07, "Allow", true, aAclTab.RightsTab)
+    aAclTab.DenyRight = guiCreateButton(0.51, 0.89, 0.23, 0.07, "Deny", true, aAclTab.RightsTab)
+    aAclTab.RemoveRight = guiCreateButton(0.76, 0.89, 0.23, 0.07, "Remove Right", true, aAclTab.RightsTab)
 
     -- access matrix tab
     aAclTab.AccessTab = guiCreateTab("Access Matrix", aAclTab.Panel)
@@ -72,6 +83,8 @@ function aAclTab.Create(tab)
 
     triggerServerEvent(EVENT_ACL, localPlayer, ACL_GROUPS)
 
+    addEventHandler("onClientGUIComboBoxAccepted", aAclTab.RightsACL, aAclTab.RefreshRightsList)
+    addEventHandler("onClientGUIChanged", aAclTab.RightsSearch, aAclTab.RefreshRightsList)
     addEventHandler(EVENT_ACL, localPlayer, aAclTab.onSync)
     addEventHandler("onClientGUIClick", aAclTab.Tab, aAclTab.onClick)
     addEventHandler("onClientGUIChanged", aAclTab.AccessSearch, aAclTab.onChanged)
@@ -83,7 +96,7 @@ aAclTab.SyncFunctions = {
     [ACL_GROUPS] = function(data)
         guiGridListClear(aAclTab.Groups)
         for id, group in ipairs(data) do
-            aAclTab.Cache.Groups[group] = {}
+            aAclTab.Cache.Groups[group] = false
             local row = guiGridListAddRow(aAclTab.Groups)
             guiGridListSetItemText(aAclTab.Groups, row, 1, group, false, false)
         end
@@ -95,6 +108,7 @@ aAclTab.SyncFunctions = {
             aAclTab.Cache.ACL[acl] = rights
         end
         aAclTab.RefreshAccess()
+        aAclTab.RefreshRightsACL()
     end,
     [ACL_USERS] = function(group, data)
         guiGridListClear(aAclTab.Users)
@@ -131,8 +145,11 @@ function aAclTab.onClick(key, state)
 
     if (source == aAclTab.Groups) then
         aAclTab.RefreshAccess()
+        aAclTab.RefreshRightsACL()
         aAclTab.RefreshUsersList()
         aAclTab.RefreshResourcesList()
+    elseif (source == aAclTab.AddRight or source == aAclTab.AllowRight or source == aAclTab.DenyRight or source == aAclTab.RemoveRight) then
+        aAclTab.EditRight(source)
     elseif (source == aAclTab.ViewTypes) then
         aAclTab.RefreshAccess()
     elseif (source == aAclTab.UsersButton_RemoveUser) then
@@ -224,14 +241,13 @@ function aAclTab.GetViewedRight()
 end
 
 function aAclTab.RefreshAccess()
-    guiSetVisible(aAclTab.RightsTab, false)
+    aAclTab.ClearAccess()
     local selected = guiGridListGetSelectedItem(aAclTab.Groups)
     if (selected ~= -1) then
         local group = guiGridListGetItemText(aAclTab.Groups, selected, 1)
         local cache = aAclTab.Cache.Groups[group]
-        if (#cache > 0) then
+        if (cache) then
             local list = aAclTab.Access
-            aAclTab.ClearAccess()
             local temp = {}
             local strip = aAclTab.GetViewedRight()
             local names = guiGridListAddColumn(list, strip, 0.35)
@@ -241,9 +257,6 @@ function aAclTab.RefreshAccess()
                 search = false
             end
             for i, acl in ipairs(cache) do
-                if (acl == group) then
-                    guiSetVisible(aAclTab.RightsTab, true)
-                end
                 local rights = aAclTab.Cache.ACL[acl]
                 local column = guiGridListAddColumn(list, acl, 0.10)
                 for right, access in pairs(rights) do
@@ -347,4 +360,71 @@ function aAclTab.RefreshResourcesList()
             triggerServerEvent(EVENT_ACL, localPlayer, ACL_RESOURCES, ACL_GET, group)
         end
     end
+end
+
+function aAclTab.RefreshRightsACL()
+    local previous = guiComboBoxGetItemText(aAclTab.RightsACL, guiComboBoxGetSelected(aAclTab.RightsACL))
+    guiComboBoxClear(aAclTab.RightsACL)
+    local selected = guiGridListGetSelectedItem(aAclTab.Groups)
+    local group = selected ~= -1 and guiGridListGetItemText(aAclTab.Groups, selected, 1)
+    local acls = aAclTab.Cache.Groups[group]
+    if (acls) then
+        table.sort(acls)
+        for _, acl in ipairs(acls) do
+            local item = guiComboBoxAddItem(aAclTab.RightsACL, acl)
+            if (item == 0 or acl == previous) then
+                guiComboBoxSetSelected(aAclTab.RightsACL, item)
+            end
+        end
+    end
+    aAclTab.RefreshRightsList()
+end
+
+function aAclTab.RefreshRightsList()
+    guiGridListClear(aAclTab.Rights)
+    local selected = guiComboBoxGetSelected(aAclTab.RightsACL)
+    local acl = guiComboBoxGetItemText(aAclTab.RightsACL, selected)
+    local search = guiGetText(aAclTab.RightsSearch):lower()
+    for right, access in pairs(aAclTab.Cache.ACL[acl] or {}) do
+        if (right:lower():find(search, 1, true)) then
+            local row = guiGridListAddRow(aAclTab.Rights)
+            guiGridListSetItemText(aAclTab.Rights, row, 1, right, false, false)
+            guiGridListSetItemText(aAclTab.Rights, row, 2, tostring(access), false, false)
+        end
+    end
+end
+
+function aAclTab.EditRight(button)
+    local selectedGroup = guiGridListGetSelectedItem(aAclTab.Groups)
+    local selectedACL = guiComboBoxGetSelected(aAclTab.RightsACL)
+    if (selectedGroup == -1 or selectedACL == -1) then
+        messageBox("No ACL selected!", MB_ERROR, MB_OK)
+        return
+    end
+    local group = guiGridListGetItemText(aAclTab.Groups, selectedGroup, 1)
+    local acl = guiComboBoxGetItemText(aAclTab.RightsACL, selectedACL)
+    local right
+    local access = button == aAclTab.AllowRight
+    local action = ACL_ADD
+    if (button == aAclTab.AddRight) then
+        right = inputBox("Add right (initially denied)", "Full right name (e.g. command.kick)")
+        if (not right) then
+            return
+        end
+    else
+        local row = guiGridListGetSelectedItem(aAclTab.Rights)
+        if (row == -1) then
+            messageBox("No right selected!", MB_ERROR, MB_OK)
+            return
+        end
+        right = guiGridListGetItemText(aAclTab.Rights, row, 1)
+        if (button == aAclTab.RemoveRight) then
+            action = ACL_REMOVE
+        end
+    end
+    local operation = action == ACL_REMOVE and "Remove" or (access and "Allow" or "Deny")
+    if (not messageBox(operation .. " '" .. right .. "' in ACL '" .. acl .. "'? This affects every group using this ACL.", MB_QUESTION, MB_YESNO)) then
+        return
+    end
+    triggerServerEvent(EVENT_ACL, localPlayer, ACL_ACL, action, group, acl, right, access)
 end
