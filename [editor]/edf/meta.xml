@@ -41,6 +41,7 @@
 	<export function="edfSetCreatorClient" /> <!-- bool -->
 	<export function="edfGetElementPosition" /> <!-- number, number, number -->
 	<export function="edfSetElementPosition" /> <!-- bool -->
+	<export function="isRotatableMarker" /> <!-- bool -->
 	<export function="edfGetElementRotation" /> <!-- number, number, number -->
 	<export function="edfSetElementRotation" /> <!-- bool -->
 	<export function="edfGetElementScale" /> <!-- number -->
@@ -61,6 +62,7 @@
 	<export function="edfGetCreatorResource" type="client" /> <!-- resource -->
 	<export function="edfGetElementPosition" type="client" /> <!-- number, number, number -->
 	<export function="edfSetElementPosition" type="client" /> <!-- bool -->
+	<export function="isRotatableMarker" type="client" /> <!-- bool -->
 	<export function="edfGetElementRotation" type="client" /> <!-- number, number, number -->
 	<export function="edfSetElementRotation" type="client" /> <!-- bool -->
 	<export function="edfGetElementScale" type="client" /> <!-- number -->

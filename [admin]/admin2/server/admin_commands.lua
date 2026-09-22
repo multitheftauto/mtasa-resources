@@ -56,7 +56,7 @@ function aCommand(admin, command, ...)
     local call = _commands[command]
     if (call) then
         if (hasObjectPermissionTo(admin, "command." .. call.action, false)) then
-            arg2 = aCommandToArgs({...}, call.args)
+            local arg2 = aCommandToArgs({...}, call.args)
             if (call.type == "player") then
                 triggerEvent("aPlayer", admin, arg2[1], call.action, arg2[2], arg2[3])
             elseif (call.type == "vehicle") then

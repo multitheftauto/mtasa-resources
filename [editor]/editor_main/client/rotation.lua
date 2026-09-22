@@ -63,18 +63,19 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 	offset_quat[4] = math.cos(arad / 2)
 
 	-- Get rotation patch userdata
-	local enableRotPatch = exports["editor_gui"]:sx_getOptionData("enableRotPatch")
+	local rotatableMarker = exports.edf:isRotatableMarker(element)
+	local enableRotPatch = rotatableMarker or exports["editor_gui"]:sx_getOptionData("enableRotPatch")
 
 	-- Get current rotation
 	local cur_quat
 	if elementQuat[element] then
 		cur_quat = elementQuat[element]
 	else
-		local euler_rot = {getElementRotation(element, "ZYX")}
+		local euler_rot = rotatableMarker and {exports.edf:edfGetElementRotation(element)} or {getElementRotation(element, "ZYX")}
 		-- Is it not rotated ingame
 		if euler_rot[1] == 0 and euler_rot[2] == 0 and euler_rot[3] == 0 then
 			-- Is there a fix and are rotation patches enabled
-			local id = getElementModel(element)
+			local id = not rotatableMarker and getElementModel(element)
 			if rotationFixes[id] and enableRotPatch then
 				-- Rotate from the fix
 				cur_quat = {unpack(rotationFixes[id])}
@@ -106,7 +107,11 @@ function applyIncrementalRotation(element, axis, angle, world_space)
 
 	-- Convert to euler and apply
 	local cur_euler = getEulerFromQuat(cur_quat)
-	setElementRotation(element, cur_euler[1], cur_euler[2], cur_euler[3], "ZYX")
+	if rotatableMarker then
+		exports.edf:edfSetElementRotation(element, cur_euler[1], cur_euler[2], cur_euler[3])
+	else
+		setElementRotation(element, cur_euler[1], cur_euler[2], cur_euler[3], "ZYX")
+	end
 
 	return unpack(cur_euler)
 end

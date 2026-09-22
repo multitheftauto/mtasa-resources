@@ -110,6 +110,7 @@ propertyGetters = {
 	},
 	marker = {
 		type = getMarkerType,
+		target = function(element) return getElementData(element, "target") or "" end,
 		size = getMarkerSize,
 		color = function(element)
 			return {getMarkerColor(element)}
@@ -281,8 +282,12 @@ propertySetters = {
 	},
 	marker = {
 		type = function(element, markerType)
-			if markerType then return setMarkerType(element, markerType)
-			else return false end
+			if not markerType or not setMarkerType(element, markerType) then return false end
+			return edfSetMarkerTarget(element, getElementData(element, "target"))
+		end,
+		target = function(element, target)
+			exports.editor_main:clearElementQuat(element)
+			return edfSetMarkerTarget(element, target)
 		end,
 		size = function(element, markerSize)
 			if markerSize then return setMarkerSize(element, markerSize)

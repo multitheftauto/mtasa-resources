@@ -336,6 +336,9 @@ addEventHandler(
     "aTeam",
     root,
     function(action, name, ...)
+        if not client then
+            client = source
+        end
         if (hasObjectPermissionTo(client, "command." .. action, false)) then
             local func = aFunctions.team[action]
             if (func) then
@@ -385,6 +388,12 @@ addEventHandler(
     "aVehicle",
     root,
     function(player, action, ...)
+		if not client then
+            client = source
+        end
+		if not player then
+			return
+		end
         local vehicle = getPedOccupiedVehicle(player)
         if (not vehicle) then
             return
@@ -423,6 +432,9 @@ addEventHandler(
     "aResource",
     root,
     function(name, action, ...)
+        if not client then
+            client = source
+        end
         if (not name or not action) then
             return
         end
@@ -452,6 +464,9 @@ addEventHandler(
     "aServer",
     root,
     function(action, ...)
+        if not client then
+            client = source
+        end
         if (hasObjectPermissionTo(client, "command." .. action, false)) then
             local func = aFunctions.server[action]
             if (func) then
@@ -539,10 +554,15 @@ addEventHandler(
     "aAdminChat",
     root,
     function(chat)
-        local sender = client or source
-        if not chat or #chat > (ADMIN_CHAT_MAXLENGTH or 255) then
+		local sender = client or source -- This is not a security flaw, see the adminChatCommandName 2 functions below
+        if not sender or not hasObjectPermissionTo(sender, "general.tab_adminchat", false) then
             return
         end
+
+        if type(chat) ~= "string" or #chat > (ADMIN_CHAT_MAXLENGTH or 255) then
+            return
+        end
+
         for _, player in ipairs(getElementsByType("player")) do
             if aPlayers[player] and aPlayers[player]["chat"] then
                 triggerClientEvent(player, "aClientAdminChat", sender, chat)

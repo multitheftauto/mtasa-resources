@@ -17,6 +17,11 @@ function aSetupACL()
         outputDebugString("Vanilla ACL not found! Please reinstall the admin resource")
         return false
     end
+	
+	local aclSetRightPermission = hasObjectPermissionTo(getThisResource(), "function.aclSetRight", false)
+	if not aclSetRightPermission then
+		outputDebugString("WARNING: admin2 needs adding to the Admin group (lacks access to function.aclSetRight) in your ACL, then run '/reloadacl', then restart admin2")
+	end
 
     local acls = 0
     local aclNode = xmlFindChild(node, "acl", acls)
@@ -56,7 +61,7 @@ function aSetupACL()
         local check = temp[aclGetName(acl)] or temp["Default"]
         if string.sub(aclGetName(acl), 1, 8) ~= "autoACL_" then
             for right, access in pairs(check) do
-                if (list[right] == nil) then
+                if (list[right] == nil and aclSetRightPermission) then
                     aclSetRight(acl, right, access)
                     updated = updated + 1
                 end

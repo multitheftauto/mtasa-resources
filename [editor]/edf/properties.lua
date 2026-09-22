@@ -130,6 +130,7 @@ propertyGetters = {
 	},
 	marker = {
 		type = getMarkerType,
+		target = function(element) return getElementData(element, "target") or "" end,
 		size = getMarkerSize,
 		color = function(element)
 			local r, g, b, a = getMarkerColor(element)
@@ -303,7 +304,11 @@ propertySetters = {
 		end
 	},
 	marker = {
-		type = setMarkerType,
+		type = function(element, markerType)
+			if not setMarkerType(element, markerType) then return false end
+			return edfSetMarkerTarget(element, getElementData(element, "target"))
+		end,
+		target = edfSetMarkerTarget,
 		size = setMarkerSize,
 		color = function(element, color)
 			return setMarkerColor(element, getColorFromString(color))
