@@ -81,6 +81,8 @@ function aAdminMenu ()
 		local y = 0.03		-- Start y coord
 		local A = 0.045		-- Large line gap
 		local B = 0.035		-- Small line gap
+		local infoLabelX, infoLabelWidth = 0.26, 0.32
+		local infoActionX, infoActionWidth, infoRowHeight = 0.60, 0.09, 0.035
 
 						     guiCreateHeader ( 0.25, y, 0.20, 0.04, "Player:", true, aTab1.Tab )
 y=y+A   aTab1.Name			= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Name: N/A", true, aTab1.Tab )
@@ -91,11 +93,20 @@ y=y+A   aTab1.Serial		= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Serial: N/A", t
 		--aTab1.Username		= guiCreateLabel ( 0.26, 0.245, 0.435, 0.035, "Username: N/A", true, aTab1.Tab )
 y=y+B   aTab1.Version		= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Version: N/A", true, aTab1.Tab )
 y=y+B   aTab1.Accountname	= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Account Name: N/A", true, aTab1.Tab )
-y=y+B   aTab1.Groups		= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Groups: N/A", true, aTab1.Tab )
+y=y+B   aTab1.Groups		= guiCreateLabel ( infoLabelX, y, infoLabelWidth, infoRowHeight, "Groups: N/A", true, aTab1.Tab )
+		aTab1.GroupsView	= guiCreateButton ( infoActionX, y, infoActionWidth, infoRowHeight, "View", true, aTab1.Tab )
+		guiSetEnabled ( aTab1.GroupsView, false )
+		aTab1.GroupsWindow = guiCreateWindow ( sx / 2 - 150, sy / 2 - 130, 300, 260, "ACL Groups", false )
+		guiWindowSetSizable ( aTab1.GroupsWindow, false )
+		aTab1.GroupsList = guiCreateGridList ( 0.05, 0.14, 0.90, 0.70, true, aTab1.GroupsWindow )
+		guiGridListAddColumn ( aTab1.GroupsList, "Group", 0.85 )
+		guiGridListSetSortingEnabled ( aTab1.GroupsList, false )
+		aTab1.GroupsClose = guiCreateButton ( 0.35, 0.87, 0.30, 0.08, "Close", true, aTab1.GroupsWindow )
+		guiSetVisible ( aTab1.GroupsWindow, false )
 y=y+A   aTab1.ACDetected	= guiCreateLabel ( 0.26, y, 0.30, 0.035, "AC Detected: N/A", true, aTab1.Tab )
 y=y+B   aTab1.ACD3D			= guiCreateLabel ( 0.26, y, 0.30, 0.035, "D3D9.DLL: N/A", true, aTab1.Tab )
-y=y+B   aTab1.ACModInfo		= guiCreateLabel ( 0.26, y, 0.20, 0.035, "Img Mods: N/A", true, aTab1.Tab )
-		aTab1.ACModDetails = guiCreateButton ( 0.46, y, 0.13, 0.04, "Details", true, aTab1.Tab )
+y=y+B   aTab1.ACModInfo		= guiCreateLabel ( infoLabelX, y, infoLabelWidth, infoRowHeight, "Img Mods: N/A", true, aTab1.Tab )
+		aTab1.ACModDetails = guiCreateButton ( infoActionX, y, infoActionWidth, infoRowHeight, "Details", true, aTab1.Tab )
 
 
 		B = 0.040
@@ -398,6 +409,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		addEventHandler ( "aClientPlayerJoin", root, aClientPlayerJoin )
 		addEventHandler ( "onClientPlayerQuit", root, aClientPlayerQuit )
 		addEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
+		addEventHandler ( "onClientGUIClick", aTab1.GroupsClose, aClientClick )
 		addEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		addEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
 		addEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
@@ -444,6 +456,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 end
 
 function aAdminMenuClose ( destroy )
+	if ( aTab1 and aTab1.GroupsWindow ) then guiSetVisible ( aTab1.GroupsWindow, false ) end
 	if ( destroy ) then
 		aMainSaveSettings ()
 		aPlayers = {}
@@ -457,6 +470,7 @@ function aAdminMenuClose ( destroy )
 		removeEventHandler ( "aClientPlayerJoin", root, aClientPlayerJoin )
 		removeEventHandler ( "onClientPlayerQuit", root, aClientPlayerQuit )
 		removeEventHandler ( "onClientGUIClick", aAdminForm, aClientClick )
+		removeEventHandler ( "onClientGUIClick", aTab1.GroupsClose, aClientClick )
 		removeEventHandler ( "onClientGUIScroll", aAdminForm, aClientScroll )
 		removeEventHandler ( "onClientGUIDoubleClick", aAdminForm, aClientDoubleClick )
 		removeEventHandler ( "onClientGUIAccepted", aAdminForm, aClientGUIAccepted )
@@ -466,6 +480,7 @@ function aAdminMenuClose ( destroy )
 		removeEventHandler ( "onClientResourceStop", root, aMainSaveSettings )
 		unbindKey ( "arrow_d", "down", aPlayerListScroll )
 		unbindKey ( "arrow_u", "down", aPlayerListScroll )
+		destroyElement ( aTab1.GroupsWindow )
 		destroyElement ( aAdminForm )
 		aAdminForm = nil
 	else
@@ -490,9 +505,57 @@ function aMainSaveSettings ()
 	else aSetSetting ( "performance", "Auto" ) end
 end
 
+local function aRefreshPlayerGroups ( player )
+	local playerData = player and aPlayers[player]
+	local groups = playerData and playerData["groupList"]
+	if ( aTab1.GroupsPlayer ~= player ) then
+		aTab1.GroupsPlayer = player
+		aTab1.GroupsData = nil
+		guiSetVisible ( aTab1.GroupsWindow, false )
+		guiGridListClear ( aTab1.GroupsList )
+	end
+	local groupsChanged = groups ~= aTab1.GroupsData
+	if ( groupsChanged and type ( groups ) == "table" and type ( aTab1.GroupsData ) == "table" ) then
+		groupsChanged = #groups ~= #aTab1.GroupsData
+		if ( not groupsChanged ) then
+			for index, group in ipairs ( groups ) do
+				if ( group ~= aTab1.GroupsData[index] ) then
+					groupsChanged = true
+					break
+				end
+			end
+		end
+	end
+	if ( groupsChanged ) then
+		guiGridListClear ( aTab1.GroupsList )
+		if ( type ( groups ) == "table" ) then
+			for _, group in ipairs ( groups ) do
+				local row = guiGridListAddRow ( aTab1.GroupsList )
+				guiGridListSetItemText ( aTab1.GroupsList, row, 1, group, false, false )
+			end
+		end
+	end
+	aTab1.GroupsData = groups
+	if ( not playerData ) then
+		guiSetText ( aTab1.Groups, "Groups: N/A" )
+	elseif ( playerData["groupStatus"] == "Not logged in" ) then
+		guiSetText ( aTab1.Groups, "Groups: Not logged in" )
+	elseif ( playerData["groupStatus"] == "None" ) then
+		guiSetText ( aTab1.Groups, "Groups: None" )
+	elseif ( type ( groups ) == "table" ) then
+		guiSetText ( aTab1.Groups, #groups > 0 and "Groups: "..#groups or "Groups: None" )
+	else
+		guiSetText ( aTab1.Groups, "Groups: N/A" )
+	end
+	local hasGroups = type ( groups ) == "table" and #groups > 0
+	guiSetEnabled ( aTab1.GroupsView, hasGroups )
+	if ( not hasGroups ) then guiSetVisible ( aTab1.GroupsWindow, false ) end
+end
+
 function aAdminRefresh ()
 	if ( guiGridListGetSelectedItem ( aTab1.PlayerList ) ~= -1 ) then
 		local player = getPlayerFromName ( guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 ) )
+		aRefreshPlayerGroups ( player and aPlayers[player] and player or nil )
 		if ( player and aPlayers[player] ) then
 			local playerName = aPlayers[player]["name"]
 
@@ -509,7 +572,6 @@ function aAdminRefresh ()
 			guiSetText ( aTab1.Freeze, iif ( aPlayers[player]["freeze"], "Unfreeze", "Freeze" ) )
 			guiSetText ( aTab1.Version, "Version: "..( aPlayers[player]["version"] or "" ) )
 			guiSetText ( aTab1.Accountname, "Account Name: "..getSensitiveText( aPlayers[player]["accountname"] or "" ) )
-			guiSetText ( aTab1.Groups, "Groups: "..( aPlayers[player]["groups"] or "None" ) )
 			guiSetText ( aTab1.ACDetected, "AC Detected: "..( aPlayers[player]["acdetected"] or "" ) )
 			guiSetText ( aTab1.ACD3D, "D3D9.DLL: "..( aPlayers[player]["d3d9dll"] or "" ) )
 			guiSetText ( aTab1.ACModInfo, "Img Mods: "..( aPlayers[player]["imgmodsnum"] or "" ) )
@@ -549,6 +611,7 @@ function aAdminRefresh ()
 			return player
 		end
 	end
+	aRefreshPlayerGroups ( nil )
 end
 
 function aClientSync ( type, table, data )
@@ -581,7 +644,8 @@ function aClientSync ( type, table, data )
 				aAdminDestroy()
 				break
 			elseif aPlayers[player] then
-				aPlayers[player]["groups"] = table[player]["groups"]
+				aPlayers[player]["groupStatus"] = table[player]["groupStatus"]
+				aPlayers[player]["groupList"] = table[player]["groupList"]
 				if ( table[player]["chat"] ) then
 					local id = 0
 					local exists = false
@@ -741,6 +805,7 @@ end
 
 function aClientGUITabSwitched( selectedTab )
 	if getElementParent( selectedTab ) == aTabPanel then
+		if selectedTab ~= aTab1.Tab then guiSetVisible ( aTab1.GroupsWindow, false ) end
 		if selectedTab == aTab2.Tab then
 			-- Handle initial update of resources list
 			if guiGridListGetRowCount( aTab2.ResourceList ) == 0 then
@@ -1000,6 +1065,10 @@ end
 
 function aClientClick ( button )
 	if ( button == "left" ) then
+		if ( source == aTab1.GroupsClose ) then
+			guiSetVisible ( aTab1.GroupsWindow, false )
+			return
+		end
 		-- TAB 1, PLAYERS
 		if ( getElementParent ( source ) == aTab1.Tab ) then
 			if ( source == aTab1.Messages ) then
@@ -1020,7 +1089,10 @@ function aClientClick ( button )
 				else
 					local name = guiGridListGetItemPlayerName ( aTab1.PlayerList, guiGridListGetSelectedItem( aTab1.PlayerList ), 1 )
 					local player = getPlayerFromName ( name )
-					if ( source == aTab1.Kick ) then aInputBox ( "Kick player "..removeColorCoding(name), "Enter the kick reason", "", "kickPlayer", player )
+					if ( source == aTab1.GroupsView ) then
+						guiSetVisible ( aTab1.GroupsWindow, true )
+						guiBringToFront ( aTab1.GroupsWindow )
+					elseif ( source == aTab1.Kick ) then aInputBox ( "Kick player "..removeColorCoding(name), "Enter the kick reason", "", "kickPlayer", player )
 					elseif ( source == aTab1.Ban ) then aBanInputBox ( player )
 					elseif ( source == aTab1.Slap ) then triggerServerEvent ( "aPlayer", localPlayer, player, "slap", aCurrentSlap )
 					elseif ( source == aTab1.Mute ) then if not aPlayers[player]["mute"] then aMuteInputBox ( player ) else aMessageBox ( "question", "Are you sure to unmute "..removeColorCoding(name).."?", "unmute", player ) end
