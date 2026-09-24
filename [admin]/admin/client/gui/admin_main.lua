@@ -22,6 +22,20 @@ aResources = {}
 local serverPassword = 'None'
 local hasResourceSetting
 
+local function aWeatherListClick ()
+	if ( source == aTab3.WeatherListSet or source == aTab3.WeatherListBlend ) then
+		local row = guiGridListGetSelectedItem ( aTab3.WeatherList )
+		local weather = row and row >= 0 and tonumber ( guiGridListGetItemData ( aTab3.WeatherList, row, 1 ) )
+		if ( weather ) then
+			local action = source == aTab3.WeatherListSet and "setweather" or "blendweather"
+			triggerServerEvent ( "aServer", localPlayer, action, weather )
+			guiSetVisible ( aTab3.WeatherWindow, false )
+		end
+	elseif ( source == aTab3.WeatherListClose ) then
+		guiSetVisible ( aTab3.WeatherWindow, false )
+	end
+end
+
 function guiComboBoxAdjustHeight ( combobox, itemcount )
     if getElementType ( combobox ) ~= "gui-combobox" or type ( itemcount ) ~= "number" then error ( "Invalid arguments @ 'guiComboBoxAdjustHeight'", 2 ) end
     local width = guiGetSize ( combobox, false )
@@ -264,6 +278,29 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 						  guiEditSetReadOnly ( aTab3.Weather, true )
 		aTab3.WeatherSet		= guiCreateButton ( 0.50, 0.40, 0.10, 0.04, "Set", true, aTab3.Tab, "setweather" )
 		aTab3.WeatherBlend	= guiCreateButton ( 0.61, 0.40, 0.15, 0.04, "Set Blended", true, aTab3.Tab, "blendweather" )
+		aTab3.WeatherListOpen	= guiCreateButton ( 0.78, 0.40, 0.12, 0.04, "Browse", true, aTab3.Tab )
+
+		aTab3.WeatherWindow	= guiCreateWindow ( 140, 65, 340, 390, "Select Weather", false, aAdminForm )
+						  guiWindowSetSizable ( aTab3.WeatherWindow, false )
+		aTab3.WeatherList	= guiCreateGridList ( 0.04, 0.08, 0.92, 0.75, true, aTab3.WeatherWindow )
+						  guiGridListAddColumn ( aTab3.WeatherList, "Weather", 0.9 )
+						  guiGridListSetSortingEnabled ( aTab3.WeatherList, false )
+		local weatherIds = {}
+		for id in pairs ( aWeathers ) do table.insert ( weatherIds, id ) end
+		table.sort ( weatherIds )
+		for _, id in ipairs ( weatherIds ) do
+			local row = guiGridListAddRow ( aTab3.WeatherList )
+			guiGridListSetItemText ( aTab3.WeatherList, row, 1, id.." - "..aWeathers[id], false, false )
+			guiGridListSetItemData ( aTab3.WeatherList, row, 1, id )
+			if ( id == getWeather() ) then guiGridListSetSelectedItem ( aTab3.WeatherList, row, 1 ) end
+		end
+		aTab3.WeatherListSet	= guiCreateButton ( 0.04, 0.86, 0.28, 0.10, "Set", true, aTab3.WeatherWindow )
+		aTab3.WeatherListBlend	= guiCreateButton ( 0.36, 0.86, 0.38, 0.10, "Set Blended", true, aTab3.WeatherWindow )
+		aTab3.WeatherListClose	= guiCreateButton ( 0.78, 0.86, 0.18, 0.10, "Close", true, aTab3.WeatherWindow )
+						  guiSetVisible ( aTab3.WeatherWindow, false )
+		addEventHandler ( "onClientGUIClick", aTab3.WeatherListSet, aWeatherListClick )
+		addEventHandler ( "onClientGUIClick", aTab3.WeatherListBlend, aWeatherListClick )
+		addEventHandler ( "onClientGUIClick", aTab3.WeatherListClose, aWeatherListClick )
 
 						  local th, tm = getTime()
 		aTab3.TimeCurrent		= guiCreateLabel ( 0.05, 0.45, 0.25, 0.04, "Time: "..th..":"..tm, true, aTab3.Tab )
@@ -1168,6 +1205,9 @@ function aClientClick ( button )
 		-- TAB 3, WORLD
 		elseif ( getElementParent ( source ) == aTab3.Tab ) then
 			if ( source == aTab3.SetGameType ) then aInputBox ( "Game Type", "Enter game type:", "", "setGameType" )
+			elseif ( source == aTab3.WeatherListOpen ) then
+				guiSetVisible ( aTab3.WeatherWindow, true )
+				guiBringToFront ( aTab3.WeatherWindow )
 			elseif ( source == aTab3.SetMapName ) then aInputBox ( "Map Name", "Enter map name:", "", "setMapName" )
 			elseif ( source == aTab3.SetWelcome ) then aInputBox ( "Welcome Message", "Enter the server welcome message:", "", "setWelcome" )
 			elseif ( source == aTab3.SetPassword ) then aInputBox ( "Server password", "Enter server password: (32 characters max)", "", "setServerPassword" )
