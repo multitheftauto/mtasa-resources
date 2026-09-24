@@ -118,13 +118,14 @@ addEventHandler ( "onResourceStart", root, function ( resource )
 		while ( xmlFindChild ( node, "interior", interiors ) ) do
 			local interior = xmlFindChild ( node, "interior", interiors )
 			interiors = interiors + 1
-			aInteriors[interiors] = {}
-			aInteriors[interiors]["world"] = tonumber ( xmlNodeGetAttribute ( interior, "world" ) )
-			aInteriors[interiors]["id"] = xmlNodeGetAttribute ( interior, "id" )
-			aInteriors[interiors]["x"] = xmlNodeGetAttribute ( interior, "posX" )
-			aInteriors[interiors]["y"] = xmlNodeGetAttribute ( interior, "posY" )
-			aInteriors[interiors]["z"] = xmlNodeGetAttribute ( interior, "posZ" )
-			aInteriors[interiors]["r"] = xmlNodeGetAttribute ( interior, "rot" )
+			local id = xmlNodeGetAttribute ( interior, "id" )
+			aInteriors[id] = {
+				world = tonumber ( xmlNodeGetAttribute ( interior, "world" ) ),
+				x = xmlNodeGetAttribute ( interior, "posX" ),
+				y = xmlNodeGetAttribute ( interior, "posY" ),
+				z = xmlNodeGetAttribute ( interior, "posZ" ),
+				r = xmlNodeGetAttribute ( interior, "rot" )
+			}
 		end
 		xmlUnloadFile ( node )
 	end
@@ -923,7 +924,7 @@ function warp ( p, to )
 	local target = getPedOccupiedVehicle ( p ) or p
 	x = x - math.sin ( math.rad ( r ) ) * 2
 	y = y + math.cos ( math.rad ( r ) ) * 2
-	setTimer ( setElementPosition, 1000, 1, target, x, y, z + 1 )
+	setTimer ( setElementPosition, 1000, 1, target, x, y, z )
 	fadeCamera ( p, false, 1, 0, 0, 0 )
 	setElementDimension ( target, dim )
 	setElementInterior ( target, int )
@@ -1095,22 +1096,21 @@ addEventHandler ( "aPlayer", root, function ( player, action, data, additional, 
 			setPlayerTeam ( player, nil )
 		elseif ( action == "setinterior" ) then
 			action = nil
-			for id, interior in ipairs ( aInteriors ) do
-				if ( interior["id"] == data ) then
-					local vehicle = getPedOccupiedVehicle ( player )
-					setElementInterior ( player, interior["world"] )
-					local x, y, z = interior["x"] or 0, interior["y"] or 0, interior["z"] or 0
-					local rot = interior["r"] or 0
-					if ( vehicle ) then
-						setElementInterior ( vehicle, interior["world"] )
-						setElementPosition ( vehicle, x, y, z + 0.2 )
-					else
-						setElementPosition ( player, x, y, z + 0.2 )
-						setElementRotation ( player, 0, 0, rot, 'default', true )
-					end
-					action = "interior"
-					mdata = data
+			local interior = aInteriors[data]
+			if ( interior ) then
+				local vehicle = getPedOccupiedVehicle ( player )
+				setElementInterior ( player, interior["world"] )
+				local x, y, z = interior["x"] or 0, interior["y"] or 0, interior["z"] or 0
+				local rot = interior["r"] or 0
+				if ( vehicle ) then
+					setElementInterior ( vehicle, interior["world"] )
+					setElementPosition ( vehicle, x, y, z + 0.2 )
+				else
+					setElementPosition ( player, x, y, z + 0.2 )
+					setElementRotation ( player, 0, 0, rot, 'default', true )
 				end
+				action = "interior"
+				mdata = data
 			end
 		elseif ( action == "setdimension" ) then
 			local dimension = tonumber ( data )
