@@ -280,7 +280,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 		aTab3.WeatherBlend	= guiCreateButton ( 0.61, 0.40, 0.15, 0.04, "Set Blended", true, aTab3.Tab, "blendweather" )
 		aTab3.WeatherListOpen	= guiCreateButton ( 0.78, 0.40, 0.12, 0.04, "Browse", true, aTab3.Tab )
 
-		aTab3.WeatherWindow	= guiCreateWindow ( 140, 65, 340, 390, "Select Weather", false, aAdminForm )
+		aTab3.WeatherWindow	= guiCreateWindow ( sx / 2 - 170, sy / 2 - 195, 340, 390, "Select Weather", false )
 						  guiWindowSetSizable ( aTab3.WeatherWindow, false )
 		aTab3.WeatherList	= guiCreateGridList ( 0.04, 0.08, 0.92, 0.75, true, aTab3.WeatherWindow )
 						  guiGridListAddColumn ( aTab3.WeatherList, "Weather", 0.9 )
