@@ -559,6 +559,7 @@ function aClientSync ( type, table, data )
 	elseif ( type == "players" ) then
 		aPlayers = table
 	elseif ( type == "resources" ) then
+		guiGridListClear ( aTab2.ResourceList )
 		local bInclMaps = guiCheckBoxGetSelected ( aTab2.ResourceInclMaps )
 		aResources = table
 		for id, resource in ipairs(table) do
@@ -764,24 +765,12 @@ function aClientGUITabSwitched( selectedTab )
 	end
 end
 
-function aClientResourceStart ( resource )
-	local id = 0
-	while ( id <= guiGridListGetRowCount( aTab2.ResourceList ) ) do
-		if ( guiGridListGetItemText ( aTab2.ResourceList, id, 1 ) == resource ) then
-			guiGridListSetItemText ( aTab2.ResourceList, id, 3, "running", false, false )
-		end
-		id = id + 1
-	end
+function aClientResourceStart ()
+	triggerServerEvent ( "aSync", localPlayer, "resources" )
 end
 
-function aClientResourceStop ( resource )
-	local id = 0
-	while ( id <= guiGridListGetRowCount( aTab2.ResourceList ) ) do
-		if ( guiGridListGetItemText ( aTab2.ResourceList, id, 1 ) == resource ) then
-			guiGridListSetItemText ( aTab2.ResourceList, id, 3, "loaded", false, false )
-		end
-		id = id + 1
-	end
+function aClientResourceStop ()
+	triggerServerEvent ( "aSync", localPlayer, "resources" )
 end
 
 function aClientPlayerJoin ( ip, accountname, serial, admin, country )
