@@ -25,19 +25,21 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		tableOut["money"] = getPlayerMoney ( data )
 		tableOut["version"] = aPlayers[data]["version"]
 		tableOut["accountname"] = getPlayerAccountName ( data ) or "N/A"
-		tableOut["groups"] = "None"
+		tableOut["groupStatus"] = "None"
+		tableOut["groupList"] = {}
 		tableOut["acdetected"] = getPlayerACDetectedList( data )
 		tableOut["d3d9dll"] = getPlayerD3D9DLLHash( data )
 		tableOut["imgmodsnum"] = getPlayerModCount( data )
 		local account = getPlayerAccount ( data )
 		if ( isGuestAccount ( account ) ) then
-			tableOut["groups"] = "Not logged in"
+			tableOut["groupStatus"] = "Not logged in"
 		else
 			local groups = aclGetAccountGroups ( account )
 			if ( #groups <= 0 ) then
-				tableOut["groups"] = "None"
+				tableOut["groupStatus"] = "None"
 			else
-				tableOut["groups"] = table.concat(table.reverse(groups), ", ")
+				tableOut["groupList"] = table.reverse(groups)
+				tableOut["groupStatus"] = "Has groups"
 			end
 		end
 		theSource = data
@@ -104,16 +106,18 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 				if ( tableOut[player]["admin"] ) then
 					tableOut[player]["chat"] = aPlayers[player]["chat"]
 				end
-				tableOut[player]["groups"] = "None"
+				tableOut[player]["groupStatus"] = "None"
+				tableOut[player]["groupList"] = {}
 				local account = getPlayerAccount ( player )
 				if ( isGuestAccount ( account ) ) then
-					tableOut[player]["groups"] = "Not logged in"
+					tableOut[player]["groupStatus"] = "Not logged in"
 				else
 					local groups = aclGetAccountGroups ( account )
 					if ( #groups <= 0 ) then
-						tableOut[player]["groups"] = "None"
+						tableOut[player]["groupStatus"] = "None"
 					else
-						tableOut[player]["groups"] = table.concat(table.reverse(groups), ", ")
+						tableOut[player]["groupList"] = table.reverse(groups)
+						tableOut[player]["groupStatus"] = "Has groups"
 					end
 				end
 			end
