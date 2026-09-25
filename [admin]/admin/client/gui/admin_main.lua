@@ -109,7 +109,6 @@ y=y+B   aTab1.Version		= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Version: N/A",
 y=y+B   aTab1.Accountname	= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Account Name: N/A", true, aTab1.Tab )
 y=y+B   aTab1.Groups		= guiCreateLabel ( infoLabelX, y, infoLabelWidth, infoRowHeight, "Groups: N/A", true, aTab1.Tab )
 		aTab1.GroupsView	= guiCreateButton ( infoActionX, y, infoActionWidth, infoRowHeight, "View", true, aTab1.Tab )
-		guiSetEnabled ( aTab1.GroupsView, false )
 		aTab1.GroupsWindow = guiCreateWindow ( sx / 2 - 150, sy / 2 - 130, 300, 260, "ACL Groups", false )
 		guiWindowSetSizable ( aTab1.GroupsWindow, false )
 		aTab1.GroupsList = guiCreateGridList ( 0.05, 0.14, 0.90, 0.70, true, aTab1.GroupsWindow )
@@ -585,7 +584,6 @@ local function aRefreshPlayerGroups ( player )
 		guiSetText ( aTab1.Groups, "Groups: N/A" )
 	end
 	local hasGroups = type ( groups ) == "table" and #groups > 0
-	guiSetEnabled ( aTab1.GroupsView, hasGroups )
 	if ( not hasGroups ) then guiSetVisible ( aTab1.GroupsWindow, false ) end
 end
 
