@@ -563,13 +563,7 @@ function aClientSync ( type, table, data )
 		aResources = table
 		for id, resource in ipairs(table) do
 			if bInclMaps or resource["type"] ~= "map" then
-				local row = guiGridListAddRow ( aTab2.ResourceList )
-				guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
-				guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
-				guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
-				guiGridListSetItemText ( aTab2.ResourceList, row, 4, resource["fullName"], false, false )
-				guiGridListSetItemText ( aTab2.ResourceList, row, 5, resource["author"], false, false )
-				guiGridListSetItemText ( aTab2.ResourceList, row, 6, resource["version"], false, false )
+				guiGridListAddRow ( aTab2.ResourceList, resource["name"], resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", resource["state"], resource["fullName"], resource["author"], resource["version"] )
 			end
 		end
 	elseif ( type == "loggedout" ) then
@@ -947,26 +941,14 @@ function aClientGUIChanged ()
 		if ( text == "" ) then
 			for id, resource in ipairs(aResources) do
 				if bInclMaps or resource["type"] ~= "map" then
-					local row = guiGridListAddRow ( aTab2.ResourceList )
-					guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
-					guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
-					guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
-					guiGridListSetItemText ( aTab2.ResourceList, row, 4, resource["fullName"], false, false )
-					guiGridListSetItemText ( aTab2.ResourceList, row, 5, resource["author"], false, false )
-					guiGridListSetItemText ( aTab2.ResourceList, row, 6, resource["version"], false, false )
+					guiGridListAddRow ( aTab2.ResourceList, resource["name"], resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", resource["state"], resource["fullName"], resource["author"], resource["version"] )
 				end
 			end
 		else
 			for id, resource in ipairs(aResources) do
 				if bInclMaps or resource["type"] ~= "map" then
 					if string.find(string.lower(resource.name), text, 1, true) then
-						local row = guiGridListAddRow ( aTab2.ResourceList )
-						guiGridListSetItemText ( aTab2.ResourceList, row, 1, resource["name"], false, false )
-						guiGridListSetItemText ( aTab2.ResourceList, row, 2, resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", false, false )
-						guiGridListSetItemText ( aTab2.ResourceList, row, 3, resource["state"], false, false )
-						guiGridListSetItemText ( aTab2.ResourceList, row, 4, resource["fullName"], false, false )
-						guiGridListSetItemText ( aTab2.ResourceList, row, 5, resource["author"], false, false )
-						guiGridListSetItemText ( aTab2.ResourceList, row, 6, resource["version"], false, false )
+						guiGridListAddRow ( aTab2.ResourceList, resource["name"], resource["numsettings"] > 0 and tostring(resource["numsettings"]) or "", resource["state"], resource["fullName"], resource["author"], resource["version"] )
 					end
 				end
 			end
