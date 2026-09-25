@@ -277,7 +277,7 @@ y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.26, y, 0.25, 0.04, "Vehicle Heal
 						  guiEditSetReadOnly ( aTab3.Weather, true )
 		aTab3.WeatherSet		= guiCreateButton ( 0.50, 0.40, 0.10, 0.04, "Set", true, aTab3.Tab, "setweather" )
 		aTab3.WeatherBlend	= guiCreateButton ( 0.61, 0.40, 0.15, 0.04, "Set Blended", true, aTab3.Tab, "blendweather" )
-		aTab3.WeatherListOpen	= guiCreateButton ( 0.78, 0.40, 0.12, 0.04, "Browse", true, aTab3.Tab )
+		aTab3.WeatherListOpen	= guiCreateButton ( 0.77, 0.40, 0.12, 0.04, "Browse", true, aTab3.Tab )
 
 		aTab3.WeatherWindow	= guiCreateWindow ( sx / 2 - 170, sy / 2 - 195, 340, 420, "Select Weather", false )
 						  guiWindowSetSizable ( aTab3.WeatherWindow, false )
