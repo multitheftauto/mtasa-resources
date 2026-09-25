@@ -96,7 +96,7 @@ function aAdminMenu ()
 		local A = 0.045		-- Large line gap
 		local B = 0.035		-- Small line gap
 		local infoLabelX, infoLabelWidth = 0.26, 0.32
-		local infoActionX, infoActionWidth, infoRowHeight = 0.60, 0.09, 0.035
+		local infoActionX, infoActionWidth, infoRowHeight = 0.45, 0.09, 0.035
 
 						     guiCreateHeader ( 0.25, y, 0.20, 0.04, "Player:", true, aTab1.Tab )
 y=y+A   aTab1.Name			= guiCreateLabel ( 0.26, y, 0.435, 0.035, "Name: N/A", true, aTab1.Tab )
