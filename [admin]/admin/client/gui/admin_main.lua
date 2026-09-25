@@ -764,24 +764,28 @@ function aClientGUITabSwitched( selectedTab )
 	end
 end
 
-function aClientResourceStart ( resource )
-	local id = 0
-	while ( id <= guiGridListGetRowCount( aTab2.ResourceList ) ) do
-		if ( guiGridListGetItemText ( aTab2.ResourceList, id, 1 ) == resource ) then
-			guiGridListSetItemText ( aTab2.ResourceList, id, 3, "running", false, false )
+local function aUpdateResourceState ( resourceName, state )
+	for _, resource in ipairs ( aResources ) do
+		if ( resource["name"] == resourceName ) then
+			resource["state"] = state
+			break
 		end
-		id = id + 1
+	end
+
+	for row = 0, guiGridListGetRowCount ( aTab2.ResourceList ) - 1 do
+		if ( guiGridListGetItemText ( aTab2.ResourceList, row, 1 ) == resourceName ) then
+			guiGridListSetItemText ( aTab2.ResourceList, row, 3, state, false, false )
+			break
+		end
 	end
 end
 
+function aClientResourceStart ( resource )
+	aUpdateResourceState ( resource, "running" )
+end
+
 function aClientResourceStop ( resource )
-	local id = 0
-	while ( id <= guiGridListGetRowCount( aTab2.ResourceList ) ) do
-		if ( guiGridListGetItemText ( aTab2.ResourceList, id, 1 ) == resource ) then
-			guiGridListSetItemText ( aTab2.ResourceList, id, 3, "loaded", false, false )
-		end
-		id = id + 1
-	end
+	aUpdateResourceState ( resource, "loaded" )
 end
 
 function aClientPlayerJoin ( ip, accountname, serial, admin, country )
