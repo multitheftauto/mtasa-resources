@@ -288,8 +288,8 @@ local aACLFunctions = {
         local data = {}
         for id, acl in ipairs(aclGroupListACL(aclGetGroup(group))) do
             local storage = {}
-            for i, right in ipairs(aclListRights(acl)) do
-                storage[right] = aclGetRight(acl, right)
+            for i, rightName in ipairs(aclListRights(acl)) do
+                storage[rightName] = aclGetRight(acl, rightName)
             end
             data[aclGetName(acl)] = storage
         end
