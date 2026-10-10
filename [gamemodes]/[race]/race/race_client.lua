@@ -426,13 +426,13 @@ addEventHandler('onClientColShapeHit', root,
 		outputDebug( 'CHECKPOINT', 'onClientColShapeHit'
 						.. ' elem:' .. tostring(elem)
 						.. ' g_Vehicle:' .. tostring(g_Vehicle)
-						.. ' isVehicleBlown(g_Vehicle):' .. tostring(isVehicleBlown(g_Vehicle))
+						.. ' isVehicleBlown(g_Vehicle):' .. tostring(g_Vehicle and isVehicleBlown(g_Vehicle))
 						.. ' localPlayer:' .. tostring(localPlayer)
 						.. ' getElementHealth(localPlayer):' .. tostring(getElementHealth(localPlayer))
 						.. ' source:' .. tostring(source)
 						.. ' pickup:' .. tostring(pickup)
 						)
-		if elem ~= g_Vehicle or not pickup or isVehicleBlown(g_Vehicle) or getElementHealth(localPlayer) == 0 then
+		if not g_Vehicle or elem ~= g_Vehicle or not pickup or isVehicleBlown(g_Vehicle) or getElementHealth(localPlayer) == 0 then
 			return
 		end
 		if pickup.load then

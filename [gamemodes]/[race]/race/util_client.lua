@@ -65,7 +65,7 @@ function setGUIComponentsVisible(settings)
 	for name,visible in pairs(settings) do
 		if type(g_GUI[name]) == 'table' then
 			g_GUI[name][visible and 'show' or 'hide'](g_GUI[name])
-		else
+		elseif type(g_GUI[name]) == 'userdata' and isElement(g_GUI[name]) then
 			guiSetVisible(g_GUI[name], visible)
 		end
 	end
