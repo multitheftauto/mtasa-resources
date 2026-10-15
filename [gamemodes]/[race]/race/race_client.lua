@@ -291,6 +291,12 @@ function updateOptions ( gameoptions, mapoptions )
 
 	-- Apply
 	updateVehicleWeapons()
+
+	-- Update vehicle collision settings
+	for _, vehicle in ipairs(getElementsByType("vehicle")) do
+		OverrideClient.updateVars(vehicle)
+	end
+	
 	setCloudsEnabled(g_GameOptions.cloudsenable)
 	setBlurLevel(g_GameOptions.blurlevel)
 	g_dxGUI.mapdisplay:visible(g_GameOptions.showmapname)

@@ -128,6 +128,8 @@ function cacheGameOptions()
 	g_GameOptions.vehicle_physics_fps = getNumber('race.vehicle_physics_fps',-1)
 	g_GameOptions.vehicle_physics_mode_map_can_override = getBool('race.vehicle_physics_mode_map_can_override',true)
 	g_GameOptions.vehicle_physics_fps_map_can_override = getBool('race.vehicle_physics_fps_map_can_override',true)
+	g_GameOptions.non_race_vehicle_collisions = getBool("race.non_race_vehicle_collisions",false)
+	g_GameOptions.non_race_vehicle_collisions_map_can_override = getBool("race.non_race_vehicle_collisions_map_can_override",true)
 	if g_GameOptions.statskey ~= 'name' and g_GameOptions.statskey ~= 'serial' then
 		outputWarning( "statskey is not set to 'name' or 'serial'" )
 		g_GameOptions.statskey = 'name'
@@ -158,6 +160,7 @@ function cacheMapOptions(map)
 	g_MapOptions.hunterminigun	= map.hunterminigun == 'true'
 	g_MapOptions.vehicle_physics_mode = map.vehicle_physics_mode or g_GameOptions.vehicle_physics_mode
 	g_MapOptions.vehicle_physics_fps = tonumber(map.vehicle_physics_fps) or g_GameOptions.vehicle_physics_fps
+	g_MapOptions.non_race_vehicle_collisions = map.non_race_vehicle_collisions == 'true'
 
 	outputDebug("MISC", "duration = "..g_MapOptions.duration.."  respawn = "..g_MapOptions.respawn.."  respawntime = "..tostring(g_MapOptions.respawntime).."  time = "..g_MapOptions.time.."  weather = "..g_MapOptions.weather)
 
@@ -225,6 +228,11 @@ function cacheMapOptions(map)
 		g_MapOptions.vehicle_physics_fps = g_GameOptions.vehicle_physics_fps
 	end
 
+	-- Set non_race_vehicle_collisions from g_GameOptions if not defined in the map, or map override not allowed
+	if not map.non_race_vehicle_collisions or not g_GameOptions.non_race_vehicle_collisions_map_can_override then
+		g_MapOptions.non_race_vehicle_collisions = g_GameOptions.non_race_vehicle_collisions
+	end
+
 	if g_MapOptions.vehicle_physics_mode == "fixed" then
 		if g_OriginalVehiclePhysicsGlitchState == nil then
 			g_OriginalVehiclePhysicsGlitchState = isGlitchEnabled("vehicle_rapid_stop")
@@ -290,6 +298,7 @@ function loadMap(res)
 	g_SavedMapSettings.hunterminigun	= map.hunterminigun
 	g_SavedMapSettings.vehicle_physics_mode		= map.vehicle_physics_mode
 	g_SavedMapSettings.vehicle_physics_fps		= map.vehicle_physics_fps
+	g_SavedMapSettings.non_race_vehicle_collisions = map.non_race_vehicle_collisions
 
 	cacheMapOptions(g_SavedMapSettings)
 
