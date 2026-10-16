@@ -59,7 +59,9 @@ local function onPlayerResourceStart(resourceElement)
 	-- Do queued events
 
 	for _, eventData in ipairs(playerData[source].pending) do
-		_triggerClientEvent(source, eventData.name, eventData.source, unpack(eventData.args))
+		if isElement(eventData.source) then
+			_triggerClientEvent(source, eventData.name, eventData.source, unpack(eventData.args))
+		end
 	end
 
 	playerData[source].pending = nil
