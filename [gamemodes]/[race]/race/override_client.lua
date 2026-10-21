@@ -67,7 +67,11 @@ function OverrideClient.updateVars( element )
 end
 
 function isCollideOthers ( element )
-	return ( getElementData ( element, 'race.collideothers' ) or 0 ) ~= 0
+	local collideothers = getElementData ( element, "race.collideothers" )
+	if not collideothers and getElementType( element ) == "vehicle" then
+		collideothers = g_MapOptions and g_MapOptions.non_race_vehicle_collisions and not g_MapOptions.ghostmode
+	end
+	return ( collideothers or 0 ) ~= 0
 end
 
 function isCollideWorld ( element )
@@ -120,7 +124,7 @@ if OverrideClient.debug then
 				end
 				local player = getVehicleController(vehicle)
 				local collisions = not isVehicleCollisionsEnabled and "n/a" or isVehicleCollisionsEnabled(vehicle)
-				local collideothers = getElementData ( vehicle, "race.collideothers" )
+				local collideothers = isCollideOthers ( vehicle )
 				local collideworld = getElementData ( vehicle, "race.collideworld" )
 				dxDrawText ( getElementDesc(vehicle), sx[1], sy )
 				dxDrawText ( tostring(collisions), sx[2], sy )
