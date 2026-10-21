@@ -426,6 +426,10 @@ local function drawBoundingBox(corners, r, g, b, a)
 end
 
 function renderHoverOverGridLines()
+	if getResourceState(getResourceFromName("editor_gui")) ~= "running" then
+		return
+	end
+	
     if not exports["editor_gui"]:sx_getOptionData("enableHoverBoundingBox") or exports.editor_gui:isTesting() then
         highlightedElement = nil
         return
